@@ -1,19 +1,19 @@
 @interface TSTCellSpec
 + (id)cellDiffProperties;
-+ (id)cellSpecFromTSKFormat:(id)a3;
++ (id)cellSpecFromTSKFormat:(id)format;
 + (id)defaultCellSpec;
-+ (id)displayNameForInteractionType:(unsigned int)a3;
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
-+ (unsigned)interactionTypeForShimControlFormatType:(unsigned int)a3;
-+ (unsigned)shimControlFormatTypeForInteractionType:(unsigned int)a3;
++ (id)displayNameForInteractionType:(unsigned int)type;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
++ (unsigned)interactionTypeForShimControlFormatType:(unsigned int)type;
++ (unsigned)shimControlFormatTypeForInteractionType:(unsigned int)type;
 - (BOOL)isControl;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (TSTCellSpec)init;
-- (id)initFromPropertyCommandMessage:(const Message *)a3 unarchiver:(id)a4;
-- (id)objectByRemovingPropertiesInMap:(id)a3 addingPropertiesInMap:(id)a4 updateInverseResetPropertyMap:(id)a5 updateInverseSetPropertyMap:(id)a6;
-- (id)propertiesMatchingThoseInMap:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)initFromPropertyCommandMessage:(const Message *)message unarchiver:(id)unarchiver;
+- (id)objectByRemovingPropertiesInMap:(id)map addingPropertiesInMap:(id)inMap updateInverseResetPropertyMap:(id)propertyMap updateInverseSetPropertyMap:(id)setPropertyMap;
+- (id)propertiesMatchingThoseInMap:(id)map;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTCellSpec
@@ -65,25 +65,25 @@
   return v3;
 }
 
-- (id)objectByRemovingPropertiesInMap:(id)a3 addingPropertiesInMap:(id)a4 updateInverseResetPropertyMap:(id)a5 updateInverseSetPropertyMap:(id)a6
+- (id)objectByRemovingPropertiesInMap:(id)map addingPropertiesInMap:(id)inMap updateInverseResetPropertyMap:(id)propertyMap updateInverseSetPropertyMap:(id)setPropertyMap
 {
-  v8 = a4;
-  objc_msgSend_setObject_forProperty_(a6, v9, self, 913, v10);
-  v11 = self;
-  if (objc_msgSend_containsProperty_(v8, v12, 913, v13, v14))
+  inMapCopy = inMap;
+  objc_msgSend_setObject_forProperty_(setPropertyMap, v9, self, 913, v10);
+  selfCopy = self;
+  if (objc_msgSend_containsProperty_(inMapCopy, v12, 913, v13, v14))
   {
-    v18 = objc_msgSend_objectForProperty_(v8, v15, 913, v16, v17);
+    v18 = objc_msgSend_objectForProperty_(inMapCopy, v15, 913, v16, v17);
 
-    v11 = v18;
+    selfCopy = v18;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)propertiesMatchingThoseInMap:(id)a3
+- (id)propertiesMatchingThoseInMap:(id)map
 {
-  v4 = a3;
-  if (objc_msgSend_containsProperty_(v4, v5, 913, v6, v7))
+  mapCopy = map;
+  if (objc_msgSend_containsProperty_(mapCopy, v5, 913, v6, v7))
   {
     v8 = objc_alloc(MEMORY[0x277D80AB8]);
     v12 = objc_msgSend_initWithPropertiesAndValues_(v8, v9, 913, v10, v11, self, 0);
@@ -97,9 +97,9 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (v9)
@@ -116,10 +116,10 @@
   return v15;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a4;
-  v8 = *(a3 + 16);
+  unarchiverCopy = unarchiver;
+  v8 = *(archive + 16);
   if (v8 <= 3)
   {
     if ((v8 - 1) < 3)
@@ -143,7 +143,7 @@ LABEL_13:
     {
       v9 = off_27845CE68;
 LABEL_12:
-      v10 = objc_msgSend_instanceWithArchive_unarchiver_(*v9, v5, a3, v7, v6);
+      v10 = objc_msgSend_instanceWithArchive_unarchiver_(*v9, v5, archive, unarchiverCopy, v6);
       goto LABEL_13;
     }
 
@@ -167,21 +167,21 @@ LABEL_14:
   return v11;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = objc_msgSend_interactionTypeFromTheFuture(self, a2, a3, a4, v4);
-  *(a3 + 4) |= 0x20u;
-  *(a3 + 16) = v6;
+  v6 = objc_msgSend_interactionTypeFromTheFuture(self, a2, archive, archiver, v4);
+  *(archive + 4) |= 0x20u;
+  *(archive + 16) = v6;
 }
 
-- (id)initFromPropertyCommandMessage:(const Message *)a3 unarchiver:(id)a4
+- (id)initFromPropertyCommandMessage:(const Message *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v11 = objc_msgSend_init(self, v7, v8, v9, v10);
-  if (LODWORD(a3[4].var0))
+  if (LODWORD(message[4].var0))
   {
     v12 = objc_opt_class();
-    v15 = objc_msgSend_instanceWithArchive_unarchiver_(v12, v13, a3, v6, v14);
+    v15 = objc_msgSend_instanceWithArchive_unarchiver_(v12, v13, message, unarchiverCopy, v14);
 
     v11 = v15;
   }
@@ -189,10 +189,10 @@ LABEL_14:
   return v11;
 }
 
-+ (id)cellSpecFromTSKFormat:(id)a3
++ (id)cellSpecFromTSKFormat:(id)format
 {
-  v3 = a3;
-  v11 = objc_msgSend_formatType(v3, v4, v5, v6, v7) - 263;
+  formatCopy = format;
+  v11 = objc_msgSend_formatType(formatCopy, v4, v5, v6, v7) - 263;
   if (v11 >= 5)
   {
     v12 = 0;
@@ -200,17 +200,17 @@ LABEL_14:
 
   else
   {
-    v12 = objc_msgSend_cellSpecFromTSKFormat_(*off_278463C00[v11], v8, v3, v9, v10);
+    v12 = objc_msgSend_cellSpecFromTSKFormat_(*off_278463C00[v11], v8, formatCopy, v9, v10);
   }
 
   return v12;
 }
 
-+ (unsigned)interactionTypeForShimControlFormatType:(unsigned int)a3
++ (unsigned)interactionTypeForShimControlFormatType:(unsigned int)type
 {
-  if (objc_msgSend_isShimControlFormatType_(a1, a2, *&a3, v3, v4))
+  if (objc_msgSend_isShimControlFormatType_(self, a2, *&type, v3, v4))
   {
-    return a3 - 100;
+    return type - 100;
   }
 
   v10 = MEMORY[0x277D81150];
@@ -222,11 +222,11 @@ LABEL_14:
   return 0;
 }
 
-+ (unsigned)shimControlFormatTypeForInteractionType:(unsigned int)a3
++ (unsigned)shimControlFormatTypeForInteractionType:(unsigned int)type
 {
-  if (a3 - 4 <= 4)
+  if (type - 4 <= 4)
   {
-    return a3 + 100;
+    return type + 100;
   }
 
   v6 = MEMORY[0x277D81150];
@@ -238,43 +238,43 @@ LABEL_14:
   return 0;
 }
 
-+ (id)displayNameForInteractionType:(unsigned int)a3
++ (id)displayNameForInteractionType:(unsigned int)type
 {
   v5 = 0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      v6 = sub_2214AAEA8(a1, a2, *&a3, v3, v4);
+      v6 = sub_2214AAEA8(self, a2, *&type, v3, v4);
       v8 = objc_msgSend_localizedStringForKey_value_table_(v6, v12, @"Stepper", &stru_2834BADA0, @"TSTables");
     }
 
     else
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_13;
       }
 
-      v6 = sub_2214AAEA8(a1, a2, *&a3, v3, v4);
+      v6 = sub_2214AAEA8(self, a2, *&type, v3, v4);
       v8 = objc_msgSend_localizedStringForKey_value_table_(v6, v9, @"Slider", &stru_2834BADA0, @"TSTables");
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 6u:
-        v6 = sub_2214AAEA8(a1, a2, *&a3, v3, v4);
+        v6 = sub_2214AAEA8(self, a2, *&type, v3, v4);
         v8 = objc_msgSend_localizedStringForKey_value_table_(v6, v10, @"Star Rating", &stru_2834BADA0, @"TSTables");
         break;
       case 7u:
-        v6 = sub_2214AAEA8(a1, a2, *&a3, v3, v4);
+        v6 = sub_2214AAEA8(self, a2, *&type, v3, v4);
         v8 = objc_msgSend_localizedStringForKey_value_table_(v6, v11, @"Pop-Up Menu", &stru_2834BADA0, @"TSTables");
         break;
       case 8u:
-        v6 = sub_2214AAEA8(a1, a2, *&a3, v3, v4);
+        v6 = sub_2214AAEA8(self, a2, *&type, v3, v4);
         v8 = objc_msgSend_localizedStringForKey_value_table_(v6, v7, @"Checkbox", &stru_2834BADA0, @"TSTables");
         break;
       default:

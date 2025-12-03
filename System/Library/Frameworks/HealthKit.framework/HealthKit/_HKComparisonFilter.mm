@@ -1,52 +1,52 @@
 @interface _HKComparisonFilter
-+ (BOOL)_isValidValue:(id)a3 forKeyPath:(id)a4 allowedClases:(id)a5 error:(id *)a6;
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)_filterForKeyPath:(id)a3 operatorType:(unint64_t)a4 value:(id)a5 dataTypes:(id)a6 applicationSDKVersionToken:(unint64_t)a7 isSubpredicate:(BOOL)a8;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)_isValidValue:(id)value forKeyPath:(id)path allowedClases:(id)clases error:(id *)error;
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)_filterForKeyPath:(id)path operatorType:(unint64_t)type value:(id)value dataTypes:(id)types applicationSDKVersionToken:(unint64_t)token isSubpredicate:(BOOL)subpredicate;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_HKComparisonFilter)initWithCoder:(id)a3;
-- (id)_initWithKeyPath:(id)a3 operatorType:(unint64_t)a4 value:(id)a5 dataTypes:(id)a6 applicationSDKVersionToken:(unint64_t)a7;
+- (_HKComparisonFilter)initWithCoder:(id)coder;
+- (id)_initWithKeyPath:(id)path operatorType:(unint64_t)type value:(id)value dataTypes:(id)types applicationSDKVersionToken:(unint64_t)token;
 - (unint64_t)hash;
 - (void)configureInMemoryFilter;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKComparisonFilter
 
-- (id)_initWithKeyPath:(id)a3 operatorType:(unint64_t)a4 value:(id)a5 dataTypes:(id)a6 applicationSDKVersionToken:(unint64_t)a7
+- (id)_initWithKeyPath:(id)path operatorType:(unint64_t)type value:(id)value dataTypes:(id)types applicationSDKVersionToken:(unint64_t)token
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  pathCopy = path;
+  valueCopy = value;
+  typesCopy = types;
   v21.receiver = self;
   v21.super_class = _HKComparisonFilter;
   v15 = [(_HKComparisonFilter *)&v21 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [pathCopy copy];
     keyPath = v15->_keyPath;
     v15->_keyPath = v16;
 
-    v15->_operatorType = a4;
-    if ([v13 conformsToProtocol:&unk_1F06879D8])
+    v15->_operatorType = type;
+    if ([valueCopy conformsToProtocol:&unk_1F06879D8])
     {
-      v18 = [v13 copy];
+      v18 = [valueCopy copy];
     }
 
     else
     {
-      v18 = v13;
+      v18 = valueCopy;
     }
 
     value = v15->_value;
     v15->_value = v18;
 
-    objc_storeStrong(&v15->_dataTypes, a6);
-    v15->_applicationSDKVersionToken = a7;
+    objc_storeStrong(&v15->_dataTypes, types);
+    v15->_applicationSDKVersionToken = token;
     atomic_store(0, &v15->_hasBeenConfiguredFlag);
   }
 
@@ -60,31 +60,31 @@
   keyPath = self->_keyPath;
   v6 = HKStringFromPredicateOperatorType(self->_operatorType);
   value = self->_value;
-  v8 = [(NSSet *)self->_dataTypes allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_dataTypes allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
   v10 = [v3 stringWithFormat:@"<%@: %@ '%@' %@ for [%@], sdk_token=%llu>", v4, keyPath, v6, value, v9, self->_applicationSDKVersionToken];
 
   return v10;
 }
 
-+ (id)_filterForKeyPath:(id)a3 operatorType:(unint64_t)a4 value:(id)a5 dataTypes:(id)a6 applicationSDKVersionToken:(unint64_t)a7 isSubpredicate:(BOOL)a8
++ (id)_filterForKeyPath:(id)path operatorType:(unint64_t)type value:(id)value dataTypes:(id)types applicationSDKVersionToken:(unint64_t)token isSubpredicate:(BOOL)subpredicate
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  if (![a1 supportsKeyPath:v14 forTypes:v16])
+  subpredicateCopy = subpredicate;
+  pathCopy = path;
+  valueCopy = value;
+  typesCopy = types;
+  if (![self supportsKeyPath:pathCopy forTypes:typesCopy])
   {
     goto LABEL_4;
   }
 
-  if ([a1 requiresSubpredicate] != v8)
+  if ([self requiresSubpredicate] != subpredicateCopy)
   {
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
-    v19 = [v16 allObjects];
-    v20 = [v19 componentsJoinedByString:{@", "}];
-    [v17 raise:v18 format:{@"Keypath should only be used in subpredicates '%@' for %@.%@", v20, objc_opt_class(), v14}];
+    allObjects = [typesCopy allObjects];
+    v20 = [allObjects componentsJoinedByString:{@", "}];
+    [v17 raise:v18 format:{@"Keypath should only be used in subpredicates '%@' for %@.%@", v20, objc_opt_class(), pathCopy}];
 
 LABEL_4:
     v21 = 0;
@@ -92,25 +92,25 @@ LABEL_4:
   }
 
   v35 = 0;
-  v22 = [a1 areValidTypes:v16 forKeyPath:v14 error:&v35];
+  v22 = [self areValidTypes:typesCopy forKeyPath:pathCopy error:&v35];
   v23 = v35;
   if (v22)
   {
-    if ([a1 isAllowedPredicateOperatorType:a4 forKeyPath:v14])
+    if ([self isAllowedPredicateOperatorType:type forKeyPath:pathCopy])
     {
       v34 = v23;
-      v24 = [a1 isValidValue:v15 forKeyPath:v14 operatorType:a4 dataTypes:v16 error:&v34];
+      v24 = [self isValidValue:valueCopy forKeyPath:pathCopy operatorType:type dataTypes:typesCopy error:&v34];
       v25 = v34;
 
       if (v24)
       {
-        v21 = [[a1 alloc] _initWithKeyPath:v14 operatorType:a4 value:v15 dataTypes:v16 applicationSDKVersionToken:a7];
+        v21 = [[self alloc] _initWithKeyPath:pathCopy operatorType:type value:valueCopy dataTypes:typesCopy applicationSDKVersionToken:token];
         [v21 configureInMemoryFilter];
       }
 
       else
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid value '%@' for %@.%@: %@", v15, objc_opt_class(), v14, v25}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid value '%@' for %@.%@: %@", valueCopy, objc_opt_class(), pathCopy, v25}];
         v21 = 0;
       }
 
@@ -120,17 +120,17 @@ LABEL_4:
 
     v30 = MEMORY[0x1E695DF30];
     v31 = *MEMORY[0x1E695D940];
-    v32 = HKStringFromPredicateOperatorType(a4);
-    [v30 raise:v31 format:{@"Invalid operatorType '%@' for %@.%@", v32, objc_opt_class(), v14}];
+    v32 = HKStringFromPredicateOperatorType(type);
+    [v30 raise:v31 format:{@"Invalid operatorType '%@' for %@.%@", v32, objc_opt_class(), pathCopy}];
   }
 
   else
   {
     v26 = MEMORY[0x1E695DF30];
     v27 = *MEMORY[0x1E695D940];
-    v28 = [v16 allObjects];
-    v29 = [v28 componentsJoinedByString:{@", "}];
-    [v26 raise:v27 format:{@"Invalid data types '%@' for %@.%@: %@", v29, objc_opt_class(), v14, v23}];
+    allObjects2 = [typesCopy allObjects];
+    v29 = [allObjects2 componentsJoinedByString:{@", "}];
+    [v26 raise:v27 format:{@"Invalid data types '%@' for %@.%@: %@", v29, objc_opt_class(), pathCopy, v23}];
   }
 
   v21 = 0;
@@ -141,25 +141,25 @@ LABEL_15:
   return v21;
 }
 
-+ (BOOL)areValidTypes:(id)a3 forKeyPath:(id)a4 error:(id *)a5
++ (BOOL)areValidTypes:(id)types forKeyPath:(id)path error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 allowedDataTypeClassesForKeyPath:v9];
-  if ([v8 count] || (objc_msgSend(a1, "allowsEmptyDataTypesSetForKeyPath:", v9) & 1) != 0)
+  typesCopy = types;
+  pathCopy = path;
+  v10 = [self allowedDataTypeClassesForKeyPath:pathCopy];
+  if ([typesCopy count] || (objc_msgSend(self, "allowsEmptyDataTypesSetForKeyPath:", pathCopy) & 1) != 0)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v8;
+    v11 = typesCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
       v13 = v12;
-      v23 = a5;
-      v24 = v9;
+      errorCopy = error;
+      v24 = pathCopy;
       v14 = *v27;
       while (2)
       {
@@ -179,9 +179,9 @@ LABEL_15:
           if (([v10 hk_containsObjectPassingTest:v25] & 1) == 0)
           {
             v18 = MEMORY[0x1E696ABC0];
-            v19 = [v10 allObjects];
-            v20 = [v19 componentsJoinedByString:{@", "}];
-            [v18 hk_assignError:v23 code:3 format:{@"'%@' not found in allowed data types classes (%@)", v16, v20}];
+            allObjects = [v10 allObjects];
+            v20 = [allObjects componentsJoinedByString:{@", "}];
+            [v18 hk_assignError:errorCopy code:3 format:{@"'%@' not found in allowed data types classes (%@)", v16, v20}];
 
             v17 = 0;
             goto LABEL_13;
@@ -199,7 +199,7 @@ LABEL_15:
 
       v17 = 1;
 LABEL_13:
-      v9 = v24;
+      pathCopy = v24;
     }
 
     else
@@ -210,7 +210,7 @@ LABEL_13:
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:@"Filter requires at least one data type"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"Filter requires at least one data type"];
     v17 = 0;
   }
 
@@ -218,14 +218,14 @@ LABEL_13:
   return v17;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [a1 allowedValueClassesForKeyPath:v10];
-  LOBYTE(a7) = [a1 _isValidValue:v11 forKeyPath:v10 allowedClases:v12 error:a7];
+  pathCopy = path;
+  valueCopy = value;
+  v12 = [self allowedValueClassesForKeyPath:pathCopy];
+  LOBYTE(error) = [self _isValidValue:valueCopy forKeyPath:pathCopy allowedClases:v12 error:error];
 
-  return a7;
+  return error;
 }
 
 - (void)configureInMemoryFilter
@@ -239,31 +239,31 @@ LABEL_13:
   }
 
   v6 = objc_opt_class();
-  v7 = [(_HKComparisonFilter *)self keyPath];
-  self->_keyPathIntegerValue = [v6 enumRepresentationForKeyPath:v7];
+  keyPath = [(_HKComparisonFilter *)self keyPath];
+  self->_keyPathIntegerValue = [v6 enumRepresentationForKeyPath:keyPath];
 }
 
-+ (BOOL)_isValidValue:(id)a3 forKeyPath:(id)a4 allowedClases:(id)a5 error:(id *)a6
++ (BOOL)_isValidValue:(id)value forKeyPath:(id)path allowedClases:(id)clases error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  valueCopy = value;
+  pathCopy = path;
+  clasesCopy = clases;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __68___HKComparisonFilter__isValidValue_forKeyPath_allowedClases_error___block_invoke;
   v36[3] = &unk_1E7382D18;
-  v13 = v10;
+  v13 = valueCopy;
   v37 = v13;
-  if (([v12 hk_containsObjectPassingTest:v36] & 1) == 0)
+  if (([clasesCopy hk_containsObjectPassingTest:v36] & 1) == 0)
   {
     v16 = MEMORY[0x1E696ABC0];
     v28 = objc_opt_class();
-    v29 = v12;
+    v29 = clasesCopy;
     v17 = @"%@ is not in the set of valid clases %@";
     v18 = v16;
 LABEL_5:
-    [v18 hk_assignError:a6 code:3 format:{v17, v28, v29}];
+    [v18 hk_assignError:error code:3 format:{v17, v28, v29}];
     v19 = 0;
     goto LABEL_24;
   }
@@ -292,14 +292,14 @@ LABEL_5:
     goto LABEL_24;
   }
 
-  if (!v15 && ([a1 allowsEmptyContainerValuesForKeyPath:v11] & 1) == 0)
+  if (!v15 && ([self allowsEmptyContainerValuesForKeyPath:pathCopy] & 1) == 0)
   {
     v18 = MEMORY[0x1E696ABC0];
     v17 = @"Filter does not support empty containers as values";
     goto LABEL_5;
   }
 
-  v30 = v11;
+  v30 = pathCopy;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -325,9 +325,9 @@ LABEL_5:
         v31[2] = __68___HKComparisonFilter__isValidValue_forKeyPath_allowedClases_error___block_invoke_2;
         v31[3] = &unk_1E7382D18;
         v31[4] = v25;
-        if (([v12 hk_containsObjectPassingTest:v31] & 1) == 0)
+        if (([clasesCopy hk_containsObjectPassingTest:v31] & 1) == 0)
         {
-          [MEMORY[0x1E696ABC0] hk_assignError:a6 code:3 format:{@"%@ is not in the set of valid clases %@", objc_opt_class(), v12}];
+          [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"%@ is not in the set of valid clases %@", objc_opt_class(), clasesCopy}];
 
           v19 = 0;
           goto LABEL_22;
@@ -346,17 +346,17 @@ LABEL_5:
 
   v19 = 1;
 LABEL_22:
-  v11 = v30;
+  pathCopy = v30;
 LABEL_24:
 
   v26 = *MEMORY[0x1E69E9840];
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -366,7 +366,7 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = -[NSString isEqualToString:](v5->_keyPath, "isEqualToString:", self->_keyPath) && v5->_operatorType == self->_operatorType && ((value = v5->_value, v7 = self->_value, value == v7) || v7 && [value isEqual:?]) && -[NSSet isEqual:](v5->_dataTypes, "isEqual:", self->_dataTypes) && v5->_applicationSDKVersionToken == self->_applicationSDKVersionToken;
     }
 
@@ -386,45 +386,45 @@ LABEL_24:
   return v3 ^ v4 ^ [(NSSet *)self->_dataTypes hash]^ self->_applicationSDKVersionToken;
 }
 
-- (_HKComparisonFilter)initWithCoder:(id)a3
+- (_HKComparisonFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
-  v6 = [v4 decodeIntegerForKey:@"operatorType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
+  v6 = [coderCopy decodeIntegerForKey:@"operatorType"];
   v7 = [objc_opt_class() allowedValueClassesForKeyPath:v5];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"value"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"value"];
 
   v9 = [MEMORY[0x1E695DFD8] hk_typesForSetOf:objc_opt_class()];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"dataTypes"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"dataTypes"];
 
-  v11 = [v4 decodeInt64ForKey:@"sdkVersionToken"];
+  v11 = [coderCopy decodeInt64ForKey:@"sdkVersionToken"];
   v12 = HKBitPatternCastSignedToUnsignedInt64(v11);
   v13 = [objc_opt_class() _filterForKeyPath:v5 operatorType:v6 value:v8 dataTypes:v10 applicationSDKVersionToken:v12 isSubpredicate:0];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _HKComparisonFilter;
-  v4 = a3;
-  [(_HKFilter *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_keyPath forKey:{@"keyPath", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_operatorType forKey:@"operatorType"];
-  [v4 encodeObject:self->_value forKey:@"value"];
-  [v4 encodeObject:self->_dataTypes forKey:@"dataTypes"];
-  [v4 encodeInt64:self->_applicationSDKVersionToken forKey:@"sdkVersionToken"];
+  coderCopy = coder;
+  [(_HKFilter *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_keyPath forKey:{@"keyPath", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_operatorType forKey:@"operatorType"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
+  [coderCopy encodeObject:self->_dataTypes forKey:@"dataTypes"];
+  [coderCopy encodeInt64:self->_applicationSDKVersionToken forKey:@"sdkVersionToken"];
 }
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_4();
   return 0;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_4();
@@ -433,7 +433,7 @@ LABEL_24:
   return [v3 set];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_4();

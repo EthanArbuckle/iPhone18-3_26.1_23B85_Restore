@@ -1,43 +1,43 @@
 @interface RoutePickerItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation RoutePickerItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControls.RoutePickerItemCell" hasSwiftField:@"itemView" withSwiftType:"RoutePickerItemView"];
-  [v3 validateClass:@"MediaControls.RoutePickerItemView" hasSwiftField:@"state" withSwiftType:"State"];
-  [v3 validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].State" hasSwiftField:@"selection" withSwiftType:"Selection"];
-  [v3 validateClass:@"MediaControls.RoutePickerItemView" isKindOfClass:@"UIView"];
-  [v3 validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].State"];
-  [v3 validateClass:@"MediaControls.RoutePickerItemCell" hasSwiftField:@"viewModel" withSwiftType:"Optional<ViewModel>"];
-  [v3 validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].ViewModel" hasSwiftField:@"title" withSwiftType:"String"];
-  [v3 validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].ViewModel" hasSwiftField:@"symbolName" withSwiftType:"Optional<String>"];
-  [v3 validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].ViewModel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControls.RoutePickerItemCell" hasSwiftField:@"itemView" withSwiftType:"RoutePickerItemView"];
+  [validationsCopy validateClass:@"MediaControls.RoutePickerItemView" hasSwiftField:@"state" withSwiftType:"State"];
+  [validationsCopy validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].State" hasSwiftField:@"selection" withSwiftType:"Selection"];
+  [validationsCopy validateClass:@"MediaControls.RoutePickerItemView" isKindOfClass:@"UIView"];
+  [validationsCopy validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].State"];
+  [validationsCopy validateClass:@"MediaControls.RoutePickerItemCell" hasSwiftField:@"viewModel" withSwiftType:"Optional<ViewModel>"];
+  [validationsCopy validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].ViewModel" hasSwiftField:@"title" withSwiftType:"String"];
+  [validationsCopy validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].ViewModel" hasSwiftField:@"symbolName" withSwiftType:"Optional<String>"];
+  [validationsCopy validateSwiftStruct:@"MediaControls.RoutePickerItemView[class].ViewModel"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v10.receiver = self;
   v10.super_class = RoutePickerItemCellAccessibility;
-  v3 = [(RoutePickerItemCellAccessibility *)&v10 accessibilityTraits];
+  accessibilityTraits = [(RoutePickerItemCellAccessibility *)&v10 accessibilityTraits];
   v4 = [(RoutePickerItemCellAccessibility *)self safeSwiftValueForKey:@"itemView"];
   v5 = [v4 safeSwiftValueForKey:@"state"];
   v6 = [v5 safeSwiftValueForKey:@"selection"];
-  v7 = [v6 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v6 safeSwiftEnumCase];
 
-  if (([v7 isEqualToString:@"selectedWithVolume"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"selected"))
+  if (([safeSwiftEnumCase isEqualToString:@"selectedWithVolume"] & 1) != 0 || objc_msgSend(safeSwiftEnumCase, "isEqualToString:", @"selected"))
   {
-    v3 |= *MEMORY[0x29EDC7FC0];
+    accessibilityTraits |= *MEMORY[0x29EDC7FC0];
   }
 
   v8 = *MEMORY[0x29EDC7F70];
 
-  return v8 | v3;
+  return v8 | accessibilityTraits;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

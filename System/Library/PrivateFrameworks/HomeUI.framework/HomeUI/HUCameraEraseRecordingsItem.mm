@@ -1,33 +1,33 @@
 @interface HUCameraEraseRecordingsItem
-- (HUCameraEraseRecordingsItem)initWithCameraProfile:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (void)_updateResultsForFuture:(id)a3 withHiddenStatus:(BOOL)a4;
+- (HUCameraEraseRecordingsItem)initWithCameraProfile:(id)profile;
+- (id)_subclass_updateWithOptions:(id)options;
+- (void)_updateResultsForFuture:(id)future withHiddenStatus:(BOOL)status;
 @end
 
 @implementation HUCameraEraseRecordingsItem
 
-- (HUCameraEraseRecordingsItem)initWithCameraProfile:(id)a3
+- (HUCameraEraseRecordingsItem)initWithCameraProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = HUCameraEraseRecordingsItem;
   v6 = [(HFStaticItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cameraProfile, a3);
+    objc_storeStrong(&v6->_cameraProfile, profile);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
   objc_initWeak(&location, self);
-  v6 = [(HUCameraEraseRecordingsItem *)self cameraProfile];
-  v7 = [v6 clipManager];
+  cameraProfile = [(HUCameraEraseRecordingsItem *)self cameraProfile];
+  clipManager = [cameraProfile clipManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__HUCameraEraseRecordingsItem__subclass_updateWithOptions___block_invoke;
@@ -35,7 +35,7 @@
   objc_copyWeak(&v12, &location);
   v8 = v5;
   v11 = v8;
-  [v7 fetchCountOfAllClipsWithCompletion:v10];
+  [clipManager fetchCountOfAllClipsWithCompletion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -59,26 +59,26 @@ void __59__HUCameraEraseRecordingsItem__subclass_updateWithOptions___block_invok
   [WeakRetained _updateResultsForFuture:*(a1 + 32) withHiddenStatus:{objc_msgSend(v3, "integerValue") < 1}];
 }
 
-- (void)_updateResultsForFuture:(id)a3 withHiddenStatus:(BOOL)a4
+- (void)_updateResultsForFuture:(id)future withHiddenStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v15[3] = *MEMORY[0x277D85DE8];
   v14[0] = *MEMORY[0x277D13F60];
-  v6 = a3;
+  futureCopy = future;
   v7 = _HULocalizedStringWithDefaultValue(@"HUCameraEraseAllRecordings", @"HUCameraEraseAllRecordings", 1);
   v15[0] = v7;
   v14[1] = *MEMORY[0x277D13DA8];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HUCameraEraseRecordingsItem *)self cameraProfile];
-  v10 = [v8 setWithObject:v9];
+  cameraProfile = [(HUCameraEraseRecordingsItem *)self cameraProfile];
+  v10 = [v8 setWithObject:cameraProfile];
   v15[1] = v10;
   v14[2] = *MEMORY[0x277D13FB8];
-  v11 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+  v11 = [MEMORY[0x277CCABB0] numberWithBool:statusCopy];
   v15[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
   v13 = [MEMORY[0x277D14780] outcomeWithResults:v12];
-  [v6 finishWithResult:v13];
+  [futureCopy finishWithResult:v13];
 }
 
 @end

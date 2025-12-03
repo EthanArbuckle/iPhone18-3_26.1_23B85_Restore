@@ -1,11 +1,11 @@
 @interface ICArchiveNotesPreviewer
 - (_TtC38com_apple_mobilenotes_SharingExtension23ICArchiveNotesPreviewer)init;
-- (id)initForArchiveAt:(id)a3 error:(id *)a4;
+- (id)initForArchiveAt:(id)at error:(id *)error;
 @end
 
 @implementation ICArchiveNotesPreviewer
 
-- (id)initForArchiveAt:(id)a3 error:(id *)a4
+- (id)initForArchiveAt:(id)at error:(id *)error
 {
   v4 = sub_1000B4DB0();
   v5 = *(*(v4 - 8) + 64);

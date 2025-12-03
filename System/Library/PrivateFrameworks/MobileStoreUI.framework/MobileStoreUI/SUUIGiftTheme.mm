@@ -1,37 +1,37 @@
 @interface SUUIGiftTheme
-- (SUUIGiftTheme)initWithThemeDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIGiftTheme)initWithThemeDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SUUIGiftTheme
 
-- (SUUIGiftTheme)initWithThemeDictionary:(id)a3
+- (SUUIGiftTheme)initWithThemeDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = SUUIGiftTheme;
   v5 = [(SUUIGiftTheme *)&v23 init];
   if (v5)
   {
-    v6 = [[SUUIUber alloc] initWithUberDictionary:v4];
-    v7 = [(SUUIUber *)v6 colorScheme];
-    v8 = [v7 backgroundColor];
-    [(SUUIGiftTheme *)v5 setBackgroundColor:v8];
+    v6 = [[SUUIUber alloc] initWithUberDictionary:dictionaryCopy];
+    colorScheme = [(SUUIUber *)v6 colorScheme];
+    backgroundColor = [colorScheme backgroundColor];
+    [(SUUIGiftTheme *)v5 setBackgroundColor:backgroundColor];
 
-    v9 = [v7 primaryTextColor];
-    [(SUUIGiftTheme *)v5 setBodyTextColor:v9];
+    primaryTextColor = [colorScheme primaryTextColor];
+    [(SUUIGiftTheme *)v5 setBodyTextColor:primaryTextColor];
 
-    v10 = [v7 secondaryTextColor];
-    [(SUUIGiftTheme *)v5 setPrimaryTextColor:v10];
+    secondaryTextColor = [colorScheme secondaryTextColor];
+    [(SUUIGiftTheme *)v5 setPrimaryTextColor:secondaryTextColor];
 
-    v11 = [v4 objectForKey:@"fcId"];
+    v11 = [dictionaryCopy objectForKey:@"fcId"];
     if (objc_opt_respondsToSelector())
     {
       v5->_themeIdentifier = [v11 longLongValue];
     }
 
-    v12 = [v4 objectForKey:@"localized_name"];
+    v12 = [dictionaryCopy objectForKey:@"localized_name"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -41,21 +41,21 @@
       v5->_themeName = v13;
     }
 
-    v15 = [(SUUIUber *)v6 artworkProvider];
-    if ([v15 hasArtwork])
+    artworkProvider = [(SUUIUber *)v6 artworkProvider];
+    if ([artworkProvider hasArtwork])
     {
-      v16 = [MEMORY[0x277D759A0] mainScreen];
-      [v16 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v18 = v17;
 
       if (v18 == 2.0)
       {
-        [v15 largestArtwork];
+        [artworkProvider largestArtwork];
       }
 
       else
       {
-        [v15 smallestArtwork];
+        [artworkProvider smallestArtwork];
       }
       v19 = ;
       v20 = [v19 URL];
@@ -78,25 +78,25 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(UIColor *)self->_backgroundColor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(UIColor *)self->_backgroundColor copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(UIColor *)self->_bodyTextColor copyWithZone:a3];
+  v8 = [(UIColor *)self->_bodyTextColor copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   objc_storeStrong((v5 + 24), self->_headerImage);
   objc_storeStrong((v5 + 32), self->_headerImageURL);
-  v10 = [(UIColor *)self->_primaryTextColor copyWithZone:a3];
+  v10 = [(UIColor *)self->_primaryTextColor copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
   *(v5 + 48) = self->_themeIdentifier;
-  v12 = [(NSString *)self->_themeName copyWithZone:a3];
+  v12 = [(NSString *)self->_themeName copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 

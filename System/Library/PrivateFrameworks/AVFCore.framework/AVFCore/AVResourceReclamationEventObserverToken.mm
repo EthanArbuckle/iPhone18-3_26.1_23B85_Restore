@@ -1,5 +1,5 @@
 @interface AVResourceReclamationEventObserverToken
-- (AVResourceReclamationEventObserverToken)initWithDetails:(id)a3;
+- (AVResourceReclamationEventObserverToken)initWithDetails:(id)details;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -15,14 +15,14 @@
   [(AVResourceReclamationEventObserverToken *)&v3 dealloc];
 }
 
-- (AVResourceReclamationEventObserverToken)initWithDetails:(id)a3
+- (AVResourceReclamationEventObserverToken)initWithDetails:(id)details
 {
   v6.receiver = self;
   v6.super_class = AVResourceReclamationEventObserverToken;
   v4 = [(AVResourceReclamationEventObserverToken *)&v6 init];
   if (v4)
   {
-    v4->_details = [a3 copy];
+    v4->_details = [details copy];
   }
 
   return v4;

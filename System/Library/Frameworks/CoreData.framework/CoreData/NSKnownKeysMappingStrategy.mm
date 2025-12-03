@@ -1,6 +1,6 @@
 @interface NSKnownKeysMappingStrategy
 + (id)alloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSKnownKeysMappingStrategy
@@ -12,7 +12,7 @@
   return _PFAllocateObject(v2, 0);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 

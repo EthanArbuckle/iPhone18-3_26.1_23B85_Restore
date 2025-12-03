@@ -1,52 +1,52 @@
 @interface StackElement
 - (BOOL)isAnimating;
 - (CGAffineTransform)fullsizeTransform;
-- (CGAffineTransform)stackTransformWithDepth:(SEL)a3 translation:(int64_t)a4;
+- (CGAffineTransform)stackTransformWithDepth:(SEL)depth translation:(int64_t)translation;
 - (CGPoint)offStackTranslation;
-- (CGSize)_scaleFactorWithDepth:(int64_t)a3 translation:(CGPoint *)a4;
+- (CGSize)_scaleFactorWithDepth:(int64_t)depth translation:(CGPoint *)translation;
 - (CGSize)_stackContainerSize;
-- (StackElement)initWithItem:(id)a3 state:(int64_t)a4;
+- (StackElement)initWithItem:(id)item state:(int64_t)state;
 - (StackElementDelegate)delegate;
-- (double)borderWidthWithStackDepth:(int64_t)a3;
-- (id)borderColorWithStackDepth:(int64_t)a3;
+- (double)borderWidthWithStackDepth:(int64_t)depth;
+- (id)borderColorWithStackDepth:(int64_t)depth;
 - (id)description;
 - (id)dimmingColor;
-- (id)itemViewCreateIfNeeded:(BOOL)a3;
-- (void)beginAnimationToState:(int64_t)a3 withDuration:(double)a4 beginsFromCurrentState:(BOOL)a5 animated:(BOOL)a6 animations:(id)a7 completion:(id)a8;
-- (void)fadeInUnderneathStack:(BOOL)a3 previousDepth:(int64_t)a4;
-- (void)fadeOutUnderneathStack:(BOOL)a3 previousDepth:(int64_t)a4;
-- (void)hide:(BOOL)a3;
-- (void)moveIntoStack:(BOOL)a3;
-- (void)moveOutFromStack:(BOOL)a3;
+- (id)itemViewCreateIfNeeded:(BOOL)needed;
+- (void)beginAnimationToState:(int64_t)state withDuration:(double)duration beginsFromCurrentState:(BOOL)currentState animated:(BOOL)animated animations:(id)animations completion:(id)completion;
+- (void)fadeInUnderneathStack:(BOOL)stack previousDepth:(int64_t)depth;
+- (void)fadeOutUnderneathStack:(BOOL)stack previousDepth:(int64_t)depth;
+- (void)hide:(BOOL)hide;
+- (void)moveIntoStack:(BOOL)stack;
+- (void)moveOutFromStack:(BOOL)stack;
 - (void)removeDimmingFilter;
 - (void)removeItemView;
 - (void)removeView;
-- (void)setCurrentState:(int64_t)a3;
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNextState:(int64_t)a3 nextDepth:(int64_t)a4 animated:(BOOL)a5;
-- (void)setTargetState:(int64_t)a3;
-- (void)showDimmed:(BOOL)a3;
-- (void)showFullsize:(BOOL)a3;
-- (void)updateItemView:(id)a3 onStack:(BOOL)a4 adjustSubviewIndex:(BOOL)a5 stackDepth:(int64_t)a6;
-- (void)updateViewFrame:(CGRect)a3;
+- (void)setCurrentState:(int64_t)state;
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated;
+- (void)setNextState:(int64_t)state nextDepth:(int64_t)depth animated:(BOOL)animated;
+- (void)setTargetState:(int64_t)state;
+- (void)showDimmed:(BOOL)dimmed;
+- (void)showFullsize:(BOOL)fullsize;
+- (void)updateItemView:(id)view onStack:(BOOL)stack adjustSubviewIndex:(BOOL)index stackDepth:(int64_t)depth;
+- (void)updateViewFrame:(CGRect)frame;
 @end
 
 @implementation StackElement
 
-- (StackElement)initWithItem:(id)a3 state:(int64_t)a4
+- (StackElement)initWithItem:(id)item state:(int64_t)state
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = StackElement;
   v8 = [(StackElement *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_item, a3);
-    v9->_nextState = a4;
-    v9->_targetState = a4;
-    v9->_previousState = a4;
-    v9->_currentState = a4;
+    objc_storeStrong(&v8->_item, item);
+    v9->_nextState = state;
+    v9->_targetState = state;
+    v9->_previousState = state;
+    v9->_currentState = state;
     v9->_nextDepth = 0;
     v9->_targetDepth = 0;
   }
@@ -67,50 +67,50 @@
   return v9;
 }
 
-- (void)setNextState:(int64_t)a3 nextDepth:(int64_t)a4 animated:(BOOL)a5
+- (void)setNextState:(int64_t)state nextDepth:(int64_t)depth animated:(BOOL)animated
 {
   nextState = self->_nextState;
   nextDepth = self->_nextDepth;
-  if (nextState == a3 && nextDepth == a4)
+  if (nextState == state && nextDepth == depth)
   {
     return;
   }
 
-  self->_nextState = a3;
-  self->_nextDepth = a4;
-  if (self->_previousState == a3)
+  self->_nextState = state;
+  self->_nextDepth = depth;
+  if (self->_previousState == state)
   {
     self->_previousState = nextState;
   }
 
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    switch(a3)
+    switch(state)
     {
       case 1:
-        [(StackElement *)self hide:a5];
+        [(StackElement *)self hide:animated];
         break;
       case 2:
-        [(StackElement *)self showFullsize:a5];
+        [(StackElement *)self showFullsize:animated];
         break;
       case 3:
-        [(StackElement *)self showDimmed:a5];
+        [(StackElement *)self showDimmed:animated];
         break;
     }
 
     goto LABEL_24;
   }
 
-  if (a3 != 4)
+  if (state != 4)
   {
-    if (a3 == 5)
+    if (state == 5)
     {
-      [(StackElement *)self moveOutFromStack:a5];
+      [(StackElement *)self moveOutFromStack:animated];
     }
 
-    else if (a3 == 6)
+    else if (state == 6)
     {
-      [(StackElement *)self fadeOutUnderneathStack:a5 previousDepth:?];
+      [(StackElement *)self fadeOutUnderneathStack:animated previousDepth:?];
     }
 
     goto LABEL_24;
@@ -118,7 +118,7 @@
 
   if (nextState == 4)
   {
-    if (nextDepth == a4)
+    if (nextDepth == depth)
     {
       goto LABEL_24;
     }
@@ -126,40 +126,40 @@
 
   else if (nextState == 6)
   {
-    [(StackElement *)self fadeInUnderneathStack:a5 previousDepth:?];
+    [(StackElement *)self fadeInUnderneathStack:animated previousDepth:?];
     goto LABEL_24;
   }
 
-  [(StackElement *)self moveIntoStack:a5];
+  [(StackElement *)self moveIntoStack:animated];
 LABEL_24:
-  if (!a5)
+  if (!animated)
   {
 
-    [(StackElement *)self setCurrentState:a3];
+    [(StackElement *)self setCurrentState:state];
   }
 }
 
-- (void)setCurrentState:(int64_t)a3
+- (void)setCurrentState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
     previousState = self->_previousState;
-    self->_currentState = a3;
-    self->_nextState = a3;
-    self->_previousState = a3;
-    v6 = [(StackElement *)self delegate];
-    [v6 stackElement:self currentStateDidChangeFrom:previousState to:a3];
+    self->_currentState = state;
+    self->_nextState = state;
+    self->_previousState = state;
+    delegate = [(StackElement *)self delegate];
+    [delegate stackElement:self currentStateDidChangeFrom:previousState to:state];
   }
 }
 
-- (void)setTargetState:(int64_t)a3
+- (void)setTargetState:(int64_t)state
 {
   targetState = self->_targetState;
-  if (targetState != a3)
+  if (targetState != state)
   {
-    self->_targetState = a3;
-    v6 = [(StackElement *)self delegate];
-    [v6 stackElement:self targetStateDidChangeFrom:targetState to:a3];
+    self->_targetState = state;
+    delegate = [(StackElement *)self delegate];
+    [delegate stackElement:self targetStateDidChangeFrom:targetState to:state];
   }
 }
 
@@ -189,7 +189,7 @@ LABEL_24:
   [(StackElement *)self removeItemView];
 }
 
-- (id)itemViewCreateIfNeeded:(BOOL)a3
+- (id)itemViewCreateIfNeeded:(BOOL)needed
 {
   itemView = self->_itemView;
   if (itemView)
@@ -199,16 +199,16 @@ LABEL_24:
 
   else
   {
-    v5 = !a3;
+    v5 = !needed;
   }
 
   if (!v5)
   {
-    v6 = [(StackElement *)self delegate];
-    v7 = [v6 viewForStackElement:self];
+    delegate = [(StackElement *)self delegate];
+    v7 = [delegate viewForStackElement:self];
 
-    v8 = [(UIView *)v7 layer];
-    [v8 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)v7 layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
     v9 = self->_itemView;
     self->_itemView = v7;
@@ -223,8 +223,8 @@ LABEL_24:
 {
   if (self->_itemView)
   {
-    v3 = [(StackElement *)self delegate];
-    [v3 stackElement:self willRemoveView:self->_itemView];
+    delegate = [(StackElement *)self delegate];
+    [delegate stackElement:self willRemoveView:self->_itemView];
 
     [(UIView *)self->_itemView removeFromSuperview];
     itemView = self->_itemView;
@@ -232,12 +232,12 @@ LABEL_24:
   }
 }
 
-- (void)updateViewFrame:(CGRect)a3
+- (void)updateViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [(StackElement *)self itemViewCreateIfNeeded:0];
   v9 = v8;
   if (v8)
@@ -271,24 +271,24 @@ LABEL_24:
   return v2;
 }
 
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(StackElement *)self item];
+  animatedCopy = animated;
+  dimmedCopy = dimmed;
+  item = [(StackElement *)self item];
 
-  if (!v7)
+  if (!item)
   {
     return;
   }
 
-  v8 = [(StackElement *)self itemViewCreateIfNeeded:v5];
+  v8 = [(StackElement *)self itemViewCreateIfNeeded:dimmedCopy];
   v31 = v8;
-  if (v4)
+  if (animatedCopy)
   {
-    v9 = [v8 layer];
+    layer = [v8 layer];
     v10 = [NSString stringWithFormat:@"filters.%@", @"dimFilter"];
-    v11 = [v9 valueForKeyPath:v10];
+    v11 = [layer valueForKeyPath:v10];
 
     v8 = v31;
     if (v11)
@@ -302,14 +302,14 @@ LABEL_24:
     v11 = 0;
   }
 
-  if (!v5)
+  if (!dimmedCopy)
   {
-    v12 = [v8 layer];
-    [v12 removeAnimationForKey:@"dim"];
+    layer2 = [v8 layer];
+    [layer2 removeAnimationForKey:@"dim"];
 
-    v13 = [v31 layer];
-    [v13 setFilters:0];
-    v14 = v13;
+    layer3 = [v31 layer];
+    [layer3 setFilters:0];
+    layer8 = layer3;
     v11 = 0;
 LABEL_25:
 
@@ -322,7 +322,7 @@ LABEL_9:
     v15 = [CAFilter alloc];
     v11 = [v15 initWithType:kCAFilterMultiplyColor];
     [v11 setName:@"dimFilter"];
-    if (!v5 || v4)
+    if (!dimmedCopy || animatedCopy)
     {
       +[UIColor whiteColor];
     }
@@ -335,22 +335,22 @@ LABEL_9:
     [v11 setValue:objc_msgSend(v16 forKey:{"CGColor"), @"inputColor"}];
 
     v17 = [NSArray arrayWithObject:v11];
-    v18 = [v31 layer];
-    [v18 setFilters:v17];
+    layer4 = [v31 layer];
+    [layer4 setFilters:v17];
 
     [v31 setUserInteractionEnabled:0];
   }
 
-  if (v4)
+  if (animatedCopy)
   {
-    v14 = [NSString stringWithFormat:@"filters.%@.inputColor", @"dimFilter"];
-    v19 = [CABasicAnimation animationWithKeyPath:v14];
-    v20 = [v31 layer];
-    v21 = [v20 presentationLayer];
-    v22 = [v21 valueForKeyPath:v14];
+    layer8 = [NSString stringWithFormat:@"filters.%@.inputColor", @"dimFilter"];
+    v19 = [CABasicAnimation animationWithKeyPath:layer8];
+    layer5 = [v31 layer];
+    presentationLayer = [layer5 presentationLayer];
+    v22 = [presentationLayer valueForKeyPath:layer8];
     [v19 setFromValue:v22];
 
-    if (v5)
+    if (dimmedCopy)
     {
       [(StackElement *)self dimmingColor];
     }
@@ -366,8 +366,8 @@ LABEL_9:
     [v19 setDuration:v25 * 0.35];
     [v19 setRemovedOnCompletion:0];
     [v19 setFillMode:kCAFillModeForwards];
-    v26 = [v31 layer];
-    [v26 addAnimation:v19 forKey:@"dim"];
+    layer6 = [v31 layer];
+    [layer6 addAnimation:v19 forKey:@"dim"];
 
     dimmingAnimationView = self->_dimmingAnimationView;
     if (!dimmingAnimationView)
@@ -382,7 +382,7 @@ LABEL_9:
     }
 
     v30 = 0.0;
-    if (v5)
+    if (dimmedCopy)
     {
       v30 = 1.0;
     }
@@ -392,13 +392,13 @@ LABEL_9:
     goto LABEL_25;
   }
 
-  v23 = [v31 layer];
-  [v23 removeAnimationForKey:@"dim"];
+  layer7 = [v31 layer];
+  [layer7 removeAnimationForKey:@"dim"];
 
-  if (!v5)
+  if (!dimmedCopy)
   {
-    v14 = [v31 layer];
-    [v14 setFilters:0];
+    layer8 = [v31 layer];
+    [layer8 setFilters:0];
     goto LABEL_25;
   }
 
@@ -408,11 +408,11 @@ LABEL_26:
 - (void)removeDimmingFilter
 {
   v6 = [(StackElement *)self itemViewCreateIfNeeded:0];
-  v3 = [v6 layer];
-  [v3 removeAnimationForKey:@"dim"];
+  layer = [v6 layer];
+  [layer removeAnimationForKey:@"dim"];
 
-  v4 = [v6 layer];
-  [v4 setFilters:0];
+  layer2 = [v6 layer];
+  [layer2 setFilters:0];
 
   [v6 setUserInteractionEnabled:1];
   [(UIView *)self->_dimmingAnimationView removeFromSuperview];
@@ -420,79 +420,79 @@ LABEL_26:
   self->_dimmingAnimationView = 0;
 }
 
-- (void)beginAnimationToState:(int64_t)a3 withDuration:(double)a4 beginsFromCurrentState:(BOOL)a5 animated:(BOOL)a6 animations:(id)a7 completion:(id)a8
+- (void)beginAnimationToState:(int64_t)state withDuration:(double)duration beginsFromCurrentState:(BOOL)currentState animated:(BOOL)animated animations:(id)animations completion:(id)completion
 {
-  v9 = a6;
+  animatedCopy = animated;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10024F7FC;
   v16[3] = &unk_1006568D0;
   v16[4] = self;
-  v18 = a3;
-  v12 = a8;
-  v17 = v12;
-  v13 = a7;
+  stateCopy = state;
+  completionCopy = completion;
+  v17 = completionCopy;
+  animationsCopy = animations;
   v14 = objc_retainBlock(v16);
   self->_currentState = 0;
-  v15 = 0.0;
-  if (v9)
+  durationCopy = 0.0;
+  if (animatedCopy)
   {
-    v15 = a4;
+    durationCopy = duration;
   }
 
-  [UIView animateWithDuration:4 delay:v13 options:v14 animations:v15 completion:0.0];
+  [UIView animateWithDuration:4 delay:animationsCopy options:v14 animations:durationCopy completion:0.0];
 }
 
-- (void)hide:(BOOL)a3
+- (void)hide:(BOOL)hide
 {
-  v3 = a3;
-  v5 = [(StackElement *)self isVisible];
-  v6 = v5;
-  [(StackElement *)self itemViewCreateIfNeeded:v5];
+  hideCopy = hide;
+  isVisible = [(StackElement *)self isVisible];
+  v6 = isVisible;
+  [(StackElement *)self itemViewCreateIfNeeded:isVisible];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10024F964;
   v8[3] = &unk_10064D9D8;
   v9 = v10 = v6;
   v7 = v9;
-  [(StackElement *)self beginAnimationToState:1 withDuration:1 beginsFromCurrentState:v3 animated:v8 animations:0.35];
+  [(StackElement *)self beginAnimationToState:1 withDuration:1 beginsFromCurrentState:hideCopy animated:v8 animations:0.35];
 }
 
-- (void)showFullsize:(BOOL)a3
+- (void)showFullsize:(BOOL)fullsize
 {
-  v3 = a3;
+  fullsizeCopy = fullsize;
   v5 = [(StackElement *)self itemViewCreateIfNeeded:0];
-  v6 = [(StackElement *)self delegate];
-  v7 = [v6 stackIsTerminating];
+  delegate = [(StackElement *)self delegate];
+  stackIsTerminating = [delegate stackIsTerminating];
 
-  v8 = [(StackElement *)self isVisible];
-  if (v8)
+  isVisible = [(StackElement *)self isVisible];
+  if (isVisible)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v5 superview];
-    if (v7)
+    superview = [v5 superview];
+    if (stackIsTerminating)
     {
-      [v10 bringSubviewToFront:v5];
+      [superview bringSubviewToFront:v5];
 
-      v11 = [v5 layer];
-      [v11 setShouldRasterize:1];
+      layer = [v5 layer];
+      [layer setShouldRasterize:1];
 
       v12 = +[UIScreen mainScreen];
       [v12 scale];
       v14 = v13;
-      v15 = [v5 layer];
-      [v15 setRasterizationScale:v14];
+      layer2 = [v5 layer];
+      [layer2 setRasterizationScale:v14];
 
       v9 = v5;
     }
 
     else
     {
-      [v10 sendSubviewToBack:v5];
+      [superview sendSubviewToBack:v5];
 
       v9 = 0;
     }
@@ -512,35 +512,35 @@ LABEL_26:
   v20[3] = &unk_100650A70;
   v16 = v5;
   v21 = v16;
-  v22 = self;
-  v23 = v8;
-  v24 = v3;
+  selfCopy = self;
+  v23 = isVisible;
+  v24 = fullsizeCopy;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10024FCD8;
   v18[3] = &unk_10064C570;
   v19 = v9;
   v17 = v9;
-  [(StackElement *)self beginAnimationToState:2 withDuration:v8 beginsFromCurrentState:v3 animated:v20 animations:v18 completion:0.35];
+  [(StackElement *)self beginAnimationToState:2 withDuration:isVisible beginsFromCurrentState:fullsizeCopy animated:v20 animations:v18 completion:0.35];
 }
 
-- (void)showDimmed:(BOOL)a3
+- (void)showDimmed:(BOOL)dimmed
 {
-  v3 = a3;
+  dimmedCopy = dimmed;
   v5 = [(StackElement *)self itemViewCreateIfNeeded:1];
-  v6 = [(StackElement *)self isVisible];
-  if (!v6)
+  isVisible = [(StackElement *)self isVisible];
+  if (!isVisible)
   {
-    v7 = [v5 superview];
-    [v7 sendSubviewToBack:v5];
+    superview = [v5 superview];
+    [superview sendSubviewToBack:v5];
 
     [(StackElement *)self fullsizeTransform];
     v15[0] = v15[3];
     v15[1] = v15[4];
     v15[2] = v15[5];
     [v5 setTransform:v15];
-    v8 = [v5 layer];
-    [v8 setBorderWidth:0.0];
+    layer = [v5 layer];
+    [layer setBorderWidth:0.0];
 
     [v5 setAlpha:0.0];
     [(StackElement *)self setDimmed:1 animated:0];
@@ -552,18 +552,18 @@ LABEL_26:
   v10[3] = &unk_100650A70;
   v9 = v5;
   v11 = v9;
-  v12 = self;
-  v13 = v6;
-  v14 = v3;
-  [(StackElement *)self beginAnimationToState:3 withDuration:v6 beginsFromCurrentState:v3 animated:v10 animations:0.35];
+  selfCopy = self;
+  v13 = isVisible;
+  v14 = dimmedCopy;
+  [(StackElement *)self beginAnimationToState:3 withDuration:isVisible beginsFromCurrentState:dimmedCopy animated:v10 animations:0.35];
 }
 
-- (void)moveIntoStack:(BOOL)a3
+- (void)moveIntoStack:(BOOL)stack
 {
-  v3 = a3;
+  stackCopy = stack;
   v5 = [(StackElement *)self itemViewCreateIfNeeded:1];
-  v6 = [(StackElement *)self isVisible];
-  if (!v6)
+  isVisible = [(StackElement *)self isVisible];
+  if (!isVisible)
   {
     [(StackElement *)self updateItemView:v5 onStack:0 adjustSubviewIndex:1];
     [v5 setAlpha:1.0];
@@ -577,17 +577,17 @@ LABEL_26:
   v8[4] = self;
   v7 = v5;
   v9 = v7;
-  v10 = v6;
-  v11 = v3;
-  [(StackElement *)self beginAnimationToState:4 withDuration:v6 beginsFromCurrentState:v3 animated:v8 animations:0.35];
+  v10 = isVisible;
+  v11 = stackCopy;
+  [(StackElement *)self beginAnimationToState:4 withDuration:isVisible beginsFromCurrentState:stackCopy animated:v8 animations:0.35];
 }
 
-- (void)moveOutFromStack:(BOOL)a3
+- (void)moveOutFromStack:(BOOL)stack
 {
-  v3 = a3;
+  stackCopy = stack;
   v5 = [(StackElement *)self itemViewCreateIfNeeded:1];
-  v6 = [(StackElement *)self isVisible];
-  if (!v6)
+  isVisible = [(StackElement *)self isVisible];
+  if (!isVisible)
   {
     [(StackElement *)self updateItemView:v5 onStack:1 adjustSubviewIndex:1];
     [v5 setAlpha:1.0];
@@ -600,37 +600,37 @@ LABEL_26:
   v8[4] = self;
   v7 = v5;
   v9 = v7;
-  v10 = v3;
-  [(StackElement *)self beginAnimationToState:5 withDuration:v6 beginsFromCurrentState:v3 animated:v8 animations:0.35];
+  v10 = stackCopy;
+  [(StackElement *)self beginAnimationToState:5 withDuration:isVisible beginsFromCurrentState:stackCopy animated:v8 animations:0.35];
 }
 
-- (void)fadeOutUnderneathStack:(BOOL)a3 previousDepth:(int64_t)a4
+- (void)fadeOutUnderneathStack:(BOOL)stack previousDepth:(int64_t)depth
 {
-  v5 = a3;
+  stackCopy = stack;
   v7 = [(StackElement *)self itemViewCreateIfNeeded:0];
-  v8 = [(StackElement *)self isVisible];
+  isVisible = [(StackElement *)self isVisible];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100250494;
   v24[3] = &unk_1006540C0;
-  v26 = v8;
+  v26 = isVisible;
   v24[4] = self;
   v9 = v7;
   v25 = v9;
-  [(StackElement *)self beginAnimationToState:6 withDuration:1 beginsFromCurrentState:v5 animated:v24 animations:0.35];
-  if (v8)
+  [(StackElement *)self beginAnimationToState:6 withDuration:1 beginsFromCurrentState:stackCopy animated:v24 animations:0.35];
+  if (isVisible)
   {
     nextDepth = self->_nextDepth;
-    v11 = nextDepth - a4;
-    if (nextDepth <= a4)
+    v11 = nextDepth - depth;
+    if (nextDepth <= depth)
     {
       v19.f64[1] = 0.35;
     }
 
     else
     {
-      v12 = [(StackElement *)self delegate];
-      v20 = ([v12 maximumStackElementDepth] - a4);
+      delegate = [(StackElement *)self delegate];
+      v20 = ([delegate maximumStackElementDepth] - depth);
 
       __asm { FMOV            V0.2D, #1.0 }
 
@@ -649,9 +649,9 @@ LABEL_26:
   }
 }
 
-- (void)fadeInUnderneathStack:(BOOL)a3 previousDepth:(int64_t)a4
+- (void)fadeInUnderneathStack:(BOOL)stack previousDepth:(int64_t)depth
 {
-  v5 = a3;
+  stackCopy = stack;
   v7 = [(StackElement *)self itemViewCreateIfNeeded:1];
   if ([(StackElement *)self isVisible]&& [(StackElement *)self previousState]!= 6)
   {
@@ -660,7 +660,7 @@ LABEL_26:
 
   else
   {
-    [(StackElement *)self updateItemView:v7 onStack:1 adjustSubviewIndex:1 stackDepth:a4];
+    [(StackElement *)self updateItemView:v7 onStack:1 adjustSubviewIndex:1 stackDepth:depth];
     [v7 setAlpha:0.0];
     [(StackElement *)self setDimmed:0 animated:0];
     v8 = 0;
@@ -674,19 +674,19 @@ LABEL_26:
   v9 = v7;
   v27 = v9;
   v28 = v8;
-  v29 = v5;
-  [(StackElement *)self beginAnimationToState:4 withDuration:v8 beginsFromCurrentState:v5 animated:v26 animations:0.35];
+  v29 = stackCopy;
+  [(StackElement *)self beginAnimationToState:4 withDuration:v8 beginsFromCurrentState:stackCopy animated:v26 animations:0.35];
   nextDepth = self->_nextDepth;
-  v11 = a4 - nextDepth;
-  if (a4 <= nextDepth)
+  v11 = depth - nextDepth;
+  if (depth <= nextDepth)
   {
     v19.f64[1] = 0.35;
   }
 
   else
   {
-    v12 = [(StackElement *)self delegate];
-    v22 = (~[v12 maximumStackElementDepth] + a4);
+    delegate = [(StackElement *)self delegate];
+    v22 = (~[delegate maximumStackElementDepth] + depth);
 
     __asm { FMOV            V0.2D, #1.0 }
 
@@ -715,12 +715,12 @@ LABEL_26:
   [UIView animateWithDuration:v20 delay:v24 options:0 animations:v23 completion:?];
 }
 
-- (void)updateItemView:(id)a3 onStack:(BOOL)a4 adjustSubviewIndex:(BOOL)a5 stackDepth:(int64_t)a6
+- (void)updateItemView:(id)view onStack:(BOOL)stack adjustSubviewIndex:(BOOL)index stackDepth:(int64_t)depth
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  if (v8)
+  indexCopy = index;
+  stackCopy = stack;
+  viewCopy = view;
+  if (stackCopy)
   {
     x = CGPointZero.x;
     y = CGPointZero.y;
@@ -731,65 +731,65 @@ LABEL_26:
     [(StackElement *)self offStackTranslation];
   }
 
-  [(StackElement *)self stackTransformWithDepth:a6 translation:x, y];
+  [(StackElement *)self stackTransformWithDepth:depth translation:x, y];
   v22[0] = v22[3];
   v22[1] = v22[4];
   v22[2] = v22[5];
-  [v10 setTransform:v22];
-  [(StackElement *)self borderWidthWithStackDepth:a6];
+  [viewCopy setTransform:v22];
+  [(StackElement *)self borderWidthWithStackDepth:depth];
   v14 = v13;
-  v15 = [v10 layer];
-  [v15 setBorderWidth:v14];
+  layer = [viewCopy layer];
+  [layer setBorderWidth:v14];
 
-  v16 = [(StackElement *)self borderColorWithStackDepth:a6];
-  v17 = [v16 CGColor];
-  v18 = [v10 layer];
-  [v18 setBorderColor:v17];
+  v16 = [(StackElement *)self borderColorWithStackDepth:depth];
+  cGColor = [v16 CGColor];
+  layer2 = [viewCopy layer];
+  [layer2 setBorderColor:cGColor];
 
-  if (v7)
+  if (indexCopy)
   {
-    v19 = [(StackElement *)self delegate];
-    v20 = [v19 viewBelowStackElement:self];
+    delegate = [(StackElement *)self delegate];
+    v20 = [delegate viewBelowStackElement:self];
 
-    v21 = [v10 superview];
+    superview = [viewCopy superview];
     if (v20)
     {
-      [v21 insertSubview:v10 aboveSubview:v20];
+      [superview insertSubview:viewCopy aboveSubview:v20];
     }
 
     else
     {
-      [v21 sendSubviewToBack:v10];
+      [superview sendSubviewToBack:viewCopy];
     }
   }
 }
 
-- (double)borderWidthWithStackDepth:(int64_t)a3
+- (double)borderWidthWithStackDepth:(int64_t)depth
 {
   v5 = +[UIScreen mainScreen];
   [v5 scale];
   v7 = 1.0 / v6;
 
-  [(StackElement *)self _scaleFactorWithDepth:a3 translation:0];
+  [(StackElement *)self _scaleFactorWithDepth:depth translation:0];
   return v7 * (1.0 / v8);
 }
 
-- (id)borderColorWithStackDepth:(int64_t)a3
+- (id)borderColorWithStackDepth:(int64_t)depth
 {
-  v4 = [(StackElement *)self delegate];
-  v5 = [v4 maximumStackElementDepth];
+  delegate = [(StackElement *)self delegate];
+  maximumStackElementDepth = [delegate maximumStackElementDepth];
 
-  if (v5 >= a3)
+  if (maximumStackElementDepth >= depth)
   {
-    v6 = a3;
+    depthCopy = depth;
   }
 
   else
   {
-    v6 = v5;
+    depthCopy = maximumStackElementDepth;
   }
 
-  return [UIColor colorWithWhite:0.0 alpha:v6 * -0.05 + 0.4];
+  return [UIColor colorWithWhite:0.0 alpha:depthCopy * -0.05 + 0.4];
 }
 
 - (CGAffineTransform)fullsizeTransform
@@ -801,12 +801,12 @@ LABEL_26:
   return self;
 }
 
-- (CGAffineTransform)stackTransformWithDepth:(SEL)a3 translation:(int64_t)a4
+- (CGAffineTransform)stackTransformWithDepth:(SEL)depth translation:(int64_t)translation
 {
   y = a5.y;
   x = a5.x;
   v16 = CGPointZero;
-  [(StackElement *)self _scaleFactorWithDepth:a4 translation:&v16];
+  [(StackElement *)self _scaleFactorWithDepth:translation translation:&v16];
   v9 = v8;
   v11 = v10;
   *&v12 = -1;
@@ -819,10 +819,10 @@ LABEL_26:
   return CGAffineTransformScale(retstr, &v14, v9, v11);
 }
 
-- (CGSize)_scaleFactorWithDepth:(int64_t)a3 translation:(CGPoint *)a4
+- (CGSize)_scaleFactorWithDepth:(int64_t)depth translation:(CGPoint *)translation
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained stackContainerView];
+  stackContainerView = [WeakRetained stackContainerView];
 
   [(StackElement *)self _stackContainerSize];
   v11 = v9;
@@ -835,11 +835,11 @@ LABEL_26:
     v16 = v9 + -64.0;
     UIRoundToViewScale();
     v18 = v17;
-    if (a3)
+    if (depth)
     {
-      v16 = v16 + a3 * -2.0 * 4.0;
+      v16 = v16 + depth * -2.0 * 4.0;
       UIRoundToViewScale();
-      if (!a4)
+      if (!translation)
       {
 LABEL_8:
         v13 = v16 / v11;
@@ -848,13 +848,13 @@ LABEL_8:
       }
     }
 
-    else if (!a4)
+    else if (!translation)
     {
       goto LABEL_8;
     }
 
-    a4->x = 0.0;
-    a4->y = (v18 - v17) * -0.5 + a3 * -4.0;
+    translation->x = 0.0;
+    translation->y = (v18 - v17) * -0.5 + depth * -4.0;
     goto LABEL_8;
   }
 
@@ -872,11 +872,11 @@ LABEL_9:
   [(StackElement *)self _stackContainerSize];
   v4 = v3;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained stackContainerView];
-  v7 = [v6 _shouldReverseLayoutDirection];
+  stackContainerView = [WeakRetained stackContainerView];
+  _shouldReverseLayoutDirection = [stackContainerView _shouldReverseLayoutDirection];
 
   v8 = -v4;
-  if (v7)
+  if (_shouldReverseLayoutDirection)
   {
     v8 = v4;
   }
@@ -890,8 +890,8 @@ LABEL_9:
 - (CGSize)_stackContainerSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained stackContainerView];
-  [v3 frame];
+  stackContainerView = [WeakRetained stackContainerView];
+  [stackContainerView frame];
   v5 = v4;
   v7 = v6;
 

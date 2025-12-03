@@ -1,10 +1,10 @@
 @interface RemoteBaseSceneHostingController
-- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithCoder:(id)a3;
-- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithCoder:(id)coder;
+- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)activityType;
-- (id)transitionerForConnectingHostingController:(id)a3;
+- (id)transitionerForConnectingHostingController:(id)controller;
 - (void)dealloc;
-- (void)sendAction:(id)a3;
+- (void)sendAction:(id)action;
 - (void)viewDidLoad;
 @end
 
@@ -17,12 +17,12 @@
   return v2;
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_19A7AB644();
 
   [v7 sendAction_];
@@ -34,11 +34,11 @@
   v6.super_class = type metadata accessor for RemoteBaseSceneHostingController();
   v2 = v6.receiver;
   [(RemoteBaseSceneHostingController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
     [v4 setBackgroundColor_];
 
     sub_19A714DAC();
@@ -50,7 +50,7 @@
   }
 }
 
-- (id)transitionerForConnectingHostingController:(id)a3
+- (id)transitionerForConnectingHostingController:(id)controller
 {
   v5[4] = sub_19A6D26D4;
   v5[5] = 0;
@@ -66,7 +66,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickerKit32RemoteBaseSceneHostingController_keyboardSuppression);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -77,9 +77,9 @@
   [(RemoteBaseSceneHostingController *)&v5 dealloc];
 }
 
-- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_19A7AB014();
     v7 = v6;
@@ -91,7 +91,7 @@
   }
 
   sub_19A5F5028(0, &unk_1EAFCB0D0);
-  v8 = a4;
+  bundleCopy = bundle;
   sub_19A7AB664();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickerKit32RemoteBaseSceneHostingController_keyboardSuppression) = 0;
   if (v7)
@@ -106,20 +106,20 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for RemoteBaseSceneHostingController();
-  v10 = [(RemoteBaseSceneHostingController *)&v12 initWithNibName:v9 bundle:v8];
+  v10 = [(RemoteBaseSceneHostingController *)&v12 initWithNibName:v9 bundle:bundleCopy];
 
   return v10;
 }
 
-- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithCoder:(id)a3
+- (_TtC10StickerKit32RemoteBaseSceneHostingController)initWithCoder:(id)coder
 {
   sub_19A5F5028(0, &unk_1EAFCB0D0);
-  v5 = a3;
+  coderCopy = coder;
   sub_19A7AB664();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10StickerKit32RemoteBaseSceneHostingController_keyboardSuppression) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for RemoteBaseSceneHostingController();
-  v6 = [(RemoteBaseSceneHostingController *)&v8 initWithCoder:v5];
+  v6 = [(RemoteBaseSceneHostingController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

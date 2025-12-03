@@ -1,13 +1,13 @@
 @interface FKBankConnectProvisioningFlowManager
 - (BOOL)hasErrorAlertToDisplay;
 - (FKBankConnectProvisioningFlowDelegate)delegate;
-- (FKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)a3 institution:(id)a4;
+- (FKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)pass institution:(id)institution;
 - (_TtC12FinanceKitUI34BankConnectProvisioningFlowManager)manager;
-- (id)errorAlertWithCompletion:(id)a3;
-- (id)viewControllerForStep:(int64_t)a3;
-- (int64_t)nextStepAfterStep:(int64_t)a3;
+- (id)errorAlertWithCompletion:(id)completion;
+- (id)viewControllerForStep:(int64_t)step;
+- (int64_t)nextStepAfterStep:(int64_t)step;
 - (int64_t)rootStep;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation FKBankConnectProvisioningFlowManager
@@ -43,7 +43,7 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -56,8 +56,8 @@
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
-  v5 = [(FKBankConnectProvisioningFlowManager *)v4 manager];
+  selfCopy = self;
+  manager = [(FKBankConnectProvisioningFlowManager *)selfCopy manager];
   swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
   sub_23846F7D4();
@@ -67,7 +67,7 @@
   swift_unknownObjectRelease();
 }
 
-- (FKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)a3 institution:(id)a4
+- (FKBankConnectProvisioningFlowManager)initWithPaymentPass:(id)pass institution:(id)institution
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -79,9 +79,9 @@
 
   swift_unknownObjectWeakInit();
   v7 = objc_allocWithZone(type metadata accessor for BankConnectProvisioningFlowManager());
-  v8 = a3;
-  v9 = a4;
-  *(self + OBJC_IVAR___FKBankConnectProvisioningFlowManager_manager) = sub_238471E64(v8);
+  passCopy = pass;
+  institutionCopy = institution;
+  *(self + OBJC_IVAR___FKBankConnectProvisioningFlowManager_manager) = sub_238471E64(passCopy);
   v12.receiver = self;
   v12.super_class = FKBankConnectProvisioningFlowManager;
   v10 = [(FKBankConnectProvisioningFlowManager *)&v12 init];
@@ -99,8 +99,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(FKBankConnectProvisioningFlowManager *)v3 manager];
+  selfCopy = self;
+  manager = [(FKBankConnectProvisioningFlowManager *)selfCopy manager];
   v5 = sub_23846F954();
 
   return v5;
@@ -116,13 +116,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = FKBankConnectProvisioningFlowManager.hasErrorAlertToDisplay.getter();
 
   return v4;
 }
 
-- (int64_t)nextStepAfterStep:(int64_t)a3
+- (int64_t)nextStepAfterStep:(int64_t)step
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -132,14 +132,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  v6 = [(FKBankConnectProvisioningFlowManager *)v5 manager];
-  v7 = sub_23846FABC(a3);
+  selfCopy = self;
+  manager = [(FKBankConnectProvisioningFlowManager *)selfCopy manager];
+  v7 = sub_23846FABC(step);
 
   return v7;
 }
 
-- (id)viewControllerForStep:(int64_t)a3
+- (id)viewControllerForStep:(int64_t)step
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -149,14 +149,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  v6 = [(FKBankConnectProvisioningFlowManager *)v5 manager];
-  v7 = sub_23846FE78(a3);
+  selfCopy = self;
+  manager = [(FKBankConnectProvisioningFlowManager *)selfCopy manager];
+  v7 = sub_23846FE78(step);
 
   return v7;
 }
 
-- (id)errorAlertWithCompletion:(id)a3
+- (id)errorAlertWithCompletion:(id)completion
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -166,11 +166,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
-  v8 = [(FKBankConnectProvisioningFlowManager *)v7 manager];
+  selfCopy = self;
+  manager = [(FKBankConnectProvisioningFlowManager *)selfCopy manager];
   v9 = sub_23847056C(sub_238472318, v6);
 
   return v9;

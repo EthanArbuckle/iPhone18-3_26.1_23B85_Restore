@@ -1,54 +1,54 @@
 @interface EQKitOffsetVBox
-- (BOOL)isEqual:(id)a3;
-- (EQKitOffsetVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4 offset:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EQKitOffsetVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index offset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
 @end
 
 @implementation EQKitOffsetVBox
 
-- (EQKitOffsetVBox)initWithChildBoxes:(id)a3 pivotIndex:(unint64_t)a4 offset:(double)a5
+- (EQKitOffsetVBox)initWithChildBoxes:(id)boxes pivotIndex:(unint64_t)index offset:(double)offset
 {
   v7.receiver = self;
   v7.super_class = EQKitOffsetVBox;
-  result = [(EQKitVBox *)&v7 initWithChildBoxes:a3 pivotIndex:a4];
+  result = [(EQKitVBox *)&v7 initWithChildBoxes:boxes pivotIndex:index];
   if (result)
   {
-    result->_offset = a5;
+    result->_offset = offset;
   }
 
   return result;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
   v8.receiver = self;
   v8.super_class = EQKitOffsetVBox;
-  [(EQKitVBox *)&v8 p_cacheDimensionsForHeight:a3 depth:a4 width:a5];
-  *a3 = self->_offset + *a3;
-  *a4 = *a4 - self->_offset;
+  [(EQKitVBox *)&v8 p_cacheDimensionsForHeight:height depth:depth width:width];
+  *height = self->_offset + *height;
+  *depth = *depth - self->_offset;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitCompoundBox *)self childBoxes];
-  v6 = [(EQKitVBox *)self pivotIndex];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  pivotIndex = [(EQKitVBox *)self pivotIndex];
   [(EQKitOffsetVBox *)self offset];
-  v7 = [v4 initWithChildBoxes:v5 pivotIndex:v6 offset:?];
+  v7 = [v4 initWithChildBoxes:childBoxes pivotIndex:pivotIndex offset:?];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = EQKitOffsetVBox;
-  if ([(EQKitVBox *)&v11 isEqual:v4])
+  if ([(EQKitVBox *)&v11 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(EQKitOffsetVBox *)self offset];
     v7 = v6;
     [v5 offset];
@@ -73,10 +73,10 @@
   v8 = v7;
   [(EQKitCompoundBox *)self width];
   v10 = v9;
-  v11 = [(EQKitCompoundBox *)self childBoxes];
-  v12 = [(EQKitVBox *)self pivotIndex];
+  childBoxes = [(EQKitCompoundBox *)self childBoxes];
+  pivotIndex = [(EQKitVBox *)self pivotIndex];
   [(EQKitOffsetVBox *)self offset];
-  v14 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu offset=%f", v4, self, v6, v8, v10, v11, v12, v13];
+  v14 = [v3 stringWithFormat:@"<%@ %p>: height=%f depth=%f width=%f childBoxes=%@ pivotIndex=%lu offset=%f", v4, self, v6, v8, v10, childBoxes, pivotIndex, v13];
 
   return v14;
 }

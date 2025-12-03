@@ -1,5 +1,5 @@
 @interface FCRecordsFetchOperation
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -10,13 +10,13 @@
   if ([(NSArray *)self->_recordIdentifiers count])
   {
     [(FCRecordSource *)self->_recordSource _prepareForUse];
-    v55 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     queue = FCDispatchQueueForQualityOfService([(FCRecordsFetchOperation *)self qualityOfService]);
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v53 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     recordSource = self->_recordSource;
     if (recordSource)
     {
@@ -46,10 +46,10 @@
       }
     }
 
-    v12 = [(FCFetchOperation *)defaultCachePolicy cachePolicy];
+    cachePolicy = [(FCFetchOperation *)defaultCachePolicy cachePolicy];
     if ([(FCFetchOperation *)self cachePolicy])
     {
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -57,16 +57,16 @@
       v14 = self->_recordSource;
       if (v14)
       {
-        v13 = v14->_defaultCachePolicy;
+        selfCopy = v14->_defaultCachePolicy;
       }
 
       else
       {
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
-    [(FCFetchOperation *)v13 maximumCachedAge];
+    [(FCFetchOperation *)selfCopy maximumCachedAge];
     v16 = v15;
     v17 = [MEMORY[0x1E695DFD8] setWithArray:self->_ignoreCacheForRecordIDs];
     v18 = self->_recordSource;
@@ -89,11 +89,11 @@
     v80 = v50;
     v51 = v17;
     v81 = v51;
-    v58 = v5;
+    v58 = array2;
     v82 = v58;
-    v85 = v12;
+    v85 = cachePolicy;
     v86 = v16;
-    v20 = v4;
+    v20 = array;
     v83 = v20;
     v21 = v3;
     v84 = v21;
@@ -143,8 +143,8 @@
       v69[4] = self;
       v31 = v58;
       v70 = v31;
-      v74 = v12;
-      v71 = v55;
+      v74 = cachePolicy;
+      v71 = date;
       v72 = v53;
       v73 = v22;
       v32 = _Block_copy(v69);
@@ -153,11 +153,11 @@
       if (v33)
       {
         v33->_refresh = 1;
-        v33->_cachePolicy = v12;
+        v33->_cachePolicy = cachePolicy;
         v33->_maxCachedAge = v16;
       }
 
-      if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1 || [v51 count])
+      if ((cachePolicy & 0xFFFFFFFFFFFFFFFBLL) == 1 || [v51 count])
       {
         v35 = self->_recordSource;
         if (v35)
@@ -903,7 +903,7 @@ LABEL_10:
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   holdTokens = self->_holdTokens;
   self->_holdTokens = 0;

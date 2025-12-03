@@ -1,14 +1,14 @@
 @interface CAFUIImageCollectionViewCell
 - (BOOL)isHighlighted;
-- (_TtC5CAFUI28CAFUIImageCollectionViewCell)initWithCoder:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC5CAFUI28CAFUIImageCollectionViewCell)initWithCoder:(id)coder;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation CAFUIImageCollectionViewCell
 
-- (_TtC5CAFUI28CAFUIImageCollectionViewCell)initWithCoder:(id)a3
+- (_TtC5CAFUI28CAFUIImageCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5CAFUI28CAFUIImageCollectionViewCell_checkImageView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5CAFUI28CAFUIImageCollectionViewCell_decoratorImageView) = 0;
@@ -41,12 +41,12 @@
   *&v2[v3] = 0;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFUIImageCollectionViewCell.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  CAFUIImageCollectionViewCell.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
 - (BOOL)isHighlighted
@@ -56,10 +56,10 @@
   return [(CAFUIImageCollectionViewCell *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  CAFUIImageCollectionViewCell.isHighlighted.setter(a3);
+  selfCopy = self;
+  CAFUIImageCollectionViewCell.isHighlighted.setter(highlighted);
 }
 
 @end

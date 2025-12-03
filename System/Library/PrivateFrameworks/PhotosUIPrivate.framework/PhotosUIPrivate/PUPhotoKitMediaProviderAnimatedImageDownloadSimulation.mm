@@ -1,67 +1,67 @@
 @interface PUPhotoKitMediaProviderAnimatedImageDownloadSimulation
 - (PUPhotoKitMediaProviderAnimatedImageDownloadSimulation)init;
-- (void)_handleResultAnimatedImage:(id)a3 info:(id)a4;
-- (void)endSimulationWithError:(id)a3;
-- (void)updateSimulationWithProgress:(double)a3;
+- (void)_handleResultAnimatedImage:(id)image info:(id)info;
+- (void)endSimulationWithError:(id)error;
+- (void)updateSimulationWithProgress:(double)progress;
 @end
 
 @implementation PUPhotoKitMediaProviderAnimatedImageDownloadSimulation
 
-- (void)endSimulationWithError:(id)a3
+- (void)endSimulationWithError:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = PUPhotoKitMediaProviderAnimatedImageDownloadSimulation;
-  [(PUPhotoKitMediaProviderDownloadSimulation *)&v10 endSimulationWithError:v4];
-  v5 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self _resultAnimatedImage];
-  v6 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self _resultInfo];
-  if (v4)
+  [(PUPhotoKitMediaProviderDownloadSimulation *)&v10 endSimulationWithError:errorCopy];
+  _resultAnimatedImage = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self _resultAnimatedImage];
+  _resultInfo = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self _resultInfo];
+  if (errorCopy)
   {
 
     v11 = *MEMORY[0x1E6978DF0];
-    v12[0] = v4;
+    v12[0] = errorCopy;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-    v5 = 0;
-    v6 = v7;
+    _resultAnimatedImage = 0;
+    _resultInfo = v7;
   }
 
-  v8 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self externalResultHandler];
-  (v8)[2](v8, v5, v6);
+  externalResultHandler = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self externalResultHandler];
+  (externalResultHandler)[2](externalResultHandler, _resultAnimatedImage, _resultInfo);
 
   internalResultHandler = self->_internalResultHandler;
   self->_internalResultHandler = 0;
 }
 
-- (void)updateSimulationWithProgress:(double)a3
+- (void)updateSimulationWithProgress:(double)progress
 {
   v8.receiver = self;
   v8.super_class = PUPhotoKitMediaProviderAnimatedImageDownloadSimulation;
   [(PUPhotoKitMediaProviderDownloadSimulation *)&v8 updateSimulationWithProgress:?];
-  v5 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self externalProgressHandler];
+  externalProgressHandler = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self externalProgressHandler];
 
-  if (v5)
+  if (externalProgressHandler)
   {
     v7 = 0;
-    v6 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self externalProgressHandler];
-    (v6)[2](v6, 0, &v7, 0, a3);
+    externalProgressHandler2 = [(PUPhotoKitMediaProviderAnimatedImageDownloadSimulation *)self externalProgressHandler];
+    (externalProgressHandler2)[2](externalProgressHandler2, 0, &v7, 0, progress);
   }
 }
 
-- (void)_handleResultAnimatedImage:(id)a3 info:(id)a4
+- (void)_handleResultAnimatedImage:(id)image info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  infoCopy = info;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__PUPhotoKitMediaProviderAnimatedImageDownloadSimulation__handleResultAnimatedImage_info___block_invoke;
   block[3] = &unk_1E7B809F0;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = infoCopy;
+  selfCopy = self;
+  v13 = imageCopy;
+  v8 = imageCopy;
+  v9 = infoCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

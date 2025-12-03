@@ -1,17 +1,17 @@
 @interface PosterLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 @end
 
 @implementation PosterLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.PosterLockupCollectionViewCell" hasInstanceMethod:@"accessibilityFallbackTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.PosterLockupCollectionViewCell" hasInstanceMethod:@"accessibilityFooterView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.PosterLockupCollectionViewCell" hasInstanceMethod:@"accessibilityOfferButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.PosterLockupCollectionViewCell" hasInstanceMethod:@"accessibilityFallbackTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.PosterLockupCollectionViewCell" hasInstanceMethod:@"accessibilityFooterView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.PosterLockupCollectionViewCell" hasInstanceMethod:@"accessibilityOfferButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -25,11 +25,11 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(PosterLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityOfferButton"];
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
-  return v3;
+  return array;
 }
 
 @end

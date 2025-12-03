@@ -6,24 +6,24 @@
 - (NSString)parentUUID;
 - (TSKAnnotationAuthor)author;
 - (TSKUIDStructCoord)cellUID;
-- (TSTCommentHosting)initWithStorage:(id)a3 forTableInfo:(id)a4 baseCellCoord:(TSUModelCellCoord)a5;
-- (TSTCommentHosting)initWithStorage:(id)a3 forTableInfo:(id)a4 cellUID:(TSKUIDStructCoord *)a5;
+- (TSTCommentHosting)initWithStorage:(id)storage forTableInfo:(id)info baseCellCoord:(TSUModelCellCoord)coord;
+- (TSTCommentHosting)initWithStorage:(id)storage forTableInfo:(id)info cellUID:(TSKUIDStructCoord *)d;
 - (TSTTableInfo)tableInfo;
 - (TSUModelCellCoord)baseCellCoord;
 - (TSUViewCellCoord)viewCellCoord;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)commentWillBeAddedToDocumentRoot;
-- (void)setAuthor:(id)a3;
-- (void)setStorage:(id)a3;
+- (void)setAuthor:(id)author;
+- (void)setStorage:(id)storage;
 @end
 
 @implementation TSTCommentHosting
 
-- (TSTCommentHosting)initWithStorage:(id)a3 forTableInfo:(id)a4 cellUID:(TSKUIDStructCoord *)a5
+- (TSTCommentHosting)initWithStorage:(id)storage forTableInfo:(id)info cellUID:(TSKUIDStructCoord *)d
 {
-  v9 = a3;
-  v13 = a4;
-  if (!v13)
+  storageCopy = storage;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTCommentHosting initWithStorage:forTableInfo:cellUID:]", v11, v12);
@@ -33,7 +33,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  if (!a5->_column._lower && !a5->_column._upper || !a5->_row._lower && !a5->_row._upper)
+  if (!d->_column._lower && !d->_column._upper || !d->_row._lower && !d->_row._upper)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTCommentHosting initWithStorage:forTableInfo:cellUID:]", v11, v12);
@@ -49,21 +49,21 @@
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->mStorage, a3);
-    objc_storeWeak(&v37->_tableInfo, v13);
-    row = a5->_row;
-    v37->_cellUID._column = a5->_column;
+    objc_storeStrong(&v36->mStorage, storage);
+    objc_storeWeak(&v37->_tableInfo, infoCopy);
+    row = d->_row;
+    v37->_cellUID._column = d->_column;
     v37->_cellUID._row = row;
   }
 
   return v37;
 }
 
-- (TSTCommentHosting)initWithStorage:(id)a3 forTableInfo:(id)a4 baseCellCoord:(TSUModelCellCoord)a5
+- (TSTCommentHosting)initWithStorage:(id)storage forTableInfo:(id)info baseCellCoord:(TSUModelCellCoord)coord
 {
-  v8 = a3;
-  v13 = a4;
-  if (!v13)
+  storageCopy = storage;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTCommentHosting initWithStorage:forTableInfo:baseCellCoord:]", v11, v12);
@@ -73,7 +73,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
   }
 
-  if (a5._coord.row == 0x7FFFFFFF || (*&a5 & 0xFFFF00000000) == 0x7FFF00000000)
+  if (coord._coord.row == 0x7FFFFFFF || (*&coord & 0xFFFF00000000) == 0x7FFF00000000)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTCommentHosting initWithStorage:forTableInfo:baseCellCoord:]", v11, v12);
@@ -85,11 +85,11 @@
 
   v45 = 0u;
   v46 = 0u;
-  v36 = objc_msgSend_translator(v13, v9, v10, v11, v12);
+  v36 = objc_msgSend_translator(infoCopy, v9, v10, v11, v12);
   v40 = v36;
   if (v36)
   {
-    objc_msgSend_cellUIDforBaseCellCoord_(v36, v37, *&a5, v38, v39);
+    objc_msgSend_cellUIDforBaseCellCoord_(v36, v37, *&coord, v38, v39);
   }
 
   else
@@ -100,20 +100,20 @@
 
   v44[0] = v45;
   v44[1] = v46;
-  v42 = objc_msgSend_initWithStorage_forTableInfo_cellUID_(self, v41, v8, v13, v44);
+  v42 = objc_msgSend_initWithStorage_forTableInfo_cellUID_(self, v41, storageCopy, infoCopy, v44);
 
   return v42;
 }
 
-- (void)setStorage:(id)a3
+- (void)setStorage:(id)storage
 {
-  v12 = a3;
-  if (self->mStorage != v12)
+  storageCopy = storage;
+  if (self->mStorage != storageCopy)
   {
     v9 = objc_msgSend_tableInfo(self, v5, v6, v7, v8);
-    objc_msgSend_setCommentStorage_atCellUID_(v9, v10, v12, &self->_cellUID, v11);
+    objc_msgSend_setCommentStorage_atCellUID_(v9, v10, storageCopy, &self->_cellUID, v11);
 
-    objc_storeStrong(&self->mStorage, a3);
+    objc_storeStrong(&self->mStorage, storage);
   }
 }
 
@@ -126,7 +126,7 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v9 = objc_msgSend_storage(self, v5, v6, v7, v8);
@@ -174,11 +174,11 @@
   return v10;
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v16 = a3;
+  authorCopy = author;
   v8 = objc_msgSend_storage(self, v4, v5, v6, v7);
-  v12 = objc_msgSend_copyWithAuthor_(v8, v9, v16, v10, v11);
+  v12 = objc_msgSend_copyWithAuthor_(v8, v9, authorCopy, v10, v11);
   objc_msgSend_setStorage_(self, v13, v12, v14, v15);
 }
 

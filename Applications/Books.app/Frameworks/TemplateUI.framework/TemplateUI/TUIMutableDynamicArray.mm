@@ -1,47 +1,47 @@
 @interface TUIMutableDynamicArray
-- (void)_beginBatchUpdatesWithTransaction:(id)a3 generation:(id)a4;
+- (void)_beginBatchUpdatesWithTransaction:(id)transaction generation:(id)generation;
 - (void)_endBatchUpdates;
-- (void)deleteItemAtIndex:(unint64_t)a3;
-- (void)insertItemAtIndex:(unint64_t)a3;
-- (void)moveItemFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)performBatchUpdatesWithGeneration:(id)a3 block:(id)a4;
-- (void)performBatchUpdatesWithTransaction:(id)a3 generation:(id)a4 block:(id)a5;
-- (void)updateItemAtIndex:(unint64_t)a3;
+- (void)deleteItemAtIndex:(unint64_t)index;
+- (void)insertItemAtIndex:(unint64_t)index;
+- (void)moveItemFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)performBatchUpdatesWithGeneration:(id)generation block:(id)block;
+- (void)performBatchUpdatesWithTransaction:(id)transaction generation:(id)generation block:(id)block;
+- (void)updateItemAtIndex:(unint64_t)index;
 @end
 
 @implementation TUIMutableDynamicArray
 
-- (void)performBatchUpdatesWithGeneration:(id)a3 block:(id)a4
+- (void)performBatchUpdatesWithGeneration:(id)generation block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  generationCopy = generation;
   v8 = +[TUITransaction currentOrImplicitTransaction];
-  [(TUIMutableDynamicArray *)self performBatchUpdatesWithTransaction:v8 generation:v7 block:v6];
+  [(TUIMutableDynamicArray *)self performBatchUpdatesWithTransaction:v8 generation:generationCopy block:blockCopy];
 }
 
-- (void)performBatchUpdatesWithTransaction:(id)a3 generation:(id)a4 block:(id)a5
+- (void)performBatchUpdatesWithTransaction:(id)transaction generation:(id)generation block:(id)block
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  transactionCopy = transaction;
+  generationCopy = generation;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (blockCopy)
   {
     if (self->_updateGroup)
     {
-      (*(v9 + 2))(v9, self);
+      (*(blockCopy + 2))(blockCopy, self);
     }
 
     else
     {
-      v11 = v13;
-      if (!v13)
+      v11 = transactionCopy;
+      if (!transactionCopy)
       {
         v11 = +[TUITransaction currentOrImplicitTransaction];
       }
 
-      v13 = v11;
-      [(TUIMutableDynamicArray *)self _beginBatchUpdatesWithTransaction:v11 generation:v8];
+      transactionCopy = v11;
+      [(TUIMutableDynamicArray *)self _beginBatchUpdatesWithTransaction:v11 generation:generationCopy];
       (v10)[2](v10, self);
       [(TUIMutableDynamicArray *)self _endBatchUpdates];
       v12 = objc_opt_self();
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)_beginBatchUpdatesWithTransaction:(id)a3 generation:(id)a4
+- (void)_beginBatchUpdatesWithTransaction:(id)transaction generation:(id)generation
 {
-  v5 = [(TUIDynamicArray *)self _newUpdateGroupWithGeneration:a4 transaction:a3];
+  v5 = [(TUIDynamicArray *)self _newUpdateGroupWithGeneration:generation transaction:transaction];
   updateGroup = self->_updateGroup;
   self->_updateGroup = v5;
 }
@@ -64,39 +64,39 @@
   self->_updateGroup = 0;
 }
 
-- (void)insertItemAtIndex:(unint64_t)a3
+- (void)insertItemAtIndex:(unint64_t)index
 {
   updateGroup = self->_updateGroup;
   if (updateGroup)
   {
-    [(_TUIDynamicArrayUpdateGroup *)updateGroup insertItemAtIndex:a3];
+    [(_TUIDynamicArrayUpdateGroup *)updateGroup insertItemAtIndex:index];
   }
 }
 
-- (void)deleteItemAtIndex:(unint64_t)a3
+- (void)deleteItemAtIndex:(unint64_t)index
 {
   updateGroup = self->_updateGroup;
   if (updateGroup)
   {
-    [(_TUIDynamicArrayUpdateGroup *)updateGroup deleteItemAtIndex:a3];
+    [(_TUIDynamicArrayUpdateGroup *)updateGroup deleteItemAtIndex:index];
   }
 }
 
-- (void)updateItemAtIndex:(unint64_t)a3
+- (void)updateItemAtIndex:(unint64_t)index
 {
   updateGroup = self->_updateGroup;
   if (updateGroup)
   {
-    [(_TUIDynamicArrayUpdateGroup *)updateGroup updateItemAtIndex:a3];
+    [(_TUIDynamicArrayUpdateGroup *)updateGroup updateItemAtIndex:index];
   }
 }
 
-- (void)moveItemFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveItemFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   updateGroup = self->_updateGroup;
   if (updateGroup)
   {
-    [(_TUIDynamicArrayUpdateGroup *)updateGroup moveItemFromIndex:a3 toIndex:a4];
+    [(_TUIDynamicArrayUpdateGroup *)updateGroup moveItemFromIndex:index toIndex:toIndex];
   }
 }
 

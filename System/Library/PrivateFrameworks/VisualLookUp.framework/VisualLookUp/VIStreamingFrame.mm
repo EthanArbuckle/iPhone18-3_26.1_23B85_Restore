@@ -1,29 +1,29 @@
 @interface VIStreamingFrame
 - (CGRect)normalizedRegionOfInterest;
-- (VIStreamingFrame)initWithTimeStamp:(double)a3 imageContent:(id)a4 normalizedRegionOfInterest:(CGRect)a5 stabilityScore:(double)a6;
+- (VIStreamingFrame)initWithTimeStamp:(double)stamp imageContent:(id)content normalizedRegionOfInterest:(CGRect)interest stabilityScore:(double)score;
 @end
 
 @implementation VIStreamingFrame
 
-- (VIStreamingFrame)initWithTimeStamp:(double)a3 imageContent:(id)a4 normalizedRegionOfInterest:(CGRect)a5 stabilityScore:(double)a6
+- (VIStreamingFrame)initWithTimeStamp:(double)stamp imageContent:(id)content normalizedRegionOfInterest:(CGRect)interest stabilityScore:(double)score
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  contentCopy = content;
   v18.receiver = self;
   v18.super_class = VIStreamingFrame;
   v15 = [(VIStreamingFrame *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_timestamp = a3;
-    objc_storeStrong(&v15->_imageContent, a4);
+    v15->_timestamp = stamp;
+    objc_storeStrong(&v15->_imageContent, content);
     v16->_normalizedRegionOfInterest.origin.y = y;
     v16->_normalizedRegionOfInterest.size.width = width;
     v16->_normalizedRegionOfInterest.size.height = height;
-    v16->_stabilityScore = a6;
+    v16->_stabilityScore = score;
     v16->_normalizedRegionOfInterest.origin.x = x;
   }
 

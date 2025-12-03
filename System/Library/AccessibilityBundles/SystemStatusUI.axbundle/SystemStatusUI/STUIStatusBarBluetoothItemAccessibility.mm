@@ -1,22 +1,22 @@
 @interface STUIStatusBarBluetoothItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation STUIStatusBarBluetoothItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUIStatusBarBluetoothItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
-  [v3 validateClass:@"STUIStatusBarIndicatorItem" hasProperty:@"imageView" withType:"@"];
-  [v3 validateClass:@"STUIStatusBarItemUpdate" hasProperty:@"data" withType:"@"];
-  [v3 validateClass:@"STStatusBarData" hasProperty:@"bluetoothEntry" withType:"@"];
-  [v3 validateClass:@"STStatusBarDataEntry" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"STStatusBarDataBatteryEntry" hasInstanceMethod:@"capacity" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"STStatusBarDataBluetoothEntry" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"STStatusBarDataBluetoothEntry" hasInstanceMethod:@"batteryEntry" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUIStatusBarBluetoothItem" isKindOfClass:@"STUIStatusBarIndicatorItem"];
+  [validationsCopy validateClass:@"STUIStatusBarIndicatorItem" hasProperty:@"imageView" withType:"@"];
+  [validationsCopy validateClass:@"STUIStatusBarItemUpdate" hasProperty:@"data" withType:"@"];
+  [validationsCopy validateClass:@"STStatusBarData" hasProperty:@"bluetoothEntry" withType:"@"];
+  [validationsCopy validateClass:@"STStatusBarDataEntry" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataBatteryEntry" hasInstanceMethod:@"capacity" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataBluetoothEntry" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"STStatusBarDataBluetoothEntry" hasInstanceMethod:@"batteryEntry" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,10 +30,10 @@
   v4 = [(STUIStatusBarBluetoothItemAccessibility *)self safeValueForKey:@"imageView"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 image];
-  v7 = [v6 accessibilityIdentifier];
+  image = [v5 image];
+  accessibilityIdentifier = [image accessibilityIdentifier];
 
-  if (([v7 isEqualToString:@"bluetooth"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"headphones"))
+  if (([accessibilityIdentifier isEqualToString:@"bluetooth"] & 1) != 0 || objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"headphones"))
   {
     v8 = accessibilityLocalizedString(@"bluetooth");
     if (!v3)
@@ -41,8 +41,8 @@
 LABEL_22:
       [v5 setIsAccessibilityElement:{1, v23, v24}];
       [v5 setAccessibilityLabel:v8];
-      v22 = [v5 accessibilityTraits];
-      [v5 setAccessibilityTraits:v22 & ~*MEMORY[0x29EDC7F88]];
+      accessibilityTraits = [v5 accessibilityTraits];
+      [v5 setAccessibilityTraits:accessibilityTraits & ~*MEMORY[0x29EDC7F88]];
 
       goto LABEL_23;
     }
@@ -106,7 +106,7 @@ LABEL_20:
         goto LABEL_19;
       }
 
-      if ([v7 isEqualToString:@"headphones"])
+      if ([accessibilityIdentifier isEqualToString:@"headphones"])
       {
         v19 = @"status.bluetooth.headphones.battery.charge";
       }
@@ -151,13 +151,13 @@ id __85__STUIStatusBarBluetoothItemAccessibility__accessibilityLoadAccessibility
   return v4;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v9.receiver = self;
   v9.super_class = STUIStatusBarBluetoothItemAccessibility;
-  v6 = a3;
-  v7 = [(STUIStatusBarBluetoothItemAccessibility *)&v9 applyUpdate:v6 toDisplayItem:a4];
-  [(STUIStatusBarBluetoothItemAccessibility *)self _accessibilitySetRetainedValue:v6 forKey:@"AccessibilityStatusBarUpdateData", v9.receiver, v9.super_class];
+  updateCopy = update;
+  v7 = [(STUIStatusBarBluetoothItemAccessibility *)&v9 applyUpdate:updateCopy toDisplayItem:item];
+  [(STUIStatusBarBluetoothItemAccessibility *)self _accessibilitySetRetainedValue:updateCopy forKey:@"AccessibilityStatusBarUpdateData", v9.receiver, v9.super_class];
 
   [(STUIStatusBarBluetoothItemAccessibility *)self _accessibilityLoadAccessibilityInformation];
 

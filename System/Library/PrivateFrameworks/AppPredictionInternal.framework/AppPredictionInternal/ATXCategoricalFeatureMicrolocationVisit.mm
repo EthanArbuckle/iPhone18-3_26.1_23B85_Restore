@@ -1,18 +1,18 @@
 @interface ATXCategoricalFeatureMicrolocationVisit
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCategoricalFeatureMicrolocationVisit
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v4 = [a3 microlocationVisitEvent];
-  v5 = [v4 dominantMicrolocationUUID];
-  v6 = [v5 UUIDString];
+  microlocationVisitEvent = [context microlocationVisitEvent];
+  dominantMicrolocationUUID = [microlocationVisitEvent dominantMicrolocationUUID];
+  uUIDString = [dominantMicrolocationUUID UUIDString];
 
-  if (v6)
+  if (uUIDString)
   {
-    v7 = v6;
+    v7 = uUIDString;
   }
 
   else

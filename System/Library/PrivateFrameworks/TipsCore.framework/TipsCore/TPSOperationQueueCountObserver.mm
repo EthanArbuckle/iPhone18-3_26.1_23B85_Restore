@@ -1,8 +1,8 @@
 @interface TPSOperationQueueCountObserver
 - (TPSOperationQueue)operationQueue;
-- (TPSOperationQueueCountObserver)initWithQueue:(id)a3;
+- (TPSOperationQueueCountObserver)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation TPSOperationQueueCountObserver
@@ -23,34 +23,34 @@
   [(TPSOperationQueueCountObserver *)&v5 dealloc];
 }
 
-- (TPSOperationQueueCountObserver)initWithQueue:(id)a3
+- (TPSOperationQueueCountObserver)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = TPSOperationQueueCountObserver;
   v5 = [(TPSOperationQueueCountObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_operationQueue, v4);
+    objc_storeWeak(&v5->_operationQueue, queueCopy);
   }
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"operationCount"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"operationCount"])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __81__TPSOperationQueueCountObserver_observeValueForKeyPath_ofObject_change_context___block_invoke;
     block[3] = &unk_1E8101390;
-    v15 = v12;
-    v16 = self;
+    v15 = changeCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -58,7 +58,7 @@
   {
     v13.receiver = self;
     v13.super_class = TPSOperationQueueCountObserver;
-    [(TPSOperationQueueCountObserver *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TPSOperationQueueCountObserver *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

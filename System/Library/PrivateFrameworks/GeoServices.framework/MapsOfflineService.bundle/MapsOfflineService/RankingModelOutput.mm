@@ -1,26 +1,26 @@
 @interface RankingModelOutput
-- (RankingModelOutput)initWithTarget:(double)a3;
-- (id)featureValueForName:(id)a3;
+- (RankingModelOutput)initWithTarget:(double)target;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation RankingModelOutput
 
-- (RankingModelOutput)initWithTarget:(double)a3
+- (RankingModelOutput)initWithTarget:(double)target
 {
   v5.receiver = self;
   v5.super_class = RankingModelOutput;
   result = [(RankingModelOutput *)&v5 init];
   if (result)
   {
-    result->_target = a3;
+    result->_target = target;
   }
 
   return result;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"target"])
+  if ([name isEqualToString:@"target"])
   {
     [(RankingModelOutput *)self target];
     v4 = [MLFeatureValue featureValueWithDouble:?];

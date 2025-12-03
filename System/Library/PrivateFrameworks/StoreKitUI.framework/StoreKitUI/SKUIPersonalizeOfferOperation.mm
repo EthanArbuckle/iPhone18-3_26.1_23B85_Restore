@@ -1,15 +1,15 @@
 @interface SKUIPersonalizeOfferOperation
-- (SKUIPersonalizeOfferOperation)initWithItemIdentifier:(int64_t)a3 clientContext:(id)a4;
+- (SKUIPersonalizeOfferOperation)initWithItemIdentifier:(int64_t)identifier clientContext:(id)context;
 - (id)outputBlock;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SKUIPersonalizeOfferOperation
 
-- (SKUIPersonalizeOfferOperation)initWithItemIdentifier:(int64_t)a3 clientContext:(id)a4
+- (SKUIPersonalizeOfferOperation)initWithItemIdentifier:(int64_t)identifier clientContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPersonalizeOfferOperation initWithItemIdentifier:clientContext:];
@@ -21,8 +21,8 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientContext, a4);
-    v9->_itemID = a3;
+    objc_storeStrong(&v8->_clientContext, context);
+    v9->_itemID = identifier;
     v10 = dispatch_queue_create("com.apple.StoreKitUI.SKUIPersonalizeOfferOperation", 0);
     dispatchQueue = v9->_dispatchQueue;
     v9->_dispatchQueue = v10;
@@ -67,17 +67,17 @@ uint64_t __44__SKUIPersonalizeOfferOperation_outputBlock__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SKUIPersonalizeOfferOperation_setOutputBlock___block_invoke;
   v7[3] = &unk_2781F98F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -108,8 +108,8 @@ uint64_t __48__SKUIPersonalizeOfferOperation_setOutputBlock___block_invoke(uint6
   v21 = 0;
   v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%lld", self->_itemID];
   v4 = objc_alloc(MEMORY[0x277D69CF0]);
-  v5 = [(SKUIClientContext *)self->_clientContext platformContext];
-  v6 = [v4 initWithPlatformContext:v5];
+  platformContext = [(SKUIClientContext *)self->_clientContext platformContext];
+  v6 = [v4 initWithPlatformContext:platformContext];
 
   v28[0] = v3;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
@@ -131,11 +131,11 @@ uint64_t __48__SKUIPersonalizeOfferOperation_setOutputBlock___block_invoke(uint6
   v15 = &v16;
   [v6 setResponseBlock:v12];
   [v6 main];
-  v10 = [(SKUIPersonalizeOfferOperation *)self outputBlock];
-  v11 = v10;
-  if (v10)
+  outputBlock = [(SKUIPersonalizeOfferOperation *)self outputBlock];
+  v11 = outputBlock;
+  if (outputBlock)
   {
-    (*(v10 + 16))(v10, v17[5], v23[5]);
+    (*(outputBlock + 16))(outputBlock, v17[5], v23[5]);
   }
 
   _Block_object_dispose(&v16, 8);

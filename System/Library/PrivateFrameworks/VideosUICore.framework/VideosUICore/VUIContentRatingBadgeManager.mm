@@ -1,16 +1,16 @@
 @interface VUIContentRatingBadgeManager
-+ (id)_badgeDescriptorLookupKeyWithRatingLabel:(id)a3 inRatingSystem:(int64_t)a4;
-+ (id)_cleanedRatingLabel:(id)a3;
-+ (id)_imageLookupKeyWithRatingLabel:(id)a3 inRatingSystem:(int64_t)a4;
++ (id)_badgeDescriptorLookupKeyWithRatingLabel:(id)label inRatingSystem:(int64_t)system;
++ (id)_cleanedRatingLabel:(id)label;
++ (id)_imageLookupKeyWithRatingLabel:(id)label inRatingSystem:(int64_t)system;
 + (id)sharedInstance;
-+ (void)_addImageDescriptorToDictionary:(id)a3 ratingSystem:(int64_t)a4 ratingLabel:(id)a5 resourceName:(id)a6 isTemplatedImage:(BOOL)a7;
-- (BOOL)isTemplatedBadgeForContentRating:(id)a3;
++ (void)_addImageDescriptorToDictionary:(id)dictionary ratingSystem:(int64_t)system ratingLabel:(id)label resourceName:(id)name isTemplatedImage:(BOOL)image;
+- (BOOL)isTemplatedBadgeForContentRating:(id)rating;
 - (NSDictionary)badgeDescriptors;
-- (id)_badgeDescriptorForContentRating:(id)a3;
-- (id)_badgeDescriptorForRatingLabel:(id)a3 inRatingSystem:(int64_t)a4;
-- (id)badgeForContentRating:(id)a3 drawUnknownRatingBadge:(BOOL)a4;
-- (id)badgeForRatingLabel:(id)a3 inRatingSystem:(int64_t)a4 drawUnknownRatingBadge:(BOOL)a5;
-- (void)setCachesImages:(BOOL)a3;
+- (id)_badgeDescriptorForContentRating:(id)rating;
+- (id)_badgeDescriptorForRatingLabel:(id)label inRatingSystem:(int64_t)system;
+- (id)badgeForContentRating:(id)rating drawUnknownRatingBadge:(BOOL)badge;
+- (id)badgeForRatingLabel:(id)label inRatingSystem:(int64_t)system drawUnknownRatingBadge:(BOOL)badge;
+- (void)setCachesImages:(BOOL)images;
 @end
 
 @implementation VUIContentRatingBadgeManager
@@ -34,12 +34,12 @@ uint64_t __46__VUIContentRatingBadgeManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setCachesImages:(BOOL)a3
+- (void)setCachesImages:(BOOL)images
 {
-  if (self->_cachesImages != a3)
+  if (self->_cachesImages != images)
   {
-    self->_cachesImages = a3;
-    if (a3)
+    self->_cachesImages = images;
+    if (images)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEA78]);
       [v5 setCountLimit:20];
@@ -55,31 +55,31 @@ uint64_t __46__VUIContentRatingBadgeManager_sharedInstance__block_invoke()
   }
 }
 
-- (id)badgeForContentRating:(id)a3 drawUnknownRatingBadge:(BOOL)a4
+- (id)badgeForContentRating:(id)rating drawUnknownRatingBadge:(BOOL)badge
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 ratingLabel];
-  v8 = [v6 ratingSystem];
+  badgeCopy = badge;
+  ratingCopy = rating;
+  ratingLabel = [ratingCopy ratingLabel];
+  ratingSystem = [ratingCopy ratingSystem];
 
-  v9 = [(VUIContentRatingBadgeManager *)self badgeForRatingLabel:v7 inRatingSystem:v8 drawUnknownRatingBadge:v4];
+  v9 = [(VUIContentRatingBadgeManager *)self badgeForRatingLabel:ratingLabel inRatingSystem:ratingSystem drawUnknownRatingBadge:badgeCopy];
 
   return v9;
 }
 
-- (id)badgeForRatingLabel:(id)a3 inRatingSystem:(int64_t)a4 drawUnknownRatingBadge:(BOOL)a5
+- (id)badgeForRatingLabel:(id)label inRatingSystem:(int64_t)system drawUnknownRatingBadge:(BOOL)badge
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(VUIContentRatingBadgeManager *)self imageCache];
-  v10 = [objc_opt_class() _imageLookupKeyWithRatingLabel:v8 inRatingSystem:a4];
-  v11 = [v9 objectForKey:v10];
+  badgeCopy = badge;
+  labelCopy = label;
+  imageCache = [(VUIContentRatingBadgeManager *)self imageCache];
+  v10 = [objc_opt_class() _imageLookupKeyWithRatingLabel:labelCopy inRatingSystem:system];
+  v11 = [imageCache objectForKey:v10];
   if (v11)
   {
     goto LABEL_13;
   }
 
-  v12 = [(VUIContentRatingBadgeManager *)self _badgeDescriptorForRatingLabel:v8 inRatingSystem:a4];
+  v12 = [(VUIContentRatingBadgeManager *)self _badgeDescriptorForRatingLabel:labelCopy inRatingSystem:system];
   v13 = v12;
   if (!v12)
   {
@@ -87,12 +87,12 @@ uint64_t __46__VUIContentRatingBadgeManager_sharedInstance__block_invoke()
     goto LABEL_8;
   }
 
-  v14 = [v12 resourceName];
-  if (v14)
+  resourceName = [v12 resourceName];
+  if (resourceName)
   {
     v15 = MEMORY[0x277D755B8];
     v16 = +[VUICoreUtilities VideosUICoreBundle];
-    v11 = [v15 vuiImageNamed:v14 inBundle:v16];
+    v11 = [v15 vuiImageNamed:resourceName inBundle:v16];
   }
 
   else
@@ -103,15 +103,15 @@ uint64_t __46__VUIContentRatingBadgeManager_sharedInstance__block_invoke()
   if (!v11)
   {
 LABEL_8:
-    if (v5)
+    if (badgeCopy)
     {
-      v11 = [objc_opt_class() _imageForUnknownRatingLabel:v8];
+      v11 = [objc_opt_class() _imageForUnknownRatingLabel:labelCopy];
     }
   }
 
   if (v11)
   {
-    [v9 setObject:v11 forKey:v10];
+    [imageCache setObject:v11 forKey:v10];
   }
 
 LABEL_13:
@@ -119,21 +119,21 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isTemplatedBadgeForContentRating:(id)a3
+- (BOOL)isTemplatedBadgeForContentRating:(id)rating
 {
-  v3 = [(VUIContentRatingBadgeManager *)self _badgeDescriptorForContentRating:a3];
+  v3 = [(VUIContentRatingBadgeManager *)self _badgeDescriptorForContentRating:rating];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 isTemplatedImage];
+    isTemplatedImage = [v3 isTemplatedImage];
   }
 
   else
   {
-    v5 = 1;
+    isTemplatedImage = 1;
   }
 
-  return v5;
+  return isTemplatedImage;
 }
 
 - (NSDictionary)badgeDescriptors
@@ -269,35 +269,35 @@ LABEL_13:
   return badgeDescriptors;
 }
 
-- (id)_badgeDescriptorForContentRating:(id)a3
+- (id)_badgeDescriptorForContentRating:(id)rating
 {
-  v4 = a3;
-  v5 = [v4 ratingLabel];
-  v6 = [v4 ratingSystem];
+  ratingCopy = rating;
+  ratingLabel = [ratingCopy ratingLabel];
+  ratingSystem = [ratingCopy ratingSystem];
 
-  v7 = [(VUIContentRatingBadgeManager *)self _badgeDescriptorForRatingLabel:v5 inRatingSystem:v6];
+  v7 = [(VUIContentRatingBadgeManager *)self _badgeDescriptorForRatingLabel:ratingLabel inRatingSystem:ratingSystem];
 
   return v7;
 }
 
-- (id)_badgeDescriptorForRatingLabel:(id)a3 inRatingSystem:(int64_t)a4
+- (id)_badgeDescriptorForRatingLabel:(id)label inRatingSystem:(int64_t)system
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _badgeDescriptorLookupKeyWithRatingLabel:v6 inRatingSystem:a4];
+  labelCopy = label;
+  v7 = [objc_opt_class() _badgeDescriptorLookupKeyWithRatingLabel:labelCopy inRatingSystem:system];
 
-  v8 = [(VUIContentRatingBadgeManager *)self badgeDescriptors];
-  v9 = [v8 objectForKey:v7];
+  badgeDescriptors = [(VUIContentRatingBadgeManager *)self badgeDescriptors];
+  v9 = [badgeDescriptors objectForKey:v7];
 
   return v9;
 }
 
-+ (id)_badgeDescriptorLookupKeyWithRatingLabel:(id)a3 inRatingSystem:(int64_t)a4
++ (id)_badgeDescriptorLookupKeyWithRatingLabel:(id)label inRatingSystem:(int64_t)system
 {
-  if (a4)
+  if (system)
   {
-    v6 = a3;
-    v7 = [VUIContentRatingSystemUtilities stringForRatingSystem:a4];
-    v8 = [a1 _cleanedRatingLabel:v6];
+    labelCopy = label;
+    v7 = [VUIContentRatingSystemUtilities stringForRatingSystem:system];
+    v8 = [self _cleanedRatingLabel:labelCopy];
 
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v7, v8];
   }
@@ -310,46 +310,46 @@ LABEL_13:
   return v9;
 }
 
-+ (id)_cleanedRatingLabel:(id)a3
++ (id)_cleanedRatingLabel:(id)label
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@" " withString:&stru_2880D3950];
+  v3 = [label stringByReplacingOccurrencesOfString:@" " withString:&stru_2880D3950];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"-" withString:&stru_2880D3950];
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"_" withString:&stru_2880D3950];
 
-  v6 = [v5 lowercaseString];
+  lowercaseString = [v5 lowercaseString];
 
-  return v6;
+  return lowercaseString;
 }
 
-+ (void)_addImageDescriptorToDictionary:(id)a3 ratingSystem:(int64_t)a4 ratingLabel:(id)a5 resourceName:(id)a6 isTemplatedImage:(BOOL)a7
++ (void)_addImageDescriptorToDictionary:(id)dictionary ratingSystem:(int64_t)system ratingLabel:(id)label resourceName:(id)name isTemplatedImage:(BOOL)image
 {
-  v7 = a7;
-  v15 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = [[VUIContentRatingBadgeDescriptor alloc] initWithResourceName:v11 isTemplatedImage:v7];
+  imageCopy = image;
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  labelCopy = label;
+  v13 = [[VUIContentRatingBadgeDescriptor alloc] initWithResourceName:nameCopy isTemplatedImage:imageCopy];
 
-  v14 = [objc_opt_class() _badgeDescriptorLookupKeyWithRatingLabel:v12 inRatingSystem:a4];
+  v14 = [objc_opt_class() _badgeDescriptorLookupKeyWithRatingLabel:labelCopy inRatingSystem:system];
 
   if (v14)
   {
-    [v15 setObject:v13 forKey:v14];
+    [dictionaryCopy setObject:v13 forKey:v14];
   }
 }
 
-+ (id)_imageLookupKeyWithRatingLabel:(id)a3 inRatingSystem:(int64_t)a4
++ (id)_imageLookupKeyWithRatingLabel:(id)label inRatingSystem:(int64_t)system
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  labelCopy = label;
+  v7 = labelCopy;
+  if (system)
   {
-    v8 = [a1 _badgeDescriptorLookupKeyWithRatingLabel:v6 inRatingSystem:a4];
+    v8 = [self _badgeDescriptorLookupKeyWithRatingLabel:labelCopy inRatingSystem:system];
   }
 
   else
   {
-    v8 = v6;
+    v8 = labelCopy;
   }
 
   v9 = v8;

@@ -1,5 +1,5 @@
 @interface OTPreflightVouchWithCustodianRecoveryKeyOperation
-- (OTPreflightVouchWithCustodianRecoveryKeyOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 tphcrk:(id)a6;
+- (OTPreflightVouchWithCustodianRecoveryKeyOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState tphcrk:(id)tphcrk;
 - (void)groupStart;
 @end
 
@@ -17,42 +17,42 @@
   v4 = objc_alloc_init(NSOperation);
   [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self setFinishOp:v4];
 
-  v5 = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishOp = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
   objc_initWeak(buf, self);
-  v6 = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self deps];
-  v7 = [v6 cuttlefishXPCWrapper];
-  v8 = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self deps];
-  v9 = [v8 activeAccount];
-  v10 = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self tphcrk];
+  deps = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self deps];
+  cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+  deps2 = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
+  tphcrk = [(OTPreflightVouchWithCustodianRecoveryKeyOperation *)self tphcrk];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10014462C;
   v11[3] = &unk_100337F48;
   objc_copyWeak(&v12, buf);
-  [v7 preflightVouchWithCustodianRecoveryKeyWithSpecificUser:v9 crk:v10 reply:v11];
+  [cuttlefishXPCWrapper preflightVouchWithCustodianRecoveryKeyWithSpecificUser:activeAccount crk:tphcrk reply:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (OTPreflightVouchWithCustodianRecoveryKeyOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 tphcrk:(id)a6
+- (OTPreflightVouchWithCustodianRecoveryKeyOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState tphcrk:(id)tphcrk
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  tphcrkCopy = tphcrk;
   v18.receiver = self;
   v18.super_class = OTPreflightVouchWithCustodianRecoveryKeyOperation;
   v15 = [(CKKSGroupOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deps, a3);
-    objc_storeStrong(&v16->_intendedState, a4);
-    objc_storeStrong(&v16->_nextState, a5);
-    objc_storeStrong(&v16->_tphcrk, a6);
+    objc_storeStrong(&v15->_deps, dependencies);
+    objc_storeStrong(&v16->_intendedState, state);
+    objc_storeStrong(&v16->_nextState, errorState);
+    objc_storeStrong(&v16->_tphcrk, tphcrk);
   }
 
   return v16;

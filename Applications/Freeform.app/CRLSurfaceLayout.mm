@@ -1,6 +1,6 @@
 @interface CRLSurfaceLayout
 - (CGSize)minimumSize;
-- (_TtC8Freeform16CRLSurfaceLayout)initWithInfo:(id)a3;
+- (_TtC8Freeform16CRLSurfaceLayout)initWithInfo:(id)info;
 @end
 
 @implementation CRLSurfaceLayout
@@ -14,12 +14,12 @@
   return result;
 }
 
-- (_TtC8Freeform16CRLSurfaceLayout)initWithInfo:(id)a3
+- (_TtC8Freeform16CRLSurfaceLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for CRLSurfaceLayout();
   swift_unknownObjectRetain();
-  v4 = [(CRLCanvasLayout *)&v6 initWithInfo:a3];
+  v4 = [(CRLCanvasLayout *)&v6 initWithInfo:info];
   swift_unknownObjectRelease();
   if (v4)
   {

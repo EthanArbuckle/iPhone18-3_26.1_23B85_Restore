@@ -2,10 +2,10 @@
 + (id)standardTurkishNounSuffixes;
 + (id)standardTurkishSuffixes;
 + (id)standardTurkishVerbSuffixes;
-+ (void)enumerateSuffixMatchesForBuffer:(char *)a3 length:(unint64_t)a4 options:(unint64_t)a5 usingBlock:(id)a6;
-+ (void)enumerateSuffixMatchesForWord:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (PRTurkishSuffix)initWithPattern:(id)a3 name:(id)a4 type:(int)a5 postponesApostrophe:(BOOL)a6;
-- (unint64_t)matchingIndexInBuffer:(char *)a3 length:(unint64_t)a4 followedByLetter:(unsigned __int8)a5 matchWithNameOnly:(BOOL *)a6;
++ (void)enumerateSuffixMatchesForBuffer:(char *)buffer length:(unint64_t)length options:(unint64_t)options usingBlock:(id)block;
++ (void)enumerateSuffixMatchesForWord:(id)word options:(unint64_t)options usingBlock:(id)block;
+- (PRTurkishSuffix)initWithPattern:(id)pattern name:(id)name type:(int)type postponesApostrophe:(BOOL)apostrophe;
+- (unint64_t)matchingIndexInBuffer:(char *)buffer length:(unint64_t)length followedByLetter:(unsigned __int8)letter matchWithNameOnly:(BOOL *)only;
 - (void)_fillPatternBuffer;
 - (void)dealloc;
 @end
@@ -60,17 +60,17 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (PRTurkishSuffix)initWithPattern:(id)a3 name:(id)a4 type:(int)a5 postponesApostrophe:(BOOL)a6
+- (PRTurkishSuffix)initWithPattern:(id)pattern name:(id)name type:(int)type postponesApostrophe:(BOOL)apostrophe
 {
   v12.receiver = self;
   v12.super_class = PRTurkishSuffix;
   v10 = [(PRTurkishSuffix *)&v12 init];
   if (v10)
   {
-    v10->_pattern = [a3 copy];
-    v10->_name = [a4 copy];
-    v10->_suffixType = a5;
-    v10->_postponesApostrophe = a6;
+    v10->_pattern = [pattern copy];
+    v10->_name = [name copy];
+    v10->_suffixType = type;
+    v10->_postponesApostrophe = apostrophe;
     [(PRTurkishSuffix *)v10 _fillPatternBuffer];
   }
 
@@ -84,34 +84,34 @@
   [(PRTurkishSuffix *)&v3 dealloc];
 }
 
-- (unint64_t)matchingIndexInBuffer:(char *)a3 length:(unint64_t)a4 followedByLetter:(unsigned __int8)a5 matchWithNameOnly:(BOOL *)a6
+- (unint64_t)matchingIndexInBuffer:(char *)buffer length:(unint64_t)length followedByLetter:(unsigned __int8)letter matchWithNameOnly:(BOOL *)only
 {
   patternBufferLength = self->_patternBufferLength;
   v79 = 0;
   v78 = 0;
-  if (!a4)
+  if (!length)
   {
     v64 = 0;
     v70 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_235;
   }
 
-  v7 = a5;
-  v8 = a4;
+  letterCopy = letter;
+  lengthCopy4 = length;
   v64 = 0;
   v76 = 0;
   v71 = 0;
   v75 = 0;
-  v9 = a3 - 2;
+  v9 = buffer - 2;
   patternBuffer = self->_patternBuffer;
   v72 = 0;
   isOptional = self->_isOptional;
-  v69 = a3 - 1;
+  v69 = buffer - 1;
   v70 = 0x7FFFFFFFFFFFFFFFLL;
-  v10 = a4;
-  v77 = a3;
-  v67 = a3 - 2;
-  v66 = a5;
+  lengthCopy2 = length;
+  bufferCopy = buffer;
+  v67 = buffer - 2;
+  letterCopy2 = letter;
   do
   {
     while (1)
@@ -126,24 +126,24 @@ LABEL_3:
             goto LABEL_235;
           }
 
-          v11 = v10 - 1;
-          if (v10 == 1)
+          v11 = lengthCopy2 - 1;
+          if (lengthCopy2 == 1)
           {
             v12 = 0;
           }
 
           else
           {
-            v12 = v9[v10];
+            v12 = v9[lengthCopy2];
           }
 
-          v13 = v7;
-          if (v10 < v8)
+          v13 = letterCopy;
+          if (lengthCopy2 < lengthCopy4)
           {
-            v13 = a3[v10];
+            v13 = buffer[lengthCopy2];
           }
 
-          v14 = a3[v11];
+          v14 = buffer[v11];
           if (v14 - 65 < 0x1A || v14 - 192 < 0x17)
           {
             if (v14 - 138 > 0x15 || ((1 << (v14 + 118)) & 0x200015) == 0)
@@ -173,10 +173,10 @@ LABEL_27:
             goto LABEL_30;
           }
 
-          if (a3[v11] <= 0xD7u)
+          if (buffer[v11] <= 0xD7u)
           {
             v18 = v14 - 138 > 0x15 || ((1 << (v14 + 118)) & 0x200015) == 0;
-            v17 = a3[v11];
+            v17 = buffer[v11];
             if (!v18)
             {
               goto LABEL_27;
@@ -197,7 +197,7 @@ LABEL_27:
 
             else
             {
-              v17 = a3[v11];
+              v17 = buffer[v11];
               if (v14 == 222)
               {
                 goto LABEL_22;
@@ -340,7 +340,7 @@ LABEL_99:
             v25 = _isTurkishVowel(v13, 0, 0, 0);
             if (v17 == 107 || !isTurkishVowel)
             {
-              a3 = v77;
+              buffer = bufferCopy;
               patternBufferLength = v23;
               v9 = v67;
               if (v17 == 107)
@@ -352,7 +352,7 @@ LABEL_99:
             }
 
             v26 = v17 == 240 && v25;
-            a3 = v77;
+            buffer = bufferCopy;
             patternBufferLength = v23;
             v9 = v67;
             if (!v26)
@@ -367,13 +367,13 @@ LABEL_99:
           }
 
 LABEL_31:
-          if (v10 != 1)
+          if (lengthCopy2 != 1)
           {
             if (isOptional[patternBufferLength])
             {
               if (!patternBufferLength)
               {
-                v20 = v9[v10];
+                v20 = v9[lengthCopy2];
                 if (v20 > 0xF7 || v20 - 97 < 0x1A || v20 - 223 < 0x18 || v20 - 154 <= 4 && ((1 << (v20 + 102)) & 0x15) != 0)
                 {
                   if (_isTurkishVowel(v20, 0, 0, 0))
@@ -395,7 +395,7 @@ LABEL_31:
 
           if (_isTurkishVowel(v14, &v79, &v79 + 1, &v78))
           {
-            a3 = v77;
+            buffer = bufferCopy;
             if (v76 & 1 | ((v75 & 1) == 0))
             {
               LOBYTE(v72) = v78;
@@ -449,7 +449,7 @@ LABEL_31:
 
           else
           {
-            a3 = v77;
+            buffer = bufferCopy;
           }
 
           if (!patternBufferLength)
@@ -458,7 +458,7 @@ LABEL_31:
           }
 
 LABEL_67:
-          --v10;
+          --lengthCopy2;
           if (!v11)
           {
             goto LABEL_235;
@@ -484,19 +484,19 @@ LABEL_138:
         if (v14 <= 0xF7 && v14 - 97 >= 0x1A && v14 - 223 >= 0x18 && (v14 - 154 > 4 || ((1 << (v14 + 102)) & 0x15) == 0))
         {
 LABEL_151:
-          v11 = v10;
+          v11 = lengthCopy2;
           goto LABEL_152;
         }
 
         if (_isTurkishVowel(v14, 0, 0, 0))
         {
-          a3 = v77;
+          buffer = bufferCopy;
           if ((v19 - 110) > 0xB)
           {
             goto LABEL_151;
           }
 
-          v11 = v10;
+          v11 = lengthCopy2;
           if (((1 << (v19 - 110)) & 0x821) != 0)
           {
             goto LABEL_235;
@@ -505,8 +505,8 @@ LABEL_151:
 
         else
         {
-          v11 = v10;
-          a3 = v77;
+          v11 = lengthCopy2;
+          buffer = bufferCopy;
           if (v19 == 73)
           {
             goto LABEL_235;
@@ -523,7 +523,7 @@ LABEL_152:
             break;
           }
 
-          v40 = a3[v38 - 1];
+          v40 = buffer[v38 - 1];
           v41 = v40 <= 0xF7 && v40 - 97 >= 0x1A;
           if (!v41 || v40 - 223 < 0x18)
           {
@@ -537,7 +537,7 @@ LABEL_152:
         }
 
         while (v44 || v45 == 0);
-        v10 = v11;
+        lengthCopy2 = v11;
         if (!(v76 & 1 | ((v75 & 1) == 0)))
         {
           break;
@@ -554,7 +554,7 @@ LABEL_211:
         {
           if ([(PRTurkishSuffix *)self postponesApostrophe])
           {
-            a3 = v77;
+            buffer = bufferCopy;
             if (!v39)
             {
               goto LABEL_215;
@@ -563,9 +563,9 @@ LABEL_211:
 
           else
           {
-            a3 = v77;
-            v58 = *v77;
-            if (v58 <= 0xF7 && v58 - 97 >= 0x1A && v58 - 223 >= 0x18 && ((v59 = v58 - 154, v59 > 4) || ((1 << v59) & 0x15) == 0) || (v60 = v77[1], v60 <= 0xF7) && v60 - 97 >= 0x1A && v60 - 223 >= 0x18 && ((v61 = v60 - 154, v61 > 4) || ((1 << v61) & 0x15) == 0))
+            buffer = bufferCopy;
+            v58 = *bufferCopy;
+            if (v58 <= 0xF7 && v58 - 97 >= 0x1A && v58 - 223 >= 0x18 && ((v59 = v58 - 154, v59 > 4) || ((1 << v59) & 0x15) == 0) || (v60 = bufferCopy[1], v60 <= 0xF7) && v60 - 97 >= 0x1A && v60 - 223 >= 0x18 && ((v61 = v60 - 154, v61 > 4) || ((1 << v61) & 0x15) == 0))
             {
 LABEL_215:
               v55 = v11 - 1;
@@ -575,7 +575,7 @@ LABEL_215:
         }
 
         v70 = v11;
-        if (!v10)
+        if (!lengthCopy2)
         {
           goto LABEL_235;
         }
@@ -588,10 +588,10 @@ LABEL_215:
       {
         if (v11 == v47)
         {
-          v10 = -1;
+          lengthCopy2 = -1;
 LABEL_210:
-          v7 = v66;
-          v8 = a4;
+          letterCopy = letterCopy2;
+          lengthCopy4 = length;
           v9 = v67;
           goto LABEL_211;
         }
@@ -599,7 +599,7 @@ LABEL_210:
         v50 = v49[v11];
         if (v50 == 97 && v11 - 3 == v47)
         {
-          if (*a3 == 105 && a3[1] == 80 && a3[3] == 100)
+          if (*buffer == 105 && buffer[1] == 80 && buffer[3] == 100)
           {
             v50 = 105;
           }
@@ -612,9 +612,9 @@ LABEL_210:
 
         else if (v50 == 101 && v11 - 6 == v47)
         {
-          if (*a3 == 105 && a3[1] == 80 && a3[2] == 104 && a3[3] == 111)
+          if (*buffer == 105 && buffer[1] == 80 && buffer[2] == 104 && buffer[3] == 111)
           {
-            if (a3[4] == 110)
+            if (buffer[4] == 110)
             {
               v50 = 117;
             }
@@ -639,30 +639,30 @@ LABEL_210:
 
         ++v47;
         --v49;
-        a3 = v77;
+        buffer = bufferCopy;
       }
 
       while (!v53);
-      v10 = v11 - v47;
+      lengthCopy2 = v11 - v47;
       if ((v39 == 0) | v48 & 1)
       {
         goto LABEL_210;
       }
 
       v76 = 0;
-      v7 = v66;
-      v8 = a4;
+      letterCopy = letterCopy2;
+      lengthCopy4 = length;
       v9 = v67;
-      if (a6)
+      if (only)
       {
         if (v11 >= 2)
         {
           v55 = v11 - 1;
-          if (v77[v11 - 1] != 39)
+          if (bufferCopy[v11 - 1] != 39)
           {
 LABEL_207:
             v76 = 0;
-            if (v10)
+            if (lengthCopy2)
             {
               goto LABEL_3;
             }
@@ -671,7 +671,7 @@ LABEL_207:
           }
 
           v76 = 0;
-          v56 = *v77;
+          v56 = *bufferCopy;
           if (v56 <= 0xF7 && v56 - 97 >= 0x1A && v56 - 223 >= 0x18)
           {
             break;
@@ -680,7 +680,7 @@ LABEL_207:
       }
 
 LABEL_219:
-      if (!v10)
+      if (!lengthCopy2)
       {
         goto LABEL_235;
       }
@@ -698,11 +698,11 @@ LABEL_216:
     v70 = v55;
   }
 
-  while (v10);
+  while (lengthCopy2);
 LABEL_235:
-  if (a6)
+  if (only)
   {
-    *a6 = v64 & 1;
+    *only = v64 & 1;
   }
 
   return v70;
@@ -763,14 +763,14 @@ LABEL_235:
   result = standardTurkishSuffixes_standardTurkishSuffixes;
   if (!standardTurkishSuffixes_standardTurkishSuffixes)
   {
-    result = [objc_msgSend(a1 "standardTurkishNounSuffixes")];
+    result = [objc_msgSend(self "standardTurkishNounSuffixes")];
     standardTurkishSuffixes_standardTurkishSuffixes = result;
   }
 
   return result;
 }
 
-+ (void)enumerateSuffixMatchesForBuffer:(char *)a3 length:(unint64_t)a4 options:(unint64_t)a5 usingBlock:(id)a6
++ (void)enumerateSuffixMatchesForBuffer:(char *)buffer length:(unint64_t)length options:(unint64_t)options usingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
   v11 = objc_alloc_init(MEMORY[0x1E696AAC8]);
@@ -785,22 +785,22 @@ LABEL_235:
   }
 
   while (v12 != 256);
-  [a1 _enumerateSuffixMatchesForBuffer:a3 length:a4 followedByLetter:0 options:a5 depth:0 matchState:13 suffixStack:NAN suffixRangeStack:v16 usingBlock:{v15, a6}];
+  [self _enumerateSuffixMatchesForBuffer:buffer length:length followedByLetter:0 options:options depth:0 matchState:13 suffixStack:NAN suffixRangeStack:v16 usingBlock:{v15, block}];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)enumerateSuffixMatchesForWord:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
++ (void)enumerateSuffixMatchesForWord:(id)word options:(unint64_t)options usingBlock:(id)block
 {
   v13 = *MEMORY[0x1E69E9840];
   usedBufLen = 0;
-  v8 = [a3 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
+  v8 = [word stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
   v9 = [(__CFString *)v8 length];
   v14.length = [(__CFString *)v8 length];
   v14.location = 0;
   if (v9 == CFStringGetBytes(v8, v14, 0x504u, 0x5Fu, 0, buffer, 72, &usedBufLen))
   {
-    [a1 enumerateSuffixMatchesForBuffer:buffer length:usedBufLen options:a4 usingBlock:a5];
+    [self enumerateSuffixMatchesForBuffer:buffer length:usedBufLen options:options usingBlock:block];
   }
 
   v10 = *MEMORY[0x1E69E9840];

@@ -1,8 +1,8 @@
 @interface SGDPurgeDeletionBox
 - (SGDPurgeDeletionBox)init;
-- (void)addDeletion:(id)a3 domainSelection:(id)a4;
-- (void)addDeletion:(id)a3 uniqueIds:(id)a4;
-- (void)addPurge:(id)a3 uniqueIds:(id)a4;
+- (void)addDeletion:(id)deletion domainSelection:(id)selection;
+- (void)addDeletion:(id)deletion uniqueIds:(id)ids;
+- (void)addPurge:(id)purge uniqueIds:(id)ids;
 @end
 
 @implementation SGDPurgeDeletionBox
@@ -30,12 +30,12 @@
   return v2;
 }
 
-- (void)addDeletion:(id)a3 domainSelection:(id)a4
+- (void)addDeletion:(id)deletion domainSelection:(id)selection
 {
   deleteDomainIds = self->_deleteDomainIds;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)deleteDomainIds objectForKey:v8];
+  selectionCopy = selection;
+  deletionCopy = deletion;
+  v9 = [(NSMutableDictionary *)deleteDomainIds objectForKey:deletionCopy];
   v10 = v9;
   if (v9)
   {
@@ -49,17 +49,17 @@
 
   v12 = v11;
 
-  [v12 addDomainsFromSelection:v7];
-  [(NSMutableDictionary *)self->_deleteDomainIds setObject:v12 forKeyedSubscript:v8];
+  [v12 addDomainsFromSelection:selectionCopy];
+  [(NSMutableDictionary *)self->_deleteDomainIds setObject:v12 forKeyedSubscript:deletionCopy];
 }
 
-- (void)addPurge:(id)a3 uniqueIds:(id)a4
+- (void)addPurge:(id)purge uniqueIds:(id)ids
 {
-  v14 = a3;
+  purgeCopy = purge;
   deleteUniqueIds = self->_deleteUniqueIds;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)deleteUniqueIds objectForKey:v14];
-  v9 = [(NSMutableDictionary *)self->_purgeUniqueIds objectForKey:v14];
+  idsCopy = ids;
+  v8 = [(NSMutableDictionary *)deleteUniqueIds objectForKey:purgeCopy];
+  v9 = [(NSMutableDictionary *)self->_purgeUniqueIds objectForKey:purgeCopy];
   v10 = v9;
   if (v9)
   {
@@ -73,29 +73,29 @@
 
   v12 = v11;
 
-  v13 = [v7 allObjects];
+  allObjects = [idsCopy allObjects];
 
-  [v12 addObjectsFromArray:v13];
+  [v12 addObjectsFromArray:allObjects];
   if (v8)
   {
     [v12 minusSet:v8];
   }
 
-  [(NSMutableDictionary *)self->_purgeUniqueIds setObject:v12 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)self->_purgeUniqueIds setObject:v12 forKeyedSubscript:purgeCopy];
 }
 
-- (void)addDeletion:(id)a3 uniqueIds:(id)a4
+- (void)addDeletion:(id)deletion uniqueIds:(id)ids
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_purgeUniqueIds objectForKey:v14];
+  deletionCopy = deletion;
+  idsCopy = ids;
+  v7 = [(NSMutableDictionary *)self->_purgeUniqueIds objectForKey:deletionCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 minusSet:v6];
+    [v7 minusSet:idsCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->_deleteUniqueIds objectForKey:v14];
+  v9 = [(NSMutableDictionary *)self->_deleteUniqueIds objectForKey:deletionCopy];
   v10 = v9;
   if (v9)
   {
@@ -109,10 +109,10 @@
 
   v12 = v11;
 
-  v13 = [v6 allObjects];
-  [v12 addObjectsFromArray:v13];
+  allObjects = [idsCopy allObjects];
+  [v12 addObjectsFromArray:allObjects];
 
-  [(NSMutableDictionary *)self->_deleteUniqueIds setObject:v12 forKeyedSubscript:v14];
+  [(NSMutableDictionary *)self->_deleteUniqueIds setObject:v12 forKeyedSubscript:deletionCopy];
 }
 
 @end

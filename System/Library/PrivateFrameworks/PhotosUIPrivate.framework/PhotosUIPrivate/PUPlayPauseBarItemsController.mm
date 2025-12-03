@@ -1,24 +1,24 @@
 @interface PUPlayPauseBarItemsController
 - (BOOL)_needsUpdate;
 - (PUPlayPauseBarItemsController)init;
-- (PUPlayPauseBarItemsController)initWithViewModel:(id)a3;
+- (PUPlayPauseBarItemsController)initWithViewModel:(id)model;
 - (PUPlayPauseBarItemsControllerChange)_currentChange;
 - (void)_assertInsideChangeBlock;
 - (void)_assertInsideUpdate;
-- (void)_handleVideoPlayer:(id)a3 didChange:(id)a4;
-- (void)_handleViewModel:(id)a3 didChange:(id)a4;
+- (void)_handleVideoPlayer:(id)player didChange:(id)change;
+- (void)_handleViewModel:(id)model didChange:(id)change;
 - (void)_invalidateAVPlayer;
 - (void)_invalidateCurrentPlaybackTimeAndDuration;
 - (void)_invalidatePlayPauseState;
 - (void)_invalidateVideoPlayer;
-- (void)_performChanges:(id)a3;
+- (void)_performChanges:(id)changes;
 - (void)_publishChanges;
-- (void)_setAVPlayer:(id)a3;
-- (void)_setCurrentPlaybackTime:(id *)a3;
+- (void)_setAVPlayer:(id)player;
+- (void)_setCurrentPlaybackTime:(id *)time;
 - (void)_setNeedsUpdate;
-- (void)_setPlayPauseState:(int64_t)a3;
-- (void)_setPlaybackDuration:(id *)a3;
-- (void)_setVideoPlayer:(id)a3;
+- (void)_setPlayPauseState:(int64_t)state;
+- (void)_setPlaybackDuration:(id *)duration;
+- (void)_setVideoPlayer:(id)player;
 - (void)_startObservingAVPlayer;
 - (void)_stopObservingAVPlayer;
 - (void)_updateAVPlayerIfNeeded;
@@ -26,23 +26,23 @@
 - (void)_updateIfNeeded;
 - (void)_updatePlayPauseStateIfNeeded;
 - (void)_updateVideoPlayerIfNeeded;
-- (void)registerChangeObserver:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)registerChangeObserver:(id)observer;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUPlayPauseBarItemsController
 
-- (void)_handleVideoPlayer:(id)a3 didChange:(id)a4
+- (void)_handleVideoPlayer:(id)player didChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__PUPlayPauseBarItemsController__handleVideoPlayer_didChange___block_invoke;
   v7[3] = &unk_1E7B80C38;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   [(PUPlayPauseBarItemsController *)self _performChanges:v7];
 }
 
@@ -74,15 +74,15 @@ uint64_t __62__PUPlayPauseBarItemsController__handleVideoPlayer_didChange___bloc
   return result;
 }
 
-- (void)_handleViewModel:(id)a3 didChange:(id)a4
+- (void)_handleViewModel:(id)model didChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 assetViewModelChangesByAssetReference];
-  v7 = [v6 allValues];
+  changeCopy = change;
+  assetViewModelChangesByAssetReference = [changeCopy assetViewModelChangesByAssetReference];
+  allValues = [assetViewModelChangesByAssetReference allValues];
   v8 = PFExists();
 
-  LOBYTE(v6) = [v5 currentAssetDidChange];
-  if ((v6 & 1) != 0 || v8)
+  LOBYTE(assetViewModelChangesByAssetReference) = [changeCopy currentAssetDidChange];
+  if ((assetViewModelChangesByAssetReference & 1) != 0 || v8)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -93,24 +93,24 @@ uint64_t __62__PUPlayPauseBarItemsController__handleVideoPlayer_didChange___bloc
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUPlayPauseBarItemsController *)self viewModel];
+  modelCopy = model;
+  changeCopy = change;
+  viewModel = [(PUPlayPauseBarItemsController *)self viewModel];
 
-  if (v7 == v9)
+  if (viewModel == modelCopy)
   {
-    [(PUPlayPauseBarItemsController *)self _handleViewModel:v9 didChange:v6];
+    [(PUPlayPauseBarItemsController *)self _handleViewModel:modelCopy didChange:changeCopy];
   }
 
   else
   {
-    v8 = [(PUPlayPauseBarItemsController *)self _videoPlayer];
+    _videoPlayer = [(PUPlayPauseBarItemsController *)self _videoPlayer];
 
-    if (v8 == v9)
+    if (_videoPlayer == modelCopy)
     {
-      [(PUPlayPauseBarItemsController *)self _handleVideoPlayer:v9 didChange:v6];
+      [(PUPlayPauseBarItemsController *)self _handleVideoPlayer:modelCopy didChange:changeCopy];
     }
   }
 }
@@ -124,16 +124,16 @@ uint64_t __62__PUPlayPauseBarItemsController__handleVideoPlayer_didChange___bloc
     v12 = *(MEMORY[0x1E6960C70] + 16);
     v9 = v11;
     v10 = v12;
-    v3 = [(PUPlayPauseBarItemsController *)self _videoPlayer];
-    v4 = [v3 isActivated];
+    _videoPlayer = [(PUPlayPauseBarItemsController *)self _videoPlayer];
+    isActivated = [_videoPlayer isActivated];
 
-    v5 = [(PUPlayPauseBarItemsController *)self _avPlayer];
-    v6 = v5;
-    if (v4)
+    _avPlayer = [(PUPlayPauseBarItemsController *)self _avPlayer];
+    v6 = _avPlayer;
+    if (isActivated)
     {
-      if (v5)
+      if (_avPlayer)
       {
-        [v5 currentTime];
+        [_avPlayer currentTime];
         [v6 currentItemDuration];
       }
     }
@@ -159,10 +159,10 @@ uint64_t __62__PUPlayPauseBarItemsController__handleVideoPlayer_didChange___bloc
   if ([(PUPlayPauseBarItemsController *)self _needsUpdateAVPlayer])
   {
     [(PUPlayPauseBarItemsController *)self _setNeedsUpdateAVPlayer:0];
-    v3 = [(PUPlayPauseBarItemsController *)self _videoPlayer];
-    v4 = [v3 avPlayer];
+    _videoPlayer = [(PUPlayPauseBarItemsController *)self _videoPlayer];
+    avPlayer = [_videoPlayer avPlayer];
 
-    [(PUPlayPauseBarItemsController *)self _setAVPlayer:v4];
+    [(PUPlayPauseBarItemsController *)self _setAVPlayer:avPlayer];
   }
 }
 
@@ -181,26 +181,26 @@ uint64_t __62__PUPlayPauseBarItemsController__handleVideoPlayer_didChange___bloc
   }
 
   [(PUPlayPauseBarItemsController *)self _setNeedsUpdatePlayPauseState:0];
-  v5 = [(PUPlayPauseBarItemsController *)self _videoPlayer];
-  v3 = [v5 desiredPlayState];
-  if (v3 < 3)
+  _videoPlayer = [(PUPlayPauseBarItemsController *)self _videoPlayer];
+  desiredPlayState = [_videoPlayer desiredPlayState];
+  if (desiredPlayState < 3)
   {
     goto LABEL_5;
   }
 
-  if (v3 - 3 > 1)
+  if (desiredPlayState - 3 > 1)
   {
     v4 = 0;
     goto LABEL_6;
   }
 
-  if ([v5 isAtEnd])
+  if ([_videoPlayer isAtEnd])
   {
 LABEL_5:
     v4 = 2;
   }
 
-  else if ([v5 playState] == 5)
+  else if ([_videoPlayer playState] == 5)
   {
     v4 = 2;
   }
@@ -226,11 +226,11 @@ LABEL_6:
   if ([(PUPlayPauseBarItemsController *)self _needsUpdateVideoPlayer])
   {
     [(PUPlayPauseBarItemsController *)self _setNeedsUpdateVideoPlayer:0];
-    v6 = [(PUPlayPauseBarItemsController *)self viewModel];
-    v3 = [v6 currentAssetReference];
-    v4 = [v6 assetViewModelForAssetReference:v3];
-    v5 = [v4 videoPlayer];
-    [(PUPlayPauseBarItemsController *)self _setVideoPlayer:v5];
+    viewModel = [(PUPlayPauseBarItemsController *)self viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    v4 = [viewModel assetViewModelForAssetReference:currentAssetReference];
+    videoPlayer = [v4 videoPlayer];
+    [(PUPlayPauseBarItemsController *)self _setVideoPlayer:videoPlayer];
   }
 }
 
@@ -245,8 +245,8 @@ LABEL_6:
 {
   if (![(PUPlayPauseBarItemsController *)self _isUpdating]&& ![(PUPlayPauseBarItemsController *)self _isPerformingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:247 description:@"not within a change block or update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:247 description:@"not within a change block or update"];
   }
 }
 
@@ -264,30 +264,30 @@ LABEL_6:
 {
   if ([(PUPlayPauseBarItemsController *)self _needsUpdate])
   {
-    v4 = [(PUPlayPauseBarItemsController *)self _isUpdating];
+    _isUpdating = [(PUPlayPauseBarItemsController *)self _isUpdating];
     [(PUPlayPauseBarItemsController *)self _setUpdating:1];
     [(PUPlayPauseBarItemsController *)self _updateVideoPlayerIfNeeded];
     [(PUPlayPauseBarItemsController *)self _updatePlayPauseStateIfNeeded];
     [(PUPlayPauseBarItemsController *)self _updateAVPlayerIfNeeded];
     [(PUPlayPauseBarItemsController *)self _updateCurrentPlaybackTimeAndDurationIfNeeded];
-    [(PUPlayPauseBarItemsController *)self _setUpdating:v4];
+    [(PUPlayPauseBarItemsController *)self _setUpdating:_isUpdating];
     if ([(PUPlayPauseBarItemsController *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:234 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:234 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
-- (void)_performChanges:(id)a3
+- (void)_performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PUPlayPauseBarItemsController *)self _isPerformingChanges];
+  changesCopy = changes;
+  _isPerformingChanges = [(PUPlayPauseBarItemsController *)self _isPerformingChanges];
   [(PUPlayPauseBarItemsController *)self _setPerformingChanges:1];
-  v4[2](v4);
+  changesCopy[2](changesCopy);
 
-  [(PUPlayPauseBarItemsController *)self _setPerformingChanges:v5];
-  if (!v5)
+  [(PUPlayPauseBarItemsController *)self _setPerformingChanges:_isPerformingChanges];
+  if (!_isPerformingChanges)
   {
     [(PUPlayPauseBarItemsController *)self _updateIfNeeded];
 
@@ -299,8 +299,8 @@ LABEL_6:
 {
   if (![(PUPlayPauseBarItemsController *)self _isUpdating])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:205 description:@"not within update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:205 description:@"not within update"];
   }
 }
 
@@ -308,8 +308,8 @@ LABEL_6:
 {
   if (![(PUPlayPauseBarItemsController *)self _isPerformingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:200 description:@"not within a change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:200 description:@"not within a change block"];
   }
 }
 
@@ -328,14 +328,14 @@ LABEL_6:
     v18 = __Block_byref_object_copy__69959;
     v19 = __Block_byref_object_dispose__69960;
     v20 = 0;
-    v5 = [(PUPlayPauseBarItemsController *)self _observerQueue];
+    _observerQueue = [(PUPlayPauseBarItemsController *)self _observerQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__PUPlayPauseBarItemsController__publishChanges__block_invoke;
     block[3] = &unk_1E7B800C8;
     block[4] = self;
     block[5] = &v15;
-    dispatch_sync(v5, block);
+    dispatch_sync(_observerQueue, block);
 
     v12 = 0u;
     v13 = 0u;
@@ -394,71 +394,71 @@ void __48__PUPlayPauseBarItemsController__publishChanges__block_invoke(uint64_t 
   return currentChange;
 }
 
-- (void)_setPlaybackDuration:(id *)a3
+- (void)_setPlaybackDuration:(id *)duration
 {
   [(PUPlayPauseBarItemsController *)self _assertInsideUpdate];
-  time1 = *a3;
+  time1 = *duration;
   playbackDuration = self->_playbackDuration;
   if (CMTimeCompare(&time1, &playbackDuration))
   {
-    v5 = *&a3->var0;
-    self->_playbackDuration.epoch = a3->var3;
+    v5 = *&duration->var0;
+    self->_playbackDuration.epoch = duration->var3;
     *&self->_playbackDuration.value = v5;
-    v6 = [(PUPlayPauseBarItemsController *)self _currentChange];
-    [v6 _setPlaybackDurationDidChange:1];
+    _currentChange = [(PUPlayPauseBarItemsController *)self _currentChange];
+    [_currentChange _setPlaybackDurationDidChange:1];
   }
 }
 
-- (void)_setCurrentPlaybackTime:(id *)a3
+- (void)_setCurrentPlaybackTime:(id *)time
 {
   [(PUPlayPauseBarItemsController *)self _assertInsideUpdate];
-  time1 = *a3;
+  time1 = *time;
   currentPlaybackTime = self->_currentPlaybackTime;
   if (CMTimeCompare(&time1, &currentPlaybackTime))
   {
-    v5 = *&a3->var0;
-    self->_currentPlaybackTime.epoch = a3->var3;
+    v5 = *&time->var0;
+    self->_currentPlaybackTime.epoch = time->var3;
     *&self->_currentPlaybackTime.value = v5;
-    v6 = [(PUPlayPauseBarItemsController *)self _currentChange];
-    [v6 _setCurrentPlaybackTimeDidChange:1];
+    _currentChange = [(PUPlayPauseBarItemsController *)self _currentChange];
+    [_currentChange _setCurrentPlaybackTimeDidChange:1];
   }
 }
 
 - (void)_stopObservingAVPlayer
 {
-  v4 = [(PUPlayPauseBarItemsController *)self _timeObservationToken];
-  if (v4)
+  _timeObservationToken = [(PUPlayPauseBarItemsController *)self _timeObservationToken];
+  if (_timeObservationToken)
   {
-    v7 = v4;
-    v5 = [(PUPlayPauseBarItemsController *)self _avPlayer];
-    if (!v5)
+    v7 = _timeObservationToken;
+    _avPlayer = [(PUPlayPauseBarItemsController *)self _avPlayer];
+    if (!_avPlayer)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"avPlayer"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"avPlayer"}];
     }
 
-    [v5 removeTimeObserver:v7];
+    [_avPlayer removeTimeObserver:v7];
     [(PUPlayPauseBarItemsController *)self _setTimeObservationToken:0];
 
-    v4 = v7;
+    _timeObservationToken = v7;
   }
 }
 
 - (void)_startObservingAVPlayer
 {
-  v4 = [(PUPlayPauseBarItemsController *)self _timeObservationToken];
+  _timeObservationToken = [(PUPlayPauseBarItemsController *)self _timeObservationToken];
 
-  if (v4)
+  if (_timeObservationToken)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"![self _timeObservationToken]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"![self _timeObservationToken]"}];
   }
 
-  v5 = [(PUPlayPauseBarItemsController *)self _avPlayer];
-  if (v5)
+  _avPlayer = [(PUPlayPauseBarItemsController *)self _avPlayer];
+  if (_avPlayer)
   {
     objc_initWeak(&location, self);
-    v6 = [(PUPlayPauseBarItemsController *)self _avPlayer];
+    _avPlayer2 = [(PUPlayPauseBarItemsController *)self _avPlayer];
     CMTimeMake(&v13, 1, 30);
     v7 = MEMORY[0x1E69E96A0];
     v8 = MEMORY[0x1E69E96A0];
@@ -467,7 +467,7 @@ void __48__PUPlayPauseBarItemsController__publishChanges__block_invoke(uint64_t 
     v11[2] = __56__PUPlayPauseBarItemsController__startObservingAVPlayer__block_invoke;
     v11[3] = &unk_1E7B7D380;
     objc_copyWeak(&v12, &location);
-    v9 = [v6 addPeriodicTimeObserverForInterval:&v13 queue:v7 usingBlock:v11];
+    v9 = [_avPlayer2 addPeriodicTimeObserverForInterval:&v13 queue:v7 usingBlock:v11];
 
     [(PUPlayPauseBarItemsController *)self _setTimeObservationToken:v9];
     objc_destroyWeak(&v12);
@@ -486,57 +486,57 @@ void __56__PUPlayPauseBarItemsController__startObservingAVPlayer__block_invoke(u
   [WeakRetained _performChanges:v2];
 }
 
-- (void)_setAVPlayer:(id)a3
+- (void)_setAVPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   [(PUPlayPauseBarItemsController *)self _assertInsideUpdate];
-  if (self->__avPlayer != v5)
+  if (self->__avPlayer != playerCopy)
   {
     [(PUPlayPauseBarItemsController *)self _stopObservingAVPlayer];
-    objc_storeStrong(&self->__avPlayer, a3);
+    objc_storeStrong(&self->__avPlayer, player);
     [(PUPlayPauseBarItemsController *)self _startObservingAVPlayer];
     [(PUPlayPauseBarItemsController *)self _invalidateCurrentPlaybackTimeAndDuration];
   }
 }
 
-- (void)_setPlayPauseState:(int64_t)a3
+- (void)_setPlayPauseState:(int64_t)state
 {
   [(PUPlayPauseBarItemsController *)self _assertInsideUpdate];
-  if (self->_playPauseState != a3)
+  if (self->_playPauseState != state)
   {
-    self->_playPauseState = a3;
-    v5 = [(PUPlayPauseBarItemsController *)self _currentChange];
-    [v5 _setPlayPauseStateDidChange:1];
+    self->_playPauseState = state;
+    _currentChange = [(PUPlayPauseBarItemsController *)self _currentChange];
+    [_currentChange _setPlayPauseStateDidChange:1];
   }
 }
 
-- (void)_setVideoPlayer:(id)a3
+- (void)_setVideoPlayer:(id)player
 {
-  v6 = a3;
+  playerCopy = player;
   [(PUPlayPauseBarItemsController *)self _assertInsideUpdate];
   videoPlayer = self->__videoPlayer;
-  if (videoPlayer != v6)
+  if (videoPlayer != playerCopy)
   {
     [(PUBrowsingVideoPlayer *)videoPlayer unregisterChangeObserver:self];
-    objc_storeStrong(&self->__videoPlayer, a3);
+    objc_storeStrong(&self->__videoPlayer, player);
     [(PUBrowsingVideoPlayer *)self->__videoPlayer registerChangeObserver:self];
     [(PUPlayPauseBarItemsController *)self _invalidatePlayPauseState];
     [(PUPlayPauseBarItemsController *)self _invalidateAVPlayer];
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUPlayPauseBarItemsController *)self _observerQueue];
+  observerCopy = observer;
+  _observerQueue = [(PUPlayPauseBarItemsController *)self _observerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PUPlayPauseBarItemsController_unregisterChangeObserver___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(_observerQueue, v7);
 }
 
 void __58__PUPlayPauseBarItemsController_unregisterChangeObserver___block_invoke(uint64_t a1)
@@ -545,18 +545,18 @@ void __58__PUPlayPauseBarItemsController_unregisterChangeObserver___block_invoke
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PUPlayPauseBarItemsController *)self _observerQueue];
+  observerCopy = observer;
+  _observerQueue = [(PUPlayPauseBarItemsController *)self _observerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__PUPlayPauseBarItemsController_registerChangeObserver___block_invoke;
   v7[3] = &unk_1E7B80C38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(_observerQueue, v7);
 }
 
 void __56__PUPlayPauseBarItemsController_registerChangeObserver___block_invoke(uint64_t a1)
@@ -567,29 +567,29 @@ void __56__PUPlayPauseBarItemsController_registerChangeObserver___block_invoke(u
 
 - (PUPlayPauseBarItemsController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:73 description:{@"%s is not available as initializer", "-[PUPlayPauseBarItemsController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPlayPauseBarItemsController.m" lineNumber:73 description:{@"%s is not available as initializer", "-[PUPlayPauseBarItemsController init]"}];
 
   abort();
 }
 
-- (PUPlayPauseBarItemsController)initWithViewModel:(id)a3
+- (PUPlayPauseBarItemsController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = PUPlayPauseBarItemsController;
   v6 = [(PUPlayPauseBarItemsController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     v8 = dispatch_queue_create("com.apple.photos.playpausebaritemscontroller.observer-queue", 0);
     observerQueue = v7->__observerQueue;
     v7->__observerQueue = v8;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     changeObservers = v7->__changeObservers;
-    v7->__changeObservers = v10;
+    v7->__changeObservers = weakObjectsHashTable;
 
     [(PUBrowsingViewModel *)v7->_viewModel registerChangeObserver:v7];
     v13[0] = MEMORY[0x1E69E9820];

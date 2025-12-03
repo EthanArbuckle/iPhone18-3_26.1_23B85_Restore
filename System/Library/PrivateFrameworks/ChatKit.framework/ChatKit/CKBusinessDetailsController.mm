@@ -1,13 +1,13 @@
 @interface CKBusinessDetailsController
 - (BOOL)isShowingAddMemberPopover;
-- (CKBusinessDetailsController)initWithCoder:(id)a3;
-- (CKBusinessDetailsController)initWithConversation:(id)a3 detailsControllerDelegate:(id)a4;
-- (CKBusinessDetailsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CKBusinessDetailsController)initWithCoder:(id)coder;
+- (CKBusinessDetailsController)initWithConversation:(id)conversation detailsControllerDelegate:(id)delegate;
+- (CKBusinessDetailsController)initWithNibName:(id)name bundle:(id)bundle;
 - (CKConversation)conversation;
 - (CKDetailsControllerDelegate)detailsControllerDelegate;
 - (void)dismissDetailsController;
-- (void)setConversation:(id)a3;
-- (void)setIsShowingAddMemberPopover:(BOOL)a3;
+- (void)setConversation:(id)conversation;
+- (void)setIsShowingAddMemberPopover:(BOOL)popover;
 - (void)viewDidLoad;
 @end
 
@@ -28,13 +28,13 @@
   return *(self + v3);
 }
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
   v5 = OBJC_IVAR___CKBusinessDetailsController_conversation;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = conversation;
+  conversationCopy = conversation;
 }
 
 - (BOOL)isShowingAddMemberPopover
@@ -44,27 +44,27 @@
   return *(self + v3);
 }
 
-- (void)setIsShowingAddMemberPopover:(BOOL)a3
+- (void)setIsShowingAddMemberPopover:(BOOL)popover
 {
   v5 = OBJC_IVAR___CKBusinessDetailsController_isShowingAddMemberPopover;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = popover;
 }
 
-- (CKBusinessDetailsController)initWithConversation:(id)a3 detailsControllerDelegate:(id)a4
+- (CKBusinessDetailsController)initWithConversation:(id)conversation detailsControllerDelegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___CKBusinessDetailsController_isShowingAddMemberPopover) = 0;
-  *(self + OBJC_IVAR___CKBusinessDetailsController_conversation) = a3;
+  *(self + OBJC_IVAR___CKBusinessDetailsController_conversation) = conversation;
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   v8.receiver = self;
   v8.super_class = type metadata accessor for BusinessDetailsController();
-  v6 = a3;
+  conversationCopy = conversation;
   return [(CKBusinessDetailsController *)&v8 initWithNibName:0 bundle:0];
 }
 
-- (CKBusinessDetailsController)initWithCoder:(id)a3
+- (CKBusinessDetailsController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___CKBusinessDetailsController_isShowingAddMemberPopover) = 0;
@@ -75,7 +75,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B1B5D0();
 }
 
@@ -90,7 +90,7 @@
   }
 }
 
-- (CKBusinessDetailsController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKBusinessDetailsController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

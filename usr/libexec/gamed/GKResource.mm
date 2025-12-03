@@ -1,43 +1,43 @@
 @interface GKResource
-+ (GKResource)resourceWithID:(id)a3 representedItem:(id)a4 TTL:(double)a5;
-+ (id)resourceForPlayer:(id)a3 TTL:(double)a4;
-+ (id)resourceForRemoveGames:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (GKResource)resourceWithID:(id)d representedItem:(id)item TTL:(double)l;
++ (id)resourceForPlayer:(id)player TTL:(double)l;
++ (id)resourceForRemoveGames:(id)games;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
 - (GKResource)init;
-- (GKResource)initWithResourceID:(id)a3 representedItem:(id)a4 TTL:(double)a5;
+- (GKResource)initWithResourceID:(id)d representedItem:(id)item TTL:(double)l;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation GKResource
 
-+ (id)resourceForRemoveGames:(id)a3
++ (id)resourceForRemoveGames:(id)games
 {
-  v3 = [(GKResource *)GKMutableResource resourceWithID:a3 representedItem:a3];
+  v3 = [(GKResource *)GKMutableResource resourceWithID:games representedItem:games];
 
   return v3;
 }
 
-+ (GKResource)resourceWithID:(id)a3 representedItem:(id)a4 TTL:(double)a5
++ (GKResource)resourceWithID:(id)d representedItem:(id)item TTL:(double)l
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_alloc(objc_opt_class()) initWithResourceID:v8 representedItem:v7 TTL:a5];
+  itemCopy = item;
+  dCopy = d;
+  v9 = [objc_alloc(objc_opt_class()) initWithResourceID:dCopy representedItem:itemCopy TTL:l];
 
   return v9;
 }
 
-- (GKResource)initWithResourceID:(id)a3 representedItem:(id)a4 TTL:(double)a5
+- (GKResource)initWithResourceID:(id)d representedItem:(id)item TTL:(double)l
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = GKResource;
   v10 = [(GKResource *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copyWithZone:0];
+    v11 = [dCopy copyWithZone:0];
     resourceID = v10->_resourceID;
     v10->_resourceID = v11;
 
@@ -45,8 +45,8 @@
     metadataLookup = v10->_metadataLookup;
     v10->_metadataLookup = v13;
 
-    v10->_TTL = a5;
-    [(GKResource *)v10 setRepresentedItem:v9];
+    v10->_TTL = l;
+    [(GKResource *)v10 setRepresentedItem:itemCopy];
   }
 
   return v10;
@@ -58,7 +58,7 @@
   objc_exception_throw(v2);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(GKResource *)[GKMutableResource alloc] initWithResourceID:self->_resourceID representedItem:self->_representedItem TTL:self->_TTL];
   v5 = v4;
@@ -91,15 +91,15 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     resourceID = self->_resourceID;
-    v6 = [v4 resourceID];
-    v7 = [resourceID isEqual:v6];
+    resourceID = [equalCopy resourceID];
+    v7 = [resourceID isEqual:resourceID];
   }
 
   else
@@ -124,12 +124,12 @@
   return v3;
 }
 
-+ (id)resourceForPlayer:(id)a3 TTL:(double)a4
++ (id)resourceForPlayer:(id)player TTL:(double)l
 {
-  v5 = a3;
+  playerCopy = player;
   v6 = objc_opt_class();
-  v7 = [v5 playerID];
-  v8 = [v6 resourceWithID:v7 representedItem:v5 TTL:a4];
+  playerID = [playerCopy playerID];
+  v8 = [v6 resourceWithID:playerID representedItem:playerCopy TTL:l];
 
   return v8;
 }

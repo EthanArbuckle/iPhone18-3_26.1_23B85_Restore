@@ -1,20 +1,20 @@
 @interface DockedHeaderView
-- (DockedHeaderView)initWithFrame:(CGRect)a3;
+- (DockedHeaderView)initWithFrame:(CGRect)frame;
 - (id)backgroundColor;
 - (void)_createPrimaryViews;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCornerRadius:(double)radius;
+- (void)setTitle:(id)title;
 @end
 
 @implementation DockedHeaderView
 
-- (DockedHeaderView)initWithFrame:(CGRect)a3
+- (DockedHeaderView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = DockedHeaderView;
-  v3 = [(DockedHeaderView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DockedHeaderView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,8 +22,8 @@
     v5 = +[UIColor clearColor];
     [(DockedHeaderView *)v4 setBackgroundColor:v5];
 
-    v6 = [(DockedHeaderView *)v4 layer];
-    [v6 setAllowsGroupOpacity:1];
+    layer = [(DockedHeaderView *)v4 layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(DockedHeaderView *)v4 _createPrimaryViews];
   }
@@ -38,21 +38,21 @@
   v20 = [v3 initWithFrame:?];
   [(DockedHeaderView *)self setBackgroundView:?];
 
-  v21 = [(DockedHeaderView *)self backgroundView];
-  [v21 setAutoresizingMask:18];
+  backgroundView = [(DockedHeaderView *)self backgroundView];
+  [backgroundView setAutoresizingMask:18];
 
-  v22 = [(DockedHeaderView *)self backgroundView];
-  v4 = [v22 layer];
-  [v4 setMaskedCorners:3];
+  backgroundView2 = [(DockedHeaderView *)self backgroundView];
+  layer = [backgroundView2 layer];
+  [layer setMaskedCorners:3];
 
-  v23 = [(DockedHeaderView *)self backgroundView];
-  [v23 setUserInteractionEnabled:0];
+  backgroundView3 = [(DockedHeaderView *)self backgroundView];
+  [backgroundView3 setUserInteractionEnabled:0];
 
-  v24 = [(DockedHeaderView *)self backgroundView];
-  v5 = [v24 layer];
-  [v5 setAllowsGroupOpacity:1];
+  backgroundView4 = [(DockedHeaderView *)self backgroundView];
+  layer2 = [backgroundView4 layer];
+  [layer2 setAllowsGroupOpacity:1];
 
-  v25 = [(DockedHeaderView *)self backgroundView];
+  backgroundView5 = [(DockedHeaderView *)self backgroundView];
   [(DockedHeaderView *)self addSubview:?];
 
   v6 = [UIView alloc];
@@ -60,15 +60,15 @@
   v26 = [v6 initWithFrame:?];
   [(DockedHeaderView *)self setContentView:?];
 
-  v27 = [(DockedHeaderView *)self contentView];
-  v7 = [v27 layer];
-  [v7 setAllowsGroupOpacity:1];
+  contentView = [(DockedHeaderView *)self contentView];
+  layer3 = [contentView layer];
+  [layer3 setAllowsGroupOpacity:1];
 
-  v28 = [(DockedHeaderView *)self contentView];
+  contentView2 = [(DockedHeaderView *)self contentView];
   [(DockedHeaderView *)self addSubview:?];
 
-  v29 = [(DockedHeaderView *)self contentView];
-  [v29 bounds];
+  contentView3 = [(DockedHeaderView *)self contentView];
+  [contentView3 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -84,34 +84,34 @@
   [(DockedHeaderView *)self setTitleLabel:?];
 
   v31 = [UIFont boldSystemFontOfSize:17.0];
-  v17 = [(DockedHeaderView *)self titleLabel];
-  [v17 setFont:v31];
+  titleLabel = [(DockedHeaderView *)self titleLabel];
+  [titleLabel setFont:v31];
 
-  v32 = [(DockedHeaderView *)self titleLabel];
-  [v32 setTextAlignment:1];
+  titleLabel2 = [(DockedHeaderView *)self titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v33 = [(DockedHeaderView *)self titleLabel];
-  [v33 setAutoresizingMask:18];
+  titleLabel3 = [(DockedHeaderView *)self titleLabel];
+  [titleLabel3 setAutoresizingMask:18];
 
-  v34 = [(DockedHeaderView *)self titleLabel];
-  v18 = [v34 layer];
-  [v18 setAllowsGroupOpacity:1];
+  titleLabel4 = [(DockedHeaderView *)self titleLabel];
+  layer4 = [titleLabel4 layer];
+  [layer4 setAllowsGroupOpacity:1];
 
-  v35 = [(DockedHeaderView *)self contentView];
-  v19 = [(DockedHeaderView *)self titleLabel];
-  [v35 addSubview:v19];
+  contentView4 = [(DockedHeaderView *)self contentView];
+  titleLabel5 = [(DockedHeaderView *)self titleLabel];
+  [contentView4 addSubview:titleLabel5];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
-    v5 = [(DockedHeaderView *)self backgroundView];
-    [v5 _setContinuousCornerRadius:a3];
+    self->_cornerRadius = radius;
+    backgroundView = [(DockedHeaderView *)self backgroundView];
+    [backgroundView _setContinuousCornerRadius:radius];
 
-    v6 = [(DockedHeaderView *)self backgroundView];
-    [v6 setClipsToBounds:1];
+    backgroundView2 = [(DockedHeaderView *)self backgroundView];
+    [backgroundView2 setClipsToBounds:1];
   }
 }
 
@@ -130,37 +130,37 @@
   v12 = v8 - (v9 + v11);
   [(DockedHeaderView *)self bounds];
   v13 = CGRectGetHeight(v16) - v4;
-  v14 = [(DockedHeaderView *)self contentView];
-  [v14 setFrame:{v10, 0.0, v12, v13}];
+  contentView = [(DockedHeaderView *)self contentView];
+  [contentView setFrame:{v10, 0.0, v12, v13}];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
-    v6 = [(DockedHeaderView *)self titleLabel];
-    [v6 setText:v7];
+    titleLabel = [(DockedHeaderView *)self titleLabel];
+    [titleLabel setText:titleCopy];
   }
 }
 
 - (id)backgroundColor
 {
-  v2 = [(DockedHeaderView *)self backgroundView];
-  v3 = [v2 backgroundColor];
+  backgroundView = [(DockedHeaderView *)self backgroundView];
+  backgroundColor = [backgroundView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v4 = [(DockedHeaderView *)self backgroundView];
-  [v4 setBackgroundColor:v5];
+  colorCopy = color;
+  backgroundView = [(DockedHeaderView *)self backgroundView];
+  [backgroundView setBackgroundColor:colorCopy];
 }
 
 @end

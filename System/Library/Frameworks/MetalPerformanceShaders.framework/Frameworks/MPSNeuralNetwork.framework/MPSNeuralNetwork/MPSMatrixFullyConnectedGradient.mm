@@ -4,7 +4,7 @@
 - (MPSMatrixFullyConnectedGradient)initWithDevice:(id)device;
 - (void)encodeGradientForDataToCommandBuffer:(id)commandBuffer gradientMatrix:(const MPSMatrix *)gradientMatrix weightMatrix:(const MPSMatrix *)weightMatrix resultGradientForDataMatrix:(MPSMatrix *)resultGradientForDataMatrix;
 - (void)encodeGradientForWeightsAndBiasToCommandBuffer:(id)commandBuffer gradientMatrix:(const MPSMatrix *)gradientMatrix inputMatrix:(const MPSMatrix *)inputMatrix resultGradientForWeightMatrix:(MPSMatrix *)resultGradientForWeightMatrix resultGradientForBiasVector:(MPSVector *)resultGradientForBiasVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSMatrixFullyConnectedGradient
@@ -365,16 +365,16 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v26.receiver = self;
   v26.super_class = MPSMatrixFullyConnectedGradient;
   [(MPSMatrixBinaryKernel *)&v26 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"MPSMatrixFullyConnectedGradient._alpha;", v6, v7, v8, v9, v10, self->_alpha);
-  objc_msgSend_encodeInt64_forKey_(a3, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixFullyConnectedGradient._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
-  objc_msgSend_encodeInt64_forKey_(a3, v16, self->_sourceInputFeatureChannels, @"MPSMatrixFullyConnectedGradient._sourceInputFeatureChannels;", v17, v18, v19, v20);
-  objc_msgSend_encodeInt64_forKey_(a3, v21, self->_sourceOutputFeatureChannels, @"MPSMatrixFullyConnectedGradient._sourceOutputFeatureChannels;", v22, v23, v24, v25);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"MPSMatrixFullyConnectedGradient._alpha;", v6, v7, v8, v9, v10, self->_alpha);
+  objc_msgSend_encodeInt64_forKey_(coder, v11, self->_sourceNumberOfFeatureVectors, @"MPSMatrixFullyConnectedGradient._sourceNumberOfFeatureVectors;", v12, v13, v14, v15);
+  objc_msgSend_encodeInt64_forKey_(coder, v16, self->_sourceInputFeatureChannels, @"MPSMatrixFullyConnectedGradient._sourceInputFeatureChannels;", v17, v18, v19, v20);
+  objc_msgSend_encodeInt64_forKey_(coder, v21, self->_sourceOutputFeatureChannels, @"MPSMatrixFullyConnectedGradient._sourceOutputFeatureChannels;", v22, v23, v24, v25);
 }
 
 @end

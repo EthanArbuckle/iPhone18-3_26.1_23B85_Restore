@@ -1,40 +1,40 @@
 @interface CPUIGridTemplateCollectionViewFlowLayout
 - (CGRect)frame;
 - (CGRect)preferredFrame;
-- (CPUIGridTemplateCollectionViewFlowLayout)initWithButtons:(id)a3 fittingRect:(CGRect)a4;
+- (CPUIGridTemplateCollectionViewFlowLayout)initWithButtons:(id)buttons fittingRect:(CGRect)rect;
 - (double)_bestHeight;
 - (double)preferredItemWidth;
-- (id)gridItemLayoutInRect:(CGRect)a3 numberOfItems:(unint64_t)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)gridItemLayoutInRect:(CGRect)rect numberOfItems:(unint64_t)items;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (id)layoutRects;
 @end
 
 @implementation CPUIGridTemplateCollectionViewFlowLayout
 
-- (CPUIGridTemplateCollectionViewFlowLayout)initWithButtons:(id)a3 fittingRect:(CGRect)a4
+- (CPUIGridTemplateCollectionViewFlowLayout)initWithButtons:(id)buttons fittingRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  buttonsCopy = buttons;
   v20.receiver = self;
   v20.super_class = CPUIGridTemplateCollectionViewFlowLayout;
   v11 = [(UICollectionViewFlowLayout *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_gridButtons, a3);
+    objc_storeStrong(&v11->_gridButtons, buttons);
     v12->_frame.origin.x = x;
     v12->_frame.origin.y = y;
     v12->_frame.size.width = width;
     v12->_frame.size.height = height;
     objc_opt_class();
-    v13 = [(CPUIGridTemplateCollectionViewFlowLayout *)v12 gridButtons];
-    v14 = [v13 firstObject];
+    gridButtons = [(CPUIGridTemplateCollectionViewFlowLayout *)v12 gridButtons];
+    firstObject = [gridButtons firstObject];
     if (objc_opt_isKindOfClass())
     {
-      v15 = v14;
+      v15 = firstObject;
     }
 
     else
@@ -42,16 +42,16 @@
       v15 = 0;
     }
 
-    v16 = [v15 layout];
+    layout = [v15 layout];
     buttonLayout = v12->_buttonLayout;
-    v12->_buttonLayout = v16;
+    v12->_buttonLayout = layout;
 
     if (v15)
     {
       [v15 preferredSize];
       [(UICollectionViewFlowLayout *)v12 setItemSize:?];
-      v18 = [v15 layout];
-      [v18 itemSpacing];
+      layout2 = [v15 layout];
+      [layout2 itemSpacing];
       [(UICollectionViewFlowLayout *)v12 setMinimumInteritemSpacing:?];
     }
 
@@ -67,9 +67,9 @@
   return v12;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  v4 = [(CPUIGridTemplateCollectionViewFlowLayout *)self collectionView:a3.origin.x];
+  v4 = [(CPUIGridTemplateCollectionViewFlowLayout *)self collectionView:rect.origin.x];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -81,15 +81,15 @@
   v13 = [(UICollectionViewFlowLayout *)&v21 layoutAttributesForElementsInRect:v6, v8, v10, v12];
   if ([v13 count])
   {
-    v14 = [(CPUIGridTemplateCollectionViewFlowLayout *)self layoutRects];
-    v15 = [v14 count];
+    layoutRects = [(CPUIGridTemplateCollectionViewFlowLayout *)self layoutRects];
+    v15 = [layoutRects count];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __78__CPUIGridTemplateCollectionViewFlowLayout_layoutAttributesForElementsInRect___block_invoke;
     v18[3] = &unk_278D9C3E8;
-    v19 = v14;
+    v19 = layoutRects;
     v20 = v15;
-    v16 = v14;
+    v16 = layoutRects;
     [v13 enumerateObjectsUsingBlock:v18];
   }
 
@@ -108,12 +108,12 @@ void __78__CPUIGridTemplateCollectionViewFlowLayout_layoutAttributesForElementsI
   }
 }
 
-- (id)gridItemLayoutInRect:(CGRect)a3 numberOfItems:(unint64_t)a4
+- (id)gridItemLayoutInRect:(CGRect)rect numberOfItems:(unint64_t)items
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_opt_new();
   v71.origin.x = x;
   v71.origin.y = y;
@@ -154,14 +154,14 @@ void __78__CPUIGridTemplateCollectionViewFlowLayout_layoutAttributesForElementsI
     goto LABEL_36;
   }
 
-  v32 = a4 - v31;
-  if (a4 < v31)
+  v32 = items - v31;
+  if (items < v31)
   {
     v32 = 0;
   }
 
-  v33 = ((__PAIR128__(v32, v31) - a4) >> 64) / v31;
-  if (v31 >= a4)
+  v33 = ((__PAIR128__(v32, v31) - items) >> 64) / v31;
+  if (v31 >= items)
   {
     v34 = v33;
   }
@@ -171,17 +171,17 @@ void __78__CPUIGridTemplateCollectionViewFlowLayout_layoutAttributesForElementsI
     v34 = v33 + 1;
   }
 
-  v35 = [(CPUIGridTemplateCollectionViewFlowLayout *)self buttonLayout];
-  v36 = [v35 maxRowCount];
+  buttonLayout = [(CPUIGridTemplateCollectionViewFlowLayout *)self buttonLayout];
+  maxRowCount = [buttonLayout maxRowCount];
 
-  if (v34 + 1 < v36)
+  if (v34 + 1 < maxRowCount)
   {
     v37 = v34 + 1;
   }
 
   else
   {
-    v37 = v36;
+    v37 = maxRowCount;
   }
 
   v38 = v37;
@@ -200,7 +200,7 @@ void __78__CPUIGridTemplateCollectionViewFlowLayout_layoutAttributesForElementsI
     if (v37 == 1)
     {
       [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
-      v42 = (v15 - (a4 - 1) * v41) / a4;
+      v42 = (v15 - (items - 1) * v41) / items;
       [(CPUIGridTemplateCollectionViewFlowLayout *)self preferredItemWidth];
       v44 = v43 + v43;
       if (v42 >= v44)
@@ -214,16 +214,16 @@ void __78__CPUIGridTemplateCollectionViewFlowLayout_layoutAttributesForElementsI
 
   else
   {
-    v40 = a4 / v38;
+    v40 = items / v38;
     v31 = vcvtps_s32_f32(v40);
   }
 
   [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
   v42 = (v15 - (v31 - 1) * v45) / v31;
 LABEL_20:
-  if (v31 >= a4)
+  if (v31 >= items)
   {
-    v50 = [(CPUIGridTemplateCollectionViewFlowLayout *)self fillsHeight];
+    fillsHeight = [(CPUIGridTemplateCollectionViewFlowLayout *)self fillsHeight];
     v74.origin.x = v22;
     v74.origin.y = v24;
     v74.size.width = v15;
@@ -234,7 +234,7 @@ LABEL_20:
     v75.size.width = v15;
     v75.size.height = v20;
     MidY = CGRectGetMidY(v75);
-    if (v50)
+    if (fillsHeight)
     {
       v52 = MidY + v28 * -0.5;
     }
@@ -247,9 +247,9 @@ LABEL_20:
     [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
     v54 = v53;
     [(UICollectionViewFlowLayout *)self sectionInset];
-    if (a4)
+    if (items)
     {
-      v56 = v55 + (v15 - (a4 - 1) * v54 - a4 * v42) * 0.5;
+      v56 = v55 + (v15 - (items - 1) * v54 - items * v42) * 0.5;
       do
       {
         [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
@@ -258,10 +258,10 @@ LABEL_20:
         [v10 addObject:v59];
 
         v56 = v58;
-        --a4;
+        --items;
       }
 
-      while (a4);
+      while (items);
     }
   }
 
@@ -277,8 +277,8 @@ LABEL_20:
 
     else
     {
-      v60 = [(CPUIGridTemplateCollectionViewFlowLayout *)self buttonLayout];
-      [v60 insets];
+      buttonLayout2 = [(CPUIGridTemplateCollectionViewFlowLayout *)self buttonLayout];
+      [buttonLayout2 insets];
       v49 = v61;
     }
 
@@ -306,10 +306,10 @@ LABEL_20:
       ++v63;
       v49 = v67;
       v64 = v66;
-      --a4;
+      --items;
     }
 
-    while (a4);
+    while (items);
   }
 
 LABEL_36:
@@ -321,16 +321,16 @@ LABEL_36:
 {
   if ([(CPUIGridTemplateCollectionViewFlowLayout *)self fillsHeight])
   {
-    v3 = [(CPUIGridTemplateCollectionViewFlowLayout *)self collectionView];
-    [v3 bounds];
+    collectionView = [(CPUIGridTemplateCollectionViewFlowLayout *)self collectionView];
+    [collectionView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(CPUIGridTemplateCollectionViewFlowLayout *)self gridButtons];
-    v13 = [v12 count];
-    v14 = self;
+    gridButtons = [(CPUIGridTemplateCollectionViewFlowLayout *)self gridButtons];
+    v13 = [gridButtons count];
+    selfCopy2 = self;
     v15 = v5;
     v16 = v7;
     v17 = v9;
@@ -341,16 +341,16 @@ LABEL_36:
   {
     [(CPUIGridTemplateCollectionViewFlowLayout *)self frame];
     v20 = v19;
-    v12 = [(CPUIGridTemplateCollectionViewFlowLayout *)self gridButtons];
-    v13 = [v12 count];
+    gridButtons = [(CPUIGridTemplateCollectionViewFlowLayout *)self gridButtons];
+    v13 = [gridButtons count];
     v15 = 0.0;
     v16 = 0.0;
     v18 = 0.0;
-    v14 = self;
+    selfCopy2 = self;
     v17 = v20;
   }
 
-  v21 = [(CPUIGridTemplateCollectionViewFlowLayout *)v14 gridItemLayoutInRect:v13 numberOfItems:v15, v16, v17, v18];
+  v21 = [(CPUIGridTemplateCollectionViewFlowLayout *)selfCopy2 gridItemLayoutInRect:v13 numberOfItems:v15, v16, v17, v18];
 
   return v21;
 }
@@ -358,14 +358,14 @@ LABEL_36:
 - (double)_bestHeight
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(CPUIGridTemplateCollectionViewFlowLayout *)self layoutRects];
-  if ([v3 count])
+  layoutRects = [(CPUIGridTemplateCollectionViewFlowLayout *)self layoutRects];
+  if ([layoutRects count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = v3;
+    v4 = layoutRects;
     v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v5)
     {
@@ -416,8 +416,8 @@ LABEL_36:
       v9 = 0.0;
     }
 
-    v18 = [(CPUIGridTemplateCollectionViewFlowLayout *)self buttonLayout];
-    [v18 insets];
+    buttonLayout = [(CPUIGridTemplateCollectionViewFlowLayout *)self buttonLayout];
+    [buttonLayout insets];
     v17 = v8 - v9 + v19;
   }
 
@@ -456,8 +456,8 @@ LABEL_36:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(CPUIGridTemplateCollectionViewFlowLayout *)self gridButtons];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  gridButtons = [(CPUIGridTemplateCollectionViewFlowLayout *)self gridButtons];
+  v3 = [gridButtons countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -469,14 +469,14 @@ LABEL_36:
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(gridButtons);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
         [v8 preferredLabelWidth];
         v10 = v9 + 4.0;
-        v11 = [v8 layout];
-        [v11 imageSize];
+        layout = [v8 layout];
+        [layout imageSize];
         v13 = v12;
 
         if (v10 >= v13)
@@ -505,7 +505,7 @@ LABEL_36:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [gridButtons countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v4);

@@ -1,46 +1,46 @@
 @interface ICCollaborationController
-+ (BOOL)showCloudKitShareAcceptancePartialFailureAlertForError:(id)a3 alertBlock:(id)a4;
++ (BOOL)showCloudKitShareAcceptancePartialFailureAlertForError:(id)error alertBlock:(id)block;
 + (ICCollaborationController)sharedInstance;
 + (UIImage)shareSheetFolderThumbnailImage;
 + (UIImage)shareSheetNoteThumbnailImage;
-+ (id)highlightColorForUserID:(id)a3 inNote:(id)a4 isDark:(BOOL)a5;
-+ (id)newShareForObject:(id)a3;
-+ (id)rootRecordForObject:(id)a3;
-+ (id)updatedShareForObject:(id)a3 includeHierarchicalShare:(BOOL)a4 managedObjectContext:(id)a5;
-+ (int64_t)shareStatusOfFolder:(id)a3 objectsForMakingDecision:(id)a4;
-+ (void)didFailToUpdateShareWithError:(id)a3;
-+ (void)genericShareErrorAlert:(id)a3;
-+ (void)postDidUpdateShareNotificationForObject:(id)a3;
-+ (void)saveActivityType:(id)a3 isCollaborationSelected:(BOOL)a4 error:(id)a5 completed:(BOOL)a6 forNote:(id)a7;
-+ (void)showQuotaExceededAlertIfNeededWithRecordID:(id)a3 accountID:(id)a4;
-+ (void)trackShare:(id)a3 forNote:(id)a4;
++ (id)highlightColorForUserID:(id)d inNote:(id)note isDark:(BOOL)dark;
++ (id)newShareForObject:(id)object;
++ (id)rootRecordForObject:(id)object;
++ (id)updatedShareForObject:(id)object includeHierarchicalShare:(BOOL)share managedObjectContext:(id)context;
++ (int64_t)shareStatusOfFolder:(id)folder objectsForMakingDecision:(id)decision;
++ (void)didFailToUpdateShareWithError:(id)error;
++ (void)genericShareErrorAlert:(id)alert;
++ (void)postDidUpdateShareNotificationForObject:(id)object;
++ (void)saveActivityType:(id)type isCollaborationSelected:(BOOL)selected error:(id)error completed:(BOOL)completed forNote:(id)note;
++ (void)showQuotaExceededAlertIfNeededWithRecordID:(id)d accountID:(id)iD;
++ (void)trackShare:(id)share forNote:(id)note;
 - (ICCollaborationAnalyticsDelegate)collaborationAnalyticsDelegate;
-- (ICCollaborationController)initWithDelegate:(id)a3;
+- (ICCollaborationController)initWithDelegate:(id)delegate;
 - (ICCollaborationControllerDelegate)collaborationControllerDelegate;
 - (id)backgroundContext;
 - (id)cloudContext;
-- (id)containerForAccountID:(id)a3;
-- (id)containerForUserRecordID:(id)a3;
-- (id)objectForCKShareRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-- (id)objectForShare:(id)a3 accountID:(id)a4 context:(id)a5;
+- (id)containerForAccountID:(id)d;
+- (id)containerForUserRecordID:(id)d;
+- (id)objectForCKShareRecordID:(id)d accountID:(id)iD context:(id)context;
+- (id)objectForShare:(id)share accountID:(id)d context:(id)context;
 - (id)viewContext;
-- (void)acceptShareWithMetadata:(id)a3 attemptNumber:(id)a4 container:(id)a5 accountID:(id)a6 fetchObjectWithCompletionHandler:(id)a7;
-- (void)acceptShareWithMetadata:(id)a3 managedObjectContext:(id)a4 completionHandler:(id)a5;
-- (void)didStopSharing:(id)a3 recordID:(id)a4 accountID:(id)a5;
-- (void)fetchAndAcceptShareMetadataWithURL:(id)a3 managedObjectContext:(id)a4 alertBlock:(id)a5 showObjectBlock:(id)a6;
-- (void)fetchShareIfNecessaryForObject:(id)a3 completionHandler:(id)a4;
-- (void)managedObjectContextObjectsDidChange:(id)a3;
-- (void)prepareShare:(id)a3 forObject:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6;
-- (void)processShareAcceptanceWithMetadata:(id)a3 managedObjectContext:(id)a4 alertBlock:(id)a5 showObjectBlock:(id)a6;
-- (void)registerShareForObject:(id)a3 itemProvider:(id)a4 generateThumbnails:(BOOL)a5 sharePreparationHandler:(id)a6;
-- (void)removeShareIfNeededWithOwnedObjectID:(id)a3 countParticipants:(BOOL)a4 completionHandler:(id)a5;
-- (void)saveServerShare:(id)a3 persistParticipantEvents:(BOOL)a4 accountID:(id)a5;
-- (void)saveShare:(id)a3 attemptNumber:(id)a4 forObject:(id)a5 accountID:(id)a6 container:(id)a7 qualityOfService:(int64_t)a8 retryPrepHandler:(id)a9 completionHandler:(id)a10;
-- (void)saveShare:(id)a3 forObject:(id)a4 accountID:(id)a5 container:(id)a6 qualityOfService:(int64_t)a7 retryPrepHandler:(id)a8 completionHandler:(id)a9;
-- (void)saveShare:(id)a3 withRootRecord:(id)a4 object:(id)a5 accountID:(id)a6 container:(id)a7 qualityOfService:(int64_t)a8 completionHandler:(id)a9;
-- (void)setCollaborationAnalyticsDelegate:(id)a3;
-- (void)updatePendingInvitationsInAccountWithID:(id)a3 receivedSince:(id)a4;
-- (void)updateRootRecordMapWithShare:(id)a3;
+- (void)acceptShareWithMetadata:(id)metadata attemptNumber:(id)number container:(id)container accountID:(id)d fetchObjectWithCompletionHandler:(id)handler;
+- (void)acceptShareWithMetadata:(id)metadata managedObjectContext:(id)context completionHandler:(id)handler;
+- (void)didStopSharing:(id)sharing recordID:(id)d accountID:(id)iD;
+- (void)fetchAndAcceptShareMetadataWithURL:(id)l managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock;
+- (void)fetchShareIfNecessaryForObject:(id)object completionHandler:(id)handler;
+- (void)managedObjectContextObjectsDidChange:(id)change;
+- (void)prepareShare:(id)share forObject:(id)object qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)processShareAcceptanceWithMetadata:(id)metadata managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock;
+- (void)registerShareForObject:(id)object itemProvider:(id)provider generateThumbnails:(BOOL)thumbnails sharePreparationHandler:(id)handler;
+- (void)removeShareIfNeededWithOwnedObjectID:(id)d countParticipants:(BOOL)participants completionHandler:(id)handler;
+- (void)saveServerShare:(id)share persistParticipantEvents:(BOOL)events accountID:(id)d;
+- (void)saveShare:(id)share attemptNumber:(id)number forObject:(id)object accountID:(id)d container:(id)container qualityOfService:(int64_t)service retryPrepHandler:(id)handler completionHandler:(id)self0;
+- (void)saveShare:(id)share forObject:(id)object accountID:(id)d container:(id)container qualityOfService:(int64_t)service retryPrepHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)saveShare:(id)share withRootRecord:(id)record object:(id)object accountID:(id)d container:(id)container qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)setCollaborationAnalyticsDelegate:(id)delegate;
+- (void)updatePendingInvitationsInAccountWithID:(id)d receivedSince:(id)since;
+- (void)updateRootRecordMapWithShare:(id)share;
 - (void)updateShares;
 @end
 
@@ -65,42 +65,42 @@ uint64_t __43__ICCollaborationController_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (ICCollaborationController)initWithDelegate:(id)a3
+- (ICCollaborationController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = ICCollaborationController;
   v5 = [(ICCollaborationController *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collaborationControllerDelegate, v4);
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v5->_collaborationControllerDelegate, delegateCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ckShareIDToRootRecordID = v6->_ckShareIDToRootRecordID;
-    v6->_ckShareIDToRootRecordID = v7;
+    v6->_ckShareIDToRootRecordID = dictionary;
 
     v9 = [objc_alloc(MEMORY[0x1E69B7AB0]) initWithTarget:v6 selector:sel_updateShares delay:1 waitToFireUntilRequestsStop:1 callOnMainThread:3.0];
     updateSharesDelayer = v6->_updateSharesDelayer;
     v6->_updateSharesDelayer = v9;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v6 selector:sel_managedObjectContextObjectsDidChange_ name:*MEMORY[0x1E695D360] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_managedObjectContextObjectsDidChange_ name:*MEMORY[0x1E695D360] object:0];
 
-    v12 = [(ICCollaborationController *)v6 updateSharesDelayer];
-    [v12 requestFire];
+    updateSharesDelayer = [(ICCollaborationController *)v6 updateSharesDelayer];
+    [updateSharesDelayer requestFire];
   }
 
   return v6;
 }
 
-- (void)setCollaborationAnalyticsDelegate:(id)a3
+- (void)setCollaborationAnalyticsDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_collaborationAnalyticsDelegate, v6);
-  v4 = v6;
-  if (v6)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_collaborationAnalyticsDelegate, delegateCopy);
+  v4 = delegateCopy;
+  if (delegateCopy)
   {
-    v4 = [[ICCollaborationAnalyticsTracker alloc] initWithDelegate:v6];
+    v4 = [[ICCollaborationAnalyticsTracker alloc] initWithDelegate:delegateCopy];
   }
 
   collaborationAnalyticsTracker = self->_collaborationAnalyticsTracker;
@@ -109,17 +109,17 @@ uint64_t __43__ICCollaborationController_sharedInstance__block_invoke()
 
 - (id)viewContext
 {
-  v3 = [(ICCollaborationController *)self collaborationControllerDelegate];
-  if (v3)
+  collaborationControllerDelegate = [(ICCollaborationController *)self collaborationControllerDelegate];
+  if (collaborationControllerDelegate)
   {
-    v4 = [(ICCollaborationController *)self collaborationControllerDelegate];
-    [v4 viewContextForCollaborationController:self];
+    collaborationControllerDelegate2 = [(ICCollaborationController *)self collaborationControllerDelegate];
+    [collaborationControllerDelegate2 viewContextForCollaborationController:self];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B7800] sharedContext];
-    [v4 managedObjectContext];
+    collaborationControllerDelegate2 = [MEMORY[0x1E69B7800] sharedContext];
+    [collaborationControllerDelegate2 managedObjectContext];
   }
   v5 = ;
 
@@ -128,17 +128,17 @@ uint64_t __43__ICCollaborationController_sharedInstance__block_invoke()
 
 - (id)backgroundContext
 {
-  v3 = [(ICCollaborationController *)self collaborationControllerDelegate];
-  if (v3)
+  collaborationControllerDelegate = [(ICCollaborationController *)self collaborationControllerDelegate];
+  if (collaborationControllerDelegate)
   {
-    v4 = [(ICCollaborationController *)self collaborationControllerDelegate];
-    [v4 backgroundContextForCollaborationController:self];
+    collaborationControllerDelegate2 = [(ICCollaborationController *)self collaborationControllerDelegate];
+    [collaborationControllerDelegate2 backgroundContextForCollaborationController:self];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B7800] sharedContext];
-    [v4 workerManagedObjectContext];
+    collaborationControllerDelegate2 = [MEMORY[0x1E69B7800] sharedContext];
+    [collaborationControllerDelegate2 workerManagedObjectContext];
   }
   v5 = ;
 
@@ -147,33 +147,33 @@ uint64_t __43__ICCollaborationController_sharedInstance__block_invoke()
 
 - (id)cloudContext
 {
-  v3 = [(ICCollaborationController *)self collaborationControllerDelegate];
-  if (v3)
+  collaborationControllerDelegate = [(ICCollaborationController *)self collaborationControllerDelegate];
+  if (collaborationControllerDelegate)
   {
-    v4 = [(ICCollaborationController *)self collaborationControllerDelegate];
-    v5 = [v4 cloudContextForCollaborationController:self];
+    collaborationControllerDelegate2 = [(ICCollaborationController *)self collaborationControllerDelegate];
+    mEMORY[0x1E69B76F0] = [collaborationControllerDelegate2 cloudContextForCollaborationController:self];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B76F0] sharedContext];
+    mEMORY[0x1E69B76F0] = [MEMORY[0x1E69B76F0] sharedContext];
   }
 
-  return v5;
+  return mEMORY[0x1E69B76F0];
 }
 
-- (void)registerShareForObject:(id)a3 itemProvider:(id)a4 generateThumbnails:(BOOL)a5 sharePreparationHandler:(id)a6
+- (void)registerShareForObject:(id)object itemProvider:(id)provider generateThumbnails:(BOOL)thumbnails sharePreparationHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  objectCopy = object;
+  providerCopy = provider;
+  handlerCopy = handler;
   v13 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v10 shortLoggingDescription];
+    shortLoggingDescription = [objectCopy shortLoggingDescription];
     *buf = 138412290;
-    v32 = v14;
+    v32 = shortLoggingDescription;
     _os_log_impl(&dword_1D4171000, v13, OS_LOG_TYPE_INFO, "Registering cloud sharing service for %@", buf, 0xCu);
   }
 
@@ -187,11 +187,11 @@ uint64_t __43__ICCollaborationController_sharedInstance__block_invoke()
     _os_signpost_emit_with_name_impl(&dword_1D4171000, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "com.apple.notes.collaboration.registerShare", "", buf, 2u);
   }
 
-  v19 = [v10 cloudAccount];
-  if ([v19 accountType] == 1)
+  cloudAccount = [objectCopy cloudAccount];
+  if ([cloudAccount accountType] == 1)
   {
-    v20 = [v19 identifier];
-    v21 = [v20 length];
+    identifier = [cloudAccount identifier];
+    v21 = [identifier length];
 
     if (v21)
     {
@@ -200,11 +200,11 @@ uint64_t __43__ICCollaborationController_sharedInstance__block_invoke()
       v23[2] = __108__ICCollaborationController_registerShareForObject_itemProvider_generateThumbnails_sharePreparationHandler___block_invoke;
       v23[3] = &unk_1E846C938;
       v23[4] = self;
-      v24 = v19;
-      v25 = v10;
-      v26 = v11;
-      v28 = v12;
-      v30 = a5;
+      v24 = cloudAccount;
+      v25 = objectCopy;
+      v26 = providerCopy;
+      v28 = handlerCopy;
+      thumbnailsCopy = thumbnails;
       v27 = v18;
       v29 = v16;
       [v24 performBlockInPersonaContext:v23];
@@ -432,10 +432,10 @@ void __108__ICCollaborationController_registerShareForObject_itemProvider_genera
   }
 }
 
-+ (int64_t)shareStatusOfFolder:(id)a3 objectsForMakingDecision:(id)a4
++ (int64_t)shareStatusOfFolder:(id)folder objectsForMakingDecision:(id)decision
 {
-  v5 = a3;
-  v6 = a4;
+  folderCopy = folder;
+  decisionCopy = decision;
   objc_opt_class();
   v7 = ICDynamicCast();
 
@@ -445,15 +445,15 @@ void __108__ICCollaborationController_registerShareForObject_itemProvider_genera
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v8 = [v5 managedObjectContext];
+    managedObjectContext = [folderCopy managedObjectContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __74__ICCollaborationController_shareStatusOfFolder_objectsForMakingDecision___block_invoke;
     v10[3] = &unk_1E8469AE0;
-    v11 = v5;
+    v11 = folderCopy;
     v13 = &v14;
-    v12 = v6;
-    [v8 performBlockAndWait:v10];
+    v12 = decisionCopy;
+    [managedObjectContext performBlockAndWait:v10];
 
     v7 = v15[3];
     _Block_object_dispose(&v14, 8);
@@ -591,24 +591,24 @@ uint64_t __59__ICCollaborationController_shareSheetFolderThumbnailImage__block_i
   return MEMORY[0x1EEE66BB8](v0);
 }
 
-+ (id)rootRecordForObject:(id)a3
++ (id)rootRecordForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__48;
   v15 = __Block_byref_object_dispose__48;
   v16 = 0;
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__ICCollaborationController_rootRecordForObject___block_invoke;
   v8[3] = &unk_1E8468FA8;
   v10 = &v11;
-  v5 = v3;
+  v5 = objectCopy;
   v9 = v5;
-  [v4 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
   v6 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -643,32 +643,32 @@ void __49__ICCollaborationController_rootRecordForObject___block_invoke(uint64_t
   }
 }
 
-+ (id)newShareForObject:(id)a3
++ (id)newShareForObject:(id)object
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 rootRecordForObject:v4];
-  v6 = [v4 serverRecord];
-  v7 = [v6 share];
+  objectCopy = object;
+  v5 = [self rootRecordForObject:objectCopy];
+  serverRecord = [objectCopy serverRecord];
+  share = [serverRecord share];
 
   v8 = objc_alloc(MEMORY[0x1E695BAC8]);
   v9 = v8;
-  if (v7)
+  if (share)
   {
-    v10 = [v4 serverRecord];
-    v11 = [v10 share];
-    v12 = [v11 recordID];
-    v13 = [v9 initWithRootRecord:v5 shareID:v12];
+    serverRecord2 = [objectCopy serverRecord];
+    share2 = [serverRecord2 share];
+    recordID = [share2 recordID];
+    v13 = [v9 initWithRootRecord:v5 shareID:recordID];
 
     v14 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v13 ic_loggingDescription];
-      v16 = [v4 shortLoggingDescription];
+      ic_loggingDescription = [v13 ic_loggingDescription];
+      shortLoggingDescription = [objectCopy shortLoggingDescription];
       v19 = 138412546;
-      v20 = v15;
+      v20 = ic_loggingDescription;
       v21 = 2112;
-      v22 = v16;
+      v22 = shortLoggingDescription;
       v17 = "Created share %@ with existing share reference for %@";
 LABEL_6:
       _os_log_impl(&dword_1D4171000, v14, OS_LOG_TYPE_INFO, v17, &v19, 0x16u);
@@ -681,29 +681,29 @@ LABEL_6:
     v14 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [v13 ic_loggingDescription];
-      v16 = [v4 shortLoggingDescription];
+      ic_loggingDescription = [v13 ic_loggingDescription];
+      shortLoggingDescription = [objectCopy shortLoggingDescription];
       v19 = 138412546;
-      v20 = v15;
+      v20 = ic_loggingDescription;
       v21 = 2112;
-      v22 = v16;
+      v22 = shortLoggingDescription;
       v17 = "Created share %@ for %@";
       goto LABEL_6;
     }
   }
 
-  [v13 ic_updateFromObject:v4];
+  [v13 ic_updateFromObject:objectCopy];
   return v13;
 }
 
-+ (id)updatedShareForObject:(id)a3 includeHierarchicalShare:(BOOL)a4 managedObjectContext:(id)a5
++ (id)updatedShareForObject:(id)object includeHierarchicalShare:(BOOL)share managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  objectCopy = object;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (contextCopy)
   {
-    v10 = v8;
+    managedObjectContext = contextCopy;
 LABEL_4:
     v18 = 0;
     v19 = &v18;
@@ -715,8 +715,8 @@ LABEL_4:
     v13[1] = 3221225472;
     v13[2] = __97__ICCollaborationController_updatedShareForObject_includeHierarchicalShare_managedObjectContext___block_invoke;
     v13[3] = &unk_1E846C960;
-    v17 = a4;
-    v14 = v7;
+    shareCopy = share;
+    v14 = objectCopy;
     v16 = &v18;
     v15 = v9;
     [v15 performBlockAndWait:v13];
@@ -726,8 +726,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [v7 managedObjectContext];
-  if (v10)
+  managedObjectContext = [objectCopy managedObjectContext];
+  if (managedObjectContext)
   {
     goto LABEL_4;
   }
@@ -835,28 +835,28 @@ void __97__ICCollaborationController_updatedShareForObject_includeHierarchicalSh
   [*(a1 + 40) ic_saveWithLogDescription:{@"Reasons: %@", v18}];
 }
 
-- (void)prepareShare:(id)a3 forObject:(id)a4 qualityOfService:(int64_t)a5 completionHandler:(id)a6
+- (void)prepareShare:(id)share forObject:(id)object qualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  shareCopy = share;
+  objectCopy = object;
+  handlerCopy = handler;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__48;
   v46 = __Block_byref_object_dispose__48;
   v47 = 0;
-  v13 = [v11 managedObjectContext];
+  managedObjectContext = [objectCopy managedObjectContext];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __87__ICCollaborationController_prepareShare_forObject_qualityOfService_completionHandler___block_invoke;
   v38[3] = &unk_1E8469190;
-  v14 = v10;
+  v14 = shareCopy;
   v39 = v14;
-  v15 = v11;
+  v15 = objectCopy;
   v40 = v15;
   v41 = &v42;
-  [v13 performBlockAndWait:v38];
+  [managedObjectContext performBlockAndWait:v38];
 
   v16 = os_log_create("com.apple.notes", "Collaboration");
   v17 = os_signpost_id_generate(v16);
@@ -870,16 +870,16 @@ void __97__ICCollaborationController_updatedShareForObject_includeHierarchicalSh
 
   if ((ICInternalSettingsIsAlexandriaDemoModeEnabled() & 1) == 0)
   {
-    v20 = [v15 managedObjectContext];
+    managedObjectContext2 = [v15 managedObjectContext];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __87__ICCollaborationController_prepareShare_forObject_qualityOfService_completionHandler___block_invoke_63;
     v35[3] = &unk_1E8468BA0;
     v36 = v15;
-    [v20 performBlockAndWait:v35];
+    [managedObjectContext2 performBlockAndWait:v35];
   }
 
-  v21 = [(ICCollaborationController *)self cloudContext];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
   v22 = v43[5];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
@@ -887,16 +887,16 @@ void __97__ICCollaborationController_updatedShareForObject_includeHierarchicalSh
   v27[3] = &unk_1E846C9B0;
   v23 = v15;
   v28 = v23;
-  v29 = self;
+  selfCopy = self;
   v24 = v14;
   v30 = v24;
-  v33 = a5;
+  serviceCopy = service;
   v25 = v19;
   v31 = v25;
   v34 = v17;
-  v26 = v12;
+  v26 = handlerCopy;
   v32 = v26;
-  [v21 finishOperationsForRecordID:v22 qualityOfService:a5 completionHandler:v27];
+  [cloudContext finishOperationsForRecordID:v22 qualityOfService:service completionHandler:v27];
 
   _Block_object_dispose(&v42, 8);
 }
@@ -986,44 +986,44 @@ void __87__ICCollaborationController_prepareShare_forObject_qualityOfService_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)saveShare:(id)a3 attemptNumber:(id)a4 forObject:(id)a5 accountID:(id)a6 container:(id)a7 qualityOfService:(int64_t)a8 retryPrepHandler:(id)a9 completionHandler:(id)a10
+- (void)saveShare:(id)share attemptNumber:(id)number forObject:(id)object accountID:(id)d container:(id)container qualityOfService:(int64_t)service retryPrepHandler:(id)handler completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  if (![v17 unsignedIntegerValue])
+  shareCopy = share;
+  numberCopy = number;
+  objectCopy = object;
+  dCopy = d;
+  containerCopy = container;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (![numberCopy unsignedIntegerValue])
   {
 
-    v17 = &unk_1F4FC3FD8;
+    numberCopy = &unk_1F4FC3FD8;
   }
 
-  if ([v17 unsignedIntegerValue] < 6)
+  if ([numberCopy unsignedIntegerValue] < 6)
   {
-    v24 = dispatch_time(0, 1000000000 * [v17 unsignedIntegerValue] - 1000000000);
+    v24 = dispatch_time(0, 1000000000 * [numberCopy unsignedIntegerValue] - 1000000000);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __135__ICCollaborationController_saveShare_attemptNumber_forObject_accountID_container_qualityOfService_retryPrepHandler_completionHandler___block_invoke;
     block[3] = &unk_1E846CA00;
     block[4] = self;
-    v26 = v16;
-    v27 = v18;
-    v28 = v19;
-    v29 = v20;
-    v33 = a8;
-    v31 = v21;
-    v30 = v17;
-    v32 = v22;
+    v26 = shareCopy;
+    v27 = objectCopy;
+    v28 = dCopy;
+    v29 = containerCopy;
+    serviceCopy = service;
+    v31 = handlerCopy;
+    v30 = numberCopy;
+    v32 = completionHandlerCopy;
     dispatch_after(v24, MEMORY[0x1E69E96A0], block);
   }
 
-  else if (v22)
+  else if (completionHandlerCopy)
   {
     v23 = ICGenericError();
-    (*(v22 + 2))(v22, 0, v23);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v23);
   }
 }
 
@@ -1079,18 +1079,18 @@ void __135__ICCollaborationController_saveShare_attemptNumber_forObject_accountI
   }
 }
 
-- (void)saveShare:(id)a3 forObject:(id)a4 accountID:(id)a5 container:(id)a6 qualityOfService:(int64_t)a7 retryPrepHandler:(id)a8 completionHandler:(id)a9
+- (void)saveShare:(id)share forObject:(id)object accountID:(id)d container:(id)container qualityOfService:(int64_t)service retryPrepHandler:(id)handler completionHandler:(id)completionHandler
 {
   v50 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v28 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  if (v16)
+  shareCopy = share;
+  objectCopy = object;
+  dCopy = d;
+  containerCopy = container;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (objectCopy)
   {
-    if (v15)
+    if (shareCopy)
     {
 LABEL_3:
       v42 = 0;
@@ -1098,33 +1098,33 @@ LABEL_3:
       v44 = 0x3032000000;
       v45 = __Block_byref_object_copy__48;
       v46 = __Block_byref_object_dispose__48;
-      v47 = [objc_opt_class() rootRecordForObject:v16];
+      v47 = [objc_opt_class() rootRecordForObject:objectCopy];
       if (v43[5])
       {
-        v20 = [v16 managedObjectContext];
+        managedObjectContext = [objectCopy managedObjectContext];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __121__ICCollaborationController_saveShare_forObject_accountID_container_qualityOfService_retryPrepHandler_completionHandler___block_invoke;
         v39[3] = &unk_1E8468F80;
-        v21 = v15;
+        v21 = shareCopy;
         v40 = v21;
-        v22 = v16;
+        v22 = objectCopy;
         v41 = v22;
-        [v20 performBlockAndWait:v39];
+        [managedObjectContext performBlockAndWait:v39];
 
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __121__ICCollaborationController_saveShare_forObject_accountID_container_qualityOfService_retryPrepHandler_completionHandler___block_invoke_2;
         v29[3] = &unk_1E846CAF0;
         v30 = v22;
-        v31 = self;
+        selfCopy = self;
         v32 = v21;
         v37 = &v42;
-        v33 = v28;
-        v34 = v17;
-        v38 = a7;
-        v35 = v18;
-        v36 = v19;
+        v33 = dCopy;
+        v34 = containerCopy;
+        serviceCopy = service;
+        v35 = handlerCopy;
+        v36 = completionHandlerCopy;
         [v32 ic_updateThumbnailsFromObject:v30 completion:v29];
 
         v23 = v40;
@@ -1135,16 +1135,16 @@ LABEL_3:
         v26 = os_log_create("com.apple.notes", "Collaboration");
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = [v16 shortLoggingDescription];
+          shortLoggingDescription = [objectCopy shortLoggingDescription];
           *buf = 138412290;
-          v49 = v27;
+          v49 = shortLoggingDescription;
           _os_log_impl(&dword_1D4171000, v26, OS_LOG_TYPE_DEFAULT, "No root record for %@", buf, 0xCu);
         }
 
         v23 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B79F0] code:208 userInfo:0];
-        if (v19)
+        if (completionHandlerCopy)
         {
-          (*(v19 + 2))(v19, 0, v23);
+          (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v23);
         }
       }
 
@@ -1156,7 +1156,7 @@ LABEL_3:
   else
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((object) != nil)" functionName:"-[ICCollaborationController saveShare:forObject:accountID:container:qualityOfService:retryPrepHandler:completionHandler:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "object"}];
-    if (v15)
+    if (shareCopy)
     {
       goto LABEL_3;
     }
@@ -1169,9 +1169,9 @@ LABEL_3:
   }
 
   v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69B79F0] code:208 userInfo:0];
-  if (v19)
+  if (completionHandlerCopy)
   {
-    (*(v19 + 2))(v19, 0, v25);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, v25);
   }
 
 LABEL_16:
@@ -1509,56 +1509,56 @@ uint64_t __121__ICCollaborationController_saveShare_forObject_accountID_containe
   return [*(a1 + 32) saveShare:*(a1 + 48) withRootRecord:*(*(*(a1 + 80) + 8) + 40) object:*(a1 + 40) accountID:*(a1 + 56) container:*(a1 + 64) qualityOfService:*(a1 + 88) completionHandler:*(a1 + 72)];
 }
 
-- (void)saveShare:(id)a3 withRootRecord:(id)a4 object:(id)a5 accountID:(id)a6 container:(id)a7 qualityOfService:(int64_t)a8 completionHandler:(id)a9
+- (void)saveShare:(id)share withRootRecord:(id)record object:(id)object accountID:(id)d container:(id)container qualityOfService:(int64_t)service completionHandler:(id)handler
 {
   v75 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v57 = a7;
-  v19 = a9;
-  if (v15 && v16)
+  shareCopy = share;
+  recordCopy = record;
+  objectCopy = object;
+  dCopy = d;
+  containerCopy = container;
+  handlerCopy = handler;
+  if (shareCopy && recordCopy)
   {
-    if (!v18)
+    if (!dCopy)
     {
-      v20 = [v17 cloudAccount];
-      v18 = [v20 identifier];
+      cloudAccount = [objectCopy cloudAccount];
+      dCopy = [cloudAccount identifier];
     }
 
-    if ([v18 length])
+    if ([dCopy length])
     {
-      if ([v17 isSharedReadOnly])
+      if ([objectCopy isSharedReadOnly])
       {
         v21 = MEMORY[0x1E69B7A38];
-        v22 = [v15 ic_loggingDescription];
-        v23 = [v17 ic_loggingDescription];
-        [v21 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCollaborationController saveShare:withRootRecord:object:accountID:container:qualityOfService:completionHandler:]" simulateCrash:1 showAlert:0 format:{@"Tried to save a read-only share (%@) for object: %@", v22, v23}];
+        ic_loggingDescription = [shareCopy ic_loggingDescription];
+        ic_loggingDescription2 = [objectCopy ic_loggingDescription];
+        [v21 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCollaborationController saveShare:withRootRecord:object:accountID:container:qualityOfService:completionHandler:]" simulateCrash:1 showAlert:0 format:{@"Tried to save a read-only share (%@) for object: %@", ic_loggingDescription, ic_loggingDescription2}];
 
-        if (v19)
+        if (handlerCopy)
         {
 LABEL_8:
           v24 = ICGenericError();
-          v19[2](v19, 0, v24);
+          handlerCopy[2](handlerCopy, 0, v24);
         }
       }
 
       else
       {
-        v56 = self;
-        v28 = [v15 rootRecordID];
-        if (v28 && ([v15 rootRecordID], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "recordID"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v29, "isEqual:", v30), v30, v29, v28, (v31 & 1) == 0))
+        selfCopy = self;
+        rootRecordID = [shareCopy rootRecordID];
+        if (rootRecordID && ([shareCopy rootRecordID], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(recordCopy, "recordID"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v29, "isEqual:", v30), v30, v29, rootRecordID, (v31 & 1) == 0))
         {
           v49 = os_log_create("com.apple.notes", "Collaboration");
           if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
           {
-            [ICCollaborationController saveShare:v15 withRootRecord:v17 object:? accountID:? container:? qualityOfService:? completionHandler:?];
+            [ICCollaborationController saveShare:shareCopy withRootRecord:objectCopy object:? accountID:? container:? qualityOfService:? completionHandler:?];
           }
 
           [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICCollaborationController saveShare:withRootRecord:object:accountID:container:qualityOfService:completionHandler:]" simulateCrash:1 showAlert:1 format:@"Tried to save a mismatched share"];
-          if (v19)
+          if (handlerCopy)
           {
-            (v19)[2](v19, v15, 0);
+            (handlerCopy)[2](handlerCopy, shareCopy, 0);
           }
         }
 
@@ -1577,39 +1577,39 @@ LABEL_8:
           v54 = v35;
           v55 = v33;
 
-          if (!v57)
+          if (!containerCopy)
           {
-            v57 = [(ICCollaborationController *)v56 containerForAccountID:v18];
+            containerCopy = [(ICCollaborationController *)selfCopy containerForAccountID:dCopy];
           }
 
           v36 = objc_alloc(MEMORY[0x1E695B9B8]);
-          v68[0] = v15;
-          v68[1] = v16;
+          v68[0] = shareCopy;
+          v68[1] = recordCopy;
           v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
           v38 = [v36 initWithRecordsToSave:v37 recordIDsToDelete:0];
 
-          [v38 setQualityOfService:a8];
-          v39 = [v38 configuration];
-          [v39 setDiscretionaryNetworkBehavior:0];
+          [v38 setQualityOfService:service];
+          configuration = [v38 configuration];
+          [configuration setDiscretionaryNetworkBehavior:0];
 
-          v40 = [v15 recordID];
-          v41 = [v57 databaseWithDatabaseScope:{objc_msgSend(v40, "databaseScope")}];
+          recordID = [shareCopy recordID];
+          v41 = [containerCopy databaseWithDatabaseScope:{objc_msgSend(recordID, "databaseScope")}];
           [v38 setDatabase:v41];
 
           objc_initWeak(&location, v38);
           v42 = os_log_create("com.apple.notes", "Collaboration");
           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
           {
-            v53 = [v15 ic_loggingDescription];
-            v43 = [v16 ic_loggingDescription];
+            ic_loggingDescription3 = [shareCopy ic_loggingDescription];
+            ic_loggingDescription4 = [recordCopy ic_loggingDescription];
             v44 = objc_loadWeakRetained(&location);
-            v45 = [v44 ic_loggingDescription];
+            ic_loggingDescription5 = [v44 ic_loggingDescription];
             *buf = 138412802;
-            v70 = v53;
+            v70 = ic_loggingDescription3;
             v71 = 2112;
-            v72 = v43;
+            v72 = ic_loggingDescription4;
             v73 = 2112;
-            v74 = v45;
+            v74 = ic_loggingDescription5;
             _os_log_impl(&dword_1D4171000, v42, OS_LOG_TYPE_INFO, "Saving Share: %@ with root record: %@ %@", buf, 0x20u);
           }
 
@@ -1618,16 +1618,16 @@ LABEL_8:
           v58[2] = __116__ICCollaborationController_saveShare_withRootRecord_object_accountID_container_qualityOfService_completionHandler___block_invoke;
           v58[3] = &unk_1E846CBB0;
           objc_copyWeak(v66, &location);
-          v59 = v17;
-          v60 = v15;
-          v61 = v56;
-          v62 = v16;
-          v18 = v18;
-          v63 = v18;
+          v59 = objectCopy;
+          v60 = shareCopy;
+          v61 = selfCopy;
+          v62 = recordCopy;
+          dCopy = dCopy;
+          v63 = dCopy;
           v46 = v54;
           v64 = v46;
           v66[1] = v55;
-          v65 = v19;
+          v65 = handlerCopy;
           [v38 setModifyRecordsCompletionBlock:v58];
           v47 = objc_alloc_init(MEMORY[0x1E695BA08]);
           [v47 setName:@"SaveShare"];
@@ -1635,8 +1635,8 @@ LABEL_8:
           [v47 setExpectedSendSize:1];
           [v47 setExpectedReceiveSize:1];
           [v38 setGroup:v47];
-          v48 = [v38 database];
-          [v48 addOperation:v38];
+          database = [v38 database];
+          [database addOperation:v38];
 
           objc_destroyWeak(v66);
           objc_destroyWeak(&location);
@@ -1649,10 +1649,10 @@ LABEL_8:
       v27 = os_log_create("com.apple.notes", "Collaboration");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        [ICCollaborationController saveShare:v15 withRootRecord:v17 object:? accountID:? container:? qualityOfService:? completionHandler:?];
+        [ICCollaborationController saveShare:shareCopy withRootRecord:objectCopy object:? accountID:? container:? qualityOfService:? completionHandler:?];
       }
 
-      if (v19)
+      if (handlerCopy)
       {
         goto LABEL_8;
       }
@@ -1664,22 +1664,22 @@ LABEL_8:
     v25 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v50 = [v15 ic_loggingDescription];
-      v51 = [v16 ic_loggingDescription];
-      v52 = [v17 ic_loggingDescription];
+      ic_loggingDescription6 = [shareCopy ic_loggingDescription];
+      ic_loggingDescription7 = [recordCopy ic_loggingDescription];
+      ic_loggingDescription8 = [objectCopy ic_loggingDescription];
       *buf = 138412802;
-      v70 = v50;
+      v70 = ic_loggingDescription6;
       v71 = 2112;
-      v72 = v51;
+      v72 = ic_loggingDescription7;
       v73 = 2112;
-      v74 = v52;
+      v74 = ic_loggingDescription8;
       _os_log_error_impl(&dword_1D4171000, v25, OS_LOG_TYPE_ERROR, "Tried to save a nil share (%@) or a nil root record (%@) for object: %@", buf, 0x20u);
     }
 
-    if (v19)
+    if (handlerCopy)
     {
       v26 = ICGenericError();
-      v19[2](v19, 0, v26);
+      handlerCopy[2](handlerCopy, 0, v26);
     }
   }
 }
@@ -2064,15 +2064,15 @@ uint64_t __116__ICCollaborationController_saveShare_withRootRecord_object_accoun
   return [v2 ic_save];
 }
 
-- (void)fetchShareIfNecessaryForObject:(id)a3 completionHandler:(id)a4
+- (void)fetchShareIfNecessaryForObject:(id)object completionHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 cloudAccount];
-  v8 = [v7 identifier];
+  objectCopy = object;
+  handlerCopy = handler;
+  cloudAccount = [objectCopy cloudAccount];
+  identifier = [cloudAccount identifier];
 
-  v9 = [v8 length];
+  v9 = [identifier length];
   v10 = os_log_create("com.apple.notes", "Collaboration");
   v11 = v10;
   if (v9)
@@ -2086,46 +2086,46 @@ uint64_t __116__ICCollaborationController_saveShare_withRootRecord_object_accoun
       _os_signpost_emit_with_name_impl(&dword_1D4171000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "com.apple.notes.collaboration.fetchShare", "", buf, 2u);
     }
 
-    v15 = [v5 serverRecord];
-    v16 = [v15 share];
-    v17 = [v16 recordID];
+    serverRecord = [objectCopy serverRecord];
+    share = [serverRecord share];
+    recordID = [share recordID];
 
-    if (v17 && ([v5 serverShare], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v19))
+    if (recordID && ([objectCopy serverShare], v18 = objc_claimAutoreleasedReturnValue(), v19 = v18 == 0, v18, v19))
     {
       v22 = os_log_create("com.apple.notes", "Collaboration");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v37 = [v5 serverRecord];
-        v23 = [v37 share];
-        v24 = [v23 recordID];
-        v36 = [v24 ic_loggingDescription];
-        v25 = [v5 shortLoggingDescription];
+        serverRecord2 = [objectCopy serverRecord];
+        share2 = [serverRecord2 share];
+        recordID2 = [share2 recordID];
+        ic_loggingDescription = [recordID2 ic_loggingDescription];
+        shortLoggingDescription = [objectCopy shortLoggingDescription];
         *buf = 138412546;
-        v49 = v36;
+        v49 = ic_loggingDescription;
         v50 = 2112;
-        v51 = v25;
+        v51 = shortLoggingDescription;
         _os_log_impl(&dword_1D4171000, v22, OS_LOG_TYPE_INFO, "Need to fetch share %@ for %@", buf, 0x16u);
       }
 
-      v26 = [(ICCollaborationController *)self containerForAccountID:v8];
+      v26 = [(ICCollaborationController *)self containerForAccountID:identifier];
       v27 = objc_alloc(MEMORY[0x1E695B938]);
-      v47 = v17;
+      v47 = recordID;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
       v29 = [v27 initWithRecordIDs:v28];
 
-      v30 = [v26 databaseWithDatabaseScope:{objc_msgSend(v17, "databaseScope")}];
+      v30 = [v26 databaseWithDatabaseScope:{objc_msgSend(recordID, "databaseScope")}];
       [v29 setDatabase:v30];
 
       [v29 setQueuePriority:8];
       [v29 setQualityOfService:17];
-      v31 = [v29 configuration];
-      [v31 setDiscretionaryNetworkBehavior:0];
+      configuration = [v29 configuration];
+      [configuration setDiscretionaryNetworkBehavior:0];
 
       objc_initWeak(&location, v29);
       v32 = os_log_create("com.apple.notes", "Collaboration");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v17 ic_loggingDescription];
+        ic_loggingDescription2 = [recordID ic_loggingDescription];
         [v29 ic_loggingDescription];
         objc_claimAutoreleasedReturnValue();
         [ICCollaborationController fetchShareIfNecessaryForObject:completionHandler:];
@@ -2135,13 +2135,13 @@ uint64_t __116__ICCollaborationController_saveShare_withRootRecord_object_accoun
       v39[1] = 3221225472;
       v39[2] = __78__ICCollaborationController_fetchShareIfNecessaryForObject_completionHandler___block_invoke;
       v39[3] = &unk_1E846CBD8;
-      v40 = v17;
+      v40 = recordID;
       objc_copyWeak(v45, &location);
-      v41 = self;
-      v42 = v8;
+      selfCopy = self;
+      v42 = identifier;
       v43 = v14;
       v45[1] = v12;
-      v44 = v6;
+      v44 = handlerCopy;
       [v29 setFetchRecordsCompletionBlock:v39];
       v34 = objc_alloc_init(MEMORY[0x1E695BA08]);
       [v34 setName:@"FetchShare"];
@@ -2149,8 +2149,8 @@ uint64_t __116__ICCollaborationController_saveShare_withRootRecord_object_accoun
       [v34 setExpectedSendSize:1];
       [v34 setExpectedReceiveSize:1];
       [v29 setGroup:v34];
-      v35 = [v29 database];
-      [v35 addOperation:v29];
+      database = [v29 database];
+      [database addOperation:v29];
 
       objc_destroyWeak(v45);
       objc_destroyWeak(&location);
@@ -2166,7 +2166,7 @@ uint64_t __116__ICCollaborationController_saveShare_withRootRecord_object_accoun
         _os_signpost_emit_with_name_impl(&dword_1D4171000, v21, OS_SIGNPOST_INTERVAL_END, v12, "com.apple.notes.collaboration.fetchShare", "", buf, 2u);
       }
 
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -2177,9 +2177,9 @@ uint64_t __116__ICCollaborationController_saveShare_withRootRecord_object_accoun
       [ICCollaborationController fetchShareIfNecessaryForObject:completionHandler:];
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
@@ -2237,23 +2237,23 @@ void __78__ICCollaborationController_fetchShareIfNecessaryForObject_completionHa
   [v14 informCloudAnalyticsDelegateForOperationDidEnd:v15 recordsByRecordID:v5 operationError:v6];
 }
 
-- (void)saveServerShare:(id)a3 persistParticipantEvents:(BOOL)a4 accountID:(id)a5
+- (void)saveServerShare:(id)share persistParticipantEvents:(BOOL)events accountID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICCollaborationController *)self viewContext];
+  shareCopy = share;
+  dCopy = d;
+  viewContext = [(ICCollaborationController *)self viewContext];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__ICCollaborationController_saveServerShare_persistParticipantEvents_accountID___block_invoke;
   v14[3] = &unk_1E846A350;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v18 = a4;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = shareCopy;
+  v16 = dCopy;
+  v17 = viewContext;
+  eventsCopy = events;
+  v11 = viewContext;
+  v12 = dCopy;
+  v13 = shareCopy;
   [v11 performBlock:v14];
 }
 
@@ -2351,14 +2351,14 @@ void __80__ICCollaborationController_saveServerShare_persistParticipantEvents_ac
   }
 }
 
-+ (void)postDidUpdateShareNotificationForObject:(id)a3
++ (void)postDidUpdateShareNotificationForObject:(id)object
 {
-  v3 = a3;
-  v10 = [v3 serverShareCheckingParent];
-  v4 = [v10 recordID];
-  if (v4)
+  objectCopy = object;
+  serverShareCheckingParent = [objectCopy serverShareCheckingParent];
+  recordID = [serverShareCheckingParent recordID];
+  if (recordID)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithObject:v4 forKey:@"ICCloudSyncingObjectShareRecordID"];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithObject:recordID forKey:@"ICCloudSyncingObjectShareRecordID"];
   }
 
   else
@@ -2366,81 +2366,81 @@ void __80__ICCollaborationController_saveServerShare_persistParticipantEvents_ac
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x1E695BAC8] ic_systemFieldsValueTransformer];
-  v7 = [v6 transformedValue:v10];
+  ic_systemFieldsValueTransformer = [MEMORY[0x1E695BAC8] ic_systemFieldsValueTransformer];
+  v7 = [ic_systemFieldsValueTransformer transformedValue:serverShareCheckingParent];
   [v5 setObject:v7 forKeyedSubscript:@"ICCloudSyncingObjectShareData"];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v9 = [v5 copy];
-  [v8 postNotificationName:@"ICCloudSyncingObjectDidUpdateShare" object:v3 userInfo:v9];
+  [defaultCenter postNotificationName:@"ICCloudSyncingObjectDidUpdateShare" object:objectCopy userInfo:v9];
 }
 
-- (id)objectForShare:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)objectForShare:(id)share accountID:(id)d context:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B7598]];
-  v12 = [v11 recordID];
-  if (v12)
+  shareCopy = share;
+  dCopy = d;
+  contextCopy = context;
+  v11 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E69B7598]];
+  recordID = [v11 recordID];
+  if (recordID)
   {
-    v13 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B75A0]];
+    v13 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E69B75A0]];
     if (!v13)
     {
       v14 = os_log_create("com.apple.notes", "Collaboration");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        [ICCollaborationController objectForShare:v8 accountID:? context:?];
+        [ICCollaborationController objectForShare:shareCopy accountID:? context:?];
       }
     }
 
-    v15 = [(ICCollaborationController *)self cloudContext];
-    v16 = [v15 existingCloudObjectForRecordID:v12 recordType:v13 accountID:v9 context:v10];
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    v16 = [cloudContext existingCloudObjectForRecordID:recordID recordType:v13 accountID:dCopy context:contextCopy];
   }
 
   else
   {
-    v15 = os_log_create("com.apple.notes", "Collaboration");
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    cloudContext = os_log_create("com.apple.notes", "Collaboration");
+    if (os_log_type_enabled(cloudContext, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v8 ic_loggingDescription];
+      ic_loggingDescription = [shareCopy ic_loggingDescription];
       v19 = 138412290;
-      v20 = v17;
-      _os_log_impl(&dword_1D4171000, v15, OS_LOG_TYPE_DEFAULT, "No root record reference for share %@", &v19, 0xCu);
+      v20 = ic_loggingDescription;
+      _os_log_impl(&dword_1D4171000, cloudContext, OS_LOG_TYPE_DEFAULT, "No root record reference for share %@", &v19, 0xCu);
     }
 
     v16 = 0;
-    v13 = v15;
+    v13 = cloudContext;
   }
 
   return v16;
 }
 
-- (void)removeShareIfNeededWithOwnedObjectID:(id)a3 countParticipants:(BOOL)a4 completionHandler:(id)a5
+- (void)removeShareIfNeededWithOwnedObjectID:(id)d countParticipants:(BOOL)participants completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (dCopy)
   {
-    v11 = [(ICCollaborationController *)self viewContext];
+    viewContext = [(ICCollaborationController *)self viewContext];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __102__ICCollaborationController_removeShareIfNeededWithOwnedObjectID_countParticipants_completionHandler___block_invoke;
     v13[3] = &unk_1E846CC50;
-    v14 = v11;
-    v15 = v8;
-    v18 = a4;
-    v16 = self;
+    v14 = viewContext;
+    v15 = dCopy;
+    participantsCopy = participants;
+    selfCopy = self;
     v17 = v10;
-    v12 = v11;
+    v12 = viewContext;
     [v12 performBlock:v13];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -2640,25 +2640,25 @@ void __102__ICCollaborationController_removeShareIfNeededWithOwnedObjectID_count
   }
 }
 
-- (void)didStopSharing:(id)a3 recordID:(id)a4 accountID:(id)a5
+- (void)didStopSharing:(id)sharing recordID:(id)d accountID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCollaborationController *)self viewContext];
+  sharingCopy = sharing;
+  dCopy = d;
+  iDCopy = iD;
+  viewContext = [(ICCollaborationController *)self viewContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63__ICCollaborationController_didStopSharing_recordID_accountID___block_invoke;
   v16[3] = &unk_1E846CC78;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v9;
-  v12 = v9;
-  v13 = v11;
-  v14 = v10;
-  v15 = v8;
+  v17 = sharingCopy;
+  selfCopy = self;
+  v19 = iDCopy;
+  v20 = viewContext;
+  v21 = dCopy;
+  v12 = dCopy;
+  v13 = viewContext;
+  v14 = iDCopy;
+  v15 = sharingCopy;
   [v13 performBlock:v16];
 }
 
@@ -2812,34 +2812,34 @@ void __63__ICCollaborationController_didStopSharing_recordID_accountID___block_i
   }
 }
 
-- (void)managedObjectContextObjectsDidChange:(id)a3
+- (void)managedObjectContextObjectsDidChange:(id)change
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [changeCopy object];
   v6 = ICCheckedDynamicCast();
 
   if ([v6 concurrencyType] == 2)
   {
     objc_opt_class();
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E695D328]];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D328]];
     v9 = ICCheckedDynamicCast();
     v10 = [v9 ic_objectsOfClass:objc_opt_class()];
 
     objc_opt_class();
-    v35 = v4;
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E695D4D0]];
+    v35 = changeCopy;
+    userInfo2 = [changeCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E695D4D0]];
     v13 = ICCheckedDynamicCast();
     v14 = [v13 ic_objectsOfClass:objc_opt_class()];
 
     v33 = [v14 ic_objectsPassingTest:&__block_literal_global_126_0];
     if ([v33 count])
     {
-      v15 = [(ICCollaborationController *)self updateSharesDelayer];
-      [v15 requestFire];
+      updateSharesDelayer = [(ICCollaborationController *)self updateSharesDelayer];
+      [updateSharesDelayer requestFire];
     }
 
     v39 = 0u;
@@ -2863,35 +2863,35 @@ void __63__ICCollaborationController_didStopSharing_recordID_accountID___block_i
           }
 
           v21 = *(*(&v37 + 1) + 8 * i);
-          v22 = [v21 serverShare];
-          if (v22)
+          serverShare = [v21 serverShare];
+          if (serverShare)
           {
-            v23 = v22;
-            v24 = [v21 invitation];
+            v23 = serverShare;
+            invitation = [v21 invitation];
 
-            if (!v24)
+            if (!invitation)
             {
               v25 = MEMORY[0x1E69B7790];
-              v26 = [v21 serverShare];
-              v27 = [v26 URL];
+              serverShare2 = [v21 serverShare];
+              v27 = [serverShare2 URL];
               v28 = [v25 invitationWithShareURL:v27 context:v6];
 
               if (v28)
               {
                 [v28 setRootObject:v21];
-                v29 = [v21 serverShare];
-                [v28 updateFromShare:v29];
+                serverShare3 = [v21 serverShare];
+                [v28 updateFromShare:serverShare3];
 
                 v30 = os_log_create("com.apple.notes", "Collaboration");
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
                 {
-                  v36 = [v21 serverShare];
-                  v31 = [v36 ic_loggingDescription];
-                  v32 = [v21 objectID];
+                  serverShare4 = [v21 serverShare];
+                  ic_loggingDescription = [serverShare4 ic_loggingDescription];
+                  objectID = [v21 objectID];
                   *buf = 138412546;
-                  v42 = v31;
+                  v42 = ic_loggingDescription;
                   v43 = 2112;
-                  v44 = v32;
+                  v44 = objectID;
                   _os_log_debug_impl(&dword_1D4171000, v30, OS_LOG_TYPE_DEBUG, "Updated invitation and associated it with object {share: %@, objectID: %@}", buf, 0x16u);
                 }
               }
@@ -2905,7 +2905,7 @@ void __63__ICCollaborationController_didStopSharing_recordID_accountID___block_i
       while (v18);
     }
 
-    v4 = v35;
+    changeCopy = v35;
   }
 }
 
@@ -2919,41 +2919,41 @@ uint64_t __66__ICCollaborationController_managedObjectContextObjectsDidChange___
   return v5;
 }
 
-+ (void)didFailToUpdateShareWithError:(id)a3
++ (void)didFailToUpdateShareWithError:(id)error
 {
-  v4 = a3;
-  v7 = [a1 sharedInstance];
-  v5 = [v7 collaborationControllerDelegate];
-  v6 = [a1 sharedInstance];
-  [v5 collaborationController:v6 didFailToSaveShareWithError:v4];
+  errorCopy = error;
+  sharedInstance = [self sharedInstance];
+  collaborationControllerDelegate = [sharedInstance collaborationControllerDelegate];
+  sharedInstance2 = [self sharedInstance];
+  [collaborationControllerDelegate collaborationController:sharedInstance2 didFailToSaveShareWithError:errorCopy];
 }
 
-- (void)acceptShareWithMetadata:(id)a3 managedObjectContext:(id)a4 completionHandler:(id)a5
+- (void)acceptShareWithMetadata:(id)metadata managedObjectContext:(id)context completionHandler:(id)handler
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.notes", "Collaboration");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 share];
-    v13 = [v12 ic_loggingDescription];
+    share = [metadataCopy share];
+    ic_loggingDescription = [share ic_loggingDescription];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v13;
+    *(&buf + 4) = ic_loggingDescription;
     _os_log_impl(&dword_1D4171000, v11, OS_LOG_TYPE_DEFAULT, "Accepting share metadata for share %@", &buf, 0xCu);
   }
 
-  v14 = [v8 callingParticipant];
-  v15 = [v14 userIdentity];
-  v16 = [v15 userRecordID];
+  callingParticipant = [metadataCopy callingParticipant];
+  userIdentity = [callingParticipant userIdentity];
+  userRecordID = [userIdentity userRecordID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
   v61 = 0x3032000000;
   v62 = __Block_byref_object_copy__48;
   v63 = __Block_byref_object_dispose__48;
-  v64 = [v8 selectedAccountID];
+  selectedAccountID = [metadataCopy selectedAccountID];
   if (*(*(&buf + 1) + 40))
   {
     v17 = [(ICCollaborationController *)self containerForAccountID:?];
@@ -2971,8 +2971,8 @@ uint64_t __66__ICCollaborationController_managedObjectContextObjectsDidChange___
     goto LABEL_25;
   }
 
-  v20 = [v16 recordName];
-  v21 = [v20 isEqualToString:*MEMORY[0x1E695B728]];
+  recordName = [userRecordID recordName];
+  v21 = [recordName isEqualToString:*MEMORY[0x1E695B728]];
 
   if (v21)
   {
@@ -2982,11 +2982,11 @@ uint64_t __66__ICCollaborationController_managedObjectContextObjectsDidChange___
       [ICCollaborationController acceptShareWithMetadata:managedObjectContext:completionHandler:];
     }
 
-    v23 = [MEMORY[0x1E69B7A28] sharedInstance];
-    v24 = [v23 primaryICloudACAccount];
-    v25 = [v24 identifier];
+    mEMORY[0x1E69B7A28] = [MEMORY[0x1E69B7A28] sharedInstance];
+    primaryICloudACAccount = [mEMORY[0x1E69B7A28] primaryICloudACAccount];
+    identifier = [primaryICloudACAccount identifier];
     v26 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v25;
+    *(*(&buf + 1) + 40) = identifier;
 
     if (![*(*(&buf + 1) + 40) length])
     {
@@ -2998,9 +2998,9 @@ uint64_t __66__ICCollaborationController_managedObjectContextObjectsDidChange___
 
   else
   {
-    v27 = [(ICCollaborationController *)self cloudContext];
-    v28 = [v27 containersByAccountID];
-    v29 = [v28 count] > 1;
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    containersByAccountID = [cloudContext containersByAccountID];
+    v29 = [containersByAccountID count] > 1;
 
     if (!v29)
     {
@@ -3013,19 +3013,19 @@ uint64_t __66__ICCollaborationController_managedObjectContextObjectsDidChange___
       [ICCollaborationController acceptShareWithMetadata:managedObjectContext:completionHandler:];
     }
 
-    v17 = [(ICCollaborationController *)self containerForUserRecordID:v16];
-    v31 = [v17 options];
-    v32 = [v31 accountOverrideInfo];
-    v33 = [v32 accountID];
+    v17 = [(ICCollaborationController *)self containerForUserRecordID:userRecordID];
+    options = [v17 options];
+    accountOverrideInfo = [options accountOverrideInfo];
+    accountID = [accountOverrideInfo accountID];
     v34 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v33;
+    *(*(&buf + 1) + 40) = accountID;
   }
 
   if (!v17)
   {
 LABEL_16:
-    v35 = [v8 containerIdentifier];
-    v36 = v35 == 0;
+    containerIdentifier = [metadataCopy containerIdentifier];
+    v36 = containerIdentifier == 0;
 
     if (v36)
     {
@@ -3041,8 +3041,8 @@ LABEL_16:
       }
 
       v38 = MEMORY[0x1E695B888];
-      v39 = [v8 containerIdentifier];
-      v17 = [v38 containerWithIdentifier:v39];
+      containerIdentifier2 = [metadataCopy containerIdentifier];
+      v17 = [v38 containerWithIdentifier:containerIdentifier2];
     }
   }
 
@@ -3062,7 +3062,7 @@ LABEL_16:
   v53[2] = __92__ICCollaborationController_acceptShareWithMetadata_managedObjectContext_completionHandler___block_invoke;
   v53[3] = &unk_1E8468FA8;
   p_buf = &buf;
-  v54 = v9;
+  v54 = contextCopy;
   [v54 performBlockAndWait:v53];
   v18 = v54;
 LABEL_25:
@@ -3077,10 +3077,10 @@ LABEL_26:
       v47[2] = __92__ICCollaborationController_acceptShareWithMetadata_managedObjectContext_completionHandler___block_invoke_133;
       v47[3] = &unk_1E846CCE8;
       v47[4] = self;
-      v48 = v8;
+      v48 = metadataCopy;
       v52 = &buf;
-      v49 = v9;
-      v51 = v10;
+      v49 = contextCopy;
+      v51 = handlerCopy;
       v50 = v17;
       [v49 performBlock:v47];
     }
@@ -3094,7 +3094,7 @@ LABEL_26:
       }
 
       v46 = ICGenericError();
-      (*(v10 + 2))(v10, v46, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, v46, 0, 0);
     }
   }
 
@@ -3103,13 +3103,13 @@ LABEL_26:
     v41 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      v42 = [v8 share];
-      v43 = [v42 ic_loggingDescription];
-      [(ICCollaborationController *)v43 acceptShareWithMetadata:v56 managedObjectContext:v41 completionHandler:v42];
+      share2 = [metadataCopy share];
+      ic_loggingDescription2 = [share2 ic_loggingDescription];
+      [(ICCollaborationController *)ic_loggingDescription2 acceptShareWithMetadata:v56 managedObjectContext:v41 completionHandler:share2];
     }
 
     v44 = ICGenericError();
-    (*(v10 + 2))(v10, v44, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v44, 0, 0);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -3181,19 +3181,19 @@ void __92__ICCollaborationController_acceptShareWithMetadata_managedObjectContex
   }
 }
 
-- (id)containerForUserRecordID:(id)a3
+- (id)containerForUserRecordID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a3 recordName];
-  v5 = [(ICCollaborationController *)self cloudContext];
-  v6 = [v5 containersByAccountID];
-  v7 = [v6 allValues];
+  recordName = [d recordName];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  containersByAccountID = [cloudContext containersByAccountID];
+  allValues = [containersByAccountID allValues];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v7;
+  v8 = allValues;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -3209,7 +3209,7 @@ void __92__ICCollaborationController_acceptShareWithMetadata_managedObjectContex
 
         v12 = *(*(&v15 + 1) + 8 * i);
         v13 = [MEMORY[0x1E69B76F0] userRecordNameForContainer:{v12, v15}];
-        if ([v13 isEqualToString:v4])
+        if ([v13 isEqualToString:recordName])
         {
           v9 = v12;
 
@@ -3232,19 +3232,19 @@ LABEL_11:
   return v9;
 }
 
-- (id)containerForAccountID:(id)a3
+- (id)containerForAccountID:(id)d
 {
-  v4 = a3;
-  if (![v4 length])
+  dCopy = d;
+  if (![dCopy length])
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"accountID.length > 0" functionName:"-[ICCollaborationController containerForAccountID:]" simulateCrash:1 showAlert:0 format:@"Must have an account ID to get container."];
   }
 
-  if ([v4 length])
+  if ([dCopy length])
   {
-    v5 = [(ICCollaborationController *)self cloudContext];
-    v6 = [v5 containersByAccountID];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    containersByAccountID = [cloudContext containersByAccountID];
+    v7 = [containersByAccountID objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -3255,16 +3255,16 @@ LABEL_11:
   return v7;
 }
 
-- (void)acceptShareWithMetadata:(id)a3 attemptNumber:(id)a4 container:(id)a5 accountID:(id)a6 fetchObjectWithCompletionHandler:(id)a7
+- (void)acceptShareWithMetadata:(id)metadata attemptNumber:(id)number container:(id)container accountID:(id)d fetchObjectWithCompletionHandler:(id)handler
 {
   v62 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v38 = a5;
-  v39 = a6;
-  v41 = a7;
-  v13 = [v11 share];
-  v40 = [v13 URL];
+  metadataCopy = metadata;
+  numberCopy = number;
+  containerCopy = container;
+  dCopy = d;
+  handlerCopy = handler;
+  share = [metadataCopy share];
+  v40 = [share URL];
 
   if (!v40)
   {
@@ -3281,13 +3281,13 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1D4171000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "com.apple.notes.collaboration.acceptShare", "", buf, 2u);
   }
 
-  if (![v12 unsignedIntegerValue])
+  if (![numberCopy unsignedIntegerValue])
   {
 
-    v12 = &unk_1F4FC3FD8;
+    numberCopy = &unk_1F4FC3FD8;
   }
 
-  if ([v12 unsignedIntegerValue] < 6)
+  if ([numberCopy unsignedIntegerValue] < 6)
   {
     v21 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -3295,46 +3295,46 @@ LABEL_11:
       *buf = 138412802;
       v57 = v40;
       v58 = 2112;
-      v59 = v39;
+      v59 = dCopy;
       v60 = 2112;
-      v61 = v12;
+      v61 = numberCopy;
       _os_log_impl(&dword_1D4171000, v21, OS_LOG_TYPE_DEFAULT, "Accepting shared object at URL: %@, account ID = %@, attemptNumber = %@", buf, 0x20u);
     }
 
     v22 = objc_alloc(MEMORY[0x1E695B848]);
-    v55 = v11;
+    v55 = metadataCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
     v20 = [v22 initWithShareMetadatas:v23];
 
     [v20 setQualityOfService:25];
     [v20 setQueuePriority:8];
-    v24 = [v20 configuration];
-    [v24 setContainer:v38];
+    configuration = [v20 configuration];
+    [configuration setContainer:containerCopy];
 
-    v25 = [v20 configuration];
-    [v25 setDiscretionaryNetworkBehavior:0];
+    configuration2 = [v20 configuration];
+    [configuration2 setDiscretionaryNetworkBehavior:0];
 
     objc_initWeak(&location, v20);
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __120__ICCollaborationController_acceptShareWithMetadata_attemptNumber_container_accountID_fetchObjectWithCompletionHandler___block_invoke;
     v52[3] = &unk_1E846CD10;
-    v27 = v26;
+    v27 = dictionary;
     v53 = v27;
     [v20 setPerShareCompletionBlock:v52];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __120__ICCollaborationController_acceptShareWithMetadata_attemptNumber_container_accountID_fetchObjectWithCompletionHandler___block_invoke_2;
     v42[3] = &unk_1E846CDB0;
-    v28 = v11;
+    v28 = metadataCopy;
     v43 = v28;
     objc_copyWeak(v51, &location);
-    v44 = v12;
-    v45 = self;
-    v46 = v38;
-    v47 = v39;
-    v50 = v41;
+    v44 = numberCopy;
+    selfCopy = self;
+    v46 = containerCopy;
+    v47 = dCopy;
+    v50 = handlerCopy;
     v48 = v17;
     v51[1] = v15;
     v29 = v27;
@@ -3349,19 +3349,19 @@ LABEL_11:
     v31 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v28 share];
-      v33 = [v32 ic_loggingDescription];
-      v34 = [v20 ic_loggingDescription];
+      share2 = [v28 share];
+      ic_loggingDescription = [share2 ic_loggingDescription];
+      ic_loggingDescription2 = [v20 ic_loggingDescription];
       *buf = 138412546;
-      v57 = v33;
+      v57 = ic_loggingDescription;
       v58 = 2112;
-      v59 = v34;
+      v59 = ic_loggingDescription2;
       _os_log_impl(&dword_1D4171000, v31, OS_LOG_TYPE_DEFAULT, "Accepting %@ with %@", buf, 0x16u);
     }
 
-    v35 = [(ICCollaborationController *)self cloudContext];
-    v36 = [v35 operationQueue];
-    [v36 addOperation:v20];
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    operationQueue = [cloudContext operationQueue];
+    [operationQueue addOperation:v20];
 
     objc_destroyWeak(v51);
     objc_destroyWeak(&location);
@@ -3376,10 +3376,10 @@ LABEL_11:
     _os_signpost_emit_with_name_impl(&dword_1D4171000, v19, OS_SIGNPOST_INTERVAL_END, v15, "com.apple.notes.collaboration.acceptShare", "", buf, 2u);
   }
 
-  if (v41)
+  if (handlerCopy)
   {
     v20 = ICGenericError();
-    (*(v41 + 2))(v41, v20, 0, v39);
+    (*(handlerCopy + 2))(handlerCopy, v20, 0, dCopy);
 LABEL_19:
   }
 }
@@ -3660,28 +3660,28 @@ LABEL_5:
   [*(a1 + 64) ic_save];
 }
 
-- (void)fetchAndAcceptShareMetadataWithURL:(id)a3 managedObjectContext:(id)a4 alertBlock:(id)a5 showObjectBlock:(id)a6
+- (void)fetchAndAcceptShareMetadataWithURL:(id)l managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  lCopy = l;
+  contextCopy = context;
+  blockCopy = block;
+  objectBlockCopy = objectBlock;
+  if (lCopy)
   {
-    v14 = [(ICCollaborationController *)self collaborationControllerDelegate];
-    v22[0] = v10;
+    collaborationControllerDelegate = [(ICCollaborationController *)self collaborationControllerDelegate];
+    v22[0] = lCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __112__ICCollaborationController_fetchAndAcceptShareMetadataWithURL_managedObjectContext_alertBlock_showObjectBlock___block_invoke;
     v17[3] = &unk_1E846CE28;
     v17[4] = self;
-    v20 = v12;
-    v18 = v10;
-    v19 = v11;
-    v21 = v13;
-    [v14 collaborationController:self fetchShareMetadataWithURLs:v15 completion:v17];
+    v20 = blockCopy;
+    v18 = lCopy;
+    v19 = contextCopy;
+    v21 = objectBlockCopy;
+    [collaborationControllerDelegate collaborationController:self fetchShareMetadataWithURLs:v15 completion:v17];
   }
 
   else
@@ -3758,25 +3758,25 @@ void __112__ICCollaborationController_fetchAndAcceptShareMetadataWithURL_managed
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)processShareAcceptanceWithMetadata:(id)a3 managedObjectContext:(id)a4 alertBlock:(id)a5 showObjectBlock:(id)a6
+- (void)processShareAcceptanceWithMetadata:(id)metadata managedObjectContext:(id)context alertBlock:(id)block showObjectBlock:(id)objectBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  contextCopy = context;
+  blockCopy = block;
+  objectBlockCopy = objectBlock;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __112__ICCollaborationController_processShareAcceptanceWithMetadata_managedObjectContext_alertBlock_showObjectBlock___block_invoke;
   v18[3] = &unk_1E846CE78;
-  v19 = v10;
-  v20 = self;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v14 = v13;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
+  v19 = metadataCopy;
+  selfCopy = self;
+  v21 = contextCopy;
+  v22 = blockCopy;
+  v23 = objectBlockCopy;
+  v14 = objectBlockCopy;
+  v15 = contextCopy;
+  v16 = blockCopy;
+  v17 = metadataCopy;
   [(ICCollaborationController *)self acceptShareWithMetadata:v17 managedObjectContext:v15 completionHandler:v18];
 }
 
@@ -3975,33 +3975,33 @@ uint64_t __112__ICCollaborationController_processShareAcceptanceWithMetadata_man
   return result;
 }
 
-+ (void)genericShareErrorAlert:(id)a3
++ (void)genericShareErrorAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v6 = __ICLocalizedFrameworkString_impl(@"Can’t Open Note", @"Can’t Open Note", 0, 1);
   v5 = __ICLocalizedFrameworkString_impl(@"Sorry, this note can’t be opened right now. Please try again later.", @"Sorry, this note can’t be opened right now. Please try again later.", 0, 1);
-  (*(a3 + 2))(v4, v6, v5);
+  (*(alert + 2))(alertCopy, v6, v5);
 }
 
-+ (BOOL)showCloudKitShareAcceptancePartialFailureAlertForError:(id)a3 alertBlock:(id)a4
++ (BOOL)showCloudKitShareAcceptancePartialFailureAlertForError:(id)error alertBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  errorCopy = error;
+  blockCopy = block;
+  if (!errorCopy)
   {
     goto LABEL_6;
   }
 
-  v7 = [v5 domain];
-  if (([v7 isEqualToString:*MEMORY[0x1E695B740]] & 1) == 0)
+  domain = [errorCopy domain];
+  if (([domain isEqualToString:*MEMORY[0x1E695B740]] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [v5 code];
+  code = [errorCopy code];
 
-  if (v8 != 2)
+  if (code != 2)
   {
 LABEL_6:
     v11 = 0;
@@ -4012,14 +4012,14 @@ LABEL_6:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v9 = [v5 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E695B798]];
+  userInfo = [errorCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695B798]];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __95__ICCollaborationController_showCloudKitShareAcceptancePartialFailureAlertForError_alertBlock___block_invoke;
   v13[3] = &unk_1E846CEA0;
-  v14 = v6;
+  v14 = blockCopy;
   v15 = &v16;
   [v10 enumerateKeysAndObjectsUsingBlock:v13];
   v11 = *(v17 + 24);
@@ -4054,16 +4054,16 @@ void __95__ICCollaborationController_showCloudKitShareAcceptancePartialFailureAl
   }
 }
 
-+ (id)highlightColorForUserID:(id)a3 inNote:(id)a4 isDark:(BOOL)a5
++ (id)highlightColorForUserID:(id)d inNote:(id)note isDark:(BOOL)dark
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 collaborationColorManager];
-  v10 = [v9 highlightColorForUserID:v8 note:v7];
+  darkCopy = dark;
+  noteCopy = note;
+  dCopy = d;
+  collaborationColorManager = [noteCopy collaborationColorManager];
+  v10 = [collaborationColorManager highlightColorForUserID:dCopy note:noteCopy];
 
   v11 = 0.8;
-  if (!v5)
+  if (!darkCopy)
   {
     v11 = 1.0;
   }
@@ -4116,21 +4116,21 @@ void __41__ICCollaborationController_updateShares__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updatePendingInvitationsInAccountWithID:(id)a3 receivedSince:(id)a4
+- (void)updatePendingInvitationsInAccountWithID:(id)d receivedSince:(id)since
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sinceCopy = since;
   if ((updatePendingInvitationsInAccountWithID_receivedSince__isUpdatingPendingInvitations & 1) == 0)
   {
     v8 = os_log_create("com.apple.notes", "Collaboration");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v17 = v6;
+      v17 = dCopy;
       v18 = 2112;
       v20 = 2080;
-      v19 = v7;
+      v19 = sinceCopy;
       v21 = "[ICCollaborationController updatePendingInvitationsInAccountWithID:receivedSince:]";
       v22 = 1024;
       v23 = 1526;
@@ -4138,16 +4138,16 @@ void __41__ICCollaborationController_updateShares__block_invoke_2(uint64_t a1)
     }
 
     updatePendingInvitationsInAccountWithID_receivedSince__isUpdatingPendingInvitations = 1;
-    v9 = [(ICCollaborationController *)self viewContext];
+    viewContext = [(ICCollaborationController *)self viewContext];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __83__ICCollaborationController_updatePendingInvitationsInAccountWithID_receivedSince___block_invoke;
     v11[3] = &unk_1E846A3A0;
-    v12 = v6;
-    v13 = v9;
-    v14 = v7;
-    v15 = self;
-    v10 = v9;
+    v12 = dCopy;
+    v13 = viewContext;
+    v14 = sinceCopy;
+    selfCopy = self;
+    v10 = viewContext;
     [v10 performBlock:v11];
   }
 }
@@ -4285,30 +4285,30 @@ void __83__ICCollaborationController_updatePendingInvitationsInAccountWithID_rec
   updatePendingInvitationsInAccountWithID_receivedSince__isUpdatingPendingInvitations = 0;
 }
 
-+ (void)showQuotaExceededAlertIfNeededWithRecordID:(id)a3 accountID:(id)a4
++ (void)showQuotaExceededAlertIfNeededWithRecordID:(id)d accountID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [a1 sharedInstance];
-  v8 = [v10 collaborationControllerDelegate];
-  v9 = [a1 sharedInstance];
-  [v8 collaborationController:v9 showQuotaExceededAlertIfNeededWithRecordID:v7 accountID:v6];
+  iDCopy = iD;
+  dCopy = d;
+  sharedInstance = [self sharedInstance];
+  collaborationControllerDelegate = [sharedInstance collaborationControllerDelegate];
+  sharedInstance2 = [self sharedInstance];
+  [collaborationControllerDelegate collaborationController:sharedInstance2 showQuotaExceededAlertIfNeededWithRecordID:dCopy accountID:iDCopy];
 }
 
-- (id)objectForCKShareRecordID:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)objectForCKShareRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3)
+  iDCopy = iD;
+  contextCopy = context;
+  if (d)
   {
-    v10 = a3;
-    v11 = [(ICCollaborationController *)self ckShareIDToRootRecordID];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    dCopy = d;
+    ckShareIDToRootRecordID = [(ICCollaborationController *)self ckShareIDToRootRecordID];
+    v12 = [ckShareIDToRootRecordID objectForKeyedSubscript:dCopy];
 
     if (v12)
     {
-      v13 = [(ICCollaborationController *)self cloudContext];
-      v14 = [v13 existingCloudObjectForRecordID:v12 recordType:0 accountID:v8 context:v9];
+      cloudContext = [(ICCollaborationController *)self cloudContext];
+      v14 = [cloudContext existingCloudObjectForRecordID:v12 recordType:0 accountID:iDCopy context:contextCopy];
     }
 
     else
@@ -4325,33 +4325,33 @@ void __83__ICCollaborationController_updatePendingInvitationsInAccountWithID_rec
   return v14;
 }
 
-- (void)updateRootRecordMapWithShare:(id)a3
+- (void)updateRootRecordMapWithShare:(id)share
 {
-  v4 = a3;
-  if (v4)
+  shareCopy = share;
+  if (shareCopy)
   {
-    v13 = v4;
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69B7598]];
-    v6 = [v5 recordID];
-    v7 = [v13 recordID];
-    if (v7 && v6)
+    v13 = shareCopy;
+    v5 = [shareCopy objectForKeyedSubscript:*MEMORY[0x1E69B7598]];
+    recordID = [v5 recordID];
+    recordID2 = [v13 recordID];
+    if (recordID2 && recordID)
     {
-      v8 = [(ICCollaborationController *)self ckShareIDToRootRecordID];
-      v9 = [v8 allKeys];
-      v10 = [v13 recordID];
-      v11 = [v9 containsObject:v10];
+      ckShareIDToRootRecordID = [(ICCollaborationController *)self ckShareIDToRootRecordID];
+      allKeys = [ckShareIDToRootRecordID allKeys];
+      recordID3 = [v13 recordID];
+      v11 = [allKeys containsObject:recordID3];
 
       if (v11)
       {
 LABEL_7:
 
-        v4 = v13;
+        shareCopy = v13;
         goto LABEL_8;
       }
 
-      v7 = [(ICCollaborationController *)self ckShareIDToRootRecordID];
-      v12 = [v13 recordID];
-      [v7 setObject:v6 forKeyedSubscript:v12];
+      recordID2 = [(ICCollaborationController *)self ckShareIDToRootRecordID];
+      recordID4 = [v13 recordID];
+      [recordID2 setObject:recordID forKeyedSubscript:recordID4];
     }
 
     goto LABEL_7;
@@ -4360,25 +4360,25 @@ LABEL_7:
 LABEL_8:
 }
 
-+ (void)saveActivityType:(id)a3 isCollaborationSelected:(BOOL)a4 error:(id)a5 completed:(BOOL)a6 forNote:(id)a7
++ (void)saveActivityType:(id)type isCollaborationSelected:(BOOL)selected error:(id)error completed:(BOOL)completed forNote:(id)note
 {
-  v7 = a6;
-  v9 = a4;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
-  v16 = [a1 sharedInstance];
-  v15 = [v16 collaborationAnalyticsTracker];
-  [v15 saveActivityType:v14 isCollaborationSelected:v9 error:v13 completed:v7 forNote:v12];
+  completedCopy = completed;
+  selectedCopy = selected;
+  noteCopy = note;
+  errorCopy = error;
+  typeCopy = type;
+  sharedInstance = [self sharedInstance];
+  collaborationAnalyticsTracker = [sharedInstance collaborationAnalyticsTracker];
+  [collaborationAnalyticsTracker saveActivityType:typeCopy isCollaborationSelected:selectedCopy error:errorCopy completed:completedCopy forNote:noteCopy];
 }
 
-+ (void)trackShare:(id)a3 forNote:(id)a4
++ (void)trackShare:(id)share forNote:(id)note
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [a1 sharedInstance];
-  v8 = [v9 collaborationAnalyticsTracker];
-  [v8 trackShare:v7 forNote:v6];
+  noteCopy = note;
+  shareCopy = share;
+  sharedInstance = [self sharedInstance];
+  collaborationAnalyticsTracker = [sharedInstance collaborationAnalyticsTracker];
+  [collaborationAnalyticsTracker trackShare:shareCopy forNote:noteCopy];
 }
 
 - (ICCollaborationControllerDelegate)collaborationControllerDelegate

@@ -1,54 +1,54 @@
 @interface SBSharedModalAlertItemPresenter
 - (SBAlertItem)currentlyPresentedAlertItem;
-- (SBSharedModalAlertItemPresenter)initWithLockOutProvider:(id)a3 systemGestureManager:(id)a4 reachabilityManager:(id)a5 alertLayoutPresentationVerifier:(id)a6 windowScene:(id)a7 enableGestures:(BOOL)a8;
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4;
-- (void)_performActionForAlertController:(id)a3 invokeActionBlock:(id)a4 dismissControllerBlock:(id)a5;
-- (void)_updateBarSwipeViewWithAlertController:(id)a3;
+- (SBSharedModalAlertItemPresenter)initWithLockOutProvider:(id)provider systemGestureManager:(id)manager reachabilityManager:(id)reachabilityManager alertLayoutPresentationVerifier:(id)verifier windowScene:(id)scene enableGestures:(BOOL)gestures;
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type;
+- (void)_performActionForAlertController:(id)controller invokeActionBlock:(id)block dismissControllerBlock:(id)controllerBlock;
+- (void)_updateBarSwipeViewWithAlertController:(id)controller;
 - (void)_updateHomeGestureParticipant;
-- (void)alertControllerDidDisappear:(id)a3;
+- (void)alertControllerDidDisappear:(id)disappear;
 - (void)dealloc;
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
 - (void)handleReachabilityYOffsetDidChange;
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3;
-- (void)homeGrabberViewDidReceiveClick:(id)a3;
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view;
+- (void)homeGrabberViewDidReceiveClick:(id)click;
 - (void)invalidate;
-- (void)modalViewControllerStack:(id)a3 didDismissViewController:(id)a4;
-- (void)modalViewControllerStack:(id)a3 didPresentViewController:(id)a4;
-- (void)modalViewControllerStack:(id)a3 willDismissViewController:(id)a4 animated:(BOOL)a5;
-- (void)modalViewControllerStack:(id)a3 willPresentViewController:(id)a4;
-- (void)presentAlertItem:(id)a3 isLocked:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)modalViewControllerStack:(id)stack didDismissViewController:(id)controller;
+- (void)modalViewControllerStack:(id)stack didPresentViewController:(id)controller;
+- (void)modalViewControllerStack:(id)stack willDismissViewController:(id)controller animated:(BOOL)animated;
+- (void)modalViewControllerStack:(id)stack willPresentViewController:(id)controller;
+- (void)presentAlertItem:(id)item isLocked:(BOOL)locked animated:(BOOL)animated completion:(id)completion;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBSharedModalAlertItemPresenter
 
 - (SBAlertItem)currentlyPresentedAlertItem
 {
-  v2 = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
-  v3 = [v2 alertItem];
+  topViewController = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
+  alertItem = [topViewController alertItem];
 
-  return v3;
+  return alertItem;
 }
 
-- (SBSharedModalAlertItemPresenter)initWithLockOutProvider:(id)a3 systemGestureManager:(id)a4 reachabilityManager:(id)a5 alertLayoutPresentationVerifier:(id)a6 windowScene:(id)a7 enableGestures:(BOOL)a8
+- (SBSharedModalAlertItemPresenter)initWithLockOutProvider:(id)provider systemGestureManager:(id)manager reachabilityManager:(id)reachabilityManager alertLayoutPresentationVerifier:(id)verifier windowScene:(id)scene enableGestures:(BOOL)gestures
 {
-  v8 = a8;
-  v39 = a3;
-  v15 = a4;
-  v38 = a5;
-  v16 = a6;
-  v17 = a7;
+  gesturesCopy = gestures;
+  providerCopy = provider;
+  managerCopy = manager;
+  reachabilityManagerCopy = reachabilityManager;
+  verifierCopy = verifier;
+  sceneCopy = scene;
   v40.receiver = self;
   v40.super_class = SBSharedModalAlertItemPresenter;
   v18 = [(SBSharedModalAlertItemPresenter *)&v40 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_lockOutProvider, a3);
-    objc_storeStrong(&v19->_systemGestureManager, a4);
-    v20 = [v17 zStackResolver];
+    objc_storeStrong(&v18->_lockOutProvider, provider);
+    objc_storeStrong(&v19->_systemGestureManager, manager);
+    zStackResolver = [sceneCopy zStackResolver];
     zStackResolver = v19->_zStackResolver;
-    v19->_zStackResolver = v20;
+    v19->_zStackResolver = zStackResolver;
 
     v22 = SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleAlert");
     v23 = off_27839E900;
@@ -57,25 +57,25 @@
       v23 = off_2783A0F98;
     }
 
-    v24 = [objc_alloc(*v23) initWithWindowScene:v17 role:@"SBTraitsParticipantRoleAlert" debugName:@"SBAlertItemWindow" alertLayoutPresentationVerifier:v16];
+    v24 = [objc_alloc(*v23) initWithWindowScene:sceneCopy role:@"SBTraitsParticipantRoleAlert" debugName:@"SBAlertItemWindow" alertLayoutPresentationVerifier:verifierCopy];
     window = v19->_window;
     v19->_window = v24;
 
     [(SBWindow *)v19->_window setOpaque:0];
     v26 = v19->_window;
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [(SBWindow *)v26 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SBWindow *)v26 setBackgroundColor:clearColor];
 
     [(SBWindow *)v19->_window setWindowLevel:*MEMORY[0x277D772A8]];
     [(SBWindow *)v19->_window setHidden:1];
-    objc_storeStrong(&v19->_alertLayoutPresentationVerifier, a6);
-    [v16 setAlertItemWindow:v19->_window];
-    [v16 setAlertPresenter:v19];
-    objc_storeStrong(&v19->_reachabilityManager, a5);
+    objc_storeStrong(&v19->_alertLayoutPresentationVerifier, verifier);
+    [verifierCopy setAlertItemWindow:v19->_window];
+    [verifierCopy setAlertPresenter:v19];
+    objc_storeStrong(&v19->_reachabilityManager, reachabilityManager);
     [(SBReachabilityManager *)v19->_reachabilityManager addObserver:v19];
     v28 = [SBBarSwipeAffordanceView alloc];
     [(SBWindow *)v19->_window bounds];
-    v29 = [(SBBarSwipeAffordanceView *)v28 initWithFrame:v15 systemGestureManager:v8 enableGestures:?];
+    v29 = [(SBBarSwipeAffordanceView *)v28 initWithFrame:managerCopy systemGestureManager:gesturesCopy enableGestures:?];
     [(SBBarSwipeAffordanceView *)v29 setAutoresizingMask:18];
     [(SBBarSwipeAffordanceView *)v29 setDelegate:v19];
     [(SBBarSwipeAffordanceView *)v29 setPointerClickDelegate:v19];
@@ -83,16 +83,16 @@
     [(SBBarSwipeAffordanceView *)v29 setActive:0];
     [(SBBarSwipeAffordanceView *)v29 setUserInteractionEnabled:0];
     [(SBWindow *)v19->_window addSubview:v29];
-    v30 = [(SBBarSwipeAffordanceView *)v29 layer];
-    [v30 setZPosition:1.0];
+    layer = [(SBBarSwipeAffordanceView *)v29 layer];
+    [layer setZPosition:1.0];
 
     barSwipeView = v19->_barSwipeView;
     v19->_barSwipeView = v29;
     v32 = v29;
 
     v33 = [SBModalViewControllerStack alloc];
-    v34 = [(SBWindow *)v19->_window rootViewController];
-    v35 = [(SBModalViewControllerStack *)v33 initWithPresentingViewController:v34];
+    rootViewController = [(SBWindow *)v19->_window rootViewController];
+    v35 = [(SBModalViewControllerStack *)v33 initWithPresentingViewController:rootViewController];
     modalViewControllerStack = v19->_modalViewControllerStack;
     v19->_modalViewControllerStack = v35;
 
@@ -113,8 +113,8 @@
 - (void)invalidate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(SBModalViewControllerStack *)self->_modalViewControllerStack viewControllers];
-  v3 = [v2 bs_map:&__block_literal_global_231];
+  viewControllers = [(SBModalViewControllerStack *)self->_modalViewControllerStack viewControllers];
+  v3 = [viewControllers bs_map:&__block_literal_global_231];
 
   v11 = 0u;
   v12 = 0u;
@@ -147,22 +147,22 @@
   }
 }
 
-- (void)presentAlertItem:(id)a3 isLocked:(BOOL)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentAlertItem:(id)item isLocked:(BOOL)locked animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = a3;
-  v12 = a6;
+  animatedCopy = animated;
+  lockedCopy = locked;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (!v11)
+  if (!itemCopy)
   {
     [SBSharedModalAlertItemPresenter presentAlertItem:a2 isLocked:self animated:? completion:?];
   }
 
-  v13 = [v11 _prepareNewAlertControllerWithLockedState:v8 requirePasscodeForActions:{-[SBFLockOutStatusProvider isLockedOut](self->_lockOutProvider, "isLockedOut")}];
+  v13 = [itemCopy _prepareNewAlertControllerWithLockedState:lockedCopy requirePasscodeForActions:{-[SBFLockOutStatusProvider isLockedOut](self->_lockOutProvider, "isLockedOut")}];
   if (!v13)
   {
-    [SBSharedModalAlertItemPresenter presentAlertItem:a2 isLocked:self animated:v11 completion:?];
+    [SBSharedModalAlertItemPresenter presentAlertItem:a2 isLocked:self animated:itemCopy completion:?];
   }
 
   [v13 setCoordinatedActionPerformingDelegate:self];
@@ -171,9 +171,9 @@
   v16[1] = 3221225472;
   v16[2] = __81__SBSharedModalAlertItemPresenter_presentAlertItem_isLocked_animated_completion___block_invoke;
   v16[3] = &unk_2783A9C70;
-  v17 = v12;
-  v15 = v12;
-  [(SBModalViewControllerStack *)modalViewControllerStack addViewController:v13 animated:v7 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(SBModalViewControllerStack *)modalViewControllerStack addViewController:v13 animated:animatedCopy completion:v16];
 }
 
 uint64_t __81__SBSharedModalAlertItemPresenter_presentAlertItem_isLocked_animated_completion___block_invoke(uint64_t a1)
@@ -187,21 +187,21 @@ uint64_t __81__SBSharedModalAlertItemPresenter_presentAlertItem_isLocked_animate
   return result;
 }
 
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  animatedCopy = animated;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (!v9)
+  if (!itemCopy)
   {
     [SBSharedModalAlertItemPresenter dismissAlertItem:a2 animated:self completion:?];
   }
 
-  v11 = [v9 _alertController];
-  if (!v11)
+  _alertController = [itemCopy _alertController];
+  if (!_alertController)
   {
-    [SBSharedModalAlertItemPresenter dismissAlertItem:a2 animated:self completion:v9];
+    [SBSharedModalAlertItemPresenter dismissAlertItem:a2 animated:self completion:itemCopy];
   }
 
   modalViewControllerStack = self->_modalViewControllerStack;
@@ -209,11 +209,11 @@ uint64_t __81__SBSharedModalAlertItemPresenter_presentAlertItem_isLocked_animate
   v15[1] = 3221225472;
   v15[2] = __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_completion___block_invoke;
   v15[3] = &unk_2783A9C98;
-  v16 = v9;
-  v17 = v10;
-  v13 = v10;
-  v14 = v9;
-  [(SBModalViewControllerStack *)modalViewControllerStack removeViewController:v11 animated:v6 completion:v15];
+  v16 = itemCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = itemCopy;
+  [(SBModalViewControllerStack *)modalViewControllerStack removeViewController:_alertController animated:animatedCopy completion:v15];
 }
 
 uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_completion___block_invoke(uint64_t a1)
@@ -230,51 +230,51 @@ uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_complet
   return result;
 }
 
-- (void)modalViewControllerStack:(id)a3 willPresentViewController:(id)a4
+- (void)modalViewControllerStack:(id)stack willPresentViewController:(id)controller
 {
-  [(SBWindow *)self->_window setHidden:0, a4];
+  [(SBWindow *)self->_window setHidden:0, controller];
   [(SBFWindow *)self->_window makeKeyWindow];
 
   [(SBSharedModalAlertItemPresenter *)self _updateHomeGestureParticipant];
 }
 
-- (void)modalViewControllerStack:(id)a3 didPresentViewController:(id)a4
+- (void)modalViewControllerStack:(id)stack didPresentViewController:(id)controller
 {
-  v5 = a4;
-  [v5 setAlertControllerDelegate:self];
-  v6 = [v5 alertItem];
-  [v6 _setPresented:1];
-  [(SBSharedModalAlertItemPresenter *)self _updateBarSwipeViewWithAlertController:v5];
+  controllerCopy = controller;
+  [controllerCopy setAlertControllerDelegate:self];
+  alertItem = [controllerCopy alertItem];
+  [alertItem _setPresented:1];
+  [(SBSharedModalAlertItemPresenter *)self _updateBarSwipeViewWithAlertController:controllerCopy];
 
   [(SBAlertLayoutPresentationVerifier *)self->_alertLayoutPresentationVerifier scheduleAlertLayoutVerificationForReason:@"didPresent alertController"];
 }
 
-- (void)modalViewControllerStack:(id)a3 willDismissViewController:(id)a4 animated:(BOOL)a5
+- (void)modalViewControllerStack:(id)stack willDismissViewController:(id)controller animated:(BOOL)animated
 {
-  v11 = a4;
+  controllerCopy = controller;
   alertLayoutPresentationVerifier = self->_alertLayoutPresentationVerifier;
-  v9 = a3;
+  stackCopy = stack;
   [(SBAlertLayoutPresentationVerifier *)alertLayoutPresentationVerifier scheduleAlertLayoutVerificationForReason:@"willDismiss alertController"];
-  [v11 setAlertControllerDelegate:0];
+  [controllerCopy setAlertControllerDelegate:0];
   [(SBSharedModalAlertItemPresenter *)self _updateHomeGestureParticipant];
-  v10 = [v9 topViewController];
+  topViewController = [stackCopy topViewController];
 
-  [(SBSharedModalAlertItemPresenter *)self _updateBarSwipeViewWithAlertController:v10];
-  if (!v10 && !a5)
+  [(SBSharedModalAlertItemPresenter *)self _updateBarSwipeViewWithAlertController:topViewController];
+  if (!topViewController && !animated)
   {
     [(SBFWindow *)self->_window resignAsKeyWindow];
     [(SBWindow *)self->_window setHidden:1];
   }
 }
 
-- (void)modalViewControllerStack:(id)a3 didDismissViewController:(id)a4
+- (void)modalViewControllerStack:(id)stack didDismissViewController:(id)controller
 {
-  v5 = [a4 alertItem];
-  [v5 _setPresented:0];
+  alertItem = [controller alertItem];
+  [alertItem _setPresented:0];
 
-  v6 = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
+  topViewController = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
 
-  if (!v6)
+  if (!topViewController)
   {
     [(SBFWindow *)self->_window resignAsKeyWindow];
     [(SBWindow *)self->_window setHidden:1];
@@ -283,25 +283,25 @@ uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_complet
   }
 }
 
-- (void)_performActionForAlertController:(id)a3 invokeActionBlock:(id)a4 dismissControllerBlock:(id)a5
+- (void)_performActionForAlertController:(id)controller invokeActionBlock:(id)block dismissControllerBlock:(id)controllerBlock
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4);
+    (*(block + 2))(block);
   }
 }
 
-- (void)alertControllerDidDisappear:(id)a3
+- (void)alertControllerDidDisappear:(id)disappear
 {
-  v9 = a3;
-  v5 = [(SBModalViewControllerStack *)self->_modalViewControllerStack viewControllers];
-  v6 = [v5 containsObject:v9];
+  disappearCopy = disappear;
+  viewControllers = [(SBModalViewControllerStack *)self->_modalViewControllerStack viewControllers];
+  v6 = [viewControllers containsObject:disappearCopy];
 
   if (v6)
   {
-    v7 = [v9 alertItem];
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SBSharedModalAlertItemPresenter.m" lineNumber:384 description:{@"Unexpectedly dismissed alert controller (%@), please file a radar to PEP SpringBoard about this bad citizen: %@", v9, v7}];
+    alertItem = [disappearCopy alertItem];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSharedModalAlertItemPresenter.m" lineNumber:384 description:{@"Unexpectedly dismissed alert controller (%@), please file a radar to PEP SpringBoard about this bad citizen: %@", disappearCopy, alertItem}];
   }
 }
 
@@ -315,10 +315,10 @@ uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_complet
 
 - (void)_updateHomeGestureParticipant
 {
-  v3 = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
+  topViewController = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
 
   zStackParticipant = self->_zStackParticipant;
-  if (v3)
+  if (topViewController)
   {
     v5 = zStackParticipant == 0;
   }
@@ -343,7 +343,7 @@ uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_complet
   {
     if (zStackParticipant)
     {
-      v6 = v3 == 0;
+      v6 = topViewController == 0;
     }
 
     else
@@ -360,14 +360,14 @@ uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_complet
   }
 }
 
-- (void)_updateBarSwipeViewWithAlertController:(id)a3
+- (void)_updateBarSwipeViewWithAlertController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   barSwipeView = self->_barSwipeView;
   if (([(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture]& 1) != 0)
   {
-    v5 = [v6 alertItem];
-    -[SBBarSwipeAffordanceView setActive:](barSwipeView, "setActive:", [v5 allowMenuButtonDismissal]);
+    alertItem = [controllerCopy alertItem];
+    -[SBBarSwipeAffordanceView setActive:](barSwipeView, "setActive:", [alertItem allowMenuButtonDismissal]);
   }
 
   else
@@ -376,46 +376,46 @@ uint64_t __72__SBSharedModalAlertItemPresenter_dismissAlertItem_animated_complet
   }
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v4 = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
-  [(SBSharedModalAlertItemPresenter *)self _updateBarSwipeViewWithAlertController:v4];
+  topViewController = [(SBModalViewControllerStack *)self->_modalViewControllerStack topViewController];
+  [(SBSharedModalAlertItemPresenter *)self _updateBarSwipeViewWithAlertController:topViewController];
 }
 
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type
 {
-  if ((a4 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A73B0[a4 - 1];
+    return qword_21F8A73B0[type - 1];
   }
 }
 
-- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)a3
+- (void)homeGesturePerformedForBarSwipeAffordanceView:(id)view
 {
-  v3 = [(SBSharedModalAlertItemPresenter *)self currentlyPresentedAlertItem];
-  [v3 deactivate];
+  currentlyPresentedAlertItem = [(SBSharedModalAlertItemPresenter *)self currentlyPresentedAlertItem];
+  [currentlyPresentedAlertItem deactivate];
 }
 
-- (void)homeGrabberViewDidReceiveClick:(id)a3
+- (void)homeGrabberViewDidReceiveClick:(id)click
 {
-  v4 = a3;
+  clickCopy = click;
   zStackParticipant = self->_zStackParticipant;
   if (zStackParticipant)
   {
-    v8 = v4;
-    v6 = [(SBFZStackParticipant *)zStackParticipant ownsHomeGesture];
-    v4 = v8;
-    if (v6)
+    v8 = clickCopy;
+    ownsHomeGesture = [(SBFZStackParticipant *)zStackParticipant ownsHomeGesture];
+    clickCopy = v8;
+    if (ownsHomeGesture)
     {
-      v7 = [(SBSharedModalAlertItemPresenter *)self currentlyPresentedAlertItem];
-      [v7 deactivate];
+      currentlyPresentedAlertItem = [(SBSharedModalAlertItemPresenter *)self currentlyPresentedAlertItem];
+      [currentlyPresentedAlertItem deactivate];
 
-      v4 = v8;
+      clickCopy = v8;
     }
   }
 }

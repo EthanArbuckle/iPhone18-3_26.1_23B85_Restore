@@ -7,25 +7,25 @@
 
 - (uint64_t)_lp_stringType
 {
-  v2 = objc_getAssociatedObject(a1, a2);
+  v2 = objc_getAssociatedObject(self, a2);
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)_lp_setStringType:()LPInternal
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, sel__lp_stringType, v2, 1);
+  objc_setAssociatedObject(self, sel__lp_stringType, v2, 1);
 }
 
 @end

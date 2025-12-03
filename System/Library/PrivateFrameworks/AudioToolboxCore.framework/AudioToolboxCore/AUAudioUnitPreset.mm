@@ -1,7 +1,7 @@
 @interface AUAudioUnitPreset
-- (AUAudioUnitPreset)initWithCoder:(id)a3;
+- (AUAudioUnitPreset)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AUAudioUnitPreset
@@ -13,17 +13,17 @@
   [(AUAudioUnitPreset *)&v2 dealloc];
 }
 
-- (AUAudioUnitPreset)initWithCoder:(id)a3
+- (AUAudioUnitPreset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AUAudioUnitPreset;
   v5 = [(AUAudioUnitPreset *)&v10 init];
   if (v5)
   {
-    v5->_number = [v4 decodeIntegerForKey:@"num"];
+    v5->_number = [coderCopy decodeIntegerForKey:@"num"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"name"];
     name = v5->_name;
     v5->_name = v7;
   }
@@ -31,11 +31,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_number forKey:@"num"];
-  [v4 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_number forKey:@"num"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
 }
 
 @end

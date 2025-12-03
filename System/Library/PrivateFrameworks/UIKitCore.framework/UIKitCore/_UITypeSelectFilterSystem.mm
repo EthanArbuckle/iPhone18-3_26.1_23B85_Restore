@@ -1,28 +1,28 @@
 @interface _UITypeSelectFilterSystem
-- (BOOL)_isValidMatchingRangeForString:(id)a3;
+- (BOOL)_isValidMatchingRangeForString:(id)string;
 - (id)_acronymMatching;
-- (id)_matchingRangeWithLocation:(int64_t)a3 length:(int64_t)a4;
-- (id)_stringWithoutPunctuation:(id)a3;
-- (id)filterResultForTypeSelectItem:(id)a3;
-- (int64_t)_lengthForWithoutPunctuationMatch:(id)a3;
+- (id)_matchingRangeWithLocation:(int64_t)location length:(int64_t)length;
+- (id)_stringWithoutPunctuation:(id)punctuation;
+- (id)filterResultForTypeSelectItem:(id)item;
+- (int64_t)_lengthForWithoutPunctuationMatch:(id)match;
 @end
 
 @implementation _UITypeSelectFilterSystem
 
-- (id)filterResultForTypeSelectItem:(id)a3
+- (id)filterResultForTypeSelectItem:(id)item
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UITypeSelectFilterSystem *)self inputString];
-  self->_userInputLength = [v5 length];
+  itemCopy = item;
+  inputString = [(_UITypeSelectFilterSystem *)self inputString];
+  self->_userInputLength = [inputString length];
 
-  v6 = [v4 string];
+  string = [itemCopy string];
   typeSelectString = self->_typeSelectString;
-  self->_typeSelectString = v6;
+  self->_typeSelectString = string;
 
   v8 = [(NSString *)self->_typeSelectString length];
-  v9 = [(_UITypeSelectFilterSystem *)self inputString];
-  if (!v9 || self->_userInputLength < 1)
+  inputString2 = [(_UITypeSelectFilterSystem *)self inputString];
+  if (!inputString2 || self->_userInputLength < 1)
   {
 
     goto LABEL_7;
@@ -48,13 +48,13 @@ LABEL_7:
 
   self->_mask = 129;
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [(_UITypeSelectFilterSystem *)self inputString];
-  v17 = [v15 stringWithFormat:@"%C", objc_msgSend(v16, "characterAtIndex:", self->_userInputLength - 1)];
+  inputString3 = [(_UITypeSelectFilterSystem *)self inputString];
+  v17 = [v15 stringWithFormat:@"%C", objc_msgSend(inputString3, "characterAtIndex:", self->_userInputLength - 1)];
   lastCharacterFromUserInput = self->_lastCharacterFromUserInput;
   self->_lastCharacterFromUserInput = v17;
 
-  v19 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v20 = [(NSString *)self->_typeSelectString componentsSeparatedByCharactersInSet:v19];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v20 = [(NSString *)self->_typeSelectString componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   words = self->_words;
   self->_words = v20;
 
@@ -69,7 +69,7 @@ LABEL_7:
     if (![(_UITypeSelectFilterSystem *)self _isValidMatchingRangeForString:v22])
     {
       v44 = v22;
-      v45 = v19;
+      v45 = whitespaceAndNewlineCharacterSet;
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
@@ -121,7 +121,7 @@ LABEL_7:
       }
 
       v22 = v44;
-      v19 = v45;
+      whitespaceAndNewlineCharacterSet = v45;
       goto LABEL_26;
     }
 
@@ -137,7 +137,7 @@ LABEL_26:
   {
     v42 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{0, v8}];
     [v42 removeIndexes:self->_matchingRanges];
-    v24 = [[_UITypeSelectItemResult alloc] initWithTypeSelectItem:v4 matchingRanges:self->_matchingRanges unmatchingRanges:v42];
+    v24 = [[_UITypeSelectItemResult alloc] initWithTypeSelectItem:itemCopy matchingRanges:self->_matchingRanges unmatchingRanges:v42];
   }
 
   else
@@ -150,11 +150,11 @@ LABEL_30:
   return v24;
 }
 
-- (BOOL)_isValidMatchingRangeForString:(id)a3
+- (BOOL)_isValidMatchingRangeForString:(id)string
 {
-  v4 = a3;
-  v5 = [(_UITypeSelectFilterSystem *)self inputString];
-  v6 = [v4 rangeOfString:v5 options:self->_mask];
+  stringCopy = string;
+  inputString = [(_UITypeSelectFilterSystem *)self inputString];
+  v6 = [stringCopy rangeOfString:inputString options:self->_mask];
   v8 = v7;
 
   if (v6)
@@ -170,38 +170,38 @@ LABEL_30:
   return !v9;
 }
 
-- (id)_stringWithoutPunctuation:(id)a3
+- (id)_stringWithoutPunctuation:(id)punctuation
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 letterCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  punctuationCopy = punctuation;
+  letterCharacterSet = [v3 letterCharacterSet];
+  invertedSet = [letterCharacterSet invertedSet];
+  v7 = [punctuationCopy componentsSeparatedByCharactersInSet:invertedSet];
 
   v8 = [v7 componentsJoinedByString:&stru_1EFB14550];
 
   return v8;
 }
 
-- (int64_t)_lengthForWithoutPunctuationMatch:(id)a3
+- (int64_t)_lengthForWithoutPunctuationMatch:(id)match
 {
-  v4 = [a3 substringFromIndex:self->_userInputLength];
+  v4 = [match substringFromIndex:self->_userInputLength];
   v5 = [v4 rangeOfString:self->_lastCharacterFromUserInput options:self->_mask];
 
   return v5;
 }
 
-- (id)_matchingRangeWithLocation:(int64_t)a3 length:(int64_t)a4
+- (id)_matchingRangeWithLocation:(int64_t)location length:(int64_t)length
 {
   matchingRanges = self->_matchingRanges;
   if (matchingRanges)
   {
-    [(NSMutableIndexSet *)matchingRanges addIndexesInRange:a3, a4];
+    [(NSMutableIndexSet *)matchingRanges addIndexesInRange:location, length];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{a3, a4}];
+    v6 = [MEMORY[0x1E696AD50] indexSetWithIndexesInRange:{location, length}];
     v7 = self->_matchingRanges;
     self->_matchingRanges = v6;
   }
@@ -235,8 +235,8 @@ LABEL_30:
           v11 = [(NSString *)typeSelectString rangeOfString:v10 options:self->_mask];
 
           v12 = MEMORY[0x1E696AEC0];
-          v13 = [(_UITypeSelectFilterSystem *)self inputString];
-          v14 = [v12 stringWithFormat:@"%C", objc_msgSend(v13, "characterAtIndex:", v5)];
+          inputString = [(_UITypeSelectFilterSystem *)self inputString];
+          v14 = [v12 stringWithFormat:@"%C", objc_msgSend(inputString, "characterAtIndex:", v5)];
 
           v15 = [(NSArray *)self->_words objectAtIndexedSubscript:v6];
           v16 = [v15 rangeOfString:v14 options:self->_mask];

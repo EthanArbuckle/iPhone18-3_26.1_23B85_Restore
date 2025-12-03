@@ -1,28 +1,28 @@
 @interface MediaView
 - (UIColor)backgroundColor;
-- (_TtC8AppStore9MediaView)initWithCoder:(id)a3;
-- (_TtC8AppStore9MediaView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore9MediaView)initWithCoder:(id)coder;
+- (_TtC8AppStore9MediaView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation MediaView
 
 - (UIColor)backgroundColor
 {
-  v2 = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore9MediaView_contentContainer) + OBJC_IVAR____TtC8AppStoreP33_ECECB79BEF5D802E6E21EF3AE112F28D20UberContentContainer_contents) backgroundColor];
+  backgroundColor = [*(*(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore9MediaView_contentContainer) + OBJC_IVAR____TtC8AppStoreP33_ECECB79BEF5D802E6E21EF3AE112F28D20UberContentContainer_contents) backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_10047B2DC(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_10047B2DC(color);
 }
 
-- (_TtC8AppStore9MediaView)initWithCoder:(id)a3
+- (_TtC8AppStore9MediaView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore9MediaView_reflectionView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore9MediaView_reflectionAmount) = 0;
@@ -34,11 +34,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047BD30();
 }
 
-- (_TtC8AppStore9MediaView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore9MediaView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

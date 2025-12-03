@@ -1,27 +1,27 @@
 @interface CATIDSServiceConnectionDataAggregation
-- (CATIDSServiceConnectionDataAggregation)initWithWorkQueue:(id)a3;
+- (CATIDSServiceConnectionDataAggregation)initWithWorkQueue:(id)queue;
 - (CATIDSServiceConnectionDataAggregationDelegate)delegate;
 - (id)description;
 - (id)pendingSequenceNumbersDescription;
 - (void)finishAggregating;
-- (void)hydratePendingNumbersWithContent:(id)a3;
-- (void)hydrateStartingSequenceNumber:(id)a3;
-- (void)hydrateWithContentIfNeededWithContent:(id)a3;
-- (void)updateWithDataContent:(id)a3;
+- (void)hydratePendingNumbersWithContent:(id)content;
+- (void)hydrateStartingSequenceNumber:(id)number;
+- (void)hydrateWithContentIfNeededWithContent:(id)content;
+- (void)updateWithDataContent:(id)content;
 @end
 
 @implementation CATIDSServiceConnectionDataAggregation
 
-- (CATIDSServiceConnectionDataAggregation)initWithWorkQueue:(id)a3
+- (CATIDSServiceConnectionDataAggregation)initWithWorkQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = CATIDSServiceConnectionDataAggregation;
   v6 = [(CATIDSServiceConnectionDataAggregation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mWorkQueue, a3);
+    objc_storeStrong(&v6->mWorkQueue, queue);
     v8 = objc_opt_new();
     mDataSegmentsBySegmentNumber = v7->mDataSegmentsBySegmentNumber;
     v7->mDataSegmentsBySegmentNumber = v8;
@@ -30,22 +30,22 @@
   return v7;
 }
 
-- (void)updateWithDataContent:(id)a3
+- (void)updateWithDataContent:(id)content
 {
-  v7 = a3;
+  contentCopy = content;
   CATAssertIsQueue(self->mWorkQueue);
-  [(CATIDSServiceConnectionDataAggregation *)self hydrateWithContentIfNeededWithContent:v7];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "segmentNumber")}];
+  [(CATIDSServiceConnectionDataAggregation *)self hydrateWithContentIfNeededWithContent:contentCopy];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(contentCopy, "segmentNumber")}];
   if ([(NSMutableSet *)self->mPendingSegmentNumbers containsObject:v4])
   {
-    v5 = [(CATIDSServiceConnectionDataAggregation *)self dataNumber];
-    if (v5 != [v7 dataNumber])
+    dataNumber = [(CATIDSServiceConnectionDataAggregation *)self dataNumber];
+    if (dataNumber != [contentCopy dataNumber])
     {
-      -[CATIDSServiceConnectionDataAggregation setDataNumber:](self, "setDataNumber:", [v7 dataNumber]);
+      -[CATIDSServiceConnectionDataAggregation setDataNumber:](self, "setDataNumber:", [contentCopy dataNumber]);
     }
 
-    v6 = [v7 dataSegment];
-    [(NSMutableDictionary *)self->mDataSegmentsBySegmentNumber setObject:v6 forKeyedSubscript:v4];
+    dataSegment = [contentCopy dataSegment];
+    [(NSMutableDictionary *)self->mDataSegmentsBySegmentNumber setObject:dataSegment forKeyedSubscript:v4];
 
     [(NSMutableSet *)self->mPendingSegmentNumbers removeObject:v4];
     if (![(NSMutableSet *)self->mPendingSegmentNumbers count])
@@ -79,30 +79,30 @@
   v11 = [v13 copy];
   [(CATIDSServiceConnectionDataAggregation *)self setTotalData:v11];
 
-  v12 = [(CATIDSServiceConnectionDataAggregation *)self delegate];
-  [v12 dataAggregationCompleted:self];
+  delegate = [(CATIDSServiceConnectionDataAggregation *)self delegate];
+  [delegate dataAggregationCompleted:self];
 }
 
-- (void)hydrateWithContentIfNeededWithContent:(id)a3
+- (void)hydrateWithContentIfNeededWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   CATAssertIsQueue(self->mWorkQueue);
   if (!self->mPerformedInitialHydration)
   {
-    [(CATIDSServiceConnectionDataAggregation *)self hydratePendingNumbersWithContent:v4];
-    [(CATIDSServiceConnectionDataAggregation *)self hydrateStartingSequenceNumber:v4];
+    [(CATIDSServiceConnectionDataAggregation *)self hydratePendingNumbersWithContent:contentCopy];
+    [(CATIDSServiceConnectionDataAggregation *)self hydrateStartingSequenceNumber:contentCopy];
     self->mPerformedInitialHydration = 1;
   }
 }
 
-- (void)hydratePendingNumbersWithContent:(id)a3
+- (void)hydratePendingNumbersWithContent:(id)content
 {
-  v9 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{(objc_msgSend(v9, "totalSegments") * 1.5)}];
+  contentCopy = content;
+  v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{(objc_msgSend(contentCopy, "totalSegments") * 1.5)}];
   mPendingSegmentNumbers = self->mPendingSegmentNumbers;
   self->mPendingSegmentNumbers = v4;
 
-  if ([v9 totalSegments])
+  if ([contentCopy totalSegments])
   {
     v6 = 1;
     do
@@ -114,27 +114,27 @@
       ++v6;
     }
 
-    while (v6 <= [v9 totalSegments]);
+    while (v6 <= [contentCopy totalSegments]);
   }
 }
 
-- (void)hydrateStartingSequenceNumber:(id)a3
+- (void)hydrateStartingSequenceNumber:(id)number
 {
-  v12 = a3;
+  numberCopy = number;
   CATAssertIsQueue(self->mWorkQueue);
-  v4 = [v12 sequenceNumber];
+  sequenceNumber = [numberCopy sequenceNumber];
 
-  if (v4)
+  if (sequenceNumber)
   {
-    v5 = [v12 sequenceNumber];
-    v6 = [v5 unsignedIntegerValue];
-    v7 = v6 - [v12 segmentNumber];
+    sequenceNumber2 = [numberCopy sequenceNumber];
+    unsignedIntegerValue = [sequenceNumber2 unsignedIntegerValue];
+    v7 = unsignedIntegerValue - [numberCopy segmentNumber];
 
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
     mStartingSequenceNumber = self->mStartingSequenceNumber;
     self->mStartingSequenceNumber = v8;
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v12, "totalSegments")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(numberCopy, "totalSegments")}];
     mTotalSegments = self->mTotalSegments;
     self->mTotalSegments = v10;
   }
@@ -179,9 +179,9 @@ uint64_t __75__CATIDSServiceConnectionDataAggregation_pendingSequenceNumbersDesc
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CATIDSServiceConnectionDataAggregation *)self dataNumber];
-  v6 = [(CATIDSServiceConnectionDataAggregation *)self pendingSequenceNumbersDescription];
-  v7 = [v3 stringWithFormat:@"<%@: %p { dataNumber = %lu, pendingSequenceNumbers = %@ }>", v4, self, v5, v6];
+  dataNumber = [(CATIDSServiceConnectionDataAggregation *)self dataNumber];
+  pendingSequenceNumbersDescription = [(CATIDSServiceConnectionDataAggregation *)self pendingSequenceNumbersDescription];
+  v7 = [v3 stringWithFormat:@"<%@: %p { dataNumber = %lu, pendingSequenceNumbers = %@ }>", v4, self, dataNumber, pendingSequenceNumbersDescription];
 
   return v7;
 }

@@ -1,28 +1,28 @@
 @interface ChromeDelegateProxy
-+ (BOOL)_selectorIsProxiedDelegateMethod:(SEL)a3 protocol:(id *)a4 isRequiredMethod:(BOOL *)a5 methodDescription:(objc_method_description *)a6;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (ChromeDelegateProxy)initWithChromeViewController:(id)a3;
++ (BOOL)_selectorIsProxiedDelegateMethod:(SEL)method protocol:(id *)protocol isRequiredMethod:(BOOL *)requiredMethod methodDescription:(objc_method_description *)description;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (ChromeDelegateProxy)initWithChromeViewController:(id)controller;
 - (ChromeDelegateProxyListening)listener;
 - (ChromeViewController)chromeViewController;
-- (id)_protocolForSelector:(SEL)a3;
+- (id)_protocolForSelector:(SEL)selector;
 - (id)initForTesting;
-- (id)methodSignatureForSelector:(SEL)a3 targets:(id *)a4;
-- (void)addAdditionalDelegate:(id)a3 forProtocol:(id)a4;
-- (void)forwardInvocation:(id)a3;
-- (void)removeAdditionalDelegate:(id)a3 forProtocol:(id)a4;
-- (void)setChromeViewController:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector targets:(id *)targets;
+- (void)addAdditionalDelegate:(id)delegate forProtocol:(id)protocol;
+- (void)forwardInvocation:(id)invocation;
+- (void)removeAdditionalDelegate:(id)delegate forProtocol:(id)protocol;
+- (void)setChromeViewController:(id)controller;
 @end
 
 @implementation ChromeDelegateProxy
 
-+ (BOOL)_selectorIsProxiedDelegateMethod:(SEL)a3 protocol:(id *)a4 isRequiredMethod:(BOOL *)a5 methodDescription:(objc_method_description *)a6
++ (BOOL)_selectorIsProxiedDelegateMethod:(SEL)method protocol:(id *)protocol isRequiredMethod:(BOOL *)requiredMethod methodDescription:(objc_method_description *)description
 {
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [a1 protocols];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  protocols = [self protocols];
+  v11 = [protocols countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v11)
   {
     v18 = 0;
@@ -30,8 +30,8 @@
   }
 
   v12 = v11;
-  v23 = a4;
-  v24 = a5;
+  protocolCopy = protocol;
+  requiredMethodCopy = requiredMethod;
   v13 = *v26;
   while (2)
   {
@@ -39,38 +39,38 @@
     {
       if (*v26 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(protocols);
       }
 
       v15 = *(*(&v25 + 1) + 8 * i);
-      MethodDescription = protocol_getMethodDescription(v15, a3, 0, 1);
+      MethodDescription = protocol_getMethodDescription(v15, method, 0, 1);
       if (MethodDescription.name)
       {
         types = MethodDescription.types;
         name = MethodDescription.name;
 LABEL_14:
-        if (v23)
+        if (protocolCopy)
         {
           v21 = v15;
-          *v23 = v15;
+          *protocolCopy = v15;
         }
 
-        if (v24)
+        if (requiredMethodCopy)
         {
-          *v24 = MethodDescription.name == 0;
+          *requiredMethodCopy = MethodDescription.name == 0;
         }
 
-        if (a6)
+        if (description)
         {
-          a6->name = name;
-          a6->types = types;
+          description->name = name;
+          description->types = types;
         }
 
         v18 = 1;
         goto LABEL_21;
       }
 
-      v17 = protocol_getMethodDescription(v15, a3, 1, 1);
+      v17 = protocol_getMethodDescription(v15, method, 1, 1);
       if (v17.name)
       {
         name = v17.name;
@@ -79,7 +79,7 @@ LABEL_14:
       }
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v12 = [protocols countByEnumeratingWithState:&v25 objects:v29 count:16];
     v18 = 0;
     if (v12)
     {
@@ -121,62 +121,62 @@ LABEL_21:
   return v4;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  objc_storeWeak(&self->_chromeViewController, a3);
+  objc_storeWeak(&self->_chromeViewController, controller);
   chromeMethodSignatures = self->_chromeMethodSignatures;
 
   [(NSMapTable *)chromeMethodSignatures removeAllObjects];
 }
 
-- (void)removeAdditionalDelegate:(id)a3 forProtocol:(id)a4
+- (void)removeAdditionalDelegate:(id)delegate forProtocol:(id)protocol
 {
-  v10 = a3;
-  v6 = a4;
-  if (!v6)
+  delegateCopy = delegate;
+  protocolCopy = protocol;
+  if (!protocolCopy)
   {
-    v7 = [objc_opt_class() protocols];
-    v6 = [v7 firstObject];
+    protocols = [objc_opt_class() protocols];
+    protocolCopy = [protocols firstObject];
   }
 
-  v8 = [(NSMapTable *)self->_additionalDelegatesByProtocol objectForKey:v6];
+  v8 = [(NSMapTable *)self->_additionalDelegatesByProtocol objectForKey:protocolCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 removeObject:v10];
+    [v8 removeObject:delegateCopy];
     if (![v9 count])
     {
-      [(NSMapTable *)self->_additionalDelegatesByProtocol removeObjectForKey:v6];
+      [(NSMapTable *)self->_additionalDelegatesByProtocol removeObjectForKey:protocolCopy];
     }
   }
 }
 
-- (void)addAdditionalDelegate:(id)a3 forProtocol:(id)a4
+- (void)addAdditionalDelegate:(id)delegate forProtocol:(id)protocol
 {
-  v9 = a3;
-  v6 = a4;
-  if (!v6)
+  delegateCopy = delegate;
+  protocolCopy = protocol;
+  if (!protocolCopy)
   {
-    v7 = [objc_opt_class() protocols];
-    v6 = [v7 firstObject];
+    protocols = [objc_opt_class() protocols];
+    protocolCopy = [protocols firstObject];
   }
 
-  v8 = [(NSMapTable *)self->_additionalDelegatesByProtocol objectForKey:v6];
+  v8 = [(NSMapTable *)self->_additionalDelegatesByProtocol objectForKey:protocolCopy];
   if (!v8)
   {
     v8 = +[NSHashTable weakObjectsHashTable];
-    [(NSMapTable *)self->_additionalDelegatesByProtocol setObject:v8 forKey:v6];
+    [(NSMapTable *)self->_additionalDelegatesByProtocol setObject:v8 forKey:protocolCopy];
   }
 
-  if (([v8 containsObject:v9] & 1) == 0)
+  if (([v8 containsObject:delegateCopy] & 1) == 0)
   {
-    [v8 addObject:v9];
+    [v8 addObject:delegateCopy];
   }
 }
 
-- (id)_protocolForSelector:(SEL)a3
+- (id)_protocolForSelector:(SEL)selector
 {
-  v5 = NSMapGet(self->_protocolsForSelectors, a3);
+  v5 = NSMapGet(self->_protocolsForSelectors, selector);
   v6 = v5;
   if (v5)
   {
@@ -185,14 +185,14 @@ LABEL_21:
 
   else
   {
-    if (!NSMapGet(self->_nilProtocolsForSelectors, a3))
+    if (!NSMapGet(self->_nilProtocolsForSelectors, selector))
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [objc_opt_class() protocols];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      protocols = [objc_opt_class() protocols];
+      v9 = [protocols countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -203,20 +203,20 @@ LABEL_21:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(protocols);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
-            if (protocol_getMethodDescription(v13, a3, 0, 1).name || protocol_getMethodDescription(v13, a3, 1, 1).name)
+            if (protocol_getMethodDescription(v13, selector, 0, 1).name || protocol_getMethodDescription(v13, selector, 1, 1).name)
             {
-              NSMapInsert(self->_protocolsForSelectors, a3, v13);
+              NSMapInsert(self->_protocolsForSelectors, selector, v13);
               v7 = v13;
 
               goto LABEL_16;
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [protocols countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v10)
           {
             continue;
@@ -226,7 +226,7 @@ LABEL_21:
         }
       }
 
-      NSMapInsert(self->_nilProtocolsForSelectors, a3, &__kCFBooleanTrue);
+      NSMapInsert(self->_nilProtocolsForSelectors, selector, &__kCFBooleanTrue);
     }
 
     v7 = 0;
@@ -237,24 +237,24 @@ LABEL_16:
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3 targets:(id *)a4
+- (id)methodSignatureForSelector:(SEL)selector targets:(id *)targets
 {
   v52 = 0;
   v50 = 0;
   v51 = 0;
-  if (![objc_opt_class() _selectorIsProxiedDelegateMethod:a3 protocol:0 isRequiredMethod:&v52 methodDescription:&v50])
+  if (![objc_opt_class() _selectorIsProxiedDelegateMethod:selector protocol:0 isRequiredMethod:&v52 methodDescription:&v50])
   {
     v7 = 0;
     goto LABEL_43;
   }
 
-  if (!a4 && (v52 & 1) != 0)
+  if (!targets && (v52 & 1) != 0)
   {
     v7 = [NSMethodSignature signatureWithObjCTypes:v51];
     goto LABEL_43;
   }
 
-  if (a4)
+  if (targets)
   {
     v8 = [[NSMutableOrderedSet alloc] initWithCapacity:2];
   }
@@ -275,12 +275,12 @@ LABEL_16:
   v40[2] = sub_100E8F7F8;
   v40[3] = &unk_101657248;
   v42 = &v44;
-  v43 = a3;
+  selectorCopy = selector;
   v31 = v8;
   v41 = v31;
   v9 = objc_retainBlock(v40);
-  v30 = [(ChromeDelegateProxy *)self _protocolForSelector:a3];
-  [(ChromeDelegateProxy *)self delegatesForSelector:a3 protocol:?];
+  v30 = [(ChromeDelegateProxy *)self _protocolForSelector:selector];
+  [(ChromeDelegateProxy *)self delegatesForSelector:selector protocol:?];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -334,15 +334,15 @@ LABEL_16:
     while (v15);
   }
 
-  v18 = NSMapGet(self->_chromeMethodSignatures, a3);
-  if (v18 || (v19 = objc_loadWeakRetained(&self->_chromeViewController), [v19 methodSignatureForSelector:a3], v18 = objc_claimAutoreleasedReturnValue(), v19, NSMapInsert(self->_chromeMethodSignatures, a3, v18), v18))
+  v18 = NSMapGet(self->_chromeMethodSignatures, selector);
+  if (v18 || (v19 = objc_loadWeakRetained(&self->_chromeViewController), [v19 methodSignatureForSelector:selector], v18 = objc_claimAutoreleasedReturnValue(), v19, NSMapInsert(self->_chromeMethodSignatures, selector, v18), v18))
   {
     WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(ChromeDelegateProxy *)self preferChromeForSelector:a3 protocol:v30];
+      v22 = [(ChromeDelegateProxy *)self preferChromeForSelector:selector protocol:v30];
       v23 = objc_loadWeakRetained(&self->_chromeViewController);
       if (v22)
       {
@@ -356,7 +356,7 @@ LABEL_16:
     }
 
     v24 = 1;
-    if (a4)
+    if (targets)
     {
       goto LABEL_31;
     }
@@ -365,11 +365,11 @@ LABEL_16:
   else
   {
     v24 = 0;
-    if (a4)
+    if (targets)
     {
 LABEL_31:
       v25 = v31;
-      *a4 = v31;
+      *targets = v31;
     }
   }
 
@@ -410,11 +410,11 @@ LABEL_43:
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v10 = 0;
   v5 = 0;
-  if ([objc_opt_class() _selectorIsProxiedDelegateMethod:a3 isRequiredMethod:&v10])
+  if ([objc_opt_class() _selectorIsProxiedDelegateMethod:selector isRequiredMethod:&v10])
   {
     if (v10)
     {
@@ -424,7 +424,7 @@ LABEL_43:
     else
     {
       v9 = 0;
-      v6 = [(ChromeDelegateProxy *)self methodSignatureForSelector:a3 targets:&v9];
+      v6 = [(ChromeDelegateProxy *)self methodSignatureForSelector:selector targets:&v9];
       v7 = v9;
       v5 = v6 && ![v6 methodReturnLength] || objc_msgSend(v7, "count") != 0;
     }
@@ -433,12 +433,12 @@ LABEL_43:
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v93 = 0;
   v92 = 0;
-  v5 = [objc_opt_class() _selectorIsProxiedDelegateMethod:objc_msgSend(v4 protocol:"selector") isRequiredMethod:{&v92, &v93}];
+  v5 = [objc_opt_class() _selectorIsProxiedDelegateMethod:objc_msgSend(invocationCopy protocol:"selector") isRequiredMethod:{&v92, &v93}];
   v6 = v92;
   if (v5)
   {
@@ -446,7 +446,7 @@ LABEL_43:
     self->_lastProxiedTargets = 0;
 
     v91 = 0;
-    v8 = -[ChromeDelegateProxy methodSignatureForSelector:targets:](self, "methodSignatureForSelector:targets:", [v4 selector], &v91);
+    v8 = -[ChromeDelegateProxy methodSignatureForSelector:targets:](self, "methodSignatureForSelector:targets:", [invocationCopy selector], &v91);
     v9 = v91;
     v10 = v9;
     if (!v8)
@@ -463,9 +463,9 @@ LABEL_71:
       self->_lastProxiedTargets = v11;
     }
 
-    v13 = [v8 methodReturnLength];
-    v77 = v4;
-    v82 = self;
+    methodReturnLength = [v8 methodReturnLength];
+    v77 = invocationCopy;
+    selfCopy = self;
     v83 = v10;
     if ([v10 count])
     {
@@ -483,7 +483,7 @@ LABEL_71:
       v76 = v8;
       v14 = *v88;
       v15 = "return";
-      if (!v13)
+      if (!methodReturnLength)
       {
         v15 = "no return";
       }
@@ -491,7 +491,7 @@ LABEL_71:
       v78 = v15;
       v16 = &selRef__updatePIPLayout;
       v79 = *v88;
-      v80 = v13;
+      v80 = methodReturnLength;
       v81 = v6;
       while (1)
       {
@@ -508,7 +508,7 @@ LABEL_71:
           v19 = sub_10000E5D0();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
-            v20 = self;
+            selfCopy2 = self;
             v21 = objc_opt_class();
             v22 = NSStringFromClass(v21);
             if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -516,23 +516,23 @@ LABEL_71:
               goto LABEL_18;
             }
 
-            v23 = [(ChromeDelegateProxy *)v20 performSelector:v86];
+            v23 = [(ChromeDelegateProxy *)selfCopy2 performSelector:v86];
             v24 = v23;
             if (v23 && ![v23 isEqualToString:v22])
             {
-              v25 = [NSString stringWithFormat:@"%@<%p, %@>", v22, v20, v24];
+              selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v22, selfCopy2, v24];
             }
 
             else
             {
 
 LABEL_18:
-              v25 = [NSString stringWithFormat:@"%@<%p>", v22, v20];
+              selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v22, selfCopy2];
             }
 
-            v26 = v25;
+            v26 = selfCopy2;
             v27 = NSStringFromProtocol(v6);
-            v28 = NSStringFromSelector([v4 selector]);
+            v28 = NSStringFromSelector([invocationCopy selector]);
             v29 = v18;
             if (v29)
             {
@@ -559,7 +559,7 @@ LABEL_24:
 
               v14 = v79;
 
-              v4 = v77;
+              invocationCopy = v77;
             }
 
             else
@@ -581,19 +581,19 @@ LABEL_24:
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%@ %@ | %@ on %@ (%s)", buf, 0x34u);
 
             v6 = v81;
-            self = v82;
+            self = selfCopy;
             v10 = v83;
-            v13 = v80;
+            methodReturnLength = v80;
           }
 
-          if (-[ChromeDelegateProxy shouldNotifyListenerForInvokedSelector:forProtocol:](self, "shouldNotifyListenerForInvokedSelector:forProtocol:", [v4 selector], v6))
+          if (-[ChromeDelegateProxy shouldNotifyListenerForInvokedSelector:forProtocol:](self, "shouldNotifyListenerForInvokedSelector:forProtocol:", [invocationCopy selector], v6))
           {
-            v35 = [(ChromeDelegateProxy *)self listener];
-            [v35 chromeDelegateProxy:self willInvoke:v4 onTarget:v18];
+            listener = [(ChromeDelegateProxy *)self listener];
+            [listener chromeDelegateProxy:self willInvoke:invocationCopy onTarget:v18];
           }
 
-          [v4 invokeWithTarget:v18];
-          if (v13)
+          [invocationCopy invokeWithTarget:v18];
+          if (methodReturnLength)
           {
             goto LABEL_36;
           }
@@ -614,7 +614,7 @@ LABEL_36:
       }
     }
 
-    if (v13)
+    if (methodReturnLength)
     {
       if (v93)
       {
@@ -625,7 +625,7 @@ LABEL_36:
           v43 = v6;
 LABEL_64:
 
-          v66 = v82;
+          v66 = selfCopy;
           v67 = objc_opt_class();
           v68 = NSStringFromClass(v67);
           if (objc_opt_respondsToSelector())
@@ -645,7 +645,7 @@ LABEL_69:
 
           v6 = v43;
           v72 = NSStringFromProtocol(v43);
-          v73 = NSStringFromSelector([v4 selector]);
+          v73 = NSStringFromSelector([invocationCopy selector]);
           v74 = [NSString stringWithFormat:@"%@ %@ | %@ (required, with return) - no targets", v71, v72, v73];
           v75 = [NSException exceptionWithName:NSInvalidArgumentException reason:v74 userInfo:0];
 
@@ -656,31 +656,31 @@ LABEL_69:
           goto LABEL_70;
         }
 
-        v38 = self;
+        selfCopy3 = self;
         v39 = objc_opt_class();
         v40 = NSStringFromClass(v39);
         if (objc_opt_respondsToSelector())
         {
-          v41 = [(ChromeDelegateProxy *)v38 performSelector:"accessibilityIdentifier"];
+          v41 = [(ChromeDelegateProxy *)selfCopy3 performSelector:"accessibilityIdentifier"];
           v42 = v41;
           if (v41 && ![v41 isEqualToString:v40])
           {
             v43 = v6;
-            v44 = [NSString stringWithFormat:@"%@<%p, %@>", v40, v38, v42];
+            selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v40, selfCopy3, v42];
 
             goto LABEL_45;
           }
         }
 
         v43 = v6;
-        v44 = [NSString stringWithFormat:@"%@<%p>", v40, v38];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v40, selfCopy3];
 LABEL_45:
         v45 = v8;
 
         v46 = NSStringFromProtocol(v43);
-        v47 = NSStringFromSelector([v4 selector]);
+        v47 = NSStringFromSelector([invocationCopy selector]);
         *buf = 138412802;
-        v95 = v44;
+        v95 = selfCopy3;
         v96 = 2112;
         v97 = v46;
         v98 = 2112;
@@ -694,32 +694,32 @@ LABEL_54:
       obj = sub_10000E5D0();
       if (os_log_type_enabled(obj, OS_LOG_TYPE_DEBUG))
       {
-        v56 = self;
+        selfCopy4 = self;
         v57 = objc_opt_class();
         v58 = NSStringFromClass(v57);
         if (objc_opt_respondsToSelector())
         {
-          v59 = [(ChromeDelegateProxy *)v56 performSelector:"accessibilityIdentifier"];
+          v59 = [(ChromeDelegateProxy *)selfCopy4 performSelector:"accessibilityIdentifier"];
           v60 = v59;
           if (v59 && ![v59 isEqualToString:v58])
           {
-            v61 = [NSString stringWithFormat:@"%@<%p, %@>", v58, v56, v60];
+            selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v58, selfCopy4, v60];
 
             goto LABEL_60;
           }
         }
 
-        v61 = [NSString stringWithFormat:@"%@<%p>", v58, v56];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v58, selfCopy4];
 LABEL_60:
 
         v62 = NSStringFromProtocol(v6);
-        v63 = NSStringFromSelector([v4 selector]);
+        v63 = NSStringFromSelector([invocationCopy selector]);
         v64 = v63;
         v65 = "with return";
         *buf = 138413058;
-        v95 = v61;
+        v95 = selfCopy4;
         v96 = 2112;
-        if (!v13)
+        if (!methodReturnLength)
         {
           v65 = "no return";
         }
@@ -748,28 +748,28 @@ LABEL_70:
       goto LABEL_70;
     }
 
-    v48 = self;
+    selfCopy5 = self;
     v49 = objc_opt_class();
     v50 = NSStringFromClass(v49);
     if (objc_opt_respondsToSelector())
     {
-      v51 = [(ChromeDelegateProxy *)v48 performSelector:"accessibilityIdentifier"];
+      v51 = [(ChromeDelegateProxy *)selfCopy5 performSelector:"accessibilityIdentifier"];
       v52 = v51;
       if (v51 && ![v51 isEqualToString:v50])
       {
-        v53 = [NSString stringWithFormat:@"%@<%p, %@>", v50, v48, v52];
+        selfCopy5 = [NSString stringWithFormat:@"%@<%p, %@>", v50, selfCopy5, v52];
 
         goto LABEL_53;
       }
     }
 
-    v53 = [NSString stringWithFormat:@"%@<%p>", v50, v48];
+    selfCopy5 = [NSString stringWithFormat:@"%@<%p>", v50, selfCopy5];
 LABEL_53:
 
     v54 = NSStringFromProtocol(v6);
-    v55 = NSStringFromSelector([v4 selector]);
+    v55 = NSStringFromSelector([invocationCopy selector]);
     *buf = 138412802;
-    v95 = v53;
+    v95 = selfCopy5;
     v96 = 2112;
     v97 = v54;
     v98 = 2112;
@@ -782,11 +782,11 @@ LABEL_53:
 LABEL_72:
 }
 
-- (ChromeDelegateProxy)initWithChromeViewController:(id)a3
+- (ChromeDelegateProxy)initWithChromeViewController:(id)controller
 {
   if (self)
   {
-    objc_storeWeak(&self->_chromeViewController, a3);
+    objc_storeWeak(&self->_chromeViewController, controller);
     v4 = +[NSMapTable strongToStrongObjectsMapTable];
     additionalDelegatesByProtocol = self->_additionalDelegatesByProtocol;
     self->_additionalDelegatesByProtocol = v4;

@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneIndexDocValues_$3
-- (OrgApacheLuceneIndexDocValues_$3)initWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (OrgApacheLuceneIndexDocValues_$3)initWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexDocValues_$3
 
-- (OrgApacheLuceneIndexDocValues_$3)initWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (OrgApacheLuceneIndexDocValues_$3)initWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  JreStrongAssign(&self->val$empty_, a3);
+  JreStrongAssign(&self->val$empty_, ref);
   OrgApacheLuceneIndexSortedDocValues_init(self, v4);
   return self;
 }

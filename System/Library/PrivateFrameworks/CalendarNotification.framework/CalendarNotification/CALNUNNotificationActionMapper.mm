@@ -1,25 +1,25 @@
 @interface CALNUNNotificationActionMapper
-+ (id)_calnNotificationActionFromUNNotificationAction:(id)a3;
-+ (id)_unNotificationActionFromCALNNotificationAction:(id)a3;
-+ (id)calnNotificationActionsFromUNNotificationActions:(id)a3;
-+ (id)unNotificationActionsFromCALNNotificationActions:(id)a3;
++ (id)_calnNotificationActionFromUNNotificationAction:(id)action;
++ (id)_unNotificationActionFromCALNNotificationAction:(id)action;
++ (id)calnNotificationActionsFromUNNotificationActions:(id)actions;
++ (id)unNotificationActionsFromCALNNotificationActions:(id)actions;
 @end
 
 @implementation CALNUNNotificationActionMapper
 
-+ (id)unNotificationActionsFromCALNNotificationActions:(id)a3
++ (id)unNotificationActionsFromCALNNotificationActions:(id)actions
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  actionsCopy = actions;
+  array = [v4 array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __83__CALNUNNotificationActionMapper_unNotificationActionsFromCALNNotificationActions___block_invoke;
   v13 = &unk_278D6F160;
-  v14 = v6;
-  v15 = a1;
-  v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  v14 = array;
+  selfCopy = self;
+  v7 = array;
+  [actionsCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -32,19 +32,19 @@ void __83__CALNUNNotificationActionMapper_unNotificationActionsFromCALNNotificat
   [*(a1 + 32) addObject:v3];
 }
 
-+ (id)calnNotificationActionsFromUNNotificationActions:(id)a3
++ (id)calnNotificationActionsFromUNNotificationActions:(id)actions
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  actionsCopy = actions;
+  array = [v4 array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __83__CALNUNNotificationActionMapper_calnNotificationActionsFromUNNotificationActions___block_invoke;
   v13 = &unk_278D6F188;
-  v14 = v6;
-  v15 = a1;
-  v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  v14 = array;
+  selfCopy = self;
+  v7 = array;
+  [actionsCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -57,17 +57,17 @@ void __83__CALNUNNotificationActionMapper_calnNotificationActionsFromUNNotificat
   [*(a1 + 32) addObject:v3];
 }
 
-+ (id)_unNotificationActionFromCALNNotificationAction:(id)a3
++ (id)_unNotificationActionFromCALNNotificationAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 title];
-  v6 = [v3 systemImageName];
-  v7 = [v3 url];
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  title = [actionCopy title];
+  systemImageName = [actionCopy systemImageName];
+  v7 = [actionCopy url];
 
-  if (v6)
+  if (systemImageName)
   {
-    v8 = [MEMORY[0x277CE1F88] iconWithSystemImageName:v6];
+    v8 = [MEMORY[0x277CE1F88] iconWithSystemImageName:systemImageName];
   }
 
   else
@@ -77,28 +77,28 @@ void __83__CALNUNNotificationActionMapper_calnNotificationActionsFromUNNotificat
 
   if (v7)
   {
-    [MEMORY[0x277CE1F80] actionWithIdentifier:v4 title:v5 url:v7 options:0 icon:v8];
+    [MEMORY[0x277CE1F80] actionWithIdentifier:identifier title:title url:v7 options:0 icon:v8];
   }
 
   else
   {
-    [MEMORY[0x277CE1F80] actionWithIdentifier:v4 title:v5 options:0 icon:v8];
+    [MEMORY[0x277CE1F80] actionWithIdentifier:identifier title:title options:0 icon:v8];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (id)_calnNotificationActionFromUNNotificationAction:(id)a3
++ (id)_calnNotificationActionFromUNNotificationAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 title];
-  v6 = [v3 icon];
-  v7 = [v6 imageName];
-  v8 = [v3 url];
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  title = [actionCopy title];
+  icon = [actionCopy icon];
+  imageName = [icon imageName];
+  v8 = [actionCopy url];
 
-  v9 = [CALNNotificationAction actionWithIdentifier:v4 title:v5 systemImageName:v7 url:v8];
+  v9 = [CALNNotificationAction actionWithIdentifier:identifier title:title systemImageName:imageName url:v8];
 
   return v9;
 }

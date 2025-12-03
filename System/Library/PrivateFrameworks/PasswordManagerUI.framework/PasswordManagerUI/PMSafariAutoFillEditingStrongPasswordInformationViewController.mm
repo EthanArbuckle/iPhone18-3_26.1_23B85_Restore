@@ -3,30 +3,30 @@
 - (CGSize)contentSize;
 - (NSString)websiteTitle;
 - (NSURL)formURL;
-- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithCoder:(id)a3;
-- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithWebsiteTitle:(id)a3 url:(id)a4;
+- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithCoder:(id)coder;
+- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithWebsiteTitle:(id)title url:(id)url;
 - (PMSafariAutoFillEditingStrongPasswordInformationViewControllerDelegate)delegate;
 - (void)loadView;
-- (void)setFormURL:(id)a3;
-- (void)setWebsiteTitle:(id)a3;
+- (void)setFormURL:(id)l;
+- (void)setWebsiteTitle:(id)title;
 @end
 
 @implementation PMSafariAutoFillEditingStrongPasswordInformationViewController
 
 + (BOOL)shouldShowView
 {
-  v2 = [objc_opt_self() isPasswordsAppInstalled];
-  if (v2)
+  isPasswordsAppInstalled = [objc_opt_self() isPasswordsAppInstalled];
+  if (isPasswordsAppInstalled)
   {
-    v3 = [objc_opt_self() pm_defaults];
+    pm_defaults = [objc_opt_self() pm_defaults];
     v4 = sub_21CB85584();
-    v5 = [v3 BOOLForKey_];
+    bOOLForKey_ = [pm_defaults BOOLForKey_];
 
-    LOBYTE(v2) = v5 ^ 1;
+    LOBYTE(isPasswordsAppInstalled) = bOOLForKey_ ^ 1;
   }
 
-  return v2;
+  return isPasswordsAppInstalled;
 }
 
 - (PMSafariAutoFillEditingStrongPasswordInformationViewControllerDelegate)delegate
@@ -41,14 +41,14 @@
 {
   swift_getObjectType();
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v4 = self;
+  selfCopy = self;
   if ([ObjCClassFromMetadata shouldShowView])
   {
-    v5 = [(PMSafariAutoFillEditingStrongPasswordInformationViewController *)v4 view];
-    if (v5)
+    view = [(PMSafariAutoFillEditingStrongPasswordInformationViewController *)selfCopy view];
+    if (view)
     {
-      v8 = v5;
-      [v5 intrinsicContentSize];
+      v8 = view;
+      [view intrinsicContentSize];
       v10 = v9;
       v12 = v11;
 
@@ -85,7 +85,7 @@
   return v4;
 }
 
-- (void)setWebsiteTitle:(id)a3
+- (void)setWebsiteTitle:(id)title
 {
   v4 = sub_21CB855C4();
   v9 = MEMORY[0x277D837D0];
@@ -93,7 +93,7 @@
   *(&v8 + 1) = v5;
   v6 = OBJC_IVAR___PMSafariAutoFillEditingStrongPasswordInformationViewController__anywebsiteTitle;
   swift_beginAccess();
-  v7 = self;
+  selfCopy = self;
   __swift_destroy_boxed_opaque_existential_0((self + v6));
   sub_21C731A9C(&v8, (self + v6));
   swift_endAccess();
@@ -116,7 +116,7 @@
   return v9;
 }
 
-- (void)setFormURL:(id)a3
+- (void)setFormURL:(id)l
 {
   v4 = sub_21CB80BE4();
   v5 = *(v4 - 8);
@@ -129,13 +129,13 @@
   (*(v5 + 32))(boxed_opaque_existential_0, v8, v4);
   v10 = OBJC_IVAR___PMSafariAutoFillEditingStrongPasswordInformationViewController__anyFormURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   __swift_destroy_boxed_opaque_existential_0((self + v10));
   sub_21C731A9C(v13, (self + v10));
   swift_endAccess();
 }
 
-- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithWebsiteTitle:(id)a3 url:(id)a4
+- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithWebsiteTitle:(id)title url:(id)url
 {
   v4 = sub_21CB80BE4();
   v5 = *(*(v4 - 8) + 64);
@@ -147,7 +147,7 @@
   return PMSafariAutoFillEditingStrongPasswordInformationViewController.init(websiteTitle:url:)(v8, v10, v7);
 }
 
-- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithCoder:(id)a3
+- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_21CB861C4();
@@ -157,11 +157,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PMSafariAutoFillEditingStrongPasswordInformationViewController.loadView()();
 }
 
-- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PMSafariAutoFillEditingStrongPasswordInformationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

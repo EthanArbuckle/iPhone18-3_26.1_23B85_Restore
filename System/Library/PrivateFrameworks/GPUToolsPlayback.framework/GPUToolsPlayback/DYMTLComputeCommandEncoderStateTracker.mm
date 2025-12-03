@@ -1,33 +1,33 @@
 @interface DYMTLComputeCommandEncoderStateTracker
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (DYMTLComputeCommandEncoderStateTracker)initWithEncoder:(id)a3 dispatchType:(unint64_t)a4;
-- (void)applyToEncoder:(id)a3 rawBytesBlock:(id)a4;
-- (void)enumerateBuffersUsingBlock:(id)a3;
-- (void)enumerateSamplersUsingBlock:(id)a3;
-- (void)enumerateTexturesUsingBlock:(id)a3;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setStageInRegion:(id *)a3;
-- (void)setStageInRegionWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)useHeap:(id)a3;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (DYMTLComputeCommandEncoderStateTracker)initWithEncoder:(id)encoder dispatchType:(unint64_t)type;
+- (void)applyToEncoder:(id)encoder rawBytesBlock:(id)block;
+- (void)enumerateBuffersUsingBlock:(id)block;
+- (void)enumerateSamplersUsingBlock:(id)block;
+- (void)enumerateTexturesUsingBlock:(id)block;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setStageInRegion:(id *)region;
+- (void)setStageInRegionWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)useHeap:(id)heap;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
 @end
 
 @implementation DYMTLComputeCommandEncoderStateTracker
 
-- (DYMTLComputeCommandEncoderStateTracker)initWithEncoder:(id)a3 dispatchType:(unint64_t)a4
+- (DYMTLComputeCommandEncoderStateTracker)initWithEncoder:(id)encoder dispatchType:(unint64_t)type
 {
-  v7 = a3;
-  if (v7)
+  encoderCopy = encoder;
+  if (encoderCopy)
   {
     v12.receiver = self;
     v12.super_class = DYMTLComputeCommandEncoderStateTracker;
@@ -35,27 +35,27 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_computeEncoder, a3);
-      v9->_dispatchType = a4;
+      objc_storeStrong(&v8->_computeEncoder, encoder);
+      v9->_dispatchType = type;
       v9->_hasSetStageInRegion = 0;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  if (([(MTLComputeCommandEncoderSPI *)self->_computeEncoder conformsToProtocol:v4]& 1) != 0)
+  protocolCopy = protocol;
+  if (([(MTLComputeCommandEncoderSPI *)self->_computeEncoder conformsToProtocol:protocolCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -64,13 +64,13 @@
   {
     v7.receiver = self;
     v7.super_class = DYMTLComputeCommandEncoderStateTracker;
-    v5 = [(DYMTLComputeCommandEncoderStateTracker *)&v7 conformsToProtocol:v4];
+    v5 = [(DYMTLComputeCommandEncoderStateTracker *)&v7 conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = DYMTLComputeCommandEncoderStateTracker;
@@ -88,47 +88,47 @@
   return v4 & 1;
 }
 
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  DYMTLBoundBufferInfo::DYMTLBoundBufferInfo(&v9, a3, a4);
-  DYMTLBoundBufferInfo::operator=(&self->_buffers[a5].m_buffer, &v9);
+  DYMTLBoundBufferInfo::DYMTLBoundBufferInfo(&v9, bytes, length);
+  DYMTLBoundBufferInfo::operator=(&self->_buffers[index].m_buffer, &v9);
   free(v9.m_bytes);
 
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setBytes:a3 length:a4 atIndex:a5];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setBytes:bytes length:length atIndex:index];
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = v8;
+  bufferCopy = buffer;
+  v9 = bufferCopy;
   v10 = 0;
-  v11 = a4;
-  DYMTLBoundBufferInfo::operator=(&self->_buffers[a5].m_buffer, &v9);
+  offsetCopy = offset;
+  DYMTLBoundBufferInfo::operator=(&self->_buffers[index].m_buffer, &v9);
   free(v10);
 
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setBuffer:v8 offset:a4 atIndex:a5];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setBuffer:bufferCopy offset:offset atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  if (a5.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
-    v10 = &self->_buffers[a5.location];
-    v11 = a3;
-    v12 = a4;
-    v13 = a5.length;
+    v10 = &self->_buffers[range.location];
+    buffersCopy = buffers;
+    offsetsCopy = offsets;
+    v13 = range.length;
     do
     {
-      v14 = *v12++;
-      v15 = *v11;
+      v14 = *offsetsCopy++;
+      v15 = *buffersCopy;
       v16 = 0;
       v17 = v14;
       DYMTLBoundBufferInfo::operator=(&v10->m_buffer, &v15);
       free(v16);
 
-      ++v11;
+      ++buffersCopy;
       ++v10;
       --v13;
     }
@@ -136,19 +136,19 @@
     while (v13);
   }
 
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setBuffers:a3 offsets:a4 withRange:location, length];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setBuffers:buffers offsets:offsets withRange:location, length];
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    v4 = &self->_textures[a4.location];
-    v5 = a3;
-    length = a4.length;
+    v4 = &self->_textures[range.location];
+    texturesCopy = textures;
+    length = range.length;
     do
     {
-      v7 = *v5++;
+      v7 = *texturesCopy++;
       *v4++ = v7;
       --length;
     }
@@ -156,27 +156,27 @@
     while (length);
   }
 
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setTextures:a3 withRange:a4.location];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setTextures:textures withRange:range.location];
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = self + 16 * a4;
-  *(v4 + 230) = a3;
+  v4 = self + 16 * index;
+  *(v4 + 230) = state;
   *(v4 + 231) = 0x447A000000000000;
   [MTLComputeCommandEncoderSPI setSamplerState:"setSamplerState:atIndex:" atIndex:?];
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    p_minLOD = &self->_samplers[a4.location].minLOD;
-    v5 = a3;
-    length = a4.length;
+    p_minLOD = &self->_samplers[range.location].minLOD;
+    statesCopy = states;
+    length = range.length;
     do
     {
-      v7 = *v5++;
+      v7 = *statesCopy++;
       *(p_minLOD - 1) = v7;
       *p_minLOD = 0x447A000000000000;
       p_minLOD += 4;
@@ -186,34 +186,34 @@
     while (length);
   }
 
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setSamplerStates:a3 withRange:a4.location];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setSamplerStates:states withRange:range.location];
 }
 
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v6 = self + 16 * a6;
-  *(v6 + 230) = a3;
-  *(v6 + 462) = a4;
-  *(v6 + 463) = a5;
+  v6 = self + 16 * index;
+  *(v6 + 230) = state;
+  *(v6 + 462) = clamp;
+  *(v6 + 463) = maxClamp;
   [MTLComputeCommandEncoderSPI setSamplerState:"setSamplerState:lodMinClamp:lodMaxClamp:atIndex:" lodMinClamp:? lodMaxClamp:? atIndex:?];
 }
 
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  if (a6.length)
+  if (range.length)
   {
-    p_maxLOD = &self->_samplers[a6.location].maxLOD;
-    v7 = a3;
-    v8 = a4;
-    v9 = a5;
-    length = a6.length;
+    p_maxLOD = &self->_samplers[range.location].maxLOD;
+    statesCopy = states;
+    clampsCopy = clamps;
+    maxClampsCopy = maxClamps;
+    length = range.length;
     do
     {
-      v12 = *v7++;
+      v12 = *statesCopy++;
       v11 = v12;
-      *&v12 = *v8++;
+      *&v12 = *clampsCopy++;
       v13 = v12;
-      *&v12 = *v9++;
+      *&v12 = *maxClampsCopy++;
       *(p_maxLOD - 3) = v11;
       *(p_maxLOD - 1) = v13;
       *p_maxLOD = v12;
@@ -224,38 +224,38 @@
     while (length);
   }
 
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setSamplerStates:a3 lodMinClamps:a4 lodMaxClamps:a5 withRange:a6.location];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder setSamplerStates:states lodMinClamps:clamps lodMaxClamps:maxClamps withRange:range.location];
 }
 
-- (void)setStageInRegion:(id *)a3
+- (void)setStageInRegion:(id *)region
 {
   self->_hasSetStageInRegion = 1;
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_stageInRegion.origin.z = *&a3->var0.var2;
+  v3 = *&region->var0.var0;
+  v4 = *&region->var1.var1;
+  *&self->_stageInRegion.origin.z = *&region->var0.var2;
   *&self->_stageInRegion.size.height = v4;
   *&self->_stageInRegion.origin.x = v3;
   computeEncoder = self->_computeEncoder;
-  v6 = *&a3->var0.var2;
-  v7[0] = *&a3->var0.var0;
+  v6 = *&region->var0.var2;
+  v7[0] = *&region->var0.var0;
   v7[1] = v6;
-  v7[2] = *&a3->var1.var1;
+  v7[2] = *&region->var1.var1;
   [(MTLComputeCommandEncoderSPI *)computeEncoder setStageInRegion:v7];
 }
 
-- (void)setStageInRegionWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)setStageInRegionWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  self->_stageInRegionIndirectBuffer = a3;
-  self->_stageInRegionIndirectBufferOffset = a4;
+  self->_stageInRegionIndirectBuffer = buffer;
+  self->_stageInRegionIndirectBufferOffset = offset;
   [MTLComputeCommandEncoderSPI setStageInRegionWithIndirectBuffer:"setStageInRegionWithIndirectBuffer:indirectBufferOffset:" indirectBufferOffset:?];
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
-  v6 = a3;
+  resourceCopy = resource;
   end = self->_usedResources.__end_;
   cap = self->_usedResources.__cap_;
-  v20 = v6;
+  v20 = resourceCopy;
   if (end >= cap)
   {
     begin = self->_usedResources.__begin_;
@@ -286,8 +286,8 @@
     }
 
     v18 = (16 * v13);
-    *v18 = v6;
-    v18[1] = a4;
+    *v18 = resourceCopy;
+    v18[1] = usage;
     v10 = (16 * v13 + 16);
     memcpy(0, begin, v12);
     v19 = self->_usedResources.__begin_;
@@ -304,23 +304,23 @@
 
   else
   {
-    v9 = v6;
-    *end = v6;
-    *(end + 1) = a4;
+    v9 = resourceCopy;
+    *end = resourceCopy;
+    *(end + 1) = usage;
     v10 = (end + 16);
   }
 
   self->_usedResources.__end_ = v10;
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder useResource:v9 usage:a4];
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder useResource:v9 usage:usage];
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  if (a4)
+  if (count)
   {
     end = self->_usedResources.__end_;
-    v9 = a3;
-    v10 = a4;
+    resourcesCopy = resources;
+    countCopy = count;
     do
     {
       cap = self->_usedResources.__cap_;
@@ -358,8 +358,8 @@
 
         v18 = (end - begin) >> 4;
         v19 = (16 * v14);
-        *v19 = *v9;
-        v19[1] = a5;
+        *v19 = *resourcesCopy;
+        v19[1] = usage;
         end = (16 * v14 + 16);
         v20 = (16 * v14 - 16 * v18);
         memcpy(&v19[-2 * v18], begin, v13);
@@ -375,54 +375,54 @@
 
       else
       {
-        *end = *v9;
-        *(end + 1) = a5;
+        *end = *resourcesCopy;
+        *(end + 1) = usage;
         end = (end + 16);
       }
 
       self->_usedResources.__end_ = end;
-      ++v9;
-      --v10;
+      ++resourcesCopy;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
   computeEncoder = self->_computeEncoder;
 
-  [(MTLComputeCommandEncoderSPI *)computeEncoder useResources:a3 count:a4 usage:a5];
+  [(MTLComputeCommandEncoderSPI *)computeEncoder useResources:resources count:count usage:usage];
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
-  v4 = a3;
-  std::vector<objc_object  {objcproto7MTLHeap}* {__strong}>::push_back[abi:ne200100](&self->_usedHeaps.__begin_, &v4);
-  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder useHeap:v4];
+  heapCopy = heap;
+  std::vector<objc_object  {objcproto7MTLHeap}* {__strong}>::push_back[abi:ne200100](&self->_usedHeaps.__begin_, &heapCopy);
+  [(MTLComputeCommandEncoderSPI *)self->_computeEncoder useHeap:heapCopy];
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v7 = a3;
-    v8 = a4;
+    heapsCopy = heaps;
+    countCopy = count;
     do
     {
-      std::vector<objc_object  {objcproto7MTLHeap}* {__strong}>::push_back[abi:ne200100](&self->_usedHeaps.__begin_, v7++);
-      --v8;
+      std::vector<objc_object  {objcproto7MTLHeap}* {__strong}>::push_back[abi:ne200100](&self->_usedHeaps.__begin_, heapsCopy++);
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   computeEncoder = self->_computeEncoder;
 
-  [(MTLComputeCommandEncoderSPI *)computeEncoder useHeaps:a3 count:a4];
+  [(MTLComputeCommandEncoderSPI *)computeEncoder useHeaps:heaps count:count];
 }
 
-- (void)enumerateBuffersUsingBlock:(id)a3
+- (void)enumerateBuffersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v7 = 0;
   for (i = self->_buffers; (i->m_buffer == 0) == (i->m_bytes == 0); ++i)
@@ -436,7 +436,7 @@ LABEL_7:
     ++v5;
   }
 
-  v4[2](v4, i, v5, &v7);
+  blockCopy[2](blockCopy, i, v5, &v7);
   if (v5 <= 0x1D && (v7 & 1) == 0)
   {
     goto LABEL_7;
@@ -445,9 +445,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)enumerateTexturesUsingBlock:(id)a3
+- (void)enumerateTexturesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v8 = 0;
   textures = self->_textures;
@@ -468,7 +468,7 @@ LABEL_7:
     ++v5;
   }
 
-  v4[2](v4, v7, v5, &v8);
+  blockCopy[2](blockCopy, v7, v5, &v8);
   if (v5 <= 0x7E && (v8 & 1) == 0)
   {
     goto LABEL_7;
@@ -477,9 +477,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)enumerateSamplersUsingBlock:(id)a3
+- (void)enumerateSamplersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v7 = 0;
   for (i = self->_samplers; !i->sampler; ++i)
@@ -493,7 +493,7 @@ LABEL_7:
     ++v5;
   }
 
-  v4[2](v4, i, v5, &v7);
+  blockCopy[2](blockCopy, i, v5, &v7);
   if (v5 <= 0xE && (v7 & 1) == 0)
   {
     goto LABEL_7;
@@ -502,16 +502,16 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)applyToEncoder:(id)a3 rawBytesBlock:(id)a4
+- (void)applyToEncoder:(id)encoder rawBytesBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  encoderCopy = encoder;
+  blockCopy = block;
   begin = self->_usedHeaps.__begin_;
   var0 = self->_usedHeaps.var0;
   while (begin != var0)
   {
     v10 = *begin;
-    [v6 useHeap:v10];
+    [encoderCopy useHeap:v10];
 
     ++begin;
   }
@@ -520,7 +520,7 @@ LABEL_8:
   end = self->_usedResources.__end_;
   while (v11 != end)
   {
-    [v6 useResource:*v11 usage:*(v11 + 1)];
+    [encoderCopy useResource:*v11 usage:*(v11 + 1)];
     v11 = (v11 + 16);
   }
 
@@ -528,9 +528,9 @@ LABEL_8:
   v28[1] = 3221225472;
   v28[2] = __71__DYMTLComputeCommandEncoderStateTracker_applyToEncoder_rawBytesBlock___block_invoke;
   v28[3] = &unk_27930F8C0;
-  v13 = v7;
+  v13 = blockCopy;
   v30 = v13;
-  v14 = v6;
+  v14 = encoderCopy;
   v29 = v14;
   [(DYMTLComputeCommandEncoderStateTracker *)self enumerateBuffersUsingBlock:v28];
   v26[0] = MEMORY[0x277D85DD0];
@@ -561,12 +561,12 @@ LABEL_8:
     [v16 setComputePipelineState:?];
   }
 
-  v19 = [(MTLComputeCommandEncoderSPI *)self->_computeEncoder label];
+  label = [(MTLComputeCommandEncoderSPI *)self->_computeEncoder label];
 
-  if (v19)
+  if (label)
   {
-    v20 = [(MTLComputeCommandEncoderSPI *)self->_computeEncoder label];
-    [v16 setLabel:v20];
+    label2 = [(MTLComputeCommandEncoderSPI *)self->_computeEncoder label];
+    [v16 setLabel:label2];
   }
 
   if (self->_hasSetStageInRegion)

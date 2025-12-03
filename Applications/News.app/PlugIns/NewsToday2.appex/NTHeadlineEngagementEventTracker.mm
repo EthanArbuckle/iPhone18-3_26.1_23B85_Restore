@@ -1,7 +1,7 @@
 @interface NTHeadlineEngagementEventTracker
 - (NTHeadlineEngagementEventTracker)init;
-- (NTHeadlineEngagementEventTracker)initWithMaxRowCount:(unint64_t)a3;
-- (void)trackEngagementWithTodaySource:(id)a3 appConfigTreatmentID:(id)a4 section:(id)a5 otherVisibleSections:(id)a6 headlineOrder:(unint64_t)a7 widgetDisplayMode:(unint64_t)a8;
+- (NTHeadlineEngagementEventTracker)initWithMaxRowCount:(unint64_t)count;
+- (void)trackEngagementWithTodaySource:(id)source appConfigTreatmentID:(id)d section:(id)section otherVisibleSections:(id)sections headlineOrder:(unint64_t)order widgetDisplayMode:(unint64_t)mode;
 @end
 
 @implementation NTHeadlineEngagementEventTracker
@@ -29,7 +29,7 @@
   objc_exception_throw(v4);
 }
 
-- (NTHeadlineEngagementEventTracker)initWithMaxRowCount:(unint64_t)a3
+- (NTHeadlineEngagementEventTracker)initWithMaxRowCount:(unint64_t)count
 {
   v21.receiver = self;
   v21.super_class = NTHeadlineEngagementEventTracker;
@@ -38,7 +38,7 @@
   {
     v19 = +[PETEventProperty ft_headlineSourceProperty];
     v5 = +[PETEventProperty ft_sectionProperty];
-    v20 = [PETEventProperty propertyWithName:@"hlOrder" range:0, a3];
+    v20 = [PETEventProperty propertyWithName:@"hlOrder" range:0, count];
     v6 = +[PETEventProperty ft_userGroupProperty];
     v18 = +[PETEventProperty ft_widgetDisplayModeProperty];
     v7 = [PETScalarEventTracker alloc];
@@ -68,22 +68,22 @@
   return v4;
 }
 
-- (void)trackEngagementWithTodaySource:(id)a3 appConfigTreatmentID:(id)a4 section:(id)a5 otherVisibleSections:(id)a6 headlineOrder:(unint64_t)a7 widgetDisplayMode:(unint64_t)a8
+- (void)trackEngagementWithTodaySource:(id)source appConfigTreatmentID:(id)d section:(id)section otherVisibleSections:(id)sections headlineOrder:(unint64_t)order widgetDisplayMode:(unint64_t)mode
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v30 = a6;
-  if (!v14 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  sourceCopy = source;
+  dCopy = d;
+  sectionCopy = section;
+  sectionsCopy = sections;
+  if (!sourceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C67E0();
-    if (v16)
+    if (sectionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v16)
+  else if (sectionCopy)
   {
     goto LABEL_6;
   }
@@ -94,22 +94,22 @@
   }
 
 LABEL_6:
-  v17 = FTSectionPropertyValueWithSection(v16);
-  v18 = FTUserGroupPropertyValueWithAppConfigTreatmentID(v15);
-  v19 = [(NTHeadlineEngagementEventTracker *)self orderHeadlineEngagementEventTracker];
+  v17 = FTSectionPropertyValueWithSection(sectionCopy);
+  v18 = FTUserGroupPropertyValueWithAppConfigTreatmentID(dCopy);
+  orderHeadlineEngagementEventTracker = [(NTHeadlineEngagementEventTracker *)self orderHeadlineEngagementEventTracker];
   v32[0] = v17;
-  v29 = v15;
-  v20 = [NSNumber numberWithUnsignedInteger:a7];
+  v29 = dCopy;
+  v20 = [NSNumber numberWithUnsignedInteger:order];
   v32[1] = v20;
   v32[2] = v18;
-  v21 = [NSNumber numberWithUnsignedInteger:a8];
+  v21 = [NSNumber numberWithUnsignedInteger:mode];
   v32[3] = v21;
   v22 = [NSArray arrayWithObjects:v32 count:4];
-  [v19 trackEventWithPropertyValues:v22];
+  [orderHeadlineEngagementEventTracker trackEventWithPropertyValues:v22];
 
   v23 = +[NSDate date];
-  v24 = [(NTHeadlineEngagementEventTracker *)self timeOfDayHeadlineEngagementEventTracker];
-  v25 = FTHeadlineSourcePropertyValueWithTodaySource(v14);
+  timeOfDayHeadlineEngagementEventTracker = [(NTHeadlineEngagementEventTracker *)self timeOfDayHeadlineEngagementEventTracker];
+  v25 = FTHeadlineSourcePropertyValueWithTodaySource(sourceCopy);
   v31[0] = v25;
   v31[1] = v17;
   v31[2] = v18;
@@ -118,7 +118,7 @@ LABEL_6:
   v27 = FTTimeZonePropertyValue();
   v31[4] = v27;
   v28 = [NSArray arrayWithObjects:v31 count:5];
-  [v24 trackEventWithPropertyValues:v28];
+  [timeOfDayHeadlineEngagementEventTracker trackEventWithPropertyValues:v28];
 }
 
 @end

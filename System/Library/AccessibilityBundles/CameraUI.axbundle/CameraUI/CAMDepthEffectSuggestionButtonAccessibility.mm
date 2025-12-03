@@ -1,5 +1,5 @@
 @interface CAMDepthEffectSuggestionButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityValue;
@@ -7,11 +7,11 @@
 
 @implementation CAMDepthEffectSuggestionButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDepthEffectSuggestionButton" hasInstanceMethod:@"mode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMDepthEffectSuggestionButton" hasInstanceMethod:@"setMode:animated:" withFullSignature:{"v", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDepthEffectSuggestionButton" hasInstanceMethod:@"mode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMDepthEffectSuggestionButton" hasInstanceMethod:@"setMode:animated:" withFullSignature:{"v", "q", "B", 0}];
 }
 
 - (id)accessibilityValue
@@ -60,7 +60,7 @@ void __68__CAMDepthEffectSuggestionButtonAccessibility_accessibilityActivate__bl
 - (void)accessibilityValue
 {
   v6 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDBA070] numberWithInteger:a1];
+  v3 = [MEMORY[0x29EDBA070] numberWithInteger:self];
   v4 = 138412290;
   v5 = v3;
   _os_log_error_impl(&dword_29BC67000, a2, OS_LOG_TYPE_ERROR, "Missing value for depth effect suggestion button mode: %@", &v4, 0xCu);

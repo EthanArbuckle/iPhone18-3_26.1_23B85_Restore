@@ -1,8 +1,8 @@
 @interface MIEligibilityManager
 + (MIEligibilityManager)sharedInstance;
-- (BOOL)getEligibilityForDomain:(unint64_t)a3 answer:(unint64_t *)a4 source:(unint64_t *)a5 status:(id *)a6 context:(id *)a7 error:(id *)a8;
+- (BOOL)getEligibilityForDomain:(unint64_t)domain answer:(unint64_t *)answer source:(unint64_t *)source status:(id *)status context:(id *)context error:(id *)error;
 - (BOOL)testOverridesEnabled;
-- (void)setTestOverrides:(id)a3;
+- (void)setTestOverrides:(id)overrides;
 @end
 
 @implementation MIEligibilityManager
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100053198;
   block[3] = &unk_100090CF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A9708 != -1)
   {
     dispatch_once(&qword_1000A9708, block);
@@ -39,30 +39,30 @@
   return v3;
 }
 
-- (void)setTestOverrides:(id)a3
+- (void)setTestOverrides:(id)overrides
 {
-  v7 = a3;
+  overridesCopy = overrides;
   if ([(MIEligibilityManager *)self testOverridesEnabled])
   {
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
     {
-      v6 = v7;
+      v6 = overridesCopy;
       MOLogWrite();
     }
 
-    v4 = [v7 copy];
+    v4 = [overridesCopy copy];
     testOverrides = self->_testOverrides;
     self->_testOverrides = v4;
   }
 }
 
-- (BOOL)getEligibilityForDomain:(unint64_t)a3 answer:(unint64_t *)a4 source:(unint64_t *)a5 status:(id *)a6 context:(id *)a7 error:(id *)a8
+- (BOOL)getEligibilityForDomain:(unint64_t)domain answer:(unint64_t *)answer source:(unint64_t *)source status:(id *)status context:(id *)context error:(id *)error
 {
-  v15 = [(MIEligibilityManager *)self testOverrides];
-  if (v15 && [(MIEligibilityManager *)self testOverridesEnabled])
+  testOverrides = [(MIEligibilityManager *)self testOverrides];
+  if (testOverrides && [(MIEligibilityManager *)self testOverridesEnabled])
   {
-    v16 = [NSNumber numberWithUnsignedLongLong:a3];
-    v18 = [v15 objectForKeyedSubscript:v16];
+    v16 = [NSNumber numberWithUnsignedLongLong:domain];
+    v18 = [testOverrides objectForKeyedSubscript:v16];
     v19 = v18 != 0;
     if (v18)
     {
@@ -71,38 +71,38 @@
         MOLogWrite();
       }
 
-      if (a4)
+      if (answer)
       {
-        *a4 = [v18 unsignedLongLongValue];
+        *answer = [v18 unsignedLongLongValue];
       }
 
-      if (a5)
+      if (source)
       {
-        *a5 = 2;
+        *source = 2;
       }
 
-      if (a6)
+      if (status)
       {
-        v20 = *a6;
-        *a6 = 0;
+        v20 = *status;
+        *status = 0;
       }
 
-      if (!a7)
+      if (!context)
       {
         goto LABEL_23;
       }
 
-      v21 = *a7;
-      *a7 = 0;
+      v21 = *context;
+      *context = 0;
     }
 
     else
     {
-      v21 = sub_100010734("[MIEligibilityManager getEligibilityForDomain:answer:source:status:context:error:]", 81, MIInstallerErrorDomain, 219, 0, 0, @"Test mode: no override set for domain %llu failing", v17, a3);;
-      if (a8)
+      v21 = sub_100010734("[MIEligibilityManager getEligibilityForDomain:answer:source:status:context:error:]", 81, MIInstallerErrorDomain, 219, 0, 0, @"Test mode: no override set for domain %llu failing", v17, domain);;
+      if (error)
       {
         v21 = v21;
-        *a8 = v21;
+        *error = v21;
       }
     }
 
@@ -117,13 +117,13 @@ LABEL_24:
   {
     v24 = MIInstallerErrorDomain;
     v25 = sub_1000106F4("[MIEligibilityManager getEligibilityForDomain:answer:source:status:context:error:]", 91, NSPOSIXErrorDomain, domain_answer, 0, 0, @"os_eligibility_get_domain_answer failed", v23, v29);
-    v16 = sub_1000106F4("[MIEligibilityManager getEligibilityForDomain:answer:source:status:context:error:]", 91, v24, 4, v25, 0, @"Failed to check eligibility for domain %llu", v26, a3);
+    v16 = sub_1000106F4("[MIEligibilityManager getEligibilityForDomain:answer:source:status:context:error:]", 91, v24, 4, v25, 0, @"Failed to check eligibility for domain %llu", v26, domain);
 
-    if (a8)
+    if (error)
     {
       v27 = v16;
       v19 = 0;
-      *a8 = v16;
+      *error = v16;
     }
 
     else

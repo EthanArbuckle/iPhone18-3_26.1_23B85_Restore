@@ -1,29 +1,29 @@
 @interface AWDSidecarPeerTraffic
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRxDataRate:(id)a3;
-- (void)addRxFWDelay:(id)a3;
-- (void)addRxIPCDelay:(id)a3;
-- (void)addRxRSSI:(id)a3;
-- (void)addRxTotalDelay:(id)a3;
-- (void)addTxCCA:(id)a3;
-- (void)addTxDataRate:(id)a3;
-- (void)addTxFWDelay:(id)a3;
-- (void)addTxHWDelay:(id)a3;
-- (void)addTxIPCDelay:(id)a3;
-- (void)addTxPacketBurstInterval:(id)a3;
-- (void)addTxPacketBurstSize:(id)a3;
-- (void)addTxRetries:(id)a3;
-- (void)addTxTotalDelay:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addRxDataRate:(id)rate;
+- (void)addRxFWDelay:(id)delay;
+- (void)addRxIPCDelay:(id)delay;
+- (void)addRxRSSI:(id)i;
+- (void)addRxTotalDelay:(id)delay;
+- (void)addTxCCA:(id)a;
+- (void)addTxDataRate:(id)rate;
+- (void)addTxFWDelay:(id)delay;
+- (void)addTxHWDelay:(id)delay;
+- (void)addTxIPCDelay:(id)delay;
+- (void)addTxPacketBurstInterval:(id)interval;
+- (void)addTxPacketBurstSize:(id)size;
+- (void)addTxRetries:(id)retries;
+- (void)addTxTotalDelay:(id)delay;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTxExpiredCount:(BOOL)a3;
-- (void)setHasTxSuccessCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTxExpiredCount:(BOOL)count;
+- (void)setHasTxSuccessCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSidecarPeerTraffic
@@ -49,9 +49,9 @@
   [(AWDSidecarPeerTraffic *)&v3 dealloc];
 }
 
-- (void)setHasTxSuccessCount:(BOOL)a3
+- (void)setHasTxSuccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTxExpiredCount:(BOOL)a3
+- (void)setHasTxExpiredCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -79,7 +79,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addTxTotalDelay:(id)a3
+- (void)addTxTotalDelay:(id)delay
 {
   txTotalDelays = self->_txTotalDelays;
   if (!txTotalDelays)
@@ -88,10 +88,10 @@
     self->_txTotalDelays = txTotalDelays;
   }
 
-  [(NSMutableArray *)txTotalDelays addObject:a3];
+  [(NSMutableArray *)txTotalDelays addObject:delay];
 }
 
-- (void)addTxIPCDelay:(id)a3
+- (void)addTxIPCDelay:(id)delay
 {
   txIPCDelays = self->_txIPCDelays;
   if (!txIPCDelays)
@@ -100,10 +100,10 @@
     self->_txIPCDelays = txIPCDelays;
   }
 
-  [(NSMutableArray *)txIPCDelays addObject:a3];
+  [(NSMutableArray *)txIPCDelays addObject:delay];
 }
 
-- (void)addTxFWDelay:(id)a3
+- (void)addTxFWDelay:(id)delay
 {
   txFWDelays = self->_txFWDelays;
   if (!txFWDelays)
@@ -112,10 +112,10 @@
     self->_txFWDelays = txFWDelays;
   }
 
-  [(NSMutableArray *)txFWDelays addObject:a3];
+  [(NSMutableArray *)txFWDelays addObject:delay];
 }
 
-- (void)addTxHWDelay:(id)a3
+- (void)addTxHWDelay:(id)delay
 {
   txHWDelays = self->_txHWDelays;
   if (!txHWDelays)
@@ -124,10 +124,10 @@
     self->_txHWDelays = txHWDelays;
   }
 
-  [(NSMutableArray *)txHWDelays addObject:a3];
+  [(NSMutableArray *)txHWDelays addObject:delay];
 }
 
-- (void)addTxDataRate:(id)a3
+- (void)addTxDataRate:(id)rate
 {
   txDataRates = self->_txDataRates;
   if (!txDataRates)
@@ -136,10 +136,10 @@
     self->_txDataRates = txDataRates;
   }
 
-  [(NSMutableArray *)txDataRates addObject:a3];
+  [(NSMutableArray *)txDataRates addObject:rate];
 }
 
-- (void)addTxCCA:(id)a3
+- (void)addTxCCA:(id)a
 {
   txCCAs = self->_txCCAs;
   if (!txCCAs)
@@ -148,10 +148,10 @@
     self->_txCCAs = txCCAs;
   }
 
-  [(NSMutableArray *)txCCAs addObject:a3];
+  [(NSMutableArray *)txCCAs addObject:a];
 }
 
-- (void)addTxRetries:(id)a3
+- (void)addTxRetries:(id)retries
 {
   txRetries = self->_txRetries;
   if (!txRetries)
@@ -160,10 +160,10 @@
     self->_txRetries = txRetries;
   }
 
-  [(NSMutableArray *)txRetries addObject:a3];
+  [(NSMutableArray *)txRetries addObject:retries];
 }
 
-- (void)addTxPacketBurstSize:(id)a3
+- (void)addTxPacketBurstSize:(id)size
 {
   txPacketBurstSizes = self->_txPacketBurstSizes;
   if (!txPacketBurstSizes)
@@ -172,10 +172,10 @@
     self->_txPacketBurstSizes = txPacketBurstSizes;
   }
 
-  [(NSMutableArray *)txPacketBurstSizes addObject:a3];
+  [(NSMutableArray *)txPacketBurstSizes addObject:size];
 }
 
-- (void)addTxPacketBurstInterval:(id)a3
+- (void)addTxPacketBurstInterval:(id)interval
 {
   txPacketBurstIntervals = self->_txPacketBurstIntervals;
   if (!txPacketBurstIntervals)
@@ -184,10 +184,10 @@
     self->_txPacketBurstIntervals = txPacketBurstIntervals;
   }
 
-  [(NSMutableArray *)txPacketBurstIntervals addObject:a3];
+  [(NSMutableArray *)txPacketBurstIntervals addObject:interval];
 }
 
-- (void)addRxTotalDelay:(id)a3
+- (void)addRxTotalDelay:(id)delay
 {
   rxTotalDelays = self->_rxTotalDelays;
   if (!rxTotalDelays)
@@ -196,10 +196,10 @@
     self->_rxTotalDelays = rxTotalDelays;
   }
 
-  [(NSMutableArray *)rxTotalDelays addObject:a3];
+  [(NSMutableArray *)rxTotalDelays addObject:delay];
 }
 
-- (void)addRxIPCDelay:(id)a3
+- (void)addRxIPCDelay:(id)delay
 {
   rxIPCDelays = self->_rxIPCDelays;
   if (!rxIPCDelays)
@@ -208,10 +208,10 @@
     self->_rxIPCDelays = rxIPCDelays;
   }
 
-  [(NSMutableArray *)rxIPCDelays addObject:a3];
+  [(NSMutableArray *)rxIPCDelays addObject:delay];
 }
 
-- (void)addRxFWDelay:(id)a3
+- (void)addRxFWDelay:(id)delay
 {
   rxFWDelays = self->_rxFWDelays;
   if (!rxFWDelays)
@@ -220,10 +220,10 @@
     self->_rxFWDelays = rxFWDelays;
   }
 
-  [(NSMutableArray *)rxFWDelays addObject:a3];
+  [(NSMutableArray *)rxFWDelays addObject:delay];
 }
 
-- (void)addRxDataRate:(id)a3
+- (void)addRxDataRate:(id)rate
 {
   rxDataRates = self->_rxDataRates;
   if (!rxDataRates)
@@ -232,10 +232,10 @@
     self->_rxDataRates = rxDataRates;
   }
 
-  [(NSMutableArray *)rxDataRates addObject:a3];
+  [(NSMutableArray *)rxDataRates addObject:rate];
 }
 
-- (void)addRxRSSI:(id)a3
+- (void)addRxRSSI:(id)i
 {
   rxRSSIs = self->_rxRSSIs;
   if (!rxRSSIs)
@@ -244,7 +244,7 @@
     self->_rxRSSIs = rxRSSIs;
   }
 
-  [(NSMutableArray *)rxRSSIs addObject:a3];
+  [(NSMutableArray *)rxRSSIs addObject:i];
 }
 
 - (id)description
@@ -257,11 +257,11 @@
 - (id)dictionaryRepresentation
 {
   v161 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txSuccessCount), @"txSuccessCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txSuccessCount), @"txSuccessCount"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -280,11 +280,11 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txExpiredCount), @"txExpiredCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txExpiredCount), @"txExpiredCount"}];
   if (*&self->_has)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txErrorCount), @"txErrorCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_txErrorCount), @"txErrorCount"}];
   }
 
 LABEL_5:
@@ -319,7 +319,7 @@ LABEL_5:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"txTotalDelay"];
+    [dictionary setObject:v5 forKey:@"txTotalDelay"];
   }
 
   if ([(NSMutableArray *)self->_txIPCDelays count])
@@ -353,7 +353,7 @@ LABEL_5:
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"txIPCDelay"];
+    [dictionary setObject:v11 forKey:@"txIPCDelay"];
   }
 
   if ([(NSMutableArray *)self->_txFWDelays count])
@@ -387,7 +387,7 @@ LABEL_5:
       while (v20);
     }
 
-    [v3 setObject:v17 forKey:@"txFWDelay"];
+    [dictionary setObject:v17 forKey:@"txFWDelay"];
   }
 
   if ([(NSMutableArray *)self->_txHWDelays count])
@@ -421,7 +421,7 @@ LABEL_5:
       while (v26);
     }
 
-    [v3 setObject:v23 forKey:@"txHWDelay"];
+    [dictionary setObject:v23 forKey:@"txHWDelay"];
   }
 
   if ([(NSMutableArray *)self->_txDataRates count])
@@ -455,7 +455,7 @@ LABEL_5:
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"txDataRate"];
+    [dictionary setObject:v29 forKey:@"txDataRate"];
   }
 
   if ([(NSMutableArray *)self->_txCCAs count])
@@ -489,7 +489,7 @@ LABEL_5:
       while (v38);
     }
 
-    [v3 setObject:v35 forKey:@"txCCA"];
+    [dictionary setObject:v35 forKey:@"txCCA"];
   }
 
   if ([(NSMutableArray *)self->_txRetries count])
@@ -523,7 +523,7 @@ LABEL_5:
       while (v44);
     }
 
-    [v3 setObject:v41 forKey:@"txRetries"];
+    [dictionary setObject:v41 forKey:@"txRetries"];
   }
 
   if ([(NSMutableArray *)self->_txPacketBurstSizes count])
@@ -557,7 +557,7 @@ LABEL_5:
       while (v50);
     }
 
-    [v3 setObject:v47 forKey:@"txPacketBurstSize"];
+    [dictionary setObject:v47 forKey:@"txPacketBurstSize"];
   }
 
   if ([(NSMutableArray *)self->_txPacketBurstIntervals count])
@@ -591,7 +591,7 @@ LABEL_5:
       while (v56);
     }
 
-    [v3 setObject:v53 forKey:@"txPacketBurstInterval"];
+    [dictionary setObject:v53 forKey:@"txPacketBurstInterval"];
   }
 
   if ([(NSMutableArray *)self->_rxTotalDelays count])
@@ -625,7 +625,7 @@ LABEL_5:
       while (v62);
     }
 
-    [v3 setObject:v59 forKey:@"rxTotalDelay"];
+    [dictionary setObject:v59 forKey:@"rxTotalDelay"];
   }
 
   if ([(NSMutableArray *)self->_rxIPCDelays count])
@@ -659,7 +659,7 @@ LABEL_5:
       while (v68);
     }
 
-    [v3 setObject:v65 forKey:@"rxIPCDelay"];
+    [dictionary setObject:v65 forKey:@"rxIPCDelay"];
   }
 
   if ([(NSMutableArray *)self->_rxFWDelays count])
@@ -693,7 +693,7 @@ LABEL_5:
       while (v74);
     }
 
-    [v3 setObject:v71 forKey:@"rxFWDelay"];
+    [dictionary setObject:v71 forKey:@"rxFWDelay"];
   }
 
   if ([(NSMutableArray *)self->_rxDataRates count])
@@ -727,7 +727,7 @@ LABEL_5:
       while (v80);
     }
 
-    [v3 setObject:v77 forKey:@"rxDataRate"];
+    [dictionary setObject:v77 forKey:@"rxDataRate"];
   }
 
   if ([(NSMutableArray *)self->_rxRSSIs count])
@@ -761,14 +761,14 @@ LABEL_5:
       while (v86);
     }
 
-    [v3 setObject:v83 forKey:@"rxRSSI"];
+    [dictionary setObject:v83 forKey:@"rxRSSI"];
   }
 
   v89 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v163 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -1213,7 +1213,7 @@ LABEL_5:
   v90 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) == 0)
@@ -1224,8 +1224,8 @@ LABEL_5:
     }
 
 LABEL_63:
-    *(a3 + 2) = self->_txExpiredCount;
-    *(a3 + 144) |= 2u;
+    *(to + 2) = self->_txExpiredCount;
+    *(to + 144) |= 2u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_5;
@@ -1234,8 +1234,8 @@ LABEL_63:
     goto LABEL_4;
   }
 
-  *(a3 + 3) = self->_txSuccessCount;
-  *(a3 + 144) |= 4u;
+  *(to + 3) = self->_txSuccessCount;
+  *(to + 144) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -1246,212 +1246,212 @@ LABEL_3:
   if (has)
   {
 LABEL_4:
-    *(a3 + 1) = self->_txErrorCount;
-    *(a3 + 144) |= 1u;
+    *(to + 1) = self->_txErrorCount;
+    *(to + 144) |= 1u;
   }
 
 LABEL_5:
   if ([(AWDSidecarPeerTraffic *)self txTotalDelaysCount])
   {
-    [a3 clearTxTotalDelays];
-    v6 = [(AWDSidecarPeerTraffic *)self txTotalDelaysCount];
-    if (v6)
+    [to clearTxTotalDelays];
+    txTotalDelaysCount = [(AWDSidecarPeerTraffic *)self txTotalDelaysCount];
+    if (txTotalDelaysCount)
     {
-      v7 = v6;
+      v7 = txTotalDelaysCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addTxTotalDelay:{-[AWDSidecarPeerTraffic txTotalDelayAtIndex:](self, "txTotalDelayAtIndex:", i)}];
+        [to addTxTotalDelay:{-[AWDSidecarPeerTraffic txTotalDelayAtIndex:](self, "txTotalDelayAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txIPCDelaysCount])
   {
-    [a3 clearTxIPCDelays];
-    v9 = [(AWDSidecarPeerTraffic *)self txIPCDelaysCount];
-    if (v9)
+    [to clearTxIPCDelays];
+    txIPCDelaysCount = [(AWDSidecarPeerTraffic *)self txIPCDelaysCount];
+    if (txIPCDelaysCount)
     {
-      v10 = v9;
+      v10 = txIPCDelaysCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addTxIPCDelay:{-[AWDSidecarPeerTraffic txIPCDelayAtIndex:](self, "txIPCDelayAtIndex:", j)}];
+        [to addTxIPCDelay:{-[AWDSidecarPeerTraffic txIPCDelayAtIndex:](self, "txIPCDelayAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txFWDelaysCount])
   {
-    [a3 clearTxFWDelays];
-    v12 = [(AWDSidecarPeerTraffic *)self txFWDelaysCount];
-    if (v12)
+    [to clearTxFWDelays];
+    txFWDelaysCount = [(AWDSidecarPeerTraffic *)self txFWDelaysCount];
+    if (txFWDelaysCount)
     {
-      v13 = v12;
+      v13 = txFWDelaysCount;
       for (k = 0; k != v13; ++k)
       {
-        [a3 addTxFWDelay:{-[AWDSidecarPeerTraffic txFWDelayAtIndex:](self, "txFWDelayAtIndex:", k)}];
+        [to addTxFWDelay:{-[AWDSidecarPeerTraffic txFWDelayAtIndex:](self, "txFWDelayAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txHWDelaysCount])
   {
-    [a3 clearTxHWDelays];
-    v15 = [(AWDSidecarPeerTraffic *)self txHWDelaysCount];
-    if (v15)
+    [to clearTxHWDelays];
+    txHWDelaysCount = [(AWDSidecarPeerTraffic *)self txHWDelaysCount];
+    if (txHWDelaysCount)
     {
-      v16 = v15;
+      v16 = txHWDelaysCount;
       for (m = 0; m != v16; ++m)
       {
-        [a3 addTxHWDelay:{-[AWDSidecarPeerTraffic txHWDelayAtIndex:](self, "txHWDelayAtIndex:", m)}];
+        [to addTxHWDelay:{-[AWDSidecarPeerTraffic txHWDelayAtIndex:](self, "txHWDelayAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txDataRatesCount])
   {
-    [a3 clearTxDataRates];
-    v18 = [(AWDSidecarPeerTraffic *)self txDataRatesCount];
-    if (v18)
+    [to clearTxDataRates];
+    txDataRatesCount = [(AWDSidecarPeerTraffic *)self txDataRatesCount];
+    if (txDataRatesCount)
     {
-      v19 = v18;
+      v19 = txDataRatesCount;
       for (n = 0; n != v19; ++n)
       {
-        [a3 addTxDataRate:{-[AWDSidecarPeerTraffic txDataRateAtIndex:](self, "txDataRateAtIndex:", n)}];
+        [to addTxDataRate:{-[AWDSidecarPeerTraffic txDataRateAtIndex:](self, "txDataRateAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txCCAsCount])
   {
-    [a3 clearTxCCAs];
-    v21 = [(AWDSidecarPeerTraffic *)self txCCAsCount];
-    if (v21)
+    [to clearTxCCAs];
+    txCCAsCount = [(AWDSidecarPeerTraffic *)self txCCAsCount];
+    if (txCCAsCount)
     {
-      v22 = v21;
+      v22 = txCCAsCount;
       for (ii = 0; ii != v22; ++ii)
       {
-        [a3 addTxCCA:{-[AWDSidecarPeerTraffic txCCAAtIndex:](self, "txCCAAtIndex:", ii)}];
+        [to addTxCCA:{-[AWDSidecarPeerTraffic txCCAAtIndex:](self, "txCCAAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txRetriesCount])
   {
-    [a3 clearTxRetries];
-    v24 = [(AWDSidecarPeerTraffic *)self txRetriesCount];
-    if (v24)
+    [to clearTxRetries];
+    txRetriesCount = [(AWDSidecarPeerTraffic *)self txRetriesCount];
+    if (txRetriesCount)
     {
-      v25 = v24;
+      v25 = txRetriesCount;
       for (jj = 0; jj != v25; ++jj)
       {
-        [a3 addTxRetries:{-[AWDSidecarPeerTraffic txRetriesAtIndex:](self, "txRetriesAtIndex:", jj)}];
+        [to addTxRetries:{-[AWDSidecarPeerTraffic txRetriesAtIndex:](self, "txRetriesAtIndex:", jj)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txPacketBurstSizesCount])
   {
-    [a3 clearTxPacketBurstSizes];
-    v27 = [(AWDSidecarPeerTraffic *)self txPacketBurstSizesCount];
-    if (v27)
+    [to clearTxPacketBurstSizes];
+    txPacketBurstSizesCount = [(AWDSidecarPeerTraffic *)self txPacketBurstSizesCount];
+    if (txPacketBurstSizesCount)
     {
-      v28 = v27;
+      v28 = txPacketBurstSizesCount;
       for (kk = 0; kk != v28; ++kk)
       {
-        [a3 addTxPacketBurstSize:{-[AWDSidecarPeerTraffic txPacketBurstSizeAtIndex:](self, "txPacketBurstSizeAtIndex:", kk)}];
+        [to addTxPacketBurstSize:{-[AWDSidecarPeerTraffic txPacketBurstSizeAtIndex:](self, "txPacketBurstSizeAtIndex:", kk)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self txPacketBurstIntervalsCount])
   {
-    [a3 clearTxPacketBurstIntervals];
-    v30 = [(AWDSidecarPeerTraffic *)self txPacketBurstIntervalsCount];
-    if (v30)
+    [to clearTxPacketBurstIntervals];
+    txPacketBurstIntervalsCount = [(AWDSidecarPeerTraffic *)self txPacketBurstIntervalsCount];
+    if (txPacketBurstIntervalsCount)
     {
-      v31 = v30;
+      v31 = txPacketBurstIntervalsCount;
       for (mm = 0; mm != v31; ++mm)
       {
-        [a3 addTxPacketBurstInterval:{-[AWDSidecarPeerTraffic txPacketBurstIntervalAtIndex:](self, "txPacketBurstIntervalAtIndex:", mm)}];
+        [to addTxPacketBurstInterval:{-[AWDSidecarPeerTraffic txPacketBurstIntervalAtIndex:](self, "txPacketBurstIntervalAtIndex:", mm)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self rxTotalDelaysCount])
   {
-    [a3 clearRxTotalDelays];
-    v33 = [(AWDSidecarPeerTraffic *)self rxTotalDelaysCount];
-    if (v33)
+    [to clearRxTotalDelays];
+    rxTotalDelaysCount = [(AWDSidecarPeerTraffic *)self rxTotalDelaysCount];
+    if (rxTotalDelaysCount)
     {
-      v34 = v33;
+      v34 = rxTotalDelaysCount;
       for (nn = 0; nn != v34; ++nn)
       {
-        [a3 addRxTotalDelay:{-[AWDSidecarPeerTraffic rxTotalDelayAtIndex:](self, "rxTotalDelayAtIndex:", nn)}];
+        [to addRxTotalDelay:{-[AWDSidecarPeerTraffic rxTotalDelayAtIndex:](self, "rxTotalDelayAtIndex:", nn)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self rxIPCDelaysCount])
   {
-    [a3 clearRxIPCDelays];
-    v36 = [(AWDSidecarPeerTraffic *)self rxIPCDelaysCount];
-    if (v36)
+    [to clearRxIPCDelays];
+    rxIPCDelaysCount = [(AWDSidecarPeerTraffic *)self rxIPCDelaysCount];
+    if (rxIPCDelaysCount)
     {
-      v37 = v36;
+      v37 = rxIPCDelaysCount;
       for (i1 = 0; i1 != v37; ++i1)
       {
-        [a3 addRxIPCDelay:{-[AWDSidecarPeerTraffic rxIPCDelayAtIndex:](self, "rxIPCDelayAtIndex:", i1)}];
+        [to addRxIPCDelay:{-[AWDSidecarPeerTraffic rxIPCDelayAtIndex:](self, "rxIPCDelayAtIndex:", i1)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self rxFWDelaysCount])
   {
-    [a3 clearRxFWDelays];
-    v39 = [(AWDSidecarPeerTraffic *)self rxFWDelaysCount];
-    if (v39)
+    [to clearRxFWDelays];
+    rxFWDelaysCount = [(AWDSidecarPeerTraffic *)self rxFWDelaysCount];
+    if (rxFWDelaysCount)
     {
-      v40 = v39;
+      v40 = rxFWDelaysCount;
       for (i2 = 0; i2 != v40; ++i2)
       {
-        [a3 addRxFWDelay:{-[AWDSidecarPeerTraffic rxFWDelayAtIndex:](self, "rxFWDelayAtIndex:", i2)}];
+        [to addRxFWDelay:{-[AWDSidecarPeerTraffic rxFWDelayAtIndex:](self, "rxFWDelayAtIndex:", i2)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self rxDataRatesCount])
   {
-    [a3 clearRxDataRates];
-    v42 = [(AWDSidecarPeerTraffic *)self rxDataRatesCount];
-    if (v42)
+    [to clearRxDataRates];
+    rxDataRatesCount = [(AWDSidecarPeerTraffic *)self rxDataRatesCount];
+    if (rxDataRatesCount)
     {
-      v43 = v42;
+      v43 = rxDataRatesCount;
       for (i3 = 0; i3 != v43; ++i3)
       {
-        [a3 addRxDataRate:{-[AWDSidecarPeerTraffic rxDataRateAtIndex:](self, "rxDataRateAtIndex:", i3)}];
+        [to addRxDataRate:{-[AWDSidecarPeerTraffic rxDataRateAtIndex:](self, "rxDataRateAtIndex:", i3)}];
       }
     }
   }
 
   if ([(AWDSidecarPeerTraffic *)self rxRSSIsCount])
   {
-    [a3 clearRxRSSIs];
-    v45 = [(AWDSidecarPeerTraffic *)self rxRSSIsCount];
-    if (v45)
+    [to clearRxRSSIs];
+    rxRSSIsCount = [(AWDSidecarPeerTraffic *)self rxRSSIsCount];
+    if (rxRSSIsCount)
     {
-      v46 = v45;
+      v46 = rxRSSIsCount;
       for (i4 = 0; i4 != v46; ++i4)
       {
-        [a3 addRxRSSI:{-[AWDSidecarPeerTraffic rxRSSIAtIndex:](self, "rxRSSIAtIndex:", i4)}];
+        [to addRxRSSI:{-[AWDSidecarPeerTraffic rxRSSIAtIndex:](self, "rxRSSIAtIndex:", i4)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v164 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -1505,7 +1505,7 @@ LABEL_5:
           objc_enumerationMutation(txTotalDelays);
         }
 
-        v13 = [*(*(&v146 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v146 + 1) + 8 * i) copyWithZone:zone];
         [v6 addTxTotalDelay:v13];
       }
 
@@ -1534,7 +1534,7 @@ LABEL_5:
           objc_enumerationMutation(txIPCDelays);
         }
 
-        v19 = [*(*(&v142 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v142 + 1) + 8 * j) copyWithZone:zone];
         [v6 addTxIPCDelay:v19];
       }
 
@@ -1563,7 +1563,7 @@ LABEL_5:
           objc_enumerationMutation(txFWDelays);
         }
 
-        v25 = [*(*(&v138 + 1) + 8 * k) copyWithZone:a3];
+        v25 = [*(*(&v138 + 1) + 8 * k) copyWithZone:zone];
         [v6 addTxFWDelay:v25];
       }
 
@@ -1592,7 +1592,7 @@ LABEL_5:
           objc_enumerationMutation(txHWDelays);
         }
 
-        v31 = [*(*(&v134 + 1) + 8 * m) copyWithZone:a3];
+        v31 = [*(*(&v134 + 1) + 8 * m) copyWithZone:zone];
         [v6 addTxHWDelay:v31];
       }
 
@@ -1621,7 +1621,7 @@ LABEL_5:
           objc_enumerationMutation(txDataRates);
         }
 
-        v37 = [*(*(&v130 + 1) + 8 * n) copyWithZone:a3];
+        v37 = [*(*(&v130 + 1) + 8 * n) copyWithZone:zone];
         [v6 addTxDataRate:v37];
       }
 
@@ -1650,7 +1650,7 @@ LABEL_5:
           objc_enumerationMutation(txCCAs);
         }
 
-        v43 = [*(*(&v126 + 1) + 8 * ii) copyWithZone:a3];
+        v43 = [*(*(&v126 + 1) + 8 * ii) copyWithZone:zone];
         [v6 addTxCCA:v43];
       }
 
@@ -1679,7 +1679,7 @@ LABEL_5:
           objc_enumerationMutation(txRetries);
         }
 
-        v49 = [*(*(&v122 + 1) + 8 * jj) copyWithZone:a3];
+        v49 = [*(*(&v122 + 1) + 8 * jj) copyWithZone:zone];
         [v6 addTxRetries:v49];
       }
 
@@ -1708,7 +1708,7 @@ LABEL_5:
           objc_enumerationMutation(txPacketBurstSizes);
         }
 
-        v55 = [*(*(&v118 + 1) + 8 * kk) copyWithZone:a3];
+        v55 = [*(*(&v118 + 1) + 8 * kk) copyWithZone:zone];
         [v6 addTxPacketBurstSize:v55];
       }
 
@@ -1737,7 +1737,7 @@ LABEL_5:
           objc_enumerationMutation(txPacketBurstIntervals);
         }
 
-        v61 = [*(*(&v114 + 1) + 8 * mm) copyWithZone:a3];
+        v61 = [*(*(&v114 + 1) + 8 * mm) copyWithZone:zone];
         [v6 addTxPacketBurstInterval:v61];
       }
 
@@ -1766,7 +1766,7 @@ LABEL_5:
           objc_enumerationMutation(rxTotalDelays);
         }
 
-        v67 = [*(*(&v110 + 1) + 8 * nn) copyWithZone:a3];
+        v67 = [*(*(&v110 + 1) + 8 * nn) copyWithZone:zone];
         [v6 addRxTotalDelay:v67];
       }
 
@@ -1795,7 +1795,7 @@ LABEL_5:
           objc_enumerationMutation(rxIPCDelays);
         }
 
-        v73 = [*(*(&v106 + 1) + 8 * i1) copyWithZone:a3];
+        v73 = [*(*(&v106 + 1) + 8 * i1) copyWithZone:zone];
         [v6 addRxIPCDelay:v73];
       }
 
@@ -1824,7 +1824,7 @@ LABEL_5:
           objc_enumerationMutation(rxFWDelays);
         }
 
-        v79 = [*(*(&v102 + 1) + 8 * i2) copyWithZone:a3];
+        v79 = [*(*(&v102 + 1) + 8 * i2) copyWithZone:zone];
         [v6 addRxFWDelay:v79];
       }
 
@@ -1853,7 +1853,7 @@ LABEL_5:
           objc_enumerationMutation(rxDataRates);
         }
 
-        v85 = [*(*(&v98 + 1) + 8 * i3) copyWithZone:a3];
+        v85 = [*(*(&v98 + 1) + 8 * i3) copyWithZone:zone];
         [v6 addRxDataRate:v85];
       }
 
@@ -1882,7 +1882,7 @@ LABEL_5:
           objc_enumerationMutation(rxRSSIs);
         }
 
-        v91 = [*(*(&v94 + 1) + 8 * i4) copyWithZone:a3];
+        v91 = [*(*(&v94 + 1) + 8 * i4) copyWithZone:zone];
         [v6 addRxRSSI:v91];
       }
 
@@ -1896,21 +1896,21 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 144);
+    v6 = *(equal + 144);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 144) & 4) == 0 || self->_txSuccessCount != *(a3 + 3))
+      if ((*(equal + 144) & 4) == 0 || self->_txSuccessCount != *(equal + 3))
       {
         goto LABEL_45;
       }
     }
 
-    else if ((*(a3 + 144) & 4) != 0)
+    else if ((*(equal + 144) & 4) != 0)
     {
 LABEL_45:
       LOBYTE(v5) = 0;
@@ -1919,71 +1919,71 @@ LABEL_45:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 144) & 2) == 0 || self->_txExpiredCount != *(a3 + 2))
+      if ((*(equal + 144) & 2) == 0 || self->_txExpiredCount != *(equal + 2))
       {
         goto LABEL_45;
       }
     }
 
-    else if ((*(a3 + 144) & 2) != 0)
+    else if ((*(equal + 144) & 2) != 0)
     {
       goto LABEL_45;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 144) & 1) == 0 || self->_txErrorCount != *(a3 + 1))
+      if ((*(equal + 144) & 1) == 0 || self->_txErrorCount != *(equal + 1))
       {
         goto LABEL_45;
       }
     }
 
-    else if (*(a3 + 144))
+    else if (*(equal + 144))
     {
       goto LABEL_45;
     }
 
     txTotalDelays = self->_txTotalDelays;
-    if (!(txTotalDelays | *(a3 + 17)) || (v5 = [(NSMutableArray *)txTotalDelays isEqual:?]) != 0)
+    if (!(txTotalDelays | *(equal + 17)) || (v5 = [(NSMutableArray *)txTotalDelays isEqual:?]) != 0)
     {
       txIPCDelays = self->_txIPCDelays;
-      if (!(txIPCDelays | *(a3 + 13)) || (v5 = [(NSMutableArray *)txIPCDelays isEqual:?]) != 0)
+      if (!(txIPCDelays | *(equal + 13)) || (v5 = [(NSMutableArray *)txIPCDelays isEqual:?]) != 0)
       {
         txFWDelays = self->_txFWDelays;
-        if (!(txFWDelays | *(a3 + 11)) || (v5 = [(NSMutableArray *)txFWDelays isEqual:?]) != 0)
+        if (!(txFWDelays | *(equal + 11)) || (v5 = [(NSMutableArray *)txFWDelays isEqual:?]) != 0)
         {
           txHWDelays = self->_txHWDelays;
-          if (!(txHWDelays | *(a3 + 12)) || (v5 = [(NSMutableArray *)txHWDelays isEqual:?]) != 0)
+          if (!(txHWDelays | *(equal + 12)) || (v5 = [(NSMutableArray *)txHWDelays isEqual:?]) != 0)
           {
             txDataRates = self->_txDataRates;
-            if (!(txDataRates | *(a3 + 10)) || (v5 = [(NSMutableArray *)txDataRates isEqual:?]) != 0)
+            if (!(txDataRates | *(equal + 10)) || (v5 = [(NSMutableArray *)txDataRates isEqual:?]) != 0)
             {
               txCCAs = self->_txCCAs;
-              if (!(txCCAs | *(a3 + 9)) || (v5 = [(NSMutableArray *)txCCAs isEqual:?]) != 0)
+              if (!(txCCAs | *(equal + 9)) || (v5 = [(NSMutableArray *)txCCAs isEqual:?]) != 0)
               {
                 txRetries = self->_txRetries;
-                if (!(txRetries | *(a3 + 16)) || (v5 = [(NSMutableArray *)txRetries isEqual:?]) != 0)
+                if (!(txRetries | *(equal + 16)) || (v5 = [(NSMutableArray *)txRetries isEqual:?]) != 0)
                 {
                   txPacketBurstSizes = self->_txPacketBurstSizes;
-                  if (!(txPacketBurstSizes | *(a3 + 15)) || (v5 = [(NSMutableArray *)txPacketBurstSizes isEqual:?]) != 0)
+                  if (!(txPacketBurstSizes | *(equal + 15)) || (v5 = [(NSMutableArray *)txPacketBurstSizes isEqual:?]) != 0)
                   {
                     txPacketBurstIntervals = self->_txPacketBurstIntervals;
-                    if (!(txPacketBurstIntervals | *(a3 + 14)) || (v5 = [(NSMutableArray *)txPacketBurstIntervals isEqual:?]) != 0)
+                    if (!(txPacketBurstIntervals | *(equal + 14)) || (v5 = [(NSMutableArray *)txPacketBurstIntervals isEqual:?]) != 0)
                     {
                       rxTotalDelays = self->_rxTotalDelays;
-                      if (!(rxTotalDelays | *(a3 + 8)) || (v5 = [(NSMutableArray *)rxTotalDelays isEqual:?]) != 0)
+                      if (!(rxTotalDelays | *(equal + 8)) || (v5 = [(NSMutableArray *)rxTotalDelays isEqual:?]) != 0)
                       {
                         rxIPCDelays = self->_rxIPCDelays;
-                        if (!(rxIPCDelays | *(a3 + 6)) || (v5 = [(NSMutableArray *)rxIPCDelays isEqual:?]) != 0)
+                        if (!(rxIPCDelays | *(equal + 6)) || (v5 = [(NSMutableArray *)rxIPCDelays isEqual:?]) != 0)
                         {
                           rxFWDelays = self->_rxFWDelays;
-                          if (!(rxFWDelays | *(a3 + 5)) || (v5 = [(NSMutableArray *)rxFWDelays isEqual:?]) != 0)
+                          if (!(rxFWDelays | *(equal + 5)) || (v5 = [(NSMutableArray *)rxFWDelays isEqual:?]) != 0)
                           {
                             rxDataRates = self->_rxDataRates;
-                            if (!(rxDataRates | *(a3 + 4)) || (v5 = [(NSMutableArray *)rxDataRates isEqual:?]) != 0)
+                            if (!(rxDataRates | *(equal + 4)) || (v5 = [(NSMutableArray *)rxDataRates isEqual:?]) != 0)
                             {
                               rxRSSIs = self->_rxRSSIs;
-                              if (rxRSSIs | *(a3 + 7))
+                              if (rxRSSIs | *(equal + 7))
                               {
 
                                 LOBYTE(v5) = [(NSMutableArray *)rxRSSIs isEqual:?];
@@ -2065,15 +2065,15 @@ LABEL_8:
   return v15 ^ v18 ^ [(NSMutableArray *)self->_rxRSSIs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v147 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 144);
+  v5 = *(from + 144);
   if ((v5 & 4) != 0)
   {
-    self->_txSuccessCount = *(a3 + 3);
+    self->_txSuccessCount = *(from + 3);
     *&self->_has |= 4u;
-    v5 = *(a3 + 144);
+    v5 = *(from + 144);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -2086,17 +2086,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 144) & 2) == 0)
+  else if ((*(from + 144) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_txExpiredCount = *(a3 + 2);
+  self->_txExpiredCount = *(from + 2);
   *&self->_has |= 2u;
-  if (*(a3 + 144))
+  if (*(from + 144))
   {
 LABEL_4:
-    self->_txErrorCount = *(a3 + 1);
+    self->_txErrorCount = *(from + 1);
     *&self->_has |= 1u;
   }
 
@@ -2105,7 +2105,7 @@ LABEL_5:
   v132 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v6 = *(a3 + 17);
+  v6 = *(from + 17);
   v7 = [v6 countByEnumeratingWithState:&v129 objects:v146 count:16];
   if (v7)
   {
@@ -2133,7 +2133,7 @@ LABEL_5:
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v11 = *(a3 + 13);
+  v11 = *(from + 13);
   v12 = [v11 countByEnumeratingWithState:&v125 objects:v145 count:16];
   if (v12)
   {
@@ -2161,7 +2161,7 @@ LABEL_5:
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v16 = *(a3 + 11);
+  v16 = *(from + 11);
   v17 = [v16 countByEnumeratingWithState:&v121 objects:v144 count:16];
   if (v17)
   {
@@ -2189,7 +2189,7 @@ LABEL_5:
   v120 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v21 = *(a3 + 12);
+  v21 = *(from + 12);
   v22 = [v21 countByEnumeratingWithState:&v117 objects:v143 count:16];
   if (v22)
   {
@@ -2217,7 +2217,7 @@ LABEL_5:
   v116 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v26 = *(a3 + 10);
+  v26 = *(from + 10);
   v27 = [v26 countByEnumeratingWithState:&v113 objects:v142 count:16];
   if (v27)
   {
@@ -2245,7 +2245,7 @@ LABEL_5:
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v31 = *(a3 + 9);
+  v31 = *(from + 9);
   v32 = [v31 countByEnumeratingWithState:&v109 objects:v141 count:16];
   if (v32)
   {
@@ -2273,7 +2273,7 @@ LABEL_5:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v36 = *(a3 + 16);
+  v36 = *(from + 16);
   v37 = [v36 countByEnumeratingWithState:&v105 objects:v140 count:16];
   if (v37)
   {
@@ -2301,7 +2301,7 @@ LABEL_5:
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v41 = *(a3 + 15);
+  v41 = *(from + 15);
   v42 = [v41 countByEnumeratingWithState:&v101 objects:v139 count:16];
   if (v42)
   {
@@ -2329,7 +2329,7 @@ LABEL_5:
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v46 = *(a3 + 14);
+  v46 = *(from + 14);
   v47 = [v46 countByEnumeratingWithState:&v97 objects:v138 count:16];
   if (v47)
   {
@@ -2357,7 +2357,7 @@ LABEL_5:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v51 = *(a3 + 8);
+  v51 = *(from + 8);
   v52 = [v51 countByEnumeratingWithState:&v93 objects:v137 count:16];
   if (v52)
   {
@@ -2385,7 +2385,7 @@ LABEL_5:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v56 = *(a3 + 6);
+  v56 = *(from + 6);
   v57 = [v56 countByEnumeratingWithState:&v89 objects:v136 count:16];
   if (v57)
   {
@@ -2413,7 +2413,7 @@ LABEL_5:
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v61 = *(a3 + 5);
+  v61 = *(from + 5);
   v62 = [v61 countByEnumeratingWithState:&v85 objects:v135 count:16];
   if (v62)
   {
@@ -2441,7 +2441,7 @@ LABEL_5:
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v66 = *(a3 + 4);
+  v66 = *(from + 4);
   v67 = [v66 countByEnumeratingWithState:&v81 objects:v134 count:16];
   if (v67)
   {
@@ -2469,7 +2469,7 @@ LABEL_5:
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v71 = *(a3 + 7);
+  v71 = *(from + 7);
   v72 = [v71 countByEnumeratingWithState:&v77 objects:v133 count:16];
   if (v72)
   {

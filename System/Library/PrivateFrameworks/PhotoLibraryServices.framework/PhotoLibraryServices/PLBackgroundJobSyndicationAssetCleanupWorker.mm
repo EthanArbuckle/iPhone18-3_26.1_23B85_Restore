@@ -1,15 +1,15 @@
 @interface PLBackgroundJobSyndicationAssetCleanupWorker
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
 @end
 
 @implementation PLBackgroundJobSyndicationAssetCleanupWorker
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -20,14 +20,14 @@
   v13[1] = 3221225472;
   v13[2] = __87__PLBackgroundJobSyndicationAssetCleanupWorker_performWorkOnItem_inLibrary_completion___block_invoke;
   v13[3] = &unk_1E75778C0;
-  v11 = v9;
+  v11 = libraryCopy;
   v14 = v11;
-  v12 = v8;
-  v16 = self;
+  v12 = itemCopy;
+  selfCopy = self;
   v17 = &v18;
   v15 = v12;
   [v11 performTransactionAndWait:v13];
-  v10[2](v10, v19[5]);
+  completionCopy[2](completionCopy, v19[5]);
 
   _Block_object_dispose(&v18, 8);
 }
@@ -90,13 +90,13 @@ void __87__PLBackgroundJobSyndicationAssetCleanupWorker_performWorkOnItem_inLibr
 LABEL_6:
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  criteriasCopy = criterias;
   v8 = +[PLBackgroundJobCriteria criteriaForHubbleWorker];
-  if ([v7 containsObject:v8])
+  if ([criteriasCopy containsObject:v8])
   {
     v22 = 0;
     v23 = &v22;
@@ -104,20 +104,20 @@ LABEL_6:
     v25 = __Block_byref_object_copy__52880;
     v26 = __Block_byref_object_dispose__52881;
     v27 = 0;
-    v9 = [v6 globalValues];
-    v10 = [v9 lastFullIndexSyndicationSyncStartDate];
+    globalValues = [libraryCopy globalValues];
+    lastFullIndexSyndicationSyncStartDate = [globalValues lastFullIndexSyndicationSyncStartDate];
 
-    if (v10)
+    if (lastFullIndexSyndicationSyncStartDate)
     {
       v11 = PLSyndicationGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(PLBackgroundJobWorker *)self workerName];
-        [v10 timeIntervalSinceReferenceDate];
+        workerName = [(PLBackgroundJobWorker *)self workerName];
+        [lastFullIndexSyndicationSyncStartDate timeIntervalSinceReferenceDate];
         *buf = 138543874;
-        v29 = v12;
+        v29 = workerName;
         v30 = 2112;
-        v31 = v10;
+        v31 = lastFullIndexSyndicationSyncStartDate;
         v32 = 2048;
         v33 = v13;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[sync.worker] %{public}@ searching for assets that have not been updated since last full index on date: %@ (%f)", buf, 0x20u);
@@ -127,25 +127,25 @@ LABEL_6:
       v17[1] = 3221225472;
       v17[2] = __99__PLBackgroundJobSyndicationAssetCleanupWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke;
       v17[3] = &unk_1E75778C0;
-      v18 = v10;
+      v18 = lastFullIndexSyndicationSyncStartDate;
       v21 = &v22;
-      v19 = v6;
-      v20 = self;
+      v19 = libraryCopy;
+      selfCopy = self;
       [v19 performBlockAndWait:v17];
     }
 
     v14 = [PLBackgroundJobWorkerPendingWorkItems alloc];
-    v15 = [(PLBackgroundJobWorkerPendingWorkItems *)v14 initWithCriteria:v8 workItemsNeedingProcessing:v23[5]];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v14 initWithCriteria:v8 workItemsNeedingProcessing:v23[5]];
 
     _Block_object_dispose(&v22, 8);
   }
 
   else
   {
-    v15 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
   }
 
-  return v15;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
 void __99__PLBackgroundJobSyndicationAssetCleanupWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)

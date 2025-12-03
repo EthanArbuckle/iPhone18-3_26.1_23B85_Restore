@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterChargingTargetStruct
 - (MTREnergyEVSEClusterChargingTargetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterChargingTargetStruct);
-  v5 = [(MTREnergyEVSEClusterChargingTargetStruct *)self targetTimeMinutesPastMidnight];
-  [(MTREnergyEVSEClusterChargingTargetStruct *)v4 setTargetTimeMinutesPastMidnight:v5];
+  targetTimeMinutesPastMidnight = [(MTREnergyEVSEClusterChargingTargetStruct *)self targetTimeMinutesPastMidnight];
+  [(MTREnergyEVSEClusterChargingTargetStruct *)v4 setTargetTimeMinutesPastMidnight:targetTimeMinutesPastMidnight];
 
-  v6 = [(MTREnergyEVSEClusterChargingTargetStruct *)self targetSoC];
-  [(MTREnergyEVSEClusterChargingTargetStruct *)v4 setTargetSoC:v6];
+  targetSoC = [(MTREnergyEVSEClusterChargingTargetStruct *)self targetSoC];
+  [(MTREnergyEVSEClusterChargingTargetStruct *)v4 setTargetSoC:targetSoC];
 
-  v7 = [(MTREnergyEVSEClusterChargingTargetStruct *)self addedEnergy];
-  [(MTREnergyEVSEClusterChargingTargetStruct *)v4 setAddedEnergy:v7];
+  addedEnergy = [(MTREnergyEVSEClusterChargingTargetStruct *)self addedEnergy];
+  [(MTREnergyEVSEClusterChargingTargetStruct *)v4 setAddedEnergy:addedEnergy];
 
   return v4;
 }

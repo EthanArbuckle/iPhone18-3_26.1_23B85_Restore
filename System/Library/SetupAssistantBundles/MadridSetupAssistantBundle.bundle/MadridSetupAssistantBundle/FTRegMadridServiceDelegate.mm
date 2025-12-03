@@ -7,9 +7,9 @@
 - (BOOL)serviceIsAvailable
 {
   v2 = +[FTDeviceSupport sharedInstance];
-  v3 = [v2 iMessageAvailable];
+  iMessageAvailable = [v2 iMessageAvailable];
 
-  return v3;
+  return iMessageAvailable;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface HMMCoreAnalyticsTagObserver
 + (id)logCategory;
-- (HMMCoreAnalyticsTagObserver)initWithTagDispatcher:(id)a3 logEventSubmitter:(id)a4 logEventFactory:(id)a5;
+- (HMMCoreAnalyticsTagObserver)initWithTagDispatcher:(id)dispatcher logEventSubmitter:(id)submitter logEventFactory:(id)factory;
 - (void)configure;
-- (void)observeTaggedEvent:(id)a3 addProcessorBlock:(id)a4;
+- (void)observeTaggedEvent:(id)event addProcessorBlock:(id)block;
 - (void)unconfigure;
 @end
 
 @implementation HMMCoreAnalyticsTagObserver
 
-- (void)observeTaggedEvent:(id)a3 addProcessorBlock:(id)a4
+- (void)observeTaggedEvent:(id)event addProcessorBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMCoreAnalyticsTagObserver *)self logEventFactory];
-  v9 = [v8 logEventForTaggedEvent:v6];
+  eventCopy = event;
+  blockCopy = block;
+  logEventFactory = [(HMMCoreAnalyticsTagObserver *)self logEventFactory];
+  v9 = [logEventFactory logEventForTaggedEvent:eventCopy];
 
-  if (v6)
+  if (eventCopy)
   {
-    v10 = [(HMMCoreAnalyticsTagObserver *)self logEventSubmitter];
-    [v10 submitLogEvent:v9];
+    logEventSubmitter = [(HMMCoreAnalyticsTagObserver *)self logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v9];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -45,40 +45,40 @@
 
 - (void)unconfigure
 {
-  v5 = [(HMMCoreAnalyticsTagObserver *)self tagDispatcher];
-  v3 = [(HMMCoreAnalyticsTagObserver *)self logEventFactory];
-  v4 = [v3 supportedTags];
-  [v5 unregisterTagObserver:self forTags:v4];
+  tagDispatcher = [(HMMCoreAnalyticsTagObserver *)self tagDispatcher];
+  logEventFactory = [(HMMCoreAnalyticsTagObserver *)self logEventFactory];
+  supportedTags = [logEventFactory supportedTags];
+  [tagDispatcher unregisterTagObserver:self forTags:supportedTags];
 }
 
 - (void)configure
 {
-  v5 = [(HMMCoreAnalyticsTagObserver *)self tagDispatcher];
-  v3 = [(HMMCoreAnalyticsTagObserver *)self logEventFactory];
-  v4 = [v3 supportedTags];
-  [v5 registerTagObserver:self forTags:v4];
+  tagDispatcher = [(HMMCoreAnalyticsTagObserver *)self tagDispatcher];
+  logEventFactory = [(HMMCoreAnalyticsTagObserver *)self logEventFactory];
+  supportedTags = [logEventFactory supportedTags];
+  [tagDispatcher registerTagObserver:self forTags:supportedTags];
 }
 
-- (HMMCoreAnalyticsTagObserver)initWithTagDispatcher:(id)a3 logEventSubmitter:(id)a4 logEventFactory:(id)a5
+- (HMMCoreAnalyticsTagObserver)initWithTagDispatcher:(id)dispatcher logEventSubmitter:(id)submitter logEventFactory:(id)factory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dispatcherCopy = dispatcher;
+  submitterCopy = submitter;
+  factoryCopy = factory;
+  if (!dispatcherCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!submitterCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = factoryCopy;
+  if (!factoryCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -91,9 +91,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_tagDispatcher, a3);
-    objc_storeStrong(&v14->_logEventSubmitter, a4);
-    objc_storeStrong(&v14->_logEventFactory, a5);
+    objc_storeStrong(&v13->_tagDispatcher, dispatcher);
+    objc_storeStrong(&v14->_logEventSubmitter, submitter);
+    objc_storeStrong(&v14->_logEventFactory, factory);
   }
 
   return v14;

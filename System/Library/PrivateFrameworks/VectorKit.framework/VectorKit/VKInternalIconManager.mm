@@ -1,20 +1,20 @@
 @interface VKInternalIconManager
-+ (int64_t)convertGrlSizeGroup:(unsigned __int8)a3;
-+ (unsigned)convertSizeGroup:(int64_t)a3;
++ (int64_t)convertGrlSizeGroup:(unsigned __int8)group;
++ (unsigned)convertSizeGroup:(int64_t)group;
 - (BOOL)isCachingAtlases;
 - (VKInternalIconManager)init;
 - (id).cxx_construct;
-- (id)balloonIconForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)imageForDataID:(unsigned int)a3 text:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)imageForIconID:(unsigned int)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6;
-- (id)imageForImageSourceKey:(id)a3;
-- (id)imageForKey:(unsigned int)a3 value:(unsigned int)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)imageForName:(id)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6;
-- (id)imageForStyleAttributes:(id)a3 styleManager:(shared_ptr<gss:(float)a5 :(int64_t)a6 StylesheetManager<gss:(id)a7 :PropertyID>>)a4 contentScale:sizeGroup:modifiers:;
-- (id)imageForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7;
-- (id)init:(shared_ptr<grl:(shared_ptr<md:(void *)a5 :StylesheetVendor>)a4 :IconManager>)a3 stylesheetVendor:tileGroupNotificationManager:;
-- (shared_ptr<grl::IconImage>)_iconImageForStyleAttributes:(id)a3 styleManager:(shared_ptr<gss:(float)a5 :(int64_t)a6 StylesheetManager<gss:(id)a7 :PropertyID>>)a4 contentScale:sizeGroup:modifiers:;
-- (shared_ptr<gss::StylesheetManager<gss::PropertyID>>)_styleManagerForStylesheetName:(id)a3 contentScale:(float)a4;
+- (id)balloonIconForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForDataID:(unsigned int)d text:(id)text contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForIconID:(unsigned int)d contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForImageSourceKey:(id)key;
+- (id)imageForKey:(unsigned int)key value:(unsigned int)value contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)imageForStyleAttributes:(id)attributes styleManager:(shared_ptr<gss:(float)manager :(int64_t)a6 StylesheetManager<gss:(id)gss :PropertyID>>)a4 contentScale:sizeGroup:modifiers:;
+- (id)imageForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers;
+- (id)init:(shared_ptr<grl:(shared_ptr<md:(void *)init :StylesheetVendor>)a4 :IconManager>)a3 stylesheetVendor:tileGroupNotificationManager:;
+- (shared_ptr<grl::IconImage>)_iconImageForStyleAttributes:(id)attributes styleManager:(shared_ptr<gss:(float)manager :(int64_t)a6 StylesheetManager<gss:(id)gss :PropertyID>>)a4 contentScale:sizeGroup:modifiers:;
+- (shared_ptr<gss::StylesheetManager<gss::PropertyID>>)_styleManagerForStylesheetName:(id)name contentScale:(float)scale;
 - (void)_purgeStyleManagers;
 - (void)dealloc;
 - (void)init;
@@ -105,13 +105,13 @@ LABEL_6:
   return ptr & 1;
 }
 
-- (id)balloonIconForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)balloonIconForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v12 = a3;
-  v13 = a7;
-  *&v14 = a5;
-  [(VKInternalIconManager *)self _styleManagerForStylesheetName:a4 contentScale:v14];
-  grl::IconModifiers::setComponent([v13 cppModifiers], 6);
+  attributesCopy = attributes;
+  modifiersCopy = modifiers;
+  *&v14 = scale;
+  [(VKInternalIconManager *)self _styleManagerForStylesheetName:name contentScale:v14];
+  grl::IconModifiers::setComponent([modifiersCopy cppModifiers], 6);
   v28 = v32;
   v29 = v33;
   if (v33)
@@ -119,14 +119,14 @@ LABEL_6:
     atomic_fetch_add_explicit(&v33->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  *&v15 = a5;
-  [(VKInternalIconManager *)self _iconImageForStyleAttributes:v12 styleManager:&v28 contentScale:a6 sizeGroup:v13 modifiers:v15];
+  *&v15 = scale;
+  [(VKInternalIconManager *)self _iconImageForStyleAttributes:attributesCopy styleManager:&v28 contentScale:group sizeGroup:modifiersCopy modifiers:v15];
   if (v29)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v29);
   }
 
-  grl::IconModifiers::setComponent([v13 cppModifiers], 3);
+  grl::IconModifiers::setComponent([modifiersCopy cppModifiers], 3);
   v24 = v32;
   v25 = v33;
   if (v33)
@@ -134,8 +134,8 @@ LABEL_6:
     atomic_fetch_add_explicit(&v33->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  *&v16 = a5;
-  [(VKInternalIconManager *)self _iconImageForStyleAttributes:v12 styleManager:&v24 contentScale:a6 sizeGroup:v13 modifiers:v16];
+  *&v16 = scale;
+  [(VKInternalIconManager *)self _iconImageForStyleAttributes:attributesCopy styleManager:&v24 contentScale:group sizeGroup:modifiersCopy modifiers:v16];
   if (v25)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v25);
@@ -185,28 +185,28 @@ LABEL_6:
   return v18;
 }
 
-- (id)imageForIconID:(unsigned int)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6
+- (id)imageForIconID:(unsigned int)d contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
   v43[4] = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  modifiersCopy = modifiers;
   v38 = 1065353216;
   v39 = 4;
   v40 = 0;
   v41 = -1;
   v42 = 0;
   memset(v43, 0, 24);
-  grl::IconRequestOptions::setContentScale(&v38, a4);
-  grl::IconModifiers::setMirrored(&v38, [VKInternalIconManager convertSizeGroup:a5]);
-  if (v10)
+  grl::IconRequestOptions::setContentScale(&v38, scale);
+  grl::IconModifiers::setMirrored(&v38, [VKInternalIconManager convertSizeGroup:group]);
+  if (modifiersCopy)
   {
-    grl::IconRequestOptions::setVariant(&v38, [v10 variant]);
-    grl::IconRequestOptions::setDataVariant(&v38, [v10 secondaryVariant]);
-    grl::IconRequestOptions::setCountryCode(&v38, [v10 countryCode]);
+    grl::IconRequestOptions::setVariant(&v38, [modifiersCopy variant]);
+    grl::IconRequestOptions::setDataVariant(&v38, [modifiersCopy secondaryVariant]);
+    grl::IconRequestOptions::setCountryCode(&v38, [modifiersCopy countryCode]);
     ptr = self->_iconManager.__ptr_;
     *(&v29 + 1) = 0;
     v27 = &v28;
     v28 = 0;
-    grl::IconManager::imageForIconID(&v25, ptr, a3, [v10 cppModifiers], &v38, &v27, 0);
+    grl::IconManager::imageForIconID(&v25, ptr, d, [modifiersCopy cppModifiers], &v38, &v27, 0);
     v22 = v25;
     v25 = 0uLL;
     std::__tree<std::__value_type<unsigned short,grl::ImageProvider>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,grl::ImageProvider>,std::less<unsigned short>,true>,geo::allocator_adapter<std::__value_type<unsigned short,grl::ImageProvider>,grl::zone_mallocator>>::destroy(v28);
@@ -233,7 +233,7 @@ LABEL_6:
     v26 = 0;
     *&v25 = &v25 + 8;
     *(&v25 + 1) = 0;
-    grl::IconManager::imageForIconID(&v24, v17, a3, &v27, &v38, &v25, 0);
+    grl::IconManager::imageForIconID(&v24, v17, d, &v27, &v38, &v25, 0);
     v22 = v24;
     v24 = 0uLL;
     std::__tree<std::__value_type<unsigned short,grl::ImageProvider>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,grl::ImageProvider>,std::less<unsigned short>,true>,geo::allocator_adapter<std::__value_type<unsigned short,grl::ImageProvider>,grl::zone_mallocator>>::destroy(*(&v25 + 1));
@@ -273,12 +273,12 @@ LABEL_6:
   return v20;
 }
 
-- (id)imageForName:(id)a3 contentScale:(float)a4 sizeGroup:(int64_t)a5 modifiers:(id)a6
+- (id)imageForName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
   v46[4] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  if (!v10)
+  nameCopy = name;
+  modifiersCopy = modifiers;
+  if (!nameCopy)
   {
     v15 = 0;
     goto LABEL_18;
@@ -290,12 +290,12 @@ LABEL_6:
   v44 = -1;
   v45 = 0;
   memset(v46, 0, 24);
-  grl::IconRequestOptions::setContentScale(&v41, a4);
-  grl::IconModifiers::setMirrored(&v41, [VKInternalIconManager convertSizeGroup:a5]);
-  if (!v11)
+  grl::IconRequestOptions::setContentScale(&v41, scale);
+  grl::IconModifiers::setMirrored(&v41, [VKInternalIconManager convertSizeGroup:group]);
+  if (!modifiersCopy)
   {
     ptr = self->_iconManager.__ptr_;
-    std::string::basic_string[abi:nn200100]<0>(__p, [v10 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(__p, [nameCopy UTF8String]);
     v31[0] = 0;
     v32 = 0u;
     v37 = 0;
@@ -328,12 +328,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  grl::IconRequestOptions::setVariant(&v41, [v11 variant]);
-  grl::IconRequestOptions::setDataVariant(&v41, [v11 secondaryVariant]);
-  grl::IconRequestOptions::setCountryCode(&v41, [v11 countryCode]);
+  grl::IconRequestOptions::setVariant(&v41, [modifiersCopy variant]);
+  grl::IconRequestOptions::setDataVariant(&v41, [modifiersCopy secondaryVariant]);
+  grl::IconRequestOptions::setCountryCode(&v41, [modifiersCopy countryCode]);
   v12 = self->_iconManager.__ptr_;
-  std::string::basic_string[abi:nn200100]<0>(v31, [v10 UTF8String]);
-  grl::IconManager::imageForName(__p, v12, v31, [v11 cppModifiers], &v41, 0);
+  std::string::basic_string[abi:nn200100]<0>(v31, [nameCopy UTF8String]);
+  grl::IconManager::imageForName(__p, v12, v31, [modifiersCopy cppModifiers], &v41, 0);
   v13 = *__p;
   __p[0] = 0;
   __p[1] = 0;
@@ -381,24 +381,24 @@ LABEL_18:
   return v15;
 }
 
-- (id)imageForKey:(unsigned int)a3 value:(unsigned int)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)imageForKey:(unsigned int)key value:(unsigned int)value contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
   v42[4] = *MEMORY[0x1E69E9840];
-  v12 = a7;
+  modifiersCopy = modifiers;
   v37 = 1065353216;
   v38 = 4;
   v39 = 0;
   v40 = -1;
   v41 = 0;
   memset(v42, 0, 24);
-  grl::IconRequestOptions::setContentScale(&v37, a5);
-  grl::IconModifiers::setMirrored(&v37, [VKInternalIconManager convertSizeGroup:a6]);
-  if (v12)
+  grl::IconRequestOptions::setContentScale(&v37, scale);
+  grl::IconModifiers::setMirrored(&v37, [VKInternalIconManager convertSizeGroup:group]);
+  if (modifiersCopy)
   {
-    grl::IconRequestOptions::setVariant(&v37, [v12 variant]);
-    grl::IconRequestOptions::setDataVariant(&v37, [v12 secondaryVariant]);
-    grl::IconRequestOptions::setCountryCode(&v37, [v12 countryCode]);
-    grl::IconManager::imageForKeyValue(&v27, self->_iconManager.__ptr_, a3, a4, [v12 cppModifiers], &v37, 0);
+    grl::IconRequestOptions::setVariant(&v37, [modifiersCopy variant]);
+    grl::IconRequestOptions::setDataVariant(&v37, [modifiersCopy secondaryVariant]);
+    grl::IconRequestOptions::setCountryCode(&v37, [modifiersCopy countryCode]);
+    grl::IconManager::imageForKeyValue(&v27, self->_iconManager.__ptr_, key, value, [modifiersCopy cppModifiers], &v37, 0);
     v13 = v27;
   }
 
@@ -419,7 +419,7 @@ LABEL_18:
     BYTE4(v30) = 0;
     v34 = v35;
     v36 = 0;
-    grl::IconManager::imageForKeyValue(&v26, self->_iconManager.__ptr_, a3, a4, &v27, &v37, 0);
+    grl::IconManager::imageForKeyValue(&v26, self->_iconManager.__ptr_, key, value, &v27, &v37, 0);
     v23 = v26;
     grl::IconModifiers::~IconModifiers(&v27);
     v13 = v23;
@@ -459,30 +459,30 @@ LABEL_18:
   return v21;
 }
 
-- (id)imageForDataID:(unsigned int)a3 text:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)imageForDataID:(unsigned int)d text:(id)text contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v10 = *&a3;
+  v10 = *&d;
   v54[4] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a7;
+  textCopy = text;
+  modifiersCopy = modifiers;
   v49 = 1065353216;
   v50 = 4;
   v51 = 0;
   v52 = -1;
   v53 = 0;
   memset(v54, 0, 24);
-  grl::IconRequestOptions::setContentScale(&v49, a5);
-  grl::IconModifiers::setMirrored(&v49, [VKInternalIconManager convertSizeGroup:a6]);
-  if (v12)
+  grl::IconRequestOptions::setContentScale(&v49, scale);
+  grl::IconModifiers::setMirrored(&v49, [VKInternalIconManager convertSizeGroup:group]);
+  if (textCopy)
   {
-    if (v13)
+    if (modifiersCopy)
     {
-      grl::IconRequestOptions::setVariant(&v49, [v13 variant]);
-      grl::IconRequestOptions::setDataVariant(&v49, [v13 secondaryVariant]);
-      grl::IconRequestOptions::setCountryCode(&v49, [v13 countryCode]);
+      grl::IconRequestOptions::setVariant(&v49, [modifiersCopy variant]);
+      grl::IconRequestOptions::setDataVariant(&v49, [modifiersCopy secondaryVariant]);
+      grl::IconRequestOptions::setCountryCode(&v49, [modifiersCopy countryCode]);
       ptr = self->_iconManager.__ptr_;
-      std::string::basic_string[abi:nn200100]<0>(&v35, [v12 UTF8String]);
-      grl::IconManager::imageForDataIDAndText(__p, ptr, v10, &v35, [v13 cppModifiers], &v49, 0);
+      std::string::basic_string[abi:nn200100]<0>(&v35, [textCopy UTF8String]);
+      grl::IconManager::imageForDataIDAndText(__p, ptr, v10, &v35, [modifiersCopy cppModifiers], &v49, 0);
       v15 = *__p;
       __p[0] = 0;
       __p[1] = 0;
@@ -497,7 +497,7 @@ LABEL_18:
     }
 
     v17 = self->_iconManager.__ptr_;
-    std::string::basic_string[abi:nn200100]<0>(__p, [v12 UTF8String]);
+    std::string::basic_string[abi:nn200100]<0>(__p, [textCopy UTF8String]);
     *&v35 = 0;
     v36 = 0u;
     v47 = 0u;
@@ -531,12 +531,12 @@ LABEL_9:
 
   else
   {
-    if (v13)
+    if (modifiersCopy)
     {
-      grl::IconRequestOptions::setVariant(&v49, [v13 variant]);
-      grl::IconRequestOptions::setDataVariant(&v49, [v13 secondaryVariant]);
-      grl::IconRequestOptions::setCountryCode(&v49, [v13 countryCode]);
-      grl::IconManager::imageForDataID(&v35, self->_iconManager.__ptr_, v10, [v13 cppModifiers], &v49);
+      grl::IconRequestOptions::setVariant(&v49, [modifiersCopy variant]);
+      grl::IconRequestOptions::setDataVariant(&v49, [modifiersCopy secondaryVariant]);
+      grl::IconRequestOptions::setCountryCode(&v49, [modifiersCopy countryCode]);
+      grl::IconManager::imageForDataID(&v35, self->_iconManager.__ptr_, v10, [modifiersCopy cppModifiers], &v49);
       v15 = v35;
       goto LABEL_12;
     }
@@ -604,12 +604,12 @@ LABEL_12:
   return v27;
 }
 
-- (id)imageForStyleAttributes:(id)a3 withStylesheetName:(id)a4 contentScale:(float)a5 sizeGroup:(int64_t)a6 modifiers:(id)a7
+- (id)imageForStyleAttributes:(id)attributes withStylesheetName:(id)name contentScale:(float)scale sizeGroup:(int64_t)group modifiers:(id)modifiers
 {
-  v12 = a3;
-  v13 = a7;
-  *&v14 = a5;
-  [(VKInternalIconManager *)self _styleManagerForStylesheetName:a4 contentScale:v14];
+  attributesCopy = attributes;
+  modifiersCopy = modifiers;
+  *&v14 = scale;
+  [(VKInternalIconManager *)self _styleManagerForStylesheetName:name contentScale:v14];
   v18 = v20;
   v19 = v21;
   if (v21)
@@ -617,8 +617,8 @@ LABEL_12:
     atomic_fetch_add_explicit(&v21->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  *&v15 = a5;
-  v16 = [(VKInternalIconManager *)self imageForStyleAttributes:v12 styleManager:&v18 contentScale:a6 sizeGroup:v13 modifiers:v15];
+  *&v15 = scale;
+  v16 = [(VKInternalIconManager *)self imageForStyleAttributes:attributesCopy styleManager:&v18 contentScale:group sizeGroup:modifiersCopy modifiers:v15];
   if (v19)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v19);
@@ -632,11 +632,11 @@ LABEL_12:
   return v16;
 }
 
-- (id)imageForStyleAttributes:(id)a3 styleManager:(shared_ptr<gss:(float)a5 :(int64_t)a6 StylesheetManager<gss:(id)a7 :PropertyID>>)a4 contentScale:sizeGroup:modifiers:
+- (id)imageForStyleAttributes:(id)attributes styleManager:(shared_ptr<gss:(float)manager :(int64_t)a6 StylesheetManager<gss:(id)gss :PropertyID>>)a4 contentScale:sizeGroup:modifiers:
 {
   cntrl = a4.__cntrl_;
   ptr = a4.__ptr_;
-  v12 = a3;
+  attributesCopy = attributes;
   v13 = a6;
   v15 = ptr[1];
   v21 = *ptr;
@@ -646,8 +646,8 @@ LABEL_12:
     atomic_fetch_add_explicit(&v15->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  *&v14 = a5;
-  [(VKInternalIconManager *)self _iconImageForStyleAttributes:v12 styleManager:&v21 contentScale:cntrl sizeGroup:v13 modifiers:v14];
+  *&v14 = manager;
+  [(VKInternalIconManager *)self _iconImageForStyleAttributes:attributesCopy styleManager:&v21 contentScale:cntrl sizeGroup:v13 modifiers:v14];
   if (v22)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v22);
@@ -683,27 +683,27 @@ LABEL_12:
   return v17;
 }
 
-- (id)imageForImageSourceKey:(id)a3
+- (id)imageForImageSourceKey:(id)key
 {
   v46[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v41 = 1065353216;
   v42 = 4;
   v43 = 0;
   v44 = -1;
   v45 = 0;
   memset(v46, 0, 24);
-  [v4 contentScale];
+  [keyCopy contentScale];
   grl::IconRequestOptions::setContentScale(&v41, v5);
-  grl::IconModifiers::setMirrored(&v41, +[VKInternalIconManager convertSizeGroup:](VKInternalIconManager, "convertSizeGroup:", [v4 sizeGroup]));
-  grl::IconRequestOptions::setVariant(&v41, [v4 variant]);
-  grl::IconRequestOptions::setDataVariant(&v41, [v4 secondaryVariant]);
-  grl::IconRequestOptions::setCountryCode(&v41, [v4 countryCode]);
-  if ([v4 keyType] == 5)
+  grl::IconModifiers::setMirrored(&v41, +[VKInternalIconManager convertSizeGroup:](VKInternalIconManager, "convertSizeGroup:", [keyCopy sizeGroup]));
+  grl::IconRequestOptions::setVariant(&v41, [keyCopy variant]);
+  grl::IconRequestOptions::setDataVariant(&v41, [keyCopy secondaryVariant]);
+  grl::IconRequestOptions::setCountryCode(&v41, [keyCopy countryCode]);
+  if ([keyCopy keyType] == 5)
   {
     ptr = self->_iconManager.__ptr_;
-    v7 = [v4 imageName];
-    std::string::basic_string[abi:nn200100]<0>(__p, [v7 UTF8String]);
+    imageName = [keyCopy imageName];
+    std::string::basic_string[abi:nn200100]<0>(__p, [imageName UTF8String]);
     v26 = 0;
     v28 = 0u;
     v39 = 0u;
@@ -735,15 +735,15 @@ LABEL_12:
 
   else
   {
-    if ([v4 keyType] != 2)
+    if ([keyCopy keyType] != 2)
     {
       v19 = 0;
       goto LABEL_17;
     }
 
     v13 = self->_iconManager.__ptr_;
-    v14 = [v4 iconAttributeKey];
-    v15 = [v4 iconAttributeValue];
+    iconAttributeKey = [keyCopy iconAttributeKey];
+    iconAttributeValue = [keyCopy iconAttributeValue];
     v26 = 0;
     v28 = 0u;
     v39 = 0u;
@@ -763,7 +763,7 @@ LABEL_12:
     v40 = 0;
     v37 = 0u;
     memset(v38, 0, sizeof(v38));
-    grl::IconManager::imageForKeyValue(__p, v13, v14, v15, &v26, &v41, 0);
+    grl::IconManager::imageForKeyValue(__p, v13, iconAttributeKey, iconAttributeValue, &v26, &v41, 0);
     v21 = *__p;
     __p[0] = 0;
     __p[1] = 0;
@@ -809,15 +809,15 @@ LABEL_17:
   return v19;
 }
 
-- (shared_ptr<grl::IconImage>)_iconImageForStyleAttributes:(id)a3 styleManager:(shared_ptr<gss:(float)a5 :(int64_t)a6 StylesheetManager<gss:(id)a7 :PropertyID>>)a4 contentScale:sizeGroup:modifiers:
+- (shared_ptr<grl::IconImage>)_iconImageForStyleAttributes:(id)attributes styleManager:(shared_ptr<gss:(float)manager :(int64_t)a6 StylesheetManager<gss:(id)gss :PropertyID>>)a4 contentScale:sizeGroup:modifiers:
 {
   cntrl = a4.__cntrl_;
   ptr = a4.__ptr_;
   v13 = v7;
   v71[4] = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  attributesCopy = attributes;
   v15 = a6;
-  if (self->_iconManager.__ptr_ && *ptr && v14 && *[v14 featureStyleAttributesPtr])
+  if (self->_iconManager.__ptr_ && *ptr && attributesCopy && *[attributesCopy featureStyleAttributesPtr])
   {
     if (!v15)
     {
@@ -828,9 +828,9 @@ LABEL_17:
     v64[1] = 0;
     v65 = 256;
     geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::copy(v64, [(VKIconModifiers *)v15 queryOverrides]);
-    v16 = [v14 featureStyleAttributesPtr];
-    v17 = v16[1];
-    __p.__r_.__value_.__r.__words[0] = *v16;
+    featureStyleAttributesPtr = [attributesCopy featureStyleAttributesPtr];
+    v17 = featureStyleAttributesPtr[1];
+    __p.__r_.__value_.__r.__words[0] = *featureStyleAttributesPtr;
     __p.__r_.__value_.__l.__size_ = v17;
     if (v17)
     {
@@ -864,18 +864,18 @@ LABEL_17:
         goto LABEL_58;
       }
 
-      v20 = [(VKIconModifiers *)v15 zoom];
-      if (gss::QueryableLocker<gss::PropertyID>::hasTargetValueForKeyAtZ(v58[3], 0x71u, v20))
+      zoom = [(VKIconModifiers *)v15 zoom];
+      if (gss::QueryableLocker<gss::PropertyID>::hasTargetValueForKeyAtZ(v58[3], 0x71u, zoom))
       {
-        v21 = [(VKIconModifiers *)v15 zoom];
-        if (v21 >= 0x17)
+        zoom2 = [(VKIconModifiers *)v15 zoom];
+        if (zoom2 >= 0x17)
         {
           v22 = 23;
         }
 
         else
         {
-          v22 = v21;
+          v22 = zoom2;
         }
 
         gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<std::string>(&__p, v58[3], 0x71u, v22, 1);
@@ -888,7 +888,7 @@ LABEL_17:
 
         if (size)
         {
-          v25 = grl::IconManager::identifierForName(self->_iconManager.__ptr_, &__p.__r_.__value_.__l.__data_, a5);
+          v25 = grl::IconManager::identifierForName(self->_iconManager.__ptr_, &__p.__r_.__value_.__l.__data_, manager);
           v24 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
         }
 
@@ -908,13 +908,13 @@ LABEL_17:
         }
       }
 
-      v28 = [(VKIconModifiers *)v15 zoom];
-      v29 = v28 >= 0x17 ? 23 : v28;
+      zoom3 = [(VKIconModifiers *)v15 zoom];
+      v29 = zoom3 >= 0x17 ? 23 : zoom3;
       v30 = gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<unsigned int>(v58[3], 186, v29, 1, 0);
       if (v30)
       {
         LODWORD(__p.__r_.__value_.__l.__data_) = 0;
-        v31 = [v14 hasKey:v30 value:&__p] ? LODWORD(__p.__r_.__value_.__l.__data_) : 0;
+        v31 = [attributesCopy hasKey:v30 value:&__p] ? LODWORD(__p.__r_.__value_.__l.__data_) : 0;
       }
 
       else
@@ -922,25 +922,25 @@ LABEL_17:
         v31 = 0;
       }
 
-      v25 = grl::IconManager::identifierForMapKeyValue(self->_iconManager.__ptr_, v30, v31, a5);
+      v25 = grl::IconManager::identifierForMapKeyValue(self->_iconManager.__ptr_, v30, v31, manager);
       if (v25)
       {
 LABEL_41:
-        v32 = [(VKIconModifiers *)v15 zoom];
+        zoom4 = [(VKIconModifiers *)v15 zoom];
         __p.__r_.__value_.__s.__data_[0] = 1;
-        if (v32 >= 0x17)
+        if (zoom4 >= 0x17)
         {
           v33 = 23;
         }
 
         else
         {
-          v33 = v32;
+          v33 = zoom4;
         }
 
         v34 = gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<unsigned int>(v58[3], 364, v33, 1, &__p);
         v35 = __p.__r_.__value_.__s.__data_[0];
-        v36 = [(VKIconModifiers *)v15 variant];
+        variant = [(VKIconModifiers *)v15 variant];
         if (v35)
         {
           v37 = v34;
@@ -948,24 +948,24 @@ LABEL_41:
 
         else
         {
-          v37 = v36;
+          v37 = variant;
         }
 
-        v38 = [(VKIconModifiers *)v15 zoom];
+        zoom5 = [(VKIconModifiers *)v15 zoom];
         __p.__r_.__value_.__s.__data_[0] = 1;
-        if (v38 >= 0x17)
+        if (zoom5 >= 0x17)
         {
           v39 = 23;
         }
 
         else
         {
-          v39 = v38;
+          v39 = zoom5;
         }
 
         v40 = gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<unsigned int>(v58[3], 372, v39, 1, &__p);
         v41 = __p.__r_.__value_.__s.__data_[0];
-        v42 = [(VKIconModifiers *)v15 secondaryVariant];
+        secondaryVariant = [(VKIconModifiers *)v15 secondaryVariant];
         if (v41)
         {
           v43 = v40;
@@ -973,21 +973,21 @@ LABEL_41:
 
         else
         {
-          v43 = v42;
+          v43 = secondaryVariant;
         }
 
-        v44 = [(VKIconModifiers *)v15 zoom];
-        if (gss::QueryableLocker<gss::PropertyID>::hasTargetValueForKeyAtZ(v58[3], 0x162u, v44))
+        zoom6 = [(VKIconModifiers *)v15 zoom];
+        if (gss::QueryableLocker<gss::PropertyID>::hasTargetValueForKeyAtZ(v58[3], 0x162u, zoom6))
         {
-          v45 = [(VKIconModifiers *)v15 zoom];
-          if (v45 >= 0x17)
+          zoom7 = [(VKIconModifiers *)v15 zoom];
+          if (zoom7 >= 0x17)
           {
             v46 = 23;
           }
 
           else
           {
-            v46 = v45;
+            v46 = zoom7;
           }
 
           v47 = gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<unsigned int>(v58[3], 354, v46, 1, 0);
@@ -999,23 +999,23 @@ LABEL_41:
         }
 
         v48 = v47;
-        v49 = [(VKIconModifiers *)v15 zoom];
-        if (gss::QueryableLocker<gss::PropertyID>::hasTargetValueForKeyAtZ(v58[3], 0xDAu, v49))
+        zoom8 = [(VKIconModifiers *)v15 zoom];
+        if (gss::QueryableLocker<gss::PropertyID>::hasTargetValueForKeyAtZ(v58[3], 0xDAu, zoom8))
         {
-          v50 = [(VKIconModifiers *)v15 cppModifiers];
-          v51 = [(VKIconModifiers *)v15 zoom];
-          if (v51 >= 0x17)
+          cppModifiers = [(VKIconModifiers *)v15 cppModifiers];
+          zoom9 = [(VKIconModifiers *)v15 zoom];
+          if (zoom9 >= 0x17)
           {
             v52 = 23;
           }
 
           else
           {
-            v52 = v51;
+            v52 = zoom9;
           }
 
           gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<float>(v58[3], 218, v52, 1u, 0);
-          grl::IconModifiers::setOpacity(v50, v53);
+          grl::IconModifiers::setOpacity(cppModifiers, v53);
         }
 
         v57 = 0;
@@ -1038,17 +1038,17 @@ LABEL_41:
         v69 = 0;
         v70 = 0;
         __p.__r_.__value_.__r.__words[2] = 0;
-        grl::IconRequestOptions::setContentScale(&__p, a5);
+        grl::IconRequestOptions::setContentScale(&__p, manager);
         grl::IconModifiers::setMirrored(&__p, v48);
         grl::IconRequestOptions::setVariant(&__p, v37);
         grl::IconRequestOptions::setDataVariant(&__p, v43);
         grl::IconRequestOptions::setCountryCode(&__p, v54);
         v55 = self->_iconManager.__ptr_;
-        v56 = [(VKIconModifiers *)v15 cppModifiers];
+        cppModifiers2 = [(VKIconModifiers *)v15 cppModifiers];
         v67[2] = 0;
         v66 = v67;
         v67[0] = 0;
-        grl::IconManager::imageForIconID(v13, v55, v25, v56, &__p, &v66, 0);
+        grl::IconManager::imageForIconID(v13, v55, v25, cppModifiers2, &__p, &v66, 0);
         std::__tree<std::__value_type<unsigned short,grl::ImageProvider>,std::__map_value_compare<unsigned short,std::__value_type<unsigned short,grl::ImageProvider>,std::less<unsigned short>,true>,geo::allocator_adapter<std::__value_type<unsigned short,grl::ImageProvider>,grl::zone_mallocator>>::destroy(v67[0]);
         v66 = &__p.__r_.__value_.__r.__words[2];
         std::vector<std::string,geo::allocator_adapter<std::string,grl::zone_mallocator>>::__destroy_vector::operator()[abi:nn200100](&v66);
@@ -1103,12 +1103,12 @@ LABEL_58:
   return result;
 }
 
-- (shared_ptr<gss::StylesheetManager<gss::PropertyID>>)_styleManagerForStylesheetName:(id)a3 contentScale:(float)a4
+- (shared_ptr<gss::StylesheetManager<gss::PropertyID>>)_styleManagerForStylesheetName:(id)name contentScale:(float)scale
 {
   v7 = v4;
-  v8 = a3;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%f", v8, a4];
-  v43 = v9;
+  nameCopy = name;
+  scale = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%f", nameCopy, scale];
+  v43 = scale;
   v10 = pthread_rwlock_rdlock(&self->_nameToStyleManagerLock._lock);
   if (v10)
   {
@@ -1139,11 +1139,11 @@ LABEL_58:
     }
   }
 
-  v16 = [v8 UTF8String];
+  uTF8String = [nameCopy UTF8String];
   if (self->_stylesheetVendor.__ptr_)
   {
-    v17 = v16;
-    if (v16)
+    v17 = uTF8String;
+    if (uTF8String)
     {
       p_nameToStyleManagerLock = &self->_nameToStyleManagerLock;
       v18 = pthread_rwlock_wrlock(&self->_nameToStyleManagerLock._lock);
@@ -1172,7 +1172,7 @@ LABEL_58:
       }
 
       std::string::basic_string[abi:nn200100]<0>(__p, v17);
-      gss::StyleManagerExtension::initWithName<gss::PropertyID>(v41, __p, 0, self->_stylesheetVendor.__ptr_, a4);
+      gss::StyleManagerExtension::initWithName<gss::PropertyID>(v41, __p, 0, self->_stylesheetVendor.__ptr_, scale);
       v15 = v41[0];
       v23 = v41[1];
       if (v14)
@@ -1205,7 +1205,7 @@ LABEL_58:
         v21 = v24;
 LABEL_47:
         geo::write_lock_guard::~write_lock_guard(&p_nameToStyleManagerLock);
-        v9 = v43;
+        scale = v43;
         v14 = v21;
 LABEL_48:
         *v7 = v15;
@@ -1221,7 +1221,7 @@ LABEL_48:
           while (1)
           {
             v28 = left;
-            v26 = NSStringMapComparison::operator()(v9, left[4].__left_);
+            v26 = NSStringMapComparison::operator()(scale, left[4].__left_);
             if (!v26)
             {
               break;
@@ -1235,7 +1235,7 @@ LABEL_48:
             }
           }
 
-          v26 = NSStringMapComparison::operator()(v28[4].__left_, v9);
+          v26 = NSStringMapComparison::operator()(v28[4].__left_, scale);
           if (!v26)
           {
             break;
@@ -1343,7 +1343,7 @@ LABEL_49:
   geo::write_lock_guard::~write_lock_guard(&p_nameToStyleManagerLock);
 }
 
-- (id)init:(shared_ptr<grl:(shared_ptr<md:(void *)a5 :StylesheetVendor>)a4 :IconManager>)a3 stylesheetVendor:tileGroupNotificationManager:
+- (id)init:(shared_ptr<grl:(shared_ptr<md:(void *)init :StylesheetVendor>)a4 :IconManager>)a3 stylesheetVendor:tileGroupNotificationManager:
 {
   ptr = a4.__ptr_;
   cntrl = a3.__cntrl_;
@@ -1409,7 +1409,7 @@ LABEL_49:
 
 - (void)init:stylesheetVendor:tileGroupNotificationManager:
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
@@ -1440,34 +1440,34 @@ LABEL_49:
 
 - (void)init
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }
 
-+ (int64_t)convertGrlSizeGroup:(unsigned __int8)a3
++ (int64_t)convertGrlSizeGroup:(unsigned __int8)group
 {
-  if (a3 >= 0xAu)
+  if (group >= 0xAu)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return group;
   }
 }
 
-+ (unsigned)convertSizeGroup:(int64_t)a3
++ (unsigned)convertSizeGroup:(int64_t)group
 {
-  if (a3 >= 0xA)
+  if (group >= 0xA)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return group;
   }
 }
 

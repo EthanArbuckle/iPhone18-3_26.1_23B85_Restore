@@ -1,46 +1,46 @@
 @interface LBLocalSpeechRecognizerClient
-- (LBLocalSpeechRecognizerClient)initWithDelegate:(id)a3 xpcListenerEndpoint:(id)a4 audioCapture:(id)a5;
+- (LBLocalSpeechRecognizerClient)initWithDelegate:(id)delegate xpcListenerEndpoint:(id)endpoint audioCapture:(id)capture;
 - (LBLocalSpeechRecognizerClientDelegate)delegate;
 - (id)_connection;
 - (id)_newConnection;
 - (id)_service;
 - (void)_invalidate;
-- (void)_stopSpeechRecognitionTaskWithReason:(unint64_t)a3 requestId:(id)a4 shouldInvalidateAfterStop:(BOOL)a5 completion:(id)a6;
+- (void)_stopSpeechRecognitionTaskWithReason:(unint64_t)reason requestId:(id)id shouldInvalidateAfterStop:(BOOL)stop completion:(id)completion;
 - (void)connectToServiceIfNeeded;
 - (void)dealloc;
-- (void)disableLocalSpeechRecognitionForRequestId:(id)a3;
+- (void)disableLocalSpeechRecognitionForRequestId:(id)id;
 - (void)invalidate;
-- (void)localSpeechServiceDidCompletionRecognitionWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6;
-- (void)localSpeechServiceDidDetectedFinalEndpointAtTime:(double)a3;
-- (void)localSpeechServiceDidReceiveContinuityEndDetected:(id)a3;
-- (void)localSpeechServiceDidReceiveMultiUserTRPCandidatePackage:(id)a3;
-- (void)localSpeechServiceDidReceiveTCUStateUpdate:(id)a3;
-- (void)localSpeechServiceDidReceiveTRPCandidatePackage:(id)a3;
-- (void)localSpeechServiceDidReceiveTRPDetected:(id)a3;
-- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)a3 rcId:(unint64_t)a4 speechPackage:(id)a5 duration:(double)a6;
-- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)a3 rcId:(unint64_t)a4 speechPackage:(id)a5 duration:(double)a6 metadata:(id)a7;
-- (void)localSpeechServiceDidReceivedFinalResultCandidateWithRequestId:(id)a3 speechPackage:(id)a4;
-- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)a3 speechPackage:(id)a4;
-- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)a3 speechPackage:(id)a4 metadata:(id)a5;
-- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)a3 language:(id)a4 speechPackage:(id)a5 metadata:(id)a6;
-- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)a3 language:(id)a4 tokens:(id)a5;
-- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)a3 language:(id)a4 tokens:(id)a5 metadata:(id)a6;
-- (void)localSpeechServiceDidReceivedVoiceCommandCandidateWithRequestId:(id)a3 speechPackage:(id)a4 metadata:(id)a5;
-- (void)localSpeechServiceDidReceivedVoiceIdScoreCard:(id)a3;
+- (void)localSpeechServiceDidCompletionRecognitionWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error;
+- (void)localSpeechServiceDidDetectedFinalEndpointAtTime:(double)time;
+- (void)localSpeechServiceDidReceiveContinuityEndDetected:(id)detected;
+- (void)localSpeechServiceDidReceiveMultiUserTRPCandidatePackage:(id)package;
+- (void)localSpeechServiceDidReceiveTCUStateUpdate:(id)update;
+- (void)localSpeechServiceDidReceiveTRPCandidatePackage:(id)package;
+- (void)localSpeechServiceDidReceiveTRPDetected:(id)detected;
+- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)id rcId:(unint64_t)rcId speechPackage:(id)package duration:(double)duration;
+- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)id rcId:(unint64_t)rcId speechPackage:(id)package duration:(double)duration metadata:(id)metadata;
+- (void)localSpeechServiceDidReceivedFinalResultCandidateWithRequestId:(id)id speechPackage:(id)package;
+- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)id speechPackage:(id)package;
+- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)id speechPackage:(id)package metadata:(id)metadata;
+- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)id language:(id)language speechPackage:(id)package metadata:(id)metadata;
+- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)id language:(id)language tokens:(id)tokens;
+- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)id language:(id)language tokens:(id)tokens metadata:(id)metadata;
+- (void)localSpeechServiceDidReceivedVoiceCommandCandidateWithRequestId:(id)id speechPackage:(id)package metadata:(id)metadata;
+- (void)localSpeechServiceDidReceivedVoiceIdScoreCard:(id)card;
 - (void)localSpeechServiceRequestAttentionAssetDownload;
-- (void)pauseLocalSpeechRecognitionForRequestId:(id)a3;
-- (void)preheatLocalSpeechRecognitionWithLanguage:(id)a3 source:(unint64_t)a4;
+- (void)pauseLocalSpeechRecognitionForRequestId:(id)id;
+- (void)preheatLocalSpeechRecognitionWithLanguage:(id)language source:(unint64_t)source;
 - (void)resetCacheAndCompileAllAssets;
-- (void)resumeLocalRecognitionWithRequestId:(id)a3 prefixText:(id)a4 postfixText:(id)a5 selectedText:(id)a6;
-- (void)sendSpeechCorrectionInfo:(id)a3 interactionIdentifier:(id)a4;
-- (void)sendVisualContextAndCorrectionsInfo:(id)a3 interactionIdentifier:(id)a4;
-- (void)setLocalSpeechRecognizerClientDelegate:(id)a3;
-- (void)startSpeechRecognitionResultsWithSettings:(id)a3;
-- (void)stopSpeechRecognitionTaskAndInvalidateWithReason:(unint64_t)a3 requestId:(id)a4 completion:(id)a5;
-- (void)stopSpeechRecognitionTaskWithReason:(unint64_t)a3 requestId:(id)a4 completion:(id)a5;
-- (void)trpCandidateReadyForExecutionForRequestId:(id)a3 withTrpId:(id)a4;
-- (void)updateTCUState:(id)a3;
-- (void)updateVoiceCommandContextWithRequestId:(id)a3 prefixText:(id)a4 postfixText:(id)a5 selectedText:(id)a6 disambiguationActive:(id)a7 cursorInVisibleText:(id)a8 favorCommandSuppression:(id)a9 abortCommandSuppression:(id)a10 undoEvent:(id)a11;
+- (void)resumeLocalRecognitionWithRequestId:(id)id prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText;
+- (void)sendSpeechCorrectionInfo:(id)info interactionIdentifier:(id)identifier;
+- (void)sendVisualContextAndCorrectionsInfo:(id)info interactionIdentifier:(id)identifier;
+- (void)setLocalSpeechRecognizerClientDelegate:(id)delegate;
+- (void)startSpeechRecognitionResultsWithSettings:(id)settings;
+- (void)stopSpeechRecognitionTaskAndInvalidateWithReason:(unint64_t)reason requestId:(id)id completion:(id)completion;
+- (void)stopSpeechRecognitionTaskWithReason:(unint64_t)reason requestId:(id)id completion:(id)completion;
+- (void)trpCandidateReadyForExecutionForRequestId:(id)id withTrpId:(id)trpId;
+- (void)updateTCUState:(id)state;
+- (void)updateVoiceCommandContextWithRequestId:(id)id prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)suppression abortCommandSuppression:(id)self0 undoEvent:(id)self1;
 @end
 
 @implementation LBLocalSpeechRecognizerClient
@@ -52,29 +52,29 @@
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     xpcConnectionUUIDString = self->_xpcConnectionUUIDString;
-    self->_xpcConnectionUUIDString = v5;
+    self->_xpcConnectionUUIDString = uUIDString;
 
     v7 = LBLogContextFacilityLocalSRBridge;
     if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-      v10 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+      uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+      xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
       *buf = 136315650;
       v30 = "[LBLocalSpeechRecognizerClient _connection]";
       v31 = 2112;
-      v32 = v9;
+      v32 = uuidString;
       v33 = 2112;
-      v34 = v10;
+      v34 = xpcConnectionUUIDString;
       _os_log_impl(&dword_256130000, v8, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Creating new xpc connection...", buf, 0x20u);
     }
 
-    v11 = [(LBLocalSpeechRecognizerClient *)self _newConnection];
+    _newConnection = [(LBLocalSpeechRecognizerClient *)self _newConnection];
     v12 = self->_xpcConnection;
-    self->_xpcConnection = v11;
+    self->_xpcConnection = _newConnection;
 
     objc_initWeak(buf, self);
     v13 = self->_xpcConnectionUUIDString;
@@ -138,10 +138,10 @@
 
 - (id)_service
 {
-  v2 = [(LBLocalSpeechRecognizerClient *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(LBLocalSpeechRecognizerClient *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (LBLocalSpeechRecognizerClientDelegate)delegate
@@ -282,14 +282,14 @@ LABEL_9:
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v6 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     v11 = 136315650;
     v12 = "[LBLocalSpeechRecognizerClient localSpeechServiceRequestAttentionAssetDownload]";
     v13 = 2112;
-    v14 = v5;
+    v14 = uuidString;
     v15 = 2112;
-    v16 = v6;
+    v16 = xpcConnectionUUIDString;
     _os_log_impl(&dword_256130000, v4, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:", &v11, 0x20u);
   }
 
@@ -305,7 +305,7 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidDetectedFinalEndpointAtTime:(double)a3
+- (void)localSpeechServiceDidDetectedFinalEndpointAtTime:(double)time
 {
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -313,16 +313,16 @@ LABEL_9:
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     *buf = 136315906;
     v17 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidDetectedFinalEndpointAtTime:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = uuidString;
     v20 = 2112;
-    v21 = v8;
+    v21 = xpcConnectionUUIDString;
     v22 = 2048;
-    v23 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:time = %f", buf, 0x2Au);
   }
 
@@ -344,7 +344,7 @@ LABEL_9:
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    [v13 localSpeechRecognizerClient:self receivedFinalEndpointDetectedAtTime:a3];
+    [v13 localSpeechRecognizerClient:self receivedFinalEndpointDetectedAtTime:time];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -377,25 +377,25 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceiveMultiUserTRPCandidatePackage:(id)a3
+- (void)localSpeechServiceDidReceiveMultiUserTRPCandidatePackage:(id)package
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  packageCopy = package;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     v13 = 136315906;
     v14 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceiveMultiUserTRPCandidatePackage:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uuidString;
     v17 = 2112;
-    v18 = v8;
+    v18 = xpcConnectionUUIDString;
     v19 = 2112;
-    v20 = v4;
+    v20 = packageCopy;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Received MultiUserTRP candidate: %@", &v13, 0x2Au);
   }
 
@@ -405,31 +405,31 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 localSpeechRecognizerClient:self receivedMultiUserTRPCandidatePackage:v4];
+    [v11 localSpeechRecognizerClient:self receivedMultiUserTRPCandidatePackage:packageCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceiveTRPDetected:(id)a3
+- (void)localSpeechServiceDidReceiveTRPDetected:(id)detected
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  detectedCopy = detected;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     v13 = 136315906;
     v14 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceiveTRPDetected:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uuidString;
     v17 = 2112;
-    v18 = v8;
+    v18 = xpcConnectionUUIDString;
     v19 = 2112;
-    v20 = v4;
+    v20 = detectedCopy;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Received TRP Detected: %@", &v13, 0x2Au);
   }
 
@@ -439,31 +439,31 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 localSpeechRecognizerClient:self receivedTRPDetected:v4];
+    [v11 localSpeechRecognizerClient:self receivedTRPDetected:detectedCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceiveTCUStateUpdate:(id)a3
+- (void)localSpeechServiceDidReceiveTCUStateUpdate:(id)update
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     v13 = 136315906;
     v14 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceiveTCUStateUpdate:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uuidString;
     v17 = 2112;
-    v18 = v8;
+    v18 = xpcConnectionUUIDString;
     v19 = 2112;
-    v20 = v4;
+    v20 = updateCopy;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Received TCU state update: %@", &v13, 0x2Au);
   }
 
@@ -473,31 +473,31 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 localSpeechRecognizerClient:self receivedTCUStateUpdate:v4];
+    [v11 localSpeechRecognizerClient:self receivedTCUStateUpdate:updateCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceiveContinuityEndDetected:(id)a3
+- (void)localSpeechServiceDidReceiveContinuityEndDetected:(id)detected
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  detectedCopy = detected;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     v17 = 136315906;
     v18 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceiveContinuityEndDetected:]";
     v19 = 2112;
-    v20 = v7;
+    v20 = uuidString;
     v21 = 2112;
-    v22 = v8;
+    v22 = xpcConnectionUUIDString;
     v23 = 2112;
-    v24 = v4;
+    v24 = detectedCopy;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Received Continuity End Detected: %@", &v17, 0x2Au);
   }
 
@@ -510,43 +510,43 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
     if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-      v14 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+      uuidString2 = [(LBLocalSpeechRecognizerClient *)self uuidString];
+      xpcConnectionUUIDString2 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
       v17 = 136315906;
       v18 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceiveContinuityEndDetected:]";
       v19 = 2112;
-      v20 = v13;
+      v20 = uuidString2;
       v21 = 2112;
-      v22 = v14;
+      v22 = xpcConnectionUUIDString2;
       v23 = 2112;
-      v24 = v4;
+      v24 = detectedCopy;
       _os_log_impl(&dword_256130000, v12, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Delegate - Received Continuity End Detected: %@", &v17, 0x2Au);
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 localSpeechRecognizerClient:self receivedContinuityEndDetected:v4];
+    [v15 localSpeechRecognizerClient:self receivedContinuityEndDetected:detectedCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceiveTRPCandidatePackage:(id)a3
+- (void)localSpeechServiceDidReceiveTRPCandidatePackage:(id)package
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  packageCopy = package;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     v13 = 136315650;
     v14 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceiveTRPCandidatePackage:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = uuidString;
     v17 = 2112;
-    v18 = v8;
+    v18 = xpcConnectionUUIDString;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Received TRP Candidate Package", &v13, 0x20u);
   }
 
@@ -556,32 +556,32 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 localSpeechRecognizerClient:self receivedTRPCandidatePackage:v4];
+    [v11 localSpeechRecognizerClient:self receivedTRPCandidatePackage:packageCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceivedVoiceIdScoreCard:(id)a3
+- (void)localSpeechServiceDidReceivedVoiceIdScoreCard:(id)card
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cardCopy = card;
   dispatch_assert_queue_V2(self->_queue);
   v5 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v8 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
-    v9 = [v4 spIdKnownUserScores];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    spIdKnownUserScores = [cardCopy spIdKnownUserScores];
     v14 = 136315906;
     v15 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidReceivedVoiceIdScoreCard:]";
     v16 = 2112;
-    v17 = v7;
+    v17 = uuidString;
     v18 = 2112;
-    v19 = v8;
+    v19 = xpcConnectionUUIDString;
     v20 = 2112;
-    v21 = v9;
+    v21 = spIdKnownUserScores;
     _os_log_impl(&dword_256130000, v6, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Client received voiceId scores: %@", &v14, 0x2Au);
   }
 
@@ -591,38 +591,38 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 localSpeechRecognizerClient:self receivedVoiceIdScoreCard:v4];
+    [v12 localSpeechRecognizerClient:self receivedVoiceIdScoreCard:cardCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidCompletionRecognitionWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6
+- (void)localSpeechServiceDidCompletionRecognitionWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  statisticsCopy = statistics;
+  idCopy = id;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v13 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v16 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
-    v17 = [v12 localizedDescription];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    localizedDescription = [errorCopy localizedDescription];
     v24 = 136316418;
     v25 = "[LBLocalSpeechRecognizerClient localSpeechServiceDidCompletionRecognitionWithStatistics:requestId:endpointMode:error:]";
     v26 = 2112;
-    v27 = v15;
+    v27 = uuidString;
     v28 = 2112;
-    v29 = v16;
+    v29 = xpcConnectionUUIDString;
     v30 = 2112;
-    v31 = v11;
+    v31 = idCopy;
     v32 = 2050;
-    v33 = a5;
+    modeCopy = mode;
     v34 = 2114;
-    v35 = v17;
+    v35 = localizedDescription;
     _os_log_impl(&dword_256130000, v14, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:Notify task %@ completed with endpointMode %{public}ld, error : %{public}@", &v24, 0x3Eu);
   }
 
@@ -633,7 +633,7 @@ void __82__LBLocalSpeechRecognizerClient_localSpeechServiceDidDetectedFinalEndpo
   v21 = v20;
   if (v19)
   {
-    [v20 localSpeechRecognizerClient:self didCompletionRecognitionWithStatistics:v10 requestId:v11 endpointMode:a5 error:v12];
+    [v20 localSpeechRecognizerClient:self didCompletionRecognitionWithStatistics:statisticsCopy requestId:idCopy endpointMode:mode error:errorCopy];
 LABEL_7:
 
     goto LABEL_8;
@@ -644,7 +644,7 @@ LABEL_7:
   if (v22)
   {
     v21 = objc_loadWeakRetained(&self->_delegate);
-    [v21 localSpeechRecognizerClient:self didCompletionRecognitionWithStatistics:v10 requestId:v11 error:v12];
+    [v21 localSpeechRecognizerClient:self didCompletionRecognitionWithStatistics:statisticsCopy requestId:idCopy error:errorCopy];
     goto LABEL_7;
   }
 
@@ -653,11 +653,11 @@ LABEL_8:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)a3 rcId:(unint64_t)a4 speechPackage:(id)a5 duration:(double)a6 metadata:(id)a7
+- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)id rcId:(unint64_t)rcId speechPackage:(id)package duration:(double)duration metadata:(id)metadata
 {
-  v17 = a3;
-  v12 = a5;
-  v13 = a7;
+  idCopy = id;
+  packageCopy = package;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v15 = objc_opt_respondsToSelector();
@@ -665,14 +665,14 @@ LABEL_8:
   if (v15)
   {
     v16 = objc_loadWeakRetained(&self->_delegate);
-    [v16 localSpeechRecognizerClient:self receivedEagerRecognitionCandidateWithRequestId:v17 rcId:a4 speechPackage:v12 duration:v13 metadata:a6];
+    [v16 localSpeechRecognizerClient:self receivedEagerRecognitionCandidateWithRequestId:idCopy rcId:rcId speechPackage:packageCopy duration:metadataCopy metadata:duration];
   }
 }
 
-- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)a3 rcId:(unint64_t)a4 speechPackage:(id)a5 duration:(double)a6
+- (void)localSpeechServiceDidReceivedEagerRecognitionCandidateWithRequestId:(id)id rcId:(unint64_t)rcId speechPackage:(id)package duration:(double)duration
 {
-  v14 = a3;
-  v10 = a5;
+  idCopy = id;
+  packageCopy = package;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = objc_opt_respondsToSelector();
@@ -680,15 +680,15 @@ LABEL_8:
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_delegate);
-    [v13 localSpeechRecognizerClient:self receivedEagerRecognitionCandidateWithRequestId:v14 rcId:a4 speechPackage:v10 duration:a6];
+    [v13 localSpeechRecognizerClient:self receivedEagerRecognitionCandidateWithRequestId:idCopy rcId:rcId speechPackage:packageCopy duration:duration];
   }
 }
 
-- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)a3 speechPackage:(id)a4 metadata:(id)a5
+- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)id speechPackage:(id)package metadata:(id)metadata
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  packageCopy = package;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
@@ -696,25 +696,25 @@ LABEL_8:
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 localSpeechRecognizerClient:self receivedFinalResultWithRequestId:v13 speechPackage:v8 metadata:v9];
+    [v12 localSpeechRecognizerClient:self receivedFinalResultWithRequestId:idCopy speechPackage:packageCopy metadata:metadataCopy];
   }
 }
 
-- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)a3 speechPackage:(id)a4
+- (void)localSpeechServiceDidReceivedFinalResultWithRequestId:(id)id speechPackage:(id)package
 {
   queue = self->_queue;
-  v7 = a4;
-  v8 = a3;
+  packageCopy = package;
+  idCopy = id;
   dispatch_assert_queue_V2(queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localSpeechRecognizerClient:self receivedFinalResultWithRequestId:v8 speechPackage:v7];
+  [WeakRetained localSpeechRecognizerClient:self receivedFinalResultWithRequestId:idCopy speechPackage:packageCopy];
 }
 
-- (void)localSpeechServiceDidReceivedVoiceCommandCandidateWithRequestId:(id)a3 speechPackage:(id)a4 metadata:(id)a5
+- (void)localSpeechServiceDidReceivedVoiceCommandCandidateWithRequestId:(id)id speechPackage:(id)package metadata:(id)metadata
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  packageCopy = package;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
@@ -722,14 +722,14 @@ LABEL_8:
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 localSpeechRecognizerClient:self receivedVoiceCommandCandidateWithRequestId:v13 speechPackage:v8 metadata:v9];
+    [v12 localSpeechRecognizerClient:self receivedVoiceCommandCandidateWithRequestId:idCopy speechPackage:packageCopy metadata:metadataCopy];
   }
 }
 
-- (void)localSpeechServiceDidReceivedFinalResultCandidateWithRequestId:(id)a3 speechPackage:(id)a4
+- (void)localSpeechServiceDidReceivedFinalResultCandidateWithRequestId:(id)id speechPackage:(id)package
 {
-  v10 = a3;
-  v6 = a4;
+  idCopy = id;
+  packageCopy = package;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
@@ -737,16 +737,16 @@ LABEL_8:
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 localSpeechRecognizerClient:self receivedFinalResultCandidateWithRequestId:v10 speechPackage:v6];
+    [v9 localSpeechRecognizerClient:self receivedFinalResultCandidateWithRequestId:idCopy speechPackage:packageCopy];
   }
 }
 
-- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)a3 language:(id)a4 speechPackage:(id)a5 metadata:(id)a6
+- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)id language:(id)language speechPackage:(id)package metadata:(id)metadata
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  languageCopy = language;
+  packageCopy = package;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = objc_opt_respondsToSelector();
@@ -754,16 +754,16 @@ LABEL_8:
   if (v14)
   {
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 localSpeechRecognizerClient:self receivedPartialResultWithRequestId:v16 language:v10 speechPackage:v11 metadata:v12];
+    [v15 localSpeechRecognizerClient:self receivedPartialResultWithRequestId:idCopy language:languageCopy speechPackage:packageCopy metadata:metadataCopy];
   }
 }
 
-- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)a3 language:(id)a4 tokens:(id)a5 metadata:(id)a6
+- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)id language:(id)language tokens:(id)tokens metadata:(id)metadata
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  languageCopy = language;
+  tokensCopy = tokens;
+  metadataCopy = metadata;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v14 = objc_opt_respondsToSelector();
@@ -771,19 +771,19 @@ LABEL_8:
   if (v14)
   {
     v15 = objc_loadWeakRetained(&self->_delegate);
-    [v15 localSpeechRecognizerClient:self receivedPartialResultWithRequestId:v16 language:v10 tokens:v11 metadata:v12];
+    [v15 localSpeechRecognizerClient:self receivedPartialResultWithRequestId:idCopy language:languageCopy tokens:tokensCopy metadata:metadataCopy];
   }
 }
 
-- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)a3 language:(id)a4 tokens:(id)a5
+- (void)localSpeechServiceDidReceivedPartialResultWithRequestId:(id)id language:(id)language tokens:(id)tokens
 {
   queue = self->_queue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  tokensCopy = tokens;
+  languageCopy = language;
+  idCopy = id;
   dispatch_assert_queue_V2(queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained localSpeechRecognizerClient:self receivedPartialResultWithRequestId:v11 language:v10 tokens:v9];
+  [WeakRetained localSpeechRecognizerClient:self receivedPartialResultWithRequestId:idCopy language:languageCopy tokens:tokensCopy];
 }
 
 - (void)_invalidate
@@ -834,20 +834,20 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)trpCandidateReadyForExecutionForRequestId:(id)a3 withTrpId:(id)a4
+- (void)trpCandidateReadyForExecutionForRequestId:(id)id withTrpId:(id)trpId
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  trpIdCopy = trpId;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__LBLocalSpeechRecognizerClient_trpCandidateReadyForExecutionForRequestId_withTrpId___block_invoke;
   block[3] = &unk_279823898;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = trpIdCopy;
+  v9 = trpIdCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -876,17 +876,17 @@ void __85__LBLocalSpeechRecognizerClient_trpCandidateReadyForExecutionForRequest
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTCUState:(id)a3
+- (void)updateTCUState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__LBLocalSpeechRecognizerClient_updateTCUState___block_invoke;
   v7[3] = &unk_2798238E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -915,20 +915,20 @@ void __48__LBLocalSpeechRecognizerClient_updateTCUState___block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendVisualContextAndCorrectionsInfo:(id)a3 interactionIdentifier:(id)a4
+- (void)sendVisualContextAndCorrectionsInfo:(id)info interactionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__LBLocalSpeechRecognizerClient_sendVisualContextAndCorrectionsInfo_interactionIdentifier___block_invoke;
   block[3] = &unk_279823898;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
@@ -938,20 +938,20 @@ void __91__LBLocalSpeechRecognizerClient_sendVisualContextAndCorrectionsInfo_int
   [v2 sendVisualContextAndCorrectionsInfo:*(a1 + 40) interactionIdentifier:*(a1 + 48)];
 }
 
-- (void)sendSpeechCorrectionInfo:(id)a3 interactionIdentifier:(id)a4
+- (void)sendSpeechCorrectionInfo:(id)info interactionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__LBLocalSpeechRecognizerClient_sendSpeechCorrectionInfo_interactionIdentifier___block_invoke;
   block[3] = &unk_279823898;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = infoCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
@@ -994,41 +994,41 @@ void __80__LBLocalSpeechRecognizerClient_sendSpeechCorrectionInfo_interactionIde
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVoiceCommandContextWithRequestId:(id)a3 prefixText:(id)a4 postfixText:(id)a5 selectedText:(id)a6 disambiguationActive:(id)a7 cursorInVisibleText:(id)a8 favorCommandSuppression:(id)a9 abortCommandSuppression:(id)a10 undoEvent:(id)a11
+- (void)updateVoiceCommandContextWithRequestId:(id)id prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)suppression abortCommandSuppression:(id)self0 undoEvent:(id)self1
 {
-  v35 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  idCopy = id;
+  textCopy = text;
+  postfixTextCopy = postfixText;
+  selectedTextCopy = selectedText;
+  activeCopy = active;
+  visibleTextCopy = visibleText;
+  suppressionCopy = suppression;
+  commandSuppressionCopy = commandSuppression;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __207__LBLocalSpeechRecognizerClient_updateVoiceCommandContextWithRequestId_prefixText_postfixText_selectedText_disambiguationActive_cursorInVisibleText_favorCommandSuppression_abortCommandSuppression_undoEvent___block_invoke;
   block[3] = &unk_279823870;
   block[4] = self;
-  v37 = v35;
-  v38 = v17;
-  v39 = v18;
-  v40 = v19;
-  v41 = v20;
-  v42 = v21;
-  v43 = v22;
-  v44 = v23;
-  v45 = v24;
-  v26 = v24;
-  v27 = v23;
-  v28 = v22;
-  v29 = v21;
-  v30 = v20;
-  v31 = v19;
-  v32 = v18;
-  v33 = v17;
-  v34 = v35;
+  v37 = idCopy;
+  v38 = textCopy;
+  v39 = postfixTextCopy;
+  v40 = selectedTextCopy;
+  v41 = activeCopy;
+  v42 = visibleTextCopy;
+  v43 = suppressionCopy;
+  v44 = commandSuppressionCopy;
+  v45 = eventCopy;
+  v26 = eventCopy;
+  v27 = commandSuppressionCopy;
+  v28 = suppressionCopy;
+  v29 = visibleTextCopy;
+  v30 = activeCopy;
+  v31 = selectedTextCopy;
+  v32 = postfixTextCopy;
+  v33 = textCopy;
+  v34 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -1060,26 +1060,26 @@ void __207__LBLocalSpeechRecognizerClient_updateVoiceCommandContextWithRequestId
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resumeLocalRecognitionWithRequestId:(id)a3 prefixText:(id)a4 postfixText:(id)a5 selectedText:(id)a6
+- (void)resumeLocalRecognitionWithRequestId:(id)id prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  textCopy = text;
+  postfixTextCopy = postfixText;
+  selectedTextCopy = selectedText;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105__LBLocalSpeechRecognizerClient_resumeLocalRecognitionWithRequestId_prefixText_postfixText_selectedText___block_invoke;
   block[3] = &unk_279823848;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = idCopy;
+  v21 = textCopy;
+  v22 = postfixTextCopy;
+  v23 = selectedTextCopy;
+  v15 = selectedTextCopy;
+  v16 = postfixTextCopy;
+  v17 = textCopy;
+  v18 = idCopy;
   dispatch_async(queue, block);
 }
 
@@ -1111,17 +1111,17 @@ void __105__LBLocalSpeechRecognizerClient_resumeLocalRecognitionWithRequestId_pr
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pauseLocalSpeechRecognitionForRequestId:(id)a3
+- (void)pauseLocalSpeechRecognitionForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__LBLocalSpeechRecognizerClient_pauseLocalSpeechRecognitionForRequestId___block_invoke;
   v7[3] = &unk_2798238E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1153,17 +1153,17 @@ void __73__LBLocalSpeechRecognizerClient_pauseLocalSpeechRecognitionForRequestId
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableLocalSpeechRecognitionForRequestId:(id)a3
+- (void)disableLocalSpeechRecognitionForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__LBLocalSpeechRecognizerClient_disableLocalSpeechRecognitionForRequestId___block_invoke;
   v7[3] = &unk_2798238E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1195,30 +1195,30 @@ void __75__LBLocalSpeechRecognizerClient_disableLocalSpeechRecognitionForRequest
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopSpeechRecognitionTaskWithReason:(unint64_t)a3 requestId:(id)a4 shouldInvalidateAfterStop:(BOOL)a5 completion:(id)a6
+- (void)_stopSpeechRecognitionTaskWithReason:(unint64_t)reason requestId:(id)id shouldInvalidateAfterStop:(BOOL)stop completion:(id)completion
 {
-  v7 = a5;
+  stopCopy = stop;
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  idCopy = id;
+  completionCopy = completion;
   v12 = LBLogContextFacilityLocalSRBridge;
   if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(LBLocalSpeechRecognizerClient *)self uuidString];
-    v15 = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
+    uuidString = [(LBLocalSpeechRecognizerClient *)self uuidString];
+    xpcConnectionUUIDString = [(LBLocalSpeechRecognizerClient *)self xpcConnectionUUIDString];
     *buf = 136316418;
     v25 = "[LBLocalSpeechRecognizerClient _stopSpeechRecognitionTaskWithReason:requestId:shouldInvalidateAfterStop:completion:]";
     v26 = 2112;
-    v27 = v14;
+    v27 = uuidString;
     v28 = 2112;
-    v29 = v15;
+    v29 = xpcConnectionUUIDString;
     v30 = 2050;
-    v31 = a3;
+    reasonCopy = reason;
     v32 = 2112;
-    v33 = v10;
+    v33 = idCopy;
     v34 = 1024;
-    v35 = v7;
+    v35 = stopCopy;
     _os_log_impl(&dword_256130000, v13, OS_LOG_TYPE_DEFAULT, "%s LBLocalSpeechRecognizerClient[%@], xpcConnection[%@]:reason : %{public}lu, requestId %@, shouldInvalidate %d", buf, 0x3Au);
   }
 
@@ -1229,26 +1229,26 @@ void __75__LBLocalSpeechRecognizerClient_disableLocalSpeechRecognitionForRequest
     v19[2] = __117__LBLocalSpeechRecognizerClient__stopSpeechRecognitionTaskWithReason_requestId_shouldInvalidateAfterStop_completion___block_invoke;
     v19[3] = &unk_279823820;
     v19[4] = self;
-    v22 = a3;
-    v20 = v10;
-    v23 = v7;
-    v21 = v11;
-    [(LBAudioCapture *)audioCapture stopAudioCaptureWithReason:a3 requestId:v20 completion:v19];
+    reasonCopy2 = reason;
+    v20 = idCopy;
+    v23 = stopCopy;
+    v21 = completionCopy;
+    [(LBAudioCapture *)audioCapture stopAudioCaptureWithReason:reason requestId:v20 completion:v19];
   }
 
   else
   {
-    v17 = [(LBLocalSpeechRecognizerClient *)self _service];
-    [v17 stopSpeechRecognitionWithReason:a3 requestId:v10];
+    _service = [(LBLocalSpeechRecognizerClient *)self _service];
+    [_service stopSpeechRecognitionWithReason:reason requestId:idCopy];
 
-    if (v7)
+    if (stopCopy)
     {
       [(LBLocalSpeechRecognizerClient *)self _invalidate];
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
@@ -1276,53 +1276,53 @@ uint64_t __117__LBLocalSpeechRecognizerClient__stopSpeechRecognitionTaskWithReas
   return MEMORY[0x2821F9730]();
 }
 
-- (void)stopSpeechRecognitionTaskAndInvalidateWithReason:(unint64_t)a3 requestId:(id)a4 completion:(id)a5
+- (void)stopSpeechRecognitionTaskAndInvalidateWithReason:(unint64_t)reason requestId:(id)id completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__LBLocalSpeechRecognizerClient_stopSpeechRecognitionTaskAndInvalidateWithReason_requestId_completion___block_invoke;
   v13[3] = &unk_2798237F8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = idCopy;
+  v15 = completionCopy;
+  reasonCopy = reason;
+  v11 = completionCopy;
+  v12 = idCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)stopSpeechRecognitionTaskWithReason:(unint64_t)a3 requestId:(id)a4 completion:(id)a5
+- (void)stopSpeechRecognitionTaskWithReason:(unint64_t)reason requestId:(id)id completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  idCopy = id;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __90__LBLocalSpeechRecognizerClient_stopSpeechRecognitionTaskWithReason_requestId_completion___block_invoke;
   v13[3] = &unk_2798237F8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = idCopy;
+  v15 = completionCopy;
+  reasonCopy = reason;
+  v11 = completionCopy;
+  v12 = idCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)startSpeechRecognitionResultsWithSettings:(id)a3
+- (void)startSpeechRecognitionResultsWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__LBLocalSpeechRecognizerClient_startSpeechRecognitionResultsWithSettings___block_invoke;
   v7[3] = &unk_2798238E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1461,18 +1461,18 @@ void __75__LBLocalSpeechRecognizerClient_startSpeechRecognitionResultsWithSettin
   }
 }
 
-- (void)preheatLocalSpeechRecognitionWithLanguage:(id)a3 source:(unint64_t)a4
+- (void)preheatLocalSpeechRecognitionWithLanguage:(id)language source:(unint64_t)source
 {
-  v6 = a3;
+  languageCopy = language;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__LBLocalSpeechRecognizerClient_preheatLocalSpeechRecognitionWithLanguage_source___block_invoke;
   block[3] = &unk_279823780;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = languageCopy;
+  sourceCopy = source;
+  v8 = languageCopy;
   dispatch_async(queue, block);
 }
 
@@ -1518,17 +1518,17 @@ void __57__LBLocalSpeechRecognizerClient_connectToServiceIfNeeded__block_invoke(
   [v1 connectToServiceIfNeeded];
 }
 
-- (void)setLocalSpeechRecognizerClientDelegate:(id)a3
+- (void)setLocalSpeechRecognizerClientDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__LBLocalSpeechRecognizerClient_setLocalSpeechRecognizerClientDelegate___block_invoke;
   v7[3] = &unk_2798238E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1574,12 +1574,12 @@ id __72__LBLocalSpeechRecognizerClient_setLocalSpeechRecognizerClientDelegate___
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (LBLocalSpeechRecognizerClient)initWithDelegate:(id)a3 xpcListenerEndpoint:(id)a4 audioCapture:(id)a5
+- (LBLocalSpeechRecognizerClient)initWithDelegate:(id)delegate xpcListenerEndpoint:(id)endpoint audioCapture:(id)capture
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  endpointCopy = endpoint;
+  captureCopy = capture;
   v24.receiver = self;
   v24.super_class = LBLocalSpeechRecognizerClient;
   v11 = [(LBLocalSpeechRecognizerClient *)&v24 init];
@@ -1595,11 +1595,11 @@ id __72__LBLocalSpeechRecognizerClient_setLocalSpeechRecognizerClientDelegate___
     queue = v11->_queue;
     v11->_queue = v13;
 
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v11->_xpcListenerEndpoint, a4);
-    if (v10)
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_xpcListenerEndpoint, endpoint);
+    if (captureCopy)
     {
-      v15 = v10;
+      v15 = captureCopy;
     }
 
     else
@@ -1610,10 +1610,10 @@ id __72__LBLocalSpeechRecognizerClient_setLocalSpeechRecognizerClientDelegate___
     audioCapture = v11->_audioCapture;
     v11->_audioCapture = v15;
 
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uuidString = v11->_uuidString;
-    v11->_uuidString = v18;
+    v11->_uuidString = uUIDString;
 
     v20 = LBLogContextFacilityLocalSRBridge;
     if (os_log_type_enabled(LBLogContextFacilityLocalSRBridge, OS_LOG_TYPE_DEFAULT))

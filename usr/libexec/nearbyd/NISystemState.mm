@@ -1,12 +1,12 @@
 @interface NISystemState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NISystemState)init;
-- (NISystemState)initWithCoder:(id)a3;
-- (NISystemState)initWithUWBPreciseDistanceAvailability:(unint64_t)a3 uwbExtendedDistanceAvailability:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NISystemState)initWithCoder:(id)coder;
+- (NISystemState)initWithUWBPreciseDistanceAvailability:(unint64_t)availability uwbExtendedDistanceAvailability:(unint64_t)distanceAvailability;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NISystemState
@@ -18,51 +18,51 @@
   return v3;
 }
 
-- (NISystemState)initWithUWBPreciseDistanceAvailability:(unint64_t)a3 uwbExtendedDistanceAvailability:(unint64_t)a4
+- (NISystemState)initWithUWBPreciseDistanceAvailability:(unint64_t)availability uwbExtendedDistanceAvailability:(unint64_t)distanceAvailability
 {
   v7.receiver = self;
   v7.super_class = NISystemState;
   result = [(NISystemState *)&v7 init];
   if (result)
   {
-    result->_uwbPreciseDistanceAvailability = a3;
-    result->_uwbExtendedDistanceAvailability = a4;
+    result->_uwbPreciseDistanceAvailability = availability;
+    result->_uwbExtendedDistanceAvailability = distanceAvailability;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NISystemState allocWithZone:a3];
+  v4 = [NISystemState allocWithZone:zone];
   uwbPreciseDistanceAvailability = self->_uwbPreciseDistanceAvailability;
   uwbExtendedDistanceAvailability = self->_uwbExtendedDistanceAvailability;
 
   return [(NISystemState *)v4 initWithUWBPreciseDistanceAvailability:uwbPreciseDistanceAvailability uwbExtendedDistanceAvailability:uwbExtendedDistanceAvailability];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_uwbPreciseDistanceAvailability forKey:@"uwbPreciseDistanceAvailability"];
-  [v4 encodeInteger:self->_uwbExtendedDistanceAvailability forKey:@"uwbExtendedDistanceAvailability"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_uwbPreciseDistanceAvailability forKey:@"uwbPreciseDistanceAvailability"];
+  [coderCopy encodeInteger:self->_uwbExtendedDistanceAvailability forKey:@"uwbExtendedDistanceAvailability"];
 }
 
-- (NISystemState)initWithCoder:(id)a3
+- (NISystemState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[NISystemState initWithUWBPreciseDistanceAvailability:uwbExtendedDistanceAvailability:]([NISystemState alloc], "initWithUWBPreciseDistanceAvailability:uwbExtendedDistanceAvailability:", [v4 decodeIntegerForKey:@"uwbPreciseDistanceAvailability"], objc_msgSend(v4, "decodeIntegerForKey:", @"uwbExtendedDistanceAvailability"));
+  coderCopy = coder;
+  v5 = -[NISystemState initWithUWBPreciseDistanceAvailability:uwbExtendedDistanceAvailability:]([NISystemState alloc], "initWithUWBPreciseDistanceAvailability:uwbExtendedDistanceAvailability:", [coderCopy decodeIntegerForKey:@"uwbPreciseDistanceAvailability"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"uwbExtendedDistanceAvailability"));
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -71,10 +71,10 @@
 
     else
     {
-      v7 = [(NISystemState *)v5 uwbPreciseDistanceAvailability];
+      uwbPreciseDistanceAvailability = [(NISystemState *)v5 uwbPreciseDistanceAvailability];
       uwbPreciseDistanceAvailability = self->_uwbPreciseDistanceAvailability;
-      v9 = [(NISystemState *)v6 uwbExtendedDistanceAvailability];
-      v11 = v7 == uwbPreciseDistanceAvailability && v9 == self->_uwbExtendedDistanceAvailability;
+      uwbExtendedDistanceAvailability = [(NISystemState *)v6 uwbExtendedDistanceAvailability];
+      v11 = uwbPreciseDistanceAvailability == uwbPreciseDistanceAvailability && uwbExtendedDistanceAvailability == self->_uwbExtendedDistanceAvailability;
     }
   }
 
@@ -91,8 +91,8 @@
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NISystemState *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NISystemState *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }

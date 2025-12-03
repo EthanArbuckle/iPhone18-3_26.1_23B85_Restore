@@ -1,6 +1,6 @@
 @interface RTEventAgentHelper
 + (id)signingIdentifierFromSelf;
-- (RTEventAgentHelper)initWithRestorationIdentifier:(id)a3;
+- (RTEventAgentHelper)initWithRestorationIdentifier:(id)identifier;
 @end
 
 @implementation RTEventAgentHelper
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (RTEventAgentHelper)initWithRestorationIdentifier:(id)a3
+- (RTEventAgentHelper)initWithRestorationIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && +[RTEventAgentHelper launchdManaged])
+  identifierCopy = identifier;
+  if (identifierCopy && +[RTEventAgentHelper launchdManaged])
   {
     v22.receiver = self;
     v22.super_class = RTEventAgentHelper;
@@ -36,9 +36,9 @@
     {
       v6 = objc_alloc(MEMORY[0x1E696AEC0]);
       v7 = +[RTEventAgentHelper signingIdentifierFromSelf];
-      v8 = [v6 initWithFormat:@"%@-%@", v7, v4];
+      identifierCopy = [v6 initWithFormat:@"%@-%@", v7, identifierCopy];
       restorationIdentifier = v5->_restorationIdentifier;
-      v5->_restorationIdentifier = v8;
+      v5->_restorationIdentifier = identifierCopy;
 
       if (v5->_restorationIdentifier)
       {
@@ -58,36 +58,36 @@
               v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
               {
-                v15 = [(RTEventAgentHelper *)v5 restorationIdentifier];
+                restorationIdentifier = [(RTEventAgentHelper *)v5 restorationIdentifier];
                 *buf = 138412290;
-                v24 = v15;
+                v24 = restorationIdentifier;
                 _os_log_impl(&dword_1BF1C4000, v14, OS_LOG_TYPE_INFO, "setup client with restorationIdentifier, %@", buf, 0xCu);
               }
             }
 
-            v16 = [@"com.apple.routined-events" UTF8String];
+            uTF8String = [@"com.apple.routined-events" UTF8String];
             handler[0] = MEMORY[0x1E69E9820];
             handler[1] = 3221225472;
             handler[2] = __52__RTEventAgentHelper_initWithRestorationIdentifier___block_invoke;
             handler[3] = &unk_1E80B4C58;
             v21 = v5;
-            xpc_set_event_stream_handler(v16, MEMORY[0x1E69E96A0], handler);
+            xpc_set_event_stream_handler(uTF8String, MEMORY[0x1E69E96A0], handler);
           }
         }
       }
     }
 
     self = v5;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
 void __52__RTEventAgentHelper_initWithRestorationIdentifier___block_invoke(uint64_t a1)

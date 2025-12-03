@@ -1,27 +1,27 @@
 @interface ATXPowerThrottlingCreditPool
 - (ATXPowerThrottlingCreditPool)init;
-- (ATXPowerThrottlingCreditPool)initWithConfig:(id)a3;
-- (void)consumeCredits:(int64_t)a3 toRun:(id)a4;
+- (ATXPowerThrottlingCreditPool)initWithConfig:(id)config;
+- (void)consumeCredits:(int64_t)credits toRun:(id)run;
 @end
 
 @implementation ATXPowerThrottlingCreditPool
 
-- (ATXPowerThrottlingCreditPool)initWithConfig:(id)a3
+- (ATXPowerThrottlingCreditPool)initWithConfig:(id)config
 {
-  v3 = a3;
-  v4 = sub_2267C9A08(v3);
+  configCopy = config;
+  v4 = sub_2267C9A08(configCopy);
 
   return v4;
 }
 
-- (void)consumeCredits:(int64_t)a3 toRun:(id)a4
+- (void)consumeCredits:(int64_t)credits toRun:(id)run
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(run);
   v12[2] = v6;
   v7 = *(&self->super.isa + OBJC_IVAR___ATXPowerThrottlingCreditPool_queue);
   v8 = swift_allocObject();
   v8[2] = self;
-  v8[3] = a3;
+  v8[3] = credits;
   v8[4] = sub_2267C9EF4;
   v8[5] = v12;
   v9 = swift_allocObject();
@@ -34,7 +34,7 @@
   aBlock[2] = sub_2267A3E84;
   aBlock[3] = &block_descriptor_22;
   v10 = _Block_copy(aBlock);
-  v11 = self;
+  selfCopy = self;
 
   dispatch_sync(v7, v10);
   _Block_release(v10);

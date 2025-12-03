@@ -1,37 +1,37 @@
 @interface _INPBSearchForPhotosIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchForPhotosIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchForPhotosIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAlbumName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAlbumName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchForPhotosIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_albumName)
   {
-    v4 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"albumName"];
+    albumName = [(_INPBSearchForPhotosIntentResponse *)self albumName];
+    v5 = [albumName copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"albumName"];
   }
 
-  v6 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"locationCreated"];
+  locationCreated = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
+  dictionaryRepresentation = [locationCreated dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"locationCreated"];
 
   if ([(_INPBSearchForPhotosIntentResponse *)self hasSearchResultsCount])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBSearchForPhotosIntentResponse searchResultsCount](self, "searchResultsCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"searchResultsCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"searchResultsCount"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -51,28 +51,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
-  v6 = [v4 albumName];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBSearchForPhotosIntentResponse *)self albumName];
+  albumName2 = [equalCopy albumName];
+  if ((albumName != 0) == (albumName2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
-  if (v7)
+  albumName3 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
+  if (albumName3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
-    v10 = [v4 albumName];
-    v11 = [v9 isEqual:v10];
+    v8 = albumName3;
+    albumName4 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
+    albumName5 = [equalCopy albumName];
+    v11 = [albumName4 isEqual:albumName5];
 
     if (!v11)
     {
@@ -84,22 +84,22 @@
   {
   }
 
-  v5 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
-  v6 = [v4 locationCreated];
-  if ((v5 != 0) == (v6 == 0))
+  albumName = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
+  albumName2 = [equalCopy locationCreated];
+  if ((albumName != 0) == (albumName2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
-  if (v12)
+  locationCreated = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
+  if (locationCreated)
   {
-    v13 = v12;
-    v14 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
-    v15 = [v4 locationCreated];
-    v16 = [v14 isEqual:v15];
+    v13 = locationCreated;
+    locationCreated2 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
+    locationCreated3 = [equalCopy locationCreated];
+    v16 = [locationCreated2 isEqual:locationCreated3];
 
     if (!v16)
     {
@@ -111,10 +111,10 @@ LABEL_11:
   {
   }
 
-  v19 = [(_INPBSearchForPhotosIntentResponse *)self hasSearchResultsCount];
-  if (v19 == [v4 hasSearchResultsCount])
+  hasSearchResultsCount = [(_INPBSearchForPhotosIntentResponse *)self hasSearchResultsCount];
+  if (hasSearchResultsCount == [equalCopy hasSearchResultsCount])
   {
-    if (!-[_INPBSearchForPhotosIntentResponse hasSearchResultsCount](self, "hasSearchResultsCount") || ![v4 hasSearchResultsCount] || (searchResultsCount = self->_searchResultsCount, searchResultsCount == objc_msgSend(v4, "searchResultsCount")))
+    if (!-[_INPBSearchForPhotosIntentResponse hasSearchResultsCount](self, "hasSearchResultsCount") || ![equalCopy hasSearchResultsCount] || (searchResultsCount = self->_searchResultsCount, searchResultsCount == objc_msgSend(equalCopy, "searchResultsCount")))
     {
       v17 = 1;
       goto LABEL_13;
@@ -128,13 +128,13 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchForPhotosIntentResponse allocWithZone:](_INPBSearchForPhotosIntentResponse init];
-  v6 = [(NSString *)self->_albumName copyWithZone:a3];
+  v6 = [(NSString *)self->_albumName copyWithZone:zone];
   [(_INPBSearchForPhotosIntentResponse *)v5 setAlbumName:v6];
 
-  v7 = [(_INPBLocation *)self->_locationCreated copyWithZone:a3];
+  v7 = [(_INPBLocation *)self->_locationCreated copyWithZone:zone];
   [(_INPBSearchForPhotosIntentResponse *)v5 setLocationCreated:v7];
 
   if ([(_INPBSearchForPhotosIntentResponse *)self hasSearchResultsCount])
@@ -145,46 +145,46 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchForPhotosIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchForPhotosIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchForPhotosIntentResponse)initWithCoder:(id)a3
+- (_INPBSearchForPhotosIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchForPhotosIntentResponse *)self initWithData:v6];
+    self = [(_INPBSearchForPhotosIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_INPBSearchForPhotosIntentResponse *)self albumName];
+  toCopy = to;
+  albumName = [(_INPBSearchForPhotosIntentResponse *)self albumName];
 
-  if (v4)
+  if (albumName)
   {
     albumName = self->_albumName;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
+  locationCreated = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
 
-  if (v6)
+  if (locationCreated)
   {
-    v7 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
+    locationCreated2 = [(_INPBSearchForPhotosIntentResponse *)self locationCreated];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,9 +195,9 @@ LABEL_13:
   }
 }
 
-- (void)setAlbumName:(id)a3
+- (void)setAlbumName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   albumName = self->_albumName;
   self->_albumName = v4;
 

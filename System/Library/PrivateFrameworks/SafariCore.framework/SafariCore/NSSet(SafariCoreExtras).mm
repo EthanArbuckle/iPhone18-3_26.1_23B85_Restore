@@ -17,15 +17,15 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -36,7 +36,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
@@ -46,7 +46,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -67,15 +67,15 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -86,7 +86,7 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -94,7 +94,7 @@
           [v5 setObject:v12 forKeyedSubscript:{v11, v15}];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -115,15 +115,15 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(a1, "count")}];
+    v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(self, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -134,7 +134,7 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
@@ -144,7 +144,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -165,18 +165,18 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  if ([a1 count] > 1)
+  if ([self count] > 1)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
-      v5 = 0;
+      anyObject = 0;
       v9 = *v16;
       do
       {
@@ -184,27 +184,27 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          if (v5)
+          if (anyObject)
           {
-            if (v4[2](v4, v5, *(*(&v15 + 1) + 8 * i)) >= 1)
+            if (v4[2](v4, anyObject, *(*(&v15 + 1) + 8 * i)) >= 1)
             {
               v12 = v11;
 
-              v5 = v12;
+              anyObject = v12;
             }
           }
 
           else
           {
-            v5 = v11;
+            anyObject = v11;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -212,18 +212,18 @@
 
     else
     {
-      v5 = 0;
+      anyObject = 0;
     }
   }
 
   else
   {
-    v5 = [a1 anyObject];
+    anyObject = [self anyObject];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return anyObject;
 }
 
 - (id)safari_anyObjectPassingTest:()SafariCoreExtras
@@ -234,8 +234,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -245,7 +245,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -256,7 +256,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -275,7 +275,7 @@ LABEL_11:
 
 - (BOOL)safari_containsObjectPassingTest:()SafariCoreExtras
 {
-  v1 = [a1 safari_anyObjectPassingTest:?];
+  v1 = [self safari_anyObjectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -284,8 +284,8 @@ LABEL_11:
 - (uint64_t)safari_allObjectsPassTest:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 allObjects];
-  v6 = [v5 safari_allObjectsPassTest:v4];
+  allObjects = [self allObjects];
+  v6 = [allObjects safari_allObjectsPassTest:v4];
 
   return v6;
 }
@@ -293,19 +293,19 @@ LABEL_11:
 - (id)safari_setByRemovingObject:()SafariCoreExtras
 {
   v4 = a3;
-  if ([a1 containsObject:v4])
+  if ([self containsObject:v4])
   {
-    v5 = [a1 mutableCopy];
+    v5 = [self mutableCopy];
     [v5 removeObject:v4];
-    v6 = [v5 copy];
+    selfCopy = [v5 copy];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)safari_sortedArrayUsingFinderLikeSorting
@@ -315,7 +315,7 @@ LABEL_11:
   v7[0] = v2;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
-  v4 = [a1 sortedArrayUsingDescriptors:v3];
+  v4 = [self sortedArrayUsingDescriptors:v3];
 
   v5 = *MEMORY[0x1E69E9840];
 
@@ -325,7 +325,7 @@ LABEL_11:
 - (id)safari_setBySubtractingSet:()SafariCoreExtras
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 minusSet:v4];
 
   v6 = [v5 copy];

@@ -1,11 +1,11 @@
 @interface ASVVelocitySample2D
-- (ASVVelocitySample2D)initWithStart:(ASVVelocitySample2D *)self end:(SEL)a2 deltaTime:(double)a3;
+- (ASVVelocitySample2D)initWithStart:(ASVVelocitySample2D *)self end:(SEL)end deltaTime:(double)time;
 - (uint64_t)velocity;
 @end
 
 @implementation ASVVelocitySample2D
 
-- (ASVVelocitySample2D)initWithStart:(ASVVelocitySample2D *)self end:(SEL)a2 deltaTime:(double)a3
+- (ASVVelocitySample2D)initWithStart:(ASVVelocitySample2D *)self end:(SEL)end deltaTime:(double)time
 {
   v5 = v4;
   v6 = v3;
@@ -14,7 +14,7 @@
   result = [(ASVVelocitySample2D *)&v9 init];
   if (result)
   {
-    *result->_start = a3;
+    *result->_start = time;
     *result->_end = v6;
     result->_deltaTime = v5;
   }
@@ -24,12 +24,12 @@
 
 - (uint64_t)velocity
 {
-  result = [a1 deltaTime];
+  result = [self deltaTime];
   if (v3 >= 0.00000011920929)
   {
-    [a1 end];
-    [a1 start];
-    return [a1 deltaTime];
+    [self end];
+    [self start];
+    return [self deltaTime];
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface SFSupersededPlugin
-- (BOOL)beginUsingRequest:(id)a3 withSubsystemOptions:(id)a4 error:(id *)a5;
-- (BOOL)beginUsingWithSubsystemOptions:(id)a3 error:(id *)a4;
-- (BOOL)useBundle:(id)a3 error:(id *)a4;
+- (BOOL)beginUsingRequest:(id)request withSubsystemOptions:(id)options error:(id *)error;
+- (BOOL)beginUsingWithSubsystemOptions:(id)options error:(id *)error;
+- (BOOL)useBundle:(id)bundle error:(id *)error;
 - (NSArray)launchPersonas;
 - (NSArray)preferredLanguages;
 - (NSBundle)embeddedBundle;
@@ -11,21 +11,21 @@
 - (NSXPCConnection)pluginConnection;
 - (PKPlugIn)supersededBy;
 - (_TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin)init;
-- (id)createInstanceWithUUID:(id)a3;
+- (id)createInstanceWithUUID:(id)d;
 - (id)defaults;
-- (id)export:(id *)a3;
+- (id)export:(id *)export;
 - (id)notificationBlock;
-- (void)beginUsing:(id)a3;
-- (void)beginUsingRequest:(PKLaunchRequest *)a3 completion:(id)a4;
-- (void)beginUsingRequest:(PKLaunchRequest *)a3 withSubsystemOptions:(NSDictionary *)a4 completion:(id)a5;
-- (void)beginUsingWithSubsystemOptions:(NSDictionary *)a3 completion:(id)a4;
-- (void)endUsing:(id)a3;
-- (void)endUsingRequest:(PKLaunchRequest *)a3 completion:(id)a4;
-- (void)localizedInfoDictionaryForKeys:(NSArray *)a3 completion:(id)a4;
-- (void)setHostPrincipal:(id)a3 withProtocol:(id)a4;
-- (void)setNotificationBlock:(id)a3;
-- (void)setPreferredLanguages:(id)a3;
-- (void)setSandboxProfile:(id)a3;
+- (void)beginUsing:(id)using;
+- (void)beginUsingRequest:(PKLaunchRequest *)request completion:(id)completion;
+- (void)beginUsingRequest:(PKLaunchRequest *)request withSubsystemOptions:(NSDictionary *)options completion:(id)completion;
+- (void)beginUsingWithSubsystemOptions:(NSDictionary *)options completion:(id)completion;
+- (void)endUsing:(id)using;
+- (void)endUsingRequest:(PKLaunchRequest *)request completion:(id)completion;
+- (void)localizedInfoDictionaryForKeys:(NSArray *)keys completion:(id)completion;
+- (void)setHostPrincipal:(id)principal withProtocol:(id)protocol;
+- (void)setNotificationBlock:(id)block;
+- (void)setPreferredLanguages:(id)languages;
+- (void)setSandboxProfile:(id)profile;
 @end
 
 @implementation SFSupersededPlugin
@@ -46,11 +46,11 @@
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v20 - v8;
   v10 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
-  v11 = self;
-  v12 = [v10 multipleInstanceUUID];
-  if (v12)
+  selfCopy = self;
+  multipleInstanceUUID = [v10 multipleInstanceUUID];
+  if (multipleInstanceUUID)
   {
-    v13 = v12;
+    v13 = multipleInstanceUUID;
     sub_1A9976290();
 
     v14 = sub_1A99762C0();
@@ -81,33 +81,33 @@
 
 - (NSBundle)embeddedBundle
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) embeddedBundle];
+  embeddedBundle = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) embeddedBundle];
 
-  return v2;
+  return embeddedBundle;
 }
 
 - (id)notificationBlock
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) notificationBlock];
-  if (v2)
+  notificationBlock = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) notificationBlock];
+  if (notificationBlock)
   {
     v3 = swift_allocObject();
-    *(v3 + 16) = v2;
+    *(v3 + 16) = notificationBlock;
     v5[4] = sub_1A982B48C;
     v5[5] = v3;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 1107296256;
     v5[2] = sub_1A9820470;
     v5[3] = &block_descriptor_204;
-    v2 = _Block_copy(v5);
+    notificationBlock = _Block_copy(v5);
   }
 
-  return v2;
+  return notificationBlock;
 }
 
-- (void)setNotificationBlock:(id)a3
+- (void)setNotificationBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -122,7 +122,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1A982B0B8(v7, v6);
   sub_1A967C46C(v7);
 }
@@ -136,11 +136,11 @@
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v20 - v8;
   v10 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
-  v11 = self;
-  v12 = [v10 uuid];
-  if (v12)
+  selfCopy = self;
+  uuid = [v10 uuid];
+  if (uuid)
   {
-    v13 = v12;
+    v13 = uuid;
     sub_1A9976290();
 
     v14 = sub_1A99762C0();
@@ -178,11 +178,11 @@
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v20 - v8;
   v10 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
-  v11 = self;
-  v12 = [v10 timestamp];
-  if (v12)
+  selfCopy = self;
+  timestamp = [v10 timestamp];
+  if (timestamp)
   {
-    v13 = v12;
+    v13 = timestamp;
     sub_1A99761F0();
 
     v14 = sub_1A9976230();
@@ -213,19 +213,19 @@
 
 - (NSXPCConnection)pluginConnection
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) pluginConnection];
+  pluginConnection = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) pluginConnection];
 
-  return v2;
+  return pluginConnection;
 }
 
 - (NSArray)preferredLanguages
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
-  v3 = self;
-  v4 = [v2 preferredLanguages];
-  if (v4)
+  selfCopy = self;
+  preferredLanguages = [v2 preferredLanguages];
+  if (preferredLanguages)
   {
-    v5 = v4;
+    v5 = preferredLanguages;
     sub_1A9976AC0();
 
     v6 = sub_1A9976AB0();
@@ -240,17 +240,17 @@
   return v6;
 }
 
-- (void)setPreferredLanguages:(id)a3
+- (void)setPreferredLanguages:(id)languages
 {
-  v8 = self;
-  if (a3)
+  selfCopy = self;
+  if (languages)
   {
     v3 = sub_1A9976AC0();
-    self = v8;
-    v4 = *(&v8->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
+    self = selfCopy;
+    v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
     if (v3)
     {
-      v5 = v8;
+      v5 = selfCopy;
       swift_unknownObjectRetain();
       v6 = sub_1A9976AB0();
 
@@ -263,7 +263,7 @@
     v4 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
   }
 
-  v7 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   v6 = 0;
 LABEL_6:
@@ -274,11 +274,11 @@ LABEL_6:
 - (NSArray)launchPersonas
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
-  v3 = self;
-  v4 = [v2 launchPersonas];
-  if (v4)
+  selfCopy = self;
+  launchPersonas = [v2 launchPersonas];
+  if (launchPersonas)
   {
-    v5 = v4;
+    v5 = launchPersonas;
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B2A28, &qword_1A9998398);
     sub_1A9976AC0();
 
@@ -294,17 +294,17 @@ LABEL_6:
   return v6;
 }
 
-- (void)setSandboxProfile:(id)a3
+- (void)setSandboxProfile:(id)profile
 {
-  v8 = self;
-  if (a3)
+  selfCopy = self;
+  if (profile)
   {
     sub_1A9976820();
-    self = v8;
-    v3 = *(&v8->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
+    self = selfCopy;
+    v3 = *(&selfCopy->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
     if (v4)
     {
-      v5 = v8;
+      v5 = selfCopy;
       swift_unknownObjectRetain();
       v6 = sub_1A99767E0();
 
@@ -317,7 +317,7 @@ LABEL_6:
     v3 = *(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin);
   }
 
-  v7 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   v6 = 0;
 LABEL_6:
@@ -325,9 +325,9 @@ LABEL_6:
   swift_unknownObjectRelease();
 }
 
-- (void)beginUsing:(id)a3
+- (void)beginUsing:(id)using
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(using);
   if (v4)
   {
     v5 = v4;
@@ -342,20 +342,20 @@ LABEL_6:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1A9820FFC(v7, v6);
   sub_1A967C46C(v7);
 }
 
-- (void)beginUsingWithSubsystemOptions:(NSDictionary *)a3 completion:(id)a4
+- (void)beginUsingWithSubsystemOptions:(NSDictionary *)options completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29C0, &qword_1A9991A00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = options;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1A9976C00();
@@ -370,14 +370,14 @@ LABEL_6:
   v15[3] = 0;
   v15[4] = &unk_1A9998380;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1A98A683C(0, 0, v10, &unk_1A9998388, v15);
 }
 
-- (BOOL)beginUsingWithSubsystemOptions:(id)a3 error:(id *)a4
+- (BOOL)beginUsingWithSubsystemOptions:(id)options error:(id *)error
 {
-  if (a3)
+  if (options)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29A0, &qword_1A99982D0);
     v5 = sub_1A9976700();
@@ -388,15 +388,15 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1A9821A20(v5);
 
   return 1;
 }
 
-- (BOOL)useBundle:(id)a3 error:(id *)a4
+- (BOOL)useBundle:(id)bundle error:(id *)error
 {
-  if (a3)
+  if (bundle)
   {
     v5 = sub_1A9976820();
     v7 = v6;
@@ -408,15 +408,15 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1A9821C08(v5, v7);
 
   return 1;
 }
 
-- (void)endUsing:(id)a3
+- (void)endUsing:(id)using
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(using);
   if (v4)
   {
     v5 = v4;
@@ -431,17 +431,17 @@ LABEL_6:
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1A9821DB4(v7, v6);
   sub_1A967C46C(v7);
 }
 
-- (void)setHostPrincipal:(id)a3 withProtocol:(id)a4
+- (void)setHostPrincipal:(id)principal withProtocol:(id)protocol
 {
-  if (a3)
+  if (principal)
   {
-    v6 = a4;
-    v7 = self;
+    protocolCopy = protocol;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A99771B0();
     swift_unknownObjectRelease();
@@ -450,22 +450,22 @@ LABEL_6:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a4;
-    v9 = self;
+    protocolCopy2 = protocol;
+    selfCopy2 = self;
   }
 
-  sub_1A982210C(v10, a4);
+  sub_1A982210C(v10, protocol);
 
   sub_1A97B06FC(v10, &qword_1EB3B0BA0, &unk_1A99923D0);
 }
 
-- (id)createInstanceWithUUID:(id)a3
+- (id)createInstanceWithUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB3B29B0, &qword_1A9990640);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  if (a3)
+  if (d)
   {
     sub_1A9976290();
     v9 = sub_1A99762C0();
@@ -478,7 +478,7 @@ LABEL_6:
     (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
   }
 
-  v11 = self;
+  selfCopy = self;
   v12 = sub_1A9822324(v8);
 
   sub_1A97B06FC(v8, &unk_1EB3B29B0, &qword_1A9990640);
@@ -488,20 +488,20 @@ LABEL_6:
 
 - (id)defaults
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) defaults];
+  defaults = [*(&self->super.isa + OBJC_IVAR____TtC7SharingP33_92E8A60AEC1CE4A2A2DCBDADFB6E580C18SFSupersededPlugin__innerPlugin) defaults];
 
-  return v2;
+  return defaults;
 }
 
-- (void)localizedInfoDictionaryForKeys:(NSArray *)a3 completion:(id)a4
+- (void)localizedInfoDictionaryForKeys:(NSArray *)keys completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29C0, &qword_1A9991A00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = keys;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1A9976C00();
@@ -516,14 +516,14 @@ LABEL_6:
   v15[3] = 0;
   v15[4] = &unk_1A9998360;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  keysCopy = keys;
+  selfCopy = self;
   sub_1A98A683C(0, 0, v10, &unk_1A9998368, v15);
 }
 
-- (BOOL)beginUsingRequest:(id)a3 withSubsystemOptions:(id)a4 error:(id *)a5
+- (BOOL)beginUsingRequest:(id)request withSubsystemOptions:(id)options error:(id *)error
 {
-  if (a4)
+  if (options)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29A0, &qword_1A99982D0);
     v7 = sub_1A9976700();
@@ -535,24 +535,24 @@ LABEL_6:
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1A9822F28(a3, v7);
+  selfCopy = self;
+  sub_1A9822F28(request, v7);
 
   swift_unknownObjectRelease();
 
   return 1;
 }
 
-- (void)beginUsingRequest:(PKLaunchRequest *)a3 withSubsystemOptions:(NSDictionary *)a4 completion:(id)a5
+- (void)beginUsingRequest:(PKLaunchRequest *)request withSubsystemOptions:(NSDictionary *)options completion:(id)completion
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29C0, &qword_1A9991A00);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(completion);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = request;
+  v14[3] = options;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1A9976C00();
@@ -568,20 +568,20 @@ LABEL_6:
   v17[4] = &unk_1A9998340;
   v17[5] = v16;
   swift_unknownObjectRetain();
-  v18 = a4;
-  v19 = self;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1A98A683C(0, 0, v12, &unk_1A9998348, v17);
 }
 
-- (void)beginUsingRequest:(PKLaunchRequest *)a3 completion:(id)a4
+- (void)beginUsingRequest:(PKLaunchRequest *)request completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29C0, &qword_1A9991A00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1A9976C00();
@@ -597,19 +597,19 @@ LABEL_6:
   v15[4] = &unk_1A9998320;
   v15[5] = v14;
   swift_unknownObjectRetain();
-  v16 = self;
+  selfCopy = self;
   sub_1A98A683C(0, 0, v10, &unk_1A9998328, v15);
 }
 
-- (void)endUsingRequest:(PKLaunchRequest *)a3 completion:(id)a4
+- (void)endUsingRequest:(PKLaunchRequest *)request completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB3B29C0, &qword_1A9991A00);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = request;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1A9976C00();
@@ -625,11 +625,11 @@ LABEL_6:
   v15[4] = &unk_1A9998300;
   v15[5] = v14;
   swift_unknownObjectRetain();
-  v16 = self;
+  selfCopy = self;
   sub_1A98A683C(0, 0, v10, &unk_1A9998308, v15);
 }
 
-- (id)export:(id *)a3
+- (id)export:(id *)export
 {
   sub_1A97BFD80(MEMORY[0x1E69E7CC0]);
   v3 = sub_1A99766E0();

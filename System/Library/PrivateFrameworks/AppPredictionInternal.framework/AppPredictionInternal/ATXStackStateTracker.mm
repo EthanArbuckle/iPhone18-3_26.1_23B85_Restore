@@ -1,33 +1,33 @@
 @interface ATXStackStateTracker
 + (ATXStackStateTracker)sharedInstance;
 - (ATXStackStateTracker)init;
-- (BOOL)lastStackRotationWasALongTimeAgoForStackId:(id)a3;
-- (BOOL)lastStalenessRotationWasALongTimeAgoForStackId:(id)a3;
-- (BOOL)lastUserScrollWasALongTimeAgoForStackId:(id)a3;
+- (BOOL)lastStackRotationWasALongTimeAgoForStackId:(id)id;
+- (BOOL)lastStalenessRotationWasALongTimeAgoForStackId:(id)id;
+- (BOOL)lastUserScrollWasALongTimeAgoForStackId:(id)id;
 - (BOOL)loadInternalState;
-- (BOOL)mostRecentRotationOfStackIsSystemInitiated:(id)a3;
+- (BOOL)mostRecentRotationOfStackIsSystemInitiated:(id)initiated;
 - (BOOL)persistInternalState;
-- (BOOL)stackIsStale:(id)a3;
-- (BOOL)stackWasCreatedALongTimeAgo:(id)a3;
-- (id)_blendingCacheIdToStackIdMap:(id)a3;
+- (BOOL)stackIsStale:(id)stale;
+- (BOOL)stackWasCreatedALongTimeAgo:(id)ago;
+- (id)_blendingCacheIdToStackIdMap:(id)map;
 - (id)dataFromDisk;
-- (id)initTrackerInDirectory:(id)a3;
+- (id)initTrackerInDirectory:(id)directory;
 - (id)jsonRepresentation;
-- (id)lastStackRotationEvent:(id)a3;
-- (id)lastStackShownEvent:(id)a3;
-- (id)lastThreeUserVisitDatesOfPage:(unint64_t)a3;
-- (id)lastUserScrollStackRotationEvent:(id)a3;
-- (id)layoutForLastStalenessRotation:(id)a3;
-- (id)stackCreationEvent:(id)a3;
-- (id)stackStateForStackId:(id)a3;
-- (id)topWidgetUniqueIdOfStack:(id)a3;
+- (id)lastStackRotationEvent:(id)event;
+- (id)lastStackShownEvent:(id)event;
+- (id)lastThreeUserVisitDatesOfPage:(unint64_t)page;
+- (id)lastUserScrollStackRotationEvent:(id)event;
+- (id)layoutForLastStalenessRotation:(id)rotation;
+- (id)stackCreationEvent:(id)event;
+- (id)stackStateForStackId:(id)id;
+- (id)topWidgetUniqueIdOfStack:(id)stack;
 - (void)_persistInternalStateImmediatelyOnSigterm;
-- (void)cleanupOldDataWithHomeScreenPages:(id)a3;
+- (void)cleanupOldDataWithHomeScreenPages:(id)pages;
 - (void)coalescedPersistInternalState;
 - (void)dataFromDisk;
 - (void)handleSigterm;
 - (void)loadInternalState;
-- (void)setLayoutForLastStalenessRotation:(id)a3 stackId:(id)a4 date:(id)a5;
+- (void)setLayoutForLastStalenessRotation:(id)rotation stackId:(id)id date:(id)date;
 - (void)updateStackRotationEvents;
 @end
 
@@ -35,7 +35,7 @@
 
 - (BOOL)persistInternalState
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -45,19 +45,19 @@
   v7[1] = 3221225472;
   v7[2] = __44__ATXStackStateTracker_persistInternalState__block_invoke;
   v7[3] = &unk_27859D660;
-  v7[4] = v2;
+  v7[4] = selfCopy;
   v7[5] = &v8;
   [(_PASLock *)internalStateLock runWithLockAcquired:v7];
-  queue = v2->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__ATXStackStateTracker_persistInternalState__block_invoke_196;
   block[3] = &unk_278596BB8;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(queue, block);
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __44__ATXStackStateTracker_persistInternalState__block_invoke(uint64_t a1, void *a2)
@@ -147,11 +147,11 @@ LABEL_17:
   v10 = 3221225472;
   v11 = __49__ATXStackStateTracker_updateStackRotationEvents__block_invoke;
   v12 = &unk_27859D6D8;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
   v14 = v7;
   [v6 getCurrentSuggestionsWidgetAndAppPredictionPanelLayoutsWithCompletionHandler:&v9];
-  if ([MEMORY[0x277D425A0] waitForSemaphore:v7 timeoutSeconds:{1.0, v9, v10, v11, v12, v13}] == 1)
+  if ([MEMORY[0x277D425A0] waitForSemaphore:v7 timeoutSeconds:{1.0, v9, v10, v11, v12, selfCopy}] == 1)
   {
     v8 = __atxlog_handle_blending();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -281,9 +281,9 @@ uint64_t __53__ATXStackStateTracker_coalescedPersistInternalState__block_invoke(
 {
   if (!self->_sigtermListener)
   {
-    v4 = [MEMORY[0x277CEBCD8] sharedInstance];
+    mEMORY[0x277CEBCD8] = [MEMORY[0x277CEBCD8] sharedInstance];
     sigtermListener = self->_sigtermListener;
-    self->_sigtermListener = v4;
+    self->_sigtermListener = mEMORY[0x277CEBCD8];
 
     v6 = self->_sigtermListener;
 
@@ -293,8 +293,8 @@ uint64_t __53__ATXStackStateTracker_coalescedPersistInternalState__block_invoke(
 
 - (ATXStackStateTracker)init
 {
-  v3 = [MEMORY[0x277CEBCB0] appPredictionCacheDirectory];
-  v4 = [(ATXStackStateTracker *)self initTrackerInDirectory:v3];
+  appPredictionCacheDirectory = [MEMORY[0x277CEBCB0] appPredictionCacheDirectory];
+  v4 = [(ATXStackStateTracker *)self initTrackerInDirectory:appPredictionCacheDirectory];
 
   return v4;
 }
@@ -321,16 +321,16 @@ void __38__ATXStackStateTracker_sharedInstance__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)initTrackerInDirectory:(id)a3
+- (id)initTrackerInDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v24.receiver = self;
   v24.super_class = ATXStackStateTracker;
   v5 = [(ATXStackStateTracker *)&v24 init];
   if (v5)
   {
     v6 = os_transaction_create();
-    v7 = [v4 stringByAppendingPathComponent:@"ATXStackStates"];
+    v7 = [directoryCopy stringByAppendingPathComponent:@"ATXStackStates"];
     path = v5->_path;
     v5->_path = v7;
 
@@ -398,9 +398,9 @@ void __42__ATXStackStateTracker_jsonRepresentation__block_invoke(uint64_t a1, vo
   *(v4 + 40) = v3;
 }
 
-- (BOOL)stackIsStale:(id)a3
+- (BOOL)stackIsStale:(id)stale
 {
-  v4 = a3;
+  staleCopy = stale;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -410,9 +410,9 @@ void __42__ATXStackStateTracker_jsonRepresentation__block_invoke(uint64_t a1, vo
   v8[1] = 3221225472;
   v8[2] = __37__ATXStackStateTracker_stackIsStale___block_invoke;
   v8[3] = &unk_27859D610;
-  v6 = v4;
+  v6 = staleCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [(_PASLock *)internalStateLock runWithLockAcquired:v8];
   LOBYTE(self) = *(v13 + 24);
@@ -462,9 +462,9 @@ LABEL_13:
   *(*(*(a1 + 48) + 8) + 24) = v6;
 }
 
-- (BOOL)mostRecentRotationOfStackIsSystemInitiated:(id)a3
+- (BOOL)mostRecentRotationOfStackIsSystemInitiated:(id)initiated
 {
-  v4 = a3;
+  initiatedCopy = initiated;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -474,7 +474,7 @@ LABEL_13:
   v8[1] = 3221225472;
   v8[2] = __67__ATXStackStateTracker_mostRecentRotationOfStackIsSystemInitiated___block_invoke;
   v8[3] = &unk_27859D638;
-  v6 = v4;
+  v6 = initiatedCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)internalStateLock runWithLockAcquired:v8];
@@ -522,17 +522,17 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)lastStackRotationWasALongTimeAgoForStackId:(id)a3
+- (BOOL)lastStackRotationWasALongTimeAgoForStackId:(id)id
 {
-  v3 = [(ATXStackStateTracker *)self lastStackRotationEvent:a3];
+  v3 = [(ATXStackStateTracker *)self lastStackRotationEvent:id];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 date];
-    [v5 timeIntervalSinceNow];
+    date = [v3 date];
+    [date timeIntervalSinceNow];
     v7 = v6;
-    v8 = [MEMORY[0x277D41B98] sharedInstance];
-    [v8 maxAgeOfStackSuggestionToConsiderStaleInSeconds];
+    mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
+    [mEMORY[0x277D41B98] maxAgeOfStackSuggestionToConsiderStaleInSeconds];
     v10 = v7 < -v9;
   }
 
@@ -544,17 +544,17 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)stackWasCreatedALongTimeAgo:(id)a3
+- (BOOL)stackWasCreatedALongTimeAgo:(id)ago
 {
-  v3 = [(ATXStackStateTracker *)self stackCreationEvent:a3];
+  v3 = [(ATXStackStateTracker *)self stackCreationEvent:ago];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 date];
-    [v5 timeIntervalSinceNow];
+    date = [v3 date];
+    [date timeIntervalSinceNow];
     v7 = v6;
-    v8 = [MEMORY[0x277D41B98] sharedInstance];
-    [v8 maxAgeOfStackSuggestionToConsiderStaleInSeconds];
+    mEMORY[0x277D41B98] = [MEMORY[0x277D41B98] sharedInstance];
+    [mEMORY[0x277D41B98] maxAgeOfStackSuggestionToConsiderStaleInSeconds];
     v10 = v7 < -v9;
   }
 
@@ -566,9 +566,9 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)lastUserScrollWasALongTimeAgoForStackId:(id)a3
+- (BOOL)lastUserScrollWasALongTimeAgoForStackId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -578,7 +578,7 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = __64__ATXStackStateTracker_lastUserScrollWasALongTimeAgoForStackId___block_invoke;
   v8[3] = &unk_27859D638;
-  v6 = v4;
+  v6 = idCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)internalStateLock runWithLockAcquired:v8];
@@ -615,9 +615,9 @@ void __64__ATXStackStateTracker_lastUserScrollWasALongTimeAgoForStackId___block_
   }
 }
 
-- (BOOL)lastStalenessRotationWasALongTimeAgoForStackId:(id)a3
+- (BOOL)lastStalenessRotationWasALongTimeAgoForStackId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -627,7 +627,7 @@ void __64__ATXStackStateTracker_lastUserScrollWasALongTimeAgoForStackId___block_
   v8[1] = 3221225472;
   v8[2] = __71__ATXStackStateTracker_lastStalenessRotationWasALongTimeAgoForStackId___block_invoke;
   v8[3] = &unk_27859D638;
-  v6 = v4;
+  v6 = idCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)internalStateLock runWithLockAcquired:v8];
@@ -663,9 +663,9 @@ void __71__ATXStackStateTracker_lastStalenessRotationWasALongTimeAgoForStackId__
   }
 }
 
-- (id)topWidgetUniqueIdOfStack:(id)a3
+- (id)topWidgetUniqueIdOfStack:(id)stack
 {
-  v4 = a3;
+  stackCopy = stack;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -677,7 +677,7 @@ void __71__ATXStackStateTracker_lastStalenessRotationWasALongTimeAgoForStackId__
   v9[1] = 3221225472;
   v9[2] = __49__ATXStackStateTracker_topWidgetUniqueIdOfStack___block_invoke;
   v9[3] = &unk_27859D638;
-  v6 = v4;
+  v6 = stackCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)internalStateLock runWithLockAcquired:v9];
@@ -766,9 +766,9 @@ LABEL_4:
 LABEL_14:
 }
 
-- (id)stackStateForStackId:(id)a3
+- (id)stackStateForStackId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -781,7 +781,7 @@ LABEL_14:
   v9[2] = __45__ATXStackStateTracker_stackStateForStackId___block_invoke;
   v9[3] = &unk_27859D660;
   v11 = &v12;
-  v6 = v4;
+  v6 = idCopy;
   v10 = v6;
   [(_PASLock *)internalStateLock runWithLockAcquired:v9];
   v7 = v13[5];
@@ -800,63 +800,63 @@ void __45__ATXStackStateTracker_stackStateForStackId___block_invoke(uint64_t a1,
   *(v4 + 40) = v3;
 }
 
-- (id)stackCreationEvent:(id)a3
+- (id)stackCreationEvent:(id)event
 {
-  v3 = [(ATXStackStateTracker *)self stackStateForStackId:a3];
-  v4 = [v3 stackCreationEvent];
+  v3 = [(ATXStackStateTracker *)self stackStateForStackId:event];
+  stackCreationEvent = [v3 stackCreationEvent];
 
-  return v4;
+  return stackCreationEvent;
 }
 
-- (id)lastStackRotationEvent:(id)a3
+- (id)lastStackRotationEvent:(id)event
 {
-  v3 = [(ATXStackStateTracker *)self stackStateForStackId:a3];
-  v4 = [v3 lastStackRotationEvent];
+  v3 = [(ATXStackStateTracker *)self stackStateForStackId:event];
+  lastStackRotationEvent = [v3 lastStackRotationEvent];
 
-  return v4;
+  return lastStackRotationEvent;
 }
 
-- (id)lastStackShownEvent:(id)a3
+- (id)lastStackShownEvent:(id)event
 {
-  v3 = [(ATXStackStateTracker *)self stackStateForStackId:a3];
-  v4 = [v3 lastStackShownEvent];
+  v3 = [(ATXStackStateTracker *)self stackStateForStackId:event];
+  lastStackShownEvent = [v3 lastStackShownEvent];
 
-  return v4;
+  return lastStackShownEvent;
 }
 
-- (id)lastUserScrollStackRotationEvent:(id)a3
+- (id)lastUserScrollStackRotationEvent:(id)event
 {
-  v3 = [(ATXStackStateTracker *)self stackStateForStackId:a3];
-  v4 = [v3 lastUserScrollStackRotationEvent];
+  v3 = [(ATXStackStateTracker *)self stackStateForStackId:event];
+  lastUserScrollStackRotationEvent = [v3 lastUserScrollStackRotationEvent];
 
-  return v4;
+  return lastUserScrollStackRotationEvent;
 }
 
-- (id)layoutForLastStalenessRotation:(id)a3
+- (id)layoutForLastStalenessRotation:(id)rotation
 {
-  v3 = [(ATXStackStateTracker *)self stackStateForStackId:a3];
-  v4 = [v3 layoutForLastStalenessRotation];
+  v3 = [(ATXStackStateTracker *)self stackStateForStackId:rotation];
+  layoutForLastStalenessRotation = [v3 layoutForLastStalenessRotation];
 
-  return v4;
+  return layoutForLastStalenessRotation;
 }
 
-- (void)setLayoutForLastStalenessRotation:(id)a3 stackId:(id)a4 date:(id)a5
+- (void)setLayoutForLastStalenessRotation:(id)rotation stackId:(id)id date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rotationCopy = rotation;
+  idCopy = id;
+  dateCopy = date;
   internalStateLock = self->_internalStateLock;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__ATXStackStateTracker_setLayoutForLastStalenessRotation_stackId_date___block_invoke;
   v15[3] = &unk_27859D688;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = idCopy;
+  v17 = rotationCopy;
+  v18 = dateCopy;
+  selfCopy = self;
+  v12 = dateCopy;
+  v13 = rotationCopy;
+  v14 = idCopy;
   [(_PASLock *)internalStateLock runWithLockAcquired:v15];
 }
 
@@ -881,7 +881,7 @@ void __71__ATXStackStateTracker_setLayoutForLastStalenessRotation_stackId_date__
   [*(a1 + 56) coalescedPersistInternalState];
 }
 
-- (id)lastThreeUserVisitDatesOfPage:(unint64_t)a3
+- (id)lastThreeUserVisitDatesOfPage:(unint64_t)page
 {
   v7 = 0;
   v8 = &v7;
@@ -895,7 +895,7 @@ void __71__ATXStackStateTracker_setLayoutForLastStalenessRotation_stackId_date__
   v6[2] = __54__ATXStackStateTracker_lastThreeUserVisitDatesOfPage___block_invoke;
   v6[3] = &unk_27859D6B0;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = page;
   [(_PASLock *)internalStateLock runWithLockAcquired:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1454,9 +1454,9 @@ LABEL_33:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_blendingCacheIdToStackIdMap:(id)a3
+- (id)_blendingCacheIdToStackIdMap:(id)map
 {
-  v3 = a3;
+  mapCopy = map;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1464,7 +1464,7 @@ LABEL_33:
   v7[3] = &unk_27859D748;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1483,10 +1483,10 @@ void __53__ATXStackStateTracker__blendingCacheIdToStackIdMap___block_invoke(uint
   [v6 addObject:v7];
 }
 
-- (void)cleanupOldDataWithHomeScreenPages:(id)a3
+- (void)cleanupOldDataWithHomeScreenPages:(id)pages
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pagesCopy = pages;
   v4 = __atxlog_handle_blending();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1499,7 +1499,7 @@ void __53__ATXStackStateTracker__blendingCacheIdToStackIdMap___block_invoke(uint
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v3;
+  obj = pagesCopy;
   v6 = [obj countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v6)
   {
@@ -1521,10 +1521,10 @@ void __53__ATXStackStateTracker__blendingCacheIdToStackIdMap___block_invoke(uint
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v11 = [v9 config];
-        v12 = [v11 stacks];
+        config = [v9 config];
+        stacks = [config stacks];
 
-        v13 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        v13 = [stacks countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1536,20 +1536,20 @@ void __53__ATXStackStateTracker__blendingCacheIdToStackIdMap___block_invoke(uint
             {
               if (*v31 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(stacks);
               }
 
               v17 = *(*(&v30 + 1) + 8 * v16);
               v18 = objc_autoreleasePoolPush();
-              v19 = [v17 identifier];
-              [v5 addObject:v19];
+              identifier = [v17 identifier];
+              [v5 addObject:identifier];
 
               objc_autoreleasePoolPop(v18);
               ++v16;
             }
 
             while (v14 != v16);
-            v14 = [v12 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v14 = [stacks countByEnumeratingWithState:&v30 objects:v39 count:16];
           }
 
           while (v14);
@@ -1572,7 +1572,7 @@ void __53__ATXStackStateTracker__blendingCacheIdToStackIdMap___block_invoke(uint
   v27[2] = __58__ATXStackStateTracker_cleanupOldDataWithHomeScreenPages___block_invoke;
   v27[3] = &unk_27859D770;
   v28 = v5;
-  v29 = self;
+  selfCopy = self;
   v21 = v5;
   [(_PASLock *)internalStateLock runWithLockAcquired:v27];
   v22 = __atxlog_handle_blending();
@@ -1654,12 +1654,12 @@ void __44__ATXStackStateTracker_persistInternalState__block_invoke_196(uint64_t 
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(ATXStackStateTracker *)self dataFromDisk];
-  if (v4)
+  dataFromDisk = [(ATXStackStateTracker *)self dataFromDisk];
+  if (dataFromDisk)
   {
     v5 = objc_autoreleasePoolPush();
     v21 = 0;
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v21];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:dataFromDisk error:&v21];
     v7 = v21;
     objc_autoreleasePoolPop(v5);
     if (v7)
@@ -1885,7 +1885,7 @@ void __44__ATXStackStateTracker_persistInternalState__block_invoke_cold_3()
 - (void)dataFromDisk
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   v2 = *__error();
   v3 = __error();
   strerror(*v3);

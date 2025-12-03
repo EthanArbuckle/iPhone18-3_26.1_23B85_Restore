@@ -1,30 +1,30 @@
 @interface CSMSNExceptionManager
 + (id)sharedInstance;
 - (CSMSNExceptionManager)init;
-- (void)beginAnnounceMessageException:(id)a3 reason:(id)a4;
-- (void)endAnnounceMessageException:(id)a3 reason:(id)a4;
+- (void)beginAnnounceMessageException:(id)exception reason:(id)reason;
+- (void)endAnnounceMessageException:(id)exception reason:(id)reason;
 @end
 
 @implementation CSMSNExceptionManager
 
-- (void)endAnnounceMessageException:(id)a3 reason:(id)a4
+- (void)endAnnounceMessageException:(id)exception reason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"announcemessage"])
+  exceptionCopy = exception;
+  reasonCopy = reason;
+  if ([exceptionCopy isEqualToString:@"announcemessage"])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v7];
+    reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", exceptionCopy, reasonCopy];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__CSMSNExceptionManager_endAnnounceMessageException_reason___block_invoke;
     block[3] = &unk_1E865C9C8;
     block[4] = self;
-    v14 = v8;
-    v15 = v6;
-    v16 = v7;
-    v10 = v8;
+    v14 = reasonCopy;
+    v15 = exceptionCopy;
+    v16 = reasonCopy;
+    v10 = reasonCopy;
     dispatch_async(queue, block);
   }
 
@@ -36,7 +36,7 @@
       *buf = 136315394;
       v18 = "[CSMSNExceptionManager endAnnounceMessageException:reason:]";
       v19 = 2114;
-      v20 = v6;
+      v20 = exceptionCopy;
       _os_log_error_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_ERROR, "%s Unexpected exception request : %{public}@", buf, 0x16u);
     }
   }
@@ -137,24 +137,24 @@ LABEL_16:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginAnnounceMessageException:(id)a3 reason:(id)a4
+- (void)beginAnnounceMessageException:(id)exception reason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"announcemessage"])
+  exceptionCopy = exception;
+  reasonCopy = reason;
+  if ([exceptionCopy isEqualToString:@"announcemessage"])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v6, v7];
+    reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", exceptionCopy, reasonCopy];
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__CSMSNExceptionManager_beginAnnounceMessageException_reason___block_invoke;
     block[3] = &unk_1E865C9C8;
     block[4] = self;
-    v14 = v6;
-    v15 = v8;
-    v16 = v7;
-    v10 = v8;
+    v14 = exceptionCopy;
+    v15 = reasonCopy;
+    v16 = reasonCopy;
+    v10 = reasonCopy;
     dispatch_async(queue, block);
   }
 
@@ -166,7 +166,7 @@ LABEL_16:
       *buf = 136315394;
       v18 = "[CSMSNExceptionManager beginAnnounceMessageException:reason:]";
       v19 = 2114;
-      v20 = v6;
+      v20 = exceptionCopy;
       _os_log_error_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_ERROR, "%s Unexpected exception request : %{public}@", buf, 0x16u);
     }
   }
@@ -233,7 +233,7 @@ void __62__CSMSNExceptionManager_beginAnnounceMessageException_reason___block_in
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -247,16 +247,16 @@ void __62__CSMSNExceptionManager_beginAnnounceMessageException_reason___block_in
       queue = v4->_queue;
       v4->_queue = v5;
 
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       announceMessageExceptions = v4->_announceMessageExceptions;
-      v4->_announceMessageExceptions = v7;
+      v4->_announceMessageExceptions = dictionary;
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedInstance

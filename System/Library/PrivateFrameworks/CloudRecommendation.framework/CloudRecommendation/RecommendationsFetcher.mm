@@ -1,17 +1,17 @@
 @interface RecommendationsFetcher
 + (_TtC19CloudRecommendation22RecommendationsFetcher)shared;
 - (_TtC19CloudRecommendation22RecommendationsFetcher)init;
-- (void)fetchClientRecommendationsAsyncFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchClientRecommendationsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5;
-- (void)fetchCompletedRecommendationsFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchCompletedRecommendationsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5;
-- (void)fetchRulesFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchRulesetsAsyncFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchRulesetsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5;
-- (void)fetchServerRecommendationsAsyncFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5;
-- (void)fetchServerRecommendationsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5;
-- (void)refreshCacheFor:(id)a3;
-- (void)refreshCacheFor:(id)a3 completion:(id)a4;
+- (void)fetchClientRecommendationsAsyncFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler;
+- (void)fetchClientRecommendationsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion;
+- (void)fetchCompletedRecommendationsFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler;
+- (void)fetchCompletedRecommendationsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion;
+- (void)fetchRulesFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler;
+- (void)fetchRulesetsAsyncFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler;
+- (void)fetchRulesetsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion;
+- (void)fetchServerRecommendationsAsyncFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler;
+- (void)fetchServerRecommendationsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion;
+- (void)refreshCacheFor:(id)for;
+- (void)refreshCacheFor:(id)for completion:(id)completion;
 @end
 
 @implementation RecommendationsFetcher
@@ -28,16 +28,16 @@
   return v3;
 }
 
-- (void)refreshCacheFor:(id)a3
+- (void)refreshCacheFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_2439F6940(v4, 0, 0);
+  forCopy = for;
+  selfCopy = self;
+  sub_2439F6940(forCopy, 0, 0);
 }
 
-- (void)refreshCacheFor:(id)a3 completion:(id)a4
+- (void)refreshCacheFor:(id)for completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -50,18 +50,18 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_2439F6940(v8, v6, v7);
+  forCopy = for;
+  selfCopy = self;
+  sub_2439F6940(forCopy, v6, v7);
   sub_2439F5390(v6);
 }
 
-- (void)fetchServerRecommendationsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5
+- (void)fetchServerRecommendationsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -80,24 +80,24 @@
   *(v15 + 16) = 0;
   *(v15 + 24) = 0;
   *(v15 + 32) = self;
-  *(v15 + 40) = a3;
-  *(v15 + 48) = a4;
+  *(v15 + 40) = for;
+  *(v15 + 48) = cache;
   *(v15 + 56) = v12;
   *(v15 + 64) = v13;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_2439F8390(0, 0, v11, &unk_243A10060, v15);
 }
 
-- (void)fetchServerRecommendationsAsyncFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchServerRecommendationsAsyncFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = for;
+  *(v13 + 24) = cache;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_243A0D5DC();
@@ -112,17 +112,17 @@
   v16[3] = 0;
   v16[4] = &unk_243A10050;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_243A02CF8(0, 0, v11, &unk_243A10058, v16);
 }
 
-- (void)fetchRulesetsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5
+- (void)fetchRulesetsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -141,24 +141,24 @@
   *(v15 + 16) = 0;
   *(v15 + 24) = 0;
   *(v15 + 32) = self;
-  *(v15 + 40) = a3;
-  *(v15 + 48) = a4;
+  *(v15 + 40) = for;
+  *(v15 + 48) = cache;
   *(v15 + 56) = v12;
   *(v15 + 64) = v13;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_2439F8390(0, 0, v11, &unk_243A10038, v15);
 }
 
-- (void)fetchRulesFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchRulesFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = for;
+  *(v13 + 24) = cache;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_243A0D5DC();
@@ -173,20 +173,20 @@
   v16[3] = 0;
   v16[4] = &unk_243A10028;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_243A02CF8(0, 0, v11, &unk_243A10030, v16);
 }
 
-- (void)fetchRulesetsAsyncFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchRulesetsAsyncFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = for;
+  *(v13 + 24) = cache;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_243A0D5DC();
@@ -201,17 +201,17 @@
   v16[3] = 0;
   v16[4] = &unk_243A10008;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_243A02CF8(0, 0, v11, &unk_243A10010, v16);
 }
 
-- (void)fetchCompletedRecommendationsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5
+- (void)fetchCompletedRecommendationsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -230,24 +230,24 @@
   *(v15 + 16) = 0;
   *(v15 + 24) = 0;
   *(v15 + 32) = self;
-  *(v15 + 40) = a3;
-  *(v15 + 48) = a4;
+  *(v15 + 40) = for;
+  *(v15 + 48) = cache;
   *(v15 + 56) = v12;
   *(v15 + 64) = v13;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_2439F8390(0, 0, v11, &unk_243A0FFF0, v15);
 }
 
-- (void)fetchCompletedRecommendationsFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchCompletedRecommendationsFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = for;
+  *(v13 + 24) = cache;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_243A0D5DC();
@@ -262,17 +262,17 @@
   v16[3] = 0;
   v16[4] = &unk_243A0FFE0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_243A02CF8(0, 0, v11, &unk_243A0FFE8, v16);
 }
 
-- (void)fetchClientRecommendationsFor:(id)a3 shouldIgnoreCache:(BOOL)a4 completion:(id)a5
+- (void)fetchClientRecommendationsFor:(id)for shouldIgnoreCache:(BOOL)cache completion:(id)completion
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -291,24 +291,24 @@
   *(v15 + 16) = 0;
   *(v15 + 24) = 0;
   *(v15 + 32) = self;
-  *(v15 + 40) = a3;
-  *(v15 + 48) = a4;
+  *(v15 + 40) = for;
+  *(v15 + 48) = cache;
   *(v15 + 56) = v12;
   *(v15 + 64) = v13;
-  v16 = a3;
-  v17 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_2439F8390(0, 0, v11, &unk_243A0FFC8, v15);
 }
 
-- (void)fetchClientRecommendationsAsyncFor:(ACAccount *)a3 shouldIgnoreCache:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchClientRecommendationsAsyncFor:(ACAccount *)for shouldIgnoreCache:(BOOL)cache completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ED97BE0, &qword_243A0FC10) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = for;
+  *(v13 + 24) = cache;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_243A0D5DC();
@@ -323,8 +323,8 @@
   v16[3] = 0;
   v16[4] = &unk_243A0FF98;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_243A02CF8(0, 0, v11, &unk_243A0FFA8, v16);
 }
 

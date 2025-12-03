@@ -1,6 +1,6 @@
 @interface MRCroppingSpriteVBO
 - (BOOL)getVerticesCoordinates:(CGPoint *)(a3 withMatrix:;
-- (BOOL)hitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5;
+- (BOOL)hitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint;
 - (CGPoint)position;
 - (CGPoint)spriteCoordinatesOffset;
 - (CGRect)innerRect;
@@ -8,18 +8,18 @@
 - (CGSize)halfSize;
 - (CGSize)spriteCoordinatesFactor;
 - (MRCroppingSpriteVBO)init;
-- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 context:(id)a6;
-- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 innerRect:(CGRect)a6 context:(id)a7;
-- (void)fakeRenderInContext:(id)a3 atPosition:(CGPoint)a4 andSize:(CGSize)a5 zRotation:(float)a6;
-- (void)getOpaquePosition:(CGPoint *)a3 andHalfSize:(CGSize *)a4;
-- (void)initWithPosition:(double)a3 size:(double)a4 zRotation:(double)a5 innerRect:(float)a6 outerRect:(uint64_t)a7 context:(uint64_t)a8;
-- (void)renderImageInner:(id)a3 inContext:(id)a4;
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4;
-- (void)renderImageOuter:(id)a3 inContext:(id)a4;
+- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation context:(id)context;
+- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation innerRect:(CGRect)rect context:(id)context;
+- (void)fakeRenderInContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation;
+- (void)getOpaquePosition:(CGPoint *)position andHalfSize:(CGSize *)size;
+- (void)initWithPosition:(double)position size:(double)size zRotation:(double)rotation innerRect:(float)rect outerRect:(uint64_t)outerRect context:(uint64_t)context;
+- (void)renderImageInner:(id)inner inContext:(id)context;
+- (void)renderImageMiddle:(id)middle inContext:(id)context;
+- (void)renderImageOuter:(id)outer inContext:(id)context;
 - (void)reset;
-- (void)setInnerRect:(CGRect)a3;
-- (void)setOuterRect:(CGRect)a3;
-- (void)updateVBOsInContext:(id)a3;
+- (void)setInnerRect:(CGRect)rect;
+- (void)setOuterRect:(CGRect)rect;
+- (void)updateVBOsInContext:(id)context;
 @end
 
 @implementation MRCroppingSpriteVBO
@@ -47,49 +47,49 @@
   return result;
 }
 
-- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 context:(id)a6
+- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v12 = [(MRCroppingSpriteVBO *)self init];
   v14 = v12;
   if (v12)
   {
-    *&v13 = a5;
-    [(MRCroppingSpriteVBO *)v12 fakeRenderInContext:a6 atPosition:x andSize:y zRotation:width, height, v13];
+    *&v13 = rotation;
+    [(MRCroppingSpriteVBO *)v12 fakeRenderInContext:context atPosition:x andSize:y zRotation:width, height, v13];
   }
 
   return v14;
 }
 
-- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)a3 size:(CGSize)a4 zRotation:(float)a5 innerRect:(CGRect)a6 context:(id)a7
+- (MRCroppingSpriteVBO)initWithPosition:(CGPoint)position size:(CGSize)size zRotation:(float)rotation innerRect:(CGRect)rect context:(id)context
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
   v13 = [(MRCroppingSpriteVBO *)self init];
   v15 = v13;
   if (v13)
   {
-    *&v14 = a5;
-    [(MRCroppingSpriteVBO *)v13 fakeRenderInContext:a7 atPosition:x andSize:y zRotation:width, height, v14];
-    [(MRCroppingSpriteVBO *)v15 setInnerRect:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+    *&v14 = rotation;
+    [(MRCroppingSpriteVBO *)v13 fakeRenderInContext:context atPosition:x andSize:y zRotation:width, height, v14];
+    [(MRCroppingSpriteVBO *)v15 setInnerRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   }
 
   return v15;
 }
 
-- (void)initWithPosition:(double)a3 size:(double)a4 zRotation:(double)a5 innerRect:(float)a6 outerRect:(uint64_t)a7 context:(uint64_t)a8
+- (void)initWithPosition:(double)position size:(double)size zRotation:(double)rotation innerRect:(float)rect outerRect:(uint64_t)outerRect context:(uint64_t)context
 {
-  v27 = [a1 init];
+  v27 = [self init];
   v29 = v27;
   if (v27)
   {
-    *&v28 = a6;
-    [v27 fakeRenderInContext:a8 atPosition:a2 andSize:a3 zRotation:{a4, a5, v28}];
+    *&v28 = rect;
+    [v27 fakeRenderInContext:context atPosition:a2 andSize:position zRotation:{size, rotation, v28}];
     [v29 setInnerRect:{a12, a13, a14, a15}];
     [v29 setOuterRect:{a16, a17, a18, a19}];
   }
@@ -105,33 +105,33 @@
   self->mPositionWasUpdated = 1;
 }
 
-- (void)fakeRenderInContext:(id)a3 atPosition:(CGPoint)a4 andSize:(CGSize)a5 zRotation:(float)a6
+- (void)fakeRenderInContext:(id)context atPosition:(CGPoint)position andSize:(CGSize)size zRotation:(float)rotation
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  [a3 localAspectRatio];
+  height = size.height;
+  width = size.width;
+  y = position.y;
+  x = position.x;
+  [context localAspectRatio];
   *&y = y / v13;
   v14 = width * 0.5;
-  [a3 localAspectRatio];
+  [context localAspectRatio];
   v16 = height * 0.5 / v15;
   v17 = *&y;
-  v18 = self->mPosition.x != x || self->mPosition.y != v17 || self->mHalfSize.width != v14 || self->mHalfSize.height != v16 || self->mRotation != a6;
+  v18 = self->mPosition.x != x || self->mPosition.y != v17 || self->mHalfSize.width != v14 || self->mHalfSize.height != v16 || self->mRotation != rotation;
   self->mPositionWasUpdated |= v18;
   self->mPosition.x = x;
   self->mPosition.y = v17;
   self->mHalfSize.width = v14;
   self->mHalfSize.height = v16;
-  self->mRotation = a6;
+  self->mRotation = rotation;
 }
 
-- (void)setInnerRect:(CGRect)a3
+- (void)setInnerRect:(CGRect)rect
 {
   y = 0.0;
-  if (a3.origin.x >= 0.0)
+  if (rect.origin.x >= 0.0)
   {
-    x = a3.origin.x;
+    x = rect.origin.x;
   }
 
   else
@@ -139,13 +139,13 @@
     x = 0.0;
   }
 
-  if (a3.origin.y >= 0.0)
+  if (rect.origin.y >= 0.0)
   {
-    y = a3.origin.y;
+    y = rect.origin.y;
   }
 
-  v5 = fmin(a3.origin.x + a3.size.width, 1.0) - x;
-  v6 = fmin(a3.origin.y + a3.size.height, 1.0) - y;
+  v5 = fmin(rect.origin.x + rect.size.width, 1.0) - x;
+  v6 = fmin(rect.origin.y + rect.size.height, 1.0) - y;
   v7 = self->mInnerRect.origin.x != x || self->mInnerRect.origin.y != y || self->mInnerRect.size.width != v5 || self->mInnerRect.size.height != v6;
   self->mRectsWereUpdated |= v7;
   self->mInnerRect.origin.x = x;
@@ -154,12 +154,12 @@
   self->mInnerRect.size.height = v6;
 }
 
-- (void)setOuterRect:(CGRect)a3
+- (void)setOuterRect:(CGRect)rect
 {
   y = 0.0;
-  if (a3.origin.x >= 0.0)
+  if (rect.origin.x >= 0.0)
   {
-    x = a3.origin.x;
+    x = rect.origin.x;
   }
 
   else
@@ -167,13 +167,13 @@
     x = 0.0;
   }
 
-  if (a3.origin.y >= 0.0)
+  if (rect.origin.y >= 0.0)
   {
-    y = a3.origin.y;
+    y = rect.origin.y;
   }
 
-  v5 = fmin(a3.origin.x + a3.size.width, 1.0) - x;
-  v6 = fmin(a3.origin.y + a3.size.height, 1.0) - y;
+  v5 = fmin(rect.origin.x + rect.size.width, 1.0) - x;
+  v6 = fmin(rect.origin.y + rect.size.height, 1.0) - y;
   v7 = self->mInnerRect.origin.x != x || self->mInnerRect.origin.y != y || self->mInnerRect.size.width != v5 || self->mInnerRect.size.height != v6;
   self->mRectsWereUpdated |= v7;
   self->mOuterRect.origin.x = x;
@@ -182,7 +182,7 @@
   self->mOuterRect.size.height = v6;
 }
 
-- (void)getOpaquePosition:(CGPoint *)a3 andHalfSize:(CGSize *)a4
+- (void)getOpaquePosition:(CGPoint *)position andHalfSize:(CGSize *)size
 {
   x = self->mPosition.x;
   v8 = __sincosf_stret(self->mRotation);
@@ -201,14 +201,14 @@
   _Q4 = vaddq_f64(v19, v20);
   __asm { FMLA            D0, D1, V4.D[1] }
 
-  a3->x = x + (_Q4.f64[0] * v8.__cosval - _Q4.f64[1] * v8.__sinval) * 0.5;
-  a3->y = y + _D0 * 0.5;
+  position->x = x + (_Q4.f64[0] * v8.__cosval - _Q4.f64[1] * v8.__sinval) * 0.5;
+  position->y = y + _D0 * 0.5;
   __asm { FMOV            V1.2D, #0.5 }
 
-  *a4 = vmulq_f64(vsubq_f64(v20, v19), _Q1);
+  *size = vmulq_f64(vsubq_f64(v20, v19), _Q1);
 }
 
-- (void)updateVBOsInContext:(id)a3
+- (void)updateVBOsInContext:(id)context
 {
   if (self->mHalfSize.width == 0.0 || self->mHalfSize.height == 0.0 || !self->mPositionWasUpdated && !self->mRectsWereUpdated)
   {
@@ -649,15 +649,15 @@ LABEL_27:
     mVBO = self->mVBO;
   }
 
-  [a3 uploadBuffer:v16 withSize:(32 * mOuterOffset) toVertexBuffer2D:mVBO usage:{35044, *&v143}];
+  [context uploadBuffer:v16 withSize:(32 * mOuterOffset) toVertexBuffer2D:mVBO usage:{35044, *&v143}];
   free(v16);
   *&self->mPositionWasUpdated = 0;
 }
 
-- (void)renderImageInner:(id)a3 inContext:(id)a4
+- (void)renderImageInner:(id)inner inContext:(id)context
 {
   v12 = 0;
-  if (a3)
+  if (inner)
   {
     if (self->mPreservesImageAspectRatio)
     {
@@ -666,15 +666,15 @@ LABEL_27:
 
     else
     {
-      [a3 aspectRatio];
+      [inner aspectRatio];
     }
 
     *&v7 = v7;
-    [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v12 state:v7];
+    [inner setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v12 state:v7];
   }
 
-  [(MRCroppingSpriteVBO *)self updateVBOsInContext:a4];
-  if (a3)
+  [(MRCroppingSpriteVBO *)self updateVBOsInContext:context];
+  if (inner)
   {
     mNeedsInSpriteCoordinates = self->mNeedsInSpriteCoordinates | 2;
   }
@@ -686,7 +686,7 @@ LABEL_27:
 
   for (i = 1; i != 4; ++i)
   {
-    v10 = [a4 imageSetOnTextureUnit:i];
+    v10 = [context imageSetOnTextureUnit:i];
     v11 = (1 << i);
     if (!v10)
     {
@@ -696,21 +696,21 @@ LABEL_27:
     mNeedsInSpriteCoordinates |= v11;
   }
 
-  [a4 setVertexBuffer2D:self->mVBO withFeatures:mNeedsInSpriteCoordinates];
-  [a4 drawTriangleStripFromOffset:0 count:self->mMiddleOffset];
-  [a4 unsetVertexPointer];
-  if (a3)
+  [context setVertexBuffer2D:self->mVBO withFeatures:mNeedsInSpriteCoordinates];
+  [context drawTriangleStripFromOffset:0 count:self->mMiddleOffset];
+  [context unsetVertexPointer];
+  if (inner)
   {
-    [a3 unsetOnContext:a4 onTextureUnit:0 state:&v12];
+    [inner unsetOnContext:context onTextureUnit:0 state:&v12];
   }
 }
 
-- (void)renderImageMiddle:(id)a3 inContext:(id)a4
+- (void)renderImageMiddle:(id)middle inContext:(id)context
 {
   if (self->mInnerRect.origin.x != self->mOuterRect.origin.x || self->mInnerRect.origin.y != self->mOuterRect.origin.y || self->mInnerRect.size.width != self->mOuterRect.size.width || self->mInnerRect.size.height != self->mOuterRect.size.height)
   {
     v12 = 0;
-    if (a3)
+    if (middle)
     {
       if (self->mPreservesImageAspectRatio)
       {
@@ -719,15 +719,15 @@ LABEL_27:
 
       else
       {
-        [a3 aspectRatio];
+        [middle aspectRatio];
       }
 
       *&v7 = v7;
-      [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v12 state:v7];
+      [middle setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v12 state:v7];
     }
 
-    [(MRCroppingSpriteVBO *)self updateVBOsInContext:a4];
-    if (a3)
+    [(MRCroppingSpriteVBO *)self updateVBOsInContext:context];
+    if (middle)
     {
       mNeedsInSpriteCoordinates = self->mNeedsInSpriteCoordinates | 2;
     }
@@ -739,7 +739,7 @@ LABEL_27:
 
     for (i = 1; i != 4; ++i)
     {
-      v10 = [a4 imageSetOnTextureUnit:i];
+      v10 = [context imageSetOnTextureUnit:i];
       v11 = (1 << i);
       if (!v10)
       {
@@ -749,22 +749,22 @@ LABEL_27:
       mNeedsInSpriteCoordinates |= v11;
     }
 
-    [a4 setVertexBuffer2D:self->mVBO withFeatures:mNeedsInSpriteCoordinates];
-    [a4 drawTriangleStripFromOffset:self->mMiddleOffset count:self->mOuterOffset - self->mMiddleOffset];
-    [a4 unsetVertexPointer];
-    if (a3)
+    [context setVertexBuffer2D:self->mVBO withFeatures:mNeedsInSpriteCoordinates];
+    [context drawTriangleStripFromOffset:self->mMiddleOffset count:self->mOuterOffset - self->mMiddleOffset];
+    [context unsetVertexPointer];
+    if (middle)
     {
-      [a3 unsetOnContext:a4 onTextureUnit:0 state:&v12];
+      [middle unsetOnContext:context onTextureUnit:0 state:&v12];
     }
   }
 }
 
-- (void)renderImageOuter:(id)a3 inContext:(id)a4
+- (void)renderImageOuter:(id)outer inContext:(id)context
 {
   if (self->mInnerRect.origin.x != 0.0 || self->mInnerRect.origin.y != 0.0 || self->mInnerRect.size.width != 1.0 || self->mInnerRect.size.height != 1.0)
   {
     v12 = 0;
-    if (a3)
+    if (outer)
     {
       if (self->mPreservesImageAspectRatio)
       {
@@ -773,15 +773,15 @@ LABEL_27:
 
       else
       {
-        [a3 aspectRatio];
+        [outer aspectRatio];
       }
 
       *&v7 = v7;
-      [a3 setOnContext:a4 onTextureUnit:0 withReferenceAspectRatio:&v12 state:v7];
+      [outer setOnContext:context onTextureUnit:0 withReferenceAspectRatio:&v12 state:v7];
     }
 
-    [(MRCroppingSpriteVBO *)self updateVBOsInContext:a4];
-    if (a3)
+    [(MRCroppingSpriteVBO *)self updateVBOsInContext:context];
+    if (outer)
     {
       mNeedsInSpriteCoordinates = self->mNeedsInSpriteCoordinates | 2;
     }
@@ -793,7 +793,7 @@ LABEL_27:
 
     for (i = 1; i != 4; ++i)
     {
-      v10 = [a4 imageSetOnTextureUnit:i];
+      v10 = [context imageSetOnTextureUnit:i];
       v11 = (1 << i);
       if (!v10)
       {
@@ -803,21 +803,21 @@ LABEL_27:
       mNeedsInSpriteCoordinates |= v11;
     }
 
-    [a4 setVertexBuffer2D:self->mVBO withFeatures:mNeedsInSpriteCoordinates];
-    [a4 drawTriangleStripFromOffset:self->mOuterOffset count:self->mNumberOfVertices - self->mOuterOffset];
-    [a4 unsetVertexPointer];
-    if (a3)
+    [context setVertexBuffer2D:self->mVBO withFeatures:mNeedsInSpriteCoordinates];
+    [context drawTriangleStripFromOffset:self->mOuterOffset count:self->mNumberOfVertices - self->mOuterOffset];
+    [context unsetVertexPointer];
+    if (outer)
     {
-      [a3 unsetOnContext:a4 onTextureUnit:0 state:&v12];
+      [outer unsetOnContext:context onTextureUnit:0 state:&v12];
     }
   }
 }
 
-- (BOOL)hitAtPoint:(CGPoint)a3 withInverseMatrix:(float)a4[16] localPoint:(CGPoint *)a5
+- (BOOL)hitAtPoint:(CGPoint)point withInverseMatrix:(float)matrix[16] localPoint:(CGPoint *)localPoint
 {
   if (self->mHitIsActive)
   {
-    v24 = MRMatrix_UnprojectPoint(a4, a3.x, a3.y) - self->mPosition.x;
+    v24 = MRMatrix_UnprojectPoint(matrix, point.x, point.y) - self->mPosition.x;
     v25 = v7 - self->mPosition.y;
     v8 = __sincosf_stret(self->mRotation);
     v9.f64[0] = v24;
@@ -832,9 +832,9 @@ LABEL_27:
     }
 
     v19 = vmulq_f64(vaddq_f64(v12, _Q1), _Q2);
-    if (a5)
+    if (localPoint)
     {
-      *a5 = v19;
+      *localPoint = v19;
     }
 
     v20.i32[0] = vuzp1_s16(vmovn_s64(vcgeq_f64(_Q1, v19)), *&v19.x).u32[0];

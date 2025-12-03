@@ -15,15 +15,15 @@
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKLeaderboard+UI.m", 28, "-[GKLeaderboard(UI) loadImageWithCompletionHandler:]"];
   v7 = [v5 dispatchGroupWithName:v6];
 
-  v8 = [a1 imageURL];
-  v9 = v8;
-  if (v8)
+  imageURL = [self imageURL];
+  v9 = imageURL;
+  if (imageURL)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__GKLeaderboard_UI__loadImageWithCompletionHandler___block_invoke;
     v13[3] = &unk_279669A20;
-    v14 = v8;
+    v14 = imageURL;
     v15 = v7;
     [v15 perform:v13];
   }
@@ -42,28 +42,28 @@
 
 - (id)imageURL
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice userInterfaceIdiom];
 
-  v3 = [a1 internal];
-  v4 = [v3 icons];
-  v5 = [MEMORY[0x277D0C8A8] sharedController];
-  [v5 greatestScreenScale];
-  v6 = [v4 _gkImageURLForSize:187 scale:?];
+  internal = [self internal];
+  icons = [internal icons];
+  mEMORY[0x277D0C8A8] = [MEMORY[0x277D0C8A8] sharedController];
+  [mEMORY[0x277D0C8A8] greatestScreenScale];
+  v6 = [icons _gkImageURLForSize:187 scale:?];
 
   return v6;
 }
 
 - (id)miniImageURL
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice userInterfaceIdiom];
 
-  v3 = [a1 internal];
-  v4 = [v3 icons];
-  v5 = [MEMORY[0x277D0C8A8] sharedController];
-  [v5 greatestScreenScale];
-  v6 = [v4 _gkImageURLForSize:187 scale:?];
+  internal = [self internal];
+  icons = [internal icons];
+  mEMORY[0x277D0C8A8] = [MEMORY[0x277D0C8A8] sharedController];
+  [mEMORY[0x277D0C8A8] greatestScreenScale];
+  v6 = [icons _gkImageURLForSize:187 scale:?];
 
   return v6;
 }

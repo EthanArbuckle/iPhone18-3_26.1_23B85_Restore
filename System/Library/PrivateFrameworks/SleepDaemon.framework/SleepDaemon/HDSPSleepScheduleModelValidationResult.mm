@@ -1,33 +1,33 @@
 @interface HDSPSleepScheduleModelValidationResult
-+ (id)emptyFailureWithError:(id)a3;
-- (HDSPSleepScheduleModelValidationResult)initWithSuccess:(BOOL)a3 timelineResults:(id)a4 error:(id)a5;
++ (id)emptyFailureWithError:(id)error;
+- (HDSPSleepScheduleModelValidationResult)initWithSuccess:(BOOL)success timelineResults:(id)results error:(id)error;
 @end
 
 @implementation HDSPSleepScheduleModelValidationResult
 
-- (HDSPSleepScheduleModelValidationResult)initWithSuccess:(BOOL)a3 timelineResults:(id)a4 error:(id)a5
+- (HDSPSleepScheduleModelValidationResult)initWithSuccess:(BOOL)success timelineResults:(id)results error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = HDSPSleepScheduleModelValidationResult;
   v11 = [(HDSPSleepScheduleModelValidationResult *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_success = a3;
-    objc_storeStrong(&v11->_error, a5);
-    objc_storeStrong(&v12->_timelineResults, a4);
+    v11->_success = success;
+    objc_storeStrong(&v11->_error, error);
+    objc_storeStrong(&v12->_timelineResults, results);
     v13 = v12;
   }
 
   return v12;
 }
 
-+ (id)emptyFailureWithError:(id)a3
++ (id)emptyFailureWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSuccess:0 timelineResults:0 error:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithSuccess:0 timelineResults:0 error:errorCopy];
 
   return v5;
 }

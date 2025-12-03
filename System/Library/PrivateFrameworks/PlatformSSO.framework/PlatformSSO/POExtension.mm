@@ -1,7 +1,7 @@
 @interface POExtension
 - (BOOL)canPerformRegistration;
-- (POExtension)initWithExtensionBundleIdentifier:(id)a3 delegate:(id)a4;
-- (POExtension)initWithExtensionBundleIdentifier:(id)a3 extensionManager:(id)a4 delegate:(id)a5;
+- (POExtension)initWithExtensionBundleIdentifier:(id)identifier delegate:(id)delegate;
+- (POExtension)initWithExtensionBundleIdentifier:(id)identifier extensionManager:(id)manager delegate:(id)delegate;
 - (POExtensionDelegate)delegate;
 - (id)supportedDeviceEncryptionAlgorithms;
 - (id)supportedDeviceSigningAlgorithms;
@@ -9,40 +9,40 @@
 - (int64_t)protocolVersion;
 - (int64_t)supportedGrantTypes;
 - (void)_unload;
-- (void)authorization:(id)a3 didCompleteWithCredential:(id)a4 error:(id)a5;
-- (void)authorizationDidFailWithOtherVersionError:(id)a3;
-- (void)beginDeviceRegistrationUsingOptions:(int64_t)a3 extensionData:(id)a4 completion:(id)a5;
-- (void)beginUserRegistrationUsingUserName:(id)a3 authenticationMethod:(int)a4 options:(int64_t)a5 extensionData:(id)a6 completion:(id)a7;
+- (void)authorization:(id)authorization didCompleteWithCredential:(id)credential error:(id)error;
+- (void)authorizationDidFailWithOtherVersionError:(id)error;
+- (void)beginDeviceRegistrationUsingOptions:(int64_t)options extensionData:(id)data completion:(id)completion;
+- (void)beginUserRegistrationUsingUserName:(id)name authenticationMethod:(int)method options:(int64_t)options extensionData:(id)data completion:(id)completion;
 - (void)close;
 - (void)dealloc;
-- (void)displayNamesForGroups:(id)a3 extensionData:(id)a4 completion:(id)a5;
-- (void)keyWillRotateForKeyType:(int64_t)a3 newKey:(__SecKey *)a4 extensionData:(id)a5 completion:(id)a6;
-- (void)presentAuthorizationViewControllerInWindow:(id)a3 hints:(id)a4 completion:(id)a5;
-- (void)presentRegistrationViewControllerWithCompletion:(id)a3;
-- (void)profilePictureForUserUsingExtensionData:(id)a3 completion:(id)a4;
-- (void)registrationDidCancelWithCompletion:(id)a3;
-- (void)registrationDidCompleteWithCompletion:(id)a3;
+- (void)displayNamesForGroups:(id)groups extensionData:(id)data completion:(id)completion;
+- (void)keyWillRotateForKeyType:(int64_t)type newKey:(__SecKey *)key extensionData:(id)data completion:(id)completion;
+- (void)presentAuthorizationViewControllerInWindow:(id)window hints:(id)hints completion:(id)completion;
+- (void)presentRegistrationViewControllerWithCompletion:(id)completion;
+- (void)profilePictureForUserUsingExtensionData:(id)data completion:(id)completion;
+- (void)registrationDidCancelWithCompletion:(id)completion;
+- (void)registrationDidCompleteWithCompletion:(id)completion;
 - (void)unload;
 @end
 
 @implementation POExtension
 
-- (POExtension)initWithExtensionBundleIdentifier:(id)a3 delegate:(id)a4
+- (POExtension)initWithExtensionBundleIdentifier:(id)identifier delegate:(id)delegate
 {
   v6 = MEMORY[0x277CEBEE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedInstance];
-  v10 = [(POExtension *)self initWithExtensionBundleIdentifier:v8 extensionManager:v9 delegate:v7];
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  sharedInstance = [v6 sharedInstance];
+  v10 = [(POExtension *)self initWithExtensionBundleIdentifier:identifierCopy extensionManager:sharedInstance delegate:delegateCopy];
 
   return v10;
 }
 
-- (POExtension)initWithExtensionBundleIdentifier:(id)a3 extensionManager:(id)a4 delegate:(id)a5
+- (POExtension)initWithExtensionBundleIdentifier:(id)identifier extensionManager:(id)manager delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = POExtension;
   v11 = [(POExtension *)&v18 init];
@@ -51,11 +51,11 @@
     goto LABEL_4;
   }
 
-  v12 = [v9 loadExtensionWithBundleIdentifier:v8];
+  v12 = [managerCopy loadExtensionWithBundleIdentifier:identifierCopy];
   extension = v11->_extension;
   v11->_extension = v12;
 
-  objc_storeWeak(&v11->_delegate, v10);
+  objc_storeWeak(&v11->_delegate, delegateCopy);
   v14 = v11->_extension;
   if (v14)
   {
@@ -95,7 +95,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[POExtension unload]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -113,7 +113,7 @@ LABEL_8:
     v7 = 136315394;
     v8 = "[POExtension _unload]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
   }
 
@@ -137,7 +137,7 @@ LABEL_8:
     v5 = 136315394;
     v6 = "[POExtension close]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -145,20 +145,20 @@ LABEL_8:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginDeviceRegistrationUsingOptions:(int64_t)a3 extensionData:(id)a4 completion:(id)a5
+- (void)beginDeviceRegistrationUsingOptions:(int64_t)options extensionData:(id)data completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v10 = PO_LOG_POExtension();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[POExtension beginDeviceRegistrationUsingOptions:extensionData:completion:]";
     v21 = 2048;
-    v22 = a3;
+    optionsCopy = options;
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v10, OS_LOG_TYPE_DEFAULT, "%s options = %ld on %@", buf, 0x20u);
   }
 
@@ -167,12 +167,12 @@ LABEL_8:
   v15[1] = 3221225472;
   v15[2] = __76__POExtension_beginDeviceRegistrationUsingOptions_extensionData_completion___block_invoke;
   v15[3] = &unk_279A3ABD8;
-  v17 = v9;
-  v18 = a3;
+  v17 = completionCopy;
+  optionsCopy2 = options;
   v15[4] = self;
-  v16 = v8;
-  v12 = v8;
-  v13 = v9;
+  v16 = dataCopy;
+  v12 = dataCopy;
+  v13 = completionCopy;
   [(SOExtension *)extension requestAuthorizationViewControllerWithCompletion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -274,23 +274,23 @@ uint64_t __76__POExtension_beginDeviceRegistrationUsingOptions_extensionData_com
   return result;
 }
 
-- (void)beginUserRegistrationUsingUserName:(id)a3 authenticationMethod:(int)a4 options:(int64_t)a5 extensionData:(id)a6 completion:(id)a7
+- (void)beginUserRegistrationUsingUserName:(id)name authenticationMethod:(int)method options:(int64_t)options extensionData:(id)data completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  dataCopy = data;
+  completionCopy = completion;
   v15 = PO_LOG_POExtension();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v28 = "[POExtension beginUserRegistrationUsingUserName:authenticationMethod:options:extensionData:completion:]";
     v29 = 1026;
-    v30 = a4;
+    methodCopy = method;
     v31 = 2048;
-    v32 = a5;
+    optionsCopy = options;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v15, OS_LOG_TYPE_DEFAULT, "%s authenticationMethod = %{public}d, options = %ld on %@", buf, 0x26u);
   }
 
@@ -300,14 +300,14 @@ uint64_t __76__POExtension_beginDeviceRegistrationUsingOptions_extensionData_com
   v21[2] = __104__POExtension_beginUserRegistrationUsingUserName_authenticationMethod_options_extensionData_completion___block_invoke;
   v21[3] = &unk_279A3AC00;
   v21[4] = self;
-  v22 = v12;
-  v26 = a4;
-  v24 = v14;
-  v25 = a5;
-  v23 = v13;
-  v17 = v13;
-  v18 = v12;
-  v19 = v14;
+  v22 = nameCopy;
+  methodCopy2 = method;
+  v24 = completionCopy;
+  optionsCopy2 = options;
+  v23 = dataCopy;
+  v17 = dataCopy;
+  v18 = nameCopy;
+  v19 = completionCopy;
   [(SOExtension *)extension requestAuthorizationViewControllerWithCompletion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -411,17 +411,17 @@ uint64_t __104__POExtension_beginUserRegistrationUsingUserName_authenticationMet
   return result;
 }
 
-- (void)registrationDidCompleteWithCompletion:(id)a3
+- (void)registrationDidCompleteWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtension();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[POExtension registrationDidCompleteWithCompletion:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -431,8 +431,8 @@ uint64_t __104__POExtension_beginUserRegistrationUsingUserName_authenticationMet
   v9[2] = __53__POExtension_registrationDidCompleteWithCompletion___block_invoke;
   v9[3] = &unk_279A3AC28;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [(SOExtension *)extension requestAuthorizationViewControllerWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -482,17 +482,17 @@ uint64_t __53__POExtension_registrationDidCompleteWithCompletion___block_invoke_
   return v2();
 }
 
-- (void)registrationDidCancelWithCompletion:(id)a3
+- (void)registrationDidCancelWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtension();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[POExtension registrationDidCancelWithCompletion:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -502,8 +502,8 @@ uint64_t __53__POExtension_registrationDidCompleteWithCompletion___block_invoke_
   v9[2] = __51__POExtension_registrationDidCancelWithCompletion___block_invoke;
   v9[3] = &unk_279A3A0D0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(v6, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -874,58 +874,58 @@ intptr_t __37__POExtension_canPerformRegistration__block_invoke(uint64_t a1, cha
   }
 }
 
-- (void)presentRegistrationViewControllerWithCompletion:(id)a3
+- (void)presentRegistrationViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_POExtension();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [POExtension presentRegistrationViewControllerWithCompletion:];
   }
 
-  v6 = [(POExtension *)self delegate];
-  [v6 presentRegistrationViewControllerWithCompletion:v4];
+  delegate = [(POExtension *)self delegate];
+  [delegate presentRegistrationViewControllerWithCompletion:completionCopy];
 }
 
-- (void)presentAuthorizationViewControllerInWindow:(id)a3 hints:(id)a4 completion:(id)a5
+- (void)presentAuthorizationViewControllerInWindow:(id)window hints:(id)hints completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  completionCopy = completion;
   v7 = PO_LOG_POExtension();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[POExtension presentAuthorizationViewControllerInWindow:hints:completion:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v10, 0x16u);
   }
 
   if (self->_extensionViewController)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v8 = [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"No extension registration view controller"];
-    (*(v6 + 2))(v6, 0, v8);
+    (*(completionCopy + 2))(completionCopy, 0, v8);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authorization:(id)a3 didCompleteWithCredential:(id)a4 error:(id)a5
+- (void)authorization:(id)authorization didCompleteWithCredential:(id)credential error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  errorCopy = error;
   v7 = PO_LOG_POExtension();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "[POExtension authorization:didCompleteWithCredential:error:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v7, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -936,8 +936,8 @@ intptr_t __37__POExtension_canPerformRegistration__block_invoke(uint64_t a1, cha
   v11[2] = __61__POExtension_authorization_didCompleteWithCredential_error___block_invoke_2;
   v11[3] = &unk_279A3A7D8;
   v11[4] = self;
-  v12 = v6;
-  v9 = v6;
+  v12 = errorCopy;
+  v9 = errorCopy;
   dispatch_async(v8, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -954,42 +954,42 @@ void __61__POExtension_authorization_didCompleteWithCredential_error___block_inv
   }
 }
 
-- (void)authorizationDidFailWithOtherVersionError:(id)a3
+- (void)authorizationDidFailWithOtherVersionError:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = PO_LOG_POExtension();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[POExtension authorizationDidFailWithOtherVersionError:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v7, 0x16u);
   }
 
-  [(POExtension *)self authorization:v4 didCompleteWithCredential:0 error:0];
+  [(POExtension *)self authorization:errorCopy didCompleteWithCredential:0 error:0];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)keyWillRotateForKeyType:(int64_t)a3 newKey:(__SecKey *)a4 extensionData:(id)a5 completion:(id)a6
+- (void)keyWillRotateForKeyType:(int64_t)type newKey:(__SecKey *)key extensionData:(id)data completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [objc_alloc(MEMORY[0x277CDBD80]) initWithKey:a4];
+  dataCopy = data;
+  completionCopy = completion;
+  v12 = [objc_alloc(MEMORY[0x277CDBD80]) initWithKey:key];
   extension = self->_extension;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __71__POExtension_keyWillRotateForKeyType_newKey_extensionData_completion___block_invoke;
   v17[3] = &unk_279A3ACF0;
-  v20 = v11;
-  v21 = a3;
+  v20 = completionCopy;
+  typeCopy = type;
   v17[4] = self;
   v18 = v12;
-  v19 = v10;
-  v14 = v10;
+  v19 = dataCopy;
+  v14 = dataCopy;
   v15 = v12;
-  v16 = v11;
+  v16 = completionCopy;
   [(SOExtension *)extension setupNonUISessionWithCompletion:v17];
 }
 
@@ -1046,23 +1046,23 @@ uint64_t __71__POExtension_keyWillRotateForKeyType_newKey_extensionData_completi
   return v2();
 }
 
-- (void)displayNamesForGroups:(id)a3 extensionData:(id)a4 completion:(id)a5
+- (void)displayNamesForGroups:(id)groups extensionData:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupsCopy = groups;
+  dataCopy = data;
+  completionCopy = completion;
   extension = self->_extension;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__POExtension_displayNamesForGroups_extensionData_completion___block_invoke;
   v15[3] = &unk_279A3AD40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = groupsCopy;
+  v17 = dataCopy;
+  v18 = completionCopy;
+  v12 = dataCopy;
+  v13 = groupsCopy;
+  v14 = completionCopy;
   [(SOExtension *)extension setupNonUISessionWithCompletion:v15];
 }
 
@@ -1109,20 +1109,20 @@ id __62__POExtension_displayNamesForGroups_extensionData_completion___block_invo
   return v1;
 }
 
-- (void)profilePictureForUserUsingExtensionData:(id)a3 completion:(id)a4
+- (void)profilePictureForUserUsingExtensionData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   extension = self->_extension;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__POExtension_profilePictureForUserUsingExtensionData_completion___block_invoke;
   v11[3] = &unk_279A3AD90;
-  v12 = v6;
-  v13 = v7;
+  v12 = dataCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dataCopy;
+  v10 = completionCopy;
   [(SOExtension *)extension setupNonUISessionWithCompletion:v11];
 }
 

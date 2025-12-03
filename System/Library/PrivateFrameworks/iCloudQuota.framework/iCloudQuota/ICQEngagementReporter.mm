@@ -1,22 +1,22 @@
 @interface ICQEngagementReporter
-+ (id)_createOpportunityBubbleFrom:(id)a3 bundleID:(id)a4;
-+ (id)_eventNameForEngagementType:(int64_t)a3;
++ (id)_createOpportunityBubbleFrom:(id)from bundleID:(id)d;
++ (id)_eventNameForEngagementType:(int64_t)type;
 + (id)_placementDictionary;
-+ (void)_sendBubbleDisplayedEventFor:(id)a3;
-+ (void)_sendImpressionEventWithName:(id)a3 bundleID:(id)a4;
++ (void)_sendBubbleDisplayedEventFor:(id)for;
++ (void)_sendImpressionEventWithName:(id)name bundleID:(id)d;
 + (void)_sendSubscriptionChangedEvent;
-+ (void)fetchBubbleContentWithBundleID:(id)a3 completion:(id)a4;
-+ (void)sendEventFor:(int64_t)a3 withBundleID:(id)a4 link:(id)a5;
-+ (void)shouldShowOpportunityBubbleWithBundleID:(id)a3 completion:(id)a4;
++ (void)fetchBubbleContentWithBundleID:(id)d completion:(id)completion;
++ (void)sendEventFor:(int64_t)for withBundleID:(id)d link:(id)link;
++ (void)shouldShowOpportunityBubbleWithBundleID:(id)d completion:(id)completion;
 @end
 
 @implementation ICQEngagementReporter
 
-+ (void)sendEventFor:(int64_t)a3 withBundleID:(id)a4 link:(id)a5
++ (void)sendEventFor:(int64_t)for withBundleID:(id)d link:(id)link
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a1 _eventNameForEngagementType:a3];
+  linkCopy = link;
+  v8 = [self _eventNameForEngagementType:for];
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -25,36 +25,36 @@
     _os_log_impl(&dword_275572000, v9, OS_LOG_TYPE_DEFAULT, "Sending AMSMetricEvent for %@", &v11, 0xCu);
   }
 
-  if (a3 == 2)
+  if (for == 2)
   {
-    [a1 _sendBubbleDisplayedEventFor:v7];
+    [self _sendBubbleDisplayedEventFor:linkCopy];
   }
 
-  else if (a3 == 3)
+  else if (for == 3)
   {
-    [a1 _sendSubscriptionChangedEvent];
+    [self _sendSubscriptionChangedEvent];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_sendImpressionEventWithName:(id)a3 bundleID:(id)a4
++ (void)_sendImpressionEventWithName:(id)name bundleID:(id)d
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  nameCopy = name;
+  dCopy = d;
+  v7 = dCopy;
   v8 = @"com.apple.iCloudQuotaUI";
-  if (v6)
+  if (dCopy)
   {
-    v8 = v6;
+    v8 = dCopy;
   }
 
   v9 = v8;
   v10 = objc_alloc(MEMORY[0x277CEE5A8]);
   v22[0] = @"eventType";
   v22[1] = @"bundleId";
-  v23[0] = v5;
+  v23[0] = nameCopy;
   v23[1] = v9;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v12 = [v10 initWithUnderlyingDictionary:v11];
@@ -68,25 +68,25 @@
   }
 
   v14 = objc_alloc_init(MEMORY[0x277CEE498]);
-  v15 = [v12 underlyingDictionary];
-  v16 = [v14 enqueueData:v15];
+  underlyingDictionary = [v12 underlyingDictionary];
+  v16 = [v14 enqueueData:underlyingDictionary];
 
   v17 = _ICQGetLogSystem();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v12 underlyingDictionary];
+    underlyingDictionary2 = [v12 underlyingDictionary];
     v20 = 138412290;
-    v21 = v18;
+    v21 = underlyingDictionary2;
     _os_log_impl(&dword_275572000, v17, OS_LOG_TYPE_DEFAULT, "Enqueued metricEvent to AMSEngagement: %@", &v20, 0xCu);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)shouldShowOpportunityBubbleWithBundleID:(id)a3 completion:(id)a4
++ (void)shouldShowOpportunityBubbleWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CEE498]);
   v9 = [MEMORY[0x277CBEB98] setWithObjects:{@"photosLibraryFooter", @"homeDashboardHeader", 0}];
   v10 = [objc_alloc(MEMORY[0x277CEE4A8]) initWithServiceType:@"iCloudQuotaUI" placements:v9];
@@ -102,15 +102,15 @@
   v17[1] = 3221225472;
   v17[2] = __76__ICQEngagementReporter_shouldShowOpportunityBubbleWithBundleID_completion___block_invoke;
   v17[3] = &unk_27A652A48;
-  v21 = v7;
-  v22 = a1;
+  v21 = completionCopy;
+  selfCopy = self;
   v18 = v9;
-  v19 = v6;
+  v19 = dCopy;
   v20 = v8;
   v13 = v8;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v9;
-  v16 = v7;
+  v16 = completionCopy;
   [v12 addFinishBlock:v17];
 }
 
@@ -275,10 +275,10 @@ LABEL_34:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)fetchBubbleContentWithBundleID:(id)a3 completion:(id)a4
++ (void)fetchBubbleContentWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277CEE498]);
   v9 = [MEMORY[0x277CBEB98] setWithObjects:{@"photosLibraryFooter", @"homeDashboardHeader", 0}];
   v10 = [objc_alloc(MEMORY[0x277CEE4A8]) initWithServiceType:@"iCloudQuotaUI" placements:v9];
@@ -294,14 +294,14 @@ LABEL_34:
   v17[1] = 3221225472;
   v17[2] = __67__ICQEngagementReporter_fetchBubbleContentWithBundleID_completion___block_invoke;
   v17[3] = &unk_27A652A70;
-  v21 = v7;
-  v22 = a1;
+  v21 = completionCopy;
+  selfCopy = self;
   v18 = v9;
-  v19 = v6;
+  v19 = dCopy;
   v20 = v8;
   v13 = v8;
-  v14 = v7;
-  v15 = v6;
+  v14 = completionCopy;
+  v15 = dCopy;
   v16 = v9;
   [v12 addFinishBlock:v17];
 }
@@ -426,76 +426,76 @@ LABEL_24:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_createOpportunityBubbleFrom:(id)a3 bundleID:(id)a4
++ (id)_createOpportunityBubbleFrom:(id)from bundleID:(id)d
 {
   v58[2] = *MEMORY[0x277D85DE8];
   v57[1] = @"opportunityBubbleDetails";
-  v58[0] = a4;
+  v58[0] = d;
   v57[0] = @"appId";
   v55[0] = @"title";
-  v43 = a4;
-  v5 = a3;
-  v42 = [v5 title];
-  v56[0] = v42;
+  dCopy = d;
+  fromCopy = from;
+  title = [fromCopy title];
+  v56[0] = title;
   v55[1] = @"message";
-  v41 = [v5 message];
-  v56[1] = v41;
+  message = [fromCopy message];
+  v56[1] = message;
   v55[2] = @"imageDetails";
   v53[0] = @"3x";
-  v40 = [v5 iconURL];
-  v54[0] = v40;
+  iconURL = [fromCopy iconURL];
+  v54[0] = iconURL;
   v53[1] = @"2x";
-  v39 = [v5 iconURL];
-  v54[1] = v39;
+  iconURL2 = [fromCopy iconURL];
+  v54[1] = iconURL2;
   v53[2] = @"1x";
-  v38 = [v5 iconURL];
-  v54[2] = v38;
+  iconURL3 = [fromCopy iconURL];
+  v54[2] = iconURL3;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:3];
   v56[2] = v37;
   v55[3] = @"actions";
   v50[0] = @"btnId";
-  v36 = [v5 buttonActions];
-  v35 = [v36 objectAtIndexedSubscript:0];
-  v34 = [v35 identifier];
-  v51[0] = v34;
+  buttonActions = [fromCopy buttonActions];
+  v35 = [buttonActions objectAtIndexedSubscript:0];
+  identifier = [v35 identifier];
+  v51[0] = identifier;
   v50[1] = @"btnTitle";
-  v33 = [v5 buttonActions];
-  v32 = [v33 objectAtIndexedSubscript:0];
-  v31 = [v32 title];
-  v51[1] = v31;
+  buttonActions2 = [fromCopy buttonActions];
+  v32 = [buttonActions2 objectAtIndexedSubscript:0];
+  title2 = [v32 title];
+  v51[1] = title2;
   v51[2] = @"LAUNCH_REMOTE_UI";
   v50[2] = @"btnAction";
   v50[3] = @"btnActParams";
   v48 = @"openUrl";
-  v30 = [v5 buttonActions];
-  v29 = [v30 objectAtIndexedSubscript:0];
-  v28 = [v29 deepLink];
-  v27 = [v28 absoluteString];
-  v49 = v27;
+  buttonActions3 = [fromCopy buttonActions];
+  v29 = [buttonActions3 objectAtIndexedSubscript:0];
+  deepLink = [v29 deepLink];
+  absoluteString = [deepLink absoluteString];
+  v49 = absoluteString;
   v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
   v51[3] = v26;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:4];
   v52[0] = v25;
   v46[0] = @"btnId";
-  v24 = [v5 buttonActions];
-  v23 = [v24 objectAtIndexedSubscript:1];
-  v22 = [v23 identifier];
-  v47[0] = v22;
+  buttonActions4 = [fromCopy buttonActions];
+  v23 = [buttonActions4 objectAtIndexedSubscript:1];
+  identifier2 = [v23 identifier];
+  v47[0] = identifier2;
   v46[1] = @"btnTitle";
-  v21 = [v5 buttonActions];
-  v20 = [v21 objectAtIndexedSubscript:1];
-  v6 = [v20 title];
-  v47[1] = v6;
+  buttonActions5 = [fromCopy buttonActions];
+  v20 = [buttonActions5 objectAtIndexedSubscript:1];
+  title3 = [v20 title];
+  v47[1] = title3;
   v47[2] = @"HTTP_CALL";
   v46[2] = @"btnAction";
   v46[3] = @"btnActParams";
   v44 = @"openUrl";
-  v7 = [v5 buttonActions];
+  buttonActions6 = [fromCopy buttonActions];
 
-  v8 = [v7 objectAtIndexedSubscript:1];
-  v9 = [v8 deepLink];
-  v10 = [v9 absoluteString];
-  v45 = v10;
+  v8 = [buttonActions6 objectAtIndexedSubscript:1];
+  deepLink2 = [v8 deepLink];
+  absoluteString2 = [deepLink2 absoluteString];
+  v45 = absoluteString2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
   v47[3] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:4];
@@ -514,7 +514,7 @@ LABEL_24:
   return v17;
 }
 
-+ (void)_sendBubbleDisplayedEventFor:(id)a3
++ (void)_sendBubbleDisplayedEventFor:(id)for
 {
   v3 = objc_alloc_init(MEMORY[0x277CEE498]);
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{@"photosLibraryFooter", @"homeDashboardHeader", 0}];
@@ -675,7 +675,7 @@ void __54__ICQEngagementReporter__sendBubbleDisplayedEventFor___block_invoke(uin
   v8[2] = __54__ICQEngagementReporter__sendSubscriptionChangedEvent__block_invoke_79;
   v8[3] = &unk_27A652AE8;
   v8[5] = v14;
-  v8[6] = a1;
+  v8[6] = self;
   v8[4] = v16;
   dispatch_group_notify(v6, v7, v8);
 
@@ -797,16 +797,16 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_eventNameForEngagementType:(int64_t)a3
++ (id)_eventNameForEngagementType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"iCloudQuota:dismissal";
   }
 
   else
   {
-    return off_27A652B08[a3];
+    return off_27A652B08[type];
   }
 }
 

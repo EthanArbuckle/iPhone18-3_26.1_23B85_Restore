@@ -1,25 +1,25 @@
 @interface CACGestureLivePreviewPathEffectView
 - ($01BB1521EC52D44A8E7628F5261DCEC8)_currentThemeSettings;
-- (CACGestureLivePreviewPathEffectView)initWithFrame:(CGRect)a3;
+- (CACGestureLivePreviewPathEffectView)initWithFrame:(CGRect)frame;
 - (id)_currentPath;
 - (id)_pushNewPath;
-- (void)_addDrawingPoint:(CGPoint)a3 force:(double)a4 sentinel:(BOOL)a5;
+- (void)_addDrawingPoint:(CGPoint)point force:(double)force sentinel:(BOOL)sentinel;
 - (void)_clearPointInterpolators;
-- (void)_displayLinkFired:(id)a3;
-- (void)addPoint:(CGPoint)a3 force:(double)a4 timestamp:(double)a5;
+- (void)_displayLinkFired:(id)fired;
+- (void)addPoint:(CGPoint)point force:(double)force timestamp:(double)timestamp;
 - (void)buildOut;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)reset;
 @end
 
 @implementation CACGestureLivePreviewPathEffectView
 
-- (CACGestureLivePreviewPathEffectView)initWithFrame:(CGRect)a3
+- (CACGestureLivePreviewPathEffectView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = CACGestureLivePreviewPathEffectView;
-  v3 = [(CACGestureLivePreviewPathEffectView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CACGestureLivePreviewPathEffectView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = CACLogGestureRecording();
@@ -29,14 +29,14 @@
     }
 
     [(CACGestureLivePreviewPathEffectView *)v3 setUserInteractionEnabled:0];
-    v12 = [(CACGestureLivePreviewPathEffectView *)v3 layer];
-    [v12 setAllowsHitTesting:0];
+    layer = [(CACGestureLivePreviewPathEffectView *)v3 layer];
+    [layer setAllowsHitTesting:0];
 
-    v13 = [(CACGestureLivePreviewPathEffectView *)v3 layer];
-    [v13 setDrawsAsynchronously:1];
+    layer2 = [(CACGestureLivePreviewPathEffectView *)v3 layer];
+    [layer2 setDrawsAsynchronously:1];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(CACGestureLivePreviewPathEffectView *)v3 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CACGestureLivePreviewPathEffectView *)v3 setBackgroundColor:clearColor];
 
     [(CACGestureLivePreviewPathEffectView *)v3 setIncreasedContrastEnabled:UIAccessibilityDarkerSystemColorsEnabled()];
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -54,8 +54,8 @@
     v18 = objc_alloc_init(MEMORY[0x277CCAB58]);
     [(CACGestureLivePreviewPathEffectView *)v3 setPointDecayQueue:v18];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v3 selector:sel_accessibilityValueChanged_ name:*MEMORY[0x277D76460] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_accessibilityValueChanged_ name:*MEMORY[0x277D76460] object:0];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -113,14 +113,14 @@ void __53__CACGestureLivePreviewPathEffectView_initWithFrame___block_invoke(uint
     [(CACGestureLivePreviewPathEffectView *)v3 didMoveToWindow:v4];
   }
 
-  v11 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
+  pointDecayDisplayLink = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
 
-  if (v11)
+  if (pointDecayDisplayLink)
   {
-    v12 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
-    v13 = [MEMORY[0x277CBEB88] mainRunLoop];
+    pointDecayDisplayLink2 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
     v14 = *MEMORY[0x277CBE738];
-    [v12 removeFromRunLoop:v13 forMode:*MEMORY[0x277CBE738]];
+    [pointDecayDisplayLink2 removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 
   else
@@ -128,37 +128,37 @@ void __53__CACGestureLivePreviewPathEffectView_initWithFrame___block_invoke(uint
     v14 = *MEMORY[0x277CBE738];
   }
 
-  v15 = [(CACGestureLivePreviewPathEffectView *)self window];
-  v16 = [v15 screen];
-  v17 = [v16 displayLinkWithTarget:self selector:sel__displayLinkFired_];
+  window = [(CACGestureLivePreviewPathEffectView *)self window];
+  screen = [window screen];
+  v17 = [screen displayLinkWithTarget:self selector:sel__displayLinkFired_];
   [(CACGestureLivePreviewPathEffectView *)self setPointDecayDisplayLink:v17];
 
-  v18 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
-  [v18 setPaused:1];
+  pointDecayDisplayLink3 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
+  [pointDecayDisplayLink3 setPaused:1];
 
-  v19 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
-  v20 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v19 addToRunLoop:v20 forMode:v14];
+  pointDecayDisplayLink4 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
+  mainRunLoop2 = [MEMORY[0x277CBEB88] mainRunLoop];
+  [pointDecayDisplayLink4 addToRunLoop:mainRunLoop2 forMode:v14];
 }
 
 - (id)_pushNewPath
 {
   v3 = objc_alloc_init(_CACGesturePointQueue);
-  v4 = [(CACGestureLivePreviewPathEffectView *)self paths];
-  [v4 addObject:v3];
+  paths = [(CACGestureLivePreviewPathEffectView *)self paths];
+  [paths addObject:v3];
 
   return v3;
 }
 
 - (id)_currentPath
 {
-  v2 = [(CACGestureLivePreviewPathEffectView *)self paths];
-  v3 = [v2 lastObject];
+  paths = [(CACGestureLivePreviewPathEffectView *)self paths];
+  lastObject = [paths lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   v47 = *MEMORY[0x277D85DE8];
   v4 = CACLogGestureRecording();
@@ -167,13 +167,13 @@ void __53__CACGestureLivePreviewPathEffectView_initWithFrame___block_invoke(uint
     [(CACGestureLivePreviewPathEffectView *)v4 _displayLinkFired:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  v12 = [(CACGestureLivePreviewPathEffectView *)self paths];
-  v13 = [v12 count];
+  paths = [(CACGestureLivePreviewPathEffectView *)self paths];
+  v13 = [paths count];
 
   if (v13 && (v13 != 1 || (-[CACGestureLivePreviewPathEffectView _currentPath](self, "_currentPath"), v14 = objc_claimAutoreleasedReturnValue(), [v14 nonSentinelPoints], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14, v16)))
   {
     v39 = [MEMORY[0x277CBEB58] set];
-    v40 = self;
+    selfCopy = self;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -194,24 +194,24 @@ void __53__CACGestureLivePreviewPathEffectView_initWithFrame___block_invoke(uint
           }
 
           v21 = *(*(&v42 + 1) + 8 * i);
-          v22 = [v21 nonSentinelPoints];
-          v23 = [v22 count];
+          nonSentinelPoints = [v21 nonSentinelPoints];
+          v23 = [nonSentinelPoints count];
 
           if (v23)
           {
-            v24 = [v21 effectiveStartIndexBasedOnLength];
+            effectiveStartIndexBasedOnLength = [v21 effectiveStartIndexBasedOnLength];
             Current = CFAbsoluteTimeGetCurrent();
-            v26 = [MEMORY[0x277CCAB58] indexSet];
-            v27 = [v21 nonSentinelPoints];
-            v28 = [v27 count];
+            indexSet = [MEMORY[0x277CCAB58] indexSet];
+            nonSentinelPoints2 = [v21 nonSentinelPoints];
+            v28 = [nonSentinelPoints2 count];
 
-            v29 = v24;
-            if (v24 < v28)
+            v29 = effectiveStartIndexBasedOnLength;
+            if (effectiveStartIndexBasedOnLength < v28)
             {
               while (1)
               {
-                v30 = [v21 nonSentinelPoints];
-                v31 = [v30 objectAtIndex:v29];
+                nonSentinelPoints3 = [v21 nonSentinelPoints];
+                v31 = [nonSentinelPoints3 objectAtIndex:v29];
 
                 if (!v31)
                 {
@@ -225,7 +225,7 @@ void __53__CACGestureLivePreviewPathEffectView_initWithFrame___block_invoke(uint
                   goto LABEL_17;
                 }
 
-                [v26 addIndex:v29];
+                [indexSet addIndex:v29];
 LABEL_18:
 
                 if (v28 == ++v29)
@@ -241,16 +241,16 @@ LABEL_17:
             }
 
 LABEL_19:
-            [v26 addIndexesInRange:{0, v24}];
-            v34 = [v21 nonSentinelPoints];
-            [v34 removeObjectsAtIndexes:v26];
+            [indexSet addIndexesInRange:{0, effectiveStartIndexBasedOnLength}];
+            nonSentinelPoints4 = [v21 nonSentinelPoints];
+            [nonSentinelPoints4 removeObjectsAtIndexes:indexSet];
           }
 
           else
           {
-            v35 = [(CACGestureLivePreviewPathEffectView *)v40 _currentPath];
+            _currentPath = [(CACGestureLivePreviewPathEffectView *)selfCopy _currentPath];
 
-            if (v21 != v35)
+            if (v21 != _currentPath)
             {
               [v39 addObject:v21];
             }
@@ -263,86 +263,86 @@ LABEL_19:
       while (v18);
     }
 
-    v36 = [(CACGestureLivePreviewPathEffectView *)v40 paths];
-    v37 = v39;
-    v38 = [v39 allObjects];
-    [v36 removeObjectsInArray:v38];
+    paths2 = [(CACGestureLivePreviewPathEffectView *)selfCopy paths];
+    pointDecayDisplayLink = v39;
+    allObjects = [v39 allObjects];
+    [paths2 removeObjectsInArray:allObjects];
 
-    [(CACGestureLivePreviewPathEffectView *)v40 setNeedsDisplay];
+    [(CACGestureLivePreviewPathEffectView *)selfCopy setNeedsDisplay];
   }
 
   else
   {
-    v37 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
-    [v37 setPaused:1];
+    pointDecayDisplayLink = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
+    [pointDecayDisplayLink setPaused:1];
   }
 }
 
-- (void)_addDrawingPoint:(CGPoint)a3 force:(double)a4 sentinel:(BOOL)a5
+- (void)_addDrawingPoint:(CGPoint)point force:(double)force sentinel:(BOOL)sentinel
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
+  sentinelCopy = sentinel;
+  y = point.y;
+  x = point.x;
   Current = CFAbsoluteTimeGetCurrent();
   if (self->_startTime == 0.0)
   {
     self->_startTime = Current;
   }
 
-  v11 = [(CACGestureLivePreviewPathEffectView *)self _currentPath];
-  if (!v11)
+  _currentPath = [(CACGestureLivePreviewPathEffectView *)self _currentPath];
+  if (!_currentPath)
   {
-    v11 = [(CACGestureLivePreviewPathEffectView *)self _pushNewPath];
+    _currentPath = [(CACGestureLivePreviewPathEffectView *)self _pushNewPath];
   }
 
-  v21 = v11;
-  v12 = [v11 nonSentinelPoints];
-  v13 = [v12 lastObject];
+  v21 = _currentPath;
+  nonSentinelPoints = [_currentPath nonSentinelPoints];
+  lastObject = [nonSentinelPoints lastObject];
 
   v14 = objc_alloc_init(_CACGesturePathPoint);
   [(_CACGesturePathPoint *)v14 setPoint:x, y];
-  [(_CACGesturePathPoint *)v14 setForce:a4];
+  [(_CACGesturePathPoint *)v14 setForce:force];
   [(_CACGesturePathPoint *)v14 setRelativeTime:Current - self->_startTime];
   [(_CACGesturePathPoint *)v14 setAbsoluteTime:Current];
-  [(_CACGesturePathPoint *)v14 setSentinelPoint:v5];
+  [(_CACGesturePathPoint *)v14 setSentinelPoint:sentinelCopy];
   [(_CACGesturePathPoint *)v14 setLength:0.0];
-  if (v13 && !v5)
+  if (lastObject && !sentinelCopy)
   {
-    [v13 point];
+    [lastObject point];
     v17 = CACCGPointDistance(v15, v16, x, y);
-    [v13 length];
+    [lastObject length];
     [(_CACGesturePathPoint *)v14 setLength:v17 + v18];
   }
 
-  if (!v5)
+  if (!sentinelCopy)
   {
-    v19 = [v21 nonSentinelPoints];
-    [v19 addObject:v14];
+    nonSentinelPoints2 = [v21 nonSentinelPoints];
+    [nonSentinelPoints2 addObject:v14];
   }
 
-  v20 = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
-  [v20 setPaused:0];
+  pointDecayDisplayLink = [(CACGestureLivePreviewPathEffectView *)self pointDecayDisplayLink];
+  [pointDecayDisplayLink setPaused:0];
 }
 
-- (void)addPoint:(CGPoint)a3 force:(double)a4 timestamp:(double)a5
+- (void)addPoint:(CGPoint)point force:(double)force timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(CACGestureLivePreviewPathEffectView *)self pointInterpolator:a3.x];
+  y = point.y;
+  x = point.x;
+  v7 = [(CACGestureLivePreviewPathEffectView *)self pointInterpolator:point.x];
   [v7 addPoint:{x, y, 1.0}];
 }
 
 - (void)_clearPointInterpolators
 {
-  v2 = [(CACGestureLivePreviewPathEffectView *)self pointInterpolator];
-  [v2 clear];
+  pointInterpolator = [(CACGestureLivePreviewPathEffectView *)self pointInterpolator];
+  [pointInterpolator clear];
 }
 
 - (void)buildOut
 {
   self->_done = 1;
   [(CACGestureLivePreviewPathEffectView *)self _clearPointInterpolators];
-  v3 = [(CACGestureLivePreviewPathEffectView *)self _pushNewPath];
+  _pushNewPath = [(CACGestureLivePreviewPathEffectView *)self _pushNewPath];
 }
 
 - (void)reset
@@ -435,10 +435,10 @@ LABEL_19:
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v46 = *MEMORY[0x277D85DE8];
-  [(CACGestureLivePreviewPathEffectView *)self _currentThemeSettings:a3.origin.x];
+  [(CACGestureLivePreviewPathEffectView *)self _currentThemeSettings:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -470,30 +470,30 @@ LABEL_19:
         }
 
         v17 = *(*(&v41 + 1) + 8 * v16);
-        v18 = [v17 nonSentinelPoints];
-        v19 = [v18 count];
+        nonSentinelPoints = [v17 nonSentinelPoints];
+        v19 = [nonSentinelPoints count];
 
         if (v19 >= 2)
         {
-          v20 = [v17 effectiveStartIndexBasedOnLength];
-          v21 = [v17 nonSentinelPoints];
-          v22 = [v21 objectAtIndex:v20];
+          effectiveStartIndexBasedOnLength = [v17 effectiveStartIndexBasedOnLength];
+          nonSentinelPoints2 = [v17 nonSentinelPoints];
+          v22 = [nonSentinelPoints2 objectAtIndex:effectiveStartIndexBasedOnLength];
 
           [v22 point];
           v24 = v23;
           [v22 point];
           CGContextMoveToPoint(CurrentContext, v24, v25);
-          v26 = v20 + 1;
+          v26 = effectiveStartIndexBasedOnLength + 1;
           while (v26 < v19)
           {
-            v27 = [v17 nonSentinelPoints];
-            v28 = [v27 objectAtIndex:v26];
+            nonSentinelPoints3 = [v17 nonSentinelPoints];
+            v28 = [nonSentinelPoints3 objectAtIndex:v26];
 
             [v28 decay];
             v30 = 1.0 - v29;
-            if ((v26 - v20) / (v19 - v20) < v30)
+            if ((v26 - effectiveStartIndexBasedOnLength) / (v19 - effectiveStartIndexBasedOnLength) < v30)
             {
-              v30 = (v26 - v20) / (v19 - v20);
+              v30 = (v26 - effectiveStartIndexBasedOnLength) / (v19 - effectiveStartIndexBasedOnLength);
             }
 
             CGContextSetLineWidth(CurrentContext, (1.0 - v30) * -62.1 + 69.0);

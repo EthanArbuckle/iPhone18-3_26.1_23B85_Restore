@@ -8,18 +8,18 @@
 {
   v3 = [(SUTableHeaderViewAccessibility *)self safeValueForKey:@"title"];
   v4 = [(SUTableHeaderViewAccessibility *)self safeValueForKey:@"subtitle"];
-  v5 = [MEMORY[0x29EDBA050] string];
+  string = [MEMORY[0x29EDBA050] string];
   if ([v3 length])
   {
-    [v5 appendFormat:@"%@, ", v3];
+    [string appendFormat:@"%@, ", v3];
   }
 
   if ([v4 length])
   {
-    [v5 appendFormat:@"%@, ", v4];
+    [string appendFormat:@"%@, ", v4];
   }
 
-  return v5;
+  return string;
 }
 
 @end

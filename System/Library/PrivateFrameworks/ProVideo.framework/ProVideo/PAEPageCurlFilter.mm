@@ -1,7 +1,7 @@
 @interface PAEPageCurlFilter
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)parameterChanged:(unsigned int)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)parameterChanged:(unsigned int)changed;
 @end
 
 @implementation PAEPageCurlFilter
@@ -24,9 +24,9 @@
   return result;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
-  if (a3 == 10)
+  if (changed == 10)
   {
     v15 = v3;
     v16 = v4;
@@ -64,14 +64,14 @@
   return v8;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
-  if ([a4 imageType] != 3)
+  if ([input imageType] != 3)
   {
     return 0;
   }
 
-  if ([a3 imageType] != 3)
+  if ([output imageType] != 3)
   {
     return 0;
   }
@@ -91,9 +91,9 @@
 
   v12 = v11;
   v37 = 0;
-  v13 = [v11 getBoolValue:&v37 fromParm:10 atFxTime:a5->var0.var1];
+  v13 = [v11 getBoolValue:&v37 fromParm:10 atFxTime:info->var0.var1];
   v36 = 0;
-  v14 = [v12 getIntValue:&v36 fromParm:9 atFxTime:a5->var0.var1];
+  v14 = [v12 getIntValue:&v36 fromParm:9 atFxTime:info->var0.var1];
   v15 = 0;
   if (v13)
   {
@@ -113,7 +113,7 @@
   if (v37 != 1)
   {
     *&v34 = 0;
-    if ([v12 getFloatValue:&v34 fromParm:11 atFxTime:a5->var0.var1])
+    if ([v12 getFloatValue:&v34 fromParm:11 atFxTime:info->var0.var1])
     {
       v23 = *&v34 / 100.0;
       goto LABEL_13;
@@ -122,7 +122,7 @@
     return 0;
   }
 
-  var1 = a5->var0.var1;
+  var1 = info->var0.var1;
   v18 = MEMORY[0x277CC0888];
   v34 = *MEMORY[0x277CC0888];
   v35 = *(MEMORY[0x277CC0888] + 16);
@@ -159,7 +159,7 @@ LABEL_13:
   {
     *&v31 = v34;
     (*(*v34 + 16))(v34);
-    [a3 setHeliumRef:&v31];
+    [output setHeliumRef:&v31];
     if (v31)
     {
       (*(*v31 + 24))(v31);

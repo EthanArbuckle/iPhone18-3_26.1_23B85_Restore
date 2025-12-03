@@ -1,46 +1,46 @@
 @interface ICQUpgradeOfferView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range;
 - (ICQPageDelegate)delegate;
-- (ICQUpgradeOfferView)initWithFrame:(CGRect)a3;
-- (double)_spacingFromUpperView:(id)a3 toLowerView:(id)a4;
-- (id)_anchorForLowerView:(id)a3;
-- (id)_anchorForUpperView:(id)a3;
+- (ICQUpgradeOfferView)initWithFrame:(CGRect)frame;
+- (double)_spacingFromUpperView:(id)view toLowerView:(id)lowerView;
+- (id)_anchorForLowerView:(id)view;
+- (id)_anchorForUpperView:(id)view;
 - (id)_buttons;
-- (id)_constraintsForView:(id)a3 equalToView:(id)a4;
-- (id)_imageForBundleIdentifier:(id)a3;
+- (id)_constraintsForView:(id)view equalToView:(id)toView;
+- (id)_imageForBundleIdentifier:(id)identifier;
 - (id)_imageForGenericCloud;
 - (id)_makeLinkButton;
 - (id)_makePurchaseButton;
 - (id)fineprintAttributes;
 - (id)fineprintParagraphStyle;
-- (id)horizontalConstraintsForView:(id)a3 margin:(double)a4;
+- (id)horizontalConstraintsForView:(id)view margin:(double)margin;
 - (id)messageAttributes;
 - (id)messageParagraphStyle;
-- (int64_t)_styleOfView:(id)a3;
-- (void)_setButton:(id)a3 backgroundColor:(id)a4;
-- (void)_setButtonTintColor:(id)a3;
-- (void)_setLinkTextColor:(id)a3;
+- (int64_t)_styleOfView:(id)view;
+- (void)_setButton:(id)button backgroundColor:(id)color;
+- (void)_setButtonTintColor:(id)color;
+- (void)_setLinkTextColor:(id)color;
 - (void)_updateTrayVisibility;
-- (void)bottomButtonTapped:(id)a3;
+- (void)bottomButtonTapped:(id)tapped;
 - (void)flashScrollIndicatorsIfNeeded;
 - (void)layoutSubviews;
-- (void)purchase2ButtonTapped:(id)a3;
-- (void)purchaseButtonTapped:(id)a3;
-- (void)setButtonTintColor:(id)a3;
-- (void)setUpgradeMode:(int64_t)a3;
-- (void)setUpgradeOfferPageSpecification:(id)a3;
+- (void)purchase2ButtonTapped:(id)tapped;
+- (void)purchaseButtonTapped:(id)tapped;
+- (void)setButtonTintColor:(id)color;
+- (void)setUpgradeMode:(int64_t)mode;
+- (void)setUpgradeOfferPageSpecification:(id)specification;
 - (void)updateConstraints;
 @end
 
 @implementation ICQUpgradeOfferView
 
-- (int64_t)_styleOfView:(id)a3
+- (int64_t)_styleOfView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(_ICQTextView *)v4 buttonType]== 1)
+    if ([(_ICQTextView *)viewCopy buttonType]== 1)
     {
       v5 = 3;
     }
@@ -53,59 +53,59 @@
 
   else
   {
-    v5 = self->_fineprintView == v4;
+    v5 = self->_fineprintView == viewCopy;
   }
 
   return v5;
 }
 
-- (id)_anchorForUpperView:(id)a3
+- (id)_anchorForUpperView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_trayView == v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (self->_trayView == viewCopy)
   {
-    v6 = [(UIView *)v4 topAnchor];
+    topAnchor = [(UIView *)viewCopy topAnchor];
   }
 
-  else if ([(ICQUpgradeOfferView *)self _styleOfView:v4]== 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if ([(ICQUpgradeOfferView *)self _styleOfView:viewCopy]== 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(UIView *)v5 lastBaselineAnchor];
+    topAnchor = [(UIView *)v5 lastBaselineAnchor];
   }
 
   else
   {
-    v6 = [(UIView *)v5 bottomAnchor];
+    topAnchor = [(UIView *)v5 bottomAnchor];
   }
 
-  v7 = v6;
+  v7 = topAnchor;
 
   return v7;
 }
 
-- (id)_anchorForLowerView:(id)a3
+- (id)_anchorForLowerView:(id)view
 {
-  v4 = a3;
-  if ([(ICQUpgradeOfferView *)self _styleOfView:v4]== 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  viewCopy = view;
+  if ([(ICQUpgradeOfferView *)self _styleOfView:viewCopy]== 3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 firstBaselineAnchor];
+    firstBaselineAnchor = [viewCopy firstBaselineAnchor];
   }
 
   else
   {
-    v5 = [v4 topAnchor];
+    firstBaselineAnchor = [viewCopy topAnchor];
   }
 
-  v6 = v5;
+  v6 = firstBaselineAnchor;
 
   return v6;
 }
 
-- (double)_spacingFromUpperView:(id)a3 toLowerView:(id)a4
+- (double)_spacingFromUpperView:(id)view toLowerView:(id)lowerView
 {
-  v6 = a4;
-  v7 = [(ICQUpgradeOfferView *)self _styleOfView:a3];
-  v8 = [(ICQUpgradeOfferView *)self _styleOfView:v6];
+  lowerViewCopy = lowerView;
+  v7 = [(ICQUpgradeOfferView *)self _styleOfView:view];
+  v8 = [(ICQUpgradeOfferView *)self _styleOfView:lowerViewCopy];
 
   v9 = kViewStyleSpacing[4 * v7 + v8];
   if (v9 < 0.0)
@@ -120,26 +120,26 @@
 
 - (id)_buttons
 {
-  v3 = [(ICQUpgradeOfferView *)self upgradeOfferPageSpecification];
-  v4 = [v3 purchaseLink];
-  v5 = [v4 text];
-  v6 = [v5 length];
+  upgradeOfferPageSpecification = [(ICQUpgradeOfferView *)self upgradeOfferPageSpecification];
+  purchaseLink = [upgradeOfferPageSpecification purchaseLink];
+  text = [purchaseLink text];
+  v6 = [text length];
 
-  v7 = [(ICQUpgradeOfferView *)self upgradeOfferPageSpecification];
-  v8 = [v7 purchase2Link];
-  v9 = [v8 text];
-  v10 = [v9 length];
+  upgradeOfferPageSpecification2 = [(ICQUpgradeOfferView *)self upgradeOfferPageSpecification];
+  purchase2Link = [upgradeOfferPageSpecification2 purchase2Link];
+  text2 = [purchase2Link text];
+  v10 = [text2 length];
 
-  v11 = [(ICQUpgradeOfferView *)self upgradeOfferPageSpecification];
-  v12 = [v11 bottomLink];
-  v13 = [v12 text];
-  v14 = [v13 length];
+  upgradeOfferPageSpecification3 = [(ICQUpgradeOfferView *)self upgradeOfferPageSpecification];
+  bottomLink = [upgradeOfferPageSpecification3 bottomLink];
+  text3 = [bottomLink text];
+  v14 = [text3 length];
 
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = v15;
+  array = [MEMORY[0x277CBEB18] array];
+  v16 = array;
   if (v6)
   {
-    [v15 addObject:self->_purchaseButton];
+    [array addObject:self->_purchaseButton];
   }
 
   if (v10)
@@ -161,18 +161,18 @@
 {
   v3 = [MEMORY[0x277D75220] buttonWithType:0];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(ICQUpgradeOfferView *)self purchaseButtonFont];
-  v5 = [v3 titleLabel];
-  [v5 setFont:v4];
+  purchaseButtonFont = [(ICQUpgradeOfferView *)self purchaseButtonFont];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setFont:purchaseButtonFont];
 
-  v6 = [v3 titleLabel];
-  [v6 setNumberOfLines:0];
+  titleLabel2 = [v3 titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v7 = [v3 titleLabel];
-  [v7 setLineBreakMode:0];
+  titleLabel3 = [v3 titleLabel];
+  [titleLabel3 setLineBreakMode:0];
 
-  v8 = [v3 titleLabel];
-  [v8 setTextAlignment:1];
+  titleLabel4 = [v3 titleLabel];
+  [titleLabel4 setTextAlignment:1];
 
   v9 = [v3 titleColorForState:0];
   v10 = [v9 colorWithAlphaComponent:0.25];
@@ -187,31 +187,31 @@
 {
   v3 = [MEMORY[0x277D75220] buttonWithType:1];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(ICQUpgradeOfferView *)self linkButtonFont];
-  v5 = [v3 titleLabel];
-  [v5 setFont:v4];
+  linkButtonFont = [(ICQUpgradeOfferView *)self linkButtonFont];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setFont:linkButtonFont];
 
-  v6 = [v3 titleLabel];
-  [v6 setNumberOfLines:0];
+  titleLabel2 = [v3 titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v7 = [v3 titleLabel];
-  [v7 setLineBreakMode:0];
+  titleLabel3 = [v3 titleLabel];
+  [titleLabel3 setLineBreakMode:0];
 
-  v8 = [v3 titleLabel];
-  [v8 setTextAlignment:1];
+  titleLabel4 = [v3 titleLabel];
+  [titleLabel4 setTextAlignment:1];
 
   return v3;
 }
 
-- (ICQUpgradeOfferView)initWithFrame:(CGRect)a3
+- (ICQUpgradeOfferView)initWithFrame:(CGRect)frame
 {
   v54.receiver = self;
   v54.super_class = ICQUpgradeOfferView;
-  v3 = [(ICQUpgradeOfferView *)&v54 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICQUpgradeOfferView *)&v54 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(ICQUpgradeOfferView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(ICQUpgradeOfferView *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_alloc_init(MEMORY[0x277D756D0]);
     scrollVisibleLayoutGuide = v3->_scrollVisibleLayoutGuide;
@@ -245,8 +245,8 @@
     v3->_titleLabel = v20;
 
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v22 = [(ICQUpgradeOfferView *)v3 titleFont];
-    [(UILabel *)v3->_titleLabel setFont:v22];
+    titleFont = [(ICQUpgradeOfferView *)v3 titleFont];
+    [(UILabel *)v3->_titleLabel setFont:titleFont];
 
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
@@ -255,27 +255,27 @@
     v3->_messageView = v23;
 
     [(_ICQTextView *)v3->_messageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(ICQUpgradeOfferView *)v3 messageFont];
-    [(_ICQTextView *)v3->_messageView setFont:v25];
+    messageFont = [(ICQUpgradeOfferView *)v3 messageFont];
+    [(_ICQTextView *)v3->_messageView setFont:messageFont];
 
-    v26 = [MEMORY[0x277D75348] clearColor];
-    [(_ICQTextView *)v3->_messageView setBackgroundColor:v26];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(_ICQTextView *)v3->_messageView setBackgroundColor:clearColor];
 
     [(_ICQTextView *)v3->_messageView setDelegate:v3];
-    v27 = [(ICQUpgradeOfferView *)v3 _makePurchaseButton];
+    _makePurchaseButton = [(ICQUpgradeOfferView *)v3 _makePurchaseButton];
     purchaseButton = v3->_purchaseButton;
-    v3->_purchaseButton = v27;
+    v3->_purchaseButton = _makePurchaseButton;
 
     [(UIButton *)v3->_purchaseButton _icq_applyGlassTinted:1];
     [(UIButton *)v3->_purchaseButton addTarget:v3 action:sel_purchaseButtonTapped_ forControlEvents:0x2000];
-    v29 = [(ICQUpgradeOfferView *)v3 _makeLinkButton];
+    _makeLinkButton = [(ICQUpgradeOfferView *)v3 _makeLinkButton];
     purchase2Button = v3->_purchase2Button;
-    v3->_purchase2Button = v29;
+    v3->_purchase2Button = _makeLinkButton;
 
     [(UIButton *)v3->_purchase2Button addTarget:v3 action:sel_purchase2ButtonTapped_ forControlEvents:0x2000];
-    v31 = [(ICQUpgradeOfferView *)v3 _makeLinkButton];
+    _makeLinkButton2 = [(ICQUpgradeOfferView *)v3 _makeLinkButton];
     bottomButton = v3->_bottomButton;
-    v3->_bottomButton = v31;
+    v3->_bottomButton = _makeLinkButton2;
 
     [(UIButton *)v3->_bottomButton _icq_applyGlassTinted:0];
     [(UIButton *)v3->_bottomButton addTarget:v3 action:sel_bottomButtonTapped_ forControlEvents:0x2000];
@@ -290,14 +290,14 @@
     v3->_fineprintView = v35;
 
     [(_ICQTextView *)v3->_fineprintView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v37 = [(ICQUpgradeOfferView *)v3 fineprintFont];
-    [(_ICQTextView *)v3->_fineprintView setFont:v37];
+    fineprintFont = [(ICQUpgradeOfferView *)v3 fineprintFont];
+    [(_ICQTextView *)v3->_fineprintView setFont:fineprintFont];
 
-    v38 = [(ICQUpgradeOfferView *)v3 fineprintColor];
-    [(_ICQTextView *)v3->_fineprintView setTextColor:v38];
+    fineprintColor = [(ICQUpgradeOfferView *)v3 fineprintColor];
+    [(_ICQTextView *)v3->_fineprintView setTextColor:fineprintColor];
 
-    v39 = [MEMORY[0x277D75348] clearColor];
-    [(_ICQTextView *)v3->_fineprintView setBackgroundColor:v39];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(_ICQTextView *)v3->_fineprintView setBackgroundColor:clearColor2];
 
     [(_ICQTextView *)v3->_fineprintView setDelegate:v3];
     [(ICQUpgradeOfferView *)v3 _setButtonTintColor:0];
@@ -356,54 +356,54 @@
   return v3;
 }
 
-- (void)_setButton:(id)a3 backgroundColor:(id)a4
+- (void)_setButton:(id)button backgroundColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v5 colorWithAlphaComponent:0.5];
-  v7 = _PointImageOfColor(v5);
+  colorCopy = color;
+  buttonCopy = button;
+  v9 = [colorCopy colorWithAlphaComponent:0.5];
+  v7 = _PointImageOfColor(colorCopy);
 
-  [v6 setBackgroundImage:v7 forState:0];
+  [buttonCopy setBackgroundImage:v7 forState:0];
   v8 = _PointImageOfColor(v9);
-  [v6 setBackgroundImage:v8 forState:1];
+  [buttonCopy setBackgroundImage:v8 forState:1];
 }
 
-- (void)_setLinkTextColor:(id)a3
+- (void)_setLinkTextColor:(id)color
 {
   messageView = self->_messageView;
-  v5 = a3;
-  v6 = [(_ICQTextView *)messageView linkTextAttributes];
-  v7 = [v6 mutableCopy];
+  colorCopy = color;
+  linkTextAttributes = [(_ICQTextView *)messageView linkTextAttributes];
+  v7 = [linkTextAttributes mutableCopy];
 
   v8 = *MEMORY[0x277D740C0];
-  [v7 setObject:v5 forKeyedSubscript:*MEMORY[0x277D740C0]];
+  [v7 setObject:colorCopy forKeyedSubscript:*MEMORY[0x277D740C0]];
   v9 = [v7 copy];
   [(_ICQTextView *)self->_messageView setLinkTextAttributes:v9];
 
-  v10 = [(_ICQTextView *)self->_fineprintView linkTextAttributes];
-  v12 = [v10 mutableCopy];
+  linkTextAttributes2 = [(_ICQTextView *)self->_fineprintView linkTextAttributes];
+  v12 = [linkTextAttributes2 mutableCopy];
 
-  [v12 setObject:v5 forKeyedSubscript:v8];
+  [v12 setObject:colorCopy forKeyedSubscript:v8];
   v11 = [v12 copy];
   [(_ICQTextView *)self->_fineprintView setLinkTextAttributes:v11];
 }
 
-- (void)_setButtonTintColor:(id)a3
+- (void)_setButtonTintColor:(id)color
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_buttonTintColor, a3);
-  if (!v5)
+  colorCopy = color;
+  objc_storeStrong(&self->_buttonTintColor, color);
+  if (!colorCopy)
   {
-    v5 = [(ICQUpgradeOfferView *)self defaultButtonColor];
+    colorCopy = [(ICQUpgradeOfferView *)self defaultButtonColor];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(ICQUpgradeOfferView *)self _buttons];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _buttons = [(ICQUpgradeOfferView *)self _buttons];
+  v7 = [_buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -414,44 +414,44 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_buttons);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
-        [v11 setTintColor:v5];
+        [v11 setTintColor:colorCopy];
         if ([(ICQUpgradeOfferView *)self _styleOfView:v11]== 2)
         {
-          [(ICQUpgradeOfferView *)self _setButton:v11 backgroundColor:v5];
+          [(ICQUpgradeOfferView *)self _setButton:v11 backgroundColor:colorCopy];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [_buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  [(ICQUpgradeOfferView *)self _setLinkTextColor:v5];
+  [(ICQUpgradeOfferView *)self _setLinkTextColor:colorCopy];
 }
 
-- (void)setButtonTintColor:(id)a3
+- (void)setButtonTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   buttonTintColor = self->_buttonTintColor;
-  if (v4 | buttonTintColor)
+  if (colorCopy | buttonTintColor)
   {
-    v7 = v4;
-    v6 = [(UIColor *)buttonTintColor isEqual:v4];
-    v4 = v7;
+    v7 = colorCopy;
+    v6 = [(UIColor *)buttonTintColor isEqual:colorCopy];
+    colorCopy = v7;
     if ((v6 & 1) == 0)
     {
       [(ICQUpgradeOfferView *)self _setButtonTintColor:v7];
-      v4 = v7;
+      colorCopy = v7;
     }
   }
 }
 
-- (void)purchaseButtonTapped:(id)a3
+- (void)purchaseButtonTapped:(id)tapped
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -461,7 +461,7 @@
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "ICQUpgradeOfferView main button tapped", &v20, 2u);
   }
 
-  v5 = [(ICQUpgradeOfferView *)self delegate];
+  delegate = [(ICQUpgradeOfferView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -469,33 +469,33 @@
     v7 = _ICQGetLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ICQUpgradeOfferView *)self delegate];
+      delegate2 = [(ICQUpgradeOfferView *)self delegate];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [(ICQUpgradeOfferView *)self purchaseLink];
-      [v11 action];
+      purchaseLink = [(ICQUpgradeOfferView *)self purchaseLink];
+      [purchaseLink action];
       v12 = _ICQStringForAction();
-      v13 = [(ICQUpgradeOfferView *)self purchaseLink];
-      v14 = [v13 parameters];
+      purchaseLink2 = [(ICQUpgradeOfferView *)self purchaseLink];
+      parameters = [purchaseLink2 parameters];
       v20 = 138412802;
       v21 = v10;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
-      v25 = v14;
+      v25 = parameters;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "delegate %@ being sent action:%@ parameters:%@", &v20, 0x20u);
     }
 
-    v15 = [(ICQUpgradeOfferView *)self delegate];
-    v16 = [(ICQUpgradeOfferView *)self purchaseLink];
-    v17 = [v16 action];
-    v18 = [(ICQUpgradeOfferView *)self purchaseLink];
-    v19 = [v18 parameters];
-    [v15 sender:self action:v17 parameters:v19];
+    delegate3 = [(ICQUpgradeOfferView *)self delegate];
+    purchaseLink3 = [(ICQUpgradeOfferView *)self purchaseLink];
+    action = [purchaseLink3 action];
+    purchaseLink4 = [(ICQUpgradeOfferView *)self purchaseLink];
+    parameters2 = [purchaseLink4 parameters];
+    [delegate3 sender:self action:action parameters:parameters2];
   }
 }
 
-- (void)purchase2ButtonTapped:(id)a3
+- (void)purchase2ButtonTapped:(id)tapped
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -505,7 +505,7 @@
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "ICQUpgradeOfferView second button tapped", &v20, 2u);
   }
 
-  v5 = [(ICQUpgradeOfferView *)self delegate];
+  delegate = [(ICQUpgradeOfferView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -513,33 +513,33 @@
     v7 = _ICQGetLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ICQUpgradeOfferView *)self delegate];
+      delegate2 = [(ICQUpgradeOfferView *)self delegate];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [(ICQUpgradeOfferView *)self purchase2Link];
-      [v11 action];
+      purchase2Link = [(ICQUpgradeOfferView *)self purchase2Link];
+      [purchase2Link action];
       v12 = _ICQStringForAction();
-      v13 = [(ICQUpgradeOfferView *)self purchase2Link];
-      v14 = [v13 parameters];
+      purchase2Link2 = [(ICQUpgradeOfferView *)self purchase2Link];
+      parameters = [purchase2Link2 parameters];
       v20 = 138412802;
       v21 = v10;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
-      v25 = v14;
+      v25 = parameters;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "delegate %@ being sent action:%@ parameters:%@", &v20, 0x20u);
     }
 
-    v15 = [(ICQUpgradeOfferView *)self delegate];
-    v16 = [(ICQUpgradeOfferView *)self purchase2Link];
-    v17 = [v16 action];
-    v18 = [(ICQUpgradeOfferView *)self purchase2Link];
-    v19 = [v18 parameters];
-    [v15 sender:self action:v17 parameters:v19];
+    delegate3 = [(ICQUpgradeOfferView *)self delegate];
+    purchase2Link3 = [(ICQUpgradeOfferView *)self purchase2Link];
+    action = [purchase2Link3 action];
+    purchase2Link4 = [(ICQUpgradeOfferView *)self purchase2Link];
+    parameters2 = [purchase2Link4 parameters];
+    [delegate3 sender:self action:action parameters:parameters2];
   }
 }
 
-- (void)bottomButtonTapped:(id)a3
+- (void)bottomButtonTapped:(id)tapped
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = _ICQGetLogSystem();
@@ -549,7 +549,7 @@
     _os_log_impl(&dword_275623000, v4, OS_LOG_TYPE_DEFAULT, "ICQUpgradeOfferView bottom button tapped", &v20, 2u);
   }
 
-  v5 = [(ICQUpgradeOfferView *)self delegate];
+  delegate = [(ICQUpgradeOfferView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -557,37 +557,37 @@
     v7 = _ICQGetLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ICQUpgradeOfferView *)self delegate];
+      delegate2 = [(ICQUpgradeOfferView *)self delegate];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [(ICQUpgradeOfferView *)self bottomLink];
-      [v11 action];
+      bottomLink = [(ICQUpgradeOfferView *)self bottomLink];
+      [bottomLink action];
       v12 = _ICQStringForAction();
-      v13 = [(ICQUpgradeOfferView *)self bottomLink];
-      v14 = [v13 parameters];
+      bottomLink2 = [(ICQUpgradeOfferView *)self bottomLink];
+      parameters = [bottomLink2 parameters];
       v20 = 138412802;
       v21 = v10;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
-      v25 = v14;
+      v25 = parameters;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "delegate %@ being sent action:%@ parameters:%@", &v20, 0x20u);
     }
 
-    v15 = [(ICQUpgradeOfferView *)self delegate];
-    v16 = [(ICQUpgradeOfferView *)self bottomLink];
-    v17 = [v16 action];
-    v18 = [(ICQUpgradeOfferView *)self bottomLink];
-    v19 = [v18 parameters];
-    [v15 sender:self action:v17 parameters:v19];
+    delegate3 = [(ICQUpgradeOfferView *)self delegate];
+    bottomLink3 = [(ICQUpgradeOfferView *)self bottomLink];
+    action = [bottomLink3 action];
+    bottomLink4 = [(ICQUpgradeOfferView *)self bottomLink];
+    parameters2 = [bottomLink4 parameters];
+    [delegate3 sender:self action:action parameters:parameters2];
   }
 }
 
 - (id)messageParagraphStyle
 {
   v2 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
-  v3 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v4 = [v3 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v4 = [defaultParagraphStyle mutableCopy];
 
   [v4 setAlignment:1];
   [v2 scaledValueForValue:8.0];
@@ -601,14 +601,14 @@
 {
   v9[3] = *MEMORY[0x277D85DE8];
   v8[0] = *MEMORY[0x277D740A8];
-  v3 = [(ICQUpgradeOfferView *)self messageFont];
-  v9[0] = v3;
+  messageFont = [(ICQUpgradeOfferView *)self messageFont];
+  v9[0] = messageFont;
   v8[1] = *MEMORY[0x277D740C0];
-  v4 = [(ICQUpgradeOfferView *)self messageTextColor];
-  v9[1] = v4;
+  messageTextColor = [(ICQUpgradeOfferView *)self messageTextColor];
+  v9[1] = messageTextColor;
   v8[2] = *MEMORY[0x277D74118];
-  v5 = [(ICQUpgradeOfferView *)self messageParagraphStyle];
-  v9[2] = v5;
+  messageParagraphStyle = [(ICQUpgradeOfferView *)self messageParagraphStyle];
+  v9[2] = messageParagraphStyle;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
@@ -616,8 +616,8 @@
 
 - (id)fineprintParagraphStyle
 {
-  v2 = [MEMORY[0x277D74248] defaultParagraphStyle];
-  v3 = [v2 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+  v3 = [defaultParagraphStyle mutableCopy];
 
   [v3 setAlignment:1];
   [v3 setLineSpacing:0.0];
@@ -630,14 +630,14 @@
 {
   v9[3] = *MEMORY[0x277D85DE8];
   v8[0] = *MEMORY[0x277D740A8];
-  v3 = [(ICQUpgradeOfferView *)self fineprintFont];
-  v9[0] = v3;
+  fineprintFont = [(ICQUpgradeOfferView *)self fineprintFont];
+  v9[0] = fineprintFont;
   v8[1] = *MEMORY[0x277D740C0];
-  v4 = [(ICQUpgradeOfferView *)self fineprintColor];
-  v9[1] = v4;
+  fineprintColor = [(ICQUpgradeOfferView *)self fineprintColor];
+  v9[1] = fineprintColor;
   v8[2] = *MEMORY[0x277D74118];
-  v5 = [(ICQUpgradeOfferView *)self fineprintParagraphStyle];
-  v9[2] = v5;
+  fineprintParagraphStyle = [(ICQUpgradeOfferView *)self fineprintParagraphStyle];
+  v9[2] = fineprintParagraphStyle;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
@@ -646,46 +646,46 @@
 - (id)_imageForGenericCloud
 {
   v2 = [MEMORY[0x277D755B8] icqBundleImageNamed:@"iCloudImage"];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = [v2 _applicationIconImageForFormat:2 precomposed:0 scale:?];
 
   return v4;
 }
 
-- (id)_imageForBundleIdentifier:(id)a3
+- (id)_imageForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 length] || (objc_msgSend(v4, "isEqualToString:", @"com.apple.iCloudDriveApp") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"com.apple.DocumentsApp") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"com.apple.__mobilebackup__") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.Preferences"))
+  identifierCopy = identifier;
+  if (![identifierCopy length] || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.iCloudDriveApp") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.DocumentsApp") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.__mobilebackup__") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.Preferences"))
   {
-    v5 = [(ICQUpgradeOfferView *)self _imageForGenericCloud];
+    _imageForGenericCloud = [(ICQUpgradeOfferView *)self _imageForGenericCloud];
   }
 
   else
   {
     v7 = MEMORY[0x277D755B8];
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
-    v5 = [v7 _applicationIconImageForBundleIdentifier:v4 format:2 scale:?];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    _imageForGenericCloud = [v7 _applicationIconImageForBundleIdentifier:identifierCopy format:2 scale:?];
   }
 
-  return v5;
+  return _imageForGenericCloud;
 }
 
-- (void)setUpgradeOfferPageSpecification:(id)a3
+- (void)setUpgradeOfferPageSpecification:(id)specification
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_upgradeOfferPageSpecification != v5)
+  specificationCopy = specification;
+  if (self->_upgradeOfferPageSpecification != specificationCopy)
   {
-    objc_storeStrong(&self->_upgradeOfferPageSpecification, a3);
-    v6 = [(_ICQUpgradeOfferPageSpecification *)v5 iconBundleIdentifier];
-    v7 = [(ICQUpgradeOfferView *)self _imageForBundleIdentifier:v6];
+    objc_storeStrong(&self->_upgradeOfferPageSpecification, specification);
+    iconBundleIdentifier = [(_ICQUpgradeOfferPageSpecification *)specificationCopy iconBundleIdentifier];
+    v7 = [(ICQUpgradeOfferView *)self _imageForBundleIdentifier:iconBundleIdentifier];
     [(UIImageView *)self->_iconView setImage:v7];
 
-    v8 = [(UIImageView *)self->_iconView image];
+    image = [(UIImageView *)self->_iconView image];
 
-    if (v8)
+    if (image)
     {
       iconView = self->_iconView;
       v10 = 0;
@@ -696,9 +696,9 @@
       v11 = _ICQGetLogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(_ICQUpgradeOfferPageSpecification *)v5 iconBundleIdentifier];
+        iconBundleIdentifier2 = [(_ICQUpgradeOfferPageSpecification *)specificationCopy iconBundleIdentifier];
         v40 = 138412290;
-        v41 = v12;
+        v41 = iconBundleIdentifier2;
         _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "no image available for bundle id %@", &v40, 0xCu);
       }
 
@@ -707,24 +707,24 @@
     }
 
     [(UIImageView *)iconView setHidden:v10];
-    v13 = [(_ICQUpgradeOfferPageSpecification *)v5 title];
-    [(UILabel *)self->_titleLabel setText:v13];
+    title = [(_ICQUpgradeOfferPageSpecification *)specificationCopy title];
+    [(UILabel *)self->_titleLabel setText:title];
 
-    v14 = [(ICQUpgradeOfferView *)self messageAttributes];
-    [(_ICQTextView *)self->_messageView setAttributes:v14];
+    messageAttributes = [(ICQUpgradeOfferView *)self messageAttributes];
+    [(_ICQTextView *)self->_messageView setAttributes:messageAttributes];
 
     v15 = MEMORY[0x277D7F390];
-    v16 = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification message];
-    v17 = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification altMessage];
-    v18 = [v15 stringWithPlaceholderFormat:v16 alternateString:v17];
+    message = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification message];
+    altMessage = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification altMessage];
+    v18 = [v15 stringWithPlaceholderFormat:message alternateString:altMessage];
     [(_ICQTextView *)self->_messageView setFormat:v18];
 
-    v19 = [(_ICQTextView *)self->_messageView format];
-    v20 = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification altMessage];
-    LODWORD(v17) = [v19 isEqualToString:v20];
+    format = [(_ICQTextView *)self->_messageView format];
+    altMessage2 = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification altMessage];
+    LODWORD(altMessage) = [format isEqualToString:altMessage2];
 
     upgradeOfferPageSpecification = self->_upgradeOfferPageSpecification;
-    if (v17)
+    if (altMessage)
     {
       [(_ICQUpgradeOfferPageSpecification *)upgradeOfferPageSpecification altMessageLinks];
     }
@@ -738,33 +738,33 @@
 
     [(_ICQTextView *)self->_messageView setAttributedText];
     [(_ICQTextView *)self->_messageView layoutIfNeeded];
-    v23 = [(_ICQUpgradeOfferPageSpecification *)v5 purchaseLink];
+    purchaseLink = [(_ICQUpgradeOfferPageSpecification *)specificationCopy purchaseLink];
     purchaseLink = self->_purchaseLink;
-    self->_purchaseLink = v23;
+    self->_purchaseLink = purchaseLink;
 
-    v25 = [(_ICQUpgradeOfferPageSpecification *)v5 purchase2Link];
+    purchase2Link = [(_ICQUpgradeOfferPageSpecification *)specificationCopy purchase2Link];
     purchase2Link = self->_purchase2Link;
-    self->_purchase2Link = v25;
+    self->_purchase2Link = purchase2Link;
 
-    v27 = [(_ICQUpgradeOfferPageSpecification *)v5 bottomLink];
+    bottomLink = [(_ICQUpgradeOfferPageSpecification *)specificationCopy bottomLink];
     bottomLink = self->_bottomLink;
-    self->_bottomLink = v27;
+    self->_bottomLink = bottomLink;
 
     purchaseButton = self->_purchaseButton;
-    v30 = [(ICQLink *)self->_purchaseLink text];
-    [(UIButton *)purchaseButton setTitle:v30 forState:0];
+    text = [(ICQLink *)self->_purchaseLink text];
+    [(UIButton *)purchaseButton setTitle:text forState:0];
 
     purchase2Button = self->_purchase2Button;
-    v32 = [(ICQLink *)self->_purchase2Link text];
-    [(UIButton *)purchase2Button setTitle:v32 forState:0];
+    text2 = [(ICQLink *)self->_purchase2Link text];
+    [(UIButton *)purchase2Button setTitle:text2 forState:0];
 
-    v33 = [(ICQLink *)self->_bottomLink text];
+    text3 = [(ICQLink *)self->_bottomLink text];
 
     bottomButton = self->_bottomButton;
-    if (v33)
+    if (text3)
     {
-      v35 = [(ICQLink *)self->_bottomLink text];
-      [(UIButton *)bottomButton setTitle:v35 forState:0];
+      text4 = [(ICQLink *)self->_bottomLink text];
+      [(UIButton *)bottomButton setTitle:text4 forState:0];
     }
 
     else
@@ -772,30 +772,30 @@
       [(UIButton *)self->_bottomButton setHidden:1];
     }
 
-    v36 = [(ICQUpgradeOfferView *)self fineprintAttributes];
-    [(_ICQTextView *)self->_fineprintView setAttributes:v36];
+    fineprintAttributes = [(ICQUpgradeOfferView *)self fineprintAttributes];
+    [(_ICQTextView *)self->_fineprintView setAttributes:fineprintAttributes];
 
-    v37 = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification fineprintFormat];
-    [(_ICQTextView *)self->_fineprintView setFormat:v37];
+    fineprintFormat = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification fineprintFormat];
+    [(_ICQTextView *)self->_fineprintView setFormat:fineprintFormat];
 
-    v38 = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification fineprintLinks];
-    [(_ICQTextView *)self->_fineprintView setLinks:v38];
+    fineprintLinks = [(_ICQUpgradeOfferPageSpecification *)self->_upgradeOfferPageSpecification fineprintLinks];
+    [(_ICQTextView *)self->_fineprintView setLinks:fineprintLinks];
 
     [(_ICQTextView *)self->_fineprintView setAttributedText];
     [(_ICQTextView *)self->_fineprintView layoutIfNeeded];
-    v39 = [(ICQUpgradeOfferView *)self buttonTintColor];
-    [(ICQUpgradeOfferView *)self _setButtonTintColor:v39];
+    buttonTintColor = [(ICQUpgradeOfferView *)self buttonTintColor];
+    [(ICQUpgradeOfferView *)self _setButtonTintColor:buttonTintColor];
 
     [(ICQUpgradeOfferView *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setUpgradeMode:(int64_t)a3
+- (void)setUpgradeMode:(int64_t)mode
 {
-  if (self->_upgradeMode != a3)
+  if (self->_upgradeMode != mode)
   {
-    self->_upgradeMode = a3;
-    if (a3 == 1)
+    self->_upgradeMode = mode;
+    if (mode == 1)
     {
       [(UIButton *)self->_purchaseButton setHidden:?];
       [(UIButton *)self->_purchase2Button setHidden:1];
@@ -804,7 +804,7 @@
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
     }
 
-    else if (!a3)
+    else if (!mode)
     {
       [(UIButton *)self->_purchaseButton setHidden:?];
       [(UIButton *)self->_purchase2Button setHidden:0];
@@ -817,36 +817,36 @@
   }
 }
 
-- (id)horizontalConstraintsForView:(id)a3 margin:(double)a4
+- (id)horizontalConstraintsForView:(id)view margin:(double)margin
 {
   v25[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 isHidden])
+  viewCopy = view;
+  if ([viewCopy isHidden])
   {
     v7 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v23 = [v6 centerXAnchor];
-    v24 = [v6 superview];
-    v22 = [v24 centerXAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    centerXAnchor = [viewCopy centerXAnchor];
+    superview = [viewCopy superview];
+    centerXAnchor2 = [superview centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v25[0] = v21;
-    v19 = [v6 widthAnchor];
-    v20 = [(ICQUpgradeOfferView *)self readableContentGuide];
-    v18 = [v20 widthAnchor];
-    v17 = [v19 constraintLessThanOrEqualToAnchor:v18];
+    widthAnchor = [viewCopy widthAnchor];
+    readableContentGuide = [(ICQUpgradeOfferView *)self readableContentGuide];
+    widthAnchor2 = [readableContentGuide widthAnchor];
+    v17 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v25[1] = v17;
-    v8 = [v6 leftAnchor];
-    v9 = [v6 superview];
-    v10 = [v9 leftAnchor];
-    v11 = [v8 constraintGreaterThanOrEqualToAnchor:v10 constant:a4];
+    leftAnchor = [viewCopy leftAnchor];
+    superview2 = [viewCopy superview];
+    leftAnchor2 = [superview2 leftAnchor];
+    v11 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:margin];
     v25[2] = v11;
-    v12 = [v6 rightAnchor];
-    v13 = [v6 superview];
-    v14 = [v13 rightAnchor];
-    v15 = [v12 constraintLessThanOrEqualToAnchor:v14 constant:-a4];
+    rightAnchor = [viewCopy rightAnchor];
+    superview3 = [viewCopy superview];
+    rightAnchor2 = [superview3 rightAnchor];
+    v15 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2 constant:-margin];
     v25[3] = v15;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:4];
   }
@@ -854,28 +854,28 @@
   return v7;
 }
 
-- (id)_constraintsForView:(id)a3 equalToView:(id)a4
+- (id)_constraintsForView:(id)view equalToView:(id)toView
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v20 = [v6 centerXAnchor];
-  v19 = [v5 centerXAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  toViewCopy = toView;
+  viewCopy = view;
+  centerXAnchor = [viewCopy centerXAnchor];
+  centerXAnchor2 = [toViewCopy centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v21[0] = v18;
-  v7 = [v6 widthAnchor];
-  v8 = [v5 widthAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  widthAnchor = [viewCopy widthAnchor];
+  widthAnchor2 = [toViewCopy widthAnchor];
+  v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v21[1] = v9;
-  v10 = [v6 centerYAnchor];
-  v11 = [v5 centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerYAnchor = [viewCopy centerYAnchor];
+  centerYAnchor2 = [toViewCopy centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v21[2] = v12;
-  v13 = [v6 heightAnchor];
+  heightAnchor = [viewCopy heightAnchor];
 
-  v14 = [v5 heightAnchor];
+  heightAnchor2 = [toViewCopy heightAnchor];
 
-  v15 = [v13 constraintEqualToAnchor:v14];
+  v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v21[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
 
@@ -886,63 +886,63 @@
 {
   v149 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CCAAD0] deactivateConstraints:self->_activeConstraints];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(UIImageView *)self->_iconView isHidden];
+  array = [MEMORY[0x277CBEB18] array];
+  isHidden = [(UIImageView *)self->_iconView isHidden];
   v5 = [(ICQUpgradeOfferView *)self _constraintsForView:self->_scrollView equalToView:self];
-  [v3 addObjectsFromArray:v5];
+  [array addObjectsFromArray:v5];
 
   v6 = [(ICQUpgradeOfferView *)self _constraintsForView:self->_blurBackdrop equalToView:self->_trayView];
-  [v3 addObjectsFromArray:v6];
+  [array addObjectsFromArray:v6];
 
-  v7 = [(UIView *)self->_trayView centerXAnchor];
-  v8 = [(ICQUpgradeOfferView *)self centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
-  [v3 addObject:v9];
+  centerXAnchor = [(UIView *)self->_trayView centerXAnchor];
+  centerXAnchor2 = [(ICQUpgradeOfferView *)self centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v9];
 
-  v10 = [(UIView *)self->_trayView widthAnchor];
-  v11 = [(ICQUpgradeOfferView *)self widthAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
-  [v3 addObject:v12];
+  widthAnchor = [(UIView *)self->_trayView widthAnchor];
+  widthAnchor2 = [(ICQUpgradeOfferView *)self widthAnchor];
+  v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+  [array addObject:v12];
 
-  v13 = [(UIView *)self->_trayView bottomAnchor];
-  v14 = [(ICQUpgradeOfferView *)self bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
-  [v3 addObject:v15];
+  bottomAnchor = [(UIView *)self->_trayView bottomAnchor];
+  bottomAnchor2 = [(ICQUpgradeOfferView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v15];
 
-  v16 = [(UIView *)self->_contentView centerXAnchor];
-  v17 = [(UIScrollView *)self->_scrollView centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
-  [v3 addObject:v18];
+  centerXAnchor3 = [(UIView *)self->_contentView centerXAnchor];
+  centerXAnchor4 = [(UIScrollView *)self->_scrollView centerXAnchor];
+  v18 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+  [array addObject:v18];
 
-  v19 = [(UIView *)self->_contentView widthAnchor];
-  v20 = [(UIScrollView *)self->_scrollView widthAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
-  [v3 addObject:v21];
+  widthAnchor3 = [(UIView *)self->_contentView widthAnchor];
+  widthAnchor4 = [(UIScrollView *)self->_scrollView widthAnchor];
+  v21 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
+  [array addObject:v21];
 
-  v136 = v4;
-  if ((v4 & 1) == 0)
+  v136 = isHidden;
+  if ((isHidden & 1) == 0)
   {
-    v22 = [(UIImageView *)self->_iconView centerXAnchor];
-    v23 = [(UIView *)self->_contentView centerXAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
-    [v3 addObject:v24];
+    centerXAnchor5 = [(UIImageView *)self->_iconView centerXAnchor];
+    centerXAnchor6 = [(UIView *)self->_contentView centerXAnchor];
+    v24 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
+    [array addObject:v24];
   }
 
   v25 = [(ICQUpgradeOfferView *)self horizontalConstraintsForView:self->_titleLabel margin:24.0, &self->_iconView];
-  [v3 addObjectsFromArray:v25];
+  [array addObjectsFromArray:v25];
 
   v26 = [(ICQUpgradeOfferView *)self horizontalConstraintsForView:self->_messageView margin:24.0];
-  [v3 addObjectsFromArray:v26];
+  [array addObjectsFromArray:v26];
 
   v27 = [(ICQUpgradeOfferView *)self horizontalConstraintsForView:self->_fineprintView margin:24.0];
-  [v3 addObjectsFromArray:v27];
+  [array addObjectsFromArray:v27];
 
   v145 = 0u;
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v28 = [(ICQUpgradeOfferView *)self _buttons];
-  v29 = [v28 countByEnumeratingWithState:&v143 objects:v148 count:16];
+  _buttons = [(ICQUpgradeOfferView *)self _buttons];
+  v29 = [_buttons countByEnumeratingWithState:&v143 objects:v148 count:16];
   if (v29)
   {
     v30 = v29;
@@ -954,56 +954,56 @@
       {
         if (*v144 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(_buttons);
         }
 
         v34 = *(*(&v143 + 1) + 8 * i);
         [(ICQUpgradeOfferView *)self _marginForButton:v34];
         v35 = [(ICQUpgradeOfferView *)self horizontalConstraintsForView:v34 margin:?];
-        [v3 addObjectsFromArray:v35];
+        [array addObjectsFromArray:v35];
 
-        v36 = [v34 widthAnchor];
-        v37 = [v36 constraintEqualToConstant:v32];
-        [v3 addObject:v37];
+        widthAnchor5 = [v34 widthAnchor];
+        v37 = [widthAnchor5 constraintEqualToConstant:v32];
+        [array addObject:v37];
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v143 objects:v148 count:16];
+      v30 = [_buttons countByEnumeratingWithState:&v143 objects:v148 count:16];
     }
 
     while (v30);
   }
 
-  v38 = [(UILayoutGuide *)self->_scrollVisibleLayoutGuide topAnchor];
-  v39 = [(ICQUpgradeOfferView *)self safeAreaLayoutGuide];
-  v40 = [v39 topAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
-  [v3 addObject:v41];
+  topAnchor = [(UILayoutGuide *)self->_scrollVisibleLayoutGuide topAnchor];
+  safeAreaLayoutGuide = [(ICQUpgradeOfferView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v41];
 
-  v42 = [(UILayoutGuide *)self->_scrollVisibleLayoutGuide bottomAnchor];
-  v43 = [(UIView *)self->_trayView topAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
-  [v3 addObject:v44];
+  bottomAnchor3 = [(UILayoutGuide *)self->_scrollVisibleLayoutGuide bottomAnchor];
+  topAnchor3 = [(UIView *)self->_trayView topAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3];
+  [array addObject:v44];
 
-  v45 = [(UIView *)self->_contentView heightAnchor];
-  v46 = [(UILayoutGuide *)self->_scrollVisibleLayoutGuide heightAnchor];
-  v47 = [v45 constraintGreaterThanOrEqualToAnchor:v46];
-  [v3 addObject:v47];
+  heightAnchor = [(UIView *)self->_contentView heightAnchor];
+  heightAnchor2 = [(UILayoutGuide *)self->_scrollVisibleLayoutGuide heightAnchor];
+  v47 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
+  [array addObject:v47];
 
   p_headerView = &self->_headerView;
-  v49 = [(UIView *)self->_headerView topAnchor];
-  v50 = [(UIView *)self->_contentView topAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
-  [v3 addObject:v51];
+  topAnchor4 = [(UIView *)self->_headerView topAnchor];
+  topAnchor5 = [(UIView *)self->_contentView topAnchor];
+  v51 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
+  [array addObject:v51];
 
-  v52 = [(UIView *)self->_footerView bottomAnchor];
-  v53 = [(UIView *)self->_contentView bottomAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
-  [v3 addObject:v54];
+  bottomAnchor4 = [(UIView *)self->_footerView bottomAnchor];
+  bottomAnchor5 = [(UIView *)self->_contentView bottomAnchor];
+  v54 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
+  [array addObject:v54];
 
-  v55 = [(UIView *)self->_headerView heightAnchor];
-  v56 = [(UIView *)self->_footerView heightAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
-  [v3 addObject:v57];
+  heightAnchor3 = [(UIView *)self->_headerView heightAnchor];
+  heightAnchor4 = [(UIView *)self->_footerView heightAnchor];
+  v57 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
+  [array addObject:v57];
 
   if (v136)
   {
@@ -1012,52 +1012,52 @@
 
   else
   {
-    v59 = [*v134 topAnchor];
-    v60 = [(UIView *)*p_headerView bottomAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60 constant:12.0];
-    [v3 addObject:v61];
+    topAnchor6 = [*v134 topAnchor];
+    bottomAnchor6 = [(UIView *)*p_headerView bottomAnchor];
+    v61 = [topAnchor6 constraintEqualToAnchor:bottomAnchor6 constant:12.0];
+    [array addObject:v61];
 
     v58 = 20.0;
     p_headerView = v134;
   }
 
-  v62 = [(UILabel *)self->_titleLabel topAnchor];
-  v63 = [(UIView *)*p_headerView bottomAnchor];
-  v64 = [v62 constraintEqualToAnchor:v63 constant:v58];
-  [v3 addObject:v64];
+  topAnchor7 = [(UILabel *)self->_titleLabel topAnchor];
+  bottomAnchor7 = [(UIView *)*p_headerView bottomAnchor];
+  v64 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7 constant:v58];
+  [array addObject:v64];
 
-  v65 = [(_ICQTextView *)self->_messageView topAnchor];
-  v66 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66 constant:15.0];
-  [v3 addObject:v67];
+  topAnchor8 = [(_ICQTextView *)self->_messageView topAnchor];
+  bottomAnchor8 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v67 = [topAnchor8 constraintEqualToAnchor:bottomAnchor8 constant:15.0];
+  [array addObject:v67];
 
-  v68 = [(UIView *)self->_footerView topAnchor];
-  v69 = [(_ICQTextView *)self->_messageView bottomAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69 constant:15.0];
-  [v3 addObject:v70];
+  topAnchor9 = [(UIView *)self->_footerView topAnchor];
+  bottomAnchor9 = [(_ICQTextView *)self->_messageView bottomAnchor];
+  v70 = [topAnchor9 constraintEqualToAnchor:bottomAnchor9 constant:15.0];
+  [array addObject:v70];
 
-  v71 = [(_ICQTextView *)self->_fineprintView text];
-  v72 = [v71 length];
+  text = [(_ICQTextView *)self->_fineprintView text];
+  v72 = [text length];
 
   p_super = self->_trayView;
   if (v72)
   {
-    v74 = [(_ICQTextView *)self->_fineprintView topAnchor];
-    v75 = [(UIView *)self->_trayView topAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75 constant:11.0];
-    [v3 addObject:v76];
+    topAnchor10 = [(_ICQTextView *)self->_fineprintView topAnchor];
+    topAnchor11 = [(UIView *)self->_trayView topAnchor];
+    v76 = [topAnchor10 constraintEqualToAnchor:topAnchor11 constant:11.0];
+    [array addObject:v76];
 
     v77 = self->_fineprintView;
     p_super = &v77->super.super.super;
   }
 
-  v78 = [(ICQUpgradeOfferView *)self _buttons];
+  _buttons2 = [(ICQUpgradeOfferView *)self _buttons];
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v79 = [v78 countByEnumeratingWithState:&v139 objects:v147 count:16];
-  v135 = v78;
+  v79 = [_buttons2 countByEnumeratingWithState:&v139 objects:v147 count:16];
+  v135 = _buttons2;
   if (v79)
   {
     v80 = v79;
@@ -1070,7 +1070,7 @@
       {
         if (*v140 != v137)
         {
-          objc_enumerationMutation(v78);
+          objc_enumerationMutation(_buttons2);
         }
 
         v83 = *(*(&v139 + 1) + 8 * v81);
@@ -1078,39 +1078,39 @@
         v85 = [(ICQUpgradeOfferView *)self _anchorForUpperView:v82];
         [(ICQUpgradeOfferView *)self _spacingFromUpperView:v82 toLowerView:v83];
         v86 = [v84 constraintEqualToAnchor:v85 constant:?];
-        [v3 addObject:v86];
+        [array addObject:v86];
 
         if ([(ICQUpgradeOfferView *)self _styleOfView:v83]== 2)
         {
-          v87 = [v83 heightAnchor];
-          v88 = [v87 constraintGreaterThanOrEqualToConstant:50.0];
-          [v3 addObject:v88];
+          heightAnchor5 = [v83 heightAnchor];
+          v88 = [heightAnchor5 constraintGreaterThanOrEqualToConstant:50.0];
+          [array addObject:v88];
 
-          v89 = [v83 titleLabel];
-          v90 = [v89 topAnchor];
-          v91 = [v83 topAnchor];
-          v92 = [v90 constraintGreaterThanOrEqualToAnchor:v91 constant:14.0];
-          [v3 addObject:v92];
+          titleLabel = [v83 titleLabel];
+          topAnchor12 = [titleLabel topAnchor];
+          topAnchor13 = [v83 topAnchor];
+          v92 = [topAnchor12 constraintGreaterThanOrEqualToAnchor:topAnchor13 constant:14.0];
+          [array addObject:v92];
 
-          v93 = [v83 bottomAnchor];
-          v94 = [v83 titleLabel];
-          v95 = [v94 bottomAnchor];
-          v96 = [v93 constraintGreaterThanOrEqualToAnchor:v95 constant:14.0];
-          [v3 addObject:v96];
+          bottomAnchor10 = [v83 bottomAnchor];
+          titleLabel2 = [v83 titleLabel];
+          bottomAnchor11 = [titleLabel2 bottomAnchor];
+          v96 = [bottomAnchor10 constraintGreaterThanOrEqualToAnchor:bottomAnchor11 constant:14.0];
+          [array addObject:v96];
 
-          v97 = [v83 titleLabel];
-          v98 = [v97 leftAnchor];
-          v99 = [v83 leftAnchor];
-          v100 = [v98 constraintGreaterThanOrEqualToAnchor:v99 constant:16.0];
-          [v3 addObject:v100];
+          titleLabel3 = [v83 titleLabel];
+          leftAnchor = [titleLabel3 leftAnchor];
+          leftAnchor2 = [v83 leftAnchor];
+          v100 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:16.0];
+          [array addObject:v100];
 
-          v101 = [v83 rightAnchor];
-          v102 = [v83 titleLabel];
-          v103 = [v102 rightAnchor];
-          v104 = [v101 constraintGreaterThanOrEqualToAnchor:v103 constant:16.0];
-          [v3 addObject:v104];
+          rightAnchor = [v83 rightAnchor];
+          titleLabel4 = [v83 titleLabel];
+          rightAnchor2 = [titleLabel4 rightAnchor];
+          v104 = [rightAnchor constraintGreaterThanOrEqualToAnchor:rightAnchor2 constant:16.0];
+          [array addObject:v104];
 
-          v78 = v135;
+          _buttons2 = v135;
         }
 
         p_super = v83;
@@ -1120,7 +1120,7 @@
       }
 
       while (v80 != v81);
-      v80 = [v78 countByEnumeratingWithState:&v139 objects:v147 count:16];
+      v80 = [_buttons2 countByEnumeratingWithState:&v139 objects:v147 count:16];
     }
 
     while (v80);
@@ -1132,49 +1132,49 @@
     v106 = v105;
     [(ICQUpgradeOfferView *)self safeAreaInsets];
     v108 = v106 + v107;
-    v109 = [(UIView *)self->_trayView bottomAnchor];
+    bottomAnchor12 = [(UIView *)self->_trayView bottomAnchor];
     v110 = [(ICQUpgradeOfferView *)self _anchorForUpperView:p_super];
-    v111 = [v109 constraintEqualToAnchor:v110 constant:v108];
-    [v3 addObject:v111];
+    v111 = [bottomAnchor12 constraintEqualToAnchor:v110 constant:v108];
+    [array addObject:v111];
   }
 
-  if ((-[UIActivityIndicatorView isHidden](self->_spinner, "isHidden") & 1) == 0 && [v78 count])
+  if ((-[UIActivityIndicatorView isHidden](self->_spinner, "isHidden") & 1) == 0 && [_buttons2 count])
   {
-    v112 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-    v113 = [(UIView *)self->_trayView centerXAnchor];
-    v114 = [v112 constraintEqualToAnchor:v113];
-    [v3 addObject:v114];
+    centerXAnchor7 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+    centerXAnchor8 = [(UIView *)self->_trayView centerXAnchor];
+    v114 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
+    [array addObject:v114];
 
-    v115 = [(UILayoutGuide *)self->_aboveSpinnerLayoutGuide topAnchor];
-    v116 = [v78 firstObject];
-    v117 = [v116 topAnchor];
-    v118 = [v115 constraintEqualToAnchor:v117];
-    [v3 addObject:v118];
+    topAnchor14 = [(UILayoutGuide *)self->_aboveSpinnerLayoutGuide topAnchor];
+    firstObject = [_buttons2 firstObject];
+    topAnchor15 = [firstObject topAnchor];
+    v118 = [topAnchor14 constraintEqualToAnchor:topAnchor15];
+    [array addObject:v118];
 
-    v119 = [(UILayoutGuide *)self->_aboveSpinnerLayoutGuide bottomAnchor];
-    v120 = [(UIActivityIndicatorView *)self->_spinner topAnchor];
-    v121 = [v119 constraintEqualToAnchor:v120];
-    [v3 addObject:v121];
+    bottomAnchor13 = [(UILayoutGuide *)self->_aboveSpinnerLayoutGuide bottomAnchor];
+    topAnchor16 = [(UIActivityIndicatorView *)self->_spinner topAnchor];
+    v121 = [bottomAnchor13 constraintEqualToAnchor:topAnchor16];
+    [array addObject:v121];
 
-    v122 = [(UILayoutGuide *)self->_belowSpinnerLayoutGuide topAnchor];
-    v123 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
-    v124 = [v122 constraintEqualToAnchor:v123];
-    [v3 addObject:v124];
+    topAnchor17 = [(UILayoutGuide *)self->_belowSpinnerLayoutGuide topAnchor];
+    bottomAnchor14 = [(UIActivityIndicatorView *)self->_spinner bottomAnchor];
+    v124 = [topAnchor17 constraintEqualToAnchor:bottomAnchor14];
+    [array addObject:v124];
 
-    v125 = [(UILayoutGuide *)self->_belowSpinnerLayoutGuide bottomAnchor];
-    v126 = [v135 lastObject];
-    v127 = [(ICQUpgradeOfferView *)self _anchorForUpperView:v126];
-    v128 = [v125 constraintEqualToAnchor:v127];
-    [v3 addObject:v128];
+    bottomAnchor15 = [(UILayoutGuide *)self->_belowSpinnerLayoutGuide bottomAnchor];
+    lastObject = [v135 lastObject];
+    v127 = [(ICQUpgradeOfferView *)self _anchorForUpperView:lastObject];
+    v128 = [bottomAnchor15 constraintEqualToAnchor:v127];
+    [array addObject:v128];
 
-    v129 = [(UILayoutGuide *)self->_aboveSpinnerLayoutGuide heightAnchor];
-    v78 = v135;
-    v130 = [(UILayoutGuide *)self->_belowSpinnerLayoutGuide heightAnchor];
-    v131 = [v129 constraintEqualToAnchor:v130];
-    [v3 addObject:v131];
+    heightAnchor6 = [(UILayoutGuide *)self->_aboveSpinnerLayoutGuide heightAnchor];
+    _buttons2 = v135;
+    heightAnchor7 = [(UILayoutGuide *)self->_belowSpinnerLayoutGuide heightAnchor];
+    v131 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7];
+    [array addObject:v131];
   }
 
-  v132 = [v3 copy];
+  v132 = [array copy];
   activeConstraints = self->_activeConstraints;
   self->_activeConstraints = v132;
 
@@ -1244,38 +1244,38 @@
   [(UIVisualEffectView *)blurBackdrop setHidden:v13];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 links];
-    v9 = [v7 icqIndex];
-    if (v9 > 0x7FFFFFFFFFFFFFFELL)
+    links = [viewCopy links];
+    icqIndex = [lCopy icqIndex];
+    if (icqIndex > 0x7FFFFFFFFFFFFFFELL)
     {
       goto LABEL_23;
     }
 
-    v10 = v9;
-    if (v9 >= [v8 count])
+    v10 = icqIndex;
+    if (icqIndex >= [links count])
     {
       goto LABEL_23;
     }
 
-    v11 = [v8 objectAtIndexedSubscript:v10];
+    v11 = [links objectAtIndexedSubscript:v10];
     if ([v11 action] != 6)
     {
       v13 = _ICQGetLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v11 text];
+        text = [v11 text];
         [v11 action];
         v16 = _ICQStringForAction();
         v24 = 138412546;
-        v25 = v15;
+        v25 = text;
         v26 = 2112;
         v27 = v16;
         _os_log_impl(&dword_275623000, v13, OS_LOG_TYPE_DEFAULT, "tapped %@, but link action %@ unsupported in ICQTextView", &v24, 0x16u);
@@ -1284,8 +1284,8 @@
       goto LABEL_22;
     }
 
-    v12 = [v11 parameters];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D7F280]];
+    parameters = [v11 parameters];
+    v13 = [parameters objectForKeyedSubscript:*MEMORY[0x277D7F280]];
 
     if (v13)
     {
@@ -1299,11 +1299,11 @@ LABEL_19:
           v14 = _ICQGetLogSystem();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v11 text];
+            text2 = [v11 text];
             v21 = objc_opt_class();
             v22 = NSStringFromClass(v21);
             v24 = 138412546;
-            v25 = v20;
+            v25 = text2;
             v26 = 2112;
             v27 = v22;
             _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "tapped %@, but URL of wrong class %@", &v24, 0x16u);
@@ -1327,16 +1327,16 @@ LABEL_19:
       v18 = _ICQGetLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v11 text];
+        text3 = [v11 text];
         v24 = 138412546;
-        v25 = v19;
+        v25 = text3;
         v26 = 2112;
         v27 = v14;
         _os_log_impl(&dword_275623000, v18, OS_LOG_TYPE_DEFAULT, "tapped %@, opening URL %@", &v24, 0x16u);
       }
 
-      v17 = [MEMORY[0x277D75128] sharedApplication];
-      [v17 openURL:v14 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global_5];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      [mEMORY[0x277D75128] openURL:v14 options:MEMORY[0x277CBEC10] completionHandler:&__block_literal_global_5];
     }
 
     else
@@ -1352,9 +1352,9 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v17 = [v11 text];
+      mEMORY[0x277D75128] = [v11 text];
       v24 = 138412290;
-      v25 = v17;
+      v25 = mEMORY[0x277D75128];
       _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "tapped %@, but URL missing", &v24, 0xCu);
     }
 

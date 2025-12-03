@@ -1,6 +1,6 @@
 @interface _SEBrowserProcess
 + ($115C4C562B26FF47E01F9F4EA65B5887)_currentAuditToken;
-+ (BOOL)checkBrowserEngineEntitlementForAuditToken:(id *)a3;
++ (BOOL)checkBrowserEngineEntitlementForAuditToken:(id *)token;
 + (BOOL)checkBrowserEngineEntitlementForCurrentProcess;
 - (_SEBrowserProcess)init;
 @end
@@ -83,12 +83,12 @@
   return v16 & 1;
 }
 
-+ (BOOL)checkBrowserEngineEntitlementForAuditToken:(id *)a3
++ (BOOL)checkBrowserEngineEntitlementForAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  v4 = *&a3->var0[2];
-  v5 = *&a3->var0[4];
-  v6 = *&a3->var0[6];
+  v3 = *token->var0;
+  v4 = *&token->var0[2];
+  v5 = *&token->var0[4];
+  v6 = *&token->var0[6];
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28001C270, &qword_265751960);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);

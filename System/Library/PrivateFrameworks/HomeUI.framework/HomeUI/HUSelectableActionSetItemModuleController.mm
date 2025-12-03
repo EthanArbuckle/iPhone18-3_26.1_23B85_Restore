@@ -1,29 +1,29 @@
 @interface HUSelectableActionSetItemModuleController
-- (Class)collectionCellClassForItem:(id)a3;
-- (HUSelectableActionSetItemModuleController)initWithModule:(id)a3;
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4;
-- (id)displayedItemsInSection:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (Class)collectionCellClassForItem:(id)item;
+- (HUSelectableActionSetItemModuleController)initWithModule:(id)module;
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment;
+- (id)displayedItemsInSection:(id)section;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUSelectableActionSetItemModuleController
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
   sub_20CECF940(0, &unk_27C81D110);
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20CFF3B7C(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CFF3B7C(cellCopy, itemCopy);
 }
 
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment
 {
   v6 = sub_20D567838();
   v8 = v7;
@@ -31,8 +31,8 @@
   v13[1] = 0;
   v14 = 2;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_20CEFA3C8(v6, v8, v13, a4);
+  selfCopy = self;
+  sub_20CEFA3C8(v6, v8, v13, environment);
   v11 = v10;
 
   swift_unknownObjectRelease();
@@ -40,17 +40,17 @@
   return v11;
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
   sub_20D567838();
-  v4 = self;
-  v5 = [(HUItemModuleController *)v4 module];
-  v6 = [(HFItemModule *)v5 itemUpdater];
+  selfCopy = self;
+  module = [(HUItemModuleController *)selfCopy module];
+  itemUpdater = [(HFItemModule *)module itemUpdater];
 
-  if (v6)
+  if (itemUpdater)
   {
     v7 = sub_20D5677F8();
-    v8 = [(HFItemUpdating *)v6 displayedItemsInSectionWithIdentifier:v7];
+    v8 = [(HFItemUpdating *)itemUpdater displayedItemsInSectionWithIdentifier:v7];
 
     swift_unknownObjectRelease();
     sub_20CECF940(0, &qword_281120AC0);
@@ -67,7 +67,7 @@
   return v9;
 }
 
-- (HUSelectableActionSetItemModuleController)initWithModule:(id)a3
+- (HUSelectableActionSetItemModuleController)initWithModule:(id)module
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

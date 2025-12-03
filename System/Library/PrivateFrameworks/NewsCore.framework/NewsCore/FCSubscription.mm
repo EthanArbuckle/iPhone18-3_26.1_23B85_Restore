@@ -1,15 +1,15 @@
 @interface FCSubscription
-+ (id)pendingSubscriptionWithSubscriptionID:(id)a3 url:(id)a4 title:(id)a5 pollingURL:(id)a6 dateAdded:(id)a7;
-+ (id)subscriptionWithSubscriptionID:(id)a3 dictionaryRepresentation:(id)a4;
-+ (id)subscriptionWithSubscriptionID:(id)a3 tagID:(id)a4 type:(unint64_t)a5 order:(id)a6 origin:(unint64_t)a7 groupID:(id)a8 dateAdded:(id)a9 notificationsEnabled:(BOOL)a10 zone:(unint64_t)a11;
-- (FCSubscription)initWithSubscriptionID:(id)a3 tagID:(id)a4 groupID:(id)a5 dateAdded:(id)a6 subscriptionType:(unint64_t)a7 order:(id)a8 origin:(unint64_t)a9 notificationsEnabled:(BOOL)a10 zone:(unint64_t)a11;
-- (FCSubscription)initWithSubscriptionID:(id)a3 url:(id)a4 title:(id)a5 pollingURL:(id)a6 dateAdded:(id)a7;
++ (id)pendingSubscriptionWithSubscriptionID:(id)d url:(id)url title:(id)title pollingURL:(id)l dateAdded:(id)added;
++ (id)subscriptionWithSubscriptionID:(id)d dictionaryRepresentation:(id)representation;
++ (id)subscriptionWithSubscriptionID:(id)d tagID:(id)iD type:(unint64_t)type order:(id)order origin:(unint64_t)origin groupID:(id)groupID dateAdded:(id)added notificationsEnabled:(BOOL)self0 zone:(unint64_t)self1;
+- (FCSubscription)initWithSubscriptionID:(id)d tagID:(id)iD groupID:(id)groupID dateAdded:(id)added subscriptionType:(unint64_t)type order:(id)order origin:(unint64_t)origin notificationsEnabled:(BOOL)self0 zone:(unint64_t)self1;
+- (FCSubscription)initWithSubscriptionID:(id)d url:(id)url title:(id)title pollingURL:(id)l dateAdded:(id)added;
 - (id)asCKRecord;
 - (id)asReorderableTagSubscription;
-- (id)copyWithOrder:(id)a3;
+- (id)copyWithOrder:(id)order;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)comparePriority:(id)a3;
+- (int64_t)comparePriority:(id)priority;
 - (unint64_t)priority;
 @end
 
@@ -19,40 +19,40 @@
 {
   if ([(FCSubscription *)self subscriptionType])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (id)subscriptionWithSubscriptionID:(id)a3 tagID:(id)a4 type:(unint64_t)a5 order:(id)a6 origin:(unint64_t)a7 groupID:(id)a8 dateAdded:(id)a9 notificationsEnabled:(BOOL)a10 zone:(unint64_t)a11
++ (id)subscriptionWithSubscriptionID:(id)d tagID:(id)iD type:(unint64_t)type order:(id)order origin:(unint64_t)origin groupID:(id)groupID dateAdded:(id)added notificationsEnabled:(BOOL)self0 zone:(unint64_t)self1
 {
-  v18 = a9;
-  v19 = a8;
-  v20 = a6;
-  v21 = a4;
-  v22 = a3;
-  LOBYTE(v25) = a10;
-  v23 = [[a1 alloc] initWithSubscriptionID:v22 tagID:v21 groupID:v19 dateAdded:v18 subscriptionType:a5 order:v20 origin:a7 notificationsEnabled:v25 zone:a11];
+  addedCopy = added;
+  groupIDCopy = groupID;
+  orderCopy = order;
+  iDCopy = iD;
+  dCopy = d;
+  LOBYTE(v25) = enabled;
+  v23 = [[self alloc] initWithSubscriptionID:dCopy tagID:iDCopy groupID:groupIDCopy dateAdded:addedCopy subscriptionType:type order:orderCopy origin:origin notificationsEnabled:v25 zone:zone];
 
   return v23;
 }
 
-+ (id)pendingSubscriptionWithSubscriptionID:(id)a3 url:(id)a4 title:(id)a5 pollingURL:(id)a6 dateAdded:(id)a7
++ (id)pendingSubscriptionWithSubscriptionID:(id)d url:(id)url title:(id)title pollingURL:(id)l dateAdded:(id)added
 {
-  if (a4)
+  if (url)
   {
-    v11 = a7;
-    v12 = a6;
-    v13 = a5;
-    v14 = a4;
-    v15 = a3;
-    v16 = [[FCSubscription alloc] initWithSubscriptionID:v15 url:v14 title:v13 pollingURL:v12 dateAdded:v11];
+    addedCopy = added;
+    lCopy = l;
+    titleCopy = title;
+    urlCopy = url;
+    dCopy = d;
+    v16 = [[FCSubscription alloc] initWithSubscriptionID:dCopy url:urlCopy title:titleCopy pollingURL:lCopy dateAdded:addedCopy];
   }
 
   else
@@ -63,16 +63,16 @@
   return v16;
 }
 
-- (FCSubscription)initWithSubscriptionID:(id)a3 tagID:(id)a4 groupID:(id)a5 dateAdded:(id)a6 subscriptionType:(unint64_t)a7 order:(id)a8 origin:(unint64_t)a9 notificationsEnabled:(BOOL)a10 zone:(unint64_t)a11
+- (FCSubscription)initWithSubscriptionID:(id)d tagID:(id)iD groupID:(id)groupID dateAdded:(id)added subscriptionType:(unint64_t)type order:(id)order origin:(unint64_t)origin notificationsEnabled:(BOOL)self0 zone:(unint64_t)self1
 {
   v44 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  obj = a4;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  if (!v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  obj = iD;
+  iDCopy = iD;
+  groupIDCopy = groupID;
+  addedCopy = added;
+  orderCopy = order;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v31 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "subscriptionID != nil"];
     *buf = 136315906;
@@ -85,13 +85,13 @@
     v43 = v31;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v19)
+    if (iDCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v19)
+  else if (iDCopy)
   {
     goto LABEL_6;
   }
@@ -111,7 +111,7 @@
   }
 
 LABEL_6:
-  if (!v21 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!addedCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v33 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dateAdded != nil"];
     *buf = 136315906;
@@ -131,23 +131,23 @@ LABEL_6:
   v24 = v23;
   if (v23)
   {
-    if (v19)
+    if (iDCopy)
     {
       objc_storeStrong(&v23->_tagID, obj);
-      v24->_subscriptionType = a7;
-      v25 = [v22 copy];
+      v24->_subscriptionType = type;
+      v25 = [orderCopy copy];
       order = v24->_order;
       v24->_order = v25;
 
-      v24->_subscriptionOrigin = a9;
-      objc_storeStrong(&v24->_subscriptionID, a3);
-      v27 = [v21 copy];
+      v24->_subscriptionOrigin = origin;
+      objc_storeStrong(&v24->_subscriptionID, d);
+      v27 = [addedCopy copy];
       dateAdded = v24->_dateAdded;
       v24->_dateAdded = v27;
 
-      v24->_notificationsEnabled = a10;
-      objc_storeStrong(&v24->_groupID, a5);
-      v24->_zone = a11;
+      v24->_notificationsEnabled = enabled;
+      objc_storeStrong(&v24->_groupID, groupID);
+      v24->_zone = zone;
     }
 
     else
@@ -161,15 +161,15 @@ LABEL_6:
   return v24;
 }
 
-- (FCSubscription)initWithSubscriptionID:(id)a3 url:(id)a4 title:(id)a5 pollingURL:(id)a6 dateAdded:(id)a7
+- (FCSubscription)initWithSubscriptionID:(id)d url:(id)url title:(id)title pollingURL:(id)l dateAdded:(id)added
 {
   v35 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  urlCopy = url;
+  titleCopy = title;
+  lCopy = l;
+  addedCopy = added;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "subscriptionID != nil"];
     *buf = 136315906;
@@ -182,13 +182,13 @@ LABEL_6:
     v34 = v24;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v17)
+    if (addedCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v17)
+  else if (addedCopy)
   {
     goto LABEL_6;
   }
@@ -214,14 +214,14 @@ LABEL_6:
   v19 = v18;
   if (v18)
   {
-    if (v14 && v16)
+    if (urlCopy && lCopy)
     {
-      objc_storeStrong(&v18->_url, a4);
-      objc_storeStrong(&v19->_title, a5);
-      objc_storeStrong(&v19->_pollingURL, a6);
+      objc_storeStrong(&v18->_url, url);
+      objc_storeStrong(&v19->_title, title);
+      objc_storeStrong(&v19->_pollingURL, l);
       v19->_subscriptionType = 1;
-      objc_storeStrong(&v19->_subscriptionID, a3);
-      v20 = [v17 copy];
+      objc_storeStrong(&v19->_subscriptionID, d);
+      v20 = [addedCopy copy];
       dateAdded = v19->_dateAdded;
       v19->_dateAdded = v20;
     }
@@ -239,30 +239,30 @@ LABEL_6:
 
 - (unint64_t)priority
 {
-  v2 = [(FCSubscription *)self subscriptionType];
-  if (v2 > 5)
+  subscriptionType = [(FCSubscription *)self subscriptionType];
+  if (subscriptionType > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B681A6D0[v2];
+    return qword_1B681A6D0[subscriptionType];
   }
 }
 
-- (int64_t)comparePriority:(id)a3
+- (int64_t)comparePriority:(id)priority
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "priority")}];
+  priorityCopy = priority;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(priorityCopy, "priority")}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCSubscription priority](self, "priority")}];
   v7 = [v5 compare:v6];
 
   if (!v7)
   {
-    v8 = [v4 dateAdded];
-    v9 = [(FCSubscription *)self dateAdded];
-    v7 = [v8 compare:v9];
+    dateAdded = [priorityCopy dateAdded];
+    dateAdded2 = [(FCSubscription *)self dateAdded];
+    v7 = [dateAdded compare:dateAdded2];
 
     if (!v7)
     {
@@ -304,12 +304,12 @@ LABEL_6:
 
   v6 = *v5;
   v7 = objc_alloc(MEMORY[0x1E695BA70]);
-  v8 = [(FCSubscription *)self subscriptionID];
-  v9 = [v7 initWithRecordName:v8 zoneID:v6];
+  subscriptionID = [(FCSubscription *)self subscriptionID];
+  v9 = [v7 initWithRecordName:subscriptionID zoneID:v6];
 
   v3 = [objc_alloc(MEMORY[0x1E695BA60]) initWithRecordType:@"Subscription" recordID:v9];
-  v10 = [(FCSubscription *)self dateAdded];
-  [v3 setObject:v10 forKeyedSubscript:@"dateAdded"];
+  dateAdded = [(FCSubscription *)self dateAdded];
+  [v3 setObject:dateAdded forKeyedSubscript:@"dateAdded"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{FCCKSubscriptionOriginFromFCSubscriptionOrigin(-[FCSubscription subscriptionOrigin](self, "subscriptionOrigin"))}];
   [v3 setObject:v11 forKeyedSubscript:@"subscriptionOrigin"];
@@ -317,13 +317,13 @@ LABEL_6:
   if (![(FCSubscription *)self subscriptionType])
   {
     [v3 setObject:@"tag" forKeyedSubscript:@"subscriptionType"];
-    v16 = [(FCSubscription *)self tagID];
-    [v3 setObject:v16 forKeyedSubscript:@"tagID"];
+    tagID = [(FCSubscription *)self tagID];
+    [v3 setObject:tagID forKeyedSubscript:@"tagID"];
 
-    v17 = [(FCSubscription *)self order];
-    [v3 setObject:v17 forKeyedSubscript:@"subscriptionOrder"];
+    order = [(FCSubscription *)self order];
+    [v3 setObject:order forKeyedSubscript:@"subscriptionOrder"];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[FCSubscription notificationsEnabled](self, "notificationsEnabled")}];
+    tagID2 = [MEMORY[0x1E696AD98] numberWithBool:{-[FCSubscription notificationsEnabled](self, "notificationsEnabled")}];
     v15 = FCCKSubscriptionNotificationsEnabledKey;
     goto LABEL_19;
   }
@@ -349,7 +349,7 @@ LABEL_6:
           goto LABEL_21;
         }
 
-        v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unrecognized subscription type"];
+        tagID2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unrecognized subscription type"];
         v21 = 136315906;
         v22 = "[FCSubscription asCKRecord]";
         v23 = 2080;
@@ -357,7 +357,7 @@ LABEL_6:
         v25 = 1024;
         v26 = 275;
         v27 = 2114;
-        v28 = v14;
+        v28 = tagID2;
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v21, 0x26u);
         goto LABEL_20;
       }
@@ -366,24 +366,24 @@ LABEL_6:
     }
 
     [v3 setObject:*v18 forKeyedSubscript:@"subscriptionType"];
-    v14 = [(FCSubscription *)self tagID];
+    tagID2 = [(FCSubscription *)self tagID];
     v15 = FCCKSubscriptionTagIDKey;
 LABEL_19:
-    [v3 setObject:v14 forKeyedSubscript:*v15];
+    [v3 setObject:tagID2 forKeyedSubscript:*v15];
 LABEL_20:
 
     goto LABEL_21;
   }
 
   [v3 setObject:@"mutedTag" forKeyedSubscript:@"subscriptionType"];
-  v12 = [(FCSubscription *)self tagID];
-  [v3 setObject:v12 forKeyedSubscript:@"tagID"];
+  tagID3 = [(FCSubscription *)self tagID];
+  [v3 setObject:tagID3 forKeyedSubscript:@"tagID"];
 
-  v13 = [(FCSubscription *)self groupID];
+  groupID = [(FCSubscription *)self groupID];
 
-  if (v13)
+  if (groupID)
   {
-    v14 = [(FCSubscription *)self groupID];
+    tagID2 = [(FCSubscription *)self groupID];
     v15 = FCCKSubscriptionGroupIDKey;
     goto LABEL_19;
   }
@@ -414,7 +414,7 @@ uint64_t __28__FCSubscription_asCKRecord__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FCSubscription *)self subscriptionID];
+  subscriptionID = [(FCSubscription *)self subscriptionID];
   v5 = [(FCSubscription *)self subscriptionType]- 1;
   if (v5 > 4)
   {
@@ -426,17 +426,17 @@ uint64_t __28__FCSubscription_asCKRecord__block_invoke()
     v6 = off_1E7C3B8E0[v5];
   }
 
-  v7 = [(FCSubscription *)self order];
-  v8 = [(FCSubscription *)self dateAdded];
-  v9 = [v3 stringWithFormat:@"{id: %@ type: %@ order: %@ dateAdded: %@ notifications: %d}", v4, v6, v7, v8, -[FCSubscription notificationsEnabled](self, "notificationsEnabled")];
+  order = [(FCSubscription *)self order];
+  dateAdded = [(FCSubscription *)self dateAdded];
+  v9 = [v3 stringWithFormat:@"{id: %@ type: %@ order: %@ dateAdded: %@ notifications: %d}", subscriptionID, v6, order, dateAdded, -[FCSubscription notificationsEnabled](self, "notificationsEnabled")];
 
   return v9;
 }
 
-- (id)copyWithOrder:(id)a3
+- (id)copyWithOrder:(id)order
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  orderCopy = order;
   if ([(FCSubscription *)self subscriptionType]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"expected equality between %s and %s", "self.subscriptionType", "FCSubscriptionTypeTag"];
@@ -452,72 +452,72 @@ uint64_t __28__FCSubscription_asCKRecord__block_invoke()
   }
 
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(FCSubscription *)self subscriptionID];
-  v7 = [(FCSubscription *)self tagID];
-  v8 = [(FCSubscription *)self groupID];
-  v9 = [(FCSubscription *)self dateAdded];
-  v10 = [(FCSubscription *)self subscriptionType];
-  v11 = [(FCSubscription *)self subscriptionOrigin];
+  subscriptionID = [(FCSubscription *)self subscriptionID];
+  tagID = [(FCSubscription *)self tagID];
+  groupID = [(FCSubscription *)self groupID];
+  dateAdded = [(FCSubscription *)self dateAdded];
+  subscriptionType = [(FCSubscription *)self subscriptionType];
+  subscriptionOrigin = [(FCSubscription *)self subscriptionOrigin];
   LOBYTE(v16) = [(FCSubscription *)self notificationsEnabled];
-  v12 = [v5 initWithSubscriptionID:v6 tagID:v7 groupID:v8 dateAdded:v9 subscriptionType:v10 order:v4 origin:v11 notificationsEnabled:v16 zone:{-[FCSubscription zone](self, "zone")}];
+  v12 = [v5 initWithSubscriptionID:subscriptionID tagID:tagID groupID:groupID dateAdded:dateAdded subscriptionType:subscriptionType order:orderCopy origin:subscriptionOrigin notificationsEnabled:v16 zone:{-[FCSubscription zone](self, "zone")}];
 
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-+ (id)subscriptionWithSubscriptionID:(id)a3 dictionaryRepresentation:(id)a4
++ (id)subscriptionWithSubscriptionID:(id)d dictionaryRepresentation:(id)representation
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"subscriptionType"];
-  v8 = [v7 unsignedIntegerValue];
+  dCopy = d;
+  representationCopy = representation;
+  v7 = [representationCopy objectForKeyedSubscript:@"subscriptionType"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"subscriptionOrder"];
-  v10 = [v6 objectForKeyedSubscript:@"subscriptionOrigin"];
-  v11 = [v10 unsignedIntegerValue];
+  v9 = [representationCopy objectForKeyedSubscript:@"subscriptionOrder"];
+  v10 = [representationCopy objectForKeyedSubscript:@"subscriptionOrigin"];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v12 = [v6 objectForKeyedSubscript:@"zone"];
-  v13 = [v12 unsignedIntegerValue];
+  v12 = [representationCopy objectForKeyedSubscript:@"zone"];
+  unsignedIntegerValue3 = [v12 unsignedIntegerValue];
 
-  v14 = [v6 objectForKeyedSubscript:@"dateAdded"];
-  if (v8 == 2)
+  v14 = [representationCopy objectForKeyedSubscript:@"dateAdded"];
+  if (unsignedIntegerValue == 2)
   {
-    v17 = [v6 objectForKeyedSubscript:@"tagID"];
-    v18 = [v6 objectForKeyedSubscript:@"groupID"];
+    v17 = [representationCopy objectForKeyedSubscript:@"tagID"];
+    v18 = [representationCopy objectForKeyedSubscript:@"groupID"];
     LOBYTE(v25) = 0;
-    v19 = [FCSubscription subscriptionWithSubscriptionID:v5 tagID:v17 type:2 order:v9 origin:v11 groupID:v18 dateAdded:v14 notificationsEnabled:v25 zone:v13];
+    v19 = [FCSubscription subscriptionWithSubscriptionID:dCopy tagID:v17 type:2 order:v9 origin:unsignedIntegerValue2 groupID:v18 dateAdded:v14 notificationsEnabled:v25 zone:unsignedIntegerValue3];
 
     goto LABEL_13;
   }
 
-  if (!v8)
+  if (!unsignedIntegerValue)
   {
-    v15 = [v6 objectForKeyedSubscript:@"notificationsEnabled"];
-    v16 = [v15 BOOLValue];
+    v15 = [representationCopy objectForKeyedSubscript:@"notificationsEnabled"];
+    bOOLValue = [v15 BOOLValue];
 
-    v17 = [v6 objectForKeyedSubscript:@"tagID"];
-    LOBYTE(v25) = v16;
-    [FCSubscription subscriptionWithSubscriptionID:v5 tagID:v17 type:0 order:v9 origin:v11 groupID:0 dateAdded:v14 notificationsEnabled:v25 zone:v13];
+    v17 = [representationCopy objectForKeyedSubscript:@"tagID"];
+    LOBYTE(v25) = bOOLValue;
+    [FCSubscription subscriptionWithSubscriptionID:dCopy tagID:v17 type:0 order:v9 origin:unsignedIntegerValue2 groupID:0 dateAdded:v14 notificationsEnabled:v25 zone:unsignedIntegerValue3];
     v19 = LABEL_7:;
     goto LABEL_13;
   }
 
-  if ((v8 - 3) <= 2)
+  if ((unsignedIntegerValue - 3) <= 2)
   {
-    v17 = [v6 objectForKeyedSubscript:@"tagID"];
+    v17 = [representationCopy objectForKeyedSubscript:@"tagID"];
     LOBYTE(v25) = 0;
-    [FCSubscription subscriptionWithSubscriptionID:v5 tagID:v17 type:v8 order:v9 origin:v11 groupID:0 dateAdded:v14 notificationsEnabled:v25 zone:v13];
+    [FCSubscription subscriptionWithSubscriptionID:dCopy tagID:v17 type:unsignedIntegerValue order:v9 origin:unsignedIntegerValue2 groupID:0 dateAdded:v14 notificationsEnabled:v25 zone:unsignedIntegerValue3];
     goto LABEL_7;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"pollingURL"];
-  v20 = [v6 objectForKeyedSubscript:@"url"];
+  v17 = [representationCopy objectForKeyedSubscript:@"pollingURL"];
+  v20 = [representationCopy objectForKeyedSubscript:@"url"];
   if ([v17 length] && objc_msgSend(v20, "length"))
   {
     v21 = [MEMORY[0x1E695DFF8] URLWithString:v17];
     v22 = [MEMORY[0x1E695DFF8] URLWithString:v20];
-    v23 = [v6 objectForKeyedSubscript:@"title"];
-    v19 = [FCSubscription pendingSubscriptionWithSubscriptionID:v5 url:v22 title:v23 pollingURL:v21 dateAdded:v14];
+    v23 = [representationCopy objectForKeyedSubscript:@"title"];
+    v19 = [FCSubscription pendingSubscriptionWithSubscriptionID:dCopy url:v22 title:v23 pollingURL:v21 dateAdded:v14];
   }
 
   else
@@ -533,40 +533,40 @@ LABEL_13:
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(FCSubscription *)self isTypeTag]|| [(FCSubscription *)self isTypeMutedTag]|| [(FCSubscription *)self isTypeAutoFavoriteTag]|| [(FCSubscription *)self isTypeGroupableTag]|| [(FCSubscription *)self isTypeIgnoredTag])
   {
-    v4 = [(FCSubscription *)self tagID];
+    tagID = [(FCSubscription *)self tagID];
 
-    if (v4)
+    if (tagID)
     {
-      v5 = [(FCSubscription *)self tagID];
-      [v3 setObject:v5 forKey:@"tagID"];
+      tagID2 = [(FCSubscription *)self tagID];
+      [dictionary setObject:tagID2 forKey:@"tagID"];
 
-      v6 = [(FCSubscription *)self order];
-      [v3 fc_safelySetObjectAllowingNil:v6 forKey:@"subscriptionOrder"];
+      order = [(FCSubscription *)self order];
+      [dictionary fc_safelySetObjectAllowingNil:order forKey:@"subscriptionOrder"];
 
-      v7 = [(FCSubscription *)self dateAdded];
-      [v3 setObject:v7 forKey:@"dateAdded"];
+      dateAdded = [(FCSubscription *)self dateAdded];
+      [dictionary setObject:dateAdded forKey:@"dateAdded"];
 
       v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{FCCKSubscriptionOriginFromFCSubscriptionOrigin(-[FCSubscription subscriptionOrigin](self, "subscriptionOrigin"))}];
-      [v3 setObject:v8 forKey:@"subscriptionOrigin"];
+      [dictionary setObject:v8 forKey:@"subscriptionOrigin"];
 
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCSubscription subscriptionType](self, "subscriptionType")}];
-      [v3 setObject:v9 forKey:@"subscriptionType"];
+      [dictionary setObject:v9 forKey:@"subscriptionType"];
 
       v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FCSubscription notificationsEnabled](self, "notificationsEnabled")}];
-      [v3 setObject:v10 forKey:@"notificationsEnabled"];
+      [dictionary setObject:v10 forKey:@"notificationsEnabled"];
 
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCSubscription zone](self, "zone")}];
-      [v3 setObject:v11 forKey:@"zone"];
+      [dictionary setObject:v11 forKey:@"zone"];
 
-      v12 = [(FCSubscription *)self groupID];
+      groupID = [(FCSubscription *)self groupID];
 
-      if (v12)
+      if (groupID)
       {
-        v13 = [(FCSubscription *)self groupID];
-        [v3 setObject:v13 forKey:@"groupID"];
+        groupID2 = [(FCSubscription *)self groupID];
+        [dictionary setObject:groupID2 forKey:@"groupID"];
 LABEL_9:
       }
     }
@@ -579,30 +579,30 @@ LABEL_9:
     if (v17)
     {
       v18 = [(FCSubscription *)self url];
-      v19 = [v18 absoluteString];
-      [v3 setObject:v19 forKey:@"url"];
+      absoluteString = [v18 absoluteString];
+      [dictionary setObject:absoluteString forKey:@"url"];
 
       v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[FCSubscription subscriptionType](self, "subscriptionType")}];
-      [v3 setObject:v20 forKey:@"subscriptionType"];
+      [dictionary setObject:v20 forKey:@"subscriptionType"];
 
-      v21 = [(FCSubscription *)self dateAdded];
-      [v3 setObject:v21 forKey:@"dateAdded"];
+      dateAdded2 = [(FCSubscription *)self dateAdded];
+      [dictionary setObject:dateAdded2 forKey:@"dateAdded"];
 
-      v22 = [(FCSubscription *)self title];
+      title = [(FCSubscription *)self title];
 
-      if (v22)
+      if (title)
       {
-        v23 = [(FCSubscription *)self title];
-        [v3 setObject:v23 forKey:@"title"];
+        title2 = [(FCSubscription *)self title];
+        [dictionary setObject:title2 forKey:@"title"];
       }
 
-      v24 = [(FCSubscription *)self pollingURL];
+      pollingURL = [(FCSubscription *)self pollingURL];
 
-      if (v24)
+      if (pollingURL)
       {
-        v13 = [(FCSubscription *)self pollingURL];
-        v25 = [v13 absoluteString];
-        [v3 setObject:v25 forKey:@"pollingURL"];
+        groupID2 = [(FCSubscription *)self pollingURL];
+        absoluteString2 = [groupID2 absoluteString];
+        [dictionary setObject:absoluteString2 forKey:@"pollingURL"];
 
         goto LABEL_9;
       }
@@ -611,7 +611,7 @@ LABEL_9:
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Case not implemented"];
+    groupID2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Case not implemented"];
     v26 = 136315906;
     v27 = "[FCSubscription(SubscriptionList) dictionaryRepresentation]";
     v28 = 2080;
@@ -619,12 +619,12 @@ LABEL_9:
     v30 = 1024;
     v31 = 1515;
     v32 = 2114;
-    v33 = v13;
+    v33 = groupID2;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v26, 0x26u);
     goto LABEL_9;
   }
 
-  v14 = [v3 copy];
+  v14 = [dictionary copy];
 
   v15 = *MEMORY[0x1E69E9840];
 

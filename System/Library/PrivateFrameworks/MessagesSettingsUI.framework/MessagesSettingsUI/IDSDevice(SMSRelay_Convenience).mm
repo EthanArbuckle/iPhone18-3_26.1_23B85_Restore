@@ -6,8 +6,8 @@
 
 - (BOOL)isWatch
 {
-  v1 = [a1 modelIdentifier];
-  v2 = [v1 rangeOfString:@"Watch"] != 0x7FFFFFFFFFFFFFFFLL;
+  modelIdentifier = [self modelIdentifier];
+  v2 = [modelIdentifier rangeOfString:@"Watch"] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v2;
 }

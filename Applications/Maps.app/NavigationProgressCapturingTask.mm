@@ -1,18 +1,18 @@
 @interface NavigationProgressCapturingTask
 - (_TtC4Maps31NavigationProgressCapturingTask)init;
-- (void)navigationRouteInterrupter:(id)a3 finishedInteruptingEntryWithIdentifier:(id)a4;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 willEndWithReason:(unint64_t)a4;
+- (void)navigationRouteInterrupter:(id)interrupter finishedInteruptingEntryWithIdentifier:(id)identifier;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service willEndWithReason:(unint64_t)reason;
 @end
 
 @implementation NavigationProgressCapturingTask
 
-- (void)navigationRouteInterrupter:(id)a3 finishedInteruptingEntryWithIdentifier:(id)a4
+- (void)navigationRouteInterrupter:(id)interrupter finishedInteruptingEntryWithIdentifier:(id)identifier
 {
   v6 = sub_1000CE6B8(&unk_101918E50);
   __chkstk_darwin(v6 - 8);
   v8 = &v12 - v7;
-  if (a4)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for UUID();
@@ -26,7 +26,7 @@
   }
 
   swift_unknownObjectRetain();
-  v11 = self;
+  selfCopy = self;
   sub_100518C4C(v8);
   swift_unknownObjectRelease();
 
@@ -40,18 +40,18 @@
   return result;
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = a3;
-  v8 = self;
-  sub_100517BCC(a3);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_100517BCC(service);
 }
 
-- (void)navigationService:(id)a3 willEndWithReason:(unint64_t)a4
+- (void)navigationService:(id)service willEndWithReason:(unint64_t)reason
 {
-  v7 = a3;
-  v8 = self;
-  sub_10051858C(a3, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10051858C(service, reason);
 }
 
 @end

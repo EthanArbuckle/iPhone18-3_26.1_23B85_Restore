@@ -1,27 +1,27 @@
 @interface NSKeyValueFastMutableSet
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4;
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter;
 - (void)_proxyNonGCFinalize;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
-- (void)intersectSet:(id)a3;
-- (void)minusSet:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
+- (void)intersectSet:(id)set;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)setSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)removeObject:(id)object;
+- (void)setSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation NSKeyValueFastMutableSet
 
-- (id)_proxyInitWithContainer:(id)a3 getter:(id)a4
+- (id)_proxyInitWithContainer:(id)container getter:(id)getter
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSKeyValueFastMutableSet;
-  v5 = [(NSKeyValueMutableSet *)&v7 _proxyInitWithContainer:a3 getter:?];
+  v5 = [(NSKeyValueMutableSet *)&v7 _proxyInitWithContainer:container getter:?];
   if (v5)
   {
-    v5[3] = [a4 mutatingMethods];
+    v5[3] = [getter mutatingMethods];
   }
 
   return v5;
@@ -37,10 +37,10 @@
   self->_mutatingMethods = 0;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v4[0] = a3;
+  v4[0] = object;
   if (self->_mutatingMethods->addObject)
   {
 
@@ -54,12 +54,12 @@
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_mutatingMethods->unionSet)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:a3];
+    v3 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:array];
     method_invoke();
   }
 
@@ -67,11 +67,11 @@
   {
     v4.receiver = self;
     v4.super_class = NSKeyValueFastMutableSet;
-    [(NSKeyValueFastMutableSet *)&v4 addObjectsFromArray:a3];
+    [(NSKeyValueFastMutableSet *)&v4 addObjectsFromArray:array];
   }
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
   v4 = *MEMORY[0x1E69E9840];
   if (self->_mutatingMethods->intersectSet)
@@ -84,11 +84,11 @@
   {
     v3.receiver = self;
     v3.super_class = NSKeyValueFastMutableSet;
-    [(NSKeyValueFastMutableSet *)&v3 intersectSet:a3];
+    [(NSKeyValueFastMutableSet *)&v3 intersectSet:set];
   }
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   v4 = *MEMORY[0x1E69E9840];
   if (self->_mutatingMethods->minusSet)
@@ -101,7 +101,7 @@
   {
     v3.receiver = self;
     v3.super_class = NSKeyValueFastMutableSet;
-    [(NSKeyValueFastMutableSet *)&v3 minusSet:a3];
+    [(NSKeyValueFastMutableSet *)&v3 minusSet:set];
   }
 }
 
@@ -122,10 +122,10 @@
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v4[0] = a3;
+  v4[0] = object;
   if (self->_mutatingMethods->removeObject)
   {
 
@@ -139,7 +139,7 @@
   }
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   v4 = *MEMORY[0x1E69E9840];
   if (self->_mutatingMethods->setSet)
@@ -152,11 +152,11 @@
   {
     v3.receiver = self;
     v3.super_class = NSKeyValueFastMutableSet;
-    [(NSKeyValueFastMutableSet *)&v3 setSet:a3];
+    [(NSKeyValueFastMutableSet *)&v3 setSet:set];
   }
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   v4 = *MEMORY[0x1E69E9840];
   if (self->_mutatingMethods->unionSet)
@@ -169,7 +169,7 @@
   {
     v3.receiver = self;
     v3.super_class = NSKeyValueFastMutableSet;
-    [(NSKeyValueFastMutableSet *)&v3 unionSet:a3];
+    [(NSKeyValueFastMutableSet *)&v3 unionSet:set];
   }
 }
 

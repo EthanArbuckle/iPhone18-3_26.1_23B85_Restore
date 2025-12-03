@@ -1,17 +1,17 @@
 @interface MCMClientCodeSignInfo
 - (BOOL)cached;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClientCodeSignInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClientCodeSignInfo:(id)info;
 - (BOOL)isPlatformBinary;
 - (BOOL)isSignatureValid;
 - (BOOL)isSigned;
-- (MCMClientCodeSignInfo)initWithCDHash:(id)a3 entitlements:(id)a4 identifier:(id)a5 teamIdentifier:(id)a6 status:(unint64_t)a7;
+- (MCMClientCodeSignInfo)initWithCDHash:(id)hash entitlements:(id)entitlements identifier:(id)identifier teamIdentifier:(id)teamIdentifier status:(unint64_t)status;
 - (MCMEntitlements)entitlements;
 - (NSData)cdhash;
 - (NSString)identifier;
 - (NSString)teamIdentifier;
-- (id)clientCodeSignInfoByChangingCached:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)clientCodeSignInfoByChangingCached:(BOOL)cached;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -81,20 +81,20 @@
   return result;
 }
 
-- (id)clientCodeSignInfoByChangingCached:(BOOL)a3
+- (id)clientCodeSignInfoByChangingCached:(BOOL)cached
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = [(MCMClientCodeSignInfo *)self copy];
-  v4[8] = a3;
+  v4[8] = cached;
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -111,23 +111,23 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MCMClientCodeSignInfo *)self isEqualToClientCodeSignInfo:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MCMClientCodeSignInfo *)self isEqualToClientCodeSignInfo:equalCopy];
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (BOOL)isEqualToClientCodeSignInfo:(id)a3
+- (BOOL)isEqualToClientCodeSignInfo:(id)info
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSData *)self->_cdhash isEqualToData:v4[5]])
+  infoCopy = info;
+  if ([(NSData *)self->_cdhash isEqualToData:infoCopy[5]])
   {
-    v5 = [(NSString *)self->_identifier isEqualToString:v4[3]];
+    v5 = [(NSString *)self->_identifier isEqualToString:infoCopy[3]];
   }
 
   else
@@ -148,27 +148,27 @@
   return v4 ^ v3;
 }
 
-- (MCMClientCodeSignInfo)initWithCDHash:(id)a3 entitlements:(id)a4 identifier:(id)a5 teamIdentifier:(id)a6 status:(unint64_t)a7
+- (MCMClientCodeSignInfo)initWithCDHash:(id)hash entitlements:(id)entitlements identifier:(id)identifier teamIdentifier:(id)teamIdentifier status:(unint64_t)status
 {
-  v7 = a7;
+  statusCopy = status;
   v22 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  hashCopy = hash;
+  entitlementsCopy = entitlements;
+  identifierCopy = identifier;
+  teamIdentifierCopy = teamIdentifier;
   v21.receiver = self;
   v21.super_class = MCMClientCodeSignInfo;
   v17 = [(MCMClientCodeSignInfo *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    v17->_isSigned = v7 & 1;
-    v17->_isSignatureValid = (v7 & 2) != 0;
-    v17->_isPlatformBinary = (v7 & 4) != 0;
-    objc_storeStrong(&v17->_cdhash, a3);
-    objc_storeStrong(&v18->_entitlements, a4);
-    objc_storeStrong(&v18->_identifier, a5);
-    objc_storeStrong(&v18->_teamIdentifier, a6);
+    v17->_isSigned = statusCopy & 1;
+    v17->_isSignatureValid = (statusCopy & 2) != 0;
+    v17->_isPlatformBinary = (statusCopy & 4) != 0;
+    objc_storeStrong(&v17->_cdhash, hash);
+    objc_storeStrong(&v18->_entitlements, entitlements);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v18->_teamIdentifier, teamIdentifier);
     v18->_cached = 0;
   }
 

@@ -2,8 +2,8 @@
 - (AXSDKShotDetectorQueueManager)init;
 - (BOOL)currentGeneralDetectorIsValid;
 - (void)addGeneralApplianceDetector;
-- (void)assetsNotReadyForUltronManager:(id)a3;
-- (void)assetsReadyForUltronManager:(id)a3;
+- (void)assetsNotReadyForUltronManager:(id)manager;
+- (void)assetsReadyForUltronManager:(id)manager;
 - (void)removeGeneralApplianceDetector;
 @end
 
@@ -140,15 +140,15 @@ void __63__AXSDKShotDetectorQueueManager_removeGeneralApplianceDetector__block_i
 
 - (BOOL)currentGeneralDetectorIsValid
 {
-  v2 = [(AXSDDetectorQueueManager *)self delegate];
-  v3 = [v2 detectorManager];
-  v4 = [v3 currentGeneralApplianceRequest];
-  v5 = v4 != 0;
+  delegate = [(AXSDDetectorQueueManager *)self delegate];
+  detectorManager = [delegate detectorManager];
+  currentGeneralApplianceRequest = [detectorManager currentGeneralApplianceRequest];
+  v5 = currentGeneralApplianceRequest != 0;
 
   return v5;
 }
 
-- (void)assetsReadyForUltronManager:(id)a3
+- (void)assetsReadyForUltronManager:(id)manager
 {
   self->_ready = 1;
   v4 = AXLogUltron();
@@ -189,7 +189,7 @@ void __61__AXSDKShotDetectorQueueManager_assetsReadyForUltronManager___block_inv
   [v13 assetsReadyAndDetectorsAdded];
 }
 
-- (void)assetsNotReadyForUltronManager:(id)a3
+- (void)assetsNotReadyForUltronManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
   self->_ready = 0;
@@ -204,8 +204,8 @@ void __61__AXSDKShotDetectorQueueManager_assetsReadyForUltronManager___block_inv
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXSDDetectorQueueManager *)self currentDetectionTypes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  currentDetectionTypes = [(AXSDDetectorQueueManager *)self currentDetectionTypes];
+  v6 = [currentDetectionTypes countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -216,7 +216,7 @@ void __61__AXSDKShotDetectorQueueManager_assetsReadyForUltronManager___block_inv
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(currentDetectionTypes);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -231,7 +231,7 @@ void __61__AXSDKShotDetectorQueueManager_assetsReadyForUltronManager___block_inv
         [(AXSDDetectorQueueManager *)self addListenType:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v7 = [currentDetectionTypes countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v7);

@@ -1,6 +1,6 @@
 @interface SHMusicalFeaturesModelLocalStore
 - (id)debugDescription;
-- (id)defaultModelURLWithName:(id)a3;
+- (id)defaultModelURLWithName:(id)name;
 @end
 
 @implementation SHMusicalFeaturesModelLocalStore
@@ -8,20 +8,20 @@
 - (id)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(SHMusicalFeaturesModelLocalStore *)self defaultCremaModelURL];
-  v5 = [(SHMusicalFeaturesModelLocalStore *)self defaultCrepeModelURL];
-  v6 = [(SHMusicalFeaturesModelLocalStore *)self cremaModelURL];
-  v7 = [(SHMusicalFeaturesModelLocalStore *)self crepeModelURL];
-  v8 = [NSString stringWithFormat:@"<%@: %p>\n\tDefault CREMA URL: %@\n\tDefault CREPE URL: %@\n\tCREMA URL: %@\n\tCREPE URL: %@", v3, self, v4, v5, v6, v7];
+  defaultCremaModelURL = [(SHMusicalFeaturesModelLocalStore *)self defaultCremaModelURL];
+  defaultCrepeModelURL = [(SHMusicalFeaturesModelLocalStore *)self defaultCrepeModelURL];
+  cremaModelURL = [(SHMusicalFeaturesModelLocalStore *)self cremaModelURL];
+  crepeModelURL = [(SHMusicalFeaturesModelLocalStore *)self crepeModelURL];
+  v8 = [NSString stringWithFormat:@"<%@: %p>\n\tDefault CREMA URL: %@\n\tDefault CREPE URL: %@\n\tCREMA URL: %@\n\tCREPE URL: %@", v3, self, defaultCremaModelURL, defaultCrepeModelURL, cremaModelURL, crepeModelURL];
 
   return v8;
 }
 
-- (id)defaultModelURLWithName:(id)a3
+- (id)defaultModelURLWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[NSBundle sh_ShazamKitBundle];
-  v5 = [v4 URLForResource:v3 withExtension:@"mlmodelc"];
+  v5 = [v4 URLForResource:nameCopy withExtension:@"mlmodelc"];
 
   return v5;
 }

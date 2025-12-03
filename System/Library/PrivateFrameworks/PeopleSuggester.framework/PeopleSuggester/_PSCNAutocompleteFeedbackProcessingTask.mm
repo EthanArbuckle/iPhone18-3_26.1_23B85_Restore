@@ -1,5 +1,5 @@
 @interface _PSCNAutocompleteFeedbackProcessingTask
-+ (id)bookmarkFileNameForImplicit:(BOOL)a3;
++ (id)bookmarkFileNameForImplicit:(BOOL)implicit;
 + (id)bundleIDsToProcess;
 + (id)sourceBundleIDsToIgnore;
 - (void)execute;
@@ -29,9 +29,9 @@
   return v3;
 }
 
-+ (id)bookmarkFileNameForImplicit:(BOOL)a3
++ (id)bookmarkFileNameForImplicit:(BOOL)implicit
 {
-  if (a3)
+  if (implicit)
   {
     v3 = @".metadata.archive";
   }

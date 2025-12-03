@@ -1,73 +1,73 @@
 @interface CarouselAdView
 - (CGRect)frame;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didMoveToWindow;
-- (void)didSelectActionButtonWithSender:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setFrame:(CGRect)a3;
+- (void)didSelectActionButtonWithSender:(id)sender;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CarouselAdView
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_1C1A6D6EC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D6CC();
-  v10 = a3;
-  v11 = self;
-  sub_1C19E7CC4(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1C19E7CC4(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_1C19E7FBC();
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C1A5C008();
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1C1A5C008();
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v8 = a3;
-  v9 = self;
-  sub_1C19E8380(v8, &a5->x, x);
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_1C19E8380(draggingCopy, &offset->x, x);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_1C1A6D6EC();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v20 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D6CC();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
   v15 = sub_1C1A03420();
   v17 = v16;
 
@@ -91,13 +91,13 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_1C1A54AB8(x, y, width, height);
 }
 
@@ -110,24 +110,24 @@
   sub_1C1A5C008();
 }
 
-- (void)didSelectActionButtonWithSender:(id)a3
+- (void)didSelectActionButtonWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C1A5B5E8(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1C1A5B5E8(senderCopy);
   sub_1C1A5B780();
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_1C1A6D6EC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D6CC();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1C1A6B968(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1C1A6B968(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 

@@ -1,41 +1,41 @@
 @interface NTKRichComplicationCircularBaseTextView
-- (NTKRichComplicationCircularBaseTextView)initWithFamily:(int64_t)a3;
-- (id)_createLabelViewWithFont:(id)a3;
+- (NTKRichComplicationCircularBaseTextView)initWithFamily:(int64_t)family;
+- (id)_createLabelViewWithFont:(id)font;
 - (id)_labelFont;
 - (void)_layoutLabel;
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3;
-- (void)_setLayoutTransformToView:(id)a3 origin:(CGPoint)a4 centerScale:(double)a5;
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4;
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration;
+- (void)_setLayoutTransformToView:(id)view origin:(CGPoint)origin centerScale:(double)scale;
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction;
 - (void)layoutSubviews;
-- (void)setForegroundColor:(id)a3;
+- (void)setForegroundColor:(id)color;
 @end
 
 @implementation NTKRichComplicationCircularBaseTextView
 
-- (NTKRichComplicationCircularBaseTextView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationCircularBaseTextView)initWithFamily:(int64_t)family
 {
   v14.receiver = self;
   v14.super_class = NTKRichComplicationCircularBaseTextView;
-  v3 = [(NTKRichComplicationCircularBaseView *)&v14 initWithFamily:a3];
+  v3 = [(NTKRichComplicationCircularBaseView *)&v14 initWithFamily:family];
   v4 = v3;
   if (v3)
   {
     v3->_labelScale = 1.0;
-    v5 = [(NTKRichComplicationCircularBaseTextView *)v3 _labelFont];
-    v6 = [(NTKRichComplicationCircularBaseTextView *)v4 _createLabelViewWithFont:v5];
+    _labelFont = [(NTKRichComplicationCircularBaseTextView *)v3 _labelFont];
+    v6 = [(NTKRichComplicationCircularBaseTextView *)v4 _createLabelViewWithFont:_labelFont];
     label = v4->_label;
     v4->_label = v6;
 
-    v8 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-    [v8 addSubview:v4->_label];
+    contentView = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+    [contentView addSubview:v4->_label];
 
-    v9 = [(NTKRichComplicationCircularBaseView *)v4 framingView];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v10];
+    framingView = [(NTKRichComplicationCircularBaseView *)v4 framingView];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [framingView setBackgroundColor:clearColor];
 
-    v11 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [v11 setBackgroundColor:v12];
+    contentView2 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [contentView2 setBackgroundColor:clearColor2];
   }
 
   return v4;
@@ -43,34 +43,34 @@
 
 - (id)_labelFont
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = ___LayoutConstants_block_invoke_50(v2, v2);
+  device = [(CDRichComplicationView *)self device];
+  v3 = ___LayoutConstants_block_invoke_50(device, device);
 
   v4 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v3 design:*MEMORY[0x277D74420]];
-  v5 = [v4 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v4 CLKFontWithAlternativePunctuation];
 
-  return v5;
+  return cLKFontWithAlternativePunctuation;
 }
 
-- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)a3
+- (void)_setFontConfiguration:(CDRichComplicationFontConfiguration *)configuration
 {
-  v10[0] = a3->var0;
-  v5 = a3->var1;
-  var2 = a3->var2;
+  v10[0] = configuration->var0;
+  v5 = configuration->var1;
+  var2 = configuration->var2;
   v11 = v5;
   v12 = var2;
   v9.receiver = self;
   v9.super_class = NTKRichComplicationCircularBaseTextView;
   [(CDRichComplicationView *)&v9 _setFontConfiguration:v10];
-  if (a3->var1)
+  if (configuration->var1)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    var1 = a3->var1;
+    var1 = configuration->var1;
     if (isKindOfClass)
     {
-      [(CDRichComplicationView *)self _updateColoringLabel:self->_label withFontDescriptor:var1 andSizeFactor:a3->var2];
-      var1 = a3->var1;
+      [(CDRichComplicationView *)self _updateColoringLabel:self->_label withFontDescriptor:var1 andSizeFactor:configuration->var2];
+      var1 = configuration->var1;
     }
   }
 
@@ -80,13 +80,13 @@
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationCircularBaseTextView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v5 setForegroundColor:v4];
-  [(CLKUIColoringView *)self->_label setColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(CDRichComplicationView *)&v5 setForegroundColor:colorCopy];
+  [(CLKUIColoringView *)self->_label setColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)layoutSubviews
@@ -99,8 +99,8 @@
 
 - (void)_layoutLabel
 {
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -114,16 +114,16 @@
   [(CLKUIColoringView *)label setTransform:&v27];
   [(CLKUIColoringView *)self->_label sizeToFit];
   [(CLKUIColoringView *)self->_label frame];
-  v14 = [(NTKRichComplicationCircularBaseTextView *)self _labelFont];
-  [v14 ascender];
+  _labelFont = [(NTKRichComplicationCircularBaseTextView *)self _labelFont];
+  [_labelFont ascender];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(CLKUIColoringView *)self->_label _firstLineBaseline];
 LABEL_5:
-    v15 = [(NTKRichComplicationCircularBaseTextView *)self _labelFont];
-    [v15 capHeight];
+    _labelFont2 = [(NTKRichComplicationCircularBaseTextView *)self _labelFont];
+    [_labelFont2 capHeight];
 
     goto LABEL_6;
   }
@@ -141,7 +141,7 @@ LABEL_6:
   v28.size.width = v9;
   v28.size.height = v11;
   CGRectGetMidY(v28);
-  v16 = [(CDRichComplicationView *)self device];
+  device = [(CDRichComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   v18 = v17;
   v20 = v19;
@@ -155,11 +155,11 @@ LABEL_6:
   [(CLKUIColoringView *)v25 setTransform:&v27];
 }
 
-- (void)_setLayoutTransformToView:(id)a3 origin:(CGPoint)a4 centerScale:(double)a5
+- (void)_setLayoutTransformToView:(id)view origin:(CGPoint)origin centerScale:(double)scale
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = origin.y;
+  x = origin.x;
+  viewCopy = view;
   [(NTKRichComplicationCircularBaseTextView *)self bounds];
   v11 = v10;
   v13 = v12;
@@ -171,23 +171,23 @@ LABEL_6:
   *&v20.c = v14;
   *&v20.tx = *&v21.tx;
   CGAffineTransformTranslate(&v21, &v20, x, y);
-  [v9 center];
+  [viewCopy center];
   v16 = v11 * 0.5 - x - v15;
-  [v9 center];
+  [viewCopy center];
   v18 = v13 * 0.5 - y - v17;
   v19 = v21;
   CGAffineTransformTranslate(&v20, &v19, v16, v18);
   v21 = v20;
   v19 = v20;
-  CGAffineTransformScale(&v20, &v19, a5, a5);
+  CGAffineTransformScale(&v20, &v19, scale, scale);
   v21 = v20;
   v19 = v20;
   CGAffineTransformTranslate(&v20, &v19, -v16, -v18);
   v21 = v20;
-  [v9 setTransform:&v20];
+  [viewCopy setTransform:&v20];
 }
 
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   self->_labelScale = v5;
@@ -195,7 +195,7 @@ LABEL_6:
   [(NTKRichComplicationCircularBaseTextView *)self _layoutLabel];
 }
 
-- (id)_createLabelViewWithFont:(id)a3
+- (id)_createLabelViewWithFont:(id)font
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

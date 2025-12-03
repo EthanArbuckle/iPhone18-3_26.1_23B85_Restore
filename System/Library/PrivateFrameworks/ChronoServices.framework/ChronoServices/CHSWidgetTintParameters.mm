@@ -1,15 +1,15 @@
 @interface CHSWidgetTintParameters
-- (BOOL)isEqual:(id)a3;
-- (CHSWidgetTintParameters)initWithBSXPCCoder:(id)a3;
-- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)a3;
-- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)a3 primaryTintColor:(id)a4 secondaryTintColor:(id)a5 fraction:(double)a6;
+- (BOOL)isEqual:(id)equal;
+- (CHSWidgetTintParameters)initWithBSXPCCoder:(id)coder;
+- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)style;
+- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)style primaryTintColor:(id)color secondaryTintColor:(id)tintColor fraction:(double)fraction;
 - (NSString)description;
-- (id)_initWithTintParameters:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithTintParameters:(id)parameters;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)effectiveRenderingMode;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHSWidgetTintParameters
@@ -23,11 +23,11 @@
   v10 = &unk_1E7453000;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
@@ -44,20 +44,20 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_primaryTintColor];
-  v5 = [v3 appendObject:self->_secondaryTintColor];
-  v6 = [v3 appendUnsignedInteger:self->_filterStyle];
-  v7 = [v3 appendDouble:self->_fraction];
-  v8 = [v3 appendBool:self->_accentedAlternateBackground];
-  v9 = [v3 appendObject:self->_glassOptions];
-  v10 = [v3 appendUnsignedInteger:self->_accentedDesaturatedMode];
-  v11 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_primaryTintColor];
+  v5 = [builder appendObject:self->_secondaryTintColor];
+  v6 = [builder appendUnsignedInteger:self->_filterStyle];
+  v7 = [builder appendDouble:self->_fraction];
+  v8 = [builder appendBool:self->_accentedAlternateBackground];
+  v9 = [builder appendObject:self->_glassOptions];
+  v10 = [builder appendUnsignedInteger:self->_accentedDesaturatedMode];
+  v11 = [builder hash];
 
   return v11;
 }
 
-- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)a3
+- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)style
 {
   v10.receiver = self;
   v10.super_class = CHSWidgetTintParameters;
@@ -71,7 +71,7 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
     secondaryTintColor = v5->_secondaryTintColor;
     v5->_secondaryTintColor = 0;
 
-    v5->_filterStyle = a3;
+    v5->_filterStyle = style;
     v5->_fraction = 1.0;
     v5->_accentedAlternateBackground = 0;
     glassOptions = v5->_glassOptions;
@@ -82,20 +82,20 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_initWithTintParameters:(id)a3
+- (id)_initWithTintParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = [(CHSWidgetTintParameters *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_primaryTintColor, v4[1]);
-    objc_storeStrong(&v6->_secondaryTintColor, v4[2]);
-    v6->_filterStyle = v4[3];
-    *&v6->_fraction = v4[4];
-    v6->_accentedAlternateBackground = *(v4 + 40);
-    v6->_accentedDesaturatedMode = v4[6];
-    v7 = [v4[7] copy];
+    objc_storeStrong(&v5->_primaryTintColor, parametersCopy[1]);
+    objc_storeStrong(&v6->_secondaryTintColor, parametersCopy[2]);
+    v6->_filterStyle = parametersCopy[3];
+    *&v6->_fraction = parametersCopy[4];
+    v6->_accentedAlternateBackground = *(parametersCopy + 40);
+    v6->_accentedDesaturatedMode = parametersCopy[6];
+    v7 = [parametersCopy[7] copy];
     glassOptions = v6->_glassOptions;
     v6->_glassOptions = v7;
   }
@@ -103,20 +103,20 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)a3 primaryTintColor:(id)a4 secondaryTintColor:(id)a5 fraction:(double)a6
+- (CHSWidgetTintParameters)initWithFilterStyle:(int64_t)style primaryTintColor:(id)color secondaryTintColor:(id)tintColor fraction:(double)fraction
 {
-  v11 = a4;
-  v12 = a5;
+  colorCopy = color;
+  tintColorCopy = tintColor;
   v17.receiver = self;
   v17.super_class = CHSWidgetTintParameters;
   v13 = [(CHSWidgetTintParameters *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    v13->_filterStyle = a3;
-    objc_storeStrong(&v13->_primaryTintColor, a4);
-    objc_storeStrong(&v14->_secondaryTintColor, a5);
-    v14->_fraction = a6;
+    v13->_filterStyle = style;
+    objc_storeStrong(&v13->_primaryTintColor, color);
+    objc_storeStrong(&v14->_secondaryTintColor, tintColor);
+    v14->_fraction = fraction;
     glassOptions = v14->_glassOptions;
     v14->_glassOptions = 0;
   }
@@ -124,12 +124,12 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -211,16 +211,16 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSWidgetTintParameters alloc];
 
   return [(CHSWidgetTintParameters *)v4 _initWithTintParameters:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSMutableWidgetTintParameters allocWithZone:a3];
+  v4 = [CHSMutableWidgetTintParameters allocWithZone:zone];
 
   return [(CHSWidgetTintParameters *)v4 _initWithTintParameters:self];
 }
@@ -239,38 +239,38 @@ id __38__CHSWidgetTintParameters_description__block_invoke(uint64_t a1)
   }
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_primaryTintColor forKey:@"primaryTintColor"];
-  [v4 encodeObject:self->_secondaryTintColor forKey:@"secondaryTintColor"];
-  [v4 encodeUInt64:self->_filterStyle forKey:@"filterStyle"];
-  [v4 encodeDouble:@"fraction" forKey:self->_fraction];
-  [v4 encodeBool:self->_accentedAlternateBackground forKey:@"accentedAlternateBackground"];
-  [v4 encodeUInt64:self->_accentedDesaturatedMode forKey:@"accentedDesaturatedMode"];
-  [v4 encodeObject:self->_glassOptions forKey:@"glassOptions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_primaryTintColor forKey:@"primaryTintColor"];
+  [coderCopy encodeObject:self->_secondaryTintColor forKey:@"secondaryTintColor"];
+  [coderCopy encodeUInt64:self->_filterStyle forKey:@"filterStyle"];
+  [coderCopy encodeDouble:@"fraction" forKey:self->_fraction];
+  [coderCopy encodeBool:self->_accentedAlternateBackground forKey:@"accentedAlternateBackground"];
+  [coderCopy encodeUInt64:self->_accentedDesaturatedMode forKey:@"accentedDesaturatedMode"];
+  [coderCopy encodeObject:self->_glassOptions forKey:@"glassOptions"];
 }
 
-- (CHSWidgetTintParameters)initWithBSXPCCoder:(id)a3
+- (CHSWidgetTintParameters)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CHSWidgetTintParameters *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryTintColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryTintColor"];
     primaryTintColor = v5->_primaryTintColor;
     v5->_primaryTintColor = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTintColor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTintColor"];
     secondaryTintColor = v5->_secondaryTintColor;
     v5->_secondaryTintColor = v8;
 
-    v5->_filterStyle = [v4 decodeUInt64ForKey:@"filterStyle"];
-    [v4 decodeDoubleForKey:@"fraction"];
+    v5->_filterStyle = [coderCopy decodeUInt64ForKey:@"filterStyle"];
+    [coderCopy decodeDoubleForKey:@"fraction"];
     v5->_fraction = v10;
-    v5->_accentedAlternateBackground = [v4 decodeBoolForKey:@"accentedAlternateBackground"];
-    v5->_accentedDesaturatedMode = [v4 decodeUInt64ForKey:@"accentedDesaturatedMode"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"glassOptions"];
+    v5->_accentedAlternateBackground = [coderCopy decodeBoolForKey:@"accentedAlternateBackground"];
+    v5->_accentedDesaturatedMode = [coderCopy decodeUInt64ForKey:@"accentedDesaturatedMode"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"glassOptions"];
     glassOptions = v5->_glassOptions;
     v5->_glassOptions = v11;
   }

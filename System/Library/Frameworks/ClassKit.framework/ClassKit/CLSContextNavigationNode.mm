@@ -1,95 +1,95 @@
 @interface CLSContextNavigationNode
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (CLSContextNavigationNode)initWithDatabaseRow:(id)a3;
-- (id)initWithCKRecord:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (CLSContextNavigationNode)initWithDatabaseRow:(id)row;
+- (id)initWithCKRecord:(id)record;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
 @end
 
 @implementation CLSContextNavigationNode
 
-- (CLSContextNavigationNode)initWithDatabaseRow:(id)a3
+- (CLSContextNavigationNode)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSContextNavigationNode *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSContextNavigationNode *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, CLSPredicateKeyPathParentObjectID);
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, CLSPredicateKeyPathParentObjectID);
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"childObjectID");
+    v8 = sub_10016D778(rowCopy, @"childObjectID");
     [v6 setChildObjectID:v8];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v8.receiver = self;
   v8.super_class = CLSContextNavigationNode;
-  v4 = a3;
-  [(CLSContextNavigationNode *)&v8 bindTo:v4];
+  toCopy = to;
+  [(CLSContextNavigationNode *)&v8 bindTo:toCopy];
   v9 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v9 count:1, v8.receiver, v8.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSContextNavigationNode *)self parentObjectID];
-  sub_1000982FC(v4, v6, CLSPredicateKeyPathParentObjectID);
+  parentObjectID = [(CLSContextNavigationNode *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, CLSPredicateKeyPathParentObjectID);
 
-  v7 = [(CLSContextNavigationNode *)self childObjectID];
-  sub_1000982FC(v4, v7, @"childObjectID");
+  childObjectID = [(CLSContextNavigationNode *)self childObjectID];
+  sub_1000982FC(toCopy, childObjectID, @"childObjectID");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSContextNavigationNode (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    childObjectID     text not null,\n    foreign key (parentObjectID) references CLSContext(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSContextNavigationNode_objectID on CLSContextNavigationNode (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSContextNavigationNode (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    childObjectID     text not null,\n    foreign key (parentObjectID) references CLSContext(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSContextNavigationNode_objectID on CLSContextNavigationNode (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 
   return v9;
 }
 
-- (id)initWithCKRecord:(id)a3
+- (id)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CLSContextNavigationNode *)self _init];
-  v6 = v5;
-  if (v5)
+  recordCopy = record;
+  _init = [(CLSContextNavigationNode *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithRecord:v4];
-    v7 = [v4 objectForKeyedSubscript:@"childObjectID"];
+    [_init _initCommonPropsWithRecord:recordCopy];
+    v7 = [recordCopy objectForKeyedSubscript:@"childObjectID"];
     [v6 setChildObjectID:v7];
   }
 
   return v6;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v6.receiver = self;
   v6.super_class = CLSContextNavigationNode;
-  v4 = a3;
-  [(CLSContextNavigationNode *)&v6 populate:v4];
+  populateCopy = populate;
+  [(CLSContextNavigationNode *)&v6 populate:populateCopy];
   v5 = [(CLSContextNavigationNode *)self childObjectID:v6.receiver];
-  [v4 setObject:v5 forKeyedSubscript:@"childObjectID"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"childObjectID"];
 
-  [(CLSContextNavigationNode *)self updateParentReferencesForRecord:v4];
+  [(CLSContextNavigationNode *)self updateParentReferencesForRecord:populateCopy];
 }
 
 @end

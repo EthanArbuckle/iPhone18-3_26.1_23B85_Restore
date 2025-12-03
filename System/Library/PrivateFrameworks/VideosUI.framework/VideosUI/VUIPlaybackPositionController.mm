@@ -3,10 +3,10 @@
 - (id)_init;
 - (void)_onQueue_beginCapturingEvents;
 - (void)_onQueue_endCapturingEvents;
-- (void)_onQueue_updateEntityWithPlaybackPositionInfo:(id)a3 forTrack:(id)a4;
+- (void)_onQueue_updateEntityWithPlaybackPositionInfo:(id)info forTrack:(id)track;
 - (void)beginCapturingEvents;
 - (void)endCapturingEvents;
-- (void)persistPlaybackPositionInfo:(id)a3 forTrack:(id)a4;
+- (void)persistPlaybackPositionInfo:(id)info forTrack:(id)track;
 @end
 
 @implementation VUIPlaybackPositionController
@@ -52,10 +52,10 @@ void __47__VUIPlaybackPositionController_sharedInstance__block_invoke()
   dispatch_async(queue, block);
 }
 
-- (void)persistPlaybackPositionInfo:(id)a3 forTrack:(id)a4
+- (void)persistPlaybackPositionInfo:(id)info forTrack:(id)track
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  trackCopy = track;
+  v7 = [info copy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -63,8 +63,8 @@ void __47__VUIPlaybackPositionController_sharedInstance__block_invoke()
   block[3] = &unk_1E872E008;
   block[4] = self;
   v12 = v7;
-  v13 = v6;
-  v9 = v6;
+  v13 = trackCopy;
+  v9 = trackCopy;
   v10 = v7;
   dispatch_async(queue, block);
 }
@@ -80,8 +80,8 @@ void __47__VUIPlaybackPositionController_sharedInstance__block_invoke()
     logObject = v2->_logObject;
     v2->_logObject = v3;
 
-    v5 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibraryPath];
-    v6 = [MEMORY[0x1E69D4868] domainForSyncingMusicLibraryWithLibraryPath:v5];
+    autoupdatingSharedLibraryPath = [MEMORY[0x1E69B34E0] autoupdatingSharedLibraryPath];
+    v6 = [MEMORY[0x1E69D4868] domainForSyncingMusicLibraryWithLibraryPath:autoupdatingSharedLibraryPath];
     v7 = [MEMORY[0x1E69D4880] serviceForSyncDomain:v6];
     syncService = v2->_syncService;
     v2->_syncService = v7;
@@ -118,67 +118,67 @@ void __47__VUIPlaybackPositionController_sharedInstance__block_invoke()
   [(SBCPlaybackPositionSyncService *)self->_syncService endAccessingPlaybackPositionEntities];
 }
 
-- (void)_onQueue_updateEntityWithPlaybackPositionInfo:(id)a3 forTrack:(id)a4
+- (void)_onQueue_updateEntityWithPlaybackPositionInfo:(id)info forTrack:(id)track
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  trackCopy = track;
   if (![(VUIPlaybackPositionController *)self isRunning])
   {
     [(VUIPlaybackPositionController *)self _onQueue_beginCapturingEvents];
   }
 
-  v8 = [v7 valueForProperty:*MEMORY[0x1E69B3280]];
+  v8 = [trackCopy valueForProperty:*MEMORY[0x1E69B3280]];
   v9 = objc_alloc(MEMORY[0x1E69D4870]);
-  v10 = [(SBCPlaybackPositionSyncService *)self->_syncService playbackPositionDomain];
-  v11 = [v9 initWithPlaybackPositionDomain:v10 ubiquitousIdentifier:v8 foreignDatabaseEntityID:{objc_msgSend(v7, "persistentID")}];
+  playbackPositionDomain = [(SBCPlaybackPositionSyncService *)self->_syncService playbackPositionDomain];
+  v11 = [v9 initWithPlaybackPositionDomain:playbackPositionDomain ubiquitousIdentifier:v8 foreignDatabaseEntityID:{objc_msgSend(trackCopy, "persistentID")}];
 
-  v12 = [v6 bookmarkTime];
+  bookmarkTime = [infoCopy bookmarkTime];
 
-  if (v12)
+  if (bookmarkTime)
   {
-    v13 = [v6 bookmarkTime];
-    [v13 doubleValue];
+    bookmarkTime2 = [infoCopy bookmarkTime];
+    [bookmarkTime2 doubleValue];
     v15 = v14;
   }
 
   else
   {
-    v13 = [v7 valueForProperty:*MEMORY[0x1E69B2E20]];
-    [v13 doubleValue];
+    bookmarkTime2 = [trackCopy valueForProperty:*MEMORY[0x1E69B2E20]];
+    [bookmarkTime2 doubleValue];
     v15 = v16 / 1000.0;
   }
 
-  v17 = [v6 playCount];
+  playCount = [infoCopy playCount];
 
-  if (v17)
+  if (playCount)
   {
-    [v6 playCount];
+    [infoCopy playCount];
   }
 
   else
   {
-    [v7 valueForProperty:*MEMORY[0x1E69B3158]];
+    [trackCopy valueForProperty:*MEMORY[0x1E69B3158]];
   }
   v18 = ;
-  v19 = [v18 unsignedIntegerValue];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-  v20 = [v6 hasBeenPlayed];
+  hasBeenPlayed = [infoCopy hasBeenPlayed];
 
-  if (v20)
+  if (hasBeenPlayed)
   {
-    [v6 hasBeenPlayed];
+    [infoCopy hasBeenPlayed];
   }
 
   else
   {
-    [v7 valueForProperty:*MEMORY[0x1E69B3000]];
+    [trackCopy valueForProperty:*MEMORY[0x1E69B3000]];
   }
   v21 = ;
-  v22 = [v21 BOOLValue];
+  bOOLValue = [v21 BOOLValue];
 
   [v11 setBookmarkTime:v15];
-  [v11 setUserPlayCount:v19];
-  [v11 setHasBeenPlayed:v22];
+  [v11 setUserPlayCount:unsignedIntegerValue];
+  [v11 setHasBeenPlayed:bOOLValue];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [v11 setBookmarkTimestamp:?];
   v23 = dispatch_semaphore_create(0);

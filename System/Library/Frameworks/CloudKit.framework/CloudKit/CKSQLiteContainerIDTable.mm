@@ -1,23 +1,23 @@
 @interface CKSQLiteContainerIDTable
-- (id)entryForReferent:(id)a3;
-- (id)fetchPrimaryKeyForEntry:(id)a3;
-- (id)referenceWasDeleted:(id)a3;
-- (id)referentForEntry:(id)a3 error:(id *)a4;
-- (id)tableForReferenceProperty:(id)a3;
-- (void)defaultSearchOrder:(id)a3;
+- (id)entryForReferent:(id)referent;
+- (id)fetchPrimaryKeyForEntry:(id)entry;
+- (id)referenceWasDeleted:(id)deleted;
+- (id)referentForEntry:(id)entry error:(id *)error;
+- (id)tableForReferenceProperty:(id)property;
+- (void)defaultSearchOrder:(id)order;
 @end
 
 @implementation CKSQLiteContainerIDTable
 
-- (id)entryForReferent:(id)a3
+- (id)entryForReferent:(id)referent
 {
-  v4 = a3;
+  referentCopy = referent;
   objc_msgSend_db(self, v5, v6);
 
-  if ((objc_msgSend_matchesContainerID_(self->_cachedEntry, v7, v4) & 1) == 0)
+  if ((objc_msgSend_matchesContainerID_(self->_cachedEntry, v7, referentCopy) & 1) == 0)
   {
     v8 = [CKContainerIDTableEntry alloc];
-    v10 = objc_msgSend_initWithCKContainerID_(v8, v9, v4);
+    v10 = objc_msgSend_initWithCKContainerID_(v8, v9, referentCopy);
     cachedEntry = self->_cachedEntry;
     self->_cachedEntry = v10;
   }
@@ -28,23 +28,23 @@
   return v12;
 }
 
-- (id)referentForEntry:(id)a3 error:(id *)a4
+- (id)referentForEntry:(id)entry error:(id *)error
 {
-  v5 = a3;
+  entryCopy = entry;
   objc_msgSend_db(self, v6, v7);
 
-  v10 = objc_msgSend_containerID(v5, v8, v9);
+  v10 = objc_msgSend_containerID(entryCopy, v8, v9);
 
   return v10;
 }
 
-- (id)referenceWasDeleted:(id)a3
+- (id)referenceWasDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   objc_msgSend_db(self, v5, v6);
 
   v9 = objc_msgSend_containerIDKey(self->_cachedEntry, v7, v8);
-  isEqualToNumber = objc_msgSend_isEqualToNumber_(v9, v10, v4);
+  isEqualToNumber = objc_msgSend_isEqualToNumber_(v9, v10, deletedCopy);
 
   if (isEqualToNumber)
   {
@@ -53,15 +53,15 @@
 
   v15.receiver = self;
   v15.super_class = CKSQLiteContainerIDTable;
-  v13 = [(CKSQLiteReferencedObjectTable *)&v15 referenceWasDeleted:v4];
+  v13 = [(CKSQLiteReferencedObjectTable *)&v15 referenceWasDeleted:deletedCopy];
 
   return v13;
 }
 
-- (id)tableForReferenceProperty:(id)a3
+- (id)tableForReferenceProperty:(id)property
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"containerIdentifier"))
+  propertyCopy = property;
+  if (objc_msgSend_isEqualToString_(propertyCopy, v5, @"containerIdentifier"))
   {
     v8 = objc_msgSend_tableGroup(self, v6, v7);
     v10 = objc_msgSend_singletonInstanceInGroup_(CKSQLiteUniquedStringTable, v9, v8);
@@ -71,27 +71,27 @@
   {
     v12.receiver = self;
     v12.super_class = CKSQLiteContainerIDTable;
-    v10 = [(CKSQLiteTable *)&v12 tableForReferenceProperty:v4];
+    v10 = [(CKSQLiteTable *)&v12 tableForReferenceProperty:propertyCopy];
   }
 
   return v10;
 }
 
-- (void)defaultSearchOrder:(id)a3
+- (void)defaultSearchOrder:(id)order
 {
-  v5 = a3;
-  objc_msgSend_orderAscendingByProperty_(v5, v3, @"containerIdentifier");
-  objc_msgSend_orderAscendingByProperty_(v5, v4, @"environment");
+  orderCopy = order;
+  objc_msgSend_orderAscendingByProperty_(orderCopy, v3, @"containerIdentifier");
+  objc_msgSend_orderAscendingByProperty_(orderCopy, v4, @"environment");
 }
 
-- (id)fetchPrimaryKeyForEntry:(id)a3
+- (id)fetchPrimaryKeyForEntry:(id)entry
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entryCopy = entry;
   v7 = objc_msgSend_primaryKey(self, v5, v6);
   v14[0] = v7;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v14, 1);
-  v11 = objc_msgSend_fetchProperties_inObject_matchingDBProperties_label_(self, v10, v9, v4, &unk_1EFA85DB8, off_1EA911358);
+  v11 = objc_msgSend_fetchProperties_inObject_matchingDBProperties_label_(self, v10, v9, entryCopy, &unk_1EFA85DB8, off_1EA911358);
 
   v12 = *MEMORY[0x1E69E9840];
 

@@ -1,30 +1,30 @@
 @interface SUIBIntelligenceFlowActionSummary
-- (SUIBIntelligenceFlowActionSummary)initWithBuilder:(id)a3;
-- (SUIBIntelligenceFlowActionSummary)initWithCoder:(id)a3;
+- (SUIBIntelligenceFlowActionSummary)initWithBuilder:(id)builder;
+- (SUIBIntelligenceFlowActionSummary)initWithCoder:(id)coder;
 - (id)parameterMatches;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUIBIntelligenceFlowActionSummary
 
-- (SUIBIntelligenceFlowActionSummary)initWithBuilder:(id)a3
+- (SUIBIntelligenceFlowActionSummary)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = SUIBIntelligenceFlowActionSummary;
   v5 = [(SUIBIntelligenceFlowActionSummary *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBIntelligenceFlowActionSummaryMutation);
-    v4[2](v4, v7);
-    v8 = [(SUIBIntelligenceFlowActionSummaryMutation *)v7 formatString];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    formatString = [(SUIBIntelligenceFlowActionSummaryMutation *)v7 formatString];
+    v9 = [formatString copy];
     formatString = v6->_formatString;
     v6->_formatString = v9;
 
-    v11 = [(SUIBIntelligenceFlowActionSummaryMutation *)v7 parameterSummaries];
-    v12 = [v11 copy];
+    parameterSummaries = [(SUIBIntelligenceFlowActionSummaryMutation *)v7 parameterSummaries];
+    v12 = [parameterSummaries copy];
     parameterSummaries = v6->_parameterSummaries;
     v6->_parameterSummaries = v12;
   }
@@ -32,12 +32,12 @@
   return v6;
 }
 
-- (SUIBIntelligenceFlowActionSummary)initWithCoder:(id)a3
+- (SUIBIntelligenceFlowActionSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowActionSummary::formatString"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowActionSummary::formatString"];
   v6 = objc_opt_class();
-  v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowActionSummary::parameterSummaries"];
+  v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"SUIBIntelligenceFlowActionSummary::parameterSummaries"];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -60,19 +60,19 @@ void __51__SUIBIntelligenceFlowActionSummary_initWithCoder___block_invoke(uint64
   [v4 setParameterSummaries:*(a1 + 40)];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   formatString = self->_formatString;
-  v5 = a3;
-  [v5 encodeObject:formatString forKey:@"SUIBIntelligenceFlowActionSummary::formatString"];
-  [v5 encodeObject:self->_parameterSummaries forKey:@"SUIBIntelligenceFlowActionSummary::parameterSummaries"];
+  coderCopy = coder;
+  [coderCopy encodeObject:formatString forKey:@"SUIBIntelligenceFlowActionSummary::formatString"];
+  [coderCopy encodeObject:self->_parameterSummaries forKey:@"SUIBIntelligenceFlowActionSummary::parameterSummaries"];
 }
 
 - (id)parameterMatches
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [(SUIBIntelligenceFlowActionSummary *)self formatString];
-  v3 = [SUIBIntelligenceFlowActionSummaryParameterMatcher matchesIn:v2];
+  formatString = [(SUIBIntelligenceFlowActionSummary *)self formatString];
+  v3 = [SUIBIntelligenceFlowActionSummaryParameterMatcher matchesIn:formatString];
 
   v4 = objc_opt_new();
   v16 = 0u;

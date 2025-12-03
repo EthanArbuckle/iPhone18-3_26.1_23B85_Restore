@@ -1,41 +1,41 @@
 @interface WFPBRemoteExecutionErrorEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBRemoteExecutionErrorEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(WFPBRemoteExecutionErrorEvent *)self setKey:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(WFPBRemoteExecutionErrorEvent *)self setSource:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(WFPBRemoteExecutionErrorEvent *)self setDestinationType:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(WFPBRemoteExecutionErrorEvent *)self setErrorDomain:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(WFPBRemoteExecutionErrorEvent *)self setErrorCode:?];
   }
@@ -50,13 +50,13 @@
   return v6 ^ [(NSString *)self->_errorCode hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[4])) || -[NSString isEqual:](key, "isEqual:")) && ((source = self->_source, !(source | v4[5])) || -[NSString isEqual:](source, "isEqual:")) && ((destinationType = self->_destinationType, !(destinationType | v4[1])) || -[NSString isEqual:](destinationType, "isEqual:")) && ((errorDomain = self->_errorDomain, !(errorDomain | v4[3])) || -[NSString isEqual:](errorDomain, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[4])) || -[NSString isEqual:](key, "isEqual:")) && ((source = self->_source, !(source | equalCopy[5])) || -[NSString isEqual:](source, "isEqual:")) && ((destinationType = self->_destinationType, !(destinationType | equalCopy[1])) || -[NSString isEqual:](destinationType, "isEqual:")) && ((errorDomain = self->_errorDomain, !(errorDomain | equalCopy[3])) || -[NSString isEqual:](errorDomain, "isEqual:")))
   {
     errorCode = self->_errorCode;
-    if (errorCode | v4[2])
+    if (errorCode | equalCopy[2])
     {
       v10 = [(NSString *)errorCode isEqual:?];
     }
@@ -75,110 +75,110 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_source copyWithZone:a3];
+  v8 = [(NSString *)self->_source copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSString *)self->_destinationType copyWithZone:a3];
+  v10 = [(NSString *)self->_destinationType copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v12 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_errorCode copyWithZone:a3];
+  v14 = [(NSString *)self->_errorCode copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (self->_source)
   {
     [v5 setSource:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destinationType)
   {
     [v5 setDestinationType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorDomain)
   {
     [v5 setErrorDomain:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorCode)
   {
     [v5 setErrorCode:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_source)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_destinationType)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorCode)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   source = self->_source;
@@ -214,8 +214,8 @@
   v8.receiver = self;
   v8.super_class = WFPBRemoteExecutionErrorEvent;
   v4 = [(WFPBRemoteExecutionErrorEvent *)&v8 description];
-  v5 = [(WFPBRemoteExecutionErrorEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBRemoteExecutionErrorEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,15 +1,15 @@
 @interface BDSReadingHistoryCommandLineServiceClient
 + (id)sharedServiceProxy;
 - (BDSReadingHistoryCommandLineServiceClient)init;
-- (void)backupWithName:(id)a3 completionHandler:(id)a4;
-- (void)clearDataWithCompletionHandler:(id)a3;
-- (void)clearDate:(id)a3 completionHandler:(id)a4;
-- (void)clearTodayWithCompletionHandler:(id)a3;
-- (void)incrementWithDate:(id)a3 by:(int64_t)a4 completionHandler:(id)a5;
-- (void)listBackupWithCompletionHandler:(id)a3;
-- (void)readingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 completionHandler:(id)a6;
-- (void)restoreWithName:(id)a3 completionHandler:(id)a4;
-- (void)serviceStatusInfoWithCompletionHandler:(id)a3;
+- (void)backupWithName:(id)name completionHandler:(id)handler;
+- (void)clearDataWithCompletionHandler:(id)handler;
+- (void)clearDate:(id)date completionHandler:(id)handler;
+- (void)clearTodayWithCompletionHandler:(id)handler;
+- (void)incrementWithDate:(id)date by:(int64_t)by completionHandler:(id)handler;
+- (void)listBackupWithCompletionHandler:(id)handler;
+- (void)readingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time completionHandler:(id)handler;
+- (void)restoreWithName:(id)name completionHandler:(id)handler;
+- (void)serviceStatusInfoWithCompletionHandler:(id)handler;
 @end
 
 @implementation BDSReadingHistoryCommandLineServiceClient
@@ -41,74 +41,74 @@
   return v2;
 }
 
-- (void)clearDataWithCompletionHandler:(id)a3
+- (void)clearDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v5 readingHistoryClearDataWithCompletion:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryClearDataWithCompletion:handlerCopy];
 }
 
-- (void)clearDate:(id)a3 completionHandler:(id)a4
+- (void)clearDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v8 readingHistoryClearDate:v7 withCompletion:v6];
+  handlerCopy = handler;
+  dateCopy = date;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryClearDate:dateCopy withCompletion:handlerCopy];
 }
 
-- (void)clearTodayWithCompletionHandler:(id)a3
+- (void)clearTodayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v5 readingHistoryClearTodayWithCompletion:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryClearTodayWithCompletion:handlerCopy];
 }
 
-- (void)incrementWithDate:(id)a3 by:(int64_t)a4 completionHandler:(id)a5
+- (void)incrementWithDate:(id)date by:(int64_t)by completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v10 readingHistoryIncrementWithDate:v9 by:a4 withCompletion:v8];
+  handlerCopy = handler;
+  dateCopy = date;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryIncrementWithDate:dateCopy by:by withCompletion:handlerCopy];
 }
 
-- (void)readingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 completionHandler:(id)a6
+- (void)readingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v14 readingHistoryReadingHistoryStateInfoWithRangeStart:v13 rangeEnd:v12 currentTime:v11 withCompletion:v10];
+  handlerCopy = handler;
+  timeCopy = time;
+  endCopy = end;
+  startCopy = start;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryReadingHistoryStateInfoWithRangeStart:startCopy rangeEnd:endCopy currentTime:timeCopy withCompletion:handlerCopy];
 }
 
-- (void)serviceStatusInfoWithCompletionHandler:(id)a3
+- (void)serviceStatusInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v5 readingHistoryServiceStatusInfoWithCompletion:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryServiceStatusInfoWithCompletion:handlerCopy];
 }
 
-- (void)backupWithName:(id)a3 completionHandler:(id)a4
+- (void)backupWithName:(id)name completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v8 readingHistoryBackupWithName:v7 completion:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryBackupWithName:nameCopy completion:handlerCopy];
 }
 
-- (void)listBackupWithCompletionHandler:(id)a3
+- (void)listBackupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v5 readingHistoryListBackupWithCompletion:v4];
+  handlerCopy = handler;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryListBackupWithCompletion:handlerCopy];
 }
 
-- (void)restoreWithName:(id)a3 completionHandler:(id)a4
+- (void)restoreWithName:(id)name completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
-  [v8 readingHistoryRestoreWithName:v7 completion:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  serviceProxy = [(BDSReadingHistoryCommandLineServiceClient *)self serviceProxy];
+  [serviceProxy readingHistoryRestoreWithName:nameCopy completion:handlerCopy];
 }
 
 @end

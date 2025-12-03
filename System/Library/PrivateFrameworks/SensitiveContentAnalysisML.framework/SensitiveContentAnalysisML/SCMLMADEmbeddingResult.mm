@@ -1,43 +1,43 @@
 @interface SCMLMADEmbeddingResult
-- (SCMLMADEmbeddingResult)initWithType:(unint64_t)a3 data:(id)a4 shape:(id)a5 bias:(id)a6 scale:(id)a7;
-- (id)float16DataWithError:(id *)a3;
-- (id)float32DataWithError:(id *)a3;
-- (id)tokenCountWithError:(id *)a3;
+- (SCMLMADEmbeddingResult)initWithType:(unint64_t)type data:(id)data shape:(id)shape bias:(id)bias scale:(id)scale;
+- (id)float16DataWithError:(id *)error;
+- (id)float32DataWithError:(id *)error;
+- (id)tokenCountWithError:(id *)error;
 @end
 
 @implementation SCMLMADEmbeddingResult
 
-- (SCMLMADEmbeddingResult)initWithType:(unint64_t)a3 data:(id)a4 shape:(id)a5 bias:(id)a6 scale:(id)a7
+- (SCMLMADEmbeddingResult)initWithType:(unint64_t)type data:(id)data shape:(id)shape bias:(id)bias scale:(id)scale
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  shapeCopy = shape;
+  biasCopy = bias;
+  scaleCopy = scale;
   v20.receiver = self;
   v20.super_class = SCMLMADEmbeddingResult;
   v17 = [(SCMLMADEmbeddingResult *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_type = a3;
-    objc_storeStrong(&v17->_data, a4);
-    objc_storeStrong(&v18->_shape, a5);
-    objc_storeStrong(&v18->_bias, a6);
-    objc_storeStrong(&v18->_scale, a7);
+    v17->_type = type;
+    objc_storeStrong(&v17->_data, data);
+    objc_storeStrong(&v18->_shape, shape);
+    objc_storeStrong(&v18->_bias, bias);
+    objc_storeStrong(&v18->_scale, scale);
   }
 
   return v18;
 }
 
-- (id)tokenCountWithError:(id *)a3
+- (id)tokenCountWithError:(id *)error
 {
-  v5 = [(SCMLMADEmbeddingResult *)self shape];
-  v6 = [v5 count];
+  shape = [(SCMLMADEmbeddingResult *)self shape];
+  v6 = [shape count];
 
   if (v6 < 2)
   {
-    v10 = [(SCMLMADEmbeddingResult *)self shape];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    shape2 = [(SCMLMADEmbeddingResult *)self shape];
+    v11 = [shape2 componentsJoinedByString:{@", "}];
     scml::strFromNSString(v11, &v17);
 
     std::operator+<char>();
@@ -61,7 +61,7 @@
       v13 = __p[1];
     }
 
-    *a3 = scml::error(0x15u, v12, v13);
+    *error = scml::error(0x15u, v12, v13);
     if (v16 < 0)
     {
       operator delete(__p[0]);
@@ -77,27 +77,27 @@
 
   else
   {
-    v7 = [(SCMLMADEmbeddingResult *)self shape];
-    v8 = [(SCMLMADEmbeddingResult *)self shape];
-    v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v8, "count") - 2}];
+    shape3 = [(SCMLMADEmbeddingResult *)self shape];
+    shape4 = [(SCMLMADEmbeddingResult *)self shape];
+    v9 = [shape3 objectAtIndexedSubscript:{objc_msgSend(shape4, "count") - 2}];
   }
 
   return v9;
 }
 
-- (id)float16DataWithError:(id *)a3
+- (id)float16DataWithError:(id *)error
 {
-  v5 = [(SCMLMADEmbeddingResult *)self type];
-  if (v5 != 2)
+  type = [(SCMLMADEmbeddingResult *)self type];
+  if (type != 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
-      v6 = [(SCMLMADEmbeddingResult *)self data];
+      data = [(SCMLMADEmbeddingResult *)self data];
       goto LABEL_23;
     }
 
-    v27 = [(SCMLMADEmbeddingResult *)self type];
-    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding type: ", &v27, &__p);
+    type2 = [(SCMLMADEmbeddingResult *)self type];
+    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding type: ", &type2, &__p);
     if ((v30 & 0x80u) == 0)
     {
       p_p = &__p;
@@ -118,7 +118,7 @@
       v13 = v29;
     }
 
-    *a3 = scml::error(0x15u, p_p, v13);
+    *error = scml::error(0x15u, p_p, v13);
     if (v30 < 0)
     {
       operator delete(__p);
@@ -127,14 +127,14 @@
     goto LABEL_22;
   }
 
-  v7 = [(SCMLMADEmbeddingResult *)self data];
-  v8 = [v7 length] & 3;
+  data2 = [(SCMLMADEmbeddingResult *)self data];
+  v8 = [data2 length] & 3;
 
   if (v8)
   {
-    v9 = [(SCMLMADEmbeddingResult *)self data];
-    v27 = [v9 length];
-    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding size: ", &v27, &__p);
+    data3 = [(SCMLMADEmbeddingResult *)self data];
+    type2 = [data3 length];
+    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding size: ", &type2, &__p);
     if ((v30 & 0x80u) == 0)
     {
       v10 = &__p;
@@ -155,35 +155,35 @@
       v11 = v29;
     }
 
-    *a3 = scml::error(0x15u, v10, v11);
+    *error = scml::error(0x15u, v10, v11);
     if (v30 < 0)
     {
       operator delete(__p);
     }
 
 LABEL_22:
-    v6 = 0;
+    data = 0;
     goto LABEL_23;
   }
 
-  v15 = [(SCMLMADEmbeddingResult *)self data];
-  v16 = [v15 length];
+  data4 = [(SCMLMADEmbeddingResult *)self data];
+  v16 = [data4 length];
   v17 = v16 >> 2;
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:2 * (v16 >> 2)];
-  v18 = [(SCMLMADEmbeddingResult *)self data];
-  v19 = [v18 bytes];
+  data = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:2 * (v16 >> 2)];
+  data5 = [(SCMLMADEmbeddingResult *)self data];
+  bytes = [data5 bytes];
 
-  v20 = [v6 mutableBytes];
+  mutableBytes = [data mutableBytes];
   if (v16 >= 4)
   {
     do
     {
-      v21 = *v19++;
+      v21 = *bytes++;
       _S0 = v21;
       __asm { FCVT            H0, S0 }
 
-      *v20++ = _S0;
+      *mutableBytes++ = _S0;
       --v17;
     }
 
@@ -192,22 +192,22 @@ LABEL_22:
 
 LABEL_23:
 
-  return v6;
+  return data;
 }
 
-- (id)float32DataWithError:(id *)a3
+- (id)float32DataWithError:(id *)error
 {
-  v5 = [(SCMLMADEmbeddingResult *)self type];
-  if (v5 == 2)
+  type = [(SCMLMADEmbeddingResult *)self type];
+  if (type == 2)
   {
-    v11 = [(SCMLMADEmbeddingResult *)self data];
+    data = [(SCMLMADEmbeddingResult *)self data];
     goto LABEL_26;
   }
 
-  if (v5 != 1)
+  if (type != 1)
   {
-    v28 = [(SCMLMADEmbeddingResult *)self type];
-    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding type: ", &v28, &__p);
+    type2 = [(SCMLMADEmbeddingResult *)self type];
+    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding type: ", &type2, &__p);
     if ((v31 & 0x80u) == 0)
     {
       p_p = &__p;
@@ -228,7 +228,7 @@ LABEL_23:
       v23 = v30;
     }
 
-    *a3 = scml::error(0x15u, p_p, v23);
+    *error = scml::error(0x15u, p_p, v23);
     if (v31 < 0)
     {
       operator delete(__p);
@@ -237,14 +237,14 @@ LABEL_23:
     goto LABEL_25;
   }
 
-  v6 = [(SCMLMADEmbeddingResult *)self data];
-  v7 = [v6 length];
+  data2 = [(SCMLMADEmbeddingResult *)self data];
+  v7 = [data2 length];
 
   if (v7)
   {
-    v24 = [(SCMLMADEmbeddingResult *)self data];
-    v28 = [v24 length];
-    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding size: ", &v28, &__p);
+    data3 = [(SCMLMADEmbeddingResult *)self data];
+    type2 = [data3 length];
+    scml::strCat<char const(&)[32],MADUnifiedEmbeddingVersion &>("unexpected embedding size: ", &type2, &__p);
     if ((v31 & 0x80u) == 0)
     {
       v25 = &__p;
@@ -265,35 +265,35 @@ LABEL_23:
       v26 = v30;
     }
 
-    *a3 = scml::error(0x15u, v25, v26);
+    *error = scml::error(0x15u, v25, v26);
     if (v31 < 0)
     {
       operator delete(__p);
     }
 
 LABEL_25:
-    v11 = 0;
+    data = 0;
     goto LABEL_26;
   }
 
-  v8 = [(SCMLMADEmbeddingResult *)self data];
-  v9 = [v8 length];
+  data4 = [(SCMLMADEmbeddingResult *)self data];
+  v9 = [data4 length];
   v10 = v9 >> 1;
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * (v9 >> 1)];
-  v12 = [(SCMLMADEmbeddingResult *)self data];
-  v13 = [v12 bytes];
+  data = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * (v9 >> 1)];
+  data5 = [(SCMLMADEmbeddingResult *)self data];
+  bytes = [data5 bytes];
 
-  v14 = [v11 mutableBytes];
+  mutableBytes = [data mutableBytes];
   if (v9 >= 2)
   {
     do
     {
-      v15 = *v13++;
+      v15 = *bytes++;
       _H0 = v15;
       __asm { FCVT            S0, H0 }
 
-      *v14++ = _S0;
+      *mutableBytes++ = _S0;
       --v10;
     }
 
@@ -302,7 +302,7 @@ LABEL_25:
 
 LABEL_26:
 
-  return v11;
+  return data;
 }
 
 @end

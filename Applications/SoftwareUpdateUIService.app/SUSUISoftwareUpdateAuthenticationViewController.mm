@@ -1,147 +1,147 @@
 @interface SUSUISoftwareUpdateAuthenticationViewController
-- (BOOL)_createKeybagForPasscode:(id)a3 forInstallTonight:(BOOL)a4;
+- (BOOL)_createKeybagForPasscode:(id)passcode forInstallTonight:(BOOL)tonight;
 - (BOOL)_shouldShowPasscodeView;
-- (SUSUISoftwareUpdateAuthenticationViewController)initWithDescriptor:(id)a3 forInstallTonight:(BOOL)a4 withInstallForecast:(id)a5 canDeferInstallation:(BOOL)a6;
-- (SUSUISoftwareUpdateAuthenticationViewController)initWithRollbackDescriptor:(id)a3 canDeferInstallation:(BOOL)a4;
+- (SUSUISoftwareUpdateAuthenticationViewController)initWithDescriptor:(id)descriptor forInstallTonight:(BOOL)tonight withInstallForecast:(id)forecast canDeferInstallation:(BOOL)installation;
+- (SUSUISoftwareUpdateAuthenticationViewController)initWithRollbackDescriptor:(id)descriptor canDeferInstallation:(BOOL)installation;
 - (SUSUISoftwareUpdateAuthenticationViewControllerDelegate)delegate;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_attemptUnlock:(id)a3 passcode:(id)a4;
-- (void)_authenticationFailure:(id)a3 fromMesa:(BOOL)a4;
-- (void)_authenticationSuccess:(id)a3 fromMesa:(BOOL)a4;
-- (void)_dismissAndSendCompletionResponse:(BOOL)a3;
-- (void)_dismissSelf:(BOOL)a3;
-- (void)_dismissTermsAndConditionsIfNecessaryAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)_passcodeLockViewPasscodeEntered:(id)a3 viaMesa:(BOOL)a4;
-- (void)_presentTermsAndConditionsWithCompletion:(id)a3;
-- (void)_setChildViewController:(id)a3;
-- (void)_setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_attemptUnlock:(id)unlock passcode:(id)passcode;
+- (void)_authenticationFailure:(id)failure fromMesa:(BOOL)mesa;
+- (void)_authenticationSuccess:(id)success fromMesa:(BOOL)mesa;
+- (void)_dismissAndSendCompletionResponse:(BOOL)response;
+- (void)_dismissSelf:(BOOL)self;
+- (void)_dismissTermsAndConditionsIfNecessaryAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)_passcodeLockViewPasscodeEntered:(id)entered viaMesa:(BOOL)mesa;
+- (void)_presentTermsAndConditionsWithCompletion:(id)completion;
+- (void)_setChildViewController:(id)controller;
+- (void)_setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 - (void)dealloc;
-- (void)dismissEmergencyCallViewController:(id)a3;
-- (void)emergencyCallViewController:(id)a3 didExitWithError:(id)a4;
+- (void)dismissEmergencyCallViewController:(id)controller;
+- (void)emergencyCallViewController:(id)controller didExitWithError:(id)error;
 - (void)loadView;
-- (void)passcodeLockViewCancelButtonPressed:(id)a3;
-- (void)passcodeLockViewEmergencyCallButtonPressed:(id)a3;
-- (void)passcodeLockViewPasscodeDidChange:(id)a3;
-- (void)passcodeLockViewPasscodeEntered:(id)a3;
-- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed;
+- (void)passcodeLockViewEmergencyCallButtonPressed:(id)pressed;
+- (void)passcodeLockViewPasscodeDidChange:(id)change;
+- (void)passcodeLockViewPasscodeEntered:(id)entered;
+- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)mesa;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUSUISoftwareUpdateAuthenticationViewController
 
-- (SUSUISoftwareUpdateAuthenticationViewController)initWithDescriptor:(id)a3 forInstallTonight:(BOOL)a4 withInstallForecast:(id)a5 canDeferInstallation:(BOOL)a6
+- (SUSUISoftwareUpdateAuthenticationViewController)initWithDescriptor:(id)descriptor forInstallTonight:(BOOL)tonight withInstallForecast:(id)forecast canDeferInstallation:(BOOL)installation
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24 = a4;
+  objc_storeStrong(location, descriptor);
+  tonightCopy = tonight;
   v23 = 0;
-  objc_storeStrong(&v23, a5);
-  v22 = a6;
-  v6 = v26;
-  v26 = 0;
+  objc_storeStrong(&v23, forecast);
+  installationCopy = installation;
+  v6 = selfCopy;
+  selfCopy = 0;
   v21.receiver = v6;
   v21.super_class = SUSUISoftwareUpdateAuthenticationViewController;
   v20 = [(SUSUISoftwareUpdateAuthenticationViewController *)&v21 init];
-  v26 = v20;
-  objc_storeStrong(&v26, v20);
+  selfCopy = v20;
+  objc_storeStrong(&selfCopy, v20);
   if (v20)
   {
-    v26->_forInstallTonight = v24;
-    v26->_canDeferInstallation = v22;
-    objc_storeStrong(&v26->_descriptor, location[0]);
-    objc_storeStrong(&v26->_rollbackDescriptor, 0);
-    v7 = [location[0] isSplatOnly];
-    v26->_createInstallationKeybag = (v7 ^ 1) & 1;
-    v26->_showingPinController = 0;
-    v26->_doneWithPinController = 0;
+    selfCopy->_forInstallTonight = tonightCopy;
+    selfCopy->_canDeferInstallation = installationCopy;
+    objc_storeStrong(&selfCopy->_descriptor, location[0]);
+    objc_storeStrong(&selfCopy->_rollbackDescriptor, 0);
+    isSplatOnly = [location[0] isSplatOnly];
+    selfCopy->_createInstallationKeybag = (isSplatOnly ^ 1) & 1;
+    selfCopy->_showingPinController = 0;
+    selfCopy->_doneWithPinController = 0;
     if (v23)
     {
-      objc_storeStrong(&v26->_installForecast, v23);
+      objc_storeStrong(&selfCopy->_installForecast, v23);
     }
 
     v8 = objc_alloc_init(SUSSoftwareUpdateTermsManager);
-    termsManager = v26->_termsManager;
-    v26->_termsManager = v8;
+    termsManager = selfCopy->_termsManager;
+    selfCopy->_termsManager = v8;
 
     v10 = dispatch_queue_create("com.apple.susui.authVC.susQueue", 0);
-    clientQueue = v26->_clientQueue;
-    v26->_clientQueue = v10;
+    clientQueue = selfCopy->_clientQueue;
+    selfCopy->_clientQueue = v10;
 
     v12 = [SUManagerClient alloc];
-    v13 = [v12 initWithDelegate:0 queue:v26->_clientQueue clientType:0];
-    suManagerClient = v26->_suManagerClient;
-    v26->_suManagerClient = v13;
+    v13 = [v12 initWithDelegate:0 queue:selfCopy->_clientQueue clientType:0];
+    suManagerClient = selfCopy->_suManagerClient;
+    selfCopy->_suManagerClient = v13;
   }
 
-  v16 = v26;
+  v16 = selfCopy;
   objc_storeStrong(&v23, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v16;
 }
 
-- (SUSUISoftwareUpdateAuthenticationViewController)initWithRollbackDescriptor:(id)a3 canDeferInstallation:(BOOL)a4
+- (SUSUISoftwareUpdateAuthenticationViewController)initWithRollbackDescriptor:(id)descriptor canDeferInstallation:(BOOL)installation
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v4 = v19;
-  v19 = 0;
+  objc_storeStrong(location, descriptor);
+  installationCopy = installation;
+  v4 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v4;
   v16.super_class = SUSUISoftwareUpdateAuthenticationViewController;
   v15 = [(SUSUISoftwareUpdateAuthenticationViewController *)&v16 init];
-  v19 = v15;
-  objc_storeStrong(&v19, v15);
+  selfCopy = v15;
+  objc_storeStrong(&selfCopy, v15);
   if (v15)
   {
-    v19->_forInstallTonight = 0;
-    objc_storeStrong(&v19->_descriptor, 0);
-    objc_storeStrong(&v19->_installForecast, 0);
-    v19->_showingPinController = 0;
-    v19->_doneWithPinController = 0;
-    objc_storeStrong(&v19->_rollbackDescriptor, location[0]);
-    v19->_canDeferInstallation = v17;
-    v19->_createInstallationKeybag = 0;
+    selfCopy->_forInstallTonight = 0;
+    objc_storeStrong(&selfCopy->_descriptor, 0);
+    objc_storeStrong(&selfCopy->_installForecast, 0);
+    selfCopy->_showingPinController = 0;
+    selfCopy->_doneWithPinController = 0;
+    objc_storeStrong(&selfCopy->_rollbackDescriptor, location[0]);
+    selfCopy->_canDeferInstallation = installationCopy;
+    selfCopy->_createInstallationKeybag = 0;
     v5 = objc_alloc_init(SUSSoftwareUpdateTermsManager);
-    termsManager = v19->_termsManager;
-    v19->_termsManager = v5;
+    termsManager = selfCopy->_termsManager;
+    selfCopy->_termsManager = v5;
 
     v7 = dispatch_queue_create("com.apple.susui.authVC.susQueue", 0);
-    clientQueue = v19->_clientQueue;
-    v19->_clientQueue = v7;
+    clientQueue = selfCopy->_clientQueue;
+    selfCopy->_clientQueue = v7;
 
     v9 = [SUManagerClient alloc];
-    v10 = [v9 initWithDelegate:0 queue:v19->_clientQueue clientType:0];
-    suManagerClient = v19->_suManagerClient;
-    v19->_suManagerClient = v10;
+    v10 = [v9 initWithDelegate:0 queue:selfCopy->_clientQueue clientType:0];
+    suManagerClient = selfCopy->_suManagerClient;
+    selfCopy->_suManagerClient = v10;
   }
 
-  v13 = v19;
+  v13 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   objc_storeWeak(&self->_delegate, 0);
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v4 _sendDeactivationResponseFailureIfNecessary];
-  v2.receiver = v4;
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _sendDeactivationResponseFailureIfNecessary];
+  v2.receiver = selfCopy;
   v2.super_class = SUSUISoftwareUpdateAuthenticationViewController;
   [(SUSUISoftwareUpdateAuthenticationViewController *)&v2 dealloc];
 }
 
 - (void)loadView
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v12 = +[UIScreen mainScreen];
   [(UIScreen *)v12 bounds];
@@ -150,77 +150,77 @@
   *&v15 = v4;
   *(&v15 + 1) = v5;
 
-  if (v17->_forInstallTonight)
+  if (selfCopy->_forInstallTonight)
   {
     v8 = [[SUSUIInstallTonightPasscodeEntryView alloc] initWithFrame:v14, v15];
-    view = v17->_view;
-    v17->_view = &v8->super;
+    view = selfCopy->_view;
+    selfCopy->_view = &v8->super;
 
-    [(SUSUIPasscodeEntryView *)v17->_view setInstallTonightForecast:v17->_installForecast];
-    [(SUSUIPasscodeEntryView *)v17->_view setDescriptor:v17->_descriptor];
+    [(SUSUIPasscodeEntryView *)selfCopy->_view setInstallTonightForecast:selfCopy->_installForecast];
+    [(SUSUIPasscodeEntryView *)selfCopy->_view setDescriptor:selfCopy->_descriptor];
   }
 
   else
   {
     v6 = [[SUSUIPasscodeEntryView alloc] initWithFrame:v14, v15];
-    v7 = v17->_view;
-    v17->_view = v6;
+    v7 = selfCopy->_view;
+    selfCopy->_view = v6;
   }
 
-  v13 = [(SUSUIPasscodeEntryView *)v17->_view passcodeLockView];
-  [(SBUIPasscodeLockView *)v13 setDelegate:v17];
+  passcodeLockView = [(SUSUIPasscodeEntryView *)selfCopy->_view passcodeLockView];
+  [(SBUIPasscodeLockView *)passcodeLockView setDelegate:selfCopy];
   v10 = +[UIDevice currentDevice];
-  v11 = [(UIDevice *)v10 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v10 userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    [(SBUIPasscodeLockView *)v13 setShowsEmergencyCallButton:0];
+    [(SBUIPasscodeLockView *)passcodeLockView setShowsEmergencyCallButton:0];
   }
 
   else
   {
-    [(SBUIPasscodeLockView *)v13 setShowsEmergencyCallButton:!v17->_canDeferInstallation];
+    [(SBUIPasscodeLockView *)passcodeLockView setShowsEmergencyCallButton:!selfCopy->_canDeferInstallation];
   }
 
-  [(SBUIPasscodeLockView *)v13 setShowsCancelButton:v17->_canDeferInstallation];
-  [(SBUIPasscodeLockView *)v13 setBiometricAuthenticationAllowed:0];
-  [(SUSUIPasscodeEntryView *)v17->_view updateStatusText];
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v17 setView:v17->_view];
-  objc_storeStrong(&v13, 0);
+  [(SBUIPasscodeLockView *)passcodeLockView setShowsCancelButton:selfCopy->_canDeferInstallation];
+  [(SBUIPasscodeLockView *)passcodeLockView setBiometricAuthenticationAllowed:0];
+  [(SUSUIPasscodeEntryView *)selfCopy->_view updateStatusText];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy setView:selfCopy->_view];
+  objc_storeStrong(&passcodeLockView, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = SUSUISoftwareUpdateAuthenticationViewController;
-  [(SUSUISoftwareUpdateAuthenticationViewController *)&v3 viewWillAppear:a3];
-  [(SUSUIPasscodeEntryView *)v6->_view updateStatusText];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)&v3 viewWillAppear:appear];
+  [(SUSUIPasscodeEntryView *)selfCopy->_view updateStatusText];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = SUSUISoftwareUpdateAuthenticationViewController;
-  [(SUSUISoftwareUpdateAuthenticationViewController *)&v3 viewDidAppear:a3];
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v6 _setVisible:1 animated:1 completion:0];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)&v3 viewDidAppear:appear];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _setVisible:1 animated:1 completion:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  disappearCopy = disappear;
   oslog = SUSUILogAuthenticationUI();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8)
+    if (disappearCopy)
     {
       v3 = @"YES";
     }
@@ -230,7 +230,7 @@
       v3 = @"NO";
     }
 
-    if (v10->_showingTermsAndConditions)
+    if (selfCopy->_showingTermsAndConditions)
     {
       v4 = @"YES";
     }
@@ -245,18 +245,18 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v5.receiver = v10;
+  v5.receiver = selfCopy;
   v5.super_class = SUSUISoftwareUpdateAuthenticationViewController;
-  [(SUSUISoftwareUpdateAuthenticationViewController *)&v5 viewDidDisappear:v8];
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v10 _sendDeactivationResponseFailureIfNecessary];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)&v5 viewDidDisappear:disappearCopy];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _sendDeactivationResponseFailureIfNecessary];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v5 = +[UIDevice currentDevice];
-  v2 = [(UIDevice *)v5 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v5 userInterfaceIdiom];
   v3 = 30;
-  if (v2 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v3 = 2;
   }
@@ -266,54 +266,54 @@
   return v6;
 }
 
-- (void)passcodeLockViewPasscodeDidChange:(id)a3
+- (void)passcodeLockViewPasscodeDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUSUISoftwareUpdateAuthenticationViewController *)v5 delegate];
-  [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v3 viewControllerWantsIdleTimerReset:v5];
+  objc_storeStrong(location, change);
+  delegate = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+  [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate viewControllerWantsIdleTimerReset:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeLockViewPasscodeEntered:(id)a3
+- (void)passcodeLockViewPasscodeEntered:(id)entered
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v4 _passcodeLockViewPasscodeEntered:location[0] viaMesa:0];
+  objc_storeStrong(location, entered);
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _passcodeLockViewPasscodeEntered:location[0] viaMesa:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)a3
+- (void)passcodeLockViewPasscodeEnteredViaMesa:(id)mesa
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v4 _passcodeLockViewPasscodeEntered:location[0] viaMesa:1];
+  objc_storeStrong(location, mesa);
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _passcodeLockViewPasscodeEntered:location[0] viaMesa:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeLockViewCancelButtonPressed:(id)a3
+- (void)passcodeLockViewCancelButtonPressed:(id)pressed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v4 _authenticationCancelled];
+  objc_storeStrong(location, pressed);
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _authenticationCancelled];
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeLockViewEmergencyCallButtonPressed:(id)a3
+- (void)passcodeLockViewEmergencyCallButtonPressed:(id)pressed
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pressed);
   v13 = SUSUILogAuthenticationUI();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -330,61 +330,61 @@
   v7 = 0;
   v8 = sub_100003548;
   v9 = &unk_1000185D0;
-  v10 = v15;
+  v10 = selfCopy;
   [SUSUIRemoteEmergencyCallViewController requestEmergencyCallControllerWithCompletion:&v5];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissEmergencyCallViewController:(id)a3
+- (void)dismissEmergencyCallViewController:(id)controller
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_100003958;
   v13 = &unk_1000185A8;
-  v14 = v16;
+  v14 = selfCopy;
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_1000039C0;
   v7 = &unk_1000185F8;
-  v8 = v16;
+  v8 = selfCopy;
   [UIView animateWithDuration:&v9 animations:0.4 completion:?];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)emergencyCallViewController:(id)a3 didExitWithError:(id)a4
+- (void)emergencyCallViewController:(id)controller didExitWithError:(id)error
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v7 bs_removeChildViewController:v7->_emergencyVC];
-  objc_storeStrong(&v7->_emergencyVC, 0);
+  objc_storeStrong(&v5, error);
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy bs_removeChildViewController:selfCopy->_emergencyVC];
+  objc_storeStrong(&selfCopy->_emergencyVC, 0);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_setVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_setVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  visibleCopy = visible;
+  animatedCopy = animated;
   location = 0;
-  objc_storeStrong(&location, a5);
-  if (v19->_showingTermsAndConditions)
+  objc_storeStrong(&location, completion);
+  if (selfCopy->_showingTermsAndConditions)
   {
-    if (v17)
+    if (visibleCopy)
     {
       if (location)
       {
@@ -394,15 +394,15 @@
 
     else
     {
-      v5 = v19;
+      v5 = selfCopy;
       v6 = _NSConcreteStackBlock;
       v7 = -1073741824;
       v8 = 0;
       v9 = sub_100003D2C;
       v10 = &unk_100018620;
-      v11 = v19;
-      v13 = v17;
-      v14 = v16;
+      v11 = selfCopy;
+      v13 = visibleCopy;
+      v14 = animatedCopy;
       v12 = location;
       [(SUSUISoftwareUpdateAuthenticationViewController *)v5 _dismissTermsAndConditionsIfNecessaryAnimated:1 withCompletion:&v6];
       objc_storeStrong(&v12, 0);
@@ -410,36 +410,36 @@
     }
   }
 
-  else if (v17)
+  else if (visibleCopy)
   {
-    if ([(SUSUISoftwareUpdateAuthenticationViewController *)v19 _shouldShowPasscodeView])
+    if ([(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _shouldShowPasscodeView])
     {
-      [(SUSUIPasscodeEntryView *)v19->_view setPasscodeViewsToVisible:v17 animated:v16 completion:location];
+      [(SUSUIPasscodeEntryView *)selfCopy->_view setPasscodeViewsToVisible:visibleCopy animated:animatedCopy completion:location];
     }
 
     else
     {
-      [(SUSUISoftwareUpdateAuthenticationViewController *)v19 _presentTermsAndConditionsWithCompletion:location];
+      [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _presentTermsAndConditionsWithCompletion:location];
     }
   }
 
   else
   {
-    [(SUSUIPasscodeEntryView *)v19->_view setPasscodeViewsToVisible:v17 animated:v16 completion:location];
-    [(SUSUISoftwareUpdateAuthenticationViewController *)v19 _dismissTermsAndConditionsIfNecessaryAnimated:0 withCompletion:0];
+    [(SUSUIPasscodeEntryView *)selfCopy->_view setPasscodeViewsToVisible:visibleCopy animated:animatedCopy completion:location];
+    [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _dismissTermsAndConditionsIfNecessaryAnimated:0 withCompletion:0];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (void)_attemptUnlock:(id)a3 passcode:(id)a4
+- (void)_attemptUnlock:(id)unlock passcode:(id)passcode
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, unlock);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, passcode);
   v8 = [v9 length] != 0;
   v7 = +[SUSUIAuthenticationInterface sharedInstance];
   v6 = 0;
@@ -447,42 +447,42 @@
   if (v6)
   {
     [location[0] reset];
-    [(SUSUISoftwareUpdateAuthenticationViewController *)v11 _dismissAndSendCompletionResponse:0];
+    [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _dismissAndSendCompletionResponse:0];
   }
 
   else if (v5)
   {
     [location[0] reset];
-    [(SUSUISoftwareUpdateAuthenticationViewController *)v11 _authenticationSuccess:v9 fromMesa:!v8];
+    [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _authenticationSuccess:v9 fromMesa:!v8];
   }
 
   else
   {
     [location[0] resetForFailedPasscode];
-    [(SUSUISoftwareUpdateAuthenticationViewController *)v11 _authenticationFailure:v9 fromMesa:!v8];
+    [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _authenticationFailure:v9 fromMesa:!v8];
   }
 
-  v11->_attemptingUnlock = 0;
+  selfCopy->_attemptingUnlock = 0;
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_passcodeLockViewPasscodeEntered:(id)a3 viaMesa:(BOOL)a4
+- (void)_passcodeLockViewPasscodeEntered:(id)entered viaMesa:(BOOL)mesa
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
-  if (v21->_attemptingUnlock)
+  objc_storeStrong(location, entered);
+  mesaCopy = mesa;
+  if (selfCopy->_attemptingUnlock)
   {
     v18 = 1;
   }
 
   else
   {
-    v21->_attemptingUnlock = 1;
+    selfCopy->_attemptingUnlock = 1;
     v17 = 0x3FC999999999999ALL;
     v16 = dispatch_time(0, (0.2 * 1000000000.0));
     when = v16;
@@ -493,9 +493,9 @@
     v10 = 0;
     v11 = sub_1000040C0;
     v12 = &unk_100018648;
-    v15 = v19;
+    v15 = mesaCopy;
     v13 = location[0];
-    v14 = v21;
+    v14 = selfCopy;
     dispatch_after(when, queue, &v8);
 
     objc_storeStrong(&v14, 0);
@@ -506,13 +506,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_authenticationFailure:(id)a3 fromMesa:(BOOL)a4
+- (void)_authenticationFailure:(id)failure fromMesa:(BOOL)mesa
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, failure);
+  mesaCopy = mesa;
   v9 = SUSUILogAuthenticationUI();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -527,13 +527,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_authenticationSuccess:(id)a3 fromMesa:(BOOL)a4
+- (void)_authenticationSuccess:(id)success fromMesa:(BOOL)mesa
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v12 = a4;
+  objc_storeStrong(location, success);
+  mesaCopy = mesa;
   v11 = SUSUILogAuthenticationUI();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -546,28 +546,28 @@
 
   objc_storeStrong(&v11, 0);
   v4 = [location[0] copy];
-  passcode = v14->_passcode;
-  v14->_passcode = v4;
+  passcode = selfCopy->_passcode;
+  selfCopy->_passcode = v4;
 
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v14 _presentTermsAndConditionsWithCompletion:0];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _presentTermsAndConditionsWithCompletion:0];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_shouldShowPasscodeView
 {
   v3 = +[SUKeybagInterface sharedInstance];
-  v4 = [(SUKeybagInterface *)v3 hasPasscodeSet];
+  hasPasscodeSet = [(SUKeybagInterface *)v3 hasPasscodeSet];
 
-  return v4;
+  return hasPasscodeSet;
 }
 
-- (void)_presentTermsAndConditionsWithCompletion:(id)a3
+- (void)_presentTermsAndConditionsWithCompletion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v20->_showingTermsAndConditions)
+  objc_storeStrong(location, completion);
+  if (selfCopy->_showingTermsAndConditions)
   {
     if (location[0])
     {
@@ -580,31 +580,31 @@
   else
   {
     v3 = [[UIViewController alloc] initWithNibName:0 bundle:?];
-    termsAndConditionsController = v20->_termsAndConditionsController;
-    v20->_termsAndConditionsController = v3;
+    termsAndConditionsController = selfCopy->_termsAndConditionsController;
+    selfCopy->_termsAndConditionsController = v3;
 
-    v8 = [(UIViewController *)v20->_termsAndConditionsController view];
-    [(UIView *)v8 setAlpha:0.0];
+    view = [(UIViewController *)selfCopy->_termsAndConditionsController view];
+    [(UIView *)view setAlpha:0.0];
 
-    [(UIViewController *)v20->_termsAndConditionsController setModalPresentationStyle:0];
-    v20->_showingTermsAndConditions = 1;
+    [(UIViewController *)selfCopy->_termsAndConditionsController setModalPresentationStyle:0];
+    selfCopy->_showingTermsAndConditions = 1;
     v9 = +[UIDevice currentDevice];
-    v10 = [(UIDevice *)v9 userInterfaceIdiom];
+    userInterfaceIdiom = [(UIDevice *)v9 userInterfaceIdiom];
 
-    if (v10 != 1)
+    if (userInterfaceIdiom != 1)
     {
-      v7 = [(SUSUISoftwareUpdateAuthenticationViewController *)v20 delegate];
-      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v7 viewController:v20 wantsStatusBarHidden:1 withDuration:0.4];
+      delegate = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate viewController:selfCopy wantsStatusBarHidden:1 withDuration:0.4];
     }
 
-    v6 = v20;
-    v5 = v20->_termsAndConditionsController;
+    v6 = selfCopy;
+    v5 = selfCopy->_termsAndConditionsController;
     v11 = _NSConcreteStackBlock;
     v12 = -1073741824;
     v13 = 0;
     v14 = sub_10000470C;
     v15 = &unk_100018698;
-    v16 = v20;
+    v16 = selfCopy;
     v17 = location[0];
     [(SUSUISoftwareUpdateAuthenticationViewController *)v6 presentViewController:v5 animated:0 completion:&v11];
     objc_storeStrong(&v17, 0);
@@ -615,26 +615,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_dismissTermsAndConditionsIfNecessaryAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_dismissTermsAndConditionsIfNecessaryAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  animatedCopy = animated;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v10->_showingTermsAndConditions)
+  objc_storeStrong(&location, completion);
+  if (selfCopy->_showingTermsAndConditions)
   {
-    v10->_showingTermsAndConditions = 0;
+    selfCopy->_showingTermsAndConditions = 0;
     v5 = +[UIDevice currentDevice];
-    v6 = [(UIDevice *)v5 userInterfaceIdiom];
+    userInterfaceIdiom = [(UIDevice *)v5 userInterfaceIdiom];
 
-    if (v6 != 1)
+    if (userInterfaceIdiom != 1)
     {
-      v4 = [(SUSUISoftwareUpdateAuthenticationViewController *)v10 delegate];
-      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v4 viewController:v10 wantsStatusBarHidden:0 withDuration:0.4];
+      delegate = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate viewController:selfCopy wantsStatusBarHidden:0 withDuration:0.4];
     }
 
-    [(UIViewController *)v10->_termsAndConditionsController dismissViewControllerAnimated:v8 completion:location];
+    [(UIViewController *)selfCopy->_termsAndConditionsController dismissViewControllerAnimated:animatedCopy completion:location];
   }
 
   else if (location)
@@ -645,19 +645,19 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_dismissAndSendCompletionResponse:(BOOL)a3
+- (void)_dismissAndSendCompletionResponse:(BOOL)response
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  v27 = a3;
+  responseCopy = response;
   if (!self->_responseSent)
   {
-    v29->_responseSent = 1;
+    selfCopy->_responseSent = 1;
     location = SUSUILogAuthenticationUI();
     v25 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
     {
-      if (v27)
+      if (responseCopy)
       {
         v3 = @"YES";
       }
@@ -672,18 +672,18 @@
     }
 
     objc_storeStrong(&location, 0);
-    v24 = v27;
-    if (v27)
+    v24 = responseCopy;
+    if (responseCopy)
     {
-      if (v29->_createInstallationKeybag)
+      if (selfCopy->_createInstallationKeybag)
       {
         v13 = +[SUKeybagInterface sharedInstance];
-        v14 = [(SUKeybagInterface *)v13 hasPasscodeSet];
+        hasPasscodeSet = [(SUKeybagInterface *)v13 hasPasscodeSet];
 
-        v23 = v14;
-        if (v14)
+        v23 = hasPasscodeSet;
+        if (hasPasscodeSet)
         {
-          v24 = [(SUSUISoftwareUpdateAuthenticationViewController *)v29 _createKeybagForPasscode:v29->_passcode forInstallTonight:v29->_forInstallTonight];
+          v24 = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy _createKeybagForPasscode:selfCopy->_passcode forInstallTonight:selfCopy->_forInstallTonight];
           v22 = SUSUILogAuthenticationUI();
           v21 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -744,11 +744,11 @@
         objc_storeStrong(&v18, 0);
       }
 
-      v9 = [(SUSUISoftwareUpdateAuthenticationViewController *)v29 delegate];
-      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v9 viewControllerAuthenticatedWithResult:v24 & 1];
+      delegate = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate viewControllerAuthenticatedWithResult:v24 & 1];
 
-      v10 = [(SUSUISoftwareUpdateAuthenticationViewController *)v29 delegate];
-      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v10 viewControllerWantsDismissal:v29];
+      delegate2 = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate2 viewControllerWantsDismissal:selfCopy];
     }
 
     else
@@ -771,38 +771,38 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      v7 = [(SUSUISoftwareUpdateAuthenticationViewController *)v29 delegate];
-      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v7 viewControllerAuthenticatedWithResult:v24 & 1];
+      delegate3 = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate3 viewControllerAuthenticatedWithResult:v24 & 1];
 
-      v8 = [(SUSUISoftwareUpdateAuthenticationViewController *)v29 delegate];
-      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)v8 viewControllerWantsDismissal:v29];
+      delegate4 = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy delegate];
+      [(SUSUISoftwareUpdateAuthenticationViewControllerDelegate *)delegate4 viewControllerWantsDismissal:selfCopy];
     }
 
-    [(SUManagerClient *)v29->_suManagerClient invalidate];
-    objc_storeStrong(&v29->_suManagerClient, 0);
+    [(SUManagerClient *)selfCopy->_suManagerClient invalidate];
+    objc_storeStrong(&selfCopy->_suManagerClient, 0);
   }
 }
 
-- (BOOL)_createKeybagForPasscode:(id)a3 forInstallTonight:(BOOL)a4
+- (BOOL)_createKeybagForPasscode:(id)passcode forInstallTonight:(BOOL)tonight
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
-  objc_initWeak(&v21, v24->_suManagerClient);
+  objc_storeStrong(location, passcode);
+  tonightCopy = tonight;
+  objc_initWeak(&v21, selfCopy->_suManagerClient);
   v16 = 0;
   v17 = &v16;
   v18 = 0x20000000;
   v19 = 32;
   v20 = 0;
-  queue = v24->_clientQueue;
+  queue = selfCopy->_clientQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000052DC;
   v12 = &unk_1000186C0;
-  v13 = v24;
+  v13 = selfCopy;
   v14[0] = location[0];
   v14[1] = &v16;
   objc_copyWeak(&v15, &v21);
@@ -817,16 +817,16 @@
   return v7 & 1;
 }
 
-- (void)_dismissSelf:(BOOL)a3
+- (void)_dismissSelf:(BOOL)self
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  selfCopy2 = self;
   location = SUSUILogAuthenticationUI();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
   {
-    if (v15)
+    if (selfCopy2)
     {
       v3 = @"YES";
     }
@@ -841,44 +841,44 @@
   }
 
   objc_storeStrong(&location, 0);
-  v17->_doneWithPinController = 1;
-  objc_initWeak(&from, v17);
-  v4 = v17;
+  selfCopy->_doneWithPinController = 1;
+  objc_initWeak(&from, selfCopy);
+  v4 = selfCopy;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_100005740;
   v9 = &unk_1000186E8;
   objc_copyWeak(&v10, &from);
-  v11 = v15;
+  v11 = selfCopy2;
   [(SUSUISoftwareUpdateAuthenticationViewController *)v4 _setVisible:0 animated:1 completion:&v5];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&from);
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(SUSUISoftwareUpdateAuthenticationViewController *)v13 view];
-  [v7 bounds];
+  objc_storeStrong(location, controller);
+  view = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy view];
+  [view bounds];
   *&v10 = v3;
   *(&v10 + 1) = v4;
   *&v11 = v5;
   *(&v11 + 1) = v6;
 
-  v9 = [location[0] view];
-  [v9 setFrame:{v10, v11}];
-  [v9 setAutoresizingMask:18];
-  [location[0] willMoveToParentViewController:v13];
-  v8 = [(SUSUISoftwareUpdateAuthenticationViewController *)v13 view];
-  [v8 addSubview:v9];
+  view2 = [location[0] view];
+  [view2 setFrame:{v10, v11}];
+  [view2 setAutoresizingMask:18];
+  [location[0] willMoveToParentViewController:selfCopy];
+  view3 = [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy view];
+  [view3 addSubview:view2];
 
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v13 addChildViewController:location[0]];
-  [location[0] didMoveToParentViewController:v13];
-  objc_storeStrong(&v9, 0);
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy addChildViewController:location[0]];
+  [location[0] didMoveToParentViewController:selfCopy];
+  objc_storeStrong(&view2, 0);
   objc_storeStrong(location, 0);
 }
 

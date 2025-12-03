@@ -1,38 +1,38 @@
 @interface SCROCallback
-- (SCROCallback)initWithCoder:(id)a3;
-- (SCROCallback)initWithKey:(int)a3 object:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SCROCallback)initWithCoder:(id)coder;
+- (SCROCallback)initWithKey:(int)key object:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCROCallback
 
-- (SCROCallback)initWithKey:(int)a3 object:(id)a4
+- (SCROCallback)initWithKey:(int)key object:(id)object
 {
-  v7 = a4;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = SCROCallback;
   v8 = [(SCROCallback *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_key = a3;
-    objc_storeStrong(&v8->_object, a4);
+    v8->_key = key;
+    objc_storeStrong(&v8->_object, object);
   }
 
   return v9;
 }
 
-- (SCROCallback)initWithCoder:(id)a3
+- (SCROCallback)initWithCoder:(id)coder
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"_key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"_key"];
   if (initWithCoder__onceToken != -1)
   {
     [SCROCallback initWithCoder:];
   }
 
-  v6 = [v4 decodeObjectOfClasses:initWithCoder__classes forKey:@"_object"];
+  v6 = [coderCopy decodeObjectOfClasses:initWithCoder__classes forKey:@"_object"];
   v7 = [(SCROCallback *)self initWithKey:v5 object:v6];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -62,12 +62,12 @@ void __30__SCROCallback_initWithCoder___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeInt:key forKey:@"_key"];
-  [v5 encodeObject:self->_object forKey:@"_object"];
+  coderCopy = coder;
+  [coderCopy encodeInt:key forKey:@"_key"];
+  [coderCopy encodeObject:self->_object forKey:@"_object"];
 }
 
 @end

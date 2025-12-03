@@ -7,93 +7,93 @@
 - (id)donateActivityCommand
 {
   v2 = objc_alloc_init(MEMORY[0x277D47158]);
-  v3 = [a1 address];
+  address = [self address];
   [v2 setType:@"com.apple.siri.businessLocation"];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v3)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (address)
   {
-    v5 = [v3 label];
+    label = [address label];
 
-    if (v5)
+    if (label)
     {
-      v6 = [v3 label];
-      v7 = [MEMORY[0x277CFE210] locationName];
-      [v4 setValue:v6 forKey:v7];
+      label2 = [address label];
+      locationName = [MEMORY[0x277CFE210] locationName];
+      [dictionary setValue:label2 forKey:locationName];
     }
 
-    v8 = [v3 city];
+    city = [address city];
 
-    if (v8)
+    if (city)
     {
-      v9 = [v3 city];
-      v10 = [MEMORY[0x277CFE210] city];
-      [v4 setValue:v9 forKey:v10];
+      city2 = [address city];
+      city3 = [MEMORY[0x277CFE210] city];
+      [dictionary setValue:city2 forKey:city3];
     }
 
-    v11 = [v3 postalCode];
+    postalCode = [address postalCode];
 
-    if (v11)
+    if (postalCode)
     {
-      v12 = [v3 postalCode];
-      v13 = [MEMORY[0x277CFE210] postalCode];
-      [v4 setValue:v12 forKey:v13];
+      postalCode2 = [address postalCode];
+      postalCode3 = [MEMORY[0x277CFE210] postalCode];
+      [dictionary setValue:postalCode2 forKey:postalCode3];
     }
 
-    v14 = [v3 street];
+    street = [address street];
 
-    if (v14)
+    if (street)
     {
-      v15 = [v3 street];
-      v16 = [MEMORY[0x277CFE210] thoroughfare];
-      [v4 setValue:v15 forKey:v16];
+      street2 = [address street];
+      thoroughfare = [MEMORY[0x277CFE210] thoroughfare];
+      [dictionary setValue:street2 forKey:thoroughfare];
     }
 
-    v17 = [v3 stateCode];
+    stateCode = [address stateCode];
 
-    if (v17)
+    if (stateCode)
     {
-      v18 = [v3 stateCode];
-      v19 = [MEMORY[0x277CFE210] stateOrProvince];
-      [v4 setValue:v18 forKey:v19];
+      stateCode2 = [address stateCode];
+      stateOrProvince = [MEMORY[0x277CFE210] stateOrProvince];
+      [dictionary setValue:stateCode2 forKey:stateOrProvince];
     }
 
-    v20 = [v3 countryCode];
+    countryCode = [address countryCode];
 
-    if (v20)
+    if (countryCode)
     {
-      v21 = [v3 countryCode];
-      v22 = [MEMORY[0x277CFE210] country];
-      [v4 setValue:v21 forKey:v22];
+      countryCode2 = [address countryCode];
+      country = [MEMORY[0x277CFE210] country];
+      [dictionary setValue:countryCode2 forKey:country];
     }
 
-    v23 = [v3 longitude];
+    longitude = [address longitude];
 
-    if (v23)
+    if (longitude)
     {
-      v24 = [v3 longitude];
-      v25 = [MEMORY[0x277CFE210] longitude];
-      [v4 setValue:v24 forKey:v25];
+      longitude2 = [address longitude];
+      longitude3 = [MEMORY[0x277CFE210] longitude];
+      [dictionary setValue:longitude2 forKey:longitude3];
     }
 
-    v26 = [v3 latitude];
+    latitude = [address latitude];
 
-    if (v26)
+    if (latitude)
     {
-      v27 = [v3 latitude];
-      v28 = [MEMORY[0x277CFE210] latitude];
-      [v4 setValue:v27 forKey:v28];
+      latitude2 = [address latitude];
+      latitude3 = [MEMORY[0x277CFE210] latitude];
+      [dictionary setValue:latitude2 forKey:latitude3];
     }
   }
 
-  v29 = [a1 phoneNumber];
+  phoneNumber = [self phoneNumber];
 
-  if (v29)
+  if (phoneNumber)
   {
-    v30 = [a1 phoneNumber];
-    [v4 setValue:v30 forKey:@"_DKLocationApplicationActivityMetadataKey-phoneNumber"];
+    phoneNumber2 = [self phoneNumber];
+    [dictionary setValue:phoneNumber2 forKey:@"_DKLocationApplicationActivityMetadataKey-phoneNumber"];
   }
 
-  [v2 setMetadata:v4];
+  [v2 setMetadata:dictionary];
   [v2 setVisibility:*MEMORY[0x277D47BF8]];
   [v2 setStreamType:@"/app/locationActivity"];
   v31 = objc_alloc_init(MEMORY[0x277D476B0]);

@@ -1,24 +1,24 @@
 @interface MLCRNNGPUDeviceOps
-+ (id)deviceOpsWithForwardKernel:(id)a3 gradientKernel:(id)a4;
-- (MLCRNNGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4;
++ (id)deviceOpsWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel;
+- (MLCRNNGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel;
 @end
 
 @implementation MLCRNNGPUDeviceOps
 
-+ (id)deviceOpsWithForwardKernel:(id)a3 gradientKernel:(id)a4
++ (id)deviceOpsWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithForwardKernel:v7 gradientKernel:v6];
+  gradientKernelCopy = gradientKernel;
+  kernelCopy = kernel;
+  v8 = [[self alloc] initWithForwardKernel:kernelCopy gradientKernel:gradientKernelCopy];
 
   return v8;
 }
 
-- (MLCRNNGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4
+- (MLCRNNGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel
 {
   v48.receiver = self;
   v48.super_class = MLCRNNGPUDeviceOps;
-  v4 = [(MLCGPUDeviceOps *)&v48 initWithForwardKernel:a3 gradientKernel:a4 secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
+  v4 = [(MLCGPUDeviceOps *)&v48 initWithForwardKernel:kernel gradientKernel:gradientKernel secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
   if (v4)
   {
     v5 = MEMORY[0x277CBEBF8];

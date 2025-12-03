@@ -1,9 +1,9 @@
 @interface RBXNUWrapper
 + (id)sharedWrapper;
-+ (void)setGPURoleWithKernel:(unsigned __int8)a3 forPid:(int)a4;
++ (void)setGPURoleWithKernel:(unsigned __int8)kernel forPid:(int)pid;
 - (RBXNUWrapper)init;
-- (int64_t)_setBallastOffset:(unint64_t)a3;
-- (void)setGPURoleWithGPUDevice:(unsigned __int8)a3 forPid:(int)a4;
+- (int64_t)_setBallastOffset:(unint64_t)offset;
+- (void)setGPURoleWithGPUDevice:(unsigned __int8)device forPid:(int)pid;
 @end
 
 @implementation RBXNUWrapper
@@ -43,9 +43,9 @@ uint64_t __29__RBXNUWrapper_sharedWrapper__block_invoke()
     v6 = rbs_process_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 longValue];
+      longValue = [v5 longValue];
       *buf = 134217984;
-      v23 = v7;
+      v23 = longValue;
       _os_log_impl(&dword_262485000, v6, OS_LOG_TYPE_DEFAULT, "Setting ballast offset to %lld", buf, 0xCu);
     }
 
@@ -156,24 +156,24 @@ void __20__RBXNUWrapper_init__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setGPURoleWithKernel:(unsigned __int8)a3 forPid:(int)a4
++ (void)setGPURoleWithKernel:(unsigned __int8)kernel forPid:(int)pid
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = 0x706030202uLL >> (8 * a3);
-  if (a3 >= 5u)
+  v5 = 0x706030202uLL >> (8 * kernel);
+  if (kernel >= 5u)
   {
     LOBYTE(v5) = 2;
   }
 
   v6 = v5 & 7;
-  if (!setpriority(5, a4, v6))
+  if (!setpriority(5, pid, v6))
   {
     v7 = rbs_process_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = NSStringFromDarwinGPURole(v6);
       v12 = 67109634;
-      v13 = a4;
+      pidCopy2 = pid;
       v14 = 2114;
       v15 = v8;
       v16 = 1024;
@@ -196,7 +196,7 @@ LABEL_10:
       v9 = __error();
       v10 = strerror(*v9);
       v12 = 67109890;
-      v13 = a4;
+      pidCopy2 = pid;
       v14 = 2114;
       v15 = v8;
       v16 = 1024;
@@ -216,14 +216,14 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setGPURoleWithGPUDevice:(unsigned __int8)a3 forPid:(int)a4
+- (void)setGPURoleWithGPUDevice:(unsigned __int8)device forPid:(int)pid
 {
   v19 = *MEMORY[0x277D85DE8];
   if (MEMORY[0x28221DB78])
   {
     if (self->_gpuDevice)
     {
-      if (a3 == 3)
+      if (device == 3)
       {
         v5 = 1;
       }
@@ -233,7 +233,7 @@ LABEL_11:
         v5 = 2;
       }
 
-      if (a3 == 4)
+      if (device == 4)
       {
         v6 = 0;
       }
@@ -250,7 +250,7 @@ LABEL_11:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v15 = 67109376;
-          v16 = a4;
+          pidCopy2 = pid;
           v17 = 1024;
           v18 = v6;
           v10 = "%d setGPURole role to %d (no effect for this process)";
@@ -266,7 +266,7 @@ LABEL_11:
           v9 = rbs_general_log();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
-            [(RBXNUWrapper *)a4 setGPURoleWithGPUDevice:v8 forPid:v9];
+            [(RBXNUWrapper *)pid setGPURoleWithGPUDevice:v8 forPid:v9];
           }
         }
 
@@ -276,7 +276,7 @@ LABEL_11:
           if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
           {
             v15 = 67109376;
-            v16 = a4;
+            pidCopy2 = pid;
             v17 = 1024;
             v18 = v6;
             v10 = "%d setGPURole role to %d";
@@ -318,11 +318,11 @@ LABEL_20:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_setBallastOffset:(unint64_t)a3
+- (int64_t)_setBallastOffset:(unint64_t)offset
 {
-  self->_ballastOffsetMB = a3;
-  v4 = a3;
-  return sysctlbyname("kern.memorystatus.ballast_offset_mb", 0, 0, &v4, 4uLL);
+  self->_ballastOffsetMB = offset;
+  offsetCopy = offset;
+  return sysctlbyname("kern.memorystatus.ballast_offset_mb", 0, 0, &offsetCopy, 4uLL);
 }
 
 - (void)setGPURoleWithGPUDevice:(os_log_t)log forPid:.cold.1(int a1, int a2, os_log_t log)

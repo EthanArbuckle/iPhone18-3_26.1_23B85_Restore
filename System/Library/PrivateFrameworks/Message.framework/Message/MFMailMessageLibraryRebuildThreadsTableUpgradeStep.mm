@@ -1,16 +1,16 @@
 @interface MFMailMessageLibraryRebuildThreadsTableUpgradeStep
-+ (id)_threadsTableSchemaWithMessagesTable:(id)a3 conversationsTable:(id)a4 threadScopesTable:(id)a5;
-+ (int)runWithConnection:(id)a3;
++ (id)_threadsTableSchemaWithMessagesTable:(id)table conversationsTable:(id)conversationsTable threadScopesTable:(id)scopesTable;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryRebuildThreadsTableUpgradeStep
 
-+ (id)_threadsTableSchemaWithMessagesTable:(id)a3 conversationsTable:(id)a4 threadScopesTable:(id)a5
++ (id)_threadsTableSchemaWithMessagesTable:(id)table conversationsTable:(id)conversationsTable threadScopesTable:(id)scopesTable
 {
   v88 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v51 = a4;
-  v52 = a5;
+  tableCopy = table;
+  conversationsTableCopy = conversationsTable;
+  scopesTableCopy = scopesTable;
   v7 = objc_alloc(MEMORY[0x1E699B958]);
   v64 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"scope" nullable:0];
   v50 = v64;
@@ -114,10 +114,10 @@
   v29 = v28;
   v55 = v29;
   v30 = _Block_copy(v54);
-  v30[2](v30, @"scope", v52);
-  v30[2](v30, @"conversation", v51);
-  (*(v29 + 2))(v29, @"newest_read_message", v53, 3);
-  (*(v29 + 2))(v29, @"display_message", v53, 3);
+  v30[2](v30, @"scope", scopesTableCopy);
+  v30[2](v30, @"conversation", conversationsTableCopy);
+  (*(v29 + 2))(v29, @"newest_read_message", tableCopy, 3);
+  (*(v29 + 2))(v29, @"display_message", tableCopy, 3);
   v31 = v27;
 
   v32 = *MEMORY[0x1E69E9840];
@@ -131,10 +131,10 @@ void __128__MFMailMessageLibraryRebuildThreadsTableUpgradeStep__threadsTableSche
   [v7 setAsForeignKeyForTable:v8 onDelete:a4 onUpdate:0];
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v4 = a3;
-  if (([v4 executeStatementString:@"DROP TABLE threads" errorMessage:@"Dropping threads"] & 1) != 0 && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_scopes", @"Clearing thread_scopes") && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_mailboxes", @"Clearing thread_mailboxes") && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_senders", @"Clearing thread_senders") && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_recipients", @"Clearing thread_recipients"))
+  connectionCopy = connection;
+  if (([connectionCopy executeStatementString:@"DROP TABLE threads" errorMessage:@"Dropping threads"] & 1) != 0 && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_scopes", @"Clearing thread_scopes") && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_mailboxes", @"Clearing thread_mailboxes") && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_senders", @"Clearing thread_senders") && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_recipients", @"Clearing thread_recipients"))
   {
     v5 = objc_alloc(MEMORY[0x1E699B958]);
     v6 = [v5 initWithName:@"messages" rowIDType:2 columns:MEMORY[0x1E695E0F0]];
@@ -142,9 +142,9 @@ void __128__MFMailMessageLibraryRebuildThreadsTableUpgradeStep__threadsTableSche
     v8 = [v7 initWithName:@"conversations" rowIDType:2 rowIDAlias:@"conversation_id" columns:MEMORY[0x1E695E0F0]];
     v9 = objc_alloc(MEMORY[0x1E699B958]);
     v10 = [v9 initWithName:@"thread_scopes" rowIDType:2 columns:MEMORY[0x1E695E0F0]];
-    v11 = [a1 _threadsTableSchemaWithMessagesTable:v6 conversationsTable:v8 threadScopesTable:v10];
+    v11 = [self _threadsTableSchemaWithMessagesTable:v6 conversationsTable:v8 threadScopesTable:v10];
     v12 = [v11 definitionWithDatabaseName:0];
-    v13 = [v4 executeStatementString:v12 errorMessage:@"Creating new threads"] ^ 1;
+    v13 = [connectionCopy executeStatementString:v12 errorMessage:@"Creating new threads"] ^ 1;
   }
 
   else

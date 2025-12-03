@@ -1,13 +1,13 @@
 @interface FRCFrameBurstyDropInfo
-- (void)setBurstyBaseDuration:(id *)a3;
+- (void)setBurstyBaseDuration:(id *)duration;
 @end
 
 @implementation FRCFrameBurstyDropInfo
 
-- (void)setBurstyBaseDuration:(id *)a3
+- (void)setBurstyBaseDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_burstyBaseDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_burstyBaseDuration.epoch = duration->var3;
   *&self->_burstyBaseDuration.value = v3;
 }
 

@@ -1,11 +1,11 @@
 @interface StorageSettingsUIWrapper
 - (STStorageUIViewControllerDelegate)delegate;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
 - (void)viewDidLoad;
 @end
 
@@ -17,22 +17,22 @@
   v42.super_class = StorageSettingsUIWrapper;
   [(StorageSettingsUIWrapper *)&v42 viewDidLoad];
   v3 = [_TtC17StorageSettingsUI7Wrapper hostingControllerWithParentController:self];
-  v4 = [(StorageSettingsUIWrapper *)self view];
-  [v4 bounds];
+  view = [(StorageSettingsUIWrapper *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v3 view];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  view2 = [v3 view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = [v3 view];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [v3 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(StorageSettingsUIWrapper *)self addChildViewController:v3];
-  v15 = [(StorageSettingsUIWrapper *)self view];
-  v16 = [v3 view];
-  [v15 addSubview:v16];
+  view4 = [(StorageSettingsUIWrapper *)self view];
+  view5 = [v3 view];
+  [view4 addSubview:view5];
 
   [v3 didMoveToParentViewController:self];
   v17 = STLocalizedString(@"%@ Storage");
@@ -40,21 +40,21 @@
   v19 = [NSString stringWithFormat:v17, v18];
   [(StorageSettingsUIWrapper *)self setTitle:v19];
 
-  v20 = [v3 view];
-  v21 = [(StorageSettingsUIWrapper *)self view];
-  v22 = [NSLayoutConstraint constraintWithItem:v20 attribute:3 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:0.0];
+  view6 = [v3 view];
+  view7 = [(StorageSettingsUIWrapper *)self view];
+  v22 = [NSLayoutConstraint constraintWithItem:view6 attribute:3 relatedBy:0 toItem:view7 attribute:3 multiplier:1.0 constant:0.0];
 
-  v23 = [v3 view];
-  v24 = [(StorageSettingsUIWrapper *)self view];
-  v25 = [NSLayoutConstraint constraintWithItem:v23 attribute:2 relatedBy:0 toItem:v24 attribute:2 multiplier:1.0 constant:0.0];
+  view8 = [v3 view];
+  view9 = [(StorageSettingsUIWrapper *)self view];
+  v25 = [NSLayoutConstraint constraintWithItem:view8 attribute:2 relatedBy:0 toItem:view9 attribute:2 multiplier:1.0 constant:0.0];
 
-  v26 = [v3 view];
-  v27 = [(StorageSettingsUIWrapper *)self view];
-  v28 = [NSLayoutConstraint constraintWithItem:v26 attribute:4 relatedBy:0 toItem:v27 attribute:4 multiplier:1.0 constant:0.0];
+  view10 = [v3 view];
+  view11 = [(StorageSettingsUIWrapper *)self view];
+  v28 = [NSLayoutConstraint constraintWithItem:view10 attribute:4 relatedBy:0 toItem:view11 attribute:4 multiplier:1.0 constant:0.0];
 
-  v29 = [v3 view];
-  v30 = [(StorageSettingsUIWrapper *)self view];
-  v31 = [NSLayoutConstraint constraintWithItem:v29 attribute:1 relatedBy:0 toItem:v30 attribute:1 multiplier:1.0 constant:0.0];
+  view12 = [v3 view];
+  view13 = [(StorageSettingsUIWrapper *)self view];
+  v31 = [NSLayoutConstraint constraintWithItem:view12 attribute:1 relatedBy:0 toItem:view13 attribute:1 multiplier:1.0 constant:0.0];
 
   v43[0] = v22;
   v43[1] = v25;
@@ -68,30 +68,30 @@
   self->_searchController = v33;
 
   [(UISearchController *)self->_searchController setDelegate:self];
-  v35 = [(UISearchController *)self->_searchController searchBar];
-  [v35 setDelegate:self];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setDelegate:self];
 
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
   v36 = self->_searchController;
-  v37 = [(StorageSettingsUIWrapper *)self navigationItem];
-  [v37 setSearchController:v36];
+  navigationItem = [(StorageSettingsUIWrapper *)self navigationItem];
+  [navigationItem setSearchController:v36];
 
-  v38 = [(StorageSettingsUIWrapper *)self navigationItem];
-  [v38 setPreferredSearchBarPlacement:2];
+  navigationItem2 = [(StorageSettingsUIWrapper *)self navigationItem];
+  [navigationItem2 setPreferredSearchBarPlacement:2];
 
-  v39 = [(UISearchController *)self->_searchController searchBar];
-  [v39 setHidden:1];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar2 setHidden:1];
 
-  v40 = [(UISearchController *)self->_searchController searchBar];
-  [v40 setAccessibilityIdentifier:@"StorageSearchBar"];
+  searchBar3 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar3 setAccessibilityIdentifier:@"StorageSearchBar"];
 
-  v41 = [(StorageSettingsUIWrapper *)self navigationItem];
-  [v41 setStyle:0];
+  navigationItem3 = [(StorageSettingsUIWrapper *)self navigationItem];
+  [navigationItem3 setStyle:0];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  if (!a3)
+  if (!controller)
   {
     lastSearchedText = self->_lastSearchedText;
     self->_lastSearchedText = 0;
@@ -101,37 +101,20 @@
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  if (a3)
+  if (l)
   {
-    v8 = a4;
-    v6 = a3;
+    completionCopy = completion;
+    lCopy = l;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained handleDeepLinkWithResourceDictionary:v6];
+    [WeakRetained handleDeepLinkWithResourceDictionary:lCopy];
 
-    v8[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
-{
-  if (self->_lastSearchedText)
-  {
-    WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained searchDidUpdate:self->_lastSearchedText];
-  }
-
-  else
-  {
-    self->_lastSearchedText = &stru_AD3C8;
-
-    WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained searchDidOpen];
-  }
-}
-
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
   if (self->_lastSearchedText)
   {
@@ -148,7 +131,24 @@
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
+{
+  if (self->_lastSearchedText)
+  {
+    WeakRetained = objc_loadWeakRetained(&self->_delegate);
+    [WeakRetained searchDidUpdate:self->_lastSearchedText];
+  }
+
+  else
+  {
+    self->_lastSearchedText = &stru_AD3C8;
+
+    WeakRetained = objc_loadWeakRetained(&self->_delegate);
+    [WeakRetained searchDidOpen];
+  }
+}
+
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   lastSearchedText = self->_lastSearchedText;
   self->_lastSearchedText = 0;
@@ -157,17 +157,17 @@
   [WeakRetained searchDidClose];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v6 = a4;
+  changeCopy = change;
   if (self->_lastSearchedText)
   {
-    v8 = v6;
-    objc_storeStrong(&self->_lastSearchedText, a4);
+    v8 = changeCopy;
+    objc_storeStrong(&self->_lastSearchedText, change);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained searchDidUpdate:v8];
 
-    v6 = v8;
+    changeCopy = v8;
   }
 }
 

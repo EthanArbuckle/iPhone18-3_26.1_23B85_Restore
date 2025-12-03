@@ -1,42 +1,42 @@
 @interface CATTaskMessageStart
-- (CATTaskMessageStart)initWithCoder:(id)a3;
-- (CATTaskMessageStart)initWithTaskUUID:(id)a3 request:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CATTaskMessageStart)initWithCoder:(id)coder;
+- (CATTaskMessageStart)initWithTaskUUID:(id)d request:(id)request;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CATTaskMessageStart
 
-- (CATTaskMessageStart)initWithTaskUUID:(id)a3 request:(id)a4
+- (CATTaskMessageStart)initWithTaskUUID:(id)d request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  dCopy = d;
+  requestCopy = request;
+  if (!requestCopy)
   {
     [CATTaskMessageStart initWithTaskUUID:a2 request:self];
   }
 
   v12.receiver = self;
   v12.super_class = CATTaskMessageStart;
-  v9 = [(CATTaskMessage *)&v12 initWithTaskUUID:v7];
+  v9 = [(CATTaskMessage *)&v12 initWithTaskUUID:dCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a4);
+    objc_storeStrong(&v9->_request, request);
   }
 
   return v10;
 }
 
-- (CATTaskMessageStart)initWithCoder:(id)a3
+- (CATTaskMessageStart)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CATTaskMessageStart;
-  v5 = [(CATTaskMessage *)&v10 initWithCoder:v4];
+  v5 = [(CATTaskMessage *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"request"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"request"];
     request = v5->_request;
     v5->_request = v7;
   }
@@ -44,14 +44,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CATTaskMessageStart;
-  v4 = a3;
-  [(CATTaskMessage *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskMessage *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CATTaskMessageStart *)self request:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"request"];
+  [coderCopy encodeObject:v5 forKey:@"request"];
 }
 
 - (void)initWithTaskUUID:(uint64_t)a1 request:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

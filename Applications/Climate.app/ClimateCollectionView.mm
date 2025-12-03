@@ -1,18 +1,18 @@
 @interface ClimateCollectionView
-- (_TtC7Climate21ClimateCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC7Climate21ClimateCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 @end
 
 @implementation ClimateCollectionView
 
-- (_TtC7Climate21ClimateCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC7Climate21ClimateCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ClimateCollectionView();
-  return [(ClimateCollectionView *)&v10 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(ClimateCollectionView *)&v10 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
 @end

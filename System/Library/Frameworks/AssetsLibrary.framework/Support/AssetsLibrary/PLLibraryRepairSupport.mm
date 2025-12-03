@@ -1,28 +1,28 @@
 @interface PLLibraryRepairSupport
-- (BOOL)_isValidProcessingURL:(id)a3 interruptedPaths:(id)a4;
-- (BOOL)_runCriticalPeriodicMaintenanceTasksDeferActivityIfRequired:(id)a3;
-- (BOOL)_shouldDeferTaskIfRequiredForClassName:(id)a3;
-- (BOOL)_updateDeferredCriticalMaintenanceTaskMarker:(id)a3;
-- (BOOL)_updateMaintenanceTaskMarker:(id)a3 key:(id)a4 value:(id)a5;
-- (BOOL)shouldRunLocationOfInterestUpdateTaskWithGlobalValues:(id)a3;
-- (PLLibraryRepairSupport)initWithTask:(id)a3 description:(id)a4;
+- (BOOL)_isValidProcessingURL:(id)l interruptedPaths:(id)paths;
+- (BOOL)_runCriticalPeriodicMaintenanceTasksDeferActivityIfRequired:(id)required;
+- (BOOL)_shouldDeferTaskIfRequiredForClassName:(id)name;
+- (BOOL)_updateDeferredCriticalMaintenanceTaskMarker:(id)marker;
+- (BOOL)_updateMaintenanceTaskMarker:(id)marker key:(id)key value:(id)value;
+- (BOOL)shouldRunLocationOfInterestUpdateTaskWithGlobalValues:(id)values;
+- (PLLibraryRepairSupport)initWithTask:(id)task description:(id)description;
 - (id)_buildIncompleteMaintenanceTaskPathsKey;
 - (id)_interruptedProcessingURLs;
 - (id)_registeredCriticalMaintenaceTaskClasses;
 - (id)_registeredMaintenanceTaskClasses;
-- (unint64_t)_indexOfRegisteredMaintenanceTaskForMarker:(id)a3;
-- (void)_maintainLibrary:(id)a3 executionBlock:(id)a4;
-- (void)_saveInterruptedProcessingURLs:(id)a3;
-- (void)runCuratedLibraryPeriodicMaintenanceTasksWithProgressReportBlock:(id)a3;
-- (void)runPeriodicMaintenanceActivityOnAllLibrariesWithExecutionBlock:(id)a3;
-- (void)runPeriodicMaintenanceWithProgressReportBlock:(id)a3;
+- (unint64_t)_indexOfRegisteredMaintenanceTaskForMarker:(id)marker;
+- (void)_maintainLibrary:(id)library executionBlock:(id)block;
+- (void)_saveInterruptedProcessingURLs:(id)ls;
+- (void)runCuratedLibraryPeriodicMaintenanceTasksWithProgressReportBlock:(id)block;
+- (void)runPeriodicMaintenanceActivityOnAllLibrariesWithExecutionBlock:(id)block;
+- (void)runPeriodicMaintenanceWithProgressReportBlock:(id)block;
 @end
 
 @implementation PLLibraryRepairSupport
 
-- (void)runPeriodicMaintenanceActivityOnAllLibrariesWithExecutionBlock:(id)a3
+- (void)runPeriodicMaintenanceActivityOnAllLibrariesWithExecutionBlock:(id)block
 {
-  v38 = a3;
+  blockCopy = block;
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -33,7 +33,7 @@
   }
 
   v37 = +[PLLibraryBookmarkManager sharedBookmarkManager];
-  v6 = [v37 allKnownLibraryURLs];
+  allKnownLibraryURLs = [v37 allKnownLibraryURLs];
   v7 = [PLPhotoLibraryPathManager wellKnownPhotoLibraryURLForIdentifier:1];
   v57[0] = v7;
   v8 = [PLPhotoLibraryPathManager wellKnownPhotoLibraryURLForIdentifier:3];
@@ -60,8 +60,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v50 + 1) + 8 * i) path];
-        v17 = [PLFileUtilities realPathForPath:v16 error:0];
+        path = [*(*(&v50 + 1) + 8 * i) path];
+        v17 = [PLFileUtilities realPathForPath:path error:0];
 
         if (v17)
         {
@@ -76,7 +76,7 @@
   }
 
   v18 = objc_alloc_init(NSMutableArray);
-  v19 = [(PLLibraryRepairSupport *)self _interruptedProcessingURLs];
+  _interruptedProcessingURLs = [(PLLibraryRepairSupport *)self _interruptedProcessingURLs];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -99,7 +99,7 @@
         }
 
         v26 = *(*(&v46 + 1) + 8 * j);
-        if ([(PLLibraryRepairSupport *)self _isValidProcessingURL:v26 interruptedPaths:v19])
+        if ([(PLLibraryRepairSupport *)self _isValidProcessingURL:v26 interruptedPaths:_interruptedProcessingURLs])
         {
           [v21 addObject:v26];
         }
@@ -118,7 +118,7 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v27 = v6;
+  v27 = allKnownLibraryURLs;
   v28 = [v27 countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (v28)
   {
@@ -134,10 +134,10 @@
         }
 
         v32 = *(*(&v42 + 1) + 8 * k);
-        if ([(PLLibraryRepairSupport *)self _isValidProcessingURL:v32 interruptedPaths:v19])
+        if ([(PLLibraryRepairSupport *)self _isValidProcessingURL:v32 interruptedPaths:_interruptedProcessingURLs])
         {
-          v33 = [v32 path];
-          v34 = [PLFileUtilities realPathForPath:v33 error:0];
+          path2 = [v32 path];
+          v34 = [PLFileUtilities realPathForPath:path2 error:0];
 
           if (v34 && ([v40 containsObject:v34] & 1) == 0)
           {
@@ -162,25 +162,25 @@
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Maintenance task: processing %td libraries", buf, 0xCu);
   }
 
-  [(PLLibraryRepairSupport *)self _maintainLibrary:v39 executionBlock:v38];
+  [(PLLibraryRepairSupport *)self _maintainLibrary:v39 executionBlock:blockCopy];
 }
 
-- (void)_maintainLibrary:(id)a3 executionBlock:(id)a4
+- (void)_maintainLibrary:(id)library executionBlock:(id)block
 {
-  v6 = a3;
-  v31 = a4;
-  v7 = [NSMutableOrderedSet orderedSetWithArray:v6];
+  libraryCopy = library;
+  blockCopy = block;
+  v7 = [NSMutableOrderedSet orderedSetWithArray:libraryCopy];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v6;
+  obj = libraryCopy;
   v8 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v36;
-    v30 = (v31 + 2);
+    v30 = (blockCopy + 2);
 LABEL_3:
     v11 = 0;
     while (1)
@@ -241,36 +241,36 @@ LABEL_17:
     if (((1 << v14) & 0x3B) != 0)
     {
       [(NSString *)v7 removeObject:v12];
-      v17 = [(NSString *)v7 array];
-      [(PLLibraryRepairSupport *)self _saveInterruptedProcessingURLs:v17];
+      array = [(NSString *)v7 array];
+      [(PLLibraryRepairSupport *)self _saveInterruptedProcessingURLs:array];
     }
 
     else if (v14 != 2)
     {
-      v31[2](v31, self);
+      blockCopy[2](blockCopy, self);
       if ([(PLLibraryRepairSupport *)self shouldDefer])
       {
         goto LABEL_17;
       }
 
       [(NSString *)v7 removeObject:v12];
-      v18 = [(NSString *)v7 array];
-      [(PLLibraryRepairSupport *)self _saveInterruptedProcessingURLs:v18];
+      array2 = [(NSString *)v7 array];
+      [(PLLibraryRepairSupport *)self _saveInterruptedProcessingURLs:array2];
       goto LABEL_16;
     }
 
-    v18 = PLBackendGetLog();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    array2 = PLBackendGetLog();
+    if (os_log_type_enabled(array2, OS_LOG_TYPE_ERROR))
     {
       description = self->_description;
-      v20 = [(PLLibraryRepairSupport *)self bundle];
+      bundle = [(PLLibraryRepairSupport *)self bundle];
       *buf = 134218498;
       v40 = v14;
       v41 = 2114;
       v42 = description;
       v43 = 2112;
-      v44 = v20;
-      _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error (%ld) activating library for maintenance tasks [%{public}@] for library bundle %@", buf, 0x20u);
+      v44 = bundle;
+      _os_log_impl(&_mh_execute_header, array2, OS_LOG_TYPE_ERROR, "Error (%ld) activating library for maintenance tasks [%{public}@] for library bundle %@", buf, 0x20u);
     }
 
 LABEL_16:
@@ -325,21 +325,21 @@ LABEL_23:
   }
 }
 
-- (BOOL)_updateDeferredCriticalMaintenanceTaskMarker:(id)a3
+- (BOOL)_updateDeferredCriticalMaintenanceTaskMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   v5 = +[NSDate date];
-  LOBYTE(self) = [(PLLibraryRepairSupport *)self _updateMaintenanceTaskMarker:v4 key:@"PLDeferredCriticalMaintenanceTask" value:v5];
+  LOBYTE(self) = [(PLLibraryRepairSupport *)self _updateMaintenanceTaskMarker:markerCopy key:@"PLDeferredCriticalMaintenanceTask" value:v5];
 
   return self;
 }
 
-- (BOOL)_updateMaintenanceTaskMarker:(id)a3 key:(id)a4 value:(id)a5
+- (BOOL)_updateMaintenanceTaskMarker:(id)marker key:(id)key value:(id)value
 {
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  valueCopy = value;
   v13 = 0;
-  v9 = [a3 setValue:v8 forKeyPath:v7 error:&v13];
+  v9 = [marker setValue:valueCopy forKeyPath:keyCopy error:&v13];
   v10 = v13;
   if ((v9 & 1) == 0)
   {
@@ -347,9 +347,9 @@ LABEL_23:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v15 = v7;
+      v15 = keyCopy;
       v16 = 2114;
-      v17 = v8;
+      v17 = valueCopy;
       v18 = 2112;
       v19 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error updating %{public}@ with value %{public}@. Error: %@", buf, 0x20u);
@@ -359,14 +359,14 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)_isValidProcessingURL:(id)a3 interruptedPaths:(id)a4
+- (BOOL)_isValidProcessingURL:(id)l interruptedPaths:(id)paths
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  lCopy = l;
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
-    v7 = [v5 path];
-    v8 = [v6 containsObject:v7];
+    path = [lCopy path];
+    v8 = [pathsCopy containsObject:path];
   }
 
   else
@@ -380,71 +380,71 @@ LABEL_23:
 - (id)_interruptedProcessingURLs
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(PLLibraryRepairSupport *)self _buildIncompleteMaintenanceTaskPathsKey];
-  v5 = [v3 arrayForKey:v4];
+  _buildIncompleteMaintenanceTaskPathsKey = [(PLLibraryRepairSupport *)self _buildIncompleteMaintenanceTaskPathsKey];
+  v5 = [v3 arrayForKey:_buildIncompleteMaintenanceTaskPathsKey];
   v6 = [NSSet setWithArray:v5];
 
   return v6;
 }
 
-- (void)_saveInterruptedProcessingURLs:(id)a3
+- (void)_saveInterruptedProcessingURLs:(id)ls
 {
-  v6 = [a3 mutableArrayValueForKeyPath:@"self.path"];
+  v6 = [ls mutableArrayValueForKeyPath:@"self.path"];
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [(PLLibraryRepairSupport *)self _buildIncompleteMaintenanceTaskPathsKey];
-  [v4 setObject:v6 forKey:v5];
+  _buildIncompleteMaintenanceTaskPathsKey = [(PLLibraryRepairSupport *)self _buildIncompleteMaintenanceTaskPathsKey];
+  [v4 setObject:v6 forKey:_buildIncompleteMaintenanceTaskPathsKey];
 }
 
 - (id)_buildIncompleteMaintenanceTaskPathsKey
 {
-  v2 = [(BGSystemTask *)self->_task identifier];
-  v3 = [v2 componentsSeparatedByString:@"."];
-  v4 = [v3 lastObject];
-  v5 = [@"PLIncompleteMaintenanceTaskPaths" stringByAppendingPathExtension:v4];
+  identifier = [(BGSystemTask *)self->_task identifier];
+  v3 = [identifier componentsSeparatedByString:@"."];
+  lastObject = [v3 lastObject];
+  v5 = [@"PLIncompleteMaintenanceTaskPaths" stringByAppendingPathExtension:lastObject];
 
   return v5;
 }
 
-- (void)runPeriodicMaintenanceWithProgressReportBlock:(id)a3
+- (void)runPeriodicMaintenanceWithProgressReportBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PLLibraryRepairSupport *)self bundle];
-  v6 = [v5 libraryServicesManager];
-  v7 = [v6 wellKnownPhotoLibraryIdentifier];
+  blockCopy = block;
+  bundle = [(PLLibraryRepairSupport *)self bundle];
+  libraryServicesManager = [bundle libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
   v8 = PLBackendGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v40 = v7;
+    v40 = wellKnownPhotoLibraryIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "running periodic maintenance tasks [library identifier: %ld]...", buf, 0xCu);
   }
 
-  v9 = [(PLLibraryRepairSupport *)self _registeredMaintenanceTaskClasses];
-  v10 = [(PLLibraryRepairSupport *)self bundle];
-  v11 = [v10 libraryURL];
-  v12 = [PLAppPrivateData appPrivateDataForLibraryURL:v11];
+  _registeredMaintenanceTaskClasses = [(PLLibraryRepairSupport *)self _registeredMaintenanceTaskClasses];
+  bundle2 = [(PLLibraryRepairSupport *)self bundle];
+  libraryURL = [bundle2 libraryURL];
+  v12 = [PLAppPrivateData appPrivateDataForLibraryURL:libraryURL];
 
   v13 = [v12 valueForKey:@"PLDeferredMaintenanceTask"];
   v38 = v12;
   v14 = [(PLLibraryRepairSupport *)self _runCriticalPeriodicMaintenanceTasksDeferActivityIfRequired:v12];
   v15 = [(PLLibraryRepairSupport *)self _indexOfRegisteredMaintenanceTaskForMarker:v13];
   v16 = 0;
-  if (v15 >= [v9 count] || (v14 & 1) != 0)
+  if (v15 >= [_registeredMaintenanceTaskClasses count] || (v14 & 1) != 0)
   {
     goto LABEL_23;
   }
 
   v34 = v13;
-  v37 = v4;
-  v35 = v9;
-  v36 = self;
+  v37 = blockCopy;
+  v35 = _registeredMaintenanceTaskClasses;
+  selfCopy = self;
   while (1)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = objc_alloc([v9 objectAtIndexedSubscript:v15]);
-    v19 = [(PLLibraryRepairSupport *)self bundle];
-    v20 = [v18 initWithLibraryBundle:v19];
+    v18 = objc_alloc([_registeredMaintenanceTaskClasses objectAtIndexedSubscript:v15]);
+    bundle3 = [(PLLibraryRepairSupport *)self bundle];
+    v20 = [v18 initWithLibraryBundle:bundle3];
 
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
@@ -509,8 +509,8 @@ LABEL_15:
 
     objc_autoreleasePoolPop(v17);
     ++v15;
-    v9 = v35;
-    self = v36;
+    _registeredMaintenanceTaskClasses = v35;
+    self = selfCopy;
     if (v15 >= [v35 count])
     {
       v16 = 0;
@@ -525,7 +525,7 @@ LABEL_21:
 
   objc_autoreleasePoolPop(v17);
 LABEL_22:
-  v4 = v37;
+  blockCopy = v37;
   v13 = v34;
 LABEL_23:
   if ((v16 & 1) == 0 && (v14 & 1) == 0)
@@ -536,9 +536,9 @@ LABEL_23:
   [(PLXPCTransaction *)self->_transaction stillAlive];
 }
 
-- (void)runCuratedLibraryPeriodicMaintenanceTasksWithProgressReportBlock:(id)a3
+- (void)runCuratedLibraryPeriodicMaintenanceTasksWithProgressReportBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -546,13 +546,13 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "running curated library periodic maintenance tasks...", v15, 2u);
   }
 
-  v6 = [(PLLibraryRepairSupport *)self bundle];
-  v7 = [v6 libraryServicesManager];
+  bundle = [(PLLibraryRepairSupport *)self bundle];
+  libraryServicesManager = [bundle libraryServicesManager];
 
-  v8 = [v7 momentGenerationDataManager];
+  momentGenerationDataManager = [libraryServicesManager momentGenerationDataManager];
   v9 = [PLGlobalValues alloc];
-  v10 = [v8 managedObjectContext];
-  v11 = [v9 initWithManagedObjectContext:v10];
+  managedObjectContext = [momentGenerationDataManager managedObjectContext];
+  v11 = [v9 initWithManagedObjectContext:managedObjectContext];
 
   v12 = [(PLLibraryRepairSupport *)self shouldRunLocationOfInterestUpdateTaskWithGlobalValues:v11];
   if (v12)
@@ -565,7 +565,7 @@ LABEL_23:
     v13 = 13;
   }
 
-  [v8 runPeriodicMaintenanceTasks:v13 withTransaction:self->_transaction progressReportBlock:v4];
+  [momentGenerationDataManager runPeriodicMaintenanceTasks:v13 withTransaction:self->_transaction progressReportBlock:blockCopy];
 
   if (v12)
   {
@@ -574,13 +574,13 @@ LABEL_23:
   }
 }
 
-- (BOOL)shouldRunLocationOfInterestUpdateTaskWithGlobalValues:(id)a3
+- (BOOL)shouldRunLocationOfInterestUpdateTaskWithGlobalValues:(id)values
 {
-  v3 = [a3 locationOfInterestUpdateDate];
-  if (v3)
+  locationOfInterestUpdateDate = [values locationOfInterestUpdateDate];
+  if (locationOfInterestUpdateDate)
   {
     v4 = +[NSDate date];
-    [v4 timeIntervalSinceDate:v3];
+    [v4 timeIntervalSinceDate:locationOfInterestUpdateDate];
     v6 = v5;
 
     v7 = v6 > 604800.0;
@@ -617,10 +617,10 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)_runCriticalPeriodicMaintenanceTasksDeferActivityIfRequired:(id)a3
+- (BOOL)_runCriticalPeriodicMaintenanceTasksDeferActivityIfRequired:(id)required
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"PLDeferredCriticalMaintenanceTask"];
+  requiredCopy = required;
+  v5 = [requiredCopy valueForKey:@"PLDeferredCriticalMaintenanceTask"];
   v6 = v5;
   if (v5 && ([v5 timeIntervalSinceNow], fabs(v7) < 86400.0))
   {
@@ -633,14 +633,14 @@ LABEL_23:
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v9 = [(PLLibraryRepairSupport *)self _registeredCriticalMaintenaceTaskClasses];
+    _registeredCriticalMaintenaceTaskClasses = [(PLLibraryRepairSupport *)self _registeredCriticalMaintenaceTaskClasses];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100006884;
     v11[3] = &unk_10002CE58;
     v11[4] = self;
     v11[5] = &v12;
-    [v9 enumerateObjectsUsingBlock:v11];
+    [_registeredCriticalMaintenaceTaskClasses enumerateObjectsUsingBlock:v11];
 
     if (v13[3])
     {
@@ -649,7 +649,7 @@ LABEL_23:
 
     else
     {
-      [(PLLibraryRepairSupport *)self _updateDeferredCriticalMaintenanceTaskMarker:v4];
+      [(PLLibraryRepairSupport *)self _updateDeferredCriticalMaintenanceTaskMarker:requiredCopy];
       v8 = *(v13 + 24);
     }
 
@@ -659,26 +659,26 @@ LABEL_23:
   return v8 & 1;
 }
 
-- (BOOL)_shouldDeferTaskIfRequiredForClassName:(id)a3
+- (BOOL)_shouldDeferTaskIfRequiredForClassName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(PLLibraryRepairSupport *)self shouldDefer])
   {
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = nameCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Defer processing of maintenance task: %{public}@", &v12, 0xCu);
     }
   }
 
   else
   {
-    v6 = [(PLLibraryRepairSupport *)self bundle];
-    v7 = [v6 isShuttingDown];
+    bundle = [(PLLibraryRepairSupport *)self bundle];
+    isShuttingDown = [bundle isShuttingDown];
 
-    if (!v7)
+    if (!isShuttingDown)
     {
       v10 = 0;
       goto LABEL_9;
@@ -687,10 +687,10 @@ LABEL_23:
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(PLLibraryRepairSupport *)self bundle];
-      v9 = [v8 shutdownReason];
+      bundle2 = [(PLLibraryRepairSupport *)self bundle];
+      shutdownReason = [bundle2 shutdownReason];
       v12 = 138543362;
-      v13 = v9;
+      v13 = shutdownReason;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Maintenance task early termination due to library shutdown. Reason: %{public}@", &v12, 0xCu);
     }
   }
@@ -701,18 +701,18 @@ LABEL_9:
   return v10;
 }
 
-- (unint64_t)_indexOfRegisteredMaintenanceTaskForMarker:(id)a3
+- (unint64_t)_indexOfRegisteredMaintenanceTaskForMarker:(id)marker
 {
-  v4 = a3;
-  if ([v4 length])
+  markerCopy = marker;
+  if ([markerCopy length])
   {
-    v5 = [(PLLibraryRepairSupport *)self _registeredMaintenanceTaskClasses];
+    _registeredMaintenanceTaskClasses = [(PLLibraryRepairSupport *)self _registeredMaintenanceTaskClasses];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100006CEC;
     v9[3] = &unk_10002CE30;
-    v10 = v4;
-    v6 = [v5 indexOfObjectPassingTest:v9];
+    v10 = markerCopy;
+    v6 = [_registeredMaintenanceTaskClasses indexOfObjectPassingTest:v9];
 
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -758,11 +758,11 @@ LABEL_9:
   v30 = objc_opt_class();
   v3 = [NSArray arrayWithObjects:&v10 count:21];
   v4 = [v3 mutableCopy];
-  v5 = [(PLLibraryRepairSupport *)self bundle];
-  v6 = [v5 libraryServicesManager];
-  v7 = [v6 isSyndicationPhotoLibrary];
+  bundle = [(PLLibraryRepairSupport *)self bundle];
+  libraryServicesManager = [bundle libraryServicesManager];
+  isSyndicationPhotoLibrary = [libraryServicesManager isSyndicationPhotoLibrary];
 
-  if ((v7 & 1) == 0)
+  if ((isSyndicationPhotoLibrary & 1) == 0)
   {
     [v4 addObject:objc_opt_class()];
   }
@@ -782,18 +782,18 @@ LABEL_9:
   return v2;
 }
 
-- (PLLibraryRepairSupport)initWithTask:(id)a3 description:(id)a4
+- (PLLibraryRepairSupport)initWithTask:(id)task description:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = PLLibraryRepairSupport;
   v9 = [(PLLibraryRepairSupport *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_task, a3);
-    objc_storeStrong(&v10->_description, a4);
+    objc_storeStrong(&v9->_task, task);
+    objc_storeStrong(&v10->_description, description);
     v11 = [PLXPCTransaction transaction:[(NSString *)v10->_description UTF8String]];
     transaction = v10->_transaction;
     v10->_transaction = v11;

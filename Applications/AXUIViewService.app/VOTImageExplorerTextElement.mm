@@ -1,7 +1,7 @@
 @interface VOTImageExplorerTextElement
 - (AXMVisionFeature)parentTextFeature;
 - (BOOL)isHeader;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (CGRect)accessibilityFrame;
 - (NSString)description;
 - (_NSRange)accessibilityColumnRange;
@@ -16,52 +16,52 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(VOTImageExplorerTextElement *)self accessibilityLabel];
+  accessibilityLabel = [(VOTImageExplorerTextElement *)self accessibilityLabel];
   [(VOTImageExplorerTextElement *)self accessibilityFrame];
   v6 = NSStringFromCGRect(v10);
-  v7 = [NSString stringWithFormat:@"%@, Label: %@, Frame: %@, Row: %li, Column: %li", v4, v5, v6, [(VOTImageExplorerTextElement *)self rowIndex], [(VOTImageExplorerTextElement *)self columnIndex]];
+  v7 = [NSString stringWithFormat:@"%@, Label: %@, Frame: %@, Row: %li, Column: %li", v4, accessibilityLabel, v6, [(VOTImageExplorerTextElement *)self rowIndex], [(VOTImageExplorerTextElement *)self columnIndex]];
 
   return v7;
 }
 
 - (BOOL)isHeader
 {
-  v2 = [(VOTImageExplorerElement *)self feature];
-  v3 = [v2 ocrFeatureType] == 12;
+  feature = [(VOTImageExplorerElement *)self feature];
+  v3 = [feature ocrFeatureType] == 12;
 
   return v3;
 }
 
 - (_NSRange)accessibilityRowRange
 {
-  v2 = [(VOTImageExplorerTextElement *)self rowIndex];
+  rowIndex = [(VOTImageExplorerTextElement *)self rowIndex];
   v3 = 1;
   result.length = v3;
-  result.location = v2;
+  result.location = rowIndex;
   return result;
 }
 
 - (_NSRange)accessibilityColumnRange
 {
-  v2 = [(VOTImageExplorerTextElement *)self columnIndex];
+  columnIndex = [(VOTImageExplorerTextElement *)self columnIndex];
   v3 = 1;
   result.length = v3;
-  result.location = v2;
+  result.location = columnIndex;
   return result;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(VOTImageExplorerElement *)self feature];
-  v3 = [v2 value];
+  feature = [(VOTImageExplorerElement *)self feature];
+  value = [feature value];
 
-  return v3;
+  return value;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   if ([(VOTImageExplorerTextElement *)self accessibilityContainerType]== 4)
   {
     x = CGRectZero.origin.x;
@@ -72,11 +72,11 @@
 
   else
   {
-    v10 = [(VOTImageExplorerElement *)self feature];
-    [v10 boundingBoxForRange:{location, length}];
+    feature = [(VOTImageExplorerElement *)self feature];
+    [feature boundingBoxForRange:{location, length}];
 
-    v11 = [(VOTImageExplorerTextElement *)self parentAccessibilityContainer];
-    [v11 frame];
+    parentAccessibilityContainer = [(VOTImageExplorerTextElement *)self parentAccessibilityContainer];
+    [parentAccessibilityContainer frame];
     UIAccessibilityFrameForBounds();
     x = v12;
     y = v13;
@@ -97,15 +97,15 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(VOTImageExplorerTextElement *)self parentAccessibilityContainer];
-  v4 = [(VOTImageExplorerTextElement *)self parentTextFeature];
-  v5 = [v4 ocrFeatureType];
+  parentAccessibilityContainer = [(VOTImageExplorerTextElement *)self parentAccessibilityContainer];
+  parentTextFeature = [(VOTImageExplorerTextElement *)self parentTextFeature];
+  ocrFeatureType = [parentTextFeature ocrFeatureType];
 
-  if (v5 == 16)
+  if (ocrFeatureType == 16)
   {
-    v6 = [(VOTImageExplorerTextElement *)self parentTextFeature];
-    [v6 normalizedFrame];
-    [v3 frame];
+    parentTextFeature2 = [(VOTImageExplorerTextElement *)self parentTextFeature];
+    [parentTextFeature2 normalizedFrame];
+    [parentAccessibilityContainer frame];
     [(VOTImageExplorerElement *)self flippedYAxis];
 
     UIAccessibilityFrameForBounds();
@@ -113,15 +113,15 @@
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(VOTImageExplorerElement *)self feature];
-    [v15 normalizedFrame];
+    feature = [(VOTImageExplorerElement *)self feature];
+    [feature normalizedFrame];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [(VOTImageExplorerElement *)self flippedYAxis];
+    flippedYAxis = [(VOTImageExplorerElement *)self flippedYAxis];
     v25 = 1.0 - v19 - v23;
-    if (!v24)
+    if (!flippedYAxis)
     {
       v25 = v19;
     }
@@ -137,9 +137,9 @@
 
   else
   {
-    v27 = [(VOTImageExplorerElement *)self feature];
-    [v27 normalizedFrame];
-    [v3 frame];
+    feature2 = [(VOTImageExplorerElement *)self feature];
+    [feature2 normalizedFrame];
+    [parentAccessibilityContainer frame];
     [(VOTImageExplorerElement *)self flippedYAxis];
 
     UIAccessibilityFrameForBounds();
@@ -163,10 +163,10 @@
 
 - (id)parentAccessibilityContainer
 {
-  v2 = [(VOTImageExplorerTextElement *)self accessibilityContainer];
-  v3 = [v2 accessibilityContainer];
+  accessibilityContainer = [(VOTImageExplorerTextElement *)self accessibilityContainer];
+  v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-  return v3;
+  return v2AccessibilityContainer;
 }
 
 - (AXMVisionFeature)parentTextFeature

@@ -1,8 +1,8 @@
 @interface SearchTopHitsSuggester
 + (OS_os_log)log;
 - (NSArray)categories;
-- (SearchTopHitsSuggester)initWithMessageRepository:(id)a3 bundleID:(id)a4 queryCompletionHandler:(id)a5;
-- (id)generateSuggestionsUsingPhraseManager:(id)a3 handler:(id)a4;
+- (SearchTopHitsSuggester)initWithMessageRepository:(id)repository bundleID:(id)d queryCompletionHandler:(id)handler;
+- (id)generateSuggestionsUsingPhraseManager:(id)manager handler:(id)handler;
 @end
 
 @implementation SearchTopHitsSuggester
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1002466E8;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD808 != -1)
   {
     dispatch_once(&qword_1006DD808, block);
@@ -24,23 +24,23 @@
   return v2;
 }
 
-- (SearchTopHitsSuggester)initWithMessageRepository:(id)a3 bundleID:(id)a4 queryCompletionHandler:(id)a5
+- (SearchTopHitsSuggester)initWithMessageRepository:(id)repository bundleID:(id)d queryCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  repositoryCopy = repository;
+  dCopy = d;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = SearchTopHitsSuggester;
   v12 = [(SearchTopHitsSuggester *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_messageRepository, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_messageRepository, repository);
+    v14 = [dCopy copy];
     bundleID = v13->_bundleID;
     v13->_bundleID = v14;
 
-    v16 = [v11 copy];
+    v16 = [handlerCopy copy];
     queryCompletionHandler = v13->_queryCompletionHandler;
     v13->_queryCompletionHandler = v16;
   }
@@ -65,11 +65,11 @@
   return v2;
 }
 
-- (id)generateSuggestionsUsingPhraseManager:(id)a3 handler:(id)a4
+- (id)generateSuggestionsUsingPhraseManager:(id)manager handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_100246A84([_SearchTopHitsSuggesterQuery alloc], v6, v7, self);
+  managerCopy = manager;
+  handlerCopy = handler;
+  v8 = sub_100246A84([_SearchTopHitsSuggesterQuery alloc], managerCopy, handlerCopy, self);
   v9 = v8;
   if (v8)
   {

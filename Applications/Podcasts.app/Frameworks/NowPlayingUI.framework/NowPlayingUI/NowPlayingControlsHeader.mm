@@ -1,6 +1,6 @@
 @interface NowPlayingControlsHeader
-- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithCoder:(id)a3;
-- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithFrame:(CGRect)a3;
+- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithCoder:(id)coder;
+- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -26,12 +26,12 @@
   }
 }
 
-- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI24NowPlayingControlsHeader_controlsView) = 0;
   v10.receiver = self;
@@ -39,14 +39,14 @@
   return [(NowPlayingControlsHeader *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithCoder:(id)a3
+- (_TtC12NowPlayingUI24NowPlayingControlsHeader)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI24NowPlayingControlsHeader_controlsView) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(NowPlayingControlsHeader *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(NowPlayingControlsHeader *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

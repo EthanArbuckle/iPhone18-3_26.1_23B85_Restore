@@ -1,43 +1,43 @@
 @interface NTKGalleonGPSRingView
 - (CGRect)_ringFrame;
-- (NTKGalleonGPSRingView)initWithFrame:(CGRect)a3 device:(id)a4;
+- (NTKGalleonGPSRingView)initWithFrame:(CGRect)frame device:(id)device;
 - (double)_fontSize;
-- (void)_layoutCurvedLabel:(id)a3 top:(BOOL)a4;
-- (void)_positionDotsForCenterAngle:(double)a3 leftDot:(id)a4 rightDot:(id)a5;
+- (void)_layoutCurvedLabel:(id)label top:(BOOL)top;
+- (void)_positionDotsForCenterAngle:(double)angle leftDot:(id)dot rightDot:(id)rightDot;
 - (void)_positionRingViews;
 - (void)_setupStrings;
-- (void)_updateCurvedLabel:(id)a3 withString:(id)a4 top:(BOOL)a5;
+- (void)_updateCurvedLabel:(id)label withString:(id)string top:(BOOL)top;
 - (void)_updateElevationColors;
 - (void)_updateLabelVisibility;
 - (void)_updateLatLongColors;
 - (void)_updateRingThickness;
-- (void)applyTransitionFraction:(double)a3 fromBezelStyle:(unint64_t)a4 toBezelStyle:(unint64_t)a5;
+- (void)applyTransitionFraction:(double)fraction fromBezelStyle:(unint64_t)style toBezelStyle:(unint64_t)bezelStyle;
 - (void)layoutSubviews;
 - (void)locationUnavailable;
-- (void)locationUpdated:(id)a3;
-- (void)setAltitude:(double)a3 approximate:(BOOL)a4;
-- (void)setBezelStyle:(unint64_t)a3;
-- (void)setIncline:(double)a3;
-- (void)setLatency:(double)a3;
-- (void)setPalette:(id)a3;
+- (void)locationUpdated:(id)updated;
+- (void)setAltitude:(double)altitude approximate:(BOOL)approximate;
+- (void)setBezelStyle:(unint64_t)style;
+- (void)setIncline:(double)incline;
+- (void)setLatency:(double)latency;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKGalleonGPSRingView
 
-- (NTKGalleonGPSRingView)initWithFrame:(CGRect)a3 device:(id)a4
+- (NTKGalleonGPSRingView)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v260.receiver = self;
   v260.super_class = NTKGalleonGPSRingView;
-  v11 = [(NTKGalleonGPSRingView *)&v260 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKGalleonGPSRingView *)&v260 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v12->_bezelStyle = 0;
     v12->_ringFraction = 1.0;
     v12->_latLongFraction = 1.0;
@@ -321,8 +321,8 @@
 {
   v86.receiver = self;
   v86.super_class = NTKGalleonGPSRingView;
-  v3 = [(NTKGalleonGPSRingView *)&v86 layoutSubviews];
-  v4 = sub_23BEA2910(v3, self->_device);
+  layoutSubviews = [(NTKGalleonGPSRingView *)&v86 layoutSubviews];
+  v4 = sub_23BEA2910(layoutSubviews, self->_device);
   objc_msgSend_bounds(self, v5, v6, v7);
   v88 = CGRectInset(v87, 0.25, 0.25);
   x = v88.origin.x;
@@ -385,12 +385,12 @@
   objc_msgSend__layoutCurvedLabel_top_(self, v85, *p_elevationLabel, v24);
 }
 
-- (void)_positionDotsForCenterAngle:(double)a3 leftDot:(id)a4 rightDot:(id)a5
+- (void)_positionDotsForCenterAngle:(double)angle leftDot:(id)dot rightDot:(id)rightDot
 {
-  v7 = 4.71238898 - a3;
-  v8 = a3 + 4.71238898;
-  v30 = a5;
-  v9 = a4;
+  v7 = 4.71238898 - angle;
+  v8 = angle + 4.71238898;
+  rightDotCopy = rightDot;
+  dotCopy = dot;
   v13 = objc_msgSend_bounds(self, v10, v11, v12);
   v14 = MEMORY[0x23EEC04E0](v13);
   v16 = v15;
@@ -400,23 +400,23 @@
   v21 = __sincos_stret(v7);
   ringCenterRadius = self->_ringCenterRadius;
   v23 = __sincos_stret(v8);
-  objc_msgSend_setFrame_(v9, v24, v25, v26, v16 + v21.__cosval * ringCenterRadius - v20 * 0.5, v18 - v21.__sinval * ringCenterRadius - v20 * 0.5, v20, v20);
+  objc_msgSend_setFrame_(dotCopy, v24, v25, v26, v16 + v21.__cosval * ringCenterRadius - v20 * 0.5, v18 - v21.__sinval * ringCenterRadius - v20 * 0.5, v20, v20);
 
-  objc_msgSend_setFrame_(v30, v27, v28, v29, v16 + v23.__cosval * ringCenterRadius - v20 * 0.5, v18 - v23.__sinval * ringCenterRadius - v20 * 0.5, v20, v20);
+  objc_msgSend_setFrame_(rightDotCopy, v27, v28, v29, v16 + v23.__cosval * ringCenterRadius - v20 * 0.5, v18 - v23.__sinval * ringCenterRadius - v20 * 0.5, v20, v20);
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v33 = a3;
-  objc_storeStrong(&self->_palette, a3);
+  paletteCopy = palette;
+  objc_storeStrong(&self->_palette, palette);
   ringLayer = self->_ringLayer;
-  v9 = objc_msgSend_gpsRingBackgroundColor(v33, v6, v7, v8);
+  v9 = objc_msgSend_gpsRingBackgroundColor(paletteCopy, v6, v7, v8);
   v10 = v9;
   v14 = objc_msgSend_CGColor(v10, v11, v12, v13);
   objc_msgSend_setBorderColor_(ringLayer, v15, v14, v16);
 
   ringView = self->_ringView;
-  v21 = objc_msgSend_outerRingBackgroundColor(v33, v18, v19, v20);
+  v21 = objc_msgSend_outerRingBackgroundColor(paletteCopy, v18, v19, v20);
   objc_msgSend_setBackgroundColor_(ringView, v22, v21, v23);
 
   if ((objc_msgSend_isHidden(self->_latLongView, v24, v25, v26) & 1) == 0)
@@ -453,21 +453,21 @@
   objc_msgSend_setTextColor_(timestampLabel, v37, v39, v38);
 }
 
-- (void)setIncline:(double)a3
+- (void)setIncline:(double)incline
 {
-  if (self->_incline != a3)
+  if (self->_incline != incline)
   {
-    self->_incline = a3;
+    self->_incline = incline;
     if ((objc_msgSend_supportsPDRCapability_(self->_device, a2, 3669496134, v3) & 1) == 0)
     {
-      if (a3 >= 1.79769313e308)
+      if (incline >= 1.79769313e308)
       {
         v8 = self->_inclineUnknown;
       }
 
       else
       {
-        v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, self->_inclineFormat, v7, *&a3);
+        v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, self->_inclineFormat, v7, *&incline);
       }
 
       obj = v8;
@@ -513,9 +513,9 @@
   self->_locationUnavailable = 1;
 }
 
-- (void)locationUpdated:(id)a3
+- (void)locationUpdated:(id)updated
 {
-  if (a3)
+  if (updated)
   {
     v5 = NTKLocationComponentStringsShowSecondsAndLatLongTitle();
     v8 = objc_msgSend_objectForKeyedSubscript_(v5, v6, *MEMORY[0x277D2BF48], v7);
@@ -534,26 +534,26 @@
   objc_msgSend__updateCurvedLabel_withString_top_(self, v14, self->_coordinatesLabel, v18, 1);
 }
 
-- (void)setAltitude:(double)a3 approximate:(BOOL)a4
+- (void)setAltitude:(double)altitude approximate:(BOOL)approximate
 {
-  if (self->_altitude != a3)
+  if (self->_altitude != altitude)
   {
-    self->_altitude = a3;
-    if (a3 >= 1.79769313e308)
+    self->_altitude = altitude;
+    if (altitude >= 1.79769313e308)
     {
       v20 = self->_elevationUnknown;
     }
 
     else
     {
-      v7 = a4;
+      approximateCopy = approximate;
       elevationFormatter = self->_elevationFormatter;
-      v9 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, a4, v4);
+      v9 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], a2, approximate, v4);
       v12 = objc_msgSend_stringFromNumber_(elevationFormatter, v10, v9, v11);
 
       v15 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, self->_elevationFormat, v14, v12);
       obj = v15;
-      if (v7)
+      if (approximateCopy)
       {
         v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v15, self->_elevationApproximateFormat, v16, v15);
 
@@ -572,33 +572,33 @@
   }
 }
 
-- (void)setLatency:(double)a3
+- (void)setLatency:(double)latency
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   latency = self->_latency;
-  v8 = floor(a3) != floor(latency);
-  v10 = a3 != 1.79769313e308 && latency == 1.79769313e308 || v8;
-  if (latency == a3)
+  v8 = floor(latency) != floor(latency);
+  v10 = latency != 1.79769313e308 && latency == 1.79769313e308 || v8;
+  if (latency == latency)
   {
     return;
   }
 
-  self->_latency = a3;
-  if (a3 >= 1.79769313e308)
+  self->_latency = latency;
+  if (latency >= 1.79769313e308)
   {
     v11 = 608;
   }
 
-  else if (a3 >= 1.0)
+  else if (latency >= 1.0)
   {
     if (!v10)
     {
       return;
     }
 
-    if (a3 != 1)
+    if (latency != 1)
     {
-      v13 = objc_msgSend_localizedStringWithFormat_(MEMORY[0x277CCACA8], v5, @"%ld", v6, a3);
+      v13 = objc_msgSend_localizedStringWithFormat_(MEMORY[0x277CCACA8], v5, @"%ld", v6, latency);
       v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v14, self->_timestampFormat, v15, v13);
 
       v12 = v17;
@@ -629,35 +629,35 @@ LABEL_13:
   objc_msgSend__updateCurvedLabel_withString_top_(self, v12, self->_timestampLabel, v12, 0);
 }
 
-- (void)_updateCurvedLabel:(id)a3 withString:(id)a4 top:(BOOL)a5
+- (void)_updateCurvedLabel:(id)label withString:(id)string top:(BOOL)top
 {
-  v5 = a5;
-  v11 = a3;
-  objc_msgSend_setText_(v11, v8, a4, v9);
-  objc_msgSend__layoutCurvedLabel_top_(self, v10, v11, v5);
+  topCopy = top;
+  labelCopy = label;
+  objc_msgSend_setText_(labelCopy, v8, string, v9);
+  objc_msgSend__layoutCurvedLabel_top_(self, v10, labelCopy, topCopy);
 }
 
-- (void)_layoutCurvedLabel:(id)a3 top:(BOOL)a4
+- (void)_layoutCurvedLabel:(id)label top:(BOOL)top
 {
-  v6 = a3;
+  labelCopy = label;
   objc_msgSend_bounds(self, v7, v8, v9);
   v34 = CGRectInset(v33, (v33.size.width - v33.size.width) * 0.5, (v33.size.height - v33.size.width) * 0.5);
   x = v34.origin.x;
   y = v34.origin.y;
   width = v34.size.width;
   height = v34.size.height;
-  objc_msgSend_sizeToFit(v6, v14, v15, v16);
+  objc_msgSend_sizeToFit(labelCopy, v14, v15, v16);
   v31 = 0.0;
   v32 = 0.0;
   v30 = *MEMORY[0x277CBF348];
-  TextCenter_startAngle_endAngle = objc_msgSend_getTextCenter_startAngle_endAngle_(v6, v17, &v30, &v32, &v31);
+  TextCenter_startAngle_endAngle = objc_msgSend_getTextCenter_startAngle_endAngle_(labelCopy, v17, &v30, &v32, &v31);
   v19 = MEMORY[0x23EEC04E0](TextCenter_startAngle_endAngle, x, y, width, height);
   v20 = v19 - *&v30;
   v22 = v21 - *(&v30 + 1);
-  objc_msgSend_frame(v6, v23, v24, v25);
-  objc_msgSend_setFrame_(v6, v26, v27, v28, v20, v22);
+  objc_msgSend_frame(labelCopy, v23, v24, v25);
+  objc_msgSend_setFrame_(labelCopy, v26, v27, v28, v20, v22);
 
-  if (!a4)
+  if (!top)
   {
     v31 = fabs(v31);
     v32 = fabs(v32);
@@ -665,11 +665,11 @@ LABEL_13:
   }
 }
 
-- (void)setBezelStyle:(unint64_t)a3
+- (void)setBezelStyle:(unint64_t)style
 {
-  self->_bezelStyle = a3;
+  self->_bezelStyle = style;
   v5 = 0.0;
-  if (a3)
+  if (style)
   {
     v6 = 0.0;
   }
@@ -680,7 +680,7 @@ LABEL_13:
   }
 
   self->_latLongFraction = v6;
-  if (a3 == 1)
+  if (style == 1)
   {
     v7 = 1.0;
   }
@@ -691,18 +691,18 @@ LABEL_13:
   }
 
   self->_elevationFraction = v7;
-  if (a3 != 2)
+  if (style != 2)
   {
     v5 = 1.0;
   }
 
   self->_ringFraction = v5;
-  objc_msgSend__updateLabelVisibility(self, a2, a3, v3);
+  objc_msgSend__updateLabelVisibility(self, a2, style, v3);
 
   MEMORY[0x2821F9670](self, sel__updateRingThickness, v8, v9);
 }
 
-- (void)applyTransitionFraction:(double)a3 fromBezelStyle:(unint64_t)a4 toBezelStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromBezelStyle:(unint64_t)style toBezelStyle:(unint64_t)bezelStyle
 {
   CLKInterpolateBetweenFloatsClipped();
   self->_ringFraction = v6;

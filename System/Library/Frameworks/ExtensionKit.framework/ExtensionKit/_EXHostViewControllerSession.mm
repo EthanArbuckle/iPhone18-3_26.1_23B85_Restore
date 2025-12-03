@@ -1,13 +1,13 @@
 @interface _EXHostViewControllerSession
-+ (void)sessionWithProcess:(id)a3 configuration:(id)a4 completion:(id)a5;
-+ (void)sessionWithProcessConfiguration:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (void)sessionWithProcess:(id)process configuration:(id)configuration completion:(id)completion;
++ (void)sessionWithProcessConfiguration:(id)configuration configuration:(id)a4 completion:(id)completion;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (UIView)hostView;
-- (_EXHostViewControllerSession)initWithProcessConfiguration:(id)a3 configuration:(id)a4 detached:(BOOL)a5;
+- (_EXHostViewControllerSession)initWithProcessConfiguration:(id)configuration configuration:(id)a4 detached:(BOOL)detached;
 - (_EXHostViewControllerSessionDelegate)delegate;
 - (_UIRemoteSheet)remoteSheet;
-- (id)_makeXPCConnectionWithError:(id *)a3;
-- (id)makeXPCConnectionWithError:(id *)a3;
+- (id)_makeXPCConnectionWithError:(id *)error;
+- (id)makeXPCConnectionWithError:(id *)error;
 - (void)_internalQueue_prepareToHost;
 - (void)_invalidateSession;
 - (void)clientIsReady;
@@ -17,45 +17,45 @@
 - (void)processDidInvalidate;
 - (void)requestRemoteViewController;
 - (void)resume;
-- (void)resumeWithReadyNotification:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setRemoteViewController:(id)a3;
-- (void)setSceneViewController:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)resumeWithReadyNotification:(id)notification;
+- (void)setDelegate:(id)delegate;
+- (void)setRemoteViewController:(id)controller;
+- (void)setSceneViewController:(id)controller;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation _EXHostViewControllerSession
 
-+ (void)sessionWithProcess:(id)a3 configuration:(id)a4 completion:(id)a5
++ (void)sessionWithProcess:(id)process configuration:(id)configuration completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 configuration];
-  [a1 sessionWithProcessConfiguration:v10 configuration:v9 completion:v8];
+  completionCopy = completion;
+  configurationCopy = configuration;
+  configuration = [process configuration];
+  [self sessionWithProcessConfiguration:configuration configuration:configurationCopy completion:completionCopy];
 }
 
-+ (void)sessionWithProcessConfiguration:(id)a3 configuration:(id)a4 completion:(id)a5
++ (void)sessionWithProcessConfiguration:(id)configuration configuration:(id)a4 completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = a4;
-  v9 = a3;
-  v10 = [[_EXHostViewControllerSession alloc] initWithProcessConfiguration:v9 configuration:v8 detached:1];
+  configurationCopy = configuration;
+  v10 = [[_EXHostViewControllerSession alloc] initWithProcessConfiguration:configurationCopy configuration:v8 detached:1];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89___EXHostViewControllerSession_sessionWithProcessConfiguration_configuration_completion___block_invoke;
   v13[3] = &unk_1E8401BA8;
   v14 = v10;
-  v15 = v7;
-  v11 = v7;
+  v15 = completionCopy;
+  v11 = completionCopy;
   v12 = v10;
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 }
 
-- (_EXHostViewControllerSession)initWithProcessConfiguration:(id)a3 configuration:(id)a4 detached:(BOOL)a5
+- (_EXHostViewControllerSession)initWithProcessConfiguration:(id)configuration configuration:(id)a4 detached:(BOOL)detached
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  configurationCopy = configuration;
   v9 = a4;
   v29.receiver = self;
   v29.super_class = _EXHostViewControllerSession;
@@ -82,7 +82,7 @@
     }
 
     v10->_signpost = v14;
-    v18 = [v8 copy];
+    v18 = [configurationCopy copy];
     processConfiguration = v10->_processConfiguration;
     v10->_processConfiguration = v18;
 
@@ -96,13 +96,13 @@
     v10->_internalQueue = v23;
 
     v10->_state = 0;
-    v25 = [v8 extensionIdentity];
-    v10->_requiresFBSceneHosting = [v25 requiresFBSceneHosting];
+    extensionIdentity = [configurationCopy extensionIdentity];
+    v10->_requiresFBSceneHosting = [extensionIdentity requiresFBSceneHosting];
 
-    v26 = [v8 extensionIdentity];
-    v10->_requiresUIKitSceneHosting = [v26 requiresUIKitSceneHosting];
+    extensionIdentity2 = [configurationCopy extensionIdentity];
+    v10->_requiresUIKitSceneHosting = [extensionIdentity2 requiresUIKitSceneHosting];
 
-    v10->_detached = a5;
+    v10->_detached = detached;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -134,20 +134,20 @@
   [(_EXHostViewControllerSession *)&v8 dealloc];
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   remoteViewController = self->_remoteViewController;
-  self->_remoteViewController = v4;
+  self->_remoteViewController = controllerCopy;
 }
 
-- (void)setSceneViewController:(id)a3
+- (void)setSceneViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   sceneViewController = self->_sceneViewController;
-  self->_sceneViewController = v4;
+  self->_sceneViewController = controllerCopy;
 }
 
 - (_UIRemoteSheet)remoteSheet
@@ -155,20 +155,20 @@
   hostingController = self->_hostingController;
   if (hostingController)
   {
-    v3 = hostingController;
+    remoteViewController = hostingController;
   }
 
   else
   {
-    v3 = [(_EXHostViewControllerSession *)self remoteViewController];
+    remoteViewController = [(_EXHostViewControllerSession *)self remoteViewController];
   }
 
-  return v3;
+  return remoteViewController;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -180,9 +180,9 @@
   }
 }
 
-- (id)makeXPCConnectionWithError:(id *)a3
+- (id)makeXPCConnectionWithError:(id *)error
 {
-  v3 = [(_EXHostViewControllerSession *)self _makeXPCConnectionWithError:a3];
+  v3 = [(_EXHostViewControllerSession *)self _makeXPCConnectionWithError:error];
   if (!v3)
   {
     v3 = objc_opt_new();
@@ -191,12 +191,12 @@
   return v3;
 }
 
-- (id)_makeXPCConnectionWithError:(id *)a3
+- (id)_makeXPCConnectionWithError:(id *)error
 {
   v23[1] = *MEMORY[0x1E69E9840];
   if (self->_requiresFBSceneHosting)
   {
-    if (a3)
+    if (error)
     {
       v4 = MEMORY[0x1E696ABC0];
       v5 = *MEMORY[0x1E6966C98];
@@ -206,7 +206,7 @@
       v7 = [v4 errorWithDomain:v5 code:6 userInfo:v6];
       v8 = 0;
 LABEL_14:
-      *a3 = v7;
+      *error = v7;
 
       goto LABEL_16;
     }
@@ -217,8 +217,8 @@ LABEL_14:
 
   if (self->_state - 2 > 2)
   {
-    v9 = _EXDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    remoteViewControllerEndpoint = _EXDefaultLog();
+    if (os_log_type_enabled(remoteViewControllerEndpoint, OS_LOG_TYPE_ERROR))
     {
       [_EXHostViewControllerSession _makeXPCConnectionWithError:];
     }
@@ -226,8 +226,8 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  v9 = [(_EXHostViewControllerSession *)self remoteViewControllerEndpoint];
-  if (!v9)
+  remoteViewControllerEndpoint = [(_EXHostViewControllerSession *)self remoteViewControllerEndpoint];
+  if (!remoteViewControllerEndpoint)
   {
     v14 = _EXDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -235,14 +235,14 @@ LABEL_14:
       [_EXHostViewControllerSession _makeXPCConnectionWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v15 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E6966C98];
       v20 = *MEMORY[0x1E696A278];
       v21 = @"Remote view controller XPC connection endpoint is nil, the extension probably exited.";
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      *a3 = [v15 errorWithDomain:v16 code:6 userInfo:v17];
+      *error = [v15 errorWithDomain:v16 code:6 userInfo:v17];
     }
 
 LABEL_9:
@@ -250,10 +250,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v9];
+  v8 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:remoteViewControllerEndpoint];
 LABEL_10:
 
-  if (a3 && !v8 && !*a3)
+  if (error && !v8 && !*error)
   {
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E6966C98];
@@ -270,11 +270,11 @@ LABEL_16:
   return v8;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v68 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     goto LABEL_35;
   }
@@ -285,18 +285,18 @@ LABEL_16:
     state = self->_state;
     uuid = self->_uuid;
     *buf = 138543874;
-    v63 = uuid;
+    selfCopy = uuid;
     v64 = 2048;
-    v65 = state;
+    stateCopy3 = state;
     v66 = 2048;
-    v67 = a3;
+    stateCopy2 = state;
   }
 
   v8 = self->_state;
   if (v8 != 5)
   {
-    self->_state = a3;
-    if (a3 == 5)
+    self->_state = state;
+    if (state == 5)
     {
       v11 = _EXSignpostLog();
       v12 = v11;
@@ -368,8 +368,8 @@ LABEL_16:
 
     else
     {
-      self->_maxState = a3;
-      if (a3 == 1 && !v8)
+      self->_maxState = state;
+      if (state == 1 && !v8)
       {
         v31 = _EXSignpostLog();
         v32 = v31;
@@ -392,9 +392,9 @@ LABEL_16:
         self->_activity.osActivity = v36;
 
         os_activity_scope_enter(self->_activity.osActivity, &self->_activity.state);
-        v38 = [(_EXHostViewControllerSessionConfiguration *)self->_configuration invalidationHandler];
+        invalidationHandler = [(_EXHostViewControllerSessionConfiguration *)self->_configuration invalidationHandler];
         v39 = self->_invalidationHandler;
-        self->_invalidationHandler = v38;
+        self->_invalidationHandler = invalidationHandler;
 
         internalQueue = self->_internalQueue;
         block[0] = MEMORY[0x1E69E9820];
@@ -406,7 +406,7 @@ LABEL_16:
         goto LABEL_35;
       }
 
-      if (a3 == 2 && v8 == 1)
+      if (state == 2 && v8 == 1)
       {
         v42 = _EXSignpostLog();
         v43 = v42;
@@ -438,9 +438,9 @@ LABEL_16:
         goto LABEL_35;
       }
 
-      if (a3 != 3 || v8 != 2)
+      if (state != 3 || v8 != 2)
       {
-        if (a3 == 4 && v8 == 3)
+        if (state == 4 && v8 == 3)
         {
           v52 = _EXSignpostLog();
           v53 = v52;
@@ -495,14 +495,14 @@ LABEL_35:
 
   v9 = _EXDefaultLog();
   v10 = v9;
-  if (a3 != 1)
+  if (state != 1)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v63 = self;
+      selfCopy = self;
       v64 = 2048;
-      v65 = a3;
+      stateCopy3 = state;
       _os_log_impl(&dword_1D29CC000, v10, OS_LOG_TYPE_DEFAULT, "Attempted transition of invalidated session %{public}@ to state %lu", buf, 0x16u);
     }
 
@@ -527,7 +527,7 @@ LABEL_68:
 
 - (void)resume
 {
-  OUTLINED_FUNCTION_7(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_7(self, *MEMORY[0x1E69E9840]);
   v4 = 136315906;
   v5 = "_processConfiguration.extensionIdentity";
   v6 = 2080;
@@ -540,9 +540,9 @@ LABEL_68:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeWithReadyNotification:(id)a3
+- (void)resumeWithReadyNotification:(id)notification
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(notification);
   readyBlock = self->_readyBlock;
   self->_readyBlock = v4;
 
@@ -559,7 +559,7 @@ LABEL_68:
 - (void)processDidInvalidate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 extensionProcess];
+  extensionProcess = [self extensionProcess];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -570,8 +570,8 @@ LABEL_68:
 - (void)_invalidateSession
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [a1 extensionProcess];
-  v9 = [a1 uuid];
+  extensionProcess = [self extensionProcess];
+  uuid = [self uuid];
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0x16u);
 
@@ -580,7 +580,7 @@ LABEL_68:
 
 - (void)_internalQueue_prepareToHost
 {
-  OUTLINED_FUNCTION_7(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_7(self, *MEMORY[0x1E69E9840]);
   v2 = *(v1 + 40);
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_1_0();
@@ -590,7 +590,7 @@ LABEL_68:
 
 - (void)requestRemoteViewController
 {
-  OUTLINED_FUNCTION_7(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_7(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_6();
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
@@ -609,27 +609,27 @@ LABEL_68:
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_internalQueue);
   v8 = 0;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (self->_hostListener == v6)
+  if (self->_hostListener == listenerCopy)
   {
-    v9 = [(_EXHostViewControllerSession *)self delegate];
+    delegate = [(_EXHostViewControllerSession *)self delegate];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67___EXHostViewControllerSession_listener_shouldAcceptNewConnection___block_invoke;
     block[3] = &unk_1E8401D58;
     v15 = &v16;
-    v13 = v9;
-    v14 = v7;
-    v10 = v9;
+    v13 = delegate;
+    v14 = connectionCopy;
+    v10 = delegate;
     dispatch_sync(MEMORY[0x1E69E96A0], block);
 
     v8 = *(v17 + 24);

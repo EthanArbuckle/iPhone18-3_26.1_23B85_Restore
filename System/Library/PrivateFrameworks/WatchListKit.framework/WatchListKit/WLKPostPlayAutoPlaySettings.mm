@@ -1,18 +1,18 @@
 @interface WLKPostPlayAutoPlaySettings
-- (BOOL)_compareOptional:(id)a3 with:(id)a4;
+- (BOOL)_compareOptional:(id)optional with:(id)with;
 - (BOOL)_hasValues;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSettings:(id)a3;
-- (id)_newSettingsMergedWithPreviousSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSettings:(id)settings;
+- (id)_newSettingsMergedWithPreviousSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WLKPostPlayAutoPlaySettings
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -20,33 +20,33 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKPostPlayAutoPlaySettings *)self isEqualToSettings:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKPostPlayAutoPlaySettings *)self isEqualToSettings:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSettings:(id)a3
+- (BOOL)isEqualToSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (settingsCopy)
   {
     nextEpisodeSettingValue = self->_nextEpisodeSettingValue;
-    v7 = [v4 nextEpisodeSettingValue];
-    if (nextEpisodeSettingValue == v7)
+    nextEpisodeSettingValue = [settingsCopy nextEpisodeSettingValue];
+    if (nextEpisodeSettingValue == nextEpisodeSettingValue)
     {
       recommendedItemsSettingValue = self->_recommendedItemsSettingValue;
-      v10 = [v5 recommendedItemsSettingValue];
-      if (recommendedItemsSettingValue == v10)
+      recommendedItemsSettingValue = [v5 recommendedItemsSettingValue];
+      if (recommendedItemsSettingValue == recommendedItemsSettingValue)
       {
         v11 = self->_nextEpisodeSettingValue;
-        v12 = [v5 nextEpisodeSettingValue];
-        if ([(WLKPostPlayAutoPlaySettings *)self _compareOptional:v11 with:v12])
+        nextEpisodeSettingValue2 = [v5 nextEpisodeSettingValue];
+        if ([(WLKPostPlayAutoPlaySettings *)self _compareOptional:v11 with:nextEpisodeSettingValue2])
         {
           v13 = self->_recommendedItemsSettingValue;
-          v14 = [v5 recommendedItemsSettingValue];
-          v8 = [(WLKPostPlayAutoPlaySettings *)self _compareOptional:v13 with:v14];
+          recommendedItemsSettingValue2 = [v5 recommendedItemsSettingValue];
+          v8 = [(WLKPostPlayAutoPlaySettings *)self _compareOptional:v13 with:recommendedItemsSettingValue2];
         }
 
         else
@@ -75,7 +75,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WLKPostPlayAutoPlaySettings);
   v5 = [(NSNumber *)self->_nextEpisodeSettingValue copy];
@@ -89,53 +89,53 @@
   return v4;
 }
 
-- (BOOL)_compareOptional:(id)a3 with:(id)a4
+- (BOOL)_compareOptional:(id)optional with:(id)with
 {
-  if (a3 && a4)
+  if (optional && with)
   {
-    return [a3 isEqual:a4];
+    return [optional isEqual:with];
   }
 
   else
   {
-    return (a3 | a4) == 0;
+    return (optional | with) == 0;
   }
 }
 
 - (BOOL)_hasValues
 {
-  v3 = [(WLKPostPlayAutoPlaySettings *)self nextEpisodeSettingValue];
+  nextEpisodeSettingValue = [(WLKPostPlayAutoPlaySettings *)self nextEpisodeSettingValue];
 
-  if (v3)
+  if (nextEpisodeSettingValue)
   {
     return 1;
   }
 
-  v5 = [(WLKPostPlayAutoPlaySettings *)self recommendedItemsSettingValue];
-  v4 = v5 != 0;
+  recommendedItemsSettingValue = [(WLKPostPlayAutoPlaySettings *)self recommendedItemsSettingValue];
+  v4 = recommendedItemsSettingValue != 0;
 
   return v4;
 }
 
-- (id)_newSettingsMergedWithPreviousSettings:(id)a3
+- (id)_newSettingsMergedWithPreviousSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(WLKPostPlayAutoPlaySettings);
-  v6 = [(WLKPostPlayAutoPlaySettings *)self nextEpisodeSettingValue];
+  nextEpisodeSettingValue = [(WLKPostPlayAutoPlaySettings *)self nextEpisodeSettingValue];
 
-  v7 = self;
-  if (v6 || ([(WLKPostPlayAutoPlaySettings *)v4 nextEpisodeSettingValue], v8 = objc_claimAutoreleasedReturnValue(), v8, v7 = v4, v8))
+  selfCopy = self;
+  if (nextEpisodeSettingValue || ([(WLKPostPlayAutoPlaySettings *)settingsCopy nextEpisodeSettingValue], v8 = objc_claimAutoreleasedReturnValue(), v8, selfCopy = settingsCopy, v8))
   {
-    v9 = [(WLKPostPlayAutoPlaySettings *)v7 nextEpisodeSettingValue];
-    [(WLKPostPlayAutoPlaySettings *)v5 setNextEpisodeSettingValue:v9];
+    nextEpisodeSettingValue2 = [(WLKPostPlayAutoPlaySettings *)selfCopy nextEpisodeSettingValue];
+    [(WLKPostPlayAutoPlaySettings *)v5 setNextEpisodeSettingValue:nextEpisodeSettingValue2];
   }
 
-  v10 = [(WLKPostPlayAutoPlaySettings *)self recommendedItemsSettingValue];
+  recommendedItemsSettingValue = [(WLKPostPlayAutoPlaySettings *)self recommendedItemsSettingValue];
 
-  if (v10 || ([(WLKPostPlayAutoPlaySettings *)v4 recommendedItemsSettingValue], v11 = objc_claimAutoreleasedReturnValue(), v11, self = v4, v11))
+  if (recommendedItemsSettingValue || ([(WLKPostPlayAutoPlaySettings *)settingsCopy recommendedItemsSettingValue], v11 = objc_claimAutoreleasedReturnValue(), v11, self = settingsCopy, v11))
   {
-    v12 = [(WLKPostPlayAutoPlaySettings *)self recommendedItemsSettingValue];
-    [(WLKPostPlayAutoPlaySettings *)v5 setRecommendedItemsSettingValue:v12];
+    recommendedItemsSettingValue2 = [(WLKPostPlayAutoPlaySettings *)self recommendedItemsSettingValue];
+    [(WLKPostPlayAutoPlaySettings *)v5 setRecommendedItemsSettingValue:recommendedItemsSettingValue2];
   }
 
   return v5;

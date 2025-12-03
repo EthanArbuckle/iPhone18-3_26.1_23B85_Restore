@@ -1,21 +1,21 @@
 @interface SSURLBag
-+ (id)URLBagForContext:(id)a3;
-+ (void)setURLBag:(id)a3 forContext:(id)a4;
++ (id)URLBagForContext:(id)context;
++ (void)setURLBag:(id)bag forContext:(id)context;
 - (NSDictionary)existingBagDictionary;
 - (SSURLBag)init;
-- (SSURLBag)initWithURLBagContext:(id)a3;
+- (SSURLBag)initWithURLBagContext:(id)context;
 - (SSURLBagContext)URLBagContext;
 - (id)_connection;
-- (id)valueForKey:(id)a3 error:(id *)a4;
-- (void)_drainPendingLookupsWithError:(id)a3;
+- (id)valueForKey:(id)key error:(id *)error;
+- (void)_drainPendingLookupsWithError:(id)error;
 - (void)_loadURLBag;
-- (void)_loadWithCompletionBlock:(id)a3;
+- (void)_loadWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)dispatchAsync:(id)a3;
-- (void)dispatchSync:(id)a3;
-- (void)getTrustForURL:(id)a3 completionBlock:(id)a4;
+- (void)dispatchAsync:(id)async;
+- (void)dispatchSync:(id)sync;
+- (void)getTrustForURL:(id)l completionBlock:(id)block;
 - (void)invalidate;
-- (void)loadValueForKey:(id)a3 completionBlock:(id)a4;
+- (void)loadValueForKey:(id)key completionBlock:(id)block;
 @end
 
 @implementation SSURLBag
@@ -28,16 +28,16 @@
   return v4;
 }
 
-- (SSURLBag)initWithURLBagContext:(id)a3
+- (SSURLBag)initWithURLBagContext:(id)context
 {
-  if (a3)
+  if (context)
   {
     v6.receiver = self;
     v6.super_class = SSURLBag;
     v4 = [(SSURLBag *)&v6 init];
     if (v4)
     {
-      v4->_context = [a3 copy];
+      v4->_context = [context copy];
       v4->_dispatchQueue = dispatch_queue_create("com.apple.storeservices.SSURLBag", 0);
       v4->_expirationTime = -1.79769313e308;
     }
@@ -66,10 +66,10 @@
   [(SSURLBag *)&v4 dealloc];
 }
 
-+ (id)URLBagForContext:(id)a3
++ (id)URLBagForContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!context)
   {
     return 0;
   }
@@ -124,21 +124,21 @@ LABEL_12:
     __URLBags = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  v9 = [[SSURLBag alloc] initWithURLBagContext:a3];
+  v9 = [[SSURLBag alloc] initWithURLBagContext:context];
   [__URLBags addObject:v9];
 LABEL_15:
   pthread_mutex_unlock(&__URLBagsLock);
   return v9;
 }
 
-- (void)getTrustForURL:(id)a3 completionBlock:(id)a4
+- (void)getTrustForURL:(id)l completionBlock:(id)block
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __43__SSURLBag_getTrustForURL_completionBlock___block_invoke;
   v4[3] = &unk_1E84B09C8;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = l;
+  v4[5] = block;
   [(SSURLBag *)self loadValueForKey:@"trustedDomains" completionBlock:v4];
 }
 
@@ -225,14 +225,14 @@ void __22__SSURLBag_invalidate__block_invoke(uint64_t a1)
   *(*(a1 + 32) + 48) = 1;
 }
 
-- (void)loadValueForKey:(id)a3 completionBlock:(id)a4
+- (void)loadValueForKey:(id)key completionBlock:(id)block
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__SSURLBag_loadValueForKey_completionBlock___block_invoke;
   v4[3] = &unk_1E84B09F0;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = key;
+  v4[5] = block;
   [(SSURLBag *)self _loadWithCompletionBlock:v4];
 }
 
@@ -263,7 +263,7 @@ uint64_t __44__SSURLBag_loadValueForKey_completionBlock___block_invoke(uint64_t 
   return v2;
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -285,13 +285,13 @@ uint64_t __44__SSURLBag_loadValueForKey_completionBlock___block_invoke(uint64_t 
   v11[5] = &v18;
   v11[6] = &v12;
   v11[4] = v7;
-  [(SSURLBag *)self loadValueForKey:a3 completionBlock:v11];
+  [(SSURLBag *)self loadValueForKey:key completionBlock:v11];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v7);
   v8 = v13[5];
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v9 = v19[5];
@@ -337,7 +337,7 @@ id __33__SSURLBag_existingBagDictionary__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)setURLBag:(id)a3 forContext:(id)a4
++ (void)setURLBag:(id)bag forContext:(id)context
 {
   pthread_mutex_lock(&__URLBagsLock);
   v6 = __URLBags;
@@ -351,16 +351,16 @@ id __33__SSURLBag_existingBagDictionary__block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __33__SSURLBag_setURLBag_forContext___block_invoke;
   v8[3] = &unk_1E84B0A40;
-  v8[4] = a4;
+  v8[4] = context;
   v7 = [v6 indexOfObjectPassingTest:v8];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [__URLBags removeObjectAtIndex:v7];
   }
 
-  if (a3)
+  if (bag)
   {
-    [__URLBags addObject:a3];
+    [__URLBags addObject:bag];
   }
 
   pthread_mutex_unlock(&__URLBagsLock);
@@ -374,7 +374,7 @@ uint64_t __33__SSURLBag_setURLBag_forContext___block_invoke(uint64_t a1, void *a
   return [v3 isEqual:v4];
 }
 
-- (void)dispatchAsync:(id)a3
+- (void)dispatchAsync:(id)async
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -382,11 +382,11 @@ uint64_t __33__SSURLBag_setURLBag_forContext___block_invoke(uint64_t a1, void *a
   v4[2] = __26__SSURLBag_dispatchAsync___block_invoke;
   v4[3] = &unk_1E84AC738;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = async;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)dispatchSync:(id)a3
+- (void)dispatchSync:(id)sync
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -394,7 +394,7 @@ uint64_t __33__SSURLBag_setURLBag_forContext___block_invoke(uint64_t a1, void *a
   v4[2] = __25__SSURLBag_dispatchSync___block_invoke;
   v4[3] = &unk_1E84AC738;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = sync;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -410,7 +410,7 @@ uint64_t __33__SSURLBag_setURLBag_forContext___block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (void)_drainPendingLookupsWithError:(id)a3
+- (void)_drainPendingLookupsWithError:(id)error
 {
   v5 = [(NSMutableArray *)self->_pendingLookups copy];
   [(NSMutableArray *)self->_pendingLookups removeAllObjects];
@@ -423,7 +423,7 @@ uint64_t __33__SSURLBag_setURLBag_forContext___block_invoke(uint64_t a1, void *a
   v8[4] = self;
   v8[5] = v5;
   v8[6] = v6;
-  v8[7] = a3;
+  v8[7] = error;
   dispatch_async(global_queue, v8);
 }
 
@@ -476,15 +476,15 @@ uint64_t __42__SSURLBag__drainPendingLookupsWithError___block_invoke(uint64_t a1
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -529,13 +529,13 @@ uint64_t __42__SSURLBag__drainPendingLookupsWithError___block_invoke(uint64_t a1
     SSXPCDictionarySetCFObject(v16, "1", self->_context);
   }
 
-  v18 = [(SSURLBag *)self _connection];
+  _connection = [(SSURLBag *)self _connection];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __23__SSURLBag__loadURLBag__block_invoke;
   v21[3] = &unk_1E84AF2C8;
   v21[4] = self;
-  [v18 sendMessage:v16 withReply:v21];
+  [_connection sendMessage:v16 withReply:v21];
   xpc_release(v16);
 }
 
@@ -634,7 +634,7 @@ LABEL_5:
   xpc_release(v9);
 }
 
-- (void)_loadWithCompletionBlock:(id)a3
+- (void)_loadWithCompletionBlock:(id)block
 {
   v10 = 0;
   v11 = &v10;
@@ -653,7 +653,7 @@ LABEL_5:
   v6 = v11[5];
   if (v6)
   {
-    (*(a3 + 2))(a3, v6, 0);
+    (*(block + 2))(block, v6, 0);
   }
 
   else
@@ -664,7 +664,7 @@ LABEL_5:
     v8[2] = __37__SSURLBag__loadWithCompletionBlock___block_invoke_2;
     v8[3] = &unk_1E84AF318;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = block;
     dispatch_sync(v7, v8);
   }
 

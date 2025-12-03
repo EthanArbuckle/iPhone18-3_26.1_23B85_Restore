@@ -5,22 +5,22 @@
 - (MSPSharedTripSharingIdentity)sharingIdentity;
 - (NSArray)accountAliases;
 - (NSString)sharingName;
-- (id)groupSessionForIdentifier:(id)a3;
-- (id)removeSharingWith:(id)a3;
-- (id)startSharingGroupSessionWithTripIdentifer:(id)a3;
+- (id)groupSessionForIdentifier:(id)identifier;
+- (id)removeSharingWith:(id)with;
+- (id)startSharingGroupSessionWithTripIdentifer:(id)identifer;
 - (void)_fetchDisplayName;
-- (void)_handleChunk:(id)a3 fromID:(id)a4 receivingHandle:(id)a5 receivingAccountIdentifier:(id)a6;
-- (void)_handleCommand:(id)a3 fromID:(id)a4;
-- (void)_handleIncomingMessage:(id)a3 info:(id)a4 fromID:(id)a5 receivingHandle:(id)a6 receivingAccountIdentifier:(id)a7;
-- (void)_removeFinishedSession:(id)a3;
+- (void)_handleChunk:(id)chunk fromID:(id)d receivingHandle:(id)handle receivingAccountIdentifier:(id)identifier;
+- (void)_handleCommand:(id)command fromID:(id)d;
+- (void)_handleIncomingMessage:(id)message info:(id)info fromID:(id)d receivingHandle:(id)handle receivingAccountIdentifier:(id)identifier;
+- (void)_removeFinishedSession:(id)session;
 - (void)_startService;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 fromID:(id)a6 hasBeenDeliveredWithContext:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 receivedGroupSessionParticipantUpdate:(id)a5;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
+- (void)service:(id)service account:(id)account identifier:(id)identifier fromID:(id)d hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account receivedGroupSessionParticipantUpdate:(id)update;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
 - (void)stopSharing;
 @end
 
@@ -29,11 +29,11 @@
 - (MSPSharedTripSharingIdentity)sharingIdentity
 {
   v3 = [MSPSharedTripSharingIdentity alloc];
-  v4 = [(MSPSharedTripRelay *)self hasValidIDSAccount];
-  v5 = [(MSPSharedTripRelay *)self sharingName];
-  v6 = [(MSPSharedTripRelay *)self sharingHandle];
-  v7 = [(MSPSharedTripRelay *)self accountAliases];
-  v8 = [(MSPSharedTripSharingIdentity *)v3 initWithValidAccount:v4 name:v5 handle:v6 aliases:v7];
+  hasValidIDSAccount = [(MSPSharedTripRelay *)self hasValidIDSAccount];
+  sharingName = [(MSPSharedTripRelay *)self sharingName];
+  sharingHandle = [(MSPSharedTripRelay *)self sharingHandle];
+  accountAliases = [(MSPSharedTripRelay *)self accountAliases];
+  v8 = [(MSPSharedTripSharingIdentity *)v3 initWithValidAccount:hasValidIDSAccount name:sharingName handle:sharingHandle aliases:accountAliases];
 
   return v8;
 }
@@ -52,10 +52,10 @@
 
 - (NSArray)accountAliases
 {
-  v2 = [(IDSService *)self->_sharingService _msp_currentAccount];
-  v3 = [v2 aliasStrings];
+  _msp_currentAccount = [(IDSService *)self->_sharingService _msp_currentAccount];
+  aliasStrings = [_msp_currentAccount aliasStrings];
 
-  return v3;
+  return aliasStrings;
 }
 
 - (MSPSharedTripRelay)init
@@ -65,10 +65,10 @@
   v2 = [(MSPSharedTripRelay *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     clientID = v2->_clientID;
-    v2->_clientID = v4;
+    v2->_clientID = uUIDString;
 
     v6 = objc_alloc_init(MSPSharedTripStorageController);
     storageController = v2->_storageController;
@@ -101,16 +101,16 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v4 = [v3 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
   v5 = objc_alloc_init(MEMORY[0x277CCAC00]);
-  v6 = [v4 aa_firstName];
-  [v5 setGivenName:v6];
+  aa_firstName = [aa_primaryAppleAccount aa_firstName];
+  [v5 setGivenName:aa_firstName];
 
-  v7 = [v4 aa_middleName];
-  [v5 setMiddleName:v7];
+  aa_middleName = [aa_primaryAppleAccount aa_middleName];
+  [v5 setMiddleName:aa_middleName];
 
-  v8 = [v4 aa_lastName];
-  [v5 setFamilyName:v8];
+  aa_lastName = [aa_primaryAppleAccount aa_lastName];
+  [v5 setFamilyName:aa_lastName];
 
   v9 = objc_alloc_init(MEMORY[0x277CCAC08]);
   [v9 setStyle:2];
@@ -153,15 +153,15 @@
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(IDSService *)self->_sharingService activeAliases];
-    v7 = [(IDSService *)self->_sharingService _msp_currentAccount];
+    activeAliases = [(IDSService *)self->_sharingService activeAliases];
+    _msp_currentAccount = [(IDSService *)self->_sharingService _msp_currentAccount];
     displayName = self->_displayName;
     v10 = 138413058;
     v11 = @"com.apple.private.alloy.maps.eta";
     v12 = 2112;
-    v13 = v6;
+    v13 = activeAliases;
     v14 = 2112;
-    v15 = v7;
+    v15 = _msp_currentAccount;
     v16 = 2112;
     v17 = displayName;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_DEFAULT, "[RELAY] startService: %@, active alias: %@, account: %@, displayName: %@", &v10, 0x2Au);
@@ -170,10 +170,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startSharingGroupSessionWithTripIdentifer:(id)a3
+- (id)startSharingGroupSessionWithTripIdentifer:(id)identifer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identiferCopy = identifer;
   sharingETAGroupSession = self->_sharingETAGroupSession;
   if (!sharingETAGroupSession)
   {
@@ -181,20 +181,20 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = identiferCopy;
       _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_DEFAULT, "[RELAY] creating _sharingGroupSession for identifier %@", &v16, 0xCu);
     }
 
     v7 = [MSPSharedTripGroupSession alloc];
     sharingService = self->_sharingService;
-    v9 = [(IDSService *)sharingService _msp_currentAccountIdentifier];
-    v10 = [(MSPSharedTripGroupSession *)v7 initWithService:sharingService groupID:v4 initiator:1 initiatorIdentifier:v9];
+    _msp_currentAccountIdentifier = [(IDSService *)sharingService _msp_currentAccountIdentifier];
+    v10 = [(MSPSharedTripGroupSession *)v7 initWithService:sharingService groupID:identiferCopy initiator:1 initiatorIdentifier:_msp_currentAccountIdentifier];
     v11 = self->_sharingETAGroupSession;
     self->_sharingETAGroupSession = v10;
 
     [(MSPSharedTripRelay *)self _fetchDisplayName];
-    v12 = [(MSPSharedTripRelay *)self sharingName];
-    [(MSPSharedTripGroupSession *)self->_sharingETAGroupSession setInitiatorDisplayName:v12];
+    sharingName = [(MSPSharedTripRelay *)self sharingName];
+    [(MSPSharedTripGroupSession *)self->_sharingETAGroupSession setInitiatorDisplayName:sharingName];
 
     sharingETAGroupSession = self->_sharingETAGroupSession;
   }
@@ -205,9 +205,9 @@
   return sharingETAGroupSession;
 }
 
-- (id)removeSharingWith:(id)a3
+- (id)removeSharingWith:(id)with
 {
-  if (![(MSPSharedTripGroupSession *)self->_sharingETAGroupSession sessionIsAliveAfterRemovingSharingIdentifiers:a3])
+  if (![(MSPSharedTripGroupSession *)self->_sharingETAGroupSession sessionIsAliveAfterRemovingSharingIdentifiers:with])
   {
     sharingETAGroupSession = self->_sharingETAGroupSession;
     self->_sharingETAGroupSession = 0;
@@ -225,28 +225,28 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (id)groupSessionForIdentifier:(id)a3
+- (id)groupSessionForIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v6 = [(MSPSharedTripStorageController *)self->_storageController groupSessionInfoForKey:v4];
+    v6 = [(MSPSharedTripStorageController *)self->_storageController groupSessionInfoForKey:identifierCopy];
     if (v6)
     {
       v7 = v6;
       v8 = [MSPSharedTripGroupSession alloc];
       sharingService = self->_sharingService;
-      v10 = [v7 fromID];
-      v5 = [(MSPSharedTripGroupSession *)v8 initWithService:sharingService groupID:v4 initiator:0 initiatorIdentifier:v10];
+      fromID = [v7 fromID];
+      v5 = [(MSPSharedTripGroupSession *)v8 initWithService:sharingService groupID:identifierCopy initiator:0 initiatorIdentifier:fromID];
 
-      [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions setObject:v5 forKeyedSubscript:identifierCopy];
       v11 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = identifierCopy;
         _os_log_impl(&dword_25813A000, v11, OS_LOG_TYPE_DEFAULT, "[RELAY] group session created %@", &v15, 0xCu);
       }
     }
@@ -257,11 +257,11 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = identifierCopy;
         _os_log_impl(&dword_25813A000, v12, OS_LOG_TYPE_ERROR, "[RELAY] unknown group session %@", &v15, 0xCu);
       }
 
-      [(MSPSharedTripRelay *)self _removeFinishedSession:v4];
+      [(MSPSharedTripRelay *)self _removeFinishedSession:identifierCopy];
       v5 = 0;
     }
   }
@@ -271,39 +271,39 @@
   return v5;
 }
 
-- (void)_handleChunk:(id)a3 fromID:(id)a4 receivingHandle:(id)a5 receivingAccountIdentifier:(id)a6
+- (void)_handleChunk:(id)chunk fromID:(id)d receivingHandle:(id)handle receivingAccountIdentifier:(id)identifier
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 objectForKeyedSubscript:@"commandKey"];
+  chunkCopy = chunk;
+  dCopy = d;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  v14 = [chunkCopy objectForKeyedSubscript:@"commandKey"];
 
   if (v14)
   {
-    v15 = [v10 objectForKeyedSubscript:@"commandKey"];
-    [(MSPSharedTripRelay *)self _handleCommand:v15 fromID:v11];
+    v15 = [chunkCopy objectForKeyedSubscript:@"commandKey"];
+    [(MSPSharedTripRelay *)self _handleCommand:v15 fromID:dCopy];
 
     goto LABEL_39;
   }
 
-  v16 = [v10 objectForKeyedSubscript:@"chunkMessageIDKey"];
+  v16 = [chunkCopy objectForKeyedSubscript:@"chunkMessageIDKey"];
   if (!v16)
   {
     goto LABEL_36;
   }
 
   v17 = v16;
-  v18 = [v10 objectForKeyedSubscript:@"chunkNumberKey"];
+  v18 = [chunkCopy objectForKeyedSubscript:@"chunkNumberKey"];
   if (!v18)
   {
     goto LABEL_35;
   }
 
   v19 = v18;
-  v55 = self;
-  v20 = [v10 objectForKeyedSubscript:@"chunkIndexKey"];
+  selfCopy = self;
+  v20 = [chunkCopy objectForKeyedSubscript:@"chunkIndexKey"];
   if (!v20)
   {
 LABEL_34:
@@ -313,7 +313,7 @@ LABEL_35:
   }
 
   v21 = v20;
-  v22 = [v10 objectForKeyedSubscript:@"chunkDataKey"];
+  v22 = [chunkCopy objectForKeyedSubscript:@"chunkDataKey"];
   if (!v22)
   {
 
@@ -321,30 +321,30 @@ LABEL_35:
   }
 
   v23 = v22;
-  v24 = [v10 objectForKeyedSubscript:@"chunkGroupIDKey"];
+  v24 = [chunkCopy objectForKeyedSubscript:@"chunkGroupIDKey"];
 
   if (v24)
   {
     if (!self->_packetBuckets)
     {
-      v25 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       packetBuckets = self->_packetBuckets;
-      self->_packetBuckets = v25;
+      self->_packetBuckets = dictionary;
     }
 
-    v27 = [v10 objectForKeyedSubscript:@"chunkMessageIDKey"];
+    v27 = [chunkCopy objectForKeyedSubscript:@"chunkMessageIDKey"];
     v28 = MSPGetSharedTripIDSTransportLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v64 = v10;
+      v64 = chunkCopy;
       v65 = 2114;
       v66 = v27;
       _os_log_impl(&dword_25813A000, v28, OS_LOG_TYPE_INFO, "[RELAY] incomingMessage %@ from %{public}@", buf, 0x16u);
     }
 
-    v29 = [v10 objectForKeyedSubscript:@"chunkNumberKey"];
-    v30 = [v29 unsignedIntegerValue];
+    v29 = [chunkCopy objectForKeyedSubscript:@"chunkNumberKey"];
+    unsignedIntegerValue = [v29 unsignedIntegerValue];
 
     v31 = [(NSMutableDictionary *)self->_packetBuckets objectForKeyedSubscript:v27];
     if (!v31)
@@ -353,7 +353,7 @@ LABEL_35:
       [(NSMutableDictionary *)self->_packetBuckets setObject:v31 forKeyedSubscript:v27];
     }
 
-    [v31 addObject:v10];
+    [v31 addObject:chunkCopy];
     v32 = MSPGetSharedTripIDSTransportLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
@@ -365,15 +365,15 @@ LABEL_35:
       _os_log_impl(&dword_25813A000, v32, OS_LOG_TYPE_INFO, "[RELAY] handleChunk %lu %@", buf, 0x16u);
     }
 
-    if ([v31 count] == v30)
+    if ([v31 count] == unsignedIntegerValue)
     {
       v51 = v27;
-      v52 = v12;
-      v53 = v11;
-      v54 = v10;
-      v34 = [MEMORY[0x277CBEB28] data];
-      v35 = v30;
-      v36 = v34;
+      v52 = handleCopy;
+      v53 = dCopy;
+      v54 = chunkCopy;
+      data = [MEMORY[0x277CBEB28] data];
+      v35 = unsignedIntegerValue;
+      v36 = data;
       v57 = v35;
       if (v35)
       {
@@ -402,9 +402,9 @@ LABEL_35:
 
                 v43 = *(*(&v58 + 1) + 8 * i);
                 v44 = [v43 objectForKeyedSubscript:@"chunkIndexKey"];
-                v45 = [v44 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v44 unsignedIntegerValue];
 
-                if (v45 == v37)
+                if (unsignedIntegerValue2 == v37)
                 {
                   v46 = [v43 objectForKeyedSubscript:@"chunkDataKey"];
                   [v36 appendData:v46];
@@ -436,11 +436,11 @@ LABEL_35:
         _os_log_impl(&dword_25813A000, v47, OS_LOG_TYPE_INFO, "[RELAY] incomingMessage full message ready %@ messageID %{public}@", buf, 0x16u);
       }
 
-      v10 = v54;
-      v12 = v52;
-      v11 = v53;
-      [(MSPSharedTripRelay *)v55 _handleIncomingMessage:v36 info:v54 fromID:v53 receivingHandle:v52 receivingAccountIdentifier:v13];
-      [(NSMutableDictionary *)v55->_packetBuckets setObject:0 forKeyedSubscript:v51];
+      chunkCopy = v54;
+      handleCopy = v52;
+      dCopy = v53;
+      [(MSPSharedTripRelay *)selfCopy _handleIncomingMessage:v36 info:v54 fromID:v53 receivingHandle:v52 receivingAccountIdentifier:identifierCopy];
+      [(NSMutableDictionary *)selfCopy->_packetBuckets setObject:0 forKeyedSubscript:v51];
     }
 
     goto LABEL_39;
@@ -451,7 +451,7 @@ LABEL_36:
   if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v64 = v10;
+    v64 = chunkCopy;
     _os_log_impl(&dword_25813A000, v49, OS_LOG_TYPE_ERROR, "[RELAY] cannot handle message %@", buf, 0xCu);
   }
 
@@ -459,19 +459,19 @@ LABEL_39:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCommand:(id)a3 fromID:(id)a4
+- (void)_handleCommand:(id)command fromID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"j"])
+  commandCopy = command;
+  dCopy = d;
+  if ([commandCopy isEqualToString:@"j"])
   {
-    [(MSPSharedTripGroupSession *)self->_sharingETAGroupSession participantDidJoin:v7];
+    [(MSPSharedTripGroupSession *)self->_sharingETAGroupSession participantDidJoin:dCopy];
   }
 
-  else if ([v6 isEqualToString:@"l"])
+  else if ([commandCopy isEqualToString:@"l"])
   {
-    [(MSPSharedTripGroupSession *)self->_sharingETAGroupSession participantDidLeave:v7];
+    [(MSPSharedTripGroupSession *)self->_sharingETAGroupSession participantDidLeave:dCopy];
   }
 
   else
@@ -480,7 +480,7 @@ LABEL_39:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = commandCopy;
       _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_ERROR, "[RELAY] cannot handle command %@", &v10, 0xCu);
     }
   }
@@ -488,17 +488,17 @@ LABEL_39:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleIncomingMessage:(id)a3 info:(id)a4 fromID:(id)a5 receivingHandle:(id)a6 receivingAccountIdentifier:(id)a7
+- (void)_handleIncomingMessage:(id)message info:(id)info fromID:(id)d receivingHandle:(id)handle receivingAccountIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v13 objectForKeyedSubscript:@"chunkGroupIDKey"];
+  messageCopy = message;
+  infoCopy = info;
+  dCopy = d;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  v17 = [infoCopy objectForKeyedSubscript:@"chunkGroupIDKey"];
   v18 = v17;
-  if (v12 && v17)
+  if (messageCopy && v17)
   {
     v19 = [(MSPSharedTripStorageController *)self->_storageController groupSessionInfoForKey:v17];
 
@@ -512,11 +512,11 @@ LABEL_39:
         _os_log_impl(&dword_25813A000, v20, OS_LOG_TYPE_DEFAULT, "[RELAY] add new session %@", &v23, 0xCu);
       }
 
-      [(MSPSharedTripStorageController *)self->_storageController addNewSession:v18 originator:v14 receivingHandle:v15 receivingAccountIdentifier:v16];
+      [(MSPSharedTripStorageController *)self->_storageController addNewSession:v18 originator:dCopy receivingHandle:handleCopy receivingAccountIdentifier:identifierCopy];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained relay:self receiveData:v12 info:v13 fromID:v14];
+    [WeakRetained relay:self receiveData:messageCopy info:infoCopy fromID:dCopy];
   }
 
   else
@@ -525,7 +525,7 @@ LABEL_39:
     if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_ERROR))
     {
       v23 = 138412290;
-      v24 = v13;
+      v24 = infoCopy;
       _os_log_impl(&dword_25813A000, WeakRetained, OS_LOG_TYPE_ERROR, "[RELAY] identifier or data missing %@", &v23, 0xCu);
     }
   }
@@ -533,163 +533,163 @@ LABEL_39:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeFinishedSession:(id)a3
+- (void)_removeFinishedSession:(id)session
 {
-  v7 = a3;
+  sessionCopy = session;
   v4 = [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions objectForKeyedSubscript:?];
   v5 = v4;
   if (v4)
   {
     [v4 leaveLiveModeForced:0];
-    [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions setObject:0 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_sharedTripGroupIDSSessions setObject:0 forKeyedSubscript:sessionCopy];
   }
 
-  [(MSPSharedTripStorageController *)self->_storageController removeSession:v7];
+  [(MSPSharedTripStorageController *)self->_storageController removeSession:sessionCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained relay:self sharingClosed:v7];
+  [WeakRetained relay:self sharingClosed:sessionCopy];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v15 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v19 = 138412802;
-    v20 = v12;
+    v20 = messageCopy;
     v21 = 2112;
-    v22 = v13;
+    v22 = dCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = accountCopy;
     _os_log_impl(&dword_25813A000, v15, OS_LOG_TYPE_INFO, "[RELAY] incomingMessage %@ from %@ to %@", &v19, 0x20u);
   }
 
-  v16 = [v14 toID];
+  toID = [contextCopy toID];
 
-  v17 = [v11 uniqueID];
-  [(MSPSharedTripRelay *)self _handleChunk:v12 fromID:v13 receivingHandle:v16 receivingAccountIdentifier:v17];
+  uniqueID = [accountCopy uniqueID];
+  [(MSPSharedTripRelay *)self _handleChunk:messageCopy fromID:dCopy receivingHandle:toID receivingAccountIdentifier:uniqueID];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
+  dataCopy = data;
   v15 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v20 = 138412546;
-    v21 = v12;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v11;
+    v23 = accountCopy;
     _os_log_impl(&dword_25813A000, v15, OS_LOG_TYPE_INFO, "[RELAY] incomingData from %@ to %@", &v20, 0x16u);
   }
 
-  v16 = [MEMORY[0x277CBEAC0] dictionaryWithPlistData:v14];
+  v16 = [MEMORY[0x277CBEAC0] dictionaryWithPlistData:dataCopy];
 
-  v17 = [v13 toID];
+  toID = [contextCopy toID];
 
-  v18 = [v11 uniqueID];
-  [(MSPSharedTripRelay *)self _handleChunk:v16 fromID:v12 receivingHandle:v17 receivingAccountIdentifier:v18];
+  uniqueID = [accountCopy uniqueID];
+  [(MSPSharedTripRelay *)self _handleChunk:v16 fromID:dCopy receivingHandle:toID receivingAccountIdentifier:uniqueID];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a5;
+  accountCopy = account;
+  metadataCopy = metadata;
+  dCopy = d;
+  contextCopy = context;
+  lCopy = l;
   v18 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v28 = v14;
+    v28 = metadataCopy;
     v29 = 2112;
-    v30 = v15;
+    v30 = dCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = accountCopy;
     _os_log_impl(&dword_25813A000, v18, OS_LOG_TYPE_INFO, "[RELAY] incomingMessage URL %@ from %@ to %@", buf, 0x20u);
   }
 
   v19 = MEMORY[0x277CBEA90];
-  v20 = [v17 path];
+  path = [lCopy path];
 
   v26 = 0;
-  v21 = [v19 dataWithContentsOfFile:v20 options:1 error:&v26];
+  v21 = [v19 dataWithContentsOfFile:path options:1 error:&v26];
   v22 = v26;
 
   if (v22)
   {
-    v23 = MSPGetSharedTripIDSTransportLog();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    toID = MSPGetSharedTripIDSTransportLog();
+    if (os_log_type_enabled(toID, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v28 = v22;
-      _os_log_impl(&dword_25813A000, v23, OS_LOG_TYPE_ERROR, "[RELAY] incomingMessage error %@", buf, 0xCu);
+      _os_log_impl(&dword_25813A000, toID, OS_LOG_TYPE_ERROR, "[RELAY] incomingMessage error %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v23 = [v16 toID];
-    v24 = [v13 uniqueID];
-    [(MSPSharedTripRelay *)self _handleIncomingMessage:v21 info:v14 fromID:v15 receivingHandle:v23 receivingAccountIdentifier:v24];
+    toID = [contextCopy toID];
+    uniqueID = [accountCopy uniqueID];
+    [(MSPSharedTripRelay *)self _handleIncomingMessage:v21 info:metadataCopy fromID:dCopy receivingHandle:toID receivingAccountIdentifier:uniqueID];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 receivedGroupSessionParticipantUpdate:(id)a5
+- (void)service:(id)service account:(id)account receivedGroupSessionParticipantUpdate:(id)update
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a5;
+  updateCopy = update;
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = updateCopy;
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[RELAY] receivedGroupSessionParticipantUpdate %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 fromID:(id)a6 hasBeenDeliveredWithContext:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier fromID:(id)d hasBeenDeliveredWithContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = a7;
+  identifierCopy = identifier;
+  dCopy = d;
+  contextCopy = context;
   v12 = MSPGetSharedTripIDSTransportLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v14 = 138543874;
-    v15 = v9;
+    v15 = identifierCopy;
     v16 = 2112;
-    v17 = v11;
+    v17 = contextCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = dCopy;
     _os_log_impl(&dword_25813A000, v12, OS_LOG_TYPE_INFO, "[RELAY] Message hasBeenDelivered {identifier: %{public}@, context: %@ fromID %@}", &v14, 0x20u);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v5 = [(MSPSharedTripRelay *)self availabilityDelegate:a3];
+  v5 = [(MSPSharedTripRelay *)self availabilityDelegate:service];
   [v5 relay:self accountStatusChanged:{-[MSPSharedTripRelay hasValidIDSAccount](self, "hasValidIDSAccount")}];
 }
 

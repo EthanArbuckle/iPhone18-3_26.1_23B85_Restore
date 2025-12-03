@@ -1,62 +1,62 @@
 @interface PKSharingCarKeyInvitation
-+ (id)_activationOptionsFromDictionary:(id)a3;
-+ (void)_mergeActivationOptions:(id)a3 intoDictionary:(id)a4;
-- (BOOL)configureWithContent:(id)a3;
++ (id)_activationOptionsFromDictionary:(id)dictionary;
++ (void)_mergeActivationOptions:(id)options intoDictionary:(id)dictionary;
+- (BOOL)configureWithContent:(id)content;
 - (NSString)brandIdentifier;
 - (NSString)partnerIdentifier;
 - (NSString)readerIdentifier;
 - (NSString)vehicleIssuer;
 - (NSString)vehicleModel;
-- (PKSharingCarKeyInvitation)initWithRawInvite:(id)a3 shareIdentifier:(id)a4 radioTechnology:(unint64_t)a5 vehicleModel:(id)a6 vehicleIssuer:(id)a7 readerIdentifier:(id)a8 partnerIdentifier:(id)a9 brandIdentifier:(id)a10 carKeySharingDict:(id)a11 proprietaryData:(id)a12 activationOptions:(id)a13 displayInformation:(id)a14;
+- (PKSharingCarKeyInvitation)initWithRawInvite:(id)invite shareIdentifier:(id)identifier radioTechnology:(unint64_t)technology vehicleModel:(id)model vehicleIssuer:(id)issuer readerIdentifier:(id)readerIdentifier partnerIdentifier:(id)partnerIdentifier brandIdentifier:(id)self0 carKeySharingDict:(id)self1 proprietaryData:(id)self2 activationOptions:(id)self3 displayInformation:(id)self4;
 - (unint64_t)radioTechnology;
 @end
 
 @implementation PKSharingCarKeyInvitation
 
-- (PKSharingCarKeyInvitation)initWithRawInvite:(id)a3 shareIdentifier:(id)a4 radioTechnology:(unint64_t)a5 vehicleModel:(id)a6 vehicleIssuer:(id)a7 readerIdentifier:(id)a8 partnerIdentifier:(id)a9 brandIdentifier:(id)a10 carKeySharingDict:(id)a11 proprietaryData:(id)a12 activationOptions:(id)a13 displayInformation:(id)a14
+- (PKSharingCarKeyInvitation)initWithRawInvite:(id)invite shareIdentifier:(id)identifier radioTechnology:(unint64_t)technology vehicleModel:(id)model vehicleIssuer:(id)issuer readerIdentifier:(id)readerIdentifier partnerIdentifier:(id)partnerIdentifier brandIdentifier:(id)self0 carKeySharingDict:(id)self1 proprietaryData:(id)self2 activationOptions:(id)self3 displayInformation:(id)self4
 {
-  v14 = self;
+  selfCopy = self;
   v15 = 0;
-  if (a3 && a4)
+  if (invite && identifier)
   {
     v39 = MEMORY[0x1E695DF90];
-    v42 = a5;
-    v44 = a14;
-    v40 = a13;
-    v43 = a12;
-    v21 = a11;
-    v22 = a10;
-    v23 = a9;
-    v24 = a8;
-    v41 = a7;
-    v25 = a6;
-    v26 = a4;
-    v27 = a3;
+    technologyCopy = technology;
+    informationCopy = information;
+    optionsCopy = options;
+    dataCopy = data;
+    dictCopy = dict;
+    brandIdentifierCopy = brandIdentifier;
+    partnerIdentifierCopy = partnerIdentifier;
+    readerIdentifierCopy = readerIdentifier;
+    issuerCopy = issuer;
+    modelCopy = model;
+    identifierCopy = identifier;
+    inviteCopy = invite;
     v28 = objc_alloc_init(v39);
-    v29 = [v27 hexEncoding];
+    hexEncoding = [inviteCopy hexEncoding];
 
-    [v28 setObject:v29 forKeyedSubscript:@"sharingData"];
-    [v28 setObject:v26 forKeyedSubscript:@"sharingId"];
+    [v28 setObject:hexEncoding forKeyedSubscript:@"sharingData"];
+    [v28 setObject:identifierCopy forKeyedSubscript:@"sharingId"];
 
-    [v28 setObject:v25 forKeyedSubscript:@"model"];
-    [v28 setObject:v22 forKeyedSubscript:@"brand"];
-    [v28 setObject:v24 forKeyedSubscript:@"vehicleIdentifier"];
-    [PKSharingCarKeyInvitation _mergeActivationOptions:v40 intoDictionary:v28];
+    [v28 setObject:modelCopy forKeyedSubscript:@"model"];
+    [v28 setObject:brandIdentifierCopy forKeyedSubscript:@"brand"];
+    [v28 setObject:readerIdentifierCopy forKeyedSubscript:@"vehicleIdentifier"];
+    [PKSharingCarKeyInvitation _mergeActivationOptions:optionsCopy intoDictionary:v28];
 
-    v30 = [v21 mutableCopy];
-    v31 = PKRadioTechnologiesToString(v42);
+    v30 = [dictCopy mutableCopy];
+    v31 = PKRadioTechnologiesToString(technologyCopy);
     [v30 setObject:v31 forKeyedSubscript:@"radioTechnologies"];
 
-    [v30 setObject:v25 forKeyedSubscript:@"vehicleModel"];
-    [v30 setObject:v41 forKeyedSubscript:@"vehicleIssuer"];
+    [v30 setObject:modelCopy forKeyedSubscript:@"vehicleModel"];
+    [v30 setObject:issuerCopy forKeyedSubscript:@"vehicleIssuer"];
 
-    [v30 setObject:v24 forKeyedSubscript:@"readerIdentifier"];
-    [v30 setObject:v23 forKeyedSubscript:@"partnerIdentifier"];
+    [v30 setObject:readerIdentifierCopy forKeyedSubscript:@"readerIdentifier"];
+    [v30 setObject:partnerIdentifierCopy forKeyedSubscript:@"partnerIdentifier"];
 
-    [v30 setObject:v22 forKeyedSubscript:@"brandIdentifier"];
-    v32 = [v43 dictionaryRepresentation];
+    [v30 setObject:brandIdentifierCopy forKeyedSubscript:@"brandIdentifier"];
+    dictionaryRepresentation = [dataCopy dictionaryRepresentation];
 
-    v33 = [v32 mutableCopy];
+    v33 = [dictionaryRepresentation mutableCopy];
     v34 = v33;
     if (v33)
     {
@@ -73,30 +73,30 @@
     [v36 setObject:v30 forKeyedSubscript:@"carKey"];
     v46.receiver = self;
     v46.super_class = PKSharingCarKeyInvitation;
-    v37 = [(PKSharingGenericMessage *)&v46 initWithFormat:2 type:1 genericSharingDict:v28 appleSharingDict:v36 displayInformation:v44];
+    v37 = [(PKSharingGenericMessage *)&v46 initWithFormat:2 type:1 genericSharingDict:v28 appleSharingDict:v36 displayInformation:informationCopy];
 
-    v14 = v37;
-    v15 = v14;
+    selfCopy = v37;
+    v15 = selfCopy;
   }
 
   return v15;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
   v13.receiver = self;
   v13.super_class = PKSharingCarKeyInvitation;
-  v4 = [(PKSharingCarKeyMessage *)&v13 configureWithContent:a3];
+  v4 = [(PKSharingCarKeyMessage *)&v13 configureWithContent:content];
   if (v4)
   {
     v5 = [PKSharingMesageProprietaryData alloc];
-    v6 = [(PKSharingGenericMessage *)self appleSharingDict];
-    v7 = [(PKSharingMesageProprietaryData *)v5 initWithDictionary:v6];
+    appleSharingDict = [(PKSharingGenericMessage *)self appleSharingDict];
+    v7 = [(PKSharingMesageProprietaryData *)v5 initWithDictionary:appleSharingDict];
     proprietaryData = self->_proprietaryData;
     self->_proprietaryData = v7;
 
-    v9 = [(PKSharingGenericMessage *)self genericSharingDict];
-    v10 = [PKSharingCarKeyInvitation _activationOptionsFromDictionary:v9];
+    genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+    v10 = [PKSharingCarKeyInvitation _activationOptionsFromDictionary:genericSharingDict];
     activationOptions = self->_activationOptions;
     self->_activationOptions = v10;
   }
@@ -106,8 +106,8 @@
 
 - (unint64_t)radioTechnology
 {
-  v2 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v3 = [v2 PKStringForKey:@"radioTechnologies"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v3 = [carKeySharingDict PKStringForKey:@"radioTechnologies"];
 
   v4 = PKRadioTechnologiesFromString(v3);
   return v4;
@@ -115,8 +115,8 @@
 
 - (NSString)vehicleModel
 {
-  v3 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v4 = [v3 PKStringForKey:@"vehicleModel"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v4 = [carKeySharingDict PKStringForKey:@"vehicleModel"];
   v5 = v4;
   if (v4)
   {
@@ -125,8 +125,8 @@
 
   else
   {
-    v7 = [(PKSharingGenericMessage *)self genericSharingDict];
-    v6 = [v7 PKStringForKey:@"model"];
+    genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+    v6 = [genericSharingDict PKStringForKey:@"model"];
   }
 
   return v6;
@@ -134,16 +134,16 @@
 
 - (NSString)vehicleIssuer
 {
-  v2 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v3 = [v2 PKStringForKey:@"vehicleIssuer"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v3 = [carKeySharingDict PKStringForKey:@"vehicleIssuer"];
 
   return v3;
 }
 
 - (NSString)readerIdentifier
 {
-  v3 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v4 = [v3 PKStringForKey:@"readerIdentifier"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v4 = [carKeySharingDict PKStringForKey:@"readerIdentifier"];
   v5 = v4;
   if (v4)
   {
@@ -152,8 +152,8 @@
 
   else
   {
-    v7 = [(PKSharingGenericMessage *)self genericSharingDict];
-    v6 = [v7 PKStringForKey:@"vehicleIdentifier"];
+    genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+    v6 = [genericSharingDict PKStringForKey:@"vehicleIdentifier"];
   }
 
   return v6;
@@ -161,16 +161,16 @@
 
 - (NSString)partnerIdentifier
 {
-  v2 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v3 = [v2 PKStringForKey:@"partnerIdentifier"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v3 = [carKeySharingDict PKStringForKey:@"partnerIdentifier"];
 
   return v3;
 }
 
 - (NSString)brandIdentifier
 {
-  v3 = [(PKSharingCarKeyMessage *)self carKeySharingDict];
-  v4 = [v3 PKStringForKey:@"brandIdentifier"];
+  carKeySharingDict = [(PKSharingCarKeyMessage *)self carKeySharingDict];
+  v4 = [carKeySharingDict PKStringForKey:@"brandIdentifier"];
   v5 = v4;
   if (v4)
   {
@@ -179,58 +179,58 @@
 
   else
   {
-    v7 = [(PKSharingGenericMessage *)self genericSharingDict];
-    v6 = [v7 PKStringForKey:@"brand"];
+    genericSharingDict = [(PKSharingGenericMessage *)self genericSharingDict];
+    v6 = [genericSharingDict PKStringForKey:@"brand"];
   }
 
   return v6;
 }
 
-+ (void)_mergeActivationOptions:(id)a3 intoDictionary:(id)a4
++ (void)_mergeActivationOptions:(id)options intoDictionary:(id)dictionary
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  optionsCopy = options;
+  dictionaryCopy = dictionary;
+  if (optionsCopy)
   {
-    v7 = [v5 containsOptionOfType:4];
-    if ((v7 & 1) != 0 || ![v5 containsOptionOfType:1])
+    v7 = [optionsCopy containsOptionOfType:4];
+    if ((v7 & 1) != 0 || ![optionsCopy containsOptionOfType:1])
     {
       v8 = @"VehicleActivation";
-      v11 = [v5 identifiers];
-      [v6 setObject:v11 forKeyedSubscript:@"activationOptions"];
+      identifiers = [optionsCopy identifiers];
+      [dictionaryCopy setObject:identifiers forKeyedSubscript:@"activationOptions"];
 
       if (!v7)
       {
 LABEL_10:
         v18[0] = v8;
         v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-        [v6 setObject:v17 forKeyedSubscript:@"authType"];
+        [dictionaryCopy setObject:v17 forKeyedSubscript:@"authType"];
 
         goto LABEL_11;
       }
 
-      v9 = v5;
+      v9 = optionsCopy;
       v10 = 4;
     }
 
     else
     {
       v8 = @"DevicePIN";
-      v9 = v5;
+      v9 = optionsCopy;
       v10 = 1;
     }
 
     v12 = [v9 optionOfType:v10];
-    v13 = [v12 valueLength];
-    if (v13)
+    valueLength = [v12 valueLength];
+    if (valueLength)
     {
-      v14 = v13;
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
-      [v6 setObject:v15 forKeyedSubscript:@"pinLength"];
+      v14 = valueLength;
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:valueLength];
+      [dictionaryCopy setObject:v15 forKeyedSubscript:@"pinLength"];
 
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
-      [v6 setObject:v16 forKeyedSubscript:@"pinCodeLength"];
+      [dictionaryCopy setObject:v16 forKeyedSubscript:@"pinCodeLength"];
     }
 
     goto LABEL_10;
@@ -239,22 +239,22 @@ LABEL_10:
 LABEL_11:
 }
 
-+ (id)_activationOptionsFromDictionary:(id)a3
++ (id)_activationOptionsFromDictionary:(id)dictionary
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v8 = 0;
     goto LABEL_25;
   }
 
-  v4 = [v3 PKArrayContaining:objc_opt_class() forKey:@"authType"];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5 != @"DevicePIN")
+  v4 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"authType"];
+  firstObject = [v4 firstObject];
+  v6 = firstObject;
+  if (firstObject != @"DevicePIN")
   {
-    if (v5)
+    if (firstObject)
     {
       v7 = @"DevicePIN" == 0;
     }
@@ -270,7 +270,7 @@ LABEL_11:
 
     else
     {
-      v9 = [(__CFString *)v5 isEqualToString:@"DevicePIN"];
+      v9 = [(__CFString *)firstObject isEqualToString:@"DevicePIN"];
 
       if (v9)
       {
@@ -302,13 +302,13 @@ LABEL_11:
       if (v17)
       {
 LABEL_29:
-        v10 = [v3 PKArrayContaining:objc_opt_class() forKey:@"activationOptions"];
+        v10 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"activationOptions"];
         v8 = [[PKPassShareActivationOptions alloc] initWithCarKeyIdentifiers:v10];
         v14 = [(PKPassShareActivationOptions *)v8 optionOfType:4];
         if (v14)
         {
-          v18 = [v3 PKNumberForKey:@"pinLength"];
-          if (v18 || ([v3 PKNumberForKey:@"pinCodeLength"], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+          v18 = [dictionaryCopy PKNumberForKey:@"pinLength"];
+          if (v18 || ([dictionaryCopy PKNumberForKey:@"pinCodeLength"], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v19 = v18;
             [v14 setValueLength:{objc_msgSend(v18, "integerValue")}];
@@ -325,8 +325,8 @@ LABEL_29:
 
 LABEL_12:
   v10 = [[PKPassShareActivationOption alloc] initWithDefaultIdentifierForType:1];
-  v11 = [v3 PKNumberForKey:@"pinLength"];
-  if (v11 || ([v3 PKNumberForKey:@"pinCodeLength"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  v11 = [dictionaryCopy PKNumberForKey:@"pinLength"];
+  if (v11 || ([dictionaryCopy PKNumberForKey:@"pinCodeLength"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
     -[PKPassShareActivationOption setValueLength:](v10, "setValueLength:", [v11 integerValue]);

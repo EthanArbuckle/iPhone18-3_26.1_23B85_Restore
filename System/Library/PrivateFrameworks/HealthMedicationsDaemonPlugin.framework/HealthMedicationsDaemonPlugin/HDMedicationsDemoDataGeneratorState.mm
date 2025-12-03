@@ -1,19 +1,19 @@
 @interface HDMedicationsDemoDataGeneratorState
-- (HDMedicationsDemoDataGeneratorState)initWithDictionary:(id)a3;
+- (HDMedicationsDemoDataGeneratorState)initWithDictionary:(id)dictionary;
 - (id)dictionary;
 @end
 
 @implementation HDMedicationsDemoDataGeneratorState
 
-- (HDMedicationsDemoDataGeneratorState)initWithDictionary:(id)a3
+- (HDMedicationsDemoDataGeneratorState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = HDMedicationsDemoDataGeneratorState;
   v5 = [(HDMedicationsDemoDataGeneratorState *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorDidSetupOntologyKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorDidSetupOntologyKey"];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -33,7 +33,7 @@
       v5->_didSetupOntologyData = [v9 BOOLValue];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorDidSaveInitialDataKey"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorDidSaveInitialDataKey"];
     objc_opt_class();
     v11 = v10;
     if (objc_opt_isKindOfClass())
@@ -53,7 +53,7 @@
       v5->_didSaveIntialData = [v13 BOOLValue];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorHasScheduledMedicationsKey"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorHasScheduledMedicationsKey"];
     objc_opt_class();
     v15 = v14;
     if (objc_opt_isKindOfClass())
@@ -73,7 +73,7 @@
       v5->_hasScheduledMedications = [v17 BOOLValue];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorLatestLogDateKey"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorLatestLogDateKey"];
     objc_opt_class();
     v19 = v18;
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@
     latestLogDate = v5->_latestLogDate;
     v5->_latestLogDate = v21;
 
-    v23 = [v4 objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorLatestTakenLogDateKey"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"HDMedicationsDemoDataGeneratorLatestTakenLogDateKey"];
     objc_opt_class();
     v24 = v23;
     if (objc_opt_isKindOfClass())

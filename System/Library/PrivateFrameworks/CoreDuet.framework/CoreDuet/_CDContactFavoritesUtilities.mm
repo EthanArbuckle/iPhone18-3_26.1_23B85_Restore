@@ -1,9 +1,9 @@
 @interface _CDContactFavoritesUtilities
 + (id)sharedInstance;
 - (_CDContactFavoritesUtilities)init;
-- (void)accessEntriesForContact:(id)a3 withBlock:(id)a4;
-- (void)accessFavoriteContactEntriesWithBlock:(id)a3;
-- (void)runWithLockAcquired:(id)a3;
+- (void)accessEntriesForContact:(id)contact withBlock:(id)block;
+- (void)accessFavoriteContactEntriesWithBlock:(id)block;
+- (void)runWithLockAcquired:(id)acquired;
 @end
 
 @implementation _CDContactFavoritesUtilities
@@ -38,15 +38,15 @@
   return v2;
 }
 
-- (void)runWithLockAcquired:(id)a3
+- (void)runWithLockAcquired:(id)acquired
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 isMainThread];
+  acquiredCopy = acquired;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v6)
+  if (isMainThread)
   {
-    v4[2](v4, self->_contactFavorites);
+    acquiredCopy[2](acquiredCopy, self->_contactFavorites);
   }
 
   else
@@ -56,35 +56,35 @@
     v7[2] = __52___CDContactFavoritesUtilities_runWithLockAcquired___block_invoke;
     v7[3] = &unk_1E7367818;
     v7[4] = self;
-    v8 = v4;
+    v8 = acquiredCopy;
     dispatch_sync(MEMORY[0x1E69E96A0], v7);
   }
 }
 
-- (void)accessFavoriteContactEntriesWithBlock:(id)a3
+- (void)accessFavoriteContactEntriesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70___CDContactFavoritesUtilities_accessFavoriteContactEntriesWithBlock___block_invoke;
   v6[3] = &unk_1E7369D00;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(_CDContactFavoritesUtilities *)self runWithLockAcquired:v6];
 }
 
-- (void)accessEntriesForContact:(id)a3 withBlock:(id)a4
+- (void)accessEntriesForContact:(id)contact withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __66___CDContactFavoritesUtilities_accessEntriesForContact_withBlock___block_invoke;
   v10[3] = &unk_1E7369D28;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = contactCopy;
+  v12 = blockCopy;
+  v8 = contactCopy;
+  v9 = blockCopy;
   [(_CDContactFavoritesUtilities *)self runWithLockAcquired:v10];
 }
 

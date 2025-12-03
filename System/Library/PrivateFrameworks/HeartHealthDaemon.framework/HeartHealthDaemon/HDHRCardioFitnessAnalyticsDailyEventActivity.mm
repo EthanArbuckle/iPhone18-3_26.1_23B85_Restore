@@ -1,25 +1,25 @@
 @interface HDHRCardioFitnessAnalyticsDailyEventActivity
-- (HDHRCardioFitnessAnalyticsDailyEventActivity)initWithProfile:(id)a3;
+- (HDHRCardioFitnessAnalyticsDailyEventActivity)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (void)_queue_submitAnalyticsWithActivityCompletion:(id)a3;
-- (void)daemonReady:(id)a3;
+- (void)_queue_submitAnalyticsWithActivityCompletion:(id)completion;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
 @end
 
 @implementation HDHRCardioFitnessAnalyticsDailyEventActivity
 
-- (HDHRCardioFitnessAnalyticsDailyEventActivity)initWithProfile:(id)a3
+- (HDHRCardioFitnessAnalyticsDailyEventActivity)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = HDHRCardioFitnessAnalyticsDailyEventActivity;
   v5 = [(HDHRCardioFitnessAnalyticsDailyEventActivity *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = *MEMORY[0x277D862A0];
     v6->_calculationPeriod = *MEMORY[0x277D86298];
     v6->_retryPeriod = v7;
@@ -27,18 +27,18 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    v10 = [[HDHRCardioFitnessAnalyticsSignalSource alloc] initWithProfile:v4];
+    v10 = [[HDHRCardioFitnessAnalyticsSignalSource alloc] initWithProfile:profileCopy];
     v11 = [objc_alloc(MEMORY[0x277D12F98]) initWithSignalSource:v10];
     analyticsManager = v6->_analyticsManager;
     v6->_analyticsManager = v11;
 
-    v13 = [[HDHRCardioFitnessAnalyticsDailyEventDataSource alloc] initWithProfile:v4];
+    v13 = [[HDHRCardioFitnessAnalyticsDailyEventDataSource alloc] initWithProfile:profileCopy];
     dataSource = v6->_dataSource;
     v6->_dataSource = v13;
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v16 = [WeakRetained daemon];
-    [v16 registerDaemonReadyObserver:v6 queue:v6->_queue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:v6->_queue];
   }
 
   return v6;
@@ -52,29 +52,29 @@
   [(HDHRCardioFitnessAnalyticsDailyEventActivity *)&v3 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v4 = objc_alloc(MEMORY[0x277D107E8]);
-  v7 = [(HDHRCardioFitnessAnalyticsDailyEventActivity *)self profile];
+  profile = [(HDHRCardioFitnessAnalyticsDailyEventActivity *)self profile];
   [(HDHRCardioFitnessAnalyticsDailyEventActivity *)self calculationPeriod];
-  v5 = [v4 initWithProfile:v7 name:@"com.apple.healthd.cardiofitness.HDHRCardioFitnessAnalyticsDailyEventActivity" interval:self delegate:*MEMORY[0x277CCC2D0] loggingCategory:?];
+  v5 = [v4 initWithProfile:profile name:@"com.apple.healthd.cardiofitness.HDHRCardioFitnessAnalyticsDailyEventActivity" interval:self delegate:*MEMORY[0x277CCC2D0] loggingCategory:?];
   periodicActivity = self->_periodicActivity;
   self->_periodicActivity = v5;
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
   v4 = *MEMORY[0x277D86230];
-  xdict = a4;
+  xdict = criteria;
   xpc_dictionary_set_BOOL(xdict, v4, 1);
   xpc_dictionary_set_string(xdict, *MEMORY[0x277D86340], *MEMORY[0x277D86350]);
   xpc_dictionary_set_BOOL(xdict, *MEMORY[0x277D86378], 1);
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = HKLogHeartRateCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -85,8 +85,8 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v34 = objc_opt_class();
-      v9 = v34;
+      selfCopy = objc_opt_class();
+      v9 = selfCopy;
       _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_INFO, "[%{public}@] Received periodic activity trigger.", buf, 0xCu);
     }
   }
@@ -109,29 +109,29 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v34 = self;
+      selfCopy = self;
       _os_log_impl(&dword_229486000, v13, OS_LOG_TYPE_INFO, "[%{public}@] maintenance operation enqueued", buf, 0xCu);
     }
   }
 
   v14 = MEMORY[0x277D10748];
-  v25 = self;
+  selfCopy2 = self;
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_completion___block_invoke_311;
   v29 = &unk_278660DC0;
-  v30 = self;
-  v31 = v5;
+  selfCopy3 = self;
+  v31 = completionCopy;
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_completion___block_invoke_315;
   v24 = &unk_278660738;
-  v15 = v5;
+  v15 = completionCopy;
   v16 = [v14 maintenanceOperationWithName:@"HDHRCardioFitnessAnalyticsDailyEventActivity" asynchronousBlock:&v26 canceledBlock:&v21];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v18 = [WeakRetained daemon];
-  v19 = [v18 maintenanceWorkCoordinator];
-  [v19 enqueueMaintenanceOperation:v16];
+  daemon = [WeakRetained daemon];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v16];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -260,10 +260,10 @@ void __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_
   v3[2]();
 }
 
-- (void)_queue_submitAnalyticsWithActivityCompletion:(id)a3
+- (void)_queue_submitAnalyticsWithActivityCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogHeartRateCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -281,9 +281,9 @@ void __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained deviceContextManager];
+  deviceContextManager = [WeakRetained deviceContextManager];
   v34 = 0;
-  v11 = [v10 numberOfDeviceContextsPerDeviceType:&v34];
+  v11 = [deviceContextManager numberOfDeviceContextsPerDeviceType:&v34];
   v12 = v34;
 
   if (v12)
@@ -310,8 +310,8 @@ void __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_
   }
 
   v17 = v16;
-  v18 = [v16 status];
-  switch(v18)
+  status = [v16 status];
+  switch(status)
   {
     case 2:
       _HKInitializeLogging();
@@ -327,8 +327,8 @@ void __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_
 
       [(HDHRCardioFitnessAnalyticsDailyEventActivity *)self retryPeriod];
       v32 = v31;
-      v27 = [v17 error];
-      v4[2](v4, 1, v27, v32);
+      error = [v17 error];
+      completionCopy[2](completionCopy, 1, error, v32);
       goto LABEL_22;
     case 1:
       _HKInitializeLogging();
@@ -344,8 +344,8 @@ void __83__HDHRCardioFitnessAnalyticsDailyEventActivity_performPeriodicActivity_
 
       [(HDHRCardioFitnessAnalyticsDailyEventActivity *)self retryPeriod];
       v26 = v25;
-      v27 = [v17 error];
-      v4[2](v4, 2, v27, v26);
+      error = [v17 error];
+      completionCopy[2](completionCopy, 2, error, v26);
 LABEL_22:
 
       break;
@@ -362,7 +362,7 @@ LABEL_22:
       }
 
       [(HDHRCardioFitnessAnalyticsDailyEventActivity *)self retryPeriod];
-      (v4[2])(v4, 0, 0);
+      (completionCopy[2])(completionCopy, 0, 0);
       break;
   }
 

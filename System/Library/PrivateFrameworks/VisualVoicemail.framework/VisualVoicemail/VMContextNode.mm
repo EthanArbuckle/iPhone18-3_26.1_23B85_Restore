@@ -1,21 +1,21 @@
 @interface VMContextNode
-- (VMContextNode)initWithLanguage:(id)a3 count:(int)a4;
+- (VMContextNode)initWithLanguage:(id)language count:(int)count;
 - (void)printNode;
 @end
 
 @implementation VMContextNode
 
-- (VMContextNode)initWithLanguage:(id)a3 count:(int)a4
+- (VMContextNode)initWithLanguage:(id)language count:(int)count
 {
-  v7 = a3;
+  languageCopy = language;
   v13.receiver = self;
   v13.super_class = VMContextNode;
   v8 = [(VMContextNode *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_language, a3);
-    v9->_count = a4;
+    objc_storeStrong(&v8->_language, language);
+    v9->_count = count;
     prev = v9->_prev;
     v9->_prev = 0;
 
@@ -36,7 +36,7 @@
     prev = self->_prev;
     next = self->_next;
     v8 = 138413314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = language;
     v12 = 1024;

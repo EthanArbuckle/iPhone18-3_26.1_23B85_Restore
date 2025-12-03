@@ -1,16 +1,16 @@
 @interface UVFSService
-- (BOOL)fsTypeIsErasable:(id)a3;
-- (void)createVolumesForTheDevice:(id)a3 fsType:(id)a4 how:(unint64_t)a5 withReply:(id)a6;
-- (void)ejectVolumesForDevice:(id)a3 how:(unint64_t)a4 withReply:(id)a5;
-- (void)startUp:(id)a3;
-- (void)unlockVolume:(id)a3 password:(id)a4 saveToKeychain:(BOOL)a5 completionHandler:(id)a6;
+- (BOOL)fsTypeIsErasable:(id)erasable;
+- (void)createVolumesForTheDevice:(id)device fsType:(id)type how:(unint64_t)how withReply:(id)reply;
+- (void)ejectVolumesForDevice:(id)device how:(unint64_t)how withReply:(id)reply;
+- (void)startUp:(id)up;
+- (void)unlockVolume:(id)volume password:(id)password saveToKeychain:(BOOL)keychain completionHandler:(id)handler;
 @end
 
 @implementation UVFSService
 
-- (void)startUp:(id)a3
+- (void)startUp:(id)up
 {
-  v3 = a3;
+  upCopy = up;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100020474();
@@ -91,7 +91,7 @@ LABEL_21:
     sub_10002056C(v5, v11, v12);
   }
 
-  v3[2](v3, v11, v5);
+  upCopy[2](upCopy, v11, v5);
   if (v5)
   {
     if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_ERROR))
@@ -103,18 +103,18 @@ LABEL_21:
   }
 }
 
-- (BOOL)fsTypeIsErasable:(id)a3
+- (BOOL)fsTypeIsErasable:(id)erasable
 {
-  v3 = [a3 volumeRawDevice];
-  v4 = [v3 isErasable];
+  volumeRawDevice = [erasable volumeRawDevice];
+  isErasable = [volumeRawDevice isErasable];
 
-  return v4;
+  return isErasable;
 }
 
-- (void)ejectVolumesForDevice:(id)a3 how:(unint64_t)a4 withReply:(id)a5
+- (void)ejectVolumesForDevice:(id)device how:(unint64_t)how withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  deviceCopy = device;
+  replyCopy = reply;
   v12 = 0;
   v13[0] = &v12;
   v13[1] = 0x3032000000;
@@ -133,7 +133,7 @@ LABEL_21:
     v11[2] = sub_100005F48;
     v11[3] = &unk_100038768;
     v11[4] = &v12;
-    [externalVolumeLiveFSService ejectDisk:v7 usingFlags:a4 reply:v11];
+    [externalVolumeLiveFSService ejectDisk:deviceCopy usingFlags:how reply:v11];
   }
 
   else
@@ -148,47 +148,47 @@ LABEL_21:
     sub_1000206B0(v13);
   }
 
-  v8[2](v8, *(v13[0] + 40));
+  replyCopy[2](replyCopy, *(v13[0] + 40));
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)unlockVolume:(id)a3 password:(id)a4 saveToKeychain:(BOOL)a5 completionHandler:(id)a6
+- (void)unlockVolume:(id)volume password:(id)password saveToKeychain:(BOOL)keychain completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  volumeCopy = volume;
+  passwordCopy = password;
+  handlerCopy = handler;
   if (externalVolumeLiveFSService)
   {
     v31 = 0;
-    v11 = [externalVolumeLiveFSService volumeProxyForVolume:v8];
+    v11 = [externalVolumeLiveFSService volumeProxyForVolume:volumeCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 errorState];
-      if (!v13)
+      errorState = [v11 errorState];
+      if (!errorState)
       {
         goto LABEL_32;
       }
 
-      v14 = v13;
-      v15 = [v12 errorState];
+      v14 = errorState;
+      errorState2 = [v12 errorState];
       v16 = +[LIFSPreVolume errorForAuthError];
-      v17 = [v15 isEqual:v16];
+      v17 = [errorState2 isEqual:v16];
 
       if (v17)
       {
-        v18 = [v12 preVolInfo];
-        if (v18)
+        preVolInfo = [v12 preVolInfo];
+        if (preVolInfo)
         {
-          v19 = v18;
+          v19 = preVolInfo;
           v20 = malloc_type_calloc(1uLL, 0x10uLL, 0x1010040A1D9428BuLL);
-          v21 = strdup([v9 UTF8String]);
+          v21 = strdup([passwordCopy UTF8String]);
           *v20 = v21;
           v20[2] = strlen(v21);
-          v22 = [v19 volumeRawDevice];
-          v23 = [v22 deviceIsReadOnly];
+          volumeRawDevice = [v19 volumeRawDevice];
+          deviceIsReadOnly = [volumeRawDevice deviceIsReadOnly];
 
-          if ((v23 & 1) != 0 || (v24 = [v19 checkVolumeWithCreds:v20], !v24))
+          if ((deviceIsReadOnly & 1) != 0 || (v24 = [v19 checkVolumeWithCreds:v20], !v24))
           {
             v24 = [v19 mountVolumeWithCreds:v20 resultRootNode:&v31];
           }
@@ -209,12 +209,12 @@ LABEL_21:
               }
 
               v26 = getNSErrorFromLiveFSErrno();
-              v10[2](v10, v26);
+              handlerCopy[2](handlerCopy, v26);
               goto LABEL_12;
             }
 
             v26 = v28;
-            v29 = [v28 updateErrorStateForVolume:v8 provider:@"com.apple.filesystems.UserFS.FileProvider" domainError:v25];
+            v29 = [v28 updateErrorStateForVolume:volumeCopy provider:@"com.apple.filesystems.UserFS.FileProvider" domainError:v25];
             if (v29)
             {
               v30 = v29;
@@ -223,13 +223,13 @@ LABEL_21:
                 sub_100020740();
               }
 
-              v10[2](v10, v30);
+              handlerCopy[2](handlerCopy, v30);
 
               goto LABEL_13;
             }
           }
 
-          v10[2](v10, v25);
+          handlerCopy[2](handlerCopy, v25);
 LABEL_12:
 
 LABEL_13:
@@ -255,34 +255,34 @@ LABEL_32:
     }
 
     v19 = getNSErrorFromLiveFSErrno();
-    v10[2](v10, v19);
+    handlerCopy[2](handlerCopy, v19);
     goto LABEL_18;
   }
 
   v12 = getNSErrorFromLiveFSErrno();
-  v10[2](v10, v12);
+  handlerCopy[2](handlerCopy, v12);
 LABEL_19:
 }
 
-- (void)createVolumesForTheDevice:(id)a3 fsType:(id)a4 how:(unint64_t)a5 withReply:(id)a6
+- (void)createVolumesForTheDevice:(id)device fsType:(id)type how:(unint64_t)how withReply:(id)reply
 {
-  v9 = a3;
-  v96 = a4;
-  v95 = a6;
+  deviceCopy = device;
+  typeCopy = type;
+  replyCopy = reply;
   v10 = uvfsservice_log_default;
   if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v125 = 136315650;
     *&v125[4] = "[UVFSService createVolumesForTheDevice:fsType:how:withReply:]";
     *&v125[12] = 2114;
-    *&v125[14] = v9;
+    *&v125[14] = deviceCopy;
     *&v125[22] = 2048;
-    v126 = a5;
+    howCopy = how;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s:device:%{public}@:how:0x%llx:start", v125, 0x20u);
-    if ((a5 & 2) == 0)
+    if ((how & 2) == 0)
     {
 LABEL_3:
-      if (a5)
+      if (how)
       {
         goto LABEL_5;
       }
@@ -291,13 +291,13 @@ LABEL_3:
     }
   }
 
-  else if ((a5 & 2) == 0)
+  else if ((how & 2) == 0)
   {
     goto LABEL_3;
   }
 
   dispatchAsyncConcurentLiveItemIO = 1;
-  if ((a5 & 1) == 0)
+  if ((how & 1) == 0)
   {
 LABEL_4:
     enableSpotlight = 0;
@@ -320,7 +320,7 @@ LABEL_5:
       sub_100020A84();
     }
 
-    notifyMainServiceAndExit(v9, 0);
+    notifyMainServiceAndExit(deviceCopy, 0);
   }
 
   if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_DEBUG))
@@ -329,8 +329,8 @@ LABEL_5:
   }
 
   v116 = 0;
-  obj = [[LiveFSRawDevice alloc] initDeviceWithName:v9 andError:&v116];
-  v15 = v116;
+  obj = [[LiveFSRawDevice alloc] initDeviceWithName:deviceCopy andError:&v116];
+  registerSpotlightNotifer = v116;
   if (!obj)
   {
     if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_ERROR))
@@ -338,7 +338,7 @@ LABEL_5:
       sub_100020A00();
     }
 
-    notifyMainServiceAndExit(v9, 0);
+    notifyMainServiceAndExit(deviceCopy, 0);
   }
 
   if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_DEBUG))
@@ -346,7 +346,7 @@ LABEL_5:
     sub_1000208D8();
   }
 
-  v16 = [obj getVolumesFromDeviceForFileSystem:v96];
+  v16 = [obj getVolumesFromDeviceForFileSystem:typeCopy];
   if (![v16 count])
   {
     v93 = uvfsservice_log_default;
@@ -356,14 +356,14 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_INFO, "main:UVFSService:noVolumesFound", v125, 2u);
     }
 
-    notifyMainServiceAndExit(v9, 0);
+    notifyMainServiceAndExit(deviceCopy, 0);
   }
 
   objc_storeStrong(&deviceBeenServiced, obj);
   v17 = uvfsservice_log_default;
   if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_100020948(v9, v17, v16);
+    sub_100020948(deviceCopy, v17, v16);
   }
 
   v114 = 0u;
@@ -391,7 +391,7 @@ LABEL_5:
         *v125 = 0;
         *&v125[8] = v125;
         *&v125[16] = 0x3032000000;
-        v126 = sub_100005F30;
+        howCopy = sub_100005F30;
         v127 = sub_100005F40;
         v128 = 0;
         v106 = 0;
@@ -400,8 +400,8 @@ LABEL_5:
         v109 = sub_100005F30;
         v110 = sub_100005F40;
         v111 = 0;
-        v21 = [v20 volumeName];
-        v22 = v21 == 0;
+        volumeName = [v20 volumeName];
+        v22 = volumeName == 0;
 
         if (v22)
         {
@@ -410,7 +410,7 @@ LABEL_5:
           if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v118 = v9;
+            v118 = deviceCopy;
             _os_log_error_impl(&_mh_execute_header, v59, OS_LOG_TYPE_ERROR, "device:%{public}@:volumeNameCheck:nullName", buf, 0xCu);
           }
 
@@ -420,11 +420,11 @@ LABEL_5:
         v23 = uvfsservice_log_default;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v71 = [v20 volumeName];
+          volumeName2 = [v20 volumeName];
           *buf = 138543618;
-          v118 = v9;
+          v118 = deviceCopy;
           v119 = 2112;
-          v120 = v71;
+          v120 = volumeName2;
           _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "device:%{public}@:volume:%@:", buf, 0x16u);
         }
 
@@ -432,11 +432,11 @@ LABEL_5:
         {
 
           v25 = externalVolumeLiveFSService;
-          v26 = [v20 volumeName];
+          volumeName3 = [v20 volumeName];
           v27 = +[LiveFSClient interfaceForListeners];
           v28 = objc_opt_class();
-          v29 = [v20 metaDataRequests];
-          v30 = [v25 addVolume:v26 usingInterface:v27 connectionClass:v28 queue:v29 proxy:v20 description:v9];
+          metaDataRequests = [v20 metaDataRequests];
+          v30 = [v25 addVolume:volumeName3 usingInterface:v27 connectionClass:v28 queue:metaDataRequests proxy:v20 description:deviceCopy];
 
           if (v30)
           {
@@ -444,57 +444,57 @@ LABEL_5:
             v63 = uvfsservice_log_default;
             if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
             {
-              v88 = [v20 volumeName];
+              volumeName4 = [v20 volumeName];
               *buf = 138543874;
-              v118 = v9;
+              v118 = deviceCopy;
               v119 = 2112;
-              v120 = v88;
+              v120 = volumeName4;
               v121 = 2112;
               v122 = v30;
               _os_log_error_impl(&_mh_execute_header, v63, OS_LOG_TYPE_ERROR, "device:%{public}@:volume:%@:local:registration:failed:%@:skipping", buf, 0x20u);
             }
 
-            v15 = v30;
+            registerSpotlightNotifer = v30;
             goto LABEL_90;
           }
 
           v31 = uvfsservice_log_default;
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
           {
-            v54 = [v20 volumeName];
+            volumeName5 = [v20 volumeName];
             *buf = 138543618;
-            v118 = v9;
+            v118 = deviceCopy;
             v119 = 2112;
-            v120 = v54;
+            v120 = volumeName5;
             _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "device:%{public}@:registeredVolume:%@", buf, 0x16u);
           }
 
           v32 = externalVolumeLiveFSService;
-          v33 = [v20 volumeName];
+          volumeName6 = [v20 volumeName];
           v105[0] = _NSConcreteStackBlock;
           v105[1] = 3221225472;
           v105[2] = sub_100007568;
           v105[3] = &unk_100038790;
           v105[4] = v125;
           v105[5] = &v106;
-          [v32 listenerForVolume:v33 reply:v105];
+          [v32 listenerForVolume:volumeName6 reply:v105];
 
           if (*(*&v125[8] + 40) || !v107[5])
           {
             v60 = externalVolumeLiveFSService;
-            v61 = [v20 volumeName];
-            [v60 removeVolume:v61];
+            volumeName7 = [v20 volumeName];
+            [v60 removeVolume:volumeName7];
 
             [v20 unmount:0];
             v62 = uvfsservice_log_default;
             if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
             {
-              v86 = [v20 volumeName];
+              volumeName8 = [v20 volumeName];
               v87 = *(*&v125[8] + 40);
               *buf = 138543874;
-              v118 = v9;
+              v118 = deviceCopy;
               v119 = 2112;
-              v120 = v86;
+              v120 = volumeName8;
               v121 = 2112;
               v122 = v87;
               _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "device:%{public}@:volume:%@:listener:error:%@:skipping", buf, 0x20u);
@@ -506,32 +506,32 @@ LABEL_5:
           v34 = uvfsservice_log_default;
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
           {
-            v55 = [v20 volumeName];
+            volumeName9 = [v20 volumeName];
             v56 = v107[5];
             *buf = 138543874;
-            v118 = v9;
+            v118 = deviceCopy;
             v119 = 2112;
-            v120 = v55;
+            v120 = volumeName9;
             v121 = 2112;
             v122 = v56;
             _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "device:%{public}@:volume:%@:listener:%@", buf, 0x20u);
           }
 
           v35 = masterService;
-          v36 = [v20 volumeName];
-          v15 = [v35 registerNewVolume:v36 listener:v107[5] device:v9];
+          volumeName10 = [v20 volumeName];
+          registerSpotlightNotifer = [v35 registerNewVolume:volumeName10 listener:v107[5] device:deviceCopy];
 
           v37 = uvfsservice_log_default;
           v38 = v37;
-          if (!v15)
+          if (!registerSpotlightNotifer)
           {
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
-              v89 = [v20 volumeName];
+              volumeName11 = [v20 volumeName];
               *buf = 138543618;
-              v118 = v9;
+              v118 = deviceCopy;
               v119 = 2112;
-              v120 = v89;
+              v120 = volumeName11;
               _os_log_debug_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "device:%{public}@:volume:%@:userfsd:registered", buf, 0x16u);
             }
 
@@ -542,24 +542,24 @@ LABEL_5:
 
             if (enableSpotlight)
             {
-              v15 = [v20 registerSpotlightNotifer];
-              if (v15)
+              registerSpotlightNotifer = [v20 registerSpotlightNotifer];
+              if (registerSpotlightNotifer)
               {
                 v64 = masterService;
-                v65 = [v20 volumeName];
-                v66 = [v64 forgetVolume:v65 withFlags:2];
+                volumeName12 = [v20 volumeName];
+                v66 = [v64 forgetVolume:volumeName12 withFlags:2];
 
                 [v20 unmount:0];
                 v67 = uvfsservice_log_default;
                 if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
                 {
-                  v91 = [v20 volumeName];
+                  volumeName13 = [v20 volumeName];
                   *buf = 138543874;
-                  v118 = v9;
+                  v118 = deviceCopy;
                   v119 = 2112;
-                  v120 = v91;
+                  v120 = volumeName13;
                   v121 = 2112;
-                  v122 = v15;
+                  v122 = registerSpotlightNotifer;
                   _os_log_error_impl(&_mh_execute_header, v67, OS_LOG_TYPE_ERROR, "device:%{public}@:volume:%@:creating:CSNotifier:failed:%@:skipping", buf, 0x20u);
                 }
 
@@ -569,34 +569,34 @@ LABEL_5:
               v73 = uvfsservice_log_default;
               if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
               {
-                v92 = [v20 volumeName];
+                volumeName14 = [v20 volumeName];
                 *buf = 138543618;
-                v118 = v9;
+                v118 = deviceCopy;
                 v119 = 2112;
-                v120 = v92;
+                v120 = volumeName14;
                 _os_log_debug_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEBUG, "device:%{public}@:volume:%@:created:CSNotifier", buf, 0x16u);
               }
             }
 
             v74 = [NSMutableDictionary dictionaryWithCapacity:4];
-            v75 = [v20 volumeName];
-            [v74 setObject:v75 forKeyedSubscript:@"UUID"];
+            volumeName15 = [v20 volumeName];
+            [v74 setObject:volumeName15 forKeyedSubscript:@"UUID"];
 
-            v76 = [v20 volumeLabel];
-            [v74 setObject:v76 forKeyedSubscript:@"name"];
+            volumeLabel = [v20 volumeLabel];
+            [v74 setObject:volumeLabel forKeyedSubscript:@"name"];
 
-            v77 = [v20 errorState];
+            errorState = [v20 errorState];
 
-            if (v77)
+            if (errorState)
             {
-              v78 = [v20 errorState];
-              v79 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v78 code]);
+              errorState2 = [v20 errorState];
+              v79 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [errorState2 code]);
               [v74 setObject:v79 forKeyedSubscript:@"errorForDomain"];
             }
 
-            v80 = [v20 readOnly];
+            readOnly = [v20 readOnly];
             v81 = [(UVFSService *)self fsTypeIsErasable:v20];
-            if (v80)
+            if (readOnly)
             {
               v82 = 2048;
             }
@@ -623,7 +623,7 @@ LABEL_5:
             if (os_log_type_enabled(uvfsservice_log_default, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543618;
-              v118 = v9;
+              v118 = deviceCopy;
               v119 = 2112;
               v120 = v74;
               _os_log_debug_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEBUG, "device:%{public}@:volumeInfo:%@", buf, 0x16u);
@@ -632,19 +632,19 @@ LABEL_5:
             [v100 addObject:v74];
 
 LABEL_89:
-            v15 = 0;
+            registerSpotlightNotifer = 0;
             goto LABEL_90;
           }
 
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
-            v57 = [v20 volumeName];
+            volumeName16 = [v20 volumeName];
             *buf = 138544130;
-            v118 = v9;
+            v118 = deviceCopy;
             v119 = 2112;
-            v120 = v57;
+            v120 = volumeName16;
             v121 = 2114;
-            v122 = v15;
+            v122 = registerSpotlightNotifer;
             v123 = 1024;
             v124 = j;
             _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "device:%{public}@:volume:%@:userfsd:registration:failed:%{public}@:retry:%d", buf, 0x26u);
@@ -654,30 +654,30 @@ LABEL_89:
           v107[5] = 0;
 
           v40 = externalVolumeLiveFSService;
-          v41 = [v20 volumeName];
-          [v40 removeVolume:v41];
+          volumeName17 = [v20 volumeName];
+          [v40 removeVolume:volumeName17];
 
           v42 = userfs_log_default;
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
           {
-            v58 = [v20 volumeName];
+            volumeName18 = [v20 volumeName];
             *buf = 138543618;
-            v118 = v9;
+            v118 = deviceCopy;
             v119 = 2112;
-            v120 = v58;
+            v120 = volumeName18;
             _os_log_debug_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "device:%{public}@:volume:%@:volume:removed", buf, 0x16u);
           }
 
-          v43 = [v15 userInfo];
-          v23 = [v43 objectForKeyedSubscript:NSUnderlyingErrorKey];
+          userInfo = [registerSpotlightNotifer userInfo];
+          v23 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
           if (!v23)
           {
             goto LABEL_72;
           }
 
-          v44 = [v23 domain];
-          if (![v44 isEqual:NSPOSIXErrorDomain])
+          domain = [v23 domain];
+          if (![domain isEqual:NSPOSIXErrorDomain])
           {
             goto LABEL_71;
           }
@@ -691,28 +691,28 @@ LABEL_89:
           }
 
           v47 = masterService;
-          v48 = [v20 volumeName];
+          volumeName19 = [v20 volumeName];
           v104 = 0;
-          v49 = [v47 sameVolumeAlreadyLoaded:v48 device:v9 withError:&v104];
-          v44 = v104;
+          v49 = [v47 sameVolumeAlreadyLoaded:volumeName19 device:deviceCopy withError:&v104];
+          domain = v104;
 
           if (v49)
           {
             break;
           }
 
-          if (v44)
+          if (domain)
           {
             v68 = uvfsservice_log_default;
             if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
             {
-              v90 = [v20 volumeName];
+              volumeName20 = [v20 volumeName];
               *buf = 138412802;
-              v118 = v9;
+              v118 = deviceCopy;
               v119 = 2112;
-              v120 = v90;
+              v120 = volumeName20;
               v121 = 2112;
-              v122 = v44;
+              v122 = domain;
               _os_log_error_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "device:%@:volume:%@:collision:resolution:error%@", buf, 0x20u);
             }
 
@@ -720,17 +720,17 @@ LABEL_89:
           }
 
           v50 = +[NSUUID UUID];
-          v51 = [v50 UUIDString];
-          [v20 setVolumeName:v51];
+          uUIDString = [v50 UUIDString];
+          [v20 setVolumeName:uUIDString];
 
           v52 = uvfsservice_log_default;
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
           {
-            v53 = [v20 volumeName];
+            volumeName21 = [v20 volumeName];
             *buf = 138412802;
-            v118 = v9;
+            v118 = deviceCopy;
             v119 = 2112;
-            v120 = v53;
+            v120 = volumeName21;
             v121 = 1024;
             LODWORD(v122) = j;
             _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "device:%@:volume:%@:collision:resolved:retry:%d", buf, 0x1Cu);
@@ -740,11 +740,11 @@ LABEL_89:
         v68 = userfs_log_default;
         if (os_log_type_enabled(v68, OS_LOG_TYPE_FAULT))
         {
-          v69 = [v20 volumeName];
+          volumeName22 = [v20 volumeName];
           *buf = v94;
-          v118 = v9;
+          v118 = deviceCopy;
           v119 = 2112;
-          v120 = v69;
+          v120 = volumeName22;
           _os_log_fault_impl(&_mh_execute_header, v68, OS_LOG_TYPE_FAULT, "device:%@:volume:%@:collision:already:loaded.", buf, 0x16u);
         }
 
@@ -757,13 +757,13 @@ LABEL_72:
         v70 = uvfsservice_log_default;
         if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
         {
-          v72 = [v20 volumeName];
+          volumeName23 = [v20 volumeName];
           *buf = 138544130;
-          v118 = v9;
+          v118 = deviceCopy;
           v119 = 2112;
-          v120 = v72;
+          v120 = volumeName23;
           v121 = 2114;
-          v122 = v15;
+          v122 = registerSpotlightNotifer;
           v123 = 1024;
           v124 = j;
           _os_log_error_impl(&_mh_execute_header, v70, OS_LOG_TYPE_ERROR, "device:%{public}@:volume:%@:userfsd:registration:failed:%{public}@:retry:%d:skipping", buf, 0x26u);
@@ -786,7 +786,7 @@ LABEL_90:
   v100 = 0;
 LABEL_97:
 
-  v95[2](v95, 0, v100);
+  replyCopy[2](replyCopy, 0, v100);
 }
 
 @end

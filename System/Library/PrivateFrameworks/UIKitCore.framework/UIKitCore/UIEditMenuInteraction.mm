@@ -1,98 +1,98 @@
 @interface UIEditMenuInteraction
 + (BOOL)_isOutOfProcessEditMenusEnabled;
 + (void)_registerPlatformMetrics;
-- ($9638EFF0CCCAFE90921E224CC361F7AC)_anchorForPreferredArrowDirection:(SEL)a3;
+- ($9638EFF0CCCAFE90921E224CC361F7AC)_anchorForPreferredArrowDirection:(SEL)direction;
 - (BOOL)isDisplayingMenu;
 - (CGPoint)locationInView:(UIView *)view;
-- (CGRect)_editMenuPresentation:(id)a3 targetRectForConfiguration:(id)a4;
-- (CGRect)_targetRectForConfiguration:(id)a3;
-- (CGRect)menuFrameInCoordinateSpace:(id)a3;
+- (CGRect)_editMenuPresentation:(id)presentation targetRectForConfiguration:(id)configuration;
+- (CGRect)_targetRectForConfiguration:(id)configuration;
+- (CGRect)menuFrameInCoordinateSpace:(id)space;
 - (UIEditMenuInteraction)initWithDelegate:(id)delegate;
 - (UIMenuLeaf)_selectedMenuLeaf;
 - (UIView)view;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)_defaultSuggestedActionsAtLocation:(CGPoint)a3 configuration:(id)a4;
-- (id)_editMenuPresentation:(id)a3 preferredLayoutRectsForConfiguration:(id)a4;
-- (id)_editMenuPresentation:(id)a3 titleViewForMenu:(id)a4 configuration:(id)a5;
-- (id)_menuForSuggestedActions:(id)a3 configuration:(id)a4;
-- (id)_menuPreparationContextForConfiguration:(id)a3;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)_defaultSuggestedActionsAtLocation:(CGPoint)location configuration:(id)configuration;
+- (id)_editMenuPresentation:(id)presentation preferredLayoutRectsForConfiguration:(id)configuration;
+- (id)_editMenuPresentation:(id)presentation titleViewForMenu:(id)menu configuration:(id)configuration;
+- (id)_menuForSuggestedActions:(id)actions configuration:(id)configuration;
+- (id)_menuPreparationContextForConfiguration:(id)configuration;
 - (id)_proxySender;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
 - (id)delegate;
-- (id)firstResponderTargetForConfiguration:(id)a3;
-- (void)_contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4 completion:(id)a5;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_dismissMenuWithPresentationType:(int64_t)a3;
-- (void)_editMenuPresentation:(id)a3 didSelectMenuLeaf:(id)a4 completion:(id)a5;
-- (void)_editMenuPresentation:(id)a3 didTransitionMenuForConfiguration:(id)a4;
-- (void)_editMenuPresentation:(id)a3 handoffDisplayedMenuWithContext:(id)a4;
-- (void)_editMenuPresentation:(id)a3 preparedMenuForDisplay:(id)a4 completion:(id)a5;
-- (void)_editMenuPresentation:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)_editMenuPresentation:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)_prepareMenuAtLocation:(CGPoint)a3 configuration:(id)a4 completionHandler:(id)a5;
-- (void)_setProxySender:(id)a3;
+- (id)firstResponderTargetForConfiguration:(id)configuration;
+- (void)_contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location completion:(id)completion;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_dismissMenuWithPresentationType:(int64_t)type;
+- (void)_editMenuPresentation:(id)presentation didSelectMenuLeaf:(id)leaf completion:(id)completion;
+- (void)_editMenuPresentation:(id)presentation didTransitionMenuForConfiguration:(id)configuration;
+- (void)_editMenuPresentation:(id)presentation handoffDisplayedMenuWithContext:(id)context;
+- (void)_editMenuPresentation:(id)presentation preparedMenuForDisplay:(id)display completion:(id)completion;
+- (void)_editMenuPresentation:(id)presentation willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)_editMenuPresentation:(id)presentation willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)_prepareMenuAtLocation:(CGPoint)location configuration:(id)configuration completionHandler:(id)handler;
+- (void)_setProxySender:(id)sender;
 - (void)_updateContextMenuInteractionDrivers;
-- (void)_updateVisibleMenuWithReason:(int64_t)a3 updateBlock:(id)a4;
-- (void)_viewTraitCollectionDidChange:(id)a3;
-- (void)_willDismissMenuForConfiguration:(id)a3 animator:(id)a4;
-- (void)_willPresentMenuForConfiguration:(id)a3 animator:(id)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)deferredMenuElementWasFulfilled:(id)a3;
-- (void)didMoveToView:(id)a3;
+- (void)_updateVisibleMenuWithReason:(int64_t)reason updateBlock:(id)block;
+- (void)_viewTraitCollectionDidChange:(id)change;
+- (void)_willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)_willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)deferredMenuElementWasFulfilled:(id)fulfilled;
+- (void)didMoveToView:(id)view;
 - (void)presentEditMenuWithConfiguration:(UIEditMenuConfiguration *)configuration;
 - (void)reloadVisibleMenu;
-- (void)setPresentsContextMenuAsSecondaryAction:(BOOL)a3;
+- (void)setPresentsContextMenuAsSecondaryAction:(BOOL)action;
 - (void)updateVisibleMenuPositionAnimated:(BOOL)animated;
-- (void)willMoveToView:(id)a3;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIEditMenuInteraction
 
 - (BOOL)isDisplayingMenu
 {
-  v3 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-  v4 = [v3 displayedMenu];
-  if (v4)
+  activeEditMenuPresentation = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+  displayedMenu = [activeEditMenuPresentation displayedMenu];
+  if (displayedMenu)
   {
-    v5 = 1;
+    _hasVisibleMenu = 1;
   }
 
   else
   {
-    v5 = [(UIContextMenuInteraction *)self->_contextMenuInteraction _hasVisibleMenu];
+    _hasVisibleMenu = [(UIContextMenuInteraction *)self->_contextMenuInteraction _hasVisibleMenu];
   }
 
-  return v5;
+  return _hasVisibleMenu;
 }
 
 - (id)_proxySender
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->__proxySender);
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v2 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateContextMenuInteractionDrivers
 {
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(UIEditMenuInteraction *)self presentsContextMenuAsSecondaryAction])
   {
     v3 = objc_opt_new();
-    [v4 addObject:v3];
+    [array addObject:v3];
   }
 
-  [(UIContextMenuInteraction *)self->_contextMenuInteraction setDrivers:v4];
+  [(UIContextMenuInteraction *)self->_contextMenuInteraction setDrivers:array];
 }
 
 + (void)_registerPlatformMetrics
@@ -153,8 +153,8 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
     objc_storeWeak(&v5->_delegate, v4);
     v6->_presentsContextMenuAsSecondaryAction = 1;
     v7 = [(UIContextMenuInteraction *)[_UIEditMenuBridgedContextMenuInteraction alloc] initWithDelegate:v6];
-    v8 = [(UIEditMenuInteraction *)v6 _proxySender];
-    [(_UIEditMenuBridgedContextMenuInteraction *)v7 setProxySender:v8];
+    _proxySender = [(UIEditMenuInteraction *)v6 _proxySender];
+    [(_UIEditMenuBridgedContextMenuInteraction *)v7 setProxySender:_proxySender];
 
     contextMenuInteraction = v6->_contextMenuInteraction;
     v6->_contextMenuInteraction = &v7->super;
@@ -267,23 +267,23 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
   return v6;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   contextMenuInteraction = self->_contextMenuInteraction;
-  v5 = a3;
-  v6 = [(UIContextMenuInteraction *)contextMenuInteraction view];
-  [v6 removeInteraction:self->_contextMenuInteraction];
+  viewCopy = view;
+  view = [(UIContextMenuInteraction *)contextMenuInteraction view];
+  [view removeInteraction:self->_contextMenuInteraction];
 
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  if (WeakRetained == v5)
+  if (WeakRetained == viewCopy)
   {
   }
 
   else
   {
-    v8 = [(UIEditMenuInteraction *)self isDisplayingMenu];
+    isDisplayingMenu = [(UIEditMenuInteraction *)self isDisplayingMenu];
 
-    if (v8)
+    if (isDisplayingMenu)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -297,21 +297,21 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
   objc_storeWeak(&self->_view, 0);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  objc_storeWeak(&self->_view, v5);
-  v4 = v5;
-  if (v5)
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  v4 = viewCopy;
+  if (viewCopy)
   {
-    [v5 addInteraction:self->_contextMenuInteraction];
-    v4 = v5;
+    [viewCopy addInteraction:self->_contextMenuInteraction];
+    v4 = viewCopy;
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  if (!a4)
+  if (!toWindow)
   {
     v7[7] = v4;
     v7[8] = v5;
@@ -327,21 +327,21 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
   }
 }
 
-- (void)_viewTraitCollectionDidChange:(id)a3
+- (void)_viewTraitCollectionDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   if ([(UIEditMenuInteraction *)self isDisplayingMenu])
   {
-    v4 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-    [v4 sourceViewDidUpdateFromTraitCollection:v5];
+    activeEditMenuPresentation = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+    [activeEditMenuPresentation sourceViewDidUpdateFromTraitCollection:changeCopy];
   }
 }
 
-- (void)setPresentsContextMenuAsSecondaryAction:(BOOL)a3
+- (void)setPresentsContextMenuAsSecondaryAction:(BOOL)action
 {
-  if (self->_presentsContextMenuAsSecondaryAction != a3)
+  if (self->_presentsContextMenuAsSecondaryAction != action)
   {
-    self->_presentsContextMenuAsSecondaryAction = a3;
+    self->_presentsContextMenuAsSecondaryAction = action;
     [(UIEditMenuInteraction *)self _updateContextMenuInteractionDrivers];
   }
 }
@@ -350,9 +350,9 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = configuration;
-  v6 = [(UIEditMenuInteraction *)self view];
+  view = [(UIEditMenuInteraction *)self view];
 
-  if (!v6)
+  if (!view)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -362,12 +362,12 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
         goto LABEL_7;
       }
 
-      v13 = [(UIEditMenuInteraction *)self activeConfiguration];
-      v14 = [(UIEditMenuInteraction *)self view];
+      activeConfiguration = [(UIEditMenuInteraction *)self activeConfiguration];
+      view2 = [(UIEditMenuInteraction *)self view];
       *buf = 138412546;
-      v18 = v13;
+      v18 = activeConfiguration;
       v19 = 2112;
-      v20 = v14;
+      v20 = view2;
       _os_log_fault_impl(&dword_188A29000, v12, OS_LOG_TYPE_FAULT, "The edit menu (configuration: %@) can only be presented when the view is in a window scene: %@", buf, 0x16u);
     }
 
@@ -380,12 +380,12 @@ uint64_t __56__UIEditMenuInteraction__isOutOfProcessEditMenusEnabled__block_invo
       }
 
       v12 = v11;
-      v13 = [(UIEditMenuInteraction *)self activeConfiguration];
-      v14 = [(UIEditMenuInteraction *)self view];
+      activeConfiguration = [(UIEditMenuInteraction *)self activeConfiguration];
+      view2 = [(UIEditMenuInteraction *)self view];
       *buf = 138412546;
-      v18 = v13;
+      v18 = activeConfiguration;
       v19 = 2112;
-      v20 = v14;
+      v20 = view2;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "The edit menu (configuration: %@) can only be presented when the view is in a window scene: %@", buf, 0x16u);
     }
 
@@ -445,11 +445,11 @@ void __58__UIEditMenuInteraction_presentEditMenuWithConfiguration___block_invoke
 
 - (void)reloadVisibleMenu
 {
-  v3 = [(UIEditMenuInteraction *)self activeConfiguration];
-  v4 = v3;
-  if (v3)
+  activeConfiguration = [(UIEditMenuInteraction *)self activeConfiguration];
+  v4 = activeConfiguration;
+  if (activeConfiguration)
   {
-    [v3 sourcePoint];
+    [activeConfiguration sourcePoint];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __42__UIEditMenuInteraction_reloadVisibleMenu__block_invoke;
@@ -475,23 +475,23 @@ void __42__UIEditMenuInteraction_reloadVisibleMenu__block_invoke(uint64_t a1, vo
 - (void)updateVisibleMenuPositionAnimated:(BOOL)animated
 {
   v3 = animated;
-  v5 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-  v7 = [v5 displayedMenu];
+  activeEditMenuPresentation = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+  displayedMenu = [activeEditMenuPresentation displayedMenu];
 
-  if (v7)
+  if (displayedMenu)
   {
-    v6 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-    [v6 updateMenuPositionAnimated:v3];
+    activeEditMenuPresentation2 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+    [activeEditMenuPresentation2 updateMenuPositionAnimated:v3];
   }
 }
 
 - (CGPoint)locationInView:(UIView *)view
 {
   v4 = view;
-  v5 = [(UIEditMenuInteraction *)self contextMenuInteraction];
-  v6 = [v5 _hasVisibleMenu];
+  contextMenuInteraction = [(UIEditMenuInteraction *)self contextMenuInteraction];
+  _hasVisibleMenu = [contextMenuInteraction _hasVisibleMenu];
 
-  if (v6)
+  if (_hasVisibleMenu)
   {
     [(UIContextMenuInteraction *)self->_contextMenuInteraction locationInView:v4];
     v8 = v7;
@@ -500,12 +500,12 @@ void __42__UIEditMenuInteraction_reloadVisibleMenu__block_invoke(uint64_t a1, vo
 
   else
   {
-    v11 = [(UIEditMenuInteraction *)self activeConfiguration];
+    activeConfiguration = [(UIEditMenuInteraction *)self activeConfiguration];
 
-    if (v11)
+    if (activeConfiguration)
     {
-      v12 = [(UIEditMenuInteraction *)self activeConfiguration];
-      [v12 sourcePoint];
+      activeConfiguration2 = [(UIEditMenuInteraction *)self activeConfiguration];
+      [activeConfiguration2 sourcePoint];
       v8 = v13;
       v10 = v14;
     }
@@ -518,9 +518,9 @@ void __42__UIEditMenuInteraction_reloadVisibleMenu__block_invoke(uint64_t a1, vo
 
     if (v8 == 1.79769313e308 && v10 == 1.79769313e308)
     {
-      v15 = [(UIEditMenuInteraction *)self view];
+      view = [(UIEditMenuInteraction *)self view];
 
-      if (v15 == v4)
+      if (view == v4)
       {
         v8 = 1.79769313e308;
         v10 = 1.79769313e308;
@@ -528,8 +528,8 @@ void __42__UIEditMenuInteraction_reloadVisibleMenu__block_invoke(uint64_t a1, vo
 
       else
       {
-        v16 = [(UIEditMenuInteraction *)self view];
-        [v16 convertPoint:v4 toView:{v8, 1.79769313e308}];
+        view2 = [(UIEditMenuInteraction *)self view];
+        [view2 convertPoint:v4 toView:{v8, 1.79769313e308}];
         v8 = v17;
         v10 = v18;
       }
@@ -543,91 +543,91 @@ void __42__UIEditMenuInteraction_reloadVisibleMenu__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (void)_dismissMenuWithPresentationType:(int64_t)a3
+- (void)_dismissMenuWithPresentationType:(int64_t)type
 {
-  v5 = [(UIEditMenuInteraction *)self pendingConfiguration];
+  pendingConfiguration = [(UIEditMenuInteraction *)self pendingConfiguration];
 
-  if (v5)
+  if (pendingConfiguration)
   {
     pendingConfiguration = self->_pendingConfiguration;
     self->_pendingConfiguration = 0;
   }
 
-  v7 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-  v8 = v7;
-  if (a3 == 2 || !v7)
+  activeEditMenuPresentation = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+  v8 = activeEditMenuPresentation;
+  if (type == 2 || !activeEditMenuPresentation)
   {
   }
 
   else
   {
-    v9 = [(UIEditMenuInteraction *)self _activeHandoffContext];
+    _activeHandoffContext = [(UIEditMenuInteraction *)self _activeHandoffContext];
 
-    if (!v9)
+    if (!_activeHandoffContext)
     {
-      v12 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-      [v12 hideMenuWithReason:0];
+      activeEditMenuPresentation2 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+      [activeEditMenuPresentation2 hideMenuWithReason:0];
       goto LABEL_11;
     }
   }
 
-  v10 = [(UIEditMenuInteraction *)self contextMenuInteraction];
-  v11 = [v10 _hasVisibleMenu];
+  contextMenuInteraction = [(UIEditMenuInteraction *)self contextMenuInteraction];
+  _hasVisibleMenu = [contextMenuInteraction _hasVisibleMenu];
 
-  if (a3 == 1 || !v11)
+  if (type == 1 || !_hasVisibleMenu)
   {
     return;
   }
 
-  v12 = [(UIEditMenuInteraction *)self contextMenuInteraction];
-  [v12 dismissMenu];
+  activeEditMenuPresentation2 = [(UIEditMenuInteraction *)self contextMenuInteraction];
+  [activeEditMenuPresentation2 dismissMenu];
 LABEL_11:
 }
 
-- (void)_updateVisibleMenuWithReason:(int64_t)a3 updateBlock:(id)a4
+- (void)_updateVisibleMenuWithReason:(int64_t)reason updateBlock:(id)block
 {
-  v13 = a4;
-  v6 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-  v7 = [v6 displayedMenu];
+  blockCopy = block;
+  activeEditMenuPresentation = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+  displayedMenu = [activeEditMenuPresentation displayedMenu];
 
-  if (v7)
+  if (displayedMenu)
   {
-    v8 = [v7 copy];
-    v9 = v13[2](v13, v8);
-    if (v9 != v8)
+    contextMenuInteraction2 = [displayedMenu copy];
+    v9 = blockCopy[2](blockCopy, contextMenuInteraction2);
+    if (v9 != contextMenuInteraction2)
     {
       +[UIView areAnimationsEnabled];
-      v10 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-      [v10 replaceVisibleMenuWithMenu:v9 reason:a3];
+      activeEditMenuPresentation2 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+      [activeEditMenuPresentation2 replaceVisibleMenuWithMenu:v9 reason:reason];
     }
   }
 
   else
   {
-    v11 = [(UIEditMenuInteraction *)self contextMenuInteraction];
-    v12 = [v11 _hasVisibleMenu];
+    contextMenuInteraction = [(UIEditMenuInteraction *)self contextMenuInteraction];
+    _hasVisibleMenu = [contextMenuInteraction _hasVisibleMenu];
 
-    if (!v12)
+    if (!_hasVisibleMenu)
     {
       goto LABEL_8;
     }
 
-    v8 = [(UIEditMenuInteraction *)self contextMenuInteraction];
-    [v8 updateVisibleMenuWithBlock:v13];
+    contextMenuInteraction2 = [(UIEditMenuInteraction *)self contextMenuInteraction];
+    [contextMenuInteraction2 updateVisibleMenuWithBlock:blockCopy];
   }
 
 LABEL_8:
 }
 
-- (CGRect)menuFrameInCoordinateSpace:(id)a3
+- (CGRect)menuFrameInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+  spaceCopy = space;
+  activeEditMenuPresentation = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
 
-  if (v5)
+  if (activeEditMenuPresentation)
   {
-    v6 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
-    [v6 menuFrameInCoordinateSpace:v4];
+    activeEditMenuPresentation2 = [(UIEditMenuInteraction *)self activeEditMenuPresentation];
+    [activeEditMenuPresentation2 menuFrameInCoordinateSpace:spaceCopy];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -653,51 +653,51 @@ LABEL_8:
   return result;
 }
 
-- (id)firstResponderTargetForConfiguration:(id)a3
+- (id)firstResponderTargetForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ((*&self->_delegateImplements & 0x80) == 0 || (-[UIEditMenuInteraction delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 _editMenuInteraction:self firstResponderTargetForConfiguration:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  configurationCopy = configuration;
+  if ((*&self->_delegateImplements & 0x80) == 0 || (-[UIEditMenuInteraction delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 _editMenuInteraction:self firstResponderTargetForConfiguration:configurationCopy], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v7 = [v4 _firstResponderTarget];
-    if (!v7)
+    _firstResponderTarget = [configurationCopy _firstResponderTarget];
+    if (!_firstResponderTarget)
     {
-      v7 = [(UIEditMenuInteraction *)self view];
+      _firstResponderTarget = [(UIEditMenuInteraction *)self view];
     }
 
-    v6 = v7;
+    v6 = _firstResponderTarget;
   }
 
   return v6;
 }
 
-- (id)_defaultSuggestedActionsAtLocation:(CGPoint)a3 configuration:(id)a4
+- (id)_defaultSuggestedActionsAtLocation:(CGPoint)location configuration:(id)configuration
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(UIEditMenuInteraction *)self firstResponderTargetForConfiguration:a4];
-  v8 = [(UIEditMenuInteraction *)self view];
-  v9 = [_UIEditMenuProvider menuElementsFromResponderChain:v7 atLocation:v8 inCoordinateSpace:[(UIEditMenuInteraction *)self _includeMenuControllerItems] includeMenuControllerItems:x, y];
+  y = location.y;
+  x = location.x;
+  v7 = [(UIEditMenuInteraction *)self firstResponderTargetForConfiguration:configuration];
+  view = [(UIEditMenuInteraction *)self view];
+  v9 = [_UIEditMenuProvider menuElementsFromResponderChain:v7 atLocation:view inCoordinateSpace:[(UIEditMenuInteraction *)self _includeMenuControllerItems] includeMenuControllerItems:x, y];
 
   return v9;
 }
 
-- (void)_editMenuPresentation:(id)a3 didSelectMenuLeaf:(id)a4 completion:(id)a5
+- (void)_editMenuPresentation:(id)presentation didSelectMenuLeaf:(id)leaf completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeWeak(&self->__selectedMenuLeaf, v9);
-  v11 = [(UIEditMenuInteraction *)self _proxySender];
+  presentationCopy = presentation;
+  leafCopy = leaf;
+  completionCopy = completion;
+  objc_storeWeak(&self->__selectedMenuLeaf, leafCopy);
+  _proxySender = [(UIEditMenuInteraction *)self _proxySender];
   v17 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v9;
-    v13 = [v8 activeConfiguration];
-    v14 = [(UIEditMenuInteraction *)self firstResponderTargetForConfiguration:v13];
+    v12 = leafCopy;
+    activeConfiguration = [presentationCopy activeConfiguration];
+    v14 = [(UIEditMenuInteraction *)self firstResponderTargetForConfiguration:activeConfiguration];
 
     [v12 set_useSenderForResolvingTarget:{-[UIEditMenuInteraction _useSenderAsResponderSender](self, "_useSenderAsResponderSender")}];
-    v15 = [v12 _resolvedTargetFromFirstTarget:v14 sender:v11 shouldUseFallbackActionOut:&v17];
+    v15 = [v12 _resolvedTargetFromFirstTarget:v14 sender:_proxySender shouldUseFallbackActionOut:&v17];
 
     if (!v15)
     {
@@ -709,7 +709,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v12 _performFallbackActionWithSender:v11 target:v15];
+        [v12 _performFallbackActionWithSender:_proxySender target:v15];
         goto LABEL_8;
       }
     }
@@ -720,31 +720,31 @@ LABEL_8:
     v15 = 0;
   }
 
-  [v9 performWithSender:v11 target:v15];
+  [leafCopy performWithSender:_proxySender target:v15];
 LABEL_8:
   if ((*&self->_delegateImplements & 0x100) != 0)
   {
-    v16 = [(UIEditMenuInteraction *)self delegate];
-    [v16 _editMenuInteraction:self didPerformMenuLeaf:v9 target:v15];
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    [delegate _editMenuInteraction:self didPerformMenuLeaf:leafCopy target:v15];
   }
 
 LABEL_10:
-  self->_dismissedByMenuAction = ([v9 attributes] & 8) == 0;
+  self->_dismissedByMenuAction = ([leafCopy attributes] & 8) == 0;
   objc_storeWeak(&self->__selectedMenuLeaf, 0);
-  v10[2](v10);
+  completionCopy[2](completionCopy);
 }
 
-- (CGRect)_editMenuPresentation:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)_editMenuPresentation:(id)presentation targetRectForConfiguration:(id)configuration
 {
-  v5 = a4;
-  [(UIEditMenuInteraction *)self _targetRectForConfiguration:v5];
+  configurationCopy = configuration;
+  [(UIEditMenuInteraction *)self _targetRectForConfiguration:configurationCopy];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
   height = v16.size.height;
   if (CGRectIsNull(v16))
   {
-    [v5 sourcePoint];
+    [configurationCopy sourcePoint];
     x = v10;
     y = v11;
     width = *MEMORY[0x1E695F060];
@@ -762,31 +762,31 @@ LABEL_10:
   return result;
 }
 
-- (void)_editMenuPresentation:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)_editMenuPresentation:(id)presentation willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v9 = a4;
-  v8 = [(UIEditMenuInteraction *)self _outgoingPresentation];
-  [v8 forceEndDismissalIfNeeded];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  _outgoingPresentation = [(UIEditMenuInteraction *)self _outgoingPresentation];
+  [_outgoingPresentation forceEndDismissalIfNeeded];
 
   [(UIEditMenuInteraction *)self _dismissMenuWithPresentationType:2];
-  [(UIEditMenuInteraction *)self _willPresentMenuForConfiguration:v9 animator:v7];
+  [(UIEditMenuInteraction *)self _willPresentMenuForConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (void)_editMenuPresentation:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)_editMenuPresentation:(id)presentation willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v9 = a3;
-  v10 = a5;
-  [(UIEditMenuInteraction *)self _willDismissMenuForConfiguration:a4 animator:v10];
+  presentationCopy = presentation;
+  animatorCopy = animator;
+  [(UIEditMenuInteraction *)self _willDismissMenuForConfiguration:configuration animator:animatorCopy];
   activeEditMenuPresentation = self->_activeEditMenuPresentation;
-  if (activeEditMenuPresentation == v9)
+  if (activeEditMenuPresentation == presentationCopy)
   {
     self->_activeEditMenuPresentation = 0;
 
-    v12 = [(UIEditMenuInteraction *)self _outgoingPresentation];
-    [v12 forceEndDismissalIfNeeded];
+    _outgoingPresentation = [(UIEditMenuInteraction *)self _outgoingPresentation];
+    [_outgoingPresentation forceEndDismissalIfNeeded];
 
-    objc_storeStrong(&self->__outgoingPresentation, a3);
+    objc_storeStrong(&self->__outgoingPresentation, presentation);
   }
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -794,9 +794,9 @@ LABEL_10:
   v14[2] = __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfiguration_animator___block_invoke;
   v14[3] = &unk_1E70F35B8;
   v14[4] = self;
-  v15 = v9;
-  v13 = v9;
-  [v10 addCompletion:v14];
+  v15 = presentationCopy;
+  v13 = presentationCopy;
+  [animatorCopy addCompletion:v14];
 }
 
 void __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfiguration_animator___block_invoke(uint64_t a1)
@@ -810,14 +810,14 @@ void __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfigu
   }
 }
 
-- (void)_editMenuPresentation:(id)a3 preparedMenuForDisplay:(id)a4 completion:(id)a5
+- (void)_editMenuPresentation:(id)presentation preparedMenuForDisplay:(id)display completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 activeConfiguration];
-  v11 = [(UIEditMenuInteraction *)self _menuPreparationContextForConfiguration:v10];
+  displayCopy = display;
+  completionCopy = completion;
+  activeConfiguration = [presentation activeConfiguration];
+  v11 = [(UIEditMenuInteraction *)self _menuPreparationContextForConfiguration:activeConfiguration];
 
-  v12 = v8;
+  v12 = displayCopy;
   v13 = v11;
   if ([v12 metadata])
   {
@@ -830,42 +830,42 @@ void __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfigu
     v21 = 0;
     v20 = 0;
     v15 = [_UIActionBridge validatedCommandMenuForMenu:v12 context:v13];
-    v16 = [v15 _resolvedElementSize];
-    v17 = [v15 children];
-    v18 = _menuElementsPreparedForDisplay(v17, v16, v13, &v20);
+    _resolvedElementSize = [v15 _resolvedElementSize];
+    children = [v15 children];
+    v18 = _menuElementsPreparedForDisplay(children, _resolvedElementSize, v13, &v20);
     v14 = [v15 menuByReplacingChildren:v18];
 
     LOBYTE(v20) = 1;
     if ([v13 supportsHeaderView])
     {
-      v19 = [v12 headerView];
-      HIBYTE(v20) |= v19 != 0;
+      headerView = [v12 headerView];
+      HIBYTE(v20) |= headerView != 0;
     }
 
     [v14 setMetadata:v20 | (v21 << 32)];
   }
 
-  v9[2](v9, v14);
+  completionCopy[2](completionCopy, v14);
 }
 
-- (void)_editMenuPresentation:(id)a3 didTransitionMenuForConfiguration:(id)a4
+- (void)_editMenuPresentation:(id)presentation didTransitionMenuForConfiguration:(id)configuration
 {
   if ((*&self->_delegateImplements & 0x20) != 0)
   {
-    v6 = a4;
-    v7 = [(UIEditMenuInteraction *)self delegate];
-    [v7 _editMenuInteraction:self didTransitionMenuForConfiguration:v6];
+    configurationCopy = configuration;
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    [delegate _editMenuInteraction:self didTransitionMenuForConfiguration:configurationCopy];
   }
 }
 
-- (id)_editMenuPresentation:(id)a3 titleViewForMenu:(id)a4 configuration:(id)a5
+- (id)_editMenuPresentation:(id)presentation titleViewForMenu:(id)menu configuration:(id)configuration
 {
   if ((*&self->_delegateImplements & 0x40) != 0)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = [(UIEditMenuInteraction *)self delegate];
-    v5 = [v10 _editMenuInteraction:self titleViewForMenu:v9 configuration:v8];
+    configurationCopy = configuration;
+    menuCopy = menu;
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    v5 = [delegate _editMenuInteraction:self titleViewForMenu:menuCopy configuration:configurationCopy];
   }
 
   else
@@ -876,13 +876,13 @@ void __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfigu
   return v5;
 }
 
-- (id)_editMenuPresentation:(id)a3 preferredLayoutRectsForConfiguration:(id)a4
+- (id)_editMenuPresentation:(id)presentation preferredLayoutRectsForConfiguration:(id)configuration
 {
   if ((*&self->_delegateImplements & 0x200) != 0)
   {
-    v6 = a4;
-    v7 = [(UIEditMenuInteraction *)self delegate];
-    v4 = [v7 _editMenuInteraction:self preferredLayoutRectsForConfiguration:v6];
+    configurationCopy = configuration;
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    v4 = [delegate _editMenuInteraction:self preferredLayoutRectsForConfiguration:configurationCopy];
   }
 
   else
@@ -893,65 +893,65 @@ void __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfigu
   return v4;
 }
 
-- (void)_editMenuPresentation:(id)a3 handoffDisplayedMenuWithContext:(id)a4
+- (void)_editMenuPresentation:(id)presentation handoffDisplayedMenuWithContext:(id)context
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = [v7 configuration];
-  [v8 _setDidHandoff:1];
+  presentationCopy = presentation;
+  contextCopy = context;
+  configuration = [contextCopy configuration];
+  [configuration _setDidHandoff:1];
 
-  objc_storeStrong(&self->_activeHandoffContext, a4);
+  objc_storeStrong(&self->_activeHandoffContext, context);
   v9 = self->_contextMenuInteraction;
-  v10 = [(UIContextMenuInteraction *)v9 view];
+  view = [(UIContextMenuInteraction *)v9 view];
 
-  if (!v10)
+  if (!view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained addInteraction:v9];
   }
 
-  objc_storeStrong(&self->_activeHandoffPresentation, a3);
-  v12 = [v7 configuration];
-  [v12 sourcePoint];
+  objc_storeStrong(&self->_activeHandoffPresentation, presentation);
+  configuration2 = [contextCopy configuration];
+  [configuration2 sourcePoint];
   [(UIContextMenuInteraction *)v9 _presentMenuAtLocation:?];
 
   activeEditMenuPresentation = self->_activeEditMenuPresentation;
-  if (activeEditMenuPresentation == v14)
+  if (activeEditMenuPresentation == presentationCopy)
   {
     self->_activeEditMenuPresentation = 0;
   }
 }
 
-- (void)_contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4 completion:(id)a5
+- (void)_contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(UIEditMenuInteraction *)self _activeHandoffContext];
-  v10 = v9;
-  if (v9)
+  y = location.y;
+  x = location.x;
+  completionCopy = completion;
+  _activeHandoffContext = [(UIEditMenuInteraction *)self _activeHandoffContext];
+  v10 = _activeHandoffContext;
+  if (_activeHandoffContext)
   {
-    v11 = [v9 configuration];
+    configuration = [_activeHandoffContext configuration];
     activeConfiguration = self->_activeConfiguration;
-    self->_activeConfiguration = v11;
+    self->_activeConfiguration = configuration;
 
-    v13 = [v10 configuration];
-    v14 = [v13 identifier];
+    configuration2 = [v10 configuration];
+    identifier = [configuration2 identifier];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtLocation_completion___block_invoke;
     v22[3] = &unk_1E70F6A70;
     v23 = v10;
-    v15 = [UIContextMenuConfiguration configurationWithIdentifier:v14 previewProvider:0 actionProvider:v22];
+    v15 = [UIContextMenuConfiguration configurationWithIdentifier:identifier previewProvider:0 actionProvider:v22];
 
-    v8[2](v8, v15);
-    v16 = v23;
+    completionCopy[2](completionCopy, v15);
+    uUID = v23;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [UIEditMenuConfiguration configurationWithIdentifier:v16 sourcePoint:x, y];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v17 = [UIEditMenuConfiguration configurationWithIdentifier:uUID sourcePoint:x, y];
     v18 = self->_activeConfiguration;
     self->_activeConfiguration = v17;
 
@@ -961,7 +961,7 @@ void __88__UIEditMenuInteraction__editMenuPresentation_willDismissMenuForConfigu
     v20[2] = __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtLocation_completion___block_invoke_2;
     v20[3] = &unk_1E710E108;
     v20[4] = self;
-    v21 = v8;
+    v21 = completionCopy;
     [(UIEditMenuInteraction *)self _prepareMenuAtLocation:v19 configuration:v20 completionHandler:x, y];
   }
 }
@@ -991,42 +991,42 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"UIEditMenuInteraction.m" lineNumber:718 description:@"This should never be called."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIEditMenuInteraction.m" lineNumber:718 description:@"This should never be called."];
 
   return 0;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [(UIEditMenuInteraction *)self _activeHandoffContext];
+  interactionCopy = interaction;
+  _activeHandoffContext = [(UIEditMenuInteraction *)self _activeHandoffContext];
 
-  if (v6)
+  if (_activeHandoffContext)
   {
-    v7 = [(UIEditMenuInteraction *)self _activeHandoffContext];
-    v8 = [v7 sourceView];
+    _activeHandoffContext2 = [(UIEditMenuInteraction *)self _activeHandoffContext];
+    sourceView = [_activeHandoffContext2 sourceView];
 
     v9 = objc_opt_new();
     v10 = +[UIColor clearColor];
     [(UIPreviewTarget *)v9 setBackgroundColor:v10];
 
-    [(UIPreviewTarget *)v8 bounds];
+    [(UIPreviewTarget *)sourceView bounds];
     v13 = v12 + v11 * 0.5;
     v16 = v15 + v14 * 0.5;
-    v17 = [v5 view];
-    [(UIPreviewTarget *)v8 convertPoint:v17 toView:v13, v16];
+    view = [interactionCopy view];
+    [(UIPreviewTarget *)sourceView convertPoint:view toView:v13, v16];
     v19 = v18;
     v21 = v20;
 
     v22 = [UIPreviewTarget alloc];
-    v23 = [v5 view];
+    view2 = [interactionCopy view];
 
-    v24 = [(UIPreviewTarget *)v22 initWithContainer:v23 center:v19, v21];
+    v24 = [(UIPreviewTarget *)v22 initWithContainer:view2 center:v19, v21];
     v25 = [UITargetedPreview alloc];
-    v26 = v8;
+    v26 = sourceView;
     v27 = v9;
     v28 = v24;
   }
@@ -1034,10 +1034,10 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
   else
   {
     v29 = [UIPreviewTarget alloc];
-    v30 = [v5 view];
+    view3 = [interactionCopy view];
 
     [(UIEditMenuConfiguration *)self->_activeConfiguration sourcePoint];
-    v8 = [(UIPreviewTarget *)v29 initWithContainer:v30 center:?];
+    sourceView = [(UIPreviewTarget *)v29 initWithContainer:view3 center:?];
 
     v9 = objc_opt_new();
     v31 = [UITargetedPreview alloc];
@@ -1045,7 +1045,7 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
     v25 = v31;
     v26 = v9;
     v27 = v24;
-    v28 = v8;
+    v28 = sourceView;
   }
 
   v32 = [(UITargetedPreview *)v25 initWithView:v26 parameters:v27 target:v28];
@@ -1053,18 +1053,18 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
   return v32;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForDismissingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForDismissingMenuWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [v5 view];
-  v7 = [v6 window];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  window = [view window];
 
-  if (v7)
+  if (window)
   {
     v8 = [UIPreviewTarget alloc];
-    v9 = [v5 view];
+    view2 = [interactionCopy view];
     [(UIEditMenuConfiguration *)self->_activeConfiguration sourcePoint];
-    v10 = [(UIPreviewTarget *)v8 initWithContainer:v9 center:?];
+    v10 = [(UIPreviewTarget *)v8 initWithContainer:view2 center:?];
 
     v11 = objc_opt_new();
     v12 = [UITargetedPreview alloc];
@@ -1080,16 +1080,16 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
   return v14;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  v11 = animatorCopy;
+  if (animatorCopy)
   {
     v12 = 0;
-    v13 = v10;
+    v13 = animatorCopy;
   }
 
   else
@@ -1098,13 +1098,13 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
     v12 = v13;
   }
 
-  v14 = [(UIEditMenuInteraction *)self _activeHandoffContext];
+  _activeHandoffContext = [(UIEditMenuInteraction *)self _activeHandoffContext];
 
-  if (!v14)
+  if (!_activeHandoffContext)
   {
     [(UIEditMenuInteraction *)self _dismissMenuWithPresentationType:1];
-    v17 = [(UIEditMenuInteraction *)self activeConfiguration];
-    [(UIEditMenuInteraction *)self _willPresentMenuForConfiguration:v17 animator:v13];
+    activeConfiguration = [(UIEditMenuInteraction *)self activeConfiguration];
+    [(UIEditMenuInteraction *)self _willPresentMenuForConfiguration:activeConfiguration animator:v13];
 
     if (!v12)
     {
@@ -1121,13 +1121,13 @@ void __91__UIEditMenuInteraction__contextMenuInteraction_configurationForMenuAtL
   v24[3] = &unk_1E70F5A28;
   objc_copyWeak(&v25, &location);
   [v11 addAnimations:v24];
-  v15 = [(UIEditMenuInteraction *)self activeHandoffPresentation];
+  activeHandoffPresentation = [(UIEditMenuInteraction *)self activeHandoffPresentation];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __89__UIEditMenuInteraction_contextMenuInteraction_willDisplayMenuForConfiguration_animator___block_invoke_2;
   v21 = &unk_1E70F2F80;
   objc_copyWeak(&v23, &location);
-  v16 = v15;
+  v16 = activeHandoffPresentation;
   v22 = v16;
   [v11 addCompletion:&v18];
 
@@ -1171,16 +1171,16 @@ void __89__UIEditMenuInteraction_contextMenuInteraction_willDisplayMenuForConfig
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  v11 = animatorCopy;
+  if (animatorCopy)
   {
     v12 = 0;
-    v13 = v10;
+    v13 = animatorCopy;
   }
 
   else
@@ -1189,14 +1189,14 @@ void __89__UIEditMenuInteraction_contextMenuInteraction_willDisplayMenuForConfig
     v12 = v13;
   }
 
-  v14 = [(UIEditMenuInteraction *)self activeConfiguration];
-  [(UIEditMenuInteraction *)self _willDismissMenuForConfiguration:v14 animator:v13];
+  activeConfiguration = [(UIEditMenuInteraction *)self activeConfiguration];
+  [(UIEditMenuInteraction *)self _willDismissMenuForConfiguration:activeConfiguration animator:v13];
 
-  v15 = [(UIEditMenuInteraction *)self activeHandoffPresentation];
-  v16 = v15;
-  if (v15)
+  activeHandoffPresentation = [(UIEditMenuInteraction *)self activeHandoffPresentation];
+  v16 = activeHandoffPresentation;
+  if (activeHandoffPresentation)
   {
-    [v15 completeHandoff];
+    [activeHandoffPresentation completeHandoff];
     activeHandoffPresentation = self->_activeHandoffPresentation;
     self->_activeHandoffPresentation = 0;
   }
@@ -1205,9 +1205,9 @@ void __89__UIEditMenuInteraction_contextMenuInteraction_willDisplayMenuForConfig
   v20 = 3221225472;
   v21 = __81__UIEditMenuInteraction_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v22 = &unk_1E70F35B8;
-  v18 = v9;
+  v18 = configurationCopy;
   v23 = v18;
-  v24 = self;
+  selfCopy = self;
   [v13 addAnimations:&v19];
   if (v12)
   {
@@ -1229,23 +1229,23 @@ void __81__UIEditMenuInteraction_contextMenuInteraction_willEndForConfiguration_
   }
 }
 
-- (void)_setProxySender:(id)a3
+- (void)_setProxySender:(id)sender
 {
-  objc_storeWeak(&self->__proxySender, a3);
+  objc_storeWeak(&self->__proxySender, sender);
   contextMenuInteraction = self->_contextMenuInteraction;
-  v5 = [(UIEditMenuInteraction *)self _proxySender];
-  [(UIContextMenuInteraction *)contextMenuInteraction setProxySender:v5];
+  _proxySender = [(UIEditMenuInteraction *)self _proxySender];
+  [(UIContextMenuInteraction *)contextMenuInteraction setProxySender:_proxySender];
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v5 = [_UIContextMenuStyle defaultStyle:a3];
+  v5 = [_UIContextMenuStyle defaultStyle:interaction];
   [v5 setPreferredLayout:3];
-  v6 = [(UIEditMenuInteraction *)self _activeHandoffContext];
-  if (v6)
+  _activeHandoffContext = [(UIEditMenuInteraction *)self _activeHandoffContext];
+  if (_activeHandoffContext)
   {
     [v5 setShouldMenuOverlapSourcePreview:1];
-    -[UIEditMenuInteraction _anchorForPreferredArrowDirection:](self, "_anchorForPreferredArrowDirection:", [v6 arrowDirection]);
+    -[UIEditMenuInteraction _anchorForPreferredArrowDirection:](self, "_anchorForPreferredArrowDirection:", [_activeHandoffContext arrowDirection]);
     v9[0] = v11;
     v9[1] = v12;
     v10 = v13;
@@ -1253,13 +1253,13 @@ void __81__UIEditMenuInteraction_contextMenuInteraction_willEndForConfiguration_
   }
 
   [v5 setInputViewVisibility:1];
-  v7 = [(UIEditMenuInteraction *)self view];
-  [v5 set_parentTraitEnvironmentForUserInterfaceStyle:v7];
+  view = [(UIEditMenuInteraction *)self view];
+  [v5 set_parentTraitEnvironmentForUserInterfaceStyle:view];
 
   return v5;
 }
 
-- ($9638EFF0CCCAFE90921E224CC361F7AC)_anchorForPreferredArrowDirection:(SEL)a3
+- ($9638EFF0CCCAFE90921E224CC361F7AC)_anchorForPreferredArrowDirection:(SEL)direction
 {
   v5 = 0;
   v6 = 1;
@@ -1290,8 +1290,8 @@ void __81__UIEditMenuInteraction_contextMenuInteraction_willEndForConfiguration_
   if (!a4)
   {
 LABEL_12:
-    v8 = [($9638EFF0CCCAFE90921E224CC361F7AC *)self view];
-    if ([v8 _shouldReverseLayoutDirection])
+    view = [($9638EFF0CCCAFE90921E224CC361F7AC *)self view];
+    if ([view _shouldReverseLayoutDirection])
     {
       v5 = 2;
     }
@@ -1307,8 +1307,8 @@ LABEL_12:
 
   if (a4 == 1)
   {
-    v7 = [($9638EFF0CCCAFE90921E224CC361F7AC *)self view];
-    if ([v7 _shouldReverseLayoutDirection])
+    view2 = [($9638EFF0CCCAFE90921E224CC361F7AC *)self view];
+    if ([view2 _shouldReverseLayoutDirection])
     {
       v5 = 2;
     }
@@ -1330,45 +1330,45 @@ LABEL_18:
   return self;
 }
 
-- (id)_menuPreparationContextForConfiguration:(id)a3
+- (id)_menuPreparationContextForConfiguration:(id)configuration
 {
-  v4 = [(UIEditMenuInteraction *)self firstResponderTargetForConfiguration:a3];
+  v4 = [(UIEditMenuInteraction *)self firstResponderTargetForConfiguration:configuration];
   v5 = [_UIMenuPreparationContext contextWithPreparer:self firstResponderTarget:v4];
   [v5 setDeferredElementDelegate:self];
   [v5 setSupportsCustomViewMenuElements:0];
-  v6 = [(UIEditMenuInteraction *)self _proxySender];
-  [v5 setSender:v6];
+  _proxySender = [(UIEditMenuInteraction *)self _proxySender];
+  [v5 setSender:_proxySender];
 
   [v5 setUseSenderAsResponderSender:{-[UIEditMenuInteraction _useSenderAsResponderSender](self, "_useSenderAsResponderSender")}];
 
   return v5;
 }
 
-- (void)_prepareMenuAtLocation:(CGPoint)a3 configuration:(id)a4 completionHandler:(id)a5
+- (void)_prepareMenuAtLocation:(CGPoint)location configuration:(id)configuration completionHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIEditMenuInteraction *)self _defaultSuggestedActionsAtLocation:v9 configuration:x, y];
+  y = location.y;
+  x = location.x;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  v11 = [(UIEditMenuInteraction *)self _defaultSuggestedActionsAtLocation:configurationCopy configuration:x, y];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __80__UIEditMenuInteraction__prepareMenuAtLocation_configuration_completionHandler___block_invoke;
   v19 = &unk_1E710E108;
   v12 = v11;
   v20 = v12;
-  v21 = v10;
-  v13 = v10;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
   v14 = _Block_copy(&v16);
   if ((*&self->_delegateImplements & 0x10) != 0)
   {
     v15 = [(UIEditMenuInteraction *)self delegate:v16];
-    [v15 _editMenuInteraction:self menuForConfiguration:v9 suggestedActions:v12 completionHandler:v14];
+    [v15 _editMenuInteraction:self menuForConfiguration:configurationCopy suggestedActions:v12 completionHandler:v14];
   }
 
   else
   {
-    v15 = [(UIEditMenuInteraction *)self _menuForSuggestedActions:v12 configuration:v9, v16, v17, v18, v19, v20, v21];
+    v15 = [(UIEditMenuInteraction *)self _menuForSuggestedActions:v12 configuration:configurationCopy, v16, v17, v18, v19, v20, v21];
     v14[2](v14, v15);
   }
 }
@@ -1385,15 +1385,15 @@ void __80__UIEditMenuInteraction__prepareMenuAtLocation_configuration_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deferredMenuElementWasFulfilled:(id)a3
+- (void)deferredMenuElementWasFulfilled:(id)fulfilled
 {
-  v4 = a3;
+  fulfilledCopy = fulfilled;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__UIEditMenuInteraction_deferredMenuElementWasFulfilled___block_invoke;
   v6[3] = &unk_1E70F6A48;
-  v7 = v4;
-  v5 = v4;
+  v7 = fulfilledCopy;
+  v5 = fulfilledCopy;
   [(UIEditMenuInteraction *)self _updateVisibleMenuWithReason:2 updateBlock:v6];
 }
 
@@ -1415,14 +1415,14 @@ id __57__UIEditMenuInteraction_deferredMenuElementWasFulfilled___block_invoke(ui
   return v5;
 }
 
-- (id)_menuForSuggestedActions:(id)a3 configuration:(id)a4
+- (id)_menuForSuggestedActions:(id)actions configuration:(id)configuration
 {
   if (*&self->_delegateImplements)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(UIEditMenuInteraction *)self delegate];
-    v4 = [v9 editMenuInteraction:self menuForConfiguration:v7 suggestedActions:v8];
+    configurationCopy = configuration;
+    actionsCopy = actions;
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    v4 = [delegate editMenuInteraction:self menuForConfiguration:configurationCopy suggestedActions:actionsCopy];
   }
 
   else
@@ -1433,13 +1433,13 @@ id __57__UIEditMenuInteraction_deferredMenuElementWasFulfilled___block_invoke(ui
   return v4;
 }
 
-- (CGRect)_targetRectForConfiguration:(id)a3
+- (CGRect)_targetRectForConfiguration:(id)configuration
 {
   if ((*&self->_delegateImplements & 2) != 0)
   {
-    v8 = a3;
-    v9 = [(UIEditMenuInteraction *)self delegate];
-    [v9 editMenuInteraction:self targetRectForConfiguration:v8];
+    configurationCopy = configuration;
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    [delegate editMenuInteraction:self targetRectForConfiguration:configurationCopy];
     v3 = v10;
     v4 = v11;
     v5 = v12;
@@ -1465,28 +1465,28 @@ id __57__UIEditMenuInteraction_deferredMenuElementWasFulfilled___block_invoke(ui
   return result;
 }
 
-- (void)_willPresentMenuForConfiguration:(id)a3 animator:(id)a4
+- (void)_willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
   self->_lastDismissalTime = 0.0;
   self->_dismissedByMenuAction = 0;
   if ((*&self->_delegateImplements & 4) != 0)
   {
-    v7 = a4;
-    v8 = a3;
-    v9 = [(UIEditMenuInteraction *)self delegate];
-    [v9 editMenuInteraction:self willPresentMenuForConfiguration:v8 animator:v7];
+    animatorCopy = animator;
+    configurationCopy = configuration;
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    [delegate editMenuInteraction:self willPresentMenuForConfiguration:configurationCopy animator:animatorCopy];
   }
 }
 
-- (void)_willDismissMenuForConfiguration:(id)a3 animator:(id)a4
+- (void)_willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   self->_lastDismissalTime = CFAbsoluteTimeGetCurrent();
   if ((*&self->_delegateImplements & 8) != 0)
   {
-    v8 = [(UIEditMenuInteraction *)self delegate];
-    [v8 editMenuInteraction:self willDismissMenuForConfiguration:v6 animator:v7];
+    delegate = [(UIEditMenuInteraction *)self delegate];
+    [delegate editMenuInteraction:self willDismissMenuForConfiguration:configurationCopy animator:animatorCopy];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -1494,9 +1494,9 @@ id __57__UIEditMenuInteraction_deferredMenuElementWasFulfilled___block_invoke(ui
   v10[2] = __67__UIEditMenuInteraction__willDismissMenuForConfiguration_animator___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 addCompletion:v10];
+  v11 = configurationCopy;
+  v9 = configurationCopy;
+  [animatorCopy addCompletion:v10];
 }
 
 void __67__UIEditMenuInteraction__willDismissMenuForConfiguration_animator___block_invoke(uint64_t a1)

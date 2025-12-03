@@ -6,7 +6,7 @@
 
 - (id)makeViewComposer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNKTranscriptionViewComposerFactory.makeViewComposer()();
 
   return v3;

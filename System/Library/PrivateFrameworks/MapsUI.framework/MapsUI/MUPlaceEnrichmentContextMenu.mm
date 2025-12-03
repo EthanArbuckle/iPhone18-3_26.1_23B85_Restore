@@ -1,8 +1,8 @@
 @interface MUPlaceEnrichmentContextMenu
 - (MUPlaceEnrichmentActionHandler)enrichmentActionDelegate;
-- (MUPlaceEnrichmentContextMenu)initWithFrame:(CGRect)a3;
+- (MUPlaceEnrichmentContextMenu)initWithFrame:(CGRect)frame;
 - (MUPlaceEnrichmentSectionContextMenuDelegate)contextMenuDelegate;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation MUPlaceEnrichmentContextMenu
@@ -21,7 +21,7 @@
   return WeakRetained;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -99,11 +99,11 @@ void __86__MUPlaceEnrichmentContextMenu_contextMenuInteraction_configurationForM
   }
 }
 
-- (MUPlaceEnrichmentContextMenu)initWithFrame:(CGRect)a3
+- (MUPlaceEnrichmentContextMenu)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPlaceEnrichmentContextMenu;
-  v3 = [(MUPlaceEnrichmentContextMenu *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceEnrichmentContextMenu *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

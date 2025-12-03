@@ -1,41 +1,41 @@
 @interface CNContactUpdateExistingContactAction
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)performActionWithSender:(id)a3;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)performActionWithSender:(id)sender;
 @end
 
 @implementation CNContactUpdateExistingContactAction
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  if (a4)
+  controllerCopy = controller;
+  if (contact)
   {
-    [(CNContactUpdateExistingContactAction *)self setExistingContact:a4];
-    v7 = [(CNContactAction *)self delegate];
-    [v7 action:self dismissViewController:v6 sender:0];
+    [(CNContactUpdateExistingContactAction *)self setExistingContact:contact];
+    delegate = [(CNContactAction *)self delegate];
+    [delegate action:self dismissViewController:controllerCopy sender:0];
 
-    v9 = [(CNContactAction *)self delegate];
-    [v9 actionDidFinish:self];
+    delegate2 = [(CNContactAction *)self delegate];
+    [delegate2 actionDidFinish:self];
   }
 
   else
   {
-    v8 = [(CNContactAction *)self delegate];
-    [v8 action:self dismissViewController:v6 sender:0];
+    delegate3 = [(CNContactAction *)self delegate];
+    [delegate3 action:self dismissViewController:controllerCopy sender:0];
 
-    v9 = [(CNContactAction *)self delegate];
-    [v9 actionWasCanceled:self];
+    delegate2 = [(CNContactAction *)self delegate];
+    [delegate2 actionWasCanceled:self];
   }
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  senderCopy = sender;
   v5 = MEMORY[0x1E695CD58];
-  v6 = [(CNContactUpdateExistingContactAction *)self existingContact];
-  v7 = [v6 identifier];
-  v30[0] = v7;
+  existingContact = [(CNContactUpdateExistingContactAction *)self existingContact];
+  identifier = [existingContact identifier];
+  v30[0] = identifier;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   v9 = [v5 predicateForContactsWithIdentifiers:v8];
 
@@ -48,9 +48,9 @@
   [v13 setOnlyMainStore:1];
   [v13 setUnifyResults:1];
   [v13 setPredicate:v9];
-  v14 = [(CNContactAction *)self delegate];
-  v15 = [v14 contactViewCache];
-  v16 = [v15 contactStore];
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
   v23 = 0;
   v24 = &v23;
@@ -63,16 +63,16 @@
   v22[2] = __64__CNContactUpdateExistingContactAction_performActionWithSender___block_invoke;
   v22[3] = &unk_1E74E6F60;
   v22[4] = &v23;
-  [v16 enumerateContactsWithFetchRequest:v13 error:0 usingBlock:v22];
+  [contactStore enumerateContactsWithFetchRequest:v13 error:0 usingBlock:v22];
   v17 = v24[5];
-  v18 = [(CNContactAction *)self contact];
-  v19 = [CNContactViewController viewControllerForUpdatingContact:v17 withPropertiesFromContact:v18];
+  contact = [(CNContactAction *)self contact];
+  v19 = [CNContactViewController viewControllerForUpdatingContact:v17 withPropertiesFromContact:contact];
 
-  [v19 setContactStore:v16];
+  [v19 setContactStore:contactStore];
   [v19 setDelegate:self];
   v20 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v19];
-  v21 = [(CNContactAction *)self delegate];
-  [v21 action:self presentViewController:v20 sender:v4];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 action:self presentViewController:v20 sender:senderCopy];
 
   _Block_object_dispose(&v23, 8);
 }

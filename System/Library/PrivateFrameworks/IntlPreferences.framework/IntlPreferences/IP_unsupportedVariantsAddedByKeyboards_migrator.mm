@@ -1,21 +1,21 @@
 @interface IP_unsupportedVariantsAddedByKeyboards_migrator
-- (id)migrateForPreferences:(id)a3 keyboards:(id)a4;
-- (id)performMigrationForPreferences:(id)a3;
+- (id)migrateForPreferences:(id)preferences keyboards:(id)keyboards;
+- (id)performMigrationForPreferences:(id)preferences;
 @end
 
 @implementation IP_unsupportedVariantsAddedByKeyboards_migrator
 
-- (id)migrateForPreferences:(id)a3 keyboards:(id)a4
+- (id)migrateForPreferences:(id)preferences keyboards:(id)keyboards
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
+  preferencesCopy = preferences;
+  keyboardsCopy = keyboards;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = v6;
+  v8 = keyboardsCopy;
   v9 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v9)
   {
@@ -32,7 +32,7 @@
 
         v13 = IPUIKeyboardInputModeGetLanguageWithRegion(*(*(&v46 + 1) + 8 * i));
         v14 = [MEMORY[0x277CBEAF8] canonicalLanguageIdentifierFromString:v13];
-        [v7 addObject:v14];
+        [orderedSet addObject:v14];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -41,21 +41,21 @@
     while (v10);
   }
 
-  v39 = v7;
+  v39 = orderedSet;
   v36 = v8;
 
-  v35 = [v5 mutableCopy];
-  v15 = [v5 objectForKeyedSubscript:?];
+  v35 = [preferencesCopy mutableCopy];
+  v15 = [preferencesCopy objectForKeyedSubscript:?];
   v38 = [MEMORY[0x277CBEB40] orderedSetWithArray:v15];
   v16 = MEMORY[0x277CBEAF8];
-  v37 = v5;
-  v17 = [v5 objectForKeyedSubscript:@"AppleLocale"];
+  v37 = preferencesCopy;
+  v17 = [preferencesCopy objectForKeyedSubscript:@"AppleLocale"];
   v18 = [v16 componentsFromLocaleIdentifier:v17];
   v19 = *MEMORY[0x277CBE690];
   v20 = [v18 objectForKeyedSubscript:*MEMORY[0x277CBE690]];
 
   v21 = [IPLanguageListManager effectiveSystemLanguagesWithUnsupportedVariant:1 forPreferredLanguages:v15];
-  v40 = [v21 firstObject];
+  firstObject = [v21 firstObject];
 
   v44 = 0u;
   v45 = 0u;
@@ -80,10 +80,10 @@
         v27 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v26];
         v28 = [v27 objectForKeyedSubscript:v19];
 
-        if (([v28 isEqualToString:v20] & 1) == 0 && (objc_msgSend(v26, "isEqualToString:", v40) & 1) == 0)
+        if (([v28 isEqualToString:v20] & 1) == 0 && (objc_msgSend(v26, "isEqualToString:", firstObject) & 1) == 0)
         {
-          v29 = [MEMORY[0x277CBEAF8] systemLanguages];
-          v30 = [v29 containsObject:v26];
+          systemLanguages = [MEMORY[0x277CBEAF8] systemLanguages];
+          v30 = [systemLanguages containsObject:v26];
 
           if ((v30 & 1) == 0)
           {
@@ -110,28 +110,28 @@
     while (v23);
   }
 
-  v32 = [v38 array];
-  [v35 setObject:v32 forKeyedSubscript:@"AppleLanguages"];
+  array = [v38 array];
+  [v35 setObject:array forKeyedSubscript:@"AppleLanguages"];
 
   v33 = *MEMORY[0x277D85DE8];
 
   return v35;
 }
 
-- (id)performMigrationForPreferences:(id)a3
+- (id)performMigrationForPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if ([(ISMigrator *)self previousSchemaVersion]>= 0x7D0)
   {
-    v7 = v4;
+    v7 = preferencesCopy;
   }
 
   else
   {
-    v5 = [(objc_class *)IPUIKeyboardInputModeController() sharedInputModeController];
-    v6 = [v5 enabledInputModeIdentifiers];
+    iPUIKeyboardInputModeController = [(objc_class *)IPUIKeyboardInputModeController() sharedInputModeController];
+    enabledInputModeIdentifiers = [iPUIKeyboardInputModeController enabledInputModeIdentifiers];
 
-    v7 = [(IP_unsupportedVariantsAddedByKeyboards_migrator *)self migrateForPreferences:v4 keyboards:v6];
+    v7 = [(IP_unsupportedVariantsAddedByKeyboards_migrator *)self migrateForPreferences:preferencesCopy keyboards:enabledInputModeIdentifiers];
   }
 
   return v7;

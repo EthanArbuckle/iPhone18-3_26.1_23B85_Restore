@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneStoreFSLockFactory
 + (id)getDefault;
-- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4;
+- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string;
 @end
 
 @implementation OrgApacheLuceneStoreFSLockFactory
@@ -15,7 +15,7 @@
   return OrgApacheLuceneStoreNativeFSLockFactory_INSTANCE_;
 }
 
-- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4
+- (id)obtainLockWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -27,12 +27,12 @@
   }
 
   objc_opt_class();
-  if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (directory && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return [(OrgApacheLuceneStoreFSLockFactory *)self obtainFSLockWithOrgApacheLuceneStoreFSDirectory:a3 withNSString:a4];
+  return [(OrgApacheLuceneStoreFSLockFactory *)self obtainFSLockWithOrgApacheLuceneStoreFSDirectory:directory withNSString:string];
 }
 
 @end

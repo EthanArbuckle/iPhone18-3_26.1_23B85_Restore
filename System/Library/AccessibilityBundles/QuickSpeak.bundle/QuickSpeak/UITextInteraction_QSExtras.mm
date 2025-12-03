@@ -1,16 +1,16 @@
 @interface UITextInteraction_QSExtras
-- (id)_updatedAccessibilityTextMenuWithMenuElements:(id)a3;
-- (id)_updatedAccessibilityTextSpeechMenuWithMenu:(id)a3;
+- (id)_updatedAccessibilityTextMenuWithMenuElements:(id)elements;
+- (id)_updatedAccessibilityTextSpeechMenuWithMenu:(id)menu;
 @end
 
 @implementation UITextInteraction_QSExtras
 
-- (id)_updatedAccessibilityTextSpeechMenuWithMenu:(id)a3
+- (id)_updatedAccessibilityTextSpeechMenuWithMenu:(id)menu
 {
   v40[1] = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x29EDC81F0]];
+  menuCopy = menu;
+  identifier = [menuCopy identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x29EDC81F0]];
 
   if (v6)
   {
@@ -21,7 +21,7 @@
       _os_log_impl(&dword_29C1E5000, v7, OS_LOG_TYPE_INFO, "Will update AX speech items for UIMenu", buf, 2u);
     }
 
-    v8 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     if ([(UITextInteraction_QSExtras *)self _accessibilityQScanPerformAction:sel__accessibilitySpeak_ withSender:0])
     {
       v9 = MEMORY[0x29EDC7A08];
@@ -29,7 +29,7 @@
       v11 = [MEMORY[0x29EDC7AC8] systemImageNamed:@"play"];
       v12 = [v9 commandWithTitle:v10 image:v11 action:sel__accessibilitySpeak_ propertyList:0];
 
-      [v8 addObject:v12];
+      [array addObject:v12];
     }
 
     else if ([(UITextInteraction_QSExtras *)self _accessibilityQScanPerformAction:sel__accessibilityPauseSpeaking_ withSender:0])
@@ -39,7 +39,7 @@
       v16 = [MEMORY[0x29EDC7AC8] systemImageNamed:@"pause"];
       v17 = [v14 commandWithTitle:v15 image:v16 action:sel__accessibilityPauseSpeaking_ propertyList:0];
 
-      [v8 addObject:v17];
+      [array addObject:v17];
     }
 
     else if ([(UITextInteraction_QSExtras *)self _accessibilityShouldShowSpeakLanguageBubble]&& [(UITextInteraction_QSExtras *)self _accessibilitySystemShouldShowSpeakLanguageBubble])
@@ -59,7 +59,7 @@
       v23 = [MEMORY[0x29EDB8D80] arrayWithObjects:v40 count:1];
       v24 = [v20 menuWithTitle:v21 image:v22 identifier:0 options:0 children:v23];
 
-      [v8 addObject:v24];
+      [array addObject:v24];
       objc_destroyWeak(&v37);
       objc_destroyWeak(buf);
     }
@@ -71,7 +71,7 @@
       v27 = [MEMORY[0x29EDC7AC8] systemImageNamed:@"play"];
       v28 = [v25 commandWithTitle:v26 image:v27 action:sel__accessibilitySpeakSentence_ propertyList:0];
 
-      [v8 addObject:v28];
+      [array addObject:v28];
     }
 
     if ([(UITextInteraction_QSExtras *)self _accessibilityQScanPerformAction:sel__accessibilitySpeakSpellOut_ withSender:0])
@@ -81,18 +81,18 @@
       v31 = [MEMORY[0x29EDC7AC8] systemImageNamed:@"play"];
       v32 = [v29 commandWithTitle:v30 image:v31 action:sel__accessibilitySpeakSpellOut_ propertyList:0];
 
-      [v8 addObject:v32];
+      [array addObject:v32];
     }
 
     v33 = AXLogSpeakSelection();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v39 = v8;
+      v39 = array;
       _os_log_impl(&dword_29C1E5000, v33, OS_LOG_TYPE_INFO, "Did update AX speech items for UIMenu: %@", buf, 0xCu);
     }
 
-    v13 = [v4 menuByReplacingChildren:v8];
+    v13 = [menuCopy menuByReplacingChildren:array];
   }
 
   else
@@ -105,12 +105,12 @@
   return v13;
 }
 
-- (id)_updatedAccessibilityTextMenuWithMenuElements:(id)a3
+- (id)_updatedAccessibilityTextMenuWithMenuElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v21.receiver = self;
   v21.super_class = UITextInteraction_QSExtras;
-  v5 = [(UITextInteraction_QSExtras *)&v21 _updatedAccessibilityTextMenuWithMenuElements:v4];
+  v5 = [(UITextInteraction_QSExtras *)&v21 _updatedAccessibilityTextMenuWithMenuElements:elementsCopy];
   v6 = v5;
   if (v5)
   {
@@ -119,7 +119,7 @@
 
   else if (_AXSQuickSpeakEnabled() && (+[AXQuickSpeak sharedInstance](AXQuickSpeak, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isSpeaking], v8, (v9 & 1) == 0))
   {
-    v7 = [v4 mutableCopy];
+    v7 = [elementsCopy mutableCopy];
     if ([v7 count])
     {
       v10 = 0;
@@ -130,8 +130,8 @@
         v12 = [v7 objectAtIndex:v10];
         v13 = __UIAccessibilityCastAsClass();
 
-        v14 = [v13 identifier];
-        v15 = [v14 isEqualToString:v11];
+        identifier = [v13 identifier];
+        v15 = [identifier isEqualToString:v11];
 
         if (v15)
         {
@@ -143,8 +143,8 @@
 
           else
           {
-            v17 = [v13 children];
-            v18 = [(UITextInteraction_QSExtras *)self _updatedAccessibilityTextMenuWithMenuElements:v17];
+            children = [v13 children];
+            v18 = [(UITextInteraction_QSExtras *)self _updatedAccessibilityTextMenuWithMenuElements:children];
 
             if ([v18 count])
             {

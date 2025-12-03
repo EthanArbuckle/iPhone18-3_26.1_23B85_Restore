@@ -1,10 +1,10 @@
 @interface SummaryServiceHelper
-- (void)summaryServiceDidReceiveGroupSummaries:(id)a3;
+- (void)summaryServiceDidReceiveGroupSummaries:(id)summaries;
 @end
 
 @implementation SummaryServiceHelper
 
-- (void)summaryServiceDidReceiveGroupSummaries:(id)a3
+- (void)summaryServiceDidReceiveGroupSummaries:(id)summaries
 {
   sub_270ADB120(0, &unk_281257BA8, 0x277D77D00);
   v3 = sub_270AE3D5C();

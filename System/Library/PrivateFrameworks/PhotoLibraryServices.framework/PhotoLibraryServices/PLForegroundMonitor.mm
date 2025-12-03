@@ -2,26 +2,26 @@
 + (NSArray)bundleIdentifiersToMonitorForSystemLibrary;
 + (PLForegroundMonitor)sharedInstance;
 - (PLForegroundMonitor)init;
-- (id)startMonitoringBundleIdentifiers:(id)a3 block:(id)a4;
-- (void)_handleApplicationStateMonitorNotificationWithUserInfo:(id)a3 applicationStateMonitorUUID:(id)a4;
-- (void)_locked_applicationDidMoveToBackground:(id)a3;
-- (void)_locked_applicationDidMoveToForeground:(id)a3;
-- (void)_startMonitoringBundleIdentifiers:(id)a3;
+- (id)startMonitoringBundleIdentifiers:(id)identifiers block:(id)block;
+- (void)_handleApplicationStateMonitorNotificationWithUserInfo:(id)info applicationStateMonitorUUID:(id)d;
+- (void)_locked_applicationDidMoveToBackground:(id)background;
+- (void)_locked_applicationDidMoveToForeground:(id)foreground;
+- (void)_startMonitoringBundleIdentifiers:(id)identifiers;
 - (void)_stopMonitoring;
 - (void)_updateMonitoring;
-- (void)stopMonitoring:(id)a3;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation PLForegroundMonitor
 
-- (void)_handleApplicationStateMonitorNotificationWithUserInfo:(id)a3 applicationStateMonitorUUID:(id)a4
+- (void)_handleApplicationStateMonitorNotificationWithUserInfo:(id)info applicationStateMonitorUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   objc_initWeak(&location, self);
   objc_copyWeak(&v10, &location);
-  v8 = v7;
-  v9 = v6;
+  v8 = dCopy;
+  v9 = infoCopy;
   pl_dispatch_async();
 
   objc_destroyWeak(&v10);
@@ -62,22 +62,22 @@ void __106__PLForegroundMonitor__handleApplicationStateMonitorNotificationWithUs
   }
 }
 
-- (void)_locked_applicationDidMoveToBackground:(id)a3
+- (void)_locked_applicationDidMoveToBackground:(id)background
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(NSMutableSet *)self->_foregroundBundleIDs containsObject:v4])
+  if ([(NSMutableSet *)self->_foregroundBundleIDs containsObject:backgroundCopy])
   {
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = backgroundCopy;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ moved to background", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_foregroundBundleIDs removeObject:v4];
+    [(NSMutableSet *)self->_foregroundBundleIDs removeObject:backgroundCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -99,14 +99,14 @@ void __106__PLForegroundMonitor__handleApplicationStateMonitorNotificationWithUs
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 bundleIdentifiers];
-          v14 = [v13 containsObject:v4];
+          bundleIdentifiers = [v12 bundleIdentifiers];
+          v14 = [bundleIdentifiers containsObject:backgroundCopy];
 
           if (v14)
           {
             ++v9;
-            v15 = [v12 block];
-            (v15)[2](v15, v4, 0);
+            block = [v12 block];
+            (block)[2](block, backgroundCopy, 0);
           }
         }
 
@@ -127,28 +127,28 @@ void __106__PLForegroundMonitor__handleApplicationStateMonitorNotificationWithUs
       *buf = 134218242;
       v22 = v9;
       v23 = 2112;
-      v24 = v4;
+      v24 = backgroundCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "Notified %lu clients that %@ is in background", buf, 0x16u);
     }
   }
 }
 
-- (void)_locked_applicationDidMoveToForeground:(id)a3
+- (void)_locked_applicationDidMoveToForeground:(id)foreground
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  foregroundCopy = foreground;
   dispatch_assert_queue_V2(self->_queue);
-  if (([(NSMutableSet *)self->_foregroundBundleIDs containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_foregroundBundleIDs containsObject:foregroundCopy]& 1) == 0)
   {
     v5 = PLBackendGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = foregroundCopy;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%@ moved to foreground", buf, 0xCu);
     }
 
-    [(NSMutableSet *)self->_foregroundBundleIDs addObject:v4];
+    [(NSMutableSet *)self->_foregroundBundleIDs addObject:foregroundCopy];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -170,14 +170,14 @@ void __106__PLForegroundMonitor__handleApplicationStateMonitorNotificationWithUs
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 bundleIdentifiers];
-          v14 = [v13 containsObject:v4];
+          bundleIdentifiers = [v12 bundleIdentifiers];
+          v14 = [bundleIdentifiers containsObject:foregroundCopy];
 
           if (v14)
           {
             ++v9;
-            v15 = [v12 block];
-            (v15)[2](v15, v4, 1);
+            block = [v12 block];
+            (block)[2](block, foregroundCopy, 1);
           }
         }
 
@@ -198,16 +198,16 @@ void __106__PLForegroundMonitor__handleApplicationStateMonitorNotificationWithUs
       *buf = 134218242;
       v22 = v9;
       v23 = 2112;
-      v24 = v4;
+      v24 = foregroundCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEBUG, "Notified %lu clients that %@ is in foreground", buf, 0x16u);
     }
   }
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
-  v4 = a3;
-  v3 = v4;
+  monitoringCopy = monitoring;
+  v3 = monitoringCopy;
   pl_dispatch_async();
 }
 
@@ -219,14 +219,14 @@ uint64_t __38__PLForegroundMonitor_stopMonitoring___block_invoke(uint64_t a1)
   return [v2 _updateMonitoring];
 }
 
-- (id)startMonitoringBundleIdentifiers:(id)a3 block:(id)a4
+- (id)startMonitoringBundleIdentifiers:(id)identifiers block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  identifiersCopy = identifiers;
   v7 = [_PLForegroundMonitorClient alloc];
-  v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v6];
+  v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
 
-  v9 = [(_PLForegroundMonitorClient *)v7 initWithBundleIdentifiers:v8 block:v5];
+  v9 = [(_PLForegroundMonitorClient *)v7 initWithBundleIdentifiers:v8 block:blockCopy];
   v12 = v9;
   pl_dispatch_async();
   v10 = v12;
@@ -305,8 +305,8 @@ void __62__PLForegroundMonitor_startMonitoringBundleIdentifiers_block___block_in
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) bundleIdentifiers];
-        [v3 unionSet:v9];
+        bundleIdentifiers = [*(*(&v10 + 1) + 8 * v8) bundleIdentifiers];
+        [v3 unionSet:bundleIdentifiers];
 
         ++v8;
       }
@@ -332,28 +332,28 @@ void __62__PLForegroundMonitor_startMonitoringBundleIdentifiers_block___block_in
   }
 }
 
-- (void)_startMonitoringBundleIdentifiers:(id)a3
+- (void)_startMonitoringBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(PLForegroundMonitor *)self _stopMonitoring];
   v5 = objc_alloc(MEMORY[0x1E698D028]);
-  v6 = [v4 allObjects];
-  v7 = [v5 initWithBundleIDs:v6 states:*MEMORY[0x1E698CFE8]];
+  allObjects = [identifiersCopy allObjects];
+  v7 = [v5 initWithBundleIDs:allObjects states:*MEMORY[0x1E698CFE8]];
   applicationStateMonitor = self->_applicationStateMonitor;
   self->_applicationStateMonitor = v7;
 
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  objc_storeStrong(&self->_applicationStateMonitorUUID, v9);
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  objc_storeStrong(&self->_applicationStateMonitorUUID, uUID);
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__PLForegroundMonitor__startMonitoringBundleIdentifiers___block_invoke;
   v13[3] = &unk_1E75686C0;
   objc_copyWeak(&v15, &location);
-  v10 = v9;
+  v10 = uUID;
   v14 = v10;
   [(BKSApplicationStateMonitor *)self->_applicationStateMonitor setHandler:v13];
-  v11 = [v4 copy];
+  v11 = [identifiersCopy copy];
   monitoredBundleIdentifiers = self->_monitoredBundleIdentifiers;
   self->_monitoredBundleIdentifiers = v11;
 

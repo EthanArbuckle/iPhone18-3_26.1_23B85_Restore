@@ -1,17 +1,17 @@
 @interface BMGeneratedImageFailureReason
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMGeneratedImageFailureReason)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMGeneratedImageFailureReason)initWithTimestamp:(id)a3 identifier:(id)a4 userInterfaceLanguage:(id)a5 userSetRegionFormat:(id)a6 reason:(int)a7 feature:(int)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMGeneratedImageFailureReason)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMGeneratedImageFailureReason)initWithTimestamp:(id)timestamp identifier:(id)identifier userInterfaceLanguage:(id)language userSetRegionFormat:(id)format reason:(int)reason feature:(int)feature;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)timestamp;
 - (NSString)description;
 - (NSUUID)identifier;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMGeneratedImageFailureReason
@@ -38,25 +38,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMGeneratedImageFailureReason *)self timestamp];
-    v7 = [v5 timestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    timestamp = [(BMGeneratedImageFailureReason *)self timestamp];
+    timestamp2 = [v5 timestamp];
+    v8 = timestamp2;
+    if (timestamp == timestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMGeneratedImageFailureReason *)self timestamp];
-      v10 = [v5 timestamp];
-      v11 = [v9 isEqual:v10];
+      timestamp3 = [(BMGeneratedImageFailureReason *)self timestamp];
+      timestamp4 = [v5 timestamp];
+      v11 = [timestamp3 isEqual:timestamp4];
 
       if (!v11)
       {
@@ -64,18 +64,18 @@
       }
     }
 
-    v13 = [(BMGeneratedImageFailureReason *)self identifier];
-    v14 = [v5 identifier];
-    v15 = v14;
-    if (v13 == v14)
+    identifier = [(BMGeneratedImageFailureReason *)self identifier];
+    identifier2 = [v5 identifier];
+    v15 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v16 = [(BMGeneratedImageFailureReason *)self identifier];
-      v17 = [v5 identifier];
-      v18 = [v16 isEqual:v17];
+      identifier3 = [(BMGeneratedImageFailureReason *)self identifier];
+      identifier4 = [v5 identifier];
+      v18 = [identifier3 isEqual:identifier4];
 
       if (!v18)
       {
@@ -83,18 +83,18 @@
       }
     }
 
-    v19 = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
-    v20 = [v5 userInterfaceLanguage];
-    v21 = v20;
-    if (v19 == v20)
+    userInterfaceLanguage = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
+    userInterfaceLanguage2 = [v5 userInterfaceLanguage];
+    v21 = userInterfaceLanguage2;
+    if (userInterfaceLanguage == userInterfaceLanguage2)
     {
     }
 
     else
     {
-      v22 = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
-      v23 = [v5 userInterfaceLanguage];
-      v24 = [v22 isEqual:v23];
+      userInterfaceLanguage3 = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
+      userInterfaceLanguage4 = [v5 userInterfaceLanguage];
+      v24 = [userInterfaceLanguage3 isEqual:userInterfaceLanguage4];
 
       if (!v24)
       {
@@ -102,18 +102,18 @@
       }
     }
 
-    v25 = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
-    v26 = [v5 userSetRegionFormat];
-    v27 = v26;
-    if (v25 == v26)
+    userSetRegionFormat = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
+    userSetRegionFormat2 = [v5 userSetRegionFormat];
+    v27 = userSetRegionFormat2;
+    if (userSetRegionFormat == userSetRegionFormat2)
     {
     }
 
     else
     {
-      v28 = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
-      v29 = [v5 userSetRegionFormat];
-      v30 = [v28 isEqual:v29];
+      userSetRegionFormat3 = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
+      userSetRegionFormat4 = [v5 userSetRegionFormat];
+      v30 = [userSetRegionFormat3 isEqual:userSetRegionFormat4];
 
       if (!v30)
       {
@@ -121,11 +121,11 @@
       }
     }
 
-    v31 = [(BMGeneratedImageFailureReason *)self reason];
-    if (v31 == [v5 reason])
+    reason = [(BMGeneratedImageFailureReason *)self reason];
+    if (reason == [v5 reason])
     {
-      v32 = [(BMGeneratedImageFailureReason *)self feature];
-      v12 = v32 == [v5 feature];
+      feature = [(BMGeneratedImageFailureReason *)self feature];
+      v12 = feature == [v5 feature];
 LABEL_22:
 
       goto LABEL_23;
@@ -178,12 +178,12 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v27[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMGeneratedImageFailureReason *)self timestamp];
-  if (v3)
+  timestamp = [(BMGeneratedImageFailureReason *)self timestamp];
+  if (timestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMGeneratedImageFailureReason *)self timestamp];
-    [v5 timeIntervalSince1970];
+    timestamp2 = [(BMGeneratedImageFailureReason *)self timestamp];
+    [timestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -192,64 +192,64 @@ LABEL_23:
     v6 = 0;
   }
 
-  v7 = [(BMGeneratedImageFailureReason *)self identifier];
-  v8 = [v7 UUIDString];
+  identifier = [(BMGeneratedImageFailureReason *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  v9 = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
-  v10 = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
+  userInterfaceLanguage = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
+  userSetRegionFormat = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGeneratedImageFailureReason reason](self, "reason")}];
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMGeneratedImageFailureReason feature](self, "feature")}];
   v26[0] = @"timestamp";
-  v13 = v6;
+  null = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v13;
+  v24 = null;
   v25 = v6;
-  v27[0] = v13;
+  v27[0] = null;
   v26[1] = @"identifier";
-  v14 = v8;
-  if (!v8)
+  null2 = uUIDString;
+  if (!uUIDString)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v14;
-  v27[1] = v14;
+  v22 = null2;
+  v27[1] = null2;
   v26[2] = @"userInterfaceLanguage";
-  v15 = v9;
-  if (!v9)
+  null3 = userInterfaceLanguage;
+  if (!userInterfaceLanguage)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[2] = v15;
+  v27[2] = null3;
   v26[3] = @"userSetRegionFormat";
-  v16 = v10;
-  if (!v10)
+  null4 = userSetRegionFormat;
+  if (!userSetRegionFormat)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[3] = v16;
+  v27[3] = null4;
   v26[4] = @"reason";
-  v17 = v11;
+  null5 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v17;
+  v27[4] = null5;
   v26[5] = @"feature";
-  v18 = v12;
+  null6 = v12;
   if (!v12)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[5] = v18;
+  v27[5] = null6;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:{6, v22}];
   if (v12)
   {
@@ -265,7 +265,7 @@ LABEL_23:
     if (v11)
     {
 LABEL_18:
-      if (v10)
+      if (userSetRegionFormat)
       {
         goto LABEL_19;
       }
@@ -274,17 +274,17 @@ LABEL_18:
     }
   }
 
-  if (v10)
+  if (userSetRegionFormat)
   {
 LABEL_19:
-    if (v9)
+    if (userInterfaceLanguage)
     {
       goto LABEL_20;
     }
 
 LABEL_29:
 
-    if (v8)
+    if (uUIDString)
     {
       goto LABEL_21;
     }
@@ -294,13 +294,13 @@ LABEL_29:
 
 LABEL_28:
 
-  if (!v9)
+  if (!userInterfaceLanguage)
   {
     goto LABEL_29;
   }
 
 LABEL_20:
-  if (v8)
+  if (uUIDString)
   {
     goto LABEL_21;
   }
@@ -317,11 +317,11 @@ LABEL_21:
   return v19;
 }
 
-- (BMGeneratedImageFailureReason)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMGeneratedImageFailureReason)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v83[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"timestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -350,7 +350,7 @@ LABEL_21:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           v32 = 0;
@@ -358,7 +358,7 @@ LABEL_21:
         }
 
         v53 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v54 = a4;
+        errorCopy = error;
         v55 = *MEMORY[0x1E698F240];
         v82 = *MEMORY[0x1E696A578];
         v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"timestamp"];
@@ -368,7 +368,7 @@ LABEL_21:
         v17 = v56;
         v8 = 0;
         v32 = 0;
-        *v54 = [v57 initWithDomain:v55 code:2 userInfo:v56];
+        *errorCopy = [v57 initWithDomain:v55 code:2 userInfo:v56];
         goto LABEL_56;
       }
 
@@ -384,7 +384,7 @@ LABEL_21:
   }
 
 LABEL_9:
-  v16 = [v6 objectForKeyedSubscript:@"identifier"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v69 = v8;
@@ -395,51 +395,51 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v68 = self;
+    selfCopy = self;
     v23 = v16;
     v24 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v23];
     if (!v24)
     {
-      if (a4)
+      if (error)
       {
         v46 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v47 = a4;
+        errorCopy2 = error;
         v48 = *MEMORY[0x1E698F240];
         v80 = *MEMORY[0x1E696A578];
         v49 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"identifier"];
         v81 = v49;
         v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-        *v47 = [v46 initWithDomain:v48 code:2 userInfo:v50];
+        *errorCopy2 = [v46 initWithDomain:v48 code:2 userInfo:v50];
       }
 
       v32 = 0;
       v17 = v23;
       v16 = v23;
-      self = v68;
+      self = selfCopy;
       goto LABEL_56;
     }
 
     v17 = v24;
     v69 = v8;
 
-    self = v68;
+    self = selfCopy;
 LABEL_12:
-    v18 = [v6 objectForKeyedSubscript:@"userInterfaceLanguage"];
-    v63 = a4;
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"userInterfaceLanguage"];
+    errorCopy3 = error;
     v64 = v7;
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v67 = 0;
           v32 = 0;
           goto LABEL_55;
         }
 
-        v33 = self;
+        selfCopy2 = self;
         v34 = v17;
         v35 = objc_alloc(MEMORY[0x1E696ABC0]);
         v36 = *MEMORY[0x1E698F240];
@@ -449,10 +449,10 @@ LABEL_12:
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v77 forKeys:&v76 count:1];
         v37 = v35;
         v17 = v34;
-        self = v33;
+        self = selfCopy2;
         v67 = 0;
         v32 = 0;
-        *v63 = [v37 initWithDomain:v36 code:2 userInfo:v19];
+        *errorCopy3 = [v37 initWithDomain:v36 code:2 userInfo:v19];
 LABEL_54:
 
         v7 = v64;
@@ -470,14 +470,14 @@ LABEL_55:
       v67 = 0;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"userSetRegionFormat"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"userSetRegionFormat"];
     v65 = v17;
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v66 = 0;
           v32 = 0;
@@ -493,7 +493,7 @@ LABEL_55:
         v40 = [v38 initWithDomain:v39 code:2 userInfo:v20];
         v66 = 0;
         v32 = 0;
-        *v63 = v40;
+        *errorCopy3 = v40;
 LABEL_52:
 
 LABEL_53:
@@ -509,10 +509,10 @@ LABEL_53:
       v66 = 0;
     }
 
-    v20 = [v6 objectForKeyedSubscript:@"reason"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v21 = self;
+      selfCopy4 = self;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -524,7 +524,7 @@ LABEL_53:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v63)
+          if (!errorCopy3)
           {
             v22 = 0;
             v32 = 0;
@@ -540,7 +540,7 @@ LABEL_53:
           v52 = [v61 initWithDomain:v51 code:2 userInfo:v41];
           v22 = 0;
           v32 = 0;
-          *v63 = v52;
+          *errorCopy3 = v52;
           goto LABEL_50;
         }
 
@@ -552,11 +552,11 @@ LABEL_53:
 
     else
     {
-      v21 = self;
+      selfCopy4 = self;
       v22 = 0;
     }
 
-    v41 = [v6 objectForKeyedSubscript:@"feature"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
     if (v41 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -570,7 +570,7 @@ LABEL_53:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v63)
+          if (errorCopy3)
           {
             v62 = objc_alloc(MEMORY[0x1E696ABC0]);
             v60 = *MEMORY[0x1E698F240];
@@ -578,7 +578,7 @@ LABEL_53:
             v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"feature"];
             v71 = v58;
             v59 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
-            *v63 = [v62 initWithDomain:v60 code:2 userInfo:v59];
+            *errorCopy3 = [v62 initWithDomain:v60 code:2 userInfo:v59];
           }
 
           v42 = 0;
@@ -597,23 +597,23 @@ LABEL_53:
       v42 = 0;
     }
 
-    v32 = -[BMGeneratedImageFailureReason initWithTimestamp:identifier:userInterfaceLanguage:userSetRegionFormat:reason:feature:](v21, "initWithTimestamp:identifier:userInterfaceLanguage:userSetRegionFormat:reason:feature:", v69, v65, v67, v66, [v22 intValue], objc_msgSend(v42, "intValue"));
-    v21 = v32;
+    v32 = -[BMGeneratedImageFailureReason initWithTimestamp:identifier:userInterfaceLanguage:userSetRegionFormat:reason:feature:](selfCopy4, "initWithTimestamp:identifier:userInterfaceLanguage:userSetRegionFormat:reason:feature:", v69, v65, v67, v66, [v22 intValue], objc_msgSend(v42, "intValue"));
+    selfCopy4 = v32;
 LABEL_50:
 
 LABEL_51:
-    self = v21;
+    self = selfCopy4;
     goto LABEL_52;
   }
 
-  if (!a4)
+  if (!error)
   {
     v32 = 0;
     goto LABEL_57;
   }
 
   v26 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v27 = a4;
+  errorCopy4 = error;
   v28 = *MEMORY[0x1E698F240];
   v78 = *MEMORY[0x1E696A578];
   v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"identifier"];
@@ -621,7 +621,7 @@ LABEL_51:
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
   v31 = v26;
   v17 = v29;
-  *v27 = [v31 initWithDomain:v28 code:2 userInfo:v30];
+  *errorCopy4 = [v31 initWithDomain:v28 code:2 userInfo:v30];
 
   v32 = 0;
 LABEL_56:
@@ -637,14 +637,14 @@ LABEL_58:
 {
   v3 = objc_opt_new();
   [(BMGeneratedImageFailureReason *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_hasRaw_timestamp)
   {
     raw_timestamp = self->_raw_timestamp;
@@ -672,9 +672,9 @@ LABEL_58:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMGeneratedImageFailureReason;
   v5 = [(BMEventBase *)&v39 init];
@@ -683,12 +683,12 @@ LABEL_58:
     goto LABEL_68;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_66;
       }
@@ -699,18 +699,18 @@ LABEL_58:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v40) & 0x7F) << v7;
@@ -727,9 +727,9 @@ LABEL_58:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_66;
       }
@@ -753,18 +753,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v40) = 0;
-            v31 = [v4 position] + 1;
-            if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+            v31 = [fromCopy position] + 1;
+            if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
             {
-              v33 = [v4 data];
-              [v33 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (LOBYTE(v40) & 0x7F) << v29;
@@ -781,7 +781,7 @@ LABEL_16:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 0xE)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 0xE)
           {
 LABEL_60:
             LODWORD(v20) = 0;
@@ -796,18 +796,18 @@ LABEL_60:
           while (1)
           {
             LOBYTE(v40) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (LOBYTE(v40) & 0x7F) << v18;
@@ -824,7 +824,7 @@ LABEL_60:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 3)
           {
 LABEL_56:
             LODWORD(v20) = 0;
@@ -844,8 +844,8 @@ LABEL_40:
 
       *(&v5->super.super.isa + v34) = v20;
 LABEL_65:
-      v36 = [v4 position];
-      if (v36 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_66;
       }
@@ -856,18 +856,18 @@ LABEL_65:
       case 1:
         v5->_hasRaw_timestamp = 1;
         v40 = 0.0;
-        v25 = [v4 position] + 8;
-        if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+        v25 = [fromCopy position] + 8;
+        if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
         {
-          v35 = [v4 data];
-          [v35 getBytes:&v40 range:{objc_msgSend(v4, "position"), 8}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_timestamp = v40;
@@ -898,7 +898,7 @@ LABEL_39:
   }
 
 LABEL_66:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_67:
     v37 = 0;
@@ -916,34 +916,34 @@ LABEL_68:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMGeneratedImageFailureReason *)self timestamp];
-  v5 = [(BMGeneratedImageFailureReason *)self identifier];
-  v6 = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
-  v7 = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
+  timestamp = [(BMGeneratedImageFailureReason *)self timestamp];
+  identifier = [(BMGeneratedImageFailureReason *)self identifier];
+  userInterfaceLanguage = [(BMGeneratedImageFailureReason *)self userInterfaceLanguage];
+  userSetRegionFormat = [(BMGeneratedImageFailureReason *)self userSetRegionFormat];
   v8 = BMGeneratedImageFailureReasonReasonAsString([(BMGeneratedImageFailureReason *)self reason]);
   v9 = BMGeneratedImageFailureReasonFeatureAsString([(BMGeneratedImageFailureReason *)self feature]);
-  v10 = [v3 initWithFormat:@"BMGeneratedImageFailureReason with timestamp: %@, identifier: %@, userInterfaceLanguage: %@, userSetRegionFormat: %@, reason: %@, feature: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMGeneratedImageFailureReason with timestamp: %@, identifier: %@, userInterfaceLanguage: %@, userSetRegionFormat: %@, reason: %@, feature: %@", timestamp, identifier, userInterfaceLanguage, userSetRegionFormat, v8, v9];
 
   return v10;
 }
 
-- (BMGeneratedImageFailureReason)initWithTimestamp:(id)a3 identifier:(id)a4 userInterfaceLanguage:(id)a5 userSetRegionFormat:(id)a6 reason:(int)a7 feature:(int)a8
+- (BMGeneratedImageFailureReason)initWithTimestamp:(id)timestamp identifier:(id)identifier userInterfaceLanguage:(id)language userSetRegionFormat:(id)format reason:(int)reason feature:(int)feature
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  timestampCopy = timestamp;
+  identifierCopy = identifier;
+  languageCopy = language;
+  formatCopy = format;
   v24.receiver = self;
   v24.super_class = BMGeneratedImageFailureReason;
   v18 = [(BMEventBase *)&v24 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (timestampCopy)
     {
       v18->_hasRaw_timestamp = 1;
-      [v14 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -953,11 +953,11 @@ LABEL_68:
     }
 
     v18->_raw_timestamp = v19;
-    if (v15)
+    if (identifierCopy)
     {
       v25[0] = 0;
       v25[1] = 0;
-      [v15 getUUIDBytes:v25];
+      [identifierCopy getUUIDBytes:v25];
       v20 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v25 length:16];
       raw_identifier = v18->_raw_identifier;
       v18->_raw_identifier = v20;
@@ -969,10 +969,10 @@ LABEL_68:
       v18->_raw_identifier = 0;
     }
 
-    objc_storeStrong(&v18->_userInterfaceLanguage, a5);
-    objc_storeStrong(&v18->_userSetRegionFormat, a6);
-    v18->_reason = a7;
-    v18->_feature = a8;
+    objc_storeStrong(&v18->_userInterfaceLanguage, language);
+    objc_storeStrong(&v18->_userSetRegionFormat, format);
+    v18->_reason = reason;
+    v18->_feature = feature;
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -1001,9 +1001,9 @@ LABEL_68:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1011,8 +1011,8 @@ LABEL_68:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMGeneratedImageFailureReason alloc] initByReadFrom:v7];
     v4 = v8;

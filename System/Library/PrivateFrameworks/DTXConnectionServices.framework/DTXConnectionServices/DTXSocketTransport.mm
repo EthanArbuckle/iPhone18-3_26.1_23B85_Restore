@@ -1,16 +1,16 @@
 @interface DTXSocketTransport
-- (DTXSocketTransport)initWithRemoteAddress:(id)a3;
+- (DTXSocketTransport)initWithRemoteAddress:(id)address;
 - (id)localAddresses;
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4;
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length;
 - (void)_commonSocketTransportInit;
-- (void)_setupWithLocalPort:(int)a3;
+- (void)_setupWithLocalPort:(int)port;
 - (void)_signalSocketAccepted;
 - (void)disconnect;
 @end
 
 @implementation DTXSocketTransport
 
-- (void)_setupWithLocalPort:(int)a3
+- (void)_setupWithLocalPort:(int)port
 {
   v5 = socket(30, 1, 6);
   if ((v5 & 0x80000000) != 0 || (v6 = v5, fcntl(v5, 2, 1) == -1))
@@ -25,7 +25,7 @@
   }
 
   *v10 = 7708;
-  *&v10[2] = bswap32(a3) >> 16;
+  *&v10[2] = bswap32(port) >> 16;
   *&v10[4] = 0;
   *&v10[8] = *MEMORY[0x277D85EE8];
   v11 = 0;
@@ -73,12 +73,12 @@
   }
 }
 
-- (DTXSocketTransport)initWithRemoteAddress:(id)a3
+- (DTXSocketTransport)initWithRemoteAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v46.receiver = self;
   v46.super_class = DTXSocketTransport;
-  v6 = [(DTXTransport *)&v46 initWithRemoteAddress:v5];
+  v6 = [(DTXTransport *)&v46 initWithRemoteAddress:addressCopy];
   v9 = v6;
   if (v6)
   {
@@ -88,8 +88,8 @@
     v45.ai_flags = 5120;
     *&v45.ai_socktype = 0x600000001;
     v44 = 0;
-    v12 = objc_msgSend_host(v5, v10, v11);
-    v15 = objc_msgSend_port(v5, v13, v14);
+    v12 = objc_msgSend_host(addressCopy, v10, v11);
+    v15 = objc_msgSend_port(addressCopy, v13, v14);
     v18 = objc_msgSend_intValue(v15, v16, v17);
 
     if (v18)
@@ -103,7 +103,7 @@
       if (v29)
       {
         v42 = gai_strerror(v29);
-        NSLog(&cfstr_ErrorFindingAd.isa, v5, v42);
+        NSLog(&cfstr_ErrorFindingAd.isa, addressCopy, v42);
       }
 
       else
@@ -117,7 +117,7 @@
             if (fcntl(v34, 2, 1) != -1 && (connect(v35, i->ai_addr, i->ai_addrlen) & 0x80000000) == 0)
             {
               freeaddrinfo(v44);
-              v39 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v38, v5);
+              v39 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEA60], v38, addressCopy);
               addresses = v9->_addresses;
               v9->_addresses = v39;
 
@@ -131,7 +131,7 @@
 
         v36 = __error();
         v43 = strerror(*v36);
-        NSLog(&cfstr_UnableToConnec_0.isa, v5, v43);
+        NSLog(&cfstr_UnableToConnec_0.isa, addressCopy, v43);
       }
     }
 
@@ -140,7 +140,7 @@
       v30 = objc_opt_class();
       v31 = NSStringFromClass(v30);
       v32 = NSStringFromSelector(a2);
-      NSLog(&cfstr_MissingPortInU.isa, v31, v32, v5);
+      NSLog(&cfstr_MissingPortInU.isa, v31, v32, addressCopy);
     }
 
     v9 = 0;
@@ -151,9 +151,9 @@ LABEL_15:
   return v9;
 }
 
-- (unint64_t)transmit:(const void *)a3 ofLength:(unint64_t)a4
+- (unint64_t)transmit:(const void *)transmit ofLength:(unint64_t)length
 {
-  if (objc_msgSend_status(self, a2, a3) == 2)
+  if (objc_msgSend_status(self, a2, transmit) == 2)
   {
     dispatch_semaphore_wait(self->_socketAcceptedSem, 0xFFFFFFFFFFFFFFFFLL);
     dispatch_semaphore_signal(self->_socketAcceptedSem);
@@ -161,7 +161,7 @@ LABEL_15:
 
   v8.receiver = self;
   v8.super_class = DTXSocketTransport;
-  return [(DTXFileDescriptorTransport *)&v8 transmit:a3 ofLength:a4];
+  return [(DTXFileDescriptorTransport *)&v8 transmit:transmit ofLength:length];
 }
 
 - (void)disconnect

@@ -1,23 +1,23 @@
 @interface VGUserBodyPoseGuidance
-- (VGUserBodyPoseGuidance)initWithOptions:(id)a3;
-- (float)calculateAggregatedScoreFromScores:(id)a3;
-- (id)calculatePoseGuidanceFromSkeleton:(float32x4_t)a3 andAtlasToDeviceTransform:(float32x4_t)a4 atTimestamp:(simd_float4)a5;
-- (id)evaluatePoseValues:(id)a3 atTimestamp:(double)a4;
+- (VGUserBodyPoseGuidance)initWithOptions:(id)options;
+- (float)calculateAggregatedScoreFromScores:(id)scores;
+- (id)calculatePoseGuidanceFromSkeleton:(float32x4_t)skeleton andAtlasToDeviceTransform:(float32x4_t)transform atTimestamp:(simd_float4)timestamp;
+- (id)evaluatePoseValues:(id)values atTimestamp:(double)timestamp;
 @end
 
 @implementation VGUserBodyPoseGuidance
 
-- (VGUserBodyPoseGuidance)initWithOptions:(id)a3
+- (VGUserBodyPoseGuidance)initWithOptions:(id)options
 {
   v98[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v97.receiver = self;
   v97.super_class = VGUserBodyPoseGuidance;
   v6 = [(VGUserBodyPoseGuidance *)&v97 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     [(VGBodyPoseGuidanceOptions *)v7->_options torsoHeadTargetMin];
     v9 = v8;
     [(VGBodyPoseGuidanceOptions *)v7->_options torsoHeadTargetMax];
@@ -120,9 +120,9 @@
   return v7;
 }
 
-- (float)calculateAggregatedScoreFromScores:(id)a3
+- (float)calculateAggregatedScoreFromScores:(id)scores
 {
-  v3 = a3;
+  scoresCopy = scores;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -132,8 +132,8 @@
   v7[2] = __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_invoke;
   v7[3] = &unk_279E28E80;
   v7[4] = &v8;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
-  v4 = [v3 count];
+  [scoresCopy enumerateKeysAndObjectsUsingBlock:v7];
+  v4 = [scoresCopy count];
   v5 = v9[6] / v4;
   v9[6] = v5;
   _Block_object_dispose(&v8, 8);
@@ -148,10 +148,10 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
   *(*(*(a1 + 32) + 8) + 24) = v4 + *(*(*(a1 + 32) + 8) + 24);
 }
 
-- (id)evaluatePoseValues:(id)a3 atTimestamp:(double)a4
+- (id)evaluatePoseValues:(id)values atTimestamp:(double)timestamp
 {
   v104 = *MEMORY[0x277D85DE8];
-  v79 = a3;
+  valuesCopy = values;
   v74 = objc_opt_new();
   v77 = objc_opt_new();
   v76 = objc_opt_new();
@@ -161,7 +161,7 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
   v93 = 0u;
   v94 = 0u;
   obj = self->_poseTargets;
-  v73 = self;
+  selfCopy = self;
   v80 = [(NSArray *)obj countByEnumeratingWithState:&v93 objects:v103 count:16];
   v6 = 0;
   if (v80)
@@ -177,7 +177,7 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
           objc_enumerationMutation(obj);
         }
 
-        v84 = v6;
+        rejectionReasonTooSmall = v6;
         v8 = *(*(&v93 + 1) + 8 * i);
         v9 = objc_opt_new();
         [v8 targetMin];
@@ -189,7 +189,7 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
         [v8 marginMax];
         [v9 setRawValueMarginMax:?];
         v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "identifier")}];
-        v85 = [v79 objectForKeyedSubscript:v10];
+        v85 = [valuesCopy objectForKeyedSubscript:v10];
 
         if (v85)
         {
@@ -209,9 +209,9 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
             else
             {
               [v9 setFeedback:{objc_msgSend(v8, "feedbackTooSmall")}];
-              if (!v84)
+              if (!rejectionReasonTooSmall)
               {
-                v84 = [v8 rejectionReasonTooSmall];
+                rejectionReasonTooSmall = [v8 rejectionReasonTooSmall];
               }
 
               [v8 targetMin];
@@ -225,9 +225,9 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
           else
           {
             [v9 setFeedback:{objc_msgSend(v8, "feedbackTooLarge")}];
-            if (!v84)
+            if (!rejectionReasonTooSmall)
             {
-              v84 = [v8 rejectionReasonTooLarge];
+              rejectionReasonTooSmall = [v8 rejectionReasonTooLarge];
             }
 
             [v8 targetMax];
@@ -244,8 +244,8 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
           v82 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "identifier")}];
           v102[0] = v82;
           v101[1] = @"description";
-          v83 = [v8 targetDescription];
-          v102[1] = v83;
+          targetDescription = [v8 targetDescription];
+          v102[1] = targetDescription;
           v101[2] = @"rawValueTargetMin";
           v24 = MEMORY[0x277CCABB0];
           [v8 targetMin];
@@ -285,38 +285,38 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
           [(vg::shared::VisualLogger *)v76 addObject:v37];
 
           v38 = MEMORY[0x277CCACA8];
-          v39 = [v8 targetDescription];
-          v40 = [v38 stringWithFormat:@"visage.userbodyposeguidance.rawValues.%@", v39];
+          targetDescription2 = [v8 targetDescription];
+          v40 = [v38 stringWithFormat:@"visage.userbodyposeguidance.rawValues.%@", targetDescription2];
 
-          v41 = [v8 targetDescription];
-          vg::shared::VisualLogger::logFloat(v87, v12, a4, v40, v41);
+          targetDescription3 = [v8 targetDescription];
+          vg::shared::VisualLogger::logFloat(v87, v12, timestamp, v40, targetDescription3);
 
           [v8 targetMin];
-          vg::shared::VisualLogger::logFloat(v87, v42, a4, v40, &cfstr_Min.isa);
+          vg::shared::VisualLogger::logFloat(v87, v42, timestamp, v40, &cfstr_Min.isa);
           [v8 targetMax];
-          vg::shared::VisualLogger::logFloat(v87, v43, a4, v40, &cfstr_Max.isa);
+          vg::shared::VisualLogger::logFloat(v87, v43, timestamp, v40, &cfstr_Max.isa);
           [v8 targetMin];
           v45 = v44;
           [v8 marginMin];
-          vg::shared::VisualLogger::logFloat(v87, v45 - v46, a4, v40, &cfstr_Minmargin.isa);
+          vg::shared::VisualLogger::logFloat(v87, v45 - v46, timestamp, v40, &cfstr_Minmargin.isa);
           [v8 targetMax];
           v48 = v47;
           [v8 marginMax];
-          vg::shared::VisualLogger::logFloat(v87, v48 + v49, a4, v40, &cfstr_Maxmargin.isa);
+          vg::shared::VisualLogger::logFloat(v87, v48 + v49, timestamp, v40, &cfstr_Maxmargin.isa);
           [v9 value];
           v51 = v50;
-          v52 = [v8 targetDescription];
-          vg::shared::VisualLogger::logFloat(v87, v51, a4, &cfstr_VisageUserbody_0.isa, v52);
+          targetDescription4 = [v8 targetDescription];
+          vg::shared::VisualLogger::logFloat(v87, v51, timestamp, &cfstr_VisageUserbody_0.isa, targetDescription4);
 
           [v9 value];
           v54 = v53;
-          v55 = [v8 targetDescription];
-          vg::shared::VisualLogger::logFloat(v87, v7 + v54, a4, &cfstr_VisageUserbody_1.isa, v55);
+          targetDescription5 = [v8 targetDescription];
+          vg::shared::VisualLogger::logFloat(v87, v7 + v54, timestamp, &cfstr_VisageUserbody_1.isa, targetDescription5);
 
           v7 = v7 + 1.0;
         }
 
-        v6 = v84;
+        v6 = rejectionReasonTooSmall;
       }
 
       v80 = [(NSArray *)obj countByEnumeratingWithState:&v93 objects:v103 count:16];
@@ -327,10 +327,10 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
 
   v56 = objc_opt_new();
   [v56 setScores:v77];
-  [(VGUserBodyPoseGuidance *)v73 calculateAggregatedScoreFromScores:v77];
+  [(VGUserBodyPoseGuidance *)selfCopy calculateAggregatedScoreFromScores:v77];
   [v56 setAggregatedScore:?];
   [v56 aggregatedScore];
-  vg::shared::VisualLogger::logFloat(v87, v57, a4, &cfstr_VisageUserbody_0.isa, &cfstr_Aggregatedscor.isa);
+  vg::shared::VisualLogger::logFloat(v87, v57, timestamp, &cfstr_VisageUserbody_0.isa, &cfstr_Aggregatedscor.isa);
   v99[0] = @"aggregatedScore";
   v58 = MEMORY[0x277CCABB0];
   [v56 aggregatedScore];
@@ -395,7 +395,7 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
     v98[1] = v69;
     v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:2];
 
-    vg::shared::VisualLogger::logDictionary(v87, v70, a4, &cfstr_VisageUserbody_2.isa, 0);
+    vg::shared::VisualLogger::logDictionary(v87, v70, timestamp, &cfstr_VisageUserbody_2.isa, 0);
   }
 
   v71 = *MEMORY[0x277D85DE8];
@@ -403,15 +403,15 @@ void __61__VGUserBodyPoseGuidance_calculateAggregatedScoreFromScores___block_inv
   return v74;
 }
 
-- (id)calculatePoseGuidanceFromSkeleton:(float32x4_t)a3 andAtlasToDeviceTransform:(float32x4_t)a4 atTimestamp:(simd_float4)a5
+- (id)calculatePoseGuidanceFromSkeleton:(float32x4_t)skeleton andAtlasToDeviceTransform:(float32x4_t)transform atTimestamp:(simd_float4)timestamp
 {
   v103[7] = *MEMORY[0x277D85DE8];
   v10 = a8;
   v11 = objc_opt_new();
-  v105.columns[1] = a3;
+  v105.columns[1] = skeleton;
   v105.columns[0] = a2;
-  v105.columns[3] = a5;
-  v105.columns[2] = a4;
+  v105.columns[3] = timestamp;
+  v105.columns[2] = transform;
   v106 = __invert_f4(v105);
   v67 = v106.columns[0];
   v68 = v106.columns[1];
@@ -536,8 +536,8 @@ LABEL_31:
   v66 = vdivq_f32(v19, vdupq_lane_s32(*v20.f32, 0));
   v62 = v18;
   v63 = vnegq_f32(v18);
-  v61 = angle_deg_in_2d_plane(v63, a2, a4);
-  v60 = angle_deg_in_2d_plane(v63, a2, a3);
+  v61 = angle_deg_in_2d_plane(v63, a2, transform);
+  v60 = angle_deg_in_2d_plane(v63, a2, skeleton);
   v21 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(v66, v66), v66, 0xCuLL), v63), v66, vextq_s8(vuzp1q_s32(v62, v62), v62, 0xCuLL));
   v22 = vextq_s8(vuzp1q_s32(v21, v21), v21, 0xCuLL);
   v23 = vmulq_f32(v21, v21);
@@ -572,7 +572,7 @@ LABEL_31:
     v36 = v29;
   }
 
-  v37 = deg_angle_between(v66, vnegq_f32(a3));
+  v37 = deg_angle_between(v66, vnegq_f32(skeleton));
   v102[0] = &unk_2880F5EF0;
   *&v38 = v32;
   v103[0] = [MEMORY[0x277CCABB0] numberWithFloat:v38];
@@ -610,7 +610,7 @@ LABEL_31:
   vg::shared::VisualLogger::logFloat(v53, v29, a6, &cfstr_VisageUserbody_3.isa, &cfstr_Rightelbowraw.isa);
   vg::shared::VisualLogger::logFloat(v53, v30, a6, &cfstr_VisageUserbody_3.isa, &cfstr_Leftelbowforwa.isa);
   vg::shared::VisualLogger::logFloat(v53, v31, a6, &cfstr_VisageUserbody_3.isa, &cfstr_Rightelbowforw.isa);
-  v54 = [a1 evaluatePoseValues:v51 atTimestamp:a6];
+  v54 = [self evaluatePoseValues:v51 atTimestamp:a6];
 
 LABEL_33:
   v56 = *MEMORY[0x277D85DE8];

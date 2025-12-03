@@ -1,38 +1,38 @@
 @interface TIKeyboardInputManagerWubixing
-- (BOOL)isValidWubiInput:(id)a3;
+- (BOOL)isValidWubiInput:(id)input;
 - (BOOL)supportsNumberKeySelection;
 - (id)keyboardBehaviors;
 - (id)sortingMethods;
 - (unint64_t)initialSelectedIndex;
 - (unsigned)inputIndex;
-- (void)addInput:(id)a3 withContext:(id)a4;
-- (void)notifyUpdateCandidates:(id)a3 forOperation:(id)a4;
+- (void)addInput:(id)input withContext:(id)context;
+- (void)notifyUpdateCandidates:(id)candidates forOperation:(id)operation;
 - (void)updateMarkedText;
 @end
 
 @implementation TIKeyboardInputManagerWubixing
 
-- (BOOL)isValidWubiInput:(id)a3
+- (BOOL)isValidWubiInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if ([TIKeyboardInputManagerWubixing isValidWubiInput:]::onceToken != -1)
   {
     dispatch_once(&[TIKeyboardInputManagerWubixing isValidWubiInput:]::onceToken, &__block_literal_global_610);
   }
 
-  v5 = [(TIKeyboardInputManagerShapeBased *)self searchString];
-  if (![v5 length])
+  searchString = [(TIKeyboardInputManagerShapeBased *)self searchString];
+  if (![searchString length])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v4 isEqualToString:@"."];
+  v6 = [inputCopy isEqualToString:@"."];
 
   if ((v6 & 1) == 0)
   {
 LABEL_7:
-    v7 = [v4 rangeOfCharacterFromSet:-[TIKeyboardInputManagerWubixing isValidWubiInput:]::notWubiSet] == 0x7FFFFFFFFFFFFFFFLL;
+    v7 = [inputCopy rangeOfCharacterFromSet:-[TIKeyboardInputManagerWubixing isValidWubiInput:]::notWubiSet] == 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_8;
   }
 
@@ -55,17 +55,17 @@ void __51__TIKeyboardInputManagerWubixing_isValidWubiInput___block_invoke()
   [TIKeyboardInputManagerWubixing isValidWubiInput:]::notWubiSet = v2;
 }
 
-- (void)notifyUpdateCandidates:(id)a3 forOperation:(id)a4
+- (void)notifyUpdateCandidates:(id)candidates forOperation:(id)operation
 {
-  v5 = a3;
+  candidatesCopy = candidates;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__TIKeyboardInputManagerWubixing_notifyUpdateCandidates_forOperation___block_invoke;
   v7[3] = &unk_279D9D620;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = candidatesCopy;
+  v6 = candidatesCopy;
   [(TIKeyboardInputManagerMecabra *)self addStickers:v6 withCompletionHandler:v7];
 
   objc_destroyWeak(&v9);
@@ -103,38 +103,38 @@ LABEL_5:
 
 - (unsigned)inputIndex
 {
-  v2 = [(TIKeyboardInputManagerWubixing *)self inputString];
-  v3 = [v2 length];
+  inputString = [(TIKeyboardInputManagerWubixing *)self inputString];
+  v3 = [inputString length];
 
   return v3;
 }
 
 - (void)updateMarkedText
 {
-  v3 = [(TIKeyboardInputManagerShapeBased *)self markedTextWithAutoconvertedCandidates];
-  [(TIKeyboardInputManagerChinese *)self setInput:v3];
+  markedTextWithAutoconvertedCandidates = [(TIKeyboardInputManagerShapeBased *)self markedTextWithAutoconvertedCandidates];
+  [(TIKeyboardInputManagerChinese *)self setInput:markedTextWithAutoconvertedCandidates];
   [(TIKeyboardInputManagerWubixing *)self setMarkedText];
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 string];
-  if ([v8 length])
+  inputCopy = input;
+  contextCopy = context;
+  string = [inputCopy string];
+  if ([string length])
   {
     [(TIKeyboardInputManagerShapeBased *)self cancelCandidatesThread];
-    if ([v8 isEqualToString:@"☻"])
+    if ([string isEqualToString:@"☻"])
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [(TIKeyboardInputManagerWubixing *)self keyboardState];
-      if ([v10 hardwareKeyboardMode])
+      keyboardState = [(TIKeyboardInputManagerWubixing *)self keyboardState];
+      if ([keyboardState hardwareKeyboardMode])
       {
-        v9 = [v8 isEqualToString:*MEMORY[0x277D6FF40]];
+        v9 = [string isEqualToString:*MEMORY[0x277D6FF40]];
       }
 
       else
@@ -143,45 +143,45 @@ LABEL_5:
       }
     }
 
-    if ([(TIKeyboardInputManagerWubixing *)self isValidWubiInput:v8]|| [(TIKeyboardInputManagerMecabra *)self stringContainsActiveSupplementalLexiconSearchPrefix:v8])
+    if ([(TIKeyboardInputManagerWubixing *)self isValidWubiInput:string]|| [(TIKeyboardInputManagerMecabra *)self stringContainsActiveSupplementalLexiconSearchPrefix:string])
     {
       if ([(TIKeyboardInputManagerChinese *)self showingFacemarkCandidates])
       {
-        [(TIKeyboardInputManagerWubixing *)self acceptCurrentCandidateWithContext:v7];
+        [(TIKeyboardInputManagerWubixing *)self acceptCurrentCandidateWithContext:contextCopy];
       }
 
-      v11 = [(TIKeyboardInputManagerShapeBased *)self searchString];
-      [v11 appendString:v8];
+      searchString = [(TIKeyboardInputManagerShapeBased *)self searchString];
+      [searchString appendString:string];
 
       [(TIKeyboardInputManagerWubixing *)self updateMarkedText];
     }
 
     else if (v9)
     {
-      if ([v8 isEqualToString:@"☻"])
+      if ([string isEqualToString:@"☻"])
       {
         v12 = *MEMORY[0x277D6FF50];
 
-        v8 = v12;
+        string = v12;
       }
 
-      [(TIKeyboardInputManagerWubixing *)self acceptCurrentCandidateWithContext:v7];
-      v13 = [(TIKeyboardInputManagerShapeBased *)self searchString];
-      [v13 appendString:v8];
+      [(TIKeyboardInputManagerWubixing *)self acceptCurrentCandidateWithContext:contextCopy];
+      searchString2 = [(TIKeyboardInputManagerShapeBased *)self searchString];
+      [searchString2 appendString:string];
 
-      [v6 setString:v8];
+      [inputCopy setString:string];
       v15.receiver = self;
       v15.super_class = TIKeyboardInputManagerWubixing;
-      [(TIKeyboardInputManagerWubixing *)&v15 addInput:v6 withContext:v7];
+      [(TIKeyboardInputManagerWubixing *)&v15 addInput:inputCopy withContext:contextCopy];
     }
 
     else
     {
-      [(TIKeyboardInputManagerWubixing *)self acceptCurrentCandidateWithContext:v7];
-      v14 = [(TIKeyboardInputManagerChinese *)self outputByConvertingDecimalPointForInput:v8];
+      [(TIKeyboardInputManagerWubixing *)self acceptCurrentCandidateWithContext:contextCopy];
+      v14 = [(TIKeyboardInputManagerChinese *)self outputByConvertingDecimalPointForInput:string];
 
-      [v7 insertText:v14];
-      v8 = v14;
+      [contextCopy insertText:v14];
+      string = v14;
     }
   }
 }
@@ -203,16 +203,16 @@ LABEL_5:
 
 - (BOOL)supportsNumberKeySelection
 {
-  v2 = [(TIKeyboardInputManagerWubixing *)self inputString];
-  v3 = [v2 length] != 0;
+  inputString = [(TIKeyboardInputManagerWubixing *)self inputString];
+  v3 = [inputString length] != 0;
 
   return v3;
 }
 
 - (unint64_t)initialSelectedIndex
 {
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 BOOLForPreferenceKey:*MEMORY[0x277D6FA90]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v4 = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6FA90]];
 
   if (!v4)
   {

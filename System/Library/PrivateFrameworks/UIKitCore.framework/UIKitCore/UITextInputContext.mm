@@ -4,14 +4,14 @@
 - (BOOL)isDictationInputExpected;
 - (BOOL)isHardwareKeyboardInputExpected;
 - (BOOL)isPencilInputExpected;
-- (void)updateInputSource:(int64_t)a3 toUpdate:(BOOL)a4;
+- (void)updateInputSource:(int64_t)source toUpdate:(BOOL)update;
 @end
 
 @implementation UITextInputContext
 
 + (UITextInputContext)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___UITextInputContext;
   return objc_msgSendSuper2(&v3, "new");
 }
@@ -47,26 +47,26 @@
   return v3;
 }
 
-- (void)updateInputSource:(int64_t)a3 toUpdate:(BOOL)a4
+- (void)updateInputSource:(int64_t)source toUpdate:(BOOL)update
 {
-  if (!a4)
+  if (!update)
   {
     v5 = +[UIKeyboardSceneDelegate automaticKeyboardArbiterClient];
-    v6 = [v5 lastEventSource];
+    lastEventSource = [v5 lastEventSource];
 
-    if (v6 == a3)
+    if (lastEventSource == source)
     {
-      a3 = 0;
+      source = 0;
     }
 
     else
     {
-      a3 = v6;
+      source = lastEventSource;
     }
   }
 
   v7 = +[UIKeyboardSceneDelegate automaticTextInputSourceCache];
-  [v7 updateEventSource:a3 options:15];
+  [v7 updateEventSource:source options:15];
 }
 
 @end

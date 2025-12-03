@@ -55,10 +55,10 @@ uint64_t __25__LACBATS_sharedInstance__block_invoke()
   v2 = os_variant_allows_internal_security_policies();
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    v4 = [v3 environment];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
 
-    v5 = [v4 objectForKeyedSubscript:@"BATS"];
+    v5 = [environment objectForKeyedSubscript:@"BATS"];
     v6 = [v5 isEqualToString:@"1"];
 
     LOBYTE(v2) = v6;

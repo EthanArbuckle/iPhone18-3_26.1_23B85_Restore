@@ -2,30 +2,30 @@
 - (BKLibraryDataSourceBLDownload)init;
 - (BKLibraryDataSourcePlistWriting)iTunesSyncedBooksPlistCleaner;
 - (BKLibraryManager)libraryManager;
-- (id)_createDownloadStatusForReportingAsset:(id)a3 downloadingAsset:(id)a4;
-- (id)_reportingAssetsForDownloadingAsset:(id)a3 includeUntrackedParent:(BOOL)a4;
-- (id)_updateDownloadingAssetAndCreateDownloadStatuses:(id)a3 from:(id)a4;
-- (id)_updateDownloadingAssets:(id)a3;
-- (void)_addReportingItemToCoverCache:(id)a3;
-- (void)_performBlockOnAllAssetsForAssetID:(id)a3 block:(id)a4;
-- (void)_removeReportingItemFromCoverCache:(id)a3;
-- (void)_reportAudiobookDownloadProgress:(id)a3;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5;
-- (void)cancelDownloadForAssetID:(id)a3;
+- (id)_createDownloadStatusForReportingAsset:(id)asset downloadingAsset:(id)downloadingAsset;
+- (id)_reportingAssetsForDownloadingAsset:(id)asset includeUntrackedParent:(BOOL)parent;
+- (id)_updateDownloadingAssetAndCreateDownloadStatuses:(id)statuses from:(id)from;
+- (id)_updateDownloadingAssets:(id)assets;
+- (void)_addReportingItemToCoverCache:(id)cache;
+- (void)_performBlockOnAllAssetsForAssetID:(id)d block:(id)block;
+- (void)_removeReportingItemFromCoverCache:(id)cache;
+- (void)_reportAudiobookDownloadProgress:(id)progress;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion;
+- (void)cancelDownloadForAssetID:(id)d;
 - (void)dealloc;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5;
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error;
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion;
 - (void)p_checkForInactiveQueue;
-- (void)pauseDownloadForAssetID:(id)a3;
+- (void)pauseDownloadForAssetID:(id)d;
 - (void)reloadDownloadQueue;
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)restartDownloadForAssetID:(id)a3;
-- (void)resumeDownloadForAssetID:(id)a3;
-- (void)togglePausedForAssetID:(id)a3 orTemporaryAssetID:(id)a4;
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion;
+- (void)restartDownloadForAssetID:(id)d;
+- (void)resumeDownloadForAssetID:(id)d;
+- (void)togglePausedForAssetID:(id)d orTemporaryAssetID:(id)iD;
 - (void)updateDownloadStatus;
 @end
 
@@ -82,31 +82,31 @@
 - (void)p_checkForInactiveQueue
 {
   v3 = dispatch_time(0, 5000000000);
-  v4 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A07E0;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, dispatchQueue, block);
 }
 
-- (id)_updateDownloadingAssets:(id)a3
+- (id)_updateDownloadingAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [v4 bk_assetIdentifier];
-  if (![v5 length])
+  assetsCopy = assets;
+  bk_assetIdentifier = [assetsCopy bk_assetIdentifier];
+  if (![bk_assetIdentifier length])
   {
     goto LABEL_34;
   }
 
-  v6 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  downloadingAssets = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
+  v7 = [downloadingAssets objectForKeyedSubscript:bk_assetIdentifier];
 
   if (v7)
   {
     v55 = v7;
-    v56 = v5;
+    v56 = bk_assetIdentifier;
     v8 = [(BKLibraryDataSourceBLDownload *)self _reportingAssetsForDownloadingAsset:v7];
     v57 = 0u;
     v58 = 0u;
@@ -127,33 +127,33 @@
           }
 
           v13 = *(*(&v57 + 1) + 8 * i);
-          v14 = [v13 title];
-          if (v14)
+          title = [v13 title];
+          if (title)
           {
-            v15 = v14;
-            v16 = [v13 author];
+            v15 = title;
+            author = [v13 author];
 
-            if (v16)
+            if (author)
             {
               continue;
             }
           }
 
-          if ([v13 updateMetadata:v4])
+          if ([v13 updateMetadata:assetsCopy])
           {
             v17 = BCBookDownloadLog();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v13 identifier];
+              identifier = [v13 identifier];
               *buf = 138543362;
-              v65 = v18;
+              v65 = identifier;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "download metadata updated identifier=%{public}@", buf, 0xCu);
             }
 
-            v19 = [(BKLibraryDataSourceBLDownload *)self libraryManager];
+            libraryManager = [(BKLibraryDataSourceBLDownload *)self libraryManager];
             v61 = v13;
             v20 = [NSArray arrayWithObjects:&v61 count:1];
-            [v19 libraryDataSource:self updatedAssets:v20];
+            [libraryManager libraryDataSource:self updatedAssets:v20];
 
             [(BKLibraryDataSourceBLDownload *)self _addReportingItemToCoverCache:v13];
           }
@@ -166,16 +166,16 @@
     }
 
     v21 = v55;
-    v5 = v56;
+    bk_assetIdentifier = v56;
     goto LABEL_35;
   }
 
-  if ([v4 isAudiobook])
+  if ([assetsCopy isAudiobook])
   {
-    v22 = [v4 storePlaylistID];
-    v23 = [v22 longLongValue];
+    storePlaylistID = [assetsCopy storePlaylistID];
+    longLongValue = [storePlaylistID longLongValue];
 
-    if (!v23)
+    if (!longLongValue)
     {
 LABEL_34:
       v21 = 0;
@@ -184,74 +184,74 @@ LABEL_34:
   }
 
   v24 = [BKBLDownloadAsset alloc];
-  v25 = [(BKLibraryDataSourceBLDownload *)self identifier];
-  v21 = [(BKBLDownloadAsset *)v24 initWithBLDownloadStatus:v4 dataSourceIdentifier:v25 isParent:0];
+  identifier2 = [(BKLibraryDataSourceBLDownload *)self identifier];
+  v21 = [(BKBLDownloadAsset *)v24 initWithBLDownloadStatus:assetsCopy dataSourceIdentifier:identifier2 isParent:0];
 
-  v26 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
-  [v26 setObject:v21 forKeyedSubscript:v5];
+  downloadingAssets2 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
+  [downloadingAssets2 setObject:v21 forKeyedSubscript:bk_assetIdentifier];
 
   v27 = BCBookDownloadLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(BKBLDownloadAsset *)v21 identifier];
+    identifier3 = [(BKBLDownloadAsset *)v21 identifier];
     *buf = 138412290;
-    v65 = v28;
+    v65 = identifier3;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "download new asset=%@", buf, 0xCu);
   }
 
-  v29 = [v4 storePlaylistID];
-  v30 = [v29 longLongValue];
+  storePlaylistID2 = [assetsCopy storePlaylistID];
+  longLongValue2 = [storePlaylistID2 longLongValue];
 
-  if (!v30)
+  if (!longLongValue2)
   {
     goto LABEL_33;
   }
 
-  v31 = [v4 storePlaylistID];
-  v32 = [v31 stringValue];
+  storePlaylistID3 = [assetsCopy storePlaylistID];
+  stringValue = [storePlaylistID3 stringValue];
 
-  v33 = [(BKLibraryDataSourceBLDownload *)self assetsWithDownloadingChildAssets];
-  v34 = [v33 objectForKeyedSubscript:v32];
+  assetsWithDownloadingChildAssets = [(BKLibraryDataSourceBLDownload *)self assetsWithDownloadingChildAssets];
+  v34 = [assetsWithDownloadingChildAssets objectForKeyedSubscript:stringValue];
 
   if (!v34)
   {
     v35 = [BKBLDownloadAsset alloc];
-    v36 = [(BKLibraryDataSourceBLDownload *)self identifier];
-    v34 = [(BKBLDownloadAsset *)v35 initWithBLDownloadStatus:v4 dataSourceIdentifier:v36 isParent:1];
+    identifier4 = [(BKLibraryDataSourceBLDownload *)self identifier];
+    v34 = [(BKBLDownloadAsset *)v35 initWithBLDownloadStatus:assetsCopy dataSourceIdentifier:identifier4 isParent:1];
 
-    v37 = [(BKLibraryDataSourceBLDownload *)self assetsWithDownloadingChildAssets];
-    [v37 setObject:v34 forKeyedSubscript:v32];
+    assetsWithDownloadingChildAssets2 = [(BKLibraryDataSourceBLDownload *)self assetsWithDownloadingChildAssets];
+    [assetsWithDownloadingChildAssets2 setObject:v34 forKeyedSubscript:stringValue];
 
     v38 = BCBookDownloadLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(BKBLDownloadAsset *)v34 identifier];
+      identifier5 = [(BKBLDownloadAsset *)v34 identifier];
       *buf = 138412290;
-      v65 = v39;
+      v65 = identifier5;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "created parent=%@ for tracking", buf, 0xCu);
     }
   }
 
-  v40 = [v4 isAudiobook];
-  v41 = v40;
-  if (v40)
+  isAudiobook = [assetsCopy isAudiobook];
+  v41 = isAudiobook;
+  if (isAudiobook)
   {
-    v42 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
-    [v42 setObject:v34 forKeyedSubscript:v32];
+    downloadingAssets3 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
+    [downloadingAssets3 setObject:v34 forKeyedSubscript:stringValue];
 
     v43 = BCBookDownloadLog();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [(BKBLDownloadAsset *)v34 identifier];
+      identifier6 = [(BKBLDownloadAsset *)v34 identifier];
       *buf = 138412290;
-      v65 = v44;
+      v65 = identifier6;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "download new parent=%@", buf, 0xCu);
     }
 
-    v45 = [(BKLibraryDataSourceBLDownload *)self libraryManager];
+    libraryManager2 = [(BKLibraryDataSourceBLDownload *)self libraryManager];
     v68 = v34;
     v46 = [NSArray arrayWithObjects:&v68 count:1];
-    [v45 libraryDataSource:self addedAssets:v46];
+    [libraryManager2 libraryDataSource:self addedAssets:v46];
 
     [(BKLibraryDataSourceBLDownload *)self _addReportingItemToCoverCache:v34];
   }
@@ -259,17 +259,17 @@ LABEL_34:
   v47 = BCBookDownloadLog();
   if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
   {
-    v48 = [(BKBLDownloadAsset *)v34 identifier];
+    identifier7 = [(BKBLDownloadAsset *)v34 identifier];
     [(BKBLDownloadAsset *)v21 identifier];
     v49 = v21;
-    v51 = v50 = v5;
+    v51 = v50 = bk_assetIdentifier;
     *buf = 138412546;
-    v65 = v48;
+    v65 = identifier7;
     v66 = 2112;
     v67 = v51;
     _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "set parent=%@ for child=%@", buf, 0x16u);
 
-    v5 = v50;
+    bk_assetIdentifier = v50;
     v21 = v49;
   }
 
@@ -277,10 +277,10 @@ LABEL_34:
   if ((v41 & 1) == 0)
   {
 LABEL_33:
-    v52 = [(BKLibraryDataSourceBLDownload *)self libraryManager];
+    libraryManager3 = [(BKLibraryDataSourceBLDownload *)self libraryManager];
     v63 = v21;
     v53 = [NSArray arrayWithObjects:&v63 count:1];
-    [v52 libraryDataSource:self addedAssets:v53];
+    [libraryManager3 libraryDataSource:self addedAssets:v53];
 
     [(BKLibraryDataSourceBLDownload *)self _addReportingItemToCoverCache:v21];
   }
@@ -290,18 +290,18 @@ LABEL_35:
   return v21;
 }
 
-- (void)_addReportingItemToCoverCache:(id)a3
+- (void)_addReportingItemToCoverCache:(id)cache
 {
-  v3 = a3;
-  v4 = [v3 thumbnailImageURL];
-  v5 = [v4 absoluteString];
+  cacheCopy = cache;
+  thumbnailImageURL = [cacheCopy thumbnailImageURL];
+  absoluteString = [thumbnailImageURL absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
     v6 = +[BCCacheManager defaultCacheManager];
-    v7 = [v3 identifier];
-    v15 = v7;
-    v16 = v5;
+    identifier = [cacheCopy identifier];
+    v15 = identifier;
+    v16 = absoluteString;
     v8 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     [v6 addURLs:v8 priority:5 quality:201 expiresAfter:10];
 LABEL_7:
@@ -309,22 +309,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [v3 storeID];
+  storeID = [cacheCopy storeID];
 
-  if (v9)
+  if (storeID)
   {
     v10 = BCBookDownloadLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v3 storeID];
+      storeID2 = [cacheCopy storeID];
       *buf = 138412290;
-      v14 = v11;
+      v14 = storeID2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding fallback store ID to cover cache: %@", buf, 0xCu);
     }
 
     v6 = +[BCCacheManager defaultCacheManager];
-    v7 = [v3 storeID];
-    v12 = v7;
+    identifier = [cacheCopy storeID];
+    v12 = identifier;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
     [v6 addProductProfileIDs:v8 priority:5];
     goto LABEL_7;
@@ -333,57 +333,57 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_removeReportingItemFromCoverCache:(id)a3
+- (void)_removeReportingItemFromCoverCache:(id)cache
 {
-  v3 = a3;
-  v4 = [v3 thumbnailImageURL];
-  v5 = [v4 absoluteString];
+  cacheCopy = cache;
+  thumbnailImageURL = [cacheCopy thumbnailImageURL];
+  absoluteString = [thumbnailImageURL absoluteString];
 
-  if (v5)
+  if (absoluteString)
   {
     v6 = +[BCCacheManager defaultCacheManager];
-    v7 = [v3 identifier];
-    v9 = v7;
-    v10 = v5;
+    identifier = [cacheCopy identifier];
+    v9 = identifier;
+    v10 = absoluteString;
     v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     [v6 removeURLs:v8 priority:3 quality:201];
   }
 }
 
-- (id)_reportingAssetsForDownloadingAsset:(id)a3 includeUntrackedParent:(BOOL)a4
+- (id)_reportingAssetsForDownloadingAsset:(id)asset includeUntrackedParent:(BOOL)parent
 {
-  v6 = a3;
+  assetCopy = asset;
   v7 = [[NSMutableArray alloc] initWithCapacity:2];
-  v8 = [v6 parent];
-  v9 = [v8 identifier];
+  parent = [assetCopy parent];
+  identifier = [parent identifier];
 
-  if (v9)
+  if (identifier)
   {
-    if (a4 || (-[BKLibraryDataSourceBLDownload downloadingAssets](self, "downloadingAssets"), v10 = objc_claimAutoreleasedReturnValue(), [v8 identifier], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v11), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v12))
+    if (parent || (-[BKLibraryDataSourceBLDownload downloadingAssets](self, "downloadingAssets"), v10 = objc_claimAutoreleasedReturnValue(), [parent identifier], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", v11), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v12))
     {
-      [v7 addObject:v8];
+      [v7 addObject:parent];
     }
   }
 
-  if (([v6 isAudiobook] & 1) == 0)
+  if (([assetCopy isAudiobook] & 1) == 0)
   {
-    [v7 addObject:v6];
+    [v7 addObject:assetCopy];
   }
 
   return v7;
 }
 
-- (id)_updateDownloadingAssetAndCreateDownloadStatuses:(id)a3 from:(id)a4
+- (id)_updateDownloadingAssetAndCreateDownloadStatuses:(id)statuses from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  statusesCopy = statuses;
+  fromCopy = from;
   v8 = [[NSMutableArray alloc] initWithCapacity:2];
-  v9 = [(BKLibraryDataSourceBLDownload *)self _reportingAssetsForDownloadingAsset:v6 includeUntrackedParent:1];
+  v9 = [(BKLibraryDataSourceBLDownload *)self _reportingAssetsForDownloadingAsset:statusesCopy includeUntrackedParent:1];
   if ([v9 count])
   {
-    if (v7)
+    if (fromCopy)
     {
-      [v6 setDownloadStatus:v7];
+      [statusesCopy setDownloadStatus:fromCopy];
     }
 
     v20 = 0u;
@@ -405,7 +405,7 @@ LABEL_8:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [(BKLibraryDataSourceBLDownload *)self _createDownloadStatusForReportingAsset:*(*(&v18 + 1) + 8 * i) downloadingAsset:v6, v18];
+          v15 = [(BKLibraryDataSourceBLDownload *)self _createDownloadStatusForReportingAsset:*(*(&v18 + 1) + 8 * i) downloadingAsset:statusesCopy, v18];
           [v8 addObject:v15];
         }
 
@@ -416,32 +416,32 @@ LABEL_8:
     }
   }
 
-  v16 = [v6 parent];
-  [(BKLibraryDataSourceBLDownload *)self _reportAudiobookDownloadProgress:v16];
+  parent = [statusesCopy parent];
+  [(BKLibraryDataSourceBLDownload *)self _reportAudiobookDownloadProgress:parent];
 
   return v8;
 }
 
-- (id)_createDownloadStatusForReportingAsset:(id)a3 downloadingAsset:(id)a4
+- (id)_createDownloadStatusForReportingAsset:(id)asset downloadingAsset:(id)downloadingAsset
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  assetCopy = asset;
+  downloadingAssetCopy = downloadingAsset;
+  if (assetCopy)
   {
-    v8 = [v6 identifier];
+    identifier = [assetCopy identifier];
 
-    if (v8)
+    if (identifier)
     {
-      v9 = [v6 identifier];
-      v10 = [v6 bytesDownloaded];
-      v11 = [v6 bytesTotal];
-      v12 = [v6 children];
-      v13 = [v12 count];
+      identifier2 = [assetCopy identifier];
+      bytesDownloaded = [assetCopy bytesDownloaded];
+      bytesTotal = [assetCopy bytesTotal];
+      children = [assetCopy children];
+      v13 = [children count];
 
-      v14 = [v6 activeChildren];
-      v15 = [v14 count];
+      activeChildren = [assetCopy activeChildren];
+      v15 = [activeChildren count];
 
-      [v6 progress];
+      [assetCopy progress];
       if (v16 >= 0.05)
       {
         v17 = v16;
@@ -452,25 +452,25 @@ LABEL_8:
         v17 = 0.05;
       }
 
-      v18 = [v6 downloadState];
+      downloadState = [assetCopy downloadState];
       v19 = BCBookDownloadLog();
       v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-      if (v18 > 4)
+      if (downloadState > 4)
       {
-        if (v18 <= 6)
+        if (downloadState <= 6)
         {
-          if (v18 == 5)
+          if (downloadState == 5)
           {
             if (v20)
             {
               v33 = 138543618;
-              v34 = v9;
+              v34 = identifier2;
               v35 = 2048;
               v36 = v17;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "download status: asset=%{public}@ progress=%f DOWNLOADED", &v33, 0x16u);
             }
 
-            v18 = 5;
+            downloadState = 5;
           }
 
           else
@@ -478,45 +478,45 @@ LABEL_8:
             if (v20)
             {
               v33 = 138543618;
-              v34 = v9;
+              v34 = identifier2;
               v35 = 2048;
               v36 = v17;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "download status: asset=%{public}@ progress=%f PAUSED", &v33, 0x16u);
             }
 
-            v18 = 6;
+            downloadState = 6;
           }
 
           goto LABEL_40;
         }
 
-        if (v18 == 7)
+        if (downloadState == 7)
         {
           if (v20)
           {
             v33 = 138543618;
-            v34 = v9;
+            v34 = identifier2;
             v35 = 2048;
             v36 = v17;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "download status: asset=%{public}@ progress=%f FAILED", &v33, 0x16u);
           }
 
-          v18 = 7;
+          downloadState = 7;
           goto LABEL_40;
         }
 
-        if (v18 == 8)
+        if (downloadState == 8)
         {
           if (v20)
           {
             v33 = 138543618;
-            v34 = v9;
+            v34 = identifier2;
             v35 = 2048;
             v36 = v17;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "download status: asset=%{public}@ progress=%f CANCELED", &v33, 0x16u);
           }
 
-          v18 = 8;
+          downloadState = 8;
           goto LABEL_40;
         }
 
@@ -524,18 +524,18 @@ LABEL_27:
         if (v20)
         {
           v33 = 138543874;
-          v34 = v9;
+          v34 = identifier2;
           v35 = 2048;
           v36 = v17;
           v37 = 1024;
-          LODWORD(v38) = v18;
+          LODWORD(v38) = downloadState;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "download status: asset=%{public}@ progress=%f state=%d (unexpected)", &v33, 0x1Cu);
         }
 
         goto LABEL_40;
       }
 
-      switch(v18)
+      switch(downloadState)
       {
         case 2:
           if (!v20)
@@ -544,7 +544,7 @@ LABEL_27:
           }
 
           v33 = 138543618;
-          v34 = v9;
+          v34 = identifier2;
           v35 = 2048;
           v36 = v17;
           v22 = "download status: asset=%{public}@ progress=%f REQUESTED";
@@ -556,7 +556,7 @@ LABEL_27:
           }
 
           v33 = 138543618;
-          v34 = v9;
+          v34 = identifier2;
           v35 = 2048;
           v36 = v17;
           v22 = "download status: asset=%{public}@ progress=%f WAITING";
@@ -565,13 +565,13 @@ LABEL_27:
           if (v20)
           {
             v33 = 138544642;
-            v34 = v9;
+            v34 = identifier2;
             v35 = 2048;
             v36 = v17;
             v37 = 2048;
-            v38 = v10;
+            v38 = bytesDownloaded;
             v39 = 2048;
-            v40 = v11;
+            v40 = bytesTotal;
             v41 = 2048;
             v42 = v13;
             v43 = 2048;
@@ -584,21 +584,21 @@ LABEL_38:
           }
 
 LABEL_39:
-          v18 = 4;
+          downloadState = 4;
 LABEL_40:
 
-          if ([v6 isParent] && (-[BKLibraryDataSourceBLDownload downloadingAssets](self, "downloadingAssets"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "identifier"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "objectForKeyedSubscript:", v26), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v25, !v27))
+          if ([assetCopy isParent] && (-[BKLibraryDataSourceBLDownload downloadingAssets](self, "downloadingAssets"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(assetCopy, "identifier"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "objectForKeyedSubscript:", v26), v27 = objc_claimAutoreleasedReturnValue(), v27, v26, v25, !v27))
           {
             v32 = [BKLibraryDownloadStatus alloc];
-            v29 = [v6 identifier];
-            v30 = [v32 initWithAssetID:v29 supplementalContentState:v18 progressValue:objc_msgSend(v6 timeRemaining:"secondsRemaining") bytesDownloaded:objc_msgSend(v6 fileSize:{"bytesDownloaded"), objc_msgSend(v6, "bytesTotal"), v17}];
+            identifier3 = [assetCopy identifier];
+            v30 = [v32 initWithAssetID:identifier3 supplementalContentState:downloadState progressValue:objc_msgSend(assetCopy timeRemaining:"secondsRemaining") bytesDownloaded:objc_msgSend(assetCopy fileSize:{"bytesDownloaded"), objc_msgSend(assetCopy, "bytesTotal"), v17}];
           }
 
           else
           {
             v28 = [BKLibraryDownloadStatus alloc];
-            v29 = [v6 identifier];
-            v30 = [v28 initWithAssetID:v29 state:v18 progressValue:objc_msgSend(v6 timeRemaining:"secondsRemaining") bytesDownloaded:objc_msgSend(v6 fileSize:{"bytesDownloaded"), objc_msgSend(v6, "bytesTotal"), v17}];
+            identifier3 = [assetCopy identifier];
+            v30 = [v28 initWithAssetID:identifier3 state:downloadState progressValue:objc_msgSend(assetCopy timeRemaining:"secondsRemaining") bytesDownloaded:objc_msgSend(assetCopy fileSize:{"bytesDownloaded"), objc_msgSend(assetCopy, "bytesTotal"), v17}];
           }
 
           v21 = v30;
@@ -614,10 +614,10 @@ LABEL_40:
     }
   }
 
-  v9 = BCBookDownloadLog();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  identifier2 = BCBookDownloadLog();
+  if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
   {
-    sub_100792F20(v7, v6, v9);
+    sub_100792F20(downloadingAssetCopy, assetCopy, identifier2);
   }
 
   v21 = 0;
@@ -626,16 +626,16 @@ LABEL_44:
   return v21;
 }
 
-- (void)_reportAudiobookDownloadProgress:(id)a3
+- (void)_reportAudiobookDownloadProgress:(id)progress
 {
-  v4 = a3;
-  if ([v4 isParent])
+  progressCopy = progress;
+  if ([progressCopy isParent])
   {
     v5 = objc_alloc_init(BSUIAudioBookDownloadProgress);
-    v6 = [v4 identifier];
-    [v5 setAssetIdentifier:v6];
+    identifier = [progressCopy identifier];
+    [v5 setAssetIdentifier:identifier];
 
-    [v4 progress];
+    [progressCopy progress];
     v7 = [NSNumber numberWithFloat:?];
     [v5 setProgress:v7];
 
@@ -648,28 +648,28 @@ LABEL_44:
   }
 }
 
-- (void)_performBlockOnAllAssetsForAssetID:(id)a3 block:(id)a4
+- (void)_performBlockOnAllAssetsForAssetID:(id)d block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  blockCopy = block;
+  downloadingAssets = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
+  v9 = [downloadingAssets objectForKeyedSubscript:dCopy];
   if (v9)
   {
     v10 = v9;
 
 LABEL_4:
-    v12 = [v10 parent];
+    parent = [v10 parent];
 
-    if (v12)
+    if (parent)
     {
-      v13 = [v10 parent];
+      parent2 = [v10 parent];
 
-      v10 = v13;
+      v10 = parent2;
     }
 
-    v14 = [v10 children];
-    v15 = [v14 count];
+    children = [v10 children];
+    v15 = [children count];
 
     if (v15)
     {
@@ -677,8 +677,8 @@ LABEL_4:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v16 = [v10 activeChildren];
-      v17 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      activeChildren = [v10 activeChildren];
+      v17 = [activeChildren countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v17)
       {
         v18 = v17;
@@ -690,15 +690,15 @@ LABEL_4:
           {
             if (*v29 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(activeChildren);
             }
 
-            v7[2](v7, *(*(&v28 + 1) + 8 * v20));
+            blockCopy[2](blockCopy, *(*(&v28 + 1) + 8 * v20));
             v20 = v20 + 1;
           }
 
           while (v18 != v20);
-          v18 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v18 = [activeChildren countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v18);
@@ -707,14 +707,14 @@ LABEL_4:
 
     else if ([v10 active])
     {
-      (v7)[2](v7, v10);
+      (blockCopy)[2](blockCopy, v10);
     }
 
     goto LABEL_20;
   }
 
-  v11 = [(BKLibraryDataSourceBLDownload *)self assetsWithDownloadingChildAssets];
-  v10 = [v11 objectForKeyedSubscript:v6];
+  assetsWithDownloadingChildAssets = [(BKLibraryDataSourceBLDownload *)self assetsWithDownloadingChildAssets];
+  v10 = [assetsWithDownloadingChildAssets objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
@@ -724,7 +724,7 @@ LABEL_4:
   v21 = BCBookDownloadLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    sub_100792FE4(v6, v21, v22, v23, v24, v25, v26, v27);
+    sub_100792FE4(dCopy, v21, v22, v23, v24, v25, v26, v27);
   }
 
   v10 = 0;
@@ -739,88 +739,88 @@ LABEL_20:
     sub_100793050(v3);
   }
 
-  v4 = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
-  v5 = [v4 count];
+  downloadingAssets = [(BKLibraryDataSourceBLDownload *)self downloadingAssets];
+  v5 = [downloadingAssets count];
 
   if (v5)
   {
-    v6 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001A1F84;
     block[3] = &unk_100A033C8;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(dispatchQueue, block);
   }
 }
 
-- (void)pauseDownloadForAssetID:(id)a3
+- (void)pauseDownloadForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = BCBookDownloadLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "pauseDownloadForAssetID:%@", buf, 0xCu);
   }
 
-  v6 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001A22B8;
   v8[3] = &unk_100A03440;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(dispatchQueue, v8);
 }
 
-- (void)resumeDownloadForAssetID:(id)a3
+- (void)resumeDownloadForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = BCBookDownloadLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "resumeDownloadForAssetID:%@", buf, 0xCu);
   }
 
-  v6 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001A25A8;
   v8[3] = &unk_100A03440;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(dispatchQueue, v8);
 }
 
-- (void)cancelDownloadForAssetID:(id)a3
+- (void)cancelDownloadForAssetID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = BCBookDownloadLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "cancelDownloadForAssetID:%@", buf, 0xCu);
   }
 
-  v6 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001A2898;
   v8[3] = &unk_100A03440;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(dispatchQueue, v8);
 }
 
-- (void)restartDownloadForAssetID:(id)a3
+- (void)restartDownloadForAssetID:(id)d
 {
   v3 = BCBookDownloadLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -830,127 +830,127 @@ LABEL_20:
   }
 }
 
-- (void)togglePausedForAssetID:(id)a3 orTemporaryAssetID:(id)a4
+- (void)togglePausedForAssetID:(id)d orTemporaryAssetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = BCBookDownloadLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = dCopy;
     v16 = 2112;
-    v17 = v7;
+    v17 = iDCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "togglePausedForAssetID:%@ orTemporaryAssetID:%@", buf, 0x16u);
   }
 
-  if (v6)
+  if (dCopy)
   {
-    v9 = v6;
+    v9 = dCopy;
   }
 
   else
   {
-    v9 = v7;
+    v9 = iDCopy;
   }
 
   v10 = v9;
   if (v10)
   {
-    v11 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+    dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001A2C2C;
     v12[3] = &unk_100A03440;
     v12[4] = self;
     v13 = v10;
-    dispatch_async(v11, v12);
+    dispatch_async(dispatchQueue, v12);
   }
 }
 
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = BCBookDownloadLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = changeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[BKLibraryDataSourceBLDownload] downloadQueue:downloadStatesDidChange: %@", buf, 0xCu);
   }
 
-  v7 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001A3238;
   v9[3] = &unk_100A03440;
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
-  dispatch_async(v7, v9);
+  v10 = changeCopy;
+  selfCopy = self;
+  v8 = changeCopy;
+  dispatch_async(dispatchQueue, v9);
 }
 
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  statesCopy = states;
+  errorCopy = error;
   v9 = BCBookDownloadLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v8;
+    v16 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BKLibraryDataSourceBLDownload] didCompleteWithError: %@", buf, 0xCu);
   }
 
-  v10 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001A36FC;
   v12[3] = &unk_100A03440;
-  v13 = v7;
-  v14 = self;
-  v11 = v7;
-  dispatch_async(v10, v12);
+  v13 = statesCopy;
+  selfCopy = self;
+  v11 = statesCopy;
+  dispatch_async(dispatchQueue, v12);
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  completionCopy = completion;
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001A473C;
   v7[3] = &unk_100A03788;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)fetchAssetsWithIDs:(id)a3 completion:(id)a4
+- (void)fetchAssetsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   kdebug_trace();
   v8 = +[NSMutableArray array];
-  v9 = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
+  dispatchQueue = [(BKLibraryDataSourceBLDownload *)self dispatchQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001A49D4;
   v13[3] = &unk_100A04FE8;
-  v14 = v6;
-  v15 = self;
+  v14 = dsCopy;
+  selfCopy = self;
   v16 = v8;
-  v17 = v7;
-  v10 = v7;
+  v17 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
-  v12 = v6;
-  dispatch_async(v9, v13);
+  v12 = dsCopy;
+  dispatch_async(dispatchQueue, v13);
 }
 
-- (void)bookCoverForLibraryAssetProperties:(id)a3 size:(CGSize)a4 completion:(id)a5
+- (void)bookCoverForLibraryAssetProperties:(id)properties size:(CGSize)size completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -959,9 +959,9 @@ LABEL_20:
   }
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -970,37 +970,37 @@ LABEL_20:
   }
 }
 
-- (void)resolveLibraryAsset:(id)a3 options:(id)a4 completion:(id)a5
+- (void)resolveLibraryAsset:(id)asset options:(id)options completion:(id)completion
 {
-  v7 = a5;
-  v8 = [a3 permanentOrTemporaryAssetID];
+  completionCopy = completion;
+  permanentOrTemporaryAssetID = [asset permanentOrTemporaryAssetID];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A4CEC;
   block[3] = &unk_100A049A0;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = permanentOrTemporaryAssetID;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = permanentOrTemporaryAssetID;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 permanentOrTemporaryAssetID];
+  completionCopy = completion;
+  permanentOrTemporaryAssetID = [asset permanentOrTemporaryAssetID];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001A4E98;
   block[3] = &unk_100A049A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = permanentOrTemporaryAssetID;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = permanentOrTemporaryAssetID;
   dispatch_async(dispatchQueue, block);
 }
 

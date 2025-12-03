@@ -1,19 +1,19 @@
 @interface PXSharedLibraryParticipantValidationManager
 - (PXSharedLibraryParticipantValidationManager)init;
-- (void)requestValidationForPhoneNumbers:(id)a3 emailAddresses:(id)a4 resultHandler:(id)a5;
+- (void)requestValidationForPhoneNumbers:(id)numbers emailAddresses:(id)addresses resultHandler:(id)handler;
 @end
 
 @implementation PXSharedLibraryParticipantValidationManager
 
-- (void)requestValidationForPhoneNumbers:(id)a3 emailAddresses:(id)a4 resultHandler:(id)a5
+- (void)requestValidationForPhoneNumbers:(id)numbers emailAddresses:(id)addresses resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  numbersCopy = numbers;
+  addressesCopy = addresses;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantValidationManager.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryParticipantValidationManager.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -27,13 +27,13 @@
   v15 = v12;
   v28 = v15;
   v16 = _Block_copy(aBlock);
-  v16[2](v16, v9, v13);
-  v16[2](v16, v10, v14);
+  v16[2](v16, numbersCopy, v13);
+  v16[2](v16, addressesCopy, v14);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__PXSharedLibraryParticipantValidationManager_requestValidationForPhoneNumbers_emailAddresses_resultHandler___block_invoke_3;
   block[3] = &unk_1E774C2F0;
-  v17 = v11;
+  v17 = handlerCopy;
   v26 = v17;
   v18 = v15;
   v25 = v18;
@@ -41,14 +41,14 @@
   if ([v14 count] || objc_msgSend(v13, "count"))
   {
     v19 = MEMORY[0x1E6978AC0];
-    v20 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+    px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __109__PXSharedLibraryParticipantValidationManager_requestValidationForPhoneNumbers_emailAddresses_resultHandler___block_invoke_4;
     v22[3] = &unk_1E772F290;
     v22[4] = self;
     v23 = v17;
-    [v19 queryParticipantsWithEmails:v14 phoneNumbers:v13 photoLibrary:v20 completionHandler:v22];
+    [v19 queryParticipantsWithEmails:v14 phoneNumbers:v13 photoLibrary:px_systemPhotoLibrary completionHandler:v22];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface PUPhotoKitDestructiveActionsPerformer
 - (int64_t)destructivePhotosAction;
-- (void)deletePhotosActionController:(id)a3 presentConfirmationViewController:(id)a4;
+- (void)deletePhotosActionController:(id)controller presentConfirmationViewController:(id)viewController;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPhotoKitDestructiveActionsPerformer
 
-- (void)deletePhotosActionController:(id)a3 presentConfirmationViewController:(id)a4
+- (void)deletePhotosActionController:(id)controller presentConfirmationViewController:(id)viewController
 {
-  if (![(PUAssetActionPerformer *)self presentViewController:a4])
+  if (![(PUAssetActionPerformer *)self presentViewController:viewController])
   {
     v5 = PLUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -24,11 +24,11 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PUPhotoKitDestructiveActionsPerformer *)self destructivePhotosAction];
-  v4 = [(PUAssetActionPerformer *)self assets];
+  destructivePhotosAction = [(PUPhotoKitDestructiveActionsPerformer *)self destructivePhotosAction];
+  assets = [(PUAssetActionPerformer *)self assets];
   v5 = objc_alloc(MEMORY[0x1E69C37F8]);
-  v6 = [(PUAssetActionPerformer *)self undoManager];
-  v7 = [v5 initWithAction:v3 assets:v4 undoManager:v6 delegate:self];
+  undoManager = [(PUAssetActionPerformer *)self undoManager];
+  v7 = [v5 initWithAction:destructivePhotosAction assets:assets undoManager:undoManager delegate:self];
 
   [v7 setShouldSkipDeleteConfirmation:{-[PUPhotoKitDestructiveActionsPerformer shouldConfirmDestructiveAction](self, "shouldConfirmDestructiveAction") ^ 1}];
   v14[0] = 0;
@@ -47,9 +47,9 @@
   v9[3] = &unk_1E7B7BA78;
   v11 = v14;
   v9[4] = self;
-  v8 = v4;
+  v8 = assets;
   v10 = v8;
-  v12 = v3;
+  v12 = destructivePhotosAction;
   [v7 performWithWillDeleteHandler:v13 completionHandler:v9];
 
   _Block_object_dispose(v14, 8);
@@ -110,9 +110,9 @@ void __67__PUPhotoKitDestructiveActionsPerformer_performUserInteractionTask__blo
 
 - (int64_t)destructivePhotosAction
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:843 description:{@"Concrete subclass must implement %@", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:843 description:{@"Concrete subclass must implement %@", v5}];
 
   return 0;
 }

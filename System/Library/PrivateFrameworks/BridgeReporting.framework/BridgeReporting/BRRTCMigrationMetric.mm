@@ -117,9 +117,9 @@
     [v4 setObject:MEMORY[0x277CBEC28] forKey:@"MigrationSucceeded"];
   }
 
-  v18 = [(BRRTCMigrationMetric *)self deviceDetails];
-  v19 = [v18 dictionaryOfMetricKeysWithRecordedValues];
-  [v4 addEntriesFromDictionary:v19];
+  deviceDetails = [(BRRTCMigrationMetric *)self deviceDetails];
+  dictionaryOfMetricKeysWithRecordedValues = [deviceDetails dictionaryOfMetricKeysWithRecordedValues];
+  [v4 addEntriesFromDictionary:dictionaryOfMetricKeysWithRecordedValues];
 
   [v4 addEntriesFromDictionary:self->_transactionPhases];
 

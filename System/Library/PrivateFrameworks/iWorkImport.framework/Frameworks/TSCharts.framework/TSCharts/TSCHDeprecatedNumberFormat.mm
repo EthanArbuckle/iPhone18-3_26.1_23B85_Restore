@@ -1,16 +1,16 @@
 @interface TSCHDeprecatedNumberFormat
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4;
-+ (id)upgradedNumberFormatFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCHDeprecatedNumberFormat)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)saveToArchive:(Message *)a3 archiver:(id)a4;
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver;
++ (id)upgradedNumberFormatFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCHDeprecatedNumberFormat)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)saveToArchive:(Message *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCHDeprecatedNumberFormat
 
-+ (id)upgradedNumberFormatFromArchive:(const void *)a3 unarchiver:(id)a4
++ (id)upgradedNumberFormatFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v86 = a4;
-  v9 = *(a3 + 24);
+  unarchiverCopy = unarchiver;
+  v9 = *(archive + 24);
   if (v9 > 5)
   {
     v10 = 0;
@@ -21,10 +21,10 @@
     v10 = dword_2764D6BD0[v9];
   }
 
-  v11 = *(a3 + 50);
-  if ((*(a3 + 16) & 2) != 0)
+  v11 = *(archive + 50);
+  if ((*(archive + 16) & 2) != 0)
   {
-    v87 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v5, v6, v7, v8, *(a3 + 7) & 0xFFFFFFFFFFFFFFFELL);
+    v87 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v5, v6, v7, v8, *(archive + 7) & 0xFFFFFFFFFFFFFFFELL);
   }
 
   else
@@ -32,23 +32,23 @@
     v87 = 0;
   }
 
-  if (*(a3 + 26) >= 4u)
+  if (*(archive + 26) >= 4u)
   {
     v12 = 4;
   }
 
   else
   {
-    v12 = *(a3 + 26);
+    v12 = *(archive + 26);
   }
 
-  v13 = *(a3 + 120);
-  v15 = sub_2762A78A0(*(a3 + 27));
-  v19 = *(a3 + 4);
+  v13 = *(archive + 120);
+  v15 = sub_2762A78A0(*(archive + 27));
+  v19 = *(archive + 4);
   if ((v19 & 4) != 0)
   {
-    v20 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v14, v16, v17, v18, *(a3 + 8) & 0xFFFFFFFFFFFFFFFELL);
-    if ((*(a3 + 4) & 0x10) == 0)
+    v20 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v14, v16, v17, v18, *(archive + 8) & 0xFFFFFFFFFFFFFFFELL);
+    if ((*(archive + 4) & 0x10) == 0)
     {
       goto LABEL_12;
     }
@@ -65,19 +65,19 @@ LABEL_12:
     }
   }
 
-  v21 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v14, v16, v17, v18, *(a3 + 10) & 0xFFFFFFFFFFFFFFFELL);
+  v21 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v14, v16, v17, v18, *(archive + 10) & 0xFFFFFFFFFFFFFFFELL);
 LABEL_15:
-  if (*(a3 + 123) == 1)
+  if (*(archive + 123) == 1)
   {
     v23 = objc_msgSend_defaultDecimalNumberFormatWithPrefixString_suffixString_(TSCHNumberFormat, v14, v16, v17, v18, v21, v20);
   }
 
   else
   {
-    v84 = *(a3 + 58);
-    v85 = *(a3 + 56);
-    v83 = *(a3 + 121);
-    v27 = *(a3 + 122);
+    v84 = *(archive + 58);
+    v85 = *(archive + 56);
+    v83 = *(archive + 121);
+    v27 = *(archive + 122);
     v28 = MEMORY[0x277D80680];
     v29 = objc_msgSend_currentLocale(MEMORY[0x277D81228], v14, v16, v17, v18);
     v34 = objc_msgSend_defaultFormatWithFormatType_locale_(v28, v30, v31, v32, v33, v10, v29);
@@ -101,29 +101,29 @@ LABEL_15:
   return v81;
 }
 
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCHDeprecatedNumberFormat alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCHDeprecatedNumberFormat)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCHDeprecatedNumberFormat)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v14.receiver = self;
   v14.super_class = TSCHDeprecatedNumberFormat;
   v7 = [(TSCHDeprecatedNumberFormat *)&v14 init];
-  v12 = objc_msgSend_upgradedNumberFormatFromArchive_unarchiver_(TSCHDeprecatedNumberFormat, v8, v9, v10, v11, a3, v6);
+  v12 = objc_msgSend_upgradedNumberFormatFromArchive_unarchiver_(TSCHDeprecatedNumberFormat, v8, v9, v10, v11, archive, unarchiverCopy);
 
   return v12;
 }
 
-- (void)saveToArchive:(Message *)a3 archiver:(id)a4
+- (void)saveToArchive:(Message *)archive archiver:(id)archiver
 {
-  v4 = a4;
+  archiverCopy = archiver;
   v5 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v7, v8, v9, "[TSCHDeprecatedNumberFormat saveToArchive:archiver:]");
   v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHArchiveUtilities.mm");

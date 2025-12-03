@@ -1,30 +1,30 @@
 @interface EPMigrationKeyPusher
-+ (id)newService:(id)a3;
-+ (id)prefsKeyForPairingID:(id)a3;
++ (id)newService:(id)service;
++ (id)prefsKeyForPairingID:(id)d;
 - (BOOL)isUIUnlocked;
-- (BOOL)shouldConfirmKeyForWatch:(id)a3;
+- (BOOL)shouldConfirmKeyForWatch:(id)watch;
 - (EPKeymaster)keymaster;
-- (EPMigrationKeyPusher)initWithServiceRegistry:(id)a3;
+- (EPMigrationKeyPusher)initWithServiceRegistry:(id)registry;
 - (NRKeychainSyncStatusManager)keychainSyncStatusManager;
 - (NRRegistry)registry;
 - (NRRemoteObjectClassA)keyChannel;
 - (NRSecureDevicePropertyStore)secureProperties;
 - (void)dealloc;
-- (void)didConfirmKeyForWatch:(id)a3;
+- (void)didConfirmKeyForWatch:(id)watch;
 - (void)forceSecureBackup;
 - (void)registerForNotifications;
-- (void)sendMessageToWatch:(id)a3 withCompletion:(id)a4;
-- (void)tagInBluetoothWatches:(id)a3 withCompletion:(id)a4;
+- (void)sendMessageToWatch:(id)watch withCompletion:(id)completion;
+- (void)tagInBluetoothWatches:(id)watches withCompletion:(id)completion;
 - (void)unregisterForNotifications;
 - (void)update;
 @end
 
 @implementation EPMigrationKeyPusher
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithServiceRegistry:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initWithServiceRegistry:serviceCopy];
 
   return v5;
 }
@@ -69,10 +69,10 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (EPMigrationKeyPusher)initWithServiceRegistry:(id)a3
+- (EPMigrationKeyPusher)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a3);
+  registryCopy = registry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
   v6 = [(EPMigrationKeyPusher *)self init];
   if (v6)
   {
@@ -89,8 +89,8 @@
       }
     }
 
-    v10 = [(EPMigrationKeyPusher *)v6 keychainSyncStatusManager];
-    [v10 addObserver:v6];
+    keychainSyncStatusManager = [(EPMigrationKeyPusher *)v6 keychainSyncStatusManager];
+    [keychainSyncStatusManager addObserver:v6];
 
     *&v6->_uiUnlockedNotifyToken = -1;
     v11 = [[NRPreferences alloc] initWithDomain:@"com.apple.nanoregistryd"];
@@ -101,13 +101,13 @@
     lastActiveDeviceID = v6->_lastActiveDeviceID;
     v6->_lastActiveDeviceID = 0;
 
-    v14 = [(EPMigrationKeyPusher *)v6 registry];
+    registry = [(EPMigrationKeyPusher *)v6 registry];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000159A4;
     v20[3] = &unk_100175D30;
     objc_copyWeak(&v21, buf);
-    v15 = [v14 addDiffObserverWithWriteBlock:v20];
+    v15 = [registry addDiffObserverWithWriteBlock:v20];
 
     v16 = +[NRQueue registryDaemonQueue];
     v18[0] = _NSConcreteStackBlock;
@@ -130,13 +130,13 @@
   if (self->_uiUnlockedNotifyToken == -1)
   {
     v4 = +[NRQueue registryDaemonQueue];
-    v5 = [v4 queue];
+    queue = [v4 queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10001616C;
     handler[3] = &unk_1001759E8;
     handler[4] = self;
-    v6 = notify_register_dispatch("com.apple.springboard.lockstate", p_uiUnlockedNotifyToken, v5, handler);
+    v6 = notify_register_dispatch("com.apple.springboard.lockstate", p_uiUnlockedNotifyToken, queue, handler);
 
     if (v6)
     {
@@ -158,13 +158,13 @@
   {
     v10 = kMobileKeyBagLockStatusNotifyToken;
     v11 = +[NRQueue registryDaemonQueue];
-    v12 = [v11 queue];
+    queue2 = [v11 queue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100016208;
     v17[3] = &unk_1001759E8;
     v17[4] = self;
-    v13 = notify_register_dispatch(v10, &self->_keybagNotifyToken, v12, v17);
+    v13 = notify_register_dispatch(v10, &self->_keybagNotifyToken, queue2, v17);
 
     if (v13)
     {
@@ -233,10 +233,10 @@
   [(EPMigrationKeyPusher *)&v3 dealloc];
 }
 
-- (void)sendMessageToWatch:(id)a3 withCompletion:(id)a4
+- (void)sendMessageToWatch:(id)watch withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  watchCopy = watch;
+  completionCopy = completion;
   v8 = [(EPKey *)self->_key key];
   v9 = sub_1000FDEB0(v8);
 
@@ -245,18 +245,18 @@
     goto LABEL_9;
   }
 
-  v10 = [(EPMigrationKeyPusher *)self keyChannel];
-  if (!v10)
+  keyChannel = [(EPMigrationKeyPusher *)self keyChannel];
+  if (!keyChannel)
   {
     goto LABEL_9;
   }
 
-  v11 = v10;
-  v12 = [(EPMigrationKeyPusher *)self keyChannel];
-  v13 = [v12 defaultPairedDevice];
-  v14 = [v13 isConnected];
+  v11 = keyChannel;
+  keyChannel2 = [(EPMigrationKeyPusher *)self keyChannel];
+  defaultPairedDevice = [keyChannel2 defaultPairedDevice];
+  isConnected = [defaultPairedDevice isConnected];
 
-  if (v14)
+  if (isConnected)
   {
     v15 = sub_1000034AC();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -266,8 +266,8 @@
       v17 = sub_1000034AC();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v9 SHA256Data];
-        v19 = [v18 base64EncodedStringWithOptions:0];
+        sHA256Data = [v9 SHA256Data];
+        v19 = [sHA256Data base64EncodedStringWithOptions:0];
         v20 = [v19 substringToIndex:6];
         *buf = 138412290;
         v31 = v20;
@@ -275,7 +275,7 @@
       }
     }
 
-    v21 = [(EPMigrationKeyPusher *)self keyChannel];
+    keyChannel3 = [(EPMigrationKeyPusher *)self keyChannel];
     v22 = [(EPKey *)self->_key key];
     v23 = sub_1000FDEC4(v22);
     v27[0] = _NSConcreteStackBlock;
@@ -283,9 +283,9 @@
     v27[2] = sub_1000166A8;
     v27[3] = &unk_100175D80;
     v27[4] = self;
-    v28 = v6;
-    v29 = v7;
-    [v21 sendMigrationSetKeyRequestToBTUUID:v28 withKey:v9 withRevision:v23 withResponseBlock:v27];
+    v28 = watchCopy;
+    v29 = completionCopy;
+    [keyChannel3 sendMigrationSetKeyRequestToBTUUID:v28 withKey:v9 withRevision:v23 withResponseBlock:v27];
   }
 
   else
@@ -303,20 +303,20 @@ LABEL_9:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-+ (id)prefsKeyForPairingID:(id)a3
++ (id)prefsKeyForPairingID:(id)d
 {
-  v3 = [a3 UUIDString];
-  v4 = v3;
-  if (v3)
+  uUIDString = [d UUIDString];
+  v4 = uUIDString;
+  if (uUIDString)
   {
-    v5 = v3;
+    v5 = uUIDString;
   }
 
   else
@@ -329,9 +329,9 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)shouldConfirmKeyForWatch:(id)a3
+- (BOOL)shouldConfirmKeyForWatch:(id)watch
 {
-  if (!a3)
+  if (!watch)
   {
     return 0;
   }
@@ -375,9 +375,9 @@ LABEL_7:
   return v12;
 }
 
-- (void)didConfirmKeyForWatch:(id)a3
+- (void)didConfirmKeyForWatch:(id)watch
 {
-  v6 = [EPMigrationKeyPusher prefsKeyForPairingID:a3];
+  v6 = [EPMigrationKeyPusher prefsKeyForPairingID:watch];
   v4 = +[NSDate date];
   [v4 timeIntervalSinceReferenceDate];
   v5 = [NSNumber numberWithDouble:?];
@@ -401,9 +401,9 @@ LABEL_7:
     }
   }
 
-  v6 = [(EPMigrationKeyPusher *)self isUIUnlocked];
-  v7 = v6 && !self->_wasUIUnlocked;
-  self->_wasUIUnlocked = v6;
+  isUIUnlocked = [(EPMigrationKeyPusher *)self isUIUnlocked];
+  v7 = isUIUnlocked && !self->_wasUIUnlocked;
+  self->_wasUIUnlocked = isUIUnlocked;
   v35 = @"ExtendedDeviceLockState";
   v36 = &__kCFBooleanTrue;
   [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
@@ -460,7 +460,7 @@ LABEL_7:
   v17[3] = sub_100016D94;
   v17[4] = sub_100016DA4;
   v18 = [NROSTransaction transactionWithName:@"migrationKeyPusher"];
-  v12 = [(EPMigrationKeyPusher *)self registry];
+  registry = [(EPMigrationKeyPusher *)self registry];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100016DAC;
@@ -476,7 +476,7 @@ LABEL_7:
   v16 = v11;
   v13[10] = v19;
   v13[11] = v17;
-  [v12 grabRegistryWithReadBlock:v13];
+  [registry grabRegistryWithReadBlock:v13];
 
   _Block_object_dispose(v17, 8);
   _Block_object_dispose(v19, 8);
@@ -488,11 +488,11 @@ LABEL_7:
   _Block_object_dispose(v33, 8);
 }
 
-- (void)tagInBluetoothWatches:(id)a3 withCompletion:(id)a4
+- (void)tagInBluetoothWatches:(id)watches withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  watchesCopy = watches;
+  completionCopy = completion;
+  if ([watchesCopy count])
   {
     objc_initWeak(&location, self);
     if (!self->_transactionForBackup)
@@ -508,15 +508,15 @@ LABEL_7:
     v11[2] = sub_100017910;
     v11[3] = &unk_100175E60;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
+    v12 = completionCopy;
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 

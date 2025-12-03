@@ -1,6 +1,6 @@
 @interface FSFFeatureStoreBiomeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (FSFFeatureStoreBiomeEvent)initWithInteractionId:(id)a3 featureData:(id)a4 dataVersion:(unsigned int)a5 timestamp:(double)a6;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (FSFFeatureStoreBiomeEvent)initWithInteractionId:(id)id featureData:(id)data dataVersion:(unsigned int)version timestamp:(double)timestamp;
 - (NSData)featureData;
 - (NSString)interactionId;
 - (id)serialize;
@@ -10,7 +10,7 @@
 
 - (id)serialize
 {
-  v2 = self;
+  selfCopy = self;
   FeatureStoreBiomeEvent.serialize()();
   v4 = v3;
 
@@ -48,25 +48,25 @@
   return v2.super.isa;
 }
 
-- (FSFFeatureStoreBiomeEvent)initWithInteractionId:(id)a3 featureData:(id)a4 dataVersion:(unsigned int)a5 timestamp:(double)a6
+- (FSFFeatureStoreBiomeEvent)initWithInteractionId:(id)id featureData:(id)data dataVersion:(unsigned int)version timestamp:(double)timestamp
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a4;
+  dataCopy = data;
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 
-  return FeatureStoreBiomeEvent.init(interactionId:featureData:dataVersion:timestamp:)(v9, v11, v13, v15, a5, a6);
+  return FeatureStoreBiomeEvent.init(interactionId:featureData:dataVersion:timestamp:)(v9, v11, v13, v15, version, timestamp);
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
+  dataCopy = data;
   static Data._unconditionallyBridgeFromObjectiveC(_:)();
 
   swift_getObjCClassMetadata();
   v6 = OUTLINED_FUNCTION_16();
-  v8 = static FeatureStoreBiomeEvent.event(with:dataVersion:)(v6, v7, a4);
+  v8 = static FeatureStoreBiomeEvent.event(with:dataVersion:)(v6, v7, version);
   v9 = OUTLINED_FUNCTION_16();
   outlined consume of Data._Representation(v9, v10);
 

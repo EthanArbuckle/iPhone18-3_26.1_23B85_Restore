@@ -23,18 +23,18 @@
 
 - (id)description
 {
-  v3 = [(VGFaceSelectionState *)self capturedFrontPose];
-  if (v3)
+  capturedFrontPose = [(VGFaceSelectionState *)self capturedFrontPose];
+  if (capturedFrontPose)
   {
-    v4 = [(VGFaceSelectionState *)self capturedFrontPose];
-    if ([v4 valid])
+    capturedFrontPose2 = [(VGFaceSelectionState *)self capturedFrontPose];
+    if ([capturedFrontPose2 valid])
     {
-      v5 = [(VGFaceSelectionState *)self capturedFrontPose];
-      v6 = [v5 captureData];
-      v7 = v6;
-      if (v6)
+      capturedFrontPose3 = [(VGFaceSelectionState *)self capturedFrontPose];
+      captureData = [capturedFrontPose3 captureData];
+      v7 = captureData;
+      if (captureData)
       {
-        [v6 timestamp];
+        [captureData timestamp];
         v22 = v25;
       }
 
@@ -90,12 +90,12 @@
   poseIndex_low = LODWORD(self->_poseIndex);
   [(VGSelectionState *)self progress];
   v13 = v12;
-  v14 = [(VGFaceSelectionState *)self yawAngleCaptured];
-  v15 = [(VGFaceSelectionState *)self pitchAngleCaptured];
-  v16 = [(VGFaceSelectionState *)self expressionCaptured];
-  v17 = [(VGFaceSelectionState *)self capturedFrontPose];
+  yawAngleCaptured = [(VGFaceSelectionState *)self yawAngleCaptured];
+  pitchAngleCaptured = [(VGFaceSelectionState *)self pitchAngleCaptured];
+  expressionCaptured = [(VGFaceSelectionState *)self expressionCaptured];
+  capturedFrontPose4 = [(VGFaceSelectionState *)self capturedFrontPose];
   [(VGFaceSelectionState *)self completionScore];
-  if (v17)
+  if (capturedFrontPose4)
   {
     v19 = @"YES";
   }
@@ -105,7 +105,7 @@
     v19 = @"NO";
   }
 
-  v20 = [v24 stringWithFormat:@"Face frame selection state: completed %@ failed %@ updated %@ poseIndex %d progress %f yaw %@ pitch %@ expr %@ frontPose %@ (%lld) completionScore %.3f", v23, v9, v10, poseIndex_low, v13, v14, v15, v16, v19, v22, v18];
+  v20 = [v24 stringWithFormat:@"Face frame selection state: completed %@ failed %@ updated %@ poseIndex %d progress %f yaw %@ pitch %@ expr %@ frontPose %@ (%lld) completionScore %.3f", v23, v9, v10, poseIndex_low, v13, yawAngleCaptured, pitchAngleCaptured, expressionCaptured, v19, v22, v18];
 
   return v20;
 }

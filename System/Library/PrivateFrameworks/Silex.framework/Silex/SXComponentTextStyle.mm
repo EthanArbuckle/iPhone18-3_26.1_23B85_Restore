@@ -1,56 +1,56 @@
 @interface SXComponentTextStyle
-+ (id)valueClassBlockForPropertyWithName:(id)a3;
-- (BOOL)fontScalingWithValue:(id)a3 withType:(int)a4;
-- (double)hyphenationZoneWithValue:(id)a3 withType:(int)a4;
-- (double)relativeLineHeightWithValue:(id)a3 withType:(int)a4;
-- (int64_t)exactLineHeightWithValue:(id)a3 withType:(int)a4;
-- (int64_t)hyphenationMinimumCharactersAfterWithValue:(id)a3 withType:(int)a4;
-- (int64_t)hyphenationMinimumCharactersBeforeWithValue:(id)a3 withType:(int)a4;
-- (int64_t)hyphenationMinimumWordLengthWithValue:(id)a3 withType:(int)a4;
-- (int64_t)hyphenationWithValue:(id)a3 withType:(int)a4;
-- (int64_t)lineHeightWithValue:(id)a3 withType:(int)a4;
-- (int64_t)textAlignmentWithValue:(id)a3 withType:(int)a4;
++ (id)valueClassBlockForPropertyWithName:(id)name;
+- (BOOL)fontScalingWithValue:(id)value withType:(int)type;
+- (double)hyphenationZoneWithValue:(id)value withType:(int)type;
+- (double)relativeLineHeightWithValue:(id)value withType:(int)type;
+- (int64_t)exactLineHeightWithValue:(id)value withType:(int)type;
+- (int64_t)hyphenationMinimumCharactersAfterWithValue:(id)value withType:(int)type;
+- (int64_t)hyphenationMinimumCharactersBeforeWithValue:(id)value withType:(int)type;
+- (int64_t)hyphenationMinimumWordLengthWithValue:(id)value withType:(int)type;
+- (int64_t)hyphenationWithValue:(id)value withType:(int)type;
+- (int64_t)lineHeightWithValue:(id)value withType:(int)type;
+- (int64_t)textAlignmentWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXComponentTextStyle
 
-+ (id)valueClassBlockForPropertyWithName:(id)a3
++ (id)valueClassBlockForPropertyWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"conditional"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"conditional"])
   {
     v5 = &__block_literal_global_87;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXComponentTextStyle;
-    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_valueClassBlockForPropertyWithName_, nameCopy);
   }
 
   return v5;
 }
 
-- (int64_t)textAlignmentWithValue:(id)a3 withType:(int)a4
+- (int64_t)textAlignmentWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"left"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"left"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"center"])
+  else if ([valueCopy isEqualToString:@"center"])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"right"])
+  else if ([valueCopy isEqualToString:@"right"])
   {
     v5 = 3;
   }
 
-  else if ([v4 isEqualToString:@"justified"])
+  else if ([valueCopy isEqualToString:@"justified"])
   {
     v5 = 4;
   }
@@ -63,11 +63,11 @@
   return v5;
 }
 
-- (int64_t)lineHeightWithValue:(id)a3 withType:(int)a4
+- (int64_t)lineHeightWithValue:(id)value withType:(int)type
 {
-  if (a3)
+  if (value)
   {
-    return [a3 integerValue];
+    return [value integerValue];
   }
 
   else
@@ -76,11 +76,11 @@
   }
 }
 
-- (int64_t)exactLineHeightWithValue:(id)a3 withType:(int)a4
+- (int64_t)exactLineHeightWithValue:(id)value withType:(int)type
 {
-  if (a3)
+  if (value)
   {
-    return [a3 integerValue];
+    return [value integerValue];
   }
 
   else
@@ -89,23 +89,23 @@
   }
 }
 
-- (double)relativeLineHeightWithValue:(id)a3 withType:(int)a4
+- (double)relativeLineHeightWithValue:(id)value withType:(int)type
 {
-  if (!a3)
+  if (!value)
   {
     return 1.79769313e308;
   }
 
-  [a3 floatValue];
+  [value floatValue];
   return v4;
 }
 
-- (int64_t)hyphenationWithValue:(id)a3 withType:(int)a4
+- (int64_t)hyphenationWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if ([v4 BOOLValue])
+    if ([valueCopy BOOLValue])
     {
       v5 = 1;
     }
@@ -124,23 +124,23 @@
   return v5;
 }
 
-- (double)hyphenationZoneWithValue:(id)a3 withType:(int)a4
+- (double)hyphenationZoneWithValue:(id)value withType:(int)type
 {
   result = 18.0;
-  if (a4 == 2)
+  if (type == 2)
   {
-    [a3 floatValue];
+    [value floatValue];
     return v7;
   }
 
   return result;
 }
 
-- (int64_t)hyphenationMinimumWordLengthWithValue:(id)a3 withType:(int)a4
+- (int64_t)hyphenationMinimumWordLengthWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 unsignedIntegerValue];
+    return [value unsignedIntegerValue];
   }
 
   else
@@ -149,11 +149,11 @@
   }
 }
 
-- (int64_t)hyphenationMinimumCharactersBeforeWithValue:(id)a3 withType:(int)a4
+- (int64_t)hyphenationMinimumCharactersBeforeWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 unsignedIntegerValue];
+    return [value unsignedIntegerValue];
   }
 
   else
@@ -162,11 +162,11 @@
   }
 }
 
-- (int64_t)hyphenationMinimumCharactersAfterWithValue:(id)a3 withType:(int)a4
+- (int64_t)hyphenationMinimumCharactersAfterWithValue:(id)value withType:(int)type
 {
-  if (a4 == 2)
+  if (type == 2)
   {
-    return [a3 unsignedIntegerValue];
+    return [value unsignedIntegerValue];
   }
 
   else
@@ -175,21 +175,21 @@
   }
 }
 
-- (BOOL)fontScalingWithValue:(id)a3 withType:(int)a4
+- (BOOL)fontScalingWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

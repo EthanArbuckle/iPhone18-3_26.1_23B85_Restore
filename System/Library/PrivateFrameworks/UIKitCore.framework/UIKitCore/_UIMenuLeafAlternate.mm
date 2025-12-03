@@ -1,48 +1,48 @@
 @interface _UIMenuLeafAlternate
-+ (id)alternateWithModifierFlags:(int64_t)a3 menuLeaf:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)alternateWithModifierFlags:(int64_t)flags menuLeaf:(id)leaf;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UIMenuLeafAlternate)initWithCoder:(id)a3;
-- (_UIMenuLeafAlternate)initWithModifierFlags:(int64_t)a3 menuLeaf:(id)a4;
-- (id)_alternateWithMenuLeaf:(id)a3;
-- (id)alternateLeafWithBaseLeaf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIMenuLeafAlternate)initWithCoder:(id)coder;
+- (_UIMenuLeafAlternate)initWithModifierFlags:(int64_t)flags menuLeaf:(id)leaf;
+- (id)_alternateWithMenuLeaf:(id)leaf;
+- (id)alternateLeafWithBaseLeaf:(id)leaf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMenuLeafAlternate
 
-+ (id)alternateWithModifierFlags:(int64_t)a3 menuLeaf:(id)a4
++ (id)alternateWithModifierFlags:(int64_t)flags menuLeaf:(id)leaf
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithModifierFlags:a3 menuLeaf:v6];
+  leafCopy = leaf;
+  v7 = [[self alloc] initWithModifierFlags:flags menuLeaf:leafCopy];
 
   return v7;
 }
 
-- (_UIMenuLeafAlternate)initWithModifierFlags:(int64_t)a3 menuLeaf:(id)a4
+- (_UIMenuLeafAlternate)initWithModifierFlags:(int64_t)flags menuLeaf:(id)leaf
 {
-  v7 = a4;
+  leafCopy = leaf;
   v11.receiver = self;
   v11.super_class = _UIMenuLeafAlternate;
   v8 = [(_UIMenuLeafAlternate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_modifierFlags = a3;
-    objc_storeStrong(&v8->_menuLeaf, a4);
+    v8->_modifierFlags = flags;
+    objc_storeStrong(&v8->_menuLeaf, leaf);
   }
 
   return v9;
 }
 
-- (id)alternateLeafWithBaseLeaf:(id)a3
+- (id)alternateLeafWithBaseLeaf:(id)leaf
 {
-  v4 = [a3 _keyboardShortcut];
-  if (v4)
+  _keyboardShortcut = [leaf _keyboardShortcut];
+  if (_keyboardShortcut)
   {
-    v5 = v4;
-    v6 = [v4 shortcutAddingModifierFlags:self->_modifierFlags];
+    v5 = _keyboardShortcut;
+    v6 = [_keyboardShortcut shortcutAddingModifierFlags:self->_modifierFlags];
   }
 
   else
@@ -55,35 +55,35 @@
   return v7;
 }
 
-- (id)_alternateWithMenuLeaf:(id)a3
+- (id)_alternateWithMenuLeaf:(id)leaf
 {
-  v4 = a3;
+  leafCopy = leaf;
   v5 = [(_UIMenuLeafAlternate *)self copy];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = leafCopy;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modifierFlags = self->_modifierFlags;
-  v5 = a3;
-  [v5 encodeInteger:modifierFlags forKey:@"ModifierFlags"];
-  [v5 encodeObject:self->_menuLeaf forKey:@"MenuLeaf"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:modifierFlags forKey:@"ModifierFlags"];
+  [coderCopy encodeObject:self->_menuLeaf forKey:@"MenuLeaf"];
 }
 
-- (_UIMenuLeafAlternate)initWithCoder:(id)a3
+- (_UIMenuLeafAlternate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _UIMenuLeafAlternate;
   v5 = [(_UIMenuLeafAlternate *)&v10 init];
   if (v5)
   {
-    v5->_modifierFlags = [v4 decodeIntegerForKey:@"ModifierFlags"];
+    v5->_modifierFlags = [coderCopy decodeIntegerForKey:@"ModifierFlags"];
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"MenuLeaf"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"MenuLeaf"];
     menuLeaf = v5->_menuLeaf;
     v5->_menuLeaf = v7;
   }
@@ -91,10 +91,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -106,7 +106,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_modifierFlags == v7->_modifierFlags)
       {
@@ -145,7 +145,7 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIMenuLeafAlternate alloc];
   modifierFlags = self->_modifierFlags;
@@ -161,9 +161,9 @@
   [v3 appendString:v4 withName:@"modifierFlags"];
 
   v5 = [v3 appendObject:self->_menuLeaf withName:@"menuLeaf"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

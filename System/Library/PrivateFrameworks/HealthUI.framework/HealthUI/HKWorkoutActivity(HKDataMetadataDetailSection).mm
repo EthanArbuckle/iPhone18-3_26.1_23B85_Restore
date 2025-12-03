@@ -9,16 +9,16 @@
   v115[15] = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = HKDateFormatterFromTemplate(32);
-  v6 = [a1 startDate];
-  v7 = [a1 endDate];
-  v8 = [v6 isEqualToDate:v7];
+  startDate = [self startDate];
+  endDate = [self endDate];
+  v8 = [startDate isEqualToDate:endDate];
 
-  v105 = a1;
+  selfCopy = self;
   v102 = v5;
   if (v8)
   {
-    v9 = [a1 startDate];
-    v10 = [v5 stringFromDate:v9];
+    startDate2 = [self startDate];
+    v10 = [v5 stringFromDate:startDate2];
 
     v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v12 = [v11 localizedStringForKey:@"DATE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -30,12 +30,12 @@
   {
     v10 = objc_alloc_init(HKWorkoutDurationNumberFormatter);
     [(HKTimePeriodWithSecondsNumberFormatter *)v10 setAllowMillisecondPrecision:1];
-    v14 = [a1 startDate];
-    v11 = [v5 stringFromDate:v14];
+    startDate3 = [self startDate];
+    v11 = [v5 stringFromDate:startDate3];
 
-    v15 = [a1 endDate];
-    [v5 stringFromDate:v15];
-    v12 = v16 = a1;
+    endDate2 = [self endDate];
+    [v5 stringFromDate:endDate2];
+    v12 = v16 = self;
 
     v17 = MEMORY[0x1E696AD98];
     [v16 duration];
@@ -96,7 +96,7 @@
   v111 = 0u;
   obj = v35;
   v36 = [obj countByEnumeratingWithState:&v110 objects:v114 count:16];
-  v37 = v105;
+  v37 = selfCopy;
   if (!v36)
   {
     goto LABEL_21;
@@ -120,30 +120,30 @@
       v42 = [v37 statisticsForType:v41];
       if (v42)
       {
-        v43 = [v4 displayTypeController];
-        v44 = [v43 displayTypeForObjectType:v41];
+        displayTypeController = [v4 displayTypeController];
+        v44 = [displayTypeController displayTypeForObjectType:v41];
 
-        v45 = [v4 unitController];
-        v46 = [v45 unitForDisplayType:v44];
+        unitController = [v4 unitController];
+        v46 = [unitController unitForDisplayType:v44];
 
-        v47 = [v41 aggregationStyle];
-        if (v47 == 1)
+        aggregationStyle = [v41 aggregationStyle];
+        if (aggregationStyle == 1)
         {
-          v48 = [v42 averageQuantity];
+          averageQuantity = [v42 averageQuantity];
 LABEL_14:
-          v49 = v48;
-          [v48 doubleValueForUnit:v46];
+          v49 = averageQuantity;
+          [averageQuantity doubleValueForUnit:v46];
           v51 = v50;
 
-          v52 = [v44 presentation];
+          presentation = [v44 presentation];
           v53 = [MEMORY[0x1E696AD98] numberWithDouble:v51];
-          v54 = [v52 adjustedValueForDaemonValue:v53];
+          v54 = [presentation adjustedValueForDaemonValue:v53];
           [v4 unitController];
           v56 = v55 = v4;
           v57 = HKFormattedStringFromValueForContext(v54, v44, v56, 0, 0, 1);
 
-          v58 = [v55 unitController];
-          LOBYTE(v54) = HKFormatterIncludesUnitForDisplayTypeInContext(v44, 1, v58);
+          unitController2 = [v55 unitController];
+          LOBYTE(v54) = HKFormatterIncludesUnitForDisplayTypeInContext(v44, 1, unitController2);
 
           if (v54)
           {
@@ -152,26 +152,26 @@ LABEL_14:
 
           else
           {
-            v60 = [v55 unitController];
-            v61 = [v60 localizedDisplayNameForDisplayType:v44 value:0 nameContext:3];
+            unitController3 = [v55 unitController];
+            v61 = [unitController3 localizedDisplayNameForDisplayType:v44 value:0 nameContext:3];
 
             v59 = HKFormatValueAndUnit(v57, v61);
           }
 
-          v62 = [v44 localization];
-          v63 = [v62 displayName];
+          localization = [v44 localization];
+          displayName = [localization displayName];
           v64 = HKUIJoinStringsForAutomationIdentifier(&unk_1F4381C90);
-          [v55 addText:v59 detail:v63 baseIdentifier:v64];
+          [v55 addText:v59 detail:displayName baseIdentifier:v64];
 
           v4 = v55;
           v39 = v104;
-          v37 = v105;
+          v37 = selfCopy;
           v38 = v107;
         }
 
-        else if (!v47)
+        else if (!aggregationStyle)
         {
-          v48 = [v42 sumQuantity];
+          averageQuantity = [v42 sumQuantity];
           goto LABEL_14;
         }
       }
@@ -187,17 +187,17 @@ LABEL_14:
 LABEL_21:
   v65 = v4;
 
-  v66 = [v37 workoutConfiguration];
-  v67 = [v66 locationType];
+  workoutConfiguration = [v37 workoutConfiguration];
+  locationType = [workoutConfiguration locationType];
 
-  if ((v67 - 1) > 2)
+  if ((locationType - 1) > 2)
   {
     v68 = 0;
   }
 
   else
   {
-    v68 = off_1E81BB630[v67 - 1];
+    v68 = off_1E81BB630[locationType - 1];
   }
 
   v69 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -207,35 +207,35 @@ LABEL_21:
   v73 = HKUIJoinStringsForAutomationIdentifier(&unk_1F4381CA8);
   [v65 addText:v70 detail:v72 baseIdentifier:v73];
 
-  v74 = [v105 workoutConfiguration];
-  v75 = [v74 activityType];
+  workoutConfiguration2 = [selfCopy workoutConfiguration];
+  activityType = [workoutConfiguration2 activityType];
 
-  if (v75 == 46)
+  if (activityType == 46)
   {
-    v76 = [v105 workoutConfiguration];
-    [v76 swimmingLocationType];
+    workoutConfiguration3 = [selfCopy workoutConfiguration];
+    [workoutConfiguration3 swimmingLocationType];
     v77 = _HKWorkoutSwimmingLocationTypeName();
     v78 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v79 = [v78 localizedStringForKey:@"HKSwimmingLocationType" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v80 = HKUIJoinStringsForAutomationIdentifier(&unk_1F4381CC0);
     [v65 addText:v77 detail:v79 baseIdentifier:v80];
 
-    v81 = [v65 displayTypeController];
-    v82 = [v81 displayTypeWithIdentifier:&unk_1F4384750];
+    displayTypeController2 = [v65 displayTypeController];
+    v82 = [displayTypeController2 displayTypeWithIdentifier:&unk_1F4384750];
 
-    v83 = [v65 unitController];
-    v84 = [v83 unitForDisplayType:v82];
+    unitController4 = [v65 unitController];
+    v84 = [unitController4 unitForDisplayType:v82];
 
-    v85 = [v105 workoutConfiguration];
-    v86 = [v85 lapLength];
-    [v86 doubleValueForUnit:v84];
+    workoutConfiguration4 = [selfCopy workoutConfiguration];
+    lapLength = [workoutConfiguration4 lapLength];
+    [lapLength doubleValueForUnit:v84];
     v88 = v87;
 
-    v89 = [v82 presentation];
+    presentation2 = [v82 presentation];
     v90 = [MEMORY[0x1E696AD98] numberWithDouble:v88];
-    v91 = [v89 adjustedValueForDaemonValue:v90];
-    v92 = [v65 unitController];
-    v93 = HKFormattedStringFromValueForContext(v91, v82, v92, 0, 0, 1);
+    v91 = [presentation2 adjustedValueForDaemonValue:v90];
+    unitController5 = [v65 unitController];
+    v93 = HKFormattedStringFromValueForContext(v91, v82, unitController5, 0, 0, 1);
 
     v94 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v95 = [v94 localizedStringForKey:@"HKLapLength" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];

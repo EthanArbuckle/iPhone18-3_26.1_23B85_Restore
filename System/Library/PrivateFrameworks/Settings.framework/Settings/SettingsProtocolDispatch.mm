@@ -1,25 +1,25 @@
 @interface SettingsProtocolDispatch
 - (_TtP8Settings20SettingsHostProtocol_)settingsHost;
-- (void)handshakeWithEndPoint:(id)a3;
-- (void)isCloudSyncEnabled:(id)a3;
+- (void)handshakeWithEndPoint:(id)point;
+- (void)isCloudSyncEnabled:(id)enabled;
 - (void)popNavigationStack;
-- (void)setCloudSyncEnabled:(BOOL)a3;
-- (void)willSelectWithNavigationPath:(id)a3;
-- (void)willSelectWithRevealElementKey:(id)a3;
+- (void)setCloudSyncEnabled:(BOOL)enabled;
+- (void)willSelectWithNavigationPath:(id)path;
+- (void)willSelectWithRevealElementKey:(id)key;
 @end
 
 @implementation SettingsProtocolDispatch
 
 - (_TtP8Settings20SettingsHostProtocol_)settingsHost
 {
-  v2 = [*self->target settingsHost];
+  settingsHost = [*self->target settingsHost];
 
-  return v2;
+  return settingsHost;
 }
 
-- (void)willSelectWithRevealElementKey:(id)a3
+- (void)willSelectWithRevealElementKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v3 = sub_21CE6CC50();
     v5 = v4;
@@ -34,23 +34,23 @@
   sub_21CE2DAFC(v3, v5);
 }
 
-- (void)willSelectWithNavigationPath:(id)a3
+- (void)willSelectWithNavigationPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
 
-  sub_21CE2E030(v3);
+  sub_21CE2E030(pathCopy);
 }
 
-- (void)handshakeWithEndPoint:(id)a3
+- (void)handshakeWithEndPoint:(id)point
 {
-  v3 = a3;
+  pointCopy = point;
 
-  sub_21CE31F34(v3);
+  sub_21CE31F34(pointCopy);
 }
 
-- (void)isCloudSyncEnabled:(id)a3
+- (void)isCloudSyncEnabled:(id)enabled
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(enabled);
   _Block_copy(v3);
 
   sub_21CE32418(v4, v3);
@@ -58,10 +58,10 @@
   _Block_release(v3);
 }
 
-- (void)setCloudSyncEnabled:(BOOL)a3
+- (void)setCloudSyncEnabled:(BOOL)enabled
 {
 
-  sub_21CE2F4B4(a3);
+  sub_21CE2F4B4(enabled);
 }
 
 - (void)popNavigationStack

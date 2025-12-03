@@ -1,8 +1,8 @@
 @interface MTRDoorLockClusterSetCredentialParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDoorLockClusterSetCredentialParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,9 +23,9 @@
     credential = v3->_credential;
     v3->_credential = v5;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     credentialData = v3->_credentialData;
-    v3->_credentialData = v7;
+    v3->_credentialData = data;
 
     userIndex = v3->_userIndex;
     v3->_userIndex = 0;
@@ -46,32 +46,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterSetCredentialParams);
-  v5 = [(MTRDoorLockClusterSetCredentialParams *)self operationType];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setOperationType:v5];
+  operationType = [(MTRDoorLockClusterSetCredentialParams *)self operationType];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setOperationType:operationType];
 
-  v6 = [(MTRDoorLockClusterSetCredentialParams *)self credential];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setCredential:v6];
+  credential = [(MTRDoorLockClusterSetCredentialParams *)self credential];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setCredential:credential];
 
-  v7 = [(MTRDoorLockClusterSetCredentialParams *)self credentialData];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setCredentialData:v7];
+  credentialData = [(MTRDoorLockClusterSetCredentialParams *)self credentialData];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setCredentialData:credentialData];
 
-  v8 = [(MTRDoorLockClusterSetCredentialParams *)self userIndex];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setUserIndex:v8];
+  userIndex = [(MTRDoorLockClusterSetCredentialParams *)self userIndex];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setUserIndex:userIndex];
 
-  v9 = [(MTRDoorLockClusterSetCredentialParams *)self userStatus];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setUserStatus:v9];
+  userStatus = [(MTRDoorLockClusterSetCredentialParams *)self userStatus];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setUserStatus:userStatus];
 
-  v10 = [(MTRDoorLockClusterSetCredentialParams *)self userType];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setUserType:v10];
+  userType = [(MTRDoorLockClusterSetCredentialParams *)self userType];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setUserType:userType];
 
-  v11 = [(MTRDoorLockClusterSetCredentialParams *)self timedInvokeTimeoutMs];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRDoorLockClusterSetCredentialParams *)self timedInvokeTimeoutMs];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v12 = [(MTRDoorLockClusterSetCredentialParams *)self serverSideProcessingTimeout];
-  [(MTRDoorLockClusterSetCredentialParams *)v4 setServerSideProcessingTimeout:v12];
+  serverSideProcessingTimeout = [(MTRDoorLockClusterSetCredentialParams *)self serverSideProcessingTimeout];
+  [(MTRDoorLockClusterSetCredentialParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -89,59 +89,59 @@
   return v9;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v33[0] = 0;
-  v34 = 0;
-  v35 = 0;
+  unsignedCharValue = 0;
+  unsignedShortValue = 0;
   v38 = 0;
   v36 = 0uLL;
-  LOBYTE(v37) = 0;
+  LOBYTE(unsignedShortValue2) = 0;
   v39 = 0;
   v32[0] = 0;
   v32[1] = 0;
   v31 = v32;
-  v5 = [(MTRDoorLockClusterSetCredentialParams *)self operationType];
-  v33[0] = [v5 unsignedCharValue];
+  operationType = [(MTRDoorLockClusterSetCredentialParams *)self operationType];
+  v33[0] = [operationType unsignedCharValue];
 
-  v6 = [(MTRDoorLockClusterSetCredentialParams *)self credential];
-  v7 = [v6 credentialType];
-  v34 = [v7 unsignedCharValue];
+  credential = [(MTRDoorLockClusterSetCredentialParams *)self credential];
+  credentialType = [credential credentialType];
+  unsignedCharValue = [credentialType unsignedCharValue];
 
-  v8 = [(MTRDoorLockClusterSetCredentialParams *)self credential];
-  v9 = [v8 credentialIndex];
-  v35 = [v9 unsignedShortValue];
+  credential2 = [(MTRDoorLockClusterSetCredentialParams *)self credential];
+  credentialIndex = [credential2 credentialIndex];
+  unsignedShortValue = [credentialIndex unsignedShortValue];
 
-  v10 = [(MTRDoorLockClusterSetCredentialParams *)self credentialData];
-  sub_238DB6950(v25, [v10 bytes], objc_msgSend(v10, "length"));
+  credentialData = [(MTRDoorLockClusterSetCredentialParams *)self credentialData];
+  sub_238DB6950(v25, [credentialData bytes], objc_msgSend(credentialData, "length"));
 
   v36 = v25[0];
-  v11 = [(MTRDoorLockClusterSetCredentialParams *)self userIndex];
+  userIndex = [(MTRDoorLockClusterSetCredentialParams *)self userIndex];
 
-  if (v11)
+  if (userIndex)
   {
-    v37 = 0;
+    unsignedShortValue2 = 0;
     v38 = 1;
-    v12 = [(MTRDoorLockClusterSetCredentialParams *)self userIndex];
-    v37 = [v12 unsignedShortValue];
+    userIndex2 = [(MTRDoorLockClusterSetCredentialParams *)self userIndex];
+    unsignedShortValue2 = [userIndex2 unsignedShortValue];
   }
 
-  v13 = [(MTRDoorLockClusterSetCredentialParams *)self userStatus];
+  userStatus = [(MTRDoorLockClusterSetCredentialParams *)self userStatus];
 
-  if (v13)
+  if (userStatus)
   {
     LOWORD(v39) = 256;
-    v14 = [(MTRDoorLockClusterSetCredentialParams *)self userStatus];
-    LOBYTE(v39) = [v14 unsignedCharValue];
+    userStatus2 = [(MTRDoorLockClusterSetCredentialParams *)self userStatus];
+    LOBYTE(v39) = [userStatus2 unsignedCharValue];
   }
 
-  v15 = [(MTRDoorLockClusterSetCredentialParams *)self userType];
+  userType = [(MTRDoorLockClusterSetCredentialParams *)self userType];
 
-  if (v15)
+  if (userType)
   {
     HIWORD(v39) = 256;
-    v16 = [(MTRDoorLockClusterSetCredentialParams *)self userType];
-    BYTE2(v39) = [v16 unsignedCharValue];
+    userType2 = [(MTRDoorLockClusterSetCredentialParams *)self userType];
+    BYTE2(v39) = [userType2 unsignedCharValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v30);
@@ -163,8 +163,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v30);
-      v17 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v30);
+      v17 = sub_2393C7114(reader, 21, 256);
       v20 = v24;
       v19 = v17;
     }
@@ -192,19 +192,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDoorLockClusterSetCredentialParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -215,7 +215,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x524E00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

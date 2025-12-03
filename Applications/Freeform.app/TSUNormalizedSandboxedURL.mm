@@ -1,23 +1,23 @@
 @interface TSUNormalizedSandboxedURL
 - (BOOL)hasSandboxAccess;
-- (TSUNormalizedSandboxedURL)initWithURL:(id)a3 originalSandboxedURL:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSUNormalizedSandboxedURL)initWithURL:(id)l originalSandboxedURL:(id)rL;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)originalSandboxedURLForNormalizing;
 @end
 
 @implementation TSUNormalizedSandboxedURL
 
-- (TSUNormalizedSandboxedURL)initWithURL:(id)a3 originalSandboxedURL:(id)a4
+- (TSUNormalizedSandboxedURL)initWithURL:(id)l originalSandboxedURL:(id)rL
 {
-  v7 = a4;
+  rLCopy = rL;
   v11.receiver = self;
   v11.super_class = TSUNormalizedSandboxedURL;
-  v8 = [(CRLSandboxedURL *)&v11 initWithURL:a3];
+  v8 = [(CRLSandboxedURL *)&v11 initWithURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_originalSandboxedURL, a4);
+    objc_storeStrong(&v8->_originalSandboxedURL, rL);
   }
 
   return v9;
@@ -44,21 +44,21 @@
   v5.super_class = TSUNormalizedSandboxedURL;
   if ([(CRLSandboxedURL *)&v5 hasSandboxAccess])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(CRLSandboxedURL *)self->_originalSandboxedURL originalSandboxedURLForNormalizing];
+    selfCopy = [(CRLSandboxedURL *)self->_originalSandboxedURL originalSandboxedURLForNormalizing];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(CRLSandboxedURL *)self->_originalSandboxedURL copyWithZone:?];
-  v6 = [TSUNormalizedSandboxedURL allocWithZone:a3];
+  v6 = [TSUNormalizedSandboxedURL allocWithZone:zone];
   v7 = [(CRLSandboxedURL *)self URL];
   v8 = [(TSUNormalizedSandboxedURL *)v6 initWithURL:v7 originalSandboxedURL:v5];
 
@@ -95,8 +95,8 @@
     abort();
   }
 
-  v9 = [(TSUNormalizedSandboxedURL *)v8 hasSandboxAccess];
-  if (v9 != [(TSUNormalizedSandboxedURL *)self hasSandboxAccess])
+  hasSandboxAccess = [(TSUNormalizedSandboxedURL *)v8 hasSandboxAccess];
+  if (hasSandboxAccess != [(TSUNormalizedSandboxedURL *)self hasSandboxAccess])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -135,9 +135,9 @@
   v5 = [(CRLSandboxedURL *)self URL];
   v10.receiver = self;
   v10.super_class = TSUNormalizedSandboxedURL;
-  v6 = [(CRLSandboxedURL *)&v10 hasSandboxAccess];
+  hasSandboxAccess = [(CRLSandboxedURL *)&v10 hasSandboxAccess];
   v7 = @"NO";
-  if (v6)
+  if (hasSandboxAccess)
   {
     v7 = @"YES";
   }

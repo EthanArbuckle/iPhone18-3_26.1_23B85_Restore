@@ -1,14 +1,14 @@
 @interface HDCodableBloodPressureJournalScheduleTimeInterval
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDayWindowType:(id)a3;
+- (int)StringAsDayWindowType:(id)type;
 - (int)dayWindowType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableBloodPressureJournalScheduleTimeInterval
@@ -26,17 +26,17 @@
   }
 }
 
-- (int)StringAsDayWindowType:(id)a3
+- (int)StringAsDayWindowType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WakeUp"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WakeUp"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"BedTime"];
+    v4 = [typeCopy isEqualToString:@"BedTime"];
   }
 
   return v4;
@@ -48,15 +48,15 @@
   v8.receiver = self;
   v8.super_class = HDCodableBloodPressureJournalScheduleTimeInterval;
   v4 = [(HDCodableBloodPressureJournalScheduleTimeInterval *)&v8 description];
-  v5 = [(HDCodableBloodPressureJournalScheduleTimeInterval *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableBloodPressureJournalScheduleTimeInterval *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     dayWindowType = self->_dayWindowType;
@@ -78,57 +78,57 @@
       v5 = @"WakeUp";
     }
 
-    [v3 setObject:v5 forKey:@"dayWindowType"];
+    [dictionary setObject:v5 forKey:@"dayWindowType"];
   }
 
   scheduledTime = self->_scheduledTime;
   if (scheduledTime)
   {
-    v7 = [(HDCodableDateComponents *)scheduledTime dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"scheduledTime"];
+    dictionaryRepresentation = [(HDCodableDateComponents *)scheduledTime dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"scheduledTime"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     dayWindowType = self->_dayWindowType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scheduledTime)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_dayWindowType;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_dayWindowType;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_scheduledTime)
   {
-    v5 = v4;
-    [v4 setScheduledTime:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setScheduledTime:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -136,31 +136,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(HDCodableDateComponents *)self->_scheduledTime copyWithZone:a3];
+  v7 = [(HDCodableDateComponents *)self->_scheduledTime copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_dayWindowType != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_dayWindowType != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -168,7 +168,7 @@ LABEL_9:
   }
 
   scheduledTime = self->_scheduledTime;
-  if (scheduledTime | *(v4 + 2))
+  if (scheduledTime | *(equalCopy + 2))
   {
     v7 = [(HDCodableDateComponents *)scheduledTime isEqual:?];
   }
@@ -198,13 +198,13 @@ LABEL_10:
   return [(HDCodableDateComponents *)self->_scheduledTime hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_dayWindowType = v4[2];
+    self->_dayWindowType = fromCopy[2];
     *&self->_has |= 1u;
   }
 

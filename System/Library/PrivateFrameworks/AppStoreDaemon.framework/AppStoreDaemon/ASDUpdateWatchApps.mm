@@ -1,30 +1,30 @@
 @interface ASDUpdateWatchApps
-+ (void)shouldPromptBeforeUpdatingWithResultHandler:(id)a3;
-+ (void)updateBundleIDs:(id)a3 userInitiated:(BOOL)a4 withResultHandler:(id)a5;
++ (void)shouldPromptBeforeUpdatingWithResultHandler:(id)handler;
++ (void)updateBundleIDs:(id)ds userInitiated:(BOOL)initiated withResultHandler:(id)handler;
 @end
 
 @implementation ASDUpdateWatchApps
 
-+ (void)shouldPromptBeforeUpdatingWithResultHandler:(id)a3
++ (void)shouldPromptBeforeUpdatingWithResultHandler:(id)handler
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [a1 shouldPromptBeforeUpdating], 0);
+  handlerCopy = handler;
+  (*(handler + 2))(handlerCopy, [self shouldPromptBeforeUpdating], 0);
 }
 
-+ (void)updateBundleIDs:(id)a3 userInitiated:(BOOL)a4 withResultHandler:(id)a5
++ (void)updateBundleIDs:(id)ds userInitiated:(BOOL)initiated withResultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  dsCopy = ds;
+  handlerCopy = handler;
   v9 = +[ASDServiceBroker defaultBroker];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__ASDUpdateWatchApps_updateBundleIDs_userInitiated_withResultHandler___block_invoke;
   v12[3] = &unk_1E7CDD5C8;
-  v13 = v7;
-  v14 = v8;
-  v15 = a4;
-  v10 = v7;
-  v11 = v8;
+  v13 = dsCopy;
+  v14 = handlerCopy;
+  initiatedCopy = initiated;
+  v10 = dsCopy;
+  v11 = handlerCopy;
   [v9 getUpdatesServiceWithCompletionHandler:v12];
 }
 

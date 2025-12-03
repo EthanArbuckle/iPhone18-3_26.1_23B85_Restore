@@ -1,11 +1,11 @@
 @interface _LTRateLimiter
-- (BOOL)allowedForRequests:(unint64_t)a3;
-- (_LTRateLimiter)initWithMaximumPageLoadRequest:(unint64_t)a3 maximumDynamicContentRequests:(int64_t)a4;
+- (BOOL)allowedForRequests:(unint64_t)requests;
+- (_LTRateLimiter)initWithMaximumPageLoadRequest:(unint64_t)request maximumDynamicContentRequests:(int64_t)requests;
 @end
 
 @implementation _LTRateLimiter
 
-- (_LTRateLimiter)initWithMaximumPageLoadRequest:(unint64_t)a3 maximumDynamicContentRequests:(int64_t)a4
+- (_LTRateLimiter)initWithMaximumPageLoadRequest:(unint64_t)request maximumDynamicContentRequests:(int64_t)requests
 {
   v10.receiver = self;
   v10.super_class = _LTRateLimiter;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_maximumPageLoadRequests = a3;
-    v6->_maximumDynamicContentRequests = a4;
+    v6->_maximumPageLoadRequests = request;
+    v6->_maximumDynamicContentRequests = requests;
     v6->_pageLoaded = 0;
     v6->_count = 0;
     v8 = v6;
@@ -23,7 +23,7 @@
   return v7;
 }
 
-- (BOOL)allowedForRequests:(unint64_t)a3
+- (BOOL)allowedForRequests:(unint64_t)requests
 {
   v3 = 24;
   if (self->_pageLoaded)
@@ -32,7 +32,7 @@
   }
 
   v4 = *(&self->super.isa + v3);
-  v5 = self->_count + a3;
+  v5 = self->_count + requests;
   self->_count = v5;
   return v5 < v4;
 }

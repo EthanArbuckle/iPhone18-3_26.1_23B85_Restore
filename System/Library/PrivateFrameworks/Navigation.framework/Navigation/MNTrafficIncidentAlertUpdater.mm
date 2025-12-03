@@ -2,21 +2,21 @@
 - (MNTrafficIncidentAlertUpdater)init;
 - (MNTrafficIncidentAlertUpdaterDelegate)delegate;
 - (id)_nextAlert;
-- (void)_activateAlert:(id)a3 forLocation:(id)a4;
+- (void)_activateAlert:(id)alert forLocation:(id)location;
 - (void)_removeActiveAlert;
-- (void)_updateActiveAlertForLocation:(id)a3;
-- (void)_updateAlertDistanceAndETAForLocation:(id)a3;
-- (void)_updateForAlertsFromResponseUsingDistancePoints:(id)a3;
-- (void)_updateForLocationUsingDistancePoints:(id)a3;
+- (void)_updateActiveAlertForLocation:(id)location;
+- (void)_updateAlertDistanceAndETAForLocation:(id)location;
+- (void)_updateForAlertsFromResponseUsingDistancePoints:(id)points;
+- (void)_updateForLocationUsingDistancePoints:(id)points;
 - (void)clearAlerts;
 - (void)dealloc;
-- (void)setActiveAlert:(id)a3;
-- (void)setUseTriggerPointRangeBannerQueuing:(BOOL)a3;
-- (void)updateForAlertsFromResponse:(id)a3 updatedLocation:(id)a4;
-- (void)updateForLocation:(id)a3;
-- (void)updateForReroute:(id)a3;
-- (void)updateIncidentResultForETARequest:(id)a3;
-- (void)updateIncidentResultForRerouteRequest:(id)a3;
+- (void)setActiveAlert:(id)alert;
+- (void)setUseTriggerPointRangeBannerQueuing:(BOOL)queuing;
+- (void)updateForAlertsFromResponse:(id)response updatedLocation:(id)location;
+- (void)updateForLocation:(id)location;
+- (void)updateForReroute:(id)reroute;
+- (void)updateIncidentResultForETARequest:(id)request;
+- (void)updateIncidentResultForRerouteRequest:(id)request;
 @end
 
 @implementation MNTrafficIncidentAlertUpdater
@@ -28,64 +28,64 @@
   return WeakRetained;
 }
 
-- (void)_updateAlertDistanceAndETAForLocation:(id)a3
+- (void)_updateAlertDistanceAndETAForLocation:(id)location
 {
   activeAlert = self->_activeAlert;
   if (activeAlert)
   {
-    [(MNTrafficIncidentAlert *)activeAlert updateLocation:a3];
+    [(MNTrafficIncidentAlert *)activeAlert updateLocation:location];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained trafficIncidentAlertUpdater:self updatedAlert:self->_activeAlert];
   }
 }
 
-- (void)_updateActiveAlertForLocation:(id)a3
+- (void)_updateActiveAlertForLocation:(id)location
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  locationCopy = location;
+  v5 = locationCopy;
   if (self->_activeAlert)
   {
-    v6 = [v4 routeMatch];
-    v7 = [v6 route];
+    routeMatch = [locationCopy routeMatch];
+    route = [routeMatch route];
 
-    v8 = [(MNTrafficIncidentAlert *)self->_activeAlert originalRoute];
-    v9 = v8;
-    if (v8 == v7)
+    originalRoute = [(MNTrafficIncidentAlert *)self->_activeAlert originalRoute];
+    v9 = originalRoute;
+    if (originalRoute == route)
     {
     }
 
     else
     {
-      v10 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
+      alternateRoute = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
 
-      if (v10 != v7)
+      if (alternateRoute != route)
       {
         v11 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          v33 = [v7 name];
-          v31 = [v7 uniqueRouteID];
-          v35 = [(MNTrafficIncidentAlert *)self->_activeAlert originalRoute];
-          v12 = [v35 name];
-          v34 = [(MNTrafficIncidentAlert *)self->_activeAlert originalRoute];
-          v13 = [v34 uniqueRouteID];
-          v32 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
-          v14 = [v32 name];
-          v15 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
-          v16 = [v15 uniqueRouteID];
+          name = [route name];
+          uniqueRouteID = [route uniqueRouteID];
+          originalRoute2 = [(MNTrafficIncidentAlert *)self->_activeAlert originalRoute];
+          name2 = [originalRoute2 name];
+          originalRoute3 = [(MNTrafficIncidentAlert *)self->_activeAlert originalRoute];
+          uniqueRouteID2 = [originalRoute3 uniqueRouteID];
+          alternateRoute2 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
+          name3 = [alternateRoute2 name];
+          alternateRoute3 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
+          uniqueRouteID3 = [alternateRoute3 uniqueRouteID];
           *buf = 138479107;
-          v37 = v33;
+          v37 = name;
           v38 = 2112;
-          v39 = v31;
+          v39 = uniqueRouteID;
           v40 = 2113;
-          v41 = v12;
+          v41 = name2;
           v42 = 2112;
-          v43 = v13;
+          v43 = uniqueRouteID2;
           v44 = 2113;
-          v45 = v14;
+          v45 = name3;
           v46 = 2112;
-          v47 = v16;
+          v47 = uniqueRouteID3;
           _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_ERROR, "Location was matched to a route that matches neither of the alert's routes! Invalidating alert.\nRoute for location: %{private}@ - %@\nAlert original route: %{private}@ - %@\nAlert new route: %{private}@ - %@", buf, 0x3Eu);
         }
 
@@ -94,14 +94,14 @@
       }
     }
 
-    v17 = [(MNTrafficIncidentAlert *)self->_activeAlert progressBarTriggerRange];
-    v18 = [v17 showTriggerPoint];
+    progressBarTriggerRange = [(MNTrafficIncidentAlert *)self->_activeAlert progressBarTriggerRange];
+    showTriggerPoint = [progressBarTriggerRange showTriggerPoint];
 
-    if (v18 && !-[MNTrafficIncidentAlert shouldShowTimer](self->_activeAlert, "shouldShowTimer") && [v18 shouldActivateForLocation:v5])
+    if (showTriggerPoint && !-[MNTrafficIncidentAlert shouldShowTimer](self->_activeAlert, "shouldShowTimer") && [showTriggerPoint shouldActivateForLocation:v5])
     {
       [(MNTrafficIncidentAlert *)self->_activeAlert setShouldShowTimer:1];
-      v19 = [(MNTrafficIncidentAlert *)self->_activeAlert progressBarTriggerRange];
-      [v19 displayTime];
+      progressBarTriggerRange2 = [(MNTrafficIncidentAlert *)self->_activeAlert progressBarTriggerRange];
+      [progressBarTriggerRange2 displayTime];
       [(MNTrafficIncidentAlert *)self->_activeAlert setAlertDisplayDuration:?];
     }
 
@@ -116,12 +116,12 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v20 = [(MNTrafficIncidentAlert *)self->_activeAlert triggerRange];
-      v19 = [v20 hideTriggerPoint];
+      triggerRange = [(MNTrafficIncidentAlert *)self->_activeAlert triggerRange];
+      progressBarTriggerRange2 = [triggerRange hideTriggerPoint];
 
-      if (v19)
+      if (progressBarTriggerRange2)
       {
-        v21 = [v19 shouldActivateForLocation:v5];
+        v21 = [progressBarTriggerRange2 shouldActivateForLocation:v5];
       }
 
       else
@@ -131,8 +131,8 @@ LABEL_32:
 
       [(NSDate *)self->_activeAlertDisplayedTime timeIntervalSinceNow];
       v23 = -v22;
-      v24 = [(MNTrafficIncidentAlert *)self->_activeAlert triggerRange];
-      [v24 displayTime];
+      triggerRange2 = [(MNTrafficIncidentAlert *)self->_activeAlert triggerRange];
+      [triggerRange2 displayTime];
       v26 = v25;
 
       if ((v21 & 1) != 0 || v26 < v23)
@@ -207,70 +207,70 @@ LABEL_7:
   [WeakRetained trafficIncidentAlertUpdater:self invalidatedAlert:v4];
 }
 
-- (void)_activateAlert:(id)a3 forLocation:(id)a4
+- (void)_activateAlert:(id)alert forLocation:(id)location
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  locationCopy = location;
   [(NSDate *)self->_nextAlertDisplayTime timeIntervalSinceNow];
   if (v8 > 0.0)
   {
     goto LABEL_25;
   }
 
-  v9 = [v6 bannerID];
+  bannerID = [alertCopy bannerID];
 
-  if (v9)
+  if (bannerID)
   {
     displayedBannerIds = self->_displayedBannerIds;
-    v11 = [v6 bannerID];
-    [(NSMutableSet *)displayedBannerIds addObject:v11];
+    bannerID2 = [alertCopy bannerID];
+    [(NSMutableSet *)displayedBannerIds addObject:bannerID2];
   }
 
   if (![(MNTrafficIncidentAlertUpdater *)self useTriggerPointRangeBannerQueuing])
   {
-    v12 = [v6 bannerID];
+    bannerID3 = [alertCopy bannerID];
     previousBannerID = self->_previousBannerID;
-    self->_previousBannerID = v12;
+    self->_previousBannerID = bannerID3;
   }
 
-  [v6 updateLocation:v7];
-  v14 = [v6 alternateRoute];
+  [alertCopy updateLocation:locationCopy];
+  alternateRoute = [alertCopy alternateRoute];
 
-  v15 = v14 == 0;
+  v15 = alternateRoute == 0;
   v16 = GEOFindOrCreateLog();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
   if (v15)
   {
     if (v17)
     {
-      v21 = [v6 bannerID];
+      bannerID4 = [alertCopy bannerID];
       *buf = 138412290;
-      v46 = v21;
+      v46 = bannerID4;
       _os_log_impl(&dword_1D311E000, v16, OS_LOG_TYPE_DEFAULT, "Activating alert: %@", buf, 0xCu);
     }
   }
 
   else if (v17)
   {
-    v18 = [v6 bannerID];
-    v19 = [v6 alternateRoute];
-    v20 = [v19 uniqueRouteID];
+    bannerID5 = [alertCopy bannerID];
+    alternateRoute2 = [alertCopy alternateRoute];
+    uniqueRouteID = [alternateRoute2 uniqueRouteID];
     *buf = 138412546;
-    v46 = v18;
+    v46 = bannerID5;
     v47 = 2112;
-    v48 = v20;
+    v48 = uniqueRouteID;
     _os_log_impl(&dword_1D311E000, v16, OS_LOG_TYPE_DEFAULT, "Activating alert: %@ | Alternate route: %@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v22 = [v6 alertType];
-  if (v22 <= 7)
+  alertType = [alertCopy alertType];
+  if (alertType <= 7)
   {
-    if (((1 << v22) & 0x64) != 0)
+    if (((1 << alertType) & 0x64) != 0)
     {
-      [(NSMutableSet *)self->_pendingAlerts removeObject:v6];
-      [(MNTrafficIncidentAlertUpdater *)self setActiveAlert:v6];
+      [(NSMutableSet *)self->_pendingAlerts removeObject:alertCopy];
+      [(MNTrafficIncidentAlertUpdater *)self setActiveAlert:alertCopy];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
@@ -278,14 +278,14 @@ LABEL_7:
       v36[3] = &unk_1E842B7D0;
       v23 = &v38;
       objc_copyWeak(&v38, buf);
-      v37 = v6;
+      v37 = alertCopy;
       [WeakRetained trafficIncidentAlertUpdater:self receivedAlert:v37 responseCallback:v36];
 
       v27 = &v37;
       goto LABEL_21;
     }
 
-    if (((1 << v22) & 0x18) != 0)
+    if (((1 << alertType) & 0x18) != 0)
     {
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -293,7 +293,7 @@ LABEL_7:
       aBlock[3] = &unk_1E842B7D0;
       v23 = &v41;
       objc_copyWeak(&v41, buf);
-      v24 = v6;
+      v24 = alertCopy;
       v40 = v24;
       v25 = _Block_copy(aBlock);
       [(NSMutableSet *)self->_pendingAlerts removeObject:v24];
@@ -309,7 +309,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (v22 == 7)
+    if (alertType == 7)
     {
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
@@ -318,7 +318,7 @@ LABEL_21:
       v23 = &v35;
       objc_copyWeak(&v35, buf);
       v27 = &v34;
-      v34 = v6;
+      v34 = alertCopy;
       v29 = MEMORY[0x1E69E96A0];
       v30 = v33;
 LABEL_20:
@@ -327,7 +327,7 @@ LABEL_20:
     }
   }
 
-  if (v22 == 1)
+  if (alertType == 1)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -336,7 +336,7 @@ LABEL_20:
     v23 = &v44;
     objc_copyWeak(&v44, buf);
     v27 = &v43;
-    v43 = v6;
+    v43 = alertCopy;
     v29 = MEMORY[0x1E69E96A0];
     v30 = block;
     goto LABEL_20;
@@ -503,55 +503,55 @@ void __60__MNTrafficIncidentAlertUpdater__activateAlert_forLocation___block_invo
   [WeakRetained trafficIncidentAlertUpdater:*(a1 + 32) didDismissAlert:*(a1 + 40) withReroute:a2];
 }
 
-- (void)_updateForLocationUsingDistancePoints:(id)a3
+- (void)_updateForLocationUsingDistancePoints:(id)points
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pointsCopy = points;
   pendingAlerts = self->_pendingAlerts;
   if (pendingAlerts && [(NSMutableSet *)pendingAlerts count])
   {
-    v6 = [(NSMutableSet *)self->_pendingAlerts anyObject];
+    anyObject = [(NSMutableSet *)self->_pendingAlerts anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  v7 = [v4 routeMatch];
-  [v7 routeCoordinate];
+  routeMatch = [pointsCopy routeMatch];
+  [routeMatch routeCoordinate];
 
-  if (v6)
+  if (anyObject)
   {
     if (!self->_activeAlert)
     {
-      [v6 startValidCoordinateRange];
-      [v6 endValidCoordinateRange];
+      [anyObject startValidCoordinateRange];
+      [anyObject endValidCoordinateRange];
       if (GEOPolylineCoordinateWithinRange())
       {
-        [(MNTrafficIncidentAlertUpdater *)self _activateAlert:v6 forLocation:v4];
+        [(MNTrafficIncidentAlertUpdater *)self _activateAlert:anyObject forLocation:pointsCopy];
       }
     }
   }
 
   if (self->_activeAlert)
   {
-    v8 = [v4 routeMatch];
-    v9 = [v8 route];
+    routeMatch2 = [pointsCopy routeMatch];
+    route = [routeMatch2 route];
 
-    v10 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
+    alternateRoute = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
 
     activeAlert = self->_activeAlert;
-    if (v9 == v10)
+    if (route == alternateRoute)
     {
       [(MNTrafficIncidentAlert *)activeAlert alternateEndValidCoordinateRange];
     }
 
     else
     {
-      v12 = [(MNTrafficIncidentAlert *)activeAlert originalRoute];
+      originalRoute = [(MNTrafficIncidentAlert *)activeAlert originalRoute];
 
-      if (v9 != v12)
+      if (route != originalRoute)
       {
         v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected route from route match."];
         v14 = GEOFindOrCreateLog();
@@ -607,7 +607,7 @@ LABEL_25:
       [(MNTrafficIncidentAlertUpdater *)self _removeActiveAlert];
     }
 
-    [(MNTrafficIncidentAlertUpdater *)self _updateAlertDistanceAndETAForLocation:v4];
+    [(MNTrafficIncidentAlertUpdater *)self _updateAlertDistanceAndETAForLocation:pointsCopy];
     goto LABEL_25;
   }
 
@@ -616,11 +616,11 @@ LABEL_26:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateForAlertsFromResponseUsingDistancePoints:(id)a3
+- (void)_updateForAlertsFromResponseUsingDistancePoints:(id)points
 {
-  v4 = a3;
-  v20 = v4;
-  if (v4 && [v4 count])
+  pointsCopy = points;
+  v20 = pointsCopy;
+  if (pointsCopy && [pointsCopy count])
   {
     v5 = [v20 objectAtIndexedSubscript:0];
   }
@@ -640,11 +640,11 @@ LABEL_26:
     v6 = self->_activeAlert != 0;
   }
 
-  v7 = [v5 bannerID];
-  if ([v7 length] && -[NSString length](self->_previousBannerID, "length"))
+  bannerID = [v5 bannerID];
+  if ([bannerID length] && -[NSString length](self->_previousBannerID, "length"))
   {
-    v8 = [v5 bannerID];
-    v9 = [v8 isEqualToString:self->_previousBannerID];
+    bannerID2 = [v5 bannerID];
+    v9 = [bannerID2 isEqualToString:self->_previousBannerID];
   }
 
   else
@@ -660,8 +660,8 @@ LABEL_26:
   previousBannerID = self->_previousBannerID;
   self->_previousBannerID = 0;
 
-  v11 = [v5 previousBannerChange];
-  if (v11 == 3)
+  previousBannerChange = [v5 previousBannerChange];
+  if (previousBannerChange == 3)
   {
 
 LABEL_23:
@@ -675,7 +675,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v12 = v11;
+  v12 = previousBannerChange;
   if (![(NSMutableSet *)self->_pendingAlerts count]&& !self->_activeAlert)
   {
     goto LABEL_22;
@@ -740,8 +740,8 @@ LABEL_24:
 - (id)_nextAlert
 {
   v80 = *MEMORY[0x1E69E9840];
-  v3 = [(MNLocation *)self->_lastLocation routeMatch];
-  v4 = [v3 routeCoordinate];
+  routeMatch = [(MNLocation *)self->_lastLocation routeMatch];
+  routeCoordinate = [routeMatch routeCoordinate];
 
   pendingAlerts = self->_pendingAlerts;
   v77[0] = MEMORY[0x1E69E9820];
@@ -749,11 +749,11 @@ LABEL_24:
   v77[2] = __43__MNTrafficIncidentAlertUpdater__nextAlert__block_invoke;
   v77[3] = &unk_1E842B738;
   v77[4] = self;
-  v77[5] = v4;
+  v77[5] = routeCoordinate;
   v6 = [(NSMutableSet *)pendingAlerts _geo_filtered:v77];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_6738];
-  v9 = [v8 firstObject];
+  allObjects = [v6 allObjects];
+  v8 = [allObjects sortedArrayUsingComparator:&__block_literal_global_6738];
+  firstObject = [v8 firstObject];
 
   if ([(NSMutableSet *)self->_pendingAlerts count]< 2)
   {
@@ -768,12 +768,12 @@ LABEL_24:
   aBlock[3] = &unk_1E842B780;
   aBlock[4] = self;
   v11 = _Block_copy(aBlock);
-  v12 = v11[2](v11, v9);
+  v12 = v11[2](v11, firstObject);
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v63 = self;
+  selfCopy = self;
   v13 = self->_pendingAlerts;
   v14 = [(NSMutableSet *)v13 countByEnumeratingWithState:&v72 objects:v79 count:16];
   if (v14)
@@ -790,7 +790,7 @@ LABEL_24:
         }
 
         v18 = *(*(&v72 + 1) + 8 * i);
-        if (v18 != v9)
+        if (v18 != firstObject)
         {
           v11[2](v11, *(*(&v72 + 1) + 8 * i));
           if (GEOPolylineCoordinateRangeIntersectsRange())
@@ -828,54 +828,54 @@ LABEL_24:
       }
 
       v20 = *(*(&v68 + 1) + 8 * j);
-      v21 = [v20 priority];
-      if (v21 > [v9 priority])
+      priority = [v20 priority];
+      if (priority > [firstObject priority])
       {
         v22 = v11[2](v11, v20);
         v62 = v23;
-        [v9 minDisplayTime];
+        [firstObject minDisplayTime];
         v25 = v24;
-        [v9 overlapDelayTime];
+        [firstObject overlapDelayTime];
         v27 = v26 + v25;
-        v28 = [(MNLocation *)v63->_lastLocation routeMatch];
-        v29 = [v28 route];
-        v30 = [v20 mainRouteInfo];
-        [v30 etaRoute];
+        routeMatch2 = [(MNLocation *)selfCopy->_lastLocation routeMatch];
+        route = [routeMatch2 route];
+        mainRouteInfo = [v20 mainRouteInfo];
+        [mainRouteInfo etaRoute];
         v31 = v65 = v20;
-        [v29 coordinateAtTimeInterval:v12 afterCoordinate:v31 etaRoute:v27];
+        [route coordinateAtTimeInterval:v12 afterCoordinate:v31 etaRoute:v27];
 
         if (GEOPolylineCoordinateIsABeforeB())
         {
-          v32 = [v9 triggerRange];
-          v33 = [v32 showTriggerPoint];
-          v34 = [v33 allowsShifting];
+          triggerRange = [firstObject triggerRange];
+          showTriggerPoint = [triggerRange showTriggerPoint];
+          allowsShifting = [showTriggerPoint allowsShifting];
 
-          v35 = [v9 triggerRange];
-          v36 = [v35 hideTriggerPoint];
-          v37 = v36;
-          if (v34)
+          triggerRange2 = [firstObject triggerRange];
+          hideTriggerPoint = [triggerRange2 hideTriggerPoint];
+          v37 = hideTriggerPoint;
+          if (allowsShifting)
           {
-            if (v36)
+            if (hideTriggerPoint)
             {
-              v38 = [v9 triggerRange];
-              v39 = [v38 hideTriggerPoint];
-              v40 = [v39 allowsShifting];
+              triggerRange3 = [firstObject triggerRange];
+              hideTriggerPoint2 = [triggerRange3 hideTriggerPoint];
+              allowsShifting2 = [hideTriggerPoint2 allowsShifting];
 
-              if (v40)
+              if (allowsShifting2)
               {
-                v49 = [v9 triggerRange];
-                v50 = [v49 showTriggerPoint];
-                [v50 setReferenceCoordinate:v62];
+                triggerRange4 = [firstObject triggerRange];
+                showTriggerPoint2 = [triggerRange4 showTriggerPoint];
+                [showTriggerPoint2 setReferenceCoordinate:v62];
 
-                v51 = [(MNLocation *)v63->_lastLocation routeMatch];
-                v52 = [v51 route];
-                v53 = [v65 mainRouteInfo];
-                v54 = [v53 etaRoute];
-                v55 = v52;
+                routeMatch3 = [(MNLocation *)selfCopy->_lastLocation routeMatch];
+                route2 = [routeMatch3 route];
+                mainRouteInfo2 = [v65 mainRouteInfo];
+                etaRoute = [mainRouteInfo2 etaRoute];
+                v55 = route2;
                 v56 = v27;
                 v57 = v62;
 LABEL_34:
-                v58 = [v55 coordinateAtTimeInterval:v57 afterCoordinate:v54 etaRoute:v56];
+                v58 = [v55 coordinateAtTimeInterval:v57 afterCoordinate:etaRoute etaRoute:v56];
 
                 v6 = v61;
                 if (!GEOPolylineCoordinateIsABeforeB())
@@ -886,9 +886,9 @@ LABEL_37:
                   goto LABEL_38;
                 }
 
-                v47 = [v9 triggerRange];
-                v48 = [v47 hideTriggerPoint];
-                [v48 setReferenceCoordinate:v58];
+                triggerRange5 = [firstObject triggerRange];
+                hideTriggerPoint3 = [triggerRange5 hideTriggerPoint];
+                [hideTriggerPoint3 setReferenceCoordinate:v58];
 LABEL_36:
 
                 goto LABEL_37;
@@ -899,32 +899,32 @@ LABEL_36:
             {
             }
 
-            v44 = [v9 triggerRange];
-            v45 = [v44 hideTriggerPoint];
+            triggerRange6 = [firstObject triggerRange];
+            hideTriggerPoint4 = [triggerRange6 hideTriggerPoint];
 
-            if (!v45)
+            if (!hideTriggerPoint4)
             {
-              v47 = [v9 triggerRange];
-              v48 = [v47 showTriggerPoint];
-              [v48 setReferenceCoordinate:v22];
+              triggerRange5 = [firstObject triggerRange];
+              hideTriggerPoint3 = [triggerRange5 showTriggerPoint];
+              [hideTriggerPoint3 setReferenceCoordinate:v22];
               v6 = v61;
               goto LABEL_36;
             }
           }
 
-          else if (v36)
+          else if (hideTriggerPoint)
           {
-            v41 = [v9 triggerRange];
-            v42 = [v41 hideTriggerPoint];
-            v43 = [v42 allowsShifting];
+            triggerRange7 = [firstObject triggerRange];
+            hideTriggerPoint5 = [triggerRange7 hideTriggerPoint];
+            allowsShifting3 = [hideTriggerPoint5 allowsShifting];
 
-            if (v43)
+            if (allowsShifting3)
             {
-              v51 = [(MNLocation *)v63->_lastLocation routeMatch];
-              v52 = [v51 route];
-              v53 = [v65 mainRouteInfo];
-              v54 = [v53 etaRoute];
-              v55 = v52;
+              routeMatch3 = [(MNLocation *)selfCopy->_lastLocation routeMatch];
+              route2 = [routeMatch3 route];
+              mainRouteInfo2 = [v65 mainRouteInfo];
+              etaRoute = [mainRouteInfo2 etaRoute];
+              v55 = route2;
               v56 = v27;
               v57 = v62;
               goto LABEL_34;
@@ -951,7 +951,7 @@ LABEL_32:
 
   v6 = v61;
 LABEL_33:
-  v46 = v9;
+  v46 = firstObject;
 LABEL_38:
 
   v59 = *MEMORY[0x1E69E9840];
@@ -1168,18 +1168,18 @@ LABEL_21:
   [(NSMutableSet *)pendingAlerts removeAllObjects];
 }
 
-- (void)updateForAlertsFromResponse:(id)a3 updatedLocation:(id)a4
+- (void)updateForAlertsFromResponse:(id)response updatedLocation:(id)location
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  responseCopy = response;
+  locationCopy = location;
+  if ([responseCopy count])
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v6;
+      v51 = responseCopy;
       _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEFAULT, "MNTrafficIncidentAlertUpdater received alerts: %@", buf, 0xCu);
     }
   }
@@ -1188,7 +1188,7 @@ LABEL_21:
   {
     if (self->_useTriggerPointRangeBannerQueuing)
     {
-      v38 = v7;
+      v38 = locationCopy;
       v9 = objc_opt_new();
       v44 = 0u;
       v45 = 0u;
@@ -1212,8 +1212,8 @@ LABEL_21:
             v15 = *(*(&v44 + 1) + 8 * i);
             if ([v15 persistAcrossUpdates])
             {
-              v16 = [v15 bannerID];
-              [v9 setObject:v15 forKeyedSubscript:v16];
+              bannerID = [v15 bannerID];
+              [v9 setObject:v15 forKeyedSubscript:bannerID];
             }
           }
 
@@ -1227,8 +1227,8 @@ LABEL_21:
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v39 = v6;
-      v17 = v6;
+      v39 = responseCopy;
+      v17 = responseCopy;
       v18 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
       if (v18)
       {
@@ -1247,9 +1247,9 @@ LABEL_21:
             activeAlert = self->_activeAlert;
             if (activeAlert)
             {
-              v24 = [(MNTrafficIncidentAlert *)activeAlert bannerID];
-              v25 = [v22 bannerID];
-              v26 = [v24 isEqualToString:v25];
+              bannerID2 = [(MNTrafficIncidentAlert *)activeAlert bannerID];
+              bannerID3 = [v22 bannerID];
+              v26 = [bannerID2 isEqualToString:bannerID3];
 
               if (v26)
               {
@@ -1258,25 +1258,25 @@ LABEL_21:
             }
 
             displayedBannerIds = self->_displayedBannerIds;
-            v28 = [v22 bannerID];
-            LODWORD(displayedBannerIds) = [(NSMutableSet *)displayedBannerIds containsObject:v28];
+            bannerID4 = [v22 bannerID];
+            LODWORD(displayedBannerIds) = [(NSMutableSet *)displayedBannerIds containsObject:bannerID4];
 
             if (displayedBannerIds)
             {
-              v29 = GEOFindOrCreateLog();
-              if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+              bannerID6 = GEOFindOrCreateLog();
+              if (os_log_type_enabled(bannerID6, OS_LOG_TYPE_ERROR))
               {
-                v30 = [v22 bannerID];
+                bannerID5 = [v22 bannerID];
                 *buf = 138412290;
-                v51 = v30;
-                _os_log_impl(&dword_1D311E000, v29, OS_LOG_TYPE_ERROR, "Banner with ID %@ was already displayed. Ignoring.", buf, 0xCu);
+                v51 = bannerID5;
+                _os_log_impl(&dword_1D311E000, bannerID6, OS_LOG_TYPE_ERROR, "Banner with ID %@ was already displayed. Ignoring.", buf, 0xCu);
               }
             }
 
             else
             {
-              v29 = [v22 bannerID];
-              [v9 setObject:v22 forKeyedSubscript:v29];
+              bannerID6 = [v22 bannerID];
+              [v9 setObject:v22 forKeyedSubscript:bannerID6];
             }
           }
 
@@ -1287,12 +1287,12 @@ LABEL_21:
       }
 
       v31 = MEMORY[0x1E695DFA8];
-      v32 = [v9 allValues];
-      v33 = [v31 setWithArray:v32];
+      allValues = [v9 allValues];
+      v33 = [v31 setWithArray:allValues];
       pendingAlerts = self->_pendingAlerts;
       self->_pendingAlerts = v33;
 
-      v7 = v38;
+      locationCopy = v38;
       lastLocation = v38;
       if (!v38)
       {
@@ -1301,12 +1301,12 @@ LABEL_21:
 
       [(MNTrafficIncidentAlertUpdater *)self updateForLocation:lastLocation, v38];
 
-      v6 = v39;
+      responseCopy = v39;
     }
 
     else
     {
-      [(MNTrafficIncidentAlertUpdater *)self _updateForAlertsFromResponseUsingDistancePoints:v6];
+      [(MNTrafficIncidentAlertUpdater *)self _updateForAlertsFromResponseUsingDistancePoints:responseCopy];
     }
   }
 
@@ -1316,7 +1316,7 @@ LABEL_21:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v6;
+      v51 = responseCopy;
       _os_log_impl(&dword_1D311E000, v36, OS_LOG_TYPE_DEFAULT, "Dodgeball alert was found in response but EnableDodgeball is off. Ignoring %@", buf, 0xCu);
     }
   }
@@ -1324,28 +1324,28 @@ LABEL_21:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateIncidentResultForRerouteRequest:(id)a3
+- (void)updateIncidentResultForRerouteRequest:(id)request
 {
   displayedBannerIds = self->_displayedBannerIds;
-  v4 = a3;
-  v6 = [(NSMutableSet *)displayedBannerIds allObjects];
-  v5 = [v6 copy];
-  [v4 setDisplayedBannerIds:v5];
+  requestCopy = request;
+  allObjects = [(NSMutableSet *)displayedBannerIds allObjects];
+  v5 = [allObjects copy];
+  [requestCopy setDisplayedBannerIds:v5];
 }
 
-- (void)updateIncidentResultForETARequest:(id)a3
+- (void)updateIncidentResultForETARequest:(id)request
 {
-  [a3 setRerouteStatus:self->_trafficIncidentStatus];
+  [request setRerouteStatus:self->_trafficIncidentStatus];
   if ((self->_trafficIncidentStatus - 2) <= 2)
   {
     self->_trafficIncidentStatus = 0;
   }
 }
 
-- (void)updateForReroute:(id)a3
+- (void)updateForReroute:(id)reroute
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rerouteCopy = reroute;
   [(NSMutableSet *)self->_pendingAlerts removeAllObjects];
   activeAlert = self->_activeAlert;
   if (!activeAlert)
@@ -1353,17 +1353,17 @@ LABEL_21:
     self->_trafficIncidentStatus = 0;
   }
 
-  v6 = [(MNTrafficIncidentAlert *)activeAlert alternateRoute];
+  alternateRoute = [(MNTrafficIncidentAlert *)activeAlert alternateRoute];
 
-  if (!v6)
+  if (!alternateRoute)
   {
     goto LABEL_5;
   }
 
-  v7 = [v4 uniqueRouteID];
-  v8 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
-  v9 = [v8 uniqueRouteID];
-  v10 = [v7 isEqual:v9];
+  uniqueRouteID = [rerouteCopy uniqueRouteID];
+  alternateRoute2 = [(MNTrafficIncidentAlert *)self->_activeAlert alternateRoute];
+  uniqueRouteID2 = [alternateRoute2 uniqueRouteID];
+  v10 = [uniqueRouteID isEqual:uniqueRouteID2];
 
   if ((v10 & 1) == 0)
   {
@@ -1371,9 +1371,9 @@ LABEL_5:
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 uniqueRouteID];
+      uniqueRouteID3 = [rerouteCopy uniqueRouteID];
       v14 = 138412290;
-      v15 = v12;
+      v15 = uniqueRouteID3;
       _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_DEFAULT, "Clearing traffic incident alerts because of a reroute to route %@.", &v14, 0xCu);
     }
 
@@ -1383,31 +1383,31 @@ LABEL_5:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateForLocation:(id)a3
+- (void)updateForLocation:(id)location
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 state] == 1)
+  locationCopy = location;
+  if ([locationCopy state] == 1)
   {
-    objc_storeStrong(&self->_lastLocation, a3);
+    objc_storeStrong(&self->_lastLocation, location);
     if (self->_useTriggerPointRangeBannerQueuing)
     {
-      v6 = [(MNTrafficIncidentAlertUpdater *)self _nextAlert];
-      v7 = v6;
-      if (!v6)
+      _nextAlert = [(MNTrafficIncidentAlertUpdater *)self _nextAlert];
+      v7 = _nextAlert;
+      if (!_nextAlert)
       {
 LABEL_31:
-        [(MNTrafficIncidentAlertUpdater *)self _updateActiveAlertForLocation:v5];
+        [(MNTrafficIncidentAlertUpdater *)self _updateActiveAlertForLocation:locationCopy];
 
         goto LABEL_32;
       }
 
-      v8 = [v6 previousBannerChange];
-      v9 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
+      previousBannerChange = [_nextAlert previousBannerChange];
+      activeAlert = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
 
-      if (v9)
+      if (activeAlert)
       {
-        v10 = v8;
+        v10 = previousBannerChange;
       }
 
       else
@@ -1415,26 +1415,26 @@ LABEL_31:
         v10 = 0;
       }
 
-      v11 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
-      v12 = [v11 priority];
-      v13 = [v7 priority];
+      activeAlert2 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
+      priority = [activeAlert2 priority];
+      priority2 = [v7 priority];
 
       [(NSDate *)self->_activeAlertDisplayedTime timeIntervalSinceNow];
       v15 = v14;
-      v16 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
-      [v16 minDisplayTime];
+      activeAlert3 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
+      [activeAlert3 minDisplayTime];
       v18 = v17;
 
       if (v10 > 1)
       {
         if (v10 == 2)
         {
-          v36 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
+          activeAlert4 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
 
-          if (v36)
+          if (activeAlert4)
           {
-            v37 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
-            [v7 updateAlertIDWithAlert:v37];
+            activeAlert5 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
+            [v7 updateAlertIDWithAlert:activeAlert5];
 
             [(MNTrafficIncidentAlertUpdater *)self setActiveAlert:v7];
           }
@@ -1455,16 +1455,16 @@ LABEL_31:
           goto LABEL_31;
         }
 
-        if (v12 >= v13)
+        if (priority >= priority2)
         {
           goto LABEL_31;
         }
 
-        v19 = [v7 triggerRange];
-        v20 = [v19 showTriggerPoint];
+        triggerRange = [v7 triggerRange];
+        showTriggerPoint = [triggerRange showTriggerPoint];
 
-        LOBYTE(v19) = [v20 shouldActivateForLocation:v5];
-        if ((v19 & 1) == 0)
+        LOBYTE(triggerRange) = [showTriggerPoint shouldActivateForLocation:locationCopy];
+        if ((triggerRange & 1) == 0)
         {
           goto LABEL_31;
         }
@@ -1472,39 +1472,39 @@ LABEL_31:
 
       else
       {
-        v21 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
-        if (v21)
+        activeAlert6 = [(MNTrafficIncidentAlertUpdater *)self activeAlert];
+        if (activeAlert6)
         {
 
-          if (v12 >= v13 || v18 >= -v15)
+          if (priority >= priority2 || v18 >= -v15)
           {
             goto LABEL_31;
           }
         }
 
-        v22 = [v7 triggerRange];
-        v23 = [v22 showTriggerPoint];
+        triggerRange2 = [v7 triggerRange];
+        showTriggerPoint2 = [triggerRange2 showTriggerPoint];
 
-        LODWORD(v22) = [v23 shouldActivateForLocation:v5];
-        if (!v22)
+        LODWORD(triggerRange2) = [showTriggerPoint2 shouldActivateForLocation:locationCopy];
+        if (!triggerRange2)
         {
           goto LABEL_31;
         }
       }
 
-      v24 = [v7 incident];
+      incident = [v7 incident];
 
-      if (v24)
+      if (incident)
       {
-        v25 = [(MNLocation *)self->_lastLocation routeMatch];
-        v26 = [v25 route];
-        v27 = [v7 triggerRange];
-        v28 = [v27 showTriggerPoint];
-        v29 = [v28 referenceCoordinate];
+        routeMatch = [(MNLocation *)self->_lastLocation routeMatch];
+        route = [routeMatch route];
+        triggerRange3 = [v7 triggerRange];
+        showTriggerPoint3 = [triggerRange3 showTriggerPoint];
+        referenceCoordinate = [showTriggerPoint3 referenceCoordinate];
 
-        [v26 distanceBetweenRouteCoordinate:v29 andRouteCoordinate:{objc_msgSend(v25, "routeCoordinate")}];
+        [route distanceBetweenRouteCoordinate:referenceCoordinate andRouteCoordinate:{objc_msgSend(routeMatch, "routeCoordinate")}];
         v31 = v30;
-        [v26 distanceBetweenRouteCoordinate:v29 andRouteCoordinate:{objc_msgSend(v7, "incidentCoordinate")}];
+        [route distanceBetweenRouteCoordinate:referenceCoordinate andRouteCoordinate:{objc_msgSend(v7, "incidentCoordinate")}];
         v33 = v32;
         if (v32 <= 2.22044605e-16)
         {
@@ -1538,11 +1538,11 @@ LABEL_31:
 LABEL_24:
       self->_trafficIncidentStatus = 0;
       [(MNTrafficIncidentAlertUpdater *)self _removeActiveAlert];
-      [(MNTrafficIncidentAlertUpdater *)self _activateAlert:v7 forLocation:v5];
+      [(MNTrafficIncidentAlertUpdater *)self _activateAlert:v7 forLocation:locationCopy];
       goto LABEL_31;
     }
 
-    [(MNTrafficIncidentAlertUpdater *)self _updateForLocationUsingDistancePoints:v5];
+    [(MNTrafficIncidentAlertUpdater *)self _updateForLocationUsingDistancePoints:locationCopy];
   }
 
 LABEL_32:
@@ -1550,12 +1550,12 @@ LABEL_32:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setActiveAlert:(id)a3
+- (void)setActiveAlert:(id)alert
 {
-  v5 = a3;
-  if (self->_activeAlert != v5)
+  alertCopy = alert;
+  if (self->_activeAlert != alertCopy)
   {
-    v10 = v5;
+    v10 = alertCopy;
     v6 = [MEMORY[0x1E695DF00] now];
     if (!v10)
     {
@@ -1570,16 +1570,16 @@ LABEL_32:
     activeAlertDisplayedTime = self->_activeAlertDisplayedTime;
     self->_activeAlertDisplayedTime = v6;
 
-    objc_storeStrong(&self->_activeAlert, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_activeAlert, alert);
+    alertCopy = v10;
   }
 }
 
-- (void)setUseTriggerPointRangeBannerQueuing:(BOOL)a3
+- (void)setUseTriggerPointRangeBannerQueuing:(BOOL)queuing
 {
-  if (self->_useTriggerPointRangeBannerQueuing != a3)
+  if (self->_useTriggerPointRangeBannerQueuing != queuing)
   {
-    self->_useTriggerPointRangeBannerQueuing = a3;
+    self->_useTriggerPointRangeBannerQueuing = queuing;
     [(MNTrafficIncidentAlertUpdater *)self clearAlerts];
   }
 }

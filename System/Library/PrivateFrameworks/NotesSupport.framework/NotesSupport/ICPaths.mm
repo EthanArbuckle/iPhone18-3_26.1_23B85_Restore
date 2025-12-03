@@ -8,11 +8,11 @@
 + (NSURL)managedObjectModelURL;
 + (NSURL)oldManagedObjectModelURL;
 + (NSURL)persistentStoreURL;
-+ (id)URLForGroupContainerWithIdentifier:(id)a3;
++ (id)URLForGroupContainerWithIdentifier:(id)identifier;
 + (void)applicationDataContainerURL;
 + (void)resetApplicationDocumentsURL;
-+ (void)setApplicationDocumentsURL:(id)a3;
-+ (void)setIsReadOnlyPersistentStore:(BOOL)a3;
++ (void)setApplicationDocumentsURL:(id)l;
++ (void)setIsReadOnlyPersistentStore:(BOOL)store;
 @end
 
 @implementation ICPaths
@@ -31,7 +31,7 @@
     block[1] = 3221225472;
     block[2] = __29__ICPaths_persistentStoreURL__block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(persistentStoreURL_creationQueue, block);
     v3 = _persistentStoreURL;
   }
@@ -78,7 +78,7 @@ uint64_t __29__ICPaths_persistentStoreURL__block_invoke_2(uint64_t result)
     block[1] = 3221225472;
     block[2] = __34__ICPaths_applicationDocumentsURL__block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(applicationDocumentsURL_creationQueue, block);
     v3 = _applicationDocumentsURL;
   }
@@ -158,10 +158,10 @@ void __32__ICPaths_managedObjectModelURL__block_invoke()
   }
 }
 
-+ (void)setApplicationDocumentsURL:(id)a3
++ (void)setApplicationDocumentsURL:(id)l
 {
-  objc_storeStrong(&_applicationDocumentsURL, a3);
-  v5 = a3;
+  objc_storeStrong(&_applicationDocumentsURL, l);
+  lCopy = l;
   v4 = _persistentStoreURL;
   _persistentStoreURL = 0;
 }
@@ -189,7 +189,7 @@ void __32__ICPaths_managedObjectModelURL__block_invoke()
     block[1] = 3221225472;
     block[2] = __29__ICPaths_importDocumentsURL__block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(importDocumentsURL_creationQueue, block);
     v3 = importDocumentsURL_importDocumentsURL;
   }
@@ -219,21 +219,21 @@ void __29__ICPaths_importDocumentsURL__block_invoke_2(uint64_t a1)
 
 + (NSURL)defaultPreviewImageDirectoryURL
 {
-  v2 = [a1 applicationDocumentsURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Previews" isDirectory:1];
+  applicationDocumentsURL = [self applicationDocumentsURL];
+  v3 = [applicationDocumentsURL URLByAppendingPathComponent:@"Previews" isDirectory:1];
 
   return v3;
 }
 
-+ (id)URLForGroupContainerWithIdentifier:(id)a3
++ (id)URLForGroupContainerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   Helper_x8__OBJC_CLASS___UMUserManager = gotLoadHelper_x8__OBJC_CLASS___UMUserManager(v5);
-  v8 = [*(v7 + 104) sharedManager];
-  v9 = [v8 currentPersona];
-  v10 = [v9 isProxy];
+  sharedManager = [*(v7 + 104) sharedManager];
+  currentPersona = [sharedManager currentPersona];
+  v10 = [currentPersona isProxy];
   v38 = 0;
-  v11 = [v9 copyCurrentPersonaContextWithError:&v38];
+  v11 = [currentPersona copyCurrentPersonaContextWithError:&v38];
   v12 = v38;
   v13 = v12;
   if (v12)
@@ -256,8 +256,8 @@ void __29__ICPaths_importDocumentsURL__block_invoke_2(uint64_t a1)
 
     Helper_x8__OBJC_CLASS___UMUserPersonaAttributes = gotLoadHelper_x8__OBJC_CLASS___UMUserPersonaAttributes(v16);
     v19 = [*(v18 + 136) personaAttributesForPersonaType:{0, Helper_x8__OBJC_CLASS___UMUserPersonaAttributes}];
-    v20 = [v19 userPersonaUniqueString];
-    v21 = [v9 generateAndRestorePersonaContextWithPersonaUniqueString:v20];
+    userPersonaUniqueString = [v19 userPersonaUniqueString];
+    v21 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:userPersonaUniqueString];
   }
 
   else
@@ -275,8 +275,8 @@ void __29__ICPaths_importDocumentsURL__block_invoke_2(uint64_t a1)
   }
 
 LABEL_12:
-  v22 = [MEMORY[0x1E696AC08] defaultManager];
-  v23 = [v22 containerURLForSecurityApplicationGroupIdentifier:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v23 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:identifierCopy];
 
   if (v23)
   {
@@ -288,7 +288,7 @@ LABEL_12:
 
   else
   {
-    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "groupContainerURL", "+[ICPaths URLForGroupContainerWithIdentifier:]", 1, 1, @"Failed to get group container URL for %@", v4);
+    +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "groupContainerURL", "+[ICPaths URLForGroupContainerWithIdentifier:]", 1, 1, @"Failed to get group container URL for %@", identifierCopy);
     if (!v14)
     {
 LABEL_14:
@@ -301,7 +301,7 @@ LABEL_14:
     }
   }
 
-  v24 = [v9 restorePersonaWithSavedPersonaContext:v11];
+  v24 = [currentPersona restorePersonaWithSavedPersonaContext:v11];
   if (!v23)
   {
     goto LABEL_28;
@@ -319,13 +319,13 @@ LABEL_18:
       +[ICPaths URLForGroupContainerWithIdentifier:];
     }
 
-    if (([a1 isReadOnlyPersistentStore] & 1) == 0)
+    if (([self isReadOnlyPersistentStore] & 1) == 0)
     {
       v35 = v11;
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [a1 attributesForGroupContainerDirectory];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      attributesForGroupContainerDirectory = [self attributesForGroupContainerDirectory];
       v36 = 0;
-      v30 = [v28 createDirectoryAtURL:v23 withIntermediateDirectories:1 attributes:v29 error:&v36];
+      v30 = [defaultManager2 createDirectoryAtURL:v23 withIntermediateDirectories:1 attributes:attributesForGroupContainerDirectory error:&v36];
       v31 = v36;
 
       if ((v30 & 1) == 0)
@@ -353,18 +353,18 @@ LABEL_28:
 
 + (NSURL)applicationDataContainerURL
 {
-  v2 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
   v3 = objc_opt_class();
-  v4 = ICDynamicCast(v3, v2);
-  v5 = [v4 containingBundleRecord];
+  v4 = ICDynamicCast(v3, bundleRecordForCurrentProcess);
+  containingBundleRecord = [v4 containingBundleRecord];
 
   v6 = objc_opt_class();
-  v7 = ICDynamicCast(v6, v5);
-  v8 = [v7 dataContainerURL];
-  if (v8)
+  v7 = ICDynamicCast(v6, containingBundleRecord);
+  dataContainerURL = [v7 dataContainerURL];
+  if (dataContainerURL)
   {
-    v9 = v8;
-    v10 = v5;
+    v9 = dataContainerURL;
+    v10 = containingBundleRecord;
     goto LABEL_12;
   }
 
@@ -385,10 +385,10 @@ LABEL_28:
 
   else
   {
-    v16 = [v10 dataContainerURL];
-    if (v16)
+    dataContainerURL2 = [v10 dataContainerURL];
+    if (dataContainerURL2)
     {
-      v9 = v16;
+      v9 = dataContainerURL2;
       goto LABEL_12;
     }
   }
@@ -417,19 +417,19 @@ LABEL_12:
 
 + (BOOL)isReadOnlyPersistentStore
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _isReadOnlyPersistentStore;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (void)setIsReadOnlyPersistentStore:(BOOL)a3
++ (void)setIsReadOnlyPersistentStore:(BOOL)store
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
-  _isReadOnlyPersistentStore = a3;
+  _isReadOnlyPersistentStore = store;
   objc_sync_exit(obj);
 }
 

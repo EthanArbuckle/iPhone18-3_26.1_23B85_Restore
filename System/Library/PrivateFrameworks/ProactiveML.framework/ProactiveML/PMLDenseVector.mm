@@ -1,41 +1,41 @@
 @interface PMLDenseVector
-+ (id)denseVectorFromNumbers:(id)a3;
++ (id)denseVectorFromNumbers:(id)numbers;
 - (PMLDenseVector)init;
-- (PMLDenseVector)initWithCount:(unint64_t)a3;
-- (PMLDenseVector)initWithData:(id)a3;
-- (PMLDenseVector)initWithFloats:(const float *)a3 count:(unint64_t)a4;
-- (PMLDenseVector)initWithFloatsNoCopy:(float *)a3 count:(unint64_t)a4 deallocator:(id)a5;
-- (PMLDenseVector)initWithNumbers:(id)a3;
-- (float)cosineDistanceFrom:(id)a3;
+- (PMLDenseVector)initWithCount:(unint64_t)count;
+- (PMLDenseVector)initWithData:(id)data;
+- (PMLDenseVector)initWithFloats:(const float *)floats count:(unint64_t)count;
+- (PMLDenseVector)initWithFloatsNoCopy:(float *)copy count:(unint64_t)count deallocator:(id)deallocator;
+- (PMLDenseVector)initWithNumbers:(id)numbers;
+- (float)cosineDistanceFrom:(id)from;
 - (float)density;
 - (float)l1norm;
 - (float)l2norm;
 - (float)maxValue;
 - (float)minValue;
-- (float)valueAt:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)sliceFrom:(int)a3 to:(int)a4;
-- (id)vecByAppendingVec:(id)a3;
-- (void)enumerateNonZeroValuesWithBlock:(id)a3;
-- (void)enumerateValuesWithBlock:(id)a3;
+- (float)valueAt:(unint64_t)at;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)sliceFrom:(int)from to:(int)to;
+- (id)vecByAppendingVec:(id)vec;
+- (void)enumerateNonZeroValuesWithBlock:(id)block;
+- (void)enumerateValuesWithBlock:(id)block;
 @end
 
 @implementation PMLDenseVector
 
-- (float)valueAt:(unint64_t)a3
+- (float)valueAt:(unint64_t)at
 {
-  if ([(PMLDenseVector *)self count]<= a3)
+  if ([(PMLDenseVector *)self count]<= at)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:202 description:{@"Index %tu out of bounds (vector length: %tu)", a3, -[PMLDenseVector count](self, "count")}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:202 description:{@"Index %tu out of bounds (vector length: %tu)", at, -[PMLDenseVector count](self, "count")}];
   }
 
-  return [(PMLDenseVector *)self ptr][4 * a3];
+  return [(PMLDenseVector *)self ptr][4 * at];
 }
 
-- (void)enumerateNonZeroValuesWithBlock:(id)a3
+- (void)enumerateNonZeroValuesWithBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   v4 = [(PMLDenseVector *)self ptr];
   v5 = [(PMLDenseVector *)self count];
   if (v5)
@@ -45,15 +45,15 @@
     {
       if (v4[i] != 0.0)
       {
-        v8[2](v8, i);
+        blockCopy[2](blockCopy, i);
       }
     }
   }
 }
 
-- (void)enumerateValuesWithBlock:(id)a3
+- (void)enumerateValuesWithBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   v4 = [(PMLDenseVector *)self ptr];
   v5 = [(PMLDenseVector *)self count];
   if (v5)
@@ -61,7 +61,7 @@
     v6 = v5;
     for (i = 0; i != v6; ++i)
     {
-      v8[2](v8, i, v4[i]);
+      blockCopy[2](blockCopy, i, v4[i]);
     }
   }
 }
@@ -150,108 +150,108 @@
   return result;
 }
 
-- (float)cosineDistanceFrom:(id)a3
+- (float)cosineDistanceFrom:(id)from
 {
-  v5 = a3;
-  v6 = [v5 count];
+  fromCopy = from;
+  v6 = [fromCopy count];
   if (v6 != [(PMLDenseVector *)self count])
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"other.count == self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:134 description:{@"Invalid parameter not satisfying: %@", @"other.count == self.count"}];
   }
 
   [(PMLDenseVector *)self count];
   [(PMLDenseVector *)self ptr];
-  [v5 ptr];
+  [fromCopy ptr];
   cblas_sdot_NEWLAPACK();
   v8 = v7;
   [(PMLDenseVector *)self l2norm];
   v10 = v9;
-  [v5 l2norm];
+  [fromCopy l2norm];
   v12 = v11;
 
   return 1.0 - (v8 / (v10 * v12));
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PMLMutableDenseVector allocWithZone:a3];
+  v4 = [PMLMutableDenseVector allocWithZone:zone];
   data = self->_data;
 
   return [(PMLDenseVector *)v4 initWithData:data];
 }
 
-+ (id)denseVectorFromNumbers:(id)a3
++ (id)denseVectorFromNumbers:(id)numbers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithNumbers:v4];
+  numbersCopy = numbers;
+  v5 = [[self alloc] initWithNumbers:numbersCopy];
 
   return v5;
 }
 
-- (id)vecByAppendingVec:(id)a3
+- (id)vecByAppendingVec:(id)vec
 {
   v4 = self->_data;
-  v5 = [a3 data];
-  v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{objc_msgSend(v5, "length") + -[NSMutableData length](v4, "length")}];
+  data = [vec data];
+  v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:{objc_msgSend(data, "length") + -[NSMutableData length](v4, "length")}];
   [v6 appendData:v4];
 
-  [v6 appendData:v5];
+  [v6 appendData:data];
   v7 = [[PMLMutableDenseVector alloc] initWithMutableData:v6];
 
   return v7;
 }
 
-- (id)sliceFrom:(int)a3 to:(int)a4
+- (id)sliceFrom:(int)from to:(int)to
 {
-  if (a3 < 0 || [(PMLDenseVector *)self count]<= a3)
+  if (from < 0 || [(PMLDenseVector *)self count]<= from)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"start >= 0 && start < self.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"start >= 0 && start < self.count"}];
   }
 
-  if (a4 < 1 || [(PMLDenseVector *)self count]< a4)
+  if (to < 1 || [(PMLDenseVector *)self count]< to)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"end > 0 && end <= self.count"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"end > 0 && end <= self.count"}];
   }
 
-  v8 = a4 - a3;
-  if (a4 < a3)
+  v8 = to - from;
+  if (to < from)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"end >= start"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PMLDenseVector.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"end >= start"}];
   }
 
   v9 = [(PMLDenseVector *)[PMLMutableDenseVector alloc] initWithCount:v8];
-  memcpy([(PMLMutableDenseVector *)v9 mutablePtr], [(PMLDenseVector *)self ptr]+ 4 * a3, 4 * v8);
+  memcpy([(PMLMutableDenseVector *)v9 mutablePtr], [(PMLDenseVector *)self ptr]+ 4 * from, 4 * v8);
 
   return v9;
 }
 
-- (PMLDenseVector)initWithNumbers:(id)a3
+- (PMLDenseVector)initWithNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   v13.receiver = self;
   v13.super_class = PMLDenseVector;
   v5 = [(PMLDenseVector *)&v13 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{4 * objc_msgSend(v4, "count")}];
-    v7 = [(NSMutableData *)v6 mutableBytes];
-    if ([v4 count])
+    v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{4 * objc_msgSend(numbersCopy, "count")}];
+    mutableBytes = [(NSMutableData *)v6 mutableBytes];
+    if ([numbersCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v4 objectAtIndexedSubscript:v8];
+        v9 = [numbersCopy objectAtIndexedSubscript:v8];
         [v9 floatValue];
-        *(v7 + 4 * v8) = v10;
+        *(mutableBytes + 4 * v8) = v10;
 
         ++v8;
       }
 
-      while (v8 < [v4 count]);
+      while (v8 < [numbersCopy count]);
     }
 
     data = v5->_data;
@@ -261,15 +261,15 @@
   return v5;
 }
 
-- (PMLDenseVector)initWithData:(id)a3
+- (PMLDenseVector)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PMLDenseVector;
   v5 = [(PMLDenseVector *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dataCopy mutableCopy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -277,15 +277,15 @@
   return v5;
 }
 
-- (PMLDenseVector)initWithFloatsNoCopy:(float *)a3 count:(unint64_t)a4 deallocator:(id)a5
+- (PMLDenseVector)initWithFloatsNoCopy:(float *)copy count:(unint64_t)count deallocator:(id)deallocator
 {
-  v8 = a5;
+  deallocatorCopy = deallocator;
   v13.receiver = self;
   v13.super_class = PMLDenseVector;
   v9 = [(PMLDenseVector *)&v13 init];
   if (v9)
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytesNoCopy:a3 length:4 * a4 deallocator:v8];
+    v10 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytesNoCopy:copy length:4 * count deallocator:deallocatorCopy];
     data = v9->_data;
     v9->_data = v10;
   }
@@ -293,14 +293,14 @@
   return v9;
 }
 
-- (PMLDenseVector)initWithFloats:(const float *)a3 count:(unint64_t)a4
+- (PMLDenseVector)initWithFloats:(const float *)floats count:(unint64_t)count
 {
   v10.receiver = self;
   v10.super_class = PMLDenseVector;
   v6 = [(PMLDenseVector *)&v10 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:a3 length:4 * a4];
+    v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:floats length:4 * count];
     data = v6->_data;
     v6->_data = v7;
   }
@@ -308,7 +308,7 @@
   return v6;
 }
 
-- (PMLDenseVector)initWithCount:(unint64_t)a3
+- (PMLDenseVector)initWithCount:(unint64_t)count
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -316,7 +316,7 @@
   v4 = [(PMLDenseVector *)&v14 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * a3];
+    v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * count];
     data = v4->_data;
     v4->_data = v5;
 
@@ -324,7 +324,7 @@
     {
       v9 = MEMORY[0x277CBEAD8];
       v15 = @"count";
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
       v16[0] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       v12 = [v9 exceptionWithName:@"PMLMutableDenseVectorAllocationFailure" reason:@"Failed to allocate NSData." userInfo:v11];

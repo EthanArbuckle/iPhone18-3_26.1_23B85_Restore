@@ -1,50 +1,50 @@
 @interface IXPromisedTransferToPathSeed
-- (IXPromisedTransferToPathSeed)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (IXPromisedTransferToPathSeed)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IXPromisedTransferToPathSeed
 
-- (IXPromisedTransferToPathSeed)initWithCoder:(id)a3
+- (IXPromisedTransferToPathSeed)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = IXPromisedTransferToPathSeed;
-  v5 = [(IXOwnedDataPromiseSeed *)&v9 initWithCoder:v4];
+  v5 = [(IXOwnedDataPromiseSeed *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferPath"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferPath"];
     transferPath = v5->_transferPath;
     v5->_transferPath = v6;
 
-    v5->_shouldCopy = [v4 decodeBoolForKey:@"shouldCopy"];
-    v5->_tryDeltaCopy = [v4 decodeBoolForKey:@"tryDeltaCopy"];
+    v5->_shouldCopy = [coderCopy decodeBoolForKey:@"shouldCopy"];
+    v5->_tryDeltaCopy = [coderCopy decodeBoolForKey:@"tryDeltaCopy"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IXPromisedTransferToPathSeed;
-  v4 = a3;
-  [(IXOwnedDataPromiseSeed *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IXOwnedDataPromiseSeed *)&v6 encodeWithCoder:coderCopy];
   v5 = [(IXPromisedTransferToPathSeed *)self transferPath:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"transferPath"];
+  [coderCopy encodeObject:v5 forKey:@"transferPath"];
 
-  [v4 encodeBool:-[IXPromisedTransferToPathSeed shouldCopy](self forKey:{"shouldCopy"), @"shouldCopy"}];
-  [v4 encodeBool:-[IXPromisedTransferToPathSeed tryDeltaCopy](self forKey:{"tryDeltaCopy"), @"tryDeltaCopy"}];
+  [coderCopy encodeBool:-[IXPromisedTransferToPathSeed shouldCopy](self forKey:{"shouldCopy"), @"shouldCopy"}];
+  [coderCopy encodeBool:-[IXPromisedTransferToPathSeed tryDeltaCopy](self forKey:{"tryDeltaCopy"), @"tryDeltaCopy"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = IXPromisedTransferToPathSeed;
-  v4 = [(IXOwnedDataPromiseSeed *)&v7 copyWithZone:a3];
-  v5 = [(IXPromisedTransferToPathSeed *)self transferPath];
-  [v4 setTransferPath:v5];
+  v4 = [(IXOwnedDataPromiseSeed *)&v7 copyWithZone:zone];
+  transferPath = [(IXPromisedTransferToPathSeed *)self transferPath];
+  [v4 setTransferPath:transferPath];
 
   [v4 setShouldCopy:{-[IXPromisedTransferToPathSeed shouldCopy](self, "shouldCopy")}];
   [v4 setTryDeltaCopy:{-[IXPromisedTransferToPathSeed tryDeltaCopy](self, "tryDeltaCopy")}];

@@ -1,6 +1,6 @@
 @interface WFTrelloItemContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
@@ -8,20 +8,20 @@
 
 @implementation WFTrelloItemContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Trello items", @"Trello items");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Trello item", @"Trello item");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -38,7 +38,7 @@
 + (id)stringConversionBehavior
 {
   v2 = MEMORY[0x277CFC310];
-  v3 = [a1 propertyForName:@"Name"];
+  v3 = [self propertyForName:@"Name"];
   v4 = [v2 accessingProperty:v3];
 
   return v4;

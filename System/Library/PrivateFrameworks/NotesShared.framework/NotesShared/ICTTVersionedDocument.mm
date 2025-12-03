@@ -1,82 +1,82 @@
 @interface ICTTVersionedDocument
-- (ICTTVersionedDocument)initWithArchive:(const void *)a3 replicaID:(id)a4;
-- (ICTTVersionedDocument)initWithData:(id)a3 replicaID:(id)a4;
+- (ICTTVersionedDocument)initWithArchive:(const void *)archive replicaID:(id)d;
+- (ICTTVersionedDocument)initWithData:(id)data replicaID:(id)d;
 - (id)serialize;
-- (unint64_t)mergeWithVersionedDocument:(id)a3;
+- (unint64_t)mergeWithVersionedDocument:(id)document;
 - (unsigned)maxDocumentVersion;
 - (void)dealloc;
-- (void)loadData:(id)a3;
-- (void)loadDocumentArchive:(void *)a3;
-- (void)saveCurrentVersion:(void *)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)loadData:(id)data;
+- (void)loadDocumentArchive:(void *)archive;
+- (void)saveCurrentVersion:(void *)version;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation ICTTVersionedDocument
 
-- (ICTTVersionedDocument)initWithData:(id)a3 replicaID:(id)a4
+- (ICTTVersionedDocument)initWithData:(id)data replicaID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = ICTTVersionedDocument;
   v8 = [(ICTTVersionedDocument *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_replicaID, a4);
-    [(ICTTVersionedDocument *)v9 loadData:v6];
+    objc_storeStrong(&v8->_replicaID, d);
+    [(ICTTVersionedDocument *)v9 loadData:dataCopy];
   }
 
   return v9;
 }
 
-- (ICTTVersionedDocument)initWithArchive:(const void *)a3 replicaID:(id)a4
+- (ICTTVersionedDocument)initWithArchive:(const void *)archive replicaID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = ICTTVersionedDocument;
   v8 = [(ICTTVersionedDocument *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_replicaID, a4);
-    [(ICTTVersionedDocument *)v9 loadArchive:a3];
+    objc_storeStrong(&v8->_replicaID, d);
+    [(ICTTVersionedDocument *)v9 loadArchive:archive];
   }
 
   return v9;
 }
 
-- (void)loadData:(id)a3
+- (void)loadData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__ICTTVersionedDocument_loadData___block_invoke;
   v6[3] = &unk_278197130;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dataCopy;
+  v5 = dataCopy;
   _os_activity_initiate(&dword_214D51000, "Loading versioned document", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
-- (void)loadDocumentArchive:(void *)a3
+- (void)loadDocumentArchive:(void *)archive
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = [objc_opt_class() serializationVersion];
-  v6 = *(a3 + 12);
+  serializationVersion = [objc_opt_class() serializationVersion];
+  v6 = *(archive + 12);
   if (!v6)
   {
     v10 = -1;
     goto LABEL_36;
   }
 
-  v7 = v5;
+  v7 = serializationVersion;
   v8 = 0;
   v9 = -1;
   v10 = -1;
   do
   {
-    v11 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>(a3 + 40, v8);
+    v11 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>(archive + 40, v8);
     versioned_document::Version::Version(v47, v11);
     if (v10 < 0 && v48 <= v7)
     {
@@ -137,10 +137,10 @@ LABEL_39:
   v15 = 0x277CBE000uLL;
   *&v13 = 67109632;
   v45 = v13;
-  v46 = a3;
+  archiveCopy = archive;
   while (1)
   {
-    v16 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>(a3 + 40, v9);
+    v16 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>(archive + 40, v9);
     versioned_document::Version::Version(v47, v16);
     v17 = v50;
     v18 = *(v50 + 23);
@@ -197,7 +197,7 @@ LABEL_34:
     }
   }
 
-  v24 = self;
+  selfCopy = self;
   v25 = v15;
   v26 = v14;
   v27 = v49;
@@ -219,12 +219,12 @@ LABEL_34:
 
     v14 = v28;
     v15 = v25;
-    self = v24;
-    a3 = v46;
+    self = selfCopy;
+    archive = archiveCopy;
     goto LABEL_34;
   }
 
-  a3 = v46;
+  archive = archiveCopy;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
     [(ICTTVersionedDocument *)v20 loadDocumentArchive:v38, v39, v40, v41, v42, v43, v44];
@@ -234,7 +234,7 @@ LABEL_34:
   if ((v10 & 0x80000000) == 0)
   {
 LABEL_40:
-    google::protobuf::RepeatedPtrField<versioned_document::Version>::DeleteSubrange((a3 + 40), v10, *(a3 + 12) - v10);
+    google::protobuf::RepeatedPtrField<versioned_document::Version>::DeleteSubrange((archive + 40), v10, *(archive + 12) - v10);
   }
 }
 
@@ -251,42 +251,42 @@ LABEL_40:
   [(ICTTVersionedDocument *)&v4 dealloc];
 }
 
-- (void)saveCurrentVersion:(void *)a3
+- (void)saveCurrentVersion:(void *)version
 {
-  v5 = [objc_opt_class() minimumSupportedVersion];
+  minimumSupportedVersion = [objc_opt_class() minimumSupportedVersion];
   v12 = 0;
   v6 = [(ICTTVersionedDocument *)self serializeCurrentVersion:&v12];
   v7 = v12;
-  *(a3 + 8) |= 3u;
-  *(a3 + 10) = v7;
-  *(a3 + 11) = v5;
-  v8 = [v6 bytes];
+  *(version + 8) |= 3u;
+  *(version + 10) = v7;
+  *(version + 11) = minimumSupportedVersion;
+  bytes = [v6 bytes];
   v9 = [v6 length];
-  *(a3 + 8) |= 4u;
+  *(version + 8) |= 4u;
   if (!google::protobuf::internal::empty_string_)
   {
     __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
   }
 
   v10 = v9;
-  v11 = *(a3 + 6);
+  v11 = *(version + 6);
   if (v11 == google::protobuf::internal::empty_string_)
   {
     operator new();
   }
 
-  std::string::__assign_external(v11, v8, v10);
+  std::string::__assign_external(v11, bytes, v10);
 }
 
-- (unint64_t)mergeWithVersionedDocument:(id)a3
+- (unint64_t)mergeWithVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICTTVersionedDocument *)self documentArchive];
-  v6 = [v4 documentArchive];
-  if (v6 != v5)
+  documentCopy = document;
+  documentArchive = [(ICTTVersionedDocument *)self documentArchive];
+  documentArchive2 = [documentCopy documentArchive];
+  if (documentArchive2 != documentArchive)
   {
-    google::protobuf::internal::RepeatedPtrFieldBase::Clear<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>((v5 + 40));
-    google::protobuf::internal::RepeatedPtrFieldBase::MergeFrom<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>((v5 + 40), (v6 + 40));
+    google::protobuf::internal::RepeatedPtrFieldBase::Clear<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>((documentArchive + 40));
+    google::protobuf::internal::RepeatedPtrFieldBase::MergeFrom<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>((documentArchive + 40), (documentArchive2 + 40));
   }
 
   return 1;
@@ -303,8 +303,8 @@ LABEL_40:
 
   else
   {
-    v3 = [(ICTTVersionedDocument *)self documentArchive];
-    if (v3[12] <= 0)
+    documentArchive = [(ICTTVersionedDocument *)self documentArchive];
+    if (documentArchive[12] <= 0)
     {
       google::protobuf::internal::LogMessage::LogMessage(v8, 3, "/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Source/Shared/protobuf-lite/google/protobuf/repeated_field.h", 886);
       v4 = google::protobuf::internal::LogMessage::operator<<(v8, "CHECK failed: (index) < (size()): ");
@@ -312,7 +312,7 @@ LABEL_40:
       google::protobuf::internal::LogMessage::~LogMessage(&v8[0].__r_.__value_.__l.__data_);
     }
 
-    return *(**(v3 + 5) + 40);
+    return *(**(documentArchive + 5) + 40);
   }
 }
 
@@ -322,39 +322,39 @@ LABEL_40:
   v3 = os_log_create("com.apple.notes", "Topotext");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [objc_opt_class() serializationVersion];
+    serializationVersion = [objc_opt_class() serializationVersion];
     [[(ICTTVersionedDocument *)self documentArchive] serialize];
   }
 
-  v5 = [(ICTTVersionedDocument *)self documentArchive];
+  documentArchive = [(ICTTVersionedDocument *)self documentArchive];
   v6 = +[ICTTVersionedDocument versionedDocumentSerializationVersion];
-  v5[8] |= 1u;
-  v5[16] = v6;
-  v7 = [(ICTTVersionedDocument *)self documentArchive];
-  v8 = v7[13];
-  v9 = v7[12];
+  documentArchive[8] |= 1u;
+  documentArchive[16] = v6;
+  documentArchive2 = [(ICTTVersionedDocument *)self documentArchive];
+  v8 = documentArchive2[13];
+  v9 = documentArchive2[12];
   if (v9 >= v8)
   {
-    if (v8 == v7[14])
+    if (v8 == documentArchive2[14])
     {
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((v7 + 10), v8 + 1);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((documentArchive2 + 10), v8 + 1);
     }
 
     google::protobuf::internal::GenericTypeHandler<versioned_document::Version>::New();
   }
 
-  v10 = *(v7 + 5);
-  v7[12] = v9 + 1;
+  v10 = *(documentArchive2 + 5);
+  documentArchive2[12] = v9 + 1;
   [(ICTTVersionedDocument *)self saveCurrentVersion:*(v10 + 8 * v9)];
   v11 = objc_alloc(MEMORY[0x277CBEB28]);
-  v12 = [(ICTTVersionedDocument *)self documentArchive];
-  v13 = [v11 initWithLength:(*(*v12 + 72))(v12)];
-  v14 = [(ICTTVersionedDocument *)self documentArchive];
+  documentArchive3 = [(ICTTVersionedDocument *)self documentArchive];
+  v13 = [v11 initWithLength:(*(*documentArchive3 + 72))(documentArchive3)];
+  documentArchive4 = [(ICTTVersionedDocument *)self documentArchive];
   v15 = v13;
-  google::protobuf::MessageLite::SerializeToArray(v14, [v13 mutableBytes], objc_msgSend(v13, "length"));
-  v16 = [(ICTTVersionedDocument *)self documentArchive];
-  v17 = v16;
-  v18 = v16[12];
+  google::protobuf::MessageLite::SerializeToArray(documentArchive4, [v13 mutableBytes], objc_msgSend(v13, "length"));
+  documentArchive5 = [(ICTTVersionedDocument *)self documentArchive];
+  v17 = documentArchive5;
+  v18 = documentArchive5[12];
   if (v18 <= 0)
   {
     google::protobuf::internal::LogMessage::LogMessage(v25, 3, "/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Source/Shared/protobuf-lite/google/protobuf/repeated_field.h", 913);
@@ -368,45 +368,45 @@ LABEL_40:
   v21 = v18 - 1;
   v17[12] = v21;
   (*(**(v20 + 8 * v21) + 32))(*(v20 + 8 * v21));
-  v22 = [v13 ic_gzipDeflate];
+  ic_gzipDeflate = [v13 ic_gzipDeflate];
 
-  return v22;
+  return ic_gzipDeflate;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.notes", "Topotext");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [objc_opt_class() serializationVersion];
+    serializationVersion = [objc_opt_class() serializationVersion];
     [[(ICTTVersionedDocument *)self documentArchive] serialize];
   }
 
   v7 = +[ICTTVersionedDocument versionedDocumentSerializationVersion];
-  *(a3 + 8) |= 1u;
-  *(a3 + 16) = v7;
-  v8 = [(ICTTVersionedDocument *)self documentArchive];
-  if (v8 != a3)
+  *(archive + 8) |= 1u;
+  *(archive + 16) = v7;
+  documentArchive = [(ICTTVersionedDocument *)self documentArchive];
+  if (documentArchive != archive)
   {
-    google::protobuf::internal::RepeatedPtrFieldBase::Clear<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>(a3 + 40);
-    google::protobuf::internal::RepeatedPtrFieldBase::MergeFrom<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>((a3 + 40), (v8 + 40));
+    google::protobuf::internal::RepeatedPtrFieldBase::Clear<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>(archive + 40);
+    google::protobuf::internal::RepeatedPtrFieldBase::MergeFrom<google::protobuf::RepeatedPtrField<versioned_document::Version>::TypeHandler>((archive + 40), (documentArchive + 40));
   }
 
-  v9 = *(a3 + 13);
-  v10 = *(a3 + 12);
+  v9 = *(archive + 13);
+  v10 = *(archive + 12);
   if (v10 >= v9)
   {
-    if (v9 == *(a3 + 14))
+    if (v9 == *(archive + 14))
     {
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 40, v9 + 1);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 40, v9 + 1);
     }
 
     google::protobuf::internal::GenericTypeHandler<versioned_document::Version>::New();
   }
 
-  v11 = *(a3 + 5);
-  *(a3 + 12) = v10 + 1;
+  v11 = *(archive + 5);
+  *(archive + 12) = v10 + 1;
   [(ICTTVersionedDocument *)self saveCurrentVersion:*(v11 + 8 * v10)];
 }
 

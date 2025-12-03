@@ -1,11 +1,11 @@
 @interface CXEndCallAction
-- (CXEndCallAction)initWithCoder:(id)a3;
+- (CXEndCallAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fulfill;
 - (void)fulfillWithDateEnded:(NSDate *)dateEnded;
-- (void)updateAsFulfilledWithDateEnded:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)updateAsFulfilledWithDateEnded:(id)ended;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXEndCallAction
@@ -14,17 +14,17 @@
 {
   v6.receiver = self;
   v6.super_class = CXEndCallAction;
-  v3 = [(CXCallAction *)&v6 customDescription];
-  v4 = [(CXEndCallAction *)self dateEnded];
-  [v3 appendFormat:@" dateEnded=%@", v4];
+  customDescription = [(CXCallAction *)&v6 customDescription];
+  dateEnded = [(CXEndCallAction *)self dateEnded];
+  [customDescription appendFormat:@" dateEnded=%@", dateEnded];
 
-  return v3;
+  return customDescription;
 }
 
 - (void)fulfill
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(CXEndCallAction *)self fulfillWithDateEnded:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CXEndCallAction *)self fulfillWithDateEnded:date];
 }
 
 - (void)fulfillWithDateEnded:(NSDate *)dateEnded
@@ -37,38 +37,38 @@
 
   v4 = [(CXEndCallAction *)self copy];
   [v4 updateAsFulfilledWithDateEnded:v6];
-  v5 = [v4 delegate];
-  [v5 actionCompleted:v4];
+  delegate = [v4 delegate];
+  [delegate actionCompleted:v4];
 }
 
-- (void)updateAsFulfilledWithDateEnded:(id)a3
+- (void)updateAsFulfilledWithDateEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   [(CXAction *)self updateAsFulfilled];
-  [(CXEndCallAction *)self setDateEnded:v4];
+  [(CXEndCallAction *)self setDateEnded:endedCopy];
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CXEndCallAction;
-  v6 = a3;
-  [(CXCallAction *)&v8 updateSanitizedCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXCallAction *)&v8 updateSanitizedCopy:copyCopy withZone:zone];
   v7 = [(CXEndCallAction *)self dateEnded:v8.receiver];
-  [v6 setDateEnded:v7];
+  [copyCopy setDateEnded:v7];
 }
 
-- (CXEndCallAction)initWithCoder:(id)a3
+- (CXEndCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CXEndCallAction;
-  v5 = [(CXCallAction *)&v11 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_dateEnded);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     dateEnded = v5->_dateEnded;
     v5->_dateEnded = v8;
   }
@@ -76,15 +76,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXEndCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXEndCallAction *)self dateEnded:v7.receiver];
   v6 = NSStringFromSelector(sel_dateEnded);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 @end

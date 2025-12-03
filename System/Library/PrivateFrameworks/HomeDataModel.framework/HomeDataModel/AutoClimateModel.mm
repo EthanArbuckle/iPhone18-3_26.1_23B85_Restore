@@ -1,9 +1,9 @@
 @interface AutoClimateModel
 - (_TtC13HomeDataModel16AutoClimateModel)init;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
 @end
 
 @implementation AutoClimateModel
@@ -19,36 +19,36 @@
   return [(AutoClimateModel *)&v5 init];
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D1D50FD4(v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_1D1D50FD4(homeCopy);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  AutoClimateModel.home(_:didRemove:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  AutoClimateModel.home(_:didRemove:)(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  _s13HomeDataModel011AutoClimateC0C4home_6didAddySo6HMHomeC_So11HMAccessoryCtF_0(v6, a4);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  _s13HomeDataModel011AutoClimateC0C4home_6didAddySo6HMHomeC_So11HMAccessoryCtF_0(homeCopy, accessory);
 }
 
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = self;
-  _s13HomeDataModel011AutoClimateC0C4home_6didAddySo6HMHomeC_So11HMAccessoryCtF_0(v7, a5);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  _s13HomeDataModel011AutoClimateC0C4home_6didAddySo6HMHomeC_So11HMAccessoryCtF_0(homeCopy, accessory);
 }
 
 @end

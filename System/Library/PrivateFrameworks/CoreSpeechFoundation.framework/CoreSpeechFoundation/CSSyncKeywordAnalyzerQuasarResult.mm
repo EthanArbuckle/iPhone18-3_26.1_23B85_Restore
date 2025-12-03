@@ -1,18 +1,18 @@
 @interface CSSyncKeywordAnalyzerQuasarResult
-- (CSSyncKeywordAnalyzerQuasarResult)initWithConfidence:(double)a3;
+- (CSSyncKeywordAnalyzerQuasarResult)initWithConfidence:(double)confidence;
 - (CSSyncKeywordAnalyzerQuasarResult)initWithDefaultConfidence;
 @end
 
 @implementation CSSyncKeywordAnalyzerQuasarResult
 
-- (CSSyncKeywordAnalyzerQuasarResult)initWithConfidence:(double)a3
+- (CSSyncKeywordAnalyzerQuasarResult)initWithConfidence:(double)confidence
 {
   v5.receiver = self;
   v5.super_class = CSSyncKeywordAnalyzerQuasarResult;
   result = [(CSSyncKeywordAnalyzerQuasarResult *)&v5 init];
   if (result)
   {
-    result->_triggerConfidence = a3;
+    result->_triggerConfidence = confidence;
     result->_isValidResult = 1;
   }
 

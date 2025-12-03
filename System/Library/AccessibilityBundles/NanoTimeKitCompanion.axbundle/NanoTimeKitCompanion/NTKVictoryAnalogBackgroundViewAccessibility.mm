@@ -1,8 +1,8 @@
 @interface NTKVictoryAnalogBackgroundViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axHandleNumberLabels:(id)a3;
-- (void)_axLabelLogoButton:(id)a3;
+- (void)_axHandleNumberLabels:(id)labels;
+- (void)_axLabelLogoButton:(id)button;
 - (void)_createLargeHourMarkerLabelsAndAttachToViewIfNeeded;
 - (void)_createMediumNumberLayersIfNeededAndAttachToViewIfNeeded;
 - (void)addLogoButtonIfNeeded;
@@ -11,17 +11,17 @@
 
 @implementation NTKVictoryAnalogBackgroundViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_logoButton" withType:"NTKVictoryLogoButton"];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_smallLogoButton" withType:"NTKVictoryLogoButton"];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_largeHourMarkerLabels" withType:"NSArray"];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_mediumNumberLayers" withType:"NSArray"];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"addLogoButtonIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"addSmallLogoButtonIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"_createLargeHourMarkerLabelsAndAttachToViewIfNeeded" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"_createMediumNumberLayersIfNeededAndAttachToViewIfNeeded" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_logoButton" withType:"NTKVictoryLogoButton"];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_smallLogoButton" withType:"NTKVictoryLogoButton"];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_largeHourMarkerLabels" withType:"NSArray"];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceVariable:@"_mediumNumberLayers" withType:"NSArray"];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"addLogoButtonIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"addSmallLogoButtonIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"_createLargeHourMarkerLabelsAndAttachToViewIfNeeded" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKVictoryAnalogBackgroundView" hasInstanceMethod:@"_createMediumNumberLayersIfNeededAndAttachToViewIfNeeded" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -74,21 +74,21 @@
   [(NTKVictoryAnalogBackgroundViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axLabelLogoButton:(id)a3
+- (void)_axLabelLogoButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = accessibilityLocalizedString(@"victory.watchkit.app", v4);
-  [v3 setAccessibilityLabel:v5];
+  [buttonCopy setAccessibilityLabel:v5];
 }
 
-- (void)_axHandleNumberLabels:(id)a3
+- (void)_axHandleNumberLabels:(id)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [labelsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -100,7 +100,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(labelsCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v7) setIsAccessibilityElement:0];
@@ -108,7 +108,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [labelsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

@@ -2,8 +2,8 @@
 + (BOOL)supportsAccountlessHandling;
 + (id)accountlessHandler;
 + (id)handlers;
-- (ArtistImageRequestHandler)initWithConfiguration:(id)a3;
-- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)a3;
+- (ArtistImageRequestHandler)initWithConfiguration:(id)configuration;
+- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)identity;
 @end
 
 @implementation ArtistImageRequestHandler
@@ -20,13 +20,13 @@
   return v3;
 }
 
-- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)a3
+- (void)updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[ICCloudAvailabilityController sharedController];
-  v6 = [v5 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v5 shouldProhibitMusicActionForCurrentNetworkConditions];
 
-  if (v6)
+  if (shouldProhibitMusicActionForCurrentNetworkConditions)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -38,17 +38,17 @@
 
   else
   {
-    [(CloudArtistHeroImageImporter *)self->_importer updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:v4];
+    [(CloudArtistHeroImageImporter *)self->_importer updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:identityCopy];
   }
 }
 
-- (ArtistImageRequestHandler)initWithConfiguration:(id)a3
+- (ArtistImageRequestHandler)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[ICDeviceInfo currentDeviceInfo];
-  v6 = [v5 isAudioAccessory];
+  isAudioAccessory = [v5 isAudioAccessory];
 
-  if (v6)
+  if (isAudioAccessory)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -57,26 +57,26 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Device does not support ArtistImageRequestHandler", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = ArtistImageRequestHandler;
-    v9 = [(BaseRequestHandler *)&v13 initWithConfiguration:v4];
+    v9 = [(BaseRequestHandler *)&v13 initWithConfiguration:configurationCopy];
     if (v9)
     {
-      v10 = [[CloudArtistHeroImageImporter alloc] initWithConfiguration:v4];
+      v10 = [[CloudArtistHeroImageImporter alloc] initWithConfiguration:configurationCopy];
       importer = v9->_importer;
       v9->_importer = v10;
     }
 
     self = v9;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 + (id)accountlessHandler
@@ -94,9 +94,9 @@
 + (BOOL)supportsAccountlessHandling
 {
   v2 = +[ICDeviceInfo currentDeviceInfo];
-  v3 = [v2 isAudioAccessory];
+  isAudioAccessory = [v2 isAudioAccessory];
 
-  if (v3)
+  if (isAudioAccessory)
   {
     v4 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -106,7 +106,7 @@
     }
   }
 
-  return v3 ^ 1;
+  return isAudioAccessory ^ 1;
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface PKPassShareScheduleSectionController
-- (PKPassShareScheduleSectionController)initWithConfiguration:(id)a3 possibleTimeConfiguration:(id)a4 isEditable:(BOOL)a5 isDisabled:(BOOL)a6 delegate:(id)a7;
-- (id)_formattedDate:(id)a3;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)decorateCell:(id)a3 forScheduleRowItem:(id)a4;
-- (id)headerAttributedStringForIdentifier:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (PKPassShareScheduleSectionController)initWithConfiguration:(id)configuration possibleTimeConfiguration:(id)timeConfiguration isEditable:(BOOL)editable isDisabled:(BOOL)disabled delegate:(id)delegate;
+- (id)_formattedDate:(id)date;
+- (id)cellRegistrationForItem:(id)item;
+- (id)decorateCell:(id)cell forScheduleRowItem:(id)item;
+- (id)headerAttributedStringForIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)_updateRowsIfNecessary;
-- (void)decorateDayPicker:(id)a3 forScheduleRowItem:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setIsDisabled:(BOOL)a3;
-- (void)timePickerValueDidChange:(id)a3;
-- (void)toggleValueChanged:(id)a3;
-- (void)weekdaySelector:(id)a3 didUpdateSelectedWeekdays:(id)a4;
+- (void)decorateDayPicker:(id)picker forScheduleRowItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)setConfiguration:(id)configuration;
+- (void)setIsDisabled:(BOOL)disabled;
+- (void)timePickerValueDidChange:(id)change;
+- (void)toggleValueChanged:(id)changed;
+- (void)weekdaySelector:(id)selector didUpdateSelectedWeekdays:(id)weekdays;
 @end
 
 @implementation PKPassShareScheduleSectionController
 
-- (PKPassShareScheduleSectionController)initWithConfiguration:(id)a3 possibleTimeConfiguration:(id)a4 isEditable:(BOOL)a5 isDisabled:(BOOL)a6 delegate:(id)a7
+- (PKPassShareScheduleSectionController)initWithConfiguration:(id)configuration possibleTimeConfiguration:(id)timeConfiguration isEditable:(BOOL)editable isDisabled:(BOOL)disabled delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  configurationCopy = configuration;
+  timeConfigurationCopy = timeConfiguration;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = PKPassShareScheduleSectionController;
   v16 = [(PKPassShareSectionController *)&v21 initWithIdentifiers:MEMORY[0x1E695E0F0]];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_configuration, a3);
-    objc_storeStrong(&v17->_possibleTimeConfiguration, a4);
-    v17->_isEditable = a5;
-    v17->_isDisabled = a6;
-    objc_storeStrong(&v17->_delegate, a7);
+    objc_storeStrong(&v16->_configuration, configuration);
+    objc_storeStrong(&v17->_possibleTimeConfiguration, timeConfiguration);
+    v17->_isEditable = editable;
+    v17->_isDisabled = disabled;
+    objc_storeStrong(&v17->_delegate, delegate);
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
     tags = v17->_tags;
     v17->_tags = v18;
@@ -43,29 +43,29 @@
   return v17;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_configuration, a3);
+  objc_storeStrong(&self->_configuration, configuration);
 
   [(PKPassShareScheduleSectionController *)self _updateRowsIfNecessary];
 }
 
-- (void)setIsDisabled:(BOOL)a3
+- (void)setIsDisabled:(BOOL)disabled
 {
-  if (self->_isDisabled != a3)
+  if (self->_isDisabled != disabled)
   {
-    self->_isDisabled = a3;
+    self->_isDisabled = disabled;
     [(PKPassShareScheduleSectionController *)self _updateRowsIfNecessary];
   }
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v5 = [v4 hasDayPicker];
+  hasDayPicker = [itemCopy hasDayPicker];
   v6 = MEMORY[0x1E69DC800];
-  if (v5)
+  if (hasDayPicker)
   {
     v7 = objc_opt_class();
     v15[0] = MEMORY[0x1E69E9820];
@@ -120,71 +120,71 @@ void __64__PKPassShareScheduleSectionController_cellRegistrationForItem___block_
   }
 }
 
-- (void)decorateDayPicker:(id)a3 forScheduleRowItem:(id)a4
+- (void)decorateDayPicker:(id)picker forScheduleRowItem:(id)item
 {
-  v5 = a3;
-  [v5 setUserInteractionEnabled:1];
-  v6 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v5 setBackgroundColor:v6];
+  pickerCopy = picker;
+  [pickerCopy setUserInteractionEnabled:1];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [pickerCopy setBackgroundColor:secondarySystemBackgroundColor];
 
-  [v5 setDelegate:self];
-  v7 = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
-  v12 = [v7 firstObject];
+  [pickerCopy setDelegate:self];
+  schedules = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
+  firstObject = [schedules firstObject];
 
-  v8 = [(PKPassShareTimeConfiguration *)self->_possibleTimeConfiguration schedules];
-  v9 = [v8 firstObject];
+  schedules2 = [(PKPassShareTimeConfiguration *)self->_possibleTimeConfiguration schedules];
+  firstObject2 = [schedules2 firstObject];
 
-  v10 = [v12 daysOfWeek];
-  v11 = [v9 daysOfWeek];
-  [v5 setSelectedDays:v10 possibleDays:v11];
+  daysOfWeek = [firstObject daysOfWeek];
+  daysOfWeek2 = [firstObject2 daysOfWeek];
+  [pickerCopy setSelectedDays:daysOfWeek possibleDays:daysOfWeek2];
 }
 
-- (id)decorateCell:(id)a3 forScheduleRowItem:(id)a4
+- (id)decorateCell:(id)cell forScheduleRowItem:(id)item
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 configuration];
-  v9 = [v7 title];
-  [v8 setText:v9];
+  cellCopy = cell;
+  itemCopy = item;
+  configuration = [itemCopy configuration];
+  title = [itemCopy title];
+  [configuration setText:title];
 
-  v10 = [v7 value];
-  [v8 setSecondaryText:v10];
+  value = [itemCopy value];
+  [configuration setSecondaryText:value];
 
-  v11 = [v7 icon];
-  if (v11)
+  icon = [itemCopy icon];
+  if (icon)
   {
-    [v8 setImage:v11];
-    v12 = [v8 imageProperties];
+    [configuration setImage:icon];
+    imageProperties = [configuration imageProperties];
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
   else
   {
     v13 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"number.circle.fill" withConfiguration:0];
-    [v8 setImage:v13];
+    [configuration setImage:v13];
 
-    v12 = [v8 imageProperties];
+    imageProperties = [configuration imageProperties];
     [MEMORY[0x1E69DC888] clearColor];
   }
   v14 = ;
-  [v12 setTintColor:v14];
+  [imageProperties setTintColor:v14];
 
-  [v8 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
-  [v6 setContentConfiguration:v8];
-  v15 = [v7 userInteractionEnabled];
-  if ([v7 hasToggle])
+  [configuration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
+  [cellCopy setContentConfiguration:configuration];
+  userInteractionEnabled = [itemCopy userInteractionEnabled];
+  if ([itemCopy hasToggle])
   {
     v16 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
-    [v16 setOn:{objc_msgSend(v7, "isOn")}];
+    [v16 setOn:{objc_msgSend(itemCopy, "isOn")}];
     v17 = MEMORY[0x1E696AD98];
-    v18 = [v7 title];
-    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(v18, "hash")}];
+    title2 = [itemCopy title];
+    v19 = [v17 numberWithUnsignedInteger:{objc_msgSend(title2, "hash")}];
 
     [v16 setTag:{objc_msgSend(v19, "unsignedIntegerValue")}];
-    [(NSMutableDictionary *)self->_tags setObject:v7 forKeyedSubscript:v19];
+    [(NSMutableDictionary *)self->_tags setObject:itemCopy forKeyedSubscript:v19];
     [v16 addTarget:self action:sel_toggleValueChanged_ forControlEvents:4096];
-    [v16 setEnabled:v15];
+    [v16 setEnabled:userInteractionEnabled];
     v20 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:v16 placement:1];
     [v20 setMaintainsFixedSize:1];
     v32[0] = v20;
@@ -192,35 +192,35 @@ void __64__PKPassShareScheduleSectionController_cellRegistrationForItem___block_
     v22 = v32;
 LABEL_8:
     v28 = [v21 arrayWithObjects:v22 count:1];
-    [v6 setAccessories:v28];
+    [cellCopy setAccessories:v28];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v7 hasTimePicker])
+  if ([itemCopy hasTimePicker])
   {
     v16 = objc_alloc_init(MEMORY[0x1E69DC920]);
     [v16 setDatePickerMode:0];
     [v16 setPreferredDatePickerStyle:3];
-    v23 = [v7 date];
-    [v16 setDate:v23];
+    date = [itemCopy date];
+    [v16 setDate:date];
 
-    v24 = [v7 minimumDate];
-    [v16 setMinimumDate:v24];
+    minimumDate = [itemCopy minimumDate];
+    [v16 setMinimumDate:minimumDate];
 
-    v25 = [v7 maximumDate];
-    [v16 setMaximumDate:v25];
+    maximumDate = [itemCopy maximumDate];
+    [v16 setMaximumDate:maximumDate];
 
     [v16 setMinuteInterval:60];
     [v16 setRoundsToMinuteInterval:1];
-    [v16 setEnabled:v15];
+    [v16 setEnabled:userInteractionEnabled];
     v26 = MEMORY[0x1E696AD98];
-    v27 = [v7 title];
-    v19 = [v26 numberWithUnsignedInteger:{objc_msgSend(v27, "hash")}];
+    title3 = [itemCopy title];
+    v19 = [v26 numberWithUnsignedInteger:{objc_msgSend(title3, "hash")}];
 
     [v16 setTag:{objc_msgSend(v19, "unsignedIntegerValue")}];
-    [(NSMutableDictionary *)self->_tags setObject:v7 forKeyedSubscript:v19];
+    [(NSMutableDictionary *)self->_tags setObject:itemCopy forKeyedSubscript:v19];
     [v16 addTarget:self action:sel_timePickerValueDidChange_ forControlEvents:4096];
     v20 = [PKDatePickerCellAccessory accessoryWithDatePicker:v16];
     v31 = v20;
@@ -229,20 +229,20 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if ((v15 & 1) != 0 || [v7 isSelectable])
+  if ((userInteractionEnabled & 1) != 0 || [itemCopy isSelectable])
   {
     v16 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
     v30 = v16;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-    [v6 setAccessories:v19];
+    [cellCopy setAccessories:v19];
     goto LABEL_9;
   }
 
 LABEL_10:
-  [v6 setConfigurationUpdateHandler:&__block_literal_global_116];
-  [v6 setUserInteractionEnabled:!self->_isDisabled];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_116];
+  [cellCopy setUserInteractionEnabled:!self->_isDisabled];
 
-  return v8;
+  return configuration;
 }
 
 void __72__PKPassShareScheduleSectionController_decorateCell_forScheduleRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -267,105 +267,105 @@ void __72__PKPassShareScheduleSectionController_decorateCell_forScheduleRowItem_
   [v5 setBackgroundConfiguration:v6];
 }
 
-- (void)timePickerValueDidChange:(id)a3
+- (void)timePickerValueDidChange:(id)change
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   tags = self->_tags;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "tag")}];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(changeCopy, "tag")}];
   v7 = [(NSMutableDictionary *)tags objectForKeyedSubscript:v6];
 
-  v8 = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
-  v9 = [v8 firstObject];
-  v10 = v9;
-  if (v9)
+  schedules = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
+  firstObject = [schedules firstObject];
+  v10 = firstObject;
+  if (firstObject)
   {
-    v11 = v9;
+    emptySchedule = firstObject;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69B8A88] emptySchedule];
+    emptySchedule = [MEMORY[0x1E69B8A88] emptySchedule];
   }
 
-  v12 = v11;
+  v12 = emptySchedule;
 
-  v13 = [v12 hoursOfDay];
-  v14 = v13;
+  hoursOfDay = [v12 hoursOfDay];
+  v14 = hoursOfDay;
   v15 = MEMORY[0x1E695E0F0];
-  if (v13)
+  if (hoursOfDay)
   {
-    v15 = v13;
+    v15 = hoursOfDay;
   }
 
   v16 = v15;
 
-  v17 = [v4 date];
+  date = [changeCopy date];
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v19 = [v7 identifier];
+  identifier = [v7 identifier];
   v47 = v7;
-  v48 = v4;
+  v48 = changeCopy;
   v46 = v16;
-  if (v19 == @"StartHourRow" || (v20 = v19) != 0 && (v21 = [(__CFString *)v19 isEqualToString:@"StartHourRow"], v20, v20, v21))
+  if (identifier == @"StartHourRow" || (v20 = identifier) != 0 && (v21 = [(__CFString *)identifier isEqualToString:@"StartHourRow"], v20, v20, v21))
   {
-    v22 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v23 = ([v22 component:32 fromDate:v17] + 1);
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    integerValue2 = ([currentCalendar component:32 fromDate:date] + 1);
 
-    v24 = [v16 lastObject];
-    v25 = [v24 integerValue];
+    lastObject = [v16 lastObject];
+    integerValue = [lastObject integerValue];
 
     goto LABEL_16;
   }
 
-  v26 = [v7 identifier];
-  if (v26 != @"EndHourRow")
+  identifier2 = [v7 identifier];
+  if (identifier2 != @"EndHourRow")
   {
-    v23 = v26;
-    if (v26)
+    integerValue2 = identifier2;
+    if (identifier2)
     {
-      v27 = [(__CFString *)v26 isEqualToString:@"EndHourRow"];
+      v27 = [(__CFString *)identifier2 isEqualToString:@"EndHourRow"];
 
       if (v27)
       {
         goto LABEL_13;
       }
 
-      v23 = 0;
+      integerValue2 = 0;
     }
 
-    v25 = 0;
+    integerValue = 0;
     goto LABEL_20;
   }
 
 LABEL_13:
-  v28 = [v16 firstObject];
-  v23 = [v28 integerValue];
+  firstObject2 = [v16 firstObject];
+  integerValue2 = [firstObject2 integerValue];
 
-  v29 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v30 = [v29 component:32 fromDate:v17];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v30 = [currentCalendar2 component:32 fromDate:date];
 
   if (v30)
   {
-    v25 = v30;
+    integerValue = v30;
   }
 
   else
   {
-    v25 = 24;
+    integerValue = 24;
   }
 
 LABEL_16:
-  if (v23 > v25)
+  if (integerValue2 > integerValue)
   {
-    v31 = [v7 date];
+    date2 = [v7 date];
     v32 = v48;
-    [v48 setDate:v31 animated:1];
+    [v48 setDate:date2 animated:1];
 
     goto LABEL_26;
   }
 
 LABEL_20:
-  v33 = v23;
+  v33 = integerValue2;
   do
   {
     v34 = [MEMORY[0x1E696AD98] numberWithInteger:v33];
@@ -374,13 +374,13 @@ LABEL_20:
     v33 = (v33 + 1);
   }
 
-  while ((v25 + 1) != v33);
+  while ((integerValue + 1) != v33);
   [v12 setHoursOfDay:v18];
   v35 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [MEMORY[0x1E696AD98] numberWithInteger:v23];
-    v37 = [MEMORY[0x1E696AD98] numberWithInteger:v25];
+    v36 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue2];
+    v37 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
     *buf = 138412802;
     v51 = v36;
     v52 = 2112;
@@ -396,57 +396,57 @@ LABEL_20:
   [(PKPassShareTimeConfiguration *)configuration setSchedules:v39];
 
   [(PKPassShareScheduleSectionControllerDelegate *)self->_delegate timeConfigurationDidChange:self->_configuration];
-  v40 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v41 = [v40 component:64 fromDate:v17];
+  currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v41 = [currentCalendar3 component:64 fromDate:date];
 
   v32 = v48;
   if (v41 >= 1)
   {
-    v42 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v43 = [v42 components:96 fromDate:v17];
+    currentCalendar4 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v43 = [currentCalendar4 components:96 fromDate:date];
 
     [v43 setMinute:0];
-    v44 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v45 = [v44 dateFromComponents:v43];
+    currentCalendar5 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v45 = [currentCalendar5 dateFromComponents:v43];
     [v48 setDate:v45 animated:1];
   }
 
 LABEL_26:
 }
 
-- (void)toggleValueChanged:(id)a3
+- (void)toggleValueChanged:(id)changed
 {
   v25[1] = *MEMORY[0x1E69E9840];
   tags = self->_tags;
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "tag")}];
+  changedCopy = changed;
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(changedCopy, "tag")}];
   v8 = [(NSMutableDictionary *)tags objectForKeyedSubscript:v7];
 
-  [v8 setIsOn:{objc_msgSend(v6, "isOn")}];
-  v9 = [v6 isOn];
+  [v8 setIsOn:{objc_msgSend(changedCopy, "isOn")}];
+  isOn = [changedCopy isOn];
 
-  v10 = [v8 identifier];
-  if (v10 == @"DaysOfWeekRow" || (v11 = v10) != 0 && (v12 = [(__CFString *)v10 isEqualToString:@"DaysOfWeekRow"], v11, v11, v12))
+  identifier = [v8 identifier];
+  if (identifier == @"DaysOfWeekRow" || (v11 = identifier) != 0 && (v12 = [(__CFString *)identifier isEqualToString:@"DaysOfWeekRow"], v11, v11, v12))
   {
     p_configuration = &self->_configuration;
-    v14 = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
-    v15 = [v14 firstObject];
+    schedules = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
+    firstObject = [schedules firstObject];
 
-    if (!v9)
+    if (!isOn)
     {
-      [v15 setDaysOfWeek:0];
+      [firstObject setDaysOfWeek:0];
       goto LABEL_18;
     }
 
-    if (!v15)
+    if (!firstObject)
     {
-      v15 = [MEMORY[0x1E69B8A88] emptySchedule];
+      firstObject = [MEMORY[0x1E69B8A88] emptySchedule];
     }
 
-    [v15 setDaysOfWeek:MEMORY[0x1E695E0F0]];
+    [firstObject setDaysOfWeek:MEMORY[0x1E695E0F0]];
     v16 = *p_configuration;
-    v25[0] = v15;
+    v25[0] = firstObject;
     v17 = MEMORY[0x1E695DEC8];
     v18 = v25;
 LABEL_15:
@@ -459,27 +459,27 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v19 = [v8 identifier];
-  if (v19 == @"HoursOfDayRow" || (v20 = v19) != 0 && (v21 = [(__CFString *)v19 isEqualToString:@"HoursOfDayRow"], v20, v20, v21))
+  identifier2 = [v8 identifier];
+  if (identifier2 == @"HoursOfDayRow" || (v20 = identifier2) != 0 && (v21 = [(__CFString *)identifier2 isEqualToString:@"HoursOfDayRow"], v20, v20, v21))
   {
     p_configuration = &self->_configuration;
-    v22 = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
-    v15 = [v22 firstObject];
+    schedules2 = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
+    firstObject = [schedules2 firstObject];
 
-    if (!v9)
+    if (!isOn)
     {
-      [v15 setHoursOfDay:0];
+      [firstObject setHoursOfDay:0];
       goto LABEL_18;
     }
 
-    if (!v15)
+    if (!firstObject)
     {
-      v15 = [MEMORY[0x1E69B8A88] emptySchedule];
+      firstObject = [MEMORY[0x1E69B8A88] emptySchedule];
     }
 
-    [v15 setHoursOfDay:&unk_1F3CC8438];
+    [firstObject setHoursOfDay:&unk_1F3CC8438];
     v16 = *p_configuration;
-    v24 = v15;
+    v24 = firstObject;
     v17 = MEMORY[0x1E695DEC8];
     v18 = &v24;
     goto LABEL_15;
@@ -490,26 +490,26 @@ LABEL_19:
   [(PKPassShareScheduleSectionControllerDelegate *)self->_delegate reloadDataAnimated:1];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v12 = a3;
-  v4 = [v12 isSelectable];
-  v5 = v12;
-  if (v4)
+  itemCopy = item;
+  isSelectable = [itemCopy isSelectable];
+  v5 = itemCopy;
+  if (isSelectable)
   {
-    v6 = [v12 identifier];
-    v7 = v6;
-    if (v6 != @"StartDateRow")
+    identifier = [itemCopy identifier];
+    v7 = identifier;
+    if (identifier != @"StartDateRow")
     {
-      if (!v6)
+      if (!identifier)
       {
 LABEL_6:
 
-        v5 = v12;
+        v5 = itemCopy;
         goto LABEL_7;
       }
 
-      v8 = [(__CFString *)v6 isEqualToString:@"StartDateRow"];
+      v8 = [(__CFString *)identifier isEqualToString:@"StartDateRow"];
 
       if (!v8)
       {
@@ -530,9 +530,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   if (PKEqualObjects())
   {
@@ -555,28 +555,28 @@ LABEL_6:
   return v6;
 }
 
-- (id)headerAttributedStringForIdentifier:(id)a3
+- (id)headerAttributedStringForIdentifier:(id)identifier
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (!self->_showTimeLimitHeader)
   {
     goto LABEL_10;
   }
 
-  v5 = [(PKPaymentSetupListSectionController *)self identifiers];
-  v6 = [v5 firstObject];
-  v7 = v4;
+  identifiers = [(PKPaymentSetupListSectionController *)self identifiers];
+  firstObject = [identifiers firstObject];
+  v7 = identifierCopy;
   v8 = v7;
-  if (v6 == v7)
+  if (firstObject == v7)
   {
 
     goto LABEL_8;
   }
 
-  if (v7 && v6)
+  if (v7 && firstObject)
   {
-    v9 = [v6 isEqualToString:v7];
+    v9 = [firstObject isEqualToString:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -590,8 +590,8 @@ LABEL_8:
     v12 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], *MEMORY[0x1E69DDC58], 2, 0);
     v18[0] = v12;
     v17[1] = *MEMORY[0x1E69DB650];
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v18[1] = v13;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v18[1] = secondaryLabelColor;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
     v15 = [v11 initWithString:v10 attributes:v14];
 
@@ -608,11 +608,11 @@ LABEL_11:
 - (void)_updateRowsIfNecessary
 {
   v78[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPassShareTimeConfiguration *)self->_possibleTimeConfiguration support];
+  support = [(PKPassShareTimeConfiguration *)self->_possibleTimeConfiguration support];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v3 > 1 || !self->_isEditable && ([(PKPassShareTimeConfiguration *)self->_configuration schedules], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (support > 1 || !self->_isEditable && ([(PKPassShareTimeConfiguration *)self->_configuration schedules], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v67 = v3;
+    v67 = support;
     v68 = v4;
     [v4 addObject:@"DayModifierSection"];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -623,17 +623,17 @@ LABEL_11:
 
     [(PKPassShareScheduleRowItem *)v10 setIdentifier:@"DaysOfWeekRow"];
     [(PKPassShareScheduleRowItem *)v10 setSelectable:0];
-    v11 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-    [(PKPassShareScheduleRowItem *)v10 setConfiguration:v11];
+    subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    [(PKPassShareScheduleRowItem *)v10 setConfiguration:subtitleCellConfiguration];
 
     [(PKPassShareScheduleRowItem *)v10 setHasToggle:1];
     [(PKPassShareScheduleRowItem *)v10 setUserInteractionEnabled:self->_isEditable];
     [(NSMutableArray *)v6 addObject:v10];
-    v12 = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
-    v13 = [v12 firstObject];
+    schedules = [(PKPassShareTimeConfiguration *)self->_configuration schedules];
+    firstObject = [schedules firstObject];
 
-    v65 = [v13 daysOfWeek];
-    if (v65 && !self->_isDisabled)
+    daysOfWeek = [firstObject daysOfWeek];
+    if (daysOfWeek && !self->_isDisabled)
     {
       [(PKPassShareScheduleRowItem *)v10 setIsOn:1];
       v14 = [[PKPassShareScheduleRowItem alloc] initWithTitle:0 icon:0];
@@ -650,26 +650,26 @@ LABEL_11:
 
     [(PKPassShareScheduleRowItem *)v18 setIdentifier:@"HoursOfDayRow"];
     [(PKPassShareScheduleRowItem *)v18 setSelectable:0];
-    v19 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-    [(PKPassShareScheduleRowItem *)v18 setConfiguration:v19];
+    subtitleCellConfiguration2 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+    [(PKPassShareScheduleRowItem *)v18 setConfiguration:subtitleCellConfiguration2];
 
     [(PKPassShareScheduleRowItem *)v18 setHasToggle:1];
     [(PKPassShareScheduleRowItem *)v18 setUserInteractionEnabled:self->_isEditable];
     [(NSMutableArray *)v6 addObject:v18];
-    v66 = v13;
-    v20 = [v13 hoursOfDay];
-    v21 = [(PKPassShareTimeConfiguration *)self->_possibleTimeConfiguration schedules];
-    v22 = [v21 firstObject];
-    v23 = [v22 hoursOfDay];
+    v66 = firstObject;
+    hoursOfDay = [firstObject hoursOfDay];
+    schedules2 = [(PKPassShareTimeConfiguration *)self->_possibleTimeConfiguration schedules];
+    firstObject2 = [schedules2 firstObject];
+    hoursOfDay2 = [firstObject2 hoursOfDay];
 
     v24 = v6;
-    if (v20 && !self->_isDisabled)
+    if (hoursOfDay && !self->_isDisabled)
     {
       [(PKPassShareScheduleRowItem *)v18 setIsOn:1];
-      v25 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v26 = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
       v27 = [MEMORY[0x1E695DF00] now];
-      v28 = [v26 components:96 fromDate:v27];
+      v28 = [currentCalendar2 components:96 fromDate:v27];
 
       [v28 setMinute:0];
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -677,26 +677,26 @@ LABEL_11:
       aBlock[2] = __62__PKPassShareScheduleSectionController__updateRowsIfNecessary__block_invoke;
       aBlock[3] = &unk_1E8019E50;
       v76 = v28;
-      v77 = v25;
-      v64 = v25;
+      v77 = currentCalendar;
+      v64 = currentCalendar;
       v63 = v28;
       v29 = _Block_copy(aBlock);
-      v30 = [v23 firstObject];
-      v31 = [v30 integerValue];
+      firstObject3 = [hoursOfDay2 firstObject];
+      integerValue = [firstObject3 integerValue];
 
       v32 = 0;
-      if ([v23 count] && v31 != 1)
+      if ([hoursOfDay2 count] && integerValue != 1)
       {
         v32 = v29[2](v29);
       }
 
-      v33 = [v23 lastObject];
-      v34 = [v33 integerValue];
+      lastObject = [hoursOfDay2 lastObject];
+      integerValue2 = [lastObject integerValue];
 
       v35 = 0;
-      if ([v23 count] && v34 != 24)
+      if ([hoursOfDay2 count] && integerValue2 != 24)
       {
-        v35 = (v29[2])(v29, v34);
+        v35 = (v29[2])(v29, integerValue2);
       }
 
       v69[0] = MEMORY[0x1E69E9820];
@@ -706,45 +706,45 @@ LABEL_11:
       v70 = v32;
       v71 = v35;
       v74 = v29;
-      v72 = self;
+      selfCopy = self;
       v73 = v24;
       v62 = v35;
       v61 = v32;
       v60 = v29;
       v36 = _Block_copy(v69);
       v37 = PKLocalizedShareableCredentialString(&cfstr_ShareScheduleS.isa);
-      v38 = [v20 firstObject];
-      v36[2](v36, v37, @"StartHourRow", [v38 integerValue] - 1);
+      firstObject4 = [hoursOfDay firstObject];
+      v36[2](v36, v37, @"StartHourRow", [firstObject4 integerValue] - 1);
 
       v39 = PKLocalizedShareableCredentialString(&cfstr_ShareScheduleE.isa);
-      v40 = [v20 lastObject];
-      v36[2](v36, v39, @"EndHourRow", [v40 integerValue]);
+      lastObject2 = [hoursOfDay lastObject];
+      v36[2](v36, v39, @"EndHourRow", [lastObject2 integerValue]);
     }
 
     dayRowItems = self->_dayRowItems;
     self->_dayRowItems = v24;
 
     v4 = v68;
-    v3 = v67;
+    support = v67;
   }
 
-  if (!v3)
+  if (!support)
   {
     if (self->_isEditable)
     {
       goto LABEL_19;
     }
 
-    v58 = [(PKPassShareTimeConfiguration *)self->_configuration startDate];
-    if (v58)
+    startDate = [(PKPassShareTimeConfiguration *)self->_configuration startDate];
+    if (startDate)
     {
     }
 
     else
     {
-      v59 = [(PKPassShareTimeConfiguration *)self->_configuration expirationDate];
+      expirationDate = [(PKPassShareTimeConfiguration *)self->_configuration expirationDate];
 
-      if (!v59)
+      if (!expirationDate)
       {
         goto LABEL_19;
       }
@@ -759,11 +759,11 @@ LABEL_11:
   [(PKPassShareScheduleRowItem *)v44 setIdentifier:@"StartDateRow"];
   [(PKPassShareScheduleRowItem *)v44 setSelectable:self->_isEditable];
   [(PKPassShareScheduleRowItem *)v44 setUserInteractionEnabled:self->_isEditable];
-  v45 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [(PKPassShareScheduleRowItem *)v44 setConfiguration:v45];
+  valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [(PKPassShareScheduleRowItem *)v44 setConfiguration:valueCellConfiguration];
 
-  v46 = [(PKPassShareTimeConfiguration *)self->_configuration startDate];
-  v47 = [(PKPassShareScheduleSectionController *)self _formattedDate:v46];
+  startDate2 = [(PKPassShareTimeConfiguration *)self->_configuration startDate];
+  v47 = [(PKPassShareScheduleSectionController *)self _formattedDate:startDate2];
   [(PKPassShareScheduleRowItem *)v44 setValue:v47];
 
   v48 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"calendar"];
@@ -776,11 +776,11 @@ LABEL_11:
   [(PKPassShareScheduleRowItem *)v51 setIdentifier:@"EndDateRow"];
   [(PKPassShareScheduleRowItem *)v51 setSelectable:self->_isEditable];
   [(PKPassShareScheduleRowItem *)v51 setUserInteractionEnabled:self->_isEditable];
-  v52 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-  [(PKPassShareScheduleRowItem *)v51 setConfiguration:v52];
+  valueCellConfiguration2 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+  [(PKPassShareScheduleRowItem *)v51 setConfiguration:valueCellConfiguration2];
 
-  v53 = [(PKPassShareTimeConfiguration *)self->_configuration expirationDate];
-  v54 = [(PKPassShareScheduleSectionController *)self _formattedDate:v53];
+  expirationDate2 = [(PKPassShareTimeConfiguration *)self->_configuration expirationDate];
+  v54 = [(PKPassShareScheduleSectionController *)self _formattedDate:expirationDate2];
   [(PKPassShareScheduleRowItem *)v51 setValue:v54];
 
   v55 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"calendar"];
@@ -826,17 +826,17 @@ void __62__PKPassShareScheduleSectionController__updateRowsIfNecessary__block_in
   [*(a1 + 56) addObject:v9];
 }
 
-- (id)_formattedDate:(id)a3
+- (id)_formattedDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v7 = @"SHARE_SCHEDULE_DATE_NEVER";
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v6 = [v5 isDateInToday:v4];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v6 = [currentCalendar isDateInToday:dateCopy];
 
   if (v6)
   {
@@ -857,34 +857,34 @@ LABEL_5:
     formatter = self->_formatter;
   }
 
-  v8 = [(NSDateFormatter *)formatter stringFromDate:v4];
+  v8 = [(NSDateFormatter *)formatter stringFromDate:dateCopy];
 LABEL_9:
   v12 = v8;
 
   return v12;
 }
 
-- (void)weekdaySelector:(id)a3 didUpdateSelectedWeekdays:(id)a4
+- (void)weekdaySelector:(id)selector didUpdateSelectedWeekdays:(id)weekdays
 {
   v14[1] = *MEMORY[0x1E69E9840];
   configuration = self->_configuration;
-  v6 = a4;
-  v7 = [(PKPassShareTimeConfiguration *)configuration schedules];
-  v8 = [v7 firstObject];
-  v9 = v8;
-  if (v8)
+  weekdaysCopy = weekdays;
+  schedules = [(PKPassShareTimeConfiguration *)configuration schedules];
+  firstObject = [schedules firstObject];
+  v9 = firstObject;
+  if (firstObject)
   {
-    v10 = v8;
+    emptySchedule = firstObject;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69B8A88] emptySchedule];
+    emptySchedule = [MEMORY[0x1E69B8A88] emptySchedule];
   }
 
-  v11 = v10;
+  v11 = emptySchedule;
 
-  [v11 setDaysOfWeek:v6];
+  [v11 setDaysOfWeek:weekdaysCopy];
   v12 = self->_configuration;
   v14[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];

@@ -1,32 +1,32 @@
 @interface MCAnimationTrigger
-+ (id)animationTriggerForTargetPlugObjectID:(id)a3 withAnimationKey:(id)a4;
-- (MCAnimationTrigger)initWithImprint:(id)a3;
++ (id)animationTriggerForTargetPlugObjectID:(id)d withAnimationKey:(id)key;
+- (MCAnimationTrigger)initWithImprint:(id)imprint;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCAnimationTrigger
 
-+ (id)animationTriggerForTargetPlugObjectID:(id)a3 withAnimationKey:(id)a4
++ (id)animationTriggerForTargetPlugObjectID:(id)d withAnimationKey:(id)key
 {
   v6 = objc_alloc_init(MCAnimationTrigger);
-  [(MCAction *)v6 setTargetObjectID:a3];
-  [(MCAnimationTrigger *)v6 setAnimationKey:a4];
+  [(MCAction *)v6 setTargetObjectID:d];
+  [(MCAnimationTrigger *)v6 setAnimationKey:key];
 
   return v6;
 }
 
-- (MCAnimationTrigger)initWithImprint:(id)a3
+- (MCAnimationTrigger)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCAnimationTrigger;
   v4 = [(MCAction *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->_animationKey = [a3 objectForKey:@"animationKey"];
-    v4->_animationAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectForKey:", @"animationAttributes"}];
+    v4->_animationKey = [imprint objectForKey:@"animationKey"];
+    v4->_animationAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(imprint, "objectForKey:", @"animationAttributes"}];
   }
 
   return v4;
@@ -46,12 +46,12 @@
 {
   v8.receiver = self;
   v8.super_class = MCAnimationTrigger;
-  v3 = [(MCAction *)&v8 imprint];
-  v4 = v3;
+  imprint = [(MCAction *)&v8 imprint];
+  v4 = imprint;
   animationKey = self->_animationKey;
   if (animationKey)
   {
-    [v3 setObject:animationKey forKey:@"animationKey"];
+    [imprint setObject:animationKey forKey:@"animationKey"];
   }
 
   animationAttributes = self->_animationAttributes;
@@ -63,22 +63,22 @@
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   objc_sync_enter(self);
   v7.receiver = self;
   v7.super_class = MCAnimationTrigger;
-  [(MCAction *)&v7 _copySelfToSnapshot:a3];
+  [(MCAction *)&v7 _copySelfToSnapshot:snapshot];
   animationKey = self->_animationKey;
   if (animationKey)
   {
-    *(a3 + 4) = [(NSString *)animationKey copy];
+    *(snapshot + 4) = [(NSString *)animationKey copy];
   }
 
   animationAttributes = self->_animationAttributes;
   if (animationAttributes)
   {
-    *(a3 + 3) = [(NSMutableDictionary *)animationAttributes copy];
+    *(snapshot + 3) = [(NSMutableDictionary *)animationAttributes copy];
   }
 
   objc_sync_exit(self);

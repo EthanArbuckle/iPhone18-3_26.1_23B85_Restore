@@ -1,30 +1,30 @@
 @interface CRKASMCredentialManifestEntry
-+ (id)validityIntervalWithDictionary:(id)a3;
++ (id)validityIntervalWithDictionary:(id)dictionary;
 - (BOOL)isFullyPopulated;
-- (CRKASMCredentialManifestEntry)initWithDictionary:(id)a3;
-- (CRKASMCredentialManifestEntry)initWithUserIdentifier:(id)a3 validityInterval:(id)a4 fingerprint:(id)a5;
+- (CRKASMCredentialManifestEntry)initWithDictionary:(id)dictionary;
+- (CRKASMCredentialManifestEntry)initWithUserIdentifier:(id)identifier validityInterval:(id)interval fingerprint:(id)fingerprint;
 - (NSString)stringValue;
 - (id)dictionaryValue;
 @end
 
 @implementation CRKASMCredentialManifestEntry
 
-- (CRKASMCredentialManifestEntry)initWithUserIdentifier:(id)a3 validityInterval:(id)a4 fingerprint:(id)a5
+- (CRKASMCredentialManifestEntry)initWithUserIdentifier:(id)identifier validityInterval:(id)interval fingerprint:(id)fingerprint
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  fingerprintCopy = fingerprint;
   v17.receiver = self;
   v17.super_class = CRKASMCredentialManifestEntry;
   v11 = [(CRKASMCredentialManifestEntry *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     userIdentifier = v11->_userIdentifier;
     v11->_userIdentifier = v12;
 
-    objc_storeStrong(&v11->_validityInterval, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_validityInterval, interval);
+    v14 = [fingerprintCopy copy];
     fingerprint = v11->_fingerprint;
     v11->_fingerprint = v14;
   }
@@ -34,14 +34,14 @@
 
 - (BOOL)isFullyPopulated
 {
-  v3 = [(CRKASMCredentialManifestEntry *)self userIdentifier];
-  if (v3)
+  userIdentifier = [(CRKASMCredentialManifestEntry *)self userIdentifier];
+  if (userIdentifier)
   {
-    v4 = [(CRKASMCredentialManifestEntry *)self validityInterval];
-    if (v4)
+    validityInterval = [(CRKASMCredentialManifestEntry *)self validityInterval];
+    if (validityInterval)
     {
-      v5 = [(CRKASMCredentialManifestEntry *)self fingerprint];
-      v6 = v5 != 0;
+      fingerprint = [(CRKASMCredentialManifestEntry *)self fingerprint];
+      v6 = fingerprint != 0;
     }
 
     else
@@ -61,18 +61,18 @@
 - (NSString)stringValue
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CRKASMCredentialManifestEntry *)self userIdentifier];
-  v5 = [(CRKASMCredentialManifestEntry *)self validityInterval];
-  v6 = [(CRKASMCredentialManifestEntry *)self fingerprint];
-  v7 = [v3 stringWithFormat:@"{ userIdentifier = %@, validityInterval = %@, fingerprint = %@ }", v4, v5, v6];
+  userIdentifier = [(CRKASMCredentialManifestEntry *)self userIdentifier];
+  validityInterval = [(CRKASMCredentialManifestEntry *)self validityInterval];
+  fingerprint = [(CRKASMCredentialManifestEntry *)self fingerprint];
+  v7 = [v3 stringWithFormat:@"{ userIdentifier = %@, validityInterval = %@, fingerprint = %@ }", userIdentifier, validityInterval, fingerprint];
 
   return v7;
 }
 
-- (CRKASMCredentialManifestEntry)initWithDictionary:(id)a3
+- (CRKASMCredentialManifestEntry)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"UserIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"UserIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -86,8 +86,8 @@
 
   v7 = v6;
 
-  v8 = [objc_opt_class() validityIntervalWithDictionary:v4];
-  v9 = [v4 objectForKeyedSubscript:@"Fingerprint"];
+  v8 = [objc_opt_class() validityIntervalWithDictionary:dictionaryCopy];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"Fingerprint"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -109,29 +109,29 @@
 - (id)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CRKASMCredentialManifestEntry *)self userIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"UserIdentifier"];
+  userIdentifier = [(CRKASMCredentialManifestEntry *)self userIdentifier];
+  [v3 setObject:userIdentifier forKeyedSubscript:@"UserIdentifier"];
 
-  v5 = [(CRKASMCredentialManifestEntry *)self validityInterval];
-  v6 = [v5 startDate];
-  [v3 setObject:v6 forKeyedSubscript:@"ValidityStartDate"];
+  validityInterval = [(CRKASMCredentialManifestEntry *)self validityInterval];
+  startDate = [validityInterval startDate];
+  [v3 setObject:startDate forKeyedSubscript:@"ValidityStartDate"];
 
-  v7 = [(CRKASMCredentialManifestEntry *)self validityInterval];
-  v8 = [v7 endDate];
-  [v3 setObject:v8 forKeyedSubscript:@"ValidityEndDate"];
+  validityInterval2 = [(CRKASMCredentialManifestEntry *)self validityInterval];
+  endDate = [validityInterval2 endDate];
+  [v3 setObject:endDate forKeyedSubscript:@"ValidityEndDate"];
 
-  v9 = [(CRKASMCredentialManifestEntry *)self fingerprint];
-  [v3 setObject:v9 forKeyedSubscript:@"Fingerprint"];
+  fingerprint = [(CRKASMCredentialManifestEntry *)self fingerprint];
+  [v3 setObject:fingerprint forKeyedSubscript:@"Fingerprint"];
 
   v10 = [v3 copy];
 
   return v10;
 }
 
-+ (id)validityIntervalWithDictionary:(id)a3
++ (id)validityIntervalWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"ValidityStartDate"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"ValidityStartDate"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -145,7 +145,7 @@
 
   v6 = v5;
 
-  v7 = [v3 objectForKeyedSubscript:@"ValidityEndDate"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"ValidityEndDate"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

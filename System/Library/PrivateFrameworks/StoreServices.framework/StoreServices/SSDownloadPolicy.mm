@@ -1,23 +1,23 @@
 @interface SSDownloadPolicy
-- (BOOL)isEqual:(id)a3;
-- (SSDownloadPolicy)initWithCoder:(id)a3;
-- (SSDownloadPolicy)initWithDownloadKind:(id)a3 URLBagType:(int64_t)a4;
-- (SSDownloadPolicy)initWithNetworkConstraints:(id)a3;
-- (SSDownloadPolicy)initWithXPCEncoding:(id)a3;
-- (id)_policyRuleForSizeLimit:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SSDownloadPolicy)initWithCoder:(id)coder;
+- (SSDownloadPolicy)initWithDownloadKind:(id)kind URLBagType:(int64_t)type;
+- (SSDownloadPolicy)initWithNetworkConstraints:(id)constraints;
+- (SSDownloadPolicy)initWithXPCEncoding:(id)encoding;
+- (id)_policyRuleForSizeLimit:(int64_t)limit;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPolicyRule:(id)a3;
-- (void)setPolicyRules:(id)a3;
-- (void)unionNetworkConstraints:(id)a3;
-- (void)unionPolicyRule:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPolicyRule:(id)rule;
+- (void)setPolicyRules:(id)rules;
+- (void)unionNetworkConstraints:(id)constraints;
+- (void)unionPolicyRule:(id)rule;
 @end
 
 @implementation SSDownloadPolicy
 
-- (SSDownloadPolicy)initWithDownloadKind:(id)a3 URLBagType:(int64_t)a4
+- (SSDownloadPolicy)initWithDownloadKind:(id)kind URLBagType:(int64_t)type
 {
   v9.receiver = self;
   v9.super_class = SSDownloadPolicy;
@@ -25,14 +25,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_bagType = a4;
-    v6->_downloadKind = [a3 copy];
+    v6->_bagType = type;
+    v6->_downloadKind = [kind copy];
   }
 
   return v7;
 }
 
-- (SSDownloadPolicy)initWithNetworkConstraints:(id)a3
+- (SSDownloadPolicy)initWithNetworkConstraints:(id)constraints
 {
   v7.receiver = self;
   v7.super_class = SSDownloadPolicy;
@@ -40,7 +40,7 @@
   v5 = v4;
   if (v4)
   {
-    [(SSDownloadPolicy *)v4 unionNetworkConstraints:a3];
+    [(SSDownloadPolicy *)v4 unionNetworkConstraints:constraints];
   }
 
   return v5;
@@ -53,16 +53,16 @@
   [(SSDownloadPolicy *)&v3 dealloc];
 }
 
-- (void)setPolicyRule:(id)a3
+- (void)setPolicyRule:(id)rule
 {
-  v5 = -[SSDownloadPolicy _policyRuleForSizeLimit:](self, "_policyRuleForSizeLimit:", [a3 downloadSizeLimit]);
+  v5 = -[SSDownloadPolicy _policyRuleForSizeLimit:](self, "_policyRuleForSizeLimit:", [rule downloadSizeLimit]);
   policyRules = self->_policyRules;
   if (v5)
   {
     v7 = [(NSMutableArray *)policyRules indexOfObjectIdenticalTo:?];
     v8 = self->_policyRules;
 
-    [(NSMutableArray *)v8 replaceObjectAtIndex:v7 withObject:a3];
+    [(NSMutableArray *)v8 replaceObjectAtIndex:v7 withObject:rule];
   }
 
   else
@@ -73,27 +73,27 @@
       self->_policyRules = policyRules;
     }
 
-    [(NSMutableArray *)policyRules addObject:a3];
+    [(NSMutableArray *)policyRules addObject:rule];
   }
 }
 
-- (void)setPolicyRules:(id)a3
+- (void)setPolicyRules:(id)rules
 {
   policyRules = self->_policyRules;
-  if (policyRules != a3)
+  if (policyRules != rules)
   {
 
-    self->_policyRules = [a3 mutableCopy];
+    self->_policyRules = [rules mutableCopy];
   }
 }
 
-- (void)unionNetworkConstraints:(id)a3
+- (void)unionNetworkConstraints:(id)constraints
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __44__SSDownloadPolicy_unionNetworkConstraints___block_invoke;
   v3[3] = &unk_1E84AF130;
-  v3[4] = a3;
+  v3[4] = constraints;
   v3[5] = self;
   SSNetworkTypeApplyBlock(v3);
 }
@@ -106,13 +106,13 @@ void __44__SSDownloadPolicy_unionNetworkConstraints___block_invoke(uint64_t a1, 
   [*(a1 + 40) unionPolicyRule:v4];
 }
 
-- (void)unionPolicyRule:(id)a3
+- (void)unionPolicyRule:(id)rule
 {
-  v5 = -[SSDownloadPolicy _policyRuleForSizeLimit:](self, "_policyRuleForSizeLimit:", [a3 downloadSizeLimit]);
+  v5 = -[SSDownloadPolicy _policyRuleForSizeLimit:](self, "_policyRuleForSizeLimit:", [rule downloadSizeLimit]);
   if (v5)
   {
 
-    [v5 unionPolicyRule:a3];
+    [v5 unionPolicyRule:rule];
   }
 
   else
@@ -124,20 +124,20 @@ void __44__SSDownloadPolicy_unionNetworkConstraints___block_invoke(uint64_t a1, 
       self->_policyRules = policyRules;
     }
 
-    [(NSMutableArray *)policyRules addObject:a3];
+    [(NSMutableArray *)policyRules addObject:rule];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && self->_bagType == *(a3 + 1))
+  if (v5 == objc_opt_class() && self->_bagType == *(equal + 1))
   {
     downloadKind = self->_downloadKind;
-    if (downloadKind == *(a3 + 2) || (v7 = [(NSString *)downloadKind isEqualToString:?]) != 0)
+    if (downloadKind == *(equal + 2) || (v7 = [(NSString *)downloadKind isEqualToString:?]) != 0)
     {
       policyRules = self->_policyRules;
-      if (policyRules == *(a3 + 3))
+      if (policyRules == *(equal + 3))
       {
         LOBYTE(v7) = 1;
       }
@@ -158,39 +158,39 @@ void __44__SSDownloadPolicy_unionNetworkConstraints___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_downloadKind forKey:@"kind"];
-  [a3 encodeObject:self->_policyRules forKey:@"rules"];
+  [coder encodeObject:self->_downloadKind forKey:@"kind"];
+  [coder encodeObject:self->_policyRules forKey:@"rules"];
   v5 = SSGetStringForURLBagType(self->_bagType);
 
-  [a3 encodeObject:v5 forKey:@"bagtype"];
+  [coder encodeObject:v5 forKey:@"bagtype"];
 }
 
-- (SSDownloadPolicy)initWithCoder:(id)a3
+- (SSDownloadPolicy)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SSDownloadPolicy;
   v4 = [(SSDownloadPolicy *)&v9 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bagtype"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bagtype"];
     v4->_bagType = SSURLBagTypeForString(v5);
-    v4->_downloadKind = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v4->_downloadKind = [coder decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
-    v4->_policyRules = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"rules", "mutableCopy"}];
+    v4->_policyRules = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"rules", "mutableCopy"}];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_bagType;
-  v5[2] = [(NSString *)self->_downloadKind copyWithZone:a3];
-  v5[3] = [(NSMutableArray *)self->_policyRules mutableCopyWithZone:a3];
+  v5[2] = [(NSString *)self->_downloadKind copyWithZone:zone];
+  v5[3] = [(NSMutableArray *)self->_policyRules mutableCopyWithZone:zone];
   return v5;
 }
 
@@ -203,21 +203,21 @@ void __44__SSDownloadPolicy_unionNetworkConstraints___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (SSDownloadPolicy)initWithXPCEncoding:(id)a3
+- (SSDownloadPolicy)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v10.receiver = self;
     v10.super_class = SSDownloadPolicy;
     v5 = [(SSDownloadPolicy *)&v10 init];
     if (v5)
     {
-      value = xpc_dictionary_get_value(a3, "1");
+      value = xpc_dictionary_get_value(encoding, "1");
       v8 = objc_opt_class();
       v9 = SSXPCCreateNSArrayFromXPCEncodedArray(value, v8);
-      v5->_bagType = xpc_dictionary_get_int64(a3, "2");
+      v5->_bagType = xpc_dictionary_get_int64(encoding, "2");
       objc_opt_class();
-      v5->_downloadKind = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v5->_downloadKind = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
       v5->_policyRules = [v9 mutableCopy];
     }
   }
@@ -231,7 +231,7 @@ void __44__SSDownloadPolicy_unionNetworkConstraints___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)_policyRuleForSizeLimit:(int64_t)a3
+- (id)_policyRuleForSizeLimit:(int64_t)limit
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -257,7 +257,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 downloadSizeLimit] == a3)
+    if ([v9 downloadSizeLimit] == limit)
     {
       return v9;
     }

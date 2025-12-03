@@ -13,10 +13,10 @@
   v2 = CPPhoneNumberCopyHomeCountryCode();
   if ([v2 isEqualToString:@"001"])
   {
-    v3 = [objc_opt_class() triage_log];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    triage_log = [objc_opt_class() triage_log];
+    if (os_log_type_enabled(triage_log, OS_LOG_TYPE_ERROR))
     {
-      [(_CNCPPhoneNumberUtilitiesFacade *)v2 homeCountryCode:v3];
+      [(_CNCPPhoneNumberUtilitiesFacade *)v2 homeCountryCode:triage_log];
     }
 
     v2 = 0;
@@ -30,10 +30,10 @@
   v2 = CPPhoneNumberCopyNetworkCountryCode();
   if ([v2 isEqualToString:@"001"])
   {
-    v3 = [objc_opt_class() triage_log];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    triage_log = [objc_opt_class() triage_log];
+    if (os_log_type_enabled(triage_log, OS_LOG_TYPE_ERROR))
     {
-      [(_CNCPPhoneNumberUtilitiesFacade *)v2 currentCountryCode:v3];
+      [(_CNCPPhoneNumberUtilitiesFacade *)v2 currentCountryCode:triage_log];
     }
 
     v2 = 0;

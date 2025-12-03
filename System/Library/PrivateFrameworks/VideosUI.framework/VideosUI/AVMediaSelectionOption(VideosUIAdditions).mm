@@ -9,8 +9,8 @@
   v34 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E6987FE0] identifierForKey:*MEMORY[0x1E69878A8] keySpace:*MEMORY[0x1E6987850]];
   v3 = MEMORY[0x1E6987FE0];
-  v4 = [a1 commonMetadata];
-  v5 = [v3 metadataItemsFromArray:v4 filteredByIdentifier:v2];
+  commonMetadata = [self commonMetadata];
+  v5 = [v3 metadataItemsFromArray:commonMetadata filteredByIdentifier:v2];
 
   if ([v5 count])
   {
@@ -21,17 +21,17 @@
   {
     v25 = v5;
     v26 = v2;
-    v7 = [a1 extendedLanguageTag];
+    extendedLanguageTag = [self extendedLanguageTag];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v8 = +[VUIFeaturesConfiguration sharedInstance];
-    v9 = [v8 nowPlayingConfig];
-    v10 = [v9 mediaCharacteristicsToLocalize];
+    nowPlayingConfig = [v8 nowPlayingConfig];
+    mediaCharacteristicsToLocalize = [nowPlayingConfig mediaCharacteristicsToLocalize];
 
-    obj = v10;
-    v11 = [v10 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    obj = mediaCharacteristicsToLocalize;
+    v11 = [mediaCharacteristicsToLocalize countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v11)
     {
       v12 = v11;
@@ -47,12 +47,12 @@
           }
 
           v15 = *(*(&v29 + 1) + 8 * i);
-          if ([a1 hasMediaCharacteristic:v15])
+          if ([self hasMediaCharacteristic:v15])
           {
             v16 = v15;
-            if ([v7 length])
+            if ([extendedLanguageTag length])
             {
-              v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v16, v7];
+              v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v16, extendedLanguageTag];
 
               v16 = v17;
             }
@@ -60,9 +60,9 @@
             if ([v16 length])
             {
               v18 = +[VUIFeaturesConfiguration sharedInstance];
-              v19 = [v18 nowPlayingConfig];
-              v20 = [v19 mediaLocalizationKeyMapping];
-              v21 = [v20 objectForKey:v16];
+              nowPlayingConfig2 = [v18 nowPlayingConfig];
+              mediaLocalizationKeyMapping = [nowPlayingConfig2 mediaLocalizationKeyMapping];
+              v21 = [mediaLocalizationKeyMapping objectForKey:v16];
 
               if ([v21 length])
               {

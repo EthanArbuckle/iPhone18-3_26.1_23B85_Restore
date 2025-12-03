@@ -1,15 +1,15 @@
 @interface KMAppGlobalVocabularyBridge
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block;
 - (KMAppGlobalVocabularyBridge)init;
-- (KMAppGlobalVocabularyBridge)initWithOriginAppId:(id)a3 cascadeItemType:(unsigned __int16)a4 items:(id)a5;
+- (KMAppGlobalVocabularyBridge)initWithOriginAppId:(id)id cascadeItemType:(unsigned __int16)type items:(id)items;
 @end
 
 @implementation KMAppGlobalVocabularyBridge
 
-- (BOOL)enumerateItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateItemsWithError:(id *)error usingBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -31,7 +31,7 @@
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        LODWORD(v11) = v5[2](v5, v11);
+        LODWORD(v11) = blockCopy[2](blockCopy, v11);
         objc_autoreleasePoolPop(v12);
         if (!v11)
         {
@@ -57,19 +57,19 @@ LABEL_11:
   return v13;
 }
 
-- (KMAppGlobalVocabularyBridge)initWithOriginAppId:(id)a3 cascadeItemType:(unsigned __int16)a4 items:(id)a5
+- (KMAppGlobalVocabularyBridge)initWithOriginAppId:(id)id cascadeItemType:(unsigned __int16)type items:(id)items
 {
-  v9 = a3;
-  v10 = a5;
+  idCopy = id;
+  itemsCopy = items;
   v14.receiver = self;
   v14.super_class = KMAppGlobalVocabularyBridge;
   v11 = [(KMAppGlobalVocabularyBridge *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appId, a3);
-    v12->_cascadeItemType = a4;
-    objc_storeStrong(&v12->_items, a5);
+    objc_storeStrong(&v11->_appId, id);
+    v12->_cascadeItemType = type;
+    objc_storeStrong(&v12->_items, items);
   }
 
   return v12;

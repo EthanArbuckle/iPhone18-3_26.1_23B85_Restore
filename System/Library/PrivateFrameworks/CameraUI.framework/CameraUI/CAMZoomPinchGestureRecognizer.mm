@@ -5,7 +5,7 @@
 - (double)_zoomPinchDistance;
 - (double)zoomScale;
 - (void)_distanceBetweenInitialTwoTouches;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation CAMZoomPinchGestureRecognizer
@@ -13,21 +13,21 @@
 - (double)zoomScale
 {
   v3 = +[CAMCaptureCapabilities capabilities];
-  v4 = [v3 zoomPinchScalingMethod];
+  zoomPinchScalingMethod = [v3 zoomPinchScalingMethod];
 
-  if (v4 == 2)
+  if (zoomPinchScalingMethod == 2)
   {
 
     [(CAMZoomPinchGestureRecognizer *)self _hybridZoomScale];
   }
 
-  else if (v4 == 1)
+  else if (zoomPinchScalingMethod == 1)
   {
 
     [(CAMZoomPinchGestureRecognizer *)self _exponentialZoomScale];
   }
 
-  else if (v4)
+  else if (zoomPinchScalingMethod)
   {
     return 0.0;
   }
@@ -81,19 +81,19 @@
   return result;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(CAMZoomPinchGestureRecognizer *)self state];
+  state = [(CAMZoomPinchGestureRecognizer *)self state];
   v8.receiver = self;
   v8.super_class = CAMZoomPinchGestureRecognizer;
-  [(CAMZoomPinchGestureRecognizer *)&v8 setState:a3];
-  v6 = [(CAMZoomPinchGestureRecognizer *)self state];
-  if (v6 != v5)
+  [(CAMZoomPinchGestureRecognizer *)&v8 setState:state];
+  state2 = [(CAMZoomPinchGestureRecognizer *)self state];
+  if (state2 != state)
   {
     v7 = 0.0;
-    if ((v6 - 3) >= 3)
+    if ((state2 - 3) >= 3)
     {
-      if (v6 != 1)
+      if (state2 != 1)
       {
         return;
       }
@@ -109,13 +109,13 @@
 {
   v3 = [(CAMZoomPinchGestureRecognizer *)self _activeEventOfType:0];
   v4 = [(CAMZoomPinchGestureRecognizer *)self _activeTouchesForEvent:v3];
-  v5 = [v4 allObjects];
-  if ([v5 count] == 2)
+  allObjects = [v4 allObjects];
+  if ([allObjects count] == 2)
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [allObjects objectAtIndexedSubscript:0];
     [v6 locationInView:0];
 
-    v7 = [v5 objectAtIndexedSubscript:1];
+    v7 = [allObjects objectAtIndexedSubscript:1];
     [v7 locationInView:0];
 
     UIDistanceBetweenPoints();
@@ -127,7 +127,7 @@
     v10 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(CAMZoomPinchGestureRecognizer *)v5 _distanceBetweenInitialTwoTouches];
+      [(CAMZoomPinchGestureRecognizer *)allObjects _distanceBetweenInitialTwoTouches];
     }
 
     v11 = +[CAMCaptureCapabilities capabilities];
@@ -142,7 +142,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = [a1 count];
+  v4 = [self count];
   _os_log_error_impl(&dword_1A3640000, a2, OS_LOG_TYPE_ERROR, "Zoom pinch gesture recognizer received %lu touches instead of 2.", &v3, 0xCu);
 }
 

@@ -1,17 +1,17 @@
 @interface ISDataProvider
 + (id)provider;
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4;
-- (BOOL)canStreamContentLength:(int64_t)a3 error:(id *)a4;
-- (BOOL)parseData:(id)a3 returningError:(id *)a4;
-- (BOOL)runAuthorizationDialog:(id)a3 error:(id *)a4;
-- (BOOL)runSubOperation:(id)a3 error:(id *)a4;
-- (BOOL)runTouchIDAuthorizationDialog:(id)a3 fallbackDialog:(id)a4 metricsDictionary:(id)a5 error:(id *)a6;
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error;
+- (BOOL)canStreamContentLength:(int64_t)length error:(id *)error;
+- (BOOL)parseData:(id)data returningError:(id *)error;
+- (BOOL)runAuthorizationDialog:(id)dialog error:(id *)error;
+- (BOOL)runSubOperation:(id)operation error:(id *)error;
+- (BOOL)runTouchIDAuthorizationDialog:(id)dialog fallbackDialog:(id)fallbackDialog metricsDictionary:(id)dictionary error:(id *)error;
 - (ISDataProvider)init;
 - (ISOperation)parentOperation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_performActionsForButton:(id)a3 withDialog:(id)a4;
-- (void)configureFromProvider:(id)a3;
-- (void)migrateOutputFromSubProvider:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_performActionsForButton:(id)button withDialog:(id)dialog;
+- (void)configureFromProvider:(id)provider;
+- (void)migrateOutputFromSubProvider:(id)provider;
 - (void)setup;
 @end
 
@@ -25,12 +25,12 @@
   return [(ISDataProvider *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[4] = [(ISDataProvider *)self contentLength];
-  v6 = [(ISDataProvider *)self contentType];
-  v7 = [v6 copyWithZone:a3];
+  contentType = [(ISDataProvider *)self contentType];
+  v7 = [contentType copyWithZone:zone];
   v8 = v5[5];
   v5[5] = v7;
 
@@ -44,47 +44,47 @@
   return v2;
 }
 
-- (BOOL)canStreamContentLength:(int64_t)a3 error:(id *)a4
+- (BOOL)canStreamContentLength:(int64_t)length error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (void)configureFromProvider:(id)a3
+- (void)configureFromProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 authenticationContext];
-  [(ISDataProvider *)self setAuthenticationContext:v5];
+  providerCopy = provider;
+  authenticationContext = [providerCopy authenticationContext];
+  [(ISDataProvider *)self setAuthenticationContext:authenticationContext];
 
-  v6 = [(ISDataProvider *)self bagContext];
-  [(ISDataProvider *)self setBagContext:v6];
+  bagContext = [(ISDataProvider *)self bagContext];
+  [(ISDataProvider *)self setBagContext:bagContext];
 
-  v7 = [v4 contentType];
+  contentType = [providerCopy contentType];
 
-  [(ISDataProvider *)self setContentType:v7];
+  [(ISDataProvider *)self setContentType:contentType];
 }
 
-- (void)migrateOutputFromSubProvider:(id)a3
+- (void)migrateOutputFromSubProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 authenticatedAccountDSID];
-  [(ISDataProvider *)self setAuthenticatedAccountDSID:v5];
+  providerCopy = provider;
+  authenticatedAccountDSID = [providerCopy authenticatedAccountDSID];
+  [(ISDataProvider *)self setAuthenticatedAccountDSID:authenticatedAccountDSID];
 
-  v6 = [v4 redirectURL];
+  redirectURL = [providerCopy redirectURL];
 
-  [(ISDataProvider *)self setRedirectURL:v6];
+  [(ISDataProvider *)self setRedirectURL:redirectURL];
 }
 
-- (BOOL)parseData:(id)a3 returningError:(id *)a4
+- (BOOL)parseData:(id)data returningError:(id *)error
 {
-  [(ISDataProvider *)self setOutput:a3];
-  if (a4)
+  [(ISDataProvider *)self setOutput:data];
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
@@ -97,19 +97,19 @@
   [(ISDataProvider *)self setRedirectURL:0];
 }
 
-- (BOOL)runAuthorizationDialog:(id)a3 error:(id *)a4
+- (BOOL)runAuthorizationDialog:(id)dialog error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dialogCopy = dialog;
   v7 = objc_alloc_init(ISServerAuthenticationOperation);
-  [(ISServerAuthenticationOperation *)v7 setDialog:v6];
-  v8 = [v6 authenticationContext];
+  [(ISServerAuthenticationOperation *)v7 setDialog:dialogCopy];
+  authenticationContext = [dialogCopy authenticationContext];
 
-  v9 = [v8 mutableCopy];
+  v9 = [authenticationContext mutableCopy];
   if (!v9)
   {
-    v10 = [(ISDataProvider *)self authenticationContext];
-    v9 = [v10 mutableCopy];
+    authenticationContext2 = [(ISDataProvider *)self authenticationContext];
+    v9 = [authenticationContext2 mutableCopy];
 
     if (!v9)
     {
@@ -118,25 +118,25 @@
   }
 
   [(ISServerAuthenticationOperation *)v7 setAuthenticationContext:v9];
-  v11 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-  if (!v11)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v11 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v12 = [v11 shouldLog];
-  if ([v11 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog;
   }
 
-  v14 = [v11 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v13;
   }
@@ -151,7 +151,7 @@
     v16 = objc_opt_class();
     v28 = v16;
     v17 = AMSSetLogKeyIfNeeded();
-    v18 = [v9 accountName];
+    accountName = [v9 accountName];
     SSHashIfNeeded();
     v30 = 138544130;
     v31 = v16;
@@ -179,77 +179,77 @@
   v21 = [(ISDataProvider *)self _runServerAuthenticationOperation:v7 error:&v29];
   v22 = v29;
   v23 = v22;
-  if (a4 && !v21)
+  if (error && !v21)
   {
     v24 = v22;
-    *a4 = v23;
+    *error = v23;
   }
 
   v25 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (BOOL)runSubOperation:(id)a3 error:(id *)a4
+- (BOOL)runSubOperation:(id)operation error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ISDataProvider *)self parentOperation];
-  if (!v7)
+  operationCopy = operation;
+  parentOperation = [(ISDataProvider *)self parentOperation];
+  if (!parentOperation)
   {
-    v7 = objc_alloc_init(ISOperation);
+    parentOperation = objc_alloc_init(ISOperation);
   }
 
   v13 = 0;
-  v8 = [(ISOperation *)v7 runSubOperation:v6 returningError:&v13];
+  v8 = [(ISOperation *)parentOperation runSubOperation:operationCopy returningError:&v13];
   v9 = v13;
   v10 = v9;
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;
 }
 
-- (BOOL)runTouchIDAuthorizationDialog:(id)a3 fallbackDialog:(id)a4 metricsDictionary:(id)a5 error:(id *)a6
+- (BOOL)runTouchIDAuthorizationDialog:(id)dialog fallbackDialog:(id)fallbackDialog metricsDictionary:(id)dictionary error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v62 = v10;
-  v13 = [v10 paymentSheet];
+  dialogCopy = dialog;
+  fallbackDialogCopy = fallbackDialog;
+  dictionaryCopy = dictionary;
+  v62 = dialogCopy;
+  paymentSheet = [dialogCopy paymentSheet];
 
-  if (v13)
+  if (paymentSheet)
   {
     biometricAuthenticationContext = self->_biometricAuthenticationContext;
-    v15 = [v10 paymentSheet];
-    [(SSBiometricAuthenticationContext *)biometricAuthenticationContext setPaymentSheet:v15];
+    paymentSheet2 = [dialogCopy paymentSheet];
+    [(SSBiometricAuthenticationContext *)biometricAuthenticationContext setPaymentSheet:paymentSheet2];
   }
 
-  v16 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext challenge];
+  challenge = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext challenge];
 
-  if (!v16)
+  if (!challenge)
   {
-    v19 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v19)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v19 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v24 = [(ISBiometricAuthorizationDialogOperation *)v19 shouldLog];
-    if ([(ISBiometricAuthorizationDialogOperation *)v19 shouldLogToDisk])
+    shouldLog = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] shouldLog];
+    if ([(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v25 = v24 | 2;
+      v25 = shouldLog | 2;
     }
 
     else
     {
-      v25 = v24;
+      v25 = shouldLog;
     }
 
-    v22 = [(ISBiometricAuthorizationDialogOperation *)v19 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v26 = v25;
     }
@@ -267,30 +267,30 @@
     goto LABEL_41;
   }
 
-  v17 = [(ISDataProvider *)self authenticationContext];
-  v18 = [v17 shouldSuppressDialogs];
+  authenticationContext = [(ISDataProvider *)self authenticationContext];
+  shouldSuppressDialogs = [authenticationContext shouldSuppressDialogs];
 
-  if (v18)
+  if (shouldSuppressDialogs)
   {
-    v19 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    if (!v19)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v19 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v20 = [(ISBiometricAuthorizationDialogOperation *)v19 shouldLog];
-    if ([(ISBiometricAuthorizationDialogOperation *)v19 shouldLogToDisk])
+    shouldLog2 = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] shouldLog];
+    if ([(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog2 | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog2;
     }
 
-    v22 = [(ISBiometricAuthorizationDialogOperation *)v19 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v23 = v21;
     }
@@ -327,47 +327,47 @@ LABEL_42:
     goto LABEL_47;
   }
 
-  v19 = [[ISBiometricAuthorizationDialogOperation alloc] initWithTouchIDDialog:v10 fallbackDialog:v11];
-  [(ISBiometricAuthorizationDialogOperation *)v19 setBiometricAuthenticationContext:self->_biometricAuthenticationContext];
-  [(ISBiometricAuthorizationDialogOperation *)v19 setMetricsDictionary:v12];
-  v30 = [(SSAuthenticationContext *)self->_authenticationContext signupRequestParameters];
-  v31 = [v30 objectForKey:@"product"];
+  mEMORY[0x277D69B38] = [[ISBiometricAuthorizationDialogOperation alloc] initWithTouchIDDialog:dialogCopy fallbackDialog:fallbackDialogCopy];
+  [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] setBiometricAuthenticationContext:self->_biometricAuthenticationContext];
+  [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] setMetricsDictionary:dictionaryCopy];
+  signupRequestParameters = [(SSAuthenticationContext *)self->_authenticationContext signupRequestParameters];
+  v31 = [signupRequestParameters objectForKey:@"product"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v32 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:v31 unescapedValues:1];
-    [(ISBiometricAuthorizationDialogOperation *)v19 setBuyParams:v32];
+    [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] setBuyParams:v32];
   }
 
-  v33 = [(SSAuthenticationContext *)self->_authenticationContext HTTPHeaders];
-  v34 = [v33 objectForKey:*MEMORY[0x277D6A130]];
+  hTTPHeaders = [(SSAuthenticationContext *)self->_authenticationContext HTTPHeaders];
+  v34 = [hTTPHeaders objectForKey:*MEMORY[0x277D6A130]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ISBiometricAuthorizationDialogOperation *)v19 setUserAgent:v34];
+    [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] setUserAgent:v34];
   }
 
-  v35 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-  if (!v35)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v35 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v36 = [v35 shouldLog];
-  if ([v35 shouldLogToDisk])
+  shouldLog3 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v37 = v36 | 2;
+    v37 = shouldLog3 | 2;
   }
 
   else
   {
-    v37 = v36;
+    v37 = shouldLog3;
   }
 
-  v38 = [v35 OSLogObject];
-  if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v39 = v37;
   }
@@ -379,9 +379,9 @@ LABEL_42:
 
   if (v39)
   {
-    v60 = v12;
-    v61 = a6;
-    v40 = v11;
+    v60 = dictionaryCopy;
+    errorCopy = error;
+    v40 = fallbackDialogCopy;
     v41 = objc_opt_class();
     v42 = self->_biometricAuthenticationContext;
     v58 = v41;
@@ -390,11 +390,11 @@ LABEL_42:
     SSHashIfNeeded();
     v64 = 138543874;
     v65 = v41;
-    v11 = v40;
+    fallbackDialogCopy = v40;
     v66 = 2112;
     v67 = v42;
-    v12 = v60;
-    a6 = v61;
+    dictionaryCopy = v60;
+    error = errorCopy;
     v69 = v68 = 2114;
     LODWORD(v57) = 32;
     v44 = _os_log_send_and_compose_impl();
@@ -413,83 +413,83 @@ LABEL_42:
   }
 
   v63 = 0;
-  v47 = [(ISDataProvider *)self runSubOperation:v19 error:&v63];
+  v47 = [(ISDataProvider *)self runSubOperation:mEMORY[0x277D69B38] error:&v63];
   v46 = v63;
   if (v47)
   {
-    v48 = [(ISBiometricAuthorizationDialogOperation *)v19 selectedButton];
-    [(ISBiometricAuthorizationDialogOperation *)v19 dialog];
-    v50 = v49 = a6;
-    [(ISDataProvider *)self _performActionsForButton:v48 withDialog:v50];
+    selectedButton = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] selectedButton];
+    [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] dialog];
+    v50 = v49 = error;
+    [(ISDataProvider *)self _performActionsForButton:selectedButton withDialog:v50];
 
-    v51 = [(ISBiometricAuthorizationDialogOperation *)v19 biometricAuthenticationContext];
-    v52 = [v51 accountIdentifier];
-    [(ISDataProvider *)self setAuthenticatedAccountDSID:v52];
+    biometricAuthenticationContext = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] biometricAuthenticationContext];
+    accountIdentifier = [biometricAuthenticationContext accountIdentifier];
+    [(ISDataProvider *)self setAuthenticatedAccountDSID:accountIdentifier];
 
-    a6 = v49;
-    v53 = [(ISBiometricAuthorizationDialogOperation *)v19 redirectURL];
-    [(ISDataProvider *)self setRedirectURL:v53];
+    error = v49;
+    redirectURL = [(ISBiometricAuthorizationDialogOperation *)mEMORY[0x277D69B38] redirectURL];
+    [(ISDataProvider *)self setRedirectURL:redirectURL];
   }
 
 LABEL_47:
-  if (a6 && !v47)
+  if (error && !v47)
   {
     v54 = v46;
-    *a6 = v46;
+    *error = v46;
   }
 
   v55 = *MEMORY[0x277D85DE8];
   return v47;
 }
 
-- (void)_performActionsForButton:(id)a3 withDialog:(id)a4
+- (void)_performActionsForButton:(id)button withDialog:(id)dialog
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v6 actionType] == 4)
+  buttonCopy = button;
+  dialogCopy = dialog;
+  if ([buttonCopy actionType] == 4)
   {
-    [v6 performDefaultActionForDialog:v5];
+    [buttonCopy performDefaultActionForDialog:dialogCopy];
   }
 }
 
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationCopy = operation;
   v22 = 0;
-  v7 = [(ISDataProvider *)self runSubOperation:v6 error:&v22];
+  v7 = [(ISDataProvider *)self runSubOperation:operationCopy error:&v22];
   v8 = v22;
   if (v7)
   {
-    -[ISDataProvider setAuthenticatedAccountCredentialSource:](self, "setAuthenticatedAccountCredentialSource:", [v6 authenticatedAccountCredentialSource]);
-    v9 = [v6 authenticatedAccountDSID];
-    [(ISDataProvider *)self setAuthenticatedAccountDSID:v9];
+    -[ISDataProvider setAuthenticatedAccountCredentialSource:](self, "setAuthenticatedAccountCredentialSource:", [operationCopy authenticatedAccountCredentialSource]);
+    authenticatedAccountDSID = [operationCopy authenticatedAccountDSID];
+    [(ISDataProvider *)self setAuthenticatedAccountDSID:authenticatedAccountDSID];
 
-    v10 = [v6 redirectURL];
-    [(ISDataProvider *)self setRedirectURL:v10];
+    redirectURL = [operationCopy redirectURL];
+    [(ISDataProvider *)self setRedirectURL:redirectURL];
 
     goto LABEL_16;
   }
 
-  v11 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-  if (!v11)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v11 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v12 = [v11 shouldLog];
-  if ([v11 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog;
   }
 
-  v14 = [v11 OSLogObject];
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v13 &= 2u;
   }
@@ -510,16 +510,16 @@ LABEL_47:
       goto LABEL_14;
     }
 
-    v14 = [MEMORY[0x277CCACA8] stringWithCString:v17 encoding:{4, &v23, v21}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v17 encoding:{4, &v23, v21}];
     free(v17);
     SSFileLog();
   }
 
 LABEL_14:
-  if (a4)
+  if (error)
   {
     v18 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_16:

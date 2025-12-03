@@ -1,7 +1,7 @@
 @interface CallHoldingButtonViewController
-- (_TtC15ConversationKit31CallHoldingButtonViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit31CallHoldingButtonViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)buttonTapped;
-- (void)setWaitOnHoldActive:(BOOL)a3;
+- (void)setWaitOnHoldActive:(BOOL)active;
 - (void)textSizeDidChange;
 - (void)viewDidLoad;
 @end
@@ -10,36 +10,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CallHoldingButtonViewController.viewDidLoad()();
 }
 
 - (void)buttonTapped
 {
-  v2 = self;
+  selfCopy = self;
   CallHoldingButtonViewController.buttonTapped()();
 }
 
 - (void)textSizeDidChange
 {
-  v2 = self;
+  selfCopy = self;
   CallHoldingButtonViewController.textSizeDidChange()();
 }
 
-- (void)setWaitOnHoldActive:(BOOL)a3
+- (void)setWaitOnHoldActive:(BOOL)active
 {
-  v4 = self;
-  CallHoldingButtonViewController.setWaitOnHoldActive(_:)(a3);
+  selfCopy = self;
+  CallHoldingButtonViewController.setWaitOnHoldActive(_:)(active);
 }
 
-- (_TtC15ConversationKit31CallHoldingButtonViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit31CallHoldingButtonViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CallHoldingButtonViewController.init(nibName:bundle:)();
 }
 

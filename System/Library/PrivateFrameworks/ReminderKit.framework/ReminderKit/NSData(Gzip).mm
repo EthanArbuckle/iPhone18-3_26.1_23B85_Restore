@@ -8,16 +8,16 @@
 
 - (id)TT_gzipInflate
 {
-  if (![a1 length])
+  if (![self length])
   {
-    v11 = a1;
+    selfCopy = self;
     goto LABEL_19;
   }
 
-  v2 = [a1 length];
-  v3 = [a1 length];
+  v2 = [self length];
+  v3 = [self length];
   v4 = [MEMORY[0x1E695DF88] dataWithLength:v2 + (v3 >> 1)];
-  v15.avail_in = [a1 length];
+  v15.avail_in = [self length];
   v15.zalloc = 0;
   v15.zfree = 0;
   v15.total_out = 0;
@@ -35,8 +35,8 @@
       [v4 increaseLengthBy:v5];
     }
 
-    v7 = [v4 mutableBytes];
-    v15.next_out = (v7 + v15.total_out);
+    mutableBytes = [v4 mutableBytes];
+    v15.next_out = (mutableBytes + v15.total_out);
     v8 = [v4 length];
     v15.avail_out = v8 - LODWORD(v15.total_out);
     v9 = inflate(&v15, 2);
@@ -70,26 +70,26 @@ LABEL_14:
     }
 
 LABEL_17:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   [v4 setLength:v15.total_out];
-  v11 = [MEMORY[0x1E695DEF0] dataWithData:v4];
+  selfCopy = [MEMORY[0x1E695DEF0] dataWithData:v4];
 LABEL_18:
 
 LABEL_19:
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)TT_gzipDeflate
 {
-  if ([a1 length])
+  if ([self length])
   {
     memset(&v8.total_out, 0, 72);
-    v8.avail_in = [a1 length];
-    v2 = 0;
+    v8.avail_in = [self length];
+    selfCopy = 0;
     if (!deflateInit2_(&v8, -1, 8, 31, 8, 0, "1.2.12", 112))
     {
       v3 = [MEMORY[0x1E695DF88] dataWithLength:0x4000];
@@ -101,8 +101,8 @@ LABEL_19:
           [v3 increaseLengthBy:0x4000];
         }
 
-        v5 = [v3 mutableBytes];
-        v8.next_out = (v5 + v8.total_out);
+        mutableBytes = [v3 mutableBytes];
+        v8.next_out = (mutableBytes + v8.total_out);
         v6 = [v3 length];
         v8.avail_out = v6 - LODWORD(v8.total_out);
         deflate(&v8, 4);
@@ -111,23 +111,23 @@ LABEL_19:
       while (!v8.avail_out);
       deflateEnd(&v8);
       [v3 setLength:v8.total_out];
-      v2 = [MEMORY[0x1E695DEF0] dataWithData:v3];
+      selfCopy = [MEMORY[0x1E695DEF0] dataWithData:v3];
     }
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)TT_gzipInflate
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_19A0DB000, a2, OS_LOG_TYPE_ERROR, "inflate failed returned %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

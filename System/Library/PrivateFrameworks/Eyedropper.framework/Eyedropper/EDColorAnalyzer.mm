@@ -1,13 +1,13 @@
 @interface EDColorAnalyzer
-- (BOOL)kmeansShouldStopWithPreviousColors:(id)a3 newColors:(id)a4 iterations:(int64_t)a5;
+- (BOOL)kmeansShouldStopWithPreviousColors:(id)colors newColors:(id)newColors iterations:(int64_t)iterations;
 - (EDColorAnalyzer)init;
-- (id)colorAtCenterOfHDRSurface:(__IOSurface *)a3 SDRSurface:(__IOSurface *)a4 offset:(CGPoint)a5;
-- (id)colorAtCenterOfSurface:(__IOSurface *)a3 offset:(CGPoint)a4;
-- (id)colorsInSurface:(__IOSurface *)a3 offset:(CGPoint)a4 clipToCircle:(BOOL)a5 clipedToRect:(CGRect)a6;
-- (id)colorsSuggestionsForSurface:(__IOSurface *)a3 maxSuggestions:(int64_t)a4 clipToCircle:(BOOL)a5 clipedToRect:(CGRect)a6;
-- (id)getRandomColors:(int64_t)a3 from:(id)a4;
-- (id)kmeansColorsForColors:(id)a3 clusters:(int64_t)a4;
-- (id)removeSimilarColors:(id)a3 minDistance:(double)a4;
+- (id)colorAtCenterOfHDRSurface:(__IOSurface *)surface SDRSurface:(__IOSurface *)rSurface offset:(CGPoint)offset;
+- (id)colorAtCenterOfSurface:(__IOSurface *)surface offset:(CGPoint)offset;
+- (id)colorsInSurface:(__IOSurface *)surface offset:(CGPoint)offset clipToCircle:(BOOL)circle clipedToRect:(CGRect)rect;
+- (id)colorsSuggestionsForSurface:(__IOSurface *)surface maxSuggestions:(int64_t)suggestions clipToCircle:(BOOL)circle clipedToRect:(CGRect)rect;
+- (id)getRandomColors:(int64_t)colors from:(id)from;
+- (id)kmeansColorsForColors:(id)colors clusters:(int64_t)clusters;
+- (id)removeSimilarColors:(id)colors minDistance:(double)distance;
 @end
 
 @implementation EDColorAnalyzer
@@ -27,40 +27,40 @@
   return v2;
 }
 
-- (id)colorsSuggestionsForSurface:(__IOSurface *)a3 maxSuggestions:(int64_t)a4 clipToCircle:(BOOL)a5 clipedToRect:(CGRect)a6
+- (id)colorsSuggestionsForSurface:(__IOSurface *)surface maxSuggestions:(int64_t)suggestions clipToCircle:(BOOL)circle clipedToRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
-  IOSurfaceLock(a3, 1u, 0);
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [(EDColorAnalyzer *)self colorAtCenterOfSurface:a3 offset:-1.0, -1.0];
-  [v14 addObject:v15];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  circleCopy = circle;
+  IOSurfaceLock(surface, 1u, 0);
+  array = [MEMORY[0x277CBEB18] array];
+  v15 = [(EDColorAnalyzer *)self colorAtCenterOfSurface:surface offset:-1.0, -1.0];
+  [array addObject:v15];
 
-  v16 = [(EDColorAnalyzer *)self colorsInSurface:a3 offset:v10 clipToCircle:-1.0 clipedToRect:-1.0, x, y, width, height];
-  v17 = [(EDColorAnalyzer *)self kmeansForColors:v16 clusters:a4 - 1];
-  [v14 addObjectsFromArray:v17];
+  height = [(EDColorAnalyzer *)self colorsInSurface:surface offset:circleCopy clipToCircle:-1.0 clipedToRect:-1.0, x, y, width, height];
+  v17 = [(EDColorAnalyzer *)self kmeansForColors:height clusters:suggestions - 1];
+  [array addObjectsFromArray:v17];
 
-  v18 = [(EDColorAnalyzer *)self removeSimilarColors:v14 minDistance:0.1];
+  v18 = [(EDColorAnalyzer *)self removeSimilarColors:array minDistance:0.1];
   v19 = [v18 mutableCopy];
 
-  IOSurfaceUnlock(a3, 1u, 0);
+  IOSurfaceUnlock(surface, 1u, 0);
 
   return v19;
 }
 
-- (id)removeSimilarColors:(id)a3 minDistance:(double)a4
+- (id)removeSimilarColors:(id)colors minDistance:(double)distance
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  colorsCopy = colors;
+  array = [MEMORY[0x277CBEB18] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v7 = v5;
+  v7 = colorsCopy;
   v8 = [v7 countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (v8)
   {
@@ -76,7 +76,7 @@
         }
 
         v12 = [MEMORY[0x277CCAE60] valueWithColor:ColorMakeWithColor(*(*(&v54 + 1) + 8 * i))];
-        [v6 addObject:v12];
+        [array addObject:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v54 objects:v60 count:16];
@@ -87,12 +87,12 @@
 
   v45 = v7;
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v14 = v6;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v50 objects:v59 count:16];
   if (v15)
   {
@@ -112,7 +112,7 @@
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        if (![v13 count])
+        if (![array2 count])
         {
           goto LABEL_17;
         }
@@ -121,19 +121,19 @@
         v27 = 0;
         do
         {
-          v28 = [v13 objectAtIndexedSubscript:v27];
+          v28 = [array2 objectAtIndexedSubscript:v27];
           [v28 colorValue];
-          v32 = ColorDistanceToColor(v21, v23, v25, v29, v30, v31) < a4;
+          v32 = ColorDistanceToColor(v21, v23, v25, v29, v30, v31) < distance;
 
           v26 |= v32;
           ++v27;
         }
 
-        while (v27 < [v13 count]);
+        while (v27 < [array2 count]);
         if ((v26 & 1) == 0)
         {
 LABEL_17:
-          [v13 addObject:v19];
+          [array2 addObject:v19];
         }
       }
 
@@ -143,12 +143,12 @@ LABEL_17:
     while (v16);
   }
 
-  v33 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v34 = v13;
+  v34 = array2;
   v35 = [v34 countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v35)
   {
@@ -165,7 +165,7 @@ LABEL_17:
 
         [*(*(&v46 + 1) + 8 * k) colorValue];
         v42 = ColorUIColor(v39, v40, v41);
-        [v33 addObject:v42];
+        [array3 addObject:v42];
       }
 
       v36 = [v34 countByEnumeratingWithState:&v46 objects:v58 count:16];
@@ -174,21 +174,21 @@ LABEL_17:
     while (v36);
   }
 
-  v43 = [MEMORY[0x277CBEA60] arrayWithArray:v33];
+  v43 = [MEMORY[0x277CBEA60] arrayWithArray:array3];
 
   return v43;
 }
 
-- (id)kmeansColorsForColors:(id)a3 clusters:(int64_t)a4
+- (id)kmeansColorsForColors:(id)colors clusters:(int64_t)clusters
 {
   v144 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  colorsCopy = colors;
   v7 = 0.0;
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v133 objects:v143 count:16];
+  v8 = [colorsCopy countByEnumeratingWithState:&v133 objects:v143 count:16];
   v9 = 0.0;
   v10 = 0.0;
   v11 = 0.0;
@@ -205,7 +205,7 @@ LABEL_17:
       {
         if (*v134 != v13)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(colorsCopy);
         }
 
         [*(*(&v133 + 1) + 8 * i) colorValue];
@@ -214,13 +214,13 @@ LABEL_17:
         v9 = v17;
       }
 
-      v12 = [v6 countByEnumeratingWithState:&v133 objects:v143 count:16];
+      v12 = [colorsCopy countByEnumeratingWithState:&v133 objects:v143 count:16];
     }
 
     while (v12);
   }
 
-  v18 = ColorMake(a4, a4, a4);
+  v18 = ColorMake(clusters, clusters, clusters);
   v19 = [MEMORY[0x277CCAE60] valueWithColor:{ColorCombineColors(v11, v10, v9, v18)}];
   v20 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v19];
 
@@ -232,20 +232,20 @@ LABEL_17:
   else
   {
     v101 = v19;
-    v22 = [(EDColorAnalyzer *)self getRandomColors:a4 from:v6];
+    v22 = [(EDColorAnalyzer *)self getRandomColors:clusters from:colorsCopy];
     v23 = [v22 mutableCopy];
 
-    v24 = [MEMORY[0x277CBEB18] array];
-    if ([(EDColorAnalyzer *)self kmeansShouldStopWithPreviousColors:v24 newColors:v23 iterations:0])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([(EDColorAnalyzer *)self kmeansShouldStopWithPreviousColors:array newColors:v23 iterations:0])
     {
-      v25 = v24;
+      v25 = array;
     }
 
     else
     {
       v26 = 0;
-      v102 = v6;
-      v105 = self;
+      v102 = colorsCopy;
+      selfCopy = self;
       do
       {
         v103 = v26;
@@ -272,8 +272,8 @@ LABEL_17:
               }
 
               v33 = *(*(&v129 + 1) + 8 * j);
-              v34 = [MEMORY[0x277CBEB18] array];
-              [v27 setObject:v34 forKeyedSubscript:v33];
+              array2 = [MEMORY[0x277CBEB18] array];
+              [v27 setObject:array2 forKeyedSubscript:v33];
             }
 
             v30 = [v28 countByEnumeratingWithState:&v129 objects:v142 count:16];
@@ -286,7 +286,7 @@ LABEL_17:
         v128 = 0u;
         v125 = 0u;
         v126 = 0u;
-        obj = v6;
+        obj = colorsCopy;
         v35 = [obj countByEnumeratingWithState:&v125 objects:v141 count:16];
         if (v35)
         {
@@ -369,8 +369,8 @@ LABEL_17:
         v120 = 0u;
         v117 = 0u;
         v118 = 0u;
-        v61 = [v27 allValues];
-        v62 = [v61 countByEnumeratingWithState:&v117 objects:v139 count:16];
+        allValues = [v27 allValues];
+        v62 = [allValues countByEnumeratingWithState:&v117 objects:v139 count:16];
         if (v62)
         {
           v63 = v62;
@@ -381,7 +381,7 @@ LABEL_17:
             {
               if (*v118 != v64)
               {
-                objc_enumerationMutation(v61);
+                objc_enumerationMutation(allValues);
               }
 
               v66 = *(*(&v117 + 1) + 8 * n);
@@ -431,9 +431,9 @@ LABEL_17:
 
               else
               {
-                v83 = [(EDColorAnalyzer *)v105 getRandomColors:1 from:obj];
-                v84 = [v83 firstObject];
-                [v84 colorValue];
+                v83 = [(EDColorAnalyzer *)selfCopy getRandomColors:1 from:obj];
+                firstObject = [v83 firstObject];
+                [firstObject colorValue];
                 v78 = v85;
                 v80 = v86;
                 v82 = v87;
@@ -443,7 +443,7 @@ LABEL_17:
               [v28 addObject:v88];
             }
 
-            v63 = [v61 countByEnumeratingWithState:&v117 objects:v139 count:16];
+            v63 = [allValues countByEnumeratingWithState:&v117 objects:v139 count:16];
           }
 
           while (v63);
@@ -455,15 +455,15 @@ LABEL_17:
         v23 = [v89 mutableCopy];
 
         v25 = v104;
-        self = v105;
-        v24 = v104;
-        v6 = v102;
+        self = selfCopy;
+        array = v104;
+        colorsCopy = v102;
       }
 
-      while (![(EDColorAnalyzer *)v105 kmeansShouldStopWithPreviousColors:v104 newColors:v23 iterations:v103 + 1]);
+      while (![(EDColorAnalyzer *)selfCopy kmeansShouldStopWithPreviousColors:v104 newColors:v23 iterations:v103 + 1]);
     }
 
-    v90 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v109 = 0u;
     v110 = 0u;
     v111 = 0u;
@@ -485,7 +485,7 @@ LABEL_17:
 
           [*(*(&v109 + 1) + 8 * jj) colorValue];
           v99 = ColorUIColor(v96, v97, v98);
-          [v90 addObject:v99];
+          [array3 addObject:v99];
         }
 
         v93 = [v91 countByEnumeratingWithState:&v109 objects:v137 count:16];
@@ -495,8 +495,8 @@ LABEL_17:
     }
 
     v19 = v101;
-    [(NSMutableDictionary *)self->_cache setObject:v90 forKeyedSubscript:v101];
-    v21 = [MEMORY[0x277CBEA60] arrayWithArray:v90];
+    [(NSMutableDictionary *)self->_cache setObject:array3 forKeyedSubscript:v101];
+    v21 = [MEMORY[0x277CBEA60] arrayWithArray:array3];
   }
 
   return v21;
@@ -517,11 +517,11 @@ BOOL __50__EDColorAnalyzer_kmeansColorsForColors_clusters___block_invoke(uint64_
   return v8 * 0.7152 + v6 * 0.2126 + v10 * 0.0722 > v14 * 0.7152 + v12 * 0.2126 + v16 * 0.0722;
 }
 
-- (BOOL)kmeansShouldStopWithPreviousColors:(id)a3 newColors:(id)a4 iterations:(int64_t)a5
+- (BOOL)kmeansShouldStopWithPreviousColors:(id)colors newColors:(id)newColors iterations:(int64_t)iterations
 {
-  if (a5 <= 14)
+  if (iterations <= 14)
   {
-    return [a3 isEqualToArray:a4];
+    return [colors isEqualToArray:newColors];
   }
 
   else
@@ -530,21 +530,21 @@ BOOL __50__EDColorAnalyzer_kmeansColorsForColors_clusters___block_invoke(uint64_
   }
 }
 
-- (id)colorsInSurface:(__IOSurface *)a3 offset:(CGPoint)a4 clipToCircle:(BOOL)a5 clipedToRect:(CGRect)a6
+- (id)colorsInSurface:(__IOSurface *)surface offset:(CGPoint)offset clipToCircle:(BOOL)circle clipedToRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
-  v11 = a4.y;
-  v12 = a4.x;
-  BaseAddress = IOSurfaceGetBaseAddress(a3);
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
-  v16 = IOSurfaceGetWidth(a3);
-  v17 = IOSurfaceGetHeight(a3);
-  BytesPerRow = IOSurfaceGetBytesPerRow(a3);
-  v18 = [MEMORY[0x277CBEB18] array];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  circleCopy = circle;
+  v11 = offset.y;
+  v12 = offset.x;
+  BaseAddress = IOSurfaceGetBaseAddress(surface);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
+  v16 = IOSurfaceGetWidth(surface);
+  v17 = IOSurfaceGetHeight(surface);
+  BytesPerRow = IOSurfaceGetBytesPerRow(surface);
+  array = [MEMORY[0x277CBEB18] array];
   v55.origin.x = x;
   v55.origin.y = y;
   v55.size.width = width;
@@ -559,7 +559,7 @@ BOOL __50__EDColorAnalyzer_kmeansColorsForColors_clusters___block_invoke(uint64_
   if (v11 + CGRectGetMaxY(v56) <= v20)
   {
 LABEL_2:
-    v21 = [v18 copy];
+    v21 = [array copy];
     goto LABEL_19;
   }
 
@@ -609,7 +609,7 @@ LABEL_16:
   v34 = &v23[8 * v28];
   while (1)
   {
-    if (v10)
+    if (circleCopy)
     {
       v26 = *&v52;
       v29 = floor(sqrt(v30 + (v53 - v25) * (v53 - v25)));
@@ -658,7 +658,7 @@ LABEL_16:
     _D2 = (((*v31 & 0x3FF) - 384) / 510.0);
 LABEL_14:
     v46 = [v35 valueWithColor:{ColorMake(_D0, _D1, _D2)}];
-    [v18 addObject:v46];
+    [array addObject:v46];
 
 LABEL_15:
     v25 = v32;
@@ -683,13 +683,13 @@ LABEL_19:
   return v21;
 }
 
-- (id)colorAtCenterOfHDRSurface:(__IOSurface *)a3 SDRSurface:(__IOSurface *)a4 offset:(CGPoint)a5
+- (id)colorAtCenterOfHDRSurface:(__IOSurface *)surface SDRSurface:(__IOSurface *)rSurface offset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
+  y = offset.y;
+  x = offset.x;
   v29 = *MEMORY[0x277D85DE8];
-  v9 = [(EDColorAnalyzer *)self colorAtCenterOfSurface:a3 offset:?];
-  v10 = [(EDColorAnalyzer *)self colorAtCenterOfSurface:a4 offset:x, y];
+  v9 = [(EDColorAnalyzer *)self colorAtCenterOfSurface:surface offset:?];
+  v10 = [(EDColorAnalyzer *)self colorAtCenterOfSurface:rSurface offset:x, y];
   v11 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF428]);
   if (v11)
   {
@@ -786,16 +786,16 @@ LABEL_19:
   return v19;
 }
 
-- (id)colorAtCenterOfSurface:(__IOSurface *)a3 offset:(CGPoint)a4
+- (id)colorAtCenterOfSurface:(__IOSurface *)surface offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v41 = *MEMORY[0x277D85DE8];
-  BaseAddress = IOSurfaceGetBaseAddress(a3);
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
-  v9 = (x + (IOSurfaceGetWidth(a3) >> 1));
-  v10 = (y + (IOSurfaceGetHeight(a3) >> 1));
-  BytesPerRow = IOSurfaceGetBytesPerRow(a3);
+  BaseAddress = IOSurfaceGetBaseAddress(surface);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
+  v9 = (x + (IOSurfaceGetWidth(surface) >> 1));
+  v10 = (y + (IOSurfaceGetHeight(surface) >> 1));
+  BytesPerRow = IOSurfaceGetBytesPerRow(surface);
   v12 = CGColorSpaceCopyFromIOSurface();
   v16 = v12;
   v17 = &BaseAddress[BytesPerRow * v10];
@@ -867,48 +867,48 @@ LABEL_14:
   return v32;
 }
 
-- (id)getRandomColors:(int64_t)a3 from:(id)a4
+- (id)getRandomColors:(int64_t)colors from:(id)from
 {
-  v5 = a4;
-  if ([v5 count] >= a3)
+  fromCopy = from;
+  if ([fromCopy count] >= colors)
   {
     v7 = [MEMORY[0x277CBEB58] set];
-    v8 = [MEMORY[0x277CBEB18] array];
-    if ([v5 count])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([fromCopy count])
     {
       v9 = 0;
       do
       {
         v10 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
-        [v8 addObject:v10];
+        [array addObject:v10];
 
         ++v9;
       }
 
-      while (v9 < [v5 count]);
+      while (v9 < [fromCopy count]);
     }
 
-    while ([v8 count] && objc_msgSend(v7, "count") < a3)
+    while ([array count] && objc_msgSend(v7, "count") < colors)
     {
       v11 = arc4random();
-      v12 = v11 % [v8 count];
-      v13 = [v8 objectAtIndexedSubscript:v12];
-      v14 = [v13 integerValue];
+      v12 = v11 % [array count];
+      v13 = [array objectAtIndexedSubscript:v12];
+      integerValue = [v13 integerValue];
 
-      [v8 removeObjectAtIndex:v12];
-      v15 = [v5 objectAtIndexedSubscript:v14];
+      [array removeObjectAtIndex:v12];
+      v15 = [fromCopy objectAtIndexedSubscript:integerValue];
       [v7 addObject:v15];
     }
 
-    v6 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return allObjects;
 }
 
 @end

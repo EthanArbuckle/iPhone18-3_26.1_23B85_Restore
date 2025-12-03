@@ -1,10 +1,10 @@
 @interface ASTVirtualTrackpadInnerColorController
 - (id)trackpadInnerColor;
 - (id)trackpadOpacity;
-- (void)setTrackpadInnerColor:(id)a3;
-- (void)setTrackpadOpacity:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setTrackpadInnerColor:(id)color;
+- (void)setTrackpadOpacity:(id)opacity;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation ASTVirtualTrackpadInnerColorController
@@ -19,36 +19,36 @@
   return v4;
 }
 
-- (void)setTrackpadOpacity:(id)a3
+- (void)setTrackpadOpacity:(id)opacity
 {
-  v3 = a3;
+  opacityCopy = opacity;
   v6 = +[AXSettings sharedInstance];
-  [v3 floatValue];
+  [opacityCopy floatValue];
   v5 = v4;
 
   [v6 setAssistiveTouchVirtualTrackpadInnerOpacity:v5];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(ASTVirtualTrackpadInnerColorController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(ASTVirtualTrackpadInnerColorController *)self specifierForIndexPath:path];
   v9 = [v8 propertyForKey:@"ColorKey"];
   if (v9)
   {
-    v10 = v7;
-    v11 = [v9 intValue];
-    v12 = [v9 intValue];
-    v13 = [(ASTVirtualTrackpadInnerColorController *)self trackpadInnerColor];
-    [v10 setChecked:{v12 == objc_msgSend(v13, "intValue")}];
+    v10 = cellCopy;
+    intValue = [v9 intValue];
+    intValue2 = [v9 intValue];
+    trackpadInnerColor = [(ASTVirtualTrackpadInnerColorController *)self trackpadInnerColor];
+    [v10 setChecked:{intValue2 == objc_msgSend(trackpadInnerColor, "intValue")}];
 
     v14 = _ASTVirtualTrackpadColorValues();
     v15 = [(ASTVirtualTrackpadInnerColorController *)self traitCollection:0];
-    v16 = [v15 userInterfaceStyle];
+    userInterfaceStyle = [v15 userInterfaceStyle];
 
     if (v14)
     {
-      v17 = v11 == 1;
+      v17 = intValue == 1;
     }
 
     else
@@ -57,7 +57,7 @@
     }
 
     v18 = !v17;
-    if (v16 == &dword_0 + 2)
+    if (userInterfaceStyle == &dword_0 + 2)
     {
       v19 = v14 != 0;
     }
@@ -71,28 +71,28 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = ASTVirtualTrackpadInnerColorController;
-  [(ASTVirtualTrackpadInnerColorController *)&v30 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(ASTVirtualTrackpadInnerColorController *)self specifierForIndexPath:v7];
+  [(ASTVirtualTrackpadInnerColorController *)&v30 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(ASTVirtualTrackpadInnerColorController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"ColorKey"];
   if (v9)
   {
     v22 = v8;
-    v23 = v7;
-    v10 = self;
+    v23 = pathCopy;
+    selfCopy = self;
     v21 = v9;
     [(ASTVirtualTrackpadInnerColorController *)self setTrackpadInnerColor:v9];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v24 = v6;
-    obj = [v6 visibleCells];
+    v24 = viewCopy;
+    obj = [viewCopy visibleCells];
     v11 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v11)
     {
@@ -108,14 +108,14 @@
           }
 
           v15 = *(*(&v26 + 1) + 8 * i);
-          v16 = [v15 specifier];
-          v17 = [v16 propertyForKey:@"ColorKey"];
+          specifier = [v15 specifier];
+          v17 = [specifier propertyForKey:@"ColorKey"];
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 intValue];
-            v20 = [(ASTVirtualTrackpadInnerColorController *)v10 trackpadInnerColor];
-            [v15 setChecked:{v19 == objc_msgSend(v20, "intValue")}];
+            intValue = [v17 intValue];
+            trackpadInnerColor = [(ASTVirtualTrackpadInnerColorController *)selfCopy trackpadInnerColor];
+            [v15 setChecked:{intValue == objc_msgSend(trackpadInnerColor, "intValue")}];
           }
         }
 
@@ -125,8 +125,8 @@
       while (v12);
     }
 
-    v7 = v23;
-    v6 = v24;
+    pathCopy = v23;
+    viewCopy = v24;
     v9 = v21;
     v8 = v22;
   }
@@ -140,13 +140,13 @@
   return v3;
 }
 
-- (void)setTrackpadInnerColor:(id)a3
+- (void)setTrackpadInnerColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v5 = +[AXSettings sharedInstance];
-  v4 = [v3 integerValue];
+  integerValue = [colorCopy integerValue];
 
-  [v5 setAssistiveTouchVirtualTrackpadInnerColor:v4];
+  [v5 setAssistiveTouchVirtualTrackpadInnerColor:integerValue];
 }
 
 @end

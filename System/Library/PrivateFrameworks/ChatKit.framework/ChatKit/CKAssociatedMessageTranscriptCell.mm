@@ -1,6 +1,6 @@
 @interface CKAssociatedMessageTranscriptCell
 - (CGRect)adjustedContentAlignmentRect;
-- (CGRect)associatedViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4;
+- (CGRect)associatedViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame;
 - (CGRect)rawAssociatedItemViewFrame;
 - (CGSize)parentSize;
 - (CGSize)size;
@@ -8,30 +8,30 @@
 - (IMAssociatedMessageGeometryDescriptor)geometryDescriptor;
 - (UIEdgeInsets)stickerReactionInsetsForParent;
 - (double)swipeToReplyLayoutOffset;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)addFilter:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)addFilter:(id)filter;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)clearFilters;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)performReload:(id)a3 completion:(id)a4;
+- (void)performReload:(id)reload completion:(id)completion;
 - (void)prepareForReuse;
-- (void)setAssociatedItemView:(id)a3;
-- (void)setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)a3;
+- (void)setAssociatedItemView:(id)view;
+- (void)setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)descriptor;
 @end
 
 @implementation CKAssociatedMessageTranscriptCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = CKAssociatedMessageTranscriptCell;
-  [(CKTranscriptMessageContentCell *)&v15 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  if (v12)
+  [(CKTranscriptMessageContentCell *)&v15 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  if (itemCopy)
   {
-    [v12 geometryDescriptor];
+    [itemCopy geometryDescriptor];
   }
 
   else
@@ -41,17 +41,17 @@
   }
 
   [(CKAssociatedMessageTranscriptCell *)self setGeometryDescriptor:v13];
-  [v12 size];
+  [itemCopy size];
   [(CKAssociatedMessageTranscriptCell *)self setSize:?];
-  -[CKTranscriptMessageCell setFailed:](self, "setFailed:", [v12 failed]);
+  -[CKTranscriptMessageCell setFailed:](self, "setFailed:", [itemCopy failed]);
   [(CKAssociatedMessageTranscriptCell *)self setNeedsLayout];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = CKAssociatedMessageTranscriptCell;
-  v5 = [(CKAssociatedMessageTranscriptCell *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CKAssociatedMessageTranscriptCell *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self || ([(CKEditableCollectionViewCell *)self contentView], v6 = objc_claimAutoreleasedReturnValue(), v6, v5 == v6))
   {
 
@@ -61,35 +61,35 @@
   return v5;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  if (![(CKTranscriptCollectionViewLayoutAttributes *)self->_layoutAttributes isEqual:v4])
+  attributesCopy = attributes;
+  if (![(CKTranscriptCollectionViewLayoutAttributes *)self->_layoutAttributes isEqual:attributesCopy])
   {
     v5.receiver = self;
     v5.super_class = CKAssociatedMessageTranscriptCell;
-    [(CKAssociatedMessageTranscriptCell *)&v5 applyLayoutAttributes:v4];
-    [(CKAssociatedMessageTranscriptCell *)self setLayoutAttributes:v4];
-    if (v4[56] > 0.0)
+    [(CKAssociatedMessageTranscriptCell *)&v5 applyLayoutAttributes:attributesCopy];
+    [(CKAssociatedMessageTranscriptCell *)self setLayoutAttributes:attributesCopy];
+    if (attributesCopy[56] > 0.0)
     {
       [(CKAssociatedMessageTranscriptCell *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setAssociatedItemView:(id)a3
+- (void)setAssociatedItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   associatedItemView = self->_associatedItemView;
-  if (associatedItemView != v5)
+  if (associatedItemView != viewCopy)
   {
-    v12 = v5;
+    v12 = viewCopy;
     if (associatedItemView)
     {
       [(UIView *)associatedItemView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_associatedItemView, a3);
+    objc_storeStrong(&self->_associatedItemView, view);
     [(UIView *)v12 frame];
     self->_rawAssociatedItemViewFrame.origin.x = v7;
     self->_rawAssociatedItemViewFrame.origin.y = v8;
@@ -97,12 +97,12 @@
     self->_rawAssociatedItemViewFrame.size.height = v10;
     if (self->_associatedItemView)
     {
-      v11 = [(CKEditableCollectionViewCell *)self contentView];
-      [v11 addSubview:self->_associatedItemView];
+      contentView = [(CKEditableCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_associatedItemView];
     }
 
     [(CKAssociatedMessageTranscriptCell *)self setNeedsLayout];
-    v5 = v12;
+    viewCopy = v12;
   }
 }
 
@@ -129,23 +129,23 @@
     v18 = v18 + v26;
   }
 
-  v27 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v27 setFrame:{v18, v20, v22, v24}];
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView setFrame:{v18, v20, v22, v24}];
 
-  v28 = [(CKTranscriptMessageContentCell *)self drawerLabel];
-  [v28 setHidden:1];
+  drawerLabel = [(CKTranscriptMessageContentCell *)self drawerLabel];
+  [drawerLabel setHidden:1];
 }
 
-- (CGRect)associatedViewFrame:(CGRect)a3 inContainerFrame:(CGRect)a4
+- (CGRect)associatedViewFrame:(CGRect)frame inContainerFrame:(CGRect)containerFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
+  height = containerFrame.size.height;
+  width = containerFrame.size.width;
+  y = containerFrame.origin.y;
+  x = containerFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
   v10 = *(MEMORY[0x1E695EFF8] + 8);
-  if ([(CKEditableCollectionViewCell *)self orientation:a3.origin.x])
+  if ([(CKEditableCollectionViewCell *)self orientation:frame.origin.x])
   {
     v15.origin.x = x;
     v15.origin.y = y;
@@ -167,9 +167,9 @@
 
 - (double)swipeToReplyLayoutOffset
 {
-  v3 = [(CKAssociatedMessageTranscriptCell *)self layoutAttributes];
-  v4 = v3;
-  if (!v3 || (v5 = *(v3 + 448), v5 <= 0.0))
+  layoutAttributes = [(CKAssociatedMessageTranscriptCell *)self layoutAttributes];
+  v4 = layoutAttributes;
+  if (!layoutAttributes || (v5 = *(layoutAttributes + 448), v5 <= 0.0))
   {
     [(CKAssociatedMessageTranscriptCell *)self swipeToReplyDelta];
     v5 = v6;
@@ -178,26 +178,26 @@
   return v5;
 }
 
-- (void)performReload:(id)a3 completion:(id)a4
+- (void)performReload:(id)reload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v8 frame];
+  reloadCopy = reload;
+  completionCopy = completion;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  if (v6)
+  if (reloadCopy)
   {
-    v6[2](v6);
+    reloadCopy[2](reloadCopy);
   }
 
   [(CKAssociatedMessageTranscriptCell *)self setNeedsLayout];
   [(CKAssociatedMessageTranscriptCell *)self layoutIfNeeded];
-  v17 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v17 frame];
+  associatedItemView2 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView2 frame];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -213,16 +213,16 @@
   v29.size.height = v25;
   if (CGRectEqualToRect(v28, v29))
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    v26 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-    [v26 setFrame:{v10, v12, v14, v16}];
+    associatedItemView3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+    [associatedItemView3 setFrame:{v10, v12, v14, v16}];
 
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -233,7 +233,7 @@
     *&v27[6] = v21;
     *&v27[7] = v23;
     *&v27[8] = v25;
-    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v27 options:v7 animations:0.25 completion:0.0];
+    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v27 options:completionCopy animations:0.25 completion:0.0];
   }
 }
 
@@ -257,66 +257,66 @@ void __62__CKAssociatedMessageTranscriptCell_performReload_completion___block_in
   [(CKAssociatedMessageTranscriptCell *)self setCumulativeAssociatedOffset:0.0];
   [(CKAssociatedMessageTranscriptCell *)self setParentSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   [(CKAssociatedMessageTranscriptCell *)self setParentRotationOffset:0.0];
-  v3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v3 removeFromSuperview];
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView removeFromSuperview];
 
   [(CKAssociatedMessageTranscriptCell *)self setAssociatedItemView:0];
   [(CKAssociatedMessageTranscriptCell *)self setDelegate:0];
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v6 = a3;
-  v7 = [v6 balloonFilters];
+  filterCopy = filter;
+  balloonFilters = [filterCopy balloonFilters];
 
-  if (v7)
+  if (balloonFilters)
   {
-    v8 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-    v9 = [v8 layer];
-    v10 = [v9 filters];
-    if (v10)
+    associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+    layer = [associatedItemView layer];
+    filters = [layer filters];
+    if (filters)
     {
-      v18 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-      v17 = [v18 layer];
-      v3 = [v17 filters];
-      v4 = [v6 balloonFilters];
-      [v3 arrayByAddingObjectsFromArray:v4];
+      associatedItemView2 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+      layer2 = [associatedItemView2 layer];
+      filters2 = [layer2 filters];
+      balloonFilters2 = [filterCopy balloonFilters];
+      [filters2 arrayByAddingObjectsFromArray:balloonFilters2];
     }
 
     else
     {
-      [v6 balloonFilters];
+      [filterCopy balloonFilters];
     }
     v11 = ;
-    v12 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-    v13 = [v12 layer];
-    [v13 setFilters:v11];
+    associatedItemView3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+    layer3 = [associatedItemView3 layer];
+    [layer3 setFilters:v11];
 
-    if (v10)
+    if (filters)
     {
 
-      v11 = v18;
+      v11 = associatedItemView2;
     }
   }
 
-  [v6 contentAlpha];
+  [filterCopy contentAlpha];
   v15 = v14;
-  v16 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v16 setAlpha:v15];
+  associatedItemView4 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView4 setAlpha:v15];
 
   v19.receiver = self;
   v19.super_class = CKAssociatedMessageTranscriptCell;
-  [(CKEditableCollectionViewCell *)&v19 addFilter:v6];
+  [(CKEditableCollectionViewCell *)&v19 addFilter:filterCopy];
 }
 
 - (void)clearFilters
 {
-  v3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  v4 = [v3 layer];
-  [v4 setFilters:0];
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  layer = [associatedItemView layer];
+  [layer setFilters:0];
 
-  v5 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v5 setAlpha:1.0];
+  associatedItemView2 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView2 setAlpha:1.0];
 
   v6.receiver = self;
   v6.super_class = CKAssociatedMessageTranscriptCell;
@@ -333,9 +333,9 @@ void __62__CKAssociatedMessageTranscriptCell_performReload_completion___block_in
   [(CKAssociatedMessageTranscriptCell *)self parentSize];
   v12 = v11;
   v14 = v13;
-  v15 = [(CKEditableCollectionViewCell *)self orientation];
+  orientation = [(CKEditableCollectionViewCell *)self orientation];
 
-  [CKAssociatedMessageChatItem adjustContentAlignmentRect:v15 forChatItemSize:v4 transcriptOrientation:v6, v8, v10, v12, v14];
+  [CKAssociatedMessageChatItem adjustContentAlignmentRect:orientation forChatItemSize:v4 transcriptOrientation:v6, v8, v10, v12, v14];
   result.size.height = v19;
   result.size.width = v18;
   result.origin.y = v17;
@@ -360,12 +360,12 @@ void __62__CKAssociatedMessageTranscriptCell_performReload_completion___block_in
   return self;
 }
 
-- (void)setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)a3
+- (void)setGeometryDescriptor:(IMAssociatedMessageGeometryDescriptor *)descriptor
 {
-  v4 = *&a3->parentPreviewWidth;
-  v3 = *&a3->yScalar;
-  v5 = *&a3->layoutIntent;
-  self->_geometryDescriptor.rotation = a3->rotation;
+  v4 = *&descriptor->parentPreviewWidth;
+  v3 = *&descriptor->yScalar;
+  v5 = *&descriptor->layoutIntent;
+  self->_geometryDescriptor.rotation = descriptor->rotation;
   *&self->_geometryDescriptor.parentPreviewWidth = v4;
   *&self->_geometryDescriptor.yScalar = v3;
   *&self->_geometryDescriptor.layoutIntent = v5;

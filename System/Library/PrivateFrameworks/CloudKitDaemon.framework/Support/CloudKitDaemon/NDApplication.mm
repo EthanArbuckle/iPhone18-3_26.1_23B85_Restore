@@ -1,13 +1,13 @@
 @interface NDApplication
-+ (BOOL)springBoardApplicationExistsWithIdentifier:(id)a3;
-+ (id)applicationWithIdentifier:(id)a3;
-+ (id)cloudContainerWithIdentifier:(id)a3;
-+ (id)springboardApplicationWithBundleIdentifier:(id)a3;
++ (BOOL)springBoardApplicationExistsWithIdentifier:(id)identifier;
++ (id)applicationWithIdentifier:(id)identifier;
++ (id)cloudContainerWithIdentifier:(id)identifier;
++ (id)springboardApplicationWithBundleIdentifier:(id)identifier;
 + (void)initialize;
-- (NDApplication)initWithOperationID:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)invokeSelectorForAllObservers:(SEL)a3;
-- (void)removeObserver:(id)a3;
+- (NDApplication)initWithOperationID:(id)d;
+- (void)addObserver:(id)observer;
+- (void)invokeSelectorForAllObservers:(SEL)observers;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NDApplication
@@ -20,82 +20,82 @@
   }
 }
 
-+ (id)applicationWithIdentifier:(id)a3
++ (id)applicationWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [qword_1000161D0 objectForKeyedSubscript:v3];
+  v5 = [qword_1000161D0 objectForKeyedSubscript:identifierCopy];
 
   if (!v5)
   {
-    v6 = [objc_alloc(objc_opt_class()) initWithOperationID:v3];
-    [qword_1000161D0 setObject:v6 forKeyedSubscript:v3];
+    v6 = [objc_alloc(objc_opt_class()) initWithOperationID:identifierCopy];
+    [qword_1000161D0 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
-  v7 = [qword_1000161D0 objectForKeyedSubscript:v3];
+  v7 = [qword_1000161D0 objectForKeyedSubscript:identifierCopy];
   objc_sync_exit(v4);
 
   return v7;
 }
 
-+ (id)springboardApplicationWithBundleIdentifier:(id)a3
++ (id)springboardApplicationWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [qword_1000161D0 objectForKeyedSubscript:v3];
+  v5 = [qword_1000161D0 objectForKeyedSubscript:identifierCopy];
 
   if (!v5)
   {
-    v6 = [[NDSpringBoardApplication alloc] initWithOperationID:v3];
-    [qword_1000161D0 setObject:v6 forKeyedSubscript:v3];
+    v6 = [[NDSpringBoardApplication alloc] initWithOperationID:identifierCopy];
+    [qword_1000161D0 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
-  v7 = [qword_1000161D0 objectForKeyedSubscript:v3];
+  v7 = [qword_1000161D0 objectForKeyedSubscript:identifierCopy];
   objc_sync_exit(v4);
 
   return v7;
 }
 
-+ (BOOL)springBoardApplicationExistsWithIdentifier:(id)a3
++ (BOOL)springBoardApplicationExistsWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NDSpringBoard sharedSpringBoard];
-  v5 = [v4 identifierIsForSpringBoardApplication:v3];
+  v5 = [v4 identifierIsForSpringBoardApplication:identifierCopy];
 
   return v5;
 }
 
-+ (id)cloudContainerWithIdentifier:(id)a3
++ (id)cloudContainerWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  v5 = [qword_1000161D0 objectForKeyedSubscript:v3];
+  v5 = [qword_1000161D0 objectForKeyedSubscript:identifierCopy];
 
   if (!v5)
   {
-    v6 = [[NDCloudContainer alloc] initWithOperationID:v3];
-    [qword_1000161D0 setObject:v6 forKeyedSubscript:v3];
+    v6 = [[NDCloudContainer alloc] initWithOperationID:identifierCopy];
+    [qword_1000161D0 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
-  v7 = [qword_1000161D0 objectForKeyedSubscript:v3];
+  v7 = [qword_1000161D0 objectForKeyedSubscript:identifierCopy];
   objc_sync_exit(v4);
 
   return v7;
 }
 
-- (NDApplication)initWithOperationID:(id)a3
+- (NDApplication)initWithOperationID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = NDApplication;
   v6 = [(NDApplication *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, d);
     v8 = +[NSMutableArray array];
     observers = v7->_observers;
     v7->_observers = v8;
@@ -104,30 +104,30 @@
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)v4->_observers indexOfObject:v6];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableArray *)selfCopy->_observers indexOfObject:observerCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)v4->_observers removeObjectAtIndex:v5];
+    [(NSMutableArray *)selfCopy->_observers removeObjectAtIndex:v5];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)invokeSelectorForAllObservers:(SEL)a3
+- (void)invokeSelectorForAllObservers:(SEL)observers
 {
   v5 = dispatch_get_global_queue(0, 0);
   v6[0] = _NSConcreteStackBlock;
@@ -135,7 +135,7 @@
   v6[2] = sub_1000019F4;
   v6[3] = &unk_100010528;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = observers;
   dispatch_async(v5, v6);
 }
 

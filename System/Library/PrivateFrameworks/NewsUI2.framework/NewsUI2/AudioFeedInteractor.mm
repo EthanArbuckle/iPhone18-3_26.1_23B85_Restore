@@ -1,14 +1,14 @@
 @interface AudioFeedInteractor
 - (_TtC7NewsUI219AudioFeedInteractor)init;
-- (void)bundleSubscriptionDidSubscribe:(void *)a3;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
 @end
 
 @implementation AudioFeedInteractor
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a3
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v4 = a3;
-  v5 = a1;
+  subscribeCopy = subscribe;
+  selfCopy = self;
   sub_21914F5B4();
 }
 

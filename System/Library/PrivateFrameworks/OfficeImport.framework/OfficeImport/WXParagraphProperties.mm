@@ -12,7 +12,7 @@
 + (void)heightRuleEnumMap;
 + (void)horizontalAnchorEnumMap;
 + (void)lineSpacingEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 readBaseStyle:(BOOL)a5 state:(id)a6;
++ (void)readFrom:(_xmlNode *)from to:(id)to readBaseStyle:(BOOL)style state:(id)state;
 + (void)strictTabTypeEnumMap;
 + (void)tabLeaderEnumMap;
 + (void)tabTypeEnumMap;
@@ -229,70 +229,70 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
   +[WXParagraphProperties wrapCodeEnumMap]::sWrapCodeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 readBaseStyle:(BOOL)a5 state:(id)a6
++ (void)readFrom:(_xmlNode *)from to:(id)to readBaseStyle:(BOOL)style state:(id)state
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a6;
-  v156 = a3;
-  if (!a3)
+  styleCopy = style;
+  toCopy = to;
+  stateCopy = state;
+  fromCopy = from;
+  if (!from)
   {
     goto LABEL_171;
   }
 
-  v158 = v9;
-  v11 = [v9 document];
-  v154 = [v11 styleSheet];
+  v158 = toCopy;
+  document = [toCopy document];
+  styleSheet = [document styleSheet];
 
   [v158 setResolveMode:0];
-  v12 = [(WXReadState *)v10 WXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "pPrChange");
+  wXMainNamespace = [(WXReadState *)stateCopy WXMainNamespace];
+  v13 = OCXFindChild(from, wXMainNamespace, "pPrChange");
 
   if (v13)
   {
-    v14 = [(WXReadState *)v10 WXMainNamespace];
-    v15 = OCXFindChild(v13, v14, "pPr");
+    wXMainNamespace2 = [(WXReadState *)stateCopy WXMainNamespace];
+    v15 = OCXFindChild(v13, wXMainNamespace2, "pPr");
 
     if (v15)
     {
-      [WXParagraphProperties readFrom:v15 to:v158 readBaseStyle:v7 state:v10];
+      [WXParagraphProperties readFrom:v15 to:v158 readBaseStyle:styleCopy state:stateCopy];
       if ([v158 isBaseStyleOverridden])
       {
-        v16 = [v158 baseStyle];
+        baseStyle = [v158 baseStyle];
       }
 
       else
       {
-        v16 = 0;
+        baseStyle = 0;
       }
 
-      [v158 setResolveMode:{1, v154}];
+      [v158 setResolveMode:{1, styleSheet}];
       [v158 setFormattingChanged:1];
-      if (v16)
+      if (baseStyle)
       {
-        [v158 setBaseStyle:v16];
+        [v158 setBaseStyle:baseStyle];
       }
     }
   }
 
-  if (v7)
+  if (styleCopy)
   {
-    v17 = [(WXReadState *)v10 WXMainNamespace];
-    v18 = OCXFindChild(v156, v17, "pStyle");
+    wXMainNamespace3 = [(WXReadState *)stateCopy WXMainNamespace];
+    v18 = OCXFindChild(fromCopy, wXMainNamespace3, "pStyle");
 
     if (v18)
     {
-      v19 = [(WXReadState *)v10 WXMainNamespace];
-      v20 = CXDefaultStringAttribute(v18, v19, "val", 0);
+      wXMainNamespace4 = [(WXReadState *)stateCopy WXMainNamespace];
+      v20 = CXDefaultStringAttribute(v18, wXMainNamespace4, "val", 0);
 
-      v21 = [v154 styleWithId:v20];
+      v21 = [styleSheet styleWithId:v20];
       [v158 setBaseStyle:v21];
     }
   }
 
   v173 = 0;
-  v22 = [a1 heightRuleEnumMap];
-  v23 = readEnumProperty<WDHeightRule>(v156, "framePr", "hRule", v22, &v173, v10);
+  heightRuleEnumMap = [self heightRuleEnumMap];
+  v23 = readEnumProperty<WDHeightRule>(fromCopy, "framePr", "hRule", heightRuleEnumMap, &v173, stateCopy);
 
   if (v23)
   {
@@ -300,8 +300,8 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
   }
 
   v172 = 0;
-  v24 = [a1 horizontalAnchorEnumMap];
-  v25 = readEnumProperty<WDHorizontalAnchor>(v156, "framePr", "hAnchor", v24, &v172, v10);
+  horizontalAnchorEnumMap = [self horizontalAnchorEnumMap];
+  v25 = readEnumProperty<WDHorizontalAnchor>(fromCopy, "framePr", "hAnchor", horizontalAnchorEnumMap, &v172, stateCopy);
 
   if (v25)
   {
@@ -309,8 +309,8 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
   }
 
   v171 = 0;
-  v26 = [a1 verticalAnchorEnumMap];
-  v27 = readEnumProperty<WDVerticalAnchor>(v156, "framePr", "vAnchor", v26, &v171, v10);
+  verticalAnchorEnumMap = [self verticalAnchorEnumMap];
+  v27 = readEnumProperty<WDVerticalAnchor>(fromCopy, "framePr", "vAnchor", verticalAnchorEnumMap, &v171, stateCopy);
 
   if (v27)
   {
@@ -318,8 +318,8 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
   }
 
   v170 = 0;
-  v28 = [a1 wrapCodeEnumMap];
-  v29 = readEnumProperty<char>(v156, "framePr", "wrap", v28, &v170, v10);
+  wrapCodeEnumMap = [self wrapCodeEnumMap];
+  v29 = readEnumProperty<char>(fromCopy, "framePr", "wrap", wrapCodeEnumMap, &v170, stateCopy);
 
   if (v29)
   {
@@ -327,8 +327,8 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
   }
 
   v169 = 0;
-  v30 = [a1 lineSpacingEnumMap];
-  v31 = readEnumProperty<WDLineSpacingRule>(v156, "spacing", "lineRule", v30, &v169, v10);
+  lineSpacingEnumMap = [self lineSpacingEnumMap];
+  v31 = readEnumProperty<WDLineSpacingRule>(fromCopy, "spacing", "lineRule", lineSpacingEnumMap, &v169, stateCopy);
 
   if (v31)
   {
@@ -337,14 +337,14 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
 
   v168 = 0;
   v32 = +[WXCommon justifyEnumMap];
-  if (readEnumProperty<WDJustification>(v156, "jc", "val", v32, &v168, v10))
+  if (readEnumProperty<WDJustification>(fromCopy, "jc", "val", v32, &v168, stateCopy))
   {
   }
 
   else
   {
     v33 = +[WXCommon strictJustifyEnumMap];
-    v34 = readEnumProperty<WDJustification>(v156, "jc", "val", v33, &v168, v10);
+    v34 = readEnumProperty<WDJustification>(fromCopy, "jc", "val", v33, &v168, stateCopy);
 
     if (!v34)
     {
@@ -355,109 +355,109 @@ void __40__WXParagraphProperties_wrapCodeEnumMap__block_invoke()
   [v158 setJustification:v168];
 LABEL_27:
   v167 = 0;
-  if (wmxmlGetBoolOnlyProperty(v156, "pageBreakBefore", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "pageBreakBefore", "val", &v167, stateCopy))
   {
     [v158 setPageBreakBefore:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "wordWrap", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "wordWrap", "val", &v167, stateCopy))
   {
     [v158 setWrap:v167];
   }
 
-  if (wmxmlGetBoolProperty(v156, "framePr", "anchorLock", &v167, v10))
+  if (wmxmlGetBoolProperty(fromCopy, "framePr", "anchorLock", &v167, stateCopy))
   {
     [v158 setAnchorLock:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "keepNext", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "keepNext", "val", &v167, stateCopy))
   {
     [v158 setKeepNextParagraphTogether:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "keepLines", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "keepLines", "val", &v167, stateCopy))
   {
     [v158 setKeepLinesTogether:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "suppressLineNumbers", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "suppressLineNumbers", "val", &v167, stateCopy))
   {
     [v158 setSuppressLineNumbers:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "suppressAutoHyphens", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "suppressAutoHyphens", "val", &v167, stateCopy))
   {
     [v158 setSuppressAutoHyphens:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "widowControl", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "widowControl", "val", &v167, stateCopy))
   {
     [v158 setWidowControl:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "bidi", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "bidi", "val", &v167, stateCopy))
   {
     [v158 setBiDi:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "kinsoku", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "kinsoku", "val", &v167, stateCopy))
   {
     [v158 setKinsokuOff:!v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "beforeAutospacing", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "beforeAutospacing", "val", &v167, stateCopy))
   {
     [v158 setSpaceBeforeAuto:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "afterAutospacing", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "afterAutospacing", "val", &v167, stateCopy))
   {
     [v158 setSpaceAfterAuto:v167];
   }
 
-  if (wmxmlGetBoolOnlyProperty(v156, "contextualSpacing", "val", &v167, v10))
+  if (wmxmlGetBoolOnlyProperty(fromCopy, "contextualSpacing", "val", &v167, stateCopy))
   {
     [v158 setContextualSpacing:v167];
   }
 
   v166 = 0;
-  v35 = [(WXReadState *)v10 WXMainNamespace];
-  v36 = OCXFindChild(v156, v35, "framePr");
+  wXMainNamespace5 = [(WXReadState *)stateCopy WXMainNamespace];
+  v36 = OCXFindChild(fromCopy, wXMainNamespace5, "framePr");
 
-  v37 = [(WXReadState *)v10 WXMainNamespace];
-  v38 = CXOptionalLongAttribute(v36, v37, "w", &v166, 14);
+  wXMainNamespace6 = [(WXReadState *)stateCopy WXMainNamespace];
+  v38 = CXOptionalLongAttribute(v36, wXMainNamespace6, "w", &v166, 14);
 
   if (v38)
   {
     [v158 setWidth:v166];
   }
 
-  v39 = [(WXReadState *)v10 WXMainNamespace];
-  v40 = CXOptionalLongAttribute(v36, v39, "h", &v166, 14);
+  wXMainNamespace7 = [(WXReadState *)stateCopy WXMainNamespace];
+  v40 = CXOptionalLongAttribute(v36, wXMainNamespace7, "h", &v166, 14);
 
   if (v40)
   {
     [v158 setHeight:v166];
   }
 
-  v41 = [(WXReadState *)v10 WXMainNamespace];
-  v42 = CXOptionalLongAttribute(v36, v41, "vSpace", &v166, 14);
+  wXMainNamespace8 = [(WXReadState *)stateCopy WXMainNamespace];
+  v42 = CXOptionalLongAttribute(v36, wXMainNamespace8, "vSpace", &v166, 14);
 
   if (v42)
   {
     [v158 setVerticalSpace:v166];
   }
 
-  v43 = [(WXReadState *)v10 WXMainNamespace];
-  v44 = CXOptionalLongAttribute(v36, v43, "hSpace", &v166, 14);
+  wXMainNamespace9 = [(WXReadState *)stateCopy WXMainNamespace];
+  v44 = CXOptionalLongAttribute(v36, wXMainNamespace9, "hSpace", &v166, 14);
 
   if (v44)
   {
     [v158 setHorizontalSpace:v166];
   }
 
-  v45 = [(WXReadState *)v10 WXMainNamespace];
-  v46 = CXOptionalLongAttribute(v36, v45, "x", &v166, 14);
+  wXMainNamespace10 = [(WXReadState *)stateCopy WXMainNamespace];
+  v46 = CXOptionalLongAttribute(v36, wXMainNamespace10, "x", &v166, 14);
 
   if (v46)
   {
@@ -466,9 +466,9 @@ LABEL_27:
 
   if (([v158 isHorizontalPositionOverridden] & 1) == 0)
   {
-    v47 = [(WXReadState *)v10 WXMainNamespace];
+    wXMainNamespace11 = [(WXReadState *)stateCopy WXMainNamespace];
     v165 = 0;
-    v48 = CXOptionalStringAttribute(v36, v47, "xAlign", &v165);
+    v48 = CXOptionalStringAttribute(v36, wXMainNamespace11, "xAlign", &v165);
     v49 = v165;
 
     if (v48)
@@ -509,8 +509,8 @@ LABEL_75:
 LABEL_76:
   }
 
-  v51 = [(WXReadState *)v10 WXMainNamespace];
-  v52 = CXOptionalLongAttribute(v36, v51, "y", &v166, 14);
+  wXMainNamespace12 = [(WXReadState *)stateCopy WXMainNamespace];
+  v52 = CXOptionalLongAttribute(v36, wXMainNamespace12, "y", &v166, 14);
 
   if (v52)
   {
@@ -519,9 +519,9 @@ LABEL_76:
 
   if (([v158 isVerticalPositionOverridden] & 1) == 0)
   {
-    v53 = [(WXReadState *)v10 WXMainNamespace];
+    wXMainNamespace13 = [(WXReadState *)stateCopy WXMainNamespace];
     v164 = 0;
-    v54 = CXOptionalStringAttribute(v36, v53, "yAlign", &v164);
+    v54 = CXOptionalStringAttribute(v36, wXMainNamespace13, "yAlign", &v164);
     v55 = v164;
 
     if (v54)
@@ -562,11 +562,11 @@ LABEL_91:
 LABEL_92:
   }
 
-  v57 = [(WXReadState *)v10 WXMainNamespace];
-  v58 = OCXFindChild(v156, v57, "spacing");
+  wXMainNamespace14 = [(WXReadState *)stateCopy WXMainNamespace];
+  v58 = OCXFindChild(fromCopy, wXMainNamespace14, "spacing");
 
-  v59 = [(WXReadState *)v10 WXMainNamespace];
-  v60 = CXOptionalLongAttribute(v58, v59, "line", &v166, 14);
+  wXMainNamespace15 = [(WXReadState *)stateCopy WXMainNamespace];
+  v60 = CXOptionalLongAttribute(v58, wXMainNamespace15, "line", &v166, 14);
 
   if (v60)
   {
@@ -583,38 +583,38 @@ LABEL_92:
     [v158 setLineSpacing:v61];
   }
 
-  v62 = [(WXReadState *)v10 WXMainNamespace];
-  v63 = CXOptionalLongAttribute(v58, v62, "before", &v166, 14);
+  wXMainNamespace16 = [(WXReadState *)stateCopy WXMainNamespace];
+  v63 = CXOptionalLongAttribute(v58, wXMainNamespace16, "before", &v166, 14);
 
   if (v63)
   {
     [v158 setSpaceBefore:v166];
   }
 
-  v64 = [(WXReadState *)v10 WXMainNamespace];
-  v65 = CXOptionalLongAttribute(v58, v64, "after", &v166, 14);
+  wXMainNamespace17 = [(WXReadState *)stateCopy WXMainNamespace];
+  v65 = CXOptionalLongAttribute(v58, wXMainNamespace17, "after", &v166, 14);
 
   if (v65)
   {
     [v158 setSpaceAfter:v166];
   }
 
-  v66 = [(WXReadState *)v10 WXMainNamespace];
-  v67 = OCXFindChild(v156, v66, "outlineLvl");
+  wXMainNamespace18 = [(WXReadState *)stateCopy WXMainNamespace];
+  v67 = OCXFindChild(fromCopy, wXMainNamespace18, "outlineLvl");
 
-  v68 = [(WXReadState *)v10 WXMainNamespace];
-  LODWORD(v67) = CXOptionalLongAttribute(v67, v68, "val", &v166);
+  wXMainNamespace19 = [(WXReadState *)stateCopy WXMainNamespace];
+  LODWORD(v67) = CXOptionalLongAttribute(v67, wXMainNamespace19, "val", &v166);
 
   if (v67)
   {
     [v158 setOutlineLevel:v166];
   }
 
-  v69 = [(WXReadState *)v10 WXMainNamespace];
-  v70 = OCXFindChild(v156, v69, "ind");
+  wXMainNamespace20 = [(WXReadState *)stateCopy WXMainNamespace];
+  v70 = OCXFindChild(fromCopy, wXMainNamespace20, "ind");
 
-  v71 = [(WXReadState *)v10 WXMainNamespace];
-  if (CXOptionalLongAttribute(v70, v71, "left", &v166, 14))
+  wXMainNamespace21 = [(WXReadState *)stateCopy WXMainNamespace];
+  if (CXOptionalLongAttribute(v70, wXMainNamespace21, "left", &v166, 14))
   {
 
 LABEL_108:
@@ -622,23 +622,23 @@ LABEL_108:
     goto LABEL_109;
   }
 
-  v72 = [(WXReadState *)v10 WXMainNamespace];
-  v73 = CXOptionalLongAttribute(v70, v72, "start", &v166, 14);
+  wXMainNamespace22 = [(WXReadState *)stateCopy WXMainNamespace];
+  v73 = CXOptionalLongAttribute(v70, wXMainNamespace22, "start", &v166, 14);
 
   if (v73)
   {
     goto LABEL_108;
   }
 
-  v142 = [(WXReadState *)v10 WXMainNamespace];
-  if (CXOptionalLongAttribute(v70, v142, "leftChars", &v166))
+  wXMainNamespace23 = [(WXReadState *)stateCopy WXMainNamespace];
+  if (CXOptionalLongAttribute(v70, wXMainNamespace23, "leftChars", &v166))
   {
   }
 
   else
   {
-    v148 = [(WXReadState *)v10 WXMainNamespace];
-    v149 = CXOptionalLongAttribute(v70, v148, "startChars", &v166);
+    wXMainNamespace24 = [(WXReadState *)stateCopy WXMainNamespace];
+    v149 = CXOptionalLongAttribute(v70, wXMainNamespace24, "startChars", &v166);
 
     if (!v149)
     {
@@ -648,8 +648,8 @@ LABEL_108:
 
   [v158 setLeftIndentChars:v166];
 LABEL_109:
-  v74 = [(WXReadState *)v10 WXMainNamespace];
-  if (CXOptionalLongAttribute(v70, v74, "right", &v166, 14))
+  wXMainNamespace25 = [(WXReadState *)stateCopy WXMainNamespace];
+  if (CXOptionalLongAttribute(v70, wXMainNamespace25, "right", &v166, 14))
   {
 
 LABEL_112:
@@ -657,23 +657,23 @@ LABEL_112:
     goto LABEL_113;
   }
 
-  v75 = [(WXReadState *)v10 WXMainNamespace];
-  v76 = CXOptionalLongAttribute(v70, v75, "end", &v166, 14);
+  wXMainNamespace26 = [(WXReadState *)stateCopy WXMainNamespace];
+  v76 = CXOptionalLongAttribute(v70, wXMainNamespace26, "end", &v166, 14);
 
   if (v76)
   {
     goto LABEL_112;
   }
 
-  v143 = [(WXReadState *)v10 WXMainNamespace];
-  if (CXOptionalLongAttribute(v70, v143, "rightChars", &v166))
+  wXMainNamespace27 = [(WXReadState *)stateCopy WXMainNamespace];
+  if (CXOptionalLongAttribute(v70, wXMainNamespace27, "rightChars", &v166))
   {
   }
 
   else
   {
-    v150 = [(WXReadState *)v10 WXMainNamespace];
-    v151 = CXOptionalLongAttribute(v70, v150, "endChars", &v166);
+    wXMainNamespace28 = [(WXReadState *)stateCopy WXMainNamespace];
+    v151 = CXOptionalLongAttribute(v70, wXMainNamespace28, "endChars", &v166);
 
     if (!v151)
     {
@@ -685,13 +685,13 @@ LABEL_112:
 LABEL_113:
   v162 = 0;
   v163 = 0;
-  v77 = [(WXReadState *)v10 WXMainNamespace];
-  v78 = CXOptionalLongAttribute(v70, v77, "firstLine", &v163, 14);
+  wXMainNamespace29 = [(WXReadState *)stateCopy WXMainNamespace];
+  v78 = CXOptionalLongAttribute(v70, wXMainNamespace29, "firstLine", &v163, 14);
 
   if (!v78)
   {
-    v80 = [(WXReadState *)v10 WXMainNamespace];
-    v81 = CXOptionalLongAttribute(v70, v80, "firstLineChars", &v163);
+    wXMainNamespace30 = [(WXReadState *)stateCopy WXMainNamespace];
+    v81 = CXOptionalLongAttribute(v70, wXMainNamespace30, "firstLineChars", &v163);
 
     if (v81)
     {
@@ -700,8 +700,8 @@ LABEL_113:
 
     else
     {
-      v144 = [(WXReadState *)v10 WXMainNamespace];
-      v145 = CXOptionalLongAttribute(v70, v144, "hanging", &v162, 14);
+      wXMainNamespace31 = [(WXReadState *)stateCopy WXMainNamespace];
+      v145 = CXOptionalLongAttribute(v70, wXMainNamespace31, "hanging", &v162, 14);
 
       if (v145)
       {
@@ -709,8 +709,8 @@ LABEL_113:
         goto LABEL_115;
       }
 
-      v152 = [(WXReadState *)v10 WXMainNamespace];
-      v153 = CXOptionalLongAttribute(v70, v152, "hangingChars", &v162);
+      wXMainNamespace32 = [(WXReadState *)stateCopy WXMainNamespace];
+      v153 = CXOptionalLongAttribute(v70, wXMainNamespace32, "hangingChars", &v162);
 
       if (!v153)
       {
@@ -729,102 +729,102 @@ LABEL_115:
   [v158 setFirstLineIndent:v79];
 LABEL_119:
   v161 = 0;
-  v83 = [a1 dropCapEnumMap];
-  v84 = readEnumProperty<WDDropCapStyle>(v156, "framePr", "dropCap", v83, &v161, v10);
+  dropCapEnumMap = [self dropCapEnumMap];
+  v84 = readEnumProperty<WDDropCapStyle>(fromCopy, "framePr", "dropCap", dropCapEnumMap, &v161, stateCopy);
 
   if (v84)
   {
-    v85 = [(WXReadState *)v10 WXMainNamespace];
-    v86 = CXDefaultLongAttribute(v36, v85, "lines", 0);
+    wXMainNamespace33 = [(WXReadState *)stateCopy WXMainNamespace];
+    v86 = CXDefaultLongAttribute(v36, wXMainNamespace33, "lines", 0);
 
     [v158 setDropCap:v161 | (v86 << 8)];
   }
 
-  v87 = [(WXReadState *)v10 WXMainNamespace];
-  v88 = OCXFindChild(v156, v87, "pBdr");
+  wXMainNamespace34 = [(WXReadState *)stateCopy WXMainNamespace];
+  v88 = OCXFindChild(fromCopy, wXMainNamespace34, "pBdr");
 
   if (v88)
   {
-    v89 = [(WXReadState *)v10 WXMainNamespace];
-    v90 = OCXFindChild(v88, v89, "top");
+    wXMainNamespace35 = [(WXReadState *)stateCopy WXMainNamespace];
+    v90 = OCXFindChild(v88, wXMainNamespace35, "top");
 
     if (v90)
     {
-      v91 = [v158 mutableTopBorder];
-      [WXBorder readFrom:v90 to:v91 state:v10];
+      mutableTopBorder = [v158 mutableTopBorder];
+      [WXBorder readFrom:v90 to:mutableTopBorder state:stateCopy];
     }
 
-    v92 = [(WXReadState *)v10 WXMainNamespace];
-    v93 = OCXFindChild(v88, v92, "left");
+    wXMainNamespace36 = [(WXReadState *)stateCopy WXMainNamespace];
+    v93 = OCXFindChild(v88, wXMainNamespace36, "left");
 
     if (v93)
     {
-      v94 = [v158 mutableLeftBorder];
-      [WXBorder readFrom:v93 to:v94 state:v10];
+      mutableLeftBorder = [v158 mutableLeftBorder];
+      [WXBorder readFrom:v93 to:mutableLeftBorder state:stateCopy];
     }
 
-    v95 = [(WXReadState *)v10 WXMainNamespace];
-    v96 = OCXFindChild(v88, v95, "bottom");
+    wXMainNamespace37 = [(WXReadState *)stateCopy WXMainNamespace];
+    v96 = OCXFindChild(v88, wXMainNamespace37, "bottom");
 
     if (v96)
     {
-      v97 = [v158 mutableBottomBorder];
-      [WXBorder readFrom:v96 to:v97 state:v10];
+      mutableBottomBorder = [v158 mutableBottomBorder];
+      [WXBorder readFrom:v96 to:mutableBottomBorder state:stateCopy];
     }
 
-    v98 = [(WXReadState *)v10 WXMainNamespace];
-    v99 = OCXFindChild(v88, v98, "right");
+    wXMainNamespace38 = [(WXReadState *)stateCopy WXMainNamespace];
+    v99 = OCXFindChild(v88, wXMainNamespace38, "right");
 
     if (v99)
     {
-      v100 = [v158 mutableRightBorder];
-      [WXBorder readFrom:v99 to:v100 state:v10];
+      mutableRightBorder = [v158 mutableRightBorder];
+      [WXBorder readFrom:v99 to:mutableRightBorder state:stateCopy];
     }
 
-    v101 = [(WXReadState *)v10 WXMainNamespace];
-    v102 = OCXFindChild(v88, v101, "between");
+    wXMainNamespace39 = [(WXReadState *)stateCopy WXMainNamespace];
+    v102 = OCXFindChild(v88, wXMainNamespace39, "between");
 
     if (v102)
     {
-      v103 = [v158 mutableBetweenBorder];
-      [WXBorder readFrom:v102 to:v103 state:v10];
+      mutableBetweenBorder = [v158 mutableBetweenBorder];
+      [WXBorder readFrom:v102 to:mutableBetweenBorder state:stateCopy];
     }
 
-    v104 = [(WXReadState *)v10 WXMainNamespace];
-    v105 = OCXFindChild(v88, v104, "bar");
+    wXMainNamespace40 = [(WXReadState *)stateCopy WXMainNamespace];
+    v105 = OCXFindChild(v88, wXMainNamespace40, "bar");
 
     if (v105)
     {
-      v106 = [v158 mutableBarBorder];
-      [WXBorder readFrom:v105 to:v106 state:v10];
+      mutableBarBorder = [v158 mutableBarBorder];
+      [WXBorder readFrom:v105 to:mutableBarBorder state:stateCopy];
     }
   }
 
-  v107 = [(WXReadState *)v10 WXMainNamespace];
-  v108 = OCXFindChild(v156, v107, "shd");
+  wXMainNamespace41 = [(WXReadState *)stateCopy WXMainNamespace];
+  v108 = OCXFindChild(fromCopy, wXMainNamespace41, "shd");
 
   if (v108)
   {
-    v109 = [v158 mutableShading];
-    [WXShading readFrom:v108 to:v109 state:v10];
+    mutableShading = [v158 mutableShading];
+    [WXShading readFrom:v108 to:mutableShading state:stateCopy];
   }
 
-  v110 = [(WXReadState *)v10 WXMainNamespace];
-  v111 = OCXFindChild(v156, v110, "tabs");
+  wXMainNamespace42 = [(WXReadState *)stateCopy WXMainNamespace];
+  v111 = OCXFindChild(fromCopy, wXMainNamespace42, "tabs");
 
   if (v111)
   {
-    v112 = [(WXReadState *)v10 WXMainNamespace];
-    Child = OCXFindChild(v111, v112, "tab");
+    wXMainNamespace43 = [(WXReadState *)stateCopy WXMainNamespace];
+    Child = OCXFindChild(v111, wXMainNamespace43, "tab");
 
     while (Child)
     {
-      v114 = [(WXReadState *)v10 WXMainNamespace];
-      v166 = CXRequiredLongAttribute(Child, v114, "pos", 14);
+      wXMainNamespace44 = [(WXReadState *)stateCopy WXMainNamespace];
+      v166 = CXRequiredLongAttribute(Child, wXMainNamespace44, "pos", 14);
 
       LOWORD(v160) = v166;
-      v115 = [a1 tabTypeEnumMap];
-      Enum = readEnumProperty<unsigned char>(Child, "val", v115, &v160 + 2);
+      tabTypeEnumMap = [self tabTypeEnumMap];
+      Enum = readEnumProperty<unsigned char>(Child, "val", tabTypeEnumMap, &v160 + 2);
 
       if (Enum)
       {
@@ -833,12 +833,12 @@ LABEL_119:
 
       else
       {
-        v118 = [a1 strictTabTypeEnumMap];
-        v117 = readEnumProperty<unsigned char>(Child, "val", v118, &v160 + 2);
+        strictTabTypeEnumMap = [self strictTabTypeEnumMap];
+        v117 = readEnumProperty<unsigned char>(Child, "val", strictTabTypeEnumMap, &v160 + 2);
       }
 
-      v119 = [a1 tabLeaderEnumMap];
-      v120 = readEnumProperty<unsigned char>(Child, "leader", v119, &v160 + 3);
+      tabLeaderEnumMap = [self tabLeaderEnumMap];
+      v120 = readEnumProperty<unsigned char>(Child, "leader", tabLeaderEnumMap, &v160 + 3);
 
       if ((v120 & 1) == 0)
       {
@@ -865,22 +865,22 @@ LABEL_119:
         [v158 addTabStopAdded:&v160];
       }
 
-      v122 = [(WXReadState *)v10 WXMainNamespace];
-      Child = OCXFindNextChild(Child, v122, "tab");
+      wXMainNamespace45 = [(WXReadState *)stateCopy WXMainNamespace];
+      Child = OCXFindNextChild(Child, wXMainNamespace45, "tab");
     }
   }
 
-  v123 = [(WXReadState *)v10 WXMainNamespace];
-  v124 = OCXFindChild(v156, v123, "numPr");
+  wXMainNamespace46 = [(WXReadState *)stateCopy WXMainNamespace];
+  v124 = OCXFindChild(fromCopy, wXMainNamespace46, "numPr");
 
   if (v124)
   {
     v160 = 0;
-    v125 = [(WXReadState *)v10 WXMainNamespace];
-    v126 = OCXFindChild(v124, v125, "ilvl");
+    wXMainNamespace47 = [(WXReadState *)stateCopy WXMainNamespace];
+    v126 = OCXFindChild(v124, wXMainNamespace47, "ilvl");
 
-    v127 = [(WXReadState *)v10 WXMainNamespace];
-    v128 = CXOptionalLongAttribute(v126, v127, "val", &v160);
+    wXMainNamespace48 = [(WXReadState *)stateCopy WXMainNamespace];
+    v128 = CXOptionalLongAttribute(v126, wXMainNamespace48, "val", &v160);
 
     if (v128)
     {
@@ -888,11 +888,11 @@ LABEL_119:
     }
 
     v159 = 0;
-    v129 = [(WXReadState *)v10 WXMainNamespace];
-    v130 = OCXFindChild(v124, v129, "numId");
+    wXMainNamespace49 = [(WXReadState *)stateCopy WXMainNamespace];
+    v130 = OCXFindChild(v124, wXMainNamespace49, "numId");
 
-    v131 = [(WXReadState *)v10 WXMainNamespace];
-    v132 = CXOptionalLongAttribute(v130, v131, "val", &v159);
+    wXMainNamespace50 = [(WXReadState *)stateCopy WXMainNamespace];
+    v132 = CXOptionalLongAttribute(v130, wXMainNamespace50, "val", &v159);
 
     if (v132)
     {
@@ -900,25 +900,25 @@ LABEL_119:
     }
   }
 
-  v133 = [(WXReadState *)v10 WXMainNamespace];
-  v134 = OCXFindChild(v156, v133, "rPr");
+  wXMainNamespace51 = [(WXReadState *)stateCopy WXMainNamespace];
+  v134 = OCXFindChild(fromCopy, wXMainNamespace51, "rPr");
 
   if (v134)
   {
-    v135 = [v158 mutableCharacterProperties];
-    [WXCharacterProperties readFrom:v134 to:v135 state:v10];
+    mutableCharacterProperties = [v158 mutableCharacterProperties];
+    [WXCharacterProperties readFrom:v134 to:mutableCharacterProperties state:stateCopy];
   }
 
-  v136 = [(WXReadState *)v10 WXMainNamespace];
-  v137 = OCXFindChild(v156, v136, "sectPr");
+  wXMainNamespace52 = [(WXReadState *)stateCopy WXMainNamespace];
+  v137 = OCXFindChild(fromCopy, wXMainNamespace52, "sectPr");
 
   if (v137)
   {
-    v138 = [(WXReadState *)v10 document];
-    v139 = [v138 lastSection];
-    [WXSection readFrom:v137 to:v139 state:v10];
+    document2 = [(WXReadState *)stateCopy document];
+    lastSection = [document2 lastSection];
+    [WXSection readFrom:v137 to:lastSection state:stateCopy];
 
-    [(WXReadState *)v10 setNewSectionRequested:1];
+    [(WXReadState *)stateCopy setNewSectionRequested:1];
   }
 
   if ([v158 resolveMode] == 1)
@@ -926,22 +926,22 @@ LABEL_119:
     [v158 setResolveMode:2];
     if ([v158 isBaseStyleOverridden])
     {
-      v140 = [v158 baseStyle];
-      v141 = [v140 paragraphProperties];
+      baseStyle2 = [v158 baseStyle];
+      paragraphProperties = [baseStyle2 paragraphProperties];
     }
 
     else
     {
-      v140 = [(WXReadState *)v10 document];
-      v146 = [v140 styleSheet];
-      v147 = [v146 defaultParagraphStyle];
-      v141 = [v147 paragraphProperties];
+      baseStyle2 = [(WXReadState *)stateCopy document];
+      styleSheet2 = [baseStyle2 styleSheet];
+      defaultParagraphStyle = [styleSheet2 defaultParagraphStyle];
+      paragraphProperties = [defaultParagraphStyle paragraphProperties];
     }
 
-    [v158 negateFormattingChangesWithDefaults:v141];
+    [v158 negateFormattingChangesWithDefaults:paragraphProperties];
   }
 
-  v9 = v158;
+  toCopy = v158;
 LABEL_171:
 }
 

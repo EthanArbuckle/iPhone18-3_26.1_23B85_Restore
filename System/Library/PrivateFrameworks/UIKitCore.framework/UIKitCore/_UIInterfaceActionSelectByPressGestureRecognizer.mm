@@ -2,25 +2,25 @@
 - (UIFocusedInterfaceActionPressDelegate)pressDelegate;
 - (UIInterfaceAction)interfaceActionOnPressBegan;
 - (UIInterfaceActionGroupView)actionGroupView;
-- (_UIInterfaceActionSelectByPressGestureRecognizer)initWithFocusedInterfaceActionPressDelegate:(id)a3;
-- (void)_gestureChanged:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (_UIInterfaceActionSelectByPressGestureRecognizer)initWithFocusedInterfaceActionPressDelegate:(id)delegate;
+- (void)_gestureChanged:(id)changed;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reset;
 @end
 
 @implementation _UIInterfaceActionSelectByPressGestureRecognizer
 
-- (_UIInterfaceActionSelectByPressGestureRecognizer)initWithFocusedInterfaceActionPressDelegate:(id)a3
+- (_UIInterfaceActionSelectByPressGestureRecognizer)initWithFocusedInterfaceActionPressDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UIInterfaceActionSelectByPressGestureRecognizer;
   v5 = [(UITapGestureRecognizer *)&v8 initWithTarget:self action:sel__gestureChanged_];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pressDelegate, v4);
+    objc_storeWeak(&v5->_pressDelegate, delegateCopy);
     [(UITapGestureRecognizer *)v6 setAllowedPressTypes:&unk_1EFE2B338];
     [(UIGestureRecognizer *)v6 setAllowedTouchTypes:MEMORY[0x1E695E0F0]];
   }
@@ -28,30 +28,30 @@
   return v6;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = _UIInterfaceActionSelectByPressGestureRecognizer;
-  [(UITapGestureRecognizer *)&v7 pressesBegan:a3 withEvent:a4];
-  v5 = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
-  v6 = [v5 focusedInterfaceAction];
-  [(_UIInterfaceActionSelectByPressGestureRecognizer *)self setInterfaceActionOnPressBegan:v6];
+  [(UITapGestureRecognizer *)&v7 pressesBegan:began withEvent:event];
+  pressDelegate = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
+  focusedInterfaceAction = [pressDelegate focusedInterfaceAction];
+  [(_UIInterfaceActionSelectByPressGestureRecognizer *)self setInterfaceActionOnPressBegan:focusedInterfaceAction];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
-  v9 = [v8 focusedInterfaceAction];
+  endedCopy = ended;
+  eventCopy = event;
+  pressDelegate = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
+  focusedInterfaceAction = [pressDelegate focusedInterfaceAction];
 
-  v10 = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self interfaceActionOnPressBegan];
+  interfaceActionOnPressBegan = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self interfaceActionOnPressBegan];
 
-  if (v9 == v10)
+  if (focusedInterfaceAction == interfaceActionOnPressBegan)
   {
     v11.receiver = self;
     v11.super_class = _UIInterfaceActionSelectByPressGestureRecognizer;
-    [(UITapGestureRecognizer *)&v11 pressesEnded:v6 withEvent:v7];
+    [(UITapGestureRecognizer *)&v11 pressesEnded:endedCopy withEvent:eventCopy];
   }
 
   else
@@ -68,17 +68,17 @@
   [(_UIInterfaceActionSelectByPressGestureRecognizer *)self setInterfaceActionOnPressBegan:0];
 }
 
-- (void)_gestureChanged:(id)a3
+- (void)_gestureChanged:(id)changed
 {
-  if ([a3 state] == 3)
+  if ([changed state] == 3)
   {
-    v4 = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
-    v6 = [v4 focusedInterfaceAction];
+    pressDelegate = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
+    focusedInterfaceAction = [pressDelegate focusedInterfaceAction];
 
-    if (v6)
+    if (focusedInterfaceAction)
     {
-      v5 = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
-      [v5 handlePressedFocusedInterfaceAction:v6];
+      pressDelegate2 = [(_UIInterfaceActionSelectByPressGestureRecognizer *)self pressDelegate];
+      [pressDelegate2 handlePressedFocusedInterfaceAction:focusedInterfaceAction];
     }
   }
 }

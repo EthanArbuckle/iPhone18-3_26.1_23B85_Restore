@@ -1,57 +1,57 @@
 @interface QLThumbnailGenerator
 + (QLThumbnailGenerator)sharedGenerator;
-+ (id)debugDescriptionForErrorCode:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3 request:(id)a4 additionalUserInfo:(id)a5;
++ (id)debugDescriptionForErrorCode:(int64_t)code;
++ (id)errorWithCode:(int64_t)code request:(id)request additionalUserInfo:(id)info;
 + (void)initialize;
-- (BOOL)__finishRequestIfInvalid:(id)a3;
-- (BOOL)__finishRequestIfNeeded:(id)a3;
-- (BOOL)__requestWithUUIDIsStillRunning:(id)a3;
-- (BOOL)_cancelRequestIfNeeded:(id)a3;
-- (BOOL)_finishRequestIfInvalid:(id)a3;
-- (BOOL)_finishRequestIfNeeded:(id)a3;
-- (BOOL)_queueThumbnailGenerationForRequestIfNeeded:(id)a3;
-- (BOOL)_requestRepresentationTypeIsMoreRepresentative:(id)a3 thanType:(int64_t)a4;
-- (BOOL)canGenerateThumbnailsForContentType:(id)a3 atSize:(CGSize)a4;
+- (BOOL)__finishRequestIfInvalid:(id)invalid;
+- (BOOL)__finishRequestIfNeeded:(id)needed;
+- (BOOL)__requestWithUUIDIsStillRunning:(id)running;
+- (BOOL)_cancelRequestIfNeeded:(id)needed;
+- (BOOL)_finishRequestIfInvalid:(id)invalid;
+- (BOOL)_finishRequestIfNeeded:(id)needed;
+- (BOOL)_queueThumbnailGenerationForRequestIfNeeded:(id)needed;
+- (BOOL)_requestRepresentationTypeIsMoreRepresentative:(id)representative thanType:(int64_t)type;
+- (BOOL)canGenerateThumbnailsForContentType:(id)type atSize:(CGSize)size;
 - (QLThumbnailGenerator)init;
-- (id)__requestWithUUID:(id)a3;
-- (id)_cachedIconForContentType:(id)a3;
-- (id)_requestWithUUID:(id)a3;
-- (id)thumbnailIconForRequest:(id)a3;
-- (void)__callCompletionBlockOfRequest:(id)a3 withError:(id)a4;
-- (void)__finishRequest:(id)a3 withError:(id)a4;
-- (void)__finishRequestWithoutError:(id)a3;
-- (void)__notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)a3 thumbnail:(id)a4 type:(int64_t)a5 error:(id)a6;
-- (void)__removeRequestWithUUID:(id)a3;
-- (void)_addRequest:(id)a3;
-- (void)_callCompletionBlockOfRequest:(id)a3 withError:(id)a4;
-- (void)_callUpdateBlockOfRequestIfRunning:(id)a3 andUpdateMostRepresentativeThumbnail:(id)a4 type:(int64_t)a5 error:(id)a6;
+- (id)__requestWithUUID:(id)d;
+- (id)_cachedIconForContentType:(id)type;
+- (id)_requestWithUUID:(id)d;
+- (id)thumbnailIconForRequest:(id)request;
+- (void)__callCompletionBlockOfRequest:(id)request withError:(id)error;
+- (void)__finishRequest:(id)request withError:(id)error;
+- (void)__finishRequestWithoutError:(id)error;
+- (void)__notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)needed thumbnail:(id)thumbnail type:(int64_t)type error:(id)error;
+- (void)__removeRequestWithUUID:(id)d;
+- (void)_addRequest:(id)request;
+- (void)_callCompletionBlockOfRequest:(id)request withError:(id)error;
+- (void)_callUpdateBlockOfRequestIfRunning:(id)running andUpdateMostRepresentativeThumbnail:(id)thumbnail type:(int64_t)type error:(id)error;
 - (void)_createSyncThumbnailServiceProxy;
 - (void)_createThumbnailServiceProxy;
-- (void)_finishAllRequestsWithError:(id)a3;
-- (void)_finishRequest:(id)a3 withError:(id)a4;
-- (void)_finishRequestWithoutError:(id)a3;
-- (void)_handleThumbnailGenerationCompletionWithUUID:(id)a3 images:(id)a4 metadata:(id)a5 contentRect:(CGRect)a6 iconFlavor:(int)a7 thumbnailType:(int64_t)a8 clientShouldTakeOwnership:(BOOL)a9 error:(id)a10;
-- (void)_logRequestDuration:(id)a3;
-- (void)_notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)a3 thumbnail:(id)a4 type:(int64_t)a5 error:(id)a6;
-- (void)_performInBatch:(id)a3;
-- (void)_prepareSyncThumbnailRequest:(id)a3;
-- (void)_prepareThumbnailRequestForQueueOrSending:(id)a3 synchronous:(BOOL)a4;
-- (void)_queueIconGenerationForRequestIfNeeded:(id)a3;
-- (void)_queueThumbnailRequest:(id)a3;
-- (void)_removeRequest:(id)a3;
+- (void)_finishAllRequestsWithError:(id)error;
+- (void)_finishRequest:(id)request withError:(id)error;
+- (void)_finishRequestWithoutError:(id)error;
+- (void)_handleThumbnailGenerationCompletionWithUUID:(id)d images:(id)images metadata:(id)metadata contentRect:(CGRect)rect iconFlavor:(int)flavor thumbnailType:(int64_t)type clientShouldTakeOwnership:(BOOL)ownership error:(id)self0;
+- (void)_logRequestDuration:(id)duration;
+- (void)_notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)needed thumbnail:(id)thumbnail type:(int64_t)type error:(id)error;
+- (void)_performInBatch:(id)batch;
+- (void)_prepareSyncThumbnailRequest:(id)request;
+- (void)_prepareThumbnailRequestForQueueOrSending:(id)sending synchronous:(BOOL)synchronous;
+- (void)_queueIconGenerationForRequestIfNeeded:(id)needed;
+- (void)_queueThumbnailRequest:(id)request;
+- (void)_removeRequest:(id)request;
 - (void)_sendPendingBatches;
 - (void)_sendPendingCancelledRequests;
 - (void)_sendPendingGenerationRequests;
-- (void)_sendSyncGenerationRequest:(id)a3;
-- (void)_setMostRepresentativeThumbnail:(id)a3 forRequest:(id)a4;
+- (void)_sendSyncGenerationRequest:(id)request;
+- (void)_setMostRepresentativeThumbnail:(id)thumbnail forRequest:(id)request;
 - (void)cancelRequest:(QLThumbnailGenerationRequest *)request;
-- (void)didUpdateStatus:(int64_t)a3 ofThumbnailGenerationWithUUID:(id)a4;
+- (void)didUpdateStatus:(int64_t)status ofThumbnailGenerationWithUUID:(id)d;
 - (void)generateBestRepresentationForRequest:(QLThumbnailGenerationRequest *)request completionHandler:(void *)completionHandler;
 - (void)generateRepresentationsForRequest:(QLThumbnailGenerationRequest *)request updateHandler:(void *)updateHandler;
-- (void)generateThumbnailForRequest:(id)a3 updateHandler:(id)a4 statusHandler:(id)a5 completionHandler:(id)a6;
-- (void)performInBatch:(id)a3;
+- (void)generateThumbnailForRequest:(id)request updateHandler:(id)handler statusHandler:(id)statusHandler completionHandler:(id)completionHandler;
+- (void)performInBatch:(id)batch;
 - (void)saveBestRepresentationForRequest:(QLThumbnailGenerationRequest *)request toFileAtURL:(NSURL *)fileURL withContentType:(NSString *)contentType completionHandler:(void *)completionHandler;
-- (void)synchronousGenerateThumbnailForRequest:(id)a3 updateHandler:(id)a4 statusHandler:(id)a5 completionHandler:(id)a6;
+- (void)synchronousGenerateThumbnailForRequest:(id)request updateHandler:(id)handler statusHandler:(id)statusHandler completionHandler:(id)completionHandler;
 @end
 
 @implementation QLThumbnailGenerator
@@ -62,7 +62,7 @@
   v2[1] = 3221225472;
   v2[2] = __34__QLThumbnailGenerator_initialize__block_invoke;
   v2[3] = &__block_descriptor_40_e30__24__0__NSError_8__NSString_16l;
-  v2[4] = a1;
+  v2[4] = self;
   [MEMORY[0x1E696ABC0] setUserInfoValueProviderForDomain:@"QLThumbnailErrorDomain" provider:v2];
 }
 
@@ -72,7 +72,7 @@
   block[1] = 3221225472;
   block[2] = __39__QLThumbnailGenerator_sharedGenerator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGenerator_onceToken != -1)
   {
     dispatch_once(&sharedGenerator_onceToken, block);
@@ -226,21 +226,21 @@ uint64_t __54__QLThumbnailGenerator__sendPendingGenerationRequests__block_invoke
   v6[2] = __54__QLThumbnailGenerator__sendPendingGenerationRequests__block_invoke;
   v6[3] = &unk_1E8369BD0;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(requestPreparationQueue, v6);
 }
 
-+ (id)debugDescriptionForErrorCode:(int64_t)a3
++ (id)debugDescriptionForErrorCode:(int64_t)code
 {
-  if (a3 > 5)
+  if (code > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E8369EB8[a3];
+    return off_1E8369EB8[code];
   }
 }
 
@@ -317,41 +317,41 @@ LABEL_11:
   [(QLThumbnailGenerator *)self generateThumbnailForRequest:v8 updateHandler:v6 statusHandler:0 completionHandler:0];
 }
 
-- (void)generateThumbnailForRequest:(id)a3 updateHandler:(id)a4 statusHandler:(id)a5 completionHandler:(id)a6
+- (void)generateThumbnailForRequest:(id)request updateHandler:(id)handler statusHandler:(id)statusHandler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!(v11 | v13))
+  requestCopy = request;
+  handlerCopy = handler;
+  statusHandlerCopy = statusHandler;
+  completionHandlerCopy = completionHandler;
+  if (!(handlerCopy | completionHandlerCopy))
   {
     [QLThumbnailGenerator generateThumbnailForRequest:updateHandler:statusHandler:completionHandler:];
   }
 
-  v14 = v13;
-  [v10 setUpdateBlock:v11];
-  [v10 setStatusBlock:v12];
-  [v10 setCompletionBlock:v14];
-  v15 = self;
-  objc_sync_enter(v15);
-  if ([(QLThumbnailGenerator *)v15 _isBuildingBatch])
+  v14 = completionHandlerCopy;
+  [requestCopy setUpdateBlock:handlerCopy];
+  [requestCopy setStatusBlock:statusHandlerCopy];
+  [requestCopy setCompletionBlock:v14];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(QLThumbnailGenerator *)selfCopy _isBuildingBatch])
   {
-    [(QLThumbnailGenerator *)v15 _queueThumbnailRequest:v10];
+    [(QLThumbnailGenerator *)selfCopy _queueThumbnailRequest:requestCopy];
   }
 
   else
   {
-    queue = v15->_queue;
+    queue = selfCopy->_queue;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __98__QLThumbnailGenerator_generateThumbnailForRequest_updateHandler_statusHandler_completionHandler___block_invoke;
     v17[3] = &unk_1E8369BD0;
-    v17[4] = v15;
-    v18 = v10;
+    v17[4] = selfCopy;
+    v18 = requestCopy;
     dispatch_sync(queue, v17);
   }
 
-  objc_sync_exit(v15);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __98__QLThumbnailGenerator_generateThumbnailForRequest_updateHandler_statusHandler_completionHandler___block_invoke(uint64_t a1)
@@ -362,26 +362,26 @@ uint64_t __98__QLThumbnailGenerator_generateThumbnailForRequest_updateHandler_st
   return [v2 _sendPendingGenerationRequests];
 }
 
-- (void)synchronousGenerateThumbnailForRequest:(id)a3 updateHandler:(id)a4 statusHandler:(id)a5 completionHandler:(id)a6
+- (void)synchronousGenerateThumbnailForRequest:(id)request updateHandler:(id)handler statusHandler:(id)statusHandler completionHandler:(id)completionHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!(v11 | v13))
+  requestCopy = request;
+  handlerCopy = handler;
+  statusHandlerCopy = statusHandler;
+  completionHandlerCopy = completionHandler;
+  if (!(handlerCopy | completionHandlerCopy))
   {
     [QLThumbnailGenerator synchronousGenerateThumbnailForRequest:updateHandler:statusHandler:completionHandler:];
   }
 
-  v14 = v13;
+  v14 = completionHandlerCopy;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__0;
   v31 = __Block_byref_object_dispose__0;
   v32 = dispatch_semaphore_create(0);
-  [v10 setUpdateBlock:v11];
-  [v10 setStatusBlock:v12];
+  [requestCopy setUpdateBlock:handlerCopy];
+  [requestCopy setStatusBlock:statusHandlerCopy];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __109__QLThumbnailGenerator_synchronousGenerateThumbnailForRequest_updateHandler_statusHandler_completionHandler___block_invoke;
@@ -389,17 +389,17 @@ uint64_t __98__QLThumbnailGenerator_generateThumbnailForRequest_updateHandler_st
   v15 = v14;
   v25 = v15;
   v26 = &v27;
-  [v10 setCompletionBlock:v24];
+  [requestCopy setCompletionBlock:v24];
   queue = self->_queue;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __109__QLThumbnailGenerator_synchronousGenerateThumbnailForRequest_updateHandler_statusHandler_completionHandler___block_invoke_2;
   v21 = &unk_1E8369BD0;
-  v22 = self;
-  v17 = v10;
+  selfCopy = self;
+  v17 = requestCopy;
   v23 = v17;
   dispatch_sync(queue, &v18);
-  [(QLThumbnailGenerator *)self _sendSyncGenerationRequest:v17, v18, v19, v20, v21, v22];
+  [(QLThumbnailGenerator *)self _sendSyncGenerationRequest:v17, v18, v19, v20, v21, selfCopy];
   dispatch_semaphore_wait(v28[5], 0xFFFFFFFFFFFFFFFFLL);
 
   _Block_object_dispose(&v27, 8);
@@ -431,14 +431,14 @@ intptr_t __109__QLThumbnailGenerator_synchronousGenerateThumbnailForRequest_upda
 - (void)cancelRequest:(QLThumbnailGenerationRequest *)request
 {
   v4 = request;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(QLThumbnailGenerator *)v5 _isBuildingBatch];
-  queue = v5->_queue;
-  if (v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _isBuildingBatch = [(QLThumbnailGenerator *)selfCopy _isBuildingBatch];
+  queue = selfCopy->_queue;
+  if (_isBuildingBatch)
   {
-    dispatch_assert_queue_V2(v5->_queue);
-    [(QLThumbnailGenerator *)v5 _cancelRequestIfNeeded:v4];
+    dispatch_assert_queue_V2(selfCopy->_queue);
+    [(QLThumbnailGenerator *)selfCopy _cancelRequestIfNeeded:v4];
   }
 
   else
@@ -447,12 +447,12 @@ intptr_t __109__QLThumbnailGenerator_synchronousGenerateThumbnailForRequest_upda
     v8[1] = 3221225472;
     v8[2] = __38__QLThumbnailGenerator_cancelRequest___block_invoke;
     v8[3] = &unk_1E8369BD0;
-    v8[4] = v5;
+    v8[4] = selfCopy;
     v9 = v4;
     dispatch_sync(queue, v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __38__QLThumbnailGenerator_cancelRequest___block_invoke(uint64_t a1)
@@ -468,23 +468,23 @@ uint64_t __38__QLThumbnailGenerator_cancelRequest___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_cancelRequestIfNeeded:(id)a3
+- (BOOL)_cancelRequestIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
   preparingGenerationRequests = self->_preparingGenerationRequests;
-  v6 = [v4 uuid];
-  v7 = [(NSMutableDictionary *)preparingGenerationRequests objectForKeyedSubscript:v6];
+  uuid = [neededCopy uuid];
+  v7 = [(NSMutableDictionary *)preparingGenerationRequests objectForKeyedSubscript:uuid];
 
   if (v7)
   {
-    [v4 cancel];
+    [neededCopy cancel];
   }
 
   else
   {
-    v8 = [v4 uuid];
-    v9 = [(QLThumbnailGenerator *)self __requestWithUUIDIsStillRunning:v8];
+    uuid2 = [neededCopy uuid];
+    v9 = [(QLThumbnailGenerator *)self __requestWithUUIDIsStillRunning:uuid2];
 
     if (!v9)
     {
@@ -492,10 +492,10 @@ uint64_t __38__QLThumbnailGenerator_cancelRequest___block_invoke(uint64_t a1)
       goto LABEL_6;
     }
 
-    [v4 cancel];
+    [neededCopy cancel];
     pendingCancelledRequests = self->_pendingCancelledRequests;
-    v11 = [v4 uuid];
-    [(NSMutableDictionary *)pendingCancelledRequests setObject:v4 forKey:v11];
+    uuid3 = [neededCopy uuid];
+    [(NSMutableDictionary *)pendingCancelledRequests setObject:neededCopy forKey:uuid3];
   }
 
   v12 = 1;
@@ -504,38 +504,38 @@ LABEL_6:
   return v12;
 }
 
-- (void)performInBatch:(id)a3
+- (void)performInBatch:(id)batch
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(QLThumbnailGenerator *)v5 _isBuildingBatch])
+  batchCopy = batch;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(QLThumbnailGenerator *)selfCopy _isBuildingBatch])
   {
-    [(QLThumbnailGenerator *)v5 _performInBatch:v4];
+    [(QLThumbnailGenerator *)selfCopy _performInBatch:batchCopy];
   }
 
   else
   {
-    queue = v5->_queue;
+    queue = selfCopy->_queue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __39__QLThumbnailGenerator_performInBatch___block_invoke;
     v7[3] = &unk_1E8369D60;
-    v7[4] = v5;
-    v8 = v4;
+    v7[4] = selfCopy;
+    v8 = batchCopy;
     dispatch_sync(queue, v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_performInBatch:(id)a3
+- (void)_performInBatch:(id)batch
 {
   queue = self->_queue;
-  v5 = a3;
+  batchCopy = batch;
   dispatch_assert_queue_V2(queue);
   ++self->_batchingCount;
-  v5[2](v5);
+  batchCopy[2](batchCopy);
 
   v6 = self->_batchingCount - 1;
   self->_batchingCount = v6;
@@ -546,17 +546,17 @@ LABEL_6:
   }
 }
 
-- (void)_addRequest:(id)a3
+- (void)_addRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__QLThumbnailGenerator__addRequest___block_invoke;
   v7[3] = &unk_1E8369BD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -568,17 +568,17 @@ void __36__QLThumbnailGenerator__addRequest___block_invoke(uint64_t a1)
   [v4 setObject:v2 forKey:v3];
 }
 
-- (void)_removeRequest:(id)a3
+- (void)_removeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__QLThumbnailGenerator__removeRequest___block_invoke;
   v7[3] = &unk_1E8369BD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -589,18 +589,18 @@ void __39__QLThumbnailGenerator__removeRequest___block_invoke(uint64_t a1)
   [v3 removeObjectForKey:v2];
 }
 
-- (void)__removeRequestWithUUID:(id)a3
+- (void)__removeRequestWithUUID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(QLThumbnailGenerator *)self requests];
-  [v6 removeObjectForKey:v5];
+  requests = [(QLThumbnailGenerator *)self requests];
+  [requests removeObjectForKey:dCopy];
 }
 
-- (id)_requestWithUUID:(id)a3
+- (id)_requestWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -612,10 +612,10 @@ void __39__QLThumbnailGenerator__removeRequest___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__QLThumbnailGenerator__requestWithUUID___block_invoke;
   block[3] = &unk_1E8369D88;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -634,23 +634,23 @@ uint64_t __41__QLThumbnailGenerator__requestWithUUID___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)__requestWithUUID:(id)a3
+- (id)__requestWithUUID:(id)d
 {
   queue = self->_queue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v6 = [(QLThumbnailGenerator *)self requests];
-  v7 = [v6 objectForKey:v5];
+  requests = [(QLThumbnailGenerator *)self requests];
+  v7 = [requests objectForKey:dCopy];
 
   return v7;
 }
 
-- (BOOL)__requestWithUUIDIsStillRunning:(id)a3
+- (BOOL)__requestWithUUIDIsStillRunning:(id)running
 {
   queue = self->_queue;
-  v5 = a3;
+  runningCopy = running;
   dispatch_assert_queue_V2(queue);
-  v6 = [(QLThumbnailGenerator *)self __requestWithUUID:v5];
+  v6 = [(QLThumbnailGenerator *)self __requestWithUUID:runningCopy];
 
   if (v6 && ([v6 isCancelled] & 1) == 0)
   {
@@ -673,10 +673,10 @@ uint64_t __41__QLThumbnailGenerator__requestWithUUID___block_invoke(uint64_t a1)
   [(QLThumbnailGenerator *)self _sendPendingCancelledRequests];
 }
 
-- (void)_sendSyncGenerationRequest:(id)a3
+- (void)_sendSyncGenerationRequest:(id)request
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -691,17 +691,17 @@ uint64_t __41__QLThumbnailGenerator__requestWithUUID___block_invoke(uint64_t a1)
   v9[4] = self;
   v9[5] = &v10;
   dispatch_sync(queue, v9);
-  if ([v4 prepareForSending])
+  if ([requestCopy prepareForSending])
   {
     v6 = v11[5];
-    v16[0] = v4;
+    v16[0] = requestCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     [v6 generateSuccessiveThumbnailRepresentationsForRequests:v7 generationHandler:self completionHandler:&__block_literal_global_2];
   }
 
   else
   {
-    [(QLThumbnailGenerator *)self _finishRequestIfInvalid:v4];
+    [(QLThumbnailGenerator *)self _finishRequestIfInvalid:requestCopy];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -713,20 +713,20 @@ uint64_t __41__QLThumbnailGenerator__requestWithUUID___block_invoke(uint64_t a1)
 {
   dispatch_assert_queue_V2(self->_queue);
   thumbnailServiceProxy = self->_thumbnailServiceProxy;
-  v4 = [(NSMutableDictionary *)self->_pendingCancelledRequests allValues];
-  [(QLThumbnailServiceProxy *)thumbnailServiceProxy cancelThumbnailRequests:v4];
+  allValues = [(NSMutableDictionary *)self->_pendingCancelledRequests allValues];
+  [(QLThumbnailServiceProxy *)thumbnailServiceProxy cancelThumbnailRequests:allValues];
 
   pendingCancelledRequests = self->_pendingCancelledRequests;
 
   [(NSMutableDictionary *)pendingCancelledRequests removeAllObjects];
 }
 
-- (void)_prepareThumbnailRequestForQueueOrSending:(id)a3 synchronous:(BOOL)a4
+- (void)_prepareThumbnailRequestForQueueOrSending:(id)sending synchronous:(BOOL)synchronous
 {
-  v4 = a4;
-  v6 = a3;
+  synchronousCopy = synchronous;
+  sendingCopy = sending;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (synchronousCopy)
   {
     [(QLThumbnailGenerator *)self _createSyncThumbnailServiceProxy];
   }
@@ -736,44 +736,44 @@ uint64_t __41__QLThumbnailGenerator__requestWithUUID___block_invoke(uint64_t a1)
     [(QLThumbnailGenerator *)self _createThumbnailServiceProxy];
   }
 
-  [v6 markDidBegin];
-  if (![(QLThumbnailGenerator *)self __finishRequestIfInvalid:v6])
+  [sendingCopy markDidBegin];
+  if (![(QLThumbnailGenerator *)self __finishRequestIfInvalid:sendingCopy])
   {
-    [(QLThumbnailGenerator *)self _queueIconGenerationForRequestIfNeeded:v6];
+    [(QLThumbnailGenerator *)self _queueIconGenerationForRequestIfNeeded:sendingCopy];
   }
 }
 
-- (void)_queueThumbnailRequest:(id)a3
+- (void)_queueThumbnailRequest:(id)request
 {
-  v4 = a3;
-  [(QLThumbnailGenerator *)self _prepareThumbnailRequestForQueueOrSending:v4 synchronous:0];
-  [(QLThumbnailGenerator *)self _queueThumbnailGenerationForRequestIfNeeded:v4];
+  requestCopy = request;
+  [(QLThumbnailGenerator *)self _prepareThumbnailRequestForQueueOrSending:requestCopy synchronous:0];
+  [(QLThumbnailGenerator *)self _queueThumbnailGenerationForRequestIfNeeded:requestCopy];
 }
 
-- (void)_prepareSyncThumbnailRequest:(id)a3
+- (void)_prepareSyncThumbnailRequest:(id)request
 {
-  v6 = a3;
-  [(QLThumbnailGenerator *)self _prepareThumbnailRequestForQueueOrSending:v6 synchronous:1];
-  if (![(QLThumbnailGenerator *)self __finishRequestIfNeeded:v6])
+  requestCopy = request;
+  [(QLThumbnailGenerator *)self _prepareThumbnailRequestForQueueOrSending:requestCopy synchronous:1];
+  if (![(QLThumbnailGenerator *)self __finishRequestIfNeeded:requestCopy])
   {
-    if ([v6 representationTypes] > 1)
+    if ([requestCopy representationTypes] > 1)
     {
       requests = self->_requests;
-      v5 = [v6 uuid];
-      [(NSMutableDictionary *)requests setObject:v6 forKeyedSubscript:v5];
+      uuid = [requestCopy uuid];
+      [(NSMutableDictionary *)requests setObject:requestCopy forKeyedSubscript:uuid];
     }
 
     else
     {
-      [(QLThumbnailGenerator *)self __finishRequestWithoutError:v6];
+      [(QLThumbnailGenerator *)self __finishRequestWithoutError:requestCopy];
     }
   }
 }
 
-- (void)_queueIconGenerationForRequestIfNeeded:(id)a3
+- (void)_queueIconGenerationForRequestIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (!-[QLThumbnailGenerator __finishRequestIfNeeded:](self, "__finishRequestIfNeeded:", v4) && [v4 provideGenericIcon])
+  neededCopy = needed;
+  if (!-[QLThumbnailGenerator __finishRequestIfNeeded:](self, "__finishRequestIfNeeded:", neededCopy) && [neededCopy provideGenericIcon])
   {
     serialResponseQueue = self->_serialResponseQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -781,7 +781,7 @@ uint64_t __41__QLThumbnailGenerator__requestWithUUID___block_invoke(uint64_t a1)
     v6[2] = __63__QLThumbnailGenerator__queueIconGenerationForRequestIfNeeded___block_invoke;
     v6[3] = &unk_1E8369BD0;
     v6[4] = self;
-    v7 = v4;
+    v7 = neededCopy;
     dispatch_async(serialResponseQueue, v6);
   }
 }
@@ -792,22 +792,22 @@ void __63__QLThumbnailGenerator__queueIconGenerationForRequestIfNeeded___block_i
   [*(a1 + 32) __notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:*(a1 + 40) thumbnail:v2 type:0 error:0];
 }
 
-- (BOOL)_queueThumbnailGenerationForRequestIfNeeded:(id)a3
+- (BOOL)_queueThumbnailGenerationForRequestIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (![(QLThumbnailGenerator *)self __finishRequestIfNeeded:v4])
+  neededCopy = needed;
+  if (![(QLThumbnailGenerator *)self __finishRequestIfNeeded:neededCopy])
   {
-    if ([v4 representationTypes] > 1)
+    if ([neededCopy representationTypes] > 1)
     {
       pendingGenerationRequests = self->_pendingGenerationRequests;
-      v7 = [v4 uuid];
-      [(NSMutableDictionary *)pendingGenerationRequests setObject:v4 forKeyedSubscript:v7];
+      uuid = [neededCopy uuid];
+      [(NSMutableDictionary *)pendingGenerationRequests setObject:neededCopy forKeyedSubscript:uuid];
 
       v5 = 1;
       goto LABEL_6;
     }
 
-    [(QLThumbnailGenerator *)self __finishRequestWithoutError:v4];
+    [(QLThumbnailGenerator *)self __finishRequestWithoutError:neededCopy];
   }
 
   v5 = 0;
@@ -816,41 +816,41 @@ LABEL_6:
   return v5;
 }
 
-- (void)_handleThumbnailGenerationCompletionWithUUID:(id)a3 images:(id)a4 metadata:(id)a5 contentRect:(CGRect)a6 iconFlavor:(int)a7 thumbnailType:(int64_t)a8 clientShouldTakeOwnership:(BOOL)a9 error:(id)a10
+- (void)_handleThumbnailGenerationCompletionWithUUID:(id)d images:(id)images metadata:(id)metadata contentRect:(CGRect)rect iconFlavor:(int)flavor thumbnailType:(int64_t)type clientShouldTakeOwnership:(BOOL)ownership error:(id)self0
 {
-  v69 = a9;
+  ownershipCopy = ownership;
   v86 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a10;
+  dCopy = d;
+  imagesCopy = images;
+  metadataCopy = metadata;
+  errorCopy = error;
   v19 = _log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     [QLThumbnailGenerator _handleThumbnailGenerationCompletionWithUUID:images:metadata:contentRect:iconFlavor:thumbnailType:clientShouldTakeOwnership:error:];
   }
 
-  v20 = [(QLThumbnailGenerator *)self _requestWithUUID:v15];
-  if (!v16 || v18)
+  v20 = [(QLThumbnailGenerator *)self _requestWithUUID:dCopy];
+  if (!imagesCopy || errorCopy)
   {
-    [(QLThumbnailGenerator *)self _notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:v20 thumbnail:0 type:a8 error:v18];
+    [(QLThumbnailGenerator *)self _notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:v20 thumbnail:0 type:type error:errorCopy];
     goto LABEL_42;
   }
 
   if (![(QLThumbnailGenerator *)self _finishRequestIfNeeded:v20])
   {
-    v59 = a7;
-    v60 = self;
-    v61 = a8;
-    v62 = v17;
-    v64 = v15;
-    v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v16, "count")}];
+    flavorCopy = flavor;
+    selfCopy = self;
+    typeCopy = type;
+    v62 = metadataCopy;
+    v64 = dCopy;
+    v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(imagesCopy, "count")}];
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v63 = v16;
-    obj = v16;
+    v63 = imagesCopy;
+    obj = imagesCopy;
     v22 = [obj countByEnumeratingWithState:&v71 objects:v85 count:16];
     if (!v22)
     {
@@ -873,13 +873,13 @@ LABEL_6:
         }
 
         v26 = *(*(&v71 + 1) + 8 * v25);
-        v27 = [v26 data];
-        v28 = v27;
-        if (v69)
+        data = [v26 data];
+        v28 = data;
+        if (ownershipCopy)
         {
           v29 = v21;
           v30 = v20;
-          v31 = [v27 length];
+          v31 = [data length];
           v32 = v31 + *MEMORY[0x1E69E9AC8] - 1;
           v33 = -*MEMORY[0x1E69E9AC8];
           v34 = mmap(0, v32 & v33, 3, 4097, 1627389952, 0);
@@ -950,13 +950,13 @@ LABEL_18:
         {
           v48 = v47;
           v49 = [v28 length];
-          v50 = [v26 format];
+          format = [v26 format];
           *buf = 138413314;
           *v78 = v20;
           *&v78[8] = 2048;
           *&v78[10] = v49;
           v79 = 2112;
-          v80 = v50;
+          v80 = format;
           v81 = 2112;
           v82 = 0;
           v83 = 2112;
@@ -977,9 +977,9 @@ LABEL_27:
 
         if (v21)
         {
-          v17 = v62;
-          v16 = v63;
-          v51 = v61;
+          metadataCopy = v62;
+          imagesCopy = v63;
+          v51 = typeCopy;
           if (v62)
           {
             v70 = 0;
@@ -1011,17 +1011,17 @@ LABEL_27:
 
           v57 = [QLThumbnailRepresentation alloc];
           [v20 scale];
-          v56 = [QLThumbnailRepresentation initWithThumbnailType:v57 iconFlavor:"initWithThumbnailType:iconFlavor:images:scale:contentRect:generatedProperties:" images:v61 scale:v59 contentRect:v21 generatedProperties:v52];
-          v18 = 0;
+          v56 = [QLThumbnailRepresentation initWithThumbnailType:v57 iconFlavor:"initWithThumbnailType:iconFlavor:images:scale:contentRect:generatedProperties:" images:typeCopy scale:flavorCopy contentRect:v21 generatedProperties:v52];
+          errorCopy = 0;
         }
 
         else
         {
           v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not decode image for thumbnail request %@ from received thumbnail data", v20];
           v55 = _log();
-          v17 = v62;
-          v16 = v63;
-          v51 = v61;
+          metadataCopy = v62;
+          imagesCopy = v63;
+          v51 = typeCopy;
           if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
           {
             [QLThumbnailGenerator _handleThumbnailGenerationCompletionWithUUID:images:metadata:contentRect:iconFlavor:thumbnailType:clientShouldTakeOwnership:error:];
@@ -1030,12 +1030,12 @@ LABEL_27:
           v75 = *MEMORY[0x1E696A278];
           v76 = v53;
           v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-          v18 = [QLThumbnailGenerator errorWithCode:0 request:v20 additionalUserInfo:v52];
+          errorCopy = [QLThumbnailGenerator errorWithCode:0 request:v20 additionalUserInfo:v52];
           v56 = 0;
         }
 
-        [(QLThumbnailGenerator *)v60 _notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:v20 thumbnail:v56 type:v51 error:v18];
-        v15 = v64;
+        [(QLThumbnailGenerator *)selfCopy _notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:v20 thumbnail:v56 type:v51 error:errorCopy];
+        dCopy = v64;
 LABEL_42:
 
         break;
@@ -1046,67 +1046,67 @@ LABEL_42:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)a3 thumbnail:(id)a4 type:(int64_t)a5 error:(id)a6
+- (void)_notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)needed thumbnail:(id)thumbnail type:(int64_t)type error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  neededCopy = needed;
+  thumbnailCopy = thumbnail;
+  errorCopy = error;
   serialResponseQueue = self->_serialResponseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __107__QLThumbnailGenerator__notifyClientWithNewThumbnailRepresentationForRequestIfNeeded_thumbnail_type_error___block_invoke;
   block[3] = &unk_1E8369E28;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = neededCopy;
+  v20 = errorCopy;
+  typeCopy = type;
+  v19 = thumbnailCopy;
+  v14 = errorCopy;
+  v15 = thumbnailCopy;
+  v16 = neededCopy;
   dispatch_async(serialResponseQueue, block);
 }
 
-- (void)__notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)a3 thumbnail:(id)a4 type:(int64_t)a5 error:(id)a6
+- (void)__notifyClientWithNewThumbnailRepresentationForRequestIfNeeded:(id)needed thumbnail:(id)thumbnail type:(int64_t)type error:(id)error
 {
-  v14 = a3;
-  v10 = a6;
+  neededCopy = needed;
+  errorCopy = error;
   serialResponseQueue = self->_serialResponseQueue;
-  v12 = a4;
+  thumbnailCopy = thumbnail;
   dispatch_assert_queue_V2(serialResponseQueue);
-  v13 = [v14 updateBlock];
+  updateBlock = [neededCopy updateBlock];
 
-  if (v13)
+  if (updateBlock)
   {
-    [(QLThumbnailGenerator *)self _callUpdateBlockOfRequestIfRunning:v14 andUpdateMostRepresentativeThumbnail:v12 type:a5 error:v10];
+    [(QLThumbnailGenerator *)self _callUpdateBlockOfRequestIfRunning:neededCopy andUpdateMostRepresentativeThumbnail:thumbnailCopy type:type error:errorCopy];
   }
 
   else
   {
-    [(QLThumbnailGenerator *)self _setMostRepresentativeThumbnail:v12 forRequest:v14];
+    [(QLThumbnailGenerator *)self _setMostRepresentativeThumbnail:thumbnailCopy forRequest:neededCopy];
   }
 
-  if ([v14 thumbnailRepresentationTypeMatchesRequestedMostRepresentativeType:a5])
+  if ([neededCopy thumbnailRepresentationTypeMatchesRequestedMostRepresentativeType:type])
   {
-    [(QLThumbnailGenerator *)self _finishAndCallCompletionBlockOfRequest:v14 withError:v10];
+    [(QLThumbnailGenerator *)self _finishAndCallCompletionBlockOfRequest:neededCopy withError:errorCopy];
   }
 }
 
-- (id)thumbnailIconForRequest:(id)a3
+- (id)thumbnailIconForRequest:(id)request
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 scale];
+  requestCopy = request;
+  [requestCopy scale];
   v6 = v5;
-  v7 = [v4 contentType];
+  contentType = [requestCopy contentType];
   v8 = objc_alloc(MEMORY[0x1E69A8A30]);
-  [v4 size];
+  [requestCopy size];
   v9 = [v8 initWithSize:? scale:?];
-  if (v7)
+  if (contentType)
   {
-    v10 = [v7 conformsToType:*MEMORY[0x1E6982CB0]];
+    v10 = [contentType conformsToType:*MEMORY[0x1E6982CB0]];
     v11 = *MEMORY[0x1E6982DC8];
-    if ((v10 & 1) == 0 && ([v7 conformsToType:*MEMORY[0x1E6982DC8]] & 1) == 0)
+    if ((v10 & 1) == 0 && ([contentType conformsToType:*MEMORY[0x1E6982DC8]] & 1) == 0)
     {
       goto LABEL_11;
     }
@@ -1117,37 +1117,37 @@ LABEL_42:
     v11 = *MEMORY[0x1E6982DC8];
   }
 
-  v12 = [v7 conformsToType:v11];
-  v13 = [v4 fileURL];
+  v12 = [contentType conformsToType:v11];
+  fileURL = [requestCopy fileURL];
 
   if (v12)
   {
-    if (!v13)
+    if (!fileURL)
     {
 LABEL_11:
-      v17 = [(QLThumbnailGenerator *)self _cachedIconForContentType:v7];
+      v17 = [(QLThumbnailGenerator *)self _cachedIconForContentType:contentType];
       goto LABEL_12;
     }
 
     v14 = MEMORY[0x1E6999E38];
-    v15 = [v4 fileURL];
-    v16 = [v14 fiNodeFromURL:v15];
+    fileURL2 = [requestCopy fileURL];
+    v16 = [v14 fiNodeFromURL:fileURL2];
 
     v17 = [v16 propertyAsNSObject:1769171299];
     QLApplyCurrentIconAppearance(v9);
 
 LABEL_12:
-    if (![v4 iconVariant])
+    if (![requestCopy iconVariant])
     {
       [v9 setVariantOptions:1];
     }
 
-    v20 = [v4 tintColor];
+    tintColor = [requestCopy tintColor];
 
-    if (v20)
+    if (tintColor)
     {
-      v21 = [v4 tintColor];
-      [v9 setTintColor:v21];
+      tintColor2 = [requestCopy tintColor];
+      [v9 setTintColor:tintColor2];
 
       [v9 setAppearance:2];
     }
@@ -1162,12 +1162,12 @@ LABEL_12:
 
     if (v22)
     {
-      v24 = [v22 CGImage];
+      cGImage = [v22 CGImage];
       v25 = [QLThumbnailRepresentation alloc];
-      v31[0] = v24;
+      v31[0] = cGImage;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-      v27 = CGImageGetWidth(v24) / v6;
-      v28 = [(QLThumbnailRepresentation *)v25 initWithThumbnailType:0 iconFlavor:0 images:v26 scale:0 contentRect:v6 generatedProperties:0.0, 0.0, v27, CGImageGetHeight(v24) / v6];
+      v27 = CGImageGetWidth(cGImage) / v6;
+      v28 = [(QLThumbnailRepresentation *)v25 initWithThumbnailType:0 iconFlavor:0 images:v26 scale:0 contentRect:v6 generatedProperties:0.0, 0.0, v27, CGImageGetHeight(cGImage) / v6];
     }
 
     else
@@ -1178,11 +1178,11 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (v13)
+  if (fileURL)
   {
     v18 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v19 = [v4 fileURL];
-    v17 = [v18 initWithURL:v19];
+    fileURL3 = [requestCopy fileURL];
+    v17 = [v18 initWithURL:fileURL3];
 
     goto LABEL_12;
   }
@@ -1201,20 +1201,20 @@ LABEL_22:
   return v28;
 }
 
-- (id)_cachedIconForContentType:(id)a3
+- (id)_cachedIconForContentType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_iconsLock);
-  v5 = [(NSMutableDictionary *)self->_iconsByType objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_iconsByType objectForKey:typeCopy];
   if (!v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v7 = [v4 identifier];
-    v5 = [v6 initWithType:v7];
+    identifier = [typeCopy identifier];
+    v5 = [v6 initWithType:identifier];
 
     if (v5)
     {
-      [(NSMutableDictionary *)self->_iconsByType setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_iconsByType setObject:v5 forKey:typeCopy];
     }
   }
 
@@ -1223,11 +1223,11 @@ LABEL_22:
   return v5;
 }
 
-- (void)_callUpdateBlockOfRequestIfRunning:(id)a3 andUpdateMostRepresentativeThumbnail:(id)a4 type:(int64_t)a5 error:(id)a6
+- (void)_callUpdateBlockOfRequestIfRunning:(id)running andUpdateMostRepresentativeThumbnail:(id)thumbnail type:(int64_t)type error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  runningCopy = running;
+  thumbnailCopy = thumbnail;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_serialResponseQueue);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1235,13 +1235,13 @@ LABEL_22:
   block[2] = __107__QLThumbnailGenerator__callUpdateBlockOfRequestIfRunning_andUpdateMostRepresentativeThumbnail_type_error___block_invoke;
   block[3] = &unk_1E8369E28;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a5;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = runningCopy;
+  v20 = errorCopy;
+  typeCopy = type;
+  v19 = thumbnailCopy;
+  v14 = errorCopy;
+  v15 = thumbnailCopy;
+  v16 = runningCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1307,53 +1307,53 @@ void __107__QLThumbnailGenerator__callUpdateBlockOfRequestIfRunning_andUpdateMos
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setMostRepresentativeThumbnail:(id)a3 forRequest:(id)a4
+- (void)_setMostRepresentativeThumbnail:(id)thumbnail forRequest:(id)request
 {
-  v7 = a3;
-  v6 = a4;
+  thumbnailCopy = thumbnail;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_serialResponseQueue);
-  if (v7)
+  if (thumbnailCopy)
   {
-    [v6 setMostRepresentativeThumbnail:v7];
+    [requestCopy setMostRepresentativeThumbnail:thumbnailCopy];
   }
 }
 
-- (void)_finishRequest:(id)a3 withError:(id)a4
+- (void)_finishRequest:(id)request withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__QLThumbnailGenerator__finishRequest_withError___block_invoke;
   block[3] = &unk_1E8369E00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)__finishRequest:(id)a3 withError:(id)a4
+- (void)__finishRequest:(id)request withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isFinished] & 1) == 0)
+  requestCopy = request;
+  errorCopy = error;
+  if (([requestCopy isFinished] & 1) == 0)
   {
-    [v6 finish];
+    [requestCopy finish];
     serialResponseQueue = self->_serialResponseQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__QLThumbnailGenerator___finishRequest_withError___block_invoke;
     block[3] = &unk_1E8369E00;
-    v12 = v7;
-    v13 = self;
-    v9 = v6;
+    v12 = errorCopy;
+    selfCopy = self;
+    v9 = requestCopy;
     v14 = v9;
     dispatch_async(serialResponseQueue, block);
-    v10 = [v9 uuid];
-    [(QLThumbnailGenerator *)self __removeRequestWithUUID:v10];
+    uuid = [v9 uuid];
+    [(QLThumbnailGenerator *)self __removeRequestWithUUID:uuid];
   }
 }
 
@@ -1377,36 +1377,36 @@ uint64_t __50__QLThumbnailGenerator___finishRequest_withError___block_invoke(uin
   return [v3 _logRequestDuration:v4];
 }
 
-- (void)_callCompletionBlockOfRequest:(id)a3 withError:(id)a4
+- (void)_callCompletionBlockOfRequest:(id)request withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   serialResponseQueue = self->_serialResponseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__QLThumbnailGenerator__callCompletionBlockOfRequest_withError___block_invoke;
   block[3] = &unk_1E8369E00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
   dispatch_async(serialResponseQueue, block);
 }
 
-- (void)__callCompletionBlockOfRequest:(id)a3 withError:(id)a4
+- (void)__callCompletionBlockOfRequest:(id)request withError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 completionBlock];
+  requestCopy = request;
+  errorCopy = error;
+  completionBlock = [requestCopy completionBlock];
 
-  if (v7)
+  if (completionBlock)
   {
-    v8 = v6;
-    v9 = [v5 mostRepresentativeThumbnail];
+    v8 = errorCopy;
+    mostRepresentativeThumbnail = [requestCopy mostRepresentativeThumbnail];
 
-    if (v9)
+    if (mostRepresentativeThumbnail)
     {
 
       v8 = 0;
@@ -1433,7 +1433,7 @@ uint64_t __50__QLThumbnailGenerator___finishRequest_withError___block_invoke(uin
       }
 
       *buf = 138412546;
-      v17 = v5;
+      v17 = requestCopy;
       v18 = 2112;
       v19 = v12;
       _os_log_impl(&dword_1CA1E7000, v11, OS_LOG_TYPE_INFO, "Calling request completionBlock for %@ %@", buf, 0x16u);
@@ -1442,43 +1442,43 @@ uint64_t __50__QLThumbnailGenerator___finishRequest_withError___block_invoke(uin
       }
     }
 
-    v13 = [v5 completionBlock];
-    v14 = [v5 mostRepresentativeThumbnail];
-    (v13)[2](v13, v14, v8);
+    completionBlock2 = [requestCopy completionBlock];
+    mostRepresentativeThumbnail2 = [requestCopy mostRepresentativeThumbnail];
+    (completionBlock2)[2](completionBlock2, mostRepresentativeThumbnail2, v8);
 
-    [v5 setUpdateBlock:0];
-    [v5 setStatusBlock:0];
-    [v5 setCompletionBlock:0];
+    [requestCopy setUpdateBlock:0];
+    [requestCopy setStatusBlock:0];
+    [requestCopy setCompletionBlock:0];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishRequestWithoutError:(id)a3
+- (void)_finishRequestWithoutError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__QLThumbnailGenerator__finishRequestWithoutError___block_invoke;
   v7[3] = &unk_1E8369BD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)__finishRequestWithoutError:(id)a3
+- (void)__finishRequestWithoutError:(id)error
 {
   queue = self->_queue;
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(queue);
-  [(QLThumbnailGenerator *)self __finishRequest:v5 withError:0];
+  [(QLThumbnailGenerator *)self __finishRequest:errorCopy withError:0];
 }
 
-- (BOOL)_finishRequestIfInvalid:(id)a3
+- (BOOL)_finishRequestIfInvalid:(id)invalid
 {
-  v4 = a3;
+  invalidCopy = invalid;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1488,10 +1488,10 @@ uint64_t __50__QLThumbnailGenerator___finishRequest_withError___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __48__QLThumbnailGenerator__finishRequestIfInvalid___block_invoke;
   block[3] = &unk_1E8369D88;
-  v9 = v4;
+  v9 = invalidCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = invalidCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -1506,66 +1506,66 @@ uint64_t __48__QLThumbnailGenerator__finishRequestIfInvalid___block_invoke(uint6
   return result;
 }
 
-- (BOOL)__finishRequestIfInvalid:(id)a3
+- (BOOL)__finishRequestIfInvalid:(id)invalid
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidCopy = invalid;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 requestIsInvalidError];
+  requestIsInvalidError = [invalidCopy requestIsInvalidError];
 
-  if (v5)
+  if (requestIsInvalidError)
   {
     v6 = _log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = invalidCopy;
       _os_log_impl(&dword_1CA1E7000, v6, OS_LOG_TYPE_INFO, "Finishing request %@ because it is invalid.", &v10, 0xCu);
     }
 
-    v7 = [v4 requestIsInvalidError];
-    [(QLThumbnailGenerator *)self __finishRequest:v4 withError:v7];
+    requestIsInvalidError2 = [invalidCopy requestIsInvalidError];
+    [(QLThumbnailGenerator *)self __finishRequest:invalidCopy withError:requestIsInvalidError2];
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5 != 0;
+  return requestIsInvalidError != 0;
 }
 
-- (BOOL)_finishRequestIfNeeded:(id)a3
+- (BOOL)_finishRequestIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   queue = self->_queue;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __47__QLThumbnailGenerator__finishRequestIfNeeded___block_invoke;
   v11 = &unk_1E8369BD0;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = neededCopy;
+  v6 = neededCopy;
   dispatch_sync(queue, &v8);
   LOBYTE(queue) = [v6 isFinished];
 
   return queue;
 }
 
-- (BOOL)__finishRequestIfNeeded:(id)a3
+- (BOOL)__finishRequestIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
-  if (!-[QLThumbnailGenerator __finishRequestIfInvalid:](self, "__finishRequestIfInvalid:", v4) && [v4 isCancelled])
+  if (!-[QLThumbnailGenerator __finishRequestIfInvalid:](self, "__finishRequestIfInvalid:", neededCopy) && [neededCopy isCancelled])
   {
-    v5 = [QLThumbnailGenerator errorWithCode:5 request:v4 additionalUserInfo:0];
-    [(QLThumbnailGenerator *)self __finishRequest:v4 withError:v5];
+    v5 = [QLThumbnailGenerator errorWithCode:5 request:neededCopy additionalUserInfo:0];
+    [(QLThumbnailGenerator *)self __finishRequest:neededCopy withError:v5];
   }
 
-  v6 = [v4 isFinished];
+  isFinished = [neededCopy isFinished];
 
-  return v6;
+  return isFinished;
 }
 
-- (void)_finishAllRequestsWithError:(id)a3
+- (void)_finishAllRequestsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -1577,10 +1577,10 @@ uint64_t __48__QLThumbnailGenerator__finishRequestIfInvalid___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __52__QLThumbnailGenerator__finishAllRequestsWithError___block_invoke;
   block[3] = &unk_1E8369D88;
-  v8 = v4;
+  v8 = errorCopy;
   v9 = v10;
   block[4] = self;
-  v6 = v4;
+  v6 = errorCopy;
   dispatch_sync(queue, block);
 
   _Block_object_dispose(v10, 8);
@@ -1634,12 +1634,12 @@ void __52__QLThumbnailGenerator__finishAllRequestsWithError___block_invoke(uint6
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logRequestDuration:(id)a3
+- (void)_logRequestDuration:(id)duration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 beginDate];
-  [v4 timeIntervalSinceNow];
+  durationCopy = duration;
+  beginDate = [durationCopy beginDate];
+  [beginDate timeIntervalSinceNow];
   v6 = v5;
 
   v7 = qltLogHandles[0];
@@ -1652,28 +1652,28 @@ void __52__QLThumbnailGenerator__finishAllRequestsWithError___block_invoke(uint6
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [v3 mostRepresentativeThumbnail];
+    mostRepresentativeThumbnail = [durationCopy mostRepresentativeThumbnail];
     v11 = 134218498;
     v12 = -v6;
     v13 = 2112;
-    v14 = v3;
+    v14 = durationCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = mostRepresentativeThumbnail;
     _os_log_impl(&dword_1CA1E7000, v8, OS_LOG_TYPE_INFO, "Thumbnail generation duration of %.3f for %@. Most representative thumbnail generated: %@", &v11, 0x20u);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateStatus:(int64_t)a3 ofThumbnailGenerationWithUUID:(id)a4
+- (void)didUpdateStatus:(int64_t)status ofThumbnailGenerationWithUUID:(id)d
 {
-  v7 = [(QLThumbnailGenerator *)self _requestWithUUID:a4];
-  v5 = [v7 statusBlock];
+  v7 = [(QLThumbnailGenerator *)self _requestWithUUID:d];
+  statusBlock = [v7 statusBlock];
 
-  if (v5)
+  if (statusBlock)
   {
-    v6 = [v7 statusBlock];
-    v6[2](v6, a3);
+    statusBlock2 = [v7 statusBlock];
+    statusBlock2[2](statusBlock2, status);
   }
 }
 
@@ -1720,15 +1720,15 @@ void __56__QLThumbnailGenerator__createSyncThumbnailServiceProxy__block_invoke(u
   [WeakRetained _finishAllRequestsWithError:v3];
 }
 
-- (BOOL)_requestRepresentationTypeIsMoreRepresentative:(id)a3 thanType:(int64_t)a4
+- (BOOL)_requestRepresentationTypeIsMoreRepresentative:(id)representative thanType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [v5 mostRepresentativeThumbnail];
+  representativeCopy = representative;
+  mostRepresentativeThumbnail = [representativeCopy mostRepresentativeThumbnail];
 
-  if (v6)
+  if (mostRepresentativeThumbnail)
   {
-    v7 = [v5 mostRepresentativeThumbnail];
-    v8 = [v7 type] > a4;
+    mostRepresentativeThumbnail2 = [representativeCopy mostRepresentativeThumbnail];
+    v8 = [mostRepresentativeThumbnail2 type] > type;
   }
 
   else
@@ -1739,21 +1739,21 @@ void __56__QLThumbnailGenerator__createSyncThumbnailServiceProxy__block_invoke(u
   return v8;
 }
 
-+ (id)errorWithCode:(int64_t)a3 request:(id)a4 additionalUserInfo:(id)a5
++ (id)errorWithCode:(int64_t)code request:(id)request additionalUserInfo:(id)info
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 fileURL];
-  v10 = [v8 item];
+  infoCopy = info;
+  requestCopy = request;
+  fileURL = [requestCopy fileURL];
+  item = [requestCopy item];
 
-  if (v9)
+  if (fileURL)
   {
-    if (v7)
+    if (infoCopy)
     {
 LABEL_3:
-      v11 = [v7 mutableCopy];
-      [v11 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A980]];
+      v11 = [infoCopy mutableCopy];
+      [v11 setObject:fileURL forKeyedSubscript:*MEMORY[0x1E696A980]];
       v12 = [v11 copy];
 
       goto LABEL_13;
@@ -1762,64 +1762,64 @@ LABEL_3:
 
   else
   {
-    v13 = [v10 fileURL];
-    if (!v13)
+    fileURL2 = [item fileURL];
+    if (!fileURL2)
     {
-      v9 = [v10 filename];
+      fileURL = [item filename];
 
-      if (v9)
+      if (fileURL)
       {
-        if (v7)
+        if (infoCopy)
         {
-          v14 = [v7 mutableCopy];
-          v15 = [v10 filename];
-          [v14 setObject:v15 forKeyedSubscript:@"QLErrorFailingFileNameKey"];
+          filename2 = [infoCopy mutableCopy];
+          filename = [item filename];
+          [filename2 setObject:filename forKeyedSubscript:@"QLErrorFailingFileNameKey"];
 
-          v12 = [v14 copy];
+          v12 = [filename2 copy];
         }
 
         else
         {
           v19 = @"QLErrorFailingFileNameKey";
-          v14 = [v10 filename];
-          v20 = v14;
+          filename2 = [item filename];
+          v20 = filename2;
           v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
         }
 
-        v9 = 0;
+        fileURL = 0;
       }
 
       else
       {
-        v12 = v7;
+        v12 = infoCopy;
       }
 
       goto LABEL_13;
     }
 
-    v9 = v13;
-    if (v7)
+    fileURL = fileURL2;
+    if (infoCopy)
     {
       goto LABEL_3;
     }
   }
 
   v21 = *MEMORY[0x1E696A980];
-  v22[0] = v9;
+  v22[0] = fileURL;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
 LABEL_13:
-  v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLThumbnailErrorDomain" code:a3 userInfo:v12];
+  v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLThumbnailErrorDomain" code:code userInfo:v12];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-- (BOOL)canGenerateThumbnailsForContentType:(id)a3 atSize:(CGSize)a4
+- (BOOL)canGenerateThumbnailsForContentType:(id)type atSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1831,7 +1831,7 @@ LABEL_13:
   v10[2] = __67__QLThumbnailGenerator_canGenerateThumbnailsForContentType_atSize___block_invoke_65;
   v10[3] = &unk_1E8369E98;
   v10[4] = &v11;
-  [v8 canGenerateThumbnailsForContentType:v6 atSize:v10 completionHandler:{width, height}];
+  [v8 canGenerateThumbnailsForContentType:typeCopy atSize:v10 completionHandler:{width, height}];
 
   LOBYTE(v7) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);

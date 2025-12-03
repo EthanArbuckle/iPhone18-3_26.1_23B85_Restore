@@ -1,14 +1,14 @@
 @interface AXSwitchRegistrar
 - (AXSwitchRegistrar)init;
 - (AXSwitchRegistrarDelegate)delegate;
-- (BOOL)_isSwitchWithSource:(id)a3 keyCode:(unsigned __int16)a4 buttonNumber:(unsigned int)a5 ATVRemoteButtonUsage:(int64_t)a6 midiEvent:(id)a7;
-- (void)_filterEvents:(BOOL)a3;
-- (void)_handleATVRemoteButtonDownEvent:(__IOHIDEvent *)a3;
-- (void)_handleApplicationDidBecomeActive:(id)a3;
-- (void)_handleGamepadButtonPressedEvent:(__IOHIDEvent *)a3;
-- (void)_handleKeyboardKeyDownEvent:(__IOHIDEvent *)a3;
-- (void)_handleMFIButtonDownValue:(__IOHIDValue *)a3;
-- (void)_handleMIDIEvent:(id)a3 device:(id)a4 entity:(id)a5 source:(id)a6;
+- (BOOL)_isSwitchWithSource:(id)source keyCode:(unsigned __int16)code buttonNumber:(unsigned int)number ATVRemoteButtonUsage:(int64_t)usage midiEvent:(id)event;
+- (void)_filterEvents:(BOOL)events;
+- (void)_handleATVRemoteButtonDownEvent:(__IOHIDEvent *)event;
+- (void)_handleApplicationDidBecomeActive:(id)active;
+- (void)_handleGamepadButtonPressedEvent:(__IOHIDEvent *)event;
+- (void)_handleKeyboardKeyDownEvent:(__IOHIDEvent *)event;
+- (void)_handleMFIButtonDownValue:(__IOHIDValue *)value;
+- (void)_handleMIDIEvent:(id)event device:(id)device entity:(id)entity source:(id)source;
 - (void)beginFilteringEvents;
 - (void)dealloc;
 - (void)endFilteringEvents;
@@ -41,12 +41,12 @@
 - (void)beginFilteringEvents
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69887F0] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x1E69887F0] = [MEMORY[0x1E69887F0] sharedInstance];
+  ignoreLogging = [mEMORY[0x1E69887F0] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x1E69887F0] identifier];
+    identifier = [MEMORY[0x1E69887F0] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -69,12 +69,12 @@
 - (void)endFilteringEvents
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69887F0] sharedInstance];
-  v4 = [v3 ignoreLogging];
+  mEMORY[0x1E69887F0] = [MEMORY[0x1E69887F0] sharedInstance];
+  ignoreLogging = [mEMORY[0x1E69887F0] ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v5 = [MEMORY[0x1E69887F0] identifier];
+    identifier = [MEMORY[0x1E69887F0] identifier];
     v6 = AXLoggerForFacility();
 
     v7 = AXOSLogLevelFromAXLogLevel();
@@ -94,12 +94,12 @@
   [(AXSwitchRegistrar *)self _filterEvents:0];
 }
 
-- (BOOL)_isSwitchWithSource:(id)a3 keyCode:(unsigned __int16)a4 buttonNumber:(unsigned int)a5 ATVRemoteButtonUsage:(int64_t)a6 midiEvent:(id)a7
+- (BOOL)_isSwitchWithSource:(id)source keyCode:(unsigned __int16)code buttonNumber:(unsigned int)number ATVRemoteButtonUsage:(int64_t)usage midiEvent:(id)event
 {
-  v11 = a3;
-  v12 = a7;
+  sourceCopy = source;
+  eventCopy = event;
   v13 = +[AXSettings sharedInstance];
-  v14 = [v13 assistiveTouchSwitches];
+  assistiveTouchSwitches = [v13 assistiveTouchSwitches];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -108,19 +108,19 @@
   v18[1] = 3221225472;
   v18[2] = __93__AXSwitchRegistrar__isSwitchWithSource_keyCode_buttonNumber_ATVRemoteButtonUsage_midiEvent___block_invoke;
   v18[3] = &unk_1E71EB9C8;
-  v15 = v11;
-  v24 = a4;
-  v23 = a5;
+  v15 = sourceCopy;
+  codeCopy = code;
+  numberCopy = number;
   v21 = &v25;
-  v22 = a6;
+  usageCopy = usage;
   v19 = v15;
-  v16 = v12;
+  v16 = eventCopy;
   v20 = v16;
-  [v14 enumerateObjectsUsingBlock:v18];
-  LOBYTE(a5) = *(v26 + 24);
+  [assistiveTouchSwitches enumerateObjectsUsingBlock:v18];
+  LOBYTE(number) = *(v26 + 24);
 
   _Block_object_dispose(&v25, 8);
-  return a5;
+  return number;
 }
 
 void __93__AXSwitchRegistrar__isSwitchWithSource_keyCode_buttonNumber_ATVRemoteButtonUsage_midiEvent___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -253,10 +253,10 @@ LABEL_33:
 LABEL_13:
 }
 
-- (void)_handleApplicationDidBecomeActive:(id)a3
+- (void)_handleApplicationDidBecomeActive:(id)active
 {
-  v4 = [(AXSwitchRegistrar *)self delegate];
-  v5 = [v4 switchRegistrarShouldFilterEvents:self];
+  delegate = [(AXSwitchRegistrar *)self delegate];
+  v5 = [delegate switchRegistrarShouldFilterEvents:self];
 
   if (v5)
   {
@@ -265,149 +265,149 @@ LABEL_13:
   }
 }
 
-- (void)_handleKeyboardKeyDownEvent:(__IOHIDEvent *)a3
+- (void)_handleKeyboardKeyDownEvent:(__IOHIDEvent *)event
 {
-  v4 = [(AXSwitchRegistrar *)self delegate];
-  v5 = [v4 switchRegistrarShouldProcessKeyboardKeyEvent:self];
+  delegate = [(AXSwitchRegistrar *)self delegate];
+  v5 = [delegate switchRegistrarShouldProcessKeyboardKeyEvent:self];
 
   if (v5)
   {
     IntegerValue = IOHIDEventGetIntegerValue();
     if ([(AXSwitchRegistrar *)self _isKeyboardSwitchWithKeyCode:IntegerValue longPress:[(AXSwitchRegistrar *)self addLongPressSwitch]])
     {
-      v8 = [(AXSwitchRegistrar *)self delegate];
-      [v8 switchRegistrarKeyboardKeyAlreadyInUseForSwitch:self];
+      delegate2 = [(AXSwitchRegistrar *)self delegate];
+      [delegate2 switchRegistrarKeyboardKeyAlreadyInUseForSwitch:self];
     }
 
     else
     {
-      v8 = [(AXSwitchRegistrar *)self aSwitch];
-      [v8 setKeyCode:IntegerValue];
-      [v8 setSource:@"SwitchSourceKeyboard"];
-      v7 = [(AXSwitchRegistrar *)self delegate];
-      [v7 switchRegistrar:self didUpdateSwitch:v8];
+      delegate2 = [(AXSwitchRegistrar *)self aSwitch];
+      [delegate2 setKeyCode:IntegerValue];
+      [delegate2 setSource:@"SwitchSourceKeyboard"];
+      delegate3 = [(AXSwitchRegistrar *)self delegate];
+      [delegate3 switchRegistrar:self didUpdateSwitch:delegate2];
     }
   }
 }
 
-- (void)_handleGamepadButtonPressedEvent:(__IOHIDEvent *)a3
+- (void)_handleGamepadButtonPressedEvent:(__IOHIDEvent *)event
 {
-  v5 = [(AXSwitchRegistrar *)self delegate];
-  v6 = [v5 switchRegistrarShouldProcessGamepadEvent:self];
+  delegate = [(AXSwitchRegistrar *)self delegate];
+  v6 = [delegate switchRegistrarShouldProcessGamepadEvent:self];
 
   if (v6)
   {
-    v7 = [AXGameControllerEvent axGameControllerKeyCodeForEvent:a3];
+    v7 = [AXGameControllerEvent axGameControllerKeyCodeForEvent:event];
     if ((v7 - 13) >= 4u)
     {
       v8 = v7;
       if ([(AXSwitchRegistrar *)self _isGamepadSwitchWithKeyCode:v7 longPress:[(AXSwitchRegistrar *)self addLongPressSwitch]])
       {
-        v10 = [(AXSwitchRegistrar *)self delegate];
-        [v10 switchRegistrarGamepadSourceAlreadyInUseForSwitch:self];
+        delegate2 = [(AXSwitchRegistrar *)self delegate];
+        [delegate2 switchRegistrarGamepadSourceAlreadyInUseForSwitch:self];
       }
 
       else
       {
-        v10 = [(AXSwitchRegistrar *)self aSwitch];
-        [v10 setKeyCode:v8];
-        [v10 setSource:@"SwitchSourceGamepad"];
-        v9 = [(AXSwitchRegistrar *)self delegate];
-        [v9 switchRegistrar:self didUpdateSwitch:v10];
+        delegate2 = [(AXSwitchRegistrar *)self aSwitch];
+        [delegate2 setKeyCode:v8];
+        [delegate2 setSource:@"SwitchSourceGamepad"];
+        delegate3 = [(AXSwitchRegistrar *)self delegate];
+        [delegate3 switchRegistrar:self didUpdateSwitch:delegate2];
       }
     }
   }
 }
 
-- (void)_handleMIDIEvent:(id)a3 device:(id)a4 entity:(id)a5 source:(id)a6
+- (void)_handleMIDIEvent:(id)event device:(id)device entity:(id)entity source:(id)source
 {
-  v13 = a3;
-  v7 = [v13 type];
-  if (v7 <= 7 && ((1 << v7) & 0xB4) != 0)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type <= 7 && ((1 << type) & 0xB4) != 0)
   {
-    v9 = [(AXSwitchRegistrar *)self delegate];
-    v10 = [v9 switchRegistrarShouldProcessMIDIEvent:self];
+    delegate = [(AXSwitchRegistrar *)self delegate];
+    v10 = [delegate switchRegistrarShouldProcessMIDIEvent:self];
 
     if (v10)
     {
-      if ([(AXSwitchRegistrar *)self _isMIDISwitchWithMidiEvent:v13])
+      if ([(AXSwitchRegistrar *)self _isMIDISwitchWithMidiEvent:eventCopy])
       {
-        v11 = [(AXSwitchRegistrar *)self delegate];
-        [v11 switchRegistrarMIDISourceAlreadyInUseForSwitch:self];
+        delegate2 = [(AXSwitchRegistrar *)self delegate];
+        [delegate2 switchRegistrarMIDISourceAlreadyInUseForSwitch:self];
       }
 
       else
       {
-        v11 = [(AXSwitchRegistrar *)self aSwitch];
-        [v11 setSource:@"SwitchSourceMIDI"];
-        [v11 setMidiEvent:v13];
-        v12 = [(AXSwitchRegistrar *)self delegate];
-        [v12 switchRegistrar:self didUpdateSwitch:v11];
+        delegate2 = [(AXSwitchRegistrar *)self aSwitch];
+        [delegate2 setSource:@"SwitchSourceMIDI"];
+        [delegate2 setMidiEvent:eventCopy];
+        delegate3 = [(AXSwitchRegistrar *)self delegate];
+        [delegate3 switchRegistrar:self didUpdateSwitch:delegate2];
       }
     }
   }
 }
 
-- (void)_handleATVRemoteButtonDownEvent:(__IOHIDEvent *)a3
+- (void)_handleATVRemoteButtonDownEvent:(__IOHIDEvent *)event
 {
-  v4 = [(AXSwitchRegistrar *)self delegate];
-  v5 = [v4 switchRegistrarShouldProcessKeyboardKeyEvent:self];
+  delegate = [(AXSwitchRegistrar *)self delegate];
+  v5 = [delegate switchRegistrarShouldProcessKeyboardKeyEvent:self];
 
   if (v5)
   {
     IntegerValue = IOHIDEventGetIntegerValue();
     if ([(AXSwitchRegistrar *)self _isATVRemoteButtonSwitchWithUsage:IntegerValue longPress:[(AXSwitchRegistrar *)self addLongPressSwitch]])
     {
-      v8 = [(AXSwitchRegistrar *)self delegate];
-      [v8 switchRegistrarMFIButtonAlreadyInUseForSwitch:self];
+      delegate2 = [(AXSwitchRegistrar *)self delegate];
+      [delegate2 switchRegistrarMFIButtonAlreadyInUseForSwitch:self];
     }
 
     else
     {
-      v8 = [(AXSwitchRegistrar *)self aSwitch];
-      [v8 setButtonNumber:IntegerValue];
-      [v8 setSource:@"SwitchSourceATVRemote"];
-      v7 = [(AXSwitchRegistrar *)self delegate];
-      [v7 switchRegistrar:self didUpdateSwitch:v8];
+      delegate2 = [(AXSwitchRegistrar *)self aSwitch];
+      [delegate2 setButtonNumber:IntegerValue];
+      [delegate2 setSource:@"SwitchSourceATVRemote"];
+      delegate3 = [(AXSwitchRegistrar *)self delegate];
+      [delegate3 switchRegistrar:self didUpdateSwitch:delegate2];
     }
   }
 }
 
-- (void)_handleMFIButtonDownValue:(__IOHIDValue *)a3
+- (void)_handleMFIButtonDownValue:(__IOHIDValue *)value
 {
-  v5 = [(AXSwitchRegistrar *)self delegate];
-  v6 = [v5 switchRegistrarShouldProcessMFIButtonEvent:self];
+  delegate = [(AXSwitchRegistrar *)self delegate];
+  v6 = [delegate switchRegistrarShouldProcessMFIButtonEvent:self];
 
   if (v6)
   {
-    Element = IOHIDValueGetElement(a3);
+    Element = IOHIDValueGetElement(value);
     Usage = IOHIDElementGetUsage(Element);
     if ([(AXSwitchRegistrar *)self _isMFISwitchWithButtonNumber:Usage longPress:[(AXSwitchRegistrar *)self addLongPressSwitch]])
     {
-      v10 = [(AXSwitchRegistrar *)self delegate];
-      [v10 switchRegistrarMFIButtonAlreadyInUseForSwitch:self];
+      delegate2 = [(AXSwitchRegistrar *)self delegate];
+      [delegate2 switchRegistrarMFIButtonAlreadyInUseForSwitch:self];
     }
 
     else
     {
-      v10 = [(AXSwitchRegistrar *)self aSwitch];
-      [v10 setButtonNumber:Usage];
-      [v10 setSource:@"SwitchSourceMFI"];
-      v9 = [(AXSwitchRegistrar *)self delegate];
-      [v9 switchRegistrar:self didUpdateSwitch:v10];
+      delegate2 = [(AXSwitchRegistrar *)self aSwitch];
+      [delegate2 setButtonNumber:Usage];
+      [delegate2 setSource:@"SwitchSourceMFI"];
+      delegate3 = [(AXSwitchRegistrar *)self delegate];
+      [delegate3 switchRegistrar:self didUpdateSwitch:delegate2];
     }
   }
 }
 
-- (void)_filterEvents:(BOOL)a3
+- (void)_filterEvents:(BOOL)events
 {
-  v3 = a3;
-  v5 = [(AXSwitchRegistrar *)self device];
-  v6 = [(AXSwitchRegistrar *)self eventSystemClient];
-  v7 = [(AXSwitchRegistrar *)self manager];
-  if (v3)
+  eventsCopy = events;
+  device = [(AXSwitchRegistrar *)self device];
+  eventSystemClient = [(AXSwitchRegistrar *)self eventSystemClient];
+  manager = [(AXSwitchRegistrar *)self manager];
+  if (eventsCopy)
   {
-    if (!v6)
+    if (!eventSystemClient)
     {
       v8 = IOHIDEventSystemClientCreate();
       if (!v8)
@@ -415,15 +415,15 @@ LABEL_13:
         v24 = @"Could not create event system client";
         LOBYTE(v23) = 1;
         _AXLogWithFacility();
-        if (!v7)
+        if (!manager)
         {
 LABEL_6:
           v13 = IOHIDManagerCreate(*MEMORY[0x1E695E480], 0);
           if (v13)
           {
             v14 = v13;
-            v15 = [(AXSwitchRegistrar *)self _mfiMatching];
-            IOHIDManagerSetDeviceMatchingMultiple(v14, v15);
+            _mfiMatching = [(AXSwitchRegistrar *)self _mfiMatching];
+            IOHIDManagerSetDeviceMatchingMultiple(v14, _mfiMatching);
 
             Current = CFRunLoopGetCurrent();
             IOHIDManagerScheduleWithRunLoop(v14, Current, *MEMORY[0x1E695E8E0]);
@@ -459,9 +459,9 @@ LABEL_20:
       }
 
       v9 = v8;
-      v10 = [(AXSwitchRegistrar *)self _keyboardMatching];
-      v11 = [(AXSwitchRegistrar *)self _gamepadMatching];
-      v12 = [v10 arrayByAddingObjectsFromArray:v11];
+      _keyboardMatching = [(AXSwitchRegistrar *)self _keyboardMatching];
+      _gamepadMatching = [(AXSwitchRegistrar *)self _gamepadMatching];
+      v12 = [_keyboardMatching arrayByAddingObjectsFromArray:_gamepadMatching];
 
       IOHIDEventSystemClientSetMatchingMultiple();
       CFRunLoopGetCurrent();
@@ -471,7 +471,7 @@ LABEL_20:
       CFRelease(v9);
     }
 
-    if (!v7)
+    if (!manager)
     {
       goto LABEL_6;
     }
@@ -480,15 +480,15 @@ LABEL_20:
   }
 
   v18 = MEMORY[0x1E695E8E0];
-  if (v5)
+  if (device)
   {
     v19 = CFRunLoopGetCurrent();
-    IOHIDDeviceUnscheduleFromRunLoop(v5, v19, *v18);
-    IOHIDDeviceClose(v5, 0);
+    IOHIDDeviceUnscheduleFromRunLoop(device, v19, *v18);
+    IOHIDDeviceClose(device, 0);
     [(AXSwitchRegistrar *)self setDevice:0];
   }
 
-  if (v6)
+  if (eventSystemClient)
   {
     IOHIDEventSystemClientUnregisterEventFilterCallback();
     CFRunLoopGetCurrent();
@@ -496,11 +496,11 @@ LABEL_20:
     [(AXSwitchRegistrar *)self setEventSystemClient:0];
   }
 
-  if (v7)
+  if (manager)
   {
     v20 = CFRunLoopGetCurrent();
-    IOHIDManagerUnscheduleFromRunLoop(v7, v20, *v18);
-    IOHIDManagerClose(v7, 0);
+    IOHIDManagerUnscheduleFromRunLoop(manager, v20, *v18);
+    IOHIDManagerClose(manager, 0);
     [(AXSwitchRegistrar *)self setManager:0];
   }
 

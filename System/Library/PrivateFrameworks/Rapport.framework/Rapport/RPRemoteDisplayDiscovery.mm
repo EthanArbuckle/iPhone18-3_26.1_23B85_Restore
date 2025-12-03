@@ -1,31 +1,31 @@
 @interface RPRemoteDisplayDiscovery
-- (BOOL)_checkRSSIThresholdForDevice:(id)a3;
-- (BOOL)shouldReportDevice:(id)a3;
+- (BOOL)_checkRSSIThresholdForDevice:(id)device;
+- (BOOL)shouldReportDevice:(id)device;
 - (NSArray)discoveredDevices;
 - (NSArray)discoveredPeople;
 - (RPRemoteDisplayDiscovery)init;
-- (RPRemoteDisplayDiscovery)initWithCoder:(id)a3;
+- (RPRemoteDisplayDiscovery)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_lostAllDevices;
 - (void)_lostAllPeople;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enterDiscoverySessionWithDevice:(id)a3 reason:(id)a4;
-- (void)exitDiscoverySessionWithReason:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)enterDiscoverySessionWithDevice:(id)device reason:(id)reason;
+- (void)exitDiscoverySessionWithReason:(id)reason;
 - (void)invalidate;
-- (void)personCanceled:(id)a3;
-- (void)remoteDisplayDedicatedDeviceChanged:(id)a3;
-- (void)remoteDisplayDeviceSelected:(id)a3;
-- (void)remoteDisplayFoundDevice:(id)a3;
-- (void)remoteDisplayLostDevice:(id)a3;
+- (void)personCanceled:(id)canceled;
+- (void)remoteDisplayDedicatedDeviceChanged:(id)changed;
+- (void)remoteDisplayDeviceSelected:(id)selected;
+- (void)remoteDisplayFoundDevice:(id)device;
+- (void)remoteDisplayLostDevice:(id)device;
 - (void)remoteDisplayPersonDeclined;
-- (void)remoteDisplayUpdateErrorFlags:(unint64_t)a3;
-- (void)requestDedicatedDeviceConfirmationWithCompletion:(id)a3;
-- (void)saveDedicatedDevice:(id)a3;
+- (void)remoteDisplayUpdateErrorFlags:(unint64_t)flags;
+- (void)requestDedicatedDeviceConfirmationWithCompletion:(id)completion;
+- (void)saveDedicatedDevice:(id)device;
 @end
 
 @implementation RPRemoteDisplayDiscovery
@@ -54,9 +54,9 @@
   return v3;
 }
 
-- (RPRemoteDisplayDiscovery)initWithCoder:(id)a3
+- (RPRemoteDisplayDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RPRemoteDisplayDiscovery;
   v5 = [(RPRemoteDisplayDiscovery *)&v13 init];
@@ -64,7 +64,7 @@
   if (v5)
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
-    v7 = v4;
+    v7 = coderCopy;
     if ([v7 containsValueForKey:@"cFl"])
     {
       v6->_controlFlags = [v7 decodeInt64ForKey:@"cFl"];
@@ -94,35 +94,35 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   controlFlags = self->_controlFlags;
-  v8 = v4;
+  v8 = coderCopy;
   if (controlFlags)
   {
-    [v4 encodeInt64:controlFlags forKey:@"cFl"];
-    v4 = v8;
+    [coderCopy encodeInt64:controlFlags forKey:@"cFl"];
+    coderCopy = v8;
   }
 
   discoveryFlags = self->_discoveryFlags;
   if (discoveryFlags)
   {
     [v8 encodeInt64:discoveryFlags forKey:@"dFl"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   if (self->_triggerEnhancedDiscovery)
   {
     [v8 encodeBool:1 forKey:@"eDis"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   rssiThreshold = self->_rssiThreshold;
   if (rssiThreshold)
   {
     [v8 encodeInteger:rssiThreshold forKey:@"rssiTh"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
@@ -183,17 +183,17 @@
   return v4;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__RPRemoteDisplayDiscovery_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -220,11 +220,11 @@ uint64_t __51__RPRemoteDisplayDiscovery_activateWithCompletion___block_invoke(ui
   return [v6 _activateWithCompletion:v7 reactivate:0];
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  if (reactivateCopy)
   {
     if (gLogCategory_RPRemoteDisplayDiscovery <= 30 && (gLogCategory_RPRemoteDisplayDiscovery != -1 || _LogCategory_Initialize()))
     {
@@ -244,15 +244,15 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __63__RPRemoteDisplayDiscovery__activateWithCompletion_reactivate___block_invoke;
   v14[3] = &unk_1E7C92F88;
-  v16 = v4;
-  v8 = v6;
+  v16 = reactivateCopy;
+  v8 = completionCopy;
   v15 = v8;
   v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__RPRemoteDisplayDiscovery__activateWithCompletion_reactivate___block_invoke_2;
   v11[3] = &unk_1E7C94D00;
-  v13 = v4;
+  v13 = reactivateCopy;
   v11[4] = self;
   v12 = v8;
   v10 = v8;
@@ -548,10 +548,10 @@ uint64_t __38__RPRemoteDisplayDiscovery_invalidate__block_invoke(uint64_t result
   }
 }
 
-- (void)personCanceled:(id)a3
+- (void)personCanceled:(id)canceled
 {
-  v4 = a3;
-  if (v4)
+  canceledCopy = canceled;
+  if (canceledCopy)
   {
     [(RPRemoteDisplayDiscovery *)self _ensureXPCStarted];
     xpcCnx = self->_xpcCnx;
@@ -559,7 +559,7 @@ uint64_t __38__RPRemoteDisplayDiscovery_invalidate__block_invoke(uint64_t result
     v8[1] = 3221225472;
     v8[2] = __43__RPRemoteDisplayDiscovery_personCanceled___block_invoke;
     v8[3] = &unk_1E7C92D58;
-    v6 = v4;
+    v6 = canceledCopy;
     v9 = v6;
     v7 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v8];
     [v7 remoteDisplayPersonCanceled:v6];
@@ -582,53 +582,53 @@ void __43__RPRemoteDisplayDiscovery_personCanceled___block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)_checkRSSIThresholdForDevice:(id)a3
+- (BOOL)_checkRSSIThresholdForDevice:(id)device
 {
-  v4 = [a3 bleDevice];
-  v5 = [v4 bleDevice];
-  v6 = [v5 rssi];
+  bleDevice = [device bleDevice];
+  v4BleDevice = [bleDevice bleDevice];
+  rssi = [v4BleDevice rssi];
 
-  return !v6 || v6 >= self->_rssiThreshold;
+  return !rssi || rssi >= self->_rssiThreshold;
 }
 
 - (NSArray)discoveredDevices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveredDevices = v2->_discoveredDevices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredDevices = selfCopy->_discoveredDevices;
   if (discoveredDevices)
   {
-    v4 = [(NSMutableDictionary *)discoveredDevices allValues];
+    allValues = [(NSMutableDictionary *)discoveredDevices allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
 - (NSArray)discoveredPeople
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveredPeople = v2->_discoveredPeople;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredPeople = selfCopy->_discoveredPeople;
   if (discoveredPeople)
   {
-    v4 = [(NSMutableDictionary *)discoveredPeople allValues];
+    allValues = [(NSMutableDictionary *)discoveredPeople allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
 void __61__RPRemoteDisplayDiscovery_setPersonSelected_forPairingType___block_invoke(uint64_t a1, void *a2)
@@ -649,41 +649,41 @@ void __61__RPRemoteDisplayDiscovery_setPersonSelected_forPairingType___block_inv
   objc_sync_exit(v3);
 }
 
-- (void)remoteDisplayFoundDevice:(id)a3
+- (void)remoteDisplayFoundDevice:(id)device
 {
-  v20 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  discoveredDevices = v4->_discoveredDevices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredDevices = selfCopy->_discoveredDevices;
   if (!discoveredDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = v4->_discoveredDevices;
-    v4->_discoveredDevices = v6;
+    v7 = selfCopy->_discoveredDevices;
+    selfCopy->_discoveredDevices = v6;
 
-    discoveredDevices = v4->_discoveredDevices;
+    discoveredDevices = selfCopy->_discoveredDevices;
   }
 
-  v8 = [v20 identifier];
-  [(NSMutableDictionary *)discoveredDevices setObject:v20 forKeyedSubscript:v8];
+  identifier = [deviceCopy identifier];
+  [(NSMutableDictionary *)discoveredDevices setObject:deviceCopy forKeyedSubscript:identifier];
 
-  v9 = [v20 accountAltDSID];
-  if (!v9)
+  accountAltDSID = [deviceCopy accountAltDSID];
+  if (!accountAltDSID)
   {
     goto LABEL_14;
   }
 
-  v10 = [(NSMutableDictionary *)v4->_discoveredPeople valueForKey:v9];
+  v10 = [(NSMutableDictionary *)selfCopy->_discoveredPeople valueForKey:accountAltDSID];
   v11 = v10;
   if (v10)
   {
-    [v10 addDevice:v20];
+    [v10 addDevice:deviceCopy];
     v12 = 0;
     goto LABEL_15;
   }
 
-  v11 = [[RPRemoteDisplayPerson alloc] initPersonWithDevice:v20];
+  v11 = [[RPRemoteDisplayPerson alloc] initPersonWithDevice:deviceCopy];
   if (!v11)
   {
     if (gLogCategory_RPRemoteDisplayDiscovery <= 90 && (gLogCategory_RPRemoteDisplayDiscovery != -1 || _LogCategory_Initialize()))
@@ -697,31 +697,31 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  discoveredPeople = v4->_discoveredPeople;
+  discoveredPeople = selfCopy->_discoveredPeople;
   if (!discoveredPeople)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v15 = v4->_discoveredPeople;
-    v4->_discoveredPeople = v14;
+    v15 = selfCopy->_discoveredPeople;
+    selfCopy->_discoveredPeople = v14;
 
-    discoveredPeople = v4->_discoveredPeople;
+    discoveredPeople = selfCopy->_discoveredPeople;
   }
 
-  [(NSMutableDictionary *)discoveredPeople setObject:v11 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)discoveredPeople setObject:v11 forKeyedSubscript:accountAltDSID];
   v12 = 1;
 LABEL_15:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (v11)
   {
     if (v12)
     {
-      personFoundHandler = v4->_personFoundHandler;
+      personFoundHandler = selfCopy->_personFoundHandler;
     }
 
     else
     {
-      personFoundHandler = v4->_personChangedHandler;
+      personFoundHandler = selfCopy->_personChangedHandler;
     }
 
     v17 = _Block_copy(personFoundHandler);
@@ -732,31 +732,31 @@ LABEL_15:
     }
   }
 
-  deviceFoundHandler = v4->_deviceFoundHandler;
+  deviceFoundHandler = selfCopy->_deviceFoundHandler;
   if (deviceFoundHandler)
   {
-    deviceFoundHandler[2](deviceFoundHandler, v20);
+    deviceFoundHandler[2](deviceFoundHandler, deviceCopy);
   }
 }
 
-- (void)remoteDisplayLostDevice:(id)a3
+- (void)remoteDisplayLostDevice:(id)device
 {
-  v17 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  discoveredDevices = v4->_discoveredDevices;
-  v6 = [v17 identifier];
-  [(NSMutableDictionary *)discoveredDevices setObject:0 forKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredDevices = selfCopy->_discoveredDevices;
+  identifier = [deviceCopy identifier];
+  [(NSMutableDictionary *)discoveredDevices setObject:0 forKeyedSubscript:identifier];
 
-  v7 = [v17 accountAltDSID];
-  if (v7)
+  accountAltDSID = [deviceCopy accountAltDSID];
+  if (accountAltDSID)
   {
-    v8 = [(NSMutableDictionary *)v4->_discoveredPeople valueForKey:v7];
+    v8 = [(NSMutableDictionary *)selfCopy->_discoveredPeople valueForKey:accountAltDSID];
     v9 = v8;
-    if (v8 && ([v8 removeDevice:v17], objc_msgSend(v9, "discoveredDevices"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11))
+    if (v8 && ([v8 removeDevice:deviceCopy], objc_msgSend(v9, "discoveredDevices"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11))
     {
-      [(NSMutableDictionary *)v4->_discoveredPeople removeObjectForKey:v7];
+      [(NSMutableDictionary *)selfCopy->_discoveredPeople removeObjectForKey:accountAltDSID];
       v12 = 1;
     }
 
@@ -772,17 +772,17 @@ LABEL_15:
     v9 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   if (v9)
   {
     if (v12)
     {
-      personLostHandler = v4->_personLostHandler;
+      personLostHandler = selfCopy->_personLostHandler;
     }
 
     else
     {
-      personLostHandler = v4->_personChangedHandler;
+      personLostHandler = selfCopy->_personChangedHandler;
     }
 
     v14 = _Block_copy(personLostHandler);
@@ -793,19 +793,19 @@ LABEL_15:
     }
   }
 
-  deviceLostHandler = v4->_deviceLostHandler;
+  deviceLostHandler = selfCopy->_deviceLostHandler;
   if (deviceLostHandler)
   {
-    deviceLostHandler[2](deviceLostHandler, v17);
+    deviceLostHandler[2](deviceLostHandler, deviceCopy);
   }
 }
 
-- (void)remoteDisplayUpdateErrorFlags:(unint64_t)a3
+- (void)remoteDisplayUpdateErrorFlags:(unint64_t)flags
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (self->_errorFlags != a3)
+  if (self->_errorFlags != flags)
   {
-    self->_errorFlags = a3;
+    self->_errorFlags = flags;
     v5 = _Block_copy(self->_errorFlagsChangedHandler);
     if (v5)
     {
@@ -816,18 +816,18 @@ LABEL_15:
   }
 }
 
-- (void)remoteDisplayDeviceSelected:(id)a3
+- (void)remoteDisplayDeviceSelected:(id)selected
 {
-  v9 = a3;
+  selectedCopy = selected;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = v9;
-  if (v9)
+  v4 = selectedCopy;
+  if (selectedCopy)
   {
-    v5 = [(RPRemoteDisplayPerson *)v9 accountAltDSID];
+    accountAltDSID = [(RPRemoteDisplayPerson *)selectedCopy accountAltDSID];
 
-    if (v5)
+    if (accountAltDSID)
     {
-      v4 = [[RPRemoteDisplayPerson alloc] initPersonWithDevice:v9];
+      v4 = [[RPRemoteDisplayPerson alloc] initPersonWithDevice:selectedCopy];
     }
 
     else
@@ -843,7 +843,7 @@ LABEL_15:
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, v9);
+    (*(v7 + 2))(v7, selectedCopy);
   }
 }
 
@@ -873,7 +873,7 @@ LABEL_15:
   discoveredDevices = obj->_discoveredDevices;
   if (deviceLostHandler)
   {
-    v5 = [(NSMutableDictionary *)discoveredDevices allValues];
+    allValues = [(NSMutableDictionary *)discoveredDevices allValues];
     [(NSMutableDictionary *)obj->_discoveredDevices removeAllObjects];
     v6 = obj->_discoveredDevices;
     obj->_discoveredDevices = 0;
@@ -883,7 +883,7 @@ LABEL_15:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v5;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -932,24 +932,24 @@ LABEL_15:
     [RPRemoteDisplayDiscovery _lostAllPeople];
   }
 
-  v3 = [(RPRemoteDisplayDiscovery *)self discoveredPeople];
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_discoveredPeople removeAllObjects];
-  discoveredPeople = v4->_discoveredPeople;
-  v4->_discoveredPeople = 0;
+  discoveredPeople = [(RPRemoteDisplayDiscovery *)self discoveredPeople];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_discoveredPeople removeAllObjects];
+  discoveredPeople = selfCopy->_discoveredPeople;
+  selfCopy->_discoveredPeople = 0;
 
-  personSelected = v4->_personSelected;
-  v4->_personSelected = 0;
+  personSelected = selfCopy->_personSelected;
+  selfCopy->_personSelected = 0;
 
-  objc_sync_exit(v4);
-  if (v4->_personLostHandler)
+  objc_sync_exit(selfCopy);
+  if (selfCopy->_personLostHandler)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v3;
+    v7 = discoveredPeople;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
@@ -964,7 +964,7 @@ LABEL_15:
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
-          (*(v4->_personLostHandler + 2))(v4->_personLostHandler);
+          (*(selfCopy->_personLostHandler + 2))(selfCopy->_personLostHandler);
         }
 
         v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -977,21 +977,21 @@ LABEL_15:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldReportDevice:(id)a3
+- (BOOL)shouldReportDevice:(id)device
 {
-  v4 = a3;
-  v5 = (([v4 statusFlags] & 0x80000) != 0 || (objc_msgSend(v4, "statusFlags") & 0x2000000000) != 0 && (self->_discoveryFlags & 1) != 0 || (objc_msgSend(v4, "statusFlags") & 0x1000000000) != 0 && (self->_discoveryFlags & 2) != 0) && -[RPRemoteDisplayDiscovery _checkRSSIThresholdForDevice:](self, "_checkRSSIThresholdForDevice:", v4);
+  deviceCopy = device;
+  v5 = (([deviceCopy statusFlags] & 0x80000) != 0 || (objc_msgSend(deviceCopy, "statusFlags") & 0x2000000000) != 0 && (self->_discoveryFlags & 1) != 0 || (objc_msgSend(deviceCopy, "statusFlags") & 0x1000000000) != 0 && (self->_discoveryFlags & 2) != 0) && -[RPRemoteDisplayDiscovery _checkRSSIThresholdForDevice:](self, "_checkRSSIThresholdForDevice:", deviceCopy);
 
   return v5;
 }
 
-- (void)enterDiscoverySessionWithDevice:(id)a3 reason:(id)a4
+- (void)enterDiscoverySessionWithDevice:(id)device reason:(id)reason
 {
   xpcCnx = self->_xpcCnx;
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  deviceCopy = device;
   v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:&__block_literal_global_14];
-  [v8 remoteDisplayChangeDiscoverySessionStateForDevice:v7 reason:v6];
+  [v8 remoteDisplayChangeDiscoverySessionStateForDevice:deviceCopy reason:reasonCopy];
 }
 
 void __67__RPRemoteDisplayDiscovery_enterDiscoverySessionWithDevice_reason___block_invoke(uint64_t a1, void *a2)
@@ -1009,12 +1009,12 @@ void __67__RPRemoteDisplayDiscovery_enterDiscoverySessionWithDevice_reason___blo
   }
 }
 
-- (void)exitDiscoverySessionWithReason:(id)a3
+- (void)exitDiscoverySessionWithReason:(id)reason
 {
   xpcCnx = self->_xpcCnx;
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:&__block_literal_global_123];
-  [v5 remoteDisplayChangeDiscoverySessionStateForDevice:0 reason:v4];
+  [v5 remoteDisplayChangeDiscoverySessionStateForDevice:0 reason:reasonCopy];
 }
 
 void __59__RPRemoteDisplayDiscovery_exitDiscoverySessionWithReason___block_invoke(uint64_t a1, void *a2)
@@ -1032,12 +1032,12 @@ void __59__RPRemoteDisplayDiscovery_exitDiscoverySessionWithReason___block_invok
   }
 }
 
-- (void)saveDedicatedDevice:(id)a3
+- (void)saveDedicatedDevice:(id)device
 {
   xpcCnx = self->_xpcCnx;
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:&__block_literal_global_126];
-  [v5 remoteDisplayChangeDedicatedDevice:v4];
+  [v5 remoteDisplayChangeDedicatedDevice:deviceCopy];
 }
 
 void __48__RPRemoteDisplayDiscovery_saveDedicatedDevice___block_invoke(uint64_t a1, void *a2)
@@ -1055,46 +1055,46 @@ void __48__RPRemoteDisplayDiscovery_saveDedicatedDevice___block_invoke(uint64_t 
   }
 }
 
-- (void)remoteDisplayDedicatedDeviceChanged:(id)a3
+- (void)remoteDisplayDedicatedDeviceChanged:(id)changed
 {
-  v8 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_dedicatedDevice == v8)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_dedicatedDevice == changedCopy)
   {
-    objc_storeStrong(&v5->_dedicatedDevice, a3);
-    objc_sync_exit(v5);
+    objc_storeStrong(&selfCopy->_dedicatedDevice, changed);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v6 = [(RPRemoteDisplayDevice *)v8 isEqualToDevice:?];
-    objc_storeStrong(&v5->_dedicatedDevice, a3);
-    objc_sync_exit(v5);
+    v6 = [(RPRemoteDisplayDevice *)changedCopy isEqualToDevice:?];
+    objc_storeStrong(&selfCopy->_dedicatedDevice, changed);
+    objc_sync_exit(selfCopy);
 
     if (!v6)
     {
-      dedicatedDeviceChangedHandler = v5->_dedicatedDeviceChangedHandler;
+      dedicatedDeviceChangedHandler = selfCopy->_dedicatedDeviceChangedHandler;
       if (dedicatedDeviceChangedHandler)
       {
-        dedicatedDeviceChangedHandler[2](dedicatedDeviceChangedHandler, v8);
+        dedicatedDeviceChangedHandler[2](dedicatedDeviceChangedHandler, changedCopy);
       }
     }
   }
 }
 
-- (void)requestDedicatedDeviceConfirmationWithCompletion:(id)a3
+- (void)requestDedicatedDeviceConfirmationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(RPRemoteDisplayDiscovery *)self _ensureXPCStarted];
   v5 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxyWithErrorHandler:&__block_literal_global_129];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__RPRemoteDisplayDiscovery_requestDedicatedDeviceConfirmationWithCompletion___block_invoke_2;
   v7[3] = &unk_1E7C92DA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 remoteDisplayDedicatedDeviceConfirmationWithCompletion:v7];
 }
 

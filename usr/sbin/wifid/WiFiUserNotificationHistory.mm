@@ -1,9 +1,9 @@
 @interface WiFiUserNotificationHistory
 - (WiFiUserNotificationHistory)init;
-- (int)canPresentRecommendationForSSID:(id)a3 currentLocation:(id)a4;
+- (int)canPresentRecommendationForSSID:(id)d currentLocation:(id)location;
 - (void)dealloc;
 - (void)reset;
-- (void)resetAttemptsForSSID:(id)a3;
+- (void)resetAttemptsForSSID:(id)d;
 @end
 
 @implementation WiFiUserNotificationHistory
@@ -27,14 +27,14 @@
   [(WiFiUserNotificationHistory *)&v3 dealloc];
 }
 
-- (int)canPresentRecommendationForSSID:(id)a3 currentLocation:(id)a4
+- (int)canPresentRecommendationForSSID:(id)d currentLocation:(id)location
 {
   if (![(WiFiUserNotificationHistory *)self lastRecommendedSSID]|| ![(NSMutableDictionary *)[(WiFiUserNotificationHistory *)self notifications] count])
   {
     return 0;
   }
 
-  if (!a3)
+  if (!d)
   {
     v10 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -45,7 +45,7 @@
     goto LABEL_24;
   }
 
-  v7 = [(NSString *)[(WiFiUserNotificationHistory *)self lastRecommendedSSID] isEqualToString:a3];
+  v7 = [(NSString *)[(WiFiUserNotificationHistory *)self lastRecommendedSSID] isEqualToString:d];
   v8 = [(NSMutableDictionary *)[(WiFiUserNotificationHistory *)self notifications] objectForKey:[(WiFiUserNotificationHistory *)self lastRecommendedSSID]];
   if ([v8 objectForKey:@"response"])
   {
@@ -62,7 +62,7 @@
   v13 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: ssid: %@ lastRecommendedSSID: %@ lastResponseWasSystemCancelled: %d lessThan24Hours: %d", "-[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:]", a3, -[WiFiUserNotificationHistory lastRecommendedSSID](self, "lastRecommendedSSID", -86400.0), v9, v12 >= -86400.0}];
+    [off_100298C40 WFLog:3 message:{"%s: ssid: %@ lastRecommendedSSID: %@ lastResponseWasSystemCancelled: %d lessThan24Hours: %d", "-[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:]", d, -[WiFiUserNotificationHistory lastRecommendedSSID](self, "lastRecommendedSSID", -86400.0), v9, v12 >= -86400.0}];
   }
 
   objc_autoreleasePoolPop(v13);
@@ -72,9 +72,9 @@
     v17 = [v8 objectForKey:@"location"];
     if (v17)
     {
-      if (a4)
+      if (location)
       {
-        [a4 distanceFromLocation:v17];
+        [location distanceFromLocation:v17];
         v19 = v18;
         if (v18 <= 4000.0 && v12 >= -86400.0)
         {
@@ -124,13 +124,13 @@ LABEL_32:
     return 0;
   }
 
-  v15 = [v14 unsignedIntegerValue];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
   v10 = objc_autoreleasePoolPush();
-  if (v15 >= 2)
+  if (unsignedIntegerValue >= 2)
   {
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: hit max attempts for system cancelled for ssid %@", "-[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: hit max attempts for system cancelled for ssid %@", "-[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:]", d}];
     }
 
     v16 = 2;
@@ -139,7 +139,7 @@ LABEL_32:
 
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: allowing a re-prompting due to last response was system cancelled (total attempts: %lu)", "-[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:]", v15}];
+    [off_100298C40 WFLog:3 message:{"%s: allowing a re-prompting due to last response was system cancelled (total attempts: %lu)", "-[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:]", unsignedIntegerValue}];
   }
 
 LABEL_24:
@@ -149,25 +149,25 @@ LABEL_25:
   return v16;
 }
 
-- (void)resetAttemptsForSSID:(id)a3
+- (void)resetAttemptsForSSID:(id)d
 {
   v5 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: resetting attempts for ssid %@", "-[WiFiUserNotificationHistory resetAttemptsForSSID:]", a3}];
+    [off_100298C40 WFLog:3 message:{"%s: resetting attempts for ssid %@", "-[WiFiUserNotificationHistory resetAttemptsForSSID:]", d}];
   }
 
   objc_autoreleasePoolPop(v5);
-  v6 = [(NSMutableDictionary *)[(WiFiUserNotificationHistory *)self notifications] objectForKey:a3];
+  v6 = [(NSMutableDictionary *)[(WiFiUserNotificationHistory *)self notifications] objectForKey:d];
   if (v6)
   {
     v10 = [v6 mutableCopy];
     [v10 removeObjectForKey:@"attempt"];
-    [(NSMutableDictionary *)[(WiFiUserNotificationHistory *)self notifications] setObject:v10 forKey:a3];
+    [(NSMutableDictionary *)[(WiFiUserNotificationHistory *)self notifications] setObject:v10 forKey:d];
     v7 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: history for %@: %@", "-[WiFiUserNotificationHistory resetAttemptsForSSID:]", v10, a3}];
+      [off_100298C40 WFLog:3 message:{"%s: history for %@: %@", "-[WiFiUserNotificationHistory resetAttemptsForSSID:]", v10, d}];
     }
 
     objc_autoreleasePoolPop(v7);
@@ -178,7 +178,7 @@ LABEL_25:
     v8 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: no history found for ssid %@", "-[WiFiUserNotificationHistory resetAttemptsForSSID:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: no history found for ssid %@", "-[WiFiUserNotificationHistory resetAttemptsForSSID:]", d}];
     }
 
     objc_autoreleasePoolPop(v8);
@@ -201,9 +201,9 @@ LABEL_25:
   }
 
   objc_autoreleasePoolPop(v3);
-  v4 = [(WiFiUserNotificationHistory *)self notifications];
+  notifications = [(WiFiUserNotificationHistory *)self notifications];
 
-  [(NSMutableDictionary *)v4 removeAllObjects];
+  [(NSMutableDictionary *)notifications removeAllObjects];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CKTapbackBackdropCaptureLayer
 - (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)init;
-- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithCoder:(id)a3;
-- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithLayer:(id)a3;
+- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithCoder:(id)coder;
+- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithLayer:(id)layer;
 @end
 
 @implementation CKTapbackBackdropCaptureLayer
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithLayer:(id)a3
+- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_190D58140();
@@ -35,7 +35,7 @@
   return v6;
 }
 
-- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit29CKTapbackBackdropCaptureLayer)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);

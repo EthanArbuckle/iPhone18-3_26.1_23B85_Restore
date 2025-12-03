@@ -1,8 +1,8 @@
 @interface FBAAttachmentTableViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)dismiss:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)dismiss:(id)dismiss;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,15 +18,15 @@
   [(FBAAttachmentTableViewController *)self setTitle:v4];
 
   v5 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"dismiss:"];
-  v6 = [(FBAAttachmentTableViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(FBAAttachmentTableViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 
-  v7 = [(FBAAttachmentTableViewController *)self tableView];
-  [v7 registerClass:objc_opt_class() forCellReuseIdentifier:@"extensionCell"];
+  tableView = [(FBAAttachmentTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"extensionCell"];
 
-  v8 = [(FBAAttachmentTableViewController *)self devicesController];
+  devicesController = [(FBAAttachmentTableViewController *)self devicesController];
 
-  if (v8)
+  if (devicesController)
   {
     [(FBAAttachmentTableViewController *)self setClearsSelectionOnViewWillAppear:1];
     *buf = 0;
@@ -34,15 +34,15 @@
     v15 = 0x3032000000;
     v16 = sub_1000367F4;
     v17 = sub_100036804;
-    v18 = self;
-    v9 = [(FBAAttachmentTableViewController *)v18 devicesController];
-    v10 = [v9 currentDeviceBugSession];
+    selfCopy = self;
+    devicesController2 = [(FBAAttachmentTableViewController *)selfCopy devicesController];
+    currentDeviceBugSession = [devicesController2 currentDeviceBugSession];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10003680C;
     v12[3] = &unk_1000DF880;
     v12[4] = buf;
-    [v10 listDiagnosticExtensionsWithCompletion:v12];
+    [currentDeviceBugSession listDiagnosticExtensionsWithCompletion:v12];
 
     _Block_object_dispose(buf, 8);
   }
@@ -60,67 +60,67 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(FBAAttachmentTableViewController *)self extensions:a3];
+  v4 = [(FBAAttachmentTableViewController *)self extensions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"extensionCell" forIndexPath:v6];
-  v8 = [(FBAAttachmentTableViewController *)self extensions];
-  v9 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"extensionCell" forIndexPath:pathCopy];
+  extensions = [(FBAAttachmentTableViewController *)self extensions];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [extensions objectAtIndexedSubscript:v9];
 
-  v11 = [v10 name];
-  if (v11)
+  name = [v10 name];
+  if (name)
   {
-    v12 = [v10 name];
+    name2 = [v10 name];
   }
 
   else
   {
-    v12 = @"-";
+    name2 = @"-";
   }
 
-  v13 = [v7 textLabel];
-  [v13 setText:v12];
+  textLabel = [v7 textLabel];
+  [textLabel setText:name2];
 
-  if (v11)
+  if (name)
   {
   }
 
   v14 = +[UIColor labelColor];
-  v15 = [v7 textLabel];
-  [v15 setTextColor:v14];
+  textLabel2 = [v7 textLabel];
+  [textLabel2 setTextColor:v14];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(FBAAttachmentTableViewController *)self extensions];
-  v7 = [v5 row];
+  pathCopy = path;
+  extensions = [(FBAAttachmentTableViewController *)self extensions];
+  v7 = [pathCopy row];
 
-  v10 = [v6 objectAtIndexedSubscript:v7];
+  v10 = [extensions objectAtIndexedSubscript:v7];
 
-  v8 = [(FBAAttachmentTableViewController *)self devicesController];
-  v9 = [v8 currentDeviceAttachmentManager];
-  [v9 gatherFilesWithDedExtension:v10 answers:&__NSDictionary0__struct];
+  devicesController = [(FBAAttachmentTableViewController *)self devicesController];
+  currentDeviceAttachmentManager = [devicesController currentDeviceAttachmentManager];
+  [currentDeviceAttachmentManager gatherFilesWithDedExtension:v10 answers:&__NSDictionary0__struct];
 
   [(FBAAttachmentTableViewController *)self dismiss:self];
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v3 = [(FBAAttachmentTableViewController *)self parentViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  parentViewController = [(FBAAttachmentTableViewController *)self parentViewController];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

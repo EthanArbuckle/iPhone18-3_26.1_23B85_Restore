@@ -10,10 +10,10 @@
 - (NSUUID)cuuid;
 - (NSUUID)flowuuid;
 - (NSUUID)puuid;
-- (NWStatsConnSnapshot)initWithConnDetails:(const nstat_msg_src_details_conn *)a3 startTime:(double)a4 flowFlags:(unsigned int)a5;
+- (NWStatsConnSnapshot)initWithConnDetails:(const nstat_msg_src_details_conn *)details startTime:(double)time flowFlags:(unsigned int)flags;
 - (double)connSnapshotTimeIntervalSinceReferenceDate;
 - (double)connStartTimeIntervalSinceReferenceDate;
-- (id)_connDescriptorDictionaryForm:(nstat_connection_descriptor *)a3;
+- (id)_connDescriptorDictionaryForm:(nstat_connection_descriptor *)form;
 - (id)description;
 - (id)dictionaryForm;
 - (id)domainAttributedBundleId;
@@ -30,29 +30,29 @@
 
 - (BOOL)isSilent
 {
-  v3 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v3)
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties)
   {
-    v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v5 = [v4 isSilent];
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    isSilent = [ancestralProperties2 isSilent];
   }
 
   else
   {
-    v4 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v4)
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    if (ancestralProperties2)
     {
-      v6 = [(NWStatsConnSnapshot *)self currentProperties];
-      v5 = [v6 isSilent];
+      currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+      isSilent = [currentProperties isSilent];
     }
 
     else
     {
-      v5 = 0;
+      isSilent = 0;
     }
   }
 
-  return v5;
+  return isSilent;
 }
 
 - (id)description
@@ -66,9 +66,9 @@
 
     else
     {
-      v3 = [(NWStatsConnSnapshot *)self eventFlags];
+      eventFlags = [(NWStatsConnSnapshot *)self eventFlags];
       v4 = @"(flowUUID-changed)";
-      if ((v3 & 0x8000) == 0)
+      if ((eventFlags & 0x8000) == 0)
       {
         v4 = @"?";
       }
@@ -83,24 +83,24 @@
   v5 = MEMORY[0x277CCACA8];
   v21 = v4;
   v22 = [v5 alloc];
-  v20 = [(NWStatsConnSnapshot *)self processName];
-  v19 = [(NWStatsConnSnapshot *)self sourceIdentifier];
-  v18 = [(NWStatsSnapshot *)self snapshotReasonString];
-  v17 = [(NWStatsConnSnapshot *)self hasNetAccess];
-  v26 = [(NWStatsConnSnapshot *)self uuid];
-  v16 = [(NWStatsConnSnapshot *)self euuid];
-  v25 = [(NWStatsConnSnapshot *)self cuuid];
-  v24 = [(NWStatsConnSnapshot *)self puuid];
-  v6 = [(NWStatsConnSnapshot *)self flowuuid];
-  v15 = [(NWStatsConnSnapshot *)self domainName];
-  v7 = [(NWStatsConnSnapshot *)self domainOwner];
-  v14 = [(NWStatsConnSnapshot *)self domainTrackerContext];
-  v8 = [(NWStatsConnSnapshot *)self domainAttributedBundleId];
-  v9 = [(NWStatsConnSnapshot *)self isSilent];
-  v10 = [(NWStatsConnSnapshot *)self currentProperties];
-  v11 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  v12 = [(NWStatsSnapshot *)self extensions];
-  v23 = [v22 initWithFormat:@"%@ conn id %lld (%@) %@ net-access %d uuid %@ euuid %@ cuuid %@ puuid %@ fuuid %@ domain name %@ owner %@ context %@ attributed %@ silent %d current %@ ancestral %@ extensions %@", v20, v19, v18, v21, v17, v26, v16, v25, v24, v6, v15, v7, v14, v8, v9, v10, v11, v12];
+  processName = [(NWStatsConnSnapshot *)self processName];
+  sourceIdentifier = [(NWStatsConnSnapshot *)self sourceIdentifier];
+  snapshotReasonString = [(NWStatsSnapshot *)self snapshotReasonString];
+  hasNetAccess = [(NWStatsConnSnapshot *)self hasNetAccess];
+  uuid = [(NWStatsConnSnapshot *)self uuid];
+  euuid = [(NWStatsConnSnapshot *)self euuid];
+  cuuid = [(NWStatsConnSnapshot *)self cuuid];
+  puuid = [(NWStatsConnSnapshot *)self puuid];
+  flowuuid = [(NWStatsConnSnapshot *)self flowuuid];
+  domainName = [(NWStatsConnSnapshot *)self domainName];
+  domainOwner = [(NWStatsConnSnapshot *)self domainOwner];
+  domainTrackerContext = [(NWStatsConnSnapshot *)self domainTrackerContext];
+  domainAttributedBundleId = [(NWStatsConnSnapshot *)self domainAttributedBundleId];
+  isSilent = [(NWStatsConnSnapshot *)self isSilent];
+  currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  extensions = [(NWStatsSnapshot *)self extensions];
+  v23 = [v22 initWithFormat:@"%@ conn id %lld (%@) %@ net-access %d uuid %@ euuid %@ cuuid %@ puuid %@ fuuid %@ domain name %@ owner %@ context %@ attributed %@ silent %d current %@ ancestral %@ extensions %@", processName, sourceIdentifier, snapshotReasonString, v21, hasNetAccess, uuid, euuid, cuuid, puuid, flowuuid, domainName, domainOwner, domainTrackerContext, domainAttributedBundleId, isSilent, currentProperties, ancestralProperties, extensions];
 
   return v23;
 }
@@ -197,213 +197,213 @@
 
 - (id)domainName
 {
-  v3 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v3)
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties)
   {
-    v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v5 = [v4 domainName];
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    domainName = [ancestralProperties2 domainName];
   }
 
   else
   {
-    v4 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v4)
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    if (ancestralProperties2)
     {
-      v6 = [(NWStatsConnSnapshot *)self currentProperties];
-      v5 = [v6 domainName];
+      currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+      domainName = [currentProperties domainName];
     }
 
     else
     {
-      v5 = 0;
+      domainName = 0;
     }
   }
 
-  return v5;
+  return domainName;
 }
 
 - (id)domainOwner
 {
-  v3 = [(NWStatsConnSnapshot *)self currentProperties];
-  if (v3)
+  currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+  if (currentProperties)
   {
-    v4 = [(NWStatsConnSnapshot *)self currentProperties];
-    v5 = [v4 domainOwner];
+    currentProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    domainOwner = [currentProperties2 domainOwner];
   }
 
   else
   {
-    v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    if (v4)
+    currentProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    if (currentProperties2)
     {
-      v6 = [(NWStatsConnSnapshot *)self ancestralProperties];
-      v5 = [v6 domainOwner];
+      ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+      domainOwner = [ancestralProperties domainOwner];
     }
 
     else
     {
-      v5 = 0;
+      domainOwner = 0;
     }
   }
 
-  return v5;
+  return domainOwner;
 }
 
 - (id)domainTrackerContext
 {
-  v3 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v3)
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties)
   {
-    v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v5 = [v4 domainTrackerContext];
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    domainTrackerContext = [ancestralProperties2 domainTrackerContext];
   }
 
   else
   {
-    v4 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v4)
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    if (ancestralProperties2)
     {
-      v6 = [(NWStatsConnSnapshot *)self currentProperties];
-      v5 = [v6 domainTrackerContext];
+      currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+      domainTrackerContext = [currentProperties domainTrackerContext];
     }
 
     else
     {
-      v5 = 0;
+      domainTrackerContext = 0;
     }
   }
 
-  return v5;
+  return domainTrackerContext;
 }
 
 - (id)domainAttributedBundleId
 {
-  v3 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v3)
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties)
   {
-    v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v5 = [v4 domainAttributedBundleId];
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    domainAttributedBundleId = [ancestralProperties2 domainAttributedBundleId];
   }
 
   else
   {
-    v4 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v4)
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    if (ancestralProperties2)
     {
-      v6 = [(NWStatsConnSnapshot *)self currentProperties];
-      v5 = [v6 domainAttributedBundleId];
+      currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+      domainAttributedBundleId = [currentProperties domainAttributedBundleId];
     }
 
     else
     {
-      v5 = 0;
+      domainAttributedBundleId = 0;
     }
   }
 
-  return v5;
+  return domainAttributedBundleId;
 }
 
 - (BOOL)isTracker
 {
-  v3 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v3 && ([(NWStatsConnSnapshot *)self currentProperties], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties && ([(NWStatsConnSnapshot *)self currentProperties], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    if ([v6 isTracker])
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    if ([ancestralProperties2 isTracker])
     {
-      v7 = 1;
+      isTracker = 1;
     }
 
     else
     {
-      v11 = [(NWStatsConnSnapshot *)self currentProperties];
-      v7 = [v11 isTracker];
+      currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+      isTracker = [currentProperties isTracker];
     }
   }
 
   else
   {
-    v8 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v8)
+    currentProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    if (currentProperties2)
     {
-      v5 = v8;
-      v9 = [(NWStatsConnSnapshot *)self currentProperties];
+      v5 = currentProperties2;
+      currentProperties3 = [(NWStatsConnSnapshot *)self currentProperties];
     }
 
     else
     {
-      v10 = [(NWStatsConnSnapshot *)self ancestralProperties];
-      if (!v10)
+      ancestralProperties3 = [(NWStatsConnSnapshot *)self ancestralProperties];
+      if (!ancestralProperties3)
       {
-        v7 = 0;
+        isTracker = 0;
         goto LABEL_12;
       }
 
-      v5 = v10;
-      v9 = [(NWStatsConnSnapshot *)self ancestralProperties];
+      v5 = ancestralProperties3;
+      currentProperties3 = [(NWStatsConnSnapshot *)self ancestralProperties];
     }
 
-    v6 = v9;
-    v7 = [v9 isTracker];
+    ancestralProperties2 = currentProperties3;
+    isTracker = [currentProperties3 isTracker];
   }
 
 LABEL_12:
-  return v7;
+  return isTracker;
 }
 
 - (BOOL)isNonAppInitiated
 {
-  v3 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v3)
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties)
   {
-    v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v5 = [v4 isNonAppInitiated];
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    isNonAppInitiated = [ancestralProperties2 isNonAppInitiated];
   }
 
   else
   {
-    v4 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v4)
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    if (ancestralProperties2)
     {
-      v6 = [(NWStatsConnSnapshot *)self currentProperties];
-      v5 = [v6 isNonAppInitiated];
+      currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+      isNonAppInitiated = [currentProperties isNonAppInitiated];
     }
 
     else
     {
-      v5 = 0;
+      isNonAppInitiated = 0;
     }
   }
 
-  return v5;
+  return isNonAppInitiated;
 }
 
 - (NSData)remoteAddress
 {
-  v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v4 && (-[NWStatsConnSnapshot ancestralProperties](self, "ancestralProperties"), v2 = objc_claimAutoreleasedReturnValue(), [v2 remoteAddress], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties && (-[NWStatsConnSnapshot ancestralProperties](self, "ancestralProperties"), v2 = objc_claimAutoreleasedReturnValue(), [v2 remoteAddress], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v8 = [v7 remoteAddress];
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    remoteAddress = [ancestralProperties2 remoteAddress];
   }
 
   else
   {
-    v9 = [(NWStatsConnSnapshot *)self currentProperties];
-    if (v9)
+    currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+    if (currentProperties)
     {
-      v10 = [(NWStatsConnSnapshot *)self currentProperties];
-      v8 = [v10 remoteAddress];
+      currentProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+      remoteAddress = [currentProperties2 remoteAddress];
     }
 
     else
     {
-      v8 = 0;
+      remoteAddress = 0;
     }
 
-    if (!v4)
+    if (!ancestralProperties)
     {
       goto LABEL_9;
     }
@@ -411,47 +411,47 @@ LABEL_12:
 
 LABEL_9:
 
-  return v8;
+  return remoteAddress;
 }
 
 - (unsigned)remotePort
 {
-  v4 = [(NWStatsConnSnapshot *)self ancestralProperties];
-  if (v4)
+  ancestralProperties = [(NWStatsConnSnapshot *)self ancestralProperties];
+  if (ancestralProperties)
   {
-    v2 = [(NWStatsConnSnapshot *)self ancestralProperties];
-    v5 = [v2 remoteAddress];
-    if (v5)
+    ancestralProperties2 = [(NWStatsConnSnapshot *)self ancestralProperties];
+    remoteAddress = [ancestralProperties2 remoteAddress];
+    if (remoteAddress)
     {
-      v6 = v5;
-      v7 = [(NWStatsConnSnapshot *)self ancestralProperties];
-      v8 = [v7 remotePort];
+      v6 = remoteAddress;
+      ancestralProperties3 = [(NWStatsConnSnapshot *)self ancestralProperties];
+      remotePort = [ancestralProperties3 remotePort];
 
 LABEL_8:
       goto LABEL_9;
     }
   }
 
-  v9 = [(NWStatsConnSnapshot *)self currentProperties];
-  if (v9)
+  currentProperties = [(NWStatsConnSnapshot *)self currentProperties];
+  if (currentProperties)
   {
-    v10 = [(NWStatsConnSnapshot *)self currentProperties];
-    v8 = [v10 remotePort];
+    currentProperties2 = [(NWStatsConnSnapshot *)self currentProperties];
+    remotePort = [currentProperties2 remotePort];
   }
 
   else
   {
-    v8 = 0;
+    remotePort = 0;
   }
 
-  if (v4)
+  if (ancestralProperties)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  return v8;
+  return remotePort;
 }
 
 - (NSDate)connStartTimestamp
@@ -514,23 +514,23 @@ LABEL_9:
 
 - (NSData)parametersTLV
 {
-  v2 = [(NWStatsSnapshot *)self extensions];
+  extensions = [(NWStatsSnapshot *)self extensions];
   v3 = [MEMORY[0x277CCABB0] numberWithInt:2];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [extensions objectForKeyedSubscript:v3];
 
   return v4;
 }
 
 - (NSData)ancestralParametersTLV
 {
-  v2 = [(NWStatsSnapshot *)self extensions];
+  extensions = [(NWStatsSnapshot *)self extensions];
   v3 = [MEMORY[0x277CCABB0] numberWithInt:3];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [extensions objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-- (NWStatsConnSnapshot)initWithConnDetails:(const nstat_msg_src_details_conn *)a3 startTime:(double)a4 flowFlags:(unsigned int)a5
+- (NWStatsConnSnapshot)initWithConnDetails:(const nstat_msg_src_details_conn *)details startTime:(double)time flowFlags:(unsigned int)flags
 {
   v11.receiver = self;
   v11.super_class = NWStatsConnSnapshot;
@@ -538,58 +538,58 @@ LABEL_9:
   v9 = v8;
   if (v8)
   {
-    v8->_flags = a5;
-    memcpy(&v8->_nstat_details, a3, sizeof(v8->_nstat_details));
+    v8->_flags = flags;
+    memcpy(&v8->_nstat_details, details, sizeof(v8->_nstat_details));
     v9->_descriptor = &v9->_nstat_details.conn_desc;
-    v9->_startTimeInterval = a4;
+    v9->_startTimeInterval = time;
   }
 
   return v9;
 }
 
-- (id)_connDescriptorDictionaryForm:(nstat_connection_descriptor *)a3
+- (id)_connDescriptorDictionaryForm:(nstat_connection_descriptor *)form
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3->upid];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:form->upid];
   [v4 setObject:v5 forKeyedSubscript:@"upid"];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3->start_timestamp];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:form->start_timestamp];
   [v4 setObject:v6 forKeyedSubscript:@"start_timestamp"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3->timestamp];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:form->timestamp];
   [v4 setObject:v7 forKeyedSubscript:@"timestamp"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->pid];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:form->pid];
   [v4 setObject:v8 forKeyedSubscript:@"pid"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3->eupid];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:form->eupid];
   [v4 setObject:v9 forKeyedSubscript:@"eupid"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->epid];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:form->epid];
   [v4 setObject:v10 forKeyedSubscript:@"epid"];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3->pname];
+  v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:form->pname];
   [v4 setObject:v11 forKeyedSubscript:@"pname"];
 
-  v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3->cuuid];
-  v13 = [v12 UUIDString];
-  [v4 setObject:v13 forKeyedSubscript:@"cuuid"];
+  v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:form->cuuid];
+  uUIDString = [v12 UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"cuuid"];
 
-  v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3->fuuid];
-  v15 = [v14 UUIDString];
-  [v4 setObject:v15 forKeyedSubscript:@"fuuid"];
+  v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:form->fuuid];
+  uUIDString2 = [v14 UUIDString];
+  [v4 setObject:uUIDString2 forKeyedSubscript:@"fuuid"];
 
-  v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3->uuid];
-  v17 = [v16 UUIDString];
-  [v4 setObject:v17 forKeyedSubscript:@"uuid"];
+  v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:form->uuid];
+  uUIDString3 = [v16 UUIDString];
+  [v4 setObject:uUIDString3 forKeyedSubscript:@"uuid"];
 
-  v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3->euuid];
-  v19 = [v18 UUIDString];
-  [v4 setObject:v19 forKeyedSubscript:@"euuid"];
+  v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:form->euuid];
+  uUIDString4 = [v18 UUIDString];
+  [v4 setObject:uUIDString4 forKeyedSubscript:@"euuid"];
 
-  v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3->puuid];
-  v21 = [v20 UUIDString];
-  [v4 setObject:v21 forKeyedSubscript:@"puuid"];
+  v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:form->puuid];
+  uUIDString5 = [v20 UUIDString];
+  [v4 setObject:uUIDString5 forKeyedSubscript:@"puuid"];
 
   return v4;
 }
@@ -616,28 +616,28 @@ LABEL_9:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_flags];
   [v3 setObject:v13 forKeyedSubscript:@"_flags"];
 
-  v14 = [(NWStatsSnapshot *)self attributedEntity];
-  if (v14)
+  attributedEntity = [(NWStatsSnapshot *)self attributedEntity];
+  if (attributedEntity)
   {
-    [v3 setObject:v14 forKeyedSubscript:@"attributedEntity"];
+    [v3 setObject:attributedEntity forKeyedSubscript:@"attributedEntity"];
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEB68] null];
-    [v3 setObject:v15 forKeyedSubscript:@"attributedEntity"];
+    null = [MEMORY[0x277CBEB68] null];
+    [v3 setObject:null forKeyedSubscript:@"attributedEntity"];
   }
 
-  v16 = [(NWStatsSnapshot *)self delegateName];
-  if (v16)
+  delegateName = [(NWStatsSnapshot *)self delegateName];
+  if (delegateName)
   {
-    [v3 setObject:v16 forKeyedSubscript:@"delegateName"];
+    [v3 setObject:delegateName forKeyedSubscript:@"delegateName"];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CBEB68] null];
-    [v3 setObject:v17 forKeyedSubscript:@"delegateName"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [v3 setObject:null2 forKeyedSubscript:@"delegateName"];
   }
 
   v18 = [MEMORY[0x277CCABB0] numberWithInt:{-[NWStatsSnapshot attributionReason](self, "attributionReason")}];

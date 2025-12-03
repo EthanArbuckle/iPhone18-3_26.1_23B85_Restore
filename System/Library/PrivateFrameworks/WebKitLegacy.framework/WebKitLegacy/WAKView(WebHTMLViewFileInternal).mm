@@ -11,8 +11,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a1 subviews];
-  result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [self subviews];
+  result = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (result)
   {
     v6 = result;
@@ -24,7 +24,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -39,7 +39,7 @@
       }
 
       while (v6 != v8);
-      result = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      result = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
       v6 = result;
     }
 

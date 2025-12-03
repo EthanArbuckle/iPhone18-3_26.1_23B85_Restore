@@ -1,8 +1,8 @@
 @interface TUIResourceLoaderTaskTracker
-- (BOOL)stopTrackingController:(id)a3;
+- (BOOL)stopTrackingController:(id)controller;
 - (TUIResourceLoaderTaskTracker)init;
 - (void)_updateTaskWithHighestRequestedPriority;
-- (void)updatePriorty:(float)a3 forController:(id)a4;
+- (void)updatePriorty:(float)priorty forController:(id)controller;
 @end
 
 @implementation TUIResourceLoaderTaskTracker
@@ -28,8 +28,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_controllerPriorities allValues];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_controllerPriorities allValues];
+  v4 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -41,7 +41,7 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -53,7 +53,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -68,27 +68,27 @@
   [(TUIResourceLoaderTask *)self->_resourceLoaderTask setPriority:v12];
 }
 
-- (void)updatePriorty:(float)a3 forController:(id)a4
+- (void)updatePriorty:(float)priorty forController:(id)controller
 {
   controllerPriorities = self->_controllerPriorities;
-  v7 = a4;
-  *&v8 = a3;
+  controllerCopy = controller;
+  *&v8 = priorty;
   v9 = [NSNumber numberWithFloat:v8];
-  [(NSMutableDictionary *)controllerPriorities setObject:v9 forKey:v7];
+  [(NSMutableDictionary *)controllerPriorities setObject:v9 forKey:controllerCopy];
 
   [(TUIResourceLoaderTaskTracker *)self _updateTaskWithHighestRequestedPriority];
 }
 
-- (BOOL)stopTrackingController:(id)a3
+- (BOOL)stopTrackingController:(id)controller
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_controllerPriorities objectForKey:v4];
+  controllerCopy = controller;
+  v5 = [(NSMutableDictionary *)self->_controllerPriorities objectForKey:controllerCopy];
 
   if (v5)
   {
-    [(NSMutableDictionary *)self->_controllerPriorities removeObjectForKey:v4];
-    v6 = [(NSMutableDictionary *)self->_controllerPriorities allKeys];
-    v7 = [v6 count];
+    [(NSMutableDictionary *)self->_controllerPriorities removeObjectForKey:controllerCopy];
+    allKeys = [(NSMutableDictionary *)self->_controllerPriorities allKeys];
+    v7 = [allKeys count];
 
     if (!v7)
     {

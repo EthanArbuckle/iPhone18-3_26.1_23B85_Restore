@@ -1,5 +1,5 @@
 @interface TSPUnknownObjectUnarchiver
-- (TSPUnknownObjectUnarchiver)initWithMessageType:(unsigned int)a3 unarchiveClass:(Class)a4 message:()unique_ptr<google:(std:(int64_t)a6 :()unique_ptr<TSP:(std:(unint64_t)a8 :(id)a9 default_delete<TSP:(BOOL)a10 :(id)a11 IdentifierMap<BOOL>>>)a7 :(id)a12 IdentifierMap<BOOL> default_delete<google:(id)a13 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:;
+- (TSPUnknownObjectUnarchiver)initWithMessageType:(unsigned int)type unarchiveClass:(Class)class message:()unique_ptr<google:(std:(int64_t)google :()unique_ptr<TSP:(std:(unint64_t)p :(id)a9 default_delete<TSP:(BOOL)self0 :(id)self1 IdentifierMap<BOOL>>>)a7 :(id)self2 IdentifierMap<BOOL> default_delete<google:(id)self3 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:;
 - (const)message;
 - (id).cxx_construct;
 - (shared_ptr<TSP::ArchiveInfo>)archiveInfo;
@@ -7,7 +7,7 @@
 
 @implementation TSPUnknownObjectUnarchiver
 
-- (TSPUnknownObjectUnarchiver)initWithMessageType:(unsigned int)a3 unarchiveClass:(Class)a4 message:()unique_ptr<google:(std:(int64_t)a6 :()unique_ptr<TSP:(std:(unint64_t)a8 :(id)a9 default_delete<TSP:(BOOL)a10 :(id)a11 IdentifierMap<BOOL>>>)a7 :(id)a12 IdentifierMap<BOOL> default_delete<google:(id)a13 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:
+- (TSPUnknownObjectUnarchiver)initWithMessageType:(unsigned int)type unarchiveClass:(Class)class message:()unique_ptr<google:(std:(int64_t)google :()unique_ptr<TSP:(std:(unint64_t)p :(id)a9 default_delete<TSP:(BOOL)self0 :(id)self1 IdentifierMap<BOOL>>>)a7 :(id)self2 IdentifierMap<BOOL> default_delete<google:(id)self3 :protobuf::Message>>)a5 :protobuf::Message identifier:strongReferences:messageVersion:unknownContent:hasAlternateMessages:objectDelegate:lazyReferenceDelegate:delegate:
 {
   v13 = a9;
   v14 = a11;

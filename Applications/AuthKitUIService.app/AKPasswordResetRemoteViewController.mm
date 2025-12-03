@@ -1,35 +1,35 @@
 @interface AKPasswordResetRemoteViewController
-- (AKPasswordResetRemoteViewController)initWithContext:(id)a3;
+- (AKPasswordResetRemoteViewController)initWithContext:(id)context;
 - (BOOL)needsOptionsView;
-- (void)_passwordResetDidFinishWithResult:(id)a3 error:(id)a4;
-- (void)_presentPasswordResetFlowForUsername:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleCancellation:(id)a3;
-- (void)passwordResetControllerDidSelectClose:(id)a3;
-- (void)passwordResetControllerDidSelectOtherUser:(id)a3;
-- (void)passwordResetControllerDidSelectPrimaryUser:(id)a3;
+- (void)_passwordResetDidFinishWithResult:(id)result error:(id)error;
+- (void)_presentPasswordResetFlowForUsername:(id)username;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleCancellation:(id)cancellation;
+- (void)passwordResetControllerDidSelectClose:(id)close;
+- (void)passwordResetControllerDidSelectOtherUser:(id)user;
+- (void)passwordResetControllerDidSelectPrimaryUser:(id)user;
 - (void)setUpHostProxy;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willShowViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willShowViewController:(id)controller;
 @end
 
 @implementation AKPasswordResetRemoteViewController
 
 - (BOOL)needsOptionsView
 {
-  v3 = [(AKPasswordResetRemoteViewController *)self context];
-  v4 = [(AKAppleIDAuthenticationContext *)v3 username];
+  context = [(AKPasswordResetRemoteViewController *)self context];
+  username = [(AKAppleIDAuthenticationContext *)context username];
   v8 = 0;
   v6 = 0;
   v5 = 0;
-  if (v4)
+  if (username)
   {
-    v9 = [(AKPasswordResetRemoteViewController *)self context];
+    context2 = [(AKPasswordResetRemoteViewController *)self context];
     v8 = 1;
-    v7 = [(AKAppleIDAuthenticationContext *)v9 username];
+    username2 = [(AKAppleIDAuthenticationContext *)context2 username];
     v6 = 1;
-    v5 = [v7 length] != 0;
+    v5 = [username2 length] != 0;
   }
 
   if (v6)
@@ -43,70 +43,70 @@
   return v5;
 }
 
-- (AKPasswordResetRemoteViewController)initWithContext:(id)a3
+- (AKPasswordResetRemoteViewController)initWithContext:(id)context
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKPasswordResetRemoteViewController;
-  v8 = [(AKPasswordResetRemoteViewController *)&v6 initWithNibName:0 bundle:?];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKPasswordResetRemoteViewController *)&v6 initWithNibName:0 bundle:?];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_context, location[0]);
+    objc_storeStrong(&selfCopy->_context, location[0]);
   }
 
-  v5 = v8;
+  v5 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)viewDidLoad
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = AKPasswordResetRemoteViewController;
   [(AKPasswordResetRemoteViewController *)&v6 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v2 = [(AKPasswordResetRemoteViewController *)v8 view];
-  [v2 setBackgroundColor:v3];
+  view = [(AKPasswordResetRemoteViewController *)selfCopy view];
+  [view setBackgroundColor:v3];
 
   v4 = objc_alloc_init(UIViewController);
-  [(AKPasswordResetRemoteViewController *)v8 setFullscreenBackDropViewController:?];
+  [(AKPasswordResetRemoteViewController *)selfCopy setFullscreenBackDropViewController:?];
 
-  v5 = [(AKPasswordResetRemoteViewController *)v8 fullscreenBackDropViewController];
-  [(UIViewController *)v5 setModalPresentationStyle:0];
+  fullscreenBackDropViewController = [(AKPasswordResetRemoteViewController *)selfCopy fullscreenBackDropViewController];
+  [(UIViewController *)fullscreenBackDropViewController setModalPresentationStyle:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  appearCopy = appear;
   v13.receiver = self;
   v13.super_class = AKPasswordResetRemoteViewController;
-  [(AKPasswordResetRemoteViewController *)&v13 viewWillAppear:a3];
-  [(AKRemoteViewController *)v16 setupRemoteProxy];
-  v5 = [(AKPasswordResetRemoteViewController *)v16 fullscreenBackDropViewController];
-  v6 = [(UIViewController *)v5 presentingViewController];
+  [(AKPasswordResetRemoteViewController *)&v13 viewWillAppear:appear];
+  [(AKRemoteViewController *)selfCopy setupRemoteProxy];
+  fullscreenBackDropViewController = [(AKPasswordResetRemoteViewController *)selfCopy fullscreenBackDropViewController];
+  presentingViewController = [(UIViewController *)fullscreenBackDropViewController presentingViewController];
 
-  if (!v6)
+  if (!presentingViewController)
   {
-    v3 = v16;
-    v4 = [(AKPasswordResetRemoteViewController *)v16 fullscreenBackDropViewController];
+    v3 = selfCopy;
+    fullscreenBackDropViewController2 = [(AKPasswordResetRemoteViewController *)selfCopy fullscreenBackDropViewController];
     v7 = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_100005558;
     v11 = &unk_1000143C8;
-    v12 = v16;
-    [(AKPasswordResetRemoteViewController *)v3 presentViewController:v4 animated:0 completion:&v7];
+    v12 = selfCopy;
+    [(AKPasswordResetRemoteViewController *)v3 presentViewController:fullscreenBackDropViewController2 animated:0 completion:&v7];
 
     objc_storeStrong(&v12, 0);
   }
@@ -114,7 +114,7 @@
 
 - (void)setUpHostProxy
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v14 = 2;
@@ -127,29 +127,29 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_initWeak(&from, v16);
-  v3 = [(AKRemoteViewController *)v16 lookupConnection];
+  objc_initWeak(&from, selfCopy);
+  lookupConnection = [(AKRemoteViewController *)selfCopy lookupConnection];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_100005A58;
   v10 = &unk_100014310;
   objc_copyWeak(v11, &from);
-  v2 = [(NSXPCConnection *)v3 remoteObjectProxyWithErrorHandler:&v6];
-  [(AKPasswordResetRemoteViewController *)v16 setHostProxy:?];
+  v2 = [(NSXPCConnection *)lookupConnection remoteObjectProxyWithErrorHandler:&v6];
+  [(AKPasswordResetRemoteViewController *)selfCopy setHostProxy:?];
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&from);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, completion);
   v24 = _AKLogSystem();
   v23 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -161,11 +161,11 @@
   }
 
   objc_storeStrong(&v24, 0);
-  v8 = [location[0] userInfo];
-  v21 = [v8 objectForKeyedSubscript:@"context"];
+  userInfo = [location[0] userInfo];
+  v21 = [userInfo objectForKeyedSubscript:@"context"];
 
-  v9 = v27;
-  v10 = [location[0] xpcEndpoint];
+  v9 = selfCopy;
+  xpcEndpoint = [location[0] xpcEndpoint];
   [(AKRemoteViewController *)v9 setUpLookupConnection:?];
 
   if ([v21 length])
@@ -175,7 +175,7 @@
     v19 = v20;
     v7 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:v21 error:&v19];
     objc_storeStrong(&v20, v19);
-    [(AKPasswordResetRemoteViewController *)v27 setContext:v7];
+    [(AKPasswordResetRemoteViewController *)selfCopy setContext:v7];
 
     if (v20)
     {
@@ -218,25 +218,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)handleCancellation:(id)a3
+- (void)handleCancellation:(id)cancellation
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, cancellation);
+  v3 = selfCopy;
   v4 = [NSError ak_errorWithCode:-7003];
   [(AKPasswordResetRemoteViewController *)v3 _passwordResetDidFinishWithResult:0 error:?];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)passwordResetControllerDidSelectPrimaryUser:(id)a3
+- (void)passwordResetControllerDidSelectPrimaryUser:(id)user
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, user);
   v10 = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -248,20 +248,20 @@
   }
 
   objc_storeStrong(&v10, 0);
-  v3 = v12;
-  v5 = [(AKPasswordResetRemoteViewController *)v12 context];
-  v4 = [(AKAppleIDAuthenticationContext *)v5 username];
+  v3 = selfCopy;
+  context = [(AKPasswordResetRemoteViewController *)selfCopy context];
+  username = [(AKAppleIDAuthenticationContext *)context username];
   [(AKPasswordResetRemoteViewController *)v3 _presentPasswordResetFlowForUsername:?];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)passwordResetControllerDidSelectOtherUser:(id)a3
+- (void)passwordResetControllerDidSelectOtherUser:(id)user
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, user);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -273,16 +273,16 @@
   }
 
   objc_storeStrong(&v7, 0);
-  [(AKPasswordResetRemoteViewController *)v9 _presentPasswordResetFlowForUsername:0];
+  [(AKPasswordResetRemoteViewController *)selfCopy _presentPasswordResetFlowForUsername:0];
   objc_storeStrong(location, 0);
 }
 
-- (void)passwordResetControllerDidSelectClose:(id)a3
+- (void)passwordResetControllerDidSelectClose:(id)close
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, close);
   v9 = _AKLogSystem();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -294,19 +294,19 @@
   }
 
   objc_storeStrong(&v9, 0);
-  v3 = v11;
+  v3 = selfCopy;
   v4 = [NSError ak_errorWithCode:-7003];
   [(AKPasswordResetRemoteViewController *)v3 _passwordResetDidFinishWithResult:0 error:?];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)willShowViewController:(id)a3
+- (void)willShowViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -316,12 +316,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_presentPasswordResetFlowForUsername:(id)a3
+- (void)_presentPasswordResetFlowForUsername:(id)username
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -338,38 +338,38 @@
   [v24 setIsEphemeral:1];
   [v24 setAuthenticationType:2];
   [v24 setNeedsCredentialRecovery:1];
-  v7 = [(AKPasswordResetRemoteViewController *)v29 context];
-  [v24 setIsNativeTakeover:{-[AKAppleIDAuthenticationContext isNativeTakeover](v7, "isNativeTakeover")}];
+  context = [(AKPasswordResetRemoteViewController *)selfCopy context];
+  [v24 setIsNativeTakeover:{-[AKAppleIDAuthenticationContext isNativeTakeover](context, "isNativeTakeover")}];
 
   [v24 setIsRequestedFromOOPViewService:1];
-  v8 = [(AKPasswordResetRemoteViewController *)v29 context];
-  [v24 setServiceType:{-[AKAppleIDAuthenticationContext serviceType](v8, "serviceType")}];
+  context2 = [(AKPasswordResetRemoteViewController *)selfCopy context];
+  [v24 setServiceType:{-[AKAppleIDAuthenticationContext serviceType](context2, "serviceType")}];
 
-  v10 = [(AKPasswordResetRemoteViewController *)v29 context];
-  v9 = [(AKAppleIDAuthenticationContext *)v10 serviceIdentifier];
+  context3 = [(AKPasswordResetRemoteViewController *)selfCopy context];
+  serviceIdentifier = [(AKAppleIDAuthenticationContext *)context3 serviceIdentifier];
   [v24 setServiceIdentifier:?];
 
-  v12 = [(AKPasswordResetRemoteViewController *)v29 context];
-  v11 = [(AKAppleIDAuthenticationContext *)v12 httpHeadersForRemoteUI];
+  context4 = [(AKPasswordResetRemoteViewController *)selfCopy context];
+  httpHeadersForRemoteUI = [(AKAppleIDAuthenticationContext *)context4 httpHeadersForRemoteUI];
   [v24 setHttpHeadersForRemoteUI:?];
 
   [v24 setShouldPromptForPasswordOnly:0];
   [v24 setIsUsernameEditable:0];
-  [v24 setForceInlinePresentation:{-[AKPasswordResetRemoteViewController needsOptionsView](v29, "needsOptionsView")}];
-  if ([(AKPasswordResetRemoteViewController *)v29 needsOptionsView])
+  [v24 setForceInlinePresentation:{-[AKPasswordResetRemoteViewController needsOptionsView](selfCopy, "needsOptionsView")}];
+  if ([(AKPasswordResetRemoteViewController *)selfCopy needsOptionsView])
   {
-    v6 = [(AKPasswordResetRemoteViewController *)v29 rootNavigationController];
+    rootNavigationController = [(AKPasswordResetRemoteViewController *)selfCopy rootNavigationController];
     [v24 setPresentingViewController:?];
   }
 
   else
   {
-    v5 = [(AKPasswordResetRemoteViewController *)v29 fullscreenBackDropViewController];
+    fullscreenBackDropViewController = [(AKPasswordResetRemoteViewController *)selfCopy fullscreenBackDropViewController];
     [v24 setPresentingViewController:?];
   }
 
-  [v24 setDelegate:v29];
-  objc_initWeak(&from, v29);
+  [v24 setDelegate:selfCopy];
+  objc_initWeak(&from, selfCopy);
   v22 = objc_alloc_init(AKAppleIDAuthenticationController);
   v4 = v22;
   v3 = v24;
@@ -389,14 +389,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_passwordResetDidFinishWithResult:(id)a3 error:(id)a4
+- (void)_passwordResetDidFinishWithResult:(id)result error:(id)error
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, error);
   v29 = _AKLogSystem();
   v28 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -417,7 +417,7 @@
   }
 
   objc_storeStrong(&v26, 0);
-  objc_initWeak(&from, v32);
+  objc_initWeak(&from, selfCopy);
   v17 = _NSConcreteStackBlock;
   v18 = -1073741824;
   v19 = 0;
@@ -425,7 +425,7 @@
   v21 = &unk_100014620;
   objc_copyWeak(&v22, &from);
   v23 = objc_retainBlock(&v17);
-  v4 = [(AKPasswordResetRemoteViewController *)v32 hostProxy];
+  hostProxy = [(AKPasswordResetRemoteViewController *)selfCopy hostProxy];
   v5 = location[0];
   v6 = v30;
   v10 = _NSConcreteStackBlock;
@@ -435,7 +435,7 @@
   v14 = &unk_100014670;
   objc_copyWeak(v16, &from);
   v15 = v23;
-  [(AKPasswordResetPresenterHostProtocol *)v4 passwordResetFinishedWithResult:v5 error:v6 completion:&v10];
+  [(AKPasswordResetPresenterHostProtocol *)hostProxy passwordResetFinishedWithResult:v5 error:v6 completion:&v10];
 
   objc_storeStrong(&v15, 0);
   objc_destroyWeak(v16);

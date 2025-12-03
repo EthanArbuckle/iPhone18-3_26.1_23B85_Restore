@@ -13,9 +13,9 @@
 
 - (id)localizedName
 {
-  if ([a1 accountType])
+  if ([self accountType])
   {
-    [a1 name];
+    [self name];
   }
 
   else
@@ -29,7 +29,7 @@
 
 - (uint64_t)legacyAccountType
 {
-  result = [a1 accountType];
+  result = [self accountType];
   if (result != 2)
   {
     return result == 1;
@@ -40,44 +40,44 @@
 
 - (id)emailAddress
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [a1 accountIdentifier];
-  v4 = [v2 accountWithIdentifier:v3];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  accountIdentifier = [self accountIdentifier];
+  v4 = [defaultStore accountWithIdentifier:accountIdentifier];
 
   if (!v4)
   {
     v5 = os_log_create("com.apple.notes", "HTML");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(NoteAccountObject(ICLegacyAccount) *)a1 emailAddress];
+      [(NoteAccountObject(ICLegacyAccount) *)self emailAddress];
     }
   }
 
-  v6 = [v4 username];
+  username = [v4 username];
 
-  return v6;
+  return username;
 }
 
 - (uint64_t)isManaged
 {
-  v2 = [a1 accountIdentifier];
-  v3 = [v2 length];
+  accountIdentifier = [self accountIdentifier];
+  v3 = [accountIdentifier length];
 
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277D36178] sharedInstance];
-  v5 = [a1 accountIdentifier];
-  v6 = [v4 isManagedACAccountWithIdentifier:v5];
+  mEMORY[0x277D36178] = [MEMORY[0x277D36178] sharedInstance];
+  accountIdentifier2 = [self accountIdentifier];
+  v6 = [mEMORY[0x277D36178] isManagedACAccountWithIdentifier:accountIdentifier2];
 
   return v6;
 }
 
 - (id)localizedAttachmentsNotSupportedReason
 {
-  if ([a1 accountType] == 2)
+  if ([self accountType] == 2)
   {
     v1 = __ICLocalizedFrameworkString_impl(@"Exchange accounts don’t support attachments.", @"Exchange accounts don’t support attachments.", 0, 1);
   }
@@ -97,8 +97,8 @@
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 folders];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  folders = [self folders];
+  v2 = [folders countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -108,7 +108,7 @@
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(folders);
         }
 
         if ([*(*(&v6 + 1) + 8 * i) isCustomFolder])
@@ -118,7 +118,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [folders countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;
@@ -139,15 +139,15 @@ LABEL_11:
   v5 = ICProtocolCast();
   if (v5)
   {
-    v6 = [a1 name];
-    v7 = [v5 name];
-    v8 = [v6 localizedCaseInsensitiveCompare:v7];
+    name = [self name];
+    name2 = [v5 name];
+    v8 = [name localizedCaseInsensitiveCompare:name2];
   }
 
   else
   {
-    v6 = ICProtocolCast();
-    if (v6)
+    name = ICProtocolCast();
+    if (name)
     {
       v8 = -1;
     }
@@ -157,7 +157,7 @@ LABEL_11:
       v9 = os_log_create("com.apple.notes", "HTML");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(NoteAccountObject(ICLegacyAccount) *)a1 compare:v4, v9];
+        [(NoteAccountObject(ICLegacyAccount) *)self compare:v4, v9];
       }
 
       v8 = 0;
@@ -171,7 +171,7 @@ LABEL_11:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "No apple account found for note account %@", &v2, 0xCu);
 }
 

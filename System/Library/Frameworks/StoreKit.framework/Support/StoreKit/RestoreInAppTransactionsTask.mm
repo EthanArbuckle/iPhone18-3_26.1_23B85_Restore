@@ -1,24 +1,24 @@
 @interface RestoreInAppTransactionsTask
-- (BOOL)_isAccountError:(id)a3;
-- (RestoreInAppTransactionsTask)initWithClient:(id)a3;
-- (void)_authenticateAndRunRequestWithCompletionHandler:(id)a3;
-- (void)_processResult:(id)a3 error:(id)a4;
-- (void)_runRequestWithAccount:(id)a3 completionHandler:(id)a4;
+- (BOOL)_isAccountError:(id)error;
+- (RestoreInAppTransactionsTask)initWithClient:(id)client;
+- (void)_authenticateAndRunRequestWithCompletionHandler:(id)handler;
+- (void)_processResult:(id)result error:(id)error;
+- (void)_runRequestWithAccount:(id)account completionHandler:(id)handler;
 - (void)main;
 @end
 
 @implementation RestoreInAppTransactionsTask
 
-- (RestoreInAppTransactionsTask)initWithClient:(id)a3
+- (RestoreInAppTransactionsTask)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = RestoreInAppTransactionsTask;
   v6 = [(Task *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong((v6 + 50), a3);
+    objc_storeStrong((v6 + 50), client);
     v8 = +[NSUUID lib_shortLogKey];
     v9 = *(v7 + 74);
     *(v7 + 74) = v8;
@@ -38,16 +38,16 @@
   if (os_log_type_enabled(qword_1003D4300, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(RestoreInAppTransactionsTask *)self logKey];
+    logKey = [(RestoreInAppTransactionsTask *)self logKey];
     *buf = 138543362;
-    v12 = v5;
+    v12 = logKey;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Restoring completed purchases", buf, 0xCu);
   }
 
-  v6 = [(RestoreInAppTransactionsTask *)self client];
-  v7 = [v6 objc_clientType];
+  client = [(RestoreInAppTransactionsTask *)self client];
+  objc_clientType = [client objc_clientType];
 
-  if (v7 == 3)
+  if (objc_clientType == 3)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -59,21 +59,21 @@
 
   else
   {
-    v8 = [(RestoreInAppTransactionsTask *)self client];
+    client2 = [(RestoreInAppTransactionsTask *)self client];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10004C5C0;
     v9[3] = &unk_10037F890;
     v9[4] = self;
-    [_TtC9storekitd19objc_AccountManager accountWithClient:v8 completionHandler:v9];
+    [_TtC9storekitd19objc_AccountManager accountWithClient:client2 completionHandler:v9];
   }
 }
 
-- (BOOL)_isAccountError:(id)a3
+- (BOOL)_isAccountError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:AMSErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:AMSErrorDomain])
   {
 
 LABEL_6:
@@ -81,33 +81,33 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v5 = [v3 code];
+  code = [errorCopy code];
 
-  if (v5 != 305)
+  if (code != 305)
   {
     goto LABEL_6;
   }
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:AMSErrorUserInfoKeyServerErrorCode];
-  v8 = [v7 integerValue];
+  userInfo = [errorCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:AMSErrorUserInfoKeyServerErrorCode];
+  integerValue = [v7 integerValue];
 
-  if ((v8 - 2002) >= 0x36)
+  if ((integerValue - 2002) >= 0x36)
   {
     goto LABEL_6;
   }
 
-  v9 = 0x20000100000001uLL >> (v8 + 46);
+  v9 = 0x20000100000001uLL >> (integerValue + 46);
 LABEL_7:
 
   return v9 & 1;
 }
 
-- (void)_processResult:(id)a3 error:(id)a4
+- (void)_processResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (qword_1003D4330 != -1)
     {
@@ -120,18 +120,18 @@ LABEL_7:
       sub_1002CDAA0(v8, self);
     }
 
-    [(AsyncTask *)self completeWithError:v7];
+    [(AsyncTask *)self completeWithError:errorCopy];
   }
 
   else
   {
-    v9 = [v6 object];
-    if (v9)
+    object = [resultCopy object];
+    if (object)
     {
-      v10 = [(RestoreInAppTransactionsTask *)self client];
-      v11 = [(RestoreInAppTransactionsTask *)self receiptInstallURL];
-      v12 = [(RestoreInAppTransactionsTask *)self logKey];
-      v13 = sub_100027E30(v9, v10, v11, 1, v12, 0, 0);
+      client = [(RestoreInAppTransactionsTask *)self client];
+      receiptInstallURL = [(RestoreInAppTransactionsTask *)self receiptInstallURL];
+      logKey = [(RestoreInAppTransactionsTask *)self logKey];
+      v13 = sub_100027E30(object, client, receiptInstallURL, 1, logKey, 0, 0);
       v14 = *(&self->_receiptInstallURL + 2);
       *(&self->_receiptInstallURL + 2) = v13;
     }
@@ -140,33 +140,33 @@ LABEL_7:
   }
 }
 
-- (void)_runRequestWithAccount:(id)a3 completionHandler:(id)a4
+- (void)_runRequestWithAccount:(id)account completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RestoreInAppTransactionsTask *)self client];
-  v9 = [v8 bag];
+  handlerCopy = handler;
+  accountCopy = account;
+  client = [(RestoreInAppTransactionsTask *)self client];
+  v9 = [client bag];
 
-  v10 = [(RestoreInAppTransactionsTask *)self client];
-  v11 = [v10 urlSession];
+  client2 = [(RestoreInAppTransactionsTask *)self client];
+  urlSession = [client2 urlSession];
 
   v12 = [[AMSURLRequestEncoder alloc] initWithBag:v9];
-  [v12 setAccount:v7];
+  [v12 setAccount:accountCopy];
 
-  v13 = [(RestoreInAppTransactionsTask *)self client];
-  v14 = [v13 processInfo];
-  [v12 setClientInfo:v14];
+  client3 = [(RestoreInAppTransactionsTask *)self client];
+  processInfo = [client3 processInfo];
+  [v12 setClientInfo:processInfo];
 
-  v15 = [(RestoreInAppTransactionsTask *)self logKey];
-  [v12 setLogUUID:v15];
+  logKey = [(RestoreInAppTransactionsTask *)self logKey];
+  [v12 setLogUUID:logKey];
 
-  v16 = [(RestoreInAppTransactionsTask *)self client];
-  v17 = [(RestoreInAppTransactionsTask *)self receiptInstallURL];
-  v18 = [v16 queryWith:1 customReceiptURL:v17];
+  client4 = [(RestoreInAppTransactionsTask *)self client];
+  receiptInstallURL = [(RestoreInAppTransactionsTask *)self receiptInstallURL];
+  v18 = [client4 queryWith:1 customReceiptURL:receiptInstallURL];
   v19 = [v18 mutableCopy];
 
-  v20 = [(RestoreInAppTransactionsTask *)self applicationUsername];
-  [v19 setObject:v20 forKeyedSubscript:@"applicationUsername"];
+  applicationUsername = [(RestoreInAppTransactionsTask *)self applicationUsername];
+  [v19 setObject:applicationUsername forKeyedSubscript:@"applicationUsername"];
 
   v21 = +[_TtC9storekitd6BagKey restoreTransactionsURL];
   v22 = [v9 URLForKey:v21];
@@ -176,20 +176,20 @@ LABEL_7:
   v26[1] = 3221225472;
   v26[2] = sub_10004CBDC;
   v26[3] = &unk_100382050;
-  v28 = self;
-  v29 = v6;
-  v27 = v11;
-  v24 = v11;
-  v25 = v6;
+  selfCopy = self;
+  v29 = handlerCopy;
+  v27 = urlSession;
+  v24 = urlSession;
+  v25 = handlerCopy;
   [v23 resultWithCompletion:v26];
 }
 
-- (void)_authenticateAndRunRequestWithCompletionHandler:(id)a3
+- (void)_authenticateAndRunRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RestoreInAppTransactionsTask *)self dialogContext];
+  handlerCopy = handler;
+  dialogContext = [(RestoreInAppTransactionsTask *)self dialogContext];
 
-  if (v5)
+  if (dialogContext)
   {
     if (qword_1003D4330 != -1)
     {
@@ -200,22 +200,22 @@ LABEL_7:
     if (os_log_type_enabled(qword_1003D4300, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(RestoreInAppTransactionsTask *)self logKey];
+      logKey = [(RestoreInAppTransactionsTask *)self logKey];
       *buf = 138543362;
-      v19 = v8;
+      v19 = logKey;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Sending authentication request", buf, 0xCu);
     }
 
-    v9 = [(RestoreInAppTransactionsTask *)self client];
-    v10 = [(RestoreInAppTransactionsTask *)self dialogContext];
-    v11 = [(RestoreInAppTransactionsTask *)self logKey];
+    client = [(RestoreInAppTransactionsTask *)self client];
+    dialogContext2 = [(RestoreInAppTransactionsTask *)self dialogContext];
+    logKey2 = [(RestoreInAppTransactionsTask *)self logKey];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10004CFD0;
     v16[3] = &unk_100380E38;
     v16[4] = self;
-    v17 = v4;
-    [_TtC9storekitd19objc_AccountManager authenticateWithClient:v9 reason:@"Restore In App" dialogContext:v10 logKey:v11 completionHandler:v16];
+    v17 = handlerCopy;
+    [_TtC9storekitd19objc_AccountManager authenticateWithClient:client reason:@"Restore In App" dialogContext:dialogContext2 logKey:logKey2 completionHandler:v16];
   }
 
   else
@@ -229,14 +229,14 @@ LABEL_7:
     if (os_log_type_enabled(qword_1003D4300, OS_LOG_TYPE_DEFAULT))
     {
       v13 = v12;
-      v14 = [(RestoreInAppTransactionsTask *)self logKey];
+      logKey3 = [(RestoreInAppTransactionsTask *)self logKey];
       *buf = 138543362;
-      v19 = v14;
+      v19 = logKey3;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] No client available to handle authentication request", buf, 0xCu);
     }
 
     v15 = ASDErrorWithDescription();
-    (*(v4 + 2))(v4, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 

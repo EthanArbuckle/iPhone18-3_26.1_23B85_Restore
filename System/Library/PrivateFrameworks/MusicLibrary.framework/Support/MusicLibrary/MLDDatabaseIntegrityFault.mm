@@ -1,10 +1,10 @@
 @interface MLDDatabaseIntegrityFault
-- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)a3 withError:(id *)a4;
+- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)handle withError:(id *)error;
 @end
 
 @implementation MLDDatabaseIntegrityFault
 
-- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)a3 withError:(id *)a4
+- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)handle withError:(id *)error
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);

@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&NSString_CASE_INSENSITIVE_ORDER_, objc_alloc_init(JavaLangString_CaseInsensitiveComparator));
     v2 = [IOSObjectArray newArrayWithLength:0 type:JavaIoObjectStreamField_class_()];

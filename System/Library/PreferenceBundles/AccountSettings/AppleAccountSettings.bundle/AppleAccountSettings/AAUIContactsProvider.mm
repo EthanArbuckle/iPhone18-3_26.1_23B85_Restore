@@ -1,11 +1,11 @@
 @interface AAUIContactsProvider
 - (AAUIContactsProvider)init;
-- (void)_fetchImageDataForLocalContact:(id)a3 ofSize:(double)a4 withCompletion:(id)a5;
-- (void)_fetchImagesForContacts:(id)a3 ofSize:(double)a4 completion:(id)a5;
-- (void)_fetchServerImageDataFor:(id)a3 WithCompletion:(id)a4;
-- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)a3 andCompletion:(id)a4;
-- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)a3 telemetryFlowID:(id)a4 andCompletion:(id)a5;
-- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)a3 andCompletion:(id)a4;
+- (void)_fetchImageDataForLocalContact:(id)contact ofSize:(double)size withCompletion:(id)completion;
+- (void)_fetchImagesForContacts:(id)contacts ofSize:(double)size completion:(id)completion;
+- (void)_fetchServerImageDataFor:(id)for WithCompletion:(id)completion;
+- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)size andCompletion:(id)completion;
+- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)size telemetryFlowID:(id)d andCompletion:(id)completion;
+- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)size andCompletion:(id)completion;
 @end
 
 @implementation AAUIContactsProvider
@@ -25,59 +25,59 @@
   return v2;
 }
 
-- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)a3 andCompletion:(id)a4
+- (void)fetchSuggestedCustodiansWithImagesOfSize:(double)size andCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4B70;
   v6[3] = &unk_592B8;
-  v9 = a3;
-  v7 = self;
-  v8 = a4;
-  v5.receiver = v7;
+  sizeCopy = size;
+  selfCopy = self;
+  completionCopy = completion;
+  v5.receiver = selfCopy;
   v5.super_class = AAUIContactsProvider;
-  v4 = v8;
+  v4 = completionCopy;
   [(AAUIContactsProvider *)&v5 fetchSuggestedCustodians:v6];
 }
 
-- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)a3 telemetryFlowID:(id)a4 andCompletion:(id)a5
+- (void)fetchSuggestedCustodiansForUpsellWithImagesOfSize:(double)size telemetryFlowID:(id)d andCompletion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4C38;
   v7[3] = &unk_592B8;
-  v10 = a3;
-  v8 = self;
-  v9 = a5;
-  v6 = v9;
-  [(AAUIContactsProvider *)v8 fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:a4 completion:v7];
+  sizeCopy = size;
+  selfCopy = self;
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(AAUIContactsProvider *)selfCopy fetchSuggestedCustodiansForUpsellWithTelemetryFlowID:d completion:v7];
 }
 
-- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)a3 andCompletion:(id)a4
+- (void)fetchSuggestedBeneficiariesWithImagesOfSize:(double)size andCompletion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4D08;
   v6[3] = &unk_592B8;
-  v9 = a3;
-  v7 = self;
-  v8 = a4;
-  v5.receiver = v7;
+  sizeCopy = size;
+  selfCopy = self;
+  completionCopy = completion;
+  v5.receiver = selfCopy;
   v5.super_class = AAUIContactsProvider;
-  v4 = v8;
+  v4 = completionCopy;
   [(AAUIContactsProvider *)&v5 fetchSuggestedBeneficiaries:v6];
 }
 
-- (void)_fetchImagesForContacts:(id)a3 ofSize:(double)a4 completion:(id)a5
+- (void)_fetchImagesForContacts:(id)contacts ofSize:(double)size completion:(id)completion
 {
-  v8 = a3;
-  v20 = a5;
+  contactsCopy = contacts;
+  completionCopy = completion;
   v9 = dispatch_group_create();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v8;
+  v10 = contactsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -93,9 +93,9 @@
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 imageData];
+        imageData = [v15 imageData];
 
-        if (!v16)
+        if (!imageData)
         {
           dispatch_group_enter(v9);
           v24[0] = _NSConcreteStackBlock;
@@ -104,7 +104,7 @@
           v24[3] = &unk_592E0;
           v24[4] = v15;
           v25 = v9;
-          [(AAUIContactsProvider *)self _fetchImageDataForLocalContact:v15 ofSize:v24 withCompletion:a4];
+          [(AAUIContactsProvider *)self _fetchImageDataForLocalContact:v15 ofSize:v24 withCompletion:size];
         }
       }
 
@@ -120,63 +120,63 @@
   block[2] = sub_4FAC;
   block[3] = &unk_59308;
   v22 = v10;
-  v23 = v20;
+  v23 = completionCopy;
   v18 = v10;
-  v19 = v20;
+  v19 = completionCopy;
   dispatch_group_notify(v9, v17, block);
 }
 
-- (void)_fetchImageDataForLocalContact:(id)a3 ofSize:(double)a4 withCompletion:(id)a5
+- (void)_fetchImageDataForLocalContact:(id)contact ofSize:(double)size withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   contactsManager = self->_contactsManager;
-  v11 = [v8 handle];
-  v12 = [(AAContactsManager *)contactsManager contactForHandle:v11];
+  handle = [contactCopy handle];
+  v12 = [(AAContactsManager *)contactsManager contactForHandle:handle];
 
-  v13 = [v12 imageData];
+  imageData = [v12 imageData];
 
-  if (v13)
+  if (imageData)
   {
-    v14 = [v12 imageData];
+    imageData2 = [v12 imageData];
   }
 
   else
   {
-    v15 = [v12 thumbnailImageData];
+    thumbnailImageData = [v12 thumbnailImageData];
 
-    if (!v15)
+    if (!thumbnailImageData)
     {
-      v17 = [v8 familyDSID];
+      familyDSID = [contactCopy familyDSID];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_514C;
       v18[3] = &unk_59330;
-      v19 = v8;
-      v21 = a4;
-      v20 = v9;
-      [(AAUIContactsProvider *)self _fetchServerImageDataFor:v17 WithCompletion:v18];
+      v19 = contactCopy;
+      sizeCopy = size;
+      v20 = completionCopy;
+      [(AAUIContactsProvider *)self _fetchServerImageDataFor:familyDSID WithCompletion:v18];
 
       goto LABEL_6;
     }
 
-    v14 = [v12 thumbnailImageData];
+    imageData2 = [v12 thumbnailImageData];
   }
 
-  v16 = v14;
-  (*(v9 + 2))(v9, v14);
+  v16 = imageData2;
+  (*(completionCopy + 2))(completionCopy, imageData2);
 
 LABEL_6:
 }
 
-- (void)_fetchServerImageDataFor:(id)a3 WithCompletion:(id)a4
+- (void)_fetchServerImageDataFor:(id)for WithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  forCopy = for;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (forCopy)
   {
-    v8 = [[FAFetchFamilyPhotoRequest alloc] initWithFamilyMemberDSID:v5 size:1 localFallback:1];
+    v8 = [[FAFetchFamilyPhotoRequest alloc] initWithFamilyMemberDSID:forCopy size:1 localFallback:1];
     [v8 setUseMonogramAsLastResort:0];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -188,7 +188,7 @@ LABEL_6:
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

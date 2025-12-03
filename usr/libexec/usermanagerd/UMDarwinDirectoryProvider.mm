@@ -1,26 +1,26 @@
 @interface UMDarwinDirectoryProvider
-- (BOOL)updateLocalUsersAndGroupsWithError:(id *)a3 updater:(id)a4;
-- (void)initializeLocalUsersAndGroups:(id)a3;
+- (BOOL)updateLocalUsersAndGroupsWithError:(id *)error updater:(id)updater;
+- (void)initializeLocalUsersAndGroups:(id)groups;
 @end
 
 @implementation UMDarwinDirectoryProvider
 
-- (void)initializeLocalUsersAndGroups:(id)a3
+- (void)initializeLocalUsersAndGroups:(id)groups
 {
-  v4 = a3;
-  v3 = v4;
+  groupsCopy = groups;
+  v3 = groupsCopy;
   DDIInitializeLocalUsersAndGroups();
 }
 
-- (BOOL)updateLocalUsersAndGroupsWithError:(id *)a3 updater:(id)a4
+- (BOOL)updateLocalUsersAndGroupsWithError:(id *)error updater:(id)updater
 {
-  v5 = a4;
-  if (a3)
+  updaterCopy = updater;
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
-  v6 = v5;
+  v6 = updaterCopy;
   v7 = DDIUpdateLocalUsersAndGroups();
   v8 = 0;
   if ((v7 & 1) == 0)
@@ -62,10 +62,10 @@
       free(v13);
     }
 
-    if (a3)
+    if (error)
     {
       v14 = v8;
-      *a3 = v8;
+      *error = v8;
     }
   }
 

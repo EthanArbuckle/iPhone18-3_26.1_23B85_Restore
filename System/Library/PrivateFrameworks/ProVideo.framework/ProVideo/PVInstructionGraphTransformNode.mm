@@ -1,46 +1,46 @@
 @interface PVInstructionGraphTransformNode
-+ (id)newTransformNode:(id)a3 transform:(CGAffineTransform *)a4;
++ (id)newTransformNode:(id)node transform:(CGAffineTransform *)transform;
 - (CGAffineTransform)transform;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
-- (PVInstructionGraphTransformNode)initWithInputNode:(id)a3 transform:(CGAffineTransform *)a4;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PVInstructionGraphTransformNode)initWithInputNode:(id)node transform:(CGAffineTransform *)transform;
 - (id)getAllSourceNodes;
 - (id)requiredSourceTrackIDs;
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects;
+- (void)setTransform:(CGAffineTransform *)transform;
 - (void)unloadIGNode;
 @end
 
 @implementation PVInstructionGraphTransformNode
 
-+ (id)newTransformNode:(id)a3 transform:(CGAffineTransform *)a4
++ (id)newTransformNode:(id)node transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = *&a4->c;
-  v11[0] = *&a4->a;
+  nodeCopy = node;
+  v7 = [self alloc];
+  v8 = *&transform->c;
+  v11[0] = *&transform->a;
   v11[1] = v8;
-  v11[2] = *&a4->tx;
-  v9 = [v7 initWithInputNode:v6 transform:v11];
+  v11[2] = *&transform->tx;
+  v9 = [v7 initWithInputNode:nodeCopy transform:v11];
 
   return v9;
 }
 
-- (PVInstructionGraphTransformNode)initWithInputNode:(id)a3 transform:(CGAffineTransform *)a4
+- (PVInstructionGraphTransformNode)initWithInputNode:(id)node transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  nodeCopy = node;
   v12.receiver = self;
   v12.super_class = PVInstructionGraphTransformNode;
   v7 = [(PVInstructionGraphNode *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    [(PVInstructionGraphTransformNode *)v7 setInputNode:v6];
-    v9 = *&a4->c;
-    v11[0] = *&a4->a;
+    [(PVInstructionGraphTransformNode *)v7 setInputNode:nodeCopy];
+    v9 = *&transform->c;
+    v11[0] = *&transform->a;
     v11[1] = v9;
-    v11[2] = *&a4->tx;
+    v11[2] = *&transform->tx;
     [(PVInstructionGraphTransformNode *)v8 setTransform:v11];
     [(PVInstructionGraphTransformNode *)v8 setTransformOrigin:2];
   }
@@ -48,18 +48,18 @@
   return v8;
 }
 
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects
 {
-  v6 = a4;
-  v7 = [(PVInstructionGraphTransformNode *)self inputNode];
-  v8 = *a3.m_Obj;
+  effectsCopy = effects;
+  inputNode = [(PVInstructionGraphTransformNode *)self inputNode];
+  v8 = *node.m_Obj;
   v9 = v8;
   if (v8)
   {
     (*(*v8 + 16))(v8);
   }
 
-  [v7 loadIGNode:&v9 returnLoadedEffects:v6];
+  [inputNode loadIGNode:&v9 returnLoadedEffects:effectsCopy];
   if (v9)
   {
     (*(*v9 + 24))(v9);
@@ -68,26 +68,26 @@
 
 - (void)unloadIGNode
 {
-  v2 = [(PVInstructionGraphTransformNode *)self inputNode];
-  [v2 unloadIGNode];
+  inputNode = [(PVInstructionGraphTransformNode *)self inputNode];
+  [inputNode unloadIGNode];
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v12 = v6;
   HGTraceGuard::HGTraceGuard(v42, "kPVInstructionGraphToHeliumGraphLogContext", 1, "[PVInstructionGraphTransformNode hgNodeForTime:...]");
-  v13 = [(PVInstructionGraphTransformNode *)self inputNode];
-  v41 = *a3;
-  v14 = *a6.m_Obj;
+  inputNode = [(PVInstructionGraphTransformNode *)self inputNode];
+  v41 = *time;
+  v14 = *context.m_Obj;
   v40 = v14;
   if (v14)
   {
     (*(*v14 + 16))(v14);
   }
 
-  if (v13)
+  if (inputNode)
   {
-    [v13 hgNodeForTime:&v41 trackInputs:a4 renderer:a5 igContext:&v40];
+    [inputNode hgNodeForTime:&v41 trackInputs:inputs renderer:renderer igContext:&v40];
   }
 
   else
@@ -100,18 +100,18 @@
     (*(*v40 + 24))(v40);
   }
 
-  v15 = (*(**a6.m_Obj + 40))();
+  v15 = (*(**context.m_Obj + 40))();
   v17 = v16;
-  v18 = (*(**a6.m_Obj + 48))();
+  v18 = (*(**context.m_Obj + 48))();
   memset(&v39, 0, sizeof(v39));
   [(PVInstructionGraphTransformNode *)self transform];
-  v19 = [(PVInstructionGraphTransformNode *)self transformOrigin];
+  transformOrigin = [(PVInstructionGraphTransformNode *)self transformOrigin];
   v20 = v18;
   v21 = v15 * v18;
   v22 = v17 * v20;
-  if (v19)
+  if (transformOrigin)
   {
-    if (v19 == 1)
+    if (transformOrigin == 1)
     {
       v23 = v17 * v20;
     }
@@ -121,7 +121,7 @@
       v23 = v22 * 0.5;
     }
 
-    if (v19 == 1)
+    if (transformOrigin == 1)
     {
       v24 = 0.0;
     }
@@ -152,7 +152,7 @@
   }
 
   v45 = v38;
-  v26 = (*(**a6.m_Obj + 64))();
+  v26 = (*(**context.m_Obj + 64))();
   HGXFormForCGAffineTransform(&v37, &v45, v26, &t1);
   v27 = *v12;
   a = t1.a;
@@ -199,27 +199,27 @@
 
 - (id)requiredSourceTrackIDs
 {
-  v2 = [(PVInstructionGraphTransformNode *)self inputNode];
-  v3 = [v2 requiredSourceTrackIDs];
+  inputNode = [(PVInstructionGraphTransformNode *)self inputNode];
+  requiredSourceTrackIDs = [inputNode requiredSourceTrackIDs];
 
-  return v3;
+  return requiredSourceTrackIDs;
 }
 
 - (id)getAllSourceNodes
 {
-  v2 = [(PVInstructionGraphTransformNode *)self inputNode];
-  v3 = [v2 getAllSourceNodes];
+  inputNode = [(PVInstructionGraphTransformNode *)self inputNode];
+  getAllSourceNodes = [inputNode getAllSourceNodes];
 
-  return v3;
+  return getAllSourceNodes;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v15 = a3;
-  v7 = (*(**a4.m_Obj + 40))();
+  effectCopy = effect;
+  v7 = (*(**context.m_Obj + 40))();
   v9 = v8;
-  v10 = (*(**a4.m_Obj + 48))();
+  v10 = (*(**context.m_Obj + 48))();
   *v6 = 0;
   *(v6 + 8) = 0;
   *(v6 + 16) = v7 * v10;
@@ -232,13 +232,13 @@
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
-  v17 = a4;
+  contextCopy = context;
   v7 = (*(**a5.m_Obj + 40))();
   v9 = v8;
   v10 = (*(**a5.m_Obj + 48))();
-  [v17 outputSize];
+  [contextCopy outputSize];
   v11 = v9;
   v12 = (v10 * v11);
   v13 = v7;
@@ -270,11 +270,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_transform.a = *&transform->a;
   *&self->_transform.c = v4;
   *&self->_transform.tx = v3;
 }

@@ -1,31 +1,31 @@
 @interface SFRequestUserReportCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFRequestUserReportCommand)initWithCoder:(id)a3;
-- (SFRequestUserReportCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFRequestUserReportCommand)initWithCoder:(id)coder;
+- (SFRequestUserReportCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFRequestUserReportCommand
 
-- (SFRequestUserReportCommand)initWithProtobuf:(id)a3
+- (SFRequestUserReportCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFRequestUserReportCommand;
   v5 = [(SFRequestUserReportCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 userReportRequest];
+    userReportRequest = [protobufCopy userReportRequest];
 
-    if (v6)
+    if (userReportRequest)
     {
       v7 = [SFUserReportRequest alloc];
-      v8 = [v4 userReportRequest];
-      v9 = [(SFUserReportRequest *)v7 initWithProtobuf:v8];
+      userReportRequest2 = [protobufCopy userReportRequest];
+      v9 = [(SFUserReportRequest *)v7 initWithProtobuf:userReportRequest2];
       [(SFRequestUserReportCommand *)v5 setUserReportRequest:v9];
     }
 
@@ -40,38 +40,38 @@
   v7.receiver = self;
   v7.super_class = SFRequestUserReportCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFRequestUserReportCommand *)self userReportRequest];
-  v5 = [v4 hash];
+  userReportRequest = [(SFRequestUserReportCommand *)self userReportRequest];
+  v5 = [userReportRequest hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFRequestUserReportCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFRequestUserReportCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFRequestUserReportCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFRequestUserReportCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFRequestUserReportCommand *)self userReportRequest];
-    v7 = [(SFRequestUserReportCommand *)v5 userReportRequest];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    userReportRequest = [(SFRequestUserReportCommand *)self userReportRequest];
+    userReportRequest2 = [(SFRequestUserReportCommand *)v5 userReportRequest];
+    if ((userReportRequest != 0) == (userReportRequest2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFRequestUserReportCommand *)self userReportRequest];
-      if (v8)
+      userReportRequest3 = [(SFRequestUserReportCommand *)self userReportRequest];
+      if (userReportRequest3)
       {
-        v9 = [(SFRequestUserReportCommand *)self userReportRequest];
-        v10 = [(SFRequestUserReportCommand *)v5 userReportRequest];
-        v11 = [v9 isEqual:v10];
+        userReportRequest4 = [(SFRequestUserReportCommand *)self userReportRequest];
+        userReportRequest5 = [(SFRequestUserReportCommand *)v5 userReportRequest];
+        v11 = [userReportRequest4 isEqual:userReportRequest5];
       }
 
       else
@@ -89,13 +89,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFRequestUserReportCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFRequestUserReportCommand *)self userReportRequest];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  userReportRequest = [(SFRequestUserReportCommand *)self userReportRequest];
+  v6 = [userReportRequest copy];
   [v4 setUserReportRequest:v6];
 
   return v4;
@@ -104,51 +104,51 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBRequestUserReportCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBRequestUserReportCommand *)v2 jsonData];
+  jsonData = [(_SFPBRequestUserReportCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRequestUserReportCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBRequestUserReportCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRequestUserReportCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFRequestUserReportCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFRequestUserReportCommand)initWithCoder:(id)a3
+- (SFRequestUserReportCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFRequestUserReportCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 userReportRequest];
-    [(SFRequestUserReportCommand *)v5 setUserReportRequest:v9];
+    userReportRequest = [(SFCommand *)v8 userReportRequest];
+    [(SFRequestUserReportCommand *)v5 setUserReportRequest:userReportRequest];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

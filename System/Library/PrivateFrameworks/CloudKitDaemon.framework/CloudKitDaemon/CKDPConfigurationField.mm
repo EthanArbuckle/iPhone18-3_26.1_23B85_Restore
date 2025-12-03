@@ -1,11 +1,11 @@
 @interface CKDPConfigurationField
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPConfigurationField
@@ -42,66 +42,66 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_value)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   name = self->_name;
-  v8 = v4;
+  v8 = toCopy;
   if (name)
   {
-    objc_msgSend_setName_(v4, v5, name);
-    v4 = v8;
+    objc_msgSend_setName_(toCopy, v5, name);
+    toCopy = v8;
   }
 
   value = self->_value;
   if (value)
   {
     objc_msgSend_setValue_(v8, v5, value);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_name, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_name, v11, zone);
   v13 = v10[1];
   v10[1] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_value, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_value, v14, zone);
   v16 = v10[2];
   v10[2] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((name = self->_name, v9 = v4[1], !(name | v9)) || objc_msgSend_isEqual_(name, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((name = self->_name, v9 = equalCopy[1], !(name | v9)) || objc_msgSend_isEqual_(name, v7, v9)))
   {
     value = self->_value;
-    v11 = v4[2];
+    v11 = equalCopy[2];
     if (value | v11)
     {
       isEqual = objc_msgSend_isEqual_(value, v7, v11);
@@ -121,30 +121,30 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[1];
-  v8 = v4;
+  fromCopy = from;
+  v5 = fromCopy[1];
+  v8 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setName_(self, v4, v5);
-    v4 = v8;
+    objc_msgSend_setName_(self, fromCopy, v5);
+    fromCopy = v8;
   }
 
   value = self->_value;
-  v7 = v4[2];
+  v7 = fromCopy[2];
   if (value)
   {
     if (v7)
     {
-      objc_msgSend_mergeFrom_(value, v4, v7);
+      objc_msgSend_mergeFrom_(value, fromCopy, v7);
     }
   }
 
   else if (v7)
   {
-    objc_msgSend_setValue_(self, v4, v7);
+    objc_msgSend_setValue_(self, fromCopy, v7);
   }
 
   MEMORY[0x2821F96F8]();

@@ -8,15 +8,15 @@
 
 - (void)accountsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E1982DB8();
 }
 
 - (id)fetchMediaToken
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit29PersonalizedMediaTokenService_tokenService) fetchMediaToken];
+  fetchMediaToken = [*(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit29PersonalizedMediaTokenService_tokenService) fetchMediaToken];
 
-  return v2;
+  return fetchMediaToken;
 }
 
 - (_TtC11AppStoreKit29PersonalizedMediaTokenService)init

@@ -1,22 +1,22 @@
 @interface DetachEvent
-- (DetachEvent)initWithTimestamp:(id)a3 primaryPort:(id)a4 restrictedModeEnabled:(BOOL)a5;
+- (DetachEvent)initWithTimestamp:(id)timestamp primaryPort:(id)port restrictedModeEnabled:(BOOL)enabled;
 @end
 
 @implementation DetachEvent
 
-- (DetachEvent)initWithTimestamp:(id)a3 primaryPort:(id)a4 restrictedModeEnabled:(BOOL)a5
+- (DetachEvent)initWithTimestamp:(id)timestamp primaryPort:(id)port restrictedModeEnabled:(BOOL)enabled
 {
-  v9 = a3;
-  v10 = a4;
+  timestampCopy = timestamp;
+  portCopy = port;
   v16.receiver = self;
   v16.super_class = DetachEvent;
   v11 = [(DetachEvent *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_timestamp, a3);
-    objc_storeStrong(&v12->_primaryPort, a4);
-    v12->_restrictedModeEnabled = a5;
+    objc_storeStrong(&v11->_timestamp, timestamp);
+    objc_storeStrong(&v12->_primaryPort, port);
+    v12->_restrictedModeEnabled = enabled;
     duration = v12->_duration;
     v12->_duration = 0;
 

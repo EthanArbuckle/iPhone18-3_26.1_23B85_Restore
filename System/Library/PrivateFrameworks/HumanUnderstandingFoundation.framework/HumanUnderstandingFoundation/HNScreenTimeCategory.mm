@@ -1,12 +1,12 @@
 @interface HNScreenTimeCategory
-+ (id)categoryForBundleId:(id)a3;
++ (id)categoryForBundleId:(id)id;
 @end
 
 @implementation HNScreenTimeCategory
 
-+ (id)categoryForBundleId:(id)a3
++ (id)categoryForBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = dispatch_semaphore_create(0);
   v12 = 0;
   v13 = &v12;
@@ -14,7 +14,7 @@
   v15 = sub_2546B525C;
   v16 = sub_2546B526C;
   v17 = 0;
-  v5 = [MEMORY[0x277CF9650] sharedCategories];
+  mEMORY[0x277CF9650] = [MEMORY[0x277CF9650] sharedCategories];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2546B5274;
@@ -22,7 +22,7 @@
   v11 = &v12;
   v6 = v4;
   v10 = v6;
-  [v5 categoryForBundleID:v3 completionHandler:v9];
+  [mEMORY[0x277CF9650] categoryForBundleID:idCopy completionHandler:v9];
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];

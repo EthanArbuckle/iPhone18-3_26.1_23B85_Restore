@@ -1,29 +1,29 @@
 @interface DNDSSyncEngineLastChanceDataStore
-- (DNDSSyncEngineLastChanceDataStore)initWithURL:(id)a3;
+- (DNDSSyncEngineLastChanceDataStore)initWithURL:(id)l;
 - (NSDictionary)records;
-- (id)_decodeRecordFromData:(id)a3;
-- (id)_encodedDataFromRecord:(id)a3;
-- (id)recordWithID:(id)a3;
-- (id)recordsWithZoneID:(id)a3;
+- (id)_decodeRecordFromData:(id)data;
+- (id)_encodedDataFromRecord:(id)record;
+- (id)recordWithID:(id)d;
+- (id)recordsWithZoneID:(id)d;
 - (void)_queue_read;
 - (void)_queue_write;
-- (void)addRecord:(id)a3;
+- (void)addRecord:(id)record;
 - (void)purge;
-- (void)removeRecordWithID:(id)a3;
-- (void)removeRecordsWithZoneID:(id)a3;
+- (void)removeRecordWithID:(id)d;
+- (void)removeRecordsWithZoneID:(id)d;
 @end
 
 @implementation DNDSSyncEngineLastChanceDataStore
 
-- (DNDSSyncEngineLastChanceDataStore)initWithURL:(id)a3
+- (DNDSSyncEngineLastChanceDataStore)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = DNDSSyncEngineLastChanceDataStore;
   v5 = [(DNDSSyncEngineLastChanceDataStore *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -76,24 +76,24 @@ uint64_t __44__DNDSSyncEngineLastChanceDataStore_records__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)recordsWithZoneID:(id)a3
+- (id)recordsWithZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__7;
   v16 = __Block_byref_object_dispose__7;
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__DNDSSyncEngineLastChanceDataStore_recordsWithZoneID___block_invoke;
   block[3] = &unk_278F8ACC8;
   block[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -144,9 +144,9 @@ void __55__DNDSSyncEngineLastChanceDataStore_recordsWithZoneID___block_invoke(vo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)recordWithID:(id)a3
+- (id)recordWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -158,10 +158,10 @@ void __55__DNDSSyncEngineLastChanceDataStore_recordsWithZoneID___block_invoke(vo
   block[1] = 3221225472;
   block[2] = __50__DNDSSyncEngineLastChanceDataStore_recordWithID___block_invoke;
   block[3] = &unk_278F8ACF0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -180,17 +180,17 @@ uint64_t __50__DNDSSyncEngineLastChanceDataStore_recordWithID___block_invoke(voi
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__DNDSSyncEngineLastChanceDataStore_addRecord___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordCopy;
+  v6 = recordCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -206,17 +206,17 @@ uint64_t __47__DNDSSyncEngineLastChanceDataStore_addRecord___block_invoke(uint64
   return [v5 _queue_write];
 }
 
-- (void)removeRecordWithID:(id)a3
+- (void)removeRecordWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__DNDSSyncEngineLastChanceDataStore_removeRecordWithID___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -233,17 +233,17 @@ void __56__DNDSSyncEngineLastChanceDataStore_removeRecordWithID___block_invoke(u
   }
 }
 
-- (void)removeRecordsWithZoneID:(id)a3
+- (void)removeRecordsWithZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__DNDSSyncEngineLastChanceDataStore_removeRecordsWithZoneID___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -332,9 +332,9 @@ void __61__DNDSSyncEngineLastChanceDataStore_removeRecordsWithZoneID___block_inv
 - (void)_queue_read
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   queue_recordsByID = self->_queue_recordsByID;
-  self->_queue_recordsByID = v3;
+  self->_queue_recordsByID = dictionary;
 
   if (self->_url)
   {
@@ -342,15 +342,15 @@ void __61__DNDSSyncEngineLastChanceDataStore_removeRecordsWithZoneID___block_inv
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      array = v5;
     }
 
     else
     {
-      v7 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
-    v8 = v7;
+    v8 = array;
 
     v20 = 0u;
     v21 = 0u;
@@ -373,8 +373,8 @@ void __61__DNDSSyncEngineLastChanceDataStore_removeRecordsWithZoneID___block_inv
 
           v14 = [(DNDSSyncEngineLastChanceDataStore *)self _decodeRecordFromData:*(*(&v18 + 1) + 8 * i), v18];
           v15 = self->_queue_recordsByID;
-          v16 = [v14 recordID];
-          [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v16];
+          recordID = [v14 recordID];
+          [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:recordID];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -394,23 +394,23 @@ void __61__DNDSSyncEngineLastChanceDataStore_removeRecordsWithZoneID___block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_encodedDataFromRecord:(id)a3
+- (id)_encodedDataFromRecord:(id)record
 {
   v3 = MEMORY[0x277CCAAB0];
-  v4 = a3;
+  recordCopy = record;
   v5 = [[v3 alloc] initRequiringSecureCoding:1];
-  [v4 encodeWithCoder:v5];
+  [recordCopy encodeWithCoder:v5];
 
-  v6 = [v5 encodedData];
+  encodedData = [v5 encodedData];
 
-  return v6;
+  return encodedData;
 }
 
-- (id)_decodeRecordFromData:(id)a3
+- (id)_decodeRecordFromData:(id)data
 {
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:0];
+  dataCopy = data;
+  v5 = [[v3 alloc] initForReadingFromData:dataCopy error:0];
 
   v6 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithCoder:v5];
 

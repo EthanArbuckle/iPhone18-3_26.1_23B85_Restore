@@ -1,28 +1,28 @@
 @interface LTMMetadataWriterV2
-+ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a5 geometryData:(id)a6;
-+ (void)_addAverageLTMToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5 ltcNumNodes:(unsigned int)a6;
-+ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)a3;
-+ (void)_addHazeCorrection:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addHighlightCompression:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addLTMCurveTypeToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addLTMCurvesToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 geometryData:(id)a7 isSIFR:(BOOL)a8 ltcNumNodes:(unsigned int)a9;
-+ (void)_addLTMEnabledToMetadata:(id)a3;
-+ (void)_addLocalClippingDataToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5;
-+ (void)_addLocalHistToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5;
-+ (void)_addSoftDGainToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4;
-+ (void)_addSpatialCCMDataToMetadata:(id)a3 fromOutput:(sLtmComputeOutput *)a4 statistics:(sCLRProcHITHStat_SOFTISP *)a5 geometryData:(id)a6 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a7;
-+ (void)addLTMMetadataTo:(id)a3 curvesType:(int)a4 fromLTMOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a7 geometryData:(id)a8;
++ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data;
++ (void)_addAverageLTMToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output ltcNumNodes:(unsigned int)nodes;
++ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)rect;
++ (void)_addHazeCorrection:(id)correction driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata;
++ (void)_addHighlightCompression:(id)compression driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata;
++ (void)_addLTMCurveTypeToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata;
++ (void)_addLTMCurvesToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data isSIFR:(BOOL)r ltcNumNodes:(unsigned int)nodes;
++ (void)_addLTMEnabledToMetadata:(id)metadata;
++ (void)_addLocalClippingDataToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data;
++ (void)_addLocalHistToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data;
++ (void)_addSoftDGainToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata;
++ (void)_addSpatialCCMDataToMetadata:(id)metadata fromOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata;
++ (void)addLTMMetadataTo:(id)to curvesType:(int)type fromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data;
 @end
 
 @implementation LTMMetadataWriterV2
 
-+ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a5 geometryData:(id)a6
++ (id)createLTMMetadataFromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data
 {
-  v10 = a6;
+  dataCopy = data;
   v11 = objc_opt_new();
   if (v11)
   {
-    if (a4->localHistBinSize == 68)
+    if (statistics->localHistBinSize == 68)
     {
       v12 = 65;
     }
@@ -33,17 +33,17 @@
     }
 
     LODWORD(v15) = v12;
-    [a1 _addLTMCurvesToMetadata:v11 curvesType:0 fromOutput:a3 statistics:a4 geometryData:v10 isSIFR:a5->isSIFRFrame ltcNumNodes:v15];
-    [a1 _addSoftDGainToMetadata:v11 driverInputMetadata:a5];
-    [a1 _addLTMCurveTypeToMetadata:v11 driverInputMetadata:a5];
-    [a1 _addLTMEnabledToMetadata:v11];
-    [a1 _addLocalHistToMetadata:v11 statistics:a4 geometryData:v10];
-    [a1 _addLocalClippingDataToMetadata:v11 statistics:a4 geometryData:v10];
-    [a1 _addAverageLTMToMetadata:v11 curvesType:0 fromOutput:a3 ltcNumNodes:v12];
-    [a1 _addSpatialCCMDataToMetadata:v11 fromOutput:a3 statistics:a4 geometryData:v10 driverInputMetadata:a5];
-    [a1 _addGlobalLTMLookUpTableAlignedToFinalCropRect:v11];
-    [a1 _addHighlightCompression:v11 driverInputMetadata:a5];
-    [a1 _addHazeCorrection:v11 driverInputMetadata:a5];
+    [self _addLTMCurvesToMetadata:v11 curvesType:0 fromOutput:output statistics:statistics geometryData:dataCopy isSIFR:metadata->isSIFRFrame ltcNumNodes:v15];
+    [self _addSoftDGainToMetadata:v11 driverInputMetadata:metadata];
+    [self _addLTMCurveTypeToMetadata:v11 driverInputMetadata:metadata];
+    [self _addLTMEnabledToMetadata:v11];
+    [self _addLocalHistToMetadata:v11 statistics:statistics geometryData:dataCopy];
+    [self _addLocalClippingDataToMetadata:v11 statistics:statistics geometryData:dataCopy];
+    [self _addAverageLTMToMetadata:v11 curvesType:0 fromOutput:output ltcNumNodes:v12];
+    [self _addSpatialCCMDataToMetadata:v11 fromOutput:output statistics:statistics geometryData:dataCopy driverInputMetadata:metadata];
+    [self _addGlobalLTMLookUpTableAlignedToFinalCropRect:v11];
+    [self _addHighlightCompression:v11 driverInputMetadata:metadata];
+    [self _addHazeCorrection:v11 driverInputMetadata:metadata];
     v13 = v11;
   }
 
@@ -55,10 +55,10 @@
   return v11;
 }
 
-+ (void)addLTMMetadataTo:(id)a3 curvesType:(int)a4 fromLTMOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a7 geometryData:(id)a8
++ (void)addLTMMetadataTo:(id)to curvesType:(int)type fromLTMOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata geometryData:(id)data
 {
-  v11 = *&a4;
-  if (a6->localHistBinSize == 68)
+  v11 = *&type;
+  if (statistics->localHistBinSize == 68)
   {
     v13 = 65;
   }
@@ -68,18 +68,18 @@
     v13 = 257;
   }
 
-  isSIFRFrame = a7->isSIFRFrame;
-  v16 = a3;
+  isSIFRFrame = metadata->isSIFRFrame;
+  toCopy = to;
   LODWORD(v15) = v13;
-  [a1 _addLTMCurvesToMetadata:v16 curvesType:v11 fromOutput:a5 statistics:a6 geometryData:a8 isSIFR:isSIFRFrame ltcNumNodes:v15];
-  [a1 _addAverageLTMToMetadata:v16 curvesType:v11 fromOutput:a5 ltcNumNodes:v13];
+  [self _addLTMCurvesToMetadata:toCopy curvesType:v11 fromOutput:output statistics:statistics geometryData:data isSIFR:isSIFRFrame ltcNumNodes:v15];
+  [self _addAverageLTMToMetadata:toCopy curvesType:v11 fromOutput:output ltcNumNodes:v13];
 }
 
-+ (void)_addLTMCurvesToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5 statistics:(sCLRProcHITHStat_SOFTISP *)a6 geometryData:(id)a7 isSIFR:(BOOL)a8 ltcNumNodes:(unsigned int)a9
++ (void)_addLTMCurvesToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data isSIFR:(BOOL)r ltcNumNodes:(unsigned int)nodes
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = malloc_type_malloc((384 * a9) | 0x18, 0x1000040504FFAC1uLL);
+  metadataCopy = metadata;
+  dataCopy = data;
+  v16 = malloc_type_malloc((384 * nodes) | 0x18, 0x1000040504FFAC1uLL);
   if (!v16)
   {
     +[LTMMetadataWriterV2 _addLTMCurvesToMetadata:curvesType:fromOutput:statistics:geometryData:isSIFR:ltcNumNodes:];
@@ -113,10 +113,10 @@
     goto LABEL_35;
   }
 
-  v48 = v14;
+  v48 = metadataCopy;
   *v17 = 257;
   *v18 = 257;
-  globalLUT = a5->globalLUT;
+  globalLUT = output->globalLUT;
   v21 = 1;
   v22 = 1.0;
   do
@@ -127,9 +127,9 @@
   }
 
   while (v21 != 258);
-  calculatedOnPortraitOrientation = a6->calculatedOnPortraitOrientation;
+  calculatedOnPortraitOrientation = statistics->calculatedOnPortraitOrientation;
   v24 = 36;
-  if (a6->calculatedOnPortraitOrientation)
+  if (statistics->calculatedOnPortraitOrientation)
   {
     v25 = 38;
   }
@@ -139,14 +139,14 @@
     v25 = 36;
   }
 
-  if (!a6->calculatedOnPortraitOrientation)
+  if (!statistics->calculatedOnPortraitOrientation)
   {
     v24 = 38;
   }
 
-  LOWORD(v22) = *(&a6->thumbnailWindow + v25);
-  LOWORD(v9) = *(&a6->thumbnailWindow + v24);
-  if (a6->calculatedOnPortraitOrientation)
+  LOWORD(v22) = *(&statistics->thumbnailWindow + v25);
+  LOWORD(v9) = *(&statistics->thumbnailWindow + v24);
+  if (statistics->calculatedOnPortraitOrientation)
   {
     v26 = 16;
   }
@@ -169,21 +169,21 @@
 
   *(v16 + 1) = v27;
   *(v16 + 2) = v26;
-  *(v16 + 3) = 2 * a9 * v27;
-  *(v16 + 4) = 2 * a9;
+  *(v16 + 3) = 2 * nodes * v27;
+  *(v16 + 4) = 2 * nodes;
   v28 = v22;
   *(v16 + 10) = 0;
-  [v15 inputTextureDownsampleRatio];
+  [dataCopy inputTextureDownsampleRatio];
   v30 = v29 * v28;
-  [v15 deepZoomRatio];
+  [dataCopy deepZoomRatio];
   *(v16 + 9) = ((v30 * v31) * 0.5);
-  [v15 inputTextureDownsampleRatio];
+  [dataCopy inputTextureDownsampleRatio];
   v33 = v32 * v9;
-  [v15 deepZoomRatio];
+  [dataCopy deepZoomRatio];
   v34 = 0;
   v35 = 0;
   *(v16 + 10) = ((v33 * *&v36) * 0.5);
-  *(v16 + 11) = a9;
+  *(v16 + 11) = nodes;
   LODWORD(v36) = 1.0;
   do
   {
@@ -191,7 +191,7 @@
     v38 = v34;
     do
     {
-      if (a9)
+      if (nodes)
       {
         v39 = v35 + v37 * v27;
         if (!calculatedOnPortraitOrientation)
@@ -199,42 +199,42 @@
           v39 = v37 + v35 * v27;
         }
 
-        v40 = v39 * a9;
-        v41 = a9;
+        v40 = v39 * nodes;
+        nodesCopy = nodes;
         v42 = v38;
         do
         {
-          *&v16[2 * v40++ + 24] = vcvtms_s32_f32(fmaxf(fminf(a5->LTC[v42++], 1.0), 0.0) * 65535.0);
-          --v41;
+          *&v16[2 * v40++ + 24] = vcvtms_s32_f32(fmaxf(fminf(output->LTC[v42++], 1.0), 0.0) * 65535.0);
+          --nodesCopy;
         }
 
-        while (v41);
+        while (nodesCopy);
       }
 
       ++v37;
-      v38 += a9;
+      v38 += nodes;
     }
 
     while (v37 != 16);
     ++v35;
-    v34 += 16 * a9;
+    v34 += 16 * nodes;
   }
 
   while (v35 != 12);
-  v43 = [MEMORY[0x1E695DF88] dataWithBytes:v16 length:{(384 * a9) | 0x18, v36, 0.0}];
+  v43 = [MEMORY[0x1E695DF88] dataWithBytes:v16 length:{(384 * nodes) | 0x18, v36, 0.0}];
   v44 = [MEMORY[0x1E695DF88] dataWithBytes:v17 length:516];
   v45 = [MEMORY[0x1E695DF88] dataWithBytes:v19 length:516];
-  if (a4 == 1)
+  if (type == 1)
   {
-    v14 = v48;
+    metadataCopy = v48;
     [v48 setObject:v43 forKeyedSubscript:*MEMORY[0x1E6990E08]];
     [v48 setObject:v44 forKeyedSubscript:*MEMORY[0x1E6990DD0]];
     v47 = MEMORY[0x1E6990DE0];
     goto LABEL_33;
   }
 
-  v14 = v48;
-  if (a4 == 2)
+  metadataCopy = v48;
+  if (type == 2)
   {
     [v48 setObject:v43 forKeyedSubscript:*MEMORY[0x1E6990E00]];
     [v48 setObject:v44 forKeyedSubscript:*MEMORY[0x1E6990DC8]];
@@ -244,7 +244,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
     [v48 setObject:v43 forKeyedSubscript:*MEMORY[0x1E6991068]];
     [v48 setObject:v44 forKeyedSubscript:*MEMORY[0x1E6991020]];
@@ -256,35 +256,35 @@ LABEL_33:
   [v48 setObject:v44 forKeyedSubscript:@"GlobalLTMLookUpTable_HLGWithoutFaceBoost"];
   v46 = @"GlobalToneCurveLookUpTable_HLGWithoutFaceBoost";
 LABEL_34:
-  [v14 setObject:v45 forKeyedSubscript:v46];
+  [metadataCopy setObject:v45 forKeyedSubscript:v46];
 LABEL_35:
   free(v17);
   free(v19);
   free(v16);
 }
 
-+ (void)_addSoftDGainToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addSoftDGainToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata
 {
   v5 = MEMORY[0x1E696AD98];
-  LODWORD(v4) = vcvts_n_u32_f32(a4->softIspDGain, 8uLL);
-  v6 = a3;
+  LODWORD(v4) = vcvts_n_u32_f32(inputMetadata->softIspDGain, 8uLL);
+  metadataCopy = metadata;
   v7 = [v5 numberWithUnsignedInt:v4];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991168]];
+  [metadataCopy setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991168]];
 }
 
-+ (void)_addLTMCurveTypeToMetadata:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addLTMCurveTypeToMetadata:(id)metadata driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata
 {
   v4 = MEMORY[0x1E696AD98];
-  ltmProcMode = a4->ltmProcMode;
-  v6 = a3;
+  ltmProcMode = inputMetadata->ltmProcMode;
+  metadataCopy = metadata;
   v7 = [v4 numberWithInt:ltmProcMode];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991058]];
+  [metadataCopy setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991058]];
 }
 
-+ (void)_addAverageLTMToMetadata:(id)a3 curvesType:(int)a4 fromOutput:(sLtmComputeOutput *)a5 ltcNumNodes:(unsigned int)a6
++ (void)_addAverageLTMToMetadata:(id)metadata curvesType:(int)type fromOutput:(sLtmComputeOutput *)output ltcNumNodes:(unsigned int)nodes
 {
-  v24 = a3;
-  v8 = vcvtas_u32_f32(a6 / 65.0);
+  metadataCopy = metadata;
+  v8 = vcvtas_u32_f32(nodes / 65.0);
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:65];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:0];
   [v9 setObject:v10 atIndexedSubscript:0];
@@ -302,14 +302,14 @@ LABEL_35:
       v17 = v15;
       do
       {
-        v14 = (floorf(fmaxf(fminf(a5->LTC[v17], 1.0), 0.0) * 65535.0) + v14);
-        v17 += a6;
+        v14 = (floorf(fmaxf(fminf(output->LTC[v17], 1.0), 0.0) * 65535.0) + v14);
+        v17 += nodes;
         --v16;
       }
 
       while (v16);
       ++v13;
-      v15 += 16 * a6;
+      v15 += 16 * nodes;
     }
 
     while (v13 != 12);
@@ -324,23 +324,23 @@ LABEL_35:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:0xFFFFLL];
   [v9 setObject:v19 atIndexedSubscript:64];
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v21 = *MEMORY[0x1E6990D90];
-    v20 = v24;
+    v20 = metadataCopy;
   }
 
   else
   {
-    v20 = v24;
-    if (a4 == 2)
+    v20 = metadataCopy;
+    if (type == 2)
     {
       v22 = MEMORY[0x1E6990D88];
     }
 
     else
     {
-      if (a4 == 3)
+      if (type == 3)
       {
         v21 = @"AverageLTM_HLGWithoutFaceBoost";
         goto LABEL_15;
@@ -356,12 +356,12 @@ LABEL_15:
   [v20 setObject:v9 forKeyedSubscript:v21];
 }
 
-+ (void)_addHighlightCompression:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addHighlightCompression:(id)compression driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata
 {
-  v5 = a3;
-  if (a4->useHighlightCompression)
+  compressionCopy = compression;
+  if (metadata->useHighlightCompression)
   {
-    v9 = v5;
+    v9 = compressionCopy;
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:257];
     for (i = 0; i != 257; ++i)
     {
@@ -371,54 +371,54 @@ LABEL_15:
 
     [v9 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6990DB8]];
 
-    v5 = v9;
+    compressionCopy = v9;
   }
 }
 
-+ (void)_addHazeCorrection:(id)a3 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a4
++ (void)_addHazeCorrection:(id)correction driverInputMetadata:(sRefDriverInputs_SOFTISP *)metadata
 {
-  v5 = a3;
-  if (a4->useHazeCorrection)
+  correctionCopy = correction;
+  if (metadata->useHazeCorrection)
   {
-    v10 = v5;
+    v10 = correctionCopy;
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
     for (i = 0; i != 3; ++i)
     {
-      LODWORD(v7) = *(&a4[1].gainDigi + (i & 3));
+      LODWORD(v7) = *(&metadata[1].gainDigi + (i & 3));
       v9 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
       [v6 setObject:v9 atIndexedSubscript:i];
     }
 
     [v10 setObject:v6 forKeyedSubscript:*MEMORY[0x1E6990DE8]];
 
-    v5 = v10;
+    correctionCopy = v10;
   }
 }
 
-+ (void)_addLTMEnabledToMetadata:(id)a3
++ (void)_addLTMEnabledToMetadata:(id)metadata
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [v3 numberWithBool:1];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6991060]];
+  [metadataCopy setObject:v5 forKeyedSubscript:*MEMORY[0x1E6991060]];
 }
 
-+ (void)_addLocalHistToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5
++ (void)_addLocalHistToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data
 {
-  v7 = a3;
-  v8 = a5;
-  localHistBinSize = a4->localHistBinSize;
-  calculatedOnPortraitOrientation = a4->calculatedOnPortraitOrientation;
+  metadataCopy = metadata;
+  dataCopy = data;
+  localHistBinSize = statistics->localHistBinSize;
+  calculatedOnPortraitOrientation = statistics->calculatedOnPortraitOrientation;
   v11 = malloc_type_malloc(0x19A0uLL, 0x1000040E0EAB150uLL);
   v12 = v11;
   if (v11)
   {
     v71 = v11;
-    v72 = v8;
-    v13 = a4->localHistBinSize;
+    v72 = dataCopy;
+    v13 = statistics->localHistBinSize;
     if (v13 == 68 || v13 == 260)
     {
-      v70 = v7;
+      v70 = metadataCopy;
       *v11 = 0x19A000000001;
       v14 = 132;
       if (calculatedOnPortraitOrientation)
@@ -431,13 +431,13 @@ LABEL_15:
         v15 = 132;
       }
 
-      v16 = *(&a4->thumbnailWindow + v15);
+      v16 = *(&statistics->thumbnailWindow + v15);
       if (!calculatedOnPortraitOrientation)
       {
         v14 = 136;
       }
 
-      v17 = *(&a4->thumbnailWindow + v14);
+      v17 = *(&statistics->thumbnailWindow + v14);
       v18 = 36;
       if (calculatedOnPortraitOrientation)
       {
@@ -467,21 +467,21 @@ LABEL_15:
 
       if (calculatedOnPortraitOrientation)
       {
-        v22 = 13 * a4->localHistStrideY;
-        v23 = 17 * a4->localHistStrideX;
+        v22 = 13 * statistics->localHistStrideY;
+        v23 = 17 * statistics->localHistStrideX;
       }
 
       else
       {
         v20 = 34;
-        v22 = 17 * a4->localHistStrideX;
-        v23 = 13 * a4->localHistStrideY;
+        v22 = 17 * statistics->localHistStrideX;
+        v23 = 13 * statistics->localHistStrideY;
       }
 
-      v73 = *(&a4->thumbnailWindow + v19);
-      v77 = *(&a4->thumbnailWindow + v18);
-      v24 = *(&a4->thumbnailWindow + v21);
-      v25 = *(&a4->thumbnailWindow + v20);
+      v73 = *(&statistics->thumbnailWindow + v19);
+      v77 = *(&statistics->thumbnailWindow + v18);
+      v24 = *(&statistics->thumbnailWindow + v21);
+      v25 = *(&statistics->thumbnailWindow + v20);
       v26 = 40;
       if (calculatedOnPortraitOrientation)
       {
@@ -493,25 +493,25 @@ LABEL_15:
         v27 = 40;
       }
 
-      v28 = *(&a4->thumbnailWindow + v27);
+      v28 = *(&statistics->thumbnailWindow + v27);
       if (!calculatedOnPortraitOrientation)
       {
         v26 = 42;
       }
 
-      v75 = *(&a4->thumbnailWindow + v26);
+      v75 = *(&statistics->thumbnailWindow + v26);
       v29 = v16;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v31 = v29 / v30;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v33 = v17 / v32;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v35 = v22 / v34;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v37 = v23 / v36;
-      if (v8)
+      if (dataCopy)
       {
-        [v8 sensorSpaceToValidBufferSpaceTransform];
+        [dataCopy sensorSpaceToValidBufferSpaceTransform];
       }
 
       else
@@ -527,30 +527,30 @@ LABEL_15:
       v84 = CGRectApplyAffineTransform(v83, &v80);
       x = v84.origin.x;
       y = v84.origin.y;
-      [v8 inputTextureDownsampleRatio];
-      v42 = x * v41 * [v8 rawSensorWidth];
-      [v8 inputTextureDownsampleRatio];
-      v44 = y * v43 * [v8 rawSensorHeight];
-      [v8 inputTextureDownsampleRatio];
-      [v8 rawSensorWidth];
-      [v8 inputTextureDownsampleRatio];
-      [v8 rawSensorHeight];
+      [dataCopy inputTextureDownsampleRatio];
+      v42 = x * v41 * [dataCopy rawSensorWidth];
+      [dataCopy inputTextureDownsampleRatio];
+      v44 = y * v43 * [dataCopy rawSensorHeight];
+      [dataCopy inputTextureDownsampleRatio];
+      [dataCopy rawSensorWidth];
+      [dataCopy inputTextureDownsampleRatio];
+      [dataCopy rawSensorHeight];
       *(v71 + 4) = v42;
       *(v71 + 5) = v44;
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v71 + 6) = (v45 * v24);
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v71 + 7) = (v46 * v25);
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v71 + 8) = (v47 * v73);
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v71 + 9) = (v48 * v77);
       *(v71 + 10) = v28;
       *(v71 + 11) = v75;
       *(v71 + 12) = 68;
-      *(v71 + 13) = a4->localHistCountBitShift;
-      *(v71 + 7) = a4->localHistogramOriginalTilePixelCount;
-      if (a4->localHistBinSize == 68)
+      *(v71 + 13) = statistics->localHistCountBitShift;
+      *(v71 + 7) = statistics->localHistogramOriginalTilePixelCount;
+      if (statistics->localHistBinSize == 68)
       {
         v49 = 0;
         v50 = 0;
@@ -574,7 +574,7 @@ LABEL_15:
               v54 = v50;
             }
 
-            memcpy(v71 + 2 * v54 * localHistBinSize + 32, a4->localHistStat + v53, 2 * localHistBinSize);
+            memcpy(v71 + 2 * v54 * localHistBinSize + 32, statistics->localHistStat + v53, 2 * localHistBinSize);
             LODWORD(v51) = v51 + v28;
             LODWORD(v50) = v50 + 1;
             v53 += 2 * localHistBinSize;
@@ -593,7 +593,7 @@ LABEL_15:
       else
       {
         v55 = 0;
-        localHistStat = a4->localHistStat;
+        localHistStat = statistics->localHistStat;
         v57 = v71 + 4;
         v58 = (localHistStat + 11);
         do
@@ -644,10 +644,10 @@ LABEL_15:
 
       v12 = v71;
       v69 = [MEMORY[0x1E695DEF0] dataWithBytes:v71 length:6560];
-      v7 = v70;
+      metadataCopy = v70;
       [v70 setObject:v69 forKeyedSubscript:*MEMORY[0x1E6991088]];
 
-      v8 = v72;
+      dataCopy = v72;
     }
 
     else
@@ -670,16 +670,16 @@ LABEL_15:
   free(v12);
 }
 
-+ (void)_addLocalClippingDataToMetadata:(id)a3 statistics:(sCLRProcHITHStat_SOFTISP *)a4 geometryData:(id)a5
++ (void)_addLocalClippingDataToMetadata:(id)metadata statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data
 {
-  v7 = a3;
-  v8 = a5;
-  calculatedOnPortraitOrientation = a4->calculatedOnPortraitOrientation;
+  metadataCopy = metadata;
+  dataCopy = data;
+  calculatedOnPortraitOrientation = statistics->calculatedOnPortraitOrientation;
   v10 = malloc_type_malloc(0x1ACuLL, 0x1000040DE9E61F1uLL);
   v11 = v10;
   if (v10)
   {
-    localHistBinSize = a4->localHistBinSize;
+    localHistBinSize = statistics->localHistBinSize;
     if (localHistBinSize == 68 || localHistBinSize == 260)
     {
       *v10 = 0x1AC00000001;
@@ -694,13 +694,13 @@ LABEL_15:
         v14 = 132;
       }
 
-      v15 = *(&a4->thumbnailWindow + v14);
+      v15 = *(&statistics->thumbnailWindow + v14);
       if (!calculatedOnPortraitOrientation)
       {
         v13 = 136;
       }
 
-      v16 = *(&a4->thumbnailWindow + v13);
+      v16 = *(&statistics->thumbnailWindow + v13);
       v17 = 36;
       if (calculatedOnPortraitOrientation)
       {
@@ -730,21 +730,21 @@ LABEL_15:
 
       if (calculatedOnPortraitOrientation)
       {
-        v21 = 13 * a4->localHistStrideY;
-        v22 = 17 * a4->localHistStrideX;
+        v21 = 13 * statistics->localHistStrideY;
+        v22 = 17 * statistics->localHistStrideX;
       }
 
       else
       {
         v19 = 34;
-        v21 = 17 * a4->localHistStrideX;
-        v22 = 13 * a4->localHistStrideY;
+        v21 = 17 * statistics->localHistStrideX;
+        v22 = 13 * statistics->localHistStrideY;
       }
 
-      v61 = *(&a4->thumbnailWindow + v18);
-      v63 = *(&a4->thumbnailWindow + v17);
-      v23 = *(&a4->thumbnailWindow + v20);
-      v60 = *(&a4->thumbnailWindow + v19);
+      v61 = *(&statistics->thumbnailWindow + v18);
+      v63 = *(&statistics->thumbnailWindow + v17);
+      v23 = *(&statistics->thumbnailWindow + v20);
+      v60 = *(&statistics->thumbnailWindow + v19);
       v24 = 40;
       if (calculatedOnPortraitOrientation)
       {
@@ -756,25 +756,25 @@ LABEL_15:
         v25 = 40;
       }
 
-      v26 = *(&a4->thumbnailWindow + v25);
+      v26 = *(&statistics->thumbnailWindow + v25);
       if (!calculatedOnPortraitOrientation)
       {
         v24 = 42;
       }
 
-      v62 = *(&a4->thumbnailWindow + v24);
+      v62 = *(&statistics->thumbnailWindow + v24);
       v27 = v15;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v29 = v27 / v28;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v31 = v16 / v30;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v33 = v21 / v32;
-      [v8 cropRect];
+      [dataCopy cropRect];
       v35 = v22 / v34;
-      if (v8)
+      if (dataCopy)
       {
-        [v8 sensorSpaceToValidBufferSpaceTransform];
+        [dataCopy sensorSpaceToValidBufferSpaceTransform];
       }
 
       else
@@ -790,37 +790,37 @@ LABEL_15:
       v69 = CGRectApplyAffineTransform(v68, &v65);
       x = v69.origin.x;
       y = v69.origin.y;
-      [v8 inputTextureDownsampleRatio];
-      v40 = x * v39 * [v8 rawSensorWidth];
-      [v8 inputTextureDownsampleRatio];
-      v42 = y * v41 * [v8 rawSensorHeight];
-      [v8 inputTextureDownsampleRatio];
-      [v8 rawSensorWidth];
-      [v8 inputTextureDownsampleRatio];
-      [v8 rawSensorHeight];
+      [dataCopy inputTextureDownsampleRatio];
+      v40 = x * v39 * [dataCopy rawSensorWidth];
+      [dataCopy inputTextureDownsampleRatio];
+      v42 = y * v41 * [dataCopy rawSensorHeight];
+      [dataCopy inputTextureDownsampleRatio];
+      [dataCopy rawSensorWidth];
+      [dataCopy inputTextureDownsampleRatio];
+      [dataCopy rawSensorHeight];
       *(v11 + 4) = v40;
       *(v11 + 5) = v42;
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v11 + 6) = (v43 * v23);
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v11 + 7) = (v44 * v60);
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       *(v11 + 8) = (v45 * v61);
-      [v8 inputTextureDownsampleRatio];
+      [dataCopy inputTextureDownsampleRatio];
       v46 = 0;
       v47 = 0;
       *(v11 + 9) = (v48 * v63);
       *(v11 + 10) = v26;
       *(v11 + 11) = v62;
-      *(v11 + 12) = a4->localHistCountBitShift;
-      *(v11 + 7) = a4->localHistogramOriginalTilePixelCount;
-      *(v11 + 16) = a4->localHistLowThreshold;
+      *(v11 + 12) = statistics->localHistCountBitShift;
+      *(v11 + 7) = statistics->localHistogramOriginalTilePixelCount;
+      *(v11 + 16) = statistics->localHistLowThreshold;
       *(v11 + 17) = 0;
-      *(v11 + 18) = a4->localHistHighThreshold;
+      *(v11 + 18) = statistics->localHistHighThreshold;
       *(v11 + 38) = 65539;
       *(v11 + 21) = 2;
-      v49 = a4->localHistBinSize;
-      localHistStat = a4->localHistStat;
+      v49 = statistics->localHistBinSize;
+      localHistStat = statistics->localHistStat;
       v51 = v11 + 44;
       v52 = v49 - 1;
       v53 = localHistStat + 1;
@@ -863,7 +863,7 @@ LABEL_15:
 
       while (v47 != 6);
       v36 = [MEMORY[0x1E695DEF0] dataWithBytes:v11 length:{428, v58}];
-      [v7 setObject:v36 forKeyedSubscript:*MEMORY[0x1E6991080]];
+      [metadataCopy setObject:v36 forKeyedSubscript:*MEMORY[0x1E6991080]];
     }
 
     else
@@ -884,18 +884,18 @@ LABEL_15:
   free(v11);
 }
 
-+ (void)_addSpatialCCMDataToMetadata:(id)a3 fromOutput:(sLtmComputeOutput *)a4 statistics:(sCLRProcHITHStat_SOFTISP *)a5 geometryData:(id)a6 driverInputMetadata:(sRefDriverInputs_SOFTISP *)a7
++ (void)_addSpatialCCMDataToMetadata:(id)metadata fromOutput:(sLtmComputeOutput *)output statistics:(sCLRProcHITHStat_SOFTISP *)statistics geometryData:(id)data driverInputMetadata:(sRefDriverInputs_SOFTISP *)inputMetadata
 {
-  v11 = a3;
-  v12 = a6;
+  metadataCopy = metadata;
+  dataCopy = data;
   if (_addSpatialCCMDataToMetadata_fromOutput_statistics_geometryData_driverInputMetadata__onceToken != -1)
   {
     +[LTMMetadataWriterV2 _addSpatialCCMDataToMetadata:fromOutput:statistics:geometryData:driverInputMetadata:];
   }
 
-  if (a7->useSpatialCCM)
+  if (inputMetadata->useSpatialCCM)
   {
-    calculatedOnPortraitOrientation = a5->calculatedOnPortraitOrientation;
+    calculatedOnPortraitOrientation = statistics->calculatedOnPortraitOrientation;
     v14 = malloc_type_malloc(0x2898uLL, 0x1000040504FFAC1uLL);
     v15 = v14;
     if (v14)
@@ -927,19 +927,19 @@ LABEL_15:
       *(v14 + 3) = 54 * v18;
       *(v14 + 4) = 54;
       *(v14 + 10) = 0;
-      width = a7->tileStatsRegion.width;
-      [v12 inputTextureDownsampleRatio];
+      width = inputMetadata->tileStatsRegion.width;
+      [dataCopy inputTextureDownsampleRatio];
       v21 = v20 * width;
-      [v12 deepZoomRatio];
+      [dataCopy deepZoomRatio];
       v15[9] = ((v21 * v22) / v18);
-      height = a7->tileStatsRegion.height;
-      [v12 inputTextureDownsampleRatio];
+      height = inputMetadata->tileStatsRegion.height;
+      [dataCopy inputTextureDownsampleRatio];
       v25 = v24 * height;
-      [v12 deepZoomRatio];
+      [dataCopy deepZoomRatio];
       v15[10] = ((v25 * v26) / v17);
       v15[11] = 4096;
       v27 = v15 + 38;
-      v28 = &a4->spatialCCM[13];
+      v28 = &output->spatialCCM[13];
       v29 = 192;
       v30 = vdupq_n_s32(0x45800000u);
       do
@@ -993,7 +993,7 @@ LABEL_15:
       if (v48)
       {
         v49 = v48;
-        [v11 setObject:v48 forKeyedSubscript:*MEMORY[0x1E6991078]];
+        [metadataCopy setObject:v48 forKeyedSubscript:*MEMORY[0x1E6991078]];
       }
 
       else
@@ -1012,16 +1012,16 @@ LABEL_15:
 
   else
   {
-    [v11 removeObjectForKey:*MEMORY[0x1E6991078]];
+    [metadataCopy removeObjectForKey:*MEMORY[0x1E6991078]];
   }
 }
 
-+ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)a3
++ (void)_addGlobalLTMLookUpTableAlignedToFinalCropRect:(id)rect
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
+  rectCopy = rect;
   v5 = [v3 numberWithBool:1];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6990DC0]];
+  [rectCopy setObject:v5 forKeyedSubscript:*MEMORY[0x1E6990DC0]];
 }
 
 + (void)createLTMMetadataFromLTMOutput:statistics:driverInputMetadata:geometryData:.cold.1()

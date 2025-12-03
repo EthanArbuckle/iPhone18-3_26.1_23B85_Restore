@@ -1,57 +1,57 @@
 @interface PXFeedbackFormUIViewController
-- (BOOL)_isSelectedRow:(id)a3 inSection:(int64_t)a4;
-- (PXFeedbackFormUIViewController)initWithDelegate:(id)a3 positiveKeys:(id)a4 negativeKeys:(id)a5 wantsCustomFeedbackSection:(BOOL)a6;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_feedbackKeyForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_feedbackFormSectionForSectionIndex:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_markCell:(id)a3 asSelected:(BOOL)a4;
-- (void)_setSelectionStateForKey:(id)a3 inSection:(int64_t)a4 to:(BOOL)a5;
-- (void)finishWithSuccess:(BOOL)a3;
-- (void)sendFeedback:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (BOOL)_isSelectedRow:(id)row inSection:(int64_t)section;
+- (PXFeedbackFormUIViewController)initWithDelegate:(id)delegate positiveKeys:(id)keys negativeKeys:(id)negativeKeys wantsCustomFeedbackSection:(BOOL)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_feedbackKeyForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_feedbackFormSectionForSectionIndex:(int64_t)index;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_markCell:(id)cell asSelected:(BOOL)selected;
+- (void)_setSelectionStateForKey:(id)key inSection:(int64_t)section to:(BOOL)to;
+- (void)finishWithSuccess:(BOOL)success;
+- (void)sendFeedback:(id)feedback;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation PXFeedbackFormUIViewController
 
-- (int64_t)_feedbackFormSectionForSectionIndex:(int64_t)a3
+- (int64_t)_feedbackFormSectionForSectionIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_sections objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_sections objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)_markCell:(id)a3 asSelected:(BOOL)a4
+- (void)_markCell:(id)cell asSelected:(BOOL)selected
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  selectedCopy = selected;
+  cellCopy = cell;
+  v6 = cellCopy;
+  if (selectedCopy)
   {
-    [v5 setAccessoryType:3];
+    [cellCopy setAccessoryType:3];
     [MEMORY[0x1E69DC888] colorWithRed:0.298039216 green:0.631372549 blue:1.0 alpha:1.0];
   }
 
   else
   {
-    [v5 setAccessoryType:0];
+    [cellCopy setAccessoryType:0];
     [MEMORY[0x1E69DC888] labelColor];
   }
   v8 = ;
-  v7 = [v6 textLabel];
+  textLabel = [v6 textLabel];
 
-  [v7 setTextColor:v8];
+  [textLabel setTextColor:v8];
 }
 
-- (id)_feedbackKeyForIndexPath:(id)a3
+- (id)_feedbackKeyForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[PXFeedbackFormUIViewController _feedbackFormSectionForSectionIndex:](self, "_feedbackFormSectionForSectionIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[PXFeedbackFormUIViewController _feedbackFormSectionForSectionIndex:](self, "_feedbackFormSectionForSectionIndex:", [pathCopy section]);
   v6 = &OBJC_IVAR___PXFeedbackFormUIViewController__negativeFeedbackKeys;
   if (!v5)
   {
@@ -59,19 +59,19 @@
   }
 
   v7 = *(&self->super.super.super.isa + *v6);
-  v8 = [v4 row];
+  v8 = [pathCopy row];
 
   v9 = [v7 objectAtIndexedSubscript:v8];
 
   return v9;
 }
 
-- (void)_setSelectionStateForKey:(id)a3 inSection:(int64_t)a4 to:(BOOL)a5
+- (void)_setSelectionStateForKey:(id)key inSection:(int64_t)section to:(BOOL)to
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:a4];
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  toCopy = to;
+  keyCopy = key;
+  v9 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:section];
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:toCopy];
   v12 = v10;
   v11 = &OBJC_IVAR___PXFeedbackFormUIViewController__negativeFeedbackValues;
   if (!v9)
@@ -79,96 +79,96 @@
     v11 = &OBJC_IVAR___PXFeedbackFormUIViewController__positiveFeedbackValues;
   }
 
-  [*(&self->super.super.super.isa + *v11) setObject:v10 forKeyedSubscript:v8];
+  [*(&self->super.super.super.isa + *v11) setObject:v10 forKeyedSubscript:keyCopy];
 }
 
-- (BOOL)_isSelectedRow:(id)a3 inSection:(int64_t)a4
+- (BOOL)_isSelectedRow:(id)row inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:a4];
+  rowCopy = row;
+  v7 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:section];
   v8 = &OBJC_IVAR___PXFeedbackFormUIViewController__negativeFeedbackValues;
   if (!v7)
   {
     v8 = &OBJC_IVAR___PXFeedbackFormUIViewController__positiveFeedbackValues;
   }
 
-  v9 = [*(&self->super.super.super.isa + *v8) objectForKeyedSubscript:v6];
+  v9 = [*(&self->super.super.super.isa + *v8) objectForKeyedSubscript:rowCopy];
 
-  v10 = [v9 BOOLValue];
-  return v10;
+  bOOLValue = [v9 BOOLValue];
+  return bOOLValue;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v4 = a4;
-  if ([v4 section] == 2)
+  pathCopy = path;
+  if ([pathCopy section] == 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = pathCopy;
   }
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v13 = [a3 cellForRowAtIndexPath:v6];
-  v7 = [(PXFeedbackFormUIViewController *)self _feedbackKeyForIndexPath:v6];
-  v8 = -[PXFeedbackFormUIViewController _isSelectedRow:inSection:](self, "_isSelectedRow:inSection:", v7, [v6 section]);
-  v9 = [v6 section];
+  pathCopy = path;
+  v13 = [view cellForRowAtIndexPath:pathCopy];
+  v7 = [(PXFeedbackFormUIViewController *)self _feedbackKeyForIndexPath:pathCopy];
+  v8 = -[PXFeedbackFormUIViewController _isSelectedRow:inSection:](self, "_isSelectedRow:inSection:", v7, [pathCopy section]);
+  section = [pathCopy section];
 
   if (v8)
   {
-    [(PXFeedbackFormUIViewController *)self _setSelectionStateForKey:v7 inSection:v9 to:0];
+    [(PXFeedbackFormUIViewController *)self _setSelectionStateForKey:v7 inSection:section to:0];
     [v13 setSelected:0];
-    v10 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v11 = 0;
   }
 
   else
   {
-    [(PXFeedbackFormUIViewController *)self _setSelectionStateForKey:v7 inSection:v9 to:1];
+    [(PXFeedbackFormUIViewController *)self _setSelectionStateForKey:v7 inSection:section to:1];
     [v13 setSelected:1];
-    v10 = [MEMORY[0x1E69DC888] colorWithRed:0.298039216 green:0.631372549 blue:1.0 alpha:1.0];
+    labelColor = [MEMORY[0x1E69DC888] colorWithRed:0.298039216 green:0.631372549 blue:1.0 alpha:1.0];
     v11 = 3;
   }
 
-  v12 = [v13 textLabel];
-  [v12 setTextColor:v10];
+  textLabel = [v13 textLabel];
+  [textLabel setTextColor:labelColor];
 
   [v13 setAccessoryType:v11];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  if (-[PXFeedbackFormUIViewController _feedbackFormSectionForSectionIndex:](self, "_feedbackFormSectionForSectionIndex:", [a4 section]) == 2)
+  viewCopy = view;
+  if (-[PXFeedbackFormUIViewController _feedbackFormSectionForSectionIndex:](self, "_feedbackFormSectionForSectionIndex:", [path section]) == 2)
   {
     v7 = 500.0;
   }
 
   else
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"SwitchCell"];
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"SwitchCell"];
-      v9 = [v8 textLabel];
-      [v9 setLineBreakMode:0];
+      textLabel = [v8 textLabel];
+      [textLabel setLineBreakMode:0];
 
-      v10 = [v8 textLabel];
-      [v10 setNumberOfLines:0];
+      textLabel2 = [v8 textLabel];
+      [textLabel2 setNumberOfLines:0];
 
       [v8 setSelectionStyle:0];
     }
 
-    v11 = [v8 contentView];
-    [v11 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+    contentView = [v8 contentView];
+    [contentView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
     v13 = v12;
 
     v7 = v13 + 10.0;
@@ -177,14 +177,14 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (-[PXFeedbackFormUIViewController _feedbackFormSectionForSectionIndex:](self, "_feedbackFormSectionForSectionIndex:", [v7 section]) == 2)
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PXFeedbackFormUIViewController _feedbackFormSectionForSectionIndex:](self, "_feedbackFormSectionForSectionIndex:", [pathCopy section]) == 2)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"OpenFeedbackCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"OpenFeedbackCell"];
     if (v8)
     {
       goto LABEL_10;
@@ -205,13 +205,13 @@
       customFeedbackTextView = self->_customFeedbackTextView;
       self->_customFeedbackTextView = v14;
 
-      v16 = [MEMORY[0x1E69DC888] labelColor];
-      [(UITextView *)self->_customFeedbackTextView setTextColor:v16];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UITextView *)self->_customFeedbackTextView setTextColor:labelColor];
 
       [(UITextView *)self->_customFeedbackTextView setKeyboardType:0];
       [(UITextView *)self->_customFeedbackTextView setReturnKeyType:0];
-      v17 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [(UITextView *)self->_customFeedbackTextView setBackgroundColor:v17];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [(UITextView *)self->_customFeedbackTextView setBackgroundColor:systemBackgroundColor];
 
       [(UITextView *)self->_customFeedbackTextView setDelegate:self];
       v18 = [MEMORY[0x1E69DB878] systemFontOfSize:15.0];
@@ -232,45 +232,45 @@
       [(UITextView *)self->_customFeedbackTextView setInputAccessoryView:v20];
     }
 
-    v24 = [v8 contentView];
-    [v24 addSubview:self->_customFeedbackTextView];
+    contentView = [v8 contentView];
+    [contentView addSubview:self->_customFeedbackTextView];
   }
 
   else
   {
-    v24 = [(PXFeedbackFormUIViewController *)self _feedbackKeyForIndexPath:v7];
-    v25 = PXLocalizedStringFromTable(v24, @"PXFeedbackCollection");
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"SwitchCell"];
+    contentView = [(PXFeedbackFormUIViewController *)self _feedbackKeyForIndexPath:pathCopy];
+    v25 = PXLocalizedStringFromTable(contentView, @"PXFeedbackCollection");
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"SwitchCell"];
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"SwitchCell"];
-      v26 = [v8 textLabel];
-      [v26 setText:v25];
+      textLabel = [v8 textLabel];
+      [textLabel setText:v25];
 
-      [v8 setSelected:{-[PXFeedbackFormUIViewController _isSelectedRow:inSection:](self, "_isSelectedRow:inSection:", v24, objc_msgSend(v7, "section"))}];
+      [v8 setSelected:{-[PXFeedbackFormUIViewController _isSelectedRow:inSection:](self, "_isSelectedRow:inSection:", contentView, objc_msgSend(pathCopy, "section"))}];
     }
 
-    -[PXFeedbackFormUIViewController _markCell:asSelected:](self, "_markCell:asSelected:", v8, -[PXFeedbackFormUIViewController _isSelectedRow:inSection:](self, "_isSelectedRow:inSection:", v24, [v7 section]));
-    v27 = [v8 textLabel];
-    [v27 setText:v25];
+    -[PXFeedbackFormUIViewController _markCell:asSelected:](self, "_markCell:asSelected:", v8, -[PXFeedbackFormUIViewController _isSelectedRow:inSection:](self, "_isSelectedRow:inSection:", contentView, [pathCopy section]));
+    textLabel2 = [v8 textLabel];
+    [textLabel2 setText:v25];
   }
 
 LABEL_10:
-  v28 = [v8 textLabel];
-  [v28 setNumberOfLines:0];
+  textLabel3 = [v8 textLabel];
+  [textLabel3 setNumberOfLines:0];
 
-  v29 = [v8 textLabel];
-  [v29 setLineBreakMode:0];
+  textLabel4 = [v8 textLabel];
+  [textLabel4 setLineBreakMode:0];
 
   [v8 setSelectionStyle:0];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:a4];
+  viewCopy = view;
+  v7 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:section];
   if (v7 > 2)
   {
     v8 = &stru_1F1741150;
@@ -291,10 +291,10 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:a4];
+  viewCopy = view;
+  v7 = [(PXFeedbackFormUIViewController *)self _feedbackFormSectionForSectionIndex:section];
   if (!v7)
   {
     v8 = &OBJC_IVAR___PXFeedbackFormUIViewController__positiveFeedbackKeys;
@@ -326,16 +326,16 @@ LABEL_8:
   return v9;
 }
 
-- (void)finishWithSuccess:(BOOL)a3
+- (void)finishWithSuccess:(BOOL)success
 {
-  v3 = a3;
-  v5 = [(PXFeedbackFormUIViewController *)self delegate];
+  successCopy = success;
+  delegate = [(PXFeedbackFormUIViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PXFeedbackFormUIViewController *)self delegate];
-    [v7 userDidFinish:v3];
+    delegate2 = [(PXFeedbackFormUIViewController *)self delegate];
+    [delegate2 userDidFinish:successCopy];
   }
 
   else
@@ -345,33 +345,33 @@ LABEL_8:
   }
 }
 
-- (void)sendFeedback:(id)a3
+- (void)sendFeedback:(id)feedback
 {
-  v9 = a3;
+  feedbackCopy = feedback;
   if (self->_wantsCustomFeedbackSection)
   {
-    v4 = [(UITextView *)self->_customFeedbackTextView text];
+    text = [(UITextView *)self->_customFeedbackTextView text];
   }
 
   else
   {
-    v4 = &stru_1F1741150;
+    text = &stru_1F1741150;
   }
 
-  v5 = [(PXFeedbackFormUIViewController *)self delegate];
-  [v5 userSentPositiveFeedback:self->_positiveFeedbackValues negativeFeedback:self->_negativeFeedbackValues customFeedback:v4];
+  delegate = [(PXFeedbackFormUIViewController *)self delegate];
+  [delegate userSentPositiveFeedback:self->_positiveFeedbackValues negativeFeedback:self->_negativeFeedbackValues customFeedback:text];
 
-  v6 = [(PXFeedbackFormUIViewController *)self delegate];
+  delegate2 = [(PXFeedbackFormUIViewController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(PXFeedbackFormUIViewController *)self delegate];
-  v8 = [v7 shouldContinuePresentingFormAfterFeedback];
+  delegate3 = [(PXFeedbackFormUIViewController *)self delegate];
+  shouldContinuePresentingFormAfterFeedback = [delegate3 shouldContinuePresentingFormAfterFeedback];
 
-  if ((v8 & 1) == 0)
+  if ((shouldContinuePresentingFormAfterFeedback & 1) == 0)
   {
 LABEL_8:
     [(PXFeedbackFormUIViewController *)self finishWithSuccess:1];
@@ -384,37 +384,37 @@ LABEL_8:
   v30.receiver = self;
   v30.super_class = PXFeedbackFormUIViewController;
   [(PXFeedbackFormUIViewController *)&v30 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [(PXFeedbackFormUIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  view = [(PXFeedbackFormUIViewController *)self view];
+  [view setBackgroundColor:whiteColor];
 
-  v5 = [(PXFeedbackFormUIViewController *)self tableViewController];
-  v6 = [v5 view];
+  tableViewController = [(PXFeedbackFormUIViewController *)self tableViewController];
+  view2 = [tableViewController view];
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(PXFeedbackFormUIViewController *)self view];
-  [v7 addSubview:v6];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(PXFeedbackFormUIViewController *)self view];
+  [view3 addSubview:view2];
 
-  v8 = [(PXFeedbackFormUIViewController *)self view];
-  v9 = [v8 safeAreaLayoutGuide];
+  view4 = [(PXFeedbackFormUIViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
 
   v10 = MEMORY[0x1E696ACD8];
-  v29 = v9;
-  v11 = [v9 topAnchor];
-  v12 = [v6 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  v29 = safeAreaLayoutGuide;
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  topAnchor2 = [view2 topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[0] = v13;
-  v14 = [v9 bottomAnchor];
-  v15 = [v6 bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+  bottomAnchor2 = [view2 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
   [v10 activateConstraints:v17];
 
-  v28 = _NSDictionaryOfVariableBindings(&cfstr_Feedbacktablev.isa, v6, 0);
-  v18 = [(PXFeedbackFormUIViewController *)self view];
+  v28 = _NSDictionaryOfVariableBindings(&cfstr_Feedbacktablev.isa, view2, 0);
+  view5 = [(PXFeedbackFormUIViewController *)self view];
   v19 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-0-[feedbackTableView]-0-|" options:0 metrics:0 views:v28];
-  [v18 addConstraints:v19];
+  [view5 addConstraints:v19];
 
   v20 = PXLocalizedStringFromTable(@"FeedbackFormPanel.sendButton.title", @"PXFeedbackCollection");
   v21 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v20 style:0 target:self action:sel_sendFeedback_];
@@ -423,34 +423,34 @@ LABEL_8:
   v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v23 style:0 target:self action:sel_cancelFeedback_];
   v31 = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-  v26 = [(PXFeedbackFormUIViewController *)self navigationItem];
-  [v26 setLeftBarButtonItems:v25];
+  navigationItem = [(PXFeedbackFormUIViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:v25];
 
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v22, v21, 0}];
   [(PXFeedbackFormUIViewController *)self setToolbarItems:v27];
 }
 
-- (PXFeedbackFormUIViewController)initWithDelegate:(id)a3 positiveKeys:(id)a4 negativeKeys:(id)a5 wantsCustomFeedbackSection:(BOOL)a6
+- (PXFeedbackFormUIViewController)initWithDelegate:(id)delegate positiveKeys:(id)keys negativeKeys:(id)negativeKeys wantsCustomFeedbackSection:(BOOL)section
 {
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  keysCopy = keys;
+  negativeKeysCopy = negativeKeys;
   v62.receiver = self;
   v62.super_class = PXFeedbackFormUIViewController;
   v13 = [(PXFeedbackFormUIViewController *)&v62 init];
   v14 = v13;
   if (v13)
   {
-    v47 = v12;
-    v49 = v11;
-    v51 = v10;
+    v47 = negativeKeysCopy;
+    v49 = keysCopy;
+    v51 = delegateCopy;
     v13->_userLikedIt = 0;
-    v13->_wantsCustomFeedbackSection = a6;
-    objc_storeStrong(&v13->_positiveFeedbackKeys, a4);
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    v13->_wantsCustomFeedbackSection = section;
+    objc_storeStrong(&v13->_positiveFeedbackKeys, keys);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     positiveFeedbackValues = v14->_positiveFeedbackValues;
-    v14->_positiveFeedbackValues = v15;
+    v14->_positiveFeedbackValues = dictionary;
 
     v60 = 0u;
     v61 = 0u;
@@ -486,10 +486,10 @@ LABEL_8:
       while (v19);
     }
 
-    objc_storeStrong(&v14->_negativeFeedbackKeys, a5);
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v14->_negativeFeedbackKeys, negativeKeys);
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     negativeFeedbackValues = v14->_negativeFeedbackValues;
-    v14->_negativeFeedbackValues = v24;
+    v14->_negativeFeedbackValues = dictionary2;
 
     v56 = 0u;
     v57 = 0u;
@@ -528,24 +528,24 @@ LABEL_8:
     v33 = objc_opt_new();
     [(PXFeedbackFormUIViewController *)v14 setTableViewController:v33];
 
-    v34 = [(PXFeedbackFormUIViewController *)v14 tableViewController];
-    v35 = [v34 view];
-    [v35 setDataSource:v14];
+    tableViewController = [(PXFeedbackFormUIViewController *)v14 tableViewController];
+    view = [tableViewController view];
+    [view setDataSource:v14];
 
-    v36 = [(PXFeedbackFormUIViewController *)v14 tableViewController];
-    v37 = [v36 view];
-    [v37 setDelegate:v14];
+    tableViewController2 = [(PXFeedbackFormUIViewController *)v14 tableViewController];
+    view2 = [tableViewController2 view];
+    [view2 setDelegate:v14];
 
-    v10 = v51;
+    delegateCopy = v51;
     [(PXFeedbackFormUIViewController *)v14 setDelegate:v51];
     v14->_wantsPositiveFeedbackSection = 1;
-    v38 = [(PXFeedbackFormUIViewController *)v14 delegate];
-    LOBYTE(v37) = objc_opt_respondsToSelector();
+    delegate = [(PXFeedbackFormUIViewController *)v14 delegate];
+    LOBYTE(view2) = objc_opt_respondsToSelector();
 
-    if (v37)
+    if (view2)
     {
-      v39 = [(PXFeedbackFormUIViewController *)v14 delegate];
-      v14->_wantsPositiveFeedbackSection = [v39 wantsPositiveFeedbackSection];
+      delegate2 = [(PXFeedbackFormUIViewController *)v14 delegate];
+      v14->_wantsPositiveFeedbackSection = [delegate2 wantsPositiveFeedbackSection];
     }
 
     v14->_wantsNegativeFeedbackSection = 1;
@@ -554,8 +554,8 @@ LABEL_8:
 
     if (v41)
     {
-      v42 = [(PXFeedbackFormUIViewController *)v14 delegate];
-      v14->_wantsNegativeFeedbackSection = [v42 wantsNegativeFeedbackSection];
+      delegate3 = [(PXFeedbackFormUIViewController *)v14 delegate];
+      v14->_wantsNegativeFeedbackSection = [delegate3 wantsNegativeFeedbackSection];
     }
 
     v52[0] = MEMORY[0x1E69E9820];
@@ -568,8 +568,8 @@ LABEL_8:
     sections = v43->_sections;
     v43->_sections = v44;
 
-    v12 = v48;
-    v11 = v50;
+    negativeKeysCopy = v48;
+    keysCopy = v50;
   }
 
   return v14;

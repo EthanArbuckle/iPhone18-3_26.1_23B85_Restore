@@ -1,23 +1,23 @@
 @interface ASToastViewController
-+ (id)_fontWithSize:(double)a3 textStyleAttribute:(__CFString *)a4;
++ (id)_fontWithSize:(double)size textStyleAttribute:(__CFString *)attribute;
 + (id)_primaryLabelFont;
 + (id)_secondaryLabelFont;
-- (ASToastViewController)initWithTitle:(id)a3 message:(id)a4 duration:(double)a5 image:(id)a6;
-- (void)_dismissAfterDelay:(double)a3;
+- (ASToastViewController)initWithTitle:(id)title message:(id)message duration:(double)duration image:(id)image;
+- (void)_dismissAfterDelay:(double)delay;
 - (void)present;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ASToastViewController
 
-- (ASToastViewController)initWithTitle:(id)a3 message:(id)a4 duration:(double)a5 image:(id)a6
+- (ASToastViewController)initWithTitle:(id)title message:(id)message duration:(double)duration image:(id)image
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  imageCopy = image;
   v28.receiver = self;
   v28.super_class = ASToastViewController;
   v13 = [(ASToastViewController *)&v28 initWithNibName:0 bundle:0];
@@ -46,10 +46,10 @@
     toastView = v13->_toastView;
     v13->_toastView = v25;
 
-    [(ASToastViewController *)v13 setTitle:v10];
-    [(ASToastViewController *)v13 setMessage:v11];
-    [(ASToastViewController *)v13 setImage:v12];
-    [(ASToastViewController *)v13 setDuration:a5];
+    [(ASToastViewController *)v13 setTitle:titleCopy];
+    [(ASToastViewController *)v13 setMessage:messageCopy];
+    [(ASToastViewController *)v13 setImage:imageCopy];
+    [(ASToastViewController *)v13 setDuration:duration];
     [(ASToastViewController *)v13 setModalPresentationStyle:6];
   }
 
@@ -61,113 +61,113 @@
   v43.receiver = self;
   v43.super_class = ASToastViewController;
   [(ASToastViewController *)&v43 viewDidLoad];
-  v3 = [(ASToastViewController *)self presentationController];
-  [v3 _setContainerIgnoresDirectTouchEvents:1];
+  presentationController = [(ASToastViewController *)self presentationController];
+  [presentationController _setContainerIgnoresDirectTouchEvents:1];
 
-  v4 = [(ASToastViewController *)self view];
-  [v4 setUserInteractionEnabled:0];
+  view = [(ASToastViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v5 = [(ASToastViewController *)self image];
-  v6 = [(ASToastViewController *)self imageView];
-  [v6 setImage:v5];
+  image = [(ASToastViewController *)self image];
+  imageView = [(ASToastViewController *)self imageView];
+  [imageView setImage:image];
 
-  v7 = [(ASToastViewController *)self imageView];
-  [v7 setAlpha:0.64];
+  imageView2 = [(ASToastViewController *)self imageView];
+  [imageView2 setAlpha:0.64];
 
   v8 = +[UIColor labelColor];
-  v9 = [(ASToastViewController *)self imageView];
-  [v9 setTintColor:v8];
+  imageView3 = [(ASToastViewController *)self imageView];
+  [imageView3 setTintColor:v8];
 
-  v10 = [(ASToastViewController *)self imageView];
-  [v10 setContentMode:2];
+  imageView4 = [(ASToastViewController *)self imageView];
+  [imageView4 setContentMode:2];
 
-  v11 = [(ASToastViewController *)self title];
-  v12 = [(ASToastViewController *)self primaryLabel];
-  [v12 setText:v11];
+  title = [(ASToastViewController *)self title];
+  primaryLabel = [(ASToastViewController *)self primaryLabel];
+  [primaryLabel setText:title];
 
-  v13 = [(ASToastViewController *)self primaryLabel];
-  [v13 setTextAlignment:1];
+  primaryLabel2 = [(ASToastViewController *)self primaryLabel];
+  [primaryLabel2 setTextAlignment:1];
 
-  v14 = [(ASToastViewController *)self primaryLabel];
-  [v14 setNumberOfLines:2];
+  primaryLabel3 = [(ASToastViewController *)self primaryLabel];
+  [primaryLabel3 setNumberOfLines:2];
 
   v15 = +[UIColor secondaryLabelColor];
-  v16 = [(ASToastViewController *)self primaryLabel];
-  [v16 setTextColor:v15];
+  primaryLabel4 = [(ASToastViewController *)self primaryLabel];
+  [primaryLabel4 setTextColor:v15];
 
-  v17 = [(ASToastViewController *)self primaryLabel];
-  [v17 setLineBreakMode:4];
+  primaryLabel5 = [(ASToastViewController *)self primaryLabel];
+  [primaryLabel5 setLineBreakMode:4];
 
-  v18 = [(ASToastViewController *)self message];
+  message = [(ASToastViewController *)self message];
 
-  if (v18)
+  if (message)
   {
     v19 = [NSMutableAttributedString alloc];
-    v20 = [(ASToastViewController *)self message];
-    v18 = [v19 initWithString:v20];
+    message2 = [(ASToastViewController *)self message];
+    message = [v19 initWithString:message2];
   }
 
   v21 = objc_alloc_init(NSMutableParagraphStyle);
   [v21 setLineSpacing:2.0];
-  [v18 addAttribute:NSParagraphStyleAttributeName value:v21 range:{0, objc_msgSend(v18, "length")}];
-  v22 = [(ASToastViewController *)self secondaryLabel];
-  [v22 setAttributedText:v18];
+  [message addAttribute:NSParagraphStyleAttributeName value:v21 range:{0, objc_msgSend(message, "length")}];
+  secondaryLabel = [(ASToastViewController *)self secondaryLabel];
+  [secondaryLabel setAttributedText:message];
 
-  v23 = [(ASToastViewController *)self secondaryLabel];
-  [v23 setTextAlignment:1];
+  secondaryLabel2 = [(ASToastViewController *)self secondaryLabel];
+  [secondaryLabel2 setTextAlignment:1];
 
-  v24 = [(ASToastViewController *)self secondaryLabel];
-  [v24 setNumberOfLines:4];
+  secondaryLabel3 = [(ASToastViewController *)self secondaryLabel];
+  [secondaryLabel3 setNumberOfLines:4];
 
   v25 = +[UIColor secondaryLabelColor];
-  v26 = [(ASToastViewController *)self secondaryLabel];
-  [v26 setTextColor:v25];
+  secondaryLabel4 = [(ASToastViewController *)self secondaryLabel];
+  [secondaryLabel4 setTextColor:v25];
 
-  v27 = [(ASToastViewController *)self secondaryLabel];
-  [v27 setLineBreakMode:4];
+  secondaryLabel5 = [(ASToastViewController *)self secondaryLabel];
+  [secondaryLabel5 setLineBreakMode:4];
 
-  v28 = [(ASToastViewController *)self toastView];
-  v29 = [v28 contentView];
-  v30 = [(ASToastViewController *)self imageView];
-  [v29 addSubview:v30];
+  toastView = [(ASToastViewController *)self toastView];
+  contentView = [toastView contentView];
+  imageView5 = [(ASToastViewController *)self imageView];
+  [contentView addSubview:imageView5];
 
-  v31 = [(ASToastViewController *)self toastView];
-  v32 = [v31 contentView];
-  v33 = [(ASToastViewController *)self primaryLabel];
-  [v32 addSubview:v33];
+  toastView2 = [(ASToastViewController *)self toastView];
+  contentView2 = [toastView2 contentView];
+  primaryLabel6 = [(ASToastViewController *)self primaryLabel];
+  [contentView2 addSubview:primaryLabel6];
 
-  v34 = [(ASToastViewController *)self toastView];
-  v35 = [v34 contentView];
-  v36 = [(ASToastViewController *)self secondaryLabel];
-  [v35 addSubview:v36];
+  toastView3 = [(ASToastViewController *)self toastView];
+  contentView3 = [toastView3 contentView];
+  secondaryLabel6 = [(ASToastViewController *)self secondaryLabel];
+  [contentView3 addSubview:secondaryLabel6];
 
   CGAffineTransformMakeScale(&v42, 0.88, 0.88);
-  v37 = [(ASToastViewController *)self toastView];
+  toastView4 = [(ASToastViewController *)self toastView];
   v41 = v42;
-  [v37 setTransform:&v41];
+  [toastView4 setTransform:&v41];
 
-  v38 = [(ASToastViewController *)self toastView];
-  [v38 setAlpha:0.0];
+  toastView5 = [(ASToastViewController *)self toastView];
+  [toastView5 setAlpha:0.0];
 
-  v39 = [(ASToastViewController *)self view];
-  v40 = [(ASToastViewController *)self toastView];
-  [v39 addSubview:v40];
+  view2 = [(ASToastViewController *)self view];
+  toastView6 = [(ASToastViewController *)self toastView];
+  [view2 addSubview:toastView6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ASToastViewController;
-  [(ASToastViewController *)&v5 viewWillAppear:a3];
-  v4 = [(ASToastViewController *)self presentationController];
-  [v4 _setContainerIgnoresDirectTouchEvents:1];
+  [(ASToastViewController *)&v5 viewWillAppear:appear];
+  presentationController = [(ASToastViewController *)self presentationController];
+  [presentationController _setContainerIgnoresDirectTouchEvents:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ASToastViewController;
-  [(ASToastViewController *)&v6 viewDidAppear:a3];
+  [(ASToastViewController *)&v6 viewDidAppear:appear];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_74A0;
@@ -186,15 +186,15 @@
   v65.receiver = self;
   v65.super_class = ASToastViewController;
   [(ASToastViewController *)&v65 viewDidLayoutSubviews];
-  v3 = [(ASToastViewController *)self view];
-  [v3 bounds];
+  view = [(ASToastViewController *)self view];
+  [view bounds];
 
-  v4 = [(ASToastViewController *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(ASToastViewController *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
-  v7 = [(ASToastViewController *)self toastView];
-  [v7 setFrame:{0.0, 0.0, 250.0, 450.0}];
+  toastView = [(ASToastViewController *)self toastView];
+  [toastView setFrame:{0.0, 0.0, 250.0, 450.0}];
 
   v59 = 0;
   v60 = &v59;
@@ -202,23 +202,23 @@
   v62 = &unk_7C31E1;
   v63 = 0u;
   v64 = 0u;
-  v8 = [(ASToastViewController *)self toastView];
-  [v8 bounds];
+  toastView2 = [(ASToastViewController *)self toastView];
+  [toastView2 bounds];
   *&v63 = v9 + 25.0;
   *(&v63 + 1) = v10 + 40.0;
   *&v64 = v11 + -50.0;
   *(&v64 + 1) = v12 + -65.0;
 
-  v13 = [(ASToastViewController *)self toastView];
-  [v13 bounds];
+  toastView3 = [(ASToastViewController *)self toastView];
+  [toastView3 bounds];
   UIRectCenteredXInRectScale();
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(ASToastViewController *)self imageView];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  imageView = [(ASToastViewController *)self imageView];
+  [imageView setFrame:{v15, v17, v19, v21}];
 
   v23 = v60;
   v60[5] = v21 + v60[5];
@@ -239,29 +239,29 @@
   v53[5] = v54;
   v53[6] = &v55;
   v24 = objc_retainBlock(v53);
-  v25 = [objc_opt_class() _primaryLabelFont];
-  v26 = [(ASToastViewController *)self primaryLabel];
-  [v26 setFont:v25];
+  _primaryLabelFont = [objc_opt_class() _primaryLabelFont];
+  primaryLabel = [(ASToastViewController *)self primaryLabel];
+  [primaryLabel setFont:_primaryLabelFont];
 
-  v27 = [(ASToastViewController *)self primaryLabel];
-  (v24[2])(v24, v27, 0, 18.0);
+  primaryLabel2 = [(ASToastViewController *)self primaryLabel];
+  (v24[2])(v24, primaryLabel2, 0, 18.0);
 
-  v28 = [objc_opt_class() _secondaryLabelFont];
-  v29 = [(ASToastViewController *)self secondaryLabel];
-  [v29 setFont:v28];
+  _secondaryLabelFont = [objc_opt_class() _secondaryLabelFont];
+  secondaryLabel = [(ASToastViewController *)self secondaryLabel];
+  [secondaryLabel setFont:_secondaryLabelFont];
 
-  v30 = [(ASToastViewController *)self secondaryLabel];
-  (v24[2])(v24, v30, 0, 25.5);
+  secondaryLabel2 = [(ASToastViewController *)self secondaryLabel];
+  (v24[2])(v24, secondaryLabel2, 0, 25.5);
 
-  v31 = [(ASToastViewController *)self toastView];
-  [v31 bounds];
+  toastView4 = [(ASToastViewController *)self toastView];
+  [toastView4 bounds];
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
   v38 = v56[3];
-  v39 = [(ASToastViewController *)self toastView];
-  v40 = v39;
+  toastView5 = [(ASToastViewController *)self toastView];
+  v40 = toastView5;
   v41 = fmin(v38 + 25.0, 450.0);
   if (v41 < 250.0)
   {
@@ -269,10 +269,10 @@
   }
 
   v42 = v41;
-  [v39 setBounds:{v33, v35, v37, ceilf(v42)}];
+  [toastView5 setBounds:{v33, v35, v37, ceilf(v42)}];
 
-  v43 = [(ASToastViewController *)self toastView];
-  [v43 frame];
+  toastView6 = [(ASToastViewController *)self toastView];
+  [toastView6 frame];
   UIRectCenteredXInRectScale();
 
   UIRectCenteredYInRectScale();
@@ -280,8 +280,8 @@
   v47 = v46;
   v49 = v48;
   v51 = v50;
-  v52 = [(ASToastViewController *)self toastView];
-  [v52 setFrame:{v45, v47, v49, v51}];
+  toastView7 = [(ASToastViewController *)self toastView];
+  [toastView7 setFrame:{v45, v47, v49, v51}];
 
   _Block_object_dispose(v54, 8);
   _Block_object_dispose(&v55, 8);
@@ -297,9 +297,9 @@
   [(ASToastPresentationWindow *)v3 presentViewController:self animated:0 completion:0];
 }
 
-- (void)_dismissAfterDelay:(double)a3
+- (void)_dismissAfterDelay:(double)delay
 {
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_7CF8;
@@ -313,7 +313,7 @@
   v2 = qword_9652C8;
   if (!qword_9652C8)
   {
-    v3 = [a1 _fontWithSize:kCTFontDescriptorTextStyleSemibold textStyleAttribute:22.0];
+    v3 = [self _fontWithSize:kCTFontDescriptorTextStyleSemibold textStyleAttribute:22.0];
     v4 = qword_9652C8;
     qword_9652C8 = v3;
 
@@ -328,7 +328,7 @@
   v2 = qword_9652D0;
   if (!qword_9652D0)
   {
-    v3 = [a1 _fontWithSize:kCTFontDescriptorTextStyleRegular textStyleAttribute:16.0];
+    v3 = [self _fontWithSize:kCTFontDescriptorTextStyleRegular textStyleAttribute:16.0];
     v4 = qword_9652D0;
     qword_9652D0 = v3;
 
@@ -338,14 +338,14 @@
   return v2;
 }
 
-+ (id)_fontWithSize:(double)a3 textStyleAttribute:(__CFString *)a4
++ (id)_fontWithSize:(double)size textStyleAttribute:(__CFString *)attribute
 {
-  v5 = [UIFont systemFontOfSize:a3];
-  v6 = [v5 fontDescriptor];
+  v5 = [UIFont systemFontOfSize:size];
+  fontDescriptor = [v5 fontDescriptor];
   v11 = UIFontDescriptorTextStyleAttribute;
-  v12 = a4;
-  v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-  v8 = [v6 fontDescriptorByAddingAttributes:v7];
+  attributeCopy = attribute;
+  v7 = [NSDictionary dictionaryWithObjects:&attributeCopy forKeys:&v11 count:1];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v7];
   v9 = [UIFont fontWithDescriptor:v8 size:0.0];
 
   return v9;

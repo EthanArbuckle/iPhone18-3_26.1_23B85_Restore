@@ -1,15 +1,15 @@
 @interface STUIStatusBarVPNDisconnectView
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)_setupForStyleAttributes:(id)a3;
-- (void)animateSlashForUpdate:(id)a3;
-- (void)applyStyleAttributes:(id)a3;
-- (void)resetSlashForUpdate:(id)a3;
+- (void)_setupForStyleAttributes:(id)attributes;
+- (void)animateSlashForUpdate:(id)update;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)resetSlashForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarVPNDisconnectView
 
-- (void)_setupForStyleAttributes:(id)a3
+- (void)_setupForStyleAttributes:(id)attributes
 {
   if (!self->_vpnView)
   {
@@ -24,17 +24,17 @@
     v6 = objc_alloc(MEMORY[0x277D75D18]);
     [(STUIStatusBarStringView *)self->_vpnView frame];
     v28 = [v6 initWithFrame:?];
-    v7 = [MEMORY[0x277D75348] blackColor];
-    v8 = [v7 CGColor];
-    v9 = [v28 layer];
-    [v9 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [v28 layer];
+    [layer setBackgroundColor:cGColor];
 
-    v10 = [MEMORY[0x277CD9F90] layer];
+    layer2 = [MEMORY[0x277CD9F90] layer];
     vpnSlashMaskShapeLayer = self->_vpnSlashMaskShapeLayer;
-    self->_vpnSlashMaskShapeLayer = v10;
+    self->_vpnSlashMaskShapeLayer = layer2;
 
-    v12 = [MEMORY[0x277D75348] blackColor];
-    -[CAShapeLayer setStrokeColor:](self->_vpnSlashMaskShapeLayer, "setStrokeColor:", [v12 CGColor]);
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    -[CAShapeLayer setStrokeColor:](self->_vpnSlashMaskShapeLayer, "setStrokeColor:", [blackColor2 CGColor]);
 
     Mutable = CGPathCreateMutable();
     v30.origin.x = 5.0;
@@ -64,15 +64,15 @@
     [(CAShapeLayer *)self->_vpnSlashMaskShapeLayer setLineWidth:4.0];
     v18 = *MEMORY[0x277CDA780];
     [(CAShapeLayer *)self->_vpnSlashMaskShapeLayer setLineCap:*MEMORY[0x277CDA780]];
-    v19 = [MEMORY[0x277D75348] blackColor];
-    -[CAShapeLayer setStrokeColor:](self->_vpnSlashMaskShapeLayer, "setStrokeColor:", [v19 CGColor]);
+    blackColor3 = [MEMORY[0x277D75348] blackColor];
+    -[CAShapeLayer setStrokeColor:](self->_vpnSlashMaskShapeLayer, "setStrokeColor:", [blackColor3 CGColor]);
 
     [(CAShapeLayer *)self->_vpnSlashMaskShapeLayer setStrokeEnd:0.0];
     v20 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA658]];
     [(CAShapeLayer *)self->_vpnSlashMaskShapeLayer setCompositingFilter:v20];
 
-    v21 = [v28 layer];
-    [v21 addSublayer:self->_vpnSlashMaskShapeLayer];
+    layer3 = [v28 layer];
+    [layer3 addSublayer:self->_vpnSlashMaskShapeLayer];
 
     [(STUIStatusBarStringView *)self->_vpnView setMaskView:v28];
     v22 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{5.0, 0.0, 19.0, 19.0}];
@@ -80,9 +80,9 @@
     self->_slashView = v22;
 
     [(STUIStatusBarVPNDisconnectView *)self addSubview:self->_slashView];
-    v24 = [MEMORY[0x277CD9F90] layer];
+    layer4 = [MEMORY[0x277CD9F90] layer];
     slashShapeLayer = self->_slashShapeLayer;
-    self->_slashShapeLayer = v24;
+    self->_slashShapeLayer = layer4;
 
     v26 = CGPathCreateMutable();
     CGPathMoveToPoint(v26, 0, 0.0, 0.0);
@@ -92,26 +92,26 @@
     [(CAShapeLayer *)self->_slashShapeLayer setLineWidth:1.0];
     [(CAShapeLayer *)self->_slashShapeLayer setLineCap:v18];
     [(CAShapeLayer *)self->_slashShapeLayer setStrokeEnd:0.0];
-    v27 = [(UIView *)self->_slashView layer];
-    [v27 addSublayer:self->_slashShapeLayer];
+    layer5 = [(UIView *)self->_slashView layer];
+    [layer5 addSublayer:self->_slashShapeLayer];
   }
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  [(STUIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:v4];
-  [(STUIStatusBarStringView *)self->_vpnView applyStyleAttributes:v4];
-  v6 = [v4 imageTintColor];
+  attributesCopy = attributes;
+  [(STUIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:attributesCopy];
+  [(STUIStatusBarStringView *)self->_vpnView applyStyleAttributes:attributesCopy];
+  imageTintColor = [attributesCopy imageTintColor];
 
-  v5 = v6;
-  -[CAShapeLayer setStrokeColor:](self->_slashShapeLayer, "setStrokeColor:", [v6 CGColor]);
+  v5 = imageTintColor;
+  -[CAShapeLayer setStrokeColor:](self->_slashShapeLayer, "setStrokeColor:", [imageTintColor CGColor]);
 }
 
-- (void)resetSlashForUpdate:(id)a3
+- (void)resetSlashForUpdate:(id)update
 {
-  v4 = [a3 styleAttributes];
-  [(STUIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:v4];
+  styleAttributes = [update styleAttributes];
+  [(STUIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:styleAttributes];
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] disableActions];
@@ -122,14 +122,14 @@
   [v5 commit];
 }
 
-- (void)animateSlashForUpdate:(id)a3
+- (void)animateSlashForUpdate:(id)update
 {
-  v4 = [a3 styleAttributes];
-  [(STUIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:v4];
+  styleAttributes = [update styleAttributes];
+  [(STUIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:styleAttributes];
 
   v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
-  v5 = [(STUIStatusBarVPNDisconnectView *)self layer];
-  [v5 convertTime:0 toLayer:CACurrentMediaTime()];
+  layer = [(STUIStatusBarVPNDisconnectView *)self layer];
+  [layer convertTime:0 toLayer:CACurrentMediaTime()];
   [v8 setBeginTime:v6 + 0.75];
 
   [v8 setFromValue:&unk_287D1B2C0];

@@ -1,16 +1,16 @@
 @interface ABPKBreakthroughPipeline
-- (BOOL)overlayResult:(id)a3 OnImage:(__CVBuffer *)a4 andGenerateOverlayImage:(__CVBuffer *)a5;
-- (int)runWithInput:(__CVBuffer *)a3 atTimeStamp:(double)a4 andOutput:(id)a5;
+- (BOOL)overlayResult:(id)result OnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage;
+- (int)runWithInput:(__CVBuffer *)input atTimeStamp:(double)stamp andOutput:(id)output;
 @end
 
 @implementation ABPKBreakthroughPipeline
 
-- (int)runWithInput:(__CVBuffer *)a3 atTimeStamp:(double)a4 andOutput:(id)a5
+- (int)runWithInput:(__CVBuffer *)input atTimeStamp:(double)stamp andOutput:(id)output
 {
   v39 = *MEMORY[0x277D85DE8];
-  v35 = a5;
+  outputCopy = output;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([(ABPKGestureDetectionPipeline *)self->_gestureDetection runWithInput:a3 abpkDeviceOrientation:3 atTimeStamp:v8 andOutput:a4])
+  if ([(ABPKGestureDetectionPipeline *)self->_gestureDetection runWithInput:input abpkDeviceOrientation:3 atTimeStamp:v8 andOutput:stamp])
   {
     v10 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -34,9 +34,9 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v14 = [v8 objectAtIndexedSubscript:v12];
-        v15 = [v14 gestureTypes];
+        gestureTypes = [v14 gestureTypes];
         *buf = v34;
-        v38 = v15;
+        v38 = gestureTypes;
         _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " Gestures detected: %@ ", buf, 0xCu);
       }
 
@@ -47,8 +47,8 @@
       while (1)
       {
         v20 = [v8 objectAtIndexedSubscript:v12];
-        v21 = [v20 gestureTypes];
-        v22 = [v21 count] > v16;
+        gestureTypes2 = [v20 gestureTypes];
+        v22 = [gestureTypes2 count] > v16;
 
         if (!v22)
         {
@@ -56,18 +56,18 @@
         }
 
         v23 = [v8 objectAtIndexedSubscript:v12];
-        v24 = [v23 gestureTypes];
-        v25 = [v24 objectAtIndexedSubscript:v16];
-        v26 = [v25 integerValue];
+        gestureTypes3 = [v23 gestureTypes];
+        v25 = [gestureTypes3 objectAtIndexedSubscript:v16];
+        integerValue = [v25 integerValue];
 
-        if (v26)
+        if (integerValue)
         {
-          if (v26 == 1)
+          if (integerValue == 1)
           {
             v18 = 1;
           }
 
-          else if (v26 == 2)
+          else if (integerValue == 2)
           {
             v17 = 1;
           }
@@ -82,13 +82,13 @@
       }
 
       v27 = [v8 objectAtIndexedSubscript:v12];
-      v28 = [v27 skeleton2D];
+      skeleton2D = [v27 skeleton2D];
       v29 = [v8 objectAtIndexedSubscript:v12];
-      v30 = [v29 isPoseValid];
+      isPoseValid = [v29 isPoseValid];
       v31 = [v8 objectAtIndexedSubscript:v12];
-      -[ABPKBreakthroughResult set2dSkeleton:isPoseValid:trackingId:isFaceVisible:isRaisingHand:isWavingHand:](v36, "set2dSkeleton:isPoseValid:trackingId:isFaceVisible:isRaisingHand:isWavingHand:", v28, v30, [v31 trackingId], v17 & 1, v18 & 1, v19 & 1);
+      -[ABPKBreakthroughResult set2dSkeleton:isPoseValid:trackingId:isFaceVisible:isRaisingHand:isWavingHand:](v36, "set2dSkeleton:isPoseValid:trackingId:isFaceVisible:isRaisingHand:isWavingHand:", skeleton2D, isPoseValid, [v31 trackingId], v17 & 1, v18 & 1, v19 & 1);
 
-      [v35 addObject:v36];
+      [outputCopy addObject:v36];
       ++v12;
     }
 
@@ -99,10 +99,10 @@
   return v11;
 }
 
-- (BOOL)overlayResult:(id)a3 OnImage:(__CVBuffer *)a4 andGenerateOverlayImage:(__CVBuffer *)a5
+- (BOOL)overlayResult:(id)result OnImage:(__CVBuffer *)image andGenerateOverlayImage:(__CVBuffer *)overlayImage
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  resultCopy = result;
   *buf = xmmword_23EE281B0;
   v26 = xmmword_23EE281C0;
   *&v8 = 255;
@@ -126,7 +126,7 @@
   v10 = 0;
   *&v11 = 134217984;
   v21 = v11;
-  while (v10 < [v7 count])
+  while (v10 < [resultCopy count])
   {
     v12 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -136,27 +136,27 @@
       _os_log_impl(&dword_23EDDC000, v12, OS_LOG_TYPE_DEBUG, " \x10Overlaying result for Person: %lu ", buf, 0xCu);
     }
 
-    v13 = [v7 objectAtIndexedSubscript:v10];
+    v13 = [resultCopy objectAtIndexedSubscript:v10];
     if ([v13 isFaceVisible])
     {
       if ([v13 isWavingHand])
       {
-        v14 = 1;
+        isRaisingHand = 1;
       }
 
       else
       {
-        v14 = [v13 isRaisingHand];
+        isRaisingHand = [v13 isRaisingHand];
       }
     }
 
     else
     {
-      v14 = 0;
+      isRaisingHand = 0;
     }
 
-    v15 = [v13 trackingId];
-    if (v14)
+    trackingId = [v13 trackingId];
+    if (isRaisingHand)
     {
       v16 = __ABPKLogSharedInstance();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -170,20 +170,20 @@
 
     else
     {
-      v17 = *(__p + v15 % ((v23 - __p) >> 4));
+      v17 = *(__p + trackingId % ((v23 - __p) >> 4));
     }
 
     if (v10)
     {
-      v18 = a5;
+      imageCopy = overlayImage;
     }
 
     else
     {
-      v18 = a4;
+      imageCopy = image;
     }
 
-    [v13 overlayResultOnImage:v18 withResult:a5 withColor:*&v17];
+    [v13 overlayResultOnImage:imageCopy withResult:overlayImage withColor:*&v17];
 
     ++v10;
   }

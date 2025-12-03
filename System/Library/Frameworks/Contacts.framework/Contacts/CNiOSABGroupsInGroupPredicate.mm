@@ -1,21 +1,21 @@
 @interface CNiOSABGroupsInGroupPredicate
-- (CNiOSABGroupsInGroupPredicate)initWithParentGroupIdentifier:(id)a3;
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4;
+- (CNiOSABGroupsInGroupPredicate)initWithParentGroupIdentifier:(id)identifier;
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error;
 @end
 
 @implementation CNiOSABGroupsInGroupPredicate
 
-- (CNiOSABGroupsInGroupPredicate)initWithParentGroupIdentifier:(id)a3
+- (CNiOSABGroupsInGroupPredicate)initWithParentGroupIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentGroup.identifier == %@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentGroup.identifier == %@", identifierCopy];
   v10.receiver = self;
   v10.super_class = CNiOSABGroupsInGroupPredicate;
-  v6 = [(CNPredicate *)&v10 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v10 initWithPredicate:identifierCopy];
 
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     parentGroupIdentifier = v6->_parentGroupIdentifier;
     v6->_parentGroupIdentifier = v7;
   }
@@ -23,11 +23,11 @@
   return v6;
 }
 
-- (__CFArray)cn_copyGroupsInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyGroupsInAddressBook:(void *)book error:(__CFError *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(CNiOSABGroupsInGroupPredicate *)self parentGroupIdentifier];
-  v9[0] = v4;
+  parentGroupIdentifier = [(CNiOSABGroupsInGroupPredicate *)self parentGroupIdentifier];
+  v9[0] = parentGroupIdentifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v5 = ABAddressBookCopyGroupsWithUUIDs();
 

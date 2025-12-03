@@ -1,20 +1,20 @@
 @interface IDSQRProtoDiagnosticIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPacketsRecordDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPacketsRecordDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoDiagnosticIndication
 
-- (void)setHasPacketsRecordDuration:(BOOL)a3
+- (void)setHasPacketsRecordDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoDiagnosticIndication;
   v4 = [(IDSQRProtoDiagnosticIndication *)&v8 description];
-  v5 = [(IDSQRProtoDiagnosticIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoDiagnosticIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   failureSubtype = self->_failureSubtype;
   if (failureSubtype)
   {
-    [v3 setObject:failureSubtype forKey:@"failure_subtype"];
+    [dictionary setObject:failureSubtype forKey:@"failure_subtype"];
   }
 
   failureSubtypeContext = self->_failureSubtypeContext;
@@ -73,15 +73,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_failureSubtype)
   {
     sub_1A7E1B638();
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_failureSubtypeContext)
   {
@@ -102,34 +102,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setFailureSubtype:self->_failureSubtype];
-  [v5 setFailureSubtypeContext:self->_failureSubtypeContext];
+  toCopy = to;
+  [toCopy setFailureSubtype:self->_failureSubtype];
+  [toCopy setFailureSubtypeContext:self->_failureSubtypeContext];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v5 + 8) = self->_packetsRecordDuration;
-    *(v5 + 36) |= 2u;
+    *(toCopy + 8) = self->_packetsRecordDuration;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v5 + 1) = self->_txnId;
-    *(v5 + 36) |= 1u;
+    *(toCopy + 1) = self->_txnId;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_failureSubtype copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_failureSubtype copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_failureSubtypeContext copyWithZone:a3];
+  v8 = [(NSString *)self->_failureSubtypeContext copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -150,16 +150,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   failureSubtype = self->_failureSubtype;
-  if (failureSubtype | *(v4 + 2))
+  if (failureSubtype | *(equalCopy + 2))
   {
     if (![(NSString *)failureSubtype isEqual:?])
     {
@@ -168,7 +168,7 @@
   }
 
   failureSubtypeContext = self->_failureSubtypeContext;
-  if (failureSubtypeContext | *(v4 + 3))
+  if (failureSubtypeContext | *(equalCopy + 3))
   {
     if (![(NSString *)failureSubtypeContext isEqual:?])
     {
@@ -178,23 +178,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_packetsRecordDuration != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_packetsRecordDuration != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_15:
     v7 = 0;
     goto LABEL_16;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_txnId != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_txnId != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
@@ -235,33 +235,33 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(IDSQRProtoDiagnosticIndication *)self setFailureSubtype:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(IDSQRProtoDiagnosticIndication *)self setFailureSubtypeContext:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_packetsRecordDuration = *(v4 + 8);
+    self->_packetsRecordDuration = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_txnId = *(v4 + 1);
+    self->_txnId = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

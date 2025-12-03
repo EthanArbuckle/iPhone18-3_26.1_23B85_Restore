@@ -1,7 +1,7 @@
 @interface UIInterfaceActionVisualStyle
-+ (id)idiomSpecificStyleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4;
++ (id)idiomSpecificStyleForTraitCollection:(id)collection presentationStyle:(int64_t)style;
 - (BOOL)allowsZeroSizedSectionSeparators;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)selectByIndirectPointerTouchRequired;
 - (BOOL)selectByPressGestureRequired;
 - (BOOL)selectionFeedbackEnabled;
@@ -11,48 +11,48 @@
 - (UIEdgeInsets)actionSequenceEdgeInsets;
 - (UIEdgeInsets)contentMargin;
 - (UIInterfaceActionVisualStyle)init;
-- (UIInterfaceActionVisualStyle)initWithConcreteVisualStyle:(id)a3;
+- (UIInterfaceActionVisualStyle)initWithConcreteVisualStyle:(id)style;
 - (double)actionSectionSpacing;
-- (double)actionSpacingForGroupViewState:(id)a3;
+- (double)actionSpacingForGroupViewState:(id)state;
 - (double)actionTitleLabelMinimumScaleFactor;
 - (double)contentCornerRadius;
 - (double)horizontalImageContentSpacing;
 - (double)verticalImageContentSpacing;
 - (id)_base_actionPropertiesAffectingImageViewStyling;
 - (id)_base_actionPropertiesAffectingLabelStyling;
-- (id)_contrastingColorForColor:(id)a3;
+- (id)_contrastingColorForColor:(id)color;
 - (id)_styleForVisualProperties;
-- (id)actionBackgroundColorForViewState:(id)a3;
-- (id)actionClassificationLabelColorForViewState:(id)a3;
-- (id)actionClassificationLabelFontForViewState:(id)a3;
+- (id)actionBackgroundColorForViewState:(id)state;
+- (id)actionClassificationLabelColorForViewState:(id)state;
+- (id)actionClassificationLabelFontForViewState:(id)state;
 - (id)actionGroupPropertiesAffectingActionsScrollViewStyling;
-- (id)actionImageViewTintColorForImageProperty:(id)a3 actionViewState:(id)a4;
+- (id)actionImageViewTintColorForImageProperty:(id)property actionViewState:(id)state;
 - (id)actionPropertiesAffectingActionRepresentationViewStyling;
 - (id)actionPropertiesAffectingImageViewStyling;
 - (id)actionPropertiesAffectingLabelStyling;
-- (id)actionTitleLabelColorForViewState:(id)a3;
-- (id)actionTitleLabelCompositingFilterForViewState:(id)a3;
-- (id)actionTitleLabelFontForViewState:(id)a3;
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3;
-- (id)copyWithGroupViewState:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)actionTitleLabelColorForViewState:(id)state;
+- (id)actionTitleLabelCompositingFilterForViewState:(id)state;
+- (id)actionTitleLabelFontForViewState:(id)state;
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view;
+- (id)copyWithGroupViewState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultConcreteActionTitleLabelPreferredFont;
 - (id)defaultConcreteActionTitleLabelRegularFont;
 - (id)defaultScreen;
-- (id)newActionBackgroundViewForViewState:(id)a3;
-- (id)newActionSeparatorViewForGroupViewState:(id)a3;
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3;
-- (id)newSectionSeparatorViewForGroupViewState:(id)a3;
-- (void)_base_configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5;
-- (void)_base_configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5;
-- (void)configureAttributesForActionRepresentationView:(id)a3 actionViewState:(id)a4;
-- (void)configureAttributesForActionScrollView:(id)a3 groupViewState:(id)a4;
-- (void)configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5;
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5;
-- (void)configureForDismissingGroupView:(id)a3 alongsideTransitionCoordinator:(id)a4;
-- (void)configureForPresentingGroupView:(id)a3 alongsideTransitionCoordinator:(id)a4;
-- (void)setConcreteVisualStyle:(id)a3;
-- (void)setVisualStyleOverride:(id)a3;
+- (id)newActionBackgroundViewForViewState:(id)state;
+- (id)newActionSeparatorViewForGroupViewState:(id)state;
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state;
+- (id)newSectionSeparatorViewForGroupViewState:(id)state;
+- (void)_base_configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state;
+- (void)_base_configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state;
+- (void)configureAttributesForActionRepresentationView:(id)view actionViewState:(id)state;
+- (void)configureAttributesForActionScrollView:(id)view groupViewState:(id)state;
+- (void)configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state;
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state;
+- (void)configureForDismissingGroupView:(id)view alongsideTransitionCoordinator:(id)coordinator;
+- (void)configureForPresentingGroupView:(id)view alongsideTransitionCoordinator:(id)coordinator;
+- (void)setConcreteVisualStyle:(id)style;
+- (void)setVisualStyleOverride:(id)override;
 @end
 
 @implementation UIInterfaceActionVisualStyle
@@ -65,16 +65,16 @@
   return v4;
 }
 
-- (UIInterfaceActionVisualStyle)initWithConcreteVisualStyle:(id)a3
+- (UIInterfaceActionVisualStyle)initWithConcreteVisualStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v12.receiver = self;
   v12.super_class = UIInterfaceActionVisualStyle;
   v6 = [(UIInterfaceActionVisualStyle *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_concreteVisualStyle, a3);
+    objc_storeStrong(&v6->_concreteVisualStyle, style);
     visualStyleOverride = v7->_visualStyleOverride;
     v7->_visualStyleOverride = 0;
 
@@ -91,37 +91,37 @@
   visualStyleOverride = self->_visualStyleOverride;
   if (visualStyleOverride)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@", overridesStyle = %@", visualStyleOverride];
+    visualStyleOverride = [MEMORY[0x1E696AEC0] stringWithFormat:@", overridesStyle = %@", visualStyleOverride];
   }
 
   else
   {
-    v4 = &stru_1EFB14550;
+    visualStyleOverride = &stru_1EFB14550;
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = UIInterfaceActionVisualStyle;
   v6 = [(UIInterfaceActionVisualStyle *)&v9 description];
-  v7 = [v5 stringWithFormat:@"%@ concreteStyle = %@%@", v6, self->_concreteVisualStyle, v4];
+  v7 = [v5 stringWithFormat:@"%@ concreteStyle = %@%@", v6, self->_concreteVisualStyle, visualStyleOverride];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
-    v8 = [(UIInterfaceActionVisualStyle *)self groupViewState];
-    v9 = [v7 groupViewState];
-    if ([v8 isEqual:v9])
+    v7 = equalCopy;
+    groupViewState = [(UIInterfaceActionVisualStyle *)self groupViewState];
+    groupViewState2 = [v7 groupViewState];
+    if ([groupViewState isEqual:groupViewState2])
     {
-      v10 = [(UIInterfaceActionVisualStyle *)self concreteVisualStyle];
-      v11 = [v7 concreteVisualStyle];
-      v6 = [v10 isEqual:v11];
+      concreteVisualStyle = [(UIInterfaceActionVisualStyle *)self concreteVisualStyle];
+      concreteVisualStyle2 = [v7 concreteVisualStyle];
+      v6 = [concreteVisualStyle isEqual:concreteVisualStyle2];
     }
 
     else
@@ -138,7 +138,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(UIInterfaceActionGroupViewState *)self->_groupViewState copy];
@@ -156,55 +156,55 @@
   return v4;
 }
 
-- (id)copyWithGroupViewState:(id)a3
+- (id)copyWithGroupViewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(UIInterfaceActionVisualStyle *)self copy];
-  v6 = [v4 screen];
+  screen = [stateCopy screen];
 
-  if (!v6)
+  if (!screen)
   {
-    v7 = [(UIInterfaceActionVisualStyle *)self defaultScreen];
-    v8 = [v4 copyWithScreen:v7];
+    defaultScreen = [(UIInterfaceActionVisualStyle *)self defaultScreen];
+    v8 = [stateCopy copyWithScreen:defaultScreen];
 
-    v4 = v8;
+    stateCopy = v8;
   }
 
   v9 = v5[1];
-  v5[1] = v4;
+  v5[1] = stateCopy;
 
   return v5;
 }
 
-- (void)setVisualStyleOverride:(id)a3
+- (void)setVisualStyleOverride:(id)override
 {
-  v5 = a3;
+  overrideCopy = override;
   if (![(UIInterfaceActionOverrideVisualStyle *)self->_visualStyleOverride isEqual:?])
   {
-    objc_storeStrong(&self->_visualStyleOverride, a3);
+    objc_storeStrong(&self->_visualStyleOverride, override);
     [(UIInterfaceActionVisualStyle *)self->_visualStyleOverride setConcreteVisualStyle:self->_concreteVisualStyle];
   }
 }
 
-- (void)setConcreteVisualStyle:(id)a3
+- (void)setConcreteVisualStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   if (([(UIInterfaceActionConcreteVisualStyleImpl *)self->_concreteVisualStyle isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_concreteVisualStyle, a3);
+    objc_storeStrong(&self->_concreteVisualStyle, style);
     [(UIInterfaceActionVisualStyle *)self->_visualStyleOverride setConcreteVisualStyle:self->_concreteVisualStyle];
   }
 }
 
-+ (id)idiomSpecificStyleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4
++ (id)idiomSpecificStyleForTraitCollection:(id)collection presentationStyle:(int64_t)style
 {
   v18[5] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 userInterfaceIdiom];
-  if (v6 == -1)
+  collectionCopy = collection;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+  if (userInterfaceIdiom == -1)
   {
     v7 = +[UIDevice currentDevice];
-    v6 = [v7 userInterfaceIdiom];
+    userInterfaceIdiom = [v7 userInterfaceIdiom];
   }
 
   v17[0] = &unk_1EFE2F128;
@@ -218,7 +218,7 @@
   v17[4] = &unk_1EFE2F188;
   v18[4] = objc_opt_class();
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:userInterfaceIdiom];
   v10 = [v8 objectForKeyedSubscript:v9];
 
   if (!v10)
@@ -226,15 +226,15 @@
     v10 = objc_opt_class();
   }
 
-  v11 = [v10 styleForTraitCollection:v5 presentationStyle:a4];
+  v11 = [v10 styleForTraitCollection:collectionCopy presentationStyle:style];
   if (!v11)
   {
-    v11 = [UIInterfaceActionConcreteVisualStyleFactory_iOS styleForTraitCollection:v5 presentationStyle:a4];
+    v11 = [UIInterfaceActionConcreteVisualStyleFactory_iOS styleForTraitCollection:collectionCopy presentationStyle:style];
   }
 
   v12 = [objc_alloc(objc_opt_class()) initWithConcreteVisualStyle:v11];
-  v13 = [v12 groupViewState];
-  v14 = [v13 copyWithTraitCollection:v5];
+  groupViewState = [v12 groupViewState];
+  v14 = [groupViewState copyWithTraitCollection:collectionCopy];
   v15 = v12[1];
   v12[1] = v14;
 
@@ -254,13 +254,13 @@
   return v2;
 }
 
-- (id)_contrastingColorForColor:(id)a3
+- (id)_contrastingColorForColor:(id)color
 {
   v13 = 0.0;
   v11 = 0.0;
   v12 = 0.0;
   v10 = 0.0;
-  [a3 getHue:&v13 saturation:&v12 brightness:&v11 alpha:&v10];
+  [color getHue:&v13 saturation:&v12 brightness:&v11 alpha:&v10];
   *v3.i64 = v13 + 0.5;
   *v3.i32 = v13 + 0.5;
   *v4.i32 = *v3.i32 - truncf(*v3.i32);
@@ -278,32 +278,32 @@
   return v8;
 }
 
-- (void)_base_configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5
+- (void)_base_configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state
 {
-  v36 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 action];
-  v11 = [v10 _titleTextColor];
-  v12 = v11;
-  if (v8)
+  labelCopy = label;
+  classificationLabelCopy = classificationLabel;
+  stateCopy = state;
+  action = [stateCopy action];
+  _titleTextColor = [action _titleTextColor];
+  v12 = _titleTextColor;
+  if (classificationLabelCopy)
   {
-    if (v11)
+    if (_titleTextColor)
     {
-      v13 = v11;
+      v13 = _titleTextColor;
     }
 
     else
     {
-      v13 = [(UIInterfaceActionVisualStyle *)self actionClassificationLabelColorForViewState:v9];
+      v13 = [(UIInterfaceActionVisualStyle *)self actionClassificationLabelColorForViewState:stateCopy];
     }
 
     v14 = v13;
-    v15 = [(UIInterfaceActionVisualStyle *)self actionClassificationLabelFontForViewState:v9];
-    [v8 setFont:v15];
+    v15 = [(UIInterfaceActionVisualStyle *)self actionClassificationLabelFontForViewState:stateCopy];
+    [classificationLabelCopy setFont:v15];
 
-    [v8 _setTextColorFollowsTintColor:1];
-    [v8 setTintColor:v14];
+    [classificationLabelCopy _setTextColorFollowsTintColor:1];
+    [classificationLabelCopy setTintColor:v14];
   }
 
   if (v12)
@@ -313,22 +313,22 @@
 
   else
   {
-    v16 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelColorForViewState:v9];
+    v16 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelColorForViewState:stateCopy];
   }
 
   v17 = v16;
-  v18 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelFontForViewState:v9];
-  [v36 setFont:v18];
+  v18 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelFontForViewState:stateCopy];
+  [labelCopy setFont:v18];
 
-  [v36 _setTextColorFollowsTintColor:1];
+  [labelCopy _setTextColorFollowsTintColor:1];
   if (_UISolariumEnabled())
   {
-    v19 = [(UIInterfaceActionVisualStyle *)self actionBackgroundColorForViewState:v9];
-    v20 = [v36 traitCollection];
-    v21 = [v19 resolvedColorWithTraitCollection:v20];
+    v19 = [(UIInterfaceActionVisualStyle *)self actionBackgroundColorForViewState:stateCopy];
+    traitCollection = [labelCopy traitCollection];
+    v21 = [v19 resolvedColorWithTraitCollection:traitCollection];
 
-    v22 = [v36 traitCollection];
-    v23 = [v17 resolvedColorWithTraitCollection:v22];
+    traitCollection2 = [labelCopy traitCollection];
+    v23 = [v17 resolvedColorWithTraitCollection:traitCollection2];
 
     if ([v23 _isSimilarToColor:v21 withinPercentage:0.01])
     {
@@ -338,37 +338,37 @@
     }
   }
 
-  [v36 setTintColor:v17];
+  [labelCopy setTintColor:v17];
   LODWORD(v25) = 1053609165;
-  [v36 _setHyphenationFactor:v25];
-  v26 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelCompositingFilterForViewState:v9];
-  v27 = [v36 layer];
-  [v27 setCompositingFilter:v26];
+  [labelCopy _setHyphenationFactor:v25];
+  v26 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelCompositingFilterForViewState:stateCopy];
+  layer = [labelCopy layer];
+  [layer setCompositingFilter:v26];
 
-  v28 = [v36 superview];
-  v29 = [v28 layer];
-  [v29 setAllowsGroupBlending:v26 == 0];
+  superview = [labelCopy superview];
+  layer2 = [superview layer];
+  [layer2 setAllowsGroupBlending:v26 == 0];
 
-  v30 = [v36 superview];
-  v31 = [v30 layer];
-  [v31 setAllowsGroupOpacity:v26 == 0];
+  superview2 = [labelCopy superview];
+  layer3 = [superview2 layer];
+  [layer3 setAllowsGroupOpacity:v26 == 0];
 
-  v32 = [v36 traitCollection];
-  v33 = [v32 preferredContentSizeCategory];
+  traitCollection3 = [labelCopy traitCollection];
+  preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v33))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    [v36 setMinimumScaleFactor:1.0];
-    [v36 setAdjustsFontSizeToFitWidth:0];
-    [v36 setNumberOfLines:0];
+    [labelCopy setMinimumScaleFactor:1.0];
+    [labelCopy setAdjustsFontSizeToFitWidth:0];
+    [labelCopy setNumberOfLines:0];
     v34 = 0;
     v35 = 0;
   }
 
-  else if (v8)
+  else if (classificationLabelCopy)
   {
-    [v36 setMinimumScaleFactor:1.0];
-    [v36 setAdjustsFontSizeToFitWidth:0];
+    [labelCopy setMinimumScaleFactor:1.0];
+    [labelCopy setAdjustsFontSizeToFitWidth:0];
     v34 = 0;
     v35 = 4;
   }
@@ -376,14 +376,14 @@
   else
   {
     v34 = 1;
-    [v36 setAdjustsFontSizeToFitWidth:1];
+    [labelCopy setAdjustsFontSizeToFitWidth:1];
     [(UIInterfaceActionVisualStyle *)self actionTitleLabelMinimumScaleFactor];
-    [v36 setMinimumScaleFactor:?];
+    [labelCopy setMinimumScaleFactor:?];
     v35 = 5;
   }
 
-  [v36 setBaselineAdjustment:v34];
-  [v36 setLineBreakMode:v35];
+  [labelCopy setBaselineAdjustment:v34];
+  [labelCopy setLineBreakMode:v35];
 }
 
 - (id)_base_actionPropertiesAffectingImageViewStyling
@@ -395,62 +395,62 @@
   return v2;
 }
 
-- (void)_base_configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5
+- (void)_base_configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state
 {
-  v23 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 action];
-  v11 = [(UIInterfaceActionVisualStyle *)self actionImageViewTintColorForImageProperty:v9 actionViewState:v8];
+  viewCopy = view;
+  stateCopy = state;
+  propertyCopy = property;
+  action = [stateCopy action];
+  v11 = [(UIInterfaceActionVisualStyle *)self actionImageViewTintColorForImageProperty:propertyCopy actionViewState:stateCopy];
 
   if (v11)
   {
     goto LABEL_11;
   }
 
-  v12 = [v10 _titleTextColor];
-  v13 = v12;
-  if (v12)
+  _titleTextColor = [action _titleTextColor];
+  v13 = _titleTextColor;
+  if (_titleTextColor)
   {
-    v14 = v12;
+    v14 = _titleTextColor;
   }
 
   else
   {
-    v14 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelColorForViewState:v8];
+    v14 = [(UIInterfaceActionVisualStyle *)self actionTitleLabelColorForViewState:stateCopy];
   }
 
   v15 = v14;
-  v16 = [v8 action];
-  v17 = [v16 _imageTintColor];
+  action2 = [stateCopy action];
+  _imageTintColor = [action2 _imageTintColor];
 
-  if (v17)
+  if (_imageTintColor)
   {
-    v18 = [v8 action];
-    v19 = [v18 _imageTintColor];
+    action3 = [stateCopy action];
+    _imageTintColor2 = [action3 _imageTintColor];
   }
 
   else
   {
-    v20 = [v23 superview];
-    v21 = [v20 tintColor];
+    superview = [viewCopy superview];
+    tintColor = [superview tintColor];
 
-    if (v15 != v21)
+    if (v15 != tintColor)
     {
       v11 = v15;
       goto LABEL_10;
     }
 
-    v18 = [v23 superview];
-    v19 = [v18 tintColor];
+    action3 = [viewCopy superview];
+    _imageTintColor2 = [action3 tintColor];
   }
 
-  v11 = v19;
+  v11 = _imageTintColor2;
 
 LABEL_10:
 LABEL_11:
-  [v23 setTintColor:v11];
-  if ([v10 isEnabled])
+  [viewCopy setTintColor:v11];
+  if ([action isEnabled])
   {
     v22 = 1;
   }
@@ -460,9 +460,9 @@ LABEL_11:
     v22 = 2;
   }
 
-  if ([v23 tintAdjustmentMode] != v22)
+  if ([viewCopy tintAdjustmentMode] != v22)
   {
-    [v23 setTintAdjustmentMode:v22];
+    [viewCopy setTintAdjustmentMode:v22];
   }
 }
 
@@ -479,16 +479,16 @@ LABEL_11:
 
 - (id)defaultScreen
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 defaultScreen];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  defaultScreen = [_styleForVisualProperties defaultScreen];
 
-  return v3;
+  return defaultScreen;
 }
 
 - (CGSize)maximumActionGroupContentSize
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 maximumActionGroupContentSize];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties maximumActionGroupContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -501,8 +501,8 @@ LABEL_11:
 
 - (CGSize)minimumActionContentSize
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 minimumActionContentSize];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties minimumActionContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -515,8 +515,8 @@ LABEL_11:
 
 - (double)horizontalImageContentSpacing
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 horizontalImageContentSpacing];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties horizontalImageContentSpacing];
   v4 = v3;
 
   return v4;
@@ -524,8 +524,8 @@ LABEL_11:
 
 - (double)verticalImageContentSpacing
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 verticalImageContentSpacing];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties verticalImageContentSpacing];
   v4 = v3;
 
   return v4;
@@ -533,16 +533,16 @@ LABEL_11:
 
 - (BOOL)allowsZeroSizedSectionSeparators
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 allowsZeroSizedSectionSeparators];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  allowsZeroSizedSectionSeparators = [_styleForVisualProperties allowsZeroSizedSectionSeparators];
 
-  return v3;
+  return allowsZeroSizedSectionSeparators;
 }
 
 - (double)actionSectionSpacing
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 actionSectionSpacing];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties actionSectionSpacing];
   v4 = v3;
 
   return v4;
@@ -550,8 +550,8 @@ LABEL_11:
 
 - (UIEdgeInsets)actionSequenceEdgeInsets
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 actionSequenceEdgeInsets];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties actionSequenceEdgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -570,8 +570,8 @@ LABEL_11:
 
 - (double)contentCornerRadius
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 contentCornerRadius];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties contentCornerRadius];
   v4 = v3;
 
   return v4;
@@ -579,8 +579,8 @@ LABEL_11:
 
 - (UIEdgeInsets)contentMargin
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 contentMargin];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties contentMargin];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -599,75 +599,75 @@ LABEL_11:
 
 - (BOOL)selectByPressGestureRequired
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 selectByPressGestureRequired];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  selectByPressGestureRequired = [_styleForVisualProperties selectByPressGestureRequired];
 
-  return v3;
+  return selectByPressGestureRequired;
 }
 
 - (BOOL)selectionFeedbackEnabled
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 selectionFeedbackEnabled];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  selectionFeedbackEnabled = [_styleForVisualProperties selectionFeedbackEnabled];
 
-  return v3;
+  return selectionFeedbackEnabled;
 }
 
 - (BOOL)selectByIndirectPointerTouchRequired
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 selectByIndirectPointerTouchRequired];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  selectByIndirectPointerTouchRequired = [_styleForVisualProperties selectByIndirectPointerTouchRequired];
 
-  return v3;
+  return selectByIndirectPointerTouchRequired;
 }
 
 - (double)actionTitleLabelMinimumScaleFactor
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v2 actionTitleLabelMinimumScaleFactor];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties actionTitleLabelMinimumScaleFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 actionViewStateForAttachingToActionRepresentationView:v4];
+  viewCopy = view;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties actionViewStateForAttachingToActionRepresentationView:viewCopy];
 
   return v6;
 }
 
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 newGroupBackgroundViewWithGroupViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties newGroupBackgroundViewWithGroupViewState:stateCopy];
 
   return v6;
 }
 
-- (id)newActionSeparatorViewForGroupViewState:(id)a3
+- (id)newActionSeparatorViewForGroupViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 newActionSeparatorViewForGroupViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties newActionSeparatorViewForGroupViewState:stateCopy];
 
   return v6;
 }
 
-- (id)newSectionSeparatorViewForGroupViewState:(id)a3
+- (id)newSectionSeparatorViewForGroupViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v5 actionSectionSpacing];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties actionSectionSpacing];
   v7 = v6;
 
-  v8 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v9 = [v8 allowsZeroSizedSectionSeparators];
+  _styleForVisualProperties2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  allowsZeroSizedSectionSeparators = [_styleForVisualProperties2 allowsZeroSizedSectionSeparators];
 
-  if (v9)
+  if (allowsZeroSizedSectionSeparators)
   {
     v10 = v7 >= 0.0;
   }
@@ -679,8 +679,8 @@ LABEL_11:
 
   if (v10)
   {
-    v11 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-    v12 = [v11 newSectionSeparatorViewForGroupViewState:v4];
+    _styleForVisualProperties3 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+    v12 = [_styleForVisualProperties3 newSectionSeparatorViewForGroupViewState:stateCopy];
     v13 = v12;
     if (v12)
     {
@@ -705,137 +705,137 @@ LABEL_11:
   return v15;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 newActionBackgroundViewForViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties newActionBackgroundViewForViewState:stateCopy];
 
   return v6;
 }
 
-- (id)actionTitleLabelFontForViewState:(id)a3
+- (id)actionTitleLabelFontForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
+  stateCopy = state;
+  fontForViewStateBlock = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
 
-  if (v5)
+  if (fontForViewStateBlock)
   {
-    v6 = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
-    (v6)[2](v6, v4);
+    fontForViewStateBlock2 = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
+    (fontForViewStateBlock2)[2](fontForViewStateBlock2, stateCopy);
   }
 
   else
   {
-    v6 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-    [v6 actionTitleLabelFontForViewState:v4];
+    fontForViewStateBlock2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+    [fontForViewStateBlock2 actionTitleLabelFontForViewState:stateCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)actionTitleLabelColorForViewState:(id)a3
+- (id)actionTitleLabelColorForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 actionTitleLabelColorForViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties actionTitleLabelColorForViewState:stateCopy];
 
   return v6;
 }
 
-- (id)actionBackgroundColorForViewState:(id)a3
+- (id)actionBackgroundColorForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 actionBackgroundColorForViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties actionBackgroundColorForViewState:stateCopy];
 
   return v6;
 }
 
-- (id)actionTitleLabelCompositingFilterForViewState:(id)a3
+- (id)actionTitleLabelCompositingFilterForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 actionTitleLabelCompositingFilterForViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties actionTitleLabelCompositingFilterForViewState:stateCopy];
 
   return v6;
 }
 
-- (id)actionClassificationLabelFontForViewState:(id)a3
+- (id)actionClassificationLabelFontForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
+  stateCopy = state;
+  fontForViewStateBlock = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
 
-  if (v5)
+  if (fontForViewStateBlock)
   {
-    v6 = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
-    (v6)[2](v6, v4);
+    fontForViewStateBlock2 = [(UIInterfaceActionVisualStyle *)self fontForViewStateBlock];
+    (fontForViewStateBlock2)[2](fontForViewStateBlock2, stateCopy);
   }
 
   else
   {
-    v6 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-    [v6 actionClassificationLabelFontForViewState:v4];
+    fontForViewStateBlock2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+    [fontForViewStateBlock2 actionClassificationLabelFontForViewState:stateCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)actionClassificationLabelColorForViewState:(id)a3
+- (id)actionClassificationLabelColorForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v6 = [v5 actionClassificationLabelColorForViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v6 = [_styleForVisualProperties actionClassificationLabelColorForViewState:stateCopy];
 
   return v6;
 }
 
-- (id)actionImageViewTintColorForImageProperty:(id)a3 actionViewState:(id)a4
+- (id)actionImageViewTintColorForImageProperty:(id)property actionViewState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v9 = [v8 actionImageViewTintColorForImageProperty:v7 actionViewState:v6];
+  stateCopy = state;
+  propertyCopy = property;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  v9 = [_styleForVisualProperties actionImageViewTintColorForImageProperty:propertyCopy actionViewState:stateCopy];
 
   return v9;
 }
 
-- (double)actionSpacingForGroupViewState:(id)a3
+- (double)actionSpacingForGroupViewState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v5 actionSpacingForGroupViewState:v4];
+  stateCopy = state;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties actionSpacingForGroupViewState:stateCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (void)configureForPresentingGroupView:(id)a3 alongsideTransitionCoordinator:(id)a4
+- (void)configureForPresentingGroupView:(id)view alongsideTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v8 configureForPresentingGroupView:v7 alongsideTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  viewCopy = view;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties configureForPresentingGroupView:viewCopy alongsideTransitionCoordinator:coordinatorCopy];
 }
 
-- (void)configureForDismissingGroupView:(id)a3 alongsideTransitionCoordinator:(id)a4
+- (void)configureForDismissingGroupView:(id)view alongsideTransitionCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v8 configureForDismissingGroupView:v7 alongsideTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  viewCopy = view;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties configureForDismissingGroupView:viewCopy alongsideTransitionCoordinator:coordinatorCopy];
 }
 
 - (id)actionGroupPropertiesAffectingActionsScrollViewStyling
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 actionPropertiesAffectingImageViewStyling];
-  v4 = v3;
-  if (v3)
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  actionPropertiesAffectingImageViewStyling = [_styleForVisualProperties actionPropertiesAffectingImageViewStyling];
+  v4 = actionPropertiesAffectingImageViewStyling;
+  if (actionPropertiesAffectingImageViewStyling)
   {
-    v5 = v3;
+    v5 = actionPropertiesAffectingImageViewStyling;
   }
 
   else
@@ -848,80 +848,80 @@ LABEL_11:
   return v5;
 }
 
-- (void)configureAttributesForActionScrollView:(id)a3 groupViewState:(id)a4
+- (void)configureAttributesForActionScrollView:(id)view groupViewState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v8 configureAttributesForActionScrollView:v7 groupViewState:v6];
+  stateCopy = state;
+  viewCopy = view;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties configureAttributesForActionScrollView:viewCopy groupViewState:stateCopy];
 }
 
 - (id)actionPropertiesAffectingLabelStyling
 {
-  v3 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v4 = [v3 actionPropertiesAffectingLabelStyling];
-  v5 = v4;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  actionPropertiesAffectingLabelStyling = [_styleForVisualProperties actionPropertiesAffectingLabelStyling];
+  v5 = actionPropertiesAffectingLabelStyling;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (actionPropertiesAffectingLabelStyling)
   {
-    v6 = v4;
+    v6 = actionPropertiesAffectingLabelStyling;
   }
 
   v7 = v6;
 
-  v8 = [(UIInterfaceActionVisualStyle *)self _base_actionPropertiesAffectingLabelStyling];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  _base_actionPropertiesAffectingLabelStyling = [(UIInterfaceActionVisualStyle *)self _base_actionPropertiesAffectingLabelStyling];
+  v9 = [v7 arrayByAddingObjectsFromArray:_base_actionPropertiesAffectingLabelStyling];
 
   return v9;
 }
 
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(UIInterfaceActionVisualStyle *)self _base_configureAttributesForTitleLabel:v10 classificationLabel:v9 actionViewState:v8];
-  v11 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v11 configureAttributesForTitleLabel:v10 classificationLabel:v9 actionViewState:v8];
+  stateCopy = state;
+  classificationLabelCopy = classificationLabel;
+  labelCopy = label;
+  [(UIInterfaceActionVisualStyle *)self _base_configureAttributesForTitleLabel:labelCopy classificationLabel:classificationLabelCopy actionViewState:stateCopy];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties configureAttributesForTitleLabel:labelCopy classificationLabel:classificationLabelCopy actionViewState:stateCopy];
 }
 
 - (id)actionPropertiesAffectingImageViewStyling
 {
-  v3 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v4 = [v3 actionPropertiesAffectingImageViewStyling];
-  v5 = v4;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  actionPropertiesAffectingImageViewStyling = [_styleForVisualProperties actionPropertiesAffectingImageViewStyling];
+  v5 = actionPropertiesAffectingImageViewStyling;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (actionPropertiesAffectingImageViewStyling)
   {
-    v6 = v4;
+    v6 = actionPropertiesAffectingImageViewStyling;
   }
 
   v7 = v6;
 
-  v8 = [(UIInterfaceActionVisualStyle *)self _base_actionPropertiesAffectingImageViewStyling];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  _base_actionPropertiesAffectingImageViewStyling = [(UIInterfaceActionVisualStyle *)self _base_actionPropertiesAffectingImageViewStyling];
+  v9 = [v7 arrayByAddingObjectsFromArray:_base_actionPropertiesAffectingImageViewStyling];
 
   return v9;
 }
 
-- (void)configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(UIInterfaceActionVisualStyle *)self _base_configureAttributesForImageView:v10 imageProperty:v9 actionViewState:v8];
-  v11 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v11 configureAttributesForImageView:v10 imageProperty:v9 actionViewState:v8];
+  stateCopy = state;
+  propertyCopy = property;
+  viewCopy = view;
+  [(UIInterfaceActionVisualStyle *)self _base_configureAttributesForImageView:viewCopy imageProperty:propertyCopy actionViewState:stateCopy];
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties configureAttributesForImageView:viewCopy imageProperty:propertyCopy actionViewState:stateCopy];
 }
 
 - (id)actionPropertiesAffectingActionRepresentationViewStyling
 {
-  v2 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  v3 = [v2 actionPropertiesAffectingActionRepresentationViewStyling];
-  v4 = v3;
-  if (v3)
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  actionPropertiesAffectingActionRepresentationViewStyling = [_styleForVisualProperties actionPropertiesAffectingActionRepresentationViewStyling];
+  v4 = actionPropertiesAffectingActionRepresentationViewStyling;
+  if (actionPropertiesAffectingActionRepresentationViewStyling)
   {
-    v5 = v3;
+    v5 = actionPropertiesAffectingActionRepresentationViewStyling;
   }
 
   else
@@ -934,12 +934,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)configureAttributesForActionRepresentationView:(id)a3 actionViewState:(id)a4
+- (void)configureAttributesForActionRepresentationView:(id)view actionViewState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
-  [v8 configureAttributesForActionRepresentationView:v7 actionViewState:v6];
+  stateCopy = state;
+  viewCopy = view;
+  _styleForVisualProperties = [(UIInterfaceActionVisualStyle *)self _styleForVisualProperties];
+  [_styleForVisualProperties configureAttributesForActionRepresentationView:viewCopy actionViewState:stateCopy];
 }
 
 - (id)defaultConcreteActionTitleLabelRegularFont

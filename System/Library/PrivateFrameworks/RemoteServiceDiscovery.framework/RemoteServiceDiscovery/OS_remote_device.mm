@@ -1,8 +1,8 @@
 @interface OS_remote_device
-- (BOOL)hasServiceWithName:(const char *)a3 peerMessage:(id)a4;
+- (BOOL)hasServiceWithName:(const char *)name peerMessage:(id)message;
 - (OS_remote_device)init;
 - (void)dealloc;
-- (void)setUuid:(char *)a3;
+- (void)setUuid:(char *)uuid;
 @end
 
 @implementation OS_remote_device
@@ -23,11 +23,11 @@
   [(OS_remote_device *)&v4 dealloc];
 }
 
-- (void)setUuid:(char *)a3
+- (void)setUuid:(char *)uuid
 {
   v10 = *MEMORY[0x277D85DE8];
   uuid = self->_uuid;
-  if (a3)
+  if (uuid)
   {
     if (!uuid)
     {
@@ -41,7 +41,7 @@
 
     v6 = *MEMORY[0x277D85DE8];
 
-    uuid_copy(uuid, a3);
+    uuid_copy(uuid, uuid);
   }
 
   else
@@ -69,7 +69,7 @@
   return v2;
 }
 
-- (BOOL)hasServiceWithName:(const char *)a3 peerMessage:(id)a4
+- (BOOL)hasServiceWithName:(const char *)name peerMessage:(id)message
 {
   if (remote_device_get_state(self) != 2)
   {
@@ -94,7 +94,7 @@ LABEL_6:
   while (1)
   {
     string = xpc_array_get_string(v6, v7);
-    if (!strcmp(a3, string))
+    if (!strcmp(name, string))
     {
       break;
     }

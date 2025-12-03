@@ -1,22 +1,22 @@
 @interface DeviceDetailResolutionResult
-+ (id)confirmationRequiredWithDeviceDetailToConfirm:(id)a3;
-+ (id)disambiguationWithDeviceDetailsToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedDeviceDetail:(id)a3;
++ (id)confirmationRequiredWithDeviceDetailToConfirm:(id)confirm;
++ (id)disambiguationWithDeviceDetailsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedDeviceDetail:(id)detail;
 @end
 
 @implementation DeviceDetailResolutionResult
 
-+ (id)successWithResolvedDeviceDetail:(id)a3
++ (id)successWithResolvedDeviceDetail:(id)detail
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_266DA380C(v4);
+  detailCopy = detail;
+  v5 = sub_266DA380C(detailCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithDeviceDetailsToDisambiguate:(id)a3
++ (id)disambiguationWithDeviceDetailsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for DeviceDetail();
   v3 = sub_266DAA93C();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithDeviceDetailToConfirm:(id)a3
++ (id)confirmationRequiredWithDeviceDetailToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_266DA39AC(a3);
+  confirmCopy = confirm;
+  v5 = sub_266DA39AC(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_266DA3968();
   sub_266DAA93C();

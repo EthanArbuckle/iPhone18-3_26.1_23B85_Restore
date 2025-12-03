@@ -1,7 +1,7 @@
 @interface CKMessageAcknowledgmentDraftDescriptor
 + (id)acknowledgmentBarColor;
-+ (id)allMessageAcknowledgmentDescriptorsWithServiceName:(id)a3;
-- (CKMessageAcknowledgmentDraftDescriptor)initWithMessageAcknowledgmentType:(int64_t)a3 serviceName:(id)a4;
++ (id)allMessageAcknowledgmentDescriptorsWithServiceName:(id)name;
+- (CKMessageAcknowledgmentDraftDescriptor)initWithMessageAcknowledgmentType:(int64_t)type serviceName:(id)name;
 - (NSString)acknowledgmentImageName;
 - (UIColor)acknowledgmentImageColor;
 - (UIColor)selectedAcknowledgmentImageColor;
@@ -12,17 +12,17 @@
 
 @implementation CKMessageAcknowledgmentDraftDescriptor
 
-- (CKMessageAcknowledgmentDraftDescriptor)initWithMessageAcknowledgmentType:(int64_t)a3 serviceName:(id)a4
+- (CKMessageAcknowledgmentDraftDescriptor)initWithMessageAcknowledgmentType:(int64_t)type serviceName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CKMessageAcknowledgmentDraftDescriptor;
   v7 = [(CKMessageAcknowledgmentDraftDescriptor *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_messageAcknowledgmentType = a3;
-    v9 = [v6 copy];
+    v7->_messageAcknowledgmentType = type;
+    v9 = [nameCopy copy];
     serviceName = v8->_serviceName;
     v8->_serviceName = v9;
   }
@@ -40,15 +40,15 @@
 
 - (id)symbolName
 {
-  v2 = [(CKMessageAcknowledgmentDraftDescriptor *)self messageAcknowledgmentType];
-  if ((v2 - 2000) > 5)
+  messageAcknowledgmentType = [(CKMessageAcknowledgmentDraftDescriptor *)self messageAcknowledgmentType];
+  if ((messageAcknowledgmentType - 2000) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E72F13D8[v2 - 2000];
+    return off_1E72F13D8[messageAcknowledgmentType - 2000];
   }
 }
 
@@ -68,8 +68,8 @@
 - (UIColor)acknowledgmentImageColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 messageAcknowledgment:2 acknowledgmentImageColor:0];
+  theme = [v2 theme];
+  v4 = [theme messageAcknowledgment:2 acknowledgmentImageColor:0];
 
   return v4;
 }
@@ -77,8 +77,8 @@
 - (UIColor)selectedAcknowledgmentImageColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 messageAcknowledgment:2 selectedAcknowledgmentImageColor:{-[CKMessageAcknowledgmentDraftDescriptor themeColor](self, "themeColor")}];
+  theme = [v3 theme];
+  v5 = [theme messageAcknowledgment:2 selectedAcknowledgmentImageColor:{-[CKMessageAcknowledgmentDraftDescriptor themeColor](self, "themeColor")}];
 
   return v5;
 }
@@ -86,8 +86,8 @@
 - (UIColor)selectedBalloonColor
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [v4 messageAcknowledgmentSelectedBalloonColorForStyle:2 serviceName:self->_serviceName];
+  theme = [v3 theme];
+  v5 = [theme messageAcknowledgmentSelectedBalloonColorForStyle:2 serviceName:self->_serviceName];
 
   return v5;
 }
@@ -95,25 +95,25 @@
 + (id)acknowledgmentBarColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 messageAcknowledgmentBalloonColorForStyle:2];
+  theme = [v2 theme];
+  v4 = [theme messageAcknowledgmentBalloonColorForStyle:2];
 
   return v4;
 }
 
-+ (id)allMessageAcknowledgmentDescriptorsWithServiceName:(id)a3
++ (id)allMessageAcknowledgmentDescriptorsWithServiceName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  nameCopy = name;
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 messageAcknowledgmentPickerBarAcknowledgmentOrder];
+  messageAcknowledgmentPickerBarAcknowledgmentOrder = [v5 messageAcknowledgmentPickerBarAcknowledgmentOrder];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [messageAcknowledgmentPickerBarAcknowledgmentOrder countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -124,20 +124,20 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(messageAcknowledgmentPickerBarAcknowledgmentOrder);
         }
 
-        v11 = -[CKMessageAcknowledgmentDraftDescriptor initWithMessageAcknowledgmentType:serviceName:]([CKMessageAcknowledgmentDraftDescriptor alloc], "initWithMessageAcknowledgmentType:serviceName:", [*(*(&v13 + 1) + 8 * i) integerValue], v3);
-        [v4 addObject:v11];
+        v11 = -[CKMessageAcknowledgmentDraftDescriptor initWithMessageAcknowledgmentType:serviceName:]([CKMessageAcknowledgmentDraftDescriptor alloc], "initWithMessageAcknowledgmentType:serviceName:", [*(*(&v13 + 1) + 8 * i) integerValue], nameCopy);
+        [array addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [messageAcknowledgmentPickerBarAcknowledgmentOrder countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  return v4;
+  return array;
 }
 
 @end

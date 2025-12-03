@@ -1,5 +1,5 @@
 @interface PHMisconfiguredAccountAlert
-- (PHMisconfiguredAccountAlert)initWithDialAction:(id)a3;
+- (PHMisconfiguredAccountAlert)initWithDialAction:(id)action;
 - (id)defaultButtonTitle;
 - (id)message;
 - (id)otherButtonTitle;
@@ -9,16 +9,16 @@
 
 @implementation PHMisconfiguredAccountAlert
 
-- (PHMisconfiguredAccountAlert)initWithDialAction:(id)a3
+- (PHMisconfiguredAccountAlert)initWithDialAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v8.receiver = self;
   v8.super_class = PHMisconfiguredAccountAlert;
   v5 = [(PHMisconfiguredAccountAlert *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PHMisconfiguredAccountAlert *)v5 setDialAction:v4];
+    [(PHMisconfiguredAccountAlert *)v5 setDialAction:actionCopy];
   }
 
   return v6;
@@ -37,7 +37,7 @@
   v2 = +[IMAccountController sharedInstance];
   v3 = +[IMService facetimeService];
   v4 = [v2 accountsForService:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
   v6 = objc_alloc_init(TUFeatureFlags);
   LODWORD(v3) = [v6 appleAccountRebrandEnabled];
@@ -55,7 +55,7 @@
 
   v10 = [v7 localizedStringForKey:v9 value:&stru_100361FD0 table:@"InCallService"];
 
-  v11 = [v5 name];
+  name = [firstObject name];
   v12 = IMStripLoginID();
   v13 = TUHomeCountryCode();
   v14 = TUFormattedPhoneNumber();

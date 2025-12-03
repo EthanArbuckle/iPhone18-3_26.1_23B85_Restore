@@ -1,11 +1,11 @@
 @interface HKSignedClinicalDataFile
-+ (id)signedClinicalDataFileWithURL:(id)a3 sourceURL:(id)a4 receivedDate:(id)a5 countryOfOrigin:(id)a6 error:(id *)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)signedClinicalDataFileWithURL:(id)l sourceURL:(id)rL receivedDate:(id)date countryOfOrigin:(id)origin error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKSignedClinicalDataFile)init;
-- (HKSignedClinicalDataFile)initWithCoder:(id)a3;
-- (HKSignedClinicalDataFile)initWithFileURL:(id)a3 fileHandle:(id)a4 sourceURL:(id)a5 receivedDate:(id)a6 metadata:(id)a7;
+- (HKSignedClinicalDataFile)initWithCoder:(id)coder;
+- (HKSignedClinicalDataFile)initWithFileURL:(id)l fileHandle:(id)handle sourceURL:(id)rL receivedDate:(id)date metadata:(id)metadata;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataFile
@@ -20,35 +20,35 @@
   return 0;
 }
 
-- (HKSignedClinicalDataFile)initWithFileURL:(id)a3 fileHandle:(id)a4 sourceURL:(id)a5 receivedDate:(id)a6 metadata:(id)a7
+- (HKSignedClinicalDataFile)initWithFileURL:(id)l fileHandle:(id)handle sourceURL:(id)rL receivedDate:(id)date metadata:(id)metadata
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  handleCopy = handle;
+  rLCopy = rL;
+  dateCopy = date;
+  metadataCopy = metadata;
   v29.receiver = self;
   v29.super_class = HKSignedClinicalDataFile;
   v17 = [(HKSignedClinicalDataFile *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [lCopy copy];
     fileURL = v17->_fileURL;
     v17->_fileURL = v18;
 
-    v20 = [v13 copy];
+    v20 = [handleCopy copy];
     fileHandle = v17->_fileHandle;
     v17->_fileHandle = v20;
 
-    v22 = [v14 copy];
+    v22 = [rLCopy copy];
     sourceURL = v17->_sourceURL;
     v17->_sourceURL = v22;
 
-    v24 = [v15 copy];
+    v24 = [dateCopy copy];
     receivedDate = v17->_receivedDate;
     v17->_receivedDate = v24;
 
-    v26 = [v16 copy];
+    v26 = [metadataCopy copy];
     metadata = v17->_metadata;
     v17->_metadata = v26;
   }
@@ -56,31 +56,31 @@
   return v17;
 }
 
-+ (id)signedClinicalDataFileWithURL:(id)a3 sourceURL:(id)a4 receivedDate:(id)a5 countryOfOrigin:(id)a6 error:(id *)a7
++ (id)signedClinicalDataFileWithURL:(id)l sourceURL:(id)rL receivedDate:(id)date countryOfOrigin:(id)origin error:(id *)error
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:v12 error:a7];
+  lCopy = l;
+  rLCopy = rL;
+  dateCopy = date;
+  originCopy = origin;
+  v16 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:lCopy error:error];
   if (v16)
   {
     v24[0] = @"Filename";
-    v17 = [v12 lastPathComponent];
-    v18 = v17;
+    lastPathComponent = [lCopy lastPathComponent];
+    v18 = lastPathComponent;
     v24[1] = @"CountryOfOrigin";
     v19 = *MEMORY[0x277CCBBC8];
-    if (v15)
+    if (originCopy)
     {
-      v19 = v15;
+      v19 = originCopy;
     }
 
-    v25[0] = v17;
+    v25[0] = lastPathComponent;
     v25[1] = v19;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
-    v21 = [[a1 alloc] initWithFileURL:v12 fileHandle:v16 sourceURL:v13 receivedDate:v14 metadata:v20];
+    v21 = [[self alloc] initWithFileURL:lCopy fileHandle:v16 sourceURL:rLCopy receivedDate:dateCopy metadata:v20];
   }
 
   else
@@ -93,189 +93,189 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fileURL = self->_fileURL;
-  v5 = a3;
-  [v5 encodeObject:fileURL forKey:@"FileURL"];
-  [v5 encodeObject:self->_fileHandle forKey:@"FileHandle"];
-  [v5 encodeObject:self->_sourceURL forKey:@"SourceURL"];
-  [v5 encodeObject:self->_receivedDate forKey:@"ReceivedDate"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fileURL forKey:@"FileURL"];
+  [coderCopy encodeObject:self->_fileHandle forKey:@"FileHandle"];
+  [coderCopy encodeObject:self->_sourceURL forKey:@"SourceURL"];
+  [coderCopy encodeObject:self->_receivedDate forKey:@"ReceivedDate"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
 }
 
-- (HKSignedClinicalDataFile)initWithCoder:(id)a3
+- (HKSignedClinicalDataFile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FileURL"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FileURL"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FileHandle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FileHandle"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDate"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReceivedDate"];
       if (v8)
       {
-        v9 = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
-        v10 = [v4 decodeObjectOfClasses:v9 forKey:@"Metadata"];
+        hk_secureCodingClasses = [MEMORY[0x277CBEAC0] hk_secureCodingClasses];
+        v10 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"Metadata"];
 
         if (v10)
         {
           self = [(HKSignedClinicalDataFile *)self initWithFileURL:v5 fileHandle:v6 sourceURL:v7 receivedDate:v8 metadata:v10];
-          v11 = self;
+          selfCopy = self;
         }
 
         else
         {
-          [v4 hrs_failWithCocoaValueNotFoundError];
-          v11 = 0;
+          [coderCopy hrs_failWithCocoaValueNotFoundError];
+          selfCopy = 0;
         }
       }
 
       else
       {
-        [v4 hrs_failWithCocoaValueNotFoundError];
-        v11 = 0;
+        [coderCopy hrs_failWithCocoaValueNotFoundError];
+        selfCopy = 0;
       }
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v11 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v11 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(sourceURL3) = 0;
 LABEL_42:
 
       goto LABEL_43;
     }
 
     fileURL = self->_fileURL;
-    v9 = [(HKSignedClinicalDataFile *)v7 fileURL];
-    if (fileURL != v9)
+    fileURL = [(HKSignedClinicalDataFile *)v7 fileURL];
+    if (fileURL != fileURL)
     {
-      v10 = [(HKSignedClinicalDataFile *)v7 fileURL];
-      if (!v10)
+      fileURL2 = [(HKSignedClinicalDataFile *)v7 fileURL];
+      if (!fileURL2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(sourceURL3) = 0;
         goto LABEL_41;
       }
 
-      v3 = v10;
+      v3 = fileURL2;
       v11 = self->_fileURL;
-      v12 = [(HKSignedClinicalDataFile *)v7 fileURL];
-      if (![(NSURL *)v11 isEqual:v12])
+      fileURL3 = [(HKSignedClinicalDataFile *)v7 fileURL];
+      if (![(NSURL *)v11 isEqual:fileURL3])
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(sourceURL3) = 0;
 LABEL_40:
 
         goto LABEL_41;
       }
 
-      v41 = v12;
+      v41 = fileURL3;
     }
 
     sourceURL = self->_sourceURL;
-    v15 = [(HKSignedClinicalDataFile *)v7 sourceURL];
+    sourceURL = [(HKSignedClinicalDataFile *)v7 sourceURL];
     v42 = sourceURL;
-    if (sourceURL != v15)
+    if (sourceURL != sourceURL)
     {
-      v16 = [(HKSignedClinicalDataFile *)v7 sourceURL];
-      if (!v16)
+      sourceURL2 = [(HKSignedClinicalDataFile *)v7 sourceURL];
+      if (!sourceURL2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(sourceURL3) = 0;
         goto LABEL_38;
       }
 
-      v17 = v16;
+      v17 = sourceURL2;
       v18 = self->_sourceURL;
-      v13 = [(HKSignedClinicalDataFile *)v7 sourceURL];
-      if (([(NSURL *)v18 isEqual:v13]& 1) == 0)
+      sourceURL3 = [(HKSignedClinicalDataFile *)v7 sourceURL];
+      if (([(NSURL *)v18 isEqual:sourceURL3]& 1) == 0)
       {
 
-        LOBYTE(v13) = 0;
+        LOBYTE(sourceURL3) = 0;
         goto LABEL_39;
       }
 
-      v38 = v13;
+      v38 = sourceURL3;
       v39 = v17;
     }
 
     receivedDate = self->_receivedDate;
-    v40 = [(HKSignedClinicalDataFile *)v7 receivedDate];
-    if (receivedDate == v40)
+    receivedDate = [(HKSignedClinicalDataFile *)v7 receivedDate];
+    if (receivedDate == receivedDate)
     {
       v37 = v3;
     }
 
     else
     {
-      v13 = [(HKSignedClinicalDataFile *)v7 receivedDate];
-      if (!v13)
+      sourceURL3 = [(HKSignedClinicalDataFile *)v7 receivedDate];
+      if (!sourceURL3)
       {
         v31 = v38;
         v32 = v39;
-        v30 = v40;
+        v30 = receivedDate;
         goto LABEL_30;
       }
 
       v20 = self->_receivedDate;
-      v21 = [(HKSignedClinicalDataFile *)v7 receivedDate];
+      receivedDate2 = [(HKSignedClinicalDataFile *)v7 receivedDate];
       v22 = v20;
-      v23 = v21;
-      if (([(NSDate *)v22 isEqual:v21]& 1) == 0)
+      v23 = receivedDate2;
+      if (([(NSDate *)v22 isEqual:receivedDate2]& 1) == 0)
       {
 
-        LOBYTE(v13) = 0;
-        v29 = v42 == v15;
+        LOBYTE(sourceURL3) = 0;
+        v29 = v42 == sourceURL;
         goto LABEL_33;
       }
 
       v34 = v23;
-      v36 = v13;
+      v36 = sourceURL3;
       v37 = v3;
     }
 
     metadata = self->_metadata;
-    v25 = [(HKSignedClinicalDataFile *)v7 metadata];
-    LOBYTE(v13) = metadata == v25;
-    if (metadata != v25)
+    metadata = [(HKSignedClinicalDataFile *)v7 metadata];
+    LOBYTE(sourceURL3) = metadata == metadata;
+    if (metadata != metadata)
     {
-      v26 = [(HKSignedClinicalDataFile *)v7 metadata];
-      if (v26)
+      metadata2 = [(HKSignedClinicalDataFile *)v7 metadata];
+      if (metadata2)
       {
-        v27 = v26;
-        v13 = self->_metadata;
-        v28 = [(HKSignedClinicalDataFile *)v7 metadata];
-        LOBYTE(v13) = [v13 isEqual:v28];
+        v27 = metadata2;
+        sourceURL3 = self->_metadata;
+        metadata3 = [(HKSignedClinicalDataFile *)v7 metadata];
+        LOBYTE(sourceURL3) = [sourceURL3 isEqual:metadata3];
 
-        if (receivedDate != v40)
+        if (receivedDate != receivedDate)
         {
         }
 
-        v29 = v42 == v15;
+        v29 = v42 == sourceURL;
         v3 = v37;
 LABEL_33:
         v32 = v39;
@@ -288,8 +288,8 @@ LABEL_37:
 LABEL_38:
 
 LABEL_39:
-        v12 = v41;
-        if (fileURL != v9)
+        fileURL3 = v41;
+        if (fileURL != fileURL)
         {
           goto LABEL_40;
         }
@@ -300,14 +300,14 @@ LABEL_41:
       }
     }
 
-    v30 = v40;
-    if (receivedDate == v40)
+    v30 = receivedDate;
+    if (receivedDate == receivedDate)
     {
 
       v3 = v37;
       v31 = v38;
       v32 = v39;
-      if (v42 == v15)
+      if (v42 == sourceURL)
       {
         goto LABEL_38;
       }
@@ -322,7 +322,7 @@ LABEL_36:
     v32 = v39;
 LABEL_30:
 
-    if (v42 == v15)
+    if (v42 == sourceURL)
     {
       goto LABEL_38;
     }
@@ -330,10 +330,10 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  LOBYTE(v13) = 1;
+  LOBYTE(sourceURL3) = 1;
 LABEL_43:
 
-  return v13;
+  return sourceURL3;
 }
 
 - (unint64_t)hash

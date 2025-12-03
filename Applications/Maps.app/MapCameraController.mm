@@ -1,38 +1,38 @@
 @interface MapCameraController
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectApproximatingRouteFromStartPOIShape:(id)a3 toEndPOIShapes:(id)a4 routeLineMapRect:(id)a5 includePadding:(BOOL)a6;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRouteLines:(id)a3 includePadding:(BOOL)a4;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)a3 includeCompassInset:(BOOL)a4 startPOIShape:(id)a5 endPOIShapes:(id)a6;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)a3 includeCompassInset:(BOOL)a4 waypoints:(BOOL)a5;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectFromLocation:(id)a3 alongRoute:(id)a4;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectApproximatingRouteFromStartPOIShape:(id)a3 toEndPOIShapes:(id)a4 routeLineMapRect:(id)a5;
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectForTripFromLocation:(id)a3 alongRoute:(id)a4;
-- (BOOL)_frameVenueLabelMarker:(id)a3 completion:(id)a4;
-- (BOOL)_mapViewFitsLabelMarker:(id)a3 withEdgeInsets:(UIEdgeInsets)a4;
-- (BOOL)searchResultIsVenueOrBuilding:(id)a3;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectApproximatingRouteFromStartPOIShape:(id)shape toEndPOIShapes:(id)shapes routeLineMapRect:(id)rect includePadding:(BOOL)padding;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRouteLines:(id)lines includePadding:(BOOL)padding;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)routes includeCompassInset:(BOOL)inset startPOIShape:(id)shape endPOIShapes:(id)shapes;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)routes includeCompassInset:(BOOL)inset waypoints:(BOOL)waypoints;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectFromLocation:(id)location alongRoute:(id)route;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectApproximatingRouteFromStartPOIShape:(id)shape toEndPOIShapes:(id)shapes routeLineMapRect:(id)rect;
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectForTripFromLocation:(id)location alongRoute:(id)route;
+- (BOOL)_frameVenueLabelMarker:(id)marker completion:(id)completion;
+- (BOOL)_mapViewFitsLabelMarker:(id)marker withEdgeInsets:(UIEdgeInsets)insets;
+- (BOOL)searchResultIsVenueOrBuilding:(id)building;
 - (MKMapView)mapView;
-- (MapCameraController)initWithMapView:(id)a3;
-- (UIEdgeInsets)_insetsByAddingCompassPaddingToInsets:(UIEdgeInsets)a3;
+- (MapCameraController)initWithMapView:(id)view;
+- (UIEdgeInsets)_insetsByAddingCompassPaddingToInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)_insetsForPin;
-- (double)_maximumEdgeToEdgeDistanceBetweenCurrentAndTargetMapRect:(id)a3;
-- (id)_poiShapeAnchorPointMarkersFromRoute:(id)a3;
-- (id)_poiShapeWaypointMarkersFromRoute:(id)a3;
-- (void)_frameMapRect:(id)a3 duration:(double)a4 completion:(id)a5;
-- (void)_frameNotVisibleLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 completion:(id)a5;
-- (void)_frameSearchResult:(id)a3 minZoom:(id)a4 maxZoom:(id)a5 completion:(id)a6;
-- (void)_frameVisibleLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 completion:(id)a5;
+- (double)_maximumEdgeToEdgeDistanceBetweenCurrentAndTargetMapRect:(id)rect;
+- (id)_poiShapeAnchorPointMarkersFromRoute:(id)route;
+- (id)_poiShapeWaypointMarkersFromRoute:(id)route;
+- (void)_frameMapRect:(id)rect duration:(double)duration completion:(id)completion;
+- (void)_frameNotVisibleLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets completion:(id)completion;
+- (void)_frameSearchResult:(id)result minZoom:(id)zoom maxZoom:(id)maxZoom completion:(id)completion;
+- (void)_frameVisibleLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets completion:(id)completion;
 - (void)_notifyObserversWillChangeVisibleRect;
-- (void)_setCenterCoordinate:(CLLocationCoordinate2D)a3 duration:(double)a4 completion:(id)a5;
-- (void)_setCenterCoordinate:(CLLocationCoordinate2D)a3 zoomLevel:(double)a4 animated:(BOOL)a5;
-- (void)_setMapCamera:(id)a3 duration:(double)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)displayMapRegion:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)displayTransitRoute:(id)a3 boardingStopCoord:(id)a4 boardingStopIndex:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)frameApproximateRouteFromStartPOIShape:(id)a3 toEndPOIShapes:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)frameLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 minZoom:(id)a5 maxZoom:(id)a6 completion:(id)a7;
-- (void)frameMapItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)frameMapRect:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)frameRoutes:(id)a3 includeCompassInset:(BOOL)a4 waypoints:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)frameSearchResults:(id)a3 withResultToSelect:(id)a4 historyItem:(id)a5 suggestedMapRegion:(id)a6 minZoom:(id)a7 maxZoom:(id)a8 disableAdditionalViewportPadding:(BOOL)a9 completion:(id)a10;
-- (void)restoreRegionForMapSelectionForLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 completion:(id)a5;
+- (void)_setCenterCoordinate:(CLLocationCoordinate2D)coordinate duration:(double)duration completion:(id)completion;
+- (void)_setCenterCoordinate:(CLLocationCoordinate2D)coordinate zoomLevel:(double)level animated:(BOOL)animated;
+- (void)_setMapCamera:(id)camera duration:(double)duration options:(unint64_t)options completion:(id)completion;
+- (void)displayMapRegion:(id)region animated:(BOOL)animated completion:(id)completion;
+- (void)displayTransitRoute:(id)route boardingStopCoord:(id)coord boardingStopIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion;
+- (void)frameApproximateRouteFromStartPOIShape:(id)shape toEndPOIShapes:(id)shapes animated:(BOOL)animated completion:(id)completion;
+- (void)frameLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets minZoom:(id)zoom maxZoom:(id)maxZoom completion:(id)completion;
+- (void)frameMapItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)frameMapRect:(id)rect animated:(BOOL)animated completion:(id)completion;
+- (void)frameRoutes:(id)routes includeCompassInset:(BOOL)inset waypoints:(BOOL)waypoints animated:(BOOL)animated completion:(id)completion;
+- (void)frameSearchResults:(id)results withResultToSelect:(id)select historyItem:(id)item suggestedMapRegion:(id)region minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)padding completion:(id)self0;
+- (void)restoreRegionForMapSelectionForLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets completion:(id)completion;
 @end
 
 @implementation MapCameraController
@@ -44,29 +44,29 @@
   return WeakRetained;
 }
 
-- (BOOL)_mapViewFitsLabelMarker:(id)a3 withEdgeInsets:(UIEdgeInsets)a4
+- (BOOL)_mapViewFitsLabelMarker:(id)marker withEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  [a3 coordinate];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  [marker coordinate];
   v7 = CLLocationCoordinate2DMake(v5, v6);
-  v8 = [(MapCameraController *)self mapView];
-  v9 = [(MapCameraController *)self mapView];
-  [v8 convertCoordinate:v9 toPointToView:{v7.latitude, v7.longitude}];
+  mapView = [(MapCameraController *)self mapView];
+  mapView2 = [(MapCameraController *)self mapView];
+  [mapView convertCoordinate:mapView2 toPointToView:{v7.latitude, v7.longitude}];
   v33 = v11;
   v34 = v10;
 
-  v12 = [(MapCameraController *)self mapView];
-  [v12 bounds];
+  mapView3 = [(MapCameraController *)self mapView];
+  [mapView3 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(MapCameraController *)self mapView];
-  [v21 defaultInsetsForBalloonCallout];
+  mapView4 = [(MapCameraController *)self mapView];
+  [mapView4 defaultInsetsForBalloonCallout];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -109,17 +109,17 @@
   return result;
 }
 
-- (UIEdgeInsets)_insetsByAddingCompassPaddingToInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)_insetsByAddingCompassPaddingToInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(MapCameraController *)self mapView];
-  if (sub_10000FA08(v8))
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  mapView = [(MapCameraController *)self mapView];
+  if (sub_10000FA08(mapView))
   {
-    v9 = [(MapCameraController *)self mapView];
-    v10 = sub_10000FA08(v9);
+    mapView2 = [(MapCameraController *)self mapView];
+    v10 = sub_10000FA08(mapView2);
 
     if (v10 != 1)
     {
@@ -131,8 +131,8 @@
   {
   }
 
-  v11 = [(MapCameraController *)self mapView];
-  [v11 _compassDiameter];
+  mapView3 = [(MapCameraController *)self mapView];
+  [mapView3 _compassDiameter];
   v13 = v12;
 
   v14 = sub_100019A44() + v13;
@@ -158,70 +158,70 @@ LABEL_8:
   return result;
 }
 
-- (double)_maximumEdgeToEdgeDistanceBetweenCurrentAndTargetMapRect:(id)a3
+- (double)_maximumEdgeToEdgeDistanceBetweenCurrentAndTargetMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v25 = a3.var1.var1;
-  v4 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
-  v8 = [(MapCameraController *)self mapView];
-  [v8 visibleMapRect];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v25 = rect.var1.var1;
+  v4 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
+  mapView = [(MapCameraController *)self mapView];
+  [mapView visibleMapRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(MapCameraController *)self mapView];
-  [v17 _zoomLevelForMapRect:0 includeAccessoryPadding:{v6, v5, v4, var1}];
+  mapView2 = [(MapCameraController *)self mapView];
+  [mapView2 _zoomLevelForMapRect:0 includeAccessoryPadding:{v6, v5, v4, var1}];
   MKZoomScaleForZoomLevelF();
   v19 = v18;
 
-  v20 = [(MapCameraController *)self mapView];
-  [v20 _zoomLevelForMapRect:0 includeAccessoryPadding:{v10, v12, v14, v16}];
+  mapView3 = [(MapCameraController *)self mapView];
+  [mapView3 _zoomLevelForMapRect:0 includeAccessoryPadding:{v10, v12, v14, v16}];
   MKZoomScaleForZoomLevelF();
   v22 = v21;
 
   return fmax(v19, v22) * fmax(fmax(fmax(vabdd_f64(v6, v10), vabdd_f64(v5, v12)), vabdd_f64(v6 + var0, v10 + v14)), vabdd_f64(v5 + v25, v12 + v16));
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectFromLocation:(id)a3 alongRoute:(id)a4
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectFromLocation:(id)location alongRoute:(id)route
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 routeMatch];
-  v9 = [v8 stepIndex];
-  v10 = [v8 routeCoordinate];
-  if (v8)
+  locationCopy = location;
+  routeCopy = route;
+  routeMatch = [locationCopy routeMatch];
+  stepIndex = [routeMatch stepIndex];
+  routeCoordinate = [routeMatch routeCoordinate];
+  if (routeMatch)
   {
-    v9 = [v8 stepIndex];
-    v11 = [v8 routeCoordinate];
+    stepIndex = [routeMatch stepIndex];
+    routeCoordinate2 = [routeMatch routeCoordinate];
   }
 
   else
   {
-    LODWORD(v11) = v10;
-    [v6 coordinate];
+    LODWORD(routeCoordinate2) = routeCoordinate;
+    [locationCopy coordinate];
     GEOLocationCoordinate2DFromCLLocationCoordinate2D();
-    v12 = [v7 closestPointOnRoute:?];
+    v12 = [routeCopy closestPointOnRoute:?];
     if (GEOPolylineCoordinateIsValid())
     {
-      v11 = v12;
-      v9 = [v7 stepIndexForPointIndex:v12];
+      routeCoordinate2 = v12;
+      stepIndex = [routeCopy stepIndexForPointIndex:v12];
     }
 
     else
     {
-      v11 = v11;
-      [v7 _maps_boundingMapRect];
+      routeCoordinate2 = routeCoordinate2;
+      [routeCopy _maps_boundingMapRect];
     }
   }
 
-  v13 = [v7 steps];
-  v14 = [v13 count];
+  steps = [routeCopy steps];
+  v14 = [steps count];
 
-  if (v9 >= v14)
+  if (stepIndex >= v14)
   {
     x = MKMapRectNull.origin.x;
     y = MKMapRectNull.origin.y;
@@ -231,9 +231,9 @@ LABEL_8:
 
   else
   {
-    v15 = [v7 steps];
-    v16 = [v15 objectAtIndexedSubscript:v9];
-    [v7 _maps_boundingRectForStep:v16 fromPoint:v11];
+    steps2 = [routeCopy steps];
+    v16 = [steps2 objectAtIndexedSubscript:stepIndex];
+    [routeCopy _maps_boundingRectForStep:v16 fromPoint:routeCoordinate2];
     x = v17;
     y = v19;
     width = v21;
@@ -241,18 +241,18 @@ LABEL_8:
 
     while (1)
     {
-      ++v9;
-      v25 = [v7 steps];
-      v26 = [v25 count];
+      ++stepIndex;
+      steps3 = [routeCopy steps];
+      v26 = [steps3 count];
 
-      if (v9 >= v26)
+      if (stepIndex >= v26)
       {
         break;
       }
 
-      v27 = [v7 steps];
-      v28 = [v27 objectAtIndexedSubscript:v9];
-      [v7 _maps_boundingRectForStep:v28];
+      steps4 = [routeCopy steps];
+      v28 = [steps4 objectAtIndexedSubscript:stepIndex];
+      [routeCopy _maps_boundingRectForStep:v28];
       v30 = v29;
       v32 = v31;
       v34 = v33;
@@ -274,12 +274,12 @@ LABEL_8:
     }
   }
 
-  v37 = [v7 destination];
-  if (v6)
+  destination = [routeCopy destination];
+  if (locationCopy)
   {
-    v38 = [(MapCameraController *)self mapView];
-    [v6 coordinate];
-    v39 = [POIShapeFactory userLocationPOIShapeWithMapView:v38 coordinate:?];
+    mapView = [(MapCameraController *)self mapView];
+    [locationCopy coordinate];
+    v39 = [POIShapeFactory userLocationPOIShapeWithMapView:mapView coordinate:?];
   }
 
   else
@@ -287,8 +287,8 @@ LABEL_8:
     v39 = 0;
   }
 
-  v40 = [(MapCameraController *)self mapView];
-  v41 = [POIShapeFactory composedWaypointPOIShapeWithMapView:v40 composedWaypoint:v37];
+  mapView2 = [(MapCameraController *)self mapView];
+  v41 = [POIShapeFactory composedWaypointPOIShapeWithMapView:mapView2 composedWaypoint:destination];
 
   if (v41)
   {
@@ -341,19 +341,19 @@ LABEL_8:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectApproximatingRouteFromStartPOIShape:(id)a3 toEndPOIShapes:(id)a4 routeLineMapRect:(id)a5 includePadding:(BOOL)a6
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectApproximatingRouteFromStartPOIShape:(id)shape toEndPOIShapes:(id)shapes routeLineMapRect:(id)rect includePadding:(BOOL)padding
 {
-  v6 = a6;
-  var1 = a5.var1.var1;
-  var0 = a5.var1.var0;
-  v9 = a5.var0.var1;
-  v10 = a5.var0.var0;
-  v13 = a3;
-  v14 = a4;
-  v15 = v14;
-  if (v13 || [v14 count])
+  paddingCopy = padding;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v9 = rect.var0.var1;
+  v10 = rect.var0.var0;
+  shapeCopy = shape;
+  shapesCopy = shapes;
+  v15 = shapesCopy;
+  if (shapeCopy || [shapesCopy count])
   {
-    if (v6)
+    if (paddingCopy)
     {
       UIEdgeInsetsMakeWithEdges();
       top = v16;
@@ -375,9 +375,9 @@ LABEL_8:
     v105 = v10;
     v23 = [[NSMutableArray alloc] initWithArray:v15];
     v24 = v23;
-    if (v13)
+    if (shapeCopy)
     {
-      [v23 insertObject:v13 atIndex:0];
+      [v23 insertObject:shapeCopy atIndex:0];
     }
 
     v25 = [v24 count];
@@ -442,8 +442,8 @@ LABEL_8:
         v50 = v111.origin.y;
         v51 = v111.size.width;
         v52 = v111.size.height;
-        v53 = [(MapCameraController *)self mapView];
-        [v53 _zoomLevelForMapRect:0 includeAccessoryPadding:{v49, v50, v51, v52}];
+        mapView = [(MapCameraController *)self mapView];
+        [mapView _zoomLevelForMapRect:0 includeAccessoryPadding:{v49, v50, v51, v52}];
         MKZoomScaleForZoomLevelF();
         v55 = v54;
 
@@ -518,8 +518,8 @@ LABEL_8:
 
         while (v58);
         v78 = v59;
-        v79 = [(MapCameraController *)self mapView];
-        [v79 mapRectThatFits:v78 edgePadding:{v60, v61, v63, v96, v101, bottom, v99}];
+        mapView2 = [(MapCameraController *)self mapView];
+        [mapView2 mapRectThatFits:v78 edgePadding:{v60, v61, v63, v96, v101, bottom, v99}];
         x = v80;
         y = v81;
         width = v82;
@@ -582,30 +582,30 @@ LABEL_8:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectApproximatingRouteFromStartPOIShape:(id)a3 toEndPOIShapes:(id)a4 routeLineMapRect:(id)a5
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectApproximatingRouteFromStartPOIShape:(id)shape toEndPOIShapes:(id)shapes routeLineMapRect:(id)rect
 {
-  var1 = a5.var1.var1;
-  var0 = a5.var1.var0;
-  v7 = a5.var0.var1;
-  v8 = a5.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v14 = a4;
-  v15 = a3;
+  shapesCopy = shapes;
+  shapeCopy = shape;
   [(MapCameraController *)self _insetsByAddingCompassPaddingToInsets:UIEdgeInsetsZero.top, left, bottom, right];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  [(MapCameraController *)self _mapRectApproximatingRouteFromStartPOIShape:v15 toEndPOIShapes:v14 routeLineMapRect:1 includePadding:v8, v7, var0, var1];
+  [(MapCameraController *)self _mapRectApproximatingRouteFromStartPOIShape:shapeCopy toEndPOIShapes:shapesCopy routeLineMapRect:1 includePadding:v8, v7, var0, var1];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(MapCameraController *)self mapView];
-  [v32 mapRectThatFits:v25 edgePadding:{v27, v29, v31, v17, v19, v21, v23}];
+  mapView = [(MapCameraController *)self mapView];
+  [mapView mapRectThatFits:v25 edgePadding:{v27, v29, v31, v17, v19, v21, v23}];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -622,54 +622,54 @@ LABEL_8:
   return result;
 }
 
-- (id)_poiShapeWaypointMarkersFromRoute:(id)a3
+- (id)_poiShapeWaypointMarkersFromRoute:(id)route
 {
-  v4 = [a3 waypoints];
+  waypoints = [route waypoints];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1008EE4D4;
   v7[3] = &unk_10162E1D0;
   v7[4] = self;
-  v5 = sub_100021DB0(v4, v7);
+  v5 = sub_100021DB0(waypoints, v7);
 
   return v5;
 }
 
-- (id)_poiShapeAnchorPointMarkersFromRoute:(id)a3
+- (id)_poiShapeAnchorPointMarkersFromRoute:(id)route
 {
-  v4 = [a3 anchorPoints];
-  v5 = [v4 anchorPoints];
+  anchorPoints = [route anchorPoints];
+  v4AnchorPoints = [anchorPoints anchorPoints];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1008EE624;
   v8[3] = &unk_10162E1A8;
   v8[4] = self;
-  v6 = sub_100021DB0(v5, v8);
+  v6 = sub_100021DB0(v4AnchorPoints, v8);
 
   return v6;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)a3 includeCompassInset:(BOOL)a4 waypoints:(BOOL)a5
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)routes includeCompassInset:(BOOL)inset waypoints:(BOOL)waypoints
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (v5)
+  waypointsCopy = waypoints;
+  insetCopy = inset;
+  routesCopy = routes;
+  v9 = routesCopy;
+  if (waypointsCopy)
   {
-    v10 = [v8 firstObject];
-    v11 = [v10 anchorPoints];
-    v12 = [v11 count];
+    firstObject = [routesCopy firstObject];
+    anchorPoints = [firstObject anchorPoints];
+    v12 = [anchorPoints count];
 
     if (v12)
     {
-      [(MapCameraController *)self _poiShapeAnchorPointMarkersFromRoute:v10];
+      [(MapCameraController *)self _poiShapeAnchorPointMarkersFromRoute:firstObject];
     }
 
     else
     {
-      [(MapCameraController *)self _poiShapeWaypointMarkersFromRoute:v10];
+      [(MapCameraController *)self _poiShapeWaypointMarkersFromRoute:firstObject];
     }
     v13 = ;
   }
@@ -679,7 +679,7 @@ LABEL_8:
     v13 = 0;
   }
 
-  [(MapCameraController *)self _mapRectForRoutes:v9 includeCompassInset:v6 startPOIShape:0 endPOIShapes:v13];
+  [(MapCameraController *)self _mapRectForRoutes:v9 includeCompassInset:insetCopy startPOIShape:0 endPOIShapes:v13];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -696,13 +696,13 @@ LABEL_8:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRouteLines:(id)a3 includePadding:(BOOL)a4
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRouteLines:(id)lines includePadding:(BOOL)padding
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  paddingCopy = padding;
+  linesCopy = lines;
+  if ([linesCopy count])
   {
-    if (v4)
+    if (paddingCopy)
     {
       v7 = 10.0;
     }
@@ -712,10 +712,10 @@ LABEL_8:
       v7 = 0.0;
     }
 
-    v8 = [v6 firstObject];
-    v9 = [v8 transportType];
+    firstObject = [linesCopy firstObject];
+    transportType = [firstObject transportType];
 
-    if (v9 == 1)
+    if (transportType == 1)
     {
       v10 = v7 + 10.0;
     }
@@ -733,7 +733,7 @@ LABEL_8:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v15 = v6;
+    v15 = linesCopy;
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v16)
     {
@@ -770,8 +770,8 @@ LABEL_8:
       while (v17);
     }
 
-    v24 = [(MapCameraController *)self mapView];
-    [v24 mapRectThatFits:x edgePadding:{y, width, height, v10, v10, v10, v10}];
+    mapView = [(MapCameraController *)self mapView];
+    [mapView mapRectThatFits:x edgePadding:{y, width, height, v10, v10, v10, v10}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -797,17 +797,17 @@ LABEL_8:
   return result;
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)a3 includeCompassInset:(BOOL)a4 startPOIShape:(id)a5 endPOIShapes:(id)a6
+- ($873BFAB23BBB6E2F0B0288ED2F935688)_mapRectForRoutes:(id)routes includeCompassInset:(BOOL)inset startPOIShape:(id)shape endPOIShapes:(id)shapes
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  [(MapCameraController *)self _mapRectForRouteLines:a3 includePadding:0];
+  insetCopy = inset;
+  shapesCopy = shapes;
+  shapeCopy = shape;
+  [(MapCameraController *)self _mapRectForRouteLines:routes includePadding:0];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [(MapCameraController *)self _mapRectApproximatingRouteFromStartPOIShape:v11 toEndPOIShapes:v10 routeLineMapRect:0 includePadding:?];
+  [(MapCameraController *)self _mapRectApproximatingRouteFromStartPOIShape:shapeCopy toEndPOIShapes:shapesCopy routeLineMapRect:0 includePadding:?];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -836,7 +836,7 @@ LABEL_8:
     right = v36;
   }
 
-  if (v7)
+  if (insetCopy)
   {
     [(MapCameraController *)self _insetsByAddingCompassPaddingToInsets:top, left, bottom, right];
     top = v37;
@@ -897,11 +897,11 @@ LABEL_8:
   }
 }
 
-- (void)_setCenterCoordinate:(CLLocationCoordinate2D)a3 zoomLevel:(double)a4 animated:(BOOL)a5
+- (void)_setCenterCoordinate:(CLLocationCoordinate2D)coordinate zoomLevel:(double)level animated:(BOOL)animated
 {
-  v5 = a5;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  animatedCopy = animated;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v10 = sub_1008EEDF8();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -909,23 +909,23 @@ LABEL_8:
     v14 = 138412546;
     v15 = v11;
     v16 = 2048;
-    v17 = a4;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "setting center coordinate %@, zoom level %#.2lf animated", &v14, 0x16u);
   }
 
-  v12 = [(MapCameraController *)self mapView];
-  [v12 setUserTrackingMode:0];
+  mapView = [(MapCameraController *)self mapView];
+  [mapView setUserTrackingMode:0];
 
   [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
-  v13 = [(MapCameraController *)self mapView];
-  [v13 setCenterCoordinate:v5 zoomLevel:latitude animated:{longitude, a4}];
+  mapView2 = [(MapCameraController *)self mapView];
+  [mapView2 setCenterCoordinate:animatedCopy zoomLevel:latitude animated:{longitude, level}];
 }
 
-- (void)_setCenterCoordinate:(CLLocationCoordinate2D)a3 duration:(double)a4 completion:(id)a5
+- (void)_setCenterCoordinate:(CLLocationCoordinate2D)coordinate duration:(double)duration completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(MapCameraController *)self mapView];
-  [v8 setUserTrackingMode:0];
+  completionCopy = completion;
+  mapView = [(MapCameraController *)self mapView];
+  [mapView setUserTrackingMode:0];
 
   [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
   v9 = sub_1008EEDF8();
@@ -937,38 +937,38 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "setting center coordinate %@ animated", &v28, 0xCu);
   }
 
-  v11 = [(MapCameraController *)self mapView];
-  v12 = [v11 _mapLayer];
+  mapView2 = [(MapCameraController *)self mapView];
+  _mapLayer = [mapView2 _mapLayer];
   VKLocationCoordinate2DMake();
   v14 = v13;
   v16 = v15;
-  v17 = [(MapCameraController *)self mapView];
-  v18 = [v17 _mapLayer];
-  [v18 altitude];
+  mapView3 = [(MapCameraController *)self mapView];
+  _mapLayer2 = [mapView3 _mapLayer];
+  [_mapLayer2 altitude];
   v20 = v19;
-  v21 = [(MapCameraController *)self mapView];
-  v22 = [v21 _mapLayer];
-  [v22 yaw];
+  mapView4 = [(MapCameraController *)self mapView];
+  _mapLayer3 = [mapView4 _mapLayer];
+  [_mapLayer3 yaw];
   v24 = v23;
-  v25 = [(MapCameraController *)self mapView];
-  v26 = [v25 _mapLayer];
-  [v26 pitch];
-  [v12 setCenterCoordinate:0 altitude:v7 yaw:v14 pitch:v16 duration:v20 timingCurve:v24 completion:{v27, a4}];
+  mapView5 = [(MapCameraController *)self mapView];
+  _mapLayer4 = [mapView5 _mapLayer];
+  [_mapLayer4 pitch];
+  [_mapLayer setCenterCoordinate:0 altitude:completionCopy yaw:v14 pitch:v16 duration:v20 timingCurve:v24 completion:{v27, duration}];
 }
 
-- (void)_setMapCamera:(id)a3 duration:(double)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)_setMapCamera:(id)camera duration:(double)duration options:(unint64_t)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(MapCameraController *)self mapView];
-  [v12 setUserTrackingMode:0];
+  cameraCopy = camera;
+  completionCopy = completion;
+  mapView = [(MapCameraController *)self mapView];
+  [mapView setUserTrackingMode:0];
 
   [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
   v13 = sub_1008EEDF8();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v10;
+    v18 = cameraCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "setting camera %@ animated", buf, 0xCu);
   }
 
@@ -977,21 +977,21 @@ LABEL_8:
   v15[2] = sub_1008EF220;
   v15[3] = &unk_101661A90;
   v15[4] = self;
-  v16 = v10;
-  v14 = v10;
-  [UIView animateWithDuration:a5 delay:v15 options:v11 animations:a4 completion:0.0];
+  v16 = cameraCopy;
+  v14 = cameraCopy;
+  [UIView animateWithDuration:options delay:v15 options:completionCopy animations:duration completion:0.0];
 }
 
-- (void)_frameMapRect:(id)a3 duration:(double)a4 completion:(id)a5
+- (void)_frameMapRect:(id)rect duration:(double)duration completion:(id)completion
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v8 = a3.var0.var1;
-  v9 = a3.var0.var0;
-  v11 = a5;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v8 = rect.var0.var1;
+  v9 = rect.var0.var0;
+  completionCopy = completion;
   y = MKMapRectNull.origin.y;
   v13 = sub_1008EEDF8();
-  v14 = v13;
+  mapView3 = v13;
   if (v9 == MKMapRectNull.origin.x && v8 == y)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1002,7 +1002,7 @@ LABEL_8:
 
       *buf = 138412290;
       v26 = v24;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "not framing target map rect %@, it's null", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, mapView3, OS_LOG_TYPE_ERROR, "not framing target map rect %@, it's null", buf, 0xCu);
     }
   }
 
@@ -1014,38 +1014,38 @@ LABEL_8:
       v17 = [NSString stringWithFormat:@"{%.1f, %.1f}", *&var0, *&var1];
       v18 = [NSString stringWithFormat:@"{%@, %@}", v16, v17];
 
-      v19 = [(MapCameraController *)self mapView];
-      [v19 _edgeInsets];
+      mapView = [(MapCameraController *)self mapView];
+      [mapView _edgeInsets];
       v20 = NSStringFromUIEdgeInsets(v31);
       *buf = 138543874;
       v26 = v18;
       v27 = 2048;
-      v28 = a4;
+      durationCopy = duration;
       v29 = 2114;
       v30 = v20;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "setting map camera to frame: %{public}@, duration: %#.1lfs, current edge insets: %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, mapView3, OS_LOG_TYPE_INFO, "setting map camera to frame: %{public}@, duration: %#.1lfs, current edge insets: %{public}@", buf, 0x20u);
     }
 
-    v21 = [(MapCameraController *)self mapView];
-    [v21 setUserTrackingMode:0];
+    mapView2 = [(MapCameraController *)self mapView];
+    [mapView2 setUserTrackingMode:0];
 
     [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
-    v14 = [(MapCameraController *)self mapView];
-    [v14 _setVisibleMapRect:v11 duration:v9 completionHandler:v8, var0, var1, a4];
+    mapView3 = [(MapCameraController *)self mapView];
+    [mapView3 _setVisibleMapRect:completionCopy duration:v9 completionHandler:v8, var0, var1, duration];
   }
 }
 
-- (void)frameMapRect:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)frameMapRect:(id)rect animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v8 = a3.var0.var1;
-  v9 = a3.var0.var0;
-  v11 = a5;
+  animatedCopy = animated;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v8 = rect.var0.var1;
+  v9 = rect.var0.var0;
+  completionCopy = completion;
   y = MKMapRectNull.origin.y;
   v13 = sub_1008EEDF8();
-  v14 = v13;
+  mapView3 = v13;
   if (v9 == MKMapRectNull.origin.x && v8 == y)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1056,7 +1056,7 @@ LABEL_8:
 
       *buf = 138412290;
       v26 = v24;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "not framing target map rect %@, it's null", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, mapView3, OS_LOG_TYPE_ERROR, "not framing target map rect %@, it's null", buf, 0xCu);
     }
   }
 
@@ -1068,64 +1068,64 @@ LABEL_8:
       v17 = [NSString stringWithFormat:@"{%.1f, %.1f}", *&var0, *&var1];
       v18 = [NSString stringWithFormat:@"{%@, %@}", v16, v17];
 
-      v19 = [(MapCameraController *)self mapView];
-      [v19 _edgeInsets];
+      mapView = [(MapCameraController *)self mapView];
+      [mapView _edgeInsets];
       v20 = NSStringFromUIEdgeInsets(v31);
       *buf = 138412802;
       v26 = v18;
       v27 = 1024;
-      v28 = v5;
+      v28 = animatedCopy;
       v29 = 2114;
       v30 = v20;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "setting map camera to frame: %@, animated: %d, current edge insets: %{public}@", buf, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, mapView3, OS_LOG_TYPE_INFO, "setting map camera to frame: %@, animated: %d, current edge insets: %{public}@", buf, 0x1Cu);
     }
 
-    v21 = [(MapCameraController *)self mapView];
-    [v21 setUserTrackingMode:0];
+    mapView2 = [(MapCameraController *)self mapView];
+    [mapView2 setUserTrackingMode:0];
 
     [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
-    v14 = [(MapCameraController *)self mapView];
-    [v14 _setVisibleMapRect:v5 animated:v11 completionHandler:v9, v8, var0, var1];
+    mapView3 = [(MapCameraController *)self mapView];
+    [mapView3 _setVisibleMapRect:animatedCopy animated:completionCopy completionHandler:v9, v8, var0, var1];
   }
 }
 
-- (void)restoreRegionForMapSelectionForLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 completion:(id)a5
+- (void)restoreRegionForMapSelectionForLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets completion:(id)completion
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v19 = a3;
-  v11 = a5;
-  if ([(MapCameraController *)self _mapViewFitsLabelMarker:v19 withEdgeInsets:top, left, bottom, right])
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  markerCopy = marker;
+  completionCopy = completion;
+  if ([(MapCameraController *)self _mapViewFitsLabelMarker:markerCopy withEdgeInsets:top, left, bottom, right])
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    v12 = [(MapCameraController *)self mapView];
-    v13 = [v12 camera];
-    v14 = [v13 copy];
+    mapView = [(MapCameraController *)self mapView];
+    camera = [mapView camera];
+    v14 = [camera copy];
 
-    [v19 coordinate];
+    [markerCopy coordinate];
     v16 = v15;
-    [v19 coordinate];
+    [markerCopy coordinate];
     v18 = CLLocationCoordinate2DMake(v16, v17);
     [v14 setCenterCoordinate:{v18.latitude, v18.longitude}];
-    [(MapCameraController *)self restoreRegionForMapSelectionWithCamera:v14 completion:v11];
+    [(MapCameraController *)self restoreRegionForMapSelectionWithCamera:v14 completion:completionCopy];
   }
 }
 
-- (BOOL)searchResultIsVenueOrBuilding:(id)a3
+- (BOOL)searchResultIsVenueOrBuilding:(id)building
 {
-  v3 = [a3 mapItem];
-  if ([v3 _hasVenueFeatureType])
+  mapItem = [building mapItem];
+  if ([mapItem _hasVenueFeatureType])
   {
-    v4 = [v3 _venueFeatureType] == 1 || objc_msgSend(v3, "_venueFeatureType") == 2;
+    v4 = [mapItem _venueFeatureType] == 1 || objc_msgSend(mapItem, "_venueFeatureType") == 2;
   }
 
   else
@@ -1136,72 +1136,72 @@ LABEL_8:
   return v4;
 }
 
-- (void)_frameSearchResult:(id)a3 minZoom:(id)a4 maxZoom:(id)a5 completion:(id)a6
+- (void)_frameSearchResult:(id)result minZoom:(id)zoom maxZoom:(id)maxZoom completion:(id)completion
 {
-  v10 = a6;
-  if (a3)
+  completionCopy = completion;
+  if (result)
   {
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v14 = [(MapCameraController *)self mapView];
-    [v14 setUserTrackingMode:0];
+    maxZoomCopy = maxZoom;
+    zoomCopy = zoom;
+    resultCopy = result;
+    mapView = [(MapCameraController *)self mapView];
+    [mapView setUserTrackingMode:0];
 
     [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
     WeakRetained = objc_loadWeakRetained(&self->_mapView);
-    v20 = v13;
+    v20 = resultCopy;
     v16 = [NSArray arrayWithObjects:&v20 count:1];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1008EFB1C;
     v18[3] = &unk_10162E180;
-    v19 = v10;
+    v19 = completionCopy;
     LOBYTE(v17) = 0;
-    [WeakRetained goToSearchResults:v16 mapRegion:0 requireMapMovement:1 animation:0 minZoom:v12 maxZoom:v11 disableAdditionalViewportPadding:v17 completion:v18];
+    [WeakRetained goToSearchResults:v16 mapRegion:0 requireMapMovement:1 animation:0 minZoom:zoomCopy maxZoom:maxZoomCopy disableAdditionalViewportPadding:v17 completion:v18];
   }
 }
 
-- (void)frameSearchResults:(id)a3 withResultToSelect:(id)a4 historyItem:(id)a5 suggestedMapRegion:(id)a6 minZoom:(id)a7 maxZoom:(id)a8 disableAdditionalViewportPadding:(BOOL)a9 completion:(id)a10
+- (void)frameSearchResults:(id)results withResultToSelect:(id)select historyItem:(id)item suggestedMapRegion:(id)region minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)padding completion:(id)self0
 {
-  v24 = a3;
-  v16 = a10;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = [(MapCameraController *)self mapView];
-  [v20 setUserTrackingMode:0];
+  resultsCopy = results;
+  completionCopy = completion;
+  maxZoomCopy = maxZoom;
+  zoomCopy = zoom;
+  regionCopy = region;
+  mapView = [(MapCameraController *)self mapView];
+  [mapView setUserTrackingMode:0];
 
   [(MapCameraController *)self _notifyObserversWillChangeVisibleRect];
-  if (a4)
+  if (select)
   {
     v21 = 1;
   }
 
   else
   {
-    v21 = [v24 count] > 1;
+    v21 = [resultsCopy count] > 1;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
-  LOBYTE(v23) = a9;
-  [WeakRetained goToSearchResults:v24 mapRegion:v19 requireMapMovement:v21 setCameraFromMapItemViewportFrame:a5 == 0 animation:0 minZoom:v18 maxZoom:v17 disableAdditionalViewportPadding:v23 completion:v16];
+  LOBYTE(v23) = padding;
+  [WeakRetained goToSearchResults:resultsCopy mapRegion:regionCopy requireMapMovement:v21 setCameraFromMapItemViewportFrame:item == 0 animation:0 minZoom:zoomCopy maxZoom:maxZoomCopy disableAdditionalViewportPadding:v23 completion:completionCopy];
 }
 
-- (void)displayTransitRoute:(id)a3 boardingStopCoord:(id)a4 boardingStopIndex:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)displayTransitRoute:(id)route boardingStopCoord:(id)coord boardingStopIndex:(unint64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  v56 = a3;
-  v12 = a7;
-  if (v56)
+  animatedCopy = animated;
+  routeCopy = route;
+  completionCopy = completion;
+  if (routeCopy)
   {
-    [v56 pointAt:{objc_msgSend(v56, "routeCoordinateAtDistance:beforeRouteCoordinate:", a4, 500.0)}];
+    [routeCopy pointAt:{objc_msgSend(routeCopy, "routeCoordinateAtDistance:beforeRouteCoordinate:", coord, 500.0)}];
     GEOMapPoint3DForCoordinate();
     v14 = v13;
     v16 = v15;
-    v17 = [v56 stops];
-    v18 = [v17 count];
+    stops = [routeCopy stops];
+    v18 = [stops count];
 
-    if (v18 <= a5)
+    if (v18 <= index)
     {
       v20 = v14;
       v19 = v16;
@@ -1211,17 +1211,17 @@ LABEL_8:
     {
       v19 = v16;
       v20 = v14;
-      v21 = v56;
+      v21 = routeCopy;
       do
       {
-        v22 = [v21 stops];
-        v23 = [v22 objectAtIndexedSubscript:a5];
+        stops2 = [v21 stops];
+        v23 = [stops2 objectAtIndexedSubscript:index];
 
-        v24 = [v23 latLng];
-        v25 = v24;
-        if (v24)
+        latLng = [v23 latLng];
+        v25 = latLng;
+        if (latLng)
         {
-          [v24 lat];
+          [latLng lat];
           [v25 lng];
           GEOMapPoint3DForCoordinate();
           v20 = fmin(v20, v26);
@@ -1230,14 +1230,14 @@ LABEL_8:
           v16 = fmax(v16, v27);
         }
 
-        ++a5;
-        v28 = [v56 stops];
-        v29 = [v28 count];
+        ++index;
+        stops3 = [routeCopy stops];
+        v29 = [stops3 count];
 
-        v21 = v56;
+        v21 = routeCopy;
       }
 
-      while (a5 < v29);
+      while (index < v29);
     }
 
     v30 = [[GEOMapRegion alloc] initWithMapRect:{v20, v19, v14 - v20, v16 - v19}];
@@ -1252,49 +1252,49 @@ LABEL_8:
     v42 = v41;
     v44 = v43;
     v46 = v45;
-    v47 = [(MapCameraController *)self mapView];
-    [v47 mapRectThatFits:v40 edgePadding:{v42, v44, v46, v32, v34, v36, v38}];
+    mapView = [(MapCameraController *)self mapView];
+    [mapView mapRectThatFits:v40 edgePadding:{v42, v44, v46, v32, v34, v36, v38}];
     v49 = v48;
     v51 = v50;
     v53 = v52;
     v55 = v54;
 
-    [(MapCameraController *)self frameMapRect:v8 animated:v12 completion:v49, v51, v53, v55];
+    [(MapCameraController *)self frameMapRect:animatedCopy animated:completionCopy completion:v49, v51, v53, v55];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)displayMapRegion:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)displayMapRegion:(id)region animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v8 = a5;
-  if (v9)
+  animatedCopy = animated;
+  regionCopy = region;
+  completionCopy = completion;
+  if (regionCopy)
   {
     GEOMapRectForMapRegion();
-    [(MapCameraController *)self frameMapRect:v6 animated:v8 completion:?];
+    [(MapCameraController *)self frameMapRect:animatedCopy animated:completionCopy completion:?];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (BOOL)_frameVenueLabelMarker:(id)a3 completion:(id)a4
+- (BOOL)_frameVenueLabelMarker:(id)marker completion:(id)completion
 {
   v12 = 0.0;
   v13 = 0.0;
   v11 = 0.0;
-  v5 = [a3 positionOfInterest:&v12 zoom:&v11];
+  v5 = [marker positionOfInterest:&v12 zoom:&v11];
   if (v5)
   {
-    v6 = [(MapCameraController *)self mapView];
-    [v6 _mapKitZoomLevelForVectorKitTileZoomLevel:v11];
+    mapView = [(MapCameraController *)self mapView];
+    [mapView _mapKitZoomLevelForVectorKitTileZoomLevel:v11];
     v8 = v7;
 
     v9 = CLLocationCoordinate2DMake(v12, v13);
@@ -1304,48 +1304,48 @@ LABEL_8:
   return v5;
 }
 
-- (void)_frameNotVisibleLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 completion:(id)a5
+- (void)_frameNotVisibleLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets completion:(id)completion
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v16 = a3;
-  v11 = a5;
-  if ([(MapCameraController *)self _mapViewFitsLabelMarker:v16 withEdgeInsets:top, left, bottom, right])
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  markerCopy = marker;
+  completionCopy = completion;
+  if ([(MapCameraController *)self _mapViewFitsLabelMarker:markerCopy withEdgeInsets:top, left, bottom, right])
   {
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    [v16 coordinate];
+    [markerCopy coordinate];
     v13 = v12;
-    [v16 coordinate];
+    [markerCopy coordinate];
     v15 = CLLocationCoordinate2DMake(v13, v14);
-    [(MapCameraController *)self _setCenterCoordinate:v11 duration:v15.latitude completion:v15.longitude, 0.25];
+    [(MapCameraController *)self _setCenterCoordinate:completionCopy duration:v15.latitude completion:v15.longitude, 0.25];
   }
 }
 
-- (void)_frameVisibleLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 completion:(id)a5
+- (void)_frameVisibleLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets completion:(id)completion
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 mapRegion];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  markerCopy = marker;
+  completionCopy = completion;
+  mapRegion = [markerCopy mapRegion];
   GEOMapRectForMapRegion();
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(MapCameraController *)self mapView];
+  mapView = [(MapCameraController *)self mapView];
   v126.origin.x = v11;
   v126.origin.y = v13;
   v126.size.width = v15;
@@ -1355,15 +1355,15 @@ LABEL_8:
   longitude = v127.center.longitude;
   latitudeDelta = v127.span.latitudeDelta;
   longitudeDelta = v127.span.longitudeDelta;
-  v23 = [(MapCameraController *)self mapView];
-  [v18 convertRegion:v23 toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
+  mapView2 = [(MapCameraController *)self mapView];
+  [mapView convertRegion:mapView2 toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
-  v32 = [(MapCameraController *)self mapView];
-  v33 = [v32 viewForAnnotation:v7];
+  mapView3 = [(MapCameraController *)self mapView];
+  v33 = [mapView3 viewForAnnotation:markerCopy];
 
   if (v33)
   {
@@ -1376,8 +1376,8 @@ LABEL_8:
     v122 = 0u;
     v123 = 0u;
     v124 = 0u;
-    v42 = [v33 subviews];
-    v43 = [v42 countByEnumeratingWithState:&v121 objects:v125 count:16];
+    subviews = [v33 subviews];
+    v43 = [subviews countByEnumeratingWithState:&v121 objects:v125 count:16];
     if (v43)
     {
       v44 = v43;
@@ -1388,7 +1388,7 @@ LABEL_8:
         {
           if (*v122 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v121 + 1) + 8 * i) frame];
@@ -1407,7 +1407,7 @@ LABEL_8:
         y = v129.origin.y;
         width = v129.size.width;
         height = v129.size.height;
-        v44 = [v42 countByEnumeratingWithState:&v121 objects:v125 count:16];
+        v44 = [subviews countByEnumeratingWithState:&v121 objects:v125 count:16];
       }
 
       while (v44);
@@ -1415,8 +1415,8 @@ LABEL_8:
 
     if (width != CGSizeZero.width || height != CGSizeZero.height)
     {
-      v52 = [(MapCameraController *)self mapView];
-      [v52 convertRect:v33 fromView:{x, y, width, height}];
+      mapView4 = [(MapCameraController *)self mapView];
+      [mapView4 convertRect:v33 fromView:{x, y, width, height}];
       v25 = v53;
       v27 = v54;
       v29 = v55;
@@ -1424,9 +1424,9 @@ LABEL_8:
     }
   }
 
-  v57 = [(MapCameraController *)self mapView];
-  [v7 screenCollisionBounds];
-  [v57 convertRect:0 fromView:?];
+  mapView5 = [(MapCameraController *)self mapView];
+  [markerCopy screenCollisionBounds];
+  [mapView5 convertRect:0 fromView:?];
   v59 = v58;
   v61 = v60;
   v63 = v62;
@@ -1448,8 +1448,8 @@ LABEL_8:
   v69 = v132.size.height;
   if (!__isinfd() && !__isinfd() && !__isinfd() && !__isinfd())
   {
-    v70 = [(MapCameraController *)self mapView];
-    [v70 bounds];
+    mapView6 = [(MapCameraController *)self mapView];
+    [mapView6 bounds];
     v72 = v71 + left;
     v115 = v73 + top;
     v75 = v74 - (left + right);
@@ -1564,22 +1564,22 @@ LABEL_8:
       vertical = CGRectGetMinY(v144) - v84;
     }
 
-    v88 = [(MapCameraController *)self mapView];
-    [v88 centerCoordinate];
+    mapView7 = [(MapCameraController *)self mapView];
+    [mapView7 centerCoordinate];
     v90 = v89;
     v92 = v91;
 
     if (v118 > 0.0 || vertical > 0.0)
     {
-      v95 = [(MapCameraController *)self mapView];
-      v96 = [(MapCameraController *)self mapView];
-      [v95 convertCoordinate:v96 toPointToView:{v90, v92}];
+      mapView8 = [(MapCameraController *)self mapView];
+      mapView9 = [(MapCameraController *)self mapView];
+      [mapView8 convertCoordinate:mapView9 toPointToView:{v90, v92}];
       v98 = v97;
       v100 = v99;
 
-      v101 = [(MapCameraController *)self mapView];
-      v102 = [(MapCameraController *)self mapView];
-      [v101 convertPoint:v102 toCoordinateFromView:{v98 + v118, v100 + vertical}];
+      mapView10 = [(MapCameraController *)self mapView];
+      mapView11 = [(MapCameraController *)self mapView];
+      [mapView10 convertPoint:mapView11 toCoordinateFromView:{v98 + v118, v100 + vertical}];
       v93 = v103;
       v94 = v104;
     }
@@ -1592,57 +1592,57 @@ LABEL_8:
 
     if (v93 != v90 || v94 != v92)
     {
-      v105 = [(MapCameraController *)self mapView];
-      [v105 region];
+      mapView12 = [(MapCameraController *)self mapView];
+      [mapView12 region];
 
       MKMapRectForCoordinateRegion();
       v110 = [[GEOMapRegion alloc] initWithMapRect:{v106, v107, v108, v109}];
-      v111 = [(MapCameraController *)self mapView];
-      v112 = [v111 _mapLayer];
-      [v112 durationToAnimateToMapRegion:v110];
+      mapView13 = [(MapCameraController *)self mapView];
+      _mapLayer = [mapView13 _mapLayer];
+      [_mapLayer durationToAnimateToMapRegion:v110];
       v114 = v113;
 
-      [(MapCameraController *)self _setCenterCoordinate:v8 duration:v93 completion:v94, v114];
+      [(MapCameraController *)self _setCenterCoordinate:completionCopy duration:v93 completion:v94, v114];
     }
   }
 }
 
-- (void)frameLabelMarker:(id)a3 edgeInsets:(UIEdgeInsets)a4 minZoom:(id)a5 maxZoom:(id)a6 completion:(id)a7
+- (void)frameLabelMarker:(id)marker edgeInsets:(UIEdgeInsets)insets minZoom:(id)zoom maxZoom:(id)maxZoom completion:(id)completion
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v21 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [v21 featureAnnotation];
-  if ([v18 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  markerCopy = marker;
+  zoomCopy = zoom;
+  maxZoomCopy = maxZoom;
+  completionCopy = completion;
+  featureAnnotation = [markerCopy featureAnnotation];
+  if ([featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
   {
-    v19 = [v18 searchResult];
-    if (v19 && [(MapCameraController *)self searchResultIsVenueOrBuilding:v19])
+    searchResult = [featureAnnotation searchResult];
+    if (searchResult && [(MapCameraController *)self searchResultIsVenueOrBuilding:searchResult])
     {
-      [(MapCameraController *)self _frameSearchResult:v19 minZoom:v15 maxZoom:v16 completion:v17];
+      [(MapCameraController *)self _frameSearchResult:searchResult minZoom:zoomCopy maxZoom:maxZoomCopy completion:completionCopy];
 
       goto LABEL_12;
     }
   }
 
-  if (![v21 isVenueButton] || !-[MapCameraController _frameVenueLabelMarker:completion:](self, "_frameVenueLabelMarker:completion:", v21, v17))
+  if (![markerCopy isVenueButton] || !-[MapCameraController _frameVenueLabelMarker:completion:](self, "_frameVenueLabelMarker:completion:", markerCopy, completionCopy))
   {
-    v20 = [v21 mapRegion];
+    mapRegion = [markerCopy mapRegion];
 
-    if (v20)
+    if (mapRegion)
     {
-      if ([v21 isVisible])
+      if ([markerCopy isVisible])
       {
-        [(MapCameraController *)self _frameVisibleLabelMarker:v21 edgeInsets:v17 completion:top, left, bottom, right];
+        [(MapCameraController *)self _frameVisibleLabelMarker:markerCopy edgeInsets:completionCopy completion:top, left, bottom, right];
       }
 
       else
       {
-        [(MapCameraController *)self _frameNotVisibleLabelMarker:v21 edgeInsets:v17 completion:top, left, bottom, right];
+        [(MapCameraController *)self _frameNotVisibleLabelMarker:markerCopy edgeInsets:completionCopy completion:top, left, bottom, right];
       }
     }
   }
@@ -1650,17 +1650,17 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)frameMapItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)frameMapItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [a3 _displayMapRegion];
-  [(MapCameraController *)self displayMapRegion:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  _displayMapRegion = [item _displayMapRegion];
+  [(MapCameraController *)self displayMapRegion:_displayMapRegion animated:animatedCopy completion:completionCopy];
 }
 
-- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectForTripFromLocation:(id)a3 alongRoute:(id)a4
+- ($873BFAB23BBB6E2F0B0288ED2F935688)mapRectForTripFromLocation:(id)location alongRoute:(id)route
 {
-  [(MapCameraController *)self _mapRectFromLocation:a3 alongRoute:a4];
+  [(MapCameraController *)self _mapRectFromLocation:location alongRoute:route];
   result.var1.var1 = v7;
   result.var1.var0 = v6;
   result.var0.var1 = v5;
@@ -1668,35 +1668,35 @@ LABEL_12:
   return result;
 }
 
-- (void)frameApproximateRouteFromStartPOIShape:(id)a3 toEndPOIShapes:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)frameApproximateRouteFromStartPOIShape:(id)shape toEndPOIShapes:(id)shapes animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10 || [v11 count])
+  animatedCopy = animated;
+  shapeCopy = shape;
+  shapesCopy = shapes;
+  completionCopy = completion;
+  if (shapeCopy || [shapesCopy count])
   {
-    [(MapCameraController *)self mapRectApproximatingRouteFromStartPOIShape:v10 toEndPOIShapes:v11 routeLineMapRect:MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height];
+    [(MapCameraController *)self mapRectApproximatingRouteFromStartPOIShape:shapeCopy toEndPOIShapes:shapesCopy routeLineMapRect:MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height];
     v14 = v13;
     v46 = v15;
     v47 = v13;
     v17 = v16;
     v18 = v15;
     v20 = v19;
-    v21 = [(MapCameraController *)self mapView];
-    [v21 visibleMapRect];
+    mapView = [(MapCameraController *)self mapView];
+    [mapView visibleMapRect];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
 
-    v30 = [(MapCameraController *)self mapView];
-    [v30 _zoomLevelForMapRect:0 includeAccessoryPadding:{v14, v17, v18, v20}];
+    mapView2 = [(MapCameraController *)self mapView];
+    [mapView2 _zoomLevelForMapRect:0 includeAccessoryPadding:{v14, v17, v18, v20}];
     MKZoomScaleForZoomLevelF();
     v32 = v31;
 
-    v33 = [(MapCameraController *)self mapView];
-    [v33 _zoomLevelForMapRect:0 includeAccessoryPadding:{v23, v25, v27, v29}];
+    mapView3 = [(MapCameraController *)self mapView];
+    [mapView3 _zoomLevelForMapRect:0 includeAccessoryPadding:{v23, v25, v27, v29}];
     MKZoomScaleForZoomLevelF();
     v35 = v34;
 
@@ -1726,15 +1726,15 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "not framing approx route, target map rect %@ not different enough from current map rect %@ (%#.1lf <= %#.1lf)", buf, 0x2Au);
       }
 
-      if (v12)
+      if (completionCopy)
       {
-        v12[2](v12, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      [(MapCameraController *)self frameMapRect:v7 animated:v12 completion:v47, v17, v46, v20];
+      [(MapCameraController *)self frameMapRect:animatedCopy animated:completionCopy completion:v47, v17, v46, v20];
     }
   }
 
@@ -1749,13 +1749,13 @@ LABEL_12:
   }
 }
 
-- (void)frameRoutes:(id)a3 includeCompassInset:(BOOL)a4 waypoints:(BOOL)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)frameRoutes:(id)routes includeCompassInset:(BOOL)inset waypoints:(BOOL)waypoints animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  [(MapCameraController *)self _mapRectForRoutes:a3 includeCompassInset:v9 waypoints:v8];
+  animatedCopy = animated;
+  waypointsCopy = waypoints;
+  insetCopy = inset;
+  completionCopy = completion;
+  [(MapCameraController *)self _mapRectForRoutes:routes includeCompassInset:insetCopy waypoints:waypointsCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1772,8 +1772,8 @@ LABEL_12:
       v26 = [NSString stringWithFormat:@"{%@, %@}", v24, v25];
 
       v27 = v26;
-      v28 = [(MapCameraController *)self mapView];
-      [v28 visibleMapRect];
+      mapView = [(MapCameraController *)self mapView];
+      [mapView visibleMapRect];
       v30 = v29;
       v32 = v31;
       v35 = [NSString stringWithFormat:@"{%.1f, %.1f}", v33, v34];
@@ -1791,28 +1791,28 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "not framing routes, target map rect %@ not different enough from current map rect %@ (%#.1lf <= %#.1lf)", buf, 0x2Au);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    [(MapCameraController *)self frameMapRect:v7 animated:v12 completion:v14, v16, v18, v20];
+    [(MapCameraController *)self frameMapRect:animatedCopy animated:completionCopy completion:v14, v16, v18, v20];
   }
 }
 
-- (MapCameraController)initWithMapView:(id)a3
+- (MapCameraController)initWithMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = MapCameraController;
   v5 = [(MapCameraController *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mapView, v4);
+    objc_storeWeak(&v5->_mapView, viewCopy);
     v7 = +[NSHashTable weakObjectsHashTable];
     observers = v6->_observers;
     v6->_observers = v7;

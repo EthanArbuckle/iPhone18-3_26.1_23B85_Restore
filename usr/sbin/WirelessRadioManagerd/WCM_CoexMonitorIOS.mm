@@ -1,8 +1,8 @@
 @interface WCM_CoexMonitorIOS
 - (WCM_CoexMonitorIOS)init;
-- (void)updateCoexCondition:(int)a3 inBand:(int)a4 state:(BOOL)a5;
-- (void)updateCoexDurationCount:(double)a3;
-- (void)updateCoexErrorFor:(int)a3 inBand:(int)a4;
+- (void)updateCoexCondition:(int)condition inBand:(int)band state:(BOOL)state;
+- (void)updateCoexDurationCount:(double)count;
+- (void)updateCoexErrorFor:(int)for inBand:(int)band;
 @end
 
 @implementation WCM_CoexMonitorIOS
@@ -30,21 +30,21 @@
   return result;
 }
 
-- (void)updateCoexCondition:(int)a3 inBand:(int)a4 state:(BOOL)a5
+- (void)updateCoexCondition:(int)condition inBand:(int)band state:(BOOL)state
 {
-  if (a3 < 4 || !a5)
+  if (condition < 4 || !state)
   {
-    if (a5)
+    if (state)
     {
-      if (!self->lteCoexStart[a3] || self->lteCoexConditionBand[a3] != a4)
+      if (!self->lteCoexStart[condition] || self->lteCoexConditionBand[condition] != band)
       {
-        v7 = a4;
-        self->lteCoexStart[a3] = ADMonotonicTimeGetCurrent();
-        ++self->lteCoexCount[a3];
-        self->lteCoexConditionBand[a3] = v7;
-        v8 = off_10023F4F8[a3];
+        bandCopy = band;
+        self->lteCoexStart[condition] = ADMonotonicTimeGetCurrent();
+        ++self->lteCoexCount[condition];
+        self->lteCoexConditionBand[condition] = bandCopy;
+        v8 = off_10023F4F8[condition];
         ADClientAddValueForScalarKey();
-        v9 = off_10023F518[v7];
+        v9 = off_10023F518[bandCopy];
 
         ADClientAddValueForScalarKey();
       }
@@ -53,7 +53,7 @@
     else
     {
       lteCoexStart = self->lteCoexStart;
-      if (a3 == 4)
+      if (condition == 4)
       {
         for (i = 0; i != 4; ++i)
         {
@@ -68,36 +68,36 @@
         }
       }
 
-      else if (lteCoexStart[a3])
+      else if (lteCoexStart[condition])
       {
-        v13 = off_10023F558[a3];
+        v13 = off_10023F558[condition];
         ADPushTimeIntervalForDistributionKeySinceStartTime();
         [(WCM_CoexMonitorIOS *)self updateCoexDurationCount:?];
-        lteCoexStart[a3] = 0;
-        self->lteCoexConditionBand[a3] = -1;
+        lteCoexStart[condition] = 0;
+        self->lteCoexConditionBand[condition] = -1;
       }
     }
   }
 }
 
-- (void)updateCoexDurationCount:(double)a3
+- (void)updateCoexDurationCount:(double)count
 {
-  if (a3 <= 5.0)
+  if (count <= 5.0)
   {
     v3 = 0;
   }
 
-  else if (a3 <= 30.0)
+  else if (count <= 30.0)
   {
     v3 = 1;
   }
 
-  else if (a3 <= 120.0)
+  else if (count <= 120.0)
   {
     v3 = 2;
   }
 
-  else if (a3 <= 300.0)
+  else if (count <= 300.0)
   {
     v3 = 3;
   }
@@ -105,7 +105,7 @@
   else
   {
     v3 = 4;
-    if (a3 > 1800.0)
+    if (count > 1800.0)
     {
       v3 = 5;
     }
@@ -116,19 +116,19 @@
   ADClientAddValueForScalarKey();
 }
 
-- (void)updateCoexErrorFor:(int)a3 inBand:(int)a4
+- (void)updateCoexErrorFor:(int)for inBand:(int)band
 {
-  if (a3 <= 4)
+  if (for <= 4)
   {
-    if (a3 != 4)
+    if (for != 4)
     {
-      ++self->lteCoexConditionErrors[a3];
-      v7 = off_10023F5A8[a3];
+      ++self->lteCoexConditionErrors[for];
+      v7 = off_10023F5A8[for];
       ADClientAddValueForScalarKey();
     }
 
-    ++self->lteCoexBandErrors[a4];
-    v8 = off_10023F5C8[a4];
+    ++self->lteCoexBandErrors[band];
+    v8 = off_10023F5C8[band];
 
     ADClientAddValueForScalarKey();
   }

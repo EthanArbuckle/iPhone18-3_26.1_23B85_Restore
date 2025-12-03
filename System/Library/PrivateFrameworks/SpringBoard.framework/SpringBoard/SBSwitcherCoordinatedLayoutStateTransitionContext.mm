@@ -1,41 +1,41 @@
 @interface SBSwitcherCoordinatedLayoutStateTransitionContext
-+ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)a3 fromSwitcherController:(id)a4 fromAppLayout:(id)a5 toAppLayout:(id)a6 toSwitcherController:(id)a7 withApplicationController:(id)a8;
-+ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)a3 toSwitcherController:(id)a4 toAppLayout:(id)a5 withApplicationController:(id)a6;
-- (BOOL)hasTransitioningDisplayItemsForSwitcherController:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)fromFrameInFromSwitcherForDisplayItem:(id)a3;
-- (CGRect)fromFrameInToSwitcherForDisplayItem:(id)a3;
-- (CGRect)toFrameInFromSwitcherForDisplayItem:(id)a3;
-- (CGRect)toFrameInToSwitcherForDisplayItem:(id)a3;
-- (SBSwitcherCoordinatedLayoutStateTransitionContext)initWithDisplayItems:(id)a3 fromSwitcherController:(id)a4 toSwitcherController:(id)a5 fromAppLayout:(id)a6 toAppLayout:(id)a7;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)items fromSwitcherController:(id)controller fromAppLayout:(id)layout toAppLayout:(id)appLayout toSwitcherController:(id)switcherController withApplicationController:(id)applicationController;
++ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)items toSwitcherController:(id)controller toAppLayout:(id)layout withApplicationController:(id)applicationController;
+- (BOOL)hasTransitioningDisplayItemsForSwitcherController:(id)controller;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)fromFrameInFromSwitcherForDisplayItem:(id)item;
+- (CGRect)fromFrameInToSwitcherForDisplayItem:(id)item;
+- (CGRect)toFrameInFromSwitcherForDisplayItem:(id)item;
+- (CGRect)toFrameInToSwitcherForDisplayItem:(id)item;
+- (SBSwitcherCoordinatedLayoutStateTransitionContext)initWithDisplayItems:(id)items fromSwitcherController:(id)controller toSwitcherController:(id)switcherController fromAppLayout:(id)layout toAppLayout:(id)appLayout;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation SBSwitcherCoordinatedLayoutStateTransitionContext
 
-+ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)a3 toSwitcherController:(id)a4 toAppLayout:(id)a5 withApplicationController:(id)a6
++ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)items toSwitcherController:(id)controller toAppLayout:(id)layout withApplicationController:(id)applicationController
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v41 = a5;
-  v39 = a6;
-  v11 = [v10 _managedMainDisplayItems];
-  v40 = v9;
-  v12 = [v9 mutableCopy];
-  v37 = v11;
-  [v12 minusSet:v11];
-  v13 = [v10 switcherCoordinator];
-  v14 = [v13 coordinatedSwitcherControllers];
+  itemsCopy = items;
+  controllerCopy = controller;
+  layoutCopy = layout;
+  applicationControllerCopy = applicationController;
+  _managedMainDisplayItems = [controllerCopy _managedMainDisplayItems];
+  v40 = itemsCopy;
+  v12 = [itemsCopy mutableCopy];
+  v37 = _managedMainDisplayItems;
+  [v12 minusSet:_managedMainDisplayItems];
+  switcherCoordinator = [controllerCopy switcherCoordinator];
+  coordinatedSwitcherControllers = [switcherCoordinator coordinatedSwitcherControllers];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v15 = v14;
+  v15 = coordinatedSwitcherControllers;
   v16 = [v15 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (!v16)
   {
@@ -56,22 +56,22 @@
       }
 
       v20 = *(*(&v42 + 1) + 8 * i);
-      v21 = [v20 _managedMainDisplayItems];
-      if ([v12 isSubsetOfSet:v21])
+      _managedMainDisplayItems2 = [v20 _managedMainDisplayItems];
+      if ([v12 isSubsetOfSet:_managedMainDisplayItems2])
       {
-        v25 = [v20 _currentMainAppLayout];
+        _currentMainAppLayout = [v20 _currentMainAppLayout];
 LABEL_14:
-        v24 = v25;
+        v24 = _currentMainAppLayout;
 
         goto LABEL_15;
       }
 
-      v22 = [v20 _currentFloatingAppLayout];
-      v23 = [v22 containsAllItemsFromSet:v12];
+      _currentFloatingAppLayout = [v20 _currentFloatingAppLayout];
+      v23 = [_currentFloatingAppLayout containsAllItemsFromSet:v12];
 
       if (v23)
       {
-        v25 = [v20 _currentFloatingAppLayout];
+        _currentMainAppLayout = [v20 _currentFloatingAppLayout];
         goto LABEL_14;
       }
     }
@@ -89,14 +89,14 @@ LABEL_14:
 
 LABEL_15:
 
-  if (!v10 || !v20 || !v24 || ![v40 count])
+  if (!controllerCopy || !v20 || !v24 || ![v40 count])
   {
-    v26 = [v40 bs_array];
-    v36 = [v26 bs_map:&__block_literal_global_86];
+    bs_array = [v40 bs_array];
+    v36 = [bs_array bs_map:&__block_literal_global_86];
 
     v27 = [v15 bs_compactMap:&__block_literal_global_3];
-    v28 = [v24 succinctDescription];
-    v29 = [v41 succinctDescription];
+    succinctDescription = [v24 succinctDescription];
+    succinctDescription2 = [layoutCopy succinctDescription];
     v30 = SBLogAppSwitcher();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -118,11 +118,11 @@ LABEL_15:
     v33 = SBLogAppSwitcher();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      [SBSwitcherCoordinatedLayoutStateTransitionContext coordinatedLayoutStateTransitionContextForMovingDisplayItems:v28 toSwitcherController:v29 toAppLayout:v33 withApplicationController:?];
+      [SBSwitcherCoordinatedLayoutStateTransitionContext coordinatedLayoutStateTransitionContextForMovingDisplayItems:succinctDescription toSwitcherController:succinctDescription2 toAppLayout:v33 withApplicationController:?];
     }
   }
 
-  v34 = [a1 coordinatedLayoutStateTransitionContextForMovingDisplayItems:v40 fromSwitcherController:v20 fromAppLayout:v24 toAppLayout:v41 toSwitcherController:v10 withApplicationController:{v39, v36}];
+  v34 = [self coordinatedLayoutStateTransitionContextForMovingDisplayItems:v40 fromSwitcherController:v20 fromAppLayout:v24 toAppLayout:layoutCopy toSwitcherController:controllerCopy withApplicationController:{applicationControllerCopy, v36}];
 
   return v34;
 }
@@ -135,101 +135,101 @@ id __173__SBSwitcherCoordinatedLayoutStateTransitionContext_coordinatedLayoutSta
   return v3;
 }
 
-+ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)a3 fromSwitcherController:(id)a4 fromAppLayout:(id)a5 toAppLayout:(id)a6 toSwitcherController:(id)a7 withApplicationController:(id)a8
++ (id)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(id)items fromSwitcherController:(id)controller fromAppLayout:(id)layout toAppLayout:(id)appLayout toSwitcherController:(id)switcherController withApplicationController:(id)applicationController
 {
-  v14 = a6;
-  v15 = a7;
-  v40 = a8;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v15 displayItemLayoutAttributesProvider];
-  v20 = [v14 preferredDisplayOrdinal];
-  v21 = [v15 interfaceOrientation];
-  if ((v21 - 1) < 2)
+  appLayoutCopy = appLayout;
+  switcherControllerCopy = switcherController;
+  applicationControllerCopy = applicationController;
+  layoutCopy = layout;
+  controllerCopy = controller;
+  itemsCopy = items;
+  displayItemLayoutAttributesProvider = [switcherControllerCopy displayItemLayoutAttributesProvider];
+  preferredDisplayOrdinal = [appLayoutCopy preferredDisplayOrdinal];
+  interfaceOrientation = [switcherControllerCopy interfaceOrientation];
+  if ((interfaceOrientation - 1) < 2)
   {
     v22 = 1;
   }
 
   else
   {
-    v22 = 2 * ((v21 - 3) < 2);
+    v22 = 2 * ((interfaceOrientation - 3) < 2);
   }
 
-  v23 = [v19 layoutAttributesMapForAppLayout:v14 displayOrdinal:v20 orientation:{v22, a1}];
-  v24 = [v15 windowManagementContext];
-  if ([v24 isChamoisOrFlexibleWindowing])
+  v23 = [displayItemLayoutAttributesProvider layoutAttributesMapForAppLayout:appLayoutCopy displayOrdinal:preferredDisplayOrdinal orientation:{v22, self}];
+  windowManagementContext = [switcherControllerCopy windowManagementContext];
+  if ([windowManagementContext isChamoisOrFlexibleWindowing])
   {
-    v25 = [v14 appLayoutByAdjustingFloatingItemsForFlexibleWindowing];
+    appLayoutByAdjustingFloatingItemsForFlexibleWindowing = [appLayoutCopy appLayoutByAdjustingFloatingItemsForFlexibleWindowing];
 
-    v14 = [v25 appLayoutByAdjustingCenterWindowItemsForFlexibleWindowing];
+    appLayoutCopy = [appLayoutByAdjustingFloatingItemsForFlexibleWindowing appLayoutByAdjustingCenterWindowItemsForFlexibleWindowing];
 
-    v26 = [v14 preferredDisplayOrdinal];
-    v27 = [v15 interfaceOrientation];
-    if ((v27 - 1) < 2)
+    preferredDisplayOrdinal2 = [appLayoutCopy preferredDisplayOrdinal];
+    interfaceOrientation2 = [switcherControllerCopy interfaceOrientation];
+    if ((interfaceOrientation2 - 1) < 2)
     {
       v28 = 1;
     }
 
     else
     {
-      v28 = 2 * ((v27 - 3) < 2);
+      v28 = 2 * ((interfaceOrientation2 - 3) < 2);
     }
 
-    [v19 updateLayoutAttributesMap:v23 forAppLayout:v14 displayOrdinal:v26 orientation:v28];
+    [displayItemLayoutAttributesProvider updateLayoutAttributesMap:v23 forAppLayout:appLayoutCopy displayOrdinal:preferredDisplayOrdinal2 orientation:v28];
   }
 
-  else if ([v24 isMedusaEnabled])
+  else if ([windowManagementContext isMedusaEnabled])
   {
-    v29 = [v14 appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:v40 multitaskingSupported:1];
+    v29 = [appLayoutCopy appLayoutsBySplittingMedusaIncompatibleItemsWithApplicationController:applicationControllerCopy multitaskingSupported:1];
     if ([v29 count])
     {
-      v30 = [v29 firstObject];
+      firstObject = [v29 firstObject];
     }
 
     else
     {
-      v30 = v14;
+      firstObject = appLayoutCopy;
     }
 
-    v32 = v30;
+    v32 = firstObject;
 
-    v14 = v32;
+    appLayoutCopy = v32;
   }
 
-  else if ([v24 baseStyle])
+  else if ([windowManagementContext baseStyle])
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:v39 file:@"SBSwitcherCoordinatedLayoutStateTransitionContext.m" lineNumber:100 description:@"Unexpected window management context"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v39 file:@"SBSwitcherCoordinatedLayoutStateTransitionContext.m" lineNumber:100 description:@"Unexpected window management context"];
   }
 
   else
   {
-    v33 = [v14 leafAppLayoutForRole:1];
+    v33 = [appLayoutCopy leafAppLayoutForRole:1];
 
-    v14 = v33;
+    appLayoutCopy = v33;
   }
 
-  v34 = [v15 layoutState];
-  v35 = [v14 appLayoutByModifyingPreferredDisplayOrdinal:{objc_msgSend(v34, "displayOrdinal")}];
+  layoutState = [switcherControllerCopy layoutState];
+  v35 = [appLayoutCopy appLayoutByModifyingPreferredDisplayOrdinal:{objc_msgSend(layoutState, "displayOrdinal")}];
 
-  v36 = [[v39 alloc] initWithDisplayItems:v18 fromSwitcherController:v17 toSwitcherController:v15 fromAppLayout:v16 toAppLayout:v35];
+  v36 = [[v39 alloc] initWithDisplayItems:itemsCopy fromSwitcherController:controllerCopy toSwitcherController:switcherControllerCopy fromAppLayout:layoutCopy toAppLayout:v35];
 
   return v36;
 }
 
-- (SBSwitcherCoordinatedLayoutStateTransitionContext)initWithDisplayItems:(id)a3 fromSwitcherController:(id)a4 toSwitcherController:(id)a5 fromAppLayout:(id)a6 toAppLayout:(id)a7
+- (SBSwitcherCoordinatedLayoutStateTransitionContext)initWithDisplayItems:(id)items fromSwitcherController:(id)controller toSwitcherController:(id)switcherController fromAppLayout:(id)layout toAppLayout:(id)appLayout
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  obj = a7;
-  v17 = a7;
-  v23 = v13;
-  if ([v13 count])
+  itemsCopy = items;
+  controllerCopy = controller;
+  switcherControllerCopy = switcherController;
+  layoutCopy = layout;
+  obj = appLayout;
+  appLayoutCopy = appLayout;
+  v23 = itemsCopy;
+  if ([itemsCopy count])
   {
-    if (v14)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -238,10 +238,10 @@ id __173__SBSwitcherCoordinatedLayoutStateTransitionContext_coordinatedLayoutSta
   else
   {
     [SBSwitcherCoordinatedLayoutStateTransitionContext initWithDisplayItems:fromSwitcherController:toSwitcherController:fromAppLayout:toAppLayout:];
-    if (v14)
+    if (controllerCopy)
     {
 LABEL_3:
-      if (v15)
+      if (switcherControllerCopy)
       {
         goto LABEL_4;
       }
@@ -251,17 +251,17 @@ LABEL_3:
   }
 
   [SBSwitcherCoordinatedLayoutStateTransitionContext initWithDisplayItems:fromSwitcherController:toSwitcherController:fromAppLayout:toAppLayout:];
-  if (v15)
+  if (switcherControllerCopy)
   {
 LABEL_4:
-    if (v16)
+    if (layoutCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
     [SBSwitcherCoordinatedLayoutStateTransitionContext initWithDisplayItems:fromSwitcherController:toSwitcherController:fromAppLayout:toAppLayout:];
-    if (v17)
+    if (appLayoutCopy)
     {
       goto LABEL_6;
     }
@@ -271,13 +271,13 @@ LABEL_12:
 
 LABEL_11:
   [SBSwitcherCoordinatedLayoutStateTransitionContext initWithDisplayItems:fromSwitcherController:toSwitcherController:fromAppLayout:toAppLayout:];
-  if (!v16)
+  if (!layoutCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v17)
+  if (appLayoutCopy)
   {
     goto LABEL_6;
   }
@@ -291,46 +291,46 @@ LABEL_6:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_displayItems, a3);
-    objc_storeStrong(&v19->_fromSwitcherController, a4);
-    objc_storeStrong(&v19->_toSwitcherController, a5);
-    objc_storeStrong(&v19->_fromAppLayout, a6);
+    objc_storeStrong(&v18->_displayItems, items);
+    objc_storeStrong(&v19->_fromSwitcherController, controller);
+    objc_storeStrong(&v19->_toSwitcherController, switcherController);
+    objc_storeStrong(&v19->_fromAppLayout, layout);
     objc_storeStrong(&v19->_toAppLayout, obj);
-    v20 = [v14 layoutState];
-    v19->_fromFloatingConfiguration = [v20 floatingConfiguration];
-    v19->_fromCenterConfiguration = [v20 centerConfiguration];
+    layoutState = [controllerCopy layoutState];
+    v19->_fromFloatingConfiguration = [layoutState floatingConfiguration];
+    v19->_fromCenterConfiguration = [layoutState centerConfiguration];
   }
 
   return v19;
 }
 
-- (BOOL)hasTransitioningDisplayItemsForSwitcherController:(id)a3
+- (BOOL)hasTransitioningDisplayItemsForSwitcherController:(id)controller
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_fromSwitcherController])
+  controllerCopy = controller;
+  if ([controllerCopy isEqual:self->_fromSwitcherController])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqual:self->_toSwitcherController];
+    v5 = [controllerCopy isEqual:self->_toSwitcherController];
   }
 
   return v5;
 }
 
-- (CGRect)fromFrameInFromSwitcherForDisplayItem:(id)a3
+- (CGRect)fromFrameInFromSwitcherForDisplayItem:(id)item
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBSwitcherController *)self->_fromSwitcherController windowManagementContext];
-  if (![v5 isFlexibleWindowingEnabled] || (objc_msgSend(v5, "isAutomaticStageCreationEnabled") & 1) != 0 || -[SBAppLayout containsItem:](self->_fromAppLayout, "containsItem:", v4))
+  itemCopy = item;
+  windowManagementContext = [(SBSwitcherController *)self->_fromSwitcherController windowManagementContext];
+  if (![windowManagementContext isFlexibleWindowingEnabled] || (objc_msgSend(windowManagementContext, "isAutomaticStageCreationEnabled") & 1) != 0 || -[SBAppLayout containsItem:](self->_fromAppLayout, "containsItem:", itemCopy))
   {
-    v6 = [(SBAppLayout *)self->_fromAppLayout environment];
-    v7 = [(SBAppLayout *)self->_fromAppLayout layoutRoleForItem:v4];
-    v8 = [(SBSwitcherController *)self->_fromSwitcherController interfaceOrientation];
-    switch(v6)
+    environment = [(SBAppLayout *)self->_fromAppLayout environment];
+    v7 = [(SBAppLayout *)self->_fromAppLayout layoutRoleForItem:itemCopy];
+    interfaceOrientation = [(SBSwitcherController *)self->_fromSwitcherController interfaceOrientation];
+    switch(environment)
     {
       case 3:
         goto LABEL_13;
@@ -339,7 +339,7 @@ LABEL_6:
       case 1:
         if (SBLayoutRoleIsValidForSplitView(v7))
         {
-          [(SBSwitcherController *)self->_fromSwitcherController frameForItemWithRole:v7 inMainAppLayout:self->_fromAppLayout interfaceOrientation:v8];
+          [(SBSwitcherController *)self->_fromSwitcherController frameForItemWithRole:v7 inMainAppLayout:self->_fromAppLayout interfaceOrientation:interfaceOrientation];
 LABEL_14:
           v20 = v9;
           v22 = v10;
@@ -351,14 +351,14 @@ LABEL_14:
         if (v7 == 3)
         {
 LABEL_11:
-          [(SBSwitcherController *)self->_fromSwitcherController frameForFloatingAppLayoutInInterfaceOrientation:v8 floatingConfiguration:self->_fromFloatingConfiguration];
+          [(SBSwitcherController *)self->_fromSwitcherController frameForFloatingAppLayoutInInterfaceOrientation:interfaceOrientation floatingConfiguration:self->_fromFloatingConfiguration];
           goto LABEL_14;
         }
 
         if (v7 == 4)
         {
 LABEL_13:
-          [(SBSwitcherController *)self->_fromSwitcherController frameForCenterItemWithConfiguration:self->_fromCenterConfiguration interfaceOrientation:v8];
+          [(SBSwitcherController *)self->_fromSwitcherController frameForCenterItemWithConfiguration:self->_fromCenterConfiguration interfaceOrientation:interfaceOrientation];
           goto LABEL_14;
         }
 
@@ -373,15 +373,15 @@ LABEL_13:
   }
 
   v13 = [SBAppLayout alloc];
-  v32[0] = v4;
+  v32[0] = itemCopy;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
   LOBYTE(v31) = 0;
   v15 = [(SBAppLayout *)v13 initWithItems:v14 centerItem:0 floatingItem:0 configuration:1 centerConfiguration:0 environment:1 hidden:v31 preferredDisplayOrdinal:[(SBAppLayout *)self->_fromAppLayout preferredDisplayOrdinal]];
 
   fromSwitcherController = self->_fromSwitcherController;
-  v17 = [(SBAppLayout *)v15 layoutRoleForItem:v4];
-  v18 = [(SBSwitcherController *)self->_fromSwitcherController layoutState];
-  -[SBSwitcherController frameForItemWithRole:inMainAppLayout:interfaceOrientation:](fromSwitcherController, "frameForItemWithRole:inMainAppLayout:interfaceOrientation:", v17, v15, [v18 interfaceOrientation]);
+  v17 = [(SBAppLayout *)v15 layoutRoleForItem:itemCopy];
+  layoutState = [(SBSwitcherController *)self->_fromSwitcherController layoutState];
+  -[SBSwitcherController frameForItemWithRole:inMainAppLayout:interfaceOrientation:](fromSwitcherController, "frameForItemWithRole:inMainAppLayout:interfaceOrientation:", v17, v15, [layoutState interfaceOrientation]);
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -399,19 +399,19 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)fromFrameInToSwitcherForDisplayItem:(id)a3
+- (CGRect)fromFrameInToSwitcherForDisplayItem:(id)item
 {
   fromSwitcherController = self->_fromSwitcherController;
-  v5 = a3;
-  v6 = [(SBSwitcherController *)fromSwitcherController windowScene];
-  v7 = [(SBSwitcherController *)self->_toSwitcherController windowScene];
-  [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self fromFrameInFromSwitcherForDisplayItem:v5];
+  itemCopy = item;
+  windowScene = [(SBSwitcherController *)fromSwitcherController windowScene];
+  windowScene2 = [(SBSwitcherController *)self->_toSwitcherController windowScene];
+  [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self fromFrameInFromSwitcherForDisplayItem:itemCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v6 convertRect:v7 toNeighboringDisplayWindowScene:{v9, v11, v13, v15}];
+  [windowScene convertRect:windowScene2 toNeighboringDisplayWindowScene:{v9, v11, v13, v15}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -428,19 +428,19 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)toFrameInFromSwitcherForDisplayItem:(id)a3
+- (CGRect)toFrameInFromSwitcherForDisplayItem:(id)item
 {
   fromSwitcherController = self->_fromSwitcherController;
-  v5 = a3;
-  v6 = [(SBSwitcherController *)fromSwitcherController windowScene];
-  v7 = [(SBSwitcherController *)self->_toSwitcherController windowScene];
-  [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self toFrameInToSwitcherForDisplayItem:v5];
+  itemCopy = item;
+  windowScene = [(SBSwitcherController *)fromSwitcherController windowScene];
+  windowScene2 = [(SBSwitcherController *)self->_toSwitcherController windowScene];
+  [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self toFrameInToSwitcherForDisplayItem:itemCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  [v7 convertRect:v6 toNeighboringDisplayWindowScene:{v9, v11, v13, v15}];
+  [windowScene2 convertRect:windowScene toNeighboringDisplayWindowScene:{v9, v11, v13, v15}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -457,14 +457,14 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)toFrameInToSwitcherForDisplayItem:(id)a3
+- (CGRect)toFrameInToSwitcherForDisplayItem:(id)item
 {
   toSwitcherController = self->_toSwitcherController;
-  v5 = [(SBAppLayout *)self->_toAppLayout layoutRoleForItem:a3];
+  v5 = [(SBAppLayout *)self->_toAppLayout layoutRoleForItem:item];
   toAppLayout = self->_toAppLayout;
-  v7 = [(SBSwitcherController *)self->_toSwitcherController interfaceOrientation];
+  interfaceOrientation = [(SBSwitcherController *)self->_toSwitcherController interfaceOrientation];
 
-  [(SBSwitcherController *)toSwitcherController frameForItemWithRole:v5 inMainAppLayout:toAppLayout interfaceOrientation:v7];
+  [(SBSwitcherController *)toSwitcherController frameForItemWithRole:v5 inMainAppLayout:toAppLayout interfaceOrientation:interfaceOrientation];
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -475,7 +475,7 @@ LABEL_16:
 - (unint64_t)hash
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -496,7 +496,7 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [v3 appendObject:{*(*(&v16 + 1) + 8 * v8++), v16}];
+        v9 = [builder appendObject:{*(*(&v16 + 1) + 8 * v8++), v16}];
       }
 
       while (v6 != v8);
@@ -506,22 +506,22 @@ LABEL_16:
     while (v6);
   }
 
-  v10 = [v3 appendObject:self->_fromSwitcherController];
-  v11 = [v3 appendObject:self->_toSwitcherController];
-  v12 = [v3 appendObject:self->_fromAppLayout];
-  v13 = [v3 appendObject:self->_toAppLayout];
-  v14 = [v3 hash];
+  v10 = [builder appendObject:self->_fromSwitcherController];
+  v11 = [builder appendObject:self->_toSwitcherController];
+  v12 = [builder appendObject:self->_fromAppLayout];
+  v13 = [builder appendObject:self->_toAppLayout];
+  v14 = [builder hash];
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 hash];
+    v5 = [equalCopy hash];
     v6 = v5 == [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self hash];
   }
 
@@ -535,30 +535,30 @@ LABEL_16:
 
 - (id)succinctDescription
 {
-  v2 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_displayItems withName:@"displayItems"];
-  v6 = [v4 appendObject:self->_fromSwitcherController withName:@"fromSwitcherController"];
-  v7 = [v4 appendObject:self->_toSwitcherController withName:@"toSwitcherController"];
-  v8 = [v4 appendObject:self->_fromAppLayout withName:@"fromAppLayout"];
-  v9 = [v4 appendObject:self->_toAppLayout withName:@"toAppLayout"];
+  succinctDescriptionBuilder = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_displayItems withName:@"displayItems"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_fromSwitcherController withName:@"fromSwitcherController"];
+  v7 = [succinctDescriptionBuilder appendObject:self->_toSwitcherController withName:@"toSwitcherController"];
+  v8 = [succinctDescriptionBuilder appendObject:self->_fromAppLayout withName:@"fromAppLayout"];
+  v9 = [succinctDescriptionBuilder appendObject:self->_toAppLayout withName:@"toAppLayout"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 + (void)coordinatedLayoutStateTransitionContextForMovingDisplayItems:(uint64_t)a1 toSwitcherController:(NSObject *)a2 toAppLayout:withApplicationController:.cold.2(uint64_t a1, NSObject *a2)

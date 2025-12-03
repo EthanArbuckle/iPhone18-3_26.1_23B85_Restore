@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_UpdateOutdatedPersonMetadata
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateOutdatedPersonMetadata
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v82 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLModelMigrationActionCore *)self pathManager];
-  v7 = [PLPersistedPersonMetadata urlsForPersistedPersonsInMetadataDirectoryWithPathManager:v6];
+  contextCopy = context;
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v7 = [PLPersistedPersonMetadata urlsForPersistedPersonsInMetadataDirectoryWithPathManager:pathManager];
 
   v44 = 0u;
   v45 = 0u;
@@ -39,16 +39,16 @@
         v14 = *(*(&v42 + 1) + 8 * v13);
         v15 = objc_autoreleasePoolPush();
         v16 = [objc_alloc(v12[303]) initWithPersistedDataAtURL:v14 cplEnabled:0];
-        if (([v16 matchesEntityInLibraryBackedByManagedObjectContext:v5 diff:0] & 1) == 0)
+        if (([v16 matchesEntityInLibraryBackedByManagedObjectContext:contextCopy diff:0] & 1) == 0)
         {
-          v17 = [v16 personUUID];
-          v18 = [PLPerson personWithUUID:v17 inManagedObjectContext:v5];
+          personUUID = [v16 personUUID];
+          v18 = [PLPerson personWithUUID:personUUID inManagedObjectContext:contextCopy];
 
           if (v18 && [v18 verifiedType])
           {
             v19 = objc_alloc(v12[303]);
-            v20 = [(PLModelMigrationActionCore *)self pathManager];
-            v21 = [v19 initWithPLPerson:v18 pathManager:v20];
+            pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
+            v21 = [v19 initWithPLPerson:v18 pathManager:pathManager2];
 
             [v21 writePersistedData];
             ++v38;
@@ -57,15 +57,15 @@
           else
           {
             v22 = v12[303];
-            v23 = [v16 personUUID];
+            personUUID2 = [v16 personUUID];
             [(PLModelMigrationActionCore *)self pathManager];
             v24 = v10;
-            v25 = v5;
+            v25 = contextCopy;
             v27 = v26 = self;
-            [(__objc2_class *)v22 deleteMetadataFileForPersonUUID:v23 pathManager:v27];
+            [(__objc2_class *)v22 deleteMetadataFileForPersonUUID:personUUID2 pathManager:v27];
 
             self = v26;
-            v5 = v25;
+            contextCopy = v25;
             v28 = v24;
             v12 = off_1E7560000;
 
@@ -98,9 +98,9 @@
 
   if (v30)
   {
-    v31 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v31)
+    if (logger)
     {
       v79 = 0u;
       v80 = 0u;

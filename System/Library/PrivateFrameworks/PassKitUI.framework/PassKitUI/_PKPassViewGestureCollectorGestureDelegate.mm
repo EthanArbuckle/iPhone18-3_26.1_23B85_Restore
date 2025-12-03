@@ -1,7 +1,7 @@
 @interface _PKPassViewGestureCollectorGestureDelegate
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (_PKPassViewGestureCollectorGestureDelegate)init;
-- (void)_gestureRecognizerActed:(id)a3;
+- (void)_gestureRecognizerActed:(id)acted;
 @end
 
 @implementation _PKPassViewGestureCollectorGestureDelegate
@@ -13,22 +13,22 @@
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v4 = *(&self->super.isa + OBJC_IVAR____PKPassViewGestureCollectorGestureDelegate_shouldBegin);
-  v5 = a3;
-  v6 = self;
-  v7 = v4(v5);
+  beginCopy = begin;
+  selfCopy = self;
+  v7 = v4(beginCopy);
 
   return v7 & 1;
 }
 
-- (void)_gestureRecognizerActed:(id)a3
+- (void)_gestureRecognizerActed:(id)acted
 {
   v4 = *(&self->super.isa + OBJC_IVAR____PKPassViewGestureCollectorGestureDelegate_action);
-  v6 = a3;
-  v5 = self;
-  v4(v6);
+  actedCopy = acted;
+  selfCopy = self;
+  v4(actedCopy);
 }
 
 @end

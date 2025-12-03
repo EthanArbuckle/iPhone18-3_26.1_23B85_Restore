@@ -1,45 +1,45 @@
 @interface CPSMultilineLabelConfig
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLabelConfig:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLabelConfig:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation CPSMultilineLabelConfig
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v11 = self;
+  selfCopy = self;
   v10[2] = a2;
-  v10[1] = a3;
+  v10[1] = zone;
   v10[0] = objc_opt_new();
-  v7 = [(CPSMultilineLabelConfig *)v11 text];
+  text = [(CPSMultilineLabelConfig *)selfCopy text];
   [v10[0] setText:?];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  v8 = [(CPSMultilineLabelConfig *)v11 font];
+  *&v3 = MEMORY[0x277D82BD8](text).n128_u64[0];
+  font = [(CPSMultilineLabelConfig *)selfCopy font];
   [v10[0] setFont:?];
-  *&v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  v5 = [(CPSMultilineLabelConfig *)v11 lineCount];
-  [v10[0] setLineCount:v5];
+  *&v4 = MEMORY[0x277D82BD8](font).n128_u64[0];
+  lineCount = [(CPSMultilineLabelConfig *)selfCopy lineCount];
+  [v10[0] setLineCount:lineCount];
   v9 = MEMORY[0x277D82BE0](v10[0]);
   objc_storeStrong(v10, 0);
   return v9;
 }
 
-- (BOOL)isEqualToLabelConfig:(id)a3
+- (BOOL)isEqualToLabelConfig:(id)config
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(CPSMultilineLabelConfig *)v9 lineCount];
-  if (v7 == [location[0] lineCount])
+  objc_storeStrong(location, config);
+  lineCount = [(CPSMultilineLabelConfig *)selfCopy lineCount];
+  if (lineCount == [location[0] lineCount])
   {
-    v5 = [(CPSMultilineLabelConfig *)v9 font];
-    v4 = [location[0] font];
-    v6 = [(UIFont *)v5 isEqual:?];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    font = [(CPSMultilineLabelConfig *)selfCopy font];
+    font2 = [location[0] font];
+    v6 = [(UIFont *)font isEqual:?];
+    MEMORY[0x277D82BD8](font2);
+    MEMORY[0x277D82BD8](font);
     v10 = (v6 & 1) != 0;
   }
 
@@ -52,13 +52,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (location[0] == v7)
+  objc_storeStrong(location, equal);
+  if (location[0] == selfCopy)
   {
     v8 = 1;
     v5 = 1;
@@ -66,11 +66,11 @@
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = CPSMultilineLabelConfig;
     if ([(CPSMultilineLabelConfig *)&v4 isEqual:location[0]])
     {
-      v8 = [(CPSMultilineLabelConfig *)v7 isEqualToLabelConfig:location[0]];
+      v8 = [(CPSMultilineLabelConfig *)selfCopy isEqualToLabelConfig:location[0]];
     }
 
     else
@@ -89,23 +89,23 @@
 {
   v9 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
-  v6 = [(CPSMultilineLabelConfig *)self lineCount];
-  v12 = [(CPSMultilineLabelConfig *)self font];
-  [(UIFont *)v12 pointSize];
+  lineCount = [(CPSMultilineLabelConfig *)self lineCount];
+  font = [(CPSMultilineLabelConfig *)self font];
+  [(UIFont *)font pointSize];
   v7 = v2;
-  v11 = [(CPSMultilineLabelConfig *)self attributedText];
+  attributedText = [(CPSMultilineLabelConfig *)self attributedText];
   v3 = @"YES";
-  if (!v11)
+  if (!attributedText)
   {
     v3 = @"NO";
   }
 
   v8 = v3;
-  v10 = [(CPSMultilineLabelConfig *)self text];
-  v13 = [v9 stringWithFormat:@"<%@: %p lineCount=%ld fontSize=%f %@ - %@>", v5, self, v6, v7, v8, v10];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  text = [(CPSMultilineLabelConfig *)self text];
+  v13 = [v9 stringWithFormat:@"<%@: %p lineCount=%ld fontSize=%f %@ - %@>", v5, self, lineCount, v7, v8, text];
+  MEMORY[0x277D82BD8](text);
+  MEMORY[0x277D82BD8](attributedText);
+  MEMORY[0x277D82BD8](font);
 
   return v13;
 }

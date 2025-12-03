@@ -1,65 +1,65 @@
 @interface PRPosterSystemTimeFontConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PRPosterSystemTimeFontConfiguration)init;
-- (PRPosterSystemTimeFontConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterSystemTimeFontConfiguration)initWithCoder:(id)a3;
-- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)a3 systemItem:(BOOL)a4;
-- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)a3 weight:(double)a4 systemItem:(BOOL)a5;
-- (PRPosterSystemTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)a3;
-- (PRVariantWeightRange)_validWeightRangeForTimeFontIdentifier:(id)a3;
-- (double)_defaultWeightForTimeFontIdentifier:(id)a3;
+- (PRPosterSystemTimeFontConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterSystemTimeFontConfiguration)initWithCoder:(id)coder;
+- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)identifier systemItem:(BOOL)item;
+- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)identifier weight:(double)weight systemItem:(BOOL)item;
+- (PRPosterSystemTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)l;
+- (PRVariantWeightRange)_validWeightRangeForTimeFontIdentifier:(id)identifier;
+- (double)_defaultWeightForTimeFontIdentifier:(id)identifier;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterSystemTimeFontConfiguration
 
-- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)a3 systemItem:(BOOL)a4
+- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)identifier systemItem:(BOOL)item
 {
-  v4 = a4;
-  v6 = a3;
-  [(PRPosterSystemTimeFontConfiguration *)self _defaultWeightForTimeFontIdentifier:v6];
-  v7 = [(PRPosterSystemTimeFontConfiguration *)self initWithTimeFontIdentifier:v6 weight:v4 systemItem:?];
+  itemCopy = item;
+  identifierCopy = identifier;
+  [(PRPosterSystemTimeFontConfiguration *)self _defaultWeightForTimeFontIdentifier:identifierCopy];
+  v7 = [(PRPosterSystemTimeFontConfiguration *)self initWithTimeFontIdentifier:identifierCopy weight:itemCopy systemItem:?];
 
   return v7;
 }
 
-- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)a3 weight:(double)a4 systemItem:(BOOL)a5
+- (PRPosterSystemTimeFontConfiguration)initWithTimeFontIdentifier:(id)identifier weight:(double)weight systemItem:(BOOL)item
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = PRPosterSystemTimeFontConfiguration;
   v9 = [(PRPosterTimeFontConfiguration *)&v18 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     timeFontConfiguration = v9->_timeFontConfiguration;
     v9->_timeFontConfiguration = v10;
 
-    v12 = [(PRPosterSystemTimeFontConfiguration *)v9 _validWeightRangeForTimeFontIdentifier:v8];
+    v12 = [(PRPosterSystemTimeFontConfiguration *)v9 _validWeightRangeForTimeFontIdentifier:identifierCopy];
     v14 = v13;
     if (BSFloatIsZero())
     {
-      [(PRPosterSystemTimeFontConfiguration *)v9 _defaultWeightForTimeFontIdentifier:v8];
-      a4 = v15;
+      [(PRPosterSystemTimeFontConfiguration *)v9 _defaultWeightForTimeFontIdentifier:identifierCopy];
+      weight = v15;
     }
 
-    v16 = v14;
-    if (a4 < v14)
+    weightCopy = v14;
+    if (weight < v14)
     {
-      v16 = a4;
+      weightCopy = weight;
     }
 
-    if (v16 < v12)
+    if (weightCopy < v12)
     {
-      v16 = v12;
+      weightCopy = v12;
     }
 
-    *&v9->_timeFontIdentifier = v16;
-    *(&v9->super._systemItem + 1) = a5;
+    *&v9->_timeFontIdentifier = weightCopy;
+    *(&v9->super._systemItem + 1) = item;
   }
 
   return v9;
@@ -67,16 +67,16 @@
 
 - (PRPosterSystemTimeFontConfiguration)init
 {
-  v3 = [objc_opt_class() defaultTimeFontIdentifier];
-  v4 = [(PRPosterSystemTimeFontConfiguration *)self initWithTimeFontIdentifier:v3];
+  defaultTimeFontIdentifier = [objc_opt_class() defaultTimeFontIdentifier];
+  v4 = [(PRPosterSystemTimeFontConfiguration *)self initWithTimeFontIdentifier:defaultTimeFontIdentifier];
 
   return v4;
 }
 
-- (PRPosterSystemTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)a3
+- (PRPosterSystemTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     [PRPosterSystemTimeFontConfiguration timeFontConfigurationWithExtensionBundleURL:];
   }
@@ -85,9 +85,9 @@
   if (!v5)
   {
     v6 = [PRTimeFontConfiguration alloc];
-    v7 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+    timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
     [(PRPosterSystemTimeFontConfiguration *)self weight];
-    v8 = [(PRTimeFontConfiguration *)v6 initWithTimeFontIdentifier:v7 weight:?];
+    v8 = [(PRTimeFontConfiguration *)v6 initWithTimeFontIdentifier:timeFontIdentifier weight:?];
     v9 = *&self->_systemItem;
     *&self->_systemItem = v8;
 
@@ -102,47 +102,47 @@
 - (id)uniqueIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+  timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
   [(PRPosterSystemTimeFontConfiguration *)self weight];
-  v6 = [v3 stringWithFormat:@"%@ - %f", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ - %f", timeFontIdentifier, v5];
 
   return v6;
 }
 
-- (PRVariantWeightRange)_validWeightRangeForTimeFontIdentifier:(id)a3
+- (PRVariantWeightRange)_validWeightRangeForTimeFontIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E69DB878] pr_fontWithTimeFontIdentifier:a3];
-  v4 = [v3 pr_variantWeightRange];
+  v3 = [MEMORY[0x1E69DB878] pr_fontWithTimeFontIdentifier:identifier];
+  pr_variantWeightRange = [v3 pr_variantWeightRange];
   v6 = v5;
 
-  v7 = v4;
+  v7 = pr_variantWeightRange;
   v8 = v6;
   result.var1 = v8;
   result.var0 = v7;
   return result;
 }
 
-- (double)_defaultWeightForTimeFontIdentifier:(id)a3
+- (double)_defaultWeightForTimeFontIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x1E69DB878] pr_fontWithTimeFontIdentifier:a3];
+  v3 = [MEMORY[0x1E69DB878] pr_fontWithTimeFontIdentifier:identifier];
   if ([MEMORY[0x1E6999608] providesMetricsForFont:v3])
   {
     [MEMORY[0x1E6999608] defaultWeightForBaseFont:v3];
-    v5 = v4;
+    pr_variantWeight = v4;
   }
 
   else
   {
-    v5 = [v3 pr_variantWeight];
+    pr_variantWeight = [v3 pr_variantWeight];
   }
 
-  return v5;
+  return pr_variantWeight;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -154,9 +154,9 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
-      v9 = [(PRPosterSystemTimeFontConfiguration *)v7 timeFontIdentifier];
+      v7 = equalCopy;
+      timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+      timeFontIdentifier2 = [(PRPosterSystemTimeFontConfiguration *)v7 timeFontIdentifier];
       v10 = BSEqualObjects();
 
       if (v10)
@@ -183,55 +183,55 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+  v5 = [builder appendString:timeFontIdentifier];
 
   [(PRPosterSystemTimeFontConfiguration *)self weight];
-  v6 = [v3 appendDouble:?];
-  v7 = [v3 hash];
+  v6 = [builder appendDouble:?];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v7 = a3;
-  v4 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
-  [v7 appendString:v4 withName:@"timeFontIdentifier"];
+  formatterCopy = formatter;
+  timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+  [formatterCopy appendString:timeFontIdentifier withName:@"timeFontIdentifier"];
 
   [(PRPosterSystemTimeFontConfiguration *)self weight];
-  v5 = [v7 appendDouble:@"weight" withName:5 decimalPrecision:?];
-  v6 = [v7 appendBool:-[PRPosterSystemTimeFontConfiguration isSystemItem](self withName:{"isSystemItem"), @"isSystemItem"}];
+  v5 = [formatterCopy appendDouble:@"weight" withName:5 decimalPrecision:?];
+  v6 = [formatterCopy appendBool:-[PRPosterSystemTimeFontConfiguration isSystemItem](self withName:{"isSystemItem"), @"isSystemItem"}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
-  [v8 encodeObject:v4 forKey:*MEMORY[0x1E69C54E0]];
+  coderCopy = coder;
+  timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+  [coderCopy encodeObject:timeFontIdentifier forKey:*MEMORY[0x1E69C54E0]];
 
   v5 = MEMORY[0x1E696AD98];
   [(PRPosterSystemTimeFontConfiguration *)self weight];
   v6 = [v5 numberWithDouble:?];
-  [v8 encodeObject:v6 forKey:*MEMORY[0x1E69C54E8]];
+  [coderCopy encodeObject:v6 forKey:*MEMORY[0x1E69C54E8]];
 
-  v7 = [(PRPosterSystemTimeFontConfiguration *)self isSystemItem];
-  [v8 encodeBool:v7 forKey:*MEMORY[0x1E69C54D8]];
+  isSystemItem = [(PRPosterSystemTimeFontConfiguration *)self isSystemItem];
+  [coderCopy encodeBool:isSystemItem forKey:*MEMORY[0x1E69C54D8]];
 }
 
-- (PRPosterSystemTimeFontConfiguration)initWithCoder:(id)a3
+- (PRPosterSystemTimeFontConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:*MEMORY[0x1E69C54E0]];
+  defaultTimeFontIdentifier = [coderCopy decodeObjectOfClass:v5 forKey:*MEMORY[0x1E69C54E0]];
 
-  if (!v6)
+  if (!defaultTimeFontIdentifier)
   {
-    v6 = [objc_opt_class() defaultTimeFontIdentifier];
+    defaultTimeFontIdentifier = [objc_opt_class() defaultTimeFontIdentifier];
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C54E8]];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C54E8]];
   v8 = v7;
   if (v7)
   {
@@ -240,41 +240,41 @@
 
   else
   {
-    [(PRPosterSystemTimeFontConfiguration *)self _defaultWeightForTimeFontIdentifier:v6];
+    [(PRPosterSystemTimeFontConfiguration *)self _defaultWeightForTimeFontIdentifier:defaultTimeFontIdentifier];
   }
 
-  v10 = -[PRPosterSystemTimeFontConfiguration initWithTimeFontIdentifier:weight:systemItem:](self, "initWithTimeFontIdentifier:weight:systemItem:", v6, [v4 decodeBoolForKey:*MEMORY[0x1E69C54D8]], v9);
+  v10 = -[PRPosterSystemTimeFontConfiguration initWithTimeFontIdentifier:weight:systemItem:](self, "initWithTimeFontIdentifier:weight:systemItem:", defaultTimeFontIdentifier, [coderCopy decodeBoolForKey:*MEMORY[0x1E69C54D8]], v9);
 
   return v10;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
-  [v8 encodeObject:v4 forKey:*MEMORY[0x1E69C54E0]];
+  coderCopy = coder;
+  timeFontIdentifier = [(PRPosterSystemTimeFontConfiguration *)self timeFontIdentifier];
+  [coderCopy encodeObject:timeFontIdentifier forKey:*MEMORY[0x1E69C54E0]];
 
   v5 = MEMORY[0x1E696AD98];
   [(PRPosterSystemTimeFontConfiguration *)self weight];
   v6 = [v5 numberWithDouble:?];
-  [v8 encodeObject:v6 forKey:*MEMORY[0x1E69C54E8]];
+  [coderCopy encodeObject:v6 forKey:*MEMORY[0x1E69C54E8]];
 
-  v7 = [(PRPosterSystemTimeFontConfiguration *)self isSystemItem];
-  [v8 encodeBool:v7 forKey:*MEMORY[0x1E69C54D8]];
+  isSystemItem = [(PRPosterSystemTimeFontConfiguration *)self isSystemItem];
+  [coderCopy encodeBool:isSystemItem forKey:*MEMORY[0x1E69C54D8]];
 }
 
-- (PRPosterSystemTimeFontConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterSystemTimeFontConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:*MEMORY[0x1E69C54E0]];
+  defaultTimeFontIdentifier = [coderCopy decodeObjectOfClass:v5 forKey:*MEMORY[0x1E69C54E0]];
 
-  if (!v6)
+  if (!defaultTimeFontIdentifier)
   {
-    v6 = [objc_opt_class() defaultTimeFontIdentifier];
+    defaultTimeFontIdentifier = [objc_opt_class() defaultTimeFontIdentifier];
   }
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C54E8]];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x1E69C54E8]];
   v8 = v7;
   if (v7)
   {
@@ -283,10 +283,10 @@
 
   else
   {
-    [(PRPosterSystemTimeFontConfiguration *)self _defaultWeightForTimeFontIdentifier:v6];
+    [(PRPosterSystemTimeFontConfiguration *)self _defaultWeightForTimeFontIdentifier:defaultTimeFontIdentifier];
   }
 
-  v10 = -[PRPosterSystemTimeFontConfiguration initWithTimeFontIdentifier:weight:systemItem:](self, "initWithTimeFontIdentifier:weight:systemItem:", v6, [v4 decodeBoolForKey:*MEMORY[0x1E69C54D8]], v9);
+  v10 = -[PRPosterSystemTimeFontConfiguration initWithTimeFontIdentifier:weight:systemItem:](self, "initWithTimeFontIdentifier:weight:systemItem:", defaultTimeFontIdentifier, [coderCopy decodeBoolForKey:*MEMORY[0x1E69C54D8]], v9);
 
   return v10;
 }

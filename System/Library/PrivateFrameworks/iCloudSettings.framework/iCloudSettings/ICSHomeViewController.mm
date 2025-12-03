@@ -1,46 +1,46 @@
 @interface ICSHomeViewController
-- (ICSHomeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)accountsForAccountManager:(id)a3;
+- (ICSHomeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)accountsForAccountManager:(id)manager;
 - (void)PREFIX_popViewController;
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4;
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4;
-- (void)handleURL:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info;
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success;
+- (void)handleURL:(id)l;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation ICSHomeViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2758EA848(a3);
+  selfCopy = self;
+  sub_2758EA848(appear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2758EAEC0(a3);
+  selfCopy = self;
+  sub_2758EAEC0(appear);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_2758EB124(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2758EB124(controller);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2758EB264();
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = sub_2759BA1D8();
   }
@@ -50,27 +50,27 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_2758EC310(v4);
 }
 
-- (ICSHomeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSHomeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)genericTermsRemoteUI:(id)a3 didFinishWithSuccess:(BOOL)a4
+- (void)genericTermsRemoteUI:(id)i didFinishWithSuccess:(BOOL)success
 {
-  v6 = a3;
-  v7 = self;
-  sub_2758ED728(a4);
+  iCopy = i;
+  selfCopy = self;
+  sub_2758ED728(success);
 }
 
-- (void)genericTermsRemoteUI:(id)a3 acceptedTermsInfo:(id)a4
+- (void)genericTermsRemoteUI:(id)i acceptedTermsInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = sub_2759BA1D8();
   }
@@ -80,15 +80,15 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
+  iCopy = i;
+  selfCopy = self;
   sub_2758ED930(v6);
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   _s14iCloudSettings01iA18HomeViewControllerC8accounts3forSDySo15AIDAServiceTypeaSo9ACAccountCGSo18AIDAAccountManagerC_tF_0();
 
   type metadata accessor for AIDAServiceType(0);
@@ -101,7 +101,7 @@
 
 - (void)PREFIX_popViewController
 {
-  v2 = self;
+  selfCopy = self;
   iCloudHomeViewController.popViewController()();
 }
 

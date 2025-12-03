@@ -1,22 +1,22 @@
 @interface _BSUIAudiobookControlRenderModel
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (unint64_t)hash;
 @end
 
 @implementation _BSUIAudiobookControlRenderModel
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
   v5 = TUIDynamicCast();
 
   if (TUIRenderModelIsEqualToRenderModel())
   {
-    v6 = [(_BSUIAudiobookControlRenderModel *)self dynamicAudiobookProgress];
-    v7 = [v5 dynamicAudiobookProgress];
-    v8 = v6 == v7;
+    dynamicAudiobookProgress = [(_BSUIAudiobookControlRenderModel *)self dynamicAudiobookProgress];
+    dynamicAudiobookProgress2 = [v5 dynamicAudiobookProgress];
+    v8 = dynamicAudiobookProgress == dynamicAudiobookProgress2;
   }
 
   else
@@ -29,7 +29,7 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_BSUIAudiobookControlRenderModel *)self identifier];
+  identifier = [(_BSUIAudiobookControlRenderModel *)self identifier];
   v3 = TUIIdentifierHash();
 
   return v3;

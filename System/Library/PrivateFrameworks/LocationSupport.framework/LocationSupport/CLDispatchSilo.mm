@@ -1,19 +1,19 @@
 @interface CLDispatchSilo
-- (CLDispatchSilo)initWithIdentifier:(id)a3;
-- (CLDispatchSilo)initWithUnderlyingQueue:(id)a3;
-- (CLDispatchSilo)initWithUnderlyingQueue:(id)a3 bePermissive:(BOOL)a4;
+- (CLDispatchSilo)initWithIdentifier:(id)identifier;
+- (CLDispatchSilo)initWithUnderlyingQueue:(id)queue;
+- (CLDispatchSilo)initWithUnderlyingQueue:(id)queue bePermissive:(BOOL)permissive;
 - (id)getTimeCoercibleVariantInstance;
 - (id)initMain;
 - (id)newTimer;
 - (id)operationQueue;
-- (void)_setLatchedAbsoluteTimestamp:(double)a3;
-- (void)afterInterval:(double)a3 async:(id)a4;
-- (void)async:(id)a3;
-- (void)heartBeat:(id)a3;
+- (void)_setLatchedAbsoluteTimestamp:(double)timestamp;
+- (void)afterInterval:(double)interval async:(id)async;
+- (void)async:(id)async;
+- (void)heartBeat:(id)beat;
 - (void)intendToSync;
 - (void)resume;
 - (void)suspend;
-- (void)sync:(id)a3;
+- (void)sync:(id)sync;
 @end
 
 @implementation CLDispatchSilo
@@ -26,7 +26,7 @@
     v3 = dispatch_get_specific("dispatchSilo");
     if (v3)
     {
-      v4 = self;
+      selfCopy = self;
       if (qword_1ED5FAD40 != -1)
       {
         dispatch_once(&qword_1ED5FAD40, &unk_1F5AC69E0);
@@ -37,8 +37,8 @@
       {
         v6 = *(v3 + 8);
         v7 = *(v3 + 80);
-        identifier = v4->super._identifier;
-        cohortId = v4->_cohortId;
+        identifier = selfCopy->super._identifier;
+        cohortId = selfCopy->_cohortId;
         *buf = 68290050;
         v26 = 0;
         v27 = 2082;
@@ -54,13 +54,13 @@
         _os_log_impl(&dword_1DF7FE000, v5, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#Cohorting Intend to sync, FromDispatchSilo:%{public, location:escape_only}@, FromCohortId:%{public, location:escape_only}@, ToDispatchSilo:%{public, location:escape_only}@, ToCohortId:%{public, location:escape_only}@}", buf, 0x3Au);
       }
 
-      v10 = [*(v3 + 80) intValue];
-      if (v10 <= [(NSNumber *)v4->_cohortId intValue])
+      intValue = [*(v3 + 80) intValue];
+      if (intValue <= [(NSNumber *)selfCopy->_cohortId intValue])
       {
         os_unfair_lock_lock(&unk_1ECE5D900);
-        v11 = [v3 identifier];
-        v12 = [(CLSilo *)v4 identifier];
-        v24[1] = v12;
+        identifier = [v3 identifier];
+        identifier2 = [(CLSilo *)selfCopy identifier];
+        v24[1] = identifier2;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
         v14 = [CLAutoCohortUtilities isEdgeKnownToCauseCycle:v13];
 
@@ -69,38 +69,38 @@
           v16 = sub_1DF81A9CC();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
           {
-            v17 = [v3 identifier];
-            v18 = [(CLSilo *)v4 identifier];
+            identifier3 = [v3 identifier];
+            identifier4 = [(CLSilo *)selfCopy identifier];
             *buf = 68289538;
             v26 = 0;
             v27 = 2082;
             v28 = &unk_1DF8255EF;
             v29 = 2114;
-            v30 = v17;
+            v30 = identifier3;
             v31 = 2114;
-            v32 = v18;
+            v32 = identifier4;
             _os_log_impl(&dword_1DF7FE000, v16, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#Cohorting Persist sync-get edge, fromSiloIdentifier:%{public, location:escape_only}@, toSiloIdentifier:%{public, location:escape_only}@}", buf, 0x26u);
           }
 
           v19 = sub_1DF81A9CC();
           if (os_signpost_enabled(v19))
           {
-            v20 = [v3 identifier];
-            v21 = [(CLSilo *)v4 identifier];
+            identifier5 = [v3 identifier];
+            identifier6 = [(CLSilo *)selfCopy identifier];
             *buf = 68289538;
             v26 = 0;
             v27 = 2082;
             v28 = &unk_1DF8255EF;
             v29 = 2114;
-            v30 = v20;
+            v30 = identifier5;
             v31 = 2114;
-            v32 = v21;
+            v32 = identifier6;
             _os_signpost_emit_with_name_impl(&dword_1DF7FE000, v19, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#Cohorting Persist sync-get edge", "{msg%{public}.0s:#Cohorting Persist sync-get edge, fromSiloIdentifier:%{public, location:escape_only}@, toSiloIdentifier:%{public, location:escape_only}@}", buf, 0x26u);
           }
 
-          v22 = [v3 identifier];
-          v23 = [(CLSilo *)v4 identifier];
-          [CLAutoCohortUtilities persistEdgeFrom:v22 to:v23];
+          identifier7 = [v3 identifier];
+          identifier8 = [(CLSilo *)selfCopy identifier];
+          [CLAutoCohortUtilities persistEdgeFrom:identifier7 to:identifier8];
 
           _Exit(0);
         }
@@ -145,10 +145,10 @@
   return v3;
 }
 
-- (CLDispatchSilo)initWithIdentifier:(id)a3
+- (CLDispatchSilo)initWithIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -158,8 +158,8 @@
   v5 = +[CLSilo globalConfiguration];
   v6 = [v5 objectForKeyedSubscript:@"NameToCohortMap"];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
-  if (v7 || ([&unk_1F5AC9BA8 containsObject:v4] & 1) == 0 && (objc_msgSend(v6, "objectForKeyedSubscript:", @"default"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  v7 = [v6 objectForKeyedSubscript:identifierCopy];
+  if (v7 || ([&unk_1F5AC9BA8 containsObject:identifierCopy] & 1) == 0 && (objc_msgSend(v6, "objectForKeyedSubscript:", @"default"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -188,13 +188,13 @@
 
   v20.receiver = self;
   v20.super_class = CLDispatchSilo;
-  v11 = [(CLSilo *)&v20 initWithIdentifier:v4];
+  v11 = [(CLSilo *)&v20 initWithIdentifier:identifierCopy];
   if (v11)
   {
-    v12 = v4;
-    v13 = [v4 UTF8String];
+    v12 = identifierCopy;
+    uTF8String = [identifierCopy UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create_with_target_V2(v13, v14, v27[5]);
+    v15 = dispatch_queue_create_with_target_V2(uTF8String, v14, v27[5]);
     v16 = *(v11 + 7);
     *(v11 + 7) = v15;
 
@@ -215,7 +215,7 @@
     v34 = 2082;
     v35 = &unk_1DF8255EF;
     v36 = 2114;
-    v37 = v4;
+    v37 = identifierCopy;
     v38 = 2114;
     v39 = v8;
     _os_log_impl(&dword_1DF7FE000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#Cohorting CohortId assignment for silo, Silo:%{public, location:escape_only}@, CohortId:%{public, location:escape_only}@}", buf, 0x26u);
@@ -226,28 +226,28 @@
   return v11;
 }
 
-- (CLDispatchSilo)initWithUnderlyingQueue:(id)a3
+- (CLDispatchSilo)initWithUnderlyingQueue:(id)queue
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:dispatch_queue_get_label(v5)];
+  queueCopy = queue;
+  v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:dispatch_queue_get_label(queueCopy)];
   v10.receiver = self;
   v10.super_class = CLDispatchSilo;
   v7 = [(CLSilo *)&v10 initWithIdentifier:v6];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
   }
 
   return v8;
 }
 
-- (CLDispatchSilo)initWithUnderlyingQueue:(id)a3 bePermissive:(BOOL)a4
+- (CLDispatchSilo)initWithUnderlyingQueue:(id)queue bePermissive:(BOOL)permissive
 {
-  result = [(CLDispatchSilo *)self initWithUnderlyingQueue:a3];
+  result = [(CLDispatchSilo *)self initWithUnderlyingQueue:queue];
   if (result)
   {
-    result->_useCLPermissiveTimer = a4;
+    result->_useCLPermissiveTimer = permissive;
   }
 
   return result;
@@ -372,11 +372,11 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setLatchedAbsoluteTimestamp:(double)a3
+- (void)_setLatchedAbsoluteTimestamp:(double)timestamp
 {
-  if (self->super._currentLatchedAbsoluteTimestamp <= a3)
+  if (self->super._currentLatchedAbsoluteTimestamp <= timestamp)
   {
-    self->super._currentLatchedAbsoluteTimestamp = a3;
+    self->super._currentLatchedAbsoluteTimestamp = timestamp;
   }
 
   else
@@ -397,23 +397,23 @@
   }
 }
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1DF81B0D8;
   v7[3] = &unk_1E86C8370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   [(CLDispatchSilo *)self intendToSync];
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -421,37 +421,37 @@
   v7[2] = sub_1DF81B198;
   v7[3] = &unk_1E86C8370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)afterInterval:(double)a3 async:(id)a4
+- (void)afterInterval:(double)interval async:(id)async
 {
-  v6 = a4;
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  asyncCopy = async;
+  v7 = dispatch_time(0, (interval * 1000000000.0));
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1DF81B27C;
   v10[3] = &unk_1E86C8370;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = asyncCopy;
+  v9 = asyncCopy;
   dispatch_after(v7, queue, v10);
 }
 
-- (void)heartBeat:(id)a3
+- (void)heartBeat:(id)beat
 {
-  v4 = a3;
+  beatCopy = beat;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1DF81B328;
   v7[3] = &unk_1E86C83C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = beatCopy;
+  selfCopy = self;
+  v6 = beatCopy;
   dispatch_async(queue, v7);
 }
 
@@ -466,8 +466,8 @@
     self->_operationQueue = v4;
 
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(CLSilo *)self identifier];
-    v8 = [v6 stringWithFormat:@"%@.NSOperationQueue", v7];
+    identifier = [(CLSilo *)self identifier];
+    v8 = [v6 stringWithFormat:@"%@.NSOperationQueue", identifier];
     [(NSOperationQueue *)self->_operationQueue setName:v8];
 
     [(NSOperationQueue *)self->_operationQueue setUnderlyingQueue:self->_queue];

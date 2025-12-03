@@ -1,28 +1,28 @@
 @interface AppHistoryScreenerEpisode
-- (AppHistoryScreenerEpisode)initWithLabel:(id)a3 exportLabel:(id)a4;
+- (AppHistoryScreenerEpisode)initWithLabel:(id)label exportLabel:(id)exportLabel;
 - (BOOL)canAcceptEpisodeWithRedactionAndTax;
 - (float)computeReward;
-- (id)_fetchWithLabel:(id)a3 exportLabel:(id)a4;
+- (id)_fetchWithLabel:(id)label exportLabel:(id)exportLabel;
 - (id)description;
-- (void)accrueReward:(float)a3;
-- (void)accrueRewardFromFlow:(id)a3;
+- (void)accrueReward:(float)reward;
+- (void)accrueRewardFromFlow:(id)flow;
 - (void)dealloc;
 @end
 
 @implementation AppHistoryScreenerEpisode
 
-- (AppHistoryScreenerEpisode)initWithLabel:(id)a3 exportLabel:(id)a4
+- (AppHistoryScreenerEpisode)initWithLabel:(id)label exportLabel:(id)exportLabel
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  exportLabelCopy = exportLabel;
   v29.receiver = self;
   v29.super_class = AppHistoryScreenerEpisode;
   v8 = [(AppHistoryScreenerEpisode *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    v10 = [(AppHistoryScreenerEpisode *)v8 _fetchWithLabel:v6 exportLabel:v7];
+    v10 = [(AppHistoryScreenerEpisode *)v8 _fetchWithLabel:labelCopy exportLabel:exportLabelCopy];
     pvar = v9->pvar;
     v9->pvar = v10;
 
@@ -83,11 +83,11 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<%p> screenIn: %s, genID: %@, pvar: %@", self, v2, self->genID, self->pvar];
 }
 
-- (id)_fetchWithLabel:(id)a3 exportLabel:(id)a4
+- (id)_fetchWithLabel:(id)label exportLabel:(id)exportLabel
 {
   v36[5] = *MEMORY[0x277D85DE8];
-  v5 = COERCE_DOUBLE(a3);
-  v6 = a4;
+  v5 = COERCE_DOUBLE(label);
+  exportLabelCopy = exportLabel;
   v7 = [objc_alloc(MEMORY[0x277D6B408]) initFromLastCheckpointForLabel:*&v5];
   if (v7)
   {
@@ -108,7 +108,7 @@
     v11 = objc_alloc(MEMORY[0x277D6B408]);
     LODWORD(v12) = 1.0;
     v8 = [v11 initInNumRangeFrom:&unk_2847EFE50 to:&unk_2847EFE60 stride:*&v5 withLabel:v12];
-    [v8 setExportLabel:v6];
+    [v8 setExportLabel:exportLabelCopy];
     v13 = *MEMORY[0x277D6B4D0];
     v35[0] = *MEMORY[0x277D6B4C8];
     v35[1] = v13;
@@ -279,7 +279,7 @@ LABEL_6:
     *&v7 = v4;
     [(NWPVarBandit *)pvar setReward:v6 onValue:self->genID forPredictionGenerationId:v7];
 
-    v8 = [(NWPVarBandit *)self->pvar checkpoint];
+    checkpoint = [(NWPVarBandit *)self->pvar checkpoint];
     v9 = flowScrutinyLogHandle;
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -291,7 +291,7 @@ LABEL_7:
     [(NWPVarBandit *)self->pvar label];
     v10 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     v11 = self->_screenIn ^ (self->genID == 0);
-    v12 = [(NWPVarBandit *)self->pvar pullCount];
+    pullCount = [(NWPVarBandit *)self->pvar pullCount];
     v13 = self->genID == 0;
     energyTaxBracket = self->energyTaxBracket;
     *buf = 134219266;
@@ -301,7 +301,7 @@ LABEL_7:
     *&v27[8] = 1024;
     *&v27[10] = v11;
     v28 = 2048;
-    v29 = v12;
+    v29 = pullCount;
     v30 = 1024;
     v31 = v13;
     v32 = 2048;
@@ -323,13 +323,13 @@ LABEL_6:
     [(NWPVarBandit *)v19 label];
     v10 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     screenIn = self->_screenIn;
-    v21 = [(NWPVarBandit *)self->pvar pullCount];
+    pullCount2 = [(NWPVarBandit *)self->pvar pullCount];
     *buf = 138412802;
     v25 = v10;
     v26 = 1024;
     *v27 = screenIn;
     *&v27[4] = 2048;
-    *&v27[6] = v21;
+    *&v27[6] = pullCount2;
     v15 = "App episode ignored, not learnable, label: %@, screenIn: %d, pullCount: %lu";
     v16 = v9;
     v17 = 28;
@@ -349,12 +349,12 @@ LABEL_8:
   if ([(NSMutableArray *)self->partialCeilingLifts count]&& self->baselineCeilingRx > 0.0 && self->baselineCeilingTx > 0.0)
   {
     v3 = [(NSMutableArray *)self->partialCeilingLifts sortedArrayUsingSelector:sel_compare_];
-    v4 = [v3 lastObject];
-    v5 = [v4 integerValue];
+    lastObject = [v3 lastObject];
+    integerValue = [lastObject integerValue];
 
-    if (v5)
+    if (integerValue)
     {
-      if (v5 < 1)
+      if (integerValue < 1)
       {
         v25 = flowScrutinyLogHandle;
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
@@ -394,10 +394,10 @@ LABEL_8:
     else
     {
       v16 = self->baselineCeilingRx;
-      v17 = [(AppHistoryScreenerEpisode *)self screenIn];
+      screenIn = [(AppHistoryScreenerEpisode *)self screenIn];
       if (v16 == 43.0)
       {
-        if (v17)
+        if (screenIn)
         {
           v18 = flowScrutinyLogHandle;
           if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
@@ -426,7 +426,7 @@ LABEL_8:
         self->energyTaxBracket = findEnergyTaxBracketFor(self->dataVolume);
       }
 
-      else if (!v17)
+      else if (!screenIn)
       {
         v6 = flowScrutinyLogHandle;
         if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_INFO))
@@ -559,10 +559,10 @@ LABEL_12:
   return v11;
 }
 
-- (void)accrueRewardFromFlow:(id)a3
+- (void)accrueRewardFromFlow:(id)flow
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = COERCE_DOUBLE(a3);
+  v4 = COERCE_DOUBLE(flow);
   v52 = 0.0;
   v53 = 0.0;
   v50 = 0.0;
@@ -684,7 +684,7 @@ LABEL_34:
   if (v49 > v47)
   {
     v19 = v14 - self->baselineCeilingRx;
-    v20 = [*&v4 totalObservedCellRxBytes];
+    totalObservedCellRxBytes = [*&v4 totalObservedCellRxBytes];
     v21 = 1.0;
     v22 = 43.0;
     if (v45 <= 43.0)
@@ -697,7 +697,7 @@ LABEL_34:
   }
 
   v19 = v15 - self->baselineCeilingTx;
-  v20 = [*&v4 totalObservedCellTxBytes];
+  totalObservedCellRxBytes = [*&v4 totalObservedCellTxBytes];
   v21 = 1.0;
   v22 = 9.0;
   if (v43 > 9.0)
@@ -813,7 +813,7 @@ LABEL_25:
     v37 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
     [(NSMutableArray *)partialCeilingLifts addObject:v37];
 
-    self->dataVolume += v20;
+    self->dataVolume += totalObservedCellRxBytes;
   }
 
 LABEL_35:
@@ -821,7 +821,7 @@ LABEL_35:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accrueReward:(float)a3
+- (void)accrueReward:(float)reward
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = flowScrutinyLogHandle;
@@ -832,7 +832,7 @@ LABEL_35:
     pvar = self->pvar;
     genID = self->genID;
     v14 = 134219010;
-    v15 = a3;
+    rewardCopy = reward;
     v16 = 2112;
     v17 = partialRewards;
     v18 = 2112;
@@ -845,7 +845,7 @@ LABEL_35:
   }
 
   v11 = self->partialRewards;
-  *&v6 = a3;
+  *&v6 = reward;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
   [(NSMutableArray *)v11 addObject:v12];
 

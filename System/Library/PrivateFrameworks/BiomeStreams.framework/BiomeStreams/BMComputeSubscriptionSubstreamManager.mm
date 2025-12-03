@@ -1,48 +1,48 @@
 @interface BMComputeSubscriptionSubstreamManager
-- (BMComputeSubscriptionSubstreamManager)initWithQueue:(id)a3;
-- (BOOL)supportsStream:(id)a3;
+- (BMComputeSubscriptionSubstreamManager)initWithQueue:(id)queue;
+- (BOOL)supportsStream:(id)stream;
 - (double)timestamp;
-- (id)_initWithDomain:(unint64_t)a3 queue:(id)a4 library:(id)a5;
+- (id)_initWithDomain:(unint64_t)domain queue:(id)queue library:(id)library;
 - (id)_loadSubscriptionsFromSubscriptionsSubstreams;
-- (id)_subscriptionSourceForStream:(id)a3;
+- (id)_subscriptionSourceForStream:(id)stream;
 - (void)_checkinTimeout;
-- (void)_removeSubscriptionsPassingTest:(id)a3;
-- (void)addSubscription:(id)a3;
+- (void)_removeSubscriptionsPassingTest:(id)test;
+- (void)addSubscription:(id)subscription;
 - (void)initialCheckinsComplete;
-- (void)removeSubscription:(id)a3;
+- (void)removeSubscription:(id)subscription;
 @end
 
 @implementation BMComputeSubscriptionSubstreamManager
 
-- (BMComputeSubscriptionSubstreamManager)initWithQueue:(id)a3
+- (BMComputeSubscriptionSubstreamManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = BiomeLibraryAndInternalLibraryNode();
-  v6 = [(BMComputeSubscriptionSubstreamManager *)self _initWithDomain:0 queue:v4 library:v5];
+  v6 = [(BMComputeSubscriptionSubstreamManager *)self _initWithDomain:0 queue:queueCopy library:v5];
 
   return v6;
 }
 
-- (id)_initWithDomain:(unint64_t)a3 queue:(id)a4 library:(id)a5
+- (id)_initWithDomain:(unint64_t)domain queue:(id)queue library:(id)library
 {
-  v8 = a4;
-  v9 = a5;
-  dispatch_assert_queue_V2(v8);
+  queueCopy = queue;
+  libraryCopy = library;
+  dispatch_assert_queue_V2(queueCopy);
   v17.receiver = self;
   v17.super_class = BMComputeSubscriptionSubstreamManager;
   v10 = [(BMComputeSubscriptionSubstreamManager *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a4);
-    objc_storeStrong(&v11->_library, a5);
+    objc_storeStrong(&v10->_queue, queue);
+    objc_storeStrong(&v11->_library, library);
     v12 = objc_opt_new();
     checkins = v11->_checkins;
     v11->_checkins = v12;
 
-    v14 = [(BMComputeSubscriptionSubstreamManager *)v11 _loadSubscriptionsFromSubscriptionsSubstreams];
+    _loadSubscriptionsFromSubscriptionsSubstreams = [(BMComputeSubscriptionSubstreamManager *)v11 _loadSubscriptionsFromSubscriptionsSubstreams];
     subscriptions = v11->_subscriptions;
-    v11->_subscriptions = v14;
+    v11->_subscriptions = _loadSubscriptionsFromSubscriptionsSubstreams;
   }
 
   return v11;
@@ -73,17 +73,17 @@
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 configuration];
-        v10 = [v9 enableSubscriptionSubstream];
+        configuration = [v8 configuration];
+        enableSubscriptionSubstream = [configuration enableSubscriptionSubstream];
 
-        if (v10)
+        if (enableSubscriptionSubstream)
         {
           v11 = objc_opt_new();
           v12 = [v8 subscriptionPublisherWithUseCase:v6 options:v11];
           v13 = [BMPairedEventSession sessionPublisherWithStreamPublisher:v12 startingBlock:&__block_literal_global_12 sessionKeyBlock:&__block_literal_global_7 options:0];
           v14 = objc_opt_new();
-          v15 = [v8 identifier];
-          [v21 setObject:v14 forKeyedSubscript:v15];
+          identifier = [v8 identifier];
+          [v21 setObject:v14 forKeyedSubscript:identifier];
 
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
@@ -186,9 +186,9 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)supportsStream:(id)a3
+- (BOOL)supportsStream:(id)stream
 {
-  v3 = [(NSDictionary *)self->_subscriptions objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_subscriptions objectForKeyedSubscript:stream];
   v4 = v3 != 0;
 
   return v4;
@@ -206,34 +206,34 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
   return result;
 }
 
-- (void)addSubscription:(id)a3
+- (void)addSubscription:(id)subscription
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscriptionCopy = subscription;
   dispatch_assert_queue_V2(self->_queue);
   checkins = self->_checkins;
-  v6 = [v4 uniqueIdentifier];
-  [(NSMutableDictionary *)checkins setObject:v4 forKeyedSubscript:v6];
+  uniqueIdentifier = [subscriptionCopy uniqueIdentifier];
+  [(NSMutableDictionary *)checkins setObject:subscriptionCopy forKeyedSubscript:uniqueIdentifier];
 
-  LOBYTE(v6) = self->_initialCheckinsComplete;
-  v7 = __biome_log_for_category();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  LOBYTE(uniqueIdentifier) = self->_initialCheckinsComplete;
+  startEvent = __biome_log_for_category();
+  v8 = os_log_type_enabled(startEvent, OS_LOG_TYPE_DEFAULT);
+  if (uniqueIdentifier)
   {
     if (v8)
     {
-      v11 = [v4 uniqueIdentifier];
+      uniqueIdentifier2 = [subscriptionCopy uniqueIdentifier];
       *buf = 138412290;
-      v37 = v11;
-      _os_log_impl(&dword_1848EE000, v7, OS_LOG_TYPE_DEFAULT, "addSubscription: %@", buf, 0xCu);
+      v37 = uniqueIdentifier2;
+      _os_log_impl(&dword_1848EE000, startEvent, OS_LOG_TYPE_DEFAULT, "addSubscription: %@", buf, 0xCu);
     }
 
-    v7 = [(BMComputeSubscription *)v4 startEvent];
+    startEvent = [(BMComputeSubscription *)subscriptionCopy startEvent];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = [v4 streamIdentifiers];
+    obj = [subscriptionCopy streamIdentifiers];
     v12 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
@@ -254,28 +254,28 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
           if ([(BMComputeSubscriptionSubstreamManager *)self supportsStream:v16, v29])
           {
             v17 = [(NSDictionary *)self->_subscriptions objectForKeyedSubscript:v16];
-            v18 = v4;
-            v19 = [v4 uniqueIdentifier];
-            v20 = [v17 objectForKeyedSubscript:v19];
+            v18 = subscriptionCopy;
+            uniqueIdentifier3 = [subscriptionCopy uniqueIdentifier];
+            v20 = [v17 objectForKeyedSubscript:uniqueIdentifier3];
 
             v21 = v20;
-            v22 = v7;
-            v23 = [v7 serialize];
-            v24 = [v21 serialize];
+            v22 = startEvent;
+            serialize = [startEvent serialize];
+            serialize2 = [v21 serialize];
 
-            v25 = [v23 isEqual:v24];
+            v25 = [serialize isEqual:serialize2];
             if ((v25 & 1) == 0)
             {
               v26 = [(BMComputeSubscriptionSubstreamManager *)self _subscriptionSourceForStream:v16];
               [(BMComputeSubscriptionSubstreamManager *)self timestamp];
               [v26 sendEvent:v22 timestamp:?];
               v27 = [(NSDictionary *)self->_subscriptions objectForKeyedSubscript:v16];
-              v28 = [v18 uniqueIdentifier];
-              [v27 setObject:v22 forKeyedSubscript:v28];
+              uniqueIdentifier4 = [v18 uniqueIdentifier];
+              [v27 setObject:v22 forKeyedSubscript:uniqueIdentifier4];
             }
 
-            v4 = v18;
-            v7 = v22;
+            subscriptionCopy = v18;
+            startEvent = v22;
             v13 = v29;
           }
 
@@ -292,22 +292,22 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
 
   else if (v8)
   {
-    v9 = [v4 uniqueIdentifier];
+    uniqueIdentifier5 = [subscriptionCopy uniqueIdentifier];
     *buf = 138412290;
-    v37 = v9;
-    _os_log_impl(&dword_1848EE000, v7, OS_LOG_TYPE_DEFAULT, "addSubscription: %@ pending barrier", buf, 0xCu);
+    v37 = uniqueIdentifier5;
+    _os_log_impl(&dword_1848EE000, startEvent, OS_LOG_TYPE_DEFAULT, "addSubscription: %@ pending barrier", buf, 0xCu);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeSubscription:(id)a3
+- (void)removeSubscription:(id)subscription
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscriptionCopy = subscription;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 uniqueIdentifier];
-  [(NSMutableDictionary *)self->_checkins setObject:0 forKeyedSubscript:v5];
+  uniqueIdentifier = [subscriptionCopy uniqueIdentifier];
+  [(NSMutableDictionary *)self->_checkins setObject:0 forKeyedSubscript:uniqueIdentifier];
   initialCheckinsComplete = self->_initialCheckinsComplete;
   v7 = __biome_log_for_category();
   v8 = os_log_type_enabled(&v7->super, OS_LOG_TYPE_DEFAULT);
@@ -315,9 +315,9 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
   {
     if (v8)
     {
-      v9 = [v4 uniqueIdentifier];
+      uniqueIdentifier2 = [subscriptionCopy uniqueIdentifier];
       *buf = 138412290;
-      v29 = v9;
+      v29 = uniqueIdentifier2;
       _os_log_impl(&dword_1848EE000, &v7->super, OS_LOG_TYPE_DEFAULT, "removeSubscription: %@", buf, 0xCu);
     }
 
@@ -330,7 +330,7 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
     if (v10)
     {
       v11 = v10;
-      v22 = v4;
+      v22 = subscriptionCopy;
       v12 = *v24;
       do
       {
@@ -343,16 +343,16 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
 
           v14 = *(*(&v23 + 1) + 8 * i);
           v15 = [(NSDictionary *)self->_subscriptions objectForKeyedSubscript:v14];
-          v16 = [v15 objectForKeyedSubscript:v5];
+          v16 = [v15 objectForKeyedSubscript:uniqueIdentifier];
 
           if (v16)
           {
-            v17 = [(BMSubscriptionEvent *)v16 endEvent];
+            endEvent = [(BMSubscriptionEvent *)v16 endEvent];
             v18 = [(BMComputeSubscriptionSubstreamManager *)self _subscriptionSourceForStream:v14];
             [(BMComputeSubscriptionSubstreamManager *)self timestamp];
-            [v18 sendEvent:v17 timestamp:?];
+            [v18 sendEvent:endEvent timestamp:?];
             v19 = [(NSDictionary *)self->_subscriptions objectForKeyedSubscript:v14];
-            [v19 setObject:0 forKeyedSubscript:v5];
+            [v19 setObject:0 forKeyedSubscript:uniqueIdentifier];
           }
         }
 
@@ -360,15 +360,15 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
       }
 
       while (v11);
-      v4 = v22;
+      subscriptionCopy = v22;
     }
   }
 
   else if (v8)
   {
-    v20 = [v4 uniqueIdentifier];
+    uniqueIdentifier3 = [subscriptionCopy uniqueIdentifier];
     *buf = 138412290;
-    v29 = v20;
+    v29 = uniqueIdentifier3;
     _os_log_impl(&dword_1848EE000, &v7->super, OS_LOG_TYPE_DEFAULT, "removeSubscription: %@ before barrier", buf, 0xCu);
   }
 
@@ -382,9 +382,9 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
   if (!self->_initialCheckinsComplete || ([(BMComputeSubscriptionSubstreamManager *)a2 initialCheckinsComplete]& 1) == 0)
   {
     self->_initialCheckinsComplete = 1;
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     dateOverride = self->_dateOverride;
-    self->_dateOverride = v4;
+    self->_dateOverride = date;
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -400,8 +400,8 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(NSMutableDictionary *)v6 allValues];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    allValues = [(NSMutableDictionary *)v6 allValues];
+    v9 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -412,13 +412,13 @@ void __86__BMComputeSubscriptionSubstreamManager__loadSubscriptionsFromSubscript
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
           [(BMComputeSubscriptionSubstreamManager *)self addSubscription:*(*(&v20 + 1) + 8 * i)];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v10);
@@ -524,15 +524,15 @@ BOOL __56__BMComputeSubscriptionSubstreamManager__checkinTimeout__block_invoke(u
   return v6 == 0;
 }
 
-- (void)_removeSubscriptionsPassingTest:(id)a3
+- (void)_removeSubscriptionsPassingTest:(id)test
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v25 = self;
+  selfCopy = self;
   obj = self->_subscriptions;
   v22 = [(NSDictionary *)obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v22)
@@ -555,10 +555,10 @@ BOOL __56__BMComputeSubscriptionSubstreamManager__checkinTimeout__block_invoke(u
         v29 = 0u;
         v23 = v5;
         v24 = v6;
-        v7 = [(NSDictionary *)v25->_subscriptions objectForKeyedSubscript:?];
-        v8 = [v7 allValues];
+        v7 = [(NSDictionary *)selfCopy->_subscriptions objectForKeyedSubscript:?];
+        allValues = [v7 allValues];
 
-        v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v9)
         {
           v10 = v9;
@@ -571,30 +571,30 @@ BOOL __56__BMComputeSubscriptionSubstreamManager__checkinTimeout__block_invoke(u
             {
               if (*v27 != v12)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allValues);
               }
 
               v14 = *(*(&v26 + 1) + 8 * v13);
-              if (v4[2](v4, v14))
+              if (testCopy[2](testCopy, v14))
               {
                 if (!v11)
                 {
-                  v11 = [(BMComputeSubscriptionSubstreamManager *)v25 _subscriptionSourceForStream:v24];
+                  v11 = [(BMComputeSubscriptionSubstreamManager *)selfCopy _subscriptionSourceForStream:v24];
                 }
 
-                v15 = [(BMSubscriptionEvent *)v14 endEvent];
-                [(BMComputeSubscriptionSubstreamManager *)v25 timestamp];
-                [v11 sendEvent:v15 timestamp:?];
-                v16 = [(NSDictionary *)v25->_subscriptions objectForKeyedSubscript:v24];
-                v17 = [v14 uniqueIdentifier];
-                [v16 setObject:0 forKeyedSubscript:v17];
+                endEvent = [(BMSubscriptionEvent *)v14 endEvent];
+                [(BMComputeSubscriptionSubstreamManager *)selfCopy timestamp];
+                [v11 sendEvent:endEvent timestamp:?];
+                v16 = [(NSDictionary *)selfCopy->_subscriptions objectForKeyedSubscript:v24];
+                uniqueIdentifier = [v14 uniqueIdentifier];
+                [v16 setObject:0 forKeyedSubscript:uniqueIdentifier];
               }
 
               ++v13;
             }
 
             while (v10 != v13);
-            v18 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v18 = [allValues countByEnumeratingWithState:&v26 objects:v34 count:16];
             v10 = v18;
           }
 
@@ -619,39 +619,39 @@ BOOL __56__BMComputeSubscriptionSubstreamManager__checkinTimeout__block_invoke(u
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_subscriptionSourceForStream:(id)a3
+- (id)_subscriptionSourceForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   dispatch_assert_queue_V2(self->_queue);
-  if ([(BMComputeSubscriptionSubstreamManager *)self supportsStream:v4])
+  if ([(BMComputeSubscriptionSubstreamManager *)self supportsStream:streamCopy])
   {
     library = self->_library;
     v11 = 0;
-    v6 = [(BMLibraryNode *)library streamWithIdentifier:v4 error:&v11];
+    v6 = [(BMLibraryNode *)library streamWithIdentifier:streamCopy error:&v11];
     v7 = v11;
     if (v7)
     {
       v8 = __biome_log_for_category();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(BMComputeSubscriptionSubstreamManager *)v4 _subscriptionSourceForStream:v7, v8];
+        [(BMComputeSubscriptionSubstreamManager *)streamCopy _subscriptionSourceForStream:v7, v8];
       }
 
-      v9 = 0;
+      subscriptionSource = 0;
     }
 
     else
     {
-      v9 = [v6 subscriptionSource];
+      subscriptionSource = [v6 subscriptionSource];
     }
   }
 
   else
   {
-    v9 = 0;
+    subscriptionSource = 0;
   }
 
-  return v9;
+  return subscriptionSource;
 }
 
 @end

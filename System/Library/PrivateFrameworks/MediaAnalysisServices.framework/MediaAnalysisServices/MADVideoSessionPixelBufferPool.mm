@@ -1,7 +1,7 @@
 @interface MADVideoSessionPixelBufferPool
 - (MADVideoSessionPixelBufferPool)init;
 - (id).cxx_construct;
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4;
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer;
 @end
 
 @implementation MADVideoSessionPixelBufferPool
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (int)copyPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (int)copyPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  pixelBufferOut = a4;
+  pixelBufferOut = pixelBuffer;
   v21[4] = *MEMORY[0x1E69E9840];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v9 = PixelFormatType;
   p_pixelBufferPool = &self->_pixelBufferPool;
   if (!self->_pixelBufferPool.value_ || self->_width != Width || self->_height != Height || self->_pixelFormat != PixelFormatType)
@@ -68,7 +68,7 @@
     PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(0, p_pixelBufferPool->value_, pixelBufferOut);
     if (!PixelBuffer)
     {
-      return VTPixelTransferSessionTransferImage(p_transferSession->value_, a3, *pixelBufferOut);
+      return VTPixelTransferSessionTransferImage(p_transferSession->value_, buffer, *pixelBufferOut);
     }
   }
 

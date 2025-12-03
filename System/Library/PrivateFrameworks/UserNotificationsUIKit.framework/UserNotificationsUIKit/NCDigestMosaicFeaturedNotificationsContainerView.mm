@@ -1,31 +1,31 @@
 @interface NCDigestMosaicFeaturedNotificationsContainerView
 - (BOOL)_shouldShowImageAttachments;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGRect)_sizingBoundsForLargeFeaturedViewInRect:(CGRect)a3;
-- (CGRect)_sizingBoundsForMediumFeaturedViewInRect:(CGRect)a3;
-- (CGRect)_sizingBoundsForSmallFeaturedViewInRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)_sizingBoundsForLargeFeaturedViewInRect:(CGRect)rect;
+- (CGRect)_sizingBoundsForMediumFeaturedViewInRect:(CGRect)rect;
+- (CGRect)_sizingBoundsForSmallFeaturedViewInRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_overlapMarginForLargeFeaturedView;
-- (id)_newFeaturedNotificationViewForContentProvider:(id)a3 contentViewStyle:(unint64_t)a4 showImageAttachment:(BOOL)a5;
-- (id)_newNotificationSeamlessContentViewForContentProvider:(id)a3;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (unint64_t)_contentViewStyleForIndex:(unint64_t)a3;
-- (void)_configureNotificationContentView:(id)a3 withContentProvider:(id)a4 showImageAttachment:(BOOL)a5 contentViewStyle:(unint64_t)a6;
-- (void)_layoutLargeFeaturedView:(id)a3;
-- (void)_layoutMediumFeaturedView:(id)a3;
-- (void)_layoutSmallFeaturedView:(id)a3;
+- (id)_newFeaturedNotificationViewForContentProvider:(id)provider contentViewStyle:(unint64_t)style showImageAttachment:(BOOL)attachment;
+- (id)_newNotificationSeamlessContentViewForContentProvider:(id)provider;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (unint64_t)_contentViewStyleForIndex:(unint64_t)index;
+- (void)_configureNotificationContentView:(id)view withContentProvider:(id)provider showImageAttachment:(BOOL)attachment contentViewStyle:(unint64_t)style;
+- (void)_layoutLargeFeaturedView:(id)view;
+- (void)_layoutMediumFeaturedView:(id)view;
+- (void)_layoutSmallFeaturedView:(id)view;
 - (void)layoutSubviews;
-- (void)setFeaturedNotificationContentProviders:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setFeaturedNotificationContentProviders:(id)providers;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)updateContent;
 @end
 
 @implementation NCDigestMosaicFeaturedNotificationsContainerView
 
-- (void)setFeaturedNotificationContentProviders:(id)a3
+- (void)setFeaturedNotificationContentProviders:(id)providers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providersCopy = providers;
   if (BSEqualArrays())
   {
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self updateContent];
@@ -33,7 +33,7 @@
 
   else
   {
-    objc_storeStrong(&self->_featuredNotificationContentProviders, a3);
+    objc_storeStrong(&self->_featuredNotificationContentProviders, providers);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -68,14 +68,14 @@
     notificationViews = self->_notificationViews;
     self->_notificationViews = v11;
 
-    v13 = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _shouldShowImageAttachments];
+    _shouldShowImageAttachments = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _shouldShowImageAttachments];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __92__NCDigestMosaicFeaturedNotificationsContainerView_setFeaturedNotificationContentProviders___block_invoke;
     v14[3] = &unk_278373040;
     v14[4] = self;
-    v15 = v13;
-    [v5 enumerateObjectsUsingBlock:v14];
+    v15 = _shouldShowImageAttachments;
+    [providersCopy enumerateObjectsUsingBlock:v14];
   }
 }
 
@@ -115,14 +115,14 @@ void __92__NCDigestMosaicFeaturedNotificationsContainerView_setFeaturedNotificat
   v3 = [(NSArray *)self->_featuredNotificationContentProviders count];
   if (v3 == [(NSMutableArray *)self->_notificationViews count])
   {
-    v4 = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _shouldShowImageAttachments];
+    _shouldShowImageAttachments = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _shouldShowImageAttachments];
     featuredNotificationContentProviders = self->_featuredNotificationContentProviders;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __65__NCDigestMosaicFeaturedNotificationsContainerView_updateContent__block_invoke;
     v7[3] = &unk_278373040;
     v7[4] = self;
-    v8 = v4;
+    v8 = _shouldShowImageAttachments;
     [(NSArray *)featuredNotificationContentProviders enumerateObjectsUsingBlock:v7];
   }
 
@@ -154,10 +154,10 @@ void __65__NCDigestMosaicFeaturedNotificationsContainerView_updateContent__block
   [v9 _configureNotificationContentView:v10 withContentProvider:v6 showImageAttachment:v8 & 1 contentViewStyle:v7];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications])
   {
     v14 = 0;
@@ -180,11 +180,11 @@ void __65__NCDigestMosaicFeaturedNotificationsContainerView_updateContent__block
 
   else
   {
-    v8 = [(NSMutableArray *)self->_notificationViews firstObject];
-    v9 = v8;
-    if (v8)
+    firstObject = [(NSMutableArray *)self->_notificationViews firstObject];
+    v9 = firstObject;
+    if (firstObject)
     {
-      [v8 sizeThatFits:{width, height}];
+      [firstObject sizeThatFits:{width, height}];
       v7 = v10;
     }
 
@@ -260,9 +260,9 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = NCDigestMosaicFeaturedNotificationsContainerView;
   [(NCDigestMosaicFeaturedNotificationsContainerView *)&v7 layoutSubviews];
-  v3 = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications];
+  _isDisplayingRichFeaturedNotifications = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications];
   notificationViews = self->_notificationViews;
-  if (v3)
+  if (_isDisplayingRichFeaturedNotifications)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -274,9 +274,9 @@ LABEL_11:
 
   else
   {
-    v5 = [(NSMutableArray *)notificationViews firstObject];
+    firstObject = [(NSMutableArray *)notificationViews firstObject];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self bounds];
-    [v5 setFrame:?];
+    [firstObject setFrame:?];
   }
 }
 
@@ -306,13 +306,13 @@ LABEL_8:
   }
 }
 
-- (void)_layoutLargeFeaturedView:(id)a3
+- (void)_layoutLargeFeaturedView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v15 = v4;
-    [v4 frame];
+    v15 = viewCopy;
+    [viewCopy frame];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -333,17 +333,17 @@ LABEL_8:
     [v15 setFrame:?];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self _overlapMarginForLargeFeaturedView];
     [v15 setHorizontalMarginForContentOverlap:?];
-    v4 = v15;
+    viewCopy = v15;
   }
 }
 
-- (void)_layoutMediumFeaturedView:(id)a3
+- (void)_layoutMediumFeaturedView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v15 = v4;
-    [v4 frame];
+    v15 = viewCopy;
+    [viewCopy frame];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -364,17 +364,17 @@ LABEL_8:
     UIRectIntegralWithScale();
     [v15 setFrame:?];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self bringSubviewToFront:v15];
-    v4 = v15;
+    viewCopy = v15;
   }
 }
 
-- (void)_layoutSmallFeaturedView:(id)a3
+- (void)_layoutSmallFeaturedView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v21 = v4;
-    [v4 frame];
+    v21 = viewCopy;
+    [viewCopy frame];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -403,111 +403,111 @@ LABEL_8:
     UIRectIntegralWithScale();
     [v21 setFrame:?];
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self bringSubviewToFront:v21];
-    v4 = v21;
+    viewCopy = v21;
   }
 }
 
-- (id)_newFeaturedNotificationViewForContentProvider:(id)a3 contentViewStyle:(unint64_t)a4 showImageAttachment:(BOOL)a5
+- (id)_newFeaturedNotificationViewForContentProvider:(id)provider contentViewStyle:(unint64_t)style showImageAttachment:(BOOL)attachment
 {
-  v5 = a5;
-  v8 = a3;
+  attachmentCopy = attachment;
+  providerCopy = provider;
   v9 = [NCDigestMosaicFeaturedNotificationContentView alloc];
   v10 = [(NCNotificationListBaseContentView *)v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  [(NCDigestMosaicFeaturedNotificationContentView *)v10 setContentViewStyle:a4];
+  [(NCDigestMosaicFeaturedNotificationContentView *)v10 setContentViewStyle:style];
   v11 = 0.0;
-  if (a4 == 2)
+  if (style == 2)
   {
     [(NCDigestMosaicFeaturedNotificationsContainerView *)self _overlapMarginForLargeFeaturedView];
   }
 
   [(NCDigestMosaicFeaturedNotificationContentView *)v10 setHorizontalMarginForContentOverlap:v11];
-  v12 = [v8 notificationRequest];
-  v13 = [v12 sectionIdentifier];
-  [(NCDigestMosaicFeaturedNotificationContentView *)v10 setSectionIdentifier:v13];
+  notificationRequest = [providerCopy notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  [(NCDigestMosaicFeaturedNotificationContentView *)v10 setSectionIdentifier:sectionIdentifier];
 
   [(NCDigestMosaicFeaturedNotificationContentView *)v10 setUserInteractionEnabled:0];
-  v14 = [(NCDigestMosaicFeaturedNotificationContentView *)v10 layer];
-  [v14 setShadowColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
-  [v14 setShadowRadius:20.0];
+  layer = [(NCDigestMosaicFeaturedNotificationContentView *)v10 layer];
+  [layer setShadowColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
+  [layer setShadowRadius:20.0];
   LODWORD(v15) = 1041865114;
-  [v14 setShadowOpacity:v15];
-  [v14 setShadowOffset:{0.0, 10.0}];
-  [(NCDigestMosaicFeaturedNotificationsContainerView *)self _configureNotificationContentView:v10 withContentProvider:v8 showImageAttachment:v5 contentViewStyle:a4];
+  [layer setShadowOpacity:v15];
+  [layer setShadowOffset:{0.0, 10.0}];
+  [(NCDigestMosaicFeaturedNotificationsContainerView *)self _configureNotificationContentView:v10 withContentProvider:providerCopy showImageAttachment:attachmentCopy contentViewStyle:style];
 
   return v10;
 }
 
-- (id)_newNotificationSeamlessContentViewForContentProvider:(id)a3
+- (id)_newNotificationSeamlessContentViewForContentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [NCNotificationSeamlessContentView alloc];
   v6 = [(NCNotificationSeamlessContentView *)v5 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(NCNotificationSeamlessContentView *)v6 setThumbnailAlignedWithSecondaryText:1];
   [(NCNotificationSeamlessContentView *)v6 setHorizontalMarginPaddingDisabled:1];
   [(NCNotificationSeamlessContentView *)v6 setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:1];
-  [(NCDigestMosaicFeaturedNotificationsContainerView *)self _configureNotificationContentView:v6 withContentProvider:v4 showImageAttachment:1 contentViewStyle:2];
+  [(NCDigestMosaicFeaturedNotificationsContainerView *)self _configureNotificationContentView:v6 withContentProvider:providerCopy showImageAttachment:1 contentViewStyle:2];
 
   return v6;
 }
 
-- (void)_configureNotificationContentView:(id)a3 withContentProvider:(id)a4 showImageAttachment:(BOOL)a5 contentViewStyle:(unint64_t)a6
+- (void)_configureNotificationContentView:(id)view withContentProvider:(id)provider showImageAttachment:(BOOL)attachment contentViewStyle:(unint64_t)style
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (a6 == 1 && [v11 appNotificationCount])
+  attachmentCopy = attachment;
+  viewCopy = view;
+  providerCopy = provider;
+  v12 = providerCopy;
+  if (style == 1 && [providerCopy appNotificationCount])
   {
     v13 = MEMORY[0x277CCACA8];
     v14 = NCUserNotificationsUIKitFrameworkBundle();
     v15 = [v14 localizedStringForKey:@"NOTIFICATION_DIGEST_FEATURED_COUNT_TEXT" value:&stru_282FE84F8 table:0];
-    v16 = [v13 localizedStringWithFormat:v15, objc_msgSend(v12, "appNotificationCount"), 0];
+    primaryText = [v13 localizedStringWithFormat:v15, objc_msgSend(v12, "appNotificationCount"), 0];
   }
 
   else
   {
-    v16 = [v12 primaryText];
+    primaryText = [v12 primaryText];
   }
 
-  [v10 setPrimaryText:v16];
-  v17 = [v12 primarySubtitleText];
-  [v10 setPrimarySubtitleText:v17];
+  [viewCopy setPrimaryText:primaryText];
+  primarySubtitleText = [v12 primarySubtitleText];
+  [viewCopy setPrimarySubtitleText:primarySubtitleText];
 
-  v18 = [v12 secondaryText];
-  [v10 setSecondaryText:v18];
+  secondaryText = [v12 secondaryText];
+  [viewCopy setSecondaryText:secondaryText];
 
-  v19 = [v12 notificationRequest];
-  v20 = [v19 subordinateIconRecipe];
-  v21 = v20;
-  if (v20)
+  notificationRequest = [v12 notificationRequest];
+  subordinateIconRecipe = [notificationRequest subordinateIconRecipe];
+  v21 = subordinateIconRecipe;
+  if (subordinateIconRecipe)
   {
-    v22 = v20;
+    iconRecipe = subordinateIconRecipe;
   }
 
   else
   {
-    v23 = [v12 notificationRequest];
-    v22 = [v23 iconRecipe];
+    notificationRequest2 = [v12 notificationRequest];
+    iconRecipe = [notificationRequest2 iconRecipe];
   }
 
   v24 = [NCBadgedIconDescription alloc];
-  v25 = [v12 notificationRequest];
-  v26 = [v25 topLevelSectionIdentifier];
-  v27 = [(NCBadgedIconDescription *)v24 initWithBundleIdentifier:v26 prominentIconDescription:v22 subordinateIconRecipe:0 badgeText:0];
+  notificationRequest3 = [v12 notificationRequest];
+  topLevelSectionIdentifier = [notificationRequest3 topLevelSectionIdentifier];
+  v27 = [(NCBadgedIconDescription *)v24 initWithBundleIdentifier:topLevelSectionIdentifier prominentIconDescription:iconRecipe subordinateIconRecipe:0 badgeText:0];
 
-  [v10 setBadgedIconDescription:v27];
-  [v10 setAlpha:1.0];
-  if (v7)
+  [viewCopy setBadgedIconDescription:v27];
+  [viewCopy setAlpha:1.0];
+  if (attachmentCopy)
   {
-    v28 = [v12 thumbnail];
-    [v10 setThumbnail:v28];
+    thumbnail = [v12 thumbnail];
+    [viewCopy setThumbnail:thumbnail];
 
     if ([(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v10 imageAttachmentSizeRatio];
+        [viewCopy imageAttachmentSizeRatio];
         v30 = v29;
       }
 
@@ -520,8 +520,8 @@ LABEL_8:
       v31[1] = 3221225472;
       v31[2] = __143__NCDigestMosaicFeaturedNotificationsContainerView__configureNotificationContentView_withContentProvider_showImageAttachment_contentViewStyle___block_invoke;
       v31[3] = &unk_2783730B8;
-      v32 = v10;
-      v33 = self;
+      v32 = viewCopy;
+      selfCopy = self;
       [v12 fetchFeaturedAttachmentImageWithSizeRatio:v31 completion:v30];
     }
   }
@@ -540,13 +540,13 @@ uint64_t __143__NCDigestMosaicFeaturedNotificationsContainerView__configureNotif
 - (BOOL)adjustForContentSizeCategoryChange
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory);
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory);
   if (v5)
   {
-    objc_storeStrong(&self->_preferredContentSizeCategory, v4);
+    objc_storeStrong(&self->_preferredContentSizeCategory, preferredContentSizeCategory);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -583,7 +583,7 @@ uint64_t __143__NCDigestMosaicFeaturedNotificationsContainerView__configureNotif
   return v5 != NSOrderedSame;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
   if (strokeVisualStylingProvider)
@@ -595,18 +595,18 @@ uint64_t __143__NCDigestMosaicFeaturedNotificationsContainerView__configureNotif
   {
     v6.receiver = self;
     v6.super_class = NCDigestMosaicFeaturedNotificationsContainerView;
-    v4 = [(NCDigestMosaicFeaturedNotificationsContainerView *)&v6 visualStylingProviderForCategory:a3];
+    v4 = [(NCDigestMosaicFeaturedNotificationsContainerView *)&v6 visualStylingProviderForCategory:category];
   }
 
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v7 = a3;
-  if (self->_strokeVisualStylingProvider != v7)
+  providerCopy = provider;
+  if (self->_strokeVisualStylingProvider != providerCopy)
   {
-    objc_storeStrong(&self->_strokeVisualStylingProvider, a3);
+    objc_storeStrong(&self->_strokeVisualStylingProvider, provider);
     if (![(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications])
     {
       notificationViews = self->_notificationViews;
@@ -614,8 +614,8 @@ uint64_t __143__NCDigestMosaicFeaturedNotificationsContainerView__configureNotif
       v9[1] = 3221225472;
       v9[2] = __89__NCDigestMosaicFeaturedNotificationsContainerView_setVisualStylingProvider_forCategory___block_invoke;
       v9[3] = &unk_2783730E0;
-      v11 = a4;
-      v10 = v7;
+      categoryCopy = category;
+      v10 = providerCopy;
       [(NSMutableArray *)notificationViews enumerateObjectsUsingBlock:v9];
     }
   }
@@ -640,12 +640,12 @@ void __89__NCDigestMosaicFeaturedNotificationsContainerView_setVisualStylingProv
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
-    v4 = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications];
+    _isDisplayingRichFeaturedNotifications = [(NCDigestMosaicFeaturedNotificationsContainerView *)self _isDisplayingRichFeaturedNotifications];
 
-    if (v4)
+    if (_isDisplayingRichFeaturedNotifications)
     {
       featuredNotificationContentProviders = self->_featuredNotificationContentProviders;
       v8[0] = MEMORY[0x277D85DD0];
@@ -681,11 +681,11 @@ uint64_t __79__NCDigestMosaicFeaturedNotificationsContainerView__shouldShowImage
   return result;
 }
 
-- (unint64_t)_contentViewStyleForIndex:(unint64_t)a3
+- (unint64_t)_contentViewStyleForIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
-    return a3 != 1;
+    return index != 1;
   }
 
   else
@@ -694,13 +694,13 @@ uint64_t __79__NCDigestMosaicFeaturedNotificationsContainerView__shouldShowImage
   }
 }
 
-- (CGRect)_sizingBoundsForLargeFeaturedViewInRect:(CGRect)a3
+- (CGRect)_sizingBoundsForLargeFeaturedViewInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3) * 0.65;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = CGRectGetWidth(rect) * 0.65;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -716,13 +716,13 @@ uint64_t __79__NCDigestMosaicFeaturedNotificationsContainerView__shouldShowImage
   return result;
 }
 
-- (CGRect)_sizingBoundsForMediumFeaturedViewInRect:(CGRect)a3
+- (CGRect)_sizingBoundsForMediumFeaturedViewInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CGRectGetWidth(a3) * 0.45;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = CGRectGetWidth(rect) * 0.45;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -738,14 +738,14 @@ uint64_t __79__NCDigestMosaicFeaturedNotificationsContainerView__shouldShowImage
   return result;
 }
 
-- (CGRect)_sizingBoundsForSmallFeaturedViewInRect:(CGRect)a3
+- (CGRect)_sizingBoundsForSmallFeaturedViewInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = dbl_21E946890[[v7 userInterfaceIdiom] == 1];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v8 = dbl_21E946890[[currentDevice userInterfaceIdiom] == 1];
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;

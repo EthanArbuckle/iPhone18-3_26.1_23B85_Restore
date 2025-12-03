@@ -1,12 +1,12 @@
 @interface IconTypeSegmentedControlCell.SegmentedControl
-- (_TtCC10WorkflowUI28IconTypeSegmentedControlCell16SegmentedControl)initWithItems:(id)a3;
+- (_TtCC10WorkflowUI28IconTypeSegmentedControlCell16SegmentedControl)initWithItems:(id)items;
 @end
 
 @implementation IconTypeSegmentedControlCell.SegmentedControl
 
-- (_TtCC10WorkflowUI28IconTypeSegmentedControlCell16SegmentedControl)initWithItems:(id)a3
+- (_TtCC10WorkflowUI28IconTypeSegmentedControlCell16SegmentedControl)initWithItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     v3 = sub_2749FCF84();
   }

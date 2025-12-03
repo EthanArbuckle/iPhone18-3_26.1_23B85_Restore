@@ -1,7 +1,7 @@
 @interface PSTransitionBlock
-+ (const)stringWithGraphFrequencyType:(unint64_t)a3;
-+ (id)generateTransitionBlockWithAddedGraphs:(id)a3 withRemovedGraphs:(id)a4 withDashboard:(id)a5 withStopOption:(BOOL)a6;
-- (void)printGraph:(id)a3 context:(id)a4 printResolvedFieldsOnly:(BOOL)a5;
++ (const)stringWithGraphFrequencyType:(unint64_t)type;
++ (id)generateTransitionBlockWithAddedGraphs:(id)graphs withRemovedGraphs:(id)removedGraphs withDashboard:(id)dashboard withStopOption:(BOOL)option;
+- (void)printGraph:(id)graph context:(id)context printResolvedFieldsOnly:(BOOL)only;
 - (void)printGraphsSummary;
 @end
 
@@ -28,7 +28,7 @@
     if (v5)
     {
       v6 = v5;
-      v33 = self;
+      selfCopy = self;
       v7 = *v45;
       do
       {
@@ -43,9 +43,9 @@
           v10 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
-            v11 = [v9 name];
+            name = [v9 name];
             *buf = 138478083;
-            v51 = v11;
+            v51 = name;
             v52 = 2048;
             v53 = v9;
             _os_log_impl(&dword_25EA3A000, v10, OS_LOG_TYPE_DEFAULT, "%{private}@: %p", buf, 0x16u);
@@ -56,7 +56,7 @@
       }
 
       while (v6);
-      self = v33;
+      self = selfCopy;
     }
   }
 
@@ -88,7 +88,7 @@
     if (v14)
     {
       v15 = v14;
-      v34 = self;
+      selfCopy2 = self;
       v16 = *v41;
       do
       {
@@ -103,9 +103,9 @@
           v19 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v18 name];
+            name2 = [v18 name];
             *buf = 138478083;
-            v51 = v20;
+            v51 = name2;
             v52 = 2048;
             v53 = v18;
             _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_DEFAULT, "%{private}@: %p", buf, 0x16u);
@@ -116,7 +116,7 @@
       }
 
       while (v15);
-      self = v34;
+      self = selfCopy2;
     }
   }
 
@@ -165,9 +165,9 @@
           v29 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v28 name];
+            name3 = [v28 name];
             *buf = 138478083;
-            v51 = v30;
+            v51 = name3;
             v52 = 2048;
             v53 = v28;
             _os_log_impl(&dword_25EA3A000, v29, OS_LOG_TYPE_DEFAULT, "%{private}@: %p", buf, 0x16u);
@@ -202,52 +202,52 @@
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (const)stringWithGraphFrequencyType:(unint64_t)a3
++ (const)stringWithGraphFrequencyType:(unint64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    return off_279A48780[a3];
+    return off_279A48780[type];
   }
 
   v11[1] = v3;
   v11[2] = v4;
-  v6 = [(PSTransitionBlock *)v11 stringWithGraphFrequencyType:a3];
+  v6 = [(PSTransitionBlock *)v11 stringWithGraphFrequencyType:type];
   [(PSTransitionBlock *)v6 printGraph:v7 context:v8 printResolvedFieldsOnly:v9, v10];
   return result;
 }
 
-- (void)printGraph:(id)a3 context:(id)a4 printResolvedFieldsOnly:(BOOL)a5
+- (void)printGraph:(id)graph context:(id)context printResolvedFieldsOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v267 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v175 = v7;
-  if (v5)
+  graphCopy = graph;
+  contextCopy = context;
+  v175 = graphCopy;
+  if (onlyCopy)
   {
-    v9 = [v7 graphFrequency];
-    v10 = [v9 type];
+    graphFrequency = [graphCopy graphFrequency];
+    type = [graphFrequency type];
 
     log = __PLSLogSharedInstance();
     v11 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (type)
     {
       if (v11)
       {
-        v12 = [v175 name];
-        v13 = [v175 resolvedDomain];
-        v14 = [v13 key];
-        v15 = [v175 graphFrequency];
+        name = [v175 name];
+        resolvedDomain = [v175 resolvedDomain];
+        v14 = [resolvedDomain key];
+        graphFrequency2 = [v175 graphFrequency];
         *buf = 138413314;
-        *v260 = v12;
+        *v260 = name;
         *&v260[8] = 2048;
         *&v260[10] = v175;
         *&v260[18] = 2112;
         *&v260[20] = v14;
         v261 = 2080;
-        v262 = +[PSTransitionBlock stringWithGraphFrequencyType:](PSTransitionBlock, "stringWithGraphFrequencyType:", [v15 type]);
+        frequency = +[PSTransitionBlock stringWithGraphFrequencyType:](PSTransitionBlock, "stringWithGraphFrequencyType:", [graphFrequency2 type]);
         v263 = 2048;
-        v264 = [v175 resolvedFrequency];
+        resolvedFrequency = [v175 resolvedFrequency];
         _os_log_impl(&dword_25EA3A000, log, OS_LOG_TYPE_DEFAULT, "Graph %@: %p (domain: %@) [Frequency: %s (%lu fps)]", buf, 0x34u);
 
         v16 = v175;
@@ -259,11 +259,11 @@ LABEL_200:
 
     else if (v11)
     {
-      v12 = [v175 name];
-      v168 = [v175 resolvedDomain];
-      v169 = [v168 key];
+      name = [v175 name];
+      resolvedDomain2 = [v175 resolvedDomain];
+      v169 = [resolvedDomain2 key];
       *buf = 138412802;
-      *v260 = v12;
+      *v260 = name;
       *&v260[8] = 2048;
       *&v260[10] = v175;
       *&v260[18] = 2112;
@@ -281,30 +281,30 @@ LABEL_200:
   v17 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v7 name];
-    v19 = [v175 graphFrequency];
+    name2 = [graphCopy name];
+    graphFrequency3 = [v175 graphFrequency];
     *buf = 138413571;
-    *v260 = v18;
+    *v260 = name2;
     *&v260[8] = 2048;
     *&v260[10] = v175;
     *&v260[18] = 2080;
-    *&v260[20] = +[PSTransitionBlock stringWithGraphFrequencyType:](PSTransitionBlock, "stringWithGraphFrequencyType:", [v19 type]);
+    *&v260[20] = +[PSTransitionBlock stringWithGraphFrequencyType:](PSTransitionBlock, "stringWithGraphFrequencyType:", [graphFrequency3 type]);
     v261 = 2049;
-    v262 = [v175 frequency];
+    frequency = [v175 frequency];
     v263 = 2049;
-    v264 = [v175 criticalityCPU];
+    resolvedFrequency = [v175 criticalityCPU];
     v265 = 2048;
-    v266 = [v175 resolvedThreadPoolSize];
+    resolvedThreadPoolSize = [v175 resolvedThreadPoolSize];
     _os_log_impl(&dword_25EA3A000, v17, OS_LOG_TYPE_DEFAULT, "Graph %@: %p [Frequency Type: %s] [FPS: %{private}lu] [CPU Criticality: %{private}lu] [Thread Pool Size: %lu]", buf, 0x3Eu);
 
-    v7 = v175;
+    graphCopy = v175;
   }
 
   v244 = 0u;
   v245 = 0u;
   v242 = 0u;
   v243 = 0u;
-  obj = [v7 tasks];
+  obj = [graphCopy tasks];
   v174 = [obj countByEnumeratingWithState:&v242 objects:v258 count:16];
   if (v174)
   {
@@ -326,9 +326,9 @@ LABEL_200:
         v23 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v22 name];
+          name3 = [v22 name];
           *buf = v171;
-          *v260 = v24;
+          *v260 = name3;
           _os_log_impl(&dword_25EA3A000, v23, OS_LOG_TYPE_DEFAULT, "    Task %@", buf, 0xCu);
         }
 
@@ -341,8 +341,8 @@ LABEL_200:
         v240 = 0u;
         v241 = 0u;
         v178 = v22;
-        v29 = [v22 inputs];
-        v30 = [v29 countByEnumeratingWithState:&v238 objects:v257 count:16];
+        inputs = [v22 inputs];
+        v30 = [inputs countByEnumeratingWithState:&v238 objects:v257 count:16];
         if (v30)
         {
           v31 = v30;
@@ -353,18 +353,18 @@ LABEL_200:
             {
               if (*v239 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(inputs);
               }
 
               v34 = *(*(&v238 + 1) + 8 * i);
-              v35 = [v34 type];
-              if (v35 > 1)
+              type2 = [v34 type];
+              if (type2 > 1)
               {
                 v36 = v27;
-                if (v35 != 2)
+                if (type2 != 2)
                 {
                   v36 = v28;
-                  if (v35 != 3)
+                  if (type2 != 3)
                   {
 LABEL_203:
                     [PSTransitionBlock printGraph:buf context:v34 printResolvedFieldsOnly:?];
@@ -377,10 +377,10 @@ LABEL_204:
               else
               {
                 v36 = v25;
-                if (v35)
+                if (type2)
                 {
                   v36 = v26;
-                  if (v35 != 1)
+                  if (type2 != 1)
                   {
                     goto LABEL_203;
                   }
@@ -390,7 +390,7 @@ LABEL_204:
               [v36 addObject:v34];
             }
 
-            v31 = [v29 countByEnumeratingWithState:&v238 objects:v257 count:16];
+            v31 = [inputs countByEnumeratingWithState:&v238 objects:v257 count:16];
           }
 
           while (v31);
@@ -429,27 +429,27 @@ LABEL_204:
                 }
 
                 v43 = *(*(&v234 + 1) + 8 * j);
-                v44 = [v43 resolvedResourceKey];
-                v45 = [v8 resourceStreamForKey:v44];
+                resolvedResourceKey = [v43 resolvedResourceKey];
+                v45 = [contextCopy resourceStreamForKey:resolvedResourceKey];
 
                 if (v45)
                 {
-                  v46 = [v45 resourceClass];
+                  resourceClass = [v45 resourceClass];
                 }
 
                 else
                 {
-                  v46 = -1;
+                  resourceClass = -1;
                 }
 
                 v47 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                 {
-                  v48 = [v43 resolvedResourceKey];
+                  resolvedResourceKey2 = [v43 resolvedResourceKey];
                   *buf = 67109378;
-                  *v260 = v46;
+                  *v260 = resourceClass;
                   *&v260[4] = 2112;
-                  *&v260[6] = v48;
+                  *&v260[6] = resolvedResourceKey2;
                   _os_log_impl(&dword_25EA3A000, v47, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
@@ -494,27 +494,27 @@ LABEL_204:
                 }
 
                 v55 = *(*(&v230 + 1) + 8 * k);
-                v56 = [v55 resolvedResourceKey];
-                v57 = [v8 resourceStreamForKey:v56];
+                resolvedResourceKey3 = [v55 resolvedResourceKey];
+                v57 = [contextCopy resourceStreamForKey:resolvedResourceKey3];
 
                 if (v57)
                 {
-                  v58 = [v57 resourceClass];
+                  resourceClass2 = [v57 resourceClass];
                 }
 
                 else
                 {
-                  v58 = -1;
+                  resourceClass2 = -1;
                 }
 
                 v59 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
                 {
-                  v60 = [v55 resolvedResourceKey];
+                  resolvedResourceKey4 = [v55 resolvedResourceKey];
                   *buf = 67109378;
-                  *v260 = v58;
+                  *v260 = resourceClass2;
                   *&v260[4] = 2112;
-                  *&v260[6] = v60;
+                  *&v260[6] = resolvedResourceKey4;
                   _os_log_impl(&dword_25EA3A000, v59, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
@@ -560,27 +560,27 @@ LABEL_204:
                 }
 
                 v68 = *(*(&v226 + 1) + 8 * m);
-                v69 = [v68 resolvedResourceKey];
-                v70 = [v8 resourceStreamForKey:v69];
+                resolvedResourceKey5 = [v68 resolvedResourceKey];
+                v70 = [contextCopy resourceStreamForKey:resolvedResourceKey5];
 
                 if (v70)
                 {
-                  v71 = [v70 resourceClass];
+                  resourceClass3 = [v70 resourceClass];
                 }
 
                 else
                 {
-                  v71 = -1;
+                  resourceClass3 = -1;
                 }
 
                 v72 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
                 {
-                  v73 = [v68 resolvedResourceKey];
+                  resolvedResourceKey6 = [v68 resolvedResourceKey];
                   *buf = 67109378;
-                  *v260 = v71;
+                  *v260 = resourceClass3;
                   *&v260[4] = 2112;
-                  *&v260[6] = v73;
+                  *&v260[6] = resolvedResourceKey6;
                   _os_log_impl(&dword_25EA3A000, v72, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
@@ -626,30 +626,30 @@ LABEL_204:
                 }
 
                 v80 = *(*(&v222 + 1) + 8 * n);
-                v81 = [v80 resolvedResourceKey];
-                v82 = [v8 resourceStreamForKey:v81];
+                resolvedResourceKey7 = [v80 resolvedResourceKey];
+                v82 = [contextCopy resourceStreamForKey:resolvedResourceKey7];
 
                 if (v82)
                 {
-                  v83 = [v82 resourceClass];
+                  resourceClass4 = [v82 resourceClass];
                 }
 
                 else
                 {
-                  v83 = -1;
+                  resourceClass4 = -1;
                 }
 
                 v84 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
                 {
-                  v85 = [v80 resolvedResourceKey];
-                  v86 = [v80 sourceInputResourceKey];
+                  resolvedResourceKey8 = [v80 resolvedResourceKey];
+                  sourceInputResourceKey = [v80 sourceInputResourceKey];
                   *buf = 67109634;
-                  *v260 = v83;
+                  *v260 = resourceClass4;
                   *&v260[4] = 2112;
-                  *&v260[6] = v85;
+                  *&v260[6] = resolvedResourceKey8;
                   *&v260[14] = 2112;
-                  *&v260[16] = v86;
+                  *&v260[16] = sourceInputResourceKey;
                   _os_log_impl(&dword_25EA3A000, v84, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@, synced to %@", buf, 0x1Cu);
                 }
               }
@@ -667,8 +667,8 @@ LABEL_204:
           v28 = v180;
         }
 
-        v87 = [v61 outputs];
-        v88 = [v87 count];
+        outputs = [v61 outputs];
+        v88 = [outputs count];
 
         if (v88)
         {
@@ -683,8 +683,8 @@ LABEL_204:
           v221 = 0u;
           v218 = 0u;
           v219 = 0u;
-          v90 = [v61 outputs];
-          v91 = [v90 countByEnumeratingWithState:&v218 objects:v252 count:16];
+          outputs2 = [v61 outputs];
+          v91 = [outputs2 countByEnumeratingWithState:&v218 objects:v252 count:16];
           if (v91)
           {
             v92 = v91;
@@ -695,36 +695,36 @@ LABEL_204:
               {
                 if (*v219 != v93)
                 {
-                  objc_enumerationMutation(v90);
+                  objc_enumerationMutation(outputs2);
                 }
 
                 v95 = *(*(&v218 + 1) + 8 * ii);
-                v96 = [v95 resourceKey];
-                v97 = [v8 resourceStreamForKey:v96];
+                resourceKey = [v95 resourceKey];
+                v97 = [contextCopy resourceStreamForKey:resourceKey];
 
                 if (v97)
                 {
-                  v98 = [v97 resourceClass];
+                  resourceClass5 = [v97 resourceClass];
                 }
 
                 else
                 {
-                  v98 = -1;
+                  resourceClass5 = -1;
                 }
 
                 v99 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
                 {
-                  v100 = [v95 resourceKey];
+                  resourceKey2 = [v95 resourceKey];
                   *buf = 67109378;
-                  *v260 = v98;
+                  *v260 = resourceClass5;
                   *&v260[4] = 2112;
-                  *&v260[6] = v100;
+                  *&v260[6] = resourceKey2;
                   _os_log_impl(&dword_25EA3A000, v99, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
 
-              v92 = [v90 countByEnumeratingWithState:&v218 objects:v252 count:16];
+              v92 = [outputs2 countByEnumeratingWithState:&v218 objects:v252 count:16];
             }
 
             while (v92);
@@ -751,8 +751,8 @@ LABEL_204:
   v214 = 0u;
   v215 = 0u;
   v101 = v175;
-  v183 = [v175 sourceTasks];
-  v189 = [v183 countByEnumeratingWithState:&v214 objects:v251 count:16];
+  sourceTasks = [v175 sourceTasks];
+  v189 = [sourceTasks countByEnumeratingWithState:&v214 objects:v251 count:16];
   if (v189)
   {
     v186 = *v215;
@@ -762,21 +762,21 @@ LABEL_204:
       {
         if (*v215 != v186)
         {
-          objc_enumerationMutation(v183);
+          objc_enumerationMutation(sourceTasks);
         }
 
         v103 = *(*(&v214 + 1) + 8 * jj);
         v104 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
         {
-          v105 = [v103 name];
+          name4 = [v103 name];
           *buf = 138412290;
-          *v260 = v105;
+          *v260 = name4;
           _os_log_impl(&dword_25EA3A000, v104, OS_LOG_TYPE_DEFAULT, "    SourceTask %@", buf, 0xCu);
         }
 
-        v106 = [v103 outputs];
-        v107 = [v106 count];
+        outputs3 = [v103 outputs];
+        v107 = [outputs3 count];
 
         if (v107)
         {
@@ -792,8 +792,8 @@ LABEL_204:
           v213 = 0u;
           v210 = 0u;
           v211 = 0u;
-          v109 = [v103 outputs];
-          v110 = [v109 countByEnumeratingWithState:&v210 objects:v250 count:16];
+          outputs4 = [v103 outputs];
+          v110 = [outputs4 countByEnumeratingWithState:&v210 objects:v250 count:16];
           if (v110)
           {
             v111 = v110;
@@ -804,36 +804,36 @@ LABEL_204:
               {
                 if (*v211 != v112)
                 {
-                  objc_enumerationMutation(v109);
+                  objc_enumerationMutation(outputs4);
                 }
 
                 v114 = *(*(&v210 + 1) + 8 * kk);
-                v115 = [v114 resourceKey];
-                v116 = [v8 resourceStreamForKey:v115];
+                resourceKey3 = [v114 resourceKey];
+                v116 = [contextCopy resourceStreamForKey:resourceKey3];
 
                 if (v116)
                 {
-                  v117 = [v116 resourceClass];
+                  resourceClass6 = [v116 resourceClass];
                 }
 
                 else
                 {
-                  v117 = -1;
+                  resourceClass6 = -1;
                 }
 
                 v118 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v118, OS_LOG_TYPE_DEFAULT))
                 {
-                  v119 = [v114 resourceKey];
+                  resourceKey4 = [v114 resourceKey];
                   *buf = 67109378;
-                  *v260 = v117;
+                  *v260 = resourceClass6;
                   *&v260[4] = 2112;
-                  *&v260[6] = v119;
+                  *&v260[6] = resourceKey4;
                   _os_log_impl(&dword_25EA3A000, v118, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
 
-              v111 = [v109 countByEnumeratingWithState:&v210 objects:v250 count:16];
+              v111 = [outputs4 countByEnumeratingWithState:&v210 objects:v250 count:16];
             }
 
             while (v111);
@@ -844,7 +844,7 @@ LABEL_204:
         }
       }
 
-      v189 = [v183 countByEnumeratingWithState:&v214 objects:v251 count:16];
+      v189 = [sourceTasks countByEnumeratingWithState:&v214 objects:v251 count:16];
     }
 
     while (v189);
@@ -854,8 +854,8 @@ LABEL_204:
   v209 = 0u;
   v206 = 0u;
   v207 = 0u;
-  v193 = [v101 writers];
-  v120 = [v193 countByEnumeratingWithState:&v206 objects:v249 count:16];
+  writers = [v101 writers];
+  v120 = [writers countByEnumeratingWithState:&v206 objects:v249 count:16];
   if (v120)
   {
     v121 = v120;
@@ -866,22 +866,22 @@ LABEL_204:
       {
         if (*v207 != v122)
         {
-          objc_enumerationMutation(v193);
+          objc_enumerationMutation(writers);
         }
 
         v124 = *(*(&v206 + 1) + 8 * mm);
         v125 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v125, OS_LOG_TYPE_DEFAULT))
         {
-          v126 = [v124 name];
+          name5 = [v124 name];
           *buf = 138412290;
-          *v260 = v126;
+          *v260 = name5;
           _os_log_impl(&dword_25EA3A000, v125, OS_LOG_TYPE_DEFAULT, "    Writer %@", buf, 0xCu);
         }
 
-        v127 = [v124 output];
+        output = [v124 output];
 
-        if (v127)
+        if (output)
         {
           v128 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
@@ -890,34 +890,34 @@ LABEL_204:
             _os_log_impl(&dword_25EA3A000, v128, OS_LOG_TYPE_DEFAULT, "        Output:", buf, 2u);
           }
 
-          v129 = [v124 output];
-          v130 = [v129 resourceKey];
-          v131 = [v8 resourceStreamForKey:v130];
+          output2 = [v124 output];
+          resourceKey5 = [output2 resourceKey];
+          v131 = [contextCopy resourceStreamForKey:resourceKey5];
 
           if (v131)
           {
-            v132 = [v131 resourceClass];
+            resourceClass7 = [v131 resourceClass];
           }
 
           else
           {
-            v132 = -1;
+            resourceClass7 = -1;
           }
 
           v133 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v133, OS_LOG_TYPE_DEFAULT))
           {
-            v134 = [v129 resourceKey];
+            resourceKey6 = [output2 resourceKey];
             *buf = 67109378;
-            *v260 = v132;
+            *v260 = resourceClass7;
             *&v260[4] = 2112;
-            *&v260[6] = v134;
+            *&v260[6] = resourceKey6;
             _os_log_impl(&dword_25EA3A000, v133, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
           }
         }
       }
 
-      v121 = [v193 countByEnumeratingWithState:&v206 objects:v249 count:16];
+      v121 = [writers countByEnumeratingWithState:&v206 objects:v249 count:16];
     }
 
     while (v121);
@@ -946,24 +946,24 @@ LABEL_204:
         v137 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v137, OS_LOG_TYPE_DEFAULT))
         {
-          v138 = [v136 name];
+          name6 = [v136 name];
           *buf = 138412290;
-          *v260 = v138;
+          *v260 = name6;
           _os_log_impl(&dword_25EA3A000, v137, OS_LOG_TYPE_DEFAULT, "    Reader %@", buf, 0xCu);
         }
 
         v139 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v140 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v141 = [v136 input];
-        v31 = v141;
-        if (v141)
+        input = [v136 input];
+        v31 = input;
+        if (input)
         {
-          v142 = [v141 type];
+          type3 = [input type];
           v143 = v139;
-          if (v142 != 1)
+          if (type3 != 1)
           {
             v143 = v140;
-            if (v142 != 2)
+            if (type3 != 2)
             {
               goto LABEL_204;
             }
@@ -1005,27 +1005,27 @@ LABEL_204:
                 }
 
                 v150 = *(*(&v198 + 1) + 8 * i1);
-                v151 = [v150 resolvedResourceKey];
-                v152 = [v8 resourceStreamForKey:v151];
+                resolvedResourceKey9 = [v150 resolvedResourceKey];
+                v152 = [contextCopy resourceStreamForKey:resolvedResourceKey9];
 
                 if (v152)
                 {
-                  v153 = [v152 resourceClass];
+                  resourceClass8 = [v152 resourceClass];
                 }
 
                 else
                 {
-                  v153 = -1;
+                  resourceClass8 = -1;
                 }
 
                 v154 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v154, OS_LOG_TYPE_DEFAULT))
                 {
-                  v155 = [v150 resolvedResourceKey];
+                  resolvedResourceKey10 = [v150 resolvedResourceKey];
                   *buf = 67109378;
-                  *v260 = v153;
+                  *v260 = resourceClass8;
                   *&v260[4] = 2112;
-                  *&v260[6] = v155;
+                  *&v260[6] = resolvedResourceKey10;
                   _os_log_impl(&dword_25EA3A000, v154, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
@@ -1072,27 +1072,27 @@ LABEL_204:
                 }
 
                 v162 = *(*(&v194 + 1) + 8 * i2);
-                v163 = [v162 resolvedResourceKey];
-                v164 = [v8 resourceStreamForKey:v163];
+                resolvedResourceKey11 = [v162 resolvedResourceKey];
+                v164 = [contextCopy resourceStreamForKey:resolvedResourceKey11];
 
                 if (v164)
                 {
-                  v165 = [v164 resourceClass];
+                  resourceClass9 = [v164 resourceClass];
                 }
 
                 else
                 {
-                  v165 = -1;
+                  resourceClass9 = -1;
                 }
 
                 v166 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v166, OS_LOG_TYPE_DEFAULT))
                 {
-                  v167 = [v162 resolvedResourceKey];
+                  resolvedResourceKey12 = [v162 resolvedResourceKey];
                   *buf = 67109378;
-                  *v260 = v165;
+                  *v260 = resourceClass9;
                   *&v260[4] = 2112;
-                  *&v260[6] = v167;
+                  *&v260[6] = resolvedResourceKey12;
                   _os_log_impl(&dword_25EA3A000, v166, OS_LOG_TYPE_DEFAULT, "            - (Stream Class: %d) %@", buf, 0x12u);
                 }
               }
@@ -1122,41 +1122,41 @@ LABEL_202:
   v170 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)generateTransitionBlockWithAddedGraphs:(id)a3 withRemovedGraphs:(id)a4 withDashboard:(id)a5 withStopOption:(BOOL)a6
++ (id)generateTransitionBlockWithAddedGraphs:(id)graphs withRemovedGraphs:(id)removedGraphs withDashboard:(id)dashboard withStopOption:(BOOL)option
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionCopy = option;
+  graphsCopy = graphs;
+  removedGraphsCopy = removedGraphs;
+  dashboardCopy = dashboard;
   v12 = objc_alloc_init(PSTransitionBlock);
-  if (v6)
+  if (optionCopy)
   {
-    if (v9 && [v9 count] || v10 && objc_msgSend(v10, "count"))
+    if (graphsCopy && [graphsCopy count] || removedGraphsCopy && objc_msgSend(removedGraphsCopy, "count"))
     {
       [PSTransitionBlock generateTransitionBlockWithAddedGraphs:? withRemovedGraphs:? withDashboard:? withStopOption:?];
       return [(PSTransitionBlock *)v28 addedGraphs];
     }
 
-    v13 = [v11 getRunningGraphs];
-    [(PSTransitionBlock *)v12 setPreTransitionGraphs:v13];
+    getRunningGraphs = [dashboardCopy getRunningGraphs];
+    [(PSTransitionBlock *)v12 setPreTransitionGraphs:getRunningGraphs];
 
     v14 = objc_alloc_init(MEMORY[0x277CBEB98]);
     [(PSTransitionBlock *)v12 setAddedGraphs:v14];
 
     v15 = objc_alloc(MEMORY[0x277CBEB98]);
-    v16 = [(PSTransitionBlock *)v12 preTransitionGraphs];
-    v17 = [v15 initWithSet:v16];
+    preTransitionGraphs = [(PSTransitionBlock *)v12 preTransitionGraphs];
+    v17 = [v15 initWithSet:preTransitionGraphs];
     [(PSTransitionBlock *)v12 setRemovedGraphs:v17];
   }
 
   else
   {
-    v18 = [v11 getRunningGraphs];
-    [(PSTransitionBlock *)v12 setPreTransitionGraphs:v18];
+    getRunningGraphs2 = [dashboardCopy getRunningGraphs];
+    [(PSTransitionBlock *)v12 setPreTransitionGraphs:getRunningGraphs2];
 
-    if (v9)
+    if (graphsCopy)
     {
-      v19 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:v9];
+      v19 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:graphsCopy];
     }
 
     else
@@ -1167,9 +1167,9 @@ LABEL_202:
     v20 = v19;
     [(PSTransitionBlock *)v12 setAddedGraphs:v19];
 
-    if (v10)
+    if (removedGraphsCopy)
     {
-      v21 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:v10];
+      v21 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:removedGraphsCopy];
     }
 
     else
@@ -1177,19 +1177,19 @@ LABEL_202:
       v21 = objc_alloc_init(MEMORY[0x277CBEB98]);
     }
 
-    v16 = v21;
+    preTransitionGraphs = v21;
     [(PSTransitionBlock *)v12 setRemovedGraphs:v21];
   }
 
   v22 = objc_alloc(MEMORY[0x277CBEB58]);
-  v23 = [(PSTransitionBlock *)v12 preTransitionGraphs];
-  v24 = [v22 initWithSet:v23];
+  preTransitionGraphs2 = [(PSTransitionBlock *)v12 preTransitionGraphs];
+  v24 = [v22 initWithSet:preTransitionGraphs2];
 
-  v25 = [(PSTransitionBlock *)v12 addedGraphs];
-  [v24 unionSet:v25];
+  addedGraphs = [(PSTransitionBlock *)v12 addedGraphs];
+  [v24 unionSet:addedGraphs];
 
-  v26 = [(PSTransitionBlock *)v12 removedGraphs];
-  [v24 minusSet:v26];
+  removedGraphs = [(PSTransitionBlock *)v12 removedGraphs];
+  [v24 minusSet:removedGraphs];
 
   [(PSTransitionBlock *)v12 setPostTransitionGraphs:v24];
 

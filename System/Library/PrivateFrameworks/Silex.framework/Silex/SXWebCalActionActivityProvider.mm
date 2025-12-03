@@ -1,12 +1,12 @@
 @interface SXWebCalActionActivityProvider
-- (id)activityGroupForAction:(id)a3;
+- (id)activityGroupForAction:(id)action;
 @end
 
 @implementation SXWebCalActionActivityProvider
 
-- (id)activityGroupForAction:(id)a3
+- (id)activityGroupForAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = [SXActionActivityGroup alloc];
   v5 = SXBundle();
   v6 = [v5 localizedStringForKey:@"Calendar" value:&stru_1F532F6C0 table:0];
@@ -19,8 +19,8 @@
   v14[1] = 3221225472;
   v14[2] = __57__SXWebCalActionActivityProvider_activityGroupForAction___block_invoke;
   v14[3] = &unk_1E84FF668;
-  v15 = v3;
-  v11 = v3;
+  v15 = actionCopy;
+  v11 = actionCopy;
   v12 = [(SXBlockActionActivity *)v8 initWithLabel:v10 type:0 block:v14];
   [(SXActionActivityGroup *)v7 addActivity:v12];
 

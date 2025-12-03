@@ -1,24 +1,24 @@
 @interface EDSearchableIndexManager
 + (OS_os_log)log;
-+ (id)searchableItemResultForExpression:(id)a3;
-- (EDSearchableIndexManager)initWithDatabase:(id)a3 messagePersistence:(id)a4 richLinkPersistence:(id)a5 hookResponder:(id)a6;
-- (void)_removeItemsForPersistedMessages:(id)a3;
++ (id)searchableItemResultForExpression:(id)expression;
+- (EDSearchableIndexManager)initWithDatabase:(id)database messagePersistence:(id)persistence richLinkPersistence:(id)linkPersistence hookResponder:(id)responder;
+- (void)_removeItemsForPersistedMessages:(id)messages;
 - (void)_startObservingTurboModeToggle;
-- (void)enableIndexingAndBeginScheduling:(BOOL)a3;
-- (void)persistenceDidAddDataDetectionResults:(id)a3 generationWindow:(id)a4;
-- (void)persistenceDidAddLabels:(id)a3 removeLabels:(id)a4 messages:(id)a5 generationWindow:(id)a6;
-- (void)persistenceDidAddMessages:(id)a3 generationWindow:(id)a4;
-- (void)persistenceDidChangeCategorizationForMessages:(id)a3 userInitiated:(BOOL)a4 generationWindow:(id)a5;
-- (void)persistenceDidChangeFlags:(id)a3 messages:(id)a4 generationWindow:(id)a5;
+- (void)enableIndexingAndBeginScheduling:(BOOL)scheduling;
+- (void)persistenceDidAddDataDetectionResults:(id)results generationWindow:(id)window;
+- (void)persistenceDidAddLabels:(id)labels removeLabels:(id)removeLabels messages:(id)messages generationWindow:(id)window;
+- (void)persistenceDidAddMessages:(id)messages generationWindow:(id)window;
+- (void)persistenceDidChangeCategorizationForMessages:(id)messages userInitiated:(BOOL)initiated generationWindow:(id)window;
+- (void)persistenceDidChangeFlags:(id)flags messages:(id)messages generationWindow:(id)window;
 - (void)persistenceDidFinishUpdates;
-- (void)persistenceDidUpdateAuthenticationStateForMessages:(id)a3;
-- (void)persistenceDidUpdateData:(id)a3 message:(id)a4;
-- (void)persistenceIsAddingDataDetectionResults:(id)a3 generationWindow:(id)a4;
-- (void)persistenceIsAddingLabels:(id)a3 removingLabels:(id)a4 messages:(id)a5;
-- (void)persistenceIsAddingMessages:(id)a3 journaled:(BOOL)a4 generationWindow:(id)a5;
-- (void)persistenceIsChangingCategorizationForMessages:(id)a3;
-- (void)persistenceIsChangingFlags:(id)a3 messages:(id)a4 generationWindow:(id)a5;
-- (void)persistenceIsUpdatingAuthenticationStateForMessages:(id)a3;
+- (void)persistenceDidUpdateAuthenticationStateForMessages:(id)messages;
+- (void)persistenceDidUpdateData:(id)data message:(id)message;
+- (void)persistenceIsAddingDataDetectionResults:(id)results generationWindow:(id)window;
+- (void)persistenceIsAddingLabels:(id)labels removingLabels:(id)removingLabels messages:(id)messages;
+- (void)persistenceIsAddingMessages:(id)messages journaled:(BOOL)journaled generationWindow:(id)window;
+- (void)persistenceIsChangingCategorizationForMessages:(id)messages;
+- (void)persistenceIsChangingFlags:(id)flags messages:(id)messages generationWindow:(id)window;
+- (void)persistenceIsUpdatingAuthenticationStateForMessages:(id)messages;
 - (void)persistenceWillBeginUpdates;
 - (void)resetIndexForNewLibrary;
 - (void)scheduleRecurringActivity;
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __31__EDSearchableIndexManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_89 != -1)
   {
     dispatch_once(&log_onceToken_89, block);
@@ -53,11 +53,11 @@ void __31__EDSearchableIndexManager_log__block_invoke(uint64_t a1)
   log_log_89 = v1;
 }
 
-+ (id)searchableItemResultForExpression:(id)a3
++ (id)searchableItemResultForExpression:(id)expression
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([a1 shouldCancelSearchQuery])
+  expressionCopy = expression;
+  if ([self shouldCancelSearchQuery])
   {
     v5 = +[EDSearchableIndexManager log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -72,32 +72,32 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v4 isValid])
+  if ([expressionCopy isValid])
   {
-    v23 = [MEMORY[0x1E699B868] promise];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    promise = [MEMORY[0x1E699B868] promise];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__EDSearchableIndexManager_searchableItemResultForExpression___block_invoke;
     aBlock[3] = &unk_1E8256F20;
-    v32 = a1;
-    v8 = v6;
+    selfCopy = self;
+    v8 = array;
     v29 = v8;
-    v24 = v7;
+    v24 = dictionary;
     v30 = v24;
-    v9 = v23;
+    v9 = promise;
     v31 = v9;
     v25 = _Block_copy(aBlock);
-    v10 = [MEMORY[0x1E699AE90] queryWithExpression:v4 builder:v25];
-    v11 = [v10 progress];
-    [a1 addSearchQueryCancelable:v11];
+    v10 = [MEMORY[0x1E699AE90] queryWithExpression:expressionCopy builder:v25];
+    progress = [v10 progress];
+    [self addSearchQueryCancelable:progress];
 
     [v10 start];
-    v12 = [v9 future];
+    future = [v9 future];
     v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:5.0];
     v27 = 0;
-    v5 = [v12 resultBeforeDate:v13 error:&v27];
+    v5 = [future resultBeforeDate:v13 error:&v27];
     v14 = v27;
 
     if (!v5 && [v14 ef_isTimeoutError])
@@ -105,23 +105,23 @@ LABEL_20:
       v15 = +[EDSearchableIndexManager log];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v14 ef_publicDescription];
-        [(EDSearchableIndexManager *)v16 searchableItemResultForExpression:buf, v15];
+        ef_publicDescription = [v14 ef_publicDescription];
+        [(EDSearchableIndexManager *)ef_publicDescription searchableItemResultForExpression:buf, v15];
       }
 
       [v10 cancel];
     }
 
-    v17 = [v10 progress];
-    [a1 removeSearchQueryCancelable:v17];
+    progress2 = [v10 progress];
+    [self removeSearchQueryCancelable:progress2];
 
     if (!v5)
     {
       v18 = +[EDSearchableIndex log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
       {
-        v19 = [v14 ef_publicDescription];
-        [(EDSearchableIndexManager *)v19 searchableItemResultForExpression:v33, v18];
+        ef_publicDescription2 = [v14 ef_publicDescription];
+        [(EDSearchableIndexManager *)ef_publicDescription2 searchableItemResultForExpression:v33, v18];
       }
     }
   }
@@ -131,7 +131,7 @@ LABEL_20:
     v5 = 0;
   }
 
-  if ([a1 shouldCancelSearchQuery])
+  if ([self shouldCancelSearchQuery])
   {
     v20 = +[EDSearchableIndex log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -336,10 +336,10 @@ void __62__EDSearchableIndexManager_searchableItemResultForExpression___block_in
   }
 }
 
-- (EDSearchableIndexManager)initWithDatabase:(id)a3 messagePersistence:(id)a4 richLinkPersistence:(id)a5 hookResponder:(id)a6
+- (EDSearchableIndexManager)initWithDatabase:(id)database messagePersistence:(id)persistence richLinkPersistence:(id)linkPersistence hookResponder:(id)responder
 {
-  v9 = a3;
-  v10 = a4;
+  databaseCopy = database;
+  persistenceCopy = persistence;
   v19.receiver = self;
   v19.super_class = EDSearchableIndexManager;
   v11 = [(EDSearchableIndexManager *)&v19 init];
@@ -347,17 +347,17 @@ void __62__EDSearchableIndexManager_searchableItemResultForExpression___block_in
   v13 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_database, a3);
-    objc_storeStrong(&v12->_messagePersistence, a4);
+    objc_storeStrong(&v11->_database, database);
+    objc_storeStrong(&v12->_messagePersistence, persistence);
   }
 
-  v14 = [MEMORY[0x1E699B7B0] currentDevice];
-  v15 = [v14 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v15)
+  if (isInternal)
   {
     [(EDSearchableIndexManager *)v13 _startObservingTurboModeToggle];
-    v16 = [[EDSearchableIndexAnalyticsPersistence alloc] initWithDatabase:v9];
+    v16 = [[EDSearchableIndexAnalyticsPersistence alloc] initWithDatabase:databaseCopy];
     analytics = v13->_analytics;
     v13->_analytics = v16;
   }
@@ -369,22 +369,22 @@ void __62__EDSearchableIndexManager_searchableItemResultForExpression___block_in
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"EDSearchableIndexManager.m" lineNumber:170 description:{@"%s can only be called from unit tests", "-[EDSearchableIndexManager test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDSearchableIndexManager.m" lineNumber:170 description:{@"%s can only be called from unit tests", "-[EDSearchableIndexManager test_tearDown]"}];
   }
 
-  v4 = [(EDSearchableIndexManager *)self index];
-  [v4 test_tearDown];
+  index = [(EDSearchableIndexManager *)self index];
+  [index test_tearDown];
 }
 
 - (void)scheduleRecurringActivity
 {
-  v3 = [(EDSearchableIndexManager *)self index];
+  index = [(EDSearchableIndexManager *)self index];
 
-  if (v3)
+  if (index)
   {
-    v4 = [(EDSearchableIndexManager *)self index];
-    [v4 scheduleRecurringActivity];
+    index2 = [(EDSearchableIndexManager *)self index];
+    [index2 scheduleRecurringActivity];
   }
 
   else
@@ -423,9 +423,9 @@ void __58__EDSearchableIndexManager__startObservingTurboModeToggle__block_invoke
   }
 }
 
-- (void)enableIndexingAndBeginScheduling:(BOOL)a3
+- (void)enableIndexingAndBeginScheduling:(BOOL)scheduling
 {
-  v3 = a3;
+  schedulingCopy = scheduling;
   if ([MEMORY[0x1E699ACE8] preferenceEnabled:33])
   {
     v5 = +[EDSearchableIndexManager log];
@@ -434,31 +434,31 @@ void __58__EDSearchableIndexManager__startObservingTurboModeToggle__block_invoke
       [EDSearchableIndexManager enableIndexingAndBeginScheduling:v5];
     }
 
-    v6 = [(EDSearchableIndexManager *)self index];
-    [v6 setIndexingDisabledForPPT:1];
+    index = [(EDSearchableIndexManager *)self index];
+    [index setIndexingDisabledForPPT:1];
   }
 
   else
   {
-    if (v3)
+    if (schedulingCopy)
     {
-      v7 = [(EDSearchableIndexManager *)self index];
-      [v7 setPersistenceAvailable:1];
+      index2 = [(EDSearchableIndexManager *)self index];
+      [index2 setPersistenceAvailable:1];
 
-      v8 = [(EDSearchableIndexManager *)self scheduler];
-      [v8 setScheduling:1];
+      scheduler = [(EDSearchableIndexManager *)self scheduler];
+      [scheduler setScheduling:1];
     }
 
     else
     {
-      v8 = [(EDSearchableIndexManager *)self scheduler];
-      [v8 setScheduling:0];
+      scheduler = [(EDSearchableIndexManager *)self scheduler];
+      [scheduler setScheduling:0];
     }
 
     if ([(EDSearchableIndexManager *)self needsToRedonate])
     {
-      v9 = [(EDSearchableIndexManager *)self index];
-      [v9 redonateAllItemsWithAcknowledgementHandler:0];
+      index3 = [(EDSearchableIndexManager *)self index];
+      [index3 redonateAllItemsWithAcknowledgementHandler:0];
 
       [(EDSearchableIndexManager *)self setNeedsToRedonate:0];
     }
@@ -476,8 +476,8 @@ void __58__EDSearchableIndexManager__startObservingTurboModeToggle__block_invoke
 {
   [(EDSearchableIndexManager *)self setNeedsToRedonate:0];
   [(EDSearchableIndexManager *)self enableIndexingAndBeginScheduling:0];
-  v3 = [(EDSearchableIndexManager *)self index];
-  [v3 resetIndexForNewLibraryWithCompletionHandler:0];
+  index = [(EDSearchableIndexManager *)self index];
+  [index resetIndexForNewLibraryWithCompletionHandler:0];
 }
 
 - (void)setNeedsToRedonate
@@ -497,128 +497,128 @@ void __58__EDSearchableIndexManager__startObservingTurboModeToggle__block_invoke
 
 - (void)persistenceWillBeginUpdates
 {
-  v2 = [(EDSearchableIndexManager *)self index];
-  [v2 beginUpdatesAffectingDataSourceAndIndex];
+  index = [(EDSearchableIndexManager *)self index];
+  [index beginUpdatesAffectingDataSourceAndIndex];
 }
 
 - (void)persistenceDidFinishUpdates
 {
-  v2 = [(EDSearchableIndexManager *)self index];
-  [v2 endUpdatesAffectingDataSourceAndIndex];
+  index = [(EDSearchableIndexManager *)self index];
+  [index endUpdatesAffectingDataSourceAndIndex];
 }
 
-- (void)persistenceIsAddingMessages:(id)a3 journaled:(BOOL)a4 generationWindow:(id)a5
+- (void)persistenceIsAddingMessages:(id)messages journaled:(BOOL)journaled generationWindow:(id)window
 {
-  v7 = a3;
-  v6 = [(EDSearchableIndexManager *)self analytics];
-  [v6 didAddMessages:v7];
+  messagesCopy = messages;
+  analytics = [(EDSearchableIndexManager *)self analytics];
+  [analytics didAddMessages:messagesCopy];
 }
 
-- (void)persistenceDidAddMessages:(id)a3 generationWindow:(id)a4
+- (void)persistenceDidAddMessages:(id)messages generationWindow:(id)window
 {
-  v6 = a3;
-  v5 = [(EDSearchableIndexManager *)self index];
-  [v5 indexMessages:v6 includeBody:0 indexingType:0];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index indexMessages:messagesCopy includeBody:0 indexingType:0];
 }
 
-- (void)persistenceDidUpdateData:(id)a3 message:(id)a4
+- (void)persistenceDidUpdateData:(id)data message:(id)message
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 persistentID];
-  v7 = [v6 length];
+  messageCopy = message;
+  persistentID = [messageCopy persistentID];
+  v7 = [persistentID length];
 
   if (v7)
   {
-    v8 = [(EDSearchableIndexManager *)self index];
-    v14[0] = v5;
+    index = [(EDSearchableIndexManager *)self index];
+    v14[0] = messageCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    [v8 recordDataNeedsToBeDonatedForMessages:v9];
+    [index recordDataNeedsToBeDonatedForMessages:v9];
 
-    v10 = [(EDSearchableIndexManager *)self index];
-    v13 = v5;
+    index2 = [(EDSearchableIndexManager *)self index];
+    v13 = messageCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
-    [v10 indexMessages:v11 includeBody:1 indexingType:0];
+    [index2 indexMessages:v11 includeBody:1 indexingType:0];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsChangingFlags:(id)a3 messages:(id)a4 generationWindow:(id)a5
+- (void)persistenceIsChangingFlags:(id)flags messages:(id)messages generationWindow:(id)window
 {
-  v9 = a3;
-  v7 = a4;
-  if (([v9 deleted] & 1) == 0)
+  flagsCopy = flags;
+  messagesCopy = messages;
+  if (([flagsCopy deleted] & 1) == 0)
   {
-    v8 = [(EDSearchableIndexManager *)self index];
-    [v8 recordMessagesNeedToBeDonated:v7 indexingType:1];
+    index = [(EDSearchableIndexManager *)self index];
+    [index recordMessagesNeedToBeDonated:messagesCopy indexingType:1];
   }
 }
 
-- (void)persistenceDidChangeFlags:(id)a3 messages:(id)a4 generationWindow:(id)a5
+- (void)persistenceDidChangeFlags:(id)flags messages:(id)messages generationWindow:(id)window
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v9 deleted])
+  flagsCopy = flags;
+  messagesCopy = messages;
+  if ([flagsCopy deleted])
   {
-    [(EDSearchableIndexManager *)self _removeItemsForPersistedMessages:v7];
+    [(EDSearchableIndexManager *)self _removeItemsForPersistedMessages:messagesCopy];
   }
 
   else
   {
-    v8 = [(EDSearchableIndexManager *)self index];
-    [v8 indexMessages:v7 includeBody:0 indexingType:1];
+    index = [(EDSearchableIndexManager *)self index];
+    [index indexMessages:messagesCopy includeBody:0 indexingType:1];
   }
 }
 
-- (void)persistenceIsAddingDataDetectionResults:(id)a3 generationWindow:(id)a4
+- (void)persistenceIsAddingDataDetectionResults:(id)results generationWindow:(id)window
 {
-  v6 = a3;
-  v5 = [(EDSearchableIndexManager *)self index];
-  [v5 recordMessagesNeedToBeDonated:v6 indexingType:4];
+  resultsCopy = results;
+  index = [(EDSearchableIndexManager *)self index];
+  [index recordMessagesNeedToBeDonated:resultsCopy indexingType:4];
 }
 
-- (void)persistenceDidAddDataDetectionResults:(id)a3 generationWindow:(id)a4
+- (void)persistenceDidAddDataDetectionResults:(id)results generationWindow:(id)window
 {
-  v6 = a3;
-  v5 = [(EDSearchableIndexManager *)self index];
-  [v5 indexMessages:v6 includeBody:0 indexingType:4];
+  resultsCopy = results;
+  index = [(EDSearchableIndexManager *)self index];
+  [index indexMessages:resultsCopy includeBody:0 indexingType:4];
 }
 
-- (void)persistenceIsAddingLabels:(id)a3 removingLabels:(id)a4 messages:(id)a5
+- (void)persistenceIsAddingLabels:(id)labels removingLabels:(id)removingLabels messages:(id)messages
 {
-  v7 = a5;
-  v6 = [(EDSearchableIndexManager *)self index];
-  [v6 recordMessagesNeedToBeDonated:v7 indexingType:2];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index recordMessagesNeedToBeDonated:messagesCopy indexingType:2];
 }
 
-- (void)persistenceDidAddLabels:(id)a3 removeLabels:(id)a4 messages:(id)a5 generationWindow:(id)a6
+- (void)persistenceDidAddLabels:(id)labels removeLabels:(id)removeLabels messages:(id)messages generationWindow:(id)window
 {
-  v8 = a5;
-  v7 = [(EDSearchableIndexManager *)self index];
-  [v7 indexMessages:v8 includeBody:0 indexingType:2];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index indexMessages:messagesCopy includeBody:0 indexingType:2];
 }
 
-- (void)persistenceIsUpdatingAuthenticationStateForMessages:(id)a3
+- (void)persistenceIsUpdatingAuthenticationStateForMessages:(id)messages
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndexManager *)self index];
-  [v4 recordMessagesNeedToBeDonated:v5 indexingType:8];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index recordMessagesNeedToBeDonated:messagesCopy indexingType:8];
 }
 
-- (void)persistenceDidUpdateAuthenticationStateForMessages:(id)a3
+- (void)persistenceDidUpdateAuthenticationStateForMessages:(id)messages
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndexManager *)self index];
-  [v4 indexMessages:v5 includeBody:0 indexingType:8];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index indexMessages:messagesCopy includeBody:0 indexingType:8];
 }
 
-- (void)_removeItemsForPersistedMessages:(id)a3
+- (void)_removeItemsForPersistedMessages:(id)messages
 {
-  v6 = a3;
-  v4 = [(EDSearchableIndexManager *)self index];
-  v5 = [v6 ef_map:&__block_literal_global_78];
-  [v4 removeItemsWithIdentifiers:v5];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  v5 = [messagesCopy ef_map:&__block_literal_global_78];
+  [index removeItemsWithIdentifiers:v5];
 }
 
 id __61__EDSearchableIndexManager__removeItemsForPersistedMessages___block_invoke(uint64_t a1, void *a2)
@@ -628,18 +628,18 @@ id __61__EDSearchableIndexManager__removeItemsForPersistedMessages___block_invok
   return v2;
 }
 
-- (void)persistenceIsChangingCategorizationForMessages:(id)a3
+- (void)persistenceIsChangingCategorizationForMessages:(id)messages
 {
-  v5 = a3;
-  v4 = [(EDSearchableIndexManager *)self index];
-  [v4 recordMessagesNeedToBeDonated:v5 indexingType:7];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index recordMessagesNeedToBeDonated:messagesCopy indexingType:7];
 }
 
-- (void)persistenceDidChangeCategorizationForMessages:(id)a3 userInitiated:(BOOL)a4 generationWindow:(id)a5
+- (void)persistenceDidChangeCategorizationForMessages:(id)messages userInitiated:(BOOL)initiated generationWindow:(id)window
 {
-  v7 = a3;
-  v6 = [(EDSearchableIndexManager *)self index];
-  [v6 indexMessages:v7 includeBody:0 indexingType:7];
+  messagesCopy = messages;
+  index = [(EDSearchableIndexManager *)self index];
+  [index indexMessages:messagesCopy includeBody:0 indexingType:7];
 }
 
 + (void)searchableItemResultForExpression:(os_log_t)log .cold.1(void *a1, uint8_t *buf, os_log_t log)

@@ -1,16 +1,16 @@
 @interface NCNotificationListSectionRevealHintView
 + (double)minimumViewHeight;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationListSectionRevealHintView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationListSectionRevealHintView)initWithFrame:(CGRect)frame;
 - (void)_configureRevealHintTitleIfNecessary;
 - (void)_layoutRevealHintTitle;
 - (void)_updateAlpha;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
+- (void)adjustForLegibilitySettingsChange:(id)change;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setForceRevealed:(BOOL)a3;
-- (void)setRevealPercentage:(double)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setForceRevealed:(BOOL)revealed;
+- (void)setRevealPercentage:(double)percentage;
 @end
 
 @implementation NCNotificationListSectionRevealHintView
@@ -38,8 +38,8 @@
     v3 = +[NCNotificationListLegibilityLabelCache sharedInstance];
     v4 = NCUserNotificationsUIKitFrameworkBundle();
     v5 = [v4 localizedStringForKey:@"NO_NOTIFICATION_HISTORY" value:&stru_282FE84F8 table:0];
-    v6 = [(NCNotificationListSectionRevealHintView *)self _labelFont];
-    v7 = [v3 legibilityLabelForTitle:v5 forSuperview:self font:v6];
+    _labelFont = [(NCNotificationListSectionRevealHintView *)self _labelFont];
+    v7 = [v3 legibilityLabelForTitle:v5 forSuperview:self font:_labelFont];
     revealHintTitle = self->_revealHintTitle;
     self->_revealHintTitle = v7;
 
@@ -53,11 +53,11 @@
   }
 }
 
-- (NCNotificationListSectionRevealHintView)initWithFrame:(CGRect)a3
+- (NCNotificationListSectionRevealHintView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NCNotificationListSectionRevealHintView;
-  v3 = [(NCNotificationListSectionRevealHintView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationListSectionRevealHintView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -68,21 +68,21 @@
   return v4;
 }
 
-- (void)setRevealPercentage:(double)a3
+- (void)setRevealPercentage:(double)percentage
 {
-  if (self->_revealPercentage != a3)
+  if (self->_revealPercentage != percentage)
   {
-    self->_revealPercentage = a3;
+    self->_revealPercentage = percentage;
     [(NCNotificationListSectionRevealHintView *)self _updateAlpha];
 
     [(NCNotificationListSectionRevealHintView *)self setNeedsLayout];
   }
 }
 
-- (void)setForceRevealed:(BOOL)a3
+- (void)setForceRevealed:(BOOL)revealed
 {
   v4 = 0.0;
-  if (a3)
+  if (revealed)
   {
     v4 = 1.0;
   }
@@ -105,10 +105,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCNotificationListSectionRevealHintView *)self _configureRevealHintTitleIfNecessary];
   [(NCNotificationListSectionRevealHintView *)self _layoutRevealHintTitle];
   revealHintTitle = self->_revealHintTitle;
@@ -128,25 +128,25 @@
   [(NCNotificationListSectionRevealHintView *)self _layoutRevealHintTitle];
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  changeCopy = change;
+  if (self->_legibilitySettings != changeCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v6 = [(NCNotificationListSectionRevealHintView *)self revealHintTitle];
-    [v6 setLegibilitySettings:v7];
+    v7 = changeCopy;
+    objc_storeStrong(&self->_legibilitySettings, change);
+    revealHintTitle = [(NCNotificationListSectionRevealHintView *)self revealHintTitle];
+    [revealHintTitle setLegibilitySettings:v7];
 
-    v5 = v7;
+    changeCopy = v7;
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
   }
 }
 
@@ -171,8 +171,8 @@
   v4 = v3;
   [(NCNotificationListSectionRevealHintView *)self hintingAlpha];
   v6 = v4 + v5;
-  v7 = [(NCNotificationListSectionRevealHintView *)self revealHintTitle];
-  [v7 setAlpha:v6];
+  revealHintTitle = [(NCNotificationListSectionRevealHintView *)self revealHintTitle];
+  [revealHintTitle setAlpha:v6];
 }
 
 @end

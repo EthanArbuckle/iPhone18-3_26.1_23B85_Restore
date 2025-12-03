@@ -1,13 +1,13 @@
 @interface _CDInteractionAdvisor
 + (id)sharedInteractionAdvisor;
-- (_CDInteractionAdvisor)initWithServiceName:(id)a3;
-- (id)adviseInteractionsForDate:(id)a3 usingSettings:(id)a4;
-- (id)adviseInteractionsForKeywordsInString:(id)a3 usingSettings:(id)a4;
-- (id)adviseInteractionsUsingSettings:(id)a3;
-- (id)adviseSocialInteractionsForDate:(id)a3 andSeedContacts:(id)a4 usingSettings:(id)a5;
-- (id)rankCandidateContacts:(id)a3 usingSettings:(id)a4;
+- (_CDInteractionAdvisor)initWithServiceName:(id)name;
+- (id)adviseInteractionsForDate:(id)date usingSettings:(id)settings;
+- (id)adviseInteractionsForKeywordsInString:(id)string usingSettings:(id)settings;
+- (id)adviseInteractionsUsingSettings:(id)settings;
+- (id)adviseSocialInteractionsForDate:(id)date andSeedContacts:(id)contacts usingSettings:(id)settings;
+- (id)rankCandidateContacts:(id)contacts usingSettings:(id)settings;
 - (void)dealloc;
-- (void)tuneSocialAdvisorUsingSettings:(id)a3 heartBeatHandler:(id)a4;
+- (void)tuneSocialAdvisorUsingSettings:(id)settings heartBeatHandler:(id)handler;
 @end
 
 @implementation _CDInteractionAdvisor
@@ -24,15 +24,15 @@
   return v3;
 }
 
-- (_CDInteractionAdvisor)initWithServiceName:(id)a3
+- (_CDInteractionAdvisor)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = _CDInteractionAdvisor;
   v5 = [(_CDInteractionAdvisor *)&v10 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v4 options:4096];
+    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:4096];
     connection = v5->_connection;
     v5->_connection = v6;
 
@@ -53,10 +53,10 @@
   [(_CDInteractionAdvisor *)&v3 dealloc];
 }
 
-- (id)rankCandidateContacts:(id)a3 usingSettings:(id)a4
+- (id)rankCandidateContacts:(id)contacts usingSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  settingsCopy = settings;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: rankCandidateContacts", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -82,7 +82,7 @@
   v13[2] = __61___CDInteractionAdvisor_rankCandidateContacts_usingSettings___block_invoke_7;
   v13[3] = &unk_1E7367760;
   v13[4] = &state;
-  [v10 rankCandidateContacts:v6 usingSettings:v7 reply:v13];
+  [v10 rankCandidateContacts:contactsCopy usingSettings:settingsCopy reply:v13];
   v11 = *(state.opaque[1] + 40);
 
   _Block_object_dispose(&state, 8);
@@ -90,10 +90,10 @@
   return v11;
 }
 
-- (id)adviseInteractionsUsingSettings:(id)a3
+- (id)adviseInteractionsUsingSettings:(id)settings
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = _os_activity_create(&dword_191750000, "CoreDuet: adviseInteractionsUsingSettings", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -115,14 +115,14 @@
   v18[4] = self;
   v7 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v18];
   v8 = v7;
-  if (v4)
+  if (settingsCopy)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __57___CDInteractionAdvisor_adviseInteractionsUsingSettings___block_invoke_9;
     v17[3] = &unk_1E7367760;
     v17[4] = &state;
-    [v7 adviseInteractionsUsingSettings:v4 reply:v17];
+    [v7 adviseInteractionsUsingSettings:settingsCopy reply:v17];
   }
 
   else
@@ -136,8 +136,8 @@
     v12 = +[_CDLogging interactionChannel];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 localizedDescription];
-      [(_CDInteractionAdvisor *)v13 adviseInteractionsUsingSettings:buf, v12];
+      localizedDescription = [v11 localizedDescription];
+      [(_CDInteractionAdvisor *)localizedDescription adviseInteractionsUsingSettings:buf, v12];
     }
 
     [(_CDInteractionAdvisor *)self setError:v11];
@@ -151,10 +151,10 @@
   return v14;
 }
 
-- (id)adviseInteractionsForDate:(id)a3 usingSettings:(id)a4
+- (id)adviseInteractionsForDate:(id)date usingSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  settingsCopy = settings;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: adviseInteractionsForDate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -180,7 +180,7 @@
   v13[2] = __65___CDInteractionAdvisor_adviseInteractionsForDate_usingSettings___block_invoke_18;
   v13[3] = &unk_1E7367760;
   v13[4] = &state;
-  [v10 adviseInteractionsForDate:v6 usingSettings:v7 reply:v13];
+  [v10 adviseInteractionsForDate:dateCopy usingSettings:settingsCopy reply:v13];
   v11 = *(state.opaque[1] + 40);
 
   _Block_object_dispose(&state, 8);
@@ -188,11 +188,11 @@
   return v11;
 }
 
-- (id)adviseSocialInteractionsForDate:(id)a3 andSeedContacts:(id)a4 usingSettings:(id)a5
+- (id)adviseSocialInteractionsForDate:(id)date andSeedContacts:(id)contacts usingSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  contactsCopy = contacts;
+  settingsCopy = settings;
   v11 = _os_activity_create(&dword_191750000, "CoreDuet: adviseSocialInteractionsForDate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -218,7 +218,7 @@
   v16[2] = __87___CDInteractionAdvisor_adviseSocialInteractionsForDate_andSeedContacts_usingSettings___block_invoke_19;
   v16[3] = &unk_1E7367760;
   v16[4] = &state;
-  [v13 adviseSocialInteractionsForDate:v8 andSeedContacts:v9 usingSettings:v10 reply:v16];
+  [v13 adviseSocialInteractionsForDate:dateCopy andSeedContacts:contactsCopy usingSettings:settingsCopy reply:v16];
   v14 = *(state.opaque[1] + 40);
 
   _Block_object_dispose(&state, 8);
@@ -226,10 +226,10 @@
   return v14;
 }
 
-- (id)adviseInteractionsForKeywordsInString:(id)a3 usingSettings:(id)a4
+- (id)adviseInteractionsForKeywordsInString:(id)string usingSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  settingsCopy = settings;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: adviseInteractionsForKeywordsInString", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -255,7 +255,7 @@
   v13[2] = __77___CDInteractionAdvisor_adviseInteractionsForKeywordsInString_usingSettings___block_invoke_20;
   v13[3] = &unk_1E7367760;
   v13[4] = &state;
-  [v10 adviseInteractionsForKeywordsInString:v6 usingSettings:v7 reply:v13];
+  [v10 adviseInteractionsForKeywordsInString:stringCopy usingSettings:settingsCopy reply:v13];
   v11 = *(state.opaque[1] + 40);
 
   _Block_object_dispose(&state, 8);
@@ -263,10 +263,10 @@
   return v11;
 }
 
-- (void)tuneSocialAdvisorUsingSettings:(id)a3 heartBeatHandler:(id)a4
+- (void)tuneSocialAdvisorUsingSettings:(id)settings heartBeatHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  settingsCopy = settings;
   v8 = _os_activity_create(&dword_191750000, "CoreDuet: tuneSocialAdvisorUsingSettings", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -281,7 +281,7 @@
   v11[3] = &unk_1E73675F8;
   v11[4] = self;
   v10 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
-  [v10 tuneSocialAdvisorUsingSettings:v7 heartBeatHandler:v6 reply:0];
+  [v10 tuneSocialAdvisorUsingSettings:settingsCopy heartBeatHandler:handlerCopy reply:0];
 }
 
 - (void)adviseInteractionsUsingSettings:(os_log_t)log .cold.1(void *a1, uint8_t *buf, os_log_t log)

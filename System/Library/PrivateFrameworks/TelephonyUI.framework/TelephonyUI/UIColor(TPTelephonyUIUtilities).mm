@@ -10,7 +10,7 @@
   v6.height = 1.0;
   UIGraphicsBeginImageContext(v6);
   CurrentContext = UIGraphicsGetCurrentContext();
-  CGContextSetFillColorWithColor(CurrentContext, [a1 CGColor]);
+  CGContextSetFillColorWithColor(CurrentContext, [self CGColor]);
   v7.origin.x = 0.0;
   v7.origin.y = 0.0;
   v7.size.width = 1.0;

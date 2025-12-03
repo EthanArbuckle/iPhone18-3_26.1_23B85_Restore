@@ -1,14 +1,14 @@
 @interface ACCAnalytics
-- (void)logACCAnalyticsForEventNamed:(id)a3 withAttributes:(id)a4;
+- (void)logACCAnalyticsForEventNamed:(id)named withAttributes:(id)attributes;
 @end
 
 @implementation ACCAnalytics
 
-- (void)logACCAnalyticsForEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logACCAnalyticsForEventNamed:(id)named withAttributes:(id)attributes
 {
-  if (a4)
+  if (attributes)
   {
-    [(ACCAnalyticsLogger *)self logEventNamed:a3 withAttributes:?];
+    [(ACCAnalyticsLogger *)self logEventNamed:named withAttributes:?];
   }
 }
 

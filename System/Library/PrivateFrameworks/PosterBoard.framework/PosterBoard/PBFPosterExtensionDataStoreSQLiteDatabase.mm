@@ -1,19 +1,19 @@
 @interface PBFPosterExtensionDataStoreSQLiteDatabase
-- (BOOL)checkIfPosterUUIDs:(id)a3 belongToRole:(id)a4 error:(id *)a5;
-- (BOOL)performChanges:(id)a3 error:(id *)a4;
-- (BOOL)validateDatabaseWithError:(id *)a3;
-- (PBFPosterExtensionDataStoreSQLiteDatabase)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)attributeForPoster:(id)a3 roleId:(id)a4 attributeId:(id)a5 error:(id *)a6;
-- (id)attributeIdentifiersForPoster:(id)a3 roleId:(id)a4 error:(id *)a5;
-- (id)attributesForPoster:(id)a3 roleId:(id)a4 attributeIdentifiers:(id)a5 error:(id *)a6;
-- (id)dataStoreMetadataWithError:(id *)a3;
-- (id)extensionIdentifierForPosterUUID:(id)a3 error:(id *)a4;
-- (id)extensionIdentifiersForRole:(id)a3 error:(id *)a4;
-- (id)posterUUIDsForExtensionIdentifier:(id)a3 role:(id)a4 error:(id *)a5;
-- (id)roleDisplayNamesForIdentifiers:(id)a3 error:(id *)a4;
-- (id)roleIdentifiersWithError:(id *)a3;
-- (id)selectedPosterUUIDForRole:(id)a3 error:(id *)a4;
-- (id)sortedPosterUUIDsForRole:(id)a3 error:(id *)a4;
+- (BOOL)checkIfPosterUUIDs:(id)ds belongToRole:(id)role error:(id *)error;
+- (BOOL)performChanges:(id)changes error:(id *)error;
+- (BOOL)validateDatabaseWithError:(id *)error;
+- (PBFPosterExtensionDataStoreSQLiteDatabase)initWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)attributeForPoster:(id)poster roleId:(id)id attributeId:(id)attributeId error:(id *)error;
+- (id)attributeIdentifiersForPoster:(id)poster roleId:(id)id error:(id *)error;
+- (id)attributesForPoster:(id)poster roleId:(id)id attributeIdentifiers:(id)identifiers error:(id *)error;
+- (id)dataStoreMetadataWithError:(id *)error;
+- (id)extensionIdentifierForPosterUUID:(id)d error:(id *)error;
+- (id)extensionIdentifiersForRole:(id)role error:(id *)error;
+- (id)posterUUIDsForExtensionIdentifier:(id)identifier role:(id)role error:(id *)error;
+- (id)roleDisplayNamesForIdentifiers:(id)identifiers error:(id *)error;
+- (id)roleIdentifiersWithError:(id *)error;
+- (id)selectedPosterUUIDForRole:(id)role error:(id *)error;
+- (id)sortedPosterUUIDsForRole:(id)role error:(id *)error;
 - (id)underlyingReadonlyDatabaseConnection;
 - (unint64_t)version;
 - (void)cancel;
@@ -22,16 +22,16 @@
 
 @implementation PBFPosterExtensionDataStoreSQLiteDatabase
 
-- (PBFPosterExtensionDataStoreSQLiteDatabase)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (PBFPosterExtensionDataStoreSQLiteDatabase)initWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v71 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  lCopy = l;
+  if (!lCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase initWithURL:a2 options:? error:?];
   }
 
-  v10 = v9;
+  v10 = lCopy;
   v64.receiver = self;
   v64.super_class = PBFPosterExtensionDataStoreSQLiteDatabase;
   v11 = [(PBFPosterExtensionDataStoreSQLiteDatabase *)&v64 init];
@@ -44,26 +44,26 @@
   URL = v11->_URL;
   v11->_URL = v12;
 
-  v11->_options = a4;
+  v11->_options = options;
   [(PBFPosterExtensionDataStoreSQLiteDatabase *)v11 setCheckpointWALOnInvalidate:1];
   v11->_lock._os_unfair_lock_opaque = 0;
   v11->_readwriteLock._os_unfair_lock_opaque = 0;
   v14 = MEMORY[0x277CBEBC0];
-  v15 = [v10 path];
-  v16 = [v15 stringByAppendingString:@"-shm"];
+  path = [v10 path];
+  v16 = [path stringByAppendingString:@"-shm"];
   v17 = [v14 fileURLWithPath:v16];
 
   v18 = MEMORY[0x277CBEBC0];
-  v19 = [v10 path];
-  v20 = [v19 stringByAppendingString:@"-wal"];
+  path2 = [v10 path];
+  v20 = [path2 stringByAppendingString:@"-wal"];
   v21 = [v18 fileURLWithPath:v20];
 
-  v52 = a5;
+  errorCopy = error;
   v53 = v11;
-  if ((a4 & 0xA) != 0)
+  if ((options & 0xA) != 0)
   {
     v22 = [_PBFPosterExtensionDataStoreSQLiteDatabaseImpl alloc];
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
       v23 = 6;
     }
@@ -73,7 +73,7 @@
       v23 = 2;
     }
 
-    if ((a4 & 4) != 0)
+    if ((options & 4) != 0)
     {
       v24 = 1;
     }
@@ -87,18 +87,18 @@
     v25 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)v22 initWithURL:v10 options:v24 error:&v63];
     v26 = v63;
     v27 = v26;
-    if (((a4 & 8) != 0 || (a4 & 2) != 0) && !v26)
+    if (((options & 8) != 0 || (options & 2) != 0) && !v26)
     {
-      v28 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)v25 setup];
+      setup = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)v25 setup];
 
-      v27 = v28;
+      v27 = setup;
     }
 
     [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)v25 invalidate];
     goto LABEL_15;
   }
 
-  if ((a4 & 4) != 0)
+  if ((options & 4) != 0)
   {
     if (![v17 checkResourceIsReachableAndReturnError:0] || (objc_msgSend(v21, "checkResourceIsReachableAndReturnError:", 0) & 1) == 0)
     {
@@ -111,7 +111,7 @@ LABEL_15:
     }
   }
 
-  else if ((a4 & 1) == 0)
+  else if ((options & 1) == 0)
   {
     v49 = _PBFPosterExtensionDataStoreSQLiteDatabaseError(1, 0, 0, 0);
     goto LABEL_16;
@@ -144,18 +144,18 @@ LABEL_16:
         }
 
         v34 = *(*(&v58 + 1) + 8 * i);
-        v35 = [v34 pf_allowSuspendWithOpenFileHandle];
+        pf_allowSuspendWithOpenFileHandle = [v34 pf_allowSuspendWithOpenFileHandle];
         v36 = PBFLogSQLite();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
           v66 = v34;
           v67 = 1024;
-          LODWORD(v68) = v35;
+          LODWORD(v68) = pf_allowSuspendWithOpenFileHandle;
           _os_log_impl(&dword_21B526000, v36, OS_LOG_TYPE_DEFAULT, "Database file at %{public}@ allowSuspendWithOpenFileHandle: %{BOOL}u", buf, 0x12u);
         }
 
-        if ((v35 & 1) == 0)
+        if ((pf_allowSuspendWithOpenFileHandle & 1) == 0)
         {
           v57 = 0;
           v37 = [v34 pf_setAllowSuspendWithOpenFileHandle:1 error:&v57];
@@ -166,11 +166,11 @@ LABEL_16:
           {
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
             {
-              v41 = [v34 pf_allowSuspendWithOpenFileHandle];
+              pf_allowSuspendWithOpenFileHandle2 = [v34 pf_allowSuspendWithOpenFileHandle];
               *buf = 138543618;
               v66 = v34;
               v67 = 1024;
-              LODWORD(v68) = v41;
+              LODWORD(v68) = pf_allowSuspendWithOpenFileHandle2;
               _os_log_impl(&dword_21B526000, v40, OS_LOG_TYPE_DEFAULT, "Database file at %{public}@ was updated to allowSuspendWithOpenFileHandle: %{BOOL}u", buf, 0x12u);
             }
           }
@@ -211,7 +211,7 @@ LABEL_16:
       if (v47)
       {
         v42 = v47;
-        if (!v52)
+        if (!errorCopy)
         {
           goto LABEL_36;
         }
@@ -225,11 +225,11 @@ LABEL_48:
     }
   }
 
-  if (v52)
+  if (errorCopy)
   {
 LABEL_35:
     v45 = v42;
-    *v52 = v42;
+    *errorCopy = v42;
   }
 
 LABEL_36:
@@ -246,16 +246,16 @@ LABEL_49:
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
+    version = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v3 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl version];
+    version = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl version];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return version;
 }
 
 - (id)underlyingReadonlyDatabaseConnection
@@ -263,28 +263,28 @@ LABEL_49:
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    v3 = 0;
+    connection = 0;
   }
 
   else
   {
-    v3 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl connection];
+    connection = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl connection];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return connection;
 }
 
-- (BOOL)validateDatabaseWithError:(id *)a3
+- (BOOL)validateDatabaseWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a3)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a3 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -295,7 +295,7 @@ LABEL_49:
 
   else
   {
-    v5 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl validateDatabaseWithError:a3];
+    v5 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl validateDatabaseWithError:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -314,15 +314,15 @@ LABEL_49:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)dataStoreMetadataWithError:(id *)a3
+- (id)dataStoreMetadataWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a3)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a3 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -333,7 +333,7 @@ LABEL_49:
 
   else
   {
-    v5 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl dataStoreMetadataWithError:a3];
+    v5 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl dataStoreMetadataWithError:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -341,15 +341,15 @@ LABEL_49:
   return v5;
 }
 
-- (id)roleIdentifiersWithError:(id *)a3
+- (id)roleIdentifiersWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a3)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a3 = v5 = 0;
+      *error = v5 = 0;
     }
 
     else
@@ -360,7 +360,7 @@ LABEL_49:
 
   else
   {
-    v5 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl roleIdentifiersWithError:a3];
+    v5 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl roleIdentifiersWithError:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -368,16 +368,16 @@ LABEL_49:
   return v5;
 }
 
-- (id)extensionIdentifiersForRole:(id)a3 error:(id *)a4
+- (id)extensionIdentifiersForRole:(id)role error:(id *)error
 {
-  v6 = a3;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a4)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -388,7 +388,7 @@ LABEL_49:
 
   else
   {
-    v7 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl extensionIdentifiersForRole:v6 error:a4];
+    v7 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl extensionIdentifiersForRole:roleCopy error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -396,17 +396,17 @@ LABEL_49:
   return v7;
 }
 
-- (id)attributeIdentifiersForPoster:(id)a3 roleId:(id)a4 error:(id *)a5
+- (id)attributeIdentifiersForPoster:(id)poster roleId:(id)id error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  posterCopy = poster;
+  idCopy = id;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a5)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -417,7 +417,7 @@ LABEL_49:
 
   else
   {
-    v10 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl attributeIdentifiersForPoster:v8 roleId:v9 error:a5];
+    v10 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl attributeIdentifiersForPoster:posterCopy roleId:idCopy error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -425,16 +425,16 @@ LABEL_49:
   return v10;
 }
 
-- (id)extensionIdentifierForPosterUUID:(id)a3 error:(id *)a4
+- (id)extensionIdentifierForPosterUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a4)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -445,7 +445,7 @@ LABEL_49:
 
   else
   {
-    v7 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl extensionIdentifierForPosterUUID:v6 error:a4];
+    v7 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl extensionIdentifierForPosterUUID:dCopy error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -453,17 +453,17 @@ LABEL_49:
   return v7;
 }
 
-- (id)posterUUIDsForExtensionIdentifier:(id)a3 role:(id)a4 error:(id *)a5
+- (id)posterUUIDsForExtensionIdentifier:(id)identifier role:(id)role error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  roleCopy = role;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a5)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a5 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -474,7 +474,7 @@ LABEL_49:
 
   else
   {
-    v10 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl posterUUIDsForExtensionIdentifier:v8 role:v9 error:a5];
+    v10 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl posterUUIDsForExtensionIdentifier:identifierCopy role:roleCopy error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -482,22 +482,22 @@ LABEL_49:
   return v10;
 }
 
-- (id)sortedPosterUUIDsForRole:(id)a3 error:(id *)a4
+- (id)sortedPosterUUIDsForRole:(id)role error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  roleCopy = role;
+  if (!roleCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase sortedPosterUUIDsForRole:a2 error:?];
   }
 
-  v8 = v7;
+  v8 = roleCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a4)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -508,7 +508,7 @@ LABEL_49:
 
   else
   {
-    v9 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl sortedPosterUUIDsForRole:v8 error:a4];
+    v9 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl sortedPosterUUIDsForRole:v8 error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -516,24 +516,24 @@ LABEL_49:
   return v9;
 }
 
-- (id)roleDisplayNamesForIdentifiers:(id)a3 error:(id *)a4
+- (id)roleDisplayNamesForIdentifiers:(id)identifiers error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase roleDisplayNamesForIdentifiers:a2 error:?];
   }
 
-  v8 = v7;
-  if ([v7 count])
+  v8 = identifiersCopy;
+  if ([identifiersCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
     if (self->_lock_invalidated)
     {
-      if (a4)
+      if (error)
       {
         _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-        *a4 = v9 = 0;
+        *error = v9 = 0;
       }
 
       else
@@ -544,7 +544,7 @@ LABEL_49:
 
     else
     {
-      v9 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl roleDisplayNamesForIdentifiers:v8 error:a4];
+      v9 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl roleDisplayNamesForIdentifiers:v8 error:error];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -558,25 +558,25 @@ LABEL_49:
   return v9;
 }
 
-- (BOOL)checkIfPosterUUIDs:(id)a3 belongToRole:(id)a4 error:(id *)a5
+- (BOOL)checkIfPosterUUIDs:(id)ds belongToRole:(id)role error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dsCopy = ds;
+  roleCopy = role;
+  if (!roleCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase checkIfPosterUUIDs:a2 belongToRole:? error:?];
   }
 
-  v11 = v10;
-  if ([v9 count])
+  v11 = roleCopy;
+  if ([dsCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
     if (self->_lock_invalidated)
     {
-      if (a5)
+      if (error)
       {
         _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-        *a5 = v12 = 0;
+        *error = v12 = 0;
       }
 
       else
@@ -587,7 +587,7 @@ LABEL_49:
 
     else
     {
-      v12 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl checkIfPosterUUIDs:v9 belongToRole:v11 error:a5];
+      v12 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl checkIfPosterUUIDs:dsCopy belongToRole:v11 error:error];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -601,22 +601,22 @@ LABEL_49:
   return v12;
 }
 
-- (id)selectedPosterUUIDForRole:(id)a3 error:(id *)a4
+- (id)selectedPosterUUIDForRole:(id)role error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  roleCopy = role;
+  if (!roleCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase selectedPosterUUIDForRole:a2 error:?];
   }
 
-  v8 = v7;
+  v8 = roleCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a4)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -627,7 +627,7 @@ LABEL_49:
 
   else
   {
-    v9 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl selectedPosterUUIDForRole:v8 error:a4];
+    v9 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl selectedPosterUUIDForRole:v8 error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -635,24 +635,24 @@ LABEL_49:
   return v9;
 }
 
-- (id)attributeForPoster:(id)a3 roleId:(id)a4 attributeId:(id)a5 error:(id *)a6
+- (id)attributeForPoster:(id)poster roleId:(id)id attributeId:(id)attributeId error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v12)
+  posterCopy = poster;
+  idCopy = id;
+  attributeIdCopy = attributeId;
+  if (!idCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase attributeForPoster:a2 roleId:? attributeId:? error:?];
   }
 
-  v14 = v13;
+  v14 = attributeIdCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a6)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a6 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -663,7 +663,7 @@ LABEL_49:
 
   else
   {
-    v15 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl attributeForPoster:v11 roleId:v12 attributeId:v14 error:a6];
+    v15 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl attributeForPoster:posterCopy roleId:idCopy attributeId:v14 error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -671,24 +671,24 @@ LABEL_49:
   return v15;
 }
 
-- (id)attributesForPoster:(id)a3 roleId:(id)a4 attributeIdentifiers:(id)a5 error:(id *)a6
+- (id)attributesForPoster:(id)poster roleId:(id)id attributeIdentifiers:(id)identifiers error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v12)
+  posterCopy = poster;
+  idCopy = id;
+  identifiersCopy = identifiers;
+  if (!idCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase attributesForPoster:a2 roleId:? attributeIdentifiers:? error:?];
   }
 
-  v14 = v13;
+  v14 = identifiersCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_invalidated)
   {
-    if (a6)
+    if (error)
     {
       _PBFPosterExtensionDataStoreSQLiteDatabaseError(3, 0, 0, 0);
-      *a6 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -699,7 +699,7 @@ LABEL_49:
 
   else
   {
-    v15 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl attributesForPoster:v11 roleId:v12 attributeIdentifiers:v14 error:a6];
+    v15 = [(_PBFPosterExtensionDataStoreSQLiteDatabaseImpl *)self->_lock_readonlyImpl attributesForPoster:posterCopy roleId:idCopy attributeIdentifiers:v14 error:error];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -707,15 +707,15 @@ LABEL_49:
   return v15;
 }
 
-- (BOOL)performChanges:(id)a3 error:(id *)a4
+- (BOOL)performChanges:(id)changes error:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  changesCopy = changes;
+  if (!changesCopy)
   {
     [PBFPosterExtensionDataStoreSQLiteDatabase performChanges:a2 error:?];
   }
 
-  v8 = v7;
+  v8 = changesCopy;
   os_unfair_lock_lock(&self->_lock);
   lock_invalidated = self->_lock_invalidated;
   os_unfair_lock_unlock(&self->_lock);
@@ -785,10 +785,10 @@ LABEL_15:
 LABEL_16:
   os_activity_scope_leave(&state);
   os_unfair_lock_unlock(&self->_readwriteLock);
-  if (a4 && v16)
+  if (error && v16)
   {
     v17 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
 LABEL_20:

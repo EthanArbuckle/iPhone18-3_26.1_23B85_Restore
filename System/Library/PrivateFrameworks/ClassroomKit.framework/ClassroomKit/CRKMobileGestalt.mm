@@ -5,8 +5,8 @@
 - (NSString)productVersion;
 - (NSString)serialNumber;
 - (double)mainScreenScale;
-- (id)answerForQuestion:(__CFString *)a3;
-- (id)answerForQuestion:(__CFString *)a3 ofClass:(Class)a4;
+- (id)answerForQuestion:(__CFString *)question;
+- (id)answerForQuestion:(__CFString *)question ofClass:(Class)class;
 - (unint64_t)availableBytes;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __33__CRKMobileGestalt_sharedGestalt__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedGestalt_onceToken != -1)
   {
     dispatch_once(&sharedGestalt_onceToken, block);
@@ -72,9 +72,9 @@ uint64_t __33__CRKMobileGestalt_sharedGestalt__block_invoke()
 {
   v2 = [(CRKMobileGestalt *)self answerForQuestion:@"DiskUsage" ofClass:objc_opt_class()];
   v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277D82398]];
-  v4 = [v3 unsignedLongLongValue];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (NSString)buildVersion
@@ -91,9 +91,9 @@ uint64_t __33__CRKMobileGestalt_sharedGestalt__block_invoke()
   return [(CRKMobileGestalt *)self answerForQuestion:@"ProductVersion" ofClass:v3];
 }
 
-- (id)answerForQuestion:(__CFString *)a3 ofClass:(Class)a4
+- (id)answerForQuestion:(__CFString *)question ofClass:(Class)class
 {
-  v4 = [(CRKMobileGestalt *)self answerForQuestion:a3];
+  v4 = [(CRKMobileGestalt *)self answerForQuestion:question];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -109,7 +109,7 @@ uint64_t __33__CRKMobileGestalt_sharedGestalt__block_invoke()
   return v5;
 }
 
-- (id)answerForQuestion:(__CFString *)a3
+- (id)answerForQuestion:(__CFString *)question
 {
   v3 = MGCopyAnswer();
 

@@ -1,14 +1,14 @@
 @interface NSSQLStatementIntermediate
-- (BOOL)keypathExpressionIsSafeLHSForIn:(id)a3;
-- (NSSQLStatementIntermediate)initWithEntity:(id)a3 alias:(id)a4 inScope:(id)a5;
-- (id)governingAliasForKeypathExpression:(id)a3;
-- (id)governingEntityForKeypathExpression:(id)a3;
+- (BOOL)keypathExpressionIsSafeLHSForIn:(id)in;
+- (NSSQLStatementIntermediate)initWithEntity:(id)entity alias:(id)alias inScope:(id)scope;
+- (id)governingAliasForKeypathExpression:(id)expression;
+- (id)governingEntityForKeypathExpression:(id)expression;
 - (void)dealloc;
-- (void)setCorrelationToken:(uint64_t)a1;
-- (void)setGoverningAlias:(id)a3;
-- (void)setLimitIntermediate:(uint64_t)a1;
-- (void)setOrderIntermediate:(uint64_t)a1;
-- (void)setWhereIntermediate:(uint64_t)a1;
+- (void)setCorrelationToken:(uint64_t)token;
+- (void)setGoverningAlias:(id)alias;
+- (void)setLimitIntermediate:(uint64_t)intermediate;
+- (void)setOrderIntermediate:(uint64_t)intermediate;
+- (void)setWhereIntermediate:(uint64_t)intermediate;
 @end
 
 @implementation NSSQLStatementIntermediate
@@ -27,87 +27,87 @@
   [(NSSQLStatementIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLStatementIntermediate)initWithEntity:(id)a3 alias:(id)a4 inScope:(id)a5
+- (NSSQLStatementIntermediate)initWithEntity:(id)entity alias:(id)alias inScope:(id)scope
 {
-  v7 = [(NSSQLIntermediate *)self initWithScope:a5];
+  v7 = [(NSSQLIntermediate *)self initWithScope:scope];
   v8 = v7;
   if (v7)
   {
-    v7->_governingEntity = a3;
-    v7->_governingAlias = a4;
+    v7->_governingEntity = entity;
+    v7->_governingAlias = alias;
   }
 
   return v8;
 }
 
-- (void)setWhereIntermediate:(uint64_t)a1
+- (void)setWhereIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 40) != a2)
+    if (*(intermediate + 40) != a2)
     {
       v4 = a2;
 
-      *(a1 + 40) = a2;
+      *(intermediate + 40) = a2;
     }
   }
 }
 
-- (void)setLimitIntermediate:(uint64_t)a1
+- (void)setLimitIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 48) != a2)
+    if (*(intermediate + 48) != a2)
     {
       v4 = a2;
 
-      *(a1 + 48) = a2;
+      *(intermediate + 48) = a2;
     }
   }
 }
 
-- (void)setOrderIntermediate:(uint64_t)a1
+- (void)setOrderIntermediate:(uint64_t)intermediate
 {
-  if (a1)
+  if (intermediate)
   {
-    if (*(a1 + 56) != a2)
+    if (*(intermediate + 56) != a2)
     {
       v4 = a2;
 
-      *(a1 + 56) = a2;
+      *(intermediate + 56) = a2;
     }
   }
 }
 
-- (void)setCorrelationToken:(uint64_t)a1
+- (void)setCorrelationToken:(uint64_t)token
 {
-  if (a1)
+  if (token)
   {
-    if (*(a1 + 32) != a2)
+    if (*(token + 32) != a2)
     {
       v4 = a2;
 
-      *(a1 + 32) = a2;
+      *(token + 32) = a2;
     }
   }
 }
 
-- (void)setGoverningAlias:(id)a3
+- (void)setGoverningAlias:(id)alias
 {
-  if (self->_governingAlias != a3)
+  if (self->_governingAlias != alias)
   {
-    v5 = a3;
+    aliasCopy = alias;
 
-    self->_governingAlias = a3;
+    self->_governingAlias = alias;
   }
 }
 
-- (id)governingAliasForKeypathExpression:(id)a3
+- (id)governingAliasForKeypathExpression:(id)expression
 {
   scope = self->super._scope;
   if (!scope)
   {
-    if ([objc_opt_class() isSimpleKeypath:a3])
+    if ([objc_opt_class() isSimpleKeypath:expression])
     {
       return self->_governingAlias;
     }
@@ -115,15 +115,15 @@
     scope = self->super._scope;
   }
 
-  return [(NSSQLIntermediate *)scope governingAliasForKeypathExpression:a3];
+  return [(NSSQLIntermediate *)scope governingAliasForKeypathExpression:expression];
 }
 
-- (id)governingEntityForKeypathExpression:(id)a3
+- (id)governingEntityForKeypathExpression:(id)expression
 {
   scope = self->super._scope;
   if (!scope)
   {
-    if ([objc_opt_class() isSimpleKeypath:a3])
+    if ([objc_opt_class() isSimpleKeypath:expression])
     {
       return self->_governingEntity;
     }
@@ -131,10 +131,10 @@
     scope = self->super._scope;
   }
 
-  return [(NSSQLIntermediate *)scope governingEntityForKeypathExpression:a3];
+  return [(NSSQLIntermediate *)scope governingEntityForKeypathExpression:expression];
 }
 
-- (BOOL)keypathExpressionIsSafeLHSForIn:(id)a3
+- (BOOL)keypathExpressionIsSafeLHSForIn:(id)in
 {
   v26 = *MEMORY[0x1E69E9840];
   scope = self->super._scope;
@@ -143,27 +143,27 @@
     goto LABEL_6;
   }
 
-  if (([objc_opt_class() isSimpleKeypath:a3] & 1) == 0)
+  if (([objc_opt_class() isSimpleKeypath:in] & 1) == 0)
   {
     scope = self->super._scope;
 LABEL_6:
     v8 = *MEMORY[0x1E69E9840];
 
-    return [(NSSQLIntermediate *)scope keypathExpressionIsSafeLHSForIn:a3];
+    return [(NSSQLIntermediate *)scope keypathExpressionIsSafeLHSForIn:in];
   }
 
-  v6 = [(NSSQLStatementIntermediate *)self governingEntityForKeypathExpression:a3];
-  if ([a3 expressionType] == 3)
+  destinationEntity = [(NSSQLStatementIntermediate *)self governingEntityForKeypathExpression:in];
+  if ([in expressionType] == 3)
   {
-    v7 = [a3 keyPath];
+    keyPath = [in keyPath];
   }
 
   else
   {
-    v7 = [objc_msgSend(objc_msgSend(a3 "arguments")];
+    keyPath = [objc_msgSend(objc_msgSend(in "arguments")];
   }
 
-  v10 = [v7 componentsSeparatedByString:@"."];
+  v10 = [keyPath componentsSeparatedByString:@"."];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -183,12 +183,12 @@ LABEL_12:
         objc_enumerationMutation(v10);
       }
 
-      if (!v6)
+      if (!destinationEntity)
       {
         goto LABEL_27;
       }
 
-      v16 = [v6[5] objectForKey:*(*(&v21 + 1) + 8 * v15)];
+      v16 = [destinationEntity[5] objectForKey:*(*(&v21 + 1) + 8 * v15)];
       if (!v16)
       {
         goto LABEL_27;
@@ -203,7 +203,7 @@ LABEL_12:
       v18 = v17[24];
       if (v18 == 7)
       {
-        v6 = [v17 destinationEntity];
+        destinationEntity = [v17 destinationEntity];
       }
 
       else
@@ -213,7 +213,7 @@ LABEL_12:
           break;
         }
 
-        v6 = 0;
+        destinationEntity = 0;
       }
 
 LABEL_24:
@@ -230,14 +230,14 @@ LABEL_24:
       }
     }
 
-    v19 = [v17 destinationEntity];
+    destinationEntity2 = [v17 destinationEntity];
     if (v13)
     {
       result = 0;
       goto LABEL_29;
     }
 
-    v6 = v19;
+    destinationEntity = destinationEntity2;
     v13 = 1;
     goto LABEL_24;
   }

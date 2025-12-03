@@ -1,7 +1,7 @@
 @interface SBHRootFolderSettings
 + (id)settingsControllerModule;
 - (CGSize)editModeButtonSize;
-- (CGSize)iconImageSizeForGridSizeClass:(id)a3;
+- (CGSize)iconImageSizeForGridSizeClass:(id)class;
 - (UIEdgeInsets)dockAdditionalIconInsets;
 - (UIEdgeInsets)dockPlatterInsets;
 - (UIEdgeInsets)landscapeAdditionalWidgetLayoutInsets;
@@ -10,8 +10,8 @@
 - (UIEdgeInsets)portraitLayoutInsets;
 - (UIOffset)editModeButtonLayoutOffset;
 - (double)dockViewHeight;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)setDefaultValues;
 @end
@@ -122,8 +122,8 @@
   __49__SBHRootFolderSettings_settingsControllerModule__block_invoke(v37, v36);
   v38 = [MEMORY[0x1E69C6638] sectionWithRows:v36 title:@"Icon Size Adjustments"];
   v39 = MEMORY[0x1E69C65E8];
-  v40 = [MEMORY[0x1E69C6640] action];
-  v41 = [v39 rowWithTitle:@"Restore Defaults" action:v40];
+  action = [MEMORY[0x1E69C6640] action];
+  v41 = [v39 rowWithTitle:@"Restore Defaults" action:action];
   v53 = v41;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
 
@@ -276,9 +276,9 @@ void __49__SBHRootFolderSettings_settingsControllerModule__block_invoke(uint64_t
   return v5 + v4 * 2.0;
 }
 
-- (CGSize)iconImageSizeForGridSizeClass:(id)a3
+- (CGSize)iconImageSizeForGridSizeClass:(id)class
 {
-  v4 = a3;
+  classCopy = class;
   [(SBHRootFolderSettings *)self defaultIconSize];
   v6 = v5;
   [(SBHRootFolderSettings *)self smallWidgetHeight];
@@ -286,7 +286,7 @@ void __49__SBHRootFolderSettings_settingsControllerModule__block_invoke(uint64_t
   [(SBHRootFolderSettings *)self mediumWidgetWidth];
   v10 = v9;
   [(SBHRootFolderSettings *)self largeIconHeight];
-  if (@"SBHIconGridSizeClassDefault" == v4)
+  if (@"SBHIconGridSizeClassDefault" == classCopy)
   {
     v13 = v6;
   }
@@ -295,9 +295,9 @@ void __49__SBHRootFolderSettings_settingsControllerModule__block_invoke(uint64_t
   {
     v12 = v11;
     v13 = v6;
-    if (([(__CFString *)v4 isEqualToString:?]& 1) == 0)
+    if (([(__CFString *)classCopy isEqualToString:?]& 1) == 0)
     {
-      if (@"SBHIconGridSizeClassSmall" == v4 || ([(__CFString *)v4 isEqualToString:?]& 1) != 0)
+      if (@"SBHIconGridSizeClassSmall" == classCopy || ([(__CFString *)classCopy isEqualToString:?]& 1) != 0)
       {
         v6 = v8;
         v13 = v8;
@@ -305,14 +305,14 @@ void __49__SBHRootFolderSettings_settingsControllerModule__block_invoke(uint64_t
 
       else
       {
-        if (@"SBHIconGridSizeClassMedium" == v4 || ([(__CFString *)v4 isEqualToString:?]& 1) != 0)
+        if (@"SBHIconGridSizeClassMedium" == classCopy || ([(__CFString *)classCopy isEqualToString:?]& 1) != 0)
         {
           v6 = v8;
         }
 
         else
         {
-          if (@"SBHIconGridSizeClassLarge" != v4 && ![(__CFString *)v4 isEqualToString:?])
+          if (@"SBHIconGridSizeClassLarge" != classCopy && ![(__CFString *)classCopy isEqualToString:?])
           {
             v13 = *MEMORY[0x1E695F060];
             v6 = *(MEMORY[0x1E695F060] + 8);
@@ -362,37 +362,37 @@ LABEL_7:
 
 - (id)succinctDescription
 {
-  v2 = [(SBHRootFolderSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHRootFolderSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHRootFolderSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHRootFolderSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBHRootFolderSettings *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBHRootFolderSettings *)self succinctDescriptionBuilder];
   v6 = SBHScreenTypeForCurrentDevice();
   v7 = SBHStringForScreenType(v6);
-  [v5 appendString:v7 withName:@"layout"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"layout"];
 
-  v8 = [v5 appendBool:-[SBHRootFolderSettings isAdjustableLayoutEnabled](self withName:{"isAdjustableLayoutEnabled"), @"adjustableLayoutEnabled"}];
+  v8 = [succinctDescriptionBuilder appendBool:-[SBHRootFolderSettings isAdjustableLayoutEnabled](self withName:{"isAdjustableLayoutEnabled"), @"adjustableLayoutEnabled"}];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__SBHRootFolderSettings_descriptionBuilderWithMultilinePrefix___block_invoke;
   v12[3] = &unk_1E8088F18;
-  v9 = v5;
+  v9 = succinctDescriptionBuilder;
   v13 = v9;
-  v14 = self;
-  [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v12];
+  selfCopy = self;
+  [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v12];
 
   v10 = v9;
   return v9;

@@ -1,39 +1,39 @@
 @interface ACXSyncedApplication
-+ (id)buildLocalizedInfoPlistStringsDictForAppBundleURL:(id)a3 watchKitExtensionURL:(id)a4;
-+ (id)localizedAppNameFromRecord:(id)a3;
++ (id)buildLocalizedInfoPlistStringsDictForAppBundleURL:(id)l watchKitExtensionURL:(id)rL;
++ (id)localizedAppNameFromRecord:(id)record;
 - (ACXSyncedApplication)init;
-- (ACXSyncedApplication)initWithApplicationRecord:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5;
-- (ACXSyncedApplication)initWithBundleID:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5;
-- (ACXSyncedApplication)initWithCoder:(id)a3;
-- (ACXSyncedApplication)initWithSerializedDictionary:(id)a3;
+- (ACXSyncedApplication)initWithApplicationRecord:(id)record databaseUUID:(id)d sequenceNumber:(unint64_t)number;
+- (ACXSyncedApplication)initWithBundleID:(id)d databaseUUID:(id)iD sequenceNumber:(unint64_t)number;
+- (ACXSyncedApplication)initWithCoder:(id)coder;
+- (ACXSyncedApplication)initWithSerializedDictionary:(id)dictionary;
 - (NSString)applicationName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initForTesting;
-- (id)localizedInfoPlistStringsForKeys:(id)a3 fetchingFirstMatchingLocalizationInList:(id)a4;
+- (id)localizedInfoPlistStringsForKeys:(id)keys fetchingFirstMatchingLocalizationInList:(id)list;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACXSyncedApplication
 
-+ (id)localizedAppNameFromRecord:(id)a3
++ (id)localizedAppNameFromRecord:(id)record
 {
-  v3 = a3;
-  v4 = [v3 localizedName];
-  if (v4 || ([v3 localizedShortName], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  recordCopy = record;
+  localizedName = [recordCopy localizedName];
+  if (localizedName || ([recordCopy localizedShortName], (localizedName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
+    v5 = localizedName;
   }
 
   else
   {
-    v7 = [v3 URL];
-    v8 = [v7 URLByDeletingPathExtension];
-    v9 = [v8 lastPathComponent];
+    v7 = [recordCopy URL];
+    uRLByDeletingPathExtension = [v7 URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-    if (v9)
+    if (lastPathComponent)
     {
-      v5 = v9;
+      v5 = lastPathComponent;
     }
 
     else
@@ -45,9 +45,9 @@
   return v5;
 }
 
-- (ACXSyncedApplication)initWithCoder:(id)a3
+- (ACXSyncedApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = ACXSyncedApplication;
   v5 = [(ACXSyncedApplication *)&v34 init];
@@ -58,7 +58,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (![v4 containsValueForKey:@"bundleIdentifier"])
+  if (![coderCopy containsValueForKey:@"bundleIdentifier"])
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -68,49 +68,49 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"databaseUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"databaseUUID"];
   if (v8)
   {
     v9 = v8;
     objc_storeStrong(&v5->_databaseUUID, v8);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sequenceNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sequenceNumber"];
     v5->_sequenceNumber = [v10 unsignedIntegerValue];
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"counterpartIdentifiers"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"counterpartIdentifiers"];
     counterpartIdentifiers = v5->_counterpartIdentifiers;
     v5->_counterpartIdentifiers = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationType"];
     v5->_applicationType = [v16 unsignedIntegerValue];
 
-    v5->_isDeletable = [v4 decodeBoolForKey:@"isDeletable"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationName"];
+    v5->_isDeletable = [coderCopy decodeBoolForKey:@"isDeletable"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationName"];
     applicationName = v5->_applicationName;
     v5->_applicationName = v17;
 
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"localizedInfoPlistStrings"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"localizedInfoPlistStrings"];
     localizedInfoPlistStrings = v5->_localizedInfoPlistStrings;
     v5->_localizedInfoPlistStrings = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalVersionIdentifier"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalVersionIdentifier"];
     externalVersionIdentifier = v5->_externalVersionIdentifier;
     v5->_externalVersionIdentifier = v24;
 
-    v5->_supportsAlwaysOnDisplay = [v4 decodeBoolForKey:@"supportsAlwaysOnDisplay"];
-    v5->_defaultsToPrivateAlwaysOnDisplayTreatment = [v4 decodeBoolForKey:@"defaultsToPrivateAlwaysOnDisplayTreatment"];
-    if ([v4 containsValueForKey:@"isEligibleForWatchAppInstall"])
+    v5->_supportsAlwaysOnDisplay = [coderCopy decodeBoolForKey:@"supportsAlwaysOnDisplay"];
+    v5->_defaultsToPrivateAlwaysOnDisplayTreatment = [coderCopy decodeBoolForKey:@"defaultsToPrivateAlwaysOnDisplayTreatment"];
+    if ([coderCopy containsValueForKey:@"isEligibleForWatchAppInstall"])
     {
-      v26 = [v4 decodeBoolForKey:@"isEligibleForWatchAppInstall"];
+      v26 = [coderCopy decodeBoolForKey:@"isEligibleForWatchAppInstall"];
     }
 
     else
@@ -122,7 +122,7 @@ LABEL_15:
     v28 = MEMORY[0x277CBEB98];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"accessorySetupKitSupports"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"accessorySetupKitSupports"];
     accessorySetupKitSupports = v5->_accessorySetupKitSupports;
     v5->_accessorySetupKitSupports = v31;
 
@@ -142,27 +142,27 @@ LABEL_16:
   return v27;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v7 = a3;
-  [v7 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v7 encodeObject:self->_databaseUUID forKey:@"databaseUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_databaseUUID forKey:@"databaseUUID"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_sequenceNumber];
-  [v7 encodeObject:v5 forKey:@"sequenceNumber"];
+  [coderCopy encodeObject:v5 forKey:@"sequenceNumber"];
 
-  [v7 encodeObject:self->_counterpartIdentifiers forKey:@"counterpartIdentifiers"];
+  [coderCopy encodeObject:self->_counterpartIdentifiers forKey:@"counterpartIdentifiers"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_applicationType];
-  [v7 encodeObject:v6 forKey:@"applicationType"];
+  [coderCopy encodeObject:v6 forKey:@"applicationType"];
 
-  [v7 encodeBool:self->_isDeletable forKey:@"isDeletable"];
-  [v7 encodeObject:self->_applicationName forKey:@"applicationName"];
-  [v7 encodeObject:self->_localizedInfoPlistStrings forKey:@"localizedInfoPlistStrings"];
-  [v7 encodeObject:self->_externalVersionIdentifier forKey:@"externalVersionIdentifier"];
-  [v7 encodeBool:self->_supportsAlwaysOnDisplay forKey:@"supportsAlwaysOnDisplay"];
-  [v7 encodeBool:self->_defaultsToPrivateAlwaysOnDisplayTreatment forKey:@"defaultsToPrivateAlwaysOnDisplayTreatment"];
-  [v7 encodeBool:self->_isEligibleForWatchAppInstall forKey:@"isEligibleForWatchAppInstall"];
-  [v7 encodeObject:self->_accessorySetupKitSupports forKey:@"accessorySetupKitSupports"];
+  [coderCopy encodeBool:self->_isDeletable forKey:@"isDeletable"];
+  [coderCopy encodeObject:self->_applicationName forKey:@"applicationName"];
+  [coderCopy encodeObject:self->_localizedInfoPlistStrings forKey:@"localizedInfoPlistStrings"];
+  [coderCopy encodeObject:self->_externalVersionIdentifier forKey:@"externalVersionIdentifier"];
+  [coderCopy encodeBool:self->_supportsAlwaysOnDisplay forKey:@"supportsAlwaysOnDisplay"];
+  [coderCopy encodeBool:self->_defaultsToPrivateAlwaysOnDisplayTreatment forKey:@"defaultsToPrivateAlwaysOnDisplayTreatment"];
+  [coderCopy encodeBool:self->_isEligibleForWatchAppInstall forKey:@"isEligibleForWatchAppInstall"];
+  [coderCopy encodeObject:self->_accessorySetupKitSupports forKey:@"accessorySetupKitSupports"];
 }
 
 - (ACXSyncedApplication)init
@@ -172,26 +172,26 @@ LABEL_16:
   return [(ACXSyncedApplication *)&v3 init];
 }
 
-- (ACXSyncedApplication)initWithApplicationRecord:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5
+- (ACXSyncedApplication)initWithApplicationRecord:(id)record databaseUUID:(id)d sequenceNumber:(unint64_t)number
 {
   v6.receiver = self;
   v6.super_class = ACXSyncedApplication;
-  return [(ACXSyncedApplication *)&v6 init:a3];
+  return [(ACXSyncedApplication *)&v6 init:record];
 }
 
-- (ACXSyncedApplication)initWithBundleID:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5
+- (ACXSyncedApplication)initWithBundleID:(id)d databaseUUID:(id)iD sequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v13.receiver = self;
   v13.super_class = ACXSyncedApplication;
   v10 = [(ACXSyncedApplication *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(ACXSyncedApplication *)v10 setBundleIdentifier:v8];
-    [(ACXSyncedApplication *)v11 setDatabaseUUID:v9];
-    [(ACXSyncedApplication *)v11 setSequenceNumber:a5];
+    [(ACXSyncedApplication *)v10 setBundleIdentifier:dCopy];
+    [(ACXSyncedApplication *)v11 setDatabaseUUID:iDCopy];
+    [(ACXSyncedApplication *)v11 setSequenceNumber:number];
   }
 
   return v11;
@@ -204,49 +204,49 @@ LABEL_16:
   return [(ACXSyncedApplication *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
-    v5 = [(ACXSyncedApplication *)self bundleIdentifier];
-    v6 = [v5 copy];
+    bundleIdentifier = [(ACXSyncedApplication *)self bundleIdentifier];
+    v6 = [bundleIdentifier copy];
     v7 = *(v4 + 16);
     *(v4 + 16) = v6;
 
-    v8 = [(ACXSyncedApplication *)self databaseUUID];
-    v9 = [v8 copy];
+    databaseUUID = [(ACXSyncedApplication *)self databaseUUID];
+    v9 = [databaseUUID copy];
     v10 = *(v4 + 32);
     *(v4 + 32) = v9;
 
     *(v4 + 40) = [(ACXSyncedApplication *)self sequenceNumber];
-    v11 = [(ACXSyncedApplication *)self counterpartIdentifiers];
-    v12 = [v11 copy];
+    counterpartIdentifiers = [(ACXSyncedApplication *)self counterpartIdentifiers];
+    v12 = [counterpartIdentifiers copy];
     v13 = *(v4 + 48);
     *(v4 + 48) = v12;
 
     *(v4 + 56) = [(ACXSyncedApplication *)self applicationType];
     *(v4 + 8) = [(ACXSyncedApplication *)self isDeletable];
-    v14 = [(ACXSyncedApplication *)self applicationName];
-    v15 = [v14 copy];
+    applicationName = [(ACXSyncedApplication *)self applicationName];
+    v15 = [applicationName copy];
     v16 = *(v4 + 24);
     *(v4 + 24) = v15;
 
-    v17 = [(ACXSyncedApplication *)self localizedInfoPlistStrings];
-    v18 = [v17 copy];
+    localizedInfoPlistStrings = [(ACXSyncedApplication *)self localizedInfoPlistStrings];
+    v18 = [localizedInfoPlistStrings copy];
     v19 = *(v4 + 72);
     *(v4 + 72) = v18;
 
-    v20 = [(ACXSyncedApplication *)self externalVersionIdentifier];
-    v21 = [v20 copy];
+    externalVersionIdentifier = [(ACXSyncedApplication *)self externalVersionIdentifier];
+    v21 = [externalVersionIdentifier copy];
     v22 = *(v4 + 80);
     *(v4 + 80) = v21;
 
     *(v4 + 9) = [(ACXSyncedApplication *)self supportsAlwaysOnDisplay];
     *(v4 + 10) = [(ACXSyncedApplication *)self defaultsToPrivateAlwaysOnDisplayTreatment];
     *(v4 + 11) = [(ACXSyncedApplication *)self isEligibleForWatchAppInstall];
-    v23 = [(ACXSyncedApplication *)self accessorySetupKitSupports];
-    v24 = [v23 copy];
+    accessorySetupKitSupports = [(ACXSyncedApplication *)self accessorySetupKitSupports];
+    v24 = [accessorySetupKitSupports copy];
     v25 = *(v4 + 64);
     *(v4 + 64) = v24;
 
@@ -256,9 +256,9 @@ LABEL_16:
   return v4;
 }
 
-- (ACXSyncedApplication)initWithSerializedDictionary:(id)a3
+- (ACXSyncedApplication)initWithSerializedDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v50.receiver = self;
   v50.super_class = ACXSyncedApplication;
   v5 = [(ACXSyncedApplication *)&v50 init];
@@ -269,7 +269,7 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBED38]];
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CBED38]];
   objc_opt_class();
   v7 = v6;
   if (objc_opt_isKindOfClass())
@@ -287,7 +287,7 @@ LABEL_74:
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"DBUUID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"DBUUID"];
     objc_opt_class();
     v11 = v10;
     v12 = (objc_opt_isKindOfClass() & 1) != 0 ? v11 : 0;
@@ -308,7 +308,7 @@ LABEL_74:
       databaseUUID = v5->_databaseUUID;
       v5->_databaseUUID = v13;
 
-      v15 = [v4 objectForKeyedSubscript:@"sequenceNumber"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"sequenceNumber"];
       objc_opt_class();
       v16 = v15;
       if (objc_opt_isKindOfClass())
@@ -325,7 +325,7 @@ LABEL_74:
       {
         v5->_sequenceNumber = [v17 unsignedIntegerValue];
 
-        v18 = [v4 objectForKeyedSubscript:@"counterpartIdentifiers"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"counterpartIdentifiers"];
         objc_opt_class();
         v19 = v18;
         if (objc_opt_isKindOfClass())
@@ -343,7 +343,7 @@ LABEL_74:
           objc_storeStrong(&v5->_counterpartIdentifiers, v20);
         }
 
-        v22 = [v4 objectForKeyedSubscript:@"applicationType"];
+        v22 = [dictionaryCopy objectForKeyedSubscript:@"applicationType"];
         objc_opt_class();
         v23 = v22;
         if (objc_opt_isKindOfClass())
@@ -361,7 +361,7 @@ LABEL_74:
           v5->_applicationType = [v24 unsignedIntegerValue];
         }
 
-        v25 = [v4 objectForKeyedSubscript:@"isDeletable"];
+        v25 = [dictionaryCopy objectForKeyedSubscript:@"isDeletable"];
         objc_opt_class();
         v26 = v25;
         if (objc_opt_isKindOfClass())
@@ -379,7 +379,7 @@ LABEL_74:
           v5->_isDeletable = [v27 BOOLValue];
         }
 
-        v28 = [v4 objectForKeyedSubscript:@"n"];
+        v28 = [dictionaryCopy objectForKeyedSubscript:@"n"];
         objc_opt_class();
         v29 = v28;
         if (objc_opt_isKindOfClass())
@@ -397,7 +397,7 @@ LABEL_74:
           objc_storeStrong(&v5->_applicationName, v30);
         }
 
-        v31 = [v4 objectForKeyedSubscript:@"localizedInfoPlistStrings"];
+        v31 = [dictionaryCopy objectForKeyedSubscript:@"localizedInfoPlistStrings"];
         objc_opt_class();
         v32 = v31;
         if (objc_opt_isKindOfClass())
@@ -415,7 +415,7 @@ LABEL_74:
           objc_storeStrong(&v5->_localizedInfoPlistStrings, v33);
         }
 
-        v34 = [v4 objectForKeyedSubscript:@"ExternalVersionIdentifier"];
+        v34 = [dictionaryCopy objectForKeyedSubscript:@"ExternalVersionIdentifier"];
         objc_opt_class();
         v35 = v34;
         if (objc_opt_isKindOfClass())
@@ -434,7 +434,7 @@ LABEL_74:
         }
 
         v5->_supportsAlwaysOnDisplay = 1;
-        v37 = [v4 objectForKeyedSubscript:@"ACXSupportsAlwaysOnDisplayKey"];
+        v37 = [dictionaryCopy objectForKeyedSubscript:@"ACXSupportsAlwaysOnDisplayKey"];
         objc_opt_class();
         v38 = v37;
         if (objc_opt_isKindOfClass())
@@ -452,7 +452,7 @@ LABEL_74:
           v5->_supportsAlwaysOnDisplay = [v39 BOOLValue];
         }
 
-        v40 = [v4 objectForKeyedSubscript:@"ACXAppDefaultsToPrivateAlwaysOnDisplayTreatmentKey"];
+        v40 = [dictionaryCopy objectForKeyedSubscript:@"ACXAppDefaultsToPrivateAlwaysOnDisplayTreatmentKey"];
         objc_opt_class();
         v41 = v40;
         if (objc_opt_isKindOfClass())
@@ -471,7 +471,7 @@ LABEL_74:
         }
 
         v5->_isEligibleForWatchAppInstall = 1;
-        v43 = [v4 objectForKeyedSubscript:@"ACXIsEligibleForWatchAppInstallKey"];
+        v43 = [dictionaryCopy objectForKeyedSubscript:@"ACXIsEligibleForWatchAppInstallKey"];
         objc_opt_class();
         v44 = v43;
         if (objc_opt_isKindOfClass())
@@ -489,7 +489,7 @@ LABEL_74:
           v5->_isEligibleForWatchAppInstall = [v45 BOOLValue];
         }
 
-        v46 = [v4 objectForKeyedSubscript:@"ACXAccessorySetupKitSupportsKey"];
+        v46 = [dictionaryCopy objectForKeyedSubscript:@"ACXAccessorySetupKitSupportsKey"];
         objc_opt_class();
         v47 = v46;
         if (objc_opt_isKindOfClass())
@@ -528,8 +528,8 @@ LABEL_75:
 {
   v3 = objc_opt_new();
   [v3 setObject:self->_bundleIdentifier forKeyedSubscript:*MEMORY[0x277CBED38]];
-  v4 = [(NSUUID *)self->_databaseUUID UUIDString];
-  [v3 setObject:v4 forKeyedSubscript:@"DBUUID"];
+  uUIDString = [(NSUUID *)self->_databaseUUID UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"DBUUID"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_sequenceNumber];
   [v3 setObject:v5 forKeyedSubscript:@"sequenceNumber"];
@@ -553,57 +553,57 @@ LABEL_75:
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACXSyncedApplication isEligibleForWatchAppInstall](self, "isEligibleForWatchAppInstall")}];
   [v3 setObject:v10 forKeyedSubscript:@"ACXIsEligibleForWatchAppInstallKey"];
 
-  v11 = [(ACXSyncedApplication *)self accessorySetupKitSupports];
-  [v3 setObject:v11 forKeyedSubscript:@"ACXAccessorySetupKitSupportsKey"];
+  accessorySetupKitSupports = [(ACXSyncedApplication *)self accessorySetupKitSupports];
+  [v3 setObject:accessorySetupKitSupports forKeyedSubscript:@"ACXAccessorySetupKitSupportsKey"];
 
   v12 = [v3 copy];
 
   return v12;
 }
 
-+ (id)buildLocalizedInfoPlistStringsDictForAppBundleURL:(id)a3 watchKitExtensionURL:(id)a4
++ (id)buildLocalizedInfoPlistStringsDictForAppBundleURL:(id)l watchKitExtensionURL:(id)rL
 {
-  v5 = a4;
-  v6 = a3;
+  rLCopy = rL;
+  lCopy = l;
   v7 = objc_opt_new();
-  v8 = [objc_opt_class() localizedInfoPlistKeysLoadAppOnly];
-  v9 = [objc_opt_class() localizedInfoPlistKeysLoadAnywhere];
-  if (v5)
+  localizedInfoPlistKeysLoadAppOnly = [objc_opt_class() localizedInfoPlistKeysLoadAppOnly];
+  localizedInfoPlistKeysLoadAnywhere = [objc_opt_class() localizedInfoPlistKeysLoadAnywhere];
+  if (rLCopy)
   {
-    _FetchLocalizedKeys(v5, v7, v9);
+    _FetchLocalizedKeys(rLCopy, v7, localizedInfoPlistKeysLoadAnywhere);
   }
 
   v10 = objc_opt_new();
-  [v10 unionSet:v9];
-  if (v5)
+  [v10 unionSet:localizedInfoPlistKeysLoadAnywhere];
+  if (rLCopy)
   {
     v11 = MEMORY[0x277CBEB98];
-    v12 = [v7 allKeys];
-    v13 = [v11 setWithArray:v12];
+    allKeys = [v7 allKeys];
+    v13 = [v11 setWithArray:allKeys];
     [v10 minusSet:v13];
   }
 
-  [v10 unionSet:v8];
-  _FetchLocalizedKeys(v6, v7, v10);
+  [v10 unionSet:localizedInfoPlistKeysLoadAppOnly];
+  _FetchLocalizedKeys(lCopy, v7, v10);
 
   v14 = [v7 copy];
 
   return v14;
 }
 
-- (id)localizedInfoPlistStringsForKeys:(id)a3 fetchingFirstMatchingLocalizationInList:(id)a4
+- (id)localizedInfoPlistStringsForKeys:(id)keys fetchingFirstMatchingLocalizationInList:(id)list
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  prefArray = a4;
+  keysCopy = keys;
+  prefArray = list;
   v32 = objc_opt_new();
-  v30 = self;
-  v35 = [(ACXSyncedApplication *)self localizedInfoPlistStrings];
+  selfCopy = self;
+  localizedInfoPlistStrings = [(ACXSyncedApplication *)self localizedInfoPlistStrings];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v6;
+  obj = keysCopy;
   v7 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v7)
   {
@@ -619,18 +619,18 @@ LABEL_75:
         }
 
         v10 = *(*(&v40 + 1) + 8 * i);
-        v11 = [v35 objectForKeyedSubscript:{v10, v26, v27}];
+        v11 = [localizedInfoPlistStrings objectForKeyedSubscript:{v10, v26, v27}];
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 allKeys];
-          v14 = CFBundleCopyLocalizationsForPreferences(v13, prefArray);
+          allKeys = [v11 allKeys];
+          v14 = CFBundleCopyLocalizationsForPreferences(allKeys, prefArray);
           if (gLogHandle && *(gLogHandle + 44) >= 7)
           {
-            [(ACXSyncedApplication *)v30 bundleIdentifier];
+            [(ACXSyncedApplication *)selfCopy bundleIdentifier];
             v28 = prefArray;
             v26 = v29 = v14;
-            v27 = v13;
+            v27 = allKeys;
             MOLogWrite();
           }
 
@@ -687,9 +687,9 @@ LABEL_21:
 
         if (!gLogHandle || *(gLogHandle + 44) >= 5)
         {
-          v13 = [(ACXSyncedApplication *)v30 bundleIdentifier];
+          allKeys = [(ACXSyncedApplication *)selfCopy bundleIdentifier];
           v26 = v10;
-          v27 = v13;
+          v27 = allKeys;
           MOLogWrite();
 LABEL_25:
         }

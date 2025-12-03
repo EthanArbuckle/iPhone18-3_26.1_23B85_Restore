@@ -1,13 +1,13 @@
 @interface CIAreaAverageProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CIAreaAverageProcessor
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v5 = [a4 objectForKeyedSubscript:{@"region", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"region", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;
@@ -17,19 +17,19 @@
   return result;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v8 = [a3 objectAtIndexedSubscript:{0, a4, a5, a6}];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"region", "CGRectValue"}];
+  v8 = [inputs objectAtIndexedSubscript:{0, arguments, output, error}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"region", "CGRectValue"}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [a5 metalCommandBuffer];
-  if (v17)
+  metalCommandBuffer = [output metalCommandBuffer];
+  if (metalCommandBuffer)
   {
-    v18 = v17;
-    v19 = [objc_alloc(MEMORY[0x1E6974628]) initWithDevice:{objc_msgSend(v17, "device")}];
+    v18 = metalCommandBuffer;
+    v19 = [objc_alloc(MEMORY[0x1E6974628]) initWithDevice:{objc_msgSend(metalCommandBuffer, "device")}];
     if (v19)
     {
       v20 = v19;
@@ -122,7 +122,7 @@
       [v20 setClipRectSource:&v40];
       [v20 setOptions:2];
       [v20 setEdgeMode:1];
-      [a5 region];
+      [output region];
       v32 = v54.origin.x;
       v33 = v54.origin.y;
       v34 = v54.size.width;
@@ -166,7 +166,7 @@
       v42 = xmmword_19CF22E40;
       v43 = vdupq_n_s64(1uLL);
       [v20 setClipRect:&v40];
-      [v20 encodeToCommandBuffer:v18 sourceTexture:objc_msgSend(v8 destinationTexture:{"metalTexture"), objc_msgSend(a5, "metalTexture")}];
+      [v20 encodeToCommandBuffer:v18 sourceTexture:objc_msgSend(v8 destinationTexture:{"metalTexture"), objc_msgSend(output, "metalTexture")}];
     }
   }
 

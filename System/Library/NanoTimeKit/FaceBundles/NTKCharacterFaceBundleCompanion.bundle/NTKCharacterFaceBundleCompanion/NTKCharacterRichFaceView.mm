@@ -1,35 +1,35 @@
 @interface NTKCharacterRichFaceView
-- (NTKCharacterRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKCharacterRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (id)_newScaleView;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 @end
 
 @implementation NTKCharacterRichFaceView
 
-- (NTKCharacterRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKCharacterRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = NTKCharacterRichFaceView;
-  v5 = [(NTKCharacterFaceView *)&v9 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKCharacterFaceView *)&v9 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(NTKCharacterRichFaceView *)v5 complicationFactory];
-    [v7 setGraphicCornerComplications:1];
+    complicationFactory = [(NTKCharacterRichFaceView *)v5 complicationFactory];
+    [complicationFactory setGraphicCornerComplications:1];
   }
 
   return v6;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = NTKCharacterRichFaceView;
-  [(NTKCharacterFaceView *)&v10 _configureComplicationView:v6 forSlot:a4];
-  if ([v6 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  [(NTKCharacterFaceView *)&v10 _configureComplicationView:viewCopy forSlot:slot];
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
-    v7 = v6;
+    v7 = viewCopy;
     [v7 setUseRoundedFontDesign:1];
     [v7 setFontWeight:UIFontWeightMedium];
   }
@@ -37,7 +37,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = viewCopy;
     v9 = [UIColor colorWithRed:0.701960784 green:0.701960784 blue:0.701960784 alpha:1.0];
     [(NTKCharacterRichFaceView *)self setComplicationColor:v9];
     [(NTKCharacterRichFaceView *)self setInterpolatedComplicationColor:v9];
@@ -50,10 +50,10 @@
 {
   v5.receiver = self;
   v5.super_class = NTKCharacterRichFaceView;
-  v2 = [(NTKCharacterFaceView *)&v5 _newScaleView];
+  _newScaleView = [(NTKCharacterFaceView *)&v5 _newScaleView];
   CGAffineTransformMakeScale(&v4, 0.95, 0.95);
-  [v2 setTransform:&v4];
-  return v2;
+  [_newScaleView setTransform:&v4];
+  return _newScaleView;
 }
 
 @end

@@ -4,8 +4,8 @@
 - (UIView)leadingView;
 - (UIView)trailingView;
 - (int64_t)systemApertureLayoutCustomizingOptions;
-- (void)setProminent:(BOOL)a3;
-- (void)setShowsTrailing:(BOOL)a3;
+- (void)setProminent:(BOOL)prominent;
+- (void)setShowsTrailing:(BOOL)trailing;
 @end
 
 @implementation SBPrototypeProminentPresentingActivityElementViewProvider
@@ -24,21 +24,21 @@
   return result;
 }
 
-- (void)setProminent:(BOOL)a3
+- (void)setProminent:(BOOL)prominent
 {
-  if (self->_prominent != a3)
+  if (self->_prominent != prominent)
   {
-    self->_prominent = a3;
+    self->_prominent = prominent;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
   }
 }
 
-- (void)setShowsTrailing:(BOOL)a3
+- (void)setShowsTrailing:(BOOL)trailing
 {
-  if (self->_showsTrailing != a3)
+  if (self->_showsTrailing != trailing)
   {
-    self->_showsTrailing = a3;
+    self->_showsTrailing = trailing;
     WeakRetained = objc_loadWeakRetained(&self->_layoutHost);
     [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:self];
   }
@@ -69,32 +69,32 @@
     v6 = objc_alloc(MEMORY[0x277D755E8]);
     v7 = MEMORY[0x277D755B8];
     v8 = MEMORY[0x277D755D0];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    v10 = [v8 configurationWithHierarchicalColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v10 = [v8 configurationWithHierarchicalColor:whiteColor];
     v11 = [v7 systemImageNamed:@"flashlight.on.fill" withConfiguration:v10];
     v12 = [v6 initWithImage:v11];
 
     [v12 setContentMode:1];
     [(UIView *)self->_leadingView addSubview:v12];
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [v12 leadingAnchor];
-    v14 = [(UIView *)self->_leadingView leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [v12 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_leadingView leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v15 setActive:1];
 
-    v16 = [v12 trailingAnchor];
-    v17 = [(UIView *)self->_leadingView trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [v12 trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_leadingView trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v18 setActive:1];
 
-    v19 = [v12 topAnchor];
-    v20 = [(UIView *)self->_leadingView topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [(UIView *)self->_leadingView topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v21 setActive:1];
 
-    v22 = [v12 bottomAnchor];
-    v23 = [(UIView *)self->_leadingView bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self->_leadingView bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v24 setActive:1];
 
     leadingView = self->_leadingView;
@@ -115,8 +115,8 @@
     v7 = [v5 fontWithDescriptor:v6 size:0.0];
     [(UIView *)v4 setFont:v7];
 
-    v8 = [MEMORY[0x277D75348] systemYellowColor];
-    [(UIView *)v4 setTextColor:v8];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [(UIView *)v4 setTextColor:systemYellowColor];
 
     v9 = self->_trailingView;
     self->_trailingView = v4;

@@ -4,7 +4,7 @@
 + (NSString)timeSplitAnalyticsKey;
 - (BOOL)canDisplayBlockRepeatIndicator;
 - (BOOL)canDisplayTrackLaneIndicator;
-- (BOOL)configureWithWorkoutVoiceMotivationWithShouldLog:(BOOL)a3;
+- (BOOL)configureWithWorkoutVoiceMotivationWithShouldLog:(BOOL)log;
 - (BOOL)isCatalogWorkout;
 - (BOOL)isGymKit;
 - (BOOL)isLastIntervalWorkoutKeyPath;
@@ -21,7 +21,7 @@
 - (BOOL)shouldHideMetricsUntilFirstAlert;
 - (BOOL)startTrackingWhenMetricsDisplay;
 - (BOOL)supportsCustomRouteAlerts;
-- (BOOL)supportsMetricType:(unint64_t)a3 domainAccessor:(id)a4;
+- (BOOL)supportsMetricType:(unint64_t)type domainAccessor:(id)accessor;
 - (BOOL)supportsMirroredCatalogWorkouts;
 - (BOOL)supportsMirroring;
 - (BOOL)supportsSegments;
@@ -47,11 +47,11 @@
 - (WOCoreCatalogWorkout)catalogWorkoutBridge;
 - (WOCoreHeartRateTargetZone)currentHeartRateTargetZone;
 - (WOCoreLiveWorkoutConfiguration)init;
-- (WOCoreLiveWorkoutConfiguration)initWithConfiguration:(id)a3 startSource:(unint64_t)a4 activityMoveMode:(int64_t)a5 activityPausedRingsObserver:(id)a6 catalogWorkout:(id)a7 isWorkoutBuddyFeatureSupported:(BOOL)a8;
+- (WOCoreLiveWorkoutConfiguration)initWithConfiguration:(id)configuration startSource:(unint64_t)source activityMoveMode:(int64_t)mode activityPausedRingsObserver:(id)observer catalogWorkout:(id)workout isWorkoutBuddyFeatureSupported:(BOOL)supported;
 - (WOCorePowerZonesAlertTargetZone)currentPowerAlertTargetZone;
 - (WOCorePowerZonesAlertTargetZone)currentPowerZonesAlertTargetZone;
 - (WONPSDomainAccessorProtocol)domainAccessor;
-- (id)analyticsAlertsConfiguredWithFormattingManager:(id)a3;
+- (id)analyticsAlertsConfiguredWithFormattingManager:(id)manager;
 - (id)copy;
 - (int64_t)currentActivityLocationType;
 - (int64_t)currentMultiSportLeg;
@@ -59,19 +59,19 @@
 - (int64_t)safetyCheckInWillDismissCounter;
 - (unint64_t)fitnessMachineSeymourStartSource;
 - (unint64_t)startSource;
-- (void)advanceMultisportLegWithSuggestedConfiguration:(id)a3;
-- (void)restoreFromWorkoutActivityMetadata:(id)a3;
-- (void)saveWorkoutConfigurationMetadataTo:(id)a3;
-- (void)setFitnessMachineSeymourStartSource:(unint64_t)a3;
-- (void)setIsWorkoutBuddyFeatureNoLongerAvailable:(BOOL)a3;
-- (void)setIsWorkoutBuddyMuted:(BOOL)a3;
-- (void)setIsWorkoutBuddyUnavailableDueToHeadphonesOff:(BOOL)a3;
-- (void)setMirroredStartInterrupted:(BOOL)a3;
-- (void)setRequiresGoalConfiguration:(BOOL)a3;
-- (void)setSafetyCheckInWillDismissCounter:(int64_t)a3;
-- (void)setStartSource:(unint64_t)a3;
-- (void)setSuggestedHKWorkoutConfiguration:(id)a3;
-- (void)setVideoMetrics:(id)a3;
+- (void)advanceMultisportLegWithSuggestedConfiguration:(id)configuration;
+- (void)restoreFromWorkoutActivityMetadata:(id)metadata;
+- (void)saveWorkoutConfigurationMetadataTo:(id)to;
+- (void)setFitnessMachineSeymourStartSource:(unint64_t)source;
+- (void)setIsWorkoutBuddyFeatureNoLongerAvailable:(BOOL)available;
+- (void)setIsWorkoutBuddyMuted:(BOOL)muted;
+- (void)setIsWorkoutBuddyUnavailableDueToHeadphonesOff:(BOOL)off;
+- (void)setMirroredStartInterrupted:(BOOL)interrupted;
+- (void)setRequiresGoalConfiguration:(BOOL)configuration;
+- (void)setSafetyCheckInWillDismissCounter:(int64_t)counter;
+- (void)setStartSource:(unint64_t)source;
+- (void)setSuggestedHKWorkoutConfiguration:(id)configuration;
+- (void)setVideoMetrics:(id)metrics;
 @end
 
 @implementation WOCoreLiveWorkoutConfiguration
@@ -100,11 +100,11 @@
   return *(self + v3);
 }
 
-- (void)setStartSource:(unint64_t)a3
+- (void)setStartSource:(unint64_t)source
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_startSource;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = source;
 }
 
 - (BOOL)mirroredStartInterrupted
@@ -114,16 +114,16 @@
   return *(self + v3);
 }
 
-- (void)setMirroredStartInterrupted:(BOOL)a3
+- (void)setMirroredStartInterrupted:(BOOL)interrupted
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_mirroredStartInterrupted;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = interrupted;
 }
 
 - (WOCoreCatalogWorkout)catalogWorkoutBridge
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.catalogWorkoutBridge.getter();
 
   return v3;
@@ -136,11 +136,11 @@
   return *(self + v3);
 }
 
-- (void)setFitnessMachineSeymourStartSource:(unint64_t)a3
+- (void)setFitnessMachineSeymourStartSource:(unint64_t)source
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_fitnessMachineSeymourStartSource;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = source;
 }
 
 - (HKWorkoutConfiguration)suggestedHKWorkoutConfiguration
@@ -150,13 +150,13 @@
   return *(self + v3);
 }
 
-- (void)setSuggestedHKWorkoutConfiguration:(id)a3
+- (void)setSuggestedHKWorkoutConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_suggestedHKWorkoutConfiguration;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = configuration;
+  configurationCopy = configuration;
 }
 
 - (BOOL)requiresGoalConfiguration
@@ -166,11 +166,11 @@
   return *(self + v3);
 }
 
-- (void)setRequiresGoalConfiguration:(BOOL)a3
+- (void)setRequiresGoalConfiguration:(BOOL)configuration
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_requiresGoalConfiguration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = configuration;
 }
 
 - (WONPSDomainAccessorProtocol)domainAccessor
@@ -191,7 +191,7 @@
 
 - (FIUIWorkoutActivityType)currentMultisportDisplayedActivityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentMultisportDisplayedActivityType.getter();
 
   return v3;
@@ -199,7 +199,7 @@
 
 - (FIUIWorkoutActivityType)currentActivityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentActivityType.getter();
 
   return v3;
@@ -207,11 +207,11 @@
 
 - (int64_t)currentActivityLocationType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentActivityType.getter();
-  v4 = [v3 isIndoor];
+  isIndoor = [v3 isIndoor];
 
-  if (v4)
+  if (isIndoor)
   {
     return 2;
   }
@@ -226,7 +226,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
@@ -234,7 +234,7 @@
 
 - (int64_t)remainingMultisportLegCount
 {
-  v2 = self;
+  selfCopy = self;
   LiveWorkoutConfiguration.remainingMultisportLegCount.getter();
   v4 = v3;
 
@@ -243,7 +243,7 @@
 
 - (WOCorePowerZonesAlertTargetZone)currentPowerZonesAlertTargetZone
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentPowerZonesAlertTargetZone.getter();
 
   return v3;
@@ -251,7 +251,7 @@
 
 - (WOCorePowerZonesAlertTargetZone)currentPowerAlertTargetZone
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentPowerAlertTargetZone.getter();
 
   return v3;
@@ -268,7 +268,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     v6 = LiveWorkoutConfiguration.currentGoal.getter();
 
     v4 = v6;
@@ -279,7 +279,7 @@
 
 - (NLSessionActivityGoal)currentGoal
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentGoal.getter();
 
   return v3;
@@ -287,7 +287,7 @@
 
 - (WOCoreHeartRateTargetZone)currentHeartRateTargetZone
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.currentHeartRateTargetZone.getter();
 
   return v3;
@@ -300,11 +300,11 @@
   return *(self + v3);
 }
 
-- (void)setIsWorkoutBuddyMuted:(BOOL)a3
+- (void)setIsWorkoutBuddyMuted:(BOOL)muted
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_isWorkoutBuddyMuted;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = muted;
 }
 
 - (BOOL)isWorkoutBuddyFeatureNoLongerAvailable
@@ -314,11 +314,11 @@
   return *(self + v3);
 }
 
-- (void)setIsWorkoutBuddyFeatureNoLongerAvailable:(BOOL)a3
+- (void)setIsWorkoutBuddyFeatureNoLongerAvailable:(BOOL)available
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_isWorkoutBuddyFeatureNoLongerAvailable;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = available;
 }
 
 - (BOOL)isWorkoutBuddyUnavailableDueToHeadphonesOff
@@ -328,11 +328,11 @@
   return *(self + v3);
 }
 
-- (void)setIsWorkoutBuddyUnavailableDueToHeadphonesOff:(BOOL)a3
+- (void)setIsWorkoutBuddyUnavailableDueToHeadphonesOff:(BOOL)off
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_isWorkoutBuddyUnavailableDueToHeadphonesOff;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = off;
 }
 
 - (BOOL)multisportAutomaticallySwitchesLegs
@@ -342,7 +342,7 @@
   v4 = swift_dynamicCastClass();
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = specialized static MultisportTransitionsStore.read()();
     swift_getKeyPath();
     swift_getKeyPath();
@@ -424,9 +424,9 @@
   return v4.super.isa;
 }
 
-- (void)setVideoMetrics:(id)a3
+- (void)setVideoMetrics:(id)metrics
 {
-  if (a3)
+  if (metrics)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -444,7 +444,7 @@
 
 - (HKWorkoutConfiguration)topLevelHKWorkoutConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.topLevelHKWorkoutConfiguration.getter();
 
   return v3;
@@ -452,7 +452,7 @@
 
 - (HKWorkoutConfiguration)hkWorkoutConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.hkWorkoutConfiguration.getter();
 
   return v3;
@@ -461,26 +461,26 @@
 - (BOOL)isLowPowerMode
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  selfCopy = self;
+  processInfo = [v3 processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if (v6)
+  if (isLowPowerModeEnabled)
   {
-    v7 = 1;
+    isPowerSavingModeEnabled = 1;
   }
 
   else
   {
-    v7 = [*(v4 + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_domainAccessor) isPowerSavingModeEnabled];
+    isPowerSavingModeEnabled = [*(selfCopy + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_domainAccessor) isPowerSavingModeEnabled];
   }
 
-  return v7;
+  return isPowerSavingModeEnabled;
 }
 
 - (NSDictionary)hkWorkoutConfigurationMetadata
 {
-  v2 = self;
+  selfCopy = self;
   LiveWorkoutConfiguration.hkWorkoutConfigurationMetadata.getter();
 
   v3.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
@@ -494,7 +494,7 @@
   swift_beginAccess();
   v4 = *(self + v3);
   v5 = *(self + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_domainAccessor);
-  v6 = self;
+  selfCopy = self;
   LOBYTE(v4) = specialized static PrecisionStartChecker.usePrecisionStart(startSource:domainAccessor:)(v4, v5);
 
   return v4 & 1;
@@ -509,7 +509,7 @@
 
 - (BOOL)supportsMirroring
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.supportsMirroring.getter();
 
   return v3 & 1;
@@ -552,16 +552,16 @@
 
 - (BOOL)supportsWorkoutVoiceMotivation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.supportsWorkoutVoiceMotivation.getter();
 
   return v3 & 1;
 }
 
-- (BOOL)configureWithWorkoutVoiceMotivationWithShouldLog:(BOOL)a3
+- (BOOL)configureWithWorkoutVoiceMotivationWithShouldLog:(BOOL)log
 {
-  v4 = self;
-  v5 = LiveWorkoutConfiguration.configureWithWorkoutVoiceMotivation(shouldLog:)(a3);
+  selfCopy = self;
+  v5 = LiveWorkoutConfiguration.configureWithWorkoutVoiceMotivation(shouldLog:)(log);
 
   return v5;
 }
@@ -582,7 +582,7 @@
 
 - (BOOL)canDisplayBlockRepeatIndicator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.canDisplayBlockRepeatIndicator.getter();
 
   return v3 & 1;
@@ -590,7 +590,7 @@
 
 - (BOOL)canDisplayTrackLaneIndicator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.canDisplayTrackLaneIndicator.getter();
 
   return v3 & 1;
@@ -598,7 +598,7 @@
 
 - (BOOL)startTrackingWhenMetricsDisplay
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.startTrackingWhenMetricsDisplay.getter();
 
   return v3 & 1;
@@ -606,7 +606,7 @@
 
 - (BOOL)shouldHideMetricsUntilFirstAlert
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.shouldHideMetricsUntilFirstAlert.getter();
 
   return v3 & 1;
@@ -626,25 +626,25 @@
   return *(self + v3);
 }
 
-- (void)setSafetyCheckInWillDismissCounter:(int64_t)a3
+- (void)setSafetyCheckInWillDismissCounter:(int64_t)counter
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_safetyCheckInWillDismissCounter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = counter;
 }
 
-- (WOCoreLiveWorkoutConfiguration)initWithConfiguration:(id)a3 startSource:(unint64_t)a4 activityMoveMode:(int64_t)a5 activityPausedRingsObserver:(id)a6 catalogWorkout:(id)a7 isWorkoutBuddyFeatureSupported:(BOOL)a8
+- (WOCoreLiveWorkoutConfiguration)initWithConfiguration:(id)configuration startSource:(unint64_t)source activityMoveMode:(int64_t)mode activityPausedRingsObserver:(id)observer catalogWorkout:(id)workout isWorkoutBuddyFeatureSupported:(BOOL)supported
 {
-  v8 = a8;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  return LiveWorkoutConfiguration.init(configuration:startSource:activityMoveMode:activityPausedRingsObserver:catalogWorkout:isWorkoutBuddyFeatureSupported:)(v13, a4, a5, v14, a7, v8);
+  supportedCopy = supported;
+  configurationCopy = configuration;
+  observerCopy = observer;
+  workoutCopy = workout;
+  return LiveWorkoutConfiguration.init(configuration:startSource:activityMoveMode:activityPausedRingsObserver:catalogWorkout:isWorkoutBuddyFeatureSupported:)(configurationCopy, source, mode, observerCopy, workout, supportedCopy);
 }
 
 - (BOOL)moveToNextStep
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.moveToNextStep()();
 
   return v3;
@@ -652,7 +652,7 @@
 
 - (BOOL)isLastIntervalWorkoutKeyPath
 {
-  v2 = self;
+  selfCopy = self;
   IntervalWorkoutKey = LiveWorkoutConfiguration.isLastIntervalWorkoutKeyPath()();
 
   return IntervalWorkoutKey;
@@ -660,24 +660,24 @@
 
 - (BOOL)isLastMultiSportLeg
 {
-  v2 = self;
+  selfCopy = self;
   MultiSport = LiveWorkoutConfiguration.isLastMultiSportLeg()();
 
   return MultiSport;
 }
 
-- (void)advanceMultisportLegWithSuggestedConfiguration:(id)a3
+- (void)advanceMultisportLegWithSuggestedConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR___WOCoreLiveWorkoutConfiguration_suggestedHKWorkoutConfiguration;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = configuration;
+  configurationCopy = configuration;
+  selfCopy = self;
 
   swift_getKeyPath();
   swift_getKeyPath();
-  v9 = v7;
+  v9 = configurationCopy;
   v10 = static Published.subscript.modify();
   if (__OFADD__(*v11, 1))
   {
@@ -691,16 +691,16 @@
   }
 }
 
-- (void)restoreFromWorkoutActivityMetadata:(id)a3
+- (void)restoreFromWorkoutActivityMetadata:(id)metadata
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   LiveWorkoutConfiguration.restoreFromWorkoutActivityMetadata(_:)(v4);
 }
 
 - (BOOL)supportsSegments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.supportsSegments.getter();
 
   return v3 & 1;
@@ -709,25 +709,25 @@
 - (BOOL)trackRunningIsSuspended
 {
   v2 = *(self + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = specialized WorkoutConfiguration.trackRunningIsSuspended(domainAccessor:)();
 
   return v2 & 1;
 }
 
-- (BOOL)supportsMetricType:(unint64_t)a3 domainAccessor:(id)a4
+- (BOOL)supportsMetricType:(unint64_t)type domainAccessor:(id)accessor
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  LOBYTE(a3) = specialized LiveWorkoutConfiguration.supportsMetricType(_:domainAccessor:)(a3);
+  selfCopy = self;
+  LOBYTE(type) = specialized LiveWorkoutConfiguration.supportsMetricType(_:domainAccessor:)(type);
   swift_unknownObjectRelease();
 
-  return a3 & 1;
+  return type & 1;
 }
 
 - (NSString)logString
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.logString.getter();
   v5 = v4;
 
@@ -764,11 +764,11 @@
   return v2;
 }
 
-- (id)analyticsAlertsConfiguredWithFormattingManager:(id)a3
+- (id)analyticsAlertsConfiguredWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  v6 = LiveWorkoutConfiguration.analyticsAlertsConfigured(formattingManager:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  v6 = LiveWorkoutConfiguration.analyticsAlertsConfigured(formattingManager:)(managerCopy);
   v8 = v7;
 
   v9 = MEMORY[0x20F2E6C00](v6, v8);
@@ -778,7 +778,7 @@
 
 - (NSString)analyticsActivityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveWorkoutConfiguration.analyticsActivityType.getter();
   v5 = v4;
 
@@ -789,23 +789,23 @@
 
 - (NSString)analyticsConfigurationType
 {
-  v2 = [*(self + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration) analyticsKey];
+  analyticsKey = [*(self + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration) analyticsKey];
 
-  return v2;
+  return analyticsKey;
 }
 
 - (NSString)analyticsSubActivities
 {
-  v2 = [*(self + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration) analyticsSubActivities];
+  analyticsSubActivities = [*(self + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration) analyticsSubActivities];
 
-  return v2;
+  return analyticsSubActivities;
 }
 
-- (void)saveWorkoutConfigurationMetadataTo:(id)a3
+- (void)saveWorkoutConfigurationMetadataTo:(id)to
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  LiveWorkoutConfiguration.saveWorkoutConfigurationMetadata(to:)(a3);
+  selfCopy = self;
+  LiveWorkoutConfiguration.saveWorkoutConfigurationMetadata(to:)(to);
   swift_unknownObjectRelease();
 }
 

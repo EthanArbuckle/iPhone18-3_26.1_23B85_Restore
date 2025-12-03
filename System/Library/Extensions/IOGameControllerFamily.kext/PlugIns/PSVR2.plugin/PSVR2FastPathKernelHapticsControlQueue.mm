@@ -1,24 +1,24 @@
 @interface PSVR2FastPathKernelHapticsControlQueue
-- (BOOL)sample:(const __IOGCFastPathSample *)a3 getTraceProviderID:(unint64_t *)a4 queueID:(unint64_t *)a5 channel:(unsigned int *)a6 position:(unint64_t *)a7;
-- (PSVR2FastPathKernelHapticsControlQueue)initWithClient:(id)a3 options:(id)a4;
-- (id)getProperty:(id)a3;
-- (int)get:(unint64_t)a3 options:(unsigned int)a4 sample:(__IOGCFastPathSample *)a5;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)sampleDestroy:(__IOGCFastPathSample *)a3;
+- (BOOL)sample:(const __IOGCFastPathSample *)sample getTraceProviderID:(unint64_t *)d queueID:(unint64_t *)iD channel:(unsigned int *)channel position:(unint64_t *)position;
+- (PSVR2FastPathKernelHapticsControlQueue)initWithClient:(id)client options:(id)options;
+- (id)getProperty:(id)property;
+- (int)get:(unint64_t)get options:(unsigned int)options sample:(__IOGCFastPathSample *)sample;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)sampleDestroy:(__IOGCFastPathSample *)destroy;
 - (void)dealloc;
 @end
 
 @implementation PSVR2FastPathKernelHapticsControlQueue
 
-- (PSVR2FastPathKernelHapticsControlQueue)initWithClient:(id)a3 options:(id)a4
+- (PSVR2FastPathKernelHapticsControlQueue)initWithClient:(id)client options:(id)options
 {
   v19.receiver = self;
   v19.super_class = PSVR2FastPathKernelHapticsControlQueue;
   v6 = [(PSVR2FastPathKernelHapticsControlQueue *)&v19 init];
   *(v6 + 1) = IOGCFastPathControlQueueInterfacePrepareObjCVtbl();
   *(v6 + 2) = IOGCFastPathSampleContainerInterfacePrepareObjCVtbl();
-  *(v6 + 3) = a3;
-  [a4 objectForKey:@"QueueChannel"];
+  *(v6 + 3) = client;
+  [options objectForKey:@"QueueChannel"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -50,15 +50,15 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v9 unsignedLongLongValue];
+        unsignedLongLongValue = [v9 unsignedLongLongValue];
       }
 
       else
       {
-        v13 = 0;
+        unsignedLongLongValue = 0;
       }
 
-      *(v6 + 5) = v13;
+      *(v6 + 5) = unsignedLongLongValue;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -137,9 +137,9 @@ LABEL_2:
   [(PSVR2FastPathKernelHapticsControlQueue *)&v6 dealloc];
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0x5Du, 0xF3u, 0x6Au, 0xD7u, 0xDDu, 0x2Bu, 0x49u, 0xBEu, 0xB3u, 0xFu, 0xF0u, 0xFAu, 0xEAu, 0x2Cu, 0xD7u, 0x74u), CFEqual(v6, v8)))
   {
@@ -158,7 +158,7 @@ LABEL_2:
     v9 = 16;
   }
 
-  *a4 = self + v9;
+  *outInterface = self + v9;
   CFRetain(self);
   v10 = 0;
 LABEL_5:
@@ -166,14 +166,14 @@ LABEL_5:
   return v10;
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
-  v3 = a3;
-  if (a3)
+  propertyCopy = property;
+  if (property)
   {
     v6 = 0;
-    v7 = a3;
-    if (sub_7870(self->_client, self->_queuePort, [NSArray arrayWithObjects:&v7 count:1], &v6))
+    propertyCopy2 = property;
+    if (sub_7870(self->_client, self->_queuePort, [NSArray arrayWithObjects:&propertyCopy2 count:1], &v6))
     {
       return 0;
     }
@@ -181,35 +181,35 @@ LABEL_5:
     else
     {
       v5 = v6;
-      v3 = [v6 objectForKeyedSubscript:v3];
+      propertyCopy = [v6 objectForKeyedSubscript:propertyCopy];
     }
   }
 
-  return v3;
+  return propertyCopy;
 }
 
-- (int)get:(unint64_t)a3 options:(unsigned int)a4 sample:(__IOGCFastPathSample *)a5
+- (int)get:(unint64_t)get options:(unsigned int)options sample:(__IOGCFastPathSample *)sample
 {
-  a5->var0 = &self->_IOGCFastPathSampleContainerVTBL;
-  a5->var1[0] = &self->_queue;
-  a5->var1[1] = a3;
+  sample->var0 = &self->_IOGCFastPathSampleContainerVTBL;
+  sample->var1[0] = &self->_queue;
+  sample->var1[1] = get;
   return 0;
 }
 
-- (int)sampleDestroy:(__IOGCFastPathSample *)a3
+- (int)sampleDestroy:(__IOGCFastPathSample *)destroy
 {
-  a3->var0 = 0;
-  a3->var1[0] = 0;
-  a3->var1[1] = 0;
+  destroy->var0 = 0;
+  destroy->var1[0] = 0;
+  destroy->var1[1] = 0;
   return 0;
 }
 
-- (BOOL)sample:(const __IOGCFastPathSample *)a3 getTraceProviderID:(unint64_t *)a4 queueID:(unint64_t *)a5 channel:(unsigned int *)a6 position:(unint64_t *)a7
+- (BOOL)sample:(const __IOGCFastPathSample *)sample getTraceProviderID:(unint64_t *)d queueID:(unint64_t *)iD channel:(unsigned int *)channel position:(unint64_t *)position
 {
-  *a4 = self->_client->_serviceID;
-  *a5 = self->_queueID;
-  *a6 = 5;
-  *a7 = a3->var1[1];
+  *d = self->_client->_serviceID;
+  *iD = self->_queueID;
+  *channel = 5;
+  *position = sample->var1[1];
   return 1;
 }
 

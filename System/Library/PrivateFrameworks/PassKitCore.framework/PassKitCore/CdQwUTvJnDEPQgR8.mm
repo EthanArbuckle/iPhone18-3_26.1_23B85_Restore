@@ -1,34 +1,34 @@
 @interface CdQwUTvJnDEPQgR8
-+ (id)scorerWithContext:(id)a3;
-- (CdQwUTvJnDEPQgR8)initWithContext:(id)a3;
-- (id)VkBISyFszEu5z9lr:(id)a3 error:(id *)a4;
-- (id)settingsFromContext:(id)a3;
-- (void)MHcqy8dNQyXvA5JC:(id)a3;
-- (void)_safeCallbackWithMessage:(id)a3 uuid:(id)a4 error:(id)a5;
++ (id)scorerWithContext:(id)context;
+- (CdQwUTvJnDEPQgR8)initWithContext:(id)context;
+- (id)VkBISyFszEu5z9lr:(id)eu5z9lr error:(id *)error;
+- (id)settingsFromContext:(id)context;
+- (void)MHcqy8dNQyXvA5JC:(id)c;
+- (void)_safeCallbackWithMessage:(id)message uuid:(id)uuid error:(id)error;
 - (void)prepareScoreMessage;
-- (void)scoreWithScoreRequest:(id)a3 completionHandler:(id)a4;
+- (void)scoreWithScoreRequest:(id)request completionHandler:(id)handler;
 - (void)stop;
 @end
 
 @implementation CdQwUTvJnDEPQgR8
 
-+ (id)scorerWithContext:(id)a3
++ (id)scorerWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [[CdQwUTvJnDEPQgR8 alloc] initWithContext:v3];
+  contextCopy = context;
+  v4 = [[CdQwUTvJnDEPQgR8 alloc] initWithContext:contextCopy];
 
   return v4;
 }
 
-- (CdQwUTvJnDEPQgR8)initWithContext:(id)a3
+- (CdQwUTvJnDEPQgR8)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = CdQwUTvJnDEPQgR8;
   v5 = [(CdQwUTvJnDEPQgR8 *)&v15 init];
   context = v5->_context;
-  v5->_context = v4;
-  v7 = v4;
+  v5->_context = contextCopy;
+  v7 = contextCopy;
 
   v8 = dispatch_queue_create("com.apple.libCoreAS.callback", 0);
   callback_queue = v5->_callback_queue;
@@ -38,34 +38,34 @@
   score_id_queue = v5->_score_id_queue;
   v5->_score_id_queue = v10;
 
-  v12 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   identifier2UUID = v5->_identifier2UUID;
-  v5->_identifier2UUID = v12;
+  v5->_identifier2UUID = dictionary;
 
   return v5;
 }
 
-- (id)settingsFromContext:(id)a3
+- (id)settingsFromContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_opt_new();
-  v5 = [v3 serverEndpointIdentifier];
-  [v4 setEndpointIdentifier:v5];
+  serverEndpointIdentifier = [contextCopy serverEndpointIdentifier];
+  [v4 setEndpointIdentifier:serverEndpointIdentifier];
 
-  [v4 setSettingsType:{objc_msgSend(v3, "eventFrequency") == 2}];
-  v6 = [v3 phoneNumber];
-  [v4 setPhone:v6];
+  [v4 setSettingsType:{objc_msgSend(contextCopy, "eventFrequency") == 2}];
+  phoneNumber = [contextCopy phoneNumber];
+  [v4 setPhone:phoneNumber];
 
-  v7 = [v3 emailAddress];
-  [v4 setEmail:v7];
+  emailAddress = [contextCopy emailAddress];
+  [v4 setEmail:emailAddress];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v3 identities];
-  v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  identities = [contextCopy identities];
+  v9 = [identities countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -77,20 +77,20 @@
       {
         if (*v30 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(identities);
         }
 
         v13 = *(*(&v29 + 1) + 8 * v12);
-        v14 = [v13 fullName];
-        if (v14 || ([v13 firstName], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+        fullName = [v13 fullName];
+        if (fullName || ([v13 firstName], (fullName = objc_claimAutoreleasedReturnValue()) != 0))
         {
         }
 
         else
         {
-          v26 = [v13 lastName];
+          lastName = [v13 lastName];
 
-          if (!v26)
+          if (!lastName)
           {
             goto LABEL_13;
           }
@@ -98,34 +98,34 @@
 
         if (![v13 type])
         {
-          v15 = [v4 name];
-          if (!v15 || (v16 = v15, v17 = [v13 source], v16, v17 == 2))
+          name = [v4 name];
+          if (!name || (v16 = name, v17 = [v13 source], v16, v17 == 2))
           {
             v18 = objc_opt_new();
-            v19 = [v13 firstName];
-            [v18 setFirstName:v19];
+            firstName = [v13 firstName];
+            [v18 setFirstName:firstName];
 
-            v20 = [v13 lastName];
-            [v18 setLastName:v20];
+            lastName2 = [v13 lastName];
+            [v18 setLastName:lastName2];
 
-            v21 = [v13 fullName];
-            [v18 setFullName:v21];
+            fullName2 = [v13 fullName];
+            [v18 setFullName:fullName2];
 
             [v4 setName:v18];
           }
         }
 
 LABEL_13:
-        v22 = [v13 phoneNumber];
-        if (v22)
+        phoneNumber2 = [v13 phoneNumber];
+        if (phoneNumber2)
         {
         }
 
         else
         {
-          v23 = [v13 emailAddress];
+          emailAddress2 = [v13 emailAddress];
 
-          if (!v23)
+          if (!emailAddress2)
           {
             goto LABEL_21;
           }
@@ -133,11 +133,11 @@ LABEL_13:
 
         if ([v13 type] == 1)
         {
-          v24 = [v13 phoneNumber];
-          [v4 setPPhone:v24];
+          phoneNumber3 = [v13 phoneNumber];
+          [v4 setPPhone:phoneNumber3];
 
-          v25 = [v13 emailAddress];
-          [v4 setPEmail:v25];
+          emailAddress3 = [v13 emailAddress];
+          [v4 setPEmail:emailAddress3];
         }
 
         else
@@ -147,8 +147,8 @@ LABEL_13:
             goto LABEL_21;
           }
 
-          v25 = [v13 phoneNumber];
-          [v4 setPhone:v25];
+          emailAddress3 = [v13 phoneNumber];
+          [v4 setPhone:emailAddress3];
         }
 
 LABEL_21:
@@ -156,7 +156,7 @@ LABEL_21:
       }
 
       while (v10 != v12);
-      v27 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v27 = [identities countByEnumeratingWithState:&v29 objects:v33 count:16];
       v10 = v27;
     }
 
@@ -166,17 +166,17 @@ LABEL_21:
   return v4;
 }
 
-- (id)VkBISyFszEu5z9lr:(id)a3 error:(id *)a4
+- (id)VkBISyFszEu5z9lr:(id)eu5z9lr error:(id *)error
 {
-  v5 = a3;
+  eu5z9lrCopy = eu5z9lr;
   v13 = 0;
-  bcgsyabc74vz12([v5 bytes], objc_msgSend(v5, "length"), &v13);
+  bcgsyabc74vz12([eu5z9lrCopy bytes], objc_msgSend(eu5z9lrCopy, "length"), &v13);
   if (v6)
   {
     v7 = v6;
     v8 = MEMORY[0x1E696ABC0];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:kCoreASErrorDomainCADecrypt];
-    *a4 = [v8 errorWithDomain:v9 code:v7 userInfo:0];
+    *error = [v8 errorWithDomain:v9 code:v7 userInfo:0];
 
     v10 = 0;
   }
@@ -184,7 +184,7 @@ LABEL_21:
   else
   {
     v11 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v10 = [v11 initWithBytes:v13 length:{objc_msgSend(v5, "length")}];
+    v10 = [v11 initWithBytes:v13 length:{objc_msgSend(eu5z9lrCopy, "length")}];
   }
 
   free(v13);
@@ -196,8 +196,8 @@ LABEL_21:
 {
   self->_prepared = 1;
   v3 = +[LZHbEqKhcixce9PA sharedInstance];
-  v4 = [(CdQwUTvJnDEPQgR8 *)self context];
-  v5 = [(CdQwUTvJnDEPQgR8 *)self settingsFromContext:v4];
+  context = [(CdQwUTvJnDEPQgR8 *)self context];
+  v5 = [(CdQwUTvJnDEPQgR8 *)self settingsFromContext:context];
 
   score_id_queue = self->_score_id_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -206,7 +206,7 @@ LABEL_21:
   block[3] = &unk_1E79C4080;
   v10 = v3;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
   v8 = v3;
   dispatch_async(score_id_queue, block);
@@ -243,23 +243,23 @@ void __39__CdQwUTvJnDEPQgR8_prepareScoreMessage__block_invoke_2(uint64_t a1, voi
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_safeCallbackWithMessage:(id)a3 uuid:(id)a4 error:(id)a5
+- (void)_safeCallbackWithMessage:(id)message uuid:(id)uuid error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  uuidCopy = uuid;
+  errorCopy = error;
   callback_queue = self->_callback_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__CdQwUTvJnDEPQgR8__safeCallbackWithMessage_uuid_error___block_invoke;
   v15[3] = &unk_1E79C40A8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = uuidCopy;
+  v17 = messageCopy;
+  v18 = errorCopy;
+  v12 = errorCopy;
+  v13 = messageCopy;
+  v14 = uuidCopy;
   dispatch_async(callback_queue, v15);
 }
 
@@ -279,17 +279,17 @@ void *__56__CdQwUTvJnDEPQgR8__safeCallbackWithMessage_uuid_error___block_invoke(
   return result;
 }
 
-- (void)scoreWithScoreRequest:(id)a3 completionHandler:(id)a4
+- (void)scoreWithScoreRequest:(id)request completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     [CdQwUTvJnDEPQgR8 scoreWithScoreRequest:completionHandler:];
   }
 
-  v8 = _Block_copy(v7);
+  v8 = _Block_copy(handlerCopy);
   handler = self->_handler;
   self->_handler = v8;
 
@@ -302,7 +302,7 @@ void *__56__CdQwUTvJnDEPQgR8__safeCallbackWithMessage_uuid_error___block_invoke(
     v16[2] = __60__CdQwUTvJnDEPQgR8_scoreWithScoreRequest_completionHandler___block_invoke;
     v16[3] = &unk_1E79C4080;
     v16[4] = self;
-    v17 = v6;
+    v17 = requestCopy;
     v18 = v10;
     v12 = v10;
     dispatch_async(score_id_queue, v16);
@@ -445,7 +445,7 @@ void __60__CdQwUTvJnDEPQgR8_scoreWithScoreRequest_completionHandler___block_invo
   [(CdQwUTvJnDEPQgR8 *)self _safeCallbackWithMessage:0 uuid:0 error:v6];
 }
 
-- (void)MHcqy8dNQyXvA5JC:(id)a3
+- (void)MHcqy8dNQyXvA5JC:(id)c
 {
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))

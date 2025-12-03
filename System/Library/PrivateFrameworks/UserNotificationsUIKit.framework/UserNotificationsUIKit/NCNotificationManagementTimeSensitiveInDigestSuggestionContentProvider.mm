@@ -1,25 +1,25 @@
 @interface NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider
-- (NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6;
+- (NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate;
 - (id)auxiliaryOptionActions;
-- (void)handleLeaveOnAction:(id)a3;
-- (void)handleOffAction:(id)a3;
+- (void)handleLeaveOnAction:(id)action;
+- (void)handleOffAction:(id)action;
 @end
 
 @implementation NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider
 
-- (NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6
+- (NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate
 {
-  v10 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvider;
-  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:a3 bundleDisplayName:v10 managementDelegate:a5 suggestionDelegate:a6];
+  v11 = [(NCNotificationManagementSuggestionContentProvider *)&v17 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate];
   if (v11)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = NCUserNotificationsUIKitFrameworkBundle();
     v14 = [v13 localizedStringForKey:@"NOTIFICATION_MANAGEMENT_TIME_SENSITIVE_IN_DIGEST_SUGGESTION" value:&stru_282FE84F8 table:0];
-    v15 = [v12 stringWithFormat:v14, v10, v10];
-    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:v15];
+    nameCopy = [v12 stringWithFormat:v14, nameCopy, nameCopy];
+    [(NCNotificationManagementSuggestionContentProvider *)v11 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v11;
@@ -78,26 +78,26 @@ void __96__NCNotificationManagementTimeSensitiveInDigestSuggestionContentProvide
   [WeakRetained handleLeaveOnAction:v4];
 }
 
-- (void)handleOffAction:(id)a3
+- (void)handleOffAction:(id)action
 {
-  v7 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v5 = [v4 sectionIdentifier];
-  [v7 notificationManagementContentProvider:self setAllowsTimeSensitive:0 forSectionIdentifier:v5];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  [suggestionDelegate notificationManagementContentProvider:self setAllowsTimeSensitive:0 forSectionIdentifier:sectionIdentifier];
 
-  v6 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v7 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v6];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
-- (void)handleLeaveOnAction:(id)a3
+- (void)handleLeaveOnAction:(id)action
 {
-  v7 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v5 = [v4 sectionIdentifier];
-  [v7 notificationManagementContentProvider:self setAllowsTimeSensitive:1 forSectionIdentifier:v5];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  [suggestionDelegate notificationManagementContentProvider:self setAllowsTimeSensitive:1 forSectionIdentifier:sectionIdentifier];
 
-  v6 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v7 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v6];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
 @end

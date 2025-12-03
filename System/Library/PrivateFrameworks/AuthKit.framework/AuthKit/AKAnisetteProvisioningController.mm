@@ -1,33 +1,33 @@
 @interface AKAnisetteProvisioningController
 - (AKAnisetteProvisioningController)init;
-- (AKAnisetteProvisioningController)initWithConnectionConfiguration:(id)a3 device:(id)a4 provider:(id)a5;
+- (AKAnisetteProvisioningController)initWithConnectionConfiguration:(id)configuration device:(id)device provider:(id)provider;
 - (id)_anisetteServiceConnection;
-- (id)_attestationDataForRequestData:(id)a3 error:(id *)a4;
-- (id)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 error:(id *)a4;
-- (id)anisetteDataForURLRequest:(id)a3 error:(id *)a4;
-- (id)attestationDataForRequestData:(id)a3 error:(id *)a4;
-- (id)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 error:(id *)a4;
-- (id)initForDevice:(id)a3 provider:(id)a4;
-- (void)_attestationDataForRequestData:(id)a3 completion:(id)a4;
-- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)_setTimeAdjustmentWithServerTime:(id)a3 completion:(id)a4;
+- (id)_attestationDataForRequestData:(id)data error:(id *)error;
+- (id)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)anisetteDataForURLRequest:(id)request error:(id *)error;
+- (id)attestationDataForRequestData:(id)data error:(id *)error;
+- (id)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary error:(id *)error;
+- (id)initForDevice:(id)device provider:(id)provider;
+- (void)_attestationDataForRequestData:(id)data completion:(id)completion;
+- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)_setTimeAdjustmentWithServerTime:(id)time completion:(id)completion;
 - (void)_tearDownConnection;
-- (void)anisetteDataForURLRequest:(id)a3 completion:(id)a4;
-- (void)anisetteDataWithCompletion:(id)a3;
-- (void)attestationDataForRequest:(id)a3 completion:(id)a4;
-- (void)attestationDataForRequestData:(id)a3 completion:(id)a4;
-- (void)eraseWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4;
-- (void)handleAttestationResponseWithResponseData:(id)a3 completion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)postAttestationAnalytics:(id)a3 completion:(id)a4;
-- (void)provisionWithCompletion:(id)a3;
-- (void)refreshBAADeviceTokenWithCompletion:(id)a3;
-- (void)resetDeviceIdentityWithCompletion:(id)a3;
-- (void)setTimeAdjustmentWithServerTime:(id)a3 completion:(id)a4;
-- (void)shouldAllowReprovisionForHostName:(id)a3 completion:(id)a4;
-- (void)syncWithSIMData:(id)a3 completion:(id)a4;
+- (void)anisetteDataForURLRequest:(id)request completion:(id)completion;
+- (void)anisetteDataWithCompletion:(id)completion;
+- (void)attestationDataForRequest:(id)request completion:(id)completion;
+- (void)attestationDataForRequestData:(id)data completion:(id)completion;
+- (void)eraseWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion;
+- (void)handleAttestationResponseWithResponseData:(id)data completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)postAttestationAnalytics:(id)analytics completion:(id)completion;
+- (void)provisionWithCompletion:(id)completion;
+- (void)refreshBAADeviceTokenWithCompletion:(id)completion;
+- (void)resetDeviceIdentityWithCompletion:(id)completion;
+- (void)setTimeAdjustmentWithServerTime:(id)time completion:(id)completion;
+- (void)shouldAllowReprovisionForHostName:(id)name completion:(id)completion;
+- (void)syncWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation AKAnisetteProvisioningController
@@ -43,55 +43,55 @@
 
 - (id)_anisetteServiceConnection
 {
-  v3 = [(AKAnisetteProvisioningController *)self connectionManager];
-  v4 = [(AKClientConnectionLifecycleManager *)v3 activeServiceConnection];
-  MEMORY[0x1E69E5920](v3);
+  connectionManager = [(AKAnisetteProvisioningController *)self connectionManager];
+  activeServiceConnection = [(AKClientConnectionLifecycleManager *)connectionManager activeServiceConnection];
+  MEMORY[0x1E69E5920](connectionManager);
 
-  return v4;
+  return activeServiceConnection;
 }
 
-- (id)initForDevice:(id)a3 provider:(id)a4
+- (id)initForDevice:(id)device provider:(id)provider
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, provider);
   v8 = objc_alloc_init(AKXPCConnectionConfiguration);
   [(AKXPCConnectionConfiguration *)v8 setMachServiceName:@"com.apple.ak.anisette.xpc"];
-  v4 = v11;
-  v11 = 0;
-  v11 = [(AKAnisetteProvisioningController *)v4 initWithConnectionConfiguration:v8 device:location[0] provider:v9];
-  v7 = MEMORY[0x1E69E5928](v11);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKAnisetteProvisioningController *)v4 initWithConnectionConfiguration:v8 device:location[0] provider:v9];
+  v7 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (AKAnisetteProvisioningController)initWithConnectionConfiguration:(id)a3 device:(id)a4 provider:(id)a5
+- (AKAnisetteProvisioningController)initWithConnectionConfiguration:(id)configuration device:(id)device provider:(id)provider
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, device);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  v5 = v28;
-  v28 = 0;
+  objc_storeStrong(&v25, provider);
+  v5 = selfCopy;
+  selfCopy = 0;
   v24.receiver = v5;
   v24.super_class = AKAnisetteProvisioningController;
-  v28 = [(AKAnisetteProvisioningController *)&v24 init];
-  objc_storeStrong(&v28, v28);
-  if (v28)
+  selfCopy = [(AKAnisetteProvisioningController *)&v24 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v21 = [location[0] remoteObjectInterface];
-    MEMORY[0x1E69E5920](v21);
-    if (!v21)
+    remoteObjectInterface = [location[0] remoteObjectInterface];
+    MEMORY[0x1E69E5920](remoteObjectInterface);
+    if (!remoteObjectInterface)
     {
       v19 = location[0];
       v20 = +[AKAnisetteProvisioningDaemonInterface XPCInterface];
@@ -99,9 +99,9 @@
       MEMORY[0x1E69E5920](v20);
     }
 
-    v18 = [location[0] exportedInterface];
-    MEMORY[0x1E69E5920](v18);
-    if (!v18)
+    exportedInterface = [location[0] exportedInterface];
+    MEMORY[0x1E69E5920](exportedInterface);
+    if (!exportedInterface)
     {
       v16 = location[0];
       v17 = +[AKAnisetteProvisioningClientInterface XPCInterface];
@@ -109,14 +109,14 @@
       MEMORY[0x1E69E5920](v17);
     }
 
-    v14 = [location[0] exportedObject];
+    exportedObject = [location[0] exportedObject];
     v15 = 0;
-    if (!v14)
+    if (!exportedObject)
     {
       v15 = v25 != 0;
     }
 
-    MEMORY[0x1E69E5920](v14);
+    MEMORY[0x1E69E5920](exportedObject);
     if (v15)
     {
       v12 = location[0];
@@ -128,35 +128,35 @@
 
     v7 = [AKClientConnectionLifecycleManager alloc];
     v8 = [(AKClientConnectionLifecycleManager *)v7 initWithConfiguration:location[0]];
-    connectionManager = v28->_connectionManager;
-    v28->_connectionManager = v8;
+    connectionManager = selfCopy->_connectionManager;
+    selfCopy->_connectionManager = v8;
     MEMORY[0x1E69E5920](connectionManager);
-    objc_storeStrong(&v28->_targetDevice, v26);
-    objc_storeStrong(&v28->_anisetteDataProvider, v25);
+    objc_storeStrong(&selfCopy->_targetDevice, v26);
+    objc_storeStrong(&selfCopy->_anisetteDataProvider, v25);
   }
 
-  v11 = MEMORY[0x1E69E5928](v28);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)provisionWithCompletion:(id)a3
+- (void)provisionWithCompletion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v45[0] = 0;
   v45[1] = v45;
   v46 = 838860800;
   v47 = 48;
   v48 = __Block_byref_object_copy__15;
   v49 = __Block_byref_object_dispose__15;
-  v50 = MEMORY[0x1E69E5928](v52);
+  v50 = MEMORY[0x1E69E5928](selfCopy);
   v43 = _os_activity_create(&dword_193225000, "authkit/anisette-provision", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v44 = v43;
   state.opaque[0] = 0;
@@ -201,17 +201,17 @@
   v30[0] = MEMORY[0x1E69E5928](location[0]);
   v29 = MEMORY[0x1E69E5928](v41);
   v32 = MEMORY[0x193B165F0](&v24);
-  v6 = [(AKAnisetteProvisioningController *)v52 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v17 = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __60__AKAnisetteProvisioningController_provisionWithCompletion___block_invoke_6;
   v21 = &unk_1E73D3510;
   v22 = MEMORY[0x1E69E5928](v32);
-  v23 = [v6 remoteObjectProxyWithErrorHandler:&v17];
-  MEMORY[0x1E69E5920](v6);
+  v23 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v17];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v5 = v23;
-  targetDevice = v52->_targetDevice;
+  targetDevice = selfCopy->_targetDevice;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -335,14 +335,14 @@ void __60__AKAnisetteProvisioningController_provisionWithCompletion___block_invo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)shouldAllowReprovisionForHostName:(id)a3 completion:(id)a4
+- (void)shouldAllowReprovisionForHostName:(id)name completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v13 = +[AKURLBag sharedBag];
   v5 = v13;
   v6 = MEMORY[0x1E69E9820];
@@ -475,21 +475,21 @@ LABEL_19:
   *MEMORY[0x1E69E9840];
 }
 
-- (void)syncWithSIMData:(id)a3 completion:(id)a4
+- (void)syncWithSIMData:(id)data completion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, completion);
   v34[0] = 0;
   v34[1] = v34;
   v35 = 838860800;
   v36 = 48;
   v37 = __Block_byref_object_copy__15;
   v38 = __Block_byref_object_dispose__15;
-  v39 = MEMORY[0x1E69E5928](v42);
+  v39 = MEMORY[0x1E69E5928](selfCopy);
   v32 = _os_activity_create(&dword_193225000, "authkit/sync-sim", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v33 = v32;
   state.opaque[0] = 0;
@@ -505,18 +505,18 @@ LABEL_19:
   v28[0] = MEMORY[0x1E69E5928](v40);
   v27 = MEMORY[0x1E69E5928](v30);
   v29 = MEMORY[0x193B165F0](&v22);
-  v7 = [(AKAnisetteProvisioningController *)v42 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
   v17 = 0;
   v18 = __63__AKAnisetteProvisioningController_syncWithSIMData_completion___block_invoke_2;
   v19 = &unk_1E73D3510;
   v20 = MEMORY[0x1E69E5928](v29);
-  v21 = [v7 remoteObjectProxyWithErrorHandler:&v15];
-  MEMORY[0x1E69E5920](v7);
+  v21 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v15];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v6 = v21;
   v4 = location[0];
-  targetDevice = v42->_targetDevice;
+  targetDevice = selfCopy->_targetDevice;
   v9 = MEMORY[0x1E69E9820];
   v10 = -1073741824;
   v11 = 0;
@@ -615,20 +615,20 @@ void __63__AKAnisetteProvisioningController_syncWithSIMData_completion___block_i
   *MEMORY[0x1E69E9840];
 }
 
-- (void)eraseWithCompletion:(id)a3
+- (void)eraseWithCompletion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v45[0] = 0;
   v45[1] = v45;
   v46 = 838860800;
   v47 = 48;
   v48 = __Block_byref_object_copy__15;
   v49 = __Block_byref_object_dispose__15;
-  v50 = MEMORY[0x1E69E5928](v52);
+  v50 = MEMORY[0x1E69E5928](selfCopy);
   v43 = _os_activity_create(&dword_193225000, "authkit/anisette-erase", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v44 = v43;
   state.opaque[0] = 0;
@@ -673,17 +673,17 @@ void __63__AKAnisetteProvisioningController_syncWithSIMData_completion___block_i
   v30[0] = MEMORY[0x1E69E5928](location[0]);
   v29 = MEMORY[0x1E69E5928](v41);
   v32 = MEMORY[0x193B165F0](&v24);
-  v6 = [(AKAnisetteProvisioningController *)v52 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v17 = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_15;
   v21 = &unk_1E73D3510;
   v22 = MEMORY[0x1E69E5928](v32);
-  v23 = [v6 remoteObjectProxyWithErrorHandler:&v17];
-  MEMORY[0x1E69E5920](v6);
+  v23 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v17];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v5 = v23;
-  targetDevice = v52->_targetDevice;
+  targetDevice = selfCopy->_targetDevice;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -807,30 +807,30 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   *MEMORY[0x1E69E9840];
 }
 
-- (id)anisetteDataForURLRequest:(id)a3 error:(id *)a4
+- (id)anisetteDataForURLRequest:(id)request error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = 1;
+  objc_storeStrong(location, request);
+  ak_usesHTTPSScheme = 1;
   if (location[0])
   {
-    v9 = [location[0] ak_usesHTTPSScheme];
+    ak_usesHTTPSScheme = [location[0] ak_usesHTTPSScheme];
   }
 
-  if (v9)
+  if (ak_usesHTTPSScheme)
   {
-    v12 = [(AKAnisetteProvisioningController *)v11 fetchAnisetteDataAndProvisionIfNecessary:1 error:a4];
+    v12 = [(AKAnisetteProvisioningController *)selfCopy fetchAnisetteDataAndProvisionIfNecessary:1 error:error];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AKAnisetteError" code:-8012 userInfo:0];
       v4 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     v12 = 0;
@@ -842,24 +842,24 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   return v5;
 }
 
-- (void)anisetteDataWithCompletion:(id)a3
+- (void)anisetteDataWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAnisetteProvisioningController *)v4 anisetteDataForURLRequest:0 completion:location[0]];
+  objc_storeStrong(location, completion);
+  [(AKAnisetteProvisioningController *)selfCopy anisetteDataForURLRequest:0 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)anisetteDataForURLRequest:(id)a3 completion:(id)a4
+- (void)anisetteDataForURLRequest:(id)request completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v13 = _os_activity_create(&dword_193225000, "authkit/anisette-for-request", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v14 = v13;
   state.opaque[0] = 0;
@@ -867,7 +867,7 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   os_activity_scope_enter(v13, &state);
   if (!location[0] || [location[0] ak_usesHTTPSScheme])
   {
-    [(AKAnisetteProvisioningController *)v17 fetchAnisetteDataAndProvisionIfNecessary:1 withCompletion:v15];
+    [(AKAnisetteProvisioningController *)selfCopy fetchAnisetteDataAndProvisionIfNecessary:1 withCompletion:v15];
   }
 
   else
@@ -898,13 +898,13 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   objc_storeStrong(location, 0);
 }
 
-- (id)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 error:(id *)a4
+- (id)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v48 = self;
+  selfCopy = self;
   v47 = a2;
-  v46 = a3;
-  v45 = a4;
+  necessaryCopy = necessary;
+  errorCopy = error;
   v43 = _os_activity_create(&dword_193225000, "authkit/fetch-anisette", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v44 = v43;
   state.opaque[0] = 0;
@@ -940,7 +940,7 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   v41 = v40;
   v33 = 0;
   obj = 0;
-  v16 = [(AKAnisetteProvisioningController *)v48 _fetchAnisetteDataAndProvisionIfNecessary:v46 error:&obj];
+  v16 = [(AKAnisetteProvisioningController *)selfCopy _fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy error:&obj];
   objc_storeStrong(&v33, obj);
   v32 = v16;
   if ([v33 ak_isXPCServiceError])
@@ -958,18 +958,18 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
     objc_storeStrong(&oslog, 0);
     objc_storeStrong(&v33, 0);
     v27 = v33;
-    v13 = [(AKAnisetteProvisioningController *)v48 _fetchAnisetteDataAndProvisionIfNecessary:v46 error:&v27];
+    v13 = [(AKAnisetteProvisioningController *)selfCopy _fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy error:&v27];
     objc_storeStrong(&v33, v27);
     v5 = v32;
     v32 = v13;
     MEMORY[0x1E69E5920](v5);
   }
 
-  if (v45)
+  if (errorCopy)
   {
     v12 = v33;
     v6 = v33;
-    *v45 = v12;
+    *errorCopy = v12;
   }
 
   v26 = _AKSignpostGetNanoseconds(v41, *(&v41 + 1)) / 1000000000.0;
@@ -1004,13 +1004,13 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   return v8;
 }
 
-- (id)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 error:(id *)a4
+- (id)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
-  v39 = a3;
-  v38 = a4;
+  necessaryCopy = necessary;
+  errorCopy = error;
   v31 = 0;
   v32 = &v31;
   v33 = 838860800;
@@ -1025,16 +1025,16 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   v28 = __Block_byref_object_copy__15;
   v29 = __Block_byref_object_dispose__15;
   v30 = 0;
-  v9 = [(AKAnisetteProvisioningController *)self _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)self _anisetteServiceConnection];
   v17 = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __84__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNecessary_error___block_invoke;
   v21 = &unk_1E73D3C50;
   v22 = &v24;
-  location = [v9 synchronousRemoteObjectProxyWithErrorHandler:?];
-  MEMORY[0x1E69E5920](v9);
-  targetDevice = v41->_targetDevice;
+  location = [_anisetteServiceConnection synchronousRemoteObjectProxyWithErrorHandler:?];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
+  targetDevice = selfCopy->_targetDevice;
   oslog[1] = MEMORY[0x1E69E9820];
   v11 = -1073741824;
   v12 = 0;
@@ -1042,12 +1042,12 @@ void __56__AKAnisetteProvisioningController_eraseWithCompletion___block_invoke_1
   v14 = &unk_1E73D9068;
   v15 = &v31;
   v16 = &v24;
-  [location fetchAnisetteDataAndProvisionIfNecessary:v39 device:targetDevice completion:?];
-  if (v38)
+  [location fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy device:targetDevice completion:?];
+  if (errorCopy)
   {
     v8 = v25[5];
     v5 = v8;
-    *v38 = v8;
+    *errorCopy = v8;
   }
 
   if (v25[5])
@@ -1122,14 +1122,14 @@ void __84__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNece
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v29 = _os_activity_create(&dword_193225000, "authkit/fetch-anisette", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v30 = v29;
   state.opaque[0] = 0;
@@ -1169,12 +1169,12 @@ void __84__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNece
   v12 = 0;
   v13 = __92__AKAnisetteProvisioningController_fetchAnisetteDataAndProvisionIfNecessary_withCompletion___block_invoke;
   v14 = &unk_1E73D90B8;
-  v15 = MEMORY[0x1E69E5928](v34);
-  v18 = v32;
+  v15 = MEMORY[0x1E69E5928](selfCopy);
+  v18 = necessaryCopy;
   v17 = v27;
   v16 = MEMORY[0x1E69E5928](location);
   v19 = MEMORY[0x193B165F0](&v10);
-  [(AKAnisetteProvisioningController *)v34 _fetchAnisetteDataAndProvisionIfNecessary:v32 withCompletion:v19];
+  [(AKAnisetteProvisioningController *)selfCopy _fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy withCompletion:v19];
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
@@ -1296,20 +1296,20 @@ void __92__AKAnisetteProvisioningController_fetchAnisetteDataAndProvisionIfNeces
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)_fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v19[0] = 0;
   v19[1] = v19;
   v20 = 838860800;
   v21 = 48;
   v22 = __Block_byref_object_copy__15;
   v23 = __Block_byref_object_dispose__15;
-  v24 = MEMORY[0x1E69E5928](v28);
+  v24 = MEMORY[0x1E69E5928](selfCopy);
   v12 = MEMORY[0x1E69E9820];
   v13 = -1073741824;
   v14 = 0;
@@ -1318,16 +1318,16 @@ void __92__AKAnisetteProvisioningController_fetchAnisetteDataAndProvisionIfNeces
   v17[1] = v19;
   v17[0] = MEMORY[0x1E69E5928](location);
   v18 = MEMORY[0x193B165F0](&v12);
-  v4 = [(AKAnisetteProvisioningController *)v28 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __93__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNecessary_withCompletion___block_invoke_20;
   v9 = &unk_1E73D3510;
   v10 = MEMORY[0x1E69E5928](v18);
-  v11 = [v4 remoteObjectProxyWithErrorHandler:&v5];
-  MEMORY[0x1E69E5920](v4);
-  [v11 fetchAnisetteDataAndProvisionIfNecessary:v26 device:v28->_targetDevice completion:v18];
+  v11 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v5];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
+  [v11 fetchAnisetteDataAndProvisionIfNecessary:necessaryCopy device:selfCopy->_targetDevice completion:v18];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v18, 0);
@@ -1394,14 +1394,14 @@ void __93__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNece
   objc_storeStrong(location, 0);
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, completion);
   if (!location[0])
   {
     v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"No DSID was provided!" userInfo:0];
@@ -1413,7 +1413,7 @@ void __93__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNece
   v35 = 48;
   v36 = __Block_byref_object_copy__15;
   v37 = __Block_byref_object_dispose__15;
-  v38 = MEMORY[0x1E69E5928](v41);
+  v38 = MEMORY[0x1E69E5928](selfCopy);
   v31 = _os_activity_create(&dword_193225000, "authkit/legacy-anisette", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v32 = v31;
   state.opaque[0] = 0;
@@ -1427,18 +1427,18 @@ void __93__AKAnisetteProvisioningController__fetchAnisetteDataAndProvisionIfNece
   v28[1] = v33;
   v28[0] = MEMORY[0x1E69E5928](v39);
   v29 = MEMORY[0x193B165F0](&v23);
-  v8 = [(AKAnisetteProvisioningController *)v41 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v16 = MEMORY[0x1E69E9820];
   v17 = -1073741824;
   v18 = 0;
   v19 = __77__AKAnisetteProvisioningController_legacyAnisetteDataForDSID_withCompletion___block_invoke_2;
   v20 = &unk_1E73D3510;
   v21 = MEMORY[0x1E69E5928](v29);
-  v22 = [v8 remoteObjectProxyWithErrorHandler:&v16];
-  MEMORY[0x1E69E5920](v8);
+  v22 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v16];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v7 = v22;
   v5 = location[0];
-  targetDevice = v41->_targetDevice;
+  targetDevice = selfCopy->_targetDevice;
   v10 = MEMORY[0x1E69E9820];
   v11 = -1073741824;
   v12 = 0;
@@ -1539,22 +1539,22 @@ void __77__AKAnisetteProvisioningController_legacyAnisetteDataForDSID_withComple
   *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion
 {
   v57 = *MEMORY[0x1E69E9840];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, completion);
   v47[0] = 0;
   v47[1] = v47;
   v48 = 838860800;
   v49 = 48;
   v50 = __Block_byref_object_copy__15;
   v51 = __Block_byref_object_dispose__15;
-  v52 = MEMORY[0x1E69E5928](v55);
+  v52 = MEMORY[0x1E69E5928](selfCopy);
   v45 = _os_activity_create(&dword_193225000, "authkit/fetch-peer-attestation-data", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v46 = v45;
   state.opaque[0] = 0;
@@ -1597,17 +1597,17 @@ void __77__AKAnisetteProvisioningController_legacyAnisetteDataForDSID_withComple
   v33[1] = v47;
   v33[0] = MEMORY[0x1E69E5928](v53);
   v35 = MEMORY[0x193B165F0](&v28);
-  v8 = [(AKAnisetteProvisioningController *)v55 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v21 = MEMORY[0x1E69E9820];
   v22 = -1073741824;
   v23 = 0;
   v24 = __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_completion___block_invoke_25;
   v25 = &unk_1E73D3510;
   v26 = MEMORY[0x1E69E5928](v35);
-  v27 = [v8 remoteObjectProxyWithErrorHandler:&v21];
-  MEMORY[0x1E69E5920](v8);
+  v27 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v21];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v7 = v27;
-  targetDevice = v55->_targetDevice;
+  targetDevice = selfCopy->_targetDevice;
   v6 = location[0];
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
@@ -1756,14 +1756,14 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   *MEMORY[0x1E69E9840];
 }
 
-- (id)attestationDataForRequestData:(id)a3 error:(id *)a4
+- (id)attestationDataForRequestData:(id)data error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v46 = a4;
+  objc_storeStrong(location, data);
+  errorCopy = error;
   v44 = _os_activity_create(&dword_193225000, "authkit/fetch-attestation-data-sync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v45 = v44;
   state.opaque[0] = 0;
@@ -1799,7 +1799,7 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   v42 = v41;
   v34 = 0;
   obj = 0;
-  v16 = [(AKAnisetteProvisioningController *)v48 _attestationDataForRequestData:location[0] error:&obj];
+  v16 = [(AKAnisetteProvisioningController *)selfCopy _attestationDataForRequestData:location[0] error:&obj];
   objc_storeStrong(&v34, obj);
   v33 = v16;
   if ([v34 ak_isXPCServiceError])
@@ -1815,21 +1815,21 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
     }
 
     objc_storeStrong(&oslog, 0);
-    [(AKAnisetteProvisioningController *)v48 _tearDownConnection];
+    [(AKAnisetteProvisioningController *)selfCopy _tearDownConnection];
     objc_storeStrong(&v34, 0);
     v28 = v34;
-    v13 = [(AKAnisetteProvisioningController *)v48 _attestationDataForRequestData:location[0] error:&v28];
+    v13 = [(AKAnisetteProvisioningController *)selfCopy _attestationDataForRequestData:location[0] error:&v28];
     objc_storeStrong(&v34, v28);
     v5 = v33;
     v33 = v13;
     MEMORY[0x1E69E5920](v5);
   }
 
-  if (v46)
+  if (errorCopy)
   {
     v12 = v34;
     v6 = v34;
-    *v46 = v12;
+    *errorCopy = v12;
   }
 
   v27 = _AKSignpostGetNanoseconds(v42, *(&v42 + 1)) / 1000000000.0;
@@ -1865,15 +1865,15 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   return v8;
 }
 
-- (void)handleAttestationResponseWithResponseData:(id)a3 completion:(id)a4
+- (void)handleAttestationResponseWithResponseData:(id)data completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v37 = _AKLogSystem();
   v36 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -1883,14 +1883,14 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   }
 
   objc_storeStrong(&v37, 0);
-  v18 = [location[0] headersFromServer];
-  v35 = [v18 objectForKey:@"x-apple-server-time"];
-  MEMORY[0x1E69E5920](v18);
-  v19 = [location[0] status];
-  switch(v19)
+  headersFromServer = [location[0] headersFromServer];
+  v35 = [headersFromServer objectForKey:@"x-apple-server-time"];
+  MEMORY[0x1E69E5920](headersFromServer);
+  status = [location[0] status];
+  switch(status)
   {
     case 441:
-      [(AKAnisetteProvisioningController *)v40 resetDeviceIdentityWithCompletion:v38];
+      [(AKAnisetteProvisioningController *)selfCopy resetDeviceIdentityWithCompletion:v38];
       break;
     case 442:
       v28 = _AKLogSystem();
@@ -1927,7 +1927,7 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
         }
 
         objc_storeStrong(&v34, 0);
-        [(AKAnisetteProvisioningController *)v40 setTimeAdjustmentWithServerTime:v35 completion:v38];
+        [(AKAnisetteProvisioningController *)selfCopy setTimeAdjustmentWithServerTime:v35 completion:v38];
       }
 
       else
@@ -1976,7 +1976,7 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
         }
 
         objc_storeStrong(&v23, 0);
-        [(AKAnisetteProvisioningController *)v40 setTimeAdjustmentWithServerTime:v35 completion:v38];
+        [(AKAnisetteProvisioningController *)selfCopy setTimeAdjustmentWithServerTime:v35 completion:v38];
       }
 
       else if (v38)
@@ -1996,13 +1996,13 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_attestationDataForRequestData:(id)a3 error:(id *)a4
+- (id)_attestationDataForRequestData:(id)data error:(id *)error
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v38 = a4;
+  objc_storeStrong(location, data);
+  errorCopy = error;
   v31 = 0;
   v32 = &v31;
   v33 = 838860800;
@@ -2017,15 +2017,15 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   v28 = __Block_byref_object_copy__15;
   v29 = __Block_byref_object_dispose__15;
   v30 = 0;
-  v10 = [(AKAnisetteProvisioningController *)v40 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v17[3] = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __73__AKAnisetteProvisioningController__attestationDataForRequestData_error___block_invoke;
   v21 = &unk_1E73D3C50;
   v22 = &v24;
-  v23 = [v10 synchronousRemoteObjectProxyWithErrorHandler:?];
-  MEMORY[0x1E69E5920](v10);
+  v23 = [_anisetteServiceConnection synchronousRemoteObjectProxyWithErrorHandler:?];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v9 = v23;
   v8 = location[0];
   v12 = MEMORY[0x1E69E9820];
@@ -2037,11 +2037,11 @@ void __82__AKAnisetteProvisioningController_fetchPeerAttestationDataForRequest_c
   v17[1] = &v24;
   v17[2] = &v31;
   [v9 attestationDataForRequestData:v8 completion:&v12];
-  if (v38)
+  if (errorCopy)
   {
     v7 = v25[5];
     v4 = v7;
-    *v38 = v7;
+    *errorCopy = v7;
   }
 
   v6 = MEMORY[0x1E69E5928](v32[5]);
@@ -2140,15 +2140,15 @@ void __73__AKAnisetteProvisioningController__attestationDataForRequestData_error
   *MEMORY[0x1E69E9840];
 }
 
-- (void)attestationDataForRequestData:(id)a3 completion:(id)a4
+- (void)attestationDataForRequestData:(id)data completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, completion);
   v30 = _os_activity_create(&dword_193225000, "authkit/fetch-attestation-data-async", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v31 = v30;
   state.opaque[0] = 0;
@@ -2188,12 +2188,12 @@ void __73__AKAnisetteProvisioningController__attestationDataForRequestData_error
   v13 = 0;
   v14 = __77__AKAnisetteProvisioningController_attestationDataForRequestData_completion___block_invoke;
   v15 = &unk_1E73D91A8;
-  v16 = MEMORY[0x1E69E5928](v34);
+  v16 = MEMORY[0x1E69E5928](selfCopy);
   v17 = MEMORY[0x1E69E5928](location[0]);
   v19 = v28;
   v18 = MEMORY[0x1E69E5928](v32);
   v20 = MEMORY[0x193B165F0](&v11);
-  [(AKAnisetteProvisioningController *)v34 _attestationDataForRequestData:location[0] completion:v20];
+  [(AKAnisetteProvisioningController *)selfCopy _attestationDataForRequestData:location[0] completion:v20];
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v17, 0);
@@ -2317,21 +2317,21 @@ void __77__AKAnisetteProvisioningController_attestationDataForRequestData_comple
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_attestationDataForRequestData:(id)a3 completion:(id)a4
+- (void)_attestationDataForRequestData:(id)data completion:(id)completion
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, completion);
   v21[0] = 0;
   v21[1] = v21;
   v22 = 838860800;
   v23 = 48;
   v24 = __Block_byref_object_copy__15;
   v25 = __Block_byref_object_dispose__15;
-  v26 = MEMORY[0x1E69E5928](v29);
+  v26 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E9820];
   v14 = -1073741824;
   v15 = 0;
@@ -2341,15 +2341,15 @@ void __77__AKAnisetteProvisioningController_attestationDataForRequestData_comple
   v18 = MEMORY[0x1E69E5928](location[0]);
   v19[0] = MEMORY[0x1E69E5928](v27);
   v20 = MEMORY[0x193B165F0](&v13);
-  v4 = [(AKAnisetteProvisioningController *)v29 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __78__AKAnisetteProvisioningController__attestationDataForRequestData_completion___block_invoke_30;
   v10 = &unk_1E73D3510;
   v11 = MEMORY[0x1E69E5928](v20);
-  v12 = [v4 remoteObjectProxyWithErrorHandler:&v6];
-  MEMORY[0x1E69E5920](v4);
+  v12 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v6];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   [v12 attestationDataForRequestData:location[0] completion:v20];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
@@ -2437,17 +2437,17 @@ void __78__AKAnisetteProvisioningController__attestationDataForRequestData_compl
   objc_storeStrong(location, 0);
 }
 
-- (void)attestationDataForRequest:(id)a3 completion:(id)a4
+- (void)attestationDataForRequest:(id)request completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v4 = [AKAttestationRequestData alloc];
   v14 = [(AKAttestationRequestData *)v4 initWithRequest:location[0] requiredHeaders:0];
-  v7 = v17;
+  v7 = selfCopy;
   v6 = v14;
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
@@ -2484,19 +2484,19 @@ void __73__AKAnisetteProvisioningController_attestationDataForRequest_completion
   objc_storeStrong(location, 0);
 }
 
-- (void)resetDeviceIdentityWithCompletion:(id)a3
+- (void)resetDeviceIdentityWithCompletion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v24[0] = 0;
   v24[1] = v24;
   v25 = 838860800;
   v26 = 48;
   v27 = __Block_byref_object_copy__15;
   v28 = __Block_byref_object_dispose__15;
-  v29 = MEMORY[0x1E69E5928](v31);
+  v29 = MEMORY[0x1E69E5928](selfCopy);
   v22 = _os_activity_create(&dword_193225000, "authkit/reset-baa-certs", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v23 = v22;
   state.opaque[0] = 0;
@@ -2509,15 +2509,15 @@ void __73__AKAnisetteProvisioningController_attestationDataForRequest_completion
   v19[1] = v24;
   v19[0] = MEMORY[0x1E69E5928](location[0]);
   v20 = MEMORY[0x193B165F0](v18);
-  v4 = [(AKAnisetteProvisioningController *)v31 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
   v14 = __70__AKAnisetteProvisioningController_resetDeviceIdentityWithCompletion___block_invoke_2;
   v15 = &unk_1E73D3510;
   v16 = MEMORY[0x1E69E5928](v20);
-  v17 = [v4 remoteObjectProxyWithErrorHandler:&v11];
-  MEMORY[0x1E69E5920](v4);
+  v17 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v11];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v3 = v17;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
@@ -2612,19 +2612,19 @@ void __70__AKAnisetteProvisioningController_resetDeviceIdentityWithCompletion___
   *MEMORY[0x1E69E9840];
 }
 
-- (void)refreshBAADeviceTokenWithCompletion:(id)a3
+- (void)refreshBAADeviceTokenWithCompletion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v24[0] = 0;
   v24[1] = v24;
   v25 = 838860800;
   v26 = 48;
   v27 = __Block_byref_object_copy__15;
   v28 = __Block_byref_object_dispose__15;
-  v29 = MEMORY[0x1E69E5928](v31);
+  v29 = MEMORY[0x1E69E5928](selfCopy);
   v22 = _os_activity_create(&dword_193225000, "authkit/renew-baa-device-token", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v23 = v22;
   state.opaque[0] = 0;
@@ -2637,15 +2637,15 @@ void __70__AKAnisetteProvisioningController_resetDeviceIdentityWithCompletion___
   v19[1] = v24;
   v19[0] = MEMORY[0x1E69E5928](location[0]);
   v20 = MEMORY[0x193B165F0](v18);
-  v4 = [(AKAnisetteProvisioningController *)v31 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
   v14 = __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion___block_invoke_2;
   v15 = &unk_1E73D3510;
   v16 = MEMORY[0x1E69E5928](v20);
-  v17 = [v4 remoteObjectProxyWithErrorHandler:&v11];
-  MEMORY[0x1E69E5920](v4);
+  v17 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v11];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v3 = v17;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
@@ -2740,16 +2740,16 @@ void __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion_
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setTimeAdjustmentWithServerTime:(id)a3 completion:(id)a4
+- (void)setTimeAdjustmentWithServerTime:(id)time completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, time);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  if ([(AKAnisetteProvisioningController *)v16 timeSetOperationResult]== 1 || [(AKAnisetteProvisioningController *)v16 timeSetOperationResult]== 2)
+  objc_storeStrong(&v14, completion);
+  if ([(AKAnisetteProvisioningController *)selfCopy timeSetOperationResult]== 1 || [(AKAnisetteProvisioningController *)selfCopy timeSetOperationResult]== 2)
   {
     v13 = _AKLogSystem();
     v12 = OS_LOG_TYPE_DEFAULT;
@@ -2773,9 +2773,9 @@ void __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion_
   else if ([location[0] length])
   {
     v4 = +[AKConfiguration sharedConfiguration];
-    v5 = [v4 shouldEnableAttestationLogging];
+    shouldEnableAttestationLogging = [v4 shouldEnableAttestationLogging];
     MEMORY[0x1E69E5920](v4);
-    if (v5 == 1)
+    if (shouldEnableAttestationLogging == 1)
     {
       oslog = _AKLogSystem();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -2787,7 +2787,7 @@ void __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion_
       objc_storeStrong(&oslog, 0);
     }
 
-    [(AKAnisetteProvisioningController *)v16 _setTimeAdjustmentWithServerTime:location[0] completion:v14];
+    [(AKAnisetteProvisioningController *)selfCopy _setTimeAdjustmentWithServerTime:location[0] completion:v14];
     v10 = 0;
   }
 
@@ -2806,21 +2806,21 @@ void __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion_
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_setTimeAdjustmentWithServerTime:(id)a3 completion:(id)a4
+- (void)_setTimeAdjustmentWithServerTime:(id)time completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, time);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, completion);
   v28[0] = 0;
   v28[1] = v28;
   v29 = 838860800;
   v30 = 48;
   v31 = __Block_byref_object_copy__15;
   v32 = __Block_byref_object_dispose__15;
-  v33 = MEMORY[0x1E69E5928](v36);
+  v33 = MEMORY[0x1E69E5928](selfCopy);
   v26 = _os_activity_create(&dword_193225000, "authkit/resync-server-time", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v27 = v26;
   state.opaque[0] = 0;
@@ -2833,15 +2833,15 @@ void __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion_
   v23[1] = v28;
   v23[0] = MEMORY[0x1E69E5928](v34);
   v24 = MEMORY[0x193B165F0](v22);
-  v6 = [(AKAnisetteProvisioningController *)v36 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v15 = MEMORY[0x1E69E9820];
   v16 = -1073741824;
   v17 = 0;
   v18 = __80__AKAnisetteProvisioningController__setTimeAdjustmentWithServerTime_completion___block_invoke_2;
   v19 = &unk_1E73D3510;
   v20 = MEMORY[0x1E69E5928](v24);
-  v21 = [v6 remoteObjectProxyWithErrorHandler:&v15];
-  MEMORY[0x1E69E5920](v6);
+  v21 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v15];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v5 = v21;
   v4 = location[0];
   v8 = MEMORY[0x1E69E9820];
@@ -2849,7 +2849,7 @@ void __72__AKAnisetteProvisioningController_refreshBAADeviceTokenWithCompletion_
   v10 = 0;
   v11 = __80__AKAnisetteProvisioningController__setTimeAdjustmentWithServerTime_completion___block_invoke_35;
   v12 = &unk_1E73D9220;
-  v13 = MEMORY[0x1E69E5928](v36);
+  v13 = MEMORY[0x1E69E5928](selfCopy);
   v14 = MEMORY[0x1E69E5928](v24);
   [v5 setTimeAdjustmentWithServerTime:v4 completion:&v8];
   objc_storeStrong(&v14, 0);
@@ -2942,21 +2942,21 @@ void __80__AKAnisetteProvisioningController__setTimeAdjustmentWithServerTime_com
   *MEMORY[0x1E69E9840];
 }
 
-- (void)postAttestationAnalytics:(id)a3 completion:(id)a4
+- (void)postAttestationAnalytics:(id)analytics completion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, analytics);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, completion);
   v24[0] = 0;
   v24[1] = v24;
   v25 = 838860800;
   v26 = 48;
   v27 = __Block_byref_object_copy__15;
   v28 = __Block_byref_object_dispose__15;
-  v29 = MEMORY[0x1E69E5928](v32);
+  v29 = MEMORY[0x1E69E5928](selfCopy);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __72__AKAnisetteProvisioningController_postAttestationAnalytics_completion___block_invoke;
@@ -2964,15 +2964,15 @@ void __80__AKAnisetteProvisioningController__setTimeAdjustmentWithServerTime_com
   v22[1] = v24;
   v22[0] = MEMORY[0x1E69E5928](v30);
   v23 = MEMORY[0x193B165F0](v21);
-  v6 = [(AKAnisetteProvisioningController *)v32 _anisetteServiceConnection];
+  _anisetteServiceConnection = [(AKAnisetteProvisioningController *)selfCopy _anisetteServiceConnection];
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
   v16 = 0;
   v17 = __72__AKAnisetteProvisioningController_postAttestationAnalytics_completion___block_invoke_2;
   v18 = &unk_1E73D3510;
   v19 = MEMORY[0x1E69E5928](v23);
-  v20 = [v6 remoteObjectProxyWithErrorHandler:&v14];
-  MEMORY[0x1E69E5920](v6);
+  v20 = [_anisetteServiceConnection remoteObjectProxyWithErrorHandler:&v14];
+  MEMORY[0x1E69E5920](_anisetteServiceConnection);
   v5 = v20;
   v4 = location[0];
   v8 = MEMORY[0x1E69E9820];
@@ -3069,9 +3069,9 @@ void __72__AKAnisetteProvisioningController_postAttestationAnalytics_completion_
 
 - (void)_tearDownConnection
 {
-  v2 = [(AKAnisetteProvisioningController *)self connectionManager];
-  [(AKClientConnectionLifecycleManager *)v2 teardownServiceConnection];
-  MEMORY[0x1E69E5920](v2);
+  connectionManager = [(AKAnisetteProvisioningController *)self connectionManager];
+  [(AKClientConnectionLifecycleManager *)connectionManager teardownServiceConnection];
+  MEMORY[0x1E69E5920](connectionManager);
 }
 
 @end

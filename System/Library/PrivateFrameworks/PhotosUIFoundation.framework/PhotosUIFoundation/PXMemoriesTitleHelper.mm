@@ -1,24 +1,24 @@
 @interface PXMemoriesTitleHelper
 + (PXMemoriesTitleHelper)defaultHelper;
-- (BOOL)_isTextLongerThanPreferredLine:(id)a3 range:(_NSRange)a4 minimumScaleFactor:(double)a5;
+- (BOOL)_isTextLongerThanPreferredLine:(id)line range:(_NSRange)range minimumScaleFactor:(double)factor;
 - (PXMemoriesTitleHelper)init;
-- (id)displayableTextForTitle:(id)a3 intent:(int64_t)a4;
-- (id)titleForDisplayableText:(id)a3 titleCategory:(int64_t)a4 options:(unint64_t)a5;
+- (id)displayableTextForTitle:(id)title intent:(int64_t)intent;
+- (id)titleForDisplayableText:(id)text titleCategory:(int64_t)category options:(unint64_t)options;
 @end
 
 @implementation PXMemoriesTitleHelper
 
-- (BOOL)_isTextLongerThanPreferredLine:(id)a3 range:(_NSRange)a4 minimumScaleFactor:(double)a5
+- (BOOL)_isTextLongerThanPreferredLine:(id)line range:(_NSRange)range minimumScaleFactor:(double)factor
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  length = range.length;
+  location = range.location;
+  lineCopy = line;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
   if (length >= 2)
   {
     v11 = length;
     v12 = location;
-    while ([v10 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v12)}])
+    while ([whitespaceCharacterSet characterIsMember:{objc_msgSend(lineCopy, "characterAtIndex:", v12)}])
     {
       ++v12;
       if (--v11 <= 1)
@@ -30,7 +30,7 @@
 
     v13 = location + length - 1;
     length = 1;
-    while ([v10 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v13)}])
+    while ([whitespaceCharacterSet characterIsMember:{objc_msgSend(lineCopy, "characterAtIndex:", v13)}])
     {
       --v11;
       --v13;
@@ -44,25 +44,25 @@
   }
 
 LABEL_11:
-  v14 = 1.0 / a5 * [(PXMemoriesTitleHelper *)self preferredLineLength]< length;
+  v14 = 1.0 / factor * [(PXMemoriesTitleHelper *)self preferredLineLength]< length;
 
   return v14;
 }
 
-- (id)titleForDisplayableText:(id)a3 titleCategory:(int64_t)a4 options:(unint64_t)a5
+- (id)titleForDisplayableText:(id)text titleCategory:(int64_t)category options:(unint64_t)options
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
-  if (-[PXMemoriesTitleHelper _isTextLongerThanPreferredLine:range:minimumScaleFactor:](self, "_isTextLongerThanPreferredLine:range:minimumScaleFactor:", v8, 0, [v8 length], 1.0))
+  optionsCopy = options;
+  textCopy = text;
+  v9 = textCopy;
+  if (-[PXMemoriesTitleHelper _isTextLongerThanPreferredLine:range:minimumScaleFactor:](self, "_isTextLongerThanPreferredLine:range:minimumScaleFactor:", textCopy, 0, [textCopy length], 1.0))
   {
-    if (v5)
+    if (optionsCopy)
     {
-      v18 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-      v19 = [v18 mutableCopy];
+      punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+      v19 = [punctuationCharacterSet mutableCopy];
 
-      v20 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      [v19 formUnionWithCharacterSet:v20];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      [v19 formUnionWithCharacterSet:whitespaceCharacterSet];
 
       [v19 removeCharactersInString:@"]}"]);
       v48[0] = 0;
@@ -79,7 +79,7 @@ LABEL_11:
       v39 = &v38;
       v40 = 0x2020000000;
       v41 = 0;
-      v21 = [v8 length];
+      v21 = [textCopy length];
       v27 = MEMORY[0x1E69E9820];
       v28 = 3221225472;
       v29 = __71__PXMemoriesTitleHelper_titleForDisplayableText_titleCategory_options___block_invoke_19;
@@ -87,11 +87,11 @@ LABEL_11:
       v34 = v48;
       v22 = v19;
       v31 = v22;
-      v9 = v8;
+      v9 = textCopy;
       v32 = v9;
-      v33 = self;
+      selfCopy = self;
       v36 = &v38;
-      v37 = a4;
+      categoryCopy = category;
       v35 = &v42;
       [v9 enumerateSubstringsInRange:0 options:v21 usingBlock:{3, &v27}];
       v23 = v43[5];
@@ -122,16 +122,16 @@ LABEL_11:
       v42 = 0;
       v43 = &v42;
       v44 = 0x2020000000;
-      v45 = [v8 length] >> 1;
-      v10 = [v8 length];
+      v45 = [textCopy length] >> 1;
+      v10 = [textCopy length];
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __71__PXMemoriesTitleHelper_titleForDisplayableText_titleCategory_options___block_invoke;
       v49[3] = &unk_1E7BB5E58;
       v49[4] = &v42;
-      [v8 enumerateSubstringsInRange:0 options:v10 usingBlock:{3, v49}];
+      [textCopy enumerateSubstringsInRange:0 options:v10 usingBlock:{3, v49}];
       v11 = v43[3];
-      if (v11 < [v8 length])
+      if (v11 < [textCopy length])
       {
         v12 = objc_msgSend(MEMORY[0x1E696AB08], "characterSetWithCharactersInString:", @"([{");
         v13 = v43[3];
@@ -139,7 +139,7 @@ LABEL_11:
         {
           do
           {
-            if (![v12 characterIsMember:{objc_msgSend(v8, "characterAtIndex:", v13 - 1)}])
+            if (![v12 characterIsMember:{objc_msgSend(textCopy, "characterAtIndex:", v13 - 1)}])
             {
               break;
             }
@@ -154,15 +154,15 @@ LABEL_11:
       }
 
       v15 = v43[3];
-      v9 = v8;
+      v9 = textCopy;
       if (v15 >= 1)
       {
-        v9 = v8;
-        if (v15 < [v8 length])
+        v9 = textCopy;
+        if (v15 < [textCopy length])
         {
           v16 = v43[3];
-          v17 = [(PXMemoriesTitleHelper *)self softLineBreak];
-          v9 = [v8 stringByReplacingCharactersInRange:v16 withString:{0, v17}];
+          softLineBreak = [(PXMemoriesTitleHelper *)self softLineBreak];
+          v9 = [textCopy stringByReplacingCharactersInRange:v16 withString:{0, softLineBreak}];
         }
       }
 
@@ -267,15 +267,15 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)displayableTextForTitle:(id)a3 intent:(int64_t)a4
+- (id)displayableTextForTitle:(id)title intent:(int64_t)intent
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 2)
+  titleCopy = title;
+  v7 = titleCopy;
+  if (intent <= 2)
   {
-    v8 = off_1E7BB5C80[a4];
-    v9 = [(PXMemoriesTitleHelper *)self softLineBreak];
-    v10 = [v6 stringByReplacingOccurrencesOfString:v9 withString:v8];
+    v8 = off_1E7BB5C80[intent];
+    softLineBreak = [(PXMemoriesTitleHelper *)self softLineBreak];
+    v10 = [titleCopy stringByReplacingOccurrencesOfString:softLineBreak withString:v8];
 
     v11 = [v10 stringByReplacingOccurrencesOfString:@"\n" withString:v8];
 

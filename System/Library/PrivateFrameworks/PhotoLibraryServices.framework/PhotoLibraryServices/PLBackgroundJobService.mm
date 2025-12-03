@@ -1,56 +1,56 @@
 @interface PLBackgroundJobService
-+ (BOOL)verifyStateTransitionFromState:(unint64_t)a3 toState:(unint64_t)a4;
++ (BOOL)verifyStateTransitionFromState:(unint64_t)state toState:(unint64_t)toState;
 + (void)_removeAllBundlesFromUserDefaultsWithoutLocking;
-- (BOOL)_signalNeededOnBundle:(id)a3;
+- (BOOL)_signalNeededOnBundle:(id)bundle;
 - (PLBackgroundJobService)init;
-- (PLBackgroundJobService)initWithLibraryCoordinator:(id)a3 statusCenter:(id)a4;
+- (PLBackgroundJobService)initWithLibraryCoordinator:(id)coordinator statusCenter:(id)center;
 - (id)_bundlesToProcessByCriteriaShortCodesAsPathStrings;
 - (id)_bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked;
 - (id)_getBundleRecordsFromProcessingSetForAllCriterias;
-- (id)_getBundleRecordsFromProcessingSetForCriteriaShortCode:(id)a3;
+- (id)_getBundleRecordsFromProcessingSetForCriteriaShortCode:(id)code;
 - (id)stateCaptureDictionary;
 - (unint64_t)serviceState;
-- (void)_appendBundleRecordsToProcessingSet:(id)a3 criteriaShortCode:(id)a4;
+- (void)_appendBundleRecordsToProcessingSet:(id)set criteriaShortCode:(id)code;
 - (void)_closePendingThroughputReports;
-- (void)_finishTaskIfNeededShouldConsiderDeferring_enqueue:(BOOL)a3;
-- (void)_fireWatchdogTimerWithStartTime:(id)a3 startingPushBackTimeInterval:(double)a4 sourceDescription:(id)a5;
-- (void)_inq_finishTaskIfNeededShouldConsiderDeferring:(BOOL)a3;
-- (void)_inq_runTask:(id)a3 withCriteria:(id)a4;
-- (void)_inq_setServiceState:(unint64_t)a3;
+- (void)_finishTaskIfNeededShouldConsiderDeferring_enqueue:(BOOL)deferring_enqueue;
+- (void)_fireWatchdogTimerWithStartTime:(id)time startingPushBackTimeInterval:(double)interval sourceDescription:(id)description;
+- (void)_inq_finishTaskIfNeededShouldConsiderDeferring:(BOOL)deferring;
+- (void)_inq_runTask:(id)task withCriteria:(id)criteria;
+- (void)_inq_setServiceState:(unint64_t)state;
 - (void)_inq_shutdown;
 - (void)_inq_startPollingForTaskStatus;
-- (void)_inq_startRunningBackgroundJobsWithCriteria:(id)a3;
+- (void)_inq_startRunningBackgroundJobsWithCriteria:(id)criteria;
 - (void)_inq_stopPollingForTaskStatus;
 - (void)_inq_stopRunningBackgroundJobs;
-- (void)_inq_submitBackgroundProcessingNeededForBuffer:(id)a3 context:(id)a4;
-- (void)_inq_submitPendingJobsIfNecessary:(id)a3;
-- (void)_inq_submitTaskWithCriteria:(id)a3;
-- (void)_inq_updateCameraForegroundState:(BOOL)a3;
-- (void)_invalidateSignalNeededForCrashRecoveryOnBundle:(id)a3;
+- (void)_inq_submitBackgroundProcessingNeededForBuffer:(id)buffer context:(id)context;
+- (void)_inq_submitPendingJobsIfNecessary:(id)necessary;
+- (void)_inq_submitTaskWithCriteria:(id)criteria;
+- (void)_inq_updateCameraForegroundState:(BOOL)state;
+- (void)_invalidateSignalNeededForCrashRecoveryOnBundle:(id)bundle;
 - (void)_loadBundleRecordsDictionaryFromUserDefaults;
-- (void)_noteSignalNeededForCrashRecoveryOnBundle:(id)a3;
+- (void)_noteSignalNeededForCrashRecoveryOnBundle:(id)bundle;
 - (void)_persistBundleRecordsDictionaryToUserDefaults;
 - (void)_removeAllBundlesFromProcessingSet;
-- (void)_removeAllBundlesFromProcessingSetForCriteriaShortCode:(id)a3;
-- (void)_removeBundleRecordFromProcessingSet:(id)a3 criteriaShortCode:(id)a4;
-- (void)_reportProgressWithType:(unint64_t)a3 itemCount:(unint64_t)a4 category:(id)a5;
-- (void)_setRunningCriteria:(id)a3;
-- (void)_setServiceState:(unint64_t)a3;
-- (void)_simulateBGSTShouldExpire:(BOOL)a3;
+- (void)_removeAllBundlesFromProcessingSetForCriteriaShortCode:(id)code;
+- (void)_removeBundleRecordFromProcessingSet:(id)set criteriaShortCode:(id)code;
+- (void)_reportProgressWithType:(unint64_t)type itemCount:(unint64_t)count category:(id)category;
+- (void)_setRunningCriteria:(id)criteria;
+- (void)_setServiceState:(unint64_t)state;
+- (void)_simulateBGSTShouldExpire:(BOOL)expire;
 - (void)_startPollingForTaskStatus;
-- (void)_startRunningBackgroundJobsWithCriteria:(id)a3;
-- (void)_submitTaskWithoutCoalescingIfNecessaryOnBundle:(id)a3;
-- (void)cameraWatcherDidChangeState:(id)a3;
-- (void)invalidateLibraryBundle:(id)a3 completion:(id)a4;
+- (void)_startRunningBackgroundJobsWithCriteria:(id)criteria;
+- (void)_submitTaskWithoutCoalescingIfNecessaryOnBundle:(id)bundle;
+- (void)cameraWatcherDidChangeState:(id)state;
+- (void)invalidateLibraryBundle:(id)bundle completion:(id)completion;
 - (void)libraryCoordinatorFinishedJobsOnAllSubmittedBundles;
-- (void)libraryCoordinatorFinishedJobsOnSubmittedBundle:(id)a3 withCriteria:(id)a4;
-- (void)performCrashRecoveryIfNeededOnBundle:(id)a3;
-- (void)signalBackgroundProcessingNeededOnBundle:(id)a3;
-- (void)signalBackgroundProcessingNeededOnBundle:(id)a3 workerTypes:(id)a4;
-- (void)signalBackgroundProcessingNeededOnLibrary:(id)a3;
-- (void)signalBackgroundProcessingNeededOnLibrary:(id)a3 workerTypes:(id)a4;
+- (void)libraryCoordinatorFinishedJobsOnSubmittedBundle:(id)bundle withCriteria:(id)criteria;
+- (void)performCrashRecoveryIfNeededOnBundle:(id)bundle;
+- (void)signalBackgroundProcessingNeededOnBundle:(id)bundle;
+- (void)signalBackgroundProcessingNeededOnBundle:(id)bundle workerTypes:(id)types;
+- (void)signalBackgroundProcessingNeededOnLibrary:(id)library;
+- (void)signalBackgroundProcessingNeededOnLibrary:(id)library workerTypes:(id)types;
 - (void)start;
-- (void)startWatchdogTimerIfNeededWithSourceDescription:(id)a3;
+- (void)startWatchdogTimerIfNeededWithSourceDescription:(id)description;
 @end
 
 @implementation PLBackgroundJobService
@@ -67,10 +67,10 @@
   return v2;
 }
 
-- (void)_submitTaskWithoutCoalescingIfNecessaryOnBundle:(id)a3
+- (void)_submitTaskWithoutCoalescingIfNecessaryOnBundle:(id)bundle
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v5 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -85,9 +85,9 @@
   v8[1] = 3221225472;
   v8[2] = __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundle___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = bundleCopy;
+  selfCopy = self;
+  v7 = bundleCopy;
   dispatch_sync(isolationQueue, v8);
 }
 
@@ -99,7 +99,7 @@ void __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundl
   [*(a1 + 40) _inq_submitPendingJobsIfNecessary:v2];
 }
 
-- (void)_setServiceState:(unint64_t)a3
+- (void)_setServiceState:(unint64_t)state
 {
   isolationQueue = self->_isolationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -107,7 +107,7 @@ void __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundl
   v4[2] = __43__PLBackgroundJobService__setServiceState___block_invoke;
   v4[3] = &unk_1E7577B90;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_sync(isolationQueue, v4);
 }
 
@@ -125,8 +125,8 @@ void __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundl
 - (id)stateCaptureDictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v20 = [(PLBackgroundJobService *)self statusCenterDump];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  statusCenterDump = [(PLBackgroundJobService *)self statusCenterDump];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -146,12 +146,12 @@ void __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundl
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
-        v9 = [v8 shortCode];
-        v10 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:v9];
+        shortCode = [v8 shortCode];
+        v10 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:shortCode];
 
         v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
-        v12 = [v8 name];
-        [v3 setObject:v11 forKeyedSubscript:v12];
+        name = [v8 name];
+        [dictionary setObject:v11 forKeyedSubscript:name];
       }
 
       v5 = [v4 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -173,25 +173,25 @@ void __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundl
   v25 = __Block_byref_object_dispose__33659;
   v26 = 0;
   PLSafeRunWithUnfairLock();
-  v13 = [(PLBackgroundJobService *)self serviceState];
-  v14 = [MEMORY[0x1E695DF90] dictionary];
-  [v14 setObject:v20 forKeyedSubscript:@"statusCenter"];
-  if (v13 - 1 > 9)
+  serviceState = [(PLBackgroundJobService *)self serviceState];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary2 setObject:statusCenterDump forKeyedSubscript:@"statusCenter"];
+  if (serviceState - 1 > 9)
   {
     v15 = @"Unknown";
   }
 
   else
   {
-    v15 = off_1E756B010[v13 - 1];
+    v15 = off_1E756B010[serviceState - 1];
   }
 
   v16 = v15;
-  [v14 setObject:v16 forKeyedSubscript:@"state"];
+  [dictionary2 setObject:v16 forKeyedSubscript:@"state"];
 
-  [v14 setObject:v3 forKeyedSubscript:@"criteria"];
-  [v14 setObject:v28[5] forKeyedSubscript:@"watchdogTimerStartDate"];
-  [v14 setObject:v22[5] forKeyedSubscript:@"watchdogTimerSource"];
+  [dictionary2 setObject:dictionary forKeyedSubscript:@"criteria"];
+  [dictionary2 setObject:v28[5] forKeyedSubscript:@"watchdogTimerStartDate"];
+  [dictionary2 setObject:v22[5] forKeyedSubscript:@"watchdogTimerSource"];
   if (self->_submissionCoalescer)
   {
     v17 = @"NO";
@@ -203,12 +203,12 @@ void __74__PLBackgroundJobService__submitTaskWithoutCoalescingIfNecessaryOnBundl
   }
 
   v18 = v17;
-  [v14 setObject:v18 forKeyedSubscript:@"registrationDisabled"];
+  [dictionary2 setObject:v18 forKeyedSubscript:@"registrationDisabled"];
 
   _Block_object_dispose(&v21, 8);
   _Block_object_dispose(&v27, 8);
 
-  return v14;
+  return dictionary2;
 }
 
 void __48__PLBackgroundJobService_stateCaptureDictionary__block_invoke(void *a1)
@@ -224,14 +224,14 @@ void __48__PLBackgroundJobService_stateCaptureDictionary__block_invoke(void *a1)
   }
 }
 
-- (void)cameraWatcherDidChangeState:(id)a3
+- (void)cameraWatcherDidChangeState:(id)state
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(isolationQueue);
-  v6 = [v5 isCameraRunning];
+  isCameraRunning = [stateCopy isCameraRunning];
 
-  [(PLBackgroundJobService *)self _inq_updateCameraForegroundState:v6];
+  [(PLBackgroundJobService *)self _inq_updateCameraForegroundState:isCameraRunning];
 }
 
 - (void)libraryCoordinatorFinishedJobsOnAllSubmittedBundles
@@ -376,19 +376,19 @@ LABEL_23:
 LABEL_32:
 }
 
-- (void)libraryCoordinatorFinishedJobsOnSubmittedBundle:(id)a3 withCriteria:(id)a4
+- (void)libraryCoordinatorFinishedJobsOnSubmittedBundle:(id)bundle withCriteria:(id)criteria
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  criteriaCopy = criteria;
   v8 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 name];
+    name = [criteriaCopy name];
     *buf = 138412546;
-    v15 = v6;
+    v15 = bundleCopy;
     v16 = 2114;
-    v17 = v9;
+    v17 = name;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Library coordinator reported all background jobs finished on bundle %@ with criteria %{public}@", buf, 0x16u);
   }
 
@@ -398,8 +398,8 @@ LABEL_32:
   v12[2] = __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundle_withCriteria___block_invoke;
   v12[3] = &unk_1E7578848;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = bundleCopy;
+  v11 = bundleCopy;
   dispatch_async(isolationQueue, v12);
 }
 
@@ -488,8 +488,8 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
         }
 
         v9 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
-        v10 = [v9 allObjects];
-        [v3 addObjectsFromArray:v10];
+        allObjects = [v9 allObjects];
+        [v3 addObjectsFromArray:allObjects];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -504,12 +504,12 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
   return v11;
 }
 
-- (id)_getBundleRecordsFromProcessingSetForCriteriaShortCode:(id)a3
+- (id)_getBundleRecordsFromProcessingSetForCriteriaShortCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   os_unfair_lock_lock(&self->_bundlesToProcessByCriteriaShortCodeLock);
   LogBundlesToProcessByCriteria(self->_bundlesToProcessByCriteriaShortCode, 0);
-  v5 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:codeCopy];
 
   v6 = [v5 copy];
   os_unfair_lock_unlock(&self->_bundlesToProcessByCriteriaShortCodeLock);
@@ -559,11 +559,11 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
   os_unfair_lock_unlock(&self->_bundlesToProcessByCriteriaShortCodeLock);
 }
 
-- (void)_removeAllBundlesFromProcessingSetForCriteriaShortCode:(id)a3
+- (void)_removeAllBundlesFromProcessingSetForCriteriaShortCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   os_unfair_lock_lock(&self->_bundlesToProcessByCriteriaShortCodeLock);
-  v5 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:codeCopy];
 
   [v5 removeAllObjects];
   LogBundlesToProcessByCriteria(self->_bundlesToProcessByCriteriaShortCode, 0);
@@ -571,27 +571,27 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
   os_unfair_lock_unlock(&self->_bundlesToProcessByCriteriaShortCodeLock);
 }
 
-- (void)_removeBundleRecordFromProcessingSet:(id)a3 criteriaShortCode:(id)a4
+- (void)_removeBundleRecordFromProcessingSet:(id)set criteriaShortCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
+  codeCopy = code;
+  setCopy = set;
   os_unfair_lock_lock(&self->_bundlesToProcessByCriteriaShortCodeLock);
-  v8 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:v6];
+  v8 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:codeCopy];
 
-  [v8 removeObject:v7];
+  [v8 removeObject:setCopy];
   LogBundlesToProcessByCriteria(self->_bundlesToProcessByCriteriaShortCode, 0);
   [(PLBackgroundJobService *)self _persistBundleRecordsDictionaryToUserDefaults];
   os_unfair_lock_unlock(&self->_bundlesToProcessByCriteriaShortCodeLock);
 }
 
-- (void)_appendBundleRecordsToProcessingSet:(id)a3 criteriaShortCode:(id)a4
+- (void)_appendBundleRecordsToProcessingSet:(id)set criteriaShortCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
+  codeCopy = code;
+  setCopy = set;
   os_unfair_lock_lock(&self->_bundlesToProcessByCriteriaShortCodeLock);
-  v8 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:v6];
+  v8 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:codeCopy];
 
-  [v8 unionSet:v7];
+  [v8 unionSet:setCopy];
   LogBundlesToProcessByCriteria(self->_bundlesToProcessByCriteriaShortCode, 0);
   [(PLBackgroundJobService *)self _persistBundleRecordsDictionaryToUserDefaults];
   os_unfair_lock_unlock(&self->_bundlesToProcessByCriteriaShortCodeLock);
@@ -602,7 +602,7 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
   v32 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_bundlesToProcessByCriteriaShortCodeLock);
   v2 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v17 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -625,7 +625,7 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
         v20 = v3;
         v4 = *(*(&v26 + 1) + 8 * v3);
         v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"PLBackgroundJobServiceBundleRecordsKeyWithShortCode", v4];
-        v5 = [v17 objectForKey:?];
+        v5 = [standardUserDefaults objectForKey:?];
         v6 = [(NSDictionary *)self->_bundlesToProcessByCriteriaShortCode objectForKeyedSubscript:v4];
         [v6 removeAllObjects];
 
@@ -680,8 +680,8 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_bundlesToProcessByCriteriaShortCodeLock);
-  v3 = [(PLBackgroundJobService *)self _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked = [(PLBackgroundJobService *)self _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -703,9 +703,9 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"PLBackgroundJobServiceBundleRecordsKeyWithShortCode", v9];
-        v11 = [v3 objectForKeyedSubscript:v9];
-        v12 = [v11 allObjects];
-        [v4 setObject:v12 forKey:v10];
+        v11 = [_bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked objectForKeyedSubscript:v9];
+        allObjects = [v11 allObjects];
+        [standardUserDefaults setObject:allObjects forKey:v10];
       }
 
       v6 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -762,13 +762,13 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
               }
 
               v13 = *(*(&v28 + 1) + 8 * j);
-              v14 = [v13 libraryURL];
+              libraryURL = [v13 libraryURL];
 
-              if (v14)
+              if (libraryURL)
               {
-                v15 = [v13 libraryURL];
-                v16 = [v15 path];
-                [v7 addObject:v16];
+                libraryURL2 = [v13 libraryURL];
+                path = [libraryURL2 path];
+                [v7 addObject:path];
               }
             }
 
@@ -796,19 +796,19 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
 - (id)_bundlesToProcessByCriteriaShortCodesAsPathStrings
 {
   os_unfair_lock_lock(&self->_bundlesToProcessByCriteriaShortCodeLock);
-  v3 = [(PLBackgroundJobService *)self _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked];
+  _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked = [(PLBackgroundJobService *)self _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked];
   os_unfair_lock_unlock(&self->_bundlesToProcessByCriteriaShortCodeLock);
 
-  return v3;
+  return _bundlesToProcessByCriteriaShortCodesAsPathStringsAlreadyLocked;
 }
 
-- (void)_inq_updateCameraForegroundState:(BOOL)a3
+- (void)_inq_updateCameraForegroundState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v29 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
-  self->_cameraForeground = v3;
-  v5 = [(PLBackgroundJobService *)self serviceState];
+  self->_cameraForeground = stateCopy;
+  serviceState = [(PLBackgroundJobService *)self serviceState];
   cameraForeground = self->_cameraForeground;
   v7 = PLBackgroundJobServiceGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -816,14 +816,14 @@ void __87__PLBackgroundJobService_libraryCoordinatorFinishedJobsOnSubmittedBundl
   {
     if (v8)
     {
-      if (v5 - 1 > 9)
+      if (serviceState - 1 > 9)
       {
         v9 = @"Unknown";
       }
 
       else
       {
-        v9 = off_1E756B010[v5 - 1];
+        v9 = off_1E756B010[serviceState - 1];
       }
 
       v11 = v9;
@@ -837,14 +837,14 @@ LABEL_12:
 
   else if (v8)
   {
-    if (v5 - 1 > 9)
+    if (serviceState - 1 > 9)
     {
       v10 = @"Unknown";
     }
 
     else
     {
-      v10 = off_1E756B010[v5 - 1];
+      v10 = off_1E756B010[serviceState - 1];
     }
 
     v11 = v10;
@@ -854,9 +854,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v3 || v5 != 5)
+  if (stateCopy || serviceState != 5)
   {
-    if (v3 && v5 == 6)
+    if (stateCopy && serviceState == 6)
     {
       v23 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -879,10 +879,10 @@ LABEL_12:
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_INFO, "Resuming scheduling for task that was paused before Camera went to background", buf, 2u);
     }
 
-    v14 = [MEMORY[0x1E698E4B8] sharedScheduler];
-    v15 = [(PLBackgroundJobCriteria *)self->_pausedCriteria taskIdentifier];
+    mEMORY[0x1E698E4B8] = [MEMORY[0x1E698E4B8] sharedScheduler];
+    taskIdentifier = [(PLBackgroundJobCriteria *)self->_pausedCriteria taskIdentifier];
     v24 = 0;
-    v16 = [v14 resumeScheduling:v15 error:&v24];
+    v16 = [mEMORY[0x1E698E4B8] resumeScheduling:taskIdentifier error:&v24];
     v17 = v24;
 
     if ((v16 & 1) == 0)
@@ -890,8 +890,8 @@ LABEL_12:
       v18 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [(PLBackgroundJobCriteria *)self->_pausedCriteria taskIdentifier];
-        v20 = v19;
+        taskIdentifier2 = [(PLBackgroundJobCriteria *)self->_pausedCriteria taskIdentifier];
+        v20 = taskIdentifier2;
         v21 = @"unknown";
         if (v17)
         {
@@ -899,7 +899,7 @@ LABEL_12:
         }
 
         *buf = 138412546;
-        v26 = v19;
+        v26 = taskIdentifier2;
         v27 = 2112;
         v28 = v21;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to resume scheduling for task %@. Error: %@", buf, 0x16u);
@@ -913,37 +913,37 @@ LABEL_12:
   }
 }
 
-- (void)_reportProgressWithType:(unint64_t)a3 itemCount:(unint64_t)a4 category:(id)a5
+- (void)_reportProgressWithType:(unint64_t)type itemCount:(unint64_t)count category:(id)category
 {
   v62 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  categoryCopy = category;
   runningTask = self->_runningTask;
   if (runningTask)
   {
-    if (!a3)
+    if (!type)
     {
-      v36 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v36 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobService.m" lineNumber:828 description:@"Invalid thoughput report type"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobService.m" lineNumber:828 description:@"Invalid thoughput report type"];
 
       runningTask = self->_runningTask;
     }
 
     v11 = runningTask;
-    v37 = [(BGSystemTask *)self->_runningTask identifier];
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v37, v9];
+    identifier = [(BGSystemTask *)self->_runningTask identifier];
+    categoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifier, categoryCopy];
     *v58 = 0;
     *&v58[8] = v58;
     *&v58[16] = 0x3032000000;
     v59 = __Block_byref_object_copy__33658;
     v60 = __Block_byref_object_dispose__33659;
-    v61 = [(NSMutableDictionary *)self->_throughputMetricsCache objectForKeyedSubscript:v12];
+    v61 = [(NSMutableDictionary *)self->_throughputMetricsCache objectForKeyedSubscript:categoryCopy];
     v47[1] = MEMORY[0x1E69E9820];
     v47[2] = 3221225472;
     v47[3] = __69__PLBackgroundJobService__reportProgressWithType_itemCount_category___block_invoke;
     v47[4] = &unk_1E7578820;
     v49 = v58;
     v47[5] = self;
-    v13 = v12;
+    v13 = categoryCopy;
     v48 = v13;
     PLRunWithUnfairLock();
     v14 = *(*&v58[8] + 40);
@@ -959,7 +959,7 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = @"Resuming";
-        if (a3 == 2)
+        if (type == 2)
         {
           v20 = @"Starting";
         }
@@ -967,7 +967,7 @@ LABEL_12:
         *buf = 138412546;
         v51 = v20;
         v52 = 2112;
-        v53 = v13;
+        countCopy = v13;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_INFO, "%@ task '%@' work", buf, 0x16u);
       }
 
@@ -985,7 +985,7 @@ LABEL_12:
           *buf = 138412546;
           v51 = v13;
           v52 = 2112;
-          v53 = v24;
+          countCopy = v24;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "'%@': %@, Can't register throughput tracking", buf, 0x16u);
         }
 
@@ -996,7 +996,7 @@ LABEL_12:
       v41 = 3221225472;
       v42 = __69__PLBackgroundJobService__reportProgressWithType_itemCount_category___block_invoke_158;
       v43 = &unk_1E7578820;
-      v44 = self;
+      selfCopy = self;
       v45 = v13;
       v46 = v58;
       PLRunWithUnfairLock();
@@ -1004,18 +1004,18 @@ LABEL_12:
       v14 = *(*&v58[8] + 40);
     }
 
-    [v14 addItemCount:a4];
+    [v14 addItemCount:count];
     v25 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
       v51 = v13;
       v52 = 2048;
-      v53 = a4;
+      countCopy = count;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_INFO, "task '%@', added work, %lu items", buf, 0x16u);
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       v38[1] = MEMORY[0x1E69E9820];
       v38[2] = 3221225472;
@@ -1036,17 +1036,17 @@ LABEL_12:
         v31 = PLBackgroundJobServiceGetLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
-          v32 = [*(*&v58[8] + 40) startTimestamp];
-          v33 = [*(*&v58[8] + 40) endTimestamp];
-          v34 = [*(*&v58[8] + 40) itemCount];
+          startTimestamp = [*(*&v58[8] + 40) startTimestamp];
+          endTimestamp = [*(*&v58[8] + 40) endTimestamp];
+          itemCount = [*(*&v58[8] + 40) itemCount];
           *buf = 138413058;
           v51 = v26;
           v52 = 2112;
-          v53 = v32;
+          countCopy = startTimestamp;
           v54 = 2112;
-          v55 = v33;
+          v55 = endTimestamp;
           v56 = 2048;
-          v57 = v34;
+          v57 = itemCount;
           _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_INFO, "Finished task '%@' work, from: %@, to: %@, count: %lu", buf, 0x2Au);
         }
       }
@@ -1059,7 +1059,7 @@ LABEL_12:
           *buf = 138412546;
           v51 = v26;
           v52 = 2112;
-          v53 = v30;
+          countCopy = v30;
           _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "Couldn't deregister metrics for '%@': %@", buf, 0x16u);
         }
       }
@@ -1075,9 +1075,9 @@ LABEL_25:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *v58 = 138412546;
-    *&v58[4] = v9;
+    *&v58[4] = categoryCopy;
     *&v58[12] = 1024;
-    *&v58[14] = a3;
+    *&v58[14] = type;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Out-of-band throughput report category='%@', type=%u", v58, 0x12u);
   }
 
@@ -1092,27 +1092,27 @@ void __69__PLBackgroundJobService__reportProgressWithType_itemCount_category___b
   *(v3 + 40) = v2;
 }
 
-- (void)_inq_startRunningBackgroundJobsWithCriteria:(id)a3
+- (void)_inq_startRunningBackgroundJobsWithCriteria:(id)criteria
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  criteriaCopy = criteria;
   dispatch_assert_queue_V2(self->_isolationQueue);
   [(PLBackgroundJobService *)self _inq_setServiceState:6];
-  v5 = [(PLBackgroundJobCriteria *)v4 shortCode];
-  v6 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:v5];
+  shortCode = [(PLBackgroundJobCriteria *)criteriaCopy shortCode];
+  v6 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:shortCode];
 
   v7 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(PLBackgroundJobCriteria *)v4 name];
+    name = [(PLBackgroundJobCriteria *)criteriaCopy name];
     *buf = 138543618;
-    v13 = v8;
+    v13 = name;
     v14 = 2112;
     v15 = v6;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Running criteria %{public}@ background jobs on bundles %@", buf, 0x16u);
   }
 
-  if (self->_runningCriteria == v4 && self->_runningTask)
+  if (self->_runningCriteria == criteriaCopy && self->_runningTask)
   {
     objc_initWeak(buf, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1130,7 +1130,7 @@ void __69__PLBackgroundJobService__reportProgressWithType_itemCount_category___b
     v9 = 0;
   }
 
-  [(PLBackgroundJobLibraryCoordinator *)self->_libraryCoordinator startBackgroundJobsOnBundles:v6 withCriteria:v4 reportProgressUsingBlock:v9];
+  [(PLBackgroundJobLibraryCoordinator *)self->_libraryCoordinator startBackgroundJobsOnBundles:v6 withCriteria:criteriaCopy reportProgressUsingBlock:v9];
 }
 
 void __70__PLBackgroundJobService__inq_startRunningBackgroundJobsWithCriteria___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1140,17 +1140,17 @@ void __70__PLBackgroundJobService__inq_startRunningBackgroundJobsWithCriteria___
   [WeakRetained _reportProgressWithType:a2 itemCount:a3 category:v7];
 }
 
-- (void)_startRunningBackgroundJobsWithCriteria:(id)a3
+- (void)_startRunningBackgroundJobsWithCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__PLBackgroundJobService__startRunningBackgroundJobsWithCriteria___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = criteriaCopy;
+  v6 = criteriaCopy;
   dispatch_sync(isolationQueue, v7);
 }
 
@@ -1181,15 +1181,15 @@ void __70__PLBackgroundJobService__inq_startRunningBackgroundJobsWithCriteria___
     v3 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(PLBackgroundJobService *)self serviceState];
-      if (v4 - 1 > 9)
+      serviceState = [(PLBackgroundJobService *)self serviceState];
+      if (serviceState - 1 > 9)
       {
         v5 = @"Unknown";
       }
 
       else
       {
-        v5 = off_1E756B010[v4 - 1];
+        v5 = off_1E756B010[serviceState - 1];
       }
 
       v8 = v5;
@@ -1224,8 +1224,8 @@ void __70__PLBackgroundJobService__inq_startRunningBackgroundJobsWithCriteria___
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_runningTaskDeferTimer)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobService.m" lineNumber:744 description:@"timer is not nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobService.m" lineNumber:744 description:@"timer is not nil"];
   }
 
   if (self->_simulateDASDeferral || self->_runningTask)
@@ -1286,21 +1286,21 @@ uint64_t __56__PLBackgroundJobService__inq_startPollingForTaskStatus__block_invo
   return [*(a1 + 32) _inq_stopRunningBackgroundJobs];
 }
 
-- (void)_inq_finishTaskIfNeededShouldConsiderDeferring:(BOOL)a3
+- (void)_inq_finishTaskIfNeededShouldConsiderDeferring:(BOOL)deferring
 {
-  v3 = a3;
+  deferringCopy = deferring;
   v17 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_runningTask)
   {
-    if (v3 && self->_deferringService)
+    if (deferringCopy && self->_deferringService)
     {
       v5 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(BGSystemTask *)self->_runningTask identifier];
+        identifier = [(BGSystemTask *)self->_runningTask identifier];
         *buf = 138412290;
-        v16 = v6;
+        v16 = identifier;
         _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "Deferring currently running task %@", buf, 0xCu);
       }
 
@@ -1327,9 +1327,9 @@ uint64_t __56__PLBackgroundJobService__inq_startPollingForTaskStatus__block_invo
       v11 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(BGSystemTask *)self->_runningTask identifier];
+        identifier2 = [(BGSystemTask *)self->_runningTask identifier];
         *buf = 138412290;
-        v16 = v12;
+        v16 = identifier2;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "Finished running task %@", buf, 0xCu);
       }
 
@@ -1341,7 +1341,7 @@ uint64_t __56__PLBackgroundJobService__inq_startPollingForTaskStatus__block_invo
   }
 }
 
-- (void)_finishTaskIfNeededShouldConsiderDeferring_enqueue:(BOOL)a3
+- (void)_finishTaskIfNeededShouldConsiderDeferring_enqueue:(BOOL)deferring_enqueue
 {
   isolationQueue = self->_isolationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1349,24 +1349,24 @@ uint64_t __56__PLBackgroundJobService__inq_startPollingForTaskStatus__block_invo
   v4[2] = __77__PLBackgroundJobService__finishTaskIfNeededShouldConsiderDeferring_enqueue___block_invoke;
   v4[3] = &unk_1E7576F80;
   v4[4] = self;
-  v5 = a3;
+  deferring_enqueueCopy = deferring_enqueue;
   dispatch_sync(isolationQueue, v4);
 }
 
-- (void)_inq_runTask:(id)a3 withCriteria:(id)a4
+- (void)_inq_runTask:(id)task withCriteria:(id)criteria
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  criteriaCopy = criteria;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v9 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 name];
+    name = [criteriaCopy name];
     qos_class_self();
     v11 = PLStringFromQoSClass();
     *buf = 138543618;
-    v32 = v10;
+    v32 = name;
     v33 = 2114;
     v34 = v11;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Background Job Service asked to run criteria %{public}@, QOS %{public}@", buf, 0x16u);
@@ -1377,31 +1377,31 @@ uint64_t __56__PLBackgroundJobService__inq_startPollingForTaskStatus__block_invo
   v30[2] = __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke;
   v30[3] = &unk_1E75781E8;
   v30[4] = self;
-  [v7 setExpirationHandler:v30];
-  v12 = [(PLBackgroundJobService *)self serviceState];
-  v13 = [objc_opt_class() _stateIsReadyToRun:v12];
-  v14 = [v8 shortCode];
-  v15 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:v14];
+  [taskCopy setExpirationHandler:v30];
+  serviceState = [(PLBackgroundJobService *)self serviceState];
+  v13 = [objc_opt_class() _stateIsReadyToRun:serviceState];
+  shortCode = [criteriaCopy shortCode];
+  v15 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:shortCode];
 
   if ((v13 & 1) == 0)
   {
     v19 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v8 name];
-      if (v12 - 1 > 9)
+      name2 = [criteriaCopy name];
+      if (serviceState - 1 > 9)
       {
         v21 = @"Unknown";
       }
 
       else
       {
-        v21 = off_1E756B010[v12 - 1];
+        v21 = off_1E756B010[serviceState - 1];
       }
 
       v24 = v21;
       *buf = 138543618;
-      v32 = v20;
+      v32 = name2;
       v33 = 2114;
       v34 = v24;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Background Job Service is not in a runnable state for criteria %{public}@. It's in %{public}@. Skipping calls to _startRunningBackgroundJobs for this task. BGST task execution ends here for this task. Removing all bundles from processing set for this criteria", buf, 0x16u);
@@ -1412,11 +1412,11 @@ uint64_t __56__PLBackgroundJobService__inq_startPollingForTaskStatus__block_invo
       goto LABEL_26;
     }
 
-    v25 = [v8 shortCode];
-    [(PLBackgroundJobService *)self _removeAllBundlesFromProcessingSetForCriteriaShortCode:v25];
+    shortCode2 = [criteriaCopy shortCode];
+    [(PLBackgroundJobService *)self _removeAllBundlesFromProcessingSetForCriteriaShortCode:shortCode2];
 
 LABEL_25:
-    [v7 setTaskCompleted];
+    [taskCopy setTaskCompleted];
     goto LABEL_26;
   }
 
@@ -1441,11 +1441,11 @@ LABEL_25:
       else
       {
         v29 = 0;
-        v26 = [v7 setTaskExpiredWithRetryAfter:&v29 error:300.0];
+        v26 = [taskCopy setTaskExpiredWithRetryAfter:&v29 error:300.0];
         v27 = v29;
         if (v26)
         {
-          objc_storeStrong(&self->_pausedCriteria, a4);
+          objc_storeStrong(&self->_pausedCriteria, criteria);
           [(PLBackgroundJobService *)self _inq_setServiceState:5];
         }
 
@@ -1459,7 +1459,7 @@ LABEL_25:
             _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "Unable to defer background job service task: %@", buf, 0xCu);
           }
 
-          [v7 setTaskCompleted];
+          [taskCopy setTaskCompleted];
         }
       }
     }
@@ -1468,21 +1468,21 @@ LABEL_25:
     {
       if (v18)
       {
-        v23 = [v8 name];
+        name3 = [criteriaCopy name];
         *buf = 138543618;
-        v32 = v23;
+        v32 = name3;
         v33 = 2112;
         v34 = v15;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Running criteria %{public}@ background jobs on bundles %@", buf, 0x16u);
       }
 
       self->_deferringService = 0;
-      objc_storeStrong(&self->_runningTask, a3);
-      objc_storeStrong(&self->_runningCriteria, a4);
+      objc_storeStrong(&self->_runningTask, task);
+      objc_storeStrong(&self->_runningCriteria, criteria);
       if ((MEMORY[0x19EAEE520]() & 1) == 0)
       {
         [(PLBackgroundJobService *)self _inq_startPollingForTaskStatus];
-        [(PLBackgroundJobService *)self _inq_startRunningBackgroundJobsWithCriteria:v8];
+        [(PLBackgroundJobService *)self _inq_startRunningBackgroundJobsWithCriteria:criteriaCopy];
       }
     }
 
@@ -1528,17 +1528,17 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
   return [*(a1 + 32) _inq_stopRunningBackgroundJobs];
 }
 
-- (void)_inq_submitBackgroundProcessingNeededForBuffer:(id)a3 context:(id)a4
+- (void)_inq_submitBackgroundProcessingNeededForBuffer:(id)buffer context:(id)context
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v8 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = contextCopy;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEBUG, "Submission coalescer action handler called with signaled jobs buffer: %@", &buf, 0xCu);
   }
 
@@ -1546,9 +1546,9 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
   v48 = 3221225472;
   v49 = __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuffer_context___block_invoke;
   v50 = &unk_1E75781E8;
-  v51 = self;
+  selfCopy = self;
   PLSafeRunWithUnfairLock();
-  [v6 bundles];
+  [bufferCopy bundles];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -1577,17 +1577,17 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
     while (v10);
   }
 
-  v13 = [(PLBackgroundJobService *)self serviceState];
-  if ([objc_opt_class() _stateIsReadyForSubmission:v13])
+  serviceState = [(PLBackgroundJobService *)self serviceState];
+  if ([objc_opt_class() _stateIsReadyForSubmission:serviceState])
   {
     v38 = MEMORY[0x1E69E9820];
     v39 = 3221225472;
     v40 = __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuffer_context___block_invoke_2;
     v41 = &unk_1E75781E8;
-    v42 = self;
+    selfCopy2 = self;
     PLSafeRunWithUnfairLock();
     [(PLBackgroundJobService *)self _inq_setServiceState:2];
-    v14 = [(PLBackgroundJobLibraryCoordinator *)self->_libraryCoordinator pendingJobsOnBuffer:v6];
+    v14 = [(PLBackgroundJobLibraryCoordinator *)self->_libraryCoordinator pendingJobsOnBuffer:bufferCopy];
     [(PLBackgroundJobService *)self _inq_submitPendingJobsIfNecessary:v14];
     v37 = 0u;
     v35 = 0u;
@@ -1618,7 +1618,7 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
       while (v16);
     }
 
-    [v7 delayNextInvocationByTimeInterval:2.0];
+    [contextCopy delayNextInvocationByTimeInterval:2.0];
   }
 
   else
@@ -1631,7 +1631,7 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
     v29 = 3221225472;
     v30 = __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuffer_context___block_invoke_3;
     v31 = &unk_1E7578910;
-    v32 = self;
+    selfCopy3 = self;
     p_buf = &buf;
     PLSafeRunWithUnfairLock();
     if (fabs(*(*(&buf + 1) + 24) + -128.0) < 2.22044605e-16)
@@ -1639,14 +1639,14 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
       v19 = PLBackgroundJobServiceGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
       {
-        if (v13 - 1 > 9)
+        if (serviceState - 1 > 9)
         {
           v20 = @"Unknown";
         }
 
         else
         {
-          v20 = off_1E756B010[v13 - 1];
+          v20 = off_1E756B010[serviceState - 1];
         }
 
         v21 = v20;
@@ -1659,14 +1659,14 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
     v22 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      if (v13 - 1 > 9)
+      if (serviceState - 1 > 9)
       {
         v23 = @"Unknown";
       }
 
       else
       {
-        v23 = off_1E756B010[v13 - 1];
+        v23 = off_1E756B010[serviceState - 1];
       }
 
       v24 = v23;
@@ -1682,9 +1682,9 @@ uint64_t __52__PLBackgroundJobService__inq_runTask_withCriteria___block_invoke_2
     v26[1] = 3221225472;
     v26[2] = __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuffer_context___block_invoke_130;
     v26[3] = &unk_1E756AFC8;
-    v27 = v6;
-    [v7 pushBack:v26];
-    [v7 delayNextInvocationByTimeInterval:*(*(&buf + 1) + 24)];
+    v27 = bufferCopy;
+    [contextCopy pushBack:v26];
+    [contextCopy delayNextInvocationByTimeInterval:*(*(&buf + 1) + 24)];
     [(PLBackgroundJobService *)self startWatchdogTimerIfNeededWithSourceDescription:@"push back"];
 
     _Block_object_dispose(&buf, 8);
@@ -1712,10 +1712,10 @@ double __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuff
   return result;
 }
 
-- (void)_inq_submitTaskWithCriteria:(id)a3
+- (void)_inq_submitTaskWithCriteria:(id)criteria
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  criteriaCopy = criteria;
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (MEMORY[0x19EAEE520]())
   {
@@ -1723,8 +1723,8 @@ double __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuff
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = self->_observers;
-    v6 = [(NSPointerArray *)v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    taskRequest = self->_observers;
+    v6 = [(NSPointerArray *)taskRequest countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1735,18 +1735,18 @@ double __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuff
         {
           if (*v25 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(taskRequest);
           }
 
           v10 = *(*(&v24 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v11 = [v4 shortCode];
-            [v10 backgroundJobServiceDidSubmitCriteriaShortCode:v11];
+            shortCode = [criteriaCopy shortCode];
+            [v10 backgroundJobServiceDidSubmitCriteriaShortCode:shortCode];
           }
         }
 
-        v7 = [(NSPointerArray *)v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v7 = [(NSPointerArray *)taskRequest countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v7);
@@ -1755,11 +1755,11 @@ double __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuff
     goto LABEL_20;
   }
 
-  v12 = [MEMORY[0x1E698E4B8] sharedScheduler];
-  v13 = [v4 taskIdentifier];
-  v5 = [v12 taskRequestForIdentifier:v13];
+  mEMORY[0x1E698E4B8] = [MEMORY[0x1E698E4B8] sharedScheduler];
+  taskIdentifier = [criteriaCopy taskIdentifier];
+  taskRequest = [mEMORY[0x1E698E4B8] taskRequestForIdentifier:taskIdentifier];
 
-  if (v5)
+  if (taskRequest)
   {
     v14 = PLBackgroundJobServiceGetLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1767,36 +1767,36 @@ double __81__PLBackgroundJobService__inq_submitBackgroundProcessingNeededForBuff
 LABEL_19:
 
 LABEL_20:
-      [(PLBackgroundJobStatusCenter *)self->_statusCenter recordTaskSubmittedWithCriteria:v4];
+      [(PLBackgroundJobStatusCenter *)self->_statusCenter recordTaskSubmittedWithCriteria:criteriaCopy];
       [(PLBackgroundJobService *)self _inq_setServiceState:4];
       goto LABEL_21;
     }
 
-    v15 = [v4 name];
+    name = [criteriaCopy name];
     *buf = 138543362;
-    v29 = v15;
+    v29 = name;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "Skip submitting %{public}@ criteria since this task is already submitted", buf, 0xCu);
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v5 = [v4 taskRequest];
-  v16 = [MEMORY[0x1E698E4B8] sharedScheduler];
+  taskRequest = [criteriaCopy taskRequest];
+  mEMORY[0x1E698E4B8]2 = [MEMORY[0x1E698E4B8] sharedScheduler];
   v23 = 0;
-  v17 = [v16 submitTaskRequest:v5 error:&v23];
+  v17 = [mEMORY[0x1E698E4B8]2 submitTaskRequest:taskRequest error:&v23];
   v14 = v23;
 
   v18 = PLBackgroundJobServiceGetLog();
-  v15 = v18;
+  name = v18;
   if (v17)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v4 name];
+      name2 = [criteriaCopy name];
       *buf = 138412290;
-      v29 = v19;
-      _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "Submitted task %@.", buf, 0xCu);
+      v29 = name2;
+      _os_log_impl(&dword_19BF1F000, name, OS_LOG_TYPE_INFO, "Submitted task %@.", buf, 0xCu);
     }
 
     goto LABEL_18;
@@ -1804,8 +1804,8 @@ LABEL_18:
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v4 name];
-    v21 = v20;
+    name3 = [criteriaCopy name];
+    v21 = name3;
     v22 = @"unknown";
     if (v14)
     {
@@ -1813,19 +1813,19 @@ LABEL_18:
     }
 
     *buf = 138412546;
-    v29 = v20;
+    v29 = name3;
     v30 = 2112;
     v31 = v22;
-    _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Failed to submit task %@. Error: %@", buf, 0x16u);
+    _os_log_impl(&dword_19BF1F000, name, OS_LOG_TYPE_ERROR, "Failed to submit task %@. Error: %@", buf, 0x16u);
   }
 
 LABEL_21:
 }
 
-- (void)_inq_submitPendingJobsIfNecessary:(id)a3
+- (void)_inq_submitPendingJobsIfNecessary:(id)necessary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  necessaryCopy = necessary;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1835,14 +1835,14 @@ LABEL_21:
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "%s called", buf, 0xCu);
   }
 
-  if ([v4 count])
+  if ([necessaryCopy count])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v6 = [v4 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    allKeys = [necessaryCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1853,16 +1853,16 @@ LABEL_21:
         {
           if (*v29 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
-          v12 = [v4 objectForKeyedSubscript:v11];
-          v13 = [v11 shortCode];
-          [(PLBackgroundJobService *)self _appendBundleRecordsToProcessingSet:v12 criteriaShortCode:v13];
+          v12 = [necessaryCopy objectForKeyedSubscript:v11];
+          shortCode = [v11 shortCode];
+          [(PLBackgroundJobService *)self _appendBundleRecordsToProcessingSet:v12 criteriaShortCode:shortCode];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v8);
@@ -1904,8 +1904,8 @@ LABEL_24:
       }
 
       v20 = *(*(&v24 + 1) + 8 * j);
-      v21 = [v20 shortCode];
-      v22 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:v21];
+      shortCode2 = [v20 shortCode];
+      v22 = [(PLBackgroundJobService *)self _getBundleRecordsFromProcessingSetForCriteriaShortCode:shortCode2];
 
       if ([v22 count])
       {
@@ -1927,11 +1927,11 @@ LABEL_24:
 LABEL_27:
 }
 
-- (void)_fireWatchdogTimerWithStartTime:(id)a3 startingPushBackTimeInterval:(double)a4 sourceDescription:(id)a5
+- (void)_fireWatchdogTimerWithStartTime:(id)time startingPushBackTimeInterval:(double)interval sourceDescription:(id)description
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  timeCopy = time;
+  descriptionCopy = description;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -1940,23 +1940,23 @@ LABEL_27:
   v20 = 0;
   v14 = MEMORY[0x1E69E9820];
   PLSafeRunWithUnfairLock();
-  if ([v8 isEqual:{v16[5], v14, 3221225472, __105__PLBackgroundJobService__fireWatchdogTimerWithStartTime_startingPushBackTimeInterval_sourceDescription___block_invoke, &unk_1E7578910, self, &v15}])
+  if ([timeCopy isEqual:{v16[5], v14, 3221225472, __105__PLBackgroundJobService__fireWatchdogTimerWithStartTime_startingPushBackTimeInterval_sourceDescription___block_invoke, &unk_1E7578910, self, &v15}])
   {
     v10 = [MEMORY[0x1E695DF00] now];
-    [v10 timeIntervalSinceDate:v8];
+    [v10 timeIntervalSinceDate:timeCopy];
     v12 = v11;
 
     v13 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       *buf = 138544130;
-      v22 = v9;
+      v22 = descriptionCopy;
       v23 = 2114;
-      v24 = v8;
+      v24 = timeCopy;
       v25 = 2048;
       v26 = v12;
       v27 = 2048;
-      v28 = a4;
+      intervalCopy = interval;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_FAULT, "Background job service has not responded to signal from %{public}@ at %{public}@, %.1f seconds elapsed, push back interval was %.1f seconds", buf, 0x2Au);
     }
   }
@@ -1964,9 +1964,9 @@ LABEL_27:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)startWatchdogTimerIfNeededWithSourceDescription:(id)a3
+- (void)startWatchdogTimerIfNeededWithSourceDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [MEMORY[0x1E695DF00] now];
   v27 = 0;
   v28 = &v27;
@@ -1980,10 +1980,10 @@ LABEL_27:
   v15 = 3221225472;
   v16 = __74__PLBackgroundJobService_startWatchdogTimerIfNeededWithSourceDescription___block_invoke;
   v17 = &unk_1E75787D0;
-  v18 = self;
+  selfCopy = self;
   v6 = v5;
   v19 = v6;
-  v7 = v4;
+  v7 = descriptionCopy;
   v20 = v7;
   v21 = &v27;
   v22 = &v23;
@@ -2023,12 +2023,12 @@ double __74__PLBackgroundJobService_startWatchdogTimerIfNeededWithSourceDescript
   return result;
 }
 
-- (void)signalBackgroundProcessingNeededOnBundle:(id)a3 workerTypes:(id)a4
+- (void)signalBackgroundProcessingNeededOnBundle:(id)bundle workerTypes:(id)types
 {
   v26 = *MEMORY[0x1E69E9840];
   isolationQueue = self->_isolationQueue;
-  v7 = a4;
-  v8 = a3;
+  typesCopy = types;
+  bundleCopy = bundle;
   dispatch_assert_queue_not_V2(isolationQueue);
   v9 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2036,19 +2036,19 @@ double __74__PLBackgroundJobService_startWatchdogTimerIfNeededWithSourceDescript
     v10 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       *buf = 136315394;
       v23 = "[PLBackgroundJobService signalBackgroundProcessingNeededOnBundle:workerTypes:]";
       v24 = 2112;
-      v25 = v11;
+      v25 = callStackSymbols;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "%s called by stack %@", buf, 0x16u);
     }
   }
 
   v12 = objc_alloc_init(PLBackgroundJobWorkerTypesBuffer);
-  [(PLBackgroundJobWorkerTypesBuffer *)v12 addBackgroundJobWorkerTypes:v7 forBundle:v8];
+  [(PLBackgroundJobWorkerTypesBuffer *)v12 addBackgroundJobWorkerTypes:typesCopy forBundle:bundleCopy];
 
-  if (!v8)
+  if (!bundleCopy)
   {
     p_super = PLBackgroundJobServiceGetLog();
     if (!os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
@@ -2103,18 +2103,18 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)signalBackgroundProcessingNeededOnBundle:(id)a3
+- (void)signalBackgroundProcessingNeededOnBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = +[PLBackgroundJobWorkerTypes allTypesMask];
-  [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnBundle:v4 workerTypes:v5];
+  [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnBundle:bundleCopy workerTypes:v5];
 }
 
-- (void)signalBackgroundProcessingNeededOnLibrary:(id)a3 workerTypes:(id)a4
+- (void)signalBackgroundProcessingNeededOnLibrary:(id)library workerTypes:(id)types
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  typesCopy = types;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v8 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -2122,57 +2122,57 @@ LABEL_15:
     v9 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v15 = 136315394;
       v16 = "[PLBackgroundJobService signalBackgroundProcessingNeededOnLibrary:workerTypes:]";
       v17 = 2112;
-      v18 = v10;
+      v18 = callStackSymbols;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "%s called by stack %@", &v15, 0x16u);
     }
   }
 
-  v11 = [v6 managedObjectContext];
-  if ([v11 hasChanges])
+  managedObjectContext = [libraryCopy managedObjectContext];
+  if ([managedObjectContext hasChanges])
   {
-    v12 = [v6 managedObjectContext];
-    [v12 recordNeedsBackgroundJobProcessingForWorkerTypes:v7];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    [managedObjectContext2 recordNeedsBackgroundJobProcessingForWorkerTypes:typesCopy];
 
     [(PLBackgroundJobService *)self startWatchdogTimerIfNeededWithSourceDescription:@"library"];
   }
 
   else
   {
-    v13 = [v6 libraryServicesManager];
-    v14 = [v13 libraryBundle];
-    [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnBundle:v14 workerTypes:v7];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    libraryBundle = [libraryServicesManager libraryBundle];
+    [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnBundle:libraryBundle workerTypes:typesCopy];
   }
 }
 
-- (void)signalBackgroundProcessingNeededOnLibrary:(id)a3
+- (void)signalBackgroundProcessingNeededOnLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = +[PLBackgroundJobWorkerTypes allTypesMask];
-  [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnLibrary:v4 workerTypes:v5];
+  [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnLibrary:libraryCopy workerTypes:v5];
 }
 
-- (void)performCrashRecoveryIfNeededOnBundle:(id)a3
+- (void)performCrashRecoveryIfNeededOnBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   if ([(PLBackgroundJobService *)self _signalNeededOnBundle:?])
   {
-    [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnBundle:v4];
+    [(PLBackgroundJobService *)self signalBackgroundProcessingNeededOnBundle:bundleCopy];
   }
 }
 
-- (BOOL)_signalNeededOnBundle:(id)a3
+- (BOOL)_signalNeededOnBundle:(id)bundle
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobService _signalNeededOnBundle:]" bundle:a3];
+  v3 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobService _signalNeededOnBundle:]" bundle:bundle];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 globalValues];
-    v6 = [v5 backgroundJobServiceNeedsProcessing];
+    globalValues = [v3 globalValues];
+    backgroundJobServiceNeedsProcessing = [globalValues backgroundJobServiceNeedsProcessing];
   }
 
   else
@@ -2185,59 +2185,59 @@ LABEL_15:
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "Failed to initialize photolibrary in %s", &v9, 0xCu);
     }
 
-    v6 = 0;
+    backgroundJobServiceNeedsProcessing = 0;
   }
 
-  return v6;
+  return backgroundJobServiceNeedsProcessing;
 }
 
-- (void)_invalidateSignalNeededForCrashRecoveryOnBundle:(id)a3
+- (void)_invalidateSignalNeededForCrashRecoveryOnBundle:(id)bundle
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobService _invalidateSignalNeededForCrashRecoveryOnBundle:]" bundle:a3];
+  v3 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobService _invalidateSignalNeededForCrashRecoveryOnBundle:]" bundle:bundle];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 globalValues];
-    [v5 setBackgroundJobServiceNeedsProcessing:0];
+    globalValues = [v3 globalValues];
+    [globalValues setBackgroundJobServiceNeedsProcessing:0];
   }
 
   else
   {
-    v5 = PLBackgroundJobServiceGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    globalValues = PLBackgroundJobServiceGetLog();
+    if (os_log_type_enabled(globalValues, OS_LOG_TYPE_ERROR))
     {
       v6 = 136315138;
       v7 = "[PLBackgroundJobService _invalidateSignalNeededForCrashRecoveryOnBundle:]";
-      _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "Failed to initialize photolibrary in %s", &v6, 0xCu);
+      _os_log_impl(&dword_19BF1F000, globalValues, OS_LOG_TYPE_ERROR, "Failed to initialize photolibrary in %s", &v6, 0xCu);
     }
   }
 }
 
-- (void)_noteSignalNeededForCrashRecoveryOnBundle:(id)a3
+- (void)_noteSignalNeededForCrashRecoveryOnBundle:(id)bundle
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobService _noteSignalNeededForCrashRecoveryOnBundle:]" bundle:a3];
+  v3 = [PLDatabaseContext newShortLivedLibraryWithName:"[PLBackgroundJobService _noteSignalNeededForCrashRecoveryOnBundle:]" bundle:bundle];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 globalValues];
-    [v5 setBackgroundJobServiceNeedsProcessing:1];
+    globalValues = [v3 globalValues];
+    [globalValues setBackgroundJobServiceNeedsProcessing:1];
   }
 
   else
   {
-    v5 = PLBackgroundJobServiceGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    globalValues = PLBackgroundJobServiceGetLog();
+    if (os_log_type_enabled(globalValues, OS_LOG_TYPE_ERROR))
     {
       v6 = 136315138;
       v7 = "[PLBackgroundJobService _noteSignalNeededForCrashRecoveryOnBundle:]";
-      _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "Failed to initialize photolibrary in %s", &v6, 0xCu);
+      _os_log_impl(&dword_19BF1F000, globalValues, OS_LOG_TYPE_ERROR, "Failed to initialize photolibrary in %s", &v6, 0xCu);
     }
   }
 }
 
-- (void)_inq_setServiceState:(unint64_t)a3
+- (void)_inq_setServiceState:(unint64_t)state
 {
   v43 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
@@ -2249,11 +2249,11 @@ LABEL_15:
   v28 = 3221225472;
   v29 = __47__PLBackgroundJobService__inq_setServiceState___block_invoke;
   v30 = &unk_1E7576208;
-  v31 = self;
+  selfCopy = self;
   v32 = &v34;
-  v33 = a3;
+  stateCopy = state;
   v5 = PLRunWithUnfairLock();
-  if (MEMORY[0x19EAEE230](v5) && ([objc_opt_class() verifyStateTransitionFromState:v35[3] toState:a3] & 1) == 0)
+  if (MEMORY[0x19EAEE230](v5) && ([objc_opt_class() verifyStateTransitionFromState:v35[3] toState:state] & 1) == 0)
   {
     v6 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -2270,14 +2270,14 @@ LABEL_15:
       }
 
       v9 = v8;
-      if (a3 - 1 > 9)
+      if (state - 1 > 9)
       {
         v10 = @"Unknown";
       }
 
       else
       {
-        v10 = off_1E756B010[a3 - 1];
+        v10 = off_1E756B010[state - 1];
       }
 
       v11 = v10;
@@ -2304,14 +2304,14 @@ LABEL_15:
     }
 
     v15 = v14;
-    if (a3 - 1 > 9)
+    if (state - 1 > 9)
     {
       v16 = @"Unknown";
     }
 
     else
     {
-      v16 = off_1E756B010[a3 - 1];
+      v16 = off_1E756B010[state - 1];
     }
 
     v17 = v16;
@@ -2344,7 +2344,7 @@ LABEL_15:
         v22 = *(*(&v23 + 1) + 8 * v21);
         if (objc_opt_respondsToSelector())
         {
-          [v22 backgroundJobServiceDidChangeStateFrom:v35[3] to:{a3, v23}];
+          [v22 backgroundJobServiceDidChangeStateFrom:v35[3] to:{state, v23}];
         }
 
         ++v21;
@@ -2367,31 +2367,31 @@ void *__47__PLBackgroundJobService__inq_setServiceState___block_invoke(void *res
   return result;
 }
 
-- (void)_setRunningCriteria:(id)a3
+- (void)_setRunningCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PLBackgroundJobService__setRunningCriteria___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = criteriaCopy;
+  v6 = criteriaCopy;
   dispatch_sync(isolationQueue, v7);
 }
 
-- (void)invalidateLibraryBundle:(id)a3 completion:(id)a4
+- (void)invalidateLibraryBundle:(id)bundle completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  completionCopy = completion;
   v8 = PLBackgroundJobServiceGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 libraryURL];
+    libraryURL = [bundleCopy libraryURL];
     *buf = 138412290;
-    v17 = v9;
+    v17 = libraryURL;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Invalidate library called on bundle: %@", buf, 0xCu);
   }
 
@@ -2401,10 +2401,10 @@ void *__47__PLBackgroundJobService__inq_setServiceState___block_invoke(void *res
   block[2] = __61__PLBackgroundJobService_invalidateLibraryBundle_completion___block_invoke;
   block[3] = &unk_1E7576F38;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = bundleCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = bundleCopy;
   dispatch_async(isolationQueue, block);
 }
 
@@ -2541,14 +2541,14 @@ LABEL_27:
   v29 = 3221225472;
   v30 = __56__PLBackgroundJobService__closePendingThroughputReports__block_invoke;
   v31 = &unk_1E7578910;
-  v32 = self;
+  selfCopy = self;
   v33 = &v34;
   PLRunWithUnfairLock();
   v22 = self->_runningTask;
   runningTask = self->_runningTask;
   if (runningTask)
   {
-    v4 = [(BGSystemTask *)runningTask identifier];
+    identifier = [(BGSystemTask *)runningTask identifier];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -2573,7 +2573,7 @@ LABEL_27:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        if ([v10 hasPrefix:{v4, v21}])
+        if ([v10 hasPrefix:{identifier, v21}])
         {
           v11 = [v35[5] objectForKeyedSubscript:v10];
           v12 = [MEMORY[0x1E695DF00] now];
@@ -2640,13 +2640,13 @@ LABEL_19:
 
   if ([v35[5] count])
   {
-    v4 = PLBackgroundJobServiceGetLog();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    identifier = PLBackgroundJobServiceGetLog();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v35[5] allKeys];
+      allKeys = [v35[5] allKeys];
       *buf = 138412290;
-      v41 = v20;
-      _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_ERROR, "Found orphaned thoughput reports: %@", buf, 0xCu);
+      v41 = allKeys;
+      _os_log_impl(&dword_19BF1F000, identifier, OS_LOG_TYPE_ERROR, "Found orphaned thoughput reports: %@", buf, 0xCu);
     }
 
 LABEL_20:
@@ -2678,9 +2678,9 @@ uint64_t __56__PLBackgroundJobService__closePendingThroughputReports__block_invo
   v20 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_isolationQueue);
   [(PLBackgroundJobService *)self _inq_setServiceState:8];
-  v3 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
   libraryInvalidationCompletionHandlerByLibraryURL = self->_libraryInvalidationCompletionHandlerByLibraryURL;
-  self->_libraryInvalidationCompletionHandlerByLibraryURL = v3;
+  self->_libraryInvalidationCompletionHandlerByLibraryURL = dictionary;
 
   [(PLBackgroundJobService *)self _inq_stopPollingForTaskStatus];
   [(PLBackgroundJobService *)self _inq_finishTaskIfNeededShouldConsiderDeferring:1];
@@ -2741,7 +2741,7 @@ uint64_t __56__PLBackgroundJobService__closePendingThroughputReports__block_invo
   [(PLBackgroundJobService *)self _closePendingThroughputReports];
 }
 
-- (void)_simulateBGSTShouldExpire:(BOOL)a3
+- (void)_simulateBGSTShouldExpire:(BOOL)expire
 {
   isolationQueue = self->_isolationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2749,7 +2749,7 @@ uint64_t __56__PLBackgroundJobService__closePendingThroughputReports__block_invo
   v4[2] = __52__PLBackgroundJobService__simulateBGSTShouldExpire___block_invoke;
   v4[3] = &unk_1E7576F80;
   v4[4] = self;
-  v5 = a3;
+  expireCopy = expire;
   dispatch_sync(isolationQueue, v4);
 }
 
@@ -2852,11 +2852,11 @@ void __31__PLBackgroundJobService_start__block_invoke(uint64_t a1)
   }
 }
 
-- (PLBackgroundJobService)initWithLibraryCoordinator:(id)a3 statusCenter:(id)a4
+- (PLBackgroundJobService)initWithLibraryCoordinator:(id)coordinator statusCenter:(id)center
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  coordinatorCopy = coordinator;
+  centerCopy = center;
   v49.receiver = self;
   v49.super_class = PLBackgroundJobService;
   v10 = [(PLBackgroundJobService *)&v49 init];
@@ -2864,12 +2864,12 @@ void __31__PLBackgroundJobService_start__block_invoke(uint64_t a1)
   {
     if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v43 = NSStringFromSelector(a2);
-      [v42 handleFailureInMethod:a2 object:v10 file:@"PLBackgroundJobService.m" lineNumber:118 description:{@"%@ can only be called from assetsd", v43}];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PLBackgroundJobService.m" lineNumber:118 description:{@"%@ can only be called from assetsd", v43}];
     }
 
-    v44 = v9;
+    v44 = centerCopy;
     v11 = PLBackgroundJobServiceGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -2877,16 +2877,16 @@ void __31__PLBackgroundJobService_start__block_invoke(uint64_t a1)
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_INFO, "BackgroundJobService starting up", buf, 2u);
     }
 
-    v12 = v8;
+    v12 = coordinatorCopy;
 
     v10->_stateLock._os_unfair_lock_opaque = 0;
     v10->_stateLock_state = 1;
-    objc_storeStrong(&v10->_libraryCoordinator, a3);
+    objc_storeStrong(&v10->_libraryCoordinator, coordinator);
     [(PLBackgroundJobLibraryCoordinator *)v10->_libraryCoordinator setDelegate:v10];
-    objc_storeStrong(&v10->_statusCenter, a4);
-    v13 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    objc_storeStrong(&v10->_statusCenter, center);
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     observers = v10->_observers;
-    v10->_observers = v13;
+    v10->_observers = weakObjectsPointerArray;
 
     if (MEMORY[0x19EAEE230]())
     {
@@ -2938,14 +2938,14 @@ void __31__PLBackgroundJobService_start__block_invoke(uint64_t a1)
     v10->_isolationQueue = v25;
 
     v10->_watchdogTimerLock_submissionCoalescerPushBackTimeInterval = 2.0;
-    v27 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     libraryInvalidationCompletionHandlerByLibraryURL = v10->_libraryInvalidationCompletionHandlerByLibraryURL;
-    v10->_libraryInvalidationCompletionHandlerByLibraryURL = v27;
+    v10->_libraryInvalidationCompletionHandlerByLibraryURL = dictionary;
 
     if (MEMORY[0x19EAEE230]() && ([MEMORY[0x1E695E000] standardUserDefaults], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "BOOLForKey:", @"PLDisableBackgroundJobServiceActivityRegistration"), v29, (v30 & 1) != 0))
     {
       v31 = PLBackgroundJobServiceGetLog();
-      v8 = v12;
+      coordinatorCopy = v12;
       if (os_log_type_enabled(&v31->super, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -2961,10 +2961,10 @@ void __31__PLBackgroundJobService_start__block_invoke(uint64_t a1)
       submissionCoalescer = v10->_submissionCoalescer;
       v10->_submissionCoalescer = v32;
 
-      v8 = v12;
+      coordinatorCopy = v12;
     }
 
-    v9 = v44;
+    centerCopy = v44;
 
     v10->_watchdogTimerLock._os_unfair_lock_opaque = 0;
     v34 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
@@ -2975,9 +2975,9 @@ void __31__PLBackgroundJobService_start__block_invoke(uint64_t a1)
       v10->_cameraWatcher = v35;
     }
 
-    v37 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     throughputMetricsCache = v10->_throughputMetricsCache;
-    v10->_throughputMetricsCache = v37;
+    v10->_throughputMetricsCache = dictionary2;
 
     v10->_throughputMetricsCacheLock._os_unfair_lock_opaque = 0;
     v39 = [objc_alloc(MEMORY[0x1E69BDD80]) initWithProvider:v10];
@@ -3018,7 +3018,7 @@ id __66__PLBackgroundJobService_initWithLibraryCoordinator_statusCenter___block_
 + (void)_removeAllBundlesFromUserDefaultsWithoutLocking
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -3040,7 +3040,7 @@ id __66__PLBackgroundJobService_initWithLibraryCoordinator_statusCenter___block_
         }
 
         v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"PLBackgroundJobServiceBundleRecordsKeyWithShortCode", *(*(&v9 + 1) + 8 * v7)];
-        [v2 removeObjectForKey:v8];
+        [standardUserDefaults removeObjectForKey:v8];
 
         ++v7;
       }
@@ -3053,83 +3053,83 @@ id __66__PLBackgroundJobService_initWithLibraryCoordinator_statusCenter___block_
   }
 }
 
-+ (BOOL)verifyStateTransitionFromState:(unint64_t)a3 toState:(unint64_t)a4
++ (BOOL)verifyStateTransitionFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  if (a3 <= 4)
+  if (state <= 4)
   {
-    v4 = a4 - 3 < 2;
-    v14 = a4 == 8 || a4 == 2;
-    v15 = a4 & 0xFFFFFFFFFFFFFFFDLL;
-    v18 = a4 == 2 || v15 == 4 || a4 == 5;
-    if (a3 != 4)
+    v4 = toState - 3 < 2;
+    v14 = toState == 8 || toState == 2;
+    v15 = toState & 0xFFFFFFFFFFFFFFFDLL;
+    v18 = toState == 2 || v15 == 4 || toState == 5;
+    if (state != 4)
     {
       v18 = 0;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       v14 = v18;
     }
 
-    if (a3 != 2)
+    if (state != 2)
     {
       v4 = v14;
     }
 
-    v8 = a4 == 1;
-    v20 = a4 == 2 || v15 == 4;
-    if (a3 != 1)
+    v8 = toState == 1;
+    v20 = toState == 2 || v15 == 4;
+    if (state != 1)
     {
       v20 = 0;
     }
 
-    if (a3)
+    if (state)
     {
       v8 = v20;
     }
 
-    v12 = a3 <= 1;
+    v12 = state <= 1;
   }
 
   else
   {
-    v4 = a4 - 9 < 2;
-    v6 = a4 == 2 || a4 - 5 < 2;
-    v7 = a4 == 2;
-    if (a3 != 10)
+    v4 = toState - 9 < 2;
+    v6 = toState == 2 || toState - 5 < 2;
+    v7 = toState == 2;
+    if (state != 10)
     {
       v7 = 0;
     }
 
-    if (a3 != 9)
+    if (state != 9)
     {
       v6 = v7;
     }
 
-    if (a3 != 8)
+    if (state != 8)
     {
       v4 = v6;
     }
 
-    v8 = a4 == 4;
-    v9 = a4 == 7;
-    v11 = a4 == 8 || (a4 & 0xFFFFFFFFFFFFFFFDLL) == 4;
-    if (a3 != 7)
+    v8 = toState == 4;
+    v9 = toState == 7;
+    v11 = toState == 8 || (toState & 0xFFFFFFFFFFFFFFFDLL) == 4;
+    if (state != 7)
     {
       v11 = 0;
     }
 
-    if (a3 != 6)
+    if (state != 6)
     {
       v9 = v11;
     }
 
-    if (a3 != 5)
+    if (state != 5)
     {
       v8 = v9;
     }
 
-    v12 = a3 <= 7;
+    v12 = state <= 7;
   }
 
   if (v12)

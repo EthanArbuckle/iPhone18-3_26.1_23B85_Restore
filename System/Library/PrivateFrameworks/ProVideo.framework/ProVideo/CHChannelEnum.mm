@@ -1,26 +1,26 @@
 @interface CHChannelEnum
 - (id)enabledStateForStrings;
 - (id)intValuesForStrings;
-- (id)stringAtIndex:(unint64_t)a3;
+- (id)stringAtIndex:(unint64_t)index;
 - (id)stringValue;
-- (id)stringValueAtTime:(id *)a3;
+- (id)stringValueAtTime:(id *)time;
 - (id)strings;
 - (int)defaultIntValue;
 - (int)intValue;
-- (int)intValueAtTime:(id *)a3;
-- (int)intValueForIndex:(int)a3;
+- (int)intValueAtTime:(id *)time;
+- (int)intValueForIndex:(int)index;
 - (unint64_t)stringCount;
 - (void)ozChannel;
-- (void)setCurveIntValue:(int)a3 atTime:(id *)a4 options:(unsigned int)a5;
-- (void)setCurveStringValue:(id)a3 atTime:(id *)a4 options:(unsigned int)a5;
-- (void)setDefaultIntValue:(int)a3;
-- (void)setEnabledStateForStrings:(id)a3;
-- (void)setIntValue:(int)a3;
-- (void)setIntValuesForStrings:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)setStrings:(id)a3;
-- (void)setStringsFromChannel:(id)a3;
-- (void)setStringsWithArray:(id)a3;
+- (void)setCurveIntValue:(int)value atTime:(id *)time options:(unsigned int)options;
+- (void)setCurveStringValue:(id)value atTime:(id *)time options:(unsigned int)options;
+- (void)setDefaultIntValue:(int)value;
+- (void)setEnabledStateForStrings:(id)strings;
+- (void)setIntValue:(int)value;
+- (void)setIntValuesForStrings:(id)strings;
+- (void)setStringValue:(id)value;
+- (void)setStrings:(id)strings;
+- (void)setStringsFromChannel:(id)channel;
+- (void)setStringsWithArray:(id)array;
 @end
 
 @implementation CHChannelEnum
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (int)intValueAtTime:(id *)a3
+- (int)intValueAtTime:(id *)time
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -47,7 +47,7 @@
     v5 = 0;
   }
 
-  (*(v5->var0 + 42))(&v7, v5, a3);
+  (*(v5->var0 + 42))(&v7, v5, time);
   return OZChannel::getValueAsInt(v5, &v7, 0.0);
 }
 
@@ -61,43 +61,43 @@
   return OZChannel::getInitialValue(pOZChannel);
 }
 
-- (int)intValueForIndex:(int)a3
+- (int)intValueForIndex:(int)index
 {
   if (*(v4 + 22) == *(v4 + 21))
   {
-    return a3;
+    return index;
   }
 
-  return OZChannelEnum::getTag(v4, a3);
+  return OZChannelEnum::getTag(v4, index);
 }
 
-- (id)stringValueAtTime:(id *)a3
+- (id)stringValueAtTime:(id *)time
 {
-  v5 = [(CHChannelEnum *)self intValuesForStrings];
-  v10 = *a3;
+  intValuesForStrings = [(CHChannelEnum *)self intValuesForStrings];
+  v10 = *time;
   v6 = [(CHChannelEnum *)self intValueAtTime:&v10];
   v7 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v6];
-  v8 = [v5 allKeysForObject:v7];
+  v8 = [intValuesForStrings allKeysForObject:v7];
 
   return [v8 lastObject];
 }
 
 - (id)stringValue
 {
-  v3 = [(CHChannelEnum *)self intValuesForStrings];
-  v4 = [(CHChannelEnum *)self intValue];
-  v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v4];
-  v6 = [v3 allKeysForObject:v5];
+  intValuesForStrings = [(CHChannelEnum *)self intValuesForStrings];
+  intValue = [(CHChannelEnum *)self intValue];
+  v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:intValue];
+  v6 = [intValuesForStrings allKeysForObject:v5];
 
   return [v6 lastObject];
 }
 
-- (void)setCurveIntValue:(int)a3 atTime:(id *)a4 options:(unsigned int)a5
+- (void)setCurveIntValue:(int)value atTime:(id *)time options:(unsigned int)options
 {
-  v5 = a5;
+  optionsCopy = options;
   Instance = OZCoreGlobals::getInstance(self);
   v10 = *(Instance + 8);
-  *(OZCoreGlobals::getInstance(Instance) + 8) = v5 & 1;
+  *(OZCoreGlobals::getInstance(Instance) + 8) = optionsCopy & 1;
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
@@ -108,46 +108,46 @@
     v12 = 0;
   }
 
-  if ((~a4->var2 & 0x11) != 0)
+  if ((~time->var2 & 0x11) != 0)
   {
-    (*(v12->var0 + 42))(v15, v12, a4);
-    v14.n128_f64[0] = a3;
+    (*(v12->var0 + 42))(v15, v12, time);
+    v14.n128_f64[0] = value;
     v13 = (*(v12->var0 + 89))(v12, v15, 0, v14);
   }
 
   else
   {
-    v13 = OZChannel::setInitialValue(v12, a3, 0);
+    v13 = OZChannel::setInitialValue(v12, value, 0);
   }
 
   *(OZCoreGlobals::getInstance(v13) + 8) = v10;
 }
 
-- (void)setIntValue:(int)a3
+- (void)setIntValue:(int)value
 {
   v3 = *MEMORY[0x277CC0888];
   v4 = *(MEMORY[0x277CC0888] + 16);
-  [(CHChannelEnum *)self setCurveIntValue:*&a3 atTime:&v3 options:0];
+  [(CHChannelEnum *)self setCurveIntValue:*&value atTime:&v3 options:0];
 }
 
-- (void)setCurveStringValue:(id)a3 atTime:(id *)a4 options:(unsigned int)a5
+- (void)setCurveStringValue:(id)value atTime:(id *)time options:(unsigned int)options
 {
-  v5 = *&a5;
+  v5 = *&options;
   v8 = [-[CHChannelEnum intValuesForStrings](self "intValuesForStrings")];
   if (v8)
   {
-    v9 = [v8 intValue];
-    v10 = *&a4->var0;
-    var3 = a4->var3;
-    [(CHChannelEnum *)self setCurveIntValue:v9 atTime:&v10 options:v5];
+    intValue = [v8 intValue];
+    v10 = *&time->var0;
+    var3 = time->var3;
+    [(CHChannelEnum *)self setCurveIntValue:intValue atTime:&v10 options:v5];
   }
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
   v3 = *MEMORY[0x277CC0888];
   v4 = *(MEMORY[0x277CC0888] + 16);
-  [(CHChannelEnum *)self setCurveStringValue:a3 atTime:&v3 options:0];
+  [(CHChannelEnum *)self setCurveStringValue:value atTime:&v3 options:0];
 }
 
 - (int)defaultIntValue
@@ -160,7 +160,7 @@
   return OZChannel::getDefaultValue(pOZChannel);
 }
 
-- (void)setDefaultIntValue:(int)a3
+- (void)setDefaultIntValue:(int)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -172,7 +172,7 @@
     v5 = 0;
   }
 
-  OZChannel::setDefaultValue(v5, a3);
+  OZChannel::setDefaultValue(v5, value);
   v6 = (*(v5->var0 + 64))(v5);
   var0 = v5->var0;
   if (v6)
@@ -203,15 +203,15 @@
   return OZChannelEnum::getNumberOfStrings(pOZChannel);
 }
 
-- (id)stringAtIndex:(unint64_t)a3
+- (id)stringAtIndex:(unint64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  String = OZChannelEnum::getString(pOZChannel, v3);
+  String = OZChannelEnum::getString(pOZChannel, indexCopy);
 
   return PCString::ns_str(String);
 }
@@ -242,7 +242,7 @@
   return v5;
 }
 
-- (void)setStringsWithArray:(id)a3
+- (void)setStringsWithArray:(id)array
 {
   v17 = *MEMORY[0x277D85DE8];
   pOZChannel = self->super.super._pOZChannel;
@@ -260,7 +260,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  v6 = [array countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -271,7 +271,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -288,7 +288,7 @@
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [array countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
@@ -298,7 +298,7 @@
   PCString::~PCString(&v15);
 }
 
-- (void)setStrings:(id)a3
+- (void)setStrings:(id)strings
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -311,12 +311,12 @@
   }
 
   v6.var0 = 0;
-  PCString::set(&v6, a3);
+  PCString::set(&v6, strings);
   (*(*v5 + 848))(v5, &v6, 1);
   PCString::~PCString(&v6);
 }
 
-- (void)setStringsFromChannel:(id)a3
+- (void)setStringsFromChannel:(id)channel
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -328,10 +328,10 @@
     v5 = 0;
   }
 
-  v6 = [a3 ozChannel];
+  ozChannel = [channel ozChannel];
   v7 = *(*v5 + 856);
 
-  v7(v5, v6);
+  v7(v5, ozChannel);
 }
 
 - (id)intValuesForStrings
@@ -346,9 +346,9 @@
     v4 = 0;
   }
 
-  v5 = [(CHChannelEnum *)self stringCount];
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v5];
-  if (v5)
+  stringCount = [(CHChannelEnum *)self stringCount];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:stringCount];
+  if (stringCount)
   {
     v7 = 0;
     v8 = 0;
@@ -370,13 +370,13 @@
       v8 = v7;
     }
 
-    while (v5 > v7);
+    while (stringCount > v7);
   }
 
   return v6;
 }
 
-- (void)setIntValuesForStrings:(id)a3
+- (void)setIntValuesForStrings:(id)strings
 {
   v10[1] = *MEMORY[0x277D85DE8];
   pOZChannel = self->super.super._pOZChannel;
@@ -389,17 +389,17 @@
     v6 = 0;
   }
 
-  v7 = [(CHChannelEnum *)self stringCount];
-  v8 = v10 - ((4 * v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (v7)
+  stringCount = [(CHChannelEnum *)self stringCount];
+  v8 = v10 - ((4 * stringCount + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (stringCount)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != stringCount; ++i)
     {
-      *&v8[4 * i] = [objc_msgSend(a3 objectForKey:{-[CHChannelEnum stringAtIndex:](self, "stringAtIndex:", i)), "intValue"}];
+      *&v8[4 * i] = [objc_msgSend(strings objectForKey:{-[CHChannelEnum stringAtIndex:](self, "stringAtIndex:", i)), "intValue"}];
     }
   }
 
-  OZChannelEnum::setTags(v6, v8, v7);
+  OZChannelEnum::setTags(v6, v8, stringCount);
 }
 
 - (id)enabledStateForStrings
@@ -414,9 +414,9 @@
     v4 = 0;
   }
 
-  v5 = [(CHChannelEnum *)self stringCount];
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v5];
-  if (v5)
+  stringCount = [(CHChannelEnum *)self stringCount];
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:stringCount];
+  if (stringCount)
   {
     v7 = 0;
     v8 = *(v4 + 25);
@@ -440,13 +440,13 @@
       v7 = v9;
     }
 
-    while (v5 > v9++);
+    while (stringCount > v9++);
   }
 
   return v6;
 }
 
-- (void)setEnabledStateForStrings:(id)a3
+- (void)setEnabledStateForStrings:(id)strings
 {
   v10[1] = *MEMORY[0x277D85DE8];
   pOZChannel = self->super.super._pOZChannel;
@@ -459,17 +459,17 @@
     v6 = 0;
   }
 
-  v7 = [(CHChannelEnum *)self stringCount];
-  v8 = v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (v7)
+  stringCount = [(CHChannelEnum *)self stringCount];
+  v8 = v10 - ((stringCount + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (stringCount)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != stringCount; ++i)
     {
-      v8[i] = [objc_msgSend(a3 objectForKey:{-[CHChannelEnum stringAtIndex:](self, "stringAtIndex:", i)), "BOOLValue"}];
+      v8[i] = [objc_msgSend(strings objectForKey:{-[CHChannelEnum stringAtIndex:](self, "stringAtIndex:", i)), "BOOLValue"}];
     }
   }
 
-  OZChannelEnum::setEnabledStates(v6, v8, v7);
+  OZChannelEnum::setEnabledStates(v6, v8, stringCount);
 }
 
 @end

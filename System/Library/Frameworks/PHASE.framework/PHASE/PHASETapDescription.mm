@@ -1,17 +1,17 @@
 @interface PHASETapDescription
 - (NSString)uidString;
-- (PHASETapDescription)initWithAudioSessionToken:(unsigned int)a3 tapType:(int64_t)a4;
-- (PHASETapDescription)initWithProcessIdentifier:(int)a3 tapType:(int64_t)a4;
-- (PHASETapDescription)initWithSceneIdentifier:(id)a3 tapType:(int64_t)a4;
-- (PHASETapDescription)initWithStreamType:(int64_t)a3 tapType:(int64_t)a4;
-- (id)initInternalWithType:(int64_t)a3;
-- (id)initScreenSharingTapOfType:(int64_t)a3;
-- (id)initSystemTapOfType:(int64_t)a3;
+- (PHASETapDescription)initWithAudioSessionToken:(unsigned int)token tapType:(int64_t)type;
+- (PHASETapDescription)initWithProcessIdentifier:(int)identifier tapType:(int64_t)type;
+- (PHASETapDescription)initWithSceneIdentifier:(id)identifier tapType:(int64_t)type;
+- (PHASETapDescription)initWithStreamType:(int64_t)type tapType:(int64_t)tapType;
+- (id)initInternalWithType:(int64_t)type;
+- (id)initScreenSharingTapOfType:(int64_t)type;
+- (id)initSystemTapOfType:(int64_t)type;
 @end
 
 @implementation PHASETapDescription
 
-- (id)initInternalWithType:(int64_t)a3
+- (id)initInternalWithType:(int64_t)type
 {
   v12.receiver = self;
   v12.super_class = PHASETapDescription;
@@ -22,7 +22,7 @@
     uidString = v4->_uidString;
     v4->_uidString = 0;
 
-    v5->_type = a3;
+    v5->_type = type;
     *&v5->_binding = xmmword_23A555530;
     v5->_audioSessionToken = 0;
     sceneIdentifier = v5->_sceneIdentifier;
@@ -38,9 +38,9 @@
   return v5;
 }
 
-- (id)initSystemTapOfType:(int64_t)a3
+- (id)initSystemTapOfType:(int64_t)type
 {
-  result = [(PHASETapDescription *)self initInternalWithType:a3];
+  result = [(PHASETapDescription *)self initInternalWithType:type];
   if (result)
   {
     *(result + 4) = 0;
@@ -49,9 +49,9 @@
   return result;
 }
 
-- (id)initScreenSharingTapOfType:(int64_t)a3
+- (id)initScreenSharingTapOfType:(int64_t)type
 {
-  result = [(PHASETapDescription *)self initInternalWithType:a3];
+  result = [(PHASETapDescription *)self initInternalWithType:type];
   if (result)
   {
     *(result + 4) = 5;
@@ -60,11 +60,11 @@
   return result;
 }
 
-- (PHASETapDescription)initWithProcessIdentifier:(int)a3 tapType:(int64_t)a4
+- (PHASETapDescription)initWithProcessIdentifier:(int)identifier tapType:(int64_t)type
 {
-  v5 = self;
+  selfCopy = self;
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0)
+  if (identifier <= 0)
   {
     v8 = **(Phase::Logger::GetInstance(self) + 448);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -74,7 +74,7 @@
       v12 = 1024;
       v13 = 124;
       v14 = 1024;
-      v15 = a3;
+      identifierCopy = identifier;
       _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: tap desc: invalid processIdentifier %d", &v10, 0x18u);
     }
 
@@ -83,35 +83,35 @@
 
   else
   {
-    v6 = [(PHASETapDescription *)self initInternalWithType:a4];
+    v6 = [(PHASETapDescription *)self initInternalWithType:type];
     if (v6)
     {
       v6[4] = 1;
-      *(v6 + 5) = a3;
+      *(v6 + 5) = identifier;
     }
 
-    v5 = v6;
-    v7 = v5;
+    selfCopy = v6;
+    v7 = selfCopy;
   }
 
   return v7;
 }
 
-- (PHASETapDescription)initWithAudioSessionToken:(unsigned int)a3 tapType:(int64_t)a4
+- (PHASETapDescription)initWithAudioSessionToken:(unsigned int)token tapType:(int64_t)type
 {
-  v5 = self;
+  selfCopy = self;
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 + 1 > 1)
+  if (token + 1 > 1)
   {
-    v8 = [(PHASETapDescription *)self initInternalWithType:a4];
+    v8 = [(PHASETapDescription *)self initInternalWithType:type];
     if (v8)
     {
       v8[4] = 2;
-      *(v8 + 4) = a3;
+      *(v8 + 4) = token;
     }
 
-    v5 = v8;
-    v7 = v5;
+    selfCopy = v8;
+    v7 = selfCopy;
   }
 
   else
@@ -124,7 +124,7 @@
       v12 = 1024;
       v13 = 141;
       v14 = 1024;
-      v15 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_23A302000, v6, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: tap desc: invalid audioSessionToken 0x%x", &v10, 0x18u);
     }
 
@@ -134,28 +134,28 @@
   return v7;
 }
 
-- (PHASETapDescription)initWithSceneIdentifier:(id)a3 tapType:(int64_t)a4
+- (PHASETapDescription)initWithSceneIdentifier:(id)identifier tapType:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && (v7 = [(Phase::Logger *)v7 length]) != 0)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifierCopy && (identifierCopy = [(Phase::Logger *)identifierCopy length]) != 0)
   {
-    v9 = [(PHASETapDescription *)self initInternalWithType:a4];
+    v9 = [(PHASETapDescription *)self initInternalWithType:type];
     v10 = v9;
     if (v9)
     {
       v9[4] = 3;
-      objc_storeStrong(v9 + 6, a3);
+      objc_storeStrong(v9 + 6, identifier);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = **(Phase::Logger::GetInstance(v7) + 448);
+    v12 = **(Phase::Logger::GetInstance(identifierCopy) + 448);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 136315650;
@@ -163,30 +163,30 @@
       v16 = 1024;
       v17 = 158;
       v18 = 2080;
-      v19 = [(Phase::Logger *)v8 UTF8String];
+      uTF8String = [(Phase::Logger *)v8 UTF8String];
       _os_log_impl(&dword_23A302000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: tap desc: invalid sceneIdentifier %s", &v14, 0x1Cu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PHASETapDescription)initWithStreamType:(int64_t)a3 tapType:(int64_t)a4
+- (PHASETapDescription)initWithStreamType:(int64_t)type tapType:(int64_t)tapType
 {
-  v4 = self;
+  selfCopy = self;
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
-    v5 = [(PHASETapDescription *)self initInternalWithType:a4];
+    v5 = [(PHASETapDescription *)self initInternalWithType:tapType];
     if (v5)
     {
       v5[2] = xmmword_23A554A00;
     }
 
-    v4 = v5;
-    v6 = v4;
+    selfCopy = v5;
+    v6 = selfCopy;
   }
 
   else
@@ -199,7 +199,7 @@
       v12 = 1024;
       v13 = 175;
       v14 = 2048;
-      v15 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_23A302000, v8, OS_LOG_TYPE_ERROR, "%25s:%-5d Error: tap desc: invalid streamType %ld", &v10, 0x1Cu);
     }
 

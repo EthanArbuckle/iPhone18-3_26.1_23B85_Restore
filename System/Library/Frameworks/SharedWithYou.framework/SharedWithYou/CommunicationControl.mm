@@ -2,18 +2,18 @@
 - (BOOL)isEnabled;
 - (CGSize)intrinsicContentSize;
 - (UIColor)tintColor;
-- (_TtC13SharedWithYou20CommunicationControl)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)setTintColor:(id)a3;
+- (_TtC13SharedWithYou20CommunicationControl)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)setTintColor:(id)color;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CommunicationControl
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BBC32A78();
   v4 = v3;
   v6 = v5;
@@ -36,44 +36,44 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(CommunicationControl *)&v4 tintColor];
+  tintColor = [(CommunicationControl *)&v4 tintColor];
 
-  return v2;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  colorCopy = color;
   v5 = v6.receiver;
-  [(CommunicationControl *)&v6 setTintColor:v4];
+  [(CommunicationControl *)&v6 setTintColor:colorCopy];
   sub_1BBC33264();
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BBC341E4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BBC34370(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BBC34370(change);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = sub_1BBC349D4();
 
   return v7;
 }
 
-- (_TtC13SharedWithYou20CommunicationControl)initWithFrame:(CGRect)a3
+- (_TtC13SharedWithYou20CommunicationControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

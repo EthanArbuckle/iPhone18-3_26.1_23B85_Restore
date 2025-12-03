@@ -1,8 +1,8 @@
 @interface BSUIStorefrontCache
 + (BSUIStorefrontCache)sharedInstance;
-- (BSUIStorefrontCache)initWithMemoryCapacity:(unint64_t)a3 diskCapacity:(unint64_t)a4;
-- (id)_resolveURLString:(id)a3 size:(CGSize)a4 fileType:(id)a5;
-- (void)imageWithURLString:(id)a3 size:(CGSize)a4 fileType:(id)a5 completion:(id)a6;
+- (BSUIStorefrontCache)initWithMemoryCapacity:(unint64_t)capacity diskCapacity:(unint64_t)diskCapacity;
+- (id)_resolveURLString:(id)string size:(CGSize)size fileType:(id)type;
+- (void)imageWithURLString:(id)string size:(CGSize)size fileType:(id)type completion:(id)completion;
 @end
 
 @implementation BSUIStorefrontCache
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_70B4;
   block[3] = &unk_386D38;
-  block[4] = a1;
+  block[4] = self;
   if (qword_3CA6B8 != -1)
   {
     dispatch_once(&qword_3CA6B8, block);
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (BSUIStorefrontCache)initWithMemoryCapacity:(unint64_t)a3 diskCapacity:(unint64_t)a4
+- (BSUIStorefrontCache)initWithMemoryCapacity:(unint64_t)capacity diskCapacity:(unint64_t)diskCapacity
 {
   v15.receiver = self;
   v15.super_class = BSUIStorefrontCache;
@@ -35,7 +35,7 @@
     v8 = [NSURLCache alloc];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v8 initWithMemoryCapacity:a3 diskCapacity:a4 diskPath:v10];
+    v11 = [v8 initWithMemoryCapacity:capacity diskCapacity:diskCapacity diskPath:v10];
     [v7 setURLCache:v11];
 
     v12 = [NSURLSession sessionWithConfiguration:v7];
@@ -46,30 +46,30 @@
   return v6;
 }
 
-- (void)imageWithURLString:(id)a3 size:(CGSize)a4 fileType:(id)a5 completion:(id)a6
+- (void)imageWithURLString:(id)string size:(CGSize)size fileType:(id)type completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = [(BSUIStorefrontCache *)self _resolveURLString:a3 size:a5 fileType:width, height];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  height = [(BSUIStorefrontCache *)self _resolveURLString:string size:type fileType:width, height];
   session = self->_session;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_72F0;
   v16[3] = &unk_386D60;
-  v17 = v11;
-  v14 = v11;
-  v15 = [(NSURLSession *)session dataTaskWithURL:v12 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  v15 = [(NSURLSession *)session dataTaskWithURL:height completionHandler:v16];
   [v15 resume];
 }
 
-- (id)_resolveURLString:(id)a3 size:(CGSize)a4 fileType:(id)a5
+- (id)_resolveURLString:(id)string size:(CGSize)size fileType:(id)type
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a5;
-  v9 = [a3 mutableCopy];
-  v10 = v8;
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
+  v9 = [string mutableCopy];
+  v10 = typeCopy;
   v11 = v10;
   if (([(__CFString *)v10 isEqualToString:@"jpeg"]& 1) == 0)
   {

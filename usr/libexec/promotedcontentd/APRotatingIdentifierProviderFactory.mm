@@ -1,24 +1,24 @@
 @interface APRotatingIdentifierProviderFactory
 - (APRotatingIdentifierProvider)provider;
 - (APRotatingIdentifierProviderFactory)init;
-- (void)setProvider:(id)a3;
+- (void)setProvider:(id)provider;
 @end
 
 @implementation APRotatingIdentifierProviderFactory
 
 - (APRotatingIdentifierProvider)provider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100002E80();
 
   return v3;
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
   v4 = *(&self->super.isa + OBJC_IVAR___APRotatingIdentifierProviderFactory____lazy_storage___provider);
-  *(&self->super.isa + OBJC_IVAR___APRotatingIdentifierProviderFactory____lazy_storage___provider) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___APRotatingIdentifierProviderFactory____lazy_storage___provider) = provider;
+  providerCopy = provider;
 }
 
 - (APRotatingIdentifierProviderFactory)init

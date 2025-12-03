@@ -11,16 +11,16 @@
 
 - (id)hmd_preferredDisplayHandle
 {
-  v2 = [a1 hmd_handles];
-  v3 = [v2 mutableCopy];
+  hmd_handles = [self hmd_handles];
+  v3 = [hmd_handles mutableCopy];
 
-  v4 = [a1 iCloudAccount];
-  v5 = [v4 loginID];
+  iCloudAccount = [self iCloudAccount];
+  loginID = [iCloudAccount loginID];
 
-  if (v5)
+  if (loginID)
   {
     v6 = +[HMDAccountHandleFormatter defaultFormatter];
-    v7 = [v6 accountHandleFromString:v5];
+    v7 = [v6 accountHandleFromString:loginID];
   }
 
   else
@@ -38,24 +38,24 @@
   v10[2] = __53__IDSService_HMDAccounts__hmd_preferredDisplayHandle__block_invoke;
   v10[3] = &unk_27972B1A0;
   v11 = v7;
-  v8 = [v3 hmf_objectPassingTest:v10];
+  lastObject = [v3 hmf_objectPassingTest:v10];
 
-  if (!v8)
+  if (!lastObject)
   {
 LABEL_6:
     [v3 sortWithOptions:16 usingComparator:&__block_literal_global_11_97349];
-    v8 = [v3 lastObject];
+    lastObject = [v3 lastObject];
   }
 
-  return v8;
+  return lastObject;
 }
 
 - (id)hmd_preferredHandle
 {
   v23 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v2 = [a1 hmd_handles];
-  v15 = [v2 na_map:&__block_literal_global_97352];
+  hmd_handles = [self hmd_handles];
+  v15 = [hmd_handles na_map:&__block_literal_global_97352];
   v3 = _IDSCopyOrderedAliasesWithGetter();
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v18 = 0u;
@@ -83,7 +83,7 @@ LABEL_6:
         v17[2] = __46__IDSService_HMDAccounts__hmd_preferredHandle__block_invoke_3;
         v17[3] = &unk_27972A5F0;
         v17[4] = v10;
-        v11 = [v2 na_firstObjectPassingTest:v17];
+        v11 = [hmd_handles na_firstObjectPassingTest:v17];
         if (v11)
         {
           [v4 addObject:v11];
@@ -96,24 +96,24 @@ LABEL_6:
     while (v7);
   }
 
-  v12 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
   objc_autoreleasePoolPop(context);
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
 - (id)hmd_handles
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a1 accounts];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accounts = [self accounts];
+  v4 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -124,49 +124,49 @@ LABEL_6:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) hmd_handles];
-        [v2 addObjectsFromArray:v8];
+        hmd_handles = [*(*(&v12 + 1) + 8 * i) hmd_handles];
+        [orderedSet addObjectsFromArray:hmd_handles];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [v2 array];
+  array = [orderedSet array];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
 - (uint64_t)hmd_registrationError
 {
-  v1 = [a1 iCloudAccount];
-  v2 = [v1 registrationError];
+  iCloudAccount = [self iCloudAccount];
+  registrationError = [iCloudAccount registrationError];
 
-  return v2;
+  return registrationError;
 }
 
 - (uint64_t)hmd_registrationStatus
 {
-  v1 = [a1 iCloudAccount];
-  v2 = [v1 registrationStatus];
+  iCloudAccount = [self iCloudAccount];
+  registrationStatus = [iCloudAccount registrationStatus];
 
-  return v2;
+  return registrationStatus;
 }
 
 - (BOOL)hmd_isActive
 {
-  v1 = [a1 iCloudAccount];
-  if ([v1 isActive])
+  iCloudAccount = [self iCloudAccount];
+  if ([iCloudAccount isActive])
   {
-    v2 = [v1 loginID];
-    v3 = v2 != 0;
+    loginID = [iCloudAccount loginID];
+    v3 = loginID != 0;
   }
 
   else

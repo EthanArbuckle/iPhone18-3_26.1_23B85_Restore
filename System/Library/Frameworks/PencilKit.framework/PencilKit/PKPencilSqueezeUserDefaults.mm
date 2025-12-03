@@ -2,8 +2,8 @@
 - (PKPencilSqueezeUserDefaults)init;
 - (id)loadLastPaletteHoverLocation;
 - (id)loadLastPaletteViewStartAngle;
-- (void)saveLastPaletteHoverLocation:(CGFloat)a3;
-- (void)saveLastPaletteViewStartAngle:(uint64_t)a1;
+- (void)saveLastPaletteHoverLocation:(CGFloat)location;
+- (void)saveLastPaletteViewStartAngle:(uint64_t)angle;
 @end
 
 @implementation PKPencilSqueezeUserDefaults
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)saveLastPaletteViewStartAngle:(uint64_t)a1
+- (void)saveLastPaletteViewStartAngle:(uint64_t)angle
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (angle)
   {
     v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -36,7 +36,7 @@
       _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Save last palette view start angle: %{private}f", &v7, 0xCu);
     }
 
-    v5 = *(a1 + 8);
+    v5 = *(angle + 8);
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
     [v5 setObject:v6 forKey:@"PKPencilSqueezeLastPaletteViewStartAngle"];
   }
@@ -45,9 +45,9 @@
 - (id)loadLastPaletteViewStartAngle
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) objectForKey:@"PKPencilSqueezeLastPaletteViewStartAngle"];
+    v1 = [*(self + 8) objectForKey:@"PKPencilSqueezeLastPaletteViewStartAngle"];
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
@@ -65,25 +65,25 @@
   return v1;
 }
 
-- (void)saveLastPaletteHoverLocation:(CGFloat)a3
+- (void)saveLastPaletteHoverLocation:(CGFloat)location
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v13.x = a2;
-      v13.y = a3;
+      v13.y = location;
       v7 = NSStringFromCGPoint(v13);
       v10 = 138477827;
       v11 = v7;
       _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "Save last palette hover location: %{private}@", &v10, 0xCu);
     }
 
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
     v14.x = a2;
-    v14.y = a3;
+    v14.y = location;
     v9 = NSStringFromCGPoint(v14);
     [v8 setObject:v9 forKey:@"PKPencilSqueezeLastPaletteHoverLocation"];
   }
@@ -92,9 +92,9 @@
 - (id)loadLastPaletteHoverLocation
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 8) objectForKey:@"PKPencilSqueezeLastPaletteHoverLocation"];
+    v1 = [*(self + 8) objectForKey:@"PKPencilSqueezeLastPaletteHoverLocation"];
     v2 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {

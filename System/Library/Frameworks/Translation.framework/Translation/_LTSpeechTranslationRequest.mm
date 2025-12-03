@@ -1,29 +1,29 @@
 @interface _LTSpeechTranslationRequest
-+ (id)generateSilentAudioDataWithDuration:(double)a3;
++ (id)generateSilentAudioDataWithDuration:(double)duration;
 - (_LTSpeechTranslationDelegate)delegate;
-- (_LTSpeechTranslationRequest)initWithLocalePair:(id)a3 suggestedUniqueID:(id)a4;
-- (_LTSpeechTranslationRequest)initWithSourceLocale:(id)a3 targetLocale:(id)a4 suggestedUniqueID:(id)a5;
+- (_LTSpeechTranslationRequest)initWithLocalePair:(id)pair suggestedUniqueID:(id)d;
+- (_LTSpeechTranslationRequest)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale suggestedUniqueID:(id)d;
 - (id)nativeAudioFormat;
 - (id)requestContext;
-- (id)setUpAudioCaptureFile:(id)a3 withFormat:(id)a4;
-- (void)_appendAudioPCMBuffer:(id)a3;
-- (void)_appendAudioSampleBuffer:(opaqueCMSampleBuffer *)a3 simulateRealtime:(BOOL)a4;
-- (void)_convertAndFeedPCMBuffer:(id)a3;
+- (id)setUpAudioCaptureFile:(id)file withFormat:(id)format;
+- (void)_appendAudioPCMBuffer:(id)buffer;
+- (void)_appendAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer simulateRealtime:(BOOL)realtime;
+- (void)_convertAndFeedPCMBuffer:(id)buffer;
 - (void)_drainAndClearAudioConverter;
-- (void)_simulateRealtimeBehavior:(id)a3;
-- (void)_startTranslationWithService:(id)a3 done:(id)a4;
-- (void)_translationFailedWithError:(id)a3;
-- (void)append:(opaqueCMSampleBuffer *)a3 simulateRealtime:(BOOL)a4;
-- (void)appendAudioPCMBuffer:(id)a3;
+- (void)_simulateRealtimeBehavior:(id)behavior;
+- (void)_startTranslationWithService:(id)service done:(id)done;
+- (void)_translationFailedWithError:(id)error;
+- (void)append:(opaqueCMSampleBuffer *)append simulateRealtime:(BOOL)realtime;
+- (void)appendAudioPCMBuffer:(id)buffer;
 - (void)endAudio;
 - (void)hybridEndpointerFoundEndpoint;
 - (void)languageDetectionCompleted;
-- (void)languageDetectionResult:(id)a3;
-- (void)serverEndpointerFeatures:(id)a3 locale:(id)a4;
+- (void)languageDetectionResult:(id)result;
+- (void)serverEndpointerFeatures:(id)features locale:(id)locale;
 - (void)speechActivityDetected;
-- (void)speechRecognitionResult:(id)a3;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)translatorDidTranslate:(id)a3;
+- (void)speechRecognitionResult:(id)result;
+- (void)translationDidFinishWithError:(id)error;
+- (void)translatorDidTranslate:(id)translate;
 @end
 
 @implementation _LTSpeechTranslationRequest
@@ -32,24 +32,24 @@
 {
   v8.receiver = self;
   v8.super_class = _LTSpeechTranslationRequest;
-  v3 = [(_LTTranslationRequest *)&v8 requestContext];
-  v4 = [(_LTTranslationRequest *)self outputFileURL];
-  [v3 setOutputFileURL:v4];
+  requestContext = [(_LTTranslationRequest *)&v8 requestContext];
+  outputFileURL = [(_LTTranslationRequest *)self outputFileURL];
+  [requestContext setOutputFileURL:outputFileURL];
 
-  v5 = [(_LTSpeechTranslationRequest *)self _offlineASRModelURLs];
-  [v3 setAsrModelURLs:v5];
+  _offlineASRModelURLs = [(_LTSpeechTranslationRequest *)self _offlineASRModelURLs];
+  [requestContext setAsrModelURLs:_offlineASRModelURLs];
 
-  [v3 setAutoEndpoint:{-[_LTSpeechTranslationRequest autoEndpoint](self, "autoEndpoint")}];
-  [v3 setEnableStreamingSpeechTranslation:{-[_LTSpeechTranslationRequest enableStreamingSpeechTranslation](self, "enableStreamingSpeechTranslation")}];
-  [v3 setEnableMultiFieldInput:{-[_LTSpeechTranslationRequest enableMultiFieldInput](self, "enableMultiFieldInput")}];
-  [v3 setEnableTranslationSemanticSegmentation:{-[_LTSpeechTranslationRequest enableTranslationSemanticSegmentation](self, "enableTranslationSemanticSegmentation")}];
-  [v3 setLidThreshold:{-[_LTSpeechTranslationRequest _lidThreshold](self, "_lidThreshold")}];
-  [v3 setAsrConfidenceThreshold:{-[_LTSpeechTranslationRequest _asrConfidenceThreshold](self, "_asrConfidenceThreshold")}];
-  [v3 setEnableVAD:{-[_LTSpeechTranslationRequest enableVAD](self, "enableVAD")}];
-  [v3 setEnableAirPodsOwnVAD:{-[_LTSpeechTranslationRequest enableAirPodsOwnVAD](self, "enableAirPodsOwnVAD")}];
+  [requestContext setAutoEndpoint:{-[_LTSpeechTranslationRequest autoEndpoint](self, "autoEndpoint")}];
+  [requestContext setEnableStreamingSpeechTranslation:{-[_LTSpeechTranslationRequest enableStreamingSpeechTranslation](self, "enableStreamingSpeechTranslation")}];
+  [requestContext setEnableMultiFieldInput:{-[_LTSpeechTranslationRequest enableMultiFieldInput](self, "enableMultiFieldInput")}];
+  [requestContext setEnableTranslationSemanticSegmentation:{-[_LTSpeechTranslationRequest enableTranslationSemanticSegmentation](self, "enableTranslationSemanticSegmentation")}];
+  [requestContext setLidThreshold:{-[_LTSpeechTranslationRequest _lidThreshold](self, "_lidThreshold")}];
+  [requestContext setAsrConfidenceThreshold:{-[_LTSpeechTranslationRequest _asrConfidenceThreshold](self, "_asrConfidenceThreshold")}];
+  [requestContext setEnableVAD:{-[_LTSpeechTranslationRequest enableVAD](self, "enableVAD")}];
+  [requestContext setEnableAirPodsOwnVAD:{-[_LTSpeechTranslationRequest enableAirPodsOwnVAD](self, "enableAirPodsOwnVAD")}];
   v6 = 1;
-  [v3 setCancelOnCleanup:1];
-  [v3 setRoute:0];
+  [requestContext setCancelOnCleanup:1];
+  [requestContext setRoute:0];
   if (![(_LTTranslationRequest *)self forcedOfflineTranslation])
   {
     if ([(_LTTranslationRequest *)self _forcedOnlineTranslation])
@@ -68,28 +68,28 @@
     }
   }
 
-  [v3 setRoute:v6];
+  [requestContext setRoute:v6];
 LABEL_7:
 
-  return v3;
+  return requestContext;
 }
 
-- (_LTSpeechTranslationRequest)initWithSourceLocale:(id)a3 targetLocale:(id)a4 suggestedUniqueID:(id)a5
+- (_LTSpeechTranslationRequest)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale suggestedUniqueID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_LTLocalePair alloc] initWithSourceLocale:v10 targetLocale:v9];
+  dCopy = d;
+  targetLocaleCopy = targetLocale;
+  localeCopy = locale;
+  v11 = [[_LTLocalePair alloc] initWithSourceLocale:localeCopy targetLocale:targetLocaleCopy];
 
-  v12 = [(_LTSpeechTranslationRequest *)self initWithLocalePair:v11 suggestedUniqueID:v8];
+  v12 = [(_LTSpeechTranslationRequest *)self initWithLocalePair:v11 suggestedUniqueID:dCopy];
   return v12;
 }
 
-- (_LTSpeechTranslationRequest)initWithLocalePair:(id)a3 suggestedUniqueID:(id)a4
+- (_LTSpeechTranslationRequest)initWithLocalePair:(id)pair suggestedUniqueID:(id)d
 {
   v10.receiver = self;
   v10.super_class = _LTSpeechTranslationRequest;
-  v4 = [(_LTTranslationRequest *)&v10 initWithLocalePair:a3 suggestedUniqueID:a4];
+  v4 = [(_LTTranslationRequest *)&v10 initWithLocalePair:pair suggestedUniqueID:d];
   if (v4)
   {
     v5 = dispatch_queue_create("com.apple.siri.translation.speechrequest", 0);
@@ -101,8 +101,8 @@ LABEL_7:
     v4->_autoEndpoint = 0;
     if (_LTIsInternalInstall())
     {
-      v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v4->_audioCaptureEnabled = [v7 BOOLForKey:@"SaveAudioRecordings"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v4->_audioCaptureEnabled = [standardUserDefaults BOOLForKey:@"SaveAudioRecordings"];
     }
 
     else
@@ -123,10 +123,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)_startTranslationWithService:(id)a3 done:(id)a4
+- (void)_startTranslationWithService:(id)service done:(id)done
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  doneCopy = done;
   v8 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -134,9 +134,9 @@ LABEL_7:
     _os_log_impl(&dword_23AAF5000, v8, OS_LOG_TYPE_DEFAULT, "Start speech translation with service", buf, 2u);
   }
 
-  v9 = [(_LTTranslationRequest *)self logIdentifier];
-  v10 = [(_LTTranslationRequest *)self localePair];
-  [(_LTTranslationRequest *)self setLogIdentifier:v9];
+  logIdentifier = [(_LTTranslationRequest *)self logIdentifier];
+  localePair = [(_LTTranslationRequest *)self localePair];
+  [(_LTTranslationRequest *)self setLogIdentifier:logIdentifier];
 
   objc_initWeak(buf, self);
   queue = self->_queue;
@@ -145,53 +145,53 @@ LABEL_7:
   block[2] = __65___LTSpeechTranslationRequest__startTranslationWithService_done___block_invoke;
   block[3] = &unk_278B6CCE0;
   objc_copyWeak(&v17, buf);
-  v15 = v6;
-  v16 = v7;
-  v12 = v6;
-  v13 = v7;
+  v15 = serviceCopy;
+  v16 = doneCopy;
+  v12 = serviceCopy;
+  v13 = doneCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
 }
 
-- (void)_translationFailedWithError:(id)a3
+- (void)_translationFailedWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(_LTSpeechTranslationRequest *)self delegate];
+  errorCopy = error;
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v6 translationDidFinishWithError:v7];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 translationDidFinishWithError:errorCopy];
   }
 }
 
-- (void)_appendAudioPCMBuffer:(id)a3
+- (void)_appendAudioPCMBuffer:(id)buffer
 {
-  v9 = a3;
+  bufferCopy = buffer;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(_LTSpeechTranslationRequest *)self nativeAudioFormat];
-  v5 = [v9 format];
-  v6 = [v4 isEqual:v5];
+  nativeAudioFormat = [(_LTSpeechTranslationRequest *)self nativeAudioFormat];
+  format = [bufferCopy format];
+  v6 = [nativeAudioFormat isEqual:format];
 
   if (v6)
   {
-    v7 = [v9 int16ChannelData];
-    v8 = [MEMORY[0x277CBEA90] dataWithBytes:*v7 length:{2 * objc_msgSend(v9, "frameLength")}];
+    int16ChannelData = [bufferCopy int16ChannelData];
+    v8 = [MEMORY[0x277CBEA90] dataWithBytes:*int16ChannelData length:{2 * objc_msgSend(bufferCopy, "frameLength")}];
     [(_LTTranslationService *)self->_service addSpeechAudioData:v8];
   }
 
   else
   {
-    [(_LTSpeechTranslationRequest *)self _convertAndFeedPCMBuffer:v9];
+    [(_LTSpeechTranslationRequest *)self _convertAndFeedPCMBuffer:bufferCopy];
   }
 }
 
-- (void)appendAudioPCMBuffer:(id)a3
+- (void)appendAudioPCMBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -199,21 +199,21 @@ LABEL_7:
   v7[2] = __52___LTSpeechTranslationRequest_appendAudioPCMBuffer___block_invoke;
   v7[3] = &unk_278B6DB58;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = bufferCopy;
+  selfCopy = self;
+  v6 = bufferCopy;
   dispatch_async(queue, v7);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_simulateRealtimeBehavior:(id)a3
+- (void)_simulateRealtimeBehavior:(id)behavior
 {
-  v17 = a3;
-  v4 = [v17 length];
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  [v5 systemUptime];
+  behaviorCopy = behavior;
+  v4 = [behaviorCopy length];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  [processInfo systemUptime];
   v7 = v6;
 
   if (v4 >= 1)
@@ -225,8 +225,8 @@ LABEL_7:
     {
       v9 = v9 + 0.02;
       [MEMORY[0x277CCACC8] sleepForTimeInterval:v9 - v10];
-      v11 = [MEMORY[0x277CCAC38] processInfo];
-      [v11 systemUptime];
+      processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo2 systemUptime];
       v10 = v12 - v7;
 
       if (v4 >= 0x280)
@@ -240,7 +240,7 @@ LABEL_7:
       }
 
       service = self->_service;
-      v15 = [v17 subdataWithRange:{v8, v13}];
+      v15 = [behaviorCopy subdataWithRange:{v8, v13}];
       [(_LTTranslationService *)service addSpeechAudioData:v15];
 
       v8 += v13;
@@ -252,21 +252,21 @@ LABEL_7:
   }
 }
 
-- (void)_appendAudioSampleBuffer:(opaqueCMSampleBuffer *)a3 simulateRealtime:(BOOL)a4
+- (void)_appendAudioSampleBuffer:(opaqueCMSampleBuffer *)buffer simulateRealtime:(BOOL)realtime
 {
-  v4 = a4;
+  realtimeCopy = realtime;
   dispatch_assert_queue_V2(self->_queue);
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(FormatDescription);
   mSampleRate = StreamBasicDescription->mSampleRate;
   if ((StreamBasicDescription->mSampleRate == 16000.0 || mSampleRate == 8000.0) && StreamBasicDescription->mFormatID == 1819304813 && StreamBasicDescription->mFormatFlags == 12 && StreamBasicDescription->mBytesPerPacket == 2 && StreamBasicDescription->mFramesPerPacket == 1 && StreamBasicDescription->mBytesPerFrame == 2 && StreamBasicDescription->mChannelsPerFrame == 1 && StreamBasicDescription->mBitsPerChannel == 16)
   {
     [(_LTSpeechTranslationRequest *)self _drainAndClearAudioConverter];
-    if (CMSampleBufferGetNumSamples(a3))
+    if (CMSampleBufferGetNumSamples(buffer))
     {
       totalLengthOut = 0;
       dataPointerOut = 0;
-      DataBuffer = CMSampleBufferGetDataBuffer(a3);
+      DataBuffer = CMSampleBufferGetDataBuffer(buffer);
       if (CMBlockBufferGetDataPointer(DataBuffer, 0, 0, &totalLengthOut, &dataPointerOut))
       {
         DataLength = CMBlockBufferGetDataLength(DataBuffer);
@@ -295,7 +295,7 @@ LABEL_7:
 
       if (v14)
       {
-        if (v4)
+        if (realtimeCopy)
         {
           [(_LTSpeechTranslationRequest *)self _simulateRealtimeBehavior:v14];
         }
@@ -311,15 +311,15 @@ LABEL_7:
   else
   {
     v17 = [objc_alloc(MEMORY[0x277CB83A8]) initWithStreamDescription:StreamBasicDescription];
-    v15 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v17 frameCapacity:CMSampleBufferGetNumSamples(a3)];
-    [v15 setFrameLength:CMSampleBufferGetNumSamples(a3)];
-    NumSamples = CMSampleBufferGetNumSamples(a3);
-    CMSampleBufferCopyPCMDataIntoAudioBufferList(a3, 0, NumSamples, [v15 mutableAudioBufferList]);
+    v15 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v17 frameCapacity:CMSampleBufferGetNumSamples(buffer)];
+    [v15 setFrameLength:CMSampleBufferGetNumSamples(buffer)];
+    NumSamples = CMSampleBufferGetNumSamples(buffer);
+    CMSampleBufferCopyPCMDataIntoAudioBufferList(buffer, 0, NumSamples, [v15 mutableAudioBufferList]);
     [(_LTSpeechTranslationRequest *)self _convertAndFeedPCMBuffer:v15];
   }
 }
 
-- (void)append:(opaqueCMSampleBuffer *)a3 simulateRealtime:(BOOL)a4
+- (void)append:(opaqueCMSampleBuffer *)append simulateRealtime:(BOOL)realtime
 {
   v7 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -329,17 +329,17 @@ LABEL_7:
   }
 
   objc_initWeak(buf, self);
-  v8 = a3;
+  appendCopy = append;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55___LTSpeechTranslationRequest_append_simulateRealtime___block_invoke;
   v11[3] = &unk_278B6CD58;
   objc_copyWeak(&v14, buf);
-  v12 = v8;
-  v13 = self;
-  v15 = a4;
-  v10 = v8;
+  v12 = appendCopy;
+  selfCopy = self;
+  realtimeCopy = realtime;
+  v10 = appendCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -355,20 +355,20 @@ LABEL_7:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_convertAndFeedPCMBuffer:(id)a3
+- (void)_convertAndFeedPCMBuffer:(id)buffer
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bufferCopy = buffer;
   dispatch_assert_queue_V2(self->_queue);
-  v25 = [v4 format];
-  v24 = [(_LTSpeechTranslationRequest *)self nativeAudioFormat];
-  v5 = [(AVAudioConverter *)self->_converter inputFormat];
-  v6 = [v5 isEqual:v25];
+  format = [bufferCopy format];
+  nativeAudioFormat = [(_LTSpeechTranslationRequest *)self nativeAudioFormat];
+  inputFormat = [(AVAudioConverter *)self->_converter inputFormat];
+  v6 = [inputFormat isEqual:format];
 
   if ((v6 & 1) == 0)
   {
     [(_LTSpeechTranslationRequest *)self _drainAndClearAudioConverter];
-    v7 = [objc_alloc(MEMORY[0x277CB8380]) initFromFormat:v25 toFormat:v24];
+    v7 = [objc_alloc(MEMORY[0x277CB8380]) initFromFormat:format toFormat:nativeAudioFormat];
     converter = self->_converter;
     self->_converter = v7;
 
@@ -382,8 +382,8 @@ LABEL_7:
   while (1)
   {
     v9 = objc_alloc(MEMORY[0x277CB83C8]);
-    v10 = [(_LTSpeechTranslationRequest *)self nativeAudioFormat];
-    v11 = [v9 initWithPCMFormat:v10 frameCapacity:8000];
+    nativeAudioFormat2 = [(_LTSpeechTranslationRequest *)self nativeAudioFormat];
+    v11 = [v9 initWithPCMFormat:nativeAudioFormat2 frameCapacity:8000];
 
     [v11 setFrameLength:8000];
     v12 = self->_converter;
@@ -393,7 +393,7 @@ LABEL_7:
     v27[3] = &unk_278B6DBA0;
     v29 = v31;
     v30 = 0;
-    v13 = v4;
+    v13 = bufferCopy;
     v28 = v13;
     v14 = [(AVAudioConverter *)v12 convertToBuffer:v11 error:&v30 withInputFromBlock:v27];
     v15 = v30;
@@ -427,8 +427,8 @@ LABEL_7:
           v21 = _LTOSLogSpeech();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v22 = [v20 localizedDescription];
-            [(_LTSpeechTranslationRequest *)v22 _convertAndFeedPCMBuffer:buf, v21];
+            localizedDescription = [v20 localizedDescription];
+            [(_LTSpeechTranslationRequest *)localizedDescription _convertAndFeedPCMBuffer:buf, v21];
           }
 
           break;
@@ -467,105 +467,105 @@ LABEL_17:
 
 - (void)speechActivityDetected
 {
-  v3 = [(_LTSpeechTranslationRequest *)self delegate];
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v5 speechActivityDetected];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 speechActivityDetected];
   }
 }
 
 - (void)languageDetectionCompleted
 {
-  v3 = [(_LTSpeechTranslationRequest *)self delegate];
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v5 languageDetectionCompleted];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 languageDetectionCompleted];
   }
 }
 
-- (void)languageDetectionResult:(id)a3
+- (void)languageDetectionResult:(id)result
 {
-  v7 = a3;
-  v4 = [(_LTSpeechTranslationRequest *)self delegate];
+  resultCopy = result;
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v6 languageDetectionResult:v7];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 languageDetectionResult:resultCopy];
   }
 }
 
 - (void)hybridEndpointerFoundEndpoint
 {
-  v3 = [(_LTSpeechTranslationRequest *)self delegate];
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v5 hybridEndpointerFoundEndpoint];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 hybridEndpointerFoundEndpoint];
   }
 }
 
-- (void)serverEndpointerFeatures:(id)a3 locale:(id)a4
+- (void)serverEndpointerFeatures:(id)features locale:(id)locale
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(_LTSpeechTranslationRequest *)self delegate];
+  featuresCopy = features;
+  localeCopy = locale;
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v9 serverEndpointerFeatures:v10 locale:v6];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 serverEndpointerFeatures:featuresCopy locale:localeCopy];
   }
 }
 
-- (void)speechRecognitionResult:(id)a3
+- (void)speechRecognitionResult:(id)result
 {
-  v7 = a3;
-  v4 = [(_LTSpeechTranslationRequest *)self delegate];
+  resultCopy = result;
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v6 speechRecognitionResult:v7];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 speechRecognitionResult:resultCopy];
   }
 }
 
-- (void)translatorDidTranslate:(id)a3
+- (void)translatorDidTranslate:(id)translate
 {
-  v7 = a3;
-  v4 = [(_LTSpeechTranslationRequest *)self delegate];
+  translateCopy = translate;
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v6 translatorDidTranslate:v7];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 translatorDidTranslate:translateCopy];
 
     [(_LTTranslationRequest *)self logIdentifier];
   }
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(_LTSpeechTranslationRequest *)self delegate];
+  errorCopy = error;
+  delegate = [(_LTSpeechTranslationRequest *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_LTSpeechTranslationRequest *)self delegate];
-    [v6 translationDidFinishWithError:v8];
+    delegate2 = [(_LTSpeechTranslationRequest *)self delegate];
+    [delegate2 translationDidFinishWithError:errorCopy];
 
     [(_LTTranslationRequest *)self logIdentifier];
   }
@@ -577,14 +577,14 @@ LABEL_17:
   }
 }
 
-- (id)setUpAudioCaptureFile:(id)a3 withFormat:(id)a4
+- (id)setUpAudioCaptureFile:(id)file withFormat:(id)format
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  formatCopy = format;
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a3;
-  v8 = [v6 standardUserDefaults];
-  v9 = [v8 stringForKey:@"AudioRecordingPath"];
+  fileCopy = file;
+  standardUserDefaults = [v6 standardUserDefaults];
+  v9 = [standardUserDefaults stringForKey:@"AudioRecordingPath"];
 
   if (!v9)
   {
@@ -592,20 +592,20 @@ LABEL_17:
     v9 = [v10 stringByAppendingPathComponent:@"TranslateRecordings"];
   }
 
-  v11 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v12 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v12 setDateFormat:@"yyyyMMdd.HHmmss"];
-  v13 = [v12 stringFromDate:v11];
-  v14 = [v13 stringByAppendingFormat:@"_%@.caf", v7];
+  v13 = [v12 stringFromDate:date];
+  fileCopy = [v13 stringByAppendingFormat:@"_%@.caf", fileCopy];
 
   v15 = MEMORY[0x277CBEBC0];
-  v16 = [v9 stringByAppendingPathComponent:v14];
+  v16 = [v9 stringByAppendingPathComponent:fileCopy];
   v17 = [v15 fileURLWithPath:v16 isDirectory:0];
 
   v18 = objc_alloc(MEMORY[0x277CB8398]);
-  v19 = [v5 settings];
+  settings = [formatCopy settings];
   v29 = 0;
-  v20 = [v18 initForWriting:v17 settings:v19 commonFormat:objc_msgSend(v5 interleaved:"commonFormat") error:objc_msgSend(v5, "isInterleaved"), &v29];
+  v20 = [v18 initForWriting:v17 settings:settings commonFormat:objc_msgSend(formatCopy interleaved:"commonFormat") error:objc_msgSend(formatCopy, "isInterleaved"), &v29];
   v21 = v29;
 
   v22 = _LTOSLogSpeech();
@@ -625,11 +625,11 @@ LABEL_17:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v25 = v23;
-      v28 = [v17 path];
+      path = [v17 path];
       *buf = 138412546;
-      v31 = v28;
+      v31 = path;
       v32 = 2112;
-      v33 = v5;
+      v33 = formatCopy;
       _os_log_impl(&dword_23AAF5000, v25, OS_LOG_TYPE_INFO, "Created audio file: %@ with format %@", buf, 0x16u);
     }
 
@@ -641,9 +641,9 @@ LABEL_17:
   return v24;
 }
 
-+ (id)generateSilentAudioDataWithDuration:(double)a3
++ (id)generateSilentAudioDataWithDuration:(double)duration
 {
-  v3 = [MEMORY[0x277CBEB28] dataWithLength:2 * (a3 * 16000.0)];
+  v3 = [MEMORY[0x277CBEB28] dataWithLength:2 * (duration * 16000.0)];
   v4 = [v3 copy];
 
   return v4;

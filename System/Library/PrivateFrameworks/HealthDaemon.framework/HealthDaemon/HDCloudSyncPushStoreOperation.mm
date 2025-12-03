@@ -1,16 +1,16 @@
 @interface HDCloudSyncPushStoreOperation
 + (id)operationTagDependencies;
-- (HDCloudSyncCompoundOperation)_operationForNewSequenceRecord:(void *)a3 replacingSequence:(uint64_t)a4 isRebaseline:;
-- (HDCloudSyncPushSequenceOperation)_operationForExistingSequenceRecord:(void *)a3 includedChildSyncIdentites:;
-- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5;
+- (HDCloudSyncCompoundOperation)_operationForNewSequenceRecord:(void *)record replacingSequence:(uint64_t)sequence isRebaseline:;
+- (HDCloudSyncPushSequenceOperation)_operationForExistingSequenceRecord:(void *)record includedChildSyncIdentites:;
+- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target;
 - (HDCloudSyncTarget)target;
-- (id)_validatedSequenceRecordOperationsForPushWithError:(uint64_t)a1;
+- (id)_validatedSequenceRecordOperationsForPushWithError:(uint64_t)error;
 - (id)analyticsDictionary;
 - (void)_recordCurrentSequenceEpochs;
-- (void)_recordExcludedSyncIdentitiesFromPushSequenceOperations:(void *)a1;
+- (void)_recordExcludedSyncIdentitiesFromPushSequenceOperations:(void *)operations;
 - (void)main;
-- (void)setTarget:(id)a3;
+- (void)setTarget:(id)target;
 @end
 
 @implementation HDCloudSyncPushStoreOperation
@@ -27,7 +27,7 @@
   return v2;
 }
 
-- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -37,16 +37,16 @@
   return 0;
 }
 
-- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5
+- (HDCloudSyncPushStoreOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target
 {
-  v9 = a5;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = HDCloudSyncPushStoreOperation;
-  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:a4];
+  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:state];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_target, a5);
+    objc_storeStrong(&v10->_target, target);
     v11->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -62,17 +62,17 @@
   return v3;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushStoreOperation.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPushStoreOperation.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [v5 copy];
+  v6 = [targetCopy copy];
 
   target = self->_target;
   self->_target = v6;
@@ -86,9 +86,9 @@
   target = self->_target;
   if (target)
   {
-    v4 = [(HDCloudSyncTarget *)target store];
+    store = [(HDCloudSyncTarget *)target store];
     v38 = 0;
-    v5 = [v4 persistedStateWithError:&v38];
+    v5 = [store persistedStateWithError:&v38];
     v6 = v38;
     storeState = self->_storeState;
     self->_storeState = v5;
@@ -97,9 +97,9 @@
     {
       self->_rebaseReason = -1;
       v8 = [HDCloudSyncCompoundOperation alloc];
-      v9 = [(HDCloudSyncOperation *)self configuration];
-      v10 = [(HDCloudSyncOperation *)self cloudState];
-      v11 = [(HDCloudSyncCompoundOperation *)v8 initWithConfiguration:v9 cloudState:v10 name:@"Push Sequences" continueOnSubOperationError:1];
+      configuration = [(HDCloudSyncOperation *)self configuration];
+      cloudState = [(HDCloudSyncOperation *)self cloudState];
+      v11 = [(HDCloudSyncCompoundOperation *)v8 initWithConfiguration:configuration cloudState:cloudState name:@"Push Sequences" continueOnSubOperationError:1];
 
       v37 = 0;
       v12 = [(HDCloudSyncPushStoreOperation *)self _validatedSequenceRecordOperationsForPushWithError:?];
@@ -150,15 +150,15 @@
         v31 = v19;
         v20 = v19;
         [(HDCloudSyncOperation *)v11 setOnSuccess:v30];
-        v21 = [(HDCloudSyncOperation *)v11 progress];
-        v22 = [v21 totalUnitCount];
-        v23 = [(HDCloudSyncOperation *)self progress];
-        [v23 setTotalUnitCount:v22];
+        progress = [(HDCloudSyncOperation *)v11 progress];
+        totalUnitCount = [progress totalUnitCount];
+        progress2 = [(HDCloudSyncOperation *)self progress];
+        [progress2 setTotalUnitCount:totalUnitCount];
 
-        v24 = [(HDCloudSyncOperation *)self progress];
-        v25 = [(HDCloudSyncOperation *)v11 progress];
-        v26 = [(HDCloudSyncOperation *)v11 progress];
-        [v24 addChild:v25 withPendingUnitCount:{objc_msgSend(v26, "totalUnitCount")}];
+        progress3 = [(HDCloudSyncOperation *)self progress];
+        progress4 = [(HDCloudSyncOperation *)v11 progress];
+        progress5 = [(HDCloudSyncOperation *)v11 progress];
+        [progress3 addChild:progress4 withPendingUnitCount:{objc_msgSend(progress5, "totalUnitCount")}];
 
         [(HDCloudSyncCompoundOperation *)v11 start];
       }
@@ -185,69 +185,69 @@
   }
 }
 
-- (id)_validatedSequenceRecordOperationsForPushWithError:(uint64_t)a1
+- (id)_validatedSequenceRecordOperationsForPushWithError:(uint64_t)error
 {
   v225 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!error)
   {
     v203 = 0;
     goto LABEL_142;
   }
 
-  v2 = [*(a1 + 104) storeRecord];
-  v3 = [v2 syncIdentity];
+  storeRecord = [*(error + 104) storeRecord];
+  syncIdentity = [storeRecord syncIdentity];
 
-  if (!v3)
+  if (!syncIdentity)
   {
     obj = [MEMORY[0x277CBEB58] set];
     goto LABEL_56;
   }
 
-  v4 = [*(a1 + 104) storeRecord];
-  v5 = [v4 isChild];
+  storeRecord2 = [*(error + 104) storeRecord];
+  isChild = [storeRecord2 isChild];
 
-  if (v5)
+  if (isChild)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB58]);
-    v7 = [*(a1 + 104) storeRecord];
-    v8 = [v7 syncIdentity];
-    obj = [v6 initWithObjects:{v8, 0}];
+    storeRecord3 = [*(error + 104) storeRecord];
+    syncIdentity2 = [storeRecord3 syncIdentity];
+    obj = [v6 initWithObjects:{syncIdentity2, 0}];
 
     goto LABEL_56;
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v10 = [*(a1 + 104) storeRecord];
-  v11 = [v10 syncIdentity];
+  storeRecord4 = [*(error + 104) storeRecord];
+  syncIdentity3 = [storeRecord4 syncIdentity];
 
-  if (v11)
+  if (syncIdentity3)
   {
-    v12 = [*(a1 + 104) storeRecord];
-    v13 = [v12 syncIdentity];
-    [v9 addObject:v13];
+    storeRecord5 = [*(error + 104) storeRecord];
+    syncIdentity4 = [storeRecord5 syncIdentity];
+    [v9 addObject:syncIdentity4];
   }
 
-  v14 = [*(a1 + 104) storeRecord];
-  v15 = [v14 currentSequenceHeaderRecord];
-  v16 = [v15 includedSyncIdentities];
+  storeRecord6 = [*(error + 104) storeRecord];
+  currentSequenceHeaderRecord = [storeRecord6 currentSequenceHeaderRecord];
+  includedSyncIdentities = [currentSequenceHeaderRecord includedSyncIdentities];
 
-  if (v16)
+  if (includedSyncIdentities)
   {
-    v17 = [*(a1 + 104) storeRecord];
-    v18 = [v17 currentSequenceHeaderRecord];
-    v19 = [v18 includedSyncIdentities];
-    [v9 unionSet:v19];
+    storeRecord7 = [*(error + 104) storeRecord];
+    currentSequenceHeaderRecord2 = [storeRecord7 currentSequenceHeaderRecord];
+    includedSyncIdentities2 = [currentSequenceHeaderRecord2 includedSyncIdentities];
+    [v9 unionSet:includedSyncIdentities2];
   }
 
-  v20 = [a1 profile];
-  v21 = [v20 syncIdentityManager];
+  profile = [error profile];
+  syncIdentityManager = [profile syncIdentityManager];
   v204[0] = MEMORY[0x277D85DD0];
   v204[1] = 3221225472;
   v204[2] = __77__HDCloudSyncPushStoreOperation__currentOwnedSyncIdentitiesForPushWithError___block_invoke;
   v204[3] = &unk_27861EC18;
   v202 = v9;
   v205 = v202;
-  v22 = [v21 enumerateConcreteIdentitiesError:a2 enumerationHandler:v204];
+  v22 = [syncIdentityManager enumerateConcreteIdentitiesError:a2 enumerationHandler:v204];
 
   if (!v22)
   {
@@ -259,9 +259,9 @@
   v213 = 0u;
   v210 = 0u;
   v211 = 0u;
-  v23 = [a1 configuration];
-  v24 = [v23 computedState];
-  obja = [v24 targets];
+  configuration = [error configuration];
+  computedState = [configuration computedState];
+  obja = [computedState targets];
 
   v25 = [obja countByEnumeratingWithState:&v210 objects:v218 count:16];
   if (!v25)
@@ -292,12 +292,12 @@
 
       if (([v28 options] & 2) != 0 || !v29)
       {
-        v31 = [*(a1 + 104) storeRecord];
-        v32 = [v31 sequenceRecord];
-        v33 = [v32 includedChildSyncIdentities];
-        v34 = [v28 storeRecord];
-        v35 = [v34 syncIdentity];
-        v36 = [v33 containsObject:v35];
+        storeRecord8 = [*(error + 104) storeRecord];
+        sequenceRecord = [storeRecord8 sequenceRecord];
+        includedChildSyncIdentities = [sequenceRecord includedChildSyncIdentities];
+        storeRecord9 = [v28 storeRecord];
+        syncIdentity5 = [storeRecord9 syncIdentity];
+        v36 = [includedChildSyncIdentities containsObject:syncIdentity5];
 
         if (v36)
         {
@@ -306,28 +306,28 @@
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             v38 = v37;
-            v39 = [v28 storeRecord];
-            v40 = [v39 syncIdentity];
+            storeRecord10 = [v28 storeRecord];
+            syncIdentity6 = [storeRecord10 syncIdentity];
             *buf = 138543618;
-            *&buf[4] = a1;
+            *&buf[4] = error;
             *&buf[12] = 2114;
-            *&buf[14] = v40;
+            *&buf[14] = syncIdentity6;
             _os_log_impl(&dword_228986000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@: Adding seized target that is your own child %{public}@", buf, 0x16u);
           }
 
-          v41 = [v28 storeRecord];
-          v42 = [v41 syncIdentity];
-          [v202 removeObject:v42];
+          storeRecord11 = [v28 storeRecord];
+          syncIdentity7 = [storeRecord11 syncIdentity];
+          [v202 removeObject:syncIdentity7];
           goto LABEL_35;
         }
 
-        v43 = [v28 storeRecord];
-        v41 = [v43 sequenceRecord];
+        storeRecord12 = [v28 storeRecord];
+        storeRecord11 = [storeRecord12 sequenceRecord];
 
-        if (v41)
+        if (storeRecord11)
         {
-          v44 = [v41 includedSyncIdentities];
-          v45 = [v44 count] == 0;
+          includedSyncIdentities3 = [storeRecord11 includedSyncIdentities];
+          v45 = [includedSyncIdentities3 count] == 0;
 
           if (!v45)
           {
@@ -336,20 +336,20 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
             {
               v47 = v46;
-              v48 = [v41 includedSyncIdentities];
+              includedSyncIdentities4 = [storeRecord11 includedSyncIdentities];
               *buf = 138543618;
-              *&buf[4] = a1;
+              *&buf[4] = error;
               *&buf[12] = 2114;
-              *&buf[14] = v48;
+              *&buf[14] = includedSyncIdentities4;
               _os_log_impl(&dword_228986000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@: Adding includedSyncIdentities of seized target %{public}@", buf, 0x16u);
             }
           }
 
-          v49 = [v41 includedSyncIdentities];
-          [v202 unionSet:v49];
+          includedSyncIdentities5 = [storeRecord11 includedSyncIdentities];
+          [v202 unionSet:includedSyncIdentities5];
 
-          v50 = [v41 includedChildSyncIdentities];
-          v51 = [v50 count] == 0;
+          includedChildSyncIdentities2 = [storeRecord11 includedChildSyncIdentities];
+          v51 = [includedChildSyncIdentities2 count] == 0;
 
           if (!v51)
           {
@@ -358,17 +358,17 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
             {
               v53 = v52;
-              v54 = [v41 includedChildSyncIdentities];
+              includedChildSyncIdentities3 = [storeRecord11 includedChildSyncIdentities];
               *buf = 138543618;
-              *&buf[4] = a1;
+              *&buf[4] = error;
               *&buf[12] = 2114;
-              *&buf[14] = v54;
+              *&buf[14] = includedChildSyncIdentities3;
               _os_log_impl(&dword_228986000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@: Adding includedChildSyncIdentities of seized target %{public}@", buf, 0x16u);
             }
           }
 
-          v42 = [v41 includedChildSyncIdentities];
-          [v202 unionSet:v42];
+          syncIdentity7 = [storeRecord11 includedChildSyncIdentities];
+          [v202 unionSet:syncIdentity7];
 LABEL_35:
         }
 
@@ -386,11 +386,11 @@ LABEL_39:
   v209 = 0u;
   v206 = 0u;
   v207 = 0u;
-  v55 = [a1 configuration];
-  v56 = [v55 computedState];
-  v57 = [v56 targets];
+  configuration2 = [error configuration];
+  computedState2 = [configuration2 computedState];
+  targets = [computedState2 targets];
 
-  v58 = [v57 countByEnumeratingWithState:&v206 objects:buf count:16];
+  v58 = [targets countByEnumeratingWithState:&v206 objects:buf count:16];
   if (v58)
   {
     v59 = *v207;
@@ -400,52 +400,52 @@ LABEL_39:
       {
         if (*v207 != v59)
         {
-          objc_enumerationMutation(v57);
+          objc_enumerationMutation(targets);
         }
 
         v61 = *(*(&v206 + 1) + 8 * j);
         if ([v61 purpose] == 1 && (objc_msgSend(v61, "options") & 2) == 0)
         {
-          v62 = [v61 storeRecord];
-          v63 = [v62 sequenceRecord];
+          storeRecord13 = [v61 storeRecord];
+          sequenceRecord2 = [storeRecord13 sequenceRecord];
 
-          if (v63)
+          if (sequenceRecord2)
           {
-            v64 = [v63 includedSyncIdentities];
-            [v202 minusSet:v64];
+            includedSyncIdentities6 = [sequenceRecord2 includedSyncIdentities];
+            [v202 minusSet:includedSyncIdentities6];
 
-            v65 = [v63 includedChildSyncIdentities];
-            [v202 minusSet:v65];
+            includedChildSyncIdentities4 = [sequenceRecord2 includedChildSyncIdentities];
+            [v202 minusSet:includedChildSyncIdentities4];
           }
         }
       }
 
-      v58 = [v57 countByEnumeratingWithState:&v206 objects:buf count:16];
+      v58 = [targets countByEnumeratingWithState:&v206 objects:buf count:16];
     }
 
     while (v58);
   }
 
-  v66 = [a1 profile];
-  v67 = [v66 daemon];
-  v68 = [v67 behavior];
-  v69 = [v68 isAppleWatch];
+  profile2 = [error profile];
+  daemon = [profile2 daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v69)
+  if (isAppleWatch)
   {
-    v70 = [a1 profile];
-    v71 = [v70 syncIdentityManager];
-    v72 = [v71 legacySyncIdentity];
-    v73 = [v72 identity];
+    profile3 = [error profile];
+    syncIdentityManager2 = [profile3 syncIdentityManager];
+    legacySyncIdentity = [syncIdentityManager2 legacySyncIdentity];
+    identity = [legacySyncIdentity identity];
 
-    [v202 removeObject:v73];
+    [v202 removeObject:identity];
   }
 
-  v74 = [a1 profile];
-  v75 = [v74 syncIdentityManager];
-  v76 = [v75 currentSyncIdentity];
-  v77 = [v76 identity];
-  [v202 addObject:v77];
+  profile4 = [error profile];
+  syncIdentityManager3 = [profile4 syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager3 currentSyncIdentity];
+  identity2 = [currentSyncIdentity identity];
+  [v202 addObject:identity2];
 
   obj = v202;
 LABEL_55:
@@ -459,23 +459,23 @@ LABEL_56:
     v219 = __Block_byref_object_copy__91;
     *v220 = __Block_byref_object_dispose__91;
     *&v220[8] = objc_alloc_init(MEMORY[0x277CBEB98]);
-    v78 = [*(a1 + 104) storeRecord];
-    v79 = [v78 isChild];
+    storeRecord14 = [*(error + 104) storeRecord];
+    isChild2 = [storeRecord14 isChild];
 
-    if (v79)
+    if (isChild2)
     {
       goto LABEL_59;
     }
 
-    v80 = [a1 profile];
-    v81 = [v80 database];
+    profile5 = [error profile];
+    database = [profile5 database];
     *buf = MEMORY[0x277D85DD0];
     *&buf[8] = 3221225472;
     *&buf[16] = __82__HDCloudSyncPushStoreOperation__currentOwnedChildSyncIdentitiesForPushWithError___block_invoke;
     v215 = &unk_278614110;
-    v216 = a1;
+    errorCopy = error;
     v217 = v218;
-    v82 = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v81 error:a2 block:buf];
+    v82 = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:a2 block:buf];
 
     if (v82)
     {
@@ -496,29 +496,29 @@ LABEL_59:
     {
       [obj minusSet:?];
       v85 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v86 = [*(a1 + 104) store];
-      v87 = [v86 storeIdentifier];
-      [v85 addObject:v87];
+      store = [*(error + 104) store];
+      storeIdentifier = [store storeIdentifier];
+      [v85 addObject:storeIdentifier];
 
-      v88 = [*(a1 + 104) storeRecord];
-      v89 = [v88 currentSequenceHeaderRecord];
-      v90 = [v89 includedIdentifiers];
-      [v85 unionSet:v90];
+      storeRecord15 = [*(error + 104) storeRecord];
+      currentSequenceHeaderRecord3 = [storeRecord15 currentSequenceHeaderRecord];
+      includedIdentifiers = [currentSequenceHeaderRecord3 includedIdentifiers];
+      [v85 unionSet:includedIdentifiers];
 
-      v91 = [*(a1 + 104) storeRecord];
-      LOBYTE(v88) = [v91 isChild];
+      storeRecord16 = [*(error + 104) storeRecord];
+      LOBYTE(storeRecord15) = [storeRecord16 isChild];
 
-      if ((v88 & 1) == 0)
+      if ((storeRecord15 & 1) == 0)
       {
         v212 = 0u;
         v213 = 0u;
         v210 = 0u;
         v211 = 0u;
-        v92 = [a1 configuration];
-        v93 = [v92 computedState];
-        v94 = [v93 targets];
+        configuration3 = [error configuration];
+        computedState3 = [configuration3 computedState];
+        targets2 = [computedState3 targets];
 
-        v95 = [v94 countByEnumeratingWithState:&v210 objects:v218 count:16];
+        v95 = [targets2 countByEnumeratingWithState:&v210 objects:v218 count:16];
         if (v95)
         {
           v96 = *v211;
@@ -528,7 +528,7 @@ LABEL_59:
             {
               if (*v211 != v96)
               {
-                objc_enumerationMutation(v94);
+                objc_enumerationMutation(targets2);
               }
 
               v98 = *(*(&v210 + 1) + 8 * k);
@@ -544,18 +544,18 @@ LABEL_59:
 
               if (([v98 options] & 2) != 0 || !v99)
               {
-                v101 = [v98 storeRecord];
-                v102 = [v101 sequenceRecord];
+                storeRecord17 = [v98 storeRecord];
+                sequenceRecord3 = [storeRecord17 sequenceRecord];
 
-                if (v102)
+                if (sequenceRecord3)
                 {
-                  v103 = [v102 includedIdentifiers];
-                  [v85 unionSet:v103];
+                  includedIdentifiers2 = [sequenceRecord3 includedIdentifiers];
+                  [v85 unionSet:includedIdentifiers2];
                 }
               }
             }
 
-            v95 = [v94 countByEnumeratingWithState:&v210 objects:v218 count:16];
+            v95 = [targets2 countByEnumeratingWithState:&v210 objects:v218 count:16];
           }
 
           while (v95);
@@ -565,11 +565,11 @@ LABEL_59:
         v209 = 0u;
         v206 = 0u;
         v207 = 0u;
-        v104 = [a1 configuration];
-        v105 = [v104 computedState];
-        v106 = [v105 targets];
+        configuration4 = [error configuration];
+        computedState4 = [configuration4 computedState];
+        targets3 = [computedState4 targets];
 
-        v107 = [v106 countByEnumeratingWithState:&v206 objects:buf count:16];
+        v107 = [targets3 countByEnumeratingWithState:&v206 objects:buf count:16];
         if (v107)
         {
           v108 = *v207;
@@ -579,24 +579,24 @@ LABEL_59:
             {
               if (*v207 != v108)
               {
-                objc_enumerationMutation(v106);
+                objc_enumerationMutation(targets3);
               }
 
               v110 = *(*(&v206 + 1) + 8 * m);
               if ([v110 purpose] == 1 && (objc_msgSend(v110, "options") & 2) == 0)
               {
-                v111 = [v110 storeRecord];
-                v112 = [v111 sequenceRecord];
+                storeRecord18 = [v110 storeRecord];
+                sequenceRecord4 = [storeRecord18 sequenceRecord];
 
-                if (v112)
+                if (sequenceRecord4)
                 {
-                  v113 = [v112 includedIdentifiers];
-                  [v85 minusSet:v113];
+                  includedIdentifiers3 = [sequenceRecord4 includedIdentifiers];
+                  [v85 minusSet:includedIdentifiers3];
                 }
               }
             }
 
-            v107 = [v106 countByEnumeratingWithState:&v206 objects:buf count:16];
+            v107 = [targets3 countByEnumeratingWithState:&v206 objects:buf count:16];
           }
 
           while (v107);
@@ -605,18 +605,18 @@ LABEL_59:
 
       v203 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v195 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v114 = [a1 configuration];
-      v115 = [v114 context];
-      v116 = [v115 options];
+      configuration5 = [error configuration];
+      context = [configuration5 context];
+      options = [context options];
 
-      if ((v116 & 0x100) != 0)
+      if ((options & 0x100) != 0)
       {
-        v117 = [*(a1 + 104) storeRecord];
-        v118 = [v117 tombstoneSequenceRecord];
+        storeRecord19 = [*(error + 104) storeRecord];
+        tombstoneSequenceRecord = [storeRecord19 tombstoneSequenceRecord];
 
-        if (v118)
+        if (tombstoneSequenceRecord)
         {
-          v119 = [(HDCloudSyncPushStoreOperation *)a1 _operationForExistingSequenceRecord:v118 includedChildSyncIdentites:v198];
+          v119 = [(HDCloudSyncPushStoreOperation *)error _operationForExistingSequenceRecord:tombstoneSequenceRecord includedChildSyncIdentites:v198];
           [v203 addObject:v119];
         }
 
@@ -627,26 +627,26 @@ LABEL_59:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             *v218 = 138543362;
-            *&v218[4] = a1;
+            *&v218[4] = error;
             _os_log_impl(&dword_228986000, v120, OS_LOG_TYPE_DEFAULT, "%{public}@: Sync options require separate tombstones but no tombstone sequence record exists. Creating it now.", v218, 0xCu);
           }
 
-          v121 = [*(a1 + 104) storeRecord];
-          v118 = [v121 addNewTombstoneSequenceHeaderRecordWithIncludedIdentifiers:v85 includedSyncIdentities:obj includedChildSyncIdentities:v198];
+          storeRecord20 = [*(error + 104) storeRecord];
+          tombstoneSequenceRecord = [storeRecord20 addNewTombstoneSequenceHeaderRecordWithIncludedIdentifiers:v85 includedSyncIdentities:obj includedChildSyncIdentities:v198];
 
-          v122 = [(HDCloudSyncPushStoreOperation *)a1 _operationForNewSequenceRecord:v118 replacingSequence:0 isRebaseline:0];
+          v122 = [(HDCloudSyncPushStoreOperation *)error _operationForNewSequenceRecord:tombstoneSequenceRecord replacingSequence:0 isRebaseline:0];
           [v203 addObject:v122];
         }
 
         [v195 addObject:@"tombstone"];
       }
 
-      v123 = [*(a1 + 104) storeRecord];
-      v192 = [v123 activeSequenceHeaderRecord];
+      storeRecord21 = [*(error + 104) storeRecord];
+      activeSequenceHeaderRecord = [storeRecord21 activeSequenceHeaderRecord];
 
-      if (v192)
+      if (activeSequenceHeaderRecord)
       {
-        v124 = [(HDCloudSyncPushStoreOperation *)a1 _operationForExistingSequenceRecord:v192 includedChildSyncIdentites:v198];
+        v124 = [(HDCloudSyncPushStoreOperation *)error _operationForExistingSequenceRecord:activeSequenceHeaderRecord includedChildSyncIdentites:v198];
         [v203 addObject:v124];
 
         [v195 addObject:@"active"];
@@ -655,58 +655,58 @@ LABEL_59:
       v197 = v85;
       v193 = obj;
       v194 = v198;
-      v125 = [*(a1 + 104) storeRecord];
-      v126 = [v125 activeSequenceHeaderRecord];
+      storeRecord22 = [*(error + 104) storeRecord];
+      activeSequenceHeaderRecord2 = [storeRecord22 activeSequenceHeaderRecord];
 
-      v127 = [*(a1 + 104) storeRecord];
-      v128 = [v127 pendingSequenceHeaderRecord];
+      storeRecord23 = [*(error + 104) storeRecord];
+      pendingSequenceHeaderRecord = [storeRecord23 pendingSequenceHeaderRecord];
 
-      v129 = [*(a1 + 104) storeRecord];
-      v130 = [v129 currentSequenceHeaderRecord];
+      storeRecord24 = [*(error + 104) storeRecord];
+      currentSequenceHeaderRecord4 = [storeRecord24 currentSequenceHeaderRecord];
 
-      if (!(v126 | v128))
+      if (!(activeSequenceHeaderRecord2 | pendingSequenceHeaderRecord))
       {
         _HKInitializeLogging();
         v131 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *v218 = 138543362;
-          *&v218[4] = a1;
+          *&v218[4] = error;
           _os_log_impl(&dword_228986000, v131, OS_LOG_TYPE_DEFAULT, "%{public}@: No current or active sequence; creating a new one and syncing.", v218, 0xCu);
         }
 
-        v132 = [*(a1 + 104) storeRecord];
+        storeRecord25 = [*(error + 104) storeRecord];
         v133 = objc_alloc_init(HDSyncAnchorMap);
-        v134 = [v132 addNewSequenceHeaderRecordWithSyncAnchorMap:v133 includedIdentifiers:v197 includedSyncIdentities:v193 includedChildSyncIdentities:v194];
+        v134 = [storeRecord25 addNewSequenceHeaderRecordWithSyncAnchorMap:v133 includedIdentifiers:v197 includedSyncIdentities:v193 includedChildSyncIdentities:v194];
 
-        v190 = [(HDCloudSyncPushStoreOperation *)a1 _operationForNewSequenceRecord:v134 replacingSequence:0 isRebaseline:1];
+        v190 = [(HDCloudSyncPushStoreOperation *)error _operationForNewSequenceRecord:v134 replacingSequence:0 isRebaseline:1];
 
         goto LABEL_130;
       }
 
-      v135 = [a1 configuration];
-      if ([v135 rebaseProhibited])
+      configuration6 = [error configuration];
+      if ([configuration6 rebaseProhibited])
       {
 
-        v136 = a1;
+        errorCopy4 = error;
 LABEL_119:
-        if (v128)
+        if (pendingSequenceHeaderRecord)
         {
-          *(v136 + 128) = 9;
+          *(errorCopy4 + 128) = 9;
           _HKInitializeLogging();
           v150 = *MEMORY[0x277CCC328];
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
           {
             *v218 = 138543362;
-            *&v218[4] = a1;
+            *&v218[4] = error;
             _os_log_impl(&dword_228986000, v150, OS_LOG_TYPE_DEFAULT, "%{public}@: Pushing to existing incomplete sequence.", v218, 0xCu);
           }
 
-          v151 = [a1 configuration];
-          v152 = [v151 computedState];
-          [v152 setCountOfRebaselineOperations:{objc_msgSend(v152, "countOfRebaselineOperations") + 1}];
+          configuration7 = [error configuration];
+          computedState5 = [configuration7 computedState];
+          [computedState5 setCountOfRebaselineOperations:{objc_msgSend(computedState5, "countOfRebaselineOperations") + 1}];
 
-          v190 = [(HDCloudSyncPushStoreOperation *)a1 _operationForExistingSequenceRecord:v128 includedChildSyncIdentites:v194];
+          v190 = [(HDCloudSyncPushStoreOperation *)error _operationForExistingSequenceRecord:pendingSequenceHeaderRecord includedChildSyncIdentites:v194];
         }
 
         else
@@ -717,45 +717,45 @@ LABEL_119:
 
       else
       {
-        v137 = [*(a1 + 104) store];
-        v138 = [v137 supportsRebase];
+        store2 = [*(error + 104) store];
+        supportsRebase = [store2 supportsRebase];
 
-        v136 = a1;
-        if (!v138)
+        errorCopy4 = error;
+        if (!supportsRebase)
         {
           goto LABEL_119;
         }
 
-        v139 = [a1 configuration];
-        v140 = [v139 context];
-        v141 = [v140 options];
+        configuration8 = [error configuration];
+        context2 = [configuration8 context];
+        options2 = [context2 options];
 
-        v142 = [*(a1 + 104) options];
-        v143 = [v130 includedIdentifiers];
-        v144 = [v143 isEqualToSet:v197];
+        options3 = [*(error + 104) options];
+        includedIdentifiers4 = [currentSequenceHeaderRecord4 includedIdentifiers];
+        v144 = [includedIdentifiers4 isEqualToSet:v197];
 
-        v145 = [v130 includedSyncIdentities];
-        v146 = [v145 isEqualToSet:v193];
+        includedSyncIdentities7 = [currentSequenceHeaderRecord4 includedSyncIdentities];
+        v146 = [includedSyncIdentities7 isEqualToSet:v193];
 
-        v147 = v142 & 1;
-        v136 = a1;
-        if ((v141 >> 3))
+        v147 = options3 & 1;
+        errorCopy4 = error;
+        if ((options2 >> 3))
         {
-          *(a1 + 128) = 8;
+          *(error + 128) = 8;
         }
 
-        if (v142)
+        if (options3)
         {
-          *(a1 + 128) = 10;
+          *(error + 128) = 10;
         }
 
         v148 = v144 ^ 1;
         if ((v144 & 1) == 0)
         {
-          *(a1 + 128) = 6;
+          *(error + 128) = 6;
         }
 
-        v149 = v141 & 8;
+        v149 = options2 & 8;
         if (v146)
         {
           if (!(((v149 | v147) != 0) | v148 & 1 | (v146 ^ 1) & 1))
@@ -766,7 +766,7 @@ LABEL_119:
 
         else
         {
-          *(a1 + 128) = 7;
+          *(error + 128) = 7;
         }
 
         _HKInitializeLogging();
@@ -774,7 +774,7 @@ LABEL_119:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
           *v218 = 138544386;
-          *&v218[4] = a1;
+          *&v218[4] = error;
           *&v218[12] = 1024;
           *&v218[14] = v149 >> 3;
           *&v218[18] = 1024;
@@ -786,24 +786,24 @@ LABEL_119:
           _os_log_impl(&dword_228986000, v153, OS_LOG_TYPE_DEFAULT, "%{public}@: Rebasing and pushing to new sequence record (requested: %{BOOL}d, target: %{BOOL}d, mismatch identities: %{BOOL}d, mismatch identifiers: %{BOOL}d).", v218, 0x24u);
         }
 
-        v154 = *(a1 + 104);
+        v154 = *(error + 104);
         v155 = v194;
         v156 = v193;
         v157 = v197;
-        v158 = [v154 storeRecord];
-        v191 = [v158 pendingSequenceHeaderRecord];
+        storeRecord26 = [v154 storeRecord];
+        pendingSequenceHeaderRecord2 = [storeRecord26 pendingSequenceHeaderRecord];
 
-        if (v191)
+        if (pendingSequenceHeaderRecord2)
         {
-          v159 = [*(a1 + 104) storeRecord];
-          v160 = [v159 clearPendingSequenceHeaderRecord];
+          storeRecord27 = [*(error + 104) storeRecord];
+          clearPendingSequenceHeaderRecord = [storeRecord27 clearPendingSequenceHeaderRecord];
         }
 
-        v161 = [*(a1 + 104) storeRecord];
+        storeRecord28 = [*(error + 104) storeRecord];
         v162 = objc_alloc_init(HDSyncAnchorMap);
-        v163 = [v161 addNewSequenceHeaderRecordWithSyncAnchorMap:v162 includedIdentifiers:v157 includedSyncIdentities:v156 includedChildSyncIdentities:v155];
+        v163 = [storeRecord28 addNewSequenceHeaderRecordWithSyncAnchorMap:v162 includedIdentifiers:v157 includedSyncIdentities:v156 includedChildSyncIdentities:v155];
 
-        v190 = [(HDCloudSyncPushStoreOperation *)a1 _operationForNewSequenceRecord:v163 replacingSequence:v128 isRebaseline:1];
+        v190 = [(HDCloudSyncPushStoreOperation *)error _operationForNewSequenceRecord:v163 replacingSequence:pendingSequenceHeaderRecord isRebaseline:1];
       }
 
 LABEL_130:
@@ -818,16 +818,16 @@ LABEL_130:
       v164 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
-        v165 = *(a1 + 104);
+        v165 = *(error + 104);
         v166 = v164;
-        v167 = [v165 store];
-        v168 = [*(a1 + 104) storeRecord];
+        store3 = [v165 store];
+        storeRecord29 = [*(error + 104) storeRecord];
         *v218 = 138543874;
-        *&v218[4] = a1;
+        *&v218[4] = error;
         *&v218[12] = 2114;
-        *&v218[14] = v167;
+        *&v218[14] = store3;
         *&v218[22] = 2114;
-        v219 = v168;
+        v219 = storeRecord29;
         _os_log_impl(&dword_228986000, v166, OS_LOG_TYPE_DEFAULT, "%{public}@: Pushing to store: %{public}@ with storeRecord: %{public}@", v218, 0x20u);
       }
 
@@ -835,20 +835,20 @@ LABEL_130:
       v169 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
-        v170 = *(a1 + 104);
+        v170 = *(error + 104);
         v171 = v169;
-        v172 = [v170 store];
+        store4 = [v170 store];
         v173 = [v195 componentsJoinedByString:{@", "}];
         v174 = [v197 count];
-        v175 = [v197 allObjects];
-        v176 = [v175 componentsJoinedByString:{@", "}];
+        allObjects = [v197 allObjects];
+        v176 = [allObjects componentsJoinedByString:{@", "}];
         v177 = [v193 count];
-        v178 = [v193 allObjects];
-        v179 = [v178 componentsJoinedByString:{@", "}];
+        allObjects2 = [v193 allObjects];
+        v179 = [allObjects2 componentsJoinedByString:{@", "}];
         *v218 = 138544898;
-        *&v218[4] = a1;
+        *&v218[4] = error;
         *&v218[12] = 2114;
-        *&v218[14] = v172;
+        *&v218[14] = store4;
         *&v218[22] = 2114;
         v219 = v173;
         *v220 = 2048;
@@ -868,17 +868,17 @@ LABEL_130:
         v180 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
         {
-          v181 = *(a1 + 104);
+          v181 = *(error + 104);
           v182 = v180;
-          v183 = [v181 store];
+          store5 = [v181 store];
           v184 = [v195 componentsJoinedByString:{@", "}];
           v185 = [v194 count];
-          v186 = [v194 allObjects];
-          v187 = [v186 componentsJoinedByString:{@", "}];
+          allObjects3 = [v194 allObjects];
+          v187 = [allObjects3 componentsJoinedByString:{@", "}];
           *v218 = 138544386;
-          *&v218[4] = a1;
+          *&v218[4] = error;
           *&v218[12] = 2114;
-          *&v218[14] = v183;
+          *&v218[14] = store5;
           *&v218[22] = 2114;
           v219 = v184;
           *v220 = 2048;
@@ -912,21 +912,21 @@ LABEL_142:
 - (void)_recordCurrentSequenceEpochs
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 target];
-    v3 = [v2 storeRecord];
+    target = [self target];
+    storeRecord = [target storeRecord];
 
-    if (v3)
+    if (storeRecord)
     {
-      v4 = [a1 target];
-      v5 = [v4 storeRecord];
-      v6 = [v5 activeSequenceHeaderRecord];
+      target2 = [self target];
+      storeRecord2 = [target2 storeRecord];
+      activeSequenceHeaderRecord = [storeRecord2 activeSequenceHeaderRecord];
 
-      v29 = v6;
-      if (v6)
+      v29 = activeSequenceHeaderRecord;
+      if (activeSequenceHeaderRecord)
       {
-        v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "baselineEpoch")}];
+        v7 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(activeSequenceHeaderRecord, "baselineEpoch")}];
       }
 
       else
@@ -934,13 +934,13 @@ LABEL_142:
         v7 = 0;
       }
 
-      v9 = [a1 target];
-      v10 = [v9 storeRecord];
-      v11 = [v10 pendingSequenceHeaderRecord];
+      target3 = [self target];
+      storeRecord3 = [target3 storeRecord];
+      pendingSequenceHeaderRecord = [storeRecord3 pendingSequenceHeaderRecord];
 
-      if (v11)
+      if (pendingSequenceHeaderRecord)
       {
-        v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v11, "baselineEpoch")}];
+        v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(pendingSequenceHeaderRecord, "baselineEpoch")}];
       }
 
       else
@@ -948,14 +948,14 @@ LABEL_142:
         v12 = 0;
       }
 
-      v13 = [a1 target];
-      v14 = [v13 storeRecord];
-      v15 = [v14 tombstoneSequenceRecord];
+      target4 = [self target];
+      storeRecord4 = [target4 storeRecord];
+      tombstoneSequenceRecord = [storeRecord4 tombstoneSequenceRecord];
 
-      v27 = v11;
-      if (v15)
+      v27 = pendingSequenceHeaderRecord;
+      if (tombstoneSequenceRecord)
       {
-        v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v15, "baselineEpoch")}];
+        v16 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(tombstoneSequenceRecord, "baselineEpoch")}];
       }
 
       else
@@ -966,12 +966,12 @@ LABEL_142:
       v28 = v7;
       v26 = v12;
       v17 = [[HDCloudSyncCachedStoreEpochs alloc] initWithActiveEpoch:v7 pendingEpoch:v12 tombstoneEpoch:v16];
-      v18 = [a1 target];
-      v19 = [v18 storeRecord];
-      v20 = [v19 storeIdentifier];
-      v21 = [a1 profile];
+      target5 = [self target];
+      storeRecord5 = [target5 storeRecord];
+      storeIdentifier = [storeRecord5 storeIdentifier];
+      profile = [self profile];
       v30 = 0;
-      v22 = [HDCloudSyncStoreEntity cacheEpochs:v17 storeIdentifier:v20 profile:v21 error:&v30];
+      v22 = [HDCloudSyncStoreEntity cacheEpochs:v17 storeIdentifier:storeIdentifier profile:profile error:&v30];
       v23 = v30;
 
       if (!v22)
@@ -981,7 +981,7 @@ LABEL_142:
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v32 = a1;
+          selfCopy2 = self;
           v33 = 2114;
           v34 = v23;
           _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Failed to cache sequence epochs with error: %{public}@", buf, 0x16u);
@@ -996,7 +996,7 @@ LABEL_142:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v32 = a1;
+        selfCopy2 = self;
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to cache sequence epochs because store record is not set.", buf, 0xCu);
       }
     }
@@ -1014,19 +1014,19 @@ void __37__HDCloudSyncPushStoreOperation_main__block_invoke(uint64_t a1, uint64_
   [*(a1 + 32) finishWithSuccess:0 error:v5];
 }
 
-- (void)_recordExcludedSyncIdentitiesFromPushSequenceOperations:(void *)a1
+- (void)_recordExcludedSyncIdentitiesFromPushSequenceOperations:(void *)operations
 {
   v39 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (!a1)
+  if (!operations)
   {
     goto LABEL_34;
   }
 
-  v5 = [a1 target];
-  v6 = [v5 store];
+  target = [operations target];
+  store = [target store];
 
-  if (v6)
+  if (store)
   {
     v32 = 0u;
     v33 = 0u;
@@ -1053,12 +1053,12 @@ void __37__HDCloudSyncPushStoreOperation_main__block_invoke(uint64_t a1, uint64_
           if (objc_opt_isKindOfClass())
           {
             v13 = v12;
-            v14 = [v13 excludedSyncIdentities];
-            v15 = v14;
+            excludedSyncIdentities = [v13 excludedSyncIdentities];
+            v15 = excludedSyncIdentities;
             if (v9)
             {
-              v16 = v14;
-              if (!v14)
+              v16 = excludedSyncIdentities;
+              if (!excludedSyncIdentities)
               {
                 v2 = [MEMORY[0x277CBEB98] set];
                 v16 = v2;
@@ -1073,9 +1073,9 @@ void __37__HDCloudSyncPushStoreOperation_main__block_invoke(uint64_t a1, uint64_
 
             else
             {
-              if (v14)
+              if (excludedSyncIdentities)
               {
-                v18 = v14;
+                v18 = excludedSyncIdentities;
               }
 
               else
@@ -1117,12 +1117,12 @@ void __37__HDCloudSyncPushStoreOperation_main__block_invoke(uint64_t a1, uint64_
     }
 
 LABEL_30:
-    v20 = [a1 target];
-    v21 = [v20 store];
-    v22 = [v21 storeIdentifier];
-    v23 = [a1 profile];
+    target2 = [operations target];
+    store2 = [target2 store];
+    storeIdentifier = [store2 storeIdentifier];
+    profile = [operations profile];
     v29 = 0;
-    v24 = [HDCloudSyncStoreEntity cacheExcludedSyncIdentities:v8 storeIdentifier:v22 profile:v23 error:&v29];
+    v24 = [HDCloudSyncStoreEntity cacheExcludedSyncIdentities:v8 storeIdentifier:storeIdentifier profile:profile error:&v29];
     v25 = v29;
 
     if (!v24)
@@ -1132,7 +1132,7 @@ LABEL_30:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v35 = a1;
+        operationsCopy2 = operations;
         v36 = 2114;
         v37 = v25;
         _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "%{public}@: Failed to cache excluded sync identities with error: %{public}@", buf, 0x16u);
@@ -1147,7 +1147,7 @@ LABEL_30:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v35 = a1;
+    operationsCopy2 = operations;
     _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Failed to cache excluded sync identities because store is not set.", buf, 0xCu);
   }
 
@@ -1282,47 +1282,47 @@ LABEL_4:
   return v14;
 }
 
-- (HDCloudSyncCompoundOperation)_operationForNewSequenceRecord:(void *)a3 replacingSequence:(uint64_t)a4 isRebaseline:
+- (HDCloudSyncCompoundOperation)_operationForNewSequenceRecord:(void *)record replacingSequence:(uint64_t)sequence isRebaseline:
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = [a1 configuration];
-  v10 = [v9 computedState];
-  [v10 setCountOfRebaselineOperations:{objc_msgSend(v10, "countOfRebaselineOperations") + a4}];
+  recordCopy = record;
+  configuration = [self configuration];
+  computedState = [configuration computedState];
+  [computedState setCountOfRebaselineOperations:{objc_msgSend(computedState, "countOfRebaselineOperations") + sequence}];
 
   v11 = [HDCloudSyncCompoundOperation alloc];
-  v12 = [a1 configuration];
-  v13 = [a1 cloudState];
-  v14 = [(HDCloudSyncCompoundOperation *)v11 initWithConfiguration:v12 cloudState:v13 name:@"Setup & Push" continueOnSubOperationError:0];
+  configuration2 = [self configuration];
+  cloudState = [self cloudState];
+  v14 = [(HDCloudSyncCompoundOperation *)v11 initWithConfiguration:configuration2 cloudState:cloudState name:@"Setup & Push" continueOnSubOperationError:0];
 
-  v15 = [v8 recordID];
-  v16 = [v7 recordID];
-  v17 = [v15 isEqual:v16];
+  recordID = [recordCopy recordID];
+  recordID2 = [v7 recordID];
+  v17 = [recordID isEqual:recordID2];
 
   if (v17)
   {
     v18 = [HDCloudSyncModifyRecordsOperation alloc];
-    v19 = [a1 configuration];
-    v20 = [a1[13] container];
-    v21 = [v8 recordID];
-    v34[0] = v21;
+    configuration3 = [self configuration];
+    container = [self[13] container];
+    recordID3 = [recordCopy recordID];
+    v34[0] = recordID3;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-    v23 = [(HDCloudSyncModifyRecordsOperation *)v18 initWithConfiguration:v19 container:v20 recordsToSave:0 recordIDsToDelete:v22];
+    v23 = [(HDCloudSyncModifyRecordsOperation *)v18 initWithConfiguration:configuration3 container:container recordsToSave:0 recordIDsToDelete:v22];
 
     [(HDCloudSyncCompoundOperation *)v14 addOperation:v23 transitionHandler:0];
-    v8 = 0;
+    recordCopy = 0;
   }
 
   v24 = [HDCloudSyncStartSequenceOperation alloc];
-  v25 = [a1 configuration];
-  v26 = [a1 cloudState];
-  v27 = [(HDCloudSyncStartSequenceOperation *)v24 initWithConfiguration:v25 cloudState:v26 target:a1[13] sequence:v7 replacingSequence:v8 shouldClearRebaselineDeadline:a4];
+  configuration4 = [self configuration];
+  cloudState2 = [self cloudState];
+  v27 = [(HDCloudSyncStartSequenceOperation *)v24 initWithConfiguration:configuration4 cloudState:cloudState2 target:self[13] sequence:v7 replacingSequence:recordCopy shouldClearRebaselineDeadline:sequence];
 
   v28 = [HDCloudSyncPushSequenceOperation alloc];
-  v29 = [a1 configuration];
-  v30 = [a1 cloudState];
-  v31 = [(HDCloudSyncPushSequenceOperation *)v28 initWithConfiguration:v29 cloudState:v30 target:a1[13] sequence:v7];
+  configuration5 = [self configuration];
+  cloudState3 = [self cloudState];
+  v31 = [(HDCloudSyncPushSequenceOperation *)v28 initWithConfiguration:configuration5 cloudState:cloudState3 target:self[13] sequence:v7];
 
   [(HDCloudSyncCompoundOperation *)v14 addOperation:v27 transitionHandler:0];
   [(HDCloudSyncCompoundOperation *)v14 addOperation:v31 transitionHandler:&__block_literal_global_98];
@@ -1339,13 +1339,13 @@ void __95__HDCloudSyncPushStoreOperation__operationForNewSequenceRecord_replacin
   [v4 setSequenceState:v5];
 }
 
-- (HDCloudSyncPushSequenceOperation)_operationForExistingSequenceRecord:(void *)a3 includedChildSyncIdentites:
+- (HDCloudSyncPushSequenceOperation)_operationForExistingSequenceRecord:(void *)record includedChildSyncIdentites:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = [v5 includedChildSyncIdentities];
-  v8 = [v7 isEqualToSet:v6];
+  recordCopy = record;
+  includedChildSyncIdentities = [v5 includedChildSyncIdentities];
+  v8 = [includedChildSyncIdentities isEqualToSet:recordCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -1354,22 +1354,22 @@ void __95__HDCloudSyncPushStoreOperation__operationForNewSequenceRecord_replacin
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v6 allObjects];
-      v12 = [v11 componentsJoinedByString:{@", "}];
+      allObjects = [recordCopy allObjects];
+      v12 = [allObjects componentsJoinedByString:{@", "}];
       v19 = 138543618;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2114;
       v22 = v12;
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Updating sequence record to include child sync identities: %{public}@.", &v19, 0x16u);
     }
 
-    [v5 setIncludedChildSyncIdentities:v6];
+    [v5 setIncludedChildSyncIdentities:recordCopy];
   }
 
   v13 = [HDCloudSyncPushSequenceOperation alloc];
-  v14 = [a1 configuration];
-  v15 = [a1 cloudState];
-  v16 = [(HDCloudSyncPushSequenceOperation *)v13 initWithConfiguration:v14 cloudState:v15 target:a1[13] sequence:v5];
+  configuration = [self configuration];
+  cloudState = [self cloudState];
+  v16 = [(HDCloudSyncPushSequenceOperation *)v13 initWithConfiguration:configuration cloudState:cloudState target:self[13] sequence:v5];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -1391,21 +1391,21 @@ uint64_t __69__HDCloudSyncPushStoreOperation__sequencePushesDidFinishSuccessfull
   v11[1] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = HDCloudSyncPushStoreOperation;
-  v3 = [(HDCloudSyncOperation *)&v9 analyticsDictionary];
+  analyticsDictionary = [(HDCloudSyncOperation *)&v9 analyticsDictionary];
   if (self->_rebaseReason != -1)
   {
     v10 = @"rebaseReason";
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     v11[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v6 = [v5 hk_dictionaryByAddingEntriesFromDictionary:v3];
+    v6 = [v5 hk_dictionaryByAddingEntriesFromDictionary:analyticsDictionary];
 
-    v3 = v6;
+    analyticsDictionary = v6;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return analyticsDictionary;
 }
 
 @end

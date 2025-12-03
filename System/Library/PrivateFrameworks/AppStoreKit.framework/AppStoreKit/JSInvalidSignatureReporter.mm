@@ -1,10 +1,10 @@
 @interface JSInvalidSignatureReporter
-- (void)signatureVerificationFailed:(id)a3;
+- (void)signatureVerificationFailed:(id)failed;
 @end
 
 @implementation JSInvalidSignatureReporter
 
-- (void)signatureVerificationFailed:(id)a3
+- (void)signatureVerificationFailed:(id)failed
 {
   v3 = sub_1E1AEF55C();
   v4 = *(v3 - 8);

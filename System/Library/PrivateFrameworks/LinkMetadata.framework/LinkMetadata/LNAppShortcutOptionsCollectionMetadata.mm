@@ -1,21 +1,21 @@
 @interface LNAppShortcutOptionsCollectionMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNAppShortcutOptionsCollectionMetadata)initWithCoder:(id)a3;
-- (LNAppShortcutOptionsCollectionMetadata)initWithTitle:(id)a3 systemImageName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNAppShortcutOptionsCollectionMetadata)initWithCoder:(id)coder;
+- (LNAppShortcutOptionsCollectionMetadata)initWithTitle:(id)title systemImageName:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAppShortcutOptionsCollectionMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNAppShortcutOptionsCollectionMetadata *)self title];
-    v8 = [(LNAppShortcutOptionsCollectionMetadata *)v6 title];
-    v9 = v7;
-    v10 = v8;
+    title = [(LNAppShortcutOptionsCollectionMetadata *)self title];
+    title2 = [(LNAppShortcutOptionsCollectionMetadata *)v6 title];
+    v9 = title;
+    v10 = title2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
-    v16 = [(LNAppShortcutOptionsCollectionMetadata *)v6 systemImageName];
-    v14 = v15;
-    v17 = v16;
+    systemImageName = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
+    systemImageName2 = [(LNAppShortcutOptionsCollectionMetadata *)v6 systemImageName];
+    v14 = systemImageName;
+    v17 = systemImageName2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -84,10 +84,10 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAppShortcutOptionsCollectionMetadata *)self title];
-  v4 = [v3 hash];
-  v5 = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
-  v6 = [v5 hash];
+  title = [(LNAppShortcutOptionsCollectionMetadata *)self title];
+  v4 = [title hash];
+  systemImageName = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
+  v6 = [systemImageName hash];
 
   return v6 ^ v4;
 }
@@ -97,51 +97,51 @@ LABEL_21:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAppShortcutOptionsCollectionMetadata *)self title];
-  v7 = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
-  v8 = [v3 stringWithFormat:@"<%@: %p, title: %@, systemImageName: %@>", v5, self, v6, v7];
+  title = [(LNAppShortcutOptionsCollectionMetadata *)self title];
+  systemImageName = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
+  v8 = [v3 stringWithFormat:@"<%@: %p, title: %@, systemImageName: %@>", v5, self, title, systemImageName];
 
   return v8;
 }
 
-- (LNAppShortcutOptionsCollectionMetadata)initWithCoder:(id)a3
+- (LNAppShortcutOptionsCollectionMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
 
   if (v5)
   {
     self = [(LNAppShortcutOptionsCollectionMetadata *)self initWithTitle:v5 systemImageName:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAppShortcutOptionsCollectionMetadata *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(LNAppShortcutOptionsCollectionMetadata *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
-  [v4 encodeObject:v6 forKey:@"systemImageName"];
+  systemImageName = [(LNAppShortcutOptionsCollectionMetadata *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 }
 
-- (LNAppShortcutOptionsCollectionMetadata)initWithTitle:(id)a3 systemImageName:(id)a4
+- (LNAppShortcutOptionsCollectionMetadata)initWithTitle:(id)title systemImageName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  titleCopy = title;
+  nameCopy = name;
+  if (!titleCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"LNAppShortcutOptionsCollectionMetadata.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppShortcutOptionsCollectionMetadata.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"title"}];
   }
 
   v17.receiver = self;
@@ -149,11 +149,11 @@ LABEL_21:
   v9 = [(LNAppShortcutOptionsCollectionMetadata *)&v17 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     systemImageName = v9->_systemImageName;
     v9->_systemImageName = v12;
 

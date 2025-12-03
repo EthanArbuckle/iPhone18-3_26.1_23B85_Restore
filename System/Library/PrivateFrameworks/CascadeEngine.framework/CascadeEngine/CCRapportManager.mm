@@ -1,48 +1,48 @@
 @interface CCRapportManager
-- (BOOL)activateFileTransferSessions:(id *)a3;
-- (CCRapportManager)initWithQueue:(id)a3 forSharedUse:(BOOL)a4;
+- (BOOL)activateFileTransferSessions:(id *)sessions;
+- (CCRapportManager)initWithQueue:(id)queue forSharedUse:(BOOL)use;
 - (CCRapportManagerDelegate)delegate;
-- (id)deviceWithIdentifier:(id)a3;
+- (id)deviceWithIdentifier:(id)identifier;
 - (id)discoveredDevices;
-- (id)fileTransferSessionCacheKeyWithServerDevice:(id)a3 clientTargetDeviceID:(id)a4;
-- (id)fulfillFileTransferSessionFromClientDevice:(id)a3 withTargetDeviceID:(id)a4 peerPublicKey:(id)a5 error:(id *)a6;
-- (id)initiateFileTransferSessionWithServerDevice:(id)a3 error:(id *)a4;
+- (id)fileTransferSessionCacheKeyWithServerDevice:(id)device clientTargetDeviceID:(id)d;
+- (id)fulfillFileTransferSessionFromClientDevice:(id)device withTargetDeviceID:(id)d peerPublicKey:(id)key error:(id *)error;
+- (id)initiateFileTransferSessionWithServerDevice:(id)device error:(id *)error;
 - (id)localDevice;
-- (unint64_t)discoveryControlFlagsForDevicePlatform:(int64_t)a3;
-- (void)activateDirectLinkToDevice:(id)a3 completionHandler:(id)a4;
-- (void)activateDiscoveryClientWithCompletion:(id)a3;
-- (void)activateDiscoveryLinkWithCompletion:(id)a3;
+- (unint64_t)discoveryControlFlagsForDevicePlatform:(int64_t)platform;
+- (void)activateDirectLinkToDevice:(id)device completionHandler:(id)handler;
+- (void)activateDiscoveryClientWithCompletion:(id)completion;
+- (void)activateDiscoveryLinkWithCompletion:(id)completion;
 - (void)closeAllFileTransferSessions;
-- (void)closeFileTransferSessionWithDeviceIdentifier:(id)a3;
+- (void)closeFileTransferSessionWithDeviceIdentifier:(id)identifier;
 - (void)createDiscoveryClientIfNotExists;
-- (void)createDiscoveryClientWithControlFlags:(unint64_t)a3;
+- (void)createDiscoveryClientWithControlFlags:(unint64_t)flags;
 - (void)createSharedDiscoveryClientIfNotExists;
 - (void)deleteDanglingFilesFromFileTransferDirectory;
-- (void)deleteMergeableDeltaFileURL:(id)a3;
-- (void)device:(id)a3 didChange:(unsigned int)a4;
-- (void)didDiscoverDevice:(id)a3;
-- (void)didLoseDevice:(id)a3;
-- (void)finishedSendingRequestsToDevice:(id)a3;
-- (void)handleActivationForDevice:(id)a3 error:(id)a4;
-- (void)handleDiscoveryClientActivationOrError:(id)a3;
+- (void)deleteMergeableDeltaFileURL:(id)l;
+- (void)device:(id)device didChange:(unsigned int)change;
+- (void)didDiscoverDevice:(id)device;
+- (void)didLoseDevice:(id)device;
+- (void)finishedSendingRequestsToDevice:(id)device;
+- (void)handleActivationForDevice:(id)device error:(id)error;
+- (void)handleDiscoveryClientActivationOrError:(id)error;
 - (void)handleDiscoveryClientInvalidation;
-- (void)handleInterruptionForDevice:(id)a3;
-- (void)localDeviceUpdated:(id)a3;
+- (void)handleInterruptionForDevice:(id)device;
+- (void)localDeviceUpdated:(id)updated;
 - (void)registerForSigterm;
-- (void)registerRequestID:(id)a3 requestHandler:(id)a4;
-- (void)sendEvent:(id)a3 event:(id)a4 toDevice:(id)a5 completionHandler:(id)a6;
-- (void)sendNextRequestToDevice:(id)a3;
-- (void)sendRequest:(id)a3 request:(id)a4 device:(id)a5 options:(id)a6 responseHandler:(id)a7;
-- (void)startWithCompletion:(id)a3;
+- (void)registerRequestID:(id)d requestHandler:(id)handler;
+- (void)sendEvent:(id)event event:(id)a4 toDevice:(id)device completionHandler:(id)handler;
+- (void)sendNextRequestToDevice:(id)device;
+- (void)sendRequest:(id)request request:(id)a4 device:(id)device options:(id)options responseHandler:(id)handler;
+- (void)startWithCompletion:(id)completion;
 - (void)stop;
 @end
 
 @implementation CCRapportManager
 
-- (CCRapportManager)initWithQueue:(id)a3 forSharedUse:(BOOL)a4
+- (CCRapportManager)initWithQueue:(id)queue forSharedUse:(BOOL)use
 {
-  v4 = a4;
-  v7 = a3;
+  useCopy = use;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = CCRapportManager;
   v8 = [(CCRapportManager *)&v24 init];
@@ -52,9 +52,9 @@
     devices = v8->_devices;
     v8->_devices = v9;
 
-    v11 = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
+    currentPersonaIdentifier = [MEMORY[0x1E698E9D0] currentPersonaIdentifier];
     personaIdentifier = v8->_personaIdentifier;
-    v8->_personaIdentifier = v11;
+    v8->_personaIdentifier = currentPersonaIdentifier;
 
     v13 = objc_opt_new();
     unsupportedDevices = v8->_unsupportedDevices;
@@ -64,9 +64,9 @@
     registeredRequests = v8->_registeredRequests;
     v8->_registeredRequests = v15;
 
-    objc_storeStrong(&v8->_queue, a3);
+    objc_storeStrong(&v8->_queue, queue);
     v8->_sharedUse = 0;
-    if (v4)
+    if (useCopy)
     {
       if (os_variant_allows_internal_security_policies())
       {
@@ -139,19 +139,19 @@ uint64_t __38__CCRapportManager_registerForSigterm__block_invoke(uint64_t a1)
   [(CCRapportManager *)self createDiscoveryClientWithControlFlags:v3];
 }
 
-- (unint64_t)discoveryControlFlagsForDevicePlatform:(int64_t)a3
+- (unint64_t)discoveryControlFlagsForDevicePlatform:(int64_t)platform
 {
-  if (a3 <= 2)
+  if (platform <= 2)
   {
-    if (a3)
+    if (platform)
     {
       v7 = 0x2000000000824;
-      if (a3 != 2)
+      if (platform != 2)
       {
         v7 = 0;
       }
 
-      if (a3 == 1)
+      if (platform == 1)
       {
         return 0x2000000000804;
       }
@@ -179,22 +179,22 @@ uint64_t __38__CCRapportManager_registerForSigterm__block_invoke(uint64_t a1)
     v3 = 32;
     v4 = 4196356;
     v5 = 6;
-    if (a3 != 8)
+    if (platform != 8)
     {
       v5 = 0;
     }
 
-    if (a3 != 7)
+    if (platform != 7)
     {
       v4 = v5;
     }
 
-    if (a3 != 6)
+    if (platform != 6)
     {
       v3 = v4;
     }
 
-    if (a3 >= 6)
+    if (platform >= 6)
     {
       return v3;
     }
@@ -216,7 +216,7 @@ uint64_t __38__CCRapportManager_registerForSigterm__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createDiscoveryClientWithControlFlags:(unint64_t)a3
+- (void)createDiscoveryClientWithControlFlags:(unint64_t)flags
 {
   dispatch_assert_queue_V2(self->_queue);
   if (self->_discoveryClient)
@@ -235,7 +235,7 @@ uint64_t __38__CCRapportManager_registerForSigterm__block_invoke(uint64_t a1)
     self->_discoveryClient = v6;
 
     [(RPCompanionLinkClient *)self->_discoveryClient setDispatchQueue:self->_queue];
-    [(RPCompanionLinkClient *)self->_discoveryClient setControlFlags:a3];
+    [(RPCompanionLinkClient *)self->_discoveryClient setControlFlags:flags];
     [(RPCompanionLinkClient *)self->_discoveryClient setServiceType:@"com.apple.biomesyncd.cascade.rapport"];
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x1E69E9820];
@@ -311,10 +311,10 @@ void __58__CCRapportManager_createDiscoveryClientWithControlFlags___block_invoke
   [WeakRetained localDeviceUpdated:v3];
 }
 
-- (void)activateDiscoveryLinkWithCompletion:(id)a3
+- (void)activateDiscoveryLinkWithCompletion:(id)completion
 {
   sharedUse = self->_sharedUse;
-  v5 = a3;
+  completionCopy = completion;
   if (sharedUse)
   {
     [(CCRapportManager *)self createSharedDiscoveryClientIfNotExists];
@@ -325,13 +325,13 @@ void __58__CCRapportManager_createDiscoveryClientWithControlFlags___block_invoke
     [(CCRapportManager *)self createDiscoveryClientIfNotExists];
   }
 
-  [(CCRapportManager *)self activateDiscoveryClientWithCompletion:v5];
+  [(CCRapportManager *)self activateDiscoveryClientWithCompletion:completionCopy];
 }
 
-- (void)activateDiscoveryClientWithCompletion:(id)a3
+- (void)activateDiscoveryClientWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   discoveryClientState = self->_discoveryClientState;
   if (discoveryClientState == 1)
@@ -342,10 +342,10 @@ void __58__CCRapportManager_createDiscoveryClientWithControlFlags___block_invoke
       [CCRapportManager activateDiscoveryClientWithCompletion:?];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v8 = CCRapportSyncError(2);
-      v4[2](v4, v8);
+      completionCopy[2](completionCopy, v8);
     }
   }
 
@@ -357,9 +357,9 @@ void __58__CCRapportManager_createDiscoveryClientWithControlFlags___block_invoke
       [CCRapportManager activateDiscoveryClientWithCompletion:?];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -390,7 +390,7 @@ void __58__CCRapportManager_createDiscoveryClientWithControlFlags___block_invoke
       v17[2] = __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke;
       v17[3] = &unk_1E85C2830;
       objc_copyWeak(&v19, buf);
-      v18 = v4;
+      v18 = completionCopy;
       [(RPCompanionLinkClient *)v14 activateWithCompletion:v17];
 
       objc_destroyWeak(&v19);
@@ -405,9 +405,9 @@ void __58__CCRapportManager_createDiscoveryClientWithControlFlags___block_invoke
         [CCRapportManager activateDiscoveryClientWithCompletion:];
       }
 
-      if (v4)
+      if (completionCopy)
       {
-        v4[2](v4, v10);
+        completionCopy[2](completionCopy, v10);
       }
     }
   }
@@ -438,17 +438,17 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
   }
 }
 
-- (void)handleDiscoveryClientActivationOrError:(id)a3
+- (void)handleDiscoveryClientActivationOrError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  activeDevices = [(RPCompanionLinkClient *)self->_discoveryClient activeDevices];
+  v6 = [activeDevices countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -460,14 +460,14 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeDevices);
         }
 
         [(CCRapportManager *)self didDiscoverDevice:*(*(&v15 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v7 = [activeDevices countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v7);
@@ -475,7 +475,7 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
 
   v10 = __biome_log_for_category();
   v11 = v10;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -512,11 +512,11 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerRequestID:(id)a3 requestHandler:(id)a4
+- (void)registerRequestID:(id)d requestHandler:(id)handler
 {
   queue = self->_queue;
-  v7 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
   if (self->_sharedUse)
   {
@@ -528,19 +528,19 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
     [(CCRapportManager *)self createDiscoveryClientIfNotExists];
   }
 
-  v8 = [v7 copy];
+  v8 = [handlerCopy copy];
   v9 = MEMORY[0x1DA74EA40]();
-  [(NSMutableDictionary *)self->_registeredRequests setObject:v9 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)self->_registeredRequests setObject:v9 forKeyedSubscript:dCopy];
 
-  [(RPCompanionLinkClient *)self->_discoveryClient registerRequestID:v10 options:0 handler:v7];
+  [(RPCompanionLinkClient *)self->_discoveryClient registerRequestID:dCopy options:0 handler:handlerCopy];
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
   queue = self->_queue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(queue);
-  [(CCRapportManager *)self activateDiscoveryLinkWithCompletion:v5];
+  [(CCRapportManager *)self activateDiscoveryLinkWithCompletion:completionCopy];
 }
 
 - (id)discoveredDevices
@@ -555,23 +555,23 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = [CCRapportDevice alloc];
-  v4 = [(RPCompanionLinkClient *)self->_discoveryClient localDevice];
-  v5 = [(CCRapportDevice *)v3 initWithRPCompanionLinkDevice:v4];
+  localDevice = [(RPCompanionLinkClient *)self->_discoveryClient localDevice];
+  v5 = [(CCRapportDevice *)v3 initWithRPCompanionLinkDevice:localDevice];
 
   return v5;
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CCRapportManager *)self localDevice];
-  v6 = [v5 rapportIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  identifierCopy = identifier;
+  localDevice = [(CCRapportManager *)self localDevice];
+  rapportIdentifier = [localDevice rapportIdentifier];
+  v7 = [rapportIdentifier isEqualToString:identifierCopy];
 
   if (v7)
   {
-    v8 = [(CCRapportManager *)self localDevice];
+    localDevice2 = [(CCRapportManager *)self localDevice];
   }
 
   else
@@ -580,11 +580,11 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
-      v11 = [(NSMutableDictionary *)self->_devices allValues];
+      allValues = [(NSMutableDictionary *)self->_devices allValues];
       *buf = 138412546;
       v28 = v10;
       v29 = 2112;
-      v30 = v11;
+      v30 = allValues;
       _os_log_impl(&dword_1DA444000, v9, OS_LOG_TYPE_INFO, "%@: all known devices %@", buf, 0x16u);
     }
 
@@ -592,8 +592,8 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [(NSMutableDictionary *)self->_devices allValues];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    allValues2 = [(NSMutableDictionary *)self->_devices allValues];
+    v13 = [allValues2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -604,22 +604,22 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues2);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
-          v18 = [v17 rapportIdentifier];
-          v19 = [v18 isEqualToString:v4];
+          rapportIdentifier2 = [v17 rapportIdentifier];
+          v19 = [rapportIdentifier2 isEqualToString:identifierCopy];
 
           if (v19)
           {
-            v8 = v17;
+            localDevice2 = v17;
 
             goto LABEL_15;
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v14 = [allValues2 countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v14)
         {
           continue;
@@ -629,14 +629,14 @@ void __58__CCRapportManager_activateDiscoveryClientWithCompletion___block_invoke
       }
     }
 
-    v8 = 0;
+    localDevice2 = 0;
   }
 
 LABEL_15:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return localDevice2;
 }
 
 - (void)stop
@@ -655,8 +655,8 @@ LABEL_15:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [(NSMutableDictionary *)self->_devices allValues];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  allValues = [(NSMutableDictionary *)self->_devices allValues];
+  v5 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
     v7 = v5;
@@ -670,30 +670,30 @@ LABEL_15:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v26 + 1) + 8 * v9);
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v10 prefix];
+          prefix = [v10 prefix];
           *buf = v21;
-          v33 = v12;
+          v33 = prefix;
           _os_log_impl(&dword_1DA444000, v11, OS_LOG_TYPE_INFO, "%@ tearing down client", buf, 0xCu);
         }
 
-        v13 = [v10 client];
-        [v13 setInvalidationHandler:0];
+        client = [v10 client];
+        [client setInvalidationHandler:0];
 
-        v14 = [v10 client];
-        [v14 invalidate];
+        client2 = [v10 client];
+        [client2 invalidate];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
@@ -737,22 +737,22 @@ LABEL_15:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendRequest:(id)a3 request:(id)a4 device:(id)a5 options:(id)a6 responseHandler:(id)a7
+- (void)sendRequest:(id)request request:(id)a4 device:(id)device options:(id)options responseHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v47 = a3;
+  requestCopy = request;
   v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  deviceCopy = device;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v16 = __biome_log_for_category();
   v17 = v16;
-  if (v13)
+  if (deviceCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      [CCRapportManager sendRequest:v13 request:? device:? options:? responseHandler:?];
+      [CCRapportManager sendRequest:deviceCopy request:? device:? options:? responseHandler:?];
     }
 
     if (v12)
@@ -766,70 +766,70 @@ LABEL_15:
     }
 
     v17 = [v18 mutableCopy];
-    [v17 setObject:v47 forKeyedSubscript:@"~~REQUEST_ID~~"];
-    v19 = [v15 copy];
+    [v17 setObject:requestCopy forKeyedSubscript:@"~~REQUEST_ID~~"];
+    v19 = [handlerCopy copy];
     [v17 setObject:v19 forKeyedSubscript:@"~~RESPONSE_HANDLER~~"];
 
-    [v17 setObject:v14 forKeyedSubscript:@"~~OPTIONS~~"];
-    v20 = [v13 requestQueue];
-    [v20 addObject:v17];
+    [v17 setObject:optionsCopy forKeyedSubscript:@"~~OPTIONS~~"];
+    requestQueue = [deviceCopy requestQueue];
+    [requestQueue addObject:v17];
 
     v21 = __biome_log_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [CCRapportManager sendRequest:v13 request:? device:? options:? responseHandler:?];
+      [CCRapportManager sendRequest:deviceCopy request:? device:? options:? responseHandler:?];
     }
 
-    v22 = [v13 client];
-    v23 = v22 == 0;
+    client = [deviceCopy client];
+    v23 = client == 0;
 
     if (!v23)
     {
-      [(CCRapportManager *)self sendNextRequestToDevice:v13];
+      [(CCRapportManager *)self sendNextRequestToDevice:deviceCopy];
       goto LABEL_21;
     }
 
-    objc_initWeak(&location, v13);
+    objc_initWeak(&location, deviceCopy);
     objc_initWeak(&from, self);
     dispatch_assert_queue_V2(self->_queue);
     v24 = __biome_log_for_category();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v13 prefix];
-      [CCRapportManager sendRequest:v25 request:buf device:v24 options:? responseHandler:?];
+      prefix = [deviceCopy prefix];
+      [CCRapportManager sendRequest:prefix request:buf device:v24 options:? responseHandler:?];
     }
 
     v26 = objc_alloc_init(MEMORY[0x1E69C6B70]);
-    [v13 setClient:v26];
+    [deviceCopy setClient:v26];
 
-    v27 = [v13 device];
-    v28 = [v13 client];
-    [v28 setDestinationDevice:v27];
+    device = [deviceCopy device];
+    client2 = [deviceCopy client];
+    [client2 setDestinationDevice:device];
 
-    v29 = [v13 device];
-    v30 = [v29 statusFlags];
+    device2 = [deviceCopy device];
+    statusFlags = [device2 statusFlags];
 
-    v31 = [v13 device];
-    v32 = [v31 statusFlags];
+    device3 = [deviceCopy device];
+    statusFlags2 = [device3 statusFlags];
 
-    v33 = (v30 << 8) & 0x2000000000000;
-    if ((v32 & 4) == 0)
+    v33 = (statusFlags << 8) & 0x2000000000000;
+    if ((statusFlags2 & 4) == 0)
     {
-      v34 = [(CCRapportManager *)self localDevice];
-      if (-[CCRapportManager isNoAWDLDiscoverySupportedForDevicePlatform:](self, "isNoAWDLDiscoverySupportedForDevicePlatform:", [v34 platform]))
+      localDevice = [(CCRapportManager *)self localDevice];
+      if (-[CCRapportManager isNoAWDLDiscoverySupportedForDevicePlatform:](self, "isNoAWDLDiscoverySupportedForDevicePlatform:", [localDevice platform]))
       {
       }
 
       else
       {
-        v35 = -[CCRapportManager isNoAWDLDiscoverySupportedForDevicePlatform:](self, "isNoAWDLDiscoverySupportedForDevicePlatform:", [v13 platform]);
+        v35 = -[CCRapportManager isNoAWDLDiscoverySupportedForDevicePlatform:](self, "isNoAWDLDiscoverySupportedForDevicePlatform:", [deviceCopy platform]);
 
         if (!v35)
         {
-          v45 = [v13 device];
-          v46 = [v45 statusFlags];
+          device4 = [deviceCopy device];
+          statusFlags3 = [device4 statusFlags];
 
-          v36 = (v46 << 18) & 0x200000 | v33;
+          v36 = (statusFlags3 << 18) & 0x200000 | v33;
           goto LABEL_20;
         }
       }
@@ -837,15 +837,15 @@ LABEL_15:
 
     v36 = v33 | 0x400000;
 LABEL_20:
-    v37 = [v13 client];
-    [v37 setControlFlags:v36];
+    client3 = [deviceCopy client];
+    [client3 setControlFlags:v36];
 
-    v38 = [v13 client];
-    [v38 setServiceType:@"com.apple.biomesyncd.cascade.rapport"];
+    client4 = [deviceCopy client];
+    [client4 setServiceType:@"com.apple.biomesyncd.cascade.rapport"];
 
     queue = self->_queue;
-    v40 = [v13 client];
-    [v40 setDispatchQueue:queue];
+    client5 = [deviceCopy client];
+    [client5 setDispatchQueue:queue];
 
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
@@ -853,25 +853,25 @@ LABEL_20:
     v53[3] = &unk_1E85C2858;
     objc_copyWeak(&v54, &from);
     objc_copyWeak(&v55, &location);
-    v41 = [v13 client];
-    [v41 setInterruptionHandler:v53];
+    client6 = [deviceCopy client];
+    [client6 setInterruptionHandler:v53];
 
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __71__CCRapportManager_sendRequest_request_device_options_responseHandler___block_invoke_2;
     v51[3] = &unk_1E85C27B8;
     objc_copyWeak(&v52, &location);
-    v42 = [v13 client];
-    [v42 setInvalidationHandler:v51];
+    client7 = [deviceCopy client];
+    [client7 setInvalidationHandler:v51];
 
-    v43 = [v13 client];
+    client8 = [deviceCopy client];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __71__CCRapportManager_sendRequest_request_device_options_responseHandler___block_invoke_3;
     v48[3] = &unk_1E85C2880;
     objc_copyWeak(&v49, &from);
     objc_copyWeak(&v50, &location);
-    [v43 activateWithCompletion:v48];
+    [client8 activateWithCompletion:v48];
 
     objc_destroyWeak(&v50);
     objc_destroyWeak(&v49);
@@ -914,35 +914,35 @@ void __71__CCRapportManager_sendRequest_request_device_options_responseHandler__
   [WeakRetained handleActivationForDevice:v4 error:v3];
 }
 
-- (void)sendEvent:(id)a3 event:(id)a4 toDevice:(id)a5 completionHandler:(id)a6
+- (void)sendEvent:(id)event event:(id)a4 toDevice:(id)device completionHandler:(id)handler
 {
-  v10 = a3;
+  eventCopy = event;
   v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v14 = __biome_log_for_category();
   v15 = v14;
-  if (v12)
+  if (deviceCopy)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [CCRapportManager sendEvent:v12 event:? toDevice:? completionHandler:?];
+      [CCRapportManager sendEvent:deviceCopy event:? toDevice:? completionHandler:?];
     }
 
-    if ([v12 linkState])
+    if ([deviceCopy linkState])
     {
-      v16 = [v12 client];
+      client = [deviceCopy client];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __63__CCRapportManager_sendEvent_event_toDevice_completionHandler___block_invoke_2;
       v18[3] = &unk_1E85C28A8;
-      v19 = v12;
-      v20 = self;
-      v21 = v10;
+      v19 = deviceCopy;
+      selfCopy = self;
+      v21 = eventCopy;
       v22 = v11;
-      v23 = v13;
-      [v16 sendEventID:v21 event:v22 options:0 completion:v18];
+      v23 = handlerCopy;
+      [client sendEventID:v21 event:v22 options:0 completion:v18];
 
       v17 = v19;
     }
@@ -954,10 +954,10 @@ void __71__CCRapportManager_sendRequest_request_device_options_responseHandler__
       v24[2] = __63__CCRapportManager_sendEvent_event_toDevice_completionHandler___block_invoke;
       v24[3] = &unk_1E85C28A8;
       v24[4] = self;
-      v25 = v10;
+      v25 = eventCopy;
       v26 = v11;
-      v27 = v12;
-      v28 = v13;
+      v27 = deviceCopy;
+      v28 = handlerCopy;
       [(CCRapportManager *)self activateDirectLinkToDevice:v27 completionHandler:v24];
 
       v17 = v25;
@@ -991,69 +991,69 @@ void __63__CCRapportManager_sendEvent_event_toDevice_completionHandler___block_i
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)activateDirectLinkToDevice:(id)a3 completionHandler:(id)a4
+- (void)activateDirectLinkToDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v6 client];
+  client = [deviceCopy client];
 
-  if (!v8)
+  if (!client)
   {
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [CCRapportManager activateDirectLinkToDevice:v6 completionHandler:?];
+      [CCRapportManager activateDirectLinkToDevice:deviceCopy completionHandler:?];
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E69C6B70]);
-    [v6 setClient:v10];
+    [deviceCopy setClient:v10];
 
-    v11 = [v6 device];
-    v12 = [v6 client];
-    [v12 setDestinationDevice:v11];
+    device = [deviceCopy device];
+    client2 = [deviceCopy client];
+    [client2 setDestinationDevice:device];
 
-    v13 = [v6 client];
-    [v13 setServiceType:@"com.apple.biomesyncd.cascade.rapport"];
+    client3 = [deviceCopy client];
+    [client3 setServiceType:@"com.apple.biomesyncd.cascade.rapport"];
 
     queue = self->_queue;
-    v15 = [v6 client];
-    [v15 setDispatchQueue:queue];
+    client4 = [deviceCopy client];
+    [client4 setDispatchQueue:queue];
 
-    objc_initWeak(&location, v6);
+    objc_initWeak(&location, deviceCopy);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block_invoke;
     v26[3] = &unk_1E85C28D0;
     v26[4] = self;
     objc_copyWeak(&v27, &location);
-    v16 = [v6 client];
-    [v16 setInterruptionHandler:v26];
+    client5 = [deviceCopy client];
+    [client5 setInterruptionHandler:v26];
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block_invoke_2;
     v24[3] = &unk_1E85C27B8;
     objc_copyWeak(&v25, &location);
-    v17 = [v6 client];
-    [v17 setInvalidationHandler:v24];
+    client6 = [deviceCopy client];
+    [client6 setInvalidationHandler:v24];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
   }
 
-  [v6 setLinkState:1];
-  v18 = [v6 client];
+  [deviceCopy setLinkState:1];
+  client7 = [deviceCopy client];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block_invoke_3;
   v21[3] = &unk_1E85C28F8;
-  v22 = v6;
-  v23 = v7;
-  v19 = v7;
-  v20 = v6;
-  [v18 activateWithCompletion:v21];
+  v22 = deviceCopy;
+  v23 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = deviceCopy;
+  [client7 activateWithCompletion:v21];
 }
 
 void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block_invoke(uint64_t a1)
@@ -1077,33 +1077,33 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)handleActivationForDevice:(id)a3 error:(id)a4
+- (void)handleActivationForDevice:(id)device error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v8 = __biome_log_for_category();
   v9 = v8;
-  if (v6)
+  if (deviceCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 prefix];
-      v11 = v10;
+      prefix = [deviceCopy prefix];
+      v11 = prefix;
       v12 = @"failed with error, ";
-      if (!v7)
+      if (!errorCopy)
       {
         v12 = @"completed";
       }
 
       *v23 = 138412802;
-      *&v23[4] = v10;
+      *&v23[4] = prefix;
       *&v23[12] = 2112;
       *&v23[14] = v12;
-      if (v7)
+      if (errorCopy)
       {
-        v13 = v7;
+        v13 = errorCopy;
       }
 
       else
@@ -1116,40 +1116,40 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
       _os_log_impl(&dword_1DA444000, v9, OS_LOG_TYPE_DEFAULT, "%@ activation %@%@", v23, 0x20u);
     }
 
-    if (v7)
+    if (errorCopy)
     {
-      if ([(__CFString *)v7 code]== -71165)
+      if ([(__CFString *)errorCopy code]== -71165)
       {
-        v14 = [(__CFString *)v7 domain];
-        v15 = [v14 isEqualToString:*MEMORY[0x1E69C6BC8]];
+        domain = [(__CFString *)errorCopy domain];
+        v15 = [domain isEqualToString:*MEMORY[0x1E69C6BC8]];
 
         if (v15)
         {
           unsupportedDevices = self->_unsupportedDevices;
-          v17 = [v6 rapportIdentifier];
-          [(NSMutableDictionary *)unsupportedDevices setObject:v6 forKeyedSubscript:v17];
+          rapportIdentifier = [deviceCopy rapportIdentifier];
+          [(NSMutableDictionary *)unsupportedDevices setObject:deviceCopy forKeyedSubscript:rapportIdentifier];
 
           devices = self->_devices;
-          v19 = [v6 rapportIdentifier];
-          [(NSMutableDictionary *)devices setObject:0 forKeyedSubscript:v19];
+          rapportIdentifier2 = [deviceCopy rapportIdentifier];
+          [(NSMutableDictionary *)devices setObject:0 forKeyedSubscript:rapportIdentifier2];
 
           v20 = __biome_log_for_category();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v6 prefix];
+            prefix2 = [deviceCopy prefix];
             *v23 = 138412290;
-            *&v23[4] = v21;
+            *&v23[4] = prefix2;
             _os_log_impl(&dword_1DA444000, v20, OS_LOG_TYPE_DEFAULT, "%@ determined to not support service com.apple.biomesyncd.cascade.rapport", v23, 0xCu);
           }
         }
       }
 
-      [v6 invalidateClientWithError:{v7, *v23, *&v23[16]}];
+      [deviceCopy invalidateClientWithError:{errorCopy, *v23, *&v23[16]}];
     }
 
     else
     {
-      [(CCRapportManager *)self sendNextRequestToDevice:v6];
+      [(CCRapportManager *)self sendNextRequestToDevice:deviceCopy];
     }
   }
 
@@ -1164,20 +1164,20 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleInterruptionForDevice:(id)a3
+- (void)handleInterruptionForDevice:(id)device
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __biome_log_for_category();
   v6 = v5;
-  if (v4)
+  if (deviceCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 prefix];
+      prefix = [deviceCopy prefix];
       v9 = 138412290;
-      v10 = v7;
+      v10 = prefix;
       _os_log_impl(&dword_1DA444000, v6, OS_LOG_TYPE_DEFAULT, "%@ interrupted", &v9, 0xCu);
     }
   }
@@ -1190,20 +1190,20 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendNextRequestToDevice:(id)a3
+- (void)sendNextRequestToDevice:(id)device
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (deviceCopy)
   {
-    v5 = [v4 requestQueue];
-    v6 = [v5 popFirstObject];
+    requestQueue = [deviceCopy requestQueue];
+    popFirstObject = [requestQueue popFirstObject];
 
-    if (v6)
+    if (popFirstObject)
     {
-      v7 = [v6 objectForKeyedSubscript:@"~~REQUEST_ID~~"];
-      v8 = [v6 objectForKeyedSubscript:@"~~OPTIONS~~"];
+      v7 = [popFirstObject objectForKeyedSubscript:@"~~REQUEST_ID~~"];
+      v8 = [popFirstObject objectForKeyedSubscript:@"~~OPTIONS~~"];
       v9 = [v8 mutableCopy];
       v10 = v9;
       if (v9)
@@ -1218,38 +1218,38 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
 
       v12 = v11;
 
-      v13 = [v6 objectForKeyedSubscript:@"~~RESPONSE_HANDLER~~"];
+      v13 = [popFirstObject objectForKeyedSubscript:@"~~RESPONSE_HANDLER~~"];
       v14 = v13;
       if (v7 && v13)
       {
-        [v6 setObject:0 forKeyedSubscript:@"~~REQUEST_ID~~"];
-        [v6 setObject:0 forKeyedSubscript:@"~~OPTIONS~~"];
-        [v6 setObject:0 forKeyedSubscript:@"~~RESPONSE_HANDLER~~"];
+        [popFirstObject setObject:0 forKeyedSubscript:@"~~REQUEST_ID~~"];
+        [popFirstObject setObject:0 forKeyedSubscript:@"~~OPTIONS~~"];
+        [popFirstObject setObject:0 forKeyedSubscript:@"~~RESPONSE_HANDLER~~"];
         v15 = __biome_log_for_category();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(CCRapportManager *)self delegate];
-          v17 = [v4 prefix];
+          delegate = [(CCRapportManager *)self delegate];
+          prefix = [deviceCopy prefix];
           *buf = 138413314;
           v28 = v7;
           v29 = 2112;
-          v30 = v16;
+          v30 = delegate;
           v31 = 2112;
-          v32 = v17;
+          v32 = prefix;
           v33 = 2112;
-          v34 = v6;
+          v34 = popFirstObject;
           v35 = 2112;
           v36 = v12;
           _os_log_impl(&dword_1DA444000, v15, OS_LOG_TYPE_DEFAULT, "Sending requestID: %@ from %@ to %@ %@ options: %@", buf, 0x34u);
         }
 
-        objc_initWeak(buf, v4);
+        objc_initWeak(buf, deviceCopy);
         v18 = MEMORY[0x1E696AD98];
-        v19 = [v4 requestQueue];
-        v20 = [v18 numberWithInt:{objc_msgSend(v19, "count") != 0}];
+        requestQueue2 = [deviceCopy requestQueue];
+        v20 = [v18 numberWithInt:{objc_msgSend(requestQueue2, "count") != 0}];
         [v12 setObject:v20 forKeyedSubscript:*MEMORY[0x1E69C6BD8]];
 
-        v21 = [v4 client];
+        client = [deviceCopy client];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __44__CCRapportManager_sendNextRequestToDevice___block_invoke;
@@ -1257,7 +1257,7 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
         v25 = v14;
         objc_copyWeak(&v26, buf);
         v24[4] = self;
-        [v21 sendRequestID:v7 request:v6 options:v12 responseHandler:v24];
+        [client sendRequestID:v7 request:popFirstObject options:v12 responseHandler:v24];
 
         objc_destroyWeak(&v26);
         objc_destroyWeak(buf);
@@ -1268,18 +1268,18 @@ void __65__CCRapportManager_activateDirectLinkToDevice_completionHandler___block
         v22 = __biome_log_for_category();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
         {
-          [CCRapportManager sendNextRequestToDevice:v4];
+          [CCRapportManager sendNextRequestToDevice:deviceCopy];
         }
 
-        [(CCRapportManager *)self sendNextRequestToDevice:v4];
+        [(CCRapportManager *)self sendNextRequestToDevice:deviceCopy];
       }
     }
   }
 
   else
   {
-    v6 = __biome_log_for_category();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    popFirstObject = __biome_log_for_category();
+    if (os_log_type_enabled(popFirstObject, OS_LOG_TYPE_FAULT))
     {
       [CCRapportManager sendNextRequestToDevice:];
     }
@@ -1306,24 +1306,24 @@ void __44__CCRapportManager_sendNextRequestToDevice___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)finishedSendingRequestsToDevice:(id)a3
+- (void)finishedSendingRequestsToDevice:(id)device
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v5 = __biome_log_for_category();
   v6 = v5;
-  if (v4)
+  if (deviceCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 prefix];
+      prefix = [deviceCopy prefix];
       v9 = 138412290;
-      v10 = v7;
+      v10 = prefix;
       _os_log_impl(&dword_1DA444000, v6, OS_LOG_TYPE_DEFAULT, "%@ request queue empty, invalidating client", &v9, 0xCu);
     }
 
-    [v4 invalidateClientWithError:0];
+    [deviceCopy invalidateClientWithError:0];
   }
 
   else
@@ -1337,20 +1337,20 @@ void __44__CCRapportManager_sendNextRequestToDevice___block_invoke(uint64_t a1, 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)device:(id)a3 didChange:(unsigned int)a4
+- (void)device:(id)device didChange:(unsigned int)change
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   devices = self->_devices;
-  v8 = [v6 CC_companionLinkDeviceIdentifier];
-  v9 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v8];
+  cC_companionLinkDeviceIdentifier = [deviceCopy CC_companionLinkDeviceIdentifier];
+  v9 = [(NSMutableDictionary *)devices objectForKeyedSubscript:cC_companionLinkDeviceIdentifier];
 
   if (v9)
   {
     while (1)
     {
-      v10 = a4 & -a4;
+      v10 = change & -change;
       if (v10 > 31)
       {
         if (v10 <= 127)
@@ -1390,18 +1390,18 @@ void __44__CCRapportManager_sendNextRequestToDevice___block_invoke(uint64_t a1, 
                 break;
               }
 
-              v12 = [v9 prefix];
-              v17 = [v6 proximity];
-              if (v17 > 19)
+              prefix = [v9 prefix];
+              proximity = [deviceCopy proximity];
+              if (proximity > 19)
               {
-                if (v17 == 20)
+                if (proximity == 20)
                 {
                   v18 = "Near";
                 }
 
                 else
                 {
-                  if (v17 != 30)
+                  if (proximity != 30)
                   {
                     goto LABEL_52;
                   }
@@ -1410,9 +1410,9 @@ void __44__CCRapportManager_sendNextRequestToDevice___block_invoke(uint64_t a1, 
                 }
               }
 
-              else if (v17)
+              else if (proximity)
               {
-                if (v17 == 10)
+                if (proximity == 10)
                 {
                   v18 = "Immed";
                   goto LABEL_58;
@@ -1429,7 +1429,7 @@ LABEL_52:
 
 LABEL_58:
               *buf = 138412546;
-              v29 = v12;
+              v29 = prefix;
               v30 = 2080;
               v31 = v18;
               v20 = v11;
@@ -1488,11 +1488,11 @@ LABEL_42:
             v11 = __biome_log_for_category();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
             {
-              v19 = [v9 prefix];
+              prefix2 = [v9 prefix];
               *buf = 138412546;
-              v29 = v19;
+              v29 = prefix2;
               v30 = 1024;
-              LODWORD(v31) = a4 & -a4;
+              LODWORD(v31) = change & -change;
               _os_log_debug_impl(&dword_1DA444000, v11, OS_LOG_TYPE_DEBUG, "%@ got unexpected change flag: RPDeviceChangeFlags(%x)", buf, 0x12u);
             }
 
@@ -1510,17 +1510,17 @@ LABEL_42:
             goto LABEL_44;
           }
 
-          v12 = [v9 prefix];
-          v15 = [v6 proximity];
-          if (v15 > 19)
+          prefix = [v9 prefix];
+          proximity2 = [deviceCopy proximity];
+          if (proximity2 > 19)
           {
-            if (v15 == 20)
+            if (proximity2 == 20)
             {
               v16 = "Near";
               goto LABEL_55;
             }
 
-            if (v15 == 30)
+            if (proximity2 == 30)
             {
               v16 = "Far";
               goto LABEL_55;
@@ -1529,18 +1529,18 @@ LABEL_42:
 
           else
           {
-            if (!v15)
+            if (!proximity2)
             {
               v16 = "Unknown";
               goto LABEL_55;
             }
 
-            if (v15 == 10)
+            if (proximity2 == 10)
             {
               v16 = "Immed";
 LABEL_55:
               *buf = 138412546;
-              v29 = v12;
+              v29 = prefix;
               v30 = 2080;
               v31 = v16;
               v20 = v11;
@@ -1563,13 +1563,13 @@ LABEL_55:
               goto LABEL_44;
             }
 
-            v12 = [v9 prefix];
-            v13 = [v9 device];
-            v14 = [v13 name];
+            prefix = [v9 prefix];
+            device = [v9 device];
+            name = [device name];
             *buf = 138412546;
-            v29 = v12;
+            v29 = prefix;
             v30 = 2112;
-            v31 = v14;
+            v31 = name;
             _os_log_debug_impl(&dword_1DA444000, v11, OS_LOG_TYPE_DEBUG, "%@ name changed: %@", buf, 0x16u);
 
             goto LABEL_60;
@@ -1587,7 +1587,7 @@ LABEL_55:
 
 LABEL_44:
 
-      a4 ^= v10;
+      change ^= v10;
     }
   }
 
@@ -1596,22 +1596,22 @@ LABEL_61:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didDiscoverDevice:(id)a3
+- (void)didDiscoverDevice:(id)device
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 CC_companionLinkDeviceIdentifier];
+  cC_companionLinkDeviceIdentifier = [deviceCopy CC_companionLinkDeviceIdentifier];
 
-  if (v5)
+  if (cC_companionLinkDeviceIdentifier)
   {
-    v6 = [v4 model];
+    model = [deviceCopy model];
 
-    if (v6)
+    if (model)
     {
       devices = self->_devices;
-      v8 = [v4 CC_companionLinkDeviceIdentifier];
-      v9 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v8];
+      cC_companionLinkDeviceIdentifier2 = [deviceCopy CC_companionLinkDeviceIdentifier];
+      v9 = [(NSMutableDictionary *)devices objectForKeyedSubscript:cC_companionLinkDeviceIdentifier2];
       if (v9)
       {
         v10 = v9;
@@ -1620,20 +1620,20 @@ LABEL_61:
       else
       {
         unsupportedDevices = self->_unsupportedDevices;
-        v12 = [v4 CC_companionLinkDeviceIdentifier];
-        v10 = [(NSMutableDictionary *)unsupportedDevices objectForKeyedSubscript:v12];
+        cC_companionLinkDeviceIdentifier3 = [deviceCopy CC_companionLinkDeviceIdentifier];
+        v10 = [(NSMutableDictionary *)unsupportedDevices objectForKeyedSubscript:cC_companionLinkDeviceIdentifier3];
 
         if (!v10)
         {
-          v10 = [[CCRapportDevice alloc] initWithRPCompanionLinkDevice:v4];
+          v10 = [[CCRapportDevice alloc] initWithRPCompanionLinkDevice:deviceCopy];
           v15 = __biome_log_for_category();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             [CCRapportManager didDiscoverDevice:];
           }
 
-          v16 = [(CCRapportDevice *)v10 serviceTypes];
-          if (!v16 || (v17 = v16, -[CCRapportDevice serviceTypes](v10, "serviceTypes"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 containsObject:@"com.apple.biomesyncd.cascade.rapport"], v18, v17, (v19 & 1) != 0))
+          serviceTypes = [(CCRapportDevice *)v10 serviceTypes];
+          if (!serviceTypes || (v17 = serviceTypes, -[CCRapportDevice serviceTypes](v10, "serviceTypes"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 containsObject:@"com.apple.biomesyncd.cascade.rapport"], v18, v17, (v19 & 1) != 0))
           {
             v20 = MEMORY[0x1E698E9D0];
             personaIdentifier = self->_personaIdentifier;
@@ -1652,29 +1652,29 @@ LABEL_61:
           v22 = __biome_log_for_category();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [(CCRapportDevice *)v10 prefix];
+            prefix = [(CCRapportDevice *)v10 prefix];
             *buf = 138412290;
-            v28 = v23;
+            v28 = prefix;
             _os_log_impl(&dword_1DA444000, v22, OS_LOG_TYPE_DEFAULT, "%@ ignoring device not listing service from serviceTypes com.apple.biomesyncd.cascade.rapport", buf, 0xCu);
           }
 
           v24 = self->_unsupportedDevices;
-          v13 = [(CCRapportDevice *)v10 rapportIdentifier];
-          [(NSMutableDictionary *)v24 setObject:v10 forKeyedSubscript:v13];
+          rapportIdentifier = [(CCRapportDevice *)v10 rapportIdentifier];
+          [(NSMutableDictionary *)v24 setObject:v10 forKeyedSubscript:rapportIdentifier];
           goto LABEL_12;
         }
       }
 
-      v13 = __biome_log_for_category();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      rapportIdentifier = __biome_log_for_category();
+      if (os_log_type_enabled(rapportIdentifier, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
         v28 = objc_opt_class();
         v29 = 2112;
-        v30 = v4;
+        v30 = deviceCopy;
         v31 = 2112;
         v32 = v10;
-        _os_log_debug_impl(&dword_1DA444000, v13, OS_LOG_TYPE_DEBUG, "%@: already discovered device, %@ as %@", buf, 0x20u);
+        _os_log_debug_impl(&dword_1DA444000, rapportIdentifier, OS_LOG_TYPE_DEBUG, "%@: already discovered device, %@ as %@", buf, 0x20u);
       }
 
 LABEL_12:
@@ -1761,15 +1761,15 @@ void __38__CCRapportManager_didDiscoverDevice___block_invoke(uint64_t a1, void *
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didLoseDevice:(id)a3
+- (void)didLoseDevice:(id)device
 {
   queue = self->_queue;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(queue);
   devices = self->_devices;
-  v7 = [v5 CC_companionLinkDeviceIdentifier];
+  cC_companionLinkDeviceIdentifier = [deviceCopy CC_companionLinkDeviceIdentifier];
 
-  v8 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)devices objectForKeyedSubscript:cC_companionLinkDeviceIdentifier];
 
   if (v8)
   {
@@ -1780,7 +1780,7 @@ void __38__CCRapportManager_didDiscoverDevice___block_invoke(uint64_t a1, void *
     v11[2] = __34__CCRapportManager_didLoseDevice___block_invoke;
     v11[3] = &unk_1E85C2948;
     v12 = v8;
-    v13 = self;
+    selfCopy = self;
     [v9 runAsPersonaIdentifier:personaIdentifier block:v11];
   }
 }
@@ -1825,9 +1825,9 @@ void __34__CCRapportManager_didLoseDevice___block_invoke(uint64_t a1, void *a2)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)localDeviceUpdated:(id)a3
+- (void)localDeviceUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = MEMORY[0x1E698E9D0];
   personaIdentifier = self->_personaIdentifier;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1835,8 +1835,8 @@ void __34__CCRapportManager_didLoseDevice___block_invoke(uint64_t a1, void *a2)
   v8[2] = __39__CCRapportManager_localDeviceUpdated___block_invoke;
   v8[3] = &unk_1E85C2948;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = updatedCopy;
+  v7 = updatedCopy;
   [v5 runAsPersonaIdentifier:personaIdentifier block:v8];
 }
 
@@ -1860,7 +1860,7 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
   }
 }
 
-- (BOOL)activateFileTransferSessions:(id *)a3
+- (BOOL)activateFileTransferSessions:(id *)sessions
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E698E968]);
@@ -1876,13 +1876,13 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
   v11 = self->_fileTransferAccessAssertion;
   if (v11)
   {
-    v12 = [(BMAccessAssertion *)v11 path];
-    if (v12)
+    path = [(BMAccessAssertion *)v11 path];
+    if (path)
     {
-      v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12];
-      v14 = [MEMORY[0x1E696AC08] defaultManager];
+      v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v22 = 0;
-      v15 = [v14 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v22];
+      v15 = [defaultManager createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v22];
       v16 = v22;
 
       if (v15)
@@ -1920,7 +1920,7 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
 
   else
   {
-    v12 = CCRapportSyncErrorWithUnderlying(13, v9);
+    path = CCRapportSyncErrorWithUnderlying(13, v9);
     CCSetError();
     v15 = 0;
   }
@@ -1929,26 +1929,26 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
   return v15;
 }
 
-- (id)fileTransferSessionCacheKeyWithServerDevice:(id)a3 clientTargetDeviceID:(id)a4
+- (id)fileTransferSessionCacheKeyWithServerDevice:(id)device clientTargetDeviceID:(id)d
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [a3 rapportIdentifier];
-  v8 = [v5 stringWithFormat:@"%@:%@", v7, v6];
+  dCopy = d;
+  rapportIdentifier = [device rapportIdentifier];
+  dCopy = [v5 stringWithFormat:@"%@:%@", rapportIdentifier, dCopy];
 
-  return v8;
+  return dCopy;
 }
 
-- (id)initiateFileTransferSessionWithServerDevice:(id)a3 error:(id *)a4
+- (id)initiateFileTransferSessionWithServerDevice:(id)device error:(id *)error
 {
-  v5 = a3;
-  v6 = [(CCRapportManager *)self localDevice];
-  v7 = [v6 device];
-  v8 = [v7 fileTransferTargetID];
+  deviceCopy = device;
+  localDevice = [(CCRapportManager *)self localDevice];
+  device = [localDevice device];
+  fileTransferTargetID = [device fileTransferTargetID];
 
-  if (v8)
+  if (fileTransferTargetID)
   {
-    v9 = [(CCRapportManager *)self fileTransferSessionCacheKeyWithServerDevice:v5 clientTargetDeviceID:v8];
+    v9 = [(CCRapportManager *)self fileTransferSessionCacheKeyWithServerDevice:deviceCopy clientTargetDeviceID:fileTransferTargetID];
     v10 = [(NSMutableDictionary *)self->_fileTransferSessions objectForKeyedSubscript:v9];
     v11 = v10;
     if (v10)
@@ -1960,11 +1960,11 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
     {
       v17 = objc_opt_new();
       [v17 setDispatchQueue:self->_fileTransferQueue];
-      [v17 setTargetID:v8];
-      v18 = [v5 device];
-      v19 = [v18 statusFlags];
+      [v17 setTargetID:fileTransferTargetID];
+      device2 = [deviceCopy device];
+      statusFlags = [device2 statusFlags];
 
-      if ((v19 & 4) != 0)
+      if ((statusFlags & 4) != 0)
       {
         v20 = 17;
       }
@@ -1998,8 +1998,8 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
   else
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(CCRapportManager *)self localDevice];
-    v15 = [v13 stringWithFormat:@"localDevice: %@ missing fileTransferTargetID", v14];
+    localDevice2 = [(CCRapportManager *)self localDevice];
+    v15 = [v13 stringWithFormat:@"localDevice: %@ missing fileTransferTargetID", localDevice2];
     v16 = CCRapportSyncErrorWithDetails(19, 0, v15);
     CCSetError();
 
@@ -2009,13 +2009,13 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
   return v12;
 }
 
-- (id)fulfillFileTransferSessionFromClientDevice:(id)a3 withTargetDeviceID:(id)a4 peerPublicKey:(id)a5 error:(id *)a6
+- (id)fulfillFileTransferSessionFromClientDevice:(id)device withTargetDeviceID:(id)d peerPublicKey:(id)key error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(CCRapportManager *)self localDevice];
-  v13 = [(CCRapportManager *)self fileTransferSessionCacheKeyWithServerDevice:v12 clientTargetDeviceID:v10];
+  deviceCopy = device;
+  dCopy = d;
+  keyCopy = key;
+  localDevice = [(CCRapportManager *)self localDevice];
+  v13 = [(CCRapportManager *)self fileTransferSessionCacheKeyWithServerDevice:localDevice clientTargetDeviceID:dCopy];
 
   v14 = [(NSMutableDictionary *)self->_fileTransferSessions objectForKeyedSubscript:v13];
   v15 = v14;
@@ -2028,12 +2028,12 @@ void __39__CCRapportManager_localDeviceUpdated___block_invoke(uint64_t a1, void 
   {
     v17 = objc_opt_new();
     [v17 setDispatchQueue:self->_fileTransferQueue];
-    [v17 setTargetID:v10];
-    v18 = [v9 device];
-    v19 = [v18 statusFlags];
+    [v17 setTargetID:dCopy];
+    device = [deviceCopy device];
+    statusFlags = [device statusFlags];
 
-    [v17 setFlags:(4 * v19) & 0x10];
-    [v17 setPeerPublicKey:v11];
+    [v17 setFlags:(4 * statusFlags) & 0x10];
+    [v17 setPeerPublicKey:keyCopy];
     [v17 setTemporaryDirectoryURL:self->_fileTransferDirectory];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -2072,13 +2072,13 @@ void __102__CCRapportManager_fulfillFileTransferSessionFromClientDevice_withTarg
   }
 }
 
-- (void)closeFileTransferSessionWithDeviceIdentifier:(id)a3
+- (void)closeFileTransferSessionWithDeviceIdentifier:(id)identifier
 {
   fileTransferSessions = self->_fileTransferSessions;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)fileTransferSessions objectForKeyedSubscript:v5];
+  identifierCopy = identifier;
+  v6 = [(NSMutableDictionary *)fileTransferSessions objectForKeyedSubscript:identifierCopy];
   [v6 finish];
-  [(NSMutableDictionary *)self->_fileTransferSessions removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_fileTransferSessions removeObjectForKey:identifierCopy];
 }
 
 - (void)closeAllFileTransferSessions
@@ -2088,8 +2088,8 @@ void __102__CCRapportManager_fulfillFileTransferSessionFromClientDevice_withTarg
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_fileTransferSessions allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_fileTransferSessions allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2101,14 +2101,14 @@ void __102__CCRapportManager_fulfillFileTransferSessionFromClientDevice_withTarg
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v7++) invalidate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -2138,13 +2138,13 @@ void __102__CCRapportManager_fulfillFileTransferSessionFromClientDevice_withTarg
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteMergeableDeltaFileURL:(id)a3
+- (void)deleteMergeableDeltaFileURL:(id)l
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v9 = 0;
-  [v4 removeItemAtURL:v3 error:&v9];
+  [defaultManager removeItemAtURL:lCopy error:&v9];
   v5 = v9;
 
   if (v5)
@@ -2156,7 +2156,7 @@ void __102__CCRapportManager_fulfillFileTransferSessionFromClientDevice_withTarg
       *buf = 138412802;
       v11 = v8;
       v12 = 2112;
-      v13 = v3;
+      v13 = lCopy;
       v14 = 2112;
       v15 = v5;
       _os_log_error_impl(&dword_1DA444000, v6, OS_LOG_TYPE_ERROR, "%@: Failed to remove item at url %@ with error %@", buf, 0x20u);

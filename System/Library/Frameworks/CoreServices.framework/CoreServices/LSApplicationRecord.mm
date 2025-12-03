@@ -2,32 +2,32 @@
 + (BOOL)isAnyRegisteredApplicationInstalledFromDistributorOrWeb;
 + (id)_alternateIconQueue;
 + (id)_propertyClasses;
-+ (id)applicationRecordsForUserActivityDomainName:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-+ (id)applicationRecordsForUserActivityType:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-+ (id)displayOrderEnumeratorForViableDefaultAppsForCategory:(unint64_t)a3 options:(unint64_t)a4;
-+ (id)enumeratorForApplicationsOnSameVolumeWithinDirectoryAtURL:(id)a3 enumerationOptions:(unint64_t)a4 filteringOptions:(unint64_t)a5;
-+ (id)enumeratorForViableDefaultAppsForCategory:(unint64_t)a3 options:(unint64_t)a4;
-+ (id)enumeratorOnVolumeAtURL:(id)a3 options:(unint64_t)a4;
-+ (id)enumeratorWithOptions:(unint64_t)a3;
++ (id)applicationRecordsForUserActivityDomainName:(id)name limit:(unint64_t)limit error:(id *)error;
++ (id)applicationRecordsForUserActivityType:(id)type limit:(unint64_t)limit error:(id *)error;
++ (id)displayOrderEnumeratorForViableDefaultAppsForCategory:(unint64_t)category options:(unint64_t)options;
++ (id)enumeratorForApplicationsOnSameVolumeWithinDirectoryAtURL:(id)l enumerationOptions:(unint64_t)options filteringOptions:(unint64_t)filteringOptions;
++ (id)enumeratorForViableDefaultAppsForCategory:(unint64_t)category options:(unint64_t)options;
++ (id)enumeratorOnVolumeAtURL:(id)l options:(unint64_t)options;
++ (id)enumeratorWithOptions:(unint64_t)options;
 + (id)personalPersonaAttributes;
 + (id)redactedProperties;
 + (id)remotePlaceholderEnumerator;
 + (id)systemPlaceholderEnumerator;
-+ (void)setUpdateAvailabilityForApplicationsWithBundleIdentifiers:(id)a3 completionHandler:(id)a4;
++ (void)setUpdateAvailabilityForApplicationsWithBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
 - (BOOL)canHandleWebAuthentication;
-- (BOOL)getGenericTranslocationTargetURL:(id *)a3 error:(id *)a4;
-- (BOOL)isAppStoreVendableWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (BOOL)isDeletableSystemApplicationWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (BOOL)isDeletableWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
+- (BOOL)getGenericTranslocationTargetURL:(id *)l error:(id *)error;
+- (BOOL)isAppStoreVendableWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (BOOL)isDeletableSystemApplicationWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (BOOL)isDeletableWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
 - (BOOL)isEligibleMailClient;
 - (BOOL)isEligibleWebBrowser;
 - (BOOL)isInstalledFromDistributorOrWeb;
 - (BOOL)mayBeBUIVisible;
 - (BOOL)supportsMultiwindow;
-- (LSApplicationRecord)initWithBundleIdentifierOfCompanionApplication:(id)a3 error:(id *)a4;
-- (LSApplicationRecord)initWithCoder:(id)a3;
-- (LSApplicationRecord)initWithStoreItemIdentifier:(unint64_t)a3 error:(id *)a4;
-- (LSApplicationRecord)initWithURL:(id)a3 fetchingPlaceholder:(int64_t)a4 error:(id *)a5;
+- (LSApplicationRecord)initWithBundleIdentifierOfCompanionApplication:(id)application error:(id *)error;
+- (LSApplicationRecord)initWithCoder:(id)coder;
+- (LSApplicationRecord)initWithStoreItemIdentifier:(unint64_t)identifier error:(id *)error;
+- (LSApplicationRecord)initWithURL:(id)l fetchingPlaceholder:(int64_t)placeholder error:(id *)error;
 - (LSApplicationRecord)linkedParentApplication;
 - (NSArray)identities;
 - (NSArray)spotlightActions;
@@ -39,43 +39,43 @@
 - (NSString)journalNotificationURLFormatString;
 - (NSUUID)deviceIdentifierForAdvertising;
 - (NSUUID)deviceIdentifierForVendor;
-- (id)_defaultCategoryTypeIdentifiersWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)_initWithBundleIdentifier:(id)a3 placeholder:(BOOL)a4 error:(id *)a5;
-- (id)_initWithContext:(LSContext *)a3 persistentIdentifierData:(const LSPersistentIdentifierData *)a4 length:(unint64_t)a5;
-- (id)_initWithNode:(id)a3 bundleIdentifier:(id)a4 placeholderBehavior:(int64_t)a5 systemPlaceholder:(BOOL)a6 itemID:(unint64_t)a7 forceInBundleContainer:(BOOL)a8 context:(LSContext *)a9 error:(id *)a10;
-- (id)_linkedParentApplicationBundleIDWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)_localizedNamesWithContextWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)_personasWithAttributesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)appStoreToolsBuildVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)applicationExtensionRecordsWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
+- (id)_defaultCategoryTypeIdentifiersWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)_initWithBundleIdentifier:(id)identifier placeholder:(BOOL)placeholder error:(id *)error;
+- (id)_initWithContext:(LSContext *)context persistentIdentifierData:(const LSPersistentIdentifierData *)data length:(unint64_t)length;
+- (id)_initWithNode:(id)node bundleIdentifier:(id)identifier placeholderBehavior:(int64_t)behavior systemPlaceholder:(BOOL)placeholder itemID:(unint64_t)d forceInBundleContainer:(BOOL)container context:(LSContext *)context error:(id *)self0;
+- (id)_linkedParentApplicationBundleIDWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)_localizedNamesWithContextWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)_personasWithAttributesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)appStoreToolsBuildVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)applicationExtensionRecordsWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
 - (id)associatedPersonas;
-- (id)backgroundTaskSchedulerPermittedIdentifiersWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)bundleContainerURLWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)bundleMetadataReturningError:(id *)a3;
-- (id)bundleVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)carPlayInstrumentClusterURLSchemesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)categoryTypesWithError:(id *)a3;
-- (id)deviceFamiliesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)exactBundleVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)getApplicationExtensionDiagnosticDescriptionWithError:(id *)a3;
-- (id)iTunesMetadataWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
+- (id)backgroundTaskSchedulerPermittedIdentifiersWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)bundleContainerURLWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)bundleMetadataReturningError:(id *)error;
+- (id)bundleVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)carPlayInstrumentClusterURLSchemesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)categoryTypesWithError:(id *)error;
+- (id)deviceFamiliesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)exactBundleVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)getApplicationExtensionDiagnosticDescriptionWithError:(id *)error;
+- (id)iTunesMetadataWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
 - (id)intentsRestrictedWhileLocked;
 - (id)intentsRestrictedWhileProtectedDataUnavailable;
-- (id)linkedChildApplicationRecordEnumeratorWithOptions:(unint64_t)a3;
-- (id)localizedNameWithContext:(id)a3 preferredLocalizations:(id)a4;
+- (id)linkedChildApplicationRecordEnumeratorWithOptions:(unint64_t)options;
+- (id)localizedNameWithContext:(id)context preferredLocalizations:(id)localizations;
 - (id)managedPersonas;
-- (id)managementDomainWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)maximumSystemVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)minimumSystemVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)recordForUnredactingWithContext:(LSContext *)a3 error:(id *)a4;
-- (id)serializedPlaceholderURLWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)shortVersionStringWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)stashedAppMetadataWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)supportedGameControllersWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
+- (id)managementDomainWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)maximumSystemVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)minimumSystemVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)recordForUnredactingWithContext:(LSContext *)context error:(id *)error;
+- (id)serializedPlaceholderURLWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)shortVersionStringWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)stashedAppMetadataWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)supportedGameControllersWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
 - (id)supportedIntentMediaCategories;
 - (id)supportedIntents;
-- (id)typeForInstallMachineryWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
-- (id)userActivityTypesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6;
+- (id)typeForInstallMachineryWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
+- (id)userActivityTypesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes;
 - (unint64_t)applicationDSID;
 - (unint64_t)applicationDownloaderDSID;
 - (unint64_t)applicationFamilyID;
@@ -83,11 +83,11 @@
 - (unint64_t)supportedDefaultAppCategories;
 - (void)additionalEnvironmentVariables;
 - (void)clearAdvertisingIdentifier;
-- (void)getDeviceManagementPolicyWithCompletionHandler:(id)a3;
+- (void)getDeviceManagementPolicyWithCompletionHandler:(id)handler;
 - (void)linkedParentApplication;
-- (void)setAlternateIconName:(id)a3 completionHandler:(id)a4;
-- (void)setAlternateIconNameSilently:(id)a3 completionHandler:(id)a4;
-- (void)setUpdateAvailability:(unint64_t)a3 completionHandler:(id)a4;
+- (void)setAlternateIconName:(id)name completionHandler:(id)handler;
+- (void)setAlternateIconNameSilently:(id)silently completionHandler:(id)handler;
+- (void)setUpdateAvailability:(unint64_t)availability completionHandler:(id)handler;
 @end
 
 @implementation LSApplicationRecord
@@ -120,15 +120,15 @@
 - (NSArray)identities
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(LSApplicationRecord *)self _personasWithAttributes];
-  if ([v3 count])
+  _personasWithAttributes = [(LSApplicationRecord *)self _personasWithAttributes];
+  if ([_personasWithAttributes count])
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __45__LSApplicationRecord_Identities__identities__block_invoke;
     v14[3] = &unk_1E6A194A8;
     v14[4] = self;
-    v4 = XNSArrayByMappingBlock(v3, v14);
+    v4 = XNSArrayByMappingBlock(_personasWithAttributes, v14);
   }
 
   else if ([__LSDefaultsGetSharedInstance() isInEducationMode] & 1) != 0 || (objc_msgSend(__LSDefaultsGetSharedInstance(), "isUsingEphemeralStorage"))
@@ -147,10 +147,10 @@
     }
 
     v7 = +[LSApplicationRecord personalPersonaAttributes];
-    v8 = [v7 userPersonaUniqueString];
+    userPersonaUniqueString = [v7 userPersonaUniqueString];
 
     v9 = [LSApplicationIdentity alloc];
-    v10 = [[_LSPersonaWithAttributes alloc] initWithPersonaType:v8 personaUniqueString:?];
+    v10 = [[_LSPersonaWithAttributes alloc] initWithPersonaType:userPersonaUniqueString personaUniqueString:?];
     v11 = [(LSApplicationIdentity *)v9 initForRecord:self personaWithAttributes:v10];
     v16[0] = v11;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
@@ -172,8 +172,8 @@ id __45__LSApplicationRecord_Identities__identities__block_invoke(uint64_t a1, u
 {
   if (([(LSApplicationRecord *)self _rawPlistFlags]& 0x80) != 0)
   {
-    v4 = [(LSBundleRecord *)self infoDictionary];
-    v3 = [v4 objectForKey:@"LSLaunchDLabel" ofClass:objc_opt_class()];
+    infoDictionary = [(LSBundleRecord *)self infoDictionary];
+    v3 = [infoDictionary objectForKey:@"LSLaunchDLabel" ofClass:objc_opt_class()];
   }
 
   else
@@ -199,12 +199,12 @@ id __45__LSApplicationRecord_Identities__identities__block_invoke(uint64_t a1, u
   {
 
 LABEL_4:
-    v6 = [__LSDefaultsGetSharedInstance() isInEducationMode];
+    isInEducationMode = [__LSDefaultsGetSharedInstance() isInEducationMode];
     v19 = 0;
-    v7 = [(LSApplicationRecord *)self _personasWithAttributes];
-    v8 = _LSShouldFetchContainersFromContainermanagerForPersona(v7, [(LSApplicationRecord *)self _usesSystemPersona], &v19);
+    _personasWithAttributes = [(LSApplicationRecord *)self _personasWithAttributes];
+    v8 = _LSShouldFetchContainersFromContainermanagerForPersona(_personasWithAttributes, [(LSApplicationRecord *)self _usesSystemPersona], &v19);
 
-    if (v6)
+    if (isInEducationMode)
     {
       v9 = 1;
     }
@@ -229,16 +229,16 @@ LABEL_4:
     if (v9)
     {
       v14 = active_platform;
-      v15 = [(LSBundleRecord *)self bundleIdentifier];
-      v16 = _LSCopyEnvironmentVariablesFromContainermanager(v15, [(LSApplicationRecord *)self _containerClass], v14);
+      bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
+      v16 = _LSCopyEnvironmentVariablesFromContainermanager(bundleIdentifier, [(LSApplicationRecord *)self _containerClass], v14);
     }
 
     else
     {
-      v17 = [(LSApplicationRecord *)self _rawEnvironmentVariables];
-      v15 = [(_LSLazyPropertyList *)v17 propertyList];
+      _rawEnvironmentVariables = [(LSApplicationRecord *)self _rawEnvironmentVariables];
+      bundleIdentifier = [(_LSLazyPropertyList *)_rawEnvironmentVariables propertyList];
 
-      v16 = _LSCopyRationalizedEnvironmentVariablesDict(v15);
+      v16 = _LSCopyRationalizedEnvironmentVariablesDict(bundleIdentifier);
     }
 
     v12 = v16;
@@ -260,20 +260,20 @@ LABEL_18:
 
 - (id)managedPersonas
 {
-  v2 = [(LSApplicationRecord *)self _personasWithAttributes];
-  if ([v2 count] == 1)
+  _personasWithAttributes = [(LSApplicationRecord *)self _personasWithAttributes];
+  if ([_personasWithAttributes count] == 1)
   {
-    v3 = [v2 firstObject];
-    v4 = [(_LSPersonaWithAttributes *)v3 personaType];
+    firstObject = [_personasWithAttributes firstObject];
+    personaType = [(_LSPersonaWithAttributes *)firstObject personaType];
 
-    if (v4 == 1)
+    if (personaType == 1)
     {
 
-      v2 = MEMORY[0x1E695E0F0];
+      _personasWithAttributes = MEMORY[0x1E695E0F0];
     }
   }
 
-  v5 = XNSArrayByMappingBlock(v2, &__block_literal_global_162);
+  v5 = XNSArrayByMappingBlock(_personasWithAttributes, &__block_literal_global_162);
 
   return v5;
 }
@@ -325,44 +325,44 @@ LABEL_18:
   if ((base_platform - 2) < 2)
   {
 LABEL_4:
-    v4 = [(LSBundleRecord *)self infoDictionary];
-    v5 = [v4 objectForKey:@"UIApplicationSceneManifest" ofClass:objc_opt_class()];
+    infoDictionary = [(LSBundleRecord *)self infoDictionary];
+    v5 = [infoDictionary objectForKey:@"UIApplicationSceneManifest" ofClass:objc_opt_class()];
 
     if (v5)
     {
       v6 = [v5 objectForKeyedSubscript:@"UIApplicationSupportsMultipleScenes"];
       if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v7 = [v6 BOOLValue];
+        bOOLValue = [v6 BOOLValue];
 LABEL_17:
 
-        return v7;
+        return bOOLValue;
       }
     }
 
     else
     {
-      v8 = [(LSBundleRecord *)self infoDictionary];
-      v6 = [v8 objectForKey:@"UIApplicationInterfaceManifest" ofClass:objc_opt_class()];
+      infoDictionary2 = [(LSBundleRecord *)self infoDictionary];
+      v6 = [infoDictionary2 objectForKey:@"UIApplicationInterfaceManifest" ofClass:objc_opt_class()];
 
       if (v6)
       {
         v9 = [v6 objectForKeyedSubscript:@"UIApplicationSupportsMultiwindow"];
         if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v7 = [v9 BOOLValue];
+          bOOLValue = [v9 BOOLValue];
         }
 
         else
         {
-          v7 = 0;
+          bOOLValue = 0;
         }
 
         goto LABEL_17;
       }
     }
 
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_17;
   }
 
@@ -496,14 +496,14 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_2
   v9[3] = &unk_1E6A192C8;
   v9[4] = self;
   v3 = [(_LSDService *)_LSDDeviceIdentifierService synchronousXPCProxyWithErrorHandler:v9];
-  v4 = [(LSApplicationRecord *)self _deviceIdentifierVendorName];
-  v5 = [(LSBundleRecord *)self bundleIdentifier];
+  _deviceIdentifierVendorName = [(LSApplicationRecord *)self _deviceIdentifierVendorName];
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__LSApplicationRecord_UniqueIdentifiers__deviceIdentifierForVendor__block_invoke_511;
   v8[3] = &unk_1E6A192F0;
   v8[4] = &v10;
-  [v3 getIdentifierOfType:0 vendorName:v4 bundleIdentifier:v5 completionHandler:v8];
+  [v3 getIdentifierOfType:0 vendorName:_deviceIdentifierVendorName bundleIdentifier:bundleIdentifier completionHandler:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -511,48 +511,48 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_2
   return v6;
 }
 
-- (LSApplicationRecord)initWithURL:(id)a3 fetchingPlaceholder:(int64_t)a4 error:(id *)a5
+- (LSApplicationRecord)initWithURL:(id)l fetchingPlaceholder:(int64_t)placeholder error:(id *)error
 {
-  v7 = a3;
-  if (a3)
+  lCopy = l;
+  if (l)
   {
-    if ([a3 isFileURL])
+    if ([l isFileURL])
     {
       v9 = MEMORY[0x1E695DFF8];
-      v10 = [v7 absoluteString];
-      v7 = [v9 URLWithString:v10];
+      absoluteString = [lCopy absoluteString];
+      lCopy = [v9 URLWithString:absoluteString];
     }
 
     else
     {
-      v7 = 0;
+      lCopy = 0;
     }
   }
 
-  v11 = [[FSNode alloc] initWithURL:v7 flags:0 error:0];
-  v12 = [(LSApplicationRecord *)self _initWithNode:v11 bundleIdentifier:0 placeholderBehavior:a4 systemPlaceholder:0 itemID:0 forceInBundleContainer:0 context:0 error:a5];
+  v11 = [[FSNode alloc] initWithURL:lCopy flags:0 error:0];
+  v12 = [(LSApplicationRecord *)self _initWithNode:v11 bundleIdentifier:0 placeholderBehavior:placeholder systemPlaceholder:0 itemID:0 forceInBundleContainer:0 context:0 error:error];
 
   return v12;
 }
 
-- (LSApplicationRecord)initWithStoreItemIdentifier:(unint64_t)a3 error:(id *)a4
+- (LSApplicationRecord)initWithStoreItemIdentifier:(unint64_t)identifier error:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    result = [(LSApplicationRecord *)self _initWithNode:0 bundleIdentifier:0 placeholderBehavior:0 systemPlaceholder:1 itemID:a3 forceInBundleContainer:0 context:0 error:a4];
+    result = [(LSApplicationRecord *)self _initWithNode:0 bundleIdentifier:0 placeholderBehavior:0 systemPlaceholder:1 itemID:identifier forceInBundleContainer:0 context:0 error:error];
     v6 = *MEMORY[0x1E69E9840];
   }
 
   else
   {
 
-    if (a4)
+    if (error)
     {
       v9 = *MEMORY[0x1E696A278];
       v10[0] = @"Item ID 0 never exists.";
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-      *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v7, "[LSApplicationRecord initWithStoreItemIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 136);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v7, "[LSApplicationRecord initWithStoreItemIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 136);
     }
 
     v8 = *MEMORY[0x1E69E9840];
@@ -562,11 +562,11 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_2
   return result;
 }
 
-- (id)minimumSystemVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)minimumSystemVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = *&a6->_minSystemVersion._opaque[12];
-  v10[0] = *&a6->minSystemVersionPlatform;
+  v6 = *&bytes->_minSystemVersion._opaque[12];
+  v10[0] = *&bytes->minSystemVersionPlatform;
   v10[1] = v6;
   v7 = _LSVersionNumberGetStringRepresentation(v10);
   v8 = *MEMORY[0x1E69E9840];
@@ -574,11 +574,11 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_2
   return v7;
 }
 
-- (id)maximumSystemVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)maximumSystemVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = *&a6->_maxSystemVersion._opaque[12];
-  v10[0] = *&a6->_minSystemVersion._opaque[28];
+  v6 = *&bytes->_maxSystemVersion._opaque[12];
+  v10[0] = *&bytes->_minSystemVersion._opaque[28];
   v10[1] = v6;
   v7 = _LSVersionNumberGetStringRepresentation(v10);
   v8 = *MEMORY[0x1E69E9840];
@@ -586,48 +586,48 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_2
   return v7;
 }
 
-- (id)exactBundleVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)exactBundleVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  filename = a6->filename;
-  [(_LSDatabase *)a3->db store];
+  filename = bytes->filename;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
 
   return v7;
 }
 
-- (id)shortVersionStringWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)shortVersionStringWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  bundleVersion = a6->bundleVersion;
-  [(_LSDatabase *)a3->db store];
+  bundleVersion = bytes->bundleVersion;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
 
   return v7;
 }
 
-- (void)setUpdateAvailability:(unint64_t)a3 completionHandler:(id)a4
+- (void)setUpdateAvailability:(unint64_t)availability completionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = [(LSBundleRecord *)self bundleIdentifier];
-  if (v7)
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     Class = object_getClass(self);
-    v14 = v7;
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v14 = bundleIdentifier;
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:availability];
     v15[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [(objc_class *)Class setUpdateAvailabilityForApplicationsWithBundleIdentifiers:v10 completionHandler:a4];
+    [(objc_class *)Class setUpdateAvailabilityForApplicationsWithBundleIdentifiers:v10 completionHandler:handler];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a4)
+  if (handler)
   {
     v12 = *MEMORY[0x1E696A278];
     v13 = @"This application does not have a bundle identifier and cannot have its updateAvailability property modified.";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "[LSApplicationRecord setUpdateAvailability:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 265);
-    (*(a4 + 2))(a4, 0, v10);
+    (*(handler + 2))(handler, 0, v10);
     goto LABEL_5;
   }
 
@@ -636,16 +636,16 @@ LABEL_6:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setUpdateAvailabilityForApplicationsWithBundleIdentifiers:(id)a3 completionHandler:(id)a4
++ (void)setUpdateAvailabilityForApplicationsWithBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifiers)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"LSApplicationRecord.mm" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"updateAvailabilities != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSApplicationRecord.mm" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"updateAvailabilities != nil"}];
   }
 
-  if ([a3 count])
+  if ([identifiers count])
   {
     if (([__LSDefaultsGetSharedInstance() isServer] & 1) != 0 || (objc_msgSend(__LSDefaultsGetSharedInstance(), "hasServer") & 1) == 0)
     {
@@ -654,8 +654,8 @@ LABEL_6:
       v16[1] = 3221225472;
       v16[2] = __99__LSApplicationRecord_setUpdateAvailabilityForApplicationsWithBundleIdentifiers_completionHandler___block_invoke;
       v16[3] = &unk_1E6A19068;
-      v16[4] = a3;
-      v16[5] = a4;
+      v16[4] = identifiers;
+      v16[5] = handler;
       v16[6] = a2;
       [(LSDBExecutionContext *)v8 syncWrite:v16];
     }
@@ -666,24 +666,24 @@ LABEL_6:
       v15[1] = 3221225472;
       v15[2] = __99__LSApplicationRecord_setUpdateAvailabilityForApplicationsWithBundleIdentifiers_completionHandler___block_invoke_40;
       v15[3] = &unk_1E6A19090;
-      v15[4] = a4;
+      v15[4] = handler;
       v7 = [(_LSDService *)_LSDModifyService XPCProxyWithErrorHandler:v15];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __99__LSApplicationRecord_setUpdateAvailabilityForApplicationsWithBundleIdentifiers_completionHandler___block_invoke_2;
       v14[3] = &unk_1E6A190B8;
-      v14[4] = a4;
-      [v7 setUpdateAvailabilities:a3 completionHandler:v14];
+      v14[4] = handler;
+      [v7 setUpdateAvailabilities:identifiers completionHandler:v14];
     }
   }
 
-  else if (a4)
+  else if (handler)
   {
     v17 = *MEMORY[0x1E696A278];
     v18[0] = @"updateAvailabilities";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v9, "+[LSApplicationRecord setUpdateAvailabilityForApplicationsWithBundleIdentifiers:completionHandler:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 365);
-    (*(a4 + 2))(a4, 0, v10);
+    (*(handler + 2))(handler, 0, v10);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -882,50 +882,50 @@ uint64_t __99__LSApplicationRecord_setUpdateAvailabilityForApplicationsWithBundl
   return result;
 }
 
-- (BOOL)isDeletableWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (BOOL)isDeletableWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  if ((a6->_bundleFlags & 0x100) == 0)
+  if ((bytes->_bundleFlags & 0x100) == 0)
   {
     return 0;
   }
 
-  vendorName = a6->vendorName;
-  if (!vendorName || _LSDatabaseGetStringForCFString(a3->db, @"System", 0) != vendorName)
+  vendorName = bytes->vendorName;
+  if (!vendorName || _LSDatabaseGetStringForCFString(context->db, @"System", 0) != vendorName)
   {
     return 1;
   }
 
   v8 = +[LSApplicationRestrictionsManager sharedInstance];
-  v6 = [(LSApplicationRestrictionsManager *)v8 isSystemAppDeletionEnabled];
+  isSystemAppDeletionEnabled = [(LSApplicationRestrictionsManager *)v8 isSystemAppDeletionEnabled];
 
-  return v6;
+  return isSystemAppDeletionEnabled;
 }
 
-- (BOOL)isDeletableSystemApplicationWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (BOOL)isDeletableSystemApplicationWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  if ((a6->_bundleFlags & 0x100) == 0)
+  if ((bytes->_bundleFlags & 0x100) == 0)
   {
     return 0;
   }
 
-  vendorName = a6->vendorName;
-  return vendorName && _LSDatabaseGetStringForCFString(a3->db, @"System", 0) == vendorName;
+  vendorName = bytes->vendorName;
+  return vendorName && _LSDatabaseGetStringForCFString(context->db, @"System", 0) == vendorName;
 }
 
-- (BOOL)isAppStoreVendableWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (BOOL)isAppStoreVendableWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  vendorName = a6->vendorName;
-  [(_LSDatabase *)a3->db store];
+  vendorName = bytes->vendorName;
+  [(_LSDatabase *)context->db store];
   v9 = _CSStringCopyCFString();
   if ([v9 isEqualToString:@"System"])
   {
-    LOBYTE(self) = _LSFindBundleWithInfo(a3, 7uLL, [(LSBundleRecord *)self bundleIdentifier], 0, 0, 0, 0) != 0;
+    LOBYTE(self) = _LSFindBundleWithInfo(context, 7uLL, [(LSBundleRecord *)self bundleIdentifier], 0, 0, 0, 0) != 0;
   }
 
   else
   {
-    v10 = [(LSApplicationRecord *)self iTunesMetadata];
-    if ([v10 storeItemIdentifier] && (-[LSApplicationRecord _rawBundleFlags](self, "_rawBundleFlags") & 0x8000001200000) == 0)
+    iTunesMetadata = [(LSApplicationRecord *)self iTunesMetadata];
+    if ([iTunesMetadata storeItemIdentifier] && (-[LSApplicationRecord _rawBundleFlags](self, "_rawBundleFlags") & 0x8000001200000) == 0)
     {
       LODWORD(self) = ![(LSBundleRecord *)self isProfileValidated];
     }
@@ -941,13 +941,13 @@ uint64_t __99__LSApplicationRecord_setUpdateAvailabilityForApplicationsWithBundl
 
 - (BOOL)isInstalledFromDistributorOrWeb
 {
-  v2 = [(LSApplicationRecord *)self iTunesMetadata];
-  v3 = [v2 distributorInfo];
-  v4 = [v3 distributorID];
+  iTunesMetadata = [(LSApplicationRecord *)self iTunesMetadata];
+  distributorInfo = [iTunesMetadata distributorInfo];
+  distributorID = [distributorInfo distributorID];
 
-  if (v4 && ([v4 isEqualToString:@"com.apple.AppStore"] & 1) == 0)
+  if (distributorID && ([distributorID isEqualToString:@"com.apple.AppStore"] & 1) == 0)
   {
-    v5 = [v4 isEqualToString:@"com.apple.TestFlight"] ^ 1;
+    v5 = [distributorID isEqualToString:@"com.apple.TestFlight"] ^ 1;
   }
 
   else
@@ -961,7 +961,7 @@ uint64_t __99__LSApplicationRecord_setUpdateAvailabilityForApplicationsWithBundl
 + (BOOL)isAnyRegisteredApplicationInstalledFromDistributorOrWeb
 {
   v15 = *MEMORY[0x1E69E9840];
-  [a1 enumeratorWithOptions:192];
+  [self enumeratorWithOptions:192];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -1006,10 +1006,10 @@ LABEL_11:
   return v3;
 }
 
-- (id)appStoreToolsBuildVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)appStoreToolsBuildVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  v6 = *&a6->_maxSystemVersion._opaque[28];
-  [(_LSDatabase *)a3->db store];
+  v6 = *&bytes->_maxSystemVersion._opaque[28];
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
   v8 = v7;
   if (v7)
@@ -1027,10 +1027,10 @@ LABEL_11:
   return v9;
 }
 
-- (id)userActivityTypesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)userActivityTypesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  types = a6->types;
-  v7 = _LSDatabaseGetStringArray(a3->db);
+  types = bytes->types;
+  v7 = _LSDatabaseGetStringArray(context->db);
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v7];
@@ -1046,17 +1046,17 @@ LABEL_11:
 
 - (BOOL)canHandleWebAuthentication
 {
-  v2 = [(LSBundleRecord *)self entitlements];
-  v3 = [v2 objectForKey:@"com.apple.AuthenticationServices.canHandleASWebAuthenticationSessionRequest" ofClass:objc_opt_class()];
+  entitlements = [(LSBundleRecord *)self entitlements];
+  v3 = [entitlements objectForKey:@"com.apple.AuthenticationServices.canHandleASWebAuthenticationSessionRequest" ofClass:objc_opt_class()];
 
   return v3 != 0;
 }
 
-- (id)applicationExtensionRecordsWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)applicationExtensionRecordsWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  [(_LSDatabase *)a3->db store];
-  libraryPath = a6->libraryPath;
+  [(_LSDatabase *)context->db store];
+  libraryPath = bytes->libraryPath;
   v12 = v8;
   _CSArrayEnumerateAllValues();
   v10 = [v12 copy];
@@ -1087,10 +1087,10 @@ void __87__LSApplicationRecord_applicationExtensionRecordsWithContext_tableID_un
   }
 }
 
-- (id)backgroundTaskSchedulerPermittedIdentifiersWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)backgroundTaskSchedulerPermittedIdentifiersWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  driverExtensions = a6->driverExtensions;
-  v7 = _LSDatabaseGetStringArray(a3->db);
+  driverExtensions = bytes->driverExtensions;
+  v7 = _LSDatabaseGetStringArray(context->db);
   v8 = v7;
   if (v7)
   {
@@ -1107,10 +1107,10 @@ void __87__LSApplicationRecord_applicationExtensionRecordsWithContext_tableID_un
   return v9;
 }
 
-- (id)carPlayInstrumentClusterURLSchemesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)carPlayInstrumentClusterURLSchemesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  extensionPoints = a6->extensionPoints;
-  v7 = _LSDatabaseGetStringArray(a3->db);
+  extensionPoints = bytes->extensionPoints;
+  v7 = _LSDatabaseGetStringArray(context->db);
   v8 = v7;
   if (v7)
   {
@@ -1127,22 +1127,22 @@ void __87__LSApplicationRecord_applicationExtensionRecordsWithContext_tableID_un
   return v9;
 }
 
-- (void)getDeviceManagementPolicyWithCompletionHandler:(id)a3
+- (void)getDeviceManagementPolicyWithCompletionHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[LSApplicationRecord getDeviceManagementPolicyWithCompletionHandler:]"];
-    [v6 handleFailureInFunction:v7 file:@"LSApplicationRecord.mm" lineNumber:759 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    [currentHandler handleFailureInFunction:v7 file:@"LSApplicationRecord.mm" lineNumber:759 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
-  v5 = [(LSBundleRecord *)self bundleIdentifier];
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__LSApplicationRecord_getDeviceManagementPolicyWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E6A19108;
-  v8[4] = a3;
-  _LSGetDMFPolicyWithCompletionHandler(v5, v8);
+  v8[4] = handler;
+  _LSGetDMFPolicyWithCompletionHandler(bundleIdentifier, v8);
 }
 
 - (BOOL)isEligibleWebBrowser
@@ -1158,13 +1158,13 @@ void __87__LSApplicationRecord_applicationExtensionRecordsWithContext_tableID_un
 
 - (BOOL)isEligibleMailClient
 {
-  v3 = [(LSApplicationRecord *)self isMailClient];
-  if (v3)
+  isMailClient = [(LSApplicationRecord *)self isMailClient];
+  if (isMailClient)
   {
-    LOBYTE(v3) = ![(LSApplicationRecord *)self appProtectionHidden];
+    LOBYTE(isMailClient) = ![(LSApplicationRecord *)self appProtectionHidden];
   }
 
-  return v3;
+  return isMailClient;
 }
 
 - (NSArray)spotlightActions
@@ -1173,8 +1173,8 @@ void __87__LSApplicationRecord_applicationExtensionRecordsWithContext_tableID_un
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (([(LSApplicationRecord *)self _rawMoreFlags]& 0x10) != 0)
   {
-    v3 = [(LSBundleRecord *)self infoDictionary];
-    v4 = [v3 objectForKey:@"CoreSpotlightActions" ofClass:objc_opt_class()];
+    infoDictionary = [(LSBundleRecord *)self infoDictionary];
+    v4 = [infoDictionary objectForKey:@"CoreSpotlightActions" ofClass:objc_opt_class()];
 
     v29 = 0u;
     v30 = 0u;
@@ -1281,10 +1281,10 @@ LABEL_30:
   return v22;
 }
 
-- (id)managementDomainWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)managementDomainWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  parentAppIDs = a6->appClipFields.parentAppIDs;
-  [(_LSDatabase *)a3->db store];
+  parentAppIDs = bytes->appClipFields.parentAppIDs;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
   if (!v7)
   {
@@ -1294,10 +1294,10 @@ LABEL_30:
   return v7;
 }
 
-- (id)_linkedParentApplicationBundleIDWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)_linkedParentApplicationBundleIDWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  supportedGameControllers = a6->supportedGameControllers;
-  [(_LSDatabase *)a3->db store];
+  supportedGameControllers = bytes->supportedGameControllers;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
 
   return v7;
@@ -1311,9 +1311,9 @@ LABEL_30:
   v23 = __Block_byref_object_copy__132;
   v24 = __Block_byref_object_dispose__133;
   v25 = 0;
-  v3 = [(LSApplicationRecord *)self _linkedParentApplicationBundleID];
-  v4 = v3;
-  if (v3)
+  _linkedParentApplicationBundleID = [(LSApplicationRecord *)self _linkedParentApplicationBundleID];
+  v4 = _linkedParentApplicationBundleID;
+  if (_linkedParentApplicationBundleID)
   {
     v17 = 0;
     v18[0] = &v17;
@@ -1326,7 +1326,7 @@ LABEL_30:
     v13[2] = __46__LSApplicationRecord_linkedParentApplication__block_invoke;
     v13[3] = &unk_1E6A19130;
     v15 = &v20;
-    v14 = v3;
+    v14 = _linkedParentApplicationBundleID;
     v16 = &v17;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -1388,19 +1388,19 @@ void __46__LSApplicationRecord_linkedParentApplication__block_invoke_2(void *a1)
   *(v8 + 40) = v5;
 }
 
-- (id)_defaultCategoryTypeIdentifiersWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)_defaultCategoryTypeIdentifiersWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  equivalentBundleIdentifiers = a6->equivalentBundleIdentifiers;
-  [(_LSDatabase *)a3->db store];
+  equivalentBundleIdentifiers = bytes->equivalentBundleIdentifiers;
+  [(_LSDatabase *)context->db store];
   v10 = _CSStringCopyCFString();
   if (v10)
   {
     [v8 addObject:v10];
   }
 
-  categoryType = a6->categoryType;
-  [(_LSDatabase *)a3->db store];
+  categoryType = bytes->categoryType;
+  [(_LSDatabase *)context->db store];
   v12 = _CSStringCopyCFString();
   if (v12)
   {
@@ -1412,26 +1412,26 @@ void __46__LSApplicationRecord_linkedParentApplication__block_invoke_2(void *a1)
   return v13;
 }
 
-- (id)categoryTypesWithError:(id *)a3
+- (id)categoryTypesWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [(LSBundleRecord *)self _node];
+  _node = [(LSBundleRecord *)self _node];
   v24[4] = self;
   theArray = 0;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __46__LSApplicationRecord_categoryTypesWithError___block_invoke;
   v24[3] = &unk_1E6A19180;
-  v6 = _LSCopyApplicationCategoriesForApplicationNode(v5, &theArray, v24);
+  v6 = _LSCopyApplicationCategoriesForApplicationNode(_node, &theArray, v24);
 
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], v6, 0, "[LSApplicationRecord categoryTypesWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 997);
 LABEL_4:
       v8 = 0;
-      *a3 = v7;
+      *error = v7;
       goto LABEL_24;
     }
 
@@ -1443,7 +1443,7 @@ LABEL_21:
   v9 = _LSGetUTTypeClass();
   if (!v9)
   {
-    if (a3)
+    if (error)
     {
       v7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 78, 0, "[LSApplicationRecord categoryTypesWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 994);
       goto LABEL_4;
@@ -1475,9 +1475,9 @@ LABEL_21:
         v16 = [v9 typeWithIdentifier:{*(*(&v20 + 1) + 8 * i), v20}];
         if (!v16)
         {
-          if (a3)
+          if (error)
           {
-            *a3 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], 2, 0, "[LSApplicationRecord categoryTypesWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 983);
+            *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], 2, 0, "[LSApplicationRecord categoryTypesWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 983);
           }
 
           goto LABEL_17;
@@ -1520,7 +1520,7 @@ LABEL_24:
   return v8;
 }
 
-- (id)_initWithNode:(id)a3 bundleIdentifier:(id)a4 placeholderBehavior:(int64_t)a5 systemPlaceholder:(BOOL)a6 itemID:(unint64_t)a7 forceInBundleContainer:(BOOL)a8 context:(LSContext *)a9 error:(id *)a10
+- (id)_initWithNode:(id)node bundleIdentifier:(id)identifier placeholderBehavior:(int64_t)behavior systemPlaceholder:(BOOL)placeholder itemID:(unint64_t)d forceInBundleContainer:(BOOL)container context:(LSContext *)context error:(id *)self0
 {
   v51 = *MEMORY[0x1E69E9840];
   if (_LSLogAppRecordInitsForDataSeparation::onceToken != -1)
@@ -1534,17 +1534,17 @@ LABEL_24:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = a3;
+      *&buf[4] = node;
       *&buf[12] = 2112;
-      *&buf[14] = a4;
+      *&buf[14] = identifier;
       *&buf[22] = 2048;
-      v48 = a7;
+      dCopy = d;
       _os_log_impl(&dword_18162D000, v17, OS_LOG_TYPE_INFO, "application record search init. Node: %@ bundleID: %@ itemID: %llu", buf, 0x20u);
     }
   }
 
-  p_db = &a9->db;
-  if (!a9)
+  p_db = &context->db;
+  if (!context)
   {
     p_db = _LSDatabaseContextGetCurrentContext(0);
   }
@@ -1565,26 +1565,26 @@ LABEL_24:
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
-    v48 = __Block_byref_object_copy__132;
+    dCopy = __Block_byref_object_copy__132;
     v49 = __Block_byref_object_dispose__133;
     v50 = 0;
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __136__LSApplicationRecord__initWithNode_bundleIdentifier_placeholderBehavior_systemPlaceholder_itemID_forceInBundleContainer_context_error___block_invoke;
     v34[3] = &unk_1E6A191C8;
-    v35 = a6;
-    v34[4] = a4;
-    v34[5] = a3;
+    placeholderCopy = placeholder;
+    v34[4] = identifier;
+    v34[5] = node;
     v34[8] = v20;
-    v34[9] = a7;
+    v34[9] = d;
     v34[6] = &v37;
     v34[7] = buf;
-    v34[10] = a5;
-    v36 = a8;
+    v34[10] = behavior;
+    containerCopy = container;
     __LSRECORD_IS_PERFORMING_IO_FOR_A_CALLER__(v34);
-    if (a10)
+    if (error)
     {
-      *a10 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v21 = *(v38 + 6);
@@ -1593,8 +1593,8 @@ LABEL_24:
       v22 = _LSBundleGet(*v20, v21);
       if (v22)
       {
-        v23 = [(_LSDatabase *)*v20 schema];
-        v24 = [(LSApplicationRecord *)self _initWithNode:a3 bundleIdentifier:a4 context:v20 tableID:*(v23 + 4) unitID:*(v38 + 6) bundleBaseData:v22 error:a10];
+        schema = [(_LSDatabase *)*v20 schema];
+        v24 = [(LSApplicationRecord *)self _initWithNode:node bundleIdentifier:identifier context:v20 tableID:*(schema + 4) unitID:*(v38 + 6) bundleBaseData:v22 error:error];
 LABEL_21:
         _Block_object_dispose(buf, 8);
 
@@ -1602,12 +1602,12 @@ LABEL_21:
         goto LABEL_25;
       }
 
-      if (a10)
+      if (error)
       {
         v45 = *MEMORY[0x1E696A278];
         v46 = @"Unable to find this application record in the Launch Services database.";
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-        *a10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10814, v28, "[LSApplicationRecord _initWithNode:bundleIdentifier:placeholderBehavior:systemPlaceholder:itemID:forceInBundleContainer:context:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 1168);
+        *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -10814, v28, "[LSApplicationRecord _initWithNode:bundleIdentifier:placeholderBehavior:systemPlaceholder:itemID:forceInBundleContainer:context:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 1168);
       }
     }
 
@@ -1615,7 +1615,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (a10)
+  if (error)
   {
     v25 = +[_LSDServiceDomain defaultServiceDomain];
     v26 = LaunchServices::Database::Context::_get(&v41, v25, 0);
@@ -1630,7 +1630,7 @@ LABEL_21:
       v27 = v44;
     }
 
-    *a10 = v27;
+    *error = v27;
   }
 
   v24 = 0;
@@ -1767,21 +1767,21 @@ LABEL_20:
   }
 }
 
-- (id)_initWithBundleIdentifier:(id)a3 placeholder:(BOOL)a4 error:(id *)a5
+- (id)_initWithBundleIdentifier:(id)identifier placeholder:(BOOL)placeholder error:(id *)error
 {
   v5 = 3;
-  if (!a4)
+  if (!placeholder)
   {
     v5 = 0;
   }
 
-  return [(LSApplicationRecord *)self _initWithNode:0 bundleIdentifier:a3 placeholderBehavior:v5 systemPlaceholder:0 itemID:0 forceInBundleContainer:0 context:0 error:a5];
+  return [(LSApplicationRecord *)self _initWithNode:0 bundleIdentifier:identifier placeholderBehavior:v5 systemPlaceholder:0 itemID:0 forceInBundleContainer:0 context:0 error:error];
 }
 
-- (id)bundleVersionWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)bundleVersionWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  filename = a6->filename;
-  [(_LSDatabase *)a3->db store];
+  filename = bytes->filename;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
 
   return v7;
@@ -1789,8 +1789,8 @@ LABEL_20:
 
 - (id)associatedPersonas
 {
-  v2 = [(LSApplicationRecord *)self _personasWithAttributes];
-  v3 = XNSArrayByMappingBlock(v2, &__block_literal_global_164);
+  _personasWithAttributes = [(LSApplicationRecord *)self _personasWithAttributes];
+  v3 = XNSArrayByMappingBlock(_personasWithAttributes, &__block_literal_global_164);
 
   return v3;
 }
@@ -1804,16 +1804,16 @@ void __98__LSApplicationRecord__initWithNode_bundleIdentifier_context_tableID_un
   objc_storeStrong((v3 + 40), obj);
 }
 
-- (id)_personasWithAttributesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)_personasWithAttributesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  appContainerAlias = a6->appContainerAlias;
-  v10 = _LSDatabaseGetStringArray(a3->db);
+  appContainerAlias = bytes->appContainerAlias;
+  v10 = _LSDatabaseGetStringArray(context->db);
   __p = 0;
   v29 = 0;
   v30 = 0;
-  [(_LSDatabase *)a3->db store];
-  v11 = *&a6->revision;
+  [(_LSDatabase *)context->db store];
+  v11 = *&bytes->revision;
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __83__LSApplicationRecord__personasWithAttributesWithContext_tableID_unitID_unitBytes___block_invoke;
@@ -1838,14 +1838,14 @@ void __98__LSApplicationRecord__initWithNode_bundleIdentifier_context_tableID_un
     [v8 addObject:v20];
   }
 
-  v21 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   if (__p)
   {
     v29 = __p;
     operator delete(__p);
   }
 
-  return v21;
+  return allObjects;
 }
 
 void __83__LSApplicationRecord__personasWithAttributesWithContext_tableID_unitID_unitBytes___block_invoke(uint64_t a1, uint64_t a2, unsigned int a3)
@@ -1905,7 +1905,7 @@ void __83__LSApplicationRecord__personasWithAttributesWithContext_tableID_unitID
   *(v3 + 8) = v7;
 }
 
-- (id)_localizedNamesWithContextWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)_localizedNamesWithContextWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v9 = 0;
   v10 = &v9;
@@ -1918,8 +1918,8 @@ void __83__LSApplicationRecord__personasWithAttributesWithContext_tableID_unitID
   v8[2] = __86__LSApplicationRecord__localizedNamesWithContextWithContext_tableID_unitID_unitBytes___block_invoke;
   v8[3] = &unk_1E6A19258;
   v8[4] = &v9;
-  v8[5] = a6;
-  v8[6] = a3;
+  v8[5] = bytes;
+  v8[6] = context;
   _LSBundleDisplayNameContextEnumerate(v8);
   v6 = [v10[5] copy];
   _Block_object_dispose(&v9, 8);
@@ -1950,21 +1950,21 @@ void __86__LSApplicationRecord__localizedNamesWithContextWithContext_tableID_uni
   }
 }
 
-- (id)_initWithContext:(LSContext *)a3 persistentIdentifierData:(const LSPersistentIdentifierData *)a4 length:(unint64_t)a5
+- (id)_initWithContext:(LSContext *)context persistentIdentifierData:(const LSPersistentIdentifierData *)data length:(unint64_t)length
 {
-  var3 = a4->var3;
-  if (var3 != *([(_LSDatabase *)a3->db schema]+ 4))
+  var3 = data->var3;
+  if (var3 != *([(_LSDatabase *)context->db schema]+ 4))
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"LSApplicationRecord.mm" lineNumber:1530 description:{@"Invalid parameter not satisfying: %@", @"pi->tableID == ctx->db.schema->bundleTable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSApplicationRecord.mm" lineNumber:1530 description:{@"Invalid parameter not satisfying: %@", @"pi->tableID == ctx->db.schema->bundleTable"}];
   }
 
-  v11 = _LSBundleGet(a3->db, a4->var2);
-  if (v11 && a5 == 36 && *a4->var5 == *(v11 + 276))
+  v11 = _LSBundleGet(context->db, data->var2);
+  if (v11 && length == 36 && *data->var5 == *(v11 + 276))
   {
-    var2 = a4->var2;
+    var2 = data->var2;
 
-    return [(LSApplicationRecord *)self _initWithContext:a3 bundleID:var2 bundleData:v11 error:0];
+    return [(LSApplicationRecord *)self _initWithContext:context bundleID:var2 bundleData:v11 error:0];
   }
 
   else
@@ -1984,12 +1984,12 @@ uint64_t __67__LSApplicationRecord__detachFromContext_tableID_unitID_unitBytes__
   return result;
 }
 
-- (LSApplicationRecord)initWithCoder:(id)a3
+- (LSApplicationRecord)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = LSApplicationRecord;
-  v3 = [(LSBundleRecord *)&v15 initWithCoder:a3];
+  v3 = [(LSBundleRecord *)&v15 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -2027,7 +2027,7 @@ uint64_t __67__LSApplicationRecord__detachFromContext_tableID_unitID_unitBytes__
   return v4;
 }
 
-- (id)bundleContainerURLWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)bundleContainerURLWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v9 = 0;
   v10 = &v9;
@@ -2039,8 +2039,8 @@ uint64_t __67__LSApplicationRecord__detachFromContext_tableID_unitID_unitBytes__
   v8[1] = 3221225472;
   v8[2] = __90__LSApplicationRecord_Containers__bundleContainerURLWithContext_tableID_unitID_unitBytes___block_invoke;
   v8[3] = &unk_1E6A192A0;
-  v8[5] = a3;
-  v8[6] = a6;
+  v8[5] = context;
+  v8[6] = bytes;
   v8[4] = &v9;
   __LSRECORD_IS_PERFORMING_IO_FOR_A_CALLER__(v8);
   v6 = v10[5];
@@ -2064,9 +2064,9 @@ void __90__LSApplicationRecord_Containers__bundleContainerURLWithContext_tableID
   }
 }
 
-- (id)iTunesMetadataWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)iTunesMetadataWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  v6 = [[LSiTunesMetadata alloc] _initWithContext:a3 bundleData:a6];
+  v6 = [[LSiTunesMetadata alloc] _initWithContext:context bundleData:bytes];
 
   return v6;
 }
@@ -2102,14 +2102,14 @@ void __67__LSApplicationRecord_UniqueIdentifiers__deviceIdentifierForVendor__blo
   v9[3] = &unk_1E6A192C8;
   v9[4] = self;
   v3 = [(_LSDService *)_LSDDeviceIdentifierService synchronousXPCProxyWithErrorHandler:v9];
-  v4 = [(LSApplicationRecord *)self _deviceIdentifierVendorName];
-  v5 = [(LSBundleRecord *)self bundleIdentifier];
+  _deviceIdentifierVendorName = [(LSApplicationRecord *)self _deviceIdentifierVendorName];
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__LSApplicationRecord_UniqueIdentifiers__deviceIdentifierForAdvertising__block_invoke_513;
   v8[3] = &unk_1E6A192F0;
   v8[4] = &v10;
-  [v3 getIdentifierOfType:1 vendorName:v4 bundleIdentifier:v5 completionHandler:v8];
+  [v3 getIdentifierOfType:1 vendorName:_deviceIdentifierVendorName bundleIdentifier:bundleIdentifier completionHandler:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -2140,11 +2140,11 @@ void __72__LSApplicationRecord_UniqueIdentifiers__deviceIdentifierForAdvertising
   [v2 clearAllIdentifiersOfType:1];
 }
 
-- (id)deviceFamiliesWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)deviceFamiliesWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [(_LSDatabase *)a3->db store];
-  itemID_high = HIDWORD(a6->itemID);
+  [(_LSDatabase *)context->db store];
+  itemID_high = HIDWORD(bytes->itemID);
   v12 = v8;
   _CSArrayEnumerateAllValues();
   v10 = [v12 copy];
@@ -2159,7 +2159,7 @@ void __93__LSApplicationRecord_InfoPlistRarities__deviceFamiliesWithContext_tabl
   [v1 addObject:?];
 }
 
-- (id)localizedNameWithContext:(id)a3 preferredLocalizations:(id)a4
+- (id)localizedNameWithContext:(id)context preferredLocalizations:(id)localizations
 {
   v13 = 0;
   v14 = &v13;
@@ -2167,23 +2167,23 @@ void __93__LSApplicationRecord_InfoPlistRarities__deviceFamiliesWithContext_tabl
   v16 = __Block_byref_object_copy__132;
   v17 = __Block_byref_object_dispose__133;
   v18 = 0;
-  if (a3 && [a3 length])
+  if (context && [context length])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__LSApplicationRecord_Localization__localizedNameWithContext_preferredLocalizations___block_invoke;
     v12[3] = &unk_1E6A19340;
-    v12[4] = a3;
+    v12[4] = context;
     v12[5] = self;
-    v12[6] = a4;
+    v12[6] = localizations;
     v12[7] = &v13;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __85__LSApplicationRecord_Localization__localizedNameWithContext_preferredLocalizations___block_invoke_3;
     v11[3] = &unk_1E6A19368;
     v11[4] = self;
-    v11[5] = a3;
-    v11[6] = a4;
+    v11[5] = context;
+    v11[6] = localizations;
     v11[7] = &v13;
     [(LSRecord *)self _ifAttached:v12 else:v11];
   }
@@ -2259,17 +2259,17 @@ void __58__LSApplicationRecord_AlternateIcons___alternateIconQueue__block_invoke
   +[LSApplicationRecord(AlternateIcons) _alternateIconQueue]::result = v0;
 }
 
-- (void)setAlternateIconName:(id)a3 completionHandler:(id)a4
+- (void)setAlternateIconName:(id)name completionHandler:(id)handler
 {
-  v7 = [objc_opt_class() _alternateIconQueue];
+  _alternateIconQueue = [objc_opt_class() _alternateIconQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__LSApplicationRecord_AlternateIcons__setAlternateIconName_completionHandler___block_invoke;
   block[3] = &unk_1E6A193B8;
-  block[4] = a3;
+  block[4] = name;
   block[5] = self;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[6] = handler;
+  dispatch_async(_alternateIconQueue, block);
 }
 
 void __78__LSApplicationRecord_AlternateIcons__setAlternateIconName_completionHandler___block_invoke(uint64_t a1)
@@ -2373,17 +2373,17 @@ uint64_t __78__LSApplicationRecord_AlternateIcons__setAlternateIconName_completi
   return result;
 }
 
-- (void)setAlternateIconNameSilently:(id)a3 completionHandler:(id)a4
+- (void)setAlternateIconNameSilently:(id)silently completionHandler:(id)handler
 {
-  v7 = [objc_opt_class() _alternateIconQueue];
+  _alternateIconQueue = [objc_opt_class() _alternateIconQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__LSApplicationRecord_AlternateIcons__setAlternateIconNameSilently_completionHandler___block_invoke;
   block[3] = &unk_1E6A193B8;
-  block[4] = a3;
+  block[4] = silently;
   block[5] = self;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[6] = handler;
+  dispatch_async(_alternateIconQueue, block);
 }
 
 void __86__LSApplicationRecord_AlternateIcons__setAlternateIconNameSilently_completionHandler___block_invoke(uint64_t a1)
@@ -2523,15 +2523,15 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_6
   }
 }
 
-+ (id)applicationRecordsForUserActivityType:(id)a3 limit:(unint64_t)a4 error:(id *)a5
++ (id)applicationRecordsForUserActivityType:(id)type limit:(unint64_t)limit error:(id *)error
 {
-  if (!a3)
+  if (!type)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"LSApplicationRecord.mm" lineNumber:2245 description:{@"Invalid parameter not satisfying: %@", @"userActivityType != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSApplicationRecord.mm" lineNumber:2245 description:{@"Invalid parameter not satisfying: %@", @"userActivityType != nil"}];
   }
 
-  CurrentContext = _LSDatabaseContextGetCurrentContext(a1);
+  CurrentContext = _LSDatabaseContextGetCurrentContext(self);
   v45 = 0;
   v46 = 0;
   v47 = 0;
@@ -2550,7 +2550,7 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_6
     v41 = 0;
     v42 = 0;
     __p = 0;
-    _LSDatabaseGetStringForCFString(*v9, a3, 0);
+    _LSDatabaseGetStringForCFString(*v9, type, 0);
     _LSDatabaseEnumeratingBindingMap(*v43);
     v10 = v35[6];
     v11 = v35[7];
@@ -2583,7 +2583,7 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_6
         if (v21)
         {
           [v15 addObject:v21];
-          if (++v18 >= a4)
+          if (++v18 >= limit)
           {
             v22 = 1;
           }
@@ -2607,7 +2607,7 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_6
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v25 = +[_LSDServiceDomain defaultServiceDomain];
     v26 = LaunchServices::Database::Context::_get(&CurrentContext, v25, 0);
@@ -2623,7 +2623,7 @@ void __56__LSApplicationRecord_AlternateIcons__alternateIconName__block_invoke_6
     }
 
     v24 = 0;
-    *a5 = v27;
+    *error = v27;
   }
 
   else
@@ -2714,16 +2714,16 @@ void __87__LSApplicationRecord_UserActivity__applicationRecordsForUserActivityTy
   }
 }
 
-+ (id)applicationRecordsForUserActivityDomainName:(id)a3 limit:(unint64_t)a4 error:(id *)a5
++ (id)applicationRecordsForUserActivityDomainName:(id)name limit:(unint64_t)limit error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"LSApplicationRecord.mm" lineNumber:2300 description:{@"Invalid parameter not satisfying: %@", @"domainName != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSApplicationRecord.mm" lineNumber:2300 description:{@"Invalid parameter not satisfying: %@", @"domainName != nil"}];
   }
 
-  v10 = [v9 lowercaseString];
+  lowercaseString = [nameCopy lowercaseString];
 
   CurrentContext = _LSDatabaseContextGetCurrentContext(v11);
   v32 = 0;
@@ -2744,18 +2744,18 @@ void __87__LSApplicationRecord_UserActivity__applicationRecordsForUserActivityTy
     v24[2] = __93__LSApplicationRecord_UserActivity__applicationRecordsForUserActivityDomainName_limit_error___block_invoke;
     v24[3] = &unk_1E6A19458;
     v28 = v13;
-    v25 = v10;
+    v25 = lowercaseString;
     v15 = v14;
     v26 = v15;
     v27 = v30;
-    v29 = a4;
+    limitCopy = limit;
     _LSEnumerateViableBundlesOfClass(v13, 2, v24);
     v16 = [v15 copy];
 
     _Block_object_dispose(v30, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     v17 = +[_LSDServiceDomain defaultServiceDomain];
     v18 = LaunchServices::Database::Context::_get(&CurrentContext, v17, 0);
@@ -2771,7 +2771,7 @@ void __87__LSApplicationRecord_UserActivity__applicationRecordsForUserActivityTy
     }
 
     v16 = 0;
-    *a5 = v19;
+    *error = v19;
   }
 
   else
@@ -2821,11 +2821,11 @@ void __93__LSApplicationRecord_UserActivity__applicationRecordsForUserActivityDo
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)supportedGameControllersWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)supportedGameControllersWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [(_LSDatabase *)a3->db store];
-  bundlePersonas = a6->bundlePersonas;
+  [(_LSDatabase *)context->db store];
+  bundlePersonas = bytes->bundlePersonas;
   v12 = MEMORY[0x1E69E9820];
   v13 = v8;
   _CSArrayEnumerateAllValues();
@@ -2845,10 +2845,10 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
 
 - (NSNumber)supportsGameMode
 {
-  v2 = [(LSApplicationRecord *)self _rawMoreFlags];
-  if ((*&v2 & 0x800000) != 0)
+  _rawMoreFlags = [(LSApplicationRecord *)self _rawMoreFlags];
+  if ((*&_rawMoreFlags & 0x800000) != 0)
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithBool:HIBYTE(*&v2) & 1];
+    v3 = [MEMORY[0x1E696AD98] numberWithBool:HIBYTE(*&_rawMoreFlags) & 1];
   }
 
   else
@@ -2859,23 +2859,23 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
   return v3;
 }
 
-- (BOOL)getGenericTranslocationTargetURL:(id *)a3 error:(id *)a4
+- (BOOL)getGenericTranslocationTargetURL:(id *)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[LSApplicationRecord(AppWrappers) getGenericTranslocationTargetURL:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 2423);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[LSApplicationRecord(AppWrappers) getGenericTranslocationTargetURL:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 2423);
   }
 
   return 0;
 }
 
-- (id)bundleMetadataReturningError:(id *)a3
+- (id)bundleMetadataReturningError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(LSBundleRecord *)self bundleIdentifier];
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
   v13 = 0;
-  v7 = (softLinkMobileInstallationCopyAppMetadata[0])(v6, &v13);
+  v7 = (softLinkMobileInstallationCopyAppMetadata[0])(bundleIdentifier, &v13);
   v8 = v13;
 
   if (!v7)
@@ -2884,16 +2884,16 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v8;
       _os_log_impl(&dword_18162D000, v9, OS_LOG_TYPE_ERROR, "Failed to lookup metadata for app %@: %@", buf, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v8;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -2906,33 +2906,33 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
 
 - (unint64_t)applicationDSID
 {
-  v2 = [(LSApplicationRecord(MobileInstall) *)self sensitiveDataProxy];
-  v3 = [v2 applicationDSID];
+  sensitiveDataProxy = [(LSApplicationRecord(MobileInstall) *)self sensitiveDataProxy];
+  applicationDSID = [sensitiveDataProxy applicationDSID];
 
-  return v3;
+  return applicationDSID;
 }
 
 - (unint64_t)applicationDownloaderDSID
 {
-  v2 = [(LSApplicationRecord(MobileInstall) *)self sensitiveDataProxy];
-  v3 = [v2 downloaderDSID];
+  sensitiveDataProxy = [(LSApplicationRecord(MobileInstall) *)self sensitiveDataProxy];
+  downloaderDSID = [sensitiveDataProxy downloaderDSID];
 
-  return v3;
+  return downloaderDSID;
 }
 
 - (unint64_t)applicationFamilyID
 {
-  v2 = [(LSApplicationRecord(MobileInstall) *)self sensitiveDataProxy];
-  v3 = [v2 familyID];
+  sensitiveDataProxy = [(LSApplicationRecord(MobileInstall) *)self sensitiveDataProxy];
+  familyID = [sensitiveDataProxy familyID];
 
-  return v3;
+  return familyID;
 }
 
-- (id)stashedAppMetadataWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)stashedAppMetadataWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  if (a6->recordModificationTime)
+  if (bytes->recordModificationTime)
   {
-    v7 = [[LSStashedAppMetadata alloc] initWithContext:a3 unitID:a6->recordModificationTime];
+    v7 = [[LSStashedAppMetadata alloc] initWithContext:context unitID:bytes->recordModificationTime];
   }
 
   else
@@ -2943,10 +2943,10 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
   return v7;
 }
 
-- (id)serializedPlaceholderURLWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)serializedPlaceholderURLWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  mobileInstallIDs = a6->mobileInstallIDs;
-  [(_LSDatabase *)a3->db store];
+  mobileInstallIDs = bytes->mobileInstallIDs;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
   if (v7)
   {
@@ -2961,25 +2961,25 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
   return v8;
 }
 
-- (LSApplicationRecord)initWithBundleIdentifierOfCompanionApplication:(id)a3 error:(id *)a4
+- (LSApplicationRecord)initWithBundleIdentifierOfCompanionApplication:(id)application error:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v9 = *MEMORY[0x1E696A278];
     v10[0] = @"This platform does not support discovery of companion application identifiers.";
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, v6, "[LSApplicationRecord(watchOS) initWithBundleIdentifierOfCompanionApplication:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 2819);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, v6, "[LSApplicationRecord(watchOS) initWithBundleIdentifierOfCompanionApplication:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSApplicationRecord.mm", 2819);
   }
 
   v7 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (id)typeForInstallMachineryWithContext:(LSContext *)a3 tableID:(unsigned int)a4 unitID:(unsigned int)a5 unitBytes:(const LSBundleData *)a6
+- (id)typeForInstallMachineryWithContext:(LSContext *)context tableID:(unsigned int)d unitID:(unsigned int)iD unitBytes:(const LSBundleData *)bytes
 {
-  vendorName = a6->vendorName;
-  [(_LSDatabase *)a3->db store];
+  vendorName = bytes->vendorName;
+  [(_LSDatabase *)context->db store];
   v7 = _CSStringCopyCFString();
 
   return v7;
@@ -2989,8 +2989,8 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
 {
   if (([(LSApplicationRecord *)self _rawPlistFlags]& 0x20) != 0)
   {
-    v4 = [(LSBundleRecord *)self infoDictionary];
-    v3 = [v4 objectForKey:@"LSEligibilityDeletionDomain" ofClass:objc_opt_class()];
+    infoDictionary = [(LSBundleRecord *)self infoDictionary];
+    v3 = [infoDictionary objectForKey:@"LSEligibilityDeletionDomain" ofClass:objc_opt_class()];
   }
 
   else
@@ -3003,8 +3003,8 @@ void __92__LSApplicationRecord_Gaming__supportedGameControllersWithContext_table
 
 - (unint64_t)sequenceNumber
 {
-  v2 = [(LSRecord *)self persistentIdentifier];
-  SequenceNumberInternal = _LSApplicationRecordPersistentIdentifierGetSequenceNumberInternal(v2);
+  persistentIdentifier = [(LSRecord *)self persistentIdentifier];
+  SequenceNumberInternal = _LSApplicationRecordPersistentIdentifierGetSequenceNumberInternal(persistentIdentifier);
 
   return SequenceNumberInternal;
 }
@@ -3035,8 +3035,8 @@ void __60__LSApplicationRecord_Identities__personalPersonaAttributes__block_invo
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(LSBundleRecord *)self claimRecords];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  claimRecords = [(LSBundleRecord *)self claimRecords];
+  v4 = [claimRecords countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v4)
   {
     v5 = *v25;
@@ -3046,7 +3046,7 @@ void __60__LSApplicationRecord_Identities__personalPersonaAttributes__block_invo
       {
         if (*v25 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(claimRecords);
         }
 
         v7 = *(*(&v24 + 1) + 8 * i);
@@ -3057,7 +3057,7 @@ void __60__LSApplicationRecord_Identities__personalPersonaAttributes__block_invo
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v4 = [claimRecords countByEnumeratingWithState:&v24 objects:v33 count:16];
       if (v4)
       {
         continue;
@@ -3074,9 +3074,9 @@ LABEL_11:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v19 typeIdentifiers];
+  typeIdentifiers = [v19 typeIdentifiers];
   v9 = 0;
-  v10 = [v8 countByEnumeratingWithState:&v20 objects:v32 count:16];
+  v10 = [typeIdentifiers countByEnumeratingWithState:&v20 objects:v32 count:16];
   if (v10)
   {
     v11 = *v21;
@@ -3086,7 +3086,7 @@ LABEL_11:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(typeIdentifiers);
         }
 
         v13 = *(*(&v20 + 1) + 8 * j);
@@ -3101,17 +3101,17 @@ LABEL_11:
           v15 = _LSDefaultLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
           {
-            v16 = [(LSBundleRecord *)self bundleIdentifier];
+            bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
             *buf = 138543618;
             v29 = v13;
             v30 = 2114;
-            v31 = v16;
+            v31 = bundleIdentifier;
             _os_log_fault_impl(&dword_18162D000, v15, OS_LOG_TYPE_FAULT, "no category for type %{public}@ in default apps claim of bundle %{public}@!", buf, 0x16u);
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v32 count:16];
+      v10 = [typeIdentifiers countByEnumeratingWithState:&v20 objects:v32 count:16];
     }
 
     while (v10);
@@ -3123,15 +3123,15 @@ LABEL_11:
 
 - (BOOL)mayBeBUIVisible
 {
-  v2 = [(LSApplicationRecord *)self typeForInstallMachinery];
-  if ([v2 isEqualToString:@"System"])
+  typeForInstallMachinery = [(LSApplicationRecord *)self typeForInstallMachinery];
+  if ([typeForInstallMachinery isEqualToString:@"System"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"User"];
+    v3 = [typeForInstallMachinery isEqualToString:@"User"];
   }
 
   return v3;
@@ -3141,8 +3141,8 @@ LABEL_11:
 {
   if (([(LSApplicationRecord *)self _rawPlistFlags]& 0x40) != 0)
   {
-    v4 = [(LSBundleRecord *)self infoDictionary];
-    v3 = [v4 objectForKey:@"JSNotificationURLFormat" ofClass:objc_opt_class()];
+    infoDictionary = [(LSBundleRecord *)self infoDictionary];
+    v3 = [infoDictionary objectForKey:@"JSNotificationURLFormat" ofClass:objc_opt_class()];
   }
 
   else
@@ -3159,7 +3159,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __52__LSApplicationRecord_Redaction__redactedProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[LSApplicationRecord(Redaction) redactedProperties]::once != -1)
   {
     dispatch_once(&+[LSApplicationRecord(Redaction) redactedProperties]::once, block);
@@ -3180,14 +3180,14 @@ void __52__LSApplicationRecord_Redaction__redactedProperties__block_invoke(uint6
   +[LSApplicationRecord(Redaction) redactedProperties]::properties = v2;
 }
 
-- (id)recordForUnredactingWithContext:(LSContext *)a3 error:(id *)a4
+- (id)recordForUnredactingWithContext:(LSContext *)context error:(id *)error
 {
   v7 = [LSApplicationRecord alloc];
-  v8 = [(LSBundleRecord *)self _node];
-  v9 = [(LSBundleRecord *)self bundleIdentifier];
-  v10 = [(LSApplicationRecord *)self isPlaceholder];
-  v11 = [(LSApplicationRecord *)self isSystemPlaceholder];
-  if (v10)
+  _node = [(LSBundleRecord *)self _node];
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
+  isPlaceholder = [(LSApplicationRecord *)self isPlaceholder];
+  isSystemPlaceholder = [(LSApplicationRecord *)self isSystemPlaceholder];
+  if (isPlaceholder)
   {
     v12 = 3;
   }
@@ -3197,12 +3197,12 @@ void __52__LSApplicationRecord_Redaction__redactedProperties__block_invoke(uint6
     v12 = 0;
   }
 
-  v13 = [(LSApplicationRecord *)v7 _initWithNode:v8 bundleIdentifier:v9 placeholderBehavior:v12 systemPlaceholder:v11 itemID:0 forceInBundleContainer:0 context:a3 error:a4];
+  v13 = [(LSApplicationRecord *)v7 _initWithNode:_node bundleIdentifier:bundleIdentifier placeholderBehavior:v12 systemPlaceholder:isSystemPlaceholder itemID:0 forceInBundleContainer:0 context:context error:error];
 
   return v13;
 }
 
-- (id)getApplicationExtensionDiagnosticDescriptionWithError:(id *)a3
+- (id)getApplicationExtensionDiagnosticDescriptionWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -3230,9 +3230,9 @@ void __52__LSApplicationRecord_Redaction__redactedProperties__block_invoke(uint6
   v6[5] = &v8;
   v6[6] = &v14;
   [(LSRecord *)self _ifAttached:v7 else:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v4 = v9[5];
@@ -3314,28 +3314,28 @@ LABEL_10:
   v20 = 0;
 }
 
-+ (id)enumeratorWithOptions:(unint64_t)a3
++ (id)enumeratorWithOptions:(unint64_t)options
 {
-  v3 = [[_LSApplicationRecordEnumerator alloc] initWithContext:0 volumeURL:0 options:a3];
+  v3 = [[_LSApplicationRecordEnumerator alloc] initWithContext:0 volumeURL:0 options:options];
 
   return v3;
 }
 
-+ (id)enumeratorOnVolumeAtURL:(id)a3 options:(unint64_t)a4
++ (id)enumeratorOnVolumeAtURL:(id)l options:(unint64_t)options
 {
-  if (!a3)
+  if (!l)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"LSRecord+Enumeration.mm" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"volumeURL != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSRecord+Enumeration.mm" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"volumeURL != nil"}];
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"LSRecord+Enumeration.mm" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"volumeURL.fileURL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LSRecord+Enumeration.mm" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"volumeURL.fileURL"}];
   }
 
-  v8 = [[_LSApplicationRecordEnumerator alloc] initWithContext:0 volumeURL:a3 options:a4];
+  v8 = [[_LSApplicationRecordEnumerator alloc] initWithContext:0 volumeURL:l options:options];
 
   return v8;
 }
@@ -3348,16 +3348,16 @@ LABEL_10:
   return v2;
 }
 
-- (id)linkedChildApplicationRecordEnumeratorWithOptions:(unint64_t)a3
+- (id)linkedChildApplicationRecordEnumeratorWithOptions:(unint64_t)options
 {
   v5 = [_LSLinkedChildApplicationRecordEnumerator alloc];
-  v6 = [(LSBundleRecord *)self bundleIdentifier];
-  v7 = [(_LSLinkedChildApplicationRecordEnumerator *)v5 initWithContext:0 parentBundleID:v6 options:a3];
+  bundleIdentifier = [(LSBundleRecord *)self bundleIdentifier];
+  v7 = [(_LSLinkedChildApplicationRecordEnumerator *)v5 initWithContext:0 parentBundleID:bundleIdentifier options:options];
 
   return v7;
 }
 
-+ (id)enumeratorForViableDefaultAppsForCategory:(unint64_t)a3 options:(unint64_t)a4
++ (id)enumeratorForViableDefaultAppsForCategory:(unint64_t)category options:(unint64_t)options
 {
   v24 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -3369,7 +3369,7 @@ LABEL_10:
 
   if (v7)
   {
-    bundleUnitsClaimingDefaultAppCategory(v7, a3, buf);
+    bundleUnitsClaimingDefaultAppCategory(v7, category, buf);
     v8 = *buf;
     v9 = *&buf[8];
   }
@@ -3403,7 +3403,7 @@ LABEL_10:
     v9 = 0;
   }
 
-  v11 = [[_LSApplicationRecordSpecificUnitsEnumerator alloc] initWithContext:v7 options:a4 unitIDs:v8 unitCount:(v9 - v8) >> 2];
+  v11 = [[_LSApplicationRecordSpecificUnitsEnumerator alloc] initWithContext:v7 options:options unitIDs:v8 unitCount:(v9 - v8) >> 2];
   if (v19 && v21 == 1)
   {
     _LSContextDestroy(v19);
@@ -3427,7 +3427,7 @@ LABEL_10:
   return v11;
 }
 
-+ (id)displayOrderEnumeratorForViableDefaultAppsForCategory:(unint64_t)a3 options:(unint64_t)a4
++ (id)displayOrderEnumeratorForViableDefaultAppsForCategory:(unint64_t)category options:(unint64_t)options
 {
   v29 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -3439,7 +3439,7 @@ LABEL_10:
 
   if (v7)
   {
-    bundleUnitsClaimingDefaultAppCategory(v7, a3, buf);
+    bundleUnitsClaimingDefaultAppCategory(v7, category, buf);
     v8 = *buf;
     v9 = *&buf[8];
     if (*&buf[8] - *buf >= 5uLL)
@@ -3495,7 +3495,7 @@ LABEL_10:
     v8 = 0;
   }
 
-  v14 = [[_LSApplicationRecordSpecificUnitsEnumerator alloc] initWithContext:v7 options:a4 unitIDs:v8 unitCount:(v9 - v8) >> 2];
+  v14 = [[_LSApplicationRecordSpecificUnitsEnumerator alloc] initWithContext:v7 options:options unitIDs:v8 unitCount:(v9 - v8) >> 2];
   if (v22 && v24 == 1)
   {
     _LSContextDestroy(v22);
@@ -3519,9 +3519,9 @@ LABEL_10:
   return v14;
 }
 
-+ (id)enumeratorForApplicationsOnSameVolumeWithinDirectoryAtURL:(id)a3 enumerationOptions:(unint64_t)a4 filteringOptions:(unint64_t)a5
++ (id)enumeratorForApplicationsOnSameVolumeWithinDirectoryAtURL:(id)l enumerationOptions:(unint64_t)options filteringOptions:(unint64_t)filteringOptions
 {
-  v5 = [[_LSApplicationRecordsWithinDirectoryEnumerator alloc] initWithContext:0 directoryURL:a3 volumeURL:0 enumerationOptions:a4 filteringOptions:a5];
+  v5 = [[_LSApplicationRecordsWithinDirectoryEnumerator alloc] initWithContext:0 directoryURL:l volumeURL:0 enumerationOptions:options filteringOptions:filteringOptions];
 
   return v5;
 }
@@ -3547,7 +3547,7 @@ void __87__LSApplicationRecord_applicationExtensionRecordsWithContext_tableID_un
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18162D000, a2, OS_LOG_TYPE_ERROR, "Error determining whether or not to fetch from container manager %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

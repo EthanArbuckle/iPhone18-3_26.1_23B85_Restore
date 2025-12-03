@@ -1,11 +1,11 @@
 @interface DragHandleLayer
-- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithCoder:(id)a3;
-- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithLayer:(id)a3;
+- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithCoder:(id)coder;
+- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithLayer:(id)layer;
 @end
 
 @implementation DragHandleLayer
 
-- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithLayer:(id)a3
+- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_257ED0160();
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithCoder:(id)a3
+- (_TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupportP33_F38CBD44072C53D5EE09301D90112CC715DragHandleLayer__scale) = 0x3FF0000000000000;
   result = sub_257ED0410();

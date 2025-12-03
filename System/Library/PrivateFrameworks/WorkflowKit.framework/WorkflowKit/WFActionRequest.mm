@@ -1,6 +1,6 @@
 @interface WFActionRequest
-- (BOOL)isEqual:(id)a3;
-- (WFActionRequest)initWithActionIdentifier:(id)a3 serializedParameters:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFActionRequest)initWithActionIdentifier:(id)identifier serializedParameters:(id)parameters;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,23 +9,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WFActionRequest *)self actionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(WFActionRequest *)self serializedParameters];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFActionRequest *)self result];
-  v8 = [v7 hash];
+  actionIdentifier = [(WFActionRequest *)self actionIdentifier];
+  v4 = [actionIdentifier hash];
+  serializedParameters = [(WFActionRequest *)self serializedParameters];
+  v6 = [serializedParameters hash] ^ v4;
+  result = [(WFActionRequest *)self result];
+  v8 = [result hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v27.receiver = self;
   v27.super_class = WFActionRequest;
-  v5 = [(WFActionRequest *)&v27 isEqual:v4];
-  v6 = v4;
+  v5 = [(WFActionRequest *)&v27 isEqual:equalCopy];
+  v6 = equalCopy;
   if (v6)
   {
     objc_opt_class();
@@ -49,10 +49,10 @@
 
   if (v5)
   {
-    v9 = [(WFActionRequest *)self actionIdentifier];
-    v10 = [v8 actionIdentifier];
-    v11 = v9;
-    v12 = v10;
+    actionIdentifier = [(WFActionRequest *)self actionIdentifier];
+    actionIdentifier2 = [v8 actionIdentifier];
+    v11 = actionIdentifier;
+    v12 = actionIdentifier2;
     v13 = v12;
     if (v11 == v12)
     {
@@ -79,10 +79,10 @@ LABEL_28:
       }
     }
 
-    v18 = [(WFActionRequest *)self serializedParameters];
-    v19 = [v8 serializedParameters];
-    v16 = v18;
-    v20 = v19;
+    serializedParameters = [(WFActionRequest *)self serializedParameters];
+    serializedParameters2 = [v8 serializedParameters];
+    v16 = serializedParameters;
+    v20 = serializedParameters2;
     v15 = v20;
     if (v16 == v20)
     {
@@ -109,10 +109,10 @@ LABEL_27:
       }
     }
 
-    v23 = [(WFActionRequest *)self result];
-    v24 = [v8 result];
-    v22 = v23;
-    v25 = v24;
+    result = [(WFActionRequest *)self result];
+    result2 = [v8 result];
+    v22 = result;
+    v25 = result2;
     v21 = v25;
     if (v22 == v25)
     {
@@ -143,26 +143,26 @@ LABEL_29:
   v8.receiver = self;
   v8.super_class = WFActionRequest;
   v4 = [(WFActionRequest *)&v8 description];
-  v5 = [(WFActionRequest *)self actionIdentifier];
-  v6 = [v3 stringWithFormat:@"%@ for %@", v4, v5];
+  actionIdentifier = [(WFActionRequest *)self actionIdentifier];
+  v6 = [v3 stringWithFormat:@"%@ for %@", v4, actionIdentifier];
 
   return v6;
 }
 
-- (WFActionRequest)initWithActionIdentifier:(id)a3 serializedParameters:(id)a4
+- (WFActionRequest)initWithActionIdentifier:(id)identifier serializedParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = WFActionRequest;
   v8 = [(WFActionRequest *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     actionIdentifier = v8->_actionIdentifier;
     v8->_actionIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [parametersCopy copy];
     serializedParameters = v8->_serializedParameters;
     v8->_serializedParameters = v11;
 

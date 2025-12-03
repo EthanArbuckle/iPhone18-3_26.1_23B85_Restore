@@ -1,82 +1,82 @@
 @interface ICDServer
 + (ICDServer)server;
 - (BOOL)_canCompleteStartupSequence;
-- (BOOL)cancelOperationsByClass:(Class)a3;
-- (BOOL)hasOperationsOfClass:(Class)a3;
+- (BOOL)cancelOperationsByClass:(Class)class;
+- (BOOL)hasOperationsOfClass:(Class)class;
 - (BOOL)isStartupSequenceCompleted;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ICDCloudBadgeService)cloudBadgingService;
 - (ICDCloudServiceStatusMonitor)cloudServiceStatusMonitor;
 - (id)_init;
-- (id)_setupXPCListenerForService:(int64_t)a3;
+- (id)_setupXPCListenerForService:(int64_t)service;
 - (id)_stateDump;
 - (id)_supportedInterfaceForCloudServerListenerXPCConnection;
 - (id)_supportedInterfaceForCloudServerXPCConnection;
 - (id)_urlResolutionCacheFilePath;
-- (id)daemonOptionsForConfiguration:(id)a3;
-- (id)handlerWithType:(int64_t)a3 configuration:(id)a4 error:(id *)a5;
-- (int64_t)_ICCloudServerSupportedServiceForXPCListener:(id)a3;
+- (id)daemonOptionsForConfiguration:(id)configuration;
+- (id)handlerWithType:(int64_t)type configuration:(id)configuration error:(id *)error;
+- (int64_t)_ICCloudServerSupportedServiceForXPCListener:(id)listener;
 - (void)_completeStartupSequenceIfNeeded;
-- (void)_ensureMusicSubscriptionKeysAreAvailableForConfiguration:(id)a3;
-- (void)_ensureSubscriptionInformationIsUpToDateForConfiguration:(id)a3;
+- (void)_ensureMusicSubscriptionKeysAreAvailableForConfiguration:(id)configuration;
+- (void)_ensureSubscriptionInformationIsUpToDateForConfiguration:(id)configuration;
 - (void)_ensureURLResolutionCacheFileExists;
-- (void)_handleApplicationRegistrationNotification:(id)a3;
-- (void)_handleFamilyContentDeletionEvent:(id)a3;
+- (void)_handleApplicationRegistrationNotification:(id)notification;
+- (void)_handleFamilyContentDeletionEvent:(id)event;
 - (void)_handleFlushPlayActivityEvents;
-- (void)_handleURLBagProviderDidUpdateBagNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
+- (void)_handleURLBagProviderDidUpdateBagNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
 - (void)_initializeAncillaryServices;
 - (void)_initializeSocialFeaturesAvailabilityIfNeeded;
-- (void)_migrateToLatestUserVersionForConfigurations:(id)a3;
+- (void)_migrateToLatestUserVersionForConfigurations:(id)configurations;
 - (void)_performPeriodicSubscriptionTasks;
 - (void)_precacheHomeProperties;
-- (void)_preprocessURLResolutionCacheDictionary:(id)a3;
+- (void)_preprocessURLResolutionCacheDictionary:(id)dictionary;
 - (void)_retryLoadingCloudLibraryForSecondaryAccountsOnAppleTV;
 - (void)_scheduleFixFaultyMusicKitPlaybackDonations;
 - (void)_setupInternalQueues;
-- (void)_setupMPMediaLibraryFilteringForConfigurations:(id)a3;
+- (void)_setupMPMediaLibraryFilteringForConfigurations:(id)configurations;
 - (void)_setupSigtermHandler;
 - (void)_startAncillaryServices;
 - (void)_stopAncillaryServices;
 - (void)_transitionAppleTVToParallelMultiUserLibraryManagementPolicy;
 - (void)_updateAccountServerCachedData;
-- (void)_updateAirPlaySettingsForConfiguration:(id)a3;
-- (void)_updateAllowsExplicitContentSettingForConfiguration:(id)a3 automatically:(BOOL)a4;
+- (void)_updateAirPlaySettingsForConfiguration:(id)configuration;
+- (void)_updateAllowsExplicitContentSettingForConfiguration:(id)configuration automatically:(BOOL)automatically;
 - (void)_updateEnhancedAudioAvailabilityIfNeeded;
 - (void)_updateHTTPCookieStoreForContentRestrictions;
-- (void)_updateMediaRemoteCommands:(BOOL)a3;
-- (void)_updateSocialFeaturesAvailabilityIfNeededUsingBag:(id)a3;
+- (void)_updateMediaRemoteCommands:(BOOL)commands;
+- (void)_updateSocialFeaturesAvailabilityIfNeededUsingBag:(id)bag;
 - (void)_updateURLResolutionCacheFile;
-- (void)_writeURLResolutionCacheFileUsingBag:(id)a3;
+- (void)_writeURLResolutionCacheFileUsingBag:(id)bag;
 - (void)dealloc;
-- (void)enumerateBackgroundOperationsUsingBlock:(id)a3;
-- (void)enumerateOperationsUsingBlock:(id)a3;
+- (void)enumerateBackgroundOperationsUsingBlock:(id)block;
+- (void)enumerateOperationsUsingBlock:(id)block;
 - (void)fetchEnhancedAudioOfflineKeys;
-- (void)getListenerEndpointForService:(int64_t)a3 completion:(id)a4;
+- (void)getListenerEndpointForService:(int64_t)service completion:(id)completion;
 - (void)listCloudServerOperations;
-- (void)notificationsManager:(id)a3 didReceiveActiveUserIdentityDidChangeNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveAllowsExplicitContentDidChangeNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveAllowsMusicVideosDidChangeNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveApplicationInstallationNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveAuthServiceTokenDidChangeNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveFamilyDeletionEventNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveHandlerCoordinatorFinishedInitializationNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveSubscriptionStatusDidChangeNotification:(id)a4;
-- (void)notificationsManager:(id)a3 didReceiveUserIdentityStoreDidChangeNotification:(id)a4;
-- (void)notificationsManagerDidReceiveCellularDataRestrictionDidChangeDarwinNotification:(id)a3;
-- (void)notificationsManagerDidReceiveCloudAuthenticationDidChangeDarwinNotification:(id)a3;
-- (void)notificationsManagerDidReceiveFamilyCircleChangedNotification:(id)a3;
-- (void)notificationsManagerDidReceiveFirstUnlockNotification:(id)a3;
-- (void)notificationsManagerDidReceiveLibraryImportDidFinishDarwinNotification:(id)a3;
-- (void)notificationsManagerDidReceiveMusicSettingsChangedNotification:(id)a3;
-- (void)notificationsManagerDidReceivePhoneNumberChangedNotification:(id)a3;
-- (void)notificationsManagerDidRecieveICPlayActivityFlushInternalTestRequestNotification:(id)a3;
-- (void)notifyDeviceSetupFinishedWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)notificationsManager:(id)manager didReceiveActiveUserIdentityDidChangeNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveAllowsExplicitContentDidChangeNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveAllowsMusicVideosDidChangeNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveApplicationInstallationNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveAuthServiceTokenDidChangeNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveFamilyDeletionEventNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveHandlerCoordinatorFinishedInitializationNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveSubscriptionStatusDidChangeNotification:(id)notification;
+- (void)notificationsManager:(id)manager didReceiveUserIdentityStoreDidChangeNotification:(id)notification;
+- (void)notificationsManagerDidReceiveCellularDataRestrictionDidChangeDarwinNotification:(id)notification;
+- (void)notificationsManagerDidReceiveCloudAuthenticationDidChangeDarwinNotification:(id)notification;
+- (void)notificationsManagerDidReceiveFamilyCircleChangedNotification:(id)notification;
+- (void)notificationsManagerDidReceiveFirstUnlockNotification:(id)notification;
+- (void)notificationsManagerDidReceiveLibraryImportDidFinishDarwinNotification:(id)notification;
+- (void)notificationsManagerDidReceiveMusicSettingsChangedNotification:(id)notification;
+- (void)notificationsManagerDidReceivePhoneNumberChangedNotification:(id)notification;
+- (void)notificationsManagerDidRecieveICPlayActivityFlushInternalTestRequestNotification:(id)notification;
+- (void)notifyDeviceSetupFinishedWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)processPendingKeyInvalidations;
 - (void)refreshEnhancedAudioSharedKeys;
-- (void)scheduleBackgroundUpdateType:(int64_t)a3 forConfiguration:(id)a4;
-- (void)setStartupSequenceCompleted:(BOOL)a3;
+- (void)scheduleBackgroundUpdateType:(int64_t)type forConfiguration:(id)configuration;
+- (void)setStartupSequenceCompleted:(BOOL)completed;
 - (void)start;
 - (void)stop;
 @end
@@ -85,23 +85,23 @@
 
 - (BOOL)isStartupSequenceCompleted
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICDServer *)self serialQueue];
+  serialQueue = [(ICDServer *)self serialQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000023E8;
   v5[3] = &unk_1001DEF50;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 + (ICDServer)server
@@ -125,22 +125,22 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "processing pending key invalidations", v5, 2u);
   }
 
-  v4 = [(ICDServer *)self enhancedAudioKeyManager];
-  [v4 processPendingKeyInvalidations];
+  enhancedAudioKeyManager = [(ICDServer *)self enhancedAudioKeyManager];
+  [enhancedAudioKeyManager processPendingKeyInvalidations];
 }
 
-- (void)_updateAirPlaySettingsForConfiguration:(id)a3
+- (void)_updateAirPlaySettingsForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v5 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.airplay"];
     v6 = [v5 BOOLForKey:@"isAppleMusicSubscriber"];
     v7 = [v5 BOOLForKey:@"cloudLibraryIsOn"];
-    v8 = [v4 userIdentityStore];
-    v9 = [v4 userIdentity];
+    userIdentityStore = [configurationCopy userIdentityStore];
+    userIdentity = [configurationCopy userIdentity];
     v21 = 0;
-    v10 = [v8 getPropertiesForUserIdentity:v9 error:&v21];
+    v10 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v21];
     v11 = v21;
 
     if (v11)
@@ -149,18 +149,18 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2114;
         v25 = v11;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "ICDServer %p - Failed to load identity properties. err=%{public}@", buf, 0x16u);
       }
 
-      v13 = v7;
+      isActiveLocker = v7;
     }
 
     else
     {
-      v13 = [v10 isActiveLocker];
+      isActiveLocker = [v10 isActiveLocker];
     }
 
     v15 = +[ICMusicSubscriptionStatusController sharedStatusController];
@@ -169,7 +169,7 @@
     v16[2] = sub_10006144C;
     v16[3] = &unk_1001DBDA8;
     v18 = v6;
-    v19 = v13;
+    v19 = isActiveLocker;
     v20 = v7;
     v17 = v5;
     v14 = v5;
@@ -182,29 +182,29 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ICDServer %p - _updateAirPlaySettingsForConfiguration - No action [No active configuration]", buf, 0xCu);
     }
   }
 }
 
-- (void)_handleFamilyContentDeletionEvent:(id)a3
+- (void)_handleFamilyContentDeletionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ICDServer *)self accountManager];
-  v6 = [v5 activeConfiguration];
+  eventCopy = event;
+  accountManager = [(ICDServer *)self accountManager];
+  activeConfiguration = [accountManager activeConfiguration];
 
-  if (v6)
+  if (activeConfiguration)
   {
-    v21 = v6;
-    v7 = [v6 userIdentity];
-    v8 = [ML3MusicLibrary musicLibraryForUserAccount:v7];
+    v21 = activeConfiguration;
+    userIdentity = [activeConfiguration userIdentity];
+    v8 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
 
     v9 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v29 = [v4 count];
+      selfCopy = [eventCopy count];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received %llu account pairs for family content removal.", buf, 0xCu);
     }
 
@@ -212,8 +212,8 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v22 = v4;
-    obj = v4;
+    v22 = eventCopy;
+    obj = eventCopy;
     v10 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
     if (v10)
     {
@@ -233,17 +233,17 @@
           v16 = os_log_create(v13, "Accounts");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v15 purchaserAccountID];
+            purchaserAccountID = [v15 purchaserAccountID];
             v18 = v13;
-            v19 = [v15 downloaderAccountID];
-            v20 = [v15 familyID];
+            downloaderAccountID = [v15 downloaderAccountID];
+            familyID = [v15 familyID];
             *buf = 134218496;
-            v29 = v17;
+            selfCopy = purchaserAccountID;
             v30 = 2048;
-            v31 = v19;
+            v31 = downloaderAccountID;
             v13 = v18;
             v32 = 2048;
-            v33 = v20;
+            v33 = familyID;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Family content removal (purchaser = %lld, downloader = %lld, family = %lld", buf, 0x20u);
           }
 
@@ -256,8 +256,8 @@
       while (v11);
     }
 
-    v6 = v21;
-    v4 = v22;
+    activeConfiguration = v21;
+    eventCopy = v22;
   }
 
   else
@@ -266,7 +266,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v29 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ICDServer %p - _handleFamilyContentDeletionEvent - No action [No active configuration]", buf, 0xCu);
     }
   }
@@ -291,39 +291,39 @@
   dispatch_async(v3, block);
 }
 
-- (void)_updateMediaRemoteCommands:(BOOL)a3
+- (void)_updateMediaRemoteCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1024;
-    v13 = v3;
+    v13 = commandsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Resetting media remote commands if needed (force = %{BOOL}u", buf, 0x12u);
   }
 
-  if (v3)
+  if (commandsCopy)
   {
     goto LABEL_9;
   }
 
-  v6 = [(ICDAccountManaging *)self->_accountManager stateChange];
-  if (([v6 supportedConfigurationsChanged] & 1) != 0 || objc_msgSend(v6, "activeConfigurationChanged"))
+  stateChange = [(ICDAccountManaging *)self->_accountManager stateChange];
+  if (([stateChange supportedConfigurationsChanged] & 1) != 0 || objc_msgSend(stateChange, "activeConfigurationChanged"))
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Resetting media remote commands because the account state has changed", buf, 0xCu);
     }
 
 LABEL_9:
     v8 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
     v9 = dispatch_get_global_queue(21, 0);
-    v6 = v8;
+    stateChange = v8;
     MRMediaRemoteClearDefaultSupportedCommandsForApp();
   }
 }
@@ -338,9 +338,9 @@ LABEL_9:
   if (v4)
   {
     v6 = [AMSAccountIdentity alloc];
-    v7 = [v4 ic_DSID];
-    v8 = [v4 ic_altDSID];
-    v9 = [v6 initWithDSID:v7 altDSID:v8];
+    ic_DSID = [v4 ic_DSID];
+    ic_altDSID = [v4 ic_altDSID];
+    v9 = [v6 initWithDSID:ic_DSID altDSID:ic_altDSID];
 
     v10 = +[AMSAccountCachedServerData sharedInstance];
     v11 = [v10 BOOLForKey:15 accountID:v9 updateBlock:&stru_1001DBD58];
@@ -349,7 +349,7 @@ LABEL_9:
     v12[2] = sub_1000620F0;
     v12[3] = &unk_1001DBD80;
     v13 = v4;
-    v14 = self;
+    selfCopy = self;
     [v11 resultWithTimeout:v12 completion:5.0];
   }
 
@@ -359,7 +359,7 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2114;
       v19 = v5;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ - _updateAccountServerCachedData failed to load active account. err=%{public}@", buf, 0x16u);
@@ -409,7 +409,7 @@ LABEL_9:
   v7[2] = sub_100063564;
   v7[3] = &unk_1001DFB88;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   v6 = v3;
   [v5 getBagForRequestContext:v4 forceRefetch:0 withCompletionHandler:v7];
 }
@@ -421,30 +421,30 @@ LABEL_9:
   {
     v4 = +[ICDeviceInfo currentDeviceInfo];
     v10 = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
     v13 = v4;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Transitioning device=%{public}@ to Parallel Multi User", &v10, 0x16u);
   }
 
-  v5 = [(ICDServer *)self accountManager];
-  [v5 changeLibraryManagementPolicy:2];
+  accountManager = [(ICDServer *)self accountManager];
+  [accountManager changeLibraryManagementPolicy:2];
 
-  v6 = [(ICDServer *)self accountManager];
-  [v6 updateState];
+  accountManager2 = [(ICDServer *)self accountManager];
+  [accountManager2 updateState];
 
-  v7 = [(ICDServer *)self handlerCoordinator];
-  v8 = [(ICDServer *)self accountManager];
-  v9 = [v8 stateChange];
-  [v7 changeLibraryManagementPolicy:2 withAccountsStateChange:v9];
+  handlerCoordinator = [(ICDServer *)self handlerCoordinator];
+  accountManager3 = [(ICDServer *)self accountManager];
+  stateChange = [accountManager3 stateChange];
+  [handlerCoordinator changeLibraryManagementPolicy:2 withAccountsStateChange:stateChange];
 }
 
 - (void)_retryLoadingCloudLibraryForSecondaryAccountsOnAppleTV
 {
   v4 = +[ICDeviceInfo currentDeviceInfo];
-  v5 = [v4 isAppleTV];
+  isAppleTV = [v4 isAppleTV];
 
-  if ((v5 & 1) == 0)
+  if ((isAppleTV & 1) == 0)
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"ICDServer.m" lineNumber:1715 description:@"_retryLoadingCloudLibraryForSecondaryAccountsOnAppleTV: is only valid for AppleTV."];
@@ -460,10 +460,10 @@ LABEL_9:
   dispatch_after(v6, serialQueue, block);
 }
 
-- (void)_preprocessURLResolutionCacheDictionary:(id)a3
+- (void)_preprocessURLResolutionCacheDictionary:(id)dictionary
 {
-  v25 = a3;
-  [v25 objectForKey:@"p2-url-resolution"];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy objectForKey:@"p2-url-resolution"];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -612,14 +612,14 @@ LABEL_17:
     v24 = [v17 count];
     if (v24 != [v18 count])
     {
-      [v25 setObject:v17 forKey:@"p2-url-resolution"];
+      [dictionaryCopy setObject:v17 forKey:@"p2-url-resolution"];
     }
   }
 }
 
-- (void)_writeURLResolutionCacheFileUsingBag:(id)a3
+- (void)_writeURLResolutionCacheFileUsingBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -628,37 +628,37 @@ LABEL_17:
   }
 
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [v4 arrayForBagKey:@"p2-url-resolution"];
+  v7 = [bagCopy arrayForBagKey:@"p2-url-resolution"];
   [v6 setObject:v7 forKeyedSubscript:@"p2-url-resolution"];
 
-  v8 = [v4 arrayForBagKey:@"p2-launch-host-suffix-whitelist"];
+  v8 = [bagCopy arrayForBagKey:@"p2-launch-host-suffix-whitelist"];
   [v6 setObject:v8 forKeyedSubscript:@"p2-launch-host-suffix-whitelist"];
 
-  v9 = [v4 arrayForBagKey:@"p2-launch-apple-store-host-patterns"];
+  v9 = [bagCopy arrayForBagKey:@"p2-launch-apple-store-host-patterns"];
   [v6 setObject:v9 forKeyedSubscript:@"p2-launch-apple-store-host-patterns"];
 
-  v10 = [v4 arrayForBagKey:@"p2-launch-apple-store-path-patterns"];
+  v10 = [bagCopy arrayForBagKey:@"p2-launch-apple-store-path-patterns"];
   [v6 setObject:v10 forKeyedSubscript:@"p2-launch-apple-store-path-patterns"];
 
-  v11 = [v4 arrayForBagKey:@"p2-launch-appstore-host-patterns"];
+  v11 = [bagCopy arrayForBagKey:@"p2-launch-appstore-host-patterns"];
   [v6 setObject:v11 forKeyedSubscript:@"p2-launch-appstore-host-patterns"];
 
-  v12 = [v4 arrayForBagKey:@"p2-launch-appstore-path-patterns"];
+  v12 = [bagCopy arrayForBagKey:@"p2-launch-appstore-path-patterns"];
   [v6 setObject:v12 forKeyedSubscript:@"p2-launch-appstore-path-patterns"];
 
-  v13 = [v4 arrayForBagKey:@"p2-launch-ebookstore-host-patterns"];
+  v13 = [bagCopy arrayForBagKey:@"p2-launch-ebookstore-host-patterns"];
   [v6 setObject:v13 forKeyedSubscript:@"p2-launch-ebookstore-host-patterns"];
 
-  v14 = [v4 arrayForBagKey:@"p2-launch-ebookstore-path-patterns"];
+  v14 = [bagCopy arrayForBagKey:@"p2-launch-ebookstore-path-patterns"];
   [v6 setObject:v14 forKeyedSubscript:@"p2-launch-ebookstore-path-patterns"];
 
-  v15 = [v4 arrayForBagKey:@"p2-launch-mobilestore-host-patterns"];
+  v15 = [bagCopy arrayForBagKey:@"p2-launch-mobilestore-host-patterns"];
   [v6 setObject:v15 forKeyedSubscript:@"p2-launch-mobilestore-host-patterns"];
 
-  v16 = [v4 arrayForBagKey:@"p2-launch-mobilestore-path-patterns"];
+  v16 = [bagCopy arrayForBagKey:@"p2-launch-mobilestore-path-patterns"];
   [v6 setObject:v16 forKeyedSubscript:@"p2-launch-mobilestore-path-patterns"];
 
-  v17 = [v4 stringForBagKey:@"vpp-licensing-invitation-url-pattern"];
+  v17 = [bagCopy stringForBagKey:@"vpp-licensing-invitation-url-pattern"];
 
   [v6 setObject:v17 forKeyedSubscript:@"vpp-licensing-invitation-url-pattern"];
   [(ICDServer *)self _preprocessURLResolutionCacheDictionary:v6];
@@ -694,9 +694,9 @@ LABEL_17:
     }
   }
 
-  v23 = [v18 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v18 stringByDeletingLastPathComponent];
   v38 = 0;
-  v24 = [v19 createDirectoryAtPath:v23 withIntermediateDirectories:1 attributes:0 error:&v38];
+  v24 = [v19 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v38];
   v25 = v38;
 
   if (v24)
@@ -773,21 +773,21 @@ LABEL_22:
 - (void)_ensureURLResolutionCacheFileExists
 {
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isWatch];
+  isWatch = [v3 isWatch];
 
-  if (v4)
+  if (isWatch)
   {
-    v5 = [(ICDServer *)self _urlResolutionCacheFilePath];
+    _urlResolutionCacheFilePath = [(ICDServer *)self _urlResolutionCacheFilePath];
     v6 = +[NSFileManager defaultManager];
     v7 = os_log_create("com.apple.amp.itunescloudd", "XPC");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v5;
+      v10 = _urlResolutionCacheFilePath;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Checking if url resolution file exists at path '%{public}@'", &v9, 0xCu);
     }
 
-    if (([v6 fileExistsAtPath:v5] & 1) == 0)
+    if (([v6 fileExistsAtPath:_urlResolutionCacheFilePath] & 1) == 0)
     {
       v8 = os_log_create("com.apple.amp.itunescloudd", "XPC");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -808,15 +808,15 @@ LABEL_22:
   return [v2 stringByAppendingPathComponent:@"Library/Caches/com.apple.itunesstored/url-resolution.plist"];
 }
 
-- (void)_updateSocialFeaturesAvailabilityIfNeededUsingBag:(id)a3
+- (void)_updateSocialFeaturesAvailabilityIfNeededUsingBag:(id)bag
 {
-  v4 = a3;
-  if (v4)
+  bagCopy = bag;
+  if (bagCopy)
   {
     v5 = +[ICClientInfo defaultInfo];
-    v6 = [v5 bagProfile];
-    v7 = [v4 profileName];
-    v8 = [v6 isEqualToString:v7];
+    bagProfile = [v5 bagProfile];
+    profileName = [bagCopy profileName];
+    v8 = [bagProfile isEqualToString:profileName];
 
     if (v8)
     {
@@ -825,8 +825,8 @@ LABEL_22:
       v12[1] = 3221225472;
       v12[2] = sub_1000658A8;
       v12[3] = &unk_1001DF618;
-      v13 = v4;
-      v14 = self;
+      v13 = bagCopy;
+      selfCopy = self;
       dispatch_async(serialQueue, v12);
       v10 = v13;
     }
@@ -836,11 +836,11 @@ LABEL_22:
       v10 = os_log_create("com.apple.amp.itunescloudd", "Default");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v4 profileName];
+        profileName2 = [bagCopy profileName];
         *buf = 134218242;
-        v16 = self;
+        selfCopy3 = self;
         v17 = 2114;
-        v18 = v11;
+        v18 = profileName2;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "ICDServer %p _updateSocialFeaturesAvailabilityIfNeededUsingBag: ignoring bag change for profile %{public}@", buf, 0x16u);
       }
     }
@@ -852,7 +852,7 @@ LABEL_22:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v16 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "ICDServer %p _updateSocialFeaturesAvailabilityIfNeededUsingBag: called with nil bag", buf, 0xCu);
     }
   }
@@ -861,17 +861,17 @@ LABEL_22:
 - (void)_initializeSocialFeaturesAvailabilityIfNeeded
 {
   v3 = +[ICDefaults standardDefaults];
-  v4 = [v3 cachedSharedControlsCapability];
+  cachedSharedControlsCapability = [v3 cachedSharedControlsCapability];
 
-  if (!v4)
+  if (!cachedSharedControlsCapability)
   {
-    v5 = [(ICDServer *)self accountManager];
-    v6 = [v5 activeConfiguration];
+    accountManager = [(ICDServer *)self accountManager];
+    activeConfiguration = [accountManager activeConfiguration];
 
-    v7 = [v6 userIdentity];
-    if (v7)
+    userIdentity = [activeConfiguration userIdentity];
+    if (userIdentity)
     {
-      v8 = [[ICStoreRequestContext alloc] initWithIdentity:v7];
+      v8 = [[ICStoreRequestContext alloc] initWithIdentity:userIdentity];
       v9 = +[ICURLBagProvider sharedBagProvider];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -883,9 +883,9 @@ LABEL_22:
   }
 }
 
-- (void)_handleURLBagProviderDidUpdateBagNotification:(id)a3
+- (void)_handleURLBagProviderDidUpdateBagNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -893,14 +893,14 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling updated bag notification", v10, 2u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:ICURLBagProviderDidUpdateBagNotificationURLBagUserInfoKey];
+  v7 = [userInfo objectForKey:ICURLBagProviderDidUpdateBagNotificationURLBagUserInfoKey];
 
   v8 = +[ICDeviceInfo currentDeviceInfo];
-  v9 = [v8 isWatch];
+  isWatch = [v8 isWatch];
 
-  if (v9 && v7)
+  if (isWatch && v7)
   {
     [(ICDServer *)self _updateURLResolutionCacheFile];
   }
@@ -909,27 +909,27 @@ LABEL_22:
   [(ICDServer *)self _updateEnhancedAudioAvailabilityIfNeeded];
 }
 
-- (void)_handleApplicationRegistrationNotification:(id)a3
+- (void)_handleApplicationRegistrationNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = v4;
-  if (v4)
+  userInfo = [notification userInfo];
+  v5 = userInfo;
+  if (userInfo)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ICDServerNotificationsManagerApplicationRegistrationBundleIDsKey"];
+    v6 = [userInfo objectForKeyedSubscript:@"ICDServerNotificationsManagerApplicationRegistrationBundleIDsKey"];
     v7 = [v5 objectForKeyedSubscript:@"ICDServerNotificationsManagerIsApplicationRegistrationKey"];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
 
     v9 = os_log_create("com.apple.amp.itunescloudd", "XPC");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"uninstalled";
-      if (v8 == 1)
+      if (integerValue == 1)
       {
         v10 = @"installed";
       }
 
       *buf = 138543618;
-      v26 = v6;
+      selfCopy = v6;
       v27 = 2114;
       v28 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Handling app install changed notification - apps=%{public}@, registration=%{public}@", buf, 0x16u);
@@ -940,11 +940,11 @@ LABEL_22:
 
     if (v12)
     {
-      if (v8 == 1)
+      if (integerValue == 1)
       {
-        v13 = [(ICDServer *)self accountManager];
-        v14 = [v13 supportedConfigurations];
-        [v14 enumerateObjectsUsingBlock:&stru_1001DBB20];
+        accountManager = [(ICDServer *)self accountManager];
+        supportedConfigurations = [accountManager supportedConfigurations];
+        [supportedConfigurations enumerateObjectsUsingBlock:&stru_1001DBB20];
 
         v15 = +[CloudContentTasteUpdateRequestListener sharedContentTasteRequestListener];
         [v15 handleMusicAppInstalled];
@@ -956,7 +956,7 @@ LABEL_22:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v26 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ [Music App Removal] Clearing music preferences", buf, 0xCu);
         }
 
@@ -966,14 +966,14 @@ LABEL_22:
           CFPreferencesSetMultiple(0, v15, @"com.apple.Music", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
         }
 
-        v17 = [(ICDServer *)self accountManager];
-        v18 = [v17 supportedConfigurations];
+        accountManager2 = [(ICDServer *)self accountManager];
+        supportedConfigurations2 = [accountManager2 supportedConfigurations];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100066120;
         v24[3] = &unk_1001DB910;
         v24[4] = self;
-        [v18 enumerateObjectsUsingBlock:v24];
+        [supportedConfigurations2 enumerateObjectsUsingBlock:v24];
 
         v19 = +[CloudContentTasteUpdateRequestListener sharedContentTasteRequestListener];
         [v19 handleMusicAppRemoved];
@@ -985,25 +985,25 @@ LABEL_22:
 
     if (v21)
     {
-      v22 = [(ICDServer *)self accountManager];
-      v23 = [v22 supportedConfigurations];
-      [v23 enumerateObjectsUsingBlock:&stru_1001DBB60];
+      accountManager3 = [(ICDServer *)self accountManager];
+      supportedConfigurations3 = [accountManager3 supportedConfigurations];
+      [supportedConfigurations3 enumerateObjectsUsingBlock:&stru_1001DBB60];
     }
   }
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
-  v4 = [(ICDServer *)self _canCompleteStartupSequence];
-  v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if ((v4 & 1) == 0)
+  _canCompleteStartupSequence = [(ICDServer *)self _canCompleteStartupSequence];
+  internalOperationQueue = os_log_create("com.apple.amp.itunescloudd", "XPC");
+  v6 = os_log_type_enabled(internalOperationQueue, OS_LOG_TYPE_DEFAULT);
+  if ((_canCompleteStartupSequence & 1) == 0)
   {
     if (v6)
     {
       *buf = 134217984;
-      v9 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Account change - Not ready]", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, internalOperationQueue, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Account change - Not ready]", buf, 0xCu);
     }
 
     goto LABEL_8;
@@ -1012,19 +1012,19 @@ LABEL_22:
   if (v6)
   {
     *buf = 134217984;
-    v9 = self;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Account change]", buf, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, internalOperationQueue, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Account change]", buf, 0xCu);
   }
 
   if ([(ICDServer *)self isStartupSequenceCompleted])
   {
-    v5 = [(ICDServer *)self internalOperationQueue];
+    internalOperationQueue = [(ICDServer *)self internalOperationQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100066BFC;
     v7[3] = &unk_1001DF578;
     v7[4] = self;
-    [v5 addOperationWithBlock:v7];
+    [internalOperationQueue addOperationWithBlock:v7];
 LABEL_8:
 
     return;
@@ -1033,16 +1033,16 @@ LABEL_8:
   [(ICDServer *)self _completeStartupSequenceIfNeeded];
 }
 
-- (void)_ensureMusicSubscriptionKeysAreAvailableForConfiguration:(id)a3
+- (void)_ensureMusicSubscriptionKeysAreAvailableForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ICDServer %p - _ensureMusicSubscriptionKeysAreAvailableForConfiguration - No action [No active configuration]", buf, 0xCu);
     }
 
@@ -1050,9 +1050,9 @@ LABEL_8:
   }
 
   v5 = +[ICDeviceInfo currentDeviceInfo];
-  v6 = [v5 isMac];
+  isMac = [v5 isMac];
 
-  if ((v6 & 1) == 0)
+  if ((isMac & 1) == 0)
   {
     v7 = +[ICDeviceInfo currentDeviceInfo];
     if (([v7 isAppleTV]& 1) == 0 && ([v7 isAudioAccessory]& 1) == 0 && (byte_100213C30 & 1) == 0)
@@ -1063,28 +1063,28 @@ LABEL_8:
       v12 = 3221225472;
       v13 = sub_100067050;
       v14 = &unk_1001DBAE0;
-      v15 = v4;
-      v16 = self;
+      v15 = configurationCopy;
+      selfCopy2 = self;
       v9 = [v8 initWithStartHandler:&v11];
       [v9 setName:{@"com.apple.itunescloudd.CloudServer.keyRefreshOperation", v11, v12, v13, v14}];
-      v10 = [(ICDServer *)self serverOperationsManager];
-      [v10 addOperation:v9 priority:1];
+      serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+      [serverOperationsManager addOperation:v9 priority:1];
     }
 
 LABEL_9:
   }
 }
 
-- (void)_ensureSubscriptionInformationIsUpToDateForConfiguration:(id)a3
+- (void)_ensureSubscriptionInformationIsUpToDateForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v5 = +[ICMusicSubscriptionStatusController sharedStatusController];
-    v6 = [v4 userIdentity];
-    [v5 getSubscriptionStatusForUserIdentity:v6 bypassingCache:0 withCompletionHandler:&stru_1001DBA40];
+    userIdentity = [configurationCopy userIdentity];
+    [v5 getSubscriptionStatusForUserIdentity:userIdentity bypassingCache:0 withCompletionHandler:&stru_1001DBA40];
 
-    [(ICDServer *)self _ensureMusicSubscriptionKeysAreAvailableForConfiguration:v4];
+    [(ICDServer *)self _ensureMusicSubscriptionKeysAreAvailableForConfiguration:configurationCopy];
   }
 
   else
@@ -1093,19 +1093,19 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ICDServer %p - _ensureSubscriptionInformationIsUpToDateForConfiguration - No action [No active configuration]", &v8, 0xCu);
     }
   }
 }
 
-- (void)_updateAllowsExplicitContentSettingForConfiguration:(id)a3 automatically:(BOOL)a4
+- (void)_updateAllowsExplicitContentSettingForConfiguration:(id)configuration automatically:(BOOL)automatically
 {
-  v6 = a3;
-  if (v6)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v7 = [sub_100062744() sharedRestrictionsMonitor];
-    v8 = [v7 allowsExplicitContent];
+    sharedRestrictionsMonitor = [sub_100062744() sharedRestrictionsMonitor];
+    allowsExplicitContent = [sharedRestrictionsMonitor allowsExplicitContent];
 
     v42 = 0;
     v43 = &v42;
@@ -1145,9 +1145,9 @@ LABEL_9:
 
       v12 = v11;
       _Block_object_dispose(&v42, 8);
-      v13 = [v6 userIdentity];
-      v14 = [v6 userIdentityStore];
-      v15 = [v11 userMonitorWithUserIdentity:v13 fromUserIdentityStore:v14];
+      userIdentity = [configurationCopy userIdentity];
+      userIdentityStore = [configurationCopy userIdentityStore];
+      v15 = [v11 userMonitorWithUserIdentity:userIdentity fromUserIdentityStore:userIdentityStore];
 
       v16 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
       v17 = v16;
@@ -1155,20 +1155,20 @@ LABEL_9:
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v6 userIdentity];
-          v19 = [v18 accountDSID];
+          userIdentity2 = [configurationCopy userIdentity];
+          accountDSID = [userIdentity2 accountDSID];
           *buf = 134218755;
           *&buf[4] = self;
           *&buf[12] = 2048;
           *&buf[14] = v15;
           *&buf[22] = 2113;
-          v47 = v19;
+          v47 = accountDSID;
           LOWORD(v48) = 1024;
-          *(&v48 + 2) = v8;
+          *(&v48 + 2) = allowsExplicitContent;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "ICDServer %p - _updateAllowsExplicitContentSettingAutomatically: userMonitor=%p for dsid=%{private}@ allowExplicit=%{BOOL}u", buf, 0x26u);
         }
 
-        v8 = [v15 isExplicitSettingEnabled];
+        allowsExplicitContent = [v15 isExplicitSettingEnabled];
       }
 
       else
@@ -1183,49 +1183,49 @@ LABEL_9:
     }
 
     v21 = [ICStoreRequestContext alloc];
-    v22 = [v6 userIdentity];
-    v23 = [v21 initWithIdentity:v22];
+    userIdentity3 = [configurationCopy userIdentity];
+    v23 = [v21 initWithIdentity:userIdentity3];
 
-    v24 = [v6 userIdentity];
-    v25 = [ML3MusicLibrary musicLibraryForUserAccount:v24];
+    userIdentity4 = [configurationCopy userIdentity];
+    v25 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity4];
 
     v26 = [v25 valueForDatabaseProperty:@"MPExplicitContentAllowedBoolean"];
     v20 = v26;
-    if (!v26 || v8 != [v26 BOOLValue])
+    if (!v26 || allowsExplicitContent != [v26 BOOLValue])
     {
       v27 = os_log_create("com.apple.amp.itunescloudd", "XPC");
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v25 accountDSID];
-        v29 = [v20 BOOLValue];
+        accountDSID2 = [v25 accountDSID];
+        bOOLValue = [v20 BOOLValue];
         *buf = 138478339;
-        *&buf[4] = v28;
+        *&buf[4] = accountDSID2;
         *&buf[12] = 1024;
-        *&buf[14] = v29;
+        *&buf[14] = bOOLValue;
         *&buf[18] = 1024;
-        *&buf[20] = v8;
+        *&buf[20] = allowsExplicitContent;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "updating explicit content. dsid=%{private}@, lastWrittenValue=%{BOOL}u, setting allowsExplicitContent=%{BOOL}u", buf, 0x18u);
       }
 
-      v30 = [NSNumber numberWithBool:v8];
+      v30 = [NSNumber numberWithBool:allowsExplicitContent];
       [v25 setValue:v30 forDatabaseProperty:@"MPExplicitContentAllowedBoolean"];
     }
 
     v31 = +[ICMusicSubscriptionStatusController sharedStatusController];
-    v32 = [v6 userIdentity];
+    userIdentity5 = [configurationCopy userIdentity];
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_10006826C;
     v35[3] = &unk_1001DBA20;
-    v40 = v8;
+    v40 = allowsExplicitContent;
     v36 = v25;
     v37 = v23;
-    v41 = a4;
-    v38 = self;
-    v39 = v6;
+    automaticallyCopy = automatically;
+    selfCopy = self;
+    v39 = configurationCopy;
     v33 = v23;
     v34 = v25;
-    [v31 getSubscriptionStatusForUserIdentity:v32 withCompletionHandler:v35];
+    [v31 getSubscriptionStatusForUserIdentity:userIdentity5 withCompletionHandler:v35];
   }
 
   else
@@ -1240,9 +1240,9 @@ LABEL_9:
   }
 }
 
-- (void)_setupMPMediaLibraryFilteringForConfigurations:(id)a3
+- (void)_setupMPMediaLibraryFilteringForConfigurations:(id)configurations
 {
-  v3 = a3;
+  configurationsCopy = configurations;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2050000000;
@@ -1272,15 +1272,15 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - _setupMPMediaLibraryFilteringForConfigurations - setting filtering type for default media library]", buf, 0xCu);
     }
 
-    v7 = [sub_100068A74() defaultMediaLibrary];
-    [v7 setCloudFilteringType:1];
+    defaultMediaLibrary = [sub_100068A74() defaultMediaLibrary];
+    [defaultMediaLibrary setCloudFilteringType:1];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v3;
+  v8 = configurationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v9)
   {
@@ -1306,8 +1306,8 @@ LABEL_9:
         }
 
         v14 = sub_100068A74();
-        v15 = [v12 userIdentity];
-        v16 = [v14 deviceMediaLibraryWithUserIdentity:v15];
+        userIdentity = [v12 userIdentity];
+        v16 = [v14 deviceMediaLibraryWithUserIdentity:userIdentity];
         [v16 setCloudFilteringType:1];
       }
 
@@ -1318,20 +1318,20 @@ LABEL_9:
   }
 }
 
-- (void)_migrateToLatestUserVersionForConfigurations:(id)a3
+- (void)_migrateToLatestUserVersionForConfigurations:(id)configurations
 {
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = +[ICDeviceInfo currentDeviceInfo];
-  v5 = [v4 isMac];
+  isMac = [v4 isMac];
 
-  if ((v5 & 1) == 0)
+  if ((isMac & 1) == 0)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v15 = v3;
-    v6 = v3;
+    v15 = configurationsCopy;
+    v6 = configurationsCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v7)
     {
@@ -1350,12 +1350,12 @@ LABEL_9:
           v12 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v11 userIdentity];
-            v14 = [v13 accountDSID];
+            userIdentity = [v11 userIdentity];
+            accountDSID = [userIdentity accountDSID];
             *buf = 134218242;
-            v22 = self;
+            selfCopy = self;
             v23 = 2112;
-            v24 = v14;
+            v24 = accountDSID;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ICDServer %p - _migrateToLatestUserVersion - Migrating library [dsid=%@]", buf, 0x16u);
           }
 
@@ -1368,7 +1368,7 @@ LABEL_9:
       while (v8);
     }
 
-    v3 = v15;
+    configurationsCopy = v15;
   }
 }
 
@@ -1376,23 +1376,23 @@ LABEL_9:
 {
   if ([(ICDServer *)self _canCompleteStartupSequence])
   {
-    v3 = [(ICDServer *)self startupQueue];
+    startupQueue = [(ICDServer *)self startupQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100068F10;
     block[3] = &unk_1001DF578;
     block[4] = self;
-    dispatch_sync(v3, block);
+    dispatch_sync(startupQueue, block);
   }
 
   else
   {
-    v3 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+    startupQueue = os_log_create("com.apple.amp.itunescloudd", "XPC");
+    if (os_log_type_enabled(startupQueue, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v6 = self;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "ICDServer %p - _completeStartupSequenceIfNeeded - Nothing to do [blocked]", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, startupQueue, OS_LOG_TYPE_DEBUG, "ICDServer %p - _completeStartupSequenceIfNeeded - Nothing to do [blocked]", buf, 0xCu);
     }
   }
 }
@@ -1400,38 +1400,38 @@ LABEL_9:
 - (BOOL)_canCompleteStartupSequence
 {
   v3 = +[ICDeviceSetupStatusMonitor sharedMonitor];
-  v4 = [v3 isDeviceSetupComplete];
+  isDeviceSetupComplete = [v3 isDeviceSetupComplete];
 
   v5 = +[ICSecurityInfo sharedSecurityInfo];
-  v6 = [v5 isDeviceClassCUnlocked];
+  isDeviceClassCUnlocked = [v5 isDeviceClassCUnlocked];
 
   v7 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134218752;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v6 & v4;
+    v12 = isDeviceClassCUnlocked & isDeviceSetupComplete;
     v13 = 1026;
-    v14 = v6;
+    v14 = isDeviceClassCUnlocked;
     v15 = 1026;
-    v16 = v4;
+    v16 = isDeviceSetupComplete;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "ICDServer %p - Can complete startup sequence [%{BOOL}u] - deviceUnlocked=%{public}u - deviceSetupComplete=%{public}u", &v9, 0x1Eu);
   }
 
-  return v6 & v4;
+  return isDeviceClassCUnlocked & isDeviceSetupComplete;
 }
 
-- (void)setStartupSequenceCompleted:(BOOL)a3
+- (void)setStartupSequenceCompleted:(BOOL)completed
 {
-  v5 = [(ICDServer *)self serialQueue];
+  serialQueue = [(ICDServer *)self serialQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006986C;
   v6[3] = &unk_1001DE650;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  completedCopy = completed;
+  dispatch_sync(serialQueue, v6);
 }
 
 - (ICDCloudServiceStatusMonitor)cloudServiceStatusMonitor
@@ -1513,8 +1513,8 @@ LABEL_9:
   v9 = +[ICInAppMessageManager sharedManager];
   [v9 stopSystemService];
 
-  v10 = [(ICDServer *)self mediaUserStateCenterServer];
-  [v10 stop];
+  mediaUserStateCenterServer = [(ICDServer *)self mediaUserStateCenterServer];
+  [mediaUserStateCenterServer stop];
 }
 
 - (void)_startAncillaryServices
@@ -1523,23 +1523,23 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices begin", buf, 0xCu);
   }
 
-  v4 = [(ICDServer *)self serialQueue];
+  serialQueue = [(ICDServer *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006A380;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(serialQueue, block);
 
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 2", buf, 0xCu);
   }
 
@@ -1550,7 +1550,7 @@ LABEL_9:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 3", buf, 0xCu);
   }
 
@@ -1561,18 +1561,18 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 4", buf, 0xCu);
   }
 
-  v10 = [(ICDServer *)self backgroundTaskManager];
-  [v10 startPeriodicPolling];
+  backgroundTaskManager = [(ICDServer *)self backgroundTaskManager];
+  [backgroundTaskManager startPeriodicPolling];
 
   v11 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 5", buf, 0xCu);
   }
 
@@ -1583,7 +1583,7 @@ LABEL_9:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 6", buf, 0xCu);
   }
 
@@ -1592,7 +1592,7 @@ LABEL_9:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 7", buf, 0xCu);
   }
 
@@ -1603,14 +1603,14 @@ LABEL_9:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 8", buf, 0xCu);
   }
 
   v17 = +[ICDeviceInfo currentDeviceInfo];
-  v18 = [v17 isWatch];
+  isWatch = [v17 isWatch];
 
-  if (v18)
+  if (isWatch)
   {
     v19 = +[ICDeviceSetupStatusMonitor sharedMonitor];
     [v19 performBlockAfterDeviceSetup:&stru_1001DB990];
@@ -1625,7 +1625,7 @@ LABEL_9:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v34 = self;
+      selfCopy14 = self;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 9", buf, 0xCu);
     }
 
@@ -1636,7 +1636,7 @@ LABEL_9:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v34 = self;
+      selfCopy14 = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 10", buf, 0xCu);
     }
   }
@@ -1648,7 +1648,7 @@ LABEL_9:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 11", buf, 0xCu);
   }
 
@@ -1659,25 +1659,25 @@ LABEL_9:
     [v26 startSystemService];
   }
 
-  v27 = [(ICDServer *)self mediaUserStateCenterServer];
-  [v27 start];
+  mediaUserStateCenterServer = [(ICDServer *)self mediaUserStateCenterServer];
+  [mediaUserStateCenterServer start];
 
   v28 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 12", buf, 0xCu);
   }
 
-  v29 = [(ICDServer *)self playbackPositionService];
-  [v29 start];
+  playbackPositionService = [(ICDServer *)self playbackPositionService];
+  [playbackPositionService start];
 
   v30 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices... 13", buf, 0xCu);
   }
 
@@ -1687,20 +1687,20 @@ LABEL_9:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v34 = self;
+    selfCopy14 = self;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "ICDServer %p - _startAncillaryServices finished", buf, 0xCu);
   }
 }
 
 - (void)_initializeAncillaryServices
 {
-  v3 = [(ICDServer *)self serialQueue];
+  serialQueue = [(ICDServer *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006A4B8;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serialQueue, block);
 }
 
 - (void)_setupSigtermHandler
@@ -1754,12 +1754,12 @@ LABEL_9:
   [(NSOperationQueue *)v12 setMaxConcurrentOperationCount:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (self->_mediaPlaybackDefaults == v11 && [v10 isEqualToString:@"MPCPlaybackPrivateListeningEnabled"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (self->_mediaPlaybackDefaults == objectCopy && [pathCopy isEqualToString:@"MPCPlaybackPrivateListeningEnabled"])
   {
     v13 = os_log_create("com.apple.amp.itunescloudd", "XPC");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1775,11 +1775,11 @@ LABEL_9:
   {
     v14.receiver = self;
     v14.super_class = ICDServer;
-    [(ICDServer *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ICDServer *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)notificationsManagerDidReceiveFamilyCircleChangedNotification:(id)a3
+- (void)notificationsManagerDidReceiveFamilyCircleChangedNotification:(id)notification
 {
   if ([(ICDServer *)self _canCompleteStartupSequence])
   {
@@ -1788,7 +1788,7 @@ LABEL_9:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Family Circle Changed]", &v7, 0xCu);
     }
 
@@ -1804,23 +1804,23 @@ LABEL_9:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Family Circle Changed - Not ready]", &v7, 0xCu);
     }
   }
 }
 
-- (void)notificationsManagerDidRecieveICPlayActivityFlushInternalTestRequestNotification:(id)a3
+- (void)notificationsManagerDidRecieveICPlayActivityFlushInternalTestRequestNotification:(id)notification
 {
-  v4 = [(ICDServer *)self isStartupSequenceCompleted];
+  isStartupSequenceCompleted = [(ICDServer *)self isStartupSequenceCompleted];
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isStartupSequenceCompleted)
   {
     if (v6)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Flush Play Activity events request]", &v7, 0xCu);
     }
 
@@ -1832,23 +1832,23 @@ LABEL_9:
     if (v6)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Flush Play Activity events request - Not ready]", &v7, 0xCu);
     }
   }
 }
 
-- (void)notificationsManagerDidReceiveMusicSettingsChangedNotification:(id)a3
+- (void)notificationsManagerDidReceiveMusicSettingsChangedNotification:(id)notification
 {
-  v4 = [(ICDServer *)self _canCompleteStartupSequence];
+  _canCompleteStartupSequence = [(ICDServer *)self _canCompleteStartupSequence];
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (_canCompleteStartupSequence)
   {
     if (v6)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Music settings changed]", &v7, 0xCu);
     }
 
@@ -1860,23 +1860,23 @@ LABEL_9:
     if (v6)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Music settings changed - Not ready]", &v7, 0xCu);
     }
   }
 }
 
-- (void)notificationsManagerDidReceivePhoneNumberChangedNotification:(id)a3
+- (void)notificationsManagerDidReceivePhoneNumberChangedNotification:(id)notification
 {
-  v4 = [(ICDServer *)self _canCompleteStartupSequence];
+  _canCompleteStartupSequence = [(ICDServer *)self _canCompleteStartupSequence];
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (_canCompleteStartupSequence)
   {
     if (v6)
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Phone number changed]", &v9, 0xCu);
     }
 
@@ -1892,23 +1892,23 @@ LABEL_9:
     if (v6)
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Phone number changed - Not ready]", &v9, 0xCu);
     }
   }
 }
 
-- (void)notificationsManagerDidReceiveFirstUnlockNotification:(id)a3
+- (void)notificationsManagerDidReceiveFirstUnlockNotification:(id)notification
 {
-  v4 = [(ICDServer *)self _canCompleteStartupSequence];
+  _canCompleteStartupSequence = [(ICDServer *)self _canCompleteStartupSequence];
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (_canCompleteStartupSequence)
   {
     if (v6)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [First unlock]", &v7, 0xCu);
     }
 
@@ -1920,28 +1920,28 @@ LABEL_9:
     if (v6)
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [First unlock - Not ready]", &v7, 0xCu);
     }
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveApplicationInstallationNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveApplicationInstallationNotification:(id)notification
 {
-  v5 = a4;
-  v6 = [(ICDServer *)self isStartupSequenceCompleted];
+  notificationCopy = notification;
+  isStartupSequenceCompleted = [(ICDServer *)self isStartupSequenceCompleted];
   v7 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isStartupSequenceCompleted)
   {
     if (v8)
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Application install/removal]", &v9, 0xCu);
     }
 
-    [(ICDServer *)self _handleApplicationRegistrationNotification:v5];
+    [(ICDServer *)self _handleApplicationRegistrationNotification:notificationCopy];
   }
 
   else
@@ -1949,43 +1949,43 @@ LABEL_9:
     if (v8)
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Application install/removal - Not ready]", &v9, 0xCu);
     }
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveFamilyDeletionEventNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveFamilyDeletionEventNotification:(id)notification
 {
-  v5 = a4;
-  v6 = [(ICDServer *)self isStartupSequenceCompleted];
-  v7 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  notificationCopy = notification;
+  isStartupSequenceCompleted = [(ICDServer *)self isStartupSequenceCompleted];
+  userInfo = os_log_create("com.apple.amp.itunescloudd", "XPC");
+  v8 = os_log_type_enabled(userInfo, OS_LOG_TYPE_DEFAULT);
+  if (isStartupSequenceCompleted)
   {
     if (v8)
     {
       v10 = 134217984;
-      v11 = self;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Family deletion event]", &v10, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, userInfo, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Family deletion event]", &v10, 0xCu);
     }
 
-    v7 = [v5 userInfo];
-    v9 = [v7 objectForKeyedSubscript:@"ICDServerNotificationsManagerFamilyEventKey"];
+    userInfo = [notificationCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:@"ICDServerNotificationsManagerFamilyEventKey"];
     [(ICDServer *)self _handleFamilyContentDeletionEvent:v9];
   }
 
   else if (v8)
   {
     v10 = 134217984;
-    v11 = self;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Family deletion event - Not ready]", &v10, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, userInfo, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Family deletion event - Not ready]", &v10, 0xCu);
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveAuthServiceTokenDidChangeNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveAuthServiceTokenDidChangeNotification:(id)notification
 {
-  v5 = [(ICDServer *)self isStartupSequenceCompleted:a3];
+  v5 = [(ICDServer *)self isStartupSequenceCompleted:manager];
   v6 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -1993,7 +1993,7 @@ LABEL_9:
     if (v7)
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Auth service token]", &v8, 0xCu);
     }
 
@@ -2005,33 +2005,33 @@ LABEL_9:
     if (v7)
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Auth service token - Not ready]", &v8, 0xCu);
     }
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveSubscriptionStatusDidChangeNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveSubscriptionStatusDidChangeNotification:(id)notification
 {
-  v5 = [(ICDServer *)self isStartupSequenceCompleted:a3];
-  v6 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+  v5 = [(ICDServer *)self isStartupSequenceCompleted:manager];
+  activeConfiguration = os_log_create("com.apple.amp.itunescloudd", "XPC");
+  v7 = os_log_type_enabled(activeConfiguration, OS_LOG_TYPE_DEFAULT);
   if (v5)
   {
     if (v7)
     {
       v9 = 134217984;
-      v10 = self;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Subscription status]", &v9, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, activeConfiguration, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Subscription status]", &v9, 0xCu);
     }
 
     ICSiriPostDynamiteClientStateChangedNotification();
-    v8 = [(ICDServer *)self accountManager];
-    v6 = [v8 activeConfiguration];
+    accountManager = [(ICDServer *)self accountManager];
+    activeConfiguration = [accountManager activeConfiguration];
 
-    [(ICDServer *)self _updateAirPlaySettingsForConfiguration:v6];
-    [(ICDServer *)self _updateAllowsExplicitContentSettingForConfiguration:v6 automatically:1];
-    [(ICDServer *)self _ensureMusicSubscriptionKeysAreAvailableForConfiguration:v6];
+    [(ICDServer *)self _updateAirPlaySettingsForConfiguration:activeConfiguration];
+    [(ICDServer *)self _updateAllowsExplicitContentSettingForConfiguration:activeConfiguration automatically:1];
+    [(ICDServer *)self _ensureMusicSubscriptionKeysAreAvailableForConfiguration:activeConfiguration];
     [(ICDServer *)self _updateHTTPCookieStoreForContentRestrictions];
     [(ICDServer *)self _updateEnhancedAudioAvailabilityIfNeeded];
     [(ICDServer *)self _updateMediaRemoteCommands:1];
@@ -2040,14 +2040,14 @@ LABEL_9:
   else if (v7)
   {
     v9 = 134217984;
-    v10 = self;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Subscription status - Not ready]", &v9, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, activeConfiguration, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Subscription status - Not ready]", &v9, 0xCu);
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveAllowsMusicVideosDidChangeNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveAllowsMusicVideosDidChangeNotification:(id)notification
 {
-  v5 = [(ICDServer *)self isStartupSequenceCompleted:a3];
+  v5 = [(ICDServer *)self isStartupSequenceCompleted:manager];
   v6 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -2055,7 +2055,7 @@ LABEL_9:
     if (v7)
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Allows music videos]", &v8, 0xCu);
     }
 
@@ -2067,15 +2067,15 @@ LABEL_9:
     if (v7)
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Allows music videos - Not ready]", &v8, 0xCu);
     }
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveAllowsExplicitContentDidChangeNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveAllowsExplicitContentDidChangeNotification:(id)notification
 {
-  v5 = [(ICDServer *)self isStartupSequenceCompleted:a3];
+  v5 = [(ICDServer *)self isStartupSequenceCompleted:manager];
   v6 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -2083,24 +2083,24 @@ LABEL_9:
     if (v7)
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Allows explicit content]", buf, 0xCu);
     }
 
-    v8 = [(ICDServer *)self accountManager];
-    v9 = [v8 supportedConfigurations];
+    accountManager = [(ICDServer *)self accountManager];
+    supportedConfigurations = [accountManager supportedConfigurations];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10006B8FC;
     v12[3] = &unk_1001DB910;
     v12[4] = self;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [supportedConfigurations enumerateObjectsUsingBlock:v12];
 
     [(ICDServer *)self _updateHTTPCookieStoreForContentRestrictions];
-    v10 = [sub_100062744() sharedRestrictionsMonitor];
-    LOBYTE(v8) = [v10 allowsExplicitContent];
+    sharedRestrictionsMonitor = [sub_100062744() sharedRestrictionsMonitor];
+    LOBYTE(accountManager) = [sharedRestrictionsMonitor allowsExplicitContent];
 
-    if ((v8 & 1) == 0)
+    if ((accountManager & 1) == 0)
     {
       v11 = objc_alloc_init(CSSearchableIndex);
       [v11 deleteInteractionsWithGroupIdentifiers:&off_1001EE278 bundleID:@"com.apple.Music" protectionClass:0 completionHandler:&stru_1001DB930];
@@ -2112,13 +2112,13 @@ LABEL_9:
     if (v7)
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Allows explicit content - Not ready]", buf, 0xCu);
     }
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveHandlerCoordinatorFinishedInitializationNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveHandlerCoordinatorFinishedInitializationNotification:(id)notification
 {
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2126,7 +2126,7 @@ LABEL_9:
     switchLibraryManagementPolicy = self->_switchLibraryManagementPolicy;
     startupSequenceCompleted = self->_startupSequenceCompleted;
     *buf = 134218496;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
     v17 = switchLibraryManagementPolicy;
     v18 = 1024;
@@ -2137,56 +2137,56 @@ LABEL_9:
   if ([(ICDServer *)self isStartupSequenceCompleted])
   {
     v8 = +[ICDeviceInfo currentDeviceInfo];
-    v9 = [v8 isAppleTV];
+    isAppleTV = [v8 isAppleTV];
 
-    if (!v9)
+    if (!isAppleTV)
     {
       return;
     }
 
-    v10 = [(ICDServer *)self internalOperationQueue];
+    internalOperationQueue = [(ICDServer *)self internalOperationQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10006BC5C;
     v12[3] = &unk_1001DF578;
     v12[4] = self;
-    [v10 addOperationWithBlock:v12];
+    [internalOperationQueue addOperationWithBlock:v12];
   }
 
   else
   {
     serverStartupGroup = self->_serverStartupGroup;
-    v10 = [(ICDServer *)self serialQueue];
+    internalOperationQueue = [(ICDServer *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006BBA0;
     block[3] = &unk_1001DF578;
     block[4] = self;
-    dispatch_group_notify(serverStartupGroup, v10, block);
+    dispatch_group_notify(serverStartupGroup, internalOperationQueue, block);
   }
 }
 
-- (void)notificationsManager:(id)a3 didReceiveUserIdentityStoreDidChangeNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveUserIdentityStoreDidChangeNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [User identity store changed]", &v7, 0xCu);
   }
 
-  [(ICDServer *)self _handleUserIdentityStoreDidChangeNotification:v5];
+  [(ICDServer *)self _handleUserIdentityStoreDidChangeNotification:notificationCopy];
 }
 
-- (void)notificationsManager:(id)a3 didReceiveActiveUserIdentityDidChangeNotification:(id)a4
+- (void)notificationsManager:(id)manager didReceiveActiveUserIdentityDidChangeNotification:(id)notification
 {
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Active user identity changed]", &v7, 0xCu);
   }
 
@@ -2196,96 +2196,96 @@ LABEL_9:
   [(ICDServer *)self _updateAccountServerCachedData];
 }
 
-- (void)notificationsManagerDidReceiveCloudAuthenticationDidChangeDarwinNotification:(id)a3
+- (void)notificationsManagerDidReceiveCloudAuthenticationDidChangeDarwinNotification:(id)notification
 {
-  v4 = [(ICDServer *)self isStartupSequenceCompleted];
-  v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  isStartupSequenceCompleted = [(ICDServer *)self isStartupSequenceCompleted];
+  accountManager = os_log_create("com.apple.amp.itunescloudd", "XPC");
+  v6 = os_log_type_enabled(accountManager, OS_LOG_TYPE_DEFAULT);
+  if (isStartupSequenceCompleted)
   {
     if (v6)
     {
       v8 = 134217984;
-      v9 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Cloud authentication]", &v8, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, accountManager, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Cloud authentication]", &v8, 0xCu);
     }
 
-    v5 = [(ICDServer *)self accountManager];
-    v7 = [v5 activeConfiguration];
-    [(ICDServer *)self _updateAirPlaySettingsForConfiguration:v7];
+    accountManager = [(ICDServer *)self accountManager];
+    activeConfiguration = [accountManager activeConfiguration];
+    [(ICDServer *)self _updateAirPlaySettingsForConfiguration:activeConfiguration];
   }
 
   else if (v6)
   {
     v8 = 134217984;
-    v9 = self;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Cloud authentication - Not ready]", &v8, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, accountManager, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Cloud authentication - Not ready]", &v8, 0xCu);
   }
 }
 
-- (void)notificationsManagerDidReceiveCellularDataRestrictionDidChangeDarwinNotification:(id)a3
+- (void)notificationsManagerDidReceiveCellularDataRestrictionDidChangeDarwinNotification:(id)notification
 {
-  v4 = [(ICDServer *)self _canCompleteStartupSequence];
-  v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  _canCompleteStartupSequence = [(ICDServer *)self _canCompleteStartupSequence];
+  activeConfiguration = os_log_create("com.apple.amp.itunescloudd", "XPC");
+  v6 = os_log_type_enabled(activeConfiguration, OS_LOG_TYPE_DEFAULT);
+  if (_canCompleteStartupSequence)
   {
     if (v6)
     {
       *buf = 134217984;
-      v18 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Cellular restriction]", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, activeConfiguration, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Cellular restriction]", buf, 0xCu);
     }
 
     [(ICDServer *)self _completeStartupSequenceIfNeeded];
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AllowAutoDownloadOnCellular", @"com.apple.itunesstored", 0);
-    v8 = [(ICDServer *)self accountManager];
-    v5 = [v8 activeConfiguration];
+    accountManager = [(ICDServer *)self accountManager];
+    activeConfiguration = [accountManager activeConfiguration];
 
-    if (AppBooleanValue && v5)
+    if (AppBooleanValue && activeConfiguration)
     {
-      v9 = [v5 userIdentity];
-      v10 = [ML3MusicLibrary musicLibraryForUserAccount:v9];
+      userIdentity = [activeConfiguration userIdentity];
+      v10 = [ML3MusicLibrary musicLibraryForUserAccount:userIdentity];
 
-      v11 = [v5 userIdentityStore];
-      v12 = [v5 userIdentity];
+      userIdentityStore = [activeConfiguration userIdentityStore];
+      userIdentity2 = [activeConfiguration userIdentity];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_10006C26C;
       v14[3] = &unk_1001DF4B8;
       v15 = v10;
-      v5 = v5;
-      v16 = v5;
+      activeConfiguration = activeConfiguration;
+      v16 = activeConfiguration;
       v13 = v10;
-      [v11 getPropertiesForUserIdentity:v12 completionHandler:v14];
+      [userIdentityStore getPropertiesForUserIdentity:userIdentity2 completionHandler:v14];
     }
   }
 
   else if (v6)
   {
     *buf = 134217984;
-    v18 = self;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Cellular restriction - Not ready]", buf, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, activeConfiguration, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Cellular restriction - Not ready]", buf, 0xCu);
   }
 }
 
-- (void)notificationsManagerDidReceiveLibraryImportDidFinishDarwinNotification:(id)a3
+- (void)notificationsManagerDidReceiveLibraryImportDidFinishDarwinNotification:(id)notification
 {
-  v4 = [(ICDServer *)self isStartupSequenceCompleted];
+  isStartupSequenceCompleted = [(ICDServer *)self isStartupSequenceCompleted];
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (isStartupSequenceCompleted)
   {
     if (v6)
     {
       v12 = 134217984;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Processing notification [Import finished]", &v12, 0xCu);
     }
 
-    v7 = [(ICDServer *)self accountManager];
-    v8 = [v7 activeConfiguration];
-    v5 = [(BaseRequestHandler *)ArtistImageRequestHandler handlerForConfiguration:v8];
+    accountManager = [(ICDServer *)self accountManager];
+    activeConfiguration = [accountManager activeConfiguration];
+    v5 = [(BaseRequestHandler *)ArtistImageRequestHandler handlerForConfiguration:activeConfiguration];
 
     if (v5)
     {
@@ -2296,30 +2296,30 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received library import did finish notification, triggering artist hero update.", &v12, 2u);
       }
 
-      v10 = [v5 configuration];
-      v11 = [v10 clientIdentity];
-      [v5 updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:v11];
+      configuration = [v5 configuration];
+      clientIdentity = [configuration clientIdentity];
+      [v5 updateArtistHeroImagesForArtistsAddedSinceLastUpdateUsingClientIdentity:clientIdentity];
     }
   }
 
   else if (v6)
   {
     v12 = 134217984;
-    v13 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Ignoring notification [Import finished - Not ready]", &v12, 0xCu);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = [(ICDServer *)self _ICCloudServerSupportedServiceForXPCListener:a3];
-  if ([v6 icd_isConnectionAllowedForService:v7])
+  connectionCopy = connection;
+  v7 = [(ICDServer *)self _ICCloudServerSupportedServiceForXPCListener:listener];
+  if ([connectionCopy icd_isConnectionAllowedForService:v7])
   {
-    v8 = [v6 processIdentifier];
-    if (v6)
+    processIdentifier = [connectionCopy processIdentifier];
+    if (connectionCopy)
     {
-      [v6 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -2336,8 +2336,8 @@ LABEL_9:
 
     if (((1 << v7) & 0xF5) != 0)
     {
-      v11 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-      if (!os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
+      _supportedInterfaceForCloudServerListenerXPCConnection = os_log_create("com.apple.amp.itunescloudd", "XPC");
+      if (!os_log_type_enabled(&_supportedInterfaceForCloudServerListenerXPCConnection->super, OS_LOG_TYPE_ERROR))
       {
 LABEL_13:
         LOBYTE(self) = 0;
@@ -2356,18 +2356,18 @@ LABEL_25:
         v12 = v10;
       }
 
-      *(v18 + 14) = v6;
+      *(v18 + 14) = connectionCopy;
       WORD3(v18[1]) = 2114;
       *(&v18[1] + 1) = v9;
       v19 = 2048;
-      v20 = v8;
+      v20 = processIdentifier;
       v21 = 2114;
       v22 = v12;
       v23 = 2048;
       v24 = v7;
       v13 = "ICDServer %p - Refusing XPC connection %{public}@ from %{public}@[%ld] for service %{public}@[%ld].";
 LABEL_12:
-      _os_log_impl(&_mh_execute_header, &v11->super, OS_LOG_TYPE_ERROR, v13, v18, 0x3Eu);
+      _os_log_impl(&_mh_execute_header, &_supportedInterfaceForCloudServerListenerXPCConnection->super, OS_LOG_TYPE_ERROR, v13, v18, 0x3Eu);
       goto LABEL_13;
     }
 
@@ -2379,11 +2379,11 @@ LABEL_12:
         LODWORD(v18[0]) = 134219266;
         *(v18 + 4) = self;
         WORD6(v18[0]) = 2114;
-        *(v18 + 14) = v6;
+        *(v18 + 14) = connectionCopy;
         WORD3(v18[1]) = 2114;
         *(&v18[1] + 1) = v9;
         v19 = 2048;
-        v20 = v8;
+        v20 = processIdentifier;
         v21 = 2114;
         v22 = v10;
         v23 = 2048;
@@ -2391,10 +2391,10 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Setting XPC connection %{public}@ from %{public}@[%ld] for service %{public}@[%ld].", v18, 0x3Eu);
       }
 
-      v11 = [(ICDServer *)self _supportedInterfaceForCloudServerListenerXPCConnection];
-      [v6 setExportedInterface:v11];
-      [v6 setExportedObject:self];
-      [v6 resume];
+      _supportedInterfaceForCloudServerListenerXPCConnection = [(ICDServer *)self _supportedInterfaceForCloudServerListenerXPCConnection];
+      [connectionCopy setExportedInterface:_supportedInterfaceForCloudServerListenerXPCConnection];
+      [connectionCopy setExportedObject:self];
+      [connectionCopy resume];
     }
 
     else
@@ -2404,8 +2404,8 @@ LABEL_12:
         [(ICDServer *)self _completeStartupSequenceIfNeeded];
         if (![(ICDServer *)self isStartupSequenceCompleted])
         {
-          v11 = sub_10010283C();
-          if (!os_log_type_enabled(&v11->super, OS_LOG_TYPE_ERROR))
+          _supportedInterfaceForCloudServerListenerXPCConnection = sub_10010283C();
+          if (!os_log_type_enabled(&_supportedInterfaceForCloudServerListenerXPCConnection->super, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_13;
           }
@@ -2413,11 +2413,11 @@ LABEL_12:
           LODWORD(v18[0]) = 134219266;
           *(v18 + 4) = self;
           WORD6(v18[0]) = 2114;
-          *(v18 + 14) = v6;
+          *(v18 + 14) = connectionCopy;
           WORD3(v18[1]) = 2114;
           *(&v18[1] + 1) = v9;
           v19 = 2048;
-          v20 = v8;
+          v20 = processIdentifier;
           v21 = 2114;
           v22 = v10;
           v23 = 2048;
@@ -2433,11 +2433,11 @@ LABEL_12:
         LODWORD(v18[0]) = 134219266;
         *(v18 + 4) = self;
         WORD6(v18[0]) = 2114;
-        *(v18 + 14) = v6;
+        *(v18 + 14) = connectionCopy;
         WORD3(v18[1]) = 2114;
         *(&v18[1] + 1) = v9;
         v19 = 2048;
-        v20 = v8;
+        v20 = processIdentifier;
         v21 = 2114;
         v22 = v10;
         v23 = 2048;
@@ -2445,12 +2445,12 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "ICDServer %p - Setting XPC connection %{public}@ from %{public}@[%ld] for service %{public}@[%ld].", v18, 0x3Eu);
       }
 
-      v11 = [[CloudService alloc] initWithHandlerProvider:self];
-      [(CloudService *)v11 setRequestingBundleID:v9];
-      v16 = [(ICDServer *)self _supportedInterfaceForCloudServerXPCConnection];
-      [v6 setExportedInterface:v16];
-      [v6 setExportedObject:v11];
-      [v6 resume];
+      _supportedInterfaceForCloudServerListenerXPCConnection = [[CloudService alloc] initWithHandlerProvider:self];
+      [(CloudService *)_supportedInterfaceForCloudServerListenerXPCConnection setRequestingBundleID:v9];
+      _supportedInterfaceForCloudServerXPCConnection = [(ICDServer *)self _supportedInterfaceForCloudServerXPCConnection];
+      [connectionCopy setExportedInterface:_supportedInterfaceForCloudServerXPCConnection];
+      [connectionCopy setExportedObject:_supportedInterfaceForCloudServerListenerXPCConnection];
+      [connectionCopy resume];
     }
 
     LOBYTE(self) = 1;
@@ -2463,9 +2463,9 @@ LABEL_26:
   return self & 1;
 }
 
-- (int64_t)_ICCloudServerSupportedServiceForXPCListener:(id)a3
+- (int64_t)_ICCloudServerSupportedServiceForXPCListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -2478,7 +2478,7 @@ LABEL_26:
   block[2] = sub_10006CB38;
   block[3] = &unk_1001DCFA8;
   block[4] = self;
-  v6 = v4;
+  v6 = listenerCopy;
   v11 = v6;
   v12 = &v13;
   dispatch_sync(serialQueue, block);
@@ -2489,7 +2489,7 @@ LABEL_26:
   return v8;
 }
 
-- (id)_setupXPCListenerForService:(int64_t)a3
+- (id)_setupXPCListenerForService:(int64_t)service
 {
   v10 = 0;
   v11 = &v10;
@@ -2497,16 +2497,16 @@ LABEL_26:
   v13 = sub_100064CD4;
   v14 = sub_100064CE4;
   v15 = 0;
-  v6 = [(ICDServer *)self serialQueue];
+  serialQueue = [(ICDServer *)self serialQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10006CD88;
   v9[3] = &unk_1001DB880;
-  v9[6] = a3;
+  v9[6] = service;
   v9[7] = a2;
   v9[4] = self;
   v9[5] = &v10;
-  dispatch_sync(v6, v9);
+  dispatch_sync(serialQueue, v9);
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -2514,14 +2514,14 @@ LABEL_26:
   return v7;
 }
 
-- (void)notifyDeviceSetupFinishedWithCompletion:(id)a3
+- (void)notifyDeviceSetupFinishedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "CloudService %p Handling notification request that device setup has finished", &v7, 0xCu);
   }
 
@@ -2529,13 +2529,13 @@ LABEL_26:
   [v6 setSetupAssistantComplete:1];
 
   [(ICDServer *)self _completeStartupSequenceIfNeeded];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)getListenerEndpointForService:(int64_t)a3 completion:(id)a4
+- (void)getListenerEndpointForService:(int64_t)service completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ICDServer *)self _setupXPCListenerForService:a3];
+  completionCopy = completion;
+  v7 = [(ICDServer *)self _setupXPCListenerForService:service];
   if (v7)
   {
     v8 = 0;
@@ -2548,36 +2548,36 @@ LABEL_26:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = v9;
       v20 = 2048;
-      v21 = a3;
+      serviceCopy = service;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "ICDServer %p - Unable to get an anonymous listener for %{public}@[%ld] - This usually indicates an attempt to access itunescloudd without the proper entitlements.", buf, 0x20u);
     }
 
-    v11 = [NSString stringWithFormat:@"Unable to get an anonymous listener for %@[%ld] - This usually indicates an attempt to access itunescloudd without the proper entitlements.", v9, a3, @"description"];
+    v11 = [NSString stringWithFormat:@"Unable to get an anonymous listener for %@[%ld] - This usually indicates an attempt to access itunescloudd without the proper entitlements.", v9, service, @"description"];
     v15 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v8 = [NSError errorWithDomain:@"ICCloudServiceErrorDomain" code:2000 userInfo:v12];
   }
 
-  v13 = [v7 endpoint];
-  v6[2](v6, v13, v8);
+  endpoint = [v7 endpoint];
+  completionCopy[2](completionCopy, endpoint, v8);
 }
 
-- (id)handlerWithType:(int64_t)a3 configuration:(id)a4 error:(id *)a5
+- (id)handlerWithType:(int64_t)type configuration:(id)configuration error:(id *)error
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v29 = self;
-  v7 = [(ICDServer *)self accountManager];
-  v8 = [v7 supportedConfigurations];
+  selfCopy = self;
+  accountManager = [(ICDServer *)self accountManager];
+  supportedConfigurations = [accountManager supportedConfigurations];
 
-  v9 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v9 = [supportedConfigurations countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2588,15 +2588,15 @@ LABEL_3:
     {
       if (*v33 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(supportedConfigurations);
       }
 
       v13 = *(*(&v32 + 1) + 8 * v12);
-      v14 = [v6 userIdentity];
-      v15 = [v14 accountDSID];
-      v16 = [v13 userIdentity];
-      v17 = [v16 accountDSID];
-      v18 = [v15 isEqualToString:v17];
+      userIdentity = [configurationCopy userIdentity];
+      accountDSID = [userIdentity accountDSID];
+      userIdentity2 = [v13 userIdentity];
+      accountDSID2 = [userIdentity2 accountDSID];
+      v18 = [accountDSID isEqualToString:accountDSID2];
 
       if (v18)
       {
@@ -2605,7 +2605,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v10 = [supportedConfigurations countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -2615,14 +2615,14 @@ LABEL_3:
       }
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v26 = ArtistImageRequestHandler;
     }
 
     else
     {
-      if (a3)
+      if (type)
       {
         goto LABEL_22;
       }
@@ -2630,7 +2630,7 @@ LABEL_3:
       v26 = ICDCloudMusicLibraryRequestHandler;
     }
 
-    v18 = [(__objc2_class *)v26 handlerForConfiguration:v6];
+    v18 = [(__objc2_class *)v26 handlerForConfiguration:configurationCopy];
   }
 
   else
@@ -2640,23 +2640,23 @@ LABEL_9:
     v19 = os_log_create("com.apple.amp.itunescloudd", "Default");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v6 userIdentity];
-      v21 = [v20 accountDSID];
+      userIdentity3 = [configurationCopy userIdentity];
+      accountDSID3 = [userIdentity3 accountDSID];
       *buf = 134218242;
-      v37 = v29;
+      v37 = selfCopy;
       v38 = 2112;
-      v39 = v21;
+      v39 = accountDSID3;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "ICDServer %p - Attempt to retrieve handler for unsupported configuration [returning nil] - Configuration dsid=%@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v22 = [[NSMutableDictionary alloc] initWithCapacity:3];
       if (MSVDeviceOSIsInternalInstall())
       {
-        v23 = [v6 userIdentity];
-        v24 = [v23 accountDSID];
-        v25 = [NSString stringWithFormat:@"Attempting to retrieve handler for an unsupported configuration [dsid=%@]", v24];
+        userIdentity4 = [configurationCopy userIdentity];
+        accountDSID4 = [userIdentity4 accountDSID];
+        v25 = [NSString stringWithFormat:@"Attempting to retrieve handler for an unsupported configuration [dsid=%@]", accountDSID4];
         [v22 setObject:v25 forKeyedSubscript:NSLocalizedDescriptionKey];
       }
 
@@ -2668,7 +2668,7 @@ LABEL_9:
       [v22 setObject:@"An ICCloudClient (or HSCloudClient) instance is using a signed-out user identity." forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
       [v22 setObject:@"Listen to ICActiveUserIdentityDidChangeNotification and either update ICCloudClient with the new active account or recreate it" forKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
       v27 = [v22 copy];
-      *a5 = [NSError ic_cloudClientErrorWithCode:2003 userInfo:v27];
+      *error = [NSError ic_cloudClientErrorWithCode:2003 userInfo:v27];
     }
 
     v18 = 0;
@@ -2679,17 +2679,17 @@ LABEL_22:
   return v18;
 }
 
-- (void)scheduleBackgroundUpdateType:(int64_t)a3 forConfiguration:(id)a4
+- (void)scheduleBackgroundUpdateType:(int64_t)type forConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [(ICDServer *)self backgroundTaskManager];
-  [v7 scheduleTaskOfType:a3 forConfiguration:v6];
+  configurationCopy = configuration;
+  backgroundTaskManager = [(ICDServer *)self backgroundTaskManager];
+  [backgroundTaskManager scheduleTaskOfType:type forConfiguration:configurationCopy];
 }
 
 - (void)listCloudServerOperations
 {
-  v3 = [(ICDServer *)self serverOperationsManager];
-  v2 = [v3 listCloudServerOperations];
+  serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+  listCloudServerOperations = [serverOperationsManager listCloudServerOperations];
 }
 
 - (void)fetchEnhancedAudioOfflineKeys
@@ -2701,8 +2701,8 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Fetching enhanced-audio offline keys", v5, 2u);
   }
 
-  v4 = [(ICDServer *)self enhancedAudioKeyManager];
-  [v4 fetchMissingOfflineKeys];
+  enhancedAudioKeyManager = [(ICDServer *)self enhancedAudioKeyManager];
+  [enhancedAudioKeyManager fetchMissingOfflineKeys];
 }
 
 - (void)refreshEnhancedAudioSharedKeys
@@ -2714,13 +2714,13 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Refreshing enhanced-audio shared keys", v5, 2u);
   }
 
-  v4 = [(ICDServer *)self enhancedAudioKeyManager];
-  [v4 refreshSharedKeys];
+  enhancedAudioKeyManager = [(ICDServer *)self enhancedAudioKeyManager];
+  [enhancedAudioKeyManager refreshSharedKeys];
 }
 
-- (id)daemonOptionsForConfiguration:(id)a3
+- (id)daemonOptionsForConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(CloudServerOptions);
   v5 = +[ICDeviceInfo currentDeviceInfo];
   if ([v5 isAppleTV])
@@ -2773,17 +2773,17 @@ LABEL_4:
     v12 = os_log_create("com.apple.amp.itunescloudd", "XPC");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(CloudServerOptions *)v4 prohibitLibraryUpload];
-      v14 = [(CloudServerOptions *)v4 prohibitArtworkPrefetch];
-      v15 = [(CloudServerOptions *)v4 supportsAutomaticEnablingiCloudMusicLibrary];
+      prohibitLibraryUpload = [(CloudServerOptions *)v4 prohibitLibraryUpload];
+      prohibitArtworkPrefetch = [(CloudServerOptions *)v4 prohibitArtworkPrefetch];
+      supportsAutomaticEnablingiCloudMusicLibrary = [(CloudServerOptions *)v4 supportsAutomaticEnablingiCloudMusicLibrary];
       *buf = 67109888;
       v23 = v11;
       v24 = 1024;
-      v25 = v13;
+      v25 = prohibitLibraryUpload;
       v26 = 1024;
-      v27 = v14;
+      v27 = prohibitArtworkPrefetch;
       v28 = 1024;
-      v29 = v15;
+      v29 = supportsAutomaticEnablingiCloudMusicLibrary;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Setting options for watch. isMediaSyncingSupported=%{BOOL}u, prohibitLibraryUpload=%{BOOL}u, prohibitArtworkPrefetch =%{BOOL}u, supportsAutomaticEnablingiCloudMusicLibrary=%{BOOL}u", buf, 0x1Au);
     }
 
@@ -2820,7 +2820,7 @@ LABEL_26:
     v18[2] = sub_10006DD50;
     v18[3] = &unk_1001DB858;
     v19 = v4;
-    v20 = v3;
+    v20 = configurationCopy;
     v21 = v17;
     v12 = v17;
     sub_1000031E4(v20, v18);
@@ -2834,34 +2834,34 @@ LABEL_11:
   return v4;
 }
 
-- (void)enumerateBackgroundOperationsUsingBlock:(id)a3
+- (void)enumerateBackgroundOperationsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICDServer *)self serverOperationsManager];
-  [v5 enumerateBackgroundOperationsUsingBlock:v4];
+  blockCopy = block;
+  serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+  [serverOperationsManager enumerateBackgroundOperationsUsingBlock:blockCopy];
 }
 
-- (void)enumerateOperationsUsingBlock:(id)a3
+- (void)enumerateOperationsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICDServer *)self serverOperationsManager];
-  [v5 enumerateOperationsUsingBlock:v4];
+  blockCopy = block;
+  serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+  [serverOperationsManager enumerateOperationsUsingBlock:blockCopy];
 }
 
-- (BOOL)hasOperationsOfClass:(Class)a3
+- (BOOL)hasOperationsOfClass:(Class)class
 {
-  v4 = [(ICDServer *)self serverOperationsManager];
-  LOBYTE(a3) = [v4 hasOperationsOfClass:a3];
+  serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+  LOBYTE(class) = [serverOperationsManager hasOperationsOfClass:class];
 
-  return a3;
+  return class;
 }
 
-- (BOOL)cancelOperationsByClass:(Class)a3
+- (BOOL)cancelOperationsByClass:(Class)class
 {
-  v4 = [(ICDServer *)self serverOperationsManager];
-  LOBYTE(a3) = [v4 cancelOperationsByClass:a3];
+  serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+  LOBYTE(class) = [serverOperationsManager cancelOperationsByClass:class];
 
-  return a3;
+  return class;
 }
 
 - (void)stop
@@ -2874,13 +2874,13 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping server...", buf, 2u);
   }
 
-  v5 = [(ICDServer *)self serialQueue];
+  serialQueue = [(ICDServer *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006E3C8;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
   v6 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2925,10 +2925,10 @@ LABEL_11:
 
 - (id)_stateDump
 {
-  v2 = [(ICDServer *)self serverOperationsManager];
-  v3 = [v2 listCloudServerOperations];
+  serverOperationsManager = [(ICDServer *)self serverOperationsManager];
+  listCloudServerOperations = [serverOperationsManager listCloudServerOperations];
 
-  return v3;
+  return listCloudServerOperations;
 }
 
 - (void)dealloc

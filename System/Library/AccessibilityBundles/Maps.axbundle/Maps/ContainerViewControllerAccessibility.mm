@@ -1,14 +1,14 @@
 @interface ContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation ContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ContainerViewController" hasInstanceMethod:@"presentController: animated: useDefaultContaineeLayout:" withFullSignature:{"v", "@", "B", "B", 0}];
-  [v3 validateClass:@"ContainerViewController" hasInstanceVariable:@"_currentViewController" withType:"UIViewController<ContaineeProtocol>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ContainerViewController" hasInstanceMethod:@"presentController: animated: useDefaultContaineeLayout:" withFullSignature:{"v", "@", "B", "B", 0}];
+  [validationsCopy validateClass:@"ContainerViewController" hasInstanceVariable:@"_currentViewController" withType:"UIViewController<ContaineeProtocol>"];
 }
 
 @end

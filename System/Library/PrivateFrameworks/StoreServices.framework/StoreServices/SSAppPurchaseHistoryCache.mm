@@ -1,12 +1,12 @@
 @interface SSAppPurchaseHistoryCache
-- (BOOL)setImageData:(id)a3 forAdamID:(id)a4 imageToken:(id)a5;
+- (BOOL)setImageData:(id)data forAdamID:(id)d imageToken:(id)token;
 - (SSAppPurchaseHistoryCache)init;
-- (SSAppPurchaseHistoryCache)initWithAccount:(id)a3;
-- (id)allUncachedImages:(id)a3;
-- (id)imageDataForAdamID:(id)a3;
-- (unint64_t)purge:(unint64_t)a3;
+- (SSAppPurchaseHistoryCache)initWithAccount:(id)account;
+- (id)allUncachedImages:(id)images;
+- (id)imageDataForAdamID:(id)d;
+- (unint64_t)purge:(unint64_t)purge;
 - (unint64_t)purgeableSpace;
-- (void)clearCacheForAdamID:(id)a3;
+- (void)clearCacheForAdamID:(id)d;
 @end
 
 @implementation SSAppPurchaseHistoryCache
@@ -38,23 +38,23 @@
   return v2;
 }
 
-- (SSAppPurchaseHistoryCache)initWithAccount:(id)a3
+- (SSAppPurchaseHistoryCache)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = [(SSAppPurchaseHistoryCache *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)allUncachedImages:(id)a3
+- (id)allUncachedImages:(id)images
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  imagesCopy = images;
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_account)
   {
     purchaseHistoryDatabase = self->_purchaseHistoryDatabase;
@@ -63,12 +63,12 @@
     v8[2] = __47__SSAppPurchaseHistoryCache_allUncachedImages___block_invoke;
     v8[3] = &unk_1E84B33B0;
     v8[4] = self;
-    v9 = v4;
-    v10 = v5;
+    v9 = imagesCopy;
+    v10 = array;
     [(SSAppPurchaseHistoryDatabase *)purchaseHistoryDatabase readUsingTransactionBlock:v8];
   }
 
-  return v5;
+  return array;
 }
 
 uint64_t __47__SSAppPurchaseHistoryCache_allUncachedImages___block_invoke(uint64_t a1, void *a2)
@@ -213,34 +213,34 @@ uint64_t __47__SSAppPurchaseHistoryCache_allUncachedImages___block_invoke_2(uint
   return result;
 }
 
-- (void)clearCacheForAdamID:(id)a3
+- (void)clearCacheForAdamID:(id)d
 {
-  v6 = a3;
-  if ([v6 unsignedLongLongValue])
+  dCopy = d;
+  if ([dCopy unsignedLongLongValue])
   {
     databaseCache = self->_databaseCache;
-    v5 = [v6 stringValue];
-    [(SSDatabaseCache *)databaseCache clearCacheForLookupKey:v5];
+    stringValue = [dCopy stringValue];
+    [(SSDatabaseCache *)databaseCache clearCacheForLookupKey:stringValue];
   }
 }
 
-- (BOOL)setImageData:(id)a3 forAdamID:(id)a4 imageToken:(id)a5
+- (BOOL)setImageData:(id)data forAdamID:(id)d imageToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  dCopy = d;
+  tokenCopy = token;
   if (self->_account)
   {
     v11 = objc_autoreleasePoolPush();
-    if ([v8 length] && objc_msgSend(v9, "unsignedLongLongValue"))
+    if ([dataCopy length] && objc_msgSend(dCopy, "unsignedLongLongValue"))
     {
-      v12 = [MEMORY[0x1E695DF00] distantFuture];
-      [v12 timeIntervalSinceReferenceDate];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [distantFuture timeIntervalSinceReferenceDate];
       v14 = v13;
 
       databaseCache = self->_databaseCache;
-      v16 = [v9 stringValue];
-      v17 = [(SSDatabaseCache *)databaseCache setData:v8 expiring:v16 retiring:v10 lookupKey:v14 userInfo:v14];
+      stringValue = [dCopy stringValue];
+      v17 = [(SSDatabaseCache *)databaseCache setData:dataCopy expiring:stringValue retiring:tokenCopy lookupKey:v14 userInfo:v14];
 
       v18 = v17 != 0;
     }
@@ -261,15 +261,15 @@ uint64_t __47__SSAppPurchaseHistoryCache_allUncachedImages___block_invoke_2(uint
   return v18;
 }
 
-- (id)imageDataForAdamID:(id)a3
+- (id)imageDataForAdamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  if ([v4 unsignedLongLongValue])
+  if ([dCopy unsignedLongLongValue])
   {
     databaseCache = self->_databaseCache;
-    v7 = [v4 stringValue];
-    v8 = [(SSDatabaseCache *)databaseCache cacheEntryForLookupKey:v7];
+    stringValue = [dCopy stringValue];
+    v8 = [(SSDatabaseCache *)databaseCache cacheEntryForLookupKey:stringValue];
 
     v9 = [v8 dataBlob:0];
   }
@@ -287,31 +287,31 @@ uint64_t __47__SSAppPurchaseHistoryCache_allUncachedImages___block_invoke_2(uint
 - (unint64_t)purgeableSpace
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SSDatabaseCache *)self->_databaseCache statistics];
-  v5 = [v4 objectForKey:@"total"];
+  statistics = [(SSDatabaseCache *)self->_databaseCache statistics];
+  v5 = [statistics objectForKey:@"total"];
   v6 = [v5 objectForKey:@"bytes"];
-  v7 = [v6 unsignedLongLongValue];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
   objc_autoreleasePoolPop(v3);
-  return v7;
+  return unsignedLongLongValue;
 }
 
-- (unint64_t)purge:(unint64_t)a3
+- (unint64_t)purge:(unint64_t)purge
 {
-  if (!a3)
+  if (!purge)
   {
     return 0;
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [(SSDatabaseCache *)self->_databaseCache statistics];
-  v6 = [v5 objectForKey:@"total"];
+  statistics = [(SSDatabaseCache *)self->_databaseCache statistics];
+  v6 = [statistics objectForKey:@"total"];
   v7 = [v6 objectForKey:@"bytes"];
-  v8 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
   [(SSDatabaseCache *)self->_databaseCache clear];
 
   objc_autoreleasePoolPop(v4);
-  return v8;
+  return unsignedLongLongValue;
 }
 
 @end

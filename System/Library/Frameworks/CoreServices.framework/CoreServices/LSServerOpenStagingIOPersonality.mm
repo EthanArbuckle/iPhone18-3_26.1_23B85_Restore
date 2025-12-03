@@ -1,10 +1,10 @@
 @interface LSServerOpenStagingIOPersonality
 - (id)mainSystemContainerURL;
 - (id)mainUserContainerURL;
-- (id)makeStagingDirectoryNodeInContainer:(id)a3 error:(id *)a4;
-- (optional<LaunchServices::StagingDirectoryInfo>)stagingDirectoryInfoForPersonaUniqueString:(SEL)a3 error:(id)a4;
-- (optional<unsigned)stagingDirectoryKeyForFileHandle:(id)a3 error:(id *)a4;
-- (optional<unsigned)stagingDirectoryKeyForNode:(id)a3 error:(id *)a4;
+- (id)makeStagingDirectoryNodeInContainer:(id)container error:(id *)error;
+- (optional<LaunchServices::StagingDirectoryInfo>)stagingDirectoryInfoForPersonaUniqueString:(SEL)string error:(id)error;
+- (optional<unsigned)stagingDirectoryKeyForFileHandle:(id)handle error:(id *)error;
+- (optional<unsigned)stagingDirectoryKeyForNode:(id)node error:(id *)error;
 @end
 
 @implementation LSServerOpenStagingIOPersonality
@@ -23,9 +23,9 @@
   return [SharedInstance systemContainerURL];
 }
 
-- (id)makeStagingDirectoryNodeInContainer:(id)a3 error:(id *)a4
+- (id)makeStagingDirectoryNodeInContainer:(id)container error:(id *)error
 {
-  v5 = makeStagingDirectoryURLInContainer(a3);
+  v5 = makeStagingDirectoryURLInContainer(container);
   if (v5)
   {
     v10 = 0;
@@ -39,25 +39,25 @@
     v6 = 0;
   }
 
-  if (a4 && !v6)
+  if (error && !v6)
   {
     v8 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   return v6;
 }
 
-- (optional<LaunchServices::StagingDirectoryInfo>)stagingDirectoryInfoForPersonaUniqueString:(SEL)a3 error:(id)a4
+- (optional<LaunchServices::StagingDirectoryInfo>)stagingDirectoryInfoForPersonaUniqueString:(SEL)string error:(id)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v24 = v7;
+  errorCopy = error;
+  v24 = errorCopy;
   retstr->var0.var0 = 0;
   retstr->var1 = 0;
   container_query_create();
   container_query_set_class();
-  [v7 UTF8String];
+  [errorCopy UTF8String];
   container_query_set_persona_unique_string();
   container_query_operation_set_flags();
   if (!container_query_get_single_result())
@@ -150,12 +150,12 @@ LABEL_21:
   return result;
 }
 
-- (optional<unsigned)stagingDirectoryKeyForNode:(id)a3 error:(id *)a4
+- (optional<unsigned)stagingDirectoryKeyForNode:(id)node error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nodeCopy = node;
   v17 = 0;
-  v6 = [v5 getFileSystemRepresentation:v18 error:&v17];
+  v6 = [nodeCopy getFileSystemRepresentation:v18 error:&v17];
   v7 = v17;
   if (v6)
   {
@@ -173,13 +173,13 @@ LABEL_21:
     v7 = v9;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v7;
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
   else
@@ -199,21 +199,21 @@ LABEL_8:
   return result;
 }
 
-- (optional<unsigned)stagingDirectoryKeyForFileHandle:(id)a3 error:(id *)a4
+- (optional<unsigned)stagingDirectoryKeyForFileHandle:(id)handle error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (fstatfs([v5 fileDescriptor], &v14))
+  handleCopy = handle;
+  if (fstatfs([handleCopy fileDescriptor], &v14))
   {
     v6 = __error();
     v7 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], *v6, 0, "[LSServerOpenStagingIOPersonality stagingDirectoryKeyForFileHandle:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSOpenStagingDirectoryManager.mm", 211);
-    if (a4)
+    if (error)
     {
       v7 = v7;
       v8 = 0;
       v9 = 0;
       v10 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else

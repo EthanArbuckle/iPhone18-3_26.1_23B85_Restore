@@ -1,78 +1,78 @@
 @interface CNMultiValueAddUpdate
-- (BOOL)applyToABPerson:(void *)a3 abmultivalue:(void *)a4 propertyDescription:(id)a5 isUnified:(BOOL)a6 logger:(id)a7 error:(id *)a8;
-- (void)applyToMutableMultiValue:(id)a3 withIdentifierMap:(id)a4;
+- (BOOL)applyToABPerson:(void *)person abmultivalue:(void *)abmultivalue propertyDescription:(id)description isUnified:(BOOL)unified logger:(id)logger error:(id *)error;
+- (void)applyToMutableMultiValue:(id)value withIdentifierMap:(id)map;
 @end
 
 @implementation CNMultiValueAddUpdate
 
-- (void)applyToMutableMultiValue:(id)a3 withIdentifierMap:(id)a4
+- (void)applyToMutableMultiValue:(id)value withIdentifierMap:(id)map
 {
-  v5 = a3;
-  v6 = [(CNMultiValueSingleUpdate *)self value];
-  [v5 addObject:v6];
+  valueCopy = value;
+  value = [(CNMultiValueSingleUpdate *)self value];
+  [valueCopy addObject:value];
 }
 
-- (BOOL)applyToABPerson:(void *)a3 abmultivalue:(void *)a4 propertyDescription:(id)a5 isUnified:(BOOL)a6 logger:(id)a7 error:(id *)a8
+- (BOOL)applyToABPerson:(void *)person abmultivalue:(void *)abmultivalue propertyDescription:(id)description isUnified:(BOOL)unified logger:(id)logger error:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a7;
-  v13 = [(CNMultiValueSingleUpdate *)self value];
-  v14 = [v11 key];
-  [v12 applyContactUpdateOfKind:"multi value add" value:v13 property:v14];
+  descriptionCopy = description;
+  loggerCopy = logger;
+  value = [(CNMultiValueSingleUpdate *)self value];
+  v14 = [descriptionCopy key];
+  [loggerCopy applyContactUpdateOfKind:"multi value add" value:value property:v14];
 
-  v15 = [(CNMultiValueSingleUpdate *)self value];
-  v16 = [v15 value];
-  v17 = [v11 ABMultiValueValueFromCNLabeledValueValue:v16];
+  value2 = [(CNMultiValueSingleUpdate *)self value];
+  v15Value = [value2 value];
+  v17 = [descriptionCopy ABMultiValueValueFromCNLabeledValueValue:v15Value];
 
-  v18 = [v15 label];
-  v19 = [v11 ABMultiValueLabelFromCNLabeledValueLabel:v18];
+  label = [value2 label];
+  v19 = [descriptionCopy ABMultiValueLabelFromCNLabeledValueLabel:label];
 
-  Count = ABMultiValueGetCount(a4);
-  v21 = [v11 key];
+  Count = ABMultiValueGetCount(abmultivalue);
+  v21 = [descriptionCopy key];
   v22 = [v21 isEqualToString:@"addressingGrammars"];
 
   if (!v22 || v17)
   {
     if ([(CNMultiValueUpdate *)self ignoreIdentifiers])
     {
-      inserted = ABMultiValueInsertValueAndLabelAtIndex(a4, v17, v19, Count, 0);
+      inserted = ABMultiValueInsertValueAndLabelAtIndex(abmultivalue, v17, v19, Count, 0);
       v30 = ABMultiValueCopyUUIDAtIndex();
-      v31 = a8;
+      errorCopy2 = error;
       if (v30)
       {
         v32 = v30;
-        [CN addLinkedIdentifier:v30 toLabeledValue:v15];
+        [CN addLinkedIdentifier:v30 toLabeledValue:value2];
         CFRelease(v32);
       }
     }
 
     else
     {
-      [v15 identifier];
+      [value2 identifier];
       inserted = ABMultiValueInsertValueAndLabelAndUUIDAtIndex();
-      v31 = a8;
+      errorCopy2 = error;
     }
 
-    if (v31 && (inserted & 1) == 0)
+    if (errorCopy2 && (inserted & 1) == 0)
     {
       v46 = @"CNKeyPaths";
-      v33 = [v11 key];
+      v33 = [descriptionCopy key];
       v45 = v33;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
       v47[0] = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:&v46 count:1];
       v36 = +[CNErrorFactory genericiOSABError];
-      *v31 = [CNErrorFactory errorByAddingUserInfoEntries:v35 toError:v36];
+      *errorCopy2 = [CNErrorFactory errorByAddingUserInfoEntries:v35 toError:v36];
 
       v37 = MEMORY[0x1E696AEC0];
       v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNMultiValueUpdate ignoreIdentifiers](self, "ignoreIdentifiers")}];
       v39 = [v37 stringWithFormat:@"multi value add, ignore identifiers = %@", v38];
 
-      v40 = [v39 UTF8String];
-      v41 = [(CNMultiValueSingleUpdate *)self value];
-      v42 = [v11 key];
-      [v12 failedToApplyContactUpdateOfKind:v40 value:v41 property:v42 error:*v31];
+      uTF8String = [v39 UTF8String];
+      value3 = [(CNMultiValueSingleUpdate *)self value];
+      v42 = [descriptionCopy key];
+      [loggerCopy failedToApplyContactUpdateOfKind:uTF8String value:value3 property:v42 error:*errorCopy2];
 
       inserted = 0;
     }
@@ -84,10 +84,10 @@
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNMultiValueUpdate ignoreIdentifiers](self, "ignoreIdentifiers")}];
     v25 = [v23 stringWithFormat:@"multi value add, ignore identifiers = %@", v24];
 
-    v26 = [v25 UTF8String];
-    v27 = [(CNMultiValueSingleUpdate *)self value];
-    v28 = [v11 key];
-    [v12 failedToApplyContactUpdateOfKind:v26 value:v27 property:v28 error:0];
+    uTF8String2 = [v25 UTF8String];
+    value4 = [(CNMultiValueSingleUpdate *)self value];
+    v28 = [descriptionCopy key];
+    [loggerCopy failedToApplyContactUpdateOfKind:uTF8String2 value:value4 property:v28 error:0];
 
     inserted = 1;
   }

@@ -1,26 +1,26 @@
 @interface UIKBRenderingContext
-+ (id)renderingContextForRenderConfig:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (UIKBRenderingContext)initWithRenderConfig:(id)a3;
++ (id)renderingContextForRenderConfig:(id)config;
+- (BOOL)isEqual:(id)equal;
+- (UIKBRenderingContext)initWithRenderConfig:(id)config;
 - (UIView)layoutView;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UIKBRenderingContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(UIKBRenderingContext *)self shiftState];
-    if (v6 == [v5 shiftState] && (v7 = -[UIKBRenderingContext isFloating](self, "isFloating"), v7 == objc_msgSend(v5, "isFloating")))
+    v5 = equalCopy;
+    shiftState = [(UIKBRenderingContext *)self shiftState];
+    if (shiftState == [v5 shiftState] && (v7 = -[UIKBRenderingContext isFloating](self, "isFloating"), v7 == objc_msgSend(v5, "isFloating")))
     {
-      v9 = [(UIKBRenderingContext *)self renderConfig];
-      v10 = [v5 renderConfig];
-      v8 = v9 == v10;
+      renderConfig = [(UIKBRenderingContext *)self renderConfig];
+      renderConfig2 = [v5 renderConfig];
+      v8 = renderConfig == renderConfig2;
     }
 
     else
@@ -37,31 +37,31 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UIKBRenderingContext allocWithZone:?]];
   [(UIKBRenderingContext *)v4 setShiftState:[(UIKBRenderingContext *)self shiftState]];
-  v5 = [(UIKBRenderingContext *)self renderConfig];
-  [(UIKBRenderingContext *)v4 setRenderConfig:v5];
+  renderConfig = [(UIKBRenderingContext *)self renderConfig];
+  [(UIKBRenderingContext *)v4 setRenderConfig:renderConfig];
 
   [(UIKBRenderingContext *)v4 setIsFloating:[(UIKBRenderingContext *)self isFloating]];
-  v6 = [(UIKBRenderingContext *)self layoutView];
-  [(UIKBRenderingContext *)v4 setLayoutView:v6];
+  layoutView = [(UIKBRenderingContext *)self layoutView];
+  [(UIKBRenderingContext *)v4 setLayoutView:layoutView];
 
   return v4;
 }
 
-+ (id)renderingContextForRenderConfig:(id)a3
++ (id)renderingContextForRenderConfig:(id)config
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRenderConfig:v4];
+  configCopy = config;
+  v5 = [[self alloc] initWithRenderConfig:configCopy];
 
   return v5;
 }
 
-- (UIKBRenderingContext)initWithRenderConfig:(id)a3
+- (UIKBRenderingContext)initWithRenderConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = UIKBRenderingContext;
   v6 = [(UIKBRenderingContext *)&v11 init];
@@ -69,11 +69,11 @@
   if (v6)
   {
     v6->_shiftState = 0;
-    objc_storeStrong(&v6->_renderConfig, a3);
-    v7->_isFloating = [v5 isFloating];
+    objc_storeStrong(&v6->_renderConfig, config);
+    v7->_isFloating = [configCopy isFloating];
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 _layout];
-    objc_storeWeak(&v7->_layoutView, v9);
+    _layout = [v8 _layout];
+    objc_storeWeak(&v7->_layoutView, _layout);
   }
 
   return v7;

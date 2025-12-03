@@ -1,14 +1,14 @@
 @interface SRSensorDescription
 + (id)allDescriptions;
-+ (id)sensorDescriptionForDeletionRecordFromDescription:(id)a3;
-+ (id)sensorDescriptionForSensor:(id)a3;
-+ (id)sensorDescriptionsForAuthorizationService:(id)a3;
++ (id)sensorDescriptionForDeletionRecordFromDescription:(id)description;
++ (id)sensorDescriptionForSensor:(id)sensor;
++ (id)sensorDescriptionsForAuthorizationService:(id)service;
 + (void)initialize;
-- (BOOL)supportsPlatform:(id)a3;
+- (BOOL)supportsPlatform:(id)platform;
 - (NSSet)eligibleDaemons;
 - (NSString)localizedAdditionalSampleDataNote;
 - (NSString)sampleClass;
-- (SRSensorDescription)initWithDictionary:(id)a3;
+- (SRSensorDescription)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
@@ -16,27 +16,27 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_100016978 = os_log_create("com.apple.SensorKit", "SRLogDataStream");
   }
 }
 
-+ (id)sensorDescriptionForSensor:(id)a3
++ (id)sensorDescriptionForSensor:(id)sensor
 {
   v4 = sub_100005374();
 
-  return sub_100004F0C(v4, a3);
+  return sub_100004F0C(v4, sensor);
 }
 
-- (SRSensorDescription)initWithDictionary:(id)a3
+- (SRSensorDescription)initWithDictionary:(id)dictionary
 {
   v17.receiver = self;
   v17.super_class = SRSensorDescription;
   v4 = [(SRSensorDescription *)&v17 init];
   if (v4)
   {
-    v5 = [a3 objectForKeyedSubscript:@"Name"];
+    v5 = [dictionary objectForKeyedSubscript:@"Name"];
     v4->_name = v5;
     if (!v5)
     {
@@ -44,12 +44,12 @@
       if (os_log_type_enabled(qword_100016978, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v19 = a3;
+        dictionaryCopy3 = dictionary;
         _os_log_fault_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "Data stream defined without a name: %{public}@", buf, 0xCu);
       }
     }
 
-    v7 = [a3 objectForKeyedSubscript:@"AuthService"];
+    v7 = [dictionary objectForKeyedSubscript:@"AuthService"];
     v4->_authorizationService = v7;
     if (!v7)
     {
@@ -57,12 +57,12 @@
       if (os_log_type_enabled(qword_100016978, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v19 = a3;
+        dictionaryCopy3 = dictionary;
         _os_log_fault_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Data stream defined without an authorization service: %{public}@", buf, 0xCu);
       }
     }
 
-    v9 = [a3 objectForKeyedSubscript:@"RelatedSettingsCategories"];
+    v9 = [dictionary objectForKeyedSubscript:@"RelatedSettingsCategories"];
     v10 = &__NSArray0__struct;
     if (v9)
     {
@@ -70,12 +70,12 @@
     }
 
     v4->_relatedSettingsCategories = v10;
-    v4->_publicEntitlementValue = [a3 objectForKeyedSubscript:@"PublicEntitlementValue"];
-    v4->_sampleClass = [a3 objectForKeyedSubscript:@"SampleClass"];
-    v4->_exportingSampleClass = [a3 objectForKeyedSubscript:@"ExportingSampleClass"];
-    v4->_legacySampleClass = [a3 objectForKeyedSubscript:@"LegacySampleClass"];
-    v4->_legacySampleClassLinkedBefore = [objc_msgSend(a3 objectForKeyedSubscript:{@"LegacySampleClassLinkedBefore", "unsignedIntValue"}];
-    v11 = [a3 objectForKeyedSubscript:@"SRInfoPlistAuthCategory"];
+    v4->_publicEntitlementValue = [dictionary objectForKeyedSubscript:@"PublicEntitlementValue"];
+    v4->_sampleClass = [dictionary objectForKeyedSubscript:@"SampleClass"];
+    v4->_exportingSampleClass = [dictionary objectForKeyedSubscript:@"ExportingSampleClass"];
+    v4->_legacySampleClass = [dictionary objectForKeyedSubscript:@"LegacySampleClass"];
+    v4->_legacySampleClassLinkedBefore = [objc_msgSend(dictionary objectForKeyedSubscript:{@"LegacySampleClassLinkedBefore", "unsignedIntValue"}];
+    v11 = [dictionary objectForKeyedSubscript:@"SRInfoPlistAuthCategory"];
     v4->_infoPlistAuthorizationCategory = v11;
     if (!v11)
     {
@@ -83,56 +83,56 @@
       if (os_log_type_enabled(qword_100016978, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v19 = a3;
+        dictionaryCopy3 = dictionary;
         _os_log_fault_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "Data stream defined without an Info.plist authorization category: %{public}@", buf, 0xCu);
       }
     }
 
-    v4->_authorizationVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"AuthorizationVersion", "integerValue"}];
-    v4->_onDemandWriterService = [a3 objectForKeyedSubscript:@"OnDemandWriterService"];
-    v4->_supportedPlatforms = [a3 objectForKeyedSubscript:@"SupportedPlatforms"];
-    v4->_writerAuthorizationService = [a3 objectForKeyedSubscript:@"WriterAuthorizationService"];
-    v4->_authorizationStoreCohort = [a3 objectForKeyedSubscript:@"AuthorizationStoreCohort"];
-    v4->_legacyName = [a3 objectForKeyedSubscript:@"LegacyName"];
-    v4->_filters = [a3 objectForKeyedSubscript:@"Filters"];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"RoundingIntervalSecs", "doubleValue"}];
+    v4->_authorizationVersion = [objc_msgSend(dictionary objectForKeyedSubscript:{@"AuthorizationVersion", "integerValue"}];
+    v4->_onDemandWriterService = [dictionary objectForKeyedSubscript:@"OnDemandWriterService"];
+    v4->_supportedPlatforms = [dictionary objectForKeyedSubscript:@"SupportedPlatforms"];
+    v4->_writerAuthorizationService = [dictionary objectForKeyedSubscript:@"WriterAuthorizationService"];
+    v4->_authorizationStoreCohort = [dictionary objectForKeyedSubscript:@"AuthorizationStoreCohort"];
+    v4->_legacyName = [dictionary objectForKeyedSubscript:@"LegacyName"];
+    v4->_filters = [dictionary objectForKeyedSubscript:@"Filters"];
+    [objc_msgSend(dictionary objectForKeyedSubscript:{@"RoundingIntervalSecs", "doubleValue"}];
     v4->_roundingInterval = v13;
-    v14 = [a3 objectForKeyedSubscript:@"EligibleDaemons"];
+    v14 = [dictionary objectForKeyedSubscript:@"EligibleDaemons"];
     if (v14)
     {
       v4->_eligibleDaemons = [[NSSet alloc] initWithArray:v14];
     }
 
-    v15 = [a3 objectForKeyedSubscript:@"Additions"];
+    v15 = [dictionary objectForKeyedSubscript:@"Additions"];
     if (v15)
     {
       v4->_additions = [[NSSet alloc] initWithArray:v15];
     }
 
-    v4->_additionalSampleDataNoteKey = [a3 objectForKeyedSubscript:@"AdditionalDataNote"];
-    v4->_datastoreBackend = [objc_msgSend(a3 objectForKeyedSubscript:{@"StorageBackend", "integerValue"}];
+    v4->_additionalSampleDataNoteKey = [dictionary objectForKeyedSubscript:@"AdditionalDataNote"];
+    v4->_datastoreBackend = [objc_msgSend(dictionary objectForKeyedSubscript:{@"StorageBackend", "integerValue"}];
   }
 
   return v4;
 }
 
-+ (id)sensorDescriptionForDeletionRecordFromDescription:(id)a3
++ (id)sensorDescriptionForDeletionRecordFromDescription:(id)description
 {
   v4 = [NSMutableDictionary alloc];
   v8[0] = @"Name";
-  v9[0] = [objc_msgSend(a3 "name")];
+  v9[0] = [objc_msgSend(description "name")];
   v8[1] = @"AuthService";
-  v9[1] = [a3 authorizationService];
+  v9[1] = [description authorizationService];
   v9[2] = @"SRDeletionRecord";
   v8[2] = @"SampleClass";
   v8[3] = @"StorageBackend";
-  v9[3] = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 datastoreBackend]);
+  v9[3] = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [description datastoreBackend]);
   v8[4] = @"SRInfoPlistAuthCategory";
-  v9[4] = [a3 infoPlistAuthorizationCategory];
+  v9[4] = [description infoPlistAuthorizationCategory];
   v5 = [v4 initWithDictionary:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v9, v8, 5)}];
-  if ([a3 legacyName])
+  if ([description legacyName])
   {
-    [v5 setObject:objc_msgSend(objc_msgSend(a3 forKeyedSubscript:{"legacyName"), "sr_sensorForDeletionRecordsFromSensor"), @"LegacyName"}];
+    [v5 setObject:objc_msgSend(objc_msgSend(description forKeyedSubscript:{"legacyName"), "sr_sensorForDeletionRecordsFromSensor"), @"LegacyName"}];
   }
 
   v6 = [[SRSensorDescription alloc] initWithDictionary:v5];
@@ -193,9 +193,9 @@
   }
 }
 
-- (BOOL)supportsPlatform:(id)a3
+- (BOOL)supportsPlatform:(id)platform
 {
-  if (!a3)
+  if (!platform)
   {
     return 0;
   }
@@ -238,7 +238,7 @@
   [(SRSensorDescription *)&v3 dealloc];
 }
 
-+ (id)sensorDescriptionsForAuthorizationService:(id)a3
++ (id)sensorDescriptionsForAuthorizationService:(id)service
 {
   v4 = +[NSMutableArray array];
   v13 = 0u;

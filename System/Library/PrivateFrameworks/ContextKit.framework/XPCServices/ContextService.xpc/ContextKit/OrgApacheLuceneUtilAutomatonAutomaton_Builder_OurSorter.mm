@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneUtilAutomatonAutomaton_Builder_OurSorter
-- (OrgApacheLuceneUtilAutomatonAutomaton_Builder_OurSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton_Builder:(id)a3;
-- (int)compareWithInt:(int)a3 withInt:(int)a4;
+- (OrgApacheLuceneUtilAutomatonAutomaton_Builder_OurSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton_Builder:(id)builder;
+- (int)compareWithInt:(int)int withInt:(int)withInt;
 - (void)__javaClone;
-- (void)swapWithInt:(int)a3 withInt:(int)a4;
+- (void)swapWithInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneUtilAutomatonAutomaton_Builder_OurSorter
 
-- (void)swapWithInt:(int)a3 withInt:(int)a4
+- (void)swapWithInt:(int)int withInt:(int)withInt
 {
-  sub_10007D8B0(self, (4 * a3), (4 * a4));
-  sub_10007D8B0(self, (4 * a3) | 1u, (4 * a4) | 1u);
-  sub_10007D8B0(self, (4 * a3) | 2u, (4 * a4) | 2u);
+  sub_10007D8B0(self, (4 * int), (4 * withInt));
+  sub_10007D8B0(self, (4 * int) | 1u, (4 * withInt) | 1u);
+  sub_10007D8B0(self, (4 * int) | 2u, (4 * withInt) | 2u);
 
-  sub_10007D8B0(self, (4 * a3) | 3u, (4 * a4) | 3u);
+  sub_10007D8B0(self, (4 * int) | 3u, (4 * withInt) | 3u);
 }
 
-- (int)compareWithInt:(int)a3 withInt:(int)a4
+- (int)compareWithInt:(int)int withInt:(int)withInt
 {
   v7 = *(objc_loadWeak(&self->this$0_) + 3);
   if (!v7)
@@ -24,8 +24,8 @@
     JreThrowNullPointerException();
   }
 
-  v8 = (4 * a3);
-  v9 = (4 * a4);
+  v8 = (4 * int);
+  v9 = (4 * withInt);
   v10 = *(v7 + 8);
   if ((v8 & 0x80000000) != 0 || v8 >= v10)
   {
@@ -138,9 +138,9 @@
   }
 }
 
-- (OrgApacheLuceneUtilAutomatonAutomaton_Builder_OurSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton_Builder:(id)a3
+- (OrgApacheLuceneUtilAutomatonAutomaton_Builder_OurSorter)initWithOrgApacheLuceneUtilAutomatonAutomaton_Builder:(id)builder
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, builder);
   OrgApacheLuceneUtilInPlaceMergeSorter_init(self);
   return self;
 }

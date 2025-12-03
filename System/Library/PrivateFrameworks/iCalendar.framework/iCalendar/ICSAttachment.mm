@@ -1,39 +1,39 @@
 @interface ICSAttachment
 - (BOOL)hasSize;
 - (BOOL)x_apple_autoarchived;
-- (ICSAttachment)initWithData:(id)a3;
-- (ICSAttachment)initWithURL:(id)a3;
+- (ICSAttachment)initWithData:(id)data;
+- (ICSAttachment)initWithURL:(id)l;
 - (id)filename;
 - (int)size;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)setData:(id)a3;
-- (void)setURL:(id)a3;
-- (void)setX_apple_autoarchived:(BOOL)a3;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)setData:(id)data;
+- (void)setURL:(id)l;
+- (void)setX_apple_autoarchived:(BOOL)x_apple_autoarchived;
 @end
 
 @implementation ICSAttachment
 
-- (ICSAttachment)initWithURL:(id)a3
+- (ICSAttachment)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(ICSAttachment *)self init];
   v6 = v5;
   if (v5)
   {
-    [(ICSAttachment *)v5 setURL:v4];
+    [(ICSAttachment *)v5 setURL:lCopy];
   }
 
   return v6;
 }
 
-- (ICSAttachment)initWithData:(id)a3
+- (ICSAttachment)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(ICSAttachment *)self init];
   v6 = v5;
   if (v5)
   {
-    [(ICSAttachment *)v5 setData:v4];
+    [(ICSAttachment *)v5 setData:dataCopy];
   }
 
   return v6;
@@ -41,44 +41,44 @@
 
 - (id)filename
 {
-  v3 = [(ICSAttachment *)self managed_filename];
-  v4 = v3;
-  if (v3)
+  managed_filename = [(ICSAttachment *)self managed_filename];
+  v4 = managed_filename;
+  if (managed_filename)
   {
-    v5 = v3;
+    x_apple_filename = managed_filename;
   }
 
   else
   {
-    v5 = [(ICSAttachment *)self x_apple_filename];
-    if (!v5)
+    x_apple_filename = [(ICSAttachment *)self x_apple_filename];
+    if (!x_apple_filename)
     {
-      v6 = [(ICSProperty *)self value];
+      value = [(ICSProperty *)self value];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(ICSProperty *)self value];
-        v8 = v7;
-        if (v7)
+        value2 = [(ICSProperty *)self value];
+        v8 = value2;
+        if (value2)
         {
-          v9 = [v7 path];
-          v5 = [v9 lastPathComponent];
+          path = [value2 path];
+          x_apple_filename = [path lastPathComponent];
         }
 
         else
         {
-          v5 = 0;
+          x_apple_filename = 0;
         }
       }
 
       else
       {
-        v5 = 0;
+        x_apple_filename = 0;
       }
     }
   }
 
-  return v5;
+  return x_apple_filename;
 }
 
 - (BOOL)hasSize
@@ -95,28 +95,28 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (BOOL)x_apple_autoarchived
 {
   v2 = [(ICSProperty *)self parameterValueForName:@"X-APPLE-AUTOARCHIVED"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setX_apple_autoarchived:(BOOL)a3
+- (void)setX_apple_autoarchived:(BOOL)x_apple_autoarchived
 {
-  if (a3)
+  if (x_apple_autoarchived)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [(ICSProperty *)self setParameterValue:v4 forName:@"X-APPLE-AUTOARCHIVED"];
@@ -129,10 +129,10 @@
   }
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  [(ICSProperty *)self setValue:a3 type:5026];
-  if (a3)
+  [(ICSProperty *)self setValue:data type:5026];
+  if (data)
   {
     [(ICSProperty *)self setParameterValue:@"BINARY" forName:@"VALUE"];
 
@@ -147,47 +147,47 @@
   }
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  [(ICSProperty *)self setValue:a3 type:5013];
+  [(ICSProperty *)self setValue:l type:5013];
   [(ICSProperty *)self setParameterValue:@"URI" forName:@"VALUE"];
 
   [(ICSProperty *)self removeParameterValueForName:@"ENCODING"];
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v6 = a4;
-  v7 = [(ICSProperty *)self value];
-  if (v7)
+  stringCopy = string;
+  value = [(ICSProperty *)self value];
+  if (value)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
+      absoluteString = value;
 LABEL_14:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 setObject:@"BINARY" forKey:@"VALUE"];
-        [v8 setObject:@"BASE64" forKey:@"ENCODING"];
+        [dictionary setObject:@"BINARY" forKey:@"VALUE"];
+        [dictionary setObject:@"BASE64" forKey:@"ENCODING"];
       }
 
-      v17 = (a3 & 0x10) != 0 && [(ICSAttachment *)self shouldObscureValue];
-      [(ICSProperty *)self _ICSStringWithOptions:a3 appendingToString:v6 additionalParameters:v8];
-      [v6 appendString:@":"];
+      v17 = (options & 0x10) != 0 && [(ICSAttachment *)self shouldObscureValue];
+      [(ICSProperty *)self _ICSStringWithOptions:options appendingToString:stringCopy additionalParameters:dictionary];
+      [stringCopy appendString:@":"];
       if (v17)
       {
-        v18 = a3 | 0x20;
+        optionsCopy = options | 0x20;
       }
 
       else
       {
-        v18 = a3;
+        optionsCopy = options;
       }
 
-      [v9 _ICSStringWithOptions:v18 appendingToString:v6];
+      [absoluteString _ICSStringWithOptions:optionsCopy appendingToString:stringCopy];
 
       goto LABEL_25;
     }
@@ -196,38 +196,38 @@ LABEL_14:
     if (objc_opt_isKindOfClass())
     {
       v21 = 0;
-      if ((a3 & 2) != 0 && [v7 isFileURL])
+      if ((options & 2) != 0 && [value isFileURL])
       {
-        v10 = [v7 path];
-        if ([v10 length] <= 1)
+        path = [value path];
+        if ([path length] <= 1)
         {
         }
 
         else
         {
-          v11 = [MEMORY[0x277CCAA00] defaultManager];
-          v12 = [v7 path];
-          v13 = [v11 fileExistsAtPath:v12 isDirectory:&v21];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          path2 = [value path];
+          v13 = [defaultManager fileExistsAtPath:path2 isDirectory:&v21];
 
           if (v13)
           {
-            v14 = [v7 path];
-            v15 = [v14 lastPathComponent];
-            [v8 setObject:v15 forKey:@"X-APPLE-FILENAME"];
+            path3 = [value path];
+            lastPathComponent = [path3 lastPathComponent];
+            [dictionary setObject:lastPathComponent forKey:@"X-APPLE-FILENAME"];
 
             if (v21 == 1)
             {
               v16 = [MEMORY[0x277CCABB0] numberWithBool:1];
-              [v8 setObject:v16 forKey:@"X-APPLE-AUTOARCHIVED"];
+              [dictionary setObject:v16 forKey:@"X-APPLE-AUTOARCHIVED"];
             }
 
             else
             {
               v19 = MEMORY[0x277CBEA90];
-              v20 = [v7 path];
-              v9 = [v19 dataWithContentsOfFile:v20];
+              path4 = [value path];
+              absoluteString = [v19 dataWithContentsOfFile:path4];
 
-              if (v9)
+              if (absoluteString)
               {
                 goto LABEL_14;
               }
@@ -238,8 +238,8 @@ LABEL_14:
         }
       }
 
-      v9 = [v7 absoluteString];
-      if (v9)
+      absoluteString = [value absoluteString];
+      if (absoluteString)
       {
         goto LABEL_14;
       }
@@ -247,14 +247,14 @@ LABEL_14:
 
 LABEL_24:
     NSLog(&cfstr_IgnoringAttach_0.isa, self);
-    [v6 appendString:@":"];
+    [stringCopy appendString:@":"];
 LABEL_25:
 
     goto LABEL_26;
   }
 
   NSLog(&cfstr_IgnoringAttach.isa, self);
-  [v6 appendString:@":"];
+  [stringCopy appendString:@":"];
 LABEL_26:
 }
 

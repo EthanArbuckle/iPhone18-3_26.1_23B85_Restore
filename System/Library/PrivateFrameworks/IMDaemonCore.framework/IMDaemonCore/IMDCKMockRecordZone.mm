@@ -1,18 +1,18 @@
 @interface IMDCKMockRecordZone
-- (IMDCKMockRecordZone)initWithIdentifier:(id)a3;
-- (id)_ckRecordFromData:(id)a3;
-- (id)_fetchRecordZoneChangesOptionsFromOperation:(id)a3;
-- (id)_serializedCKRecordData:(id)a3;
-- (unint64_t)_fetchResultLimit:(id)a3;
-- (void)_handleFetchZoneChangesOperation:(id)a3;
-- (void)_handleModifyRecordsOperation:(id)a3;
+- (IMDCKMockRecordZone)initWithIdentifier:(id)identifier;
+- (id)_ckRecordFromData:(id)data;
+- (id)_fetchRecordZoneChangesOptionsFromOperation:(id)operation;
+- (id)_serializedCKRecordData:(id)data;
+- (unint64_t)_fetchResultLimit:(id)limit;
+- (void)_handleFetchZoneChangesOperation:(id)operation;
+- (void)_handleModifyRecordsOperation:(id)operation;
 - (void)dealloc;
-- (void)handleOperation:(id)a3;
+- (void)handleOperation:(id)operation;
 @end
 
 @implementation IMDCKMockRecordZone
 
-- (IMDCKMockRecordZone)initWithIdentifier:(id)a3
+- (IMDCKMockRecordZone)initWithIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = IMDCKMockRecordZone;
@@ -20,8 +20,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_identifier = a3;
-    v4->_queue = dispatch_queue_create([a3 cStringUsingEncoding:4], 0);
+    v4->_identifier = identifier;
+    v4->_queue = dispatch_queue_create([identifier cStringUsingEncoding:4], 0);
     v5->_recordStore = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:-[IMDCKMockRecordZone _kvStorePath](v5 storeName:"_kvStorePath") dataProtectionClass:{v5->_identifier, 0}];
   }
 
@@ -37,7 +37,7 @@
   [(IMDCKMockRecordZone *)&v3 dealloc];
 }
 
-- (void)handleOperation:(id)a3
+- (void)handleOperation:(id)operation
 {
   v17 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -46,9 +46,9 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v14 = a3;
+      operationCopy = operation;
       v15 = 2112;
-      v16 = [(IMDCKMockRecordZone *)self identifier];
+      identifier = [(IMDCKMockRecordZone *)self identifier];
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Mock Handle operation %@ identifier %@", buf, 0x16u);
     }
   }
@@ -61,42 +61,42 @@
     {
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
       *buf = 138412290;
-      v14 = v8;
+      operationCopy = v8;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Adding random delay of %@ seconds", buf, 0xCu);
     }
   }
 
   v9 = dispatch_time(0, v6);
-  v10 = [(IMDCKMockRecordZone *)self queue];
+  queue = [(IMDCKMockRecordZone *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_22B61E210;
   v12[3] = &unk_2787043C8;
-  v12[4] = a3;
+  v12[4] = operation;
   v12[5] = self;
-  dispatch_after(v9, v10, v12);
+  dispatch_after(v9, queue, v12);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchRecordZoneChangesOptionsFromOperation:(id)a3
+- (id)_fetchRecordZoneChangesOptionsFromOperation:(id)operation
 {
-  v3 = [objc_msgSend(a3 "configurationsByRecordZoneID")];
+  v3 = [objc_msgSend(operation "configurationsByRecordZoneID")];
 
   return [v3 firstObject];
 }
 
-- (unint64_t)_fetchResultLimit:(id)a3
+- (unint64_t)_fetchResultLimit:(id)limit
 {
-  v3 = [(IMDCKMockRecordZone *)self _fetchRecordZoneChangesOptionsFromOperation:a3];
+  v3 = [(IMDCKMockRecordZone *)self _fetchRecordZoneChangesOptionsFromOperation:limit];
 
   return MEMORY[0x2821F9670](v3, sel_resultsLimit);
 }
 
-- (id)_ckRecordFromData:(id)a3
+- (id)_ckRecordFromData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
   v7 = 0;
-  v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v7];
+  v3 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:data error:&v7];
   if (v7)
   {
     if (IMOSLoggingEnabled())
@@ -115,7 +115,7 @@
   return v3;
 }
 
-- (void)_handleFetchZoneChangesOperation:(id)a3
+- (void)_handleFetchZoneChangesOperation:(id)operation
 {
   v49 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -124,15 +124,15 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v44 = [(IMDCKMockRecordZone *)self identifier];
+      identifier = [(IMDCKMockRecordZone *)self identifier];
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "ID %@ MOCK Handling fetchRecordZoneChangesOperation", buf, 0xCu);
     }
   }
 
-  v6 = [a3 fetchAllChanges];
-  v7 = [(IMDCKMockRecordZone *)self _fetchResultLimit:a3];
+  fetchAllChanges = [operation fetchAllChanges];
+  v7 = [(IMDCKMockRecordZone *)self _fetchResultLimit:operation];
   v8 = @"NO";
-  if (v6)
+  if (fetchAllChanges)
   {
     v8 = @"YES";
   }
@@ -151,9 +151,9 @@
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(IMDCKMockRecordZone *)self identifier];
+          identifier2 = [(IMDCKMockRecordZone *)self identifier];
           *buf = 138412546;
-          v44 = v11;
+          identifier = identifier2;
           v45 = 2112;
           v46 = v40;
           _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "%@ Error reading from MOCK store %@ ", buf, 0x16u);
@@ -175,7 +175,7 @@
           v15 = @"YES";
         }
 
-        v44 = v14;
+        identifier = v14;
         v45 = 2112;
         v46 = v15;
         v47 = 2112;
@@ -202,8 +202,8 @@
           }
 
           v19 = [(IMDCKMockRecordZone *)self _ckRecordFromData:*(*(&v36 + 1) + 8 * i)];
-          v20 = [a3 recordChangedBlock];
-          (*(v20 + 16))(v20, v19);
+          recordChangedBlock = [operation recordChangedBlock];
+          (*(recordChangedBlock + 16))(recordChangedBlock, v19);
         }
 
         v16 = [v9 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -213,8 +213,8 @@
     }
 
     v35 = 0;
-    v21 = [(IMDCKMockRecordZone *)self recordStore];
-    [(IDSKVStore *)v21 deleteBatchWithContext:v41 error:&v35];
+    recordStore = [(IMDCKMockRecordZone *)self recordStore];
+    [(IDSKVStore *)recordStore deleteBatchWithContext:v41 error:&v35];
     if (v35)
     {
       if (IMOSLoggingEnabled())
@@ -222,9 +222,9 @@
         v22 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [(IMDCKMockRecordZone *)self identifier];
+          identifier3 = [(IMDCKMockRecordZone *)self identifier];
           *buf = 138412546;
-          v44 = v23;
+          identifier = identifier3;
           v45 = 2112;
           v46 = v35;
           _os_log_impl(&dword_22B4CC000, v22, OS_LOG_TYPE_INFO, "%@ Error deleting from MOCK store %@ ", buf, 0x16u);
@@ -232,8 +232,8 @@
       }
     }
 
-    v24 = [a3 recordZoneChangeTokensUpdatedBlock];
-    (*(v24 + 16))(v24, [objc_msgSend(a3 "recordZoneIDs")], 0, 0);
+    recordZoneChangeTokensUpdatedBlock = [operation recordZoneChangeTokensUpdatedBlock];
+    (*(recordZoneChangeTokensUpdatedBlock + 16))(recordZoneChangeTokensUpdatedBlock, [objc_msgSend(operation "recordZoneIDs")], 0, 0);
     HIDWORD(v25) = -858993459 * arc4random();
     LODWORD(v25) = HIDWORD(v25);
     if ((v25 >> 1) <= 0x19999999)
@@ -246,7 +246,7 @@
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v44 = v26;
+          identifier = v26;
           _os_log_impl(&dword_22B4CC000, v28, OS_LOG_TYPE_INFO, "Introducing random error %@", buf, 0xCu);
         }
       }
@@ -258,21 +258,21 @@
     }
 
     v29 = v12 >= v7;
-    v30 = [a3 recordZoneFetchCompletionBlock];
-    (*(v30 + 16))(v30, [objc_msgSend(a3 "recordZoneIDs")], 0, 0, v29, v26);
+    recordZoneFetchCompletionBlock = [operation recordZoneFetchCompletionBlock];
+    (*(recordZoneFetchCompletionBlock + 16))(recordZoneFetchCompletionBlock, [objc_msgSend(operation "recordZoneIDs")], 0, 0, v29, v26);
   }
 
-  while (v29 & v6);
-  v31 = [a3 fetchRecordZoneChangesCompletionBlock];
-  (*(v31 + 16))(v31, 0);
+  while (v29 & fetchAllChanges);
+  fetchRecordZoneChangesCompletionBlock = [operation fetchRecordZoneChangesCompletionBlock];
+  (*(fetchRecordZoneChangesCompletionBlock + 16))(fetchRecordZoneChangesCompletionBlock, 0);
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_serializedCKRecordData:(id)a3
+- (id)_serializedCKRecordData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:data requiringSecureCoding:1 error:&v8];
   if (!v4)
   {
     if (IMOSLoggingEnabled())
@@ -283,7 +283,7 @@
         *buf = 136315650;
         v10 = "[IMDCKMockRecordZone _serializedCKRecordData:]";
         v11 = 2112;
-        v12 = a3;
+        dataCopy = data;
         v13 = 2112;
         v14 = v8;
         _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "%s: Unable to archive record %@, error %@", buf, 0x20u);
@@ -295,7 +295,7 @@
   return v4;
 }
 
-- (void)_handleModifyRecordsOperation:(id)a3
+- (void)_handleModifyRecordsOperation:(id)operation
 {
   v33 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -304,17 +304,17 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = [(IMDCKMockRecordZone *)self identifier];
+      identifier = [(IMDCKMockRecordZone *)self identifier];
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "ID %@ MOCK Handling modifyRecordsOperation", buf, 0xCu);
     }
   }
 
-  v6 = [a3 recordsToSave];
+  recordsToSave = [operation recordsToSave];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  v7 = [recordsToSave countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v7)
   {
     v9 = *v25;
@@ -326,7 +326,7 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordsToSave);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -344,13 +344,13 @@
             {
               v18 = [objc_msgSend(v11 "recordID")];
               *buf = v22;
-              v29 = v18;
+              identifier = v18;
               _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Successfully persisted record %@ ", buf, 0xCu);
             }
           }
 
-          v19 = [a3 perRecordCompletionBlock];
-          (*(v19 + 16))(v19, v11, 0);
+          perRecordCompletionBlock = [operation perRecordCompletionBlock];
+          (*(perRecordCompletionBlock + 16))(perRecordCompletionBlock, v11, 0);
         }
 
         else if (v14)
@@ -360,7 +360,7 @@
           {
             v16 = [objc_msgSend(v11 "recordID")];
             *buf = 138412546;
-            v29 = v16;
+            identifier = v16;
             v30 = 2112;
             v31 = v23;
             _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Error persisting record %@ error %@", buf, 0x16u);
@@ -368,14 +368,14 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v7 = [recordsToSave countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v7);
   }
 
-  v20 = [a3 modifyRecordsCompletionBlock];
-  (*(v20 + 16))(v20, v6, 0, 0);
+  modifyRecordsCompletionBlock = [operation modifyRecordsCompletionBlock];
+  (*(modifyRecordsCompletionBlock + 16))(modifyRecordsCompletionBlock, recordsToSave, 0, 0);
   v21 = *MEMORY[0x277D85DE8];
 }
 

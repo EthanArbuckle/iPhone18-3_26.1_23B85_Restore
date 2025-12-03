@@ -1,7 +1,7 @@
 @interface _TUIKeyboardCandidateContainer
-+ (id)forSourceType:(int64_t)a3;
-+ (id)forSourceType:(int64_t)a3 withAutocorrectionList:(id)a4;
-+ (id)forSourceType:(int64_t)a3 withKeyboardCandidateResultSet:(id)a4;
++ (id)forSourceType:(int64_t)type;
++ (id)forSourceType:(int64_t)type withAutocorrectionList:(id)list;
++ (id)forSourceType:(int64_t)type withKeyboardCandidateResultSet:(id)set;
 - (_TUIKeyboardCandidateContainer)init;
 @end
 
@@ -25,28 +25,28 @@
   return v3;
 }
 
-+ (id)forSourceType:(int64_t)a3 withAutocorrectionList:(id)a4
++ (id)forSourceType:(int64_t)type withAutocorrectionList:(id)list
 {
-  v5 = a4;
-  v6 = [_TUIKeyboardCandidateContainer forSourceType:a3];
-  [v6 setAutocorrectionList:v5];
+  listCopy = list;
+  v6 = [_TUIKeyboardCandidateContainer forSourceType:type];
+  [v6 setAutocorrectionList:listCopy];
 
   return v6;
 }
 
-+ (id)forSourceType:(int64_t)a3 withKeyboardCandidateResultSet:(id)a4
++ (id)forSourceType:(int64_t)type withKeyboardCandidateResultSet:(id)set
 {
-  v5 = a4;
-  v6 = [_TUIKeyboardCandidateContainer forSourceType:a3];
-  [v6 setCandidateResultSet:v5];
+  setCopy = set;
+  v6 = [_TUIKeyboardCandidateContainer forSourceType:type];
+  [v6 setCandidateResultSet:setCopy];
 
   return v6;
 }
 
-+ (id)forSourceType:(int64_t)a3
++ (id)forSourceType:(int64_t)type
 {
   v4 = objc_alloc_init(_TUIKeyboardCandidateContainer);
-  [(_TUIKeyboardCandidateContainer *)v4 setCandidateSourceType:a3];
+  [(_TUIKeyboardCandidateContainer *)v4 setCandidateSourceType:type];
 
   return v4;
 }

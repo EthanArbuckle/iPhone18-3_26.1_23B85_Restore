@@ -1,12 +1,12 @@
 @interface _UIDeepestPreferredEnvironmentSearch
-- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)a3 visitedFocusEnvironments:(id)a4;
-- (id)deepestPreferredFocusEnvironmentForEnvironment:(id)a3;
-- (id)deepestPreferredFocusableItemForEnvironment:(id)a3 withRequest:(id)a4;
-- (void)_reportDidFindLockedFocusEnvironment:(id)a3;
-- (void)_reportDidFindOverridingPreferredFocusEnvironment:(id)a3 source:(id)a4;
-- (void)_reportDidFinishEnumeratingPreferencesWithDeepestPreferredFocusableItem:(id)a3;
-- (void)_reportFinishedEvaluatingAllPreferencesForEnvironmentInContext:(id)a3 result:(int64_t)a4;
-- (void)_reportFoundFocusableItem:(id)a3 inContext:(id)a4;
+- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)environment visitedFocusEnvironments:(id)environments;
+- (id)deepestPreferredFocusEnvironmentForEnvironment:(id)environment;
+- (id)deepestPreferredFocusableItemForEnvironment:(id)environment withRequest:(id)request;
+- (void)_reportDidFindLockedFocusEnvironment:(id)environment;
+- (void)_reportDidFindOverridingPreferredFocusEnvironment:(id)environment source:(id)source;
+- (void)_reportDidFinishEnumeratingPreferencesWithDeepestPreferredFocusableItem:(id)item;
+- (void)_reportFinishedEvaluatingAllPreferencesForEnvironmentInContext:(id)context result:(int64_t)result;
+- (void)_reportFoundFocusableItem:(id)item inContext:(id)context;
 - (void)_reportStartingSearch;
 @end
 
@@ -14,19 +14,19 @@
 
 - (void)_reportStartingSearch
 {
-  v3 = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
+  debugLog = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
   v2 = [off_1E70ECC50 messageWithString:@"Starting preferred focus search."];
-  [v3 addMessage:v2];
+  [debugLog addMessage:v2];
 }
 
-- (id)deepestPreferredFocusableItemForEnvironment:(id)a3 withRequest:(id)a4
+- (id)deepestPreferredFocusableItemForEnvironment:(id)environment withRequest:(id)request
 {
-  v7 = a3;
-  v25 = a4;
-  if (!v7)
+  environmentCopy = environment;
+  requestCopy = request;
+  if (!environmentCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:572 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:572 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
   [(_UIDeepestPreferredEnvironmentSearch *)self _reportStartingSearch];
@@ -49,12 +49,12 @@
   v44 = __Block_byref_object_dispose__84;
   v45 = 0;
   v24 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-  v8 = [v25 focusSystem];
-  v9 = [v8 _deepestPreferredFocusableItemCacheForCurrentUpdate];
+  focusSystem = [requestCopy focusSystem];
+  _deepestPreferredFocusableItemCacheForCurrentUpdate = [focusSystem _deepestPreferredFocusableItemCacheForCurrentUpdate];
 
   if (dyld_program_sdk_at_least())
   {
-    v10 = [v25 isMovementRequest] ^ 1;
+    v10 = [requestCopy isMovementRequest] ^ 1;
   }
 
   else
@@ -70,9 +70,9 @@
   v35[3] = &unk_1E7108468;
   v38 = &v46;
   v39 = &v52;
-  v12 = v9;
+  v12 = _deepestPreferredFocusableItemCacheForCurrentUpdate;
   v36 = v12;
-  v37 = self;
+  selfCopy = self;
   [(_UIFocusEnvironmentPreferenceEnumerator *)v11 setDidVisitAllPreferencesForEnvironmentHandler:v35];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -80,9 +80,9 @@
   v34[3] = &unk_1E7108490;
   v34[4] = &v52;
   [(_UIFocusEnvironmentPreferenceEnumerator *)v11 setShouldInferPreferenceForEnvironmentHandler:v34];
-  v13 = [(_UIDeepestPreferredEnvironmentSearch *)self allowsOverridingPreferedFocusEnvironments];
-  v23 = v7;
-  if (v7)
+  allowsOverridingPreferedFocusEnvironments = [(_UIDeepestPreferredEnvironmentSearch *)self allowsOverridingPreferedFocusEnvironments];
+  v23 = environmentCopy;
+  if (environmentCopy)
   {
     v14 = v23;
     do
@@ -102,10 +102,10 @@
       v17 = v14;
       v28 = v17;
       v32 = &v52;
-      v18 = v25;
+      v18 = requestCopy;
       v33 = &v40;
       v29 = v18;
-      v30 = self;
+      selfCopy2 = self;
       [(_UIFocusEnvironmentPreferenceEnumerator *)v11 enumeratePreferencesForEnvironment:v17 usingBlock:v26];
       if (v41[5])
       {
@@ -113,7 +113,7 @@
       }
 
       [(_UIDeepestPreferredEnvironmentSearch *)self _reportDidFinishEnumeratingPreferencesWithDeepestPreferredFocusableItem:v53[5]];
-      if (v41[5] == 0 && v13 && (v19 = v47[5]) != 0)
+      if (v41[5] == 0 && allowsOverridingPreferedFocusEnvironments && (v19 = v47[5]) != 0)
       {
         v14 = [(_UIDeepestPreferredEnvironmentSearch *)self _overridingPreferredFocusEnvironmentForPreferredEnvironment:v19 visitedFocusEnvironments:v24];
       }
@@ -137,18 +137,18 @@
   return v20;
 }
 
-- (id)deepestPreferredFocusEnvironmentForEnvironment:(id)a3
+- (id)deepestPreferredFocusEnvironmentForEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:699 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:699 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
-  v6 = [UIFocusSystem focusSystemForEnvironment:v5];
+  v6 = [UIFocusSystem focusSystemForEnvironment:environmentCopy];
   v7 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-  v16 = v5;
+  v16 = environmentCopy;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -163,7 +163,7 @@
   v26 = 0;
   v8 = [[_UIFocusEnvironmentPreferenceEnumerator alloc] initWithEnumerationMode:1];
   [(_UIFocusEnvironmentPreferenceEnumerator *)v8 setAllowsInferringPreferences:0];
-  if (v5)
+  if (environmentCopy)
   {
     v9 = v16;
     while (1)
@@ -213,14 +213,14 @@ LABEL_11:
   return v13;
 }
 
-- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)a3 visitedFocusEnvironments:(id)a4
+- (id)_overridingPreferredFocusEnvironmentForPreferredEnvironment:(id)environment visitedFocusEnvironments:(id)environments
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  environmentCopy = environment;
+  environmentsCopy = environments;
+  v9 = environmentsCopy;
+  if (environmentCopy)
   {
-    if (v8)
+    if (environmentsCopy)
     {
       goto LABEL_3;
     }
@@ -228,8 +228,8 @@ LABEL_11:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:745 description:{@"Invalid parameter not satisfying: %@", @"preferredDestinationEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:745 description:{@"Invalid parameter not satisfying: %@", @"preferredDestinationEnvironment"}];
 
     if (v9)
     {
@@ -237,8 +237,8 @@ LABEL_11:
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:746 description:{@"Invalid parameter not satisfying: %@", @"visitedFocusEnvironments"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusEnvironmentPreferenceEnumerator.m" lineNumber:746 description:{@"Invalid parameter not satisfying: %@", @"visitedFocusEnvironments"}];
 
 LABEL_3:
   v27 = 0;
@@ -261,7 +261,7 @@ LABEL_3:
   v18 = v10;
   v19 = &v27;
   v20 = &v21;
-  _UIFocusEnvironmentEnumerateAncestorEnvironments(v7, v17);
+  _UIFocusEnvironmentEnumerateAncestorEnvironments(environmentCopy, v17);
   v11 = v28[5];
   if (v11)
   {
@@ -282,53 +282,53 @@ LABEL_3:
   return v13;
 }
 
-- (void)_reportFoundFocusableItem:(id)a3 inContext:(id)a4
+- (void)_reportFoundFocusableItem:(id)item inContext:(id)context
 {
-  v5 = [a4 debugStack];
+  debugStack = [context debugStack];
   v4 = [off_1E70ECC50 messageWithStyle:2 string:@"It's focusable!"];
-  [v5 addMessage:v4];
+  [debugStack addMessage:v4];
 }
 
-- (void)_reportFinishedEvaluatingAllPreferencesForEnvironmentInContext:(id)a3 result:(int64_t)a4
+- (void)_reportFinishedEvaluatingAllPreferencesForEnvironmentInContext:(id)context result:(int64_t)result
 {
-  v5 = a3;
-  v6 = [v5 debugStack];
-  if (v6)
+  contextCopy = context;
+  debugStack = [contextCopy debugStack];
+  if (debugStack)
   {
-    v7 = v6;
-    v8 = [v5 isPreferredByItself];
+    v7 = debugStack;
+    isPreferredByItself = [contextCopy isPreferredByItself];
 
-    if (a4 != 3 && (v8 & 1) == 0)
+    if (result != 3 && (isPreferredByItself & 1) == 0)
     {
       v21 = 0;
       v22 = &v21;
       v23 = 0x2020000000;
       v24 = 0;
-      v9 = [v5 preferredEnvironments];
-      v10 = [v5 environment];
-      v11 = [v9 indexOfObject:v10];
+      preferredEnvironments = [contextCopy preferredEnvironments];
+      environment = [contextCopy environment];
+      v11 = [preferredEnvironments indexOfObject:environment];
 
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [v5 preferredEnvironments];
-        v13 = [v12 count];
+        preferredEnvironments2 = [contextCopy preferredEnvironments];
+        v13 = [preferredEnvironments2 count];
 
-        v14 = [v5 preferredEnvironments];
+        preferredEnvironments3 = [contextCopy preferredEnvironments];
         v15 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v11 + 1, v13 - (v11 + 1)}];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __110___UIDeepestPreferredEnvironmentSearch__reportFinishedEvaluatingAllPreferencesForEnvironmentInContext_result___block_invoke;
         v18[3] = &unk_1E7108530;
-        v19 = v5;
+        v19 = contextCopy;
         v20 = &v21;
-        [v14 enumerateObjectsAtIndexes:v15 options:0 usingBlock:v18];
+        [preferredEnvironments3 enumerateObjectsAtIndexes:v15 options:0 usingBlock:v18];
       }
 
       if (*(v22 + 24) == 1)
       {
-        v16 = [v5 debugStack];
+        debugStack2 = [contextCopy debugStack];
         v17 = [off_1E70ECC50 messageWithStyle:3 string:@"Found nothing."];
-        [v16 addMessage:v17];
+        [debugStack2 addMessage:v17];
       }
 
       _Block_object_dispose(&v21, 8);
@@ -336,16 +336,16 @@ LABEL_3:
   }
 }
 
-- (void)_reportDidFinishEnumeratingPreferencesWithDeepestPreferredFocusableItem:(id)a3
+- (void)_reportDidFinishEnumeratingPreferencesWithDeepestPreferredFocusableItem:(id)item
 {
-  v14 = a3;
-  v4 = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
+  itemCopy = item;
+  debugLog = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
 
-  if (v4)
+  if (debugLog)
   {
-    v5 = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
+    debugLog2 = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
     v6 = MEMORY[0x1E696AEC0];
-    v7 = v14;
+    v7 = itemCopy;
     if (v7)
     {
       v8 = MEMORY[0x1E696AEC0];
@@ -361,17 +361,17 @@ LABEL_3:
 
     v12 = [v6 stringWithFormat:@"Finished enumerating preferred environments. Preferring %@", v11];
     v13 = [off_1E70ECC50 messageWithStyle:2 string:v12];
-    [v5 addMessage:v13];
+    [debugLog2 addMessage:v13];
   }
 }
 
-- (void)_reportDidFindOverridingPreferredFocusEnvironment:(id)a3 source:(id)a4
+- (void)_reportDidFindOverridingPreferredFocusEnvironment:(id)environment source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
+  environmentCopy = environment;
+  sourceCopy = source;
+  debugLog = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = v6;
+  v10 = environmentCopy;
   v22 = v10;
   if (v10)
   {
@@ -388,7 +388,7 @@ LABEL_3:
     v14 = @"(nil)";
   }
 
-  v15 = v7;
+  v15 = sourceCopy;
   if (v15)
   {
     v16 = MEMORY[0x1E696AEC0];
@@ -404,15 +404,15 @@ LABEL_3:
 
   v20 = [v9 stringWithFormat:@"Found overide to environment %@. (source: %@)", v14, v19];
   v21 = [off_1E70ECC50 messageWithStyle:2 string:v20];
-  [v8 addMessage:v21];
+  [debugLog addMessage:v21];
 }
 
-- (void)_reportDidFindLockedFocusEnvironment:(id)a3
+- (void)_reportDidFindLockedFocusEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
+  environmentCopy = environment;
+  debugLog = [(_UIDeepestPreferredEnvironmentSearch *)self debugLog];
   v6 = MEMORY[0x1E696AEC0];
-  v13 = v4;
+  v13 = environmentCopy;
   if (v13)
   {
     v7 = MEMORY[0x1E696AEC0];
@@ -428,7 +428,7 @@ LABEL_3:
 
   v11 = [v6 stringWithFormat:@"Found locked focus environment %@.", v10];
   v12 = [off_1E70ECC50 messageWithStyle:3 string:v11];
-  [v5 addMessage:v12];
+  [debugLog addMessage:v12];
 }
 
 @end

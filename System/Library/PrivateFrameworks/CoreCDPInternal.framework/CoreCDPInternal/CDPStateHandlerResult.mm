@@ -1,14 +1,14 @@
 @interface CDPStateHandlerResult
-+ (id)resultWithError:(id)a3;
++ (id)resultWithError:(id)error;
 + (id)successResult;
 @end
 
 @implementation CDPStateHandlerResult
 
-+ (id)resultWithError:(id)a3
++ (id)resultWithError:(id)error
 {
-  v3 = a3;
-  v4 = [objc_opt_class() resultWithCloudDataProtectionEnabled:0 shouldCompleteSignIn:0 error:v3];
+  errorCopy = error;
+  v4 = [objc_opt_class() resultWithCloudDataProtectionEnabled:0 shouldCompleteSignIn:0 error:errorCopy];
 
   return v4;
 }

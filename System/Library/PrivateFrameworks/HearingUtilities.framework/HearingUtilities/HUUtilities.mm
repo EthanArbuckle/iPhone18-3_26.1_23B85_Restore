@@ -1,32 +1,32 @@
 @interface HUUtilities
-+ (id)XDCObjectFromObject:(id)a3;
-+ (id)objectFromXDCObject:(id)a3;
++ (id)XDCObjectFromObject:(id)object;
++ (id)objectFromXDCObject:(id)object;
 + (id)sharedUtilities;
 - (BOOL)_shouldBypassLiveListenRouteCheck;
-- (BOOL)deviceIsCounterfeit:(id)a3;
+- (BOOL)deviceIsCounterfeit:(id)counterfeit;
 - (BOOL)headphoneStreamSelected;
 - (BOOL)hearingAidRouteAvailable;
-- (BOOL)hearingAidRouteAvailableForAvailableRoutes:(id)a3;
+- (BOOL)hearingAidRouteAvailableForAvailableRoutes:(id)routes;
 - (BOOL)hearingAidStreamSelected;
-- (BOOL)hearingAidStreamSelectedForAvailableRoutes:(id)a3;
+- (BOOL)hearingAidStreamSelectedForAvailableRoutes:(id)routes;
 - (BOOL)liveListenRouteSelected;
-- (BOOL)liveListenRouteSelectedForAvailableRoutes:(id)a3;
+- (BOOL)liveListenRouteSelectedForAvailableRoutes:(id)routes;
 - (HUUtilities)init;
 - (OS_dispatch_queue)routingQueue;
 - (id)currentPickableAudioRoutes;
 - (id)currentPickableAudioRoutesIfExist;
 - (unint64_t)backgroundSoundsRouteDecision;
-- (void)addHearingFeatureUsage:(unint64_t)a3;
-- (void)checkAudioPlayingWithQueue:(id)a3 andCompletion:(id)a4;
-- (void)checkAudioPlayingWithQueue:(id)a3 origin:(void *)a4 andCompletion:(id)a5;
+- (void)addHearingFeatureUsage:(unint64_t)usage;
+- (void)checkAudioPlayingWithQueue:(id)queue andCompletion:(id)completion;
+- (void)checkAudioPlayingWithQueue:(id)queue origin:(void *)origin andCompletion:(id)completion;
 - (void)clearAudioRoutes;
 - (void)dealloc;
 - (void)headphoneStreamSelected;
-- (void)hearingAidRouteAvailableAsync:(id)a3;
-- (void)hearingAidStreamSelectedAsync:(id)a3;
-- (void)liveListenRouteSelectedAsync:(id)a3;
-- (void)pauseNowPlaying:(BOOL)a3 withQueue:(id)a4 andCompletion:(id)a5;
-- (void)requestCurrentRoutesWithCompletion:(id)a3;
+- (void)hearingAidRouteAvailableAsync:(id)async;
+- (void)hearingAidStreamSelectedAsync:(id)async;
+- (void)liveListenRouteSelectedAsync:(id)async;
+- (void)pauseNowPlaying:(BOOL)playing withQueue:(id)queue andCompletion:(id)completion;
+- (void)requestCurrentRoutesWithCompletion:(id)completion;
 - (void)updateHearingFeatureUsage;
 - (void)updateWirelessSplitterState;
 @end
@@ -47,25 +47,25 @@
 
 - (void)clearAudioRoutes
 {
-  v2 = [(HUUtilities *)self routesManager];
-  [v2 clearAudioRoutes];
+  routesManager = [(HUUtilities *)self routesManager];
+  [routesManager clearAudioRoutes];
 }
 
 - (id)currentPickableAudioRoutes
 {
-  v2 = [(HUUtilities *)self routesManager];
-  v3 = [v2 fetchCurrentPickableAudioRoutesIfNeeded];
+  routesManager = [(HUUtilities *)self routesManager];
+  fetchCurrentPickableAudioRoutesIfNeeded = [routesManager fetchCurrentPickableAudioRoutesIfNeeded];
 
-  return v3;
+  return fetchCurrentPickableAudioRoutesIfNeeded;
 }
 
 - (unint64_t)backgroundSoundsRouteDecision
 {
-  v2 = [(HUUtilities *)self currentPickableAudioRoutes];
+  currentPickableAudioRoutes = [(HUUtilities *)self currentPickableAudioRoutes];
   v3 = +[HUUtilities sharedUtilities];
-  v4 = [v3 wirelessSplitterEnabled];
+  wirelessSplitterEnabled = [v3 wirelessSplitterEnabled];
 
-  if (v4)
+  if (wirelessSplitterEnabled)
   {
     v5 = HCLogComfortSounds();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -82,11 +82,11 @@
     v6 = 1;
   }
 
-  v7 = [v2 valueForKey:@"AXSHARoutePicked"];
+  v7 = [currentPickableAudioRoutes valueForKey:@"AXSHARoutePicked"];
   v8 = [v7 valueForKey:@"BTDetails_IsHFPRoute"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = HCLogComfortSounds();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -114,17 +114,17 @@
 - (void)updateHearingFeatureUsage
 {
   v2 = +[HUHearingAidSettings sharedInstance];
-  v3 = [v2 usedHearingFeatures];
+  usedHearingFeatures = [v2 usedHearingFeatures];
 
   v4 = +[HUHearingAidSettings sharedInstance];
   if ([v4 isPairedWithRealHearingAids])
   {
-    v5 = compoundAttributeByAddingAttribute(v3, 2);
+    v5 = compoundAttributeByAddingAttribute(usedHearingFeatures, 2);
   }
 
   else
   {
-    v5 = compoundAttributeByRemovingAttribute(v3, 2);
+    v5 = compoundAttributeByRemovingAttribute(usedHearingFeatures, 2);
   }
 
   v6 = v5;
@@ -140,16 +140,16 @@
   }
 
   v8 = v7;
-  v9 = [getRTTSettingsClass_0() sharedInstance];
-  if ([v9 TTYHardwareEnabled])
+  sharedInstance = [getRTTSettingsClass_0() sharedInstance];
+  if ([sharedInstance TTYHardwareEnabled])
   {
     v10 = compoundAttributeByAddingAttribute(v8, 16);
   }
 
   else
   {
-    v11 = [getRTTSettingsClass_0() sharedInstance];
-    if ([v11 TTYSoftwareEnabled])
+    sharedInstance2 = [getRTTSettingsClass_0() sharedInstance];
+    if ([sharedInstance2 TTYSoftwareEnabled])
     {
       v12 = compoundAttributeByAddingAttribute(v8, 16);
     }
@@ -236,9 +236,9 @@
 
   v25 = v24;
   _Block_object_dispose(&v35, 8);
-  v26 = [v24 sharedInstance];
-  v27 = [v26 personalMediaConfiguration];
-  if (v27)
+  sharedInstance3 = [v24 sharedInstance];
+  personalMediaConfiguration = [sharedInstance3 personalMediaConfiguration];
+  if (personalMediaConfiguration)
   {
     v28 = compoundAttributeByAddingAttribute(v23, 1024);
   }
@@ -269,11 +269,11 @@
 
 - (BOOL)hearingAidStreamSelected
 {
-  v2 = self;
-  v3 = [(HUUtilities *)self currentPickableAudioRoutes];
-  LOBYTE(v2) = [(HUUtilities *)v2 hearingAidStreamSelectedForAvailableRoutes:v3];
+  selfCopy = self;
+  currentPickableAudioRoutes = [(HUUtilities *)self currentPickableAudioRoutes];
+  LOBYTE(selfCopy) = [(HUUtilities *)selfCopy hearingAidStreamSelectedForAvailableRoutes:currentPickableAudioRoutes];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)liveListenRouteSelected
@@ -283,33 +283,33 @@
     return 1;
   }
 
-  v4 = [(HUUtilities *)self currentPickableAudioRoutes];
-  v5 = [(HUUtilities *)self liveListenRouteSelectedForAvailableRoutes:v4];
+  currentPickableAudioRoutes = [(HUUtilities *)self currentPickableAudioRoutes];
+  v5 = [(HUUtilities *)self liveListenRouteSelectedForAvailableRoutes:currentPickableAudioRoutes];
 
   return v5;
 }
 
 - (BOOL)hearingAidRouteAvailable
 {
-  v2 = self;
-  v3 = [(HUUtilities *)self currentPickableAudioRoutes];
-  LOBYTE(v2) = [(HUUtilities *)v2 hearingAidRouteAvailableForAvailableRoutes:v3];
+  selfCopy = self;
+  currentPickableAudioRoutes = [(HUUtilities *)self currentPickableAudioRoutes];
+  LOBYTE(selfCopy) = [(HUUtilities *)selfCopy hearingAidRouteAvailableForAvailableRoutes:currentPickableAudioRoutes];
 
-  return v2;
+  return selfCopy;
 }
 
 - (OS_dispatch_queue)routingQueue
 {
-  v2 = [(HUUtilities *)self routesManager];
-  v3 = [v2 routingQueue];
+  routesManager = [(HUUtilities *)self routesManager];
+  routingQueue = [routesManager routingQueue];
 
-  return v3;
+  return routingQueue;
 }
 
 - (BOOL)headphoneStreamSelected
 {
-  v2 = [(HUUtilities *)self currentPickableAudioRoutes];
-  v3 = [v2 valueForKey:@"AXSHARoutePicked"];
+  currentPickableAudioRoutes = [(HUUtilities *)self currentPickableAudioRoutes];
+  v3 = [currentPickableAudioRoutes valueForKey:@"AXSHARoutePicked"];
   v4 = HCLogHearingProtection();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -401,18 +401,18 @@ void __19__HUUtilities_init__block_invoke(uint64_t a1)
   [(HUUtilities *)&v5 dealloc];
 }
 
-- (void)hearingAidStreamSelectedAsync:(id)a3
+- (void)hearingAidStreamSelectedAsync:(id)async
 {
-  v4 = a3;
-  v5 = [(HUUtilities *)self routesManager];
+  asyncCopy = async;
+  routesManager = [(HUUtilities *)self routesManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__HUUtilities_hearingAidStreamSelectedAsync___block_invoke;
   v7[3] = &unk_1E85CC7E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchCurrentPickableAudioRoutesIfNeededAsync:v7];
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  [routesManager fetchCurrentPickableAudioRoutesIfNeededAsync:v7];
 }
 
 uint64_t __45__HUUtilities_hearingAidStreamSelectedAsync___block_invoke(uint64_t result, uint64_t a2)
@@ -429,27 +429,27 @@ uint64_t __45__HUUtilities_hearingAidStreamSelectedAsync___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)hearingAidStreamSelectedForAvailableRoutes:(id)a3
+- (BOOL)hearingAidStreamSelectedForAvailableRoutes:(id)routes
 {
-  v3 = [a3 valueForKey:@"AXSHARoutePicked"];
+  v3 = [routes valueForKey:@"AXSHARoutePicked"];
   v4 = [v3 valueForKey:@"AVAudioRouteName"];
   v5 = [v4 isEqual:@"BluetoothLEOutput"];
 
   return v5;
 }
 
-- (void)hearingAidRouteAvailableAsync:(id)a3
+- (void)hearingAidRouteAvailableAsync:(id)async
 {
-  v4 = a3;
-  v5 = [(HUUtilities *)self routesManager];
+  asyncCopy = async;
+  routesManager = [(HUUtilities *)self routesManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__HUUtilities_hearingAidRouteAvailableAsync___block_invoke;
   v7[3] = &unk_1E85CC7E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchCurrentPickableAudioRoutesIfNeededAsync:v7];
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  [routesManager fetchCurrentPickableAudioRoutesIfNeededAsync:v7];
 }
 
 uint64_t __45__HUUtilities_hearingAidRouteAvailableAsync___block_invoke(uint64_t result, uint64_t a2)
@@ -466,16 +466,16 @@ uint64_t __45__HUUtilities_hearingAidRouteAvailableAsync___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)hearingAidRouteAvailableForAvailableRoutes:(id)a3
+- (BOOL)hearingAidRouteAvailableForAvailableRoutes:(id)routes
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 valueForKey:@"AXSHARouteHearingAid"];
+  routesCopy = routes;
+  v4 = [routesCopy valueForKey:@"AXSHARouteHearingAid"];
   v5 = HCLogHearingAids();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v3;
+    v9 = routesCopy;
     _os_log_impl(&dword_1DA5E2000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v8, 0xCu);
   }
 
@@ -483,25 +483,25 @@ uint64_t __45__HUUtilities_hearingAidRouteAvailableAsync___block_invoke(uint64_t
   return v4 != 0;
 }
 
-- (void)liveListenRouteSelectedAsync:(id)a3
+- (void)liveListenRouteSelectedAsync:(id)async
 {
-  v4 = a3;
-  v5 = [(HUUtilities *)self _shouldBypassLiveListenRouteCheck];
-  if (v4 && v5)
+  asyncCopy = async;
+  _shouldBypassLiveListenRouteCheck = [(HUUtilities *)self _shouldBypassLiveListenRouteCheck];
+  if (asyncCopy && _shouldBypassLiveListenRouteCheck)
   {
-    v4[2](v4, 1);
+    asyncCopy[2](asyncCopy, 1);
   }
 
   else
   {
-    v6 = [(HUUtilities *)self routesManager];
+    routesManager = [(HUUtilities *)self routesManager];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __44__HUUtilities_liveListenRouteSelectedAsync___block_invoke;
     v7[3] = &unk_1E85CC7E0;
     v7[4] = self;
-    v8 = v4;
-    [v6 fetchCurrentPickableAudioRoutesIfNeededAsync:v7];
+    v8 = asyncCopy;
+    [routesManager fetchCurrentPickableAudioRoutesIfNeededAsync:v7];
   }
 }
 
@@ -519,10 +519,10 @@ uint64_t __44__HUUtilities_liveListenRouteSelectedAsync___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)liveListenRouteSelectedForAvailableRoutes:(id)a3
+- (BOOL)liveListenRouteSelectedForAvailableRoutes:(id)routes
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routesCopy = routes;
   if ([(HUUtilities *)self _shouldBypassLiveListenRouteCheck])
   {
     v5 = 1;
@@ -530,10 +530,10 @@ uint64_t __44__HUUtilities_liveListenRouteSelectedAsync___block_invoke(uint64_t 
 
   else
   {
-    v6 = [(HUUtilities *)self hearingAidStreamSelectedForAvailableRoutes:v4];
-    v7 = [v4 valueForKey:@"AXSHARouteLiveListen"];
+    v6 = [(HUUtilities *)self hearingAidStreamSelectedForAvailableRoutes:routesCopy];
+    v7 = [routesCopy valueForKey:@"AXSHARouteLiveListen"];
     v8 = [v7 valueForKey:*MEMORY[0x1E69AEC78]];
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
     v10 = HCLogHearingAids();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -541,13 +541,13 @@ uint64_t __44__HUUtilities_liveListenRouteSelectedAsync___block_invoke(uint64_t 
       v13[0] = 67109634;
       v13[1] = v6;
       v14 = 1024;
-      v15 = v9;
+      v15 = bOOLValue;
       v16 = 2112;
       v17 = v7;
       _os_log_impl(&dword_1DA5E2000, v10, OS_LOG_TYPE_DEFAULT, "%d, %d %@", v13, 0x18u);
     }
 
-    v5 = v6 | v9;
+    v5 = v6 | bOOLValue;
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -562,68 +562,68 @@ uint64_t __44__HUUtilities_liveListenRouteSelectedAsync___block_invoke(uint64_t 
   }
 
   v2 = +[HUHearingSettings sharedInstance];
-  v3 = [v2 liveListenAnyRouteEnabled];
+  liveListenAnyRouteEnabled = [v2 liveListenAnyRouteEnabled];
 
-  return v3;
+  return liveListenAnyRouteEnabled;
 }
 
 - (id)currentPickableAudioRoutesIfExist
 {
-  v2 = [(HUUtilities *)self routesManager];
-  v3 = [v2 currentPickableAudioRoutes];
+  routesManager = [(HUUtilities *)self routesManager];
+  currentPickableAudioRoutes = [routesManager currentPickableAudioRoutes];
 
-  return v3;
+  return currentPickableAudioRoutes;
 }
 
-- (void)requestCurrentRoutesWithCompletion:(id)a3
+- (void)requestCurrentRoutesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HUUtilities *)self routesManager];
-  [v5 fetchCurrentPickableAudioRoutesIfNeededAsync:v4];
+  completionCopy = completion;
+  routesManager = [(HUUtilities *)self routesManager];
+  [routesManager fetchCurrentPickableAudioRoutesIfNeededAsync:completionCopy];
 }
 
-- (void)checkAudioPlayingWithQueue:(id)a3 origin:(void *)a4 andCompletion:(id)a5
+- (void)checkAudioPlayingWithQueue:(id)queue origin:(void *)origin andCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a5;
-  if (v7)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (!v6)
+    if (!queueCopy)
     {
-      v6 = dispatch_get_global_queue(0, 0);
+      queueCopy = dispatch_get_global_queue(0, 0);
     }
 
-    v8 = v7;
+    v8 = completionCopy;
     MRMediaRemoteGetNowPlayingApplicationPlaybackStateForOrigin();
   }
 }
 
-- (void)checkAudioPlayingWithQueue:(id)a3 andCompletion:(id)a4
+- (void)checkAudioPlayingWithQueue:(id)queue andCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(HUUtilities *)self checkAudioPlayingWithQueue:v7 origin:MRMediaRemoteGetLocalOrigin() andCompletion:v6];
+  completionCopy = completion;
+  queueCopy = queue;
+  [(HUUtilities *)self checkAudioPlayingWithQueue:queueCopy origin:MRMediaRemoteGetLocalOrigin() andCompletion:completionCopy];
 }
 
-- (void)pauseNowPlaying:(BOOL)a3 withQueue:(id)a4 andCompletion:(id)a5
+- (void)pauseNowPlaying:(BOOL)playing withQueue:(id)queue andCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v8 = dispatch_get_global_queue(0, 0);
+    queueCopy = dispatch_get_global_queue(0, 0);
   }
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__HUUtilities_pauseNowPlaying_withQueue_andCompletion___block_invoke;
   v12[3] = &unk_1E85CC880;
-  v16 = a3;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
+  playingCopy = playing;
+  v13 = queueCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = queueCopy;
   [(HUUtilities *)self checkAudioPlayingWithQueue:v11 andCompletion:v12];
 }
 
@@ -817,21 +817,21 @@ void __55__HUUtilities_pauseNowPlaying_withQueue_andCompletion___block_invoke_2_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addHearingFeatureUsage:(unint64_t)a3
+- (void)addHearingFeatureUsage:(unint64_t)usage
 {
   v4 = +[HUHearingAidSettings sharedInstance];
-  v5 = [v4 usedHearingFeatures];
+  usedHearingFeatures = [v4 usedHearingFeatures];
 
-  v6 = compoundAttributeByAddingAttribute(v5, a3);
+  v6 = compoundAttributeByAddingAttribute(usedHearingFeatures, usage);
   v7 = +[HUHearingAidSettings sharedInstance];
   [v7 setUsedHearingFeatures:v6];
 }
 
-- (BOOL)deviceIsCounterfeit:(id)a3
+- (BOOL)deviceIsCounterfeit:(id)counterfeit
 {
-  if (a3)
+  if (counterfeit)
   {
-    return ([a3 gapaFlags] >> 1) & 1;
+    return ([counterfeit gapaFlags] >> 1) & 1;
   }
 
   else
@@ -848,9 +848,9 @@ void __55__HUUtilities_pauseNowPlaying_withQueue_andCompletion___block_invoke_2_
   return v3;
 }
 
-+ (id)XDCObjectFromObject:(id)a3
++ (id)XDCObjectFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -859,19 +859,19 @@ void __55__HUUtilities_pauseNowPlaying_withQueue_andCompletion___block_invoke_2_
     v10 = 0x3032000000;
     v11 = __Block_byref_object_copy__7;
     v12 = __Block_byref_object_dispose__7;
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __35__HUUtilities_XDCObjectFromObject___block_invoke;
     v7[3] = &unk_1E85CC8A8;
     v7[4] = &v8;
-    [v3 enumerateKeysAndObjectsUsingBlock:v7];
+    [objectCopy enumerateKeysAndObjectsUsingBlock:v7];
   }
 
   else
   {
     objc_opt_class();
-    v4 = v3;
+    v4 = objectCopy;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_6;
@@ -882,13 +882,13 @@ void __55__HUUtilities_pauseNowPlaying_withQueue_andCompletion___block_invoke_2_
     v10 = 0x3032000000;
     v11 = __Block_byref_object_copy__7;
     v12 = __Block_byref_object_dispose__7;
-    v13 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __35__HUUtilities_XDCObjectFromObject___block_invoke_2;
     v6[3] = &unk_1E85CC8D0;
     v6[4] = &v8;
-    [v3 enumerateObjectsUsingBlock:v6];
+    [objectCopy enumerateObjectsUsingBlock:v6];
   }
 
   v4 = v9[5];
@@ -923,41 +923,41 @@ void __35__HUUtilities_XDCObjectFromObject___block_invoke_2(uint64_t a1, uint64_
   [v2 addObject:v3];
 }
 
-+ (id)objectFromXDCObject:(id)a3
++ (id)objectFromXDCObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __35__HUUtilities_objectFromXDCObject___block_invoke;
     v12[3] = &unk_1E85CA558;
     v5 = &v13;
-    v6 = v4;
+    v6 = dictionary;
     v13 = v6;
-    [v3 enumerateKeysAndObjectsUsingBlock:v12];
+    [objectCopy enumerateKeysAndObjectsUsingBlock:v12];
   }
 
   else
   {
     objc_opt_class();
-    v7 = v3;
+    v7 = objectCopy;
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_6;
     }
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __35__HUUtilities_objectFromXDCObject___block_invoke_2;
     v10[3] = &unk_1E85CA8E0;
     v5 = &v11;
-    v6 = v8;
+    v6 = array;
     v11 = v6;
-    [v3 enumerateObjectsUsingBlock:v10];
+    [objectCopy enumerateObjectsUsingBlock:v10];
   }
 
   v7 = v6;
@@ -1000,7 +1000,7 @@ void __35__HUUtilities_objectFromXDCObject___block_invoke_2(uint64_t a1, uint64_
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1DA5E2000, a2, OS_LOG_TYPE_DEBUG, "headphoneStreamSelected selectedRoute: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

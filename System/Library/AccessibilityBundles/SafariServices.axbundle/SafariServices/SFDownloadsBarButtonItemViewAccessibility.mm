@@ -1,23 +1,23 @@
 @interface SFDownloadsBarButtonItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation SFDownloadsBarButtonItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFDownloadsBarButtonItemView" hasInstanceVariable:@"_progress" withType:"d"];
-  [v3 validateClass:@"SFDownloadsBarButtonItemView" hasInstanceVariable:@"_progressView" withType:"UIProgressView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFDownloadsBarButtonItemView" hasInstanceVariable:@"_progress" withType:"d"];
+  [validationsCopy validateClass:@"SFDownloadsBarButtonItemView" hasInstanceVariable:@"_progressView" withType:"UIProgressView"];
 }
 
 - (id)accessibilityValue
 {
   v3 = [(SFDownloadsBarButtonItemViewAccessibility *)self safeUIViewForKey:@"_progressView"];
-  v4 = [v3 isHidden];
+  isHidden = [v3 isHidden];
 
-  if (v4)
+  if (isHidden)
   {
     v5 = 0;
   }

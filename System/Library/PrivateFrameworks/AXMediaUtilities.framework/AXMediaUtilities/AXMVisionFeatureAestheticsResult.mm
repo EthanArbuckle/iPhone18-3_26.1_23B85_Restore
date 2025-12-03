@@ -1,31 +1,31 @@
 @interface AXMVisionFeatureAestheticsResult
-- (AXMVisionFeatureAestheticsResult)initWithCoder:(id)a3;
-- (AXMVisionFeatureAestheticsResult)initWithVisionAestheticsObservation:(id)a3;
+- (AXMVisionFeatureAestheticsResult)initWithCoder:(id)coder;
+- (AXMVisionFeatureAestheticsResult)initWithVisionAestheticsObservation:(id)observation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionFeatureAestheticsResult
 
-- (AXMVisionFeatureAestheticsResult)initWithVisionAestheticsObservation:(id)a3
+- (AXMVisionFeatureAestheticsResult)initWithVisionAestheticsObservation:(id)observation
 {
-  v4 = a3;
+  observationCopy = observation;
   v14.receiver = self;
   v14.super_class = AXMVisionFeatureAestheticsResult;
   v5 = [(AXMVisionFeatureAestheticsResult *)&v14 init];
   if (v5)
   {
-    [v4 aestheticScore];
+    [observationCopy aestheticScore];
     v5->_aestheticScore = v6;
-    [v4 wellFramedSubjectScore];
+    [observationCopy wellFramedSubjectScore];
     v5->_wellFramedSubjectScore = v7;
-    [v4 wellChosenBackgroundScore];
+    [observationCopy wellChosenBackgroundScore];
     v5->_wellChosenBackgroundScore = v8;
-    [v4 noiseScore];
+    [observationCopy noiseScore];
     v5->_noiseScore = v9;
-    [v4 failureScore];
+    [observationCopy failureScore];
     v5->_failureScore = v10;
-    [v4 pleasantCompositionScore];
+    [observationCopy pleasantCompositionScore];
     v5->_pleasantCompositionScore = v11;
     v12 = v5;
   }
@@ -33,25 +33,25 @@
   return v5;
 }
 
-- (AXMVisionFeatureAestheticsResult)initWithCoder:(id)a3
+- (AXMVisionFeatureAestheticsResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = AXMVisionFeatureAestheticsResult;
   v5 = [(AXMVisionFeatureAestheticsResult *)&v14 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"aestheticScore"];
+    [coderCopy decodeFloatForKey:@"aestheticScore"];
     v5->_aestheticScore = v6;
-    [v4 decodeFloatForKey:@"wellFramedSubjectScore"];
+    [coderCopy decodeFloatForKey:@"wellFramedSubjectScore"];
     v5->_wellFramedSubjectScore = v7;
-    [v4 decodeFloatForKey:@"wellChosenBackgroundScore"];
+    [coderCopy decodeFloatForKey:@"wellChosenBackgroundScore"];
     v5->_wellChosenBackgroundScore = v8;
-    [v4 decodeFloatForKey:@"noiseScore"];
+    [coderCopy decodeFloatForKey:@"noiseScore"];
     v5->_noiseScore = v9;
-    [v4 decodeFloatForKey:@"failureScore"];
+    [coderCopy decodeFloatForKey:@"failureScore"];
     v5->_failureScore = v10;
-    [v4 decodeFloatForKey:@"pleasantCompositionScore"];
+    [coderCopy decodeFloatForKey:@"pleasantCompositionScore"];
     v5->_pleasantCompositionScore = v11;
     v12 = v5;
   }
@@ -59,21 +59,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AXMVisionFeatureAestheticsResult *)self aestheticScore];
-  [v4 encodeFloat:@"aestheticScore" forKey:?];
+  [coderCopy encodeFloat:@"aestheticScore" forKey:?];
   [(AXMVisionFeatureAestheticsResult *)self wellFramedSubjectScore];
-  [v4 encodeFloat:@"wellFramedSubjectScore" forKey:?];
+  [coderCopy encodeFloat:@"wellFramedSubjectScore" forKey:?];
   [(AXMVisionFeatureAestheticsResult *)self wellChosenBackgroundScore];
-  [v4 encodeFloat:@"wellChosenBackgroundScore" forKey:?];
+  [coderCopy encodeFloat:@"wellChosenBackgroundScore" forKey:?];
   [(AXMVisionFeatureAestheticsResult *)self noiseScore];
-  [v4 encodeFloat:@"noiseScore" forKey:?];
+  [coderCopy encodeFloat:@"noiseScore" forKey:?];
   [(AXMVisionFeatureAestheticsResult *)self failureScore];
-  [v4 encodeFloat:@"failureScore" forKey:?];
+  [coderCopy encodeFloat:@"failureScore" forKey:?];
   [(AXMVisionFeatureAestheticsResult *)self pleasantCompositionScore];
-  [v4 encodeFloat:@"pleasantCompositionScore" forKey:?];
+  [coderCopy encodeFloat:@"pleasantCompositionScore" forKey:?];
 }
 
 - (id)description

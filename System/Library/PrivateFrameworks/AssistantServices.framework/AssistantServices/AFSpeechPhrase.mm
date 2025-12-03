@@ -1,15 +1,15 @@
 @interface AFSpeechPhrase
-- (AFSpeechPhrase)initWithCoder:(id)a3;
-- (AFSpeechPhrase)initWithDictionary:(id)a3;
-- (AFSpeechPhrase)initWithInterpretations:(id)a3 isLowConfidence:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
+- (AFSpeechPhrase)initWithCoder:(id)coder;
+- (AFSpeechPhrase)initWithDictionary:(id)dictionary;
+- (AFSpeechPhrase)initWithInterpretations:(id)interpretations isLowConfidence:(BOOL)confidence;
+- (BOOL)isEqual:(id)equal;
 - (id)allInterpretationStringsAndScores;
 - (id)bestInterpretation;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)firstInterpretation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechPhrase
@@ -38,35 +38,35 @@
         }
 
         v6 = *(*(&v26 + 1) + 8 * i);
-        v7 = [v6 confidenceScoreAvg];
-        v8 = [v6 confidenceScoreMax];
-        v9 = [v6 confidenceScoreMin];
-        v10 = [v6 confidenceScore];
-        v11 = [v6 tokens];
-        v12 = [v11 count];
+        confidenceScoreAvg = [v6 confidenceScoreAvg];
+        confidenceScoreMax = [v6 confidenceScoreMax];
+        confidenceScoreMin = [v6 confidenceScoreMin];
+        confidenceScore = [v6 confidenceScore];
+        tokens = [v6 tokens];
+        v12 = [tokens count];
 
-        v13 = [v6 text];
+        text = [v6 text];
 
-        if (v13)
+        if (text)
         {
           v30[0] = @"avg";
-          v14 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
+          v14 = [MEMORY[0x1E696AD98] numberWithInteger:confidenceScoreAvg];
           v31[0] = v14;
           v30[1] = @"max";
-          v15 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
+          v15 = [MEMORY[0x1E696AD98] numberWithInteger:confidenceScoreMax];
           v31[1] = v15;
           v30[2] = @"min";
-          v16 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
+          v16 = [MEMORY[0x1E696AD98] numberWithInteger:confidenceScoreMin];
           v31[2] = v16;
           v30[3] = @"sum";
-          v17 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
+          v17 = [MEMORY[0x1E696AD98] numberWithInteger:confidenceScore];
           v31[3] = v17;
           v30[4] = @"count";
           v18 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
           v31[4] = v18;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:5];
-          v20 = [v6 text];
-          [v24 setObject:v19 forKey:v20];
+          text2 = [v6 text];
+          [v24 setObject:v19 forKey:text2];
         }
       }
 
@@ -84,10 +84,10 @@
 - (id)bestInterpretation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(AFSpeechPhrase *)self interpretations];
-  if ([v2 count] == 1)
+  interpretations = [(AFSpeechPhrase *)self interpretations];
+  if ([interpretations count] == 1)
   {
-    v3 = [v2 objectAtIndex:0];
+    v3 = [interpretations objectAtIndex:0];
   }
 
   else
@@ -96,7 +96,7 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = v2;
+    v4 = interpretations;
     v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
@@ -115,8 +115,8 @@
           v9 = *(*(&v14 + 1) + 8 * i);
           if (v3)
           {
-            v10 = [*(*(&v14 + 1) + 8 * i) confidenceScore];
-            if (v10 <= [v3 confidenceScore])
+            confidenceScore = [*(*(&v14 + 1) + 8 * i) confidenceScore];
+            if (confidenceScore <= [v3 confidenceScore])
             {
               continue;
             }
@@ -146,10 +146,10 @@
 
 - (id)firstInterpretation
 {
-  v2 = [(AFSpeechPhrase *)self interpretations];
-  v3 = [v2 firstObject];
+  interpretations = [(AFSpeechPhrase *)self interpretations];
+  firstObject = [interpretations firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)dictionaryRepresentation
@@ -175,8 +175,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
@@ -197,10 +197,10 @@
   return v11;
 }
 
-- (AFSpeechPhrase)initWithDictionary:(id)a3
+- (AFSpeechPhrase)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"interpretations"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"interpretations"];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = v5;
@@ -226,12 +226,12 @@
     [v8 enumerateObjectsUsingBlock:v17];
     if ((v25[3] & 1) != 0 || ![v19[5] count])
     {
-      v15 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v9 = [v4 objectForKey:@"isLowConfidence"];
+      v9 = [dictionaryCopy objectForKey:@"isLowConfidence"];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = v9;
@@ -241,13 +241,13 @@
       {
 
         self = -[AFSpeechPhrase initWithInterpretations:isLowConfidence:](self, "initWithInterpretations:isLowConfidence:", v19[5], [v12 BOOLValue]);
-        v15 = self;
+        selfCopy = self;
       }
 
       else
       {
 
-        v15 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -259,10 +259,10 @@
   else
   {
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 void __37__AFSpeechPhrase_initWithDictionary___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -293,28 +293,28 @@ void __37__AFSpeechPhrase_initWithDictionary___block_invoke(uint64_t a1, void *a
   [*(*(*(a1 + 40) + 8) + 40) addObject:v11];
 }
 
-- (AFSpeechPhrase)initWithInterpretations:(id)a3 isLowConfidence:(BOOL)a4
+- (AFSpeechPhrase)initWithInterpretations:(id)interpretations isLowConfidence:(BOOL)confidence
 {
-  v6 = a3;
+  interpretationsCopy = interpretations;
   v11.receiver = self;
   v11.super_class = AFSpeechPhrase;
   v7 = [(AFSpeechPhrase *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [interpretationsCopy copy];
     interpretations = v7->_interpretations;
     v7->_interpretations = v8;
 
-    v7->_isLowConfidence = a4;
+    v7->_isLowConfidence = confidence;
   }
 
   return v7;
 }
 
-- (AFSpeechPhrase)initWithCoder:(id)a3
+- (AFSpeechPhrase)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AFSpeechPhrase;
   v5 = [(AFSpeechPhrase *)&v13 init];
@@ -325,23 +325,23 @@ void __37__AFSpeechPhrase_initWithDictionary___block_invoke(uint64_t a1, void *a
     v14[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"interpretations"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"interpretations"];
     interpretations = v5->_interpretations;
     v5->_interpretations = v9;
 
-    v5->_isLowConfidence = [v4 decodeBoolForKey:@"isLowConfidence"];
+    v5->_isLowConfidence = [coderCopy decodeBoolForKey:@"isLowConfidence"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interpretations = self->_interpretations;
-  v5 = a3;
-  [v5 encodeObject:interpretations forKey:@"interpretations"];
-  [v5 encodeBool:self->_isLowConfidence forKey:@"isLowConfidence"];
+  coderCopy = coder;
+  [coderCopy encodeObject:interpretations forKey:@"interpretations"];
+  [coderCopy encodeBool:self->_isLowConfidence forKey:@"isLowConfidence"];
 }
 
 - (id)description
@@ -357,11 +357,11 @@ void __37__AFSpeechPhrase_initWithDictionary___block_invoke(uint64_t a1, void *a
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && ((v5 = *(v4 + 2), v5 == self->_interpretations) || [(NSArray *)v5 isEqualToArray:?]) && v4[8] == self->_isLowConfidence;
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && ((v5 = *(equalCopy + 2), v5 == self->_interpretations) || [(NSArray *)v5 isEqualToArray:?]) && equalCopy[8] == self->_isLowConfidence;
 
   return v6;
 }
@@ -369,8 +369,8 @@ void __37__AFSpeechPhrase_initWithDictionary___block_invoke(uint64_t a1, void *a
 - (unint64_t)hash
 {
   v3 = [(NSArray *)self->_interpretations hash];
-  v4 = [(NSArray *)self->_interpretations firstObject];
-  v5 = [v4 hash];
+  firstObject = [(NSArray *)self->_interpretations firstObject];
+  v5 = [firstObject hash];
 
   return v5 ^ v3;
 }

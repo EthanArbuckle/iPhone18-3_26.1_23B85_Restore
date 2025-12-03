@@ -1,36 +1,36 @@
 @interface SPFirmwareUpdateStateResult
-- (SPFirmwareUpdateStateResult)initWithCoder:(id)a3;
+- (SPFirmwareUpdateStateResult)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionary;
 - (id)firmwareUpdateState;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPFirmwareUpdateStateResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"state"];
-  [v5 encodeObject:self->_stateDate forKey:@"stateDate"];
-  [v5 encodeObject:self->_currentSystemVersion forKey:@"currentSystemVersion"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"state"];
+  [coderCopy encodeObject:self->_stateDate forKey:@"stateDate"];
+  [coderCopy encodeObject:self->_currentSystemVersion forKey:@"currentSystemVersion"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
-- (SPFirmwareUpdateStateResult)initWithCoder:(id)a3
+- (SPFirmwareUpdateStateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_state = [v4 decodeIntegerForKey:@"state"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stateDate"];
+  coderCopy = coder;
+  self->_state = [coderCopy decodeIntegerForKey:@"state"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateDate"];
   stateDate = self->_stateDate;
   self->_stateDate = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentSystemVersion"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentSystemVersion"];
   currentSystemVersion = self->_currentSystemVersion;
   self->_currentSystemVersion = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
 
   error = self->_error;
   self->_error = v9;
@@ -40,32 +40,32 @@
 
 - (id)firmwareUpdateState
 {
-  v2 = [(SPFirmwareUpdateStateResult *)self state];
-  if ((v2 + 1) > 7)
+  state = [(SPFirmwareUpdateStateResult *)self state];
+  if ((state + 1) > 7)
   {
     return @"completed";
   }
 
   else
   {
-    return off_279B58CE0[v2 + 1];
+    return off_279B58CE0[state + 1];
   }
 }
 
 - (id)dictionary
 {
   v3 = objc_opt_new();
-  v4 = [(SPFirmwareUpdateStateResult *)self firmwareUpdateState];
-  [v3 setObject:v4 forKeyedSubscript:@"FirmwareUpdateState"];
+  firmwareUpdateState = [(SPFirmwareUpdateStateResult *)self firmwareUpdateState];
+  [v3 setObject:firmwareUpdateState forKeyedSubscript:@"FirmwareUpdateState"];
 
-  v5 = [(SPFirmwareUpdateStateResult *)self stateDate];
-  [v3 setObject:v5 forKeyedSubscript:@"Date"];
+  stateDate = [(SPFirmwareUpdateStateResult *)self stateDate];
+  [v3 setObject:stateDate forKeyedSubscript:@"Date"];
 
-  v6 = [(SPFirmwareUpdateStateResult *)self currentSystemVersion];
-  [v3 setObject:v6 forKeyedSubscript:@"SystemVersion"];
+  currentSystemVersion = [(SPFirmwareUpdateStateResult *)self currentSystemVersion];
+  [v3 setObject:currentSystemVersion forKeyedSubscript:@"SystemVersion"];
 
-  v7 = [(SPFirmwareUpdateStateResult *)self error];
-  [v3 setObject:v7 forKeyedSubscript:@"Error"];
+  error = [(SPFirmwareUpdateStateResult *)self error];
+  [v3 setObject:error forKeyedSubscript:@"Error"];
 
   v8 = [v3 copy];
 
@@ -74,8 +74,8 @@
 
 - (id)description
 {
-  v2 = [(SPFirmwareUpdateStateResult *)self dictionary];
-  v3 = [v2 description];
+  dictionary = [(SPFirmwareUpdateStateResult *)self dictionary];
+  v3 = [dictionary description];
 
   return v3;
 }

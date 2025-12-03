@@ -1,16 +1,16 @@
 @interface HFCameraEventDebugLogger
 + (NSURL)debugLogDirectory;
-- (HFCameraEventDebugLogger)initWithCameraProfile:(id)a3;
-- (void)logEvents:(NSArray *)a3 toJSONWithDebugLogType:(unint64_t)a4 completionHandler:(id)a5;
-- (void)logFetchEventsToJSONWithDateInterval:(NSDateInterval *)a3 limit:(unint64_t)a4 ascending:(BOOL)a5 reason:(NSString *)a6 playheadPosition:(NSDate *)a7 completionHandler:(id)a8;
-- (void)removeExistingFilesWithCompletionHandler:(id)a3;
+- (HFCameraEventDebugLogger)initWithCameraProfile:(id)profile;
+- (void)logEvents:(NSArray *)events toJSONWithDebugLogType:(unint64_t)type completionHandler:(id)handler;
+- (void)logFetchEventsToJSONWithDateInterval:(NSDateInterval *)interval limit:(unint64_t)limit ascending:(BOOL)ascending reason:(NSString *)reason playheadPosition:(NSDate *)position completionHandler:(id)handler;
+- (void)removeExistingFilesWithCompletionHandler:(id)handler;
 @end
 
 @implementation HFCameraEventDebugLogger
 
-- (HFCameraEventDebugLogger)initWithCameraProfile:(id)a3
+- (HFCameraEventDebugLogger)initWithCameraProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   swift_defaultActor_initialize();
   *self->cameraProfile = 0;
   *self->fetchCounter = 0;
@@ -18,7 +18,7 @@
   v6 = OBJC_IVAR___HFCameraEventDebugLogger_previousViewModelDateInterval;
   v7 = sub_20DD63484();
   (*(*(v7 - 8) + 56))(self + v6, 1, 1, v7);
-  *&self->_anon_60[8] = a3;
+  *&self->_anon_60[8] = profile;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CameraEventDebugLogger();
   return [(HFCameraEventDebugLogger *)&v9 init];
@@ -46,13 +46,13 @@
   return v9;
 }
 
-- (void)removeExistingFilesWithCompletionHandler:(id)a3
+- (void)removeExistingFilesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -72,19 +72,19 @@
   sub_20DAB35AC(0, 0, v8, &unk_20DD94DE0, v13);
 }
 
-- (void)logFetchEventsToJSONWithDateInterval:(NSDateInterval *)a3 limit:(unint64_t)a4 ascending:(BOOL)a5 reason:(NSString *)a6 playheadPosition:(NSDate *)a7 completionHandler:(id)a8
+- (void)logFetchEventsToJSONWithDateInterval:(NSDateInterval *)interval limit:(unint64_t)limit ascending:(BOOL)ascending reason:(NSString *)reason playheadPosition:(NSDate *)position completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v27 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 48) = a7;
+  *(v20 + 16) = interval;
+  *(v20 + 24) = limit;
+  *(v20 + 32) = ascending;
+  *(v20 + 40) = reason;
+  *(v20 + 48) = position;
   *(v20 + 56) = v19;
   *(v20 + 64) = self;
   v21 = sub_20DD65114();
@@ -99,23 +99,23 @@
   v23[3] = 0;
   v23[4] = &unk_20DD94DB8;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a6;
-  v26 = a7;
+  intervalCopy = interval;
+  reasonCopy = reason;
+  positionCopy = position;
 
   sub_20DAB35AC(0, 0, v18, &unk_20DD94DC0, v23);
 }
 
-- (void)logEvents:(NSArray *)a3 toJSONWithDebugLogType:(unint64_t)a4 completionHandler:(id)a5
+- (void)logEvents:(NSArray *)events toJSONWithDebugLogType:(unint64_t)type completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = events;
+  v14[3] = type;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_20DD65114();
@@ -130,7 +130,7 @@
   v17[3] = 0;
   v17[4] = &unk_20DD94D90;
   v17[5] = v16;
-  v18 = a3;
+  eventsCopy = events;
 
   sub_20DAB35AC(0, 0, v12, &unk_20DD95520, v17);
 }

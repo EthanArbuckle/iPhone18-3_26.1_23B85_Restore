@@ -1,38 +1,38 @@
 @interface LPMIMETypeRegistry
-+ (BOOL)isAudioType:(id)a3;
-+ (BOOL)isImageType:(id)a3;
-+ (BOOL)isMediaType:(id)a3;
-+ (BOOL)isVideoType:(id)a3;
-+ (BOOL)isWebPageType:(id)a3;
-+ (id)MIMETypeForUTI:(id)a3;
-+ (id)UTIForFileExtension:(id)a3;
-+ (id)UTIForMIMEType:(id)a3;
-+ (id)fileExtensionForMIMEType:(id)a3;
-+ (id)fileExtensionForUTI:(id)a3;
++ (BOOL)isAudioType:(id)type;
++ (BOOL)isImageType:(id)type;
++ (BOOL)isMediaType:(id)type;
++ (BOOL)isVideoType:(id)type;
++ (BOOL)isWebPageType:(id)type;
++ (id)MIMETypeForUTI:(id)i;
++ (id)UTIForFileExtension:(id)extension;
++ (id)UTIForMIMEType:(id)type;
++ (id)fileExtensionForMIMEType:(id)type;
++ (id)fileExtensionForUTI:(id)i;
 @end
 
 @implementation LPMIMETypeRegistry
 
-+ (BOOL)isWebPageType:(id)a3
++ (BOOL)isWebPageType:(id)type
 {
-  v3 = a3;
-  if ([v3 _lp_isEqualIgnoringCase:@"text/html"] & 1) != 0 || (objc_msgSend(v3, "_lp_isEqualIgnoringCase:", @"application/xhtml+xml") & 1) != 0 || (objc_msgSend(v3, "_lp_isEqualIgnoringCase:", @"text/xml"))
+  typeCopy = type;
+  if ([typeCopy _lp_isEqualIgnoringCase:@"text/html"] & 1) != 0 || (objc_msgSend(typeCopy, "_lp_isEqualIgnoringCase:", @"application/xhtml+xml") & 1) != 0 || (objc_msgSend(typeCopy, "_lp_isEqualIgnoringCase:", @"text/xml"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 _lp_isEqualIgnoringCase:@"application/xml"];
+    v4 = [typeCopy _lp_isEqualIgnoringCase:@"application/xml"];
   }
 
   return v4;
 }
 
-+ (BOOL)isImageType:(id)a3
++ (BOOL)isImageType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
+  typeCopy = type;
+  v4 = typeCopy;
   if (isImageType__onceToken != -1)
   {
     +[LPMIMETypeRegistry isImageType:];
@@ -46,7 +46,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v3)
+  if (!typeCopy)
   {
     goto LABEL_8;
   }
@@ -110,13 +110,13 @@ void __34__LPMIMETypeRegistry_isImageType___block_invoke()
   }
 }
 
-+ (BOOL)isVideoType:(id)a3
++ (BOOL)isVideoType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (([v4 _lp_hasCaseInsensitivePrefix:@"video/"] & 1) != 0 || (objc_msgSend(v5, "_lp_hasCaseInsensitivePrefix:", @"application/") & 1) != 0))
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy && (([typeCopy _lp_hasCaseInsensitivePrefix:@"video/"] & 1) != 0 || (objc_msgSend(v5, "_lp_hasCaseInsensitivePrefix:", @"application/") & 1) != 0))
   {
-    v6 = [a1 isMediaType:v5];
+    v6 = [self isMediaType:v5];
   }
 
   else
@@ -127,11 +127,11 @@ void __34__LPMIMETypeRegistry_isImageType___block_invoke()
   return v6;
 }
 
-+ (BOOL)isMediaType:(id)a3
++ (BOOL)isMediaType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ([v3 _lp_hasCaseInsensitivePrefix:@"video/"] & 1) == 0 && (objc_msgSend(v4, "_lp_hasCaseInsensitivePrefix:", @"audio/") & 1) == 0 && (objc_msgSend(v4, "_lp_hasCaseInsensitivePrefix:", @"application/") & 1) == 0)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (!typeCopy || ([typeCopy _lp_hasCaseInsensitivePrefix:@"video/"] & 1) == 0 && (objc_msgSend(v4, "_lp_hasCaseInsensitivePrefix:", @"audio/") & 1) == 0 && (objc_msgSend(v4, "_lp_hasCaseInsensitivePrefix:", @"application/") & 1) == 0)
   {
     goto LABEL_8;
   }
@@ -173,13 +173,13 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)isAudioType:(id)a3
++ (BOOL)isAudioType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    v5 = [v3 _lp_hasCaseInsensitivePrefix:@"audio/"];
+    v5 = [typeCopy _lp_hasCaseInsensitivePrefix:@"audio/"];
   }
 
   else
@@ -190,84 +190,84 @@ LABEL_8:
   return v5;
 }
 
-+ (id)MIMETypeForUTI:(id)a3
++ (id)MIMETypeForUTI:(id)i
 {
-  v3 = a3;
-  if (([(__CFString *)v3 _lp_isEqualIgnoringCase:@"com.pixar.universal-scene-description-mobile"]& 1) != 0)
+  iCopy = i;
+  if (([(__CFString *)iCopy _lp_isEqualIgnoringCase:@"com.pixar.universal-scene-description-mobile"]& 1) != 0)
   {
     v4 = @"model/vnd.usdz+zip";
   }
 
-  else if (([(__CFString *)v3 _lp_isEqualIgnoringCase:@"com.apple.watchface"]& 1) != 0)
+  else if (([(__CFString *)iCopy _lp_isEqualIgnoringCase:@"com.apple.watchface"]& 1) != 0)
   {
     v4 = @"application/vnd.apple.watchface";
   }
 
-  else if (([(__CFString *)v3 _lp_isEqualIgnoringCase:@"com.apple.coreaudio-format"]& 1) != 0)
+  else if (([(__CFString *)iCopy _lp_isEqualIgnoringCase:@"com.apple.coreaudio-format"]& 1) != 0)
   {
     v4 = @"audio/x-caf";
   }
 
   else
   {
-    v4 = UTTypeCopyPreferredTagWithClass(v3, *MEMORY[0x1E6963718]);
+    v4 = UTTypeCopyPreferredTagWithClass(iCopy, *MEMORY[0x1E6963718]);
   }
 
   return v4;
 }
 
-+ (id)UTIForMIMEType:(id)a3
++ (id)UTIForMIMEType:(id)type
 {
-  v3 = a3;
-  if (([(__CFString *)v3 _lp_isEqualIgnoringCase:@"application/vnd.apple.watchface"]& 1) != 0)
+  typeCopy = type;
+  if (([(__CFString *)typeCopy _lp_isEqualIgnoringCase:@"application/vnd.apple.watchface"]& 1) != 0)
   {
     PreferredIdentifierForTag = @"com.apple.watchface";
   }
 
-  else if (([(__CFString *)v3 _lp_isEqualIgnoringCase:@"image/x-icon"]& 1) != 0)
+  else if (([(__CFString *)typeCopy _lp_isEqualIgnoringCase:@"image/x-icon"]& 1) != 0)
   {
     PreferredIdentifierForTag = @"com.microsoft.ico";
   }
 
   else
   {
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], v3, 0);
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963718], typeCopy, 0);
   }
 
   return PreferredIdentifierForTag;
 }
 
-+ (id)UTIForFileExtension:(id)a3
++ (id)UTIForFileExtension:(id)extension
 {
-  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], a3, 0);
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x1E6963710], extension, 0);
 
   return PreferredIdentifierForTag;
 }
 
-+ (id)fileExtensionForUTI:(id)a3
++ (id)fileExtensionForUTI:(id)i
 {
-  v3 = UTTypeCopyPreferredTagWithClass(a3, *MEMORY[0x1E6963710]);
+  v3 = UTTypeCopyPreferredTagWithClass(i, *MEMORY[0x1E6963710]);
 
   return v3;
 }
 
-+ (id)fileExtensionForMIMEType:(id)a3
++ (id)fileExtensionForMIMEType:(id)type
 {
-  v4 = a3;
-  if ([v4 _lp_isEqualIgnoringCase:@"application/vnd.apple.watchface"])
+  typeCopy = type;
+  if ([typeCopy _lp_isEqualIgnoringCase:@"application/vnd.apple.watchface"])
   {
     v5 = @"watchface";
   }
 
-  else if ([v4 _lp_isEqualIgnoringCase:@"image/x-icon"])
+  else if ([typeCopy _lp_isEqualIgnoringCase:@"image/x-icon"])
   {
     v5 = @"ico";
   }
 
   else
   {
-    v6 = [a1 UTIForMIMEType:v4];
-    v5 = [a1 fileExtensionForUTI:v6];
+    v6 = [self UTIForMIMEType:typeCopy];
+    v5 = [self fileExtensionForUTI:v6];
   }
 
   return v5;

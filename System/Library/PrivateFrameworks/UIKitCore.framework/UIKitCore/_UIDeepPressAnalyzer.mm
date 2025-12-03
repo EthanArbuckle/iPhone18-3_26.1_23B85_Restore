@@ -1,9 +1,9 @@
 @interface _UIDeepPressAnalyzer
 - (BOOL)isDeepPressLikely;
 - (_UIDeepPressAnalyzer)init;
-- (double)_touchForceFromTouches:(id)a3;
-- (void)analyzeTouchForce:(double)a3 centroidAtLocation:(CGPoint)a4;
-- (void)analyzeTouches:(id)a3;
+- (double)_touchForceFromTouches:(id)touches;
+- (void)analyzeTouchForce:(double)force centroidAtLocation:(CGPoint)location;
+- (void)analyzeTouches:(id)touches;
 @end
 
 @implementation _UIDeepPressAnalyzer
@@ -27,33 +27,33 @@
   return v2;
 }
 
-- (void)analyzeTouches:(id)a3
+- (void)analyzeTouches:(id)touches
 {
-  v4 = a3;
-  [(_UIDeepPressAnalyzer *)self _touchForceFromTouches:v4];
+  touchesCopy = touches;
+  [(_UIDeepPressAnalyzer *)self _touchForceFromTouches:touchesCopy];
   v6 = v5;
-  v7 = _CentroidOfTouches(v4, 0);
+  v7 = _CentroidOfTouches(touchesCopy, 0);
   v9 = v8;
 
   [(_UIDeepPressAnalyzer *)self analyzeTouchForce:v6 centroidAtLocation:v7, v9];
 }
 
-- (void)analyzeTouchForce:(double)a3 centroidAtLocation:(CGPoint)a4
+- (void)analyzeTouchForce:(double)force centroidAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3 * 10.0;
-  v8 = [(_UIDeepPressAnalyzer *)self touchForceIntegrator];
-  [v8 addSample:{v7, v7}];
+  y = location.y;
+  x = location.x;
+  v7 = force * 10.0;
+  touchForceIntegrator = [(_UIDeepPressAnalyzer *)self touchForceIntegrator];
+  [touchForceIntegrator addSample:{v7, v7}];
 
-  v9 = [(_UIDeepPressAnalyzer *)self locationIntegrator];
-  [v9 addSample:{x, y}];
+  locationIntegrator = [(_UIDeepPressAnalyzer *)self locationIntegrator];
+  [locationIntegrator addSample:{x, y}];
 }
 
 - (BOOL)isDeepPressLikely
 {
-  v3 = [(_UIDeepPressAnalyzer *)self locationIntegrator];
-  [v3 velocity];
+  locationIntegrator = [(_UIDeepPressAnalyzer *)self locationIntegrator];
+  [locationIntegrator velocity];
   v5 = v4;
   v7 = v6;
 
@@ -69,24 +69,24 @@
     v10 = v9;
   }
 
-  v11 = [(_UIDeepPressAnalyzer *)self touchForceIntegrator];
-  [v11 velocity];
+  touchForceIntegrator = [(_UIDeepPressAnalyzer *)self touchForceIntegrator];
+  [touchForceIntegrator velocity];
   v13 = v12;
 
   return v13 > 0.0 && v10 < 10.0;
 }
 
-- (double)_touchForceFromTouches:(id)a3
+- (double)_touchForceFromTouches:(id)touches
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  touchesCopy = touches;
+  if ([touchesCopy count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = v3;
+    v4 = touchesCopy;
     v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {

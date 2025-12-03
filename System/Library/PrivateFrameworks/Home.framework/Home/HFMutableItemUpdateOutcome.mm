@@ -1,27 +1,27 @@
 @interface HFMutableItemUpdateOutcome
-- (HFMutableItemUpdateOutcome)initWithResults:(id)a3 type:(unint64_t)a4;
+- (HFMutableItemUpdateOutcome)initWithResults:(id)results type:(unint64_t)type;
 - (id)allKeys;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addResultsFromDictionary:(id)a3;
-- (void)addResultsFromOutcome:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)safeSetObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setResults:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addResultsFromDictionary:(id)dictionary;
+- (void)addResultsFromOutcome:(id)outcome;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)safeSetObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setResults:(id)results;
 @end
 
 @implementation HFMutableItemUpdateOutcome
 
-- (HFMutableItemUpdateOutcome)initWithResults:(id)a3 type:(unint64_t)a4
+- (HFMutableItemUpdateOutcome)initWithResults:(id)results type:(unint64_t)type
 {
-  v6 = a3;
+  resultsCopy = results;
   v11.receiver = self;
   v11.super_class = HFMutableItemUpdateOutcome;
-  v7 = [(HFItemUpdateOutcome *)&v11 initWithResults:v6 type:a4];
+  v7 = [(HFItemUpdateOutcome *)&v11 initWithResults:resultsCopy type:type];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [resultsCopy mutableCopy];
     mutableResults = v7->_mutableResults;
     v7->_mutableResults = v8;
   }
@@ -29,73 +29,73 @@
   return v7;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFMutableItemUpdateOutcome *)self mutableResults];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  subscriptCopy = subscript;
+  objectCopy = object;
+  mutableResults = [(HFMutableItemUpdateOutcome *)self mutableResults];
+  [mutableResults setObject:objectCopy forKeyedSubscript:subscriptCopy];
 }
 
-- (void)safeSetObject:(id)a3 forKey:(id)a4
+- (void)safeSetObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(HFMutableItemUpdateOutcome *)self mutableResults];
-    [v8 setObject:v7 forKey:v6];
+    keyCopy = key;
+    objectCopy = object;
+    mutableResults = [(HFMutableItemUpdateOutcome *)self mutableResults];
+    [mutableResults setObject:objectCopy forKey:keyCopy];
   }
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   [(HFMutableItemUpdateOutcome *)self setMutableResults:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HFItemUpdateOutcome alloc];
-  v5 = [(HFMutableItemUpdateOutcome *)self results];
-  v6 = [(HFItemUpdateOutcome *)v4 initWithResults:v5 type:[(HFItemUpdateOutcome *)self outcomeType]];
+  results = [(HFMutableItemUpdateOutcome *)self results];
+  v6 = [(HFItemUpdateOutcome *)v4 initWithResults:results type:[(HFItemUpdateOutcome *)self outcomeType]];
 
   return v6;
 }
 
 - (id)allKeys
 {
-  v2 = [(HFMutableItemUpdateOutcome *)self mutableResults];
-  v3 = [v2 allKeys];
+  mutableResults = [(HFMutableItemUpdateOutcome *)self mutableResults];
+  allKeys = [mutableResults allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (void)addResultsFromOutcome:(id)a3
+- (void)addResultsFromOutcome:(id)outcome
 {
-  v4 = [a3 results];
-  [(HFMutableItemUpdateOutcome *)self addResultsFromDictionary:v4];
+  results = [outcome results];
+  [(HFMutableItemUpdateOutcome *)self addResultsFromDictionary:results];
 }
 
-- (void)addResultsFromDictionary:(id)a3
+- (void)addResultsFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(HFMutableItemUpdateOutcome *)self mutableResults];
-  [v5 addEntriesFromDictionary:v4];
+  dictionaryCopy = dictionary;
+  mutableResults = [(HFMutableItemUpdateOutcome *)self mutableResults];
+  [mutableResults addEntriesFromDictionary:dictionaryCopy];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(HFMutableItemUpdateOutcome *)self mutableResults];
-  [v5 removeObjectsForKeys:v4];
+  keysCopy = keys;
+  mutableResults = [(HFMutableItemUpdateOutcome *)self mutableResults];
+  [mutableResults removeObjectsForKeys:keysCopy];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(HFMutableItemUpdateOutcome *)self mutableResults];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  mutableResults = [(HFMutableItemUpdateOutcome *)self mutableResults];
+  [mutableResults removeObjectForKey:keyCopy];
 }
 
 @end

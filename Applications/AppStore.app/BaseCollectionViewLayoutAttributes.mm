@@ -1,15 +1,15 @@
 @interface BaseCollectionViewLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC8AppStore34BaseCollectionViewLayoutAttributes)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation BaseCollectionViewLayoutAttributes
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_10039D824(a3, v7);
+  selfCopy = self;
+  sub_10039D824(zone, v7);
 
   sub_10002A400(v7, v7[3]);
   v5 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -17,11 +17,11 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10039D978(v8);

@@ -1,28 +1,28 @@
 @interface BWMemoryPool
 + (BWMemoryPool)sharedMemoryPool;
 + (void)initialize;
-- (BOOL)getInUseFootprint:(unint64_t *)a3 andOutOfUseFootprint:(unint64_t *)a4;
+- (BOOL)getInUseFootprint:(unint64_t *)footprint andOutOfUseFootprint:(unint64_t *)useFootprint;
 - (BWMemoryPool)init;
-- (id)newFlushAssertion:(id)a3;
-- (id)newMTLBufferWithLength:(unint64_t)a3 forDevice:(id)a4;
-- (int)disableForCaptureDevice:(id)a3;
-- (int)disableForCaptureStream:(id)a3;
-- (int)enableForCaptureDevice:(id)a3;
-- (int)enableForCaptureStream:(id)a3;
+- (id)newFlushAssertion:(id)assertion;
+- (id)newMTLBufferWithLength:(unint64_t)length forDevice:(id)device;
+- (int)disableForCaptureDevice:(id)device;
+- (int)disableForCaptureStream:(id)stream;
+- (int)enableForCaptureDevice:(id)device;
+- (int)enableForCaptureStream:(id)stream;
 - (uint64_t)_createMemoryPoolWithMaximizeSystemMemory:(uint64_t)result;
-- (uint64_t)_ensureMemoryWithSize:(int)a3 withMaximizeSystemMemory:(int)a4 useOptimizedMemorySizeDistributionsIfAvailable:;
+- (uint64_t)_ensureMemoryWithSize:(int)size withMaximizeSystemMemory:(int)memory useOptimizedMemorySizeDistributionsIfAvailable:;
 - (uint64_t)_maximizeAvailableSystemMemory;
-- (uint64_t)_sizesDistributionWithTotalSize:(int)a3 useOptimizedMemorySizeDistributionsIfAvailable:;
+- (uint64_t)_sizesDistributionWithTotalSize:(int)size useOptimizedMemorySizeDistributionsIfAvailable:;
 - (void)_addFlushAssertion;
 - (void)_checkRemainingFlushAssertions;
 - (void)_disable;
 - (void)_releaseModelManagerAssertion;
 - (void)_removeFlushAssertion;
 - (void)dealloc;
-- (void)disableForClientBundleId:(id)a3;
-- (void)disableWithCompletionHandler:(id)a3;
-- (void)enableForPixelBufferAttributes:(id)a3;
-- (void)ensureMemoryAsyncWithSize:(unint64_t)a3 withMaximizeSystemMemory:(BOOL)a4 useOptimizedMemorySizeDistributionsIfAvailable:(BOOL)a5 forClientBundleId:(id)a6;
+- (void)disableForClientBundleId:(id)id;
+- (void)disableWithCompletionHandler:(id)handler;
+- (void)enableForPixelBufferAttributes:(id)attributes;
+- (void)ensureMemoryAsyncWithSize:(unint64_t)size withMaximizeSystemMemory:(BOOL)memory useOptimizedMemorySizeDistributionsIfAvailable:(BOOL)available forClientBundleId:(id)id;
 - (void)flush;
 - (void)releaseModelManagerAssertion;
 @end
@@ -49,7 +49,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -104,7 +104,7 @@ void __46__BWMemoryPool__maximizeAvailableSystemMemory__block_invoke()
   }
 }
 
-- (void)ensureMemoryAsyncWithSize:(unint64_t)a3 withMaximizeSystemMemory:(BOOL)a4 useOptimizedMemorySizeDistributionsIfAvailable:(BOOL)a5 forClientBundleId:(id)a6
+- (void)ensureMemoryAsyncWithSize:(unint64_t)size withMaximizeSystemMemory:(BOOL)memory useOptimizedMemorySizeDistributionsIfAvailable:(BOOL)available forClientBundleId:(id)id
 {
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -112,10 +112,10 @@ void __46__BWMemoryPool__maximizeAvailableSystemMemory__block_invoke()
   v7[2] = __132__BWMemoryPool_ensureMemoryAsyncWithSize_withMaximizeSystemMemory_useOptimizedMemorySizeDistributionsIfAvailable_forClientBundleId___block_invoke;
   v7[3] = &unk_1E79988E0;
   v7[4] = self;
-  v7[5] = a6;
-  v7[6] = a3;
-  v8 = a4;
-  v9 = a5;
+  v7[5] = id;
+  v7[6] = size;
+  memoryCopy = memory;
+  availableCopy = available;
   dispatch_async(queue, v7);
 }
 
@@ -140,7 +140,7 @@ void __132__BWMemoryPool_ensureMemoryAsyncWithSize_withMaximizeSystemMemory_useO
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)disableForClientBundleId:(id)a3
+- (void)disableForClientBundleId:(id)id
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -148,7 +148,7 @@ void __132__BWMemoryPool_ensureMemoryAsyncWithSize_withMaximizeSystemMemory_useO
   v4[2] = __41__BWMemoryPool_disableForClientBundleId___block_invoke;
   v4[3] = &unk_1E798F898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = id;
   dispatch_sync(queue, v4);
 }
 
@@ -172,7 +172,7 @@ void __41__BWMemoryPool_disableForClientBundleId___block_invoke(uint64_t a1)
   }
 }
 
-- (void)disableWithCompletionHandler:(id)a3
+- (void)disableWithCompletionHandler:(id)handler
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -180,7 +180,7 @@ void __41__BWMemoryPool_disableForClientBundleId___block_invoke(uint64_t a1)
   v4[2] = __45__BWMemoryPool_disableWithCompletionHandler___block_invoke;
   v4[3] = &unk_1E7990390;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = handler;
   dispatch_async(queue, v4);
 }
 
@@ -208,7 +208,7 @@ void __41__BWMemoryPool_disableForClientBundleId___block_invoke(uint64_t a1)
   }
 }
 
-- (void)enableForPixelBufferAttributes:(id)a3
+- (void)enableForPixelBufferAttributes:(id)attributes
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -216,7 +216,7 @@ void __41__BWMemoryPool_disableForClientBundleId___block_invoke(uint64_t a1)
   v4[2] = __47__BWMemoryPool_enableForPixelBufferAttributes___block_invoke;
   v4[3] = &unk_1E798F898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = attributes;
   dispatch_sync(queue, v4);
 }
 
@@ -233,7 +233,7 @@ void __47__BWMemoryPool_enableForPixelBufferAttributes___block_invoke(uint64_t a
   }
 }
 
-- (int)enableForCaptureStream:(id)a3
+- (int)enableForCaptureStream:(id)stream
 {
   v7 = 0;
   v8 = &v7;
@@ -244,7 +244,7 @@ void __47__BWMemoryPool_enableForPixelBufferAttributes___block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __39__BWMemoryPool_enableForCaptureStream___block_invoke;
   block[3] = &unk_1E79907B0;
-  block[5] = a3;
+  block[5] = stream;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(queue, block);
@@ -272,7 +272,7 @@ uint64_t __39__BWMemoryPool_enableForCaptureStream___block_invoke(uint64_t resul
   return result;
 }
 
-- (int)disableForCaptureStream:(id)a3
+- (int)disableForCaptureStream:(id)stream
 {
   v7 = 0;
   v8 = &v7;
@@ -283,7 +283,7 @@ uint64_t __39__BWMemoryPool_enableForCaptureStream___block_invoke(uint64_t resul
   v6[1] = 3221225472;
   v6[2] = __40__BWMemoryPool_disableForCaptureStream___block_invoke;
   v6[3] = &unk_1E798FAF8;
-  v6[4] = a3;
+  v6[4] = stream;
   v6[5] = &v7;
   dispatch_sync(queue, v6);
   v4 = *(v8 + 6);
@@ -305,7 +305,7 @@ uint64_t __40__BWMemoryPool_disableForCaptureStream___block_invoke(uint64_t a1)
   return result;
 }
 
-- (int)enableForCaptureDevice:(id)a3
+- (int)enableForCaptureDevice:(id)device
 {
   v7 = 0;
   v8 = &v7;
@@ -316,7 +316,7 @@ uint64_t __40__BWMemoryPool_disableForCaptureStream___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__BWMemoryPool_enableForCaptureDevice___block_invoke;
   block[3] = &unk_1E79907B0;
-  block[5] = a3;
+  block[5] = device;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(queue, block);
@@ -344,16 +344,16 @@ uint64_t __39__BWMemoryPool_enableForCaptureDevice___block_invoke(uint64_t resul
   return result;
 }
 
-- (id)newMTLBufferWithLength:(unint64_t)a3 forDevice:(id)a4
+- (id)newMTLBufferWithLength:(unint64_t)length forDevice:(id)device
 {
   if (!self->_pool)
   {
-    return [a4 newBufferWithLength:a3 options:0];
+    return [device newBufferWithLength:length options:0];
   }
 
   v15[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{self->_poolId, *MEMORY[0x1E696CE38]}];
   v14[1] = *MEMORY[0x1E696CE30];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:length];
   v7 = *MEMORY[0x1E696CE60];
   v15[1] = v6;
   v15[2] = &unk_1F2246378;
@@ -365,15 +365,15 @@ uint64_t __39__BWMemoryPool_enableForCaptureDevice___block_invoke(uint64_t resul
   if (!v9)
   {
     [BWMemoryPool newMTLBufferWithLength:forDevice:];
-    return [a4 newBufferWithLength:a3 options:0];
+    return [device newBufferWithLength:length options:0];
   }
 
   v10 = v9;
-  v11 = [a4 newBufferWithIOSurface:v9];
+  v11 = [device newBufferWithIOSurface:v9];
   if (!v11)
   {
     [BWMemoryPool newMTLBufferWithLength:v10 forDevice:?];
-    return [a4 newBufferWithLength:a3 options:0];
+    return [device newBufferWithLength:length options:0];
   }
 
   v12 = v11;
@@ -381,7 +381,7 @@ uint64_t __39__BWMemoryPool_enableForCaptureDevice___block_invoke(uint64_t resul
   return v12;
 }
 
-- (int)disableForCaptureDevice:(id)a3
+- (int)disableForCaptureDevice:(id)device
 {
   v7 = 0;
   v8 = &v7;
@@ -392,7 +392,7 @@ uint64_t __39__BWMemoryPool_enableForCaptureDevice___block_invoke(uint64_t resul
   v6[1] = 3221225472;
   v6[2] = __40__BWMemoryPool_disableForCaptureDevice___block_invoke;
   v6[3] = &unk_1E798FAF8;
-  v6[4] = a3;
+  v6[4] = device;
   v6[5] = &v7;
   dispatch_sync(queue, v6);
   v4 = *(v8 + 6);
@@ -424,7 +424,7 @@ void __45__BWMemoryPool__releaseModelManagerAssertion__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)getInUseFootprint:(unint64_t *)a3 andOutOfUseFootprint:(unint64_t *)a4
+- (BOOL)getInUseFootprint:(unint64_t *)footprint andOutOfUseFootprint:(unint64_t *)useFootprint
 {
   v8 = 0;
   v9 = &v8;
@@ -437,8 +437,8 @@ void __45__BWMemoryPool__releaseModelManagerAssertion__block_invoke(uint64_t a1)
   v7[3] = &unk_1E799B9A0;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = footprint;
+  v7[7] = useFootprint;
   dispatch_sync(queue, v7);
   v5 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -454,22 +454,22 @@ BWMemoryPool *__32__BWMemoryPool_sharedMemoryPool__block_invoke()
 
 - (void)_disable
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 16) = 0;
-    *(a1 + 24) = 0;
-    [(BWMemoryPool *)a1 _checkRemainingFlushAssertions];
+    *(self + 16) = 0;
+    *(self + 24) = 0;
+    [(BWMemoryPool *)self _checkRemainingFlushAssertions];
 
-    [(BWMemoryPool *)a1 _releaseModelManagerAssertion];
+    [(BWMemoryPool *)self _releaseModelManagerAssertion];
   }
 }
 
 - (void)_releaseModelManagerAssertion
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 40);
+    v2 = *(self + 40);
     if (v2)
     {
       if (dword_1ED8445D0)
@@ -479,7 +479,7 @@ BWMemoryPool *__32__BWMemoryPool_sharedMemoryPool__block_invoke()
         v4 = OUTLINED_FUNCTION_8_5(os_log_and_send_and_compose_flags_and_os_log_type);
         if (OUTLINED_FUNCTION_6(v4))
         {
-          v5 = *(a1 + 40);
+          v5 = *(self + 40);
           v8 = 136315394;
           v9 = "[BWMemoryPool _releaseModelManagerAssertion]";
           v10 = 2048;
@@ -488,7 +488,7 @@ BWMemoryPool *__32__BWMemoryPool_sharedMemoryPool__block_invoke()
         }
 
         OUTLINED_FUNCTION_5_75();
-        v2 = *(a1 + 40);
+        v2 = *(self + 40);
       }
 
       v6 = v2;
@@ -499,7 +499,7 @@ BWMemoryPool *__32__BWMemoryPool_sharedMemoryPool__block_invoke()
       v7[4] = v6;
       [v6 invalidateWithCompletionHandler:v7];
 
-      *(a1 + 40) = 0;
+      *(self + 40) = 0;
     }
   }
 }
@@ -534,21 +534,21 @@ BWMemoryPool *__32__BWMemoryPool_sharedMemoryPool__block_invoke()
   return result;
 }
 
-- (uint64_t)_ensureMemoryWithSize:(int)a3 withMaximizeSystemMemory:(int)a4 useOptimizedMemorySizeDistributionsIfAvailable:
+- (uint64_t)_ensureMemoryWithSize:(int)size withMaximizeSystemMemory:(int)memory useOptimizedMemorySizeDistributionsIfAvailable:
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if (a2)
     {
-      if (*(a1 + 16) || [(BWMemoryPool *)a1 _createMemoryPoolWithMaximizeSystemMemory:a3])
+      if (*(self + 16) || [(BWMemoryPool *)self _createMemoryPoolWithMaximizeSystemMemory:size])
       {
-        v8 = [(BWMemoryPool *)v4 _sizesDistributionWithTotalSize:a2 useOptimizedMemorySizeDistributionsIfAvailable:a4];
-        v9 = *(v4 + 16);
+        v8 = [(BWMemoryPool *)selfCopy _sizesDistributionWithTotalSize:a2 useOptimizedMemorySizeDistributionsIfAvailable:memory];
+        v9 = *(selfCopy + 16);
         v64 = *MEMORY[0x1E696CF80];
         v65 = v8;
         v10 = [v9 ensureMemory:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v65, &v64, 1)}];
-        v4 = v10 == 0;
+        selfCopy = v10 == 0;
         v18 = OUTLINED_FUNCTION_2_0(v10, v11, v12, v13, v14, v15, v16, v17, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, 0);
         if (v18)
         {
@@ -586,7 +586,7 @@ BWMemoryPool *__32__BWMemoryPool_sharedMemoryPool__block_invoke()
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 void __45__BWMemoryPool_disableWithCompletionHandler___block_invoke(uint64_t a1)
@@ -614,19 +614,19 @@ void __21__BWMemoryPool_flush__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)newFlushAssertion:(id)a3
+- (id)newFlushAssertion:(id)assertion
 {
   v5 = [BWMemoryPoolFlushAssertion alloc];
 
-  return [(BWMemoryPoolFlushAssertion *)v5 initWithIdentifier:a3 pool:self];
+  return [(BWMemoryPoolFlushAssertion *)v5 initWithIdentifier:assertion pool:self];
 }
 
 - (void)_checkRemainingFlushAssertions
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 9);
-    if (a1[8]._os_unfair_lock_opaque)
+    os_unfair_lock_lock(self + 9);
+    if (self[8]._os_unfair_lock_opaque)
     {
       OUTLINED_FUNCTION_0_104();
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -640,7 +640,7 @@ void __21__BWMemoryPool_flush__block_invoke(uint64_t a1)
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    os_unfair_lock_unlock(a1 + 9);
+    os_unfair_lock_unlock(self + 9);
   }
 }
 
@@ -685,7 +685,7 @@ void __21__BWMemoryPool_flush__block_invoke(uint64_t a1)
   return result;
 }
 
-- (uint64_t)_sizesDistributionWithTotalSize:(int)a3 useOptimizedMemorySizeDistributionsIfAvailable:
+- (uint64_t)_sizesDistributionWithTotalSize:(int)size useOptimizedMemorySizeDistributionsIfAvailable:
 {
   if (result)
   {
@@ -693,7 +693,7 @@ void __21__BWMemoryPool_flush__block_invoke(uint64_t a1)
     v4 = ((v3 + v3) / 6.0);
     v5 = (v3 / 6.0);
     v6 = (v3 * 3.0 / 6.0);
-    if (a3)
+    if (size)
     {
       v7 = [+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider "sharedCaptureSourceBackingsProvider")];
       if ([objc_msgSend(objc_msgSend(v7 "memoryPoolSizeDistributions")] >= 1)

@@ -1,18 +1,18 @@
 @interface JournalEntryMetadataButton
 - (NSDirectionalEdgeInsets)hitTestDirectionalInsets;
-- (_TtC7Journal26JournalEntryMetadataButton)initWithCoder:(id)a3;
-- (_TtC7Journal26JournalEntryMetadataButton)initWithFrame:(CGRect)a3;
-- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)a3;
+- (_TtC7Journal26JournalEntryMetadataButton)initWithCoder:(id)coder;
+- (_TtC7Journal26JournalEntryMetadataButton)initWithFrame:(CGRect)frame;
+- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)insets;
 @end
 
 @implementation JournalEntryMetadataButton
 
-- (_TtC7Journal26JournalEntryMetadataButton)initWithFrame:(CGRect)a3
+- (_TtC7Journal26JournalEntryMetadataButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal26JournalEntryMetadataButton_contentView);
   *v7 = 0;
   v7[1] = 0;
@@ -34,12 +34,12 @@
   return result;
 }
 
-- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)a3
+- (void)setHitTestDirectionalInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   v10.receiver = self;
   v10.super_class = type metadata accessor for JournalEntryMetadataButton();
   v7 = v10.receiver;
@@ -53,7 +53,7 @@
   }
 }
 
-- (_TtC7Journal26JournalEntryMetadataButton)initWithCoder:(id)a3
+- (_TtC7Journal26JournalEntryMetadataButton)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal26JournalEntryMetadataButton_contentView);
   *v4 = 0;
@@ -61,8 +61,8 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal26JournalEntryMetadataButton_entry) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for JournalEntryMetadataButton();
-  v5 = a3;
-  v6 = [(JournalEntryMetadataButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(JournalEntryMetadataButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

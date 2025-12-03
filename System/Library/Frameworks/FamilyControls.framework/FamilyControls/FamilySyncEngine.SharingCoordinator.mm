@@ -1,9 +1,9 @@
 @interface FamilySyncEngine.SharingCoordinator
 - (_TtCC19FamilyControlsAgent16FamilySyncEngine18SharingCoordinator)init;
-- (void)manager:(id)a3 incomingInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4;
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4;
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4;
+- (void)manager:(id)manager incomingInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation;
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation;
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation;
 @end
 
 @implementation FamilySyncEngine.SharingCoordinator
@@ -15,32 +15,32 @@
   return result;
 }
 
-- (void)manager:(id)a3 incomingInvitation:(id)a4
+- (void)manager:(id)manager incomingInvitation:(id)invitation
 {
-  v5 = a4;
-  v6 = self;
-  sub_10001DB14(v5, v6);
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_10001DB14(invitationCopy, selfCopy);
 }
 
-- (void)manager:(id)a3 senderDidCancelInvitation:(id)a4
+- (void)manager:(id)manager senderDidCancelInvitation:(id)invitation
 {
-  v5 = a4;
-  v6 = self;
-  sub_10001FFF8(v5);
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_10001FFF8(invitationCopy);
 }
 
-- (void)manager:(id)a3 receiverDidAcceptInvitation:(id)a4
+- (void)manager:(id)manager receiverDidAcceptInvitation:(id)invitation
 {
-  v5 = a4;
-  v6 = self;
-  sub_1000201F0(v5);
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_1000201F0(invitationCopy);
 }
 
-- (void)manager:(id)a3 receiverDidDeclineInvitation:(id)a4
+- (void)manager:(id)manager receiverDidDeclineInvitation:(id)invitation
 {
-  v5 = a4;
-  v6 = self;
-  sub_1000208EC(v5);
+  invitationCopy = invitation;
+  selfCopy = self;
+  sub_1000208EC(invitationCopy);
 }
 
 @end

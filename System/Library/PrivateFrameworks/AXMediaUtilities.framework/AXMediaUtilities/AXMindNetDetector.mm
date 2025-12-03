@@ -1,47 +1,47 @@
 @interface AXMindNetDetector
-+ (AXMindNetDetector)detectorWithModelPath:(id)a3 configuration:(id)a4 modelType:(int64_t)a5;
-- (AXMindNetDetector)initWithNetwork:(id)a3 nmsThreshold:(float)a4 filterThreshold:(id)a5;
-- (id)detect:(id)a3;
++ (AXMindNetDetector)detectorWithModelPath:(id)path configuration:(id)configuration modelType:(int64_t)type;
+- (AXMindNetDetector)initWithNetwork:(id)network nmsThreshold:(float)threshold filterThreshold:(id)filterThreshold;
+- (id)detect:(id)detect;
 @end
 
 @implementation AXMindNetDetector
 
-+ (AXMindNetDetector)detectorWithModelPath:(id)a3 configuration:(id)a4 modelType:(int64_t)a5
++ (AXMindNetDetector)detectorWithModelPath:(id)path configuration:(id)configuration modelType:(int64_t)type
 {
-  v8 = a4;
-  v9 = [AXMindNetNetwork networkWithModelPath:a3 configuration:v8 modelType:a5];
-  v10 = [a1 alloc];
-  v11 = [v8 nmsThreshold];
-  [v11 floatValue];
+  configurationCopy = configuration;
+  v9 = [AXMindNetNetwork networkWithModelPath:path configuration:configurationCopy modelType:type];
+  v10 = [self alloc];
+  nmsThreshold = [configurationCopy nmsThreshold];
+  [nmsThreshold floatValue];
   v13 = v12;
-  v14 = [v8 filterThresholds];
+  filterThresholds = [configurationCopy filterThresholds];
   LODWORD(v15) = v13;
-  v16 = [v10 initWithNetwork:v9 nmsThreshold:v14 filterThreshold:v15];
+  v16 = [v10 initWithNetwork:v9 nmsThreshold:filterThresholds filterThreshold:v15];
 
   return v16;
 }
 
-- (AXMindNetDetector)initWithNetwork:(id)a3 nmsThreshold:(float)a4 filterThreshold:(id)a5
+- (AXMindNetDetector)initWithNetwork:(id)network nmsThreshold:(float)threshold filterThreshold:(id)filterThreshold
 {
-  v9 = a3;
-  v10 = a5;
+  networkCopy = network;
+  filterThresholdCopy = filterThreshold;
   v14.receiver = self;
   v14.super_class = AXMindNetDetector;
   v11 = [(AXMindNetDetector *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_network, a3);
-    v12->_nmsThreshold = a4;
-    objc_storeStrong(&v12->_filterThreshold, a5);
+    objc_storeStrong(&v11->_network, network);
+    v12->_nmsThreshold = threshold;
+    objc_storeStrong(&v12->_filterThreshold, filterThreshold);
   }
 
   return v12;
 }
 
-- (id)detect:(id)a3
+- (id)detect:(id)detect
 {
-  v3 = [(AXMindNetNetwork *)self->_network processCIImage:a3];
+  v3 = [(AXMindNetNetwork *)self->_network processCIImage:detect];
 
   return v3;
 }

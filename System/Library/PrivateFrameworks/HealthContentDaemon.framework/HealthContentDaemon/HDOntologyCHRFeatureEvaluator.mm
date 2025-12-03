@@ -1,10 +1,10 @@
 @interface HDOntologyCHRFeatureEvaluator
 - (HDOntologyCHRFeatureEvaluator)init;
-- (HDOntologyCHRFeatureEvaluator)initWithOntologyUpdateCoordinator:(id)a3;
+- (HDOntologyCHRFeatureEvaluator)initWithOntologyUpdateCoordinator:(id)coordinator;
 - (HDOntologyUpdateCoordinator)updateCoordinator;
-- (int64_t)requiresFeatureShardForProfile:(id)a3;
-- (void)accountExistenceNotifier:(id)a3 didChangeHealthRecordAccountExistence:(BOOL)a4;
-- (void)registerRequiredObserversForProfile:(id)a3 queue:(id)a4;
+- (int64_t)requiresFeatureShardForProfile:(id)profile;
+- (void)accountExistenceNotifier:(id)notifier didChangeHealthRecordAccountExistence:(BOOL)existence;
+- (void)registerRequiredObserversForProfile:(id)profile queue:(id)queue;
 @end
 
 @implementation HDOntologyCHRFeatureEvaluator
@@ -19,49 +19,49 @@
   return 0;
 }
 
-- (HDOntologyCHRFeatureEvaluator)initWithOntologyUpdateCoordinator:(id)a3
+- (HDOntologyCHRFeatureEvaluator)initWithOntologyUpdateCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v8.receiver = self;
   v8.super_class = HDOntologyCHRFeatureEvaluator;
   v5 = [(HDOntologyCHRFeatureEvaluator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_updateCoordinator, v4);
+    objc_storeWeak(&v5->_updateCoordinator, coordinatorCopy);
   }
 
   return v6;
 }
 
-- (void)registerRequiredObserversForProfile:(id)a3 queue:(id)a4
+- (void)registerRequiredObserversForProfile:(id)profile queue:(id)queue
 {
-  v6 = a4;
-  v7 = [a3 healthRecordsAccountExistenceNotifier];
-  [v7 addAccountExistenceObserver:self queue:v6];
+  queueCopy = queue;
+  healthRecordsAccountExistenceNotifier = [profile healthRecordsAccountExistenceNotifier];
+  [healthRecordsAccountExistenceNotifier addAccountExistenceObserver:self queue:queueCopy];
 }
 
-- (int64_t)requiresFeatureShardForProfile:(id)a3
+- (int64_t)requiresFeatureShardForProfile:(id)profile
 {
-  v5 = [a3 healthRecordsAccountExistenceNotifier];
-  v6 = [v5 ontologyEnablingHealthRecordsAccountState];
+  healthRecordsAccountExistenceNotifier = [profile healthRecordsAccountExistenceNotifier];
+  ontologyEnablingHealthRecordsAccountState = [healthRecordsAccountExistenceNotifier ontologyEnablingHealthRecordsAccountState];
 
-  if (v6 < 3)
+  if (ontologyEnablingHealthRecordsAccountState < 3)
   {
-    return qword_2514D2D58[v6];
+    return qword_2514D2D58[ontologyEnablingHealthRecordsAccountState];
   }
 
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"HDOntologyCHRFeatureEvaluator.m" lineNumber:63 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HDOntologyCHRFeatureEvaluator.m" lineNumber:63 description:@"Unreachable code has been executed"];
 
   return 2;
 }
 
-- (void)accountExistenceNotifier:(id)a3 didChangeHealthRecordAccountExistence:(BOOL)a4
+- (void)accountExistenceNotifier:(id)notifier didChangeHealthRecordAccountExistence:(BOOL)existence
 {
   WeakRetained = objc_loadWeakRetained(&self->_updateCoordinator);
-  v5 = [WeakRetained featureCoordinator];
-  [v5 evaluteRequiredShardsForEvalulator:self reason:@"didChangeHealthRecordAccountExistence"];
+  featureCoordinator = [WeakRetained featureCoordinator];
+  [featureCoordinator evaluteRequiredShardsForEvalulator:self reason:@"didChangeHealthRecordAccountExistence"];
 }
 
 - (HDOntologyUpdateCoordinator)updateCoordinator

@@ -1,33 +1,33 @@
 @interface SHLCloudGroupTransformer
-+ (id)baseCloudRecordFromGroup:(id)a3;
-+ (id)cloudBackedItemFromLibraryGroup:(id)a3;
-+ (id)libraryGroupFromCloudBackedItem:(id)a3;
++ (id)baseCloudRecordFromGroup:(id)group;
++ (id)cloudBackedItemFromLibraryGroup:(id)group;
++ (id)libraryGroupFromCloudBackedItem:(id)item;
 @end
 
 @implementation SHLCloudGroupTransformer
 
-+ (id)libraryGroupFromCloudBackedItem:(id)a3
++ (id)libraryGroupFromCloudBackedItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 record];
-  v5 = [v4 recordType];
-  v6 = [v5 isEqualToString:@"Group"];
+  itemCopy = item;
+  record = [itemCopy record];
+  recordType = [record recordType];
+  v6 = [recordType isEqualToString:@"Group"];
 
   if (v6)
   {
     v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    v8 = [v3 record];
-    [v8 encodeSystemFieldsWithCoder:v7];
+    record2 = [itemCopy record];
+    [record2 encodeSystemFieldsWithCoder:v7];
 
     v9 = [SHLLibraryItemMetadata alloc];
-    v10 = [v7 encodedData];
-    v11 = [(SHLLibraryItemMetadata *)v9 initWithEncodedSystemData:v10];
+    encodedData = [v7 encodedData];
+    v11 = [(SHLLibraryItemMetadata *)v9 initWithEncodedSystemData:encodedData];
 
     v12 = [SHLLibraryGroup alloc];
-    v13 = [v3 record];
-    v14 = [v13 recordID];
-    v15 = [v14 recordName];
-    v16 = [(SHLLibraryGroup *)v12 initWithIdentifier:v15 metadata:v11];
+    record3 = [itemCopy record];
+    recordID = [record3 recordID];
+    recordName = [recordID recordName];
+    v16 = [(SHLLibraryGroup *)v12 initWithIdentifier:recordName metadata:v11];
   }
 
   else
@@ -38,9 +38,9 @@
   return v16;
 }
 
-+ (id)cloudBackedItemFromLibraryGroup:(id)a3
++ (id)cloudBackedItemFromLibraryGroup:(id)group
 {
-  v3 = [a1 baseCloudRecordFromGroup:a3];
+  v3 = [self baseCloudRecordFromGroup:group];
   if (v3)
   {
     v4 = [[SHLCloudBackedItem alloc] initWithRecord:v3];
@@ -54,19 +54,19 @@
   return v4;
 }
 
-+ (id)baseCloudRecordFromGroup:(id)a3
++ (id)baseCloudRecordFromGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 metadata];
+  groupCopy = group;
+  metadata = [groupCopy metadata];
 
-  if (v4)
+  if (metadata)
   {
     v5 = [NSKeyedUnarchiver alloc];
-    v6 = [v3 metadata];
+    metadata2 = [groupCopy metadata];
 
-    v7 = [v6 encodedSystemData];
+    encodedSystemData = [metadata2 encodedSystemData];
     v16 = 0;
-    v8 = [v5 initForReadingFromData:v7 error:&v16];
+    v8 = [v5 initForReadingFromData:encodedSystemData error:&v16];
 
     v9 = [[CKRecord alloc] initWithCoder:v8];
     [v8 finishDecoding];
@@ -75,12 +75,12 @@
   else
   {
     v10 = [CKRecordID alloc];
-    v11 = [v3 identifier];
+    identifier = [groupCopy identifier];
 
     v12 = +[SHLCloudContext sharedContext];
-    v13 = [v12 shazamLibraryZone];
-    v14 = [v13 zoneID];
-    v8 = [v10 initWithRecordName:v11 zoneID:v14];
+    shazamLibraryZone = [v12 shazamLibraryZone];
+    zoneID = [shazamLibraryZone zoneID];
+    v8 = [v10 initWithRecordName:identifier zoneID:zoneID];
 
     v9 = [[CKRecord alloc] initWithRecordType:@"Group" recordID:v8];
   }

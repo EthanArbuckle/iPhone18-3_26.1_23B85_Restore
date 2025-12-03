@@ -1,24 +1,24 @@
 @interface WFTumblrAccessResourceUserInterface
-- (WFTumblrAccessResourceUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4;
-- (void)authorizeWithCompletionHandler:(id)a3;
+- (WFTumblrAccessResourceUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution;
+- (void)authorizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFTumblrAccessResourceUserInterface
 
-- (void)authorizeWithCompletionHandler:(id)a3
+- (void)authorizeWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_23E36D3A0(sub_23E34DE60, v5);
 }
 
-- (WFTumblrAccessResourceUserInterface)initWithUserInterfaceType:(id)a3 attribution:(id)a4
+- (WFTumblrAccessResourceUserInterface)initWithUserInterfaceType:(id)type attribution:(id)attribution
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_23E36D9A4(v5, a4);
+  typeCopy = type;
+  attributionCopy = attribution;
+  return sub_23E36D9A4(typeCopy, attribution);
 }
 
 @end

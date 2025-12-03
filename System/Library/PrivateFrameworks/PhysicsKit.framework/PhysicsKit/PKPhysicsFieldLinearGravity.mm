@@ -24,7 +24,7 @@
 
 - (double)direction
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   if (v1)
   {
     v2 = *(v1 + 256);

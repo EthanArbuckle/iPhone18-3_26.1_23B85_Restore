@@ -1,26 +1,26 @@
 @interface CLIndoorMaintenanceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CLIndoorMaintenanceDelegate)initWithService:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CLIndoorMaintenanceDelegate)initWithService:(id)service;
 - (CLIndoorServiceDelegate)serviceDelegate;
-- (void)clearTiles:(id)a3 withCallback:(id)a4;
-- (void)eraseAllData:(id)a3;
-- (void)numFloors:(id)a3;
-- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)a3;
+- (void)clearTiles:(id)tiles withCallback:(id)callback;
+- (void)eraseAllData:(id)data;
+- (void)numFloors:(id)floors;
+- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)handler;
 - (void)shutdown;
 @end
 
 @implementation CLIndoorMaintenanceDelegate
 
-- (CLIndoorMaintenanceDelegate)initWithService:(id)a3
+- (CLIndoorMaintenanceDelegate)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v10.receiver = self;
   v10.super_class = CLIndoorMaintenanceDelegate;
   v5 = [(CLIndoorMaintenanceDelegate *)&v10 init];
   if (v5 && (v6 = dispatch_queue_create("com.apple.pipelined.maintenance", 0), q = v5->_q, v5->_q = v6, q, v5->_q))
   {
     v5->_shutdown = 0;
-    objc_storeWeak(&v5->_serviceDelegate, v4);
+    objc_storeWeak(&v5->_serviceDelegate, serviceCopy);
     v8 = v5;
   }
 
@@ -32,19 +32,19 @@
   return v8;
 }
 
-- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)a3
+- (void)retrieveLocationRelevancyDurationWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   v3 = objc_alloc_init(CLIndoorTileEvictionPolicy);
   [(CLIndoorTileEvictionPolicy *)v3 maxModifiedAge];
   v5 = v4;
 
-  v6[2](v5);
+  handlerCopy[2](v5);
 }
 
-- (void)eraseAllData:(id)a3
+- (void)eraseAllData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if (qword_10045B070 == -1)
   {
     v6 = qword_10045B078;
@@ -66,7 +66,7 @@ LABEL_3:
   }
 
 LABEL_4:
-  v5[2](v5);
+  dataCopy[2](dataCopy);
   v7 = +[NSXPCConnection currentConnection];
   v8 = [CLIndoorServiceDelegate validateEntitlement:@"maintenance" forConnection:v7 forSelector:a2];
 
@@ -74,17 +74,17 @@ LABEL_4:
   {
     v9 = objc_alloc_init(CLIndoorTileEvictionPolicy);
     [(CLIndoorTileEvictionPolicy *)v9 setMaxModifiedAge:-1.79769313e308];
-    v10 = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
-    [v10 cancelPrefetch];
-    [v10 clearTiles:v9];
-    [v10 fullyVacuumAllDBs];
+    serviceDelegate = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
+    [serviceDelegate cancelPrefetch];
+    [serviceDelegate clearTiles:v9];
+    [serviceDelegate fullyVacuumAllDBs];
   }
 }
 
-- (void)clearTiles:(id)a3 withCallback:(id)a4
+- (void)clearTiles:(id)tiles withCallback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  tilesCopy = tiles;
+  callbackCopy = callback;
   if (qword_10045B070 != -1)
   {
     sub_100387B20();
@@ -93,20 +93,20 @@ LABEL_4:
   v9 = qword_10045B078;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v7 description];
+    v10 = [tilesCopy description];
     v14 = 138543362;
     v15 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Request to evict tiles against policy %{public}@", &v14, 0xCu);
   }
 
-  v8[2](v8);
+  callbackCopy[2](callbackCopy);
   v11 = +[NSXPCConnection currentConnection];
   v12 = [CLIndoorServiceDelegate validateEntitlement:@"maintenance" forConnection:v11 forSelector:a2];
 
   if (v12)
   {
-    v13 = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
-    [v13 clearTiles:v7];
+    serviceDelegate = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
+    [serviceDelegate clearTiles:tilesCopy];
   }
 }
 
@@ -166,8 +166,8 @@ LABEL_8:
 
 LABEL_9:
   self->_shutdown = 1;
-  v8 = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
-  [v8 shutdown];
+  serviceDelegate = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
+  [serviceDelegate shutdown];
   if (qword_10045B070 != -1)
   {
     sub_100387B34();
@@ -192,9 +192,9 @@ LABEL_12:
   xpc_transaction_exit_clean();
 }
 
-- (void)numFloors:(id)a3
+- (void)numFloors:(id)floors
 {
-  v5 = a3;
+  floorsCopy = floors;
   if (qword_10045B070 == -1)
   {
     v6 = qword_10045B078;
@@ -221,15 +221,15 @@ LABEL_4:
 
   if (v8)
   {
-    v9 = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
-    v5[2](v5, [v9 numFloors]);
+    serviceDelegate = [(CLIndoorMaintenanceDelegate *)self serviceDelegate];
+    floorsCopy[2](floorsCopy, [serviceDelegate numFloors]);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = [CLIndoorServiceDelegate validateEntitlement:@"maintenance" forConnection:v6 forSelector:a2];
+  connectionCopy = connection;
+  v7 = [CLIndoorServiceDelegate validateEntitlement:@"maintenance" forConnection:connectionCopy forSelector:a2];
   if (v7)
   {
     if (self->_shutdown)
@@ -243,7 +243,7 @@ LABEL_4:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf) = 67240192;
-        DWORD1(buf) = [v6 processIdentifier];
+        DWORD1(buf) = [connectionCopy processIdentifier];
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Connection request from %{public}d postponing shutdown", &buf, 8u);
       }
     }
@@ -262,7 +262,7 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "New XPC connection to pipelined maintenance %{public}@", &buf, 0xCu);
     }
 
-    [v6 _setQueue:self->_q];
+    [connectionCopy _setQueue:self->_q];
     v18[0] = objc_opt_class();
     v18[1] = objc_opt_class();
     v18[2] = objc_opt_class();
@@ -273,10 +273,10 @@ LABEL_4:
 
     v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CLIndoorMaintenanceProtocol];
     [v13 setClasses:v12 forSelector:"prefetch:callback:when:" argumentIndex:0 ofReply:0];
-    [v6 setExportedInterface:v13];
-    [v6 setExportedObject:self];
-    [v6 setRemoteObjectInterface:0];
-    objc_initWeak(&location, v6);
+    [connectionCopy setExportedInterface:v13];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setRemoteObjectInterface:0];
+    objc_initWeak(&location, connectionCopy);
     objc_copyWeak(&to, &location);
     *&buf = _NSConcreteStackBlock;
     *(&buf + 1) = 3321888768;
@@ -285,10 +285,10 @@ LABEL_4:
     objc_copyWeak(&v22, &to);
     v14 = objc_retainBlock(&buf);
     objc_destroyWeak(&v22);
-    [v6 setInvalidationHandler:v14];
+    [connectionCopy setInvalidationHandler:v14];
 
     objc_destroyWeak(&to);
-    [v6 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&location);
   }
 

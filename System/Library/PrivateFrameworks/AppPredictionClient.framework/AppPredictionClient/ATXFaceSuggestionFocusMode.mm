@@ -1,22 +1,22 @@
 @interface ATXFaceSuggestionFocusMode
-- (ATXFaceSuggestionFocusMode)initWithCoder:(id)a3;
-- (ATXFaceSuggestionFocusMode)initWithType:(int64_t)a3 uuid:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ATXFaceSuggestionFocusMode)initWithCoder:(id)coder;
+- (ATXFaceSuggestionFocusMode)initWithType:(int64_t)type uuid:(id)uuid;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXFaceSuggestionFocusMode
 
-- (ATXFaceSuggestionFocusMode)initWithType:(int64_t)a3 uuid:(id)a4
+- (ATXFaceSuggestionFocusMode)initWithType:(int64_t)type uuid:(id)uuid
 {
-  v6 = a4;
+  uuidCopy = uuid;
   v12.receiver = self;
   v12.super_class = ATXFaceSuggestionFocusMode;
   v7 = [(ATXFaceSuggestionFocusMode *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [uuidCopy copy];
     uuid = v8->_uuid;
     v8->_uuid = v9;
   }
@@ -24,22 +24,22 @@
   return v8;
 }
 
-- (ATXFaceSuggestionFocusMode)initWithCoder:(id)a3
+- (ATXFaceSuggestionFocusMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
 
   v7 = [(ATXFaceSuggestionFocusMode *)self initWithType:v5 uuid:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[ATXFaceSuggestionFocusMode type](self forKey:{"type"), @"type"}];
-  v5 = [(ATXFaceSuggestionFocusMode *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[ATXFaceSuggestionFocusMode type](self forKey:{"type"), @"type"}];
+  uuid = [(ATXFaceSuggestionFocusMode *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 }
 
 @end

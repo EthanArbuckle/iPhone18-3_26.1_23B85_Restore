@@ -1,24 +1,24 @@
 @interface WarlockPatchworkQuad
 - (_TtC20NTKWarlockFaceBundle20WarlockPatchworkQuad)init;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
-- (void)setupForQuadView:(id)a3;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation WarlockPatchworkQuad
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_2FE10();
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_2E18C(a3, v7);
+  descriptorCopy = descriptor;
+  selfCopy = self;
+  sub_2E18C(buffer, descriptorCopy);
   swift_unknownObjectRelease();
 }
 

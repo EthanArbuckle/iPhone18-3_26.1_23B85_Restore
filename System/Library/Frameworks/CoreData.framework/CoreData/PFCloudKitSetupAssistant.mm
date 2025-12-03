@@ -1,11 +1,11 @@
 @interface PFCloudKitSetupAssistant
-- (PFCloudKitSetupAssistant)initWithSetupRequest:(id)a3 mirroringOptions:(id)a4 accountMonitor:(id)a5 observedStore:(id)a6;
-- (uint64_t)_deleteZone:(void *)a3 error:;
-- (uint64_t)_initializeCloudKitForObservedStore:(_BYTE *)a3 andNoteMetadataInitialization:;
-- (uint64_t)_saveZone:(void *)a3 error:;
-- (void)beginActivityForPhase:(uint64_t)a1;
+- (PFCloudKitSetupAssistant)initWithSetupRequest:(id)request mirroringOptions:(id)options accountMonitor:(id)monitor observedStore:(id)store;
+- (uint64_t)_deleteZone:(void *)zone error:;
+- (uint64_t)_initializeCloudKitForObservedStore:(_BYTE *)store andNoteMetadataInitialization:;
+- (uint64_t)_saveZone:(void *)zone error:;
+- (void)beginActivityForPhase:(uint64_t)phase;
 - (void)dealloc;
-- (void)endActivityForPhase:(uint64_t)a3 withError:;
+- (void)endActivityForPhase:(uint64_t)phase withError:;
 @end
 
 @implementation PFCloudKitSetupAssistant
@@ -29,17 +29,17 @@
   [(PFCloudKitSetupAssistant *)&v4 dealloc];
 }
 
-- (PFCloudKitSetupAssistant)initWithSetupRequest:(id)a3 mirroringOptions:(id)a4 accountMonitor:(id)a5 observedStore:(id)a6
+- (PFCloudKitSetupAssistant)initWithSetupRequest:(id)request mirroringOptions:(id)options accountMonitor:(id)monitor observedStore:(id)store
 {
   v14.receiver = self;
   v14.super_class = PFCloudKitSetupAssistant;
   v10 = [(PFCloudKitSetupAssistant *)&v14 init];
   if (v10)
   {
-    v10->_setupRequest = a3;
+    v10->_setupRequest = request;
     v10->_cloudKitSemaphore = dispatch_semaphore_create(0);
-    v10->_mirroringOptions = a4;
-    v10->_accountMonitor = a5;
+    v10->_mirroringOptions = options;
+    v10->_accountMonitor = monitor;
     mirroringOptions = v10->_mirroringOptions;
     if (mirroringOptions)
     {
@@ -51,13 +51,13 @@
       storeMonitorProvider = 0;
     }
 
-    v10->_storeMonitor = [PFCloudKitStoreMonitorProvider createMonitorForObservedStore:a6 inTransactionWithLabel:?];
+    v10->_storeMonitor = [PFCloudKitStoreMonitorProvider createMonitorForObservedStore:store inTransactionWithLabel:?];
   }
 
   return v10;
 }
 
-- (uint64_t)_initializeCloudKitForObservedStore:(_BYTE *)a3 andNoteMetadataInitialization:
+- (uint64_t)_initializeCloudKitForObservedStore:(_BYTE *)store andNoteMetadataInitialization:
 {
   v238 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -142,7 +142,7 @@ LABEL_114:
     goto LABEL_115;
   }
 
-  *a3 = 1;
+  *store = 1;
   if (v7)
   {
     goto LABEL_9;
@@ -192,7 +192,7 @@ LABEL_114:
     if (v14)
     {
       v16 = *(v5 + 48);
-      v17 = [*(v5 + 8) useDeviceToDeviceEncryption];
+      useDeviceToDeviceEncryption = [*(v5 + 8) useDeviceToDeviceEncryption];
       v18 = *(v5 + 56);
       if (v18)
       {
@@ -206,7 +206,7 @@ LABEL_114:
       *&v221[8] = 3221225472;
       *&v221[16] = __48__PFCloudKitSetupAssistant__checkAccountStatus___block_invoke_23;
       *&v221[24] = &unk_1E6EC3AA8;
-      LOBYTE(v227) = v17;
+      LOBYTE(v227) = useDeviceToDeviceEncryption;
       v225 = v234;
       v226 = v199;
       *&v221[32] = v19;
@@ -229,14 +229,14 @@ LABEL_114:
 
       if (os_log_type_enabled(Stream, v24))
       {
-        v25 = [*(v5 + 72) requestIdentifier];
+        requestIdentifier = [*(v5 + 72) requestIdentifier];
         *&buf[4] = "[PFCloudKitSetupAssistant _checkAccountStatus:]";
         *&buf[12] = 1024;
         v26 = @"<null>";
         *buf = 136315906;
-        if (v25)
+        if (requestIdentifier)
         {
-          v26 = v25;
+          v26 = requestIdentifier;
         }
 
         *&buf[14] = 439;
@@ -267,17 +267,17 @@ LABEL_114:
   *(v5 + 16) = v14;
   if (*(v196 + 24) == 1)
   {
-    v36 = [*(v5 + 8) databaseScope];
-    switch(v36)
+    databaseScope = [*(v5 + 8) databaseScope];
+    switch(databaseScope)
     {
       case 3:
-        v37 = [*(v5 + 16) sharedCloudDatabase];
+        sharedCloudDatabase = [*(v5 + 16) sharedCloudDatabase];
         break;
       case 2:
-        v37 = [*(v5 + 16) privateCloudDatabase];
+        sharedCloudDatabase = [*(v5 + 16) privateCloudDatabase];
         break;
       case 1:
-        v37 = [*(v5 + 16) publicCloudDatabase];
+        sharedCloudDatabase = [*(v5 + 16) publicCloudDatabase];
         break;
       default:
         *(v196 + 24) = 0;
@@ -290,15 +290,15 @@ LABEL_114:
         goto LABEL_47;
     }
 
-    *(v5 + 24) = v37;
+    *(v5 + 24) = sharedCloudDatabase;
 LABEL_47:
     if (*(v196 + 24) == 1 && !*(v5 + 24))
     {
       *(v196 + 24) = 0;
       v41 = MEMORY[0x1E696ABC0];
-      v220 = *MEMORY[0x1E696A588];
+      zoneID = *MEMORY[0x1E696A588];
       *v209 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to get a database back for scope '%@' from container: %@", (softLinkCKDatabaseScopeString[0])(objc_msgSend(*(v5 + 8), "databaseScope")), *(v5 + 16)];
-      v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v209 forKeys:&v220 count:1];
+      v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v209 forKeys:&zoneID count:1];
       v43 = [v41 errorWithDomain:*MEMORY[0x1E696A250] code:134400 userInfo:v42];
       *(*&v199[8] + 40) = v43;
     }
@@ -402,14 +402,14 @@ LABEL_53:
 
   if (os_log_type_enabled(v50, v52))
   {
-    v53 = [*(v5 + 72) requestIdentifier];
+    requestIdentifier2 = [*(v5 + 72) requestIdentifier];
     *&v212[4] = "[PFCloudKitSetupAssistant _checkUserIdentity:]";
     *&v212[12] = 1024;
     v54 = @"<null>";
     *v212 = 136315906;
-    if (v53)
+    if (requestIdentifier2)
     {
-      v54 = v53;
+      v54 = requestIdentifier2;
     }
 
     *&v212[14] = 1475;
@@ -446,8 +446,8 @@ LABEL_53:
     goto LABEL_76;
   }
 
-  v58 = [*(*&v234[8] + 40) domain];
-  if (![v58 isEqualToString:getCloudKitCKErrorDomain()] || objc_msgSend(*(*&v234[8] + 40), "code") != 9)
+  domain = [*(*&v234[8] + 40) domain];
+  if (![domain isEqualToString:getCloudKitCKErrorDomain()] || objc_msgSend(*(*&v234[8] + 40), "code") != 9)
   {
     v59 = objc_autoreleasePoolPush();
     v60 = __PFCloudKitLoggingGetStream();
@@ -611,7 +611,7 @@ LABEL_93:
   *&v205[8] = v205;
   *&v205[16] = 0x2020000000;
   v206 = 0;
-  v73 = [*(v5 + 8) databaseScope];
+  databaseScope2 = [*(v5 + 8) databaseScope];
   [(PFCloudKitSetupAssistant *)v5 beginActivityForPhase:?];
   v195 = 0;
   v196 = &v195;
@@ -623,8 +623,8 @@ LABEL_93:
   v235 = __Block_byref_object_copy__27;
   v236 = __Block_byref_object_dispose__27;
   v237 = 0;
-  v74 = [*(v5 + 8) databaseScope];
-  if (v74 == 3)
+  databaseScope3 = [*(v5 + 8) databaseScope];
+  if (databaseScope3 == 3)
   {
     v94 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v95 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -683,14 +683,14 @@ LABEL_93:
           v104 = 0;
         }
 
-        v105 = [*(v5 + 72) requestIdentifier];
+        requestIdentifier3 = [*(v5 + 72) requestIdentifier];
         *&v221[4] = "[PFCloudKitSetupAssistant _recoverFromManateeIdentityLossIfNecessary:]";
         *&v221[12] = 1024;
         v106 = @"<null>";
         *v221 = 136315906;
-        if (v105)
+        if (requestIdentifier3)
         {
-          v106 = v105;
+          v106 = requestIdentifier3;
         }
 
         *&v221[14] = 711;
@@ -759,7 +759,7 @@ LABEL_93:
     }
   }
 
-  else if (v74 == 2)
+  else if (databaseScope3 == 2)
   {
     v75 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v76 = *(v5 + 56);
@@ -776,9 +776,9 @@ LABEL_93:
 
     if (!*(*&v234[8] + 40) && [v75 count])
     {
-      v77 = [v75 allObjects];
+      allObjects = [v75 allObjects];
       v78 = dispatch_semaphore_create(0);
-      v79 = [objc_alloc(getCloudKitCKModifyRecordZonesOperationClass()) initWithRecordZonesToSave:0 recordZoneIDsToDelete:v77];
+      v79 = [objc_alloc(getCloudKitCKModifyRecordZonesOperationClass()) initWithRecordZonesToSave:0 recordZoneIDsToDelete:allObjects];
       -[NSCloudKitMirroringRequestOptions applyToOperation:]([*(v5 + 72) options], v79);
       *v199 = MEMORY[0x1E69E9820];
       *&v199[8] = 3221225472;
@@ -786,7 +786,7 @@ LABEL_93:
       *&v199[24] = &unk_1E6EC3B20;
       v201 = &v195;
       v202 = v234;
-      *&v199[32] = v77;
+      *&v199[32] = allObjects;
       v200 = v78;
       [v79 setModifyRecordZonesCompletionBlock:v199];
       [*(v5 + 24) addOperation:v79];
@@ -817,14 +817,14 @@ LABEL_93:
           v85 = 0;
         }
 
-        v86 = [*(v5 + 72) requestIdentifier];
+        requestIdentifier4 = [*(v5 + 72) requestIdentifier];
         *&v221[4] = "[PFCloudKitSetupAssistant _recoverFromManateeIdentityLossIfNecessary:]";
         *&v221[12] = 1024;
         v87 = @"<null>";
         *v221 = 136315906;
-        if (v86)
+        if (requestIdentifier4)
         {
-          v87 = v86;
+          v87 = requestIdentifier4;
         }
 
         *&v221[14] = 570;
@@ -901,7 +901,7 @@ LABEL_157:
   *(v229 + 24) = v116;
   if (v116 == 1)
   {
-    if ((v73 - 1) > 1)
+    if ((databaseScope2 - 1) > 1)
     {
       *(*&v205[8] + 24) = 1;
     }
@@ -917,7 +917,7 @@ LABEL_157:
       v201 = v205;
       v202 = &v228;
       v203 = buf;
-      v204 = v73;
+      v204 = databaseScope2;
       [(PFCloudKitStoreMonitor *)v193 performBlock:v199];
       v117 = v229;
     }
@@ -926,15 +926,15 @@ LABEL_157:
   if (*(v117 + 24) == 1 && (*(*&v205[8] + 24) & 1) == 0)
   {
     *(v117 + 24) = 0;
-    if (v73 == 3)
+    if (databaseScope2 == 3)
     {
       *(v117 + 24) = 1;
       goto LABEL_164;
     }
 
-    if (v73 != 2)
+    if (databaseScope2 != 2)
     {
-      v131 = [PFCloudKitSerializer defaultRecordZoneIDForDatabaseScope:v73];
+      v131 = [PFCloudKitSerializer defaultRecordZoneIDForDatabaseScope:databaseScope2];
       v132 = [objc_alloc(getCloudKitCKRecordZoneClass[0]()) initWithZoneID:v131];
       v195 = 0;
       v196 = &v195;
@@ -946,11 +946,11 @@ LABEL_157:
       v235 = __Block_byref_object_copy__27;
       v236 = __Block_byref_object_dispose__27;
       v237 = 0;
-      v133 = [*(v5 + 8) databaseScope];
+      databaseScope4 = [*(v5 + 8) databaseScope];
       dsemaa = *(v5 + 48);
       v134 = objc_alloc(getCloudKitCKFetchRecordZonesOperationClass());
-      v220 = [v132 zoneID];
-      v135 = [v134 initWithRecordZoneIDs:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v220, 1)}];
+      zoneID = [v132 zoneID];
+      v135 = [v134 initWithRecordZoneIDs:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &zoneID, 1)}];
       -[NSCloudKitMirroringRequestOptions applyToOperation:]([*(v5 + 72) options], v135);
       *v232 = 0;
       *&v232[8] = v232;
@@ -963,7 +963,7 @@ LABEL_157:
       v223 = v234;
       v224 = &v195;
       v225 = v232;
-      v226 = v133;
+      v226 = databaseScope4;
       *&v221[32] = v132;
       v222 = dsemaa;
       [v135 setFetchRecordZonesCompletionBlock:v221];
@@ -983,7 +983,7 @@ LABEL_157:
 
       if (os_log_type_enabled(v137, v139))
       {
-        v190 = v133;
+        v190 = databaseScope4;
         v140 = v135;
         v141 = v132;
         v142 = v131;
@@ -998,14 +998,14 @@ LABEL_157:
           v144 = 0;
         }
 
-        v145 = [*(v5 + 72) requestIdentifier];
+        requestIdentifier5 = [*(v5 + 72) requestIdentifier];
         *&v212[4] = "[PFCloudKitSetupAssistant _checkIfZoneExists:error:]";
         *&v212[12] = 1024;
         v146 = @"<null>";
         *v212 = 136315906;
-        if (v145)
+        if (requestIdentifier5)
         {
-          v146 = v145;
+          v146 = requestIdentifier5;
         }
 
         *&v212[14] = 1096;
@@ -1017,7 +1017,7 @@ LABEL_157:
         v131 = v142;
         v132 = v141;
         v135 = v140;
-        v133 = v190;
+        databaseScope4 = v190;
       }
 
       objc_autoreleasePoolPop(v136);
@@ -1034,14 +1034,14 @@ LABEL_157:
         v214 = v232;
         v215 = &v195;
         v216 = v234;
-        v217 = v133;
+        v217 = databaseScope4;
         [(PFCloudKitStoreMonitor *)v147 performBlock:v212];
       }
 
-      else if (v133 == 1 && [*(*&v234[8] + 40) code] == 9)
+      else if (databaseScope4 == 1 && [*(*&v234[8] + 40) code] == 9)
       {
-        v157 = [*(*&v234[8] + 40) domain];
-        if ([v157 isEqualToString:getCloudKitCKErrorDomain()])
+        domain2 = [*(*&v234[8] + 40) domain];
+        if ([domain2 isEqualToString:getCloudKitCKErrorDomain()])
         {
           v158 = [objc_msgSend(v132 "zoneID")];
           if (([v158 isEqualToString:getCloudKitCKRecordZoneDefaultName[0]()] & 1) == 0)
@@ -1131,8 +1131,8 @@ LABEL_268:
     }
 
     v148 = v219;
-    v149 = [(__CFString *)v219 domain];
-    if ([v149 isEqualToString:getCloudKitCKErrorDomain()])
+    domain3 = [(__CFString *)v219 domain];
+    if ([domain3 isEqualToString:getCloudKitCKErrorDomain()])
     {
       if ([(__CFString *)v148 code]== 112)
       {
@@ -1141,10 +1141,10 @@ LABEL_268:
 
       if ([(__CFString *)v148 code]== 2)
       {
-        v183 = [(__CFString *)v148 userInfo];
-        v184 = [objc_msgSend(v183 objectForKey:{getCloudKitCKPartialErrorsByItemIDKey()), "objectForKey:", objc_msgSend(v120, "zoneID")}];
-        v185 = [v184 domain];
-        if ([v185 isEqualToString:getCloudKitCKErrorDomain()])
+        userInfo = [(__CFString *)v148 userInfo];
+        v184 = [objc_msgSend(userInfo objectForKey:{getCloudKitCKPartialErrorsByItemIDKey()), "objectForKey:", objc_msgSend(v120, "zoneID")}];
+        domain4 = [v184 domain];
+        if ([domain4 isEqualToString:getCloudKitCKErrorDomain()])
         {
           if ([v184 code] == 112)
           {
@@ -1299,8 +1299,8 @@ LABEL_174:
   v229 = &v228;
   v230 = 0x2020000000;
   v231 = 0;
-  v122 = [*(v5 + 8) databaseScope];
-  if (v122 == 1)
+  databaseScope5 = [*(v5 + 8) databaseScope];
+  if (databaseScope5 == 1)
   {
     v123 = 1;
     goto LABEL_243;
@@ -1309,7 +1309,7 @@ LABEL_174:
   [(PFCloudKitSetupAssistant *)v5 beginActivityForPhase:?];
   v124 = *(v5 + 56);
   v125 = v124;
-  if (v122 == 3)
+  if (databaseScope5 == 3)
   {
     *v221 = MEMORY[0x1E69E9820];
     *&v221[8] = 3221225472;
@@ -1323,7 +1323,7 @@ LABEL_174:
     [(PFCloudKitStoreMonitor *)v124 performBlock:v221];
   }
 
-  else if (v122 == 2)
+  else if (databaseScope5 == 2)
   {
     v126 = [PFCloudKitSerializer defaultRecordZoneIDForDatabaseScope:2];
     *v221 = MEMORY[0x1E69E9820];
@@ -1342,8 +1342,8 @@ LABEL_174:
 
   if (*(*&buf[8] + 24) == 1)
   {
-    v129 = [*(v5 + 8) databaseScope];
-    switch(v129)
+    databaseScope6 = [*(v5 + 8) databaseScope];
+    switch(databaseScope6)
     {
       case 1:
         v130 = PFPublicDatabaseSubscriptionID;
@@ -1357,9 +1357,9 @@ LABEL_174:
       default:
         *(*&buf[8] + 24) = 0;
         v153 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v220 = *MEMORY[0x1E696A588];
+        zoneID = *MEMORY[0x1E696A588];
         *v209 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CloudKit integration does not support the '%@' database scope.", (softLinkCKDatabaseScopeString[0])(objc_msgSend(*(v5 + 8), "databaseScope"))];
-        v154 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v209 forKeys:&v220 count:1];
+        v154 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v209 forKeys:&zoneID count:1];
         v155 = [v153 initWithDomain:*MEMORY[0x1E696A250] code:134400 userInfo:v154];
         v152 = 0;
         *(*&v234[8] + 40) = v155;
@@ -1434,14 +1434,14 @@ LABEL_211:
                 v173 = 0;
               }
 
-              v174 = [*(v5 + 72) requestIdentifier];
+              requestIdentifier6 = [*(v5 + 72) requestIdentifier];
               *&v199[4] = "[PFCloudKitSetupAssistant _setupDatabaseSubscriptionIfNecessary:]";
               *&v199[12] = 1024;
               v175 = @"<null>";
               *v199 = 136315906;
-              if (v174)
+              if (requestIdentifier6)
               {
-                v175 = v174;
+                v175 = requestIdentifier6;
               }
 
               *&v199[14] = 1374;
@@ -1464,7 +1464,7 @@ LABEL_211:
             v200 = buf;
             v201 = &v195;
             v202 = v234;
-            v203 = v122;
+            v203 = databaseScope5;
             [(PFCloudKitStoreMonitor *)v176 performBlock:v199];
           }
         }
@@ -1643,9 +1643,9 @@ LABEL_123:
   return result;
 }
 
-- (void)beginActivityForPhase:(uint64_t)a1
+- (void)beginActivityForPhase:(uint64_t)phase
 {
-  v3 = *(a1 + 72);
+  v3 = *(phase + 72);
   if (v3)
   {
     v4 = *(v3 + 72);
@@ -1657,12 +1657,12 @@ LABEL_123:
   }
 
   v5 = [v4 beginActivityForPhase:a2];
-  [objc_msgSend(*(a1 + 8) "progressProvider")];
+  [objc_msgSend(*(phase + 8) "progressProvider")];
 }
 
-- (void)endActivityForPhase:(uint64_t)a3 withError:
+- (void)endActivityForPhase:(uint64_t)phase withError:
 {
-  v4 = *(a1 + 72);
+  v4 = *(self + 72);
   if (v4)
   {
     v5 = *(v4 + 72);
@@ -1673,8 +1673,8 @@ LABEL_123:
     v5 = 0;
   }
 
-  v6 = [v5 endActivityForPhase:a2 withError:a3];
-  [objc_msgSend(*(a1 + 8) "progressProvider")];
+  v6 = [v5 endActivityForPhase:a2 withError:phase];
+  [objc_msgSend(*(self + 8) "progressProvider")];
 }
 
 void __56__PFCloudKitSetupAssistant__checkAndInitializeMetadata___block_invoke(uint64_t *a1)
@@ -2941,7 +2941,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_saveZone:(void *)a3 error:
+- (uint64_t)_saveZone:(void *)zone error:
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v35 = 0;
@@ -2954,11 +2954,11 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   v32 = __Block_byref_object_copy__27;
   v33 = __Block_byref_object_dispose__27;
   v34 = 0;
-  v6 = *(a1 + 48);
+  v6 = *(self + 48);
   v7 = objc_alloc(getCloudKitCKModifyRecordZonesOperationClass());
   v47[0] = a2;
   v8 = [v7 initWithRecordZonesToSave:objc_msgSend(MEMORY[0x1E695DEC8] recordZoneIDsToDelete:{"arrayWithObjects:count:", v47, 1), 0}];
-  -[NSCloudKitMirroringRequestOptions applyToOperation:]([*(a1 + 72) options], v8);
+  -[NSCloudKitMirroringRequestOptions applyToOperation:]([*(self + 72) options], v8);
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -2973,7 +2973,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   v27[4] = a2;
   v27[5] = v6;
   [v8 setModifyRecordZonesCompletionBlock:v27];
-  [*(a1 + 24) addOperation:v8];
+  [*(self + 24) addOperation:v8];
   v9 = objc_autoreleasePoolPush();
   Stream = __PFCloudKitLoggingGetStream();
   v11 = Stream;
@@ -2989,7 +2989,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
 
   if (os_log_type_enabled(Stream, v12))
   {
-    v13 = *(a1 + 56);
+    v13 = *(self + 56);
     if (v13)
     {
       v14 = *(v13 + 48);
@@ -3000,14 +3000,14 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
       v14 = 0;
     }
 
-    v15 = [*(a1 + 72) requestIdentifier];
+    requestIdentifier = [*(self + 72) requestIdentifier];
     v40 = "[PFCloudKitSetupAssistant _saveZone:error:]";
     v41 = 1024;
     v16 = @"<null>";
     *buf = 136315906;
-    if (v15)
+    if (requestIdentifier)
     {
-      v16 = v15;
+      v16 = requestIdentifier;
     }
 
     v42 = 943;
@@ -3024,8 +3024,8 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   v17 = *(v36 + 24);
   if (v17 == 1)
   {
-    v18 = [*(a1 + 8) databaseScope];
-    v19 = *(a1 + 56);
+    databaseScope = [*(self + 8) databaseScope];
+    v19 = *(self + 56);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __44__PFCloudKitSetupAssistant__saveZone_error___block_invoke_81;
@@ -3035,7 +3035,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
     v26[6] = v28;
     v26[7] = &v35;
     v26[8] = &v29;
-    v26[9] = v18;
+    v26[9] = databaseScope;
     [(PFCloudKitStoreMonitor *)v19 performBlock:v26];
 
     v17 = *(v36 + 24);
@@ -3046,9 +3046,9 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
     v23 = v30[5];
     if (v23)
     {
-      if (a3)
+      if (zone)
       {
-        *a3 = v23;
+        *zone = v23;
       }
     }
 
@@ -3085,7 +3085,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   return v20;
 }
 
-- (uint64_t)_deleteZone:(void *)a3 error:
+- (uint64_t)_deleteZone:(void *)zone error:
 {
   v43[1] = *MEMORY[0x1E69E9840];
   v31 = 0;
@@ -3098,11 +3098,11 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   v28 = __Block_byref_object_copy__27;
   v29 = __Block_byref_object_dispose__27;
   v30 = 0;
-  v6 = *(a1 + 48);
+  v6 = *(self + 48);
   v7 = objc_alloc(getCloudKitCKModifyRecordZonesOperationClass());
   v43[0] = [a2 zoneID];
   v8 = [v7 initWithRecordZonesToSave:0 recordZoneIDsToDelete:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v43, 1)}];
-  -[NSCloudKitMirroringRequestOptions applyToOperation:]([*(a1 + 72) options], v8);
+  -[NSCloudKitMirroringRequestOptions applyToOperation:]([*(self + 72) options], v8);
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __46__PFCloudKitSetupAssistant__deleteZone_error___block_invoke;
@@ -3112,7 +3112,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
   v24[4] = a2;
   v24[5] = v6;
   [v8 setModifyRecordZonesCompletionBlock:v24];
-  [*(a1 + 24) addOperation:v8];
+  [*(self + 24) addOperation:v8];
   v9 = objc_autoreleasePoolPush();
   Stream = __PFCloudKitLoggingGetStream();
   v11 = Stream;
@@ -3128,7 +3128,7 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
 
   if (os_log_type_enabled(Stream, v12))
   {
-    v13 = *(a1 + 56);
+    v13 = *(self + 56);
     if (v13)
     {
       v14 = *(v13 + 48);
@@ -3139,13 +3139,13 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
       v14 = 0;
     }
 
-    v15 = [*(a1 + 72) requestIdentifier];
+    requestIdentifier = [*(self + 72) requestIdentifier];
     v16 = @"<null>";
     v36 = "[PFCloudKitSetupAssistant _deleteZone:error:]";
     *buf = 136315906;
-    if (v15)
+    if (requestIdentifier)
     {
-      v16 = v15;
+      v16 = requestIdentifier;
     }
 
     v37 = 1024;
@@ -3166,9 +3166,9 @@ void __51__PFCloudKitSetupAssistant__createZoneIfNecessary___block_invoke_2(uint
     v21 = v26[5];
     if (v21)
     {
-      if (a3)
+      if (zone)
       {
-        *a3 = v21;
+        *zone = v21;
       }
     }
 

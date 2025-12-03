@@ -1,21 +1,21 @@
 @interface SiriTipUIView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)didMoveToWindow;
-- (void)setIsPresented:(BOOL)a3;
+- (void)setIsPresented:(BOOL)presented;
 @end
 
 @implementation SiriTipUIView
 
-- (void)setIsPresented:(BOOL)a3
+- (void)setIsPresented:(BOOL)presented
 {
-  v4 = self;
-  SiriTipUIView.isPresented.setter(a3);
+  selfCopy = self;
+  SiriTipUIView.isPresented.setter(presented);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   SiriTipUIView.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = SiriTipUIView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -43,7 +43,7 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   SiriTipUIView.didMoveToWindow()();
 }
 

@@ -1,19 +1,19 @@
 @interface InProgressMessageDownload.AttachmentDecoderAndWriter.Decoder.DataConsumer
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
 @implementation InProgressMessageDownload.AttachmentDecoderAndWriter.Decoder.DataConsumer
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](data);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (data)
   {
     v6 = sub_1B0E42F38();
     v7 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](data);
     v8 = v6;
     v9 = v7;
   }

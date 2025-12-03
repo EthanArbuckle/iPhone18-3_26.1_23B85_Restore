@@ -2,13 +2,13 @@
 + (RMDeviceIdentity)sharedDeviceIdentity;
 + (id)deviceIdentityForTesting;
 - (BOOL)_validDeviceIdentityCache;
-- (RMDeviceIdentity)deviceIdentityWithCompletionHandler:(id)a3;
+- (RMDeviceIdentity)deviceIdentityWithCompletionHandler:(id)handler;
 - (RMDeviceIdentity)init;
-- (void)_cachePrivateKey:(__SecKey *)a3 certificates:(id)a4;
-- (void)_copyPersistedIdentityWithFileName:(id)a3 isBAA:(BOOL)a4 completionHandler:(id)a5;
-- (void)_fetchOrCreateSelfSignedCertificateWithCompletionHandler:(id)a3;
-- (void)_issueDeviceIdentityCertificateWithCompletionHandler:(id)a3;
-- (void)_persistIdentityWithPrivateKey:(__SecKey *)a3 certificateChain:(id)a4 fileName:(id)a5 isBAA:(BOOL)a6;
+- (void)_cachePrivateKey:(__SecKey *)key certificates:(id)certificates;
+- (void)_copyPersistedIdentityWithFileName:(id)name isBAA:(BOOL)a completionHandler:(id)handler;
+- (void)_fetchOrCreateSelfSignedCertificateWithCompletionHandler:(id)handler;
+- (void)_issueDeviceIdentityCertificateWithCompletionHandler:(id)handler;
+- (void)_persistIdentityWithPrivateKey:(__SecKey *)key certificateChain:(id)chain fileName:(id)name isBAA:(BOOL)a;
 @end
 
 @implementation RMDeviceIdentity
@@ -56,8 +56,8 @@
 {
   if ([(RMDeviceIdentity *)self privateKey]&& ([(RMDeviceIdentity *)self certificates], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(RMDeviceIdentity *)self certificates];
-    v5 = [v4 objectAtIndexedSubscript:0];
+    certificates = [(RMDeviceIdentity *)self certificates];
+    v5 = [certificates objectAtIndexedSubscript:0];
 
     return [RMSecurityUtilities checkValidAfterWithCertificate:v5 interval:3600.0];
   }
@@ -74,9 +74,9 @@
   }
 }
 
-- (void)_cachePrivateKey:(__SecKey *)a3 certificates:(id)a4
+- (void)_cachePrivateKey:(__SecKey *)key certificates:(id)certificates
 {
-  v6 = a4;
+  certificatesCopy = certificates;
   v7 = +[RMLog deviceIdentity];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -89,21 +89,21 @@
     [(RMDeviceIdentity *)self setPrivateKey:0];
   }
 
-  v8 = [(RMDeviceIdentity *)self certificates];
+  certificates = [(RMDeviceIdentity *)self certificates];
 
-  if (v8)
+  if (certificates)
   {
     [(RMDeviceIdentity *)self setCertificates:0];
   }
 
-  [(RMDeviceIdentity *)self setPrivateKey:a3];
+  [(RMDeviceIdentity *)self setPrivateKey:key];
   CFRetain([(RMDeviceIdentity *)self privateKey]);
-  [(RMDeviceIdentity *)self setCertificates:v6];
+  [(RMDeviceIdentity *)self setCertificates:certificatesCopy];
 }
 
-- (RMDeviceIdentity)deviceIdentityWithCompletionHandler:(id)a3
+- (RMDeviceIdentity)deviceIdentityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_identityLock;
   objc_sync_enter(v5);
   v6 = _os_activity_create(&_mh_execute_header, "DeviceIdentity: retrieving", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -118,9 +118,9 @@
 
   if ([(RMDeviceIdentity *)self _validDeviceIdentityCache])
   {
-    v8 = [(RMDeviceIdentity *)self privateKey];
-    v9 = [(RMDeviceIdentity *)self certificates];
-    v4[2](v4, v8, v9, 0);
+    privateKey = [(RMDeviceIdentity *)self privateKey];
+    certificates = [(RMDeviceIdentity *)self certificates];
+    handlerCopy[2](handlerCopy, privateKey, certificates, 0);
   }
 
   else
@@ -130,9 +130,9 @@
     v11[2] = sub_100028A48;
     v11[3] = &unk_1000D1A10;
     v11[4] = self;
-    v12 = v4;
+    v12 = handlerCopy;
     [(RMDeviceIdentity *)self _fetchDeviceIdentityCertificateWithCompletionHandler:v11];
-    v9 = v12;
+    certificates = v12;
   }
 
   os_activity_scope_leave(&state);
@@ -141,9 +141,9 @@
   return result;
 }
 
-- (void)_issueDeviceIdentityCertificateWithCompletionHandler:(id)a3
+- (void)_issueDeviceIdentityCertificateWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[RMLog deviceIdentity];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -159,73 +159,73 @@
 
   [v5 setObject:@"com.apple.remotemanagementd.device-identity" forKeyedSubscript:kMAOptionsBAAKeychainLabel];
   v7 = [v5 copy];
-  v9 = v3;
-  v8 = v3;
+  v9 = handlerCopy;
+  v8 = handlerCopy;
   DeviceIdentityIssueClientCertificateWithCompletion();
 }
 
-- (void)_fetchOrCreateSelfSignedCertificateWithCompletionHandler:(id)a3
+- (void)_fetchOrCreateSelfSignedCertificateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RMErrorUtilities createDeviceIdentityNotFoundError];
-  (*(a3 + 2))(v4, 0, 0, v5);
+  (*(handler + 2))(handlerCopy, 0, 0, v5);
 }
 
-- (void)_copyPersistedIdentityWithFileName:(id)a3 isBAA:(BOOL)a4 completionHandler:(id)a5
+- (void)_copyPersistedIdentityWithFileName:(id)name isBAA:(BOOL)a completionHandler:(id)handler
 {
-  v5 = a4;
-  v13 = a5;
-  v7 = a3;
+  aCopy = a;
+  handlerCopy = handler;
+  nameCopy = name;
   v8 = [RMLocations identityDirectoryURLCreateIfNeeded:1];
   v9 = +[NSFileManager defaultManager];
   [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v10 = [v8 URLByAppendingPathComponent:v7 isDirectory:0];
+  v10 = [v8 URLByAppendingPathComponent:nameCopy isDirectory:0];
 
   v11 = [NSDictionary dictionaryWithContentsOfURL:v10 error:0];
   if (v11)
   {
-    if (v5)
+    if (aCopy)
     {
-      [RMSecurityUtilities deserializeBAAIdentity:v11 completionHandler:v13];
+      [RMSecurityUtilities deserializeBAAIdentity:v11 completionHandler:handlerCopy];
     }
 
     else
     {
-      [RMSecurityUtilities deserializeIdentity:v11 completionHandler:v13];
+      [RMSecurityUtilities deserializeIdentity:v11 completionHandler:handlerCopy];
     }
   }
 
   else
   {
     v12 = +[RMErrorUtilities createInternalError];
-    (*(v13 + 2))(v13, 0, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v12);
   }
 }
 
-- (void)_persistIdentityWithPrivateKey:(__SecKey *)a3 certificateChain:(id)a4 fileName:(id)a5 isBAA:(BOOL)a6
+- (void)_persistIdentityWithPrivateKey:(__SecKey *)key certificateChain:(id)chain fileName:(id)name isBAA:(BOOL)a
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = a4;
+  aCopy = a;
+  nameCopy = name;
+  chainCopy = chain;
   v11 = [RMLocations identityDirectoryURLCreateIfNeeded:1];
   v12 = +[NSFileManager defaultManager];
   [v12 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v13 = [v11 URLByAppendingPathComponent:v9 isDirectory:0];
+  v13 = [v11 URLByAppendingPathComponent:nameCopy isDirectory:0];
 
-  if (v6)
+  if (aCopy)
   {
     v22 = 0;
     v14 = &v22;
-    v15 = [RMSecurityUtilities serializeBAAIdentityWithPrivateKey:a3 certificateChain:v10 error:&v22];
+    v15 = [RMSecurityUtilities serializeBAAIdentityWithPrivateKey:key certificateChain:chainCopy error:&v22];
   }
 
   else
   {
     v21 = 0;
     v14 = &v21;
-    v15 = [RMSecurityUtilities serializeIdentityWithPrivateKey:a3 certificateChain:v10 error:&v21];
+    v15 = [RMSecurityUtilities serializeIdentityWithPrivateKey:key certificateChain:chainCopy error:&v21];
   }
 
   v16 = v15;

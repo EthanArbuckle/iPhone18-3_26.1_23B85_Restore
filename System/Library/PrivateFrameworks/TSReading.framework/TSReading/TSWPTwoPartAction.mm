@@ -1,29 +1,29 @@
 @interface TSWPTwoPartAction
-+ (id)actionWithStartAction:(id)a3 cancelAction:(id)a4 finishAction:(id)a5;
-- (TSWPTwoPartAction)initWithStartAction:(id)a3 cancelAction:(id)a4 finishAction:(id)a5;
++ (id)actionWithStartAction:(id)action cancelAction:(id)cancelAction finishAction:(id)finishAction;
+- (TSWPTwoPartAction)initWithStartAction:(id)action cancelAction:(id)cancelAction finishAction:(id)finishAction;
 - (void)dealloc;
 @end
 
 @implementation TSWPTwoPartAction
 
-- (TSWPTwoPartAction)initWithStartAction:(id)a3 cancelAction:(id)a4 finishAction:(id)a5
+- (TSWPTwoPartAction)initWithStartAction:(id)action cancelAction:(id)cancelAction finishAction:(id)finishAction
 {
   v10.receiver = self;
   v10.super_class = TSWPTwoPartAction;
   v8 = [(TSWPTwoPartAction *)&v10 init];
   if (v8)
   {
-    v8->_startAction = [a3 copy];
-    v8->_cancelAction = [a4 copy];
-    v8->_finishAction = [a5 copy];
+    v8->_startAction = [action copy];
+    v8->_cancelAction = [cancelAction copy];
+    v8->_finishAction = [finishAction copy];
   }
 
   return v8;
 }
 
-+ (id)actionWithStartAction:(id)a3 cancelAction:(id)a4 finishAction:(id)a5
++ (id)actionWithStartAction:(id)action cancelAction:(id)cancelAction finishAction:(id)finishAction
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithStartAction:a3 cancelAction:a4 finishAction:a5];
+  v5 = [objc_alloc(objc_opt_class()) initWithStartAction:action cancelAction:cancelAction finishAction:finishAction];
 
   return v5;
 }

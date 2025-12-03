@@ -1,31 +1,31 @@
 @interface MADRemoveBackgroundMatteResult
 - (CGImage)image;
 - (CGRect)cropRect;
-- (MADRemoveBackgroundMatteResult)initWithCoder:(id)a3;
-- (MADRemoveBackgroundMatteResult)initWithSurface:(id)a3 cropRect:(CGRect)a4;
+- (MADRemoveBackgroundMatteResult)initWithCoder:(id)coder;
+- (MADRemoveBackgroundMatteResult)initWithSurface:(id)surface cropRect:(CGRect)rect;
 - (__CVBuffer)pixelBuffer;
 - (id).cxx_construct;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)pixelBuffer;
 @end
 
 @implementation MADRemoveBackgroundMatteResult
 
-- (MADRemoveBackgroundMatteResult)initWithSurface:(id)a3 cropRect:(CGRect)a4
+- (MADRemoveBackgroundMatteResult)initWithSurface:(id)surface cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  surfaceCopy = surface;
   v14.receiver = self;
   v14.super_class = MADRemoveBackgroundMatteResult;
   v11 = [(MADResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_surface, a3);
+    objc_storeStrong(&v11->_surface, surface);
     v12->_cropRect.origin.x = x;
     v12->_cropRect.origin.y = y;
     v12->_cropRect.size.width = width;
@@ -35,19 +35,19 @@
   return v12;
 }
 
-- (MADRemoveBackgroundMatteResult)initWithCoder:(id)a3
+- (MADRemoveBackgroundMatteResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MADRemoveBackgroundMatteResult;
-  v5 = [(MADResult *)&v13 initWithCoder:v4];
+  v5 = [(MADResult *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
     surface = v5->_surface;
     v5->_surface = v6;
 
-    [v4 decodeRectForKey:@"CropRect"];
+    [coderCopy decodeRectForKey:@"CropRect"];
     v5->_cropRect.origin.x = v8;
     v5->_cropRect.origin.y = v9;
     v5->_cropRect.size.width = v10;
@@ -57,27 +57,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADRemoveBackgroundMatteResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_surface forKey:@"Surface"];
-  [v4 encodeRect:@"CropRect" forKey:{self->_cropRect.origin.x, self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height}];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_surface forKey:@"Surface"];
+  [coderCopy encodeRect:@"CropRect" forKey:{self->_cropRect.origin.x, self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height}];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"surface: %@, ", self->_surface];
-  [v3 appendFormat:@"cropRect: %0.2fx%0.2f @ (%0.2f, %0.2f)>", *&self->_cropRect.size.width, *&self->_cropRect.size.height, *&self->_cropRect.origin.x, *&self->_cropRect.origin.y];
+  [string appendFormat:@"surface: %@, ", self->_surface];
+  [string appendFormat:@"cropRect: %0.2fx%0.2f @ (%0.2f, %0.2f)>", *&self->_cropRect.size.width, *&self->_cropRect.size.height, *&self->_cropRect.origin.x, *&self->_cropRect.origin.y];
 
-  return v3;
+  return string;
 }
 
 - (__CVBuffer)pixelBuffer
@@ -163,7 +163,7 @@
 {
   v2 = *MEMORY[0x1E69E9840];
   v1[0] = 67109120;
-  v1[1] = a1;
+  v1[1] = self;
   _os_log_error_impl(&dword_1C972C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to create CVPixelBufferRef from IOSurface (%d)", v1, 8u);
 }
 

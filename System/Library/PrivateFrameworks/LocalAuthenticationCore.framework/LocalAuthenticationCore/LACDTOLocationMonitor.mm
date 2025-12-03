@@ -1,33 +1,33 @@
 @interface LACDTOLocationMonitor
-- (LACDTOLocationMonitor)initWithLocationProvider:(id)a3 workQueue:(id)a4;
+- (LACDTOLocationMonitor)initWithLocationProvider:(id)provider workQueue:(id)queue;
 - (LACDTOLocationMonitorDelegate)delegate;
-- (void)startMonitoringWithReason:(id)a3;
-- (void)stopMonitoringWithReason:(id)a3;
+- (void)startMonitoringWithReason:(id)reason;
+- (void)stopMonitoringWithReason:(id)reason;
 @end
 
 @implementation LACDTOLocationMonitor
 
-- (LACDTOLocationMonitor)initWithLocationProvider:(id)a3 workQueue:(id)a4
+- (LACDTOLocationMonitor)initWithLocationProvider:(id)provider workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = LACDTOLocationMonitor;
   v9 = [(LACDTOLocationMonitor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationProvider, a3);
-    objc_storeStrong(&v10->_workQueue, a4);
+    objc_storeStrong(&v9->_locationProvider, provider);
+    objc_storeStrong(&v10->_workQueue, queue);
   }
 
   return v10;
 }
 
-- (void)startMonitoringWithReason:(id)a3
+- (void)startMonitoringWithReason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_workQueue);
   if ([(LACTimer *)self->_timer isRunning])
   {
@@ -48,11 +48,11 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = 0x4024000000000000;
       v19 = 2114;
-      v20 = v4;
+      v20 = reasonCopy;
       _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ starting monitor with an interval of %.2f secs with reason: %{public}@", buf, 0x20u);
     }
 
@@ -112,18 +112,18 @@ void __51__LACDTOLocationMonitor_startMonitoringWithReason___block_invoke_1(uint
   }
 }
 
-- (void)stopMonitoringWithReason:(id)a3
+- (void)stopMonitoringWithReason:(id)reason
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = LACLogDTOTimers();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping monitor with reason: %{public}@", &v8, 0x16u);
   }
 

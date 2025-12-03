@@ -1,9 +1,9 @@
 @interface _DASCPMModePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASCPMModePolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASCPMModePolicy
@@ -19,9 +19,9 @@
     policyName = v2->_policyName;
     v2->_policyName = @"CPM Mode Policy";
 
-    v5 = [(_DASCPMModePolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASCPMModePolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v5;
+    v3->_triggers = initializeTriggers;
 
     v7 = +[_DASCPMModeMonitor sharedMonitor];
     monitor = v3->_monitor;
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000A2254;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B6A8 != -1)
   {
     dispatch_once(&qword_10020B6A8, block);
@@ -59,38 +59,38 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 requiresPlugin] && (objc_msgSend(v3, "requestsImmediateRuntime") & 1) == 0)
+  activityCopy = activity;
+  if ([activityCopy requiresPlugin] && (objc_msgSend(activityCopy, "requestsImmediateRuntime") & 1) == 0)
   {
-    v5 = [v3 fileProtection];
+    fileProtection = [activityCopy fileProtection];
     v6 = +[_DASFileProtection complete];
-    if ([v5 isEqual:v6])
+    if ([fileProtection isEqual:v6])
     {
       LOBYTE(v4) = 0;
     }
 
     else
     {
-      v7 = [v3 fileProtection];
+      fileProtection2 = [activityCopy fileProtection];
       v8 = +[_DASFileProtection completeUnlessOpen];
-      if ([v7 isEqual:v8])
+      if ([fileProtection2 isEqual:v8])
       {
         LOBYTE(v4) = 0;
       }
 
       else
       {
-        v9 = [v3 startDate];
-        if (v9)
+        startDate = [activityCopy startDate];
+        if (startDate)
         {
           LOBYTE(v4) = 0;
         }
 
         else
         {
-          v4 = ![_DASConditionScore isPremiumClient:v3];
+          v4 = ![_DASConditionScore isPremiumClient:activityCopy];
         }
       }
     }
@@ -104,30 +104,30 @@
   return v4;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_DASCPMModeMonitor *)self->_monitor currentMode];
+  activityCopy = activity;
+  stateCopy = state;
+  currentMode = [(_DASCPMModeMonitor *)self->_monitor currentMode];
   v9 = [_DASDaemonLogger logForCategory:@"cpmModes"];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001269E4(v6, v8, v9);
+    sub_1001269E4(activityCopy, currentMode, v9);
   }
 
-  if (!v8)
+  if (!currentMode)
   {
     v16 = [_DASPolicyResponse policyResponseWithDecision:0 validityDuration:0 rationale:0x384uLL];
     goto LABEL_16;
   }
 
   v10 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"CPM Mode Policy"];
-  v11 = [NSPredicate predicateWithFormat:@"activeMode == %@", v8];
+  v11 = [NSPredicate predicateWithFormat:@"activeMode == %@", currentMode];
   [(_DASPolicyResponseRationale *)v10 addRationaleWithCondition:v11];
 
-  if (![v8 isEqual:@"InUseChargingMode"])
+  if (![currentMode isEqual:@"InUseChargingMode"])
   {
-    if ([v8 isEqual:@"AcceleratedChargingMode"])
+    if ([currentMode isEqual:@"AcceleratedChargingMode"])
     {
       v17 = 0x384uLL;
       v18 = 33;
@@ -135,7 +135,7 @@
 
     else
     {
-      if (![v8 isEqual:@"InBoxUpdateMode"])
+      if (![currentMode isEqual:@"InBoxUpdateMode"])
       {
         goto LABEL_13;
       }
@@ -150,7 +150,7 @@ LABEL_14:
   }
 
   v12 = +[_CDContextQueries keyPathForPluginStatus];
-  v13 = [v7 lastModifiedDateForContextualKeyPath:v12];
+  v13 = [stateCopy lastModifiedDateForContextualKeyPath:v12];
 
   v14 = +[NSDate now];
   [v14 timeIntervalSinceDate:v13];

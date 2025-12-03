@@ -1,30 +1,30 @@
 @interface WFParameterKeyValuePair
-- (BOOL)isEqual:(id)a3;
-- (WFParameterKeyValuePair)initWithCoder:(id)a3;
-- (WFParameterKeyValuePair)initWithParameterKey:(id)a3 parameterValue:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFParameterKeyValuePair)initWithCoder:(id)coder;
+- (WFParameterKeyValuePair)initWithParameterKey:(id)key parameterValue:(id)value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFParameterKeyValuePair
 
 - (unint64_t)hash
 {
-  v3 = [(WFParameterKeyValuePair *)self parameterKey];
-  v4 = [v3 hash];
-  v5 = [(WFParameterKeyValuePair *)self parameterValue];
-  v6 = [v5 hash];
+  parameterKey = [(WFParameterKeyValuePair *)self parameterKey];
+  v4 = [parameterKey hash];
+  parameterValue = [(WFParameterKeyValuePair *)self parameterValue];
+  v6 = [parameterValue hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -33,10 +33,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(WFParameterKeyValuePair *)self parameterKey];
-    v8 = [(WFParameterKeyValuePair *)v6 parameterKey];
-    v9 = v7;
-    v10 = v8;
+    parameterKey = [(WFParameterKeyValuePair *)self parameterKey];
+    parameterKey2 = [(WFParameterKeyValuePair *)v6 parameterKey];
+    v9 = parameterKey;
+    v10 = parameterKey2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -63,10 +63,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(WFParameterKeyValuePair *)self parameterValue];
-    v16 = [(WFParameterKeyValuePair *)v6 parameterValue];
-    v14 = v15;
-    v17 = v16;
+    parameterValue = [(WFParameterKeyValuePair *)self parameterValue];
+    parameterValue2 = [(WFParameterKeyValuePair *)v6 parameterValue];
+    v14 = parameterValue;
+    v17 = parameterValue2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -91,24 +91,24 @@ LABEL_21:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFParameterKeyValuePair *)self parameterKey];
-  [v4 encodeObject:v5 forKey:@"parameterKey"];
+  coderCopy = coder;
+  parameterKey = [(WFParameterKeyValuePair *)self parameterKey];
+  [coderCopy encodeObject:parameterKey forKey:@"parameterKey"];
 
-  v6 = [(WFParameterKeyValuePair *)self parameterValue];
-  [v4 encodeObject:v6 forKey:@"parameterValue"];
+  parameterValue = [(WFParameterKeyValuePair *)self parameterValue];
+  [coderCopy encodeObject:parameterValue forKey:@"parameterValue"];
 }
 
-- (WFParameterKeyValuePair)initWithCoder:(id)a3
+- (WFParameterKeyValuePair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterKey"];
   parameterKey = self->_parameterKey;
   self->_parameterKey = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterValue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterValue"];
 
   parameterValue = self->_parameterValue;
   self->_parameterValue = v7;
@@ -116,20 +116,20 @@ LABEL_21:
   return self;
 }
 
-- (WFParameterKeyValuePair)initWithParameterKey:(id)a3 parameterValue:(id)a4
+- (WFParameterKeyValuePair)initWithParameterKey:(id)key parameterValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = WFParameterKeyValuePair;
   v8 = [(WFParameterKeyValuePair *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     parameterKey = v8->_parameterKey;
     v8->_parameterKey = v9;
 
-    objc_storeStrong(&v8->_parameterValue, a4);
+    objc_storeStrong(&v8->_parameterValue, value);
     v11 = v8;
   }
 

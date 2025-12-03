@@ -1,10 +1,10 @@
 @interface LCFFeatureValue
-- (LCFFeatureValue)initWithBoolValue:(id)a3;
-- (LCFFeatureValue)initWithDoubleArray:(id)a3;
-- (LCFFeatureValue)initWithDoubleValue:(id)a3;
-- (LCFFeatureValue)initWithIntValue:(id)a3;
-- (LCFFeatureValue)initWithStringValue:(id)a3;
-- (LCFFeatureValue)initWithTimeBucketValue:(id)a3;
+- (LCFFeatureValue)initWithBoolValue:(id)value;
+- (LCFFeatureValue)initWithDoubleArray:(id)array;
+- (LCFFeatureValue)initWithDoubleValue:(id)value;
+- (LCFFeatureValue)initWithIntValue:(id)value;
+- (LCFFeatureValue)initWithStringValue:(id)value;
+- (LCFFeatureValue)initWithTimeBucketValue:(id)value;
 - (NSString)valueInString;
 - (id)getTypeDBString;
 - (id)initEmpty;
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (LCFFeatureValue)initWithIntValue:(id)a3
+- (LCFFeatureValue)initWithIntValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = LCFFeatureValue;
   v6 = [(LCFFeatureValue *)&v9 init];
@@ -35,15 +35,15 @@
   if (v6)
   {
     v6->_type = 1;
-    objc_storeStrong(&v6->_intValue, a3);
+    objc_storeStrong(&v6->_intValue, value);
   }
 
   return v7;
 }
 
-- (LCFFeatureValue)initWithDoubleValue:(id)a3
+- (LCFFeatureValue)initWithDoubleValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = LCFFeatureValue;
   v6 = [(LCFFeatureValue *)&v9 init];
@@ -51,15 +51,15 @@
   if (v6)
   {
     v6->_type = 2;
-    objc_storeStrong(&v6->_doubleValue, a3);
+    objc_storeStrong(&v6->_doubleValue, value);
   }
 
   return v7;
 }
 
-- (LCFFeatureValue)initWithStringValue:(id)a3
+- (LCFFeatureValue)initWithStringValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = LCFFeatureValue;
   v6 = [(LCFFeatureValue *)&v9 init];
@@ -67,15 +67,15 @@
   if (v6)
   {
     v6->_type = 3;
-    objc_storeStrong(&v6->_stringValue, a3);
+    objc_storeStrong(&v6->_stringValue, value);
   }
 
   return v7;
 }
 
-- (LCFFeatureValue)initWithBoolValue:(id)a3
+- (LCFFeatureValue)initWithBoolValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = LCFFeatureValue;
   v6 = [(LCFFeatureValue *)&v9 init];
@@ -83,15 +83,15 @@
   if (v6)
   {
     v6->_type = 4;
-    objc_storeStrong(&v6->_BOOLValue, a3);
+    objc_storeStrong(&v6->_BOOLValue, value);
   }
 
   return v7;
 }
 
-- (LCFFeatureValue)initWithTimeBucketValue:(id)a3
+- (LCFFeatureValue)initWithTimeBucketValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = LCFFeatureValue;
   v6 = [(LCFFeatureValue *)&v9 init];
@@ -99,15 +99,15 @@
   if (v6)
   {
     v6->_type = 5;
-    objc_storeStrong(&v6->_timeBucketValue, a3);
+    objc_storeStrong(&v6->_timeBucketValue, value);
   }
 
   return v7;
 }
 
-- (LCFFeatureValue)initWithDoubleArray:(id)a3
+- (LCFFeatureValue)initWithDoubleArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = LCFFeatureValue;
   v6 = [(LCFFeatureValue *)&v9 init];
@@ -115,7 +115,7 @@
   if (v6)
   {
     v6->_type = 6;
-    objc_storeStrong(&v6->_doubleArray, a3);
+    objc_storeStrong(&v6->_doubleArray, array);
   }
 
   return v7;
@@ -136,16 +136,16 @@
         intValue = self->_doubleValue;
         break;
       case 3:
-        v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@'", self->_stringValue];
+        stringValue = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@'", self->_stringValue];
         goto LABEL_16;
       default:
         goto LABEL_17;
     }
 
 LABEL_15:
-    v4 = [(NSNumber *)intValue stringValue];
+    stringValue = [(NSNumber *)intValue stringValue];
 LABEL_16:
-    v2 = v4;
+    v2 = stringValue;
     goto LABEL_17;
   }
 

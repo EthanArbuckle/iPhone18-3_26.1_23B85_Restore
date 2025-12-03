@@ -1,24 +1,24 @@
 @interface STAppInfoCache
 + (STAppInfoCache)sharedCache;
 - (STAppInfoCache)init;
-- (id)_appInfoForBundleIdentifier:(id)a3;
-- (id)_fetchAppInfoFromLaunchServicesWithBundleIdentifier:(id)a3;
-- (id)_fetchSyncedInstalledAppInfoForBundleIdentifier:(id)a3;
-- (id)_localAppNameForBundleIdentifier:(id)a3;
-- (id)_placeholderAppInfoWithBundleIdentifier:(id)a3;
-- (id)_preloadedAppInfoWithBundleIdentifier:(id)a3;
-- (id)appInfoForBundleIdentifier:(id)a3 adamId:(id)a4 distributorId:(id)a5;
-- (id)appInfoForBundleIdentifier:(id)a3 localOnly:(BOOL)a4;
-- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)a3;
-- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)a3 timeoutInterval:(double)a4 completionHandler:(id)a5;
-- (void)_finishedFetchingAppInfoByBundleIdentifier:(id)a3;
-- (void)_handleAMSClientResponseForBundleIdentifiers:(id)a3 results:(id)a4 error:(id)a5 completionHandler:(id)a6;
-- (void)_handleiTunesResponseForBundleIdentifiers:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6 completionHandler:(id)a7;
-- (void)addObserver:(id)a3 selector:(SEL)a4 bundleIdentifier:(id)a5;
+- (id)_appInfoForBundleIdentifier:(id)identifier;
+- (id)_fetchAppInfoFromLaunchServicesWithBundleIdentifier:(id)identifier;
+- (id)_fetchSyncedInstalledAppInfoForBundleIdentifier:(id)identifier;
+- (id)_localAppNameForBundleIdentifier:(id)identifier;
+- (id)_placeholderAppInfoWithBundleIdentifier:(id)identifier;
+- (id)_preloadedAppInfoWithBundleIdentifier:(id)identifier;
+- (id)appInfoForBundleIdentifier:(id)identifier adamId:(id)id distributorId:(id)distributorId;
+- (id)appInfoForBundleIdentifier:(id)identifier localOnly:(BOOL)only;
+- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)identifiers;
+- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)identifiers timeoutInterval:(double)interval completionHandler:(id)handler;
+- (void)_finishedFetchingAppInfoByBundleIdentifier:(id)identifier;
+- (void)_handleAMSClientResponseForBundleIdentifiers:(id)identifiers results:(id)results error:(id)error completionHandler:(id)handler;
+- (void)_handleiTunesResponseForBundleIdentifiers:(id)identifiers response:(id)response data:(id)data error:(id)error completionHandler:(id)handler;
+- (void)addObserver:(id)observer selector:(SEL)selector bundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)fetchAppInfoForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchAppInfoForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)removeObserver:(id)a3 bundleIdentifier:(id)a4;
+- (void)fetchAppInfoForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchAppInfoForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)removeObserver:(id)observer bundleIdentifier:(id)identifier;
 @end
 
 @implementation STAppInfoCache
@@ -63,21 +63,21 @@ uint64_t __29__STAppInfoCache_sharedCache__block_invoke()
     lookupQueue = v2->_lookupQueue;
     v2->_lookupQueue = v9;
 
-    v11 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-    v12 = [MEMORY[0x1E696AF18] sharedURLCache];
-    [v11 setURLCache:v12];
+    ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+    mEMORY[0x1E696AF18] = [MEMORY[0x1E696AF18] sharedURLCache];
+    [ephemeralSessionConfiguration setURLCache:mEMORY[0x1E696AF18]];
 
-    [v11 setRequestCachePolicy:2];
-    [v11 setHTTPShouldUsePipelining:1];
+    [ephemeralSessionConfiguration setRequestCachePolicy:2];
+    [ephemeralSessionConfiguration setHTTPShouldUsePipelining:1];
     v13 = objc_opt_new();
     [v13 setName:@"com.apple.screentime.app-info-cache"];
     [v13 setUnderlyingQueue:v2->_lookupQueue];
-    v14 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v11 delegate:0 delegateQueue:v13];
+    v14 = [MEMORY[0x1E696AF78] sessionWithConfiguration:ephemeralSessionConfiguration delegate:0 delegateQueue:v13];
     urlSession = v2->_urlSession;
     v2->_urlSession = v14;
 
-    v16 = [v13 name];
-    [(NSURLSession *)v2->_urlSession setSessionDescription:v16];
+    name = [v13 name];
+    [(NSURLSession *)v2->_urlSession setSessionDescription:name];
 
     v17 = objc_opt_new();
     completionHandlerQueue = v2->_completionHandlerQueue;
@@ -102,21 +102,21 @@ uint64_t __29__STAppInfoCache_sharedCache__block_invoke()
   [(STAppInfoCache *)&v3 dealloc];
 }
 
-- (id)appInfoForBundleIdentifier:(id)a3 adamId:(id)a4 distributorId:(id)a5
+- (id)appInfoForBundleIdentifier:(id)identifier adamId:(id)id distributorId:(id)distributorId
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v10 isEqualToString:@"com.apple.AppStore"] & 1) != 0 || !objc_msgSend(v9, "integerValue"))
+  identifierCopy = identifier;
+  idCopy = id;
+  distributorIdCopy = distributorId;
+  if (([distributorIdCopy isEqualToString:@"com.apple.AppStore"] & 1) != 0 || !objc_msgSend(idCopy, "integerValue"))
   {
-    v13 = [(STAppInfoCache *)self appInfoForBundleIdentifier:v8];
+    v13 = [(STAppInfoCache *)self appInfoForBundleIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
-    v12 = [v11 objectForKey:v8];
+    appInfoByBundleIdentifier = [(STAppInfoCache *)self appInfoByBundleIdentifier];
+    v12 = [appInfoByBundleIdentifier objectForKey:identifierCopy];
 
     if (v12)
     {
@@ -126,14 +126,14 @@ uint64_t __29__STAppInfoCache_sharedCache__block_invoke()
     else
     {
       v14 = objc_opt_new();
-      [v14 setBundleIdentifier:v8];
-      [v14 setDisplayName:v8];
+      [v14 setBundleIdentifier:identifierCopy];
+      [v14 setDisplayName:identifierCopy];
       [v14 setSource:5];
-      [v14 setAdamID:{objc_msgSend(v9, "unsignedLongLongValue")}];
-      [v14 setDistributorID:v10];
+      [v14 setAdamID:{objc_msgSend(idCopy, "unsignedLongLongValue")}];
+      [v14 setDistributorID:distributorIdCopy];
       [v14 setDistributorIsThirdParty:1];
-      v15 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
-      [v15 setObject:v14 forKey:v8];
+      appInfoByBundleIdentifier2 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
+      [appInfoByBundleIdentifier2 setObject:v14 forKey:identifierCopy];
 
       v16 = +[STLog appInfo];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -143,16 +143,16 @@ uint64_t __29__STAppInfoCache_sharedCache__block_invoke()
         _os_log_impl(&dword_1B831F000, v16, OS_LOG_TYPE_INFO, "Loading alt distro app info for %@", buf, 0xCu);
       }
 
-      v17 = [(STAppInfoCache *)self altDistroAppInfoLoader];
+      altDistroAppInfoLoader = [(STAppInfoCache *)self altDistroAppInfoLoader];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __66__STAppInfoCache_appInfoForBundleIdentifier_adamId_distributorId___block_invoke;
       v21[3] = &unk_1E7CE69A0;
       v18 = v14;
       v22 = v18;
-      v23 = self;
-      v24 = v8;
-      [v17 fetchForAppBundleId:v24 adamId:v9 distributorBundleId:v10 completionHandler:v21];
+      selfCopy = self;
+      v24 = identifierCopy;
+      [altDistroAppInfoLoader fetchForAppBundleId:v24 adamId:idCopy distributorBundleId:distributorIdCopy completionHandler:v21];
 
       v13 = v18;
     }
@@ -200,16 +200,16 @@ void __66__STAppInfoCache_appInfoForBundleIdentifier_adamId_distributorId___bloc
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)appInfoForBundleIdentifier:(id)a3 localOnly:(BOOL)a4
+- (id)appInfoForBundleIdentifier:(id)identifier localOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(STAppInfoCache *)self _appInfoForBundleIdentifier:v6];
-  v8 = [v7 source];
+  onlyCopy = only;
+  identifierCopy = identifier;
+  v7 = [(STAppInfoCache *)self _appInfoForBundleIdentifier:identifierCopy];
+  source = [v7 source];
   if ([v7 adamID])
   {
-    v9 = [v7 localURL];
-    if (v9)
+    localURL = [v7 localURL];
+    if (localURL)
     {
       LOBYTE(v10) = 0;
     }
@@ -219,12 +219,12 @@ void __66__STAppInfoCache_appInfoForBundleIdentifier_adamId_distributorId___bloc
       v10 = [v7 distributorIsThirdParty] ^ 1;
     }
 
-    if (v4)
+    if (onlyCopy)
     {
 LABEL_9:
-      if (v8 == 3)
+      if (source == 3)
       {
-        v12 = [(STAppInfoCache *)self _placeholderAppInfoWithBundleIdentifier:v6];
+        v12 = [(STAppInfoCache *)self _placeholderAppInfoWithBundleIdentifier:identifierCopy];
 
         v7 = v12;
       }
@@ -236,23 +236,23 @@ LABEL_9:
   else
   {
     LOBYTE(v10) = 0;
-    if (v4)
+    if (onlyCopy)
     {
       goto LABEL_9;
     }
   }
 
-  if ((v8 == 0) | v10 & 1)
+  if ((source == 0) | v10 & 1)
   {
     objc_initWeak(&location, self);
-    v11 = [(STAppInfoCache *)self lookupQueue];
+    lookupQueue = [(STAppInfoCache *)self lookupQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__STAppInfoCache_appInfoForBundleIdentifier_localOnly___block_invoke;
     block[3] = &unk_1E7CE69C8;
-    v15 = v6;
+    v15 = identifierCopy;
     objc_copyWeak(&v16, &location);
-    dispatch_async(v11, block);
+    dispatch_async(lookupQueue, block);
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -270,19 +270,19 @@ void __55__STAppInfoCache_appInfoForBundleIdentifier_localOnly___block_invoke(ui
   [WeakRetained _fetchAppStoreInfoAndNotifyWithBundleIdentifiers:v3];
 }
 
-- (void)fetchAppInfoForBundleIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchAppInfoForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v6, 0}];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{identifierCopy, 0}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__STAppInfoCache_fetchAppInfoForBundleIdentifier_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE69F0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   [(STAppInfoCache *)self fetchAppInfoForBundleIdentifiers:v8 completionHandler:v11];
 }
 
@@ -293,18 +293,18 @@ void __68__STAppInfoCache_fetchAppInfoForBundleIdentifier_completionHandler___bl
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fetchAppInfoForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchAppInfoForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v9 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v6;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -340,7 +340,7 @@ void __68__STAppInfoCache_fetchAppInfoForBundleIdentifier_completionHandler___bl
 
   if ([v9 count])
   {
-    v17 = [(STAppInfoCache *)self lookupQueue];
+    lookupQueue = [(STAppInfoCache *)self lookupQueue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __69__STAppInfoCache_fetchAppInfoForBundleIdentifiers_completionHandler___block_invoke;
@@ -348,13 +348,13 @@ void __68__STAppInfoCache_fetchAppInfoForBundleIdentifier_completionHandler___bl
     v19[4] = self;
     v20 = v9;
     v21 = v8;
-    v22 = v7;
-    dispatch_async(v17, v19);
+    v22 = handlerCopy;
+    dispatch_async(lookupQueue, v19);
   }
 
   else
   {
-    (*(v7 + 2))(v7, v8);
+    (*(handlerCopy + 2))(handlerCopy, v8);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -393,33 +393,33 @@ void __69__STAppInfoCache_fetchAppInfoForBundleIdentifiers_completionHandler___b
   [v3 addOperationWithBlock:v4];
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4 bundleIdentifier:(id)a5
+- (void)addObserver:(id)observer selector:(SEL)selector bundleIdentifier:(id)identifier
 {
-  v12 = a5;
+  identifierCopy = identifier;
   v8 = MEMORY[0x1E696AD88];
-  v9 = a3;
-  v10 = [v8 defaultCenter];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppInfoCacheDidFetchResult-%@", v12];
-  [v10 addObserver:v9 selector:a4 name:v11 object:self];
+  observerCopy = observer;
+  defaultCenter = [v8 defaultCenter];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppInfoCacheDidFetchResult-%@", identifierCopy];
+  [defaultCenter addObserver:observerCopy selector:selector name:identifierCopy object:self];
 }
 
-- (void)removeObserver:(id)a3 bundleIdentifier:(id)a4
+- (void)removeObserver:(id)observer bundleIdentifier:(id)identifier
 {
-  v10 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E696AD88];
-  v7 = a3;
-  v8 = [v6 defaultCenter];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppInfoCacheDidFetchResult-%@", v10];
-  [v8 removeObserver:v7 name:v9 object:self];
+  observerCopy = observer;
+  defaultCenter = [v6 defaultCenter];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"AppInfoCacheDidFetchResult-%@", identifierCopy];
+  [defaultCenter removeObserver:observerCopy name:identifierCopy object:self];
 }
 
-- (id)_appInfoForBundleIdentifier:(id)a3
+- (id)_appInfoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content())
   {
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 BOOLForKey:@"STAppInfoCacheSkipLS"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults BOOLForKey:@"STAppInfoCacheSkipLS"];
   }
 
   else
@@ -429,8 +429,8 @@ void __69__STAppInfoCache_fetchAppInfoForBundleIdentifiers_completionHandler___b
 
   if (os_variant_has_internal_content())
   {
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v8 = [v7 BOOLForKey:@"STAppInfoCacheSkipSynced"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v8 = [standardUserDefaults2 BOOLForKey:@"STAppInfoCacheSkipSynced"];
   }
 
   else
@@ -438,22 +438,22 @@ void __69__STAppInfoCache_fetchAppInfoForBundleIdentifiers_completionHandler___b
     v8 = 0;
   }
 
-  v9 = [(__CFString *)v4 isEqualToString:@"com.apple.iChat"];
+  v9 = [(__CFString *)identifierCopy isEqualToString:@"com.apple.iChat"];
   v10 = @"com.apple.MobileSMS";
   if (!v9)
   {
-    v10 = v4;
+    v10 = identifierCopy;
   }
 
   v11 = v10;
 
-  v12 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
-  v13 = [v12 objectForKey:v11];
+  appInfoByBundleIdentifier = [(STAppInfoCache *)self appInfoByBundleIdentifier];
+  v13 = [appInfoByBundleIdentifier objectForKey:v11];
 
   if (v13)
   {
-    v14 = [v13 displayName];
-    v15 = [v14 length];
+    displayName = [v13 displayName];
+    v15 = [displayName length];
 
     if (v15)
     {
@@ -483,11 +483,11 @@ void __69__STAppInfoCache_fetchAppInfoForBundleIdentifiers_completionHandler___b
     }
   }
 
-  v17 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
-  [v17 setObject:v13 forKey:v11];
+  appInfoByBundleIdentifier2 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
+  [appInfoByBundleIdentifier2 setObject:v13 forKey:v11];
 
-  v18 = [v13 displayName];
-  v19 = [v18 length];
+  displayName2 = [v13 displayName];
+  v19 = [displayName2 length];
 
   if (!v19)
   {
@@ -506,10 +506,10 @@ LABEL_23:
   return v20;
 }
 
-- (id)_fetchAppInfoFromLaunchServicesWithBundleIdentifier:(id)a3
+- (id)_fetchAppInfoFromLaunchServicesWithBundleIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[STLog appInfo];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -517,11 +517,11 @@ LABEL_23:
   }
 
   v30 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v30];
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v30];
   v6 = v30;
   if (v5)
   {
-    if ([v3 isEqualToString:@"com.apple.facetime"] && !MGGetBoolAnswer())
+    if ([identifierCopy isEqualToString:@"com.apple.facetime"] && !MGGetBoolAnswer())
     {
       v7 = 0;
       goto LABEL_21;
@@ -529,50 +529,50 @@ LABEL_23:
 
     v7 = objc_opt_new();
     [v7 setSource:2];
-    [v7 setBundleIdentifier:v3];
-    v8 = [v5 localizedName];
-    [v7 setDisplayName:v8];
+    [v7 setBundleIdentifier:identifierCopy];
+    localizedName = [v5 localizedName];
+    [v7 setDisplayName:localizedName];
 
     [v7 setPlatform:2];
     v9 = [v5 URL];
     [v7 setLocalURL:v9];
 
-    v10 = [v5 iTunesMetadata];
-    v11 = [v10 distributorInfo];
-    v12 = [v11 distributorID];
-    [v7 setDistributorID:v12];
+    iTunesMetadata = [v5 iTunesMetadata];
+    distributorInfo = [iTunesMetadata distributorInfo];
+    distributorID = [distributorInfo distributorID];
+    [v7 setDistributorID:distributorID];
 
-    v13 = [v5 iTunesMetadata];
-    [v7 setAdamID:{objc_msgSend(v13, "storeItemIdentifier")}];
+    iTunesMetadata2 = [v5 iTunesMetadata];
+    [v7 setAdamID:{objc_msgSend(iTunesMetadata2, "storeItemIdentifier")}];
 
-    v14 = [v5 iTunesMetadata];
-    [v7 setVersionIdentifier:{objc_msgSend(v14, "versionIdentifier")}];
+    iTunesMetadata3 = [v5 iTunesMetadata];
+    [v7 setVersionIdentifier:{objc_msgSend(iTunesMetadata3, "versionIdentifier")}];
 
-    v15 = [v5 iTunesMetadata];
-    [v7 setBetaVersionIdentifier:{objc_msgSend(v15, "betaVersionIdentifier")}];
+    iTunesMetadata4 = [v5 iTunesMetadata];
+    [v7 setBetaVersionIdentifier:{objc_msgSend(iTunesMetadata4, "betaVersionIdentifier")}];
 
-    v16 = [v5 iTunesMetadata];
-    v17 = [v16 distributorInfo];
-    [v7 setDistributorIsThirdParty:{objc_msgSend(v17, "distributorIsThirdParty")}];
+    iTunesMetadata5 = [v5 iTunesMetadata];
+    distributorInfo2 = [iTunesMetadata5 distributorInfo];
+    [v7 setDistributorIsThirdParty:{objc_msgSend(distributorInfo2, "distributorIsThirdParty")}];
 
     v18 = +[STScreenTimeCoreBundle bundle];
-    v19 = [v5 compatibilityObject];
-    v20 = [v19 applicationType];
-    v21 = [v20 isEqualToString:*MEMORY[0x1E69635A8]];
+    compatibilityObject = [v5 compatibilityObject];
+    applicationType = [compatibilityObject applicationType];
+    v21 = [applicationType isEqualToString:*MEMORY[0x1E69635A8]];
 
     if (v21)
     {
-      v22 = [v18 localizedStringForKey:@"AppleDeveloperName" value:&stru_1F3040980 table:0];
-      [v7 setDeveloperName:v22];
+      iTunesMetadata6 = [v18 localizedStringForKey:@"AppleDeveloperName" value:&stru_1F3040980 table:0];
+      [v7 setDeveloperName:iTunesMetadata6];
     }
 
     else
     {
-      v22 = [v5 iTunesMetadata];
-      v23 = [v22 artistName];
-      if (v23)
+      iTunesMetadata6 = [v5 iTunesMetadata];
+      artistName = [iTunesMetadata6 artistName];
+      if (artistName)
       {
-        [v7 setDeveloperName:v23];
+        [v7 setDeveloperName:artistName];
       }
 
       else
@@ -582,11 +582,11 @@ LABEL_23:
       }
     }
 
-    v25 = [v5 iTunesMetadata];
-    v26 = [v25 ratingLabel];
-    if (v26)
+    iTunesMetadata7 = [v5 iTunesMetadata];
+    ratingLabel = [iTunesMetadata7 ratingLabel];
+    if (ratingLabel)
     {
-      [v7 setRatingLabel:v26];
+      [v7 setRatingLabel:ratingLabel];
     }
 
     else
@@ -602,7 +602,7 @@ LABEL_23:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v32 = v3;
+      v32 = identifierCopy;
       v33 = 2114;
       v34 = v6;
       _os_log_impl(&dword_1B831F000, v18, OS_LOG_TYPE_INFO, "No application record found for %{public}@ %{public}@", buf, 0x16u);
@@ -617,15 +617,15 @@ LABEL_21:
   return v7;
 }
 
-- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)a3
+- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(STAppInfoCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v5);
+  identifiersCopy = identifiers;
+  lookupQueue = [(STAppInfoCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
-  v7 = [v4 mutableCopy];
-  v6 = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
-  [v7 minusSet:v6];
+  v7 = [identifiersCopy mutableCopy];
+  bundleIdentifiersWithPendingRequests = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
+  [v7 minusSet:bundleIdentifiersWithPendingRequests];
 
   if ([v7 count])
   {
@@ -633,13 +633,13 @@ LABEL_21:
   }
 }
 
-- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)a3 timeoutInterval:(double)a4 completionHandler:(id)a5
+- (void)_fetchAppStoreInfoAndNotifyWithBundleIdentifiers:(id)identifiers timeoutInterval:(double)interval completionHandler:(id)handler
 {
   v77 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v48 = a5;
-  v47 = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
-  v8 = [v49 mutableCopy];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  bundleIdentifiersWithPendingRequests = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
+  v8 = [identifiersCopy mutableCopy];
   v9 = +[STLog appInfo];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -648,9 +648,9 @@ LABEL_21:
     _os_log_impl(&dword_1B831F000, v9, OS_LOG_TYPE_INFO, "Going to query %{public}@ from the store", buf, 0xCu);
   }
 
-  [v47 unionSet:v8];
+  [bundleIdentifiersWithPendingRequests unionSet:v8];
   v10 = [v8 count];
-  v54 = [v49 mutableCopy];
+  v54 = [identifiersCopy mutableCopy];
   v52 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
   v53 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10];
   v51 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v10];
@@ -696,8 +696,8 @@ LABEL_27:
 
         if (os_variant_has_internal_content())
         {
-          v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-          v18 = [v17 BOOLForKey:@"STAppInfoCacheSkipAMS"];
+          standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+          v18 = [standardUserDefaults BOOLForKey:@"STAppInfoCacheSkipAMS"];
 
           if (v18)
           {
@@ -786,7 +786,7 @@ LABEL_21:
       v63[4] = self;
       objc_copyWeak(&v66, buf);
       v64 = v50;
-      v65 = v48;
+      v65 = handlerCopy;
       [STAMSClient loadMediaForTask:v27 withCompletionHandler:v63];
 
       objc_destroyWeak(&v66);
@@ -805,7 +805,7 @@ LABEL_21:
       v59[4] = self;
       objc_copyWeak(&v62, buf);
       v60 = v51;
-      v61 = v48;
+      v61 = handlerCopy;
       [STAMSClient loadMediaForTask:v28 withCompletionHandler:v59];
 
       objc_destroyWeak(&v62);
@@ -818,14 +818,14 @@ LABEL_21:
   {
     v30 = [MEMORY[0x1E696AF20] componentsWithString:@"https://itunes.apple.com/lookup"];
     v31 = MEMORY[0x1E696AF60];
-    v32 = [v29 allObjects];
-    v33 = [v32 componentsJoinedByString:{@", "}];
+    allObjects = [v29 allObjects];
+    v33 = [allObjects componentsJoinedByString:{@", "}];
     v34 = [v31 queryItemWithName:@"bundleId" value:v33];
 
     v35 = MEMORY[0x1E696AF60];
-    v36 = [MEMORY[0x1E695DF58] currentLocale];
-    v37 = [v36 countryCode];
-    v38 = [v35 queryItemWithName:@"country" value:v37];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    countryCode = [currentLocale countryCode];
+    v38 = [v35 queryItemWithName:@"country" value:countryCode];
 
     v39 = [MEMORY[0x1E696AF60] queryItemWithName:@"entity" value:{@"software, iPadSoftware, macSoftware"}];
     v71[0] = v34;
@@ -836,26 +836,26 @@ LABEL_21:
 
     v41 = MEMORY[0x1E696AF68];
     v42 = [v30 URL];
-    if (a4 <= 0.0)
+    if (interval <= 0.0)
     {
       [v41 requestWithURL:v42];
     }
 
     else
     {
-      [v41 requestWithURL:v42 cachePolicy:2 timeoutInterval:a4];
+      [v41 requestWithURL:v42 cachePolicy:2 timeoutInterval:interval];
     }
     v43 = ;
 
-    v44 = [(STAppInfoCache *)self urlSession];
+    urlSession = [(STAppInfoCache *)self urlSession];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __101__STAppInfoCache__fetchAppStoreInfoAndNotifyWithBundleIdentifiers_timeoutInterval_completionHandler___block_invoke_5;
     v55[3] = &unk_1E7CE6AB8;
     objc_copyWeak(&v58, buf);
     v56 = v29;
-    v57 = v48;
-    v45 = [v44 dataTaskWithRequest:v43 completionHandler:v55];
+    v57 = handlerCopy;
+    v45 = [urlSession dataTaskWithRequest:v43 completionHandler:v55];
 
     [v45 resume];
     objc_destroyWeak(&v58);
@@ -931,21 +931,21 @@ void __101__STAppInfoCache__fetchAppStoreInfoAndNotifyWithBundleIdentifiers_time
   [WeakRetained _handleiTunesResponseForBundleIdentifiers:*(a1 + 32) response:v8 data:v9 error:v7 completionHandler:*(a1 + 40)];
 }
 
-- (void)_handleAMSClientResponseForBundleIdentifiers:(id)a3 results:(id)a4 error:(id)a5 completionHandler:(id)a6
+- (void)_handleAMSClientResponseForBundleIdentifiers:(id)identifiers results:(id)results error:(id)error completionHandler:(id)handler
 {
   v82 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v59 = a6;
-  v13 = [(STAppInfoCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v13);
+  identifiersCopy = identifiers;
+  resultsCopy = results;
+  errorCopy = error;
+  handlerCopy = handler;
+  lookupQueue = [(STAppInfoCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
   val = self;
-  v14 = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
-  [v14 minusSet:v10];
+  bundleIdentifiersWithPendingRequests = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
+  [bundleIdentifiersWithPendingRequests minusSet:identifiersCopy];
 
-  if (!v11 || ![v11 count])
+  if (!resultsCopy || ![resultsCopy count])
   {
     v15 = +[STLog appInfo];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -954,15 +954,15 @@ void __101__STAppInfoCache__fetchAppStoreInfoAndNotifyWithBundleIdentifiers_time
     }
   }
 
-  v61 = v12;
-  v62 = v10;
-  v16 = [v10 mutableCopy];
+  v61 = errorCopy;
+  v62 = identifiersCopy;
+  v16 = [identifiersCopy mutableCopy];
   v17 = objc_opt_new();
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v18 = v11;
+  v18 = resultsCopy;
   v19 = [v18 countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v19)
   {
@@ -979,8 +979,8 @@ void __101__STAppInfoCache__fetchAppStoreInfoAndNotifyWithBundleIdentifiers_time
         }
 
         v23 = *(*(&v73 + 1) + 8 * i);
-        v24 = [v23 bundleIdentifier];
-        v25 = [v24 length];
+        bundleIdentifier = [v23 bundleIdentifier];
+        v25 = [bundleIdentifier length];
 
         if (!v25)
         {
@@ -999,8 +999,8 @@ LABEL_19:
           goto LABEL_27;
         }
 
-        v26 = [v23 displayName];
-        v27 = [v26 length];
+        displayName = [v23 displayName];
+        v27 = [displayName length];
 
         if (!v27)
         {
@@ -1019,14 +1019,14 @@ LABEL_19:
 
         v28 = objc_opt_new();
         [v28 setSource:3];
-        v29 = [v23 bundleIdentifier];
-        [v28 setBundleIdentifier:v29];
+        bundleIdentifier2 = [v23 bundleIdentifier];
+        [v28 setBundleIdentifier:bundleIdentifier2];
 
-        v30 = [v23 displayName];
-        [v28 setDisplayName:v30];
+        displayName2 = [v23 displayName];
+        [v28 setDisplayName:displayName2];
 
-        v31 = [v23 software];
-        if ([v31 isEqualToString:@"software"])
+        software = [v23 software];
+        if ([software isEqualToString:@"software"])
         {
 
           v32 = 2;
@@ -1037,8 +1037,8 @@ LABEL_19:
           v35 = v17;
           v36 = v18;
           v37 = v16;
-          v38 = [v23 software];
-          v39 = [v38 isEqualToString:@"ipad-software"];
+          software2 = [v23 software];
+          v39 = [software2 isEqualToString:@"ipad-software"];
 
           if (v39)
           {
@@ -1047,8 +1047,8 @@ LABEL_19:
 
           else
           {
-            v40 = [v23 software];
-            v32 = [v40 isEqualToString:@"mac-software"];
+            software3 = [v23 software];
+            v32 = [software3 isEqualToString:@"mac-software"];
           }
 
           v16 = v37;
@@ -1058,20 +1058,20 @@ LABEL_19:
         }
 
         [v28 setPlatform:v32];
-        v41 = [v23 artworkURL];
-        [v28 setArtworkURL:v41];
+        artworkURL = [v23 artworkURL];
+        [v28 setArtworkURL:artworkURL];
 
-        v42 = [v23 vendorName];
-        [v28 setDeveloperName:v42];
+        vendorName = [v23 vendorName];
+        [v28 setDeveloperName:vendorName];
 
-        v43 = [v23 ratingLabel];
-        [v28 setRatingLabel:v43];
+        ratingLabel = [v23 ratingLabel];
+        [v28 setRatingLabel:ratingLabel];
 
-        v44 = [v23 bundleIdentifier];
-        [v17 setObject:v28 forKeyedSubscript:v44];
+        bundleIdentifier3 = [v23 bundleIdentifier];
+        [v17 setObject:v28 forKeyedSubscript:bundleIdentifier3];
 
-        v45 = [v23 bundleIdentifier];
-        [v16 removeObject:v45];
+        bundleIdentifier4 = [v23 bundleIdentifier];
+        [v16 removeObject:bundleIdentifier4];
 
         v46 = +[STLog appInfo];
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -1118,9 +1118,9 @@ LABEL_27:
         v54 = +[STLog appInfo];
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [v53 bundleIdentifier];
+          bundleIdentifier5 = [v53 bundleIdentifier];
           *buf = 138412290;
-          v80 = v55;
+          v80 = bundleIdentifier5;
           _os_log_impl(&dword_1B831F000, v54, OS_LOG_TYPE_DEFAULT, "Did not find app %@ in AMS Response; setting AppInfo to placeholder", buf, 0xCu);
         }
 
@@ -1140,8 +1140,8 @@ LABEL_27:
   block[3] = &unk_1E7CE6AE0;
   objc_copyWeak(&v68, buf);
   v66 = v17;
-  v67 = v59;
-  v56 = v59;
+  v67 = handlerCopy;
+  v56 = handlerCopy;
   v57 = v17;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -1168,20 +1168,20 @@ uint64_t __95__STAppInfoCache__handleAMSClientResponseForBundleIdentifiers_resul
   return result;
 }
 
-- (void)_handleiTunesResponseForBundleIdentifiers:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6 completionHandler:(id)a7
+- (void)_handleiTunesResponseForBundleIdentifiers:(id)identifiers response:(id)response data:(id)data error:(id)error completionHandler:(id)handler
 {
   v76 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(STAppInfoCache *)self lookupQueue];
-  dispatch_assert_queue_V2(v15);
+  identifiersCopy = identifiers;
+  dataCopy = data;
+  errorCopy = error;
+  handlerCopy = handler;
+  lookupQueue = [(STAppInfoCache *)self lookupQueue];
+  dispatch_assert_queue_V2(lookupQueue);
 
-  v16 = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
-  [v16 minusSet:v11];
+  bundleIdentifiersWithPendingRequests = [(STAppInfoCache *)self bundleIdentifiersWithPendingRequests];
+  [bundleIdentifiersWithPendingRequests minusSet:identifiersCopy];
 
-  if (!v12 || v13)
+  if (!dataCopy || errorCopy)
   {
     v44 = +[STLog appInfo];
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -1189,26 +1189,26 @@ uint64_t __95__STAppInfoCache__handleAMSClientResponseForBundleIdentifiers_resul
       [STAppInfoCache _handleiTunesResponseForBundleIdentifiers:response:data:error:completionHandler:];
     }
 
-    if (v14)
+    if (handlerCopy)
     {
-      v14[2](v14, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
     v70 = 0;
-    v17 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v12 options:0 error:&v70];
+    v17 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v70];
     v18 = v70;
     if (v17)
     {
-      v53 = [v11 mutableCopy];
+      v53 = [identifiersCopy mutableCopy];
       v57 = objc_opt_new();
       v19 = [v17 objectForKeyedSubscript:@"results"];
       objc_opt_class();
-      v51 = v12;
-      v52 = v11;
-      v50 = v14;
+      v51 = dataCopy;
+      v52 = identifiersCopy;
+      v50 = handlerCopy;
       val = self;
       v48 = v18;
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1390,9 +1390,9 @@ LABEL_40:
             v41 = +[STLog appInfo];
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
             {
-              v42 = [v40 bundleIdentifier];
+              bundleIdentifier = [v40 bundleIdentifier];
               *buf = 138412290;
-              v74 = v42;
+              v74 = bundleIdentifier;
               _os_log_impl(&dword_1B831F000, v41, OS_LOG_TYPE_DEFAULT, "Did not find app %@ in iTunes Response; setting AppInfo to placeholder", buf, 0xCu);
             }
 
@@ -1412,7 +1412,7 @@ LABEL_40:
       block[3] = &unk_1E7CE6AE0;
       objc_copyWeak(&v61, buf);
       v59 = v57;
-      v14 = v50;
+      handlerCopy = v50;
       v60 = v50;
       v43 = v57;
       dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -1420,9 +1420,9 @@ LABEL_40:
       objc_destroyWeak(&v61);
       objc_destroyWeak(buf);
 
-      v12 = v51;
-      v11 = v52;
-      v13 = 0;
+      dataCopy = v51;
+      identifiersCopy = v52;
+      errorCopy = 0;
       v18 = v48;
       v17 = v49;
     }
@@ -1435,9 +1435,9 @@ LABEL_40:
         [STAppInfoCache _handleiTunesResponseForBundleIdentifiers:response:data:error:completionHandler:];
       }
 
-      if (v14)
+      if (handlerCopy)
       {
-        v14[2](v14, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
   }
@@ -1462,27 +1462,27 @@ uint64_t __98__STAppInfoCache__handleiTunesResponseForBundleIdentifiers_response
   return result;
 }
 
-- (id)_fetchSyncedInstalledAppInfoForBundleIdentifier:(id)a3
+- (id)_fetchSyncedInstalledAppInfoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v5 = [(STAppInfoCache *)self persistentContainer];
-  v6 = v5;
-  if (v5)
+  persistentContainer = [(STAppInfoCache *)self persistentContainer];
+  v6 = persistentContainer;
+  if (persistentContainer)
   {
-    v7 = [v5 newBackgroundContext];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __66__STAppInfoCache__fetchSyncedInstalledAppInfoForBundleIdentifier___block_invoke;
     v10[3] = &unk_1E7CE6B30;
-    v11 = v4;
+    v11 = identifierCopy;
     v12 = &v13;
-    [v7 performBlockAndWait:v10];
+    [newBackgroundContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -1687,19 +1687,19 @@ BOOL __66__STAppInfoCache__fetchSyncedInstalledAppInfoForBundleIdentifier___bloc
   return v16;
 }
 
-- (void)_finishedFetchingAppInfoByBundleIdentifier:(id)a3
+- (void)_finishedFetchingAppInfoByBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(STAppInfoCache *)self appInfoByBundleIdentifier];
+  appInfoByBundleIdentifier = [(STAppInfoCache *)self appInfoByBundleIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__STAppInfoCache__finishedFetchingAppInfoByBundleIdentifier___block_invoke;
   v7[3] = &unk_1E7CE6B58;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = appInfoByBundleIdentifier;
+  selfCopy = self;
+  v6 = appInfoByBundleIdentifier;
+  [identifierCopy enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __61__STAppInfoCache__finishedFetchingAppInfoByBundleIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1723,15 +1723,15 @@ void __61__STAppInfoCache__finishedFetchingAppInfoByBundleIdentifier___block_inv
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_preloadedAppInfoWithBundleIdentifier:(id)a3
+- (id)_preloadedAppInfoWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STAppInfoCache *)self _localAppNameForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(STAppInfoCache *)self _localAppNameForBundleIdentifier:identifierCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     [v6 setSource:1];
-    [v6 setBundleIdentifier:v4];
+    [v6 setBundleIdentifier:identifierCopy];
     [v6 setDisplayName:v5];
     [v6 setPlatform:2];
     v7 = +[STScreenTimeCoreBundle bundle];
@@ -1747,28 +1747,28 @@ void __61__STAppInfoCache__finishedFetchingAppInfoByBundleIdentifier___block_inv
   return v6;
 }
 
-- (id)_placeholderAppInfoWithBundleIdentifier:(id)a3
+- (id)_placeholderAppInfoWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setSource:0];
-  [v4 setBundleIdentifier:v3];
-  [v4 setDisplayName:v3];
+  [v4 setBundleIdentifier:identifierCopy];
+  [v4 setDisplayName:identifierCopy];
 
   [v4 setPlatform:0];
 
   return v4;
 }
 
-- (id)_localAppNameForBundleIdentifier:(id)a3
+- (id)_localAppNameForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_localAppNameForBundleIdentifier__onceToken != -1)
   {
     [STAppInfoCache _localAppNameForBundleIdentifier:];
   }
 
-  v4 = [_localAppNameForBundleIdentifier__localAppNameMap objectForKeyedSubscript:v3];
+  v4 = [_localAppNameForBundleIdentifier__localAppNameMap objectForKeyedSubscript:identifierCopy];
   if (v4)
   {
     v5 = +[STScreenTimeCoreBundle bundle];

@@ -15,8 +15,8 @@
     if ([v4 hasCodingSystem])
     {
       v5 = MEMORY[0x277CCD5D0];
-      v6 = [v4 codingSystem];
-      v7 = [v5 codeSystemWithIdentifier:v6];
+      codingSystem = [v4 codingSystem];
+      v7 = [v5 codeSystemWithIdentifier:codingSystem];
     }
 
     else
@@ -25,13 +25,13 @@
     }
 
     v9 = MEMORY[0x277CCD5C0];
-    v10 = [v4 codingVersion];
-    v11 = [v4 code];
-    v12 = [v4 displayString];
-    v13 = [v9 medicalCodingWithSystem:v7 codingVersion:v10 code:v11 displayString:v12];
+    codingVersion = [v4 codingVersion];
+    code = [v4 code];
+    displayString = [v4 displayString];
+    v13 = [v9 medicalCodingWithSystem:v7 codingVersion:codingVersion code:code displayString:displayString];
 
-    v14 = [v13 _validateConfiguration];
-    if (v14)
+    _validateConfiguration = [v13 _validateConfiguration];
+    if (_validateConfiguration)
     {
       v8 = 0;
     }
@@ -53,18 +53,18 @@
 - (HDCodableMedicalCoding)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableMedicalCoding);
-  v3 = [a1 codingSystem];
-  v4 = [v3 identifier];
-  [(HDCodableMedicalCoding *)v2 setCodingSystem:v4];
+  codingSystem = [self codingSystem];
+  identifier = [codingSystem identifier];
+  [(HDCodableMedicalCoding *)v2 setCodingSystem:identifier];
 
-  v5 = [a1 codingVersion];
-  [(HDCodableMedicalCoding *)v2 setCodingVersion:v5];
+  codingVersion = [self codingVersion];
+  [(HDCodableMedicalCoding *)v2 setCodingVersion:codingVersion];
 
-  v6 = [a1 code];
-  [(HDCodableMedicalCoding *)v2 setCode:v6];
+  code = [self code];
+  [(HDCodableMedicalCoding *)v2 setCode:code];
 
-  v7 = [a1 displayString];
-  [(HDCodableMedicalCoding *)v2 setDisplayString:v7];
+  displayString = [self displayString];
+  [(HDCodableMedicalCoding *)v2 setDisplayString:displayString];
 
   return v2;
 }

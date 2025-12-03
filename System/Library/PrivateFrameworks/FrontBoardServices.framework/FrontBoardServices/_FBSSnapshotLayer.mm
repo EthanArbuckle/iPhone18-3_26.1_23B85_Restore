@@ -1,29 +1,29 @@
 @interface _FBSSnapshotLayer
 - (CATransform3D)baseTransform;
-- (_FBSSnapshotLayer)initWithContextID:(unsigned int)a3 baseTransform:(CATransform3D *)a4;
+- (_FBSSnapshotLayer)initWithContextID:(unsigned int)d baseTransform:(CATransform3D *)transform;
 @end
 
 @implementation _FBSSnapshotLayer
 
-- (_FBSSnapshotLayer)initWithContextID:(unsigned int)a3 baseTransform:(CATransform3D *)a4
+- (_FBSSnapshotLayer)initWithContextID:(unsigned int)d baseTransform:(CATransform3D *)transform
 {
   v13.receiver = self;
   v13.super_class = _FBSSnapshotLayer;
   result = [(_FBSSnapshotLayer *)&v13 init];
   if (result)
   {
-    result->_contextID = a3;
-    v7 = *&a4->m11;
-    v8 = *&a4->m13;
-    v9 = *&a4->m23;
-    *&result->_baseTransform.m21 = *&a4->m21;
+    result->_contextID = d;
+    v7 = *&transform->m11;
+    v8 = *&transform->m13;
+    v9 = *&transform->m23;
+    *&result->_baseTransform.m21 = *&transform->m21;
     *&result->_baseTransform.m23 = v9;
     *&result->_baseTransform.m11 = v7;
     *&result->_baseTransform.m13 = v8;
-    v10 = *&a4->m31;
-    v11 = *&a4->m33;
-    v12 = *&a4->m43;
-    *&result->_baseTransform.m41 = *&a4->m41;
+    v10 = *&transform->m31;
+    v11 = *&transform->m33;
+    v12 = *&transform->m43;
+    *&result->_baseTransform.m41 = *&transform->m41;
     *&result->_baseTransform.m43 = v12;
     *&result->_baseTransform.m31 = v10;
     *&result->_baseTransform.m33 = v11;

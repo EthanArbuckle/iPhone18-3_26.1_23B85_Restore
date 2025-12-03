@@ -1,42 +1,42 @@
 @interface MFVIPSendersListTableViewController
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
-- (MFVIPSendersListTableViewController)initWithStyle:(int64_t)a3;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (MFVIPSendersListTableViewController)initWithStyle:(int64_t)style;
 - (UIBarButtonItem)dismissButtonItem;
 - (double)preferredNoContentViewHeight;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_labelWithPreferenceStyleFormattingForString:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_labelWithPreferenceStyleFormattingForString:(id)string;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addNewVIPSender;
-- (void)_copyUnknownPersonForVIP:(id)a3;
+- (void)_copyUnknownPersonForVIP:(id)p;
 - (void)_dismissIfNeeded;
 - (void)_refreshVIPSendersList;
-- (void)_updateVIPSendersList:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)dismissContactPicker:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSectionCount:(int64_t)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_updateVIPSendersList:(id)list;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)dismissContactPicker:(id)picker;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setSectionCount:(int64_t)count;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MFVIPSendersListTableViewController
 
-- (MFVIPSendersListTableViewController)initWithStyle:(int64_t)a3
+- (MFVIPSendersListTableViewController)initWithStyle:(int64_t)style
 {
   v14.receiver = self;
   v14.super_class = MFVIPSendersListTableViewController;
-  v3 = [(MFVIPSendersListTableViewController *)&v14 initWithStyle:a3];
+  v3 = [(MFVIPSendersListTableViewController *)&v14 initWithStyle:style];
   if (v3)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -45,8 +45,8 @@
 
     [(MFVIPSendersListTableViewController *)v3 setHidesBottomBarWhenPushed:1];
     v6 = +[VIPManager defaultInstance];
-    v7 = [v6 sortedVIPs];
-    v8 = [v7 mutableCopy];
+    sortedVIPs = [v6 sortedVIPs];
+    v8 = [sortedVIPs mutableCopy];
     allVIPs = v3->_allVIPs;
     v3->_allVIPs = v8;
 
@@ -78,112 +78,112 @@
   [(MFVIPSendersListTableViewController *)self setClearsSelectionOnViewWillAppear:0];
   if ([(NSMutableArray *)self->_allVIPs count])
   {
-    v3 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
-    [UIBarButtonItem mf_configureMultiBarButtonItem:v3 usingStyle:1];
+    dismissButtonItem = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
+    [UIBarButtonItem mf_configureMultiBarButtonItem:dismissButtonItem usingStyle:1];
 
-    v4 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
-    v5 = [(MFVIPSendersListTableViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    dismissButtonItem2 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
+    navigationItem = [(MFVIPSendersListTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:dismissButtonItem2];
 
-    v6 = [(MFVIPSendersListTableViewController *)self editButtonItem];
-    v7 = [(MFVIPSendersListTableViewController *)self navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    editButtonItem = [(MFVIPSendersListTableViewController *)self editButtonItem];
+    navigationItem2 = [(MFVIPSendersListTableViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:editButtonItem];
 
-    v8 = [(MFVIPSendersListTableViewController *)self tableView];
-    [v8 setScrollEnabled:1];
+    tableView = [(MFVIPSendersListTableViewController *)self tableView];
+    [tableView setScrollEnabled:1];
 
-    v9 = [(MFVIPSendersListTableViewController *)self tableView];
-    [v9 flashScrollIndicators];
+    tableView2 = [(MFVIPSendersListTableViewController *)self tableView];
+    [tableView2 flashScrollIndicators];
   }
 
   else
   {
-    v10 = [(MFVIPSendersListTableViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:0];
+    navigationItem3 = [(MFVIPSendersListTableViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:0];
 
-    v11 = [(MFVIPSendersListTableViewController *)self view];
-    v12 = [v11 window];
-    v13 = [v12 windowScene];
-    v14 = [v13 interfaceOrientation];
+    view = [(MFVIPSendersListTableViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    v15 = [(MFVIPSendersListTableViewController *)self tableView];
-    v9 = v15;
-    if ((v14 - 1) > 1)
+    tableView3 = [(MFVIPSendersListTableViewController *)self tableView];
+    tableView2 = tableView3;
+    if ((interfaceOrientation - 1) > 1)
     {
-      [v15 setScrollEnabled:1];
+      [tableView3 setScrollEnabled:1];
 
-      v9 = [(MFVIPSendersListTableViewController *)self tableView];
-      [v9 flashScrollIndicators];
+      tableView2 = [(MFVIPSendersListTableViewController *)self tableView];
+      [tableView2 flashScrollIndicators];
     }
 
     else
     {
-      [v15 setScrollEnabled:0];
+      [tableView3 setScrollEnabled:0];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = MFVIPSendersListTableViewController;
   [(MFVIPSendersListTableViewController *)&v6 viewWillAppear:?];
-  [(MFVIPSendersListTableViewController *)self focus:v3];
+  [(MFVIPSendersListTableViewController *)self focus:appearCopy];
   if ([(NSMutableArray *)self->_allVIPs count])
   {
-    v5 = [(MFVIPSendersListTableViewController *)self mf_updatePreferredContentSizeBasedOnTableView];
-    [(MFVIPSendersListTableViewController *)self setTableViewObserver:v5];
+    mf_updatePreferredContentSizeBasedOnTableView = [(MFVIPSendersListTableViewController *)self mf_updatePreferredContentSizeBasedOnTableView];
+    [(MFVIPSendersListTableViewController *)self setTableViewObserver:mf_updatePreferredContentSizeBasedOnTableView];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = MFVIPSendersListTableViewController;
   [(MFVIPSendersListTableViewController *)&v5 viewWillDisappear:?];
   if (([(MFVIPSendersListTableViewController *)self isBeingDismissed]& 1) != 0 || [(MFVIPSendersListTableViewController *)self isMovingFromParentViewController])
   {
-    [(MFVIPSendersListTableViewController *)self unfocus:v3];
+    [(MFVIPSendersListTableViewController *)self unfocus:disappearCopy];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MFVIPSendersListTableViewController;
-  [(MFVIPSendersListTableViewController *)&v5 traitCollectionDidChange:v4];
+  [(MFVIPSendersListTableViewController *)&v5 traitCollectionDidChange:changeCopy];
   [(MFVIPSendersListTableViewController *)self mf_updateTableViewBackgroundColorForPopover];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if (self->_sectionCount == 1)
   {
-    v8 = [(MFVIPSendersListTableViewController *)self tableView];
-    [v8 setScrollEnabled:0];
+    tableView = [(MFVIPSendersListTableViewController *)self tableView];
+    [tableView setScrollEnabled:0];
   }
 
   v9.receiver = self;
   v9.super_class = MFVIPSendersListTableViewController;
-  [(MFVIPSendersListTableViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(MFVIPSendersListTableViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v10.receiver = self;
   v10.super_class = MFVIPSendersListTableViewController;
   [MFVIPSendersListTableViewController setEditing:"setEditing:animated:" animated:?];
   if ([(NSMutableArray *)self->_allVIPs count])
   {
-    if (v5)
+    if (editingCopy)
     {
       v7 = 3;
     }
@@ -193,41 +193,41 @@
       v7 = 1;
     }
 
-    v8 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
-    [UIBarButtonItem mf_configureMultiBarButtonItem:v8 usingStyle:v7];
+    dismissButtonItem = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
+    [UIBarButtonItem mf_configureMultiBarButtonItem:dismissButtonItem usingStyle:v7];
   }
 
-  v9 = [(MFVIPSendersListTableViewController *)self navigationItem];
-  [v9 setHidesBackButton:v5 animated:v4];
+  navigationItem = [(MFVIPSendersListTableViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:editingCopy animated:animatedCopy];
 }
 
 - (double)preferredNoContentViewHeight
 {
-  v3 = [(MFVIPSendersListTableViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = UIContentSizeCategoryCompareToCategory(v4, UIContentSizeCategoryExtraLarge);
+  traitCollection = [(MFVIPSendersListTableViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryExtraLarge);
 
   if (v5 == NSOrderedAscending)
   {
     return 203.5;
   }
 
-  v6 = [(MFVIPSendersListTableViewController *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = UIContentSizeCategoryCompareToCategory(v7, UIContentSizeCategoryAccessibilityLarge) == NSOrderedAscending;
+  traitCollection2 = [(MFVIPSendersListTableViewController *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+  v8 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, UIContentSizeCategoryAccessibilityLarge) == NSOrderedAscending;
 
   return dbl_1004FC630[v8];
 }
 
-- (void)setSectionCount:(int64_t)a3
+- (void)setSectionCount:(int64_t)count
 {
-  if (self->_sectionCount != a3)
+  if (self->_sectionCount != count)
   {
-    self->_sectionCount = a3;
+    self->_sectionCount = count;
     [(MFVIPSendersListTableViewController *)self preferredContentSize];
     v7 = v6;
     v8 = 0.0;
-    if (a3 == 1)
+    if (count == 1)
     {
       [(MFVIPSendersListTableViewController *)self preferredNoContentViewHeight];
       v8 = v9;
@@ -237,14 +237,14 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(MFVIPSendersListTableViewController *)self sectionCount]!= 2)
   {
     return 0;
   }
 
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -252,20 +252,20 @@
   return [(NSMutableArray *)self->_allVIPs count]+ 1;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  LOBYTE(self) = v6 < ([(MFVIPSendersListTableViewController *)self sectionCount]- 1);
+  pathCopy = path;
+  section = [pathCopy section];
+  LOBYTE(self) = section < ([(MFVIPSendersListTableViewController *)self sectionCount]- 1);
 
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"Cell"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell"];
   if (!v8)
   {
     v8 = [[MFTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"Cell"];
@@ -281,9 +281,9 @@
   v17[3] = &unk_100656370;
   objc_copyWeak(&v22, &location);
   v18 = v9;
-  v10 = v7;
+  v10 = pathCopy;
   v19 = v10;
-  v11 = v6;
+  v11 = viewCopy;
   v20 = v11;
   v12 = v8;
   v21 = v12;
@@ -298,11 +298,11 @@
   return v15;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(MFVIPSendersListTableViewController *)self sectionCount];
+  sectionCount = [(MFVIPSendersListTableViewController *)self sectionCount];
   v6 = 0;
-  if (a4 == 1 && v5 >= 2)
+  if (section == 1 && sectionCount >= 2)
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v7 localizedStringForKey:@"VIP_CUSTOM_ALERT_EXPLANATION" value:&stru_100662A88 table:@"Main"];
@@ -311,9 +311,9 @@
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = [(MFVIPSendersListTableViewController *)self sectionCount:a3];
+  v5 = [(MFVIPSendersListTableViewController *)self sectionCount:view];
   result = 0.0;
   if (v5 == 1)
   {
@@ -324,15 +324,15 @@
   return result;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (style == 1)
   {
-    v11 = -[NSMutableArray objectAtIndex:](self->_allVIPs, "objectAtIndex:", [v9 row]);
-    v12 = [v11 identifier];
+    v11 = -[NSMutableArray objectAtIndex:](self->_allVIPs, "objectAtIndex:", [pathCopy row]);
+    identifier = [v11 identifier];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
@@ -340,13 +340,13 @@
     v16[3] = &unk_10064C6B0;
     v16[4] = self;
     v17 = v10;
-    v18 = v8;
+    v18 = viewCopy;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10023A8EC;
     v14[3] = &unk_10064C570;
-    v15 = v12;
-    v13 = v12;
+    v15 = identifier;
+    v13 = identifier;
     [v18 _performBatchUpdates:v16 completion:v14];
   }
 }
@@ -360,13 +360,13 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if (-[MFVIPSendersListTableViewController sectionCount](self, "sectionCount") < 2 || [v5 section] || (v6 = objc_msgSend(v5, "row"), v6 != -[NSMutableArray count](self->_allVIPs, "count")))
+  pathCopy = path;
+  if (-[MFVIPSendersListTableViewController sectionCount](self, "sectionCount") < 2 || [pathCopy section] || (v6 = objc_msgSend(pathCopy, "row"), v6 != -[NSMutableArray count](self->_allVIPs, "count")))
   {
-    v8 = [v5 section];
-    v7 = v8 != [(MFVIPSendersListTableViewController *)self sectionCount]- 1;
+    section = [pathCopy section];
+    v7 = section != [(MFVIPSendersListTableViewController *)self sectionCount]- 1;
   }
 
   else
@@ -377,16 +377,16 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if ([(MFVIPSendersListTableViewController *)self sectionCount]< 2)
   {
     goto LABEL_4;
   }
 
-  if ([v7 section])
+  if ([pathCopy section])
   {
     v8 = +[MFPreferencesURL vipSenderListURL];
     v9 = +[LSApplicationWorkspace defaultWorkspace];
@@ -395,7 +395,7 @@
     goto LABEL_5;
   }
 
-  v10 = [v7 row];
+  v10 = [pathCopy row];
   if (v10 == [(NSMutableArray *)self->_allVIPs count])
   {
 LABEL_4:
@@ -403,14 +403,14 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v34 = -[NSMutableArray objectAtIndex:](self->_allVIPs, "objectAtIndex:", [v7 row]);
+  v34 = -[NSMutableArray objectAtIndex:](self->_allVIPs, "objectAtIndex:", [pathCopy row]);
   v11 = +[VIPManager defaultInstance];
   v12 = +[MFAddressBookManager sharedManager];
   v13 = [v11 existingPersonForVIP:v34 usingAddressBook:{objc_msgSend(v12, "addressBook")}];
 
   v14 = [(MFVIPSendersListTableViewController *)self _copyUnknownPersonForVIP:v34];
-  v15 = [v34 emailAddresses];
-  if ([v15 count])
+  emailAddresses = [v34 emailAddresses];
+  if ([emailAddresses count])
   {
     v16 = +[MFContactsManager isAuthorizedToUseContacts];
   }
@@ -490,45 +490,45 @@ LABEL_4:
 
   [v31 _setDataOwnerForCopy:3];
   [v31 _setDataOwnerForPaste:3];
-  v32 = [(MFVIPSendersListTableViewController *)self navigationController];
-  [v32 pushViewController:v31 animated:1];
+  navigationController = [(MFVIPSendersListTableViewController *)self navigationController];
+  [navigationController pushViewController:v31 animated:1];
 
   CFRelease(v14);
 LABEL_5:
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [v6 mf_updateBackgroundColorForPopover:{-[MFVIPSendersListTableViewController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
+  cellCopy = cell;
+  [cellCopy mf_updateBackgroundColorForPopover:{-[MFVIPSendersListTableViewController mf_supportsPopoverPresentation](self, "mf_supportsPopoverPresentation")}];
 }
 
-- (void)_copyUnknownPersonForVIP:(id)a3
+- (void)_copyUnknownPersonForVIP:(id)p
 {
-  v3 = a3;
+  pCopy = p;
   v4 = ABPersonCreate();
-  v5 = [v3 name];
+  name = [pCopy name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    v7 = [v6 ec_personNameComponents];
+    name2 = [pCopy name];
+    ec_personNameComponents = [name2 ec_personNameComponents];
 
-    v8 = [v7 namePrefix];
-    ABRecordSetValue(v4, kABPersonPrefixProperty, v8, 0);
+    namePrefix = [ec_personNameComponents namePrefix];
+    ABRecordSetValue(v4, kABPersonPrefixProperty, namePrefix, 0);
 
-    v9 = [v7 givenName];
-    ABRecordSetValue(v4, kABPersonFirstNameProperty, v9, 0);
+    givenName = [ec_personNameComponents givenName];
+    ABRecordSetValue(v4, kABPersonFirstNameProperty, givenName, 0);
 
-    v10 = [v7 middleName];
-    ABRecordSetValue(v4, kABPersonMiddleNameProperty, v10, 0);
+    middleName = [ec_personNameComponents middleName];
+    ABRecordSetValue(v4, kABPersonMiddleNameProperty, middleName, 0);
 
-    v11 = [v7 familyName];
-    ABRecordSetValue(v4, kABPersonLastNameProperty, v11, 0);
+    familyName = [ec_personNameComponents familyName];
+    ABRecordSetValue(v4, kABPersonLastNameProperty, familyName, 0);
 
-    v12 = [v7 nameSuffix];
-    ABRecordSetValue(v4, kABPersonSuffixProperty, v12, 0);
+    nameSuffix = [ec_personNameComponents nameSuffix];
+    ABRecordSetValue(v4, kABPersonSuffixProperty, nameSuffix, 0);
   }
 
   Mutable = ABMultiValueCreateMutable(1u);
@@ -538,8 +538,8 @@ LABEL_5:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v14 = [v3 emailAddresses];
-    v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    emailAddresses = [pCopy emailAddresses];
+    v15 = [emailAddresses countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v15)
     {
       v16 = *v20;
@@ -550,7 +550,7 @@ LABEL_5:
         {
           if (*v20 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(emailAddresses);
           }
 
           ABMultiValueAddValueAndLabel(Mutable, *(*(&v19 + 1) + 8 * v17), kABOtherLabel, 0);
@@ -558,7 +558,7 @@ LABEL_5:
         }
 
         while (v15 != v17);
-        v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v15 = [emailAddresses countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v15);
@@ -591,15 +591,15 @@ LABEL_5:
   v6 = objc_alloc_init(CNContactPickerViewController);
   [v6 setDelegate:self];
   v3 = +[VIPManager defaultInstance];
-  v4 = [v3 allVIPEmailAddresses];
+  allVIPEmailAddresses = [v3 allVIPEmailAddresses];
 
-  v5 = [NSPredicate predicateWithFormat:@"emailAddresses.@count > 0 AND NONE emailAddresses.value IN %@", v4];
+  v5 = [NSPredicate predicateWithFormat:@"emailAddresses.@count > 0 AND NONE emailAddresses.value IN %@", allVIPEmailAddresses];
   [v6 setPredicateForEnablingContact:v5];
 
   [(MFVIPSendersListTableViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
   if ([(NSMutableArray *)self->_allVIPs count])
   {
@@ -619,8 +619,8 @@ LABEL_5:
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"VIP_ADD_PERSON" value:&stru_100662A88 table:@"Main"];
-    v12 = [v5 button];
-    [v12 setTitle:v11];
+    button = [v5 button];
+    [button setTitle:v11];
 
     objc_initWeak(&location, self);
     v15 = _NSConcreteStackBlock;
@@ -629,8 +629,8 @@ LABEL_5:
     v18 = &unk_10064F278;
     objc_copyWeak(&v19, &location);
     v13 = [UIAction actionWithHandler:&v15];
-    v14 = [v5 buttonProperties];
-    [v14 setPrimaryAction:v13];
+    buttonProperties = [v5 buttonProperties];
+    [buttonProperties setPrimaryAction:v13];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -643,15 +643,15 @@ LABEL_5:
 - (void)_refreshVIPSendersList
 {
   v3 = +[VIPManager defaultInstance];
-  v4 = [v3 sortedVIPs];
-  v5 = [v4 mutableCopy];
+  sortedVIPs = [v3 sortedVIPs];
+  v5 = [sortedVIPs mutableCopy];
   allVIPs = self->_allVIPs;
   self->_allVIPs = v5;
 
   [(MFVIPSendersListTableViewController *)self setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (void)_updateVIPSendersList:(id)a3
+- (void)_updateVIPSendersList:(id)list
 {
   v4 = [(NSMutableArray *)self->_allVIPs count];
   [(MFVIPSendersListTableViewController *)self _refreshVIPSendersList];
@@ -660,41 +660,41 @@ LABEL_5:
     [(MFVIPSendersListTableViewController *)self setSectionCount:2];
   }
 
-  v7 = [(MFVIPSendersListTableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(MFVIPSendersListTableViewController *)self tableView];
+  [tableView reloadData];
 
   if ([(NSMutableArray *)self->_allVIPs count])
   {
     [(MFVIPSendersListTableViewController *)self isEditing];
-    v8 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
+    dismissButtonItem = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
     [UIBarButtonItem mf_configureMultiBarButtonItem:"mf_configureMultiBarButtonItem:usingStyle:" usingStyle:?];
 
-    v9 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
-    v5 = [(MFVIPSendersListTableViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v9];
+    dismissButtonItem2 = [(MFVIPSendersListTableViewController *)self dismissButtonItem];
+    navigationItem = [(MFVIPSendersListTableViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:dismissButtonItem2];
 
-    v10 = [(MFVIPSendersListTableViewController *)self editButtonItem];
-    v6 = [(MFVIPSendersListTableViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:v10];
+    editButtonItem = [(MFVIPSendersListTableViewController *)self editButtonItem];
+    navigationItem2 = [(MFVIPSendersListTableViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:editButtonItem];
 
-    v11 = [(MFVIPSendersListTableViewController *)self tableView];
-    [v11 setScrollEnabled:1];
+    tableView2 = [(MFVIPSendersListTableViewController *)self tableView];
+    [tableView2 setScrollEnabled:1];
   }
 
   else
   {
-    v12 = [(MFVIPSendersListTableViewController *)self navigationItem];
-    [v12 setRightBarButtonItem:0];
+    navigationItem3 = [(MFVIPSendersListTableViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:0];
 
     [(MFVIPSendersListTableViewController *)self setEditing:0];
   }
 }
 
-- (id)_labelWithPreferenceStyleFormattingForString:(id)a3
+- (id)_labelWithPreferenceStyleFormattingForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [v4 setText:v3];
+  [v4 setText:stringCopy];
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline2];
   [v4 setFont:v5];
 
@@ -707,27 +707,27 @@ LABEL_5:
   return v4;
 }
 
-- (void)dismissContactPicker:(id)a3
+- (void)dismissContactPicker:(id)picker
 {
-  v5 = a3;
-  if (v5)
+  pickerCopy = picker;
+  if (pickerCopy)
   {
-    [v5 setDelegate:0];
-    v4 = [(MFVIPSendersListTableViewController *)self presentedViewController];
+    [pickerCopy setDelegate:0];
+    presentedViewController = [(MFVIPSendersListTableViewController *)self presentedViewController];
 
-    if (v4)
+    if (presentedViewController)
     {
       [(MFVIPSendersListTableViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v22 = a3;
-  v21 = a4;
+  pickerCopy = picker;
+  contactCopy = contact;
   v6 = objc_alloc_init(CNContactStore);
-  v7 = [v6 personFromContact:v21];
+  v7 = [v6 personFromContact:contactCopy];
   v8 = ABRecordCopyCompositeName(v7);
   v9 = objc_alloc_init(NSMutableArray);
   v10 = ABPersonCopyArrayOfAllLinkedPeople(v7);
@@ -745,7 +745,7 @@ LABEL_5:
         if (v15)
         {
           v17 = ABMultiValueCopyArrayOfAllValues(v15);
-          [v9 addObjectsFromArray:{v17, v21}];
+          [v9 addObjectsFromArray:{v17, contactCopy}];
           CFRelease(v16);
         }
       }
@@ -759,12 +759,12 @@ LABEL_5:
   v20 = +[VIPManager defaultInstance];
   [v20 saveVIP:v19];
 
-  [(MFVIPSendersListTableViewController *)self dismissContactPicker:v22];
+  [(MFVIPSendersListTableViewController *)self dismissContactPicker:pickerCopy];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v5 = [(MFVIPSendersListTableViewController *)self navigationController:a3];
+  v5 = [(MFVIPSendersListTableViewController *)self navigationController:controller];
   v4 = [v5 popViewControllerAnimated:0];
 }
 

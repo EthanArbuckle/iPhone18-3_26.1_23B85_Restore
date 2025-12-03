@@ -2,16 +2,16 @@
 + (id)log;
 - (CNMeCardSharingEditAvatarFlowManager)init;
 - (CNMeCardSharingEditAvatarFlowManagerDelegate)delegate;
-- (id)editorViewControllerForProviderItem:(id)a3;
+- (id)editorViewControllerForProviderItem:(id)item;
 - (int64_t)defaultModalPresentationStyle;
-- (void)avatarEditingManager:(id)a3 didFinishWithProviderItem:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishWithProviderItem:(id)a4;
-- (void)presentAvatarEditorViewControllerForProviderItem:(id)a3;
-- (void)presentEditorForAvatarSourceType:(int64_t)a3 visualIdentity:(id)a4 fromGalleryViewController:(id)a5;
+- (void)avatarEditingManager:(id)manager didFinishWithProviderItem:(id)item;
+- (void)imagePickerController:(id)controller didFinishWithProviderItem:(id)item;
+- (void)presentAvatarEditorViewControllerForProviderItem:(id)item;
+- (void)presentEditorForAvatarSourceType:(int64_t)type visualIdentity:(id)identity fromGalleryViewController:(id)controller;
 - (void)presentMemojiPicker;
-- (void)pushAvatarEditorViewControllerForProviderItem:(id)a3 fromViewController:(id)a4;
-- (void)visualIdentityEditorController:(id)a3 didFinishWithProviderItem:(id)a4;
-- (void)visualIdentityEditorControllerDidCancel:(id)a3;
+- (void)pushAvatarEditorViewControllerForProviderItem:(id)item fromViewController:(id)controller;
+- (void)visualIdentityEditorController:(id)controller didFinishWithProviderItem:(id)item;
+- (void)visualIdentityEditorControllerDidCancel:(id)cancel;
 @end
 
 @implementation CNMeCardSharingEditAvatarFlowManager
@@ -23,28 +23,28 @@
   return WeakRetained;
 }
 
-- (void)avatarEditingManager:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)avatarEditingManager:(id)manager didFinishWithProviderItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 viewController];
-  v9 = [v8 presentedViewController];
+  managerCopy = manager;
+  itemCopy = item;
+  viewController = [managerCopy viewController];
+  presentedViewController = [viewController presentedViewController];
 
-  v10 = [v6 viewController];
-  v11 = v10;
-  if (v9)
+  viewController2 = [managerCopy viewController];
+  v11 = viewController2;
+  if (presentedViewController)
   {
-    v12 = [v10 presentedViewController];
+    presentedViewController2 = [viewController2 presentedViewController];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __87__CNMeCardSharingEditAvatarFlowManager_avatarEditingManager_didFinishWithProviderItem___block_invoke;
     v18[3] = &unk_1E74E6EE8;
     v13 = v19;
-    v19[0] = v7;
+    v19[0] = itemCopy;
     v19[1] = self;
-    v20 = v6;
-    v14 = v7;
-    [v12 dismissViewControllerAnimated:1 completion:v18];
+    v20 = managerCopy;
+    v14 = itemCopy;
+    [presentedViewController2 dismissViewControllerAnimated:1 completion:v18];
 
     v11 = v20;
   }
@@ -56,9 +56,9 @@
     v16[2] = __87__CNMeCardSharingEditAvatarFlowManager_avatarEditingManager_didFinishWithProviderItem___block_invoke_2;
     v16[3] = &unk_1E74E77C0;
     v13 = v17;
-    v17[0] = v7;
+    v17[0] = itemCopy;
     v17[1] = self;
-    v15 = v7;
+    v15 = itemCopy;
     [v11 dismissViewControllerAnimated:1 completion:v16];
   }
 }
@@ -84,31 +84,31 @@ uint64_t __87__CNMeCardSharingEditAvatarFlowManager_avatarEditingManager_didFini
   return result;
 }
 
-- (void)visualIdentityEditorController:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)visualIdentityEditorController:(id)controller didFinishWithProviderItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNMeCardSharingEditAvatarFlowManager *)self delegate];
-  [v8 sharingEditAvatarFlowManager:self didFinishWithProviderItem:v6 fromViewController:v7];
+  itemCopy = item;
+  controllerCopy = controller;
+  delegate = [(CNMeCardSharingEditAvatarFlowManager *)self delegate];
+  [delegate sharingEditAvatarFlowManager:self didFinishWithProviderItem:itemCopy fromViewController:controllerCopy];
 }
 
-- (void)visualIdentityEditorControllerDidCancel:(id)a3
+- (void)visualIdentityEditorControllerDidCancel:(id)cancel
 {
-  v5 = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
-  [v5 dismissViewControllerAnimated:a3 != 0 completion:0];
+  baseNavigationController = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
+  [baseNavigationController dismissViewControllerAnimated:cancel != 0 completion:0];
 
-  v6 = [(CNMeCardSharingEditAvatarFlowManager *)self delegate];
-  [v6 sharingEditAvatarFlowManagerDidCancel:self];
+  delegate = [(CNMeCardSharingEditAvatarFlowManager *)self delegate];
+  [delegate sharingEditAvatarFlowManagerDidCancel:self];
 }
 
-- (void)imagePickerController:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)imagePickerController:(id)controller didFinishWithProviderItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 presentingViewController];
-  v9 = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
+  controllerCopy = controller;
+  itemCopy = item;
+  presentingViewController = [controllerCopy presentingViewController];
+  baseNavigationController = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
 
-  if (v8 == v9)
+  if (presentingViewController == baseNavigationController)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -116,23 +116,23 @@ uint64_t __87__CNMeCardSharingEditAvatarFlowManager_avatarEditingManager_didFini
     v14[3] = &unk_1E74E77C0;
     v11 = &v15;
     v14[4] = self;
-    v15 = v7;
-    v13 = v7;
-    [v6 dismissViewControllerAnimated:1 completion:v14];
+    v15 = itemCopy;
+    v13 = itemCopy;
+    [controllerCopy dismissViewControllerAnimated:1 completion:v14];
   }
 
   else
   {
-    v10 = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
+    baseNavigationController2 = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __88__CNMeCardSharingEditAvatarFlowManager_imagePickerController_didFinishWithProviderItem___block_invoke;
     v16[3] = &unk_1E74E77C0;
     v11 = &v17;
     v16[4] = self;
-    v17 = v7;
-    v12 = v7;
-    [v10 dismissViewControllerAnimated:1 completion:v16];
+    v17 = itemCopy;
+    v12 = itemCopy;
+    [baseNavigationController2 dismissViewControllerAnimated:1 completion:v16];
   }
 }
 
@@ -158,57 +158,57 @@ uint64_t __87__CNMeCardSharingEditAvatarFlowManager_avatarEditingManager_didFini
   v4 = v3;
   _Block_object_dispose(&v25, 8);
   v5 = objc_alloc_init(v3);
-  v6 = [getAVTAvatarFetchRequestClass_37873() requestForStorePrimaryAvatar];
+  requestForStorePrimaryAvatar = [getAVTAvatarFetchRequestClass_37873() requestForStorePrimaryAvatar];
   v24 = 0;
-  v7 = [v5 avatarsForFetchRequest:v6 error:&v24];
+  v7 = [v5 avatarsForFetchRequest:requestForStorePrimaryAvatar error:&v24];
   v8 = v24;
-  v9 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v10 = v8;
-    v11 = v6;
+    requestForAllAvatars = requestForStorePrimaryAvatar;
 LABEL_6:
-    v13 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:v9];
+    v13 = [CNPhotoPickerAnimojiProvider providerItemForAvatarRecord:firstObject];
     v14 = [CNAvatarEditingManager alloc];
-    v15 = [v13 avatarRecord];
-    v16 = [(CNMeCardSharingEditAvatarFlowManager *)self variantsManager];
-    v17 = [(CNAvatarEditingManager *)v14 initWithAvatarRecord:v15 variantsManager:v16];
+    avatarRecord = [v13 avatarRecord];
+    variantsManager = [(CNMeCardSharingEditAvatarFlowManager *)self variantsManager];
+    v17 = [(CNAvatarEditingManager *)v14 initWithAvatarRecord:avatarRecord variantsManager:variantsManager];
 
     [(CNAvatarEditingManager *)v17 setDelegate:self];
     [(CNAvatarEditingManager *)v17 setOriginalItem:v13];
     [(CNMeCardSharingEditAvatarFlowManager *)self setAvatarEditingManager:v17];
     v18 = objc_alloc(MEMORY[0x1E69DCCD8]);
-    v19 = [(CNAvatarEditingManager *)v17 viewController];
-    v20 = [v18 initWithRootViewController:v19];
+    viewController = [(CNAvatarEditingManager *)v17 viewController];
+    v20 = [v18 initWithRootViewController:viewController];
 
     [v20 setModalPresentationStyle:{-[CNMeCardSharingEditAvatarFlowManager defaultModalPresentationStyle](self, "defaultModalPresentationStyle")}];
-    v21 = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
-    [v21 presentViewController:v20 animated:1 completion:0];
+    baseNavigationController = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
+    [baseNavigationController presentViewController:v20 animated:1 completion:0];
 
     goto LABEL_7;
   }
 
-  v11 = [getAVTAvatarFetchRequestClass_37873() requestForAllAvatars];
+  requestForAllAvatars = [getAVTAvatarFetchRequestClass_37873() requestForAllAvatars];
 
   v23 = v8;
-  v12 = [v5 avatarsForFetchRequest:v11 error:&v23];
+  v12 = [v5 avatarsForFetchRequest:requestForAllAvatars error:&v23];
   v10 = v23;
 
-  v9 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     goto LABEL_6;
   }
 
-  v9 = [objc_opt_class() log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  firstObject = [objc_opt_class() log];
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
   {
     v22 = [v10 debugDescription];
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v22;
-    _os_log_error_impl(&dword_199A75000, v9, OS_LOG_TYPE_ERROR, "Could not load avatar; %{public}@", &buf, 0xCu);
+    _os_log_error_impl(&dword_199A75000, firstObject, OS_LOG_TYPE_ERROR, "Could not load avatar; %{public}@", &buf, 0xCu);
   }
 
 LABEL_7:
@@ -216,10 +216,10 @@ LABEL_7:
 
 - (int64_t)defaultModalPresentationStyle
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 6;
   }
@@ -230,31 +230,31 @@ LABEL_7:
   }
 }
 
-- (void)pushAvatarEditorViewControllerForProviderItem:(id)a3 fromViewController:(id)a4
+- (void)pushAvatarEditorViewControllerForProviderItem:(id)item fromViewController:(id)controller
 {
-  v6 = a4;
-  v8 = [(CNMeCardSharingEditAvatarFlowManager *)self editorViewControllerForProviderItem:a3];
+  controllerCopy = controller;
+  v8 = [(CNMeCardSharingEditAvatarFlowManager *)self editorViewControllerForProviderItem:item];
   [v8 setCanCancel:0];
-  v7 = [v6 navigationController];
+  navigationController = [controllerCopy navigationController];
 
-  [v7 pushViewController:v8 animated:1];
+  [navigationController pushViewController:v8 animated:1];
 }
 
-- (void)presentAvatarEditorViewControllerForProviderItem:(id)a3
+- (void)presentAvatarEditorViewControllerForProviderItem:(id)item
 {
-  v6 = [(CNMeCardSharingEditAvatarFlowManager *)self editorViewControllerForProviderItem:a3];
+  v6 = [(CNMeCardSharingEditAvatarFlowManager *)self editorViewControllerForProviderItem:item];
   v4 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
   [v4 setModalPresentationStyle:{-[CNMeCardSharingEditAvatarFlowManager defaultModalPresentationStyle](self, "defaultModalPresentationStyle")}];
-  v5 = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  baseNavigationController = [(CNMeCardSharingEditAvatarFlowManager *)self baseNavigationController];
+  [baseNavigationController presentViewController:v4 animated:1 completion:0];
 }
 
-- (id)editorViewControllerForProviderItem:(id)a3
+- (id)editorViewControllerForProviderItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [CNVisualIdentityItemEditorViewController alloc];
-  v6 = [(CNMeCardSharingEditAvatarFlowManager *)self variantsManager];
-  v7 = [(CNVisualIdentityItemEditorViewController *)v5 initWithProviderItem:v4 variantsManager:v6];
+  variantsManager = [(CNMeCardSharingEditAvatarFlowManager *)self variantsManager];
+  v7 = [(CNVisualIdentityItemEditorViewController *)v5 initWithProviderItem:itemCopy variantsManager:variantsManager];
 
   v8 = CNContactsUIBundle();
   v9 = [v8 localizedStringForKey:@"NEXT" value:&stru_1F0CE7398 table:@"Localized"];
@@ -265,52 +265,52 @@ LABEL_7:
   return v7;
 }
 
-- (void)presentEditorForAvatarSourceType:(int64_t)a3 visualIdentity:(id)a4 fromGalleryViewController:(id)a5
+- (void)presentEditorForAvatarSourceType:(int64_t)type visualIdentity:(id)identity fromGalleryViewController:(id)controller
 {
-  v17 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-  v10 = [v17 contacts];
-  v11 = [v10 firstObject];
-  v12 = [v9 isMeContact:v11];
-  v13 = [(CNMeCardSharingEditAvatarFlowManager *)self imagePickerController];
-  [v13 setIsMeContact:v12];
+  identityCopy = identity;
+  controllerCopy = controller;
+  unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+  contacts = [identityCopy contacts];
+  firstObject = [contacts firstObject];
+  v12 = [unifiedMeContactMonitor isMeContact:firstObject];
+  imagePickerController = [(CNMeCardSharingEditAvatarFlowManager *)self imagePickerController];
+  [imagePickerController setIsMeContact:v12];
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_14;
       }
 
-      v15 = [(CNMeCardSharingEditAvatarFlowManager *)self imagePickerController];
-      [v15 presentPhotoLibraryPickerFromViewController:v8 sourceView:0];
+      imagePickerController2 = [(CNMeCardSharingEditAvatarFlowManager *)self imagePickerController];
+      [imagePickerController2 presentPhotoLibraryPickerFromViewController:controllerCopy sourceView:0];
     }
 
     else
     {
-      v15 = [(CNMeCardSharingEditAvatarFlowManager *)self imagePickerController];
-      [v15 presentCameraImagePickerFromViewController:v8];
+      imagePickerController2 = [(CNMeCardSharingEditAvatarFlowManager *)self imagePickerController];
+      [imagePickerController2 presentCameraImagePickerFromViewController:controllerCopy];
     }
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
     [(CNMeCardSharingEditAvatarFlowManager *)self presentMemojiPicker];
   }
 
   else
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v14 = [CNPhotoPickerMonogramProvider providerItemForVisualIdentity:v17 size:0 RTL:212.0, 212.0];
+      v14 = [CNPhotoPickerMonogramProvider providerItemForVisualIdentity:identityCopy size:0 RTL:212.0, 212.0];
     }
 
     else
     {
-      if (a3 != 4)
+      if (type != 4)
       {
         goto LABEL_14;
       }

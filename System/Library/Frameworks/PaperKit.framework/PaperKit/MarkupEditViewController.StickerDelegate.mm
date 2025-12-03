@@ -1,6 +1,6 @@
 @interface MarkupEditViewController.StickerDelegate
 - (_TtCC8PaperKit24MarkupEditViewController15StickerDelegate)init;
-- (void)insertStickerFromItemProvider:(id)a3 completionHandler:(id)a4;
+- (void)insertStickerFromItemProvider:(id)provider completionHandler:(id)handler;
 @end
 
 @implementation MarkupEditViewController.StickerDelegate
@@ -13,12 +13,12 @@
   return [(MarkupEditViewController.StickerDelegate *)&v4 init];
 }
 
-- (void)insertStickerFromItemProvider:(id)a3 completionHandler:(id)a4
+- (void)insertStickerFromItemProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
-  specialized MarkupEditViewController.StickerDelegate.insertSticker(from:completionHandler:)(v7);
+  v6 = _Block_copy(handler);
+  providerCopy = provider;
+  selfCopy = self;
+  specialized MarkupEditViewController.StickerDelegate.insertSticker(from:completionHandler:)(providerCopy);
   _Block_release(v6);
 }
 

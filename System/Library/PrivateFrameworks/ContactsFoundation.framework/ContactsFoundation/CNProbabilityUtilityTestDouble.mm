@@ -1,10 +1,10 @@
 @interface CNProbabilityUtilityTestDouble
-- (CNProbabilityUtilityTestDouble)initWithExpectedResult:(BOOL)a3;
+- (CNProbabilityUtilityTestDouble)initWithExpectedResult:(BOOL)result;
 @end
 
 @implementation CNProbabilityUtilityTestDouble
 
-- (CNProbabilityUtilityTestDouble)initWithExpectedResult:(BOOL)a3
+- (CNProbabilityUtilityTestDouble)initWithExpectedResult:(BOOL)result
 {
   v8.receiver = self;
   v8.super_class = CNProbabilityUtilityTestDouble;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_expectedResult = a3;
+    v4->_expectedResult = result;
     v6 = v4;
   }
 

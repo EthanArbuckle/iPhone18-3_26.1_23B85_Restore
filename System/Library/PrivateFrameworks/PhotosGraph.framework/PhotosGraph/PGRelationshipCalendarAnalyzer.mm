@@ -1,28 +1,28 @@
 @interface PGRelationshipCalendarAnalyzer
-- (PGRelationshipCalendarAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipCalendarAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipCalendarAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = _Block_copy(blockCopy);
   v6 = 0.0;
   if (!v5 || (v7 = CFAbsoluteTimeGetCurrent(), v7 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v9 = [WeakRetained serviceManager];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [MEMORY[0x277D27690] dateByAddingMonths:-2 toDate:v10];
+    serviceManager = [WeakRetained serviceManager];
+    date = [MEMORY[0x277CBEAA8] date];
+    v11 = [MEMORY[0x277D27690] dateByAddingMonths:-2 toDate:date];
     v12 = [MEMORY[0x277CCA940] set];
     v46 = WeakRetained;
-    v13 = [WeakRetained contactIdentifiers];
-    v49 = v9;
-    v14 = [v9 workCalendarEventsMatchingContactIdentifiers:v13 fromUniversalDate:v11 toUniversalDate:v10];
+    contactIdentifiers = [WeakRetained contactIdentifiers];
+    v49 = serviceManager;
+    v14 = [serviceManager workCalendarEventsMatchingContactIdentifiers:contactIdentifiers fromUniversalDate:v11 toUniversalDate:date];
 
     v47 = [v14 count];
     if (v5)
@@ -54,9 +54,9 @@ LABEL_46:
     }
 
     v42 = v11;
-    v43 = v10;
+    v43 = date;
     v44 = v5;
-    v45 = v4;
+    v45 = blockCopy;
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
@@ -79,8 +79,8 @@ LABEL_46:
 
           v21 = *(*(&v58 + 1) + 8 * i);
           v22 = objc_autoreleasePoolPush();
-          v23 = [v21 attendees];
-          v24 = [v49 personsFromEventParticipants:v23 excludeCurrentUser:1];
+          attendees = [v21 attendees];
+          v24 = [v49 personsFromEventParticipants:attendees excludeCurrentUser:1];
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
@@ -139,10 +139,10 @@ LABEL_46:
 
           v34 = *(*(&v50 + 1) + 8 * k);
           v35 = [v29 countForObject:v34];
-          v36 = [v34 CNIdentifier];
-          if (v36)
+          cNIdentifier = [v34 CNIdentifier];
+          if (cNIdentifier)
           {
-            v37 = [v46 personLocalIdentifierForContactIdentifier:v36];
+            v37 = [v46 personLocalIdentifierForContactIdentifier:cNIdentifier];
             if ([v37 length])
             {
               v38 = [v46 relationshipAnalyzerPropertiesForPersonLocalIdentifier:v37];
@@ -162,9 +162,9 @@ LABEL_46:
     }
 
     v5 = v44;
-    v4 = v45;
+    blockCopy = v45;
     v11 = v42;
-    v10 = v43;
+    date = v43;
     v14 = v41;
     if (v44)
     {
@@ -211,16 +211,16 @@ LABEL_47:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipCalendarAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipCalendarAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipCalendarAnalyzer;
   v5 = [(PGRelationshipCalendarAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

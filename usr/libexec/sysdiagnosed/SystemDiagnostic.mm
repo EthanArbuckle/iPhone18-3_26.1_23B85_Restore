@@ -3,10 +3,10 @@
 - (id)_iOSgetLogCopyingContainers;
 - (id)getAutogenLogGenerationContainers;
 - (id)getAutogenTimeSensitiveContainers;
-- (void)TSProcessSpecific_preprocess:(id)a3;
-- (void)filecoordination_postprocess:(id)a3 withContainerArray:(id)a4;
-- (void)footprintAll_postprocess:(id)a3 withContainerArray:(id)a4;
-- (void)systemInfoTimeSensitive_postprocess:(id)a3 withContainerArray:(id)a4;
+- (void)TSProcessSpecific_preprocess:(id)specific_preprocess;
+- (void)filecoordination_postprocess:(id)filecoordination_postprocess withContainerArray:(id)array;
+- (void)footprintAll_postprocess:(id)all_postprocess withContainerArray:(id)array;
+- (void)systemInfoTimeSensitive_postprocess:(id)sensitive_postprocess withContainerArray:(id)array;
 @end
 
 @implementation SystemDiagnostic
@@ -62,8 +62,8 @@
   {
     [v10 setRuntimeChecks:16];
     v12 = [SDTask taskWithCommand:@"/usr/bin/umtool" arguments:&off_1000B4588 outputFile:@"umtool.txt"];
-    v229 = v12;
-    v13 = [NSArray arrayWithObjects:&v229 count:1];
+    startDiagnosticTime = v12;
+    v13 = [NSArray arrayWithObjects:&startDiagnosticTime count:1];
     [v11 addSDTasksToContainer:v13];
 
     [v3 addObject:v11];
@@ -649,8 +649,8 @@
   if (v227)
   {
     [v227 setRuntimeChecks:9];
-    v229 = [(SystemDiagnostic *)self startDiagnosticTime];
-    v230 = [v229 dateByAddingTimeInterval:-432000.0];
+    startDiagnosticTime = [(SystemDiagnostic *)self startDiagnosticTime];
+    v230 = [startDiagnosticTime dateByAddingTimeInterval:-432000.0];
     v231 = [SDUnitLogPathArray logRuleWithPaths:&off_1000B4AF8 withDate:v230 withFilter:0 newestFileCount:0 atInternalDirectory:0 withRuntimeChecks:0];
     v386 = v231;
     v232 = [NSArray arrayWithObjects:&v386 count:1];
@@ -771,8 +771,8 @@
   if (v266)
   {
     [v266 setRuntimeChecks:9];
-    v268 = [(SystemDiagnostic *)self startDiagnosticTime];
-    v269 = [v268 dateByAddingTimeInterval:-3600.0];
+    startDiagnosticTime2 = [(SystemDiagnostic *)self startDiagnosticTime];
+    v269 = [startDiagnosticTime2 dateByAddingTimeInterval:-3600.0];
     v270 = [SDUnitLogGlob logRuleWithGlob:@"/private/var/db/spindump/Exhaustion*" withDate:v269 withFilter:0 newestFileCount:0 atInternalDirectory:0 withRuntimeChecks:0];
     v377 = v270;
     v271 = [NSArray arrayWithObjects:&v377 count:1];
@@ -815,8 +815,8 @@
   {
     [v281 setRuntimeChecks:9];
     [v282 setSizeCap:20];
-    v283 = [(SystemDiagnostic *)self startDiagnosticTime];
-    v284 = [v283 dateByAddingTimeInterval:-600.0];
+    startDiagnosticTime3 = [(SystemDiagnostic *)self startDiagnosticTime];
+    v284 = [startDiagnosticTime3 dateByAddingTimeInterval:-600.0];
     v285 = [SDUnitLogGlob logRuleWithGlob:@"/private/var/tmp/com.apple.runningboardd/ts-*.tailspin" withDate:v284 withFilter:0 newestFileCount:1 atInternalDirectory:0 withRuntimeChecks:0];
     v374 = v285;
     v286 = [NSArray arrayWithObjects:&v374 count:1];
@@ -887,8 +887,8 @@
   {
     [v303 setRuntimeChecks:9];
     [v304 setSizeCap:50];
-    v305 = [(SystemDiagnostic *)self startDiagnosticTime];
-    v306 = [v305 dateByAddingTimeInterval:-1800.0];
+    startDiagnosticTime4 = [(SystemDiagnostic *)self startDiagnosticTime];
+    v306 = [startDiagnosticTime4 dateByAddingTimeInterval:-1800.0];
     v307 = [SDUnitLogDirectory logRuleWithDirectory:@"/Library/Logs/WindowServer" withDepth:0 withDate:v306 withFilter:0 newestFileCount:0 atInternalDirectory:0 withRuntimeChecks:0];
     v369 = v307;
     v308 = [NSArray arrayWithObjects:&v369 count:1];
@@ -958,12 +958,12 @@
   return v3;
 }
 
-- (void)TSProcessSpecific_preprocess:(id)a3
+- (void)TSProcessSpecific_preprocess:(id)specific_preprocess
 {
-  v57 = a3;
-  v4 = [(SystemDiagnostic *)self requestSource];
-  v5 = [(SystemDiagnostic *)self targetPIDs];
-  v6 = [v5 count];
+  specific_preprocessCopy = specific_preprocess;
+  requestSource = [(SystemDiagnostic *)self requestSource];
+  targetPIDs = [(SystemDiagnostic *)self targetPIDs];
+  v6 = [targetPIDs count];
 
   if (v6)
   {
@@ -974,8 +974,8 @@
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
-      v8 = [(SystemDiagnostic *)self targetPIDs];
-      v9 = [v8 countByEnumeratingWithState:&v75 objects:v87 count:16];
+      targetPIDs2 = [(SystemDiagnostic *)self targetPIDs];
+      v9 = [targetPIDs2 countByEnumeratingWithState:&v75 objects:v87 count:16];
       if (v9)
       {
         v10 = v9;
@@ -986,14 +986,14 @@
           {
             if (*v76 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(targetPIDs2);
             }
 
-            v13 = [*(*(&v75 + 1) + 8 * i) stringValue];
-            [v7 addObject:v13];
+            stringValue = [*(*(&v75 + 1) + 8 * i) stringValue];
+            [v7 addObject:stringValue];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v75 objects:v87 count:16];
+          v10 = [targetPIDs2 countByEnumeratingWithState:&v75 objects:v87 count:16];
         }
 
         while (v10);
@@ -1009,15 +1009,15 @@
         v17 = [NSArray arrayWithObjects:&v86 count:1];
         [v15 addSDTasksToContainer:v17];
 
-        [v57 addObject:v15];
+        [specific_preprocessCopy addObject:v15];
       }
     }
 
-    v18 = [(SystemDiagnostic *)self targetPIDs];
-    v19 = [v18 count];
+    targetPIDs3 = [(SystemDiagnostic *)self targetPIDs];
+    v19 = [targetPIDs3 count];
 
-    v20 = [(SystemDiagnostic *)self targetPIDs];
-    v21 = [v20 count];
+    targetPIDs4 = [(SystemDiagnostic *)self targetPIDs];
+    v21 = [targetPIDs4 count];
 
     if ((v19 & 0xFFFFFFFFFFFFFFFELL) >= v21)
     {
@@ -1042,26 +1042,26 @@
 
     v24 = 0;
     v25 = 30;
-    if (v4 == 2)
+    if (requestSource == 2)
     {
       v25 = 120;
     }
 
     v58 = v25;
     v26 = &NSClassFromString_ptr;
-    v64 = self;
+    selfCopy = self;
     v60 = v22;
     do
     {
       v27 = v59 * v24;
       v28 = (v59 * v24 + v59);
-      v29 = [(SystemDiagnostic *)self targetPIDs];
-      v30 = [v29 count];
+      targetPIDs5 = [(SystemDiagnostic *)self targetPIDs];
+      v30 = [targetPIDs5 count];
 
       if (v28 > v30)
       {
-        v31 = [(SystemDiagnostic *)self targetPIDs];
-        v28 = [v31 count];
+        targetPIDs6 = [(SystemDiagnostic *)self targetPIDs];
+        v28 = [targetPIDs6 count];
       }
 
       v61 = &v28[-v27];
@@ -1072,20 +1072,20 @@
       do
       {
         v74 = v32;
-        v33 = [(SystemDiagnostic *)self targetPIDs];
-        v34 = [v33 objectAtIndex:v27];
-        v35 = [v34 intValue];
+        targetPIDs7 = [(SystemDiagnostic *)self targetPIDs];
+        v34 = [targetPIDs7 objectAtIndex:v27];
+        intValue = [v34 intValue];
 
-        v36 = [v26[408] stringWithFormat:@"%d", v35];
-        v37 = [(SystemDiagnostic *)self pidIndices];
+        v36 = [v26[408] stringWithFormat:@"%d", intValue];
+        pidIndices = [(SystemDiagnostic *)self pidIndices];
         v73 = v27;
-        if (v37 && (v38 = v37, -[SystemDiagnostic pidIndices](self, "pidIndices"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 count], v39, v38, v40))
+        if (pidIndices && (v38 = pidIndices, -[SystemDiagnostic pidIndices](self, "pidIndices"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 count], v39, v38, v40))
         {
-          v41 = [(SystemDiagnostic *)self pidIndices];
-          v42 = [v41 objectAtIndex:v27];
-          v43 = [v42 intValue];
+          pidIndices2 = [(SystemDiagnostic *)self pidIndices];
+          v42 = [pidIndices2 objectAtIndex:v27];
+          intValue2 = [v42 intValue];
 
-          v44 = [&stru_1000A67D8 stringByAppendingFormat:@"%s", -[SystemDiagnostic processes](self, "processes") + 136 * v43 + 48];
+          v44 = [&stru_1000A67D8 stringByAppendingFormat:@"%s", -[SystemDiagnostic processes](self, "processes") + 136 * intValue2 + 48];
         }
 
         else
@@ -1093,8 +1093,8 @@
           v44 = &stru_1000A67D8;
         }
 
-        v72 = [v26[408] stringWithFormat:@"<TMPOUTPUTDIR>/graph-%d-%@.memgraph", v35, v44];
-        v71 = [v26[408] stringWithFormat:@"errors/leaks_ts_%d_errors.txt", v35];
+        v72 = [v26[408] stringWithFormat:@"<TMPOUTPUTDIR>/graph-%d-%@.memgraph", intValue, v44];
+        v71 = [v26[408] stringWithFormat:@"errors/leaks_ts_%d_errors.txt", intValue];
         v82[0] = @"-outputGraph";
         v82[1] = v72;
         v82[2] = v36;
@@ -1106,13 +1106,13 @@
         v81[1] = @"-k";
         v81[2] = v36;
         v67 = [NSArray arrayWithObjects:v81 count:3];
-        v66 = [v26[408] stringWithFormat:@"ddt-%u-%@.txt", v35, v44];
+        v66 = [v26[408] stringWithFormat:@"ddt-%u-%@.txt", intValue, v44];
         v45 = [SDTask taskWithCommand:@"/usr/local/bin/ddt" arguments:v67 outputFile:v66 withRuntimeChecks:1];
         v83[1] = v45;
         v80[0] = @"procinfo";
         v80[1] = v36;
         v46 = [NSArray arrayWithObjects:v80 count:2];
-        [v26[408] stringWithFormat:@"launchctl-procinfo-%u-%@.txt", v35, v44];
+        [v26[408] stringWithFormat:@"launchctl-procinfo-%u-%@.txt", intValue, v44];
         v47 = v36;
         v68 = v36;
         v49 = v48 = v26;
@@ -1121,7 +1121,7 @@
         v79[0] = @"dump-concurrency";
         v79[1] = v47;
         v51 = [NSArray arrayWithObjects:v79 count:2];
-        v52 = [v48[408] stringWithFormat:@"swift-inspect-%u-%@.txt", v35, v44];
+        v52 = [v48[408] stringWithFormat:@"swift-inspect-%u-%@.txt", intValue, v44];
         v53 = [SDTask taskWithCommand:@"/usr/bin/swift-inspect" arguments:v51 outputFile:v52];
         v83[3] = v53;
         v54 = [NSArray arrayWithObjects:v83 count:4];
@@ -1130,16 +1130,16 @@
         v32 = [v74 arrayByAddingObjectsFromArray:v54];
 
         v27 = v73 + 1;
-        self = v64;
+        self = selfCopy;
       }
 
       while (v73 + 1 < v65);
-      v55 = [SDComplexContainer complexContainerWithTasks:v32 withTimeout:&__NSArray0__struct withRules:&stru_1000A67D8 atDestination:v64 withDelegate:0 isConcurrent:(v61 * v58)];
+      v55 = [SDComplexContainer complexContainerWithTasks:v32 withTimeout:&__NSArray0__struct withRules:&stru_1000A67D8 atDestination:selfCopy withDelegate:0 isConcurrent:(v61 * v58)];
       v56 = v55;
       if (v55)
       {
         [v55 setName:v62];
-        [v57 addObject:v56];
+        [specific_preprocessCopy addObject:v56];
       }
 
       v24 = v63;
@@ -1149,31 +1149,31 @@
   }
 }
 
-- (void)filecoordination_postprocess:(id)a3 withContainerArray:(id)a4
+- (void)filecoordination_postprocess:(id)filecoordination_postprocess withContainerArray:(id)array
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  filecoordination_postprocessCopy = filecoordination_postprocess;
+  arrayCopy = array;
+  if (filecoordination_postprocessCopy)
   {
-    v6 = [v8 collectionContainer];
+    collectionContainer = [filecoordination_postprocessCopy collectionContainer];
 
-    if (v6)
+    if (collectionContainer)
     {
-      v7 = [v8 collectionContainer];
-      [v7 setDestination:0];
+      collectionContainer2 = [filecoordination_postprocessCopy collectionContainer];
+      [collectionContainer2 setDestination:0];
     }
   }
 }
 
-- (void)footprintAll_postprocess:(id)a3 withContainerArray:(id)a4
+- (void)footprintAll_postprocess:(id)all_postprocess withContainerArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  all_postprocessCopy = all_postprocess;
+  arrayCopy = array;
   if ([(SystemDiagnostic *)self quickMode]|| [(SystemDiagnostic *)self requestSource]== 1)
   {
-    if (v6)
+    if (all_postprocessCopy)
     {
-      [v7 removeObject:v6];
+      [arrayCopy removeObject:all_postprocessCopy];
     }
   }
 
@@ -1190,119 +1190,119 @@
   }
 }
 
-- (void)systemInfoTimeSensitive_postprocess:(id)a3 withContainerArray:(id)a4
+- (void)systemInfoTimeSensitive_postprocess:(id)sensitive_postprocess withContainerArray:(id)array
 {
-  if (a3)
+  if (sensitive_postprocess)
   {
-    v4 = a3;
+    sensitive_postprocessCopy = sensitive_postprocess;
     v5 = [SDTask taskWithCommand:@"/usr/bin/kbdebug" arguments:0 outputFile:@"kbdebug.txt"];
     v7 = v5;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
-    [v4 addSDTasksToContainer:v6];
+    [sensitive_postprocessCopy addSDTasksToContainer:v6];
   }
 }
 
 - (id)_iOSgetLogCopyingContainers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(SystemDiagnostic *)self _getCrashesAndSpinsContainer];
-  [v3 addObjectsFromArray:v4];
+  _getCrashesAndSpinsContainer = [(SystemDiagnostic *)self _getCrashesAndSpinsContainer];
+  [v3 addObjectsFromArray:_getCrashesAndSpinsContainer];
 
-  v5 = [(SystemDiagnostic *)self _copyOnDemandDaemonLogsContainer];
-  [v3 addObjectsFromArray:v5];
+  _copyOnDemandDaemonLogsContainer = [(SystemDiagnostic *)self _copyOnDemandDaemonLogsContainer];
+  [v3 addObjectsFromArray:_copyOnDemandDaemonLogsContainer];
 
-  v6 = [(SystemDiagnostic *)self _copyVideoProcessingLogs];
-  [v3 addObjectsFromArray:v6];
+  _copyVideoProcessingLogs = [(SystemDiagnostic *)self _copyVideoProcessingLogs];
+  [v3 addObjectsFromArray:_copyVideoProcessingLogs];
 
-  v7 = [(SystemDiagnostic *)self _copyThermalLogs];
-  [v3 addObjectsFromArray:v7];
+  _copyThermalLogs = [(SystemDiagnostic *)self _copyThermalLogs];
+  [v3 addObjectsFromArray:_copyThermalLogs];
 
-  v8 = [(SystemDiagnostic *)self copyCoreaudioReportingLogs];
-  [v3 addObjectsFromArray:v8];
+  copyCoreaudioReportingLogs = [(SystemDiagnostic *)self copyCoreaudioReportingLogs];
+  [v3 addObjectsFromArray:copyCoreaudioReportingLogs];
 
-  v9 = [(SystemDiagnostic *)self _copyAccessibilityPreferences];
-  [v3 addObjectsFromArray:v9];
+  _copyAccessibilityPreferences = [(SystemDiagnostic *)self _copyAccessibilityPreferences];
+  [v3 addObjectsFromArray:_copyAccessibilityPreferences];
 
-  v10 = [(SystemDiagnostic *)self _copyAstroLogsContainer];
-  [v3 addObjectsFromArray:v10];
+  _copyAstroLogsContainer = [(SystemDiagnostic *)self _copyAstroLogsContainer];
+  [v3 addObjectsFromArray:_copyAstroLogsContainer];
 
-  v11 = [(SystemDiagnostic *)self _getMapsSyncJournalContainer];
-  [v3 addObjectsFromArray:v11];
+  _getMapsSyncJournalContainer = [(SystemDiagnostic *)self _getMapsSyncJournalContainer];
+  [v3 addObjectsFromArray:_getMapsSyncJournalContainer];
 
-  v12 = [(SystemDiagnostic *)self _copyCompanionSyncContainer];
-  [v3 addObjectsFromArray:v12];
+  _copyCompanionSyncContainer = [(SystemDiagnostic *)self _copyCompanionSyncContainer];
+  [v3 addObjectsFromArray:_copyCompanionSyncContainer];
 
-  v13 = [(SystemDiagnostic *)self _getAGXMTLCompilerCrashLogs];
-  [v3 addObjectsFromArray:v13];
+  _getAGXMTLCompilerCrashLogs = [(SystemDiagnostic *)self _getAGXMTLCompilerCrashLogs];
+  [v3 addObjectsFromArray:_getAGXMTLCompilerCrashLogs];
 
-  v14 = [(SystemDiagnostic *)self _copyNanoPreferencesSyncLogs];
-  [v3 addObjectsFromArray:v14];
+  _copyNanoPreferencesSyncLogs = [(SystemDiagnostic *)self _copyNanoPreferencesSyncLogs];
+  [v3 addObjectsFromArray:_copyNanoPreferencesSyncLogs];
 
-  v15 = [(SystemDiagnostic *)self _copyCoreCaptureBTLogsContainer];
-  [v3 addObjectsFromArray:v15];
+  _copyCoreCaptureBTLogsContainer = [(SystemDiagnostic *)self _copyCoreCaptureBTLogsContainer];
+  [v3 addObjectsFromArray:_copyCoreCaptureBTLogsContainer];
 
-  v16 = [(SystemDiagnostic *)self _getFscklogs];
-  [v3 addObjectsFromArray:v16];
+  _getFscklogs = [(SystemDiagnostic *)self _getFscklogs];
+  [v3 addObjectsFromArray:_getFscklogs];
 
-  v17 = [(SystemDiagnostic *)self _copyMobileInstallationLogsContainer];
-  [v3 addObjectsFromArray:v17];
+  _copyMobileInstallationLogsContainer = [(SystemDiagnostic *)self _copyMobileInstallationLogsContainer];
+  [v3 addObjectsFromArray:_copyMobileInstallationLogsContainer];
 
-  v18 = [(SystemDiagnostic *)self _copyMobileActivationLogsContainer];
-  [v3 addObjectsFromArray:v18];
+  _copyMobileActivationLogsContainer = [(SystemDiagnostic *)self _copyMobileActivationLogsContainer];
+  [v3 addObjectsFromArray:_copyMobileActivationLogsContainer];
 
-  v19 = [(SystemDiagnostic *)self _copyAppInstallationLogsContainer];
-  [v3 addObjectsFromArray:v19];
+  _copyAppInstallationLogsContainer = [(SystemDiagnostic *)self _copyAppInstallationLogsContainer];
+  [v3 addObjectsFromArray:_copyAppInstallationLogsContainer];
 
-  v20 = [(SystemDiagnostic *)self _copyProxiedDeviceCrashLogsContainer];
-  [v3 addObjectsFromArray:v20];
+  _copyProxiedDeviceCrashLogsContainer = [(SystemDiagnostic *)self _copyProxiedDeviceCrashLogsContainer];
+  [v3 addObjectsFromArray:_copyProxiedDeviceCrashLogsContainer];
 
-  v21 = [(SystemDiagnostic *)self _copySiriLogsContainer];
-  [v3 addObjectsFromArray:v21];
+  _copySiriLogsContainer = [(SystemDiagnostic *)self _copySiriLogsContainer];
+  [v3 addObjectsFromArray:_copySiriLogsContainer];
 
-  v22 = [(SystemDiagnostic *)self _copyMobileAssetHistoryLogs];
-  [v3 addObjectsFromArray:v22];
+  _copyMobileAssetHistoryLogs = [(SystemDiagnostic *)self _copyMobileAssetHistoryLogs];
+  [v3 addObjectsFromArray:_copyMobileAssetHistoryLogs];
 
-  v23 = [(SystemDiagnostic *)self _copySplunkHistoryLogs];
-  [v3 addObjectsFromArray:v23];
+  _copySplunkHistoryLogs = [(SystemDiagnostic *)self _copySplunkHistoryLogs];
+  [v3 addObjectsFromArray:_copySplunkHistoryLogs];
 
-  v24 = [(SystemDiagnostic *)self _copyParsecdBagLogs];
-  [v3 addObjectsFromArray:v24];
+  _copyParsecdBagLogs = [(SystemDiagnostic *)self _copyParsecdBagLogs];
+  [v3 addObjectsFromArray:_copyParsecdBagLogs];
 
-  v25 = [(SystemDiagnostic *)self _getCloudKitBookmarksContainer];
-  [v3 addObjectsFromArray:v25];
+  _getCloudKitBookmarksContainer = [(SystemDiagnostic *)self _getCloudKitBookmarksContainer];
+  [v3 addObjectsFromArray:_getCloudKitBookmarksContainer];
 
-  v26 = [(SystemDiagnostic *)self _copySiriAnalyticsDB];
-  [v3 addObjectsFromArray:v26];
+  _copySiriAnalyticsDB = [(SystemDiagnostic *)self _copySiriAnalyticsDB];
+  [v3 addObjectsFromArray:_copySiriAnalyticsDB];
 
-  v27 = [(SystemDiagnostic *)self _copyHIDFWCrashLogs];
-  [v3 addObjectsFromArray:v27];
+  _copyHIDFWCrashLogs = [(SystemDiagnostic *)self _copyHIDFWCrashLogs];
+  [v3 addObjectsFromArray:_copyHIDFWCrashLogs];
 
-  v28 = [(SystemDiagnostic *)self _copySplatVersioningLogs];
-  [v3 addObjectsFromArray:v28];
+  _copySplatVersioningLogs = [(SystemDiagnostic *)self _copySplatVersioningLogs];
+  [v3 addObjectsFromArray:_copySplatVersioningLogs];
 
-  v29 = [(SystemDiagnostic *)self _copyHangTracerTailspinsContainer];
-  [v3 addObjectsFromArray:v29];
+  _copyHangTracerTailspinsContainer = [(SystemDiagnostic *)self _copyHangTracerTailspinsContainer];
+  [v3 addObjectsFromArray:_copyHangTracerTailspinsContainer];
 
-  v30 = [(SystemDiagnostic *)self _copySentryPlistsContainer];
-  [v3 addObjectsFromArray:v30];
+  _copySentryPlistsContainer = [(SystemDiagnostic *)self _copySentryPlistsContainer];
+  [v3 addObjectsFromArray:_copySentryPlistsContainer];
 
-  v31 = [(SystemDiagnostic *)self _copyMCLogs];
-  [v3 addObjectsFromArray:v31];
+  _copyMCLogs = [(SystemDiagnostic *)self _copyMCLogs];
+  [v3 addObjectsFromArray:_copyMCLogs];
 
-  v32 = [(SystemDiagnostic *)self _copyWatchdogTailspins];
-  [v3 addObjectsFromArray:v32];
+  _copyWatchdogTailspins = [(SystemDiagnostic *)self _copyWatchdogTailspins];
+  [v3 addObjectsFromArray:_copyWatchdogTailspins];
 
-  v33 = [(SystemDiagnostic *)self _copyWatchdogdDDTs];
-  [v3 addObjectsFromArray:v33];
+  _copyWatchdogdDDTs = [(SystemDiagnostic *)self _copyWatchdogdDDTs];
+  [v3 addObjectsFromArray:_copyWatchdogdDDTs];
 
-  v34 = [(SystemDiagnostic *)self _copyTCCLogs];
-  [v3 addObjectsFromArray:v34];
+  _copyTCCLogs = [(SystemDiagnostic *)self _copyTCCLogs];
+  [v3 addObjectsFromArray:_copyTCCLogs];
 
-  v35 = [(SystemDiagnostic *)self _getCalendarPrefLogs];
-  [v3 addObjectsFromArray:v35];
+  _getCalendarPrefLogs = [(SystemDiagnostic *)self _getCalendarPrefLogs];
+  [v3 addObjectsFromArray:_getCalendarPrefLogs];
 
-  v36 = [(SystemDiagnostic *)self _getSocialLayerPlist];
-  [v3 addObjectsFromArray:v36];
+  _getSocialLayerPlist = [(SystemDiagnostic *)self _getSocialLayerPlist];
+  [v3 addObjectsFromArray:_getSocialLayerPlist];
 
   return v3;
 }

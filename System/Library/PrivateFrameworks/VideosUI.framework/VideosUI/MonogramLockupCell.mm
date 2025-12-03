@@ -1,25 +1,25 @@
 @interface MonogramLockupCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (id)zoomSourceView;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)vui_setHighlighted:(BOOL)a3;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)vui_setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MonogramLockupCell
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3DCCC98(v4);
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E3DCD750(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E3DCD750(only, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -29,16 +29,16 @@
   return result;
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3DCE9A8(v4);
 }
 
 - (id)zoomSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3DCF238();
 
   return v3;

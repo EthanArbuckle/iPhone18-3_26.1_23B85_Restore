@@ -1,40 +1,40 @@
 @interface _DASBudgetModulator
-+ (id)modulatorForBudgetTypes:(id)a3 withBudgets:(id)a4 persistence:(id)a5 withQueue:(id)a6;
-- (double)areaUnderTrapeziodWithFirstValue:(double)a3 andSecondValue:(double)a4;
-- (double)budgetProportionAtDate:(id)a3 withTimeline:(id)a4 withNormalizer:(double)a5;
-- (double)gaussianKDEatDate:(id)a3 withTimeline:(id)a4 withNormalizer:(double)a5;
-- (double)locked_budgetAllocationProportionAtDate:(id)a3 forWidgetBudgetID:(id)a4;
-- (double)relativeUsageAtDate:(id)a3 withTimeline:(id)a4;
-- (id)initForBudgetTypes:(id)a3 withBudgets:(id)a4 persistence:(id)a5 withQueue:(id)a6;
++ (id)modulatorForBudgetTypes:(id)types withBudgets:(id)budgets persistence:(id)persistence withQueue:(id)queue;
+- (double)areaUnderTrapeziodWithFirstValue:(double)value andSecondValue:(double)secondValue;
+- (double)budgetProportionAtDate:(id)date withTimeline:(id)timeline withNormalizer:(double)normalizer;
+- (double)gaussianKDEatDate:(id)date withTimeline:(id)timeline withNormalizer:(double)normalizer;
+- (double)locked_budgetAllocationProportionAtDate:(id)date forWidgetBudgetID:(id)d;
+- (double)relativeUsageAtDate:(id)date withTimeline:(id)timeline;
+- (id)initForBudgetTypes:(id)types withBudgets:(id)budgets persistence:(id)persistence withQueue:(id)queue;
 - (id)usageTimeline;
-- (id)usageTimelineForWidgetBudgetID:(id)a3 withEndDate:(id)a4;
-- (int)computeSlotForDate:(id)a3 relativeToDate:(id)a4;
-- (void)locked_addBudgetsToBeModulated:(id)a3;
+- (id)usageTimelineForWidgetBudgetID:(id)d withEndDate:(id)date;
+- (int)computeSlotForDate:(id)date relativeToDate:(id)toDate;
+- (void)locked_addBudgetsToBeModulated:(id)modulated;
 - (void)locked_modulateBudgets;
-- (void)locked_replaceBudgetsToBeModulated:(id)a3;
-- (void)locked_updateBudgetsToBeModulatedAdditions:(id)a3 removals:(id)a4;
-- (void)modulateBudgets:(id)a3 lastModulatedAt:(id)a4 forNumberOfModulationSlots:(int)a5 atDate:(id)a6;
+- (void)locked_replaceBudgetsToBeModulated:(id)modulated;
+- (void)locked_updateBudgetsToBeModulatedAdditions:(id)additions removals:(id)removals;
+- (void)modulateBudgets:(id)budgets lastModulatedAt:(id)at forNumberOfModulationSlots:(int)slots atDate:(id)date;
 - (void)registerForTrial;
-- (void)updateCapacity:(double)a3 forBudgetWithName:(id)a4;
-- (void)updateTrialParametersWithManager:(id)a3;
+- (void)updateCapacity:(double)capacity forBudgetWithName:(id)name;
+- (void)updateTrialParametersWithManager:(id)manager;
 @end
 
 @implementation _DASBudgetModulator
 
-- (id)initForBudgetTypes:(id)a3 withBudgets:(id)a4 persistence:(id)a5 withQueue:(id)a6
+- (id)initForBudgetTypes:(id)types withBudgets:(id)budgets persistence:(id)persistence withQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typesCopy = types;
+  budgetsCopy = budgets;
+  persistenceCopy = persistence;
+  queueCopy = queue;
   v48.receiver = self;
   v48.super_class = _DASBudgetModulator;
   v14 = [(_DASBudgetModulator *)&v48 init];
   if (v14)
   {
-    if (v11)
+    if (budgetsCopy)
     {
-      v15 = v11;
+      v15 = budgetsCopy;
     }
 
     else
@@ -45,10 +45,10 @@
     v16 = *(v14 + 5);
     *(v14 + 5) = v15;
 
-    objc_storeStrong(v14 + 1, a5);
-    objc_storeStrong(v14 + 2, a6);
-    v17 = [NSString stringWithFormat:@"budgetModulation%@", v10];
-    v18 = os_log_create("com.apple.duetactivityscheduler", [v17 UTF8String]);
+    objc_storeStrong(v14 + 1, persistence);
+    objc_storeStrong(v14 + 2, queue);
+    typesCopy = [NSString stringWithFormat:@"budgetModulation%@", typesCopy];
+    v18 = os_log_create("com.apple.duetactivityscheduler", [typesCopy UTF8String]);
     v19 = *(v14 + 11);
     *(v14 + 11) = v18;
 
@@ -68,7 +68,7 @@
     v27 = *(v14 + 9);
     *(v14 + 9) = v26;
 
-    v28 = [v10 isEqualToString:@"Widgets"];
+    v28 = [typesCopy isEqualToString:@"Widgets"];
     if (v28)
     {
       v29 = 900;
@@ -102,9 +102,9 @@
     v33 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_INHERIT_QOS_CLASS, QOS_CLASS_UTILITY, 0, block);
     dispatch_source_set_event_handler(v31, v33);
 
-    v34 = [v12 lastModulationDate];
+    lastModulationDate = [persistenceCopy lastModulationDate];
     v35 = v32[3];
-    v32[3] = v34;
+    v32[3] = lastModulationDate;
 
     v36 = dword_10020AE10;
     v37 = v32[3];
@@ -138,13 +138,13 @@
   return v14;
 }
 
-+ (id)modulatorForBudgetTypes:(id)a3 withBudgets:(id)a4 persistence:(id)a5 withQueue:(id)a6
++ (id)modulatorForBudgetTypes:(id)types withBudgets:(id)budgets persistence:(id)persistence withQueue:(id)queue
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initForBudgetTypes:v12 withBudgets:v11 persistence:v10 withQueue:v9];
+  queueCopy = queue;
+  persistenceCopy = persistence;
+  budgetsCopy = budgets;
+  typesCopy = types;
+  v13 = [objc_alloc(objc_opt_class()) initForBudgetTypes:typesCopy withBudgets:budgetsCopy persistence:persistenceCopy withQueue:queueCopy];
 
   return v13;
 }
@@ -156,10 +156,10 @@
   [(_DASBudgetModulator *)self updateTrialParametersWithManager:v3];
 }
 
-- (void)updateTrialParametersWithManager:(id)a3
+- (void)updateTrialParametersWithManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 factorWithName:@"Budget_UsageModulationMaximumInitialAllotmentPercentage"];
+  managerCopy = manager;
+  v5 = [managerCopy factorWithName:@"Budget_UsageModulationMaximumInitialAllotmentPercentage"];
   v6 = v5;
   if (v5)
   {
@@ -169,7 +169,7 @@
 
   v8 = qword_100209AC8;
   v9 = qword_100209AD0;
-  v10 = [v4 factorWithName:@"Budget_MinimumBatteryLevelForFullUsageInitialAllotment"];
+  v10 = [managerCopy factorWithName:@"Budget_MinimumBatteryLevelForFullUsageInitialAllotment"];
 
   if (v10)
   {
@@ -177,7 +177,7 @@
     v9 = v11;
   }
 
-  v12 = [v4 factorWithName:@"Budget_MinimumBatteryForUsageInitialAllotment"];
+  v12 = [managerCopy factorWithName:@"Budget_MinimumBatteryForUsageInitialAllotment"];
 
   if (v12)
   {
@@ -191,7 +191,7 @@
     qword_100209AD0 = v9;
   }
 
-  v14 = [v4 factorWithName:@"Budget_MinimumUsageAllotmentSlotLookaheadDuration"];
+  v14 = [managerCopy factorWithName:@"Budget_MinimumUsageAllotmentSlotLookaheadDuration"];
 
   if (v14)
   {
@@ -214,14 +214,14 @@
   }
 }
 
-- (void)locked_replaceBudgetsToBeModulated:(id)a3
+- (void)locked_replaceBudgetsToBeModulated:(id)modulated
 {
   queue = self->_queue;
-  v5 = a3;
+  modulatedCopy = modulated;
   dispatch_assert_queue_V2(queue);
   [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets removeAllObjects];
   [(NSMutableDictionary *)self->_predictedBudgetsForWidgets removeAllObjects];
-  v6 = [v5 copy];
+  v6 = [modulatedCopy copy];
   budgets = self->_budgets;
   self->_budgets = v6;
 
@@ -229,37 +229,37 @@
   lastModulationDate = self->_lastModulationDate;
   self->_lastModulationDate = v8;
 
-  [(_DASBudgetModulator *)self modulateBudgets:v5 lastModulatedAt:0 forNumberOfModulationSlots:1 atDate:self->_lastModulationDate];
+  [(_DASBudgetModulator *)self modulateBudgets:modulatedCopy lastModulatedAt:0 forNumberOfModulationSlots:1 atDate:self->_lastModulationDate];
   persistence = self->_persistence;
   v11 = self->_budgets;
 
   [(_DASBudgetPersisting *)persistence saveBudgets:v11];
 }
 
-- (void)locked_addBudgetsToBeModulated:(id)a3
+- (void)locked_addBudgetsToBeModulated:(id)modulated
 {
-  v6 = a3;
+  modulatedCopy = modulated;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_lastModulationDate)
   {
-    [(_DASBudgetModulator *)self modulateBudgets:v6 lastModulatedAt:0 forNumberOfModulationSlots:1 atDate:?];
+    [(_DASBudgetModulator *)self modulateBudgets:modulatedCopy lastModulatedAt:0 forNumberOfModulationSlots:1 atDate:?];
   }
 
-  v4 = [(NSArray *)self->_budgets arrayByAddingObjectsFromArray:v6];
+  v4 = [(NSArray *)self->_budgets arrayByAddingObjectsFromArray:modulatedCopy];
   budgets = self->_budgets;
   self->_budgets = v4;
 
   [(_DASBudgetPersisting *)self->_persistence saveBudgets:self->_budgets];
 }
 
-- (void)locked_updateBudgetsToBeModulatedAdditions:(id)a3 removals:(id)a4
+- (void)locked_updateBudgetsToBeModulatedAdditions:(id)additions removals:(id)removals
 {
-  v6 = a3;
-  v7 = a4;
+  additionsCopy = additions;
+  removalsCopy = removals;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_lastModulationDate)
   {
-    [(_DASBudgetModulator *)self modulateBudgets:v6 lastModulatedAt:0 forNumberOfModulationSlots:1 atDate:?];
+    [(_DASBudgetModulator *)self modulateBudgets:additionsCopy lastModulatedAt:0 forNumberOfModulationSlots:1 atDate:?];
   }
 
   v8 = [(NSArray *)self->_budgets mutableCopy];
@@ -267,7 +267,7 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = removalsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -294,7 +294,7 @@
     while (v11);
   }
 
-  [v8 addObjectsFromArray:v6];
+  [v8 addObjectsFromArray:additionsCopy];
   v14 = [v8 copy];
   budgets = self->_budgets;
   self->_budgets = v14;
@@ -302,32 +302,32 @@
   [(_DASBudgetPersisting *)self->_persistence saveBudgets:self->_budgets];
 }
 
-- (double)relativeUsageAtDate:(id)a3 withTimeline:(id)a4
+- (double)relativeUsageAtDate:(id)date withTimeline:(id)timeline
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dateCopy = date;
+  timelineCopy = timeline;
+  if (timelineCopy)
   {
     v9 = objc_autoreleasePoolPush();
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v48 = 138412290;
-      v49 = v7;
+      v49 = timelineCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Modulation Timeline: %@", &v48, 0xCu);
     }
 
-    v11 = [v7 startDate];
-    v12 = [v7 valueAtDate:v11];
+    startDate = [timelineCopy startDate];
+    v12 = [timelineCopy valueAtDate:startDate];
     [v12 doubleValue];
     v14 = v13;
 
-    v15 = [v7 startDate];
+    startDate2 = [timelineCopy startDate];
     LODWORD(v16) = dword_10020AE10;
-    v17 = [v15 dateByAddingTimeInterval:v16];
+    v17 = [startDate2 dateByAddingTimeInterval:v16];
 
-    v18 = [v7 endDate];
-    [v17 timeIntervalSinceDate:v18];
+    endDate = [timelineCopy endDate];
+    [v17 timeIntervalSinceDate:endDate];
     v20 = v19;
 
     if (v20 >= 0.0)
@@ -339,15 +339,15 @@
     {
       do
       {
-        v22 = [v7 valueAtDate:v17];
+        v22 = [timelineCopy valueAtDate:v17];
         [v22 doubleValue];
         v14 = v14 + v23;
 
         LODWORD(v24) = dword_10020AE10;
         v25 = [v17 dateByAddingTimeInterval:v24];
 
-        v26 = [v7 endDate];
-        [v25 timeIntervalSinceDate:v26];
+        endDate2 = [timelineCopy endDate];
+        [v25 timeIntervalSinceDate:endDate2];
         v28 = v27;
 
         v17 = v25;
@@ -364,9 +364,9 @@
       v30 = v31;
     }
 
-    v32 = [v6 dateByAddingTimeInterval:v30];
-    v33 = [v7 startDate];
-    [v32 timeIntervalSinceDate:v33];
+    v32 = [dateCopy dateByAddingTimeInterval:v30];
+    startDate3 = [timelineCopy startDate];
+    [v32 timeIntervalSinceDate:startDate3];
     v35 = v34;
 
     if (v35 >= 0.0)
@@ -380,8 +380,8 @@
       {
         v36 = [v32 dateByAddingTimeInterval:86400.0];
 
-        v37 = [v7 startDate];
-        [v36 timeIntervalSinceDate:v37];
+        startDate4 = [timelineCopy startDate];
+        [v36 timeIntervalSinceDate:startDate4];
         v39 = v38;
 
         v32 = v36;
@@ -395,7 +395,7 @@
     {
       v42 = v40;
       v43 = [NSNumber numberWithDouble:v14];
-      v44 = [v7 valueAtDate:v36];
+      v44 = [timelineCopy valueAtDate:v36];
       v48 = 138412802;
       v49 = v43;
       v50 = 2112;
@@ -413,7 +413,7 @@
 
     else
     {
-      v45 = [v7 valueAtDate:v36];
+      v45 = [timelineCopy valueAtDate:v36];
       [v45 doubleValue];
       v29 = v46 / v14;
     }
@@ -437,21 +437,21 @@
   v4 = v3;
   if (self->_usage && ([v3 timeIntervalSinceDate:self->_lastUsageTimelineUpdate], v5 < 21600.0))
   {
-    v6 = self->_usage;
+    deviceActivityLikelihood = self->_usage;
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
     v8 = +[_DASPredictionManager sharedTimelinePredictor];
-    v6 = [v8 deviceActivityLikelihood];
+    deviceActivityLikelihood = [v8 deviceActivityLikelihood];
 
-    objc_storeStrong(&self->_usage, v6);
+    objc_storeStrong(&self->_usage, deviceActivityLikelihood);
     objc_storeStrong(&self->_lastUsageTimelineUpdate, v4);
     objc_autoreleasePoolPop(v7);
   }
 
-  return v6;
+  return deviceActivityLikelihood;
 }
 
 - (void)locked_modulateBudgets
@@ -501,16 +501,16 @@
 LABEL_9:
 }
 
-- (void)modulateBudgets:(id)a3 lastModulatedAt:(id)a4 forNumberOfModulationSlots:(int)a5 atDate:(id)a6
+- (void)modulateBudgets:(id)budgets lastModulatedAt:(id)at forNumberOfModulationSlots:(int)slots atDate:(id)date
 {
-  v9 = a3;
-  v10 = a6;
+  budgetsCopy = budgets;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  obj = v9;
+  obj = budgetsCopy;
   v11 = [obj countByEnumeratingWithState:&v74 objects:v84 count:16];
   if (v11)
   {
@@ -520,7 +520,7 @@ LABEL_9:
     v16 = 0.0;
     *&v12 = 134218242;
     v68 = v12;
-    v69 = a4;
+    atCopy = at;
     v70 = *v75;
     do
     {
@@ -534,16 +534,16 @@ LABEL_9:
         }
 
         v18 = *(*(&v74 + 1) + 8 * v17);
-        v19 = [v18 allocationType];
-        if (v19 <= 1)
+        allocationType = [v18 allocationType];
+        if (allocationType <= 1)
         {
-          if (v19)
+          if (allocationType)
           {
-            if (v19 == 1)
+            if (allocationType == 1)
             {
               [v18 capacity];
               LODWORD(v28) = dword_10020AE14;
-              v16 = v27 * a5 / v28;
+              v16 = v27 * slots / v28;
             }
           }
 
@@ -555,15 +555,15 @@ LABEL_9:
 
         else
         {
-          switch(v19)
+          switch(allocationType)
           {
             case 2:
-              if (a4)
+              if (at)
               {
                 if (v15 < 0.0)
                 {
-                  v29 = [(_DASBudgetModulator *)self usageTimeline];
-                  [(_DASBudgetModulator *)self relativeUsageAtDate:v10 withTimeline:v29];
+                  usageTimeline = [(_DASBudgetModulator *)self usageTimeline];
+                  [(_DASBudgetModulator *)self relativeUsageAtDate:dateCopy withTimeline:usageTimeline];
                   v15 = v30;
                 }
 
@@ -608,11 +608,11 @@ LABEL_9:
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
                 {
                   v44 = v43;
-                  v45 = [v18 name];
+                  name = [v18 name];
                   *buf = v68;
                   v79 = v16;
                   v80 = 2112;
-                  v81 = *&v45;
+                  v81 = *&name;
                   _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "Allocating %.0f budget on start for %@", buf, 0x16u);
                 }
 
@@ -641,8 +641,8 @@ LABEL_58:
             case 3:
               if (v15 < 0.0)
               {
-                v33 = [(_DASBudgetModulator *)self usageTimeline];
-                [(_DASBudgetModulator *)self relativeUsageAtDate:v10 withTimeline:v33];
+                usageTimeline2 = [(_DASBudgetModulator *)self usageTimeline];
+                [(_DASBudgetModulator *)self relativeUsageAtDate:dateCopy withTimeline:usageTimeline2];
                 v15 = v34;
               }
 
@@ -650,19 +650,19 @@ LABEL_58:
               v16 = v35 * (1.0 - v15);
               break;
             case 4:
-              if (a4)
+              if (at)
               {
-                v20 = [v18 widgetBudgetID];
+                widgetBudgetID = [v18 widgetBudgetID];
                 v21 = 0.0;
-                if (a5 >= 1)
+                if (slots >= 1)
                 {
-                  v23 = 1 - a5;
-                  v22 = a5 + 1;
+                  v23 = 1 - slots;
+                  v22 = slots + 1;
                   do
                   {
-                    [v10 dateByAddingTimeInterval:(dword_10020AE10 * v23)];
+                    [dateCopy dateByAddingTimeInterval:(dword_10020AE10 * v23)];
                     v24 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                    [(_DASBudgetModulator *)self locked_budgetAllocationProportionAtDate:*&v24 forWidgetBudgetID:v20];
+                    [(_DASBudgetModulator *)self locked_budgetAllocationProportionAtDate:*&v24 forWidgetBudgetID:widgetBudgetID];
                     v15 = v25;
                     v21 = v21 + v25;
                     v26 = self->_log;
@@ -684,7 +684,7 @@ LABEL_58:
                   while (v22 > 1);
                 }
 
-                a4 = v69;
+                at = atCopy;
                 v14 = v70;
                 v13 = v72;
               }
@@ -712,7 +712,7 @@ LABEL_58:
 
         if ([v18 allocationType])
         {
-          if (!a4)
+          if (!at)
           {
             goto LABEL_52;
           }
@@ -742,8 +742,8 @@ LABEL_47:
         [v18 capacity];
         if (v50 != v51)
         {
-          v52 = [v18 lastModulatedDate];
-          if (!v52 || (v53 = v52, [v18 lastModulatedDate], v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "timeIntervalSinceDate:", v54), v56 = v55, v54, v53, v56 >= 86400.0))
+          lastModulatedDate = [v18 lastModulatedDate];
+          if (!lastModulatedDate || (v53 = lastModulatedDate, [v18 lastModulatedDate], v54 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dateCopy, "timeIntervalSinceDate:", v54), v56 = v55, v54, v53, v56 >= 86400.0))
           {
             v65 = self->_log;
             if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
@@ -770,8 +770,8 @@ LABEL_47:
           v58 = v57;
           [v18 name];
           v59 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-          v60 = [v18 lastModulatedDate];
-          v61 = [v60 dateByAddingTimeInterval:86400.0];
+          lastModulatedDate2 = [v18 lastModulatedDate];
+          v61 = [lastModulatedDate2 dateByAddingTimeInterval:86400.0];
           *buf = 138412546;
           v79 = v59;
           v80 = 2112;
@@ -793,9 +793,9 @@ LABEL_59:
   }
 }
 
-- (void)updateCapacity:(double)a3 forBudgetWithName:(id)a4
+- (void)updateCapacity:(double)capacity forBudgetWithName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -816,12 +816,12 @@ LABEL_59:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:v6];
+        name = [v12 name];
+        v14 = [name isEqualToString:nameCopy];
 
         if (v14)
         {
-          [v12 setCapacity:a3];
+          [v12 setCapacity:capacity];
           goto LABEL_11;
         }
       }
@@ -841,9 +841,9 @@ LABEL_11:
   [(_DASBudgetPersisting *)self->_persistence saveBudgets:self->_budgets];
 }
 
-- (int)computeSlotForDate:(id)a3 relativeToDate:(id)a4
+- (int)computeSlotForDate:(id)date relativeToDate:(id)toDate
 {
-  [a3 timeIntervalSinceDate:a4];
+  [date timeIntervalSinceDate:toDate];
   if (v4 < 0.0)
   {
     v4 = v4 + ceil(v4 / -86400.0) * 86400.0;
@@ -852,12 +852,12 @@ LABEL_11:
   return v4 / dword_10020AE10 % dword_10020AE14;
 }
 
-- (double)locked_budgetAllocationProportionAtDate:(id)a3 forWidgetBudgetID:(id)a4
+- (double)locked_budgetAllocationProportionAtDate:(id)date forWidgetBudgetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMutableDictionary *)self->_predictedBudgetsForWidgets objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_predictedBudgetsForWidgets objectForKeyedSubscript:dCopy];
 
   if (!v8)
   {
@@ -866,7 +866,7 @@ LABEL_6:
     if (lastStartOfADayPeriodForBudgetAllocation)
     {
       v13 = lastStartOfADayPeriodForBudgetAllocation;
-      [(NSDate *)v13 timeIntervalSinceDate:v6];
+      [(NSDate *)v13 timeIntervalSinceDate:dateCopy];
       if (v14 >= -86400.0)
       {
         v9 = v13;
@@ -878,18 +878,18 @@ LABEL_6:
         {
           v9 = [(NSDate *)v13 dateByAddingTimeInterval:86400.0];
 
-          [(NSDate *)v9 timeIntervalSinceDate:v6];
+          [(NSDate *)v9 timeIntervalSinceDate:dateCopy];
           v13 = v9;
         }
 
         while (v15 < -86400.0);
       }
 
-      v24 = [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets objectForKeyedSubscript:v7];
+      v24 = [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets objectForKeyedSubscript:dCopy];
 
       if (v24)
       {
-        [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets objectForKeyedSubscript:v7];
+        [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets objectForKeyedSubscript:dCopy];
       }
 
       else
@@ -897,7 +897,7 @@ LABEL_6:
         [(NSDate *)v9 dateByAddingTimeInterval:0.0];
       }
       v25 = ;
-      [v25 timeIntervalSinceDate:v6];
+      [v25 timeIntervalSinceDate:dateCopy];
       if (-v26 <= (24 * dword_10020AE10))
       {
         v23 = v25;
@@ -909,7 +909,7 @@ LABEL_6:
         {
           v23 = [v25 dateByAddingTimeInterval:?];
 
-          [v23 timeIntervalSinceDate:v6];
+          [v23 timeIntervalSinceDate:dateCopy];
           v25 = v23;
         }
 
@@ -918,7 +918,7 @@ LABEL_6:
 
       while (1)
       {
-        [v23 timeIntervalSinceDate:v6];
+        [v23 timeIntervalSinceDate:dateCopy];
         if (v29 <= 0.0)
         {
           break;
@@ -937,24 +937,24 @@ LABEL_6:
       v23 = [(NSDate *)v9 dateByAddingTimeInterval:0.0];
     }
 
-    v30 = [(_DASBudgetModulator *)self usageTimelineForWidgetBudgetID:v7 withEndDate:v9];
+    v30 = [(_DASBudgetModulator *)self usageTimelineForWidgetBudgetID:dCopy withEndDate:v9];
     v31 = v30;
     if (v30)
     {
-      v32 = [v30 startDate];
-      v33 = [v31 valueAtDate:v32];
+      startDate = [v30 startDate];
+      v33 = [v31 valueAtDate:startDate];
       [v33 doubleValue];
       v35 = v34;
 
-      v36 = [v31 startDate];
+      startDate2 = [v31 startDate];
       LODWORD(v37) = dword_10020AE10;
-      v38 = [v36 dateByAddingTimeInterval:v37];
+      v38 = [startDate2 dateByAddingTimeInterval:v37];
 
-      v39 = [v31 endDate];
-      [v38 timeIntervalSinceDate:v39];
+      endDate = [v31 endDate];
+      [v38 timeIntervalSinceDate:endDate];
       v41 = v40;
 
-      v70 = v7;
+      v70 = dCopy;
       if (v41 >= 0.0)
       {
         v45 = v38;
@@ -971,8 +971,8 @@ LABEL_6:
           LODWORD(v44) = dword_10020AE10;
           v45 = [v38 dateByAddingTimeInterval:v44];
 
-          v46 = [v31 endDate];
-          [v45 timeIntervalSinceDate:v46];
+          endDate2 = [v31 endDate];
+          [v45 timeIntervalSinceDate:endDate2];
           v48 = v47;
 
           v38 = v45;
@@ -992,7 +992,7 @@ LABEL_6:
         [v51 addObject:v56];
       }
 
-      v7 = v70;
+      dCopy = v70;
       [(NSMutableDictionary *)self->_predictedBudgetsForWidgets setObject:v51 forKeyedSubscript:v70];
       [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets setObject:v23 forKeyedSubscript:v70];
       objc_storeStrong(&self->_lastStartOfADayPeriodForBudgetAllocation, v9);
@@ -1014,10 +1014,10 @@ LABEL_6:
         v76 = v51;
         _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_INFO, "Computed fresh budget allocation predictions cache for widget %@, START: %@, END: %@, TIMELINE START: %@, PREDICTIONS: %@", buf, 0x34u);
 
-        v7 = v70;
+        dCopy = v70;
       }
 
-      v61 = [(_DASBudgetModulator *)self computeSlotForDate:v6 relativeToDate:v23];
+      v61 = [(_DASBudgetModulator *)self computeSlotForDate:dateCopy relativeToDate:v23];
       v62 = v61;
       if (v61 < 0x18)
       {
@@ -1036,7 +1036,7 @@ LABEL_6:
           *buf = 67109634;
           *v72 = v62;
           *&v72[4] = 2112;
-          *&v72[6] = v6;
+          *&v72[6] = dateCopy;
           *&v72[14] = 2048;
           *&v72[16] = v69;
           _os_log_error_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "PLEASE FILE A RADAR - Requested out of bounds slot index - requestedSlot: %d, requestedDate: %@, size of predicted proportions array: %lu", buf, 0x1Cu);
@@ -1053,7 +1053,7 @@ LABEL_6:
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *v72 = v7;
+        *v72 = dCopy;
         _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "Budget allocation predictions unavailable for widget %@, returning even modulation", buf, 0xCu);
       }
 
@@ -1064,15 +1064,15 @@ LABEL_6:
     goto LABEL_42;
   }
 
-  v9 = [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets objectForKeyedSubscript:v7];
-  v10 = [(_DASBudgetModulator *)self computeSlotForDate:v6 relativeToDate:v9];
+  v9 = [(NSMutableDictionary *)self->_lastPredictionUpdateForWidgets objectForKeyedSubscript:dCopy];
+  v10 = [(_DASBudgetModulator *)self computeSlotForDate:dateCopy relativeToDate:v9];
   if (v10 > 23)
   {
     v11 = self->_log;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *v72 = v7;
+      *v72 = dCopy;
       *&v72[8] = 2112;
       *&v72[10] = v9;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Cached budget allocation prediction for widget %@ too old, start at %@", buf, 0x16u);
@@ -1082,7 +1082,7 @@ LABEL_6:
   }
 
   v16 = v10;
-  v17 = [(NSMutableDictionary *)self->_predictedBudgetsForWidgets objectForKeyedSubscript:v7];
+  v17 = [(NSMutableDictionary *)self->_predictedBudgetsForWidgets objectForKeyedSubscript:dCopy];
   v18 = [v17 objectAtIndex:v16];
   [v18 doubleValue];
   v20 = v19;
@@ -1091,7 +1091,7 @@ LABEL_6:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    *v72 = v7;
+    *v72 = dCopy;
     *&v72[8] = 2112;
     *&v72[10] = v9;
     *&v72[18] = 2048;
@@ -1104,43 +1104,43 @@ LABEL_42:
   return v20;
 }
 
-- (id)usageTimelineForWidgetBudgetID:(id)a3 withEndDate:(id)a4
+- (id)usageTimelineForWidgetBudgetID:(id)d withEndDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
+  dateCopy = date;
+  dCopy = d;
   v7 = +[_DASPredictionManager sharedTimelinePredictor];
-  v8 = [v7 widgetUsageLikelihoodForBudgetID:v6 endDate:v5];
+  v8 = [v7 widgetUsageLikelihoodForBudgetID:dCopy endDate:dateCopy];
 
   return v8;
 }
 
-- (double)budgetProportionAtDate:(id)a3 withTimeline:(id)a4 withNormalizer:(double)a5
+- (double)budgetProportionAtDate:(id)date withTimeline:(id)timeline withNormalizer:(double)normalizer
 {
-  if (a5 == 0.0)
+  if (normalizer == 0.0)
   {
     return 0.0;
   }
 
-  v10 = a4;
-  v11 = a3;
-  [(_DASBudgetModulator *)self gaussianKDEatDate:v11 withTimeline:v10 withNormalizer:a5];
+  timelineCopy = timeline;
+  dateCopy = date;
+  [(_DASBudgetModulator *)self gaussianKDEatDate:dateCopy withTimeline:timelineCopy withNormalizer:normalizer];
   v13 = *&v12;
   LODWORD(v12) = dword_10020AE10;
-  v14 = [v11 dateByAddingTimeInterval:v12];
+  v14 = [dateCopy dateByAddingTimeInterval:v12];
 
-  [(_DASBudgetModulator *)self gaussianKDEatDate:v14 withTimeline:v10 withNormalizer:a5];
+  [(_DASBudgetModulator *)self gaussianKDEatDate:v14 withTimeline:timelineCopy withNormalizer:normalizer];
   v16 = v15;
 
   [(_DASBudgetModulator *)self areaUnderTrapeziodWithFirstValue:v13 andSecondValue:v16];
   return result;
 }
 
-- (double)gaussianKDEatDate:(id)a3 withTimeline:(id)a4 withNormalizer:(double)a5
+- (double)gaussianKDEatDate:(id)date withTimeline:(id)timeline withNormalizer:(double)normalizer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 startDate];
-  v11 = [(_DASBudgetModulator *)self computeSlotForDate:v8 relativeToDate:v10];
+  dateCopy = date;
+  timelineCopy = timeline;
+  startDate = [timelineCopy startDate];
+  v11 = [(_DASBudgetModulator *)self computeSlotForDate:dateCopy relativeToDate:startDate];
 
   v12 = dword_10020AE14;
   v13 = 0.0;
@@ -1158,12 +1158,12 @@ LABEL_42:
       }
 
       v18 = (dword_10020AE10 * v17);
-      v19 = [v9 startDate];
-      v20 = [NSDate dateWithTimeInterval:v19 sinceDate:v18];
+      startDate2 = [timelineCopy startDate];
+      v20 = [NSDate dateWithTimeInterval:startDate2 sinceDate:v18];
 
-      v21 = [v9 valueAtDate:v20];
+      v21 = [timelineCopy valueAtDate:v20];
       [v21 doubleValue];
-      v23 = v22 / a5;
+      v23 = v22 / normalizer;
 
       v15 = v15 + v23 * pow(0.980198673, (v14 * v14));
       ++v14;
@@ -1177,25 +1177,25 @@ LABEL_42:
   return v13;
 }
 
-- (double)areaUnderTrapeziodWithFirstValue:(double)a3 andSecondValue:(double)a4
+- (double)areaUnderTrapeziodWithFirstValue:(double)value andSecondValue:(double)secondValue
 {
-  if (a3 >= a4)
+  if (value >= secondValue)
   {
-    v4 = a4;
+    valueCopy = secondValue;
   }
 
   else
   {
-    v4 = a3;
+    valueCopy = value;
   }
 
-  v5 = a4 - a3;
+  v5 = secondValue - value;
   if (v5 < 0.0)
   {
     v5 = -v5;
   }
 
-  return v4 + v5 * 0.5;
+  return valueCopy + v5 * 0.5;
 }
 
 @end

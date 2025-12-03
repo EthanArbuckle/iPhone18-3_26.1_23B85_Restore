@@ -1,18 +1,18 @@
 @interface FSFCurareInteractionFeatureStoreStream
-+ (BOOL)createError:(id)a3 error:(id *)a4;
-- (BOOL)insert:(id)a3 error:(id *)a4;
-- (FSFCurareInteractionFeatureStoreStream)initWithStreamId:(id)a3;
-- (id)retrieve:(id)a3;
-- (id)retrieveWithInteractionWrapper:(id)a3;
-- (void)retrieve:(id)a3 completionHandler:(id)a4;
-- (void)retrieveWithInteractionWrapper:(id)a3 completionHandler:(id)a4;
++ (BOOL)createError:(id)error error:(id *)a4;
+- (BOOL)insert:(id)insert error:(id *)error;
+- (FSFCurareInteractionFeatureStoreStream)initWithStreamId:(id)id;
+- (id)retrieve:(id)retrieve;
+- (id)retrieveWithInteractionWrapper:(id)wrapper;
+- (void)retrieve:(id)retrieve completionHandler:(id)handler;
+- (void)retrieveWithInteractionWrapper:(id)wrapper completionHandler:(id)handler;
 @end
 
 @implementation FSFCurareInteractionFeatureStoreStream
 
-- (BOOL)insert:(id)a3 error:(id *)a4
+- (BOOL)insert:(id)insert error:(id *)error
 {
-  v6 = a3;
+  insertCopy = insert;
   if (!+[FSFUtils isSupportedPlatform])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
@@ -26,37 +26,37 @@ LABEL_13:
     v7 = objc_opt_class();
     v8 = @"Does not insert into FeatureStore: under privacy restriction";
 LABEL_12:
-    [v7 createError:v8 error:a4];
+    [v7 createError:v8 error:error];
     NSLog(&stru_28366A450.isa, v8);
     goto LABEL_13;
   }
 
-  v9 = [v6 interactionId];
+  interactionId = [insertCopy interactionId];
 
-  if (!v9)
+  if (!interactionId)
   {
     v7 = objc_opt_class();
     v8 = @"Failed to Insert into FeatureStore: Nil InteractionID";
     goto LABEL_12;
   }
 
-  v10 = [v6 serialize];
+  serialize = [insertCopy serialize];
 
-  if (!v10)
+  if (!serialize)
   {
     v7 = objc_opt_class();
     v8 = @"Failed to Insert into FeatureStore: Nil Serialized Data";
     goto LABEL_12;
   }
 
-  v11 = [[_CurareInternalBiomeFeature alloc] initWithCurareInteraction:v6];
+  v11 = [[_CurareInternalBiomeFeature alloc] initWithCurareInteraction:insertCopy];
   biomeStream = self->_biomeStream;
-  v13 = [v6 interactionId];
-  v14 = [(FSFFeatureStoreStream *)biomeStream insert:v11 withInteractionId:v13 atTime:CFAbsoluteTimeGetCurrent()];
+  interactionId2 = [insertCopy interactionId];
+  v14 = [(FSFFeatureStoreStream *)biomeStream insert:v11 withInteractionId:interactionId2 atTime:CFAbsoluteTimeGetCurrent()];
 
   if ((v14 & 1) == 0)
   {
-    [objc_opt_class() createError:@"Failed to Insert into FeatureStore: Biome returned false." error:a4];
+    [objc_opt_class() createError:@"Failed to Insert into FeatureStore: Biome returned false." error:error];
     NSLog(&stru_28366A450.isa, @"Failed to Insert into FeatureStore: Biome returned false.");
   }
 
@@ -64,16 +64,16 @@ LABEL_14:
   return v14;
 }
 
-+ (BOOL)createError:(id)a3 error:(id *)a4
++ (BOOL)createError:(id)error error:(id *)a4
 {
   v14[1] = *MEMORY[0x277D85DE8];
   if (a4)
   {
     v5 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    v14[0] = a3;
+    v14[0] = error;
     v6 = MEMORY[0x277CBEAC0];
-    v7 = a3;
+    errorCopy = error;
     v8 = [v6 dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v9 = [v5 errorWithDomain:@"FSFCurareInteractionStreamErrorDomain" code:1 userInfo:v8];
 
@@ -86,14 +86,14 @@ LABEL_14:
   return result;
 }
 
-- (id)retrieveWithInteractionWrapper:(id)a3
+- (id)retrieveWithInteractionWrapper:(id)wrapper
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  wrapperCopy = wrapper;
   if (+[FSFUtils isSupportedPlatform])
   {
     v5 = [(FSFFeatureStoreStream *)self->_biomeStream retrieveEvents:0 startDate:0 endDate:0];
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -109,7 +109,7 @@ LABEL_14:
     v46 = *v48;
     *&v8 = 138412546;
     v41 = v8;
-    v42 = v6;
+    v42 = dictionary;
     while (1)
     {
       for (i = 0; i != v9; ++i)
@@ -120,30 +120,30 @@ LABEL_14:
         }
 
         v11 = *(*(&v47 + 1) + 8 * i);
-        v12 = [v11 eventBody];
+        eventBody = [v11 eventBody];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
-        v14 = [v11 eventBody];
+        eventBody2 = [v11 eventBody];
         if (isKindOfClass)
         {
           v44 = [FSFFeatureStoreBiomeEvent alloc];
-          v45 = [v14 content];
-          v15 = [v45 objectForKeyedSubscript:@"interactionId"];
-          v16 = [v14 content];
-          v17 = [v16 objectForKeyedSubscript:@"feature"];
+          content = [eventBody2 content];
+          v15 = [content objectForKeyedSubscript:@"interactionId"];
+          content2 = [eventBody2 content];
+          v17 = [content2 objectForKeyedSubscript:@"feature"];
           v18 = [FSFUtils getDataFromBase64EncodedStr:v17];
           v19 = v9;
-          v20 = v4;
-          v21 = [v14 dataVersion];
+          v20 = wrapperCopy;
+          dataVersion = [eventBody2 dataVersion];
           [v11 timestamp];
-          v22 = v21;
-          v4 = v20;
+          v22 = dataVersion;
+          wrapperCopy = v20;
           v9 = v19;
-          v23 = [(FSFFeatureStoreBiomeEvent *)v44 initWithInteractionId:v15 featureData:v18 dataVersion:v22 timestamp:?];
+          eventBody3 = [(FSFFeatureStoreBiomeEvent *)v44 initWithInteractionId:v15 featureData:v18 dataVersion:v22 timestamp:?];
 
-          v6 = v42;
-          if (v4)
+          dictionary = v42;
+          if (wrapperCopy)
           {
             goto LABEL_16;
           }
@@ -156,8 +156,8 @@ LABEL_14:
 
           if (v24)
           {
-            v23 = [v11 eventBody];
-            if (v4)
+            eventBody3 = [v11 eventBody];
+            if (wrapperCopy)
             {
               goto LABEL_16;
             }
@@ -167,7 +167,7 @@ LABEL_14:
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
-              v34 = [v11 eventBody];
+              eventBody4 = [v11 eventBody];
               v35 = objc_opt_class();
               v36 = NSStringFromClass(v35);
               [v11 eventBody];
@@ -181,12 +181,12 @@ LABEL_14:
               v9 = v37;
             }
 
-            v23 = 0;
-            if (v4)
+            eventBody3 = 0;
+            if (wrapperCopy)
             {
 LABEL_16:
-              v25 = [(FSFFeatureStoreBiomeEvent *)v23 interactionId];
-              v26 = [v4 containsObject:v25];
+              interactionId = [(FSFFeatureStoreBiomeEvent *)eventBody3 interactionId];
+              v26 = [wrapperCopy containsObject:interactionId];
 
               if (!v26)
               {
@@ -196,23 +196,23 @@ LABEL_16:
           }
         }
 
-        v27 = [(FSFFeatureStoreBiomeEvent *)v23 featureData];
+        featureData = [(FSFFeatureStoreBiomeEvent *)eventBody3 featureData];
 
-        if (v27)
+        if (featureData)
         {
-          v28 = [(FSFFeatureStoreBiomeEvent *)v23 interactionId];
-          v29 = [v6 objectForKeyedSubscript:v28];
+          interactionId2 = [(FSFFeatureStoreBiomeEvent *)eventBody3 interactionId];
+          v29 = [dictionary objectForKeyedSubscript:interactionId2];
 
           if (!v29)
           {
             v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-            v31 = [(FSFFeatureStoreBiomeEvent *)v23 interactionId];
-            [v6 setObject:v30 forKeyedSubscript:v31];
+            interactionId3 = [(FSFFeatureStoreBiomeEvent *)eventBody3 interactionId];
+            [dictionary setObject:v30 forKeyedSubscript:interactionId3];
           }
 
-          v32 = [(FSFFeatureStoreBiomeEvent *)v23 interactionId];
-          v33 = [v6 objectForKeyedSubscript:v32];
-          [v33 addObject:v23];
+          interactionId4 = [(FSFFeatureStoreBiomeEvent *)eventBody3 interactionId];
+          v33 = [dictionary objectForKeyedSubscript:interactionId4];
+          [v33 addObject:eventBody3];
         }
 
 LABEL_21:
@@ -229,28 +229,28 @@ LABEL_23:
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-  v6 = 0;
+  dictionary = 0;
 LABEL_25:
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return dictionary;
 }
 
-- (void)retrieveWithInteractionWrapper:(id)a3 completionHandler:(id)a4
+- (void)retrieveWithInteractionWrapper:(id)wrapper completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(FSFCurareInteractionFeatureStoreStream *)self retrieveWithInteractionWrapper:a3];
-    v6[2](v6, v7);
+    handlerCopy = handler;
+    v7 = [(FSFCurareInteractionFeatureStoreStream *)self retrieveWithInteractionWrapper:wrapper];
+    handlerCopy[2](handlerCopy, v7);
   }
 }
 
-- (id)retrieve:(id)a3
+- (id)retrieve:(id)retrieve
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(FSFCurareInteractionFeatureStoreStream *)self retrieveWithInteractionWrapper:a3];
+  v3 = [(FSFCurareInteractionFeatureStoreStream *)self retrieveWithInteractionWrapper:retrieve];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (v3)
   {
@@ -294,8 +294,8 @@ LABEL_25:
                   objc_enumerationMutation(v9);
                 }
 
-                v14 = [*(*(&v21 + 1) + 8 * j) featureData];
-                [v8 addObject:v14];
+                featureData = [*(*(&v21 + 1) + 8 * j) featureData];
+                [v8 addObject:featureData];
               }
 
               v11 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -327,19 +327,19 @@ LABEL_25:
   return v15;
 }
 
-- (void)retrieve:(id)a3 completionHandler:(id)a4
+- (void)retrieve:(id)retrieve completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(FSFCurareInteractionFeatureStoreStream *)self retrieve:a3];
-    v6[2](v6, v7);
+    handlerCopy = handler;
+    v7 = [(FSFCurareInteractionFeatureStoreStream *)self retrieve:retrieve];
+    handlerCopy[2](handlerCopy, v7);
   }
 }
 
-- (FSFCurareInteractionFeatureStoreStream)initWithStreamId:(id)a3
+- (FSFCurareInteractionFeatureStoreStream)initWithStreamId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if (+[FSFUtils isSupportedPlatform])
   {
     v11.receiver = self;
@@ -348,22 +348,22 @@ LABEL_25:
     if (v5)
     {
       v6 = +[FSFBiomeFeatureStore singletonInstance];
-      v7 = [v6 getStream:v4];
+      v7 = [v6 getStream:idCopy];
       biomeStream = v5->_biomeStream;
       v5->_biomeStream = v7;
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

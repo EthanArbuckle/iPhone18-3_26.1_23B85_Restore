@@ -1,36 +1,36 @@
 @interface HAPAccessoryInfo
 - (BOOL)isCertified;
 - (BOOL)isDenylisted;
-- (HAPAccessoryInfo)initWithName:(id)a3 manufacturer:(id)a4 modelName:(id)a5 category:(id)a6 certificationStatus:(id)a7 denylisted:(id)a8 ppid:(id)a9;
+- (HAPAccessoryInfo)initWithName:(id)name manufacturer:(id)manufacturer modelName:(id)modelName category:(id)category certificationStatus:(id)status denylisted:(id)denylisted ppid:(id)ppid;
 - (id)description;
 @end
 
 @implementation HAPAccessoryInfo
 
-- (HAPAccessoryInfo)initWithName:(id)a3 manufacturer:(id)a4 modelName:(id)a5 category:(id)a6 certificationStatus:(id)a7 denylisted:(id)a8 ppid:(id)a9
+- (HAPAccessoryInfo)initWithName:(id)name manufacturer:(id)manufacturer modelName:(id)modelName category:(id)category certificationStatus:(id)status denylisted:(id)denylisted ppid:(id)ppid
 {
-  v15 = a3;
-  v16 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v17 = a9;
-  if (!v15)
+  nameCopy = name;
+  manufacturerCopy = manufacturer;
+  modelNameCopy = modelName;
+  categoryCopy = category;
+  statusCopy = status;
+  denylistedCopy = denylisted;
+  ppidCopy = ppid;
+  if (!nameCopy)
   {
     v18 = sub_10007FAA0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       sub_10007FAFC(0);
-      v19 = v23 = v16;
+      v19 = v23 = manufacturerCopy;
       *buf = 138543362;
       v30 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@Accessory name is Unknown", buf, 0xCu);
 
-      v16 = v23;
+      manufacturerCopy = v23;
     }
 
-    v15 = @"Unknown";
+    nameCopy = @"Unknown";
   }
 
   v28.receiver = self;
@@ -39,13 +39,13 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_name, v15);
-    objc_storeStrong(&v21->_manufacturer, a4);
-    objc_storeStrong(&v21->_modelName, a5);
-    objc_storeStrong(&v21->_category, a6);
-    objc_storeStrong(&v21->_certificationStatus, a7);
-    objc_storeStrong(&v21->_denylisted, a8);
-    objc_storeStrong(&v21->_ppid, a9);
+    objc_storeStrong(&v20->_name, nameCopy);
+    objc_storeStrong(&v21->_manufacturer, manufacturer);
+    objc_storeStrong(&v21->_modelName, modelName);
+    objc_storeStrong(&v21->_category, category);
+    objc_storeStrong(&v21->_certificationStatus, status);
+    objc_storeStrong(&v21->_denylisted, denylisted);
+    objc_storeStrong(&v21->_ppid, ppid);
     v21->_authenticated = 0;
   }
 
@@ -54,32 +54,32 @@
 
 - (BOOL)isCertified
 {
-  v2 = [(HAPAccessoryInfo *)self certificationStatus];
-  v3 = [v2 uppercaseString];
-  v4 = [@"CERTIFIED" isEqualToString:v3];
+  certificationStatus = [(HAPAccessoryInfo *)self certificationStatus];
+  uppercaseString = [certificationStatus uppercaseString];
+  v4 = [@"CERTIFIED" isEqualToString:uppercaseString];
 
   return v4;
 }
 
 - (BOOL)isDenylisted
 {
-  v2 = [(HAPAccessoryInfo *)self denylisted];
-  v3 = [v2 uppercaseString];
-  v4 = [@"YES" isEqualToString:v3];
+  denylisted = [(HAPAccessoryInfo *)self denylisted];
+  uppercaseString = [denylisted uppercaseString];
+  v4 = [@"YES" isEqualToString:uppercaseString];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(HAPAccessoryInfo *)self name];
-  v4 = [(HAPAccessoryInfo *)self manufacturer];
-  v5 = [(HAPAccessoryInfo *)self modelName];
-  v6 = [(HAPAccessoryInfo *)self category];
-  v7 = [(HAPAccessoryInfo *)self certificationStatus];
-  v8 = [(HAPAccessoryInfo *)self denylisted];
-  v9 = [(HAPAccessoryInfo *)self ppid];
-  v10 = [NSString stringWithFormat:@"Name: %@, Manufacturer: %@, Model: %@, Category: %@, Certification Status: %@, denylisted: %@, ppid: %@", v3, v4, v5, v6, v7, v8, v9];
+  name = [(HAPAccessoryInfo *)self name];
+  manufacturer = [(HAPAccessoryInfo *)self manufacturer];
+  modelName = [(HAPAccessoryInfo *)self modelName];
+  category = [(HAPAccessoryInfo *)self category];
+  certificationStatus = [(HAPAccessoryInfo *)self certificationStatus];
+  denylisted = [(HAPAccessoryInfo *)self denylisted];
+  ppid = [(HAPAccessoryInfo *)self ppid];
+  v10 = [NSString stringWithFormat:@"Name: %@, Manufacturer: %@, Model: %@, Category: %@, Certification Status: %@, denylisted: %@, ppid: %@", name, manufacturer, modelName, category, certificationStatus, denylisted, ppid];
 
   return v10;
 }

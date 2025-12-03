@@ -1,79 +1,79 @@
 @interface CAMSnapshotView
-- (CAMSnapshotView)initWithView:(id)a3 desiredAspectRatio:(int64_t)a4;
+- (CAMSnapshotView)initWithView:(id)view desiredAspectRatio:(int64_t)ratio;
 - (double)_resumeFadeInDuration;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 - (id)activityItemsConfiguration;
-- (void)_applyLowQualityBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)_applySnapshotBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)_applySnapshotDimAnimated:(BOOL)a3 withCompletionBlock:(id)a4;
-- (void)_prepareForApplyingBlurForStyle:(int64_t)a3 applying:(BOOL)a4 inputRadiusAmount:(double *)a5 inputRadiusDuration:(double *)a6 inputRadiusDelay:(double *)a7 inputRadiusTimingFunction:(id *)a8 opacityAmount:(double *)a9 opacityDuration:(double *)a10 opacityDelay:(double *)a11 opacityTimingFunction:(id *)a12;
-- (void)_prepareForApplyingLowQualityBlurForStyle:(int64_t)a3 applying:(BOOL)a4 opacityAmount:(double *)a5 opacityDuration:(double *)a6 opacityDelay:(double *)a7 opacityTimingFunction:(id *)a8 targetView:(id *)a9;
-- (void)_removeAnimationOnView:(id)a3 forKey:(id)a4;
-- (void)_removeLowQualityBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)_removeSnapshotBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)_removeSnapshotDimAnimated:(BOOL)a3 withCompletionBlock:(id)a4;
+- (void)_applyLowQualityBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)_applySnapshotBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)_applySnapshotDimAnimated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)_prepareForApplyingBlurForStyle:(int64_t)style applying:(BOOL)applying inputRadiusAmount:(double *)amount inputRadiusDuration:(double *)duration inputRadiusDelay:(double *)delay inputRadiusTimingFunction:(id *)function opacityAmount:(double *)opacityAmount opacityDuration:(double *)self0 opacityDelay:(double *)self1 opacityTimingFunction:(id *)self2;
+- (void)_prepareForApplyingLowQualityBlurForStyle:(int64_t)style applying:(BOOL)applying opacityAmount:(double *)amount opacityDuration:(double *)duration opacityDelay:(double *)delay opacityTimingFunction:(id *)function targetView:(id *)view;
+- (void)_removeAnimationOnView:(id)view forKey:(id)key;
+- (void)_removeLowQualityBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)_removeSnapshotBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block;
+- (void)_removeSnapshotDimAnimated:(BOOL)animated withCompletionBlock:(id)block;
 - (void)_setupDimOnSnapshot;
 - (void)_setupLowQualityBlurOnSnapshot;
 - (void)prepareForResumingUsingCrossfade;
-- (void)removeAllAnimationsOnLayer:(id)a3 recursively:(BOOL)a4 shouldLog:(BOOL)a5;
+- (void)removeAllAnimationsOnLayer:(id)layer recursively:(BOOL)recursively shouldLog:(BOOL)log;
 - (void)removeInflightBlurAnimations;
-- (void)setBlurred:(BOOL)a3 animated:(BOOL)a4 style:(int64_t)a5 withCompletionBlock:(id)a6;
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5;
+- (void)setBlurred:(BOOL)blurred animated:(BOOL)animated style:(int64_t)style withCompletionBlock:(id)block;
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated withCompletionBlock:(id)block;
 @end
 
 @implementation CAMSnapshotView
 
 - (void)removeInflightBlurAnimations
 {
-  v3 = [(CAMSnapshotView *)self _blurView];
-  v4 = [v3 layer];
-  [(CAMSnapshotView *)self removeAllAnimationsOnLayer:v4 recursively:1 shouldLog:1];
+  _blurView = [(CAMSnapshotView *)self _blurView];
+  layer = [_blurView layer];
+  [(CAMSnapshotView *)self removeAllAnimationsOnLayer:layer recursively:1 shouldLog:1];
 
-  v5 = [(CAMSnapshotView *)self _lowQualityBlurView];
-  [(CAMSnapshotView *)self _removeAnimationOnView:v5 forKey:@"inputRadiusAnimation"];
+  _lowQualityBlurView = [(CAMSnapshotView *)self _lowQualityBlurView];
+  [(CAMSnapshotView *)self _removeAnimationOnView:_lowQualityBlurView forKey:@"inputRadiusAnimation"];
 
-  v6 = [(CAMSnapshotView *)self _dimmingView];
-  [(CAMSnapshotView *)self _removeAnimationOnView:v6 forKey:@"opacityAnimation"];
+  _dimmingView = [(CAMSnapshotView *)self _dimmingView];
+  [(CAMSnapshotView *)self _removeAnimationOnView:_dimmingView forKey:@"opacityAnimation"];
 
   [(CAMSnapshotView *)self _removeAnimationOnView:self forKey:@"containerOpacityAnimation"];
 }
 
 - (void)prepareForResumingUsingCrossfade
 {
-  v3 = [(CAMSnapshotView *)self snapshotView];
-  [v3 removeFromSuperview];
+  snapshotView = [(CAMSnapshotView *)self snapshotView];
+  [snapshotView removeFromSuperview];
 
   snapshotView = self->_snapshotView;
   self->_snapshotView = 0;
 
-  v5 = [(CAMSnapshotView *)self layer];
-  [v5 setShouldRasterize:0];
+  layer = [(CAMSnapshotView *)self layer];
+  [layer setShouldRasterize:0];
 }
 
-- (CAMSnapshotView)initWithView:(id)a3 desiredAspectRatio:(int64_t)a4
+- (CAMSnapshotView)initWithView:(id)view desiredAspectRatio:(int64_t)ratio
 {
-  v6 = a3;
-  v7 = [v6 superview];
-  [v7 bounds];
+  viewCopy = view;
+  superview = [viewCopy superview];
+  [superview bounds];
   v36.receiver = self;
   v36.super_class = CAMSnapshotView;
   v8 = [(CAMSnapshotView *)&v36 initWithFrame:?];
   v9 = v8;
   if (v8)
   {
-    v8->_desiredAspectRatio = a4;
-    v10 = [MEMORY[0x1E69DC938] currentDevice];
-    v9->__supportsBlur = [v10 _graphicsQuality] == 100;
+    v8->_desiredAspectRatio = ratio;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v9->__supportsBlur = [currentDevice _graphicsQuality] == 100;
 
-    v11 = [MEMORY[0x1E69DC888] blackColor];
-    [(CAMSnapshotView *)v9 setBackgroundColor:v11];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(CAMSnapshotView *)v9 setBackgroundColor:blackColor];
 
     [(CAMSnapshotView *)v9 setOpaque:1];
     [(CAMSnapshotView *)v9 setAutoresizingMask:18];
-    [v6 center];
+    [viewCopy center];
     v13 = v12;
     v15 = v14;
-    [v6 bounds];
+    [viewCopy bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -81,21 +81,21 @@
     v34 = 0u;
     v35 = 0u;
     v33 = 0u;
-    if (v6)
+    if (viewCopy)
     {
-      [v6 transform];
+      [viewCopy transform];
     }
 
-    v24 = [(CAMSnapshotView *)v9 layer];
-    [v24 setAllowsGroupOpacity:0];
+    layer = [(CAMSnapshotView *)v9 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v25 = [(CAMSnapshotView *)v9 layer];
-    [v25 setShouldRasterize:1];
+    layer2 = [(CAMSnapshotView *)v9 layer];
+    [layer2 setShouldRasterize:1];
 
-    v26 = [(CAMSnapshotView *)v9 layer];
-    [v26 setPreloadsCache:1];
+    layer3 = [(CAMSnapshotView *)v9 layer];
+    [layer3 setPreloadsCache:1];
 
-    v27 = [v6 snapshotViewAfterScreenUpdates:0];
+    v27 = [viewCopy snapshotViewAfterScreenUpdates:0];
     snapshotView = v9->_snapshotView;
     v9->_snapshotView = v27;
 
@@ -114,110 +114,110 @@
   return v9;
 }
 
-- (void)setBlurred:(BOOL)a3 animated:(BOOL)a4 style:(int64_t)a5 withCompletionBlock:(id)a6
+- (void)setBlurred:(BOOL)blurred animated:(BOOL)animated style:(int64_t)style withCompletionBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
-  if (a5 == 2 || self->_blurred != v8)
+  animatedCopy = animated;
+  blurredCopy = blurred;
+  blockCopy = block;
+  if (style == 2 || self->_blurred != blurredCopy)
   {
-    v11 = v10;
-    self->_blurred = v8;
-    [(CAMSnapshotView *)self _setBlurStyleForEffectAnimationFactory:a5];
+    v11 = blockCopy;
+    self->_blurred = blurredCopy;
+    [(CAMSnapshotView *)self _setBlurStyleForEffectAnimationFactory:style];
     if (self->__supportsBlur)
     {
-      if (v8)
+      if (blurredCopy)
       {
-        [(CAMSnapshotView *)self _applySnapshotBlurForStyle:a5 animated:v7 withCompletionBlock:v11];
+        [(CAMSnapshotView *)self _applySnapshotBlurForStyle:style animated:animatedCopy withCompletionBlock:v11];
       }
 
       else
       {
-        [(CAMSnapshotView *)self _removeSnapshotBlurForStyle:a5 animated:v7 withCompletionBlock:v11];
+        [(CAMSnapshotView *)self _removeSnapshotBlurForStyle:style animated:animatedCopy withCompletionBlock:v11];
       }
     }
 
-    else if (v8)
+    else if (blurredCopy)
     {
-      [(CAMSnapshotView *)self _applyLowQualityBlurForStyle:a5 animated:v7 withCompletionBlock:v11];
+      [(CAMSnapshotView *)self _applyLowQualityBlurForStyle:style animated:animatedCopy withCompletionBlock:v11];
     }
 
     else
     {
-      [(CAMSnapshotView *)self _removeLowQualityBlurForStyle:a5 animated:v7 withCompletionBlock:v11];
+      [(CAMSnapshotView *)self _removeLowQualityBlurForStyle:style animated:animatedCopy withCompletionBlock:v11];
     }
   }
 
   else
   {
-    if (!v10)
+    if (!blockCopy)
     {
       goto LABEL_13;
     }
 
-    v11 = v10;
-    (*(v10 + 2))(v10, 1);
+    v11 = blockCopy;
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 
-  v10 = v11;
+  blockCopy = v11;
 LABEL_13:
 }
 
-- (void)setDimmed:(BOOL)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)setDimmed:(BOOL)dimmed animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (self->_dimmed != v6)
+  animatedCopy = animated;
+  dimmedCopy = dimmed;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (self->_dimmed != dimmedCopy)
   {
-    self->_dimmed = v6;
-    v10 = v8;
-    if (v6)
+    self->_dimmed = dimmedCopy;
+    v10 = blockCopy;
+    if (dimmedCopy)
     {
-      v8 = [(CAMSnapshotView *)self _applySnapshotDimAnimated:v5 withCompletionBlock:v8];
+      blockCopy = [(CAMSnapshotView *)self _applySnapshotDimAnimated:animatedCopy withCompletionBlock:blockCopy];
     }
 
     else
     {
-      v8 = [(CAMSnapshotView *)self _removeSnapshotDimAnimated:v5 withCompletionBlock:v8];
+      blockCopy = [(CAMSnapshotView *)self _removeSnapshotDimAnimated:animatedCopy withCompletionBlock:blockCopy];
     }
 
     v9 = v10;
   }
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](blockCopy, v9);
 }
 
-- (void)_prepareForApplyingBlurForStyle:(int64_t)a3 applying:(BOOL)a4 inputRadiusAmount:(double *)a5 inputRadiusDuration:(double *)a6 inputRadiusDelay:(double *)a7 inputRadiusTimingFunction:(id *)a8 opacityAmount:(double *)a9 opacityDuration:(double *)a10 opacityDelay:(double *)a11 opacityTimingFunction:(id *)a12
+- (void)_prepareForApplyingBlurForStyle:(int64_t)style applying:(BOOL)applying inputRadiusAmount:(double *)amount inputRadiusDuration:(double *)duration inputRadiusDelay:(double *)delay inputRadiusTimingFunction:(id *)function opacityAmount:(double *)opacityAmount opacityDuration:(double *)self0 opacityDelay:(double *)self1 opacityTimingFunction:(id *)self2
 {
-  v17 = a4;
+  applyingCopy = applying;
   v20 = 1.0;
-  if (!a4)
+  if (!applying)
   {
     UIAnimationDragCoefficient();
     v20 = v21;
   }
 
-  if (a3 != 2)
+  if (style != 2)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v28 = 50.0;
-      if (!v17)
+      if (!applyingCopy)
       {
         v28 = 0.0;
       }
 
-      *a5 = v28;
+      *amount = v28;
       v29 = 0.3801;
-      if (v17)
+      if (applyingCopy)
       {
         v29 = 0.5;
       }
 
-      *a6 = v29 * v20;
-      if (v17)
+      *duration = v29 * v20;
+      if (applyingCopy)
       {
         v30 = 1.0;
       }
@@ -227,48 +227,48 @@ LABEL_13:
         v30 = 0.0;
       }
 
-      v31 = [(UIView *)self->_snapshotView layer];
-      [v31 convertTime:0 fromLayer:CACurrentMediaTime()];
-      *a7 = v32 + v20 * 0.0667;
+      layer = [(UIView *)self->_snapshotView layer];
+      [layer convertTime:0 fromLayer:CACurrentMediaTime()];
+      *delay = v32 + v20 * 0.0667;
 
       LODWORD(v33) = 1036831949;
       LODWORD(v34) = 0.25;
       LODWORD(v35) = 0.25;
       LODWORD(v36) = 1.0;
-      *a8 = [MEMORY[0x1E69793D0] functionWithControlPoints:v34 :v33 :v35 :v36];
-      *a9 = v30;
-      *a10 = v20 * 0.2862;
-      v37 = [(CAMSnapshotView *)self layer];
-      [v37 convertTime:0 fromLayer:CACurrentMediaTime()];
-      *a11 = v38 + v20 * 0.0939;
+      *function = [MEMORY[0x1E69793D0] functionWithControlPoints:v34 :v33 :v35 :v36];
+      *opacityAmount = v30;
+      *opacityDuration = v20 * 0.2862;
+      layer2 = [(CAMSnapshotView *)self layer];
+      [layer2 convertTime:0 fromLayer:CACurrentMediaTime()];
+      *opacityDelay = v38 + v20 * 0.0939;
 
       goto LABEL_25;
     }
 
-    if (a3)
+    if (style)
     {
       return;
     }
   }
 
   v22 = 25.0;
-  if (!v17)
+  if (!applyingCopy)
   {
     v22 = 0.0;
   }
 
-  *a5 = v22;
+  *amount = v22;
   v23 = 0.3331;
   HIDWORD(v24) = 1071359459;
-  if (v17)
+  if (applyingCopy)
   {
     v23 = 0.432;
   }
 
-  *a6 = v23 * v20;
-  *a7 = 0.0;
+  *duration = v23 * v20;
+  *delay = 0.0;
   v25 = 1.0;
-  if (v17)
+  if (applyingCopy)
   {
     v26 = 1.0;
   }
@@ -281,25 +281,25 @@ LABEL_13:
   LODWORD(v25) = 991345561;
   LODWORD(v24) = 1057634019;
   LODWORD(v12) = 1064732459;
-  *a8 = [MEMORY[0x1E69793D0] functionWithControlPoints:COERCE_DOUBLE(1044401829) :v25 :v24 :v12];
-  *a9 = v26;
+  *function = [MEMORY[0x1E69793D0] functionWithControlPoints:COERCE_DOUBLE(1044401829) :v25 :v24 :v12];
+  *opacityAmount = v26;
   v27 = 0.3;
-  if (a3 == 2 && !v17)
+  if (style == 2 && !applyingCopy)
   {
     [(CAMSnapshotView *)self _resumeFadeInDuration];
   }
 
-  *a10 = v20 * v27;
-  *a11 = 0.0;
+  *opacityDuration = v20 * v27;
+  *opacityDelay = 0.0;
 LABEL_25:
-  *a12 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
+  *timingFunction = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
 }
 
 - (double)_resumeFadeInDuration
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 _launchTime];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _launchTime];
   v5 = Current - v4;
 
   if (v5 > 0.517)
@@ -315,10 +315,10 @@ LABEL_25:
   return 0.183;
 }
 
-- (void)_applySnapshotBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)_applySnapshotBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
   [(CAMSnapshotView *)self setAlpha:1.0];
   v9 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
   [v9 setClipsToBounds:1];
@@ -348,11 +348,11 @@ LABEL_25:
   v25 = 0;
   v26 = 0;
   v24 = 0;
-  [(CAMSnapshotView *)self _prepareForApplyingBlurForStyle:a3 applying:1 inputRadiusAmount:v31 inputRadiusDuration:&v29 inputRadiusDelay:&v28 inputRadiusTimingFunction:&v25 opacityAmount:&v30 opacityDuration:&v27 opacityDelay:&v26 opacityTimingFunction:&v24];
+  [(CAMSnapshotView *)self _prepareForApplyingBlurForStyle:style applying:1 inputRadiusAmount:v31 inputRadiusDuration:&v29 inputRadiusDelay:&v28 inputRadiusTimingFunction:&v25 opacityAmount:&v30 opacityDuration:&v27 opacityDelay:&v26 opacityTimingFunction:&v24];
   v11 = v25;
   v12 = v24;
   v13 = [MEMORY[0x1E69DC730] effectWithBlurRadius:25.0];
-  if (v5)
+  if (animatedCopy)
   {
     v14 = MEMORY[0x1E69DD250];
     v16 = v28;
@@ -367,7 +367,7 @@ LABEL_25:
     v19[1] = 3221225472;
     v19[2] = __75__CAMSnapshotView__applySnapshotBlurForStyle_animated_withCompletionBlock___block_invoke_2;
     v19[3] = &unk_1E76F97A0;
-    v20 = v8;
+    v20 = blockCopy;
     [v14 _animateWithDuration:393216 delay:self options:v21 factory:v19 animations:v15 completion:v16];
   }
 
@@ -376,13 +376,13 @@ LABEL_25:
     [v9 setEffect:v13];
   }
 
-  v17 = [(CAMSnapshotView *)self layer];
+  layer = [(CAMSnapshotView *)self layer];
   LODWORD(v18) = 1.0;
-  [v17 setOpacity:v18];
+  [layer setOpacity:v18];
 
-  if (v8 && (!v5 || !self->__blurView))
+  if (blockCopy && (!animatedCopy || !self->__blurView))
   {
-    (*(v8 + 2))(v8, 1);
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 }
 
@@ -397,10 +397,10 @@ uint64_t __75__CAMSnapshotView__applySnapshotBlurForStyle_animated_withCompletio
   return result;
 }
 
-- (void)_removeSnapshotBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)_removeSnapshotBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
   v29 = 0.0;
   v30 = 0;
   v27 = 0;
@@ -409,14 +409,14 @@ uint64_t __75__CAMSnapshotView__applySnapshotBlurForStyle_animated_withCompletio
   v26 = 0.0;
   v23 = 0;
   v24 = 0;
-  [(CAMSnapshotView *)self _prepareForApplyingBlurForStyle:a3 applying:0 inputRadiusAmount:&v30 inputRadiusDuration:&v28 inputRadiusDelay:&v27 inputRadiusTimingFunction:&v24 opacityAmount:&v29 opacityDuration:&v26 opacityDelay:&v25 opacityTimingFunction:&v23];
+  [(CAMSnapshotView *)self _prepareForApplyingBlurForStyle:style applying:0 inputRadiusAmount:&v30 inputRadiusDuration:&v28 inputRadiusDelay:&v27 inputRadiusTimingFunction:&v24 opacityAmount:&v29 opacityDuration:&v26 opacityDelay:&v25 opacityTimingFunction:&v23];
   v9 = v24;
   v10 = v23;
-  if (v5)
+  if (animatedCopy)
   {
     v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v12 = [(CAMSnapshotView *)self layer];
-    v13 = [v12 valueForKeyPath:@"opacity"];
+    layer = [(CAMSnapshotView *)self layer];
+    v13 = [layer valueForKeyPath:@"opacity"];
     [v11 setFromValue:v13];
 
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
@@ -427,30 +427,30 @@ uint64_t __75__CAMSnapshotView__applySnapshotBlurForStyle_animated_withCompletio
     [v11 setTimingFunction:v10];
     [v11 setFillMode:*MEMORY[0x1E69797E0]];
     v15 = objc_alloc_init(CAMAnimationDelegate);
-    v16 = [(CAMSnapshotView *)self _blurView];
-    objc_initWeak(&location, v16);
+    _blurView = [(CAMSnapshotView *)self _blurView];
+    objc_initWeak(&location, _blurView);
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __76__CAMSnapshotView__removeSnapshotBlurForStyle_animated_withCompletionBlock___block_invoke;
     v19[3] = &unk_1E76FBAE0;
     objc_copyWeak(&v21, &location);
-    v20 = v8;
+    v20 = blockCopy;
     [(CAMAnimationDelegate *)v15 setCompletion:v19];
     [v11 setDelegate:v15];
-    v17 = [(CAMSnapshotView *)self layer];
-    [v17 addAnimation:v11 forKey:@"containerOpacityAnimation"];
+    layer2 = [(CAMSnapshotView *)self layer];
+    [layer2 addAnimation:v11 forKey:@"containerOpacityAnimation"];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  v18 = [(CAMSnapshotView *)self layer];
-  [v18 setOpacity:0.0];
+  layer3 = [(CAMSnapshotView *)self layer];
+  [layer3 setOpacity:0.0];
 
-  if (v8 && !v5)
+  if (blockCopy && !animatedCopy)
   {
-    (*(v8 + 2))(v8, 1);
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 }
 
@@ -492,20 +492,20 @@ uint64_t __76__CAMSnapshotView__removeSnapshotBlurForStyle_animated_withCompleti
   }
 }
 
-- (void)_prepareForApplyingLowQualityBlurForStyle:(int64_t)a3 applying:(BOOL)a4 opacityAmount:(double *)a5 opacityDuration:(double *)a6 opacityDelay:(double *)a7 opacityTimingFunction:(id *)a8 targetView:(id *)a9
+- (void)_prepareForApplyingLowQualityBlurForStyle:(int64_t)style applying:(BOOL)applying opacityAmount:(double *)amount opacityDuration:(double *)duration opacityDelay:(double *)delay opacityTimingFunction:(id *)function targetView:(id *)view
 {
-  if (a3 != 2)
+  if (style != 2)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       v20 = 0.0;
-      if (a4)
+      if (applying)
       {
         v20 = 1.0;
       }
 
-      *a5 = v20;
-      if (a4)
+      *amount = v20;
+      if (applying)
       {
         v21 = 0.03335;
       }
@@ -516,40 +516,40 @@ uint64_t __76__CAMSnapshotView__removeSnapshotBlurForStyle_animated_withCompleti
       }
 
       UIAnimationDragCoefficient();
-      *a6 = v22 * 0.25;
-      v23 = [(UIView *)self->_snapshotView layer];
-      [v23 convertTime:0 fromLayer:CACurrentMediaTime()];
+      *duration = v22 * 0.25;
+      layer = [(UIView *)self->_snapshotView layer];
+      [layer convertTime:0 fromLayer:CACurrentMediaTime()];
       v25 = v24;
       UIAnimationDragCoefficient();
-      *a7 = v25 + v21 * v26;
+      *delay = v25 + v21 * v26;
 
       LODWORD(v27) = 1036831949;
       LODWORD(v28) = 0.25;
       LODWORD(v29) = 0.25;
       LODWORD(v30) = 1.0;
-      *a8 = [MEMORY[0x1E69793D0] functionWithControlPoints:v28 :v27 :v29 :v30];
+      *function = [MEMORY[0x1E69793D0] functionWithControlPoints:v28 :v27 :v29 :v30];
       goto LABEL_16;
     }
 
-    if (a3)
+    if (style)
     {
       return;
     }
   }
 
   v14 = 0.0;
-  if (a4)
+  if (applying)
   {
     v14 = 1.0;
   }
 
-  *a5 = v14;
+  *amount = v14;
   UIAnimationDragCoefficient();
   HIDWORD(v18) = 1070638039;
   v19 = v17 * 0.26;
-  *a6 = v19;
-  *a7 = 0.0;
-  if (a4)
+  *duration = v19;
+  *delay = 0.0;
+  if (applying)
   {
     LODWORD(v19) = 1048747128;
     LODWORD(v18) = 1012482169;
@@ -566,76 +566,76 @@ uint64_t __76__CAMSnapshotView__removeSnapshotBlurForStyle_animated_withCompleti
   }
 
   v31 = [MEMORY[0x1E69793D0] functionWithControlPoints:v19 :v18 :v15 :v16];
-  *a8 = v31;
+  *function = v31;
 
 LABEL_16:
-  *a9 = [(CAMSnapshotView *)self _lowQualityBlurView];
+  *view = [(CAMSnapshotView *)self _lowQualityBlurView];
 }
 
-- (void)_applyLowQualityBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)_applyLowQualityBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
   [(CAMSnapshotView *)self _setupLowQualityBlurOnSnapshot];
   v21 = 0.0;
   v22 = 0.0;
   v19 = 0;
   v20 = 0.0;
   v18 = 0;
-  [(CAMSnapshotView *)self _prepareForApplyingLowQualityBlurForStyle:a3 applying:1 opacityAmount:&v22 opacityDuration:&v21 opacityDelay:&v20 opacityTimingFunction:&v19 targetView:&v18];
+  [(CAMSnapshotView *)self _prepareForApplyingLowQualityBlurForStyle:style applying:1 opacityAmount:&v22 opacityDuration:&v21 opacityDelay:&v20 opacityTimingFunction:&v19 targetView:&v18];
   v9 = v19;
   v10 = v18;
-  v11 = [v10 layer];
-  if (v5)
+  layer = [v10 layer];
+  if (animatedCopy)
   {
     v12 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v13 = [v11 valueForKeyPath:@"opacity"];
+    v13 = [layer valueForKeyPath:@"opacity"];
     [v12 setFromValue:v13];
 
     [v12 setBeginTime:v20];
     [v12 setDuration:v21];
     [v12 setTimingFunction:v9];
     [v12 setFillMode:*MEMORY[0x1E69797E0]];
-    if (v8)
+    if (blockCopy)
     {
       v14 = objc_alloc_init(CAMAnimationDelegate);
-      [(CAMAnimationDelegate *)v14 setCompletion:v8];
+      [(CAMAnimationDelegate *)v14 setCompletion:blockCopy];
       [v12 setDelegate:v14];
     }
 
-    [v11 addAnimation:v12 forKey:@"inputRadiusAnimation"];
+    [layer addAnimation:v12 forKey:@"inputRadiusAnimation"];
   }
 
   HIDWORD(v15) = HIDWORD(v22);
   *&v15 = v22;
-  [v11 setOpacity:v15];
-  v16 = [(CAMSnapshotView *)self layer];
+  [layer setOpacity:v15];
+  layer2 = [(CAMSnapshotView *)self layer];
   LODWORD(v17) = 1.0;
-  [v16 setOpacity:v17];
+  [layer2 setOpacity:v17];
 
-  if (v8 && !v5)
+  if (blockCopy && !animatedCopy)
   {
-    v8[2](v8, 1);
+    blockCopy[2](blockCopy, 1);
   }
 }
 
-- (void)_removeLowQualityBlurForStyle:(int64_t)a3 animated:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)_removeLowQualityBlurForStyle:(int64_t)style animated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
   v23 = 0;
   v21 = 0.0;
   v22 = 0.0;
   v19 = 0;
   v20 = 0;
-  [(CAMSnapshotView *)self _prepareForApplyingLowQualityBlurForStyle:a3 applying:0 opacityAmount:&v23 opacityDuration:&v22 opacityDelay:&v21 opacityTimingFunction:&v20 targetView:&v19];
+  [(CAMSnapshotView *)self _prepareForApplyingLowQualityBlurForStyle:style applying:0 opacityAmount:&v23 opacityDuration:&v22 opacityDelay:&v21 opacityTimingFunction:&v20 targetView:&v19];
   v9 = v20;
   v10 = v19;
-  if (v5)
+  if (animatedCopy)
   {
     v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v12 = [(CAMSnapshotView *)self layer];
-    v13 = [v12 valueForKeyPath:@"opacity"];
+    layer = [(CAMSnapshotView *)self layer];
+    v13 = [layer valueForKeyPath:@"opacity"];
     [v11 setFromValue:v13];
 
     [v11 setDuration:v22];
@@ -647,19 +647,19 @@ LABEL_16:
     v17[1] = 3221225472;
     v17[2] = __78__CAMSnapshotView__removeLowQualityBlurForStyle_animated_withCompletionBlock___block_invoke;
     v17[3] = &unk_1E76F97A0;
-    v18 = v8;
+    v18 = blockCopy;
     [(CAMAnimationDelegate *)v14 setCompletion:v17];
     [v11 setDelegate:v14];
-    v15 = [(CAMSnapshotView *)self layer];
-    [v15 addAnimation:v11 forKey:@"containerOpacityAnimation"];
+    layer2 = [(CAMSnapshotView *)self layer];
+    [layer2 addAnimation:v11 forKey:@"containerOpacityAnimation"];
   }
 
-  v16 = [(CAMSnapshotView *)self layer];
-  [v16 setOpacity:0.0];
+  layer3 = [(CAMSnapshotView *)self layer];
+  [layer3 setOpacity:0.0];
 
-  if (v8 && !v5)
+  if (blockCopy && !animatedCopy)
   {
-    (*(v8 + 2))(v8, 1);
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 }
 
@@ -688,9 +688,9 @@ uint64_t __78__CAMSnapshotView__removeLowQualityBlurForStyle_animated_withComple
     v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.4];
     [(UIView *)v6 setBackgroundColor:v7];
 
-    v8 = [(CAMSnapshotView *)self _blurView];
-    snapshotView = v8;
-    if (!v8)
+    _blurView = [(CAMSnapshotView *)self _blurView];
+    snapshotView = _blurView;
+    if (!_blurView)
     {
       snapshotView = self->_snapshotView;
     }
@@ -701,15 +701,15 @@ uint64_t __78__CAMSnapshotView__removeLowQualityBlurForStyle_animated_withComple
   }
 }
 
-- (void)_applySnapshotDimAnimated:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)_applySnapshotDimAnimated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v4 = a3;
-  v13 = a4;
+  animatedCopy = animated;
+  blockCopy = block;
   [(CAMSnapshotView *)self _setupDimOnSnapshot];
-  v6 = [(CAMSnapshotView *)self _dimmingView];
-  v7 = [v6 layer];
+  _dimmingView = [(CAMSnapshotView *)self _dimmingView];
+  layer = [_dimmingView layer];
 
-  if (v4)
+  if (animatedCopy)
   {
     v9 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
     [v9 setFromValue:&unk_1F16C8BE8];
@@ -720,33 +720,33 @@ uint64_t __78__CAMSnapshotView__removeLowQualityBlurForStyle_animated_withComple
 
     [v9 setRemovedOnCompletion:0];
     v11 = objc_alloc_init(CAMAnimationDelegate);
-    [(CAMAnimationDelegate *)v11 setCompletion:v13];
+    [(CAMAnimationDelegate *)v11 setCompletion:blockCopy];
     [v9 setDelegate:v11];
-    [v7 addAnimation:v9 forKey:@"opacityAnimation"];
+    [layer addAnimation:v9 forKey:@"opacityAnimation"];
 
     LODWORD(v12) = 1.0;
-    [v7 setOpacity:v12];
+    [layer setOpacity:v12];
   }
 
   else
   {
     LODWORD(v8) = 1.0;
-    [v7 setOpacity:v8];
-    if (v13)
+    [layer setOpacity:v8];
+    if (blockCopy)
     {
-      v13[2](v13, 1);
+      blockCopy[2](blockCopy, 1);
     }
   }
 }
 
-- (void)_removeSnapshotDimAnimated:(BOOL)a3 withCompletionBlock:(id)a4
+- (void)_removeSnapshotDimAnimated:(BOOL)animated withCompletionBlock:(id)block
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CAMSnapshotView *)self _dimmingView];
-  v8 = [v7 layer];
+  animatedCopy = animated;
+  blockCopy = block;
+  _dimmingView = [(CAMSnapshotView *)self _dimmingView];
+  layer = [_dimmingView layer];
 
-  [v8 removeAllAnimations];
+  [layer removeAllAnimations];
   v9 = self->__dimmingView;
   dimmingView = self->__dimmingView;
   self->__dimmingView = 0;
@@ -756,11 +756,11 @@ uint64_t __78__CAMSnapshotView__removeLowQualityBlurForStyle_animated_withComple
   v19 = __66__CAMSnapshotView__removeSnapshotDimAnimated_withCompletionBlock___block_invoke;
   v20 = &unk_1E76F77D8;
   v21 = v9;
-  v11 = v6;
+  v11 = blockCopy;
   v22 = v11;
   v12 = v9;
   v13 = _Block_copy(&v17);
-  if (v4)
+  if (animatedCopy)
   {
     v14 = [MEMORY[0x1E6979318] animationWithKeyPath:{@"opacity", v17, v18, v19, v20, v21, v22}];
     [v14 setFromValue:&unk_1F16C8BE8];
@@ -773,14 +773,14 @@ uint64_t __78__CAMSnapshotView__removeLowQualityBlurForStyle_animated_withComple
     v16 = objc_alloc_init(CAMAnimationDelegate);
     [(CAMAnimationDelegate *)v16 setCompletion:v13];
     [v14 setDelegate:v16];
-    [v8 addAnimation:v14 forKey:@"opacityAnimation"];
+    [layer addAnimation:v14 forKey:@"opacityAnimation"];
 
-    [v8 setOpacity:0.0];
+    [layer setOpacity:0.0];
   }
 
   else
   {
-    [v8 setOpacity:{0.0, v17, v18, v19, v20, v21, v22}];
+    [layer setOpacity:{0.0, v17, v18, v19, v20, v21, v22}];
     if (v13)
     {
       v13[2](v13, 1);
@@ -802,13 +802,13 @@ uint64_t __66__CAMSnapshotView__removeSnapshotDimAnimated_withCompletionBlock___
   return result;
 }
 
-- (void)_removeAnimationOnView:(id)a3 forKey:(id)a4
+- (void)_removeAnimationOnView:(id)view forKey:(id)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 layer];
-  v8 = [v7 animationForKey:v6];
+  viewCopy = view;
+  keyCopy = key;
+  layer = [viewCopy layer];
+  v8 = [layer animationForKey:keyCopy];
 
   if (v8)
   {
@@ -816,51 +816,51 @@ uint64_t __66__CAMSnapshotView__removeSnapshotDimAnimated_withCompletionBlock___
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = v6;
+      v11 = keyCopy;
       v12 = 2114;
-      v13 = v5;
+      v13 = viewCopy;
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Removing animation for key %{public}@ from view %{public}@", &v10, 0x16u);
     }
 
-    [v7 removeAnimationForKey:v6];
+    [layer removeAnimationForKey:keyCopy];
   }
 }
 
-- (void)removeAllAnimationsOnLayer:(id)a3 recursively:(BOOL)a4 shouldLog:(BOOL)a5
+- (void)removeAllAnimationsOnLayer:(id)layer recursively:(BOOL)recursively shouldLog:(BOOL)log
 {
-  v5 = a5;
-  v6 = a4;
+  logCopy = log;
+  recursivelyCopy = recursively;
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v5)
+  layerCopy = layer;
+  v9 = layerCopy;
+  if (logCopy)
   {
-    v10 = [v8 animationKeys];
-    if ([v10 count])
+    animationKeys = [layerCopy animationKeys];
+    if ([animationKeys count])
     {
       v11 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v23 = v10;
+        v23 = animationKeys;
         v24 = 2114;
         v25 = v9;
         v26 = 2114;
-        v27 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "Removing animation keys %{public}@ from layer %{public}@ on behalf of view %{public}@", buf, 0x20u);
       }
     }
   }
 
   [v9 removeAllAnimations];
-  if (v6)
+  if (recursivelyCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = [v9 sublayers];
-    v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    sublayers = [v9 sublayers];
+    v13 = [sublayers countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
       v14 = v13;
@@ -872,14 +872,14 @@ uint64_t __66__CAMSnapshotView__removeSnapshotDimAnimated_withCompletionBlock___
         {
           if (*v18 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(sublayers);
           }
 
-          [(CAMSnapshotView *)self removeAllAnimationsOnLayer:*(*(&v17 + 1) + 8 * v16++) recursively:1 shouldLog:v5];
+          [(CAMSnapshotView *)self removeAllAnimationsOnLayer:*(*(&v17 + 1) + 8 * v16++) recursively:1 shouldLog:logCopy];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v14 = [sublayers countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v14);
@@ -887,9 +887,9 @@ uint64_t __66__CAMSnapshotView__removeSnapshotDimAnimated_withCompletionBlock___
   }
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  if ([a4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  if ([path isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v16 = 0;
     v17 = 0.0;

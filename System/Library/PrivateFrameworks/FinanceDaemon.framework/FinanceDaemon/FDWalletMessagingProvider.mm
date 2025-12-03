@@ -1,6 +1,6 @@
 @interface FDWalletMessagingProvider
 - (FDWalletMessagingProvider)init;
-- (void)processMessagesWithCompletionHandler:(id)a3;
+- (void)processMessagesWithCompletionHandler:(id)handler;
 @end
 
 @implementation FDWalletMessagingProvider
@@ -29,16 +29,16 @@
   return v2;
 }
 
-- (void)processMessagesWithCompletionHandler:(id)a3
+- (void)processMessagesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   wrappedProvider = self->_wrappedProvider;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__FDWalletMessagingProvider_processMessagesWithCompletionHandler___block_invoke;
   v7[3] = &unk_2785C8970;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WalletMessagingProvider *)wrappedProvider processMessagesWithCompletionHandler:v7];
 }
 

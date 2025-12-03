@@ -1,9 +1,9 @@
 @interface ENRegionServerConfiguration
-- (ENRegionServerConfiguration)initWithCoder:(id)a3;
-- (ENRegionServerConfiguration)initWithServerResponseDictionary:(id)a3;
+- (ENRegionServerConfiguration)initWithCoder:(id)coder;
+- (ENRegionServerConfiguration)initWithServerResponseDictionary:(id)dictionary;
 - (id)description;
-- (id)preferredLocalizationsFromArray:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)preferredLocalizationsFromArray:(id)array;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionServerConfiguration
@@ -11,22 +11,22 @@
 - (id)description
 {
   v43 = MEMORY[0x277CCACA8];
-  v44 = [(ENRegionServerConfiguration *)self region];
-  v42 = [(ENRegionServerConfiguration *)self enVersion];
-  v41 = [(ENRegionServerConfiguration *)self enEnabled];
-  v3 = [(ENRegionServerConfiguration *)self associatedDomainsEnabled];
-  v4 = [(ENRegionServerConfiguration *)self textMessageVerificationEnabled];
-  v5 = [(ENRegionServerConfiguration *)self preArmTestVerificationEnabled];
-  v6 = [(ENRegionServerConfiguration *)self variantOfConcernEnabled];
-  v7 = [(ENRegionServerConfiguration *)self featureFlags];
-  if (!v7)
+  region = [(ENRegionServerConfiguration *)self region];
+  enVersion = [(ENRegionServerConfiguration *)self enVersion];
+  enEnabled = [(ENRegionServerConfiguration *)self enEnabled];
+  associatedDomainsEnabled = [(ENRegionServerConfiguration *)self associatedDomainsEnabled];
+  textMessageVerificationEnabled = [(ENRegionServerConfiguration *)self textMessageVerificationEnabled];
+  preArmTestVerificationEnabled = [(ENRegionServerConfiguration *)self preArmTestVerificationEnabled];
+  variantOfConcernEnabled = [(ENRegionServerConfiguration *)self variantOfConcernEnabled];
+  featureFlags = [(ENRegionServerConfiguration *)self featureFlags];
+  if (!featureFlags)
   {
     v40 = "[ None ]";
     goto LABEL_14;
   }
 
-  v8 = v7;
-  v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"(%lu) [", v7];
+  v8 = featureFlags;
+  v9 = [MEMORY[0x277CCAB68] stringWithFormat:@"(%lu) [", featureFlags];
   v10 = v9;
   if (v8)
   {
@@ -119,7 +119,7 @@ LABEL_10:
   v40 = v12;
 
 LABEL_14:
-  if (v6)
+  if (variantOfConcernEnabled)
   {
     v13 = "yes";
   }
@@ -129,7 +129,7 @@ LABEL_14:
     v13 = "no";
   }
 
-  if (v5)
+  if (preArmTestVerificationEnabled)
   {
     v14 = "yes";
   }
@@ -141,7 +141,7 @@ LABEL_14:
 
   v38 = v14;
   v39 = v13;
-  if (v4)
+  if (textMessageVerificationEnabled)
   {
     v15 = "yes";
   }
@@ -151,7 +151,7 @@ LABEL_14:
     v15 = "no";
   }
 
-  if (v3)
+  if (associatedDomainsEnabled)
   {
     v16 = "yes";
   }
@@ -163,19 +163,19 @@ LABEL_14:
 
   v36 = v16;
   v37 = v15;
-  v35 = [(ENRegionServerConfiguration *)self hasSubdivisions];
-  v17 = [(ENRegionServerConfiguration *)self subdivisions];
+  hasSubdivisions = [(ENRegionServerConfiguration *)self hasSubdivisions];
+  subdivisions = [(ENRegionServerConfiguration *)self subdivisions];
   [(ENRegionServerConfiguration *)self applicationBackgroundRuntimeInterval];
   v19 = v18;
   [(ENRegionServerConfiguration *)self rpiAdvertisementTolerance];
   v21 = v20;
-  v22 = [(ENRegionServerConfiguration *)self dailyDetectExposureLimit];
-  v23 = [(ENRegionServerConfiguration *)self appBundleID];
-  v24 = [(ENRegionServerConfiguration *)self publicKey];
-  v25 = [(ENRegionServerConfiguration *)self publicKeyVersion];
+  dailyDetectExposureLimit = [(ENRegionServerConfiguration *)self dailyDetectExposureLimit];
+  appBundleID = [(ENRegionServerConfiguration *)self appBundleID];
+  publicKey = [(ENRegionServerConfiguration *)self publicKey];
+  publicKeyVersion = [(ENRegionServerConfiguration *)self publicKeyVersion];
   [(ENRegionServerConfiguration *)self callbackInterval];
   v27 = v26;
-  v28 = [(ENRegionServerConfiguration *)self legalConsentVersion];
+  legalConsentVersion = [(ENRegionServerConfiguration *)self legalConsentVersion];
   if ([(ENRegionServerConfiguration *)self telemetryAuthorization])
   {
     v29 = "yes";
@@ -198,14 +198,14 @@ LABEL_14:
     v32 = "no";
   }
 
-  v33 = [v43 stringWithFormat:@"Server - %@, version: %lu enEnabled: %d, domains: %s, textVerify: %s, textPreArm: %s, variantOfConcern: %s, supportedFeatures: %s, hasSubdivisions: %d, subdivisions: %@, runtime: %lf, RPI Adv: %lf, API Rate Limit: %lu, appID: %@, publicKey: %@, publicKeyVersion: %@, callbackInterval: %f, Legal Consent Version: %@, telemetryAuthorization: %s, timeToResetAvailabilityAlert: %f, resetAvailabilityAlertForDeclinedUsers: %s", v44, v42, v41, v36, v37, v38, v39, v40, v35, v17, v19, v21, v22, v23, v24, v25, v27, v28, v29, v31, v32];
+  v33 = [v43 stringWithFormat:@"Server - %@, version: %lu enEnabled: %d, domains: %s, textVerify: %s, textPreArm: %s, variantOfConcern: %s, supportedFeatures: %s, hasSubdivisions: %d, subdivisions: %@, runtime: %lf, RPI Adv: %lf, API Rate Limit: %lu, appID: %@, publicKey: %@, publicKeyVersion: %@, callbackInterval: %f, Legal Consent Version: %@, telemetryAuthorization: %s, timeToResetAvailabilityAlert: %f, resetAvailabilityAlertForDeclinedUsers: %s", region, enVersion, enEnabled, v36, v37, v38, v39, v40, hasSubdivisions, subdivisions, v19, v21, dailyDetectExposureLimit, appBundleID, publicKey, publicKeyVersion, v27, legalConsentVersion, v29, v31, v32];
 
   return v33;
 }
 
-- (ENRegionServerConfiguration)initWithServerResponseDictionary:(id)a3
+- (ENRegionServerConfiguration)initWithServerResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -239,7 +239,7 @@ LABEL_117:
 
   else
   {
-    v11 = [ENRegion regionFromServerResponseDictionary:v4];
+    v11 = [ENRegion regionFromServerResponseDictionary:dictionaryCopy];
     v12 = v11;
     if (v11)
     {
@@ -342,7 +342,7 @@ LABEL_117:
           v34 = CFDictionaryGetTypedValue();
           if (v34)
           {
-            v35 = [(ENRegion *)self->_region countryCode];
+            countryCode = [(ENRegion *)self->_region countryCode];
             objc_opt_class();
             v36 = NSDictionaryGetNSArrayOfClass();
             subdivisions = self->_subdivisions;
@@ -617,55 +617,55 @@ LABEL_117:
         v110[2] = __64__ENRegionServerConfiguration_initWithServerResponseDictionary___block_invoke;
         v110[3] = &unk_278A4B3B0;
         v111 = v15;
-        v88 = self;
-        v112 = v88;
+        selfCopy = self;
+        v112 = selfCopy;
         v89 = MEMORY[0x2383EE560](v110);
         CFStringGetTypeID();
         v90 = CFDictionaryGetTypedValue();
-        phaTelemetryPublicCertificateChain = v88->_phaTelemetryPublicCertificateChain;
-        v88->_phaTelemetryPublicCertificateChain = v90;
+        phaTelemetryPublicCertificateChain = selfCopy->_phaTelemetryPublicCertificateChain;
+        selfCopy->_phaTelemetryPublicCertificateChain = v90;
 
         CFStringGetTypeID();
         v92 = CFDictionaryGetTypedValue();
-        phaTelemetryAppleCertificateChain = v88->_phaTelemetryAppleCertificateChain;
-        v88->_phaTelemetryAppleCertificateChain = v92;
+        phaTelemetryAppleCertificateChain = selfCopy->_phaTelemetryAppleCertificateChain;
+        selfCopy->_phaTelemetryAppleCertificateChain = v92;
 
         CFStringGetTypeID();
         v94 = CFDictionaryGetTypedValue();
-        phaTelemetryEndpoint = v88->_phaTelemetryEndpoint;
-        v88->_phaTelemetryEndpoint = v94;
+        phaTelemetryEndpoint = selfCopy->_phaTelemetryEndpoint;
+        selfCopy->_phaTelemetryEndpoint = v94;
 
         CFStringGetTypeID();
         v96 = CFDictionaryGetTypedValue();
-        partnerTelemetryPublicCertificateChain = v88->_partnerTelemetryPublicCertificateChain;
-        v88->_partnerTelemetryPublicCertificateChain = v96;
+        partnerTelemetryPublicCertificateChain = selfCopy->_partnerTelemetryPublicCertificateChain;
+        selfCopy->_partnerTelemetryPublicCertificateChain = v96;
 
         CFStringGetTypeID();
         v98 = CFDictionaryGetTypedValue();
-        partnerTelemetryAppleCertificateChain = v88->_partnerTelemetryAppleCertificateChain;
-        v88->_partnerTelemetryAppleCertificateChain = v98;
+        partnerTelemetryAppleCertificateChain = selfCopy->_partnerTelemetryAppleCertificateChain;
+        selfCopy->_partnerTelemetryAppleCertificateChain = v98;
 
         CFStringGetTypeID();
         v100 = CFDictionaryGetTypedValue();
-        partnerTelemetryEndpoint = v88->_partnerTelemetryEndpoint;
-        v88->_partnerTelemetryEndpoint = v100;
+        partnerTelemetryEndpoint = selfCopy->_partnerTelemetryEndpoint;
+        selfCopy->_partnerTelemetryEndpoint = v100;
 
         CFStringGetTypeID();
         v102 = CFDictionaryGetTypedValue();
-        appleTelemetryEndpoint = v88->_appleTelemetryEndpoint;
-        v88->_appleTelemetryEndpoint = v102;
+        appleTelemetryEndpoint = selfCopy->_appleTelemetryEndpoint;
+        selfCopy->_appleTelemetryEndpoint = v102;
 
         CFStringGetTypeID();
         v104 = CFDictionaryGetTypedValue();
-        appleTelemetryEndpointCredentials = v88->_appleTelemetryEndpointCredentials;
-        v88->_appleTelemetryEndpointCredentials = v104;
+        appleTelemetryEndpointCredentials = selfCopy->_appleTelemetryEndpointCredentials;
+        selfCopy->_appleTelemetryEndpointCredentials = v104;
 
-        v88->_telemetryAuthorization = CFDictionaryGetInt64() != 0;
+        selfCopy->_telemetryAuthorization = CFDictionaryGetInt64() != 0;
         v106 = (v89)[2](v89, @"telemetryOptInMessage");
-        phaTelemetryOptInMessage = v88->_phaTelemetryOptInMessage;
-        v88->_phaTelemetryOptInMessage = v106;
+        phaTelemetryOptInMessage = selfCopy->_phaTelemetryOptInMessage;
+        selfCopy->_phaTelemetryOptInMessage = v106;
 
-        v108 = v88;
+        v108 = selfCopy;
       }
     }
 
@@ -749,76 +749,76 @@ id __64__ENRegionServerConfiguration_initWithServerResponseDictionary___block_in
   return v24;
 }
 
-- (id)preferredLocalizationsFromArray:(id)a3
+- (id)preferredLocalizationsFromArray:(id)array
 {
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     v4 = MEMORY[0x277CCA8D8];
-    v5 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v6 = [v4 preferredLocalizationsFromArray:v3 forPreferences:v5];
-    v7 = [v6 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v6 = [v4 preferredLocalizationsFromArray:arrayCopy forPreferences:preferredLanguages];
+    firstObject = [v6 firstObject];
 
-    v8 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v7];
+    currentLocale = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:firstObject];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   }
 
-  return v8;
+  return currentLocale;
 }
 
-- (ENRegionServerConfiguration)initWithCoder:(id)a3
+- (ENRegionServerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v50.receiver = self;
   v50.super_class = ENRegionServerConfiguration;
   v5 = [(ENRegionServerConfiguration *)&v50 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enVersion"];
     v5->_enVersion = [v6 unsignedIntegerValue];
 
-    v5->_enEnabled = [v4 decodeBoolForKey:@"enEnabled"];
+    v5->_enEnabled = [coderCopy decodeBoolForKey:@"enEnabled"];
     v51 = 0;
     if (NSDecodeSInt64RangedIfPresent())
     {
       v5->_featureFlags = v51;
     }
 
-    v5->_associatedDomainsEnabled = [v4 decodeBoolForKey:@"enableAssociatedDomains"];
-    v5->_textMessageVerificationEnabled = [v4 decodeBoolForKey:@"enableTextMessageVerification"];
-    v5->_preArmTestVerificationEnabled = [v4 decodeBoolForKey:@"enablePreArmVerification"];
-    v5->_variantOfConcernEnabled = [v4 decodeBoolForKey:@"variantOfConcernEnabled"];
-    v7 = [v4 decodeBoolForKey:@"hasStateRegions"];
+    v5->_associatedDomainsEnabled = [coderCopy decodeBoolForKey:@"enableAssociatedDomains"];
+    v5->_textMessageVerificationEnabled = [coderCopy decodeBoolForKey:@"enableTextMessageVerification"];
+    v5->_preArmTestVerificationEnabled = [coderCopy decodeBoolForKey:@"enablePreArmVerification"];
+    v5->_variantOfConcernEnabled = [coderCopy decodeBoolForKey:@"variantOfConcernEnabled"];
+    v7 = [coderCopy decodeBoolForKey:@"hasStateRegions"];
     v5->_hasSubdivisions = v7;
     if (v7)
     {
-      v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"stateRegionConfigs"];
+      v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"stateRegionConfigs"];
       subdivisions = v5->_subdivisions;
       v5->_subdivisions = v8;
     }
 
-    [v4 decodeDoubleForKey:@"timeToResetAvailabilityAlert"];
+    [coderCopy decodeDoubleForKey:@"timeToResetAvailabilityAlert"];
     v5->_timeToResetAvailabilityAlert = v10;
-    v5->_resetAvailabilityAlertForDeclinedUsers = [v4 decodeBoolForKey:@"resetAvailabilityAlertForDeclinedUsers"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
+    v5->_resetAvailabilityAlertForDeclinedUsers = [coderCopy decodeBoolForKey:@"resetAvailabilityAlertForDeclinedUsers"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
     objc_storeStrong(&v5->_appBundleID, v11);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     objc_storeStrong(&v5->_region, v12);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKey"];
     objc_storeStrong(&v5->_publicKey, v13);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyVersion"];
     objc_storeStrong(&v5->_publicKeyVersion, v14);
-    [v4 decodeDoubleForKey:@"callbackInterval"];
+    [coderCopy decodeDoubleForKey:@"callbackInterval"];
     v5->_callbackInterval = v15;
-    [v4 decodeDoubleForKey:@"applicationBackgroundRuntimeIntervalInHours"];
+    [coderCopy decodeDoubleForKey:@"applicationBackgroundRuntimeIntervalInHours"];
     v5->_applicationBackgroundRuntimeInterval = v16;
-    [v4 decodeDoubleForKey:@"rpiAdvertisementToleranceInMinutes"];
+    [coderCopy decodeDoubleForKey:@"rpiAdvertisementToleranceInMinutes"];
     v5->_rpiAdvertisementTolerance = v17;
-    [v4 decodeDoubleForKey:@"rpiDuplicateAdvertisementToleranceInMinutes"];
+    [coderCopy decodeDoubleForKey:@"rpiDuplicateAdvertisementToleranceInMinutes"];
     v5->_rpiDuplicateAdvertisementTolerance = v18;
     v51 = 0;
     if (NSDecodeSInt64RangedIfPresent())
@@ -838,10 +838,10 @@ id __64__ENRegionServerConfiguration_initWithServerResponseDictionary___block_in
       v5->_numberOfAdvSamplesForRPIThreshold = v51;
     }
 
-    [v4 decodeDoubleForKey:@"forceAPWakeIntervalInMinutesThreshold"];
+    [coderCopy decodeDoubleForKey:@"forceAPWakeIntervalInMinutesThreshold"];
     v5->_forceAPWakeIntervalThreshold = v19;
-    v5->_dynamicAlgorithmEnabled = [v4 decodeBoolForKey:@"dynamicAlgorithmEnabled"];
-    [v4 decodeDoubleForKey:@"dynamicThrottleDownDurationInSeconds"];
+    v5->_dynamicAlgorithmEnabled = [coderCopy decodeBoolForKey:@"dynamicAlgorithmEnabled"];
+    [coderCopy decodeDoubleForKey:@"dynamicThrottleDownDurationInSeconds"];
     v5->_dynamicThrottleDownDuration = v20;
     v51 = 0;
     if (NSDecodeSInt64RangedIfPresent())
@@ -855,7 +855,7 @@ id __64__ENRegionServerConfiguration_initWithServerResponseDictionary___block_in
       v5->_dynamicThrottleDownRSSI = v51;
     }
 
-    [v4 decodeDoubleForKey:@"dynamicThrottleUpDurationInMinutes"];
+    [coderCopy decodeDoubleForKey:@"dynamicThrottleUpDurationInMinutes"];
     v5->_dynamicThrottleUpDuration = v21;
     v51 = 0;
     if (NSDecodeSInt64RangedIfPresent())
@@ -863,11 +863,11 @@ id __64__ENRegionServerConfiguration_initWithServerResponseDictionary___block_in
       v5->_dynamicThrottleUpAdvDensity = v51;
     }
 
-    [v4 decodeDoubleForKey:@"osTriggeredAppRunTimeInSeconds"];
+    [coderCopy decodeDoubleForKey:@"osTriggeredAppRunTimeInSeconds"];
     v5->_osTriggeredAppRunInterval = v22;
-    [v4 decodeDoubleForKey:@"regionTransitionGracePeriodInMinutes"];
+    [coderCopy decodeDoubleForKey:@"regionTransitionGracePeriodInMinutes"];
     v5->_regionTransitionGracePeriod = v23;
-    [v4 decodeDoubleForKey:@"regionDisabledTransitionGracePeriodMinutes"];
+    [coderCopy decodeDoubleForKey:@"regionDisabledTransitionGracePeriodMinutes"];
     v5->_regionDisabledTransitionGracePeriod = v24;
     v51 = 0;
     if (NSDecodeSInt64RangedIfPresent())
@@ -875,246 +875,246 @@ id __64__ENRegionServerConfiguration_initWithServerResponseDictionary___block_in
       v5->_selfReportTimeoutDays = v51;
     }
 
-    v5->_enableV1 = [v4 decodeBoolForKey:@"V1Enable"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"legalConsentVersion"];
+    v5->_enableV1 = [coderCopy decodeBoolForKey:@"V1Enable"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"legalConsentVersion"];
     legalConsentVersion = v5->_legalConsentVersion;
     v5->_legalConsentVersion = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textMessageVerificationPublicKey"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textMessageVerificationPublicKey"];
     textMessagePublicKey = v5->_textMessagePublicKey;
     v5->_textMessagePublicKey = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textMessageVerificationPublicKeyVersion"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textMessageVerificationPublicKeyVersion"];
     textMessagePublicKeyVersion = v5->_textMessagePublicKeyVersion;
     v5->_textMessagePublicKeyVersion = v29;
 
-    if ([v4 containsValueForKey:@"publicHealthAuthorityTelemetryPublicCertificateChain"])
+    if ([coderCopy containsValueForKey:@"publicHealthAuthorityTelemetryPublicCertificateChain"])
     {
-      v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicHealthAuthorityTelemetryPublicCertificateChain"];
+      v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicHealthAuthorityTelemetryPublicCertificateChain"];
       phaTelemetryPublicCertificateChain = v5->_phaTelemetryPublicCertificateChain;
       v5->_phaTelemetryPublicCertificateChain = v31;
     }
 
-    if ([v4 containsValueForKey:@"publicHealthAuthorityTelemetryAppleCertificateChain"])
+    if ([coderCopy containsValueForKey:@"publicHealthAuthorityTelemetryAppleCertificateChain"])
     {
-      v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicHealthAuthorityTelemetryAppleCertificateChain"];
+      v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicHealthAuthorityTelemetryAppleCertificateChain"];
       phaTelemetryAppleCertificateChain = v5->_phaTelemetryAppleCertificateChain;
       v5->_phaTelemetryAppleCertificateChain = v33;
     }
 
-    if ([v4 containsValueForKey:@"publicHealthAuthorityTelemetryEndpoint"])
+    if ([coderCopy containsValueForKey:@"publicHealthAuthorityTelemetryEndpoint"])
     {
-      v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicHealthAuthorityTelemetryEndpoint"];
+      v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicHealthAuthorityTelemetryEndpoint"];
       phaTelemetryEndpoint = v5->_phaTelemetryEndpoint;
       v5->_phaTelemetryEndpoint = v35;
     }
 
-    if ([v4 containsValueForKey:@"telemetryOptInMessage"])
+    if ([coderCopy containsValueForKey:@"telemetryOptInMessage"])
     {
-      v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"telemetryOptInMessage"];
+      v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"telemetryOptInMessage"];
       phaTelemetryOptInMessage = v5->_phaTelemetryOptInMessage;
       v5->_phaTelemetryOptInMessage = v37;
     }
 
-    if ([v4 containsValueForKey:@"partnerTelemetryPublicCertificateChain"])
+    if ([coderCopy containsValueForKey:@"partnerTelemetryPublicCertificateChain"])
     {
-      v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerTelemetryPublicCertificateChain"];
+      v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerTelemetryPublicCertificateChain"];
       partnerTelemetryPublicCertificateChain = v5->_partnerTelemetryPublicCertificateChain;
       v5->_partnerTelemetryPublicCertificateChain = v39;
     }
 
-    if ([v4 containsValueForKey:@"partnerTelemetryAppleCertificateChain"])
+    if ([coderCopy containsValueForKey:@"partnerTelemetryAppleCertificateChain"])
     {
-      v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerTelemetryAppleCertificateChain"];
+      v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerTelemetryAppleCertificateChain"];
       partnerTelemetryAppleCertificateChain = v5->_partnerTelemetryAppleCertificateChain;
       v5->_partnerTelemetryAppleCertificateChain = v41;
     }
 
-    if ([v4 containsValueForKey:@"partnerTelemetryEndpoint"])
+    if ([coderCopy containsValueForKey:@"partnerTelemetryEndpoint"])
     {
-      v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerTelemetryEndpoint"];
+      v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerTelemetryEndpoint"];
       partnerTelemetryEndpoint = v5->_partnerTelemetryEndpoint;
       v5->_partnerTelemetryEndpoint = v43;
     }
 
-    if ([v4 containsValueForKey:@"appleTelemetryEndpoint"])
+    if ([coderCopy containsValueForKey:@"appleTelemetryEndpoint"])
     {
-      v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleTelemetryEndpoint"];
+      v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleTelemetryEndpoint"];
       appleTelemetryEndpoint = v5->_appleTelemetryEndpoint;
       v5->_appleTelemetryEndpoint = v45;
     }
 
-    if ([v4 containsValueForKey:@"appleTelemetryEndpointCredentials"])
+    if ([coderCopy containsValueForKey:@"appleTelemetryEndpointCredentials"])
     {
-      v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleTelemetryEndpointCredentials"];
+      v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleTelemetryEndpointCredentials"];
       appleTelemetryEndpointCredentials = v5->_appleTelemetryEndpointCredentials;
       v5->_appleTelemetryEndpointCredentials = v47;
     }
 
-    if ([v4 containsValueForKey:@"telemetryAuthorization"])
+    if ([coderCopy containsValueForKey:@"telemetryAuthorization"])
     {
-      v5->_telemetryAuthorization = [v4 decodeBoolForKey:@"telemetryAuthorization"];
+      v5->_telemetryAuthorization = [coderCopy decodeBoolForKey:@"telemetryAuthorization"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v30 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_enVersion];
-  [v30 encodeObject:v4 forKey:@"enVersion"];
+  [coderCopy encodeObject:v4 forKey:@"enVersion"];
 
-  [v30 encodeBool:self->_enEnabled forKey:@"enEnabled"];
+  [coderCopy encodeBool:self->_enEnabled forKey:@"enEnabled"];
   featureFlags = self->_featureFlags;
   if (featureFlags)
   {
-    [v30 encodeInt64:featureFlags forKey:@"flags"];
+    [coderCopy encodeInt64:featureFlags forKey:@"flags"];
   }
 
-  [v30 encodeBool:self->_associatedDomainsEnabled forKey:@"enableAssociatedDomains"];
-  [v30 encodeBool:self->_textMessageVerificationEnabled forKey:@"enableTextMessageVerification"];
-  [v30 encodeBool:self->_preArmTestVerificationEnabled forKey:@"enablePreArmVerification"];
-  [v30 encodeBool:self->_variantOfConcernEnabled forKey:@"variantOfConcernEnabled"];
-  [v30 encodeBool:self->_hasSubdivisions forKey:@"hasStateRegions"];
-  [v30 encodeObject:self->_subdivisions forKey:@"stateRegionConfigs"];
-  [v30 encodeDouble:@"timeToResetAvailabilityAlert" forKey:self->_timeToResetAvailabilityAlert];
-  [v30 encodeBool:self->_resetAvailabilityAlertForDeclinedUsers forKey:@"resetAvailabilityAlertForDeclinedUsers"];
-  [v30 encodeObject:self->_region forKey:@"region"];
-  [v30 encodeObject:self->_appBundleID forKey:@"appBundleId"];
-  [v30 encodeObject:self->_publicKey forKey:@"publicKey"];
-  [v30 encodeObject:self->_publicKeyVersion forKey:@"publicKeyVersion"];
-  [v30 encodeObject:self->_textMessagePublicKey forKey:@"textMessageVerificationPublicKey"];
-  [v30 encodeObject:self->_textMessagePublicKeyVersion forKey:@"textMessageVerificationPublicKeyVersion"];
-  [v30 encodeDouble:@"callbackInterval" forKey:self->_callbackInterval];
-  [v30 encodeDouble:@"applicationBackgroundRuntimeIntervalInHours" forKey:self->_applicationBackgroundRuntimeInterval];
-  [v30 encodeDouble:@"rpiAdvertisementToleranceInMinutes" forKey:self->_rpiAdvertisementTolerance];
-  [v30 encodeDouble:@"rpiDuplicateAdvertisementToleranceInMinutes" forKey:self->_rpiDuplicateAdvertisementTolerance];
+  [coderCopy encodeBool:self->_associatedDomainsEnabled forKey:@"enableAssociatedDomains"];
+  [coderCopy encodeBool:self->_textMessageVerificationEnabled forKey:@"enableTextMessageVerification"];
+  [coderCopy encodeBool:self->_preArmTestVerificationEnabled forKey:@"enablePreArmVerification"];
+  [coderCopy encodeBool:self->_variantOfConcernEnabled forKey:@"variantOfConcernEnabled"];
+  [coderCopy encodeBool:self->_hasSubdivisions forKey:@"hasStateRegions"];
+  [coderCopy encodeObject:self->_subdivisions forKey:@"stateRegionConfigs"];
+  [coderCopy encodeDouble:@"timeToResetAvailabilityAlert" forKey:self->_timeToResetAvailabilityAlert];
+  [coderCopy encodeBool:self->_resetAvailabilityAlertForDeclinedUsers forKey:@"resetAvailabilityAlertForDeclinedUsers"];
+  [coderCopy encodeObject:self->_region forKey:@"region"];
+  [coderCopy encodeObject:self->_appBundleID forKey:@"appBundleId"];
+  [coderCopy encodeObject:self->_publicKey forKey:@"publicKey"];
+  [coderCopy encodeObject:self->_publicKeyVersion forKey:@"publicKeyVersion"];
+  [coderCopy encodeObject:self->_textMessagePublicKey forKey:@"textMessageVerificationPublicKey"];
+  [coderCopy encodeObject:self->_textMessagePublicKeyVersion forKey:@"textMessageVerificationPublicKeyVersion"];
+  [coderCopy encodeDouble:@"callbackInterval" forKey:self->_callbackInterval];
+  [coderCopy encodeDouble:@"applicationBackgroundRuntimeIntervalInHours" forKey:self->_applicationBackgroundRuntimeInterval];
+  [coderCopy encodeDouble:@"rpiAdvertisementToleranceInMinutes" forKey:self->_rpiAdvertisementTolerance];
+  [coderCopy encodeDouble:@"rpiDuplicateAdvertisementToleranceInMinutes" forKey:self->_rpiDuplicateAdvertisementTolerance];
   dailyDetectExposureLimit = self->_dailyDetectExposureLimit;
   if (dailyDetectExposureLimit)
   {
-    [v30 encodeInt64:dailyDetectExposureLimit forKey:@"detectExposureDailyLimit"];
+    [coderCopy encodeInt64:dailyDetectExposureLimit forKey:@"detectExposureDailyLimit"];
   }
 
   detectExposureNKDLimit = self->_detectExposureNKDLimit;
   if (detectExposureNKDLimit)
   {
-    [v30 encodeInt64:detectExposureNKDLimit forKey:@"detectExposureNKDLimit"];
+    [coderCopy encodeInt64:detectExposureNKDLimit forKey:@"detectExposureNKDLimit"];
   }
 
   numberOfAdvSamplesForRPIThreshold = self->_numberOfAdvSamplesForRPIThreshold;
-  v9 = v30;
+  v9 = coderCopy;
   if (numberOfAdvSamplesForRPIThreshold)
   {
-    [v30 encodeInt64:numberOfAdvSamplesForRPIThreshold forKey:@"numberOfAdvSamplesForRPIThreshold"];
-    v9 = v30;
+    [coderCopy encodeInt64:numberOfAdvSamplesForRPIThreshold forKey:@"numberOfAdvSamplesForRPIThreshold"];
+    v9 = coderCopy;
   }
 
   [v9 encodeDouble:@"forceAPWakeIntervalInMinutesThreshold" forKey:self->_forceAPWakeIntervalThreshold];
-  [v30 encodeBool:self->_dynamicAlgorithmEnabled forKey:@"dynamicAlgorithmEnabled"];
-  [v30 encodeDouble:@"dynamicThrottleDownDurationInSeconds" forKey:self->_dynamicThrottleDownDuration];
+  [coderCopy encodeBool:self->_dynamicAlgorithmEnabled forKey:@"dynamicAlgorithmEnabled"];
+  [coderCopy encodeDouble:@"dynamicThrottleDownDurationInSeconds" forKey:self->_dynamicThrottleDownDuration];
   dynamicThrottleDownAdvDensity = self->_dynamicThrottleDownAdvDensity;
   if (dynamicThrottleDownAdvDensity)
   {
-    [v30 encodeInt64:dynamicThrottleDownAdvDensity forKey:@"dynamicThrottleDownAdvDensity"];
+    [coderCopy encodeInt64:dynamicThrottleDownAdvDensity forKey:@"dynamicThrottleDownAdvDensity"];
   }
 
   if (self->_dynamicThrottleDownRSSI)
   {
-    [v30 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
-  [v30 encodeDouble:@"dynamicThrottleUpDurationInMinutes" forKey:self->_dynamicThrottleUpDuration];
+  [coderCopy encodeDouble:@"dynamicThrottleUpDurationInMinutes" forKey:self->_dynamicThrottleUpDuration];
   dynamicThrottleUpAdvDensity = self->_dynamicThrottleUpAdvDensity;
   if (dynamicThrottleUpAdvDensity)
   {
-    [v30 encodeInt64:dynamicThrottleUpAdvDensity forKey:@"dynamicThrottleUpAdvDensity"];
+    [coderCopy encodeInt64:dynamicThrottleUpAdvDensity forKey:@"dynamicThrottleUpAdvDensity"];
   }
 
-  [v30 encodeDouble:@"osTriggeredAppRunTimeInSeconds" forKey:self->_osTriggeredAppRunInterval];
-  [v30 encodeDouble:@"regionTransitionGracePeriodInMinutes" forKey:self->_regionTransitionGracePeriod];
-  [v30 encodeDouble:@"regionDisabledTransitionGracePeriodMinutes" forKey:self->_regionDisabledTransitionGracePeriod];
+  [coderCopy encodeDouble:@"osTriggeredAppRunTimeInSeconds" forKey:self->_osTriggeredAppRunInterval];
+  [coderCopy encodeDouble:@"regionTransitionGracePeriodInMinutes" forKey:self->_regionTransitionGracePeriod];
+  [coderCopy encodeDouble:@"regionDisabledTransitionGracePeriodMinutes" forKey:self->_regionDisabledTransitionGracePeriod];
   if (self->_selfReportTimeoutDays)
   {
-    [v30 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
-  [v30 encodeBool:self->_enableV1 forKey:@"V1Enable"];
-  [v30 encodeObject:self->_legalConsentVersion forKey:@"legalConsentVersion"];
-  v12 = [(ENRegionServerConfiguration *)self phaTelemetryPublicCertificateChain];
+  [coderCopy encodeBool:self->_enableV1 forKey:@"V1Enable"];
+  [coderCopy encodeObject:self->_legalConsentVersion forKey:@"legalConsentVersion"];
+  phaTelemetryPublicCertificateChain = [(ENRegionServerConfiguration *)self phaTelemetryPublicCertificateChain];
 
-  if (v12)
+  if (phaTelemetryPublicCertificateChain)
   {
-    v13 = [(ENRegionServerConfiguration *)self phaTelemetryPublicCertificateChain];
-    [v30 encodeObject:v13 forKey:@"publicHealthAuthorityTelemetryPublicCertificateChain"];
+    phaTelemetryPublicCertificateChain2 = [(ENRegionServerConfiguration *)self phaTelemetryPublicCertificateChain];
+    [coderCopy encodeObject:phaTelemetryPublicCertificateChain2 forKey:@"publicHealthAuthorityTelemetryPublicCertificateChain"];
   }
 
-  v14 = [(ENRegionServerConfiguration *)self phaTelemetryAppleCertificateChain];
+  phaTelemetryAppleCertificateChain = [(ENRegionServerConfiguration *)self phaTelemetryAppleCertificateChain];
 
-  if (v14)
+  if (phaTelemetryAppleCertificateChain)
   {
-    v15 = [(ENRegionServerConfiguration *)self phaTelemetryAppleCertificateChain];
-    [v30 encodeObject:v15 forKey:@"publicHealthAuthorityTelemetryAppleCertificateChain"];
+    phaTelemetryAppleCertificateChain2 = [(ENRegionServerConfiguration *)self phaTelemetryAppleCertificateChain];
+    [coderCopy encodeObject:phaTelemetryAppleCertificateChain2 forKey:@"publicHealthAuthorityTelemetryAppleCertificateChain"];
   }
 
-  v16 = [(ENRegionServerConfiguration *)self phaTelemetryEndpoint];
+  phaTelemetryEndpoint = [(ENRegionServerConfiguration *)self phaTelemetryEndpoint];
 
-  if (v16)
+  if (phaTelemetryEndpoint)
   {
-    v17 = [(ENRegionServerConfiguration *)self phaTelemetryEndpoint];
-    [v30 encodeObject:v17 forKey:@"publicHealthAuthorityTelemetryEndpoint"];
+    phaTelemetryEndpoint2 = [(ENRegionServerConfiguration *)self phaTelemetryEndpoint];
+    [coderCopy encodeObject:phaTelemetryEndpoint2 forKey:@"publicHealthAuthorityTelemetryEndpoint"];
   }
 
-  v18 = [(ENRegionServerConfiguration *)self phaTelemetryOptInMessage];
+  phaTelemetryOptInMessage = [(ENRegionServerConfiguration *)self phaTelemetryOptInMessage];
 
-  if (v18)
+  if (phaTelemetryOptInMessage)
   {
-    v19 = [(ENRegionServerConfiguration *)self phaTelemetryOptInMessage];
-    [v30 encodeObject:v19 forKey:@"telemetryOptInMessage"];
+    phaTelemetryOptInMessage2 = [(ENRegionServerConfiguration *)self phaTelemetryOptInMessage];
+    [coderCopy encodeObject:phaTelemetryOptInMessage2 forKey:@"telemetryOptInMessage"];
   }
 
-  v20 = [(ENRegionServerConfiguration *)self partnerTelemetryPublicCertificateChain];
+  partnerTelemetryPublicCertificateChain = [(ENRegionServerConfiguration *)self partnerTelemetryPublicCertificateChain];
 
-  if (v20)
+  if (partnerTelemetryPublicCertificateChain)
   {
-    v21 = [(ENRegionServerConfiguration *)self partnerTelemetryPublicCertificateChain];
-    [v30 encodeObject:v21 forKey:@"partnerTelemetryPublicCertificateChain"];
+    partnerTelemetryPublicCertificateChain2 = [(ENRegionServerConfiguration *)self partnerTelemetryPublicCertificateChain];
+    [coderCopy encodeObject:partnerTelemetryPublicCertificateChain2 forKey:@"partnerTelemetryPublicCertificateChain"];
   }
 
-  v22 = [(ENRegionServerConfiguration *)self partnerTelemetryAppleCertificateChain];
+  partnerTelemetryAppleCertificateChain = [(ENRegionServerConfiguration *)self partnerTelemetryAppleCertificateChain];
 
-  if (v22)
+  if (partnerTelemetryAppleCertificateChain)
   {
-    v23 = [(ENRegionServerConfiguration *)self partnerTelemetryAppleCertificateChain];
-    [v30 encodeObject:v23 forKey:@"partnerTelemetryAppleCertificateChain"];
+    partnerTelemetryAppleCertificateChain2 = [(ENRegionServerConfiguration *)self partnerTelemetryAppleCertificateChain];
+    [coderCopy encodeObject:partnerTelemetryAppleCertificateChain2 forKey:@"partnerTelemetryAppleCertificateChain"];
   }
 
-  v24 = [(ENRegionServerConfiguration *)self partnerTelemetryEndpoint];
+  partnerTelemetryEndpoint = [(ENRegionServerConfiguration *)self partnerTelemetryEndpoint];
 
-  if (v24)
+  if (partnerTelemetryEndpoint)
   {
-    v25 = [(ENRegionServerConfiguration *)self partnerTelemetryEndpoint];
-    [v30 encodeObject:v25 forKey:@"partnerTelemetryEndpoint"];
+    partnerTelemetryEndpoint2 = [(ENRegionServerConfiguration *)self partnerTelemetryEndpoint];
+    [coderCopy encodeObject:partnerTelemetryEndpoint2 forKey:@"partnerTelemetryEndpoint"];
   }
 
-  v26 = [(ENRegionServerConfiguration *)self appleTelemetryEndpoint];
+  appleTelemetryEndpoint = [(ENRegionServerConfiguration *)self appleTelemetryEndpoint];
 
-  if (v26)
+  if (appleTelemetryEndpoint)
   {
-    v27 = [(ENRegionServerConfiguration *)self appleTelemetryEndpoint];
-    [v30 encodeObject:v27 forKey:@"appleTelemetryEndpoint"];
+    appleTelemetryEndpoint2 = [(ENRegionServerConfiguration *)self appleTelemetryEndpoint];
+    [coderCopy encodeObject:appleTelemetryEndpoint2 forKey:@"appleTelemetryEndpoint"];
   }
 
-  v28 = [(ENRegionServerConfiguration *)self appleTelemetryEndpointCredentials];
+  appleTelemetryEndpointCredentials = [(ENRegionServerConfiguration *)self appleTelemetryEndpointCredentials];
 
-  if (v28)
+  if (appleTelemetryEndpointCredentials)
   {
-    v29 = [(ENRegionServerConfiguration *)self appleTelemetryEndpointCredentials];
-    [v30 encodeObject:v29 forKey:@"appleTelemetryEndpointCredentials"];
+    appleTelemetryEndpointCredentials2 = [(ENRegionServerConfiguration *)self appleTelemetryEndpointCredentials];
+    [coderCopy encodeObject:appleTelemetryEndpointCredentials2 forKey:@"appleTelemetryEndpointCredentials"];
   }
 
-  [v30 encodeBool:-[ENRegionServerConfiguration telemetryAuthorization](self forKey:{"telemetryAuthorization"), @"telemetryAuthorization"}];
+  [coderCopy encodeBool:-[ENRegionServerConfiguration telemetryAuthorization](self forKey:{"telemetryAuthorization"), @"telemetryAuthorization"}];
 }
 
 @end

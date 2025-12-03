@@ -1,25 +1,25 @@
 @interface TSUAssertionHandler
 + (id)currentHandler;
-+ (id)performBlockIgnoringAssertions:(id)a3;
++ (id)performBlockIgnoringAssertions:(id)assertions;
 + (void)installAsNSHandler;
-+ (void)testCaseStarted:(id)a3;
-+ (void)testCaseStopped:(id)a3;
-- (void)handleFailureInMethod:(SEL)a3 object:(id)a4 file:(id)a5 lineNumber:(int64_t)a6 description:(id)a7;
-- (void)handleFailureWithLocation:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6 arguments:(char *)a7;
++ (void)testCaseStarted:(id)started;
++ (void)testCaseStopped:(id)stopped;
+- (void)handleFailureInMethod:(SEL)method object:(id)object file:(id)file lineNumber:(int64_t)number description:(id)description;
+- (void)handleFailureWithLocation:(id)location file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments;
 @end
 
 @implementation TSUAssertionHandler
 
-+ (void)testCaseStarted:(id)a3
++ (void)testCaseStarted:(id)started
 {
-  v3 = [a3 object];
-  v4 = v3;
+  object = [started object];
+  v4 = object;
 
-  _senTestCaseRun = v3;
+  _senTestCaseRun = object;
   _senTestCasePool = objc_alloc_init(MEMORY[0x277CCA8B0]);
 }
 
-+ (void)testCaseStopped:(id)a3
++ (void)testCaseStopped:(id)stopped
 {
   _senTestCasePool = 0;
 
@@ -29,12 +29,12 @@
 + (void)installAsNSHandler
 {
   v3 = [objc_msgSend(MEMORY[0x277CCACC8] "currentThread")];
-  v4 = [a1 currentHandler];
+  currentHandler = [self currentHandler];
 
-  [v3 setObject:v4 forKey:@"NSAssertionHandler"];
+  [v3 setObject:currentHandler forKey:@"NSAssertionHandler"];
 }
 
-+ (id)performBlockIgnoringAssertions:(id)a3
++ (id)performBlockIgnoringAssertions:(id)assertions
 {
   v7 = 0;
   v8 = &v7;
@@ -49,7 +49,7 @@
   v6[3] = &unk_279D65D98;
   v6[4] = &v7;
   _callbackBlock = v6;
-  (*(a3 + 2))(a3, a2);
+  (*(assertions + 2))(assertions, a2);
   _callbackBlock = v3;
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -88,26 +88,26 @@ id __54__TSUAssertionHandler_performBlockIgnoringAssertions___block_invoke(uint6
   return v4;
 }
 
-- (void)handleFailureInMethod:(SEL)a3 object:(id)a4 file:(id)a5 lineNumber:(int64_t)a6 description:(id)a7
+- (void)handleFailureInMethod:(SEL)method object:(id)object file:(id)file lineNumber:(int64_t)number description:(id)description
 {
   v13 = objc_opt_class();
   v14 = MEMORY[0x277CCACA8];
   v16 = NSStringFromClass(v13);
-  v17 = NSStringFromSelector(a3);
+  v17 = NSStringFromSelector(method);
   v15 = 45;
-  if (v13 == a4)
+  if (v13 == object)
   {
     v15 = 43;
   }
 
-  -[TSUAssertionHandler handleFailureWithLocation:file:lineNumber:description:arguments:](self, "handleFailureWithLocation:file:lineNumber:description:arguments:", [v14 stringWithFormat:@"%c[%@ %@]", v15, v16, v17], a5, a6, a7, &v18);
+  -[TSUAssertionHandler handleFailureWithLocation:file:lineNumber:description:arguments:](self, "handleFailureWithLocation:file:lineNumber:description:arguments:", [v14 stringWithFormat:@"%c[%@ %@]", v15, v16, v17], file, number, description, &v18);
 }
 
-- (void)handleFailureWithLocation:(id)a3 file:(id)a4 lineNumber:(int64_t)a5 description:(id)a6 arguments:(char *)a7
+- (void)handleFailureWithLocation:(id)location file:(id)file lineNumber:(int64_t)number description:(id)description arguments:(char *)arguments
 {
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:a6 arguments:a7];
-  v11 = [a4 lastPathComponent];
-  TSULogSink(@"Error", @"*** Assertion failure #%lu: %@ %@:%d %@", ++handleFailureWithLocation_file_lineNumber_description_arguments__assertionCount, a3, v11, a5, v10);
+  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:description arguments:arguments];
+  lastPathComponent = [file lastPathComponent];
+  TSULogSink(@"Error", @"*** Assertion failure #%lu: %@ %@:%d %@", ++handleFailureWithLocation_file_lineNumber_description_arguments__assertionCount, location, lastPathComponent, number, v10);
 }
 
 @end

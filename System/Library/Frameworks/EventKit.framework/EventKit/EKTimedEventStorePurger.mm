@@ -2,22 +2,22 @@
 - (BOOL)purgingAllowed;
 - (EKTimedEventStorePurger)init;
 - (double)timeout;
-- (id)acquireCachedEventStoreOrCreate:(BOOL)a3;
+- (id)acquireCachedEventStoreOrCreate:(BOOL)create;
 - (id)changedBlock;
 - (id)creationBlock;
 - (void)_addPersistentNotificationObservers;
 - (void)_databaseChangedExternally;
-- (void)_eventStoreChangedNotification:(id)a3;
+- (void)_eventStoreChangedNotification:(id)notification;
 - (void)_fireChangedBlock;
 - (void)_removePersistentNotificationObservers;
 - (void)_removeTransientEventStoreChangeObserver;
 - (void)_resetIdleTimer;
 - (void)_uninstallTimer;
 - (void)dealloc;
-- (void)setChangedBlock:(id)a3;
-- (void)setCreationBlock:(id)a3;
-- (void)setPurgingAllowed:(BOOL)a3;
-- (void)setTimeout:(double)a3;
+- (void)setChangedBlock:(id)block;
+- (void)setCreationBlock:(id)block;
+- (void)setPurgingAllowed:(BOOL)allowed;
+- (void)setTimeout:(double)timeout;
 @end
 
 @implementation EKTimedEventStorePurger
@@ -31,16 +31,16 @@
   {
     objc_opt_class();
     v3 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
 
-    v5 = dispatch_queue_create(v4, 0);
+    v5 = dispatch_queue_create(uTF8String, 0);
     [(EKTimedEventStorePurger *)v2 setWorkQueue:v5];
 
     objc_opt_class();
     v6 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v7 = [v6 UTF8String];
+    uTF8String2 = [v6 UTF8String];
 
-    v8 = dispatch_queue_create(v7, 0);
+    v8 = dispatch_queue_create(uTF8String2, 0);
     [(EKTimedEventStorePurger *)v2 setCallbackQueue:v8];
 
     [(EKTimedEventStorePurger *)v2 _addPersistentNotificationObservers];
@@ -59,16 +59,16 @@
   [(EKTimedEventStorePurger *)&v3 dealloc];
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
-  v5 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__EKTimedEventStorePurger_setTimeout___block_invoke;
   v6[3] = &unk_1E77FDDC0;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = timeout;
+  dispatch_async(workQueue, v6);
 }
 
 uint64_t __38__EKTimedEventStorePurger_setTimeout___block_invoke(uint64_t a1)
@@ -109,14 +109,14 @@ uint64_t __38__EKTimedEventStorePurger_setTimeout___block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__EKTimedEventStorePurger_timeout__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -130,18 +130,18 @@ uint64_t __34__EKTimedEventStorePurger_timeout__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCreationBlock:(id)a3
+- (void)setCreationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(EKTimedEventStorePurger *)self workQueue];
+  blockCopy = block;
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__EKTimedEventStorePurger_setCreationBlock___block_invoke;
   v7[3] = &unk_1E77FD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __44__EKTimedEventStorePurger_setCreationBlock___block_invoke(uint64_t a1)
@@ -162,14 +162,14 @@ uint64_t __44__EKTimedEventStorePurger_setCreationBlock___block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__EKTimedEventStorePurger_creationBlock__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = _Block_copy(v8[5]);
   _Block_object_dispose(&v7, 8);
@@ -187,18 +187,18 @@ uint64_t __40__EKTimedEventStorePurger_creationBlock__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setChangedBlock:(id)a3
+- (void)setChangedBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(EKTimedEventStorePurger *)self workQueue];
+  blockCopy = block;
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__EKTimedEventStorePurger_setChangedBlock___block_invoke;
   v7[3] = &unk_1E77FD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 - (id)changedBlock
@@ -209,14 +209,14 @@ uint64_t __40__EKTimedEventStorePurger_creationBlock__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__EKTimedEventStorePurger_changedBlock__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = _Block_copy(v8[5]);
   _Block_object_dispose(&v7, 8);
@@ -234,16 +234,16 @@ uint64_t __39__EKTimedEventStorePurger_changedBlock__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPurgingAllowed:(BOOL)a3
+- (void)setPurgingAllowed:(BOOL)allowed
 {
-  v5 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__EKTimedEventStorePurger_setPurgingAllowed___block_invoke;
   v6[3] = &unk_1E77FDDE8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  allowedCopy = allowed;
+  dispatch_async(workQueue, v6);
 }
 
 uint64_t __45__EKTimedEventStorePurger_setPurgingAllowed___block_invoke(uint64_t a1)
@@ -279,23 +279,23 @@ uint64_t __45__EKTimedEventStorePurger_setPurgingAllowed___block_invoke(uint64_t
 
 - (BOOL)purgingAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __41__EKTimedEventStorePurger_purgingAllowed__block_invoke;
   v5[3] = &unk_1E77FD530;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __41__EKTimedEventStorePurger_purgingAllowed__block_invoke(uint64_t a1)
@@ -305,7 +305,7 @@ uint64_t __41__EKTimedEventStorePurger_purgingAllowed__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)acquireCachedEventStoreOrCreate:(BOOL)a3
+- (id)acquireCachedEventStoreOrCreate:(BOOL)create
 {
   v10 = 0;
   v11 = &v10;
@@ -313,15 +313,15 @@ uint64_t __41__EKTimedEventStorePurger_purgingAllowed__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__16;
   v14 = __Block_byref_object_dispose__17;
   v15 = 0;
-  v5 = [(EKTimedEventStorePurger *)self workQueue];
+  workQueue = [(EKTimedEventStorePurger *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__EKTimedEventStorePurger_acquireCachedEventStoreOrCreate___block_invoke;
   block[3] = &unk_1E77FDE10;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  createCopy = create;
+  dispatch_sync(workQueue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -474,39 +474,39 @@ void __53__EKTimedEventStorePurger__databaseChangedExternally__block_invoke(uint
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_eventStoreChangedNotification:(id)a3
+- (void)_eventStoreChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
   {
     [EKTimedEventStorePurger _eventStoreChangedNotification:];
   }
 
-  if (![EKChangeListener isSyncStatusChangeNotification:v4])
+  if (![EKChangeListener isSyncStatusChangeNotification:notificationCopy])
   {
-    v5 = [(EKTimedEventStorePurger *)self workQueue];
+    workQueue = [(EKTimedEventStorePurger *)self workQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__EKTimedEventStorePurger__eventStoreChangedNotification___block_invoke;
     block[3] = &unk_1E77FD418;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(workQueue, block);
   }
 }
 
 - (void)_fireChangedBlock
 {
-  v3 = [(EKTimedEventStorePurger *)self internalChangedBlock];
-  if (v3)
+  internalChangedBlock = [(EKTimedEventStorePurger *)self internalChangedBlock];
+  if (internalChangedBlock)
   {
-    v4 = [(EKTimedEventStorePurger *)self callbackQueue];
+    callbackQueue = [(EKTimedEventStorePurger *)self callbackQueue];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __44__EKTimedEventStorePurger__fireChangedBlock__block_invoke;
     v5[3] = &unk_1E77FD1A8;
     v5[4] = self;
-    v6 = v3;
-    dispatch_async(v4, v5);
+    v6 = internalChangedBlock;
+    dispatch_async(callbackQueue, v5);
   }
 }
 

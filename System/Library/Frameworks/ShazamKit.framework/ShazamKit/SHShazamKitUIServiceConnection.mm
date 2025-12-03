@@ -1,11 +1,11 @@
 @interface SHShazamKitUIServiceConnection
 - (NSXPCConnection)connection;
-- (SHShazamKitUIServiceConnection)initWithConnectionProvider:(id)a3;
+- (SHShazamKitUIServiceConnection)initWithConnectionProvider:(id)provider;
 - (void)attachDefaultConnectionHandlers;
 - (void)dealloc;
-- (void)presentMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5;
-- (void)presentMediaLibraryWithCompletionHandler:(id)a3;
+- (void)presentMediaItem:(id)item completionHandler:(id)handler;
+- (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler;
+- (void)presentMediaLibraryWithCompletionHandler:(id)handler;
 - (void)tearDownConnection;
 @end
 
@@ -19,16 +19,16 @@
   [(SHShazamKitUIServiceConnection *)&v3 dealloc];
 }
 
-- (SHShazamKitUIServiceConnection)initWithConnectionProvider:(id)a3
+- (SHShazamKitUIServiceConnection)initWithConnectionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SHShazamKitUIServiceConnection;
   v6 = [(SHShazamKitUIServiceConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionProvider, a3);
+    objc_storeStrong(&v6->_connectionProvider, provider);
     v7->_connectionLock._os_unfair_lock_opaque = 0;
   }
 
@@ -40,10 +40,10 @@
   os_unfair_lock_lock(&self->_connectionLock);
   if (!self->_connection)
   {
-    v3 = [(SHShazamKitUIServiceConnection *)self connectionProvider];
-    v4 = [v3 shazamKitUIServiceConnection];
+    connectionProvider = [(SHShazamKitUIServiceConnection *)self connectionProvider];
+    shazamKitUIServiceConnection = [connectionProvider shazamKitUIServiceConnection];
     connection = self->_connection;
-    self->_connection = v4;
+    self->_connection = shazamKitUIServiceConnection;
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
     [(SHShazamKitUIServiceConnection *)self attachDefaultConnectionHandlers];
@@ -134,20 +134,20 @@ void __65__SHShazamKitUIServiceConnection_attachDefaultConnectionHandlers__block
   }
 }
 
-- (void)presentMediaItem:(id)a3 completionHandler:(id)a4
+- (void)presentMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__SHShazamKitUIServiceConnection_presentMediaItem_completionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = handlerCopy;
+  v7 = handlerCopy;
+  itemCopy = item;
   v9 = _Block_copy(aBlock);
-  v10 = [(SHShazamKitUIServiceConnection *)self connection];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
-  [v11 presentMediaItem:v8 completionHandler:v7];
+  connection = [(SHShazamKitUIServiceConnection *)self connection];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v9];
+  [v11 presentMediaItem:itemCopy completionHandler:v7];
 }
 
 void __69__SHShazamKitUIServiceConnection_presentMediaItem_completionHandler___block_invoke(uint64_t a1)
@@ -156,23 +156,23 @@ void __69__SHShazamKitUIServiceConnection_presentMediaItem_completionHandler___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5
+- (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __90__SHShazamKitUIServiceConnection_presentMediaItem_presentationSettings_completionHandler___block_invoke;
   v19 = &unk_2788F7E18;
-  v20 = v8;
-  v21 = v9;
-  v10 = v8;
-  v11 = v9;
-  v12 = a4;
+  v20 = itemCopy;
+  v21 = handlerCopy;
+  v10 = itemCopy;
+  v11 = handlerCopy;
+  settingsCopy = settings;
   v13 = _Block_copy(&v16);
   v14 = [(SHShazamKitUIServiceConnection *)self connection:v16];
   v15 = [v14 remoteObjectProxyWithErrorHandler:v13];
-  [v15 presentMediaItem:v10 presentationSettings:v12 completionHandler:v11];
+  [v15 presentMediaItem:v10 presentationSettings:settingsCopy completionHandler:v11];
 }
 
 void __90__SHShazamKitUIServiceConnection_presentMediaItem_presentationSettings_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -183,18 +183,18 @@ void __90__SHShazamKitUIServiceConnection_presentMediaItem_presentationSettings_
   (*(v3 + 16))(v3, 0, v4, v5);
 }
 
-- (void)presentMediaLibraryWithCompletionHandler:(id)a3
+- (void)presentMediaLibraryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__SHShazamKitUIServiceConnection_presentMediaLibraryWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_2788F8078;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = _Block_copy(aBlock);
-  v7 = [(SHShazamKitUIServiceConnection *)self connection];
-  v8 = [v7 remoteObjectProxyWithErrorHandler:v6];
+  connection = [(SHShazamKitUIServiceConnection *)self connection];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v6];
   [v8 presentMediaLibraryWithCompletionHandler:v5];
 }
 

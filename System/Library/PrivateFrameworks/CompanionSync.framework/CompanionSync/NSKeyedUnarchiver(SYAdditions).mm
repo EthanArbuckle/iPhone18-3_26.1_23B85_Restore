@@ -24,9 +24,9 @@
   {
     v3 = MEMORY[0x1E696ACD0];
     v4 = a3;
-    v5 = [objc_opt_class() sy_whitelistedClasses];
+    sy_whitelistedClasses = [objc_opt_class() sy_whitelistedClasses];
     v11 = 0;
-    v6 = [v3 unarchivedObjectOfClasses:v5 fromData:v4 error:&v11];
+    v6 = [v3 unarchivedObjectOfClasses:sy_whitelistedClasses fromData:v4 error:&v11];
 
     v7 = v11;
     if (v7)

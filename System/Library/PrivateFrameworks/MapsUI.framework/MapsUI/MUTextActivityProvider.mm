@@ -1,18 +1,18 @@
 @interface MUTextActivityProvider
-+ (id)activityProviderFromDataProvider:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (void)_fetchMailTemplateWithCompletion:(id)a3;
-- (void)_fetchPlaceNoteWithCompletion:(id)a3;
-- (void)registerHTMLTemplate:(id)a3;
-- (void)registerNote:(id)a3;
++ (id)activityProviderFromDataProvider:(id)provider;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (void)_fetchMailTemplateWithCompletion:(id)completion;
+- (void)_fetchPlaceNoteWithCompletion:(id)completion;
+- (void)registerHTMLTemplate:(id)template;
+- (void)registerNote:(id)note;
 @end
 
 @implementation MUTextActivityProvider
 
-- (void)_fetchPlaceNoteWithCompletion:(id)a3
+- (void)_fetchPlaceNoteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   noteBlock = self->_noteBlock;
   if (noteBlock)
   {
@@ -20,7 +20,7 @@
     v8[1] = 3221225472;
     v8[2] = __56__MUTextActivityProvider__fetchPlaceNoteWithCompletion___block_invoke;
     v8[3] = &unk_1E82195B8;
-    v9 = v4;
+    v9 = completionCopy;
     noteBlock[2](noteBlock, v8);
   }
 
@@ -59,10 +59,10 @@ void __56__MUTextActivityProvider__fetchPlaceNoteWithCompletion___block_invoke(u
   }
 }
 
-- (void)_fetchMailTemplateWithCompletion:(id)a3
+- (void)_fetchMailTemplateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   htmlTemplateBlock = self->_htmlTemplateBlock;
   if (htmlTemplateBlock)
   {
@@ -70,7 +70,7 @@ void __56__MUTextActivityProvider__fetchPlaceNoteWithCompletion___block_invoke(u
     v8[1] = 3221225472;
     v8[2] = __59__MUTextActivityProvider__fetchMailTemplateWithCompletion___block_invoke;
     v8[3] = &unk_1E82195B8;
-    v9 = v4;
+    v9 = completionCopy;
     htmlTemplateBlock[2](htmlTemplateBlock, v8);
   }
 
@@ -98,11 +98,11 @@ void __59__MUTextActivityProvider__fetchMailTemplateWithCompletion___block_invok
   }
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:@"com.apple.share.System.CopyToPasteboard"])
+  controllerCopy = controller;
+  typeCopy = type;
+  if ([typeCopy isEqual:@"com.apple.share.System.CopyToPasteboard"])
   {
     v8 = 0;
   }
@@ -111,14 +111,14 @@ void __59__MUTextActivityProvider__fetchMailTemplateWithCompletion___block_invok
   {
     v8 = objc_alloc_init(MEMORY[0x1E696ACA0]);
     objc_initWeak(&location, self);
-    v9 = [*MEMORY[0x1E6982F40] identifier];
+    identifier = [*MEMORY[0x1E6982F40] identifier];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __69__MUTextActivityProvider_activityViewController_itemForActivityType___block_invoke;
     v11[3] = &unk_1E8218B00;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
-    [v8 registerDataRepresentationForTypeIdentifier:v9 visibility:0 loadHandler:v11];
+    v12 = typeCopy;
+    [v8 registerDataRepresentationForTypeIdentifier:identifier visibility:0 loadHandler:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -187,33 +187,33 @@ void __69__MUTextActivityProvider_activityViewController_itemForActivityType___b
   }
 }
 
-- (void)registerNote:(id)a3
+- (void)registerNote:(id)note
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(note);
   noteBlock = self->_noteBlock;
   self->_noteBlock = v4;
 
   MEMORY[0x1EEE66BB8](v4, noteBlock);
 }
 
-- (void)registerHTMLTemplate:(id)a3
+- (void)registerHTMLTemplate:(id)template
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(template);
   htmlTemplateBlock = self->_htmlTemplateBlock;
   self->_htmlTemplateBlock = v4;
 
   MEMORY[0x1EEE66BB8](v4, htmlTemplateBlock);
 }
 
-+ (id)activityProviderFromDataProvider:(id)a3
++ (id)activityProviderFromDataProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_alloc_init(MUTextActivityProvider);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__MUTextActivityProvider_activityProviderFromDataProvider___block_invoke;
   v11[3] = &unk_1E8218B28;
-  v5 = v3;
+  v5 = providerCopy;
   v12 = v5;
   [(MUTextActivityProvider *)v4 registerHTMLTemplate:v11];
   objc_opt_class();
@@ -228,10 +228,10 @@ void __69__MUTextActivityProvider_activityViewController_itemForActivityType___b
     [(MUTextActivityProvider *)v4 registerNote:v9];
   }
 
-  v7 = [v5 activityTitle];
-  if ([v7 length])
+  activityTitle = [v5 activityTitle];
+  if ([activityTitle length])
   {
-    [(MUTextActivityProvider *)v4 registerActivityTitle:v7];
+    [(MUTextActivityProvider *)v4 registerActivityTitle:activityTitle];
   }
 
   return v4;

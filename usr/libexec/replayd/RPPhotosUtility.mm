@@ -1,16 +1,16 @@
 @interface RPPhotosUtility
-+ (BOOL)showAlertFailedSaveToPhotosWithError:(id)a3;
++ (BOOL)showAlertFailedSaveToPhotosWithError:(id)error;
 + (id)fetchLastSavedVideoAssetInPhotos;
-+ (void)exportVideoToPhotosAsynchronously:(id)a3 mixAudioTracks:(BOOL)a4 completionHandler:(id)a5;
-+ (void)exportVideoToPhotosLibrary:(id)a3 completionHandler:(id)a4;
++ (void)exportVideoToPhotosAsynchronously:(id)asynchronously mixAudioTracks:(BOOL)tracks completionHandler:(id)handler;
++ (void)exportVideoToPhotosLibrary:(id)library completionHandler:(id)handler;
 @end
 
 @implementation RPPhotosUtility
 
-+ (void)exportVideoToPhotosLibrary:(id)a3 completionHandler:(id)a4
++ (void)exportVideoToPhotosLibrary:(id)library completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -24,7 +24,7 @@
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v19 = 0;
-  v7 = [[AVURLAsset alloc] initWithURL:v5 options:0];
+  v7 = [[AVURLAsset alloc] initWithURL:libraryCopy options:0];
   v8 = v7;
   if (v7)
   {
@@ -38,40 +38,40 @@
   v13[1] = 3221225472;
   v13[2] = sub_100052A64;
   v13[3] = &unk_1000A26E0;
-  v15 = v6;
+  v15 = handlerCopy;
   v16 = buf;
-  v14 = v5;
-  v11 = v6;
-  v12 = v5;
+  v14 = libraryCopy;
+  v11 = handlerCopy;
+  v12 = libraryCopy;
   dispatch_async(v10, v13);
 
   _Block_object_dispose(buf, 8);
 }
 
-+ (void)exportVideoToPhotosAsynchronously:(id)a3 mixAudioTracks:(BOOL)a4 completionHandler:(id)a5
++ (void)exportVideoToPhotosAsynchronously:(id)asynchronously mixAudioTracks:(BOOL)tracks completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4)
+  asynchronouslyCopy = asynchronously;
+  handlerCopy = handler;
+  if (tracks)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100053000;
     v9[3] = &unk_1000A1868;
-    v10 = v7;
-    v11 = v8;
+    v10 = asynchronouslyCopy;
+    v11 = handlerCopy;
     [RPAudioMixUtility mixAudioForMovie:v10 withCompletionHandler:v9];
   }
 
   else
   {
-    [RPPhotosUtility exportVideoToPhotosLibrary:v7 completionHandler:v8];
+    [RPPhotosUtility exportVideoToPhotosLibrary:asynchronouslyCopy completionHandler:handlerCopy];
   }
 }
 
-+ (BOOL)showAlertFailedSaveToPhotosWithError:(id)a3
++ (BOOL)showAlertFailedSaveToPhotosWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -82,8 +82,8 @@
   }
 
   v4 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"RECORDING_FAILED_TO_SAVE_ALERT_MESSAGE_FORMAT"];
-  v5 = [v3 localizedDescription];
-  v6 = [NSString stringWithFormat:v4, v5];
+  localizedDescription = [errorCopy localizedDescription];
+  v6 = [NSString stringWithFormat:v4, localizedDescription];
 
   v7 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"RECORDING_STATUSBAR_TAPPED_ALERT_TITLE"];
   v8 = v6;
@@ -129,9 +129,9 @@
   [v2 setSortDescriptors:v4];
 
   v5 = [PHAsset fetchAssetsWithMediaType:2 options:v2];
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
 @end

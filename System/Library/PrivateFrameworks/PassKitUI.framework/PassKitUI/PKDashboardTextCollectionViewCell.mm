@@ -1,6 +1,6 @@
 @interface PKDashboardTextCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardTextCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardTextCollectionViewCell)initWithFrame:(CGRect)frame;
 - (double)_minimumHeight;
 - (id)_defaultSubtitleFont;
 - (id)_defaultTitleFont;
@@ -10,31 +10,31 @@
 - (void)_setSubtitleImageAfterApplyingSymbolConfiguration;
 - (void)_setTitleImageAfterApplyingSymbolConfiguration;
 - (void)layoutSubviews;
-- (void)setAccessoryColor:(id)a3;
-- (void)setAccessoryImage:(id)a3;
-- (void)setHideDisclosure:(BOOL)a3;
-- (void)setIconImage:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleColor:(id)a3;
-- (void)setSubtitleImage:(id)a3;
-- (void)setTextLayoutStyle:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
-- (void)setTitleImage:(id)a3;
+- (void)setAccessoryColor:(id)color;
+- (void)setAccessoryImage:(id)image;
+- (void)setHideDisclosure:(BOOL)disclosure;
+- (void)setIconImage:(id)image;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleColor:(id)color;
+- (void)setSubtitleImage:(id)image;
+- (void)setTextLayoutStyle:(int64_t)style;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
+- (void)setTitleImage:(id)image;
 @end
 
 @implementation PKDashboardTextCollectionViewCell
 
-- (PKDashboardTextCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDashboardTextCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v43[2] = *MEMORY[0x1E69E9840];
   v42.receiver = self;
   v42.super_class = PKDashboardTextCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKDashboardTextCollectionViewCell *)v3 contentView];
+    contentView = [(PKDashboardTextCollectionViewCell *)v3 contentView];
     v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -51,8 +51,8 @@
     [(UILabel *)v4->_titleLabel setNumberOfLines:0];
     [(UILabel *)v4->_titleLabel setLineBreakMode:0];
     v15 = v4->_titleLabel;
-    v16 = [(PKDashboardTextCollectionViewCell *)v4 _defaultTitleColor];
-    [(UILabel *)v15 setTextColor:v16];
+    _defaultTitleColor = [(PKDashboardTextCollectionViewCell *)v4 _defaultTitleColor];
+    [(UILabel *)v15 setTextColor:_defaultTitleColor];
 
     [(UILabel *)v4->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v7, v8, v9, v10}];
@@ -60,8 +60,8 @@
     v4->_titleImageView = v17;
 
     v19 = v4->_titleImageView;
-    v20 = [(PKDashboardTextCollectionViewCell *)v4 _defaultTitleColor];
-    [(UIImageView *)v19 setTintColor:v20];
+    _defaultTitleColor2 = [(PKDashboardTextCollectionViewCell *)v4 _defaultTitleColor];
+    [(UIImageView *)v19 setTintColor:_defaultTitleColor2];
 
     v21 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
     subtitleLabel = v4->_subtitleLabel;
@@ -70,8 +70,8 @@
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v4->_subtitleLabel setLineBreakMode:0];
     v23 = v4->_subtitleLabel;
-    v24 = [(PKDashboardTextCollectionViewCell *)v4 _defaultSubtitleColor];
-    [(UILabel *)v23 setTextColor:v24];
+    _defaultSubtitleColor = [(PKDashboardTextCollectionViewCell *)v4 _defaultSubtitleColor];
+    [(UILabel *)v23 setTextColor:_defaultSubtitleColor];
 
     [(UILabel *)v4->_subtitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     v25 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v7, v8, v9, v10}];
@@ -79,24 +79,24 @@
     v4->_subtitleImageView = v25;
 
     v27 = v4->_subtitleImageView;
-    v28 = [(PKDashboardTextCollectionViewCell *)v4 _defaultSubtitleColor];
-    [(UIImageView *)v27 setTintColor:v28];
+    _defaultSubtitleColor2 = [(PKDashboardTextCollectionViewCell *)v4 _defaultSubtitleColor];
+    [(UIImageView *)v27 setTintColor:_defaultSubtitleColor2];
 
     v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v7, v8, v9, v10}];
     accessoryImageView = v4->_accessoryImageView;
     v4->_accessoryImageView = v29;
 
     v31 = v4->_accessoryImageView;
-    v32 = [(PKDashboardTextCollectionViewCell *)v4 _defaultAccessoryColor];
-    [(UIImageView *)v31 setTintColor:v32];
+    _defaultAccessoryColor = [(PKDashboardTextCollectionViewCell *)v4 _defaultAccessoryColor];
+    [(UIImageView *)v31 setTintColor:_defaultAccessoryColor];
 
     [(PKDashboardTextCollectionViewCell *)v4 _setFonts];
-    [v5 addSubview:v4->_iconImageView];
-    [v5 addSubview:v4->_titleLabel];
-    [v5 addSubview:v4->_titleImageView];
-    [v5 addSubview:v4->_subtitleLabel];
-    [v5 addSubview:v4->_subtitleImageView];
-    [v5 addSubview:v4->_accessoryImageView];
+    [contentView addSubview:v4->_iconImageView];
+    [contentView addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleImageView];
+    [contentView addSubview:v4->_subtitleLabel];
+    [contentView addSubview:v4->_subtitleImageView];
+    [contentView addSubview:v4->_accessoryImageView];
     v33 = objc_alloc(MEMORY[0x1E69DCAE0]);
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -114,10 +114,10 @@
 
     [(UIImageView *)v4->_disclosureView setContentMode:1];
     v37 = v4->_disclosureView;
-    v38 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIImageView *)v37 setTintColor:v38];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIImageView *)v37 setTintColor:tertiaryLabelColor];
 
-    [v5 addSubview:v4->_disclosureView];
+    [contentView addSubview:v4->_disclosureView];
     v4->_disclosureAlignment = 0;
     v43[0] = objc_opt_class();
     v43[1] = objc_opt_class();
@@ -128,10 +128,10 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKDashboardCollectionViewCell *)self horizontalInset:a3.width];
+  width = fits.width;
+  [(PKDashboardCollectionViewCell *)self horizontalInset:fits.width];
   v6 = v5;
   v7 = 0.0;
   v8 = 0.0;
@@ -143,15 +143,15 @@
 
   if (self->_iconImage)
   {
-    v10 = [(UIImageView *)self->_iconImageView image];
-    [v10 size];
+    image = [(UIImageView *)self->_iconImageView image];
+    [image size];
     v7 = v11 + 10.0;
   }
 
   if (self->_accessoryImage)
   {
-    v12 = [(UIImageView *)self->_accessoryImageView image];
-    [v12 size];
+    image2 = [(UIImageView *)self->_accessoryImageView image];
+    [image2 size];
     v14 = v6 + v13;
   }
 
@@ -165,11 +165,11 @@
   v17 = v16;
   if (self->_titleImage)
   {
-    v18 = [(UIImageView *)self->_titleImageView image];
-    v19 = v18;
-    if (v18)
+    image3 = [(UIImageView *)self->_titleImageView image];
+    v19 = image3;
+    if (image3)
     {
-      [v18 pkui_alignmentSizeThatFits:v15 maximumScale:{1.79769313e308, 1.0}];
+      [image3 pkui_alignmentSizeThatFits:v15 maximumScale:{1.79769313e308, 1.0}];
       v20 = v46;
     }
 
@@ -188,11 +188,11 @@
   v22 = v21;
   if (self->_subtitleImage)
   {
-    v23 = [(UIImageView *)self->_subtitleImageView image];
-    v24 = v23;
-    if (v23)
+    image4 = [(UIImageView *)self->_subtitleImageView image];
+    v24 = image4;
+    if (image4)
     {
-      [v23 pkui_alignmentSizeThatFits:v15 maximumScale:{1.79769313e308, 1.0}];
+      [image4 pkui_alignmentSizeThatFits:v15 maximumScale:{1.79769313e308, 1.0}];
       v25 = *(&v42 + 1);
     }
 
@@ -306,9 +306,9 @@
   v64.receiver = self;
   v64.super_class = PKDashboardTextCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v64 layoutSubviews];
-  v3 = [(PKDashboardTextCollectionViewCell *)self _shouldReverseLayoutDirection];
-  v4 = [(PKDashboardTextCollectionViewCell *)self contentView];
-  [v4 bounds];
+  _shouldReverseLayoutDirection = [(PKDashboardTextCollectionViewCell *)self _shouldReverseLayoutDirection];
+  contentView = [(PKDashboardTextCollectionViewCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -330,8 +330,8 @@
     v17 = 18.0;
   }
 
-  v18 = v3 == 0;
-  if (v3)
+  v18 = _shouldReverseLayoutDirection == 0;
+  if (_shouldReverseLayoutDirection)
   {
     v19 = CGRectMaxXEdge;
   }
@@ -371,8 +371,8 @@
   accessoryImageView = self->_accessoryImageView;
   if (self->_accessoryImage)
   {
-    v23 = [(UIImageView *)accessoryImageView image];
-    [v23 size];
+    image = [(UIImageView *)accessoryImageView image];
+    [image size];
 
     PKSizeAspectFit();
     CGRectDivide(remainder, &v62, &remainder, v24, v20);
@@ -390,8 +390,8 @@
   iconImageView = self->_iconImageView;
   if (self->_iconImage)
   {
-    v27 = [(UIImageView *)iconImageView image];
-    [v27 size];
+    image2 = [(UIImageView *)iconImageView image];
+    [image2 size];
 
     PKSizeAspectFit();
     CGRectDivide(remainder, &v62, &remainder, v28, v19);
@@ -411,8 +411,8 @@
   {
     if (self->_subtitleImage)
     {
-      v31 = [(UIImageView *)self->_subtitleImageView image];
-      [v31 size];
+      image3 = [(UIImageView *)self->_subtitleImageView image];
+      [image3 size];
 
       PKSizeAspectFit();
       CGRectDivide(remainder, &v62, &remainder, v32, CGRectMaxYEdge);
@@ -455,8 +455,8 @@ LABEL_32:
   {
     if (self->_subtitleImage)
     {
-      v34 = [(UIImageView *)self->_subtitleImageView image];
-      [v34 size];
+      image4 = [(UIImageView *)self->_subtitleImageView image];
+      [image4 size];
 
       PKSizeAspectFit();
       CGRectDivide(remainder, &v62, &remainder, v35, v20);
@@ -503,8 +503,8 @@ LABEL_35:
 
   if (self->_titleImage)
   {
-    v55 = [(UIImageView *)self->_titleImageView image];
-    [v55 size];
+    image5 = [(UIImageView *)self->_titleImageView image];
+    [image5 size];
 
     PKSizeAspectFit();
     [(UILabel *)self->_titleLabel setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -527,11 +527,11 @@ LABEL_35:
   [(UIImageView *)v61 setFrame:v57, v58, v59, v60];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -561,22 +561,22 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTitleImage:(id)a3
+- (void)setTitleImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleImage, a3);
+    objc_storeStrong(&self->_titleImage, image);
     [(PKDashboardTextCollectionViewCell *)self _setTitleImageAfterApplyingSymbolConfiguration];
     [(PKDashboardTextCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   v5 = self->_subtitle;
-  v6 = v4;
+  v6 = subtitleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -606,114 +606,114 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitleImage:(id)a3
+- (void)setSubtitleImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_subtitleImage, a3);
+    objc_storeStrong(&self->_subtitleImage, image);
     [(PKDashboardTextCollectionViewCell *)self _setSubtitleImageAfterApplyingSymbolConfiguration];
     [(PKDashboardTextCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setAccessoryImage:(id)a3
+- (void)setAccessoryImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_accessoryImage, a3);
+    objc_storeStrong(&self->_accessoryImage, image);
     [(PKDashboardTextCollectionViewCell *)self _setAccessoryImageAfterApplyingSymbolConfiguration];
     [(PKDashboardTextCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if (PKEqualObjects())
   {
-    v5 = [(PKDashboardTextCollectionViewCell *)self _defaultTitleColor];
-    [(UILabel *)self->_titleLabel setTextColor:v5];
-    [(UIImageView *)self->_titleImageView setTintColor:v5];
+    _defaultTitleColor = [(PKDashboardTextCollectionViewCell *)self _defaultTitleColor];
+    [(UILabel *)self->_titleLabel setTextColor:_defaultTitleColor];
+    [(UIImageView *)self->_titleImageView setTintColor:_defaultTitleColor];
   }
 
   else
   {
-    objc_storeStrong(&self->_titleColor, a3);
-    [(UILabel *)self->_titleLabel setTextColor:v6];
-    [(UIImageView *)self->_titleImageView setTintColor:v6];
+    objc_storeStrong(&self->_titleColor, color);
+    [(UILabel *)self->_titleLabel setTextColor:colorCopy];
+    [(UIImageView *)self->_titleImageView setTintColor:colorCopy];
   }
 }
 
-- (void)setSubtitleColor:(id)a3
+- (void)setSubtitleColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_subtitleColor, a3);
-    if (v6)
+    objc_storeStrong(&self->_subtitleColor, color);
+    if (colorCopy)
     {
       [(UILabel *)self->_subtitleLabel setTextColor:?];
-      [(UIImageView *)self->_subtitleImageView setTintColor:v6];
+      [(UIImageView *)self->_subtitleImageView setTintColor:colorCopy];
     }
 
     else
     {
-      v5 = [(PKDashboardTextCollectionViewCell *)self _defaultSubtitleColor];
-      [(UILabel *)self->_subtitleLabel setTextColor:v5];
-      [(UIImageView *)self->_subtitleImageView setTintColor:v5];
+      _defaultSubtitleColor = [(PKDashboardTextCollectionViewCell *)self _defaultSubtitleColor];
+      [(UILabel *)self->_subtitleLabel setTextColor:_defaultSubtitleColor];
+      [(UIImageView *)self->_subtitleImageView setTintColor:_defaultSubtitleColor];
     }
   }
 }
 
-- (void)setAccessoryColor:(id)a3
+- (void)setAccessoryColor:(id)color
 {
-  v6 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    if (v6)
+    if (colorCopy)
     {
-      objc_storeStrong(&self->_accessoryColor, a3);
-      [(UIImageView *)self->_accessoryImageView setTintColor:v6];
+      objc_storeStrong(&self->_accessoryColor, color);
+      [(UIImageView *)self->_accessoryImageView setTintColor:colorCopy];
     }
 
     else
     {
-      v5 = [(PKDashboardTextCollectionViewCell *)self _defaultAccessoryColor];
-      [(UIImageView *)self->_accessoryImageView setTintColor:v5];
+      _defaultAccessoryColor = [(PKDashboardTextCollectionViewCell *)self _defaultAccessoryColor];
+      [(UIImageView *)self->_accessoryImageView setTintColor:_defaultAccessoryColor];
     }
   }
 }
 
-- (void)setHideDisclosure:(BOOL)a3
+- (void)setHideDisclosure:(BOOL)disclosure
 {
-  if (self->_hideDisclosure == !a3)
+  if (self->_hideDisclosure == !disclosure)
   {
-    self->_hideDisclosure = a3;
+    self->_hideDisclosure = disclosure;
     [(UIImageView *)self->_disclosureView setHidden:?];
 
     [(PKDashboardTextCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setTextLayoutStyle:(int64_t)a3
+- (void)setTextLayoutStyle:(int64_t)style
 {
-  if (self->_textLayoutStyle != a3)
+  if (self->_textLayoutStyle != style)
   {
-    self->_textLayoutStyle = a3;
+    self->_textLayoutStyle = style;
     [(PKDashboardTextCollectionViewCell *)self _setFonts];
 
     [(PKDashboardTextCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_iconImage, a3);
+    objc_storeStrong(&self->_iconImage, image);
     [(PKDashboardTextCollectionViewCell *)self _setIconImageAfterApplyingSymbolConfiguration];
     [(PKDashboardTextCollectionViewCell *)self setNeedsLayout];
   }
@@ -724,27 +724,27 @@ LABEL_9:
   titleFont = self->_titleFont;
   if (titleFont)
   {
-    v4 = titleFont;
+    _defaultTitleFont = titleFont;
   }
 
   else
   {
-    v4 = [(PKDashboardTextCollectionViewCell *)self _defaultTitleFont];
+    _defaultTitleFont = [(PKDashboardTextCollectionViewCell *)self _defaultTitleFont];
   }
 
-  v8 = v4;
+  v8 = _defaultTitleFont;
   subtitleFont = self->_subtitleFont;
   if (subtitleFont)
   {
-    v6 = subtitleFont;
+    _defaultSubtitleFont = subtitleFont;
   }
 
   else
   {
-    v6 = [(PKDashboardTextCollectionViewCell *)self _defaultSubtitleFont];
+    _defaultSubtitleFont = [(PKDashboardTextCollectionViewCell *)self _defaultSubtitleFont];
   }
 
-  v7 = v6;
+  v7 = _defaultSubtitleFont;
   [(UILabel *)self->_titleLabel setFont:v8];
   [(PKDashboardTextCollectionViewCell *)self _setTitleImageAfterApplyingSymbolConfiguration];
   [(UILabel *)self->_subtitleLabel setFont:v7];
@@ -810,8 +810,8 @@ LABEL_9:
   if (self->_titleImage)
   {
     v3 = MEMORY[0x1E69DCAD8];
-    v4 = [(UILabel *)self->_titleLabel font];
-    v8 = [v3 configurationWithFont:v4 scale:-1];
+    font = [(UILabel *)self->_titleLabel font];
+    v8 = [v3 configurationWithFont:font scale:-1];
 
     titleImageView = self->_titleImageView;
     v6 = [(UIImage *)self->_titleImage imageByApplyingSymbolConfiguration:v8];
@@ -831,8 +831,8 @@ LABEL_9:
   if (self->_subtitleImage)
   {
     v3 = MEMORY[0x1E69DCAD8];
-    v4 = [(UILabel *)self->_subtitleLabel font];
-    v8 = [v3 configurationWithFont:v4 scale:-1];
+    font = [(UILabel *)self->_subtitleLabel font];
+    v8 = [v3 configurationWithFont:font scale:-1];
 
     subtitleImageView = self->_subtitleImageView;
     v6 = [(UIImage *)self->_subtitleImage imageByApplyingSymbolConfiguration:v8];
@@ -854,8 +854,8 @@ LABEL_9:
     v11 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0);
     v3 = [MEMORY[0x1E69DCAD8] configurationWithFont:v11 scale:-1];
     iconImage = self->_iconImage;
-    v5 = [(UILabel *)self->_titleLabel textColor];
-    v6 = [(UIImage *)iconImage imageWithTintColor:v5];
+    textColor = [(UILabel *)self->_titleLabel textColor];
+    v6 = [(UIImage *)iconImage imageWithTintColor:textColor];
     v7 = [v6 imageWithRenderingMode:1];
 
     iconImageView = self->_iconImageView;
@@ -892,9 +892,9 @@ LABEL_9:
 
 - (double)_minimumHeight
 {
-  v3 = [MEMORY[0x1E69DCC28] cellConfiguration];
-  v4 = [(PKDashboardTextCollectionViewCell *)self traitCollection];
-  [v3 _minimumHeightForTraitCollection:v4];
+  cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+  traitCollection = [(PKDashboardTextCollectionViewCell *)self traitCollection];
+  [cellConfiguration _minimumHeightForTraitCollection:traitCollection];
   v6 = v5;
 
   return v6;

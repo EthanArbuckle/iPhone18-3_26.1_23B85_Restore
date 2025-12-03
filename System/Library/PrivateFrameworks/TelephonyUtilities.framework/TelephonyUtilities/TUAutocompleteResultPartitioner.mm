@@ -2,7 +2,7 @@
 - (TUAutocompleteResultPartitioner)init;
 - (TUSearchController)searchController;
 - (id)searchResults;
-- (void)addResult:(id)a3;
+- (void)addResult:(id)result;
 @end
 
 @implementation TUAutocompleteResultPartitioner
@@ -32,18 +32,18 @@
   return v2;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v7 = a3;
-  v4 = [[TUProxyAutocompleteResult alloc] initWithAutocompleteResult:v7];
-  if ([objc_opt_class() sourceTypeIsFoundInMail:{objc_msgSend(v7, "sourceType")}])
+  resultCopy = result;
+  v4 = [[TUProxyAutocompleteResult alloc] initWithAutocompleteResult:resultCopy];
+  if ([objc_opt_class() sourceTypeIsFoundInMail:{objc_msgSend(resultCopy, "sourceType")}])
   {
-    v5 = [(TUAutocompleteResultPartitioner *)self foundInMailResultsArray];
+    foundInMailResultsArray = [(TUAutocompleteResultPartitioner *)self foundInMailResultsArray];
   }
 
   else
   {
-    if ([objc_opt_class() sourceTypeIsFoundOnServers:{objc_msgSend(v7, "sourceType")}])
+    if ([objc_opt_class() sourceTypeIsFoundOnServers:{objc_msgSend(resultCopy, "sourceType")}])
     {
       [(TUAutocompleteResultPartitioner *)self foundOnServersResultsArray];
     }
@@ -52,11 +52,11 @@
     {
       [(TUAutocompleteResultPartitioner *)self normalResultsArray];
     }
-    v5 = ;
+    foundInMailResultsArray = ;
   }
 
-  v6 = v5;
-  [v5 addObject:v4];
+  v6 = foundInMailResultsArray;
+  [foundInMailResultsArray addObject:v4];
 }
 
 - (TUSearchController)searchController
@@ -69,32 +69,32 @@
 - (id)searchResults
 {
   v3 = objc_alloc_init(TUSearchResults);
-  v4 = [(TUAutocompleteResultPartitioner *)self searchController];
-  [(TUSearchResults *)v3 setSearchController:v4];
+  searchController = [(TUAutocompleteResultPartitioner *)self searchController];
+  [(TUSearchResults *)v3 setSearchController:searchController];
 
-  v5 = [(TUAutocompleteResultPartitioner *)self normalResultsArray];
-  v6 = [v5 count];
+  normalResultsArray = [(TUAutocompleteResultPartitioner *)self normalResultsArray];
+  v6 = [normalResultsArray count];
 
   if (v6)
   {
     v7 = [TUResultGroup alloc];
     v8 = TUBundle();
     v9 = [v8 localizedStringForKey:@"CONTACTS" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v10 = [(TUAutocompleteResultPartitioner *)self normalResultsArray];
-    v11 = [(TUResultGroup *)v7 initWithTitle:v9 results:v10];
+    normalResultsArray2 = [(TUAutocompleteResultPartitioner *)self normalResultsArray];
+    v11 = [(TUResultGroup *)v7 initWithTitle:v9 results:normalResultsArray2];
     [(TUSearchResults *)v3 addResultGroup:v11];
   }
 
-  v12 = [(TUAutocompleteResultPartitioner *)self foundInMailResultsArray];
-  v13 = [v12 count];
+  foundInMailResultsArray = [(TUAutocompleteResultPartitioner *)self foundInMailResultsArray];
+  v13 = [foundInMailResultsArray count];
 
   if (v13)
   {
     v14 = [TUResultGroup alloc];
     v15 = TUBundle();
     v16 = [v15 localizedStringForKey:@"FOUND_IN_APPS" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v17 = [(TUAutocompleteResultPartitioner *)self foundInMailResultsArray];
-    v18 = [(TUResultGroup *)v14 initWithTitle:v16 results:v17];
+    foundInMailResultsArray2 = [(TUAutocompleteResultPartitioner *)self foundInMailResultsArray];
+    v18 = [(TUResultGroup *)v14 initWithTitle:v16 results:foundInMailResultsArray2];
     [(TUSearchResults *)v3 addResultGroup:v18];
   }
 

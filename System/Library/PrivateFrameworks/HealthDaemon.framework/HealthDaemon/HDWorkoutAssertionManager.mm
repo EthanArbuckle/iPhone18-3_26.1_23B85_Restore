@@ -1,22 +1,22 @@
 @interface HDWorkoutAssertionManager
-- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)a3 clientBundleIdentifier:(id)a4 explanation:(id)a5;
-- (id)takeRBSAssertionWithOwnerIdentifier:(id)a3 assertionIdentifier:(id)a4 pid:(int)a5 explanation:(id)a6;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)handleDidInvalidateLiveActivityAssertion:(id)a3 error:(id)a4;
+- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)identifier clientBundleIdentifier:(id)bundleIdentifier explanation:(id)explanation;
+- (id)takeRBSAssertionWithOwnerIdentifier:(id)identifier assertionIdentifier:(id)assertionIdentifier pid:(int)pid explanation:(id)explanation;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)handleDidInvalidateLiveActivityAssertion:(id)assertion error:(id)error;
 @end
 
 @implementation HDWorkoutAssertionManager
 
-- (id)takeRBSAssertionWithOwnerIdentifier:(id)a3 assertionIdentifier:(id)a4 pid:(int)a5 explanation:(id)a6
+- (id)takeRBSAssertionWithOwnerIdentifier:(id)identifier assertionIdentifier:(id)assertionIdentifier pid:(int)pid explanation:(id)explanation
 {
   v9 = sub_22911C35C();
   v11 = v10;
   v12 = sub_22911C35C();
   v14 = v13;
-  if (a6)
+  if (explanation)
   {
     v15 = sub_22911C35C();
-    a6 = v16;
+    explanation = v16;
   }
 
   else
@@ -24,20 +24,20 @@
     v15 = 0;
   }
 
-  v17 = self;
+  selfCopy = self;
   v18._countAndFlagsBits = v9;
   v18._object = v11;
   v19._countAndFlagsBits = v12;
   v19._object = v14;
   v20.value._countAndFlagsBits = v15;
-  v20.value._object = a6;
-  HDWorkoutAssertionManager.takeRBSAssertion(ownerIdentifier:assertionIdentifier:pid:explanation:)(v21, v18, v19, a5, v20);
+  v20.value._object = explanation;
+  HDWorkoutAssertionManager.takeRBSAssertion(ownerIdentifier:assertionIdentifier:pid:explanation:)(v21, v18, v19, pid, v20);
   v23 = v22;
 
   return v23;
 }
 
-- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)a3 clientBundleIdentifier:(id)a4 explanation:(id)a5
+- (id)takeLiveActivityAssertionWithOwnerIdentifier:(id)identifier clientBundleIdentifier:(id)bundleIdentifier explanation:(id)explanation
 {
   v6 = sub_22911C35C();
   v8 = v7;
@@ -45,7 +45,7 @@
   v11 = v10;
   v12 = sub_22911C35C();
   v14 = v13;
-  v15 = self;
+  selfCopy = self;
   v16._countAndFlagsBits = v6;
   v16._object = v8;
   v17._countAndFlagsBits = v9;
@@ -58,20 +58,20 @@
   return v21;
 }
 
-- (void)handleDidInvalidateLiveActivityAssertion:(id)a3 error:(id)a4
+- (void)handleDidInvalidateLiveActivityAssertion:(id)assertion error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_2289C4164(v6, a4);
+  assertionCopy = assertion;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2289C4164(assertionCopy, error);
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2289C4C60(v7);
+  managerCopy = manager;
+  invalidatedCopy = invalidated;
+  selfCopy = self;
+  sub_2289C4C60(invalidatedCopy);
 }
 
 @end

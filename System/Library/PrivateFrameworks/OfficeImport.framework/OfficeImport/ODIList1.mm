@@ -6,11 +6,11 @@
 
 - (void)map
 {
-  v3 = [(ODIState *)self->super.mState diagram];
-  v4 = [v3 documentPoint];
-  v10 = [v4 children];
+  diagram = [(ODIState *)self->super.mState diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
 
-  v5 = [v10 count];
+  v5 = [children count];
   mMaxPointCount = self->super.mMaxPointCount;
   if (mMaxPointCount >= v5)
   {
@@ -28,7 +28,7 @@
   {
     for (i = 0; i != v7; ++i)
     {
-      v9 = [v10 objectAtIndex:i];
+      v9 = [children objectAtIndex:i];
       [(ODIState *)self->super.mState setPointIndex:i];
       [(ODILinear *)self mapPoint:v9 bounds:0.0527383367, i * 1.08029197, 0.693711968, 0.729927007];
     }

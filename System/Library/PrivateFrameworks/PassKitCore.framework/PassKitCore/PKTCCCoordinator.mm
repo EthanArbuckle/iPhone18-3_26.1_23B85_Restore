@@ -1,25 +1,25 @@
 @interface PKTCCCoordinator
-+ (BOOL)setAuthorizationForCapability:(int64_t)a3 granted:(BOOL)a4 bundleIdentifier:(id)a5;
++ (BOOL)setAuthorizationForCapability:(int64_t)capability granted:(BOOL)granted bundleIdentifier:(id)identifier;
 + (id)allAuthorizations;
-+ (int64_t)authorizationStatusForCapability:(int64_t)a3;
-+ (int64_t)authorizationStatusForCapability:(int64_t)a3 auditToken:(id *)a4;
-+ (int64_t)authorizationStatusForCapability:(int64_t)a3 bundleIdentifier:(id)a4;
-+ (void)requestAuthorizationForCapability:(int64_t)a3 completion:(id)a4;
++ (int64_t)authorizationStatusForCapability:(int64_t)capability;
++ (int64_t)authorizationStatusForCapability:(int64_t)capability auditToken:(id *)token;
++ (int64_t)authorizationStatusForCapability:(int64_t)capability bundleIdentifier:(id)identifier;
++ (void)requestAuthorizationForCapability:(int64_t)capability completion:(id)completion;
 @end
 
 @implementation PKTCCCoordinator
 
-+ (void)requestAuthorizationForCapability:(int64_t)a3 completion:(id)a4
++ (void)requestAuthorizationForCapability:(int64_t)capability completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__PKTCCCoordinator_requestAuthorizationForCapability_completion___block_invoke;
   aBlock[3] = &unk_1E79DBDA0;
-  v6 = v5;
+  v6 = completionCopy;
   v10 = v6;
   v7 = _Block_copy(aBlock);
-  if (PKTCCServiceForCapability(a3) && !TCCAccessRestricted())
+  if (PKTCCServiceForCapability(capability) && !TCCAccessRestricted())
   {
     v8 = v7;
     TCCAccessRequest();
@@ -42,9 +42,9 @@ uint64_t __65__PKTCCCoordinator_requestAuthorizationForCapability_completion___b
   return result;
 }
 
-+ (int64_t)authorizationStatusForCapability:(int64_t)a3
++ (int64_t)authorizationStatusForCapability:(int64_t)capability
 {
-  if (!PKTCCServiceForCapability(a3) || TCCAccessRestricted())
+  if (!PKTCCServiceForCapability(capability) || TCCAccessRestricted())
   {
     return -1;
   }
@@ -61,9 +61,9 @@ uint64_t __65__PKTCCCoordinator_requestAuthorizationForCapability_completion___b
   }
 }
 
-+ (int64_t)authorizationStatusForCapability:(int64_t)a3 auditToken:(id *)a4
++ (int64_t)authorizationStatusForCapability:(int64_t)capability auditToken:(id *)token
 {
-  if (!PKTCCServiceForCapability(a3) || TCCAccessRestricted())
+  if (!PKTCCServiceForCapability(capability) || TCCAccessRestricted())
   {
     return -1;
   }
@@ -80,10 +80,10 @@ uint64_t __65__PKTCCCoordinator_requestAuthorizationForCapability_completion___b
   }
 }
 
-+ (int64_t)authorizationStatusForCapability:(int64_t)a3 bundleIdentifier:(id)a4
++ (int64_t)authorizationStatusForCapability:(int64_t)capability bundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  if (!PKTCCServiceForCapability(a3) || (v6 = TCCAccessCopyInformation(), Count = CFArrayGetCount(v6), Count < 1))
+  identifierCopy = identifier;
+  if (!PKTCCServiceForCapability(capability) || (v6 = TCCAccessCopyInformation(), Count = CFArrayGetCount(v6), Count < 1))
   {
 LABEL_14:
     v17 = -1;
@@ -110,14 +110,14 @@ LABEL_14:
     }
 
     v13 = CFBundleGetIdentifier(Value);
-    v14 = v5;
+    v14 = identifierCopy;
     v15 = v14;
     if (v13 == v14)
     {
       break;
     }
 
-    if (v5 && v13)
+    if (identifierCopy && v13)
     {
       v16 = [v13 isEqualToString:v14];
 
@@ -216,23 +216,23 @@ LABEL_15:
       while (v5 != v6);
     }
 
-    v15 = [v2 allValues];
+    allValues = [v2 allValues];
   }
 
   else
   {
-    v15 = 0;
+    allValues = 0;
   }
 
-  return v15;
+  return allValues;
 }
 
-+ (BOOL)setAuthorizationForCapability:(int64_t)a3 granted:(BOOL)a4 bundleIdentifier:(id)a5
++ (BOOL)setAuthorizationForCapability:(int64_t)capability granted:(BOOL)granted bundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  grantedCopy = granted;
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = PKTCCServiceForCapability(a3);
+  identifierCopy = identifier;
+  v8 = PKTCCServiceForCapability(capability);
   if (v8)
   {
     v9 = PKLogFacilityTypeGetObject(0);
@@ -240,14 +240,14 @@ LABEL_15:
     {
       v10 = @"NO";
       v12 = 134218498;
-      v13 = a3;
+      capabilityCopy = capability;
       v14 = 2112;
-      if (v5)
+      if (grantedCopy)
       {
         v10 = @"YES";
       }
 
-      v15 = v7;
+      v15 = identifierCopy;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Setting %ld TCC for bundle %@ to %@", &v12, 0x20u);

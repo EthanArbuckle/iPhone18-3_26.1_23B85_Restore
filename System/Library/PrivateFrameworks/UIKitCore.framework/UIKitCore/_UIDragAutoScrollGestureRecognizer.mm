@@ -1,19 +1,19 @@
 @interface _UIDragAutoScrollGestureRecognizer
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (void)_draggingEndedWithEvent:(id)a3;
-- (void)_draggingExitedWithEvent:(id)a3;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (void)_draggingEndedWithEvent:(id)event;
+- (void)_draggingExitedWithEvent:(id)event;
 @end
 
 @implementation _UIDragAutoScrollGestureRecognizer
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 9 && (objc_msgSend(v4, "isFromAccessibilitySession") & 1) == 0)
+  eventCopy = event;
+  if ([eventCopy type] == 9 && (objc_msgSend(eventCopy, "isFromAccessibilitySession") & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = _UIDragAutoScrollGestureRecognizer;
-    v5 = [(UIDragGestureRecognizer *)&v7 shouldReceiveEvent:v4];
+    v5 = [(UIDragGestureRecognizer *)&v7 shouldReceiveEvent:eventCopy];
   }
 
   else
@@ -24,7 +24,7 @@
   return v5;
 }
 
-- (void)_draggingExitedWithEvent:(id)a3
+- (void)_draggingExitedWithEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]<= UIGestureRecognizerStateChanged)
   {
@@ -33,7 +33,7 @@
   }
 }
 
-- (void)_draggingEndedWithEvent:(id)a3
+- (void)_draggingEndedWithEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]<= UIGestureRecognizerStateChanged)
   {

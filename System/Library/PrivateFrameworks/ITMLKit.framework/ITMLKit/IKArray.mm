@@ -1,45 +1,45 @@
 @interface IKArray
 + (id)array;
-- (IKArray)initWithNSArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IKArray)initWithNSArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)firstObject;
 - (id)lastObject;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(int64_t)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(int64_t)index;
 - (id)objectEnumerator;
 - (id)toNSArray;
 - (int64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfObject:(id)a3;
-- (void)_setupWithNSArray:(id)a3;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfObject:(id)object;
+- (void)_setupWithNSArray:(id)array;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation IKArray
 
 + (id)array
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (IKArray)initWithNSArray:(id)a3
+- (IKArray)initWithNSArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v8.receiver = self;
   v8.super_class = IKArray;
   v5 = [(IKArray *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IKArray *)v5 _setupWithNSArray:v4];
+    [(IKArray *)v5 _setupWithNSArray:arrayCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(IKArray *)self isMemberOfClass:objc_opt_class()])
   {
@@ -50,95 +50,95 @@
   else
   {
     v4 = [IKArray alloc];
-    v5 = [(IKArray *)self toNSArray];
-    v6 = [(IKArray *)v4 initWithNSArray:v5];
+    toNSArray = [(IKArray *)self toNSArray];
+    v6 = [(IKArray *)v4 initWithNSArray:toNSArray];
 
     return v6;
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [IKMutableArray alloc];
-  v5 = [(IKArray *)self toNSArray];
-  v6 = [(IKArray *)v4 initWithNSArray:v5];
+  toNSArray = [(IKArray *)self toNSArray];
+  v6 = [(IKArray *)v4 initWithNSArray:toNSArray];
 
   return v6;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v9 = [(IKArray *)self arrayStore];
+  arrayStore = [(IKArray *)self arrayStore];
 
-  if (v9)
+  if (arrayStore)
   {
-    v10 = [(IKArray *)self arrayStore];
-    v11 = [v10 countByEnumeratingWithState:a3 objects:a4 count:a5];
+    arrayStore2 = [(IKArray *)self arrayStore];
+    v11 = [arrayStore2 countByEnumeratingWithState:state objects:objects count:count];
 
     return v11;
   }
 
   else
   {
-    var0 = a3->var0;
+    var0 = state->var0;
     v14 = [(IKArray *)self count];
-    if (v14 - a3->var0 < a5)
+    if (v14 - state->var0 < count)
     {
-      a5 = v14 - a3->var0;
+      count = v14 - state->var0;
     }
 
-    if (a5)
+    if (count)
     {
       v15 = var0;
-      v16 = a4;
-      v17 = a5;
+      objectsCopy = objects;
+      countCopy = count;
       do
       {
-        *v16++ = [(IKArray *)self objectAtIndex:v15++];
-        --v17;
+        *objectsCopy++ = [(IKArray *)self objectAtIndex:v15++];
+        --countCopy;
       }
 
-      while (v17);
+      while (countCopy);
     }
 
-    a3->var0 = a5 + var0;
-    a3->var1 = a4;
-    a3->var2 = a3->var3;
-    return a5;
+    state->var0 = count + var0;
+    state->var1 = objects;
+    state->var2 = state->var3;
+    return count;
   }
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(IKArray *)self count]<= a3)
+  if (index < 0 || [(IKArray *)self count]<= index)
   {
     v5 = MEMORY[0x277CBEAD8];
     v6 = *MEMORY[0x277CBE730];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Index :%ld out of range", a3];
-    v8 = [v5 exceptionWithName:v6 reason:v7 userInfo:0];
+    index = [MEMORY[0x277CCACA8] stringWithFormat:@"Index :%ld out of range", index];
+    v8 = [v5 exceptionWithName:v6 reason:index userInfo:0];
     [v8 raise];
   }
 
-  v9 = [(IKArray *)self arrayStore];
-  if (v9)
+  arrayStore = [(IKArray *)self arrayStore];
+  if (arrayStore)
   {
-    v10 = [(IKArray *)self arrayStore];
-    v11 = [v10 objectAtIndexedSubscript:a3];
+    arrayStore2 = [(IKArray *)self arrayStore];
+    v11 = [arrayStore2 objectAtIndexedSubscript:index];
 
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
-    v12 = [(IKArray *)self obj1];
+    obj1 = [(IKArray *)self obj1];
     goto LABEL_10;
   }
 
-  if (!a3)
+  if (!index)
   {
-    v12 = [(IKArray *)self obj0];
+    obj1 = [(IKArray *)self obj0];
 LABEL_10:
-    v11 = v12;
+    v11 = obj1;
     goto LABEL_12;
   }
 
@@ -148,30 +148,30 @@ LABEL_12:
   return v11;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = [(IKArray *)self arrayStore];
-    if (v5)
+    arrayStore = [(IKArray *)self arrayStore];
+    if (arrayStore)
     {
-      v6 = [(IKArray *)self arrayStore];
-      v7 = [v6 indexOfObject:v4];
+      arrayStore2 = [(IKArray *)self arrayStore];
+      v7 = [arrayStore2 indexOfObject:objectCopy];
     }
 
     else
     {
-      v6 = [(IKArray *)self obj1];
-      if ([v6 isEqual:v4])
+      arrayStore2 = [(IKArray *)self obj1];
+      if ([arrayStore2 isEqual:objectCopy])
       {
         v7 = 1;
       }
 
       else
       {
-        v8 = [(IKArray *)self obj0];
-        if ([v8 isEqual:v4])
+        obj0 = [(IKArray *)self obj0];
+        if ([obj0 isEqual:objectCopy])
         {
           v7 = 0;
         }
@@ -194,25 +194,25 @@ LABEL_12:
 
 - (int64_t)count
 {
-  v3 = [(IKArray *)self arrayStore];
-  if (v3)
+  arrayStore = [(IKArray *)self arrayStore];
+  if (arrayStore)
   {
-    v4 = [(IKArray *)self arrayStore];
-    v5 = [v4 count];
+    arrayStore2 = [(IKArray *)self arrayStore];
+    v5 = [arrayStore2 count];
   }
 
   else
   {
-    v4 = [(IKArray *)self obj1];
-    if (v4)
+    arrayStore2 = [(IKArray *)self obj1];
+    if (arrayStore2)
     {
       v5 = 2;
     }
 
     else
     {
-      v6 = [(IKArray *)self obj0];
-      v5 = v6 != 0;
+      obj0 = [(IKArray *)self obj0];
+      v5 = obj0 != 0;
     }
   }
 
@@ -221,48 +221,48 @@ LABEL_12:
 
 - (id)firstObject
 {
-  v3 = [(IKArray *)self obj0];
-  v4 = v3;
-  if (v3)
+  obj0 = [(IKArray *)self obj0];
+  v4 = obj0;
+  if (obj0)
   {
-    v5 = v3;
+    firstObject = obj0;
   }
 
   else
   {
-    v6 = [(IKArray *)self arrayStore];
-    v5 = [v6 firstObject];
+    arrayStore = [(IKArray *)self arrayStore];
+    firstObject = [arrayStore firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)lastObject
 {
-  v3 = [(IKArray *)self obj1];
-  v4 = v3;
-  if (v3)
+  obj1 = [(IKArray *)self obj1];
+  v4 = obj1;
+  if (obj1)
   {
-    v5 = v3;
+    lastObject = obj1;
   }
 
   else
   {
-    v6 = [(IKArray *)self obj0];
-    v7 = v6;
-    if (v6)
+    obj0 = [(IKArray *)self obj0];
+    v7 = obj0;
+    if (obj0)
     {
-      v5 = v6;
+      lastObject = obj0;
     }
 
     else
     {
-      v8 = [(IKArray *)self arrayStore];
-      v5 = [v8 lastObject];
+      arrayStore = [(IKArray *)self arrayStore];
+      lastObject = [arrayStore lastObject];
     }
   }
 
-  return v5;
+  return lastObject;
 }
 
 - (id)objectEnumerator
@@ -272,31 +272,31 @@ LABEL_12:
   return v2;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(IKArray *)self arrayStore];
+  blockCopy = block;
+  arrayStore = [(IKArray *)self arrayStore];
 
-  if (v5)
+  if (arrayStore)
   {
-    v6 = [(IKArray *)self arrayStore];
-    [v6 enumerateObjectsUsingBlock:v4];
+    arrayStore2 = [(IKArray *)self arrayStore];
+    [arrayStore2 enumerateObjectsUsingBlock:blockCopy];
 LABEL_7:
 
     goto LABEL_8;
   }
 
   v10 = 0;
-  v7 = [(IKArray *)self obj0];
+  obj0 = [(IKArray *)self obj0];
 
-  if (!v7 || ([(IKArray *)self obj0], v8 = objc_claimAutoreleasedReturnValue(), v4[2](v4, v8, 0, &v10), v8, (v10 & 1) == 0))
+  if (!obj0 || ([(IKArray *)self obj0], v8 = objc_claimAutoreleasedReturnValue(), blockCopy[2](blockCopy, v8, 0, &v10), v8, (v10 & 1) == 0))
   {
-    v9 = [(IKArray *)self obj1];
+    obj1 = [(IKArray *)self obj1];
 
-    if (v9)
+    if (obj1)
     {
-      v6 = [(IKArray *)self obj1];
-      v4[2](v4, v6, 1, &v10);
+      arrayStore2 = [(IKArray *)self obj1];
+      blockCopy[2](blockCopy, arrayStore2, 1, &v10);
       goto LABEL_7;
     }
   }
@@ -307,22 +307,22 @@ LABEL_8:
 - (id)toNSArray
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = [(IKArray *)self arrayStore];
-  if (v3)
+  arrayStore = [(IKArray *)self arrayStore];
+  if (arrayStore)
   {
-    v4 = [(IKArray *)self arrayStore];
-    v5 = [v4 copy];
+    arrayStore2 = [(IKArray *)self arrayStore];
+    v5 = [arrayStore2 copy];
     goto LABEL_9;
   }
 
-  v4 = [(IKArray *)self obj1];
-  v6 = [(IKArray *)self obj0];
-  v7 = v6;
-  if (v4)
+  arrayStore2 = [(IKArray *)self obj1];
+  obj0 = [(IKArray *)self obj0];
+  v7 = obj0;
+  if (arrayStore2)
   {
-    v15[0] = v6;
-    v8 = [(IKArray *)self obj1];
-    v15[1] = v8;
+    v15[0] = obj0;
+    obj1 = [(IKArray *)self obj1];
+    v15[1] = obj1;
     v9 = MEMORY[0x277CBEA60];
     v10 = v15;
     v11 = 2;
@@ -330,14 +330,14 @@ LABEL_8:
 
   else
   {
-    if (!v6)
+    if (!obj0)
     {
       v5 = 0;
       goto LABEL_8;
     }
 
-    v8 = [(IKArray *)self obj0];
-    v14 = v8;
+    obj1 = [(IKArray *)self obj0];
+    v14 = obj1;
     v9 = MEMORY[0x277CBEA60];
     v10 = &v14;
     v11 = 1;
@@ -353,46 +353,46 @@ LABEL_9:
   return v5;
 }
 
-- (void)_setupWithNSArray:(id)a3
+- (void)_setupWithNSArray:(id)array
 {
-  v12 = a3;
-  v4 = [v12 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (v4 < 3)
   {
     if (v4 == 2)
     {
-      v7 = [v12 objectAtIndexedSubscript:0];
+      v7 = [arrayCopy objectAtIndexedSubscript:0];
       obj0 = self->_obj0;
       self->_obj0 = v7;
 
-      v5 = [v12 objectAtIndexedSubscript:1];
+      v5 = [arrayCopy objectAtIndexedSubscript:1];
       v6 = 16;
     }
 
     else
     {
       v9 = v4 < 1;
-      v10 = v12;
+      v10 = arrayCopy;
       if (v9)
       {
         goto LABEL_8;
       }
 
-      v5 = [v12 objectAtIndexedSubscript:0];
+      v5 = [arrayCopy objectAtIndexedSubscript:0];
       v6 = 8;
     }
   }
 
   else
   {
-    v5 = [v12 mutableCopy];
+    v5 = [arrayCopy mutableCopy];
     v6 = 24;
   }
 
   v11 = *(&self->super.isa + v6);
   *(&self->super.isa + v6) = v5;
 
-  v10 = v12;
+  v10 = arrayCopy;
 LABEL_8:
 }
 

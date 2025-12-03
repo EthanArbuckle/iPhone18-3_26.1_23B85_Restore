@@ -1,39 +1,39 @@
 @interface DEDSharingConnection
 + (void)checkIn;
-- (DEDSharingConnection)initWithController:(id)a3;
+- (DEDSharingConnection)initWithController:(id)controller;
 - (DEDSharingInboundDelegate)controller;
-- (id)_existingSharingSessionForDevice:(id)a3;
-- (id)blockingSharingSessionForDevice:(id)a3 fromInbound:(id)a4;
-- (id)sharingOutboundForBugSessionIdentifier:(id)a3 device:(id)a4 fromInbound:(id)a5;
-- (void)_handleIncomingPingingDevice:(id)a3;
-- (void)_handleIncomingPongingDevice:(id)a3 fromInbound:(id)a4;
-- (void)_saveDevice:(id)a3;
-- (void)_verifyPairingForSession:(id)a3 holdForPIN:(BOOL)a4 completion:(id)a5;
-- (void)addIncomingSFSession:(id)a3 forIdentifier:(id)a4;
-- (void)checkReadinessForSFDevice:(id)a3 session:(id)a4;
-- (void)configureSharingInbound:(id)a3;
-- (void)createSharingSessionForSFDevice:(id)a3 holdForPIN:(BOOL)a4 fromInbound:(id)a5 completion:(id)a6;
+- (id)_existingSharingSessionForDevice:(id)device;
+- (id)blockingSharingSessionForDevice:(id)device fromInbound:(id)inbound;
+- (id)sharingOutboundForBugSessionIdentifier:(id)identifier device:(id)device fromInbound:(id)inbound;
+- (void)_handleIncomingPingingDevice:(id)device;
+- (void)_handleIncomingPongingDevice:(id)device fromInbound:(id)inbound;
+- (void)_saveDevice:(id)device;
+- (void)_verifyPairingForSession:(id)session holdForPIN:(BOOL)n completion:(id)completion;
+- (void)addIncomingSFSession:(id)session forIdentifier:(id)identifier;
+- (void)checkReadinessForSFDevice:(id)device session:(id)session;
+- (void)configureSharingInbound:(id)inbound;
+- (void)createSharingSessionForSFDevice:(id)device holdForPIN:(BOOL)n fromInbound:(id)inbound completion:(id)completion;
 - (void)dealloc;
-- (void)discoverDevicesFromInbound:(id)a3 withCompletion:(id)a4;
-- (void)getSystemInfoForDevice:(id)a3;
-- (void)sharing_didStartBugSessionWithInfo:(id)a3 forCaller:(id)a4;
-- (void)sharing_startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 caller:(id)a5 target:(id)a6 fromInbound:(id)a7;
-- (void)sharing_startPairSetupForDevice:(id)a3 fromInbound:(id)a4;
-- (void)sharing_tryPIN:(id)a3 forDevice:(id)a4 fromInbound:(id)a5;
+- (void)discoverDevicesFromInbound:(id)inbound withCompletion:(id)completion;
+- (void)getSystemInfoForDevice:(id)device;
+- (void)sharing_didStartBugSessionWithInfo:(id)info forCaller:(id)caller;
+- (void)sharing_startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration caller:(id)caller target:(id)target fromInbound:(id)inbound;
+- (void)sharing_startPairSetupForDevice:(id)device fromInbound:(id)inbound;
+- (void)sharing_tryPIN:(id)n forDevice:(id)device fromInbound:(id)inbound;
 - (void)start;
 - (void)startPingDiscovery;
-- (void)startPingServiceWithCompletion:(id)a3;
+- (void)startPingServiceWithCompletion:(id)completion;
 - (void)startPongAdvertisement;
-- (void)startPongDiscoveryFromInbound:(id)a3;
+- (void)startPongDiscoveryFromInbound:(id)inbound;
 - (void)startWorkerService;
 - (void)stopDiscovery;
 - (void)stopPingDiscovery;
 - (void)stopPingService;
 - (void)stopPongAdvertisement;
 - (void)stopPongDiscovery;
-- (void)stopSession:(id)a3;
-- (void)trySessionWithFoundDevice:(id)a3 fromInbound:(id)a4;
-- (void)updateControllerWithDevice:(id)a3 andStatus:(int64_t)a4;
+- (void)stopSession:(id)session;
+- (void)trySessionWithFoundDevice:(id)device fromInbound:(id)inbound;
+- (void)updateControllerWithDevice:(id)device andStatus:(int64_t)status;
 - (void)updatePongAdvertisement;
 @end
 
@@ -41,9 +41,9 @@
 
 + (void)checkIn
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 environment];
-  v4 = [v3 objectForKeyedSubscript:@"DED_UNIT_TEST"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v4 = [environment objectForKeyedSubscript:@"DED_UNIT_TEST"];
 
   v5 = Log_5();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
@@ -116,19 +116,19 @@ LABEL_6:
   }
 }
 
-- (DEDSharingConnection)initWithController:(id)a3
+- (DEDSharingConnection)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = DEDSharingConnection;
   v5 = [(DEDSharingConnection *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [(DEDSharingConnection *)v5 setDeviceSessions:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(DEDSharingConnection *)v5 setDeviceSessions:dictionary];
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [(DEDSharingConnection *)v5 setDiscoveredDevices:v7];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(DEDSharingConnection *)v5 setDiscoveredDevices:dictionary2];
 
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v9 = dispatch_queue_create("com.apple.diagnosticextensionsd.sharingqueue", v8);
@@ -138,7 +138,7 @@ LABEL_6:
     [(DEDSharingConnection *)v5 setListenForClients:0];
     [(DEDSharingConnection *)v5 setPingService:0];
     [(DEDSharingConnection *)v5 setWorkerService:0];
-    [(DEDSharingConnection *)v5 setController:v4];
+    [(DEDSharingConnection *)v5 setController:controllerCopy];
     v10 = dispatch_semaphore_create(5);
     [(DEDSharingConnection *)v5 setBluetoothSessionSemaphore:v10];
 
@@ -154,23 +154,23 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(DEDSharingConnection *)self pingService];
-  [v3 invalidate];
+  pingService = [(DEDSharingConnection *)self pingService];
+  [pingService invalidate];
 
-  v4 = [(DEDSharingConnection *)self workerService];
-  [v4 invalidate];
+  workerService = [(DEDSharingConnection *)self workerService];
+  [workerService invalidate];
 
   v5.receiver = self;
   v5.super_class = DEDSharingConnection;
   [(DEDSharingConnection *)&v5 dealloc];
 }
 
-- (void)configureSharingInbound:(id)a3
+- (void)configureSharingInbound:(id)inbound
 {
-  v4 = a3;
+  inboundCopy = inbound;
   if (![(DEDSharingConnection *)self started])
   {
-    [(DEDSharingConnection *)self setSharingInbound:v4];
+    [(DEDSharingConnection *)self setSharingInbound:inboundCopy];
   }
 }
 
@@ -179,8 +179,8 @@ LABEL_6:
   if (![(DEDSharingConnection *)self started])
   {
     v3 = [DEDSharingInbound alloc];
-    v4 = [(DEDSharingConnection *)self controller];
-    v5 = [(DEDSharingInbound *)v3 initWithController:v4 sharingConnection:self];
+    controller = [(DEDSharingConnection *)self controller];
+    v5 = [(DEDSharingInbound *)v3 initWithController:controller sharingConnection:self];
     [(DEDSharingConnection *)self setSharingInbound:v5];
 
     if ([(DEDSharingConnection *)self listenForClients])
@@ -192,19 +192,19 @@ LABEL_6:
   }
 }
 
-- (void)discoverDevicesFromInbound:(id)a3 withCompletion:(id)a4
+- (void)discoverDevicesFromInbound:(id)inbound withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  inboundCopy = inbound;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___block_invoke;
   v10[3] = &unk_278F66618;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = inboundCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = inboundCopy;
   [(DEDSharingConnection *)self startPingServiceWithCompletion:v10];
 }
 
@@ -224,24 +224,24 @@ void __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___bloc
   [(DEDSharingConnection *)self stopPingService];
 }
 
-- (void)startPingServiceWithCompletion:(id)a3
+- (void)startPingServiceWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDSharingConnection *)self pingService];
+  completionCopy = completion;
+  pingService = [(DEDSharingConnection *)self pingService];
 
-  if (v5)
+  if (pingService)
   {
     v6 = Log_5();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DEDSharingConnection *)self pingService];
+      pingService2 = [(DEDSharingConnection *)self pingService];
       v13 = 138412290;
-      v14 = v7;
+      v14 = pingService2;
       _os_log_impl(&dword_248AD7000, v6, OS_LOG_TYPE_DEFAULT, "Ping service already initialized [%@]", &v13, 0xCu);
     }
 
-    v4[2](v4, MEMORY[0x277CBEBF8]);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEBF8]);
   }
 
   else
@@ -252,16 +252,16 @@ void __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___bloc
     v9 = Log_5();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(DEDSharingConnection *)self pingService];
+      pingService3 = [(DEDSharingConnection *)self pingService];
       v13 = 138412290;
-      v14 = v10;
+      v14 = pingService3;
       _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "Created new ping service [%@]", &v13, 0xCu);
     }
 
-    v11 = [(DEDSharingConnection *)self pingService];
-    [(DEDSharingConnection *)self _configureService:v11 withLabel:@"ded-ping" needsSetup:1 actionType:17 completion:v4];
+    pingService4 = [(DEDSharingConnection *)self pingService];
+    [(DEDSharingConnection *)self _configureService:pingService4 withLabel:@"ded-ping" needsSetup:1 actionType:17 completion:completionCopy];
 
-    v4 = v11;
+    completionCopy = pingService4;
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -276,24 +276,24 @@ void __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___bloc
     _os_log_impl(&dword_248AD7000, v3, OS_LOG_TYPE_DEFAULT, "Stopping ping service.", v5, 2u);
   }
 
-  v4 = [(DEDSharingConnection *)self pingService];
-  [v4 invalidate];
+  pingService = [(DEDSharingConnection *)self pingService];
+  [pingService invalidate];
 
   [(DEDSharingConnection *)self setPingService:0];
 }
 
 - (void)updatePongAdvertisement
 {
-  v3 = [(DEDSharingConnection *)self visiblePingUUIDs];
-  v4 = [v3 count];
+  visiblePingUUIDs = [(DEDSharingConnection *)self visiblePingUUIDs];
+  v4 = [visiblePingUUIDs count];
 
   if (!v4)
   {
     [(DEDSharingConnection *)self stopPongAdvertisement];
   }
 
-  v5 = [(DEDSharingConnection *)self visiblePingUUIDs];
-  v6 = [v5 count];
+  visiblePingUUIDs2 = [(DEDSharingConnection *)self visiblePingUUIDs];
+  v6 = [visiblePingUUIDs2 count];
 
   if (v6)
   {
@@ -304,10 +304,10 @@ void __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___bloc
 
 - (void)startPongAdvertisement
 {
-  v3 = [(DEDSharingConnection *)self workerService];
-  v4 = [v3 needsSetup];
+  workerService = [(DEDSharingConnection *)self workerService];
+  needsSetup = [workerService needsSetup];
 
-  if ((v4 & 1) == 0)
+  if ((needsSetup & 1) == 0)
   {
     v5 = Log_5();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -316,20 +316,20 @@ void __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___bloc
       _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "Starting pong advertisement.", v8, 2u);
     }
 
-    v6 = [(DEDSharingConnection *)self workerService];
-    [v6 setNeedsSetup:1];
+    workerService2 = [(DEDSharingConnection *)self workerService];
+    [workerService2 setNeedsSetup:1];
 
-    v7 = [(DEDSharingConnection *)self workerService];
-    [v7 setDeviceActionType:18];
+    workerService3 = [(DEDSharingConnection *)self workerService];
+    [workerService3 setDeviceActionType:18];
   }
 }
 
 - (void)stopPongAdvertisement
 {
-  v3 = [(DEDSharingConnection *)self workerService];
-  v4 = [v3 needsSetup];
+  workerService = [(DEDSharingConnection *)self workerService];
+  needsSetup = [workerService needsSetup];
 
-  if (v4)
+  if (needsSetup)
   {
     v5 = Log_5();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -338,27 +338,27 @@ void __66__DEDSharingConnection_discoverDevicesFromInbound_withCompletion___bloc
       _os_log_impl(&dword_248AD7000, v5, OS_LOG_TYPE_DEFAULT, "Stopping pong advertisement.", v8, 2u);
     }
 
-    v6 = [(DEDSharingConnection *)self workerService];
-    [v6 setNeedsSetup:0];
+    workerService2 = [(DEDSharingConnection *)self workerService];
+    [workerService2 setNeedsSetup:0];
 
-    v7 = [(DEDSharingConnection *)self workerService];
-    [v7 setDeviceActionType:0];
+    workerService3 = [(DEDSharingConnection *)self workerService];
+    [workerService3 setDeviceActionType:0];
   }
 }
 
 - (void)startWorkerService
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(DEDSharingConnection *)self workerService];
+  workerService = [(DEDSharingConnection *)self workerService];
 
-  if (v3)
+  if (workerService)
   {
     v4 = Log_5();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(DEDSharingConnection *)self workerService];
+      workerService2 = [(DEDSharingConnection *)self workerService];
       *buf = 138412290;
-      v21 = v5;
+      v21 = workerService2;
       v6 = "Worker service already initialized [%@]";
 LABEL_6:
       _os_log_impl(&dword_248AD7000, v4, OS_LOG_TYPE_DEFAULT, v6, buf, 0xCu);
@@ -374,27 +374,27 @@ LABEL_6:
     v8 = MEMORY[0x277CBEC38];
     v19 = MEMORY[0x277CBEC38];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v10 = [(DEDSharingConnection *)self workerService];
-    [v10 setPairSetupACL:v9];
+    workerService3 = [(DEDSharingConnection *)self workerService];
+    [workerService3 setPairSetupACL:v9];
 
     v16 = @"com.apple.DeviceDiagnostics";
     v17 = v8;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v12 = [(DEDSharingConnection *)self workerService];
-    [v12 setPairVerifyACL:v11];
+    workerService4 = [(DEDSharingConnection *)self workerService];
+    [workerService4 setPairVerifyACL:v11];
 
-    v13 = [(DEDSharingConnection *)self workerService];
-    [v13 setOverrideScreenOff:1];
+    workerService5 = [(DEDSharingConnection *)self workerService];
+    [workerService5 setOverrideScreenOff:1];
 
-    v14 = [(DEDSharingConnection *)self workerService];
-    [(DEDSharingConnection *)self _configureService:v14 withLabel:@"ded-worker" needsSetup:0 actionType:0 completion:0];
+    workerService6 = [(DEDSharingConnection *)self workerService];
+    [(DEDSharingConnection *)self _configureService:workerService6 withLabel:@"ded-worker" needsSetup:0 actionType:0 completion:0];
 
     v4 = Log_5();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(DEDSharingConnection *)self workerService];
+      workerService2 = [(DEDSharingConnection *)self workerService];
       *buf = 138412290;
-      v21 = v5;
+      v21 = workerService2;
       v6 = "Started sharing worker service %@";
       goto LABEL_6;
     }
@@ -406,25 +406,25 @@ LABEL_6:
 - (void)startPingDiscovery
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(DEDSharingConnection *)self pingDiscovery];
+  pingDiscovery = [(DEDSharingConnection *)self pingDiscovery];
 
-  if (v3)
+  if (pingDiscovery)
   {
     v4 = Log_5();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(DEDSharingConnection *)self pingDiscovery];
+      pingDiscovery2 = [(DEDSharingConnection *)self pingDiscovery];
       *buf = 138412290;
-      v35 = v5;
+      v35 = pingDiscovery2;
       _os_log_impl(&dword_248AD7000, v4, OS_LOG_TYPE_DEFAULT, "Ping discovery already initialized %@", buf, 0xCu);
     }
 
     v6 = Log_5();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DEDSharingConnection *)self visiblePingUUIDs];
+      visiblePingUUIDs = [(DEDSharingConnection *)self visiblePingUUIDs];
       *buf = 138412290;
-      v35 = v7;
+      v35 = visiblePingUUIDs;
       _os_log_impl(&dword_248AD7000, v6, OS_LOG_TYPE_DEFAULT, "Ping devices tracked %@", buf, 0xCu);
     }
   }
@@ -437,27 +437,27 @@ LABEL_6:
     v9 = Log_5();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(DEDSharingConnection *)self pingDiscovery];
+      pingDiscovery3 = [(DEDSharingConnection *)self pingDiscovery];
       *buf = 138412290;
-      v35 = v10;
+      v35 = pingDiscovery3;
       _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "Created ping discovery %@", buf, 0xCu);
     }
 
-    v11 = [(DEDSharingConnection *)self pingDiscovery];
-    [v11 setChangeFlags:13];
+    pingDiscovery4 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery4 setChangeFlags:13];
 
-    v12 = [(DEDSharingConnection *)self pingDiscovery];
-    [v12 setDiscoveryFlags:16];
+    pingDiscovery5 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery5 setDiscoveryFlags:16];
 
-    v13 = [(DEDSharingConnection *)self pingDiscovery];
-    [v13 setScanRate:20];
+    pingDiscovery6 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery6 setScanRate:20];
 
     v14 = Log_5();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(DEDSharingConnection *)self pingDiscovery];
+      pingDiscovery7 = [(DEDSharingConnection *)self pingDiscovery];
       *buf = 138412290;
-      v35 = v15;
+      v35 = pingDiscovery7;
       _os_log_impl(&dword_248AD7000, v14, OS_LOG_TYPE_DEFAULT, "Initialized Ping discovery %@", buf, 0xCu);
     }
 
@@ -470,43 +470,43 @@ LABEL_6:
     v32[2] = __42__DEDSharingConnection_startPingDiscovery__block_invoke;
     v32[3] = &unk_278F66640;
     objc_copyWeak(&v33, buf);
-    v17 = [(DEDSharingConnection *)self pingDiscovery];
-    [v17 setDeviceFoundHandler:v32];
+    pingDiscovery8 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery8 setDeviceFoundHandler:v32];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __42__DEDSharingConnection_startPingDiscovery__block_invoke_44;
     v30[3] = &unk_278F66668;
     objc_copyWeak(&v31, buf);
-    v18 = [(DEDSharingConnection *)self pingDiscovery];
-    [v18 setDeviceChangedHandler:v30];
+    pingDiscovery9 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery9 setDeviceChangedHandler:v30];
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __42__DEDSharingConnection_startPingDiscovery__block_invoke_46;
     v28[3] = &unk_278F66640;
     objc_copyWeak(&v29, buf);
-    v19 = [(DEDSharingConnection *)self pingDiscovery];
-    [v19 setDeviceLostHandler:v28];
+    pingDiscovery10 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery10 setDeviceLostHandler:v28];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __42__DEDSharingConnection_startPingDiscovery__block_invoke_47;
     v26[3] = &unk_278F65830;
     objc_copyWeak(&v27, buf);
-    v20 = [(DEDSharingConnection *)self pingDiscovery];
-    [v20 setInterruptionHandler:v26];
+    pingDiscovery11 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery11 setInterruptionHandler:v26];
 
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __42__DEDSharingConnection_startPingDiscovery__block_invoke_48;
     v24[3] = &unk_278F65830;
     objc_copyWeak(&v25, buf);
-    v21 = [(DEDSharingConnection *)self pingDiscovery];
-    [v21 setInvalidationHandler:v24];
+    pingDiscovery12 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery12 setInvalidationHandler:v24];
 
-    v22 = [(DEDSharingConnection *)self pingDiscovery];
-    [v22 activateWithCompletion:&__block_literal_global_52];
+    pingDiscovery13 = [(DEDSharingConnection *)self pingDiscovery];
+    [pingDiscovery13 activateWithCompletion:&__block_literal_global_52];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v27);
@@ -637,20 +637,20 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
   }
 }
 
-- (void)_handleIncomingPingingDevice:(id)a3
+- (void)_handleIncomingPingingDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  v7 = [v4 isValidDEDPingDevice];
-  v8 = [(DEDSharingConnection *)self visiblePingUUIDs];
-  v9 = [v8 containsObject:v6];
+  isValidDEDPingDevice = [deviceCopy isValidDEDPingDevice];
+  visiblePingUUIDs = [(DEDSharingConnection *)self visiblePingUUIDs];
+  v9 = [visiblePingUUIDs containsObject:uUIDString];
 
-  if (!v7 || (v9 & 1) != 0)
+  if (!isValidDEDPingDevice || (v9 & 1) != 0)
   {
-    if ((v7 & v9) == 1)
+    if ((isValidDEDPingDevice & v9) == 1)
     {
       v12 = Log_5();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -661,7 +661,7 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
 
     else
     {
-      v14 = v7 | v9;
+      v14 = isValidDEDPingDevice | v9;
       v15 = Log_5();
       v12 = v15;
       if (v14)
@@ -669,12 +669,12 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138412290;
-          v19 = v4;
+          v19 = deviceCopy;
           _os_log_impl(&dword_248AD7000, v12, OS_LOG_TYPE_DEFAULT, "Incoming ping discovery. known device no longer valid, will stop tracking [%@]", &v18, 0xCu);
         }
 
-        v16 = [(DEDSharingConnection *)self visiblePingUUIDs];
-        [v16 removeObject:v6];
+        visiblePingUUIDs2 = [(DEDSharingConnection *)self visiblePingUUIDs];
+        [visiblePingUUIDs2 removeObject:uUIDString];
 
         v12 = Log_5();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -696,20 +696,20 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = deviceCopy;
       _os_log_impl(&dword_248AD7000, v10, OS_LOG_TYPE_DEFAULT, "Incoming ping discovery. New device is valid, will track [%@]", &v18, 0xCu);
     }
 
-    [(DEDSharingConnection *)self _saveDevice:v4];
-    v11 = [(DEDSharingConnection *)self visiblePingUUIDs];
-    [v11 addObject:v6];
+    [(DEDSharingConnection *)self _saveDevice:deviceCopy];
+    visiblePingUUIDs3 = [(DEDSharingConnection *)self visiblePingUUIDs];
+    [visiblePingUUIDs3 addObject:uUIDString];
 
     v12 = Log_5();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(DEDSharingConnection *)self visiblePingUUIDs];
+      visiblePingUUIDs4 = [(DEDSharingConnection *)self visiblePingUUIDs];
       v18 = 138412290;
-      v19 = v13;
+      v19 = visiblePingUUIDs4;
       _os_log_impl(&dword_248AD7000, v12, OS_LOG_TYPE_INFO, "Tracked DED ping devices %@", &v18, 0xCu);
     }
   }
@@ -724,42 +724,42 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
   v3 = Log_5();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DEDSharingConnection *)self pingDiscovery];
+    pingDiscovery = [(DEDSharingConnection *)self pingDiscovery];
     v7 = 138412290;
-    v8 = v4;
+    v8 = pingDiscovery;
     _os_log_impl(&dword_248AD7000, v3, OS_LOG_TYPE_DEFAULT, "Stopping ping discovery on %@.", &v7, 0xCu);
   }
 
-  v5 = [(DEDSharingConnection *)self pingDiscovery];
-  [v5 invalidate];
+  pingDiscovery2 = [(DEDSharingConnection *)self pingDiscovery];
+  [pingDiscovery2 invalidate];
 
   [(DEDSharingConnection *)self setPingDiscovery:0];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startPongDiscoveryFromInbound:(id)a3
+- (void)startPongDiscoveryFromInbound:(id)inbound
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DEDSharingConnection *)self pongDiscovery];
+  inboundCopy = inbound;
+  pongDiscovery = [(DEDSharingConnection *)self pongDiscovery];
 
-  if (v5)
+  if (pongDiscovery)
   {
     v6 = Log_5();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DEDSharingConnection *)self pongDiscovery];
+      pongDiscovery2 = [(DEDSharingConnection *)self pongDiscovery];
       *buf = 138412290;
-      v40 = v7;
+      v40 = pongDiscovery2;
       _os_log_impl(&dword_248AD7000, v6, OS_LOG_TYPE_DEFAULT, "Pong discovery already initialized %@", buf, 0xCu);
     }
 
     v8 = Log_5();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(DEDSharingConnection *)self pongingDevices];
+      pongingDevices = [(DEDSharingConnection *)self pongingDevices];
       *buf = 138412290;
-      v40 = v9;
+      v40 = pongingDevices;
       _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "Pong devices tracked %@", buf, 0xCu);
     }
   }
@@ -772,32 +772,32 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
     v11 = Log_5();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(DEDSharingConnection *)self pongingDevices];
+      pongingDevices2 = [(DEDSharingConnection *)self pongingDevices];
       *buf = 138412290;
-      v40 = v12;
+      v40 = pongingDevices2;
       _os_log_impl(&dword_248AD7000, v11, OS_LOG_TYPE_DEFAULT, "Created pong discovery %@", buf, 0xCu);
     }
 
-    v13 = [(DEDSharingConnection *)self pongDiscovery];
-    [v13 setChangeFlags:13];
+    pongDiscovery3 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery3 setChangeFlags:13];
 
-    v14 = [(DEDSharingConnection *)self pongDiscovery];
-    [v14 setDiscoveryFlags:235011984];
+    pongDiscovery4 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery4 setDiscoveryFlags:235011984];
 
-    v15 = [(DEDSharingConnection *)self pongDiscovery];
-    [v15 setScanRate:20];
+    pongDiscovery5 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery5 setScanRate:20];
 
     v16 = Log_5();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(DEDSharingConnection *)self pongDiscovery];
+      pongDiscovery6 = [(DEDSharingConnection *)self pongDiscovery];
       *buf = 138412290;
-      v40 = v17;
+      v40 = pongDiscovery6;
       _os_log_impl(&dword_248AD7000, v16, OS_LOG_TYPE_DEFAULT, "Initialized Pong discovery %@", buf, 0xCu);
     }
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
-    [(DEDSharingConnection *)self setPongingDevices:v18];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(DEDSharingConnection *)self setPongingDevices:dictionary];
 
     objc_initWeak(buf, self);
     v36[0] = MEMORY[0x277D85DD0];
@@ -805,10 +805,10 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
     v36[2] = __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke;
     v36[3] = &unk_278F666B0;
     objc_copyWeak(&v38, buf);
-    v19 = v4;
+    v19 = inboundCopy;
     v37 = v19;
-    v20 = [(DEDSharingConnection *)self pongDiscovery];
-    [v20 setDeviceFoundHandler:v36];
+    pongDiscovery7 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery7 setDeviceFoundHandler:v36];
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -816,35 +816,35 @@ void __42__DEDSharingConnection_startPingDiscovery__block_invoke_49(uint64_t a1,
     v33[3] = &unk_278F666D8;
     objc_copyWeak(&v35, buf);
     v34 = v19;
-    v21 = [(DEDSharingConnection *)self pongDiscovery];
-    [v21 setDeviceChangedHandler:v33];
+    pongDiscovery8 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery8 setDeviceChangedHandler:v33];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_54;
     v31[3] = &unk_278F66640;
     objc_copyWeak(&v32, buf);
-    v22 = [(DEDSharingConnection *)self pongDiscovery];
-    [v22 setDeviceLostHandler:v31];
+    pongDiscovery9 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery9 setDeviceLostHandler:v31];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_56;
     v29[3] = &unk_278F65830;
     objc_copyWeak(&v30, buf);
-    v23 = [(DEDSharingConnection *)self pongDiscovery];
-    [v23 setInterruptionHandler:v29];
+    pongDiscovery10 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery10 setInterruptionHandler:v29];
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_57;
     v27[3] = &unk_278F65830;
     objc_copyWeak(&v28, buf);
-    v24 = [(DEDSharingConnection *)self pongDiscovery];
-    [v24 setInvalidationHandler:v27];
+    pongDiscovery11 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery11 setInvalidationHandler:v27];
 
-    v25 = [(DEDSharingConnection *)self pongDiscovery];
-    [v25 activateWithCompletion:&__block_literal_global_60_1];
+    pongDiscovery12 = [(DEDSharingConnection *)self pongDiscovery];
+    [pongDiscovery12 activateWithCompletion:&__block_literal_global_60_1];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v30);
@@ -968,23 +968,23 @@ void __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_58(
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleIncomingPongingDevice:(id)a3 fromInbound:(id)a4
+- (void)_handleIncomingPongingDevice:(id)device fromInbound:(id)inbound
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [v8 UUIDString];
+  deviceCopy = device;
+  inboundCopy = inbound;
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
 
-  v10 = [v6 isValidDEDPongDevice];
-  v11 = [(DEDSharingConnection *)self pongingDevices];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  isValidDEDPongDevice = [deviceCopy isValidDEDPongDevice];
+  pongingDevices = [(DEDSharingConnection *)self pongingDevices];
+  v12 = [pongingDevices objectForKeyedSubscript:uUIDString];
 
-  if (!v10 || v12)
+  if (!isValidDEDPongDevice || v12)
   {
     if (v12)
     {
-      v19 = v10;
+      v19 = isValidDEDPongDevice;
     }
 
     else
@@ -1010,15 +1010,15 @@ void __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_58(
 
       else
       {
-        v21 = v10;
+        v21 = isValidDEDPongDevice;
       }
 
       if (v21)
       {
-        v22 = [DEDDevice deviceForSFDevice:v6 andStatus:4];
+        v22 = [DEDDevice deviceForSFDevice:deviceCopy andStatus:4];
         [(DEDSharingConnection *)self updateControllerWithDevice:v22 andStatus:4];
-        v23 = [(DEDSharingConnection *)self pongingDevices];
-        [v23 removeObjectForKey:v9];
+        pongingDevices2 = [(DEDSharingConnection *)self pongingDevices];
+        [pongingDevices2 removeObjectForKey:uUIDString];
 
         goto LABEL_26;
       }
@@ -1037,25 +1037,25 @@ void __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_58(
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v6;
+    v29 = deviceCopy;
     _os_log_impl(&dword_248AD7000, v13, OS_LOG_TYPE_DEFAULT, "Incoming pong discovery. New device has pong action and within range, will get status [%@]", buf, 0xCu);
   }
 
   v14 = Log_5();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection _handleIncomingPongingDevice:v6 fromInbound:?];
+    [DEDSharingConnection _handleIncomingPongingDevice:deviceCopy fromInbound:?];
   }
 
   v15 = Log_5();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection _handleIncomingPongingDevice:v6 fromInbound:?];
+    [DEDSharingConnection _handleIncomingPongingDevice:deviceCopy fromInbound:?];
   }
 
-  [(DEDSharingConnection *)self _saveDevice:v6];
-  v16 = [(DEDSharingConnection *)self pongingDevices];
-  [v16 setObject:v6 forKeyedSubscript:v9];
+  [(DEDSharingConnection *)self _saveDevice:deviceCopy];
+  pongingDevices3 = [(DEDSharingConnection *)self pongingDevices];
+  [pongingDevices3 setObject:deviceCopy forKeyedSubscript:uUIDString];
 
   v17 = Log_5();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -1063,15 +1063,15 @@ void __54__DEDSharingConnection_startPongDiscoveryFromInbound___block_invoke_58(
     [DEDSharingConnection _handleIncomingPongingDevice:? fromInbound:?];
   }
 
-  v18 = [(DEDSharingConnection *)self run_queue];
+  run_queue = [(DEDSharingConnection *)self run_queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__DEDSharingConnection__handleIncomingPongingDevice_fromInbound___block_invoke;
   block[3] = &unk_278F65668;
   block[4] = self;
-  v26 = v6;
-  v27 = v7;
-  dispatch_async(v18, block);
+  v26 = deviceCopy;
+  v27 = inboundCopy;
+  dispatch_async(run_queue, block);
 
 LABEL_26:
   v24 = *MEMORY[0x277D85DE8];
@@ -1086,21 +1086,21 @@ LABEL_26:
     _os_log_impl(&dword_248AD7000, v3, OS_LOG_TYPE_DEFAULT, "Stopping pong discovery.", v5, 2u);
   }
 
-  v4 = [(DEDSharingConnection *)self pongDiscovery];
-  [v4 invalidate];
+  pongDiscovery = [(DEDSharingConnection *)self pongDiscovery];
+  [pongDiscovery invalidate];
 
   [(DEDSharingConnection *)self setPongDiscovery:0];
 }
 
-- (void)trySessionWithFoundDevice:(id)a3 fromInbound:(id)a4
+- (void)trySessionWithFoundDevice:(id)device fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [DEDDevice deviceForSFDevice:v6 andStatus:3];
+  deviceCopy = device;
+  inboundCopy = inbound;
+  v8 = [DEDDevice deviceForSFDevice:deviceCopy andStatus:3];
   v9 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:v8];
   if (v9)
   {
-    [(DEDSharingConnection *)self checkReadinessForSFDevice:v6 session:v9];
+    [(DEDSharingConnection *)self checkReadinessForSFDevice:deviceCopy session:v9];
   }
 
   else
@@ -1111,8 +1111,8 @@ LABEL_26:
     v10[2] = __62__DEDSharingConnection_trySessionWithFoundDevice_fromInbound___block_invoke;
     v10[3] = &unk_278F66700;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
-    [(DEDSharingConnection *)self createSharingSessionForSFDevice:v11 holdForPIN:0 fromInbound:v7 completion:v10];
+    v11 = deviceCopy;
+    [(DEDSharingConnection *)self createSharingSessionForSFDevice:v11 holdForPIN:0 fromInbound:inboundCopy completion:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -1153,22 +1153,22 @@ void __62__DEDSharingConnection_trySessionWithFoundDevice_fromInbound___block_in
   [WeakRetained getSystemInfoForDevice:*(a1 + 32)];
 }
 
-- (void)getSystemInfoForDevice:(id)a3
+- (void)getSystemInfoForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = Log_5();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection getSystemInfoForDevice:v4];
+    [DEDSharingConnection getSystemInfoForDevice:deviceCopy];
   }
 
-  v6 = [(DEDSharingConnection *)self bluetoothSessionSemaphore];
-  dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
+  bluetoothSessionSemaphore = [(DEDSharingConnection *)self bluetoothSessionSemaphore];
+  dispatch_semaphore_wait(bluetoothSessionSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   v7 = objc_alloc_init(MEMORY[0x277D54CF8]);
   v8 = objc_alloc_init(MEMORY[0x277D54C48]);
-  v9 = [v4 identifier];
-  [v8 setIdentifier:v9];
+  identifier = [deviceCopy identifier];
+  [v8 setIdentifier:identifier];
 
   [v7 setPeerDevice:v8];
   [v7 setAllowUnencrypted:1];
@@ -1176,7 +1176,7 @@ void __62__DEDSharingConnection_trySessionWithFoundDevice_fromInbound___block_in
   v10 = Log_5();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection getSystemInfoForDevice:v4];
+    [DEDSharingConnection getSystemInfoForDevice:deviceCopy];
   }
 
   v24[0] = 0;
@@ -1189,7 +1189,7 @@ void __62__DEDSharingConnection_trySessionWithFoundDevice_fromInbound___block_in
   v20[3] = &unk_278F66728;
   v23 = v24;
   v20[4] = self;
-  v11 = v4;
+  v11 = deviceCopy;
   v21 = v11;
   v12 = v7;
   v22 = v12;
@@ -1270,37 +1270,37 @@ uint64_t __47__DEDSharingConnection_getSystemInfoForDevice___block_invoke_71(uin
   return result;
 }
 
-- (void)checkReadinessForSFDevice:(id)a3 session:(id)a4
+- (void)checkReadinessForSFDevice:(id)device session:(id)session
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  sessionCopy = session;
   v7 = Log_5();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection checkReadinessForSFDevice:v5 session:?];
+    [DEDSharingConnection checkReadinessForSFDevice:deviceCopy session:?];
   }
 
   v12[0] = @"setup";
   v12[1] = @"yourIdentifier";
   v13[0] = @"ready_check";
-  v8 = [v5 identifier];
-  v9 = [v8 UUIDString];
-  v13[1] = v9;
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v13[1] = uUIDString;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v6 sendWithFlags:0 object:v10];
+  [sessionCopy sendWithFlags:0 object:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharing_startPairSetupForDevice:(id)a3 fromInbound:(id)a4
+- (void)sharing_startPairSetupForDevice:(id)device fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  inboundCopy = inbound;
   v8 = Log_5();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection sharing_startPairSetupForDevice:v6 fromInbound:?];
+    [DEDSharingConnection sharing_startPairSetupForDevice:deviceCopy fromInbound:?];
   }
 
   v16[0] = MEMORY[0x277D85DD0];
@@ -1308,9 +1308,9 @@ uint64_t __47__DEDSharingConnection_getSystemInfoForDevice___block_invoke_71(uin
   v16[2] = __68__DEDSharingConnection_sharing_startPairSetupForDevice_fromInbound___block_invoke;
   v16[3] = &unk_278F66778;
   v16[4] = self;
-  v9 = v6;
+  v9 = deviceCopy;
   v17 = v9;
-  v10 = v7;
+  v10 = inboundCopy;
   v18 = v10;
   v11 = MEMORY[0x24C1E5320](v16);
   v12 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:v9];
@@ -1321,13 +1321,13 @@ uint64_t __47__DEDSharingConnection_getSystemInfoForDevice___block_invoke_71(uin
 
   else
   {
-    v13 = [v9 sfDevice];
+    sfDevice = [v9 sfDevice];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__DEDSharingConnection_sharing_startPairSetupForDevice_fromInbound___block_invoke_82;
     v14[3] = &unk_278F667A0;
     v15 = v11;
-    [(DEDSharingConnection *)self createSharingSessionForSFDevice:v13 holdForPIN:1 fromInbound:v10 completion:v14];
+    [(DEDSharingConnection *)self createSharingSessionForSFDevice:sfDevice holdForPIN:1 fromInbound:v10 completion:v14];
   }
 }
 
@@ -1381,24 +1381,24 @@ void __68__DEDSharingConnection_sharing_startPairSetupForDevice_fromInbound___bl
   }
 }
 
-- (void)sharing_tryPIN:(id)a3 forDevice:(id)a4 fromInbound:(id)a5
+- (void)sharing_tryPIN:(id)n forDevice:(id)device fromInbound:(id)inbound
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  nCopy = n;
+  deviceCopy = device;
   v9 = Log_5();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = v8;
+    v15 = deviceCopy;
     _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "trying pin for device [%{public}@]", &v14, 0xCu);
   }
 
-  v10 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:v8];
+  v10 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:deviceCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 pairSetupTryPIN:v7];
+    [v10 pairSetupTryPIN:nCopy];
   }
 
   else
@@ -1413,16 +1413,16 @@ void __68__DEDSharingConnection_sharing_startPairSetupForDevice_fromInbound___bl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sharingOutboundForBugSessionIdentifier:(id)a3 device:(id)a4 fromInbound:(id)a5
+- (id)sharingOutboundForBugSessionIdentifier:(id)identifier device:(id)device fromInbound:(id)inbound
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:v9];
-  if (v11 || ([(DEDSharingConnection *)self blockingSharingSessionForDevice:v9 fromInbound:v10], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  deviceCopy = device;
+  inboundCopy = inbound;
+  v11 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:deviceCopy];
+  if (v11 || ([(DEDSharingConnection *)self blockingSharingSessionForDevice:deviceCopy fromInbound:inboundCopy], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
-    v13 = [[DEDSharingOutbound alloc] initWithID:v8 withSFSession:v11 connection:self];
+    v13 = [[DEDSharingOutbound alloc] initWithID:identifierCopy withSFSession:v11 connection:self];
   }
 
   else
@@ -1433,40 +1433,40 @@ void __68__DEDSharingConnection_sharing_startPairSetupForDevice_fromInbound___bl
   return v13;
 }
 
-- (void)sharing_startBugSessionWithIdentifier:(id)a3 configuration:(id)a4 caller:(id)a5 target:(id)a6 fromInbound:(id)a7
+- (void)sharing_startBugSessionWithIdentifier:(id)identifier configuration:(id)configuration caller:(id)caller target:(id)target fromInbound:(id)inbound
 {
   v24[5] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(DEDSharingConnection *)self blockingSharingSessionForDevice:v15 fromInbound:a7];
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  callerCopy = caller;
+  targetCopy = target;
+  v16 = [(DEDSharingConnection *)self blockingSharingSessionForDevice:targetCopy fromInbound:inbound];
   if (v16)
   {
     v17 = Log_5();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [DEDSharingConnection sharing_startBugSessionWithIdentifier:v15 configuration:? caller:? target:? fromInbound:?];
+      [DEDSharingConnection sharing_startBugSessionWithIdentifier:targetCopy configuration:? caller:? target:? fromInbound:?];
     }
 
-    v18 = [v13 secureArchive];
-    if (!v18)
+    secureArchive = [configurationCopy secureArchive];
+    if (!secureArchive)
     {
-      v18 = [MEMORY[0x277CBEA90] data];
+      secureArchive = [MEMORY[0x277CBEA90] data];
     }
 
     v23[0] = @"setup";
     v23[1] = @"sessionID";
     v24[0] = @"start_session";
-    v24[1] = v12;
-    v24[2] = v18;
+    v24[1] = identifierCopy;
+    v24[2] = secureArchive;
     v23[2] = @"config";
     v23[3] = @"callingDevice";
-    v19 = [v14 serialize];
-    v24[3] = v19;
+    serialize = [callerCopy serialize];
+    v24[3] = serialize;
     v23[4] = @"targetDevice";
-    v20 = [v15 serialize];
-    v24[4] = v20;
+    serialize2 = [targetCopy serialize];
+    v24[4] = serialize2;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:5];
 
     [v16 sendWithFlags:0 object:v21];
@@ -1475,50 +1475,50 @@ void __68__DEDSharingConnection_sharing_startPairSetupForDevice_fromInbound___bl
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharing_didStartBugSessionWithInfo:(id)a3 forCaller:(id)a4
+- (void)sharing_didStartBugSessionWithInfo:(id)info forCaller:(id)caller
 {
-  v8 = a3;
-  v6 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:a4];
+  infoCopy = info;
+  v6 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:caller];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v8];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:infoCopy];
     [v7 setObject:@"did_start_session" forKeyedSubscript:@"setup"];
     [v6 sendWithFlags:0 object:v7];
   }
 }
 
-- (void)updateControllerWithDevice:(id)a3 andStatus:(int64_t)a4
+- (void)updateControllerWithDevice:(id)device andStatus:(int64_t)status
 {
-  v14 = a3;
-  v6 = [(DEDSharingConnection *)self deviceStatusCallback];
+  deviceCopy = device;
+  deviceStatusCallback = [(DEDSharingConnection *)self deviceStatusCallback];
 
-  if (v6)
+  if (deviceStatusCallback)
   {
-    [v14 setStatus:a4];
-    v7 = [(DEDSharingConnection *)self deviceStatusCallback];
-    (v7)[2](v7, v14, a4);
+    [deviceCopy setStatus:status];
+    deviceStatusCallback2 = [(DEDSharingConnection *)self deviceStatusCallback];
+    (deviceStatusCallback2)[2](deviceStatusCallback2, deviceCopy, status);
   }
 
-  v8 = [(DEDSharingConnection *)self deviceSessions];
-  v9 = [v14 address];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  deviceSessions = [(DEDSharingConnection *)self deviceSessions];
+  address = [deviceCopy address];
+  v10 = [deviceSessions objectForKeyedSubscript:address];
 
   if (v10)
   {
-    v11 = [(DEDSharingConnection *)self deviceSessions];
-    v12 = [v14 address];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    deviceSessions2 = [(DEDSharingConnection *)self deviceSessions];
+    address2 = [deviceCopy address];
+    v13 = [deviceSessions2 objectForKeyedSubscript:address2];
     [(DEDSharingConnection *)self stopSession:v13];
   }
 }
 
-- (void)_saveDevice:(id)a3
+- (void)_saveDevice:(id)device
 {
-  v4 = a3;
-  v7 = [(DEDSharingConnection *)self discoveredDevices];
-  v5 = [v4 identifier];
-  v6 = [v5 UUIDString];
-  [v7 setObject:v4 forKey:v6];
+  deviceCopy = device;
+  discoveredDevices = [(DEDSharingConnection *)self discoveredDevices];
+  identifier = [deviceCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [discoveredDevices setObject:deviceCopy forKey:uUIDString];
 }
 
 void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionType_completion___block_invoke(uint64_t a1)
@@ -1589,11 +1589,11 @@ void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionTyp
   }
 }
 
-- (id)_existingSharingSessionForDevice:(id)a3
+- (id)_existingSharingSessionForDevice:(id)device
 {
-  v4 = [a3 address];
-  v5 = [(DEDSharingConnection *)self deviceSessions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  address = [device address];
+  deviceSessions = [(DEDSharingConnection *)self deviceSessions];
+  v6 = [deviceSessions objectForKeyedSubscript:address];
 
   if (v6)
   {
@@ -1603,8 +1603,8 @@ void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionTyp
       [DEDSharingConnection _existingSharingSessionForDevice:];
     }
 
-    v8 = [(DEDSharingConnection *)self deviceSessions];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    deviceSessions2 = [(DEDSharingConnection *)self deviceSessions];
+    v9 = [deviceSessions2 objectForKeyedSubscript:address];
   }
 
   else
@@ -1615,14 +1615,14 @@ void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionTyp
   return v9;
 }
 
-- (id)blockingSharingSessionForDevice:(id)a3 fromInbound:(id)a4
+- (id)blockingSharingSessionForDevice:(id)device fromInbound:(id)inbound
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  inboundCopy = inbound;
   v8 = Log_5();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [DEDSharingConnection blockingSharingSessionForDevice:v6 fromInbound:?];
+    [DEDSharingConnection blockingSharingSessionForDevice:deviceCopy fromInbound:?];
   }
 
   v21 = 0;
@@ -1631,7 +1631,7 @@ void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionTyp
   v24 = __Block_byref_object_copy__4;
   v25 = __Block_byref_object_dispose__4;
   v26 = 0;
-  v9 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:v6];
+  v9 = [(DEDSharingConnection *)self _existingSharingSessionForDevice:deviceCopy];
   v10 = v22[5];
   v22[5] = v9;
 
@@ -1644,7 +1644,7 @@ void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionTyp
   else
   {
     v13 = dispatch_semaphore_create(0);
-    v14 = [v6 sfDevice];
+    sfDevice = [deviceCopy sfDevice];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __68__DEDSharingConnection_blockingSharingSessionForDevice_fromInbound___block_invoke;
@@ -1652,7 +1652,7 @@ void __85__DEDSharingConnection__configureService_withLabel_needsSetup_actionTyp
     v20 = &v21;
     v15 = v13;
     v19 = v15;
-    [(DEDSharingConnection *)self createSharingSessionForSFDevice:v14 holdForPIN:0 fromInbound:v7 completion:v18];
+    [(DEDSharingConnection *)self createSharingSessionForSFDevice:sfDevice holdForPIN:0 fromInbound:inboundCopy completion:v18];
 
     v16 = dispatch_time(0, 2000000000);
     dispatch_semaphore_wait(v15, v16);
@@ -1675,12 +1675,12 @@ void __68__DEDSharingConnection_blockingSharingSessionForDevice_fromInbound___bl
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)createSharingSessionForSFDevice:(id)a3 holdForPIN:(BOOL)a4 fromInbound:(id)a5 completion:(id)a6
+- (void)createSharingSessionForSFDevice:(id)device holdForPIN:(BOOL)n fromInbound:(id)inbound completion:(id)completion
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  deviceCopy = device;
+  inboundCopy = inbound;
+  completionCopy = completion;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -1688,7 +1688,7 @@ void __68__DEDSharingConnection_blockingSharingSessionForDevice_fromInbound___bl
   v52 = __Block_byref_object_dispose__4;
   v53 = objc_alloc_init(MEMORY[0x277D54CE8]);
   [v49[5] setServiceIdentifier:*MEMORY[0x277D54D60]];
-  [v49[5] setPeerDevice:v10];
+  [v49[5] setPeerDevice:deviceCopy];
   v54 = @"com.apple.DeviceDiagnostics";
   v55[0] = MEMORY[0x277CBEC38];
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:&v54 count:1];
@@ -1701,7 +1701,7 @@ void __68__DEDSharingConnection_blockingSharingSessionForDevice_fromInbound___bl
   v44[1] = 3221225472;
   v44[2] = __90__DEDSharingConnection_createSharingSessionForSFDevice_holdForPIN_fromInbound_completion___block_invoke;
   v44[3] = &unk_278F661A8;
-  v14 = v10;
+  v14 = deviceCopy;
   v45 = v14;
   [v49[5] setErrorHandler:v44];
   v40[0] = MEMORY[0x277D85DD0];
@@ -1729,7 +1729,7 @@ void __68__DEDSharingConnection_blockingSharingSessionForDevice_fromInbound___bl
   v17 = v16;
   v33 = v17;
   objc_copyWeak(&v35, &from);
-  v18 = v11;
+  v18 = inboundCopy;
   v34 = v18;
   [v49[5] setPromptForPINHandler:v32];
   v29[0] = MEMORY[0x277D85DD0];
@@ -1748,8 +1748,8 @@ void __68__DEDSharingConnection_blockingSharingSessionForDevice_fromInbound___bl
   v20 = v17;
   v24 = v20;
   objc_copyWeak(&v27, &from);
-  v28 = a4;
-  v21 = v12;
+  nCopy = n;
+  v21 = completionCopy;
   v25 = v21;
   [v19 activateWithCompletion:v23];
 
@@ -1866,20 +1866,20 @@ void __90__DEDSharingConnection_createSharingSessionForSFDevice_holdForPIN_fromI
   }
 }
 
-- (void)_verifyPairingForSession:(id)a3 holdForPIN:(BOOL)a4 completion:(id)a5
+- (void)_verifyPairingForSession:(id)session holdForPIN:(BOOL)n completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__DEDSharingConnection__verifyPairingForSession_holdForPIN_completion___block_invoke;
   v12[3] = &unk_278F668E0;
-  v10 = v8;
+  v10 = sessionCopy;
   v13 = v10;
-  v16 = a4;
+  nCopy = n;
   objc_copyWeak(&v15, &location);
-  v11 = v9;
+  v11 = completionCopy;
   v14 = v11;
   [v10 pairVerifyWithFlags:8 completion:v12];
 
@@ -1936,32 +1936,32 @@ void __71__DEDSharingConnection__verifyPairingForSession_holdForPIN_completion__
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSession:(id)a3
+- (void)stopSession:(id)session
 {
-  v8 = a3;
-  v4 = [(DEDSharingConnection *)self deviceSessions];
-  v5 = [v8 peerDevice];
-  v6 = [v5 identifier];
-  v7 = [v6 UUIDString];
-  [v4 removeObjectForKey:v7];
+  sessionCopy = session;
+  deviceSessions = [(DEDSharingConnection *)self deviceSessions];
+  peerDevice = [sessionCopy peerDevice];
+  identifier = [peerDevice identifier];
+  uUIDString = [identifier UUIDString];
+  [deviceSessions removeObjectForKey:uUIDString];
 
-  [v8 invalidate];
+  [sessionCopy invalidate];
 }
 
-- (void)addIncomingSFSession:(id)a3 forIdentifier:(id)a4
+- (void)addIncomingSFSession:(id)session forIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__DEDSharingConnection_addIncomingSFSession_forIdentifier___block_invoke;
   v15[3] = &unk_278F66908;
-  v8 = v7;
+  v8 = identifierCopy;
   v16 = v8;
   objc_copyWeak(&v17, &location);
-  [v6 setInvalidationHandler:v15];
+  [sessionCopy setInvalidationHandler:v15];
   v9 = Log_5();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1970,14 +1970,14 @@ void __71__DEDSharingConnection__verifyPairingForSession_holdForPIN_completion__
     _os_log_impl(&dword_248AD7000, v9, OS_LOG_TYPE_DEFAULT, "Incoming SFSession added for %@", buf, 0xCu);
   }
 
-  v10 = [(DEDSharingConnection *)self deviceSessions];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  deviceSessions = [(DEDSharingConnection *)self deviceSessions];
+  v11 = [deviceSessions objectForKeyedSubscript:v8];
   v12 = v11 == 0;
 
   if (v12)
   {
-    v13 = [(DEDSharingConnection *)self deviceSessions];
-    [v13 setObject:v6 forKeyedSubscript:v8];
+    deviceSessions2 = [(DEDSharingConnection *)self deviceSessions];
+    [deviceSessions2 setObject:sessionCopy forKeyedSubscript:v8];
   }
 
   objc_destroyWeak(&v17);

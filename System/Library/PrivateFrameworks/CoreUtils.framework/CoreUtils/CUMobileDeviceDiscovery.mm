@@ -1,5 +1,5 @@
 @interface CUMobileDeviceDiscovery
-+ (void)getDevicesWithQueue:(id)a3 completion:(id)a4;
++ (void)getDevicesWithQueue:(id)queue completion:(id)completion;
 - (CUMobileDeviceDiscovery)init;
 - (void)_invalidated;
 - (void)activate;
@@ -167,19 +167,19 @@ uint64_t __35__CUMobileDeviceDiscovery_activate__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-+ (void)getDevicesWithQueue:(id)a3 completion:(id)a4
++ (void)getDevicesWithQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v7 = dispatch_queue_create("CUMobileDeviceGetDevices", 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__CUMobileDeviceDiscovery_getDevicesWithQueue_completion___block_invoke;
   v10[3] = &unk_1E73A49A0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = queueCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = queueCopy;
   dispatch_async(v7, v10);
 }
 

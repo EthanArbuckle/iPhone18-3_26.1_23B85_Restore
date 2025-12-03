@@ -1,29 +1,29 @@
 @interface ASAchievementManager
-- (ASAchievementManager)initWithIsWatch:(BOOL)a3;
+- (ASAchievementManager)initWithIsWatch:(BOOL)watch;
 - (NSSet)friends;
-- (id)friendWithUUID:(id)a3;
+- (id)friendWithUUID:(id)d;
 - (void)_requestAwardsUpdateIfNecessary;
-- (void)activitySharingManagerReady:(id)a3;
+- (void)activitySharingManagerReady:(id)ready;
 - (void)friendListDidLoadCompetitions;
 - (void)removeAllTemplates;
 - (void)removeAllUnusedTemplates;
-- (void)removeUnusedTemplatesForFriendWithUUID:(id)a3;
+- (void)removeUnusedTemplatesForFriendWithUUID:(id)d;
 - (void)requestEarnedInstanceUpdate;
 - (void)requestTemplateUpdate;
 @end
 
 @implementation ASAchievementManager
 
-- (ASAchievementManager)initWithIsWatch:(BOOL)a3
+- (ASAchievementManager)initWithIsWatch:(BOOL)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   v12.receiver = self;
   v12.super_class = ASAchievementManager;
   v4 = [(ASAchievementManager *)&v12 init];
   if (v4)
   {
     v5 = [ASCompetitionAwardingSource alloc];
-    if (v3)
+    if (watchCopy)
     {
       v6 = 1;
     }
@@ -43,16 +43,16 @@
     v4->_competitionTemplateSource = v9;
 
     [(ASCompetitionTemplateSource *)v4->_competitionTemplateSource setDataProvider:v4];
-    v4->_isWatch = v3;
+    v4->_isWatch = watchCopy;
   }
 
   return v4;
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = [a3 friendListManager];
-  objc_storeWeak(&self->_friendListManager, v4);
+  friendListManager = [ready friendListManager];
+  objc_storeWeak(&self->_friendListManager, friendListManager);
 
   WeakRetained = objc_loadWeakRetained(&self->_friendListManager);
   [WeakRetained addObserver:self];
@@ -192,7 +192,7 @@ void __45__ASAchievementManager_requestTemplateUpdate__block_invoke_298(uint64_t
     v18 = os_transaction_create();
     v6 = [(ASCompetitionAwardingSource *)self->_competitionAwardingSource earnedInstancesForIncrementalInterval:0];
     v7 = objc_alloc_init(MEMORY[0x277CE8DE0]);
-    v8 = [v6 allObjects];
+    allObjects = [v6 allObjects];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51__ASAchievementManager_requestEarnedInstanceUpdate__block_invoke;
@@ -200,7 +200,7 @@ void __45__ASAchievementManager_requestTemplateUpdate__block_invoke_298(uint64_t
     v9 = v6;
     v11 = v9;
     v12 = buf;
-    [v7 addEarnedInstances:v8 completion:v10];
+    [v7 addEarnedInstances:allObjects completion:v10];
 
     _Block_object_dispose(buf, 8);
   }
@@ -256,12 +256,12 @@ void __51__ASAchievementManager_requestEarnedInstanceUpdate__block_invoke(uint64
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(ASAchievementManager *)self friends];
+  friends = [(ASAchievementManager *)self friends];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  v7 = [friends countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v7)
   {
     v9 = v7;
@@ -274,7 +274,7 @@ void __51__ASAchievementManager_requestEarnedInstanceUpdate__block_invoke(uint64
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(friends);
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
@@ -285,22 +285,22 @@ void __51__ASAchievementManager_requestEarnedInstanceUpdate__block_invoke(uint64
           if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEFAULT))
           {
             v14 = v13;
-            v15 = [v12 displayName];
+            displayName = [v12 displayName];
             *buf = v23;
-            v31 = v15;
+            v31 = displayName;
             _os_log_impl(&dword_23E5E3000, v14, OS_LOG_TYPE_DEFAULT, "Achievement manager found friend with competition history but no wins: %@", buf, 0xCu);
           }
 
           competitionTemplateSource = self->_competitionTemplateSource;
-          v17 = [v12 UUID];
-          v18 = [(ASCompetitionTemplateSource *)competitionTemplateSource unusedTemplateNamesForFriendWithUUID:v17];
+          uUID = [v12 UUID];
+          v18 = [(ASCompetitionTemplateSource *)competitionTemplateSource unusedTemplateNamesForFriendWithUUID:uUID];
 
-          v19 = [v18 allObjects];
-          [v5 addObjectsFromArray:v19];
+          allObjects = [v18 allObjects];
+          [v5 addObjectsFromArray:allObjects];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v9 = [friends countByEnumeratingWithState:&v26 objects:v32 count:16];
     }
 
     while (v9);
@@ -345,29 +345,29 @@ void __48__ASAchievementManager_removeAllUnusedTemplates__block_invoke(uint64_t 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeUnusedTemplatesForFriendWithUUID:(id)a3
+- (void)removeUnusedTemplatesForFriendWithUUID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FC0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v4;
+    v14 = dCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "AchievementManager removing unused templates for friend: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(ASCompetitionTemplateSource *)self->_competitionTemplateSource unusedTemplateNamesForFriendWithUUID:v4];
+  v6 = [(ASCompetitionTemplateSource *)self->_competitionTemplateSource unusedTemplateNamesForFriendWithUUID:dCopy];
   v7 = objc_alloc_init(MEMORY[0x277CE8DE0]);
-  v8 = [v6 allObjects];
+  allObjects = [v6 allObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__ASAchievementManager_removeUnusedTemplatesForFriendWithUUID___block_invoke;
   v11[3] = &unk_278C4C218;
   v12 = v6;
   v9 = v6;
-  [v7 removeTemplatesWithUniqueNames:v8 completion:v11];
+  [v7 removeTemplatesWithUniqueNames:allObjects completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -434,16 +434,16 @@ void __42__ASAchievementManager_removeAllTemplates__block_invoke(uint64_t a1, in
 - (NSSet)friends
 {
   WeakRetained = objc_loadWeakRetained(&self->_friendListManager);
-  v3 = [WeakRetained friends];
+  friends = [WeakRetained friends];
 
-  return v3;
+  return friends;
 }
 
-- (id)friendWithUUID:(id)a3
+- (id)friendWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_friendListManager);
-  v6 = [WeakRetained friendWithUUID:v4];
+  v6 = [WeakRetained friendWithUUID:dCopy];
 
   return v6;
 }
@@ -458,11 +458,11 @@ void __42__ASAchievementManager_removeAllTemplates__block_invoke(uint64_t a1, in
 
 - (void)_requestAwardsUpdateIfNecessary
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 doubleForKey:@"ActivitySharingLastTemplateRefreshTimestamp"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"ActivitySharingLastTemplateRefreshTimestamp"];
   v5 = v4 + 1800.0;
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v8 = v7;
 
   ASLoggingInitialize();
@@ -478,7 +478,7 @@ void __42__ASAchievementManager_removeAllTemplates__block_invoke(uint64_t a1, in
 
     [(ASAchievementManager *)self requestTemplateUpdate];
     [(ASAchievementManager *)self requestEarnedInstanceUpdate];
-    [v3 setDouble:@"ActivitySharingLastTemplateRefreshTimestamp" forKey:v8];
+    [standardUserDefaults setDouble:@"ActivitySharingLastTemplateRefreshTimestamp" forKey:v8];
   }
 
   else if (v10)

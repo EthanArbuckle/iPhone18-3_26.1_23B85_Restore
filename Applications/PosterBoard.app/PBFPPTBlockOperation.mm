@@ -1,12 +1,12 @@
 @interface PBFPPTBlockOperation
-+ (PBFPPTBlockOperation)operationWithBlock:(id)a3;
-+ (PBFPPTBlockOperation)operationWithName:(id)a3 block:(id)a4;
-- (PBFPPTBlockOperation)initWithBlock:(id)a3;
-- (PBFPPTBlockOperation)initWithName:(id)a3 block:(id)a4;
++ (PBFPPTBlockOperation)operationWithBlock:(id)block;
++ (PBFPPTBlockOperation)operationWithName:(id)name block:(id)block;
+- (PBFPPTBlockOperation)initWithBlock:(id)block;
+- (PBFPPTBlockOperation)initWithName:(id)name block:(id)block;
 - (id)description;
 - (id)timeoutBlock;
 - (void)cancel;
-- (void)cancelAndFailTestWithReason:(id)a3;
+- (void)cancelAndFailTestWithReason:(id)reason;
 - (void)finish;
 - (void)main;
 - (void)start;
@@ -14,26 +14,26 @@
 
 @implementation PBFPPTBlockOperation
 
-+ (PBFPPTBlockOperation)operationWithBlock:(id)a3
++ (PBFPPTBlockOperation)operationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithBlock:blockCopy];
 
   return v5;
 }
 
-+ (PBFPPTBlockOperation)operationWithName:(id)a3 block:(id)a4
++ (PBFPPTBlockOperation)operationWithName:(id)name block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 block:v6];
+  blockCopy = block;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy block:blockCopy];
 
   return v8;
 }
 
-- (PBFPPTBlockOperation)initWithBlock:(id)a3
+- (PBFPPTBlockOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = PBFPPTBlockOperation;
   v5 = [(PBFPPTOperation *)&v10 init];
@@ -42,7 +42,7 @@
   {
     v5->_timeoutInterval = 15.0;
     v5->_state = 0;
-    v7 = [v4 copy];
+    v7 = [blockCopy copy];
     block = v6->_block;
     v6->_block = v7;
   }
@@ -50,14 +50,14 @@
   return v6;
 }
 
-- (PBFPPTBlockOperation)initWithName:(id)a3 block:(id)a4
+- (PBFPPTBlockOperation)initWithName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = [(PBFPPTBlockOperation *)self initWithBlock:a4];
+  nameCopy = name;
+  v7 = [(PBFPPTBlockOperation *)self initWithBlock:block];
   v8 = v7;
   if (v7)
   {
-    [(PBFPPTOperation *)v7 setOperationName:v6];
+    [(PBFPPTOperation *)v7 setOperationName:nameCopy];
   }
 
   return v8;
@@ -66,14 +66,14 @@
 - (id)description
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(PBFPPTBlockOperation *)self state];
+  state = [(PBFPPTBlockOperation *)self state];
   v5 = @"Pending";
-  if (v4 == 2)
+  if (state == 2)
   {
     v5 = @"Finished";
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
     v6 = @"Executing";
   }
@@ -85,12 +85,12 @@
 
   [v3 appendString:v6 withName:@"state"];
   v7 = [v3 appendFloat:@"timeoutInterval" withName:self->_timeoutInterval];
-  v8 = [(PBFPPTOperation *)self operationName];
-  [v3 appendString:v8 withName:@"operationName"];
+  operationName = [(PBFPPTOperation *)self operationName];
+  [v3 appendString:operationName withName:@"operationName"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (void)finish
@@ -115,33 +115,33 @@
   [(PBFPPTBlockOperation *)self finish];
 }
 
-- (void)cancelAndFailTestWithReason:(id)a3
+- (void)cancelAndFailTestWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [UIApp runningPPTTestName];
-  [UIApp failedTest:v5 withFailure:v4];
+  reasonCopy = reason;
+  runningPPTTestName = [UIApp runningPPTTestName];
+  [UIApp failedTest:runningPPTTestName withFailure:reasonCopy];
   v9.receiver = self;
   v9.super_class = PBFPPTBlockOperation;
   [(PBFPPTBlockOperation *)&v9 cancel];
   self->_cancelled = 1;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PBFPPTOperation *)self operationName];
-    v7 = v6;
-    if (v6)
+    operationName = [(PBFPPTOperation *)self operationName];
+    v7 = operationName;
+    if (operationName)
     {
-      v8 = v6;
+      selfCopy = operationName;
     }
 
     else
     {
-      v8 = self;
+      selfCopy = self;
     }
 
     *buf = 138412546;
-    v11 = v8;
+    v11 = selfCopy;
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "PPT Operation '%@' cancelled for reason: %@", buf, 0x16u);
   }
 
@@ -154,8 +154,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PBFPPTBlockOperation *)self dependencies];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  dependencies = [(PBFPPTBlockOperation *)self dependencies];
+  v4 = [dependencies countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -167,7 +167,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dependencies);
         }
 
         if ([*(*(&v8 + 1) + 8 * v7) isCancelled])
@@ -181,7 +181,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [dependencies countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v5)
       {
         continue;
@@ -232,8 +232,8 @@
   v6 = dispatch_time(0, (v4 * 1000000000.0));
   dispatch_after(v6, &_dispatch_main_q, v5);
   [(PBFPPTOperation *)self operationWillStart];
-  v7 = [(PBFPPTBlockOperation *)self block];
-  (v7)[2](v7, self);
+  block = [(PBFPPTBlockOperation *)self block];
+  (block)[2](block, self);
 }
 
 - (id)timeoutBlock

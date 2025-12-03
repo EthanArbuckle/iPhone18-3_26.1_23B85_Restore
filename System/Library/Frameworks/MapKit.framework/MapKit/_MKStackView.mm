@@ -1,10 +1,10 @@
 @interface _MKStackView
 - (_MKAnimationStackViewDelegate)stackAnimationDelegate;
-- (_MKStackView)initWithFrame:(CGRect)a3;
+- (_MKStackView)initWithFrame:(CGRect)frame;
 - (_MKStackViewDelegate)stackDelegate;
 - (void)_createConstraints;
-- (void)addSubview:(id)a3;
-- (void)setStackedSubviews:(id)a3 animated:(BOOL)a4 isNeedLayout:(BOOL)a5;
+- (void)addSubview:(id)subview;
+- (void)setStackedSubviews:(id)subviews animated:(BOOL)animated isNeedLayout:(BOOL)layout;
 @end
 
 @implementation _MKStackView
@@ -23,37 +23,37 @@
   return WeakRetained;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = [v4 superview];
+  subviewCopy = subview;
+  superview = [subviewCopy superview];
 
-  if (v5 != self)
+  if (superview != self)
   {
-    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [subviewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_MKStackView *)self bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    if ([v4 _hostsLayoutEngineAllowsTAMIC_NO])
+    if ([subviewCopy _hostsLayoutEngineAllowsTAMIC_NO])
     {
-      [v4 _setHostsLayoutEngine:1];
+      [subviewCopy _setHostsLayoutEngine:1];
     }
 
-    [v4 bounds];
+    [subviewCopy bounds];
     Height = CGRectGetHeight(v15);
     v13 = 1.0;
     if (Height > 1.0)
     {
-      [v4 bounds];
+      [subviewCopy bounds];
       v13 = CGRectGetHeight(v16);
     }
 
-    [v4 setFrame:{v7, v9, v11, v13}];
-    [(NSHashTable *)self->_viewsNeedingWidthConstraints addObject:v4];
+    [subviewCopy setFrame:{v7, v9, v11, v13}];
+    [(NSHashTable *)self->_viewsNeedingWidthConstraints addObject:subviewCopy];
     v14.receiver = self;
     v14.super_class = _MKStackView;
-    [(_MKStackView *)&v14 addSubview:v4];
+    [(_MKStackView *)&v14 addSubview:subviewCopy];
     [(UIView *)self _mapkit_setNeedsUpdateConstraints];
   }
 }
@@ -63,14 +63,14 @@
   v59 = *MEMORY[0x1E69E9840];
   if ([(NSHashTable *)self->_viewsNeedingWidthConstraints count])
   {
-    v3 = [(NSHashTable *)self->_viewsNeedingWidthConstraints allObjects];
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{2 * objc_msgSend(v3, "count")}];
+    allObjects = [(NSHashTable *)self->_viewsNeedingWidthConstraints allObjects];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{2 * objc_msgSend(allObjects, "count")}];
     [(NSHashTable *)self->_viewsNeedingWidthConstraints removeAllObjects];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v5 = v3;
+    v5 = allObjects;
     v6 = [v5 countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v6)
     {
@@ -86,18 +86,18 @@
           }
 
           v10 = *(*(&v53 + 1) + 8 * i);
-          v11 = [v10 superview];
+          superview = [v10 superview];
 
-          if (v11 == self)
+          if (superview == self)
           {
-            v12 = [v10 leadingAnchor];
-            v13 = [(_MKStackView *)self leadingAnchor];
-            v14 = [v12 constraintEqualToAnchor:v13];
+            leadingAnchor = [v10 leadingAnchor];
+            leadingAnchor2 = [(_MKStackView *)self leadingAnchor];
+            v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
             [v4 addObject:v14];
 
-            v15 = [(_MKStackView *)self trailingAnchor];
-            v16 = [v10 trailingAnchor];
-            v17 = [v15 constraintEqualToAnchor:v16];
+            trailingAnchor = [(_MKStackView *)self trailingAnchor];
+            trailingAnchor2 = [v10 trailingAnchor];
+            v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
             [v4 addObject:v17];
           }
         }
@@ -160,7 +160,7 @@
             v30 = v32;
           }
 
-          v33 = [v29 topAnchor];
+          topAnchor = [v29 topAnchor];
           if (v28)
           {
             [v28 bottomAnchor];
@@ -171,7 +171,7 @@
             [(_MKStackView *)self topAnchor];
           }
           v34 = ;
-          v35 = [v33 constraintEqualToAnchor:v34 constant:v30];
+          v35 = [topAnchor constraintEqualToAnchor:v34 constant:v30];
           [v48 addObject:v35];
 
           v25 = v29;
@@ -208,16 +208,16 @@ LABEL_38:
       }
 
       bottomConstraintShouldBeGreaterThanOrEqual = self->_bottomConstraintShouldBeGreaterThanOrEqual;
-      v40 = [(_MKStackView *)self bottomAnchor];
-      v41 = [v25 bottomAnchor];
+      bottomAnchor = [(_MKStackView *)self bottomAnchor];
+      bottomAnchor2 = [v25 bottomAnchor];
       if (bottomConstraintShouldBeGreaterThanOrEqual)
       {
-        [v40 constraintGreaterThanOrEqualToAnchor:v41 constant:v36];
+        [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:v36];
       }
 
       else
       {
-        [v40 constraintEqualToAnchor:v41 constant:v36];
+        [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v36];
       }
       v22 = ;
 
@@ -236,19 +236,19 @@ LABEL_38:
   }
 }
 
-- (void)setStackedSubviews:(id)a3 animated:(BOOL)a4 isNeedLayout:(BOOL)a5
+- (void)setStackedSubviews:(id)subviews animated:(BOOL)animated isNeedLayout:(BOOL)layout
 {
-  v5 = a5;
-  v6 = a4;
+  layoutCopy = layout;
+  animatedCopy = animated;
   v125 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (self->_stackedSubviews != v8 && ([(NSArray *)v8 isEqual:?]& 1) == 0)
+  subviewsCopy = subviews;
+  v9 = subviewsCopy;
+  if (self->_stackedSubviews != subviewsCopy && ([(NSArray *)subviewsCopy isEqual:?]& 1) == 0)
   {
-    if (v6)
+    if (animatedCopy)
     {
-      v10 = [(_MKStackView *)self window];
-      v94 = v10 != 0;
+      window = [(_MKStackView *)self window];
+      v94 = window != 0;
     }
 
     else
@@ -314,10 +314,10 @@ LABEL_38:
     if (v94)
     {
       v86 = v22;
-      if (v5)
+      if (layoutCopy)
       {
-        v24 = [(_MKStackView *)self stackAnimationDelegate];
-        [v24 stackViewNeedsLayout:self];
+        stackAnimationDelegate = [(_MKStackView *)self stackAnimationDelegate];
+        [stackAnimationDelegate stackViewNeedsLayout:self];
       }
 
       if (v9)
@@ -334,7 +334,7 @@ LABEL_38:
       v27 = [MEMORY[0x1E695DFD8] setWithArray:v12];
       [v26 minusSet:v27];
 
-      v83 = [(_MKStackView *)self clipsToBounds];
+      clipsToBounds = [(_MKStackView *)self clipsToBounds];
       [(_MKStackView *)self setClipsToBounds:1];
       WeakRetained = objc_loadWeakRetained(&self->_stackDelegate);
       v84 = v12;
@@ -350,7 +350,7 @@ LABEL_38:
         v30 = 0;
       }
 
-      v95 = self;
+      selfCopy = self;
       [(_MKStackView *)self bounds];
       Width = CGRectGetWidth(v126);
       v112 = 0u;
@@ -376,8 +376,8 @@ LABEL_38:
             }
 
             v44 = *(*(&v112 + 1) + 8 * v43);
-            v45 = [v44 widthAnchor];
-            v46 = [v45 constraintEqualToConstant:Width];
+            widthAnchor = [v44 widthAnchor];
+            v46 = [widthAnchor constraintEqualToConstant:Width];
 
             [v46 setActive:1];
             [v44 _mapkit_layoutIfNeeded];
@@ -387,7 +387,7 @@ LABEL_38:
             MaxY = v49;
             v52 = v51;
             v54 = v53;
-            v55 = [(NSArray *)v95->_stackedSubviews indexOfObject:v44];
+            v55 = [(NSArray *)selfCopy->_stackedSubviews indexOfObject:v44];
             if (!v55)
             {
               v56 = 0;
@@ -399,8 +399,8 @@ LABEL_38:
               }
 
 LABEL_45:
-              v57 = objc_loadWeakRetained(&v95->_stackDelegate);
-              [v57 stackView:v95 distanceBetweenUpperView:v56 andLowerView:v44];
+              v57 = objc_loadWeakRetained(&selfCopy->_stackDelegate);
+              [v57 stackView:selfCopy distanceBetweenUpperView:v56 andLowerView:v44];
               MaxY = MaxY + v58;
 
               goto LABEL_46;
@@ -417,7 +417,7 @@ LABEL_45:
 
             else
             {
-              v56 = [(NSArray *)v95->_stackedSubviews objectAtIndexedSubscript:v55 - 1];
+              v56 = [(NSArray *)selfCopy->_stackedSubviews objectAtIndexedSubscript:v55 - 1];
               [v56 frame];
               MaxY = CGRectGetMaxY(v127);
               v48 = 0.0;
@@ -468,38 +468,38 @@ LABEL_46:
             v67 = v66;
             v69 = v68;
             [v61 removeFromSuperview];
-            v107.receiver = v95;
+            v107.receiver = selfCopy;
             v107.super_class = _MKStackView;
             [(_MKStackView *)&v107 addSubview:v61];
-            v93 = [v61 topAnchor];
-            v92 = [(_MKStackView *)v95 topAnchor];
+            topAnchor = [v61 topAnchor];
+            topAnchor2 = [(_MKStackView *)selfCopy topAnchor];
             v128.origin.x = v63;
             v128.origin.y = v65;
             v128.size.width = v67;
             v128.size.height = v69;
-            v70 = [v93 constraintEqualToAnchor:v92 constant:CGRectGetMinY(v128)];
+            v70 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:CGRectGetMinY(v128)];
             v121[0] = v70;
-            v71 = [v61 leftAnchor];
-            v72 = [(_MKStackView *)v95 leftAnchor];
+            leftAnchor = [v61 leftAnchor];
+            leftAnchor2 = [(_MKStackView *)selfCopy leftAnchor];
             v129.origin.x = v63;
             v129.origin.y = v65;
             v129.size.width = v67;
             v129.size.height = v69;
-            v73 = [v71 constraintEqualToAnchor:v72 constant:CGRectGetMinX(v129)];
+            v73 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:CGRectGetMinX(v129)];
             v121[1] = v73;
-            v74 = [v61 widthAnchor];
+            widthAnchor2 = [v61 widthAnchor];
             v130.origin.x = v63;
             v130.origin.y = v65;
             v130.size.width = v67;
             v130.size.height = v69;
-            v75 = [v74 constraintEqualToConstant:CGRectGetWidth(v130)];
+            v75 = [widthAnchor2 constraintEqualToConstant:CGRectGetWidth(v130)];
             v121[2] = v75;
-            v76 = [v61 heightAnchor];
+            heightAnchor = [v61 heightAnchor];
             v131.origin.x = v63;
             v131.origin.y = v65;
             v131.size.width = v67;
             v131.size.height = v69;
-            v77 = [v76 constraintEqualToConstant:CGRectGetHeight(v131)];
+            v77 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v131)];
             v121[3] = v77;
             v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v121 count:4];
             [v90 addObjectsFromArray:v78];
@@ -512,7 +512,7 @@ LABEL_46:
       }
 
       [MEMORY[0x1E696ACD8] activateConstraints:v90];
-      [(_MKStackView *)v95 _createConstraints];
+      [(_MKStackView *)selfCopy _createConstraints];
       v79 = [obj count];
       v80 = dbl_1A30F6EB0[v79 < [v87 count]];
       v81 = MEMORY[0x1E69DD250];
@@ -520,7 +520,7 @@ LABEL_46:
       v104[1] = 3221225472;
       v104[2] = __57___MKStackView_setStackedSubviews_animated_isNeedLayout___block_invoke;
       v104[3] = &unk_1E76CCC28;
-      v104[4] = v95;
+      v104[4] = selfCopy;
       v105 = obj;
       v106 = v87;
       v100[0] = MEMORY[0x1E69E9820];
@@ -528,8 +528,8 @@ LABEL_46:
       v100[2] = __57___MKStackView_setStackedSubviews_animated_isNeedLayout___block_invoke_2;
       v100[3] = &unk_1E76C6DF0;
       v101 = v106;
-      v102 = v95;
-      v103 = v83;
+      v102 = selfCopy;
+      v103 = clipsToBounds;
       v82 = obj;
       [v81 _mapkit_animateWithDuration:v104 animations:v100 completion:v80];
 
@@ -574,16 +574,16 @@ LABEL_46:
   }
 }
 
-- (_MKStackView)initWithFrame:(CGRect)a3
+- (_MKStackView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _MKStackView;
-  v3 = [(_MKStackView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MKStackView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     viewsNeedingWidthConstraints = v3->_viewsNeedingWidthConstraints;
-    v3->_viewsNeedingWidthConstraints = v4;
+    v3->_viewsNeedingWidthConstraints = weakObjectsHashTable;
   }
 
   return v3;

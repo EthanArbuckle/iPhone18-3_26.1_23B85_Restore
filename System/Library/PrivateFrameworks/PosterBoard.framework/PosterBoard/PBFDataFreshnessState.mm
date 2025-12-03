@@ -1,17 +1,17 @@
 @interface PBFDataFreshnessState
 + (id)new;
-- (BOOL)isDataComponentFresh:(id)a3;
+- (BOOL)isDataComponentFresh:(id)fresh;
 - (BOOL)isFresh;
 - (NSSet)dataComponents;
 - (NSSet)freshComponents;
 - (NSSet)outOfDateComponents;
 - (NSString)freshnessDebugDescription;
 - (PBFDataFreshnessState)init;
-- (PBFDataFreshnessState)initWithFreshnessProvider:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)dumpFreshnessStateToLogCategory:(id)a3 type:(unsigned __int8)a4;
-- (void)enumerateComponentEntities:(id)a3;
+- (PBFDataFreshnessState)initWithFreshnessProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)dumpFreshnessStateToLogCategory:(id)category type:(unsigned __int8)type;
+- (void)enumerateComponentEntities:(id)entities;
 @end
 
 @implementation PBFDataFreshnessState
@@ -29,7 +29,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"PBFDataFreshnessState.m";
     v17 = 1024;
@@ -58,7 +58,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"PBFDataFreshnessState.m";
     v17 = 1024;
@@ -74,11 +74,11 @@
   return result;
 }
 
-- (PBFDataFreshnessState)initWithFreshnessProvider:(id)a3
+- (PBFDataFreshnessState)initWithFreshnessProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   NSClassFromString(&cfstr_Nsset.isa);
-  if (!v5)
+  if (!providerCopy)
   {
     [PBFDataFreshnessState initWithFreshnessProvider:a2];
   }
@@ -93,7 +93,7 @@
   v6 = [(PBFDataFreshnessState *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [providerCopy copy];
     freshnessProviders = v6->_freshnessProviders;
     v6->_freshnessProviders = v7;
   }
@@ -108,8 +108,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(PBFDataFreshnessState *)self freshnessProviders];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  freshnessProviders = [(PBFDataFreshnessState *)self freshnessProviders];
+  v3 = [freshnessProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -120,20 +120,20 @@
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(freshnessProviders);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) determineRefreshState];
-        v8 = [v7 needsRefresh];
+        determineRefreshState = [*(*(&v11 + 1) + 8 * i) determineRefreshState];
+        needsRefresh = [determineRefreshState needsRefresh];
 
-        if (v8)
+        if (needsRefresh)
         {
           v9 = 0;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [freshnessProviders countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -149,9 +149,9 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isDataComponentFresh:(id)a3
+- (BOOL)isDataComponentFresh:(id)fresh
 {
-  v4 = a3;
+  freshCopy = fresh;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -160,7 +160,7 @@ LABEL_11:
   v7[1] = 3221225472;
   v7[2] = __46__PBFDataFreshnessState_isDataComponentFresh___block_invoke;
   v7[3] = &unk_2782C9820;
-  v5 = v4;
+  v5 = freshCopy;
   v8 = v5;
   v9 = &v10;
   [(PBFDataFreshnessState *)self enumerateComponentEntities:v7];
@@ -190,11 +190,11 @@ void __46__PBFDataFreshnessState_isDataComponentFresh___block_invoke(uint64_t a1
   }
 }
 
-- (void)enumerateComponentEntities:(id)a3
+- (void)enumerateComponentEntities:(id)entities
 {
-  v4 = a3;
-  v5 = [(PBFDataFreshnessState *)self freshnessProviders];
-  [v5 enumerateObjectsUsingBlock:v4];
+  entitiesCopy = entities;
+  freshnessProviders = [(PBFDataFreshnessState *)self freshnessProviders];
+  [freshnessProviders enumerateObjectsUsingBlock:entitiesCopy];
 }
 
 - (NSSet)dataComponents
@@ -282,9 +282,9 @@ void __44__PBFDataFreshnessState_outOfDateComponents__block_invoke(uint64_t a1, 
   v43 = v29;
   [(PBFDataFreshnessState *)self enumerateComponentEntities:v42];
   v4 = MEMORY[0x277CCAB68];
-  v5 = [(PBFDataFreshnessState *)self isFresh];
+  isFresh = [(PBFDataFreshnessState *)self isFresh];
   v6 = @"NO.";
-  if (v5)
+  if (isFresh)
   {
     v6 = @"YES!";
   }
@@ -342,9 +342,9 @@ void __44__PBFDataFreshnessState_outOfDateComponents__block_invoke(uint64_t a1, 
                 }
 
                 v17 = *(*(&v34 + 1) + 8 * j);
-                v18 = [v17 determineRefreshState];
-                v19 = [v17 object];
-                if ([v18 needsRefresh])
+                determineRefreshState = [v17 determineRefreshState];
+                object = [v17 object];
+                if ([determineRefreshState needsRefresh])
                 {
                   v20 = @"YES";
                 }
@@ -354,17 +354,17 @@ void __44__PBFDataFreshnessState_outOfDateComponents__block_invoke(uint64_t a1, 
                   v20 = @"NO";
                 }
 
-                v21 = [v18 refreshReason];
-                [v7 appendFormat:@"\n\t'%@':\n\t\tNeeds Update? %@\n\t\tReason: %@", v19, v20, v21];
+                refreshReason = [determineRefreshState refreshReason];
+                [v7 appendFormat:@"\n\t'%@':\n\t\tNeeds Update? %@\n\t\tReason: %@", object, v20, refreshReason];
 
-                v22 = [v17 context];
-                v23 = [v22 lastRefreshDate];
+                context = [v17 context];
+                lastRefreshDate = [context lastRefreshDate];
 
-                if (v23)
+                if (lastRefreshDate)
                 {
-                  v24 = [v17 context];
-                  v25 = [v24 lastRefreshDate];
-                  [v7 appendFormat:@"\n\t\tLast Update Date: %@", v25];
+                  context2 = [v17 context];
+                  lastRefreshDate2 = [context2 lastRefreshDate];
+                  [v7 appendFormat:@"\n\t\tLast Update Date: %@", lastRefreshDate2];
                 }
               }
 
@@ -420,10 +420,10 @@ uint64_t __50__PBFDataFreshnessState_freshnessDebugDescription__block_invoke_2(u
   return v9;
 }
 
-- (void)dumpFreshnessStateToLogCategory:(id)a3 type:(unsigned __int8)a4
+- (void)dumpFreshnessStateToLogCategory:(id)category type:(unsigned __int8)type
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  categoryCopy = category;
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x2020000000;
@@ -437,23 +437,23 @@ uint64_t __50__PBFDataFreshnessState_freshnessDebugDescription__block_invoke_2(u
   v29 = v7;
   v46 = v29;
   [(PBFDataFreshnessState *)self enumerateComponentEntities:v45];
-  v8 = v6;
-  if (os_log_type_enabled(v8, a4))
+  v8 = categoryCopy;
+  if (os_log_type_enabled(v8, type))
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     *buf = 138543362;
-    v51 = v9;
-    _os_log_impl(&dword_21B526000, v8, a4, "FRESHNESS REPORT FOR %{public}@", buf, 0xCu);
+    v51 = date;
+    _os_log_impl(&dword_21B526000, v8, type, "FRESHNESS REPORT FOR %{public}@", buf, 0xCu);
   }
 
   v10 = v8;
   log = v10;
-  if (os_log_type_enabled(v10, a4))
+  if (os_log_type_enabled(v10, type))
   {
-    v11 = [(PBFDataFreshnessState *)self isFresh];
+    isFresh = [(PBFDataFreshnessState *)self isFresh];
     *buf = 67109120;
-    LODWORD(v51) = v11;
-    _os_log_impl(&dword_21B526000, v10, a4, "Is our data up to date? %{BOOL}u", buf, 8u);
+    LODWORD(v51) = isFresh;
+    _os_log_impl(&dword_21B526000, v10, type, "Is our data up to date? %{BOOL}u", buf, 8u);
   }
 
   v43 = 0u;
@@ -486,11 +486,11 @@ uint64_t __50__PBFDataFreshnessState_freshnessDebugDescription__block_invoke_2(u
         if (v33)
         {
           v31 = [v13 stringByReplacingOccurrencesOfString:@"PBFDataComponent" withString:&stru_282CD3858];
-          if (os_log_type_enabled(log, a4))
+          if (os_log_type_enabled(log, type))
           {
             *buf = v26;
             v51 = v31;
-            _os_log_impl(&dword_21B526000, log, a4, "\n%{public}@:", buf, 0xCu);
+            _os_log_impl(&dword_21B526000, log, type, "\n%{public}@:", buf, 0xCu);
           }
 
           v39 = 0u;
@@ -513,24 +513,24 @@ uint64_t __50__PBFDataFreshnessState_freshnessDebugDescription__block_invoke_2(u
                 }
 
                 v18 = *(*(&v37 + 1) + 8 * j);
-                v19 = [v18 determineRefreshState];
+                determineRefreshState = [v18 determineRefreshState];
                 v20 = log;
-                if (os_log_type_enabled(v20, a4))
+                if (os_log_type_enabled(v20, type))
                 {
-                  v21 = [v18 object];
-                  v22 = [v19 needsRefresh];
-                  v23 = [v19 refreshReason];
-                  v24 = [v18 context];
-                  v25 = [v24 lastRefreshDate];
+                  object = [v18 object];
+                  needsRefresh = [determineRefreshState needsRefresh];
+                  refreshReason = [determineRefreshState refreshReason];
+                  context = [v18 context];
+                  lastRefreshDate = [context lastRefreshDate];
                   *buf = 138413058;
-                  v51 = v21;
+                  v51 = object;
                   v52 = 1024;
-                  v53 = v22;
+                  v53 = needsRefresh;
                   v54 = 2114;
-                  v55 = v23;
+                  v55 = refreshReason;
                   v56 = 2114;
-                  v57 = v25;
-                  _os_log_impl(&dword_21B526000, v20, a4, "\t'%@':\n\t\tNeeds Update? %{BOOL}u\n\t\tReason: %{public}@\n\t\tLast Update Date: %{public}@", buf, 0x26u);
+                  v57 = lastRefreshDate;
+                  _os_log_impl(&dword_21B526000, v20, type, "\t'%@':\n\t\tNeeds Update? %{BOOL}u\n\t\tReason: %{public}@\n\t\tLast Update Date: %{public}@", buf, 0x26u);
                 }
               }
 
@@ -588,17 +588,17 @@ uint64_t __62__PBFDataFreshnessState_dumpFreshnessStateToLogCategory_type___bloc
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PBFDataFreshnessState allocWithZone:a3];
+  v4 = [PBFDataFreshnessState allocWithZone:zone];
   freshnessProviders = self->_freshnessProviders;
 
   return [(PBFDataFreshnessState *)v4 initWithFreshnessProvider:freshnessProviders];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PBFMutableDataFreshnessState allocWithZone:a3];
+  v4 = [PBFMutableDataFreshnessState allocWithZone:zone];
   freshnessProviders = self->_freshnessProviders;
 
   return [(PBFDataFreshnessState *)v4 initWithFreshnessProvider:freshnessProviders];

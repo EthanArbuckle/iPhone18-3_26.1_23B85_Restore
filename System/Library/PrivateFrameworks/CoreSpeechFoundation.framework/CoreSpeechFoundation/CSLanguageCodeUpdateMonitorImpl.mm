@@ -1,9 +1,9 @@
 @interface CSLanguageCodeUpdateMonitorImpl
-- (BOOL)isLanguageCodeCurrent:(id)a3;
+- (BOOL)isLanguageCodeCurrent:(id)current;
 - (CSLanguageCodeUpdateMonitorImpl)init;
 - (void)_didReceiveLanguageCodeUpdate;
-- (void)_notifyObserver:(id)a3 withLanguageCode:(id)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer withLanguageCode:(id)code;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -22,23 +22,23 @@
   return result;
 }
 
-- (BOOL)isLanguageCodeCurrent:(id)a3
+- (BOOL)isLanguageCodeCurrent:(id)current
 {
-  v3 = a3;
+  currentCopy = current;
   v4 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
-  v5 = [v4 isEqualToString:v3];
+  v5 = [v4 isEqualToString:currentCopy];
 
   return v5;
 }
 
-- (void)_notifyObserver:(id)a3 withLanguageCode:(id)a4
+- (void)_notifyObserver:(id)observer withLanguageCode:(id)code
 {
-  v7 = a3;
-  v6 = a4;
-  [(CSEventMonitor *)self notifyObserver:v7];
+  observerCopy = observer;
+  codeCopy = code;
+  [(CSEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v7 CSLanguageCodeUpdateMonitor:self didReceiveLanguageCodeChanged:v6];
+    [observerCopy CSLanguageCodeUpdateMonitor:self didReceiveLanguageCodeChanged:codeCopy];
   }
 }
 
@@ -97,7 +97,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v9 = *MEMORY[0x1E69E9840];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

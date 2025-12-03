@@ -1,18 +1,18 @@
 @interface CAMRAWStatusIndicator
 - (CGSize)intrinsicContentSize;
 - (id)imageNameForAXHUD;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setRAWMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setRAWMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMRAWStatusIndicator
 
-- (void)setRAWMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setRAWMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_rawMode != a3)
+  if (self->_rawMode != mode)
   {
-    self->_rawMode = a3;
-    [(CAMControlStatusIndicator *)self updateImageAnimated:a4];
+    self->_rawMode = mode;
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animated];
   }
 }
 
@@ -23,9 +23,9 @@
   [(CAMControlStatusIndicator *)&v13 intrinsicContentSize];
   v4 = v3;
   v5 = MEMORY[0x1E69DCAB8];
-  v6 = [(CAMRAWStatusIndicator *)self imageNameForCurrentState];
+  imageNameForCurrentState = [(CAMRAWStatusIndicator *)self imageNameForCurrentState];
   v7 = CAMCameraUIFrameworkBundle();
-  v8 = [v5 imageNamed:v6 inBundle:v7];
+  v8 = [v5 imageNamed:imageNameForCurrentState inBundle:v7];
 
   [v8 size];
   v10 = v9 + 20.0;
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CAMRAWStatusIndicator;

@@ -1,25 +1,25 @@
 @interface JavaUtilTreeMap_BoundedMap_BoundedKeySet
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)removeWithId:(id)a3;
-- (JavaUtilTreeMap_BoundedMap_BoundedKeySet)initWithJavaUtilTreeMap_BoundedMap:(id)a3;
-- (id)ceilingWithId:(id)a3;
+- (BOOL)removeWithId:(id)id;
+- (JavaUtilTreeMap_BoundedMap_BoundedKeySet)initWithJavaUtilTreeMap_BoundedMap:(id)map;
+- (id)ceilingWithId:(id)id;
 - (id)comparator;
 - (id)descendingIterator;
 - (id)descendingSet;
 - (id)first;
-- (id)floorWithId:(id)a3;
-- (id)headSetWithId:(id)a3;
-- (id)higherWithId:(id)a3;
+- (id)floorWithId:(id)id;
+- (id)headSetWithId:(id)id;
+- (id)higherWithId:(id)id;
 - (id)iterator;
 - (id)last;
-- (id)lowerWithId:(id)a3;
+- (id)lowerWithId:(id)id;
 - (id)pollFirst;
 - (id)pollLast;
-- (id)subSetWithId:(id)a3 withId:(id)a4;
-- (id)tailSetWithId:(id)a3;
+- (id)subSetWithId:(id)id withId:(id)withId;
+- (id)tailSetWithId:(id)id;
 - (int)size;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)__javaClone;
 @end
 
@@ -59,25 +59,25 @@
   return v5;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
-  v6 = sub_1001E0314(Weak, a3, Weak[6], Weak[8]);
+  v6 = sub_1001E0314(Weak, id, Weak[6], Weak[8]);
   if (v6)
   {
-    LOBYTE(v6) = [*(objc_loadWeak(&self->this$0_) + 3) findByObjectWithId:a3] != 0;
+    LOBYTE(v6) = [*(objc_loadWeak(&self->this$0_) + 3) findByObjectWithId:id] != 0;
   }
 
   return v6;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
-  v6 = sub_1001E0314(Weak, a3, Weak[6], Weak[8]);
+  v6 = sub_1001E0314(Weak, id, Weak[6], Weak[8]);
   if (v6)
   {
-    LOBYTE(v6) = [*(objc_loadWeak(&self->this$0_) + 3) removeInternalByKeyWithId:a3] != 0;
+    LOBYTE(v6) = [*(objc_loadWeak(&self->this$0_) + 3) removeInternalByKeyWithId:id] != 0;
   }
 
   return v6;
@@ -121,32 +121,32 @@
   return result;
 }
 
-- (id)lowerWithId:(id)a3
+- (id)lowerWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak lowerKeyWithId:a3];
+  return [Weak lowerKeyWithId:id];
 }
 
-- (id)floorWithId:(id)a3
+- (id)floorWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak floorKeyWithId:a3];
+  return [Weak floorKeyWithId:id];
 }
 
-- (id)ceilingWithId:(id)a3
+- (id)ceilingWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak ceilingKeyWithId:a3];
+  return [Weak ceilingKeyWithId:id];
 }
 
-- (id)higherWithId:(id)a3
+- (id)higherWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak higherKeyWithId:a3];
+  return [Weak higherKeyWithId:id];
 }
 
 - (id)comparator
@@ -156,9 +156,9 @@
   return [Weak comparator];
 }
 
-- (id)subSetWithId:(id)a3 withId:(id)a4
+- (id)subSetWithId:(id)id withId:(id)withId
 {
-  v4 = [objc_loadWeak(&self->this$0_) subMapWithId:a3 withId:a4];
+  v4 = [objc_loadWeak(&self->this$0_) subMapWithId:id withId:withId];
   if (!v4)
   {
     JreThrowNullPointerException();
@@ -167,9 +167,9 @@
   return [v4 navigableKeySet];
 }
 
-- (id)headSetWithId:(id)a3
+- (id)headSetWithId:(id)id
 {
-  v3 = [objc_loadWeak(&self->this$0_) headMapWithId:a3];
+  v3 = [objc_loadWeak(&self->this$0_) headMapWithId:id];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -178,9 +178,9 @@
   return [v3 navigableKeySet];
 }
 
-- (id)tailSetWithId:(id)a3
+- (id)tailSetWithId:(id)id
 {
-  v3 = [objc_loadWeak(&self->this$0_) tailMapWithId:a3];
+  v3 = [objc_loadWeak(&self->this$0_) tailMapWithId:id];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -204,9 +204,9 @@
   return [(JavaUtilTreeMap_BoundedMap *)v10 navigableKeySet];
 }
 
-- (JavaUtilTreeMap_BoundedMap_BoundedKeySet)initWithJavaUtilTreeMap_BoundedMap:(id)a3
+- (JavaUtilTreeMap_BoundedMap_BoundedKeySet)initWithJavaUtilTreeMap_BoundedMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractSet_init(self, v4);
   return self;
 }
@@ -218,20 +218,20 @@
   [(JavaUtilTreeMap_BoundedMap_BoundedKeySet *)&v3 __javaClone];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   Weak = objc_loadWeak(&self->this$0_);
-  if (!a3->var0)
+  if (!state->var0)
   {
     v10 = Weak;
-    a3->var3[1] = [Weak endpointWithBoolean:1];
-    a3->var3[2] = [v10 endpointWithBoolean:0];
+    state->var3[1] = [Weak endpointWithBoolean:1];
+    state->var3[2] = [v10 endpointWithBoolean:0];
   }
 
   v11 = *(objc_loadWeak(&self->this$0_) + 3);
   v12 = *(objc_loadWeak(&self->this$0_) + 32);
 
-  return sub_1001DE830(v11, a3, a4, a5, 1, v12);
+  return sub_1001DE830(v11, state, objects, count, 1, v12);
 }
 
 @end

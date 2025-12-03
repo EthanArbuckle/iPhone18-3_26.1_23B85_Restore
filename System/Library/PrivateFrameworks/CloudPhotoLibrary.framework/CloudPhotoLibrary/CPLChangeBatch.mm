@@ -1,29 +1,29 @@
 @interface CPLChangeBatch
-- (BOOL)hasChangeWithScopedIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sortBatchWithError:(id *)a3;
+- (BOOL)hasChangeWithScopedIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sortBatchWithError:(id *)error;
 - (CPLChangeBatch)init;
-- (CPLChangeBatch)initWithCoder:(id)a3;
-- (CPLChangeBatch)initWithRecords:(id)a3;
-- (id)_descriptionRedacted:(BOOL)a3;
-- (id)_initWithRecords:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLChangeBatch)initWithCoder:(id)coder;
+- (CPLChangeBatch)initWithRecords:(id)records;
+- (id)_descriptionRedacted:(BOOL)redacted;
+- (id)_initWithRecords:(id)records;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cplFullDescription;
 - (id)filterScopeChangeFromBatch;
-- (id)localResourceOfType:(unint64_t)a3 forItemWithCloudScopedIdentifier:(id)a4;
-- (id)recordWithScopedIdentifier:(id)a3;
+- (id)localResourceOfType:(unint64_t)type forItemWithCloudScopedIdentifier:(id)identifier;
+- (id)recordWithScopedIdentifier:(id)identifier;
 - (id)summaryDescription;
 - (unint64_t)estimatedBatchSize;
-- (void)_addAdditionalRecord:(id)a3;
-- (void)_addChange:(id)a3 resultBatch:(id)a4 changesPerScopedIdentifier:(id)a5 changesPerClass:(id)a6;
-- (void)_setAdditionalRecords:(id)a3;
-- (void)_setRecords:(id)a3;
-- (void)addRecord:(id)a3;
-- (void)addRecordsFromBatch:(id)a3;
-- (void)appendLocalResources:(id)a3 forItemWithCloudScopedIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)extractInitialDownloadBatch:(id *)a3 shouldConsiderRecordFilter:(id)a4;
-- (void)removeRecordWithScopedIdentifier:(id)a3;
+- (void)_addAdditionalRecord:(id)record;
+- (void)_addChange:(id)change resultBatch:(id)batch changesPerScopedIdentifier:(id)identifier changesPerClass:(id)class;
+- (void)_setAdditionalRecords:(id)records;
+- (void)_setRecords:(id)records;
+- (void)addRecord:(id)record;
+- (void)addRecordsFromBatch:(id)batch;
+- (void)appendLocalResources:(id)resources forItemWithCloudScopedIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
+- (void)extractInitialDownloadBatch:(id *)batch shouldConsiderRecordFilter:(id)filter;
+- (void)removeRecordWithScopedIdentifier:(id)identifier;
 @end
 
 @implementation CPLChangeBatch
@@ -37,8 +37,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = self;
-  v6 = [(CPLChangeBatch *)v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  selfCopy = self;
+  v6 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -49,21 +49,21 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v10 = [*(*(&v24 + 1) + 8 * i) cplFullDescription];
-        [v3 appendFormat:@"  %@\n", v10];
+        cplFullDescription = [*(*(&v24 + 1) + 8 * i) cplFullDescription];
+        [v3 appendFormat:@"  %@\n", cplFullDescription];
       }
 
-      v7 = [(CPLChangeBatch *)v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(CPLChangeBatch *)v5 _additionalRecords];
-  if ([v11 count])
+  _additionalRecords = [(CPLChangeBatch *)selfCopy _additionalRecords];
+  if ([_additionalRecords count])
   {
     [v3 appendString:@"Additional records:\n"];
   }
@@ -72,7 +72,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = v11;
+  v12 = _additionalRecords;
   v13 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v13)
   {
@@ -87,8 +87,8 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * j) cplFullDescription];
-        [v3 appendFormat:@"  %@\n", v17];
+        cplFullDescription2 = [*(*(&v20 + 1) + 8 * j) cplFullDescription];
+        [v3 appendFormat:@"  %@\n", cplFullDescription2];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -104,17 +104,17 @@
   return v3;
 }
 
-- (CPLChangeBatch)initWithCoder:(id)a3
+- (CPLChangeBatch)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPLChangeBatch *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = [MEMORY[0x1E695DFD8] setWithObjects:{v7, v6, 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"records"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"records"];
 
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -131,7 +131,7 @@
     if (v10)
     {
       v11 = v10;
-      v21 = v4;
+      v21 = coderCopy;
       v12 = 0;
       v13 = *v23;
       do
@@ -167,16 +167,16 @@
 
       if (!v12)
       {
-        v4 = v21;
+        coderCopy = v21;
         goto LABEL_23;
       }
 
-      v4 = v21;
+      coderCopy = v21;
       if (_CPLSilentLogging)
       {
 LABEL_23:
         v17 = [MEMORY[0x1E695DFD8] setWithObjects:{v7, v6, 0}];
-        v18 = [v4 decodeObjectOfClasses:v17 forKey:@"additionalRecords"];
+        v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"additionalRecords"];
 
         if (!v18)
         {
@@ -220,24 +220,24 @@ LABEL_29:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CPLChangeBatch *)self records];
-  [v6 encodeObject:v4 forKey:@"records"];
-  v5 = [(CPLChangeBatch *)self _additionalRecords];
-  if ([v5 count])
+  coderCopy = coder;
+  records = [(CPLChangeBatch *)self records];
+  [coderCopy encodeObject:records forKey:@"records"];
+  _additionalRecords = [(CPLChangeBatch *)self _additionalRecords];
+  if ([_additionalRecords count])
   {
-    [v6 encodeObject:v5 forKey:@"additionalRecords"];
+    [coderCopy encodeObject:_additionalRecords forKey:@"additionalRecords"];
   }
 }
 
-- (void)extractInitialDownloadBatch:(id *)a3 shouldConsiderRecordFilter:(id)a4
+- (void)extractInitialDownloadBatch:(id *)batch shouldConsiderRecordFilter:(id)filter
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v27 = a3;
-  *a3 = 0;
+  filterCopy = filter;
+  batchCopy = batch;
+  *batch = 0;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v28 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -245,8 +245,8 @@ LABEL_29:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v8 = self;
-  v9 = [(CPLChangeBatch *)v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  selfCopy = self;
+  v9 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -258,31 +258,31 @@ LABEL_29:
       {
         if (*v38 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         v13 = *(*(&v37 + 1) + 8 * v12);
-        v14 = [v13 isFullRecord];
+        isFullRecord = [v13 isFullRecord];
         if ([v13 supportsSharingScopedIdentifier])
         {
-          v15 = [v13 sharingScopeIdentifier];
-          v16 = v15 == 0;
+          sharingScopeIdentifier = [v13 sharingScopeIdentifier];
+          v16 = sharingScopeIdentifier == 0;
 
-          if ((v16 & v14) != 1)
+          if ((v16 & isFullRecord) != 1)
           {
             goto LABEL_20;
           }
         }
 
-        else if ((v14 & 1) == 0)
+        else if ((isFullRecord & 1) == 0)
         {
           goto LABEL_20;
         }
 
-        if ([v13 isMasterChange] && v6[2](v6, v13))
+        if ([v13 isMasterChange] && filterCopy[2](filterCopy, v13))
         {
-          v17 = [v13 scopedIdentifier];
-          if (!v17)
+          scopedIdentifier = [v13 scopedIdentifier];
+          if (!scopedIdentifier)
           {
             goto LABEL_19;
           }
@@ -297,15 +297,15 @@ LABEL_29:
             goto LABEL_20;
           }
 
-          v19 = [v13 realIdentifier];
+          realIdentifier = [v13 realIdentifier];
 
-          if (v19)
+          if (realIdentifier)
           {
             goto LABEL_20;
           }
 
-          v17 = [v13 masterScopedIdentifier];
-          if (!v17)
+          scopedIdentifier = [v13 masterScopedIdentifier];
+          if (!scopedIdentifier)
           {
             goto LABEL_19;
           }
@@ -313,7 +313,7 @@ LABEL_29:
           v18 = v28;
         }
 
-        v20 = [v18 objectForKey:v17];
+        v20 = [v18 objectForKey:scopedIdentifier];
 
         if (v20)
         {
@@ -324,14 +324,14 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        [v18 setObject:v13 forKey:v17];
+        [v18 setObject:v13 forKey:scopedIdentifier];
 
 LABEL_21:
         ++v12;
       }
 
       while (v10 != v12);
-      v21 = [(CPLChangeBatch *)v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v21 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v37 objects:v41 count:16];
       v10 = v21;
     }
 
@@ -346,7 +346,7 @@ LABEL_21:
     v32[2] = __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadBatch_shouldConsiderRecordFilter___block_invoke;
     v32[3] = &unk_1E861CC78;
     v33 = v29;
-    v36 = v6;
+    v36 = filterCopy;
     v23 = v22;
     v34 = v23;
     v35 = v7;
@@ -354,7 +354,7 @@ LABEL_21:
     if ([(CPLChangeBatch *)v23 count])
     {
       v24 = v23;
-      *v27 = v23;
+      *batchCopy = v23;
     }
   }
 
@@ -365,7 +365,7 @@ LABEL_21:
   v31 = v7;
   v25 = v7;
   [v29 enumerateKeysAndObjectsUsingBlock:v30];
-  [(CPLChangeBatch *)v8 _setRecords:v25];
+  [(CPLChangeBatch *)selfCopy _setRecords:v25];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -388,7 +388,7 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
   }
 }
 
-- (BOOL)sortBatchWithError:(id *)a3
+- (BOOL)sortBatchWithError:(id *)error
 {
   v87 = *MEMORY[0x1E69E9840];
   if ([(CPLChangeBatch *)self count]<= 1)
@@ -397,8 +397,8 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v5 = self;
-    v6 = [(CPLChangeBatch *)v5 countByEnumeratingWithState:&v79 objects:v86 count:16];
+    selfCopy = self;
+    v6 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v79 objects:v86 count:16];
     if (v6)
     {
       v7 = v6;
@@ -409,18 +409,18 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
         {
           if (*v80 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(selfCopy);
           }
 
-          v10 = [*(*(&v79 + 1) + 8 * i) scopedIdentifier];
+          scopedIdentifier = [*(*(&v79 + 1) + 8 * i) scopedIdentifier];
 
-          if (!v10)
+          if (!scopedIdentifier)
           {
             v37 = [CPLErrors cplErrorWithCode:50 description:@"Tried to sort a batch containing a %@ with no identifier", objc_opt_class()];
-            if (a3)
+            if (error)
             {
               v37 = v37;
-              *a3 = v37;
+              *error = v37;
             }
 
             v11 = 0;
@@ -428,7 +428,7 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
           }
         }
 
-        v7 = [(CPLChangeBatch *)v5 countByEnumeratingWithState:&v79 objects:v86 count:16];
+        v7 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v79 objects:v86 count:16];
         v11 = 1;
         if (v7)
         {
@@ -447,7 +447,7 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
     goto LABEL_81;
   }
 
-  v58 = a3;
+  errorCopy = error;
   if (sortBatchWithError__onceToken != -1)
   {
     dispatch_once(&sortBatchWithError__onceToken, &__block_literal_global_160);
@@ -462,8 +462,8 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v16 = self;
-  v17 = [(CPLChangeBatch *)v16 countByEnumeratingWithState:&v75 objects:v85 count:16];
+  selfCopy2 = self;
+  v17 = [(CPLChangeBatch *)selfCopy2 countByEnumeratingWithState:&v75 objects:v85 count:16];
   v59 = v13;
   v57 = v12;
   if (v17)
@@ -480,22 +480,22 @@ void __103__CPLChangeBatch_CPLEngineTransientRepository__extractInitialDownloadB
       {
         if (*v76 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(selfCopy2);
         }
 
         v21 = *(*(&v75 + 1) + 8 * v20);
-        v22 = [v21 scopedIdentifier];
-        if (!v22)
+        scopedIdentifier2 = [v21 scopedIdentifier];
+        if (!scopedIdentifier2)
         {
-          v5 = [CPLErrors cplErrorWithCode:50 description:@"Tried to sort a batch containing a %@ with no identifier", objc_opt_class()];
+          selfCopy = [CPLErrors cplErrorWithCode:50 description:@"Tried to sort a batch containing a %@ with no identifier", objc_opt_class()];
           v11 = 0;
-          v38 = v16;
+          v38 = selfCopy2;
           goto LABEL_78;
         }
 
-        v23 = v22;
-        v24 = [v21 realIdentifier];
-        if (v24)
+        v23 = scopedIdentifier2;
+        realIdentifier = [v21 realIdentifier];
+        if (realIdentifier)
         {
           v25 = v15;
 LABEL_21:
@@ -504,10 +504,10 @@ LABEL_21:
         }
 
         v26 = objc_opt_class();
-        v27 = [v21 changeType];
+        changeType = [v21 changeType];
         if ([v26 isSubclassOfClass:sortBatchWithError__scopeChangeClass])
         {
-          if (v27 == 1024)
+          if (changeType == 1024)
           {
             v25 = v61;
             v18 = v64;
@@ -534,7 +534,7 @@ LABEL_21:
           goto LABEL_21;
         }
 
-        if (v27 != 1024)
+        if (changeType != 1024)
         {
           v30 = [v14 objectForKey:v26];
           if (v30)
@@ -582,7 +582,7 @@ LABEL_22:
       }
 
       while (v18 != v20);
-      v36 = [(CPLChangeBatch *)v16 countByEnumeratingWithState:&v75 objects:v85 count:16];
+      v36 = [(CPLChangeBatch *)selfCopy2 countByEnumeratingWithState:&v75 objects:v85 count:16];
       v18 = v36;
       if (!v36)
       {
@@ -640,8 +640,8 @@ LABEL_52:
 
   v45 = +[CPLEngineTransientRepository orderedClassesForChanges];
 
-  v46 = [(CPLChangeBatch *)v16 records];
-  v47 = [v46 mutableCopy];
+  records = [(CPLChangeBatch *)selfCopy2 records];
+  v47 = [records mutableCopy];
 
   v69 = 0u;
   v70 = 0u;
@@ -674,13 +674,13 @@ LABEL_52:
             }
 
             v51 = [v47 objectAtIndexedSubscript:v50];
-            v52 = [v51 scopedIdentifier];
-            v53 = [v49 objectForKeyedSubscript:v52];
+            scopedIdentifier3 = [v51 scopedIdentifier];
+            v53 = [v49 objectForKeyedSubscript:scopedIdentifier3];
 
             if (v53)
             {
               [v47 removeObjectAtIndex:v50];
-              [(CPLChangeBatch *)v16 _addChange:v51 resultBatch:v15 changesPerScopedIdentifier:v66 changesPerClass:v14];
+              [(CPLChangeBatch *)selfCopy2 _addChange:v51 resultBatch:v15 changesPerScopedIdentifier:v66 changesPerClass:v14];
             }
 
             else
@@ -705,18 +705,18 @@ LABEL_52:
     [v15 addObjectsFromArray:v61];
   }
 
-  [(CPLChangeBatch *)v16 _setRecords:v15];
+  [(CPLChangeBatch *)selfCopy2 _setRecords:v15];
 
-  v5 = 0;
+  selfCopy = 0;
   v11 = 1;
 LABEL_78:
 
   objc_autoreleasePoolPop(v57);
-  if (v58 && !v11)
+  if (errorCopy && !v11)
   {
-    v54 = v5;
+    v54 = selfCopy;
     v11 = 0;
-    *v58 = v5;
+    *errorCopy = selfCopy;
   }
 
 LABEL_81:
@@ -732,27 +732,27 @@ uint64_t __67__CPLChangeBatch_CPLEngineTransientRepository__sortBatchWithError__
   return result;
 }
 
-- (void)_addChange:(id)a3 resultBatch:(id)a4 changesPerScopedIdentifier:(id)a5 changesPerClass:(id)a6
+- (void)_addChange:(id)change resultBatch:(id)batch changesPerScopedIdentifier:(id)identifier changesPerClass:(id)class
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v17 scopedIdentifier];
-  [v11 removeObjectForKey:v13];
-  v14 = [v12 objectForKey:objc_opt_class()];
-  [v14 removeObjectForKey:v13];
-  v15 = [v17 relatedScopedIdentifier];
-  if (v15)
+  changeCopy = change;
+  batchCopy = batch;
+  identifierCopy = identifier;
+  classCopy = class;
+  scopedIdentifier = [changeCopy scopedIdentifier];
+  [identifierCopy removeObjectForKey:scopedIdentifier];
+  v14 = [classCopy objectForKey:objc_opt_class()];
+  [v14 removeObjectForKey:scopedIdentifier];
+  relatedScopedIdentifier = [changeCopy relatedScopedIdentifier];
+  if (relatedScopedIdentifier)
   {
-    v16 = [v11 objectForKey:v15];
+    v16 = [identifierCopy objectForKey:relatedScopedIdentifier];
     if (v16)
     {
-      [(CPLChangeBatch *)self _addChange:v16 resultBatch:v10 changesPerScopedIdentifier:v11 changesPerClass:v12];
+      [(CPLChangeBatch *)self _addChange:v16 resultBatch:batchCopy changesPerScopedIdentifier:identifierCopy changesPerClass:classCopy];
     }
   }
 
-  [v10 addObject:v17];
+  [batchCopy addObject:changeCopy];
 }
 
 - (unint64_t)estimatedBatchSize
@@ -774,9 +774,9 @@ uint64_t __67__CPLChangeBatch_CPLEngineTransientRepository__sortBatchWithError__
         }
       }
 
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLChangeBatch.m"];
-      [v14 handleFailureInMethod:a2 object:self file:v15 lineNumber:343 description:@"Estimated batch size should not have been calculated yet"];
+      [currentHandler handleFailureInMethod:a2 object:self file:v15 lineNumber:343 description:@"Estimated batch size should not have been calculated yet"];
 
       abort();
     }
@@ -831,7 +831,7 @@ uint64_t __36__CPLChangeBatch_estimatedBatchSize__block_invoke(uint64_t a1, uint
   return result;
 }
 
-- (id)_descriptionRedacted:(BOOL)a3
+- (id)_descriptionRedacted:(BOOL)redacted
 {
   v28 = *MEMORY[0x1E69E9840];
   if ([(CPLChangeBatch *)self count])
@@ -857,7 +857,7 @@ uint64_t __36__CPLChangeBatch_estimatedBatchSize__block_invoke(uint64_t a1, uint
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          if (a3)
+          if (redacted)
           {
             [v11 redactedDescription];
           }
@@ -878,17 +878,17 @@ uint64_t __36__CPLChangeBatch_estimatedBatchSize__block_invoke(uint64_t a1, uint
 
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
-    v15 = [(CPLChangeBatch *)self summaryDescription];
+    summaryDescription = [(CPLChangeBatch *)self summaryDescription];
     v16 = [v5 componentsJoinedByString:{@", \n  "}];
-    v17 = [v13 stringWithFormat:@"<%@ %@ {{\n  %@\n}}>", v14, v15, v16];
+    v17 = [v13 stringWithFormat:@"<%@ %@ {{\n  %@\n}}>", v14, summaryDescription, v16];
   }
 
   else
   {
     v18 = MEMORY[0x1E696AEC0];
     v19 = objc_opt_class();
-    v20 = [(CPLChangeBatch *)self summaryDescription];
-    v17 = [v18 stringWithFormat:@"<%@ %@>", v19, v20];
+    summaryDescription2 = [(CPLChangeBatch *)self summaryDescription];
+    v17 = [v18 stringWithFormat:@"<%@ %@>", v19, summaryDescription2];
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -896,7 +896,7 @@ uint64_t __36__CPLChangeBatch_estimatedBatchSize__block_invoke(uint64_t a1, uint
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_records, "count")}];
@@ -1001,15 +1001,15 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)appendLocalResources:(id)a3 forItemWithCloudScopedIdentifier:(id)a4
+- (void)appendLocalResources:(id)resources forItemWithCloudScopedIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  resourcesCopy = resources;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (resourcesCopy)
   {
-    v20 = v7;
+    v20 = identifierCopy;
     if (!self->_localResources)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -1022,7 +1022,7 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v6;
+    v12 = resourcesCopy;
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
@@ -1055,10 +1055,10 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)localResourceOfType:(unint64_t)a3 forItemWithCloudScopedIdentifier:(id)a4
+- (id)localResourceOfType:(unint64_t)type forItemWithCloudScopedIdentifier:(id)identifier
 {
-  v5 = [(NSMutableDictionary *)self->_localResources objectForKey:a4];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [(NSMutableDictionary *)self->_localResources objectForKey:identifier];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v7 = [v5 objectForKey:v6];
 
   return v7;
@@ -1078,8 +1078,8 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v7 = self;
-    v8 = [(CPLChangeBatch *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    selfCopy = self;
+    v8 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1090,15 +1090,15 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
         {
           if (*v30 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
           v12 = *(*(&v29 + 1) + 8 * i);
           v13 = objc_opt_class();
           [v6 addObject:v13];
-          v14 = [v12 changeType];
+          changeType = [v12 changeType];
           v15 = v5;
-          if (v14 != 1024)
+          if (changeType != 1024)
           {
             if ([v12 isFullRecord])
             {
@@ -1114,7 +1114,7 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
           [v15 addObject:v13];
         }
 
-        v9 = [(CPLChangeBatch *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v9 = [(CPLChangeBatch *)selfCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v9);
@@ -1163,22 +1163,22 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
   return v24;
 }
 
-- (void)_setRecords:(id)a3
+- (void)_setRecords:(id)records
 {
-  objc_storeStrong(&self->_records, a3);
+  objc_storeStrong(&self->_records, records);
   self->_estimatedBatchSize = 0;
   self->_calculateEstimatedBatchSize = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     records = self->_records;
-    v6 = [v4 records];
-    v7 = [(NSMutableArray *)records isEqual:v6];
+    records = [equalCopy records];
+    v7 = [(NSMutableArray *)records isEqual:records];
   }
 
   else
@@ -1189,23 +1189,23 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
   return v7;
 }
 
-- (void)_addAdditionalRecord:(id)a3
+- (void)_addAdditionalRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   additionalRecords = self->_additionalRecords;
-  v9 = v4;
+  v9 = recordCopy;
   if (!additionalRecords)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7 = self->_additionalRecords;
     self->_additionalRecords = v6;
 
-    v4 = v9;
+    recordCopy = v9;
     additionalRecords = self->_additionalRecords;
   }
 
-  v8 = [v4 scopedIdentifier];
-  [(NSMutableDictionary *)additionalRecords setObject:v9 forKeyedSubscript:v8];
+  scopedIdentifier = [recordCopy scopedIdentifier];
+  [(NSMutableDictionary *)additionalRecords setObject:v9 forKeyedSubscript:scopedIdentifier];
 
   if (self->_calculateEstimatedBatchSize)
   {
@@ -1213,11 +1213,11 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
   }
 }
 
-- (void)_setAdditionalRecords:(id)a3
+- (void)_setAdditionalRecords:(id)records
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  recordsCopy = records;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(recordsCopy, "count")}];
   additionalRecords = self->_additionalRecords;
   self->_additionalRecords = v5;
 
@@ -1225,7 +1225,7 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = recordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1246,8 +1246,8 @@ void __31__CPLChangeBatch_copyWithZone___block_invoke_3(uint64_t a1, void *a2, v
         if (objc_opt_isKindOfClass())
         {
           v13 = self->_additionalRecords;
-          v14 = [v12 scopedIdentifier];
-          [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
+          scopedIdentifier = [v12 scopedIdentifier];
+          [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:scopedIdentifier];
         }
 
         ++v11;
@@ -1354,10 +1354,10 @@ void __44__CPLChangeBatch_filterScopeChangeFromBatch__block_invoke(void *a1, voi
   }
 }
 
-- (id)recordWithScopedIdentifier:(id)a3
+- (id)recordWithScopedIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1377,8 +1377,8 @@ void __44__CPLChangeBatch_filterScopeChangeFromBatch__block_invoke(void *a1, voi
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 scopedIdentifier];
-        v11 = [v10 isEqual:v4];
+        scopedIdentifier = [v9 scopedIdentifier];
+        v11 = [scopedIdentifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -1404,10 +1404,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasChangeWithScopedIdentifier:(id)a3
+- (BOOL)hasChangeWithScopedIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1426,8 +1426,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) scopedIdentifier];
-        v10 = [v9 isEqual:v4];
+        scopedIdentifier = [*(*(&v13 + 1) + 8 * i) scopedIdentifier];
+        v10 = [scopedIdentifier isEqual:identifierCopy];
 
         if (v10)
         {
@@ -1452,9 +1452,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeRecordWithScopedIdentifier:(id)a3
+- (void)removeRecordWithScopedIdentifier:(id)identifier
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v4 = [(NSMutableArray *)self->_records count];
   if (v4)
   {
@@ -1463,8 +1463,8 @@ LABEL_11:
     while (1)
     {
       v7 = [(NSMutableArray *)self->_records objectAtIndexedSubscript:v6];
-      v8 = [v7 scopedIdentifier];
-      v9 = [v8 isEqual:v10];
+      scopedIdentifier = [v7 scopedIdentifier];
+      v9 = [scopedIdentifier isEqual:identifierCopy];
 
       if (v9)
       {
@@ -1485,11 +1485,11 @@ LABEL_11:
 LABEL_7:
 }
 
-- (void)addRecordsFromBatch:(id)a3
+- (void)addRecordsFromBatch:(id)batch
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  batchCopy = batch;
+  if (!batchCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -1497,33 +1497,33 @@ LABEL_7:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_ERROR, "Trying to add a nil list of records to %@", buf, 0xCu);
       }
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLChangeBatch.m"];
-    [v10 handleFailureInMethod:a2 object:self file:v11 lineNumber:100 description:{@"Trying to add a nil list of records to %@", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v11 lineNumber:100 description:{@"Trying to add a nil list of records to %@", self}];
 
     abort();
   }
 
   records = self->_records;
-  v12 = v5;
-  v7 = [v5 records];
-  [(NSMutableArray *)records addObjectsFromArray:v7];
+  v12 = batchCopy;
+  records = [batchCopy records];
+  [(NSMutableArray *)records addObjectsFromArray:records];
 
   self->_estimatedBatchSize = 0;
   self->_calculateEstimatedBatchSize = 0;
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -1531,20 +1531,20 @@ LABEL_7:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_ERROR, "Trying to add a nil record to %@", buf, 0xCu);
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLChangeBatch.m"];
-    [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:92 description:{@"Trying to add a nil record to %@", self}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:92 description:{@"Trying to add a nil record to %@", self}];
 
     abort();
   }
 
-  v10 = v5;
-  [(NSMutableArray *)self->_records addObject:v5];
+  v10 = recordCopy;
+  [(NSMutableArray *)self->_records addObject:recordCopy];
   if (self->_calculateEstimatedBatchSize)
   {
     self->_estimatedBatchSize += [v10 estimatedRecordSize];
@@ -1553,26 +1553,26 @@ LABEL_7:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithRecords:(id)a3
+- (id)_initWithRecords:(id)records
 {
-  v5 = a3;
+  recordsCopy = records;
   v6 = [(CPLChangeBatch *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_records, a3);
+    objc_storeStrong(&v6->_records, records);
   }
 
   return v7;
 }
 
-- (CPLChangeBatch)initWithRecords:(id)a3
+- (CPLChangeBatch)initWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = [(CPLChangeBatch *)self init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [recordsCopy mutableCopy];
     records = v5->_records;
     v5->_records = v6;
   }

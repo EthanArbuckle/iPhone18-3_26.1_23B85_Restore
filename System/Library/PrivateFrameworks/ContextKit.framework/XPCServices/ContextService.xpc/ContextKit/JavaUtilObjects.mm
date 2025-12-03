@@ -1,46 +1,46 @@
 @interface JavaUtilObjects
-+ (BOOL)equalsWithId:(id)a3 withId:(id)a4;
-+ (id)toStringWithId:(id)a3;
-+ (id)toStringWithId:(id)a3 withNSString:(id)a4;
-+ (int)compareWithId:(id)a3 withId:(id)a4 withJavaUtilComparator:(id)a5;
-+ (int)hashCodeWithId:(id)a3;
++ (BOOL)equalsWithId:(id)id withId:(id)withId;
++ (id)toStringWithId:(id)id;
++ (id)toStringWithId:(id)id withNSString:(id)string;
++ (int)compareWithId:(id)id withId:(id)withId withJavaUtilComparator:(id)comparator;
++ (int)hashCodeWithId:(id)id;
 @end
 
 @implementation JavaUtilObjects
 
-+ (int)compareWithId:(id)a3 withId:(id)a4 withJavaUtilComparator:(id)a5
++ (int)compareWithId:(id)id withId:(id)withId withJavaUtilComparator:(id)comparator
 {
-  if (a3 == a4)
+  if (id == withId)
   {
     return 0;
   }
 
-  if (!a5)
+  if (!comparator)
   {
     JreThrowNullPointerException();
   }
 
-  return [a5 compareWithId:? withId:?];
+  return [comparator compareWithId:? withId:?];
 }
 
-+ (BOOL)equalsWithId:(id)a3 withId:(id)a4
++ (BOOL)equalsWithId:(id)id withId:(id)withId
 {
-  if (a3)
+  if (id)
   {
-    return [a3 isEqual:a4];
+    return [id isEqual:withId];
   }
 
   else
   {
-    return a4 == 0;
+    return withId == 0;
   }
 }
 
-+ (int)hashCodeWithId:(id)a3
++ (int)hashCodeWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    return [a3 hash];
+    return [id hash];
   }
 
   else
@@ -49,11 +49,11 @@
   }
 }
 
-+ (id)toStringWithId:(id)a3
++ (id)toStringWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    return [a3 description];
+    return [id description];
   }
 
   else
@@ -62,16 +62,16 @@
   }
 }
 
-+ (id)toStringWithId:(id)a3 withNSString:(id)a4
++ (id)toStringWithId:(id)id withNSString:(id)string
 {
-  if (a3)
+  if (id)
   {
-    return [a3 description];
+    return [id description];
   }
 
   else
   {
-    return a4;
+    return string;
   }
 }
 

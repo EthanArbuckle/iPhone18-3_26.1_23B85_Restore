@@ -1,16 +1,16 @@
 @interface ChicletMetadataAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation ChicletMetadataAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletMetadata" hasInstanceMethod:@"accessibilityChicletRank" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletMetadata" hasInstanceMethod:@"accessibilityChicletCaption" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterDashboardExtension.ChicletMetadata" hasInstanceMethod:@"accessibilityChicletSubtitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletMetadata" hasInstanceMethod:@"accessibilityChicletRank" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletMetadata" hasInstanceMethod:@"accessibilityChicletCaption" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterDashboardExtension.ChicletMetadata" hasInstanceMethod:@"accessibilityChicletSubtitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

@@ -15,8 +15,8 @@
 - (id)hre_actionTypes
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 services];
-  v3 = [v1 setWithArray:v2];
+  services = [self services];
+  v3 = [v1 setWithArray:services];
   v4 = [v3 na_flatMap:&__block_literal_global_90];
 
   return v4;
@@ -30,8 +30,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 services];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  services = [self services];
+  v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -41,12 +41,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 hre_actionTypes];
-        v11 = [v10 containsObject:v4];
+        hre_actionTypes = [v9 hre_actionTypes];
+        v11 = [hre_actionTypes containsObject:v4];
 
         if (v11)
         {
@@ -55,7 +55,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [services countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -74,67 +74,67 @@ LABEL_11:
 
 - (id)hre_home
 {
-  v1 = [a1 services];
-  v2 = [v1 firstObject];
-  v3 = [v2 home];
+  services = [self services];
+  firstObject = [services firstObject];
+  home = [firstObject home];
 
-  return v3;
+  return home;
 }
 
 - (id)hre_parentRoom
 {
-  if ([a1 hf_areAllServicesInSameRoom])
+  if ([self hf_areAllServicesInSameRoom])
   {
-    v2 = [a1 services];
-    v3 = [v2 firstObject];
-    v4 = [v3 hre_parentRoom];
+    services = [self services];
+    firstObject = [services firstObject];
+    hre_parentRoom = [firstObject hre_parentRoom];
   }
 
   else
   {
-    v4 = 0;
+    hre_parentRoom = 0;
   }
 
-  return v4;
+  return hre_parentRoom;
 }
 
 - (id)hre_primaryType
 {
-  v1 = [a1 hf_serviceDescriptor];
-  v2 = [v1 serviceType];
+  hf_serviceDescriptor = [self hf_serviceDescriptor];
+  serviceType = [hf_serviceDescriptor serviceType];
 
-  return v2;
+  return serviceType;
 }
 
 - (id)hre_matchingTypes
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 hre_primaryType];
-  v3 = [v1 na_setWithSafeObject:v2];
+  hre_primaryType = [self hre_primaryType];
+  v3 = [v1 na_setWithSafeObject:hre_primaryType];
 
   return v3;
 }
 
 - (id)hre_characteristics
 {
-  v1 = [a1 hf_containedServices];
-  v2 = [v1 na_flatMap:&__block_literal_global_92];
+  hf_containedServices = [self hf_containedServices];
+  v2 = [hf_containedServices na_flatMap:&__block_literal_global_92];
 
   return v2;
 }
 
 - (uint64_t)hre_isActionable
 {
-  v1 = [a1 services];
-  v2 = [v1 na_any:&__block_literal_global_95];
+  services = [self services];
+  v2 = [services na_any:&__block_literal_global_95];
 
   return v2;
 }
 
 - (uint64_t)hre_isVisible
 {
-  v1 = [a1 services];
-  v2 = [v1 na_any:&__block_literal_global_97];
+  services = [self services];
+  v2 = [services na_any:&__block_literal_global_97];
 
   return v2;
 }

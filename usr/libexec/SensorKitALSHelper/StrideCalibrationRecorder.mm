@@ -1,16 +1,16 @@
 @interface StrideCalibrationRecorder
 + (void)initialize;
 - (void)dealloc;
-- (void)launchEventRunActivity:(id)a3;
-- (void)sensorWriterDidStopMonitoring:(id)a3;
-- (void)sensorWriterWillStartMonitoring:(id)a3;
+- (void)launchEventRunActivity:(id)activity;
+- (void)sensorWriterDidStopMonitoring:(id)monitoring;
+- (void)sensorWriterWillStartMonitoring:(id)monitoring;
 @end
 
 @implementation StrideCalibrationRecorder
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10002B288 = os_log_create("com.apple.SensorKit", "SensorKitStrideCalibrationHelper");
   }
@@ -27,7 +27,7 @@
   [(StrideCalibrationRecorder *)&v3 dealloc];
 }
 
-- (void)sensorWriterWillStartMonitoring:(id)a3
+- (void)sensorWriterWillStartMonitoring:(id)monitoring
 {
   v4 = qword_10002B288;
   if (os_log_type_enabled(qword_10002B288, OS_LOG_TYPE_INFO))
@@ -41,7 +41,7 @@
   [(RDLaunchEvents *)launchEvents registerForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)sensorWriterDidStopMonitoring:(id)a3
+- (void)sensorWriterDidStopMonitoring:(id)monitoring
 {
   v4 = qword_10002B288;
   if (os_log_type_enabled(qword_10002B288, OS_LOG_TYPE_DEBUG))
@@ -55,18 +55,18 @@
   [(RDLaunchEvents *)launchEvents unregisterForXPCActivities:[NSArray arrayWithObjects:&v7 count:1]];
 }
 
-- (void)launchEventRunActivity:(id)a3
+- (void)launchEventRunActivity:(id)activity
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_queue;
   }
 
   dispatch_assert_queue_V2(&self->super);
-  if (a3)
+  if (activity)
   {
-    v5 = *(a3 + 1);
+    v5 = *(activity + 1);
   }
 
   else
@@ -76,12 +76,12 @@
 
   if ([v5 isEqualToString:@"com.apple.sensorkit.fetchStrideCalibration"])
   {
-    if (v4)
+    if (selfCopy)
     {
-      v6 = [(SRSensorWriter *)v4->_sensorWriter isMonitoring];
+      isMonitoring = [(SRSensorWriter *)selfCopy->_sensorWriter isMonitoring];
       v7 = qword_10002B288;
       v8 = os_log_type_enabled(qword_10002B288, OS_LOG_TYPE_INFO);
-      if (v6)
+      if (isMonitoring)
       {
         if (v8)
         {
@@ -90,8 +90,8 @@
         }
 
         v9 = objc_alloc_init(CMPedometer);
-        v29 = [v9 strideCalibrationDump];
-        v10 = [objc_msgSend(v29 "calibrationTracks")];
+        strideCalibrationDump = [v9 strideCalibrationDump];
+        v10 = [objc_msgSend(strideCalibrationDump "calibrationTracks")];
         v11 = qword_10002B288;
         if (os_log_type_enabled(qword_10002B288, OS_LOG_TYPE_INFO))
         {
@@ -126,7 +126,7 @@
                 v21 = 5000;
               }
 
-              v22 = +[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver, "archivedDataWithRootObject:requiringSecureCoding:error:", [objc_msgSend(v29 calibrationTracks], 1, &v30);
+              v22 = +[NSKeyedArchiver archivedDataWithRootObject:requiringSecureCoding:error:](NSKeyedArchiver, "archivedDataWithRootObject:requiringSecureCoding:error:", [objc_msgSend(strideCalibrationDump calibrationTracks], 1, &v30);
               v23 = v30;
               if (v30)
               {
@@ -141,7 +141,7 @@
 
               else if (v22)
               {
-                [(SRSensorWriter *)v4->_sensorWriter provideSampleData:v22];
+                [(SRSensorWriter *)selfCopy->_sensorWriter provideSampleData:v22];
               }
 
               else
@@ -171,7 +171,7 @@
 
       else if (v8)
       {
-        sensorWriter = v4->_sensorWriter;
+        sensorWriter = selfCopy->_sensorWriter;
         *buf = 138543618;
         v32 = sensorWriter;
         v33 = 2114;
@@ -180,7 +180,7 @@
       }
     }
 
-    [a3 markCompleted];
+    [activity markCompleted];
   }
 
   else
@@ -188,9 +188,9 @@
     v14 = qword_10002B288;
     if (os_log_type_enabled(qword_10002B288, OS_LOG_TYPE_FAULT))
     {
-      if (a3)
+      if (activity)
       {
-        v26 = *(a3 + 1);
+        v26 = *(activity + 1);
       }
 
       else
@@ -203,7 +203,7 @@
       _os_log_fault_impl(&_mh_execute_header, v14, OS_LOG_TYPE_FAULT, "Told to run unsupported XPC activity %{public}@", buf, 0xCu);
     }
 
-    [a3 markCompleted];
+    [activity markCompleted];
   }
 }
 

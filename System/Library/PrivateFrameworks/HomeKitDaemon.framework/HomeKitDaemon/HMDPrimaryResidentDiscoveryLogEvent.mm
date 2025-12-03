@@ -1,5 +1,5 @@
 @interface HMDPrimaryResidentDiscoveryLogEvent
-- (HMDPrimaryResidentDiscoveryLogEvent)initWithHomeUUID:(id)a3;
+- (HMDPrimaryResidentDiscoveryLogEvent)initWithHomeUUID:(id)d;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -77,11 +77,11 @@
   return v11;
 }
 
-- (HMDPrimaryResidentDiscoveryLogEvent)initWithHomeUUID:(id)a3
+- (HMDPrimaryResidentDiscoveryLogEvent)initWithHomeUUID:(id)d
 {
   v8.receiver = self;
   v8.super_class = HMDPrimaryResidentDiscoveryLogEvent;
-  v3 = [(HMMHomeLogEvent *)&v8 initWithHomeUUID:a3];
+  v3 = [(HMMHomeLogEvent *)&v8 initWithHomeUUID:d];
   v4 = v3;
   if (v3)
   {

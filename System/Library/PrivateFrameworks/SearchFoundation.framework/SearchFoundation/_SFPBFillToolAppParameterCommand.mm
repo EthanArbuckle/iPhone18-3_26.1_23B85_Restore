@@ -1,47 +1,47 @@
 @interface _SFPBFillToolAppParameterCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBFillToolAppParameterCommand)initWithDictionary:(id)a3;
-- (_SFPBFillToolAppParameterCommand)initWithFacade:(id)a3;
-- (_SFPBFillToolAppParameterCommand)initWithJSON:(id)a3;
+- (_SFPBFillToolAppParameterCommand)initWithDictionary:(id)dictionary;
+- (_SFPBFillToolAppParameterCommand)initWithFacade:(id)facade;
+- (_SFPBFillToolAppParameterCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setApplicationPath:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setEncodedTypedValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationPath:(id)path;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setEncodedTypedValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBFillToolAppParameterCommand
 
-- (_SFPBFillToolAppParameterCommand)initWithFacade:(id)a3
+- (_SFPBFillToolAppParameterCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBFillToolAppParameterCommand *)self init];
   if (v5)
   {
-    v6 = [v4 encodedTypedValue];
+    encodedTypedValue = [facadeCopy encodedTypedValue];
 
-    if (v6)
+    if (encodedTypedValue)
     {
-      v7 = [v4 encodedTypedValue];
-      [(_SFPBFillToolAppParameterCommand *)v5 setEncodedTypedValue:v7];
+      encodedTypedValue2 = [facadeCopy encodedTypedValue];
+      [(_SFPBFillToolAppParameterCommand *)v5 setEncodedTypedValue:encodedTypedValue2];
     }
 
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [facadeCopy bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v4 bundleIdentifier];
-      [(_SFPBFillToolAppParameterCommand *)v5 setBundleIdentifier:v9];
+      bundleIdentifier2 = [facadeCopy bundleIdentifier];
+      [(_SFPBFillToolAppParameterCommand *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    v10 = [v4 applicationPath];
+    applicationPath = [facadeCopy applicationPath];
 
-    if (v10)
+    if (applicationPath)
     {
-      v11 = [v4 applicationPath];
-      [(_SFPBFillToolAppParameterCommand *)v5 setApplicationPath:v11];
+      applicationPath2 = [facadeCopy applicationPath];
+      [(_SFPBFillToolAppParameterCommand *)v5 setApplicationPath:applicationPath2];
     }
 
     v12 = v5;
@@ -50,15 +50,15 @@
   return v5;
 }
 
-- (_SFPBFillToolAppParameterCommand)initWithDictionary:(id)a3
+- (_SFPBFillToolAppParameterCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBFillToolAppParameterCommand;
   v5 = [(_SFPBFillToolAppParameterCommand *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"encodedTypedValue"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"encodedTypedValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(_SFPBFillToolAppParameterCommand *)v5 setEncodedTypedValue:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(_SFPBFillToolAppParameterCommand *)v5 setBundleIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"applicationPath"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"applicationPath"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (_SFPBFillToolAppParameterCommand)initWithJSON:(id)a3
+- (_SFPBFillToolAppParameterCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBFillToolAppParameterCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBFillToolAppParameterCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBFillToolAppParameterCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -124,38 +124,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationPath)
   {
-    v4 = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationPath"];
+    applicationPath = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
+    v5 = [applicationPath copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationPath"];
   }
 
   if (self->_bundleIdentifier)
   {
-    v6 = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
+    bundleIdentifier = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
+    v7 = [bundleIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"bundleIdentifier"];
   }
 
   if (self->_encodedTypedValue)
   {
-    v8 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
-    v9 = [v8 base64EncodedStringWithOptions:0];
+    encodedTypedValue = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
+    v9 = [encodedTypedValue base64EncodedStringWithOptions:0];
     if (v9)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"encodedTypedValue"];
+      [dictionary setObject:v9 forKeyedSubscript:@"encodedTypedValue"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"encodedTypedValue"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"encodedTypedValue"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,28 +165,28 @@
   return v4 ^ [(NSString *)self->_applicationPath hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
-  v6 = [v4 encodedTypedValue];
-  if ((v5 != 0) == (v6 == 0))
+  encodedTypedValue = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
+  encodedTypedValue2 = [equalCopy encodedTypedValue];
+  if ((encodedTypedValue != 0) == (encodedTypedValue2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
-  if (v7)
+  encodedTypedValue3 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
+  if (encodedTypedValue3)
   {
-    v8 = v7;
-    v9 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
-    v10 = [v4 encodedTypedValue];
-    v11 = [v9 isEqual:v10];
+    v8 = encodedTypedValue3;
+    encodedTypedValue4 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
+    encodedTypedValue5 = [equalCopy encodedTypedValue];
+    v11 = [encodedTypedValue4 isEqual:encodedTypedValue5];
 
     if (!v11)
     {
@@ -198,20 +198,20 @@
   {
   }
 
-  v5 = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  encodedTypedValue = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
+  encodedTypedValue2 = [equalCopy bundleIdentifier];
+  if ((encodedTypedValue != 0) == (encodedTypedValue2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
-  if (v12)
+  bundleIdentifier = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
-    v15 = [v4 bundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = bundleIdentifier;
+    bundleIdentifier2 = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
+    bundleIdentifier3 = [equalCopy bundleIdentifier];
+    v16 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
     if (!v16)
     {
@@ -223,12 +223,12 @@
   {
   }
 
-  v5 = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
-  v6 = [v4 applicationPath];
-  if ((v5 != 0) != (v6 == 0))
+  encodedTypedValue = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
+  encodedTypedValue2 = [equalCopy applicationPath];
+  if ((encodedTypedValue != 0) != (encodedTypedValue2 == 0))
   {
-    v17 = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
-    if (!v17)
+    applicationPath = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
+    if (!applicationPath)
     {
 
 LABEL_20:
@@ -236,10 +236,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
-    v20 = [v4 applicationPath];
-    v21 = [v19 isEqual:v20];
+    v18 = applicationPath;
+    applicationPath2 = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
+    applicationPath3 = [equalCopy applicationPath];
+    v21 = [applicationPath2 isEqual:applicationPath3];
 
     if (v21)
     {
@@ -259,49 +259,49 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
-  if (v4)
+  toCopy = to;
+  encodedTypedValue = [(_SFPBFillToolAppParameterCommand *)self encodedTypedValue];
+  if (encodedTypedValue)
   {
     PBDataWriterWriteDataField();
   }
 
-  v5 = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
-  if (v5)
+  bundleIdentifier = [(_SFPBFillToolAppParameterCommand *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
-  if (v6)
+  applicationPath = [(_SFPBFillToolAppParameterCommand *)self applicationPath];
+  if (applicationPath)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setApplicationPath:(id)a3
+- (void)setApplicationPath:(id)path
 {
-  v4 = [a3 copy];
+  v4 = [path copy];
   applicationPath = self->_applicationPath;
   self->_applicationPath = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setEncodedTypedValue:(id)a3
+- (void)setEncodedTypedValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   encodedTypedValue = self->_encodedTypedValue;
   self->_encodedTypedValue = v4;
 

@@ -1,8 +1,8 @@
 @interface VKRouteRangeAnnotationInfo
-- (BOOL)isEqual:(id)a3;
-- (VKRouteRangeAnnotationInfo)initWithEtaDescription:(id)a3 start:(PolylineCoordinate)a4 end:(PolylineCoordinate)a5;
+- (BOOL)isEqual:(id)equal;
+- (VKRouteRangeAnnotationInfo)initWithEtaDescription:(id)description start:(PolylineCoordinate)start end:(PolylineCoordinate)end;
 - (id).cxx_construct;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation VKRouteRangeAnnotationInfo
@@ -14,12 +14,12 @@
   return self;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  [v4 start];
+  compareCopy = compare;
+  [compareCopy start];
   v5 = GEOPolylineCoordinateCompare();
-  if (v5 || ([v4 end], (v5 = GEOPolylineCoordinateCompare()) != 0))
+  if (v5 || ([compareCopy end], (v5 = GEOPolylineCoordinateCompare()) != 0))
   {
     if (v5 == -1)
     {
@@ -35,17 +35,17 @@
   else
   {
     etaDescription = self->_etaDescription;
-    v9 = [v4 etaDescription];
-    v6 = [(VKRouteEtaDescription *)etaDescription compare:v9];
+    etaDescription = [compareCopy etaDescription];
+    v6 = [(VKRouteEtaDescription *)etaDescription compare:etaDescription];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -53,24 +53,24 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(VKRouteRangeAnnotationInfo *)self compare:v4]== 0;
+    v6 = v5 == objc_opt_class() && [(VKRouteRangeAnnotationInfo *)self compare:equalCopy]== 0;
   }
 
   return v6;
 }
 
-- (VKRouteRangeAnnotationInfo)initWithEtaDescription:(id)a3 start:(PolylineCoordinate)a4 end:(PolylineCoordinate)a5
+- (VKRouteRangeAnnotationInfo)initWithEtaDescription:(id)description start:(PolylineCoordinate)start end:(PolylineCoordinate)end
 {
-  v9 = a3;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = VKRouteRangeAnnotationInfo;
   v10 = [(VKRouteRangeAnnotationInfo *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_etaDescription, a3);
-    v11->_start = a4;
-    v11->_end = a5;
+    objc_storeStrong(&v10->_etaDescription, description);
+    v11->_start = start;
+    v11->_end = end;
     v12 = v11;
   }
 

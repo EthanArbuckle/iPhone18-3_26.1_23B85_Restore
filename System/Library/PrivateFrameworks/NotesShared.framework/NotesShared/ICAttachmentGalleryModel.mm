@@ -1,32 +1,32 @@
 @interface ICAttachmentGalleryModel
 - (BOOL)attachmentHasMergeableData;
 - (BOOL)hasThumbnailImage;
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4;
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state;
 - (BOOL)providesStandaloneTitleForNote;
-- (BOOL)shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:(id)a3;
+- (BOOL)shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:(id)identifier;
 - (ICCROrderedSet)attachmentIdentifiersOrderedSet;
 - (ICTTOrderedSetVersionedDocument)attachmentIdentifiersOrderedSetDocument;
 - (NSArray)subAttachmentIdentifiers;
 - (id)firstSubAttachment;
 - (id)searchableStringArray;
 - (id)searchableTextContent;
-- (id)singleSubAttachmentAtIndex:(unint64_t)a3;
+- (id)singleSubAttachmentAtIndex:(unint64_t)index;
 - (id)standaloneTitleForNote;
-- (id)subAttachmentIdentifierAtIndex:(unint64_t)a3;
-- (id)titleForSubAttachment:(id)a3;
+- (id)subAttachmentIdentifierAtIndex:(unint64_t)index;
+- (id)titleForSubAttachment:(id)attachment;
 - (int64_t)previewImageOrientation;
-- (unint64_t)indexOfSubAttachmentWithIdentifier:(id)a3;
+- (unint64_t)indexOfSubAttachmentWithIdentifier:(id)identifier;
 - (unint64_t)subAttachmentCount;
-- (void)addSubAttachment:(id)a3;
-- (void)attachmentDidRefresh:(BOOL)a3;
-- (void)attachmentWillRefresh:(BOOL)a3;
+- (void)addSubAttachment:(id)attachment;
+- (void)attachmentDidRefresh:(BOOL)refresh;
+- (void)attachmentWillRefresh:(BOOL)refresh;
 - (void)attachmentWillTurnIntoFault;
-- (void)enumerateSubAttachmentsWithBlock:(id)a3;
-- (void)insertSubAttachment:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeSubAttachment:(id)a3;
+- (void)enumerateSubAttachmentsWithBlock:(id)block;
+- (void)insertSubAttachment:(id)attachment atIndex:(unint64_t)index;
+- (void)removeSubAttachment:(id)attachment;
 - (void)undeleteSubAttachments;
-- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)a3;
-- (void)updateAttachmentMarkedForDeletionStateAttachmentIsInUse:(BOOL)a3;
+- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)map;
+- (void)updateAttachmentMarkedForDeletionStateAttachmentIsInUse:(BOOL)use;
 - (void)writeMergeableData;
 @end
 
@@ -41,7 +41,7 @@
   }
 }
 
-- (void)attachmentWillRefresh:(BOOL)a3
+- (void)attachmentWillRefresh:(BOOL)refresh
 {
   if (![(ICAttachmentModel *)self isMergeableDataDirty])
   {
@@ -50,7 +50,7 @@
   }
 }
 
-- (void)attachmentDidRefresh:(BOOL)a3
+- (void)attachmentDidRefresh:(BOOL)refresh
 {
   if (self->_attachmentIdentifiersOrderedSetDocument && [(ICAttachmentModel *)self isMergeableDataDirty])
   {
@@ -64,18 +64,18 @@
 
 - (BOOL)hasThumbnailImage
 {
-  v3 = [(ICAttachmentGalleryModel *)self firstSubAttachment];
-  v4 = [(ICAttachmentModel *)self attachment];
-  if ([v4 markedForDeletion])
+  firstSubAttachment = [(ICAttachmentGalleryModel *)self firstSubAttachment];
+  attachment = [(ICAttachmentModel *)self attachment];
+  if ([attachment markedForDeletion])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 media];
-    v7 = [v6 mediaURL];
-    v5 = v7 != 0;
+    media = [firstSubAttachment media];
+    mediaURL = [media mediaURL];
+    v5 = mediaURL != 0;
   }
 
   return v5;
@@ -83,13 +83,13 @@
 
 - (id)firstSubAttachment
 {
-  v3 = [(ICAttachmentGalleryModel *)self subAttachmentCount];
-  if (v3)
+  subAttachmentCount = [(ICAttachmentGalleryModel *)self subAttachmentCount];
+  if (subAttachmentCount)
   {
-    v3 = [(ICAttachmentGalleryModel *)self singleSubAttachmentAtIndex:0];
+    subAttachmentCount = [(ICAttachmentGalleryModel *)self singleSubAttachmentAtIndex:0];
   }
 
-  return v3;
+  return subAttachmentCount;
 }
 
 - (BOOL)attachmentHasMergeableData
@@ -98,19 +98,19 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__ICAttachmentGalleryModel_attachmentHasMergeableData__block_invoke;
   v6[3] = &unk_278194DE8;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(attachment) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return attachment;
 }
 
 void __54__ICAttachmentGalleryModel_attachmentHasMergeableData__block_invoke(uint64_t a1)
@@ -120,19 +120,19 @@ void __54__ICAttachmentGalleryModel_attachmentHasMergeableData__block_invoke(uin
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (id)titleForSubAttachment:(id)a3
+- (id)titleForSubAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 parentAttachment];
-  v6 = [(ICAttachmentModel *)self attachment];
+  attachmentCopy = attachment;
+  parentAttachment = [attachmentCopy parentAttachment];
+  attachment = [(ICAttachmentModel *)self attachment];
 
-  if (v5 == v6 && (-[ICAttachmentGalleryModel attachmentIdentifiersOrderedSet](self, "attachmentIdentifiersOrderedSet"), v7 = objc_claimAutoreleasedReturnValue(), [v4 identifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "indexOfObject:", v8), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
+  if (parentAttachment == attachment && (-[ICAttachmentGalleryModel attachmentIdentifiersOrderedSet](self, "attachmentIdentifiersOrderedSet"), v7 = objc_claimAutoreleasedReturnValue(), [attachmentCopy identifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "indexOfObject:", v8), v8, v7, v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v12 = __ICLocalizedFrameworkString_impl(@"%@ %ld", @"%@ %ld", 0, 1);
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(ICAttachmentModel *)self attachment];
-    v15 = [v14 title];
-    v10 = [v13 localizedStringWithFormat:v12, v15, v9 + 1];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    title = [attachment2 title];
+    v10 = [v13 localizedStringWithFormat:v12, title, v9 + 1];
   }
 
   else
@@ -143,29 +143,29 @@ void __54__ICAttachmentGalleryModel_attachmentHasMergeableData__block_invoke(uin
   return v10;
 }
 
-- (BOOL)shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:(id)a3
+- (BOOL)shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__3;
   v15 = __Block_byref_object_dispose__3;
   v16 = 0;
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachmentWithIdentifier___block_invoke;
   v10[3] = &unk_278194D68;
   v10[4] = self;
   v10[5] = &v11;
-  [v6 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
   v7 = v12[5];
   if (v7)
   {
-    v8 = [v7 isEqualToString:v4];
+    v8 = [v7 isEqualToString:identifierCopy];
   }
 
   else
@@ -198,65 +198,65 @@ void __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachm
   }
 }
 
-- (void)addSubAttachment:(id)a3
+- (void)addSubAttachment:(id)attachment
 {
-  v6 = a3;
-  v4 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  v5 = [v4 count];
+  attachmentCopy = attachment;
+  attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  v5 = [attachmentIdentifiersOrderedSet count];
 
-  [(ICAttachmentGalleryModel *)self insertSubAttachment:v6 atIndex:v5];
+  [(ICAttachmentGalleryModel *)self insertSubAttachment:attachmentCopy atIndex:v5];
 }
 
-- (void)insertSubAttachment:(id)a3 atIndex:(unint64_t)a4
+- (void)insertSubAttachment:(id)attachment atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICAttachmentModel *)self attachment];
-  [v7 addSubAttachmentsObject:v6];
+  attachmentCopy = attachment;
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment addSubAttachmentsObject:attachmentCopy];
 
-  v8 = [(ICAttachmentModel *)self attachment];
-  [v6 setParentAttachment:v8];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  [attachmentCopy setParentAttachment:attachment2];
 
-  [v6 updateChangeCountWithReason:@"Inserted subattachment"];
-  v9 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  v10 = [v6 identifier];
+  [attachmentCopy updateChangeCountWithReason:@"Inserted subattachment"];
+  attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  identifier = [attachmentCopy identifier];
 
-  [v9 insertObject:v10 atIndex:a4];
+  [attachmentIdentifiersOrderedSet insertObject:identifier atIndex:index];
 
   [(ICAttachmentModel *)self setMergeableDataDirty:1];
 }
 
-- (void)removeSubAttachment:(id)a3
+- (void)removeSubAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICAttachmentModel *)self attachment];
-  [v5 removeSubAttachmentsObject:v4];
+  attachmentCopy = attachment;
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment removeSubAttachmentsObject:attachmentCopy];
 
-  v6 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  v7 = [v4 identifier];
+  attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  identifier = [attachmentCopy identifier];
 
-  [v6 removeObject:v7];
+  [attachmentIdentifiersOrderedSet removeObject:identifier];
 
   [(ICAttachmentModel *)self setMergeableDataDirty:1];
 }
 
-- (void)enumerateSubAttachmentsWithBlock:(id)a3
+- (void)enumerateSubAttachmentsWithBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 subAttachments];
+  blockCopy = block;
+  attachment = [(ICAttachmentModel *)self attachment];
+  subAttachments = [attachment subAttachments];
 
   v7 = objc_alloc(MEMORY[0x277CCAB00]);
-  v31 = self;
-  v8 = [(ICAttachmentModel *)self attachment];
-  v9 = [v8 subAttachments];
-  v10 = [v7 initWithKeyOptions:0x10000 valueOptions:5 capacity:{objc_msgSend(v9, "count")}];
+  selfCopy = self;
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  subAttachments2 = [attachment2 subAttachments];
+  v10 = [v7 initWithKeyOptions:0x10000 valueOptions:5 capacity:{objc_msgSend(subAttachments2, "count")}];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v6;
+  v11 = subAttachments;
   v12 = [v11 countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v12)
   {
@@ -272,8 +272,8 @@ void __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachm
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
-        v17 = [v16 identifier];
-        [v10 setObject:v16 forKey:v17];
+        identifier = [v16 identifier];
+        [v10 setObject:v16 forKey:identifier];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v33 objects:v43 count:16];
@@ -282,16 +282,16 @@ void __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachm
     while (v13);
   }
 
-  v18 = [(ICAttachmentGalleryModel *)v31 subAttachmentIdentifiers];
+  subAttachmentIdentifiers = [(ICAttachmentGalleryModel *)selfCopy subAttachmentIdentifiers];
   v32 = 0;
-  if ([v18 count])
+  if ([subAttachmentIdentifiers count])
   {
     v20 = 0;
     *&v19 = 138412546;
     v30 = v19;
     do
     {
-      v21 = [v18 objectAtIndex:{v20, v30}];
+      v21 = [subAttachmentIdentifiers objectAtIndex:{v20, v30}];
       if (!v21)
       {
         goto LABEL_21;
@@ -301,10 +301,10 @@ void __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachm
       if (v22)
       {
         v23 = v22;
-        v24 = [v22 parentAttachment];
-        v25 = [(ICAttachmentModel *)v31 attachment];
+        parentAttachment = [v22 parentAttachment];
+        attachment3 = [(ICAttachmentModel *)selfCopy attachment];
 
-        if (v24 == v25)
+        if (parentAttachment == attachment3)
         {
           goto LABEL_20;
         }
@@ -321,12 +321,12 @@ void __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachm
         v26 = os_log_create("com.apple.notes", "CoreData");
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v28 = [(ICAttachmentModel *)v31 attachment];
-          v29 = [v28 identifier];
+          attachment4 = [(ICAttachmentModel *)selfCopy attachment];
+          identifier2 = [attachment4 identifier];
           *buf = v30;
           v40 = v21;
           v41 = 2112;
-          v42 = v29;
+          v42 = identifier2;
           _os_log_error_impl(&dword_214D51000, v26, OS_LOG_TYPE_ERROR, "Attachment not found: %@, when enumerating: %@", buf, 0x16u);
         }
 
@@ -335,7 +335,7 @@ void __90__ICAttachmentGalleryModel_shouldGeneratePreviewAfterChangeInSubAttachm
 
       v23 = 0;
 LABEL_20:
-      v4[2](v4, v23, v21, v20, &v32);
+      blockCopy[2](blockCopy, v23, v21, v20, &v32);
       v27 = v32;
 
       if (v27)
@@ -349,15 +349,15 @@ LABEL_21:
       ++v20;
     }
 
-    while (v20 < [v18 count]);
+    while (v20 < [subAttachmentIdentifiers count]);
   }
 }
 
-- (unint64_t)indexOfSubAttachmentWithIdentifier:(id)a3
+- (unint64_t)indexOfSubAttachmentWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICAttachmentGalleryModel *)self subAttachmentIdentifiers];
-  v6 = [v5 indexOfObject:v4];
+  identifierCopy = identifier;
+  subAttachmentIdentifiers = [(ICAttachmentGalleryModel *)self subAttachmentIdentifiers];
+  v6 = [subAttachmentIdentifiers indexOfObject:identifierCopy];
 
   return v6;
 }
@@ -369,8 +369,8 @@ LABEL_21:
     return 0;
   }
 
-  v3 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  v4 = [v3 count];
+  attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  v4 = [attachmentIdentifiersOrderedSet count];
 
   return v4;
 }
@@ -379,27 +379,27 @@ LABEL_21:
 {
   if ([(ICAttachmentGalleryModel *)self attachmentHasMergeableData])
   {
-    v3 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-    v4 = [v3 allObjects];
+    attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+    allObjects = [attachmentIdentifiersOrderedSet allObjects];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return allObjects;
 }
 
-- (id)subAttachmentIdentifierAtIndex:(unint64_t)a3
+- (id)subAttachmentIdentifierAtIndex:(unint64_t)index
 {
-  v4 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  v5 = [v4 objectAtIndex:a3];
+  attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  v5 = [attachmentIdentifiersOrderedSet objectAtIndex:index];
 
   return v5;
 }
 
-- (id)singleSubAttachmentAtIndex:(unint64_t)a3
+- (id)singleSubAttachmentAtIndex:(unint64_t)index
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = [(ICAttachmentGalleryModel *)self subAttachmentIdentifierAtIndex:?];
@@ -408,7 +408,7 @@ LABEL_21:
     v19 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(ICAttachmentGalleryModel *)self singleSubAttachmentAtIndex:a3, v19];
+      [(ICAttachmentGalleryModel *)self singleSubAttachmentAtIndex:index, v19];
     }
 
 LABEL_21:
@@ -421,28 +421,28 @@ LABEL_21:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(ICAttachmentModel *)self attachment];
-  v7 = [v6 subAttachments];
+  attachment = [(ICAttachmentModel *)self attachment];
+  subAttachments = [attachment subAttachments];
 
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  v8 = [subAttachments countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (!v8)
   {
 LABEL_10:
-    v15 = v7;
+    v15 = subAttachments;
 LABEL_16:
 
 LABEL_17:
     v19 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [(ICAttachmentModel *)self attachment];
-      v21 = [v20 identifier];
+      attachment2 = [(ICAttachmentModel *)self attachment];
+      identifier = [attachment2 identifier];
       *buf = 138412802;
       v28 = v5;
       v29 = 2112;
-      v30 = v21;
+      v30 = identifier;
       v31 = 2048;
-      v32 = a3;
+      indexCopy = index;
       _os_log_debug_impl(&dword_214D51000, v19, OS_LOG_TYPE_DEBUG, "Sub attachment %@ not found in %@ at index %ld", buf, 0x20u);
     }
 
@@ -457,12 +457,12 @@ LABEL_4:
   {
     if (*v24 != v10)
     {
-      objc_enumerationMutation(v7);
+      objc_enumerationMutation(subAttachments);
     }
 
     v12 = *(*(&v23 + 1) + 8 * v11);
-    v13 = [v12 identifier];
-    v14 = [v13 isEqualToString:v5];
+    identifier2 = [v12 identifier];
+    v14 = [identifier2 isEqualToString:v5];
 
     if (v14)
     {
@@ -471,7 +471,7 @@ LABEL_4:
 
     if (v9 == ++v11)
     {
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v9 = [subAttachments countByEnumeratingWithState:&v23 objects:v33 count:16];
       if (v9)
       {
         goto LABEL_4;
@@ -488,10 +488,10 @@ LABEL_4:
     goto LABEL_17;
   }
 
-  v16 = [v15 parentAttachment];
-  v17 = [(ICAttachmentModel *)self attachment];
+  parentAttachment = [v15 parentAttachment];
+  attachment3 = [(ICAttachmentModel *)self attachment];
 
-  if (v16 != v17)
+  if (parentAttachment != attachment3)
   {
     v18 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -524,8 +524,8 @@ LABEL_22:
     v14 = __Block_byref_object_copy__3;
     v15 = __Block_byref_object_dispose__3;
     v16 = 0;
-    v4 = [(ICAttachmentModel *)self attachment];
-    v5 = [v4 managedObjectContext];
+    attachment = [(ICAttachmentModel *)self attachment];
+    managedObjectContext = [attachment managedObjectContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__block_invoke;
@@ -533,7 +533,7 @@ LABEL_22:
     v10[4] = self;
     v10[5] = &v17;
     v10[6] = &v11;
-    [v5 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
 
     v6 = [ICTTOrderedSetVersionedDocument alloc];
     v7 = [(ICTTVersionedDocument *)v6 initWithData:v18[5] replicaID:v12[5]];
@@ -566,21 +566,21 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
 - (ICCROrderedSet)attachmentIdentifiersOrderedSet
 {
   objc_opt_class();
-  v3 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSetDocument];
-  v4 = [v3 orderedSet];
+  attachmentIdentifiersOrderedSetDocument = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSetDocument];
+  orderedSet = [attachmentIdentifiersOrderedSetDocument orderedSet];
   v5 = ICCheckedDynamicCast();
 
   return v5;
 }
 
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v5 = a3;
+  dataCopy = data;
   v6 = os_log_create("com.apple.notes", "Topotext");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -588,25 +588,25 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
   }
 
   v7 = [ICTTOrderedSetVersionedDocument alloc];
-  v8 = [(ICAttachmentModel *)self currentReplicaID];
-  v9 = [(ICTTVersionedDocument *)v7 initWithData:v5 replicaID:v8];
+  currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+  v9 = [(ICTTVersionedDocument *)v7 initWithData:dataCopy replicaID:currentReplicaID];
 
-  v10 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSetDocument];
-  v11 = [v10 mergeWithOrderedSetVersionedDocument:v9];
+  attachmentIdentifiersOrderedSetDocument = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSetDocument];
+  v11 = [attachmentIdentifiersOrderedSetDocument mergeWithOrderedSetVersionedDocument:v9];
 
   v12 = v11 == 2;
   if (v11 == 2)
   {
-    v13 = [(ICAttachmentModel *)self attachment];
-    v14 = [v13 previewUpdateDate];
-    v15 = [(ICAttachmentModel *)self attachment];
-    v16 = [v15 modificationDate];
-    v17 = [v14 compare:v16];
+    attachment = [(ICAttachmentModel *)self attachment];
+    previewUpdateDate = [attachment previewUpdateDate];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    modificationDate = [attachment2 modificationDate];
+    v17 = [previewUpdateDate compare:modificationDate];
 
     if (v17 != -1)
     {
-      v18 = [(ICAttachmentModel *)self attachment];
-      [v18 setPreviewUpdateDate:0];
+      attachment3 = [(ICAttachmentModel *)self attachment];
+      [attachment3 setPreviewUpdateDate:0];
     }
 
     v19 = os_log_create("com.apple.notes", "Topotext");
@@ -628,27 +628,27 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
     [(ICAttachmentModel *)self setMergeableDataDirty:0];
   }
 
-  v5 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSetDocument];
-  v3 = [v5 serialize];
-  v4 = [(ICAttachmentModel *)self attachment];
-  [v4 setMergeableData:v3];
+  attachmentIdentifiersOrderedSetDocument = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSetDocument];
+  serialize = [attachmentIdentifiersOrderedSetDocument serialize];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment setMergeableData:serialize];
 }
 
-- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)a3
+- (void)updateAfterLoadWithSubAttachmentIdentifierMap:(id)map
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  v6 = [v5 allObjects];
+  mapCopy = map;
+  attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  allObjects = [attachmentIdentifiersOrderedSet allObjects];
 
-  v7 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-  [v7 removeAllObjects];
+  attachmentIdentifiersOrderedSet2 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+  [attachmentIdentifiersOrderedSet2 removeAllObjects];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v6;
+  obj = allObjects;
   v8 = [obj countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v8)
   {
@@ -666,7 +666,7 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v4 objectForKeyedSubscript:{v13, v18}];
+        v14 = [mapCopy objectForKeyedSubscript:{v13, v18}];
         v15 = os_log_create("com.apple.notes", "CoreData");
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
@@ -679,18 +679,18 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
 
         if (v14)
         {
-          v16 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-          [v16 addObject:v14];
+          attachmentIdentifiersOrderedSet3 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+          [attachmentIdentifiersOrderedSet3 addObject:v14];
         }
 
         else
         {
-          v16 = os_log_create("com.apple.notes", "CoreData");
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          attachmentIdentifiersOrderedSet3 = os_log_create("com.apple.notes", "CoreData");
+          if (os_log_type_enabled(attachmentIdentifiersOrderedSet3, OS_LOG_TYPE_ERROR))
           {
             *buf = v18;
             v25 = v13;
-            _os_log_error_impl(&dword_214D51000, v16, OS_LOG_TYPE_ERROR, "Unable to map from %@ to new identifier", buf, 0xCu);
+            _os_log_error_impl(&dword_214D51000, attachmentIdentifiersOrderedSet3, OS_LOG_TYPE_ERROR, "Unable to map from %@ to new identifier", buf, 0xCu);
           }
         }
       }
@@ -704,47 +704,47 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
   if ([obj count])
   {
     [(ICAttachmentModel *)self setMergeableDataDirty:1];
-    v17 = [(ICAttachmentModel *)self attachment];
-    [v17 saveMergeableDataIfNeeded];
+    attachment = [(ICAttachmentModel *)self attachment];
+    [attachment saveMergeableDataIfNeeded];
   }
 }
 
-- (void)updateAttachmentMarkedForDeletionStateAttachmentIsInUse:(BOOL)a3
+- (void)updateAttachmentMarkedForDeletionStateAttachmentIsInUse:(BOOL)use
 {
   v40 = *MEMORY[0x277D85DE8];
   v34.receiver = self;
   v34.super_class = ICAttachmentGalleryModel;
-  [(ICAttachmentModel *)&v34 updateAttachmentMarkedForDeletionStateAttachmentIsInUse:a3];
-  v4 = [(ICAttachmentModel *)self attachment];
-  if (([v4 needsInitialFetchFromCloud] & 1) == 0)
+  [(ICAttachmentModel *)&v34 updateAttachmentMarkedForDeletionStateAttachmentIsInUse:use];
+  attachment = [(ICAttachmentModel *)self attachment];
+  if (([attachment needsInitialFetchFromCloud] & 1) == 0)
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 hasChanges];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    hasChanges = [attachment2 hasChanges];
 
-    if (v6)
+    if (hasChanges)
     {
       return;
     }
 
-    v7 = [(ICAttachmentModel *)self attachment];
-    v8 = [v7 markedForDeletion];
+    attachment3 = [(ICAttachmentModel *)self attachment];
+    markedForDeletion = [attachment3 markedForDeletion];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v29 = self;
-    v9 = [(ICAttachmentModel *)self attachment];
-    v4 = [v9 subAttachments];
+    selfCopy = self;
+    attachment4 = [(ICAttachmentModel *)self attachment];
+    attachment = [attachment4 subAttachments];
 
-    v10 = [v4 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    v10 = [attachment countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v10)
     {
       v12 = v10;
       v13 = *v31;
       *&v11 = 138412546;
       v28 = v11;
-      v14 = self;
+      selfCopy2 = self;
       do
       {
         v15 = 0;
@@ -752,27 +752,27 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
         {
           if (*v31 != v13)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(attachment);
           }
 
           v16 = *(*(&v30 + 1) + 8 * v15);
-          if ((v8 & 1) != 0 || (-[ICAttachmentGalleryModel attachmentIdentifiersOrderedSet](v14, "attachmentIdentifiersOrderedSet"), v17 = objc_claimAutoreleasedReturnValue(), [v16 identifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "containsObject:", v18), v18, v17, (v19 & 1) == 0))
+          if ((markedForDeletion & 1) != 0 || (-[ICAttachmentGalleryModel attachmentIdentifiersOrderedSet](selfCopy2, "attachmentIdentifiersOrderedSet"), v17 = objc_claimAutoreleasedReturnValue(), [v16 identifier], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "containsObject:", v18), v18, v17, (v19 & 1) == 0))
           {
             if (([v16 markedForDeletion] & 1) == 0)
             {
               v21 = os_log_create("com.apple.notes", "CoreData");
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
               {
-                v22 = [v16 identifier];
-                v23 = [(ICAttachmentModel *)v14 attachment];
-                v24 = [v23 identifier];
+                identifier = [v16 identifier];
+                attachment5 = [(ICAttachmentModel *)selfCopy2 attachment];
+                identifier2 = [attachment5 identifier];
                 *buf = v28;
-                v36 = v22;
+                v36 = identifier;
                 v37 = 2112;
-                v38 = v24;
+                v38 = identifier2;
                 _os_log_debug_impl(&dword_214D51000, v21, OS_LOG_TYPE_DEBUG, "Gallery model deleting subattachment %@ %@", buf, 0x16u);
 
-                v14 = v29;
+                selfCopy2 = selfCopy;
               }
 
               [ICAttachment deleteAttachment:v16];
@@ -784,16 +784,16 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
             v20 = os_log_create("com.apple.notes", "CoreData");
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
             {
-              v25 = [v16 identifier];
-              v26 = [(ICAttachmentModel *)v29 attachment];
-              v27 = [v26 identifier];
+              identifier3 = [v16 identifier];
+              attachment6 = [(ICAttachmentModel *)selfCopy attachment];
+              identifier4 = [attachment6 identifier];
               *buf = v28;
-              v36 = v25;
+              v36 = identifier3;
               v37 = 2112;
-              v38 = v27;
+              v38 = identifier4;
               _os_log_debug_impl(&dword_214D51000, v20, OS_LOG_TYPE_DEBUG, "Gallery model un-deleting subattachment %@ %@", buf, 0x16u);
 
-              v14 = v29;
+              selfCopy2 = selfCopy;
             }
 
             [ICAttachment undeleteAttachment:v16];
@@ -803,7 +803,7 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
         }
 
         while (v12 != v15);
-        v12 = [v4 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        v12 = [attachment countByEnumeratingWithState:&v30 objects:v39 count:16];
       }
 
       while (v12);
@@ -818,10 +818,10 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 subAttachments];
+  attachment = [(ICAttachmentModel *)self attachment];
+  subAttachments = [attachment subAttachments];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [subAttachments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -833,13 +833,13 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subAttachments);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
-        v11 = [v9 identifier];
-        v12 = [v10 containsObject:v11];
+        attachmentIdentifiersOrderedSet = [(ICAttachmentGalleryModel *)self attachmentIdentifiersOrderedSet];
+        identifier = [v9 identifier];
+        v12 = [attachmentIdentifiersOrderedSet containsObject:identifier];
 
         if (v12)
         {
@@ -850,7 +850,7 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [subAttachments countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -859,14 +859,14 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
 
 - (BOOL)providesStandaloneTitleForNote
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 title];
+  attachment = [(ICAttachmentModel *)self attachment];
+  title = [attachment title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 defaultTitle];
-    v7 = [v4 isEqualToString:v6] ^ 1;
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    defaultTitle = [attachment2 defaultTitle];
+    v7 = [title isEqualToString:defaultTitle] ^ 1;
   }
 
   else
@@ -879,28 +879,28 @@ void __67__ICAttachmentGalleryModel_attachmentIdentifiersOrderedSetDocument__blo
 
 - (id)standaloneTitleForNote
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 title];
+  attachment = [(ICAttachmentModel *)self attachment];
+  title = [attachment title];
 
-  return v3;
+  return title;
 }
 
 - (id)searchableTextContent
 {
-  v2 = [(ICAttachmentGalleryModel *)self searchableStringArray];
-  v3 = [v2 componentsJoinedByString:@" "];
+  searchableStringArray = [(ICAttachmentGalleryModel *)self searchableStringArray];
+  v3 = [searchableStringArray componentsJoinedByString:@" "];
 
   return v3;
 }
 
 - (id)searchableStringArray
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__ICAttachmentGalleryModel_searchableStringArray__block_invoke;
   v6[3] = &unk_2781950D0;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(ICAttachmentGalleryModel *)self enumerateSubAttachmentsWithBlock:v6];
 
@@ -918,15 +918,15 @@ void __49__ICAttachmentGalleryModel_searchableStringArray__block_invoke(uint64_t
 {
   v7.receiver = self;
   v7.super_class = ICAttachmentGalleryModel;
-  v3 = [(ICAttachmentModel *)&v7 previewImageOrientation];
+  previewImageOrientation = [(ICAttachmentModel *)&v7 previewImageOrientation];
   if ([(ICAttachmentGalleryModel *)self subAttachmentCount])
   {
-    v4 = [(ICAttachmentGalleryModel *)self firstSubAttachment];
-    v5 = [v4 attachmentModel];
-    v3 = [v5 previewImageOrientation];
+    firstSubAttachment = [(ICAttachmentGalleryModel *)self firstSubAttachment];
+    attachmentModel = [firstSubAttachment attachmentModel];
+    previewImageOrientation = [attachmentModel previewImageOrientation];
   }
 
-  return v3;
+  return previewImageOrientation;
 }
 
 - (void)attachmentDidRefresh:(void *)a1 .cold.1(void *a1)

@@ -1,50 +1,50 @@
 @interface CBGrimaldiSamplingStrategyLegacy
 - (CBGrimaldiSamplingStrategyLegacy)init;
-- (unsigned)getNextNumberOfSamplesFromNewLux:(float)a3 withLastLux:(id)a4;
+- (unsigned)getNextNumberOfSamplesFromNewLux:(float)lux withLastLux:(id)lastLux;
 @end
 
 @implementation CBGrimaldiSamplingStrategyLegacy
 
 - (CBGrimaldiSamplingStrategyLegacy)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CBGrimaldiSamplingStrategyLegacy;
-  v5 = [(CBGrimaldiSamplingStrategyLegacy *)&v3 init];
-  if (v5)
+  selfCopy = [(CBGrimaldiSamplingStrategyLegacy *)&v3 init];
+  if (selfCopy)
   {
-    v5->_currentNumSamples = 4;
+    selfCopy->_currentNumSamples = 4;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (unsigned)getNextNumberOfSamplesFromNewLux:(float)a3 withLastLux:(id)a4
+- (unsigned)getNextNumberOfSamplesFromNewLux:(float)lux withLastLux:(id)lastLux
 {
   currentNumSamples = self->_currentNumSamples;
-  if (a3 < 0.0)
+  if (lux < 0.0)
   {
     return self->_currentNumSamples;
   }
 
-  if (a4)
+  if (lastLux)
   {
     if (self->_currentNumSamples == 4)
     {
-      if (a3 <= 750.0)
+      if (lux <= 750.0)
       {
         return 3;
       }
     }
 
-    else if (a3 > 850.0)
+    else if (lux > 850.0)
     {
       return 4;
     }
   }
 
-  else if (a3 > 800.0)
+  else if (lux > 800.0)
   {
     return 4;
   }

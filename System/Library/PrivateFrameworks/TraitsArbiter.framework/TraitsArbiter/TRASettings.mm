@@ -1,38 +1,38 @@
 @interface TRASettings
-- (TRASettings)initWithSettings:(id)a3;
-- (TRASettings)initWithZOrderLevelSettings:(id)a3 orientationSettings:(id)a4 ambientPresentationSettings:(id)a5 userInterfaceStyleSettings:(id)a6;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (TRASettings)initWithSettings:(id)settings;
+- (TRASettings)initWithZOrderLevelSettings:(id)settings orientationSettings:(id)orientationSettings ambientPresentationSettings:(id)presentationSettings userInterfaceStyleSettings:(id)styleSettings;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRASettings
 
-- (TRASettings)initWithZOrderLevelSettings:(id)a3 orientationSettings:(id)a4 ambientPresentationSettings:(id)a5 userInterfaceStyleSettings:(id)a6
+- (TRASettings)initWithZOrderLevelSettings:(id)settings orientationSettings:(id)orientationSettings ambientPresentationSettings:(id)presentationSettings userInterfaceStyleSettings:(id)styleSettings
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  settingsCopy = settings;
+  orientationSettingsCopy = orientationSettings;
+  presentationSettingsCopy = presentationSettings;
+  styleSettingsCopy = styleSettings;
   v24.receiver = self;
   v24.super_class = TRASettings;
   v14 = [(TRASettings *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [settingsCopy copy];
     zOrderLevelSettings = v14->_zOrderLevelSettings;
     v14->_zOrderLevelSettings = v15;
 
-    v17 = [v11 copy];
+    v17 = [orientationSettingsCopy copy];
     orientationSettings = v14->_orientationSettings;
     v14->_orientationSettings = v17;
 
-    v19 = [v12 copy];
+    v19 = [presentationSettingsCopy copy];
     ambientPresentationSettings = v14->_ambientPresentationSettings;
     v14->_ambientPresentationSettings = v19;
 
-    v21 = [v13 copy];
+    v21 = [styleSettingsCopy copy];
     userInterfaceStyleSettings = v14->_userInterfaceStyleSettings;
     v14->_userInterfaceStyleSettings = v21;
   }
@@ -40,31 +40,31 @@
   return v14;
 }
 
-- (TRASettings)initWithSettings:(id)a3
+- (TRASettings)initWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 zOrderLevelSettings];
-  v6 = [v4 orientationSettings];
-  v7 = [v4 ambientPresentationSettings];
-  v8 = [v4 userInterfaceStyleSettings];
+  settingsCopy = settings;
+  zOrderLevelSettings = [settingsCopy zOrderLevelSettings];
+  orientationSettings = [settingsCopy orientationSettings];
+  ambientPresentationSettings = [settingsCopy ambientPresentationSettings];
+  userInterfaceStyleSettings = [settingsCopy userInterfaceStyleSettings];
 
-  v9 = [(TRASettings *)self initWithZOrderLevelSettings:v5 orientationSettings:v6 ambientPresentationSettings:v7 userInterfaceStyleSettings:v8];
+  v9 = [(TRASettings *)self initWithZOrderLevelSettings:zOrderLevelSettings orientationSettings:orientationSettings ambientPresentationSettings:ambientPresentationSettings userInterfaceStyleSettings:userInterfaceStyleSettings];
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutableSettings allocWithZone:a3];
+  v4 = [TRAMutableSettings allocWithZone:zone];
 
   return [(TRASettings *)v4 initWithSettings:self];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(TRASettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRASettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -78,12 +78,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRASettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRASettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SPCalculationDatastore
 + (void)refreshCurrencyCache;
-- (id)performQuery:(id)a3;
+- (id)performQuery:(id)query;
 @end
 
 @implementation SPCalculationDatastore
@@ -16,9 +16,9 @@
   }
 }
 
-- (id)performQuery:(id)a3
+- (id)performQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = si_tracing_current_span();
   v6 = *(v5 + 16);
   v83 = *v5;
@@ -57,26 +57,26 @@
   }
 
   v15 = SPLogForSPLogCategoryTelemetry();
-  v16 = [v4 externalID];
-  if (v16 && os_signpost_enabled(v15))
+  externalID = [queryCopy externalID];
+  if (externalID && os_signpost_enabled(v15))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_BEGIN, v16, "calculationSpotlightLatency", " enableTelemetry=YES ", buf, 2u);
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v15, OS_SIGNPOST_INTERVAL_BEGIN, externalID, "calculationSpotlightLatency", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v17 = [v4 disabledBundles];
-  v18 = [v17 containsObject:@"com.apple.calculator"];
+  disabledBundles = [queryCopy disabledBundles];
+  v18 = [disabledBundles containsObject:@"com.apple.calculator"];
 
-  if (v18 & 1) != 0 || ([v4 isPeopleSearch] & 1) != 0 || (objc_msgSend(v4, "isScopedAppSearch"))
+  if (v18 & 1) != 0 || ([queryCopy isPeopleSearch] & 1) != 0 || (objc_msgSend(queryCopy, "isScopedAppSearch"))
   {
     v19 = 0;
   }
 
   else
   {
-    v28 = [v4 queryIdent];
-    v29 = [v4 queryContext];
-    v30 = [v29 searchString];
+    queryIdent = [queryCopy queryIdent];
+    queryContext = [queryCopy queryContext];
+    searchString = [queryContext searchString];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -85,17 +85,17 @@
     v90 = sub_10002E200;
     v91 = 0;
     v53 = [[SPCalculationDatastoreToken alloc] initWithStore:self];
-    [v4 externalID];
+    [queryCopy externalID];
     kdebug_trace();
     v31 = [SFStartLocalSearchFeedback alloc];
-    v32 = [v4 queryContext];
-    v57 = [v31 initWithInput:v30 triggerEvent:objc_msgSend(v32 indexType:"whyQuery") queryId:{2, v28}];
+    queryContext2 = [queryCopy queryContext];
+    v57 = [v31 initWithInput:searchString triggerEvent:objc_msgSend(queryContext2 indexType:"whyQuery") queryId:{2, queryIdent}];
 
     v33 = +[SPFeedbackProxy sharedProxy];
-    v34 = [v4 queryIdent];
-    v35 = [v4 connection];
-    v36 = [v35 bundleID];
-    [v33 sendFeedbackType:5 feedback:v57 queryId:v34 clientID:v36];
+    queryIdent2 = [queryCopy queryIdent];
+    connection = [queryCopy connection];
+    bundleID = [connection bundleID];
+    [v33 sendFeedbackType:5 feedback:v57 queryId:queryIdent2 clientID:bundleID];
 
     v37 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
     v38 = dispatch_group_create();
@@ -110,12 +110,12 @@
     v76 = v80;
     v77 = v39;
     v78 = v82;
-    v55 = v30;
+    v55 = searchString;
     v72 = v55;
     group = v38;
     v73 = group;
-    v40 = v4;
-    v79 = v28;
+    v40 = queryCopy;
+    v79 = queryIdent;
     v74 = v40;
     v75 = buf;
     v56 = objc_retainBlock(v71);
@@ -132,8 +132,8 @@
     v87[0] = &__kCFBooleanTrue;
     v87[1] = v41;
     v86[2] = CalculateKeyAllowConversions;
-    v43 = [v40 disabledBundles];
-    v44 = [v43 containsObject:@"com.apple.conversion"];
+    disabledBundles2 = [v40 disabledBundles];
+    v44 = [disabledBundles2 containsObject:@"com.apple.conversion"];
     v45 = &__kCFBooleanFalse;
     if (!v44)
     {
@@ -167,7 +167,7 @@
     v69 = v37;
     v49 = v53;
     v60 = v49;
-    v61 = self;
+    selfCopy = self;
     v64 = buf;
     v62 = v57;
     v63 = v40;

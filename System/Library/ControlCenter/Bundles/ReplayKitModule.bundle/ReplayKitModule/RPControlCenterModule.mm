@@ -1,9 +1,9 @@
 @interface RPControlCenterModule
 - (RPControlCenterModule)init;
-- (id)backgroundViewControllerForContext:(id)a3;
-- (id)contentViewControllerForContext:(id)a3;
+- (id)backgroundViewControllerForContext:(id)context;
+- (id)contentViewControllerForContext:(id)context;
 - (void)dealloc;
-- (void)setContentModuleContext:(id)a3;
+- (void)setContentModuleContext:(id)context;
 @end
 
 @implementation RPControlCenterModule
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446978;
@@ -46,22 +46,22 @@
     v9 = 1024;
     v10 = 29;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = [v4 environment];
+    environment = [contextCopy environment];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p, presentationContext: %ld", &v7, 0x26u);
   }
 
-  v5 = -[RPControlCenterMenuModuleViewController initWithClient:forBroadcastPicker:]([RPControlCenterMenuModuleViewController alloc], "initWithClient:forBroadcastPicker:", self->_client, [v4 environment] == &dword_0 + 2);
+  v5 = -[RPControlCenterMenuModuleViewController initWithClient:forBroadcastPicker:]([RPControlCenterMenuModuleViewController alloc], "initWithClient:forBroadcastPicker:", self->_client, [contextCopy environment] == &dword_0 + 2);
   objc_storeStrong(&self->_currentContentViewController, v5);
   [(RPControlCenterMenuModuleViewController *)self->_currentContentViewController setContentModuleContext:self->_contentModuleContext];
 
   return v5;
 }
 
-- (id)backgroundViewControllerForContext:(id)a3
+- (id)backgroundViewControllerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136446978;
@@ -69,21 +69,21 @@
     v14 = 1024;
     v15 = 47;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = [v4 environment];
+    environment = [contextCopy environment];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p, presentationContext: %ld", &v12, 0x26u);
   }
 
   v5 = [[RPControlCenterModuleBackgroundViewController alloc] initWithClient:self->_client];
   [(RPControlCenterModuleBackgroundViewController *)v5 setShowsMicrophoneButton:1];
   [(RPControlCenterModuleBackgroundViewController *)v5 setContentViewController:self->_currentContentViewController];
-  if ([v4 environment] == &dword_0 + 2)
+  if ([contextCopy environment] == &dword_0 + 2)
   {
     [(RPControlCenterModuleBackgroundViewController *)v5 setShowsMicrophoneButton:[(RPControlCenterClient *)self->_client shouldShowMicButton]];
-    v6 = [(RPControlCenterModuleBackgroundViewController *)self->_currentBackgroundViewController contentViewController];
-    v7 = v6;
-    if (self->_currentBackgroundViewController && [(RPControlCenterModule *)v6 isBroadcastPicker])
+    contentViewController = [(RPControlCenterModuleBackgroundViewController *)self->_currentBackgroundViewController contentViewController];
+    v7 = contentViewController;
+    if (self->_currentBackgroundViewController && [(RPControlCenterModule *)contentViewController isBroadcastPicker])
     {
       if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -93,9 +93,9 @@
         v14 = 1024;
         v15 = 61;
         v16 = 2048;
-        v17 = v7;
+        selfCopy = v7;
         v18 = 2048;
-        v19 = currentBackgroundViewController;
+        environment = currentBackgroundViewController;
         _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d removing view controllers: %p %p", &v12, 0x26u);
       }
 
@@ -114,9 +114,9 @@
   return v5;
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136446722;
@@ -124,12 +124,12 @@
     v8 = 1024;
     v9 = 76;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", &v6, 0x1Cu);
   }
 
   contentModuleContext = self->_contentModuleContext;
-  self->_contentModuleContext = v4;
+  self->_contentModuleContext = contextCopy;
 }
 
 - (void)dealloc
@@ -141,7 +141,7 @@
     v8 = 1024;
     v9 = 85;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d  %p", buf, 0x1Cu);
   }
 

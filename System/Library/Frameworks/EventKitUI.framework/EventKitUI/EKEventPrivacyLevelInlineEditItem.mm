@@ -1,51 +1,51 @@
 @interface EKEventPrivacyLevelInlineEditItem
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (BOOL)shouldAppear;
-- (double)footerHeightForWidth:(double)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (double)footerHeightForWidth:(double)width;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)footerTitle;
-- (void)_switchChanged:(id)a3;
+- (void)_switchChanged:(id)changed;
 - (void)refreshFromCalendarItemAndStore;
 @end
 
 @implementation EKEventPrivacyLevelInlineEditItem
 
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints
 {
-  v3 = a3;
-  v4 = [v3 source];
-  v5 = [v4 constraints];
-  v6 = [v5 supportsPrivateEvents];
+  constraintsCopy = constraints;
+  source = [constraintsCopy source];
+  constraints = [source constraints];
+  supportsPrivateEvents = [constraints supportsPrivateEvents];
 
-  v7 = [v3 sharingStatus];
-  if (v7 == 2)
+  sharingStatus = [constraintsCopy sharingStatus];
+  if (sharingStatus == 2)
   {
     return 0;
   }
 
   else
   {
-    return v6;
+    return supportsPrivateEvents;
   }
 }
 
 - (BOOL)shouldAppear
 {
-  v2 = [(EKEventEditItem *)self event];
-  v3 = [v2 allowsPrivacyLevelModifications];
+  event = [(EKEventEditItem *)self event];
+  allowsPrivacyLevelModifications = [event allowsPrivacyLevelModifications];
 
-  return v3;
+  return allowsPrivacyLevelModifications;
 }
 
 - (void)refreshFromCalendarItemAndStore
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(EKEventEditItem *)self event];
-  v4 = [v3 privacyLevel];
+  event = [(EKEventEditItem *)self event];
+  privacyLevel = [event privacyLevel];
 
-  self->_originalSwitchState = v4 != 0;
-  self->_currentSwitchState = v4 != 0;
+  self->_originalSwitchState = privacyLevel != 0;
+  self->_currentSwitchState = privacyLevel != 0;
   v5 = kEKUILogEventEditorHandle;
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_INFO))
   {
@@ -70,7 +70,7 @@
   }
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v4 = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
   v5 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -79,44 +79,44 @@
   [(EKUITableViewCell *)v4 setAccessoryView:v5];
   v6 = EventKitUIBundle();
   v7 = [v6 localizedStringForKey:@"Private" value:&stru_1F4EF6790 table:0];
-  v8 = [(EKUITableViewCell *)v4 textLabel];
-  [v8 setText:v7];
+  textLabel = [(EKUITableViewCell *)v4 textLabel];
+  [textLabel setText:v7];
 
   return v4;
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_currentSwitchState != self->_originalSwitchState)
   {
     if (self->_currentSwitchState)
     {
-      v4 = [(EKEventEditItem *)self event];
-      v5 = [v4 calendar];
-      v6 = [v5 source];
-      v7 = [v6 preferredEventPrivateValue];
+      event = [(EKEventEditItem *)self event];
+      calendar = [event calendar];
+      source = [calendar source];
+      preferredEventPrivateValue = [source preferredEventPrivateValue];
     }
 
     else
     {
-      v7 = 0;
+      preferredEventPrivateValue = 0;
     }
 
-    v8 = [(EKEventEditItem *)self event];
-    [v8 setPrivacyLevel:v7];
+    event2 = [(EKEventEditItem *)self event];
+    [event2 setPrivacyLevel:preferredEventPrivateValue];
 
     v9 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [(EKEventEditItem *)self event];
-      v12 = [v11 privacyLevelString];
-      v13 = [(EKEventEditItem *)self event];
+      event3 = [(EKEventEditItem *)self event];
+      privacyLevelString = [event3 privacyLevelString];
+      event4 = [(EKEventEditItem *)self event];
       v15 = 138412546;
-      v16 = v12;
+      v16 = privacyLevelString;
       v17 = 2112;
-      v18 = v13;
+      v18 = event4;
       _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_INFO, "Setting the event's privacy level to [%@].  Event: [%@]", &v15, 0x16u);
     }
 
@@ -127,7 +127,7 @@
   return 1;
 }
 
-- (double)footerHeightForWidth:(double)a3
+- (double)footerHeightForWidth:(double)width
 {
   result = *MEMORY[0x1E69DE3D0];
   if (!self->_currentSwitchState)
@@ -154,10 +154,10 @@
   return v3;
 }
 
-- (void)_switchChanged:(id)a3
+- (void)_switchChanged:(id)changed
 {
   v13 = *MEMORY[0x1E69E9840];
-  self->_currentSwitchState = [a3 isOn];
+  self->_currentSwitchState = [changed isOn];
   [(EKCalendarItemEditItem *)self notifyDidStartEditing];
   [(EKCalendarItemEditItem *)self notifyDidEndEditing];
   v4 = kEKUILogHandle;

@@ -22,20 +22,20 @@
 
 + (id)interface
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&interface_weakInterface);
   if (!WeakRetained)
   {
     v4 = MEMORY[0x1E696B0D0];
-    v5 = [v2 interfaceProtocol];
-    WeakRetained = [v4 interfaceWithProtocol:v5];
+    interfaceProtocol = [selfCopy interfaceProtocol];
+    WeakRetained = [v4 interfaceWithProtocol:interfaceProtocol];
 
-    [v2 configureInterface:WeakRetained];
+    [selfCopy configureInterface:WeakRetained];
     objc_storeWeak(&interface_weakInterface, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }

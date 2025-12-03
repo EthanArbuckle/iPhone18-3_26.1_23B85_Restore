@@ -1,16 +1,16 @@
 @interface NRPowerAssertion
 + (id)sharedInstance;
-+ (unsigned)takeAssertionWithSuffix:(id)a3;
++ (unsigned)takeAssertionWithSuffix:(id)suffix;
 - (BOOL)containsProcessGroup;
 - (NRPowerAssertion)init;
-- (id)addActivityWithName:(id)a3;
+- (id)addActivityWithName:(id)name;
 - (void)_powerAssertionLockoutTimeout;
-- (void)_removeActivityWithUUID:(id)a3;
-- (void)addActivityGroup:(id)a3;
-- (void)dumpProcesses:(id)a3 isAdded:(BOOL)a4;
+- (void)_removeActivityWithUUID:(id)d;
+- (void)addActivityGroup:(id)group;
+- (void)dumpProcesses:(id)processes isAdded:(BOOL)added;
 - (void)releaseAssertion;
-- (void)removeActivityWithUUID:(id)a3;
-- (void)renameAssertionWithSuffix:(id)a3;
+- (void)removeActivityWithUUID:(id)d;
+- (void)renameAssertionWithSuffix:(id)suffix;
 - (void)takeAssertion;
 @end
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_100089CF8;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B38C0 != -1)
   {
     dispatch_once(&qword_1001B38C0, block);
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (void)addActivityGroup:(id)a3
+- (void)addActivityGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100089DC8;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupCopy;
+  v6 = groupCopy;
   dispatch_async(queue, v7);
 }
 
@@ -76,10 +76,10 @@
   return v2;
 }
 
-- (void)dumpProcesses:(id)a3 isAdded:(BOOL)a4
+- (void)dumpProcesses:(id)processes isAdded:(BOOL)added
 {
-  v4 = a4;
-  v6 = a3;
+  addedCopy = added;
+  processesCopy = processes;
   v7 = [@"NRPowerAssertion activities: " mutableCopy];
   v23 = 0u;
   v24 = 0u;
@@ -91,7 +91,7 @@
   {
     v10 = v9;
     v11 = *v24;
-    if (v4)
+    if (addedCopy)
     {
       v12 = @"+";
     }
@@ -119,17 +119,17 @@
           [v7 appendString:{@", "}];
         }
 
-        if (v6 && [v15 isEqual:v6])
+        if (processesCopy && [v15 isEqual:processesCopy])
         {
           [v7 appendString:v22];
         }
 
-        v17 = [v16 name];
+        name = [v16 name];
 
-        if (v17)
+        if (name)
         {
-          v18 = [v16 name];
-          [v7 appendString:v18];
+          name2 = [v16 name];
+          [v7 appendString:name2];
         }
 
         v13 = 0;
@@ -201,9 +201,9 @@ LABEL_11:
   return v8;
 }
 
-- (id)addActivityWithName:(id)a3
+- (id)addActivityWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -216,9 +216,9 @@ LABEL_11:
   block[2] = sub_10008A40C;
   block[3] = &unk_100175570;
   block[4] = self;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -227,14 +227,14 @@ LABEL_11:
   return v7;
 }
 
-+ (unsigned)takeAssertionWithSuffix:(id)a3
++ (unsigned)takeAssertionWithSuffix:(id)suffix
 {
-  v3 = a3;
+  suffixCopy = suffix;
   AssertionID = 0;
-  if (v3)
+  if (suffixCopy)
   {
     v4 = [@"com.apple.nanoregistry" stringByAppendingString:@"."];
-    v5 = [v4 stringByAppendingString:v3];
+    v5 = [v4 stringByAppendingString:suffixCopy];
   }
 
   else
@@ -293,17 +293,17 @@ LABEL_11:
   self->_assertionSuffix = 0;
 }
 
-- (void)renameAssertionWithSuffix:(id)a3
+- (void)renameAssertionWithSuffix:(id)suffix
 {
-  v4 = a3;
+  suffixCopy = suffix;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008AAA4;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = suffixCopy;
+  v6 = suffixCopy;
   dispatch_async(queue, v7);
 }
 
@@ -318,22 +318,22 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)_removeActivityWithUUID:(id)a3
+- (void)_removeActivityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_liveActivityInfos objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_liveActivityInfos objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
     liveActivities = self->_liveActivities;
-    v8 = [v5 name];
-    [(NSCountedSet *)liveActivities removeObject:v8];
+    name = [v5 name];
+    [(NSCountedSet *)liveActivities removeObject:name];
 
     LOBYTE(liveActivities) = [(NRPowerAssertion *)self containsProcessGroup];
-    v9 = [v6 uuid];
-    [(NRPowerAssertion *)self dumpProcesses:v9 isAdded:0];
+    uuid = [v6 uuid];
+    [(NRPowerAssertion *)self dumpProcesses:uuid isAdded:0];
 
-    [(NSMutableDictionary *)self->_liveActivityInfos removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_liveActivityInfos removeObjectForKey:dCopy];
     if ((liveActivities & 1) == 0)
     {
       [(NRPowerAssertion *)self releaseAssertion];
@@ -397,11 +397,11 @@ LABEL_11:
   }
 }
 
-- (void)removeActivityWithUUID:(id)a3
+- (void)removeActivityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -409,7 +409,7 @@ LABEL_11:
     v7[2] = sub_10008AFE4;
     v7[3] = &unk_100175598;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }

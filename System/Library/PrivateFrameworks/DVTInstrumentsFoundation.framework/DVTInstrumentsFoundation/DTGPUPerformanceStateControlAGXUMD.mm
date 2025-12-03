@@ -1,25 +1,25 @@
 @interface DTGPUPerformanceStateControlAGXUMD
-- (DTGPUPerformanceStateControlAGXUMD)initWithDevice:(id)a3;
+- (DTGPUPerformanceStateControlAGXUMD)initWithDevice:(id)device;
 - (id)currentState;
 - (id)disable;
 @end
 
 @implementation DTGPUPerformanceStateControlAGXUMD
 
-- (DTGPUPerformanceStateControlAGXUMD)initWithDevice:(id)a3
+- (DTGPUPerformanceStateControlAGXUMD)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = DTGPUPerformanceStateControlAGXUMD;
   v5 = [(DTGPUPerformanceStateControlAGXUMD *)&v10 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = deviceCopy;
     while ((objc_opt_respondsToSelector() & 1) != 0)
     {
-      v7 = [v6 baseObject];
+      baseObject = [v6 baseObject];
 
-      v6 = v7;
+      v6 = baseObject;
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
@@ -45,11 +45,11 @@ LABEL_12:
   v3 = [(AGXConsistentStateDevice *)self->_agxDevice getConsistentPerfStateInfoAndReset:1];
   if (v3)
   {
-    v4 = [(AGXConsistentStateDevice *)self->_agxDevice getConsistentPerfStateMappingTable];
-    v5 = v4;
-    if (v4)
+    getConsistentPerfStateMappingTable = [(AGXConsistentStateDevice *)self->_agxDevice getConsistentPerfStateMappingTable];
+    v5 = getConsistentPerfStateMappingTable;
+    if (getConsistentPerfStateMappingTable)
     {
-      v28 = [v4 objectForKeyedSubscript:@"min_pstate"];
+      v28 = [getConsistentPerfStateMappingTable objectForKeyedSubscript:@"min_pstate"];
       v27 = [v5 objectForKeyedSubscript:@"mid_pstate"];
       v6 = [v5 objectForKeyedSubscript:@"max_pstate"];
       v7 = v6;
@@ -57,9 +57,9 @@ LABEL_12:
       if (v28 && v27 && v6)
       {
         v26 = v6;
-        v9 = [v28 unsignedIntValue];
-        v10 = [v27 unsignedIntValue];
-        v11 = [v26 unsignedIntValue];
+        unsignedIntValue = [v28 unsignedIntValue];
+        unsignedIntValue2 = [v27 unsignedIntValue];
+        unsignedIntValue3 = [v26 unsignedIntValue];
         v8 = objc_opt_new();
         v29[0] = @"accelerator-id";
         v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_acceleratorId];
@@ -82,7 +82,7 @@ LABEL_12:
         v17 = [v15 numberWithUnsignedInt:{objc_msgSend(v16, "unsignedIntValue")}];
         v30[4] = v17;
         v29[5] = @"mapping";
-        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(v10 << 16) | (v9 << 24) | (v11 << 8)];
+        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(unsignedIntValue2 << 16) | (unsignedIntValue << 24) | (unsignedIntValue3 << 8)];
         v30[5] = v18;
         v7 = v26;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:6];
@@ -108,10 +108,10 @@ LABEL_12:
 
 - (id)disable
 {
-  v3 = [(DTGPUPerformanceStateControlAGXUMD *)self currentState];
+  currentState = [(DTGPUPerformanceStateControlAGXUMD *)self currentState];
   [(AGXConsistentStateDevice *)self->_agxDevice disableConsistentPerfState];
 
-  return v3;
+  return currentState;
 }
 
 @end

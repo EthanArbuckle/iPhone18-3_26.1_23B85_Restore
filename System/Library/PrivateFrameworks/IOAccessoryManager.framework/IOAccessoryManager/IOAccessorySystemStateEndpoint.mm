@@ -1,9 +1,9 @@
 @interface IOAccessorySystemStateEndpoint
-- (IOAccessorySystemStateEndpoint)initWithService:(unsigned int)a3;
+- (IOAccessorySystemStateEndpoint)initWithService:(unsigned int)service;
 - (void)dealloc;
 - (void)notifyBootComplete;
-- (void)notifyUserActive:(BOOL)a3;
-- (void)notifyUserPresent:(BOOL)a3;
+- (void)notifyUserActive:(BOOL)active;
+- (void)notifyUserPresent:(BOOL)present;
 @end
 
 @implementation IOAccessorySystemStateEndpoint
@@ -32,16 +32,16 @@
 - (void)notifyBootComplete
 {
   v7 = *MEMORY[0x277D85DE8];
-  mach_error_string(a1);
+  mach_error_string(self);
   OUTLINED_FUNCTION_0_6();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0x16u);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyUserActive:(BOOL)a3
+- (void)notifyUserActive:(BOOL)active
 {
-  input = a3;
+  input = active;
   v3 = IOConnectCallMethod(self->_connection, 1u, &input, 1u, 0, 0, 0, 0, 0, 0);
   if (v3)
   {
@@ -53,9 +53,9 @@
   }
 }
 
-- (void)notifyUserPresent:(BOOL)a3
+- (void)notifyUserPresent:(BOOL)present
 {
-  input = a3;
+  input = present;
   v3 = IOConnectCallMethod(self->_connection, 2u, &input, 1u, 0, 0, 0, 0, 0, 0);
   if (v3)
   {
@@ -67,7 +67,7 @@
   }
 }
 
-- (IOAccessorySystemStateEndpoint)initWithService:(unsigned int)a3
+- (IOAccessorySystemStateEndpoint)initWithService:(unsigned int)service
 {
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
@@ -75,11 +75,11 @@
   v4 = [(IOAccessorySystemStateEndpoint *)&v12 init];
   v5 = v4;
   v6 = 0;
-  if (a3 && v4)
+  if (service && v4)
   {
-    v4->_service = a3;
-    IOObjectRetain(a3);
-    v7 = IOServiceOpen(a3, *MEMORY[0x277D85F48], 0, v5 + 3);
+    v4->_service = service;
+    IOObjectRetain(service);
+    v7 = IOServiceOpen(service, *MEMORY[0x277D85F48], 0, v5 + 3);
     if (v7)
     {
       v8 = v7;

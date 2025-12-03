@@ -1,8 +1,8 @@
 @interface TriggerRootViewController
-- (_TtC10WorkflowUI25TriggerRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)createAutomationCoordinatorDidCancel:(id)a3;
-- (void)createAutomationCoordinatorDidFinish:(id)a3;
-- (void)dataSourceDidUpdateTriggers:(id)a3;
+- (_TtC10WorkflowUI25TriggerRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)createAutomationCoordinatorDidCancel:(id)cancel;
+- (void)createAutomationCoordinatorDidFinish:(id)finish;
+- (void)dataSourceDidUpdateTriggers:(id)triggers;
 - (void)startCreateNewPersonalAutomation;
 - (void)viewDidLoad;
 @end
@@ -11,45 +11,45 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TriggerRootViewController.viewDidLoad()();
 }
 
 - (void)startCreateNewPersonalAutomation
 {
-  v2 = self;
+  selfCopy = self;
   TriggerRootViewController.startCreateNewPersonalAutomation()();
 }
 
-- (void)createAutomationCoordinatorDidCancel:(id)a3
+- (void)createAutomationCoordinatorDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  TriggerRootViewController.createAutomationCoordinatorDidCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  TriggerRootViewController.createAutomationCoordinatorDidCancel(_:)(cancelCopy);
 }
 
-- (void)createAutomationCoordinatorDidFinish:(id)a3
+- (void)createAutomationCoordinatorDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  TriggerRootViewController.createAutomationCoordinatorDidFinish(_:)(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  TriggerRootViewController.createAutomationCoordinatorDidFinish(_:)(finishCopy);
 }
 
-- (void)dataSourceDidUpdateTriggers:(id)a3
+- (void)dataSourceDidUpdateTriggers:(id)triggers
 {
-  v4 = a3;
-  v5 = self;
-  TriggerRootViewController.dataSourceDidUpdateTriggers(_:)(v5);
+  triggersCopy = triggers;
+  selfCopy = self;
+  TriggerRootViewController.dataSourceDidUpdateTriggers(_:)(selfCopy);
 }
 
-- (_TtC10WorkflowUI25TriggerRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10WorkflowUI25TriggerRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   TriggerRootViewController.init(nibName:bundle:)();
 }
 

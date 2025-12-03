@@ -1,10 +1,10 @@
 @interface PKWelcomeController
 + (void)resetEducationPane;
-- (BOOL)presentHandwritingEducationPaneIfNecessaryIn:(id)a3 withFeatures:(unint64_t)a4;
+- (BOOL)presentHandwritingEducationPaneIfNecessaryIn:(id)in withFeatures:(unint64_t)features;
 - (PKWelcomeController)init;
 - (UIViewController)pencilEducationPanePresenter;
 - (void)dismissPresentedPencilEducationPane;
-- (void)presentEducationPaneOfType:(int64_t)a3 in:(id)a4 withFeatures:(unint64_t)a5;
+- (void)presentEducationPaneOfType:(int64_t)type in:(id)in withFeatures:(unint64_t)features;
 - (void)toolPickerDidShow;
 @end
 
@@ -15,11 +15,11 @@
   v6.receiver = self;
   v6.super_class = PKWelcomeController;
   v2 = [(PKWelcomeController *)&v6 init];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:v2 selector:sel_toolPickerDidShow name:@"PKToolPickerDidShowNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_toolPickerDidShow name:@"PKToolPickerDidShowNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:v2 selector:sel_didEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v2 selector:sel_didEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
   return v2;
 }
@@ -30,19 +30,19 @@
   [(PKHandwritingEducationPaneSettings *)v2 userHasDrawn];
 }
 
-- (BOOL)presentHandwritingEducationPaneIfNecessaryIn:(id)a3 withFeatures:(unint64_t)a4
+- (BOOL)presentHandwritingEducationPaneIfNecessaryIn:(id)in withFeatures:(unint64_t)features
 {
-  v6 = a3;
-  v7 = [(PKWelcomeController *)self pencilEducationPanePresenter];
+  inCopy = in;
+  pencilEducationPanePresenter = [(PKWelcomeController *)self pencilEducationPanePresenter];
 
-  if (!v7 && (hasCheckedThisLaunch & 1) == 0 && (hasCheckedThisLaunch = 1, +[PKHandwritingEducationPaneSettings sharedInstance](), v8 = objc_claimAutoreleasedReturnValue(), User = [(PKHandwritingEducationPaneSettings *)v8 isCurrentSystemVersionEqualToLastUserDrawn], v8, User) && (+[PKHandwritingEducationPaneSettings sharedInstance], v10 = objc_claimAutoreleasedReturnValue(), v11 = [(PKHandwritingEducationPaneSettings *)v10 seenFeatures], v10, PKIsPadDevice()) && CHGetPersonalizedSynthesisSupportState() >= 3 && PKCurrentAppSupportsRefinement())
+  if (!pencilEducationPanePresenter && (hasCheckedThisLaunch & 1) == 0 && (hasCheckedThisLaunch = 1, +[PKHandwritingEducationPaneSettings sharedInstance](), v8 = objc_claimAutoreleasedReturnValue(), User = [(PKHandwritingEducationPaneSettings *)v8 isCurrentSystemVersionEqualToLastUserDrawn], v8, User) && (+[PKHandwritingEducationPaneSettings sharedInstance], v10 = objc_claimAutoreleasedReturnValue(), v11 = [(PKHandwritingEducationPaneSettings *)v10 seenFeatures], v10, PKIsPadDevice()) && CHGetPersonalizedSynthesisSupportState() >= 3 && PKCurrentAppSupportsRefinement())
   {
-    v12 = a4 & ~v11;
-    v13 = [objc_opt_class() hasAutoRefineLocaleEnabled];
+    v12 = features & ~v11;
+    hasAutoRefineLocaleEnabled = [objc_opt_class() hasAutoRefineLocaleEnabled];
     v14 = 0;
-    if (v12 && v13)
+    if (v12 && hasAutoRefineLocaleEnabled)
     {
-      [(PKWelcomeController *)self presentEducationPaneOfType:8 in:v6 withFeatures:v12];
+      [(PKWelcomeController *)self presentEducationPaneOfType:8 in:inCopy withFeatures:v12];
       v14 = 1;
     }
   }
@@ -55,9 +55,9 @@
   return v14;
 }
 
-- (void)presentEducationPaneOfType:(int64_t)a3 in:(id)a4 withFeatures:(unint64_t)a5
+- (void)presentEducationPaneOfType:(int64_t)type in:(id)in withFeatures:(unint64_t)features
 {
-  v8 = a4;
+  inCopy = in;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2050000000;
@@ -76,8 +76,8 @@
 
   v10 = v9;
   _Block_object_dispose(&v35, 8);
-  v11 = [v9 controllerWithType:a3 buttonType:0 deviceType:0 delegate:self];
-  [v11 setFeatures:a5];
+  v11 = [v9 controllerWithType:type buttonType:0 deviceType:0 delegate:self];
+  [v11 setFeatures:features];
   v12 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v11];
   v35 = 0;
   v36 = &v35;
@@ -100,25 +100,25 @@
   [v13 preferredContentSize];
   v16 = v15;
   v18 = v17;
-  v19 = [v12 view];
-  v20 = [v19 widthAnchor];
-  v21 = [v20 constraintEqualToConstant:v16];
+  view = [v12 view];
+  widthAnchor = [view widthAnchor];
+  v21 = [widthAnchor constraintEqualToConstant:v16];
   [v21 setActive:1];
 
-  v22 = [v12 view];
-  v23 = [v22 heightAnchor];
-  v24 = [v23 constraintEqualToConstant:v18];
+  view2 = [v12 view];
+  heightAnchor = [view2 heightAnchor];
+  v24 = [heightAnchor constraintEqualToConstant:v18];
   [v24 setActive:1];
 
-  v25 = [v12 view];
-  v26 = [v25 layer];
-  [v26 setCornerRadius:16.0];
+  view3 = [v12 view];
+  layer = [view3 layer];
+  [layer setCornerRadius:16.0];
 
   [v12 setModalPresentationStyle:2];
-  [(PKWelcomeController *)self setPencilEducationPanePresenter:v8];
-  [v8 presentModalViewController:v12 withTransition:3];
+  [(PKWelcomeController *)self setPencilEducationPanePresenter:inCopy];
+  [inCopy presentModalViewController:v12 withTransition:3];
   v27 = +[PKHandwritingEducationPaneSettings sharedInstance];
-  v28 = [(PKHandwritingEducationPaneSettings *)v27 seenFeatures];
+  seenFeatures = [(PKHandwritingEducationPaneSettings *)v27 seenFeatures];
 
   v29 = +[PKHandwritingEducationPaneSettings sharedInstance];
   [(PKHandwritingEducationPaneSettings *)v29 setSeenFeatures:?];
@@ -126,8 +126,8 @@
 
 - (void)dismissPresentedPencilEducationPane
 {
-  v3 = [(PKWelcomeController *)self pencilEducationPanePresenter];
-  [v3 dismissModalViewControllerWithTransition:7];
+  pencilEducationPanePresenter = [(PKWelcomeController *)self pencilEducationPanePresenter];
+  [pencilEducationPanePresenter dismissModalViewControllerWithTransition:7];
 
   [(PKWelcomeController *)self setPencilEducationPanePresenter:0];
 }

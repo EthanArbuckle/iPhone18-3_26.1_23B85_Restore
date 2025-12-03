@@ -1,43 +1,43 @@
 @interface RTBatteryManager
-+ (id)externalConnectionStateToString:(int64_t)a3;
-- (RTBatteryManager)initWithQueue:(id)a3;
-- (RTBatteryManager)initWithQueue:(id)a3 notificationHelper:(id)a4;
-- (void)_shutdownWithHandler:(id)a3;
++ (id)externalConnectionStateToString:(int64_t)string;
+- (RTBatteryManager)initWithQueue:(id)queue;
+- (RTBatteryManager)initWithQueue:(id)queue notificationHelper:(id)helper;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)dealloc;
-- (void)fetchCurrentBatteryPercent:(id)a3;
-- (void)fetchCurrentChargerConnectionState:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)setMonitorBatteryStatusChanges:(BOOL)a3;
+- (void)fetchCurrentBatteryPercent:(id)percent;
+- (void)fetchCurrentChargerConnectionState:(id)state;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)setMonitorBatteryStatusChanges:(BOOL)changes;
 - (void)startMonitoringBatteryStatusChanges;
 - (void)stopMonitoringBatteryStatusChanges;
-- (void)updateBatteryStatus:(int64_t)a3;
+- (void)updateBatteryStatus:(int64_t)status;
 @end
 
 @implementation RTBatteryManager
 
-- (RTBatteryManager)initWithQueue:(id)a3
+- (RTBatteryManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = objc_opt_new();
-  v6 = [(RTBatteryManager *)self initWithQueue:v4 notificationHelper:v5];
+  v6 = [(RTBatteryManager *)self initWithQueue:queueCopy notificationHelper:v5];
 
   return v6;
 }
 
-- (RTBatteryManager)initWithQueue:(id)a3 notificationHelper:(id)a4
+- (RTBatteryManager)initWithQueue:(id)queue notificationHelper:(id)helper
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  queueCopy = queue;
+  helperCopy = helper;
+  v8 = helperCopy;
+  if (!queueCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -48,7 +48,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!helperCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -63,24 +63,24 @@ LABEL_12:
 
   v15.receiver = self;
   v15.super_class = RTBatteryManager;
-  v9 = [(RTNotifier *)&v15 initWithQueue:v6];
+  v9 = [(RTNotifier *)&v15 initWithQueue:queueCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_notificationHelper, a4);
+    objc_storeStrong(&v9->_notificationHelper, helper);
     v10->_externalConnectionState = [objc_opt_class() currentExternalConnectionState];
   }
 
   self = v10;
-  v11 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v11;
+  return selfCopy;
 }
 
-+ (id)externalConnectionStateToString:(int64_t)a3
++ (id)externalConnectionStateToString:(int64_t)string
 {
-  if (a3)
+  if (string)
   {
     return @"Connected";
   }
@@ -99,28 +99,28 @@ LABEL_10:
   [(RTBatteryManager *)&v3 dealloc];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(RTBatteryManager *)self _unregisterForNotifications];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v7 = +[(RTNotification *)RTBatteryManagerNotificationChargerConnected];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [nameCopy isEqualToString:v7];
 
   if (v8)
   {
-    if ([(RTNotifier *)self getNumberOfObservers:v6]== 1)
+    if ([(RTNotifier *)self getNumberOfObservers:nameCopy]== 1)
     {
       [(RTBatteryManager *)self setMonitorBatteryStatusChanges:1];
     }
@@ -128,29 +128,29 @@ LABEL_10:
     v9 = [[RTBatteryManagerNotificationChargerConnected alloc] initWithChargerConnected:self->_externalConnectionState == 1];
     if (v9)
     {
-      [(RTNotifier *)self postNotification:v9 toObserver:v10];
+      [(RTNotifier *)self postNotification:v9 toObserver:observerCopy];
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v5 = +[(RTNotification *)RTBatteryManagerNotificationChargerConnected];
-  v6 = [v7 isEqualToString:v5];
+  v6 = [nameCopy isEqualToString:v5];
 
-  if (v6 && ![(RTNotifier *)self getNumberOfObservers:v7])
+  if (v6 && ![(RTNotifier *)self getNumberOfObservers:nameCopy])
   {
     [(RTBatteryManager *)self setMonitorBatteryStatusChanges:0];
   }
 }
 
-- (void)setMonitorBatteryStatusChanges:(BOOL)a3
+- (void)setMonitorBatteryStatusChanges:(BOOL)changes
 {
-  if (self->_monitorBatteryStatusChanges != a3)
+  if (self->_monitorBatteryStatusChanges != changes)
   {
-    self->_monitorBatteryStatusChanges = a3;
-    if (a3)
+    self->_monitorBatteryStatusChanges = changes;
+    if (changes)
     {
       [(RTBatteryManager *)self startMonitoringBatteryStatusChanges];
     }
@@ -225,12 +225,12 @@ uint64_t __55__RTBatteryManager_startMonitoringBatteryStatusChanges__block_invok
   [(RTDarwinNotificationHelper *)self->_notificationHelper removeObserverForNotificationName:@"com.apple.system.powermanagement.poweradapter"];
 }
 
-- (void)updateBatteryStatus:(int64_t)a3
+- (void)updateBatteryStatus:(int64_t)status
 {
-  v3 = a3;
+  statusCopy = status;
   v14 = *MEMORY[0x277D85DE8];
   externalConnectionState = self->_externalConnectionState;
-  self->_externalConnectionState = a3;
+  self->_externalConnectionState = status;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityBattery);
@@ -245,12 +245,12 @@ uint64_t __55__RTBatteryManager_startMonitoringBatteryStatusChanges__block_invok
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "charger connected state changed from, %{public}@, to, %{public}@", &v10, 0x16u);
     }
 
-    v3 = self->_externalConnectionState;
+    statusCopy = self->_externalConnectionState;
   }
 
-  if (externalConnectionState != v3)
+  if (externalConnectionState != statusCopy)
   {
-    v9 = [[RTBatteryManagerNotificationChargerConnected alloc] initWithChargerConnected:v3 == 1];
+    v9 = [[RTBatteryManagerNotificationChargerConnected alloc] initWithChargerConnected:statusCopy == 1];
     if (v9)
     {
       [(RTNotifier *)self postNotification:v9];
@@ -258,20 +258,20 @@ uint64_t __55__RTBatteryManager_startMonitoringBatteryStatusChanges__block_invok
   }
 }
 
-- (void)fetchCurrentChargerConnectionState:(id)a3
+- (void)fetchCurrentChargerConnectionState:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __55__RTBatteryManager_fetchCurrentChargerConnectionState___block_invoke;
     v7[3] = &unk_2788C4D38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = stateCopy;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -290,11 +290,11 @@ uint64_t __55__RTBatteryManager_startMonitoringBatteryStatusChanges__block_invok
   }
 }
 
-- (void)fetchCurrentBatteryPercent:(id)a3
+- (void)fetchCurrentBatteryPercent:(id)percent
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  percentCopy = percent;
+  if (!percentCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -308,15 +308,15 @@ uint64_t __55__RTBatteryManager_startMonitoringBatteryStatusChanges__block_invok
   }
 
   v6 = objc_initWeak(location, self);
-  v7 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__RTBatteryManager_fetchCurrentBatteryPercent___block_invoke;
   v9[3] = &unk_2788CA2D8;
-  v10 = v4;
-  v8 = v4;
+  v10 = percentCopy;
+  v8 = percentCopy;
   objc_copyWeak(&v11, location);
-  dispatch_async(v7, v9);
+  dispatch_async(queue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(location);

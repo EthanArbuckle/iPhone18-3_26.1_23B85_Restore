@@ -8,8 +8,8 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(UITableViewCellAccessibility__LoginUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXLUITableViewCellTextFieldOnlyTag"];
+  accessibilityIdentification = [(UITableViewCellAccessibility__LoginUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXLUITableViewCellTextFieldOnlyTag"];
 
   if (v4)
   {
@@ -26,24 +26,24 @@
   v9.receiver = self;
   v9.super_class = UITableViewCellAccessibility__LoginUI__UIKit;
   [(UITableViewCellAccessibility__LoginUI__UIKit *)&v9 _accessibilityLoadAccessibilityInformation];
-  v3 = [(UITableViewCellAccessibility__LoginUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXLUITableViewCellTextFieldOnlyTag"];
+  accessibilityIdentification = [(UITableViewCellAccessibility__LoginUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXLUITableViewCellTextFieldOnlyTag"];
 
   if (v4)
   {
     objc_opt_class();
     v5 = __UIAccessibilityCastAsClass();
-    v6 = [v5 textLabel];
-    v7 = [v6 accessibilityLabel];
-    v8 = [v5 editableTextField];
-    [v8 setAccessibilityLabel:v7];
+    textLabel = [v5 textLabel];
+    accessibilityLabel = [textLabel accessibilityLabel];
+    editableTextField = [v5 editableTextField];
+    [editableTextField setAccessibilityLabel:accessibilityLabel];
   }
 }
 
 - (BOOL)_accessibilityIgnoreInternalLabels
 {
-  v3 = [(UITableViewCellAccessibility__LoginUI__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXLUITableViewCellTextFieldOnlyTag"];
+  accessibilityIdentification = [(UITableViewCellAccessibility__LoginUI__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXLUITableViewCellTextFieldOnlyTag"];
 
   if (v4)
   {

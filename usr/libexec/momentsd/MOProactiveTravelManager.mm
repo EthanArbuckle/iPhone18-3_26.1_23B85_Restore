@@ -1,39 +1,39 @@
 @interface MOProactiveTravelManager
-- (MOProactiveTravelManager)initWithPortraitStore:(id)a3 momentStore:(id)a4 configurationManager:(id)a5;
-- (MOProactiveTravelManager)initWithUniverse:(id)a3;
-- (id)_providerIdOfTrip:(id)a3;
-- (id)createEventFromTrip:(id)a3;
-- (id)rehydratedTripEvents:(id)a3;
-- (void)_removeTripEventsDeletedAtSource:(id)a3 handler:(id)a4;
-- (void)fetchAndSaveTripsBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5;
-- (void)fetchTripsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)removeTripEventsDeletedAtSource:(id)a3 handler:(id)a4;
-- (void)saveTrips:(id)a3 handler:(id)a4;
+- (MOProactiveTravelManager)initWithPortraitStore:(id)store momentStore:(id)momentStore configurationManager:(id)manager;
+- (MOProactiveTravelManager)initWithUniverse:(id)universe;
+- (id)_providerIdOfTrip:(id)trip;
+- (id)createEventFromTrip:(id)trip;
+- (id)rehydratedTripEvents:(id)events;
+- (void)_removeTripEventsDeletedAtSource:(id)source handler:(id)handler;
+- (void)fetchAndSaveTripsBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler;
+- (void)fetchTripsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)removeTripEventsDeletedAtSource:(id)source handler:(id)handler;
+- (void)saveTrips:(id)trips handler:(id)handler;
 @end
 
 @implementation MOProactiveTravelManager
 
-- (MOProactiveTravelManager)initWithUniverse:(id)a3
+- (MOProactiveTravelManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_alloc_init(PPEventStore);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 getService:v7];
+  v8 = [universeCopy getService:v7];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v4 getService:v10];
+  v11 = [universeCopy getService:v10];
 
   v12 = [(MOProactiveTravelManager *)self initWithPortraitStore:v5 momentStore:v8 configurationManager:v11];
   return v12;
 }
 
-- (MOProactiveTravelManager)initWithPortraitStore:(id)a3 momentStore:(id)a4 configurationManager:(id)a5
+- (MOProactiveTravelManager)initWithPortraitStore:(id)store momentStore:(id)momentStore configurationManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  storeCopy = store;
+  momentStoreCopy = momentStore;
+  managerCopy = manager;
+  if (!momentStoreCopy)
   {
     v18 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -47,10 +47,10 @@
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!storeCopy)
   {
 LABEL_9:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -64,36 +64,36 @@ LABEL_9:
     queue = v13->_queue;
     v13->_queue = v15;
 
-    objc_storeStrong(&v13->_portraitStore, a3);
-    objc_storeStrong(&v13->_momentStore, a4);
-    objc_storeStrong(&v13->_configurationManager, a5);
+    objc_storeStrong(&v13->_portraitStore, store);
+    objc_storeStrong(&v13->_momentStore, momentStore);
+    objc_storeStrong(&v13->_configurationManager, manager);
   }
 
   self = v13;
-  v17 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)fetchTripsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)fetchTripsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOProactiveTravelManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MOProactiveTravelManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __81__MOProactiveTravelManager_fetchTripsBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v15[3] = &unk_1003361C0;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
 void __81__MOProactiveTravelManager_fetchTripsBetweenStartDate_EndDate_CompletionHandler___block_invoke(void *a1)
@@ -179,42 +179,42 @@ void *__81__MOProactiveTravelManager_fetchTripsBetweenStartDate_EndDate_Completi
   return result;
 }
 
-- (id)createEventFromTrip:(id)a3
+- (id)createEventFromTrip:(id)trip
 {
-  v4 = a3;
+  tripCopy = trip;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
+  startDate = [tripCopy startDate];
+  endDate = [tripCopy endDate];
   v9 = +[NSDate date];
-  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v8 creationDate:v9 provider:3 category:8];
+  v10 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:startDate endDate:endDate creationDate:v9 provider:3 category:8];
 
-  v11 = [v4 endDate];
-  v12 = [(MOProactiveTravelManager *)self configurationManager];
+  endDate2 = [tripCopy endDate];
+  configurationManager = [(MOProactiveTravelManager *)self configurationManager];
   LODWORD(v13) = 1242802176;
-  [v12 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
-  v15 = [v11 dateByAddingTimeInterval:v14];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v13];
+  v15 = [endDate2 dateByAddingTimeInterval:v14];
   [(MOEvent *)v10 setExpirationDate:v15];
 
-  v16 = [(MOProactiveTravelManager *)self _providerIdOfTrip:v4];
+  v16 = [(MOProactiveTravelManager *)self _providerIdOfTrip:tripCopy];
 
   [(MOEvent *)v10 setIdentifierFromProvider:v16];
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityProactiveTravel);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [(MOEvent *)v10 identifierFromProvider];
+    identifierFromProvider = [(MOEvent *)v10 identifierFromProvider];
     v20 = 138412290;
-    v21 = v18;
+    v21 = identifierFromProvider;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "has identifierFromProvider, %@", &v20, 0xCu);
   }
 
   return v10;
 }
 
-- (id)_providerIdOfTrip:(id)a3
+- (id)_providerIdOfTrip:(id)trip
 {
-  v3 = [a3 tripParts];
-  v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_48];
+  tripParts = [trip tripParts];
+  v4 = [tripParts _pas_mappedArrayWithTransform:&__block_literal_global_48];
   v5 = [v4 _pas_componentsJoinedByString:@"|"];
 
   CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
@@ -240,16 +240,16 @@ id __46__MOProactiveTravelManager__providerIdOfTrip___block_invoke(id a1, PPTrip
   return v3;
 }
 
-- (void)saveTrips:(id)a3 handler:(id)a4
+- (void)saveTrips:(id)trips handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tripsCopy = trips;
+  handlerCopy = handler;
   v8 = +[NSDate distantFuture];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v6;
+  v9 = tripsCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
@@ -264,14 +264,14 @@ id __46__MOProactiveTravelManager__providerIdOfTrip___block_invoke(id a1, PPTrip
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v13 startDate];
-        v15 = [v8 isAfterDate:v14];
+        startDate = [v13 startDate];
+        v15 = [v8 isAfterDate:startDate];
 
         if (v15)
         {
-          v16 = [v13 startDate];
+          startDate2 = [v13 startDate];
 
-          v8 = v16;
+          v8 = startDate2;
         }
       }
 
@@ -293,14 +293,14 @@ id __46__MOProactiveTravelManager__providerIdOfTrip___block_invoke(id a1, PPTrip
   v28[3] = __Block_byref_object_copy__34;
   v28[4] = __Block_byref_object_dispose__34;
   v29 = 0;
-  v17 = [(MOProactiveTravelManager *)self momentStore];
+  momentStore = [(MOProactiveTravelManager *)self momentStore];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __46__MOProactiveTravelManager_saveTrips_handler___block_invoke;
   v27[3] = &unk_100337768;
   v27[4] = &v30;
   v27[5] = v28;
-  [v17 fetchEventsWithStartDateAfter:v8 Category:8 CompletionHandler:v27];
+  [momentStore fetchEventsWithStartDateAfter:v8 Category:8 CompletionHandler:v27];
 
   if (*(v31[0] + 40))
   {
@@ -316,9 +316,9 @@ id __46__MOProactiveTravelManager__providerIdOfTrip___block_invoke(id a1, PPTrip
       [MOProactiveTravelManager saveTrips:handler:];
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, *(v31[0] + 40), &__NSDictionary0__struct);
+      handlerCopy[2](handlerCopy, *(v31[0] + 40), &__NSDictionary0__struct);
     }
   }
 
@@ -331,15 +331,15 @@ id __46__MOProactiveTravelManager__providerIdOfTrip___block_invoke(id a1, PPTrip
     v26[4] = self;
     v26[5] = v28;
     v20 = [v9 _pas_mappedArrayWithTransform:v26];
-    v21 = [(MOProactiveTravelManager *)self momentStore];
+    momentStore2 = [(MOProactiveTravelManager *)self momentStore];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = __46__MOProactiveTravelManager_saveTrips_handler___block_invoke_2_135;
     v23[3] = &unk_1003377B8;
     v22 = v20;
     v24 = v22;
-    v25 = v7;
-    [v21 storeEvents:v22 CompletionHandler:v23];
+    v25 = handlerCopy;
+    [momentStore2 storeEvents:v22 CompletionHandler:v23];
   }
 
   _Block_object_dispose(v28, 8);
@@ -410,16 +410,16 @@ void __46__MOProactiveTravelManager_saveTrips_handler___block_invoke_2_135(uint6
   }
 }
 
-- (void)fetchAndSaveTripsBetweenStartDate:(id)a3 EndDate:(id)a4 handler:(id)a5
+- (void)fetchAndSaveTripsBetweenStartDate:(id)date EndDate:(id)endDate handler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __78__MOProactiveTravelManager_fetchAndSaveTripsBetweenStartDate_EndDate_handler___block_invoke;
   v8[3] = &unk_100337850;
-  v9 = self;
-  v10 = a5;
-  v7 = v10;
-  [(MOProactiveTravelManager *)v9 fetchTripsBetweenStartDate:a3 EndDate:a4 CompletionHandler:v8];
+  selfCopy = self;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [(MOProactiveTravelManager *)selfCopy fetchTripsBetweenStartDate:date EndDate:endDate CompletionHandler:v8];
 }
 
 void __78__MOProactiveTravelManager_fetchAndSaveTripsBetweenStartDate_EndDate_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -465,25 +465,25 @@ uint64_t __78__MOProactiveTravelManager_fetchAndSaveTripsBetweenStartDate_EndDat
   return result;
 }
 
-- (id)rehydratedTripEvents:(id)a3
+- (id)rehydratedTripEvents:(id)events
 {
-  v4 = a3;
-  v5 = [v4 getDurationOfMOEventArray];
+  eventsCopy = events;
+  getDurationOfMOEventArray = [eventsCopy getDurationOfMOEventArray];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__34;
   v17 = __Block_byref_object_dispose__34;
   v18 = 0;
-  v6 = [v5 startDate];
-  v7 = [v5 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __49__MOProactiveTravelManager_rehydratedTripEvents___block_invoke;
   v12[3] = &unk_1003364B0;
   v12[4] = self;
   v12[5] = &v13;
-  [(MOProactiveTravelManager *)self fetchTripsBetweenStartDate:v6 EndDate:v7 CompletionHandler:v12];
+  [(MOProactiveTravelManager *)self fetchTripsBetweenStartDate:startDate EndDate:endDate CompletionHandler:v12];
 
   [(MOProactiveTravelManager *)self waitForQueueEmpty];
   if (v14[5])
@@ -493,7 +493,7 @@ uint64_t __78__MOProactiveTravelManager_fetchAndSaveTripsBetweenStartDate_EndDat
     v11[2] = __49__MOProactiveTravelManager_rehydratedTripEvents___block_invoke_139;
     v11[3] = &unk_100337F80;
     v11[4] = &v13;
-    v8 = [v4 _pas_mappedArrayWithTransform:v11];
+    v8 = [eventsCopy _pas_mappedArrayWithTransform:v11];
   }
 
   else
@@ -587,15 +587,15 @@ id __49__MOProactiveTravelManager_rehydratedTripEvents___block_invoke_139(uint64
   return v7;
 }
 
-- (void)removeTripEventsDeletedAtSource:(id)a3 handler:(id)a4
+- (void)removeTripEventsDeletedAtSource:(id)source handler:(id)handler
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __68__MOProactiveTravelManager_removeTripEventsDeletedAtSource_handler___block_invoke;
   v7[3] = &unk_100336198;
-  v8 = a4;
-  v6 = v8;
-  [(MOProactiveTravelManager *)self _removeTripEventsDeletedAtSource:a3 handler:v7];
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  [(MOProactiveTravelManager *)self _removeTripEventsDeletedAtSource:source handler:v7];
   [(MOProactiveTravelManager *)self waitForQueueEmpty];
 }
 
@@ -610,26 +610,26 @@ uint64_t __68__MOProactiveTravelManager_removeTripEventsDeletedAtSource_handler_
   return result;
 }
 
-- (void)_removeTripEventsDeletedAtSource:(id)a3 handler:(id)a4
+- (void)_removeTripEventsDeletedAtSource:(id)source handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getDurationOfMOEventArray];
+  sourceCopy = source;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [sourceCopy getDurationOfMOEventArray];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__34;
   v26 = __Block_byref_object_dispose__34;
   v27 = 0;
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = __69__MOProactiveTravelManager__removeTripEventsDeletedAtSource_handler___block_invoke;
   v21[3] = &unk_1003364B0;
   v21[4] = self;
   v21[5] = &v22;
-  [(MOProactiveTravelManager *)self fetchTripsBetweenStartDate:v9 EndDate:v10 CompletionHandler:v21];
+  [(MOProactiveTravelManager *)self fetchTripsBetweenStartDate:startDate EndDate:endDate CompletionHandler:v21];
 
   [(MOProactiveTravelManager *)self waitForQueueEmpty];
   if (v23[5])
@@ -639,7 +639,7 @@ uint64_t __68__MOProactiveTravelManager_removeTripEventsDeletedAtSource_handler_
     v20[2] = __69__MOProactiveTravelManager__removeTripEventsDeletedAtSource_handler___block_invoke_142;
     v20[3] = &unk_100337F80;
     v20[4] = &v22;
-    v11 = [v6 _pas_mappedArrayWithTransform:v20];
+    v11 = [sourceCopy _pas_mappedArrayWithTransform:v20];
     v12 = _mo_log_facility_get_os_log(&MOLogFacilityProactiveTravel);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -649,15 +649,15 @@ uint64_t __68__MOProactiveTravelManager_removeTripEventsDeletedAtSource_handler_
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%ld previously saved trip event(s) not found, therefore deleting them.", buf, 0xCu);
     }
 
-    v14 = [(MOProactiveTravelManager *)self momentStore];
+    momentStore = [(MOProactiveTravelManager *)self momentStore];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __69__MOProactiveTravelManager__removeTripEventsDeletedAtSource_handler___block_invoke_143;
     v17[3] = &unk_1003377B8;
     v15 = v11;
     v18 = v15;
-    v19 = v7;
-    [v14 removeEvents:v15 CompletionHandler:v17];
+    v19 = handlerCopy;
+    [momentStore removeEvents:v15 CompletionHandler:v17];
 
     goto LABEL_9;
   }
@@ -668,12 +668,12 @@ uint64_t __68__MOProactiveTravelManager_removeTripEventsDeletedAtSource_handler_
     [MOProactiveTravelManager _removeTripEventsDeletedAtSource:handler:];
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v30 = @"resultNumberOfEvents";
     v31 = &off_10036B818;
     v15 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    (*(v7 + 2))(v7, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
 LABEL_9:
   }
 

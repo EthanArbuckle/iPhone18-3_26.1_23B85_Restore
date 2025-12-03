@@ -1,39 +1,39 @@
 @interface BMProactiveHarvestingThirdPartyApp
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingThirdPartyApp)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMProactiveHarvestingThirdPartyApp)initWithUniqueID:(id)a3 domainID:(id)a4 bundleID:(id)a5 absoluteTimestamp:(id)a6 title:(id)a7 desc:(id)a8 comment:(id)a9 content:(id)a10 contentProtection:(id)a11 personaId:(id)a12;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingThirdPartyApp)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMProactiveHarvestingThirdPartyApp)initWithUniqueID:(id)d domainID:(id)iD bundleID:(id)bundleID absoluteTimestamp:(id)timestamp title:(id)title desc:(id)desc comment:(id)comment content:(id)self0 contentProtection:(id)self1 personaId:(id)self2;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingThirdPartyApp
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
-    v7 = [v5 uniqueID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    uniqueID = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v8 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
-      v10 = [v5 uniqueID];
-      v11 = [v9 isEqual:v10];
+      uniqueID3 = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v11 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
-    v14 = [v5 domainID];
-    v15 = v14;
-    if (v13 == v14)
+    domainID = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
+    domainID2 = [v5 domainID];
+    v15 = domainID2;
+    if (domainID == domainID2)
     {
     }
 
     else
     {
-      v16 = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
-      v17 = [v5 domainID];
-      v18 = [v16 isEqual:v17];
+      domainID3 = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
+      domainID4 = [v5 domainID];
+      v18 = [domainID3 isEqual:domainID4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
-    v20 = [v5 bundleID];
-    v21 = v20;
-    if (v19 == v20)
+    bundleID = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v21 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v22 = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
-      v23 = [v5 bundleID];
-      v24 = [v22 isEqual:v23];
+      bundleID3 = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v24 = [bundleID3 isEqual:bundleID4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
-    v26 = [v5 absoluteTimestamp];
-    v27 = v26;
-    if (v25 == v26)
+    absoluteTimestamp = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v27 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v28 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
-      v29 = [v5 absoluteTimestamp];
-      v30 = [v28 isEqual:v29];
+      absoluteTimestamp3 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v30 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMProactiveHarvestingThirdPartyApp *)self title];
-    v32 = [v5 title];
-    v33 = v32;
-    if (v31 == v32)
+    title = [(BMProactiveHarvestingThirdPartyApp *)self title];
+    title2 = [v5 title];
+    v33 = title2;
+    if (title == title2)
     {
     }
 
     else
     {
-      v34 = [(BMProactiveHarvestingThirdPartyApp *)self title];
-      v35 = [v5 title];
-      v36 = [v34 isEqual:v35];
+      title3 = [(BMProactiveHarvestingThirdPartyApp *)self title];
+      title4 = [v5 title];
+      v36 = [title3 isEqual:title4];
 
       if (!v36)
       {
@@ -117,18 +117,18 @@
       }
     }
 
-    v37 = [(BMProactiveHarvestingThirdPartyApp *)self desc];
-    v38 = [v5 desc];
-    v39 = v38;
-    if (v37 == v38)
+    desc = [(BMProactiveHarvestingThirdPartyApp *)self desc];
+    desc2 = [v5 desc];
+    v39 = desc2;
+    if (desc == desc2)
     {
     }
 
     else
     {
-      v40 = [(BMProactiveHarvestingThirdPartyApp *)self desc];
-      v41 = [v5 desc];
-      v42 = [v40 isEqual:v41];
+      desc3 = [(BMProactiveHarvestingThirdPartyApp *)self desc];
+      desc4 = [v5 desc];
+      v42 = [desc3 isEqual:desc4];
 
       if (!v42)
       {
@@ -136,18 +136,18 @@
       }
     }
 
-    v43 = [(BMProactiveHarvestingThirdPartyApp *)self comment];
-    v44 = [v5 comment];
-    v45 = v44;
-    if (v43 == v44)
+    comment = [(BMProactiveHarvestingThirdPartyApp *)self comment];
+    comment2 = [v5 comment];
+    v45 = comment2;
+    if (comment == comment2)
     {
     }
 
     else
     {
-      v46 = [(BMProactiveHarvestingThirdPartyApp *)self comment];
-      v47 = [v5 comment];
-      v48 = [v46 isEqual:v47];
+      comment3 = [(BMProactiveHarvestingThirdPartyApp *)self comment];
+      comment4 = [v5 comment];
+      v48 = [comment3 isEqual:comment4];
 
       if (!v48)
       {
@@ -155,18 +155,18 @@
       }
     }
 
-    v49 = [(BMProactiveHarvestingThirdPartyApp *)self content];
-    v50 = [v5 content];
-    v51 = v50;
-    if (v49 == v50)
+    content = [(BMProactiveHarvestingThirdPartyApp *)self content];
+    content2 = [v5 content];
+    v51 = content2;
+    if (content == content2)
     {
     }
 
     else
     {
-      v52 = [(BMProactiveHarvestingThirdPartyApp *)self content];
-      v53 = [v5 content];
-      v54 = [v52 isEqual:v53];
+      content3 = [(BMProactiveHarvestingThirdPartyApp *)self content];
+      content4 = [v5 content];
+      v54 = [content3 isEqual:content4];
 
       if (!v54)
       {
@@ -174,18 +174,18 @@
       }
     }
 
-    v55 = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
-    v56 = [v5 contentProtection];
-    v57 = v56;
-    if (v55 == v56)
+    contentProtection = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
+    contentProtection2 = [v5 contentProtection];
+    v57 = contentProtection2;
+    if (contentProtection == contentProtection2)
     {
     }
 
     else
     {
-      v58 = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
-      v59 = [v5 contentProtection];
-      v60 = [v58 isEqual:v59];
+      contentProtection3 = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
+      contentProtection4 = [v5 contentProtection];
+      v60 = [contentProtection3 isEqual:contentProtection4];
 
       if (!v60)
       {
@@ -197,18 +197,18 @@ LABEL_38:
       }
     }
 
-    v62 = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
-    v63 = [v5 personaId];
-    if (v62 == v63)
+    personaId = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
+    personaId2 = [v5 personaId];
+    if (personaId == personaId2)
     {
       v12 = 1;
     }
 
     else
     {
-      v64 = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
-      v65 = [v5 personaId];
-      v12 = [v64 isEqual:v65];
+      personaId3 = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
+      personaId4 = [v5 personaId];
+      v12 = [personaId3 isEqual:personaId4];
     }
 
     goto LABEL_38;
@@ -240,15 +240,15 @@ LABEL_39:
 - (id)jsonDictionary
 {
   v41[10] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
-  v4 = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
-  v5 = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
-  v6 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
-  if (v6)
+  uniqueID = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
+  domainID = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
+  bundleID = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
+  absoluteTimestamp = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
-    [v8 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -257,107 +257,107 @@ LABEL_39:
     v9 = 0;
   }
 
-  v10 = [(BMProactiveHarvestingThirdPartyApp *)self title];
-  v11 = [(BMProactiveHarvestingThirdPartyApp *)self desc];
-  v12 = [(BMProactiveHarvestingThirdPartyApp *)self comment];
-  v39 = [(BMProactiveHarvestingThirdPartyApp *)self content];
-  v13 = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
-  v14 = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
+  title = [(BMProactiveHarvestingThirdPartyApp *)self title];
+  desc = [(BMProactiveHarvestingThirdPartyApp *)self desc];
+  comment = [(BMProactiveHarvestingThirdPartyApp *)self comment];
+  content = [(BMProactiveHarvestingThirdPartyApp *)self content];
+  contentProtection = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
+  personaId = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
   v40[0] = @"uniqueID";
-  v15 = v3;
-  if (!v3)
+  null = uniqueID;
+  if (!uniqueID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v15;
-  v41[0] = v15;
+  v33 = null;
+  v41[0] = null;
   v40[1] = @"domainID";
-  v16 = v4;
-  if (!v4)
+  null2 = domainID;
+  if (!domainID)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v16;
-  v41[1] = v16;
+  v32 = null2;
+  v41[1] = null2;
   v40[2] = @"bundleID";
-  v17 = v5;
-  if (!v5)
+  null3 = bundleID;
+  if (!bundleID)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v3;
-  v31 = v17;
-  v41[2] = v17;
+  v38 = uniqueID;
+  v31 = null3;
+  v41[2] = null3;
   v40[3] = @"absoluteTimestamp";
-  v18 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v4;
-  v30 = v18;
-  v41[3] = v18;
+  v37 = domainID;
+  v30 = null4;
+  v41[3] = null4;
   v40[4] = @"title";
-  v19 = v10;
-  if (!v10)
+  null5 = title;
+  if (!title)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v5;
-  v29 = v19;
-  v41[4] = v19;
+  v36 = bundleID;
+  v29 = null5;
+  v41[4] = null5;
   v40[5] = @"desc";
-  v20 = v11;
-  if (!v11)
+  null6 = desc;
+  if (!desc)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v35 = v9;
-  v41[5] = v20;
+  v41[5] = null6;
   v40[6] = @"comment";
-  v21 = v12;
-  if (!v12)
+  null7 = comment;
+  if (!comment)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v10;
-  v41[6] = v21;
+  v22 = title;
+  v41[6] = null7;
   v40[7] = @"content";
-  v23 = v39;
-  if (!v39)
+  null8 = content;
+  if (!content)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v11;
-  v41[7] = v23;
+  v24 = desc;
+  v41[7] = null8;
   v40[8] = @"contentProtection";
-  v25 = v13;
-  if (!v13)
+  null9 = contentProtection;
+  if (!contentProtection)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[8] = v25;
+  v41[8] = null9;
   v40[9] = @"personaId";
-  v26 = v14;
-  if (!v14)
+  null10 = personaId;
+  if (!personaId)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[9] = v26;
+  v41[9] = null10;
   v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:10];
-  if (v14)
+  if (personaId)
   {
-    if (v13)
+    if (contentProtection)
     {
       goto LABEL_26;
     }
@@ -366,18 +366,18 @@ LABEL_39:
   else
   {
 
-    if (v13)
+    if (contentProtection)
     {
       goto LABEL_26;
     }
   }
 
 LABEL_26:
-  if (!v39)
+  if (!content)
   {
   }
 
-  if (!v12)
+  if (!comment)
   {
   }
 
@@ -429,31 +429,31 @@ LABEL_39:
   return v34;
 }
 
-- (BMProactiveHarvestingThirdPartyApp)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingThirdPartyApp)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v114[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"uniqueID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"uniqueID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"domainID"];
-    v90 = a4;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"domainID"];
+    errorCopy = error;
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v25 = 0;
           goto LABEL_57;
         }
 
-        v76 = self;
-        v26 = a4;
+        selfCopy6 = self;
+        errorCopy2 = error;
         v27 = objc_alloc(MEMORY[0x1E696ABC0]);
         v28 = *MEMORY[0x1E698F240];
         v111 = *MEMORY[0x1E696A578];
@@ -465,7 +465,7 @@ LABEL_4:
         v32 = [v31 initWithDomain:v28 code:2 userInfo:v30];
         v10 = 0;
         v25 = 0;
-        *v26 = v32;
+        *errorCopy2 = v32;
         goto LABEL_86;
       }
 
@@ -477,12 +477,12 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"bundleID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v91 = 0;
 LABEL_10:
-      v12 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
       v83 = v11;
       v84 = v12;
       if (v12 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -513,7 +513,7 @@ LABEL_10:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v90)
+            if (!errorCopy)
             {
               v93 = 0;
               v25 = 0;
@@ -536,7 +536,7 @@ LABEL_10:
             v72 = [v94 initWithDomain:v71 code:2 userInfo:?];
             v93 = 0;
             v25 = 0;
-            *v90 = v72;
+            *errorCopy = v72;
             v29 = v91;
             goto LABEL_54;
           }
@@ -553,7 +553,7 @@ LABEL_10:
       }
 
 LABEL_30:
-      v38 = [v6 objectForKeyedSubscript:@"title"];
+      v38 = [dictionaryCopy objectForKeyedSubscript:@"title"];
       v88 = v10;
       v85 = v38;
       if (v38 && (v39 = v38, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -561,8 +561,8 @@ LABEL_30:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v50 = self;
-          if (!v90)
+          selfCopy5 = self;
+          if (!errorCopy)
           {
             v89 = 0;
             v25 = 0;
@@ -582,7 +582,7 @@ LABEL_30:
           v54 = [v53 initWithDomain:v52 code:2 userInfo:v40];
           v89 = 0;
           v25 = 0;
-          *v90 = v54;
+          *errorCopy = v54;
           goto LABEL_92;
         }
 
@@ -594,19 +594,19 @@ LABEL_30:
         v89 = 0;
       }
 
-      v40 = [v6 objectForKeyedSubscript:@"desc"];
+      v40 = [dictionaryCopy objectForKeyedSubscript:@"desc"];
       v81 = v9;
       if (!v40 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v86 = 0;
 LABEL_36:
-        v41 = [v6 objectForKeyedSubscript:@"comment"];
+        v41 = [dictionaryCopy objectForKeyedSubscript:@"comment"];
         if (v41 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v90)
+            if (!errorCopy)
             {
               v82 = 0;
               v25 = 0;
@@ -622,7 +622,7 @@ LABEL_36:
             v60 = [v58 initWithDomain:v59 code:2 userInfo:v42];
             v82 = 0;
             v25 = 0;
-            *v90 = v60;
+            *errorCopy = v60;
             goto LABEL_51;
           }
 
@@ -634,7 +634,7 @@ LABEL_36:
           v82 = 0;
         }
 
-        v42 = [v6 objectForKeyedSubscript:@"content"];
+        v42 = [dictionaryCopy objectForKeyedSubscript:@"content"];
         v74 = v7;
         v78 = v8;
         if (v42 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -642,14 +642,14 @@ LABEL_36:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v90)
+            if (!errorCopy)
             {
               v79 = 0;
               v25 = 0;
               goto LABEL_51;
             }
 
-            v44 = self;
+            selfCopy4 = self;
             v80 = objc_alloc(MEMORY[0x1E696ABC0]);
             v61 = *MEMORY[0x1E698F240];
             v99 = *MEMORY[0x1E696A578];
@@ -659,10 +659,10 @@ LABEL_36:
             v62 = [v80 initWithDomain:v61 code:2 userInfo:v43];
             v79 = 0;
             v25 = 0;
-            *v90 = v62;
+            *errorCopy = v62;
 LABEL_50:
 
-            self = v44;
+            self = selfCopy4;
             v7 = v74;
             v8 = v78;
             v10 = v88;
@@ -689,14 +689,14 @@ LABEL_54:
           v79 = 0;
         }
 
-        v43 = [v6 objectForKeyedSubscript:@"contentProtection"];
-        v44 = self;
+        v43 = [dictionaryCopy objectForKeyedSubscript:@"contentProtection"];
+        selfCopy4 = self;
         if (v43 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v90)
+            if (!errorCopy)
             {
               v45 = 0;
               v25 = 0;
@@ -712,7 +712,7 @@ LABEL_54:
             v65 = [v63 initWithDomain:v64 code:2 userInfo:v46];
             v45 = 0;
             v25 = 0;
-            *v90 = v65;
+            *errorCopy = v65;
             goto LABEL_49;
           }
 
@@ -724,13 +724,13 @@ LABEL_54:
           v45 = 0;
         }
 
-        v46 = [v6 objectForKeyedSubscript:@"personaId"];
+        v46 = [dictionaryCopy objectForKeyedSubscript:@"personaId"];
         if (v46 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v90)
+            if (errorCopy)
             {
               v77 = objc_alloc(MEMORY[0x1E696ABC0]);
               v73 = *MEMORY[0x1E698F240];
@@ -738,7 +738,7 @@ LABEL_54:
               v66 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"personaId"];
               v96 = v66;
               v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v96 forKeys:&v95 count:1];
-              *v90 = [v77 initWithDomain:v73 code:2 userInfo:v67];
+              *errorCopy = [v77 initWithDomain:v73 code:2 userInfo:v67];
             }
 
             v47 = 0;
@@ -754,8 +754,8 @@ LABEL_54:
           v47 = 0;
         }
 
-        v25 = [(BMProactiveHarvestingThirdPartyApp *)v44 initWithUniqueID:v78 domainID:v88 bundleID:v91 absoluteTimestamp:v93 title:v89 desc:v86 comment:v82 content:v79 contentProtection:v45 personaId:v47];
-        v44 = v25;
+        v25 = [(BMProactiveHarvestingThirdPartyApp *)selfCopy4 initWithUniqueID:v78 domainID:v88 bundleID:v91 absoluteTimestamp:v93 title:v89 desc:v86 comment:v82 content:v79 contentProtection:v45 personaId:v47];
+        selfCopy4 = v25;
 LABEL_49:
 
         goto LABEL_50;
@@ -768,8 +768,8 @@ LABEL_49:
         goto LABEL_36;
       }
 
-      v50 = self;
-      if (v90)
+      selfCopy5 = self;
+      if (errorCopy)
       {
         v55 = objc_alloc(MEMORY[0x1E696ABC0]);
         v87 = *MEMORY[0x1E698F240];
@@ -782,14 +782,14 @@ LABEL_49:
         v57 = [v56 initWithDomain:v87 code:2 userInfo:v41];
         v86 = 0;
         v25 = 0;
-        *v90 = v57;
+        *errorCopy = v57;
         goto LABEL_52;
       }
 
       v86 = 0;
       v25 = 0;
 LABEL_92:
-      self = v50;
+      self = selfCopy5;
       goto LABEL_53;
     }
 
@@ -800,8 +800,8 @@ LABEL_92:
       goto LABEL_10;
     }
 
-    v76 = self;
-    if (v90)
+    selfCopy6 = self;
+    if (errorCopy)
     {
       v92 = objc_alloc(MEMORY[0x1E696ABC0]);
       v33 = v10;
@@ -814,7 +814,7 @@ LABEL_92:
       v10 = v33;
       v29 = 0;
       v25 = 0;
-      *v90 = [v92 initWithDomain:v36 code:2 userInfo:v35];
+      *errorCopy = [v92 initWithDomain:v36 code:2 userInfo:v35];
 LABEL_55:
 
 LABEL_56:
@@ -824,7 +824,7 @@ LABEL_56:
     v29 = 0;
     v25 = 0;
 LABEL_86:
-    self = v76;
+    self = selfCopy6;
     goto LABEL_56;
   }
 
@@ -835,15 +835,15 @@ LABEL_86:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v25 = 0;
     goto LABEL_58;
   }
 
-  v75 = self;
-  v20 = a4;
+  selfCopy7 = self;
+  errorCopy3 = error;
   v21 = objc_alloc(MEMORY[0x1E696ABC0]);
   v22 = *MEMORY[0x1E698F240];
   v113 = *MEMORY[0x1E696A578];
@@ -854,8 +854,8 @@ LABEL_86:
   v10 = v23;
   v8 = 0;
   v25 = 0;
-  *v20 = [v21 initWithDomain:v24 code:2 userInfo:v9];
-  self = v75;
+  *errorCopy3 = [v21 initWithDomain:v24 code:2 userInfo:v9];
+  self = selfCopy7;
 LABEL_57:
 
 LABEL_58:
@@ -867,80 +867,80 @@ LABEL_58:
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingThirdPartyApp *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_domainID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_desc)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_comment)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_content)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentProtection)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_personaId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMProactiveHarvestingThirdPartyApp;
   v5 = [(BMEventBase *)&v25 init];
@@ -949,12 +949,12 @@ LABEL_58:
     goto LABEL_52;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -965,18 +965,18 @@ LABEL_58:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -993,9 +993,9 @@ LABEL_58:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1068,18 +1068,18 @@ LABEL_16:
           case 4:
             v5->_hasRaw_absoluteTimestamp = 1;
             v26 = 0.0;
-            v18 = [v4 position] + 8;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 8;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_absoluteTimestamp = v26;
@@ -1101,13 +1101,13 @@ LABEL_43:
       }
 
 LABEL_44:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_51:
     v23 = 0;
@@ -1125,47 +1125,47 @@ LABEL_52:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
-  v3 = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
-  v4 = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
-  v5 = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
-  v6 = [(BMProactiveHarvestingThirdPartyApp *)self title];
-  v7 = [(BMProactiveHarvestingThirdPartyApp *)self desc];
-  v8 = [(BMProactiveHarvestingThirdPartyApp *)self comment];
-  v9 = [(BMProactiveHarvestingThirdPartyApp *)self content];
-  v10 = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
-  v11 = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
-  v12 = [v15 initWithFormat:@"BMProactiveHarvestingThirdPartyApp with uniqueID: %@, domainID: %@, bundleID: %@, absoluteTimestamp: %@, title: %@, desc: %@, comment: %@, content: %@, contentProtection: %@, personaId: %@", v14, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  uniqueID = [(BMProactiveHarvestingThirdPartyApp *)self uniqueID];
+  domainID = [(BMProactiveHarvestingThirdPartyApp *)self domainID];
+  bundleID = [(BMProactiveHarvestingThirdPartyApp *)self bundleID];
+  absoluteTimestamp = [(BMProactiveHarvestingThirdPartyApp *)self absoluteTimestamp];
+  title = [(BMProactiveHarvestingThirdPartyApp *)self title];
+  desc = [(BMProactiveHarvestingThirdPartyApp *)self desc];
+  comment = [(BMProactiveHarvestingThirdPartyApp *)self comment];
+  content = [(BMProactiveHarvestingThirdPartyApp *)self content];
+  contentProtection = [(BMProactiveHarvestingThirdPartyApp *)self contentProtection];
+  personaId = [(BMProactiveHarvestingThirdPartyApp *)self personaId];
+  v12 = [v15 initWithFormat:@"BMProactiveHarvestingThirdPartyApp with uniqueID: %@, domainID: %@, bundleID: %@, absoluteTimestamp: %@, title: %@, desc: %@, comment: %@, content: %@, contentProtection: %@, personaId: %@", uniqueID, domainID, bundleID, absoluteTimestamp, title, desc, comment, content, contentProtection, personaId];
 
   return v12;
 }
 
-- (BMProactiveHarvestingThirdPartyApp)initWithUniqueID:(id)a3 domainID:(id)a4 bundleID:(id)a5 absoluteTimestamp:(id)a6 title:(id)a7 desc:(id)a8 comment:(id)a9 content:(id)a10 contentProtection:(id)a11 personaId:(id)a12
+- (BMProactiveHarvestingThirdPartyApp)initWithUniqueID:(id)d domainID:(id)iD bundleID:(id)bundleID absoluteTimestamp:(id)timestamp title:(id)title desc:(id)desc comment:(id)comment content:(id)self0 contentProtection:(id)self1 personaId:(id)self2
 {
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v18 = a6;
-  v27 = a7;
-  v29 = a7;
-  v28 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  timestampCopy = timestamp;
+  titleCopy = title;
+  titleCopy2 = title;
+  descCopy = desc;
+  commentCopy = comment;
+  contentCopy = content;
+  protectionCopy = protection;
+  idCopy = id;
   v33.receiver = self;
   v33.super_class = BMProactiveHarvestingThirdPartyApp;
   v23 = [(BMEventBase *)&v33 init];
   if (v23)
   {
     v23->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v23->_uniqueID, a3);
-    objc_storeStrong(&v23->_domainID, a4);
-    objc_storeStrong(&v23->_bundleID, a5);
-    if (v18)
+    objc_storeStrong(&v23->_uniqueID, d);
+    objc_storeStrong(&v23->_domainID, iD);
+    objc_storeStrong(&v23->_bundleID, bundleID);
+    if (timestampCopy)
     {
       v23->_hasRaw_absoluteTimestamp = 1;
-      [v18 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1175,12 +1175,12 @@ LABEL_52:
     }
 
     v23->_raw_absoluteTimestamp = v24;
-    objc_storeStrong(&v23->_title, v27);
-    objc_storeStrong(&v23->_desc, a8);
-    objc_storeStrong(&v23->_comment, a9);
-    objc_storeStrong(&v23->_content, a10);
-    objc_storeStrong(&v23->_contentProtection, a11);
-    objc_storeStrong(&v23->_personaId, a12);
+    objc_storeStrong(&v23->_title, titleCopy);
+    objc_storeStrong(&v23->_desc, desc);
+    objc_storeStrong(&v23->_comment, comment);
+    objc_storeStrong(&v23->_content, content);
+    objc_storeStrong(&v23->_contentProtection, protection);
+    objc_storeStrong(&v23->_personaId, id);
   }
 
   return v23;
@@ -1246,13 +1246,13 @@ LABEL_52:
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingThirdPartyApp alloc] initByReadFrom:v6];
     v8 = v7;

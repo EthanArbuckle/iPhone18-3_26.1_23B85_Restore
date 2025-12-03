@@ -1,21 +1,21 @@
 @interface PaperKitPDFPage
-- (Class)annotationSubclassForSubtype:(id)a3;
+- (Class)annotationSubclassForSubtype:(id)subtype;
 - (NSArray)annotations;
 - (NSString)description;
 - (_TtC8PaperKit15PaperKitPDFPage)init;
-- (_TtC8PaperKit15PaperKitPDFPage)initWithImage:(id)a3 options:(id)a4;
+- (_TtC8PaperKit15PaperKitPDFPage)initWithImage:(id)image options:(id)options;
 - (char)isCandidateForOCR;
-- (id)copyWithZone:(void *)a3;
-- (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withOptions:(id)a5;
-- (void)setCandidateForOCR:(char)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withOptions:(id)options;
+- (void)setCandidateForOCR:(char)r;
 @end
 
 @implementation PaperKitPDFPage
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  PaperKitPDFPage.copy(with:)(a3, v7);
+  selfCopy = self;
+  PaperKitPDFPage.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -25,7 +25,7 @@
 
 - (NSArray)annotations
 {
-  v2 = self;
+  selfCopy = self;
   PaperKitPDFPage.annotations.getter();
 
   type metadata accessor for PKMathRecognitionItemAttributes(0, &lazy cache variable for type metadata for PDFAnnotation);
@@ -36,7 +36,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PaperKitPDFPage.description.getter();
   v5 = v4;
 
@@ -47,31 +47,31 @@
 
 - (char)isCandidateForOCR
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PaperKitPDFPage.candidateForOCR.getter();
 
   return v3;
 }
 
-- (void)setCandidateForOCR:(char)a3
+- (void)setCandidateForOCR:(char)r
 {
-  v3 = a3;
+  rCopy = r;
   v4.receiver = self;
   v4.super_class = type metadata accessor for PaperKitPDFPage(0);
-  [(PaperKitPDFPage *)&v4 setCandidateForOCR:v3];
+  [(PaperKitPDFPage *)&v4 setCandidateForOCR:rCopy];
 }
 
-- (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withOptions:(id)a5
+- (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withOptions:(id)options
 {
   type metadata accessor for PDFPageDrawWithBoxOption(0);
   lazy protocol witness table accessor for type CRKeyPath and conformance CRKeyPath(&lazy protocol witness table cache variable for type PDFPageDrawWithBoxOption and conformance PDFPageDrawWithBoxOption, type metadata accessor for PDFPageDrawWithBoxOption);
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a4;
-  v10 = self;
-  PaperKitPDFPage.draw(with:in:withOptions:)(a3, v9, v8);
+  contextCopy = context;
+  selfCopy = self;
+  PaperKitPDFPage.draw(with:in:withOptions:)(box, contextCopy, v8);
 }
 
-- (Class)annotationSubclassForSubtype:(id)a3
+- (Class)annotationSubclassForSubtype:(id)subtype
 {
   type metadata accessor for CanvasElementPDFAnnotation();
 
@@ -93,12 +93,12 @@
   return [(PaperKitPDFPage *)&v7 init];
 }
 
-- (_TtC8PaperKit15PaperKitPDFPage)initWithImage:(id)a3 options:(id)a4
+- (_TtC8PaperKit15PaperKitPDFPage)initWithImage:(id)image options:(id)options
 {
   type metadata accessor for PDFPageImageInitializationOption(0);
   lazy protocol witness table accessor for type CRKeyPath and conformance CRKeyPath(&lazy protocol witness table cache variable for type PDFPageImageInitializationOption and conformance PDFPageImageInitializationOption, type metadata accessor for PDFPageImageInitializationOption);
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  return PaperKitPDFPage.init(image:options:)(a3);
+  return PaperKitPDFPage.init(image:options:)(image);
 }
 
 @end

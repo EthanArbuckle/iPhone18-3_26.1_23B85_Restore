@@ -1,11 +1,11 @@
 @interface CLOSTransaction
-- (CLOSTransaction)initWithDescription:(const char *)a3;
+- (CLOSTransaction)initWithDescription:(const char *)description;
 - (void)dealloc;
 @end
 
 @implementation CLOSTransaction
 
-- (CLOSTransaction)initWithDescription:(const char *)a3
+- (CLOSTransaction)initWithDescription:(const char *)description
 {
   v21 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -13,7 +13,7 @@
   v4 = [(CLOSTransaction *)&v12 init];
   if (v4)
   {
-    v4->_description = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+    v4->_description = [MEMORY[0x1E696AEC0] stringWithUTF8String:description];
     v4->_transaction = os_transaction_create();
     if (qword_1EAFE47B8 != -1)
     {
@@ -27,7 +27,7 @@
       *buf = 134218242;
       p_transaction = &v4->_transaction;
       v19 = 2112;
-      v20 = description;
+      descriptionCopy = description;
       _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "os_transaction created: (%p) %@", buf, 0x16u);
     }
 

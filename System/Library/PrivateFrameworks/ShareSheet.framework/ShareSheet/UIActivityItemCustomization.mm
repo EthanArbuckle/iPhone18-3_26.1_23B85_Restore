@@ -1,53 +1,53 @@
 @interface UIActivityItemCustomization
-+ (id)actionCustomizationWithTitle:(id)a3 identifier:(id)a4 handler:(id)a5;
-+ (id)pickerCustomizationWithTitle:(id)a3 identifier:(id)a4 options:(id)a5 selectedOptionIndex:(int64_t)a6 valueChangedHandler:(id)a7;
-+ (id)switchCustomizationWithTitle:(id)a3 identifier:(id)a4 value:(BOOL)a5 valueChangedHandler:(id)a6;
-- (id)_initWithTitle:(id)a3 identifier:(id)a4;
++ (id)actionCustomizationWithTitle:(id)title identifier:(id)identifier handler:(id)handler;
++ (id)pickerCustomizationWithTitle:(id)title identifier:(id)identifier options:(id)options selectedOptionIndex:(int64_t)index valueChangedHandler:(id)handler;
++ (id)switchCustomizationWithTitle:(id)title identifier:(id)identifier value:(BOOL)value valueChangedHandler:(id)handler;
+- (id)_initWithTitle:(id)title identifier:(id)identifier;
 @end
 
 @implementation UIActivityItemCustomization
 
-+ (id)switchCustomizationWithTitle:(id)a3 identifier:(id)a4 value:(BOOL)a5 valueChangedHandler:(id)a6
++ (id)switchCustomizationWithTitle:(id)title identifier:(id)identifier value:(BOOL)value valueChangedHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[UIActivityItemCustomization alloc] _initWithTitle:v8 identifier:v7];
+  identifierCopy = identifier;
+  titleCopy = title;
+  v9 = [[UIActivityItemCustomization alloc] _initWithTitle:titleCopy identifier:identifierCopy];
 
   return v9;
 }
 
-+ (id)pickerCustomizationWithTitle:(id)a3 identifier:(id)a4 options:(id)a5 selectedOptionIndex:(int64_t)a6 valueChangedHandler:(id)a7
++ (id)pickerCustomizationWithTitle:(id)title identifier:(id)identifier options:(id)options selectedOptionIndex:(int64_t)index valueChangedHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[UIActivityItemCustomization alloc] _initWithTitle:v9 identifier:v8];
+  identifierCopy = identifier;
+  titleCopy = title;
+  v10 = [[UIActivityItemCustomization alloc] _initWithTitle:titleCopy identifier:identifierCopy];
 
   return v10;
 }
 
-+ (id)actionCustomizationWithTitle:(id)a3 identifier:(id)a4 handler:(id)a5
++ (id)actionCustomizationWithTitle:(id)title identifier:(id)identifier handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UIActivityItemCustomization alloc] _initWithTitle:v7 identifier:v6];
+  identifierCopy = identifier;
+  titleCopy = title;
+  v8 = [[UIActivityItemCustomization alloc] _initWithTitle:titleCopy identifier:identifierCopy];
 
   return v8;
 }
 
-- (id)_initWithTitle:(id)a3 identifier:(id)a4
+- (id)_initWithTitle:(id)title identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = UIActivityItemCustomization;
   v8 = [(UIActivityItemCustomization *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v11;
 

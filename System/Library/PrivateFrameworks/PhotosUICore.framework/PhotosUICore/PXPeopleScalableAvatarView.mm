@@ -1,21 +1,21 @@
 @interface PXPeopleScalableAvatarView
-- (PXPeopleScalableAvatarView)initWithFrame:(CGRect)a3;
-- (void)_updateImageAndWait:(BOOL)a3;
+- (PXPeopleScalableAvatarView)initWithFrame:(CGRect)frame;
+- (void)_updateImageAndWait:(BOOL)wait;
 - (void)layoutSubviews;
-- (void)setCornerStyle:(int64_t)a3;
-- (void)setFace:(id)a3;
-- (void)setImageViewCornerRadius:(double)a3;
-- (void)setPerson:(id)a3;
-- (void)setPersonAndWaitForImage:(id)a3;
+- (void)setCornerStyle:(int64_t)style;
+- (void)setFace:(id)face;
+- (void)setImageViewCornerRadius:(double)radius;
+- (void)setPerson:(id)person;
+- (void)setPersonAndWaitForImage:(id)image;
 @end
 
 @implementation PXPeopleScalableAvatarView
 
-- (void)_updateImageAndWait:(BOOL)a3
+- (void)_updateImageAndWait:(BOOL)wait
 {
-  v4 = [(PXPeopleScalableAvatarView *)self person];
-  v5 = [(PXPeopleScalableAvatarView *)self face];
-  if (v4 | v5)
+  person = [(PXPeopleScalableAvatarView *)self person];
+  face = [(PXPeopleScalableAvatarView *)self face];
+  if (person | face)
   {
     [(PXPeopleScalableAvatarView *)self bounds];
     x = v25.origin.x;
@@ -38,8 +38,8 @@
 
     if (v14 >= 2.0)
     {
-      v15 = [(PXPeopleScalableAvatarView *)self imageView];
-      [v15 setContentMode:2];
+      imageView = [(PXPeopleScalableAvatarView *)self imageView];
+      [imageView setContentMode:2];
     }
 
     else
@@ -56,8 +56,8 @@
 
     self->_imagePixelSize.width = v10;
     self->_imagePixelSize.height = v11;
-    v16 = [(PXPeopleScalableAvatarView *)self cornerStyle];
-    if (v16 == 1)
+    cornerStyle = [(PXPeopleScalableAvatarView *)self cornerStyle];
+    if (cornerStyle == 1)
     {
       [PXPeopleFaceCropManager roundedCornerRadiusForTargetSize:width displayScale:height, v13];
     }
@@ -65,7 +65,7 @@
     else
     {
       v17 = 0.0;
-      if (v16 == 2)
+      if (cornerStyle == 2)
       {
         v17 = width * 0.5;
         if (width * 0.5 < 0.0)
@@ -79,14 +79,14 @@
     if (height > 0.0 && width > 0.0)
     {
       v18 = [PXPeopleFaceCropFetchOptions alloc];
-      if (v4)
+      if (person)
       {
-        v19 = [(PXPeopleFaceCropFetchOptions *)v18 initWithPerson:v4 targetSize:width displayScale:height, v13];
+        v19 = [(PXPeopleFaceCropFetchOptions *)v18 initWithPerson:person targetSize:width displayScale:height, v13];
       }
 
       else
       {
-        v19 = [(PXPeopleFaceCropFetchOptions *)v18 initWithFace:v5 targetSize:width displayScale:height, v13];
+        v19 = [(PXPeopleFaceCropFetchOptions *)v18 initWithFace:face targetSize:width displayScale:height, v13];
       }
 
       v20 = v19;
@@ -98,8 +98,8 @@
       v22[2] = __50__PXPeopleScalableAvatarView__updateImageAndWait___block_invoke;
       v22[3] = &unk_1E773FCF0;
       v22[4] = self;
-      v23 = v4;
-      v24 = v5;
+      v23 = person;
+      v24 = face;
       [v21 requestFaceCropForOptions:v20 resultHandler:v22];
     }
   }
@@ -143,41 +143,41 @@ void __50__PXPeopleScalableAvatarView__updateImageAndWait___block_invoke_2(uint6
   }
 }
 
-- (void)setPersonAndWaitForImage:(id)a3
+- (void)setPersonAndWaitForImage:(id)image
 {
-  objc_storeStrong(&self->_person, a3);
+  objc_storeStrong(&self->_person, image);
 
   [(PXPeopleScalableAvatarView *)self _updateImageAndWait:1];
 }
 
-- (void)setImageViewCornerRadius:(double)a3
+- (void)setImageViewCornerRadius:(double)radius
 {
-  if (self->_imageViewCornerRadius != a3)
+  if (self->_imageViewCornerRadius != radius)
   {
-    self->_imageViewCornerRadius = a3;
+    self->_imageViewCornerRadius = radius;
     [(PXPeopleScalableAvatarView *)self setNeedsLayout];
   }
 }
 
-- (void)setCornerStyle:(int64_t)a3
+- (void)setCornerStyle:(int64_t)style
 {
-  if (self->_cornerStyle != a3)
+  if (self->_cornerStyle != style)
   {
-    self->_cornerStyle = a3;
+    self->_cornerStyle = style;
     [(PXPeopleScalableAvatarView *)self updateImage];
   }
 }
 
-- (void)setFace:(id)a3
+- (void)setFace:(id)face
 {
-  objc_storeStrong(&self->_face, a3);
+  objc_storeStrong(&self->_face, face);
 
   [(PXPeopleScalableAvatarView *)self updateImage];
 }
 
-- (void)setPerson:(id)a3
+- (void)setPerson:(id)person
 {
-  objc_storeStrong(&self->_person, a3);
+  objc_storeStrong(&self->_person, person);
 
   [(PXPeopleScalableAvatarView *)self updateImage];
 }
@@ -187,13 +187,13 @@ void __50__PXPeopleScalableAvatarView__updateImageAndWait___block_invoke_2(uint6
   v14.receiver = self;
   v14.super_class = PXPeopleScalableAvatarView;
   [(PXPeopleScalableAvatarView *)&v14 layoutSubviews];
-  v3 = [(PXPeopleScalableAvatarView *)self imageView];
+  imageView = [(PXPeopleScalableAvatarView *)self imageView];
   [(PXPeopleScalableAvatarView *)self bounds];
-  [v3 setFrame:?];
+  [imageView setFrame:?];
   [(PXPeopleScalableAvatarView *)self imageViewCornerRadius];
   v5 = v4;
-  v6 = [v3 layer];
-  [v6 setCornerRadius:v5];
+  layer = [imageView layer];
+  [layer setCornerRadius:v5];
 
   [(PXPeopleScalableAvatarView *)self bounds];
   x = v15.origin.x;
@@ -212,12 +212,12 @@ void __50__PXPeopleScalableAvatarView__updateImageAndWait___block_invoke_2(uint6
   }
 }
 
-- (PXPeopleScalableAvatarView)initWithFrame:(CGRect)a3
+- (PXPeopleScalableAvatarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = PXPeopleScalableAvatarView;
   v7 = [(PXPeopleScalableAvatarView *)&v12 initWithFrame:?];
@@ -229,8 +229,8 @@ void __50__PXPeopleScalableAvatarView__updateImageAndWait___block_invoke_2(uint6
 
     [(UIImageView *)v7->_imageView setAccessibilityIgnoresInvertColors:1];
     v7->_cornerStyle = +[PXPeopleFaceCropFetchOptions recommendedCornerStyleForCurrentAppConfiguration];
-    v10 = [(UIImageView *)v7->_imageView layer];
-    [v10 setMasksToBounds:1];
+    layer = [(UIImageView *)v7->_imageView layer];
+    [layer setMasksToBounds:1];
 
     [(PXPeopleScalableAvatarView *)v7 addSubview:v7->_imageView];
   }

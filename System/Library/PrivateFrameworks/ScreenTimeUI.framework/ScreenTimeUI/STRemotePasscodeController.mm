@@ -35,13 +35,13 @@ uint64_t __44__STRemotePasscodeController__xpcConnection__block_invoke()
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [a1 _xpcConnection];
+  _xpcConnection = [self _xpcConnection];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__STRemotePasscodeController_isRestrictionsPasscodeSet__block_invoke;
   v5[3] = &unk_278339370;
   v5[4] = &v6;
-  [MEMORY[0x277D4BAF8] synchronousProxyFromConnection:v2 proxyHandler:v5];
+  [MEMORY[0x277D4BAF8] synchronousProxyFromConnection:_xpcConnection proxyHandler:v5];
   v3 = *(v7 + 24);
 
   _Block_object_dispose(&v6, 8);
@@ -92,7 +92,7 @@ void __55__STRemotePasscodeController_isRestrictionsPasscodeSet__block_invoke_2(
   block[1] = 3221225472;
   block[2] = __49__STRemotePasscodeController_activateRemotePINUI__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v3, block);
 }
 

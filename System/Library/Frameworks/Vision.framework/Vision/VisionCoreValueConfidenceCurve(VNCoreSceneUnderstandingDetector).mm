@@ -34,7 +34,7 @@
   v10[5] = v11;
   v10[6] = &v12;
   [v6 enumerateUsingBlock:v10];
-  v8 = [a1 curveWithValues:v20[6] confidences:v13[6] count:v7 error:a4];
+  v8 = [self curveWithValues:v20[6] confidences:v13[6] count:v7 error:a4];
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(&v12, 8);
   if (__p[0])

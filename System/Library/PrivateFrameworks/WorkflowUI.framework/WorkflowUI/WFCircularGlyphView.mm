@@ -1,89 +1,89 @@
 @interface WFCircularGlyphView
 - (UIImageView)glyphImageView;
 - (UIView)backgroundColorView;
-- (WFCircularGlyphView)initWithName:(id)a3 glyphColor:(id)a4 backgroundColor:(id)a5;
+- (WFCircularGlyphView)initWithName:(id)name glyphColor:(id)color backgroundColor:(id)backgroundColor;
 - (id)glyphImage;
 - (void)configureBackgroundColorView;
 - (void)configureGlyphImageView;
 - (void)configureViews;
-- (void)setImagePointSize:(double)a3;
+- (void)setImagePointSize:(double)size;
 @end
 
 @implementation WFCircularGlyphView
 
-- (void)setImagePointSize:(double)a3
+- (void)setImagePointSize:(double)size
 {
-  if (self->_imagePointSize != a3)
+  if (self->_imagePointSize != size)
   {
-    self->_imagePointSize = a3 * 0.7;
+    self->_imagePointSize = size * 0.7;
     [(WFCircularGlyphView *)self configureViews];
-    v5 = [(WFCircularGlyphView *)self glyphImageView];
-    [v5 frame];
+    glyphImageView = [(WFCircularGlyphView *)self glyphImageView];
+    [glyphImageView frame];
     [(WFCircularGlyphView *)self setFrame:?];
   }
 }
 
 - (void)configureBackgroundColorView
 {
-  v21 = [(WFCircularGlyphView *)self backgroundColorView];
-  v3 = [(WFCircularGlyphView *)self glyphImageView];
-  v4 = [(WFCircularGlyphView *)self glyphBackgroundColor];
-  if (v4)
+  backgroundColorView = [(WFCircularGlyphView *)self backgroundColorView];
+  glyphImageView = [(WFCircularGlyphView *)self glyphImageView];
+  glyphBackgroundColor = [(WFCircularGlyphView *)self glyphBackgroundColor];
+  if (glyphBackgroundColor)
   {
-    [v21 setBackgroundColor:v4];
+    [backgroundColorView setBackgroundColor:glyphBackgroundColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] systemBlueColor];
-    [v21 setBackgroundColor:v5];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [backgroundColorView setBackgroundColor:systemBlueColor];
   }
 
-  [v3 frame];
+  [glyphImageView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v3 image];
-  [v14 contentInsets];
-  [v21 setFrame:{v7 + v18, v9 + v15, v11 - (v18 + v16), v13 - (v15 + v17)}];
+  image = [glyphImageView image];
+  [image contentInsets];
+  [backgroundColorView setFrame:{v7 + v18, v9 + v15, v11 - (v18 + v16), v13 - (v15 + v17)}];
 
-  [v21 frame];
+  [backgroundColorView frame];
   v19 = CGRectGetWidth(v23) * 0.5;
-  v20 = [v21 layer];
-  [v20 setCornerRadius:v19];
+  layer = [backgroundColorView layer];
+  [layer setCornerRadius:v19];
 }
 
 - (void)configureGlyphImageView
 {
-  v11 = [(WFCircularGlyphView *)self glyphImage];
-  [v11 size];
+  glyphImage = [(WFCircularGlyphView *)self glyphImage];
+  [glyphImage size];
   v4 = v3;
   v6 = v5;
-  v7 = [(WFCircularGlyphView *)self glyphImageView];
-  v8 = [(WFCircularGlyphView *)self glyphImage];
-  [v7 setImage:v8];
+  glyphImageView = [(WFCircularGlyphView *)self glyphImageView];
+  glyphImage2 = [(WFCircularGlyphView *)self glyphImage];
+  [glyphImageView setImage:glyphImage2];
 
-  v9 = [(WFCircularGlyphView *)self glyphColor];
-  if (v9)
+  glyphColor = [(WFCircularGlyphView *)self glyphColor];
+  if (glyphColor)
   {
-    [v7 setTintColor:v9];
+    [glyphImageView setTintColor:glyphColor];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v7 setTintColor:v10];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [glyphImageView setTintColor:systemWhiteColor];
   }
 
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  [glyphImageView setFrame:{0.0, 0.0, v4, v6}];
 }
 
 - (id)glyphImage
 {
   v3 = MEMORY[0x277D755B8];
-  v4 = [(WFCircularGlyphView *)self glyphName];
-  v5 = [v3 systemImageNamed:v4];
+  glyphName = [(WFCircularGlyphView *)self glyphName];
+  v5 = [v3 systemImageNamed:glyphName];
   v6 = MEMORY[0x277D755D0];
   [(WFCircularGlyphView *)self imagePointSize];
   v7 = [v6 configurationWithPointSize:?];
@@ -133,26 +133,26 @@
   [(WFCircularGlyphView *)self configureBackgroundColorView];
 }
 
-- (WFCircularGlyphView)initWithName:(id)a3 glyphColor:(id)a4 backgroundColor:(id)a5
+- (WFCircularGlyphView)initWithName:(id)name glyphColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
   v17.receiver = self;
   v17.super_class = WFCircularGlyphView;
   v11 = [(WFCircularGlyphView *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    [(WFCircularGlyphView *)v11 setGlyphName:v8];
-    [(WFCircularGlyphView *)v12 setGlyphColor:v9];
-    [(WFCircularGlyphView *)v12 setGlyphBackgroundColor:v10];
+    [(WFCircularGlyphView *)v11 setGlyphName:nameCopy];
+    [(WFCircularGlyphView *)v12 setGlyphColor:colorCopy];
+    [(WFCircularGlyphView *)v12 setGlyphBackgroundColor:backgroundColorCopy];
     [(WFCircularGlyphView *)v12 setImagePointSize:35.0];
-    v13 = [(WFCircularGlyphView *)v12 backgroundColorView];
-    [(WFCircularGlyphView *)v12 addSubview:v13];
+    backgroundColorView = [(WFCircularGlyphView *)v12 backgroundColorView];
+    [(WFCircularGlyphView *)v12 addSubview:backgroundColorView];
 
-    v14 = [(WFCircularGlyphView *)v12 glyphImageView];
-    [(WFCircularGlyphView *)v12 addSubview:v14];
+    glyphImageView = [(WFCircularGlyphView *)v12 glyphImageView];
+    [(WFCircularGlyphView *)v12 addSubview:glyphImageView];
 
     v15 = v12;
   }

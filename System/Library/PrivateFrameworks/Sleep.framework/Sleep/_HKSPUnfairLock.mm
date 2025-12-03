@@ -1,7 +1,7 @@
 @interface _HKSPUnfairLock
 - (_HKSPUnfairLock)init;
-- (void)performBlock:(id)a3;
-- (void)performBlockAssertingLocked:(id)a3;
+- (void)performBlock:(id)block;
+- (void)performBlockAssertingLocked:(id)locked;
 @end
 
 @implementation _HKSPUnfairLock
@@ -21,20 +21,20 @@
   return v3;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)performBlockAssertingLocked:(id)a3
+- (void)performBlockAssertingLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   os_unfair_lock_assert_owner(&self->_lock);
-  v4[2]();
+  lockedCopy[2]();
 }
 
 @end

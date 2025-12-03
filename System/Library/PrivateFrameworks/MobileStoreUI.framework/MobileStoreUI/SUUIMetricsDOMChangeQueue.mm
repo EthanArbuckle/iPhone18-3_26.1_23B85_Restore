@@ -1,7 +1,7 @@
 @interface SUUIMetricsDOMChangeQueue
 - (SUUIMetricsDOMChangeQueue)init;
 - (id)oldestPendingChange;
-- (void)addPendingChange:(id)a3;
+- (void)addPendingChange:(id)change;
 @end
 
 @implementation SUUIMetricsDOMChangeQueue
@@ -21,61 +21,61 @@
   return v2;
 }
 
-- (void)addPendingChange:(id)a3
+- (void)addPendingChange:(id)change
 {
-  v18 = a3;
+  changeCopy = change;
   if ([(SUUIMetricsDOMChangeQueue *)self isEmpty])
   {
     goto LABEL_14;
   }
 
-  v4 = [(NSMutableArray *)self->_storage lastObject];
-  if (![v4 isFromDeferredMessage] || !objc_msgSend(v18, "isFromDeferredMessage"))
+  lastObject = [(NSMutableArray *)self->_storage lastObject];
+  if (![lastObject isFromDeferredMessage] || !objc_msgSend(changeCopy, "isFromDeferredMessage"))
   {
 
 LABEL_14:
     storage = self->_storage;
-    v4 = [v18 copy];
-    [(NSMutableArray *)storage addObject:v4];
+    lastObject = [changeCopy copy];
+    [(NSMutableArray *)storage addObject:lastObject];
     goto LABEL_15;
   }
 
-  [v4 buildStartTime];
+  [lastObject buildStartTime];
   v6 = v5;
-  [v18 buildStartTime];
+  [changeCopy buildStartTime];
   if (v6 < v7 != fmin(v6, v7) < 2.22044605e-16)
   {
     v7 = v6;
   }
 
-  [v4 setBuildStartTime:v7];
-  [v4 buildEndTime];
+  [lastObject setBuildStartTime:v7];
+  [lastObject buildEndTime];
   v9 = v8;
-  [v18 buildEndTime];
+  [changeCopy buildEndTime];
   if (v9 >= v10)
   {
     v10 = v9;
   }
 
-  [v4 setBuildEndTime:v10];
-  [v4 renderStartTime];
+  [lastObject setBuildEndTime:v10];
+  [lastObject renderStartTime];
   v12 = v11;
-  [v18 renderStartTime];
+  [changeCopy renderStartTime];
   if (v12 < v13 != fmin(v12, v13) < 2.22044605e-16)
   {
     v13 = v12;
   }
 
-  [v4 setRenderStartTime:v13];
-  [v4 renderEndTime];
+  [lastObject setRenderStartTime:v13];
+  [lastObject renderEndTime];
   v15 = v14;
-  [v18 renderEndTime];
+  [changeCopy renderEndTime];
   if (v15 >= v16)
   {
     v16 = v15;
   }
 
-  [v4 setRenderEndTime:v16];
+  [lastObject setRenderEndTime:v16];
 LABEL_15:
 }
 
@@ -83,16 +83,16 @@ LABEL_15:
 {
   if ([(NSMutableArray *)self->_storage count])
   {
-    v3 = [(NSMutableArray *)self->_storage firstObject];
+    firstObject = [(NSMutableArray *)self->_storage firstObject];
     [(NSMutableArray *)self->_storage removeObjectAtIndex:0];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 @end

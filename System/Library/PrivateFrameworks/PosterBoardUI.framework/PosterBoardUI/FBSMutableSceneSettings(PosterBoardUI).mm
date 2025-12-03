@@ -8,7 +8,7 @@
 {
   v2 = modeFromPRUISwitcherLayoutMode();
 
-  return [a1 pruis_setPreferredSwitcherLayoutMode:v2];
+  return [self pruis_setPreferredSwitcherLayoutMode:v2];
 }
 
 @end

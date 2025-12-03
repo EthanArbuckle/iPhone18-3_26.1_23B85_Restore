@@ -1,5 +1,5 @@
 @interface _UIDiffableSectionBoundaryMoveDetector
-- (_UIDiffableSectionBoundaryMoveDetector)initWithItemDiffer:(id)a3 beforeDataSourceState:(id)a4 afterDataSourceState:(id)a5;
+- (_UIDiffableSectionBoundaryMoveDetector)initWithItemDiffer:(id)differ beforeDataSourceState:(id)state afterDataSourceState:(id)sourceState;
 - (id)_computeMovePairsFoundation;
 @end
 
@@ -7,15 +7,15 @@
 
 - (id)_computeMovePairsFoundation
 {
-  v49 = [(_UIDiffableDataSourceState *)self->_beforeState dataSourceSnapshot];
-  v50 = [(_UIDiffableDataSourceState *)self->_afterState dataSourceSnapshot];
-  v4 = [(_UIIdentifierDiffer *)self->_differ hasChanges];
-  v5 = [v49 numberOfSections];
-  if (v5 == [v50 numberOfSections] && objc_msgSend(v49, "isEqual:", v50))
+  dataSourceSnapshot = [(_UIDiffableDataSourceState *)self->_beforeState dataSourceSnapshot];
+  dataSourceSnapshot2 = [(_UIDiffableDataSourceState *)self->_afterState dataSourceSnapshot];
+  hasChanges = [(_UIIdentifierDiffer *)self->_differ hasChanges];
+  numberOfSections = [dataSourceSnapshot numberOfSections];
+  if (numberOfSections == [dataSourceSnapshot2 numberOfSections] && objc_msgSend(dataSourceSnapshot, "isEqual:", dataSourceSnapshot2))
   {
-    v6 = [(_UIDiffableDataSourceState *)self->_beforeState sections];
-    v7 = [(_UIDiffableDataSourceState *)self->_afterState sections];
-    v8 = [v6 isEqualToOrderedSet:v7];
+    sections = [(_UIDiffableDataSourceState *)self->_beforeState sections];
+    sections2 = [(_UIDiffableDataSourceState *)self->_afterState sections];
+    v8 = [sections isEqualToOrderedSet:sections2];
 
     v9 = v8 ^ 1;
   }
@@ -25,52 +25,52 @@
     v9 = 1;
   }
 
-  if ([v50 numberOfItems] && ((v4 | v9) & 1) != 0)
+  if ([dataSourceSnapshot2 numberOfItems] && ((hasChanges | v9) & 1) != 0)
   {
-    v10 = [(_UIDiffableDataSourceState *)self->_beforeState identifiers];
-    v47 = [(_UIDiffableDataSourceState *)self->_afterState identifiers];
-    v53 = [(_UIDiffableDataSourceState *)self->_beforeState sections];
-    v52 = [(_UIDiffableDataSourceState *)self->_afterState sections];
-    v11 = [v49 numberOfItems];
-    if (v11 != [v10 count])
+    identifiers = [(_UIDiffableDataSourceState *)self->_beforeState identifiers];
+    identifiers2 = [(_UIDiffableDataSourceState *)self->_afterState identifiers];
+    sections3 = [(_UIDiffableDataSourceState *)self->_beforeState sections];
+    sections4 = [(_UIDiffableDataSourceState *)self->_afterState sections];
+    numberOfItems = [dataSourceSnapshot numberOfItems];
+    if (numberOfItems != [identifiers count])
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"initialSnapshot.numberOfItems == initialIdentifiers.count"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"initialSnapshot.numberOfItems == initialIdentifiers.count"}];
     }
 
-    v12 = [v49 numberOfSections];
-    if (v12 != [v53 count])
+    numberOfSections2 = [dataSourceSnapshot numberOfSections];
+    if (numberOfSections2 != [sections3 count])
     {
-      v44 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v44 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"initialSnapshot.numberOfSections == initialSections.count"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"initialSnapshot.numberOfSections == initialSections.count"}];
     }
 
-    v13 = [v50 numberOfItems];
-    if (v13 != [v47 count])
+    numberOfItems2 = [dataSourceSnapshot2 numberOfItems];
+    if (numberOfItems2 != [identifiers2 count])
     {
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v45 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"finalSnapshot.numberOfItems == finalIdentifiers.count"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"finalSnapshot.numberOfItems == finalIdentifiers.count"}];
     }
 
-    v14 = [v50 numberOfSections];
-    if (v14 != [v52 count])
+    numberOfSections3 = [dataSourceSnapshot2 numberOfSections];
+    if (numberOfSections3 != [sections4 count])
     {
-      v46 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v46 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"finalSnapshot.numberOfSections == finalSections.count"}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UIDiffableSectionBoundaryMoveDetector.mm" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"finalSnapshot.numberOfSections == finalSections.count"}];
     }
 
-    v15 = [v47 count];
-    v48 = [v49 numberOfSections];
-    v16 = [v50 numberOfSections];
+    v15 = [identifiers2 count];
+    numberOfSections4 = [dataSourceSnapshot numberOfSections];
+    numberOfSections5 = [dataSourceSnapshot2 numberOfSections];
     __src = 0;
     v55 = 0;
     v56 = 0;
     std::vector<long>::reserve(&__src, v15);
-    if (v16 >= 1)
+    if (numberOfSections5 >= 1)
     {
-      for (i = 0; i != v16; ++i)
+      for (i = 0; i != numberOfSections5; ++i)
       {
-        v18 = [v50 rangeForSection:i];
+        v18 = [dataSourceSnapshot2 rangeForSection:i];
         v20 = v19;
         if (v18 < v18 + v19)
         {
@@ -141,23 +141,23 @@
     }
 
     v51 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    if (v48 >= 1)
+    if (numberOfSections4 >= 1)
     {
-      for (j = 0; j != v48; ++j)
+      for (j = 0; j != numberOfSections4; ++j)
       {
-        v33 = [v49 rangeForSection:j];
+        v33 = [dataSourceSnapshot rangeForSection:j];
         v35 = v34;
         if (v33 < v33 + v34)
         {
           do
           {
-            v36 = [v10 objectAtIndexedSubscript:v33];
+            v36 = [identifiers objectAtIndexedSubscript:v33];
             v37 = [(_UIDiffableDataSourceState *)self->_afterState indexOfItemIdentifier:v36];
             if (v37 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v38 = *(__src + v37);
-              v39 = [v53 objectAtIndexedSubscript:j];
-              v40 = [v52 objectAtIndexedSubscript:v38];
+              v39 = [sections3 objectAtIndexedSubscript:j];
+              v40 = [sections4 objectAtIndexedSubscript:v38];
               if (([v39 isEqual:v40] & 1) == 0)
               {
                 v41 = [[_UIIdentifierDifferMovePair alloc] initWithFromIndex:v33 toIndex:v37];
@@ -190,23 +190,23 @@
   return v51;
 }
 
-- (_UIDiffableSectionBoundaryMoveDetector)initWithItemDiffer:(id)a3 beforeDataSourceState:(id)a4 afterDataSourceState:(id)a5
+- (_UIDiffableSectionBoundaryMoveDetector)initWithItemDiffer:(id)differ beforeDataSourceState:(id)state afterDataSourceState:(id)sourceState
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  differCopy = differ;
+  stateCopy = state;
+  sourceStateCopy = sourceState;
   v17.receiver = self;
   v17.super_class = _UIDiffableSectionBoundaryMoveDetector;
   v12 = [(_UIDiffableSectionBoundaryMoveDetector *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_differ, a3);
-    objc_storeStrong(&v13->_beforeState, a4);
-    objc_storeStrong(&v13->_afterState, a5);
-    v14 = [(_UIDiffableSectionBoundaryMoveDetector *)v13 _computeMovePairsFoundation];
+    objc_storeStrong(&v12->_differ, differ);
+    objc_storeStrong(&v13->_beforeState, state);
+    objc_storeStrong(&v13->_afterState, sourceState);
+    _computeMovePairsFoundation = [(_UIDiffableSectionBoundaryMoveDetector *)v13 _computeMovePairsFoundation];
     movePairs = v13->_movePairs;
-    v13->_movePairs = v14;
+    v13->_movePairs = _computeMovePairsFoundation;
   }
 
   return v13;

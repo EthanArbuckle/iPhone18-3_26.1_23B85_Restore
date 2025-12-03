@@ -1,21 +1,21 @@
 @interface PKTextInputDrawingGestureRecognizer
 + (id)_systemGestureClassesToAvoid;
 - (BOOL)_gestureStartedInsideTargetElement;
-- (BOOL)_hasMovedPastMinimumPanThresholdForTouch:(id)a3;
-- (BOOL)_hasMovedPastScrollThresholdForTouch:(id)a3;
+- (BOOL)_hasMovedPastMinimumPanThresholdForTouch:(id)touch;
+- (BOOL)_hasMovedPastScrollThresholdForTouch:(id)touch;
 - (BOOL)_isValidLongPress;
-- (BOOL)_isValidLongPressOverDuration:(double)a3;
-- (BOOL)_isWithinLongPressDistanceForTouch:(id)a3;
-- (BOOL)hasMovedPastTapUseTimestampFromTouch:(BOOL)a3;
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
-- (CGPoint)locationInView:(id)a3;
+- (BOOL)_isValidLongPressOverDuration:(double)duration;
+- (BOOL)_isWithinLongPressDistanceForTouch:(id)touch;
+- (BOOL)hasMovedPastTapUseTimestampFromTouch:(BOOL)touch;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
+- (CGPoint)locationInView:(id)view;
 - (NSString)description;
 - (PKDrawingGestureTarget)drawingTarget;
-- (PKTextInputDrawingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (double)_distanceFromStartPositionForTouch:(id)a3;
+- (PKTextInputDrawingGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (double)_distanceFromStartPositionForTouch:(id)touch;
 - (double)timeIntervalSinceStartOfGesture;
-- (double)timeIntervalSinceTouchesBeganForTouch:(id)a3;
-- (int64_t)_panDirectionForTouch:(id)a3;
+- (double)timeIntervalSinceTouchesBeganForTouch:(id)touch;
+- (int64_t)_panDirectionForTouch:(id)touch;
 - (void)_acceptStrokeTimeoutTriggered;
 - (void)_beginDrawingIfNeeded;
 - (void)_cancelLongPressTimerBlocks;
@@ -24,47 +24,47 @@
 - (void)_cancelScheduledStrokeAcceptanceBlock;
 - (void)_drawingBegan;
 - (void)_drawingEnded;
-- (void)_drawingMoved:(id)a3;
-- (void)_enumerateTouchesForUpdateWithEvent:(id)a3 block:(id)a4;
+- (void)_drawingMoved:(id)moved;
+- (void)_enumerateTouchesForUpdateWithEvent:(id)event block:(id)block;
 - (void)_evaluateCancelIfNotMoving;
-- (void)_evaluateMovingToBeganStateUseTimestampFromTouch:(BOOL)a3;
+- (void)_evaluateMovingToBeganStateUseTimestampFromTouch:(BOOL)touch;
 - (void)_longPressSuccessTimerFired;
 - (void)_longPressTentativeTimerFired;
-- (void)_replayDrawingBegan:(id *)a3;
-- (void)_replayDrawingBegan:(id *)a3 coordinateSpace:(id)a4 activeInputProperties:(unint64_t)a5 inputType:(int64_t)a6;
+- (void)_replayDrawingBegan:(id *)began;
+- (void)_replayDrawingBegan:(id *)began coordinateSpace:(id)space activeInputProperties:(unint64_t)properties inputType:(int64_t)type;
 - (void)_replayDrawingCancelled;
 - (void)_replayDrawingEnded;
-- (void)_replayDrawingMoved:(id *)a3;
-- (void)_replayDrawingMoved:(id *)a3 coordinateSpace:(id)a4;
+- (void)_replayDrawingMoved:(id *)moved;
+- (void)_replayDrawingMoved:(id *)moved coordinateSpace:(id)space;
 - (void)_scheduleLongPressTimerBlocks;
-- (void)_setDrawingTargetIsDrawing:(BOOL)a3;
-- (void)_setLongPressState:(int64_t)a3;
-- (void)_setPanState:(int64_t)a3;
-- (void)_setStrokeAcceptanceState:(int64_t)a3;
-- (void)_updateLongPressValidityForTouch:(id)a3;
-- (void)_updatePanGestureStateForTouch:(id)a3;
-- (void)_updatePanStateForCandidateElements:(id)a3;
-- (void)_updateStrokeAcceptanceStateUseTimestampFromTouch:(BOOL)a3;
+- (void)_setDrawingTargetIsDrawing:(BOOL)drawing;
+- (void)_setLongPressState:(int64_t)state;
+- (void)_setPanState:(int64_t)state;
+- (void)_setStrokeAcceptanceState:(int64_t)state;
+- (void)_updateLongPressValidityForTouch:(id)touch;
+- (void)_updatePanGestureStateForTouch:(id)touch;
+- (void)_updatePanStateForCandidateElements:(id)elements;
+- (void)_updateStrokeAcceptanceStateUseTimestampFromTouch:(BOOL)touch;
 - (void)cancel;
 - (void)cancelDrawing;
-- (void)finishedElementFindingWithElement:(id)a3 candidateElements:(id)a4;
-- (void)reportDebugStateDescription:(id)a3;
+- (void)finishedElementFindingWithElement:(id)element candidateElements:(id)elements;
+- (void)reportDebugStateDescription:(id)description;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesEstimatedPropertiesUpdated:(id)a3;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesEstimatedPropertiesUpdated:(id)updated;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation PKTextInputDrawingGestureRecognizer
 
-- (PKTextInputDrawingGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (PKTextInputDrawingGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = PKTextInputDrawingGestureRecognizer;
-  v4 = [(PKTextInputDrawingGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(PKTextInputDrawingGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -77,18 +77,18 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self state];
+  state = [(PKTextInputDrawingGestureRecognizer *)self state];
   v6 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-    v8 = _PKNameForGestureState(v5);
-    v9 = _PKNameForGestureState(a3);
+    drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+    v8 = _PKNameForGestureState(state);
+    v9 = _PKNameForGestureState(state);
     *buf = 134218498;
-    v19 = v7;
+    v19 = drawingTouch;
     v20 = 2112;
     v21 = v8;
     v22 = 2112;
@@ -98,8 +98,8 @@
 
   v17.receiver = self;
   v17.super_class = PKTextInputDrawingGestureRecognizer;
-  [(PKTextInputDrawingGestureRecognizer *)&v17 setState:a3];
-  if (v5 != a3)
+  [(PKTextInputDrawingGestureRecognizer *)&v17 setState:state];
+  if (state != state)
   {
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
     gestureEnvironmentResetTimeoutBlock = self->_gestureEnvironmentResetTimeoutBlock;
@@ -110,7 +110,7 @@
       self->_gestureEnvironmentResetTimeoutBlock = 0;
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       objc_initWeak(buf, self);
       block[0] = MEMORY[0x1E69E9820];
@@ -156,22 +156,22 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   }
 }
 
-- (void)finishedElementFindingWithElement:(id)a3 candidateElements:(id)a4
+- (void)finishedElementFindingWithElement:(id)element candidateElements:(id)elements
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  elementsCopy = elements;
   v8 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+    drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
     v10 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
     v11 = 134218754;
-    v12 = v9;
+    v12 = drawingTouch;
     v13 = 2048;
-    v14 = v6;
+    v14 = elementCopy;
     v15 = 2048;
-    v16 = v7;
+    v16 = elementsCopy;
     v17 = 2112;
     v18 = v10;
     _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Gesture touch %p finishedElementFindingWithElement: %p, candidateElements: %p state: %@", &v11, 0x2Au);
@@ -179,8 +179,8 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
 
   if (self->_waitingForTargetElementSearch)
   {
-    [(PKTextInputDrawingGestureRecognizer *)self setTargetElement:v6];
-    [(PKTextInputDrawingGestureRecognizer *)self _updatePanStateForCandidateElements:v7];
+    [(PKTextInputDrawingGestureRecognizer *)self setTargetElement:elementCopy];
+    [(PKTextInputDrawingGestureRecognizer *)self _updatePanStateForCandidateElements:elementsCopy];
     self->_waitingForTargetElementSearch = 0;
     [(PKTextInputDrawingGestureRecognizer *)self _evaluateMovingToBeganStateUseTimestampFromTouch:0];
     [(PKTextInputDrawingGestureRecognizer *)self _updateStrokeAcceptanceStateUseTimestampFromTouch:0];
@@ -188,9 +188,9 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   }
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  if (a3 && self->_drawingTouch)
+  if (view && self->_drawingTouch)
   {
     drawingTouch = self->_drawingTouch;
 
@@ -211,11 +211,11 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   return result;
 }
 
-- (double)_distanceFromStartPositionForTouch:(id)a3
+- (double)_distanceFromStartPositionForTouch:(id)touch
 {
   x = self->_drawTouchStartPoint.x;
   y = self->_drawTouchStartPoint.y;
-  [a3 locationInView:0];
+  [touch locationInView:0];
   return sqrt((y - v6) * (y - v6) + (x - v5) * (x - v5));
 }
 
@@ -230,15 +230,15 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   return v3 - self->_drawStartTime;
 }
 
-- (double)timeIntervalSinceTouchesBeganForTouch:(id)a3
+- (double)timeIntervalSinceTouchesBeganForTouch:(id)touch
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  touchCopy = touch;
+  v5 = touchCopy;
+  if (touchCopy)
   {
     if (self->_drawingTouch)
     {
-      [v4 timestamp];
+      [touchCopy timestamp];
       v7 = v6 - self->_touchesBeganTimestamp;
     }
 
@@ -259,24 +259,24 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
 
 - (BOOL)_gestureStartedInsideTargetElement
 {
-  v3 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
-  v4 = [(PKTextInputElement *)v3 coordinateSpace];
+  targetElement = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+  coordinateSpace = [(PKTextInputElement *)targetElement coordinateSpace];
 
-  if (!v4)
+  if (!coordinateSpace)
   {
     return 0;
   }
 
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
-  v6 = [(PKTextInputElement *)v5 frame];
+  targetElement2 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+  frame = [(PKTextInputElement *)targetElement2 frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
-  v14 = [(PKTextInputElement *)v13 coordinateSpace];
-  v15 = [(PKTextInputDrawingGestureRecognizer *)self view];
-  v16 = [v15 window];
-  v17 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v14, v16, v6, v8, v10, v12);
+  targetElement3 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+  coordinateSpace2 = [(PKTextInputElement *)targetElement3 coordinateSpace];
+  view = [(PKTextInputDrawingGestureRecognizer *)self view];
+  window = [view window];
+  v17 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace2, window, frame, v8, v10, v12);
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -302,7 +302,7 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)hasMovedPastTapUseTimestampFromTouch:(BOOL)a3
+- (BOOL)hasMovedPastTapUseTimestampFromTouch:(BOOL)touch
 {
   v5 = +[PKTextInputSettings sharedSettings];
   [v5 drawingGestureTapDetectionDistanceThreshold];
@@ -312,17 +312,17 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   [v8 drawingGestureTapDetectionTimeInterval];
   v10 = v9;
 
-  v11 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-  [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:v11];
+  drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+  [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:drawingTouch];
   v13 = v12;
 
   if ([(PKTextInputDrawingGestureRecognizer *)self _gestureStartedInsideTargetElement])
   {
     v14 = v10 + -v10 / (v7 * v7) * (v13 * v13);
-    if (a3)
+    if (touch)
     {
-      v15 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-      [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceTouchesBeganForTouch:v15];
+      drawingTouch2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceTouchesBeganForTouch:drawingTouch2];
       v17 = v16;
     }
 
@@ -343,13 +343,13 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   return !v18;
 }
 
-- (void)_enumerateTouchesForUpdateWithEvent:(id)a3 block:(id)a4
+- (void)_enumerateTouchesForUpdateWithEvent:(id)event block:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v7 = [a3 coalescedTouchesForTouch:self->_drawingTouch];
+    v7 = [event coalescedTouchesForTouch:self->_drawingTouch];
     if ([v7 count])
     {
       v15 = 0u;
@@ -372,7 +372,7 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
               objc_enumerationMutation(v8);
             }
 
-            v6[2](v6, *(*(&v13 + 1) + 8 * v12++));
+            blockCopy[2](blockCopy, *(*(&v13 + 1) + 8 * v12++));
           }
 
           while (v10 != v12);
@@ -385,18 +385,18 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
 
     else
     {
-      (v6)[2](v6, self->_drawingTouch);
+      (blockCopy)[2](blockCopy, self->_drawingTouch);
     }
   }
 }
 
-- (void)_setLongPressState:(int64_t)a3
+- (void)_setLongPressState:(int64_t)state
 {
-  if (self->_longPressState != a3)
+  if (self->_longPressState != state)
   {
-    self->_longPressState = a3;
-    v5 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-    [v5 drawingGestureRecognizerLongPressStateDidChange:self];
+    self->_longPressState = state;
+    delegate = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+    [delegate drawingGestureRecognizerLongPressStateDidChange:self];
 
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
   }
@@ -416,9 +416,9 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   return v4;
 }
 
-- (BOOL)_isWithinLongPressDistanceForTouch:(id)a3
+- (BOOL)_isWithinLongPressDistanceForTouch:(id)touch
 {
-  [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:a3];
+  [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:touch];
   v4 = v3;
   v5 = +[PKTextInputSettings sharedSettings];
   [v5 drawingGestureLongPressMaxDistance];
@@ -427,13 +427,13 @@ void __48__PKTextInputDrawingGestureRecognizer_setState___block_invoke(uint64_t 
   return v4 <= v7;
 }
 
-- (BOOL)_isValidLongPressOverDuration:(double)a3
+- (BOOL)_isValidLongPressOverDuration:(double)duration
 {
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-  v6 = [(PKTextInputDrawingGestureRecognizer *)self _isWithinLongPressDistanceForTouch:v5];
+  drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+  v6 = [(PKTextInputDrawingGestureRecognizer *)self _isWithinLongPressDistanceForTouch:drawingTouch];
 
   [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceStartOfGesture];
-  return v7 > a3 && v6;
+  return v7 > duration && v6;
 }
 
 - (void)_scheduleLongPressTimerBlocks
@@ -524,19 +524,19 @@ void __68__PKTextInputDrawingGestureRecognizer__scheduleLongPressTimerBlocks__bl
   [(PKTextInputDrawingGestureRecognizer *)self _setLongPressState:v4];
 }
 
-- (void)_updateLongPressValidityForTouch:(id)a3
+- (void)_updateLongPressValidityForTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   if (self->_longPressSuccessBlock)
   {
-    v6 = v4;
-    v5 = [(PKTextInputDrawingGestureRecognizer *)self _isWithinLongPressDistanceForTouch:v4];
-    v4 = v6;
+    v6 = touchCopy;
+    v5 = [(PKTextInputDrawingGestureRecognizer *)self _isWithinLongPressDistanceForTouch:touchCopy];
+    touchCopy = v6;
     if (!v5)
     {
       [(PKTextInputDrawingGestureRecognizer *)self _cancelLongPressTimerBlocks];
       [(PKTextInputDrawingGestureRecognizer *)self _setLongPressState:3];
-      v4 = v6;
+      touchCopy = v6;
     }
   }
 }
@@ -560,18 +560,18 @@ void __68__PKTextInputDrawingGestureRecognizer__scheduleLongPressTimerBlocks__bl
   }
 }
 
-- (void)_setPanState:(int64_t)a3
+- (void)_setPanState:(int64_t)state
 {
-  if (self->_panState != a3)
+  if (self->_panState != state)
   {
-    self->_panState = a3;
+    self->_panState = state;
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
   }
 }
 
-- (BOOL)_hasMovedPastMinimumPanThresholdForTouch:(id)a3
+- (BOOL)_hasMovedPastMinimumPanThresholdForTouch:(id)touch
 {
-  [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:a3];
+  [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:touch];
   v4 = v3;
   v5 = +[PKTextInputSettings sharedSettings];
   [v5 drawingGestureMinimumPanDistanceThreshold];
@@ -580,14 +580,14 @@ void __68__PKTextInputDrawingGestureRecognizer__scheduleLongPressTimerBlocks__bl
   return v4 > v7;
 }
 
-- (BOOL)_hasMovedPastScrollThresholdForTouch:(id)a3
+- (BOOL)_hasMovedPastScrollThresholdForTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+  touchCopy = touch;
+  targetElement = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
 
-  if (v5)
+  if (targetElement)
   {
-    [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:v4];
+    [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:touchCopy];
     v7 = v6;
     v8 = +[PKTextInputSettings sharedSettings];
     [v8 drawingGestureMinimumScrollDistanceThreshold];
@@ -604,36 +604,36 @@ void __68__PKTextInputDrawingGestureRecognizer__scheduleLongPressTimerBlocks__bl
   return v11;
 }
 
-- (void)_updatePanGestureStateForTouch:(id)a3
+- (void)_updatePanGestureStateForTouch:(id)touch
 {
-  v7 = a3;
+  touchCopy = touch;
   if (![(PKTextInputDrawingGestureRecognizer *)self panState])
   {
-    if (![(PKTextInputDrawingGestureRecognizer *)self _hasMovedPastMinimumPanThresholdForTouch:v7])
+    if (![(PKTextInputDrawingGestureRecognizer *)self _hasMovedPastMinimumPanThresholdForTouch:touchCopy])
     {
       [(PKTextInputDrawingGestureRecognizer *)self _setPanDirection:0];
       goto LABEL_12;
     }
 
-    [(PKTextInputDrawingGestureRecognizer *)self _setPanDirection:[(PKTextInputDrawingGestureRecognizer *)self _panDirectionForTouch:v7]];
+    [(PKTextInputDrawingGestureRecognizer *)self _setPanDirection:[(PKTextInputDrawingGestureRecognizer *)self _panDirectionForTouch:touchCopy]];
     if ([(PKTextInputDrawingGestureRecognizer *)self panDirection]== 1 || [(PKTextInputDrawingGestureRecognizer *)self panDirection]== 3)
     {
-      v5 = self;
+      selfCopy2 = self;
       v6 = 1;
 LABEL_10:
-      [(PKTextInputDrawingGestureRecognizer *)v5 _setPanState:v6];
+      [(PKTextInputDrawingGestureRecognizer *)selfCopy2 _setPanState:v6];
       goto LABEL_12;
     }
 
 LABEL_9:
-    v5 = self;
+    selfCopy2 = self;
     v6 = 2;
     goto LABEL_10;
   }
 
   if ([(PKTextInputDrawingGestureRecognizer *)self panState]== 1)
   {
-    v4 = [(PKTextInputDrawingGestureRecognizer *)self _panDirectionForTouch:v7];
+    v4 = [(PKTextInputDrawingGestureRecognizer *)self _panDirectionForTouch:touchCopy];
     if ([(PKTextInputDrawingGestureRecognizer *)self panDirection]!= v4)
     {
       [(PKTextInputDrawingGestureRecognizer *)self _setPanDirection:0];
@@ -642,17 +642,17 @@ LABEL_9:
   }
 
 LABEL_12:
-  if ([(PKTextInputDrawingGestureRecognizer *)self state]!= 4 && [(PKTextInputDrawingGestureRecognizer *)self panState]== 1 && [(PKTextInputDrawingGestureRecognizer *)self _hasMovedPastScrollThresholdForTouch:v7])
+  if ([(PKTextInputDrawingGestureRecognizer *)self state]!= 4 && [(PKTextInputDrawingGestureRecognizer *)self panState]== 1 && [(PKTextInputDrawingGestureRecognizer *)self _hasMovedPastScrollThresholdForTouch:touchCopy])
   {
     [(PKTextInputDrawingGestureRecognizer *)self cancel];
   }
 }
 
-- (int64_t)_panDirectionForTouch:(id)a3
+- (int64_t)_panDirectionForTouch:(id)touch
 {
   x = self->_drawTouchStartPoint.x;
   y = self->_drawTouchStartPoint.y;
-  [a3 locationInView:0];
+  [touch locationInView:0];
   v7 = (atan2(v6 - y, v5 - x) * 57.2957795 + 90.0 + 45.0);
   v8 = fmod(v7, 360.0);
   if (v7 <= 0x168)
@@ -673,11 +673,11 @@ LABEL_12:
   return (v8 / 90.0) + 1;
 }
 
-- (void)_updatePanStateForCandidateElements:(id)a3
+- (void)_updatePanStateForCandidateElements:(id)elements
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] < 2)
+  elementsCopy = elements;
+  if ([elementsCopy count] < 2)
   {
     goto LABEL_19;
   }
@@ -686,7 +686,7 @@ LABEL_12:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v4;
+  v5 = elementsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v6)
   {
@@ -707,19 +707,19 @@ LABEL_18:
         objc_enumerationMutation(v5);
       }
 
-      v11 = [(PKTextInputElement *)*(*(&v15 + 1) + 8 * i) referenceView];
-      if (!v11)
+      referenceView = [(PKTextInputElement *)*(*(&v15 + 1) + 8 * i) referenceView];
+      if (!referenceView)
       {
         v12 = v8;
         goto LABEL_17;
       }
 
-      v12 = v11;
-      v13 = [v11 PK_enclosingScrollableScrollView];
-      v14 = v13;
+      v12 = referenceView;
+      pK_enclosingScrollableScrollView = [referenceView PK_enclosingScrollableScrollView];
+      v14 = pK_enclosingScrollableScrollView;
       if (v8)
       {
-        if (v8 != v13)
+        if (v8 != pK_enclosingScrollableScrollView)
         {
 
 LABEL_17:
@@ -729,7 +729,7 @@ LABEL_17:
 
       else
       {
-        v8 = v13;
+        v8 = pK_enclosingScrollableScrollView;
       }
     }
 
@@ -751,51 +751,51 @@ LABEL_19:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (!self->_isReplaying)
   {
     if (self->_drawingTouch)
     {
-      v8 = os_log_create("com.apple.pencilkit", "PencilTextInput");
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      anyObject = os_log_create("com.apple.pencilkit", "PencilTextInput");
+      if (os_log_type_enabled(anyObject, OS_LOG_TYPE_ERROR))
       {
-        v26 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+        drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
         v27 = 134217984;
-        v28 = v26;
-        _os_log_error_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_ERROR, "Gesture touch %p touchesBegan called multiple times", &v27, 0xCu);
+        v28 = drawingTouch;
+        _os_log_error_impl(&dword_1C7CCA000, anyObject, OS_LOG_TYPE_ERROR, "Gesture touch %p touchesBegan called multiple times", &v27, 0xCu);
       }
 
       goto LABEL_20;
     }
 
-    v9 = [v6 objectsPassingTest:&__block_literal_global_95];
-    v8 = [v9 anyObject];
+    v9 = [beganCopy objectsPassingTest:&__block_literal_global_95];
+    anyObject = [v9 anyObject];
 
-    if (!v8)
+    if (!anyObject)
     {
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    [v8 timestamp];
+    [anyObject timestamp];
     self->_touchesBeganTimestamp = v10;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     self->_drawStartTime = v11;
-    objc_storeStrong(&self->_drawingTouch, v8);
-    self->_activeInputProperties = [v7 PK_activeInputPropertiesForTouch:v8];
+    objc_storeStrong(&self->_drawingTouch, anyObject);
+    self->_activeInputProperties = [eventCopy PK_activeInputPropertiesForTouch:anyObject];
     [(UITouch *)self->_drawingTouch locationInView:0];
     self->_drawTouchStartPoint.x = v12;
     self->_drawTouchStartPoint.y = v13;
-    v14 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-    self->_requiresTargetElementToBegin = [v14 drawingGestureRecognizerRequiresTargetElementToBegin:self];
+    delegate = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+    self->_requiresTargetElementToBegin = [delegate drawingGestureRecognizerRequiresTargetElementToBegin:self];
 
-    v15 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-    self->_requiresPastTapToBegin = [v15 drawingGestureRecognizerRequiresPastTapToBegin:self];
+    delegate2 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+    self->_requiresPastTapToBegin = [delegate2 drawingGestureRecognizerRequiresPastTapToBegin:self];
 
     [(PKTextInputDrawingGestureRecognizer *)self setTargetElement:0];
     self->_waitingForTargetElementSearch = self->_requiresTargetElementToBegin;
@@ -806,8 +806,8 @@ LABEL_20:
 
     else
     {
-      v23 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-      v24 = [v23 drawingGestureRecognizer:self shouldBeginDrawingWithTouches:v6 event:v7];
+      delegate3 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+      v24 = [delegate3 drawingGestureRecognizer:self shouldBeginDrawingWithTouches:beganCopy event:eventCopy];
 
       if (!v24)
       {
@@ -816,8 +816,8 @@ LABEL_20:
         goto LABEL_10;
       }
 
-      v25 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-      v16 = [v25 drawingGestureRecognizerLongPressShouldBegin:self];
+      delegate4 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+      v16 = [delegate4 drawingGestureRecognizerLongPressShouldBegin:self];
     }
 
     v17 = 1;
@@ -825,7 +825,7 @@ LABEL_10:
     v18 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      drawingTouch2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
       if (v17)
       {
         v20 = @"Y";
@@ -838,7 +838,7 @@ LABEL_10:
 
       v21 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
       v27 = 134218498;
-      v28 = v19;
+      v28 = drawingTouch2;
       v29 = 2112;
       v30 = v20;
       v31 = 2112;
@@ -867,28 +867,28 @@ LABEL_10:
 LABEL_21:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a4;
-  if ([a3 containsObject:self->_drawingTouch])
+  eventCopy = event;
+  if ([moved containsObject:self->_drawingTouch])
   {
     if (!self->_isReplaying)
     {
       [(PKTextInputDrawingGestureRecognizer *)self _evaluateMovingToBeganStateUseTimestampFromTouch:1];
-      [(PKTextInputDrawingGestureRecognizer *)self _drawingMoved:v6];
+      [(PKTextInputDrawingGestureRecognizer *)self _drawingMoved:eventCopy];
       [(PKTextInputDrawingGestureRecognizer *)self _updateStrokeAcceptanceStateUseTimestampFromTouch:1];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __62__PKTextInputDrawingGestureRecognizer_touchesMoved_withEvent___block_invoke;
       v8[3] = &unk_1E82DCA60;
       v8[4] = self;
-      [(PKTextInputDrawingGestureRecognizer *)self _enumerateTouchesForUpdateWithEvent:v6 block:v8];
+      [(PKTextInputDrawingGestureRecognizer *)self _enumerateTouchesForUpdateWithEvent:eventCopy block:v8];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __62__PKTextInputDrawingGestureRecognizer_touchesMoved_withEvent___block_invoke_2;
       v7[3] = &unk_1E82DCA60;
       v7[4] = self;
-      [(PKTextInputDrawingGestureRecognizer *)self _enumerateTouchesForUpdateWithEvent:v6 block:v7];
+      [(PKTextInputDrawingGestureRecognizer *)self _enumerateTouchesForUpdateWithEvent:eventCopy block:v7];
       if (([(PKTextInputDrawingGestureRecognizer *)self state]== 1 || [(PKTextInputDrawingGestureRecognizer *)self state]== 2) && [(PKTextInputDrawingGestureRecognizer *)self strokeAcceptanceState]== 1)
       {
         [(PKTextInputDrawingGestureRecognizer *)self _cancelScheduledStrokeAcceptanceBlock];
@@ -901,7 +901,7 @@ LABEL_21:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v12 = *MEMORY[0x1E69E9840];
   if (!self->_isReplaying)
@@ -909,10 +909,10 @@ LABEL_21:
     v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
       v7 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
       v8 = 134218242;
-      v9 = v6;
+      v9 = drawingTouch;
       v10 = 2112;
       v11 = v7;
       _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Gesture touch %p touchesCancelled, state: %@. Cancelling gesture.", &v8, 0x16u);
@@ -922,25 +922,25 @@ LABEL_21:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (self->_isReplaying)
   {
     goto LABEL_14;
   }
 
-  if (![v6 containsObject:self->_drawingTouch])
+  if (![endedCopy containsObject:self->_drawingTouch])
   {
     v14 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
       v16 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
       v18 = 134218242;
-      v19 = v15;
+      v19 = drawingTouch;
       v20 = 2112;
       v21 = v16;
       v17 = "Gesture touch %p touchesEnded, but touches do not contain the original drawing touch, state: %@. Cancelling gesture.";
@@ -954,22 +954,22 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+  delegate = [(PKTextInputDrawingGestureRecognizer *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-    v10 = [v9 drawingGestureRecognizer:self shouldFinishGestureWithTouch:self->_drawingTouch];
+    delegate2 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+    v10 = [delegate2 drawingGestureRecognizer:self shouldFinishGestureWithTouch:self->_drawingTouch];
 
     if ((v10 & 1) == 0)
     {
       v14 = os_log_create("com.apple.pencilkit", "PencilTextInput");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+        drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
         v16 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
         v18 = 134218242;
-        v19 = v15;
+        v19 = drawingTouch;
         v20 = 2112;
         v21 = v16;
         v17 = "Gesture touch %p touchesEnded, but delegate.shouldFinishGestureWithTouch: N, state: %@. Cancelling gesture.";
@@ -980,24 +980,24 @@ LABEL_13:
     }
   }
 
-  v11 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+  delegate3 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-    [v13 drawingGestureRecognizer:self touchesEndedWithDrawingTouch:self->_drawingTouch];
+    delegate4 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+    [delegate4 drawingGestureRecognizer:self touchesEndedWithDrawingTouch:self->_drawingTouch];
   }
 
   [(PKTextInputDrawingGestureRecognizer *)self _endDrawing];
 LABEL_14:
 }
 
-- (void)touchesEstimatedPropertiesUpdated:(id)a3
+- (void)touchesEstimatedPropertiesUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-  [v5 drawingEstimatedPropertiesUpdated:v4];
+  updatedCopy = updated;
+  drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+  [drawingTarget drawingEstimatedPropertiesUpdated:updatedCopy];
 }
 
 - (void)_beginDrawingIfNeeded
@@ -1009,9 +1009,9 @@ LABEL_14:
   }
 }
 
-- (void)_evaluateMovingToBeganStateUseTimestampFromTouch:(BOOL)a3
+- (void)_evaluateMovingToBeganStateUseTimestampFromTouch:(BOOL)touch
 {
-  v3 = a3;
+  touchCopy = touch;
   v46 = *MEMORY[0x1E69E9840];
   if ([(PKTextInputDrawingGestureRecognizer *)self state])
   {
@@ -1020,14 +1020,14 @@ LABEL_14:
 
   if (!self->_requiresTargetElementToBegin)
   {
-    v6 = [(PKTextInputDrawingGestureRecognizer *)self hasMovedPastTapUseTimestampFromTouch:v3];
+    v6 = [(PKTextInputDrawingGestureRecognizer *)self hasMovedPastTapUseTimestampFromTouch:touchCopy];
     goto LABEL_6;
   }
 
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+  targetElement = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
 
-  v6 = [(PKTextInputDrawingGestureRecognizer *)self hasMovedPastTapUseTimestampFromTouch:v3];
-  if (v5)
+  v6 = [(PKTextInputDrawingGestureRecognizer *)self hasMovedPastTapUseTimestampFromTouch:touchCopy];
+  if (targetElement)
   {
 LABEL_6:
     v7 = !self->_requiresPastTapToBegin || v6;
@@ -1039,7 +1039,7 @@ LABEL_7:
   v8 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+    drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
     v19 = @"N";
     if (v7)
     {
@@ -1087,8 +1087,8 @@ LABEL_7:
       v19 = @"Y";
     }
 
-    v25 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-    [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:v25];
+    drawingTouch2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+    [(PKTextInputDrawingGestureRecognizer *)self _distanceFromStartPositionForTouch:drawingTouch2];
     *location = 134219522;
     *&location[4] = v28;
     v34 = 2112;
@@ -1175,7 +1175,7 @@ void __88__PKTextInputDrawingGestureRecognizer__evaluateMovingToBeganStateUseTim
   [WeakRetained _evaluateCancelIfNotMoving];
 }
 
-- (void)_updateStrokeAcceptanceStateUseTimestampFromTouch:(BOOL)a3
+- (void)_updateStrokeAcceptanceStateUseTimestampFromTouch:(BOOL)touch
 {
   v40 = *MEMORY[0x1E69E9840];
   if (![(PKTextInputDrawingGestureRecognizer *)self strokeAcceptanceState])
@@ -1188,7 +1188,7 @@ void __88__PKTextInputDrawingGestureRecognizer__evaluateMovingToBeganStateUseTim
         v7 = os_log_create("com.apple.pencilkit", "PencilTextInput");
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+          drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
           if (self->_requiresTargetElementToBegin)
           {
             v9 = @"Y";
@@ -1199,9 +1199,9 @@ void __88__PKTextInputDrawingGestureRecognizer__evaluateMovingToBeganStateUseTim
             v9 = @"N";
           }
 
-          v10 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+          targetElement = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
           v28 = 134218498;
-          if (v10)
+          if (targetElement)
           {
             v11 = @"Y";
           }
@@ -1211,7 +1211,7 @@ void __88__PKTextInputDrawingGestureRecognizer__evaluateMovingToBeganStateUseTim
             v11 = @"N";
           }
 
-          v29 = v8;
+          v29 = drawingTouch;
           v30 = 2112;
           v31 = v9;
           v32 = 2112;
@@ -1230,14 +1230,14 @@ void __88__PKTextInputDrawingGestureRecognizer__evaluateMovingToBeganStateUseTim
       {
         v13 = 0;
 LABEL_21:
-        v16 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
-        v14 = v16 != 0;
+        targetElement2 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+        v14 = targetElement2 != 0;
 
         goto LABEL_22;
       }
 
-      v15 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
-      v13 = v15 == 0;
+      targetElement3 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+      v13 = targetElement3 == 0;
 
       if (self->_requiresTargetElementToBegin)
       {
@@ -1252,10 +1252,10 @@ LABEL_21:
 
     v14 = 1;
 LABEL_22:
-    if (a3)
+    if (touch)
     {
-      v17 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-      [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceTouchesBeganForTouch:v17];
+      drawingTouch2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceTouchesBeganForTouch:drawingTouch2];
       v19 = v18;
     }
 
@@ -1275,7 +1275,7 @@ LABEL_22:
     v7 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      drawingTouch3 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
       if (v13)
       {
         v24 = @"Y";
@@ -1308,7 +1308,7 @@ LABEL_22:
 
       [v5 asyncElementRequestTimeout];
       v28 = 134219266;
-      v29 = v23;
+      v29 = drawingTouch3;
       v30 = 2112;
       v31 = v24;
       v32 = 2112;
@@ -1330,15 +1330,15 @@ LABEL_40:
   }
 }
 
-- (void)_setStrokeAcceptanceState:(int64_t)a3
+- (void)_setStrokeAcceptanceState:(int64_t)state
 {
-  if (self->_strokeAcceptanceState != a3)
+  if (self->_strokeAcceptanceState != state)
   {
-    self->_strokeAcceptanceState = a3;
-    if (a3)
+    self->_strokeAcceptanceState = state;
+    if (state)
     {
-      v5 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-      [v5 drawingGestureStrokeAcceptanceStateDidChange:self];
+      delegate = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+      [delegate drawingGestureStrokeAcceptanceStateDidChange:self];
     }
 
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
@@ -1354,13 +1354,13 @@ LABEL_40:
     v3 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-      v5 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
-      [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceTouchesBeganForTouch:v5];
+      drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      drawingTouch2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      [(PKTextInputDrawingGestureRecognizer *)self timeIntervalSinceTouchesBeganForTouch:drawingTouch2];
       v7 = v6;
       v8 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
       v9 = 134218498;
-      v10 = v4;
+      v10 = drawingTouch;
       v11 = 2048;
       v12 = v7;
       v13 = 2112;
@@ -1432,11 +1432,11 @@ LABEL_40:
     v3 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+      drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
       v5 = 134218240;
-      v6 = v4;
+      v6 = drawingTouch;
       v7 = 2048;
-      v8 = [(PKTextInputDrawingGestureRecognizer *)self state];
+      state = [(PKTextInputDrawingGestureRecognizer *)self state];
       _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_DEFAULT, "Gesture touch %p cancel called, state: %ld. Cancelling gesture.", &v5, 0x16u);
     }
 
@@ -1458,7 +1458,7 @@ LABEL_40:
   v5 = os_log_create("com.apple.pencilkit", "PencilTextInput");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
+    drawingTouch = [(PKTextInputDrawingGestureRecognizer *)self drawingTouch];
     if (self->_drawingTargetIsDrawing)
     {
       v7 = @"Y";
@@ -1471,7 +1471,7 @@ LABEL_40:
 
     v8 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
     v11 = 134218498;
-    v12 = v6;
+    v12 = drawingTouch;
     v13 = 2112;
     v14 = v7;
     v15 = 2112;
@@ -1479,10 +1479,10 @@ LABEL_40:
     _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Gesture touch %p reset, drawingTargetIsDrawing: %@, state: %@", &v11, 0x20u);
   }
 
-  v9 = [(PKTextInputDrawingGestureRecognizer *)self state];
+  state = [(PKTextInputDrawingGestureRecognizer *)self state];
   if (self->_drawingTargetIsDrawing)
   {
-    if ((v9 & 0xFFFFFFFFFFFFFFFELL) == 4 || [(PKTextInputDrawingGestureRecognizer *)self strokeAcceptanceState]!= 1)
+    if ((state & 0xFFFFFFFFFFFFFFFELL) == 4 || [(PKTextInputDrawingGestureRecognizer *)self strokeAcceptanceState]!= 1)
     {
       [(PKTextInputDrawingGestureRecognizer *)self cancelDrawing];
     }
@@ -1551,16 +1551,16 @@ void __67__PKTextInputDrawingGestureRecognizer__systemGestureClassesToAvoid__blo
   qword_1EC297268 = v4;
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recognizerCopy = recognizer;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [objc_opt_class() _systemGestureClassesToAvoid];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  _systemGestureClassesToAvoid = [objc_opt_class() _systemGestureClassesToAvoid];
+  v5 = [_systemGestureClassesToAvoid countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1571,7 +1571,7 @@ LABEL_3:
     {
       if (*v23 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(_systemGestureClassesToAvoid);
       }
 
       if (objc_opt_isKindOfClass())
@@ -1581,7 +1581,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v6 = [_systemGestureClassesToAvoid countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1596,9 +1596,9 @@ LABEL_3:
   {
 LABEL_9:
 
-    v9 = [v3 name];
+    name = [recognizerCopy name];
 
-    if (v9 == @"com.apple.PencilKit.tapGestureFailure")
+    if (name == @"com.apple.PencilKit.tapGestureFailure")
     {
       v16 = 0;
       goto LABEL_22;
@@ -1615,10 +1615,10 @@ LABEL_9:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v3 view];
-    v4 = [v10 gestureRecognizers];
+    view = [recognizerCopy view];
+    _systemGestureClassesToAvoid = [view gestureRecognizers];
 
-    v11 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v11 = [_systemGestureClassesToAvoid countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (!v11)
     {
       v16 = 1;
@@ -1633,19 +1633,19 @@ LABEL_13:
     {
       if (*v19 != v13)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(_systemGestureClassesToAvoid);
       }
 
-      v15 = [*(*(&v18 + 1) + 8 * v14) name];
+      name2 = [*(*(&v18 + 1) + 8 * v14) name];
 
-      if (v15 == @"com.apple.PencilKit.tapGestureFailure")
+      if (name2 == @"com.apple.PencilKit.tapGestureFailure")
       {
         break;
       }
 
       if (v12 == ++v14)
       {
-        v12 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v12 = [_systemGestureClassesToAvoid countByEnumeratingWithState:&v18 objects:v26 count:16];
         v16 = 1;
         if (v12)
         {
@@ -1664,13 +1664,13 @@ LABEL_22:
   return v16;
 }
 
-- (void)_setDrawingTargetIsDrawing:(BOOL)a3
+- (void)_setDrawingTargetIsDrawing:(BOOL)drawing
 {
-  if (self->_drawingTargetIsDrawing != a3)
+  if (self->_drawingTargetIsDrawing != drawing)
   {
-    self->_drawingTargetIsDrawing = a3;
-    v5 = [(PKTextInputDrawingGestureRecognizer *)self delegate];
-    [v5 drawingGestureRecognizerDrawingTargetIsDrawingDidChange:self];
+    self->_drawingTargetIsDrawing = drawing;
+    delegate = [(PKTextInputDrawingGestureRecognizer *)self delegate];
+    [delegate drawingGestureRecognizerDrawingTargetIsDrawingDidChange:self];
   }
 }
 
@@ -1679,20 +1679,20 @@ LABEL_22:
   if (!self->_drawingTargetIsDrawing)
   {
     [(PKTextInputDrawingGestureRecognizer *)self _setDrawingTargetIsDrawing:1];
-    v4 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-    [v4 drawingBegan:self->_drawingTouch];
+    drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    [drawingTarget drawingBegan:self->_drawingTouch];
 
     +[PKTextInputDebugStateIntrospector debugStateDidChange];
   }
 }
 
-- (void)_drawingMoved:(id)a3
+- (void)_drawingMoved:(id)moved
 {
   if (self->_drawingTargetIsDrawing)
   {
-    v5 = a3;
-    v6 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-    [v6 drawingMoved:self->_drawingTouch withEvent:v5];
+    movedCopy = moved;
+    drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    [drawingTarget drawingMoved:self->_drawingTouch withEvent:movedCopy];
   }
 }
 
@@ -1700,8 +1700,8 @@ LABEL_22:
 {
   if (self->_drawingTargetIsDrawing)
   {
-    v4 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-    [v4 drawingEnded:self->_drawingTouch];
+    drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    [drawingTarget drawingEnded:self->_drawingTouch];
 
     [(PKTextInputDrawingGestureRecognizer *)self _setDrawingTargetIsDrawing:0];
 
@@ -1713,8 +1713,8 @@ LABEL_22:
 {
   if (self->_drawingTargetIsDrawing)
   {
-    v4 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-    [v4 drawingCancelled];
+    drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    [drawingTarget drawingCancelled];
 
     [(PKTextInputDrawingGestureRecognizer *)self _setDrawingTargetIsDrawing:0];
 
@@ -1722,11 +1722,11 @@ LABEL_22:
   }
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v19 = a3;
+  descriptionCopy = description;
   v4 = _PKNameForGestureState([(PKTextInputDrawingGestureRecognizer *)self state]);
-  v19[2](v19, @"Gesture state", v4);
+  descriptionCopy[2](descriptionCopy, @"Gesture state", v4);
 
   if ([(PKTextInputDrawingGestureRecognizer *)self drawingTargetIsDrawing])
   {
@@ -1738,55 +1738,55 @@ LABEL_22:
     v5 = @"No";
   }
 
-  v19[2](v19, @"drawingTargetIsDrawing", v5);
-  v6 = [(PKTextInputDrawingGestureRecognizer *)self strokeAcceptanceState];
-  if (v6 > 2)
+  descriptionCopy[2](descriptionCopy, @"drawingTargetIsDrawing", v5);
+  strokeAcceptanceState = [(PKTextInputDrawingGestureRecognizer *)self strokeAcceptanceState];
+  if (strokeAcceptanceState > 2)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = off_1E82DCAB0[v6];
+    v7 = off_1E82DCAB0[strokeAcceptanceState];
   }
 
-  v19[2](v19, @"strokeAcceptanceState", v7);
-  v8 = [(PKTextInputDrawingGestureRecognizer *)self longPressState];
-  if (v8 > 3)
+  descriptionCopy[2](descriptionCopy, @"strokeAcceptanceState", v7);
+  longPressState = [(PKTextInputDrawingGestureRecognizer *)self longPressState];
+  if (longPressState > 3)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = off_1E82DCAC8[v8];
+    v9 = off_1E82DCAC8[longPressState];
   }
 
-  v19[2](v19, @"longPressState", v9);
-  v10 = [(PKTextInputDrawingGestureRecognizer *)self panState];
-  if (v10 > 2)
+  descriptionCopy[2](descriptionCopy, @"longPressState", v9);
+  panState = [(PKTextInputDrawingGestureRecognizer *)self panState];
+  if (panState > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = off_1E82DCAE8[v10];
+    v11 = off_1E82DCAE8[panState];
   }
 
-  v19[2](v19, @"panState", v11);
-  v12 = [(PKTextInputDrawingGestureRecognizer *)self panDirection];
-  if (v12 > 4)
+  descriptionCopy[2](descriptionCopy, @"panState", v11);
+  panDirection = [(PKTextInputDrawingGestureRecognizer *)self panDirection];
+  if (panDirection > 4)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = off_1E82DCB00[v12];
+    v13 = off_1E82DCB00[panDirection];
   }
 
-  v19[2](v19, @"panDirection", v13);
+  descriptionCopy[2](descriptionCopy, @"panDirection", v13);
   if (self->_requiresTargetElementToBegin)
   {
     v14 = @"Yes";
@@ -1797,7 +1797,7 @@ LABEL_22:
     v14 = @"No";
   }
 
-  v19[2](v19, @"requiresTargetElementToBegin", v14);
+  descriptionCopy[2](descriptionCopy, @"requiresTargetElementToBegin", v14);
   if (self->_requiresPastTapToBegin)
   {
     v15 = @"Yes";
@@ -1808,7 +1808,7 @@ LABEL_22:
     v15 = @"No";
   }
 
-  v19[2](v19, @"requiresPastTapToBegin", v15);
+  descriptionCopy[2](descriptionCopy, @"requiresPastTapToBegin", v15);
   if (self->_waitingForTargetElementSearch)
   {
     v16 = @"Yes";
@@ -1819,9 +1819,9 @@ LABEL_22:
     v16 = @"No";
   }
 
-  v19[2](v19, @"waitingForTargetElementSearch", v16);
-  v17 = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
-  if (v17)
+  descriptionCopy[2](descriptionCopy, @"waitingForTargetElementSearch", v16);
+  targetElement = [(PKTextInputDrawingGestureRecognizer *)self targetElement];
+  if (targetElement)
   {
     v18 = @"Yes";
   }
@@ -1831,99 +1831,99 @@ LABEL_22:
     v18 = @"No";
   }
 
-  v19[2](v19, @"hasTargetElement", v18);
+  descriptionCopy[2](descriptionCopy, @"hasTargetElement", v18);
 }
 
-- (void)_replayDrawingBegan:(id *)a3
+- (void)_replayDrawingBegan:(id *)began
 {
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self view];
-  v6 = *&a3->var13;
-  v10[6] = *&a3->var11;
+  view = [(PKTextInputDrawingGestureRecognizer *)self view];
+  v6 = *&began->var13;
+  v10[6] = *&began->var11;
   v10[7] = v6;
-  var15 = a3->var15;
-  v7 = *&a3->var5;
-  v10[2] = *&a3->var3;
+  var15 = began->var15;
+  v7 = *&began->var5;
+  v10[2] = *&began->var3;
   v10[3] = v7;
-  v8 = *&a3->var9;
-  v10[4] = *&a3->var7;
+  v8 = *&began->var9;
+  v10[4] = *&began->var7;
   v10[5] = v8;
-  v9 = *&a3->var1;
-  v10[0] = a3->var0;
+  v9 = *&began->var1;
+  v10[0] = began->var0;
   v10[1] = v9;
-  [(PKTextInputDrawingGestureRecognizer *)self _replayDrawingBegan:v10 coordinateSpace:v5 activeInputProperties:23 inputType:1];
+  [(PKTextInputDrawingGestureRecognizer *)self _replayDrawingBegan:v10 coordinateSpace:view activeInputProperties:23 inputType:1];
 }
 
-- (void)_replayDrawingBegan:(id *)a3 coordinateSpace:(id)a4 activeInputProperties:(unint64_t)a5 inputType:(int64_t)a6
+- (void)_replayDrawingBegan:(id *)began coordinateSpace:(id)space activeInputProperties:(unint64_t)properties inputType:(int64_t)type
 {
-  v10 = a4;
+  spaceCopy = space;
   [(PKTextInputDrawingGestureRecognizer *)self setIsReplaying:1];
   [(PKTextInputDrawingGestureRecognizer *)self _setDrawingTargetIsDrawing:1];
   [(PKTextInputDrawingGestureRecognizer *)self _setStrokeAcceptanceState:1];
-  v11 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+  drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-    v14 = *&a3->var13;
-    v18[6] = *&a3->var11;
+    drawingTarget2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    v14 = *&began->var13;
+    v18[6] = *&began->var11;
     v18[7] = v14;
-    var15 = a3->var15;
-    v15 = *&a3->var5;
-    v18[2] = *&a3->var3;
+    var15 = began->var15;
+    v15 = *&began->var5;
+    v18[2] = *&began->var3;
     v18[3] = v15;
-    v16 = *&a3->var9;
-    v18[4] = *&a3->var7;
+    v16 = *&began->var9;
+    v18[4] = *&began->var7;
     v18[5] = v16;
-    v17 = *&a3->var1;
-    v18[0] = a3->var0;
+    v17 = *&began->var1;
+    v18[0] = began->var0;
     v18[1] = v17;
-    [v13 _replayDrawingBegan:v18 coordinateSpace:v10 activeInputProperties:a5 inputType:a6];
+    [drawingTarget2 _replayDrawingBegan:v18 coordinateSpace:spaceCopy activeInputProperties:properties inputType:type];
   }
 }
 
-- (void)_replayDrawingMoved:(id *)a3
+- (void)_replayDrawingMoved:(id *)moved
 {
-  v5 = [(PKTextInputDrawingGestureRecognizer *)self view];
-  v6 = *&a3->var13;
-  v10[6] = *&a3->var11;
+  view = [(PKTextInputDrawingGestureRecognizer *)self view];
+  v6 = *&moved->var13;
+  v10[6] = *&moved->var11;
   v10[7] = v6;
-  var15 = a3->var15;
-  v7 = *&a3->var5;
-  v10[2] = *&a3->var3;
+  var15 = moved->var15;
+  v7 = *&moved->var5;
+  v10[2] = *&moved->var3;
   v10[3] = v7;
-  v8 = *&a3->var9;
-  v10[4] = *&a3->var7;
+  v8 = *&moved->var9;
+  v10[4] = *&moved->var7;
   v10[5] = v8;
-  v9 = *&a3->var1;
-  v10[0] = a3->var0;
+  v9 = *&moved->var1;
+  v10[0] = moved->var0;
   v10[1] = v9;
-  [(PKTextInputDrawingGestureRecognizer *)self _replayDrawingMoved:v10 coordinateSpace:v5];
+  [(PKTextInputDrawingGestureRecognizer *)self _replayDrawingMoved:v10 coordinateSpace:view];
 }
 
-- (void)_replayDrawingMoved:(id *)a3 coordinateSpace:(id)a4
+- (void)_replayDrawingMoved:(id *)moved coordinateSpace:(id)space
 {
-  v6 = a4;
-  v7 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+  spaceCopy = space;
+  drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-    v10 = *&a3->var13;
-    v14[6] = *&a3->var11;
+    drawingTarget2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    v10 = *&moved->var13;
+    v14[6] = *&moved->var11;
     v14[7] = v10;
-    var15 = a3->var15;
-    v11 = *&a3->var5;
-    v14[2] = *&a3->var3;
+    var15 = moved->var15;
+    v11 = *&moved->var5;
+    v14[2] = *&moved->var3;
     v14[3] = v11;
-    v12 = *&a3->var9;
-    v14[4] = *&a3->var7;
+    v12 = *&moved->var9;
+    v14[4] = *&moved->var7;
     v14[5] = v12;
-    v13 = *&a3->var1;
-    v14[0] = a3->var0;
+    v13 = *&moved->var1;
+    v14[0] = moved->var0;
     v14[1] = v13;
-    [v9 _replayDrawingMoved:v14 coordinateSpace:v6];
+    [drawingTarget2 _replayDrawingMoved:v14 coordinateSpace:spaceCopy];
   }
 }
 
@@ -1931,13 +1931,13 @@ LABEL_22:
 {
   if ([(PKTextInputDrawingGestureRecognizer *)self drawingTargetIsDrawing])
   {
-    v3 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+    drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-      [v5 _replayDrawingEnded];
+      drawingTarget2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+      [drawingTarget2 _replayDrawingEnded];
     }
 
     [(PKTextInputDrawingGestureRecognizer *)self _setDrawingTargetIsDrawing:0];
@@ -1955,13 +1955,13 @@ LABEL_22:
     [(PKTextInputDrawingGestureRecognizer *)self cancel];
     if ([(PKTextInputDrawingGestureRecognizer *)self drawingTargetIsDrawing])
     {
-      v3 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+      drawingTarget = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
       v4 = objc_opt_respondsToSelector();
 
       if (v4)
       {
-        v5 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
-        [v5 _replayDrawingCancelled];
+        drawingTarget2 = [(PKTextInputDrawingGestureRecognizer *)self drawingTarget];
+        [drawingTarget2 _replayDrawingCancelled];
       }
 
       [(PKTextInputDrawingGestureRecognizer *)self _setDrawingTargetIsDrawing:0];

@@ -15,13 +15,13 @@
   v8 = a3;
   v9 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  [a1 ic_appendHTTPCookies:v9];
+  [self ic_appendHTTPCookies:v9];
 }
 
 - (void)ic_appendHTTPCookies:()ICAdditions
 {
   v4 = a3;
-  v5 = [a1 ic_valueForHTTPHeaderField:@"Cookie"];
+  v5 = [self ic_valueForHTTPHeaderField:@"Cookie"];
   v6 = [v5 mutableCopy];
 
   if (!v6)
@@ -36,7 +36,7 @@
   v9 = v6;
   v7 = v6;
   [v4 enumerateKeysAndObjectsUsingBlock:v8];
-  [a1 setValue:v7 forHTTPHeaderField:@"Cookie"];
+  [self setValue:v7 forHTTPHeaderField:@"Cookie"];
 }
 
 @end

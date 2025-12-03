@@ -1,14 +1,14 @@
 @interface TSCKAuthorUtilities
-+ (BOOL)author:(id)a3 matchesAuthor:(id)a4;
++ (BOOL)author:(id)author matchesAuthor:(id)matchesAuthor;
 @end
 
 @implementation TSCKAuthorUtilities
 
-+ (BOOL)author:(id)a3 matchesAuthor:(id)a4
++ (BOOL)author:(id)author matchesAuthor:(id)matchesAuthor
 {
-  v6 = a3;
-  v9 = a4;
-  if (!v9)
+  authorCopy = author;
+  matchesAuthorCopy = matchesAuthor;
+  if (!matchesAuthorCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "+[TSCKAuthorUtilities author:matchesAuthor:]", v8);
@@ -26,7 +26,7 @@
   v24 = TSUDynamicCast();
   v28 = objc_msgSend_name(v24, v25, v26, v27);
 
-  v30 = objc_msgSend_author_name_matchesOtherAuthor_otherName_(a1, v29, v6, v23, v9, v28);
+  v30 = objc_msgSend_author_name_matchesOtherAuthor_otherName_(self, v29, authorCopy, v23, matchesAuthorCopy, v28);
   return v30;
 }
 

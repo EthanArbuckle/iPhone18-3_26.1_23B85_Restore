@@ -1,8 +1,8 @@
 @interface PXRepetitivePausableTimer
-- (PXRepetitivePausableTimer)initWithRepeatedInterval:(double)a3 initialTrigger:(BOOL)a4 target:(id)a5;
+- (PXRepetitivePausableTimer)initWithRepeatedInterval:(double)interval initialTrigger:(BOOL)trigger target:(id)target;
 - (void)_startTimer;
 - (void)_stopTimer;
-- (void)_unpauseWithReasons:(int)a3;
+- (void)_unpauseWithReasons:(int)reasons;
 - (void)pause;
 - (void)reset;
 @end
@@ -16,9 +16,9 @@
   [(PXRepetitivePausableTimer *)self _startTimer];
 }
 
-- (void)_unpauseWithReasons:(int)a3
+- (void)_unpauseWithReasons:(int)reasons
 {
-  v3 = self->_reasonsToPause - a3;
+  v3 = self->_reasonsToPause - reasons;
   self->_reasonsToPause = v3;
   if (!v3)
   {
@@ -51,17 +51,17 @@
   }
 }
 
-- (PXRepetitivePausableTimer)initWithRepeatedInterval:(double)a3 initialTrigger:(BOOL)a4 target:(id)a5
+- (PXRepetitivePausableTimer)initWithRepeatedInterval:(double)interval initialTrigger:(BOOL)trigger target:(id)target
 {
-  v7 = a5;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = PXRepetitivePausableTimer;
   v8 = [(PXRepetitivePausableTimer *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_repetitiveInterval = a3;
-    v10 = _Block_copy(v7);
+    v8->_repetitiveInterval = interval;
+    v10 = _Block_copy(targetCopy);
     callBlock = v9->_callBlock;
     v9->_callBlock = v10;
 

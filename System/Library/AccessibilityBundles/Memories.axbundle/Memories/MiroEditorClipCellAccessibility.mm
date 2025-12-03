@@ -1,5 +1,5 @@
 @interface MiroEditorClipCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axMediaAsset;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,11 +7,11 @@
 
 @implementation MiroEditorClipCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroEditorClipCell" hasInstanceMethod:@"clipProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PMClipProvider" hasInstanceMethod:@"phAsset" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroEditorClipCell" hasInstanceMethod:@"clipProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PMClipProvider" hasInstanceMethod:@"phAsset" withFullSignature:{"@", 0}];
 }
 
 - (id)_axMediaAsset
@@ -25,18 +25,18 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(MiroEditorClipCellAccessibility *)self _axMediaAsset];
-  v3 = [v2 accessibilityLabel];
+  _axMediaAsset = [(MiroEditorClipCellAccessibility *)self _axMediaAsset];
+  accessibilityLabel = [_axMediaAsset accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(MiroEditorClipCellAccessibility *)self _axMediaAsset];
-  v3 = [v2 accessibilityValue];
+  _axMediaAsset = [(MiroEditorClipCellAccessibility *)self _axMediaAsset];
+  accessibilityValue = [_axMediaAsset accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

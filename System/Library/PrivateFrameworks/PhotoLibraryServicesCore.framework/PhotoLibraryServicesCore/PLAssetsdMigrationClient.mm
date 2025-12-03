@@ -1,5 +1,5 @@
 @interface PLAssetsdMigrationClient
-- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)a3;
+- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)type;
 - (void)dataMigrationWillFinish;
 @end
 
@@ -33,8 +33,8 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6_6622];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v11 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6_6622];
   [v11 dataMigrationWillFinishWithReply:&__block_literal_global_9_6623];
 
   if (v15 == 1)
@@ -71,7 +71,7 @@ void __51__PLAssetsdMigrationClient_dataMigrationWillFinish__block_invoke(uint64
   }
 }
 
-- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)a3
+- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)type
 {
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0u;
@@ -99,9 +99,9 @@ void __51__PLAssetsdMigrationClient_dataMigrationWillFinish__block_invoke(uint64
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6632];
-  [v13 cleanupModelForDataMigrationForRestoreType:a3 reply:&__block_literal_global_4];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  v13 = [proxyFactory synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6632];
+  [v13 cleanupModelForDataMigrationForRestoreType:type reply:&__block_literal_global_4];
 
   if (v17 == 1)
   {

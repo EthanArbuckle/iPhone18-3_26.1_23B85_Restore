@@ -52,7 +52,7 @@
 - (void)beginSyncTransaction
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_272C20000, log, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
 }
 

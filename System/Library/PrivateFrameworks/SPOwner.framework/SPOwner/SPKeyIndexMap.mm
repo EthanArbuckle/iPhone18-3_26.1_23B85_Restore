@@ -1,6 +1,6 @@
 @interface SPKeyIndexMap
 - (SPKeyIndexMap)init;
-- (SPKeyIndexMap)initWithBeaconIdentifier:(id)a3 keySequence:(unsigned __int8)a4 mapHandle:(id *)a5;
+- (SPKeyIndexMap)initWithBeaconIdentifier:(id)identifier keySequence:(unsigned __int8)sequence mapHandle:(id *)handle;
 - (id)headerString;
 - (void)dealloc;
 @end
@@ -22,18 +22,18 @@
   [(SPKeyIndexMap *)&v3 dealloc];
 }
 
-- (SPKeyIndexMap)initWithBeaconIdentifier:(id)a3 keySequence:(unsigned __int8)a4 mapHandle:(id *)a5
+- (SPKeyIndexMap)initWithBeaconIdentifier:(id)identifier keySequence:(unsigned __int8)sequence mapHandle:(id *)handle
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SPKeyIndexMap;
   v10 = [(SPKeyIndexMap *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_beaconIdentifier, a3);
-    v11->_sequence = a4;
-    v11->_mapHandle = a5;
+    objc_storeStrong(&v10->_beaconIdentifier, identifier);
+    v11->_sequence = sequence;
+    v11->_mapHandle = handle;
   }
 
   return v11;

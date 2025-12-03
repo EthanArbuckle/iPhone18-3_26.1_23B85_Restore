@@ -1,15 +1,15 @@
 @interface PpfPBg3wyAI0Wjzf
-+ (void)initializeNFHardwareManagerStateWithCompletion:(id)a3;
++ (void)initializeNFHardwareManagerStateWithCompletion:(id)completion;
 - (id)createSeidFuture;
-- (void)ILEFYKTi2wz6Hf5l:(id)a3;
-- (void)traHoYtdjqKLUZYc:(id)a3;
+- (void)ILEFYKTi2wz6Hf5l:(id)hf5l;
+- (void)traHoYtdjqKLUZYc:(id)yc;
 @end
 
 @implementation PpfPBg3wyAI0Wjzf
 
-+ (void)initializeNFHardwareManagerStateWithCompletion:(id)a3
++ (void)initializeNFHardwareManagerStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = os_signpost_id_generate(qword_1006DF780);
   v5 = qword_1006DF780;
   v6 = v5;
@@ -36,15 +36,15 @@
   }
 
   [v8 registerEventListener:v9];
-  v10 = [v8 getHwSupport];
-  if (v10 == 2)
+  getHwSupport = [v8 getHwSupport];
+  if (getHwSupport == 2)
   {
     [v8 unregisterEventListener:v9];
   }
 
   else
   {
-    if (v10 == 4)
+    if (getHwSupport == 4)
     {
       [v8 unregisterEventListener:v9];
       v11 = qword_1006DF780;
@@ -59,14 +59,14 @@ LABEL_13:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_END, v4, "asd.nfhw.init", "", buf, 2u);
 LABEL_14:
 
-      v3[2](v3, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_27;
     }
 
     [(ASNFHardwareMonitor *)v9 waitForNotification];
-    v14 = [v8 getHwSupport];
+    getHwSupport2 = [v8 getHwSupport];
     [v8 unregisterEventListener:v9];
-    if (v14 != 2)
+    if (getHwSupport2 != 2)
     {
       v16 = 0;
       goto LABEL_22;
@@ -98,17 +98,17 @@ LABEL_23:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_END, v4, "asd.nfhw.init", "", buf, 2u);
   }
 
-  (v3)[2](v3, v15);
+  (completionCopy)[2](completionCopy, v15);
 LABEL_27:
 }
 
-- (void)traHoYtdjqKLUZYc:(id)a3
+- (void)traHoYtdjqKLUZYc:(id)yc
 {
-  v4 = a3;
+  ycCopy = yc;
   v5 = dispatch_semaphore_create(0);
   if (!v5)
   {
-    (*(v4 + 2))(v4, 0, 0, 0);
+    (*(ycCopy + 2))(ycCopy, 0, 0, 0);
   }
 
   v8[0] = _NSConcreteStackBlock;
@@ -116,16 +116,16 @@ LABEL_27:
   v8[2] = sub_100008654;
   v8[3] = &unk_10068EFD0;
   v9 = v5;
-  v10 = v4;
+  v10 = ycCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = ycCopy;
   [(PpfPBg3wyAI0Wjzf *)self ILEFYKTi2wz6Hf5l:v8];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)ILEFYKTi2wz6Hf5l:(id)a3
+- (void)ILEFYKTi2wz6Hf5l:(id)hf5l
 {
-  v3 = a3;
+  hf5lCopy = hf5l;
   v4 = os_signpost_id_generate(qword_1006DF780);
   v5 = qword_1006DF780;
   v6 = v5;
@@ -139,9 +139,9 @@ LABEL_27:
   v8[1] = 3221225472;
   v8[2] = sub_1000087AC;
   v8[3] = &unk_10068F040;
-  v9 = v3;
+  v9 = hf5lCopy;
   v10 = v4;
-  v7 = v3;
+  v7 = hf5lCopy;
   [PpfPBg3wyAI0Wjzf initializeNFHardwareManagerStateWithCompletion:v8];
 }
 

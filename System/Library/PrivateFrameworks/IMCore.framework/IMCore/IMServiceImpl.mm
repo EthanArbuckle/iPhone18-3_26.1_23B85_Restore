@@ -1,49 +1,49 @@
 @interface IMServiceImpl
-+ (BOOL)hasAlias:(id)a3 onAccountForService:(id)a4;
++ (BOOL)hasAlias:(id)alias onAccountForService:(id)service;
 + (BOOL)iMessageEnabled;
-+ (BOOL)iMessageEnabledForReachabilityContext:(id)a3;
-+ (BOOL)iMessageEnabledForSenderLastAddressedHandle:(id)a3 simID:(id)a4 previousService:(id)a5;
++ (BOOL)iMessageEnabledForReachabilityContext:(id)context;
++ (BOOL)iMessageEnabledForSenderLastAddressedHandle:(id)handle simID:(id)d previousService:(id)service;
 + (BOOL)mmsEnabled;
 + (BOOL)smsEnabled;
-+ (BOOL)systemSupportsSendingAttachmentsOfTypes:(id)a3 error:(int64_t *)a4;
++ (BOOL)systemSupportsSendingAttachmentsOfTypes:(id)types error:(int64_t *)error;
 + (Class)serviceClass;
 + (id)activeServices;
 + (id)allServices;
 + (id)allServicesNonBlocking;
 + (id)connectedServices;
-+ (id)connectedServicesWithCapability:(unint64_t)a3;
-+ (id)operationalServicesWithCapability:(unint64_t)a3;
-+ (id)serviceWithInternalName:(id)a3;
-+ (id)serviceWithName:(id)a3;
-+ (id)servicesWithCapability:(unint64_t)a3;
-+ (id)servicesWithCapabilityName:(id)a3;
-- (BOOL)equalID:(id)a3 andID:(id)a4;
-- (BOOL)supportsCapability:(id)a3;
++ (id)connectedServicesWithCapability:(unint64_t)capability;
++ (id)operationalServicesWithCapability:(unint64_t)capability;
++ (id)serviceWithInternalName:(id)name;
++ (id)serviceWithName:(id)name;
++ (id)servicesWithCapability:(unint64_t)capability;
++ (id)servicesWithCapabilityName:(id)name;
+- (BOOL)equalID:(id)d andID:(id)iD;
+- (BOOL)supportsCapability:(id)capability;
 - (BOOL)supportsReplication;
-- (BOOL)supportsReplicationCapability:(id)a3;
-- (IMServiceImpl)initWithName:(id)a3;
+- (BOOL)supportsReplicationCapability:(id)capability;
+- (IMServiceImpl)initWithName:(id)name;
 - (NSArray)accountIDs;
 - (NSArray)siblingServices;
 - (id)_sorting;
 - (id)description;
 - (id)infoForAllScreenNames;
-- (id)infoForScreenName:(id)a3;
+- (id)infoForScreenName:(id)name;
 - (id)myScreenNames;
 - (int64_t)chatResolutionPriority;
-- (int64_t)compareNames:(id)a3;
+- (int64_t)compareNames:(id)names;
 - (int64_t)maxAttachmentSize;
-- (int64_t)maxChatParticipantsForHandle:(id)a3 simID:(id)a4;
+- (int64_t)maxChatParticipantsForHandle:(id)handle simID:(id)d;
 - (int64_t)serviceForSendingPriority;
 - (unint64_t)status;
 - (void)_calculateBestAccount;
 - (void)_loadPropertiesIfNeeded;
-- (void)activeAccountsChanged:(id)a3;
+- (void)activeAccountsChanged:(id)changed;
 - (void)dealloc;
-- (void)defaultsChanged:(id)a3;
+- (void)defaultsChanged:(id)changed;
 - (void)disconnect;
 - (void)doneSetup;
-- (void)setServiceProperties:(id)a3;
-- (void)statusChangedForAccount:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5;
+- (void)setServiceProperties:(id)properties;
+- (void)statusChangedForAccount:(id)account from:(unint64_t)from to:(unint64_t)to;
 @end
 
 @implementation IMServiceImpl
@@ -109,7 +109,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v6;
+      selfCopy = v6;
       _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_INFO, "Accounts: %@", &v14, 0xCu);
     }
   }
@@ -125,7 +125,7 @@
     {
       v12 = self->_bestAccount;
       v14 = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v12;
       _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Recalculated best account for %@: %@", &v14, 0x16u);
@@ -307,17 +307,17 @@ LABEL_25:
   return v7;
 }
 
-+ (id)serviceWithName:(id)a3
++ (id)serviceWithName:(id)name
 {
-  v3 = a3;
-  if (objc_msgSend_length(v3, v4, v5))
+  nameCopy = name;
+  if (objc_msgSend_length(nameCopy, v4, v5))
   {
     v8 = objc_msgSend_sharedController(IMDaemonController, v6, v7);
     objc_msgSend_blockUntilConnected(v8, v9, v10);
 
     v13 = objc_msgSend_sharedController(IMDaemonController, v11, v12);
     v16 = objc_msgSend_listener(v13, v14, v15);
-    v18 = objc_msgSend_serviceWithName_(v16, v17, v3);
+    v18 = objc_msgSend_serviceWithName_(v16, v17, nameCopy);
   }
 
   else
@@ -328,10 +328,10 @@ LABEL_25:
   return v18;
 }
 
-+ (id)serviceWithInternalName:(id)a3
++ (id)serviceWithInternalName:(id)name
 {
-  v4 = a3;
-  if (!objc_msgSend_length(v4, v5, v6))
+  nameCopy = name;
+  if (!objc_msgSend_length(nameCopy, v5, v6))
   {
     v12 = 0;
     goto LABEL_24;
@@ -339,16 +339,16 @@ LABEL_25:
 
   if (!qword_1ED767828)
   {
-    v8 = a1;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v10 = qword_1ED767828;
     qword_1ED767828 = v9;
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
-  if (qword_1ED767808 && objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x1E69A7AF0]))
+  if (qword_1ED767808 && objc_msgSend_isEqualToString_(nameCopy, v7, *MEMORY[0x1E69A7AF0]))
   {
     v11 = qword_1ED767808;
 LABEL_23:
@@ -356,73 +356,73 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (qword_1ED767720 && objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x1E69A7AF8]))
+  if (qword_1ED767720 && objc_msgSend_isEqualToString_(nameCopy, v7, *MEMORY[0x1E69A7AF8]))
   {
     v11 = qword_1ED767720;
     goto LABEL_23;
   }
 
-  if (qword_1ED767748 && objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x1E69A7AE8]))
+  if (qword_1ED767748 && objc_msgSend_isEqualToString_(nameCopy, v7, *MEMORY[0x1E69A7AE8]))
   {
     v11 = qword_1ED767748;
     goto LABEL_23;
   }
 
-  if (qword_1ED767830 && objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x1E69A7AE0]))
+  if (qword_1ED767830 && objc_msgSend_isEqualToString_(nameCopy, v7, *MEMORY[0x1E69A7AE0]))
   {
     v11 = qword_1ED767830;
     goto LABEL_23;
   }
 
-  if (qword_1ED767810 && objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x1E69A7AD0]))
+  if (qword_1ED767810 && objc_msgSend_isEqualToString_(nameCopy, v7, *MEMORY[0x1E69A7AD0]))
   {
     v11 = qword_1ED767810;
     goto LABEL_23;
   }
 
-  if (qword_1ED767750 && objc_msgSend_isEqualToString_(v4, v7, *MEMORY[0x1E69A7AD8]))
+  if (qword_1ED767750 && objc_msgSend_isEqualToString_(nameCopy, v7, *MEMORY[0x1E69A7AD8]))
   {
     v11 = qword_1ED767750;
     goto LABEL_23;
   }
 
-  v14 = a1;
-  objc_sync_enter(v14);
-  v16 = objc_msgSend_objectForKey_(qword_1ED767828, v15, v4);
-  objc_sync_exit(v14);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v16 = objc_msgSend_objectForKey_(qword_1ED767828, v15, nameCopy);
+  objc_sync_exit(selfCopy2);
 
   if (!v16)
   {
-    v19 = objc_alloc(objc_msgSend_serviceClass(v14, v17, v18));
-    v16 = objc_msgSend_initWithName_(v19, v20, v4);
-    if (objc_msgSend_isEqualToString_(v4, v21, *MEMORY[0x1E69A7AD0]))
+    v19 = objc_alloc(objc_msgSend_serviceClass(selfCopy2, v17, v18));
+    v16 = objc_msgSend_initWithName_(v19, v20, nameCopy);
+    if (objc_msgSend_isEqualToString_(nameCopy, v21, *MEMORY[0x1E69A7AD0]))
     {
       v23 = &qword_1ED767810;
     }
 
-    else if (objc_msgSend_isEqualToString_(v4, v22, *MEMORY[0x1E69A7AF0]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v22, *MEMORY[0x1E69A7AF0]))
     {
       v23 = &qword_1ED767808;
     }
 
-    else if (objc_msgSend_isEqualToString_(v4, v24, *MEMORY[0x1E69A7AF8]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v24, *MEMORY[0x1E69A7AF8]))
     {
       v23 = &qword_1ED767720;
     }
 
-    else if (objc_msgSend_isEqualToString_(v4, v25, *MEMORY[0x1E69A7AE8]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v25, *MEMORY[0x1E69A7AE8]))
     {
       v23 = &qword_1ED767748;
     }
 
-    else if (objc_msgSend_isEqualToString_(v4, v26, *MEMORY[0x1E69A7AE0]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v26, *MEMORY[0x1E69A7AE0]))
     {
       v23 = &qword_1ED767830;
     }
 
     else
     {
-      if (!objc_msgSend_isEqualToString_(v4, v27, *MEMORY[0x1E69A7AD8]))
+      if (!objc_msgSend_isEqualToString_(nameCopy, v27, *MEMORY[0x1E69A7AD8]))
       {
         goto LABEL_41;
       }
@@ -434,9 +434,9 @@ LABEL_23:
 LABEL_41:
     if (v16)
     {
-      v28 = v14;
+      v28 = selfCopy2;
       objc_sync_enter(v28);
-      objc_msgSend_setObject_forKey_(qword_1ED767828, v29, v16, v4);
+      objc_msgSend_setObject_forKey_(qword_1ED767828, v29, v16, nameCopy);
       objc_sync_exit(v28);
     }
   }
@@ -456,7 +456,7 @@ LABEL_24:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = objc_msgSend_allServicesNonBlocking(a1, v4, v5, 0);
+  v6 = objc_msgSend_allServicesNonBlocking(self, v4, v5, 0);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v26, v30, 16);
   if (v8)
   {
@@ -503,7 +503,7 @@ LABEL_24:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = objc_msgSend_allServicesNonBlocking(a1, v4, v5, 0);
+  v6 = objc_msgSend_allServicesNonBlocking(self, v4, v5, 0);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v26, v30, 16);
   if (v8)
   {
@@ -542,7 +542,7 @@ LABEL_24:
   return v23;
 }
 
-+ (id)servicesWithCapability:(unint64_t)a3
++ (id)servicesWithCapability:(unint64_t)capability
 {
   v33 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -551,7 +551,7 @@ LABEL_24:
   v30 = 0u;
   v31 = 0u;
   v7 = objc_msgSend_sharedInstance(IMAccountController, v5, v6, 0);
-  v9 = objc_msgSend_accountsWithCapability_(v7, v8, a3);
+  v9 = objc_msgSend_accountsWithCapability_(v7, v8, capability);
 
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v28, v32, 16);
   if (v11)
@@ -589,7 +589,7 @@ LABEL_24:
   return v25;
 }
 
-+ (id)connectedServicesWithCapability:(unint64_t)a3
++ (id)connectedServicesWithCapability:(unint64_t)capability
 {
   v33 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -598,7 +598,7 @@ LABEL_24:
   v30 = 0u;
   v31 = 0u;
   v7 = objc_msgSend_sharedInstance(IMAccountController, v5, v6, 0);
-  v9 = objc_msgSend_connectedAccountsWithCapability_(v7, v8, a3);
+  v9 = objc_msgSend_connectedAccountsWithCapability_(v7, v8, capability);
 
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v28, v32, 16);
   if (v11)
@@ -636,7 +636,7 @@ LABEL_24:
   return v25;
 }
 
-+ (id)operationalServicesWithCapability:(unint64_t)a3
++ (id)operationalServicesWithCapability:(unint64_t)capability
 {
   v33 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -645,7 +645,7 @@ LABEL_24:
   v30 = 0u;
   v31 = 0u;
   v7 = objc_msgSend_sharedInstance(IMAccountController, v5, v6, 0);
-  v9 = objc_msgSend_operationalAccountsWithCapability_(v7, v8, a3);
+  v9 = objc_msgSend_operationalAccountsWithCapability_(v7, v8, capability);
 
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v28, v32, 16);
   if (v11)
@@ -683,60 +683,60 @@ LABEL_24:
   return v25;
 }
 
-+ (id)servicesWithCapabilityName:(id)a3
++ (id)servicesWithCapabilityName:(id)name
 {
-  v4 = a3;
-  v7 = objc_msgSend_allServices(a1, v5, v6);
+  nameCopy = name;
+  v7 = objc_msgSend_allServices(self, v5, v6);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1A827CFB4;
   v12[3] = &unk_1E7810338;
-  v13 = v4;
-  v8 = v4;
+  v13 = nameCopy;
+  v8 = nameCopy;
   v10 = objc_msgSend___imArrayByFilteringWithBlock_(v7, v9, v12);
 
   return v10;
 }
 
-- (IMServiceImpl)initWithName:(id)a3
+- (IMServiceImpl)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = IMServiceImpl;
   v7 = [(IMServiceImpl *)&v15 init];
   if (v7)
   {
-    if (objc_msgSend_isEqualToString_(v5, v6, *MEMORY[0x1E69A7AD0]))
+    if (objc_msgSend_isEqualToString_(nameCopy, v6, *MEMORY[0x1E69A7AD0]))
     {
       v9 = &qword_1ED767810;
     }
 
-    else if (objc_msgSend_isEqualToString_(v5, v8, *MEMORY[0x1E69A7AF0]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v8, *MEMORY[0x1E69A7AF0]))
     {
       v9 = &qword_1ED767808;
     }
 
-    else if (objc_msgSend_isEqualToString_(v5, v10, *MEMORY[0x1E69A7AF8]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v10, *MEMORY[0x1E69A7AF8]))
     {
       v9 = &qword_1ED767720;
     }
 
-    else if (objc_msgSend_isEqualToString_(v5, v11, *MEMORY[0x1E69A7AE8]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v11, *MEMORY[0x1E69A7AE8]))
     {
       v9 = &qword_1ED767748;
     }
 
-    else if (objc_msgSend_isEqualToString_(v5, v12, *MEMORY[0x1E69A7AE0]))
+    else if (objc_msgSend_isEqualToString_(nameCopy, v12, *MEMORY[0x1E69A7AE0]))
     {
       v9 = &qword_1ED767830;
     }
 
     else
     {
-      if (!objc_msgSend_isEqualToString_(v5, v13, *MEMORY[0x1E69A7AD8]))
+      if (!objc_msgSend_isEqualToString_(nameCopy, v13, *MEMORY[0x1E69A7AD8]))
       {
 LABEL_15:
-        objc_storeStrong(&v7->_name, a3);
+        objc_storeStrong(&v7->_name, name);
         goto LABEL_16;
       }
 
@@ -830,23 +830,23 @@ LABEL_16:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)statusChangedForAccount:(id)a3 from:(unint64_t)a4 to:(unint64_t)a5
+- (void)statusChangedForAccount:(id)account from:(unint64_t)from to:(unint64_t)to
 {
-  v5 = a5;
-  v6 = a4;
+  toCopy = to;
+  fromCopy = from;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  accountCopy = account;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v17 = 138412802;
-      v18 = v8;
+      v18 = accountCopy;
       v19 = 1024;
-      v20 = v6;
+      v20 = fromCopy;
       v21 = 1024;
-      v22 = v5;
+      v22 = toCopy;
       _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Status changed for account: %@             from: %d to: %d", &v17, 0x18u);
     }
   }
@@ -858,12 +858,12 @@ LABEL_16:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)equalID:(id)a3 andID:(id)a4
+- (BOOL)equalID:(id)d andID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
-  if (v6 == v7)
+  dCopy = d;
+  iDCopy = iD;
+  v9 = iDCopy;
+  if (dCopy == iDCopy)
   {
     isEqualToString = 1;
   }
@@ -871,9 +871,9 @@ LABEL_16:
   else
   {
     isEqualToString = 0;
-    if (v6 && v7)
+    if (dCopy && iDCopy)
     {
-      v11 = objc_msgSend_canonicalFormOfID_(self, v8, v6);
+      v11 = objc_msgSend_canonicalFormOfID_(self, v8, dCopy);
       v13 = objc_msgSend_canonicalFormOfID_(self, v12, v9);
       isEqualToString = objc_msgSend_isEqualToString_(v11, v14, v13);
     }
@@ -882,11 +882,11 @@ LABEL_16:
   return isEqualToString;
 }
 
-- (int64_t)compareNames:(id)a3
+- (int64_t)compareNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v7 = objc_msgSend_name(self, v5, v6);
-  v10 = objc_msgSend_name(v4, v8, v9);
+  v10 = objc_msgSend_name(namesCopy, v8, v9);
 
   v12 = objc_msgSend_localizedCompareToString_(v7, v11, v10);
   return v12;
@@ -906,10 +906,10 @@ LABEL_16:
   }
 }
 
-- (id)infoForScreenName:(id)a3
+- (id)infoForScreenName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   objc_msgSend__blockUntilInitialSyncPerformed(self, v5, v6);
   v26 = 0u;
   v27 = 0u;
@@ -931,7 +931,7 @@ LABEL_16:
           objc_enumerationMutation(v11);
         }
 
-        v17 = objc_msgSend_existingIMHandleWithID_(*(*(&v24 + 1) + 8 * i), v13, v4);
+        v17 = objc_msgSend_existingIMHandleWithID_(*(*(&v24 + 1) + 8 * i), v13, nameCopy);
         v20 = objc_msgSend_bestAccountSibling(v17, v18, v19);
 
         if (v20)
@@ -1056,28 +1056,28 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)supportsCapability:(id)a3
+- (BOOL)supportsCapability:(id)capability
 {
   serviceProps = self->_serviceProps;
   v4 = *MEMORY[0x1E69A7B00];
-  v5 = a3;
+  capabilityCopy = capability;
   v7 = objc_msgSend_objectForKey_(serviceProps, v6, v4);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v5);
+  v9 = objc_msgSend_objectForKey_(v7, v8, capabilityCopy);
 
-  LOBYTE(v5) = objc_msgSend_intValue(v9, v10, v11) > 0;
-  return v5;
+  LOBYTE(capabilityCopy) = objc_msgSend_intValue(v9, v10, v11) > 0;
+  return capabilityCopy;
 }
 
-- (BOOL)supportsReplicationCapability:(id)a3
+- (BOOL)supportsReplicationCapability:(id)capability
 {
   serviceProps = self->_serviceProps;
   v4 = *MEMORY[0x1E69A7B20];
-  v5 = a3;
+  capabilityCopy = capability;
   v7 = objc_msgSend_objectForKey_(serviceProps, v6, v4);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v5);
+  v9 = objc_msgSend_objectForKey_(v7, v8, capabilityCopy);
 
-  LOBYTE(v5) = objc_msgSend_intValue(v9, v10, v11) > 0;
-  return v5;
+  LOBYTE(capabilityCopy) = objc_msgSend_intValue(v9, v10, v11) > 0;
+  return capabilityCopy;
 }
 
 - (BOOL)supportsReplication
@@ -1097,12 +1097,12 @@ LABEL_11:
   return v8;
 }
 
-- (void)setServiceProperties:(id)a3
+- (void)setServiceProperties:(id)properties
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  propertiesCopy = properties;
   serviceProps = self->_serviceProps;
-  if (serviceProps != v7 && objc_msgSend_count(serviceProps, v5, v6) <= 2)
+  if (serviceProps != propertiesCopy && objc_msgSend_count(serviceProps, v5, v6) <= 2)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1110,37 +1110,37 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v47 = 138412546;
-        v48 = self;
+        selfCopy = self;
         v49 = 2112;
-        v50 = v7;
+        v50 = propertiesCopy;
         _os_log_impl(&dword_1A823F000, v9, OS_LOG_TYPE_INFO, "Service: %@  set properties: %@", &v47, 0x16u);
       }
     }
 
-    objc_storeStrong(&self->_serviceProps, a3);
-    v11 = objc_msgSend_objectForKey_(v7, v10, *MEMORY[0x1E69A5EB0]);
+    objc_storeStrong(&self->_serviceProps, properties);
+    v11 = objc_msgSend_objectForKey_(propertiesCopy, v10, *MEMORY[0x1E69A5EB0]);
     localizedName = self->_localizedName;
     self->_localizedName = v11;
 
-    v14 = objc_msgSend_objectForKey_(v7, v13, *MEMORY[0x1E69A5ED0]);
+    v14 = objc_msgSend_objectForKey_(propertiesCopy, v13, *MEMORY[0x1E69A5ED0]);
     localizedShortName = self->_localizedShortName;
     self->_localizedShortName = v14;
 
-    v17 = objc_msgSend_objectForKey_(v7, v16, *MEMORY[0x1E69A5ED8]);
+    v17 = objc_msgSend_objectForKey_(propertiesCopy, v16, *MEMORY[0x1E69A5ED8]);
     siblingServiceNames = self->_siblingServiceNames;
     self->_siblingServiceNames = v17;
 
-    v20 = objc_msgSend_objectForKey_(v7, v19, *MEMORY[0x1E69A5E68]);
+    v20 = objc_msgSend_objectForKey_(propertiesCopy, v19, *MEMORY[0x1E69A5E68]);
     emailDomains = self->_emailDomains;
     self->_emailDomains = v20;
 
-    v23 = objc_msgSend_objectForKey_(v7, v22, *MEMORY[0x1E69A5E78]);
+    v23 = objc_msgSend_objectForKey_(propertiesCopy, v22, *MEMORY[0x1E69A5E78]);
     self->_screenNameSensitivity = objc_msgSend_intValue(v23, v24, v25);
 
-    v27 = objc_msgSend_objectForKey_(v7, v26, *MEMORY[0x1E69A7B18]);
+    v27 = objc_msgSend_objectForKey_(propertiesCopy, v26, *MEMORY[0x1E69A7B18]);
     self->_handleIDInsensitivityIsCarrierBased = objc_msgSend_BOOLValue(v27, v28, v29);
 
-    v31 = objc_msgSend_objectForKey_(v7, v30, *MEMORY[0x1E69A7B10]);
+    v31 = objc_msgSend_objectForKey_(propertiesCopy, v30, *MEMORY[0x1E69A7B10]);
     self->_caseInsensitivityByHandleType = objc_msgSend_intValue(v31, v32, v33);
 
     objc_msgSend__loadPropertiesIfNeeded(self, v34, v35);
@@ -1157,13 +1157,13 @@ LABEL_11:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)hasAlias:(id)a3 onAccountForService:(id)a4
++ (BOOL)hasAlias:(id)alias onAccountForService:(id)service
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  aliasCopy = alias;
+  serviceCopy = service;
   v9 = objc_msgSend_sharedInstance(IMAccountController, v7, v8);
-  v11 = objc_msgSend_accountsForService_(v9, v10, v6);
+  v11 = objc_msgSend_accountsForService_(v9, v10, serviceCopy);
 
   v36 = 0u;
   v37 = 0u;
@@ -1184,7 +1184,7 @@ LABEL_11:
         }
 
         v17 = *(*(&v34 + 1) + 8 * i);
-        if (MEMORY[0x1AC56C3C0](v5))
+        if (MEMORY[0x1AC56C3C0](aliasCopy))
         {
           v20 = IMCanonicalizeFormattedString();
         }
@@ -1208,7 +1208,7 @@ LABEL_11:
         else
         {
           v27 = objc_msgSend_aliases(v17, v23, v24);
-          if (objc_msgSend_containsObject_(v27, v28, v5))
+          if (objc_msgSend_containsObject_(v27, v28, aliasCopy))
           {
             v31 = objc_msgSend__isUsableForSending(v17, v29, v30);
 
@@ -1243,22 +1243,22 @@ LABEL_21:
   return v14;
 }
 
-+ (BOOL)iMessageEnabledForSenderLastAddressedHandle:(id)a3 simID:(id)a4 previousService:(id)a5
++ (BOOL)iMessageEnabledForSenderLastAddressedHandle:(id)handle simID:(id)d previousService:(id)service
 {
   v8 = MEMORY[0x1E69A8240];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  serviceCopy = service;
+  dCopy = d;
+  handleCopy = handle;
   v12 = objc_alloc_init(v8);
-  objc_msgSend_setSenderLastAddressedHandle_(v12, v13, v11);
+  objc_msgSend_setSenderLastAddressedHandle_(v12, v13, handleCopy);
 
-  objc_msgSend_setSenderLastAddressedSIMID_(v12, v14, v10);
-  v17 = objc_msgSend_name(v9, v15, v16);
+  objc_msgSend_setSenderLastAddressedSIMID_(v12, v14, dCopy);
+  v17 = objc_msgSend_name(serviceCopy, v15, v16);
 
   objc_msgSend_setLastUsedServiceName_(v12, v18, v17);
-  LOBYTE(a1) = objc_msgSend_iMessageEnabledForReachabilityContext_(a1, v19, v12);
+  LOBYTE(self) = objc_msgSend_iMessageEnabledForReachabilityContext_(self, v19, v12);
 
-  return a1;
+  return self;
 }
 
 + (BOOL)mmsEnabled
@@ -1269,7 +1269,7 @@ LABEL_21:
   v10 = objc_msgSend_sharedInstance(MEMORY[0x1E699BE70], v8, v9);
   v13 = objc_msgSend_mmsConfigured(v10, v11, v12);
 
-  MMSUserOverride = objc_msgSend__readMMSUserOverride(a1, v14, v15);
+  MMSUserOverride = objc_msgSend__readMMSUserOverride(self, v14, v15);
   if (v7)
   {
     v19 = v13 == 0;
@@ -1300,10 +1300,10 @@ LABEL_21:
   return objc_msgSend_allowsMMSRelay(v21, v17, v18);
 }
 
-- (int64_t)maxChatParticipantsForHandle:(id)a3 simID:(id)a4
+- (int64_t)maxChatParticipantsForHandle:(id)handle simID:(id)d
 {
-  v6 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  dCopy = d;
   if (qword_1ED767808 == self)
   {
     if (qword_1EB2EA190 != -1)
@@ -1327,7 +1327,7 @@ LABEL_12:
 
   if (qword_1ED767830 == self)
   {
-    v19 = objc_msgSend_IMMMSMaxRecipientsForPhoneNumber_simID_(MEMORY[0x1E69A7F58], v7, v6, v9);
+    v19 = objc_msgSend_IMMMSMaxRecipientsForPhoneNumber_simID_(MEMORY[0x1E69A7F58], v7, handleCopy, dCopy);
     goto LABEL_14;
   }
 
@@ -1337,7 +1337,7 @@ LABEL_12:
   }
 
   v10 = objc_msgSend_sharedManager(MEMORY[0x1E69A7F50], v7, v8);
-  v12 = objc_msgSend_groupMessagingMaxGroupSizeForPhoneNumber_simID_(v10, v11, v6, v9);
+  v12 = objc_msgSend_groupMessagingMaxGroupSizeForPhoneNumber_simID_(v10, v11, handleCopy, dCopy);
 LABEL_10:
   v19 = v12;
 
@@ -1416,29 +1416,29 @@ LABEL_14:
   return v8;
 }
 
-- (void)defaultsChanged:(id)a3
+- (void)defaultsChanged:(id)changed
 {
-  v9 = a3;
-  if (self->_serviceDefaults != v9)
+  changedCopy = changed;
+  if (self->_serviceDefaults != changedCopy)
   {
-    objc_storeStrong(&self->_serviceDefaults, a3);
+    objc_storeStrong(&self->_serviceDefaults, changed);
   }
 
   v7 = objc_msgSend_notificationCenter(IMServiceAgent, v5, v6);
   objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v7, v8, @"__kIMServiceDefaultsChangedNotification", self, 0);
 }
 
-- (void)activeAccountsChanged:(id)a3
+- (void)activeAccountsChanged:(id)changed
 {
-  objc_msgSend__calculateBestAccount(self, a2, a3);
+  objc_msgSend__calculateBestAccount(self, a2, changed);
   v7 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v4, v5);
   objc_msgSend___mainThreadPostNotificationName_object_(v7, v6, @"NotificationActiveAccountChanged", self);
 }
 
-+ (BOOL)systemSupportsSendingAttachmentsOfTypes:(id)a3 error:(int64_t *)a4
++ (BOOL)systemSupportsSendingAttachmentsOfTypes:(id)types error:(int64_t *)error
 {
-  v5 = a3;
-  if (objc_opt_class() == a1)
+  typesCopy = types;
+  if (objc_opt_class() == self)
   {
     CanBeSent = IMMMSPartCombinationCanBeSent();
   }
@@ -1451,7 +1451,7 @@ LABEL_14:
   return CanBeSent;
 }
 
-+ (BOOL)iMessageEnabledForReachabilityContext:(id)a3
++ (BOOL)iMessageEnabledForReachabilityContext:(id)context
 {
   v4 = sub_1A84E570C();
   v5 = *(v4 - 8);
@@ -1459,7 +1459,7 @@ LABEL_14:
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = qword_1EB2E5A18;
-  v10 = a3;
+  contextCopy = context;
   if (v9 != -1)
   {
     swift_once();

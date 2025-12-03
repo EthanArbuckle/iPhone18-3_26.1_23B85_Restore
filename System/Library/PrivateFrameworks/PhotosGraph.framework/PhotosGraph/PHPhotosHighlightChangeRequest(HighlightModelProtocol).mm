@@ -10,12 +10,12 @@
   v27 = *MEMORY[0x277D85DE8];
   v7 = a3;
   v8 = a5;
-  v9 = [a4 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [a4 librarySpecificFetchOptions];
   v20 = v7;
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid IN %@", v7];
-  [v9 setPredicate:v10];
+  [librarySpecificFetchOptions setPredicate:v10];
 
-  [MEMORY[0x277CD97B8] fetchMomentsWithOptions:v9];
+  [MEMORY[0x277CD97B8] fetchMomentsWithOptions:librarySpecificFetchOptions];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -37,11 +37,11 @@ LABEL_3:
       v16 = *(*(&v22 + 1) + 8 * v15);
       v17 = [MEMORY[0x277CD9900] changeRequestForMoment:v16];
       v21 = 0;
-      v18 = [v16 uuid];
-      v8[2](v8, v17, v18, &v21);
+      uuid = [v16 uuid];
+      v8[2](v8, v17, uuid, &v21);
 
-      LOBYTE(v18) = v21;
-      if (v18)
+      LOBYTE(uuid) = v21;
+      if (uuid)
       {
         break;
       }
@@ -64,9 +64,9 @@ LABEL_3:
 
 - (uint64_t)clearCurations
 {
-  [a1 clearCurationWithType:1];
+  [self clearCurationWithType:1];
 
-  return [a1 clearCurationWithType:2];
+  return [self clearCurationWithType:2];
 }
 
 @end

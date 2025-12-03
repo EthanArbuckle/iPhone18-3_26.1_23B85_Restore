@@ -1,19 +1,19 @@
 @interface BPSStingSetupOptInViewController
-+ (id)animationFileURLForIdentifier:(id)a3;
++ (id)animationFileURLForIdentifier:(id)identifier;
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate;
 - (BPSStingSetupOptInViewController)init;
 - (id)alternateButtonTitle;
-- (id)animationViewForIdentifier:(id)a3;
+- (id)animationViewForIdentifier:(id)identifier;
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
 - (void)_applyScale;
-- (void)alternateButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
 - (void)applyAnimationLayoutContraints;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)selectionChanged:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)selectionChanged:(id)changed;
 - (void)setupViews;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)updateLocalViewSize;
 - (void)viewDidLayoutSubviews;
 @end
@@ -36,8 +36,8 @@
 
 - (void)setupViews
 {
-  v3 = [(BPSStingSetupOptInViewController *)self suggestedChoiceButton];
-  [v3 setEnabled:0];
+  suggestedChoiceButton = [(BPSStingSetupOptInViewController *)self suggestedChoiceButton];
+  [suggestedChoiceButton setEnabled:0];
 
   v4 = [UIView alloc];
   v5 = +[UIScreen mainScreen];
@@ -48,8 +48,8 @@
   localContentView = self->_localContentView;
   self->_localContentView = v9;
 
-  v11 = [(BPSStingSetupOptInViewController *)self contentView];
-  [v11 addSubview:self->_localContentView];
+  contentView = [(BPSStingSetupOptInViewController *)self contentView];
+  [contentView addSubview:self->_localContentView];
 
   if (!self->_collectionView)
   {
@@ -59,46 +59,46 @@
 
     [(BPSStingFeatureCollectionView *)self->_collectionView setSelectionChangeDelegate:self];
     [(BPSStingFeatureCollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(BPSStingSetupOptInViewController *)self localContentView];
-    [v14 addSubview:self->_collectionView];
+    localContentView = [(BPSStingSetupOptInViewController *)self localContentView];
+    [localContentView addSubview:self->_collectionView];
 
-    v15 = [(BPSStingSetupOptInViewController *)self collectionView];
-    [v15 addObserver:self forKeyPath:@"contentSize" options:2 context:0];
+    collectionView = [(BPSStingSetupOptInViewController *)self collectionView];
+    [collectionView addObserver:self forKeyPath:@"contentSize" options:2 context:0];
   }
 
   if (!self->_collectionViewHeightConstraint)
   {
-    v16 = [(BPSStingFeatureCollectionView *)self->_collectionView heightAnchor];
-    v17 = [v16 constraintEqualToConstant:106.0];
+    heightAnchor = [(BPSStingFeatureCollectionView *)self->_collectionView heightAnchor];
+    v17 = [heightAnchor constraintEqualToConstant:106.0];
     collectionViewHeightConstraint = self->_collectionViewHeightConstraint;
     self->_collectionViewHeightConstraint = v17;
   }
 
-  v19 = [(BPSStingSetupOptInViewController *)self watchViewBottomConstraint];
-  [v19 setActive:0];
+  watchViewBottomConstraint = [(BPSStingSetupOptInViewController *)self watchViewBottomConstraint];
+  [watchViewBottomConstraint setActive:0];
 
   [(NSLayoutConstraint *)self->_collectionViewHeightConstraint setActive:1];
   v20 = [(BPSStingSetupOptInViewController *)self animationViewForIdentifier:0];
   animationView = self->_animationView;
   self->_animationView = v20;
 
-  v22 = [(BPSStingSetupOptInViewController *)self localContentView];
-  [v22 addSubview:self->_animationView];
+  localContentView2 = [(BPSStingSetupOptInViewController *)self localContentView];
+  [localContentView2 addSubview:self->_animationView];
 
-  v43 = [(BPSStingFeatureCollectionView *)self->_collectionView leadingAnchor];
-  v44 = [(BPSStingSetupOptInViewController *)self view];
-  v42 = [v44 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  leadingAnchor = [(BPSStingFeatureCollectionView *)self->_collectionView leadingAnchor];
+  view = [(BPSStingSetupOptInViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
+  v41 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[0] = v41;
-  v40 = [(BPSStingFeatureCollectionView *)self->_collectionView trailingAnchor];
-  v23 = [(BPSStingSetupOptInViewController *)self view];
-  v24 = [v23 trailingAnchor];
-  v25 = [v40 constraintEqualToAnchor:v24];
+  trailingAnchor = [(BPSStingFeatureCollectionView *)self->_collectionView trailingAnchor];
+  view2 = [(BPSStingSetupOptInViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v45[1] = v25;
-  v26 = [(BPSStingFeatureCollectionView *)self->_collectionView bottomAnchor];
-  v27 = [(BPSStingSetupOptInViewController *)self contentView];
-  v28 = [v27 bottomAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  bottomAnchor = [(BPSStingFeatureCollectionView *)self->_collectionView bottomAnchor];
+  contentView2 = [(BPSStingSetupOptInViewController *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[2] = v29;
   v30 = [NSArray arrayWithObjects:v45 count:3];
   [NSLayoutConstraint activateConstraints:v30];
@@ -107,8 +107,8 @@
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = [(BPSStingSetupOptInViewController *)self view];
-  [v37 directionalLayoutMargins];
+  view3 = [(BPSStingSetupOptInViewController *)self view];
+  [view3 directionalLayoutMargins];
   v39 = v38;
 
   [(BPSStingFeatureCollectionView *)self->_collectionView setContentInset:v32, v39, v34, v36];
@@ -121,17 +121,17 @@
   v8.receiver = self;
   v8.super_class = BPSStingSetupOptInViewController;
   [(BPSStingSetupOptInViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(BPSStingSetupOptInViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(BPSStingSetupOptInViewController *)self view];
+  [view safeAreaInsets];
   if (v4 == 0.0)
   {
   }
 
   else
   {
-    v5 = [(BPSStingSetupOptInViewController *)self doneSettingUpViews];
+    doneSettingUpViews = [(BPSStingSetupOptInViewController *)self doneSettingUpViews];
 
-    if ((v5 & 1) == 0)
+    if ((doneSettingUpViews & 1) == 0)
     {
       v6 = bps_setup_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -146,18 +146,18 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  [(NSLayoutConstraint *)self->_collectionViewHeightConstraint constant:a3];
+  [(NSLayoutConstraint *)self->_collectionViewHeightConstraint constant:path];
   v8 = v7;
-  v9 = [(BPSStingSetupOptInViewController *)self collectionView];
-  [v9 preferredCellHeight];
+  collectionView = [(BPSStingSetupOptInViewController *)self collectionView];
+  [collectionView preferredCellHeight];
   v11 = v10;
 
   if (v8 != v11)
   {
-    v12 = [(BPSStingSetupOptInViewController *)self collectionView];
-    [v12 preferredCellHeight];
+    collectionView2 = [(BPSStingSetupOptInViewController *)self collectionView];
+    [collectionView2 preferredCellHeight];
     [(NSLayoutConstraint *)self->_collectionViewHeightConstraint setConstant:?];
 
     [(BPSStingSetupOptInViewController *)self updateLocalViewSize];
@@ -170,22 +170,22 @@
   v4 = v3;
   [(_UICAPackageView *)self->_animationView frame];
   v6 = v4 + v5;
-  v7 = [(BPSStingSetupOptInViewController *)self localContentView];
-  [v7 frame];
+  localContentView = [(BPSStingSetupOptInViewController *)self localContentView];
+  [localContentView frame];
   v9 = v8;
 
   if (v6 > v9)
   {
-    v17 = [(BPSStingSetupOptInViewController *)self localContentView];
-    v10 = [(BPSStingSetupOptInViewController *)self localContentView];
-    [v10 frame];
+    localContentView2 = [(BPSStingSetupOptInViewController *)self localContentView];
+    localContentView3 = [(BPSStingSetupOptInViewController *)self localContentView];
+    [localContentView3 frame];
     v12 = v11;
-    v13 = [(BPSStingSetupOptInViewController *)self localContentView];
-    [v13 frame];
+    localContentView4 = [(BPSStingSetupOptInViewController *)self localContentView];
+    [localContentView4 frame];
     v15 = v14;
-    v16 = [(BPSStingSetupOptInViewController *)self localContentView];
-    [v16 frame];
-    [v17 setFrame:{v12, v15}];
+    localContentView5 = [(BPSStingSetupOptInViewController *)self localContentView];
+    [localContentView5 frame];
+    [localContentView2 setFrame:{v12, v15}];
   }
 }
 
@@ -221,7 +221,7 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   npsQueue = self->_npsQueue;
   if (!npsQueue)
@@ -239,73 +239,73 @@
   block[3] = &unk_C2E0;
   block[4] = self;
   dispatch_async(npsQueue, block);
-  v7 = [(BPSStingSetupOptInViewController *)self miniFlowDelegate];
-  [v7 miniFlowStepComplete:self];
+  miniFlowDelegate = [(BPSStingSetupOptInViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [(BPSStingSetupOptInViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(BPSStingSetupOptInViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
-- (void)selectionChanged:(id)a3
+- (void)selectionChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    v4 = a3;
-    v5 = [(BPSStingSetupOptInViewController *)self suggestedChoiceButton];
-    [v5 setEnabled:1];
+    changedCopy = changed;
+    suggestedChoiceButton = [(BPSStingSetupOptInViewController *)self suggestedChoiceButton];
+    [suggestedChoiceButton setEnabled:1];
 
-    v6 = [(BPSStingSetupOptInViewController *)self selectedActivity];
-    v7 = [v6 identifier];
-    v8 = [v4 identifier];
-    LOBYTE(v5) = [v7 isEqualToString:v8];
+    selectedActivity = [(BPSStingSetupOptInViewController *)self selectedActivity];
+    identifier = [selectedActivity identifier];
+    identifier2 = [changedCopy identifier];
+    LOBYTE(suggestedChoiceButton) = [identifier isEqualToString:identifier2];
 
-    [(BPSStingSetupOptInViewController *)self setSelectedActivity:v4];
+    [(BPSStingSetupOptInViewController *)self setSelectedActivity:changedCopy];
     [(_UICAPackageView *)self->_animationView removeFromSuperview];
     animationView = self->_animationView;
     self->_animationView = 0;
 
-    v10 = [v4 identifier];
+    identifier3 = [changedCopy identifier];
 
-    v11 = [(BPSStingSetupOptInViewController *)self animationViewForIdentifier:v10];
+    v11 = [(BPSStingSetupOptInViewController *)self animationViewForIdentifier:identifier3];
     v12 = self->_animationView;
     self->_animationView = v11;
 
-    v13 = [(BPSStingSetupOptInViewController *)self contentView];
-    [v13 addSubview:self->_animationView];
+    contentView = [(BPSStingSetupOptInViewController *)self contentView];
+    [contentView addSubview:self->_animationView];
 
-    if ((v5 & 1) == 0)
+    if ((suggestedChoiceButton & 1) == 0)
     {
-      v14 = [(_UICAPackageView *)self->_animationView layer];
-      [v14 setBeginTime:0.0];
+      layer = [(_UICAPackageView *)self->_animationView layer];
+      [layer setBeginTime:0.0];
 
-      v15 = [(_UICAPackageView *)self->_animationView layer];
-      [v15 convertTime:0 fromLayer:CACurrentMediaTime()];
+      layer2 = [(_UICAPackageView *)self->_animationView layer];
+      [layer2 convertTime:0 fromLayer:CACurrentMediaTime()];
       v17 = v16;
 
-      v18 = [(_UICAPackageView *)self->_animationView layer];
-      [v18 setBeginTime:v17];
+      layer3 = [(_UICAPackageView *)self->_animationView layer];
+      [layer3 setBeginTime:v17];
     }
 
     [(BPSStingSetupOptInViewController *)self applyAnimationLayoutContraints];
   }
 }
 
-+ (id)animationFileURLForIdentifier:(id)a3
++ (id)animationFileURLForIdentifier:(id)identifier
 {
-  v4 = [BPSStingSetupModel fileNameForIdentifier:a3];
-  v5 = [NSBundle bundleForClass:a1];
+  v4 = [BPSStingSetupModel fileNameForIdentifier:identifier];
+  v5 = [NSBundle bundleForClass:self];
   v6 = [v5 URLForResource:v4 withExtension:@"caar"];
 
   return v6;
 }
 
-- (id)animationViewForIdentifier:(id)a3
+- (id)animationViewForIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() animationFileURLForIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() animationFileURLForIdentifier:identifierCopy];
 
   if (!v4)
   {
@@ -326,8 +326,8 @@
     v4 = v3;
     [(NSLayoutConstraint *)self->_collectionViewHeightConstraint constant];
     v6 = v4 - v5 + -15.0;
-    v7 = [(_UICAPackageView *)self->_animationView layer];
-    [v7 frame];
+    layer = [(_UICAPackageView *)self->_animationView layer];
+    [layer frame];
     v9 = fmin(v6, 316.0) / v8;
 
     if (v9 < 0.75)
@@ -346,8 +346,8 @@
       v13 = v12;
       [(NSLayoutConstraint *)self->_collectionViewHeightConstraint constant];
       v15 = v14;
-      v16 = [(_UICAPackageView *)self->_animationView layer];
-      [v16 frame];
+      layer2 = [(_UICAPackageView *)self->_animationView layer];
+      [layer2 frame];
       LODWORD(buf.m11) = 134219008;
       *(&buf.m11 + 4) = v6;
       WORD2(buf.m12) = 2048;
@@ -369,25 +369,25 @@
 {
   [(BPSStingSetupOptInViewController *)self _applyScale];
   [(BPSStingSetupOptInViewController *)self updateLocalViewSize];
-  v18 = [(_UICAPackageView *)self->_animationView topAnchor];
-  v19 = [(BPSStingSetupOptInViewController *)self localContentView];
-  v16 = [v19 topAnchor];
-  v17 = [(_UICAPackageView *)self->_animationView layer];
-  [v17 frame];
-  v15 = [v18 constraintEqualToAnchor:v16 constant:v3];
+  topAnchor = [(_UICAPackageView *)self->_animationView topAnchor];
+  localContentView = [(BPSStingSetupOptInViewController *)self localContentView];
+  topAnchor2 = [localContentView topAnchor];
+  layer = [(_UICAPackageView *)self->_animationView layer];
+  [layer frame];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v3];
   v20[0] = v15;
-  v14 = [(_UICAPackageView *)self->_animationView widthAnchor];
-  v4 = [v14 constraintEqualToConstant:197.0];
+  widthAnchor = [(_UICAPackageView *)self->_animationView widthAnchor];
+  v4 = [widthAnchor constraintEqualToConstant:197.0];
   v20[1] = v4;
-  v5 = [(_UICAPackageView *)self->_animationView centerXAnchor];
-  v6 = [(BPSStingSetupOptInViewController *)self view];
-  v7 = [v6 centerXAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  centerXAnchor = [(_UICAPackageView *)self->_animationView centerXAnchor];
+  view = [(BPSStingSetupOptInViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v20[2] = v8;
-  v9 = [(BPSStingFeatureCollectionView *)self->_collectionView bottomAnchor];
-  v10 = [(BPSStingSetupOptInViewController *)self localContentView];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  bottomAnchor = [(BPSStingFeatureCollectionView *)self->_collectionView bottomAnchor];
+  localContentView2 = [(BPSStingSetupOptInViewController *)self localContentView];
+  bottomAnchor2 = [localContentView2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v20[3] = v12;
   v13 = [NSArray arrayWithObjects:v20 count:4];
   [NSLayoutConstraint activateConstraints:v13];

@@ -1,51 +1,51 @@
 @interface HKMCDaySummaryQueryConfiguration
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
-- (HKMCDaySummaryQueryConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKMCDaySummaryQueryConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCDaySummaryQueryConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = HKMCDaySummaryQueryConfiguration;
-  v4 = [(HKQueryServerConfiguration *)&v8 copyWithZone:a3];
-  v5 = [(HKMCDaySummaryQueryConfiguration *)self dayIndexRange];
-  [v4 setDayIndexRange:{v5, v6}];
+  v4 = [(HKQueryServerConfiguration *)&v8 copyWithZone:zone];
+  dayIndexRange = [(HKMCDaySummaryQueryConfiguration *)self dayIndexRange];
+  [v4 setDayIndexRange:{dayIndexRange, v6}];
   [v4 setAscending:{-[HKMCDaySummaryQueryConfiguration ascending](self, "ascending")}];
   [v4 setLimit:{-[HKMCDaySummaryQueryConfiguration limit](self, "limit")}];
   return v4;
 }
 
-- (HKMCDaySummaryQueryConfiguration)initWithCoder:(id)a3
+- (HKMCDaySummaryQueryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKMCDaySummaryQueryConfiguration;
-  v5 = [(HKQueryServerConfiguration *)&v7 initWithCoder:v4];
+  v5 = [(HKQueryServerConfiguration *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_dayIndexRange.start = [v4 decodeIntegerForKey:@"DayIndexRangeStart"];
-    v5->_dayIndexRange.duration = [v4 decodeIntegerForKey:@"DayIndexRangeDuration"];
-    v5->_ascending = [v4 decodeBoolForKey:@"Ascending"];
-    v5->_limit = [v4 decodeIntegerForKey:@"Limit"];
+    v5->_dayIndexRange.start = [coderCopy decodeIntegerForKey:@"DayIndexRangeStart"];
+    v5->_dayIndexRange.duration = [coderCopy decodeIntegerForKey:@"DayIndexRangeDuration"];
+    v5->_ascending = [coderCopy decodeBoolForKey:@"Ascending"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"Limit"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKMCDaySummaryQueryConfiguration;
-  v4 = a3;
-  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_dayIndexRange.start forKey:{@"DayIndexRangeStart", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
-  [v4 encodeBool:self->_ascending forKey:@"Ascending"];
-  [v4 encodeInteger:self->_limit forKey:@"Limit"];
+  coderCopy = coder;
+  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_dayIndexRange.start forKey:{@"DayIndexRangeStart", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_dayIndexRange.duration forKey:@"DayIndexRangeDuration"];
+  [coderCopy encodeBool:self->_ascending forKey:@"Ascending"];
+  [coderCopy encodeInteger:self->_limit forKey:@"Limit"];
 }
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange

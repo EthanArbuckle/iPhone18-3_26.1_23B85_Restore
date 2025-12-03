@@ -1,24 +1,24 @@
 @interface NRGCompanionDaemon
 + (id)sharedInstance;
-- (BOOL)handleFullSyncResponseForIdentifier:(id)a3 responseURL:(id)a4 error:(id)a5;
-- (BOOL)queueFullSyncRequestOperation:(id)a3;
+- (BOOL)handleFullSyncResponseForIdentifier:(id)identifier responseURL:(id)l error:(id)error;
+- (BOOL)queueFullSyncRequestOperation:(id)operation;
 - (NRGCompanionDaemon)init;
 - (_opaque_pthread_mutex_t)lock;
-- (int64_t)_appViewListImageAddResponseHandler:(id)a3;
-- (void)_appViewListImageHandleResponse:(id)a3 error:(id)a4;
-- (void)_appViewListImageRequestTimedOut:(id)a3;
-- (void)_withLock:(id)a3;
+- (int64_t)_appViewListImageAddResponseHandler:(id)handler;
+- (void)_appViewListImageHandleResponse:(id)response error:(id)error;
+- (void)_appViewListImageRequestTimedOut:(id)out;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)fullSyncRequestTimedOut:(id)a3;
-- (void)handleFullSyncResponse:(id)a3;
-- (void)handleResourceResponse:(id)a3;
-- (void)iconVersionTracker:(id)a3 detectedOutOfDateIcons:(id)a4;
-- (void)iconVersionTracker:(id)a3 detectedUnusedIcons:(id)a4;
-- (void)sendFullSyncRequest:(id)a3 requestHandler:(id)a4 responseHandler:(id)a5;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)setLock:(_opaque_pthread_mutex_t *)a3;
+- (void)fullSyncRequestTimedOut:(id)out;
+- (void)handleFullSyncResponse:(id)response;
+- (void)handleResourceResponse:(id)response;
+- (void)iconVersionTracker:(id)tracker detectedOutOfDateIcons:(id)icons;
+- (void)iconVersionTracker:(id)tracker detectedUnusedIcons:(id)icons;
+- (void)sendFullSyncRequest:(id)request requestHandler:(id)handler responseHandler:(id)responseHandler;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)setLock:(_opaque_pthread_mutex_t *)lock;
 - (void)start;
-- (void)xpcGetAppViewListImage:(CGSize)a3 scale:(double)a4 reply:(id)a5;
+- (void)xpcGetAppViewListImage:(CGSize)image scale:(double)scale reply:(id)reply;
 @end
 
 @implementation NRGCompanionDaemon
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000089EC;
   block[3] = &unk_100020878;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100028398 != -1)
   {
     dispatch_once(&qword_100028398, block);
@@ -103,11 +103,11 @@
   [(NRGDaemon *)&v3 dealloc];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   pthread_mutex_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   pthread_mutex_unlock(&self->_lock);
 }
@@ -122,7 +122,7 @@
   self->_iconVersionTracker = v3;
 }
 
-- (BOOL)queueFullSyncRequestOperation:(id)a3
+- (BOOL)queueFullSyncRequestOperation:(id)operation
 {
   v10 = 0;
   v11 = &v10;
@@ -132,29 +132,29 @@
   v6[1] = 3221225472;
   v6[2] = sub_100009108;
   v6[3] = &unk_1000208C8;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  operationCopy = operation;
+  v8 = operationCopy;
   v9 = &v10;
-  [(NRGCompanionDaemon *)v7 _withLock:v6];
+  [(NRGCompanionDaemon *)selfCopy _withLock:v6];
   v4 = *(v11 + 24);
 
   _Block_object_dispose(&v10, 8);
   return v4;
 }
 
-- (void)handleResourceResponse:(id)a3
+- (void)handleResourceResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  v7 = [(NRGDaemon *)self getResourceRequest:v6];
+  v7 = [(NRGDaemon *)self getResourceRequest:incomingResponseIdentifier];
   if (v7)
   {
     v8 = [NRGPBResourceResponse alloc];
-    v9 = [v4 data];
-    v10 = [(NRGPBResourceResponse *)v8 initWithData:v9];
+    data = [responseCopy data];
+    v10 = [(NRGPBResourceResponse *)v8 initWithData:data];
 
     [v7 handleResponse:v10];
   }
@@ -169,9 +169,9 @@
   }
 }
 
-- (void)handleFullSyncResponse:(id)a3
+- (void)handleFullSyncResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = nrg_daemon_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -180,8 +180,8 @@
   }
 
   v5 = [NRGPBFullSyncResponse alloc];
-  v6 = [v3 data];
-  v7 = [(NRGPBFullSyncResponse *)v5 initWithData:v6];
+  data = [responseCopy data];
+  v7 = [(NRGPBFullSyncResponse *)v5 initWithData:data];
 
   v8 = nrg_daemon_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -195,7 +195,7 @@
   v27 = NRGGetActivePairedDeviceStorePath();
   if ([(NRGPBFullSyncResponse *)v7 iconsCount])
   {
-    v26 = v3;
+    v26 = responseCopy;
     v10 = 0;
     do
     {
@@ -205,14 +205,14 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = [NSNumber numberWithInt:v10];
-        v15 = [v12 bundleID];
+        bundleID = [v12 bundleID];
         v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v12 iconVariant]);
-        v17 = [v12 iconData];
-        v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v17 length]);
+        iconData = [v12 iconData];
+        v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [iconData length]);
         *buf = 138413058;
         v30 = v14;
         v31 = 2112;
-        v32 = v15;
+        v32 = bundleID;
         v33 = 2112;
         v34 = v16;
         v35 = 2112;
@@ -221,33 +221,33 @@
       }
 
       iconVersionTracker = self->_iconVersionTracker;
-      v20 = [v12 version];
-      v21 = [v12 bundleID];
-      [(NRGIconVersionTracker *)iconVersionTracker setVersion:v20 forBundleID:v21];
+      version = [v12 version];
+      bundleID2 = [v12 bundleID];
+      [(NRGIconVersionTracker *)iconVersionTracker setVersion:version forBundleID:bundleID2];
 
-      v22 = [v12 iconData];
-      v23 = [v12 iconVariant];
-      v24 = [v12 bundleID];
-      [NRGResourceCache setIcon:v22 forIconVariant:v23 inBundleID:v24 withPairedDeviceStorePath:v27];
+      iconData2 = [v12 iconData];
+      iconVariant = [v12 iconVariant];
+      bundleID3 = [v12 bundleID];
+      [NRGResourceCache setIcon:iconData2 forIconVariant:iconVariant inBundleID:bundleID3 withPairedDeviceStorePath:v27];
 
       objc_autoreleasePoolPop(v11);
       ++v10;
     }
 
     while ([(NRGPBFullSyncResponse *)v7 iconsCount]> v10);
-    v3 = v26;
+    responseCopy = v26;
   }
 
   [(NRGIconVersionTracker *)self->_iconVersionTracker commit];
-  v25 = [(NRGCompanionDaemon *)self fullSyncIdentifier];
-  [(NRGCompanionDaemon *)self handleFullSyncResponseForIdentifier:v25 error:0];
+  fullSyncIdentifier = [(NRGCompanionDaemon *)self fullSyncIdentifier];
+  [(NRGCompanionDaemon *)self handleFullSyncResponseForIdentifier:fullSyncIdentifier error:0];
 }
 
-- (BOOL)handleFullSyncResponseForIdentifier:(id)a3 responseURL:(id)a4 error:(id)a5
+- (BOOL)handleFullSyncResponseForIdentifier:(id)identifier responseURL:(id)l error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  errorCopy = error;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -263,11 +263,11 @@
   {
     fullSyncIdentifier = self->_fullSyncIdentifier;
     *buf = 138412802;
-    v35 = v8;
+    v35 = identifierCopy;
     v36 = 2112;
     v37 = fullSyncIdentifier;
     v38 = 2112;
-    v39 = v10;
+    v39 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "identifier = %@, fullSyncIdentifier = %@, error =%@", buf, 0x20u);
   }
 
@@ -276,7 +276,7 @@
   v20[2] = sub_100009A34;
   v20[3] = &unk_1000208F0;
   v20[4] = self;
-  v13 = v8;
+  v13 = identifierCopy;
   v21 = v13;
   v22 = &v30;
   v23 = &v24;
@@ -293,7 +293,7 @@
     v38 = 2112;
     v39 = v16;
     v40 = 2112;
-    v41 = v10;
+    v41 = errorCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "identifier = %@, fullSyncIdentifier = %@, handler = %@, error = %@", buf, 0x2Au);
   }
 
@@ -302,7 +302,7 @@
     v17 = v25[5];
     if (v17)
     {
-      (*(v17 + 16))(v17, v13, v9, self->_iconVersionTracker, v10);
+      (*(v17 + 16))(v17, v13, lCopy, self->_iconVersionTracker, errorCopy);
       v18 = *(v31 + 24);
     }
 
@@ -323,11 +323,11 @@
   return v18 & 1;
 }
 
-- (void)sendFullSyncRequest:(id)a3 requestHandler:(id)a4 responseHandler:(id)a5
+- (void)sendFullSyncRequest:(id)request requestHandler:(id)handler responseHandler:(id)responseHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  responseHandlerCopy = responseHandler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -345,7 +345,7 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = requestCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "sending sync request %@", &buf, 0xCu);
     }
 
@@ -362,10 +362,10 @@
     v19[3] = &unk_100020940;
     objc_copyWeak(&v22, &location);
     p_buf = &buf;
-    v12 = v10;
+    v12 = responseHandlerCopy;
     v19[4] = self;
     v20 = v12;
-    v13 = [(NRGDaemon *)self sendProtobufRequest:v8 type:2 priority:200 expectsResponse:1 requestHandler:v9 errorHandler:v19 withTimeout:180.0];
+    v13 = [(NRGDaemon *)self sendProtobufRequest:requestCopy type:2 priority:200 expectsResponse:1 requestHandler:handlerCopy errorHandler:v19 withTimeout:180.0];
     v14 = *(*(&buf + 1) + 40);
     *(*(&buf + 1) + 40) = v13;
 
@@ -389,32 +389,32 @@
 
   else
   {
-    v15 = [(NRGCompanionDaemon *)self requestUnsuccessfulError];
-    v9[2](v9, 0, v15);
+    requestUnsuccessfulError = [(NRGCompanionDaemon *)self requestUnsuccessfulError];
+    handlerCopy[2](handlerCopy, 0, requestUnsuccessfulError);
   }
 
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)fullSyncRequestTimedOut:(id)a3
+- (void)fullSyncRequestTimedOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = nrg_daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     sub_1000116E4();
   }
 
-  v6 = [v4 userInfo];
-  v7 = [NSString stringWithFormat:@"No response received from full sync request %@", v6];
+  userInfo = [outCopy userInfo];
+  v7 = [NSString stringWithFormat:@"No response received from full sync request %@", userInfo];
   v8 = [NRGFullSyncError errorWithCode:2 description:v7];
-  [(NRGCompanionDaemon *)self handleFullSyncResponseForIdentifier:v6 error:v8];
+  [(NRGCompanionDaemon *)self handleFullSyncResponseForIdentifier:userInfo error:v8];
 }
 
-- (void)iconVersionTracker:(id)a3 detectedOutOfDateIcons:(id)a4
+- (void)iconVersionTracker:(id)tracker detectedOutOfDateIcons:(id)icons
 {
-  v5 = a4;
-  if ([v5 count])
+  iconsCopy = icons;
+  if ([iconsCopy count])
   {
     v6 = nrg_daemon_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -439,7 +439,7 @@
     v15[3] = &unk_100020620;
     v10 = v9;
     v16 = v10;
-    [v5 enumerateObjectsUsingBlock:v15];
+    [iconsCopy enumerateObjectsUsingBlock:v15];
     v11 = [[NRGFullSyncRequestOperation alloc] initWithRequest:v10];
     [(NRGFullSyncRequestOperation *)v11 setDaemon:self];
     v13[0] = _NSConcreteStackBlock;
@@ -454,49 +454,49 @@
   }
 }
 
-- (void)iconVersionTracker:(id)a3 detectedUnusedIcons:(id)a4
+- (void)iconVersionTracker:(id)tracker detectedUnusedIcons:(id)icons
 {
-  v4 = a4;
+  iconsCopy = icons;
   NRGGetActivePairedDeviceStorePath();
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A810;
   v7 = v6[3] = &unk_100020620;
   v5 = v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [iconsCopy enumerateObjectsUsingBlock:v6];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a8;
+  lCopy = l;
+  metadataCopy = metadata;
+  contextCopy = context;
   v14 = nrg_daemon_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v11;
+    v17 = lCopy;
     v18 = 2112;
-    v19 = v12;
+    v19 = metadataCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "received resource %@ %@", &v16, 0x16u);
   }
 
-  v15 = [v13 incomingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
 
-  [(NRGCompanionDaemon *)self handleFullSyncResponseForIdentifier:v15 responseURL:v11 error:0];
+  [(NRGCompanionDaemon *)self handleFullSyncResponseForIdentifier:incomingResponseIdentifier responseURL:lCopy error:0];
 }
 
-- (void)xpcGetAppViewListImage:(CGSize)a3 scale:(double)a4 reply:(id)a5
+- (void)xpcGetAppViewListImage:(CGSize)image scale:(double)scale reply:(id)reply
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = image.height;
+  width = image.width;
+  replyCopy = reply;
   v10 = objc_alloc_init(NRGPBAppViewListImageRequest);
   *&v11 = width;
   [(NRGPBAppViewListImageRequest *)v10 setWidth:v11];
   *&v12 = height;
   [(NRGPBAppViewListImageRequest *)v10 setHeight:v12];
-  *&v13 = a4;
+  *&v13 = scale;
   [(NRGPBAppViewListImageRequest *)v10 setScale:v13];
   v14 = nrg_daemon_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -510,7 +510,7 @@
   v24[1] = 3221225472;
   v24[2] = sub_10000AC08;
   v24[3] = &unk_1000209D8;
-  v15 = v9;
+  v15 = replyCopy;
   v25 = v15;
   v16 = objc_retainBlock(v24);
   if ([(NRGCompanionDaemon *)self _appViewListImageAddResponseHandler:v16]== 1)
@@ -539,7 +539,7 @@
   }
 }
 
-- (int64_t)_appViewListImageAddResponseHandler:(id)a3
+- (int64_t)_appViewListImageAddResponseHandler:(id)handler
 {
   v10 = 0;
   v11 = &v10;
@@ -549,20 +549,20 @@
   v6[1] = 3221225472;
   v6[2] = sub_10000AD94;
   v6[3] = &unk_100020A28;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  handlerCopy = handler;
+  v8 = handlerCopy;
   v9 = &v10;
-  [(NRGCompanionDaemon *)v7 _withLock:v6];
+  [(NRGCompanionDaemon *)selfCopy _withLock:v6];
   v4 = v11[3];
 
   _Block_object_dispose(&v10, 8);
   return v4;
 }
 
-- (void)_appViewListImageRequestTimedOut:(id)a3
+- (void)_appViewListImageRequestTimedOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = nrg_daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -573,10 +573,10 @@
   [(NRGCompanionDaemon *)self _appViewListImageHandleResponse:0 error:v6];
 }
 
-- (void)_appViewListImageHandleResponse:(id)a3 error:(id)a4
+- (void)_appViewListImageHandleResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -587,9 +587,9 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *v29 = v6;
+    *v29 = responseCopy;
     *&v29[8] = 2112;
-    v30 = v7;
+    v30 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "handleAppViewListImageResponse:%@ error %@", buf, 0x16u);
   }
 
@@ -605,29 +605,29 @@
     v9 = nrg_daemon_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 hasImageData];
-      v11 = [v6 imageData];
-      v12 = [v11 length];
+      hasImageData = [responseCopy hasImageData];
+      imageData = [responseCopy imageData];
+      v12 = [imageData length];
       *buf = 67109376;
-      *v29 = v10;
+      *v29 = hasImageData;
       *&v29[4] = 1024;
       *&v29[6] = v12;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "hasImageData %{BOOL}u, imageData length %d", buf, 0xEu);
     }
 
-    if ([v6 hasImageData])
+    if ([responseCopy hasImageData])
     {
-      v13 = [v6 imageData];
+      imageData2 = [responseCopy imageData];
     }
 
     else
     {
-      if (!v7)
+      if (!errorCopy)
       {
-        v7 = [NRGError errorWithCode:6];
+        errorCopy = [NRGError errorWithCode:6];
       }
 
-      v13 = 0;
+      imageData2 = 0;
     }
 
     v15 = nrg_daemon_log();
@@ -635,11 +635,11 @@
     {
       v16 = v23[5];
       *buf = 138412802;
-      *v29 = v6;
+      *v29 = responseCopy;
       *&v29[8] = 2112;
       v30 = v16;
       v31 = 2112;
-      v32 = v7;
+      v32 = errorCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "response = %@, handlers = %@, error = %@", buf, 0x20u);
     }
 
@@ -648,10 +648,10 @@
     v18[1] = 3221225472;
     v18[2] = sub_10000B468;
     v18[3] = &unk_100020A50;
-    v14 = v13;
+    v14 = imageData2;
     v19 = v14;
-    v7 = v7;
-    v20 = v7;
+    errorCopy = errorCopy;
+    v20 = errorCopy;
     [v17 enumerateObjectsUsingBlock:v18];
   }
 
@@ -678,12 +678,12 @@
   return self;
 }
 
-- (void)setLock:(_opaque_pthread_mutex_t *)a3
+- (void)setLock:(_opaque_pthread_mutex_t *)lock
 {
-  v3 = *&a3->__opaque[40];
-  v5 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  *&self->_lock.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&lock->__opaque[40];
+  v5 = *&lock->__sig;
+  v4 = *&lock->__opaque[8];
+  *&self->_lock.__opaque[24] = *&lock->__opaque[24];
   *&self->_lock.__opaque[40] = v3;
   *&self->_lock.__sig = v5;
   *&self->_lock.__opaque[8] = v4;

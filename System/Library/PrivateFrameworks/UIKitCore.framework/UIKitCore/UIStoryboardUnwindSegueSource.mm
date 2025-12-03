@@ -1,32 +1,32 @@
 @interface UIStoryboardUnwindSegueSource
-- (id)_childContainingUnwindSourceForViewController:(id)a3;
+- (id)_childContainingUnwindSourceForViewController:(id)controller;
 - (id)_findDestination;
-- (id)_initWithSourceViewController:(id)a3 action:(SEL)a4 sender:(id)a5;
+- (id)_initWithSourceViewController:(id)controller action:(SEL)action sender:(id)sender;
 @end
 
 @implementation UIStoryboardUnwindSegueSource
 
-- (id)_initWithSourceViewController:(id)a3 action:(SEL)a4 sender:(id)a5
+- (id)_initWithSourceViewController:(id)controller action:(SEL)action sender:(id)sender
 {
-  v9 = a3;
-  v10 = a5;
+  controllerCopy = controller;
+  senderCopy = sender;
   v14.receiver = self;
   v14.super_class = UIStoryboardUnwindSegueSource;
   v11 = [(UIStoryboardUnwindSegueSource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceViewController, a3);
-    v12->_unwindAction = a4;
-    objc_storeStrong(&v12->_sender, a5);
+    objc_storeStrong(&v11->_sourceViewController, controller);
+    v12->_unwindAction = action;
+    objc_storeStrong(&v12->_sender, sender);
   }
 
   return v12;
 }
 
-- (id)_childContainingUnwindSourceForViewController:(id)a3
+- (id)_childContainingUnwindSourceForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -43,7 +43,7 @@
   v11[2] = __79__UIStoryboardUnwindSegueSource__childContainingUnwindSourceForViewController___block_invoke;
   v11[3] = &unk_1E7122900;
   v13 = v15;
-  v6 = v4;
+  v6 = controllerCopy;
   v12 = v6;
   v14 = &v17;
   [(NSMutableArray *)searchChain enumerateObjectsWithOptions:2 usingBlock:v11];
@@ -53,9 +53,9 @@
     goto LABEL_2;
   }
 
-  v9 = [(UIViewController *)self->_sourceViewController parentViewController];
+  parentViewController = [(UIViewController *)self->_sourceViewController parentViewController];
 
-  if (v9 == v6)
+  if (parentViewController == v6)
   {
     sourceViewController = self->_sourceViewController;
 LABEL_2:
@@ -114,10 +114,10 @@ void __79__UIStoryboardUnwindSegueSource__childContainingUnwindSourceForViewCont
 
   v5 = [MEMORY[0x1E696AC70] hashTableWithOptions:512];
   v6 = self->_sourceViewController;
-  v7 = [(UIViewController *)v6 _nextViewControllerForUnwindSegueSearch];
-  if (v7)
+  _nextViewControllerForUnwindSegueSearch = [(UIViewController *)v6 _nextViewControllerForUnwindSegueSearch];
+  if (_nextViewControllerForUnwindSegueSearch)
   {
-    v8 = v7;
+    v8 = _nextViewControllerForUnwindSegueSearch;
     while (1)
     {
       [(NSMutableArray *)self->_searchChain addObject:v8];
@@ -127,26 +127,26 @@ void __79__UIStoryboardUnwindSegueSource__childContainingUnwindSourceForViewCont
         break;
       }
 
-      v10 = [v8 _nextViewControllerForUnwindSegueSearch];
+      _nextViewControllerForUnwindSegueSearch2 = [v8 _nextViewControllerForUnwindSegueSearch];
 
-      v8 = v10;
-      if (!v10)
+      v8 = _nextViewControllerForUnwindSegueSearch2;
+      if (!_nextViewControllerForUnwindSegueSearch2)
       {
         goto LABEL_8;
       }
     }
 
-    v10 = v9;
+    _nextViewControllerForUnwindSegueSearch2 = v9;
   }
 
   else
   {
-    v10 = 0;
+    _nextViewControllerForUnwindSegueSearch2 = 0;
   }
 
 LABEL_8:
 
-  return v10;
+  return _nextViewControllerForUnwindSegueSearch2;
 }
 
 @end

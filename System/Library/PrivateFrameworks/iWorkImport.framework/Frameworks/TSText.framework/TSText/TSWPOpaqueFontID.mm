@@ -1,36 +1,36 @@
 @interface TSWPOpaqueFontID
-- (BOOL)isEqual:(id)a3;
-- (TSWPOpaqueFontID)initWithFont:(id)a3;
-- (TSWPOpaqueFontID)initWithPostScriptName:(id)a3 familyName:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSWPOpaqueFontID)initWithFont:(id)font;
+- (TSWPOpaqueFontID)initWithPostScriptName:(id)name familyName:(id)familyName;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TSWPOpaqueFontID
 
-- (TSWPOpaqueFontID)initWithPostScriptName:(id)a3 familyName:(id)a4
+- (TSWPOpaqueFontID)initWithPostScriptName:(id)name familyName:(id)familyName
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  familyNameCopy = familyName;
   v12.receiver = self;
   v12.super_class = TSWPOpaqueFontID;
   v9 = [(TSWPOpaqueFontID *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_desiredPostScriptName, a3);
-    objc_storeStrong(&v10->_familyName, a4);
+    objc_storeStrong(&v9->_desiredPostScriptName, name);
+    objc_storeStrong(&v10->_familyName, familyName);
   }
 
   return v10;
 }
 
-- (TSWPOpaqueFontID)initWithFont:(id)a3
+- (TSWPOpaqueFontID)initWithFont:(id)font
 {
-  v4 = a3;
-  if (objc_msgSend_isRequestedFont(v4, v5, v6))
+  fontCopy = font;
+  if (objc_msgSend_isRequestedFont(fontCopy, v5, v6))
   {
-    v9 = objc_msgSend_familyName(v4, v7, v8);
+    v9 = objc_msgSend_familyName(fontCopy, v7, v8);
   }
 
   else
@@ -38,17 +38,17 @@
     v9 = 0;
   }
 
-  v10 = objc_msgSend_desiredPostScriptName(v4, v7, v8);
+  v10 = objc_msgSend_desiredPostScriptName(fontCopy, v7, v8);
   v12 = objc_msgSend_initWithPostScriptName_familyName_(self, v11, v10, v9);
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = TSUDynamicCast();
 

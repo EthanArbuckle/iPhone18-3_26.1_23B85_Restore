@@ -1,16 +1,16 @@
 @interface SSVSubscriptionStatus
-- (BOOL)isEqualToStatus:(id)a3;
+- (BOOL)isEqualToStatus:(id)status;
 - (NSDate)subscriptionExpirationDate;
 - (NSString)description;
-- (SSVSubscriptionStatus)initWithUserDefaultsRepresentation:(id)a3;
-- (SSVSubscriptionStatus)initWithXPCEncoding:(id)a3;
+- (SSVSubscriptionStatus)initWithUserDefaultsRepresentation:(id)representation;
+- (SSVSubscriptionStatus)initWithXPCEncoding:(id)encoding;
 - (id)copyUserDefaultsRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (void)_setSubscribed:(BOOL)a3;
+- (void)_setSubscribed:(BOOL)subscribed;
 - (void)resetAccountBasedProperties;
 - (void)resetCarrierBundlingProperties;
-- (void)setValuesUsingStatusDictionary:(id)a3;
+- (void)setValuesUsingStatusDictionary:(id)dictionary;
 @end
 
 @implementation SSVSubscriptionStatus
@@ -63,10 +63,10 @@
   return v9;
 }
 
-- (SSVSubscriptionStatus)initWithUserDefaultsRepresentation:(id)a3
+- (SSVSubscriptionStatus)initWithUserDefaultsRepresentation:(id)representation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -75,14 +75,14 @@
     v5 = [(SSVSubscriptionStatus *)&v41 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"aid"];
+      v6 = [representationCopy objectForKey:@"aid"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [(SSVSubscriptionStatus *)v5 setAccountIdentifier:v6];
       }
 
-      v7 = [v4 objectForKey:@"astv"];
+      v7 = [representationCopy objectForKey:@"astv"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -90,7 +90,7 @@
         -[SSVSubscriptionStatus setAcceptedStoreTermsVersion:](v5, "setAcceptedStoreTermsVersion:", [v7 unsignedLongLongValue]);
       }
 
-      v8 = [v4 objectForKey:@"cb"];
+      v8 = [representationCopy objectForKey:@"cb"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -98,7 +98,7 @@
         -[SSVSubscriptionStatus setCarrierBundlingStatus:](v5, "setCarrierBundlingStatus:", [v8 integerValue]);
       }
 
-      v9 = [v4 objectForKey:@"cbec"];
+      v9 = [representationCopy objectForKey:@"cbec"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -106,7 +106,7 @@
         -[SSVSubscriptionStatus setCarrierBundlingErrorCode:](v5, "setCarrierBundlingErrorCode:", [v9 integerValue]);
       }
 
-      v10 = [v4 objectForKey:@"con"];
+      v10 = [representationCopy objectForKey:@"con"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -114,7 +114,7 @@
         [(SSVSubscriptionStatus *)v5 setCellularOperatorName:v10];
       }
 
-      v11 = [v4 objectForKey:@"dm"];
+      v11 = [representationCopy objectForKey:@"dm"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -122,7 +122,7 @@
         -[SSVSubscriptionStatus setDiscoveryModeEligible:](v5, "setDiscoveryModeEligible:", [v11 BOOLValue]);
       }
 
-      v12 = [v4 objectForKey:@"exp"];
+      v12 = [representationCopy objectForKey:@"exp"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -132,7 +132,7 @@
         [(SSVSubscriptionStatus *)v5 setSubscriptionExpirationDate:v14];
       }
 
-      v15 = [v4 objectForKey:@"hoh"];
+      v15 = [representationCopy objectForKey:@"hoh"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -140,7 +140,7 @@
         -[SSVSubscriptionStatus setFamilyOrganizer:](v5, "setFamilyOrganizer:", [v15 BOOLValue]);
       }
 
-      v16 = [v4 objectForKey:@"fs"];
+      v16 = [representationCopy objectForKey:@"fs"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -148,7 +148,7 @@
         -[SSVSubscriptionStatus setFamilySubscription:](v5, "setFamilySubscription:", [v16 BOOLValue]);
       }
 
-      v17 = [v4 objectForKey:@"ft"];
+      v17 = [representationCopy objectForKey:@"ft"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -156,7 +156,7 @@
         -[SSVSubscriptionStatus setFreeTrialIneligible:](v5, "setFreeTrialIneligible:", [v17 BOOLValue]);
       }
 
-      v18 = [v4 objectForKey:@"hf"];
+      v18 = [representationCopy objectForKey:@"hf"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -164,7 +164,7 @@
         -[SSVSubscriptionStatus setHasFamily:](v5, "setHasFamily:", [v18 BOOLValue]);
       }
 
-      v19 = [v4 objectForKey:@"hfm"];
+      v19 = [representationCopy objectForKey:@"hfm"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -172,7 +172,7 @@
         -[SSVSubscriptionStatus setHasFamilyMembers:](v5, "setHasFamilyMembers:", [v19 BOOLValue]);
       }
 
-      v20 = [v4 objectForKey:@"hos"];
+      v20 = [representationCopy objectForKey:@"hos"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -180,7 +180,7 @@
         -[SSVSubscriptionStatus setHasOfflineSlots:](v5, "setHasOfflineSlots:", [v20 BOOLValue]);
       }
 
-      v21 = [v4 objectForKey:@"lstv"];
+      v21 = [representationCopy objectForKey:@"lstv"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -188,7 +188,7 @@
         -[SSVSubscriptionStatus setLatestStoreTermsVersion:](v5, "setLatestStoreTermsVersion:", [v21 unsignedLongLongValue]);
       }
 
-      v22 = [v4 objectForKey:@"pn"];
+      v22 = [representationCopy objectForKey:@"pn"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -196,7 +196,7 @@
         [(SSVSubscriptionStatus *)v5 setPhoneNumber:v22];
       }
 
-      v23 = [v4 objectForKey:@"pur"];
+      v23 = [representationCopy objectForKey:@"pur"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -204,7 +204,7 @@
         -[SSVSubscriptionStatus setSubscriptionPurchaser:](v5, "setSubscriptionPurchaser:", [v23 BOOLValue]);
       }
 
-      v24 = [v4 objectForKey:@"sid"];
+      v24 = [representationCopy objectForKey:@"sid"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -212,7 +212,7 @@
         [(SSVSubscriptionStatus *)v5 setSessionIdentifier:v24];
       }
 
-      v25 = [v4 objectForKey:@"ast"];
+      v25 = [representationCopy objectForKey:@"ast"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -222,7 +222,7 @@
 
       else
       {
-        v26 = [v4 objectForKey:@"sb"];
+        v26 = [representationCopy objectForKey:@"sb"];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -233,7 +233,7 @@
         v25 = v26;
       }
 
-      v27 = [v4 objectForKey:@"prms"];
+      v27 = [representationCopy objectForKey:@"prms"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -279,7 +279,7 @@
         [(SSVSubscriptionStatus *)v5 setAccountPermissions:v28];
       }
 
-      v35 = [v4 objectForKey:{@"raw", v37}];
+      v35 = [representationCopy objectForKey:{@"raw", v37}];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -411,12 +411,12 @@
   [(SSVSubscriptionStatus *)self setSessionIdentifier:0];
 }
 
-- (void)setValuesUsingStatusDictionary:(id)a3
+- (void)setValuesUsingStatusDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SSVSubscriptionStatus *)self setRawResponseData:v4];
-  v5 = [v4 objectForKey:@"music"];
+  dictionaryCopy = dictionary;
+  [(SSVSubscriptionStatus *)self setRawResponseData:dictionaryCopy];
+  v5 = [dictionaryCopy objectForKey:@"music"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -440,7 +440,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 unsignedLongLongValue];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
   }
 
   else
@@ -451,12 +451,12 @@
       goto LABEL_12;
     }
 
-    v9 = strtoull([v8 UTF8String], 0, 10);
+    unsignedLongLongValue = strtoull([v8 UTF8String], 0, 10);
   }
 
-  if (v9)
+  if (unsignedLongLongValue)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:v9 / 1000.0];
+    v10 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:unsignedLongLongValue / 1000.0];
     [(SSVSubscriptionStatus *)self setSubscriptionExpirationDate:v10];
   }
 
@@ -498,7 +498,7 @@ LABEL_12:
   v42 = v14;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [v4 objectForKey:@"isFuseEnabled"];
+    v16 = [dictionaryCopy objectForKey:@"isFuseEnabled"];
     if (objc_opt_respondsToSelector())
     {
       [(SSVSubscriptionStatus *)self setAccountStatus:3];
@@ -544,7 +544,7 @@ LABEL_28:
 
   if ([v14 isEqualToString:@"Glide"])
   {
-    v17 = self;
+    selfCopy3 = self;
     v18 = 4;
   }
 
@@ -567,20 +567,20 @@ LABEL_28:
 
     if ([v7 isEqualToString:@"InvalidToken"])
     {
-      v17 = self;
+      selfCopy3 = self;
       v18 = 1;
     }
 
     else
     {
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2;
     }
   }
 
-  [(SSVSubscriptionStatus *)v17 setAccountStatus:v18];
+  [(SSVSubscriptionStatus *)selfCopy3 setAccountStatus:v18];
 LABEL_37:
-  v19 = [v4 objectForKey:@"family"];
+  v19 = [dictionaryCopy objectForKey:@"family"];
   objc_opt_class();
   v43 = v19;
   if (objc_opt_isKindOfClass())
@@ -608,14 +608,14 @@ LABEL_37:
     v14 = v42;
   }
 
-  v23 = [v4 objectForKey:@"terms"];
+  v23 = [dictionaryCopy objectForKey:@"terms"];
   objc_opt_class();
   v41 = v7;
   v39 = v23;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v30 = 0;
-    v25 = 0;
+    unsignedLongLongValue2 = 0;
+    unsignedLongLongValue3 = 0;
     goto LABEL_73;
   }
 
@@ -625,16 +625,16 @@ LABEL_37:
   v44 = 0u;
   v45 = 0u;
   v24 = v23;
-  v25 = [v24 countByEnumeratingWithState:&v44 objects:v48 count:16];
-  if (!v25)
+  unsignedLongLongValue3 = [v24 countByEnumeratingWithState:&v44 objects:v48 count:16];
+  if (!unsignedLongLongValue3)
   {
-    v30 = 0;
+    unsignedLongLongValue2 = 0;
     v31 = v24;
     goto LABEL_72;
   }
 
-  v36 = self;
-  v37 = v4;
+  selfCopy4 = self;
+  v37 = dictionaryCopy;
   v26 = *v45;
 LABEL_48:
   v27 = 0;
@@ -659,18 +659,18 @@ LABEL_48:
     }
 
 LABEL_54:
-    if (v25 == ++v27)
+    if (unsignedLongLongValue3 == ++v27)
     {
-      v25 = [v24 countByEnumeratingWithState:&v44 objects:v48 count:16];
-      if (v25)
+      unsignedLongLongValue3 = [v24 countByEnumeratingWithState:&v44 objects:v48 count:16];
+      if (unsignedLongLongValue3)
       {
         goto LABEL_48;
       }
 
-      v30 = 0;
+      unsignedLongLongValue2 = 0;
       v31 = v24;
-      self = v36;
-      v4 = v37;
+      self = selfCopy4;
+      dictionaryCopy = v37;
       goto LABEL_71;
     }
   }
@@ -679,38 +679,38 @@ LABEL_54:
 
   if (!v31)
   {
-    v30 = 0;
-    v25 = 0;
-    self = v36;
-    v4 = v37;
+    unsignedLongLongValue2 = 0;
+    unsignedLongLongValue3 = 0;
+    self = selfCopy4;
+    dictionaryCopy = v37;
     v13 = v38;
     v14 = v42;
     goto LABEL_73;
   }
 
   v32 = [v31 objectForKey:@"agreedToTerms"];
-  self = v36;
-  v4 = v37;
+  self = selfCopy4;
+  dictionaryCopy = v37;
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v32 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v32 unsignedLongLongValue];
   }
 
   else
   {
-    v30 = 0;
+    unsignedLongLongValue2 = 0;
   }
 
   v33 = [v31 objectForKey:@"latestTerms"];
 
   if (objc_opt_respondsToSelector())
   {
-    v25 = [v33 unsignedLongLongValue];
+    unsignedLongLongValue3 = [v33 unsignedLongLongValue];
   }
 
   else
   {
-    v25 = 0;
+    unsignedLongLongValue3 = 0;
   }
 
 LABEL_71:
@@ -719,8 +719,8 @@ LABEL_72:
 
   v13 = v38;
 LABEL_73:
-  [(SSVSubscriptionStatus *)self setAcceptedStoreTermsVersion:v30];
-  [(SSVSubscriptionStatus *)self setLatestStoreTermsVersion:v25];
+  [(SSVSubscriptionStatus *)self setAcceptedStoreTermsVersion:unsignedLongLongValue2];
+  [(SSVSubscriptionStatus *)self setLatestStoreTermsVersion:unsignedLongLongValue3];
   v34 = [v5 objectForKey:@"isAdmin"];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v34 BOOLValue])
   {
@@ -731,36 +731,36 @@ LABEL_73:
   }
 }
 
-- (BOOL)isEqualToStatus:(id)a3
+- (BOOL)isEqualToStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(SSVSubscriptionStatus *)self rawResponseData];
-  v6 = [v4 rawResponseData];
+  statusCopy = status;
+  rawResponseData = [(SSVSubscriptionStatus *)self rawResponseData];
+  rawResponseData2 = [statusCopy rawResponseData];
 
-  v7 = (v5 | v6) == 0;
-  if (v6)
+  v7 = (rawResponseData | rawResponseData2) == 0;
+  if (rawResponseData2)
   {
-    v7 = [v5 isEqualToDictionary:v6];
+    v7 = [rawResponseData isEqualToDictionary:rawResponseData2];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SSVSubscriptionStatus *)self accountIdentifier];
-  [v4 setAccountIdentifier:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  accountIdentifier = [(SSVSubscriptionStatus *)self accountIdentifier];
+  [v4 setAccountIdentifier:accountIdentifier];
 
-  v6 = [(SSVSubscriptionStatus *)self accountPermissions];
-  [v4 setAccountPermissions:v6];
+  accountPermissions = [(SSVSubscriptionStatus *)self accountPermissions];
+  [v4 setAccountPermissions:accountPermissions];
 
   [v4 setAccountStatus:{-[SSVSubscriptionStatus accountStatus](self, "accountStatus")}];
   [v4 setAcceptedStoreTermsVersion:{-[SSVSubscriptionStatus acceptedStoreTermsVersion](self, "acceptedStoreTermsVersion")}];
   [v4 setCarrierBundlingStatus:{-[SSVSubscriptionStatus carrierBundlingStatus](self, "carrierBundlingStatus")}];
   [v4 setCarrierBundlingErrorCode:{-[SSVSubscriptionStatus carrierBundlingErrorCode](self, "carrierBundlingErrorCode")}];
-  v7 = [(SSVSubscriptionStatus *)self cellularOperatorName];
-  [v4 setCellularOperatorName:v7];
+  cellularOperatorName = [(SSVSubscriptionStatus *)self cellularOperatorName];
+  [v4 setCellularOperatorName:cellularOperatorName];
 
   [v4 setDiscoveryModeEligible:{-[SSVSubscriptionStatus isDiscoveryModeEligible](self, "isDiscoveryModeEligible")}];
   [v4 setFamilyOrganizer:{-[SSVSubscriptionStatus isFamilyOrganizer](self, "isFamilyOrganizer")}];
@@ -770,25 +770,25 @@ LABEL_73:
   [v4 setHasFamilyMembers:{-[SSVSubscriptionStatus hasFamilyMembers](self, "hasFamilyMembers")}];
   [v4 setHasOfflineSlots:{-[SSVSubscriptionStatus hasOfflineSlots](self, "hasOfflineSlots")}];
   [v4 setLatestStoreTermsVersion:{-[SSVSubscriptionStatus latestStoreTermsVersion](self, "latestStoreTermsVersion")}];
-  v8 = [(SSVSubscriptionStatus *)self phoneNumber];
-  [v4 setPhoneNumber:v8];
+  phoneNumber = [(SSVSubscriptionStatus *)self phoneNumber];
+  [v4 setPhoneNumber:phoneNumber];
 
-  v9 = [(SSVSubscriptionStatus *)self rawResponseData];
-  [v4 setRawResponseData:v9];
+  rawResponseData = [(SSVSubscriptionStatus *)self rawResponseData];
+  [v4 setRawResponseData:rawResponseData];
 
-  v10 = [(SSVSubscriptionStatus *)self sessionIdentifier];
-  [v4 setSessionIdentifier:v10];
+  sessionIdentifier = [(SSVSubscriptionStatus *)self sessionIdentifier];
+  [v4 setSessionIdentifier:sessionIdentifier];
 
   v4[12] = self->_subscriptionExpirationTime;
   [v4 setSubscriptionPurchaser:{-[SSVSubscriptionStatus isSubscriptionPurchaser](self, "isSubscriptionPurchaser")}];
   return v4;
 }
 
-- (SSVSubscriptionStatus)initWithXPCEncoding:(id)a3
+- (SSVSubscriptionStatus)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v28.receiver = self;
     v28.super_class = SSVSubscriptionStatus;
@@ -878,9 +878,9 @@ LABEL_73:
   return v3;
 }
 
-- (void)_setSubscribed:(BOOL)a3
+- (void)_setSubscribed:(BOOL)subscribed
 {
-  if (a3)
+  if (subscribed)
   {
     v3 = 3;
   }

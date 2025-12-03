@@ -1,28 +1,28 @@
 @interface MADManagedPhotosAsset
 - (id)description;
-- (void)addResult:(id)a3;
-- (void)removeResult:(id)a3;
+- (void)addResult:(id)result;
+- (void)removeResult:(id)result;
 @end
 
 @implementation MADManagedPhotosAsset
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  if (!a3)
+  if (!result)
   {
     [0 setAsset:self];
   }
 }
 
-- (void)removeResult:(id)a3
+- (void)removeResult:(id)result
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
     v5 = mach_continuous_time();
-    v6 = [(MADManagedPhotosAsset *)self managedObjectContext];
-    [v6 deleteObject:v4];
+    managedObjectContext = [(MADManagedPhotosAsset *)self managedObjectContext];
+    [managedObjectContext deleteObject:resultCopy];
 
     v7 = VCPSignPostPersistentLog();
     v8 = VCPSignPostPersistentLog();
@@ -37,7 +37,7 @@
       v14 = 2082;
       v15 = "RemoveResult";
       v16 = 2082;
-      v17 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       v18 = 2050;
       v19 = 1;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v7, OS_SIGNPOST_EVENT, v9, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s Rows=%{public, signpost.telemetry:number1}lld  enableTelemetry=YES ", &v12, 0x2Au);
@@ -53,43 +53,43 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [objc_opt_class() localIdentifierColumnName];
-  v7 = [(MADManagedPhotosAsset *)self localIdentifier];
-  [v3 appendFormat:@"%@: %@, ", v6, v7];
+  localIdentifierColumnName = [objc_opt_class() localIdentifierColumnName];
+  localIdentifier = [(MADManagedPhotosAsset *)self localIdentifier];
+  [string appendFormat:@"%@: %@, ", localIdentifierColumnName, localIdentifier];
 
-  v8 = [objc_opt_class() versionColumnName];
-  [v3 appendFormat:@"%@: %d, ", v8, -[MADManagedPhotosAsset version](self, "version")];
+  versionColumnName = [objc_opt_class() versionColumnName];
+  [string appendFormat:@"%@: %d, ", versionColumnName, -[MADManagedPhotosAsset version](self, "version")];
 
-  v9 = [objc_opt_class() dateModifiedColumnName];
-  v10 = [(MADManagedPhotosAsset *)self dateModified];
-  [v3 appendFormat:@"%@: %@, ", v9, v10];
+  dateModifiedColumnName = [objc_opt_class() dateModifiedColumnName];
+  dateModified = [(MADManagedPhotosAsset *)self dateModified];
+  [string appendFormat:@"%@: %@, ", dateModifiedColumnName, dateModified];
 
-  v11 = [objc_opt_class() dateAnalyzedColumnName];
-  v12 = [(MADManagedPhotosAsset *)self dateAnalyzed];
-  [v3 appendFormat:@"%@: %@, ", v11, v12];
+  dateAnalyzedColumnName = [objc_opt_class() dateAnalyzedColumnName];
+  dateAnalyzed = [(MADManagedPhotosAsset *)self dateAnalyzed];
+  [string appendFormat:@"%@: %@, ", dateAnalyzedColumnName, dateAnalyzed];
 
-  v13 = [objc_opt_class() analysisTypesColumnName];
-  [v3 appendFormat:@"%@: %lld, ", v13, -[MADManagedPhotosAsset analysisTypes](self, "analysisTypes")];
+  analysisTypesColumnName = [objc_opt_class() analysisTypesColumnName];
+  [string appendFormat:@"%@: %lld, ", analysisTypesColumnName, -[MADManagedPhotosAsset analysisTypes](self, "analysisTypes")];
 
-  v14 = [objc_opt_class() flagsColumnName];
-  [v3 appendFormat:@"%@: %lld, ", v14, -[MADManagedPhotosAsset flags](self, "flags")];
+  flagsColumnName = [objc_opt_class() flagsColumnName];
+  [string appendFormat:@"%@: %lld, ", flagsColumnName, -[MADManagedPhotosAsset flags](self, "flags")];
 
-  v15 = [objc_opt_class() qualityColumnName];
+  qualityColumnName = [objc_opt_class() qualityColumnName];
   [(MADManagedPhotosAsset *)self quality];
-  [v3 appendFormat:@"%@: %f, ", v15, v16];
+  [string appendFormat:@"%@: %f, ", qualityColumnName, v16];
 
-  v17 = [objc_opt_class() statsFlagsColumnName];
-  [v3 appendFormat:@"%@: %lld, ", v17, -[MADManagedPhotosAsset statsFlags](self, "statsFlags")];
+  statsFlagsColumnName = [objc_opt_class() statsFlagsColumnName];
+  [string appendFormat:@"%@: %lld, ", statsFlagsColumnName, -[MADManagedPhotosAsset statsFlags](self, "statsFlags")];
 
-  v18 = [(MADManagedPhotosAsset *)self results];
-  [v3 appendFormat:@"results.count: %d>", objc_msgSend(v18, "count")];
+  results = [(MADManagedPhotosAsset *)self results];
+  [string appendFormat:@"results.count: %d>", objc_msgSend(results, "count")];
 
-  return v3;
+  return string;
 }
 
 @end

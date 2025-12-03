@@ -1,14 +1,14 @@
 @interface CKDPNotificationSyncRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWantsChanges:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasWantsChanges:(BOOL)changes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPNotificationSyncRequest
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setHasWantsChanges:(BOOL)a3
+- (void)setHasWantsChanges:(BOOL)changes
 {
-  if (a3)
+  if (changes)
   {
     v3 = 2;
   }
@@ -80,14 +80,14 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_serverChangeToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -95,7 +95,7 @@
   {
     maxChanges = self->_maxChanges;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -103,42 +103,42 @@
   {
     wantsChanges = self->_wantsChanges;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   serverChangeToken = self->_serverChangeToken;
   if (serverChangeToken)
   {
-    v8 = v4;
-    objc_msgSend_setServerChangeToken_(v4, v5, serverChangeToken);
-    v4 = v8;
+    v8 = toCopy;
+    objc_msgSend_setServerChangeToken_(toCopy, v5, serverChangeToken);
+    toCopy = v8;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_maxChanges;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 2) = self->_maxChanges;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 24) = self->_wantsChanges;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 24) = self->_wantsChanges;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_serverChangeToken, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_serverChangeToken, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -159,17 +159,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   serverChangeToken = self->_serverChangeToken;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (serverChangeToken | v9)
   {
     if (!objc_msgSend_isEqual_(serverChangeToken, v7, v9))
@@ -180,21 +180,21 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_maxChanges != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_maxChanges != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_11;
   }
 
-  v10 = (*(v4 + 28) & 2) == 0;
+  v10 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
 LABEL_11:
       v10 = 0;
@@ -203,13 +203,13 @@ LABEL_11:
 
     if (self->_wantsChanges)
     {
-      if ((v4[3] & 1) == 0)
+      if ((equalCopy[3] & 1) == 0)
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_11;
     }
@@ -249,28 +249,28 @@ LABEL_3:
   return v5 ^ v4 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 2);
+  fromCopy = from;
+  v6 = *(fromCopy + 2);
   if (v6)
   {
-    v8 = v4;
+    v8 = fromCopy;
     objc_msgSend_setServerChangeToken_(self, v5, v6);
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 28);
+  v7 = *(fromCopy + 28);
   if (v7)
   {
-    self->_maxChanges = *(v4 + 2);
+    self->_maxChanges = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v7 = *(v4 + 28);
+    v7 = *(fromCopy + 28);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_wantsChanges = *(v4 + 24);
+    self->_wantsChanges = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 }

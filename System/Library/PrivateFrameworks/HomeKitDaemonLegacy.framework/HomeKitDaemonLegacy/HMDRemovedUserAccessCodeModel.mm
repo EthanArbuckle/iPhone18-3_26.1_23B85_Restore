@@ -1,7 +1,7 @@
 @interface HMDRemovedUserAccessCodeModel
-+ (id)modelUUIDForHomeUUID:(id)a3 removedUserInfo:(id)a4 accessCode:(id)a5;
++ (id)modelUUIDForHomeUUID:(id)d removedUserInfo:(id)info accessCode:(id)code;
 + (id)properties;
-- (HMDRemovedUserAccessCodeModel)initWithRemovedUserInfo:(id)a3 accessCode:(id)a4 homeUUID:(id)a5;
+- (HMDRemovedUserAccessCodeModel)initWithRemovedUserInfo:(id)info accessCode:(id)code homeUUID:(id)d;
 - (HMRemovedUserInfo)removedUserInfo;
 @end
 
@@ -10,15 +10,15 @@
 - (HMRemovedUserInfo)removedUserInfo
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRemovedUserAccessCodeModel *)self removedUserInfoData];
+  removedUserInfoData = [(HMDRemovedUserAccessCodeModel *)self removedUserInfoData];
 
-  if (v3)
+  if (removedUserInfoData)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = objc_opt_class();
-    v6 = [(HMDRemovedUserAccessCodeModel *)self removedUserInfoData];
+    removedUserInfoData2 = [(HMDRemovedUserAccessCodeModel *)self removedUserInfoData];
     v21 = 0;
-    v7 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v21];
+    v7 = [v4 unarchivedObjectOfClass:v5 fromData:removedUserInfoData2 error:&v21];
     v8 = v21;
 
     if (v7)
@@ -29,16 +29,16 @@
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v17 = HMFGetLogIdentifier();
-        v18 = [(HMDRemovedUserAccessCodeModel *)v15 removedUserInfoData];
+        removedUserInfoData3 = [(HMDRemovedUserAccessCodeModel *)selfCopy removedUserInfoData];
         *buf = 138543874;
         v23 = v17;
         v24 = 2112;
-        v25 = v18;
+        v25 = removedUserInfoData3;
         v26 = 2112;
         v27 = v8;
         _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to unarchive removedUserInfoData: %@, with error: %@", buf, 0x20u);
@@ -51,7 +51,7 @@
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -70,37 +70,37 @@
   return v7;
 }
 
-- (HMDRemovedUserAccessCodeModel)initWithRemovedUserInfo:(id)a3 accessCode:(id)a4 homeUUID:(id)a5
+- (HMDRemovedUserAccessCodeModel)initWithRemovedUserInfo:(id)info accessCode:(id)code homeUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [HMDRemovedUserAccessCodeModel modelUUIDForHomeUUID:v10 removedUserInfo:v8 accessCode:v9];
-  v12 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v11 parentUUID:v10];
+  infoCopy = info;
+  codeCopy = code;
+  dCopy = d;
+  v11 = [HMDRemovedUserAccessCodeModel modelUUIDForHomeUUID:dCopy removedUserInfo:infoCopy accessCode:codeCopy];
+  v12 = [(HMDBackingStoreModelObject *)self initWithObjectChangeType:1 uuid:v11 parentUUID:dCopy];
 
   if (v12)
   {
     v13 = encodeRootObject();
     [(HMDRemovedUserAccessCodeModel *)v12 setRemovedUserInfoData:v13];
 
-    v14 = [v9 copy];
+    v14 = [codeCopy copy];
     [(HMDRemovedUserAccessCodeModel *)v12 setAccessCode:v14];
   }
 
   return v12;
 }
 
-+ (id)modelUUIDForHomeUUID:(id)a3 removedUserInfo:(id)a4 accessCode:(id)a5
++ (id)modelUUIDForHomeUUID:(id)d removedUserInfo:(id)info accessCode:(id)code
 {
   v7 = MEMORY[0x277CCAD78];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 userUUID];
-  v11 = [v10 hm_convertToData];
-  v12 = [v7 hmf_UUIDWithNamespace:v9 data:v11];
+  codeCopy = code;
+  dCopy = d;
+  userUUID = [info userUUID];
+  hm_convertToData = [userUUID hm_convertToData];
+  v12 = [v7 hmf_UUIDWithNamespace:dCopy data:hm_convertToData];
 
   v13 = MEMORY[0x277CCAD78];
-  v14 = [v8 dataUsingEncoding:4];
+  v14 = [codeCopy dataUsingEncoding:4];
 
   v15 = [v13 hmf_UUIDWithNamespace:v12 data:v14];
 

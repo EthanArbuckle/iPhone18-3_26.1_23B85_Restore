@@ -1,28 +1,28 @@
 @interface MDMDeviceQueryUtilities
-+ (id)allowedDeviceQueriesForAccessRights:(unint64_t)a3 isDataSeparated:(BOOL)a4;
-+ (id)allowedDeviceQueriesOnUserChannelForAccessRights:(unint64_t)a3;
++ (id)allowedDeviceQueriesForAccessRights:(unint64_t)rights isDataSeparated:(BOOL)separated;
++ (id)allowedDeviceQueriesOnUserChannelForAccessRights:(unint64_t)rights;
 + (id)allowedDeviceQueriesWithUserEnrollment;
 @end
 
 @implementation MDMDeviceQueryUtilities
 
-+ (id)allowedDeviceQueriesForAccessRights:(unint64_t)a3 isDataSeparated:(BOOL)a4
++ (id)allowedDeviceQueriesForAccessRights:(unint64_t)rights isDataSeparated:(BOOL)separated
 {
-  v4 = a4;
-  v5 = a3;
+  separatedCopy = separated;
+  rightsCopy = rights;
   v6 = MEMORY[0x277CBEB58];
   v7 = _alwaysAllowedQueries();
   v8 = [v6 setWithSet:v7];
 
-  if ((v5 & 0x10) != 0)
+  if ((rightsCopy & 0x10) != 0)
   {
     v9 = _deviceInformationQueries();
     [v8 unionSet:v9];
 
-    if ((v5 & 0x1000) == 0)
+    if ((rightsCopy & 0x1000) == 0)
     {
 LABEL_3:
-      if ((v5 & 0x20) == 0)
+      if ((rightsCopy & 0x20) == 0)
       {
         goto LABEL_4;
       }
@@ -31,7 +31,7 @@ LABEL_3:
     }
   }
 
-  else if ((v5 & 0x1000) == 0)
+  else if ((rightsCopy & 0x1000) == 0)
   {
     goto LABEL_3;
   }
@@ -39,10 +39,10 @@ LABEL_3:
   v10 = _appInstallationQueries();
   [v8 unionSet:v10];
 
-  if ((v5 & 0x20) == 0)
+  if ((rightsCopy & 0x20) == 0)
   {
 LABEL_4:
-    if (!v4)
+    if (!separatedCopy)
     {
       goto LABEL_12;
     }
@@ -54,7 +54,7 @@ LABEL_8:
   v11 = _networkInformationQueries();
   [v8 unionSet:v11];
 
-  if (!v4)
+  if (!separatedCopy)
   {
     goto LABEL_12;
   }
@@ -70,18 +70,18 @@ LABEL_12:
   v12 = +[MDMCloudConfiguration sharedConfiguration];
   if ([v12 userMode] == 1)
   {
-    v13 = [MEMORY[0x277D03538] isSharediPad];
+    isSharediPad = [MEMORY[0x277D03538] isSharediPad];
   }
 
   else
   {
-    v13 = 0;
+    isSharediPad = 0;
   }
 
   v14 = +[MDMCloudConfiguration sharedConfiguration];
-  v15 = [v14 isSupervised];
+  isSupervised = [v14 isSupervised];
 
-  if (v15 && (v13 & 1) == 0)
+  if (isSupervised && (isSharediPad & 1) == 0)
   {
     [v8 addObject:@"AccessibilitySettings"];
   }
@@ -91,9 +91,9 @@ LABEL_12:
   return v16;
 }
 
-+ (id)allowedDeviceQueriesOnUserChannelForAccessRights:(unint64_t)a3
++ (id)allowedDeviceQueriesOnUserChannelForAccessRights:(unint64_t)rights
 {
-  v3 = a3;
+  rightsCopy = rights;
   v4 = MEMORY[0x277CBEB58];
   if (_alwaysAllowedUserQueries_onceToken != -1)
   {
@@ -101,7 +101,7 @@ LABEL_12:
   }
 
   v5 = [v4 setWithSet:_alwaysAllowedUserQueries_set];
-  if ((v3 & 0x1000) != 0)
+  if ((rightsCopy & 0x1000) != 0)
   {
     v6 = _appInstallationQueries();
     [v5 unionSet:v6];
@@ -110,18 +110,18 @@ LABEL_12:
   v7 = +[MDMCloudConfiguration sharedConfiguration];
   if ([v7 userMode] == 1)
   {
-    v8 = [MEMORY[0x277D03538] isSharediPad];
+    isSharediPad = [MEMORY[0x277D03538] isSharediPad];
   }
 
   else
   {
-    v8 = 0;
+    isSharediPad = 0;
   }
 
   v9 = +[MDMCloudConfiguration sharedConfiguration];
-  v10 = [v9 isSupervised];
+  isSupervised = [v9 isSupervised];
 
-  if (v10 && v8)
+  if (isSupervised && isSharediPad)
   {
     [v5 addObject:@"AccessibilitySettings"];
   }

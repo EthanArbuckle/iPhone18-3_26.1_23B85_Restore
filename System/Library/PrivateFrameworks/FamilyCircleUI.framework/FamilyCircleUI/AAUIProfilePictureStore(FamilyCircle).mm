@@ -8,19 +8,19 @@
 {
   v4 = a3;
   v5 = objc_opt_new();
-  v6 = [v4 firstName];
-  [v5 setFirstName:v6];
+  firstName = [v4 firstName];
+  [v5 setFirstName:firstName];
 
-  v7 = [v4 lastName];
-  [v5 setLastName:v7];
+  lastName = [v4 lastName];
+  [v5 setLastName:lastName];
 
-  v8 = [v4 dsid];
-  [v5 setPersonID:v8];
+  dsid = [v4 dsid];
+  [v5 setPersonID:dsid];
 
-  v9 = [v4 appleID];
+  appleID = [v4 appleID];
 
-  [v5 setAppleID:v9];
-  v10 = [a1 profilePictureForFamilyMember:v5];
+  [v5 setAppleID:appleID];
+  v10 = [self profilePictureForFamilyMember:v5];
 
   return v10;
 }

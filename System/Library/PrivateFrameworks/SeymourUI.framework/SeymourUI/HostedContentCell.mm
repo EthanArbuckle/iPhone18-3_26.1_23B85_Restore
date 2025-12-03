@@ -1,17 +1,17 @@
 @interface HostedContentCell
-- (_TtC9SeymourUI17HostedContentCell)initWithCoder:(id)a3;
-- (_TtC9SeymourUI17HostedContentCell)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI17HostedContentCell)initWithCoder:(id)coder;
+- (_TtC9SeymourUI17HostedContentCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
 @end
 
 @implementation HostedContentCell
 
-- (_TtC9SeymourUI17HostedContentCell)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI17HostedContentCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI17HostedContentCell_delegate) = 0;
   swift_unknownObjectWeakInit();
   v8 = OBJC_IVAR____TtC9SeymourUI17HostedContentCell_itemInfo;
@@ -22,7 +22,7 @@
   return [(HostedContentCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9SeymourUI17HostedContentCell)initWithCoder:(id)a3
+- (_TtC9SeymourUI17HostedContentCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI17HostedContentCell_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -42,13 +42,13 @@
   v6 = type metadata accessor for HostedContentCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(HostedContentCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI17HostedContentCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 

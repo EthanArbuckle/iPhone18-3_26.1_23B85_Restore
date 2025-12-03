@@ -1,11 +1,11 @@
 @interface ModelLocation
 - (_TtC35com_apple_dt_DTMLModelRunnerService13ModelLocation)init;
-- (_TtC35com_apple_dt_DTMLModelRunnerService13ModelLocation)initWithTempFolderGuid:(id)a3 fileName:(id)a4;
+- (_TtC35com_apple_dt_DTMLModelRunnerService13ModelLocation)initWithTempFolderGuid:(id)guid fileName:(id)name;
 @end
 
 @implementation ModelLocation
 
-- (_TtC35com_apple_dt_DTMLModelRunnerService13ModelLocation)initWithTempFolderGuid:(id)a3 fileName:(id)a4
+- (_TtC35com_apple_dt_DTMLModelRunnerService13ModelLocation)initWithTempFolderGuid:(id)guid fileName:(id)name
 {
   v5 = sub_1000268A0();
   v6 = *(v5 - 8);

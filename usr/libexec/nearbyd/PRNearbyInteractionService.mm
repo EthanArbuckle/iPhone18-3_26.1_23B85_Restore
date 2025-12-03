@@ -1,16 +1,16 @@
 @interface PRNearbyInteractionService
-+ (id)serviceWithQueue:(id)a3;
-- (BOOL)shouldAcceptNewConnection:(id)a3;
++ (id)serviceWithQueue:(id)queue;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
 - (NSArray)machServicesNames;
-- (PRNearbyInteractionService)initWithQueue:(id)a3;
+- (PRNearbyInteractionService)initWithQueue:(id)queue;
 @end
 
 @implementation PRNearbyInteractionService
 
-- (PRNearbyInteractionService)initWithQueue:(id)a3
+- (PRNearbyInteractionService)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"PRNearbyInteractionService.mm" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
@@ -21,7 +21,7 @@
   v6 = [(PRNearbyInteractionService *)&v12 init];
   if (v6)
   {
-    v7 = [[NIServerSessionManager alloc] initWithQueue:v5];
+    v7 = [[NIServerSessionManager alloc] initWithQueue:queueCopy];
     sessionManager = v6->_sessionManager;
     v6->_sessionManager = v7;
 
@@ -35,10 +35,10 @@
   return v6;
 }
 
-+ (id)serviceWithQueue:(id)a3
++ (id)serviceWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[PRNearbyInteractionService alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[PRNearbyInteractionService alloc] initWithQueue:queueCopy];
 
   return v4;
 }
@@ -52,13 +52,13 @@
   return v2;
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [v4 serviceName];
-  v6 = [v5 isEqualToString:@"com.apple.nearbyd.xpc.nearbyinteraction.observer"];
+  connectionCopy = connection;
+  serviceName = [connectionCopy serviceName];
+  v6 = [serviceName isEqualToString:@"com.apple.nearbyd.xpc.nearbyinteraction.observer"];
 
-  LOBYTE(self) = [(NIServerSessionManager *)self->_sessionManager registerSessionWithConnection:v4 observerSession:v6];
+  LOBYTE(self) = [(NIServerSessionManager *)self->_sessionManager registerSessionWithConnection:connectionCopy observerSession:v6];
   return self;
 }
 

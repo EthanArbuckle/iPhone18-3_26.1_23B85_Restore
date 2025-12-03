@@ -1,20 +1,20 @@
 @interface AFSetSettingsRequest
-- (void)_ad_handleSettingsRequestWithCompletionHandler:(id)a3;
+- (void)_ad_handleSettingsRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation AFSetSettingsRequest
 
-- (void)_ad_handleSettingsRequestWithCompletionHandler:(id)a3
+- (void)_ad_handleSettingsRequestWithCompletionHandler:(id)handler
 {
-  v28 = a3;
-  v29 = self;
-  v4 = [(AFSetSettingsRequest *)self settings];
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  handlerCopy = handler;
+  selfCopy = self;
+  settings = [(AFSetSettingsRequest *)self settings];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(settings, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = v4;
+  v6 = settings;
   v7 = [v6 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v7)
   {
@@ -30,11 +30,11 @@
         }
 
         v11 = *(*(&v34 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = sub_10012A9D8(v12);
+        type = [v11 type];
+        v13 = sub_10012A9D8(type);
         v14 = [STSettingChange alloc];
-        v15 = [v11 value];
-        v16 = [v14 initWithSettingType:v12 valueBeforeUpdate:v13 valueAfterUpdate:v15];
+        value = [v11 value];
+        v16 = [v14 initWithSettingType:type valueBeforeUpdate:v13 valueAfterUpdate:value];
 
         [v5 addObject:v16];
       }
@@ -45,7 +45,7 @@
     while (v8);
   }
 
-  if ([(AFSetSettingsRequest *)v29 applyChanges])
+  if ([(AFSetSettingsRequest *)selfCopy applyChanges])
   {
     v32 = 0u;
     v33 = 0u;
@@ -67,24 +67,24 @@
           }
 
           v22 = *(*(&v30 + 1) + 8 * j);
-          v23 = [v22 valueAfterUpdate];
-          v24 = [v23 BOOLValue];
+          valueAfterUpdate = [v22 valueAfterUpdate];
+          bOOLValue = [valueAfterUpdate BOOLValue];
 
-          v25 = [v22 settingType];
-          if (v25 == 2)
+          settingType = [v22 settingType];
+          if (settingType == 2)
           {
             _AXSVoiceOverTouchSetEnabled();
           }
 
           else
           {
-            if (v25 != 1)
+            if (settingType != 1)
             {
               objc_exception_throw([[NSException alloc] initWithName:NSInvalidArgumentException reason:@"Unable to set setting with type Unknown" userInfo:&__NSDictionary0__struct]);
             }
 
             v26 = objc_alloc_init(RadiosPreferences);
-            [v26 setAirplaneMode:v24];
+            [v26 setAirplaneMode:bOOLValue];
           }
         }
 
@@ -95,10 +95,10 @@
     }
   }
 
-  if (v28)
+  if (handlerCopy)
   {
-    v27 = [(AFSetSettingsRequest *)v29 createResponseWithSettingChanges:v5];
-    v28[2](v28, v27, 0);
+    v27 = [(AFSetSettingsRequest *)selfCopy createResponseWithSettingChanges:v5];
+    handlerCopy[2](handlerCopy, v27, 0);
   }
 }
 

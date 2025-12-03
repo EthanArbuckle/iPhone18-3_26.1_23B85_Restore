@@ -1,17 +1,17 @@
 @interface FPDDownloadManager
-+ (id)acquireDownloadSlotForItem:(id)a3;
++ (id)acquireDownloadSlotForItem:(id)item;
 + (id)sharedInstance;
 + (void)initialize;
-+ (void)releaseDownloadSlot:(id)a3;
++ (void)releaseDownloadSlot:(id)slot;
 - (FPDDownloadManager)init;
-- (void)_downloadItem:(id)a3 downloader:(id)a4 request:(id)a5 withCompletion:(id)a6;
-- (void)_downloadItemAtLocator:(id)a3 downloader:(id)a4 request:(id)a5 completion:(id)a6;
-- (void)_recursivelyDownloadItem:(id)a3 forceDiskIteration:(BOOL)a4 skipAlreadyDownloadedItems:(BOOL)a5 downloader:(id)a6 request:(id)a7 perItemCompletion:(id)a8 completion:(id)a9;
-- (void)downloadItem:(id)a3 recursively:(unint64_t)a4 downloader:(id)a5 request:(id)a6 perItemCompletion:(id)a7 withCompletion:(id)a8;
-- (void)downloadItems:(id)a3 recursively:(unint64_t)a4 downloader:(id)a5 request:(id)a6 perItemCompletion:(id)a7 withCompletion:(id)a8;
-- (void)progressComputationPreflightForRecursiveRoot:(id)a3 downloader:(id)a4 itemProgressNeedsSetup:(id)a5 itemProgressSetup:(id)a6 completion:(id)a7;
-- (void)retrieveFPItemForURL:(id)a3 domain:(id)a4 request:(id)a5 completion:(id)a6;
-- (void)verifyIfSubtreeIsFullyMaterializedBelowItem:(id)a3 recursively:(unint64_t)a4 downloader:(id)a5 completion:(id)a6;
+- (void)_downloadItem:(id)item downloader:(id)downloader request:(id)request withCompletion:(id)completion;
+- (void)_downloadItemAtLocator:(id)locator downloader:(id)downloader request:(id)request completion:(id)completion;
+- (void)_recursivelyDownloadItem:(id)item forceDiskIteration:(BOOL)iteration skipAlreadyDownloadedItems:(BOOL)items downloader:(id)downloader request:(id)request perItemCompletion:(id)completion completion:(id)a9;
+- (void)downloadItem:(id)item recursively:(unint64_t)recursively downloader:(id)downloader request:(id)request perItemCompletion:(id)completion withCompletion:(id)withCompletion;
+- (void)downloadItems:(id)items recursively:(unint64_t)recursively downloader:(id)downloader request:(id)request perItemCompletion:(id)completion withCompletion:(id)withCompletion;
+- (void)progressComputationPreflightForRecursiveRoot:(id)root downloader:(id)downloader itemProgressNeedsSetup:(id)setup itemProgressSetup:(id)progressSetup completion:(id)completion;
+- (void)retrieveFPItemForURL:(id)l domain:(id)domain request:(id)request completion:(id)completion;
+- (void)verifyIfSubtreeIsFullyMaterializedBelowItem:(id)item recursively:(unint64_t)recursively downloader:(id)downloader completion:(id)completion;
 @end
 
 @implementation FPDDownloadManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __36__FPDDownloadManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_0 != -1)
   {
     dispatch_once(&sharedInstance_once_0, block);
@@ -40,32 +40,32 @@ void __36__FPDDownloadManager_sharedInstance__block_invoke(uint64_t a1)
   sharedInstance__instance = v1;
 }
 
-+ (id)acquireDownloadSlotForItem:(id)a3
++ (id)acquireDownloadSlotForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 providerID];
+  itemCopy = item;
+  providerID = [itemCopy providerID];
   v5 = _globalDownloadSlotsByProvider;
   objc_sync_enter(v5);
-  v6 = [_globalDownloadSlotsByProvider objectForKeyedSubscript:v4];
+  v6 = [_globalDownloadSlotsByProvider objectForKeyedSubscript:providerID];
   if (!v6)
   {
     v6 = dispatch_semaphore_create(256);
-    [_globalDownloadSlotsByProvider setObject:v6 forKeyedSubscript:v4];
+    [_globalDownloadSlotsByProvider setObject:v6 forKeyedSubscript:providerID];
   }
 
   objc_sync_exit(v5);
 
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
 
-  return v4;
+  return providerID;
 }
 
-+ (void)releaseDownloadSlot:(id)a3
++ (void)releaseDownloadSlot:(id)slot
 {
-  v7 = a3;
+  slotCopy = slot;
   v3 = _globalDownloadSlotsByProvider;
   objc_sync_enter(v3);
-  v4 = [_globalDownloadSlotsByProvider objectForKeyedSubscript:v7];
+  v4 = [_globalDownloadSlotsByProvider objectForKeyedSubscript:slotCopy];
   objc_sync_exit(v3);
 
   if (!v4)
@@ -119,30 +119,30 @@ void __32__FPDDownloadManager_initialize__block_invoke()
   return v2;
 }
 
-- (void)downloadItems:(id)a3 recursively:(unint64_t)a4 downloader:(id)a5 request:(id)a6 perItemCompletion:(id)a7 withCompletion:(id)a8
+- (void)downloadItems:(id)items recursively:(unint64_t)recursively downloader:(id)downloader request:(id)request perItemCompletion:(id)completion withCompletion:(id)withCompletion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  itemsCopy = items;
+  downloaderCopy = downloader;
+  requestCopy = request;
+  completionCopy = completion;
+  withCompletionCopy = withCompletion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__FPDDownloadManager_downloadItems_recursively_downloader_request_perItemCompletion_withCompletion___block_invoke;
   block[3] = &unk_1E83C0A18;
-  v26 = v14;
-  v27 = self;
-  v31 = v18;
-  v32 = a4;
-  v28 = v15;
-  v29 = v16;
-  v30 = v17;
-  v20 = v18;
-  v21 = v17;
-  v22 = v16;
-  v23 = v15;
-  v24 = v14;
+  v26 = itemsCopy;
+  selfCopy = self;
+  v31 = withCompletionCopy;
+  recursivelyCopy = recursively;
+  v28 = downloaderCopy;
+  v29 = requestCopy;
+  v30 = completionCopy;
+  v20 = withCompletionCopy;
+  v21 = completionCopy;
+  v22 = requestCopy;
+  v23 = downloaderCopy;
+  v24 = itemsCopy;
   dispatch_async(queue, block);
 }
 
@@ -259,13 +259,13 @@ uint64_t __100__FPDDownloadManager_downloadItems_recursively_downloader_request_
   return result;
 }
 
-- (void)downloadItem:(id)a3 recursively:(unint64_t)a4 downloader:(id)a5 request:(id)a6 perItemCompletion:(id)a7 withCompletion:(id)a8
+- (void)downloadItem:(id)item recursively:(unint64_t)recursively downloader:(id)downloader request:(id)request perItemCompletion:(id)completion withCompletion:(id)withCompletion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  itemCopy = item;
+  downloaderCopy = downloader;
+  requestCopy = request;
+  completionCopy = completion;
+  withCompletionCopy = withCompletion;
   v19 = fp_current_or_default_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
@@ -277,18 +277,18 @@ uint64_t __100__FPDDownloadManager_downloadItems_recursively_downloader_request_
   block[1] = 3221225472;
   block[2] = __99__FPDDownloadManager_downloadItem_recursively_downloader_request_perItemCompletion_withCompletion___block_invoke;
   block[3] = &unk_1E83C0A18;
-  v32 = v18;
-  v33 = a4;
-  v27 = v14;
-  v28 = self;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
+  v32 = withCompletionCopy;
+  recursivelyCopy = recursively;
+  v27 = itemCopy;
+  selfCopy = self;
+  v29 = downloaderCopy;
+  v30 = requestCopy;
+  v31 = completionCopy;
+  v21 = withCompletionCopy;
+  v22 = completionCopy;
+  v23 = requestCopy;
+  v24 = downloaderCopy;
+  v25 = itemCopy;
   dispatch_async(queue, block);
 }
 
@@ -371,11 +371,11 @@ void __99__FPDDownloadManager_downloadItem_recursively_downloader_request_perIte
   }
 }
 
-- (void)verifyIfSubtreeIsFullyMaterializedBelowItem:(id)a3 recursively:(unint64_t)a4 downloader:(id)a5 completion:(id)a6
+- (void)verifyIfSubtreeIsFullyMaterializedBelowItem:(id)item recursively:(unint64_t)recursively downloader:(id)downloader completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  itemCopy = item;
+  downloaderCopy = downloader;
+  completionCopy = completion;
   v13 = fp_current_or_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -387,14 +387,14 @@ void __99__FPDDownloadManager_downloadItem_recursively_downloader_request_perIte
   block[1] = 3221225472;
   block[2] = __100__FPDDownloadManager_verifyIfSubtreeIsFullyMaterializedBelowItem_recursively_downloader_completion___block_invoke;
   block[3] = &unk_1E83BFDF0;
-  v22 = v12;
-  v23 = a4;
-  v19 = v10;
-  v20 = v11;
-  v21 = self;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
+  v22 = completionCopy;
+  recursivelyCopy = recursively;
+  v19 = itemCopy;
+  v20 = downloaderCopy;
+  selfCopy = self;
+  v15 = downloaderCopy;
+  v16 = completionCopy;
+  v17 = itemCopy;
   dispatch_async(queue, block);
 }
 
@@ -579,23 +579,23 @@ void __100__FPDDownloadManager_verifyIfSubtreeIsFullyMaterializedBelowItem_recur
   }
 }
 
-- (void)retrieveFPItemForURL:(id)a3 domain:(id)a4 request:(id)a5 completion:(id)a6
+- (void)retrieveFPItemForURL:(id)l domain:(id)domain request:(id)request completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (a4)
+  lCopy = l;
+  requestCopy = request;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (domain)
   {
-    v14 = [a4 defaultBackend];
+    defaultBackend = [domain defaultBackend];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __69__FPDDownloadManager_retrieveFPItemForURL_domain_request_completion___block_invoke;
     v19[3] = &unk_1E83BE530;
     v19[4] = self;
-    v20 = v10;
+    v20 = lCopy;
     v21 = v13;
-    [v14 itemForURL:v20 options:0 request:v11 completionHandler:v19];
+    [defaultBackend itemForURL:v20 options:0 request:requestCopy completionHandler:v19];
 
     v15 = v20;
   }
@@ -607,7 +607,7 @@ void __100__FPDDownloadManager_verifyIfSubtreeIsFullyMaterializedBelowItem_recur
     v17[1] = 3221225472;
     v17[2] = __69__FPDDownloadManager_retrieveFPItemForURL_domain_request_completion___block_invoke_23;
     v17[3] = &unk_1E83BF9B0;
-    v18 = v12;
+    v18 = completionCopy;
     dispatch_async(queue, v17);
     v15 = v18;
   }
@@ -658,23 +658,23 @@ void __69__FPDDownloadManager_retrieveFPItemForURL_domain_request_completion___b
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)progressComputationPreflightForRecursiveRoot:(id)a3 downloader:(id)a4 itemProgressNeedsSetup:(id)a5 itemProgressSetup:(id)a6 completion:(id)a7
+- (void)progressComputationPreflightForRecursiveRoot:(id)root downloader:(id)downloader itemProgressNeedsSetup:(id)setup itemProgressSetup:(id)progressSetup completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 isFolder];
-  if ([v12 isPackage])
+  rootCopy = root;
+  downloaderCopy = downloader;
+  setupCopy = setup;
+  progressSetupCopy = progressSetup;
+  completionCopy = completion;
+  isFolder = [rootCopy isFolder];
+  if ([rootCopy isPackage])
   {
     v29 = 0;
-    v18 = [v12 fileURL];
-    if (v18)
+    fileURL = [rootCopy fileURL];
+    if (fileURL)
     {
-      v19 = v18;
-      v20 = [v12 fileURL];
-      [v20 fileSystemRepresentation];
+      v19 = fileURL;
+      fileURL2 = [rootCopy fileURL];
+      [fileURL2 fileSystemRepresentation];
       is_demoted_at = fpfs_pkg_is_demoted_at();
 
       if (!is_demoted_at)
@@ -684,12 +684,12 @@ void __69__FPDDownloadManager_retrieveFPItemForURL_domain_request_completion___b
     }
   }
 
-  if ((v17 & 1) == 0)
+  if ((isFolder & 1) == 0)
   {
 LABEL_6:
-    if (v16)
+    if (completionCopy)
     {
-      v16[2](v16);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -700,11 +700,11 @@ LABEL_6:
     v23[1] = 3221225472;
     v23[2] = __130__FPDDownloadManager_progressComputationPreflightForRecursiveRoot_downloader_itemProgressNeedsSetup_itemProgressSetup_completion___block_invoke;
     v23[3] = &unk_1E83C0B08;
-    v24 = v13;
-    v25 = v12;
-    v26 = v15;
-    v27 = v14;
-    v28 = v16;
+    v24 = downloaderCopy;
+    v25 = rootCopy;
+    v26 = progressSetupCopy;
+    v27 = setupCopy;
+    v28 = completionCopy;
     dispatch_async(preflightQueue, v23);
   }
 }
@@ -843,15 +843,15 @@ LABEL_21:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recursivelyDownloadItem:(id)a3 forceDiskIteration:(BOOL)a4 skipAlreadyDownloadedItems:(BOOL)a5 downloader:(id)a6 request:(id)a7 perItemCompletion:(id)a8 completion:(id)a9
+- (void)_recursivelyDownloadItem:(id)item forceDiskIteration:(BOOL)iteration skipAlreadyDownloadedItems:(BOOL)items downloader:(id)downloader request:(id)request perItemCompletion:(id)completion completion:(id)a9
 {
-  v46 = a5;
-  v43 = a4;
+  itemsCopy = items;
+  iterationCopy = iteration;
   v74 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v44 = a7;
-  v14 = a8;
+  itemCopy = item;
+  downloaderCopy = downloader;
+  requestCopy = request;
+  completionCopy = completion;
   v47 = a9;
   v15 = fp_current_or_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -859,20 +859,20 @@ LABEL_21:
     [FPDDownloadManager _recursivelyDownloadItem:forceDiskIteration:skipAlreadyDownloadedItems:downloader:request:perItemCompletion:completion:];
   }
 
-  v48 = [MEMORY[0x1E69672A8] locatorForItem:v12];
-  if ([v12 isRecursivelyDownloaded] && ((objc_msgSend(v12, "isEvictedWithClone") | !v46) & 1) == 0)
+  v48 = [MEMORY[0x1E69672A8] locatorForItem:itemCopy];
+  if ([itemCopy isRecursivelyDownloaded] && ((objc_msgSend(itemCopy, "isEvictedWithClone") | !itemsCopy) & 1) == 0)
   {
-    v18 = [v12 fileURL];
-    v47[2](v47, v18, 0);
+    fileURL = [itemCopy fileURL];
+    v47[2](v47, fileURL, 0);
     goto LABEL_41;
   }
 
-  v16 = [v13 domain];
-  v17 = [v16 provider];
-  v18 = [FPDIterator iteratorForLocator:v48 wantsDisk:v43 provider:v17];
+  domain = [downloaderCopy domain];
+  provider = [domain provider];
+  fileURL = [FPDIterator iteratorForLocator:v48 wantsDisk:iterationCopy provider:provider];
 
-  [v18 setShouldDecorateItems:1];
-  [v18 setSkipMaterializedTreeTraversal:v46];
+  [fileURL setShouldDecorateItems:1];
+  [fileURL setSkipMaterializedTreeTraversal:itemsCopy];
   group = dispatch_group_create();
   v64 = 0;
   v65 = &v64;
@@ -880,23 +880,23 @@ LABEL_21:
   v67 = __Block_byref_object_copy__12;
   v68 = __Block_byref_object_dispose__12;
   v69 = 0;
-  while (([v18 done] & 1) == 0)
+  while (([fileURL done] & 1) == 0)
   {
     v19 = objc_autoreleasePoolPush();
     v63 = 0;
-    v20 = [v18 nextWithError:&v63];
+    v20 = [fileURL nextWithError:&v63];
     v21 = v63;
-    v22 = [v13 cancellationProgress];
-    v23 = [v22 isCancelled];
+    cancellationProgress = [downloaderCopy cancellationProgress];
+    isCancelled = [cancellationProgress isCancelled];
 
-    if (v23)
+    if (isCancelled)
     {
       v24 = fp_current_or_default_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [v65[5] fp_prettyDescription];
+        fp_prettyDescription = [v65[5] fp_prettyDescription];
         *buf = 138412290;
-        v73 = v25;
+        v73 = fp_prettyDescription;
         _os_log_impl(&dword_1CEFC7000, v24, OS_LOG_TYPE_INFO, "[INFO] download-manager: recursive downloader had been canceled due to error %@", buf, 0xCu);
       }
 
@@ -905,10 +905,10 @@ LABEL_21:
 
     else if (v20 || !v21)
     {
-      v31 = [v18 done];
+      done = [fileURL done];
       if (v20)
       {
-        v32 = v31;
+        v32 = done;
       }
 
       else
@@ -924,7 +924,7 @@ LABEL_21:
 
       if ([v20 isDownloaded])
       {
-        if (!v14)
+        if (!completionCopy)
         {
           v26 = 1;
           goto LABEL_17;
@@ -932,12 +932,12 @@ LABEL_21:
 
         if ([v20 isProviderItem] && (objc_msgSend(v20, "asFPItem"), v33 = objc_claimAutoreleasedReturnValue(), (v24 = v33) != 0))
         {
-          v34 = [v33 fileURL];
+          fileURL2 = [v33 fileURL];
         }
 
         else
         {
-          v34 = [v20 asURL];
+          fileURL2 = [v20 asURL];
           v24 = 0;
         }
 
@@ -949,11 +949,11 @@ LABEL_21:
           _os_log_debug_impl(&dword_1CEFC7000, v39, OS_LOG_TYPE_DEBUG, "[DEBUG] download-manager: Already materialized item %@ so skipping", buf, 0xCu);
         }
 
-        v14[2](v14, v24, v34, 0);
+        completionCopy[2](completionCopy, v24, fileURL2, 0);
         v26 = 1;
       }
 
-      else if ([v13 isDryRun])
+      else if ([downloaderCopy isDryRun])
       {
         v35 = fp_current_or_default_log();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -977,16 +977,16 @@ LABEL_21:
         v53[2] = __141__FPDDownloadManager__recursivelyDownloadItem_forceDiskIteration_skipAlreadyDownloadedItems_downloader_request_perItemCompletion_completion___block_invoke;
         v53[3] = &unk_1E83C0B80;
         v60 = &v64;
-        v37 = v13;
+        v37 = downloaderCopy;
         v54 = v37;
-        v59 = v14;
+        v59 = completionCopy;
         v38 = v20;
         v55 = v38;
         v56 = group;
-        v57 = self;
-        v61 = v43;
-        v62 = v46;
-        v58 = v44;
+        selfCopy = self;
+        v61 = iterationCopy;
+        v62 = itemsCopy;
+        v58 = requestCopy;
         [(FPDDownloadManager *)self _downloadItemAtLocator:v38 downloader:v37 request:v58 completion:v53];
 
         v26 = 1;
@@ -999,8 +999,8 @@ LABEL_21:
       v27 = fp_current_or_default_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
-        v28 = [v21 fp_prettyDescription];
-        [FPDDownloadManager _recursivelyDownloadItem:v28 forceDiskIteration:v70 skipAlreadyDownloadedItems:&v71 downloader:v27 request:? perItemCompletion:? completion:?];
+        fp_prettyDescription2 = [v21 fp_prettyDescription];
+        [FPDDownloadManager _recursivelyDownloadItem:fp_prettyDescription2 forceDiskIteration:v70 skipAlreadyDownloadedItems:&v71 downloader:v27 request:? perItemCompletion:? completion:?];
       }
 
       v29 = v65;
@@ -1181,16 +1181,16 @@ void __141__FPDDownloadManager__recursivelyDownloadItem_forceDiskIteration_skipA
   (*(v3 + 16))(v3, v5, *(*(*(a1 + 48) + 8) + 40));
 }
 
-- (void)_downloadItem:(id)a3 downloader:(id)a4 request:(id)a5 withCompletion:(id)a6
+- (void)_downloadItem:(id)item downloader:(id)downloader request:(id)request withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  itemCopy = item;
+  downloaderCopy = downloader;
+  completionCopy = completion;
   queue = self->_queue;
-  v14 = a5;
+  requestCopy = request;
   dispatch_assert_queue_V2(queue);
-  v15 = [v11 domain];
-  LOBYTE(queue) = [v15 isUsingFPFS];
+  domain = [downloaderCopy domain];
+  LOBYTE(queue) = [domain isUsingFPFS];
 
   if (queue)
   {
@@ -1199,7 +1199,7 @@ void __141__FPDDownloadManager__recursivelyDownloadItem_forceDiskIteration_skipA
 
   else
   {
-    v16 = [objc_opt_class() acquireDownloadSlotForItem:v10];
+    v16 = [objc_opt_class() acquireDownloadSlotForItem:itemCopy];
   }
 
   v17 = fp_current_or_default_log();
@@ -1208,23 +1208,23 @@ void __141__FPDDownloadManager__recursivelyDownloadItem_forceDiskIteration_skipA
     [FPDDownloadManager _downloadItem:downloader:request:withCompletion:];
   }
 
-  v18 = [v11 domain];
-  v19 = [v10 itemID];
-  v20 = [v11 cancellationProgress];
+  domain2 = [downloaderCopy domain];
+  itemID = [itemCopy itemID];
+  cancellationProgress = [downloaderCopy cancellationProgress];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __70__FPDDownloadManager__downloadItem_downloader_request_withCompletion___block_invoke;
   v25[3] = &unk_1E83C0BA8;
-  v26 = v10;
-  v27 = v11;
-  v28 = self;
+  v26 = itemCopy;
+  v27 = downloaderCopy;
+  selfCopy = self;
   v29 = v16;
-  v30 = v12;
-  v21 = v12;
+  v30 = completionCopy;
+  v21 = completionCopy;
   v22 = v16;
-  v23 = v11;
-  v24 = v10;
-  [v18 downloadItemWithItemID:v19 request:v14 progress:v20 completionHandler:v25];
+  v23 = downloaderCopy;
+  v24 = itemCopy;
+  [domain2 downloadItemWithItemID:itemID request:requestCopy progress:cancellationProgress completionHandler:v25];
 }
 
 void __70__FPDDownloadManager__downloadItem_downloader_request_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1268,33 +1268,33 @@ void __70__FPDDownloadManager__downloadItem_downloader_request_withCompletion___
   (*(v13 + 16))(v13, v14, v15, v6);
 }
 
-- (void)_downloadItemAtLocator:(id)a3 downloader:(id)a4 request:(id)a5 completion:(id)a6
+- (void)_downloadItemAtLocator:(id)locator downloader:(id)downloader request:(id)request completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 isProviderItem])
+  locatorCopy = locator;
+  downloaderCopy = downloader;
+  requestCopy = request;
+  completionCopy = completion;
+  if ([locatorCopy isProviderItem])
   {
-    v14 = [v10 asFPItem];
-    [(FPDDownloadManager *)self _downloadItem:v14 downloader:v11 request:v12 withCompletion:v13];
+    asFPItem = [locatorCopy asFPItem];
+    [(FPDDownloadManager *)self _downloadItem:asFPItem downloader:downloaderCopy request:requestCopy withCompletion:completionCopy];
   }
 
   else
   {
-    v15 = [v11 domain];
-    v16 = [v15 defaultBackend];
-    v17 = [v10 asURL];
+    domain = [downloaderCopy domain];
+    defaultBackend = [domain defaultBackend];
+    asURL = [locatorCopy asURL];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __75__FPDDownloadManager__downloadItemAtLocator_downloader_request_completion___block_invoke;
     v18[3] = &unk_1E83C0BD0;
     v18[4] = self;
-    v22 = v13;
-    v19 = v10;
-    v20 = v11;
-    v21 = v12;
-    [v16 itemForURL:v17 options:0 request:v21 completionHandler:v18];
+    v22 = completionCopy;
+    v19 = locatorCopy;
+    v20 = downloaderCopy;
+    v21 = requestCopy;
+    [defaultBackend itemForURL:asURL options:0 request:v21 completionHandler:v18];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface QuickWebsiteSearchQuery
-- (QuickWebsiteSearchQuery)initWithUserEnteredQuery:(id)a3;
+- (QuickWebsiteSearchQuery)initWithUserEnteredQuery:(id)query;
 @end
 
 @implementation QuickWebsiteSearchQuery
 
-- (QuickWebsiteSearchQuery)initWithUserEnteredQuery:(id)a3
+- (QuickWebsiteSearchQuery)initWithUserEnteredQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   v21.receiver = self;
   v21.super_class = QuickWebsiteSearchQuery;
   v6 = [(QuickWebsiteSearchQuery *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_completionQuery, a3);
-    v8 = [v5 queryString];
-    v9 = [v8 safari_stringByTrimmingWhitespace];
+    objc_storeStrong(&v6->_completionQuery, query);
+    queryString = [queryCopy queryString];
+    safari_stringByTrimmingWhitespace = [queryString safari_stringByTrimmingWhitespace];
 
-    v10 = [v9 rangeOfString:@" "];
+    v10 = [safari_stringByTrimmingWhitespace rangeOfString:@" "];
     if (v11)
     {
       v12 = v10;
       v13 = v11;
-      v14 = [v9 substringToIndex:v10];
+      v14 = [safari_stringByTrimmingWhitespace substringToIndex:v10];
       websiteNamePrefix = v7->_websiteNamePrefix;
       v7->_websiteNamePrefix = v14;
 
-      if ([v9 length] <= (v12 + v13))
+      if ([safari_stringByTrimmingWhitespace length] <= (v12 + v13))
       {
 LABEL_7:
         v19 = v7;
@@ -34,14 +34,14 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v16 = [v9 substringFromIndex:?];
+      v16 = [safari_stringByTrimmingWhitespace substringFromIndex:?];
       searchTerms = v7->_searchTerms;
       v7->_searchTerms = v16;
     }
 
     else
     {
-      v18 = v9;
+      v18 = safari_stringByTrimmingWhitespace;
       searchTerms = v7->_websiteNamePrefix;
       v7->_websiteNamePrefix = v18;
     }

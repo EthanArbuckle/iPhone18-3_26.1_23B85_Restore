@@ -1,27 +1,27 @@
 @interface WFParameterStateProcessingContext
-- (WFParameterStateProcessingContext)initWithVariableSource:(id)a3 parameter:(id)a4 isInputParameter:(BOOL)a5 environment:(int64_t)a6 contentAttributionTracker:(id)a7 widgetSizeClass:(id)a8;
-- (void)addContentAttributionSet:(id)a3;
+- (WFParameterStateProcessingContext)initWithVariableSource:(id)source parameter:(id)parameter isInputParameter:(BOOL)inputParameter environment:(int64_t)environment contentAttributionTracker:(id)tracker widgetSizeClass:(id)class;
+- (void)addContentAttributionSet:(id)set;
 @end
 
 @implementation WFParameterStateProcessingContext
 
-- (void)addContentAttributionSet:(id)a3
+- (void)addContentAttributionSet:(id)set
 {
-  v4 = a3;
-  v6 = [(WFParameterStateProcessingContext *)self contentAttributionTracker];
-  v5 = [(WFParameterStateProcessingContext *)self parameter];
-  [v6 addAttributionSet:v4 forParameter:v5];
+  setCopy = set;
+  contentAttributionTracker = [(WFParameterStateProcessingContext *)self contentAttributionTracker];
+  parameter = [(WFParameterStateProcessingContext *)self parameter];
+  [contentAttributionTracker addAttributionSet:setCopy forParameter:parameter];
 }
 
-- (WFParameterStateProcessingContext)initWithVariableSource:(id)a3 parameter:(id)a4 isInputParameter:(BOOL)a5 environment:(int64_t)a6 contentAttributionTracker:(id)a7 widgetSizeClass:(id)a8
+- (WFParameterStateProcessingContext)initWithVariableSource:(id)source parameter:(id)parameter isInputParameter:(BOOL)inputParameter environment:(int64_t)environment contentAttributionTracker:(id)tracker widgetSizeClass:(id)class
 {
-  v29 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  if (v15)
+  sourceCopy = source;
+  parameterCopy = parameter;
+  trackerCopy = tracker;
+  classCopy = class;
+  if (parameterCopy)
   {
-    if (v16)
+    if (trackerCopy)
     {
       goto LABEL_3;
     }
@@ -29,17 +29,17 @@
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFParameterStateProcessingContext.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFParameterStateProcessingContext.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"parameter"}];
 
-    if (v16)
+    if (trackerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"WFParameterStateProcessingContext.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"contentAttributionTracker"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFParameterStateProcessingContext.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"contentAttributionTracker"}];
 
 LABEL_3:
   v30.receiver = self;
@@ -48,19 +48,19 @@ LABEL_3:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_variableSource, a3);
-    objc_storeStrong(&v19->_parameter, a4);
-    v19->_isInputParameter = a5;
-    v19->_environment = a6;
-    objc_storeStrong(&v19->_contentAttributionTracker, a7);
-    objc_storeStrong(&v19->_widgetSizeClass, a8);
-    if ([v15 allowsMultipleValues])
+    objc_storeStrong(&v18->_variableSource, source);
+    objc_storeStrong(&v19->_parameter, parameter);
+    v19->_isInputParameter = inputParameter;
+    v19->_environment = environment;
+    objc_storeStrong(&v19->_contentAttributionTracker, tracker);
+    objc_storeStrong(&v19->_widgetSizeClass, class);
+    if ([parameterCopy allowsMultipleValues])
     {
-      v20 = [v15 isRangedSizeArray];
+      isRangedSizeArray = [parameterCopy isRangedSizeArray];
       v21 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v17 && v20)
+      if (classCopy && isRangedSizeArray)
       {
-        v22 = [v15 arraySizeRangeForWidgetFamily:v17];
+        v22 = [parameterCopy arraySizeRangeForWidgetFamily:classCopy];
         v21 = v23 + v22 - 1;
       }
     }

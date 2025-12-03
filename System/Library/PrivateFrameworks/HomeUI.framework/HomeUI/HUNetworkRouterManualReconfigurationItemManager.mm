@@ -1,68 +1,68 @@
 @interface HUNetworkRouterManualReconfigurationItemManager
-- (BOOL)isItemNetworkConfigurationItem:(id)a3;
-- (HUNetworkRouterManualReconfigurationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUNetworkRouterManualReconfigurationItemManager)initWithHome:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)isItemNetworkConfigurationItem:(id)item;
+- (HUNetworkRouterManualReconfigurationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUNetworkRouterManualReconfigurationItemManager)initWithHome:(id)home delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
-- (id)networkConfigurationItemForProfile:(id)a3;
+- (id)networkConfigurationItemForProfile:(id)profile;
 @end
 
 @implementation HUNetworkRouterManualReconfigurationItemManager
 
-- (HUNetworkRouterManualReconfigurationItemManager)initWithHome:(id)a3 delegate:(id)a4
+- (HUNetworkRouterManualReconfigurationItemManager)initWithHome:(id)home delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  homeCopy = home;
+  delegateCopy = delegate;
+  if (!homeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationItemManager.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationItemManager.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
   v14.receiver = self;
   v14.super_class = HUNetworkRouterManualReconfigurationItemManager;
-  v10 = [(HFItemManager *)&v14 initWithDelegate:v9 sourceItem:0];
+  v10 = [(HFItemManager *)&v14 initWithDelegate:delegateCopy sourceItem:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_overrideHome, a3);
+    objc_storeStrong(&v10->_overrideHome, home);
   }
 
   return v11;
 }
 
-- (HUNetworkRouterManualReconfigurationItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUNetworkRouterManualReconfigurationItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationItemManager.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkRouterManualReconfigurationItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkRouterManualReconfigurationItemManager.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkRouterManualReconfigurationItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (BOOL)isItemNetworkConfigurationItem:(id)a3
+- (BOOL)isItemNetworkConfigurationItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  networkConfigurationItemProvider = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
+  items = [networkConfigurationItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
 
-- (id)networkConfigurationItemForProfile:(id)a3
+- (id)networkConfigurationItemForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
-  v6 = [v5 items];
+  profileCopy = profile;
+  networkConfigurationItemProvider = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
+  items = [networkConfigurationItemProvider items];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__HUNetworkRouterManualReconfigurationItemManager_networkConfigurationItemForProfile___block_invoke;
   v10[3] = &unk_277DB85D8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = profileCopy;
+  v7 = profileCopy;
+  v8 = [items na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -92,39 +92,39 @@ uint64_t __86__HUNetworkRouterManualReconfigurationItemManager_networkConfigurat
   return v10;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D148A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithHome:v5];
+  homeCopy = home;
+  v6 = [[v4 alloc] initWithHome:homeCopy];
 
   [(HUNetworkRouterManualReconfigurationItemManager *)self setNetworkConfigurationItemProvider:v6];
-  v7 = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
-  v8 = [v7 filterOptions];
-  [v8 setByFilter:&__block_literal_global_300];
+  networkConfigurationItemProvider = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
+  filterOptions = [networkConfigurationItemProvider filterOptions];
+  [filterOptions setByFilter:&__block_literal_global_300];
 
-  v9 = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
-  v12[0] = v9;
+  networkConfigurationItemProvider2 = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
+  v12[0] = networkConfigurationItemProvider2;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
   return v10;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUNetworkRouterManualReconfigurationSectionIdentifier"];
-  v7 = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
-  v10 = [MEMORY[0x277D14898] defaultItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
-  [v6 setItems:v11 filteringToDisplayedItems:v4];
+  networkConfigurationItemProvider = [(HUNetworkRouterManualReconfigurationItemManager *)self networkConfigurationItemProvider];
+  items = [networkConfigurationItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14898] defaultItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
+  [v6 setItems:v11 filteringToDisplayedItems:itemsCopy];
 
   [v5 addObject:v6];
-  v12 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v12 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v12;
 }
@@ -132,8 +132,8 @@ uint64_t __86__HUNetworkRouterManualReconfigurationItemManager_networkConfigurat
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUNetworkRouterManualReconfigurationItemManager *)self overrideHome];
-  v4 = [v2 futureWithResult:v3];
+  overrideHome = [(HUNetworkRouterManualReconfigurationItemManager *)self overrideHome];
+  v4 = [v2 futureWithResult:overrideHome];
 
   return v4;
 }

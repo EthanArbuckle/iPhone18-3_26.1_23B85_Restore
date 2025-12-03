@@ -1,18 +1,18 @@
 @interface AXSSPronunciationSubstitution
-- (BOOL)isEqualToSubstitution:(id)a3;
+- (BOOL)isEqualToSubstitution:(id)substitution;
 - (_NSRange)replacementRange;
 @end
 
 @implementation AXSSPronunciationSubstitution
 
-- (BOOL)isEqualToSubstitution:(id)a3
+- (BOOL)isEqualToSubstitution:(id)substitution
 {
-  v4 = a3;
-  v5 = [(AXSSPronunciationSubstitution *)self originalString];
-  v6 = [v4 originalString];
+  substitutionCopy = substitution;
+  originalString = [(AXSSPronunciationSubstitution *)self originalString];
+  originalString2 = [substitutionCopy originalString];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(substitutionCopy) = [originalString isEqualToString:originalString2];
+  return substitutionCopy;
 }
 
 - (_NSRange)replacementRange

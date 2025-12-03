@@ -1,25 +1,25 @@
 @interface PRSHostContext
-+ (void)hostContextWithCompletion:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (void)hostContextWithCompletion:(id)completion;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PRSHostContext)init;
-- (PRSHostContext)initWithAuditToken:(id)a3 primaryDisplay:(id)a4 connectedDisplays:(id)a5 hostApplicationIdentifier:(id)a6 userInterfaceStyle:(int64_t)a7;
-- (PRSHostContext)initWithBSXPCCoder:(id)a3;
-- (PRSHostContext)initWithCoder:(id)a3;
+- (PRSHostContext)initWithAuditToken:(id)token primaryDisplay:(id)display connectedDisplays:(id)displays hostApplicationIdentifier:(id)identifier userInterfaceStyle:(int64_t)style;
+- (PRSHostContext)initWithBSXPCCoder:(id)coder;
+- (PRSHostContext)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSHostContext
 
-+ (void)hostContextWithCompletion:(id)a3
++ (void)hostContextWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  completionCopy = completion;
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    v5 = v3;
+    v5 = completionCopy;
     BSDispatchMain();
   }
 }
@@ -34,20 +34,20 @@ void __44__PRSHostContext_hostContextWithCompletion___block_invoke(uint64_t a1)
 {
   v86 = *MEMORY[0x1E69E9840];
   BSDispatchQueueAssertMain();
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = v3;
-  if (v3)
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v54 = v3;
+    v54 = bundleIdentifier;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    v54 = v6;
+    v54 = processName;
   }
 
   if (!NSClassFromString(&cfstr_Uiapplication.isa))
@@ -63,7 +63,7 @@ void __44__PRSHostContext_hostContextWithCompletion___block_invoke(uint64_t a1)
     goto LABEL_76;
   }
 
-  v56 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v79 = 0;
   v80 = &v79;
   v81 = 0x2050000000;
@@ -125,10 +125,10 @@ void __44__PRSHostContext_hostContextWithCompletion___block_invoke(uint64_t a1)
     goto LABEL_19;
   }
 
-  v15 = [v13 connectedScenes];
+  connectedScenes = [v13 connectedScenes];
   v51 = v14;
 
-  if (!v15)
+  if (!connectedScenes)
   {
 LABEL_19:
     v55 = 0;
@@ -213,11 +213,11 @@ LABEL_20:
 
       if (v60 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v33 = [v20 displayConfiguration];
-        v34 = [v33 hardwareIdentifier];
-        v35 = [v33 isMainDisplay];
+        displayConfiguration = [v20 displayConfiguration];
+        hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+        isMainDisplay = [displayConfiguration isMainDisplay];
 
-        if (v35)
+        if (isMainDisplay)
         {
           v63 = 1;
           v64 = @"main";
@@ -227,7 +227,7 @@ LABEL_20:
 
       else
       {
-        v34 = 0;
+        hardwareIdentifier = 0;
       }
 
       v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"display-%lu", objc_msgSend(obj, "indexOfObject:", v20)];
@@ -241,7 +241,7 @@ LABEL_46:
         v66 = 0u;
         v67 = 0u;
         v36 = v55;
-        v37 = 0;
+        interfaceOrientation = 0;
         v38 = [v36 countByEnumeratingWithState:&v66 objects:v84 count:16];
         if (v38)
         {
@@ -270,7 +270,7 @@ LABEL_46:
 
                 if ([v42 isEqual:v20])
                 {
-                  v37 = [v41 interfaceOrientation];
+                  interfaceOrientation = [v41 interfaceOrientation];
                 }
               }
             }
@@ -284,13 +284,13 @@ LABEL_46:
 
       else
       {
-        v37 = 0;
+        interfaceOrientation = 0;
       }
 
       if (BSInterfaceOrientationIsValid())
       {
-        v43 = [[PRSDisplayInfo alloc] initWithHardwareIdentifier:v64 interfaceOrientation:v37 bounds:v63 pointScale:v22 isMainDisplay:v24, v26, v28, v29];
-        [v56 addObject:v43];
+        v43 = [[PRSDisplayInfo alloc] initWithHardwareIdentifier:v64 interfaceOrientation:interfaceOrientation bounds:v63 pointScale:v22 isMainDisplay:v24, v26, v28, v29];
+        [array addObject:v43];
         if (v63)
         {
           v44 = v43;
@@ -307,7 +307,7 @@ LABEL_46:
 LABEL_72:
 
 LABEL_73:
-  v45 = [v56 copy];
+  v45 = [array copy];
 
   if (!v45)
   {
@@ -328,22 +328,22 @@ LABEL_77:
   return v48;
 }
 
-- (PRSHostContext)initWithAuditToken:(id)a3 primaryDisplay:(id)a4 connectedDisplays:(id)a5 hostApplicationIdentifier:(id)a6 userInterfaceStyle:(int64_t)a7
+- (PRSHostContext)initWithAuditToken:(id)token primaryDisplay:(id)display connectedDisplays:(id)displays hostApplicationIdentifier:(id)identifier userInterfaceStyle:(int64_t)style
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  tokenCopy = token;
+  displayCopy = display;
+  displaysCopy = displays;
+  identifierCopy = identifier;
+  if (!tokenCopy)
   {
-    v12 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+    tokenCopy = [MEMORY[0x1E698E620] tokenForCurrentProcess];
   }
 
-  if (![v15 length])
+  if (![identifierCopy length])
   {
-    v16 = [v12 bundleID];
+    bundleID = [tokenCopy bundleID];
 
-    v15 = v16;
+    identifierCopy = bundleID;
   }
 
   v25.receiver = self;
@@ -352,8 +352,8 @@ LABEL_77:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_primaryDisplayInfo, a4);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_primaryDisplayInfo, display);
+    v19 = [displaysCopy copy];
     v20 = v19;
     if (v19)
     {
@@ -367,12 +367,12 @@ LABEL_77:
 
     objc_storeStrong(&v18->_connectedDisplays, v21);
 
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     hostApplicationIdentifier = v18->_hostApplicationIdentifier;
     v18->_hostApplicationIdentifier = v22;
 
-    v18->_userInterfaceStyle = a7;
-    objc_storeStrong(&v18->_auditToken, v12);
+    v18->_userInterfaceStyle = style;
+    objc_storeStrong(&v18->_auditToken, tokenCopy);
   }
 
   return v18;
@@ -388,10 +388,10 @@ LABEL_77:
   return (0x94D049BB133111EBLL * (v7 ^ (v7 >> 27))) ^ ((0x94D049BB133111EBLL * (v7 ^ (v7 >> 27))) >> 31);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -399,7 +399,7 @@ LABEL_77:
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -447,63 +447,63 @@ LABEL_77:
   }
 
   v6 = [v3 appendObject:self->_hostApplicationIdentifier withName:@"_hostApplicationIdentifier"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   primaryDisplayInfo = self->_primaryDisplayInfo;
-  v5 = a3;
-  [v5 encodeObject:primaryDisplayInfo forKey:@"_primaryDisplayInfo"];
-  [v5 encodeObject:self->_connectedDisplays forKey:@"_connectedDisplays"];
-  [v5 encodeObject:self->_hostApplicationIdentifier forKey:@"_hostApplicationIdentifier"];
-  [v5 encodeInteger:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:primaryDisplayInfo forKey:@"_primaryDisplayInfo"];
+  [coderCopy encodeObject:self->_connectedDisplays forKey:@"_connectedDisplays"];
+  [coderCopy encodeObject:self->_hostApplicationIdentifier forKey:@"_hostApplicationIdentifier"];
+  [coderCopy encodeInteger:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
 }
 
-- (PRSHostContext)initWithCoder:(id)a3
+- (PRSHostContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_auditToken"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_auditToken"];
 
-  v7 = [v4 decodeIntegerForKey:@"_userInterfaceStyle"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_primaryDisplayInfo"];
+  v7 = [coderCopy decodeIntegerForKey:@"_userInterfaceStyle"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_primaryDisplayInfo"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_self();
   v12 = [v9 setWithObjects:{v10, v11, 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_connectedDisplays"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_connectedDisplays"];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hostApplicationIdentifier"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hostApplicationIdentifier"];
 
   v15 = [(PRSHostContext *)self initWithAuditToken:v6 primaryDisplay:v8 connectedDisplays:v13 hostApplicationIdentifier:v14 userInterfaceStyle:v7];
   return v15;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   primaryDisplayInfo = self->_primaryDisplayInfo;
-  v5 = a3;
-  [v5 encodeObject:primaryDisplayInfo forKey:@"_primaryDisplayInfo"];
-  [v5 encodeObject:self->_connectedDisplays forKey:@"_connectedDisplays"];
-  [v5 encodeObject:self->_hostApplicationIdentifier forKey:@"_hostApplicationIdentifier"];
-  [v5 encodeInt64:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
-  [v5 encodeObject:self->_auditToken forKey:@"_auditToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:primaryDisplayInfo forKey:@"_primaryDisplayInfo"];
+  [coderCopy encodeObject:self->_connectedDisplays forKey:@"_connectedDisplays"];
+  [coderCopy encodeObject:self->_hostApplicationIdentifier forKey:@"_hostApplicationIdentifier"];
+  [coderCopy encodeInt64:self->_userInterfaceStyle forKey:@"_userInterfaceStyle"];
+  [coderCopy encodeObject:self->_auditToken forKey:@"_auditToken"];
 }
 
-- (PRSHostContext)initWithBSXPCCoder:(id)a3
+- (PRSHostContext)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_auditToken"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_auditToken"];
 
-  v7 = [v4 decodeInt64ForKey:@"_userInterfaceStyle"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_primaryDisplayInfo"];
+  v7 = [coderCopy decodeInt64ForKey:@"_userInterfaceStyle"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_primaryDisplayInfo"];
   v9 = objc_opt_class();
-  v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"_connectedDisplays"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hostApplicationIdentifier"];
+  v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"_connectedDisplays"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hostApplicationIdentifier"];
 
   v12 = [(PRSHostContext *)self initWithAuditToken:v6 primaryDisplay:v8 connectedDisplays:v10 hostApplicationIdentifier:v11 userInterfaceStyle:v7];
   return v12;

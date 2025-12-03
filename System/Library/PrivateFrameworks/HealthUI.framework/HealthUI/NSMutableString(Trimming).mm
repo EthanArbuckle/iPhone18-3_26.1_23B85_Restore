@@ -29,7 +29,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 _hk_trimString:*(*(&v9 + 1) + 8 * v8++)];
+        [self _hk_trimString:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -43,32 +43,32 @@
 - (void)_hk_trimString:()Trimming
 {
   v8 = a3;
-  v4 = [a1 rangeOfString:?];
+  v4 = [self rangeOfString:?];
   if (v5)
   {
-    [a1 deleteCharactersInRange:{v4, v5}];
+    [self deleteCharactersInRange:{v4, v5}];
   }
 
-  v6 = [a1 rangeOfString:v8 options:4];
+  v6 = [self rangeOfString:v8 options:4];
   if (v7)
   {
-    [a1 deleteCharactersInRange:{v6, v7}];
+    [self deleteCharactersInRange:{v6, v7}];
   }
 }
 
 - (void)_hk_trimCharactersInSet:()Trimming
 {
   v8 = a3;
-  v4 = [a1 rangeOfCharacterFromSet:?];
+  v4 = [self rangeOfCharacterFromSet:?];
   if (v5)
   {
-    [a1 deleteCharactersInRange:{v4, v5}];
+    [self deleteCharactersInRange:{v4, v5}];
   }
 
-  v6 = [a1 rangeOfCharacterFromSet:v8 options:4];
+  v6 = [self rangeOfCharacterFromSet:v8 options:4];
   if (v7)
   {
-    [a1 deleteCharactersInRange:{v6, v7}];
+    [self deleteCharactersInRange:{v6, v7}];
   }
 }
 

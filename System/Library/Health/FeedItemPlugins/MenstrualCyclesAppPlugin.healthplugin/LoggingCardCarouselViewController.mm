@@ -1,16 +1,16 @@
 @interface LoggingCardCarouselViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)doneTapped:(id)a3;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)doneTapped:(id)tapped;
 - (void)loadView;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -21,29 +21,29 @@
 {
   type metadata accessor for LoggingCardScrollableContainerView();
   v3 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(LoggingCardCarouselViewController *)v5 setView:v4];
+  [(LoggingCardCarouselViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E219080();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E21ACFC();
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_29E223AB0(v7);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_29E223AB0(viewCopy);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -60,7 +60,7 @@
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v4 = sub_29E2BCFB4();
   v5 = *(v4 - 8);
@@ -71,53 +71,53 @@
   return 0;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_29E222730();
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_29E223BC8();
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_29E2BCFB4();
   v7 = *(v6 - 8);
   MEMORY[0x2A1C7C4A8](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_29E21E670(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_29E21E670(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController_collectionView);
   if (v3)
   {
-    v6 = self;
+    selfCopy = self;
     [v3 contentOffset];
-    v4 = v6 + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController_contentOffsetXBeforeDragging;
+    v4 = selfCopy + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin33LoggingCardCarouselViewController_contentOffsetXBeforeDragging;
     *v4 = v5;
     v4[8] = 0;
   }
@@ -128,33 +128,33 @@
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = self;
-  sub_29E21E978(v9, &a5->x, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_29E21E978(draggingCopy, &offset->x, x, y);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  sub_29E223C7C(a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  sub_29E223C7C(decelerate);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
+  deceleratingCopy = decelerating;
+  selfCopy = self;
   sub_29E223E0C();
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_29E223F94();
 }
 

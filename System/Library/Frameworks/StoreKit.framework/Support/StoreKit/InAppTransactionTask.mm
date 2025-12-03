@@ -1,35 +1,35 @@
 @interface InAppTransactionTask
-- (BOOL)shouldInstallParentAppWithBuyParams:(id)a3;
-- (InAppTransactionTask)initWithBuyParams:(id)a3 client:(id)a4 apiVersion:(int64_t)a5;
-- (InAppTransactionTask)initWithProductIdentifier:(id)a3 quantity:(unint64_t)a4 client:(id)a5 apiVersion:(int64_t)a6;
+- (BOOL)shouldInstallParentAppWithBuyParams:(id)params;
+- (InAppTransactionTask)initWithBuyParams:(id)params client:(id)client apiVersion:(int64_t)version;
+- (InAppTransactionTask)initWithProductIdentifier:(id)identifier quantity:(unint64_t)quantity client:(id)client apiVersion:(int64_t)version;
 - (id)_generateMetricsOverlay;
-- (id)_generateMetricsOverlayWithMetricsStore:(id)a3 identifierKeys:(id)a4 includeAccountMatchStatus:(BOOL)a5;
-- (id)_processPurchaseResult:(id)a3 authorizationResult:(id)a4;
+- (id)_generateMetricsOverlayWithMetricsStore:(id)store identifierKeys:(id)keys includeAccountMatchStatus:(BOOL)status;
+- (id)_processPurchaseResult:(id)result authorizationResult:(id)authorizationResult;
 - (void)_cacheLegacyTransaction;
-- (void)_latestTransactionWithCompletion:(id)a3;
-- (void)_performWithAccount:(id)a3 originatingStorefront:(id)a4 buyParams:(id)a5;
-- (void)buyParams:(BOOL)a3 completionHandler:(id)a4;
+- (void)_latestTransactionWithCompletion:(id)completion;
+- (void)_performWithAccount:(id)account originatingStorefront:(id)storefront buyParams:(id)params;
+- (void)buyParams:(BOOL)params completionHandler:(id)handler;
 - (void)clearTransactionCache;
 - (void)main;
-- (void)purchaseIntakeWithTransactionID:(id)a3 metrics:(id)a4;
+- (void)purchaseIntakeWithTransactionID:(id)d metrics:(id)metrics;
 @end
 
 @implementation InAppTransactionTask
 
-- (InAppTransactionTask)initWithBuyParams:(id)a3 client:(id)a4 apiVersion:(int64_t)a5
+- (InAppTransactionTask)initWithBuyParams:(id)params client:(id)client apiVersion:(int64_t)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 parameterForKey:@"offerName"];
-  v11 = [v8 parameterForKey:@"quantity"];
-  v12 = [v11 integerValue];
+  paramsCopy = params;
+  clientCopy = client;
+  v10 = [paramsCopy parameterForKey:@"offerName"];
+  v11 = [paramsCopy parameterForKey:@"quantity"];
+  integerValue = [v11 integerValue];
 
-  v13 = [(InAppTransactionTask *)self initWithProductIdentifier:v10 quantity:v12 client:v9 apiVersion:a5];
+  v13 = [(InAppTransactionTask *)self initWithProductIdentifier:v10 quantity:integerValue client:clientCopy apiVersion:version];
   if (v13)
   {
-    v14 = [v8 dictionary];
+    dictionary = [paramsCopy dictionary];
     v15 = *(&v13->_quantity + 2);
-    *(&v13->_quantity + 2) = v14;
+    *(&v13->_quantity + 2) = dictionary;
 
     *(&v13->super._finished + 1) = 0;
   }
@@ -37,19 +37,19 @@
   return v13;
 }
 
-- (InAppTransactionTask)initWithProductIdentifier:(id)a3 quantity:(unint64_t)a4 client:(id)a5 apiVersion:(int64_t)a6
+- (InAppTransactionTask)initWithProductIdentifier:(id)identifier quantity:(unint64_t)quantity client:(id)client apiVersion:(int64_t)version
 {
-  v11 = a3;
-  v12 = a5;
+  identifierCopy = identifier;
+  clientCopy = client;
   v20.receiver = self;
   v20.super_class = InAppTransactionTask;
   v13 = [(Task *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    *(v13 + 66) = a6;
-    objc_storeStrong((v13 + 74), a5);
-    v15 = [NSUUID lib_shortLogKeyWithAPIVersion:a6];
+    *(v13 + 66) = version;
+    objc_storeStrong((v13 + 74), client);
+    v15 = [NSUUID lib_shortLogKeyWithAPIVersion:version];
     v16 = *(v14 + 82);
     *(v14 + 82) = v15;
 
@@ -58,8 +58,8 @@
     *(v14 + 90) = v17;
 
     v14[62] = 1;
-    objc_storeStrong((v14 + 98), a3);
-    *(v14 + 106) = a4;
+    objc_storeStrong((v14 + 98), identifier);
+    *(v14 + 106) = quantity;
     v14[65] = 0;
     v14[58] = 0;
     v14[42] = 1;
@@ -79,41 +79,41 @@
   if (os_log_type_enabled(qword_1003D3CA0, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(InAppTransactionTask *)self logKey];
+    logKey = [(InAppTransactionTask *)self logKey];
     *buf = 138543618;
-    v10 = v5;
+    v10 = logKey;
     v11 = 2114;
     v12 = objc_opt_class();
     v6 = v12;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@]: Started task", buf, 0x16u);
   }
 
-  v7 = [(InAppTransactionTask *)self client];
+  client = [(InAppTransactionTask *)self client];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001A15C;
   v8[3] = &unk_100380498;
   v8[4] = self;
-  [_TtC9storekitd22objc_StoreFrontManager storefrontIdentifierForClient:v7 completionHandler:v8];
+  [_TtC9storekitd22objc_StoreFrontManager storefrontIdentifierForClient:client completionHandler:v8];
 }
 
-- (void)_performWithAccount:(id)a3 originatingStorefront:(id)a4 buyParams:(id)a5
+- (void)_performWithAccount:(id)account originatingStorefront:(id)storefront buyParams:(id)params
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  storefrontCopy = storefront;
+  paramsCopy = params;
   v11 = dispatch_get_global_queue(25, 0);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001A5EC;
   v15[3] = &unk_100380510;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = accountCopy;
+  v17 = storefrontCopy;
+  v18 = paramsCopy;
+  v12 = paramsCopy;
+  v13 = storefrontCopy;
+  v14 = accountCopy;
   dispatch_async(v11, v15);
 }
 
@@ -123,21 +123,21 @@
   [v2 invalidateLegacyTransactionCache];
 }
 
-- (id)_processPurchaseResult:(id)a3 authorizationResult:(id)a4
+- (id)_processPurchaseResult:(id)result authorizationResult:(id)authorizationResult
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 responseDictionary];
+  resultCopy = result;
+  authorizationResultCopy = authorizationResult;
+  responseDictionary = [resultCopy responseDictionary];
   v9 = *(&self->_transaction + 2);
-  *(&self->_transaction + 2) = v8;
+  *(&self->_transaction + 2) = responseDictionary;
 
-  v10 = [v6 correlationID];
+  correlationID = [resultCopy correlationID];
   v11 = *(&self->_response + 2);
-  *(&self->_response + 2) = v10;
+  *(&self->_response + 2) = correlationID;
 
-  v12 = [v6 error];
+  error = [resultCopy error];
 
-  if (v12)
+  if (error)
   {
     if (qword_1003D3CD0 != -1)
     {
@@ -149,7 +149,7 @@
       sub_1002C8210();
     }
 
-    v13 = [v6 error];
+    error2 = [resultCopy error];
     goto LABEL_7;
   }
 
@@ -164,9 +164,9 @@
     if (os_log_type_enabled(qword_1003D3CA0, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(InAppTransactionTask *)self logKey];
+      logKey = [(InAppTransactionTask *)self logKey];
       *buf = 138543362;
-      v68 = v17;
+      selfCopy2 = logKey;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Payment had a trigger queue check.", buf, 0xCu);
     }
 
@@ -174,11 +174,11 @@
     [v18 checkPendingQueue];
   }
 
-  if (v7)
+  if (authorizationResultCopy)
   {
-    v19 = [v7 error];
+    error3 = [authorizationResultCopy error];
 
-    if (v19)
+    if (error3)
     {
       if (qword_1003D3CD0 != -1)
       {
@@ -190,18 +190,18 @@
         sub_1002C82B8();
       }
 
-      v20 = [v7 error];
-      v21 = [v20 domain];
-      if ([v21 isEqualToString:AKAppleIDAuthenticationErrorDomain])
+      error4 = [authorizationResultCopy error];
+      domain = [error4 domain];
+      if ([domain isEqualToString:AKAppleIDAuthenticationErrorDomain])
       {
-        v22 = [v7 error];
-        v23 = [v22 code];
+        error5 = [authorizationResultCopy error];
+        code = [error5 code];
 
-        if (v23 == -7003)
+        if (code == -7003)
         {
-          v13 = ASDErrorWithDescription();
+          error2 = ASDErrorWithDescription();
 LABEL_7:
-          v14 = v13;
+          v14 = error2;
           goto LABEL_75;
         }
       }
@@ -212,12 +212,12 @@ LABEL_7:
     }
   }
 
-  v24 = [v6 responseDictionary];
-  v25 = [(InAppTransactionTask *)self client];
-  v26 = [(InAppTransactionTask *)self receiptInstallURL];
-  v27 = [(InAppTransactionTask *)self apiVersion];
-  v28 = [(InAppTransactionTask *)self logKey];
-  v29 = sub_100027E30(v24, v25, v26, v27, v28, 1u, self->_excludeReceiptFromRequest);
+  responseDictionary2 = [resultCopy responseDictionary];
+  client = [(InAppTransactionTask *)self client];
+  receiptInstallURL = [(InAppTransactionTask *)self receiptInstallURL];
+  apiVersion = [(InAppTransactionTask *)self apiVersion];
+  logKey2 = [(InAppTransactionTask *)self logKey];
+  v29 = sub_100027E30(responseDictionary2, client, receiptInstallURL, apiVersion, logKey2, 1u, self->_excludeReceiptFromRequest);
 
   if (![v29 count])
   {
@@ -247,16 +247,16 @@ LABEL_7:
     if (os_log_type_enabled(qword_1003D3CA0, OS_LOG_TYPE_DEFAULT))
     {
       v31 = v30;
-      v32 = [(InAppTransactionTask *)self logKey];
+      logKey3 = [(InAppTransactionTask *)self logKey];
       *buf = 138543618;
-      v68 = v32;
+      selfCopy2 = logKey3;
       v69 = 2112;
       v70 = v29;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[%{public}@] Payment received more than one transaction: %@ Using only the first.", buf, 0x16u);
     }
   }
 
-  if (v7)
+  if (authorizationResultCopy)
   {
     if (qword_1003D3CD0 != -1)
     {
@@ -267,23 +267,23 @@ LABEL_7:
     if (os_log_type_enabled(qword_1003D3CA0, OS_LOG_TYPE_DEFAULT))
     {
       v34 = v33;
-      v35 = [(InAppTransactionTask *)self logKey];
+      logKey4 = [(InAppTransactionTask *)self logKey];
       *buf = 138543618;
-      v68 = self;
+      selfCopy2 = self;
       v69 = 2114;
-      v70 = v35;
+      v70 = logKey4;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@] Processing auth result.", buf, 0x16u);
     }
 
     v36 = [NSMutableDictionary alloc];
-    v37 = [v29 firstObject];
-    v38 = [v36 initWithDictionary:v37];
+    firstObject = [v29 firstObject];
+    v38 = [v36 initWithDictionary:firstObject];
 
-    v39 = [v7 error];
+    error6 = [authorizationResultCopy error];
 
-    if (v39)
+    if (error6)
     {
-      v40 = [v7 error];
+      error7 = [authorizationResultCopy error];
       v41 = ASDErrorWithSafeUserInfo();
       [v38 setObject:v41 forKeyedSubscript:off_1003CAF10];
 
@@ -295,19 +295,19 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v46 = [v7 authorizationCredential];
+    authorizationCredential = [authorizationResultCopy authorizationCredential];
 
-    if (v46)
+    if (authorizationCredential)
     {
-      v47 = [v7 authorizationCredential];
+      authorizationCredential2 = [authorizationResultCopy authorizationCredential];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v40 = [v7 authorizationCredential];
+        error7 = [authorizationResultCopy authorizationCredential];
         v66 = 0;
-        v49 = [NSKeyedArchiver archivedDataWithRootObject:v40 requiringSecureCoding:1 error:&v66];
+        v49 = [NSKeyedArchiver archivedDataWithRootObject:error7 requiringSecureCoding:1 error:&v66];
         v50 = v66;
         v51 = sub_10001A118();
         v52 = v51;
@@ -326,11 +326,11 @@ LABEL_63:
         {
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v65 = [(InAppTransactionTask *)self logKey];
+            logKey5 = [(InAppTransactionTask *)self logKey];
             *buf = 138543618;
-            v68 = self;
+            selfCopy2 = self;
             v69 = 2114;
-            v70 = v65;
+            v70 = logKey5;
             _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@] Received credential", buf, 0x16u);
           }
 
@@ -357,8 +357,8 @@ LABEL_63:
     }
 
 LABEL_62:
-    v40 = ASDErrorWithTitleAndMessage();
-    [v38 setObject:v40 forKeyedSubscript:off_1003CAF10];
+    error7 = ASDErrorWithTitleAndMessage();
+    [v38 setObject:error7 forKeyedSubscript:off_1003CAF10];
     goto LABEL_63;
   }
 
@@ -376,25 +376,25 @@ LABEL_62:
     }
 
     v44 = [NSMutableDictionary alloc];
-    v45 = [v29 firstObject];
-    v38 = [v44 initWithDictionary:v45];
+    firstObject2 = [v29 firstObject];
+    v38 = [v44 initWithDictionary:firstObject2];
 
     goto LABEL_62;
   }
 
-  v53 = [v29 firstObject];
+  firstObject3 = [v29 firstObject];
   v38 = *(&self->_receiptInstallURL + 2);
-  *(&self->_receiptInstallURL + 2) = v53;
+  *(&self->_receiptInstallURL + 2) = firstObject3;
 LABEL_64:
 
-  v57 = [(InAppTransactionTask *)self transaction];
+  transaction = [(InAppTransactionTask *)self transaction];
 
-  if (v57)
+  if (transaction)
   {
-    v58 = [(InAppTransactionTask *)self transaction];
-    v59 = [v58 tcr_stringForKey:@"tid"];
+    transaction2 = [(InAppTransactionTask *)self transaction];
+    v59 = [transaction2 tcr_stringForKey:@"tid"];
 
-    v60 = [v24 objectForKeyedSubscript:@"metrics"];
+    v60 = [responseDictionary2 objectForKeyedSubscript:@"metrics"];
     v61 = v60;
     if (v59 && v60)
     {
@@ -430,8 +430,8 @@ LABEL_75:
 {
   v3 = [LegacyTransactionDatabaseStore alloc];
   v4 = +[Environment sharedInstance];
-  v5 = [v4 userDatabase];
-  v6 = [(SQLiteDatabaseStore *)v3 initWithDatabase:v5];
+  userDatabase = [v4 userDatabase];
+  v6 = [(SQLiteDatabaseStore *)v3 initWithDatabase:userDatabase];
 
   v12 = 0;
   v13 = &v12;
@@ -447,9 +447,9 @@ LABEL_75:
   v11[5] = &v12;
   [(SQLiteDatabaseStore *)v6 readUsingSession:v11];
   v7 = v13[5];
-  v8 = [(InAppTransactionTask *)self client];
-  v9 = [v8 currentAccountToken];
-  LODWORD(v7) = [v7 isEqualToString:v9];
+  client = [(InAppTransactionTask *)self client];
+  currentAccountToken = [client currentAccountToken];
+  LODWORD(v7) = [v7 isEqualToString:currentAccountToken];
 
   if (v7)
   {
@@ -464,11 +464,11 @@ LABEL_75:
   _Block_object_dispose(&v12, 8);
 }
 
-- (void)_latestTransactionWithCompletion:(id)a3
+- (void)_latestTransactionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(InAppTransactionTask *)self client];
-  v6 = [ReceiptManager managerForClient:v5];
+  completionCopy = completion;
+  client = [(InAppTransactionTask *)self client];
+  v6 = [ReceiptManager managerForClient:client];
 
   v16[0] = 0;
   v16[1] = v16;
@@ -476,7 +476,7 @@ LABEL_75:
   v16[3] = sub_10001C848;
   v16[4] = sub_10001C858;
   v17 = 0;
-  v7 = [(InAppTransactionTask *)self productIdentifier];
+  productIdentifier = [(InAppTransactionTask *)self productIdentifier];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001CBBC;
@@ -487,12 +487,12 @@ LABEL_75:
   v10[2] = sub_10001CBF4;
   v10[3] = &unk_100380600;
   v14 = v16;
-  v8 = v4;
+  v8 = completionCopy;
   v13 = v8;
   v9 = v6;
   v11 = v9;
-  v12 = self;
-  [v9 enumerateReceiptsForProductID:v7 skipTransactionSync:0 usingBlock:v15 completionHandler:v10];
+  selfCopy = self;
+  [v9 enumerateReceiptsForProductID:productIdentifier skipTransactionSync:0 usingBlock:v15 completionHandler:v10];
 
   _Block_object_dispose(v16, 8);
 }
@@ -500,8 +500,8 @@ LABEL_75:
 - (id)_generateMetricsOverlay
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(InAppTransactionTask *)self client];
-  v5 = [v4 bag];
+  client = [(InAppTransactionTask *)self client];
+  v5 = [client bag];
   v6 = +[_TtC9storekitd6BagKey purchaseMetricsSuppressionList];
   v7 = [v5 arrayForKey:v6];
   v8 = [v7 valueWithError:0];
@@ -528,9 +528,9 @@ LABEL_75:
           }
 
           v14 = *(*(&v42 + 1) + 8 * i);
-          v15 = [(InAppTransactionTask *)self client];
-          v16 = [v15 requestBundleID];
-          v17 = [v16 caseInsensitiveCompare:v14];
+          client2 = [(InAppTransactionTask *)self client];
+          requestBundleID = [client2 requestBundleID];
+          v17 = [requestBundleID caseInsensitiveCompare:v14];
 
           if (!v17)
           {
@@ -549,11 +549,11 @@ LABEL_75:
   if (v3)
   {
     v40 = v8;
-    v18 = [(InAppTransactionTask *)self client];
-    v19 = [v18 account];
-    v20 = [(InAppTransactionTask *)self client];
-    v21 = [v20 bag];
-    v22 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v19 bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT" bag:v21];
+    client3 = [(InAppTransactionTask *)self client];
+    account = [client3 account];
+    client4 = [(InAppTransactionTask *)self client];
+    v21 = [client4 bag];
+    v22 = [AMSMetricsIdentifierStore identifierStoreWithAccount:account bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT" bag:v21];
 
     v38 = [AMSMetricsIdentifierKey keyWithName:@"userId" crossDeviceSync:1];
     v47 = v38;
@@ -561,11 +561,11 @@ LABEL_75:
     v39 = v22;
     v24 = [(InAppTransactionTask *)self _generateMetricsOverlayWithMetricsStore:v22 identifierKeys:v23 includeAccountMatchStatus:1];
 
-    v25 = [(InAppTransactionTask *)self client];
-    v26 = [v25 account];
-    v27 = [(InAppTransactionTask *)self client];
-    v28 = [v27 bag];
-    v29 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v26 bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT_CLIENT" bag:v28];
+    client5 = [(InAppTransactionTask *)self client];
+    account2 = [client5 account];
+    client6 = [(InAppTransactionTask *)self client];
+    v28 = [client6 bag];
+    v29 = [AMSMetricsIdentifierStore identifierStoreWithAccount:account2 bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT_CLIENT" bag:v28];
 
     v30 = [AMSMetricsIdentifierKey keyWithName:@"clientId" crossDeviceSync:0];
     v46 = v30;
@@ -575,13 +575,13 @@ LABEL_75:
     [v3 addEntriesFromDictionary:v24];
     [v3 addEntriesFromDictionary:&off_1003A1340];
     [v3 addEntriesFromDictionary:v32];
-    v33 = [(InAppTransactionTask *)self metricsOverlayData];
+    metricsOverlayData = [(InAppTransactionTask *)self metricsOverlayData];
 
-    if (v33)
+    if (metricsOverlayData)
     {
-      v34 = [(InAppTransactionTask *)self metricsOverlayData];
+      metricsOverlayData2 = [(InAppTransactionTask *)self metricsOverlayData];
       v41 = 0;
-      v35 = [NSJSONSerialization JSONObjectWithData:v34 options:0 error:&v41];
+      v35 = [NSJSONSerialization JSONObjectWithData:metricsOverlayData2 options:0 error:&v41];
       v36 = v41;
 
       if (v35)
@@ -609,11 +609,11 @@ LABEL_75:
   return v3;
 }
 
-- (id)_generateMetricsOverlayWithMetricsStore:(id)a3 identifierKeys:(id)a4 includeAccountMatchStatus:(BOOL)a5
+- (id)_generateMetricsOverlayWithMetricsStore:(id)store identifierKeys:(id)keys includeAccountMatchStatus:(BOOL)status
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  statusCopy = status;
+  storeCopy = store;
+  keysCopy = keys;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -628,7 +628,7 @@ LABEL_75:
   v20 = &v21;
   v10 = dispatch_semaphore_create(0);
   v19 = v10;
-  [v8 resultWithCompletion:v18];
+  [storeCopy resultWithCompletion:v18];
   v11 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v10, v11))
   {
@@ -648,13 +648,13 @@ LABEL_75:
   v13 = v22[5];
   if (v13)
   {
-    if (v5)
+    if (statusCopy)
     {
       [v13 setIncludeAccountMatchStatus:1];
       v13 = v22[5];
     }
 
-    v14 = [v13 generateEventFieldsForKeys:v9];
+    v14 = [v13 generateEventFieldsForKeys:keysCopy];
     if (qword_1003D3CD0 != -1)
     {
       sub_1002C80BC();
@@ -690,33 +690,33 @@ LABEL_75:
   return v14;
 }
 
-- (BOOL)shouldInstallParentAppWithBuyParams:(id)a3
+- (BOOL)shouldInstallParentAppWithBuyParams:(id)params
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1000F3D58(v4);
+  paramsCopy = params;
+  selfCopy = self;
+  v6 = sub_1000F3D58(paramsCopy);
 
   return v6 & 1;
 }
 
-- (void)buyParams:(BOOL)a3 completionHandler:(id)a4
+- (void)buyParams:(BOOL)params completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  *(v7 + 16) = a3;
+  *(v7 + 16) = params;
   *(v7 + 24) = v6;
   *(v7 + 32) = self;
-  v8 = self;
+  selfCopy = self;
 
   sub_100224DF8(&unk_1002F0C08, v7);
 }
 
-- (void)purchaseIntakeWithTransactionID:(id)a3 metrics:(id)a4
+- (void)purchaseIntakeWithTransactionID:(id)d metrics:(id)metrics
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_1000FFD24(v5, v7, v8);
 }
 

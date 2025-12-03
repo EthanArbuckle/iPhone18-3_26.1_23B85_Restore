@@ -1,15 +1,15 @@
 @interface _UIVisualEffectViewBackdropCaptureGroup
 - (BOOL)allowInPlaceFiltering;
-- (_UIVisualEffectViewBackdropCaptureGroup)initWithBackdrop:(id)a3;
-- (_UIVisualEffectViewBackdropCaptureGroup)initWithName:(id)a3 scale:(double)a4;
+- (_UIVisualEffectViewBackdropCaptureGroup)initWithBackdrop:(id)backdrop;
+- (_UIVisualEffectViewBackdropCaptureGroup)initWithName:(id)name scale:(double)scale;
 - (id)description;
-- (int64_t)indexOfBackdropView:(id)a3;
-- (void)addBackdrop:(id)a3 update:(BOOL)a4;
-- (void)applyScaleHint:(double)a3;
-- (void)removeBackdrop:(id)a3 update:(BOOL)a4;
-- (void)setGroupName:(id)a3;
-- (void)setMinimumScale:(double)a3;
-- (void)setScale:(double)a3;
+- (int64_t)indexOfBackdropView:(id)view;
+- (void)addBackdrop:(id)backdrop update:(BOOL)update;
+- (void)applyScaleHint:(double)hint;
+- (void)removeBackdrop:(id)backdrop update:(BOOL)update;
+- (void)setGroupName:(id)name;
+- (void)setMinimumScale:(double)scale;
+- (void)setScale:(double)scale;
 - (void)updateAllBackdropViews;
 @end
 
@@ -70,49 +70,49 @@
   }
 }
 
-- (_UIVisualEffectViewBackdropCaptureGroup)initWithName:(id)a3 scale:(double)a4
+- (_UIVisualEffectViewBackdropCaptureGroup)initWithName:(id)name scale:(double)scale
 {
-  v6 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = _UIVisualEffectViewBackdropCaptureGroup;
   v7 = [(_UIVisualEffectViewBackdropCaptureGroup *)&v13 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     backdrops = v7->_backdrops;
-    v7->_backdrops = v8;
+    v7->_backdrops = weakObjectsPointerArray;
 
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     groupName = v7->_groupName;
     v7->_groupName = v10;
 
     objc_storeStrong(&v7->_groupNamespace, *MEMORY[0x1E69795D0]);
-    v7->_scale = a4;
+    v7->_scale = scale;
   }
 
   return v7;
 }
 
-- (_UIVisualEffectViewBackdropCaptureGroup)initWithBackdrop:(id)a3
+- (_UIVisualEffectViewBackdropCaptureGroup)initWithBackdrop:(id)backdrop
 {
-  v4 = a3;
-  v5 = [v4 backdropLayer];
-  v6 = [v5 groupName];
-  [v5 scale];
-  v7 = [(_UIVisualEffectViewBackdropCaptureGroup *)self initWithName:v6 scale:?];
+  backdropCopy = backdrop;
+  backdropLayer = [backdropCopy backdropLayer];
+  groupName = [backdropLayer groupName];
+  [backdropLayer scale];
+  v7 = [(_UIVisualEffectViewBackdropCaptureGroup *)self initWithName:groupName scale:?];
 
   if (v7)
   {
-    [(NSPointerArray *)v7->_backdrops addPointer:v4];
+    [(NSPointerArray *)v7->_backdrops addPointer:backdropCopy];
   }
 
   return v7;
 }
 
-- (int64_t)indexOfBackdropView:(id)a3
+- (int64_t)indexOfBackdropView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -135,7 +135,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (*(*(&v13 + 1) + 8 * v10) == v4)
+      if (*(*(&v13 + 1) + 8 * v10) == viewCopy)
       {
         break;
       }
@@ -163,40 +163,40 @@ LABEL_9:
   return v11;
 }
 
-- (void)addBackdrop:(id)a3 update:(BOOL)a4
+- (void)addBackdrop:(id)backdrop update:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
+  updateCopy = update;
+  backdropCopy = backdrop;
   if ([(_UIVisualEffectViewBackdropCaptureGroup *)self indexOfBackdropView:?]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSPointerArray *)self->_backdrops addPointer:v6];
-    if (v4)
+    [(NSPointerArray *)self->_backdrops addPointer:backdropCopy];
+    if (updateCopy)
     {
-      updateBackdropView(v6, self);
+      updateBackdropView(backdropCopy, self);
     }
   }
 }
 
-- (void)removeBackdrop:(id)a3 update:(BOOL)a4
+- (void)removeBackdrop:(id)backdrop update:(BOOL)update
 {
-  v4 = a4;
-  v7 = a3;
+  updateCopy = update;
+  backdropCopy = backdrop;
   v6 = [(_UIVisualEffectViewBackdropCaptureGroup *)self indexOfBackdropView:?];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSPointerArray *)self->_backdrops removePointerAtIndex:v6];
-    if (v4)
+    if (updateCopy)
     {
-      updateBackdropView(v7, 0);
+      updateBackdropView(backdropCopy, 0);
     }
   }
 }
 
-- (void)setGroupName:(id)a3
+- (void)setGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = self->_groupName;
-  v6 = v4;
+  v6 = nameCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -225,23 +225,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(_UIVisualEffectViewBackdropCaptureGroup *)self updateAllBackdropViews];
   }
 }
 
-- (void)setMinimumScale:(double)a3
+- (void)setMinimumScale:(double)scale
 {
-  if (a3 < 0.0)
+  if (scale < 0.0)
   {
-    a3 = 0.0;
+    scale = 0.0;
   }
 
-  v3 = fmin(a3, 1.0);
+  v3 = fmin(scale, 1.0);
   if (self->_minimumScale != v3)
   {
     self->_minimumScale = v3;
@@ -249,9 +249,9 @@ LABEL_9:
   }
 }
 
-- (void)applyScaleHint:(double)a3
+- (void)applyScaleHint:(double)hint
 {
-  if (a3 > 0.0)
+  if (hint > 0.0)
   {
     [(_UIVisualEffectViewBackdropCaptureGroup *)self setScale:?];
   }

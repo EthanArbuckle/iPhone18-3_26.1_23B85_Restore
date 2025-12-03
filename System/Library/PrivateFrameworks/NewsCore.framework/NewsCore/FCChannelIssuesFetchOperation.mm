@@ -1,8 +1,8 @@
 @interface FCChannelIssuesFetchOperation
 - (BOOL)validateOperation;
 - (FCChannelIssuesFetchOperation)init;
-- (FCChannelIssuesFetchOperation)initWithContext:(id)a3 channelIDs:(id)a4 issueSet:(int64_t)a5;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCChannelIssuesFetchOperation)initWithContext:(id)context channelIDs:(id)ds issueSet:(int64_t)set;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -34,22 +34,22 @@
   objc_exception_throw(v6);
 }
 
-- (FCChannelIssuesFetchOperation)initWithContext:(id)a3 channelIDs:(id)a4 issueSet:(int64_t)a5
+- (FCChannelIssuesFetchOperation)initWithContext:(id)context channelIDs:(id)ds issueSet:(int64_t)set
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v16.receiver = self;
   v16.super_class = FCChannelIssuesFetchOperation;
   v11 = [(FCOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_context, context);
+    v13 = [dsCopy copy];
     channelIDs = v12->_channelIDs;
     v12->_channelIDs = v13;
 
-    v12->_issueSet = a5;
+    v12->_issueSet = set;
   }
 
   return v12;
@@ -58,9 +58,9 @@
 - (BOOL)validateOperation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(FCChannelIssuesFetchOperation *)self context];
+  context = [(FCChannelIssuesFetchOperation *)self context];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"channel issues fetch operation requires a context"];
     v10 = 136315906;
@@ -74,9 +74,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  v4 = [(FCChannelIssuesFetchOperation *)self channelIDs];
+  channelIDs = [(FCChannelIssuesFetchOperation *)self channelIDs];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!channelIDs && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"channel issues fetch operation requires channel IDs"];
     v10 = 136315906;
@@ -90,9 +90,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  if (v3)
+  if (context)
   {
-    v5 = v4 == 0;
+    v5 = channelIDs == 0;
   }
 
   else
@@ -115,11 +115,11 @@
   v16[4] = self;
   v3 = __49__FCChannelIssuesFetchOperation_performOperation__block_invoke(v16);
   v4 = objc_alloc_init(FCRecordChainFetchOperation);
-  v5 = [(FCChannelIssuesFetchOperation *)self context];
-  [(FCRecordChainFetchOperation *)v4 setContext:v5];
+  context = [(FCChannelIssuesFetchOperation *)self context];
+  [(FCRecordChainFetchOperation *)v4 setContext:context];
 
-  v6 = [(FCChannelIssuesFetchOperation *)self channelIDs];
-  [(FCRecordChainFetchOperation *)v4 setTopLevelRecordIDs:v6];
+  channelIDs = [(FCChannelIssuesFetchOperation *)self channelIDs];
+  [(FCRecordChainFetchOperation *)v4 setTopLevelRecordIDs:channelIDs];
 
   v21[0] = v3;
   v20[0] = @"Tag";
@@ -132,11 +132,11 @@
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
   [(FCRecordChainFetchOperation *)v4 setLinkKeysByRecordType:v8];
 
-  v9 = [(FCChannelIssuesFetchOperation *)self cachePolicy];
-  v10 = v9;
-  if (v9)
+  cachePolicy = [(FCChannelIssuesFetchOperation *)self cachePolicy];
+  v10 = cachePolicy;
+  if (cachePolicy)
   {
-    v11 = v9;
+    v11 = cachePolicy;
   }
 
   else
@@ -340,16 +340,16 @@ LABEL_9:
   return v15;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCChannelIssuesFetchOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCChannelIssuesFetchOperation *)self fetchCompletionHandler];
 
-  if (v4)
+  if (fetchCompletionHandler)
   {
-    v5 = [(FCChannelIssuesFetchOperation *)self fetchCompletionHandler];
-    v6 = [(FCChannelIssuesFetchOperation *)self resultIssuesByChannel];
-    (v5)[2](v5, v6, v7);
+    fetchCompletionHandler2 = [(FCChannelIssuesFetchOperation *)self fetchCompletionHandler];
+    resultIssuesByChannel = [(FCChannelIssuesFetchOperation *)self resultIssuesByChannel];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, resultIssuesByChannel, errorCopy);
   }
 }
 

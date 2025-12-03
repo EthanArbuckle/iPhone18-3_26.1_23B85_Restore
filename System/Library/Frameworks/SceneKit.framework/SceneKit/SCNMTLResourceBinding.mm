@@ -26,10 +26,10 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[MTLArgument name](self->_argument, "name")];
-  return v3;
+  [string appendFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[MTLArgument name](self->_argument, "name")];
+  return string;
 }
 
 - (NSMutableArray)usedResources

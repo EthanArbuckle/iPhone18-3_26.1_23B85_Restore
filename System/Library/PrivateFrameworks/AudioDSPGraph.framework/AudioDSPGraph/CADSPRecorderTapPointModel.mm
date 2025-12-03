@@ -1,9 +1,9 @@
 @interface CADSPRecorderTapPointModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)audioFilePath;
 - (NSString)boxName;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CADSPRecorderTapPointModel
@@ -17,20 +17,20 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v6 = 1;
     }
 
     else
     {
-      v5.__data_ = v4->_this.filePath.__pn_.__rep_.__s.__data_;
+      v5.__data_ = equalCopy->_this.filePath.__pn_.__rep_.__s.__data_;
       v6 = AudioDSPGraph::IR::InjectTapPointModel::operator==(&self->_this, v5);
     }
   }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPMutableRecorderTapPointModel allocWithZone:a3];
+  v4 = [CADSPMutableRecorderTapPointModel allocWithZone:zone];
   std::string::operator=(&v4->super._this, &self->_this);
   std::string::operator=(&v4->super._this.filePath.var0, &self->_this.filePath.var0);
   v5 = *self[1]._this.filePath.__pn_.__rep_.__s.__data_;

@@ -1,30 +1,30 @@
 @interface EQKitHVSpace
-- (BOOL)isEqual:(id)a3;
-- (EQKitHVSpace)initWithWidth:(double)a3 height:(double)a4 depth:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EQKitHVSpace)initWithWidth:(double)width height:(double)height depth:(double)depth;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation EQKitHVSpace
 
-- (EQKitHVSpace)initWithWidth:(double)a3 height:(double)a4 depth:(double)a5
+- (EQKitHVSpace)initWithWidth:(double)width height:(double)height depth:(double)depth
 {
   v9.receiver = self;
   v9.super_class = EQKitHVSpace;
   result = [(EQKitHVSpace *)&v9 init];
   if (result)
   {
-    result->_width = a3;
-    result->_height = a4;
-    result->_depth = a5;
+    result->_width = width;
+    result->_height = height;
+    result->_depth = depth;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(EQKitHVSpace *)self width];
   v6 = v5;
   [(EQKitHVSpace *)self height];
@@ -34,17 +34,17 @@
   return [v4 initWithWidth:v6 height:v8 depth:v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
 
-  else if ([(EQKitHVSpace *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(EQKitHVSpace *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(EQKitHVSpace *)self width];
     v7 = v6;
     [(EQKitHVSpace *)v5 width];

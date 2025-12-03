@@ -1,22 +1,22 @@
 @interface HUMatterAccessoryConnectedEcosystemItemProvider
-- (HUMatterAccessoryConnectedEcosystemItemProvider)initWithAccessory:(id)a3;
+- (HUMatterAccessoryConnectedEcosystemItemProvider)initWithAccessory:(id)accessory;
 - (NAFuture)connectedEcosystemsFuture;
 - (id)reloadItems;
 @end
 
 @implementation HUMatterAccessoryConnectedEcosystemItemProvider
 
-- (HUMatterAccessoryConnectedEcosystemItemProvider)initWithAccessory:(id)a3
+- (HUMatterAccessoryConnectedEcosystemItemProvider)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v13.receiver = self;
   v13.super_class = HUMatterAccessoryConnectedEcosystemItemProvider;
   v6 = [(HFItemProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessory, a3);
-    v8 = [[HUMatterConnectedHomeItemProvider alloc] initWithAccessory:v5];
+    objc_storeStrong(&v6->_accessory, accessory);
+    v8 = [[HUMatterConnectedHomeItemProvider alloc] initWithAccessory:accessoryCopy];
     connectedHomeItemProvider = v7->_connectedHomeItemProvider;
     v7->_connectedHomeItemProvider = v8;
 
@@ -30,9 +30,9 @@
 
 - (NAFuture)connectedEcosystemsFuture
 {
-  v2 = [(HUMatterAccessoryConnectedEcosystemItemProvider *)self connectedHomeItemProvider];
-  v3 = [v2 connectedCHIPAccessoryPairingsFuture];
-  v4 = [v3 flatMap:&__block_literal_global_153];
+  connectedHomeItemProvider = [(HUMatterAccessoryConnectedEcosystemItemProvider *)self connectedHomeItemProvider];
+  connectedCHIPAccessoryPairingsFuture = [connectedHomeItemProvider connectedCHIPAccessoryPairingsFuture];
+  v4 = [connectedCHIPAccessoryPairingsFuture flatMap:&__block_literal_global_153];
 
   return v4;
 }
@@ -77,13 +77,13 @@ void __76__HUMatterAccessoryConnectedEcosystemItemProvider_connectedEcosystemsFu
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUMatterAccessoryConnectedEcosystemItemProvider *)self connectedEcosystemsFuture];
+  connectedEcosystemsFuture = [(HUMatterAccessoryConnectedEcosystemItemProvider *)self connectedEcosystemsFuture];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__HUMatterAccessoryConnectedEcosystemItemProvider_reloadItems__block_invoke;
   v6[3] = &unk_277DBB720;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 flatMap:v6];
+  v4 = [connectedEcosystemsFuture flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);

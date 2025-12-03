@@ -1,29 +1,29 @@
 @interface QDSchemaQDContextStatementIdsReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDContextStatementIdsReported)initWithDictionary:(id)a3;
-- (QDSchemaQDContextStatementIdsReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDContextStatementIdsReported)initWithDictionary:(id)dictionary;
+- (QDSchemaQDContextStatementIdsReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unsigned)contextualEntityStatementIdsAtIndex:(unint64_t)a3;
-- (void)addContextStatementIds:(id)a3;
-- (void)addContextualEntityStatementIds:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)contextualEntityStatementIdsAtIndex:(unint64_t)index;
+- (void)addContextStatementIds:(id)ids;
+- (void)addContextualEntityStatementIds:(unsigned int)ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDContextStatementIdsReported
 
-- (QDSchemaQDContextStatementIdsReported)initWithDictionary:(id)a3
+- (QDSchemaQDContextStatementIdsReported)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = QDSchemaQDContextStatementIdsReported;
   v5 = [(QDSchemaQDContextStatementIdsReported *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextStatementIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextStatementIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"contextualEntityStatementIds"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"contextualEntityStatementIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (QDSchemaQDContextStatementIdsReported)initWithJSON:(id)a3
+- (QDSchemaQDContextStatementIdsReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDContextStatementIdsReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDContextStatementIdsReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDContextStatementIdsReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -151,10 +151,10 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_contextStatementIds count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -174,16 +174,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -193,43 +193,43 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"contextStatementIds"];
+    [dictionary setObject:array forKeyedSubscript:@"contextStatementIds"];
   }
 
   if ([(NSArray *)self->_contextualEntityStatementIds count])
   {
-    v12 = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"contextualEntityStatementIds"];
+    contextualEntityStatementIds = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
+    v13 = [contextualEntityStatementIds copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"contextualEntityStatementIds"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds];
-  v6 = [v4 contextStatementIds];
-  if ((v5 != 0) == (v6 == 0))
+  contextStatementIds = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds];
+  contextStatementIds2 = [equalCopy contextStatementIds];
+  if ((contextStatementIds != 0) == (contextStatementIds2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds];
-  if (v7)
+  contextStatementIds3 = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds];
+  if (contextStatementIds3)
   {
-    v8 = v7;
-    v9 = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds];
-    v10 = [v4 contextStatementIds];
-    v11 = [v9 isEqual:v10];
+    v8 = contextStatementIds3;
+    contextStatementIds4 = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds];
+    contextStatementIds5 = [equalCopy contextStatementIds];
+    v11 = [contextStatementIds4 isEqual:contextStatementIds5];
 
     if (!v11)
     {
@@ -241,12 +241,12 @@
   {
   }
 
-  v5 = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
-  v6 = [v4 contextualEntityStatementIds];
-  if ((v5 != 0) != (v6 == 0))
+  contextStatementIds = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
+  contextStatementIds2 = [equalCopy contextualEntityStatementIds];
+  if ((contextStatementIds != 0) != (contextStatementIds2 == 0))
   {
-    v12 = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
-    if (!v12)
+    contextualEntityStatementIds = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
+    if (!contextualEntityStatementIds)
     {
 
 LABEL_15:
@@ -254,10 +254,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
-    v15 = [v4 contextualEntityStatementIds];
-    v16 = [v14 isEqual:v15];
+    v13 = contextualEntityStatementIds;
+    contextualEntityStatementIds2 = [(QDSchemaQDContextStatementIdsReported *)self contextualEntityStatementIds];
+    contextualEntityStatementIds3 = [equalCopy contextualEntityStatementIds];
+    v16 = [contextualEntityStatementIds2 isEqual:contextualEntityStatementIds3];
 
     if (v16)
     {
@@ -277,10 +277,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -345,23 +345,23 @@ LABEL_13:
   }
 }
 
-- (unsigned)contextualEntityStatementIdsAtIndex:(unint64_t)a3
+- (unsigned)contextualEntityStatementIdsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_contextualEntityStatementIds objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_contextualEntityStatementIds objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addContextualEntityStatementIds:(unsigned int)a3
+- (void)addContextualEntityStatementIds:(unsigned int)ids
 {
-  v3 = *&a3;
+  v3 = *&ids;
   contextualEntityStatementIds = self->_contextualEntityStatementIds;
   if (!contextualEntityStatementIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contextualEntityStatementIds;
-    self->_contextualEntityStatementIds = v6;
+    self->_contextualEntityStatementIds = array;
 
     contextualEntityStatementIds = self->_contextualEntityStatementIds;
   }
@@ -370,32 +370,32 @@ LABEL_13:
   [(NSArray *)contextualEntityStatementIds addObject:v8];
 }
 
-- (void)addContextStatementIds:(id)a3
+- (void)addContextStatementIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   contextStatementIds = self->_contextStatementIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!contextStatementIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contextStatementIds;
-    self->_contextStatementIds = v6;
+    self->_contextStatementIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     contextStatementIds = self->_contextStatementIds;
   }
 
-  [(NSArray *)contextStatementIds addObject:v4];
+  [(NSArray *)contextStatementIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = QDSchemaQDContextStatementIdsReported;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(QDSchemaQDContextStatementIdsReported *)self contextStatementIds:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(QDSchemaQDContextStatementIdsReported *)self setContextStatementIds:v7];
 

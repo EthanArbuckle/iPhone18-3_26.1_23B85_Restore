@@ -1,5 +1,5 @@
 @interface PKFieldDetector
-- (PKFieldDetector)initWithDelegate:(id)a3;
+- (PKFieldDetector)initWithDelegate:(id)delegate;
 - (PKFieldDetectorDelegate)delegate;
 - (PKFieldProperties)fieldProperties;
 - (void)_endLookup;
@@ -7,25 +7,25 @@
 - (void)_invalidateFieldDetectSession;
 - (void)_notify;
 - (void)_restartFieldDetectSession;
-- (void)_setPersistentFieldDetectionEnabled:(BOOL)a3;
+- (void)_setPersistentFieldDetectionEnabled:(BOOL)enabled;
 - (void)_startFieldDetectSession;
 - (void)dealloc;
-- (void)fieldDetectSession:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)fieldDetectSessionDidEndUnexpectedly:(id)a3;
-- (void)fieldDetectSessionDidExitField:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)requestPersistentFieldDetectionEnabled:(BOOL)a3 withReason:(unint64_t)a4;
-- (void)setDelegate:(id)a3;
-- (void)setPersistentFieldDetectionEnabled:(BOOL)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)fieldDetectSession:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)fieldDetectSessionDidEndUnexpectedly:(id)unexpectedly;
+- (void)fieldDetectSessionDidExitField:(id)field;
+- (void)registerObserver:(id)observer;
+- (void)requestPersistentFieldDetectionEnabled:(BOOL)enabled withReason:(unint64_t)reason;
+- (void)setDelegate:(id)delegate;
+- (void)setPersistentFieldDetectionEnabled:(BOOL)enabled;
+- (void)unregisterObserver:(id)observer;
 - (void)updateRadioState;
 @end
 
 @implementation PKFieldDetector
 
-- (PKFieldDetector)initWithDelegate:(id)a3
+- (PKFieldDetector)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (PKNearFieldRadioIsAvailable() && !+[PKSecureElement isInFailForward])
   {
     v21.receiver = self;
@@ -46,9 +46,9 @@
       replyQueue = v7->_replyQueue;
       v7->_replyQueue = v12;
 
-      v14 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       observers = v7->_observers;
-      v7->_observers = v14;
+      v7->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
       v7->_nfcRadioEnabled = PKNearFieldRadioIsEnabled();
       v16 = v7->_fieldDetectorSerialQueue;
@@ -59,19 +59,19 @@
       v17 = v7;
       v20 = v17;
       dispatch_async(v16, block);
-      objc_storeWeak(v17 + 10, v4);
+      objc_storeWeak(v17 + 10, delegateCopy);
     }
 
     self = v7;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -84,9 +84,9 @@
   [(PKFieldDetector *)&v3 dealloc];
 }
 
-- (void)fieldDetectSession:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)fieldDetectSession:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   kdebug_trace();
   fieldDetectorSerialQueue = self->_fieldDetectorSerialQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -94,8 +94,8 @@
   v8[2] = __68__PKFieldDetector_fieldDetectSession_didEnterFieldWithNotification___block_invoke;
   v8[3] = &unk_1E79C4DD8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = notificationCopy;
+  v7 = notificationCopy;
   dispatch_async(fieldDetectorSerialQueue, v8);
 }
 
@@ -208,7 +208,7 @@ void __68__PKFieldDetector_fieldDetectSession_didEnterFieldWithNotification___bl
   }
 }
 
-- (void)fieldDetectSessionDidExitField:(id)a3
+- (void)fieldDetectSessionDidExitField:(id)field
 {
   kdebug_trace();
   fieldDetectorSerialQueue = self->_fieldDetectorSerialQueue;
@@ -308,7 +308,7 @@ void __50__PKFieldDetector_fieldDetectSessionDidExitField___block_invoke_44(uint
   }
 }
 
-- (void)fieldDetectSessionDidEndUnexpectedly:(id)a3
+- (void)fieldDetectSessionDidEndUnexpectedly:(id)unexpectedly
 {
   v4 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -372,18 +372,18 @@ uint64_t __35__PKFieldDetector_updateRadioState__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)requestPersistentFieldDetectionEnabled:(BOOL)a3 withReason:(unint64_t)a4
+- (void)requestPersistentFieldDetectionEnabled:(BOOL)enabled withReason:(unint64_t)reason
 {
-  if (a4)
+  if (reason)
   {
     fieldDetectorSerialQueue = self->_fieldDetectorSerialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___block_invoke;
     block[3] = &unk_1E79DE1D8;
-    v7 = a3;
+    enabledCopy = enabled;
     block[4] = self;
-    block[5] = a4;
+    block[5] = reason;
     dispatch_async(fieldDetectorSerialQueue, block);
   }
 
@@ -436,7 +436,7 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
   }
 }
 
-- (void)setPersistentFieldDetectionEnabled:(BOOL)a3
+- (void)setPersistentFieldDetectionEnabled:(BOOL)enabled
 {
   fieldDetectorSerialQueue = self->_fieldDetectorSerialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -444,25 +444,25 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
   v4[2] = __54__PKFieldDetector_setPersistentFieldDetectionEnabled___block_invoke;
   v4[3] = &unk_1E79C4EC8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(fieldDetectorSerialQueue, v4);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     v5 = self->_fieldProperties;
-    if ([(NSHashTable *)self->_observers containsObject:v4])
+    if ([(NSHashTable *)self->_observers containsObject:observerCopy])
     {
       os_unfair_lock_unlock(&self->_lock);
     }
 
     else
     {
-      [(NSHashTable *)self->_observers addObject:v4];
+      [(NSHashTable *)self->_observers addObject:observerCopy];
       os_unfair_lock_unlock(&self->_lock);
       if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
       {
@@ -471,8 +471,8 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
         block[1] = 3221225472;
         block[2] = __36__PKFieldDetector_registerObserver___block_invoke;
         block[3] = &unk_1E79C4E00;
-        v8 = v4;
-        v9 = self;
+        v8 = observerCopy;
+        selfCopy = self;
         v10 = v5;
         dispatch_async(replyQueue, block);
       }
@@ -480,16 +480,16 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lock);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
@@ -511,11 +511,11 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -544,9 +544,9 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
   [(PKFieldDetector *)self _setPersistentFieldDetectionEnabled:enablePersistentFieldDetectionReasons != 0];
 }
 
-- (void)_setPersistentFieldDetectionEnabled:(BOOL)a3
+- (void)_setPersistentFieldDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x1E69E9840];
   if (!PKNearFieldRadioIsAvailable())
   {
@@ -557,7 +557,7 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"Disabling";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = @"Enabling";
     }
@@ -567,15 +567,15 @@ void __69__PKFieldDetector_requestPersistentFieldDetectionEnabled_withReason___b
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Field Detector: %{public}@ field detection...", &v14, 0xCu);
   }
 
-  v7 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-  v8 = [v7 setFieldDetectEnabled:v3];
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  v8 = [pKGetClassNFHardwareManager() setFieldDetectEnabled:enabledCopy];
   v9 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
   if (v8)
   {
     if (v9)
     {
       v10 = @"Disabled";
-      if (v3)
+      if (enabledCopy)
       {
         v10 = @"Enabled";
       }
@@ -599,7 +599,7 @@ LABEL_13:
     _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, v11, &v14, v13);
   }
 
-  if (v3 && !self->_fieldDetectSessionRequested)
+  if (enabledCopy && !self->_fieldDetectSessionRequested)
   {
     [(PKFieldDetector *)self _startFieldDetectSession];
   }
@@ -659,7 +659,7 @@ LABEL_13:
 
   if (self->_nfcRadioEnabled)
   {
-    v3 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+    pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
     v4 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -672,16 +672,16 @@ LABEL_13:
     v6[2] = __43__PKFieldDetector__startFieldDetectSession__block_invoke;
     v6[3] = &unk_1E79DE200;
     v6[4] = self;
-    v5 = [v3 startFieldDetectSession:v6];
+    v5 = [pKGetClassNFHardwareManager() startFieldDetectSession:v6];
   }
 
   else
   {
-    v3 = PKLogFacilityTypeGetObject(7uLL);
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    pKGetClassNFHardwareManager() = PKLogFacilityTypeGetObject(7uLL);
+    if (os_log_type_enabled(pKGetClassNFHardwareManager(), OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Cannot start field detect session because the NFC radio is disabled", buf, 2u);
+      _os_log_impl(&dword_1AD337000, pKGetClassNFHardwareManager(), OS_LOG_TYPE_DEFAULT, "Cannot start field detect session because the NFC radio is disabled", buf, 2u);
     }
   }
 }
@@ -764,7 +764,7 @@ void __43__PKFieldDetector__startFieldDetectSession__block_invoke_2(id *a1)
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   v3 = self->_fieldProperties;
-  v4 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -779,11 +779,11 @@ void __43__PKFieldDetector__startFieldDetectSession__block_invoke_2(id *a1)
   block[1] = 3221225472;
   block[2] = __26__PKFieldDetector__notify__block_invoke;
   block[3] = &unk_1E79C4E00;
-  v10 = v4;
-  v11 = self;
+  v10 = allObjects;
+  selfCopy = self;
   v12 = v3;
   v7 = v3;
-  v8 = v4;
+  v8 = allObjects;
   dispatch_async(replyQueue, block);
 }
 

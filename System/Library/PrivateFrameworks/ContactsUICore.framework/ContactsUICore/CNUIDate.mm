@@ -1,14 +1,14 @@
 @interface CNUIDate
-+ (BOOL)isYearlessComponents:(id)a3;
-+ (id)GMTComponentsFromDate:(id)a3 sourceCalendar:(id)a4;
++ (BOOL)isYearlessComponents:(id)components;
++ (id)GMTComponentsFromDate:(id)date sourceCalendar:(id)calendar;
 + (id)availableAlternateCalendars;
-+ (id)componentsFromDate:(id)a3 sourceCalendar:(id)a4 destinationCalendar:(id)a5;
++ (id)componentsFromDate:(id)date sourceCalendar:(id)calendar destinationCalendar:(id)destinationCalendar;
 + (id)currentCalendarGMT;
-+ (id)dateByNormalizingToGMT:(id)a3;
-+ (id)dateFromComponents:(id)a3 destinationCalendar:(id)a4;
++ (id)dateByNormalizingToGMT:(id)t;
++ (id)dateFromComponents:(id)components destinationCalendar:(id)calendar;
 + (id)gregorianCalendarGMT;
-+ (id)yearlessComponentsFromDate:(id)a3 calendar:(id)a4;
-+ (id)yearlessGregorianComponentsFromGMTDate:(id)a3;
++ (id)yearlessComponentsFromDate:(id)date calendar:(id)calendar;
++ (id)yearlessGregorianComponentsFromGMTDate:(id)date;
 + (void)initialize;
 @end
 
@@ -16,10 +16,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:a1 selector:sel_localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
     calendarQueue = dispatch_queue_create(0, 0);
 
@@ -77,66 +77,66 @@ void __32__CNUIDate_gregorianCalendarGMT__block_invoke()
   [gregorianCalendarGMT_calendar setTimeZone:v3];
 }
 
-+ (id)GMTComponentsFromDate:(id)a3 sourceCalendar:(id)a4
++ (id)GMTComponentsFromDate:(id)date sourceCalendar:(id)calendar
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 gregorianCalendarGMT];
-  v9 = [a1 componentsFromDate:v7 sourceCalendar:v6 destinationCalendar:v8];
+  calendarCopy = calendar;
+  dateCopy = date;
+  gregorianCalendarGMT = [self gregorianCalendarGMT];
+  v9 = [self componentsFromDate:dateCopy sourceCalendar:calendarCopy destinationCalendar:gregorianCalendarGMT];
 
   return v9;
 }
 
-+ (id)componentsFromDate:(id)a3 sourceCalendar:(id)a4 destinationCalendar:(id)a5
++ (id)componentsFromDate:(id)date sourceCalendar:(id)calendar destinationCalendar:(id)destinationCalendar
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
-  v11 = [v8 timeZone];
-  [v10 setTimeZone:v11];
+  calendarCopy = calendar;
+  dateCopy = date;
+  v10 = [destinationCalendar copy];
+  timeZone = [calendarCopy timeZone];
+  [v10 setTimeZone:timeZone];
 
-  v12 = [v8 components:1048606 fromDate:v9];
+  v12 = [calendarCopy components:1048606 fromDate:dateCopy];
 
   if ([CNUIDate isYearlessComponents:v12])
   {
-    [a1 yearlessComponentsFromDate:v9 calendar:v10];
+    [self yearlessComponentsFromDate:dateCopy calendar:v10];
   }
 
   else
   {
-    [v10 components:1048606 fromDate:v9];
+    [v10 components:1048606 fromDate:dateCopy];
   }
   v13 = ;
 
   return v13;
 }
 
-+ (id)yearlessGregorianComponentsFromGMTDate:(id)a3
++ (id)yearlessGregorianComponentsFromGMTDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 gregorianCalendarGMT];
-  v6 = [a1 yearlessComponentsFromDate:v4 calendar:v5];
+  dateCopy = date;
+  gregorianCalendarGMT = [self gregorianCalendarGMT];
+  v6 = [self yearlessComponentsFromDate:dateCopy calendar:gregorianCalendarGMT];
 
   return v6;
 }
 
-+ (id)yearlessComponentsFromDate:(id)a3 calendar:(id)a4
++ (id)yearlessComponentsFromDate:(id)date calendar:(id)calendar
 {
-  v5 = a4;
-  v6 = [v5 components:24 fromDate:a3];
-  [v6 setCalendar:v5];
+  calendarCopy = calendar;
+  v6 = [calendarCopy components:24 fromDate:date];
+  [v6 setCalendar:calendarCopy];
 
   return v6;
 }
 
-+ (id)dateFromComponents:(id)a3 destinationCalendar:(id)a4
++ (id)dateFromComponents:(id)components destinationCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  componentsCopy = components;
+  calendarCopy = calendar;
+  if (calendarCopy)
   {
-    v8 = v7;
-    v9 = [v7 copy];
+    v8 = calendarCopy;
+    v9 = [calendarCopy copy];
 
     v10 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
     [v9 setTimeZone:v10];
@@ -147,7 +147,7 @@ void __32__CNUIDate_gregorianCalendarGMT__block_invoke()
     v9 = +[CNUIDate gregorianCalendarGMT];
   }
 
-  v11 = [v6 copy];
+  v11 = [componentsCopy copy];
   [v11 setHour:12];
   [v11 setMinute:0];
   [v11 setSecond:0];
@@ -156,80 +156,80 @@ void __32__CNUIDate_gregorianCalendarGMT__block_invoke()
 
   if ([CNUIDate isYearlessComponents:v11])
   {
-    v13 = [v11 calendar];
+    calendar = [v11 calendar];
 
-    if (!v13)
+    if (!calendar)
     {
-      v14 = [a1 currentCalendarGMT];
-      [v11 setCalendar:v14];
+      currentCalendarGMT = [self currentCalendarGMT];
+      [v11 setCalendar:currentCalendarGMT];
     }
 
-    v15 = [v9 calendarIdentifier];
-    v16 = [v15 isEqual:*MEMORY[0x1E695D838]];
+    calendarIdentifier = [v9 calendarIdentifier];
+    v16 = [calendarIdentifier isEqual:*MEMORY[0x1E695D838]];
 
     if ((v16 & 1) == 0)
     {
       v26 = 0;
-      v17 = [MEMORY[0x1E695DF00] distantFuture];
-      [v9 getEra:&v26 year:0 month:0 day:0 fromDate:v17];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [v9 getEra:&v26 year:0 month:0 day:0 fromDate:distantFuture];
 
       [v11 setEra:v26];
     }
 
     [MEMORY[0x1E69AAE08] setYearlessYear:v11 forCalendar:v9];
-    v18 = [v9 dateFromComponents:v11];
+    date2 = [v9 dateFromComponents:v11];
     goto LABEL_10;
   }
 
   if (v9)
   {
-    v20 = [v11 date];
-    v21 = [v9 components:2097182 fromDate:v20];
+    date = [v11 date];
+    v21 = [v9 components:2097182 fromDate:date];
 
-    v22 = v9;
+    currentCalendarGMT2 = v9;
     v23 = v21;
   }
 
   else
   {
-    v25 = [v11 calendar];
+    calendar2 = [v11 calendar];
 
-    if (v25)
+    if (calendar2)
     {
-      v18 = [v11 date];
+      date2 = [v11 date];
 LABEL_10:
-      v19 = v18;
+      v19 = date2;
       goto LABEL_14;
     }
 
-    v22 = [a1 currentCalendarGMT];
-    v21 = v22;
+    currentCalendarGMT2 = [self currentCalendarGMT];
+    v21 = currentCalendarGMT2;
     v23 = v11;
   }
 
-  v19 = [v22 dateFromComponents:v23];
+  v19 = [currentCalendarGMT2 dateFromComponents:v23];
 
 LABEL_14:
 
   return v19;
 }
 
-+ (id)dateByNormalizingToGMT:(id)a3
++ (id)dateByNormalizingToGMT:(id)t
 {
-  if (a3)
+  if (t)
   {
     v3 = MEMORY[0x1E695DEE8];
-    v4 = a3;
-    v5 = [v3 currentCalendar];
-    v6 = [v5 components:30 fromDate:v4];
+    tCopy = t;
+    currentCalendar = [v3 currentCalendar];
+    v6 = [currentCalendar components:30 fromDate:tCopy];
 
     [v6 setHour:12];
     [v6 setMinute:0];
     [v6 setSecond:0];
     v7 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-    [v5 setTimeZone:v7];
+    [currentCalendar setTimeZone:v7];
 
-    v8 = [v5 dateFromComponents:v6];
+    v8 = [currentCalendar dateFromComponents:v6];
   }
 
   else
@@ -240,10 +240,10 @@ LABEL_14:
   return v8;
 }
 
-+ (BOOL)isYearlessComponents:(id)a3
++ (BOOL)isYearlessComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 year] == 0x7FFFFFFFFFFFFFFFLL)
+  componentsCopy = components;
+  if ([componentsCopy year] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 1;
   }
@@ -251,8 +251,8 @@ LABEL_14:
   else
   {
     v5 = MEMORY[0x1E69AAE08];
-    v6 = [v3 calendar];
-    v4 = [v5 isYearlessDate:v3 forCalendar:v6];
+    calendar = [componentsCopy calendar];
+    v4 = [v5 isYearlessDate:componentsCopy forCalendar:calendar];
   }
 
   return v4;
@@ -268,9 +268,9 @@ LABEL_14:
   v2 = MEMORY[0x1E69AAE08];
   v3 = MEMORY[0x1E695DF58];
   v4 = availableAlternateCalendars_cn_once_object_1;
-  v5 = [v3 currentLocale];
-  v6 = [v5 localeIdentifier];
-  v7 = [v2 lunarCalendarsForLocaleID:v6];
+  currentLocale = [v3 currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v7 = [v2 lunarCalendarsForLocaleID:localeIdentifier];
   v8 = [v7 mutableCopy];
 
   [v8 removeObjectsInArray:v4];

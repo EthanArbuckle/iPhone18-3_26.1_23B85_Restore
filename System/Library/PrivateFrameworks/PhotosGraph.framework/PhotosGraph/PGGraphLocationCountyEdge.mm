@@ -1,15 +1,15 @@
 @interface PGGraphLocationCountyEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toCountyNode:(id)a4;
+- (id)initFromLocationNode:(id)node toCountyNode:(id)countyNode;
 @end
 
 @implementation PGGraphLocationCountyEdge
 
-- (id)initFromLocationNode:(id)a3 toCountyNode:(id)a4
+- (id)initFromLocationNode:(id)node toCountyNode:(id)countyNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationCountyEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:countyNode];
 }
 
 + (id)filter

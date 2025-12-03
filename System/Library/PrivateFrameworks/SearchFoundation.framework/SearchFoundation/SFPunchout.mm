@@ -1,55 +1,55 @@
 @interface SFPunchout
-+ (SFPunchout)punchoutWithURL:(id)a3;
-+ (SFPunchout)punchoutWithURLs:(id)a3;
-- (BOOL)canOpenURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (SFPunchout)punchoutWithURL:(id)l;
++ (SFPunchout)punchoutWithURLs:(id)ls;
+- (BOOL)canOpenURL:(id)l;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
 - (NSURL)preferredOpenableURL;
-- (SFPunchout)initWithCoder:(id)a3;
-- (SFPunchout)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPunchout)initWithCoder:(id)coder;
+- (SFPunchout)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPunchout
 
-- (SFPunchout)initWithProtobuf:(id)a3
+- (SFPunchout)initWithProtobuf:(id)protobuf
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v33.receiver = self;
   v33.super_class = SFPunchout;
   v5 = [(SFPunchout *)&v33 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [protobufCopy name];
 
-    if (v6)
+    if (name)
     {
-      v7 = [v4 name];
-      [(SFPunchout *)v5 setName:v7];
+      name2 = [protobufCopy name];
+      [(SFPunchout *)v5 setName:name2];
     }
 
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [protobufCopy bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v4 bundleIdentifier];
-      [(SFPunchout *)v5 setBundleIdentifier:v9];
+      bundleIdentifier2 = [protobufCopy bundleIdentifier];
+      [(SFPunchout *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
-    v10 = [v4 label];
+    label = [protobufCopy label];
 
-    if (v10)
+    if (label)
     {
-      v11 = [v4 label];
-      [(SFPunchout *)v5 setLabel:v11];
+      label2 = [protobufCopy label];
+      [(SFPunchout *)v5 setLabel:label2];
     }
 
-    v12 = [v4 urls];
-    if (v12)
+    urls = [protobufCopy urls];
+    if (urls)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -63,8 +63,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [v4 urls];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    urls2 = [protobufCopy urls];
+    v15 = [urls2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v15)
     {
       v16 = v15;
@@ -75,7 +75,7 @@
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(urls2);
           }
 
           v19 = _SFPBURLHandwrittenTranslator(*(*(&v29 + 1) + 8 * i));
@@ -85,44 +85,44 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v16 = [urls2 countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v16);
     }
 
     [(SFPunchout *)v5 setUrls:v13];
-    v20 = [v4 userActivityData];
+    userActivityData = [protobufCopy userActivityData];
 
-    if (v20)
+    if (userActivityData)
     {
       v21 = [SFUserActivityData alloc];
-      v22 = [v4 userActivityData];
-      v23 = [(SFUserActivityData *)v21 initWithProtobuf:v22];
+      userActivityData2 = [protobufCopy userActivityData];
+      v23 = [(SFUserActivityData *)v21 initWithProtobuf:userActivityData2];
       [(SFPunchout *)v5 setUserActivityData:v23];
     }
 
-    v24 = [v4 actionTarget];
+    actionTarget = [protobufCopy actionTarget];
 
-    if (v24)
+    if (actionTarget)
     {
-      v25 = [v4 actionTarget];
-      [(SFPunchout *)v5 setActionTarget:v25];
+      actionTarget2 = [protobufCopy actionTarget];
+      [(SFPunchout *)v5 setActionTarget:actionTarget2];
     }
 
-    if ([v4 isRunnableInBackground])
+    if ([protobufCopy isRunnableInBackground])
     {
-      -[SFPunchout setIsRunnableInBackground:](v5, "setIsRunnableInBackground:", [v4 isRunnableInBackground]);
+      -[SFPunchout setIsRunnableInBackground:](v5, "setIsRunnableInBackground:", [protobufCopy isRunnableInBackground]);
     }
 
-    if ([v4 hasClip])
+    if ([protobufCopy hasClip])
     {
-      -[SFPunchout setHasClip:](v5, "setHasClip:", [v4 hasClip]);
+      -[SFPunchout setHasClip:](v5, "setHasClip:", [protobufCopy hasClip]);
     }
 
-    if ([v4 forceOpenInBrowser])
+    if ([protobufCopy forceOpenInBrowser])
     {
-      -[SFPunchout setForceOpenInBrowser:](v5, "setForceOpenInBrowser:", [v4 forceOpenInBrowser]);
+      -[SFPunchout setForceOpenInBrowser:](v5, "setForceOpenInBrowser:", [protobufCopy forceOpenInBrowser]);
     }
 
     v26 = v5;
@@ -134,41 +134,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SFPunchout *)self name];
-  v4 = [v3 hash];
-  v5 = [(SFPunchout *)self bundleIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SFPunchout *)self label];
-  v8 = [v7 hash];
-  v9 = [(SFPunchout *)self urls];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(SFPunchout *)self userActivityData];
-  v12 = [v11 hash];
-  v13 = [(SFPunchout *)self actionTarget];
-  v14 = v12 ^ [v13 hash];
+  name = [(SFPunchout *)self name];
+  v4 = [name hash];
+  bundleIdentifier = [(SFPunchout *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash] ^ v4;
+  label = [(SFPunchout *)self label];
+  v8 = [label hash];
+  urls = [(SFPunchout *)self urls];
+  v10 = v6 ^ v8 ^ [urls hash];
+  userActivityData = [(SFPunchout *)self userActivityData];
+  v12 = [userActivityData hash];
+  actionTarget = [(SFPunchout *)self actionTarget];
+  v14 = v12 ^ [actionTarget hash];
   v15 = v10 ^ v14 ^ [(SFPunchout *)self isRunnableInBackground];
-  v16 = [(SFPunchout *)self hasClip];
-  v17 = v16 ^ [(SFPunchout *)self forceOpenInBrowser];
+  hasClip = [(SFPunchout *)self hasClip];
+  v17 = hasClip ^ [(SFPunchout *)self forceOpenInBrowser];
 
   return v15 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if ([(SFPunchout *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFPunchout *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFPunchout *)self name];
-      v8 = [(SFPunchout *)v6 name];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      name = [(SFPunchout *)self name];
+      name2 = [(SFPunchout *)v6 name];
+      if ((name != 0) == (name2 == 0))
       {
         LOBYTE(v12) = 0;
 LABEL_49:
@@ -176,32 +176,32 @@ LABEL_49:
         goto LABEL_50;
       }
 
-      v9 = [(SFPunchout *)self name];
-      if (v9)
+      name3 = [(SFPunchout *)self name];
+      if (name3)
       {
-        v10 = [(SFPunchout *)self name];
-        v11 = [(SFPunchout *)v6 name];
-        if (![v10 isEqual:v11])
+        name4 = [(SFPunchout *)self name];
+        name5 = [(SFPunchout *)v6 name];
+        if (![name4 isEqual:name5])
         {
           LOBYTE(v12) = 0;
           goto LABEL_47;
         }
 
-        v67 = v11;
-        v68 = v10;
+        v67 = name5;
+        v68 = name4;
       }
 
-      v13 = [(SFPunchout *)self bundleIdentifier];
-      v14 = [(SFPunchout *)v6 bundleIdentifier];
-      if ((v13 != 0) != (v14 == 0))
+      bundleIdentifier = [(SFPunchout *)self bundleIdentifier];
+      bundleIdentifier2 = [(SFPunchout *)v6 bundleIdentifier];
+      if ((bundleIdentifier != 0) != (bundleIdentifier2 == 0))
       {
-        v66 = v14;
-        v15 = [(SFPunchout *)self bundleIdentifier];
-        if (v15)
+        v66 = bundleIdentifier2;
+        bundleIdentifier3 = [(SFPunchout *)self bundleIdentifier];
+        if (bundleIdentifier3)
         {
-          v16 = [(SFPunchout *)self bundleIdentifier];
-          v17 = [(SFPunchout *)v6 bundleIdentifier];
-          if (([v16 isEqual:v17] & 1) == 0)
+          bundleIdentifier4 = [(SFPunchout *)self bundleIdentifier];
+          bundleIdentifier5 = [(SFPunchout *)v6 bundleIdentifier];
+          if (([bundleIdentifier4 isEqual:bundleIdentifier5] & 1) == 0)
           {
 
 LABEL_44:
@@ -210,32 +210,32 @@ LABEL_45:
             goto LABEL_46;
           }
 
-          v64 = v17;
-          v65 = v13;
-          v3 = v16;
-          v18 = v15;
+          v64 = bundleIdentifier5;
+          v65 = bundleIdentifier;
+          v3 = bundleIdentifier4;
+          v18 = bundleIdentifier3;
         }
 
         else
         {
-          v65 = v13;
+          v65 = bundleIdentifier;
           v18 = 0;
         }
 
-        v19 = [(SFPunchout *)self label];
-        v20 = [(SFPunchout *)v6 label];
+        label = [(SFPunchout *)self label];
+        label2 = [(SFPunchout *)v6 label];
         v21 = v18;
         v22 = v3;
-        if ((v19 != 0) != (v20 == 0))
+        if ((label != 0) != (label2 == 0))
         {
-          v63 = v20;
-          v62 = v19;
-          v61 = [(SFPunchout *)self label];
-          if (v61)
+          v63 = label2;
+          v62 = label;
+          label3 = [(SFPunchout *)self label];
+          if (label3)
           {
-            v23 = [(SFPunchout *)self label];
-            v24 = [(SFPunchout *)v6 label];
-            if (([v23 isEqual:v24] & 1) == 0)
+            label4 = [(SFPunchout *)self label];
+            label5 = [(SFPunchout *)v6 label];
+            if (([label4 isEqual:label5] & 1) == 0)
             {
 
               if (v21)
@@ -245,8 +245,8 @@ LABEL_45:
               goto LABEL_45;
             }
 
-            v59 = v24;
-            v60 = v23;
+            v59 = label5;
+            v60 = label4;
             v25 = v21;
           }
 
@@ -255,23 +255,23 @@ LABEL_45:
             v25 = v21;
           }
 
-          v26 = [(SFPunchout *)self urls];
-          v27 = [(SFPunchout *)v6 urls];
+          urls = [(SFPunchout *)self urls];
+          urls2 = [(SFPunchout *)v6 urls];
           v21 = v25;
           v22 = v3;
-          if ((v26 != 0) != (v27 == 0))
+          if ((urls != 0) != (urls2 == 0))
           {
-            v58 = v27;
-            v57 = [(SFPunchout *)self urls];
-            if (v57)
+            v58 = urls2;
+            urls3 = [(SFPunchout *)self urls];
+            if (urls3)
             {
-              v28 = [(SFPunchout *)self urls];
+              urls4 = [(SFPunchout *)self urls];
               [(SFPunchout *)v6 urls];
-              v54 = v56 = v28;
-              if (![v28 isEqual:?])
+              v54 = v56 = urls4;
+              if (![urls4 isEqual:?])
               {
                 LOBYTE(v12) = 0;
-                v34 = v57;
+                v34 = urls3;
                 goto LABEL_70;
               }
 
@@ -283,32 +283,32 @@ LABEL_45:
               v55 = v21;
             }
 
-            v29 = [(SFPunchout *)self userActivityData];
-            v30 = [(SFPunchout *)v6 userActivityData];
-            if ((v29 != 0) != (v30 == 0))
+            userActivityData = [(SFPunchout *)self userActivityData];
+            userActivityData2 = [(SFPunchout *)v6 userActivityData];
+            if ((userActivityData != 0) != (userActivityData2 == 0))
             {
-              v53 = v30;
-              v31 = [(SFPunchout *)self userActivityData];
-              v52 = v29;
-              if (v31)
+              v53 = userActivityData2;
+              userActivityData3 = [(SFPunchout *)self userActivityData];
+              v52 = userActivityData;
+              if (userActivityData3)
               {
-                v32 = [(SFPunchout *)self userActivityData];
-                v49 = [(SFPunchout *)v6 userActivityData];
-                v50 = v32;
-                if (![v32 isEqual:?])
+                userActivityData4 = [(SFPunchout *)self userActivityData];
+                userActivityData5 = [(SFPunchout *)v6 userActivityData];
+                v50 = userActivityData4;
+                if (![userActivityData4 isEqual:?])
                 {
                   LOBYTE(v12) = 0;
-                  v38 = v31;
+                  v38 = userActivityData3;
                   v21 = v55;
 LABEL_68:
 
 LABEL_69:
-                  v34 = v57;
-                  if (!v57)
+                  v34 = urls3;
+                  if (!urls3)
                   {
 LABEL_71:
 
-                    if (v61)
+                    if (label3)
                     {
                     }
 
@@ -317,9 +317,9 @@ LABEL_71:
                     }
 
 LABEL_46:
-                    v11 = v67;
-                    v10 = v68;
-                    if (!v9)
+                    name5 = v67;
+                    name4 = v68;
+                    if (!name3)
                     {
 LABEL_48:
 
@@ -336,7 +336,7 @@ LABEL_70:
                   goto LABEL_71;
                 }
 
-                v51 = v31;
+                v51 = userActivityData3;
               }
 
               else
@@ -344,9 +344,9 @@ LABEL_70:
                 v51 = 0;
               }
 
-              v35 = [(SFPunchout *)self actionTarget];
-              v36 = [(SFPunchout *)v6 actionTarget];
-              if ((v35 != 0) == (v36 == 0))
+              actionTarget = [(SFPunchout *)self actionTarget];
+              actionTarget2 = [(SFPunchout *)v6 actionTarget];
+              if ((actionTarget != 0) == (actionTarget2 == 0))
               {
 
                 LOBYTE(v12) = 0;
@@ -354,17 +354,17 @@ LABEL_70:
                 goto LABEL_67;
               }
 
-              v47 = v36;
+              v47 = actionTarget2;
               [(SFPunchout *)self actionTarget];
               v48 = v21 = v55;
-              v46 = v35;
+              v46 = actionTarget;
               if (!v48 || (-[SFPunchout actionTarget](self, "actionTarget"), v45 = objc_claimAutoreleasedReturnValue(), -[SFPunchout actionTarget](v6, "actionTarget"), v44 = objc_claimAutoreleasedReturnValue(), [v45 isEqual:?]))
               {
-                v39 = [(SFPunchout *)self isRunnableInBackground];
-                if (v39 == [(SFPunchout *)v6 isRunnableInBackground]&& (v40 = [(SFPunchout *)self hasClip], v40 == [(SFPunchout *)v6 hasClip]))
+                isRunnableInBackground = [(SFPunchout *)self isRunnableInBackground];
+                if (isRunnableInBackground == [(SFPunchout *)v6 isRunnableInBackground]&& (v40 = [(SFPunchout *)self hasClip], v40 == [(SFPunchout *)v6 hasClip]))
                 {
-                  v42 = [(SFPunchout *)self forceOpenInBrowser];
-                  v12 = v42 ^ [(SFPunchout *)v6 forceOpenInBrowser]^ 1;
+                  forceOpenInBrowser = [(SFPunchout *)self forceOpenInBrowser];
+                  v12 = forceOpenInBrowser ^ [(SFPunchout *)v6 forceOpenInBrowser]^ 1;
                   v41 = v12;
                 }
 
@@ -402,28 +402,28 @@ LABEL_67:
               goto LABEL_68;
             }
 
-            if (v57)
+            if (urls3)
             {
             }
 
             v21 = v55;
-            v27 = v58;
+            urls2 = v58;
           }
 
-          if (v61)
+          if (label3)
           {
           }
 
-          v19 = v62;
-          v20 = v63;
+          label = v62;
+          label2 = v63;
         }
 
         if (v21)
         {
         }
 
-        v13 = v65;
-        v14 = v66;
+        bundleIdentifier = v65;
+        bundleIdentifier2 = v66;
       }
 
       goto LABEL_44;
@@ -437,31 +437,31 @@ LABEL_50:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFPunchout *)self name];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(SFPunchout *)self name];
+  v6 = [name copy];
   [v4 setName:v6];
 
-  v7 = [(SFPunchout *)self bundleIdentifier];
-  v8 = [v7 copy];
+  bundleIdentifier = [(SFPunchout *)self bundleIdentifier];
+  v8 = [bundleIdentifier copy];
   [v4 setBundleIdentifier:v8];
 
-  v9 = [(SFPunchout *)self label];
-  v10 = [v9 copy];
+  label = [(SFPunchout *)self label];
+  v10 = [label copy];
   [v4 setLabel:v10];
 
-  v11 = [(SFPunchout *)self urls];
-  v12 = [v11 copy];
+  urls = [(SFPunchout *)self urls];
+  v12 = [urls copy];
   [v4 setUrls:v12];
 
-  v13 = [(SFPunchout *)self userActivityData];
-  v14 = [v13 copy];
+  userActivityData = [(SFPunchout *)self userActivityData];
+  v14 = [userActivityData copy];
   [v4 setUserActivityData:v14];
 
-  v15 = [(SFPunchout *)self actionTarget];
-  v16 = [v15 copy];
+  actionTarget = [(SFPunchout *)self actionTarget];
+  v16 = [actionTarget copy];
   [v4 setActionTarget:v16];
 
   [v4 setIsRunnableInBackground:{-[SFPunchout isRunnableInBackground](self, "isRunnableInBackground")}];
@@ -473,31 +473,31 @@ LABEL_50:
 - (NSData)jsonData
 {
   v2 = [[_SFPBPunchout alloc] initWithFacade:self];
-  v3 = [(_SFPBPunchout *)v2 jsonData];
+  jsonData = [(_SFPBPunchout *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPunchout alloc] initWithFacade:self];
-  v3 = [(_SFPBPunchout *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPunchout *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBPunchout alloc] initWithFacade:self];
-  v5 = [(_SFPBPunchout *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBPunchout *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFPunchout)initWithCoder:(id)a3
+- (SFPunchout)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBPunchout alloc] initWithData:v5];
   v7 = [(SFPunchout *)self initWithProtobuf:v6];
@@ -505,12 +505,12 @@ LABEL_50:
   return v7;
 }
 
-- (BOOL)canOpenURL:(id)a3
+- (BOOL)canOpenURL:(id)l
 {
   v3 = MEMORY[0x1E6963608];
-  v4 = a3;
-  v5 = [v3 defaultWorkspace];
-  v6 = [v5 isApplicationAvailableToOpenURL:v4 error:0];
+  lCopy = l;
+  defaultWorkspace = [v3 defaultWorkspace];
+  v6 = [defaultWorkspace isApplicationAvailableToOpenURL:lCopy error:0];
 
   return v6;
 }
@@ -518,18 +518,18 @@ LABEL_50:
 - (NSURL)preferredOpenableURL
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SFPunchout *)v2 cachedOpenableURL];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedOpenableURL = [(SFPunchout *)selfCopy cachedOpenableURL];
 
-  if (!v3)
+  if (!cachedOpenableURL)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(SFPunchout *)v2 urls];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    urls = [(SFPunchout *)selfCopy urls];
+    v6 = [urls countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -539,20 +539,20 @@ LABEL_50:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(urls);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          if ([(SFPunchout *)v2 canOpenURL:v9])
+          if ([(SFPunchout *)selfCopy canOpenURL:v9])
           {
-            [(SFPunchout *)v2 setCachedOpenableURL:v9];
-            v4 = v9;
+            [(SFPunchout *)selfCopy setCachedOpenableURL:v9];
+            cachedOpenableURL2 = v9;
 
             goto LABEL_13;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [urls countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -562,39 +562,39 @@ LABEL_50:
       }
     }
 
-    v10 = [(SFPunchout *)v2 urls];
-    v11 = [v10 firstObject];
-    [(SFPunchout *)v2 setCachedOpenableURL:v11];
+    urls2 = [(SFPunchout *)selfCopy urls];
+    firstObject = [urls2 firstObject];
+    [(SFPunchout *)selfCopy setCachedOpenableURL:firstObject];
   }
 
-  v4 = [(SFPunchout *)v2 cachedOpenableURL];
+  cachedOpenableURL2 = [(SFPunchout *)selfCopy cachedOpenableURL];
 LABEL_13:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return cachedOpenableURL2;
 }
 
-+ (SFPunchout)punchoutWithURLs:(id)a3
++ (SFPunchout)punchoutWithURLs:(id)ls
 {
-  v3 = a3;
+  lsCopy = ls;
   v4 = objc_alloc_init(SFPunchout);
-  [(SFPunchout *)v4 setUrls:v3];
+  [(SFPunchout *)v4 setUrls:lsCopy];
 
   return v4;
 }
 
-+ (SFPunchout)punchoutWithURL:(id)a3
++ (SFPunchout)punchoutWithURL:(id)l
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (l)
   {
-    v9 = a3;
+    lCopy = l;
     v3 = MEMORY[0x1E695DEC8];
-    v4 = a3;
-    v5 = [v3 arrayWithObjects:&v9 count:1];
-    v6 = [SFPunchout punchoutWithURLs:v5, v9, v10];
+    lCopy2 = l;
+    v5 = [v3 arrayWithObjects:&lCopy count:1];
+    v6 = [SFPunchout punchoutWithURLs:v5, lCopy, v10];
   }
 
   else

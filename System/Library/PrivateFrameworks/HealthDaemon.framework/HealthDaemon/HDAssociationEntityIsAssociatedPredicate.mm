@@ -1,23 +1,23 @@
 @interface HDAssociationEntityIsAssociatedPredicate
-+ (id)predicateWithInvertedCondition:(BOOL)a3;
-- (id)SQLForEntityClass:(Class)a3;
++ (id)predicateWithInvertedCondition:(BOOL)condition;
+- (id)SQLForEntityClass:(Class)class;
 @end
 
 @implementation HDAssociationEntityIsAssociatedPredicate
 
-+ (id)predicateWithInvertedCondition:(BOOL)a3
++ (id)predicateWithInvertedCondition:(BOOL)condition
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v4[8] = a3;
+  v4[8] = condition;
 
   return v4;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   v5 = +[(HDSQLiteSchemaEntity *)HDAssociationEntity];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [-[objc_class entityClassForEnumeration](a3 "entityClassForEnumeration")];
+  v7 = [-[objc_class entityClassForEnumeration](class "entityClassForEnumeration")];
   v8 = [v6 stringWithFormat:@"%@.%@", v7, @"data_id"];
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v5, @"source_object_id"];

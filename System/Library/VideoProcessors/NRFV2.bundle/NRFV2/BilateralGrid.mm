@@ -1,33 +1,33 @@
 @interface BilateralGrid
-+ (int)prewarmShaders:(id)a3;
-- (BilateralGrid)initWithContext:(id)a3 normalizeGridConfidence:(BOOL)a4;
-- (id)allocGridTexture:(unint64_t)a3 label:(id)a4;
-- (id)solverPcg:(int)a3;
++ (int)prewarmShaders:(id)shaders;
+- (BilateralGrid)initWithContext:(id)context normalizeGridConfidence:(BOOL)confidence;
+- (id)allocGridTexture:(unint64_t)texture label:(id)label;
+- (id)solverPcg:(int)pcg;
 - (int)allocateTextures;
-- (int)blurAndNormalize:(id)a3 grid_tmp_tex:(id)a4;
-- (int)buildWithGuideAndConfidence:(id)a3 target:(id)a4 confidence:(id)a5 grid_tex:(id)a6 ltc_tex:(id)a7 gtcRatio_tex:(id)a8 gtcFinal_tex:(id)a9 ltmROI:;
-- (int)setupWithConfig:(BilateralGridConfiguration *)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (int)solverfilter:(__CVBuffer *)a3 target:(__CVBuffer *)a4 confidence:(__CVBuffer *)a5 output:(__CVBuffer *)a6;
-- (int)solverfilterWithGuide:(id)a3 target:(id)a4 confidence:(id)a5 ltc_tex:(id)a6 gtcRatio_tex:(id)a7 gtcFinal_tex:(id)a8 ltmROI:(id)a9 output:;
-- (int)solverfilterWithGuide:(id)a3 target:(id)a4 confidence:(id)a5 output:(id)a6;
-- (int)upsample:(id)a3 grid_tex:(id)a4 conf_tex:(id)a5 ltc_tex:(id)a6 gtcRatio_tex:(id)a7 gtcFinal_tex:(id)a8 ltmROI:(id)a9 output:;
+- (int)blurAndNormalize:(id)normalize grid_tmp_tex:(id)grid_tmp_tex;
+- (int)buildWithGuideAndConfidence:(id)confidence target:(id)target confidence:(id)a5 grid_tex:(id)grid_tex ltc_tex:(id)ltc_tex gtcRatio_tex:(id)ratio_tex gtcFinal_tex:(id)final_tex ltmROI:;
+- (int)setupWithConfig:(BilateralGridConfiguration *)config width:(unint64_t)width height:(unint64_t)height;
+- (int)solverfilter:(__CVBuffer *)solverfilter target:(__CVBuffer *)target confidence:(__CVBuffer *)confidence output:(__CVBuffer *)output;
+- (int)solverfilterWithGuide:(id)guide target:(id)target confidence:(id)confidence ltc_tex:(id)ltc_tex gtcRatio_tex:(id)ratio_tex gtcFinal_tex:(id)final_tex ltmROI:(id)i output:;
+- (int)solverfilterWithGuide:(id)guide target:(id)target confidence:(id)confidence output:(id)output;
+- (int)upsample:(id)upsample grid_tex:(id)grid_tex conf_tex:(id)conf_tex ltc_tex:(id)ltc_tex gtcRatio_tex:(id)ratio_tex gtcFinal_tex:(id)final_tex ltmROI:(id)i output:;
 - (void)dealloc;
 - (void)releaseTextures;
 @end
 
 @implementation BilateralGrid
 
-- (BilateralGrid)initWithContext:(id)a3 normalizeGridConfidence:(BOOL)a4
+- (BilateralGrid)initWithContext:(id)context normalizeGridConfidence:(BOOL)confidence
 {
-  v7 = a3;
+  contextCopy = context;
   v69.receiver = self;
   v69.super_class = BilateralGrid;
   v8 = [(BilateralGrid *)&v69 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metal, a3);
-    v9->_normalizeGridConfidence = a4;
+    objc_storeStrong(&v8->_metal, context);
+    v9->_normalizeGridConfidence = confidence;
     v9->_useMetalAllocator = 0;
     v13 = objc_msgSend_device(v9->_metal, v10, v11, v12);
     v15 = objc_msgSend_newBufferWithLength_options_(v13, v14, 36, 0);
@@ -152,11 +152,11 @@ LABEL_11:
   return v67;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [BilateralGridShaders alloc];
-  v6 = objc_msgSend_initWithMetal_normalizeGridConfidence_(v4, v5, v3, 0);
+  v6 = objc_msgSend_initWithMetal_normalizeGridConfidence_(v4, v5, shadersCopy, 0);
   if (!v6)
   {
     v13 = 353;
@@ -169,7 +169,7 @@ LABEL_7:
 
   v7 = v6;
   v8 = [BilateralGridShaders alloc];
-  v10 = objc_msgSend_initWithMetal_normalizeGridConfidence_(v8, v9, v3, 1);
+  v10 = objc_msgSend_initWithMetal_normalizeGridConfidence_(v8, v9, shadersCopy, 1);
 
   if (!v10)
   {
@@ -183,9 +183,9 @@ LABEL_4:
   return v11;
 }
 
-- (id)allocGridTexture:(unint64_t)a3 label:(id)a4
+- (id)allocGridTexture:(unint64_t)texture label:(id)label
 {
-  v6 = objc_msgSend_allocator(self->_metal, a2, a3, a4);
+  v6 = objc_msgSend_allocator(self->_metal, a2, texture, label);
   v10 = objc_msgSend_newTextureDescriptor(v6, v7, v8, v9);
 
   if (v10)
@@ -215,7 +215,7 @@ LABEL_4:
     objc_msgSend_setTextureType_(v53, v54, 7, v55);
 
     v59 = objc_msgSend_desc(v10, v56, v57, v58);
-    objc_msgSend_setPixelFormat_(v59, v60, a3, v61);
+    objc_msgSend_setPixelFormat_(v59, v60, texture, v61);
 
     objc_msgSend_setLabel_(v10, v62, 0, v63);
     metal = self->_metal;
@@ -413,21 +413,21 @@ LABEL_4:
   [(BilateralGrid *)&v5 dealloc];
 }
 
-- (int)setupWithConfig:(BilateralGridConfiguration *)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (int)setupWithConfig:(BilateralGridConfiguration *)config width:(unint64_t)width height:(unint64_t)height
 {
-  v9 = objc_msgSend_allocator(self->_metal, a2, a3, a4);
+  v9 = objc_msgSend_allocator(self->_metal, a2, config, width);
 
   if (v9)
   {
     v13 = objc_msgSend_allocator(self->_metal, v10, v11, v12);
     self->_useMetalAllocator = objc_msgSend_allocatorType(v13, v14, v15, v16) == 2;
 
-    *&v17 = a3->var1;
-    *&v18 = a3->var2.var0;
-    *&v19 = a3->var2.var1;
-    *&v20 = a3->var2.var2;
-    *&v21 = a3->var2.var3;
-    v23 = objc_msgSend_config_height_space_sigma_range_sigma_solver_(self, v22, a4, a5, a3->var0, v17, v18, v19, v20, v21);
+    *&v17 = config->var1;
+    *&v18 = config->var2.var0;
+    *&v19 = config->var2.var1;
+    *&v20 = config->var2.var2;
+    *&v21 = config->var2.var3;
+    v23 = objc_msgSend_config_height_space_sigma_range_sigma_solver_(self, v22, width, height, config->var0, v17, v18, v19, v20, v21);
     if (v23)
     {
       v27 = v23;
@@ -454,16 +454,16 @@ LABEL_4:
   return v27;
 }
 
-- (int)buildWithGuideAndConfidence:(id)a3 target:(id)a4 confidence:(id)a5 grid_tex:(id)a6 ltc_tex:(id)a7 gtcRatio_tex:(id)a8 gtcFinal_tex:(id)a9 ltmROI:
+- (int)buildWithGuideAndConfidence:(id)confidence target:(id)target confidence:(id)a5 grid_tex:(id)grid_tex ltc_tex:(id)ltc_tex gtcRatio_tex:(id)ratio_tex gtcFinal_tex:(id)final_tex ltmROI:
 {
   v58 = v9;
-  v60 = a3;
-  v59 = a4;
+  confidenceCopy = confidence;
+  targetCopy = target;
   v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  grid_texCopy = grid_tex;
+  ltc_texCopy = ltc_tex;
+  ratio_texCopy = ratio_tex;
+  final_texCopy = final_tex;
   v64 = v58;
   grid_width = self->_grid_width;
   grid_height = self->_grid_height;
@@ -479,21 +479,21 @@ LABEL_4:
       v38 = (grid_width + 7) >> 3;
       v39 = (grid_height + 7) >> 3;
       v40 = 8;
-      if (v18)
+      if (ltc_texCopy)
       {
         v40 = 16;
       }
 
       objc_msgSend_setComputePipelineState_(v34, v35, *(&self->_shaders->super.isa + v40), v36, v58);
-      objc_msgSend_setTexture_atIndex_(v37, v41, v60, 0);
-      objc_msgSend_setTexture_atIndex_(v37, v42, v59, 1);
+      objc_msgSend_setTexture_atIndex_(v37, v41, confidenceCopy, 0);
+      objc_msgSend_setTexture_atIndex_(v37, v42, targetCopy, 1);
       objc_msgSend_setTexture_atIndex_(v37, v43, v16, 2);
-      objc_msgSend_setTexture_atIndex_(v37, v44, v17, 3);
-      if (v18 && v19 && v20)
+      objc_msgSend_setTexture_atIndex_(v37, v44, grid_texCopy, 3);
+      if (ltc_texCopy && ratio_texCopy && final_texCopy)
       {
-        objc_msgSend_setTexture_atIndex_(v37, v45, v18, 4);
-        objc_msgSend_setTexture_atIndex_(v37, v46, v19, 5);
-        objc_msgSend_setTexture_atIndex_(v37, v47, v20, 6);
+        objc_msgSend_setTexture_atIndex_(v37, v45, ltc_texCopy, 4);
+        objc_msgSend_setTexture_atIndex_(v37, v46, ratio_texCopy, 5);
+        objc_msgSend_setTexture_atIndex_(v37, v47, final_texCopy, 6);
         objc_msgSend_setBytes_length_atIndex_(v37, v48, &v64, 16, 1);
       }
 
@@ -525,12 +525,12 @@ LABEL_4:
   return v56;
 }
 
-- (int)blurAndNormalize:(id)a3 grid_tmp_tex:(id)a4
+- (int)blurAndNormalize:(id)normalize grid_tmp_tex:(id)grid_tmp_tex
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  normalizeCopy = normalize;
+  grid_tmp_texCopy = grid_tmp_tex;
+  v8 = normalizeCopy;
+  v9 = grid_tmp_texCopy;
   grid_width = self->_grid_width;
   grid_height = self->_grid_height;
   v15 = objc_msgSend_commandQueue(self->_metal, v12, v13, v14);
@@ -649,20 +649,20 @@ LABEL_16:
   return v56;
 }
 
-- (int)upsample:(id)a3 grid_tex:(id)a4 conf_tex:(id)a5 ltc_tex:(id)a6 gtcRatio_tex:(id)a7 gtcFinal_tex:(id)a8 ltmROI:(id)a9 output:
+- (int)upsample:(id)upsample grid_tex:(id)grid_tex conf_tex:(id)conf_tex ltc_tex:(id)ltc_tex gtcRatio_tex:(id)ratio_tex gtcFinal_tex:(id)final_tex ltmROI:(id)i output:
 {
   v89 = v9;
-  v90 = a3;
-  v92 = a4;
-  v91 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = v18;
+  upsampleCopy = upsample;
+  grid_texCopy = grid_tex;
+  conf_texCopy = conf_tex;
+  ltc_texCopy = ltc_tex;
+  ratio_texCopy = ratio_tex;
+  final_texCopy = final_tex;
+  v19 = final_texCopy;
   v93 = v89;
-  if (v16)
+  if (ltc_texCopy)
   {
-    v20 = v17 == 0;
+    v20 = ratio_texCopy == 0;
   }
 
   else
@@ -671,9 +671,9 @@ LABEL_16:
   }
 
   v21 = !v20;
-  v22 = v18 != 0;
-  v23 = a9;
-  v27 = objc_msgSend_pixelFormat(v23, v24, v25, v26);
+  v22 = final_texCopy != 0;
+  iCopy = i;
+  v27 = objc_msgSend_pixelFormat(iCopy, v24, v25, v26);
   v28 = v21 & v22;
   v29 = 64;
   if (v28)
@@ -690,7 +690,7 @@ LABEL_16:
   v34 = objc_msgSend_renderPassDescriptor(MEMORY[0x29EDBB5F8], v31, v32, v33);
   v38 = objc_msgSend_colorAttachments(v34, v35, v36, v37);
   v41 = objc_msgSend_objectAtIndexedSubscript_(v38, v39, 0, v40);
-  objc_msgSend_setTexture_(v41, v42, v23, v43);
+  objc_msgSend_setTexture_(v41, v42, iCopy, v43);
 
   v47 = objc_msgSend_colorAttachments(v34, v44, v45, v46);
   v50 = objc_msgSend_objectAtIndexedSubscript_(v47, v48, 0, v49);
@@ -704,7 +704,7 @@ LABEL_16:
     sub_29587AA74(&v94);
 LABEL_19:
     v87 = v94;
-    v70 = v90;
+    v70 = upsampleCopy;
     goto LABEL_16;
   }
 
@@ -719,14 +719,14 @@ LABEL_19:
   v68 = objc_msgSend_fullRangeVertexBuf(self->_metal, v64, v65, v66);
   objc_msgSend_setVertexBuffer_offset_atIndex_(v67, v69, v68, 0, 0);
 
-  v70 = v90;
-  objc_msgSend_setFragmentTexture_atIndex_(v67, v71, v90, 0);
-  objc_msgSend_setFragmentTexture_atIndex_(v67, v72, v92, 1);
-  objc_msgSend_setFragmentTexture_atIndex_(v67, v73, v91, 2);
+  v70 = upsampleCopy;
+  objc_msgSend_setFragmentTexture_atIndex_(v67, v71, upsampleCopy, 0);
+  objc_msgSend_setFragmentTexture_atIndex_(v67, v72, grid_texCopy, 1);
+  objc_msgSend_setFragmentTexture_atIndex_(v67, v73, conf_texCopy, 2);
   if (v28)
   {
-    objc_msgSend_setFragmentTexture_atIndex_(v67, v74, v16, 3);
-    objc_msgSend_setFragmentTexture_atIndex_(v67, v75, v17, 4);
+    objc_msgSend_setFragmentTexture_atIndex_(v67, v74, ltc_texCopy, 3);
+    objc_msgSend_setFragmentTexture_atIndex_(v67, v75, ratio_texCopy, 4);
     objc_msgSend_setFragmentTexture_atIndex_(v67, v76, v19, 5);
     objc_msgSend_setFragmentBytes_length_atIndex_(v67, v77, &v93, 16, 1);
   }
@@ -743,9 +743,9 @@ LABEL_16:
   return v87;
 }
 
-- (int)solverfilterWithGuide:(id)a3 target:(id)a4 confidence:(id)a5 output:(id)a6
+- (int)solverfilterWithGuide:(id)guide target:(id)target confidence:(id)confidence output:(id)output
 {
-  v6 = objc_msgSend_solverfilterWithGuide_target_confidence_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, a2, a3, a4, a5, 0, 0, 0, 0.0, a6);
+  v6 = objc_msgSend_solverfilterWithGuide_target_confidence_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, a2, guide, target, confidence, 0, 0, 0, 0.0, output);
   if (v6)
   {
     sub_29587AB10();
@@ -754,7 +754,7 @@ LABEL_16:
   return v6;
 }
 
-- (id)solverPcg:(int)a3
+- (id)solverPcg:(int)pcg
 {
   grid_width = self->_grid_width;
   grid_height = self->_grid_height;
@@ -853,7 +853,7 @@ LABEL_45:
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v49, v54, buf, &v228);
   objc_msgSend_endEncoding(v49, v55, v56, v57);
   objc_msgSend_commit(v45, v58, v59, v60);
-  if (a3 >= 1)
+  if (pcg >= 1)
   {
     v64 = 0;
     v65 = vdupq_n_s64(8uLL);
@@ -1056,7 +1056,7 @@ LABEL_39:
       v210 = v233;
       v233 = v209;
 
-      if (a3 == ++v64)
+      if (pcg == ++v64)
       {
         goto LABEL_25;
       }
@@ -1083,16 +1083,16 @@ LABEL_27:
   return v211;
 }
 
-- (int)solverfilterWithGuide:(id)a3 target:(id)a4 confidence:(id)a5 ltc_tex:(id)a6 gtcRatio_tex:(id)a7 gtcFinal_tex:(id)a8 ltmROI:(id)a9 output:
+- (int)solverfilterWithGuide:(id)guide target:(id)target confidence:(id)confidence ltc_tex:(id)ltc_tex gtcRatio_tex:(id)ratio_tex gtcFinal_tex:(id)final_tex ltmROI:(id)i output:
 {
   v39 = v9;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v25 = a9;
+  guideCopy = guide;
+  targetCopy = target;
+  confidenceCopy = confidence;
+  ltc_texCopy = ltc_tex;
+  ratio_texCopy = ratio_tex;
+  final_texCopy = final_tex;
+  iCopy = i;
   if (self->_useMetalAllocator)
   {
     Textures = objc_msgSend_allocateTextures(self, v22, v23, v24);
@@ -1103,7 +1103,7 @@ LABEL_27:
     }
   }
 
-  v27 = objc_msgSend_pixelFormat(v16, v22, v23, v24);
+  v27 = objc_msgSend_pixelFormat(guideCopy, v22, v23, v24);
   v29 = v27 == 10 || v27 == 25;
   if (!v29 && v27 != 576 && v27 != 588)
   {
@@ -1114,7 +1114,7 @@ LABEL_27:
     goto LABEL_19;
   }
 
-  v30 = objc_msgSend_buildWithGuideAndConfidence_target_confidence_grid_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_(self, v28, v16, v17, v18, self->_grid_tex, v19, v20, v39, v21);
+  v30 = objc_msgSend_buildWithGuideAndConfidence_target_confidence_grid_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_(self, v28, guideCopy, targetCopy, confidenceCopy, self->_grid_tex, ltc_texCopy, ratio_texCopy, v39, final_texCopy);
   if (v30)
   {
     v37 = v30;
@@ -1125,13 +1125,13 @@ LABEL_24:
     goto LABEL_19;
   }
 
-  if (v18)
+  if (confidenceCopy)
   {
     objc_msgSend_solverBistochastize_(self, v31, 10, v32);
     v35 = objc_msgSend_solverPcg_(self, v33, 20, v34);
-    if (v25)
+    if (iCopy)
     {
-      v36 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v22, v16, v35, self->_confidence_solved_tex, v19, v20, v21, v39, v25);
+      v36 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v22, guideCopy, v35, self->_confidence_solved_tex, ltc_texCopy, ratio_texCopy, final_texCopy, v39, iCopy);
       goto LABEL_15;
     }
 
@@ -1142,12 +1142,12 @@ LABEL_17:
 
   objc_msgSend_blurAndNormalize_grid_tmp_tex_(self, v31, self->_grid_tex, self->_tmp_grid_tex);
   v35 = self->_grid_tex;
-  if (!v25)
+  if (!iCopy)
   {
     goto LABEL_17;
   }
 
-  v36 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v22, v16, v35, 0, v19, v20, v21, v39, v25);
+  v36 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v22, guideCopy, v35, 0, ltc_texCopy, ratio_texCopy, final_texCopy, v39, iCopy);
 LABEL_15:
   v37 = v36;
   if (v36)
@@ -1165,15 +1165,15 @@ LABEL_19:
   return v37;
 }
 
-- (int)solverfilter:(__CVBuffer *)a3 target:(__CVBuffer *)a4 confidence:(__CVBuffer *)a5 output:(__CVBuffer *)a6
+- (int)solverfilter:(__CVBuffer *)solverfilter target:(__CVBuffer *)target confidence:(__CVBuffer *)confidence output:(__CVBuffer *)output
 {
-  if (!self->_useMetalAllocator || (Textures = objc_msgSend_allocateTextures(self, a2, a3, a4)) == 0)
+  if (!self->_useMetalAllocator || (Textures = objc_msgSend_allocateTextures(self, a2, solverfilter, target)) == 0)
   {
     input_width = self->_input_width;
     input_height = self->_input_height;
-    if (CVPixelBufferGetWidth(a3) == input_width && CVPixelBufferGetHeight(a3) == input_height && (v18 = self->_input_width, v17 = self->_input_height, CVPixelBufferGetWidth(a4) == v18) && CVPixelBufferGetHeight(a4) == v17)
+    if (CVPixelBufferGetWidth(solverfilter) == input_width && CVPixelBufferGetHeight(solverfilter) == input_height && (v18 = self->_input_width, v17 = self->_input_height, CVPixelBufferGetWidth(target) == v18) && CVPixelBufferGetHeight(target) == v17)
     {
-      if (CVPixelBufferGetPixelFormatType(a3) != 875704422)
+      if (CVPixelBufferGetPixelFormatType(solverfilter) != 875704422)
       {
         sub_2957FD180();
         FigDebugAssert3();
@@ -1181,19 +1181,19 @@ LABEL_19:
         goto LABEL_50;
       }
 
-      v20 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v19, a3, 10, 23, 0);
+      v20 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v19, solverfilter, 10, 23, 0);
       if (v20)
       {
         v21 = v20;
-        PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+        PixelFormatType = CVPixelBufferGetPixelFormatType(target);
         if (PixelFormatType == 1278226536 || PixelFormatType == 1751410032 || PixelFormatType == 1751411059)
         {
-          objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v23, a4, 25, 23, 0);
+          objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v23, target, 25, 23, 0);
         }
 
         else
         {
-          objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v23, a4, 10, 23, 0);
+          objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v23, target, 10, 23, 0);
         }
         v26 = ;
         if (!v26)
@@ -1206,14 +1206,14 @@ LABEL_19:
         }
 
         v28 = v26;
-        if (a5)
+        if (confidence)
         {
           v30 = self->_input_width;
           v29 = self->_input_height;
-          if (CVPixelBufferGetWidth(a5) == v30 && CVPixelBufferGetHeight(a5) == v29)
+          if (CVPixelBufferGetWidth(confidence) == v30 && CVPixelBufferGetHeight(confidence) == v29)
           {
-            a5 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v31, a5, 25, 23, 0);
-            if (a5)
+            confidence = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v31, confidence, 25, 23, 0);
+            if (confidence)
             {
               goto LABEL_23;
             }
@@ -1234,30 +1234,30 @@ LABEL_19:
         }
 
 LABEL_23:
-        if (!a6)
+        if (!output)
         {
           goto LABEL_36;
         }
 
         v33 = self->_input_width;
         v32 = self->_input_height;
-        if (CVPixelBufferGetWidth(a6) == v33 && CVPixelBufferGetHeight(a6) == v32)
+        if (CVPixelBufferGetWidth(output) == v33 && CVPixelBufferGetHeight(output) == v32)
         {
-          v34 = CVPixelBufferGetPixelFormatType(a6);
+          v34 = CVPixelBufferGetPixelFormatType(output);
           if (v34 == 1278226536 || v34 == 1751410032 || v34 == 1751411059)
           {
-            objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v35, a6, 25, 22, 0);
+            objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v35, output, 25, 22, 0);
           }
 
           else
           {
-            objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v35, a6, 10, 22, 0);
+            objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metal, v35, output, 10, 22, 0);
           }
-          a6 = ;
-          if (a6)
+          output = ;
+          if (output)
           {
 LABEL_36:
-            v38 = objc_msgSend_buildWithGuideAndConfidence_target_confidence_grid_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_(self, v27, v21, v28, a5, self->_grid_tex, 0, 0, 0.0, 0);
+            v38 = objc_msgSend_buildWithGuideAndConfidence_target_confidence_grid_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_(self, v27, v21, v28, confidence, self->_grid_tex, 0, 0, 0.0, 0);
             if (v38)
             {
               v47 = v38;
@@ -1266,13 +1266,13 @@ LABEL_36:
               goto LABEL_46;
             }
 
-            if (a5)
+            if (confidence)
             {
               objc_msgSend_solverBistochastize_(self, v39, 10, v40);
               v44 = objc_msgSend_solverPcg_(self, v41, 20, v42);
-              if (a6)
+              if (output)
               {
-                v45 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v43, v21, v44, self->_confidence_solved_tex, 0, 0, 0, 0.0, a6);
+                v45 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v43, v21, v44, self->_confidence_solved_tex, 0, 0, 0, 0.0, output);
                 goto LABEL_42;
               }
             }
@@ -1281,9 +1281,9 @@ LABEL_36:
             {
               objc_msgSend_blurAndNormalize_grid_tmp_tex_(self, v39, self->_grid_tex, self->_tmp_grid_tex);
               v44 = self->_grid_tex;
-              if (a6)
+              if (output)
               {
-                v45 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v46, v21, v44, 0, 0, 0, 0, 0.0, a6);
+                v45 = objc_msgSend_upsample_grid_tex_conf_tex_ltc_tex_gtcRatio_tex_gtcFinal_tex_ltmROI_output_(self, v46, v21, v44, 0, 0, 0, 0, 0.0, output);
 LABEL_42:
                 v47 = v45;
                 if (v45)

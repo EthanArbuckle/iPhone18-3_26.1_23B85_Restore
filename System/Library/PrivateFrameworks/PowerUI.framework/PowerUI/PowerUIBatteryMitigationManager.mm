@@ -1,24 +1,24 @@
 @interface PowerUIBatteryMitigationManager
-+ (id)managerWithDefaultsDomain:(id)a3;
++ (id)managerWithDefaultsDomain:(id)domain;
 + (id)sharedManager;
 - (BOOL)fetchCurrentMitigationState;
-- (PowerUIBatteryMitigationManager)initWithDefaultsDomain:(id)a3;
+- (PowerUIBatteryMitigationManager)initWithDefaultsDomain:(id)domain;
 - (id)getGaugingMitigationDict;
-- (void)submitGaugingAnalytics:(id)a3;
+- (void)submitGaugingAnalytics:(id)analytics;
 @end
 
 @implementation PowerUIBatteryMitigationManager
 
-- (PowerUIBatteryMitigationManager)initWithDefaultsDomain:(id)a3
+- (PowerUIBatteryMitigationManager)initWithDefaultsDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v13.receiver = self;
   v13.super_class = PowerUIBatteryMitigationManager;
   v6 = [(PowerUIBatteryMitigationManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultsDomain, a3);
+    objc_storeStrong(&v6->_defaultsDomain, domain);
     v8 = +[PowerUIAnalyticsManager sharedInstance];
     analyticsManager = v7->_analyticsManager;
     v7->_analyticsManager = v8;
@@ -33,10 +33,10 @@
   return v7;
 }
 
-+ (id)managerWithDefaultsDomain:(id)a3
++ (id)managerWithDefaultsDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [[PowerUIBatteryMitigationManager alloc] initWithDefaultsDomain:v3];
+  domainCopy = domain;
+  v4 = [[PowerUIBatteryMitigationManager alloc] initWithDefaultsDomain:domainCopy];
 
   return v4;
 }
@@ -64,7 +64,7 @@ uint64_t __48__PowerUIBatteryMitigationManager_sharedManager__block_invoke()
 {
   v29 = *MEMORY[0x277D85DE8];
   cf = 0;
-  v3 = [MEMORY[0x277CBEAC0] dictionary];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
   State = IOPSGaugingMitigationGetState();
   log = self->_log;
   v6 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
@@ -77,7 +77,7 @@ uint64_t __48__PowerUIBatteryMitigationManager_sharedManager__block_invoke()
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Gauging mitigation state error received: %d", buf, 8u);
     }
 
-    v7 = v3;
+    v7 = dictionary;
   }
 
   else
@@ -95,8 +95,8 @@ uint64_t __48__PowerUIBatteryMitigationManager_sharedManager__block_invoke()
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v7 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v28 count:16];
+    allKeys = [v7 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v19 objects:v28 count:16];
     if (v9)
     {
       v10 = v9;
@@ -107,7 +107,7 @@ uint64_t __48__PowerUIBatteryMitigationManager_sharedManager__block_invoke()
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = self->_log;
@@ -124,7 +124,7 @@ uint64_t __48__PowerUIBatteryMitigationManager_sharedManager__block_invoke()
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v28 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v19 objects:v28 count:16];
       }
 
       while (v10);
@@ -195,8 +195,8 @@ LABEL_8:
       _os_log_impl(&dword_21B766000, v9, OS_LOG_TYPE_DEFAULT, "Current mitigation state changed to: %d", buf, 8u);
     }
 
-    v12 = [(PowerUIBatteryMitigationManager *)self getGaugingMitigationDict];
-    [(PowerUIBatteryMitigationManager *)self submitGaugingAnalytics:v12];
+    getGaugingMitigationDict = [(PowerUIBatteryMitigationManager *)self getGaugingMitigationDict];
+    [(PowerUIBatteryMitigationManager *)self submitGaugingAnalytics:getGaugingMitigationDict];
 
     LOBYTE(v5) = 1;
   }
@@ -206,11 +206,11 @@ LABEL_9:
   return v5;
 }
 
-- (void)submitGaugingAnalytics:(id)a3
+- (void)submitGaugingAnalytics:(id)analytics
 {
-  v18 = a3;
+  analyticsCopy = analytics;
   v4 = [MEMORY[0x277CBEAA8] now];
-  v5 = [v18 objectForKeyedSubscript:@"lastQMaxUpdate"];
+  v5 = [analyticsCopy objectForKeyedSubscript:@"lastQMaxUpdate"];
   if (v5)
   {
     [v4 timeIntervalSinceDate:v5];
@@ -222,7 +222,7 @@ LABEL_9:
     v7 = 0xFFFFFFFFLL;
   }
 
-  v8 = [v18 objectForKeyedSubscript:@"lastDOD0Update"];
+  v8 = [analyticsCopy objectForKeyedSubscript:@"lastDOD0Update"];
   if (v8)
   {
     [v4 timeIntervalSinceDate:v8];
@@ -234,7 +234,7 @@ LABEL_9:
     v10 = 0xFFFFFFFFLL;
   }
 
-  v11 = [v18 objectForKeyedSubscript:@"lastFullChargeDate"];
+  v11 = [analyticsCopy objectForKeyedSubscript:@"lastFullChargeDate"];
   if (v11)
   {
     [v4 timeIntervalSinceDate:v11];

@@ -1,8 +1,8 @@
 @interface PXGPath
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
 - (PXGPath)init;
-- (PXGPath)initWithBounds:(CGRect)a3 CGPath:(CGPath *)a4 strokeColor:(id)a5 lineWidth:(double)a6 fillColor:(id)a7 drawingMode:(int)a8;
+- (PXGPath)initWithBounds:(CGRect)bounds CGPath:(CGPath *)path strokeColor:(id)color lineWidth:(double)width fillColor:(id)fillColor drawingMode:(int)mode;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -35,19 +35,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(PXGPath *)self lineWidth];
       v7 = v6;
       [(PXGPath *)v5 lineWidth];
       if (v7 == v8 && (v9 = [(PXGPath *)self drawingMode], v9 == [(PXGPath *)v5 drawingMode]))
       {
-        v10 = [(PXGPath *)self strokeColor];
-        v11 = [(PXGPath *)v5 strokeColor];
-        if ([v10 isEqual:v11])
+        strokeColor = [(PXGPath *)self strokeColor];
+        strokeColor2 = [(PXGPath *)v5 strokeColor];
+        if ([strokeColor isEqual:strokeColor2])
         {
-          v12 = [(PXGPath *)self fillColor];
-          v13 = [(PXGPath *)v5 fillColor];
-          if ([v12 isEqual:v13])
+          fillColor = [(PXGPath *)self fillColor];
+          fillColor2 = [(PXGPath *)v5 fillColor];
+          if ([fillColor isEqual:fillColor2])
           {
             v14 = CGPathEqualToPath(self->_CGPath, [(PXGPath *)v5 CGPath]);
           }
@@ -81,10 +81,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXGPath *)self strokeColor];
-  v4 = [v3 hash];
-  v5 = [(PXGPath *)self fillColor];
-  v6 = [v5 hash] ^ v4;
+  strokeColor = [(PXGPath *)self strokeColor];
+  v4 = [strokeColor hash];
+  fillColor = [(PXGPath *)self fillColor];
+  v6 = [fillColor hash] ^ v4;
   v7 = v6 ^ CFHash([(PXGPath *)self CGPath]);
   [(PXGPath *)self lineWidth];
   v9 = (v8 * 10.0);
@@ -103,20 +103,20 @@
 
 - (PXGPath)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGPath.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXGPath init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPath.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXGPath init]"}];
 
   abort();
 }
 
-- (PXGPath)initWithBounds:(CGRect)a3 CGPath:(CGPath *)a4 strokeColor:(id)a5 lineWidth:(double)a6 fillColor:(id)a7 drawingMode:(int)a8
+- (PXGPath)initWithBounds:(CGRect)bounds CGPath:(CGPath *)path strokeColor:(id)color lineWidth:(double)width fillColor:(id)fillColor drawingMode:(int)mode
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a5;
-  v19 = a7;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  colorCopy = color;
+  fillColorCopy = fillColor;
   v23.receiver = self;
   v23.super_class = PXGPath;
   v20 = [(PXGPath *)&v23 init];
@@ -127,11 +127,11 @@
     v20->_bounds.origin.y = y;
     v20->_bounds.size.width = width;
     v20->_bounds.size.height = height;
-    v20->_CGPath = CGPathRetain(a4);
-    objc_storeStrong(&v21->_strokeColor, a5);
-    v21->_lineWidth = a6;
-    objc_storeStrong(&v21->_fillColor, a7);
-    v21->_drawingMode = a8;
+    v20->_CGPath = CGPathRetain(path);
+    objc_storeStrong(&v21->_strokeColor, color);
+    v21->_lineWidth = width;
+    objc_storeStrong(&v21->_fillColor, fillColor);
+    v21->_drawingMode = mode;
   }
 
   return v21;

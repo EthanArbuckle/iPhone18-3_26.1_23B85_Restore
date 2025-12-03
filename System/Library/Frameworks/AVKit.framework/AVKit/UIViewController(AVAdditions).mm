@@ -7,18 +7,18 @@
 - (void)avkit_setNeedsUpdatePreferencesIfNeeded
 {
   v22 = *MEMORY[0x1E69E9840];
-  if ([a1 avkit_isEffectivelyFullScreen])
+  if ([self avkit_isEffectivelyFullScreen])
   {
-    v2 = [a1 viewIfLoaded];
-    v3 = [v2 window];
-    v4 = [v3 windowScene];
+    viewIfLoaded = [self viewIfLoaded];
+    window = [viewIfLoaded window];
+    windowScene = [window windowScene];
 
-    v5 = [v4 statusBarManager];
-    v6 = [a1 prefersStatusBarHidden];
-    v7 = [a1 preferredStatusBarStyle];
-    if (v6 != [v5 isStatusBarHidden] || objc_msgSend(v5, "statusBarStyle") != v7)
+    statusBarManager = [windowScene statusBarManager];
+    prefersStatusBarHidden = [self prefersStatusBarHidden];
+    preferredStatusBarStyle = [self preferredStatusBarStyle];
+    if (prefersStatusBarHidden != [statusBarManager isStatusBarHidden] || objc_msgSend(statusBarManager, "statusBarStyle") != preferredStatusBarStyle)
     {
-      [a1 setNeedsStatusBarAppearanceUpdate];
+      [self setNeedsStatusBarAppearanceUpdate];
       v8 = _AVLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
@@ -27,7 +27,7 @@
         *&v20[4] = "[UIViewController(AVAdditions) avkit_setNeedsUpdatePreferencesIfNeeded]";
         *&v20[14] = "prefersStatusBarHidden";
         *&v20[12] = 2080;
-        if (v6)
+        if (prefersStatusBarHidden)
         {
           v9 = "YES";
         }
@@ -38,13 +38,13 @@
       }
     }
 
-    v10 = [a1 preferredWhitePointAdaptivityStyle];
-    v11 = [v4 _effectiveUIClientSettings];
-    v12 = [v11 whitePointAdaptivityStyle];
+    preferredWhitePointAdaptivityStyle = [self preferredWhitePointAdaptivityStyle];
+    _effectiveUIClientSettings = [windowScene _effectiveUIClientSettings];
+    whitePointAdaptivityStyle = [_effectiveUIClientSettings whitePointAdaptivityStyle];
 
-    if (v12 != v10)
+    if (whitePointAdaptivityStyle != preferredWhitePointAdaptivityStyle)
     {
-      [a1 setNeedsWhitePointAdaptivityStyleUpdate];
+      [self setNeedsWhitePointAdaptivityStyleUpdate];
       v13 = _AVLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -53,7 +53,7 @@
         *&v20[4] = "[UIViewController(AVAdditions) avkit_setNeedsUpdatePreferencesIfNeeded]";
         *&v20[14] = "UIWhitePointAdaptivityStyleVideo == preferredWhitePointAdaptivityStyle";
         *&v20[12] = 2080;
-        if (v10 == 3)
+        if (preferredWhitePointAdaptivityStyle == 3)
         {
           v14 = "YES";
         }
@@ -64,13 +64,13 @@
       }
     }
 
-    v15 = [a1 prefersHomeIndicatorAutoHidden];
-    v16 = [v4 _effectiveUIClientSettings];
-    v17 = [v16 homeIndicatorAutoHidden];
+    prefersHomeIndicatorAutoHidden = [self prefersHomeIndicatorAutoHidden];
+    _effectiveUIClientSettings2 = [windowScene _effectiveUIClientSettings];
+    homeIndicatorAutoHidden = [_effectiveUIClientSettings2 homeIndicatorAutoHidden];
 
-    if (v15 != v17)
+    if (prefersHomeIndicatorAutoHidden != homeIndicatorAutoHidden)
     {
-      [a1 setNeedsUpdateOfHomeIndicatorAutoHidden];
+      [self setNeedsUpdateOfHomeIndicatorAutoHidden];
       v18 = _AVLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -79,7 +79,7 @@
         *&v20[4] = "[UIViewController(AVAdditions) avkit_setNeedsUpdatePreferencesIfNeeded]";
         *&v20[14] = "prefersHomeIndicatorAutoHidden";
         *&v20[12] = 2080;
-        if (v15)
+        if (prefersHomeIndicatorAutoHidden)
         {
           v19 = "YES";
         }

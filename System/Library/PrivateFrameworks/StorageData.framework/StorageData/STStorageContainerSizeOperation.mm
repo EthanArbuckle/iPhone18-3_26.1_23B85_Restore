@@ -1,27 +1,27 @@
 @interface STStorageContainerSizeOperation
-+ (id)operationForContainer:(id)a3;
++ (id)operationForContainer:(id)container;
 - (void)main;
 @end
 
 @implementation STStorageContainerSizeOperation
 
-+ (id)operationForContainer:(id)a3
++ (id)operationForContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = objc_alloc_init(STStorageContainerSizeOperation);
-  [(STStorageContainerSizeOperation *)v4 setContainer:v3];
+  [(STStorageContainerSizeOperation *)v4 setContainer:containerCopy];
 
   return v4;
 }
 
 - (void)main
 {
-  v3 = [(STStorageContainerSizeOperation *)self container];
-  v4 = v3;
-  if (v3)
+  container = [(STStorageContainerSizeOperation *)self container];
+  v4 = container;
+  if (container)
   {
     v16 = 0;
-    v5 = [v3 diskUsageWithError:&v16];
+    v5 = [container diskUsageWithError:&v16];
     v6 = v16;
   }
 
@@ -35,10 +35,10 @@
   [(STStorageOperation *)self setError:v6];
   if (v6)
   {
-    v7 = [v6 code];
+    code = [v6 code];
     v8 = [v4 url];
-    v15 = [v8 path];
-    STLog(2, @"Error %li sizing container %@", v9, v10, v11, v12, v13, v14, v7);
+    path = [v8 path];
+    STLog(2, @"Error %li sizing container %@", v9, v10, v11, v12, v13, v14, code);
   }
 }
 

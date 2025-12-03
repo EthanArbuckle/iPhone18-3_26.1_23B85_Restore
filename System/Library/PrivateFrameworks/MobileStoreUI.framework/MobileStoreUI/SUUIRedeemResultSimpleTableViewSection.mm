@@ -1,30 +1,30 @@
 @interface SUUIRedeemResultSimpleTableViewSection
-- (SUUIRedeemResultSimpleTableViewSection)initWithView:(id)a3;
+- (SUUIRedeemResultSimpleTableViewSection)initWithView:(id)view;
 - (UIEdgeInsets)contentInsets;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path;
 @end
 
 @implementation SUUIRedeemResultSimpleTableViewSection
 
-- (SUUIRedeemResultSimpleTableViewSection)initWithView:(id)a3
+- (SUUIRedeemResultSimpleTableViewSection)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SUUIRedeemResultSimpleTableViewSection;
   v6 = [(SUUIRedeemResultSimpleTableViewSection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"SUUIRRSTVC", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"SUUIRRSTVC", path}];
   if (!v5)
   {
     v5 = [[SUUIRedeemResultSimpleTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"SUUIRRSTVC"];
@@ -37,13 +37,13 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a3 backgroundColor];
-  [v7 setBackgroundColor:v8];
+  cellCopy = cell;
+  backgroundColor = [view backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 
-  [(UIView *)self->_view setBackgroundColor:v8];
+  [(UIView *)self->_view setBackgroundColor:backgroundColor];
 }
 
 - (UIEdgeInsets)contentInsets

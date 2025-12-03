@@ -1,12 +1,12 @@
 @interface AKAttestationSigner
 + (AKAttestationSigner)sharedSigner;
 - (AKAttestationSigner)init;
-- (id)_attestationWithCertificates:(id)a3 error:(id *)a4;
-- (id)_signatureForData:(id)a3 withReferenceKey:(__SecKey *)a4 error:(id *)a5;
-- (void)_baaSignatureForData:(id)a3 completion:(id)a4;
-- (void)_baaSignaturesForData:(id)a3 completion:(id)a4;
-- (void)signatureForData:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)signaturesForData:(id)a3 options:(id)a4 completion:(id)a5;
+- (id)_attestationWithCertificates:(id)certificates error:(id *)error;
+- (id)_signatureForData:(id)data withReferenceKey:(__SecKey *)key error:(id *)error;
+- (void)_baaSignatureForData:(id)data completion:(id)completion;
+- (void)_baaSignaturesForData:(id)data completion:(id)completion;
+- (void)signatureForData:(id)data options:(id)options completion:(id)completion;
+- (void)signaturesForData:(id)data options:(id)options completion:(id)completion;
 @end
 
 @implementation AKAttestationSigner
@@ -58,40 +58,40 @@ uint64_t __35__AKAttestationSigner_sharedSigner__block_invoke()
   return v5;
 }
 
-- (void)signatureForData:(id)a3 options:(id)a4 completion:(id)a5
+- (void)signatureForData:(id)data options:(id)options completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, options);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, completion);
   v11 = [v28 objectForKeyedSubscript:@"AKAttestationUseDeviceCheckKeychainAccess"];
   [v11 BOOLValue];
   MEMORY[0x1E69E5920](v11);
   if ([location[0] length])
   {
     v7 = [v28 objectForKeyedSubscript:@"AKAttestationUseDeviceCheckKeychainAccess"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     MEMORY[0x1E69E5920](v7);
-    if (v8)
+    if (bOOLValue)
     {
-      [(AKAttestationSigner *)v30 _baaSignatureForData:location[0] completion:v27];
+      [(AKAttestationSigner *)selfCopy _baaSignatureForData:location[0] completion:v27];
     }
 
     else
     {
       v22 = _AKAttestationOptionsFromOptions(v28);
-      attestationQueue = v30->_attestationQueue;
+      attestationQueue = selfCopy->_attestationQueue;
       v5 = v22;
       v14 = MEMORY[0x1E69E9820];
       v15 = -1073741824;
       v16 = 0;
       v17 = __59__AKAttestationSigner_signatureForData_options_completion___block_invoke;
       v18 = &unk_1E73D4C70;
-      v19 = MEMORY[0x1E69E5928](v30);
+      v19 = MEMORY[0x1E69E5928](selfCopy);
       v20 = MEMORY[0x1E69E5928](location[0]);
       v21 = MEMORY[0x1E69E5928](v27);
       SDeviceIdentityIssueClientCertificateWithCompletion(attestationQueue, v5, &v14);
@@ -208,33 +208,33 @@ void __59__AKAttestationSigner_signatureForData_options_completion___block_invok
   *MEMORY[0x1E69E9840];
 }
 
-- (void)signaturesForData:(id)a3 options:(id)a4 completion:(id)a5
+- (void)signaturesForData:(id)data options:(id)options completion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, options);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, completion);
   v11 = [v28 objectForKeyedSubscript:@"AKAttestationUseDeviceCheckKeychainAccess"];
   [v11 BOOLValue];
   MEMORY[0x1E69E5920](v11);
   if ([location[0] count])
   {
     v7 = [v28 objectForKeyedSubscript:@"AKAttestationUseDeviceCheckKeychainAccess"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     MEMORY[0x1E69E5920](v7);
-    if (v8)
+    if (bOOLValue)
     {
-      [(AKAttestationSigner *)v30 _baaSignaturesForData:location[0] completion:v27];
+      [(AKAttestationSigner *)selfCopy _baaSignaturesForData:location[0] completion:v27];
     }
 
     else
     {
       v22 = _AKAttestationOptionsFromOptions(v28);
-      attestationQueue = v30->_attestationQueue;
+      attestationQueue = selfCopy->_attestationQueue;
       v5 = v22;
       v14 = MEMORY[0x1E69E9820];
       v15 = -1073741824;
@@ -242,7 +242,7 @@ void __59__AKAttestationSigner_signatureForData_options_completion___block_invok
       v17 = __60__AKAttestationSigner_signaturesForData_options_completion___block_invoke;
       v18 = &unk_1E73D4C70;
       v19 = MEMORY[0x1E69E5928](location[0]);
-      v20 = MEMORY[0x1E69E5928](v30);
+      v20 = MEMORY[0x1E69E5928](selfCopy);
       v21 = MEMORY[0x1E69E5928](v27);
       SDeviceIdentityIssueClientCertificateWithCompletion(attestationQueue, v5, &v14);
       objc_storeStrong(&v21, 0);
@@ -422,14 +422,14 @@ id __60__AKAttestationSigner_signaturesForData_options_completion___block_invoke
   return v6;
 }
 
-- (void)_baaSignaturesForData:(id)a3 completion:(id)a4
+- (void)_baaSignaturesForData:(id)data completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, completion);
   if (DeviceCheckInternalLibraryCore(0))
   {
     v4 = objc_alloc_init(getDCBAASigningControllerClass());
@@ -483,14 +483,14 @@ void __56__AKAttestationSigner__baaSignaturesForData_completion___block_invoke(v
   objc_storeStrong(location, 0);
 }
 
-- (void)_baaSignatureForData:(id)a3 completion:(id)a4
+- (void)_baaSignatureForData:(id)data completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, completion);
   if (DeviceCheckInternalLibraryCore(0))
   {
     v4 = objc_alloc_init(getDCBAASigningControllerClass());
@@ -544,18 +544,18 @@ void __55__AKAttestationSigner__baaSignatureForData_completion___block_invoke(vo
   objc_storeStrong(location, 0);
 }
 
-- (id)_signatureForData:(id)a3 withReferenceKey:(__SecKey *)a4 error:(id *)a5
+- (id)_signatureForData:(id)data withReferenceKey:(__SecKey *)key error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
-  v24 = a5;
+  objc_storeStrong(location, data);
+  keyCopy = key;
+  errorCopy = error;
   error = 0;
-  v22 = SecKeyCreateSignature(a4, *MEMORY[0x1E697B128], location[0], &error);
-  v21 = error;
+  v22 = SecKeyCreateSignature(key, *MEMORY[0x1E697B128], location[0], &error);
+  errorCopy2 = error;
   if (v22)
   {
     v27 = MEMORY[0x1E69E5928](v22);
@@ -564,22 +564,22 @@ void __55__AKAttestationSigner__baaSignatureForData_completion___block_invoke(vo
 
   else
   {
-    if (v21)
+    if (errorCopy2)
     {
       oslog = _AKLogSystem();
       type = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v28, v21);
+        __os_log_helper_16_2_1_8_64(v28, errorCopy2);
         _os_log_error_impl(&dword_193225000, oslog, type, "Failed to BAA, failed to generate signature: %@", v28, 0xCu);
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v24)
+      if (errorCopy)
       {
-        v12 = _AKAttestationErrorCreateWithUnderlyingError(-10001, v21);
+        v12 = _AKAttestationErrorCreateWithUnderlyingError(-10001, errorCopy2);
         v5 = v12;
-        *v24 = v12;
+        *errorCopy = v12;
       }
     }
 
@@ -596,11 +596,11 @@ void __55__AKAttestationSigner__baaSignatureForData_completion___block_invoke(vo
       }
 
       objc_storeStrong(&v17, 0);
-      if (v24)
+      if (errorCopy)
       {
         v9 = _AKAttestationErrorCreate(-10001);
         v6 = v9;
-        *v24 = v9;
+        *errorCopy = v9;
       }
     }
 
@@ -608,7 +608,7 @@ void __55__AKAttestationSigner__baaSignatureForData_completion___block_invoke(vo
     v20 = 1;
   }
 
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&errorCopy2, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
@@ -617,14 +617,14 @@ void __55__AKAttestationSigner__baaSignatureForData_completion___block_invoke(vo
   return v7;
 }
 
-- (id)_attestationWithCertificates:(id)a3 error:(id *)a4
+- (id)_attestationWithCertificates:(id)certificates error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, certificates);
+  errorCopy = error;
   v21 = [location[0] aaf_map:&__block_literal_global_37];
   v26 = @"certs";
   v27[0] = v21;
@@ -646,11 +646,11 @@ void __55__AKAttestationSigner__baaSignatureForData_completion___block_invoke(vo
   objc_storeStrong(&v15, obj);
   if (v15)
   {
-    if (v22)
+    if (errorCopy)
     {
       v9 = _AKAttestationErrorCreateWithUnderlyingError(-10001, v15);
       v4 = v9;
-      *v22 = v9;
+      *errorCopy = v9;
     }
 
     v13 = 0;
@@ -677,11 +677,11 @@ LABEL_8:
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v22)
+      if (errorCopy)
       {
         v8 = _AKAttestationErrorCreateWithUnderlyingError(-10001, v19);
         v5 = v8;
-        *v22 = v8;
+        *errorCopy = v8;
       }
     }
 

@@ -1,26 +1,26 @@
 @interface AWDLibnetcoreConnectionDataUsageSnapshot
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBytesOut:(BOOL)a3;
-- (void)setHasMultipathBytesInCell:(BOOL)a3;
-- (void)setHasMultipathBytesInInitial:(BOOL)a3;
-- (void)setHasMultipathBytesInWiFi:(BOOL)a3;
-- (void)setHasMultipathBytesOutCell:(BOOL)a3;
-- (void)setHasMultipathBytesOutInitial:(BOOL)a3;
-- (void)setHasMultipathBytesOutWiFi:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBytesOut:(BOOL)out;
+- (void)setHasMultipathBytesInCell:(BOOL)cell;
+- (void)setHasMultipathBytesInInitial:(BOOL)initial;
+- (void)setHasMultipathBytesInWiFi:(BOOL)fi;
+- (void)setHasMultipathBytesOutCell:(BOOL)cell;
+- (void)setHasMultipathBytesOutInitial:(BOOL)initial;
+- (void)setHasMultipathBytesOutWiFi:(BOOL)fi;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLibnetcoreConnectionDataUsageSnapshot
 
-- (void)setHasBytesOut:(BOOL)a3
+- (void)setHasBytesOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 2;
   }
@@ -33,9 +33,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMultipathBytesInCell:(BOOL)a3
+- (void)setHasMultipathBytesInCell:(BOOL)cell
 {
-  if (a3)
+  if (cell)
   {
     v3 = 4;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMultipathBytesOutCell:(BOOL)a3
+- (void)setHasMultipathBytesOutCell:(BOOL)cell
 {
-  if (a3)
+  if (cell)
   {
     v3 = 32;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasMultipathBytesInWiFi:(BOOL)a3
+- (void)setHasMultipathBytesInWiFi:(BOOL)fi
 {
-  if (a3)
+  if (fi)
   {
     v3 = 16;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMultipathBytesOutWiFi:(BOOL)a3
+- (void)setHasMultipathBytesOutWiFi:(BOOL)fi
 {
-  if (a3)
+  if (fi)
   {
     v3 = 0x80;
   }
@@ -93,9 +93,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasMultipathBytesInInitial:(BOOL)a3
+- (void)setHasMultipathBytesInInitial:(BOOL)initial
 {
-  if (a3)
+  if (initial)
   {
     v3 = 8;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasMultipathBytesOutInitial:(BOOL)a3
+- (void)setHasMultipathBytesOutInitial:(BOOL)initial
 {
-  if (a3)
+  if (initial)
   {
     v3 = 64;
   }
@@ -132,11 +132,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesIn), @"bytesIn"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesIn), @"bytesIn"}];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -155,7 +155,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesOut), @"bytesOut"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bytesOut), @"bytesOut"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInCell), @"multipathBytesInCell"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInCell), @"multipathBytesInCell"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -183,7 +183,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutCell), @"multipathBytesOutCell"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutCell), @"multipathBytesOutCell"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInWiFi), @"multipathBytesInWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInWiFi), @"multipathBytesInWiFi"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -208,17 +208,17 @@ LABEL_7:
     }
 
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInInitial), @"multipathBytesInInitial"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesInInitial), @"multipathBytesInInitial"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutWiFi), @"multipathBytesOutWiFi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutWiFi), @"multipathBytesOutWiFi"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -229,13 +229,13 @@ LABEL_8:
   if ((has & 0x40) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutInitial), @"multipathBytesOutInitial"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_multipathBytesOutInitial), @"multipathBytesOutInitial"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -348,13 +348,13 @@ LABEL_17:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_bytesIn;
-    *(a3 + 72) |= 1u;
+    *(to + 1) = self->_bytesIn;
+    *(to + 72) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -373,8 +373,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_bytesOut;
-  *(a3 + 72) |= 2u;
+  *(to + 2) = self->_bytesOut;
+  *(to + 72) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -388,8 +388,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(a3 + 3) = self->_multipathBytesInCell;
-  *(a3 + 72) |= 4u;
+  *(to + 3) = self->_multipathBytesInCell;
+  *(to + 72) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -403,8 +403,8 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(a3 + 6) = self->_multipathBytesOutCell;
-  *(a3 + 72) |= 0x20u;
+  *(to + 6) = self->_multipathBytesOutCell;
+  *(to + 72) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -418,8 +418,8 @@ LABEL_6:
   }
 
 LABEL_14:
-  *(a3 + 5) = self->_multipathBytesInWiFi;
-  *(a3 + 72) |= 0x10u;
+  *(to + 5) = self->_multipathBytesInWiFi;
+  *(to + 72) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -433,8 +433,8 @@ LABEL_7:
   }
 
 LABEL_15:
-  *(a3 + 8) = self->_multipathBytesOutWiFi;
-  *(a3 + 72) |= 0x80u;
+  *(to + 8) = self->_multipathBytesOutWiFi;
+  *(to + 72) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -445,23 +445,23 @@ LABEL_8:
     }
 
 LABEL_17:
-    *(a3 + 7) = self->_multipathBytesOutInitial;
-    *(a3 + 72) |= 0x40u;
+    *(to + 7) = self->_multipathBytesOutInitial;
+    *(to + 72) |= 0x40u;
     return;
   }
 
 LABEL_16:
-  *(a3 + 4) = self->_multipathBytesInInitial;
-  *(a3 + 72) |= 8u;
+  *(to + 4) = self->_multipathBytesInInitial;
+  *(to + 72) |= 8u;
   if ((*&self->_has & 0x40) != 0)
   {
     goto LABEL_17;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -573,85 +573,85 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_bytesIn != *(a3 + 1))
+      if ((*(equal + 72) & 1) == 0 || self->_bytesIn != *(equal + 1))
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(a3 + 72))
+    else if (*(equal + 72))
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_bytesOut != *(a3 + 2))
+      if ((*(equal + 72) & 2) == 0 || self->_bytesOut != *(equal + 2))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_multipathBytesInCell != *(a3 + 3))
+      if ((*(equal + 72) & 4) == 0 || self->_multipathBytesInCell != *(equal + 3))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 72) & 0x20) == 0 || self->_multipathBytesOutCell != *(a3 + 6))
+      if ((*(equal + 72) & 0x20) == 0 || self->_multipathBytesOutCell != *(equal + 6))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x20) != 0)
+    else if ((*(equal + 72) & 0x20) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 72) & 0x10) == 0 || self->_multipathBytesInWiFi != *(a3 + 5))
+      if ((*(equal + 72) & 0x10) == 0 || self->_multipathBytesInWiFi != *(equal + 5))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x10) != 0)
+    else if ((*(equal + 72) & 0x10) != 0)
     {
       goto LABEL_41;
     }
 
     if ((*&self->_has & 0x80) != 0)
     {
-      if ((*(a3 + 72) & 0x80) == 0 || self->_multipathBytesOutWiFi != *(a3 + 8))
+      if ((*(equal + 72) & 0x80) == 0 || self->_multipathBytesOutWiFi != *(equal + 8))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 0x80) != 0)
+    else if ((*(equal + 72) & 0x80) != 0)
     {
 LABEL_41:
       LOBYTE(v5) = 0;
@@ -660,21 +660,21 @@ LABEL_41:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0 || self->_multipathBytesInInitial != *(a3 + 4))
+      if ((*(equal + 72) & 8) == 0 || self->_multipathBytesInInitial != *(equal + 4))
       {
         goto LABEL_41;
       }
     }
 
-    else if ((*(a3 + 72) & 8) != 0)
+    else if ((*(equal + 72) & 8) != 0)
     {
       goto LABEL_41;
     }
 
-    LOBYTE(v5) = (*(a3 + 72) & 0x40) == 0;
+    LOBYTE(v5) = (*(equal + 72) & 0x40) == 0;
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 72) & 0x40) == 0 || self->_multipathBytesOutInitial != *(a3 + 7))
+      if ((*(equal + 72) & 0x40) == 0 || self->_multipathBytesOutInitial != *(equal + 7))
       {
         goto LABEL_41;
       }
@@ -796,14 +796,14 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if (v3)
   {
-    self->_bytesIn = *(a3 + 1);
+    self->_bytesIn = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 72);
+    v3 = *(from + 72);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -816,14 +816,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 72) & 2) == 0)
+  else if ((*(from + 72) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_bytesOut = *(a3 + 2);
+  self->_bytesOut = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 4) == 0)
   {
 LABEL_4:
@@ -836,9 +836,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_multipathBytesInCell = *(a3 + 3);
+  self->_multipathBytesInCell = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x20) == 0)
   {
 LABEL_5:
@@ -851,9 +851,9 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_multipathBytesOutCell = *(a3 + 6);
+  self->_multipathBytesOutCell = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x10) == 0)
   {
 LABEL_6:
@@ -866,9 +866,9 @@ LABEL_6:
   }
 
 LABEL_14:
-  self->_multipathBytesInWiFi = *(a3 + 5);
+  self->_multipathBytesInWiFi = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 0x80) == 0)
   {
 LABEL_7:
@@ -881,9 +881,9 @@ LABEL_7:
   }
 
 LABEL_15:
-  self->_multipathBytesOutWiFi = *(a3 + 8);
+  self->_multipathBytesOutWiFi = *(from + 8);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 72);
+  v3 = *(from + 72);
   if ((v3 & 8) == 0)
   {
 LABEL_8:
@@ -893,15 +893,15 @@ LABEL_8:
     }
 
 LABEL_17:
-    self->_multipathBytesOutInitial = *(a3 + 7);
+    self->_multipathBytesOutInitial = *(from + 7);
     *&self->_has |= 0x40u;
     return;
   }
 
 LABEL_16:
-  self->_multipathBytesInInitial = *(a3 + 4);
+  self->_multipathBytesInInitial = *(from + 4);
   *&self->_has |= 8u;
-  if ((*(a3 + 72) & 0x40) != 0)
+  if ((*(from + 72) & 0x40) != 0)
   {
     goto LABEL_17;
   }

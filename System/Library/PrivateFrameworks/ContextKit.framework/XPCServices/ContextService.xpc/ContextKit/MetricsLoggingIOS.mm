@@ -1,11 +1,11 @@
 @interface MetricsLoggingIOS
 - (MetricsLoggingIOS)init;
-- (void)recordAssetInfo:(id)a3;
-- (void)recordFindResultsMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6;
-- (void)recordQueryEngagementWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 result:(id)a5 rank:(unint64_t)a6 indexId:(id)a7 requestType:(unint64_t)a8 logType:(unint64_t)a9;
-- (void)recordQueryEventWithLuceneResultCount:(unint64_t)a3 error:(id)a4 requestType:(unint64_t)a5 indexId:(id)a6;
-- (void)recordQueryLuceneMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6;
-- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 indexId:(id)a5 requestType:(unint64_t)a6 logType:(unint64_t)a7;
+- (void)recordAssetInfo:(id)info;
+- (void)recordFindResultsMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id;
+- (void)recordQueryEngagementWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength result:(id)result rank:(unint64_t)rank indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType;
+- (void)recordQueryEventWithLuceneResultCount:(unint64_t)count error:(id)error requestType:(unint64_t)type indexId:(id)id;
+- (void)recordQueryLuceneMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id;
+- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType;
 @end
 
 @implementation MetricsLoggingIOS
@@ -14,8 +14,8 @@
 {
   v73.receiver = self;
   v73.super_class = MetricsLoggingIOS;
-  v2 = [(MetricsLogging *)&v73 _init];
-  if (v2)
+  _init = [(MetricsLogging *)&v73 _init];
+  if (_init)
   {
     v3 = [PETEventProperty freeValuedPropertyWithName:@"index"];
     v4 = [PETEventProperty freeValuedPropertyWithName:@"ab"];
@@ -33,8 +33,8 @@
     v70 = v6;
     v9 = [NSArray arrayWithObjects:v84 count:4];
     v10 = [v7 initWithFeatureId:? event:? registerProperties:?];
-    findResultsMsec = v2->_findResultsMsec;
-    v2->_findResultsMsec = v10;
+    findResultsMsec = _init->_findResultsMsec;
+    _init->_findResultsMsec = v10;
 
     v12 = [PETDistributionEventTracker alloc];
     v83[0] = v3;
@@ -43,8 +43,8 @@
     v83[3] = v6;
     v13 = [NSArray arrayWithObjects:v83 count:4];
     v14 = [v12 initWithFeatureId:@"Context" event:@"timing_lucene" registerProperties:v13];
-    queryLuceneMsec = v2->_queryLuceneMsec;
-    v2->_queryLuceneMsec = v14;
+    queryLuceneMsec = _init->_queryLuceneMsec;
+    _init->_queryLuceneMsec = v14;
 
     v16 = [PETDistributionEventTracker alloc];
     v82[0] = v3;
@@ -53,8 +53,8 @@
     v71 = v8;
     v17 = [NSArray arrayWithObjects:v82 count:3];
     v18 = [v16 initWithFeatureId:@"Context" event:@"inputLength" registerProperties:v17];
-    inputLength = v2->_inputLength;
-    v2->_inputLength = v18;
+    inputLength = _init->_inputLength;
+    _init->_inputLength = v18;
 
     v20 = [PETScalarEventTracker alloc];
     v81[0] = v3;
@@ -66,8 +66,8 @@
     v81[4] = v22;
     v23 = [NSArray arrayWithObjects:v81 count:5];
     v24 = [v20 initWithFeatureId:@"Context" event:@"queries" registerProperties:v23];
-    queryEvent = v2->_queryEvent;
-    v2->_queryEvent = v24;
+    queryEvent = _init->_queryEvent;
+    _init->_queryEvent = v24;
 
     v26 = [PETScalarEventTracker alloc];
     v80[0] = v3;
@@ -82,8 +82,8 @@
     v80[5] = v30;
     v31 = [NSArray arrayWithObjects:v80 count:6];
     v32 = [v26 initWithFeatureId:@"Context" event:@"shown" registerProperties:v31];
-    shownEvent = v2->_shownEvent;
-    v2->_shownEvent = v32;
+    shownEvent = _init->_shownEvent;
+    _init->_shownEvent = v32;
 
     v34 = [PETScalarEventTracker alloc];
     v79[0] = v3;
@@ -94,8 +94,8 @@
     v79[3] = v36;
     v37 = [NSArray arrayWithObjects:v79 count:4];
     v38 = [v34 initWithFeatureId:@"Context" event:@"engagement" registerProperties:v37];
-    engagementEvent = v2->_engagementEvent;
-    v2->_engagementEvent = v38;
+    engagementEvent = _init->_engagementEvent;
+    _init->_engagementEvent = v38;
 
     v40 = [PETScalarEventTracker alloc];
     v78[0] = v3;
@@ -104,8 +104,8 @@
     v78[2] = v41;
     v42 = [NSArray arrayWithObjects:v78 count:3];
     v43 = [v40 initWithFeatureId:@"Context" event:@"transaction" registerProperties:v42];
-    transactionEvent = v2->_transactionEvent;
-    v2->_transactionEvent = v43;
+    transactionEvent = _init->_transactionEvent;
+    _init->_transactionEvent = v43;
 
     v45 = [PETScalarEventTracker alloc];
     v77[0] = v3;
@@ -117,8 +117,8 @@
     v77[4] = v47;
     v48 = [NSArray arrayWithObjects:v77 count:5];
     v49 = [v45 initWithFeatureId:@"Context" event:@"urlLookup" registerProperties:v48];
-    urlLookupEvent = v2->_urlLookupEvent;
-    v2->_urlLookupEvent = v49;
+    urlLookupEvent = _init->_urlLookupEvent;
+    _init->_urlLookupEvent = v49;
 
     v51 = [PETScalarEventTracker alloc];
     v76[0] = v3;
@@ -127,8 +127,8 @@
     v76[3] = v68;
     v52 = [NSArray arrayWithObjects:v76 count:4];
     v53 = [v51 initWithFeatureId:@"Context" event:@"language" registerProperties:v52];
-    languageSupportedEvent = v2->_languageSupportedEvent;
-    v2->_languageSupportedEvent = v53;
+    languageSupportedEvent = _init->_languageSupportedEvent;
+    _init->_languageSupportedEvent = v53;
 
     v55 = [PETScalarEventTracker alloc];
     v75[0] = v3;
@@ -136,8 +136,8 @@
     v75[2] = v69;
     v56 = [NSArray arrayWithObjects:v75 count:3];
     v57 = [v55 initWithFeatureId:@"Context" event:@"findResultsTimeout" registerProperties:v56];
-    findResultsTimeoutEvent = v2->_findResultsTimeoutEvent;
-    v2->_findResultsTimeoutEvent = v57;
+    findResultsTimeoutEvent = _init->_findResultsTimeoutEvent;
+    _init->_findResultsTimeoutEvent = v57;
 
     v59 = [PETScalarEventTracker alloc];
     v74[0] = v3;
@@ -145,91 +145,91 @@
     v74[2] = v69;
     v60 = [NSArray arrayWithObjects:v74 count:3];
     v61 = [v59 initWithFeatureId:@"Context" event:@"findResultsSlow" registerProperties:v60];
-    findResultsSlowEvent = v2->_findResultsSlowEvent;
-    v2->_findResultsSlowEvent = v61;
+    findResultsSlowEvent = _init->_findResultsSlowEvent;
+    _init->_findResultsSlowEvent = v61;
 
     v63 = [[_DPStringRecorder alloc] initWithKey:@"com.apple.contextkit.TopicShown"];
-    dpShownRecorder = v2->_dpShownRecorder;
-    v2->_dpShownRecorder = v63;
+    dpShownRecorder = _init->_dpShownRecorder;
+    _init->_dpShownRecorder = v63;
 
     v65 = [[_DPStringRecorder alloc] initWithKey:@"com.apple.contextkit.TopicInteracted"];
-    dpEngagedRecorder = v2->_dpEngagedRecorder;
-    v2->_dpEngagedRecorder = v65;
+    dpEngagedRecorder = _init->_dpEngagedRecorder;
+    _init->_dpEngagedRecorder = v65;
   }
 
-  return v2;
+  return _init;
 }
 
-- (void)recordFindResultsMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6
+- (void)recordFindResultsMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id
 {
-  v10 = a6;
-  if (a5 != 3)
+  idCopy = id;
+  if (requestType != 3)
   {
     v16.receiver = self;
     v16.super_class = MetricsLoggingIOS;
-    [(MetricsLogging *)&v16 recordFindResultsMsec:a4 queryType:a5 requestType:v10 indexId:a3];
-    if (a5 - 6 >= 3)
+    [(MetricsLogging *)&v16 recordFindResultsMsec:type queryType:requestType requestType:idCopy indexId:msec];
+    if (requestType - 6 >= 3)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_10029A494;
       v11[3] = &unk_100483AA0;
       v11[4] = self;
-      v12 = v10;
-      v13 = a5;
-      v14 = a4;
-      v15 = a3;
+      v12 = idCopy;
+      requestTypeCopy = requestType;
+      typeCopy = type;
+      msecCopy = msec;
       [(MetricsLogging *)self runInBackground:v11];
     }
   }
 }
 
-- (void)recordQueryLuceneMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6
+- (void)recordQueryLuceneMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id
 {
-  v10 = a6;
-  if (a5 != 3)
+  idCopy = id;
+  if (requestType != 3)
   {
     v16.receiver = self;
     v16.super_class = MetricsLoggingIOS;
-    [(MetricsLogging *)&v16 recordQueryLuceneMsec:a4 queryType:a5 requestType:v10 indexId:a3];
+    [(MetricsLogging *)&v16 recordQueryLuceneMsec:type queryType:requestType requestType:idCopy indexId:msec];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10029A72C;
     v11[3] = &unk_100483AA0;
     v11[4] = self;
-    v12 = v10;
-    v13 = a5;
-    v14 = a4;
-    v15 = a3;
+    v12 = idCopy;
+    requestTypeCopy = requestType;
+    typeCopy = type;
+    msecCopy = msec;
     [(MetricsLogging *)self runInBackground:v11];
   }
 }
 
-- (void)recordQueryEventWithLuceneResultCount:(unint64_t)a3 error:(id)a4 requestType:(unint64_t)a5 indexId:(id)a6
+- (void)recordQueryEventWithLuceneResultCount:(unint64_t)count error:(id)error requestType:(unint64_t)type indexId:(id)id
 {
-  v10 = a4;
-  v11 = a6;
-  if (a5 != 3)
+  errorCopy = error;
+  idCopy = id;
+  if (type != 3)
   {
     v21.receiver = self;
     v21.super_class = MetricsLoggingIOS;
-    [(MetricsLogging *)&v21 recordQueryEventWithLuceneResultCount:a3 error:v10 requestType:a5 indexId:v11];
-    if (v10)
+    [(MetricsLogging *)&v21 recordQueryEventWithLuceneResultCount:count error:errorCopy requestType:type indexId:idCopy];
+    if (errorCopy)
     {
-      v12 = [v10 domain];
+      domain = [errorCopy domain];
       v13 = ContextKitErrorDomain;
 
-      if (v12 == v13)
+      if (domain == v13)
       {
-        v15 = [v10 code];
-        if (v15 >= 0)
+        code = [errorCopy code];
+        if (code >= 0)
         {
-          v14 = v15;
+          v14 = code;
         }
 
         else
         {
-          v14 = -v15;
+          v14 = -code;
         }
       }
 
@@ -249,36 +249,36 @@
     v16[2] = sub_10029ACC4;
     v16[3] = &unk_100483AA0;
     v16[4] = self;
-    v17 = v11;
-    v18 = a5;
-    v19 = a3;
+    v17 = idCopy;
+    typeCopy = type;
+    countCopy = count;
     v20 = v14;
     [(MetricsLogging *)self runInBackground:v16];
   }
 }
 
-- (void)recordQueryEngagementWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 result:(id)a5 rank:(unint64_t)a6 indexId:(id)a7 requestType:(unint64_t)a8 logType:(unint64_t)a9
+- (void)recordQueryEngagementWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength result:(id)result rank:(unint64_t)rank indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType
 {
-  v15 = a5;
-  v16 = a7;
-  if (a9)
+  resultCopy = result;
+  idCopy = id;
+  if (logType)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = a8 > 0x12;
+    v17 = type > 0x12;
   }
 
-  if (!v17 && ((1 << a8) & 0x6A807) != 0)
+  if (!v17 && ((1 << type) & 0x6A807) != 0)
   {
     v25.receiver = self;
     v25.super_class = MetricsLoggingIOS;
-    [(MetricsLogging *)&v25 recordQueryEngagementWithUserInputLength:a3 completionLength:a4 result:v15 rank:a6 indexId:v16 requestType:a8 logType:0];
-    if (a3 >= 5)
+    [(MetricsLogging *)&v25 recordQueryEngagementWithUserInputLength:length completionLength:completionLength result:resultCopy rank:rank indexId:idCopy requestType:type logType:0];
+    if (length >= 5)
     {
-      a3 = 5;
+      length = 5;
     }
 
     v19[0] = _NSConcreteStackBlock;
@@ -286,26 +286,26 @@
     v19[2] = sub_10029B258;
     v19[3] = &unk_100483B18;
     v19[4] = self;
-    v20 = v16;
-    v22 = a8;
-    v23 = a3;
-    v24 = a6;
-    v21 = v15;
+    v20 = idCopy;
+    typeCopy = type;
+    lengthCopy = length;
+    rankCopy = rank;
+    v21 = resultCopy;
     [(MetricsLogging *)self runInBackground:v19];
   }
 }
 
-- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 indexId:(id)a5 requestType:(unint64_t)a6 logType:(unint64_t)a7
+- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType
 {
-  v12 = a5;
-  if (!a7 && a6 <= 0x12 && ((1 << a6) & 0x6A807) != 0)
+  idCopy = id;
+  if (!logType && type <= 0x12 && ((1 << type) & 0x6A807) != 0)
   {
     v17.receiver = self;
     v17.super_class = MetricsLoggingIOS;
-    [(MetricsLogging *)&v17 recordTransactionSuccessfulWithUserInputLength:a3 completionLength:a4 indexId:v12 requestType:a6 logType:0];
-    if (a3 >= 5)
+    [(MetricsLogging *)&v17 recordTransactionSuccessfulWithUserInputLength:length completionLength:completionLength indexId:idCopy requestType:type logType:0];
+    if (length >= 5)
     {
-      a3 = 5;
+      length = 5;
     }
 
     v13[0] = _NSConcreteStackBlock;
@@ -313,22 +313,22 @@
     v13[2] = sub_10029B508;
     v13[3] = &unk_100483B40;
     v13[4] = self;
-    v14 = v12;
-    v15 = a6;
-    v16 = a3;
+    v14 = idCopy;
+    typeCopy = type;
+    lengthCopy = length;
     [(MetricsLogging *)self runInBackground:v13];
   }
 }
 
-- (void)recordAssetInfo:(id)a3
+- (void)recordAssetInfo:(id)info
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10029B69C;
   v5[3] = &unk_100483B68;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  infoCopy = info;
+  selfCopy = self;
+  v4 = infoCopy;
   [(MetricsLogging *)self runInBackground:v5];
 }
 

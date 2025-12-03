@@ -2,7 +2,7 @@
 + (id)liveVoicemailAccount;
 - (BOOL)customGreetingSupported;
 - (MPGreetingAccount)init;
-- (MPGreetingAccount)initWithAccount:(id)a3;
+- (MPGreetingAccount)initWithAccount:(id)account;
 - (id)accountDescription;
 @end
 
@@ -23,25 +23,25 @@
   return !v2;
 }
 
-- (MPGreetingAccount)initWithAccount:(id)a3
+- (MPGreetingAccount)initWithAccount:(id)account
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR___MPGreetingAccount_accountType;
-  *v6 = a3;
+  *v6 = account;
   v6[8] = 0;
   v7 = OBJC_IVAR___MPVoicemailAccount_uuid;
   v8 = OBJC_IVAR___MPGreetingAccount_uuid;
   v9 = type metadata accessor for UUID();
-  (*(*(v9 - 8) + 16))(self + v8, a3 + v7, v9);
+  (*(*(v9 - 8) + 16))(self + v8, account + v7, v9);
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = a3;
+  accountCopy = account;
   return [(MPGreetingAccount *)&v12 init];
 }
 
 - (id)accountDescription
 {
-  v2 = self;
+  selfCopy = self;
   object = GreetingAccount.accountDescription()().value._object;
 
   if (object)

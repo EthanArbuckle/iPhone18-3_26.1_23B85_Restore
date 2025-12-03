@@ -1,26 +1,26 @@
 @interface FCReadingList
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
-- (BOOL)isArticleOnReadingList:(id)a3;
-- (BOOL)shouldHideHeadline:(id)a3;
-- (FCReadingList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
+- (BOOL)isArticleOnReadingList:(id)list;
+- (BOOL)shouldHideHeadline:(id)headline;
+- (FCReadingList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory;
 - (id)_allEntriesInReadingList;
-- (id)_readingListEntryForArticleID:(id *)a1;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
+- (id)_readingListEntryForArticleID:(id *)d;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
 - (id)allNonConsumedArticleIDs;
-- (id)allNonConsumedArticleIDsIntersectingSet:(id)a3;
+- (id)allNonConsumedArticleIDsIntersectingSet:(id)set;
 - (id)allSortedArticleIDsInReadingList;
-- (id)dateArticleWasAdded:(id)a3;
-- (id)recordsForRestoringZoneName:(id)a3;
-- (unint64_t)countOfAllArticlesSavedOutsideOfNewsSince:(id)a3;
-- (void)_addedArticleIDs:(void *)a3 removedArticleIDs:(uint64_t)a4 eventInitiationLevel:;
-- (void)addArticleToReadingList:(id)a3 eventInitiationLevel:(int64_t)a4 origin:(unint64_t)a5;
-- (void)addObserver:(id)a3;
+- (id)dateArticleWasAdded:(id)added;
+- (id)recordsForRestoringZoneName:(id)name;
+- (unint64_t)countOfAllArticlesSavedOutsideOfNewsSince:(id)since;
+- (void)_addedArticleIDs:(void *)ds removedArticleIDs:(uint64_t)iDs eventInitiationLevel:;
+- (void)addArticleToReadingList:(id)list eventInitiationLevel:(int64_t)level origin:(unint64_t)origin;
+- (void)addObserver:(id)observer;
 - (void)clearArticlesFromReadingList;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
-- (void)removeArticleFromReadingList:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)removeArticleFromReadingList:(id)list;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FCReadingList
@@ -151,35 +151,35 @@ void __41__FCReadingList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (FCReadingList)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5
+- (FCReadingList)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory
 {
-  v9 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = FCReadingList;
-  v10 = [(FCPrivateDataController *)&v17 initWithContext:v9 pushNotificationCenter:a4 storeDirectory:a5];
+  v10 = [(FCPrivateDataController *)&v17 initWithContext:contextCopy pushNotificationCenter:center storeDirectory:directory];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_cloudContext, a3);
+    objc_storeStrong(&v10->_cloudContext, context);
     v12 = objc_alloc_init(FCMTWriterLock);
     itemsLock = v11->_itemsLock;
     v11->_itemsLock = v12;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     entriesByArticleID = v11->_entriesByArticleID;
-    v11->_entriesByArticleID = v14;
+    v11->_entriesByArticleID = dictionary;
   }
 
   return v11;
 }
 
-- (BOOL)shouldHideHeadline:(id)a3
+- (BOOL)shouldHideHeadline:(id)headline
 {
-  v4 = a3;
-  if ([v4 isDeleted])
+  headlineCopy = headline;
+  if ([headlineCopy isDeleted])
   {
-    v5 = [v4 articleID];
-    v6 = ![(FCReadingList *)self isArticleOnReadingList:v5];
+    articleID = [headlineCopy articleID];
+    v6 = ![(FCReadingList *)self isArticleOnReadingList:articleID];
   }
 
   else
@@ -190,19 +190,19 @@ void __41__FCReadingList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (BOOL)isArticleOnReadingList:(id)a3
+- (BOOL)isArticleOnReadingList:(id)list
 {
-  v3 = [(FCReadingList *)&self->super.super.isa _readingListEntryForArticleID:a3];
+  v3 = [(FCReadingList *)&self->super.super.isa _readingListEntryForArticleID:list];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_readingListEntryForArticleID:(id *)a1
+- (id)_readingListEntryForArticleID:(id *)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
     v11 = 0;
     v12 = &v11;
@@ -212,13 +212,13 @@ void __41__FCReadingList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
     v16 = 0;
     if (v3)
     {
-      v5 = a1[13];
+      v5 = d[13];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __47__FCReadingList__readingListEntryForArticleID___block_invoke;
       v8[3] = &unk_1E7C37138;
       v10 = &v11;
-      v8[4] = a1;
+      v8[4] = d;
       v9 = v4;
       [v5 performReadSync:v8];
 
@@ -230,24 +230,24 @@ void __41__FCReadingList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
       v6 = 0;
     }
 
-    a1 = v6;
+    d = v6;
     _Block_object_dispose(&v11, 8);
   }
 
-  return a1;
+  return d;
 }
 
-- (void)addArticleToReadingList:(id)a3 eventInitiationLevel:(int64_t)a4 origin:(unint64_t)a5
+- (void)addArticleToReadingList:(id)list eventInitiationLevel:(int64_t)level origin:(unint64_t)origin
 {
   v38[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  listCopy = list;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v8)
+  if (listCopy)
   {
     v9 = [FCReadingListEntry alloc];
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"rl-%@", v8];
-    v11 = [MEMORY[0x1E695DF00] date];
-    v12 = [(FCReadingListEntry *)&v9->super.isa initWithEntryID:v10 articleID:v8 dateAdded:v11 origin:a5];
+    listCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"rl-%@", listCopy];
+    date = [MEMORY[0x1E695DF00] date];
+    v12 = [(FCReadingListEntry *)&v9->super.isa initWithEntryID:listCopy articleID:listCopy dateAdded:date origin:origin];
 
     if (v12)
     {
@@ -289,16 +289,16 @@ void __41__FCReadingList_loadLocalCachesFromStore__block_invoke(uint64_t a1)
       v29[4] = self;
       v19 = v12;
       v30 = v19;
-      v20 = v8;
+      v20 = listCopy;
       v31 = v20;
       [(FCMTWriterLock *)itemsLock performWriteSync:v29];
-      v21 = [(FCPrivateDataController *)self localStore];
+      localStore = [(FCPrivateDataController *)self localStore];
       v22 = v19[1];
-      [v21 setObject:v17 forKey:v22];
+      [localStore setObject:v17 forKey:v22];
 
       v33 = v20;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
-      [(FCReadingList *)self _addedArticleIDs:v23 removedArticleIDs:MEMORY[0x1E695E0F0] eventInitiationLevel:a4];
+      [(FCReadingList *)self _addedArticleIDs:v23 removedArticleIDs:MEMORY[0x1E695E0F0] eventInitiationLevel:level];
 
       v24 = [FCModifyReadingListCommand alloc];
       v32 = v19;
@@ -354,12 +354,12 @@ uint64_t __69__FCReadingList_addArticleToReadingList_eventInitiationLevel_origin
   return [v1 setObject:a1[5] forKey:a1[6]];
 }
 
-- (void)_addedArticleIDs:(void *)a3 removedArticleIDs:(uint64_t)a4 eventInitiationLevel:
+- (void)_addedArticleIDs:(void *)ds removedArticleIDs:(uint64_t)iDs eventInitiationLevel:
 {
   v31 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  dsCopy = ds;
+  if (!self)
   {
     goto LABEL_15;
   }
@@ -378,7 +378,7 @@ uint64_t __69__FCReadingList_addArticleToReadingList_eventInitiationLevel_origin
     v30 = v16;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (!v8)
+    if (!dsCopy)
     {
 LABEL_5:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -397,7 +397,7 @@ LABEL_5:
     }
   }
 
-  else if (!v8)
+  else if (!dsCopy)
   {
     goto LABEL_5;
   }
@@ -406,8 +406,8 @@ LABEL_5:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [a1 observers];
-  v10 = [v9 copy];
+  observers = [self observers];
+  v10 = [observers copy];
 
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
@@ -424,7 +424,7 @@ LABEL_5:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v18 + 1) + 8 * v14++) readingList:a1 didAddArticles:v7 removeArticles:v8 eventInitiationLevel:a4];
+        [*(*(&v18 + 1) + 8 * v14++) readingList:self didAddArticles:v7 removeArticles:dsCopy eventInitiationLevel:iDs];
       }
 
       while (v12 != v14);
@@ -438,12 +438,12 @@ LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeArticleFromReadingList:(id)a3
+- (void)removeArticleFromReadingList:(id)list
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (listCopy)
   {
     if (self)
     {
@@ -455,7 +455,7 @@ LABEL_15:
       entriesByArticleID = 0;
     }
 
-    v6 = [(NSMutableDictionary *)entriesByArticleID objectForKey:v4];
+    v6 = [(NSMutableDictionary *)entriesByArticleID objectForKey:listCopy];
     if (v6)
     {
       if (self)
@@ -473,12 +473,12 @@ LABEL_15:
       v15[2] = __46__FCReadingList_removeArticleFromReadingList___block_invoke;
       v15[3] = &unk_1E7C36C58;
       v15[4] = self;
-      v8 = v4;
+      v8 = listCopy;
       v16 = v8;
       [(FCMTWriterLock *)itemsLock performWriteSync:v15];
       v9 = v6[1];
-      v10 = [(FCPrivateDataController *)self localStore];
-      [v10 removeObjectForKey:v9];
+      localStore = [(FCPrivateDataController *)self localStore];
+      [localStore removeObjectForKey:v9];
 
       v17 = v8;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
@@ -537,8 +537,8 @@ uint64_t __46__FCReadingList_removeArticleFromReadingList___block_invoke(uint64_
 - (void)clearArticlesFromReadingList
 {
   [MEMORY[0x1E696AF00] isMainThread];
-  v3 = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
-  if ([v3 count])
+  _allEntriesInReadingList = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
+  if ([_allEntriesInReadingList count])
   {
     if (self)
     {
@@ -556,35 +556,35 @@ uint64_t __46__FCReadingList_removeArticleFromReadingList___block_invoke(uint64_
     v15[3] = &unk_1E7C36EA0;
     v15[4] = self;
     [(FCMTWriterLock *)itemsLock performWriteSync:v15];
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __45__FCReadingList_clearArticlesFromReadingList__block_invoke_2;
     v13[3] = &unk_1E7C3C280;
-    v14 = v5;
-    v6 = v5;
-    [v3 enumerateObjectsUsingBlock:v13];
-    v7 = [(FCPrivateDataController *)self localStore];
-    [v7 removeObjectsForKeys:v6];
+    v14 = array;
+    v6 = array;
+    [_allEntriesInReadingList enumerateObjectsUsingBlock:v13];
+    localStore = [(FCPrivateDataController *)self localStore];
+    [localStore removeObjectsForKeys:v6];
 
     v8 = [[FCRemoveFromReadingListCommand alloc] initWithEntryIDs:v6];
     [(FCPrivateDataController *)self addCommandToCommandQueue:v8];
-    v9 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __45__FCReadingList_clearArticlesFromReadingList__block_invoke_3;
     v11[3] = &unk_1E7C3C280;
-    v12 = v9;
-    v10 = v9;
-    [v3 enumerateObjectsUsingBlock:v11];
+    v12 = array2;
+    v10 = array2;
+    [_allEntriesInReadingList enumerateObjectsUsingBlock:v11];
     [(FCReadingList *)self _addedArticleIDs:v10 removedArticleIDs:0 eventInitiationLevel:?];
   }
 }
 
 - (id)_allEntriesInReadingList
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -592,20 +592,20 @@ uint64_t __46__FCReadingList_removeArticleFromReadingList___block_invoke(uint64_
     v8 = __Block_byref_object_copy__27;
     v9 = __Block_byref_object_dispose__27;
     v10 = 0;
-    v2 = a1[13];
+    v2 = self[13];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __41__FCReadingList__allEntriesInReadingList__block_invoke;
     v4[3] = &unk_1E7C37160;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadSync:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 uint64_t __45__FCReadingList_clearArticlesFromReadingList__block_invoke(uint64_t a1)
@@ -658,9 +658,9 @@ void __45__FCReadingList_clearArticlesFromReadingList__block_invoke_3(uint64_t a
   [v2 addObject:v4];
 }
 
-- (id)dateArticleWasAdded:(id)a3
+- (id)dateArticleWasAdded:(id)added
 {
-  v3 = [(FCReadingList *)&self->super.super.isa _readingListEntryForArticleID:a3];
+  v3 = [(FCReadingList *)&self->super.super.isa _readingListEntryForArticleID:added];
   v4 = v3;
   if (v3)
   {
@@ -681,8 +681,8 @@ void __45__FCReadingList_clearArticlesFromReadingList__block_invoke_3(uint64_t a
 {
   if (self)
   {
-    v2 = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
-    v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_51_0];
+    _allEntriesInReadingList = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
+    v3 = [_allEntriesInReadingList sortedArrayUsingComparator:&__block_literal_global_51_0];
   }
 
   else
@@ -708,17 +708,17 @@ uint64_t __49__FCReadingList_allSortedArticleIDsInReadingList__block_invoke(uint
   }
 }
 
-- (unint64_t)countOfAllArticlesSavedOutsideOfNewsSince:(id)a3
+- (unint64_t)countOfAllArticlesSavedOutsideOfNewsSince:(id)since
 {
-  v4 = a3;
-  v5 = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
+  sinceCopy = since;
+  _allEntriesInReadingList = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__FCReadingList_countOfAllArticlesSavedOutsideOfNewsSince___block_invoke;
   v9[3] = &unk_1E7C3C2C8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 fc_countOfObjectsPassingTest:v9];
+  v10 = sinceCopy;
+  v6 = sinceCopy;
+  v7 = [_allEntriesInReadingList fc_countOfObjectsPassingTest:v9];
 
   return v7;
 }
@@ -744,11 +744,11 @@ uint64_t __59__FCReadingList_countOfAllArticlesSavedOutsideOfNewsSince___block_i
 - (id)allNonConsumedArticleIDs
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_28];
-  v6 = [(FCCloudContext *)self->_cloudContext readingHistory];
-  v7 = [v6 allConsumedArticleIDs];
+  array = [MEMORY[0x1E695DF70] array];
+  _allEntriesInReadingList = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
+  v5 = [_allEntriesInReadingList sortedArrayUsingComparator:&__block_literal_global_28];
+  readingHistory = [(FCCloudContext *)self->_cloudContext readingHistory];
+  allConsumedArticleIDs = [readingHistory allConsumedArticleIDs];
 
   v24 = 0u;
   v25 = 0u;
@@ -782,7 +782,7 @@ uint64_t __59__FCReadingList_countOfAllArticlesSavedOutsideOfNewsSince___block_i
         }
 
         v15 = v14;
-        v16 = [v7 containsObject:{v15, v22}];
+        v16 = [allConsumedArticleIDs containsObject:{v15, v22}];
 
         if ((v16 & 1) == 0)
         {
@@ -797,7 +797,7 @@ uint64_t __59__FCReadingList_countOfAllArticlesSavedOutsideOfNewsSince___block_i
           }
 
           v18 = v17;
-          [v3 addObject:v18];
+          [array addObject:v18];
         }
 
         ++v12;
@@ -813,7 +813,7 @@ uint64_t __59__FCReadingList_countOfAllArticlesSavedOutsideOfNewsSince___block_i
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 uint64_t __41__FCReadingList_allNonConsumedArticleIDs__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -846,41 +846,41 @@ uint64_t __41__FCReadingList_allNonConsumedArticleIDs__block_invoke(uint64_t a1,
   return v9;
 }
 
-- (id)allNonConsumedArticleIDsIntersectingSet:(id)a3
+- (id)allNonConsumedArticleIDsIntersectingSet:(id)set
 {
-  v4 = a3;
-  v5 = [(FCReadingList *)self allNonConsumedArticleIDs];
+  setCopy = set;
+  allNonConsumedArticleIDs = [(FCReadingList *)self allNonConsumedArticleIDs];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__FCReadingList_allNonConsumedArticleIDsIntersectingSet___block_invoke;
   v9[3] = &unk_1E7C38B40;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 fc_arrayOfObjectsPassingTest:v9];
+  v10 = setCopy;
+  v6 = setCopy;
+  v7 = [allNonConsumedArticleIDs fc_arrayOfObjectsPassingTest:v9];
 
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCReadingList;
-  [(FCPrivateDataController *)&v3 addObserver:a3];
+  [(FCPrivateDataController *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FCReadingList;
-  [(FCPrivateDataController *)&v3 removeObserver:a3];
+  [(FCPrivateDataController *)&v3 removeObserver:observer];
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   [MEMORY[0x1E696AF00] isMainThread];
-  v8 = [(FCPrivateDataController *)self localStore];
+  localStore = [(FCPrivateDataController *)self localStore];
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   if (self)
@@ -897,17 +897,17 @@ uint64_t __41__FCReadingList_allNonConsumedArticleIDs__block_invoke(uint64_t a1,
   v17[1] = 3221225472;
   v17[2] = __65__FCReadingList_handleSyncWithChangedRecords_deletedRecordNames___block_invoke;
   v17[3] = &unk_1E7C3C310;
-  v18 = v6;
-  v19 = v8;
-  v20 = self;
+  v18 = recordsCopy;
+  v19 = localStore;
+  selfCopy = self;
   v21 = v9;
-  v22 = v7;
+  v22 = namesCopy;
   v23 = v10;
   v12 = v10;
-  v13 = v7;
+  v13 = namesCopy;
   v14 = v9;
-  v15 = v8;
-  v16 = v6;
+  v15 = localStore;
+  v16 = recordsCopy;
   [(FCMTWriterLock *)itemsLock performWriteSync:v17];
   [(FCReadingList *)self _addedArticleIDs:v14 removedArticleIDs:v12 eventInitiationLevel:1];
 }
@@ -1126,7 +1126,7 @@ LABEL_18:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
@@ -1139,8 +1139,8 @@ LABEL_18:
     entriesByArticleID = 0;
   }
 
-  v5 = [(NSMutableDictionary *)entriesByArticleID allValues];
-  v6 = [v5 fc_arrayByTransformingWithBlock:&__block_literal_global_43_0];
+  allValues = [(NSMutableDictionary *)entriesByArticleID allValues];
+  v6 = [allValues fc_arrayByTransformingWithBlock:&__block_literal_global_43_0];
 
   return v6;
 }
@@ -1171,17 +1171,17 @@ uint64_t __59__FCReadingList_allKnownRecordNamesWithinRecordZoneWithID___block_i
   return v4;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allKeys = [cloudCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1192,25 +1192,25 @@ uint64_t __59__FCReadingList_allKnownRecordNamesWithinRecordZoneWithID___block_i
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        if (([a1 isLocalStoreKeyInternal:v12] & 1) == 0)
+        if (([self isLocalStoreKeyInternal:v12] & 1) == 0)
         {
-          v13 = [v5 objectForKey:v12];
+          v13 = [cloudCopy objectForKey:v12];
           v14 = [[FCReadingListEntry alloc] initWithEntryID:v12 dictionaryRepresentation:v13];
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [[FCModifyReadingListCommand alloc] initWithReadingListEntries:v6 merge:1];
+  v15 = [[FCModifyReadingListCommand alloc] initWithReadingListEntries:array merge:1];
   v23 = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
 
@@ -1219,10 +1219,10 @@ uint64_t __59__FCReadingList_allKnownRecordNamesWithinRecordZoneWithID___block_i
   return v16;
 }
 
-- (id)recordsForRestoringZoneName:(id)a3
+- (id)recordsForRestoringZoneName:(id)name
 {
-  v3 = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
-  v4 = [v3 fc_arrayByTransformingWithBlock:&__block_literal_global_47];
+  _allEntriesInReadingList = [(FCReadingList *)&self->super.super.isa _allEntriesInReadingList];
+  v4 = [_allEntriesInReadingList fc_arrayByTransformingWithBlock:&__block_literal_global_47];
 
   return v4;
 }

@@ -25,9 +25,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v10, 8);
-  v4 = [v2 sharedInstance];
-  v5 = [v4 valueForKey:@"voiceOverUseSiriSounds"];
-  v6 = [v5 BOOLValue];
+  sharedInstance = [v2 sharedInstance];
+  v5 = [sharedInstance valueForKey:@"voiceOverUseSiriSounds"];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -35,12 +35,12 @@
     *buf = 136315394;
     *&buf[4] = "+[CSVoiceOverSiriSoundsSettingsReader shouldPlaySiriSounds]";
     *&buf[12] = 1024;
-    *&buf[14] = v6;
+    *&buf[14] = bOOLValue;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s shouldPlaySiriSounds: %d", buf, 0x12u);
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v6;
+  return bOOLValue;
 }
 
 @end

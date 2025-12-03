@@ -1,23 +1,23 @@
 @interface DraggableLabel.Coordinator
 - (_TtCV10StickerKit14DraggableLabel11Coordinator)init;
-- (void)dragDidEnd:(id)a3 withOperation:(unint64_t)a4;
-- (void)longPressGestureRecognized:(id)a3;
+- (void)dragDidEnd:(id)end withOperation:(unint64_t)operation;
+- (void)longPressGestureRecognized:(id)recognized;
 @end
 
 @implementation DraggableLabel.Coordinator
 
-- (void)longPressGestureRecognized:(id)a3
+- (void)longPressGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A63B0E0(v4);
+  recognizedCopy = recognized;
+  selfCopy = self;
+  sub_19A63B0E0(recognizedCopy);
 }
 
-- (void)dragDidEnd:(id)a3 withOperation:(unint64_t)a4
+- (void)dragDidEnd:(id)end withOperation:(unint64_t)operation
 {
-  v6 = a3;
-  v7 = self;
-  sub_19A63D55C(a4);
+  endCopy = end;
+  selfCopy = self;
+  sub_19A63D55C(operation);
 }
 
 - (_TtCV10StickerKit14DraggableLabel11Coordinator)init

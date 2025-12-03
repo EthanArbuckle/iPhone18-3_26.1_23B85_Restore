@@ -11,7 +11,7 @@
 + (id)storeConfigurationForGuardrailResult;
 + (id)storeConfigurationForPromptTags;
 + (id)storeConfigurationForTransparencyLog;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -21,7 +21,7 @@
 + (id)TransparencyLog
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTransparencyLog];
+  configurationForTransparencyLog = [self configurationForTransparencyLog];
   v3 = +[BMGenerativeExperiencesTransparencyLog columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -33,7 +33,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.TransparencyLog" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.TransparencyLog" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.TransparencyLog" schema:v9 configuration:configurationForTransparencyLog];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -42,13 +42,13 @@
 
 + (id)configurationForTransparencyLog
 {
-  v3 = [a1 storeConfigurationForTransparencyLog];
-  v4 = [a1 syncPolicyForTransparencyLog];
+  storeConfigurationForTransparencyLog = [self storeConfigurationForTransparencyLog];
+  syncPolicyForTransparencyLog = [self syncPolicyForTransparencyLog];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D80BEF5D-C1C8-48E4-8BE9-F05062A6CC4D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.TransparencyLog" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.AppleIntelligenceReport" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.TransparencyLog" eventClass:objc_opt_class() storeConfig:storeConfigurationForTransparencyLog syncPolicy:syncPolicyForTransparencyLog legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.AppleIntelligenceReport" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -64,10 +64,10 @@
 + (id)sublibraries
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 GeneratedImageFeatures];
-  v8[0] = v3;
-  v4 = [a1 WritingToolsFeatures];
-  v8[1] = v4;
+  generatedImageFeatures = [self GeneratedImageFeatures];
+  v8[0] = generatedImageFeatures;
+  writingToolsFeatures = [self WritingToolsFeatures];
+  v8[1] = writingToolsFeatures;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -77,13 +77,13 @@
 
 + (id)configurationForFailureTracking
 {
-  v3 = [a1 storeConfigurationForFailureTracking];
-  v4 = [a1 syncPolicyForFailureTracking];
+  storeConfigurationForFailureTracking = [self storeConfigurationForFailureTracking];
+  syncPolicyForFailureTracking = [self syncPolicyForFailureTracking];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E180C680-A5DE-4BA5-A376-DF1C18F41F62"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.FailureTracking" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.FailureTracking" eventClass:objc_opt_class() storeConfig:storeConfigurationForFailureTracking syncPolicy:syncPolicyForFailureTracking legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -100,7 +100,7 @@
 + (id)GuardrailResult
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForGuardrailResult];
+  configurationForGuardrailResult = [self configurationForGuardrailResult];
   v3 = +[BMGenerativeExperiencesGuardrailResult columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -112,7 +112,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.GuardrailResult" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.GuardrailResult" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.GuardrailResult" schema:v9 configuration:configurationForGuardrailResult];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -131,7 +131,7 @@
 + (id)PromptTags
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPromptTags];
+  configurationForPromptTags = [self configurationForPromptTags];
   v3 = +[BMGenerativeExperiencesPromptTags columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -143,7 +143,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.PromptTags" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.PromptTags" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.PromptTags" schema:v9 configuration:configurationForPromptTags];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -152,13 +152,13 @@
 
 + (id)configurationForPromptTags
 {
-  v3 = [a1 storeConfigurationForPromptTags];
-  v4 = [a1 syncPolicyForPromptTags];
+  storeConfigurationForPromptTags = [self storeConfigurationForPromptTags];
+  syncPolicyForPromptTags = [self syncPolicyForPromptTags];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"18424FEF-7218-4155-BD47-4CA5E3AEC82C"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.PromptTags" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.PromptTags" eventClass:objc_opt_class() storeConfig:storeConfigurationForPromptTags syncPolicy:syncPolicyForPromptTags legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -175,7 +175,7 @@
 + (id)FailureTracking
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFailureTracking];
+  configurationForFailureTracking = [self configurationForFailureTracking];
   v3 = +[BMGenerativeExperiencesFailureTracking columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -187,7 +187,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.FailureTracking" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.FailureTracking" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.FailureTracking" schema:v9 configuration:configurationForFailureTracking];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -196,43 +196,43 @@
 
 + (id)configurationForGuardrailResult
 {
-  v3 = [a1 storeConfigurationForGuardrailResult];
-  v4 = [a1 syncPolicyForGuardrailResult];
+  storeConfigurationForGuardrailResult = [self storeConfigurationForGuardrailResult];
+  syncPolicyForGuardrailResult = [self syncPolicyForGuardrailResult];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"2A663C6A-6BFF-46B2-8780-3C65344CF1AA"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.GuardrailResult" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.GuardrailResult" eventClass:objc_opt_class() storeConfig:storeConfigurationForGuardrailResult syncPolicy:syncPolicyForGuardrailResult legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"FailureTracking"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"FailureTracking"])
   {
-    v5 = [a1 FailureTracking];
+    failureTracking = [self FailureTracking];
 LABEL_9:
-    v6 = v5;
+    v6 = failureTracking;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"GuardrailResult"])
+  if ([nameCopy isEqualToString:@"GuardrailResult"])
   {
-    v5 = [a1 GuardrailResult];
+    failureTracking = [self GuardrailResult];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"PromptTags"])
+  if ([nameCopy isEqualToString:@"PromptTags"])
   {
-    v5 = [a1 PromptTags];
+    failureTracking = [self PromptTags];
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"TransparencyLog"])
+  if ([nameCopy isEqualToString:@"TransparencyLog"])
   {
-    v5 = [a1 TransparencyLog];
+    failureTracking = [self TransparencyLog];
     goto LABEL_9;
   }
 

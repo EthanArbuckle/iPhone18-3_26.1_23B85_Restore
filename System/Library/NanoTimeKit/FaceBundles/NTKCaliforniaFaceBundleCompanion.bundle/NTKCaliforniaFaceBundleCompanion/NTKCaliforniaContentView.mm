@@ -1,70 +1,70 @@
 @interface NTKCaliforniaContentView
 + (id)_disabledLayerActions;
 - (CGPoint)circularPillMarkersCenterPoints;
-- (CGPoint)hourMarkersCenterPointConstantsForStyle:(unint64_t)a3 dial:(unint64_t)a4;
-- (NTKCaliforniaContentView)initWithFrame:(CGRect)a3 dial:(unint64_t)a4 style:(unint64_t)a5 colorPalette:(id)a6 device:(id)a7;
+- (CGPoint)hourMarkersCenterPointConstantsForStyle:(unint64_t)style dial:(unint64_t)dial;
+- (NTKCaliforniaContentView)initWithFrame:(CGRect)frame dial:(unint64_t)dial style:(unint64_t)style colorPalette:(id)palette device:(id)device;
 - (NTKCaliforniaStyleTransitionHandler)styleTransitionHandler;
-- (id)_createChineseLabelAtIndex:(int)a3 dial:(unint64_t)a4 forStyle:(unint64_t)a5;
+- (id)_createChineseLabelAtIndex:(int)index dial:(unint64_t)dial forStyle:(unint64_t)style;
 - (id)_createLayer;
-- (id)_createLayersWithCount:(unint64_t)a3;
-- (id)_digitLayersForStyle:(unint64_t)a3 dial:(unint64_t)a4;
-- (id)attributedStringForDigit:(unint64_t)a3 style:(unint64_t)a4 font:(id)a5;
-- (id)createCaliforniaGraphicAtIndex:(unint64_t)a3 dial:(unint64_t)a4;
-- (id)createLabelAtIndex:(int)a3 forStyle:(unint64_t)a4 dial:(unint64_t)a5;
-- (id)createPillAtIndex:(unint64_t)a3 dial:(unint64_t)a4;
-- (id)createPillViewWithAngle:(double)a3 size:(const CGSize *)a4;
-- (id)hourTickColorForIndex:(unint64_t)a3 palette:(id)a4 dial:(unint64_t)a5;
-- (id)languageRenderingHintForCaliforniaStyle:(unint64_t)a3;
-- (id)minuteTickColorForIndex:(unint64_t)a3 palette:(id)a4 dial:(unint64_t)a5;
-- (id)pillLayerFromHourMarkerView:(id)a3;
-- (id)textForDigit:(unint64_t)a3 style:(unint64_t)a4;
-- (id)tickColorForIndex:(unint64_t)a3 palette:(id)a4 dial:(unint64_t)a5;
-- (void)_applyStyle:(unint64_t)a3;
-- (void)_createDigitsIfNeededWithStyle:(unint64_t)a3 dial:(unint64_t)a4;
-- (void)_createTemporaryDigitsIfNeededWithStyle:(unint64_t)a3 dial:(unint64_t)a4;
-- (void)_layoutHourMarkersLayers:(id)a3 style:(unint64_t)a4 dialShape:(unint64_t)a5;
+- (id)_createLayersWithCount:(unint64_t)count;
+- (id)_digitLayersForStyle:(unint64_t)style dial:(unint64_t)dial;
+- (id)attributedStringForDigit:(unint64_t)digit style:(unint64_t)style font:(id)font;
+- (id)createCaliforniaGraphicAtIndex:(unint64_t)index dial:(unint64_t)dial;
+- (id)createLabelAtIndex:(int)index forStyle:(unint64_t)style dial:(unint64_t)dial;
+- (id)createPillAtIndex:(unint64_t)index dial:(unint64_t)dial;
+- (id)createPillViewWithAngle:(double)angle size:(const CGSize *)size;
+- (id)hourTickColorForIndex:(unint64_t)index palette:(id)palette dial:(unint64_t)dial;
+- (id)languageRenderingHintForCaliforniaStyle:(unint64_t)style;
+- (id)minuteTickColorForIndex:(unint64_t)index palette:(id)palette dial:(unint64_t)dial;
+- (id)pillLayerFromHourMarkerView:(id)view;
+- (id)textForDigit:(unint64_t)digit style:(unint64_t)style;
+- (id)tickColorForIndex:(unint64_t)index palette:(id)palette dial:(unint64_t)dial;
+- (void)_applyStyle:(unint64_t)style;
+- (void)_createDigitsIfNeededWithStyle:(unint64_t)style dial:(unint64_t)dial;
+- (void)_createTemporaryDigitsIfNeededWithStyle:(unint64_t)style dial:(unint64_t)dial;
+- (void)_layoutHourMarkersLayers:(id)layers style:(unint64_t)style dialShape:(unint64_t)shape;
 - (void)addTicksIfNeeded;
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
-- (void)applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyTransitionFractionToTicksFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5;
-- (void)configureTicksForStatus:(BOOL)a3;
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
+- (void)applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyTransitionFractionToTicksFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial;
+- (void)configureTicksForStatus:(BOOL)status;
 - (void)layoutSubviews;
 - (void)removeHourMarkers;
 - (void)removeTemporaryHourMarkers;
-- (void)setBezelComplicationEnabled:(BOOL)a3;
-- (void)setCircularBezelTickAlpha:(double)a3;
-- (void)setColorInHourMarkerView:(id)a3 color:(id)a4;
-- (void)setColorPalette:(id)a3;
-- (void)setDial:(unint64_t)a3;
-- (void)setHourTicksColor:(id)a3;
-- (void)setMinuteTicksColor:(id)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setTicksHiddenRange:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBezelComplicationEnabled:(BOOL)enabled;
+- (void)setCircularBezelTickAlpha:(double)alpha;
+- (void)setColorInHourMarkerView:(id)view color:(id)color;
+- (void)setColorPalette:(id)palette;
+- (void)setDial:(unint64_t)dial;
+- (void)setHourTicksColor:(id)color;
+- (void)setMinuteTicksColor:(id)color;
+- (void)setStyle:(unint64_t)style;
+- (void)setTicksHiddenRange:(double)range;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKCaliforniaContentView
 
-- (NTKCaliforniaContentView)initWithFrame:(CGRect)a3 dial:(unint64_t)a4 style:(unint64_t)a5 colorPalette:(id)a6 device:(id)a7
+- (NTKCaliforniaContentView)initWithFrame:(CGRect)frame dial:(unint64_t)dial style:(unint64_t)style colorPalette:(id)palette device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a6;
-  v16 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  paletteCopy = palette;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = NTKCaliforniaContentView;
-  v17 = [(NTKCaliforniaContentView *)&v21 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(NTKCaliforniaContentView *)&v21 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    objc_storeStrong(&v17->_device, a7);
+    objc_storeStrong(&height->_device, device);
     v18->_circularBezelTickAlpha = 1.0;
-    [(NTKCaliforniaContentView *)v18 setDial:a4];
-    [(NTKCaliforniaContentView *)v18 setColorPalette:v15];
-    [(NTKCaliforniaContentView *)v18 _applyStyle:a5];
+    [(NTKCaliforniaContentView *)v18 setDial:dial];
+    [(NTKCaliforniaContentView *)v18 setColorPalette:paletteCopy];
+    [(NTKCaliforniaContentView *)v18 _applyStyle:style];
     v19 = +[UIColor clearColor];
     [(NTKCaliforniaContentView *)v18 setBackgroundColor:v19];
   }
@@ -83,41 +83,41 @@
   [(CALayer *)self->_minuteTicks setFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NTKCaliforniaContentView;
-  v4 = a3;
-  [(NTKCaliforniaContentView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NTKCaliforniaContentView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NTKCaliforniaContentView *)self traitCollection:v8.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     [(NTKCaliforniaContentView *)self _applyStyle:self->_style];
   }
 }
 
-- (void)_layoutHourMarkersLayers:(id)a3 style:(unint64_t)a4 dialShape:(unint64_t)a5
+- (void)_layoutHourMarkersLayers:(id)layers style:(unint64_t)style dialShape:(unint64_t)shape
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_400C;
   v5[3] = &unk_1C6A0;
   v5[4] = self;
-  v5[5] = a4;
-  [a3 enumerateObjectsUsingBlock:{v5, a4, a5}];
+  v5[5] = style;
+  [layers enumerateObjectsUsingBlock:{v5, style, shape}];
 }
 
-- (CGPoint)hourMarkersCenterPointConstantsForStyle:(unint64_t)a3 dial:(unint64_t)a4
+- (CGPoint)hourMarkersCenterPointConstantsForStyle:(unint64_t)style dial:(unint64_t)dial
 {
-  v4 = __chkstk_darwin(self, a2, a3, a4);
+  v4 = __chkstk_darwin(self, a2, style, dial);
   v6 = v5;
   v8 = v7;
   v9 = v4;
-  v10 = [v4 device];
-  sub_792C(v10, __src);
+  device = [v4 device];
+  sub_792C(device, __src);
   memcpy(&unk_22A10, __src, 0x18C8uLL);
 
   if (v6 == 1)
@@ -164,8 +164,8 @@
 - (CGPoint)circularPillMarkersCenterPoints
 {
   v2 = __chkstk_darwin(self, a2);
-  v3 = [v2 device];
-  sub_792C(v3, v24);
+  device = [v2 device];
+  sub_792C(device, v24);
   v21 = v25;
 
   [v2 bounds];
@@ -207,10 +207,10 @@
   return &unk_242D8;
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  objc_storeStrong(&self->_colorPalette, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_colorPalette, palette);
+  paletteCopy = palette;
   [(NTKCaliforniaContentView *)self addTicksIfNeeded];
   tickLayers = self->_tickLayers;
   v9[0] = _NSConcreteStackBlock;
@@ -228,39 +228,39 @@
   [(NSArray *)hourMarkers enumerateObjectsUsingBlock:v8];
 }
 
-- (void)setBezelComplicationEnabled:(BOOL)a3
+- (void)setBezelComplicationEnabled:(BOOL)enabled
 {
-  if (self->_bezelComplicationEnabled != a3)
+  if (self->_bezelComplicationEnabled != enabled)
   {
-    self->_bezelComplicationEnabled = a3;
+    self->_bezelComplicationEnabled = enabled;
     [(NTKCaliforniaContentView *)self layoutTicks];
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_hourMarkersStyle != a3 || (-[NTKCaliforniaContentView styleTransitionHandler](self, "styleTransitionHandler"), v5 = objc_claimAutoreleasedReturnValue(), [v5 fraction], v7 = v6, v5, v7 != 0.0))
+  if (self->_hourMarkersStyle != style || (-[NTKCaliforniaContentView styleTransitionHandler](self, "styleTransitionHandler"), v5 = objc_claimAutoreleasedReturnValue(), [v5 fraction], v7 = v6, v5, v7 != 0.0))
   {
-    [(NTKCaliforniaContentView *)self _applyStyle:a3];
-    v8 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-    [v8 setFraction:0.0];
+    [(NTKCaliforniaContentView *)self _applyStyle:style];
+    styleTransitionHandler = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+    [styleTransitionHandler setFraction:0.0];
   }
 }
 
-- (void)_applyStyle:(unint64_t)a3
+- (void)_applyStyle:(unint64_t)style
 {
   [(NTKCaliforniaContentView *)self removeHourMarkers];
-  [(NTKCaliforniaContentView *)self _createDigitsIfNeededWithStyle:a3 dial:self->_dial];
+  [(NTKCaliforniaContentView *)self _createDigitsIfNeededWithStyle:style dial:self->_dial];
   [(NTKCaliforniaContentView *)self removeTemporaryHourMarkers];
-  self->_style = a3;
+  self->_style = style;
   styleTransitionHandler = self->_styleTransitionHandler;
   self->_styleTransitionHandler = 0;
 }
 
-- (void)setDial:(unint64_t)a3
+- (void)setDial:(unint64_t)dial
 {
-  [(NTKCaliforniaContentView *)self _createDigitsIfNeededWithStyle:self->_style dial:a3];
-  self->_dial = a3;
+  [(NTKCaliforniaContentView *)self _createDigitsIfNeededWithStyle:self->_style dial:dial];
+  self->_dial = dial;
   [(NTKCaliforniaContentView *)self addTicksIfNeeded];
   if (self->_dial)
   {
@@ -291,27 +291,27 @@
   v4 = v3 == 0;
   if (!v3)
   {
-    v5 = [v2 _createLayer];
+    _createLayer = [v2 _createLayer];
     v6 = *(v2 + 56);
-    *(v2 + 56) = v5;
+    *(v2 + 56) = _createLayer;
 
-    v7 = [v2 layer];
-    [v7 addSublayer:*(v2 + 56)];
+    layer = [v2 layer];
+    [layer addSublayer:*(v2 + 56)];
   }
 
   if (!*(v2 + 64))
   {
-    v8 = [v2 _createLayer];
+    _createLayer2 = [v2 _createLayer];
     v9 = *(v2 + 64);
-    *(v2 + 64) = v8;
+    *(v2 + 64) = _createLayer2;
 
     HIDWORD(v10) = HIDWORD(v19);
     *&v10 = v19;
     [*(v2 + 64) setOpacity:v10];
     [v2 bounds];
     [*(v2 + 64) setFrame:?];
-    v11 = [v2 layer];
-    [v11 addSublayer:*(v2 + 64)];
+    layer2 = [v2 layer];
+    [layer2 addSublayer:*(v2 + 64)];
 
     v4 = 1;
   }
@@ -357,7 +357,7 @@ LABEL_13:
   [v2 layoutTicks];
 }
 
-- (void)applyTransitionFractionToTicksFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5
+- (void)applyTransitionFractionToTicksFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial
 {
   v5 = __chkstk_darwin(self, a2);
   CLKCompressFraction();
@@ -406,14 +406,14 @@ LABEL_13:
   self->_hourMarkers = 0;
 }
 
-- (void)_createDigitsIfNeededWithStyle:(unint64_t)a3 dial:(unint64_t)a4
+- (void)_createDigitsIfNeededWithStyle:(unint64_t)style dial:(unint64_t)dial
 {
-  if (!self->_hourMarkers || self->_hourMarkersStyle != a3 || self->_hourMarkersDial != a4)
+  if (!self->_hourMarkers || self->_hourMarkersStyle != style || self->_hourMarkersDial != dial)
   {
-    self->_hourMarkersStyle = a3;
-    self->_hourMarkersDial = a4;
+    self->_hourMarkersStyle = style;
+    self->_hourMarkersDial = dial;
     [(NTKCaliforniaContentView *)self removeHourMarkers];
-    v7 = [(NTKCaliforniaContentView *)self _digitLayersForStyle:a3 dial:a4];
+    v7 = [(NTKCaliforniaContentView *)self _digitLayersForStyle:style dial:dial];
     hourMarkers = self->_hourMarkers;
     self->_hourMarkers = v7;
 
@@ -424,18 +424,18 @@ LABEL_13:
     v10[3] = &unk_1C6F0;
     v10[4] = self;
     [(NSArray *)v9 enumerateObjectsUsingBlock:v10];
-    [(NTKCaliforniaContentView *)self _layoutHourMarkersLayers:self->_hourMarkers style:a3 dialShape:a4];
+    [(NTKCaliforniaContentView *)self _layoutHourMarkersLayers:self->_hourMarkers style:style dialShape:dial];
   }
 }
 
-- (void)_createTemporaryDigitsIfNeededWithStyle:(unint64_t)a3 dial:(unint64_t)a4
+- (void)_createTemporaryDigitsIfNeededWithStyle:(unint64_t)style dial:(unint64_t)dial
 {
-  if (!self->_temporaryHourMarkers || self->_temporaryHourMarkersStyle != a3 || self->_temporaryHourMarkersDial != a4)
+  if (!self->_temporaryHourMarkers || self->_temporaryHourMarkersStyle != style || self->_temporaryHourMarkersDial != dial)
   {
-    self->_temporaryHourMarkersStyle = a3;
-    self->_temporaryHourMarkersDial = a4;
+    self->_temporaryHourMarkersStyle = style;
+    self->_temporaryHourMarkersDial = dial;
     [(NSArray *)self->_temporaryHourMarkers enumerateObjectsUsingBlock:&stru_1C798];
-    v7 = [(NTKCaliforniaContentView *)self _digitLayersForStyle:a3 dial:a4];
+    v7 = [(NTKCaliforniaContentView *)self _digitLayersForStyle:style dial:dial];
     temporaryHourMarkers = self->_temporaryHourMarkers;
     self->_temporaryHourMarkers = v7;
 
@@ -446,18 +446,18 @@ LABEL_13:
     v10[3] = &unk_1C6F0;
     v10[4] = self;
     [(NSArray *)v9 enumerateObjectsUsingBlock:v10];
-    [(NTKCaliforniaContentView *)self _layoutHourMarkersLayers:self->_temporaryHourMarkers style:a3 dialShape:a4];
+    [(NTKCaliforniaContentView *)self _layoutHourMarkersLayers:self->_temporaryHourMarkers style:style dialShape:dial];
   }
 }
 
-- (void)setColorInHourMarkerView:(id)a3 color:(id)a4
+- (void)setColorInHourMarkerView:(id)view color:(id)color
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  colorCopy = color;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 setTextColor:v6];
+    [viewCopy setTextColor:colorCopy];
   }
 
   else
@@ -465,28 +465,28 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v9 setTintColor:v6];
+      [viewCopy setTintColor:colorCopy];
     }
 
     else
     {
-      v7 = [v6 CGColor];
-      v8 = [(NTKCaliforniaContentView *)self pillLayerFromHourMarkerView:v9];
-      [v8 setBackgroundColor:v7];
+      cGColor = [colorCopy CGColor];
+      v8 = [(NTKCaliforniaContentView *)self pillLayerFromHourMarkerView:viewCopy];
+      [v8 setBackgroundColor:cGColor];
     }
   }
 }
 
-- (id)pillLayerFromHourMarkerView:(id)a3
+- (id)pillLayerFromHourMarkerView:(id)view
 {
-  v3 = [a3 layer];
-  v4 = [v3 sublayers];
-  v5 = [v4 firstObject];
+  layer = [view layer];
+  sublayers = [layer sublayers];
+  firstObject = [sublayers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)createLabelAtIndex:(int)a3 forStyle:(unint64_t)a4 dial:(unint64_t)a5
+- (id)createLabelAtIndex:(int)index forStyle:(unint64_t)style dial:(unint64_t)dial
 {
   v5 = __chkstk_darwin(self, a2);
   v7 = v6;
@@ -502,7 +502,7 @@ LABEL_13:
   }
 
   v15 = *v14;
-  v16 = [v12 device];
+  device = [v12 device];
   v17 = NTKShowIndicScriptNumerals();
 
   if (!v17 || ([NTKSFCompactFont numericSoftFontOfSize:v15 weight:UIFontWeightSemibold], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -520,7 +520,7 @@ LABEL_13:
   return v13;
 }
 
-- (id)_createChineseLabelAtIndex:(int)a3 dial:(unint64_t)a4 forStyle:(unint64_t)a5
+- (id)_createChineseLabelAtIndex:(int)index dial:(unint64_t)dial forStyle:(unint64_t)style
 {
   v5 = __chkstk_darwin(self, a2);
   v7 = v6;
@@ -559,7 +559,7 @@ LABEL_13:
   return v20;
 }
 
-- (id)textForDigit:(unint64_t)a3 style:(unint64_t)a4
+- (id)textForDigit:(unint64_t)digit style:(unint64_t)style
 {
   if (!qword_24398)
   {
@@ -641,35 +641,35 @@ LABEL_13:
     qword_24410 = &off_1F860;
   }
 
-  switch(a4)
+  switch(style)
   {
     case 1uLL:
       goto LABEL_37;
     case 2uLL:
-      v6 = 0;
-      if (a3 > 0xB)
+      stringValue = 0;
+      if (digit > 0xB)
       {
         goto LABEL_55;
       }
 
-      if (((1 << a3) & 0x1B0) != 0)
+      if (((1 << digit) & 0x1B0) != 0)
       {
 LABEL_38:
-        v8 = [NSNumber numberWithUnsignedInteger:a3];
-        v6 = [v8 stringValue];
+        v8 = [NSNumber numberWithUnsignedInteger:digit];
+        stringValue = [v8 stringValue];
       }
 
-      else if (((1 << a3) & 0xC06) != 0)
+      else if (((1 << digit) & 0xC06) != 0)
       {
 LABEL_37:
         v7 = qword_243A8;
 LABEL_54:
-        v6 = [v7 objectAtIndexedSubscript:a3 - 1];
+        stringValue = [v7 objectAtIndexedSubscript:digit - 1];
       }
 
 LABEL_55:
 
-      return v6;
+      return stringValue;
     case 4uLL:
       v7 = qword_243A0;
       goto LABEL_54;
@@ -720,16 +720,16 @@ LABEL_55:
   }
 }
 
-- (id)attributedStringForDigit:(unint64_t)a3 style:(unint64_t)a4 font:(id)a5
+- (id)attributedStringForDigit:(unint64_t)digit style:(unint64_t)style font:(id)font
 {
-  v8 = a5;
-  v9 = [(NTKCaliforniaContentView *)self textForDigit:a3 style:a4];
-  v10 = [(NTKCaliforniaContentView *)self languageRenderingHintForCaliforniaStyle:a4];
+  fontCopy = font;
+  v9 = [(NTKCaliforniaContentView *)self textForDigit:digit style:style];
+  v10 = [(NTKCaliforniaContentView *)self languageRenderingHintForCaliforniaStyle:style];
   v11 = [NSAttributedString alloc];
   v15[0] = NSLanguageIdentifierAttributeName;
   v15[1] = NSFontAttributeName;
   v16[0] = v10;
-  v16[1] = v8;
+  v16[1] = fontCopy;
   v12 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v13 = [v11 initWithString:v9 attributes:v12];
@@ -737,25 +737,25 @@ LABEL_55:
   return v13;
 }
 
-- (id)languageRenderingHintForCaliforniaStyle:(unint64_t)a3
+- (id)languageRenderingHintForCaliforniaStyle:(unint64_t)style
 {
-  if (a3 + 1 > 0x13)
+  if (style + 1 > 0x13)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_179D0[a3 + 1];
+    v3 = qword_179D0[style + 1];
   }
 
   return _CLKLocaleRenderingHintLanguageIdentifierForNumberingSystem(v3, a2);
 }
 
-- (id)_digitLayersForStyle:(unint64_t)a3 dial:(unint64_t)a4
+- (id)_digitLayersForStyle:(unint64_t)style dial:(unint64_t)dial
 {
   v7 = +[NSMutableArray array];
-  if (a3 == 6)
+  if (style == 6)
   {
     v8 = 15;
   }
@@ -767,33 +767,33 @@ LABEL_55:
 
   for (i = 1; i != v8; ++i)
   {
-    if (!a3)
+    if (!style)
     {
-      v10 = [(NTKCaliforniaContentView *)self createPillAtIndex:i dial:a4];
+      v10 = [(NTKCaliforniaContentView *)self createPillAtIndex:i dial:dial];
       goto LABEL_11;
     }
 
-    if (a3 == 2)
+    if (style == 2)
     {
       if (i <= 0xC && ((1 << i) & 0x1248) != 0)
       {
-        v10 = [(NTKCaliforniaContentView *)self createCaliforniaGraphicAtIndex:i dial:a4];
+        v10 = [(NTKCaliforniaContentView *)self createCaliforniaGraphicAtIndex:i dial:dial];
 LABEL_11:
         v11 = v10;
         goto LABEL_16;
       }
 
 LABEL_14:
-      v12 = [(NTKCaliforniaContentView *)self createLabelAtIndex:i forStyle:a3 dial:a4];
+      v12 = [(NTKCaliforniaContentView *)self createLabelAtIndex:i forStyle:style dial:dial];
       goto LABEL_15;
     }
 
-    if (a3 != 6)
+    if (style != 6)
     {
       goto LABEL_14;
     }
 
-    v12 = [(NTKCaliforniaContentView *)self _createChineseLabelAtIndex:i dial:a4 forStyle:6];
+    v12 = [(NTKCaliforniaContentView *)self _createChineseLabelAtIndex:i dial:dial forStyle:6];
 LABEL_15:
     v11 = v12;
     [v12 sizeToFit];
@@ -804,15 +804,15 @@ LABEL_16:
   return v7;
 }
 
-- (id)createCaliforniaGraphicAtIndex:(unint64_t)a3 dial:(unint64_t)a4
+- (id)createCaliforniaGraphicAtIndex:(unint64_t)index dial:(unint64_t)dial
 {
   v4 = __chkstk_darwin(self, a2);
   v6 = v5;
   v7 = v4;
   if (v8 == 12)
   {
-    v9 = [v4 device];
-    sub_792C(v9, v21);
+    device = [v4 device];
+    sub_792C(device, v21);
 
     if (v6 == 1)
     {
@@ -871,7 +871,7 @@ LABEL_14:
   return v15;
 }
 
-- (id)createPillAtIndex:(unint64_t)a3 dial:(unint64_t)a4
+- (id)createPillAtIndex:(unint64_t)index dial:(unint64_t)dial
 {
   v4 = __chkstk_darwin(self, a2);
   v6 = v5;
@@ -898,15 +898,15 @@ LABEL_14:
   return v10;
 }
 
-- (id)createPillViewWithAngle:(double)a3 size:(const CGSize *)a4
+- (id)createPillViewWithAngle:(double)angle size:(const CGSize *)size
 {
   v6 = +[CALayer layer];
-  v7 = [objc_opt_class() _disabledLayerActions];
-  [v6 setActions:v7];
+  _disabledLayerActions = [objc_opt_class() _disabledLayerActions];
+  [v6 setActions:_disabledLayerActions];
 
-  [v6 setBounds:{0.0, 0.0, a4->width, a4->height}];
-  [v6 setCornerRadius:a4->width * 0.5];
-  CGAffineTransformMakeRotation(&v13, a3);
+  [v6 setBounds:{0.0, 0.0, size->width, size->height}];
+  [v6 setCornerRadius:size->width * 0.5];
+  CGAffineTransformMakeRotation(&v13, angle);
   v12 = v13;
   [v6 setAffineTransform:&v12];
   v8 = objc_alloc_init(UIView);
@@ -915,8 +915,8 @@ LABEL_14:
 
   [v6 frame];
   [v8 setFrame:?];
-  v10 = [v8 layer];
-  [v10 addSublayer:v6];
+  layer = [v8 layer];
+  [layer addSublayer:v6];
 
   [v8 bounds];
   CLKRectGetCenter();
@@ -928,18 +928,18 @@ LABEL_14:
 - (id)_createLayer
 {
   v2 = +[CALayer layer];
-  v3 = [objc_opt_class() _disabledLayerActions];
-  [v2 setActions:v3];
+  _disabledLayerActions = [objc_opt_class() _disabledLayerActions];
+  [v2 setActions:_disabledLayerActions];
   [v2 setBounds:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
 
   return v2;
 }
 
-- (id)_createLayersWithCount:(unint64_t)a3
+- (id)_createLayersWithCount:(unint64_t)count
 {
   v4 = +[NSMutableArray array];
-  v5 = [objc_opt_class() _disabledLayerActions];
-  if (a3)
+  _disabledLayerActions = [objc_opt_class() _disabledLayerActions];
+  if (count)
   {
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -947,14 +947,14 @@ LABEL_14:
     do
     {
       v9 = +[CALayer layer];
-      [v9 setActions:v5];
+      [v9 setActions:_disabledLayerActions];
       [v9 setBounds:{CGRectZero.origin.x, y, width, height}];
       [v4 addObject:v9];
 
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 
   return v4;
@@ -980,15 +980,15 @@ LABEL_14:
   return v4;
 }
 
-- (void)configureTicksForStatus:(BOOL)a3
+- (void)configureTicksForStatus:(BOOL)status
 {
   v3 = __chkstk_darwin(self, a2);
   v5 = v4;
   v6 = v3;
   *(v3 + 8) = v4;
   v7 = *(v3 + 24);
-  v8 = [*(v3 + 88) firstObject];
-  v9 = v8;
+  firstObject = [*(v3 + 88) firstObject];
+  v9 = firstObject;
   if (v7 == 1)
   {
     v10 = *(v6 + 8);
@@ -999,7 +999,7 @@ LABEL_14:
     v10 = 0;
   }
 
-  [v8 setHidden:v10 & 1];
+  [firstObject setHidden:v10 & 1];
 
   if (!*(v6 + 16) && *(v6 + 24) == 1)
   {
@@ -1024,7 +1024,7 @@ LABEL_14:
     v17 = v15[23];
     if (v5)
     {
-      v18 = [v6 device];
+      device = [v6 device];
       CLKRoundForDevice();
       v17 = v17 + v19;
     }
@@ -1033,15 +1033,15 @@ LABEL_14:
   }
 }
 
-- (void)setMinuteTicksColor:(id)a3
+- (void)setMinuteTicksColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CALayer *)self->_minuteTicks sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sublayers = [(CALayer *)self->_minuteTicks sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1053,30 +1053,30 @@ LABEL_14:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+        [*(*(&v10 + 1) + 8 * v9) setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setHourTicksColor:(id)a3
+- (void)setHourTicksColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CALayer *)self->_hourTicks sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sublayers = [(CALayer *)self->_hourTicks sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1088,84 +1088,84 @@ LABEL_14:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+        [*(*(&v10 + 1) + 8 * v9) setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setCircularBezelTickAlpha:(double)a3
+- (void)setCircularBezelTickAlpha:(double)alpha
 {
-  if (self->_circularBezelTickAlpha != a3)
+  if (self->_circularBezelTickAlpha != alpha)
   {
-    self->_circularBezelTickAlpha = a3;
+    self->_circularBezelTickAlpha = alpha;
     [(NTKCaliforniaContentView *)self applyTransitionFractionToTicksFraction:self->_dial fromDial:self->_dial toDial:0.0];
   }
 }
 
-- (id)minuteTickColorForIndex:(unint64_t)a3 palette:(id)a4 dial:(unint64_t)a5
+- (id)minuteTickColorForIndex:(unint64_t)index palette:(id)palette dial:(unint64_t)dial
 {
-  v8 = a4;
-  if ([v8 isRainbowColor])
+  paletteCopy = palette;
+  if ([paletteCopy isRainbowColor])
   {
-    v9 = [v8 colorForCircularTicksForMinute:a3];
+    smallTick = [paletteCopy colorForCircularTicksForMinute:index];
   }
 
-  else if (a5 == 1)
+  else if (dial == 1)
   {
-    v9 = [v8 smallTick];
+    smallTick = [paletteCopy smallTick];
   }
 
   else
   {
-    if (a5)
+    if (dial)
     {
       goto LABEL_11;
     }
 
     if (self->_bezelComplicationEnabled)
     {
-      [v8 circularDialSubtickColor];
+      [paletteCopy circularDialSubtickColor];
     }
 
     else
     {
-      [v8 smallTickCircular];
+      [paletteCopy smallTickCircular];
     }
-    v9 = ;
+    smallTick = ;
   }
 
-  a3 = v9;
+  index = smallTick;
 LABEL_11:
 
-  return a3;
+  return index;
 }
 
-- (id)hourTickColorForIndex:(unint64_t)a3 palette:(id)a4 dial:(unint64_t)a5
+- (id)hourTickColorForIndex:(unint64_t)index palette:(id)palette dial:(unint64_t)dial
 {
-  v8 = a4;
-  if ([v8 isRainbowColor])
+  paletteCopy = palette;
+  if ([paletteCopy isRainbowColor])
   {
-    v9 = [v8 colorForCircularTicksForHour:a3 / 5];
+    largeTick = [paletteCopy colorForCircularTicksForHour:index / 5];
   }
 
   else
   {
-    if (a5 == 1)
+    if (dial == 1)
     {
       goto LABEL_7;
     }
 
-    if (a5)
+    if (dial)
     {
       goto LABEL_9;
     }
@@ -1173,24 +1173,24 @@ LABEL_11:
     if (!self->_bezelComplicationEnabled)
     {
 LABEL_7:
-      v9 = [v8 largeTick];
+      largeTick = [paletteCopy largeTick];
     }
 
     else
     {
-      v9 = [v8 circularDialTickColor];
+      largeTick = [paletteCopy circularDialTickColor];
     }
   }
 
-  a3 = v9;
+  index = largeTick;
 LABEL_9:
 
-  return a3;
+  return index;
 }
 
-- (id)tickColorForIndex:(unint64_t)a3 palette:(id)a4 dial:(unint64_t)a5
+- (id)tickColorForIndex:(unint64_t)index palette:(id)palette dial:(unint64_t)dial
 {
-  if (0xCCCCCCCCCCCCCCCDLL * a3 <= 0x3333333333333333)
+  if (0xCCCCCCCCCCCCCCCDLL * index <= 0x3333333333333333)
   {
     [NTKCaliforniaContentView hourTickColorForIndex:"hourTickColorForIndex:palette:dial:" palette:? dial:?];
   }
@@ -1204,15 +1204,15 @@ LABEL_9:
   return v5;
 }
 
-- (void)setTicksHiddenRange:(double)a3
+- (void)setTicksHiddenRange:(double)range
 {
   v3 = __chkstk_darwin(self, a2);
   v5 = v4;
   v6 = v3;
   [v3 addTicksIfNeeded];
   memset(&v19[30], 0, 32);
-  v7 = [v6 device];
-  sub_792C(v7, v19);
+  device = [v6 device];
+  sub_792C(device, v19);
 
   v8 = [[NSMutableArray alloc] initWithCapacity:60];
   if ([v6[11] count])
@@ -1258,13 +1258,13 @@ LABEL_9:
   v6[12] = v8;
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isEqual:v9])
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  if ([paletteCopy isEqual:colorPaletteCopy])
   {
-    [(NTKCaliforniaContentView *)self setColorPalette:v9];
+    [(NTKCaliforniaContentView *)self setColorPalette:colorPaletteCopy];
   }
 
   else
@@ -1275,11 +1275,11 @@ LABEL_9:
     v19[2] = sub_6D44;
     v19[3] = &unk_1C7E8;
     v19[4] = self;
-    v11 = v8;
+    v11 = paletteCopy;
     v20 = v11;
-    v12 = v9;
+    v12 = colorPaletteCopy;
     v21 = v12;
-    v22 = a3;
+    fractionCopy = fraction;
     [(NSArray *)tickLayers enumerateObjectsUsingBlock:v19];
     hourMarkers = self->_hourMarkers;
     v14[0] = _NSConcreteStackBlock;
@@ -1287,33 +1287,33 @@ LABEL_9:
     v14[2] = sub_6E24;
     v14[3] = &unk_1C810;
     v15 = v11;
-    v18 = a3;
+    fractionCopy2 = fraction;
     v16 = v12;
-    v17 = self;
+    selfCopy = self;
     [(NSArray *)hourMarkers enumerateObjectsUsingBlock:v14];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial
 {
-  v5 = a4;
-  if (a4 == a5)
+  toDialCopy = dial;
+  if (dial == toDial)
   {
 
-    [(NTKCaliforniaContentView *)self setDial:a3];
+    [(NTKCaliforniaContentView *)self setDial:fraction];
   }
 
   else
   {
     [(NTKCaliforniaContentView *)self addTicksIfNeeded];
     CLKCompressFraction();
-    [(NTKCaliforniaContentView *)self applyTransitionFractionToTicksFraction:v5 fromDial:a5 toDial:a3];
-    if (self->_dial != a5)
+    [(NTKCaliforniaContentView *)self applyTransitionFractionToTicksFraction:toDialCopy fromDial:toDial toDial:fraction];
+    if (self->_dial != toDial)
     {
-      v5 = a5;
+      toDialCopy = toDial;
     }
 
-    [(NTKCaliforniaContentView *)self _createTemporaryDigitsIfNeededWithStyle:self->_style dial:v5];
+    [(NTKCaliforniaContentView *)self _createTemporaryDigitsIfNeededWithStyle:self->_style dial:toDialCopy];
     CLKCompressFraction();
     v10 = v9;
     p_hourMarkers = &self->_hourMarkers;
@@ -1325,7 +1325,7 @@ LABEL_9:
       v15 = fmin(1.0 - v10 + 1.0 - v10, 1.0);
       do
       {
-        if (v5 == 1)
+        if (toDialCopy == 1)
         {
           v16 = [(NSArray *)self->_temporaryHourMarkers objectAtIndex:v13];
           p_temporaryHourMarkers = &self->_hourMarkers;
@@ -1380,8 +1380,8 @@ LABEL_9:
   if (!styleTransitionHandler)
   {
     v4 = [NTKCaliforniaStyleTransitionHandler alloc];
-    v5 = [(NTKCaliforniaContentView *)self device];
-    v6 = [(NTKCaliforniaStyleTransitionHandler *)v4 initWithDevice:v5];
+    device = [(NTKCaliforniaContentView *)self device];
+    v6 = [(NTKCaliforniaStyleTransitionHandler *)v4 initWithDevice:device];
     v7 = self->_styleTransitionHandler;
     self->_styleTransitionHandler = v6;
 
@@ -1395,54 +1395,54 @@ LABEL_9:
   return styleTransitionHandler;
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  if (a4 == a5)
+  if (style == toStyle)
   {
 
-    [(NTKCaliforniaContentView *)self setStyle:a3];
+    [(NTKCaliforniaContentView *)self setStyle:fraction];
   }
 
   else
   {
-    [(NTKCaliforniaContentView *)self _createDigitsIfNeededWithStyle:a4 dial:self->_dial];
-    [(NTKCaliforniaContentView *)self _createTemporaryDigitsIfNeededWithStyle:a5 dial:self->_dial];
+    [(NTKCaliforniaContentView *)self _createDigitsIfNeededWithStyle:style dial:self->_dial];
+    [(NTKCaliforniaContentView *)self _createTemporaryDigitsIfNeededWithStyle:toStyle dial:self->_dial];
     dial = self->_dial;
-    v10 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-    [v10 setDial:dial];
+    styleTransitionHandler = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+    [styleTransitionHandler setDial:dial];
 
-    v11 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-    [v11 setFraction:a3];
+    styleTransitionHandler2 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+    [styleTransitionHandler2 setFraction:fraction];
 
-    v12 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-    [v12 setHourMarkersCount:12];
+    styleTransitionHandler3 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+    [styleTransitionHandler3 setHourMarkersCount:12];
 
-    v13 = [(NTKCaliforniaContentView *)self hourMarkersCenterPointConstantsForStyle:a4 dial:self->_dial];
-    v14 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-    [v14 setFadeOutHourMarkersCenterPoints:v13];
+    v13 = [(NTKCaliforniaContentView *)self hourMarkersCenterPointConstantsForStyle:style dial:self->_dial];
+    styleTransitionHandler4 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+    [styleTransitionHandler4 setFadeOutHourMarkersCenterPoints:v13];
 
-    v15 = [(NTKCaliforniaContentView *)self hourMarkersCenterPointConstantsForStyle:a5 dial:self->_dial];
-    v16 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-    [v16 setFadeInHourMarkersCenterPoints:v15];
+    v15 = [(NTKCaliforniaContentView *)self hourMarkersCenterPointConstantsForStyle:toStyle dial:self->_dial];
+    styleTransitionHandler5 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+    [styleTransitionHandler5 setFadeInHourMarkersCenterPoints:v15];
 
     for (i = 0; i != 14; ++i)
     {
       if ([(NSArray *)self->_hourMarkers count]> i)
       {
         v18 = [(NSArray *)self->_hourMarkers objectAtIndexedSubscript:i];
-        v19 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-        [v19 opacityForMarkerAtIndex:i markerType:0];
+        styleTransitionHandler6 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+        [styleTransitionHandler6 opacityForMarkerAtIndex:i markerType:0];
         [v18 setAlpha:?];
 
-        v20 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-        [v20 positionForMarkerAtIndex:i markerType:0];
+        styleTransitionHandler7 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+        [styleTransitionHandler7 positionForMarkerAtIndex:i markerType:0];
         [v18 setCenter:?];
 
-        v21 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-        v22 = v21;
-        if (v21)
+        styleTransitionHandler8 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+        v22 = styleTransitionHandler8;
+        if (styleTransitionHandler8)
         {
-          [v21 transformForMarkerAtIndex:i markerType:0];
+          [styleTransitionHandler8 transformForMarkerAtIndex:i markerType:0];
         }
 
         else
@@ -1461,19 +1461,19 @@ LABEL_9:
       if ([(NSArray *)self->_temporaryHourMarkers count]> i)
       {
         v23 = [(NSArray *)self->_temporaryHourMarkers objectAtIndexedSubscript:i];
-        v24 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-        [v24 opacityForMarkerAtIndex:i markerType:1];
+        styleTransitionHandler9 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+        [styleTransitionHandler9 opacityForMarkerAtIndex:i markerType:1];
         [v23 setAlpha:?];
 
-        v25 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-        [v25 positionForMarkerAtIndex:i markerType:1];
+        styleTransitionHandler10 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+        [styleTransitionHandler10 positionForMarkerAtIndex:i markerType:1];
         [v23 setCenter:?];
 
-        v26 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
-        v27 = v26;
-        if (v26)
+        styleTransitionHandler11 = [(NTKCaliforniaContentView *)self styleTransitionHandler];
+        v27 = styleTransitionHandler11;
+        if (styleTransitionHandler11)
         {
-          [v26 transformForMarkerAtIndex:i markerType:1];
+          [styleTransitionHandler11 transformForMarkerAtIndex:i markerType:1];
         }
 
         else

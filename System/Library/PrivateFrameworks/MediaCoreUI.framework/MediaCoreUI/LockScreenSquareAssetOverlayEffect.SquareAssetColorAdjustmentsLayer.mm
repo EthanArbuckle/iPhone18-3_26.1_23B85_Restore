@@ -1,7 +1,7 @@
 @interface LockScreenSquareAssetOverlayEffect.SquareAssetColorAdjustmentsLayer
 - (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)init;
-- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithCoder:(id)a3;
-- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithLayer:(id)a3;
+- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithCoder:(id)coder;
+- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithLayer:(id)layer;
 @end
 
 @implementation LockScreenSquareAssetOverlayEffect.SquareAssetColorAdjustmentsLayer
@@ -13,7 +13,7 @@
   return [(LockScreenColorAdjustmentsLayer *)&v3 init];
 }
 
-- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithLayer:(id)a3
+- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -29,12 +29,12 @@
   return v6;
 }
 
-- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithCoder:(id)a3
+- (_TtCV11MediaCoreUI34LockScreenSquareAssetOverlayEffectP33_6BA38F362B28F7680B5FF2DD700C670A32SquareAssetColorAdjustmentsLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(LockScreenColorAdjustmentsLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LockScreenColorAdjustmentsLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

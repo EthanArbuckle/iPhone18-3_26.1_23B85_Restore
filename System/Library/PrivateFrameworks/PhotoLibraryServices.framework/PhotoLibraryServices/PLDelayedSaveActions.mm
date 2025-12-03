@@ -1,97 +1,97 @@
 @interface PLDelayedSaveActions
-+ (void)_addHighlightRelationshipChangesFromChangedValues:(id)a3 onAsset:(id)a4 intoChange:(id)a5 forRelationshipNamed:(id)a6;
-+ (void)_checkForHighlightChangesOnToManyRelationshipNamed:(id)a3 andAddIntoChange:(id)a4 givenOldValue:(id)a5 andNewValue:(id)a6;
-+ (void)_checkForHighlightChangesOnToOneRelationshipNamed:(id)a3 andAddIntoChange:(id)a4 givenOldValue:(id)a5 andNewValue:(id)a6;
-- (PLDelayedSaveActions)initWithClientTransaction:(id)a3;
-- (id)_existingSharedAssetChangeContainerForAsset:(id)a3;
++ (void)_addHighlightRelationshipChangesFromChangedValues:(id)values onAsset:(id)asset intoChange:(id)change forRelationshipNamed:(id)named;
++ (void)_checkForHighlightChangesOnToManyRelationshipNamed:(id)named andAddIntoChange:(id)change givenOldValue:(id)value andNewValue:(id)newValue;
++ (void)_checkForHighlightChangesOnToOneRelationshipNamed:(id)named andAddIntoChange:(id)change givenOldValue:(id)value andNewValue:(id)newValue;
+- (PLDelayedSaveActions)initWithClientTransaction:(id)transaction;
+- (id)_existingSharedAssetChangeContainerForAsset:(id)asset;
 - (id)popDelayedSaveActionsDetail;
-- (void)_popAlbumCountChangesIntoDetail:(id)a3;
-- (void)_popAlbumKeyAssetsChangesIntoDetail:(id)a3;
-- (void)_popAlbumTrashIntoDetail:(id)a3;
-- (void)_popAssetIDsByPersonUUIDNeedingSocialGroupContainmentUpdateIntoDetail:(id)a3;
-- (void)_popAssetIDsNeedingAssetPersonEdgeUpdateIntoDetail:(id)a3;
-- (void)_popAssetIDsNeedingSocialGroupContainmentUpdateIntoDetail:(id)a3;
-- (void)_popAssetsForFilesystemPersistencyChangesIntoDetail:(id)a3;
-- (void)_popBackgroundUploadEventUpdatedIntoDetail:(id)a3;
-- (void)_popCloudFeedChangesIntoDetail:(id)a3;
-- (void)_popDelayedAlbumCountsAndDateRangeUpdates:(id *)a3;
-- (void)_popDelayedAlbumKeyAssetsUpdates:(id *)a3;
-- (void)_popDelayedAssetsForAnalysis:(id *)a3;
-- (void)_popDelayedAssetsForFilesystemPersistencyUpdates:(id *)a3;
-- (void)_popDelayedCloudFeedAlbumUpdates:(id *)a3 collectionShareUpdates:(id *)a4 collectionShareDeletes:(id *)a5 assetInserts:(id *)a6 assetUpdates:(id *)a7 commentInserts:(id *)a8 invitationRecordUpdates:(id *)a9 shareParticipantUpdates:(id *)a10 shareParticipantDeletes:(id *)a11 deletionEntries:(id *)a12;
-- (void)_popDelayedImportSessionCountsAndDateRangeUpdates:(id *)a3;
-- (void)_popDelayedMomentInsertsAndUpdates:(id *)a3 deletes:(id *)a4 updatedAssetIDsForHighlights:(id *)a5 updatedMomentIDsForHighlights:(id *)a6 sharedAssetContainerIncrementalChanges:(id *)a7;
-- (void)_popDuetDeletedAssetsIntoDetail:(id)a3;
-- (void)_popDuetDeletedMemoriesIntoDetail:(id)a3;
-- (void)_popFeaturedContentUpdateNeededForPerson:(id)a3;
-- (void)_popImportSessionCountChangesIntoDetail:(id)a3;
-- (void)_popLibraryScopeParticipantsUpdateIntoDetail:(id)a3;
-- (void)_popLibraryScopeRulesUpdatedIntoDetail:(id)a3;
-- (void)_popMemberIDsOfGroupNeedingContainmentUpdateIntoDetail:(id)a3;
-- (void)_popMembersOfGroupsNeedingDeduplicationIntoDetail:(id)a3;
-- (void)_popMemoryAssetUpdateIntoDetail:(id)a3;
-- (void)_popMomentChangesIntoDetail:(id)a3;
-- (void)_popSocialGroupNodeIDsNeedingDeduplicationIntoDetail:(id)a3;
-- (void)_popWallpaperFavoriteAlbumAssetRemovalReloadNeeded:(id)a3;
-- (void)_popWallpaperSuggestionReloadIntoDetail:(id)a3;
-- (void)_popWallpaperUserAlbumAssetRemovalReloadNeeded:(id)a3;
-- (void)_popWidgetFavoriteAlbumAssetRemovalReloadNeeded:(id)a3;
-- (void)_popWidgetTimelineReloadNeeded:(id)a3;
-- (void)_popWidgetUserAlbumAssetRemovalReloadNeeded:(id)a3;
-- (void)_recordDelayedAlbumCountsAndDateRangeUpdate:(id)a3;
-- (void)_recordDelayedAlbumKeyAssetsUpdate:(id)a3;
-- (void)_recordDelayedCloudFeedAlbumUpdate:(id)a3;
-- (void)_recordDelayedCloudFeedAssetInsert:(id)a3;
-- (void)_recordDelayedCloudFeedAssetUpdate:(id)a3;
-- (void)_recordDelayedCloudFeedCollectionShareDelete:(id)a3;
-- (void)_recordDelayedCloudFeedCollectionShareUpdate:(id)a3;
-- (void)_recordDelayedCloudFeedCommentInsert:(id)a3;
-- (void)_recordDelayedCloudFeedDeletionEntries:(id)a3;
-- (void)_recordDelayedCloudFeedInvitationRecordUpdate:(id)a3;
-- (void)_recordDelayedCloudFeedShareParticipantDelete:(id)a3;
-- (void)_recordDelayedCloudFeedShareParticipantUpdate:(id)a3;
-- (void)_recordDelayedHighlightMomentUpdates:(id)a3;
-- (void)_recordDelayedImportSessionCountsAndDateRangeUpdate:(id)a3;
-- (void)_recordDelayedMomentAssetDeletionsDictionary:(id)a3 forKey:(id)a4;
-- (void)_recordDelayedMomentAssetUpdates:(id)a3;
-- (void)_recordSharedAssetIncrementalChange:(id)a3 forAsset:(id)a4;
-- (void)persistDelayedActionsScope:(id)a3;
-- (void)recordAdditionalAssetAttributesForMomentUpdate:(id)a3;
-- (void)recordAlbumForCloudFeedUpdate:(id)a3;
-- (void)recordAlbumForCountsAndDateRangeUpdate:(id)a3;
-- (void)recordAlbumForKeyAssetsUpdate:(id)a3;
-- (void)recordAlbumForTrashUpdate:(id)a3;
-- (void)recordAssetForAlbumCountsDateRangeAndKeyAssetsUpdate:(id)a3;
-- (void)recordAssetForAnalysis:(id)a3 workerFlags:(int)a4 workerType:(signed __int16)a5;
-- (void)recordAssetForCloudFeedUpdate:(id)a3;
-- (void)recordAssetForDuetDelete:(id)a3;
-- (void)recordAssetForFileSystemPersistencyUpdate:(id)a3;
-- (void)recordAssetForImportSessionCountsAndDateRangeUpdate:(id)a3;
-- (void)recordAssetForMomentUpdate:(id)a3;
-- (void)recordAssetID:(id)a3 forWallpaperUserAlbumRemoval:(id)a4;
-- (void)recordAssetID:(id)a3 forWidgetUserAlbumRemoval:(id)a4;
-- (void)recordAssetIDForWallpaperFavoriteAlbumRemoval:(id)a3;
-- (void)recordAssetIDForWidgetFavoriteAlbumRemoval:(id)a3;
-- (void)recordAssetPersonEdgeUpdateNeededForAsset:(id)a3;
-- (void)recordCloudFeedAssetsEntryForAssetUpdate:(id)a3;
-- (void)recordCloudFeedCommentsEntryForCommentUpdate:(id)a3;
-- (void)recordCollectionShareForCloudFeedUpdate:(id)a3;
-- (void)recordCommentForCloudFeedUpdate:(id)a3;
-- (void)recordDeduplicationNeededForGroupsContainingMember:(id)a3;
-- (void)recordDeduplicationNeededForNewGroupNode:(id)a3;
-- (void)recordFeaturedContentUpdateNeededForPersonUUID:(id)a3;
-- (void)recordImportSessionCountsAndDateRangeUpdate:(id)a3;
-- (void)recordInvitationRecordForCloudFeedUpdate:(id)a3;
-- (void)recordLibraryScopeParticipantsUpdateForLibraryScope:(id)a3;
-- (void)recordMemoryAssetsUpdate:(id)a3;
-- (void)recordMemoryForDuetDelete:(id)a3;
-- (void)recordMomentForHighlightUpdate:(id)a3;
-- (void)recordShareParticipantForCloudFeedUpdate:(id)a3;
-- (void)recordSocialGroupContainmentUpdateNeededForAsset:(id)a3;
-- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)a3;
-- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)a3 andAsset:(id)a4;
-- (void)recordWallpaperSuggestionReloadForUUID:(id)a3;
-- (void)recordWidgetTimelineReloadNeededForType:(int64_t)a3;
+- (void)_popAlbumCountChangesIntoDetail:(id)detail;
+- (void)_popAlbumKeyAssetsChangesIntoDetail:(id)detail;
+- (void)_popAlbumTrashIntoDetail:(id)detail;
+- (void)_popAssetIDsByPersonUUIDNeedingSocialGroupContainmentUpdateIntoDetail:(id)detail;
+- (void)_popAssetIDsNeedingAssetPersonEdgeUpdateIntoDetail:(id)detail;
+- (void)_popAssetIDsNeedingSocialGroupContainmentUpdateIntoDetail:(id)detail;
+- (void)_popAssetsForFilesystemPersistencyChangesIntoDetail:(id)detail;
+- (void)_popBackgroundUploadEventUpdatedIntoDetail:(id)detail;
+- (void)_popCloudFeedChangesIntoDetail:(id)detail;
+- (void)_popDelayedAlbumCountsAndDateRangeUpdates:(id *)updates;
+- (void)_popDelayedAlbumKeyAssetsUpdates:(id *)updates;
+- (void)_popDelayedAssetsForAnalysis:(id *)analysis;
+- (void)_popDelayedAssetsForFilesystemPersistencyUpdates:(id *)updates;
+- (void)_popDelayedCloudFeedAlbumUpdates:(id *)updates collectionShareUpdates:(id *)shareUpdates collectionShareDeletes:(id *)deletes assetInserts:(id *)inserts assetUpdates:(id *)assetUpdates commentInserts:(id *)commentInserts invitationRecordUpdates:(id *)recordUpdates shareParticipantUpdates:(id *)self0 shareParticipantDeletes:(id *)self1 deletionEntries:(id *)self2;
+- (void)_popDelayedImportSessionCountsAndDateRangeUpdates:(id *)updates;
+- (void)_popDelayedMomentInsertsAndUpdates:(id *)updates deletes:(id *)deletes updatedAssetIDsForHighlights:(id *)highlights updatedMomentIDsForHighlights:(id *)forHighlights sharedAssetContainerIncrementalChanges:(id *)changes;
+- (void)_popDuetDeletedAssetsIntoDetail:(id)detail;
+- (void)_popDuetDeletedMemoriesIntoDetail:(id)detail;
+- (void)_popFeaturedContentUpdateNeededForPerson:(id)person;
+- (void)_popImportSessionCountChangesIntoDetail:(id)detail;
+- (void)_popLibraryScopeParticipantsUpdateIntoDetail:(id)detail;
+- (void)_popLibraryScopeRulesUpdatedIntoDetail:(id)detail;
+- (void)_popMemberIDsOfGroupNeedingContainmentUpdateIntoDetail:(id)detail;
+- (void)_popMembersOfGroupsNeedingDeduplicationIntoDetail:(id)detail;
+- (void)_popMemoryAssetUpdateIntoDetail:(id)detail;
+- (void)_popMomentChangesIntoDetail:(id)detail;
+- (void)_popSocialGroupNodeIDsNeedingDeduplicationIntoDetail:(id)detail;
+- (void)_popWallpaperFavoriteAlbumAssetRemovalReloadNeeded:(id)needed;
+- (void)_popWallpaperSuggestionReloadIntoDetail:(id)detail;
+- (void)_popWallpaperUserAlbumAssetRemovalReloadNeeded:(id)needed;
+- (void)_popWidgetFavoriteAlbumAssetRemovalReloadNeeded:(id)needed;
+- (void)_popWidgetTimelineReloadNeeded:(id)needed;
+- (void)_popWidgetUserAlbumAssetRemovalReloadNeeded:(id)needed;
+- (void)_recordDelayedAlbumCountsAndDateRangeUpdate:(id)update;
+- (void)_recordDelayedAlbumKeyAssetsUpdate:(id)update;
+- (void)_recordDelayedCloudFeedAlbumUpdate:(id)update;
+- (void)_recordDelayedCloudFeedAssetInsert:(id)insert;
+- (void)_recordDelayedCloudFeedAssetUpdate:(id)update;
+- (void)_recordDelayedCloudFeedCollectionShareDelete:(id)delete;
+- (void)_recordDelayedCloudFeedCollectionShareUpdate:(id)update;
+- (void)_recordDelayedCloudFeedCommentInsert:(id)insert;
+- (void)_recordDelayedCloudFeedDeletionEntries:(id)entries;
+- (void)_recordDelayedCloudFeedInvitationRecordUpdate:(id)update;
+- (void)_recordDelayedCloudFeedShareParticipantDelete:(id)delete;
+- (void)_recordDelayedCloudFeedShareParticipantUpdate:(id)update;
+- (void)_recordDelayedHighlightMomentUpdates:(id)updates;
+- (void)_recordDelayedImportSessionCountsAndDateRangeUpdate:(id)update;
+- (void)_recordDelayedMomentAssetDeletionsDictionary:(id)dictionary forKey:(id)key;
+- (void)_recordDelayedMomentAssetUpdates:(id)updates;
+- (void)_recordSharedAssetIncrementalChange:(id)change forAsset:(id)asset;
+- (void)persistDelayedActionsScope:(id)scope;
+- (void)recordAdditionalAssetAttributesForMomentUpdate:(id)update;
+- (void)recordAlbumForCloudFeedUpdate:(id)update;
+- (void)recordAlbumForCountsAndDateRangeUpdate:(id)update;
+- (void)recordAlbumForKeyAssetsUpdate:(id)update;
+- (void)recordAlbumForTrashUpdate:(id)update;
+- (void)recordAssetForAlbumCountsDateRangeAndKeyAssetsUpdate:(id)update;
+- (void)recordAssetForAnalysis:(id)analysis workerFlags:(int)flags workerType:(signed __int16)type;
+- (void)recordAssetForCloudFeedUpdate:(id)update;
+- (void)recordAssetForDuetDelete:(id)delete;
+- (void)recordAssetForFileSystemPersistencyUpdate:(id)update;
+- (void)recordAssetForImportSessionCountsAndDateRangeUpdate:(id)update;
+- (void)recordAssetForMomentUpdate:(id)update;
+- (void)recordAssetID:(id)d forWallpaperUserAlbumRemoval:(id)removal;
+- (void)recordAssetID:(id)d forWidgetUserAlbumRemoval:(id)removal;
+- (void)recordAssetIDForWallpaperFavoriteAlbumRemoval:(id)removal;
+- (void)recordAssetIDForWidgetFavoriteAlbumRemoval:(id)removal;
+- (void)recordAssetPersonEdgeUpdateNeededForAsset:(id)asset;
+- (void)recordCloudFeedAssetsEntryForAssetUpdate:(id)update;
+- (void)recordCloudFeedCommentsEntryForCommentUpdate:(id)update;
+- (void)recordCollectionShareForCloudFeedUpdate:(id)update;
+- (void)recordCommentForCloudFeedUpdate:(id)update;
+- (void)recordDeduplicationNeededForGroupsContainingMember:(id)member;
+- (void)recordDeduplicationNeededForNewGroupNode:(id)node;
+- (void)recordFeaturedContentUpdateNeededForPersonUUID:(id)d;
+- (void)recordImportSessionCountsAndDateRangeUpdate:(id)update;
+- (void)recordInvitationRecordForCloudFeedUpdate:(id)update;
+- (void)recordLibraryScopeParticipantsUpdateForLibraryScope:(id)scope;
+- (void)recordMemoryAssetsUpdate:(id)update;
+- (void)recordMemoryForDuetDelete:(id)delete;
+- (void)recordMomentForHighlightUpdate:(id)update;
+- (void)recordShareParticipantForCloudFeedUpdate:(id)update;
+- (void)recordSocialGroupContainmentUpdateNeededForAsset:(id)asset;
+- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)person;
+- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)person andAsset:(id)asset;
+- (void)recordWallpaperSuggestionReloadForUUID:(id)d;
+- (void)recordWidgetTimelineReloadNeededForType:(int64_t)type;
 @end
 
 @implementation PLDelayedSaveActions
@@ -129,25 +129,25 @@
   return v3;
 }
 
-- (void)_popBackgroundUploadEventUpdatedIntoDetail:(id)a3
+- (void)_popBackgroundUploadEventUpdatedIntoDetail:(id)detail
 {
   if (self->_delayedBackgroundUploadEventUpdated)
   {
-    [a3 setBackgroundUploadEventUpdated:1];
+    [detail setBackgroundUploadEventUpdated:1];
     self->_delayedBackgroundUploadEventUpdated = 0;
   }
 }
 
-- (void)_popAssetIDsNeedingAssetPersonEdgeUpdateIntoDetail:(id)a3
+- (void)_popAssetIDsNeedingAssetPersonEdgeUpdateIntoDetail:(id)detail
 {
   delayedAssetPersonEdgeUpdatesNeededForAssets = self->_delayedAssetPersonEdgeUpdatesNeededForAssets;
   if (delayedAssetPersonEdgeUpdatesNeededForAssets)
   {
     v5 = MEMORY[0x1E695DFD8];
-    v6 = a3;
+    detailCopy = detail;
     v7 = [(NSMutableSet *)delayedAssetPersonEdgeUpdatesNeededForAssets valueForKey:@"objectID"];
     v8 = [v5 setWithSet:v7];
-    [v6 setAssetIDsNeedingAssetPersonEdgeUpdates:v8];
+    [detailCopy setAssetIDsNeedingAssetPersonEdgeUpdates:v8];
 
     v9 = self->_delayedAssetPersonEdgeUpdatesNeededForAssets;
   }
@@ -160,34 +160,34 @@
   [(NSMutableSet *)v9 removeAllObjects];
 }
 
-- (void)recordAssetPersonEdgeUpdateNeededForAsset:(id)a3
+- (void)recordAssetPersonEdgeUpdateNeededForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   delayedAssetPersonEdgeUpdatesNeededForAssets = self->_delayedAssetPersonEdgeUpdatesNeededForAssets;
-  v8 = v4;
+  v8 = assetCopy;
   if (!delayedAssetPersonEdgeUpdatesNeededForAssets)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_delayedAssetPersonEdgeUpdatesNeededForAssets;
     self->_delayedAssetPersonEdgeUpdatesNeededForAssets = v6;
 
-    v4 = v8;
+    assetCopy = v8;
     delayedAssetPersonEdgeUpdatesNeededForAssets = self->_delayedAssetPersonEdgeUpdatesNeededForAssets;
   }
 
-  [(NSMutableSet *)delayedAssetPersonEdgeUpdatesNeededForAssets addObject:v4];
+  [(NSMutableSet *)delayedAssetPersonEdgeUpdatesNeededForAssets addObject:assetCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeSocialGroupAssetPersonEdges"];
 }
 
-- (void)_popMembersOfGroupsNeedingDeduplicationIntoDetail:(id)a3
+- (void)_popMembersOfGroupsNeedingDeduplicationIntoDetail:(id)detail
 {
   delayedDeduplicationNeededForSocialGroupsContainingMembers = self->_delayedDeduplicationNeededForSocialGroupsContainingMembers;
   if (delayedDeduplicationNeededForSocialGroupsContainingMembers)
   {
-    v5 = a3;
+    detailCopy = detail;
     v6 = [(NSMutableSet *)delayedDeduplicationNeededForSocialGroupsContainingMembers valueForKey:@"objectID"];
     v7 = [v6 copy];
-    [v5 setMemberIDsOfSocialGroupsNeedingDeduplication:v7];
+    [detailCopy setMemberIDsOfSocialGroupsNeedingDeduplication:v7];
 
     v8 = self->_delayedDeduplicationNeededForSocialGroupsContainingMembers;
   }
@@ -200,34 +200,34 @@
   [(NSMutableSet *)v8 removeAllObjects];
 }
 
-- (void)recordDeduplicationNeededForGroupsContainingMember:(id)a3
+- (void)recordDeduplicationNeededForGroupsContainingMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   delayedDeduplicationNeededForSocialGroupsContainingMembers = self->_delayedDeduplicationNeededForSocialGroupsContainingMembers;
-  v8 = v4;
+  v8 = memberCopy;
   if (!delayedDeduplicationNeededForSocialGroupsContainingMembers)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_delayedDeduplicationNeededForSocialGroupsContainingMembers;
     self->_delayedDeduplicationNeededForSocialGroupsContainingMembers = v6;
 
-    v4 = v8;
+    memberCopy = v8;
     delayedDeduplicationNeededForSocialGroupsContainingMembers = self->_delayedDeduplicationNeededForSocialGroupsContainingMembers;
   }
 
-  [(NSMutableSet *)delayedDeduplicationNeededForSocialGroupsContainingMembers addObject:v4];
+  [(NSMutableSet *)delayedDeduplicationNeededForSocialGroupsContainingMembers addObject:memberCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeSocialGroupDeduplication"];
 }
 
-- (void)_popSocialGroupNodeIDsNeedingDeduplicationIntoDetail:(id)a3
+- (void)_popSocialGroupNodeIDsNeedingDeduplicationIntoDetail:(id)detail
 {
   delayedSocialGroupNodesNeedingDeduplication = self->_delayedSocialGroupNodesNeedingDeduplication;
   if (delayedSocialGroupNodesNeedingDeduplication)
   {
-    v5 = a3;
+    detailCopy = detail;
     v6 = [(NSMutableSet *)delayedSocialGroupNodesNeedingDeduplication valueForKey:@"objectID"];
     v7 = [v6 copy];
-    [v5 setSocialGroupNodeIDsNeedingDeduplication:v7];
+    [detailCopy setSocialGroupNodeIDsNeedingDeduplication:v7];
 
     v8 = self->_delayedSocialGroupNodesNeedingDeduplication;
   }
@@ -240,42 +240,42 @@
   [(NSMutableSet *)v8 removeAllObjects];
 }
 
-- (void)recordDeduplicationNeededForNewGroupNode:(id)a3
+- (void)recordDeduplicationNeededForNewGroupNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   delayedSocialGroupNodesNeedingDeduplication = self->_delayedSocialGroupNodesNeedingDeduplication;
-  v8 = v4;
+  v8 = nodeCopy;
   if (!delayedSocialGroupNodesNeedingDeduplication)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_delayedSocialGroupNodesNeedingDeduplication;
     self->_delayedSocialGroupNodesNeedingDeduplication = v6;
 
-    v4 = v8;
+    nodeCopy = v8;
     delayedSocialGroupNodesNeedingDeduplication = self->_delayedSocialGroupNodesNeedingDeduplication;
   }
 
-  [(NSMutableSet *)delayedSocialGroupNodesNeedingDeduplication addObject:v4];
+  [(NSMutableSet *)delayedSocialGroupNodesNeedingDeduplication addObject:nodeCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeSocialGroupDeduplication"];
 }
 
-- (void)_popAssetIDsByPersonUUIDNeedingSocialGroupContainmentUpdateIntoDetail:(id)a3
+- (void)_popAssetIDsByPersonUUIDNeedingSocialGroupContainmentUpdateIntoDetail:(id)detail
 {
   if (self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates)
   {
     v4 = MEMORY[0x1E695DF90];
-    v5 = a3;
-    v6 = [v4 dictionary];
+    detailCopy = detail;
+    dictionary = [v4 dictionary];
     delayedAssetsByPersonUUIDNeedingContainmentUpdates = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContainmentUpdateIntoDetail___block_invoke;
     v11[3] = &unk_1E7575AD0;
-    v12 = v6;
-    v8 = v6;
+    v12 = dictionary;
+    v8 = dictionary;
     [(NSMutableDictionary *)delayedAssetsByPersonUUIDNeedingContainmentUpdates enumerateKeysAndObjectsUsingBlock:v11];
     v9 = [v8 copy];
-    [v5 setAssetIDsByPersonUUIDNeedingContainmentUpdates:v9];
+    [detailCopy setAssetIDsByPersonUUIDNeedingContainmentUpdates:v9];
 
     v10 = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
   }
@@ -296,49 +296,49 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)a3 andAsset:(id)a4
+- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)person andAsset:(id)asset
 {
-  v18 = a3;
-  v6 = a4;
+  personCopy = person;
+  assetCopy = asset;
   delayedAssetsByPersonUUIDNeedingContainmentUpdates = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
   if (!delayedAssetsByPersonUUIDNeedingContainmentUpdates)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
-    self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates = v8;
+    self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates = dictionary;
 
     delayedAssetsByPersonUUIDNeedingContainmentUpdates = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
   }
 
-  v10 = [v18 personUUID];
-  v11 = [(NSMutableDictionary *)delayedAssetsByPersonUUIDNeedingContainmentUpdates objectForKeyedSubscript:v10];
+  personUUID = [personCopy personUUID];
+  v11 = [(NSMutableDictionary *)delayedAssetsByPersonUUIDNeedingContainmentUpdates objectForKeyedSubscript:personUUID];
 
   if (!v11)
   {
     v12 = [MEMORY[0x1E695DFA8] set];
     v13 = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
-    v14 = [v18 personUUID];
-    [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
+    personUUID2 = [personCopy personUUID];
+    [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:personUUID2];
   }
 
   v15 = self->_delayedAssetsByPersonUUIDNeedingContainmentUpdates;
-  v16 = [v18 personUUID];
-  v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:v16];
-  [v17 addObject:v6];
+  personUUID3 = [personCopy personUUID];
+  v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:personUUID3];
+  [v17 addObject:assetCopy];
 
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeSocialGroupAssetContainment"];
 }
 
-- (void)_popAssetIDsNeedingSocialGroupContainmentUpdateIntoDetail:(id)a3
+- (void)_popAssetIDsNeedingSocialGroupContainmentUpdateIntoDetail:(id)detail
 {
   delayedAssetsNeedingSocialGroupContainmentUpdates = self->_delayedAssetsNeedingSocialGroupContainmentUpdates;
   if (delayedAssetsNeedingSocialGroupContainmentUpdates)
   {
     v5 = MEMORY[0x1E695DFD8];
-    v6 = a3;
+    detailCopy = detail;
     v7 = [(NSMutableSet *)delayedAssetsNeedingSocialGroupContainmentUpdates valueForKey:@"objectID"];
     v8 = [v5 setWithSet:v7];
-    [v6 setAssetIDsNeedingContainmentUpdates:v8];
+    [detailCopy setAssetIDsNeedingContainmentUpdates:v8];
 
     v9 = self->_delayedAssetsNeedingSocialGroupContainmentUpdates;
   }
@@ -351,35 +351,35 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [(NSMutableSet *)v9 removeAllObjects];
 }
 
-- (void)recordSocialGroupContainmentUpdateNeededForAsset:(id)a3
+- (void)recordSocialGroupContainmentUpdateNeededForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   delayedAssetsNeedingSocialGroupContainmentUpdates = self->_delayedAssetsNeedingSocialGroupContainmentUpdates;
-  v8 = v4;
+  v8 = assetCopy;
   if (!delayedAssetsNeedingSocialGroupContainmentUpdates)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_delayedAssetsNeedingSocialGroupContainmentUpdates;
     self->_delayedAssetsNeedingSocialGroupContainmentUpdates = v6;
 
-    v4 = v8;
+    assetCopy = v8;
     delayedAssetsNeedingSocialGroupContainmentUpdates = self->_delayedAssetsNeedingSocialGroupContainmentUpdates;
   }
 
-  [(NSMutableSet *)delayedAssetsNeedingSocialGroupContainmentUpdates addObject:v4];
+  [(NSMutableSet *)delayedAssetsNeedingSocialGroupContainmentUpdates addObject:assetCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeSocialGroupAssetContainment"];
 }
 
-- (void)_popMemberIDsOfGroupNeedingContainmentUpdateIntoDetail:(id)a3
+- (void)_popMemberIDsOfGroupNeedingContainmentUpdateIntoDetail:(id)detail
 {
   delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates = self->_delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates;
   if (delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates)
   {
     v5 = MEMORY[0x1E695DFD8];
-    v6 = a3;
+    detailCopy = detail;
     v7 = [(NSMutableSet *)delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates valueForKey:@"objectID"];
     v8 = [v5 setWithSet:v7];
-    [v6 setMemberIDsOfSocialGroupsNeedingContainmentUpdates:v8];
+    [detailCopy setMemberIDsOfSocialGroupsNeedingContainmentUpdates:v8];
 
     v9 = self->_delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates;
   }
@@ -392,53 +392,53 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [(NSMutableSet *)v9 removeAllObjects];
 }
 
-- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)a3
+- (void)recordSocialGroupContainmentUpdateNeededForPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates = self->_delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates;
-  v8 = v4;
+  v8 = personCopy;
   if (!delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
     v7 = self->_delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates;
     self->_delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates = v6;
 
-    v4 = v8;
+    personCopy = v8;
     delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates = self->_delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates;
   }
 
-  [(NSMutableSet *)delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates addObject:v4];
+  [(NSMutableSet *)delayedSocialGroupMembersOfGroupsNeedingContainmentUpdates addObject:personCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeSocialGroupAssetContainment"];
 }
 
-- (void)_popLibraryScopeRulesUpdatedIntoDetail:(id)a3
+- (void)_popLibraryScopeRulesUpdatedIntoDetail:(id)detail
 {
   if (self->_delayedLibraryScopeRulesUpdated)
   {
-    [a3 setLibraryScopeRulesUpdated:1];
+    [detail setLibraryScopeRulesUpdated:1];
     self->_delayedLibraryScopeRulesUpdated = 0;
   }
 }
 
-- (void)_popLibraryScopeParticipantsUpdateIntoDetail:(id)a3
+- (void)_popLibraryScopeParticipantsUpdateIntoDetail:(id)detail
 {
-  v5 = a3;
+  detailCopy = detail;
   if ([(NSMutableSet *)self->_delayedLibraryScopeParticipantsUpdateUUIDs count])
   {
     v4 = [(NSMutableSet *)self->_delayedLibraryScopeParticipantsUpdateUUIDs copy];
-    [v5 setLibraryScopeParticipantsForUpdate:v4];
+    [detailCopy setLibraryScopeParticipantsForUpdate:v4];
 
     [(NSMutableSet *)self->_delayedLibraryScopeParticipantsUpdateUUIDs removeAllObjects];
   }
 }
 
-- (void)recordLibraryScopeParticipantsUpdateForLibraryScope:(id)a3
+- (void)recordLibraryScopeParticipantsUpdateForLibraryScope:(id)scope
 {
-  v4 = [a3 uuid];
-  if (v4)
+  uuid = [scope uuid];
+  if (uuid)
   {
     delayedLibraryScopeParticipantsUpdateUUIDs = self->_delayedLibraryScopeParticipantsUpdateUUIDs;
-    v8 = v4;
+    v8 = uuid;
     if (!delayedLibraryScopeParticipantsUpdateUUIDs)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -449,61 +449,61 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
     }
 
     [(NSMutableSet *)delayedLibraryScopeParticipantsUpdateUUIDs addObject:v8];
-    v4 = v8;
+    uuid = v8;
   }
 }
 
-- (void)_popMemoryAssetUpdateIntoDetail:(id)a3
+- (void)_popMemoryAssetUpdateIntoDetail:(id)detail
 {
-  v5 = a3;
+  detailCopy = detail;
   if ([(NSMutableSet *)self->_delayedMemoriesAssetUpdate count])
   {
     v4 = [(NSMutableSet *)self->_delayedMemoriesAssetUpdate copy];
-    [v5 setMemoriesForAssetUpdate:v4];
+    [detailCopy setMemoriesForAssetUpdate:v4];
 
     [(NSMutableSet *)self->_delayedMemoriesAssetUpdate removeAllObjects];
   }
 }
 
-- (void)recordMemoryAssetsUpdate:(id)a3
+- (void)recordMemoryAssetsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedMemoriesAssetUpdate = self->_delayedMemoriesAssetUpdate;
-  v9 = v4;
+  v9 = updateCopy;
   if (!delayedMemoriesAssetUpdate)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_delayedMemoriesAssetUpdate;
     self->_delayedMemoriesAssetUpdate = v6;
 
-    v4 = v9;
+    updateCopy = v9;
     delayedMemoriesAssetUpdate = self->_delayedMemoriesAssetUpdate;
   }
 
-  v8 = [v4 uuid];
-  [(NSMutableSet *)delayedMemoriesAssetUpdate addObject:v8];
+  uuid = [updateCopy uuid];
+  [(NSMutableSet *)delayedMemoriesAssetUpdate addObject:uuid];
 }
 
-- (void)_popFeaturedContentUpdateNeededForPerson:(id)a3
+- (void)_popFeaturedContentUpdateNeededForPerson:(id)person
 {
-  v5 = a3;
-  [v5 setPersonsToUpdateForFeaturedContent:self->_delayedFeaturedContentUpdateNeededForPerson];
+  personCopy = person;
+  [personCopy setPersonsToUpdateForFeaturedContent:self->_delayedFeaturedContentUpdateNeededForPerson];
   delayedFeaturedContentUpdateNeededForPerson = self->_delayedFeaturedContentUpdateNeededForPerson;
   self->_delayedFeaturedContentUpdateNeededForPerson = 0;
 
   if (self->_delayedFeaturedContentUpdateNeeded)
   {
-    [v5 setShouldUpdateFeaturedContent:1];
+    [personCopy setShouldUpdateFeaturedContent:1];
     self->_delayedFeaturedContentUpdateNeeded = 0;
   }
 }
 
-- (void)recordFeaturedContentUpdateNeededForPersonUUID:(id)a3
+- (void)recordFeaturedContentUpdateNeededForPersonUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   delayedFeaturedContentUpdateNeededForPerson = self->_delayedFeaturedContentUpdateNeededForPerson;
-  v8 = v4;
-  if (v4)
+  v8 = dCopy;
+  if (dCopy)
   {
     if (!delayedFeaturedContentUpdateNeededForPerson)
     {
@@ -511,11 +511,11 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
       v7 = self->_delayedFeaturedContentUpdateNeededForPerson;
       self->_delayedFeaturedContentUpdateNeededForPerson = v6;
 
-      v4 = v8;
+      dCopy = v8;
       delayedFeaturedContentUpdateNeededForPerson = self->_delayedFeaturedContentUpdateNeededForPerson;
     }
 
-    [(NSMutableSet *)delayedFeaturedContentUpdateNeededForPerson addObject:v4];
+    [(NSMutableSet *)delayedFeaturedContentUpdateNeededForPerson addObject:dCopy];
   }
 
   else
@@ -526,44 +526,44 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   self->_delayedFeaturedContentUpdateNeeded = 1;
 }
 
-- (void)_popWallpaperSuggestionReloadIntoDetail:(id)a3
+- (void)_popWallpaperSuggestionReloadIntoDetail:(id)detail
 {
-  v5 = a3;
+  detailCopy = detail;
   if ([(NSMutableSet *)self->_delayedWallpaperSuggestionUUIDs count])
   {
     v4 = [(NSMutableSet *)self->_delayedWallpaperSuggestionUUIDs copy];
-    [v5 setWallpaperSuggestionReloadUUIDs:v4];
+    [detailCopy setWallpaperSuggestionReloadUUIDs:v4];
 
     [(NSMutableSet *)self->_delayedWallpaperSuggestionUUIDs removeAllObjects];
   }
 }
 
-- (void)recordWallpaperSuggestionReloadForUUID:(id)a3
+- (void)recordWallpaperSuggestionReloadForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   delayedWallpaperSuggestionUUIDs = self->_delayedWallpaperSuggestionUUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!delayedWallpaperSuggestionUUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_delayedWallpaperSuggestionUUIDs;
     self->_delayedWallpaperSuggestionUUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     delayedWallpaperSuggestionUUIDs = self->_delayedWallpaperSuggestionUUIDs;
   }
 
-  [(NSMutableSet *)delayedWallpaperSuggestionUUIDs addObject:v4];
+  [(NSMutableSet *)delayedWallpaperSuggestionUUIDs addObject:dCopy];
 }
 
-- (void)_popWallpaperFavoriteAlbumAssetRemovalReloadNeeded:(id)a3
+- (void)_popWallpaperFavoriteAlbumAssetRemovalReloadNeeded:(id)needed
 {
   delayedWallpaperFavoriteAlbumAssetRemovalNeeded = self->_delayedWallpaperFavoriteAlbumAssetRemovalNeeded;
   if (delayedWallpaperFavoriteAlbumAssetRemovalNeeded)
   {
-    v5 = a3;
+    neededCopy = needed;
     v6 = [(NSMutableSet *)delayedWallpaperFavoriteAlbumAssetRemovalNeeded copy];
-    [v5 setAssetsForWallpaperFavoriteAlbumRemoval:v6];
+    [neededCopy setAssetsForWallpaperFavoriteAlbumRemoval:v6];
 
     v7 = self->_delayedWallpaperFavoriteAlbumAssetRemovalNeeded;
 
@@ -571,32 +571,32 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   }
 }
 
-- (void)recordAssetIDForWallpaperFavoriteAlbumRemoval:(id)a3
+- (void)recordAssetIDForWallpaperFavoriteAlbumRemoval:(id)removal
 {
-  v4 = a3;
+  removalCopy = removal;
   delayedWallpaperFavoriteAlbumAssetRemovalNeeded = self->_delayedWallpaperFavoriteAlbumAssetRemovalNeeded;
-  v8 = v4;
+  v8 = removalCopy;
   if (!delayedWallpaperFavoriteAlbumAssetRemovalNeeded)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_delayedWallpaperFavoriteAlbumAssetRemovalNeeded;
     self->_delayedWallpaperFavoriteAlbumAssetRemovalNeeded = v6;
 
-    v4 = v8;
+    removalCopy = v8;
     delayedWallpaperFavoriteAlbumAssetRemovalNeeded = self->_delayedWallpaperFavoriteAlbumAssetRemovalNeeded;
   }
 
-  [(NSMutableSet *)delayedWallpaperFavoriteAlbumAssetRemovalNeeded addObject:v4];
+  [(NSMutableSet *)delayedWallpaperFavoriteAlbumAssetRemovalNeeded addObject:removalCopy];
 }
 
-- (void)_popWallpaperUserAlbumAssetRemovalReloadNeeded:(id)a3
+- (void)_popWallpaperUserAlbumAssetRemovalReloadNeeded:(id)needed
 {
   delayedWallpaperUserAlbumAssetRemovalNeeded = self->_delayedWallpaperUserAlbumAssetRemovalNeeded;
   if (delayedWallpaperUserAlbumAssetRemovalNeeded)
   {
-    v5 = a3;
+    neededCopy = needed;
     v6 = [(NSMutableDictionary *)delayedWallpaperUserAlbumAssetRemovalNeeded copy];
-    [v5 setAssetsForWallpaperUserAlbumRemoval:v6];
+    [neededCopy setAssetsForWallpaperUserAlbumRemoval:v6];
 
     v7 = self->_delayedWallpaperUserAlbumAssetRemovalNeeded;
 
@@ -604,10 +604,10 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   }
 }
 
-- (void)recordAssetID:(id)a3 forWallpaperUserAlbumRemoval:(id)a4
+- (void)recordAssetID:(id)d forWallpaperUserAlbumRemoval:(id)removal
 {
-  v14 = a3;
-  v6 = a4;
+  dCopy = d;
+  removalCopy = removal;
   delayedWallpaperUserAlbumAssetRemovalNeeded = self->_delayedWallpaperUserAlbumAssetRemovalNeeded;
   if (!delayedWallpaperUserAlbumAssetRemovalNeeded)
   {
@@ -618,27 +618,27 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
     delayedWallpaperUserAlbumAssetRemovalNeeded = self->_delayedWallpaperUserAlbumAssetRemovalNeeded;
   }
 
-  v10 = [(NSMutableDictionary *)delayedWallpaperUserAlbumAssetRemovalNeeded objectForKeyedSubscript:v14];
+  v10 = [(NSMutableDictionary *)delayedWallpaperUserAlbumAssetRemovalNeeded objectForKeyedSubscript:dCopy];
 
   if (!v10)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_delayedWallpaperUserAlbumAssetRemovalNeeded setObject:v11 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_delayedWallpaperUserAlbumAssetRemovalNeeded setObject:v11 forKeyedSubscript:dCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_delayedWallpaperUserAlbumAssetRemovalNeeded objectForKeyedSubscript:v14];
-  v13 = [v6 uuid];
-  [v12 addObject:v13];
+  v12 = [(NSMutableDictionary *)self->_delayedWallpaperUserAlbumAssetRemovalNeeded objectForKeyedSubscript:dCopy];
+  uuid = [removalCopy uuid];
+  [v12 addObject:uuid];
 }
 
-- (void)_popWidgetFavoriteAlbumAssetRemovalReloadNeeded:(id)a3
+- (void)_popWidgetFavoriteAlbumAssetRemovalReloadNeeded:(id)needed
 {
   delayedWidgetFavoriteAlbumAssetRemovalNeeded = self->_delayedWidgetFavoriteAlbumAssetRemovalNeeded;
   if (delayedWidgetFavoriteAlbumAssetRemovalNeeded)
   {
-    v5 = a3;
+    neededCopy = needed;
     v6 = [(NSMutableSet *)delayedWidgetFavoriteAlbumAssetRemovalNeeded copy];
-    [v5 setAssetsForWidgetFavoriteAlbumRemoval:v6];
+    [neededCopy setAssetsForWidgetFavoriteAlbumRemoval:v6];
 
     v7 = self->_delayedWidgetFavoriteAlbumAssetRemovalNeeded;
 
@@ -646,32 +646,32 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   }
 }
 
-- (void)recordAssetIDForWidgetFavoriteAlbumRemoval:(id)a3
+- (void)recordAssetIDForWidgetFavoriteAlbumRemoval:(id)removal
 {
-  v4 = a3;
+  removalCopy = removal;
   delayedWidgetFavoriteAlbumAssetRemovalNeeded = self->_delayedWidgetFavoriteAlbumAssetRemovalNeeded;
-  v8 = v4;
+  v8 = removalCopy;
   if (!delayedWidgetFavoriteAlbumAssetRemovalNeeded)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_delayedWidgetFavoriteAlbumAssetRemovalNeeded;
     self->_delayedWidgetFavoriteAlbumAssetRemovalNeeded = v6;
 
-    v4 = v8;
+    removalCopy = v8;
     delayedWidgetFavoriteAlbumAssetRemovalNeeded = self->_delayedWidgetFavoriteAlbumAssetRemovalNeeded;
   }
 
-  [(NSMutableSet *)delayedWidgetFavoriteAlbumAssetRemovalNeeded addObject:v4];
+  [(NSMutableSet *)delayedWidgetFavoriteAlbumAssetRemovalNeeded addObject:removalCopy];
 }
 
-- (void)_popWidgetUserAlbumAssetRemovalReloadNeeded:(id)a3
+- (void)_popWidgetUserAlbumAssetRemovalReloadNeeded:(id)needed
 {
   delayedWidgetUserAlbumAssetRemovalNeeded = self->_delayedWidgetUserAlbumAssetRemovalNeeded;
   if (delayedWidgetUserAlbumAssetRemovalNeeded)
   {
-    v5 = a3;
+    neededCopy = needed;
     v6 = [(NSMutableDictionary *)delayedWidgetUserAlbumAssetRemovalNeeded copy];
-    [v5 setAssetsForWidgetUserAlbumRemoval:v6];
+    [neededCopy setAssetsForWidgetUserAlbumRemoval:v6];
 
     v7 = self->_delayedWidgetUserAlbumAssetRemovalNeeded;
 
@@ -679,10 +679,10 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   }
 }
 
-- (void)recordAssetID:(id)a3 forWidgetUserAlbumRemoval:(id)a4
+- (void)recordAssetID:(id)d forWidgetUserAlbumRemoval:(id)removal
 {
-  v14 = a3;
-  v6 = a4;
+  dCopy = d;
+  removalCopy = removal;
   delayedWidgetUserAlbumAssetRemovalNeeded = self->_delayedWidgetUserAlbumAssetRemovalNeeded;
   if (!delayedWidgetUserAlbumAssetRemovalNeeded)
   {
@@ -693,32 +693,32 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
     delayedWidgetUserAlbumAssetRemovalNeeded = self->_delayedWidgetUserAlbumAssetRemovalNeeded;
   }
 
-  v10 = [(NSMutableDictionary *)delayedWidgetUserAlbumAssetRemovalNeeded objectForKeyedSubscript:v14];
+  v10 = [(NSMutableDictionary *)delayedWidgetUserAlbumAssetRemovalNeeded objectForKeyedSubscript:dCopy];
 
   if (!v10)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_delayedWidgetUserAlbumAssetRemovalNeeded setObject:v11 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_delayedWidgetUserAlbumAssetRemovalNeeded setObject:v11 forKeyedSubscript:dCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_delayedWidgetUserAlbumAssetRemovalNeeded objectForKeyedSubscript:v14];
-  v13 = [v6 uuid];
-  [v12 addObject:v13];
+  v12 = [(NSMutableDictionary *)self->_delayedWidgetUserAlbumAssetRemovalNeeded objectForKeyedSubscript:dCopy];
+  uuid = [removalCopy uuid];
+  [v12 addObject:uuid];
 }
 
-- (void)_popWidgetTimelineReloadNeeded:(id)a3
+- (void)_popWidgetTimelineReloadNeeded:(id)needed
 {
-  v5 = a3;
+  neededCopy = needed;
   if ([(NSMutableSet *)self->_delayedWidgetTimelineReloadTypesNeeded count])
   {
     v4 = [(NSMutableSet *)self->_delayedWidgetTimelineReloadTypesNeeded copy];
-    [v5 setWidgetTimelineReloadTypesNeeded:v4];
+    [neededCopy setWidgetTimelineReloadTypesNeeded:v4];
 
     [(NSMutableSet *)self->_delayedWidgetTimelineReloadTypesNeeded removeAllObjects];
   }
 }
 
-- (void)recordWidgetTimelineReloadNeededForType:(int64_t)a3
+- (void)recordWidgetTimelineReloadNeededForType:(int64_t)type
 {
   delayedWidgetTimelineReloadTypesNeeded = self->_delayedWidgetTimelineReloadTypesNeeded;
   if (!delayedWidgetTimelineReloadTypesNeeded)
@@ -730,130 +730,130 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
     delayedWidgetTimelineReloadTypesNeeded = self->_delayedWidgetTimelineReloadTypesNeeded;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [(NSMutableSet *)delayedWidgetTimelineReloadTypesNeeded addObject:v8];
 }
 
-- (void)_popDuetDeletedMemoriesIntoDetail:(id)a3
+- (void)_popDuetDeletedMemoriesIntoDetail:(id)detail
 {
-  v5 = a3;
+  detailCopy = detail;
   if ([(NSMutableSet *)self->_delayedMemoriesForDuetDelete count])
   {
     v4 = [(NSMutableSet *)self->_delayedMemoriesForDuetDelete copy];
-    [v5 setMemoriesForDuetDelete:v4];
+    [detailCopy setMemoriesForDuetDelete:v4];
 
     [(NSMutableSet *)self->_delayedMemoriesForDuetDelete removeAllObjects];
   }
 }
 
-- (void)recordMemoryForDuetDelete:(id)a3
+- (void)recordMemoryForDuetDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   delayedMemoriesForDuetDelete = self->_delayedMemoriesForDuetDelete;
-  v9 = v4;
+  v9 = deleteCopy;
   if (!delayedMemoriesForDuetDelete)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_delayedMemoriesForDuetDelete;
     self->_delayedMemoriesForDuetDelete = v6;
 
-    v4 = v9;
+    deleteCopy = v9;
     delayedMemoriesForDuetDelete = self->_delayedMemoriesForDuetDelete;
   }
 
-  v8 = [v4 uuid];
-  [(NSMutableSet *)delayedMemoriesForDuetDelete addObject:v8];
+  uuid = [deleteCopy uuid];
+  [(NSMutableSet *)delayedMemoriesForDuetDelete addObject:uuid];
 }
 
-- (void)_popDuetDeletedAssetsIntoDetail:(id)a3
+- (void)_popDuetDeletedAssetsIntoDetail:(id)detail
 {
-  v5 = a3;
+  detailCopy = detail;
   if ([(NSMutableSet *)self->_delayedAssetsForDuetDelete count])
   {
     v4 = [(NSMutableSet *)self->_delayedAssetsForDuetDelete copy];
-    [v5 setAssetsForDuetDelete:v4];
+    [detailCopy setAssetsForDuetDelete:v4];
 
     [(NSMutableSet *)self->_delayedAssetsForDuetDelete removeAllObjects];
   }
 }
 
-- (void)recordAssetForDuetDelete:(id)a3
+- (void)recordAssetForDuetDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   delayedAssetsForDuetDelete = self->_delayedAssetsForDuetDelete;
-  v9 = v4;
+  v9 = deleteCopy;
   if (!delayedAssetsForDuetDelete)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_delayedAssetsForDuetDelete;
     self->_delayedAssetsForDuetDelete = v6;
 
-    v4 = v9;
+    deleteCopy = v9;
     delayedAssetsForDuetDelete = self->_delayedAssetsForDuetDelete;
   }
 
-  v8 = [v4 uuid];
-  [(NSMutableSet *)delayedAssetsForDuetDelete addObject:v8];
+  uuid = [deleteCopy uuid];
+  [(NSMutableSet *)delayedAssetsForDuetDelete addObject:uuid];
 }
 
-- (void)_popDelayedAssetsForAnalysis:(id *)a3
+- (void)_popDelayedAssetsForAnalysis:(id *)analysis
 {
-  if (a3)
+  if (analysis)
   {
-    *a3 = self->_delayedWorkerTypesToAnalyzeByAssetUUID;
+    *analysis = self->_delayedWorkerTypesToAnalyzeByAssetUUID;
   }
 
   delayedWorkerTypesToAnalyzeByAssetUUID = self->_delayedWorkerTypesToAnalyzeByAssetUUID;
   self->_delayedWorkerTypesToAnalyzeByAssetUUID = 0;
 }
 
-- (void)recordAssetForAnalysis:(id)a3 workerFlags:(int)a4 workerType:(signed __int16)a5
+- (void)recordAssetForAnalysis:(id)analysis workerFlags:(int)flags workerType:(signed __int16)type
 {
-  v5 = a5;
-  v8 = a3;
-  v18 = v8;
+  typeCopy = type;
+  analysisCopy = analysis;
+  v18 = analysisCopy;
   if (!self->_delayedWorkerTypesToAnalyzeByAssetUUID)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     delayedWorkerTypesToAnalyzeByAssetUUID = self->_delayedWorkerTypesToAnalyzeByAssetUUID;
     self->_delayedWorkerTypesToAnalyzeByAssetUUID = v9;
 
-    v8 = v18;
+    analysisCopy = v18;
   }
 
-  v11 = [v8 uuid];
-  v12 = [(NSMutableDictionary *)self->_delayedWorkerTypesToAnalyzeByAssetUUID objectForKeyedSubscript:v11];
-  if (!v12)
+  uuid = [analysisCopy uuid];
+  dictionary = [(NSMutableDictionary *)self->_delayedWorkerTypesToAnalyzeByAssetUUID objectForKeyedSubscript:uuid];
+  if (!dictionary)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_delayedWorkerTypesToAnalyzeByAssetUUID setObject:v12 forKeyedSubscript:v11];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_delayedWorkerTypesToAnalyzeByAssetUUID setObject:dictionary forKeyedSubscript:uuid];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithShort:v5];
-  v14 = [v12 objectForKeyedSubscript:v13];
-  v15 = [v14 integerValue];
+  v13 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
+  v14 = [dictionary objectForKeyedSubscript:v13];
+  integerValue = [v14 integerValue];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInt:v15 | a4];
-  v17 = [MEMORY[0x1E696AD98] numberWithShort:v5];
-  [v12 setObject:v16 forKeyedSubscript:v17];
+  flags = [MEMORY[0x1E696AD98] numberWithInt:integerValue | flags];
+  v17 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
+  [dictionary setObject:flags forKeyedSubscript:v17];
 }
 
-- (void)_popAlbumTrashIntoDetail:(id)a3
+- (void)_popAlbumTrashIntoDetail:(id)detail
 {
-  v5 = a3;
+  detailCopy = detail;
   if ([(NSMutableSet *)self->_delayedAlbumTrashUpdates count])
   {
     v4 = [(NSMutableSet *)self->_delayedAlbumTrashUpdates valueForKey:@"objectID"];
-    [v5 setAlbumTrashCycleUpdates:v4];
+    [detailCopy setAlbumTrashCycleUpdates:v4];
 
     [(NSMutableSet *)self->_delayedAlbumTrashUpdates removeAllObjects];
   }
 }
 
-- (void)recordAlbumForTrashUpdate:(id)a3
+- (void)recordAlbumForTrashUpdate:(id)update
 {
-  v7 = a3;
-  if (([v7 isDeleted] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy isDeleted] & 1) == 0)
   {
     delayedAlbumTrashUpdates = self->_delayedAlbumTrashUpdates;
     if (!delayedAlbumTrashUpdates)
@@ -865,17 +865,17 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
       delayedAlbumTrashUpdates = self->_delayedAlbumTrashUpdates;
     }
 
-    [(NSMutableSet *)delayedAlbumTrashUpdates addObject:v7];
+    [(NSMutableSet *)delayedAlbumTrashUpdates addObject:updateCopy];
     [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeAlbumTrashCycle"];
   }
 }
 
-- (void)_popDelayedAlbumKeyAssetsUpdates:(id *)a3
+- (void)_popDelayedAlbumKeyAssetsUpdates:(id *)updates
 {
-  if (a3)
+  if (updates)
   {
     v5 = [(NSMutableSet *)self->_delayedAlbumKeyAssetsUpdates valueForKey:@"objectID"];
-    *a3 = v5;
+    *updates = v5;
   }
 
   delayedAlbumKeyAssetsUpdates = self->_delayedAlbumKeyAssetsUpdates;
@@ -883,12 +883,12 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [(NSMutableSet *)delayedAlbumKeyAssetsUpdates removeAllObjects];
 }
 
-- (void)_popDelayedAlbumCountsAndDateRangeUpdates:(id *)a3
+- (void)_popDelayedAlbumCountsAndDateRangeUpdates:(id *)updates
 {
-  if (a3)
+  if (updates)
   {
     v5 = [(NSMutableSet *)self->_delayedAlbumCountsAndDateRangeUpdates valueForKey:@"objectID"];
-    *a3 = v5;
+    *updates = v5;
   }
 
   delayedAlbumCountsAndDateRangeUpdates = self->_delayedAlbumCountsAndDateRangeUpdates;
@@ -896,16 +896,16 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [(NSMutableSet *)delayedAlbumCountsAndDateRangeUpdates removeAllObjects];
 }
 
-- (void)recordAssetForImportSessionCountsAndDateRangeUpdate:(id)a3
+- (void)recordAssetForImportSessionCountsAndDateRangeUpdate:(id)update
 {
-  v4 = [a3 importSession];
-  v5 = v4;
-  if (v4)
+  importSession = [update importSession];
+  v5 = importSession;
+  if (importSession)
   {
-    v7 = v4;
-    v6 = [v4 isDeleted];
+    v7 = importSession;
+    isDeleted = [importSession isDeleted];
     v5 = v7;
-    if ((v6 & 1) == 0)
+    if ((isDeleted & 1) == 0)
     {
       [(PLDelayedSaveActions *)self _recordDelayedImportSessionCountsAndDateRangeUpdate:v7];
       v5 = v7;
@@ -913,15 +913,15 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   }
 }
 
-- (void)recordAssetForAlbumCountsDateRangeAndKeyAssetsUpdate:(id)a3
+- (void)recordAssetForAlbumCountsDateRangeAndKeyAssetsUpdate:(id)update
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 albums];
+  albums = [update albums];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [albums countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -932,7 +932,7 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(albums);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -943,75 +943,75 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [albums countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)recordAlbumForKeyAssetsUpdate:(id)a3
+- (void)recordAlbumForKeyAssetsUpdate:(id)update
 {
-  v4 = a3;
-  if (([v4 isDeleted] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy isDeleted] & 1) == 0)
   {
-    [(PLDelayedSaveActions *)self _recordDelayedAlbumKeyAssetsUpdate:v4];
+    [(PLDelayedSaveActions *)self _recordDelayedAlbumKeyAssetsUpdate:updateCopy];
   }
 }
 
-- (void)recordAlbumForCountsAndDateRangeUpdate:(id)a3
+- (void)recordAlbumForCountsAndDateRangeUpdate:(id)update
 {
-  v4 = a3;
-  if (([v4 isDeleted] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy isDeleted] & 1) == 0)
   {
-    [(PLDelayedSaveActions *)self _recordDelayedAlbumCountsAndDateRangeUpdate:v4];
+    [(PLDelayedSaveActions *)self _recordDelayedAlbumCountsAndDateRangeUpdate:updateCopy];
   }
 }
 
-- (void)_recordDelayedAlbumKeyAssetsUpdate:(id)a3
+- (void)_recordDelayedAlbumKeyAssetsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedAlbumKeyAssetsUpdates = self->_delayedAlbumKeyAssetsUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedAlbumKeyAssetsUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedAlbumKeyAssetsUpdates;
     self->_delayedAlbumKeyAssetsUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedAlbumKeyAssetsUpdates = self->_delayedAlbumKeyAssetsUpdates;
   }
 
-  [(NSMutableSet *)delayedAlbumKeyAssetsUpdates addObject:v4];
+  [(NSMutableSet *)delayedAlbumKeyAssetsUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeAlbumCounts"];
 }
 
-- (void)_recordDelayedAlbumCountsAndDateRangeUpdate:(id)a3
+- (void)_recordDelayedAlbumCountsAndDateRangeUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedAlbumCountsAndDateRangeUpdates = self->_delayedAlbumCountsAndDateRangeUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedAlbumCountsAndDateRangeUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedAlbumCountsAndDateRangeUpdates;
     self->_delayedAlbumCountsAndDateRangeUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedAlbumCountsAndDateRangeUpdates = self->_delayedAlbumCountsAndDateRangeUpdates;
   }
 
-  [(NSMutableSet *)delayedAlbumCountsAndDateRangeUpdates addObject:v4];
+  [(NSMutableSet *)delayedAlbumCountsAndDateRangeUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeAlbumCounts"];
 }
 
-- (void)_popDelayedImportSessionCountsAndDateRangeUpdates:(id *)a3
+- (void)_popDelayedImportSessionCountsAndDateRangeUpdates:(id *)updates
 {
-  if (a3)
+  if (updates)
   {
     v5 = [(NSMutableSet *)self->_delayedImportSessionCountsAndDateRangeUpdates valueForKey:@"objectID"];
-    *a3 = v5;
+    *updates = v5;
   }
 
   delayedImportSessionCountsAndDateRangeUpdates = self->_delayedImportSessionCountsAndDateRangeUpdates;
@@ -1019,46 +1019,46 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [(NSMutableSet *)delayedImportSessionCountsAndDateRangeUpdates removeAllObjects];
 }
 
-- (void)recordImportSessionCountsAndDateRangeUpdate:(id)a3
+- (void)recordImportSessionCountsAndDateRangeUpdate:(id)update
 {
-  v6 = a3;
-  if (([v6 isDeleted] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy isDeleted] & 1) == 0)
   {
-    v4 = [v6 changedValues];
-    v5 = [v4 objectForKeyedSubscript:@"assets"];
+    changedValues = [updateCopy changedValues];
+    v5 = [changedValues objectForKeyedSubscript:@"assets"];
 
     if (v5)
     {
-      [(PLDelayedSaveActions *)self _recordDelayedImportSessionCountsAndDateRangeUpdate:v6];
+      [(PLDelayedSaveActions *)self _recordDelayedImportSessionCountsAndDateRangeUpdate:updateCopy];
     }
   }
 }
 
-- (void)_recordDelayedImportSessionCountsAndDateRangeUpdate:(id)a3
+- (void)_recordDelayedImportSessionCountsAndDateRangeUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedImportSessionCountsAndDateRangeUpdates = self->_delayedImportSessionCountsAndDateRangeUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedImportSessionCountsAndDateRangeUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedImportSessionCountsAndDateRangeUpdates;
     self->_delayedImportSessionCountsAndDateRangeUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedImportSessionCountsAndDateRangeUpdates = self->_delayedImportSessionCountsAndDateRangeUpdates;
   }
 
-  [(NSMutableSet *)delayedImportSessionCountsAndDateRangeUpdates addObject:v4];
+  [(NSMutableSet *)delayedImportSessionCountsAndDateRangeUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeImportSessionCounts"];
 }
 
-- (void)_popDelayedAssetsForFilesystemPersistencyUpdates:(id *)a3
+- (void)_popDelayedAssetsForFilesystemPersistencyUpdates:(id *)updates
 {
-  if (a3)
+  if (updates)
   {
     v5 = [(NSMutableSet *)self->_delayedAssetsForFileSystemPersistency valueForKey:@"objectID"];
-    *a3 = v5;
+    *updates = v5;
   }
 
   delayedAssetsForFileSystemPersistency = self->_delayedAssetsForFileSystemPersistency;
@@ -1066,10 +1066,10 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
   [(NSMutableSet *)delayedAssetsForFileSystemPersistency removeAllObjects];
 }
 
-- (void)recordAssetForFileSystemPersistencyUpdate:(id)a3
+- (void)recordAssetForFileSystemPersistencyUpdate:(id)update
 {
-  v7 = a3;
-  if (([v7 disableFileSystemPersistency] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy disableFileSystemPersistency] & 1) == 0)
   {
     delayedAssetsForFileSystemPersistency = self->_delayedAssetsForFileSystemPersistency;
     if (!delayedAssetsForFileSystemPersistency)
@@ -1081,78 +1081,78 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
       delayedAssetsForFileSystemPersistency = self->_delayedAssetsForFileSystemPersistency;
     }
 
-    [(NSMutableSet *)delayedAssetsForFileSystemPersistency addObject:v7];
+    [(NSMutableSet *)delayedAssetsForFileSystemPersistency addObject:updateCopy];
     [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeFilePersistence"];
   }
 }
 
-- (void)_popDelayedCloudFeedAlbumUpdates:(id *)a3 collectionShareUpdates:(id *)a4 collectionShareDeletes:(id *)a5 assetInserts:(id *)a6 assetUpdates:(id *)a7 commentInserts:(id *)a8 invitationRecordUpdates:(id *)a9 shareParticipantUpdates:(id *)a10 shareParticipantDeletes:(id *)a11 deletionEntries:(id *)a12
+- (void)_popDelayedCloudFeedAlbumUpdates:(id *)updates collectionShareUpdates:(id *)shareUpdates collectionShareDeletes:(id *)deletes assetInserts:(id *)inserts assetUpdates:(id *)assetUpdates commentInserts:(id *)commentInserts invitationRecordUpdates:(id *)recordUpdates shareParticipantUpdates:(id *)self0 shareParticipantDeletes:(id *)self1 deletionEntries:(id *)self2
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (updates)
   {
     v19 = [(NSMutableArray *)self->_delayedCloudFeedAlbumUpdates valueForKey:@"objectID"];
-    *a3 = v19;
+    *updates = v19;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedAlbumUpdates removeAllObjects];
-  if (a4)
+  if (shareUpdates)
   {
     v20 = [(NSMutableArray *)self->_delayedCloudFeedCollectionShareUpdates valueForKey:@"objectID"];
-    *a4 = v20;
+    *shareUpdates = v20;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedCollectionShareUpdates removeAllObjects];
-  if (a5)
+  if (deletes)
   {
     v21 = [(NSMutableArray *)self->_delayedCloudFeedCollectionShareDeletes copy];
-    *a5 = v21;
+    *deletes = v21;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedCollectionShareDeletes removeAllObjects];
-  if (a6)
+  if (inserts)
   {
     v22 = [(NSMutableArray *)self->_delayedCloudFeedAssetInserts valueForKey:@"objectID"];
-    *a6 = v22;
+    *inserts = v22;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedAssetInserts removeAllObjects];
-  if (a7)
+  if (assetUpdates)
   {
     v23 = [(NSMutableArray *)self->_delayedCloudFeedAssetUpdates valueForKey:@"objectID"];
-    *a7 = v23;
+    *assetUpdates = v23;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedAssetUpdates removeAllObjects];
-  if (a8)
+  if (commentInserts)
   {
     v24 = [(NSMutableArray *)self->_delayedCloudFeedCommentInserts valueForKey:@"objectID"];
-    *a8 = v24;
+    *commentInserts = v24;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedCommentInserts removeAllObjects];
-  if (a9)
+  if (recordUpdates)
   {
     v25 = [(NSMutableArray *)self->_delayedCloudFeedInvitationRecordUpdates valueForKey:@"objectID"];
-    *a9 = v25;
+    *recordUpdates = v25;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedInvitationRecordUpdates removeAllObjects];
-  if (a10)
+  if (participantUpdates)
   {
     v26 = [(NSMutableArray *)self->_delayedCloudFeedShareParticipantUpdates valueForKey:@"objectID"];
-    *a10 = v26;
+    *participantUpdates = v26;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedShareParticipantUpdates removeAllObjects];
-  if (a11)
+  if (participantDeletes)
   {
     v27 = [(NSMutableArray *)self->_delayedCloudFeedShareParticipantDeletes copy];
-    *a11 = v27;
+    *participantDeletes = v27;
   }
 
   [(NSMutableArray *)self->_delayedCloudFeedShareParticipantDeletes removeAllObjects];
-  if (a12 && [(NSMutableSet *)self->_delayedCloudFeedDeletionEntries count])
+  if (entries && [(NSMutableSet *)self->_delayedCloudFeedDeletionEntries count])
   {
     v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableSet count](self->_delayedCloudFeedDeletionEntries, "count")}];
     v36 = 0u;
@@ -1174,8 +1174,8 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v36 + 1) + 8 * i) objectID];
-          [v28 addObject:v34];
+          objectID = [*(*(&v36 + 1) + 8 * i) objectID];
+          [v28 addObject:objectID];
         }
 
         v31 = [(NSMutableSet *)v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1185,109 +1185,109 @@ void __94__PLDelayedSaveActions__popAssetIDsByPersonUUIDNeedingSocialGroupContai
     }
 
     v35 = v28;
-    *a12 = v28;
+    *entries = v28;
   }
 
   [(NSMutableSet *)self->_delayedCloudFeedDeletionEntries removeAllObjects];
 }
 
-- (void)recordCloudFeedAssetsEntryForAssetUpdate:(id)a3
+- (void)recordCloudFeedAssetsEntryForAssetUpdate:(id)update
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isDeleted] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy isDeleted] & 1) == 0)
   {
-    v5 = [v4 entryAssets];
-    v6 = [v5 count];
+    entryAssets = [updateCopy entryAssets];
+    v6 = [entryAssets count];
 
     if (!v6)
     {
-      v8[0] = v4;
+      v8[0] = updateCopy;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
       [(PLDelayedSaveActions *)self _recordDelayedCloudFeedDeletionEntries:v7];
     }
   }
 }
 
-- (void)recordCloudFeedCommentsEntryForCommentUpdate:(id)a3
+- (void)recordCloudFeedCommentsEntryForCommentUpdate:(id)update
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isDeleted] & 1) == 0)
+  updateCopy = update;
+  if (([updateCopy isDeleted] & 1) == 0)
   {
-    v5 = [v4 entryLikeComments];
-    if (![v5 count])
+    entryLikeComments = [updateCopy entryLikeComments];
+    if (![entryLikeComments count])
     {
-      v6 = [v4 entryComments];
-      v7 = [v6 count];
+      entryComments = [updateCopy entryComments];
+      v7 = [entryComments count];
 
       if (v7)
       {
         goto LABEL_5;
       }
 
-      v8[0] = v4;
-      v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedDeletionEntries:v5];
+      v8[0] = updateCopy;
+      entryLikeComments = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedDeletionEntries:entryLikeComments];
     }
   }
 
 LABEL_5:
 }
 
-- (void)recordShareParticipantForCloudFeedUpdate:(id)a3
+- (void)recordShareParticipantForCloudFeedUpdate:(id)update
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 objectID];
+    objectID = [updateCopy objectID];
     v14 = 138413314;
     v15 = v7;
     v16 = 2112;
-    v17 = v8;
+    v17 = objectID;
     v18 = 1024;
-    v19 = [v5 isDeleted];
+    isDeleted = [updateCopy isDeleted];
     v20 = 1024;
-    v21 = [v5 isInserted];
+    isInserted = [updateCopy isInserted];
     v22 = 1024;
-    v23 = [v5 isUpdated];
+    isUpdated = [updateCopy isUpdated];
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ isDeleted=%i isInserted=%i isUpdated=%i", &v14, 0x28u);
   }
 
-  if (![v5 isDeleted])
+  if (![updateCopy isDeleted])
   {
-    if ([v5 isInserted])
+    if ([updateCopy isInserted])
     {
-      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedShareParticipantUpdate:v5];
+      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedShareParticipantUpdate:updateCopy];
       goto LABEL_15;
     }
 
-    if (![v5 isUpdated])
+    if (![updateCopy isUpdated])
     {
       goto LABEL_15;
     }
 
-    v9 = [v5 changedValues];
+    changedValues = [updateCopy changedValues];
     v10 = PLCloudFeedGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v9 allKeys];
+      allKeys = [changedValues allKeys];
       v14 = 138412290;
-      v15 = v11;
+      v15 = allKeys;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "changedValues=%@", &v14, 0xCu);
     }
 
-    v12 = [v9 objectForKeyedSubscript:@"acceptanceStatus"];
-    if (v12 || ([v9 objectForKeyedSubscript:@"role"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    v12 = [changedValues objectForKeyedSubscript:@"acceptanceStatus"];
+    if (v12 || ([changedValues objectForKeyedSubscript:@"role"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v13 = [v9 objectForKeyedSubscript:@"subscriptionDate"];
+      v13 = [changedValues objectForKeyedSubscript:@"subscriptionDate"];
 
       if (!v13)
       {
@@ -1295,59 +1295,59 @@ LABEL_5:
       }
     }
 
-    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedShareParticipantUpdate:v5];
+    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedShareParticipantUpdate:updateCopy];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedShareParticipantDelete:v5];
+  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedShareParticipantDelete:updateCopy];
 LABEL_15:
 }
 
-- (void)recordInvitationRecordForCloudFeedUpdate:(id)a3
+- (void)recordInvitationRecordForCloudFeedUpdate:(id)update
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 objectID];
+    objectID = [updateCopy objectID];
     *buf = 138413314;
     v24 = v7;
     v25 = 2112;
-    v26 = v8;
+    v26 = objectID;
     v27 = 1024;
-    v28 = [v5 isDeleted];
+    isDeleted = [updateCopy isDeleted];
     v29 = 1024;
-    v30 = [v5 isInserted];
+    isInserted = [updateCopy isInserted];
     v31 = 1024;
-    v32 = [v5 isUpdated];
+    isUpdated = [updateCopy isUpdated];
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ isDeleted=%i isInserted=%i isUpdated=%i", buf, 0x28u);
   }
 
-  if ([v5 isDeleted])
+  if ([updateCopy isDeleted])
   {
-    v9 = [v5 managedObjectContext];
-    if (([v9 hasPreviouslyMergedDeleteForObject:v5] & 1) == 0)
+    managedObjectContext = [updateCopy managedObjectContext];
+    if (([managedObjectContext hasPreviouslyMergedDeleteForObject:updateCopy] & 1) == 0)
     {
       v10 = MEMORY[0x1E695D5E0];
       v11 = +[PLCloudFeedEntry entityName];
       v12 = [v10 fetchRequestWithEntityName:v11];
 
       v13 = MEMORY[0x1E696AE18];
-      v14 = [v5 cloudGUID];
-      v15 = [v13 predicateWithFormat:@"((entryType = %d) OR (entryType = %d)) AND (entryInvitationRecordGUID = %@)", 5, 6, v14];
+      cloudGUID = [updateCopy cloudGUID];
+      v15 = [v13 predicateWithFormat:@"((entryType = %d) OR (entryType = %d)) AND (entryInvitationRecordGUID = %@)", 5, 6, cloudGUID];
       [v12 setPredicate:v15];
 
-      v16 = [v9 executeFetchRequest:v12 error:0];
+      v16 = [managedObjectContext executeFetchRequest:v12 error:0];
       v17 = PLCloudFeedGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v5 cloudGUID];
+        cloudGUID2 = [updateCopy cloudGUID];
         *buf = 138412546;
-        v24 = v18;
+        v24 = cloudGUID2;
         v25 = 2112;
         v26 = v16;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEBUG, "invitationRecordGUID=%@ cloudFeedEntries=%@", buf, 0x16u);
@@ -1362,31 +1362,31 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (![v5 isInserted])
+  if (![updateCopy isInserted])
   {
-    if (![v5 isUpdated])
+    if (![updateCopy isUpdated])
     {
       goto LABEL_20;
     }
 
-    v9 = [v5 changedValues];
+    managedObjectContext = [updateCopy changedValues];
     v19 = PLCloudFeedGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v9 allKeys];
+      allKeys = [managedObjectContext allKeys];
       *buf = 138412290;
-      v24 = v20;
+      v24 = allKeys;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEBUG, "changedValues=%@", buf, 0xCu);
     }
 
-    v21 = [v9 objectForKeyedSubscript:@"invitationState"];
-    if (v21 || ([v9 objectForKeyedSubscript:@"invitationStateLocal"], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    v21 = [managedObjectContext objectForKeyedSubscript:@"invitationState"];
+    if (v21 || ([managedObjectContext objectForKeyedSubscript:@"invitationStateLocal"], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v22 = [v9 objectForKeyedSubscript:@"inviteeSubscriptionDate"];
+      v22 = [managedObjectContext objectForKeyedSubscript:@"inviteeSubscriptionDate"];
 
       if (!v22)
       {
@@ -1394,181 +1394,181 @@ LABEL_15:
       }
     }
 
-    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedInvitationRecordUpdate:v5];
+    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedInvitationRecordUpdate:updateCopy];
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedInvitationRecordUpdate:v5];
+  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedInvitationRecordUpdate:updateCopy];
 LABEL_20:
 }
 
-- (void)recordCommentForCloudFeedUpdate:(id)a3
+- (void)recordCommentForCloudFeedUpdate:(id)update
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 objectID];
+    objectID = [updateCopy objectID];
     *buf = 138413314;
     v16 = v7;
     v17 = 2112;
-    v18 = v8;
+    v18 = objectID;
     v19 = 1024;
-    v20 = [v5 isDeleted];
+    isDeleted = [updateCopy isDeleted];
     v21 = 1024;
-    v22 = [v5 isInserted];
+    isInserted = [updateCopy isInserted];
     v23 = 1024;
-    v24 = [v5 isUpdated];
+    isUpdated = [updateCopy isUpdated];
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ isDeleted=%i isInserted=%i isUpdated=%i", buf, 0x28u);
   }
 
-  if ([v5 isDeleted])
+  if ([updateCopy isDeleted])
   {
-    v9 = [v5 managedObjectContext];
-    if (([v9 hasPreviouslyMergedDeleteForObject:v5] & 1) == 0)
+    managedObjectContext = [updateCopy managedObjectContext];
+    if (([managedObjectContext hasPreviouslyMergedDeleteForObject:updateCopy] & 1) == 0)
     {
-      v10 = [v5 cloudFeedEntry];
+      cloudFeedEntry = [updateCopy cloudFeedEntry];
       v11 = PLCloudFeedGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v10 objectID];
+        objectID2 = [cloudFeedEntry objectID];
         *buf = 138412290;
-        v16 = v12;
+        v16 = objectID2;
         _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "cloudFeedEntry=%@", buf, 0xCu);
       }
 
-      if (v10)
+      if (cloudFeedEntry)
       {
-        v14 = v10;
+        v14 = cloudFeedEntry;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
         [(PLDelayedSaveActions *)self _recordDelayedCloudFeedDeletionEntries:v13];
       }
     }
   }
 
-  else if ([v5 isInserted])
+  else if ([updateCopy isInserted])
   {
-    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCommentInsert:v5];
+    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCommentInsert:updateCopy];
   }
 
   else
   {
-    [v5 isUpdated];
+    [updateCopy isUpdated];
   }
 }
 
-- (void)recordAssetForCloudFeedUpdate:(id)a3
+- (void)recordAssetForCloudFeedUpdate:(id)update
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 objectID];
+    objectID = [updateCopy objectID];
     *buf = 138413314;
     v16 = v7;
     v17 = 2112;
-    v18 = v8;
+    v18 = objectID;
     v19 = 1024;
-    v20 = [v5 isIncludedInCloudFeeds];
+    isIncludedInCloudFeeds = [updateCopy isIncludedInCloudFeeds];
     v21 = 1024;
-    v22 = [v5 isDeleted];
+    isDeleted = [updateCopy isDeleted];
     v23 = 1024;
-    v24 = [v5 isInserted];
+    isInserted = [updateCopy isInserted];
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ isIncludedInCloudFeeds=%i isDeleted=%i isInserted=%i", buf, 0x28u);
   }
 
-  if ([v5 isIncludedInCloudFeeds])
+  if ([updateCopy isIncludedInCloudFeeds])
   {
-    if ([v5 isDeleted])
+    if ([updateCopy isDeleted])
     {
-      v9 = [v5 managedObjectContext];
-      if (([v9 hasPreviouslyMergedDeleteForObject:v5] & 1) == 0)
+      managedObjectContext = [updateCopy managedObjectContext];
+      if (([managedObjectContext hasPreviouslyMergedDeleteForObject:updateCopy] & 1) == 0)
       {
-        v10 = [v5 cloudFeedAssetsEntry];
+        cloudFeedAssetsEntry = [updateCopy cloudFeedAssetsEntry];
         v11 = PLCloudFeedGetLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [v10 objectID];
+          objectID2 = [cloudFeedAssetsEntry objectID];
           *buf = 138412290;
-          v16 = v12;
+          v16 = objectID2;
           _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "cloudFeedEntry=%@", buf, 0xCu);
         }
 
-        if (v10)
+        if (cloudFeedAssetsEntry)
         {
-          v14 = v10;
+          v14 = cloudFeedAssetsEntry;
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
           [(PLDelayedSaveActions *)self _recordDelayedCloudFeedDeletionEntries:v13];
         }
       }
     }
 
-    else if ([v5 isInserted])
+    else if ([updateCopy isInserted])
     {
-      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedAssetInsert:v5];
+      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedAssetInsert:updateCopy];
     }
   }
 }
 
-- (void)recordCollectionShareForCloudFeedUpdate:(id)a3
+- (void)recordCollectionShareForCloudFeedUpdate:(id)update
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 objectID];
+    objectID = [updateCopy objectID];
     v14 = 138413314;
     v15 = v7;
     v16 = 2112;
-    v17 = v8;
+    v17 = objectID;
     v18 = 1024;
-    v19 = [v5 isDeleted];
+    isDeleted = [updateCopy isDeleted];
     v20 = 1024;
-    v21 = [v5 isInserted];
+    isInserted = [updateCopy isInserted];
     v22 = 1024;
-    v23 = [v5 isUpdated];
+    isUpdated = [updateCopy isUpdated];
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ isDeleted=%i isInserted=%i isUpdated=%i", &v14, 0x28u);
   }
 
-  if (![v5 isDeleted])
+  if (![updateCopy isDeleted])
   {
-    if ([v5 isInserted])
+    if ([updateCopy isInserted])
     {
-      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCollectionShareUpdate:v5];
+      [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCollectionShareUpdate:updateCopy];
       goto LABEL_15;
     }
 
-    if (![v5 isUpdated])
+    if (![updateCopy isUpdated])
     {
       goto LABEL_15;
     }
 
-    v9 = [v5 changedValues];
+    changedValues = [updateCopy changedValues];
     v10 = PLCloudFeedGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v9 allKeys];
+      allKeys = [changedValues allKeys];
       v14 = 138412290;
-      v15 = v11;
+      v15 = allKeys;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "changedValues=%@", &v14, 0xCu);
     }
 
-    v12 = [v9 objectForKeyedSubscript:@"status"];
-    if (v12 || ([v9 objectForKeyedSubscript:@"cloudSubscriptionDate"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    v12 = [changedValues objectForKeyedSubscript:@"status"];
+    if (v12 || ([changedValues objectForKeyedSubscript:@"cloudSubscriptionDate"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v13 = [v9 objectForKeyedSubscript:@"publicPermission"];
+      v13 = [changedValues objectForKeyedSubscript:@"publicPermission"];
 
       if (!v13)
       {
@@ -1576,59 +1576,59 @@ LABEL_20:
       }
     }
 
-    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCollectionShareUpdate:v5];
+    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCollectionShareUpdate:updateCopy];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCollectionShareDelete:v5];
+  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedCollectionShareDelete:updateCopy];
 LABEL_15:
 }
 
-- (void)recordAlbumForCloudFeedUpdate:(id)a3
+- (void)recordAlbumForCloudFeedUpdate:(id)update
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   v6 = PLCloudFeedGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 objectID];
+    objectID = [updateCopy objectID];
     *buf = 138413314;
     v24 = v7;
     v25 = 2112;
-    v26 = v8;
+    v26 = objectID;
     v27 = 1024;
-    v28 = [v5 isDeleted];
+    isDeleted = [updateCopy isDeleted];
     v29 = 1024;
-    v30 = [v5 isInserted];
+    isInserted = [updateCopy isInserted];
     v31 = 1024;
-    v32 = [v5 isUpdated];
+    isUpdated = [updateCopy isUpdated];
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEBUG, "%@ %@ isDeleted=%i isInserted=%i isUpdated=%i", buf, 0x28u);
   }
 
-  if ([v5 isDeleted])
+  if ([updateCopy isDeleted])
   {
-    v9 = [v5 managedObjectContext];
-    if (([v9 hasPreviouslyMergedDeleteForObject:v5] & 1) == 0)
+    managedObjectContext = [updateCopy managedObjectContext];
+    if (([managedObjectContext hasPreviouslyMergedDeleteForObject:updateCopy] & 1) == 0)
     {
       v10 = MEMORY[0x1E695D5E0];
       v11 = +[PLCloudFeedEntry entityName];
       v12 = [v10 fetchRequestWithEntityName:v11];
 
       v13 = MEMORY[0x1E696AE18];
-      v14 = [v5 cloudGUID];
-      v15 = [v13 predicateWithFormat:@"((entryType = %d) OR (entryType = %d) OR (entryType = %d)) AND (entryAlbumGUID = %@)", 3, 4, 7, v14];
+      cloudGUID = [updateCopy cloudGUID];
+      v15 = [v13 predicateWithFormat:@"((entryType = %d) OR (entryType = %d) OR (entryType = %d)) AND (entryAlbumGUID = %@)", 3, 4, 7, cloudGUID];
       [v12 setPredicate:v15];
 
-      v16 = [v9 executeFetchRequest:v12 error:0];
+      v16 = [managedObjectContext executeFetchRequest:v12 error:0];
       v17 = PLCloudFeedGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v5 cloudGUID];
+        cloudGUID2 = [updateCopy cloudGUID];
         *buf = 138412546;
-        v24 = v18;
+        v24 = cloudGUID2;
         v25 = 2112;
         v26 = v16;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEBUG, "albumGUID=%@ cloudFeedEntries=%@", buf, 0x16u);
@@ -1643,31 +1643,31 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  if (![v5 isInserted])
+  if (![updateCopy isInserted])
   {
-    if (![v5 isUpdated])
+    if (![updateCopy isUpdated])
     {
       goto LABEL_21;
     }
 
-    v9 = [v5 changedValues];
+    managedObjectContext = [updateCopy changedValues];
     v19 = PLCloudFeedGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v9 allKeys];
+      allKeys = [managedObjectContext allKeys];
       *buf = 138412290;
-      v24 = v20;
+      v24 = allKeys;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEBUG, "changedValues=%@", buf, 0xCu);
     }
 
-    v21 = [v9 objectForKeyedSubscript:@"cloudRelationshipState"];
-    if (v21 || ([v9 objectForKeyedSubscript:@"cloudRelationshipStateLocal"], (v21 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v9, "objectForKeyedSubscript:", @"cloudSubscriptionDate"), (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+    v21 = [managedObjectContext objectForKeyedSubscript:@"cloudRelationshipState"];
+    if (v21 || ([managedObjectContext objectForKeyedSubscript:@"cloudRelationshipStateLocal"], (v21 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(managedObjectContext, "objectForKeyedSubscript:", @"cloudSubscriptionDate"), (v21 = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v22 = [v9 objectForKeyedSubscript:@"cloudMultipleContributorsEnabled"];
+      v22 = [managedObjectContext objectForKeyedSubscript:@"cloudMultipleContributorsEnabled"];
 
       if (!v22)
       {
@@ -1675,238 +1675,238 @@ LABEL_15:
       }
     }
 
-    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedAlbumUpdate:v5];
+    [(PLDelayedSaveActions *)self _recordDelayedCloudFeedAlbumUpdate:updateCopy];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedAlbumUpdate:v5];
+  [(PLDelayedSaveActions *)self _recordDelayedCloudFeedAlbumUpdate:updateCopy];
 LABEL_21:
 }
 
-- (void)_recordDelayedCloudFeedShareParticipantDelete:(id)a3
+- (void)_recordDelayedCloudFeedShareParticipantDelete:(id)delete
 {
-  v4 = a3;
-  v10 = v4;
+  deleteCopy = delete;
+  v10 = deleteCopy;
   if (!self->_delayedCloudFeedShareParticipantDeletes)
   {
     v5 = objc_opt_new();
     delayedCloudFeedShareParticipantDeletes = self->_delayedCloudFeedShareParticipantDeletes;
     self->_delayedCloudFeedShareParticipantDeletes = v5;
 
-    v4 = v10;
+    deleteCopy = v10;
   }
 
-  v7 = [v4 participantID];
+  participantID = [deleteCopy participantID];
 
-  if (v7)
+  if (participantID)
   {
     v8 = self->_delayedCloudFeedShareParticipantDeletes;
-    v9 = [v10 participantID];
-    [(NSMutableArray *)v8 addObject:v9];
+    participantID2 = [v10 participantID];
+    [(NSMutableArray *)v8 addObject:participantID2];
   }
 
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedShareParticipantUpdate:(id)a3
+- (void)_recordDelayedCloudFeedShareParticipantUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedCloudFeedShareParticipantUpdates = self->_delayedCloudFeedShareParticipantUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedCloudFeedShareParticipantUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedShareParticipantUpdates;
     self->_delayedCloudFeedShareParticipantUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedCloudFeedShareParticipantUpdates = self->_delayedCloudFeedShareParticipantUpdates;
   }
 
-  [(NSMutableArray *)delayedCloudFeedShareParticipantUpdates addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedShareParticipantUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedInvitationRecordUpdate:(id)a3
+- (void)_recordDelayedCloudFeedInvitationRecordUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedCloudFeedInvitationRecordUpdates = self->_delayedCloudFeedInvitationRecordUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedCloudFeedInvitationRecordUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedInvitationRecordUpdates;
     self->_delayedCloudFeedInvitationRecordUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedCloudFeedInvitationRecordUpdates = self->_delayedCloudFeedInvitationRecordUpdates;
   }
 
-  [(NSMutableArray *)delayedCloudFeedInvitationRecordUpdates addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedInvitationRecordUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedCommentInsert:(id)a3
+- (void)_recordDelayedCloudFeedCommentInsert:(id)insert
 {
-  v4 = a3;
+  insertCopy = insert;
   delayedCloudFeedCommentInserts = self->_delayedCloudFeedCommentInserts;
-  v8 = v4;
+  v8 = insertCopy;
   if (!delayedCloudFeedCommentInserts)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedCommentInserts;
     self->_delayedCloudFeedCommentInserts = v6;
 
-    v4 = v8;
+    insertCopy = v8;
     delayedCloudFeedCommentInserts = self->_delayedCloudFeedCommentInserts;
   }
 
-  [(NSMutableArray *)delayedCloudFeedCommentInserts addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedCommentInserts addObject:insertCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedAssetUpdate:(id)a3
+- (void)_recordDelayedCloudFeedAssetUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedCloudFeedAssetUpdates = self->_delayedCloudFeedAssetUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedCloudFeedAssetUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedAssetUpdates;
     self->_delayedCloudFeedAssetUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedCloudFeedAssetUpdates = self->_delayedCloudFeedAssetUpdates;
   }
 
-  [(NSMutableArray *)delayedCloudFeedAssetUpdates addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedAssetUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedAssetInsert:(id)a3
+- (void)_recordDelayedCloudFeedAssetInsert:(id)insert
 {
-  v4 = a3;
+  insertCopy = insert;
   delayedCloudFeedAssetInserts = self->_delayedCloudFeedAssetInserts;
-  v8 = v4;
+  v8 = insertCopy;
   if (!delayedCloudFeedAssetInserts)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedAssetInserts;
     self->_delayedCloudFeedAssetInserts = v6;
 
-    v4 = v8;
+    insertCopy = v8;
     delayedCloudFeedAssetInserts = self->_delayedCloudFeedAssetInserts;
   }
 
-  [(NSMutableArray *)delayedCloudFeedAssetInserts addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedAssetInserts addObject:insertCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedDeletionEntries:(id)a3
+- (void)_recordDelayedCloudFeedDeletionEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   delayedCloudFeedDeletionEntries = self->_delayedCloudFeedDeletionEntries;
-  v8 = v4;
+  v8 = entriesCopy;
   if (!delayedCloudFeedDeletionEntries)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedDeletionEntries;
     self->_delayedCloudFeedDeletionEntries = v6;
 
-    v4 = v8;
+    entriesCopy = v8;
     delayedCloudFeedDeletionEntries = self->_delayedCloudFeedDeletionEntries;
   }
 
-  [(NSMutableSet *)delayedCloudFeedDeletionEntries addObjectsFromArray:v4];
+  [(NSMutableSet *)delayedCloudFeedDeletionEntries addObjectsFromArray:entriesCopy];
   if ([v8 count])
   {
     [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
   }
 }
 
-- (void)_recordDelayedCloudFeedCollectionShareDelete:(id)a3
+- (void)_recordDelayedCloudFeedCollectionShareDelete:(id)delete
 {
-  v4 = a3;
-  v10 = v4;
+  deleteCopy = delete;
+  v10 = deleteCopy;
   if (!self->_delayedCloudFeedCollectionShareDeletes)
   {
     v5 = objc_opt_new();
     delayedCloudFeedCollectionShareDeletes = self->_delayedCloudFeedCollectionShareDeletes;
     self->_delayedCloudFeedCollectionShareDeletes = v5;
 
-    v4 = v10;
+    deleteCopy = v10;
   }
 
-  v7 = [v4 scopeIdentifier];
+  scopeIdentifier = [deleteCopy scopeIdentifier];
 
-  if (v7)
+  if (scopeIdentifier)
   {
     v8 = self->_delayedCloudFeedCollectionShareDeletes;
-    v9 = [v10 scopeIdentifier];
-    [(NSMutableArray *)v8 addObject:v9];
+    scopeIdentifier2 = [v10 scopeIdentifier];
+    [(NSMutableArray *)v8 addObject:scopeIdentifier2];
 
     [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
   }
 }
 
-- (void)_recordDelayedCloudFeedCollectionShareUpdate:(id)a3
+- (void)_recordDelayedCloudFeedCollectionShareUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedCloudFeedCollectionShareUpdates = self->_delayedCloudFeedCollectionShareUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedCloudFeedCollectionShareUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedCollectionShareUpdates;
     self->_delayedCloudFeedCollectionShareUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedCloudFeedCollectionShareUpdates = self->_delayedCloudFeedCollectionShareUpdates;
   }
 
-  [(NSMutableArray *)delayedCloudFeedCollectionShareUpdates addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedCollectionShareUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_recordDelayedCloudFeedAlbumUpdate:(id)a3
+- (void)_recordDelayedCloudFeedAlbumUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   delayedCloudFeedAlbumUpdates = self->_delayedCloudFeedAlbumUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!delayedCloudFeedAlbumUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedCloudFeedAlbumUpdates;
     self->_delayedCloudFeedAlbumUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     delayedCloudFeedAlbumUpdates = self->_delayedCloudFeedAlbumUpdates;
   }
 
-  [(NSMutableArray *)delayedCloudFeedAlbumUpdates addObject:v4];
+  [(NSMutableArray *)delayedCloudFeedAlbumUpdates addObject:updateCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeCloudFeed"];
 }
 
-- (void)_popDelayedMomentInsertsAndUpdates:(id *)a3 deletes:(id *)a4 updatedAssetIDsForHighlights:(id *)a5 updatedMomentIDsForHighlights:(id *)a6 sharedAssetContainerIncrementalChanges:(id *)a7
+- (void)_popDelayedMomentInsertsAndUpdates:(id *)updates deletes:(id *)deletes updatedAssetIDsForHighlights:(id *)highlights updatedMomentIDsForHighlights:(id *)forHighlights sharedAssetContainerIncrementalChanges:(id *)changes
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (updates)
   {
     v13 = [(NSMutableArray *)self->_delayedMomentAssetUpdates valueForKey:@"objectID"];
-    *a3 = v13;
+    *updates = v13;
   }
 
   [(NSMutableArray *)self->_delayedMomentAssetUpdates removeAllObjects];
-  if (a4)
+  if (deletes)
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if ([(NSMapTable *)self->_delayedMomentAssetDeletions count])
     {
-      v33 = a6;
-      v34 = a7;
+      forHighlightsCopy = forHighlights;
+      changesCopy = changes;
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
@@ -1928,8 +1928,8 @@ LABEL_21:
 
             v20 = *(*(&v37 + 1) + 8 * i);
             v21 = [(NSMapTable *)self->_delayedMomentAssetDeletions objectForKey:v20];
-            v22 = [v20 objectID];
-            [v14 setObject:v21 forKey:v22];
+            objectID = [v20 objectID];
+            [dictionary setObject:v21 forKey:objectID];
           }
 
           v17 = [(NSMapTable *)v15 countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -1938,36 +1938,36 @@ LABEL_21:
         while (v17);
       }
 
-      a6 = v33;
-      a7 = v34;
+      forHighlights = forHighlightsCopy;
+      changes = changesCopy;
     }
 
-    v23 = v14;
-    *a4 = v14;
+    v23 = dictionary;
+    *deletes = dictionary;
   }
 
   [(NSMapTable *)self->_delayedMomentAssetDeletions removeAllObjects];
-  if (a5)
+  if (highlights)
   {
-    v24 = [(NSMutableSet *)self->_delayedHighlightAssetUpdates allObjects];
-    v25 = [v24 valueForKey:@"objectID"];
+    allObjects = [(NSMutableSet *)self->_delayedHighlightAssetUpdates allObjects];
+    v25 = [allObjects valueForKey:@"objectID"];
 
     v26 = v25;
-    *a5 = v25;
+    *highlights = v25;
   }
 
   [(NSMutableSet *)self->_delayedHighlightAssetUpdates removeAllObjects];
-  if (a6)
+  if (forHighlights)
   {
-    v27 = [(NSMutableSet *)self->_delayedHighlightMomentUpdates allObjects];
-    v28 = [v27 valueForKey:@"objectID"];
+    allObjects2 = [(NSMutableSet *)self->_delayedHighlightMomentUpdates allObjects];
+    v28 = [allObjects2 valueForKey:@"objectID"];
 
     v29 = v28;
-    *a6 = v28;
+    *forHighlights = v28;
   }
 
   [(NSMutableSet *)self->_delayedHighlightMomentUpdates removeAllObjects];
-  if (a7)
+  if (changes)
   {
     v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSMutableDictionary count](self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID, "count")}];
     delayedSharedAssetIncrementalChangeContainersByAssetUUID = self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID;
@@ -1978,7 +1978,7 @@ LABEL_21:
     v36 = v30;
     v32 = v30;
     [(NSMutableDictionary *)delayedSharedAssetIncrementalChangeContainersByAssetUUID enumerateKeysAndObjectsUsingBlock:v35];
-    *a7 = [v32 copy];
+    *changes = [v32 copy];
   }
 
   [(NSMutableDictionary *)self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID removeAllObjects];
@@ -1995,34 +1995,34 @@ void __165__PLDelayedSaveActions__popDelayedMomentInsertsAndUpdates_deletes_upda
   [v5 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)recordMomentForHighlightUpdate:(id)a3
+- (void)recordMomentForHighlightUpdate:(id)update
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v5 = PLMomentsGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 objectID];
+    objectID = [updateCopy objectID];
     v7 = 138412290;
-    v8 = v6;
+    v8 = objectID;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEBUG, "Recording moment %@ for highlight update", &v7, 0xCu);
   }
 
-  [(PLDelayedSaveActions *)self _recordDelayedHighlightMomentUpdates:v4];
+  [(PLDelayedSaveActions *)self _recordDelayedHighlightMomentUpdates:updateCopy];
 }
 
-- (void)recordAdditionalAssetAttributesForMomentUpdate:(id)a3
+- (void)recordAdditionalAssetAttributesForMomentUpdate:(id)update
 {
-  v9 = a3;
-  v4 = [v9 changedValues];
-  v5 = [v4 objectForKeyedSubscript:@"timeZoneOffset"];
+  updateCopy = update;
+  changedValues = [updateCopy changedValues];
+  v5 = [changedValues objectForKeyedSubscript:@"timeZoneOffset"];
   if (v5)
   {
   }
 
   else
   {
-    v6 = [v4 objectForKeyedSubscript:@"timeZoneName"];
+    v6 = [changedValues objectForKeyedSubscript:@"timeZoneName"];
 
     if (!v6)
     {
@@ -2030,59 +2030,59 @@ void __165__PLDelayedSaveActions__popDelayedMomentInsertsAndUpdates_deletes_upda
     }
   }
 
-  v7 = [v9 asset];
+  asset = [updateCopy asset];
   v8 = +[PLMoment predicateForAssetsIncludedInMoments];
-  if ([v8 evaluateWithObject:v7])
+  if ([v8 evaluateWithObject:asset])
   {
-    [(PLDelayedSaveActions *)self _recordDelayedMomentAssetUpdates:v7];
+    [(PLDelayedSaveActions *)self _recordDelayedMomentAssetUpdates:asset];
   }
 
 LABEL_7:
 }
 
-- (void)recordAssetForMomentUpdate:(id)a3
+- (void)recordAssetForMomentUpdate:(id)update
 {
   v85[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isIncludedInMoments])
+  updateCopy = update;
+  if ([updateCopy isIncludedInMoments])
   {
-    v78 = [v4 isInserted];
-    v5 = [v4 isUpdated];
-    v6 = [v4 isDeleted];
-    v7 = [v4 needsMomentUpdate];
-    v8 = [v4 photoLibrary];
-    v9 = [v4 changedValues];
+    isInserted = [updateCopy isInserted];
+    isUpdated = [updateCopy isUpdated];
+    isDeleted = [updateCopy isDeleted];
+    needsMomentUpdate = [updateCopy needsMomentUpdate];
+    photoLibrary = [updateCopy photoLibrary];
+    changedValues = [updateCopy changedValues];
     v10 = objc_alloc_init(PLSharedAssetsContainerIncrementalChange);
-    -[PLSharedAssetsContainerIncrementalChange setMediaType:](v10, "setMediaType:", [v4 kind] != 0);
-    v79 = v9;
-    if ((v5 & 1) == 0 && !v6)
+    -[PLSharedAssetsContainerIncrementalChange setMediaType:](v10, "setMediaType:", [updateCopy kind] != 0);
+    v79 = changedValues;
+    if ((isUpdated & 1) == 0 && !isDeleted)
     {
       goto LABEL_28;
     }
 
-    v11 = [v8 libraryServicesManager];
-    v12 = [v11 databaseContext];
-    v13 = [v12 momentLibrary];
+    libraryServicesManager = [photoLibrary libraryServicesManager];
+    databaseContext = [libraryServicesManager databaseContext];
+    momentLibrary = [databaseContext momentLibrary];
 
-    if (v8 == v13)
+    if (photoLibrary == momentLibrary)
     {
       goto LABEL_46;
     }
 
-    v9 = v79;
-    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:v4 intoChange:v10 forRelationshipNamed:@"highlightBeingAssets"];
-    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:v4 intoChange:v10 forRelationshipNamed:@"highlightBeingExtendedAssets"];
-    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:v4 intoChange:v10 forRelationshipNamed:@"highlightBeingSummaryAssets"];
-    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:v4 intoChange:v10 forRelationshipNamed:@"dayGroupHighlightBeingAssets"];
-    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:v4 intoChange:v10 forRelationshipNamed:@"dayGroupHighlightBeingExtendedAssets"];
-    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:v4 intoChange:v10 forRelationshipNamed:@"dayGroupHighlightBeingSummaryAssets"];
-    v14 = [(PLSharedAssetsContainerIncrementalChange *)v10 highlightContainerChanges];
-    v15 = [v14 count];
+    changedValues = v79;
+    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:updateCopy intoChange:v10 forRelationshipNamed:@"highlightBeingAssets"];
+    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:updateCopy intoChange:v10 forRelationshipNamed:@"highlightBeingExtendedAssets"];
+    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:updateCopy intoChange:v10 forRelationshipNamed:@"highlightBeingSummaryAssets"];
+    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:updateCopy intoChange:v10 forRelationshipNamed:@"dayGroupHighlightBeingAssets"];
+    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:updateCopy intoChange:v10 forRelationshipNamed:@"dayGroupHighlightBeingExtendedAssets"];
+    [objc_opt_class() _addHighlightRelationshipChangesFromChangedValues:v79 onAsset:updateCopy intoChange:v10 forRelationshipNamed:@"dayGroupHighlightBeingSummaryAssets"];
+    highlightContainerChanges = [(PLSharedAssetsContainerIncrementalChange *)v10 highlightContainerChanges];
+    v15 = [highlightContainerChanges count];
 
     if (!v15)
     {
 LABEL_28:
-      if (!v5)
+      if (!isUpdated)
       {
         goto LABEL_47;
       }
@@ -2090,17 +2090,17 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v6)
+    if (isDeleted)
     {
       v85[0] = @"libraryScope";
       v85[1] = @"additionalAttributes";
       v85[2] = @"libraryScopeShareState";
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:3];
-      v17 = [v4 committedValuesForKeys:v16];
+      v17 = [updateCopy committedValuesForKeys:v16];
 
       v18 = [v17 objectForKey:@"libraryScope"];
-      v19 = [MEMORY[0x1E695DFB0] null];
-      v20 = [v18 isEqual:v19];
+      null = [MEMORY[0x1E695DFB0] null];
+      v20 = [v18 isEqual:null];
       if (v18)
       {
         v21 = v20;
@@ -2115,13 +2115,13 @@ LABEL_28:
 
       v72 = v17;
       v22 = [v17 objectForKey:@"libraryScopeShareState"];
-      v23 = [MEMORY[0x1E695DFB0] null];
-      if ([v22 isEqual:v23])
+      null2 = [MEMORY[0x1E695DFB0] null];
+      if ([v22 isEqual:null2])
       {
         v24 = 2;
 LABEL_42:
 
-        v7 = 1;
+        needsMomentUpdate = 1;
         if (v74)
         {
           v36 = 2;
@@ -2136,12 +2136,12 @@ LABEL_42:
         [(PLSharedAssetsContainerIncrementalChange *)v10 setSuggestionStateChange:v24];
 
 LABEL_46:
-        v9 = v79;
-        if (!v5)
+        changedValues = v79;
+        if (!isUpdated)
         {
 LABEL_47:
           v32 = 0;
-          if (!v6)
+          if (!isDeleted)
           {
             goto LABEL_48;
           }
@@ -2150,7 +2150,7 @@ LABEL_47:
         }
 
 LABEL_29:
-        v31 = [v9 objectForKeyedSubscript:@"dateCreated"];
+        v31 = [changedValues objectForKeyedSubscript:@"dateCreated"];
         if (v31)
         {
           v32 = 1;
@@ -2158,8 +2158,8 @@ LABEL_29:
 
         else
         {
-          v75 = v7;
-          v33 = [v9 objectForKeyedSubscript:@"locationData"];
+          v75 = needsMomentUpdate;
+          v33 = [changedValues objectForKeyedSubscript:@"locationData"];
           if (v33)
           {
             v32 = 1;
@@ -2167,7 +2167,7 @@ LABEL_29:
 
           else
           {
-            v34 = [v9 objectForKeyedSubscript:@"visibilityState"];
+            v34 = [changedValues objectForKeyedSubscript:@"visibilityState"];
             if (v34)
             {
               v32 = 1;
@@ -2175,7 +2175,7 @@ LABEL_29:
 
             else
             {
-              v35 = [v9 objectForKeyedSubscript:@"hidden"];
+              v35 = [changedValues objectForKeyedSubscript:@"hidden"];
               if (v35)
               {
                 v32 = 1;
@@ -2183,7 +2183,7 @@ LABEL_29:
 
               else
               {
-                v62 = [v9 objectForKeyedSubscript:@"trashedState"];
+                v62 = [changedValues objectForKeyedSubscript:@"trashedState"];
                 if (v62)
                 {
                   v32 = 1;
@@ -2191,7 +2191,7 @@ LABEL_29:
 
                 else
                 {
-                  v63 = [v9 objectForKeyedSubscript:@"savedAssetType"];
+                  v63 = [changedValues objectForKeyedSubscript:@"savedAssetType"];
                   v32 = v63 != 0;
 
                   v62 = 0;
@@ -2204,35 +2204,35 @@ LABEL_29:
             }
           }
 
-          v9 = v79;
-          v7 = v75;
+          changedValues = v79;
+          needsMomentUpdate = v75;
         }
 
-        if (!v6)
+        if (!isDeleted)
         {
 LABEL_48:
-          v37 = v78;
-          if (((v78 | v5 | v7) & 1) == 0)
+          v37 = isInserted;
+          if (((isInserted | isUpdated | needsMomentUpdate) & 1) == 0)
           {
 LABEL_111:
             if ([(PLSharedAssetsContainerIncrementalChange *)v10 hasChanges])
             {
               [(PLSharedAssetsContainerIncrementalChange *)v10 setHasNoOtherAssetChangesRequiringMomentGeneration:!v32];
-              [(PLDelayedSaveActions *)self _recordSharedAssetIncrementalChange:v10 forAsset:v4];
+              [(PLDelayedSaveActions *)self _recordSharedAssetIncrementalChange:v10 forAsset:updateCopy];
             }
 
             goto LABEL_114;
           }
 
-          if (!v5)
+          if (!isUpdated)
           {
 LABEL_84:
-            if ((v7 | v37 | v32))
+            if ((needsMomentUpdate | v37 | v32))
             {
               v59 = PLMomentsGetLog();
               if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
               {
-                [v4 objectID];
+                [updateCopy objectID];
                 v61 = v60 = v32;
                 *buf = 138412290;
                 v83 = v61;
@@ -2241,81 +2241,81 @@ LABEL_84:
                 v32 = v60;
               }
 
-              [(PLDelayedSaveActions *)self _recordDelayedMomentAssetUpdates:v4];
+              [(PLDelayedSaveActions *)self _recordDelayedMomentAssetUpdates:updateCopy];
             }
 
             goto LABEL_111;
           }
 
-          v38 = [(PLSharedAssetsContainerIncrementalChange *)v10 highlightContainerChanges];
-          if (![v38 count])
+          highlightContainerChanges2 = [(PLSharedAssetsContainerIncrementalChange *)v10 highlightContainerChanges];
+          if (![highlightContainerChanges2 count])
           {
             v76 = v32;
-            v39 = self;
-            v40 = [v9 objectForKeyedSubscript:@"libraryScope"];
+            selfCopy = self;
+            v40 = [changedValues objectForKeyedSubscript:@"libraryScope"];
 
             if (!v40)
             {
-              self = v39;
-              v37 = v78;
+              self = selfCopy;
+              v37 = isInserted;
 LABEL_62:
-              v48 = [(PLSharedAssetsContainerIncrementalChange *)v10 highlightContainerChanges];
-              if ([v48 count])
+              highlightContainerChanges3 = [(PLSharedAssetsContainerIncrementalChange *)v10 highlightContainerChanges];
+              if ([highlightContainerChanges3 count])
               {
 LABEL_83:
 
                 goto LABEL_84;
               }
 
-              v49 = v9;
-              v50 = self;
+              v49 = changedValues;
+              selfCopy2 = self;
               v51 = [v49 objectForKeyedSubscript:@"libraryScopeShareState"];
 
               if (!v51)
               {
-                self = v50;
-                v9 = v79;
+                self = selfCopy2;
+                changedValues = v79;
                 goto LABEL_84;
               }
 
               v80 = @"libraryScopeShareState";
               v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
-              v48 = [v4 committedValuesForKeys:v52];
+              highlightContainerChanges3 = [updateCopy committedValuesForKeys:v52];
 
-              v53 = [v48 objectForKey:@"libraryScopeShareState"];
-              v54 = [v53 integerValue];
-              if (v54 > 65537)
+              v53 = [highlightContainerChanges3 objectForKey:@"libraryScopeShareState"];
+              integerValue = [v53 integerValue];
+              if (integerValue > 65537)
               {
-                if (v54 != 65538)
+                if (integerValue != 65538)
                 {
-                  v55 = v54 == 65552;
+                  v55 = integerValue == 65552;
                   goto LABEL_71;
                 }
               }
 
-              else if (v54 != 2)
+              else if (integerValue != 2)
               {
-                v55 = v54 == 16;
+                v55 = integerValue == 16;
 LABEL_71:
-                self = v50;
+                self = selfCopy2;
                 v56 = v55;
                 goto LABEL_73;
               }
 
-              self = v50;
+              self = selfCopy2;
               v56 = 1;
 LABEL_73:
-              v57 = [v4 libraryScopeShareState];
-              v9 = v79;
-              if (v57 > 65537)
+              libraryScopeShareState = [updateCopy libraryScopeShareState];
+              changedValues = v79;
+              if (libraryScopeShareState > 65537)
               {
-                if (v57 != 65552 && v57 != 65538)
+                if (libraryScopeShareState != 65552 && libraryScopeShareState != 65538)
                 {
                   goto LABEL_90;
                 }
               }
 
-              else if (v57 != 2 && v57 != 16)
+              else if (libraryScopeShareState != 2 && libraryScopeShareState != 16)
               {
 LABEL_90:
                 if (!v56)
@@ -2331,26 +2331,26 @@ LABEL_90:
               {
 LABEL_82:
 
-                v37 = v78;
+                v37 = isInserted;
                 goto LABEL_83;
               }
 
               v58 = 1;
 LABEL_81:
               [(PLSharedAssetsContainerIncrementalChange *)v10 setSuggestionStateChange:v58];
-              v7 = 1;
+              needsMomentUpdate = 1;
               goto LABEL_82;
             }
 
             v81 = @"libraryScope";
             v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
-            v38 = [v4 committedValuesForKeys:v41];
+            highlightContainerChanges2 = [updateCopy committedValuesForKeys:v41];
 
-            v42 = [v38 objectForKey:@"libraryScope"];
-            v43 = [MEMORY[0x1E695DFB0] null];
-            v44 = [v42 isEqual:v43];
+            v42 = [highlightContainerChanges2 objectForKey:@"libraryScope"];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            v44 = [v42 isEqual:null3];
 
-            v45 = [v4 hasLibraryScope];
+            hasLibraryScope = [updateCopy hasLibraryScope];
             if (v42)
             {
               v46 = v44;
@@ -2361,10 +2361,10 @@ LABEL_81:
               v46 = 1;
             }
 
-            if (v46 == v45)
+            if (v46 == hasLibraryScope)
             {
-              v7 = 1;
-              if (v45)
+              needsMomentUpdate = 1;
+              if (hasLibraryScope)
               {
                 v47 = 1;
               }
@@ -2377,8 +2377,8 @@ LABEL_81:
               [(PLSharedAssetsContainerIncrementalChange *)v10 setSharingChange:v47];
             }
 
-            self = v39;
-            v37 = v78;
+            self = selfCopy;
+            v37 = isInserted;
             v32 = v76;
           }
 
@@ -2386,14 +2386,14 @@ LABEL_81:
         }
 
 LABEL_98:
-        v64 = [v4 managedObjectContext];
-        if (([v64 hasPreviouslyMergedDeleteForObject:v4] & 1) == 0)
+        managedObjectContext = [updateCopy managedObjectContext];
+        if (([managedObjectContext hasPreviouslyMergedDeleteForObject:updateCopy] & 1) == 0)
         {
           v77 = v32;
           v84[0] = @"dateCreated";
           v84[1] = @"locationData";
           v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:2];
-          v66 = [v4 committedValuesForKeys:v65];
+          v66 = [updateCopy committedValuesForKeys:v65];
 
           v67 = [v66 objectForKeyedSubscript:@"dateCreated"];
           v68 = [v66 objectForKeyedSubscript:@"locationData"];
@@ -2421,7 +2421,7 @@ LABEL_98:
             v70 = PLMomentsGetLog();
             if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
             {
-              [v4 objectID];
+              [updateCopy objectID];
               v71 = v73 = self;
               *buf = 138412290;
               v83 = v71;
@@ -2431,22 +2431,22 @@ LABEL_98:
             }
 
             [(PLSharedAssetsContainerIncrementalChange *)v10 setCollectionChangeType:2];
-            [(PLDelayedSaveActions *)self _recordDelayedMomentAssetDeletionsDictionary:v69 forKey:v4];
+            [(PLDelayedSaveActions *)self _recordDelayedMomentAssetDeletionsDictionary:v69 forKey:updateCopy];
           }
 
-          v9 = v79;
+          changedValues = v79;
           v32 = v77;
         }
 
         goto LABEL_111;
       }
 
-      v29 = [v22 integerValue];
-      if (v29 > 65537)
+      integerValue2 = [v22 integerValue];
+      if (integerValue2 > 65537)
       {
-        if (v29 != 65538)
+        if (integerValue2 != 65538)
         {
-          v30 = v29 == 65552;
+          v30 = integerValue2 == 65552;
 LABEL_39:
           v24 = 1;
           if (!v30)
@@ -2458,9 +2458,9 @@ LABEL_39:
         }
       }
 
-      else if (v29 != 2)
+      else if (integerValue2 != 2)
       {
-        v30 = v29 == 16;
+        v30 = integerValue2 == 16;
         goto LABEL_39;
       }
 
@@ -2469,7 +2469,7 @@ LABEL_39:
     }
 
     v26 = 1;
-    if ([v4 hasLibraryScope])
+    if ([updateCopy hasLibraryScope])
     {
       v27 = 1;
     }
@@ -2480,16 +2480,16 @@ LABEL_39:
     }
 
     [(PLSharedAssetsContainerIncrementalChange *)v10 setSharingChange:v27];
-    v28 = [v4 libraryScopeShareState];
-    if (v28 > 65537)
+    libraryScopeShareState2 = [updateCopy libraryScopeShareState];
+    if (libraryScopeShareState2 > 65537)
     {
-      if (v28 == 65538 || v28 == 65552)
+      if (libraryScopeShareState2 == 65538 || libraryScopeShareState2 == 65552)
       {
         goto LABEL_27;
       }
     }
 
-    else if (v28 == 2 || v28 == 16)
+    else if (libraryScopeShareState2 == 2 || libraryScopeShareState2 == 16)
     {
       goto LABEL_27;
     }
@@ -2497,32 +2497,32 @@ LABEL_39:
     v26 = 2;
 LABEL_27:
     [(PLSharedAssetsContainerIncrementalChange *)v10 setSuggestionStateChange:v26];
-    v7 = 1;
+    needsMomentUpdate = 1;
     goto LABEL_28;
   }
 
-  v8 = PLMomentsGetLog();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  photoLibrary = PLMomentsGetLog();
+  if (os_log_type_enabled(photoLibrary, OS_LOG_TYPE_DEBUG))
   {
-    v25 = [v4 objectID];
+    objectID = [updateCopy objectID];
     *buf = 138412290;
-    v83 = v25;
-    _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEBUG, "Ignoring update for asset %@", buf, 0xCu);
+    v83 = objectID;
+    _os_log_impl(&dword_19BF1F000, photoLibrary, OS_LOG_TYPE_DEBUG, "Ignoring update for asset %@", buf, 0xCu);
   }
 
 LABEL_114:
 
-  if ([v4 needsMomentUpdate])
+  if ([updateCopy needsMomentUpdate])
   {
-    [v4 setNeedsMomentUpdate:0];
+    [updateCopy setNeedsMomentUpdate:0];
   }
 }
 
-- (void)_recordSharedAssetIncrementalChange:(id)a3 forAsset:(id)a4
+- (void)_recordSharedAssetIncrementalChange:(id)change forAsset:(id)asset
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v13 hasChanges])
+  changeCopy = change;
+  assetCopy = asset;
+  if ([changeCopy hasChanges])
   {
     if (!self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID)
     {
@@ -2531,35 +2531,35 @@ LABEL_114:
       self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID = v7;
     }
 
-    v9 = [v6 uuid];
-    if (v9)
+    uuid = [assetCopy uuid];
+    if (uuid)
     {
-      v10 = [(PLDelayedSaveActions *)self _existingSharedAssetChangeContainerForAsset:v6];
+      v10 = [(PLDelayedSaveActions *)self _existingSharedAssetChangeContainerForAsset:assetCopy];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 change];
-        [(PLSharedAssetsContainerIncrementalChangeContainer *)v12 mergeChangesFrom:v13];
+        change = [v10 change];
+        [(PLSharedAssetsContainerIncrementalChangeContainer *)change mergeChangesFrom:changeCopy];
       }
 
       else
       {
-        v12 = [[PLSharedAssetsContainerIncrementalChangeContainer alloc] initWithAsset:v6 change:v13];
-        [(NSMutableDictionary *)self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID setObject:v12 forKeyedSubscript:v9];
+        change = [[PLSharedAssetsContainerIncrementalChangeContainer alloc] initWithAsset:assetCopy change:changeCopy];
+        [(NSMutableDictionary *)self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID setObject:change forKeyedSubscript:uuid];
       }
     }
   }
 }
 
-- (id)_existingSharedAssetChangeContainerForAsset:(id)a3
+- (id)_existingSharedAssetChangeContainerForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  if (v5)
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  if (uuid)
   {
     delayedSharedAssetIncrementalChangeContainersByAssetUUID = self->_delayedSharedAssetIncrementalChangeContainersByAssetUUID;
-    v7 = [v4 uuid];
-    v8 = [(NSMutableDictionary *)delayedSharedAssetIncrementalChangeContainersByAssetUUID objectForKeyedSubscript:v7];
+    uuid2 = [assetCopy uuid];
+    v8 = [(NSMutableDictionary *)delayedSharedAssetIncrementalChangeContainersByAssetUUID objectForKeyedSubscript:uuid2];
   }
 
   else
@@ -2570,120 +2570,120 @@ LABEL_114:
   return v8;
 }
 
-- (void)_recordDelayedHighlightMomentUpdates:(id)a3
+- (void)_recordDelayedHighlightMomentUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   delayedHighlightMomentUpdates = self->_delayedHighlightMomentUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!delayedHighlightMomentUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedHighlightMomentUpdates;
     self->_delayedHighlightMomentUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     delayedHighlightMomentUpdates = self->_delayedHighlightMomentUpdates;
   }
 
-  [(NSMutableSet *)delayedHighlightMomentUpdates addObject:v4];
+  [(NSMutableSet *)delayedHighlightMomentUpdates addObject:updatesCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeMomentGeneration"];
 }
 
-- (void)_recordDelayedMomentAssetUpdates:(id)a3
+- (void)_recordDelayedMomentAssetUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   delayedMomentAssetUpdates = self->_delayedMomentAssetUpdates;
-  v8 = v4;
+  v8 = updatesCopy;
   if (!delayedMomentAssetUpdates)
   {
     v6 = objc_opt_new();
     v7 = self->_delayedMomentAssetUpdates;
     self->_delayedMomentAssetUpdates = v6;
 
-    v4 = v8;
+    updatesCopy = v8;
     delayedMomentAssetUpdates = self->_delayedMomentAssetUpdates;
   }
 
-  [(NSMutableArray *)delayedMomentAssetUpdates addObject:v4];
+  [(NSMutableArray *)delayedMomentAssetUpdates addObject:updatesCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeMomentGeneration"];
 }
 
-- (void)_recordDelayedMomentAssetDeletionsDictionary:(id)a3 forKey:(id)a4
+- (void)_recordDelayedMomentAssetDeletionsDictionary:(id)dictionary forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   delayedMomentAssetDeletions = self->_delayedMomentAssetDeletions;
   if (!delayedMomentAssetDeletions)
   {
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v9 = self->_delayedMomentAssetDeletions;
-    self->_delayedMomentAssetDeletions = v8;
+    self->_delayedMomentAssetDeletions = strongToStrongObjectsMapTable;
 
     delayedMomentAssetDeletions = self->_delayedMomentAssetDeletions;
   }
 
-  [(NSMapTable *)delayedMomentAssetDeletions setObject:v10 forKey:v6];
+  [(NSMapTable *)delayedMomentAssetDeletions setObject:dictionaryCopy forKey:keyCopy];
   [(PLDelayedSaveActions *)self persistDelayedActionsScope:@"PLTransactionScopeMomentGeneration"];
 }
 
-- (void)_popImportSessionCountChangesIntoDetail:(id)a3
+- (void)_popImportSessionCountChangesIntoDetail:(id)detail
 {
   v6 = 0;
-  v4 = a3;
+  detailCopy = detail;
   [(PLDelayedSaveActions *)self _popDelayedImportSessionCountsAndDateRangeUpdates:&v6];
   v5 = v6;
-  [v4 setImportSessionCountsAndDateRangeUpdates:v5];
+  [detailCopy setImportSessionCountsAndDateRangeUpdates:v5];
 }
 
-- (void)_popAlbumKeyAssetsChangesIntoDetail:(id)a3
+- (void)_popAlbumKeyAssetsChangesIntoDetail:(id)detail
 {
   v6 = 0;
-  v4 = a3;
+  detailCopy = detail;
   [(PLDelayedSaveActions *)self _popDelayedAlbumKeyAssetsUpdates:&v6];
   v5 = v6;
-  [v4 setAlbumKeyAssetsUpdates:v5];
+  [detailCopy setAlbumKeyAssetsUpdates:v5];
 }
 
-- (void)_popAlbumCountChangesIntoDetail:(id)a3
+- (void)_popAlbumCountChangesIntoDetail:(id)detail
 {
   v6 = 0;
-  v4 = a3;
+  detailCopy = detail;
   [(PLDelayedSaveActions *)self _popDelayedAlbumCountsAndDateRangeUpdates:&v6];
   v5 = v6;
-  [v4 setAlbumCountsAndDateRangeUpdates:v5];
+  [detailCopy setAlbumCountsAndDateRangeUpdates:v5];
 }
 
-- (void)_popAssetsForFilesystemPersistencyChangesIntoDetail:(id)a3
+- (void)_popAssetsForFilesystemPersistencyChangesIntoDetail:(id)detail
 {
   v6 = 0;
-  v4 = a3;
+  detailCopy = detail;
   [(PLDelayedSaveActions *)self _popDelayedAssetsForFilesystemPersistencyUpdates:&v6];
   v5 = v6;
-  [v4 setAssetsForFilesystemPersistency:v5];
+  [detailCopy setAssetsForFilesystemPersistency:v5];
 }
 
-- (void)_popMomentChangesIntoDetail:(id)a3
+- (void)_popMomentChangesIntoDetail:(id)detail
 {
   v13 = 0;
   v14 = 0;
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  v4 = a3;
+  detailCopy = detail;
   [(PLDelayedSaveActions *)self _popDelayedMomentInsertsAndUpdates:&v14 deletes:&v13 updatedAssetIDsForHighlights:&v12 updatedMomentIDsForHighlights:&v11 sharedAssetContainerIncrementalChanges:&v10];
   v5 = v14;
   v6 = v13;
   v7 = v12;
   v8 = v11;
   v9 = v10;
-  [v4 setMomentInsertsAndUpdates:v5];
-  [v4 setMomentDeletes:v6];
-  [v4 setUpdatedAssetIDsForHighlights:v7];
-  [v4 setUpdatedMomentIDsForHighlights:v8];
-  [v4 setSharedAssetContainerIncrementalChangesByAssetID:v9];
+  [detailCopy setMomentInsertsAndUpdates:v5];
+  [detailCopy setMomentDeletes:v6];
+  [detailCopy setUpdatedAssetIDsForHighlights:v7];
+  [detailCopy setUpdatedMomentIDsForHighlights:v8];
+  [detailCopy setSharedAssetContainerIncrementalChangesByAssetID:v9];
 }
 
-- (void)_popCloudFeedChangesIntoDetail:(id)a3
+- (void)_popCloudFeedChangesIntoDetail:(id)detail
 {
   v37 = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -2696,7 +2696,7 @@ LABEL_114:
   v26 = 0;
   v27 = 0;
   v25 = 0;
-  v4 = a3;
+  detailCopy = detail;
   [(PLDelayedSaveActions *)self _popDelayedCloudFeedAlbumUpdates:&v34 collectionShareUpdates:&v33 collectionShareDeletes:&v32 assetInserts:&v31 assetUpdates:&v30 commentInserts:&v29 invitationRecordUpdates:&v28 shareParticipantUpdates:&v27 shareParticipantDeletes:&v26 deletionEntries:&v25];
   v5 = v34;
   v6 = v33;
@@ -2708,16 +2708,16 @@ LABEL_114:
   v11 = v27;
   v12 = v26;
   v13 = v25;
-  [v4 setCloudFeedAlbumUpdates:v5];
-  [v4 setCloudFeedCollectionShareUpdates:v6];
-  [v4 setCloudFeedCollectionShareDeletes:v24];
-  [v4 setCloudFeedAssetInserts:v7];
-  [v4 setCloudFeedAssetUpdates:v8];
-  [v4 setCloudFeedCommentInserts:v9];
-  [v4 setCloudFeedInvitationRecordUpdates:v10];
-  [v4 setCloudFeedShareParticipantUpdates:v11];
-  [v4 setCloudFeedShareParticipantDeletes:v12];
-  [v4 setCloudFeedDeletionEntries:v13];
+  [detailCopy setCloudFeedAlbumUpdates:v5];
+  [detailCopy setCloudFeedCollectionShareUpdates:v6];
+  [detailCopy setCloudFeedCollectionShareDeletes:v24];
+  [detailCopy setCloudFeedAssetInserts:v7];
+  [detailCopy setCloudFeedAssetUpdates:v8];
+  [detailCopy setCloudFeedCommentInserts:v9];
+  [detailCopy setCloudFeedInvitationRecordUpdates:v10];
+  [detailCopy setCloudFeedShareParticipantUpdates:v11];
+  [detailCopy setCloudFeedShareParticipantDeletes:v12];
+  [detailCopy setCloudFeedDeletionEntries:v13];
 
   v14 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -2800,72 +2800,72 @@ LABEL_114:
   }
 }
 
-- (void)persistDelayedActionsScope:(id)a3
+- (void)persistDelayedActionsScope:(id)scope
 {
-  v4 = a3;
-  v6 = [(PLDelayedSaveActions *)self clientTransaction];
-  v5 = [MEMORY[0x1E695DFD8] setWithObject:v4];
+  scopeCopy = scope;
+  clientTransaction = [(PLDelayedSaveActions *)self clientTransaction];
+  v5 = [MEMORY[0x1E695DFD8] setWithObject:scopeCopy];
 
-  [v6 addChangeScopes:v5];
+  [clientTransaction addChangeScopes:v5];
 }
 
-- (PLDelayedSaveActions)initWithClientTransaction:(id)a3
+- (PLDelayedSaveActions)initWithClientTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v9.receiver = self;
   v9.super_class = PLDelayedSaveActions;
   v6 = [(PLDelayedSaveActions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientTransaction, a3);
+    objc_storeStrong(&v6->_clientTransaction, transaction);
   }
 
   return v7;
 }
 
-+ (void)_addHighlightRelationshipChangesFromChangedValues:(id)a3 onAsset:(id)a4 intoChange:(id)a5 forRelationshipNamed:(id)a6
++ (void)_addHighlightRelationshipChangesFromChangedValues:(id)values onAsset:(id)asset intoChange:(id)change forRelationshipNamed:(id)named
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 objectForKeyedSubscript:v12];
+  assetCopy = asset;
+  changeCopy = change;
+  namedCopy = named;
+  v13 = [values objectForKeyedSubscript:namedCopy];
 
   if (v13)
   {
-    v20[0] = v12;
+    v20[0] = namedCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    v15 = [v10 committedValuesForKeys:v14];
+    v15 = [assetCopy committedValuesForKeys:v14];
 
-    v16 = [v15 objectForKey:v12];
-    v17 = [MEMORY[0x1E695DFB0] null];
-    if ([v16 isEqual:v17])
+    v16 = [v15 objectForKey:namedCopy];
+    null = [MEMORY[0x1E695DFB0] null];
+    if ([v16 isEqual:null])
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = [v15 objectForKey:v12];
+      v18 = [v15 objectForKey:namedCopy];
     }
 
-    v19 = [v10 valueForKey:v12];
-    [a1 _checkForHighlightChangesOnToOneRelationshipNamed:v12 andAddIntoChange:v11 givenOldValue:v18 andNewValue:v19];
+    v19 = [assetCopy valueForKey:namedCopy];
+    [self _checkForHighlightChangesOnToOneRelationshipNamed:namedCopy andAddIntoChange:changeCopy givenOldValue:v18 andNewValue:v19];
   }
 }
 
-+ (void)_checkForHighlightChangesOnToManyRelationshipNamed:(id)a3 andAddIntoChange:(id)a4 givenOldValue:(id)a5 andNewValue:(id)a6
++ (void)_checkForHighlightChangesOnToManyRelationshipNamed:(id)named andAddIntoChange:(id)change givenOldValue:(id)value andNewValue:(id)newValue
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (([v11 isEqualToSet:v12] & 1) == 0)
+  namedCopy = named;
+  changeCopy = change;
+  valueCopy = value;
+  newValueCopy = newValue;
+  if (([valueCopy isEqualToSet:newValueCopy] & 1) == 0)
   {
-    v13 = [MEMORY[0x1E695DFA8] setWithSet:v11];
-    [v13 minusSet:v12];
+    v13 = [MEMORY[0x1E695DFA8] setWithSet:valueCopy];
+    [v13 minusSet:newValueCopy];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -2886,8 +2886,8 @@ LABEL_114:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v31 + 1) + 8 * v18) objectID];
-          [v10 addHighlightContainerChange:v9 sourceHighlightID:v19 destinationHighlightID:0];
+          objectID = [*(*(&v31 + 1) + 8 * v18) objectID];
+          [changeCopy addHighlightContainerChange:namedCopy sourceHighlightID:objectID destinationHighlightID:0];
 
           ++v18;
         }
@@ -2899,8 +2899,8 @@ LABEL_114:
       while (v16);
     }
 
-    v20 = [MEMORY[0x1E695DFA8] setWithSet:v12];
-    [v20 minusSet:v11];
+    v20 = [MEMORY[0x1E695DFA8] setWithSet:newValueCopy];
+    [v20 minusSet:valueCopy];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -2921,8 +2921,8 @@ LABEL_114:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v27 + 1) + 8 * v25) objectID];
-          [v10 addHighlightContainerChange:v9 sourceHighlightID:0 destinationHighlightID:v26];
+          objectID2 = [*(*(&v27 + 1) + 8 * v25) objectID];
+          [changeCopy addHighlightContainerChange:namedCopy sourceHighlightID:0 destinationHighlightID:objectID2];
 
           ++v25;
         }
@@ -2936,17 +2936,17 @@ LABEL_114:
   }
 }
 
-+ (void)_checkForHighlightChangesOnToOneRelationshipNamed:(id)a3 andAddIntoChange:(id)a4 givenOldValue:(id)a5 andNewValue:(id)a6
++ (void)_checkForHighlightChangesOnToOneRelationshipNamed:(id)named andAddIntoChange:(id)change givenOldValue:(id)value andNewValue:(id)newValue
 {
-  if ((a5 != 0) == (a6 == 0))
+  if ((value != 0) == (newValue == 0))
   {
-    v10 = a6;
-    v11 = a4;
-    v12 = a3;
-    v14 = [a5 objectID];
-    v13 = [v10 objectID];
+    newValueCopy = newValue;
+    changeCopy = change;
+    namedCopy = named;
+    objectID = [value objectID];
+    objectID2 = [newValueCopy objectID];
 
-    [v11 addHighlightContainerChange:v12 sourceHighlightID:v14 destinationHighlightID:v13];
+    [changeCopy addHighlightContainerChange:namedCopy sourceHighlightID:objectID destinationHighlightID:objectID2];
   }
 }
 

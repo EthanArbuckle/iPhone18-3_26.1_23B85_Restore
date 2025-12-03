@@ -1,22 +1,22 @@
 @interface CMAccelerometerDataArray
-- (CMAccelerometerDataArray)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
+- (CMAccelerometerDataArray)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
 @end
 
 @implementation CMAccelerometerDataArray
 
-- (CMAccelerometerDataArray)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMAccelerometerDataArray)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v7 = [CLSensorRecorderSensorMeta alloc];
     v9 = objc_msgSend_initWithDataType_(v7, v8, 0xFFFFFFFFLL);
-    v12 = objc_msgSend_bytes(a3, v10, v11);
+    v12 = objc_msgSend_bytes(representation, v10, v11);
     objc_msgSend_setDataSize_(v9, v13, bswap32(*v12));
-    v16 = objc_msgSend_bytes(a3, v14, v15);
+    v16 = objc_msgSend_bytes(representation, v14, v15);
     objc_msgSend_setTimestamp_(v9, v17, bswap64(*(v16 + 4)));
-    v20 = objc_msgSend_bytes(a3, v18, v19);
+    v20 = objc_msgSend_bytes(representation, v18, v19);
     objc_msgSend_setStartTime_(v9, v21, v22, *(v20 + 12));
-    v25 = objc_msgSend_bytes(a3, v23, v24) + 20;
+    v25 = objc_msgSend_bytes(representation, v23, v24) + 20;
     v28 = objc_msgSend_array(MEMORY[0x1E695DF70], v26, v27);
     v49 = v25;
     v50 = 0;

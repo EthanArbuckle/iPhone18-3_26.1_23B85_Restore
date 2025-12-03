@@ -1,36 +1,36 @@
 @interface FATManager
-- (BOOL)isEOFCluster:(unint64_t)a3;
-- (id)syncMetaReadFromFAT:(void *)a3 startingAt:(int64_t)a4;
+- (BOOL)isEOFCluster:(unint64_t)cluster;
+- (id)syncMetaReadFromFAT:(void *)t startingAt:(int64_t)at;
 - (id)updateFATStats;
 - (unsigned)clustersPerBlock;
-- (void)allocateClusters:(unsigned int)a3 searchFromCluster:(unsigned int)a4 allowPartial:(BOOL)a5 zeroFill:(BOOL)a6 mustBeContig:(BOOL)a7 replyHandler:(id)a8;
-- (void)clusterChainLength:(id)a3 replyHandler:(id)a4;
-- (void)findNextFreeCluster:(unsigned int)a3 replyHandler:(id)a4;
-- (void)freeClusterFrom:(unsigned int)a3 numClusters:(unsigned int)a4 replyHandler:(id)a5;
-- (void)freeClusters:(unsigned int)a3 ofItem:(id)a4 replyHandler:(id)a5;
-- (void)getContigClusterChainLengthStartingAt:(unsigned int)a3 replyHandler:(id)a4;
-- (void)getDirtyBitValue:(id)a3;
-- (void)iterateClusterChainOfItem:(id)a3 replyHandler:(id)a4;
-- (void)setDirtyBitValue:(unsigned __int8)a3 forceWriteToDisk:(BOOL)a4 replyHandler:(id)a5;
+- (void)allocateClusters:(unsigned int)clusters searchFromCluster:(unsigned int)cluster allowPartial:(BOOL)partial zeroFill:(BOOL)fill mustBeContig:(BOOL)contig replyHandler:(id)handler;
+- (void)clusterChainLength:(id)length replyHandler:(id)handler;
+- (void)findNextFreeCluster:(unsigned int)cluster replyHandler:(id)handler;
+- (void)freeClusterFrom:(unsigned int)from numClusters:(unsigned int)clusters replyHandler:(id)handler;
+- (void)freeClusters:(unsigned int)clusters ofItem:(id)item replyHandler:(id)handler;
+- (void)getContigClusterChainLengthStartingAt:(unsigned int)at replyHandler:(id)handler;
+- (void)getDirtyBitValue:(id)value;
+- (void)iterateClusterChainOfItem:(id)item replyHandler:(id)handler;
+- (void)setDirtyBitValue:(unsigned __int8)value forceWriteToDisk:(BOOL)disk replyHandler:(id)handler;
 @end
 
 @implementation FATManager
 
 - (unsigned)clustersPerBlock
 {
-  v3 = [(FATManager *)self fsInfo];
-  v4 = [v3 type];
+  fsInfo = [(FATManager *)self fsInfo];
+  type = [fsInfo type];
 
-  v5 = [(FATManager *)self rwSize];
-  v6 = v5 >> 2;
-  if (!v4)
+  rwSize = [(FATManager *)self rwSize];
+  v6 = rwSize >> 2;
+  if (!type)
   {
-    v6 = 2 * v5 / 3;
+    v6 = 2 * rwSize / 3;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
-    return v5 >> 1;
+    return rwSize >> 1;
   }
 
   else
@@ -39,29 +39,29 @@
   }
 }
 
-- (id)syncMetaReadFromFAT:(void *)a3 startingAt:(int64_t)a4
+- (id)syncMetaReadFromFAT:(void *)t startingAt:(int64_t)at
 {
-  v7 = a4 + [(FATManager *)self rwSize];
-  v8 = [(FATManager *)self fsInfo];
-  v9 = [v8 fatOffset];
-  v10 = [(FATManager *)self fsInfo];
-  v11 = &v9[[v10 fatSize]];
+  v7 = at + [(FATManager *)self rwSize];
+  fsInfo = [(FATManager *)self fsInfo];
+  fatOffset = [fsInfo fatOffset];
+  fsInfo2 = [(FATManager *)self fsInfo];
+  v11 = &fatOffset[[fsInfo2 fatSize]];
 
   if (v7 <= v11)
   {
-    v15 = [(FATManager *)self rwSize];
+    rwSize = [(FATManager *)self rwSize];
   }
 
   else
   {
-    v12 = [(FATManager *)self fsInfo];
-    v13 = [v12 fatOffset];
-    v14 = [(FATManager *)self fsInfo];
-    v15 = &v13[[v14 fatSize] - a4];
+    fsInfo3 = [(FATManager *)self fsInfo];
+    fatOffset2 = [fsInfo3 fatOffset];
+    fsInfo4 = [(FATManager *)self fsInfo];
+    rwSize = &fatOffset2[[fsInfo4 fatSize] - at];
   }
 
-  v16 = [(FATManager *)self device];
-  v17 = [Utilities syncMetaReadFromDevice:v16 into:a3 startingAt:a4 length:v15];
+  device = [(FATManager *)self device];
+  v17 = [Utilities syncMetaReadFromDevice:device into:t startingAt:at length:rwSize];
 
   return v17;
 }
@@ -69,15 +69,15 @@
 - (id)updateFATStats
 {
   v3 = [FATBlock alloc];
-  v4 = [(FATManager *)self fsInfo];
-  v5 = -[FATBlock initWithOffset:andLength:](v3, "initWithOffset:andLength:", [v4 fatOffset], -[FATManager rwSize](self, "rwSize"));
+  fsInfo = [(FATManager *)self fsInfo];
+  v5 = -[FATBlock initWithOffset:andLength:](v3, "initWithOffset:andLength:", [fsInfo fatOffset], -[FATManager rwSize](self, "rwSize"));
 
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
   v45 = 0;
-  v6 = [(FATManager *)self fsInfo];
-  v7 = [v6 fatOffset];
+  fsInfo2 = [(FATManager *)self fsInfo];
+  fatOffset = [fsInfo2 fatOffset];
 
   v8 = 0;
   v38 = 0;
@@ -90,26 +90,26 @@
   v36[1] = v36;
   while (1)
   {
-    v9 = [(FATManager *)self fsInfo];
-    v10 = [v9 fatOffset];
-    v11 = [(FATManager *)self fsInfo];
-    LOBYTE(v10) = v7 > &v10[[v11 fatSize]];
+    fsInfo3 = [(FATManager *)self fsInfo];
+    fatOffset2 = [fsInfo3 fatOffset];
+    fsInfo4 = [(FATManager *)self fsInfo];
+    LOBYTE(fatOffset2) = fatOffset > &fatOffset2[[fsInfo4 fatSize]];
 
-    if (v10)
+    if (fatOffset2)
     {
       break;
     }
 
-    v12 = [(FATBlock *)v5 data];
-    v13 = v12;
-    v14 = -[FATManager syncMetaReadFromFAT:startingAt:](self, "syncMetaReadFromFAT:startingAt:", [v12 mutableBytes], v7);
+    data = [(FATBlock *)v5 data];
+    v13 = data;
+    v14 = -[FATManager syncMetaReadFromFAT:startingAt:](self, "syncMetaReadFromFAT:startingAt:", [data mutableBytes], fatOffset);
 
     if (v14)
     {
       goto LABEL_19;
     }
 
-    [(FATBlock *)v5 setStartOffset:v7];
+    [(FATBlock *)v5 setStartOffset:fatOffset];
     v35[0] = _NSConcreteStackBlock;
     if (v8)
     {
@@ -129,59 +129,59 @@
     v35[6] = &v42;
     [(FATManager *)self countFreeClustersInBlock:v5 startingAt:v15 replyHandler:v35];
     v8 += [(FATManager *)self clustersPerBlock];
-    v7 += [(FATManager *)self rwSize];
+    fatOffset += [(FATManager *)self rwSize];
   }
 
-  v16 = [(FATManager *)self fsInfo];
-  if ([v16 freeClusters])
+  fsInfo5 = [(FATManager *)self fsInfo];
+  if ([fsInfo5 freeClusters])
   {
-    v17 = [(FATManager *)self fsInfo];
-    v18 = [v17 freeClusters];
-    v19 = v18 == *(v39 + 6);
+    fsInfo6 = [(FATManager *)self fsInfo];
+    freeClusters = [fsInfo6 freeClusters];
+    v19 = freeClusters == *(v39 + 6);
 
     if (v19)
     {
       goto LABEL_13;
     }
 
-    v16 = &_os_log_default;
+    fsInfo5 = &_os_log_default;
     v20 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       v21 = *(v39 + 6);
-      v22 = [(FATManager *)self fsInfo];
-      sub_10003223C(v47, v21, [v22 freeClusters], v22);
-      v16 = &_os_log_default;
+      fsInfo7 = [(FATManager *)self fsInfo];
+      sub_10003223C(v47, v21, [fsInfo7 freeClusters], fsInfo7);
+      fsInfo5 = &_os_log_default;
     }
   }
 
 LABEL_13:
   v23 = *(v39 + 6);
-  v24 = [(FATManager *)self fsInfo];
-  [v24 setFreeClusters:v23];
+  fsInfo8 = [(FATManager *)self fsInfo];
+  [fsInfo8 setFreeClusters:v23];
 
-  v25 = [(FATManager *)self fsInfo];
-  if (![v25 firstFreeCluster])
+  fsInfo9 = [(FATManager *)self fsInfo];
+  if (![fsInfo9 firstFreeCluster])
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v26 = [(FATManager *)self fsInfo];
-  v27 = [v26 firstFreeCluster];
-  v28 = v27 == *(v43 + 6);
+  fsInfo10 = [(FATManager *)self fsInfo];
+  firstFreeCluster = [fsInfo10 firstFreeCluster];
+  v28 = firstFreeCluster == *(v43 + 6);
 
   if (!v28)
   {
-    v25 = &_os_log_default;
+    fsInfo9 = &_os_log_default;
     v29 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       v30 = *(v43 + 6);
-      v31 = [(FATManager *)self fsInfo];
-      sub_1000322AC(v46, v30, [v31 firstFreeCluster], v31);
-      v25 = &_os_log_default;
+      fsInfo11 = [(FATManager *)self fsInfo];
+      sub_1000322AC(v46, v30, [fsInfo11 firstFreeCluster], fsInfo11);
+      fsInfo9 = &_os_log_default;
     }
 
     goto LABEL_17;
@@ -189,8 +189,8 @@ LABEL_17:
 
 LABEL_18:
   v32 = *(v43 + 6);
-  v33 = [(FATManager *)self fsInfo];
-  [v33 setFirstFreeCluster:v32];
+  fsInfo12 = [(FATManager *)self fsInfo];
+  [fsInfo12 setFirstFreeCluster:v32];
 
   v14 = 0;
 LABEL_19:
@@ -201,78 +201,78 @@ LABEL_19:
   return v14;
 }
 
-- (void)allocateClusters:(unsigned int)a3 searchFromCluster:(unsigned int)a4 allowPartial:(BOOL)a5 zeroFill:(BOOL)a6 mustBeContig:(BOOL)a7 replyHandler:(id)a8
+- (void)allocateClusters:(unsigned int)clusters searchFromCluster:(unsigned int)cluster allowPartial:(BOOL)partial zeroFill:(BOOL)fill mustBeContig:(BOOL)contig replyHandler:(id)handler
 {
-  v13 = a8;
-  v14 = [(FATManager *)self fatQueue];
+  handlerCopy = handler;
+  fatQueue = [(FATManager *)self fatQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10001B6CC;
   v16[3] = &unk_100051168;
-  v20 = a5;
+  partialCopy = partial;
   v16[4] = self;
-  v17 = v13;
-  v18 = a3;
-  v19 = a4;
-  v21 = a7;
-  v15 = v13;
-  dispatch_barrier_sync(v14, v16);
+  v17 = handlerCopy;
+  clustersCopy = clusters;
+  clusterCopy = cluster;
+  contigCopy = contig;
+  v15 = handlerCopy;
+  dispatch_barrier_sync(fatQueue, v16);
 }
 
-- (void)freeClusters:(unsigned int)a3 ofItem:(id)a4 replyHandler:(id)a5
+- (void)freeClusters:(unsigned int)clusters ofItem:(id)item replyHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(FATManager *)self fatQueue];
+  itemCopy = item;
+  handlerCopy = handler;
+  fatQueue = [(FATManager *)self fatQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001C988;
   v13[3] = &unk_1000511E0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a3;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_barrier_sync(v10, v13);
+  v14 = itemCopy;
+  clustersCopy = clusters;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = itemCopy;
+  dispatch_barrier_sync(fatQueue, v13);
 }
 
-- (void)freeClusterFrom:(unsigned int)a3 numClusters:(unsigned int)a4 replyHandler:(id)a5
+- (void)freeClusterFrom:(unsigned int)from numClusters:(unsigned int)clusters replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(FATManager *)self fatQueue];
+  handlerCopy = handler;
+  fatQueue = [(FATManager *)self fatQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001D270;
   block[3] = &unk_100050E00;
-  v13 = a3;
-  v14 = a4;
+  fromCopy = from;
+  clustersCopy = clusters;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_barrier_sync(v9, block);
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  dispatch_barrier_sync(fatQueue, block);
 }
 
-- (void)getContigClusterChainLengthStartingAt:(unsigned int)a3 replyHandler:(id)a4
+- (void)getContigClusterChainLengthStartingAt:(unsigned int)at replyHandler:(id)handler
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001D8CC;
   v11[3] = &unk_100051230;
-  v13 = a3;
+  atCopy = at;
   v11[4] = self;
-  v12 = a4;
-  v5 = v12;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   v6 = objc_retainBlock(v11);
   label = dispatch_queue_get_label(0);
-  v8 = [(FATManager *)self fatQueue];
-  v9 = dispatch_queue_get_label(v8);
+  fatQueue = [(FATManager *)self fatQueue];
+  v9 = dispatch_queue_get_label(fatQueue);
   LODWORD(label) = strcmp(label, v9);
 
   if (label)
   {
-    v10 = [(FATManager *)self fatQueue];
-    dispatch_sync(v10, v6);
+    fatQueue2 = [(FATManager *)self fatQueue];
+    dispatch_sync(fatQueue2, v6);
   }
 
   else
@@ -281,28 +281,28 @@ LABEL_19:
   }
 }
 
-- (void)clusterChainLength:(id)a3 replyHandler:(id)a4
+- (void)clusterChainLength:(id)length replyHandler:(id)handler
 {
-  v6 = a3;
+  lengthCopy = length;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10001DAD0;
   v14[3] = &unk_100051280;
-  v16 = self;
-  v17 = a4;
-  v15 = v6;
-  v7 = v17;
-  v8 = v6;
+  selfCopy = self;
+  handlerCopy = handler;
+  v15 = lengthCopy;
+  v7 = handlerCopy;
+  v8 = lengthCopy;
   v9 = objc_retainBlock(v14);
   label = dispatch_queue_get_label(0);
-  v11 = [(FATManager *)self fatQueue];
-  v12 = dispatch_queue_get_label(v11);
+  fatQueue = [(FATManager *)self fatQueue];
+  v12 = dispatch_queue_get_label(fatQueue);
   LODWORD(label) = strcmp(label, v12);
 
   if (label)
   {
-    v13 = [(FATManager *)self fatQueue];
-    dispatch_sync(v13, v9);
+    fatQueue2 = [(FATManager *)self fatQueue];
+    dispatch_sync(fatQueue2, v9);
   }
 
   else
@@ -311,60 +311,60 @@ LABEL_19:
   }
 }
 
-- (void)iterateClusterChainOfItem:(id)a3 replyHandler:(id)a4
+- (void)iterateClusterChainOfItem:(id)item replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FATManager *)self fatQueue];
+  itemCopy = item;
+  handlerCopy = handler;
+  fatQueue = [(FATManager *)self fatQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001DDD8;
   block[3] = &unk_100051280;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = itemCopy;
+  v9 = handlerCopy;
+  v10 = itemCopy;
+  dispatch_sync(fatQueue, block);
 }
 
-- (void)getDirtyBitValue:(id)a3
+- (void)getDirtyBitValue:(id)value
 {
-  v4 = a3;
-  v5 = [(FATManager *)self fatQueue];
+  valueCopy = value;
+  fatQueue = [(FATManager *)self fatQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DFD0;
   v7[3] = &unk_100050E90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = valueCopy;
+  v6 = valueCopy;
+  dispatch_sync(fatQueue, v7);
 }
 
-- (void)setDirtyBitValue:(unsigned __int8)a3 forceWriteToDisk:(BOOL)a4 replyHandler:(id)a5
+- (void)setDirtyBitValue:(unsigned __int8)value forceWriteToDisk:(BOOL)disk replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(FATManager *)self fatQueue];
+  handlerCopy = handler;
+  fatQueue = [(FATManager *)self fatQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001E23C;
   block[3] = &unk_1000512A8;
-  v13 = a4;
+  diskCopy = disk;
   block[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v10 = v8;
-  dispatch_barrier_sync(v9, block);
+  v12 = handlerCopy;
+  valueCopy = value;
+  v10 = handlerCopy;
+  dispatch_barrier_sync(fatQueue, block);
 }
 
-- (BOOL)isEOFCluster:(unint64_t)a3
+- (BOOL)isEOFCluster:(unint64_t)cluster
 {
-  v5 = [(FATManager *)self fsInfo];
-  if (([v5 FATMask] & 0xFFFFFFF8) <= a3)
+  fsInfo = [(FATManager *)self fsInfo];
+  if (([fsInfo FATMask] & 0xFFFFFFF8) <= cluster)
   {
-    v7 = [(FATManager *)self fsInfo];
-    v6 = [v7 FATMask] >= a3;
+    fsInfo2 = [(FATManager *)self fsInfo];
+    v6 = [fsInfo2 FATMask] >= cluster;
   }
 
   else
@@ -375,9 +375,9 @@ LABEL_19:
   return v6;
 }
 
-- (void)findNextFreeCluster:(unsigned int)a3 replyHandler:(id)a4
+- (void)findNextFreeCluster:(unsigned int)cluster replyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -385,16 +385,16 @@ LABEL_19:
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
-  v26 = a3;
+  clusterCopy = cluster;
   v7 = [[FATBlock alloc] initWithOffset:0 andLength:[(FATManager *)self rwSize]];
-  v21 = v6;
+  v21 = handlerCopy;
   v8 = [(FATManager *)self getRWOffsetForClusterEntry:*(v24 + 6)];
   v9 = 0;
   while (1)
   {
     [(FATBlock *)v7 setStartOffset:[(FATManager *)self getRWOffsetForClusterEntry:*(v24 + 6)]];
-    v10 = [(FATBlock *)v7 data];
-    v11 = -[FATManager syncMetaReadFromFAT:startingAt:](self, "syncMetaReadFromFAT:startingAt:", [v10 mutableBytes], -[FATBlock startOffset](v7, "startOffset"));
+    data = [(FATBlock *)v7 data];
+    v11 = -[FATManager syncMetaReadFromFAT:startingAt:](self, "syncMetaReadFromFAT:startingAt:", [data mutableBytes], -[FATBlock startOffset](v7, "startOffset"));
 
     if (v11)
     {
@@ -424,15 +424,15 @@ LABEL_19:
     }
 
     v13 = *(v24 + 6);
-    v14 = [(FATManager *)self clustersPerBlock];
-    *(v24 + 6) += v13 / v14 * v14 - v13;
-    v15 = [(FATManager *)self clustersPerBlock];
-    v16 = *(v24 + 6) + v15;
+    clustersPerBlock = [(FATManager *)self clustersPerBlock];
+    *(v24 + 6) += v13 / clustersPerBlock * clustersPerBlock - v13;
+    clustersPerBlock2 = [(FATManager *)self clustersPerBlock];
+    v16 = *(v24 + 6) + clustersPerBlock2;
     *(v24 + 6) = v16;
-    v17 = [(FATManager *)self fsInfo];
-    v18 = [v17 maxValidCluster];
+    fsInfo = [(FATManager *)self fsInfo];
+    maxValidCluster = [fsInfo maxValidCluster];
 
-    if (v18 < v16)
+    if (maxValidCluster < v16)
     {
       *(v24 + 6) = 2;
       v9 = 1;

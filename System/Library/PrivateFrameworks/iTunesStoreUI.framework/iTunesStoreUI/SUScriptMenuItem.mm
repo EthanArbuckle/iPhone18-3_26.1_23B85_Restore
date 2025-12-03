@@ -1,5 +1,5 @@
 @interface SUScriptMenuItem
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (BOOL)enabled;
 - (NSString)title;
@@ -8,9 +8,9 @@
 - (id)userInfo;
 - (void)_sendDidChange;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setTitle:(id)title;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation SUScriptMenuItem
@@ -43,28 +43,28 @@
   return enabled;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   [(SUScriptObject *)self lock];
-  self->_enabled = a3;
+  self->_enabled = enabled;
   [(SUScriptObject *)self unlock];
 
   [(SUScriptMenuItem *)self _sendDidChange];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    titleCopy = 0;
 LABEL_3:
     [(SUScriptObject *)self lock];
     title = self->_title;
-    if (title != v5)
+    if (title != titleCopy)
     {
 
-      self->_title = v5;
+      self->_title = titleCopy;
     }
 
     [(SUScriptObject *)self unlock];
@@ -75,8 +75,8 @@ LABEL_3:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
-  if (!a3)
+  titleCopy = 0;
+  if (!title)
   {
     goto LABEL_3;
   }
@@ -87,7 +87,7 @@ LABEL_3:
   }
 
   objc_opt_class();
-  v5 = a3;
+  titleCopy = title;
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_3;
@@ -98,20 +98,20 @@ LABEL_3:
   [v8 throwException:@"Invalid title"];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    info = 0;
   }
 
   [(SUScriptObject *)self lock];
   userInfo = self->_userInfo;
-  if (userInfo != a3)
+  if (userInfo != info)
   {
 
-    self->_userInfo = a3;
+    self->_userInfo = info;
   }
 
   [(SUScriptObject *)self unlock];
@@ -135,23 +135,23 @@ LABEL_3:
 
 - (void)_sendDidChange
 {
-  v2 = [(SUScriptObject *)self parentViewController];
+  parentViewController = [(SUScriptObject *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    [v2 reload];
+    [parentViewController reload];
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_9 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMenuItem;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -161,14 +161,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptMenuItem;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_9 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_9 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"enabled", @"title", @"title", @"userInfo", @"userInfo", 0}];
   }

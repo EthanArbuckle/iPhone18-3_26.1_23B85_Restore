@@ -1,19 +1,19 @@
 @interface ICSplitViewController
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ICSplitViewController
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12[0] = @"ICSplitViewControllerWillTransitionToSizeNotificationNewSizeKey";
-  v7 = a4;
-  v8 = [NSValue valueWithCGSize:width, height];
+  coordinatorCopy = coordinator;
+  height = [NSValue valueWithCGSize:width, height];
   v12[1] = @"ICSplitViewControllerWillTransitionToSizeNotificationTransitionCoordinatorKey";
-  v13[0] = v8;
-  v13[1] = v7;
+  v13[0] = height;
+  v13[1] = coordinatorCopy;
   v9 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = +[NSNotificationCenter defaultCenter];
@@ -21,7 +21,7 @@
 
   v11.receiver = self;
   v11.super_class = ICSplitViewController;
-  [(ICSplitViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ICSplitViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 @end

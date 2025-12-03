@@ -1,14 +1,14 @@
 @interface BLSHFlipbookHistory
-- (BLSHFlipbookHistory)initWithFrameLimit:(unint64_t)a3 memoryLimit:(unint64_t)a4;
+- (BLSHFlipbookHistory)initWithFrameLimit:(unint64_t)limit memoryLimit:(unint64_t)memoryLimit;
 - (NSArray)allFrames;
-- (id)frameWithUUID:(id)a3;
+- (id)frameWithUUID:(id)d;
 - (unint64_t)memoryUsage;
-- (void)addRenderedFrameToHistory:(id)a3;
+- (void)addRenderedFrameToHistory:(id)history;
 @end
 
 @implementation BLSHFlipbookHistory
 
-- (BLSHFlipbookHistory)initWithFrameLimit:(unint64_t)a3 memoryLimit:(unint64_t)a4
+- (BLSHFlipbookHistory)initWithFrameLimit:(unint64_t)limit memoryLimit:(unint64_t)memoryLimit
 {
   v13.receiver = self;
   v13.super_class = BLSHFlipbookHistory;
@@ -17,13 +17,13 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v6->_frameLimit = a3;
-    v6->_memoryLimit = a4;
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v6->_frameLimit = limit;
+    v6->_memoryLimit = memoryLimit;
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:limit];
     lock_frames = v7->_lock_frames;
     v7->_lock_frames = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:a3];
+    v10 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:limit];
     lock_framesDict = v7->_lock_framesDict;
     v7->_lock_framesDict = v10;
   }
@@ -74,23 +74,23 @@
   return v6;
 }
 
-- (void)addRenderedFrameToHistory:(id)a3
+- (void)addRenderedFrameToHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BLSDiagnosticFlipbookFrame *)BLSHFlipbookHistoryFrame createWithFrame:v4];
+  v5 = [(BLSDiagnosticFlipbookFrame *)BLSHFlipbookHistoryFrame createWithFrame:historyCopy];
   [(NSMutableArray *)self->_lock_frames addObject:v5];
   lock_framesDict = self->_lock_framesDict;
-  v7 = [v5 uuid];
-  [(NSMutableDictionary *)lock_framesDict setObject:v5 forKey:v7];
+  uuid = [v5 uuid];
+  [(NSMutableDictionary *)lock_framesDict setObject:v5 forKey:uuid];
 
   if ([(NSMutableArray *)self->_lock_frames count]> self->_frameLimit)
   {
     v8 = [(NSMutableArray *)self->_lock_frames objectAtIndex:0];
-    v9 = [v8 uuid];
+    uuid2 = [v8 uuid];
 
     [(NSMutableArray *)self->_lock_frames removeObjectAtIndex:0];
-    [(NSMutableDictionary *)self->_lock_framesDict removeObjectForKey:v9];
+    [(NSMutableDictionary *)self->_lock_framesDict removeObjectForKey:uuid2];
   }
 
   v15[0] = 0;
@@ -189,17 +189,17 @@ void __49__BLSHFlipbookHistory_addRenderedFrameToHistory___block_invoke(void *a1
 - (NSArray)allFrames
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_lock_frames bs_reverse];
+  bs_reverse = [(NSMutableArray *)self->_lock_frames bs_reverse];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return bs_reverse;
 }
 
-- (id)frameWithUUID:(id)a3
+- (id)frameWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_framesDict objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_lock_framesDict objectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 

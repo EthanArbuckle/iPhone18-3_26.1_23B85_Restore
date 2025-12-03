@@ -1,16 +1,16 @@
 @interface SiriUSSection
-- (void)addResult:(id)a3;
+- (void)addResult:(id)result;
 @end
 
 @implementation SiriUSSection
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v4 = a3;
-  if (v4)
+  resultCopy = result;
+  if (resultCopy)
   {
     results = self->_results;
-    v8 = v4;
+    v8 = resultCopy;
     if (!results)
     {
       v6 = +[NSMutableArray array];

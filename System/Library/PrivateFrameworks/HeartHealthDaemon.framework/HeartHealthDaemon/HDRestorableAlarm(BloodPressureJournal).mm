@@ -48,14 +48,14 @@
 
   v25 = v24;
   v49 = v10;
-  v26 = [v10 identifierString];
+  identifierString = [v10 identifierString];
   v27 = [MEMORY[0x277CCABB0] numberWithBool:a6];
-  v28 = [v27 longValue];
+  longValue = [v27 longValue];
 
   v50 = @"notificationIdentifier";
-  v51 = v26;
+  v51 = identifierString;
   v29 = MEMORY[0x277CBEA60];
-  v30 = v26;
+  v30 = identifierString;
   v31 = [v29 arrayWithObjects:&v50 count:2];
   v44 = v30;
 
@@ -67,7 +67,7 @@
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:2];
   v35 = [v34 componentsJoinedByString:@":"];
 
-  v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v28];
+  v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
   v50 = @"isFollowUp";
   v51 = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:2];
@@ -81,7 +81,7 @@
 
   v40 = [v39 componentsJoinedByString:{@", "}];
 
-  v41 = [a1 eventWithIdentifier:v40 dueDate:v48 eventOptions:0];
+  v41 = [self eventWithIdentifier:v40 dueDate:v48 eventOptions:0];
 
   v42 = *MEMORY[0x277D85DE8];
 

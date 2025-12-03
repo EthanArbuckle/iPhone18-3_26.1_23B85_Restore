@@ -1,19 +1,19 @@
 @interface MTRDeviceControllerMachServiceXPCParameters
-- (MTRDeviceControllerMachServiceXPCParameters)initWithUniqueIdentifier:(id)a3;
+- (MTRDeviceControllerMachServiceXPCParameters)initWithUniqueIdentifier:(id)identifier;
 @end
 
 @implementation MTRDeviceControllerMachServiceXPCParameters
 
-- (MTRDeviceControllerMachServiceXPCParameters)initWithUniqueIdentifier:(id)a3
+- (MTRDeviceControllerMachServiceXPCParameters)initWithUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = MTRDeviceControllerMachServiceXPCParameters;
-  v6 = [(MTRDeviceControllerAbstractParameters *)&v10 _initInternal];
-  v7 = v6;
-  if (v6)
+  _initInternal = [(MTRDeviceControllerAbstractParameters *)&v10 _initInternal];
+  v7 = _initInternal;
+  if (_initInternal)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(_initInternal + 2, identifier);
     v8 = v7;
   }
 

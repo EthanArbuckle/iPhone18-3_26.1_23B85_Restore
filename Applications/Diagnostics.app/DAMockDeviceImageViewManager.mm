@@ -1,6 +1,6 @@
 @interface DAMockDeviceImageViewManager
 + (id)sharedInstance;
-- (void)deviceImageViewForDeviceStateAttributes:(id)a3 completion:(id)a4;
+- (void)deviceImageViewForDeviceStateAttributes:(id)attributes completion:(id)completion;
 @end
 
 @implementation DAMockDeviceImageViewManager
@@ -17,19 +17,19 @@
   return v3;
 }
 
-- (void)deviceImageViewForDeviceStateAttributes:(id)a3 completion:(id)a4
+- (void)deviceImageViewForDeviceStateAttributes:(id)attributes completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(0, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001C714;
   v10[3] = &unk_1001BC5A8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = attributesCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = attributesCopy;
   dispatch_async(v7, v10);
 }
 

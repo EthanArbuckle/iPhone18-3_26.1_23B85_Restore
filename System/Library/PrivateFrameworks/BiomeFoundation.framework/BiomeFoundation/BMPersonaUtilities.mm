@@ -1,14 +1,14 @@
 @interface BMPersonaUtilities
-+ (void)runAsPersonaIdentifier:(id)a3 block:(id)a4;
++ (void)runAsPersonaIdentifier:(id)identifier block:(id)block;
 @end
 
 @implementation BMPersonaUtilities
 
-+ (void)runAsPersonaIdentifier:(id)a3 block:(id)a4
++ (void)runAsPersonaIdentifier:(id)identifier block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(block + 2))(block, 0);
   }
 }
 

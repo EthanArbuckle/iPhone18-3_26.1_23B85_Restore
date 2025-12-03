@@ -1,37 +1,37 @@
 @interface NTKGladiusDialView
-+ (double)minorMinuteAngleAtIndex:(int64_t)a3 device:(id)a4;
-- (CGPoint)_hourTickPositionAtIndex:(unint64_t)a3 forStyle:(unint64_t)a4;
-- (NTKGladiusDialView)initWithDevice:(id)a3 style:(unint64_t)a4 palette:(id)a5;
++ (double)minorMinuteAngleAtIndex:(int64_t)index device:(id)device;
+- (CGPoint)_hourTickPositionAtIndex:(unint64_t)index forStyle:(unint64_t)style;
+- (NTKGladiusDialView)initWithDevice:(id)device style:(unint64_t)style palette:(id)palette;
 - (_TtC29NTKGladiusFaceBundleCompanion31NTKGladiusLightSpillCoordinator)lightSpillCoordinator;
-- (double)_hourTickLengthAtIndex:(unint64_t)a3 forStyle:(unint64_t)a4;
-- (id)_textLayerWithText:(id)a3 position:(CGPoint)a4;
-- (id)_tickWithLength:(double)a3 width:(double)a4 position:(CGPoint)a5 angle:(double)a6;
+- (double)_hourTickLengthAtIndex:(unint64_t)index forStyle:(unint64_t)style;
+- (id)_textLayerWithText:(id)text position:(CGPoint)position;
+- (id)_tickWithLength:(double)length width:(double)width position:(CGPoint)position angle:(double)angle;
 - (void)_applyPalette;
 - (void)_createMajorHourLayers;
 - (void)_createMinorHourLayers;
 - (void)_createMinorMinuteLayers;
-- (void)_updateMajorHourTickAtIndex:(unint64_t)a3 forStyle:(unint64_t)a4;
-- (void)setLightSpillCoordinator:(id)a3;
-- (void)setPalette:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)_updateMajorHourTickAtIndex:(unint64_t)index forStyle:(unint64_t)style;
+- (void)setLightSpillCoordinator:(id)coordinator;
+- (void)setPalette:(id)palette;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation NTKGladiusDialView
 
-- (NTKGladiusDialView)initWithDevice:(id)a3 style:(unint64_t)a4 palette:(id)a5
+- (NTKGladiusDialView)initWithDevice:(id)device style:(unint64_t)style palette:(id)palette
 {
-  v9 = a3;
-  v10 = a5;
-  [v9 screenBounds];
+  deviceCopy = device;
+  paletteCopy = palette;
+  [deviceCopy screenBounds];
   v16.receiver = self;
   v16.super_class = NTKGladiusDialView;
   v11 = [(NTKGladiusDialView *)&v16 initWithFrame:?];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_device, a3);
-    v12->_style = a4;
-    objc_storeStrong(&v12->_palette, a5);
+    objc_storeStrong(&v11->_device, device);
+    v12->_style = style;
+    objc_storeStrong(&v12->_palette, palette);
     v13 = +[NSMutableArray array];
     minorHourLayers = v12->_minorHourLayers;
     v12->_minorHourLayers = v13;
@@ -44,14 +44,14 @@
   return v12;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
   style = self->_style;
-  if (style != a3)
+  if (style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(NTKGladiusDialView *)self _createMinorHourLayers];
-    if (!a3 || !style)
+    if (!style || !style)
     {
       +[CATransaction begin];
       [CATransaction setDisableActions:1];
@@ -60,7 +60,7 @@
         v6 = 0;
         do
         {
-          [(NTKGladiusDialView *)self _updateMajorHourTickAtIndex:v6++ forStyle:a3];
+          [(NTKGladiusDialView *)self _updateMajorHourTickAtIndex:v6++ forStyle:style];
         }
 
         while (v6 < [(NSArray *)self->_majorHourLayers count]);
@@ -73,20 +73,20 @@
   }
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
 
   [(NTKGladiusDialView *)self _applyPalette];
 }
 
-- (void)setLightSpillCoordinator:(id)a3
+- (void)setLightSpillCoordinator:(id)coordinator
 {
-  v4 = a3;
-  objc_storeWeak(&self->_lightSpillCoordinator, v4);
-  [v4 setMajorHourLayers:self->_majorHourLayers];
-  [v4 setMinorHourLayers:self->_minorHourLayers];
-  [v4 setMinorMinuteLayers:self->_minorMinuteLayers];
+  coordinatorCopy = coordinator;
+  objc_storeWeak(&self->_lightSpillCoordinator, coordinatorCopy);
+  [coordinatorCopy setMajorHourLayers:self->_majorHourLayers];
+  [coordinatorCopy setMinorHourLayers:self->_minorHourLayers];
+  [coordinatorCopy setMinorMinuteLayers:self->_minorMinuteLayers];
 }
 
 - (void)_createMinorMinuteLayers
@@ -103,8 +103,8 @@
     {
       v6 = [(NTKGladiusDialView *)self _tickWithLength:*(&v13[91] + v3 + 1) width:v5 position:*(v13 + v4) angle:*(v13 + v4 + 8), *(&v13[1] + v3 + 1)];
       [v12 addObject:v6];
-      v7 = [(NTKGladiusDialView *)self layer];
-      [v7 addSublayer:v6];
+      layer = [(NTKGladiusDialView *)self layer];
+      [layer addSublayer:v6];
     }
 
     ++v3;
@@ -183,8 +183,8 @@
       }
 
       [(NSMutableArray *)self->_minorHourLayers addObject:v11];
-      v14 = [(NTKGladiusDialView *)self layer];
-      [v14 addSublayer:v11];
+      layer = [(NTKGladiusDialView *)self layer];
+      [layer addSublayer:v11];
 
       v8 += 5;
       v9 += 80;
@@ -224,8 +224,8 @@
     [(NTKGladiusDialView *)self _hourTickPositionAtIndex:v3 forStyle:self->_style];
     v11 = [(NTKGladiusDialView *)self _tickWithLength:v8 width:v5 position:v9 angle:v10, v6];
     [v17 addObject:v11];
-    v12 = [(NTKGladiusDialView *)self layer];
-    [v12 addSublayer:v11];
+    layer = [(NTKGladiusDialView *)self layer];
+    [layer addSublayer:v11];
 
     ++v3;
   }
@@ -240,17 +240,17 @@
   [WeakRetained setMajorHourLayers:v15];
 }
 
-- (id)_tickWithLength:(double)a3 width:(double)a4 position:(CGPoint)a5 angle:(double)a6
+- (id)_tickWithLength:(double)length width:(double)width position:(CGPoint)position angle:(double)angle
 {
-  y = a5.y;
-  x = a5.x;
+  y = position.y;
+  x = position.x;
   v11 = +[CAGradientLayer layer];
   [v11 setStartPoint:{0.0, 0.5}];
   [v11 setEndPoint:{1.0, 0.5}];
-  [v11 setFrame:{0.0, 0.0, a3, a4}];
-  [v11 setCornerRadius:a4 * 0.5];
+  [v11 setFrame:{0.0, 0.0, length, width}];
+  [v11 setCornerRadius:width * 0.5];
   [v11 setPosition:{x, y}];
-  CGAffineTransformMakeRotation(&v17, a6);
+  CGAffineTransformMakeRotation(&v17, angle);
   v16 = v17;
   [v11 setAffineTransform:&v16];
   v18[0] = @"backgroundColor";
@@ -265,18 +265,18 @@
   return v11;
 }
 
-- (id)_textLayerWithText:(id)a3 position:(CGPoint)a4
+- (id)_textLayerWithText:(id)text position:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   device = self->_device;
-  v8 = a3;
+  textCopy = text;
   sub_73B8(device, v24);
   v9 = [CLKFont compactSoftFontOfSize:v25 weight:UIFontWeightRegular];
   v28 = NSFontAttributeName;
   v29 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  [v8 boundingRectWithSize:3 options:v10 attributes:0 context:{CGSizeZero.width, CGSizeZero.height}];
+  [textCopy boundingRectWithSize:3 options:v10 attributes:0 context:{CGSizeZero.width, CGSizeZero.height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -289,7 +289,7 @@
   [(CLKDevice *)self->_device screenScale];
   [v19 setContentsScale:?];
   [v19 setBounds:{v12, v14, v16, v18}];
-  [v19 setString:v8];
+  [v19 setString:textCopy];
 
   [v19 setPosition:{x, y}];
   v20 = +[UIColor whiteColor];
@@ -304,15 +304,15 @@
   return v19;
 }
 
-- (void)_updateMajorHourTickAtIndex:(unint64_t)a3 forStyle:(unint64_t)a4
+- (void)_updateMajorHourTickAtIndex:(unint64_t)index forStyle:(unint64_t)style
 {
-  if ([(NSArray *)self->_majorHourLayers count]> a3)
+  if ([(NSArray *)self->_majorHourLayers count]> index)
   {
-    [(NTKGladiusDialView *)self _hourTickLengthAtIndex:a3 forStyle:a4];
-    [(NTKGladiusDialView *)self _hourTickPositionAtIndex:a3 forStyle:a4];
+    [(NTKGladiusDialView *)self _hourTickLengthAtIndex:index forStyle:style];
+    [(NTKGladiusDialView *)self _hourTickPositionAtIndex:index forStyle:style];
     v8 = v7;
     v10 = v9;
-    v11 = [(NSArray *)self->_majorHourLayers objectAtIndexedSubscript:a3];
+    v11 = [(NSArray *)self->_majorHourLayers objectAtIndexedSubscript:index];
     v12 = v11;
     v18 = 0u;
     v19 = 0u;
@@ -337,30 +337,30 @@
   }
 }
 
-- (double)_hourTickLengthAtIndex:(unint64_t)a3 forStyle:(unint64_t)a4
+- (double)_hourTickLengthAtIndex:(unint64_t)index forStyle:(unint64_t)style
 {
   memset(v8, 0, 512);
   sub_73B8(self->_device, v8);
   v6 = 2136;
-  if (!a4)
+  if (!style)
   {
     v6 = 2424;
   }
 
-  return *(v8 + 8 * a3 + v6);
+  return *(v8 + 8 * index + v6);
 }
 
-- (CGPoint)_hourTickPositionAtIndex:(unint64_t)a3 forStyle:(unint64_t)a4
+- (CGPoint)_hourTickPositionAtIndex:(unint64_t)index forStyle:(unint64_t)style
 {
   memset(v10, 0, 512);
   sub_73B8(self->_device, v10);
   v6 = 1944;
-  if (!a4)
+  if (!style)
   {
     v6 = 2232;
   }
 
-  v7 = (&v10[a3] + v6);
+  v7 = (&v10[index] + v6);
   v8 = *v7;
   v9 = v7[1];
   result.y = v9;
@@ -370,18 +370,18 @@
 
 - (void)_applyPalette
 {
-  v3 = [(NTKGladiusColorPalette *)self->_palette minuteTickDay];
-  v4 = [(NTKGladiusColorPalette *)self->_palette minuteTickNight];
+  minuteTickDay = [(NTKGladiusColorPalette *)self->_palette minuteTickDay];
+  minuteTickNight = [(NTKGladiusColorPalette *)self->_palette minuteTickNight];
   colorFraction = self->_colorFraction;
   v6 = NTKInterpolateBetweenColors();
 
-  v7 = [(NTKGladiusColorPalette *)self->_palette minuteTickDay];
-  v8 = [(NTKGladiusColorPalette *)self->_palette minuteTickStart];
+  minuteTickDay2 = [(NTKGladiusColorPalette *)self->_palette minuteTickDay];
+  minuteTickStart = [(NTKGladiusColorPalette *)self->_palette minuteTickStart];
   v9 = self->_colorFraction;
   v60 = NTKInterpolateBetweenColors();
 
-  v10 = [(NTKGladiusColorPalette *)self->_palette minuteTickDay];
-  v11 = [(NTKGladiusColorPalette *)self->_palette minuteTickEnd];
+  minuteTickDay3 = [(NTKGladiusColorPalette *)self->_palette minuteTickDay];
+  minuteTickEnd = [(NTKGladiusColorPalette *)self->_palette minuteTickEnd];
   v12 = self->_colorFraction;
   v13 = NTKInterpolateBetweenColors();
 
@@ -389,7 +389,7 @@
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v56 = self;
+  selfCopy = self;
   v14 = self->_minorMinuteLayers;
   v15 = [(NSArray *)v14 countByEnumeratingWithState:&v69 objects:v76 count:16];
   if (v15)
@@ -419,22 +419,22 @@
     while (v16);
   }
 
-  v21 = [(NTKGladiusColorPalette *)v56->_palette hourTickEndDay];
-  v22 = [(NTKGladiusColorPalette *)v56->_palette hourTickEndNight];
-  v23 = v56->_colorFraction;
+  hourTickEndDay = [(NTKGladiusColorPalette *)selfCopy->_palette hourTickEndDay];
+  hourTickEndNight = [(NTKGladiusColorPalette *)selfCopy->_palette hourTickEndNight];
+  v23 = selfCopy->_colorFraction;
   v58 = NTKInterpolateBetweenColors();
 
   v24 = +[UIColor clearColor];
-  v25 = [(NTKGladiusColorPalette *)v56->_palette hourTickNight];
-  v26 = v56->_colorFraction;
+  hourTickNight = [(NTKGladiusColorPalette *)selfCopy->_palette hourTickNight];
+  v26 = selfCopy->_colorFraction;
   v59 = NTKInterpolateBetweenColors();
 
-  v27 = [(NTKGladiusColorPalette *)v56->_palette hourTickEndDay];
-  v28 = [(NTKGladiusColorPalette *)v56->_palette hourTickNight];
-  v29 = v56->_colorFraction;
+  hourTickEndDay2 = [(NTKGladiusColorPalette *)selfCopy->_palette hourTickEndDay];
+  hourTickNight2 = [(NTKGladiusColorPalette *)selfCopy->_palette hourTickNight];
+  v29 = selfCopy->_colorFraction;
   v30 = NTKInterpolateBetweenColors();
 
-  v31 = v56->_colorFraction;
+  v31 = selfCopy->_colorFraction;
   CLKInterpolateBetweenFloatsClipped();
   v55 = v30;
   v32 = NTKColorByApplyingWhiteOverlay();
@@ -442,7 +442,7 @@
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v33 = v56->_minorHourLayers;
+  v33 = selfCopy->_minorHourLayers;
   v34 = [(NSMutableArray *)v33 countByEnumeratingWithState:&v65 objects:v74 count:16];
   if (v34)
   {
@@ -504,12 +504,12 @@
   }
 
   v49 = [NSMutableArray arrayWithCapacity:12];
-  majorHourLayers = v56->_majorHourLayers;
+  majorHourLayers = selfCopy->_majorHourLayers;
   v61[0] = _NSConcreteStackBlock;
   v61[1] = 3221225472;
   v61[2] = sub_7004;
   v61[3] = &unk_20978;
-  v61[4] = v56;
+  v61[4] = selfCopy;
   v62 = v49;
   v63 = v59;
   v64 = v58;
@@ -517,24 +517,24 @@
   v52 = v59;
   v53 = v49;
   [(NSArray *)majorHourLayers enumerateObjectsUsingBlock:v61];
-  WeakRetained = objc_loadWeakRetained(&v56->_lightSpillCoordinator);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_lightSpillCoordinator);
   [WeakRetained handleDialPaletteChangeWithHourStartColors:v53 minuteStartColor:v60 minuteEndColor:v13 hourEndColor:v51 hourTextColor:v32];
 }
 
-+ (double)minorMinuteAngleAtIndex:(int64_t)a3 device:(id)a4
++ (double)minorMinuteAngleAtIndex:(int64_t)index device:(id)device
 {
-  if (a3 >= 0)
+  if (index >= 0)
   {
-    v5 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    v5 = a3 + 3;
+    indexCopy = index + 3;
   }
 
-  sub_73B8(a4, v7);
-  return *&v7[(a3 + (v5 >> 2) + 1) % 0x3CuLL + 3] + 1.57079633;
+  sub_73B8(device, v7);
+  return *&v7[(index + (indexCopy >> 2) + 1) % 0x3CuLL + 3] + 1.57079633;
 }
 
 - (_TtC29NTKGladiusFaceBundleCompanion31NTKGladiusLightSpillCoordinator)lightSpillCoordinator

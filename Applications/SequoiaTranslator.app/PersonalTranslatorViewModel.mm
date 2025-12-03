@@ -1,10 +1,10 @@
 @interface PersonalTranslatorViewModel
-- (void)handleRouteChangeWithNotification:(id)a3;
+- (void)handleRouteChangeWithNotification:(id)notification;
 @end
 
 @implementation PersonalTranslatorViewModel
 
-- (void)handleRouteChangeWithNotification:(id)a3
+- (void)handleRouteChangeWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

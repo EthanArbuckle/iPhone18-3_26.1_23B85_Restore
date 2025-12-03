@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneUtilTimSorter
-+ (int)minRunWithInt:(int)a3;
++ (int)minRunWithInt:(int)int;
 - (int)nextRun;
-- (int)runBaseWithInt:(int)a3;
-- (int)runEndWithInt:(int)a3;
-- (int)runLenWithInt:(int)a3;
+- (int)runBaseWithInt:(int)int;
+- (int)runEndWithInt:(int)int;
+- (int)runLenWithInt:(int)int;
 - (void)dealloc;
 - (void)ensureInvariants;
 - (void)exhaustStack;
-- (void)pushRunLenWithInt:(int)a3;
-- (void)resetWithInt:(int)a3 withInt:(int)a4;
-- (void)setRunEndWithInt:(int)a3 withInt:(int)a4;
+- (void)pushRunLenWithInt:(int)int;
+- (void)resetWithInt:(int)int withInt:(int)withInt;
+- (void)setRunEndWithInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation OrgApacheLuceneUtilTimSorter
 
-+ (int)minRunWithInt:(int)a3
++ (int)minRunWithInt:(int)int
 {
-  if (a3 < 64)
+  if (int < 64)
   {
     v3 = 0;
   }
@@ -24,22 +24,22 @@
   else
   {
     v3 = 0;
-    v4 = a3;
+    intCopy = int;
     do
     {
-      v3 |= v4 & 1;
-      a3 = v4 >> 1;
-      v5 = v4 > 0x7F;
-      v4 >>= 1;
+      v3 |= intCopy & 1;
+      int = intCopy >> 1;
+      v5 = intCopy > 0x7F;
+      intCopy >>= 1;
     }
 
     while (v5);
   }
 
-  return v3 + a3;
+  return v3 + int;
 }
 
-- (int)runLenWithInt:(int)a3
+- (int)runLenWithInt:(int)int
 {
   runEnds = self->runEnds_;
   if (!runEnds)
@@ -47,7 +47,7 @@
     JreThrowNullPointerException();
   }
 
-  v4 = (self->stackSize_ - a3);
+  v4 = (self->stackSize_ - int);
   size = runEnds->super.size_;
   if ((v4 & 0x80000000) != 0 || v4 >= size)
   {
@@ -65,7 +65,7 @@
   return v7 - *(&v6->super.size_ + v8 + 1);
 }
 
-- (int)runBaseWithInt:(int)a3
+- (int)runBaseWithInt:(int)int
 {
   runEnds = self->runEnds_;
   if (!runEnds)
@@ -75,16 +75,16 @@
 
   stackSize = self->stackSize_;
   size = runEnds->super.size_;
-  v6 = stackSize + ~a3;
+  v6 = stackSize + ~int;
   if (v6 < 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (stackSize + ~a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (stackSize + ~int));
   }
 
   return *(&runEnds->super.size_ + v6 + 1);
 }
 
-- (int)runEndWithInt:(int)a3
+- (int)runEndWithInt:(int)int
 {
   runEnds = self->runEnds_;
   if (!runEnds)
@@ -94,16 +94,16 @@
 
   stackSize = self->stackSize_;
   size = runEnds->super.size_;
-  v6 = stackSize - a3;
-  if (stackSize - a3 < 0 || v6 >= size)
+  v6 = stackSize - int;
+  if (stackSize - int < 0 || v6 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (stackSize - a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (stackSize - int));
   }
 
   return *(&runEnds->super.size_ + v6 + 1);
 }
 
-- (void)setRunEndWithInt:(int)a3 withInt:(int)a4
+- (void)setRunEndWithInt:(int)int withInt:(int)withInt
 {
   runEnds = self->runEnds_;
   if (!runEnds)
@@ -113,16 +113,16 @@
 
   stackSize = self->stackSize_;
   size = runEnds->super.size_;
-  v7 = stackSize - a3;
-  if (stackSize - a3 < 0 || v7 >= size)
+  v7 = stackSize - int;
+  if (stackSize - int < 0 || v7 >= size)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, (stackSize - a3));
+    IOSArray_throwOutOfBoundsWithMsg(size, (stackSize - int));
   }
 
-  *(&runEnds->super.size_ + v7 + 1) = a4;
+  *(&runEnds->super.size_ + v7 + 1) = withInt;
 }
 
-- (void)pushRunLenWithInt:(int)a3
+- (void)pushRunLenWithInt:(int)int
 {
   runEnds = self->runEnds_;
   stackSize = self->stackSize_;
@@ -141,7 +141,7 @@
     IOSArray_throwOutOfBoundsWithMsg(v10, (v9 + 1));
   }
 
-  *(&v7->super.size_ + v11 + 1) = v8 + a3;
+  *(&v7->super.size_ + v11 + 1) = v8 + int;
   ++self->stackSize_;
 }
 
@@ -221,7 +221,7 @@
   }
 }
 
-- (void)resetWithInt:(int)a3 withInt:(int)a4
+- (void)resetWithInt:(int)int withInt:(int)withInt
 {
   self->stackSize_ = 0;
   JavaUtilArrays_fillWithIntArray_withInt_(self->runEnds_, 0);
@@ -237,10 +237,10 @@
     IOSArray_throwOutOfBoundsWithMsg(size, 0);
   }
 
-  *(&runEnds->super.size_ + 1) = a3;
-  self->to_ = a4;
-  v9 = a4 - a3;
-  if (a4 - a3 >= 65)
+  *(&runEnds->super.size_ + 1) = int;
+  self->to_ = withInt;
+  v9 = withInt - int;
+  if (withInt - int >= 65)
   {
     v10 = 0;
     do

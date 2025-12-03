@@ -1,23 +1,23 @@
 @interface HUAccessoryDiagnosticsItemProvider
 - (HUAccessoryDiagnosticsItemManager)itemManager;
-- (HUAccessoryDiagnosticsItemProvider)initWithItemManager:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUAccessoryDiagnosticsItemProvider)initWithItemManager:(id)manager;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HUAccessoryDiagnosticsItemProvider
 
-- (HUAccessoryDiagnosticsItemProvider)initWithItemManager:(id)a3
+- (HUAccessoryDiagnosticsItemProvider)initWithItemManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = HUAccessoryDiagnosticsItemProvider;
   v5 = [(HFItemProvider *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_itemManager, v4);
+    objc_storeWeak(&v5->_itemManager, managerCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     diagnosticItems = v6->_diagnosticItems;
     v6->_diagnosticItems = v7;
@@ -26,19 +26,19 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HUAccessoryDiagnosticsItemProvider);
-  v5 = [(HUAccessoryDiagnosticsItemProvider *)self diagnosticItems];
-  [(HUAccessoryDiagnosticsItemProvider *)v4 setDiagnosticItems:v5];
+  diagnosticItems = [(HUAccessoryDiagnosticsItemProvider *)self diagnosticItems];
+  [(HUAccessoryDiagnosticsItemProvider *)v4 setDiagnosticItems:diagnosticItems];
 
   return v4;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HUAccessoryDiagnosticsItemProvider *)self itemManager];
-  v4 = [v3 availableLogs];
+  itemManager = [(HUAccessoryDiagnosticsItemProvider *)self itemManager];
+  availableLogs = [itemManager availableLogs];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -47,7 +47,7 @@
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
-  v6 = [(HFItemProvider *)self reloadItemsWithObjects:v4 keyAdaptor:&__block_literal_global_50 itemAdaptor:&__block_literal_global_6 filter:0 itemMap:v5];
+  v6 = [(HFItemProvider *)self reloadItemsWithObjects:availableLogs keyAdaptor:&__block_literal_global_50 itemAdaptor:&__block_literal_global_6 filter:0 itemMap:v5];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HUAccessoryDiagnosticsItemProvider_reloadItems__block_invoke_4;
@@ -95,12 +95,12 @@ id __49__HUAccessoryDiagnosticsItemProvider_reloadItems__block_invoke_4(uint64_t
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUAccessoryDiagnosticsItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B68];
   v8[0] = *MEMORY[0x277D13B28];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

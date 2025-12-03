@@ -1,5 +1,5 @@
 @interface CUINamedData
-- (CUINamedData)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedData)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (NSData)data;
 - (NSString)utiType;
 - (id)description;
@@ -9,16 +9,16 @@
 
 - (NSData)data
 {
-  v2 = [(CUINamedLookup *)self _rendition];
-  if ([(CUIThemeRendition *)v2 type]== 1000)
+  _rendition = [(CUINamedLookup *)self _rendition];
+  if ([(CUIThemeRendition *)_rendition type]== 1000)
   {
 
-    return [(CUIThemeRendition *)v2 data];
+    return [(CUIThemeRendition *)_rendition data];
   }
 
   else
   {
-    [(CUIThemeRendition *)v2 pdfDocument];
+    [(CUIThemeRendition *)_rendition pdfDocument];
     DataProvider = CGPDFDocumentGetDataProvider();
     v5 = CGDataProviderCopyData(DataProvider);
 
@@ -26,15 +26,15 @@
   }
 }
 
-- (CUINamedData)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedData)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v15.receiver = self;
   v15.super_class = CUINamedData;
-  v6 = [(CUINamedLookup *)&v15 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
-  v7 = [(CUINamedLookup *)v6 _rendition];
-  if ([(CUIThemeRendition *)v7 type]!= 1000 && [(CUIThemeRendition *)v7 type]!= 9)
+  v6 = [(CUINamedLookup *)&v15 initWithName:name usingRenditionKey:key fromTheme:theme];
+  _rendition = [(CUINamedLookup *)v6 _rendition];
+  if ([(CUIThemeRendition *)_rendition type]!= 1000 && [(CUIThemeRendition *)_rendition type]!= 9)
   {
-    _CUILog(4, "CoreUI: attempting to lookup a named data '%@' with a type that is not a data type in the AssetCatalog", v8, v9, v10, v11, v12, v13, a3);
+    _CUILog(4, "CoreUI: attempting to lookup a named data '%@' with a type that is not a data type in the AssetCatalog", v8, v9, v10, v11, v12, v13, name);
 
     return 0;
   }
@@ -44,13 +44,13 @@
 
 - (NSString)utiType
 {
-  v2 = [(CUINamedLookup *)self _rendition];
-  if ([(CUIThemeRendition *)v2 type]!= 1000)
+  _rendition = [(CUINamedLookup *)self _rendition];
+  if ([(CUIThemeRendition *)_rendition type]!= 1000)
   {
     return @"com.adobe.pdf";
   }
 
-  return [(CUIThemeRendition *)v2 utiType];
+  return [(CUIThemeRendition *)_rendition utiType];
 }
 
 - (id)description
@@ -59,15 +59,15 @@
   v4 = NSStringFromClass(v3);
   if (self)
   {
-    v5 = [(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] name];
+    name = [(CUIThemeRendition *)[(CUINamedLookup *)self _rendition] name];
   }
 
   else
   {
-    v5 = 0;
+    name = 0;
   }
 
-  return [NSString stringWithFormat:@"<%@:%p> name:'%@' uti:'%@' data:%@>", v4, self, v5, [(CUINamedData *)self utiType], [(CUINamedData *)self data]];
+  return [NSString stringWithFormat:@"<%@:%p> name:'%@' uti:'%@' data:%@>", v4, self, name, [(CUINamedData *)self utiType], [(CUINamedData *)self data]];
 }
 
 @end

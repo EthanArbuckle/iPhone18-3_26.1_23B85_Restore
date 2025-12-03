@@ -1,11 +1,11 @@
 @interface VSRestrictionsCenter
 + (id)defaultRestrictionsCenter;
 - (BOOL)_canInstallAppsAtAll;
-- (BOOL)canInstallAppWithRating:(int64_t)a3;
+- (BOOL)canInstallAppWithRating:(int64_t)rating;
 - (VSRestrictionsCenter)init;
 - (void)_updateAccountModificationAllowed;
 - (void)dealloc;
-- (void)profileConnectionSettingsChanged:(id)a3;
+- (void)profileConnectionSettingsChanged:(id)changed;
 @end
 
 @implementation VSRestrictionsCenter
@@ -58,36 +58,36 @@ uint64_t __49__VSRestrictionsCenter_defaultRestrictionsCenter__block_invoke()
 
 - (void)_updateAccountModificationAllowed
 {
-  v4 = [(VSRestrictionsCenter *)self profileConnection];
-  v3 = [v4 accountModificationAllowed] != 2 && objc_msgSend(v4, "TVProviderModificationAllowed") != 2;
+  profileConnection = [(VSRestrictionsCenter *)self profileConnection];
+  v3 = [profileConnection accountModificationAllowed] != 2 && objc_msgSend(profileConnection, "TVProviderModificationAllowed") != 2;
   [(VSRestrictionsCenter *)self setAccountModificationAllowed:v3];
 }
 
 - (BOOL)_canInstallAppsAtAll
 {
-  v2 = [(VSRestrictionsCenter *)self profileConnection];
-  v3 = [v2 appInstallationAllowed] != 2 && objc_msgSend(v2, "UIAppInstallationAllowed") != 2;
+  profileConnection = [(VSRestrictionsCenter *)self profileConnection];
+  v3 = [profileConnection appInstallationAllowed] != 2 && objc_msgSend(profileConnection, "UIAppInstallationAllowed") != 2;
 
   return v3;
 }
 
-- (BOOL)canInstallAppWithRating:(int64_t)a3
+- (BOOL)canInstallAppWithRating:(int64_t)rating
 {
-  v5 = [(VSRestrictionsCenter *)self _canInstallAppsAtAll];
-  v6 = [(VSRestrictionsCenter *)self profileConnection];
-  v7 = [v6 maximumAppsRating];
-  v8 = v7 >= a3 && v5;
-  if (a3 < 0)
+  _canInstallAppsAtAll = [(VSRestrictionsCenter *)self _canInstallAppsAtAll];
+  profileConnection = [(VSRestrictionsCenter *)self profileConnection];
+  maximumAppsRating = [profileConnection maximumAppsRating];
+  v8 = maximumAppsRating >= rating && _canInstallAppsAtAll;
+  if (rating < 0)
   {
     v8 = 0;
   }
 
-  if (v7 == 1000)
+  if (maximumAppsRating == 1000)
   {
-    v8 = v5;
+    v8 = _canInstallAppsAtAll;
   }
 
-  if (v7)
+  if (maximumAppsRating)
   {
     v9 = v8;
   }
@@ -100,7 +100,7 @@ uint64_t __49__VSRestrictionsCenter_defaultRestrictionsCenter__block_invoke()
   return v9;
 }
 
-- (void)profileConnectionSettingsChanged:(id)a3
+- (void)profileConnectionSettingsChanged:(id)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

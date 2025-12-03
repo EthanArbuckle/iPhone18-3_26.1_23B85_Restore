@@ -1,23 +1,23 @@
 @interface TRIDownloadLatencyTaskResultTelemetryBuilder
-- (TRIDownloadLatencyTaskResultTelemetryBuilder)initWithTelemetryValidator:(id)a3;
+- (TRIDownloadLatencyTaskResultTelemetryBuilder)initWithTelemetryValidator:(id)validator;
 - (id)builtTelemetry;
-- (void)_handleActivationTask:(id)a3 runResult:(id)a4;
-- (void)_handleFetchTask:(id)a3 runResult:(id)a4;
-- (void)updateWithTask:(id)a3 runResult:(id)a4;
+- (void)_handleActivationTask:(id)task runResult:(id)result;
+- (void)_handleFetchTask:(id)task runResult:(id)result;
+- (void)updateWithTask:(id)task runResult:(id)result;
 @end
 
 @implementation TRIDownloadLatencyTaskResultTelemetryBuilder
 
-- (TRIDownloadLatencyTaskResultTelemetryBuilder)initWithTelemetryValidator:(id)a3
+- (TRIDownloadLatencyTaskResultTelemetryBuilder)initWithTelemetryValidator:(id)validator
 {
-  v5 = a3;
+  validatorCopy = validator;
   v11.receiver = self;
   v11.super_class = TRIDownloadLatencyTaskResultTelemetryBuilder;
   v6 = [(TRIDownloadLatencyTaskResultTelemetryBuilder *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_validator, a3);
+    objc_storeStrong(&v6->_validator, validator);
     v8 = objc_opt_new();
     telemetryForDeployment = v7->_telemetryForDeployment;
     v7->_telemetryForDeployment = v8;
@@ -26,14 +26,14 @@
   return v7;
 }
 
-- (void)updateWithTask:(id)a3 runResult:(id)a4
+- (void)updateWithTask:(id)task runResult:(id)result
 {
-  v7 = a3;
-  v6 = a4;
+  taskCopy = task;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _handleActivationTask:v7 runResult:v6];
+    [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _handleActivationTask:taskCopy runResult:resultCopy];
   }
 
   else
@@ -41,25 +41,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _handleFetchTask:v7 runResult:v6];
+      [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _handleFetchTask:taskCopy runResult:resultCopy];
     }
   }
 }
 
-- (void)_handleActivationTask:(id)a3 runResult:(id)a4
+- (void)_handleActivationTask:(id)task runResult:(id)result
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 deployment];
+  taskCopy = task;
+  resultCopy = result;
+  deployment = [taskCopy deployment];
   validator = self->_validator;
-  v10 = [v6 deployment];
-  v11 = [v6 factorPackSetId];
-  v12 = [(TRILatencyMetricTelemetryValidating *)validator validateAndReturnTelemetryForDeployment:v10 factorPackSetId:v11];
+  deployment2 = [taskCopy deployment];
+  factorPackSetId = [taskCopy factorPackSetId];
+  v12 = [(TRILatencyMetricTelemetryValidating *)validator validateAndReturnTelemetryForDeployment:deployment2 factorPackSetId:factorPackSetId];
 
   if (v12)
   {
-    if ([v7 reportResultToServer])
+    if ([resultCopy reportResultToServer])
     {
       v13 = 1;
     }
@@ -69,7 +69,7 @@
       v13 = 2;
     }
 
-    [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _updateBuiltTelemetryWithDeployment:v8 rolloutFields:v12 downloadStatus:v13];
+    [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _updateBuiltTelemetryWithDeployment:deployment rolloutFields:v12 downloadStatus:v13];
   }
 
   else
@@ -78,7 +78,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v16 = 138543362;
-      v17 = v6;
+      v17 = taskCopy;
       _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_INFO, "Skipping immediate download telemetry for task %{public}@ (likely because the namespace descriptor has not opted in)", &v16, 0xCu);
     }
   }
@@ -86,22 +86,22 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFetchTask:(id)a3 runResult:(id)a4
+- (void)_handleFetchTask:(id)task runResult:(id)result
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rolloutDeployment];
-  if (v8)
+  taskCopy = task;
+  resultCopy = result;
+  rolloutDeployment = [taskCopy rolloutDeployment];
+  if (rolloutDeployment)
   {
     validator = self->_validator;
-    v10 = [v6 rolloutDeployment];
-    v11 = [v6 factorPackSetId];
-    v12 = [(TRILatencyMetricTelemetryValidating *)validator validateAndReturnTelemetryForDeployment:v10 factorPackSetId:v11];
+    rolloutDeployment2 = [taskCopy rolloutDeployment];
+    factorPackSetId = [taskCopy factorPackSetId];
+    v12 = [(TRILatencyMetricTelemetryValidating *)validator validateAndReturnTelemetryForDeployment:rolloutDeployment2 factorPackSetId:factorPackSetId];
 
     if (v12)
     {
-      if ([v7 runStatus] == 2)
+      if ([resultCopy runStatus] == 2)
       {
         v13 = 0;
       }
@@ -111,7 +111,7 @@
         v13 = 3;
       }
 
-      [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _updateBuiltTelemetryWithDeployment:v8 rolloutFields:v12 downloadStatus:v13];
+      [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self _updateBuiltTelemetryWithDeployment:rolloutDeployment rolloutFields:v12 downloadStatus:v13];
     }
 
     else
@@ -120,7 +120,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v16 = 138543362;
-        v17 = v6;
+        v17 = taskCopy;
         _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_INFO, "Skipping immediate download telemetry for task %{public}@ (likely because the namespace descriptor has not opted in)", &v16, 0xCu);
       }
     }
@@ -131,10 +131,10 @@
 
 - (id)builtTelemetry
 {
-  v2 = [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self telemetryForDeployment];
-  v3 = [v2 allValues];
+  telemetryForDeployment = [(TRIDownloadLatencyTaskResultTelemetryBuilder *)self telemetryForDeployment];
+  allValues = [telemetryForDeployment allValues];
 
-  return v3;
+  return allValues;
 }
 
 @end

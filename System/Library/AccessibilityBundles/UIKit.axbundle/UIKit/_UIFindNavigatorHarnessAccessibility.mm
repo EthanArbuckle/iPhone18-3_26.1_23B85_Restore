@@ -1,17 +1,17 @@
 @interface _UIFindNavigatorHarnessAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation _UIFindNavigatorHarnessAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIFindNavigatorView";
   [location[0] validateClass:? isKindOfClass:?];
   [location[0] validateClass:@"_UIFindNavigatorSearchTextField" isKindOfClass:@"UISearchTextField"];

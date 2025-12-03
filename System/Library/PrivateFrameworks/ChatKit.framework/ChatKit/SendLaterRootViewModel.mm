@@ -1,23 +1,23 @@
 @interface SendLaterRootViewModel
 - (_TtC7ChatKit22SendLaterRootViewModel)init;
-- (void)pluginInfoSelectedDateDidChange:(id)a3;
-- (void)pluginInfoShowingDatePickerDidChange:(id)a3;
+- (void)pluginInfoSelectedDateDidChange:(id)change;
+- (void)pluginInfoShowingDatePickerDidChange:(id)change;
 @end
 
 @implementation SendLaterRootViewModel
 
-- (void)pluginInfoSelectedDateDidChange:(id)a3
+- (void)pluginInfoSelectedDateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B0DA8C(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_190B0DA8C(changeCopy);
 }
 
-- (void)pluginInfoShowingDatePickerDidChange:(id)a3
+- (void)pluginInfoShowingDatePickerDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B0E0E0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_190B0E0E0(changeCopy);
 }
 
 - (_TtC7ChatKit22SendLaterRootViewModel)init

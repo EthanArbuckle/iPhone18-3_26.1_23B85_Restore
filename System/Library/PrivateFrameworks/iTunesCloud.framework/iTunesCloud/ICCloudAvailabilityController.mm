@@ -14,19 +14,19 @@
 - (BOOL)shouldProhibitStoreAppsActionForCurrentNetworkConditions;
 - (BOOL)shouldProhibitVideosActionForCurrentNetworkConditions;
 - (ICCloudAvailabilityController)init;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)a3;
-- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)notification;
+- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)notification;
 - (void)_onQueue_updateIsCellularDataRestrictedForMusic;
 - (void)_registerPerAppNetworkDataAccessPolicyChangedNotification;
 - (void)_unregisterPerAppNetworkDataAccessPolicyChangedNotification;
-- (void)_wifiStateDidChangeNotification:(id)a3;
+- (void)_wifiStateDidChangeNotification:(id)notification;
 - (void)airplaneModeChanged;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)environmentMonitorDidChangeNetworkType:(id)a3;
-- (void)internetConnectionStateChanged:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)environmentMonitorDidChangeNetworkType:(id)type;
+- (void)internetConnectionStateChanged:(id)changed;
 @end
 
 @implementation ICCloudAvailabilityController
@@ -58,9 +58,9 @@
     v2->_isShowingAllMusic = [(ICCloudAvailabilityController *)v2 _uncachedIsShowingAllMusic];
     v2->_isShowingAllVideo = [(ICCloudAvailabilityController *)v2 _uncachedIsShowingAllVideo];
     v5 = +[ICDeviceInfo currentDeviceInfo];
-    v6 = [v5 hasCellularDataCapability];
+    hasCellularDataCapability = [v5 hasCellularDataCapability];
 
-    if (v6)
+    if (hasCellularDataCapability)
     {
       v7 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:v2->_accessQueue];
       telephonyClient = v2->_telephonyClient;
@@ -107,11 +107,11 @@
     handler[3] = &unk_1E7BF7810;
     handler[4] = buf;
     v13->_preferencesChangedNotifyTokenIsValid = notify_register_dispatch("com.apple.mobileipod-prefsChanged", &v13->_preferencesChangedNotifyToken, v14, handler) == 0;
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v13 selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v13 selector:sel__applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
 
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
@@ -186,7 +186,7 @@ void __37__ICCloudAvailabilityController_init__block_invoke_37(uint64_t a1)
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v10 = 134218496;
-        v11 = self;
+        selfCopy2 = self;
         v12 = 1024;
         v13 = v3;
         v14 = 1024;
@@ -203,7 +203,7 @@ LABEL_7:
     else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = self;
+      selfCopy2 = self;
       v6 = "<ICCloudAvailabilityController %p> _registerPerAppNetworkDataAccessPolicyChangedNotificationfor CTPerAppNetworkDataAccessPolicyChangedNotification";
       v7 = v5;
       v8 = OS_LOG_TYPE_DEFAULT;
@@ -350,10 +350,10 @@ uint64_t __85__ICCloudAvailabilityController_shouldProhibitMusicActionForCurrent
   return v3;
 }
 
-- (void)internetConnectionStateChanged:(id)a3
+- (void)internetConnectionStateChanged:(id)changed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 state] == 2;
+  v4 = [changed state] == 2;
   if (self->_isCellularDataActive != v4)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
@@ -361,7 +361,7 @@ uint64_t __85__ICCloudAvailabilityController_shouldProhibitMusicActionForCurrent
     {
       isCellularDataActive = self->_isCellularDataActive;
       v7 = 134218496;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
       v10 = isCellularDataActive;
       v11 = 1024;
@@ -375,17 +375,17 @@ uint64_t __85__ICCloudAvailabilityController_shouldProhibitMusicActionForCurrent
   }
 }
 
-- (void)environmentMonitorDidChangeNetworkType:(id)a3
+- (void)environmentMonitorDidChangeNetworkType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__ICCloudAvailabilityController_environmentMonitorDidChangeNetworkType___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = typeCopy;
+  selfCopy = self;
+  v6 = typeCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -412,17 +412,17 @@ uint64_t __72__ICCloudAvailabilityController_environmentMonitorDidChangeNetworkT
   return result;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__ICCloudAvailabilityController_environmentMonitorDidChangeNetworkReachability___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reachabilityCopy;
+  selfCopy = self;
+  v6 = reachabilityCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -454,7 +454,7 @@ void __80__ICCloudAvailabilityController_environmentMonitorDidChangeNetworkReach
   [v2 postNotificationName:@"HSCloudAvailabilityControllerNetworkReachabilityDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)a3
+- (void)_onQueue_updateCanShowCloudTracksWithNotification:(BOOL)notification
 {
   isNetworkReachable = self->_isNetworkReachable;
   if (isNetworkReachable)
@@ -475,7 +475,7 @@ void __80__ICCloudAvailabilityController_environmentMonitorDidChangeNetworkReach
     if (self->_hasProperNetworkConditionsToShowCloudMedia != isNetworkReachable)
     {
       self->_hasProperNetworkConditionsToShowCloudMedia = isNetworkReachable;
-      if (a3)
+      if (notification)
       {
         v8 = dispatch_get_global_queue(0, 0);
 LABEL_12:
@@ -493,7 +493,7 @@ LABEL_12:
   {
     self->_canShowCloudMusic = isShowingAllMusic;
     self->_canShowCloudVideo = v7;
-    if (a3)
+    if (notification)
     {
       v8 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -532,7 +532,7 @@ void __83__ICCloudAvailabilityController__onQueue_updateCanShowCloudTracksWithNo
   [v2 postNotificationName:@"HSCloudAvailabilityControllerHasProperNetworkConditionsToShowCloudMediaDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)a3
+- (void)_onQueue_updateCanShowCloudDownloadButtonsWithNotification:(BOOL)notification
 {
   isNetworkReachable = self->_isNetworkReachable;
   if (self->_canShowCloudDownloadButtons != isNetworkReachable)
@@ -540,7 +540,7 @@ void __83__ICCloudAvailabilityController__onQueue_updateCanShowCloudTracksWithNo
     block[7] = v3;
     block[8] = v4;
     self->_canShowCloudDownloadButtons = isNetworkReachable;
-    if (a3)
+    if (notification)
     {
       v7 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -586,7 +586,7 @@ void __92__ICCloudAvailabilityController__onQueue_updateCanShowCloudDownloadButt
   return v3;
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v24 = *MEMORY[0x1E69E9840];
   isCellularDataRestrictedForMusic = self->_isCellularDataRestrictedForMusic;
@@ -596,7 +596,7 @@ void __92__ICCloudAvailabilityController__onQueue_updateCanShowCloudDownloadButt
   {
     telephonyClient = self->_telephonyClient;
     *buf = 134218240;
-    v21 = self;
+    selfCopy3 = self;
     v22 = 2048;
     v23 = telephonyClient;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "<ICCloudAvailabilityController %p> getting CTDataConnectionStatus from _telephonyClient <CoreTelephonyClient %p>", buf, 0x16u);
@@ -612,7 +612,7 @@ void __92__ICCloudAvailabilityController__onQueue_updateCanShowCloudDownloadButt
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2114;
       v23 = v10;
       v12 = "<ICCloudAvailabilityController %p> _applicationWillEnterForeground [CoreTelephonyClient getInternetConnectionStateSync] encountered error=%{public}@";
@@ -630,7 +630,7 @@ LABEL_8:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218243;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2113;
       v23 = v9;
       v12 = "<ICCloudAvailabilityController %p> received _telephonyClient CTDataConnectionStatus.state=%{private}@";
@@ -687,7 +687,7 @@ void __65__ICCloudAvailabilityController__applicationWillEnterForeground___block
   }
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -698,13 +698,13 @@ void __65__ICCloudAvailabilityController__applicationWillEnterForeground___block
   dispatch_async(accessQueue, block);
 }
 
-- (void)_wifiStateDidChangeNotification:(id)a3
+- (void)_wifiStateDidChangeNotification:(id)notification
 {
   v4 = +[ICWiFiManager sharedWiFiManager];
-  v5 = [v4 isWiFiEnabled];
+  isWiFiEnabled = [v4 isWiFiEnabled];
 
   v6 = +[ICWiFiManager sharedWiFiManager];
-  v7 = [v6 isWiFiAssociated];
+  isWiFiAssociated = [v6 isWiFiAssociated];
 
   accessQueue = self->_accessQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -712,8 +712,8 @@ void __65__ICCloudAvailabilityController__applicationWillEnterForeground___block
   v9[2] = __65__ICCloudAvailabilityController__wifiStateDidChangeNotification___block_invoke;
   v9[3] = &unk_1E7BF7888;
   v9[4] = self;
-  v10 = v5;
-  v11 = v7;
+  v10 = isWiFiEnabled;
+  v11 = isWiFiAssociated;
   dispatch_async(accessQueue, v9);
 }
 
@@ -737,14 +737,14 @@ uint64_t __65__ICCloudAvailabilityController__wifiStateDidChangeNotification___b
 
 - (void)airplaneModeChanged
 {
-  v3 = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
+  airplaneMode = [(RadiosPreferences *)self->_radiosPreferences airplaneMode];
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__ICCloudAvailabilityController_airplaneModeChanged__block_invoke;
   v5[3] = &unk_1E7BF7860;
   v5[4] = self;
-  v6 = v3;
+  v6 = airplaneMode;
   dispatch_async(accessQueue, v5);
 }
 
@@ -825,7 +825,7 @@ uint64_t __52__ICCloudAvailabilityController_airplaneModeChanged__block_invoke(u
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134218240;
-    v6 = self;
+    selfCopy = self;
     v7 = 1024;
     v8 = 1;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "<ICCloudAvailabilityController %p> StoreApps allow cellular data: %d", &v5, 0x12u);
@@ -838,18 +838,18 @@ uint64_t __52__ICCloudAvailabilityController_airplaneModeChanged__block_invoke(u
 {
   v11 = *MEMORY[0x1E69E9840];
   v3 = [ICNetworkConstraints constraintsForSystemApplicationType:1];
-  v4 = [v3 shouldAllowDataForCellularNetworkTypes];
+  shouldAllowDataForCellularNetworkTypes = [v3 shouldAllowDataForCellularNetworkTypes];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218240;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v4;
+    v10 = shouldAllowDataForCellularNetworkTypes;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "<ICCloudAvailabilityController %p> Videos allow cellular data: %d", &v7, 0x12u);
   }
 
-  return v4 ^ 1;
+  return shouldAllowDataForCellularNetworkTypes ^ 1;
 }
 
 - (BOOL)isCellularDataRestrictedForMusic
@@ -888,20 +888,20 @@ uint64_t __52__ICCloudAvailabilityController_airplaneModeChanged__block_invoke(u
 {
   [(CoreTelephonyClient *)self->_telephonyClient setDelegate:0];
   [(RadiosPreferences *)self->_radiosPreferences setDelegate:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationWillEnterForegroundNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"UIApplicationDidEnterBackgroundNotification" object:0];
 
   if (self->_preferencesChangedNotifyTokenIsValid)
   {
     notify_cancel(self->_preferencesChangedNotifyToken);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = +[ICWiFiManager sharedWiFiManager];
-  [v5 removeObserver:self name:@"ICWiFiManagerWiFiDidChangeNotification" object:v6];
+  [defaultCenter3 removeObserver:self name:@"ICWiFiManagerWiFiDidChangeNotification" object:v6];
 
   if (self->_ctServerConnection)
   {

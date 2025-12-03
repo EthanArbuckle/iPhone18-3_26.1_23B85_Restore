@@ -1,14 +1,14 @@
 @interface AMSURLRequestEncoderResult
-- (AMSURLRequestEncoderResult)initWithRequest:(id)a3 signingErrors:(id)a4;
+- (AMSURLRequestEncoderResult)initWithRequest:(id)request signingErrors:(id)errors;
 @end
 
 @implementation AMSURLRequestEncoderResult
 
-- (AMSURLRequestEncoderResult)initWithRequest:(id)a3 signingErrors:(id)a4
+- (AMSURLRequestEncoderResult)initWithRequest:(id)request signingErrors:(id)errors
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (v8 = v7) == 0)
+  requestCopy = request;
+  errorsCopy = errors;
+  if (!requestCopy || (v8 = errorsCopy) == 0)
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"request and signingErrors must be non-nil" userInfo:0];
     objc_exception_throw(v15);
@@ -19,7 +19,7 @@
   v9 = [(AMSURLRequestEncoderResult *)&v16 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [requestCopy copy];
     request = v9->_request;
     v9->_request = v10;
 

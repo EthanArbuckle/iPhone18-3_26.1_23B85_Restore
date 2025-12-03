@@ -7,7 +7,7 @@
 
 + (id)standardEnvironment
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -27,24 +27,24 @@
     [(ULEnvironment *)v2 setNotificationHelper:v5];
 
     v6 = [ULDataProtectionMonitor alloc];
-    v7 = [(ULEnvironment *)v2 notificationHelper];
-    v8 = [(ULDataProtectionMonitor *)v6 initWithNotificationHelper:v7];
+    notificationHelper = [(ULEnvironment *)v2 notificationHelper];
+    v8 = [(ULDataProtectionMonitor *)v6 initWithNotificationHelper:notificationHelper];
     [(ULEnvironment *)v2 setDataProtectionMonitor:v8];
 
     v9 = objc_alloc_init(ULAirplaneModeMonitor);
     [(ULEnvironment *)v2 setAirplaneModeMonitor:v9];
 
     v10 = [ULBatteryModeMonitor alloc];
-    v11 = [(ULEnvironment *)v2 notificationHelper];
-    v12 = [(ULBatteryModeMonitor *)v10 initWithNotificationHelper:v11];
+    notificationHelper2 = [(ULEnvironment *)v2 notificationHelper];
+    v12 = [(ULBatteryModeMonitor *)v10 initWithNotificationHelper:notificationHelper2];
     [(ULEnvironment *)v2 setBatteryModeMonitor:v12];
 
     v13 = objc_alloc_init(ULBluetoothMonitor);
     [(ULEnvironment *)v2 setBluetoothMonitor:v13];
 
     v14 = [ULRapportMonitor alloc];
-    v15 = [(ULEnvironment *)v2 notificationHelper];
-    v16 = [(ULRapportMonitor *)v14 initWithNotificationHelper:v15 identityTypeFlags:10 controlFlags:4];
+    notificationHelper3 = [(ULEnvironment *)v2 notificationHelper];
+    v16 = [(ULRapportMonitor *)v14 initWithNotificationHelper:notificationHelper3 identityTypeFlags:10 controlFlags:4];
     [(ULEnvironment *)v2 setRapportMonitor:v16];
 
     if ([MEMORY[0x277D28868] isMac])
@@ -60,8 +60,8 @@
     }
 
     v18 = [ULInternalNotifyMonitor alloc];
-    v19 = [(ULEnvironment *)v2 notificationHelper];
-    v20 = [(ULInternalNotifyMonitor *)v18 initWithNotificationHelper:v19];
+    notificationHelper4 = [(ULEnvironment *)v2 notificationHelper];
+    v20 = [(ULInternalNotifyMonitor *)v18 initWithNotificationHelper:notificationHelper4];
     [(ULEnvironment *)v2 setInternalNotifyMonitor:v20];
 
     v21 = objc_alloc_init(ULBGSystemTaskManager);
@@ -71,13 +71,13 @@
     [(ULEnvironment *)v2 setDiagnostics:v22];
 
     v23 = [ULPrivacyMonitor alloc];
-    v24 = [(ULEnvironment *)v2 notificationHelper];
-    v25 = [(ULPrivacyMonitor *)v23 initWithNotificationHelper:v24];
+    notificationHelper5 = [(ULEnvironment *)v2 notificationHelper];
+    v25 = [(ULPrivacyMonitor *)v23 initWithNotificationHelper:notificationHelper5];
     [(ULEnvironment *)v2 setPrivacyMonitor:v25];
 
     v26 = [ULBuddyMonitor alloc];
-    v27 = [(ULEnvironment *)v2 notificationHelper];
-    v28 = [(ULBuddyMonitor *)v26 initWithNotificationHelper:v27];
+    notificationHelper6 = [(ULEnvironment *)v2 notificationHelper];
+    v28 = [(ULBuddyMonitor *)v26 initWithNotificationHelper:notificationHelper6];
     [(ULEnvironment *)v2 setBuddyMonitor:v28];
 
     v29 = objc_alloc_init(_TtC19MicroLocationDaemon34ULBiomeEventStreamCarPlayConnected);

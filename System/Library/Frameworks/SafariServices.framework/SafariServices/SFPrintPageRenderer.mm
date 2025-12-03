@@ -1,10 +1,10 @@
 @interface SFPrintPageRenderer
 - (SFPrintPageRenderer)init;
 - (SFPrintPageRendererDelegate)delegate;
-- (id)printInteractionControllerParentViewController:(id)a3;
-- (void)drawFooterForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)printInteractionControllerWillStartJob:(id)a3;
-- (void)setContentFormatter:(id)a3;
+- (id)printInteractionControllerParentViewController:(id)controller;
+- (void)drawFooterForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)printInteractionControllerWillStartJob:(id)job;
+- (void)setContentFormatter:(id)formatter;
 @end
 
 @implementation SFPrintPageRenderer
@@ -36,33 +36,33 @@
   return v2;
 }
 
-- (void)setContentFormatter:(id)a3
+- (void)setContentFormatter:(id)formatter
 {
-  v5 = a3;
+  formatterCopy = formatter;
   contentFormatter = self->_contentFormatter;
-  if (contentFormatter != v5)
+  if (contentFormatter != formatterCopy)
   {
-    v7 = v5;
+    v7 = formatterCopy;
     [(UIPrintFormatter *)contentFormatter removeFromPrintPageRenderer];
-    objc_storeStrong(&self->_contentFormatter, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_contentFormatter, formatter);
+    formatterCopy = v7;
     if (self->_contentFormatter)
     {
       [(UIPrintPageRenderer *)self addPrintFormatter:v7 startingAtPageAtIndex:0];
-      v5 = v7;
+      formatterCopy = v7;
     }
   }
 }
 
-- (void)drawFooterForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawFooterForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
   if (self->_printFooter)
   {
-    [(UIColor *)self->_footerColor set:a4.origin.x];
+    [(UIColor *)self->_footerColor set:rect.origin.x];
     [(NSString *)self->_URLString _legacy_drawAtPoint:self->_footerFont forWidth:5 withFont:self->_footerOffset.x lineBreakMode:self->_footerOffset.y, self->_URLWidth];
     [(NSString *)self->_dateString _legacy_drawAtPoint:self->_footerFont forWidth:2 withFont:self->_footerOffset.x + self->_printWidth - self->_dateWidth lineBreakMode:self->_footerOffset.y];
     numberFormatter = self->_numberFormatter;
-    v8 = [MEMORY[0x1E696AD98] numberWithLong:a3 + 1];
+    v8 = [MEMORY[0x1E696AD98] numberWithLong:index + 1];
     v20 = [(NSNumberFormatter *)numberFormatter stringFromNumber:v8];
 
     v9 = self->_numberFormatter;
@@ -82,15 +82,15 @@
   }
 }
 
-- (void)printInteractionControllerWillStartJob:(id)a3
+- (void)printInteractionControllerWillStartJob:(id)job
 {
   v36 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v4 = [v31 printPaper];
-  [v4 paperSize];
+  jobCopy = job;
+  printPaper = [jobCopy printPaper];
+  [printPaper paperSize];
   v6 = v5;
   v8 = v7;
-  [v4 printableRect];
+  [printPaper printableRect];
   x = v38.origin.x;
   y = v38.origin.y;
   width = v38.size.width;
@@ -108,10 +108,10 @@
     }
   }
 
-  v15 = [v31 printInfo];
-  v16 = [v15 duplex];
+  printInfo = [jobCopy printInfo];
+  duplex = [printInfo duplex];
 
-  if (v16)
+  if (duplex)
   {
     v39.origin.x = x;
     v39.origin.y = y;
@@ -162,7 +162,7 @@
     v19 = v13 - v18;
   }
 
-  if (v19 > y || v16 == 0)
+  if (v19 > y || duplex == 0)
   {
     y = v19;
   }
@@ -191,8 +191,8 @@
 
   self->_printWidth = v30 - (v13 + v13);
   v24 = MEMORY[0x1E696AB78];
-  v25 = [MEMORY[0x1E695DF00] date];
-  v26 = [v24 localizedStringFromDate:v25 dateStyle:1 timeStyle:1];
+  date = [MEMORY[0x1E695DF00] date];
+  v26 = [v24 localizedStringFromDate:date dateStyle:1 timeStyle:1];
   dateString = self->_dateString;
   self->_dateString = v26;
 
@@ -202,7 +202,7 @@
   self->_URLWidth = v29;
 }
 
-- (id)printInteractionControllerParentViewController:(id)a3
+- (id)printInteractionControllerParentViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained presentingViewControllerForPrintPageRenderer:self];

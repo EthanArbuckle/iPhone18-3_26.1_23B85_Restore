@@ -1,48 +1,48 @@
 @interface _PSLastCommunicatedFeatures
-+ (double)timeIntervalSinceNowForInteraction:(id)a3;
-+ (id)featureValueFromTimeInterval:(double)a3;
-+ (id)lastCommunicationFromCandidates:(id)a3 direction:(int64_t)a4 mechanisms:(id)a5 caches:(id)a6;
-+ (id)lastInteractionFromCandidate:(id)a3 caches:(id)a4 direction:(int64_t)a5 mechanisms:(id)a6;
-+ (id)recipientDetailsFromContact:(id)a3;
-+ (int)bucketFromTimeInterval:(double)a3;
++ (double)timeIntervalSinceNowForInteraction:(id)interaction;
++ (id)featureValueFromTimeInterval:(double)interval;
++ (id)lastCommunicationFromCandidates:(id)candidates direction:(int64_t)direction mechanisms:(id)mechanisms caches:(id)caches;
++ (id)lastInteractionFromCandidate:(id)candidate caches:(id)caches direction:(int64_t)direction mechanisms:(id)mechanisms;
++ (id)recipientDetailsFromContact:(id)contact;
++ (int)bucketFromTimeInterval:(double)interval;
 @end
 
 @implementation _PSLastCommunicatedFeatures
 
-+ (id)lastCommunicationFromCandidates:(id)a3 direction:(int64_t)a4 mechanisms:(id)a5 caches:(id)a6
++ (id)lastCommunicationFromCandidates:(id)candidates direction:(int64_t)direction mechanisms:(id)mechanisms caches:(id)caches
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 allObjects];
+  mechanismsCopy = mechanisms;
+  cachesCopy = caches;
+  allObjects = [candidates allObjects];
   v12 = [_PSFeatureDictionary alloc];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __91___PSLastCommunicatedFeatures_lastCommunicationFromCandidates_direction_mechanisms_caches___block_invoke;
   v18[3] = &unk_1E7C26920;
-  v20 = v9;
-  v21 = a4;
-  v19 = v10;
-  v13 = v9;
-  v14 = v10;
-  v15 = [v11 _pas_mappedArrayWithTransform:v18];
-  v16 = [(_PSFeatureDictionary *)v12 initWithObjects:v15 forKeys:v11];
+  v20 = mechanismsCopy;
+  directionCopy = direction;
+  v19 = cachesCopy;
+  v13 = mechanismsCopy;
+  v14 = cachesCopy;
+  v15 = [allObjects _pas_mappedArrayWithTransform:v18];
+  v16 = [(_PSFeatureDictionary *)v12 initWithObjects:v15 forKeys:allObjects];
 
   return v16;
 }
 
-+ (id)lastInteractionFromCandidate:(id)a3 caches:(id)a4 direction:(int64_t)a5 mechanisms:(id)a6
++ (id)lastInteractionFromCandidate:(id)candidate caches:(id)caches direction:(int64_t)direction mechanisms:(id)mechanisms
 {
-  v96 = a5;
+  directionCopy = direction;
   v127 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v88 = a6;
+  candidateCopy = candidate;
+  cachesCopy = caches;
+  mechanismsCopy = mechanisms;
   v75 = _PSShareSheetSuggestionBundleIDMapping(0);
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v10 = v9;
+  v10 = cachesCopy;
   v81 = v10;
   v94 = [v10 countByEnumeratingWithState:&v117 objects:v126 count:16];
   if (v94)
@@ -65,7 +65,7 @@
         v114 = 0u;
         v115 = 0u;
         v116 = 0u;
-        v14 = v88;
+        v14 = mechanismsCopy;
         v15 = [v14 countByEnumeratingWithState:&v113 objects:v125 count:{16, v75}];
         if (v15)
         {
@@ -80,9 +80,9 @@
                 objc_enumerationMutation(v14);
               }
 
-              v19 = [*(*(&v113 + 1) + 8 * i) integerValue];
-              v20 = [v8 candidateIdentifier];
-              v21 = [v13 mostRecentInteractionForCandidateIdentifier:v20 direction:v96 mechanism:v19];
+              integerValue = [*(*(&v113 + 1) + 8 * i) integerValue];
+              candidateIdentifier = [candidateCopy candidateIdentifier];
+              v21 = [v13 mostRecentInteractionForCandidateIdentifier:candidateIdentifier direction:directionCopy mechanism:integerValue];
 
               if (!v11 || v21 && _CDStartDateCompare() == -1)
               {
@@ -117,14 +117,14 @@
   {
   }
 
-  v84 = v8;
+  v84 = candidateCopy;
   v94 = v74;
   memset(v74, 0, 21);
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v23 = v88;
+  v23 = mechanismsCopy;
   v24 = [v23 countByEnumeratingWithState:&v109 objects:v124 count:16];
   v25 = v81;
   if (v24)
@@ -140,13 +140,13 @@
           objc_enumerationMutation(v23);
         }
 
-        v29 = [*(*(&v109 + 1) + 8 * j) integerValue];
-        if ((v29 & 0x8000000000000000) != 0 || v29 >= 0x15)
+        integerValue2 = [*(*(&v109 + 1) + 8 * j) integerValue];
+        if ((integerValue2 & 0x8000000000000000) != 0 || integerValue2 >= 0x15)
         {
           __break(1u);
         }
 
-        v94[v29] = 1;
+        v94[integerValue2] = 1;
       }
 
       v26 = [v23 countByEnumeratingWithState:&v109 objects:v124 count:16];
@@ -166,7 +166,7 @@
     v31 = v30;
     v11 = 0;
     v32 = *v106;
-    v8 = v84;
+    candidateCopy = v84;
     v76 = *v106;
     do
     {
@@ -181,28 +181,28 @@
 
         v34 = *(*(&v105 + 1) + 8 * v33);
         v90 = objc_autoreleasePoolPush();
-        v35 = [v8 candidateIdentifier];
-        v36 = [v34 mostRecentInteractionForCandidateIdentifier:v35 direction:v96];
+        candidateIdentifier2 = [candidateCopy candidateIdentifier];
+        v36 = [v34 mostRecentInteractionForCandidateIdentifier:candidateIdentifier2 direction:directionCopy];
 
         if (v36)
         {
           v83 = v36;
-          v37 = [v36 recipients];
-          v38 = v37;
+          recipients = [v36 recipients];
+          v38 = recipients;
           v39 = MEMORY[0x1E695E0F0];
-          if (v37)
+          if (recipients)
           {
-            v39 = v37;
+            v39 = recipients;
           }
 
           v40 = v39;
 
-          v41 = [v11 sender];
+          sender = [v11 sender];
 
-          if (v41)
+          if (sender)
           {
-            v42 = [v11 sender];
-            v43 = [v40 arrayByAddingObject:v42];
+            sender2 = [v11 sender];
+            v43 = [v40 arrayByAddingObject:sender2];
 
             v44 = v43;
           }
@@ -227,14 +227,14 @@
             v102 = 0u;
             v103 = 0u;
             v104 = 0u;
-            v49 = [v34 interactions];
-            v50 = [v49 countByEnumeratingWithState:&v101 objects:v122 count:16];
+            interactions = [v34 interactions];
+            v50 = [interactions countByEnumeratingWithState:&v101 objects:v122 count:16];
             if (v50)
             {
               v51 = v50;
               v52 = *v102;
               v86 = *v102;
-              v87 = v49;
+              v87 = interactions;
               while (2)
               {
                 v53 = 0;
@@ -243,7 +243,7 @@
                 {
                   if (*v102 != v52)
                   {
-                    objc_enumerationMutation(v49);
+                    objc_enumerationMutation(interactions);
                   }
 
                   v54 = *(*(&v101 + 1) + 8 * v53);
@@ -253,11 +253,11 @@
                     goto LABEL_77;
                   }
 
-                  v55 = [v54 direction];
-                  if (v55 == v96 && [v54 mechanism] <= 0x14)
+                  direction = [v54 direction];
+                  if (direction == directionCopy && [v54 mechanism] <= 0x14)
                   {
-                    v56 = [v54 mechanism];
-                    if (v94[v56] == 1)
+                    mechanism = [v54 mechanism];
+                    if (v94[mechanism] == 1)
                     {
                       v92 = v53;
                       [v47 removeAllObjects];
@@ -267,8 +267,8 @@
                       v97 = 0u;
                       v98 = 0u;
                       v93 = v54;
-                      v57 = [v54 recipients];
-                      v58 = [v57 countByEnumeratingWithState:&v97 objects:v121 count:16];
+                      recipients2 = [v54 recipients];
+                      v58 = [recipients2 countByEnumeratingWithState:&v97 objects:v121 count:16];
                       if (v58)
                       {
                         v59 = v58;
@@ -279,45 +279,45 @@
                           {
                             if (*v98 != v60)
                             {
-                              objc_enumerationMutation(v57);
+                              objc_enumerationMutation(recipients2);
                             }
 
                             v62 = *(*(&v97 + 1) + 8 * k);
-                            v63 = [v62 identifier];
-                            if (v63)
+                            identifier = [v62 identifier];
+                            if (identifier)
                             {
-                              [v47 addObject:v63];
+                              [v47 addObject:identifier];
                             }
 
-                            v64 = [v62 personId];
-                            if (v64)
+                            personId = [v62 personId];
+                            if (personId)
                             {
-                              [v48 addObject:v64];
+                              [v48 addObject:personId];
                             }
                           }
 
-                          v59 = [v57 countByEnumeratingWithState:&v97 objects:v121 count:16];
+                          v59 = [recipients2 countByEnumeratingWithState:&v97 objects:v121 count:16];
                         }
 
                         while (v59);
                       }
 
                       v65 = v93;
-                      v66 = [v93 sender];
-                      v67 = v66;
-                      v8 = v84;
-                      if (v66)
+                      sender3 = [v93 sender];
+                      v67 = sender3;
+                      candidateCopy = v84;
+                      if (sender3)
                       {
-                        v68 = [v66 identifier];
-                        if (v68)
+                        identifier2 = [sender3 identifier];
+                        if (identifier2)
                         {
-                          [v47 addObject:v68];
+                          [v47 addObject:identifier2];
                         }
 
-                        v69 = [v67 personId];
-                        if (v69)
+                        personId2 = [v67 personId];
+                        if (personId2)
                         {
-                          [v48 addObject:v69];
+                          [v48 addObject:personId2];
                         }
                       }
 
@@ -326,14 +326,14 @@
                         v70 = v65;
 
                         v11 = v70;
-                        v49 = v87;
+                        interactions = v87;
 LABEL_77:
                         objc_autoreleasePoolPop(v95);
                         goto LABEL_78;
                       }
 
                       v52 = v86;
-                      v49 = v87;
+                      interactions = v87;
                       v51 = v89;
                       v53 = v92;
                     }
@@ -344,7 +344,7 @@ LABEL_77:
                 }
 
                 while (v53 != v51);
-                v51 = [v49 countByEnumeratingWithState:&v101 objects:v122 count:16];
+                v51 = [interactions countByEnumeratingWithState:&v101 objects:v122 count:16];
                 if (v51)
                 {
                   continue;
@@ -379,7 +379,7 @@ LABEL_78:
   else
   {
     v11 = 0;
-    v8 = v84;
+    candidateCopy = v84;
   }
 
 LABEL_85:
@@ -390,21 +390,21 @@ LABEL_85:
   return v71;
 }
 
-+ (double)timeIntervalSinceNowForInteraction:(id)a3
++ (double)timeIntervalSinceNowForInteraction:(id)interaction
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  [v4 timeIntervalSinceNow];
+  interactionCopy = interaction;
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceNow];
   v6 = v5;
 
-  if (v3)
+  if (interactionCopy)
   {
-    v7 = [v3 endDate];
+    endDate = [interactionCopy endDate];
 
-    if (v7)
+    if (endDate)
     {
-      v8 = [v3 endDate];
-      [v8 timeIntervalSinceNow];
+      endDate2 = [interactionCopy endDate];
+      [endDate2 timeIntervalSinceNow];
       v6 = v9;
     }
   }
@@ -412,17 +412,17 @@ LABEL_85:
   return v6;
 }
 
-+ (id)featureValueFromTimeInterval:(double)a3
++ (id)featureValueFromTimeInterval:(double)interval
 {
   v4 = [_PSLastCommunicatedFeatures bucketFromTimeInterval:?];
   v5 = objc_alloc(MEMORY[0x1E698ECC0]);
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:interval];
   v7 = [v5 initWithIntValue:0 doubleValue:v6 stringValue:0 BOOLValue:0 timeBucketValue:v4];
 
   return v7;
 }
 
-+ (int)bucketFromTimeInterval:(double)a3
++ (int)bucketFromTimeInterval:(double)interval
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF00]);
   v5 = objc_alloc(MEMORY[0x1E695DEE8]);
@@ -451,7 +451,7 @@ LABEL_85:
   [v20 timeIntervalSinceNow];
   v22 = v21;
 
-  v23 = fabs(a3);
+  v23 = fabs(interval);
   if (v23 >= 120.0)
   {
     if (v23 >= 300.0)
@@ -626,11 +626,11 @@ LABEL_85:
   return v24;
 }
 
-+ (id)recipientDetailsFromContact:(id)a3
++ (id)recipientDetailsFromContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v4 = objc_opt_new();
     v5 = objc_opt_new();
@@ -639,7 +639,7 @@ LABEL_85:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v3;
+    v7 = contactCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -655,20 +655,20 @@ LABEL_85:
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 identifier];
+          identifier = [v12 identifier];
 
-          if (v13)
+          if (identifier)
           {
-            v14 = [v12 identifier];
-            [v5 addObject:v14];
+            identifier2 = [v12 identifier];
+            [v5 addObject:identifier2];
           }
 
-          v15 = [v12 personId];
+          personId = [v12 personId];
 
-          if (v15)
+          if (personId)
           {
-            v16 = [v12 personId];
-            [v6 addObject:v16];
+            personId2 = [v12 personId];
+            [v6 addObject:personId2];
           }
         }
 

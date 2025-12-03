@@ -1,6 +1,6 @@
 @interface AskPermissionRequestExtension
 - (void)checkDownloadQueue;
-- (void)requestUpdatedWithResult:(id)a3 completion:(id)a4;
+- (void)requestUpdatedWithResult:(id)result completion:(id)completion;
 @end
 
 @implementation AskPermissionRequestExtension
@@ -11,7 +11,7 @@
   v4 = [v3 effectiveBoolValueForSetting:MCFeatureAppInstallationAllowed];
 
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v5 isAutomaticAppDownloadsAllowed];
+  isAutomaticAppDownloadsAllowed = [v5 isAutomaticAppDownloadsAllowed];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,12 +20,12 @@
     v15 = 1024;
     v16 = v4 != 2;
     v17 = 1024;
-    v18 = v6;
+    v18 = isAutomaticAppDownloadsAllowed;
     v7 = v14;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request to check download queue received. appInstallsAllowed: %{BOOL}d autoDownloadsAllowed: %{BOOL}d", buf, 0x18u);
   }
 
-  if (((v4 != 2) & v6) != 0)
+  if (((v4 != 2) & isAutomaticAppDownloadsAllowed) != 0)
   {
     v8 = [[ASDCheckQueueRequestOptions alloc] initWithReason:1];
     v9 = [[ASDCheckQueueRequest alloc] initWithOptions:v8];
@@ -47,15 +47,15 @@
   }
 }
 
-- (void)requestUpdatedWithResult:(id)a3 completion:(id)a4
+- (void)requestUpdatedWithResult:(id)result completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  completionCopy = completion;
   v8 = +[MCProfileConnection sharedConnection];
   v9 = [v8 effectiveBoolValueForSetting:MCFeatureAppInstallationAllowed];
 
   v10 = +[MCProfileConnection sharedConnection];
-  v11 = [v10 isAutomaticAppDownloadsAllowed];
+  isAutomaticAppDownloadsAllowed = [v10 isAutomaticAppDownloadsAllowed];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -64,14 +64,14 @@
     *&buf[12] = 1024;
     *&buf[14] = v9 != 2;
     *&buf[18] = 1024;
-    *&buf[20] = v11;
+    *&buf[20] = isAutomaticAppDownloadsAllowed;
     LOWORD(v61) = 2114;
-    *(&v61 + 2) = v6;
+    *(&v61 + 2) = resultCopy;
     v12 = *&buf[4];
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request updated. appInstallsAllowed: %{BOOL}d autoDownloadsAllowed: %{BOOL}d result: %{public}@", buf, 0x22u);
   }
 
-  if (((v9 != 2) & v11) == 0)
+  if (((v9 != 2) & isAutomaticAppDownloadsAllowed) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -85,8 +85,8 @@
     goto LABEL_15;
   }
 
-  v13 = [v6 productType];
-  v14 = [v13 isEqualToString:@"C"];
+  productType = [resultCopy productType];
+  v14 = [productType isEqualToString:@"C"];
 
   if (!v14)
   {
@@ -94,16 +94,16 @@
     {
       v41 = objc_opt_class();
       v42 = v41;
-      v43 = [v6 productType];
+      productType2 = [resultCopy productType];
       *buf = 138543618;
       *&buf[4] = v41;
       *&buf[12] = 2114;
-      *&buf[14] = v43;
+      *&buf[14] = productType2;
       _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "[%{public}@] AskPermission updated request for unhandled product type '%{public}@'", buf, 0x16u);
     }
 
 LABEL_15:
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_28;
   }
 
@@ -117,11 +117,11 @@ LABEL_15:
     v55 = 0;
     v15 = dispatch_semaphore_create(0);
     v16 = +[ACAccountStore ams_sharedAccountStore];
-    v17 = [v16 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v16 ams_activeiTunesAccount];
 
     v18 = [AMSBag bagForProfile:@"appstored" profileVersion:@"1"];
-    v19 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v17 bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT" bag:v18];
-    v20 = [AMSMetricsIdentifierStore identifierForAccount:v17 bag:v18 bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT_CLIENT" keyName:@"clientId"];
+    v19 = [AMSMetricsIdentifierStore identifierStoreWithAccount:ams_activeiTunesAccount bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT" bag:v18];
+    v20 = [AMSMetricsIdentifierStore identifierForAccount:ams_activeiTunesAccount bag:v18 bagNamespace:@"APPSTORE_PAYMENTS_ENGAGEMENT_CLIENT" keyName:@"clientId"];
     *buf = _NSConcreteStackBlock;
     *&buf[8] = 3221225472;
     *&buf[16] = sub_100001B20;
@@ -192,14 +192,14 @@ LABEL_15:
   }
 
   v31 = objc_alloc_init(ASDPurchase);
-  v32 = [v6 bundleIdentifier];
-  [v31 setBundleID:v32];
+  bundleIdentifier = [resultCopy bundleIdentifier];
+  [v31 setBundleID:bundleIdentifier];
 
-  v33 = [v6 buyParams];
-  [v31 setBuyParameters:v33];
+  buyParams = [resultCopy buyParams];
+  [v31 setBuyParameters:buyParams];
 
-  v34 = [v6 itemIdentifier];
-  v35 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v34 longLongValue]);
+  itemIdentifier = [resultCopy itemIdentifier];
+  v35 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [itemIdentifier longLongValue]);
   [v31 setItemID:v35];
 
   [v31 setIsRedownload:1];
@@ -225,7 +225,7 @@ LABEL_15:
   v48[2] = sub_100001874;
   v48[3] = &unk_1000041F8;
   v48[4] = self;
-  v49 = v7;
+  v49 = completionCopy;
   [v38 processPurchase:v31 withResponseHandler:v48];
 
 LABEL_28:

@@ -1,22 +1,22 @@
 @interface SecCoreAnalytics
-+ (id)appNameFromPath:(id)a3;
-+ (void)sendEvent:(id)a3 event:(id)a4;
-+ (void)sendEventLazy:(id)a3 builder:(id)a4;
++ (id)appNameFromPath:(id)path;
++ (void)sendEvent:(id)event event:(id)a4;
++ (void)sendEventLazy:(id)lazy builder:(id)builder;
 @end
 
 @implementation SecCoreAnalytics
 
-+ (id)appNameFromPath:(id)a3
++ (id)appNameFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AAE8] bundleWithPath:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x1E696AAE8] bundleWithPath:pathCopy];
   if (v4)
   {
     v5 = v4;
     goto LABEL_3;
   }
 
-  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:0];
+  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   if (v9)
   {
     v10 = v9;
@@ -34,11 +34,11 @@
         if (v5)
         {
 LABEL_3:
-          v6 = [v5 infoDictionary];
-          v7 = [v6 objectForKey:@"CFBundleVisibleComponentName"];
+          infoDictionary = [v5 infoDictionary];
+          v7 = [infoDictionary objectForKey:@"CFBundleVisibleComponentName"];
           if (!v7)
           {
-            v15 = [v6 objectForKey:@"CFBundleDisplayName"];
+            v15 = [infoDictionary objectForKey:@"CFBundleDisplayName"];
             v16 = v15;
             if (v15)
             {
@@ -47,7 +47,7 @@ LABEL_3:
 
             else
             {
-              v17 = [v6 objectForKey:@"CFBundleName"];
+              v17 = [infoDictionary objectForKey:@"CFBundleName"];
             }
 
             v8 = v17;
@@ -66,27 +66,27 @@ LABEL_3:
   }
 
 LABEL_23:
-  v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:0];
+  v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   v5 = v21;
   if (!v21)
   {
-    v6 = 0;
+    infoDictionary = 0;
     v8 = 0;
     goto LABEL_15;
   }
 
   v22 = CFBundleCopyInfoDictionaryForURL(v21);
-  v6 = v22;
+  infoDictionary = v22;
   if (v22)
   {
     v23 = [(__CFDictionary *)v22 objectForKeyedSubscript:@"CFBundleVisibleComponentName"];
-    if (v23 || ([v6 objectForKeyedSubscript:@"CFBundleDisplayName"], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v23 || ([infoDictionary objectForKeyedSubscript:@"CFBundleDisplayName"], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v23;
       goto LABEL_15;
     }
 
-    v8 = [v6 objectForKeyedSubscript:@"CFBundleName"];
+    v8 = [infoDictionary objectForKeyedSubscript:@"CFBundleName"];
     if (v8)
     {
       goto LABEL_15;
@@ -109,19 +109,19 @@ LABEL_14:
 LABEL_15:
   if (!v8 || [&unk_1EFAAC5F8 indexOfObject:v8] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v18 = [v3 lastPathComponent];
-    v19 = [v18 stringByDeletingPathExtension];
+    lastPathComponent = [pathCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v8 = v19;
+    v8 = stringByDeletingPathExtension;
   }
 
   return v8;
 }
 
-+ (void)sendEventLazy:(id)a3 builder:(id)a4
++ (void)sendEventLazy:(id)lazy builder:(id)builder
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lazyCopy = lazy;
   if (gSecCoreAnalyticsEnabled)
   {
     AnalyticsSendEventLazy();
@@ -133,7 +133,7 @@ LABEL_15:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = lazyCopy;
       _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "Skipping sending event %@ due to process configuration", &v7, 0xCu);
     }
   }
@@ -141,10 +141,10 @@ LABEL_15:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sendEvent:(id)a3 event:(id)a4
++ (void)sendEvent:(id)event event:(id)a4
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   if (gSecCoreAnalyticsEnabled)
   {
     AnalyticsSendEvent();
@@ -156,7 +156,7 @@ LABEL_15:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = eventCopy;
       _os_log_impl(&dword_1887D2000, v5, OS_LOG_TYPE_DEFAULT, "Skipping sending event %@ due to process configuration", &v7, 0xCu);
     }
   }

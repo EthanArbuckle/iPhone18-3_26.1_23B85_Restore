@@ -5,16 +5,16 @@
 - (id)orderedPluginIdentifiers;
 - (id)previousBuildVersion;
 - (id)userDataDispositionAuxiliaryData;
-- (int64_t)migrateCheckingNecessity:(BOOL)a3 lastRelevantPlugin:(id)a4 testMigrationInfrastructureOnly:(BOOL)a5;
+- (int64_t)migrateCheckingNecessity:(BOOL)necessity lastRelevantPlugin:(id)plugin testMigrationInfrastructureOnly:(BOOL)only;
 - (unsigned)userDataDisposition;
 - (void)cancelDeferredExit;
-- (void)changeVisibility:(BOOL)a3 completion:(id)a4;
+- (void)changeVisibility:(BOOL)visibility completion:(id)completion;
 - (void)dealloc;
 - (void)deferExit;
-- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)a3 context:(id)a4;
-- (void)migrationPluginResults:(id)a3;
+- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)disposition context:(id)context;
+- (void)migrationPluginResults:(id)results;
 - (void)reportMigrationFailure;
-- (void)testMigrationUIWithProgress:(BOOL)a3 forceInvert:(BOOL)a4;
+- (void)testMigrationUIWithProgress:(BOOL)progress forceInvert:(BOOL)invert;
 @end
 
 @implementation DMConnection
@@ -175,19 +175,19 @@ LABEL_6:
   return v7;
 }
 
-- (int64_t)migrateCheckingNecessity:(BOOL)a3 lastRelevantPlugin:(id)a4 testMigrationInfrastructureOnly:(BOOL)a5
+- (int64_t)migrateCheckingNecessity:(BOOL)necessity lastRelevantPlugin:(id)plugin testMigrationInfrastructureOnly:(BOOL)only
 {
-  v6 = a5;
-  v9 = a4;
+  onlyCopy = only;
+  pluginCopy = plugin;
   v10 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v10, "msgID", 0);
-  xpc_dictionary_set_BOOL(v10, "checkNecessity", a3);
-  if (v9)
+  xpc_dictionary_set_BOOL(v10, "checkNecessity", necessity);
+  if (pluginCopy)
   {
-    xpc_dictionary_set_string(v10, "lastRelevantPlugin", [v9 UTF8String]);
+    xpc_dictionary_set_string(v10, "lastRelevantPlugin", [pluginCopy UTF8String]);
   }
 
-  if (v6)
+  if (onlyCopy)
   {
     xpc_dictionary_set_BOOL(v10, "testMigrationInfrastructureOnly", 1);
   }
@@ -245,24 +245,24 @@ LABEL_6:
   return v6;
 }
 
-- (void)changeVisibility:(BOOL)a3 completion:(id)a4
+- (void)changeVisibility:(BOOL)visibility completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v7, "msgID", 3);
-  xpc_dictionary_set_BOOL(v7, "visible", a3);
+  xpc_dictionary_set_BOOL(v7, "visible", visibility);
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy_;
   v13[4] = __Block_byref_object_dispose_;
-  v14 = self;
-  connection = v14->_connection;
+  selfCopy = self;
+  connection = selfCopy->_connection;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__DMConnection_changeVisibility_completion___block_invoke;
   v10[3] = &unk_2788551C0;
-  v9 = v6;
+  v9 = completionCopy;
   v11 = v9;
   v12 = v13;
   [(DMXPCConnection *)connection sendMessage:v7 replyHandler:v10];
@@ -279,23 +279,23 @@ void __44__DMConnection_changeVisibility_completion___block_invoke(uint64_t a1, 
   *(v3 + 40) = 0;
 }
 
-- (void)testMigrationUIWithProgress:(BOOL)a3 forceInvert:(BOOL)a4
+- (void)testMigrationUIWithProgress:(BOOL)progress forceInvert:(BOOL)invert
 {
   xdict = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(xdict, "msgID", 2);
-  xpc_dictionary_set_BOOL(xdict, "progress", a3);
-  xpc_dictionary_set_BOOL(xdict, "invert", a4);
+  xpc_dictionary_set_BOOL(xdict, "progress", progress);
+  xpc_dictionary_set_BOOL(xdict, "invert", invert);
   v7 = [(DMXPCConnection *)self->_connection sendMessageSync:xdict];
 }
 
-- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)a3 context:(id)a4
+- (void)forceMigrationOnNextRebootWithUserDataDisposition:(unsigned int)disposition context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   xdict = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(xdict, "msgID", 4);
-  xpc_dictionary_set_uint64(xdict, "disposition", a3);
+  xpc_dictionary_set_uint64(xdict, "disposition", disposition);
   v7 = objc_alloc_init(DMContextManager);
-  [(DMContextManager *)v7 addContext:v6 toXPCDictionary:xdict];
+  [(DMContextManager *)v7 addContext:contextCopy toXPCDictionary:xdict];
 
   v8 = [(DMXPCConnection *)self->_connection sendMessageSync:xdict];
 }
@@ -337,9 +337,9 @@ void __44__DMConnection_changeVisibility_completion___block_invoke(uint64_t a1, 
   return v6;
 }
 
-- (void)migrationPluginResults:(id)a3
+- (void)migrationPluginResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v5, "msgID", 10);
   v11[0] = 0;
@@ -347,13 +347,13 @@ void __44__DMConnection_changeVisibility_completion___block_invoke(uint64_t a1, 
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy_;
   v11[4] = __Block_byref_object_dispose_;
-  v12 = self;
-  connection = v12->_connection;
+  selfCopy = self;
+  connection = selfCopy->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__DMConnection_migrationPluginResults___block_invoke;
   v8[3] = &unk_2788551C0;
-  v7 = v4;
+  v7 = resultsCopy;
   v9 = v7;
   v10 = v11;
   [(DMXPCConnection *)connection sendMessage:v5 replyHandler:v8];

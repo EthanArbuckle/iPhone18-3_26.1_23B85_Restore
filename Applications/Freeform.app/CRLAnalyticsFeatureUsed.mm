@@ -1,25 +1,25 @@
 @interface CRLAnalyticsFeatureUsed
-+ (id)featurePayloadFor:(int64_t)a3;
-+ (void)logFeatureUsedWithName:(int64_t)a3;
++ (id)featurePayloadFor:(int64_t)for;
++ (void)logFeatureUsedWithName:(int64_t)name;
 - (_TtC8Freeform23CRLAnalyticsFeatureUsed)init;
 @end
 
 @implementation CRLAnalyticsFeatureUsed
 
-+ (id)featurePayloadFor:(int64_t)a3
++ (id)featurePayloadFor:(int64_t)for
 {
-  _s8Freeform23CRLAnalyticsFeatureUsedC14featurePayload3forSDySSSo8NSObjectCGAA0bC4NameO_tFZ_0(a3);
+  _s8Freeform23CRLAnalyticsFeatureUsedC14featurePayload3forSDySSSo8NSObjectCGAA0bC4NameO_tFZ_0(for);
   sub_100006370(0, &qword_1019F54D0);
   v3.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
   return v3.super.isa;
 }
 
-+ (void)logFeatureUsedWithName:(int64_t)a3
++ (void)logFeatureUsedWithName:(int64_t)name
 {
   v4 = objc_opt_self();
   v5 = String._bridgeToObjectiveC()();
-  _s8Freeform23CRLAnalyticsFeatureUsedC14featurePayload3forSDySSSo8NSObjectCGAA0bC4NameO_tFZ_0(a3);
+  _s8Freeform23CRLAnalyticsFeatureUsedC14featurePayload3forSDySSSo8NSObjectCGAA0bC4NameO_tFZ_0(name);
   sub_100006370(0, &qword_1019F54D0);
   isa = Dictionary._bridgeToObjectiveC()().super.isa;
 

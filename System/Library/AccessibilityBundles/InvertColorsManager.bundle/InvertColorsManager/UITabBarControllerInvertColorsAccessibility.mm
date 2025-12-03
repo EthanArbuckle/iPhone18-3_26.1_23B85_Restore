@@ -1,14 +1,14 @@
 @interface UITabBarControllerInvertColorsAccessibility
-- (void)transitionFromViewController:(id)a3 toViewController:(id)a4;
+- (void)transitionFromViewController:(id)controller toViewController:(id)viewController;
 @end
 
 @implementation UITabBarControllerInvertColorsAccessibility
 
-- (void)transitionFromViewController:(id)a3 toViewController:(id)a4
+- (void)transitionFromViewController:(id)controller toViewController:(id)viewController
 {
   v7.receiver = self;
   v7.super_class = UITabBarControllerInvertColorsAccessibility;
-  [(UITabBarControllerInvertColorsAccessibility *)&v7 transitionFromViewController:a3 toViewController:a4];
+  [(UITabBarControllerInvertColorsAccessibility *)&v7 transitionFromViewController:controller toViewController:viewController];
   v5 = AXLogInvertColors();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {

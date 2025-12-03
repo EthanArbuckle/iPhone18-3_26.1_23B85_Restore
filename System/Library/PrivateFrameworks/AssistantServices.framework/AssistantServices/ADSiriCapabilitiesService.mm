@@ -1,17 +1,17 @@
 @interface ADSiriCapabilitiesService
 + (id)sharedService;
-- (ADSiriCapabilitiesService)initWithSiriConfiguration:(id)a3;
-- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)a3;
-- (void)siriSystemAssistantExperienceEnabled:(id)a3;
-- (void)siriWithAppIntentsEnabled:(id)a3;
+- (ADSiriCapabilitiesService)initWithSiriConfiguration:(id)configuration;
+- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)experience;
+- (void)siriSystemAssistantExperienceEnabled:(id)enabled;
+- (void)siriWithAppIntentsEnabled:(id)enabled;
 @end
 
 @implementation ADSiriCapabilitiesService
 
-- (void)siriWithAppIntentsEnabled:(id)a3
+- (void)siriWithAppIntentsEnabled:(id)enabled
 {
   v7 = 0u;
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [(ADSiriCapabilitiesService *)self siriCapabilitiesStore:0];
   v6 = v5;
   if (v5)
@@ -24,13 +24,13 @@
     v7 = 0u;
   }
 
-  v4[2](v4, (~DWORD2(v7) & 0x3FLL) == 0);
+  enabledCopy[2](enabledCopy, (~DWORD2(v7) & 0x3FLL) == 0);
 }
 
-- (void)siriSystemAssistantExperienceEnabled:(id)a3
+- (void)siriSystemAssistantExperienceEnabled:(id)enabled
 {
   v12 = 0u;
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [(ADSiriCapabilitiesService *)self siriCapabilitiesStore:0];
   v6 = v5;
   if (v5)
@@ -59,13 +59,13 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Should download assets is %@, capabilities: %@", buf, 0x20u);
   }
 
-  v4[2](v4, v7 == 63);
+  enabledCopy[2](enabledCopy, v7 == 63);
 }
 
-- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)a3
+- (void)shouldDownloadAssetsForSiriSystemAssistantExperience:(id)experience
 {
   v12 = 0u;
-  v4 = a3;
+  experienceCopy = experience;
   v5 = [(ADSiriCapabilitiesService *)self siriCapabilitiesStore:0];
   v6 = v5;
   if (v5)
@@ -94,19 +94,19 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Should download assets is %@, capabilities: %@", buf, 0x20u);
   }
 
-  v4[2](v4, v7 == 7);
+  experienceCopy[2](experienceCopy, v7 == 7);
 }
 
-- (ADSiriCapabilitiesService)initWithSiriConfiguration:(id)a3
+- (ADSiriCapabilitiesService)initWithSiriConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = ADSiriCapabilitiesService;
   v6 = [(ADSiriCapabilitiesService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_siriCapabilitiesStore, a3);
+    objc_storeStrong(&v6->_siriCapabilitiesStore, configuration);
   }
 
   return v7;

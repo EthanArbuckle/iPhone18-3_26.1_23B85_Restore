@@ -1,39 +1,39 @@
 @interface MultiDayWeekViewController
 - (CGSize)cellSize;
-- (MultiDayWeekViewController)initWithModel:(id)a3 window:(id)a4;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (MultiDayWeekViewController)initWithModel:(id)model window:(id)window;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)cellFactory;
-- (id)dateForWeek:(int64_t)a3;
+- (id)dateForWeek:(int64_t)week;
 - (id)dayHeaderFrames;
-- (id)interactionControllerForPresentation:(id)a3;
-- (id)pushedDayViewControllerWithDate:(id)a3 animated:(BOOL)a4;
-- (void)_calendarModelTimeZoneChanged:(id)a3;
-- (void)_significantTimeChanged:(id)a3;
+- (id)interactionControllerForPresentation:(id)presentation;
+- (id)pushedDayViewControllerWithDate:(id)date animated:(BOOL)animated;
+- (void)_calendarModelTimeZoneChanged:(id)changed;
+- (void)_significantTimeChanged:(id)changed;
 - (void)_updateWeekDayHeaderDayFrames;
-- (void)dayNavigationViewController:(id)a3 didSelectDate:(id)a4;
-- (void)displayedDateChanged:(id)a3 userInitiated:(BOOL)a4;
-- (void)selectDate:(id)a3 animated:(BOOL)a4;
-- (void)setDisplayedDate:(id)a3 forceScroll:(BOOL)a4 animated:(BOOL)a5;
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showEvents:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6;
-- (void)showReminderDetail:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)updatePalette:(id)a3;
+- (void)dayNavigationViewController:(id)controller didSelectDate:(id)date;
+- (void)displayedDateChanged:(id)changed userInitiated:(BOOL)initiated;
+- (void)selectDate:(id)date animated:(BOOL)animated;
+- (void)setDisplayedDate:(id)date forceScroll:(BOOL)scroll animated:(BOOL)animated;
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showEvents:(id)events animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context;
+- (void)showReminderDetail:(id)detail;
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion;
+- (void)updatePalette:(id)palette;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MultiDayWeekViewController
 
-- (MultiDayWeekViewController)initWithModel:(id)a3 window:(id)a4
+- (MultiDayWeekViewController)initWithModel:(id)model window:(id)window
 {
   v9.receiver = self;
   v9.super_class = MultiDayWeekViewController;
-  v4 = [(WeekViewController *)&v9 initWithModel:a3 window:a4];
+  v4 = [(WeekViewController *)&v9 initWithModel:model window:window];
   if (v4)
   {
     v4->_numMultiDays = +[MultiDayWeekView numMultiDays];
@@ -41,8 +41,8 @@
     scrubberControllerNeue = v4->_scrubberControllerNeue;
     v4->_scrubberControllerNeue = v5;
 
-    v7 = [(MultiDayWeekViewController *)v4 cellFactory];
-    [(DayNavigationViewController *)v4->_scrubberControllerNeue setCellFactory:v7];
+    cellFactory = [(MultiDayWeekViewController *)v4 cellFactory];
+    [(DayNavigationViewController *)v4->_scrubberControllerNeue setCellFactory:cellFactory];
 
     [(DayNavigationViewController *)v4->_scrubberControllerNeue setDelegate:v4];
     [(DayNavigationViewController *)v4->_scrubberControllerNeue setShowsMultiDay:1];
@@ -58,51 +58,51 @@
   v4.receiver = self;
   v4.super_class = MultiDayWeekViewController;
   [(WeekViewController *)&v4 viewDidLoad];
-  v3 = [(WeekViewController *)self timeView];
-  [v3 setOrientation:1];
+  timeView = [(WeekViewController *)self timeView];
+  [timeView setOrientation:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MultiDayWeekViewController;
-  [(WeekViewController *)&v4 viewWillAppear:a3];
+  [(WeekViewController *)&v4 viewWillAppear:appear];
   [(WeekViewController *)self _clearSelectedOccurrenceViews];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = MultiDayWeekViewController;
-  [(MultiDayWeekViewController *)&v4 viewIsAppearing:a3];
+  [(MultiDayWeekViewController *)&v4 viewIsAppearing:appearing];
   [(MultiDayWeekViewController *)self ekui_adjustNavAndToolBarToTranslucentGrayStyles];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MultiDayWeekViewController;
-  v7 = a4;
-  [(WeekViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(WeekViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100074954;
   v8[3] = &unk_10020F240;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
-- (void)_significantTimeChanged:(id)a3
+- (void)_significantTimeChanged:(id)changed
 {
   v7.receiver = self;
   v7.super_class = MultiDayWeekViewController;
-  v4 = a3;
-  [(WeekViewController *)&v7 _significantTimeChanged:v4];
-  v5 = [v4 userInfo];
+  changedCopy = changed;
+  [(WeekViewController *)&v7 _significantTimeChanged:changedCopy];
+  userInfo = [changedCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:CUIKCalendarModelSignificantTimeChangeNotificationDayChangedKey];
+  v6 = [userInfo objectForKeyedSubscript:CUIKCalendarModelSignificantTimeChangeNotificationDayChangedKey];
 
   if (([v6 BOOLValue] & 1) != 0 || !v6)
   {
@@ -110,94 +110,94 @@
   }
 }
 
-- (void)_calendarModelTimeZoneChanged:(id)a3
+- (void)_calendarModelTimeZoneChanged:(id)changed
 {
   v4.receiver = self;
   v4.super_class = MultiDayWeekViewController;
-  [(WeekViewController *)&v4 _calendarModelTimeZoneChanged:a3];
+  [(WeekViewController *)&v4 _calendarModelTimeZoneChanged:changed];
   [(DayNavigationViewController *)self->_scrubberControllerNeue timeZoneChanged];
 }
 
-- (id)dateForWeek:(int64_t)a3
+- (id)dateForWeek:(int64_t)week
 {
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
-  v6 = [(WeekViewController *)self referenceWeekStart];
-  v7 = v6;
+  referenceWeekStart = [(WeekViewController *)self referenceWeekStart];
+  v7 = referenceWeekStart;
   if (IsLeftToRight)
   {
-    v8 = self->_numMultiDays * (a3 - 27040);
+    v8 = self->_numMultiDays * (week - 27040);
   }
 
   else
   {
-    v8 = -(self->_numMultiDays * (a3 - 27040));
+    v8 = -(self->_numMultiDays * (week - 27040));
   }
 
-  v9 = [v6 calendarDateByAddingDays:v8];
+  v9 = [referenceWeekStart calendarDateByAddingDays:v8];
 
   return v9;
 }
 
-- (id)pushedDayViewControllerWithDate:(id)a3 animated:(BOOL)a4
+- (id)pushedDayViewControllerWithDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = [DayViewContainerViewController alloc];
-  v7 = [(WeekViewController *)self model];
-  v8 = [(MainViewController *)self window];
-  v9 = [(MainViewControllerContainer *)v6 initWithModel:v7 window:v8];
+  model = [(WeekViewController *)self model];
+  window = [(MainViewController *)self window];
+  v9 = [(MainViewControllerContainer *)v6 initWithModel:model window:window];
 
-  v10 = [(MultiDayWeekViewController *)self navigationController];
-  [v10 pushViewController:v9 animated:v4];
+  navigationController = [(MultiDayWeekViewController *)self navigationController];
+  [navigationController pushViewController:v9 animated:animatedCopy];
 
   return v9;
 }
 
-- (void)showEvent:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvent:(id)event animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v7 = a4;
-  v10 = a6;
+  animatedCopy = animated;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = MultiDayWeekViewController;
-  [(WeekViewController *)&v18 showEvent:a3 animated:v7 showMode:a5 context:v10];
-  v11 = [(MultiDayWeekViewController *)self navigationItem];
-  [v11 setTitle:0];
+  [(WeekViewController *)&v18 showEvent:event animated:animatedCopy showMode:mode context:contextCopy];
+  navigationItem = [(MultiDayWeekViewController *)self navigationItem];
+  [navigationItem setTitle:0];
 
-  if (!v10 || ([v10 objectForKeyedSubscript:@"Context_DateSelected"], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!contextCopy || ([contextCopy objectForKeyedSubscript:@"Context_DateSelected"], (displayedDate = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v12 = [(WeekViewController *)self displayedDate];
+    displayedDate = [(WeekViewController *)self displayedDate];
   }
 
-  v13 = v12;
-  v14 = [v12 date];
+  v13 = displayedDate;
+  date = [displayedDate date];
 
   v15 = CUIKStringForDate();
-  v16 = [(MultiDayWeekViewController *)self parentViewController];
-  v17 = [v16 navigationItem];
-  [v17 setBackButtonTitle:v15];
+  parentViewController = [(MultiDayWeekViewController *)self parentViewController];
+  navigationItem2 = [parentViewController navigationItem];
+  [navigationItem2 setBackButtonTitle:v15];
 }
 
-- (void)showEvents:(id)a3 animated:(BOOL)a4 showMode:(unint64_t)a5 context:(id)a6
+- (void)showEvents:(id)events animated:(BOOL)animated showMode:(unint64_t)mode context:(id)context
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [[EKExpandedReminderStackViewController alloc] initWithEvents:v8 delegate:self];
+  animatedCopy = animated;
+  eventsCopy = events;
+  v9 = [[EKExpandedReminderStackViewController alloc] initWithEvents:eventsCopy delegate:self];
   [v9 setPreferModalPresentation:1];
   [v9 setTransitioningDelegate:self];
-  [(CUIKCalendarModel *)self->super.super._model setSelectedOccurrences:v8];
+  [(CUIKCalendarModel *)self->super.super._model setSelectedOccurrences:eventsCopy];
 
-  [(MultiDayWeekViewController *)self showViewController:v9 sender:self animated:v6 completion:0];
+  [(MultiDayWeekViewController *)self showViewController:v9 sender:self animated:animatedCopy completion:0];
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showViewController:(id)controller sender:(id)sender animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  senderCopy = sender;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v10 setPreferModalPresentation:1];
+    [controllerCopy setPreferModalPresentation:1];
   }
 
   else
@@ -205,76 +205,76 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v10 setMinimalMode:0];
+      [controllerCopy setMinimalMode:0];
     }
   }
 
-  v13 = [(MultiDayWeekViewController *)self presentedViewController];
+  presentedViewController = [(MultiDayWeekViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [(MultiDayWeekViewController *)self presentedViewController];
-    v16 = [v10 presentationController];
-    [v16 setDelegate:v15];
+    presentedViewController2 = [(MultiDayWeekViewController *)self presentedViewController];
+    presentationController = [controllerCopy presentationController];
+    [presentationController setDelegate:presentedViewController2];
 
-    v17 = [(MultiDayWeekViewController *)self presentedViewController];
-    [v17 presentViewController:v10 animated:1 completion:0];
+    presentedViewController3 = [(MultiDayWeekViewController *)self presentedViewController];
+    [presentedViewController3 presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = MultiDayWeekViewController;
-    [(MainViewController *)&v18 showViewController:v10 sender:v11 animated:v7 completion:v12];
+    [(MainViewController *)&v18 showViewController:controllerCopy sender:senderCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)displayedDateChanged:(id)a3 userInitiated:(BOOL)a4
+- (void)displayedDateChanged:(id)changed userInitiated:(BOOL)initiated
 {
-  v4 = a4;
-  v6 = a3;
+  initiatedCopy = initiated;
+  changedCopy = changed;
   v9.receiver = self;
   v9.super_class = MultiDayWeekViewController;
-  [(WeekViewController *)&v9 displayedDateChanged:v6 userInitiated:v4];
-  if (v4)
+  [(WeekViewController *)&v9 displayedDateChanged:changedCopy userInitiated:initiatedCopy];
+  if (initiatedCopy)
   {
-    v7 = [(MultiDayWeekViewController *)self dayScrubberController];
-    v8 = [v6 date];
-    [v7 setSelectedDate:v8 animated:1];
+    dayScrubberController = [(MultiDayWeekViewController *)self dayScrubberController];
+    date = [changedCopy date];
+    [dayScrubberController setSelectedDate:date animated:1];
   }
 }
 
-- (void)setDisplayedDate:(id)a3 forceScroll:(BOOL)a4 animated:(BOOL)a5
+- (void)setDisplayedDate:(id)date forceScroll:(BOOL)scroll animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v10.receiver = self;
   v10.super_class = MultiDayWeekViewController;
-  v7 = a3;
-  [(WeekViewController *)&v10 setDisplayedDate:v7 forceScroll:1 animated:v5];
+  dateCopy = date;
+  [(WeekViewController *)&v10 setDisplayedDate:dateCopy forceScroll:1 animated:animatedCopy];
   v8 = [(MultiDayWeekViewController *)self dayScrubberController:v10.receiver];
-  v9 = [v7 date];
+  date = [dateCopy date];
 
-  [v8 setSelectedDate:v9 animated:v5];
+  [v8 setSelectedDate:date animated:animatedCopy];
 }
 
-- (void)selectDate:(id)a3 animated:(BOOL)a4
+- (void)selectDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(WeekViewController *)self model];
-  [v6 setSelectedDate:v10];
+  animatedCopy = animated;
+  dateCopy = date;
+  model = [(WeekViewController *)self model];
+  [model setSelectedDate:dateCopy];
 
-  v7 = [v10 calendarDateForDay];
-  v8 = [(WeekViewController *)self displayedDate];
-  v9 = [v7 differenceInDays:v8];
+  calendarDateForDay = [dateCopy calendarDateForDay];
+  displayedDate = [(WeekViewController *)self displayedDate];
+  v9 = [calendarDateForDay differenceInDays:displayedDate];
 
-  if (v9 || !v4)
+  if (v9 || !animatedCopy)
   {
     if (v9)
     {
-      [(WeekViewController *)self setDisplayedDate:v10 animated:v4];
+      [(WeekViewController *)self setDisplayedDate:dateCopy animated:animatedCopy];
     }
   }
 
@@ -283,7 +283,7 @@
     [(DayNavigationViewController *)self->_scrubberControllerNeue pulseToday];
   }
 
-  [(WeekViewController *)self scrollToCurrentTimeOfDayAnimated:v4];
+  [(WeekViewController *)self scrollToCurrentTimeOfDayAnimated:animatedCopy];
 }
 
 - (id)cellFactory
@@ -295,8 +295,8 @@
 
 - (CGSize)cellSize
 {
-  v2 = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
-  [v2 cellSize];
+  weekScrollView = [(DayNavigationViewController *)self->_scrubberControllerNeue weekScrollView];
+  [weekScrollView cellSize];
   v4 = v3;
   v6 = v5;
 
@@ -307,20 +307,20 @@
   return result;
 }
 
-- (void)updatePalette:(id)a3
+- (void)updatePalette:(id)palette
 {
-  v4 = a3;
-  [(PaletteView *)v4 setWeekdayHeaderVisible:1];
-  [(PaletteView *)v4 setWeekdayHeaderFillsHalfWidth:0];
-  v12 = [(MultiDayWeekViewController *)self dayScrubberController];
-  [(PaletteView *)v4 setDayScrubberController:v12];
-  [v12 setShowsWeekNumberWhenEnabled:0];
-  v5 = [v12 view];
-  [v5 setNeedsLayout];
+  paletteCopy = palette;
+  [(PaletteView *)paletteCopy setWeekdayHeaderVisible:1];
+  [(PaletteView *)paletteCopy setWeekdayHeaderFillsHalfWidth:0];
+  dayScrubberController = [(MultiDayWeekViewController *)self dayScrubberController];
+  [(PaletteView *)paletteCopy setDayScrubberController:dayScrubberController];
+  [dayScrubberController setShowsWeekNumberWhenEnabled:0];
+  view = [dayScrubberController view];
+  [view setNeedsLayout];
 
-  [(PaletteView *)v4 setTodayButtonVisible:0];
-  [(PaletteView *)v4 setDateStringVisible:0];
-  [(PaletteView *)v4 setDividerLineVisible:1];
+  [(PaletteView *)paletteCopy setTodayButtonVisible:0];
+  [(PaletteView *)paletteCopy setDateStringVisible:0];
+  [(PaletteView *)paletteCopy setDividerLineVisible:1];
   if (CalSolariumEnabled())
   {
     v6 = 3;
@@ -331,17 +331,17 @@
     v6 = 1;
   }
 
-  [(PaletteView *)v4 setFocusBannerPlacement:v6];
+  [(PaletteView *)paletteCopy setFocusBannerPlacement:v6];
   [(MultiDayWeekViewController *)self _updateWeekDayHeaderDayFrames];
-  [(PaletteView *)v4 sizeToFit];
-  [(PaletteView *)v4 frame];
+  [(PaletteView *)paletteCopy sizeToFit];
+  [(PaletteView *)paletteCopy frame];
   v8 = v7;
-  v9 = [(PaletteView *)v4 containingPalette];
-  [v9 setPreferredHeight:v8];
+  containingPalette = [(PaletteView *)paletteCopy containingPalette];
+  [containingPalette setPreferredHeight:v8];
 
   palette = self->_palette;
-  self->_palette = v4;
-  v11 = v4;
+  self->_palette = paletteCopy;
+  v11 = paletteCopy;
 
   [(PaletteView *)v11 setNeedsLayout];
 }
@@ -349,8 +349,8 @@
 - (void)_updateWeekDayHeaderDayFrames
 {
   palette = self->_palette;
-  v3 = [(MultiDayWeekViewController *)self dayHeaderFrames];
-  [(PaletteView *)palette setDayHeaderFrames:v3];
+  dayHeaderFrames = [(MultiDayWeekViewController *)self dayHeaderFrames];
+  [(PaletteView *)palette setDayHeaderFrames:dayHeaderFrames];
 }
 
 - (void)viewDidLayoutSubviews
@@ -397,23 +397,23 @@
   return v3;
 }
 
-- (void)dayNavigationViewController:(id)a3 didSelectDate:(id)a4
+- (void)dayNavigationViewController:(id)controller didSelectDate:(id)date
 {
   model = self->super.super._model;
-  v6 = a4;
-  v7 = [(CUIKCalendarModel *)model calendar];
-  v8 = [v7 timeZone];
-  v9 = [EKCalendarDate calendarDateWithDate:v6 timeZone:v8];
+  dateCopy = date;
+  calendar = [(CUIKCalendarModel *)model calendar];
+  timeZone = [calendar timeZone];
+  v9 = [EKCalendarDate calendarDateWithDate:dateCopy timeZone:timeZone];
 
   [(MultiDayWeekViewController *)self setDisplayedDate:v9 forceScroll:1 animated:1];
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v5 = a3;
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
   {
-    v6 = v5;
+    v6 = controllerCopy;
   }
 
   else
@@ -424,12 +424,12 @@
   return v6;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
+  controllerCopy = controller;
+  if ([controllerCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerAnimatedTransitioning])
   {
-    v4 = v3;
+    v4 = controllerCopy;
   }
 
   else
@@ -440,12 +440,12 @@
   return v4;
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerInteractiveTransitioning])
+  presentationCopy = presentation;
+  if ([presentationCopy conformsToProtocol:&OBJC_PROTOCOL___UIViewControllerInteractiveTransitioning])
   {
-    v4 = v3;
+    v4 = presentationCopy;
   }
 
   else
@@ -456,12 +456,12 @@
   return v4;
 }
 
-- (void)showReminderDetail:(id)a3
+- (void)showReminderDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   v7 = [(MainViewController *)self augmentEventDetailsContext:0];
   v5 = objc_alloc_init(UINavigationController);
-  v6 = [EKEventViewController eventDetailViewControllerWithEvent:v4 delegate:self context:v7 canvasView:0];
+  v6 = [EKEventViewController eventDetailViewControllerWithEvent:detailCopy delegate:self context:v7 canvasView:0];
 
   [v5 pushViewController:v6 animated:0];
   [(MultiDayWeekViewController *)self showViewController:v5 sender:self animated:1 completion:0];

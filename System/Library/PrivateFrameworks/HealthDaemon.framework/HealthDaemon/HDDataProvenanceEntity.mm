@@ -1,9 +1,9 @@
 @interface HDDataProvenanceEntity
-+ (BOOL)validateEntityWithProfile:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5;
-+ (id)deviceIDsForSourceIDs:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)insertOrLookupDataProvenanceForSyncProvenance:(int64_t)a3 syncIdentity:(int64_t)a4 originProductType:(id)a5 originSystemBuild:(id)a6 originOSVersion:(id *)a7 localProductType:(id)a8 localSystemBuild:(id)a9 sourceVersion:(id)a10 timeZoneName:(id)a11 sourceID:(id)a12 deviceID:(id)a13 contributorID:(id)a14 transaction:(id)a15 error:(id *)a16;
-+ (id)originProvenanceForPersistentID:(int64_t)a3 database:(id)a4 error:(id *)a5;
-+ (id)sourceIDsWithProvenanceFromSourceIDs:(id)a3 profile:(id)a4 error:(id *)a5;
++ (BOOL)validateEntityWithProfile:(id)profile error:(id *)error validationErrorHandler:(id)handler;
++ (id)deviceIDsForSourceIDs:(id)ds profile:(id)profile error:(id *)error;
++ (id)insertOrLookupDataProvenanceForSyncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity originProductType:(id)type originSystemBuild:(id)build originOSVersion:(id *)version localProductType:(id)productType localSystemBuild:(id)systemBuild sourceVersion:(id)self0 timeZoneName:(id)self1 sourceID:(id)self2 deviceID:(id)self3 contributorID:(id)self4 transaction:(id)self5 error:(id *)self6;
++ (id)originProvenanceForPersistentID:(int64_t)d database:(id)database error:(id *)error;
++ (id)sourceIDsWithProvenanceFromSourceIDs:(id)ds profile:(id)profile error:(id *)error;
 + (id)uniquedColumns;
 @end
 
@@ -32,22 +32,22 @@
   return v2;
 }
 
-+ (id)insertOrLookupDataProvenanceForSyncProvenance:(int64_t)a3 syncIdentity:(int64_t)a4 originProductType:(id)a5 originSystemBuild:(id)a6 originOSVersion:(id *)a7 localProductType:(id)a8 localSystemBuild:(id)a9 sourceVersion:(id)a10 timeZoneName:(id)a11 sourceID:(id)a12 deviceID:(id)a13 contributorID:(id)a14 transaction:(id)a15 error:(id *)a16
++ (id)insertOrLookupDataProvenanceForSyncProvenance:(int64_t)provenance syncIdentity:(int64_t)identity originProductType:(id)type originSystemBuild:(id)build originOSVersion:(id *)version localProductType:(id)productType localSystemBuild:(id)systemBuild sourceVersion:(id)self0 timeZoneName:(id)self1 sourceID:(id)self2 deviceID:(id)self3 contributorID:(id)self4 transaction:(id)self5 error:(id *)self6
 {
   v110 = *MEMORY[0x277D85DE8];
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v74 = a15;
-  if (v18)
+  typeCopy = type;
+  buildCopy = build;
+  productTypeCopy = productType;
+  systemBuildCopy = systemBuild;
+  sourceVersionCopy = sourceVersion;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  contributorIDCopy = contributorID;
+  transactionCopy = transaction;
+  if (typeCopy)
   {
-    if (v19)
+    if (buildCopy)
     {
       goto LABEL_3;
     }
@@ -55,13 +55,13 @@
 
   else
   {
-    v56 = [MEMORY[0x277CCA890] currentHandler];
-    [v56 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"originProductType != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"originProductType != nil"}];
 
-    if (v19)
+    if (buildCopy)
     {
 LABEL_3:
-      if (v20)
+      if (productTypeCopy)
       {
         goto LABEL_4;
       }
@@ -70,13 +70,13 @@ LABEL_3:
     }
   }
 
-  v57 = [MEMORY[0x277CCA890] currentHandler];
-  [v57 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"originSystemBuild != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"originSystemBuild != nil"}];
 
-  if (v20)
+  if (productTypeCopy)
   {
 LABEL_4:
-    if (v21)
+    if (systemBuildCopy)
     {
       goto LABEL_5;
     }
@@ -85,13 +85,13 @@ LABEL_4:
   }
 
 LABEL_42:
-  v58 = [MEMORY[0x277CCA890] currentHandler];
-  [v58 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"localProductType != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"localProductType != nil"}];
 
-  if (v21)
+  if (systemBuildCopy)
   {
 LABEL_5:
-    if (v22)
+    if (sourceVersionCopy)
     {
       goto LABEL_6;
     }
@@ -100,13 +100,13 @@ LABEL_5:
   }
 
 LABEL_43:
-  v59 = [MEMORY[0x277CCA890] currentHandler];
-  [v59 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"localSystemBuild != nil"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"localSystemBuild != nil"}];
 
-  if (v22)
+  if (sourceVersionCopy)
   {
 LABEL_6:
-    if (v23)
+    if (nameCopy)
     {
       goto LABEL_7;
     }
@@ -115,13 +115,13 @@ LABEL_6:
   }
 
 LABEL_44:
-  v60 = [MEMORY[0x277CCA890] currentHandler];
-  [v60 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"sourceVersion != nil"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"sourceVersion != nil"}];
 
-  if (v23)
+  if (nameCopy)
   {
 LABEL_7:
-    if (v24)
+    if (dCopy)
     {
       goto LABEL_8;
     }
@@ -130,22 +130,22 @@ LABEL_7:
   }
 
 LABEL_45:
-  v61 = [MEMORY[0x277CCA890] currentHandler];
-  [v61 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"timeZoneName != nil"}];
+  currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler6 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"timeZoneName != nil"}];
 
-  if (v24)
+  if (dCopy)
   {
 LABEL_8:
-    if (v25)
+    if (iDCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_47:
-    v63 = [MEMORY[0x277CCA890] currentHandler];
-    [v63 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"deviceID != nil"}];
+    currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler7 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"deviceID != nil"}];
 
-    if (v26)
+    if (contributorIDCopy)
     {
       goto LABEL_10;
     }
@@ -154,29 +154,29 @@ LABEL_47:
   }
 
 LABEL_46:
-  v62 = [MEMORY[0x277CCA890] currentHandler];
-  [v62 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"sourceID != nil"}];
+  currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler8 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"sourceID != nil"}];
 
-  if (!v25)
+  if (!iDCopy)
   {
     goto LABEL_47;
   }
 
 LABEL_9:
-  if (v26)
+  if (contributorIDCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_48:
-  v64 = [MEMORY[0x277CCA890] currentHandler];
-  [v64 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"contributorID != nil"}];
+  currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler9 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"contributorID != nil"}];
 
 LABEL_10:
-  if (!v74)
+  if (!transactionCopy)
   {
-    v65 = [MEMORY[0x277CCA890] currentHandler];
-    [v65 handleFailureInMethod:a2 object:a1 file:@"HDDataProvenanceEntity.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
+    currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler10 handleFailureInMethod:a2 object:self file:@"HDDataProvenanceEntity.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"transaction != nil"}];
   }
 
   v95 = 0;
@@ -189,31 +189,31 @@ LABEL_10:
   aBlock[1] = 3221225472;
   aBlock[2] = __248__HDDataProvenanceEntity_insertOrLookupDataProvenanceForSyncProvenance_syncIdentity_originProductType_originSystemBuild_originOSVersion_localProductType_localSystemBuild_sourceVersion_timeZoneName_sourceID_deviceID_contributorID_transaction_error___block_invoke;
   aBlock[3] = &unk_2786150B0;
-  v91 = a3;
-  v67 = v18;
+  provenanceCopy = provenance;
+  v67 = typeCopy;
   v82 = v67;
-  v69 = v19;
+  v69 = buildCopy;
   v83 = v69;
-  v71 = v20;
+  v71 = productTypeCopy;
   v84 = v71;
-  v27 = v23;
-  v28 = v21;
+  v27 = nameCopy;
+  v28 = systemBuildCopy;
   v85 = v28;
-  v29 = v24;
+  v29 = dCopy;
   v86 = v29;
-  v30 = v25;
+  v30 = iDCopy;
   v87 = v30;
-  v31 = v26;
+  v31 = contributorIDCopy;
   v88 = v31;
-  v32 = v22;
+  v32 = sourceVersionCopy;
   v89 = v32;
   v33 = v27;
   v90 = v33;
-  v92 = *&a7->var0;
-  var2 = a7->var2;
-  v94 = a4;
+  v92 = *&version->var0;
+  var2 = version->var2;
+  identityCopy = identity;
   v34 = _Block_copy(aBlock);
-  v35 = [v74 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
   v79[0] = MEMORY[0x277D85DD0];
   v79[1] = 3221225472;
   v79[2] = __248__HDDataProvenanceEntity_insertOrLookupDataProvenanceForSyncProvenance_syncIdentity_originProductType_originSystemBuild_originOSVersion_localProductType_localSystemBuild_sourceVersion_timeZoneName_sourceID_deviceID_contributorID_transaction_error___block_invoke_2;
@@ -225,7 +225,7 @@ LABEL_10:
   v78[2] = __248__HDDataProvenanceEntity_insertOrLookupDataProvenanceForSyncProvenance_syncIdentity_originProductType_originSystemBuild_originOSVersion_localProductType_localSystemBuild_sourceVersion_timeZoneName_sourceID_deviceID_contributorID_transaction_error___block_invoke_3;
   v78[3] = &unk_278614620;
   v78[4] = &v95;
-  v37 = [v35 executeSQL:@"SELECT ROWID FROM data_provenances WHERE sync_provenance = ? AND origin_product_type = ? AND origin_build = ? AND local_product_type = ? AND local_build = ? AND source_id = ? AND device_id = ? AND contributor_id = ? AND source_version = ? AND tz_name = ? AND origin_major_version = ? AND origin_minor_version = ? AND origin_patch_version = ? AND sync_identity = ?" error:a16 bindingHandler:v79 enumerationHandler:v78];
+  v37 = [protectedDatabase executeSQL:@"SELECT ROWID FROM data_provenances WHERE sync_provenance = ? AND origin_product_type = ? AND origin_build = ? AND local_product_type = ? AND local_build = ? AND source_id = ? AND device_id = ? AND contributor_id = ? AND source_version = ? AND tz_name = ? AND origin_major_version = ? AND origin_minor_version = ? AND origin_patch_version = ? AND sync_identity = ?" error:error bindingHandler:v79 enumerationHandler:v78];
 
   if (v37)
   {
@@ -237,8 +237,8 @@ LABEL_10:
 
     else
     {
-      v42 = [v29 longLongValue];
-      v43 = [v74 unprotectedDatabase];
+      longLongValue = [v29 longLongValue];
+      unprotectedDatabase = [transactionCopy unprotectedDatabase];
       objc_opt_self();
       v102 = 0;
       v103 = &v102;
@@ -248,13 +248,13 @@ LABEL_10:
       *(&buf + 1) = 3221225472;
       v107 = __66__HDDataProvenanceEntity__derivedFlagsForSourceID_database_error___block_invoke_2;
       v108 = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-      v109 = v42;
+      v109 = longLongValue;
       v101[0] = MEMORY[0x277D85DD0];
       v101[1] = 3221225472;
       v101[2] = __66__HDDataProvenanceEntity__derivedFlagsForSourceID_database_error___block_invoke_3;
       v101[3] = &unk_278614620;
       v101[4] = &v102;
-      if ([v43 executeCachedStatementForKey:&_derivedFlagsForSourceID_database_error__lookupKey error:a16 SQLGenerator:&__block_literal_global_13 bindingHandler:&buf enumerationHandler:v101])
+      if ([unprotectedDatabase executeCachedStatementForKey:&_derivedFlagsForSourceID_database_error__lookupKey error:error SQLGenerator:&__block_literal_global_13 bindingHandler:&buf enumerationHandler:v101])
       {
         v44 = [MEMORY[0x277CCABB0] numberWithLongLong:v103[3]];
       }
@@ -268,21 +268,21 @@ LABEL_10:
 
       if (v44)
       {
-        v45 = [v74 protectedDatabase];
+        protectedDatabase2 = [transactionCopy protectedDatabase];
         v75[0] = MEMORY[0x277D85DD0];
         v75[1] = 3221225472;
         v75[2] = __248__HDDataProvenanceEntity_insertOrLookupDataProvenanceForSyncProvenance_syncIdentity_originProductType_originSystemBuild_originOSVersion_localProductType_localSystemBuild_sourceVersion_timeZoneName_sourceID_deviceID_contributorID_transaction_error___block_invoke_397;
         v75[3] = &unk_278615100;
         v77 = v36;
         v76 = v44;
-        v46 = [v45 executeSQL:@"INSERT INTO data_provenances (sync_provenance error:origin_product_type bindingHandler:origin_build enumerationHandler:{local_product_type, local_build, source_id, device_id, contributor_id, source_version, tz_name, origin_major_version, origin_minor_version, origin_patch_version, sync_identity, derived_flags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", a16, v75, 0}];
+        v46 = [protectedDatabase2 executeSQL:@"INSERT INTO data_provenances (sync_provenance error:origin_product_type bindingHandler:origin_build enumerationHandler:{local_product_type, local_build, source_id, device_id, contributor_id, source_version, tz_name, origin_major_version, origin_minor_version, origin_patch_version, sync_identity, derived_flags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", error, v75, 0}];
 
         if (v46)
         {
-          v47 = [v74 protectedDatabase];
-          v48 = [v47 lastInsertRowID];
+          protectedDatabase3 = [transactionCopy protectedDatabase];
+          lastInsertRowID = [protectedDatabase3 lastInsertRowID];
           v49 = v96[5];
-          v96[5] = v48;
+          v96[5] = lastInsertRowID;
         }
 
         else
@@ -291,14 +291,14 @@ LABEL_10:
           v52 = *MEMORY[0x277CCC2A0];
           if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
           {
-            v53 = a16;
-            if (a16)
+            errorCopy = error;
+            if (error)
             {
-              v53 = *a16;
+              errorCopy = *error;
             }
 
             LODWORD(buf) = 138543362;
-            *(&buf + 4) = v53;
+            *(&buf + 4) = errorCopy;
             _os_log_impl(&dword_228986000, v52, OS_LOG_TYPE_INFO, "Unable to insert data provenance : %{public}@", &buf, 0xCu);
           }
         }
@@ -312,14 +312,14 @@ LABEL_10:
         v50 = *MEMORY[0x277CCC2A0];
         if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
         {
-          v51 = a16;
-          if (a16)
+          errorCopy2 = error;
+          if (error)
           {
-            v51 = *a16;
+            errorCopy2 = *error;
           }
 
           LODWORD(buf) = 138543362;
-          *(&buf + 4) = v51;
+          *(&buf + 4) = errorCopy2;
           _os_log_impl(&dword_228986000, v50, OS_LOG_TYPE_INFO, "Unable to look up derived flags: %{public}@", &buf, 0xCu);
         }
 
@@ -334,14 +334,14 @@ LABEL_10:
     v40 = *MEMORY[0x277CCC2A0];
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_INFO))
     {
-      v41 = a16;
-      if (a16)
+      errorCopy3 = error;
+      if (error)
       {
-        v41 = *a16;
+        errorCopy3 = *error;
       }
 
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v41;
+      *(&buf + 4) = errorCopy3;
       _os_log_impl(&dword_228986000, v40, OS_LOG_TYPE_INFO, "Unable to look up data provenance: %{public}@", &buf, 0xCu);
     }
 
@@ -398,9 +398,9 @@ uint64_t __248__HDDataProvenanceEntity_insertOrLookupDataProvenanceForSyncProven
   return sqlite3_bind_int64(a2, 15, v4);
 }
 
-+ (id)originProvenanceForPersistentID:(int64_t)a3 database:(id)a4 error:(id *)a5
++ (id)originProvenanceForPersistentID:(int64_t)d database:(id)database error:(id *)error
 {
-  v7 = a4;
+  databaseCopy = database;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -412,12 +412,12 @@ uint64_t __248__HDDataProvenanceEntity_insertOrLookupDataProvenanceForSyncProven
   v11[1] = 3221225472;
   v11[2] = __73__HDDataProvenanceEntity_originProvenanceForPersistentID_database_error___block_invoke;
   v11[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v11[4] = a3;
+  v11[4] = d;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__HDDataProvenanceEntity_originProvenanceForPersistentID_database_error___block_invoke_2;
   v10[3] = &unk_278614620;
-  [v7 executeSQL:@"SELECT sync_provenance error:origin_product_type bindingHandler:origin_build enumerationHandler:{source_version, tz_name, source_id, device_id, contributor_id, origin_major_version, origin_minor_version, origin_patch_version, sync_identity FROM data_provenances WHERE ROWID = ?", a5, v11, v10}];
+  [databaseCopy executeSQL:@"SELECT sync_provenance error:origin_product_type bindingHandler:origin_build enumerationHandler:{source_version, tz_name, source_id, device_id, contributor_id, origin_major_version, origin_minor_version, origin_patch_version, sync_identity FROM data_provenances WHERE ROWID = ?", error, v11, v10}];
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
 
@@ -469,26 +469,26 @@ BOOL __73__HDDataProvenanceEntity_originProvenanceForPersistentID_database_error
   return v9 != 0;
 }
 
-+ (id)deviceIDsForSourceIDs:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)deviceIDsForSourceIDs:(id)ds profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  dsCopy = ds;
   v9 = MEMORY[0x277CBEB58];
-  v10 = a4;
+  profileCopy = profile;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 database];
+  database = [profileCopy database];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__HDDataProvenanceEntity_deviceIDsForSourceIDs_profile_error___block_invoke;
   v17[3] = &unk_278614698;
-  v18 = v8;
-  v20 = a1;
+  v18 = dsCopy;
+  selfCopy = self;
   v13 = v11;
   v19 = v13;
-  v14 = v8;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v17];
+  v14 = dsCopy;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a5)
+  if (error)
   {
     v15 = [v13 copy];
   }
@@ -720,26 +720,26 @@ LABEL_3:
   return 1;
 }
 
-+ (id)sourceIDsWithProvenanceFromSourceIDs:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)sourceIDsWithProvenanceFromSourceIDs:(id)ds profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  dsCopy = ds;
   v9 = MEMORY[0x277CBEB58];
-  v10 = a4;
+  profileCopy = profile;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 database];
+  database = [profileCopy database];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__HDDataProvenanceEntity_sourceIDsWithProvenanceFromSourceIDs_profile_error___block_invoke;
   v17[3] = &unk_278614698;
-  v18 = v8;
-  v20 = a1;
+  v18 = dsCopy;
+  selfCopy = self;
   v13 = v11;
   v19 = v13;
-  v14 = v8;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v12 error:a5 block:v17];
+  v14 = dsCopy;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a5)
+  if (error)
   {
     v15 = [v13 copy];
   }
@@ -805,12 +805,12 @@ uint64_t __66__HDDataProvenanceEntity__derivedFlagsForSourceID_database_error___
   return 1;
 }
 
-+ (BOOL)validateEntityWithProfile:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5
++ (BOOL)validateEntityWithProfile:(id)profile error:(id *)error validationErrorHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  profileCopy = profile;
   v9 = objc_opt_self();
-  v10 = [v8 database];
+  database = [profileCopy database];
 
   v11 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
   v14[0] = MEMORY[0x277D85DD0];
@@ -819,11 +819,11 @@ uint64_t __66__HDDataProvenanceEntity__derivedFlagsForSourceID_database_error___
   v14[3] = &unk_278615178;
   v16 = sel__validateUnprotectedDatabaseReferencesOnProfile_error_errorHandler_;
   v17 = v9;
-  v15 = v7;
-  v12 = v7;
-  LOBYTE(a4) = [v10 performTransactionWithContext:v11 error:a4 block:v14 inaccessibilityHandler:0];
+  v15 = handlerCopy;
+  v12 = handlerCopy;
+  LOBYTE(error) = [database performTransactionWithContext:v11 error:error block:v14 inaccessibilityHandler:0];
 
-  return a4;
+  return error;
 }
 
 @end

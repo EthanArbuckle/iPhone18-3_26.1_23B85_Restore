@@ -1,18 +1,18 @@
 @interface _UISceneSafeAreaClientComponent
 - (BOOL)safeAreaEdgeInsetsPopulated;
-- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)a3;
-- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)a3;
+- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)orientation;
+- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)orientation;
 - (id)settings;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)updateSettings:(id)a3;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)updateSettings:(id)settings;
 @end
 
 @implementation _UISceneSafeAreaClientComponent
 
 - (BOOL)safeAreaEdgeInsetsPopulated
 {
-  v2 = [(_UISceneSafeAreaClientComponent *)self settings];
-  v3 = [v2 valueForProperty:sel_safeAreaEdgeInsetResolver expectedClass:objc_opt_class()];
+  settings = [(_UISceneSafeAreaClientComponent *)self settings];
+  v3 = [settings valueForProperty:sel_safeAreaEdgeInsetResolver expectedClass:objc_opt_class()];
   v4 = v3 != 0;
 
   return v4;
@@ -20,29 +20,29 @@
 
 - (id)settings
 {
-  v2 = [(FBSSceneComponent *)self scene];
-  v3 = [v2 settings];
+  scene = [(FBSSceneComponent *)self scene];
+  settings = [scene settings];
 
-  return v3;
+  return settings;
 }
 
-- (void)updateSettings:(id)a3
+- (void)updateSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(FBSSceneComponent *)self hostScene];
-  [v5 updateSettings:v4];
+  settingsCopy = settings;
+  hostScene = [(FBSSceneComponent *)self hostScene];
+  [hostScene updateSettings:settingsCopy];
 }
 
-- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)safeAreaEdgeInsetsForOrientation:(int64_t)orientation
 {
-  v5 = [(_UISceneSafeAreaClientComponent *)self settings];
-  v6 = [v5 safeAreaEdgeInsetResolver];
+  settings = [(_UISceneSafeAreaClientComponent *)self settings];
+  safeAreaEdgeInsetResolver = [settings safeAreaEdgeInsetResolver];
 
-  if (v6)
+  if (safeAreaEdgeInsetResolver)
   {
-    v7 = [(_UISceneSafeAreaClientComponent *)self settings];
-    v8 = [v7 safeAreaEdgeInsetResolver];
-    [v8 safeAreaEdgeInsetsForOrientation:a3];
+    settings2 = [(_UISceneSafeAreaClientComponent *)self settings];
+    safeAreaEdgeInsetResolver2 = [settings2 safeAreaEdgeInsetResolver];
+    [safeAreaEdgeInsetResolver2 safeAreaEdgeInsetsForOrientation:orientation];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -68,19 +68,19 @@
   return result;
 }
 
-- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)a3
+- (_UICornerInsets)safeAreaCornerInsetsForOrientation:(SEL)orientation
 {
-  v7 = [(_UISceneSafeAreaClientComponent *)self settings];
-  v8 = [v7 safeAreaCornerInsetResolver];
+  settings = [(_UISceneSafeAreaClientComponent *)self settings];
+  safeAreaCornerInsetResolver = [settings safeAreaCornerInsetResolver];
 
-  if (v8)
+  if (safeAreaCornerInsetResolver)
   {
-    v12 = [(_UISceneSafeAreaClientComponent *)self settings];
-    v10 = [v12 safeAreaCornerInsetResolver];
-    v11 = v10;
-    if (v10)
+    settings2 = [(_UISceneSafeAreaClientComponent *)self settings];
+    safeAreaCornerInsetResolver2 = [settings2 safeAreaCornerInsetResolver];
+    v11 = safeAreaCornerInsetResolver2;
+    if (safeAreaCornerInsetResolver2)
     {
-      [v10 safeAreaCornerInsetsForOrientation:a4];
+      [safeAreaCornerInsetResolver2 safeAreaCornerInsetsForOrientation:a4];
     }
 
     else
@@ -103,27 +103,27 @@
   return result;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 settingsDiff];
-  v8 = [v7 containsProperty:sel_safeAreaEdgeInsetResolver];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v8 = [settingsDiff containsProperty:sel_safeAreaEdgeInsetResolver];
 
-  v9 = [v6 settingsDiff];
-  v10 = [v9 containsProperty:sel_safeAreaCornerInsetResolver];
+  settingsDiff2 = [settingsCopy settingsDiff];
+  v10 = [settingsDiff2 containsProperty:sel_safeAreaCornerInsetResolver];
 
   if ((v8 & 1) != 0 || v10)
   {
-    v11 = [v6 transitionContext];
+    transitionContext = [settingsCopy transitionContext];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59___UISceneSafeAreaClientComponent_scene_didUpdateSettings___block_invoke;
     v12[3] = &unk_1E7123860;
-    v13 = v5;
+    v13 = sceneCopy;
     v14 = v8;
     v15 = v10;
-    _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v11, v12, 0);
+    _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(transitionContext, v12, 0);
   }
 }
 

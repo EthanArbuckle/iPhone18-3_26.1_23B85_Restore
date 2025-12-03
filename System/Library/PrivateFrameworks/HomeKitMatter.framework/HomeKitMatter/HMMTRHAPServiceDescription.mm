@@ -1,12 +1,12 @@
 @interface HMMTRHAPServiceDescription
-+ (id)descriptionsDictionaryFromAccessoryInfo:(id)a3;
-- (HMMTRHAPServiceDescription)initWithType:(id)a3 linkedServiceTypes:(id)a4 endpoint:(id)a5 name:(id)a6 optionalServiceLabelIndexIncluded:(BOOL)a7;
++ (id)descriptionsDictionaryFromAccessoryInfo:(id)info;
+- (HMMTRHAPServiceDescription)initWithType:(id)type linkedServiceTypes:(id)types endpoint:(id)endpoint name:(id)name optionalServiceLabelIndexIncluded:(BOOL)included;
 - (id)attributeDescriptions;
-- (id)padCharacteristicIDWithZeros:(id)a3;
-- (void)addFeatureMapForCharacteristic:(id)a3 featureMap:(id)a4;
-- (void)addMandatoryCharacteristic:(id)a3;
-- (void)addOptionalCharacteristic:(id)a3;
-- (void)removeCharacteristic:(id)a3;
+- (id)padCharacteristicIDWithZeros:(id)zeros;
+- (void)addFeatureMapForCharacteristic:(id)characteristic featureMap:(id)map;
+- (void)addMandatoryCharacteristic:(id)characteristic;
+- (void)addOptionalCharacteristic:(id)characteristic;
+- (void)removeCharacteristic:(id)characteristic;
 @end
 
 @implementation HMMTRHAPServiceDescription
@@ -15,36 +15,36 @@
 {
   v30[8] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v29 = [(HMMTRHAPServiceDescription *)self serviceType];
-  v28 = [v3 initWithName:@"ServiceType" value:v29];
+  serviceType = [(HMMTRHAPServiceDescription *)self serviceType];
+  v28 = [v3 initWithName:@"ServiceType" value:serviceType];
   v30[0] = v28;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v27 = [(HMMTRHAPServiceDescription *)self endpoint];
-  v26 = [v4 initWithName:@"Endpoint" value:v27];
+  endpoint = [(HMMTRHAPServiceDescription *)self endpoint];
+  v26 = [v4 initWithName:@"Endpoint" value:endpoint];
   v30[1] = v26;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v25 = [(HMMTRHAPServiceDescription *)self name];
-  v24 = [v5 initWithName:@"Name" value:v25];
+  name = [(HMMTRHAPServiceDescription *)self name];
+  v24 = [v5 initWithName:@"Name" value:name];
   v30[2] = v24;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v23 = [(HMMTRHAPServiceDescription *)self requiredCharacteristics];
-  v7 = [v6 initWithName:@"RequiredCharacteristics" value:v23];
+  requiredCharacteristics = [(HMMTRHAPServiceDescription *)self requiredCharacteristics];
+  v7 = [v6 initWithName:@"RequiredCharacteristics" value:requiredCharacteristics];
   v30[3] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMMTRHAPServiceDescription *)self optionalCharacteristics];
-  v10 = [v8 initWithName:@"OptionalCharacteristics" value:v9];
+  optionalCharacteristics = [(HMMTRHAPServiceDescription *)self optionalCharacteristics];
+  v10 = [v8 initWithName:@"OptionalCharacteristics" value:optionalCharacteristics];
   v30[4] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMMTRHAPServiceDescription *)self characteristicFeatureMap];
-  v13 = [v11 initWithName:@"CharacteristicFeatureMap" value:v12];
+  characteristicFeatureMap = [(HMMTRHAPServiceDescription *)self characteristicFeatureMap];
+  v13 = [v11 initWithName:@"CharacteristicFeatureMap" value:characteristicFeatureMap];
   v30[5] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMMTRHAPServiceDescription optionalServiceLabelIndexIncluded](self, "optionalServiceLabelIndexIncluded")}];
   v16 = [v14 initWithName:@"OptionalServiceLabelIndexIncluded" value:v15];
   v30[6] = v16;
   v17 = objc_alloc(MEMORY[0x277D0F778]);
-  v18 = [(HMMTRHAPServiceDescription *)self linkedServiceTypes];
-  v19 = [v17 initWithName:@"LinkedServiceTypes" value:v18];
+  linkedServiceTypes = [(HMMTRHAPServiceDescription *)self linkedServiceTypes];
+  v19 = [v17 initWithName:@"LinkedServiceTypes" value:linkedServiceTypes];
   v30[7] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:8];
 
@@ -53,10 +53,10 @@
   return v20;
 }
 
-- (id)padCharacteristicIDWithZeros:(id)a3
+- (id)padCharacteristicIDWithZeros:(id)zeros
 {
-  v3 = a3;
-  v4 = [v3 length];
+  zerosCopy = zeros;
+  v4 = [zerosCopy length];
   if ((v4 - 1) > 7)
   {
     v5 = 0;
@@ -64,15 +64,15 @@
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:off_2786EC680[v4 - 1], v3, "-0000-1000-8000-0026BB765291"];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:off_2786EC680[v4 - 1], zerosCopy, "-0000-1000-8000-0026BB765291"];
   }
 
   return v5;
 }
 
-- (void)removeCharacteristic:(id)a3
+- (void)removeCharacteristic:(id)characteristic
 {
-  v11 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:a3];
+  v11 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:characteristic];
   if (v11)
   {
     if ([(NSArray *)self->_requiredCharacteristics containsObject:v11])
@@ -103,22 +103,22 @@
   }
 }
 
-- (void)addFeatureMapForCharacteristic:(id)a3 featureMap:(id)a4
+- (void)addFeatureMapForCharacteristic:(id)characteristic featureMap:(id)map
 {
-  v9 = a4;
-  v6 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:a3];
-  if (v9 && v6)
+  mapCopy = map;
+  v6 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:characteristic];
+  if (mapCopy && v6)
   {
     v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:self->_characteristicFeatureMap];
-    [(NSDictionary *)v7 setObject:v9 forKey:v6];
+    [(NSDictionary *)v7 setObject:mapCopy forKey:v6];
     characteristicFeatureMap = self->_characteristicFeatureMap;
     self->_characteristicFeatureMap = v7;
   }
 }
 
-- (void)addMandatoryCharacteristic:(id)a3
+- (void)addMandatoryCharacteristic:(id)characteristic
 {
-  v4 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:a3];
+  v4 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:characteristic];
   if (v4)
   {
     v7 = v4;
@@ -131,9 +131,9 @@
   }
 }
 
-- (void)addOptionalCharacteristic:(id)a3
+- (void)addOptionalCharacteristic:(id)characteristic
 {
-  v4 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:a3];
+  v4 = [(HMMTRHAPServiceDescription *)self padCharacteristicIDWithZeros:characteristic];
   if (v4)
   {
     v7 = v4;
@@ -146,22 +146,22 @@
   }
 }
 
-- (HMMTRHAPServiceDescription)initWithType:(id)a3 linkedServiceTypes:(id)a4 endpoint:(id)a5 name:(id)a6 optionalServiceLabelIndexIncluded:(BOOL)a7
+- (HMMTRHAPServiceDescription)initWithType:(id)type linkedServiceTypes:(id)types endpoint:(id)endpoint name:(id)name optionalServiceLabelIndexIncluded:(BOOL)included
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  typeCopy = type;
+  typesCopy = types;
+  endpointCopy = endpoint;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = HMMTRHAPServiceDescription;
   v17 = [(HMMTRHAPServiceDescription *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_serviceType, a3);
-    objc_storeStrong(&v18->_linkedServiceTypes, a4);
-    objc_storeStrong(&v18->_endpoint, a5);
-    objc_storeStrong(&v18->_name, a6);
+    objc_storeStrong(&v17->_serviceType, type);
+    objc_storeStrong(&v18->_linkedServiceTypes, types);
+    objc_storeStrong(&v18->_endpoint, endpoint);
+    objc_storeStrong(&v18->_name, name);
     optionalCharacteristics = v18->_optionalCharacteristics;
     v20 = MEMORY[0x277CBEBF8];
     v18->_optionalCharacteristics = MEMORY[0x277CBEBF8];
@@ -172,22 +172,22 @@
     characteristicFeatureMap = v18->_characteristicFeatureMap;
     v18->_characteristicFeatureMap = MEMORY[0x277CBEC10];
 
-    v18->_optionalServiceLabelIndexIncluded = a7;
+    v18->_optionalServiceLabelIndexIncluded = included;
   }
 
   return v18;
 }
 
-+ (id)descriptionsDictionaryFromAccessoryInfo:(id)a3
++ (id)descriptionsDictionaryFromAccessoryInfo:(id)info
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = MEMORY[0x277CBEB18];
-  v48 = v3;
-  v5 = [v3 accessoryInfoDictionary];
-  v6 = [v5 allKeys];
-  v7 = [v4 arrayWithArray:v6];
+  v48 = infoCopy;
+  accessoryInfoDictionary = [infoCopy accessoryInfoDictionary];
+  allKeys = [accessoryInfoDictionary allKeys];
+  v7 = [v4 arrayWithArray:allKeys];
 
   [v7 sortUsingComparator:&__block_literal_global];
   v46 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -218,7 +218,7 @@
         v12 = [v48 partsListForEndpoint:v11];
         v13 = [v48 serviceDescriptionsForEndpoint:v11];
         v14 = objc_autoreleasePoolPush();
-        v15 = a1;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
@@ -264,7 +264,7 @@
               v22 = *(*(&v53 + 1) + 8 * i);
               v23 = [v48 serviceDescriptionsForEndpoint:v22];
               v24 = objc_autoreleasePoolPush();
-              v25 = v15;
+              v25 = selfCopy;
               v26 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
               {
@@ -282,8 +282,8 @@
               if (v23)
               {
                 [v47 addObjectsFromArray:v23];
-                v28 = [v22 stringValue];
-                [v46 addObject:v28];
+                stringValue = [v22 stringValue];
+                [v46 addObject:stringValue];
               }
             }
 

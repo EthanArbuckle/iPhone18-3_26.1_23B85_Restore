@@ -1,82 +1,82 @@
 @interface CRLWPDragAndDropHelper
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5;
-- (BOOL)p_allowedToHandleDragInfo:(id)a3;
-- (BOOL)p_importingDrawablesOrMoviesFromDragInfo:(id)a3;
-- (BOOL)p_insertPanelIsDragSourceFromDragInfo:(id)a3;
-- (BOOL)p_wantsToPreventDragOperationForDragInfo:(id)a3 atPoint:(CGPoint)a4;
-- (CGPoint)adjustedUnscaledPoint:(CGPoint)a3;
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (BOOL)p_allowedToHandleDragInfo:(id)info;
+- (BOOL)p_importingDrawablesOrMoviesFromDragInfo:(id)info;
+- (BOOL)p_insertPanelIsDragSourceFromDragInfo:(id)info;
+- (BOOL)p_wantsToPreventDragOperationForDragInfo:(id)info atPoint:(CGPoint)point;
+- (CGPoint)adjustedUnscaledPoint:(CGPoint)point;
 - (CGPoint)dragAndDropNaturalPoint;
-- (CRLWPDragAndDropHelper)initWithOwningRep:(id)a3;
+- (CRLWPDragAndDropHelper)initWithOwningRep:(id)rep;
 - (CRLWPDragAndDropHelperOwning)owningRep;
-- (id)p_sourceTextEditorForDragInfo:(id)a3;
-- (id)sourceSelectionForDragInfo:(id)a3;
-- (id)sourceSelectionPathForDragInfo:(id)a3;
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4;
-- (unint64_t)p_resolveDragOperationFromMask:(unint64_t)a3;
-- (unint64_t)sourceChangeCountForDragInfo:(id)a3;
+- (id)p_sourceTextEditorForDragInfo:(id)info;
+- (id)sourceSelectionForDragInfo:(id)info;
+- (id)sourceSelectionPathForDragInfo:(id)info;
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (unint64_t)p_resolveDragOperationFromMask:(unint64_t)mask;
+- (unint64_t)sourceChangeCountForDragInfo:(id)info;
 @end
 
 @implementation CRLWPDragAndDropHelper
 
-- (CRLWPDragAndDropHelper)initWithOwningRep:(id)a3
+- (CRLWPDragAndDropHelper)initWithOwningRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v8.receiver = self;
   v8.super_class = CRLWPDragAndDropHelper;
   v5 = [(CRLWPDragAndDropHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owningRep, v4);
+    objc_storeWeak(&v5->_owningRep, repCopy);
     v6->_dragAndDropNaturalPoint = vdupq_n_s64(0x7FF8000000000000uLL);
   }
 
   return v6;
 }
 
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [v7 dragOperationMask];
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  dragOperationMask = [infoCopy dragOperationMask];
   [(CRLWPDragAndDropHelper *)self adjustedUnscaledPoint:x, y];
   v10 = v9;
   v12 = v11;
-  v13 = [(CRLWPDragAndDropHelper *)self owningRep];
-  [v13 convertNaturalPointFromUnscaledCanvas:{v10, v12}];
+  owningRep = [(CRLWPDragAndDropHelper *)self owningRep];
+  [owningRep convertNaturalPointFromUnscaledCanvas:{v10, v12}];
   v15 = v14;
   v17 = v16;
 
   v18 = 0;
-  if (![(CRLWPDragAndDropHelper *)self p_allowedToHandleDragInfo:v7]|| !v8)
+  if (![(CRLWPDragAndDropHelper *)self p_allowedToHandleDragInfo:infoCopy]|| !dragOperationMask)
   {
     goto LABEL_61;
   }
 
-  v19 = [(CRLWPDragAndDropHelper *)self p_itemSourceForDragInfo:v7];
+  v19 = [(CRLWPDragAndDropHelper *)self p_itemSourceForDragInfo:infoCopy];
   v20 = objc_opt_class();
-  v21 = [v7 inProcessDraggingSources];
-  v22 = [v21 firstObject];
-  v23 = sub_100014370(v20, v22);
+  inProcessDraggingSources = [infoCopy inProcessDraggingSources];
+  firstObject = [inProcessDraggingSources firstObject];
+  v23 = sub_100014370(v20, firstObject);
 
-  v24 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v25 = [v24 storage];
-  v26 = [v23 storage];
-  v27 = v26;
-  v72 = v8;
-  if (v25 == v26)
+  owningRep2 = [(CRLWPDragAndDropHelper *)self owningRep];
+  storage = [owningRep2 storage];
+  storage2 = [v23 storage];
+  v27 = storage2;
+  v72 = dragOperationMask;
+  if (storage == storage2)
   {
     v70 = v23;
     v29 = v19;
-    v30 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v31 = [v30 storage];
-    v32 = [v31 changeCount];
-    v33 = [(CRLWPDragAndDropHelper *)self sourceChangeCountForDragInfo:v7];
+    owningRep3 = [(CRLWPDragAndDropHelper *)self owningRep];
+    storage3 = [owningRep3 storage];
+    changeCount = [storage3 changeCount];
+    v33 = [(CRLWPDragAndDropHelper *)self sourceChangeCountForDragInfo:infoCopy];
 
-    if (v32 == v33)
+    if (changeCount == v33)
     {
-      v28 = [(CRLWPDragAndDropHelper *)self sourceSelectionForDragInfo:v7];
+      v28 = [(CRLWPDragAndDropHelper *)self sourceSelectionForDragInfo:infoCopy];
     }
 
     else
@@ -86,7 +86,7 @@
 
     v19 = v29;
     v23 = v70;
-    v8 = v72;
+    dragOperationMask = v72;
   }
 
   else
@@ -96,37 +96,37 @@
   }
 
   v34 = v28;
-  if ([(CRLWPDragAndDropHelper *)self p_insertPanelIsDragSourceFromDragInfo:v7])
+  if ([(CRLWPDragAndDropHelper *)self p_insertPanelIsDragSourceFromDragInfo:infoCopy])
   {
     v35 = 0;
     goto LABEL_45;
   }
 
   v71 = v19;
-  v36 = [v23 storage];
-  v37 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v38 = [v37 storage];
-  v39 = v38;
-  if (v36 != v38 || !v34)
+  storage4 = [v23 storage];
+  owningRep4 = [(CRLWPDragAndDropHelper *)self owningRep];
+  storage5 = [owningRep4 storage];
+  v39 = storage5;
+  if (storage4 != storage5 || !v34)
   {
 
     goto LABEL_16;
   }
 
-  v40 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v41 = [v40 isDragPoint:v34 inSelection:1 includeEndpoints:{v15, v17}];
+  owningRep5 = [(CRLWPDragAndDropHelper *)self owningRep];
+  v41 = [owningRep5 isDragPoint:v34 inSelection:1 includeEndpoints:{v15, v17}];
 
   if ((v41 & 1) == 0)
   {
 LABEL_16:
-    v42 = [v23 storage];
-    v43 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v44 = [v43 storage];
-    v45 = v44;
-    if (v42 == v44 && v34)
+    storage6 = [v23 storage];
+    owningRep6 = [(CRLWPDragAndDropHelper *)self owningRep];
+    storage7 = [owningRep6 storage];
+    v45 = storage7;
+    if (storage6 == storage7 && v34)
     {
-      v46 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v47 = [v46 isDragPoint:v34 inSelection:0 includeEndpoints:{v15, v17}];
+      owningRep7 = [(CRLWPDragAndDropHelper *)self owningRep];
+      v47 = [owningRep7 isDragPoint:v34 inSelection:0 includeEndpoints:{v15, v17}];
 
       if (v47)
       {
@@ -139,35 +139,35 @@ LABEL_19:
     else
     {
 
-      if (v42 == v45)
+      if (storage6 == v45)
       {
         goto LABEL_19;
       }
     }
 
-    v48 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v49 = [v48 storageForDragDropOperation];
+    owningRep8 = [(CRLWPDragAndDropHelper *)self owningRep];
+    storageForDragDropOperation = [owningRep8 storageForDragDropOperation];
 
-    v8 = v72;
-    if (v49)
+    dragOperationMask = v72;
+    if (storageForDragDropOperation)
     {
-      v50 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v51 = [v50 storage];
+      owningRep9 = [(CRLWPDragAndDropHelper *)self owningRep];
+      storage8 = [owningRep9 storage];
 
-      if (v51 == v49)
+      if (storage8 == storageForDragDropOperation)
       {
-        v55 = [(CRLWPDragAndDropHelper *)self owningRep];
-        v54 = [v55 selectionForDragAndDropNaturalPoint:{v15, v17}];
+        owningRep10 = [(CRLWPDragAndDropHelper *)self owningRep];
+        v54 = [owningRep10 selectionForDragAndDropNaturalPoint:{v15, v17}];
       }
 
       else
       {
-        v52 = [v49 range];
-        v54 = [CRLWPSelection selectionWithRange:v52, v53];
+        range = [storageForDragDropOperation range];
+        v54 = [CRLWPSelection selectionWithRange:range, v53];
       }
 
-      v56 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v57 = [v56 textEditorForDropIntoStorage:v49];
+      owningRep11 = [(CRLWPDragAndDropHelper *)self owningRep];
+      v57 = [owningRep11 textEditorForDropIntoStorage:storageForDragDropOperation];
 
       if (!v57)
       {
@@ -198,8 +198,8 @@ LABEL_19:
         [CRLAssertionHandler handleFailureInFunction:v59 file:v60 lineNumber:146 isFatal:0 description:"invalid nil value for '%{public}s'", "targetTextEditor"];
       }
 
-      v61 = [v7 platformDraggingInfo];
-      v62 = [v57 canPasteWithItemSource:v71 selection:v54 sender:v61];
+      platformDraggingInfo = [infoCopy platformDraggingInfo];
+      v62 = [v57 canPasteWithItemSource:v71 selection:v54 sender:platformDraggingInfo];
 
       if (v62)
       {
@@ -221,7 +221,7 @@ LABEL_19:
         v35 = 0;
       }
 
-      v8 = v72;
+      dragOperationMask = v72;
     }
 
     else
@@ -237,12 +237,12 @@ LABEL_19:
   v35 = 64;
 LABEL_20:
   v19 = v71;
-  v8 = v72;
+  dragOperationMask = v72;
 LABEL_45:
 
   if (v35)
   {
-    if ([(CRLWPDragAndDropHelper *)self p_wantsToPreventDragOperationForDragInfo:v7 atPoint:v15, v17])
+    if ([(CRLWPDragAndDropHelper *)self p_wantsToPreventDragOperationForDragInfo:infoCopy atPoint:v15, v17])
     {
       v18 = 64;
     }
@@ -252,7 +252,7 @@ LABEL_45:
       v18 = v35;
     }
 
-    if ((v18 & 0xFFFFFFFFFFFFFFBFLL) != 0 && (v18 & v8) == 0)
+    if ((v18 & 0xFFFFFFFFFFFFFFBFLL) != 0 && (v18 & dragOperationMask) == 0)
     {
       v64 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -274,7 +274,7 @@ LABEL_45:
         v81 = 2048;
         v82 = v18;
         v83 = 2048;
-        v84 = v8;
+        v84 = dragOperationMask;
         _os_log_error_impl(&_mh_execute_header, v65, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Drag operation %zi not supported by the sender with mask %zi.", buf, 0x36u);
       }
 
@@ -291,7 +291,7 @@ LABEL_45:
 
       v67 = [NSString stringWithUTF8String:"[CRLWPDragAndDropHelper dragOperationForDragInfo:atUnscaledPoint:]"];
       v68 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/CRLWPDragAndDropHelper.m"];
-      [CRLAssertionHandler handleFailureInFunction:v67 file:v68 lineNumber:179 isFatal:0 description:"Drag operation %zi not supported by the sender with mask %zi.", v18, v8];
+      [CRLAssertionHandler handleFailureInFunction:v67 file:v68 lineNumber:179 isFatal:0 description:"Drag operation %zi not supported by the sender with mask %zi.", v18, dragOperationMask];
     }
   }
 
@@ -305,44 +305,44 @@ LABEL_61:
   return v18;
 }
 
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   [(CRLWPDragAndDropHelper *)self adjustedUnscaledPoint:x, y];
   v10 = v9;
   v12 = v11;
-  v13 = [(CRLWPDragAndDropHelper *)self owningRep];
-  [v13 convertNaturalPointFromUnscaledCanvas:{v10, v12}];
+  owningRep = [(CRLWPDragAndDropHelper *)self owningRep];
+  [owningRep convertNaturalPointFromUnscaledCanvas:{v10, v12}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v19 = [v18 interactiveCanvasController];
+  owningRep2 = [(CRLWPDragAndDropHelper *)self owningRep];
+  interactiveCanvasController = [owningRep2 interactiveCanvasController];
 
-  v20 = [v19 editorController];
-  v21 = [v20 selectionPath];
+  editorController = [interactiveCanvasController editorController];
+  selectionPath = [editorController selectionPath];
 
-  v122 = [(CRLWPDragAndDropHelper *)self p_itemSourceForDragInfo:v8];
-  v22 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v23 = [v22 textEditor];
+  v122 = [(CRLWPDragAndDropHelper *)self p_itemSourceForDragInfo:infoCopy];
+  owningRep3 = [(CRLWPDragAndDropHelper *)self owningRep];
+  textEditor = [owningRep3 textEditor];
 
-  if (v23)
+  if (textEditor)
   {
-    v24 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v25 = [v24 textEditor];
+    owningRep4 = [(CRLWPDragAndDropHelper *)self owningRep];
+    textEditor2 = [owningRep4 textEditor];
   }
 
   else
   {
-    v25 = [(CRLWPDragAndDropHelper *)self p_sourceTextEditorForDragInfo:v8];
+    textEditor2 = [(CRLWPDragAndDropHelper *)self p_sourceTextEditorForDragInfo:infoCopy];
   }
 
-  v123 = v8;
-  if (v25)
+  v123 = infoCopy;
+  if (textEditor2)
   {
-    v26 = [(CRLWPDragAndDropHelper *)self sourceSelectionForDragInfo:v8];
+    v26 = [(CRLWPDragAndDropHelper *)self sourceSelectionForDragInfo:infoCopy];
     if (!v26)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -412,7 +412,7 @@ LABEL_61:
     v26 = 0;
   }
 
-  if ([(CRLWPDragAndDropHelper *)self dragIsStorageLocal]&& [(CRLWPDragAndDropHelper *)self p_wantsToPreventDragOperationForDragInfo:v8 atPoint:v15, v17])
+  if ([(CRLWPDragAndDropHelper *)self dragIsStorageLocal]&& [(CRLWPDragAndDropHelper *)self p_wantsToPreventDragOperationForDragInfo:infoCopy atPoint:v15, v17])
   {
     v34 = 0;
     v35 = v122;
@@ -420,28 +420,28 @@ LABEL_61:
 
   else
   {
-    v36 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v37 = [v36 storageForDragDropOperation];
+    owningRep5 = [(CRLWPDragAndDropHelper *)self owningRep];
+    storageForDragDropOperation = [owningRep5 storageForDragDropOperation];
 
-    v38 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v39 = [v38 storage];
+    owningRep6 = [(CRLWPDragAndDropHelper *)self owningRep];
+    storage = [owningRep6 storage];
 
-    if (v39 == v37)
+    if (storage == storageForDragDropOperation)
     {
-      v42 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v121 = [v42 selectionForDragAndDropNaturalPoint:{v15, v17}];
+      owningRep7 = [(CRLWPDragAndDropHelper *)self owningRep];
+      v121 = [owningRep7 selectionForDragAndDropNaturalPoint:{v15, v17}];
     }
 
     else
     {
-      v40 = [v37 range];
-      v121 = [CRLWPSelection selectionWithRange:v40, v41];
+      range = [storageForDragDropOperation range];
+      v121 = [CRLWPSelection selectionWithRange:range, v41];
     }
 
-    v43 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v44 = [v43 textEditorForDropIntoStorage:v37];
+    owningRep8 = [(CRLWPDragAndDropHelper *)self owningRep];
+    v44 = [owningRep8 textEditorForDropIntoStorage:storageForDragDropOperation];
 
-    v120 = v21;
+    v120 = selectionPath;
     v117 = v44;
     if (!v44)
     {
@@ -471,33 +471,33 @@ LABEL_61:
       v47 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/CRLWPDragAndDropHelper.m"];
       [CRLAssertionHandler handleFailureInFunction:v46 file:v47 lineNumber:267 isFatal:0 description:"invalid nil value for '%{public}s'", "targetTextEditor"];
 
-      v21 = v120;
+      selectionPath = v120;
     }
 
-    v48 = [v25 interactiveCanvasController];
+    interactiveCanvasController2 = [textEditor2 interactiveCanvasController];
 
-    v118 = v25;
-    v119 = v37;
-    if (v25 && v48 == v19 && -[CRLWPDragAndDropHelper p_resolveDragOperationFromMask:](self, "p_resolveDragOperationFromMask:", [v8 dragOperationMask]) == 2)
+    v118 = textEditor2;
+    v119 = storageForDragDropOperation;
+    if (textEditor2 && interactiveCanvasController2 == interactiveCanvasController && -[CRLWPDragAndDropHelper p_resolveDragOperationFromMask:](self, "p_resolveDragOperationFromMask:", [infoCopy dragOperationMask]) == 2)
     {
-      v49 = [v8 platformDraggingInfo];
-      v50 = [v49 items];
+      platformDraggingInfo = [infoCopy platformDraggingInfo];
+      items = [platformDraggingInfo items];
 
-      v113 = v50;
-      v51 = [v50 firstObject];
+      v113 = items;
+      firstObject = [items firstObject];
       v52 = objc_opt_class();
-      v112 = v51;
-      v53 = [v51 localObject];
-      v54 = sub_100014370(v52, v53);
+      v112 = firstObject;
+      localObject = [firstObject localObject];
+      v54 = sub_100014370(v52, localObject);
 
-      v116 = [v54 reverseSelectionPath];
-      v55 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v56 = [v55 commandController];
-      [v56 openGroup];
+      reverseSelectionPath = [v54 reverseSelectionPath];
+      owningRep9 = [(CRLWPDragAndDropHelper *)self owningRep];
+      commandController = [owningRep9 commandController];
+      [commandController openGroup];
 
-      v57 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v58 = [v57 commandController];
-      [v58 enableProgressiveEnqueuingInCurrentGroup];
+      owningRep10 = [(CRLWPDragAndDropHelper *)self owningRep];
+      commandController2 = [owningRep10 commandController];
+      [commandController2 enableProgressiveEnqueuingInCurrentGroup];
 
       if (([v26 isRange] & 1) == 0)
       {
@@ -528,37 +528,37 @@ LABEL_61:
         [CRLAssertionHandler handleFailureInFunction:v61 file:v62 lineNumber:298 isFatal:0 description:"source selection %@ is not a range", v26];
       }
 
-      v63 = [v26 range];
-      v64 = [v121 range];
+      range2 = [v26 range];
+      range3 = [v121 range];
       v111 = v65;
-      v114 = v64;
-      if (-[CRLWPDragAndDropHelper dragIsStorageLocal](self, "dragIsStorageLocal") && ([v26 containsCharacterAtIndex:v64 withOptions:3] & 1) != 0)
+      v114 = range3;
+      if (-[CRLWPDragAndDropHelper dragIsStorageLocal](self, "dragIsStorageLocal") && ([v26 containsCharacterAtIndex:range3 withOptions:3] & 1) != 0)
       {
         v66 = v120;
       }
 
       else
       {
-        v81 = [v25 storage];
-        v109 = [v81 length];
+        storage2 = [textEditor2 storage];
+        v109 = [storage2 length];
 
         v127[0] = _NSConcreteStackBlock;
         v127[1] = 3221225472;
         v127[2] = sub_1001616D4;
         v127[3] = &unk_10183AE28;
-        v82 = v25;
+        v82 = textEditor2;
         v128 = v82;
         v129 = v54;
         v83 = objc_retainBlock(v127);
         (v83[2])();
-        v84 = [v82 storage];
+        storage3 = [v82 storage];
 
-        if (v37 == v84)
+        if (storageForDragDropOperation == storage3)
         {
-          if (v63 < v114)
+          if (range2 < v114)
           {
-            v85 = [v82 storage];
-            v86 = [v85 length];
+            storage4 = [v82 storage];
+            v86 = [storage4 length];
 
             v87 = [v121 copyWithNewRange:{&v86[v114 - v109], v111}];
             v121 = v87;
@@ -573,47 +573,47 @@ LABEL_61:
         }
       }
 
-      v88 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v89 = [v88 textEditor];
-      v110 = 2 * (v25 == v89);
+      owningRep11 = [(CRLWPDragAndDropHelper *)self owningRep];
+      textEditor3 = [owningRep11 textEditor];
+      v110 = 2 * (textEditor2 == textEditor3);
 
-      if (([v66 isEqual:v116] & 1) == 0)
+      if (([v66 isEqual:reverseSelectionPath] & 1) == 0)
       {
-        v90 = [v25 storage];
+        storage5 = [textEditor2 storage];
 
-        if (v37 != v90)
+        if (storageForDragDropOperation != storage5)
         {
-          v91 = [(CRLWPDragAndDropHelper *)self owningRep];
-          v92 = [v91 interactiveCanvasController];
-          v93 = [v92 editorController];
-          [v93 setSelectionPath:v120];
+          owningRep12 = [(CRLWPDragAndDropHelper *)self owningRep];
+          interactiveCanvasController3 = [owningRep12 interactiveCanvasController];
+          editorController2 = [interactiveCanvasController3 editorController];
+          [editorController2 setSelectionPath:v120];
         }
       }
 
-      v94 = [v25 storage];
+      storage6 = [textEditor2 storage];
 
-      v95 = [v19 selectionModelTranslator];
-      if (v37 == v94)
+      selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+      if (storageForDragDropOperation == storage6)
       {
-        v101 = [v95 selectionPathForRange:objc_msgSend(v121 onStorage:"range") headCursorAffinity:0 tailCursorAffinity:{v37, 1, 2}];
+        v101 = [selectionModelTranslator selectionPathForRange:objc_msgSend(v121 onStorage:"range") headCursorAffinity:0 tailCursorAffinity:{storageForDragDropOperation, 1, 2}];
 
-        v99 = v63;
+        v99 = range2;
       }
 
       else
       {
-        v96 = [(CRLWPDragAndDropHelper *)self dragIsStorageLocal];
-        if (v96)
+        dragIsStorageLocal = [(CRLWPDragAndDropHelper *)self dragIsStorageLocal];
+        if (dragIsStorageLocal)
         {
           v97 = v114;
         }
 
         else
         {
-          v97 = v63;
+          v97 = range2;
         }
 
-        if (v96)
+        if (dragIsStorageLocal)
         {
           v98 = v111;
         }
@@ -623,15 +623,15 @@ LABEL_61:
           v98 = 0;
         }
 
-        [v25 storage];
-        v100 = v99 = v63;
-        v101 = [v95 selectionPathForRange:v97 onStorage:{v98, v100}];
+        [textEditor2 storage];
+        v100 = v99 = range2;
+        v101 = [selectionModelTranslator selectionPathForRange:v97 onStorage:{v98, v100}];
       }
 
-      v102 = [v19 selectionModelTranslator];
-      v103 = [v25 storage];
-      [v102 selectionPathForRange:v99 onStorage:0 headCursorAffinity:v103 tailCursorAffinity:{1, 2}];
-      v104 = v115 = v19;
+      selectionModelTranslator2 = [interactiveCanvasController selectionModelTranslator];
+      storage7 = [textEditor2 storage];
+      [selectionModelTranslator2 selectionPathForRange:v99 onStorage:0 headCursorAffinity:storage7 tailCursorAffinity:{1, 2}];
+      v104 = v115 = interactiveCanvasController;
 
       v105 = [[CRLCommandSelectionBehavior alloc] initWithCommitSelectionPath:v101 forwardSelectionPath:v101 reverseSelectionPath:v104 usePersistableCommitSelectionPath:1];
       v126[0] = _NSConcreteStackBlock;
@@ -641,42 +641,42 @@ LABEL_61:
       v126[4] = self;
       v126[5] = v105;
       v106 = objc_retainBlock(v126);
-      v107 = [v123 platformDraggingInfo];
+      platformDraggingInfo2 = [v123 platformDraggingInfo];
       v79 = v117;
       v80 = v121;
-      [v117 pasteWithItemSource:v122 selection:v121 sender:v107 selectRange:v110 dragBlock:v106];
+      [v117 pasteWithItemSource:v122 selection:v121 sender:platformDraggingInfo2 selectRange:v110 dragBlock:v106];
 
       v35 = v122;
-      v8 = v123;
+      infoCopy = v123;
 
-      v19 = v115;
-      v21 = v120;
+      interactiveCanvasController = v115;
+      selectionPath = v120;
     }
 
     else
     {
       v67 = v26;
-      v68 = v19;
-      v69 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v70 = [v69 textEditor];
-      v71 = v70 != 0;
+      v68 = interactiveCanvasController;
+      owningRep13 = [(CRLWPDragAndDropHelper *)self owningRep];
+      textEditor4 = [owningRep13 textEditor];
+      v71 = textEditor4 != 0;
 
-      if (!v70)
+      if (!textEditor4)
       {
-        v72 = [v68 editorController];
-        v73 = [v72 selectionPath];
+        editorController3 = [v68 editorController];
+        selectionPath2 = [editorController3 selectionPath];
 
-        v74 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:v73 reverseSelectionPath:v73];
-        v75 = [(CRLWPDragAndDropHelper *)self owningRep];
-        v76 = [v75 commandController];
-        [v76 openGroupWithSelectionBehavior:v74];
+        v74 = [[CRLCommandSelectionBehavior alloc] initWithForwardSelectionPath:selectionPath2 reverseSelectionPath:selectionPath2];
+        owningRep14 = [(CRLWPDragAndDropHelper *)self owningRep];
+        commandController3 = [owningRep14 commandController];
+        [commandController3 openGroupWithSelectionBehavior:v74];
 
-        v21 = v120;
-        v8 = v123;
+        selectionPath = v120;
+        infoCopy = v123;
       }
 
-      v77 = v70 != 0;
-      v78 = [v8 platformDraggingInfo];
+      v77 = textEditor4 != 0;
+      platformDraggingInfo3 = [infoCopy platformDraggingInfo];
       v124[0] = _NSConcreteStackBlock;
       v124[1] = 3221225472;
       v124[2] = sub_100161800;
@@ -686,61 +686,61 @@ LABEL_61:
       v79 = v117;
       v80 = v121;
       v35 = v122;
-      [v117 pasteWithItemSource:v122 selection:v121 sender:v78 selectRange:v77 dragBlock:v124];
+      [v117 pasteWithItemSource:v122 selection:v121 sender:platformDraggingInfo3 selectRange:v77 dragBlock:v124];
 
-      v19 = v68;
+      interactiveCanvasController = v68;
       v26 = v67;
     }
 
     v34 = 1;
-    v25 = v118;
+    textEditor2 = v118;
   }
 
   return v34;
 }
 
-- (unint64_t)sourceChangeCountForDragInfo:(id)a3
+- (unint64_t)sourceChangeCountForDragInfo:(id)info
 {
-  v3 = [a3 platformDraggingInfo];
-  v4 = [v3 items];
-  v5 = [v4 firstObject];
+  platformDraggingInfo = [info platformDraggingInfo];
+  items = [platformDraggingInfo items];
+  firstObject = [items firstObject];
   v6 = objc_opt_class();
-  v7 = [v5 localObject];
-  v8 = sub_100014370(v6, v7);
+  localObject = [firstObject localObject];
+  v8 = sub_100014370(v6, localObject);
 
-  v9 = [v8 changeCount];
-  return v9;
+  changeCount = [v8 changeCount];
+  return changeCount;
 }
 
-- (id)sourceSelectionForDragInfo:(id)a3
+- (id)sourceSelectionForDragInfo:(id)info
 {
-  v3 = [(CRLWPDragAndDropHelper *)self sourceSelectionPathForDragInfo:a3];
+  v3 = [(CRLWPDragAndDropHelper *)self sourceSelectionPathForDragInfo:info];
   v4 = [v3 mostSpecificSelectionOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)sourceSelectionPathForDragInfo:(id)a3
+- (id)sourceSelectionPathForDragInfo:(id)info
 {
-  v3 = [a3 platformDraggingInfo];
-  v4 = [v3 items];
-  v5 = [v4 firstObject];
+  platformDraggingInfo = [info platformDraggingInfo];
+  items = [platformDraggingInfo items];
+  firstObject = [items firstObject];
   v6 = objc_opt_class();
-  v7 = [v5 localObject];
-  v8 = sub_100014370(v6, v7);
+  localObject = [firstObject localObject];
+  v8 = sub_100014370(v6, localObject);
 
-  v9 = [v8 sourceSelectionPath];
+  sourceSelectionPath = [v8 sourceSelectionPath];
 
-  return v9;
+  return sourceSelectionPath;
 }
 
-- (CGPoint)adjustedUnscaledPoint:(CGPoint)a3
+- (CGPoint)adjustedUnscaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v6 = [v5 interactiveCanvasController];
-  [v6 viewScale];
+  y = point.y;
+  x = point.x;
+  owningRep = [(CRLWPDragAndDropHelper *)self owningRep];
+  interactiveCanvasController = [owningRep interactiveCanvasController];
+  [interactiveCanvasController viewScale];
   v8 = y + -27.0 / v7;
 
   v9 = x;
@@ -750,30 +750,30 @@ LABEL_61:
   return result;
 }
 
-- (BOOL)p_allowedToHandleDragInfo:(id)a3
+- (BOOL)p_allowedToHandleDragInfo:(id)info
 {
-  v4 = a3;
-  if ([(CRLWPDragAndDropHelper *)self p_insertPanelIsDragSourceFromDragInfo:v4])
+  infoCopy = info;
+  if ([(CRLWPDragAndDropHelper *)self p_insertPanelIsDragSourceFromDragInfo:infoCopy])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = ![(CRLWPDragAndDropHelper *)self p_importingDrawablesOrMoviesFromDragInfo:v4];
+    v5 = ![(CRLWPDragAndDropHelper *)self p_importingDrawablesOrMoviesFromDragInfo:infoCopy];
   }
 
   return v5;
 }
 
-- (BOOL)p_insertPanelIsDragSourceFromDragInfo:(id)a3
+- (BOOL)p_insertPanelIsDragSourceFromDragInfo:(id)info
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 inProcessDraggingSources];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inProcessDraggingSources = [info inProcessDraggingSources];
+  v4 = [inProcessDraggingSources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -784,7 +784,7 @@ LABEL_61:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inProcessDraggingSources);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -800,7 +800,7 @@ LABEL_61:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [inProcessDraggingSources countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -816,64 +816,64 @@ LABEL_12:
   return v10;
 }
 
-- (unint64_t)p_resolveDragOperationFromMask:(unint64_t)a3
+- (unint64_t)p_resolveDragOperationFromMask:(unint64_t)mask
 {
-  if ((a3 & 2) != 0)
+  if ((mask & 2) != 0)
   {
     return 2;
   }
 
   else
   {
-    return a3 & 1;
+    return mask & 1;
   }
 }
 
-- (BOOL)p_wantsToPreventDragOperationForDragInfo:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)p_wantsToPreventDragOperationForDragInfo:(id)info atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  if (![(CRLWPDragAndDropHelper *)self p_allowedToHandleDragInfo:v7])
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  if (![(CRLWPDragAndDropHelper *)self p_allowedToHandleDragInfo:infoCopy])
   {
     goto LABEL_11;
   }
 
-  v8 = [(CRLWPDragAndDropHelper *)self owningRep];
-  if (!v8)
+  owningRep = [(CRLWPDragAndDropHelper *)self owningRep];
+  if (!owningRep)
   {
     goto LABEL_15;
   }
 
-  v9 = v8;
+  v9 = owningRep;
   v10 = 0;
   do
   {
     v10 |= [v9 isLocked];
-    v11 = [v9 parentRep];
+    parentRep = [v9 parentRep];
 
-    v9 = v11;
+    v9 = parentRep;
   }
 
-  while (v11);
+  while (parentRep);
   if ((v10 & 1) == 0)
   {
 LABEL_15:
     if ([(CRLWPDragAndDropHelper *)self dragIsStorageLocal])
     {
-      v13 = [(CRLWPDragAndDropHelper *)self owningRep];
-      v14 = [v13 storage];
-      v15 = [v14 changeCount];
-      v16 = [(CRLWPDragAndDropHelper *)self sourceChangeCountForDragInfo:v7];
+      owningRep2 = [(CRLWPDragAndDropHelper *)self owningRep];
+      storage = [owningRep2 storage];
+      changeCount = [storage changeCount];
+      v16 = [(CRLWPDragAndDropHelper *)self sourceChangeCountForDragInfo:infoCopy];
 
-      if (v15 == v16)
+      if (changeCount == v16)
       {
-        v17 = [(CRLWPDragAndDropHelper *)self sourceSelectionForDragInfo:v7];
+        v17 = [(CRLWPDragAndDropHelper *)self sourceSelectionForDragInfo:infoCopy];
         if (v17)
         {
           v18 = v17;
-          v19 = [(CRLWPDragAndDropHelper *)self owningRep];
-          v12 = [v19 isDragPoint:v18 inSelection:0 includeEndpoints:{x, y}];
+          owningRep3 = [(CRLWPDragAndDropHelper *)self owningRep];
+          v12 = [owningRep3 isDragPoint:v18 inSelection:0 includeEndpoints:{x, y}];
 
           goto LABEL_12;
         }
@@ -891,28 +891,28 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)p_importingDrawablesOrMoviesFromDragInfo:(id)a3
+- (BOOL)p_importingDrawablesOrMoviesFromDragInfo:(id)info
 {
-  v3 = [a3 itemSource];
-  v4 = [v3 preferredImportableDataTypeDetectingImportableURLsInText:0];
+  itemSource = [info itemSource];
+  v4 = [itemSource preferredImportableDataTypeDetectingImportableURLsInText:0];
   LOBYTE(v5) = 0;
-  if (([v3 hasNativeBoardItems] & 1) == 0)
+  if (([itemSource hasNativeBoardItems] & 1) == 0)
   {
-    v5 = ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2) & ~[v3 hasNativeText];
+    v5 = ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2) & ~[itemSource hasNativeText];
   }
 
   return v5;
 }
 
-- (id)p_sourceTextEditorForDragInfo:(id)a3
+- (id)p_sourceTextEditorForDragInfo:(id)info
 {
-  v4 = [a3 platformDraggingInfo];
-  v5 = [v4 items];
+  platformDraggingInfo = [info platformDraggingInfo];
+  items = [platformDraggingInfo items];
 
-  v6 = [v5 firstObject];
+  firstObject = [items firstObject];
   v7 = objc_opt_class();
-  v8 = [v6 localObject];
-  v9 = sub_100014370(v7, v8);
+  localObject = [firstObject localObject];
+  v9 = sub_100014370(v7, localObject);
 
   if (!v9)
   {
@@ -920,9 +920,9 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  v34 = [v9 editorController];
-  v10 = [v9 sourceSelectionPath];
-  if (!v10)
+  editorController = [v9 editorController];
+  sourceSelectionPath = [v9 sourceSelectionPath];
+  if (!sourceSelectionPath)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -951,10 +951,10 @@ LABEL_12:
     [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:706 isFatal:0 description:"invalid nil value for '%{public}s'", "sourceSelectionPath"];
   }
 
-  v14 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v15 = [v14 interactiveCanvasController];
+  owningRep = [(CRLWPDragAndDropHelper *)self owningRep];
+  interactiveCanvasController = [owningRep interactiveCanvasController];
 
-  v16 = [v15 infosForSelectionPath:v10];
+  v16 = [interactiveCanvasController infosForSelectionPath:sourceSelectionPath];
   if ([v16 count] != 1)
   {
     v19 = 0;
@@ -962,39 +962,39 @@ LABEL_12:
   }
 
   v17 = objc_opt_class();
-  v18 = [v16 anyObject];
-  v19 = sub_100014370(v17, v18);
+  anyObject = [v16 anyObject];
+  v19 = sub_100014370(v17, anyObject);
 
   v20 = 0;
-  if (!v10 || !v19)
+  if (!sourceSelectionPath || !v19)
   {
     goto LABEL_21;
   }
 
-  v21 = [(CRLWPDragAndDropHelper *)self owningRep];
-  v22 = [v21 storage];
-  v23 = v22;
-  if (v19 == v22)
+  owningRep2 = [(CRLWPDragAndDropHelper *)self owningRep];
+  storage = [owningRep2 storage];
+  v23 = storage;
+  if (v19 == storage)
   {
-    v33 = [v9 changeCount];
-    v31 = [(CRLWPDragAndDropHelper *)self owningRep];
-    v25 = [v31 storage];
-    v32 = [v25 changeCount];
+    changeCount = [v9 changeCount];
+    owningRep3 = [(CRLWPDragAndDropHelper *)self owningRep];
+    storage2 = [owningRep3 storage];
+    changeCount2 = [storage2 changeCount];
 
-    if (v33 == v32)
+    if (changeCount == changeCount2)
     {
-      v26 = [v9 sourceSelectionPath];
-      [v34 setSelectionPath:v26];
+      sourceSelectionPath2 = [v9 sourceSelectionPath];
+      [editorController setSelectionPath:sourceSelectionPath2];
 
-      v27 = [v34 selectionPath];
-      v28 = [v9 sourceSelectionPath];
-      v29 = [v27 isEqual:v28];
+      selectionPath = [editorController selectionPath];
+      sourceSelectionPath3 = [v9 sourceSelectionPath];
+      v29 = [selectionPath isEqual:sourceSelectionPath3];
 
       if (v29)
       {
         v30 = objc_opt_class();
-        v21 = [v34 textInputEditor];
-        v20 = sub_100013F00(v30, v21);
+        owningRep2 = [editorController textInputEditor];
+        v20 = sub_100013F00(v30, owningRep2);
         goto LABEL_17;
       }
     }

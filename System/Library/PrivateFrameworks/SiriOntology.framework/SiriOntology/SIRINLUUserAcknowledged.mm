@@ -1,48 +1,48 @@
 @interface SIRINLUUserAcknowledged
-- (SIRINLUUserAcknowledged)initWithCoder:(id)a3;
-- (SIRINLUUserAcknowledged)initWithSystemDialogActId:(id)a3 reference:(id)a4;
+- (SIRINLUUserAcknowledged)initWithCoder:(id)coder;
+- (SIRINLUUserAcknowledged)initWithSystemDialogActId:(id)id reference:(id)reference;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUUserAcknowledged
 
 - (id)description
 {
-  v3 = [(SIRINLUUserAcknowledged *)self reference];
-  v4 = [v3 printedForm];
-  v5 = [SIRINLUPrintUtils indentLines:v4 numSpaces:4];
+  reference = [(SIRINLUUserAcknowledged *)self reference];
+  printedForm = [reference printedForm];
+  v5 = [SIRINLUPrintUtils indentLines:printedForm numSpaces:4];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(SIRINLUUserAcknowledged *)self systemDialogActId];
-  v8 = [v6 stringWithFormat:@"{UserAcknowledged\n  systemDialogActId: %@\n  reference:\n%@\n}", v7, v5];
+  systemDialogActId = [(SIRINLUUserAcknowledged *)self systemDialogActId];
+  v8 = [v6 stringWithFormat:@"{UserAcknowledged\n  systemDialogActId: %@\n  reference:\n%@\n}", systemDialogActId, v5];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SIRINLUUserAcknowledged *)self systemDialogActId];
-  [v4 encodeObject:v5 forKey:@"systemDialogActId"];
+  coderCopy = coder;
+  systemDialogActId = [(SIRINLUUserAcknowledged *)self systemDialogActId];
+  [coderCopy encodeObject:systemDialogActId forKey:@"systemDialogActId"];
 
-  v6 = [(SIRINLUUserAcknowledged *)self reference];
-  [v4 encodeObject:v6 forKey:@"reference"];
+  reference = [(SIRINLUUserAcknowledged *)self reference];
+  [coderCopy encodeObject:reference forKey:@"reference"];
 }
 
-- (SIRINLUUserAcknowledged)initWithCoder:(id)a3
+- (SIRINLUUserAcknowledged)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SIRINLUUserAcknowledged;
   v5 = [(SIRINLUUserAcknowledged *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemDialogActId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemDialogActId"];
     systemDialogActId = v5->_systemDialogActId;
     v5->_systemDialogActId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reference"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reference"];
     reference = v5->_reference;
     v5->_reference = v8;
   }
@@ -50,18 +50,18 @@
   return v5;
 }
 
-- (SIRINLUUserAcknowledged)initWithSystemDialogActId:(id)a3 reference:(id)a4
+- (SIRINLUUserAcknowledged)initWithSystemDialogActId:(id)id reference:(id)reference
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  referenceCopy = reference;
   v12.receiver = self;
   v12.super_class = SIRINLUUserAcknowledged;
   v9 = [(SIRINLUUserAcknowledged *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_systemDialogActId, a3);
-    objc_storeStrong(&v10->_reference, a4);
+    objc_storeStrong(&v9->_systemDialogActId, id);
+    objc_storeStrong(&v10->_reference, reference);
   }
 
   return v10;

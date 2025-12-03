@@ -1,17 +1,17 @@
 @interface MPCModelRadioGetTracksEstablishAccountStep
-- (void)performWithCompletionHandler:(id)a3;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MPCModelRadioGetTracksEstablishAccountStep
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICRadioGetTracksRequest *)self->super._request requestContext];
-  v6 = [v5 identityStore];
-  v7 = [v5 identity];
+  handlerCopy = handler;
+  requestContext = [(ICRadioGetTracksRequest *)self->super._request requestContext];
+  identityStore = [requestContext identityStore];
+  identity = [requestContext identity];
   v13 = 0;
-  v8 = [v6 getVerificationContextForUserIdentity:v7 error:&v13];
+  v8 = [identityStore getVerificationContextForUserIdentity:identity error:&v13];
   v9 = v13;
 
   if (v8)
@@ -23,14 +23,14 @@
     v11[2] = __75__MPCModelRadioGetTracksEstablishAccountStep_performWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E82352D0;
     v11[4] = self;
-    v12 = v4;
+    v12 = handlerCopy;
     [(MPCModelRadioGetTracksPrepareIdentityStep *)v10 performWithResponseHandler:v11];
   }
 
   else
   {
     v10 = [(MPCModelRadioGetTracksStep *)[MPCModelRadioGetTracksPrepareIdentityStep alloc] initWithPreviousStep:self];
-    (*(v4 + 2))(v4, v10);
+    (*(handlerCopy + 2))(handlerCopy, v10);
   }
 }
 

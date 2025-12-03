@@ -1,18 +1,18 @@
 @interface IMServiceAgentImpl
-+ (id)imageNameForStatus:(unint64_t)a3;
-+ (id)imageURLForStatus:(unint64_t)a3;
++ (id)imageNameForStatus:(unint64_t)status;
++ (id)imageURLForStatus:(unint64_t)status;
 + (id)sharedAgent;
 + (void)_determineStatusImageAppearance;
 - (IMServiceAgentImpl)init;
 - (id)myAvailableMessages;
 - (id)myAwayMessages;
-- (id)serviceWithName:(id)a3;
+- (id)serviceWithName:(id)name;
 - (unint64_t)vcCapabilities;
-- (void)_customMessagesChanged:(id)a3;
-- (void)_statusImageAppearanceChanged:(id)a3;
+- (void)_customMessagesChanged:(id)changed;
+- (void)_statusImageAppearanceChanged:(id)changed;
 - (void)dealloc;
-- (void)setMyAvailableMessages:(id)a3;
-- (void)setMyAwayMessages:(id)a3;
+- (void)setMyAvailableMessages:(id)messages;
+- (void)setMyAwayMessages:(id)messages;
 - (void)setupComplete;
 @end
 
@@ -50,26 +50,26 @@
   [(IMServiceAgentImpl *)&v6 dealloc];
 }
 
-- (id)serviceWithName:(id)a3
+- (id)serviceWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v6 = objc_msgSend_sharedController(IMDaemonController, v4, v5);
   objc_msgSend_blockUntilConnected(v6, v7, v8);
 
-  if (objc_msgSend_isEqualToString_(v3, v9, @"Bonjour"))
+  if (objc_msgSend_isEqualToString_(nameCopy, v9, @"Bonjour"))
   {
 
-    v3 = @"SubNet";
+    nameCopy = @"SubNet";
   }
 
   v12 = objc_msgSend_sharedController(IMDaemonController, v10, v11);
   v15 = objc_msgSend_listener(v12, v13, v14);
-  v17 = objc_msgSend_serviceWithName_(v15, v16, v3);
+  v17 = objc_msgSend_serviceWithName_(v15, v16, nameCopy);
 
   return v17;
 }
 
-- (void)_statusImageAppearanceChanged:(id)a3
+- (void)_statusImageAppearanceChanged:(id)changed
 {
   v4 = objc_opt_class();
   objc_msgSend_forgetStatusImageAppearance(v4, v5, v6);
@@ -83,21 +83,21 @@
   qword_1EB2E4FE0 = objc_msgSend_BOOLValue(v4, v2, v3);
 }
 
-+ (id)imageNameForStatus:(unint64_t)a3
++ (id)imageNameForStatus:(unint64_t)status
 {
   if (qword_1EB2E4FE0 == -1)
   {
-    objc_msgSend__determineStatusImageAppearance(a1, a2, a3);
+    objc_msgSend__determineStatusImageAppearance(self, a2, status);
   }
 
-  if (a3 - 1 > 3)
+  if (status - 1 > 3)
   {
     v4 = @"NSStatusUnknown";
   }
 
   else
   {
-    v4 = off_1E7811B20[a3 - 1];
+    v4 = off_1E7811B20[status - 1];
   }
 
   if (qword_1EB2E4FE0)
@@ -108,11 +108,11 @@
   return v4;
 }
 
-+ (id)imageURLForStatus:(unint64_t)a3
++ (id)imageURLForStatus:(unint64_t)status
 {
   if (qword_1EB2E4FE0 == -1)
   {
-    objc_msgSend__determineStatusImageAppearance(a1, a2, a3);
+    objc_msgSend__determineStatusImageAppearance(self, a2, status);
   }
 
   v4 = qword_1EB2EA238;
@@ -145,9 +145,9 @@
     v4 = qword_1EB2EA238;
   }
 
-  if (objc_msgSend_count(v4, a2, a3) && objc_msgSend_count(qword_1EB2EA238, v28, v29) > a3)
+  if (objc_msgSend_count(v4, a2, status) && objc_msgSend_count(qword_1EB2EA238, v28, v29) > status)
   {
-    v31 = objc_msgSend_objectAtIndex_(qword_1EB2EA238, v30, a3);
+    v31 = objc_msgSend_objectAtIndex_(qword_1EB2EA238, v30, status);
     v33 = v31;
     if (qword_1EB2E4FE0 == 1)
     {
@@ -178,14 +178,14 @@
   return v40;
 }
 
-- (void)_customMessagesChanged:(id)a3
+- (void)_customMessagesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   IMSyncronizeAppPreferences();
   v7 = objc_msgSend_notificationCenter(self, v5, v6);
-  v10 = objc_msgSend_name(v4, v8, v9);
+  v10 = objc_msgSend_name(changedCopy, v8, v9);
   v11 = qword_1EB2EA230;
-  v14 = objc_msgSend_userInfo(v4, v12, v13);
+  v14 = objc_msgSend_userInfo(changedCopy, v12, v13);
 
   objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v7, v15, v10, v11, v14);
   v19 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v16, v17);
@@ -232,7 +232,7 @@
   return v9;
 }
 
-- (void)setMyAvailableMessages:(id)a3
+- (void)setMyAvailableMessages:(id)messages
 {
   v3 = *MEMORY[0x1E69A6538];
   v4 = *MEMORY[0x1E69A6210];
@@ -241,7 +241,7 @@
   objc_msgSend___mainThreadPostNotificationName_object_(v8, v7, @"__kIMCustomStatusMessagesChangedNotification", 0);
 }
 
-- (void)setMyAwayMessages:(id)a3
+- (void)setMyAwayMessages:(id)messages
 {
   v3 = *MEMORY[0x1E69A6538];
   v4 = *MEMORY[0x1E69A6218];

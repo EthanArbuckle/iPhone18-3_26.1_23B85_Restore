@@ -1,5 +1,5 @@
 @interface CATransition
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (CATransitionSubtype)subtype;
 - (CATransitionType)type;
 - (NSDictionary)options;
@@ -7,13 +7,13 @@
 - (float)startProgress;
 - (id)filter;
 - (unsigned)transitionFlags;
-- (void)_copyRenderAnimationForLayer:(id)a3;
+- (void)_copyRenderAnimationForLayer:(id)layer;
 - (void)setEndProgress:(float)endProgress;
 - (void)setFilter:(id)filter;
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 - (void)setStartProgress:(float)startProgress;
 - (void)setSubtype:(CATransitionSubtype)subtype;
-- (void)setTransitionFlags:(unsigned int)a3;
+- (void)setTransitionFlags:(unsigned int)flags;
 - (void)setType:(CATransitionType)type;
 @end
 
@@ -110,7 +110,7 @@
   CAAnimation_setter(self, 0x2D5, 3, v3);
 }
 
-- (void)_copyRenderAnimationForLayer:(id)a3
+- (void)_copyRenderAnimationForLayer:(id)layer
 {
   if (x_malloc_get_zone::once != -1)
   {
@@ -136,7 +136,7 @@
     *(v5 + 13) = 0x3F80000000000000;
     *(v5 + 7) = 0u;
     *(v5 + 8) = 0u;
-    if (![(CATransition *)self _setCARenderAnimation:v5 layer:a3])
+    if (![(CATransition *)self _setCARenderAnimation:v5 layer:layer])
     {
       if (atomic_fetch_add(v6 + 2, 0xFFFFFFFF) == 1)
       {
@@ -149,40 +149,40 @@
 
   else
   {
-    [(CATransition *)self _setCARenderAnimation:0 layer:a3];
+    [(CATransition *)self _setCARenderAnimation:0 layer:layer];
   }
 
   return v6;
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v22 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = CATransition;
-  v6 = [(CAAnimation *)&v21 _setCARenderAnimation:a3 layer:a4];
+  v6 = [(CAAnimation *)&v21 _setCARenderAnimation:animation layer:layer];
   if (v6)
   {
-    v7 = [(CATransition *)self filter];
-    if (v7)
+    filter = [(CATransition *)self filter];
+    if (filter)
     {
-      *(a3 + 24) = 255;
-      v8 = [v7 CA_copyRenderValue];
-      v9 = *(a3 + 14);
-      if (v9 != v8)
+      *(animation + 24) = 255;
+      cA_copyRenderValue = [filter CA_copyRenderValue];
+      v9 = *(animation + 14);
+      if (v9 != cA_copyRenderValue)
       {
         if (v9 && atomic_fetch_add(v9 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v9 + 16))(v9);
         }
 
-        if (v8)
+        if (cA_copyRenderValue)
         {
-          v10 = v8;
-          if (!atomic_fetch_add(v8 + 2, 1u))
+          v10 = cA_copyRenderValue;
+          if (!atomic_fetch_add(cA_copyRenderValue + 2, 1u))
           {
             v10 = 0;
-            atomic_fetch_add(v8 + 2, 0xFFFFFFFF);
+            atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF);
           }
         }
 
@@ -191,94 +191,94 @@
           v10 = 0;
         }
 
-        *(a3 + 14) = v10;
+        *(animation + 14) = v10;
       }
 
-      if (v8 && atomic_fetch_add(v8 + 2, 0xFFFFFFFF) == 1)
+      if (cA_copyRenderValue && atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF) == 1)
       {
-        (*(*v8 + 16))(v8);
+        (*(*cA_copyRenderValue + 16))(cA_copyRenderValue);
       }
     }
 
     else
     {
-      v11 = [(CATransition *)self type];
-      if (v11)
+      type = [(CATransition *)self type];
+      if (type)
       {
-        *(a3 + 24) = CAInternAtom(v11, 1);
+        *(animation + 24) = CAInternAtom(type, 1);
       }
     }
 
-    v12 = [(CATransition *)self subtype];
-    if (v12)
+    subtype = [(CATransition *)self subtype];
+    if (subtype)
     {
-      *(a3 + 25) = CAInternAtom(v12, 1);
+      *(animation + 25) = CAInternAtom(subtype, 1);
     }
 
     [(CATransition *)self startProgress];
     if (v13 != 0.0)
     {
-      *(a3 + 26) = v13;
+      *(animation + 26) = v13;
     }
 
     [(CATransition *)self endProgress];
     if (v14 != 1.0)
     {
-      *(a3 + 27) = v14;
+      *(animation + 27) = v14;
     }
 
-    v15 = [(CATransition *)self options];
-    if (v15)
+    options = [(CATransition *)self options];
+    if (options)
     {
-      v16 = [(NSDictionary *)v15 CA_copyRenderKeyValueArray];
-      v17 = *(a3 + 15);
-      if (v17 != v16)
+      cA_copyRenderKeyValueArray = [(NSDictionary *)options CA_copyRenderKeyValueArray];
+      v17 = *(animation + 15);
+      if (v17 != cA_copyRenderKeyValueArray)
       {
         if (v17 && atomic_fetch_add(v17 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v17 + 16))(v17);
         }
 
-        if (v16)
+        if (cA_copyRenderKeyValueArray)
         {
-          v18 = (v16 + 8);
-          if (!atomic_fetch_add((v16 + 8), 1u))
+          v18 = (cA_copyRenderKeyValueArray + 8);
+          if (!atomic_fetch_add((cA_copyRenderKeyValueArray + 8), 1u))
           {
-            v16 = 0;
+            cA_copyRenderKeyValueArray = 0;
             atomic_fetch_add(v18, 0xFFFFFFFF);
           }
         }
 
-        *(a3 + 15) = v16;
+        *(animation + 15) = cA_copyRenderKeyValueArray;
       }
     }
 
-    v19 = [(CATransition *)self transitionFlags];
-    if (v19)
+    transitionFlags = [(CATransition *)self transitionFlags];
+    if (transitionFlags)
     {
-      *(a3 + 3) |= 0x2000000u;
+      *(animation + 3) |= 0x2000000u;
     }
 
-    if ((v19 & 2) != 0)
+    if ((transitionFlags & 2) != 0)
     {
-      *(a3 + 3) |= 0x4000000u;
+      *(animation + 3) |= 0x4000000u;
     }
   }
 
   return v6;
 }
 
-- (void)setTransitionFlags:(unsigned int)a3
+- (void)setTransitionFlags:(unsigned int)flags
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x2CF, 12, &v3);
+  flagsCopy = flags;
+  CAAnimation_setter(self, 0x2CF, 12, &flagsCopy);
 }
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = options;
   CAAnimation_setter(self, 0x21F, 3, v3);
 }
 

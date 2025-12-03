@@ -1,9 +1,9 @@
 @interface _UIViewServiceSessionManager
 + (id)_domainMachName;
-+ (id)bundleIdentifierForConnection:(id)a3 auditToken:(id *)a4;
-+ (void)_ensureSessionManagerWithDelegate:(id)a3 asPlugIn:(BOOL)a4;
-+ (void)startViewServiceSessionManagerAsPlugin:(BOOL)a3;
-+ (void)startViewServiceSessionWithDelegate:(id)a3;
++ (id)bundleIdentifierForConnection:(id)connection auditToken:(id *)token;
++ (void)_ensureSessionManagerWithDelegate:(id)delegate asPlugIn:(BOOL)in;
++ (void)startViewServiceSessionManagerAsPlugin:(BOOL)plugin;
++ (void)startViewServiceSessionWithDelegate:(id)delegate;
 - (BOOL)_hasActiveSessions;
 - (BOOL)requiresExtensionContext;
 - (NSString)containingViewControllerClassName;
@@ -11,18 +11,18 @@
 - (NSString)mainStoryboardName;
 - (NSString)viewControllerClassName;
 - (_UIViewServiceSessionManager)init;
-- (id)_initWithDelegate:(id)a3 asPlugIn:(BOOL)a4;
-- (id)firstAuxiliaryConnectionPassingTest:(id)a3;
+- (id)_initWithDelegate:(id)delegate asPlugIn:(BOOL)in;
+- (id)firstAuxiliaryConnectionPassingTest:(id)test;
 - (id)succinctDescription;
 - (void)_start;
 - (void)_startOrStopSystemsForBackgroundRunning;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)configureConnection:(id)a3 withContext:(id)a4;
-- (void)configureLegacySessionForConnection:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)configureConnection:(id)connection withContext:(id)context;
+- (void)configureLegacySessionForConnection:(id)connection;
 - (void)dealloc;
-- (void)didCreateServiceViewController:(id)a3 contextToken:(id)a4;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)queuedConnectionInvalidated:(id)a3;
+- (void)didCreateServiceViewController:(id)controller contextToken:(id)token;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)queuedConnectionInvalidated:(id)invalidated;
 @end
 
 @implementation _UIViewServiceSessionManager
@@ -73,7 +73,7 @@
       v12 = 2114;
       v13 = v9;
       v14 = 2048;
-      v15 = a1;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"UIViewServiceSessionManager.m";
       v18 = 1024;
@@ -105,33 +105,33 @@
   return 0;
 }
 
-+ (void)_ensureSessionManagerWithDelegate:(id)a3 asPlugIn:(BOOL)a4
++ (void)_ensureSessionManagerWithDelegate:(id)delegate asPlugIn:(BOOL)in
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75___UIViewServiceSessionManager__ensureSessionManagerWithDelegate_asPlugIn___block_invoke;
   v8[3] = &unk_1E70F35E0;
-  v9 = v5;
-  v10 = a4;
+  v9 = delegateCopy;
+  inCopy = in;
   v6 = _ensureSessionManagerWithDelegate_asPlugIn__onceToken;
-  v7 = v5;
+  v7 = delegateCopy;
   if (v6 != -1)
   {
     dispatch_once(&_ensureSessionManagerWithDelegate_asPlugIn__onceToken, v8);
   }
 }
 
-+ (void)startViewServiceSessionManagerAsPlugin:(BOOL)a3
++ (void)startViewServiceSessionManagerAsPlugin:(BOOL)plugin
 {
-  v3 = a3;
+  pluginCopy = plugin;
   v29 = *MEMORY[0x1E69E9840];
-  [_UIViewServiceSessionManager _ensureSessionManagerWithDelegate:0 asPlugIn:a3];
+  [_UIViewServiceSessionManager _ensureSessionManagerWithDelegate:0 asPlugIn:plugin];
   v6 = __viewServiceSessionManager;
   v7 = *(__viewServiceSessionManager + 48);
   if (v7)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mismatching calls to _UIViewServiceSessionManager initialization : asking for asPlugIn=%i but already initialized with a delegate : delegate = %@", v3, v7];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mismatching calls to _UIViewServiceSessionManager initialization : asking for asPlugIn=%i but already initialized with a delegate : delegate = %@", pluginCopy, v7];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v10 = NSStringFromSelector(a2);
@@ -142,7 +142,7 @@
       v19 = 2114;
       v20 = v12;
       v21 = 2048;
-      v22 = a1;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = @"UIViewServiceSessionManager.m";
       v25 = 1024;
@@ -159,9 +159,9 @@
   }
 
   v8 = *(__viewServiceSessionManager + 36);
-  if (v8 != v3)
+  if (v8 != pluginCopy)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mismatching calls to _UIViewServiceSessionManager initialization : asking for asPlugIn=%i but already initialized asPlugIn=%i", v3, v8];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mismatching calls to _UIViewServiceSessionManager initialization : asking for asPlugIn=%i but already initialized asPlugIn=%i", pluginCopy, v8];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v14 = NSStringFromSelector(a2);
@@ -172,7 +172,7 @@
       v19 = 2114;
       v20 = v16;
       v21 = 2048;
-      v22 = a1;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = @"UIViewServiceSessionManager.m";
       v25 = 1024;
@@ -191,11 +191,11 @@
   [v6 _start];
 }
 
-+ (void)startViewServiceSessionWithDelegate:(id)a3
++ (void)startViewServiceSessionWithDelegate:(id)delegate
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"delegate != ((void*)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -208,7 +208,7 @@
       v26 = 2114;
       v27 = v10;
       v28 = 2048;
-      v29 = a1;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = @"UIViewServiceSessionManager.m";
       v32 = 1024;
@@ -224,8 +224,8 @@
     JUMPOUT(0x18A2A4B1CLL);
   }
 
-  v23 = v5;
-  [_UIViewServiceSessionManager _ensureSessionManagerWithDelegate:v5 asPlugIn:0];
+  v23 = delegateCopy;
+  [_UIViewServiceSessionManager _ensureSessionManagerWithDelegate:delegateCopy asPlugIn:0];
   v6 = *(__viewServiceSessionManager + 48);
   if (!v6)
   {
@@ -240,7 +240,7 @@
       v26 = 2114;
       v27 = v14;
       v28 = 2048;
-      v29 = a1;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = @"UIViewServiceSessionManager.m";
       v32 = 1024;
@@ -269,7 +269,7 @@
       v26 = 2114;
       v27 = v18;
       v28 = 2048;
-      v29 = a1;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = @"UIViewServiceSessionManager.m";
       v32 = 1024;
@@ -298,7 +298,7 @@
       v26 = 2114;
       v27 = v22;
       v28 = 2048;
-      v29 = a1;
+      selfCopy4 = self;
       v30 = 2114;
       v31 = @"UIViewServiceSessionManager.m";
       v32 = 1024;
@@ -325,10 +325,10 @@
   [(_UIViewServiceSessionManager *)&v3 dealloc];
 }
 
-- (id)firstAuxiliaryConnectionPassingTest:(id)a3
+- (id)firstAuxiliaryConnectionPassingTest:(id)test
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   os_unfair_lock_lock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
@@ -349,8 +349,8 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 context];
-        v11 = v4[2](v4, v10);
+        context = [v9 context];
+        v11 = testCopy[2](testCopy, context);
 
         if (v11)
         {
@@ -373,45 +373,45 @@
 LABEL_11:
 
   os_unfair_lock_unlock(&self->_lock);
-  v12 = [v6 connection];
+  connection = [v6 connection];
 
-  if (v12)
+  if (connection)
   {
-    v13 = [v6 connection];
-    [v13 setInvalidationHandler:0];
+    connection2 = [v6 connection];
+    [connection2 setInvalidationHandler:0];
 
-    v14 = [v6 connection];
-    [v14 setInterruptionHandler:0];
+    connection3 = [v6 connection];
+    [connection3 setInterruptionHandler:0];
   }
 
   return v6;
 }
 
-+ (id)bundleIdentifierForConnection:(id)a3 auditToken:(id *)a4
++ (id)bundleIdentifierForConnection:(id)connection auditToken:(id *)token
 {
-  v4 = a3;
+  connectionCopy = connection;
   if (_UIApplicationIsKeyboardExtension())
   {
-    v5 = @"<null>";
+    bs_fetchBundleIdentifierFromXPCConnection = @"<null>";
   }
 
   else
   {
-    v5 = [v4 bs_fetchBundleIdentifierFromXPCConnection];
-    if (!v5)
+    bs_fetchBundleIdentifierFromXPCConnection = [connectionCopy bs_fetchBundleIdentifierFromXPCConnection];
+    if (!bs_fetchBundleIdentifierFromXPCConnection)
     {
       CPCopyBundleIdentifierAndTeamFromAuditToken();
-      v5 = 0;
+      bs_fetchBundleIdentifierFromXPCConnection = 0;
     }
   }
 
-  return v5;
+  return bs_fetchBundleIdentifierFromXPCConnection;
 }
 
-- (id)_initWithDelegate:(id)a3 asPlugIn:(BOOL)a4
+- (id)_initWithDelegate:(id)delegate asPlugIn:(BOOL)in
 {
-  v4 = a4;
-  v7 = a3;
+  inCopy = in;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = _UIViewServiceSessionManager;
   v8 = [(_UIViewServiceSessionManager *)&v18 init];
@@ -425,8 +425,8 @@ LABEL_11:
     lock_queuedAuxiliaryConnections = v8->_lock_queuedAuxiliaryConnections;
     v8->_lock_queuedAuxiliaryConnections = v11;
 
-    objc_storeStrong(&v8->_delegate, a3);
-    v8->_asPlugIn = v4;
+    objc_storeStrong(&v8->_delegate, delegate);
+    v8->_asPlugIn = inCopy;
     delegate = v8->_delegate;
     if (delegate)
     {
@@ -443,7 +443,7 @@ LABEL_7:
       }
     }
 
-    else if (v4)
+    else if (inCopy)
     {
       goto LABEL_4;
     }
@@ -466,24 +466,24 @@ LABEL_8:
   return v3;
 }
 
-- (void)configureLegacySessionForConnection:(id)a3
+- (void)configureLegacySessionForConnection:(id)connection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [_UIViewServiceLegacyClientSession sessionWithConnection:v4 manager:self];
+  connectionCopy = connection;
+  v5 = [_UIViewServiceLegacyClientSession sessionWithConnection:connectionCopy manager:self];
   v6 = *(__UILogGetCategoryCachedImpl("ViewServiceSessionManager", &configureLegacySessionForConnection____s_category) + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     machName = self->_machName;
     v8 = v6;
-    v9 = [v4 processIdentifier];
-    v10 = [v5 uniqueIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
+    uniqueIdentifier = [v5 uniqueIdentifier];
     *buf = 138543874;
     v18 = machName;
     v19 = 1026;
-    v20 = v9;
+    v20 = processIdentifier;
     v21 = 2114;
-    v22 = v10;
+    v22 = uniqueIdentifier;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "Configuring connection on service %{public}@ to host pid %{public}d for session %{public}@", buf, 0x1Cu);
   }
 
@@ -497,19 +497,19 @@ LABEL_8:
   v13 = __68___UIViewServiceSessionManager_configureLegacySessionForConnection___block_invoke;
   v14 = &unk_1E70F2F80;
   objc_copyWeak(&v16, buf);
-  v15 = self;
+  selfCopy = self;
   [v5 setTerminationHandler:&v11];
-  [v4 activate];
+  [connectionCopy activate];
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
 }
 
-- (void)configureConnection:(id)a3 withContext:(id)a4
+- (void)configureConnection:(id)connection withContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 decodeObjectOfClass:objc_opt_class() forKey:0x1EFB82510];
+  connectionCopy = connection;
+  contextCopy = context;
+  v9 = [contextCopy decodeObjectOfClass:objc_opt_class() forKey:0x1EFB82510];
   if (v9)
   {
     if ([(_UIViewServiceSessionManager *)self _hasActiveSessions])
@@ -525,7 +525,7 @@ LABEL_8:
         v24 = 2114;
         v25 = v15;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 2114;
         v29 = @"UIViewServiceSessionManager.m";
         v30 = 1024;
@@ -542,29 +542,29 @@ LABEL_8:
       JUMPOUT(0x18A2A57D4);
     }
 
-    v10 = [[_UIViewServiceSessionManagerQueuedAuxiliaryConnection alloc] initWithConnection:v7 context:v8];
+    v10 = [[_UIViewServiceSessionManagerQueuedAuxiliaryConnection alloc] initWithConnection:connectionCopy context:contextCopy];
     objc_initWeak(&location, v10);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __64___UIViewServiceSessionManager_configureConnection_withContext___block_invoke;
     v19[3] = &unk_1E70F5A28;
     objc_copyWeak(&v20, &location);
-    [v7 setInterruptionHandler:v19];
+    [connectionCopy setInterruptionHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __64___UIViewServiceSessionManager_configureConnection_withContext___block_invoke_2;
     v17[3] = &unk_1E70F5A28;
     objc_copyWeak(&v18, &location);
-    [v7 setInvalidationHandler:v17];
+    [connectionCopy setInvalidationHandler:v17];
     os_unfair_lock_lock(&self->_lock);
     [(NSMutableArray *)self->_lock_queuedAuxiliaryConnections addObject:v10];
     os_unfair_lock_unlock(&self->_lock);
-    [v7 activate];
+    [connectionCopy activate];
     v11 = *(__UILogGetCategoryCachedImpl("ViewServiceSessionManager", &configureConnection_withContext____s_category) + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = v7;
+      v23 = connectionCopy;
       v24 = 2114;
       v25 = v9;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "Auxiliary connection [%{public}@] activated targeting scene %{public}@", buf, 0x16u);
@@ -577,26 +577,26 @@ LABEL_8:
 
   else
   {
-    [(_UIViewServiceSessionManager *)self configureLegacySessionForConnection:v7];
+    [(_UIViewServiceSessionManager *)self configureLegacySessionForConnection:connectionCopy];
   }
 }
 
-- (void)queuedConnectionInvalidated:(id)a3
+- (void)queuedConnectionInvalidated:(id)invalidated
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   os_unfair_lock_lock(&self->_lock);
   v5 = *(__UILogGetCategoryCachedImpl("ViewServiceSessionManager", &queuedConnectionInvalidated____s_category) + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 connection];
+    connection = [invalidatedCopy connection];
     v8 = 138543362;
-    v9 = v7;
+    v9 = connection;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "Auxiliary connection %{public}@ has been abandoned", &v8, 0xCu);
   }
 
-  [v4 setConnection:0];
+  [invalidatedCopy setConnection:0];
   if ([(NSMutableArray *)self->_lock_queuedAuxiliaryConnections count]>= 3)
   {
     [(NSMutableArray *)self->_lock_queuedAuxiliaryConnections removeObjectAtIndex:0];
@@ -605,14 +605,14 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 service];
-  v13 = [v12 isEqualToString:8316790000];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  service = [connectionCopy service];
+  v13 = [service isEqualToString:8316790000];
 
   if (!v13)
   {
@@ -620,16 +620,16 @@ LABEL_8:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [v10 service];
+      service2 = [connectionCopy service];
       *buf = 138543362;
-      v33 = v26;
+      v33 = service2;
       _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_DEFAULT, "rejecting incoming connection for unknown service %{public}@", buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  v14 = [v11 decodeInt64ForKey:0x1EFB155F0];
+  v14 = [contextCopy decodeInt64ForKey:0x1EFB155F0];
   if ((v14 - 1) > 0x7FFFFFFE || v14 != getpid())
   {
     v27 = *(__UILogGetCategoryCachedImpl("ViewServiceSessionManager", &_MergedGlobals_1366) + 8);
@@ -641,11 +641,11 @@ LABEL_8:
     }
 
 LABEL_10:
-    [v10 invalidate];
+    [connectionCopy invalidate];
     goto LABEL_11;
   }
 
-  v15 = [v10 extractNSXPCConnectionWithViewServiceConfigurator:&__block_literal_global_666];
+  v15 = [connectionCopy extractNSXPCConnectionWithViewServiceConfigurator:&__block_literal_global_666];
   if (!v15)
   {
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"newConnection"];
@@ -659,7 +659,7 @@ LABEL_10:
       v34 = 2114;
       v35 = v31;
       v36 = 2048;
-      v37 = self;
+      selfCopy = self;
       v38 = 2114;
       v39 = @"UIViewServiceSessionManager.m";
       v40 = 1024;
@@ -676,19 +676,19 @@ LABEL_10:
   }
 
   v16 = v15;
-  v17 = [UIApp _workspace];
-  v18 = [v17 machQueue];
-  v19 = [v18 queue];
-  [v16 _setQueue:v19];
+  _workspace = [UIApp _workspace];
+  machQueue = [_workspace machQueue];
+  queue = [machQueue queue];
+  [v16 _setQueue:queue];
 
   v20 = [_UIViewServiceNSXPCConnectionDelegate alloc];
-  v21 = [UIApp _workspace];
-  v22 = [v21 callOutQueue];
-  v23 = [(_UIViewServiceNSXPCConnectionDelegate *)v20 initWithCallOutQueue:v22 replyHandler:0];
+  _workspace2 = [UIApp _workspace];
+  callOutQueue = [_workspace2 callOutQueue];
+  v23 = [(_UIViewServiceNSXPCConnectionDelegate *)v20 initWithCallOutQueue:callOutQueue replyHandler:0];
 
   [v16 setDelegate:v23];
   [(_UIViewServiceNSXPCConnectionDelegate *)v23 stronglyRetainForConnection:v16];
-  [(_UIViewServiceSessionManager *)self configureConnection:v16 withContext:v11];
+  [(_UIViewServiceSessionManager *)self configureConnection:v16 withContext:contextCopy];
 
 LABEL_11:
 }
@@ -705,44 +705,44 @@ LABEL_11:
 
 - (BOOL)requiresExtensionContext
 {
-  v3 = [(_UIViewServiceSessionManager *)self delegate];
+  delegate = [(_UIViewServiceSessionManager *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     return 1;
   }
 
-  v4 = [(_UIViewServiceSessionManager *)self delegate];
-  v5 = [v4 requiresExtensionContextForViewServiceSessionManager:self];
+  delegate2 = [(_UIViewServiceSessionManager *)self delegate];
+  v5 = [delegate2 requiresExtensionContextForViewServiceSessionManager:self];
 
   return v5;
 }
 
 - (NSString)viewControllerClassName
 {
-  v3 = [(_UIViewServiceSessionManager *)self delegate];
+  delegate = [(_UIViewServiceSessionManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(_UIViewServiceSessionManager *)self delegate];
-    v5 = [v4 viewControllerClassNameForViewServiceSessionManager:self];
+    delegate2 = [(_UIViewServiceSessionManager *)self delegate];
+    v5 = [delegate2 viewControllerClassNameForViewServiceSessionManager:self];
 LABEL_4:
     v7 = v5;
     goto LABEL_5;
   }
 
   v6 = [-[objc_class performSelector:](NSClassFromString(&cfstr_UikitPksubsyst.isa) performSelector:{sel_sharedInstance), "valueForKey:", @"infoDictionary"}];
-  v4 = [v6 objectForKeyedSubscript:@"NSExtension"];
+  delegate2 = [v6 objectForKeyedSubscript:@"NSExtension"];
 
-  v5 = [v4 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
+  v5 = [delegate2 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 infoDictionary];
-  v7 = [v10 objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v7 = [infoDictionary objectForKeyedSubscript:@"NSExtensionPrincipalClass"];
 
 LABEL_5:
 
@@ -751,20 +751,20 @@ LABEL_5:
 
 - (NSString)containingViewControllerClassName
 {
-  v3 = [(_UIViewServiceSessionManager *)self delegate];
+  delegate = [(_UIViewServiceSessionManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(_UIViewServiceSessionManager *)self delegate];
-    [v4 containingViewControllerClassNameForViewServiceSessionManager:self];
+    delegate2 = [(_UIViewServiceSessionManager *)self delegate];
+    [delegate2 containingViewControllerClassNameForViewServiceSessionManager:self];
   }
 
   else
   {
     v5 = [-[objc_class performSelector:](NSClassFromString(&cfstr_UikitPksubsyst.isa) performSelector:{sel_sharedInstance), "valueForKey:", @"infoDictionary"}];
-    v4 = [v5 objectForKeyedSubscript:@"NSExtension"];
+    delegate2 = [v5 objectForKeyedSubscript:@"NSExtension"];
 
-    [v4 objectForKeyedSubscript:@"NSExtensionContainingViewControllerClass"];
+    [delegate2 objectForKeyedSubscript:@"NSExtensionContainingViewControllerClass"];
   }
   v6 = ;
 
@@ -773,56 +773,56 @@ LABEL_5:
 
 - (NSString)mainStoryboardName
 {
-  v3 = [(_UIViewServiceSessionManager *)self delegate];
+  delegate = [(_UIViewServiceSessionManager *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(_UIViewServiceSessionManager *)self delegate];
-    [v4 mainStoryboardNameForViewServiceSessionManager:self];
+    delegate2 = [(_UIViewServiceSessionManager *)self delegate];
+    [delegate2 mainStoryboardNameForViewServiceSessionManager:self];
   }
 
   else
   {
     v5 = [-[objc_class performSelector:](NSClassFromString(&cfstr_UikitPksubsyst.isa) performSelector:{sel_sharedInstance), "valueForKey:", @"infoDictionary"}];
-    v4 = [v5 objectForKeyedSubscript:@"NSExtension"];
+    delegate2 = [v5 objectForKeyedSubscript:@"NSExtension"];
 
-    [v4 objectForKeyedSubscript:@"NSExtensionMainStoryboard"];
+    [delegate2 objectForKeyedSubscript:@"NSExtensionMainStoryboard"];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)didCreateServiceViewController:(id)a3 contextToken:(id)a4
+- (void)didCreateServiceViewController:(id)controller contextToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIViewServiceSessionManager *)self delegate];
-  [v8 viewServiceSessionManager:self didCreateViewController:v7 contextToken:v6];
+  tokenCopy = token;
+  controllerCopy = controller;
+  delegate = [(_UIViewServiceSessionManager *)self delegate];
+  [delegate viewServiceSessionManager:self didCreateViewController:controllerCopy contextToken:tokenCopy];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58___UIViewServiceSessionManager_appendDescriptionToStream___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v11];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58___UIViewServiceSessionManager_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy2 = self;
     [v9 appendBodySectionWithName:0 block:v8];
   }
 }
@@ -830,8 +830,8 @@ LABEL_5:
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -839,8 +839,8 @@ LABEL_5:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

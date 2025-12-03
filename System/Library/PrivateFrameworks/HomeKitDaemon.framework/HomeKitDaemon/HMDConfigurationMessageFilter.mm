@@ -1,28 +1,28 @@
 @interface HMDConfigurationMessageFilter
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 @end
 
 @implementation HMDConfigurationMessageFilter
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  messageCopy = message;
+  policiesCopy = policies;
+  if (!messageCopy)
   {
     goto LABEL_6;
   }
 
   v9 = +[HMDDeviceCapabilities deviceCapabilities];
-  v10 = [v9 supportsCloudDataSync];
+  supportsCloudDataSync = [v9 supportsCloudDataSync];
 
-  if (!v10)
+  if (!supportsCloudDataSync)
   {
     goto LABEL_7;
   }
 
-  v11 = [MEMORY[0x277D0F8E8] productInfo];
-  if ([v11 productPlatform] != 4 || (objc_msgSend(v7, "proxyConnection"), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  if ([productInfo productPlatform] != 4 || (objc_msgSend(messageCopy, "proxyConnection"), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v15 = 0;
 LABEL_13:
@@ -31,17 +31,17 @@ LABEL_13:
   }
 
   v13 = v12;
-  v14 = [v7 isEntitledForSPIAccess];
+  isEntitledForSPIAccess = [messageCopy isEntitledForSPIAccess];
 
-  if ((v14 & 1) == 0)
+  if ((isEntitledForSPIAccess & 1) == 0)
   {
 LABEL_7:
-    v11 = [v8 hmf_objectPassingTest:&__block_literal_global_110951];
-    if ([v11 operationTypes])
+    productInfo = [policiesCopy hmf_objectPassingTest:&__block_literal_global_110951];
+    if ([productInfo operationTypes])
     {
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48 description:@"Operation not supported" reason:@"Configuration changes not supported" suggestion:0];
+        *error = [MEMORY[0x277CCA9B8] hmErrorWithCode:48 description:@"Operation not supported" reason:@"Configuration changes not supported" suggestion:0];
       }
 
       v15 = -1;

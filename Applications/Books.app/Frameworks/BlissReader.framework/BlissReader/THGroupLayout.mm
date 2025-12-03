@@ -2,7 +2,7 @@
 - (BOOL)isCompactFlowPresentation;
 - (BOOL)isExpanded;
 - (BOOL)isReflowablePresentation;
-- (id)adjustLayoutGeometry:(id)a3 forLayout:(id)a4;
+- (id)adjustLayoutGeometry:(id)geometry forLayout:(id)layout;
 @end
 
 @implementation THGroupLayout
@@ -20,22 +20,22 @@
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THGroupLayout *)self delegate];
+  delegate = [(THGroupLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THGroupLayout *)self delegate];
+  delegate = [(THGroupLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
-- (id)adjustLayoutGeometry:(id)a3 forLayout:(id)a4
+- (id)adjustLayoutGeometry:(id)geometry forLayout:(id)layout
 {
-  v4 = a3;
-  if ([(THGroupLayout *)self isCompactFlowPresentation:a3])
+  geometryCopy = geometry;
+  if ([(THGroupLayout *)self isCompactFlowPresentation:geometry])
   {
     objc_opt_class();
     [(THGroupLayout *)self parent];
@@ -47,9 +47,9 @@
       [-[THGroupLayout layoutGeometryFromInfo](self "layoutGeometryFromInfo")];
       memset(&v15, 0, sizeof(v15));
       CGAffineTransformMakeScale(&v15, v8 / v9, v8 / v9);
-      if (v4)
+      if (geometryCopy)
       {
-        [v4 transform];
+        [geometryCopy transform];
       }
 
       else
@@ -61,13 +61,13 @@
       CGAffineTransformConcat(&v14, &t1, &v12);
       v15 = v14;
       v10 = [TSDLayoutGeometry alloc];
-      [v4 size];
+      [geometryCopy size];
       v14 = v15;
       return [v10 initWithSize:&v14 transform:?];
     }
   }
 
-  return v4;
+  return geometryCopy;
 }
 
 @end

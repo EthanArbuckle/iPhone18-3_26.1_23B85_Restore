@@ -1,26 +1,26 @@
 @interface CSLocalAttendingInitiator
 - (BOOL)fetchIsAttending;
-- (CSLocalAttendingInitiator)initWithAttendingUsecase:(id)a3;
+- (CSLocalAttendingInitiator)initWithAttendingUsecase:(id)usecase;
 - (LBAttendingStatesServiceDelegate)delegate;
-- (int64_t)_stopReasonFromHint:(unint64_t)a3;
-- (void)_emitSpeechStartDetectedEventWithAttendingTriggerInfo:(id)a3;
-- (void)_handleSpeechStartDetectedWithEventInfo:(id)a3;
+- (int64_t)_stopReasonFromHint:(unint64_t)hint;
+- (void)_emitSpeechStartDetectedEventWithAttendingTriggerInfo:(id)info;
+- (void)_handleSpeechStartDetectedWithEventInfo:(id)info;
 - (void)_reset;
-- (void)_startAttendingForJarvisAnnounceMessageWithInfo:(id)a3;
-- (void)_startAttendingWithInfo:(id)a3;
-- (void)_startAttendingWithOptions:(id)a3;
-- (void)_stopAttendingWithReason:(unint64_t)a3;
-- (void)attendingStoppedWithReason:(int64_t)a3;
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 didStartAudioCaptureSuccessfully:(BOOL)a4 option:(id)a5 eventUUID:(id)a6;
-- (void)receivedAttendingJarvisHintWithInfo:(id)a3;
-- (void)receivedAttendingMagusNotSupportedHintWithInfo:(id)a3;
-- (void)receivedAttendingStartHintWithInfo:(id)a3;
-- (void)receivedAttendingStopHintWithInfo:(id)a3;
-- (void)receivedAttendingTriggerForSiriPromptHintWithInfo:(id)a3;
-- (void)receivedAttendingWillStartHintWithInfo:(id)a3;
-- (void)setAttendingState:(BOOL)a3;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)speechStartDetectedWithEventInfo:(id)a3;
+- (void)_startAttendingForJarvisAnnounceMessageWithInfo:(id)info;
+- (void)_startAttendingWithInfo:(id)info;
+- (void)_startAttendingWithOptions:(id)options;
+- (void)_stopAttendingWithReason:(unint64_t)reason;
+- (void)attendingStoppedWithReason:(int64_t)reason;
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor didStartAudioCaptureSuccessfully:(BOOL)successfully option:(id)option eventUUID:(id)d;
+- (void)receivedAttendingJarvisHintWithInfo:(id)info;
+- (void)receivedAttendingMagusNotSupportedHintWithInfo:(id)info;
+- (void)receivedAttendingStartHintWithInfo:(id)info;
+- (void)receivedAttendingStopHintWithInfo:(id)info;
+- (void)receivedAttendingTriggerForSiriPromptHintWithInfo:(id)info;
+- (void)receivedAttendingWillStartHintWithInfo:(id)info;
+- (void)setAttendingState:(BOOL)state;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)speechStartDetectedWithEventInfo:(id)info;
 @end
 
 @implementation CSLocalAttendingInitiator
@@ -32,13 +32,13 @@
   return WeakRetained;
 }
 
-- (void)_emitSpeechStartDetectedEventWithAttendingTriggerInfo:(id)a3
+- (void)_emitSpeechStartDetectedEventWithAttendingTriggerInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
+  infoCopy = info;
+  v5 = infoCopy;
   if (self->_mhUUID)
   {
-    v6 = [v4 triggerMachTime] - self->_startAttendingHostTime;
+    v6 = [infoCopy triggerMachTime] - self->_startAttendingHostTime;
     v7 = CSLogCategoryAttending;
     if (os_log_type_enabled(CSLogCategoryAttending, OS_LOG_TYPE_DEFAULT))
     {
@@ -101,7 +101,7 @@
   }
 }
 
-- (void)intuitiveConvAudioCaptureMonitor:(id)a3 didStartAudioCaptureSuccessfully:(BOOL)a4 option:(id)a5 eventUUID:(id)a6
+- (void)intuitiveConvAudioCaptureMonitor:(id)monitor didStartAudioCaptureSuccessfully:(BOOL)successfully option:(id)option eventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -112,7 +112,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -123,14 +123,14 @@
   dispatch_async(queue, block);
 }
 
-- (void)_handleSpeechStartDetectedWithEventInfo:(id)a3
+- (void)_handleSpeechStartDetectedWithEventInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = CSLogCategoryAttending;
   if (os_log_type_enabled(CSLogCategoryAttending, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 description];
+    v7 = [infoCopy description];
     v14 = 136315394;
     v15 = "[CSLocalAttendingInitiator _handleSpeechStartDetectedWithEventInfo:]";
     v16 = 2112;
@@ -144,28 +144,28 @@
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v4 triggerMachTime];
-    v12 = [v4 audioRecordType];
-    v13 = [v4 deviceId];
-    [v10 speechStartDetectedWithHostTime:v11 audioRecordType:v12 audioRecordDeviceId:v13];
+    triggerMachTime = [infoCopy triggerMachTime];
+    audioRecordType = [infoCopy audioRecordType];
+    deviceId = [infoCopy deviceId];
+    [v10 speechStartDetectedWithHostTime:triggerMachTime audioRecordType:audioRecordType audioRecordDeviceId:deviceId];
   }
 }
 
-- (void)speechStartDetectedWithEventInfo:(id)a3
+- (void)speechStartDetectedWithEventInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016EBF4;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)attendingStoppedWithReason:(int64_t)a3
+- (void)attendingStoppedWithReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -173,55 +173,55 @@
   v4[2] = sub_10016ED74;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
-- (void)receivedAttendingJarvisHintWithInfo:(id)a3
+- (void)receivedAttendingJarvisHintWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CSLocalAttendingInitiator *)self queue];
+  infoCopy = info;
+  queue = [(CSLocalAttendingInitiator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016F034;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)receivedAttendingMagusNotSupportedHintWithInfo:(id)a3
+- (void)receivedAttendingMagusNotSupportedHintWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CSLocalAttendingInitiator *)self queue];
+  infoCopy = info;
+  queue = [(CSLocalAttendingInitiator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016F1AC;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)receivedAttendingTriggerForSiriPromptHintWithInfo:(id)a3
+- (void)receivedAttendingTriggerForSiriPromptHintWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CSLocalAttendingInitiator *)self queue];
+  infoCopy = info;
+  queue = [(CSLocalAttendingInitiator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016F39C;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)receivedAttendingStopHintWithInfo:(id)a3
+- (void)receivedAttendingStopHintWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   attendingStartTransitionGroup = self->_attendingStartTransitionGroup;
   v6 = dispatch_time(0, 10000000000);
   if (dispatch_group_wait(attendingStartTransitionGroup, v6))
@@ -235,43 +235,43 @@
     }
   }
 
-  v8 = [(CSLocalAttendingInitiator *)self queue];
+  queue = [(CSLocalAttendingInitiator *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10016F714;
   v10[3] = &unk_100253C48;
-  v11 = v4;
-  v12 = self;
-  v9 = v4;
-  dispatch_async(v8, v10);
+  v11 = infoCopy;
+  selfCopy = self;
+  v9 = infoCopy;
+  dispatch_async(queue, v10);
 }
 
-- (void)receivedAttendingStartHintWithInfo:(id)a3
+- (void)receivedAttendingStartHintWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CSLocalAttendingInitiator *)self queue];
+  infoCopy = info;
+  queue = [(CSLocalAttendingInitiator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016F898;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)receivedAttendingWillStartHintWithInfo:(id)a3
+- (void)receivedAttendingWillStartHintWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CSLocalAttendingInitiator *)self queue];
+  infoCopy = info;
+  queue = [(CSLocalAttendingInitiator *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10016FA10;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)_reset
@@ -281,20 +281,20 @@
   self->_rootRequestId = 0;
 }
 
-- (int64_t)_stopReasonFromHint:(unint64_t)a3
+- (int64_t)_stopReasonFromHint:(unint64_t)hint
 {
-  if (a3 - 3 > 3)
+  if (hint - 3 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_1001AA2D0[a3 - 3];
+    return qword_1001AA2D0[hint - 3];
   }
 }
 
-- (void)_stopAttendingWithReason:(unint64_t)a3
+- (void)_stopAttendingWithReason:(unint64_t)reason
 {
   v5 = CSLogCategoryAttending;
   if (os_log_type_enabled(CSLogCategoryAttending, OS_LOG_TYPE_DEFAULT))
@@ -305,18 +305,18 @@
     v10 = 1024;
     v11 = isAttending;
     v12 = 2048;
-    v13 = a3;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s isAttending:%u, reason:%lu", &v8, 0x1Cu);
   }
 
-  if (a3 == 5 || self->_isAttending)
+  if (reason == 5 || self->_isAttending)
   {
-    if (a3 == 5)
+    if (reason == 5)
     {
       self->_isStoppingForSiriUIDismissal = 1;
     }
 
-    [(CSAttendingService *)self->_usecaseController stopAttendingWithReason:[(CSLocalAttendingInitiator *)self _stopReasonFromHint:a3]];
+    [(CSAttendingService *)self->_usecaseController stopAttendingWithReason:[(CSLocalAttendingInitiator *)self _stopReasonFromHint:reason]];
   }
 
   else
@@ -331,9 +331,9 @@
   }
 }
 
-- (void)_startAttendingForJarvisAnnounceMessageWithInfo:(id)a3
+- (void)_startAttendingForJarvisAnnounceMessageWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (+[CSUtils isContinuousConversationSupported])
   {
     if (self->_isAttending)
@@ -349,8 +349,8 @@
 
     else
     {
-      v7 = [v4 deviceId];
-      v8 = [CSAttendingOptions optionForJarvisAnnounceMessageWithDeviceId:v7];
+      deviceId = [infoCopy deviceId];
+      v8 = [CSAttendingOptions optionForJarvisAnnounceMessageWithDeviceId:deviceId];
 
       [(CSLocalAttendingInitiator *)self _startAttendingWithOptions:v8];
     }
@@ -368,12 +368,12 @@
   }
 }
 
-- (void)_startAttendingWithInfo:(id)a3
+- (void)_startAttendingWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (+[CSUtils isContinuousConversationSupported])
   {
-    v5 = [v4 recordContext];
+    recordContext = [infoCopy recordContext];
     if (self->_isAttending)
     {
       v6 = CSLogCategoryAttending;
@@ -387,21 +387,21 @@
 
     else
     {
-      v8 = [v4 rootRequestId];
+      rootRequestId = [infoCopy rootRequestId];
       rootRequestId = self->_rootRequestId;
-      self->_rootRequestId = v8;
+      self->_rootRequestId = rootRequestId;
 
-      v10 = [v4 rootRequestId];
+      rootRequestId2 = [infoCopy rootRequestId];
       rootRequestIdForLogging = self->_rootRequestIdForLogging;
-      self->_rootRequestIdForLogging = v10;
+      self->_rootRequestIdForLogging = rootRequestId2;
 
-      v12 = [v4 mhUUID];
+      mhUUID = [infoCopy mhUUID];
       mhUUID = self->_mhUUID;
-      self->_mhUUID = v12;
+      self->_mhUUID = mhUUID;
 
-      v14 = [v5 type];
-      v15 = [v5 deviceId];
-      v16 = [CSAttendingOptions optionForFlexibleFollowupWithAudioRecordType:v14 deviceId:v15];
+      type = [recordContext type];
+      deviceId = [recordContext deviceId];
+      v16 = [CSAttendingOptions optionForFlexibleFollowupWithAudioRecordType:type deviceId:deviceId];
 
       [(CSLocalAttendingInitiator *)self _startAttendingWithOptions:v16];
     }
@@ -419,9 +419,9 @@
   }
 }
 
-- (void)_startAttendingWithOptions:(id)a3
+- (void)_startAttendingWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_queue);
   v5 = CSLogCategoryAttending;
   if (os_log_type_enabled(CSLogCategoryAttending, OS_LOG_TYPE_DEFAULT))
@@ -463,19 +463,19 @@
   v14[2] = sub_100170204;
   v14[3] = &unk_100253C70;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = optionsCopy;
+  v13 = optionsCopy;
   [(CSAttendingService *)usecaseController startAttendingWithOptions:v13 completion:v14];
 }
 
-- (void)setAttendingState:(BOOL)a3
+- (void)setAttendingState:(BOOL)state
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100170754;
   v4[3] = &unk_100253BF8;
-  v5 = a3;
+  stateCopy = state;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -499,9 +499,9 @@
   return v3;
 }
 
-- (CSLocalAttendingInitiator)initWithAttendingUsecase:(id)a3
+- (CSLocalAttendingInitiator)initWithAttendingUsecase:(id)usecase
 {
-  v5 = a3;
+  usecaseCopy = usecase;
   v13.receiver = self;
   v13.super_class = CSLocalAttendingInitiator;
   v6 = [(CSLocalAttendingInitiator *)&v13 init];
@@ -511,7 +511,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_usecaseController, a3);
+    objc_storeStrong(&v6->_usecaseController, usecase);
     [(CSAttendingService *)v6->_usecaseController setDelegate:v6];
     v6->_isAttending = 0;
     [(CSLocalAttendingInitiator *)v6 _resetIsStoppingForSiriUIDismissal];

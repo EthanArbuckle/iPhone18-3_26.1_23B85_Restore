@@ -1,26 +1,26 @@
 @interface TSTTableDataConditionalStyleSet
-- (BOOL)isEqual:(id)a3;
-- (id)initObjectWithConditionalStyleSet:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)initObjectWithConditionalStyleSet:(id)set;
 - (void)dealloc;
 @end
 
 @implementation TSTTableDataConditionalStyleSet
 
-- (id)initObjectWithConditionalStyleSet:(id)a3
+- (id)initObjectWithConditionalStyleSet:(id)set
 {
   v6.receiver = self;
   v6.super_class = TSTTableDataConditionalStyleSet;
   v4 = [(TSTTableDataConditionalStyleSet *)&v6 init];
   if (v4)
   {
-    v4->mConditionalStyleSet = a3;
+    v4->mConditionalStyleSet = set;
     v4->super.mRefCount = 1;
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -29,7 +29,7 @@
   }
 
   mConditionalStyleSet = self->mConditionalStyleSet;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return [(TSTConditionalStyleSet *)mConditionalStyleSet isEqual:v6];
 }

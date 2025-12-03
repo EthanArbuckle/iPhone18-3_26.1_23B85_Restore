@@ -1,15 +1,15 @@
 @interface AppTransactionCacheManager.AppTransactionStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (SQLiteDatabaseStoreDescriptor)storeDescriptor;
 @end
 
 @implementation AppTransactionCacheManager.AppTransactionStore
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v6 = sub_1001D8218(v4, v5);
+  schemaCopy = schema;
+  v6 = sub_1001D8218(schemaCopy, v5);
 
   return v6;
 }

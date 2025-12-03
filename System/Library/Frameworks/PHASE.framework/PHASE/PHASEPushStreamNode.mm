@@ -3,10 +3,10 @@
 - (void)scheduleBuffer:(AVAudioPCMBuffer *)buffer atTime:(AVAudioTime *)when options:(PHASEPushStreamBufferOptions)options;
 - (void)scheduleBuffer:(AVAudioPCMBuffer *)buffer atTime:(AVAudioTime *)when options:(PHASEPushStreamBufferOptions)options completionCallbackType:(PHASEPushStreamCompletionCallbackCondition)completionCallbackType completionHandler:(void *)completionHandler;
 - (void)scheduleBuffer:(AVAudioPCMBuffer *)buffer completionCallbackType:(PHASEPushStreamCompletionCallbackCondition)completionCallbackType completionHandler:(void *)completionHandler;
-- (void)scheduleBuffer:(id *)a1 atTime:options:completionCallbackType:completionHandler:;
-- (void)scheduleBuffer:(uint64_t)a1;
-- (void)scheduleBuffer:(uint64_t)a1 atTime:options:;
-- (void)scheduleBuffer:(uint64_t)a1 completionCallbackType:completionHandler:;
+- (void)scheduleBuffer:(id *)buffer atTime:options:completionCallbackType:completionHandler:;
+- (void)scheduleBuffer:(uint64_t)buffer;
+- (void)scheduleBuffer:(uint64_t)buffer atTime:options:;
+- (void)scheduleBuffer:(uint64_t)buffer completionCallbackType:completionHandler:;
 @end
 
 @implementation PHASEPushStreamNode
@@ -15,12 +15,12 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v4 = buffer;
-  v5 = [(PHASEStreamNode *)self engine];
-  v6 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v5 implementation] + 48), 7);
+  engine = [(PHASEStreamNode *)self engine];
+  v6 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([engine implementation] + 48), 7);
 
-  v7 = [(PHASEStreamNode *)self actionTreeUniqueId];
+  actionTreeUniqueId = [(PHASEStreamNode *)self actionTreeUniqueId];
   v9 = v8;
-  v10 = [(PHASEStreamNode *)self nodeUID];
+  nodeUID = [(PHASEStreamNode *)self nodeUID];
   v11 = v4;
   v12 = **(v6 + 8);
   v19 = 0;
@@ -63,9 +63,9 @@
 
   *v13 = &unk_284D364D0;
   v13[1] = v6;
-  v13[2] = v7;
+  v13[2] = actionTreeUniqueId;
   v13[3] = v9;
-  v13[4] = v10;
+  v13[4] = nodeUID;
   v13[5] = v11;
   Phase::LockFreeQueueSPSC::CommitBytes(v12, 48);
   atomic_store(0, (v12 + 40));
@@ -76,12 +76,12 @@
   v34 = *MEMORY[0x277D85DE8];
   v8 = buffer;
   v23 = completionHandler;
-  v9 = [(PHASEStreamNode *)self engine];
-  v10 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v9 implementation] + 48), 7);
+  engine = [(PHASEStreamNode *)self engine];
+  v10 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([engine implementation] + 48), 7);
 
-  v11 = [(PHASEStreamNode *)self actionTreeUniqueId];
+  actionTreeUniqueId = [(PHASEStreamNode *)self actionTreeUniqueId];
   v13 = v12;
-  v14 = [(PHASEStreamNode *)self nodeUID];
+  nodeUID = [(PHASEStreamNode *)self nodeUID];
   v15 = v8;
   v16 = _Block_copy(v23);
   v17 = **(v10 + 8);
@@ -125,9 +125,9 @@
 
   *v18 = &unk_284D364F8;
   v18[1] = v10;
-  v18[2] = v11;
+  v18[2] = actionTreeUniqueId;
   v18[3] = v13;
-  v18[4] = v14;
+  v18[4] = nodeUID;
   v18[5] = v15;
   v18[6] = completionCallbackType;
   v18[7] = v16;
@@ -140,12 +140,12 @@
   v34 = *MEMORY[0x277D85DE8];
   v8 = buffer;
   v9 = when;
-  v10 = [(PHASEStreamNode *)self engine];
-  v11 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v10 implementation] + 48), 7);
+  engine = [(PHASEStreamNode *)self engine];
+  v11 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([engine implementation] + 48), 7);
 
-  v12 = [(PHASEStreamNode *)self actionTreeUniqueId];
+  actionTreeUniqueId = [(PHASEStreamNode *)self actionTreeUniqueId];
   v14 = v13;
-  v15 = [(PHASEStreamNode *)self nodeUID];
+  nodeUID = [(PHASEStreamNode *)self nodeUID];
   v16 = v8;
   v17 = v9;
   v18 = **(v11 + 8);
@@ -189,9 +189,9 @@
 
   *v19 = &unk_284D36520;
   v19[1] = v11;
-  v19[2] = v12;
+  v19[2] = actionTreeUniqueId;
   v19[3] = v14;
-  v19[4] = v15;
+  v19[4] = nodeUID;
   v19[5] = v16;
   v19[6] = v17;
   v19[7] = options;
@@ -205,8 +205,8 @@
   v12 = buffer;
   v13 = when;
   v14 = completionHandler;
-  v15 = [(PHASEStreamNode *)self engine];
-  v16 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v15 implementation] + 48), 7);
+  engine = [(PHASEStreamNode *)self engine];
+  v16 = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([engine implementation] + 48), 7);
 
   *&v27 = v16;
   *(&v27 + 1) = [(PHASEStreamNode *)self actionTreeUniqueId];
@@ -267,25 +267,25 @@
   atomic_store(0, (v21 + 40));
 }
 
-- (void)scheduleBuffer:(uint64_t)a1
+- (void)scheduleBuffer:(uint64_t)buffer
 {
 
   JUMPOUT(0x23EE864A0);
 }
 
-- (void)scheduleBuffer:(uint64_t)a1 completionCallbackType:completionHandler:
+- (void)scheduleBuffer:(uint64_t)buffer completionCallbackType:completionHandler:
 {
 
   JUMPOUT(0x23EE864A0);
 }
 
-- (void)scheduleBuffer:(uint64_t)a1 atTime:options:
+- (void)scheduleBuffer:(uint64_t)buffer atTime:options:
 {
 
   JUMPOUT(0x23EE864A0);
 }
 
-- (void)scheduleBuffer:(id *)a1 atTime:options:completionCallbackType:completionHandler:
+- (void)scheduleBuffer:(id *)buffer atTime:options:completionCallbackType:completionHandler:
 {
 
   JUMPOUT(0x23EE864A0);

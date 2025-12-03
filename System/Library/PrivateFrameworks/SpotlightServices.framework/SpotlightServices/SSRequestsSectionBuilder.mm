@@ -19,35 +19,35 @@
 - (unint64_t)buildMaxInitiallyVisibleResults
 {
   v3 = objc_opt_new();
-  v4 = [(SSSectionBuilder *)self section];
-  v5 = [v4 results];
+  section = [(SSSectionBuilder *)self section];
+  results = [section results];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__SSRequestsSectionBuilder_buildMaxInitiallyVisibleResults__block_invoke;
   v13[3] = &unk_1E8596030;
   v6 = v3;
   v14 = v6;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [results enumerateObjectsUsingBlock:v13];
 
-  v7 = [v6 count];
-  if (!v7)
+  buildMaxInitiallyVisibleResults = [v6 count];
+  if (!buildMaxInitiallyVisibleResults)
   {
     v12.receiver = self;
     v12.super_class = SSRequestsSectionBuilder;
-    v7 = [(SSSectionBuilder *)&v12 buildMaxInitiallyVisibleResults];
+    buildMaxInitiallyVisibleResults = [(SSSectionBuilder *)&v12 buildMaxInitiallyVisibleResults];
   }
 
   v11.receiver = self;
   v11.super_class = SSRequestsSectionBuilder;
-  v8 = [(SSSectionBuilder *)&v11 buildMaxInitiallyVisibleResults];
-  if (v7 >= v8)
+  buildMaxInitiallyVisibleResults2 = [(SSSectionBuilder *)&v11 buildMaxInitiallyVisibleResults];
+  if (buildMaxInitiallyVisibleResults >= buildMaxInitiallyVisibleResults2)
   {
-    v9 = v8;
+    v9 = buildMaxInitiallyVisibleResults2;
   }
 
   else
   {
-    v9 = v7;
+    v9 = buildMaxInitiallyVisibleResults;
   }
 
   return v9;

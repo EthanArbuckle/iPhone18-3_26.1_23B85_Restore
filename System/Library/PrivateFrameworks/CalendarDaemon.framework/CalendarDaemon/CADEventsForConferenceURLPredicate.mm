@@ -1,26 +1,26 @@
 @interface CADEventsForConferenceURLPredicate
-- (CADEventsForConferenceURLPredicate)initWithCoder:(id)a3;
-- (CADEventsForConferenceURLPredicate)initWithURL:(id)a3 limit:(int64_t)a4;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (CADEventsForConferenceURLPredicate)initWithCoder:(id)coder;
+- (CADEventsForConferenceURLPredicate)initWithURL:(id)l limit:(int64_t)limit;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)defaultPropertiesToLoad;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADEventsForConferenceURLPredicate
 
-- (CADEventsForConferenceURLPredicate)initWithURL:(id)a3 limit:(int64_t)a4
+- (CADEventsForConferenceURLPredicate)initWithURL:(id)l limit:(int64_t)limit
 {
-  v6 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = CADEventsForConferenceURLPredicate;
   v7 = [(EKPredicate *)&v10 initWithCalendars:0];
   if (v7)
   {
-    v8 = [v6 absoluteString];
-    [(CADEventsForConferenceURLPredicate *)v7 setUrlString:v8];
+    absoluteString = [lCopy absoluteString];
+    [(CADEventsForConferenceURLPredicate *)v7 setUrlString:absoluteString];
 
-    [(CADEventsForConferenceURLPredicate *)v7 setLimit:a4];
+    [(CADEventsForConferenceURLPredicate *)v7 setLimit:limit];
   }
 
   return v7;
@@ -34,44 +34,44 @@
   v4 = [(CADEventsForConferenceURLPredicate *)&v9 description];
   v5 = [v3 initWithSuperclassDescription:v4];
 
-  v6 = [(CADEventsForConferenceURLPredicate *)self urlString];
-  [v5 setKey:@"URL" withObject:v6];
+  urlString = [(CADEventsForConferenceURLPredicate *)self urlString];
+  [v5 setKey:@"URL" withObject:urlString];
 
   [v5 setKey:@"limit" withInteger:{-[CADEventsForConferenceURLPredicate limit](self, "limit")}];
-  v7 = [v5 build];
+  build = [v5 build];
 
-  return v7;
+  return build;
 }
 
-- (CADEventsForConferenceURLPredicate)initWithCoder:(id)a3
+- (CADEventsForConferenceURLPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CADEventsForConferenceURLPredicate;
-  v5 = [(EKPredicate *)&v9 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"urlString"];
     [(CADEventsForConferenceURLPredicate *)v5 setUrlString:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
     -[CADEventsForConferenceURLPredicate setLimit:](v5, "setLimit:", [v7 integerValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CADEventsForConferenceURLPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EKPredicate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CADEventsForConferenceURLPredicate *)self urlString:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"urlString"];
+  [coderCopy encodeObject:v5 forKey:@"urlString"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CADEventsForConferenceURLPredicate limit](self, "limit")}];
-  [v4 encodeObject:v6 forKey:@"limit"];
+  [coderCopy encodeObject:v6 forKey:@"limit"];
 }
 
 - (id)defaultPropertiesToLoad
@@ -85,20 +85,20 @@
   return v4;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   AuxilliaryDatabaseID = CalDatabaseGetAuxilliaryDatabaseID();
   v5 = [(EKPredicate *)self calendarRowIDsForDatabaseID:AuxilliaryDatabaseID];
   v6 = [(EKPredicate *)self restrictedCalendarRowIDsForDatabaseID:AuxilliaryDatabaseID];
   FilterFromRowIDs = CreateFilterFromRowIDs(v5, v6);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [(CADEventsForConferenceURLPredicate *)self urlString];
+  urlString = [(CADEventsForConferenceURLPredicate *)self urlString];
   [(CADEventsForConferenceURLPredicate *)self limit];
   v10 = CalDatabaseCopyEventOccurrenceCache();
   if (v10)
   {
     v11 = v10;
-    if (v9)
+    if (urlString)
     {
       v12 = CalDatabaseCopyEventIDsOfEventsMatching();
       if (v12)

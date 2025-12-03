@@ -1,42 +1,42 @@
 @interface AKUserInfoUpdateRequestProvider
-+ (BOOL)_isADPBlockModeOnlyRequest:(id)a3 context:(id)a4;
-+ (BOOL)_isPDPOnlyRequest:(id)a3 context:(id)a4;
-+ (BOOL)_validateParameterCombination:(id)a3 context:(id)a4 error:(id *)a5;
-+ (id)_urlBagKeyForUserInformation:(id)a3 context:(id)a4;
-+ (id)providerWithContext:(id)a3 userInformation:(id)a4 error:(id *)a5;
-- (AKUserInfoUpdateRequestProvider)initWithContext:(id)a3 userInformation:(id)a4;
-- (id)_buildRequestBodyFromUserInformation:(id)a3;
-- (void)_setupRequestWithUserInformation:(id)a3;
++ (BOOL)_isADPBlockModeOnlyRequest:(id)request context:(id)context;
++ (BOOL)_isPDPOnlyRequest:(id)request context:(id)context;
++ (BOOL)_validateParameterCombination:(id)combination context:(id)context error:(id *)error;
++ (id)_urlBagKeyForUserInformation:(id)information context:(id)context;
++ (id)providerWithContext:(id)context userInformation:(id)information error:(id *)error;
+- (AKUserInfoUpdateRequestProvider)initWithContext:(id)context userInformation:(id)information;
+- (id)_buildRequestBodyFromUserInformation:(id)information;
+- (void)_setupRequestWithUserInformation:(id)information;
 @end
 
 @implementation AKUserInfoUpdateRequestProvider
 
-+ (id)providerWithContext:(id)a3 userInformation:(id)a4 error:(id *)a5
++ (id)providerWithContext:(id)context userInformation:(id)information error:(id *)error
 {
-  v18 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = a5;
+  objc_storeStrong(&v16, information);
+  errorCopy = error;
   v14 = 0;
   v13 = 0;
-  v12 = [v18 _validateParameterCombination:v16 context:location[0] error:&v13];
+  v12 = [selfCopy _validateParameterCombination:v16 context:location[0] error:&v13];
   objc_storeStrong(&v14, v13);
   if (v12)
   {
-    v6 = [v18 alloc];
+    v6 = [selfCopy alloc];
     v19 = [v6 initWithContext:location[0] userInformation:v16];
   }
 
   else
   {
-    if (v15)
+    if (errorCopy)
     {
       v9 = v14;
       v5 = v14;
-      *v15 = v9;
+      *errorCopy = v9;
     }
 
     v19 = 0;
@@ -50,48 +50,48 @@
   return v7;
 }
 
-- (AKUserInfoUpdateRequestProvider)initWithContext:(id)a3 userInformation:(id)a4
+- (AKUserInfoUpdateRequestProvider)initWithContext:(id)context userInformation:(id)information
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, information);
   v10 = [objc_opt_class() _urlBagKeyForUserInformation:v11 context:location[0]];
-  v4 = v13;
-  v13 = 0;
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKUserInfoUpdateRequestProvider;
   v8 = [(AKURLRequestProviderImpl *)&v9 initWithContext:location[0] urlBagKey:v10];
-  v13 = v8;
-  objc_storeStrong(&v13, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    [(AKUserInfoUpdateRequestProvider *)v13 _setupRequestWithUserInformation:v11];
+    [(AKUserInfoUpdateRequestProvider *)selfCopy _setupRequestWithUserInformation:v11];
   }
 
-  v6 = _objc_retain(v13);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)_setupRequestWithUserInformation:(id)a3
+- (void)_setupRequestWithUserInformation:(id)information
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKGrandSlamRequestProvider *)v12 setAuthenticatedRequest:1];
-  [(AKGrandSlamRequestProvider *)v12 setExpectedResponseType:?];
-  [(AKGrandSlamRequestProvider *)v12 setRequestBodyType:1];
-  v10 = [(AKUserInfoUpdateRequestProvider *)v12 _buildRequestBodyFromUserInformation:location[0]];
+  objc_storeStrong(location, information);
+  [(AKGrandSlamRequestProvider *)selfCopy setAuthenticatedRequest:1];
+  [(AKGrandSlamRequestProvider *)selfCopy setExpectedResponseType:?];
+  [(AKGrandSlamRequestProvider *)selfCopy setRequestBodyType:1];
+  v10 = [(AKUserInfoUpdateRequestProvider *)selfCopy _buildRequestBodyFromUserInformation:location[0]];
   if ([v10 count])
   {
-    [(AKURLRequestProviderImpl *)v12 setAuthKitBody:v10];
+    [(AKURLRequestProviderImpl *)selfCopy setAuthKitBody:v10];
     v9 = _AKLogSystem();
     v8 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -122,20 +122,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_buildRequestBodyFromUserInformation:(id)a3
+- (id)_buildRequestBodyFromUserInformation:(id)information
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, information);
   v232 = +[NSMutableDictionary dictionary];
-  v130 = [location[0] givenName];
-  _objc_release(v130);
-  if (v130)
+  givenName = [location[0] givenName];
+  _objc_release(givenName);
+  if (givenName)
   {
-    v129 = [location[0] givenName];
+    givenName2 = [location[0] givenName];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v129);
+    _objc_release(givenName2);
     v231 = _AKLogSystem();
     v230 = 2;
     if (os_log_type_enabled(v231, OS_LOG_TYPE_DEBUG))
@@ -149,13 +149,13 @@
     objc_storeStrong(&v231, 0);
   }
 
-  v126 = [location[0] familyName];
-  _objc_release(v126);
-  if (v126)
+  familyName = [location[0] familyName];
+  _objc_release(familyName);
+  if (familyName)
   {
-    v125 = [location[0] familyName];
+    familyName2 = [location[0] familyName];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v125);
+    _objc_release(familyName2);
     v228 = _AKLogSystem();
     v227 = 2;
     if (os_log_type_enabled(v228, OS_LOG_TYPE_DEBUG))
@@ -169,13 +169,13 @@
     objc_storeStrong(&v228, 0);
   }
 
-  v122 = [location[0] accountName];
-  _objc_release(v122);
-  if (v122)
+  accountName = [location[0] accountName];
+  _objc_release(accountName);
+  if (accountName)
   {
-    v121 = [location[0] accountName];
+    accountName2 = [location[0] accountName];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v121);
+    _objc_release(accountName2);
     v225 = _AKLogSystem();
     v224 = 2;
     if (os_log_type_enabled(v225, OS_LOG_TYPE_DEBUG))
@@ -189,13 +189,13 @@
     objc_storeStrong(&v225, 0);
   }
 
-  v118 = [location[0] primaryEmailAddress];
-  _objc_release(v118);
-  if (v118)
+  primaryEmailAddress = [location[0] primaryEmailAddress];
+  _objc_release(primaryEmailAddress);
+  if (primaryEmailAddress)
   {
-    v117 = [location[0] primaryEmailAddress];
+    primaryEmailAddress2 = [location[0] primaryEmailAddress];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v117);
+    _objc_release(primaryEmailAddress2);
     v222 = _AKLogSystem();
     v221 = 2;
     if (os_log_type_enabled(v222, OS_LOG_TYPE_DEBUG))
@@ -209,13 +209,13 @@
     objc_storeStrong(&v222, 0);
   }
 
-  v114 = [location[0] appleIDCountryCode];
-  _objc_release(v114);
-  if (v114)
+  appleIDCountryCode = [location[0] appleIDCountryCode];
+  _objc_release(appleIDCountryCode);
+  if (appleIDCountryCode)
   {
-    v113 = [location[0] appleIDCountryCode];
+    appleIDCountryCode2 = [location[0] appleIDCountryCode];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v113);
+    _objc_release(appleIDCountryCode2);
     v219 = _AKLogSystem();
     v218 = 2;
     if (os_log_type_enabled(v219, OS_LOG_TYPE_DEBUG))
@@ -229,13 +229,13 @@
     objc_storeStrong(&v219, 0);
   }
 
-  v110 = [location[0] forwardingEmail];
-  _objc_release(v110);
-  if (v110)
+  forwardingEmail = [location[0] forwardingEmail];
+  _objc_release(forwardingEmail);
+  if (forwardingEmail)
   {
-    v109 = [location[0] forwardingEmail];
+    forwardingEmail2 = [location[0] forwardingEmail];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v109);
+    _objc_release(forwardingEmail2);
     v216 = _AKLogSystem();
     v215 = 2;
     if (os_log_type_enabled(v216, OS_LOG_TYPE_DEBUG))
@@ -249,13 +249,13 @@
     objc_storeStrong(&v216, 0);
   }
 
-  v106 = [location[0] previouslySelectedEmail];
-  _objc_release(v106);
-  if (v106)
+  previouslySelectedEmail = [location[0] previouslySelectedEmail];
+  _objc_release(previouslySelectedEmail);
+  if (previouslySelectedEmail)
   {
-    v105 = [location[0] previouslySelectedEmail];
+    previouslySelectedEmail2 = [location[0] previouslySelectedEmail];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v105);
+    _objc_release(previouslySelectedEmail2);
     v213 = _AKLogSystem();
     v212 = 2;
     if (os_log_type_enabled(v213, OS_LOG_TYPE_DEBUG))
@@ -269,27 +269,27 @@
     objc_storeStrong(&v213, 0);
   }
 
-  v101 = [location[0] accountAliases];
+  accountAliases = [location[0] accountAliases];
   v209 = 0;
   v102 = 0;
-  if (v101)
+  if (accountAliases)
   {
-    v210 = [location[0] accountAliases];
+    accountAliases2 = [location[0] accountAliases];
     v209 = 1;
-    v102 = [v210 count] != 0;
+    v102 = [accountAliases2 count] != 0;
   }
 
   if (v209)
   {
-    _objc_release(v210);
+    _objc_release(accountAliases2);
   }
 
-  _objc_release(v101);
+  _objc_release(accountAliases);
   if (v102)
   {
-    v100 = [location[0] accountAliases];
+    accountAliases3 = [location[0] accountAliases];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v100);
+    _objc_release(accountAliases3);
     v208 = _AKLogSystem();
     v207 = 2;
     if (os_log_type_enabled(v208, OS_LOG_TYPE_DEBUG))
@@ -303,27 +303,27 @@
     objc_storeStrong(&v208, 0);
   }
 
-  v96 = [location[0] reachableEmails];
+  reachableEmails = [location[0] reachableEmails];
   v204 = 0;
   v97 = 0;
-  if (v96)
+  if (reachableEmails)
   {
-    v205 = [location[0] reachableEmails];
+    reachableEmails2 = [location[0] reachableEmails];
     v204 = 1;
-    v97 = [v205 count] != 0;
+    v97 = [reachableEmails2 count] != 0;
   }
 
   if (v204)
   {
-    _objc_release(v205);
+    _objc_release(reachableEmails2);
   }
 
-  _objc_release(v96);
+  _objc_release(reachableEmails);
   if (v97)
   {
-    v95 = [location[0] reachableEmails];
+    reachableEmails3 = [location[0] reachableEmails];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v95);
+    _objc_release(reachableEmails3);
     v203 = _AKLogSystem();
     v202 = 2;
     if (os_log_type_enabled(v203, OS_LOG_TYPE_DEBUG))
@@ -337,27 +337,27 @@
     objc_storeStrong(&v203, 0);
   }
 
-  v91 = [location[0] trustedPhoneNumbers];
+  trustedPhoneNumbers = [location[0] trustedPhoneNumbers];
   v199 = 0;
   v92 = 0;
-  if (v91)
+  if (trustedPhoneNumbers)
   {
-    v200 = [location[0] trustedPhoneNumbers];
+    trustedPhoneNumbers2 = [location[0] trustedPhoneNumbers];
     v199 = 1;
-    v92 = [v200 count] != 0;
+    v92 = [trustedPhoneNumbers2 count] != 0;
   }
 
   if (v199)
   {
-    _objc_release(v200);
+    _objc_release(trustedPhoneNumbers2);
   }
 
-  _objc_release(v91);
+  _objc_release(trustedPhoneNumbers);
   if (v92)
   {
-    v90 = [location[0] trustedPhoneNumbers];
+    trustedPhoneNumbers3 = [location[0] trustedPhoneNumbers];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v90);
+    _objc_release(trustedPhoneNumbers3);
     v198 = _AKLogSystem();
     v197 = 2;
     if (os_log_type_enabled(v198, OS_LOG_TYPE_DEBUG))
@@ -371,27 +371,27 @@
     objc_storeStrong(&v198, 0);
   }
 
-  v86 = [location[0] loginHandles];
+  loginHandles = [location[0] loginHandles];
   v194 = 0;
   v87 = 0;
-  if (v86)
+  if (loginHandles)
   {
-    v195 = [location[0] loginHandles];
+    loginHandles2 = [location[0] loginHandles];
     v194 = 1;
-    v87 = [v195 count] != 0;
+    v87 = [loginHandles2 count] != 0;
   }
 
   if (v194)
   {
-    _objc_release(v195);
+    _objc_release(loginHandles2);
   }
 
-  _objc_release(v86);
+  _objc_release(loginHandles);
   if (v87)
   {
-    v85 = [location[0] loginHandles];
+    loginHandles3 = [location[0] loginHandles];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v85);
+    _objc_release(loginHandles3);
     oslog = _AKLogSystem();
     v192 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -423,13 +423,13 @@
     objc_storeStrong(&v190, 0);
   }
 
-  v79 = [location[0] vettedPrimaryEmail];
-  _objc_release(v79);
-  if (v79)
+  vettedPrimaryEmail = [location[0] vettedPrimaryEmail];
+  _objc_release(vettedPrimaryEmail);
+  if (vettedPrimaryEmail)
   {
-    v78 = [location[0] vettedPrimaryEmail];
+    vettedPrimaryEmail2 = [location[0] vettedPrimaryEmail];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v78);
+    _objc_release(vettedPrimaryEmail2);
     v187 = _AKLogSystem();
     v186 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v187, OS_LOG_TYPE_DEBUG))
@@ -443,13 +443,13 @@
     objc_storeStrong(&v187, 0);
   }
 
-  v75 = [location[0] phoneAsAppleID];
-  _objc_release(v75);
-  if (v75)
+  phoneAsAppleID = [location[0] phoneAsAppleID];
+  _objc_release(phoneAsAppleID);
+  if (phoneAsAppleID)
   {
-    v74 = [location[0] phoneAsAppleID];
+    phoneAsAppleID2 = [location[0] phoneAsAppleID];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v74);
+    _objc_release(phoneAsAppleID2);
     v184 = _AKLogSystem();
     v183 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v184, OS_LOG_TYPE_DEBUG))
@@ -463,13 +463,13 @@
     objc_storeStrong(&v184, 0);
   }
 
-  v71 = [location[0] hasUsedAuthorization];
-  _objc_release(v71);
-  if (v71)
+  hasUsedAuthorization = [location[0] hasUsedAuthorization];
+  _objc_release(hasUsedAuthorization);
+  if (hasUsedAuthorization)
   {
-    v70 = [location[0] hasUsedAuthorization];
+    hasUsedAuthorization2 = [location[0] hasUsedAuthorization];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v70);
+    _objc_release(hasUsedAuthorization2);
     v181 = _AKLogSystem();
     v180 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v181, OS_LOG_TYPE_DEBUG))
@@ -483,13 +483,13 @@
     objc_storeStrong(&v181, 0);
   }
 
-  v67 = [location[0] privateAttestationEnabled];
-  _objc_release(v67);
-  if (v67)
+  privateAttestationEnabled = [location[0] privateAttestationEnabled];
+  _objc_release(privateAttestationEnabled);
+  if (privateAttestationEnabled)
   {
-    v66 = [location[0] privateAttestationEnabled];
+    privateAttestationEnabled2 = [location[0] privateAttestationEnabled];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v66);
+    _objc_release(privateAttestationEnabled2);
     v178 = _AKLogSystem();
     v177 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v178, OS_LOG_TYPE_DEBUG))
@@ -503,13 +503,13 @@
     objc_storeStrong(&v178, 0);
   }
 
-  v63 = [location[0] webAccessEnabled];
-  _objc_release(v63);
-  if (v63)
+  webAccessEnabled = [location[0] webAccessEnabled];
+  _objc_release(webAccessEnabled);
+  if (webAccessEnabled)
   {
-    v62 = [location[0] webAccessEnabled];
+    webAccessEnabled2 = [location[0] webAccessEnabled];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v62);
+    _objc_release(webAccessEnabled2);
     v175 = _AKLogSystem();
     v174 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v175, OS_LOG_TYPE_DEBUG))
@@ -523,13 +523,13 @@
     objc_storeStrong(&v175, 0);
   }
 
-  v59 = [location[0] isUnderage];
-  _objc_release(v59);
-  if (v59)
+  isUnderage = [location[0] isUnderage];
+  _objc_release(isUnderage);
+  if (isUnderage)
   {
-    v58 = [location[0] isUnderage];
+    isUnderage2 = [location[0] isUnderage];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v58);
+    _objc_release(isUnderage2);
     v172 = _AKLogSystem();
     v171 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v172, OS_LOG_TYPE_DEBUG))
@@ -561,13 +561,13 @@
     objc_storeStrong(&v169, 0);
   }
 
-  v52 = [location[0] isSenior];
-  _objc_release(v52);
-  if (v52)
+  isSenior = [location[0] isSenior];
+  _objc_release(isSenior);
+  if (isSenior)
   {
-    v51 = [location[0] isSenior];
+    isSenior2 = [location[0] isSenior];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v51);
+    _objc_release(isSenior2);
     v166 = _AKLogSystem();
     v165 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v166, OS_LOG_TYPE_DEBUG))
@@ -581,13 +581,13 @@
     objc_storeStrong(&v166, 0);
   }
 
-  v48 = [location[0] ageOfMajority];
-  _objc_release(v48);
-  if (v48)
+  ageOfMajority = [location[0] ageOfMajority];
+  _objc_release(ageOfMajority);
+  if (ageOfMajority)
   {
-    v47 = [location[0] ageOfMajority];
+    ageOfMajority2 = [location[0] ageOfMajority];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v47);
+    _objc_release(ageOfMajority2);
     v163 = _AKLogSystem();
     v162 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v163, OS_LOG_TYPE_DEBUG))
@@ -601,13 +601,13 @@
     objc_storeStrong(&v163, 0);
   }
 
-  v44 = [location[0] isLegacyStudent];
-  _objc_release(v44);
-  if (v44)
+  isLegacyStudent = [location[0] isLegacyStudent];
+  _objc_release(isLegacyStudent);
+  if (isLegacyStudent)
   {
-    v43 = [location[0] isLegacyStudent];
+    isLegacyStudent2 = [location[0] isLegacyStudent];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v43);
+    _objc_release(isLegacyStudent2);
     v160 = _AKLogSystem();
     v159 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v160, OS_LOG_TYPE_DEBUG))
@@ -621,13 +621,13 @@
     objc_storeStrong(&v160, 0);
   }
 
-  v40 = [location[0] managedOrganizationType];
-  _objc_release(v40);
-  if (v40)
+  managedOrganizationType = [location[0] managedOrganizationType];
+  _objc_release(managedOrganizationType);
+  if (managedOrganizationType)
   {
-    v39 = [location[0] managedOrganizationType];
+    managedOrganizationType2 = [location[0] managedOrganizationType];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v39);
+    _objc_release(managedOrganizationType2);
     v157 = _AKLogSystem();
     v156 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v157, OS_LOG_TYPE_DEBUG))
@@ -641,13 +641,13 @@
     objc_storeStrong(&v157, 0);
   }
 
-  v36 = [location[0] managedOrganizationName];
-  _objc_release(v36);
-  if (v36)
+  managedOrganizationName = [location[0] managedOrganizationName];
+  _objc_release(managedOrganizationName);
+  if (managedOrganizationName)
   {
-    v35 = [location[0] managedOrganizationName];
+    managedOrganizationName2 = [location[0] managedOrganizationName];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v35);
+    _objc_release(managedOrganizationName2);
     v154 = _AKLogSystem();
     v153 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v154, OS_LOG_TYPE_DEBUG))
@@ -661,13 +661,13 @@
     objc_storeStrong(&v154, 0);
   }
 
-  v32 = [location[0] isNotificationEmailAvailable];
-  _objc_release(v32);
-  if (v32)
+  isNotificationEmailAvailable = [location[0] isNotificationEmailAvailable];
+  _objc_release(isNotificationEmailAvailable);
+  if (isNotificationEmailAvailable)
   {
-    v31 = [location[0] isNotificationEmailAvailable];
+    isNotificationEmailAvailable2 = [location[0] isNotificationEmailAvailable];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v31);
+    _objc_release(isNotificationEmailAvailable2);
     v151 = _AKLogSystem();
     v150 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v151, OS_LOG_TYPE_DEBUG))
@@ -681,13 +681,13 @@
     objc_storeStrong(&v151, 0);
   }
 
-  v28 = [location[0] notificationEmail];
-  _objc_release(v28);
-  if (v28)
+  notificationEmail = [location[0] notificationEmail];
+  _objc_release(notificationEmail);
+  if (notificationEmail)
   {
-    v27 = [location[0] notificationEmail];
+    notificationEmail2 = [location[0] notificationEmail];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v27);
+    _objc_release(notificationEmail2);
     v148 = _AKLogSystem();
     v147 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v148, OS_LOG_TYPE_DEBUG))
@@ -701,13 +701,13 @@
     objc_storeStrong(&v148, 0);
   }
 
-  v24 = [location[0] birthYear];
-  _objc_release(v24);
-  if (v24)
+  birthYear = [location[0] birthYear];
+  _objc_release(birthYear);
+  if (birthYear)
   {
-    v23 = [location[0] birthYear];
+    birthYear2 = [location[0] birthYear];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v23);
+    _objc_release(birthYear2);
     v145 = _AKLogSystem();
     v144 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v145, OS_LOG_TYPE_DEBUG))
@@ -721,13 +721,13 @@
     objc_storeStrong(&v145, 0);
   }
 
-  v20 = [location[0] birthMonth];
-  _objc_release(v20);
-  if (v20)
+  birthMonth = [location[0] birthMonth];
+  _objc_release(birthMonth);
+  if (birthMonth)
   {
-    v19 = [location[0] birthMonth];
+    birthMonth2 = [location[0] birthMonth];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v19);
+    _objc_release(birthMonth2);
     v142 = _AKLogSystem();
     v141 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v142, OS_LOG_TYPE_DEBUG))
@@ -741,13 +741,13 @@
     objc_storeStrong(&v142, 0);
   }
 
-  v16 = [location[0] birthDay];
-  _objc_release(v16);
-  if (v16)
+  birthDay = [location[0] birthDay];
+  _objc_release(birthDay);
+  if (birthDay)
   {
-    v15 = [location[0] birthDay];
+    birthDay2 = [location[0] birthDay];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v15);
+    _objc_release(birthDay2);
     v139 = _AKLogSystem();
     v138 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v139, OS_LOG_TYPE_DEBUG))
@@ -761,13 +761,13 @@
     objc_storeStrong(&v139, 0);
   }
 
-  v12 = [location[0] criticalAccountEditsAllowed];
-  _objc_release(v12);
-  if (v12)
+  criticalAccountEditsAllowed = [location[0] criticalAccountEditsAllowed];
+  _objc_release(criticalAccountEditsAllowed);
+  if (criticalAccountEditsAllowed)
   {
-    v11 = [location[0] criticalAccountEditsAllowed];
+    criticalAccountEditsAllowed2 = [location[0] criticalAccountEditsAllowed];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v11);
+    _objc_release(criticalAccountEditsAllowed2);
     v136 = _AKLogSystem();
     v135 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v136, OS_LOG_TYPE_DEBUG))
@@ -781,13 +781,13 @@
     objc_storeStrong(&v136, 0);
   }
 
-  v8 = [location[0] adpBlockMode];
-  _objc_release(v8);
-  if (v8)
+  adpBlockMode = [location[0] adpBlockMode];
+  _objc_release(adpBlockMode);
+  if (adpBlockMode)
   {
-    v7 = [location[0] adpBlockMode];
+    adpBlockMode2 = [location[0] adpBlockMode];
     [v232 setObject:? forKeyedSubscript:?];
-    _objc_release(v7);
+    _objc_release(adpBlockMode2);
     v133 = _AKLogSystem();
     v132 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v133, OS_LOG_TYPE_DEBUG))
@@ -808,15 +808,15 @@
   return v4;
 }
 
-+ (id)_urlBagKeyForUserInformation:(id)a3 context:(id)a4
++ (id)_urlBagKeyForUserInformation:(id)information context:(id)context
 {
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, information);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  if ([v9 _isADPBlockModeOnlyRequest:location[0] context:v7])
+  objc_storeStrong(&v7, context);
+  if ([selfCopy _isADPBlockModeOnlyRequest:location[0] context:v7])
   {
     v10 = _objc_retain(AKURLBagKeyADPBlockMode);
   }
@@ -833,37 +833,37 @@
   return v4;
 }
 
-+ (BOOL)_isPDPOnlyRequest:(id)a3 context:(id)a4
++ (BOOL)_isPDPOnlyRequest:(id)request context:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, context);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-+ (BOOL)_isADPBlockModeOnlyRequest:(id)a3 context:(id)a4
++ (BOOL)_isADPBlockModeOnlyRequest:(id)request context:(id)context
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v4 = [location[0] adpBlockMode];
-  v9 = v4 != 0;
-  _objc_release(v4);
+  objc_storeStrong(&v14, context);
+  adpBlockMode = [location[0] adpBlockMode];
+  v9 = adpBlockMode != 0;
+  _objc_release(adpBlockMode);
   v13 = v9;
   if (v9)
   {
     v6 = location[0];
-    v7 = [v14 altDSID];
+    altDSID = [v14 altDSID];
     v11 = [v6 updateableFieldNamesForAccountWithAltDSID:?];
-    _objc_release(v7);
+    _objc_release(altDSID);
     v10 = [v11 mutableCopy];
     [v10 removeObject:AKUserInfoADPBlockModeKey];
     v16 = [v10 count] == 0;
@@ -883,14 +883,14 @@
   return v16;
 }
 
-+ (BOOL)_validateParameterCombination:(id)a3 context:(id)a4 error:(id *)a5
++ (BOOL)_validateParameterCombination:(id)combination context:(id)context error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, combination);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, context);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   return 1;

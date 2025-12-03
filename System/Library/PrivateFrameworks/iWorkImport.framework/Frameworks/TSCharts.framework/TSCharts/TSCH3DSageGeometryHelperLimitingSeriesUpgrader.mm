@@ -1,21 +1,21 @@
 @interface TSCH3DSageGeometryHelperLimitingSeriesUpgrader
 - (CGRect)oldResizingFrame;
-- (id)boundsLayoutByResizingToLayoutSize:(void *)a3;
-- (id)containingViewportByResizingScene:(id)a3 toResizingFrame:(CGRect)a4;
-- (id)sceneResetWithLayoutSettings:(id *)a3;
+- (id)boundsLayoutByResizingToLayoutSize:(void *)size;
+- (id)containingViewportByResizingScene:(id)scene toResizingFrame:(CGRect)frame;
+- (id)sceneResetWithLayoutSettings:(id *)settings;
 @end
 
 @implementation TSCH3DSageGeometryHelperLimitingSeriesUpgrader
 
-- (id)sceneResetWithLayoutSettings:(id *)a3
+- (id)sceneResetWithLayoutSettings:(id *)settings
 {
   v8 = objc_msgSend_helperWithInfo_(TSCH3DChartResizerHelper, a2, v3, v4, v5, self->super._chartInfo);
   resizerHelper = self->_resizerHelper;
   self->_resizerHelper = v8;
 
-  v34 = *a3;
+  v34 = *settings;
   objc_msgSend_setLayoutSettings_(self->_resizerHelper, v10, *&v34.var0, v11, v12, &v34);
-  v17 = objc_msgSend_create3DSceneWithLayoutSettings_styleProvidingSource_(self->super._chartInfo, v13, v14, v15, v16, a3, 0);
+  v17 = objc_msgSend_create3DSceneWithLayoutSettings_styleProvidingSource_(self->super._chartInfo, v13, v14, v15, v16, settings, 0);
   boundsLayout = self->_boundsLayout;
   self->_boundsLayout = 0;
 
@@ -55,14 +55,14 @@
   return result;
 }
 
-- (id)containingViewportByResizingScene:(id)a3 toResizingFrame:(CGRect)a4
+- (id)containingViewportByResizingScene:(id)scene toResizingFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  if (!v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v11, v12, v13, "[TSCH3DSageGeometryHelperLimitingSeriesUpgrader containingViewportByResizingScene:toResizingFrame:]");
@@ -114,7 +114,7 @@
   *&v34 = v53 - *&v34;
   v63 = LODWORD(MaxY);
   v64 = LODWORD(v34);
-  v54 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(resizerHelper, v32, MaxY, v34, v35, v10, &v62, 0, 2, 0);
+  v54 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(resizerHelper, v32, MaxY, v34, v35, sceneCopy, &v62, 0, 2, 0);
   boundsLayout = self->_boundsLayout;
   self->_boundsLayout = v54;
 
@@ -123,7 +123,7 @@
   return v60;
 }
 
-- (id)boundsLayoutByResizingToLayoutSize:(void *)a3
+- (id)boundsLayoutByResizingToLayoutSize:(void *)size
 {
   v8 = objc_msgSend_scene(self->_boundsLayout, a2, v3, v4, v5);
 
@@ -140,7 +140,7 @@
   resizerHelper = self->_resizerHelper;
   v29 = objc_msgSend_scene(self->_boundsLayout, v9, v10, v11, v12);
   v37 = 0;
-  v38 = *a3;
+  v38 = *size;
   v33 = objc_msgSend_boundsLayoutResizedForScene_bounds_resizeStartingSize_mode_returningResultSize_(resizerHelper, v30, v38, v31, v32, v29, &v37, 0, 1, 0);
   boundsLayout = self->_boundsLayout;
   self->_boundsLayout = v33;

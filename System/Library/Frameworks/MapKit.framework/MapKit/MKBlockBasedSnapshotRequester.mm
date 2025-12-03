@@ -1,23 +1,23 @@
 @interface MKBlockBasedSnapshotRequester
-+ (id)snapshotRequesterWitHandler:(id)a3;
-- (void)mapSnapshotCreator:(id)a3 didCreateSnapshot:(id)a4 attributionString:(id)a5 context:(id)a6;
++ (id)snapshotRequesterWitHandler:(id)handler;
+- (void)mapSnapshotCreator:(id)creator didCreateSnapshot:(id)snapshot attributionString:(id)string context:(id)context;
 @end
 
 @implementation MKBlockBasedSnapshotRequester
 
-- (void)mapSnapshotCreator:(id)a3 didCreateSnapshot:(id)a4 attributionString:(id)a5 context:(id)a6
+- (void)mapSnapshotCreator:(id)creator didCreateSnapshot:(id)snapshot attributionString:(id)string context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(MKBlockBasedSnapshotRequester *)self handler];
-  v10[2](v10, v9, v8);
+  stringCopy = string;
+  snapshotCopy = snapshot;
+  handler = [(MKBlockBasedSnapshotRequester *)self handler];
+  handler[2](handler, snapshotCopy, stringCopy);
 }
 
-+ (id)snapshotRequesterWitHandler:(id)a3
++ (id)snapshotRequesterWitHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(MKBlockBasedSnapshotRequester);
-  [(MKBlockBasedSnapshotRequester *)v4 setHandler:v3];
+  [(MKBlockBasedSnapshotRequester *)v4 setHandler:handlerCopy];
 
   return v4;
 }

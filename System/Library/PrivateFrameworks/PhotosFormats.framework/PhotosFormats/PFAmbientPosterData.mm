@@ -1,20 +1,20 @@
 @interface PFAmbientPosterData
-+ (id)loadFromURL:(id)a3 error:(id *)a4;
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
-- (PFAmbientPosterData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)loadFromURL:(id)l error:(id *)error;
+- (BOOL)saveToURL:(id)l error:(id *)error;
+- (PFAmbientPosterData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFAmbientPosterData
 
-- (PFAmbientPosterData)initWithCoder:(id)a3
+- (PFAmbientPosterData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PFAmbientPosterData *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedAssetCloudIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedAssetCloudIdentifier"];
     associatedAssetCloudIdentifier = v5->_associatedAssetCloudIdentifier;
     v5->_associatedAssetCloudIdentifier = v6;
   }
@@ -22,24 +22,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PFAmbientPosterData *)self associatedAssetCloudIdentifier];
-  [v4 encodeObject:v5 forKey:@"associatedAssetCloudIdentifier"];
+  coderCopy = coder;
+  associatedAssetCloudIdentifier = [(PFAmbientPosterData *)self associatedAssetCloudIdentifier];
+  [coderCopy encodeObject:associatedAssetCloudIdentifier forKey:@"associatedAssetCloudIdentifier"];
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __39__PFAmbientPosterData_saveToURL_error___block_invoke;
   v17[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v17[4] = a4;
-  v5 = a3;
+  v17[4] = error;
+  lCopy = l;
   v6 = MEMORY[0x1B8C64C40](v17);
-  v7 = [v5 URLByAppendingPathComponent:@"AmbientPosterData.plist"];
+  v7 = [lCopy URLByAppendingPathComponent:@"AmbientPosterData.plist"];
 
   v16 = 0;
   v8 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v16];
@@ -100,9 +100,9 @@ void **__39__PFAmbientPosterData_saveToURL_error___block_invoke(void **result, i
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PFAmbientPosterData allocWithZone:a3];
+  v4 = [PFAmbientPosterData allocWithZone:zone];
   v5 = [(NSString *)self->_associatedAssetCloudIdentifier copy];
   associatedAssetCloudIdentifier = v4->_associatedAssetCloudIdentifier;
   v4->_associatedAssetCloudIdentifier = v5;
@@ -110,10 +110,10 @@ void **__39__PFAmbientPosterData_saveToURL_error___block_invoke(void **result, i
   return v4;
 }
 
-+ (id)loadFromURL:(id)a3 error:(id *)a4
++ (id)loadFromURL:(id)l error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [a3 URLByAppendingPathComponent:@"AmbientPosterData.plist"];
+  v5 = [l URLByAppendingPathComponent:@"AmbientPosterData.plist"];
   v15 = 0;
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v5 options:1 error:&v15];
   v7 = v15;
@@ -136,19 +136,19 @@ LABEL_10:
       *buf = 138412290;
       v17 = v9;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to unarchive poster configuraton data error:%@", buf, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
 
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_10;
   }
 
@@ -159,7 +159,7 @@ LABEL_10:
     v18 = 2112;
     v19 = v7;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to read poster data at path:%@ error:%@", buf, 0x16u);
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -169,7 +169,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -177,7 +177,7 @@ LABEL_12:
 LABEL_6:
   v11 = v7;
   v8 = 0;
-  *a4 = v7;
+  *error = v7;
 LABEL_13:
   v9 = v7;
 LABEL_14:

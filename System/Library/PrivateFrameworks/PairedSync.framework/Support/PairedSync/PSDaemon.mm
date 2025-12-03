@@ -1,9 +1,9 @@
 @interface PSDaemon
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptNewClientConnection:(id)a3;
-- (BOOL)shouldAcceptNewProgressConnection:(id)a3;
-- (BOOL)shouldAcceptNewToolConnection:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptNewClientConnection:(id)connection;
+- (BOOL)shouldAcceptNewProgressConnection:(id)connection;
+- (BOOL)shouldAcceptNewToolConnection:(id)connection;
 - (BOOL)shouldRelaunch;
 - (PSDaemon)init;
 - (void)_acquireStayAliveTransaction;
@@ -11,9 +11,9 @@
 - (void)_registerForNotifications;
 - (void)addLoggersIfNeeded;
 - (void)run;
-- (void)setShouldRelaunch:(BOOL)a3;
+- (void)setShouldRelaunch:(BOOL)relaunch;
 - (void)sigTermHandler;
-- (void)syncInitiatorStateChangedTo:(unint64_t)a3;
+- (void)syncInitiatorStateChangedTo:(unint64_t)to;
 @end
 
 @implementation PSDaemon
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000CEF8;
   block[3] = &unk_10002C778;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100038070 != -1)
   {
     dispatch_once(&qword_100038070, block);
@@ -125,9 +125,9 @@
   os_unfair_lock_unlock(&self->_stayAliveTransactionLock);
 }
 
-- (void)setShouldRelaunch:(BOOL)a3
+- (void)setShouldRelaunch:(BOOL)relaunch
 {
-  v3 = a3;
+  relaunchCopy = relaunch;
   v5 = psd_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -137,7 +137,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v3)
+      if (relaunchCopy)
       {
         v8 = @"YES";
       }
@@ -154,7 +154,7 @@
   v10[2] = sub_10000D3F8;
   v10[3] = &unk_10002CB18;
   v10[4] = self;
-  v11 = v3;
+  v11 = relaunchCopy;
   dispatch_sync(notificationQueue, v10);
 }
 
@@ -224,27 +224,27 @@
   dispatch_activate(v5);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_toolListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_toolListener == listenerCopy)
   {
-    v9 = [(PSDaemon *)self shouldAcceptNewToolConnection:v7];
+    v9 = [(PSDaemon *)self shouldAcceptNewToolConnection:connectionCopy];
 LABEL_8:
     v8 = v9;
     goto LABEL_9;
   }
 
-  if (self->_progressListener == v6)
+  if (self->_progressListener == listenerCopy)
   {
-    v9 = [(PSDaemon *)self shouldAcceptNewProgressConnection:v7];
+    v9 = [(PSDaemon *)self shouldAcceptNewProgressConnection:connectionCopy];
     goto LABEL_8;
   }
 
-  if (self->_clientListener == v6)
+  if (self->_clientListener == listenerCopy)
   {
-    v9 = [(PSDaemon *)self shouldAcceptNewClientConnection:v7];
+    v9 = [(PSDaemon *)self shouldAcceptNewClientConnection:connectionCopy];
     goto LABEL_8;
   }
 
@@ -254,26 +254,26 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)shouldAcceptNewToolConnection:(id)a3
+- (BOOL)shouldAcceptNewToolConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.pairedsync.tool"];
-  v5 = [v4 BOOLValue];
+  connectionCopy = connection;
+  v4 = [connectionCopy valueForEntitlement:@"com.apple.pairedsync.tool"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = PSYToolInterfaceXPCInterface();
-    [v3 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
     v7 = objc_alloc_init(PSDToolConnection);
-    [v3 setExportedObject:v7];
+    [connectionCopy setExportedObject:v7];
 
-    [v3 resume];
+    [connectionCopy resume];
   }
 
   else
   {
-    [v3 invalidate];
+    [connectionCopy invalidate];
     v8 = psd_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -283,30 +283,30 @@ LABEL_9:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v3;
+        v13 = connectionCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Tool connection %{public}@ is missing entitlement", &v12, 0xCu);
       }
     }
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)shouldAcceptNewProgressConnection:(id)a3
+- (BOOL)shouldAcceptNewProgressConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[PSDSyncSessionObserver alloc] initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [[PSDSyncSessionObserver alloc] initWithXPCConnection:connectionCopy];
 
   return 1;
 }
 
-- (BOOL)shouldAcceptNewClientConnection:(id)a3
+- (BOOL)shouldAcceptNewClientConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.pairedsync.client"];
-  v5 = [v4 BOOLValue];
+  connectionCopy = connection;
+  v4 = [connectionCopy valueForEntitlement:@"com.apple.pairedsync.client"];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v9 = 0;
     v10 = &v9;
@@ -319,21 +319,21 @@ LABEL_9:
     v8[2] = sub_10000DD00;
     v8[3] = &unk_10002CBC8;
     v8[4] = &v9;
-    [v3 setInvalidationHandler:v8];
+    [connectionCopy setInvalidationHandler:v8];
     v6 = PSYConnectionXPCInterface();
-    [v3 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
-    [v3 setExportedObject:v10[5]];
-    [v3 resume];
+    [connectionCopy setExportedObject:v10[5]];
+    [connectionCopy resume];
     _Block_object_dispose(&v9, 8);
   }
 
   else
   {
-    [v3 invalidate];
+    [connectionCopy invalidate];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)addLoggersIfNeeded
@@ -356,7 +356,7 @@ LABEL_9:
   self->_loggers = v3;
 }
 
-- (void)syncInitiatorStateChangedTo:(unint64_t)a3
+- (void)syncInitiatorStateChangedTo:(unint64_t)to
 {
   v5 = psd_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -369,15 +369,15 @@ LABEL_9:
       *buf = 136315394;
       v13 = "[PSDaemon syncInitiatorStateChangedTo:]";
       v14 = 2048;
-      v15 = a3;
+      toCopy = to;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: state=%ld", buf, 0x16u);
     }
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((to & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v8 = +[PSYRegistrySingleton registry];
-    v9 = [v8 pairingID];
+    pairingID = [v8 pairingID];
 
     v10 = +[PSDSyncStateManager sharedSyncStateManager];
     v11[0] = _NSConcreteStackBlock;
@@ -385,7 +385,7 @@ LABEL_9:
     v11[2] = sub_10000DFE8;
     v11[3] = &unk_10002C840;
     v11[4] = self;
-    [v10 setSyncCompleteForPairingID:v9 withBlock:v11];
+    [v10 setSyncCompleteForPairingID:pairingID withBlock:v11];
   }
 }
 

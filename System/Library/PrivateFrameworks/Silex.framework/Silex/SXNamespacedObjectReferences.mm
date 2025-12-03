@@ -1,18 +1,18 @@
 @interface SXNamespacedObjectReferences
 - (SXNamespacedObjectReferences)init;
-- (id)componentStyleIdentifierForNamespacedComponentStyleIdentifier:(id)a3 component:(id)a4;
-- (id)componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier:(id)a3 component:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)namespacedComponentStyleIdentifierForIdentifier:(id)a3 component:(id)a4;
-- (id)namespacedComponentStyleIdentifiersForIdentifiers:(id)a3 component:(id)a4;
-- (id)namespacedComponentTextStyleIdentifierForIdentifier:(id)a3 component:(id)a4;
-- (id)namespacedComponentTextStyleIdentifiersForIdentifiers:(id)a3 component:(id)a4;
-- (id)namespacedTextStyleIdentifierForIdentifier:(id)a3 component:(id)a4;
-- (id)namespacedTextStyleIdentifiersForIdentifiers:(id)a3 component:(id)a4;
-- (id)referencesForComponent:(id)a3 map:(id)a4;
-- (id)textStyleIdentifierForNamespacedTextStyleIdentifier:(id)a3 component:(id)a4;
-- (void)populateWithSource:(id)a3;
+- (id)componentStyleIdentifierForNamespacedComponentStyleIdentifier:(id)identifier component:(id)component;
+- (id)componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier:(id)identifier component:(id)component;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)namespacedComponentStyleIdentifierForIdentifier:(id)identifier component:(id)component;
+- (id)namespacedComponentStyleIdentifiersForIdentifiers:(id)identifiers component:(id)component;
+- (id)namespacedComponentTextStyleIdentifierForIdentifier:(id)identifier component:(id)component;
+- (id)namespacedComponentTextStyleIdentifiersForIdentifiers:(id)identifiers component:(id)component;
+- (id)namespacedTextStyleIdentifierForIdentifier:(id)identifier component:(id)component;
+- (id)namespacedTextStyleIdentifiersForIdentifiers:(id)identifiers component:(id)component;
+- (id)referencesForComponent:(id)component map:(id)map;
+- (id)textStyleIdentifierForNamespacedTextStyleIdentifier:(id)identifier component:(id)component;
+- (void)populateWithSource:(id)source;
 @end
 
 @implementation SXNamespacedObjectReferences
@@ -24,28 +24,28 @@
   v2 = [(SXNamespacedObjectReferences *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     componentStyleReferences = v2->_componentStyleReferences;
-    v2->_componentStyleReferences = v3;
+    v2->_componentStyleReferences = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     componentTextStyleReferences = v2->_componentTextStyleReferences;
-    v2->_componentTextStyleReferences = v5;
+    v2->_componentTextStyleReferences = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     textStyleReferences = v2->_textStyleReferences;
-    v2->_textStyleReferences = v7;
+    v2->_textStyleReferences = dictionary3;
   }
 
   return v2;
 }
 
-- (id)namespacedComponentStyleIdentifierForIdentifier:(id)a3 component:(id)a4
+- (id)namespacedComponentStyleIdentifierForIdentifier:(id)identifier component:(id)component
 {
   componentStyleReferences = self->_componentStyleReferences;
-  v7 = a3;
-  v8 = [(SXNamespacedObjectReferences *)self referencesForComponent:a4 map:componentStyleReferences];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v8 = [(SXNamespacedObjectReferences *)self referencesForComponent:component map:componentStyleReferences];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
   v10 = v9;
   if (v9)
   {
@@ -54,7 +54,7 @@
 
   else
   {
-    v11 = v7;
+    v11 = identifierCopy;
   }
 
   v12 = v11;
@@ -62,17 +62,17 @@
   return v11;
 }
 
-- (id)namespacedComponentStyleIdentifiersForIdentifiers:(id)a3 component:(id)a4
+- (id)namespacedComponentStyleIdentifiersForIdentifiers:(id)identifiers component:(id)component
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  componentCopy = component;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -87,8 +87,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(SXNamespacedObjectReferences *)self namespacedComponentStyleIdentifierForIdentifier:*(*(&v16 + 1) + 8 * i) component:v7, v16];
-        [v8 addObject:v14];
+        v14 = [(SXNamespacedObjectReferences *)self namespacedComponentStyleIdentifierForIdentifier:*(*(&v16 + 1) + 8 * i) component:componentCopy, v16];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -97,21 +97,21 @@
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)componentStyleIdentifierForNamespacedComponentStyleIdentifier:(id)a3 component:(id)a4
+- (id)componentStyleIdentifierForNamespacedComponentStyleIdentifier:(id)identifier component:(id)component
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  componentCopy = component;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
-  v8 = v6;
+  v8 = identifierCopy;
   v21 = v8;
-  v9 = [(SXNamespacedObjectReferences *)self referencesForComponent:v7 map:self->_componentStyleReferences];
+  v9 = [(SXNamespacedObjectReferences *)self referencesForComponent:componentCopy map:self->_componentStyleReferences];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __104__SXNamespacedObjectReferences_componentStyleIdentifierForNamespacedComponentStyleIdentifier_component___block_invoke;
@@ -137,12 +137,12 @@ void __104__SXNamespacedObjectReferences_componentStyleIdentifierForNamespacedCo
   }
 }
 
-- (id)namespacedComponentTextStyleIdentifierForIdentifier:(id)a3 component:(id)a4
+- (id)namespacedComponentTextStyleIdentifierForIdentifier:(id)identifier component:(id)component
 {
   componentTextStyleReferences = self->_componentTextStyleReferences;
-  v7 = a3;
-  v8 = [(SXNamespacedObjectReferences *)self referencesForComponent:a4 map:componentTextStyleReferences];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v8 = [(SXNamespacedObjectReferences *)self referencesForComponent:component map:componentTextStyleReferences];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
   v10 = v9;
   if (v9)
   {
@@ -151,7 +151,7 @@ void __104__SXNamespacedObjectReferences_componentStyleIdentifierForNamespacedCo
 
   else
   {
-    v11 = v7;
+    v11 = identifierCopy;
   }
 
   v12 = v11;
@@ -159,17 +159,17 @@ void __104__SXNamespacedObjectReferences_componentStyleIdentifierForNamespacedCo
   return v11;
 }
 
-- (id)namespacedComponentTextStyleIdentifiersForIdentifiers:(id)a3 component:(id)a4
+- (id)namespacedComponentTextStyleIdentifiersForIdentifiers:(id)identifiers component:(id)component
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  componentCopy = component;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -184,8 +184,8 @@ void __104__SXNamespacedObjectReferences_componentStyleIdentifierForNamespacedCo
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(SXNamespacedObjectReferences *)self namespacedComponentTextStyleIdentifierForIdentifier:*(*(&v16 + 1) + 8 * i) component:v7, v16];
-        [v8 addObject:v14];
+        v14 = [(SXNamespacedObjectReferences *)self namespacedComponentTextStyleIdentifierForIdentifier:*(*(&v16 + 1) + 8 * i) component:componentCopy, v16];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -194,21 +194,21 @@ void __104__SXNamespacedObjectReferences_componentStyleIdentifierForNamespacedCo
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier:(id)a3 component:(id)a4
+- (id)componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier:(id)identifier component:(id)component
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  componentCopy = component;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
-  v8 = v6;
+  v8 = identifierCopy;
   v21 = v8;
-  v9 = [(SXNamespacedObjectReferences *)self referencesForComponent:v7 map:self->_componentTextStyleReferences];
+  v9 = [(SXNamespacedObjectReferences *)self referencesForComponent:componentCopy map:self->_componentTextStyleReferences];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __112__SXNamespacedObjectReferences_componentTextStyleIdentifierForNamespacedComponentTextStyleIdentifier_component___block_invoke;
@@ -234,12 +234,12 @@ void __112__SXNamespacedObjectReferences_componentTextStyleIdentifierForNamespac
   }
 }
 
-- (id)namespacedTextStyleIdentifierForIdentifier:(id)a3 component:(id)a4
+- (id)namespacedTextStyleIdentifierForIdentifier:(id)identifier component:(id)component
 {
   textStyleReferences = self->_textStyleReferences;
-  v7 = a3;
-  v8 = [(SXNamespacedObjectReferences *)self referencesForComponent:a4 map:textStyleReferences];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  v8 = [(SXNamespacedObjectReferences *)self referencesForComponent:component map:textStyleReferences];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
   v10 = v9;
   if (v9)
   {
@@ -248,7 +248,7 @@ void __112__SXNamespacedObjectReferences_componentTextStyleIdentifierForNamespac
 
   else
   {
-    v11 = v7;
+    v11 = identifierCopy;
   }
 
   v12 = v11;
@@ -256,17 +256,17 @@ void __112__SXNamespacedObjectReferences_componentTextStyleIdentifierForNamespac
   return v11;
 }
 
-- (id)namespacedTextStyleIdentifiersForIdentifiers:(id)a3 component:(id)a4
+- (id)namespacedTextStyleIdentifiersForIdentifiers:(id)identifiers component:(id)component
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  componentCopy = component;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -281,8 +281,8 @@ void __112__SXNamespacedObjectReferences_componentTextStyleIdentifierForNamespac
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(SXNamespacedObjectReferences *)self namespacedTextStyleIdentifierForIdentifier:*(*(&v16 + 1) + 8 * i) component:v7, v16];
-        [v8 addObject:v14];
+        v14 = [(SXNamespacedObjectReferences *)self namespacedTextStyleIdentifierForIdentifier:*(*(&v16 + 1) + 8 * i) component:componentCopy, v16];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -291,21 +291,21 @@ void __112__SXNamespacedObjectReferences_componentTextStyleIdentifierForNamespac
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)textStyleIdentifierForNamespacedTextStyleIdentifier:(id)a3 component:(id)a4
+- (id)textStyleIdentifierForNamespacedTextStyleIdentifier:(id)identifier component:(id)component
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  componentCopy = component;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
-  v8 = v6;
+  v8 = identifierCopy;
   v21 = v8;
-  v9 = [(SXNamespacedObjectReferences *)self referencesForComponent:v7 map:self->_textStyleReferences];
+  v9 = [(SXNamespacedObjectReferences *)self referencesForComponent:componentCopy map:self->_textStyleReferences];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__SXNamespacedObjectReferences_textStyleIdentifierForNamespacedTextStyleIdentifier_component___block_invoke;
@@ -331,28 +331,28 @@ void __94__SXNamespacedObjectReferences_textStyleIdentifierForNamespacedTextStyl
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXNamespacedObjectReferences);
   [(SXNamespacedObjectReferences *)v4 populateWithSource:self];
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SXMutableNamespacedObjectReferences);
   [(SXNamespacedObjectReferences *)v4 populateWithSource:self];
   return v4;
 }
 
-- (void)populateWithSource:(id)a3
+- (void)populateWithSource:(id)source
 {
-  v4 = *(a3 + 1);
+  v4 = *(source + 1);
   componentStyleReferences = self->_componentStyleReferences;
-  v6 = a3;
-  __51__SXNamespacedObjectReferences_populateWithSource___block_invoke(v6, v4, componentStyleReferences);
-  __51__SXNamespacedObjectReferences_populateWithSource___block_invoke(v7, v6[2], self->_componentTextStyleReferences);
-  v8 = v6[3];
+  sourceCopy = source;
+  __51__SXNamespacedObjectReferences_populateWithSource___block_invoke(sourceCopy, v4, componentStyleReferences);
+  __51__SXNamespacedObjectReferences_populateWithSource___block_invoke(v7, sourceCopy[2], self->_componentTextStyleReferences);
+  v8 = sourceCopy[3];
 
   textStyleReferences = self->_textStyleReferences;
 
@@ -379,18 +379,18 @@ void __51__SXNamespacedObjectReferences_populateWithSource___block_invoke_2(uint
   [v4 setObject:v6 forKey:v5];
 }
 
-- (id)referencesForComponent:(id)a3 map:(id)a4
+- (id)referencesForComponent:(id)component map:(id)map
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:v5];
-  if (!v7)
+  componentCopy = component;
+  mapCopy = map;
+  dictionary = [mapCopy objectForKey:componentCopy];
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [v6 setObject:v7 forKey:v5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [mapCopy setObject:dictionary forKey:componentCopy];
   }
 
-  return v7;
+  return dictionary;
 }
 
 @end

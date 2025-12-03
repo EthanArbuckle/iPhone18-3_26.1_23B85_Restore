@@ -2,11 +2,11 @@
 + (id)defaultDatabasePath;
 + (id)modelDefinitionPath;
 + (id)systemDataStore;
-+ (id)systemDataStoreAtPath:(id)a3;
-- (BOOL)commitChangesOrRollback:(id *)a3;
-- (BOOL)commitChangesOrRollbackAndResetContext:(id *)a3;
-- (MADSystemDataStore)initWithManagedObjectModel:(id)a3;
-- (MADSystemDataStore)initWithManagedObjectModel:(id)a3 path:(id)a4;
++ (id)systemDataStoreAtPath:(id)path;
+- (BOOL)commitChangesOrRollback:(id *)rollback;
+- (BOOL)commitChangesOrRollbackAndResetContext:(id *)context;
+- (MADSystemDataStore)initWithManagedObjectModel:(id)model;
+- (MADSystemDataStore)initWithManagedObjectModel:(id)model path:(id)path;
 - (id)newManagedObjectContext;
 - (void)rollbackAndResetContext;
 @end
@@ -43,17 +43,17 @@
   return v2;
 }
 
-- (MADSystemDataStore)initWithManagedObjectModel:(id)a3 path:(id)a4
+- (MADSystemDataStore)initWithManagedObjectModel:(id)model path:(id)path
 {
   v44[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  pathCopy = path;
   v38.receiver = self;
   v38.super_class = MADSystemDataStore;
   v8 = [(MADSystemDataStore *)&v38 init];
   if (v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:v6];
+    v9 = [objc_alloc(MEMORY[0x1E695D6C0]) initWithManagedObjectModel:modelCopy];
     persistentStoreCoordinator = v8->_persistentStoreCoordinator;
     v8->_persistentStoreCoordinator = v9;
 
@@ -69,15 +69,15 @@
     v44[2] = &unk_1F49BF2E8;
     v44[3] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:4];
-    if (v7)
+    if (pathCopy)
     {
-      v15 = v7;
+      defaultDatabasePath = pathCopy;
     }
 
     else
     {
-      v15 = [objc_opt_class() defaultDatabasePath];
-      if (!v15)
+      defaultDatabasePath = [objc_opt_class() defaultDatabasePath];
+      if (!defaultDatabasePath)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -89,16 +89,16 @@
       }
     }
 
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    v17 = v16;
-    if (v7)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v17 = defaultManager;
+    if (pathCopy)
     {
-      if (([v16 fileExistsAtPath:v7] & 1) == 0)
+      if (([defaultManager fileExistsAtPath:pathCopy] & 1) == 0)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v42 = v7;
+          v42 = pathCopy;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADSystemDataStore] Provided path does not exist: %@", buf, 0xCu);
         }
 
@@ -112,13 +112,13 @@ LABEL_36:
 
     else
     {
-      v18 = [v15 stringByDeletingLastPathComponent];
-      if (([v17 fileExistsAtPath:v18] & 1) == 0)
+      stringByDeletingLastPathComponent = [defaultDatabasePath stringByDeletingLastPathComponent];
+      if (([v17 fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
       {
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v42 = v18;
+          v42 = stringByDeletingLastPathComponent;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MADSystemDataStore] Creating %@", buf, 0xCu);
         }
 
@@ -126,7 +126,7 @@ LABEL_36:
         v40 = &unk_1F49BC178;
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v37 = 0;
-        v20 = [v17 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:v19 error:&v37];
+        v20 = [v17 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:v19 error:&v37];
         v21 = v37;
 
         if ((v20 & 1) == 0)
@@ -146,11 +146,11 @@ LABEL_36:
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v42 = v15;
+      v42 = defaultDatabasePath;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[MADSystemDataStore] Opening %@", buf, 0xCu);
     }
 
-    v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v15 isDirectory:0];
+    v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:defaultDatabasePath isDirectory:0];
     storeURL = v8->_storeURL;
     v8->_storeURL = v22;
 
@@ -163,7 +163,7 @@ LABEL_36:
     v29 = v28;
     if (v28)
     {
-      v30 = [v28 code];
+      code = [v28 code];
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
@@ -180,10 +180,10 @@ LABEL_36:
 
       [(NSManagedObjectContext *)v8->_managedObjectContext setPersistentStoreCoordinator:v8->_persistentStoreCoordinator];
       [(NSManagedObjectContext *)v8->_managedObjectContext setMergePolicy:*MEMORY[0x1E695D378]];
-      v30 = 0;
+      code = 0;
     }
 
-    if (v30)
+    if (code)
     {
       goto LABEL_36;
     }
@@ -196,26 +196,26 @@ LABEL_37:
   return v34;
 }
 
-- (MADSystemDataStore)initWithManagedObjectModel:(id)a3
+- (MADSystemDataStore)initWithManagedObjectModel:(id)model
 {
-  v4 = a3;
-  v5 = [[MADSystemDataStore alloc] initWithManagedObjectModel:v4 path:0];
+  modelCopy = model;
+  v5 = [[MADSystemDataStore alloc] initWithManagedObjectModel:modelCopy path:0];
 
   return v5;
 }
 
-+ (id)systemDataStoreAtPath:(id)a3
++ (id)systemDataStoreAtPath:(id)path
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() modelDefinitionPath];
-  if (v4)
+  pathCopy = path;
+  modelDefinitionPath = [objc_opt_class() modelDefinitionPath];
+  if (modelDefinitionPath)
   {
-    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:modelDefinitionPath];
     v6 = [objc_alloc(MEMORY[0x1E695D638]) initWithContentsOfURL:v5];
     if (v6)
     {
-      v7 = [[MADSystemDataStore alloc] initWithManagedObjectModel:v6 path:v3];
+      v7 = [[MADSystemDataStore alloc] initWithManagedObjectModel:v6 path:pathCopy];
       v8 = +[MADSystemDataStore systemDataStoreAtPath:]::database;
       +[MADSystemDataStore systemDataStoreAtPath:]::database = v7;
 
@@ -224,7 +224,7 @@ LABEL_37:
         if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v3;
+          v15 = pathCopy;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADSystemDataStore] Successfully opened MediaAnalysis CoreData at path %@", &v14, 0xCu);
         }
 
@@ -242,7 +242,7 @@ LABEL_20:
       }
 
       v14 = 138412290;
-      v15 = v3;
+      v15 = pathCopy;
       v10 = MEMORY[0x1E69E9C10];
       v11 = "[MADSystemDataStore] Failed to open MediaAnalysis CoreData at path %@";
       v12 = 12;
@@ -284,7 +284,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __37__MADSystemDataStore_systemDataStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MADSystemDataStore systemDataStore]::once != -1)
   {
     dispatch_once(&+[MADSystemDataStore systemDataStore]::once, block);
@@ -562,7 +562,7 @@ void __37__MADSystemDataStore_systemDataStore__block_invoke_226(uint64_t a1)
   }
 }
 
-- (BOOL)commitChangesOrRollback:(id *)a3
+- (BOOL)commitChangesOrRollback:(id *)rollback
 {
   v11 = *MEMORY[0x1E69E9840];
   managedObjectContext = self->_managedObjectContext;
@@ -587,16 +587,16 @@ void __37__MADSystemDataStore_systemDataStore__block_invoke_226(uint64_t a1)
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MADSystemDataStore] Failed to commit changes (%@)", buf, 0xCu);
     }
 
-    if (a3)
+    if (rollback)
     {
-      *a3 = [v6 copy];
+      *rollback = [v6 copy];
     }
   }
 
   return v5;
 }
 
-- (BOOL)commitChangesOrRollbackAndResetContext:(id *)a3
+- (BOOL)commitChangesOrRollbackAndResetContext:(id *)context
 {
   v12 = *MEMORY[0x1E69E9840];
   managedObjectContext = self->_managedObjectContext;
@@ -624,9 +624,9 @@ void __37__MADSystemDataStore_systemDataStore__block_invoke_226(uint64_t a1)
     }
 
     [(MADSystemDataStore *)self rollbackAndResetContext];
-    if (a3)
+    if (context)
     {
-      *a3 = [v7 copy];
+      *context = [v7 copy];
     }
   }
 

@@ -1,18 +1,18 @@
 @interface IDSInterfaceAddress
-+ (id)addressesFromInterfaceAddresses:(id)a3;
-+ (id)interfaceAddress:(ifaddrs *)a3 eflags:(unint64_t)a4 v6flags:(int)a5 iftype:(int)a6;
-+ (id)interfaceAddressWithTransmittedBytes:(char *)a3 length:(int64_t)a4 withLocalInterfaceName:(id)a5;
-- (IDSInterfaceAddress)initWithInterfaceAddress:(ifaddrs *)a3 bflags:(unsigned __int8)a4;
++ (id)addressesFromInterfaceAddresses:(id)addresses;
++ (id)interfaceAddress:(ifaddrs *)address eflags:(unint64_t)eflags v6flags:(int)v6flags iftype:(int)iftype;
++ (id)interfaceAddressWithTransmittedBytes:(char *)bytes length:(int64_t)length withLocalInterfaceName:(id)name;
+- (IDSInterfaceAddress)initWithInterfaceAddress:(ifaddrs *)address bflags:(unsigned __int8)bflags;
 - (id)description;
-- (int64_t)getTransmittableBytes:(char *)a3 withPrefixByte:(unsigned __int8)a4;
+- (int64_t)getTransmittableBytes:(char *)bytes withPrefixByte:(unsigned __int8)byte;
 @end
 
 @implementation IDSInterfaceAddress
 
-+ (id)interfaceAddressWithTransmittedBytes:(char *)a3 length:(int64_t)a4 withLocalInterfaceName:(id)a5
++ (id)interfaceAddressWithTransmittedBytes:(char *)bytes length:(int64_t)length withLocalInterfaceName:(id)name
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  nameCopy = name;
   v38 = 0xAAAAAAAAAAAAAAAALL;
   *&v8 = 0xAAAAAAAAAAAAAAAALL;
   *(&v8 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -22,19 +22,19 @@
   memset(v45, 0, sizeof(v45));
   memset(v44, 0, sizeof(v44));
   memset(v43, 0, sizeof(v43));
-  if (a4 < 2)
+  if (length < 2)
   {
     goto LABEL_34;
   }
 
-  v9 = a3[1];
-  if (v9 + 2 > a4)
+  v9 = bytes[1];
+  if (v9 + 2 > length)
   {
     goto LABEL_34;
   }
 
-  v10 = *a3;
-  if (a3[1])
+  v10 = *bytes;
+  if (bytes[1])
   {
     if (v9 >= 0x81)
     {
@@ -56,7 +56,7 @@ LABEL_34:
       goto LABEL_7;
     }
 
-    v16 = a3[2];
+    v16 = bytes[2];
     if (v16 == 2)
     {
       if (v9 <= 0xF)
@@ -128,10 +128,10 @@ LABEL_34:
   }
 
   *(&v36 + 1) = v15;
-  v20 = &a3[v17];
+  v20 = &bytes[v17];
   v21 = *v20;
   v22 = v17 + 1;
-  if (v17 + 1 + v21 > a4)
+  if (v17 + 1 + v21 > length)
   {
     goto LABEL_34;
   }
@@ -189,10 +189,10 @@ LABEL_34:
     *&v37 = 0;
   }
 
-  v25 = &a3[v22];
+  v25 = &bytes[v22];
   v26 = *v25;
   v27 = v22 + 1;
-  if (v22 + 1 + v26 > a4)
+  if (v22 + 1 + v26 > length)
   {
     goto LABEL_34;
   }
@@ -288,17 +288,17 @@ LABEL_54:
   v27 = v22 + v26;
   *(&v37 + 1) = v43;
 LABEL_55:
-  v32 = a3[v27];
+  v32 = bytes[v27];
   v33 = v27 + 1 + v32;
   v34 = v33 + 1;
-  if (v34 > a4)
+  if (v34 > length)
   {
     goto LABEL_34;
   }
 
-  if (a3[v27])
+  if (bytes[v27])
   {
-    *(&v35 + 1) = &a3[v27 + 1];
+    *(&v35 + 1) = &bytes[v27 + 1];
     if (v32 >= 0x11)
     {
       v11 = [IDSFoundationLog interface:v35];
@@ -326,14 +326,14 @@ LABEL_44:
     LODWORD(v34) = v27 + 3;
   }
 
-  if (v34 + a3[v33] > a4)
+  if (v34 + bytes[v33] > length)
   {
     goto LABEL_34;
   }
 
-  if (v7 && v15 && *v19 == 30)
+  if (nameCopy && v15 && *v19 == 30)
   {
-    *v18 = if_nametoindex([v7 UTF8String]);
+    *v18 = if_nametoindex([nameCopy UTF8String]);
   }
 
   v28 = [[IDSInterfaceAddress alloc] initWithInterfaceAddress:&v35 bflags:v10];
@@ -342,22 +342,22 @@ LABEL_35:
   return v28;
 }
 
-+ (id)interfaceAddress:(ifaddrs *)a3 eflags:(unint64_t)a4 v6flags:(int)a5 iftype:(int)a6
++ (id)interfaceAddress:(ifaddrs *)address eflags:(unint64_t)eflags v6flags:(int)v6flags iftype:(int)iftype
 {
-  v6 = [[IDSInterfaceAddress alloc] initWithInterfaceAddress:a3 bflags:(a5 >> 5) & 4 | ((a4 & 0x100000) != 0) | (a4 >> 10) & 0x10 | (a4 >> 11) & 2 | (8 * (a6 == 5)) | (32 * (a6 == 7)) | ((a6 == 2) << 6)];
+  v6 = [[IDSInterfaceAddress alloc] initWithInterfaceAddress:address bflags:(v6flags >> 5) & 4 | ((eflags & 0x100000) != 0) | (eflags >> 10) & 0x10 | (eflags >> 11) & 2 | (8 * (iftype == 5)) | (32 * (iftype == 7)) | ((iftype == 2) << 6)];
 
   return v6;
 }
 
-+ (id)addressesFromInterfaceAddresses:(id)a3
++ (id)addressesFromInterfaceAddresses:(id)addresses
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  addressesCopy = addresses;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [addressesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -369,7 +369,7 @@ LABEL_35:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addressesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -382,16 +382,16 @@ LABEL_35:
           }
         }
 
-        v10 = [v9 address];
+        address = [v9 address];
 
-        if (v10)
+        if (address)
         {
-          v11 = [v9 address];
-          CFArrayAppendValue(v6, v11);
+          address2 = [v9 address];
+          CFArrayAppendValue(v6, address2);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [addressesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -466,21 +466,21 @@ LABEL_35:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@/%@/%@/%@/%@/%@/%@/%@/%@/%@/%@>", self->_address, self->_netmask, self->_destination, self->_name, self->_delegatedName, v3, v4, v5, v6, v7, v2];
 }
 
-- (int64_t)getTransmittableBytes:(char *)a3 withPrefixByte:(unsigned __int8)a4
+- (int64_t)getTransmittableBytes:(char *)bytes withPrefixByte:(unsigned __int8)byte
 {
-  *a3 = a4;
-  a3[1] = self->_AWDL;
+  *bytes = byte;
+  bytes[1] = self->_AWDL;
   v6 = [(IDSSockAddrWrapper *)self->_address sa];
   if (v6)
   {
     v7 = v6;
-    memcpy(a3 + 2, v6, v6->sa_len);
+    memcpy(bytes + 2, v6, v6->sa_len);
     v8 = v7->sa_len + 2;
   }
 
   else
   {
-    a3[2] = 0;
+    bytes[2] = 0;
     v8 = 3;
   }
 
@@ -488,13 +488,13 @@ LABEL_35:
   if (v9)
   {
     v10 = v9;
-    memcpy(&a3[v8], v9, v9->sa_len);
+    memcpy(&bytes[v8], v9, v9->sa_len);
     sa_len = v10->sa_len;
   }
 
   else
   {
-    a3[v8] = 0;
+    bytes[v8] = 0;
     sa_len = 1;
   }
 
@@ -503,26 +503,26 @@ LABEL_35:
   if (v13)
   {
     v14 = v13;
-    memcpy(&a3[v12], v13, v13->sa_len);
+    memcpy(&bytes[v12], v13, v13->sa_len);
     v15 = v14->sa_len;
   }
 
   else
   {
-    a3[v12] = 0;
+    bytes[v12] = 0;
     v15 = 1;
   }
 
   v16 = v15 + v12;
   v17 = [(NSString *)self->_name length];
-  a3[v16] = v17 + 1;
-  memcpy(&a3[v16 + 1], [(NSString *)self->_name UTF8String], v17);
+  bytes[v16] = v17 + 1;
+  memcpy(&bytes[v16 + 1], [(NSString *)self->_name UTF8String], v17);
   v18 = v16 + 1 + v17;
-  *&a3[v18] = 0;
+  *&bytes[v18] = 0;
   return v18 + 2;
 }
 
-- (IDSInterfaceAddress)initWithInterfaceAddress:(ifaddrs *)a3 bflags:(unsigned __int8)a4
+- (IDSInterfaceAddress)initWithInterfaceAddress:(ifaddrs *)address bflags:(unsigned __int8)bflags
 {
   v24 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -533,23 +533,23 @@ LABEL_35:
     goto LABEL_29;
   }
 
-  if (a3->ifa_addr)
+  if (address->ifa_addr)
   {
-    v7 = [[IDSSockAddrWrapper alloc] initWithSockAddr:a3->ifa_addr];
+    v7 = [[IDSSockAddrWrapper alloc] initWithSockAddr:address->ifa_addr];
     address = v6->_address;
     v6->_address = v7;
   }
 
-  if (a3->ifa_netmask)
+  if (address->ifa_netmask)
   {
-    v9 = [[IDSSockAddrWrapper alloc] initWithSockAddr:a3->ifa_netmask];
+    v9 = [[IDSSockAddrWrapper alloc] initWithSockAddr:address->ifa_netmask];
     netmask = v6->_netmask;
     v6->_netmask = v9;
   }
 
-  if (a3->ifa_dstaddr)
+  if (address->ifa_dstaddr)
   {
-    v11 = [[IDSSockAddrWrapper alloc] initWithSockAddr:a3->ifa_dstaddr];
+    v11 = [[IDSSockAddrWrapper alloc] initWithSockAddr:address->ifa_dstaddr];
     destination = v6->_destination;
     v6->_destination = v11;
   }
@@ -560,32 +560,32 @@ LABEL_35:
     goto LABEL_31;
   }
 
-  if (a3->ifa_name)
+  if (address->ifa_name)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a3->ifa_name encoding:4];
+    v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:address->ifa_name encoding:4];
     name = v6->_name;
     v6->_name = v14;
 
-    v6->_index = if_nametoindex(a3->ifa_name);
+    v6->_index = if_nametoindex(address->ifa_name);
     memset(buf, 170, 16);
-    ifa_addr = a3->ifa_addr;
+    ifa_addr = address->ifa_addr;
     if (ifa_addr)
     {
-      if (getEffectiveInterface(a3->ifa_name, ifa_addr->sa_family, buf, &v6->_delegatedIndex))
+      if (getEffectiveInterface(address->ifa_name, ifa_addr->sa_family, buf, &v6->_delegatedIndex))
       {
         v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:buf encoding:4];
         delegatedName = v6->_delegatedName;
         v6->_delegatedName = v17;
       }
 
-      v6->_constrained = isInterfaceConstrained(a3->ifa_name, a3->ifa_addr->sa_family);
+      v6->_constrained = isInterfaceConstrained(address->ifa_name, address->ifa_addr->sa_family);
     }
 
     objc_autoreleasePoolPop(v13);
   }
 
-  if ((a4 & 0x20) != 0)
+  if ((bflags & 0x20) != 0)
   {
     v6->_companionLink = 1;
     v19 = OSLogHandleForTransportCategory();
@@ -608,13 +608,13 @@ LABEL_35:
     }
   }
 
-  if (a4)
+  if (bflags)
   {
     v6->_AWDL = 1;
-    if ((a4 & 8) == 0)
+    if ((bflags & 8) == 0)
     {
 LABEL_24:
-      if ((a4 & 4) == 0)
+      if ((bflags & 4) == 0)
       {
         goto LABEL_25;
       }
@@ -623,16 +623,16 @@ LABEL_24:
     }
   }
 
-  else if ((a4 & 8) == 0)
+  else if ((bflags & 8) == 0)
   {
     goto LABEL_24;
   }
 
   v6->_Cellular = 1;
-  if ((a4 & 4) == 0)
+  if ((bflags & 4) == 0)
   {
 LABEL_25:
-    if ((a4 & 0x10) == 0)
+    if ((bflags & 0x10) == 0)
     {
       goto LABEL_26;
     }
@@ -642,17 +642,17 @@ LABEL_25:
 
 LABEL_34:
   v6->_temporary = 1;
-  if ((a4 & 0x10) == 0)
+  if ((bflags & 0x10) == 0)
   {
 LABEL_26:
-    if ((a4 & 0x40) == 0)
+    if ((bflags & 0x40) == 0)
     {
       goto LABEL_27;
     }
 
 LABEL_36:
     v6->_wired = 1;
-    if ((a4 & 2) == 0)
+    if ((bflags & 2) == 0)
     {
       goto LABEL_29;
     }
@@ -662,13 +662,13 @@ LABEL_36:
 
 LABEL_35:
   v6->_expensive = 1;
-  if ((a4 & 0x40) != 0)
+  if ((bflags & 0x40) != 0)
   {
     goto LABEL_36;
   }
 
 LABEL_27:
-  if ((a4 & 2) != 0)
+  if ((bflags & 2) != 0)
   {
 LABEL_28:
     v6->_clat46 = 1;

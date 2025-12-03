@@ -1,25 +1,25 @@
 @interface OKAutoLayoutGrid
-- (BOOL)biggestEmptyRectFromPtX:(unint64_t)a3 Y:(unint64_t)a4 W:(unint64_t *)a5 H:(unint64_t *)a6;
+- (BOOL)biggestEmptyRectFromPtX:(unint64_t)x Y:(unint64_t)y W:(unint64_t *)w H:(unint64_t *)h;
 - (BOOL)hasAnyEmptyTiles;
-- (BOOL)nextEmptyTile:(unint64_t *)a3 :(unint64_t *)a4;
-- (OKAutoLayoutGrid)initWithRows:(unint64_t)a3 columns:(unint64_t)a4;
+- (BOOL)nextEmptyTile:(unint64_t *)tile :(unint64_t *)a4;
+- (OKAutoLayoutGrid)initWithRows:(unint64_t)rows columns:(unint64_t)columns;
 - (id)description;
-- (id)nextPossibleRects:(BOOL)a3;
+- (id)nextPossibleRects:(BOOL)rects;
 - (void)dealloc;
-- (void)mark:(unint64_t)a3 forAreaX:(unint64_t)a4 Y:(unint64_t)a5 W:(unint64_t)a6 H:(unint64_t)a7;
+- (void)mark:(unint64_t)mark forAreaX:(unint64_t)x Y:(unint64_t)y W:(unint64_t)w H:(unint64_t)h;
 @end
 
 @implementation OKAutoLayoutGrid
 
-- (OKAutoLayoutGrid)initWithRows:(unint64_t)a3 columns:(unint64_t)a4
+- (OKAutoLayoutGrid)initWithRows:(unint64_t)rows columns:(unint64_t)columns
 {
   v8.receiver = self;
   v8.super_class = OKAutoLayoutGrid;
   v6 = [(OKAutoLayoutGrid *)&v8 init];
   if (v6)
   {
-    v6->_rows = a3;
-    v6->_columns = a4;
+    v6->_rows = rows;
+    v6->_columns = columns;
     operator new[]();
   }
 
@@ -56,24 +56,24 @@
   return v4;
 }
 
-- (void)mark:(unint64_t)a3 forAreaX:(unint64_t)a4 Y:(unint64_t)a5 W:(unint64_t)a6 H:(unint64_t)a7
+- (void)mark:(unint64_t)mark forAreaX:(unint64_t)x Y:(unint64_t)y W:(unint64_t)w H:(unint64_t)h
 {
-  if (a6)
+  if (w)
   {
-    for (i = 0; i != a6; ++i)
+    for (i = 0; i != w; ++i)
     {
-      if (a7)
+      if (h)
       {
-        v8 = &self->_tiles[i + a4];
-        v9 = a5;
-        v10 = a7;
+        v8 = &self->_tiles[i + x];
+        yCopy = y;
+        hCopy = h;
         do
         {
-          v8[self->_columns * v9++] = a3;
-          --v10;
+          v8[self->_columns * yCopy++] = mark;
+          --hCopy;
         }
 
-        while (v10);
+        while (hCopy);
       }
     }
   }
@@ -119,10 +119,10 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)nextEmptyTile:(unint64_t *)a3 :(unint64_t *)a4
+- (BOOL)nextEmptyTile:(unint64_t *)tile :(unint64_t *)a4
 {
   v4 = 0;
-  if (a3 && a4)
+  if (tile && a4)
   {
     rows = self->_rows;
     if (rows)
@@ -151,7 +151,7 @@ LABEL_9:
         }
       }
 
-      *a3 = v9;
+      *tile = v9;
       *a4 = v7;
       return 1;
     }
@@ -165,17 +165,17 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)biggestEmptyRectFromPtX:(unint64_t)a3 Y:(unint64_t)a4 W:(unint64_t *)a5 H:(unint64_t *)a6
+- (BOOL)biggestEmptyRectFromPtX:(unint64_t)x Y:(unint64_t)y W:(unint64_t *)w H:(unint64_t *)h
 {
   v6 = 0;
-  if (a5 && a6)
+  if (w && h)
   {
     columns = self->_columns;
     v8 = 0;
-    v9 = columns - a3;
-    if (columns > a3)
+    v9 = columns - x;
+    if (columns > x)
     {
-      v10 = &self->_tiles[columns * a4 + a3];
+      v10 = &self->_tiles[columns * y + x];
       while (v10[v8] == -1)
       {
         if (v9 == ++v8)
@@ -186,17 +186,17 @@ LABEL_9:
       }
     }
 
-    *a5 = v8;
-    *a6 = self->_rows - a4;
+    *w = v8;
+    *h = self->_rows - y;
     return v8 != 0;
   }
 
   return v6;
 }
 
-- (id)nextPossibleRects:(BOOL)a3
+- (id)nextPossibleRects:(BOOL)rects
 {
-  v3 = a3;
+  rectsCopy = rects;
   v14 = 0;
   v15 = 0;
   v12 = 0;
@@ -205,7 +205,7 @@ LABEL_9:
   if ([(OKAutoLayoutGrid *)self nextEmptyTile:&v15])
   {
     [(OKAutoLayoutGrid *)self biggestEmptyRectFromPtX:v15 Y:v14 W:&v13 H:&v12];
-    if (v3)
+    if (rectsCopy)
     {
       v16 = [NSValue valueWithCGRect:v15, v14, v13, v12];
       return [NSArray arrayWithObjects:&v16 count:1];

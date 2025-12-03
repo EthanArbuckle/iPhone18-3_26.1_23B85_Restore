@@ -1,35 +1,35 @@
 @interface _INPBConfidenceScoreComponent
-- (BOOL)isEqual:(id)a3;
-- (_INPBConfidenceScoreComponent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBConfidenceScoreComponent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSource:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSource:(id)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBConfidenceScoreComponent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBConfidenceScoreComponent *)self hasScore])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBConfidenceScoreComponent *)self score];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"score"];
+    [dictionary setObject:v5 forKeyedSubscript:@"score"];
   }
 
   if (self->_source)
   {
-    v6 = [(_INPBConfidenceScoreComponent *)self source];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"source"];
+    source = [(_INPBConfidenceScoreComponent *)self source];
+    v7 = [source copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"source"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -75,23 +75,23 @@
   return [(NSString *)self->_source hash]^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBConfidenceScoreComponent *)self hasScore];
-    if (v5 == [v4 hasScore])
+    hasScore = [(_INPBConfidenceScoreComponent *)self hasScore];
+    if (hasScore == [equalCopy hasScore])
     {
-      if (!-[_INPBConfidenceScoreComponent hasScore](self, "hasScore") || ![v4 hasScore] || (score = self->_score, objc_msgSend(v4, "score"), score == v7))
+      if (!-[_INPBConfidenceScoreComponent hasScore](self, "hasScore") || ![equalCopy hasScore] || (score = self->_score, objc_msgSend(equalCopy, "score"), score == v7))
       {
-        v8 = [(_INPBConfidenceScoreComponent *)self source];
-        v9 = [v4 source];
-        v10 = v9;
-        if ((v8 != 0) != (v9 == 0))
+        source = [(_INPBConfidenceScoreComponent *)self source];
+        source2 = [equalCopy source];
+        v10 = source2;
+        if ((source != 0) != (source2 == 0))
         {
-          v11 = [(_INPBConfidenceScoreComponent *)self source];
-          if (!v11)
+          source3 = [(_INPBConfidenceScoreComponent *)self source];
+          if (!source3)
           {
 
 LABEL_14:
@@ -99,10 +99,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v12 = v11;
-          v13 = [(_INPBConfidenceScoreComponent *)self source];
-          v14 = [v4 source];
-          v15 = [v13 isEqual:v14];
+          v12 = source3;
+          source4 = [(_INPBConfidenceScoreComponent *)self source];
+          source5 = [equalCopy source];
+          v15 = [source4 isEqual:source5];
 
           if (v15)
           {
@@ -123,7 +123,7 @@ LABEL_12:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBConfidenceScoreComponent allocWithZone:](_INPBConfidenceScoreComponent init];
   if ([(_INPBConfidenceScoreComponent *)self hasScore])
@@ -132,59 +132,59 @@ LABEL_12:
     [(_INPBConfidenceScoreComponent *)v5 setScore:?];
   }
 
-  v6 = [(NSString *)self->_source copyWithZone:a3];
+  v6 = [(NSString *)self->_source copyWithZone:zone];
   [(_INPBConfidenceScoreComponent *)v5 setSource:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBConfidenceScoreComponent *)self data];
+  coderCopy = coder;
+  data = [(_INPBConfidenceScoreComponent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBConfidenceScoreComponent)initWithCoder:(id)a3
+- (_INPBConfidenceScoreComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBConfidenceScoreComponent *)self initWithData:v6];
+    self = [(_INPBConfidenceScoreComponent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBConfidenceScoreComponent *)self hasScore])
   {
     score = self->_score;
     PBDataWriterWriteFloatField();
   }
 
-  v5 = [(_INPBConfidenceScoreComponent *)self source];
+  source = [(_INPBConfidenceScoreComponent *)self source];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (source)
   {
     source = self->_source;
     PBDataWriterWriteStringField();
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setSource:(id)a3
+- (void)setSource:(id)source
 {
-  v4 = [a3 copy];
+  v4 = [source copy];
   source = self->_source;
   self->_source = v4;
 

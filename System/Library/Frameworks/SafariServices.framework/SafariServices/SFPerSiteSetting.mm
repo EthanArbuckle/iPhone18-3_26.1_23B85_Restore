@@ -3,28 +3,28 @@
 - (NSArray)actions;
 - (NSString)displayName;
 - (SFBrowsingAssistantPerSiteSettingObserving)observer;
-- (SFPerSiteSetting)initWithPreference:(id)a3 manager:(id)a4 domain:(id)a5;
-- (id)confirmationAlertForSwitchCell:(id)a3;
+- (SFPerSiteSetting)initWithPreference:(id)preference manager:(id)manager domain:(id)domain;
+- (id)confirmationAlertForSwitchCell:(id)cell;
 - (unint64_t)displayOption;
-- (void)_setPreferenceValue:(id)a3;
-- (void)setBoolValue:(BOOL)a3;
-- (void)setObserver:(id)a3;
+- (void)_setPreferenceValue:(id)value;
+- (void)setBoolValue:(BOOL)value;
+- (void)setObserver:(id)observer;
 @end
 
 @implementation SFPerSiteSetting
 
-- (SFPerSiteSetting)initWithPreference:(id)a3 manager:(id)a4 domain:(id)a5
+- (SFPerSiteSetting)initWithPreference:(id)preference manager:(id)manager domain:(id)domain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  preferenceCopy = preference;
+  managerCopy = manager;
+  domainCopy = domain;
   v12 = [(SFPerSiteSetting *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_domain, a5);
-    objc_storeStrong(&v13->_manager, a4);
-    objc_storeStrong(&v13->_preference, a3);
+    objc_storeStrong(&v12->_domain, domain);
+    objc_storeStrong(&v13->_manager, manager);
+    objc_storeStrong(&v13->_preference, preference);
     objc_initWeak(&location, v13);
     preference = v13->_preference;
     domain = v13->_domain;
@@ -33,7 +33,7 @@
     v18[2] = __54__SFPerSiteSetting_initWithPreference_manager_domain___block_invoke;
     v18[3] = &unk_1E8495BD0;
     objc_copyWeak(&v19, &location);
-    [v10 getValueOfPreference:preference forDomain:domain withTimeout:0 usingBlock:v18];
+    [managerCopy getValueOfPreference:preference forDomain:domain withTimeout:0 usingBlock:v18];
     v16 = v13;
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -76,9 +76,9 @@ void __54__SFPerSiteSetting_initWithPreference_manager_domain___block_invoke_2(u
   }
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
 
   if (WeakRetained != obj)
@@ -90,18 +90,18 @@ void __54__SFPerSiteSetting_initWithPreference_manager_domain___block_invoke_2(u
 
 - (NSString)displayName
 {
-  v2 = [(SFPerSiteSetting *)self _displayInformation];
-  v3 = [v2 localizedDisplayName];
+  _displayInformation = [(SFPerSiteSetting *)self _displayInformation];
+  localizedDisplayName = [_displayInformation localizedDisplayName];
 
-  return v3;
+  return localizedDisplayName;
 }
 
 - (unint64_t)displayOption
 {
-  v2 = [(SFPerSiteSetting *)self _displayInformation];
-  v3 = [v2 displayOption];
+  _displayInformation = [(SFPerSiteSetting *)self _displayInformation];
+  displayOption = [_displayInformation displayOption];
 
-  return v3 != 1;
+  return displayOption != 1;
 }
 
 - (NSArray)actions
@@ -156,16 +156,16 @@ void __27__SFPerSiteSetting_actions__block_invoke_2(uint64_t a1)
   [WeakRetained _setPreferenceValue:*(a1 + 32)];
 }
 
-- (void)_setPreferenceValue:(id)a3
+- (void)_setPreferenceValue:(id)value
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C8810] sharedLogger];
-  v6 = [(WBSPerSitePreference *)self->_preference identifier];
-  [v5 didModifyPerSitePreferencesWithPreferenceIdentifier:v6 modificationLevel:1 type:0 method:1];
+  valueCopy = value;
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  identifier = [(WBSPerSitePreference *)self->_preference identifier];
+  [mEMORY[0x1E69C8810] didModifyPerSitePreferencesWithPreferenceIdentifier:identifier modificationLevel:1 type:0 method:1];
 
   cachedValue = self->_cachedValue;
-  self->_cachedValue = v4;
-  v8 = v4;
+  self->_cachedValue = valueCopy;
+  v8 = valueCopy;
 
   objc_opt_class();
   v9 = (objc_opt_isKindOfClass() & 1) == 0;
@@ -191,15 +191,15 @@ void __40__SFPerSiteSetting__setPreferenceValue___block_invoke(uint64_t a1, int 
   }
 }
 
-- (id)confirmationAlertForSwitchCell:(id)a3
+- (id)confirmationAlertForSwitchCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WBSPerSitePreference *)self->_preference identifier];
+  cellCopy = cell;
+  identifier = [(WBSPerSitePreference *)self->_preference identifier];
   if (WBSIsEqual())
   {
-    v6 = [v4 isOn];
+    isOn = [cellCopy isOn];
 
-    if ((v6 & 1) == 0)
+    if ((isOn & 1) == 0)
     {
       v7 = MEMORY[0x1E69DC650];
       v8 = MEMORY[0x1E696AEC0];
@@ -214,7 +214,7 @@ void __40__SFPerSiteSetting__setPreferenceValue___block_invoke(uint64_t a1, int 
       v23[1] = 3221225472;
       v23[2] = __51__SFPerSiteSetting_confirmationAlertForSwitchCell___block_invoke;
       v23[3] = &unk_1E848FBF8;
-      v24 = v4;
+      v24 = cellCopy;
       v15 = [v13 actionWithTitle:v14 style:1 handler:v23];
       [v12 addAction:v15];
 
@@ -265,9 +265,9 @@ void __51__SFPerSiteSetting_confirmationAlertForSwitchCell___block_invoke_2(uint
   return [cachedValue BOOLValue];
 }
 
-- (void)setBoolValue:(BOOL)a3
+- (void)setBoolValue:(BOOL)value
 {
-  v4 = [_SFPerSitePreferencesUtilities preferenceValueForBoolValue:a3 preference:self->_preference preferenceManager:self->_manager];
+  v4 = [_SFPerSitePreferencesUtilities preferenceValueForBoolValue:value preference:self->_preference preferenceManager:self->_manager];
   [(SFPerSiteSetting *)self _setPreferenceValue:v4];
 }
 

@@ -1,28 +1,28 @@
 @interface CCToolKitToolTypeDisplayRepresentation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypeDisplayRepresentation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypeDisplayRepresentation)initWithName:(id)a3 numericFormat:(id)a4 synonyms:(id)a5 error:(id *)a6;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypeDisplayRepresentation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypeDisplayRepresentation)initWithName:(id)name numericFormat:(id)format synonyms:(id)synonyms error:(id *)error;
 - (NSArray)synonyms;
 - (NSString)name;
 - (NSString)numericFormat;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypeDisplayRepresentation
 
-- (CCToolKitToolTypeDisplayRepresentation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypeDisplayRepresentation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"numericFormat"];
-    v11 = [v6 objectForKeyedSubscript:@"synonyms"];
-    v12 = [[CCToolKitToolTypeDisplayRepresentation alloc] initWithName:v9 numericFormat:v10 synonyms:v11 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numericFormat"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"synonyms"];
+    v12 = [[CCToolKitToolTypeDisplayRepresentation alloc] initWithName:v9 numericFormat:v10 synonyms:v11 error:error];
   }
 
   else
@@ -39,20 +39,20 @@
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCToolKitToolTypeDisplayRepresentation *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCToolKitToolTypeDisplayRepresentation *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   if (self->_numericFormat)
   {
-    v5 = [(CCToolKitToolTypeDisplayRepresentation *)self numericFormat];
-    [v3 setObject:v5 forKeyedSubscript:@"numericFormat"];
+    numericFormat = [(CCToolKitToolTypeDisplayRepresentation *)self numericFormat];
+    [v3 setObject:numericFormat forKeyedSubscript:@"numericFormat"];
   }
 
   if (self->_synonyms)
   {
-    v6 = [(CCToolKitToolTypeDisplayRepresentation *)self synonyms];
-    [v3 setObject:v6 forKeyedSubscript:@"synonyms"];
+    synonyms = [(CCToolKitToolTypeDisplayRepresentation *)self synonyms];
+    [v3 setObject:synonyms forKeyedSubscript:@"synonyms"];
   }
 
   v7 = [v3 copy];
@@ -60,11 +60,11 @@
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v11 = v5;
+  v11 = blockCopy;
   if (self->_name)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_name];
@@ -108,11 +108,11 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v40 = a4;
-  v41 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v41];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -260,7 +260,7 @@ LABEL_30:
       }
     }
 
-    [v9 addObject:{v26, v40}];
+    [v9 addObject:{v26, errorCopy}];
     goto LABEL_30;
   }
 
@@ -276,13 +276,13 @@ LABEL_41:
   {
     CCSetError();
     v32 = 0;
-    v33 = v41;
+    v33 = dataCopy;
   }
 
   else
   {
     v34 = MEMORY[0x1E6993AA8];
-    v33 = v41;
+    v33 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v35 = objc_opt_class();
@@ -303,14 +303,14 @@ LABEL_41:
   return v32;
 }
 
-- (CCToolKitToolTypeDisplayRepresentation)initWithName:(id)a3 numericFormat:(id)a4 synonyms:(id)a5 error:(id *)a6
+- (CCToolKitToolTypeDisplayRepresentation)initWithName:(id)name numericFormat:(id)format synonyms:(id)synonyms error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  formatCopy = format;
+  synonymsCopy = synonyms;
   v13 = objc_opt_new();
-  if (v10)
+  if (nameCopy)
   {
     objc_opt_class();
     v36 = 0;
@@ -322,11 +322,11 @@ LABEL_41:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v11)
+    if (!formatCopy)
     {
 LABEL_4:
       v16 = v15;
-      if (v12)
+      if (synonymsCopy)
       {
         goto LABEL_5;
       }
@@ -334,10 +334,10 @@ LABEL_4:
 LABEL_18:
       v15 = v16;
 LABEL_19:
-      v26 = [v13 immutableData];
-      self = [(CCItemMessage *)self initWithData:v26 error:a6];
+      immutableData = [v13 immutableData];
+      self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-      v24 = self;
+      selfCopy = self;
       goto LABEL_21;
     }
   }
@@ -345,7 +345,7 @@ LABEL_19:
   else
   {
     v15 = 0;
-    if (!v11)
+    if (!formatCopy)
     {
       goto LABEL_4;
     }
@@ -359,13 +359,13 @@ LABEL_19:
   if (!v25)
   {
     CCSetError();
-    v24 = 0;
+    selfCopy = 0;
     v15 = v16;
     goto LABEL_21;
   }
 
   CCPBDataWriterWriteStringField();
-  if (!v12)
+  if (!synonymsCopy)
   {
     goto LABEL_18;
   }
@@ -378,12 +378,12 @@ LABEL_5:
 
   if (v17)
   {
-    v29 = a6;
+    errorCopy = error;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v12;
+    v18 = synonymsCopy;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v37 count:16];
     if (v19)
     {
@@ -411,17 +411,17 @@ LABEL_5:
       while (v20);
     }
 
-    a6 = v29;
+    error = errorCopy;
     goto LABEL_19;
   }
 
 LABEL_14:
   CCSetError();
-  v24 = 0;
+  selfCopy = 0;
 LABEL_21:
 
   v27 = *MEMORY[0x1E69E9840];
-  return v24;
+  return selfCopy;
 }
 
 @end

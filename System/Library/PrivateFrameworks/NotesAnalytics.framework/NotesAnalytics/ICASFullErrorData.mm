@@ -1,22 +1,22 @@
 @interface ICASFullErrorData
-- (ICASFullErrorData)initWithFullErrorCode:(id)a3 errorString:(id)a4;
+- (ICASFullErrorData)initWithFullErrorCode:(id)code errorString:(id)string;
 - (id)toDict;
 @end
 
 @implementation ICASFullErrorData
 
-- (ICASFullErrorData)initWithFullErrorCode:(id)a3 errorString:(id)a4
+- (ICASFullErrorData)initWithFullErrorCode:(id)code errorString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  codeCopy = code;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = ICASFullErrorData;
   v9 = [(ICASFullErrorData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fullErrorCode, a3);
-    objc_storeStrong(&v10->_errorString, a4);
+    objc_storeStrong(&v9->_fullErrorCode, code);
+    objc_storeStrong(&v10->_errorString, string);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"fullErrorCode";
-  v3 = [(ICASFullErrorData *)self fullErrorCode];
-  if (v3)
+  fullErrorCode = [(ICASFullErrorData *)self fullErrorCode];
+  if (fullErrorCode)
   {
-    v4 = [(ICASFullErrorData *)self fullErrorCode];
+    fullErrorCode2 = [(ICASFullErrorData *)self fullErrorCode];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    fullErrorCode2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = fullErrorCode2;
   v12[1] = @"errorString";
-  v13[0] = v4;
-  v6 = [(ICASFullErrorData *)self errorString];
-  if (v6)
+  v13[0] = fullErrorCode2;
+  errorString = [(ICASFullErrorData *)self errorString];
+  if (errorString)
   {
-    v7 = [(ICASFullErrorData *)self errorString];
+    errorString2 = [(ICASFullErrorData *)self errorString];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    errorString2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = errorString2;
+  v13[1] = errorString2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

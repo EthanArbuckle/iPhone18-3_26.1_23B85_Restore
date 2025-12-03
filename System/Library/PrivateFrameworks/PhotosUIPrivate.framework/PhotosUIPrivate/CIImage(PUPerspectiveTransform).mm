@@ -7,15 +7,15 @@
 
 - (uint64_t)pu_imageWithPerspectiveTransform:()PUPerspectiveTransform
 {
-  [a1 extent];
+  [self extent];
 
-  return [a1 pu_imageWithPerspectiveTransform:a2 extent:{a3, a4, v5, v6, v7, v8}];
+  return [self pu_imageWithPerspectiveTransform:a2 extent:{a3, a4, v5, v6, v7, v8}];
 }
 
 - (id)pu_imageWithPerspectiveTransform:()PUPerspectiveTransform extent:
 {
   v12 = MEMORY[0x1E695F648];
-  v13 = a1;
+  selfCopy = self;
   v14 = [v12 filterWithName:@"CIPerspectiveTransformWithExtent"];
   v41.origin.x = a5;
   v41.origin.y = a6;
@@ -54,7 +54,7 @@
   v28 = [MEMORY[0x1E695F688] vectorWithX:*&v34 Y:?];
   v29 = [MEMORY[0x1E695F688] vectorWithX:*&v36 Y:?];
   v30 = [MEMORY[0x1E695F688] vectorWithX:*&v39 Y:?];
-  [v14 setValue:v13 forKey:*MEMORY[0x1E695FAB0]];
+  [v14 setValue:selfCopy forKey:*MEMORY[0x1E695FAB0]];
 
   v31 = [MEMORY[0x1E695F688] vectorWithCGRect:{a5, a6, a7, a8}];
   [v14 setValue:v31 forKey:@"inputExtent"];
@@ -63,9 +63,9 @@
   [v14 setValue:v28 forKey:@"inputTopLeft"];
   [v14 setValue:v29 forKey:@"inputTopRight"];
   [v14 setValue:v30 forKey:@"inputBottomRight"];
-  v32 = [v14 outputImage];
+  outputImage = [v14 outputImage];
 
-  return v32;
+  return outputImage;
 }
 
 @end

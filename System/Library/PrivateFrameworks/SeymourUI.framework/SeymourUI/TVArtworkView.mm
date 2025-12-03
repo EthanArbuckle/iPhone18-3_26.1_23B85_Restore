@@ -1,9 +1,9 @@
 @interface TVArtworkView
 - (CGSize)intrinsicContentSize;
 - (UIImage)stackImage;
-- (_TtC9SeymourUI13TVArtworkView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI13TVArtworkView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setStackImage:(id)a3;
+- (void)setStackImage:(id)image;
 @end
 
 @implementation TVArtworkView
@@ -12,22 +12,22 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TVArtworkView();
-  v2 = [(_UIStackedImageContainerView *)&v4 stackImage];
+  stackImage = [(_UIStackedImageContainerView *)&v4 stackImage];
 
-  return v2;
+  return stackImage;
 }
 
-- (void)setStackImage:(id)a3
+- (void)setStackImage:(id)image
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BAEF770(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_20BAEF770(image);
 }
 
-- (_TtC9SeymourUI13TVArtworkView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI13TVArtworkView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v5 = objc_allocWithZone(type metadata accessor for TVArtworkView());
   v8 = sub_20BAEFC6C(0, v6, v7, width, height);
   swift_getObjectType();
@@ -37,7 +37,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BAEFF38();
 }
 

@@ -1,21 +1,21 @@
 @interface SBFluidSwitcherPanGestureRecognizer
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3;
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration;
 - (CGPoint)initialTouchLocation;
-- (SBFluidSwitcherPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (SBFluidSwitcherPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (SBFluidSwitcherViewController)switcherViewController;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation SBFluidSwitcherPanGestureRecognizer
 
-- (SBFluidSwitcherPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBFluidSwitcherPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherPanGestureRecognizer;
-  v4 = [(SBPanSystemGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(SBPanSystemGestureRecognizer *)&v8 initWithTarget:target action:action];
   if (v4)
   {
     v5 = objc_alloc_init(SBTouchHistory);
@@ -30,57 +30,57 @@
   return v4;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  beganCopy = began;
   WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-  v9 = [WeakRetained view];
+  view = [WeakRetained view];
 
   touchHistory = self->_touchHistory;
-  v11 = [v7 anyObject];
-  v12 = [v6 coalescedTouchesForTouch:v11];
-  _SBUpdateTouchHistoryWithCoalescedTouches(touchHistory, v12, self, v9, self->_installedAsSystemGesture);
+  anyObject = [beganCopy anyObject];
+  v12 = [eventCopy coalescedTouchesForTouch:anyObject];
+  _SBUpdateTouchHistoryWithCoalescedTouches(touchHistory, v12, self, view, self->_installedAsSystemGesture);
 
   v15.receiver = self;
   v15.super_class = SBFluidSwitcherPanGestureRecognizer;
-  [(SBPanSystemGestureRecognizer *)&v15 touchesBegan:v7 withEvent:v6];
+  [(SBPanSystemGestureRecognizer *)&v15 touchesBegan:beganCopy withEvent:eventCopy];
 
-  [(SBFluidSwitcherPanGestureRecognizer *)self locationInView:v9];
+  [(SBFluidSwitcherPanGestureRecognizer *)self locationInView:view];
   self->_initialTouchLocation.x = v13;
   self->_initialTouchLocation.y = v14;
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   touchHistory = self->_touchHistory;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  movedCopy = moved;
+  anyObject = [movedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
   WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-  v12 = [WeakRetained view];
-  _SBUpdateTouchHistoryWithCoalescedTouches(touchHistory, v10, self, v12, self->_installedAsSystemGesture);
+  view = [WeakRetained view];
+  _SBUpdateTouchHistoryWithCoalescedTouches(touchHistory, v10, self, view, self->_installedAsSystemGesture);
 
   v13.receiver = self;
   v13.super_class = SBFluidSwitcherPanGestureRecognizer;
-  [(SBFluidSwitcherPanGestureRecognizer *)&v13 touchesMoved:v8 withEvent:v7];
+  [(SBFluidSwitcherPanGestureRecognizer *)&v13 touchesMoved:movedCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   touchHistory = self->_touchHistory;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 anyObject];
-  v10 = [v7 coalescedTouchesForTouch:v9];
+  eventCopy = event;
+  endedCopy = ended;
+  anyObject = [endedCopy anyObject];
+  v10 = [eventCopy coalescedTouchesForTouch:anyObject];
   WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-  v12 = [WeakRetained view];
-  _SBUpdateTouchHistoryWithCoalescedTouches(touchHistory, v10, self, v12, self->_installedAsSystemGesture);
+  view = [WeakRetained view];
+  _SBUpdateTouchHistoryWithCoalescedTouches(touchHistory, v10, self, view, self->_installedAsSystemGesture);
 
   v13.receiver = self;
   v13.super_class = SBFluidSwitcherPanGestureRecognizer;
-  [(SBFluidSwitcherPanGestureRecognizer *)&v13 touchesEnded:v8 withEvent:v7];
+  [(SBFluidSwitcherPanGestureRecognizer *)&v13 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
 - (void)reset
@@ -94,9 +94,9 @@
   [(SBFluidSwitcherPanGestureRecognizer *)self setHasEdgeResizeSeenTouchOutsideHittestedView:0];
 }
 
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration
 {
-  [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:a3];
+  [(SBTouchHistory *)self->_touchHistory averageTouchVelocityOverTimeDuration:duration];
   result.y = v4;
   result.x = v3;
   return result;

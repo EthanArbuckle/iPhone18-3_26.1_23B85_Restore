@@ -1,14 +1,14 @@
 @interface CPLCloudKitComputeStateNoEncryptionHelper
-- (BOOL)decryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5;
-- (BOOL)encryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5;
-- (CPLCloudKitComputeStateNoEncryptionHelper)initWithPrefix:(id)a3;
+- (BOOL)decryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error;
+- (BOOL)encryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error;
+- (CPLCloudKitComputeStateNoEncryptionHelper)initWithPrefix:(id)prefix;
 @end
 
 @implementation CPLCloudKitComputeStateNoEncryptionHelper
 
-- (CPLCloudKitComputeStateNoEncryptionHelper)initWithPrefix:(id)a3
+- (CPLCloudKitComputeStateNoEncryptionHelper)initWithPrefix:(id)prefix
 {
-  v5 = a3;
+  prefixCopy = prefix;
   v12.receiver = self;
   v12.super_class = CPLCloudKitComputeStateNoEncryptionHelper;
   v6 = [(CPLCloudKitComputeStateNoEncryptionHelper *)&v12 init];
@@ -18,7 +18,7 @@
     fm = v6->_fm;
     v6->_fm = v7;
 
-    v9 = [v5 dataUsingEncoding:4];
+    v9 = [prefixCopy dataUsingEncoding:4];
     prefix = v6->_prefix;
     v6->_prefix = v9;
 
@@ -31,26 +31,26 @@
   return v6;
 }
 
-- (BOOL)encryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5
+- (BOOL)encryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  rLCopy = rL;
   if ([(NSData *)self->_prefix length])
   {
     v18 = 0;
-    v10 = [[NSMutableData alloc] initWithContentsOfURL:v8 options:0 error:&v18];
+    v10 = [[NSMutableData alloc] initWithContentsOfURL:lCopy options:0 error:&v18];
     v11 = v18;
     if (v10)
     {
       v12 = objc_autoreleasePoolPush();
       [v10 replaceBytesInRange:0 withBytes:0 length:{-[NSData bytes](self->_prefix, "bytes"), -[NSData length](self->_prefix, "length")}];
       v17 = v11;
-      v13 = [v10 writeToURL:v9 options:1 error:&v17];
+      v13 = [v10 writeToURL:rLCopy options:1 error:&v17];
       v14 = v17;
 
       objc_autoreleasePoolPop(v12);
       v11 = v14;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -59,7 +59,7 @@
     else
     {
       v13 = 0;
-      if (!a5)
+      if (!error)
       {
 LABEL_9:
 
@@ -70,26 +70,26 @@ LABEL_9:
     if ((v13 & 1) == 0)
     {
       v15 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     goto LABEL_9;
   }
 
-  v13 = [(NSFileManager *)self->_fm cplCopyItemAtURL:v8 toURL:v9 error:a5];
+  v13 = [(NSFileManager *)self->_fm cplCopyItemAtURL:lCopy toURL:rLCopy error:error];
 LABEL_10:
 
   return v13;
 }
 
-- (BOOL)decryptFileAtURL:(id)a3 outputFileURL:(id)a4 error:(id *)a5
+- (BOOL)decryptFileAtURL:(id)l outputFileURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  rLCopy = rL;
   if ([(NSData *)self->_prefix length])
   {
     v24 = 0;
-    v10 = [[NSData alloc] initWithContentsOfURL:v8 options:0 error:&v24];
+    v10 = [[NSData alloc] initWithContentsOfURL:lCopy options:0 error:&v24];
     v11 = v24;
     if (v10)
     {
@@ -111,13 +111,13 @@ LABEL_10:
         {
           v19 = [v10 subdataWithRange:{-[NSData length](self->_prefix, "length"), objc_msgSend(v10, "length") - -[NSData length](self->_prefix, "length")}];
           v23 = v11;
-          v16 = [v19 writeToURL:v9 options:1 error:&v23];
+          v16 = [v19 writeToURL:rLCopy options:1 error:&v23];
           v20 = v23;
         }
 
         objc_autoreleasePoolPop(v17);
         v11 = v20;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_15;
         }
@@ -133,7 +133,7 @@ LABEL_10:
 
         v16 = 0;
         v11 = v15;
-        if (!a5)
+        if (!error)
         {
 LABEL_15:
 
@@ -145,7 +145,7 @@ LABEL_15:
     else
     {
       v16 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_15;
       }
@@ -154,13 +154,13 @@ LABEL_15:
     if ((v16 & 1) == 0)
     {
       v21 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     goto LABEL_15;
   }
 
-  v16 = [(NSFileManager *)self->_fm cplCopyItemAtURL:v8 toURL:v9 error:a5];
+  v16 = [(NSFileManager *)self->_fm cplCopyItemAtURL:lCopy toURL:rLCopy error:error];
 LABEL_16:
 
   return v16;

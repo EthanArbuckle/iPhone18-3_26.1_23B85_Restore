@@ -1,38 +1,38 @@
 @interface PXPhotoKitAssetCollectionSortActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 onAssetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)createStandardActionForAssetCollectionReference:(id)a3 withInput:(id)a4 handler:(id)a5;
-+ (id)menuActionItemsForAssetCollection:(id)a3;
-+ (id)menuTitleForItemIndex:(int64_t)a3 assetCollection:(id)a4;
-+ (int64_t)menuActionStateForItemIndex:(int64_t)a3 assetCollection:(id)a4;
-+ (void)_handleSortOrderSelected:(int64_t)a3 forAssetCollection:(id)a4;
-+ (void)performActionForItemAtIndex:(int64_t)a3 assetCollection:(id)a4;
++ (BOOL)canPerformActionType:(id)type onAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createStandardActionForAssetCollectionReference:(id)reference withInput:(id)input handler:(id)handler;
++ (id)menuActionItemsForAssetCollection:(id)collection;
++ (id)menuTitleForItemIndex:(int64_t)index assetCollection:(id)collection;
++ (int64_t)menuActionStateForItemIndex:(int64_t)index assetCollection:(id)collection;
++ (void)_handleSortOrderSelected:(int64_t)selected forAssetCollection:(id)collection;
++ (void)performActionForItemAtIndex:(int64_t)index assetCollection:(id)collection;
 @end
 
 @implementation PXPhotoKitAssetCollectionSortActionPerformer
 
-+ (void)_handleSortOrderSelected:(int64_t)a3 forAssetCollection:(id)a4
++ (void)_handleSortOrderSelected:(int64_t)selected forAssetCollection:(id)collection
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = _PXSortActionTypeForAssetCollection(v5);
+  collectionCopy = collection;
+  v6 = _PXSortActionTypeForAssetCollection(collectionCopy);
   v7 = PLUIGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6 != a3)
+  if (v6 != selected)
   {
     if (v8)
     {
       *buf = 134218242;
-      v27 = a3;
+      selectedCopy = selected;
       v28 = 2112;
-      v29 = v5;
+      v29 = collectionCopy;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Sort Action: setting sort key %ld for asset collection %@", buf, 0x16u);
     }
 
-    v9 = [v5 assetCollectionType] == 2 && objc_msgSend(v5, "assetCollectionSubtype") == 1000000204;
-    v10 = [v5 assetCollectionType] == 12;
-    if (a3 <= 2)
+    v9 = [collectionCopy assetCollectionType] == 2 && objc_msgSend(collectionCopy, "assetCollectionSubtype") == 1000000204;
+    v10 = [collectionCopy assetCollectionType] == 12;
+    if (selected <= 2)
     {
-      switch(a3)
+      switch(selected)
       {
         case 1:
           v12 = 0;
@@ -43,33 +43,33 @@
           v12 = 6;
 LABEL_19:
           v13 = v11 | v12;
-          v14 = [v5 photoLibrary];
+          photoLibrary = [collectionCopy photoLibrary];
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __92__PXPhotoKitAssetCollectionSortActionPerformer__handleSortOrderSelected_forAssetCollection___block_invoke;
           v20[3] = &unk_1E7739DB0;
           v24 = v9;
-          v22 = a3;
+          selectedCopy2 = selected;
           v23 = v13;
           v25 = v10;
-          v21 = v5;
-          [v14 performChanges:v20 completionHandler:&__block_literal_global_234_112024];
+          v21 = collectionCopy;
+          [photoLibrary performChanges:v20 completionHandler:&__block_literal_global_234_112024];
 
           v7 = v21;
           goto LABEL_20;
         case 0:
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PXSortActionResult _PXSortActionResultForType(PXSortActionType)"];
-          v17 = v15;
+          v17 = currentHandler;
           v18 = v16;
           v19 = 77;
           goto LABEL_24;
       }
 
 LABEL_23:
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"PXSortActionResult _PXSortActionResultForType(PXSortActionType)"];
-      v17 = v15;
+      v17 = currentHandler;
       v18 = v16;
       v19 = 81;
 LABEL_24:
@@ -78,14 +78,14 @@ LABEL_24:
       abort();
     }
 
-    if (a3 == 3)
+    if (selected == 3)
     {
       v11 = 0x100000000;
     }
 
     else
     {
-      if (a3 != 4)
+      if (selected != 4)
       {
         goto LABEL_23;
       }
@@ -100,7 +100,7 @@ LABEL_24:
   if (v8)
   {
     *buf = 138412290;
-    v27 = v5;
+    selectedCopy = collectionCopy;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Sort Action: User selected a custom sort key that is already set for %@", buf, 0xCu);
   }
 
@@ -171,63 +171,63 @@ LABEL_6:
   }
 }
 
-+ (void)performActionForItemAtIndex:(int64_t)a3 assetCollection:(id)a4
++ (void)performActionForItemAtIndex:(int64_t)index assetCollection:(id)collection
 {
-  v7 = [a1 menuActionItemsForAssetCollection:a4];
-  if ([v7 count] > a3)
+  v7 = [self menuActionItemsForAssetCollection:collection];
+  if ([v7 count] > index)
   {
-    v5 = [v7 objectAtIndexedSubscript:a3];
-    v6 = [v5 handler];
-    v6[2]();
+    v5 = [v7 objectAtIndexedSubscript:index];
+    handler = [v5 handler];
+    handler[2]();
   }
 }
 
-+ (int64_t)menuActionStateForItemIndex:(int64_t)a3 assetCollection:(id)a4
++ (int64_t)menuActionStateForItemIndex:(int64_t)index assetCollection:(id)collection
 {
-  v5 = [a1 menuActionItemsForAssetCollection:a4];
-  if ([v5 count] <= a3)
+  v5 = [self menuActionItemsForAssetCollection:collection];
+  if ([v5 count] <= index)
   {
-    v7 = 0;
+    state = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
-    v7 = [v6 state];
+    v6 = [v5 objectAtIndexedSubscript:index];
+    state = [v6 state];
   }
 
-  return v7;
+  return state;
 }
 
-+ (id)menuTitleForItemIndex:(int64_t)a3 assetCollection:(id)a4
++ (id)menuTitleForItemIndex:(int64_t)index assetCollection:(id)collection
 {
-  v5 = [a1 menuActionItemsForAssetCollection:a4];
-  if ([v5 count] <= a3)
+  v5 = [self menuActionItemsForAssetCollection:collection];
+  if ([v5 count] <= index)
   {
-    v7 = 0;
+    title = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
-    v7 = [v6 title];
+    v6 = [v5 objectAtIndexedSubscript:index];
+    title = [v6 title];
   }
 
-  return v7;
+  return title;
 }
 
-+ (id)menuActionItemsForAssetCollection:(id)a3
++ (id)menuActionItemsForAssetCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_opt_new();
-  v5 = _PXSortActionTypeForAssetCollection(v3);
+  v5 = _PXSortActionTypeForAssetCollection(collectionCopy);
   v6 = PXLocalizedStringFromTable(@"PXContentSortingMenuOldestFirst", @"PhotosUICore");
   v7 = [off_1E7721410 alloc];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __82__PXPhotoKitAssetCollectionSortActionPerformer_menuActionItemsForAssetCollection___block_invoke;
   v36[3] = &unk_1E774C648;
-  v8 = v3;
+  v8 = collectionCopy;
   v37 = v8;
   v9 = [v7 initWithTitle:v6 systemImageName:0 role:0 state:v5 == 3 handler:v36];
   [v4 addObject:v9];
@@ -277,21 +277,21 @@ LABEL_6:
   return v4;
 }
 
-+ (id)createStandardActionForAssetCollectionReference:(id)a3 withInput:(id)a4 handler:(id)a5
++ (id)createStandardActionForAssetCollectionReference:(id)reference withInput:(id)input handler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
+  inputCopy = input;
+  referenceCopy = reference;
   PXLocalizedStringFromTable(@"PXContentSortingMenuTitle", @"PhotosUICore");
   objc_claimAutoreleasedReturnValue();
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [a1 systemImageNameForAssetCollectionReference:v8 withInputs:v7];
+  v10 = [self systemImageNameForAssetCollectionReference:referenceCopy withInputs:inputCopy];
 
   [v9 systemImageNamed:v10];
   objc_claimAutoreleasedReturnValue();
 
-  v11 = [v8 assetCollection];
+  assetCollection = [referenceCopy assetCollection];
 
-  [a1 menuActionItemsForAssetCollection:v11];
+  [self menuActionItemsForAssetCollection:assetCollection];
   objc_claimAutoreleasedReturnValue();
   PXMap();
 }
@@ -321,15 +321,15 @@ void __114__PXPhotoKitAssetCollectionSortActionPerformer_createStandardActionFor
   v1[2]();
 }
 
-+ (BOOL)canPerformActionType:(id)a3 onAssetCollectionReference:(id)a4 withInputs:(id)a5
++ (BOOL)canPerformActionType:(id)type onAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v7 = [a4 assetCollection];
-  if (!v7)
+  assetCollection = [reference assetCollection];
+  if (!assetCollection)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionSortActionPerformer.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionSortActionPerformer.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v12}];
 LABEL_6:
 
     goto LABEL_3;
@@ -338,17 +338,17 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = objc_opt_class();
     v12 = NSStringFromClass(v13);
-    v14 = [v7 px_descriptionForAssertionMessage];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionSortActionPerformer.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, v14}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionSortActionPerformer.m" lineNumber:92 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v12, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v8 = [PXCollectionSortOrderUtilities userCanChangeSortOrderInCollection:v7];
+  v8 = [PXCollectionSortOrderUtilities userCanChangeSortOrderInCollection:assetCollection];
 
   return v8;
 }

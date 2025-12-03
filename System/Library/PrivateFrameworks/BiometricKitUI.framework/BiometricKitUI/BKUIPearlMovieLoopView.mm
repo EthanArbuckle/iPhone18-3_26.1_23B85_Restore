@@ -1,42 +1,42 @@
 @interface BKUIPearlMovieLoopView
-- (BKUIPearlMovieLoopView)initWithFrame:(CGRect)a3 player:(id)a4 asset:(id)a5;
+- (BKUIPearlMovieLoopView)initWithFrame:(CGRect)frame player:(id)player asset:(id)asset;
 - (BOOL)landscape;
 - (BOOL)portrait;
 - (id)selfPortrait;
 - (void)addAnimatedSelfPotraitIfNeeded;
 - (void)hideAVPlayerReplaceWithSnapshot;
 - (void)selfPortrait;
-- (void)setAlphaHideOnZero:(double)a3;
+- (void)setAlphaHideOnZero:(double)zero;
 - (void)unhideAVPlayerRemoveSnapshot;
 @end
 
 @implementation BKUIPearlMovieLoopView
 
-- (BKUIPearlMovieLoopView)initWithFrame:(CGRect)a3 player:(id)a4 asset:(id)a5
+- (BKUIPearlMovieLoopView)initWithFrame:(CGRect)frame player:(id)player asset:(id)asset
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  playerCopy = player;
+  assetCopy = asset;
   v21.receiver = self;
   v21.super_class = BKUIPearlMovieLoopView;
-  v14 = [(BKUIPearlMovieLoopView *)&v21 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(BKUIPearlMovieLoopView *)&v21 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_player, a4);
-    objc_storeStrong(&v15->_assets, a5);
+    objc_storeStrong(&height->_player, player);
+    objc_storeStrong(&v15->_assets, asset);
     v16 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{x, y, width, height}];
     imageView = v15->_imageView;
     v15->_imageView = v16;
 
-    v18 = [(BKUIPearlMovieLoopView *)v15 selfPortrait];
-    [(UIImageView *)v15->_imageView setImage:v18];
+    selfPortrait = [(BKUIPearlMovieLoopView *)v15 selfPortrait];
+    [(UIImageView *)v15->_imageView setImage:selfPortrait];
 
-    v19 = [(BKUIPearlMovieLoopView *)v15 playerLayer];
-    [v19 setPlayer:v12];
+    playerLayer = [(BKUIPearlMovieLoopView *)v15 playerLayer];
+    [playerLayer setPlayer:playerCopy];
 
     [(BKUIPearlMovieLoopView *)v15 addAnimatedSelfPotraitIfNeeded];
   }
@@ -47,9 +47,9 @@
 - (void)addAnimatedSelfPotraitIfNeeded
 {
   v3 = +[BKUIDevice sharedInstance];
-  v4 = [v3 isRestrictedToLandscapeEnrollment];
+  isRestrictedToLandscapeEnrollment = [v3 isRestrictedToLandscapeEnrollment];
 
-  if (v4)
+  if (isRestrictedToLandscapeEnrollment)
   {
     if ([(BKUIPearlMovieLoopView *)self landscape])
     {
@@ -73,49 +73,49 @@
 
 - (void)unhideAVPlayerRemoveSnapshot
 {
-  v2 = [(BKUIPearlMovieLoopView *)self imageView];
-  [v2 removeFromSuperview];
+  imageView = [(BKUIPearlMovieLoopView *)self imageView];
+  [imageView removeFromSuperview];
 }
 
 - (void)hideAVPlayerReplaceWithSnapshot
 {
-  v3 = [(BKUIPearlMovieLoopView *)self imageView];
-  [(BKUIPearlMovieLoopView *)self addSubview:v3];
+  imageView = [(BKUIPearlMovieLoopView *)self imageView];
+  [(BKUIPearlMovieLoopView *)self addSubview:imageView];
 }
 
 - (BOOL)portrait
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(BKUIPearlMovieLoopView *)self traitCollection];
-    v4 = [v5 horizontalSizeClass] == 1;
+    traitCollection = [(BKUIPearlMovieLoopView *)self traitCollection];
+    v4 = [traitCollection horizontalSizeClass] == 1;
   }
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 orientation] == 1 || +[BKUIUtils activeInterfaceOrientationForView:](BKUIUtils, "activeInterfaceOrientationForView:", self) == 1 || v4;
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  v7 = [currentDevice2 orientation] == 1 || +[BKUIUtils activeInterfaceOrientationForView:](BKUIUtils, "activeInterfaceOrientationForView:", self) == 1 || v4;
 
   return v7 & 1;
 }
 
 - (BOOL)landscape
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 orientation] == 3 || +[BKUIUtils activeInterfaceOrientationForView:](BKUIUtils, "activeInterfaceOrientationForView:", self) == 3;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice orientation] == 3 || +[BKUIUtils activeInterfaceOrientationForView:](BKUIUtils, "activeInterfaceOrientationForView:", self) == 3;
 
   return v4;
 }
 
-- (void)setAlphaHideOnZero:(double)a3
+- (void)setAlphaHideOnZero:(double)zero
 {
   [(BKUIPearlMovieLoopView *)self setAlpha:?];
 
-  [(BKUIPearlMovieLoopView *)self setHidden:a3 == 0.0];
+  [(BKUIPearlMovieLoopView *)self setHidden:zero == 0.0];
 }
 
 - (id)selfPortrait
@@ -123,11 +123,11 @@
   selfPortraite = self->_selfPortraite;
   if (!selfPortraite)
   {
-    v4 = [(BKUIPearlMovieLoopView *)self player];
+    player = [(BKUIPearlMovieLoopView *)self player];
     CMTimeMake(&v12, 0, 1);
-    v5 = [(BKUIPearlMovieLoopView *)self assets];
+    assets = [(BKUIPearlMovieLoopView *)self assets];
     v11 = 0;
-    v6 = [v4 bkui_snapshotImageAt:&v12 asset:v5 error:&v11];
+    v6 = [player bkui_snapshotImageAt:&v12 asset:assets error:&v11];
     v7 = v11;
     v8 = self->_selfPortraite;
     self->_selfPortraite = v6;
@@ -152,11 +152,11 @@
 - (void)selfPortrait
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v6 = 138412546;
-  v7 = v4;
+  v7 = localizedDescription;
   v8 = 2048;
-  v9 = [a1 code];
+  code = [self code];
   _os_log_fault_impl(&dword_241B0A000, a2, OS_LOG_TYPE_FAULT, "error could not grab image clip of the av clip description:/n%@ code: %li", &v6, 0x16u);
 
   v5 = *MEMORY[0x277D85DE8];

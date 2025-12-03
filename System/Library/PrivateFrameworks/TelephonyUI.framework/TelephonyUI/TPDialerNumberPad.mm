@@ -1,11 +1,11 @@
 @interface TPDialerNumberPad
 + (id)dialerNumberPadFullCharacters;
 + (id)dialerNumberPadNumericCharacters;
-- (void)buttonDown:(id)a3;
-- (void)buttonLongPressed:(id)a3;
-- (void)buttonUp:(id)a3;
-- (void)buttonUpOutside:(id)a3;
-- (void)setPlaysSounds:(BOOL)a3;
+- (void)buttonDown:(id)down;
+- (void)buttonLongPressed:(id)pressed;
+- (void)buttonUp:(id)up;
+- (void)buttonUpOutside:(id)outside;
+- (void)setPlaysSounds:(BOOL)sounds;
 @end
 
 @implementation TPDialerNumberPad
@@ -78,86 +78,86 @@
   return v11;
 }
 
-- (void)buttonUp:(id)a3
+- (void)buttonUp:(id)up
 {
-  v5 = a3;
-  v4 = [(TPDialerNumberPad *)self soundController];
-  [v4 stopSoundForDialerCharacter:{objc_msgSend(v5, "character")}];
+  upCopy = up;
+  soundController = [(TPDialerNumberPad *)self soundController];
+  [soundController stopSoundForDialerCharacter:{objc_msgSend(upCopy, "character")}];
 
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    -[TPDialerKeypadDelegate phonePad:keyUp:](self->_delegate, "phonePad:keyUp:", self, -[__CFString characterAtIndex:](TPNumberPadCharacterValues[[v5 character]], "characterAtIndex:", 0));
+    -[TPDialerKeypadDelegate phonePad:keyUp:](self->_delegate, "phonePad:keyUp:", self, -[__CFString characterAtIndex:](TPNumberPadCharacterValues[[upCopy character]], "characterAtIndex:", 0));
   }
 }
 
-- (void)buttonUpOutside:(id)a3
+- (void)buttonUpOutside:(id)outside
 {
-  v4 = a3;
-  v5 = [(TPDialerNumberPad *)self soundController];
-  v6 = [v4 character];
+  outsideCopy = outside;
+  soundController = [(TPDialerNumberPad *)self soundController];
+  character = [outsideCopy character];
 
-  [v5 stopSoundForDialerCharacter:v6];
-  v7 = [(TPDialerNumberPad *)self delegate];
-  if (v7)
+  [soundController stopSoundForDialerCharacter:character];
+  delegate = [(TPDialerNumberPad *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(TPDialerNumberPad *)self delegate];
+    v8 = delegate;
+    delegate2 = [(TPDialerNumberPad *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TPDialerNumberPad *)self delegate];
-      [v11 phonePadDeleteLastDigit:self];
+      delegate3 = [(TPDialerNumberPad *)self delegate];
+      [delegate3 phonePadDeleteLastDigit:self];
     }
   }
 }
 
-- (void)buttonDown:(id)a3
+- (void)buttonDown:(id)down
 {
-  v5 = a3;
-  v4 = [(TPDialerNumberPad *)self soundController];
-  [v4 playSoundForDialerCharacter:{objc_msgSend(v5, "character")}];
+  downCopy = down;
+  soundController = [(TPDialerNumberPad *)self soundController];
+  [soundController playSoundForDialerCharacter:{objc_msgSend(downCopy, "character")}];
 
   if (self->_delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      -[TPDialerKeypadDelegate phonePad:appendString:](self->_delegate, "phonePad:appendString:", self, TPNumberPadCharacterValues[[v5 character]]);
+      -[TPDialerKeypadDelegate phonePad:appendString:](self->_delegate, "phonePad:appendString:", self, TPNumberPadCharacterValues[[downCopy character]]);
     }
 
     if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      -[TPDialerKeypadDelegate phonePad:keyDown:](self->_delegate, "phonePad:keyDown:", self, -[__CFString characterAtIndex:](TPNumberPadCharacterValues[[v5 character]], "characterAtIndex:", 0));
+      -[TPDialerKeypadDelegate phonePad:keyDown:](self->_delegate, "phonePad:keyDown:", self, -[__CFString characterAtIndex:](TPNumberPadCharacterValues[[downCopy character]], "characterAtIndex:", 0));
     }
   }
 }
 
-- (void)buttonLongPressed:(id)a3
+- (void)buttonLongPressed:(id)pressed
 {
-  v21 = a3;
-  if ([v21 character] == 10)
+  pressedCopy = pressed;
+  if ([pressedCopy character] == 10)
   {
     v4 = @"+";
   }
 
-  else if ([v21 character] == 9)
+  else if ([pressedCopy character] == 9)
   {
     v4 = @",";
   }
 
   else
   {
-    if ([v21 character] != 11)
+    if ([pressedCopy character] != 11)
     {
-      if (![v21 character])
+      if (![pressedCopy character])
       {
-        v19 = [(TPDialerNumberPad *)self delegate];
+        delegate = [(TPDialerNumberPad *)self delegate];
         v20 = objc_opt_respondsToSelector();
 
         if (v20)
         {
-          v9 = [(TPDialerNumberPad *)self delegate];
-          [v9 phonePad:self dialerCharacterButtonWasHeld:{objc_msgSend(v21, "character")}];
+          delegate2 = [(TPDialerNumberPad *)self delegate];
+          [delegate2 phonePad:self dialerCharacterButtonWasHeld:{objc_msgSend(pressedCopy, "character")}];
           goto LABEL_16;
         }
       }
@@ -168,48 +168,48 @@
     v4 = @";";
   }
 
-  v5 = [(TPDialerNumberPad *)self delegate];
-  if (v5)
+  delegate3 = [(TPDialerNumberPad *)self delegate];
+  if (delegate3)
   {
-    v6 = v5;
-    v7 = [(TPDialerNumberPad *)self delegate];
+    v6 = delegate3;
+    delegate4 = [(TPDialerNumberPad *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(TPDialerNumberPad *)self delegate];
-      [v9 phonePad:self replaceLastDigitWithString:v4];
+      delegate2 = [(TPDialerNumberPad *)self delegate];
+      [delegate2 phonePad:self replaceLastDigitWithString:v4];
 LABEL_16:
 
       goto LABEL_17;
     }
   }
 
-  v10 = [(TPDialerNumberPad *)self delegate];
-  if (v10)
+  delegate5 = [(TPDialerNumberPad *)self delegate];
+  if (delegate5)
   {
-    v11 = v10;
-    v12 = [(TPDialerNumberPad *)self delegate];
+    v11 = delegate5;
+    delegate6 = [(TPDialerNumberPad *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(TPDialerNumberPad *)self delegate];
-      [v14 phonePadDeleteLastDigit:self];
+      delegate7 = [(TPDialerNumberPad *)self delegate];
+      [delegate7 phonePadDeleteLastDigit:self];
     }
   }
 
-  v15 = [(TPDialerNumberPad *)self delegate];
-  if (v15)
+  delegate8 = [(TPDialerNumberPad *)self delegate];
+  if (delegate8)
   {
-    v16 = v15;
-    v17 = [(TPDialerNumberPad *)self delegate];
+    v16 = delegate8;
+    delegate9 = [(TPDialerNumberPad *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v9 = [(TPDialerNumberPad *)self delegate];
-      [v9 phonePad:self appendString:v4];
+      delegate2 = [(TPDialerNumberPad *)self delegate];
+      [delegate2 phonePad:self appendString:v4];
       goto LABEL_16;
     }
   }
@@ -217,11 +217,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setPlaysSounds:(BOOL)a3
+- (void)setPlaysSounds:(BOOL)sounds
 {
-  if (self->_playsSounds != a3)
+  if (self->_playsSounds != sounds)
   {
-    if (a3)
+    if (sounds)
     {
       v4 = objc_alloc_init(TPDialerSoundController);
       [(TPDialerNumberPad *)self setSoundController:v4];

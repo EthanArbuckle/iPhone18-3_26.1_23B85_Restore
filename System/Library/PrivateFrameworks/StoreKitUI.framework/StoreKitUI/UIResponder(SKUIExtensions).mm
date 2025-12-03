@@ -19,20 +19,20 @@
     }
   }
 
-  v12 = [MEMORY[0x277D69B38] sharedConfig];
-  v13 = [v12 shouldLog];
-  if ([v12 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog;
   }
 
-  v15 = [v12 OSLogObject];
-  if (!os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v14 &= 2u;
   }
@@ -44,14 +44,14 @@
 
   NSStringFromSelector(a2);
   v19 = 138412546;
-  v20 = a1;
+  selfCopy = self;
   v22 = v21 = 2112;
   LODWORD(v18) = 22;
   v16 = _os_log_send_and_compose_impl();
 
   if (v16)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithCString:v16 encoding:{4, &v19, v18}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v16 encoding:{4, &v19, v18}];
     free(v16);
     SSFileLog();
 LABEL_13:

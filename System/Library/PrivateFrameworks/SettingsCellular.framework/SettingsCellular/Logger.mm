@@ -1,32 +1,32 @@
 @interface Logger
-+ (id)loggerWithCategory:(id)a3 instance:(id)a4;
++ (id)loggerWithCategory:(id)category instance:(id)instance;
 @end
 
 @implementation Logger
 
-+ (id)loggerWithCategory:(id)a3 instance:(id)a4
++ (id)loggerWithCategory:(id)category instance:(id)instance
 {
-  v5 = a3;
-  v6 = a4;
+  categoryCopy = category;
+  instanceCopy = instance;
   if (qword_280F75D90 != -1)
   {
     dispatch_once(&qword_280F75D90, &__block_literal_global_5);
   }
 
-  v7 = v5;
-  v8 = v7;
-  if (v6)
+  v7 = categoryCopy;
+  instanceCopy = v7;
+  if (instanceCopy)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, v6];
+    instanceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, instanceCopy];
   }
 
   v9 = _MergedGlobals_9;
   objc_sync_enter(v9);
-  v10 = [_MergedGlobals_9 objectForKey:v8];
+  v10 = [_MergedGlobals_9 objectForKey:instanceCopy];
   if (!v10)
   {
-    v10 = os_log_create(kCellularSettingsLogSubsystem, [v8 UTF8String]);
-    [_MergedGlobals_9 setObject:v10 forKey:v8];
+    v10 = os_log_create(kCellularSettingsLogSubsystem, [instanceCopy UTF8String]);
+    [_MergedGlobals_9 setObject:v10 forKey:instanceCopy];
   }
 
   objc_sync_exit(v9);

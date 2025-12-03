@@ -1,7 +1,7 @@
 @interface DNDModeAssertionCurrentLocationLifetime
 + (id)sharedInstance;
-- (BOOL)isEqual:(id)a3;
-- (id)awakeAfterUsingCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)awakeAfterUsingCoder:(id)coder;
 @end
 
 @implementation DNDModeAssertionCurrentLocationLifetime
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __57__DNDModeAssertionCurrentLocationLifetime_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -32,16 +32,16 @@ uint64_t __57__DNDModeAssertionCurrentLocationLifetime_sharedInstance__block_inv
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -49,11 +49,11 @@ uint64_t __57__DNDModeAssertionCurrentLocationLifetime_sharedInstance__block_inv
   return isKindOfClass & 1;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
-  v4 = [objc_opt_class() sharedInstance];
+  sharedInstance = [objc_opt_class() sharedInstance];
 
-  return v4;
+  return sharedInstance;
 }
 
 @end

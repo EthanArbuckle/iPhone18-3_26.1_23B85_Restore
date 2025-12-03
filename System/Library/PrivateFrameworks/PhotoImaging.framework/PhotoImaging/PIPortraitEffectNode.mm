@@ -1,21 +1,21 @@
 @interface PIPortraitEffectNode
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3;
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data;
 - (BOOL)isPortraitMono;
 - (BOOL)isPortraitStage;
-- (PIPortraitEffectNode)initWithInput:(id)a3 blurMap:(id)a4 settings:(id)a5;
-- (PIPortraitEffectNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (PIPortraitEffectNode)initWithInput:(id)input blurMap:(id)map settings:(id)settings;
+- (PIPortraitEffectNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 - (int64_t)portraitVersion;
 @end
 
 @implementation PIPortraitEffectNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v158 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v112 = NUAssertLogger_16450();
     if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@
         v120 = dispatch_get_specific(*v114);
         v121 = MEMORY[0x1E696AF00];
         v122 = v120;
-        v123 = [v121 callStackSymbols];
-        v124 = [v123 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v121 callStackSymbols];
+        v124 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v155 = v120;
         v156 = 2114;
@@ -49,8 +49,8 @@
 
     else if (v117)
     {
-      v118 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v119 = [v118 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v119 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v155 = v119;
       _os_log_error_impl(&dword_1C7694000, v116, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -59,30 +59,30 @@
     _NUAssertFailHandler();
   }
 
-  v10 = v9;
-  if ([v9 evaluationMode] != 1)
+  v10 = stateCopy;
+  if ([stateCopy evaluationMode] != 1)
   {
     [MEMORY[0x1E69B3A48] unsupportedError:@"Portrait Effect only applies to images" object:0];
-    *a5 = v27 = 0;
+    *error = v27 = 0;
     goto LABEL_85;
   }
 
   if ([v10 auxiliaryImageType] != 1 && objc_msgSend(v10, "auxiliaryImageType") != 7)
   {
-    v28 = [(PIPortraitNode *)self input];
-    v27 = [v28 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    input = [(PIPortraitNode *)self input];
+    v27 = [input nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
     goto LABEL_85;
   }
 
-  v11 = [(PIPortraitNode *)self input];
-  v12 = [v11 imageProperties:a5];
+  input2 = [(PIPortraitNode *)self input];
+  v12 = [input2 imageProperties:error];
 
   v144 = v12;
   if (v12)
   {
-    v13 = [(PIPortraitNode *)self input];
-    v14 = [v13 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+    input3 = [(PIPortraitNode *)self input];
+    v14 = [input3 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
 
     if (!v14)
     {
@@ -92,12 +92,12 @@ LABEL_83:
       goto LABEL_84;
     }
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    v16 = [(NURenderNode *)self settings];
-    v17 = [v16 objectForKeyedSubscript:@"portraitInfo"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    settings = [(NURenderNode *)self settings];
+    v17 = [settings objectForKeyedSubscript:@"portraitInfo"];
 
     v18 = [v17 objectForKeyedSubscript:@"faceLandmarks"];
-    [v15 setObject:v18 forKeyedSubscript:@"inputFaceLandmarkArray"];
+    [dictionary setObject:v18 forKeyedSubscript:@"inputFaceLandmarkArray"];
 
     v140 = v17;
     v19 = [v17 objectForKeyedSubscript:@"faceLandmarks"];
@@ -106,7 +106,7 @@ LABEL_83:
     v142 = [v10 copy];
     v21 = [v144 auxiliaryImagePropertiesForType:3];
     v22 = 0;
-    v141 = v15;
+    v141 = dictionary;
     if (v21)
     {
       v143 = 0;
@@ -117,25 +117,25 @@ LABEL_83:
         [v21 size];
         v23 = NUScaleToFillSizeInSize();
         [v142 setScale:{v23, v24}];
-        v25 = [(PIPortraitNode *)self input];
+        input4 = [(PIPortraitNode *)self input];
         v153 = 0;
-        v22 = [v25 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v153];
+        v22 = [input4 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v153];
         v26 = v153;
 
         v143 = v26;
         if (!v22)
         {
           v34 = MEMORY[0x1E69B3A48];
-          v35 = [(PIPortraitNode *)self input];
+          input5 = [(PIPortraitNode *)self input];
           v36 = v34;
-          v22 = v35;
-          [v36 errorWithCode:1 reason:@"Failed to obtain portrait matte aux image" object:v35 underlyingError:v26];
-          *a5 = v27 = 0;
-          v15 = v141;
+          v22 = input5;
+          [v36 errorWithCode:1 reason:@"Failed to obtain portrait matte aux image" object:input5 underlyingError:v26];
+          *error = v27 = 0;
+          dictionary = v141;
           goto LABEL_82;
         }
 
-        v15 = v141;
+        dictionary = v141;
       }
     }
 
@@ -149,7 +149,7 @@ LABEL_83:
       if ([(PIPortraitEffectNode *)self isPortraitMono])
       {
         [MEMORY[0x1E69B3A48] invalidError:@"Gain map is disabled" object:self];
-        *a5 = v27 = 0;
+        *error = v27 = 0;
 LABEL_82:
 
         goto LABEL_83;
@@ -157,28 +157,28 @@ LABEL_82:
 
       if ([(PIPortraitEffectNode *)self isPortraitStage])
       {
-        v33 = [v144 flexRangeProperties];
+        flexRangeProperties = [v144 flexRangeProperties];
         v138 = v22;
-        if (v33)
+        if (flexRangeProperties)
         {
 
 LABEL_49:
-          v66 = [MEMORY[0x1E695DF90] dictionary];
-          [v66 setObject:v14 forKeyedSubscript:@"inputGainMap"];
-          [v66 setObject:v138 forKeyedSubscript:@"inputMatte"];
-          v67 = v15;
-          v68 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"NUGainMapClearFilter" settings:&unk_1F47201A8 inputs:v66];
-          v27 = [v68 resolvedNodeWithCachedInputs:v66 cache:v8 pipelineState:v10 error:a5];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary2 setObject:v14 forKeyedSubscript:@"inputGainMap"];
+          [dictionary2 setObject:v138 forKeyedSubscript:@"inputMatte"];
+          v67 = dictionary;
+          v68 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"NUGainMapClearFilter" settings:&unk_1F47201A8 inputs:dictionary2];
+          v27 = [v68 resolvedNodeWithCachedInputs:dictionary2 cache:cacheCopy pipelineState:v10 error:error];
 
-          v15 = v67;
+          dictionary = v67;
           v22 = v138;
           goto LABEL_82;
         }
 
-        v63 = [v144 meteorPlusGainMapVersion];
-        v64 = [v63 major];
+        meteorPlusGainMapVersion = [v144 meteorPlusGainMapVersion];
+        major = [meteorPlusGainMapVersion major];
 
-        v65 = v64 < 2;
+        v65 = major < 2;
         v22 = v138;
         if (!v65)
         {
@@ -191,25 +191,25 @@ LABEL_49:
     }
 
     v134 = v14;
-    v29 = [(PIPortraitNode *)self blurMap];
+    blurMap = [(PIPortraitNode *)self blurMap];
 
-    if (v29)
+    if (blurMap)
     {
-      v30 = [(PIPortraitNode *)self blurMap];
+      blurMap2 = [(PIPortraitNode *)self blurMap];
       v152 = 0;
-      v31 = [v30 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:&v152];
+      v31 = [blurMap2 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:&v152];
       v32 = v152;
 
       v135 = v31;
       if (!v31)
       {
         v61 = MEMORY[0x1E69B3A48];
-        v136 = [(PIPortraitNode *)self blurMap];
+        blurMap3 = [(PIPortraitNode *)self blurMap];
         [v61 errorWithCode:1 reason:@"Failed to obtain portrait blur map" object:? underlyingError:?];
-        *a5 = v27 = 0;
+        *error = v27 = 0;
         v143 = v32;
         v14 = v134;
-        v15 = v141;
+        dictionary = v141;
 
         goto LABEL_82;
       }
@@ -223,13 +223,13 @@ LABEL_49:
     }
 
     v139 = v22;
-    v130 = [(PIPortraitEffectNode *)self portraitVersion];
-    v37 = [(NURenderNode *)self settings];
-    v131 = [v37 objectForKeyedSubscript:@"kind"];
+    portraitVersion = [(PIPortraitEffectNode *)self portraitVersion];
+    settings2 = [(NURenderNode *)self settings];
+    v131 = [settings2 objectForKeyedSubscript:@"kind"];
 
     v38 = [v144 auxiliaryImagePropertiesForType:2];
 
-    v15 = v141;
+    dictionary = v141;
     v132 = v38;
     if (v38)
     {
@@ -238,9 +238,9 @@ LABEL_49:
       [v38 size];
       v39 = NUScaleToFillSizeInSize();
       [v142 setScale:{v39, v40}];
-      v41 = [(PIPortraitNode *)self input];
+      input6 = [(PIPortraitNode *)self input];
       v151 = 0;
-      v137 = [v41 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v151];
+      v137 = [input6 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v151];
       v42 = v151;
 
       v143 = v42;
@@ -265,9 +265,9 @@ LABEL_49:
     if (!v137 && (v44 & 1) == 0)
     {
       v45 = MEMORY[0x1E69B3A48];
-      v46 = [(PIPortraitNode *)self input];
-      [v45 errorWithCode:1 reason:@"Failed to obtain disparity aux image" object:v46 underlyingError:v143];
-      *a5 = v27 = 0;
+      input7 = [(PIPortraitNode *)self input];
+      [v45 errorWithCode:1 reason:@"Failed to obtain disparity aux image" object:input7 underlyingError:v143];
+      *error = v27 = 0;
       v47 = v132;
       v14 = v134;
 LABEL_81:
@@ -276,7 +276,7 @@ LABEL_81:
       goto LABEL_82;
     }
 
-    if (v130 == 2 && v20)
+    if (portraitVersion == 2 && v20)
     {
       v47 = [v144 auxiliaryImagePropertiesForType:4];
 
@@ -287,17 +287,17 @@ LABEL_81:
         [v47 size];
         v48 = NUScaleToFillSizeInSize();
         [v142 setScale:{v48, v49}];
-        v50 = [(PIPortraitNode *)self input];
+        input8 = [(PIPortraitNode *)self input];
         v150 = 0;
-        v51 = [v50 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v150];
+        v51 = [input8 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v150];
         v52 = v150;
 
         if (!v51)
         {
           v107 = MEMORY[0x1E69B3A48];
-          v46 = [(PIPortraitNode *)self input];
-          [v107 errorWithCode:1 reason:@"Failed to obtain skin matte aux image" object:v46 underlyingError:v52];
-          *a5 = v27 = 0;
+          input7 = [(PIPortraitNode *)self input];
+          [v107 errorWithCode:1 reason:@"Failed to obtain skin matte aux image" object:input7 underlyingError:v52];
+          *error = v27 = 0;
           v143 = v52;
           v14 = v134;
           goto LABEL_80;
@@ -322,24 +322,24 @@ LABEL_81:
         [v90 size];
         v91 = NUScaleToFillSizeInSize();
         [v142 setScale:{v91, v92}];
-        v93 = [(PIPortraitNode *)self input];
+        input9 = [(PIPortraitNode *)self input];
         v149 = 0;
-        v94 = [v93 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v149];
+        v94 = [input9 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v149];
         v95 = v149;
 
         v128 = v94;
         if (!v94)
         {
           v108 = MEMORY[0x1E69B3A48];
-          v109 = [(PIPortraitNode *)self input];
-          *a5 = [v108 errorWithCode:1 reason:@"Failed to obtain hair matte aux image" object:v109 underlyingError:v95];
+          input10 = [(PIPortraitNode *)self input];
+          *error = [v108 errorWithCode:1 reason:@"Failed to obtain hair matte aux image" object:input10 underlyingError:v95];
 
           v27 = 0;
           v143 = v95;
           v47 = v90;
           v14 = v134;
           v22 = v139;
-          v46 = v129;
+          input7 = v129;
           v43 = v131;
           goto LABEL_81;
         }
@@ -362,23 +362,23 @@ LABEL_81:
         [v47 size];
         v99 = NUScaleToFillSizeInSize();
         [v142 setScale:{v99, v100}];
-        v101 = [(PIPortraitNode *)self input];
+        input11 = [(PIPortraitNode *)self input];
         v148 = 0;
-        v102 = [v101 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v148];
+        v102 = [input11 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v148];
         v103 = v148;
 
         v127 = v102;
         if (!v102)
         {
           v110 = MEMORY[0x1E69B3A48];
-          v111 = [(PIPortraitNode *)self input];
-          *a5 = [v110 errorWithCode:1 reason:@"Failed to obtain teeth matte aux image" object:v111 underlyingError:v103];
+          input12 = [(PIPortraitNode *)self input];
+          *error = [v110 errorWithCode:1 reason:@"Failed to obtain teeth matte aux image" object:input12 underlyingError:v103];
 
           v27 = 0;
           v143 = v103;
           v14 = v134;
           v22 = v139;
-          v46 = v129;
+          input7 = v129;
           goto LABEL_81;
         }
 
@@ -400,11 +400,11 @@ LABEL_81:
       v129 = 0;
     }
 
-    v53 = [(NURenderNode *)self settings];
-    v54 = [v53 objectForKeyedSubscript:@"glassesMatteAllowed"];
-    v55 = [v54 BOOLValue];
+    settings3 = [(NURenderNode *)self settings];
+    v54 = [settings3 objectForKeyedSubscript:@"glassesMatteAllowed"];
+    bOOLValue = [v54 BOOLValue];
 
-    if (v55)
+    if (bOOLValue)
     {
       v47 = [v144 auxiliaryImagePropertiesForType:8];
 
@@ -415,20 +415,20 @@ LABEL_81:
         [v47 size];
         v56 = NUScaleToFillSizeInSize();
         [v142 setScale:{v56, v57}];
-        v58 = [(PIPortraitNode *)self input];
+        input13 = [(PIPortraitNode *)self input];
         v147 = 0;
-        v59 = [v58 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v147];
+        v59 = [input13 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v147];
         v60 = v147;
 
         if (!v59)
         {
           v96 = MEMORY[0x1E69B3A48];
-          v126 = [(PIPortraitNode *)self input];
+          input14 = [(PIPortraitNode *)self input];
           [v96 errorWithCode:1 reason:@"Failed to obtain glasses matte aux image" object:? underlyingError:?];
-          *a5 = v27 = 0;
+          *error = v27 = 0;
           v143 = v60;
           v14 = v134;
-          v46 = v129;
+          input7 = v129;
 LABEL_79:
 
 LABEL_80:
@@ -444,7 +444,7 @@ LABEL_80:
         v59 = 0;
       }
 
-      v126 = v59;
+      input14 = v59;
       v69 = [v144 auxiliaryImagePropertiesForType:7];
 
       if (v69)
@@ -455,22 +455,22 @@ LABEL_80:
         [v69 size];
         v70 = NUScaleToFillSizeInSize();
         [v142 setScale:{v70, v71}];
-        v72 = [(PIPortraitNode *)self input];
+        input15 = [(PIPortraitNode *)self input];
         v146 = 0;
-        v73 = [v72 nodeByReplayingAgainstCache:v8 pipelineState:v142 error:&v146];
+        v73 = [input15 nodeByReplayingAgainstCache:cacheCopy pipelineState:v142 error:&v146];
         v74 = v146;
 
         if (!v73)
         {
           v105 = MEMORY[0x1E69B3A48];
-          v106 = [(PIPortraitNode *)self input];
-          *a5 = [v105 errorWithCode:1 reason:@"Failed to obtain gain map aux image" object:v106 underlyingError:v74];
+          input16 = [(PIPortraitNode *)self input];
+          *error = [v105 errorWithCode:1 reason:@"Failed to obtain gain map aux image" object:input16 underlyingError:v74];
 
           v27 = 0;
           v143 = v74;
           v47 = v69;
           v14 = v134;
-          v46 = v129;
+          input7 = v129;
           v43 = v131;
           goto LABEL_79;
         }
@@ -492,7 +492,7 @@ LABEL_80:
     else
     {
       v125 = 0;
-      v126 = 0;
+      input14 = 0;
       v62 = v134;
     }
 
@@ -504,11 +504,11 @@ LABEL_80:
     v77 = [v76 numberWithDouble:?];
     [v141 setObject:v77 forKeyedSubscript:@"inputScale"];
 
-    v78 = [MEMORY[0x1E696AD98] numberWithInteger:v130];
+    v78 = [MEMORY[0x1E696AD98] numberWithInteger:portraitVersion];
     [v141 setObject:v78 forKeyedSubscript:@"inputVersion"];
 
     [v141 setObject:v43 forKeyedSubscript:@"inputKind"];
-    if (v130 == 2)
+    if (portraitVersion == 2)
     {
       [v75 setObject:v137 forKeyedSubscript:@"inputDisparity"];
       [v75 setObject:v135 forKeyedSubscript:@"inputBlurMap"];
@@ -516,22 +516,22 @@ LABEL_80:
       [v75 setObject:v129 forKeyedSubscript:@"inputFaceMask"];
       [v75 setObject:v128 forKeyedSubscript:@"inputHairMask"];
       [v75 setObject:v127 forKeyedSubscript:@"inputTeethMask"];
-      v79 = [(NURenderNode *)self settings];
-      v80 = [v79 objectForKeyedSubscript:@"spillMatteAllowed"];
-      v81 = [v80 BOOLValue];
+      settings4 = [(NURenderNode *)self settings];
+      v80 = [settings4 objectForKeyedSubscript:@"spillMatteAllowed"];
+      bOOLValue2 = [v80 BOOLValue];
 
-      if (v81)
+      if (bOOLValue2)
       {
         [v141 setObject:&unk_1F471F770 forKeyedSubscript:@"inputGenerateSpillMatte"];
       }
 
-      v82 = [(NURenderNode *)self settings];
-      v83 = [v82 objectForKeyedSubscript:@"strength"];
-      v15 = v141;
+      settings5 = [(NURenderNode *)self settings];
+      v83 = [settings5 objectForKeyedSubscript:@"strength"];
+      dictionary = v141;
       [v141 setObject:v83 forKeyedSubscript:@"inputStrength"];
 
-      v84 = [(NURenderNode *)self settings];
-      v85 = [v84 objectForKeyedSubscript:@"disablePortraitMixing"];
+      settings6 = [(NURenderNode *)self settings];
+      v85 = [settings6 objectForKeyedSubscript:@"disablePortraitMixing"];
       [v141 setObject:v85 forKeyedSubscript:@"inputOneShot"];
     }
 
@@ -540,23 +540,23 @@ LABEL_80:
       [v75 setObject:v137 forKeyedSubscript:@"inputDisparity"];
       v86 = [v10 copy];
       [v86 setScale:{*MEMORY[0x1E69B3918], *(MEMORY[0x1E69B3918] + 8)}];
-      v87 = [(PIPortraitNode *)self input];
+      input17 = [(PIPortraitNode *)self input];
       v145 = 0;
-      v88 = [v87 nodeByReplayingAgainstCache:v8 pipelineState:v86 error:&v145];
+      v88 = [input17 nodeByReplayingAgainstCache:cacheCopy pipelineState:v86 error:&v145];
       v89 = v145;
 
       if (!v88)
       {
         v97 = MEMORY[0x1E69B3A48];
-        v98 = [(PIPortraitNode *)self input];
-        *a5 = [v97 errorWithCode:1 reason:@"Failed to obtain full-size input image" object:v98 underlyingError:v89];
+        input18 = [(PIPortraitNode *)self input];
+        *error = [v97 errorWithCode:1 reason:@"Failed to obtain full-size input image" object:input18 underlyingError:v89];
 
         v27 = 0;
         v14 = v134;
-        v15 = v141;
+        dictionary = v141;
 LABEL_78:
 
-        v46 = v129;
+        input7 = v129;
         v47 = v132;
         goto LABEL_79;
       }
@@ -564,7 +564,7 @@ LABEL_78:
       [v75 setObject:v88 forKeyedSubscript:@"inputFullSizeImage"];
       [v75 setObject:v139 forKeyedSubscript:@"inputMatte"];
 
-      v15 = v141;
+      dictionary = v141;
     }
 
     else if (([v43 isEqualToString:@"Light"] & 1) == 0)
@@ -572,8 +572,8 @@ LABEL_78:
       [v75 setObject:v135 forKeyedSubscript:@"inputBlurMap"];
     }
 
-    v89 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"PIPortraitEffectFilter" settings:v15 inputs:v75];
-    v27 = [v89 resolvedNodeWithCachedInputs:v75 cache:v8 pipelineState:v10 error:a5];
+    v89 = [objc_alloc(MEMORY[0x1E69B3A70]) initWithFilterName:@"PIPortraitEffectFilter" settings:dictionary inputs:v75];
+    v27 = [v89 resolvedNodeWithCachedInputs:v75 cache:cacheCopy pipelineState:v10 error:error];
     v14 = v134;
     goto LABEL_78;
   }
@@ -586,12 +586,12 @@ LABEL_85:
   return v27;
 }
 
-- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)a3
+- (BOOL)canPropagateOriginalAuxiliaryData:(int64_t)data
 {
   v7.receiver = self;
   v7.super_class = PIPortraitEffectNode;
   v5 = [(PIPortraitNode *)&v7 canPropagateOriginalAuxiliaryData:?];
-  if (a3 == 7 && v5)
+  if (data == 7 && v5)
   {
     LOBYTE(v5) = ![(PIPortraitEffectNode *)self isPortraitStage];
   }
@@ -602,8 +602,8 @@ LABEL_85:
 - (BOOL)isPortraitStage
 {
   v3 = objc_opt_class();
-  v4 = [(NURenderNode *)self settings];
-  v5 = [v4 objectForKeyedSubscript:@"kind"];
+  settings = [(NURenderNode *)self settings];
+  v5 = [settings objectForKeyedSubscript:@"kind"];
   LOBYTE(v3) = [v3 isPortraitStageEffect:v5];
 
   return v3;
@@ -612,8 +612,8 @@ LABEL_85:
 - (BOOL)isPortraitMono
 {
   v3 = objc_opt_class();
-  v4 = [(NURenderNode *)self settings];
-  v5 = [v4 objectForKeyedSubscript:@"kind"];
+  settings = [(NURenderNode *)self settings];
+  v5 = [settings objectForKeyedSubscript:@"kind"];
   LOBYTE(v3) = [v3 isPortraitMonoEffect:v5];
 
   return v3;
@@ -621,8 +621,8 @@ LABEL_85:
 
 - (int64_t)portraitVersion
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"kind"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"kind"];
 
   if ([&unk_1F471FD28 containsObject:v3])
   {
@@ -637,13 +637,13 @@ LABEL_85:
   return v4;
 }
 
-- (PIPortraitEffectNode)initWithInput:(id)a3 blurMap:(id)a4 settings:(id)a5
+- (PIPortraitEffectNode)initWithInput:(id)input blurMap:(id)map settings:(id)settings
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  inputCopy = input;
+  mapCopy = map;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v19 = NUAssertLogger_16450();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -665,8 +665,8 @@ LABEL_85:
         v27 = dispatch_get_specific(*v21);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v27;
         v39 = 2114;
@@ -677,8 +677,8 @@ LABEL_85:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v26;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -687,13 +687,13 @@ LABEL_85:
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
-  if (v9)
+  v11 = settingsCopy;
+  if (mapCopy)
   {
     v35[0] = @"inputImage";
     v35[1] = @"inputBlurMap";
-    v36[0] = v8;
-    v36[1] = v9;
+    v36[0] = inputCopy;
+    v36[1] = mapCopy;
     v12 = MEMORY[0x1E695DF20];
     v13 = v36;
     v14 = v35;
@@ -703,7 +703,7 @@ LABEL_85:
   else
   {
     v33 = @"inputImage";
-    v34 = v8;
+    v34 = inputCopy;
     v12 = MEMORY[0x1E695DF20];
     v13 = &v34;
     v14 = &v33;
@@ -718,11 +718,11 @@ LABEL_85:
   return v17;
 }
 
-- (PIPortraitEffectNode)initWithSettings:(id)a3 inputs:(id)a4
+- (PIPortraitEffectNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -761,8 +761,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -789,8 +789,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

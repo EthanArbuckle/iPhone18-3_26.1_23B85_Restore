@@ -1,12 +1,12 @@
 @interface ABPKVisualizer
-+ (void)_drawRectOfSize:(int)a3 posx:(int)a4 posy:(int)a5 pImage:(vImage_Buffer *)a6 red:(unsigned __int8)a7 green:(unsigned __int8)a8 blue:(unsigned __int8)a9;
++ (void)_drawRectOfSize:(int)size posx:(int)posx posy:(int)posy pImage:(vImage_Buffer *)image red:(unsigned __int8)red green:(unsigned __int8)green blue:(unsigned __int8)blue;
 - (ABPKVisualizer)init;
-- (BOOL)jointInImageDimensions:(CGSize)a3 imageDimensions:;
-- (int)drawBoundingBox:(CGRect)a3 withColor:(__CVBuffer *)a4 OnImage:(__CVBuffer *)a5 andGenerateOverlayImage:;
-- (int)drawFaceBbox:(__CVBuffer *)a3 detectedBodies2d:(id)a4 confidences:(id)a5 skeletonDefinition:(id)a6 overlayImage:(__CVBuffer *)a7 color:;
-- (int)drawLineFromPoint:(unint64_t)a3 ToPoint:(vImage_Buffer *)a4 withThickness:withColor:OnImage:;
+- (BOOL)jointInImageDimensions:(CGSize)dimensions imageDimensions:;
+- (int)drawBoundingBox:(CGRect)box withColor:(__CVBuffer *)color OnImage:(__CVBuffer *)image andGenerateOverlayImage:;
+- (int)drawFaceBbox:(__CVBuffer *)bbox detectedBodies2d:(id)bodies2d confidences:(id)confidences skeletonDefinition:(id)definition overlayImage:(__CVBuffer *)image color:;
+- (int)drawLineFromPoint:(unint64_t)point ToPoint:(vImage_Buffer *)toPoint withThickness:withColor:OnImage:;
 - (void)dealloc;
-- (void)drawFaceBboxEdgewithJoints:(id)a3 withSkeletonDefinition:(id)a4 fromPostion:(vImage_Buffer *)a5 toPosition:OnImage:color:;
+- (void)drawFaceBboxEdgewithJoints:(id)joints withSkeletonDefinition:(id)definition fromPostion:(vImage_Buffer *)postion toPosition:OnImage:color:;
 @end
 
 @implementation ABPKVisualizer
@@ -57,24 +57,24 @@
   [(ABPKVisualizer *)&v6 dealloc];
 }
 
-- (BOOL)jointInImageDimensions:(CGSize)a3 imageDimensions:
+- (BOOL)jointInImageDimensions:(CGSize)dimensions imageDimensions:
 {
-  if (*&a3.width < 0.0 || a3.height <= *&a3.width)
+  if (*&dimensions.width < 0.0 || dimensions.height <= *&dimensions.width)
   {
     return 0;
   }
 
-  return v3 > *(&a3.width + 1) && *(&a3.width + 1) >= 0.0;
+  return v3 > *(&dimensions.width + 1) && *(&dimensions.width + 1) >= 0.0;
 }
 
-- (int)drawBoundingBox:(CGRect)a3 withColor:(__CVBuffer *)a4 OnImage:(__CVBuffer *)a5 andGenerateOverlayImage:
+- (int)drawBoundingBox:(CGRect)box withColor:(__CVBuffer *)color OnImage:(__CVBuffer *)image andGenerateOverlayImage:
 {
   v25 = v5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, a4, a5))
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, color, image))
   {
     v12 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -88,11 +88,11 @@
 
   else
   {
-    CVPixelBufferLockBaseAddress(a5, 0);
-    *buf = CVPixelBufferGetBaseAddress(a5);
-    v27 = CVPixelBufferGetHeight(a5);
-    v28 = CVPixelBufferGetWidth(a5);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a5);
+    CVPixelBufferLockBaseAddress(image, 0);
+    *buf = CVPixelBufferGetBaseAddress(image);
+    v27 = CVPixelBufferGetHeight(image);
+    v28 = CVPixelBufferGetWidth(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
     *&v15 = x;
     *&v16 = y;
     v17 = COERCE_DOUBLE(__PAIR64__(v16, v15));
@@ -110,17 +110,17 @@
     [(ABPKVisualizer *)self drawLineFromPoint:5 ToPoint:buf withThickness:v21 withColor:v23 OnImage:v25];
     [(ABPKVisualizer *)self drawLineFromPoint:5 ToPoint:buf withThickness:v23 withColor:v24 OnImage:v25];
     [(ABPKVisualizer *)self drawLineFromPoint:5 ToPoint:buf withThickness:v24 withColor:v22 OnImage:v25];
-    CVPixelBufferUnlockBaseAddress(a5, 0);
+    CVPixelBufferUnlockBaseAddress(image, 0);
     return 0;
   }
 }
 
-- (int)drawLineFromPoint:(unint64_t)a3 ToPoint:(vImage_Buffer *)a4 withThickness:withColor:OnImage:
+- (int)drawLineFromPoint:(unint64_t)point ToPoint:(vImage_Buffer *)toPoint withThickness:withColor:OnImage:
 {
   v8 = v5;
   *&v7 = v4;
   v9 = vsub_f32(v4, v5);
-  v21 = (a3 >> 1);
+  v21 = (point >> 1);
   if (sqrtf(vaddv_f32(vmul_f32(v9, v9))) > v21)
   {
     v12 = vsub_f32(v5, *&v7);
@@ -135,7 +135,7 @@
       *&v7 = vadd_f32(v14, *&v7);
       v22 = v7;
       LOBYTE(v20) = v17;
-      [objc_opt_class() _drawRectOfSize:a3 posx:*&v7 posy:*(&v7 + 1) pImage:a4 red:v15 green:v16 blue:v20];
+      [objc_opt_class() _drawRectOfSize:point posx:*&v7 posy:*(&v7 + 1) pImage:toPoint red:v15 green:v16 blue:v20];
       v7 = v22;
       v18 = vsub_f32(*&v22, v8);
     }
@@ -146,12 +146,12 @@
   return 0;
 }
 
-- (int)drawFaceBbox:(__CVBuffer *)a3 detectedBodies2d:(id)a4 confidences:(id)a5 skeletonDefinition:(id)a6 overlayImage:(__CVBuffer *)a7 color:
+- (int)drawFaceBbox:(__CVBuffer *)bbox detectedBodies2d:(id)bodies2d confidences:(id)confidences skeletonDefinition:(id)definition overlayImage:(__CVBuffer *)image color:
 {
   v60 = v7;
-  v12 = a4;
-  v13 = a6;
-  if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, a3, a7))
+  bodies2dCopy = bodies2d;
+  definitionCopy = definition;
+  if (VTPixelTransferSessionTransferImage(self->_pixelTransferSession, bbox, image))
   {
     v14 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -165,14 +165,14 @@
 
   else
   {
-    CVPixelBufferLockBaseAddress(a7, 0);
-    *buf = CVPixelBufferGetBaseAddress(a7);
-    Height = CVPixelBufferGetHeight(a7);
-    Width = CVPixelBufferGetWidth(a7);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a7);
+    CVPixelBufferLockBaseAddress(image, 0);
+    *buf = CVPixelBufferGetBaseAddress(image);
+    Height = CVPixelBufferGetHeight(image);
+    Width = CVPixelBufferGetWidth(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
     v58 = Width;
     v16 = Height;
-    v17 = [v12 objectAtIndexedSubscript:0];
+    v17 = [bodies2dCopy objectAtIndexedSubscript:0];
     v18 = [v17 objectAtIndexedSubscript:1];
     [v18 floatValue];
     v20 = Height * v19;
@@ -186,12 +186,12 @@
 
     v24 = (v23 + v21);
 
-    v25 = [v12 objectAtIndexedSubscript:17];
+    v25 = [bodies2dCopy objectAtIndexedSubscript:17];
     v26 = [v25 objectAtIndexedSubscript:0];
     [v26 floatValue];
     v55 = v27;
 
-    v28 = [v12 objectAtIndexedSubscript:18];
+    v28 = [bodies2dCopy objectAtIndexedSubscript:18];
     v29 = [v28 objectAtIndexedSubscript:0];
     [v29 floatValue];
     v30.i32[1] = v55;
@@ -272,18 +272,18 @@
     v57 = v48;
     *(&v50 + 1) = v42;
     v59 = v50;
-    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:v12 withSkeletonDefinition:v13 fromPostion:buf toPosition:v49 OnImage:*&v47 color:v60, v52];
-    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:v12 withSkeletonDefinition:v13 fromPostion:buf toPosition:v53 OnImage:v57 color:v60];
-    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:v12 withSkeletonDefinition:v13 fromPostion:buf toPosition:v57 OnImage:v59 color:v60];
-    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:v12 withSkeletonDefinition:v13 fromPostion:buf toPosition:v54 OnImage:v59 color:v60];
-    CVPixelBufferUnlockBaseAddress(a7, 0);
+    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:bodies2dCopy withSkeletonDefinition:definitionCopy fromPostion:buf toPosition:v49 OnImage:*&v47 color:v60, v52];
+    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:bodies2dCopy withSkeletonDefinition:definitionCopy fromPostion:buf toPosition:v53 OnImage:v57 color:v60];
+    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:bodies2dCopy withSkeletonDefinition:definitionCopy fromPostion:buf toPosition:v57 OnImage:v59 color:v60];
+    [(ABPKVisualizer *)self drawFaceBboxEdgewithJoints:bodies2dCopy withSkeletonDefinition:definitionCopy fromPostion:buf toPosition:v54 OnImage:v59 color:v60];
+    CVPixelBufferUnlockBaseAddress(image, 0);
     v15 = 0;
   }
 
   return v15;
 }
 
-- (void)drawFaceBboxEdgewithJoints:(id)a3 withSkeletonDefinition:(id)a4 fromPostion:(vImage_Buffer *)a5 toPosition:OnImage:color:
+- (void)drawFaceBboxEdgewithJoints:(id)joints withSkeletonDefinition:(id)definition fromPostion:(vImage_Buffer *)postion toPosition:OnImage:color:
 {
   *&v8 = v5;
   v9 = vsub_f32(v5, v6);
@@ -303,7 +303,7 @@
       *&v8 = vadd_f32(v15, *&v8);
       v21 = v8;
       LOBYTE(v20) = v18;
-      [objc_opt_class() _drawRectOfSize:5 posx:*&v8 posy:*(&v8 + 1) pImage:a5 red:v16 green:v17 blue:v20];
+      [objc_opt_class() _drawRectOfSize:5 posx:*&v8 posy:*(&v8 + 1) pImage:postion red:v16 green:v17 blue:v20];
       v8 = v21;
       v19 = vsub_f32(*&v21, v11);
     }
@@ -312,26 +312,26 @@
   }
 }
 
-+ (void)_drawRectOfSize:(int)a3 posx:(int)a4 posy:(int)a5 pImage:(vImage_Buffer *)a6 red:(unsigned __int8)a7 green:(unsigned __int8)a8 blue:(unsigned __int8)a9
++ (void)_drawRectOfSize:(int)size posx:(int)posx posy:(int)posy pImage:(vImage_Buffer *)image red:(unsigned __int8)red green:(unsigned __int8)green blue:(unsigned __int8)blue
 {
-  rowBytes = a6->rowBytes;
-  v12 = vmax_s32(vadd_s32(vdup_n_s32(a3 / -2), __PAIR64__(a4, a5)), 0);
-  v13 = vdup_n_s32(a3);
+  rowBytes = image->rowBytes;
+  v12 = vmax_s32(vadd_s32(vdup_n_s32(size / -2), __PAIR64__(posx, posy)), 0);
+  v13 = vdup_n_s32(size);
   v14 = vadd_s32(v12, v13);
   v15.i64[0] = -1;
   v15.i64[1] = -1;
   v16.i64[0] = v14.i32[0];
   v16.i64[1] = v14.i32[1];
-  v17 = vbsl_s8(vmovn_s64(vcgtq_u64(v16, vaddq_s64(*&a6->height, v15))), vadd_s32(vmovn_s64(*&a6->height), vmvn_s8(v12)), v13);
-  v18.data = a6->data + rowBytes * v12.u32[0] + (4 * v12.i32[1]);
+  v17 = vbsl_s8(vmovn_s64(vcgtq_u64(v16, vaddq_s64(*&image->height, v15))), vadd_s32(vmovn_s64(*&image->height), vmvn_s8(v12)), v13);
+  v18.data = image->data + rowBytes * v12.u32[0] + (4 * v12.i32[1]);
   v16.i64[0] = v17.i32[0];
   v16.i64[1] = v17.i32[1];
   *&v18.height = v16;
   v18.rowBytes = rowBytes;
   vImageOverwriteChannelsWithScalar_ARGB8888(0xFFu, &v18, &v18, 1u, 0x10u);
-  vImageOverwriteChannelsWithScalar_ARGB8888(a7, &v18, &v18, 2u, 0x10u);
-  vImageOverwriteChannelsWithScalar_ARGB8888(a8, &v18, &v18, 4u, 0x10u);
-  vImageOverwriteChannelsWithScalar_ARGB8888(a9, &v18, &v18, 8u, 0x10u);
+  vImageOverwriteChannelsWithScalar_ARGB8888(red, &v18, &v18, 2u, 0x10u);
+  vImageOverwriteChannelsWithScalar_ARGB8888(green, &v18, &v18, 4u, 0x10u);
+  vImageOverwriteChannelsWithScalar_ARGB8888(blue, &v18, &v18, 8u, 0x10u);
 }
 
 @end

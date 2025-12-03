@@ -1,9 +1,9 @@
 @interface FileDescriptorInputStream
 - (NSError)streamError;
 - (NSStreamDelegate)delegate;
-- (_TtC5Anvil25FileDescriptorInputStream)initWithData:(id)a3;
-- (_TtC5Anvil25FileDescriptorInputStream)initWithURL:(id)a3;
-- (int64_t)read:(char *)a3 maxLength:(int64_t)a4;
+- (_TtC5Anvil25FileDescriptorInputStream)initWithData:(id)data;
+- (_TtC5Anvil25FileDescriptorInputStream)initWithURL:(id)l;
+- (int64_t)read:(char *)read maxLength:(int64_t)length;
 @end
 
 @implementation FileDescriptorInputStream
@@ -25,9 +25,9 @@
   return v4;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(int64_t)a4
+- (int64_t)read:(char *)read maxLength:(int64_t)length
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1DD941C0C();
 
   return v5;
@@ -40,9 +40,9 @@
   return Strong;
 }
 
-- (_TtC5Anvil25FileDescriptorInputStream)initWithData:(id)a3
+- (_TtC5Anvil25FileDescriptorInputStream)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   sub_1DDA13590();
 
   result = _swift_stdlib_reportUnimplementedInitializer();
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (_TtC5Anvil25FileDescriptorInputStream)initWithURL:(id)a3
+- (_TtC5Anvil25FileDescriptorInputStream)initWithURL:(id)l
 {
   v3 = sub_1DDA134E0();
   v4 = *(*(v3 - 8) + 64);

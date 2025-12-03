@@ -1,16 +1,16 @@
 @interface MBCKAnalysisPlugin
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4;
+- (id)endedBackupWithEngine:(id)engine error:(id)error;
 @end
 
 @implementation MBCKAnalysisPlugin
 
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4
+- (id)endedBackupWithEngine:(id)engine error:(id)error
 {
-  v42 = a3;
-  v41 = a4;
-  if (((MBIsInternalInstall() & 1) != 0 || MBBuildIsSeed()) && [v42 backsUpPrimaryAccount])
+  engineCopy = engine;
+  errorCopy = error;
+  if (((MBIsInternalInstall() & 1) != 0 || MBBuildIsSeed()) && [engineCopy backsUpPrimaryAccount])
   {
-    if (v41)
+    if (errorCopy)
     {
       oslog = MBGetDefaultLog();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -23,10 +23,10 @@
 
     else
     {
-      v38 = v42;
-      v47 = [v38 cache];
+      v38 = engineCopy;
+      cache = [v38 cache];
       v70 = 0;
-      v39 = [v47 fetchMostRecentSnapshotWithError:&v70];
+      v39 = [cache fetchMostRecentSnapshotWithError:&v70];
       oslog = v70;
       if (v39)
       {
@@ -36,19 +36,19 @@
         v68[3] = &unk_1003BC700;
         v37 = objc_alloc_init(NSMutableArray);
         v69 = v37;
-        v5 = [v47 enumerateManifestsForSnapshot:v39 foundManifest:v68];
+        v5 = [cache enumerateManifestsForSnapshot:v39 foundManifest:v68];
         v46 = objc_alloc_init(NSMutableDictionary);
         v6 = [MBCKDomainStatistics alloc];
-        v7 = [v39 snapshotID];
-        v45 = [(MBCKDomainStatistics *)v6 initWithSnapshotName:v7];
+        snapshotID = [v39 snapshotID];
+        v45 = [(MBCKDomainStatistics *)v6 initWithSnapshotName:snapshotID];
 
         if (v45)
         {
-          v8 = [(MBCKDomainStatistics *)v45 statistics];
-          [v8 setValue:@"Snapshot" forKey:@"DomainName"];
+          statistics = [(MBCKDomainStatistics *)v45 statistics];
+          [statistics setValue:@"Snapshot" forKey:@"DomainName"];
 
-          v9 = [(MBCKDomainStatistics *)v45 statistics];
-          [v46 setObject:v9 forKeyedSubscript:@"Snapshot"];
+          statistics2 = [(MBCKDomainStatistics *)v45 statistics];
+          [v46 setObject:statistics2 forKeyedSubscript:@"Snapshot"];
 
           v66 = 0u;
           v67 = 0u;
@@ -71,16 +71,16 @@
                 v12 = *(*(&v64 + 1) + 8 * i);
                 v13 = objc_alloc_init(NSMutableDictionary);
                 v14 = [MBCKDomainStatistics alloc];
-                v15 = [v12 domainName];
-                v16 = [(MBCKDomainStatistics *)v14 initWithDomainName:v15];
+                domainName = [v12 domainName];
+                v16 = [(MBCKDomainStatistics *)v14 initWithDomainName:domainName];
 
-                v17 = [(MBCKDomainStatistics *)v16 statistics];
-                v18 = [v12 domainName];
-                [v17 setValue:v18 forKey:@"DomainName"];
+                statistics3 = [(MBCKDomainStatistics *)v16 statistics];
+                domainName2 = [v12 domainName];
+                [statistics3 setValue:domainName2 forKey:@"DomainName"];
 
-                v19 = [(MBCKDomainStatistics *)v16 statistics];
-                v20 = [v12 domainName];
-                [v46 setObject:v19 forKeyedSubscript:v20];
+                statistics4 = [(MBCKDomainStatistics *)v16 statistics];
+                domainName3 = [v12 domainName];
+                [v46 setObject:statistics4 forKeyedSubscript:domainName3];
 
                 v58[0] = _NSConcreteStackBlock;
                 v58[1] = 3221225472;
@@ -93,7 +93,7 @@
                 v22 = v16;
                 v62 = v22;
                 v63 = v45;
-                v23 = [v47 enumerateFilesForManifest:v12 foundFile:v58];
+                v23 = [cache enumerateFilesForManifest:v12 foundFile:v58];
                 *buf = 0;
                 v55 = buf;
                 v56 = 0x2020000000;
@@ -102,14 +102,14 @@
                 v51 = &v50;
                 v52 = 0x2020000000;
                 v53 = 0;
-                v24 = [v12 domainName];
+                domainName4 = [v12 domainName];
                 v49[0] = _NSConcreteStackBlock;
                 v49[1] = 3221225472;
                 v49[2] = sub_1001ADFA8;
                 v49[3] = &unk_1003C0BC0;
                 v49[4] = buf;
                 v49[5] = &v50;
-                v25 = [v47 summarizeFileChangesForDomainName:v24 foundChanges:v49];
+                v25 = [cache summarizeFileChangesForDomainName:domainName4 foundChanges:v49];
 
                 [(MBCKDomainStatistics *)v22 analyzeChurnWithFileCount:*(v55 + 6) withTotalFileSize:v51[3]];
                 _Block_object_dispose(&v50, 8);
@@ -136,18 +136,18 @@
           v48[3] = &unk_1003C0BC0;
           v48[4] = buf;
           v48[5] = &v50;
-          v26 = [v47 summarizeFileChangesForAllChanges:v48];
+          v26 = [cache summarizeFileChangesForAllChanges:v48];
           [(MBCKDomainStatistics *)v45 analyzeChurnWithFileCount:*(v55 + 6) withTotalFileSize:v51[3]];
-          v27 = [v38 persona];
-          v28 = [v27 copyPreferencesValueForKey:@"FailureCount" class:objc_opt_class()];
+          persona = [v38 persona];
+          v28 = [persona copyPreferencesValueForKey:@"FailureCount" class:objc_opt_class()];
           if (v28)
           {
             [(MBCKDomainStatistics *)v45 addValue:v28 toKey:@"FailureCount"];
           }
 
-          v29 = [(MBCKDomainStatistics *)v45 statistics];
+          statistics5 = [(MBCKDomainStatistics *)v45 statistics];
           v30 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v39 type]);
-          [v29 setValue:v30 forKey:@"BackupType"];
+          [statistics5 setValue:v30 forKey:@"BackupType"];
 
           v31 = +[MBBehaviorOptions sharedOptions];
           LODWORD(v30) = [v31 usePowerLog];

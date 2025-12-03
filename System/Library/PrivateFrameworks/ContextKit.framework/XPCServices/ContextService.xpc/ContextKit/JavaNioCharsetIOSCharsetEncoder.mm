@@ -1,33 +1,33 @@
 @interface JavaNioCharsetIOSCharsetEncoder
-- (JavaNioCharsetIOSCharsetEncoder)initWithJavaNioCharsetCharset:(id)a3 withFloat:(float)a4;
-- (id)encodeLoopWithJavaNioCharBuffer:(id)a3 withJavaNioByteBuffer:(id)a4;
-- (id)encodeWithJavaNioCharBuffer:(id)a3;
+- (JavaNioCharsetIOSCharsetEncoder)initWithJavaNioCharsetCharset:(id)charset withFloat:(float)float;
+- (id)encodeLoopWithJavaNioCharBuffer:(id)buffer withJavaNioByteBuffer:(id)byteBuffer;
+- (id)encodeWithJavaNioCharBuffer:(id)buffer;
 - (void)dealloc;
 @end
 
 @implementation JavaNioCharsetIOSCharsetEncoder
 
-- (JavaNioCharsetIOSCharsetEncoder)initWithJavaNioCharsetCharset:(id)a3 withFloat:(float)a4
+- (JavaNioCharsetIOSCharsetEncoder)initWithJavaNioCharsetCharset:(id)charset withFloat:(float)float
 {
   v6 = 63;
-  JavaNioCharsetCharsetEncoder_initWithJavaNioCharsetCharset_withFloat_withFloat_withByteArray_(self, a3, [IOSByteArray arrayWithBytes:&v6 count:1], a4, a4);
+  JavaNioCharsetCharsetEncoder_initWithJavaNioCharsetCharset_withFloat_withFloat_withByteArray_(self, charset, [IOSByteArray arrayWithBytes:&v6 count:1], float, float);
   return self;
 }
 
-- (id)encodeWithJavaNioCharBuffer:(id)a3
+- (id)encodeWithJavaNioCharBuffer:(id)buffer
 {
-  v3 = sub_1001AD280(&self->super.super.isa, a3);
+  v3 = sub_1001AD280(&self->super.super.isa, buffer);
 
   return JavaNioByteBuffer_wrapWithByteArray_(v3);
 }
 
-- (id)encodeLoopWithJavaNioCharBuffer:(id)a3 withJavaNioByteBuffer:(id)a4
+- (id)encodeLoopWithJavaNioCharBuffer:(id)buffer withJavaNioByteBuffer:(id)byteBuffer
 {
   if (self->byteBuffer_)
   {
-    if (a4)
+    if (byteBuffer)
     {
-      if ([a4 hasRemaining])
+      if ([byteBuffer hasRemaining])
       {
         while (1)
         {
@@ -46,8 +46,8 @@
             IOSArray_throwOutOfBoundsWithMsg(v9, outIndex);
           }
 
-          [a4 putWithByte:*(&byteBuffer->super.size_ + outIndex + 4)];
-          if (([a4 hasRemaining] & 1) == 0)
+          [byteBuffer putWithByte:*(&byteBuffer->super.size_ + outIndex + 4)];
+          if (([byteBuffer hasRemaining] & 1) == 0)
           {
             goto LABEL_10;
           }
@@ -87,17 +87,17 @@ LABEL_33:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!buffer)
   {
     goto LABEL_33;
   }
 
-  if (![a3 hasRemaining])
+  if (![buffer hasRemaining])
   {
     goto LABEL_29;
   }
 
-  v11 = sub_1001AD280(&self->super.super.isa, a3);
+  v11 = sub_1001AD280(&self->super.super.isa, buffer);
   if (!v11)
   {
     goto LABEL_33;
@@ -116,14 +116,14 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (!a4)
+  if (!byteBuffer)
   {
     goto LABEL_33;
   }
 
-  if ([a4 remaining] >= v11->super.size_)
+  if ([byteBuffer remaining] >= v11->super.size_)
   {
-    [a4 putWithByteArray:v12];
+    [byteBuffer putWithByteArray:v12];
 LABEL_29:
     if (atomic_load_explicit(JavaNioCharsetCoderResult__initialized, memory_order_acquire))
     {
@@ -136,7 +136,7 @@ LABEL_29:
   JreStrongAssign(&self->byteBuffer_, v12);
   self->outIndex_ = 0;
 
-  return [(JavaNioCharsetIOSCharsetEncoder *)self encodeLoopWithJavaNioCharBuffer:a3 withJavaNioByteBuffer:a4];
+  return [(JavaNioCharsetIOSCharsetEncoder *)self encodeLoopWithJavaNioCharBuffer:buffer withJavaNioByteBuffer:byteBuffer];
 }
 
 - (void)dealloc

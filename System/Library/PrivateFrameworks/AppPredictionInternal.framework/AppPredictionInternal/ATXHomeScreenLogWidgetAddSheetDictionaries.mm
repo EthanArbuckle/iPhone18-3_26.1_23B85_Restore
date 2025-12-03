@@ -1,15 +1,15 @@
 @interface ATXHomeScreenLogWidgetAddSheetDictionaries
 + (id)rankKeysSplitBySize;
 - (ATXHomeScreenLogWidgetAddSheetDictionaries)init;
-- (id)_createNewWidgetAddSheetDictionaryForBundleId:(id)a3 kind:(id)a4;
-- (id)_widgetAddSheetDictionaryForDescriptor:(id)a3;
-- (id)_widgetAddSheetDictionaryForWidgetId:(id)a3 widgetKind:(id)a4;
+- (id)_createNewWidgetAddSheetDictionaryForBundleId:(id)id kind:(id)kind;
+- (id)_widgetAddSheetDictionaryForDescriptor:(id)descriptor;
+- (id)_widgetAddSheetDictionaryForWidgetId:(id)id widgetKind:(id)kind;
 - (id)dryRunResult;
-- (void)_updateWidgetAddSheetDictionariesForStack:(id)a3 suggestedSize:(unint64_t)a4;
-- (void)_updateWidgetAddSheetDictionariesWithDictionary:(id)a3 suggestedSize:(unint64_t)a4 inStack:(BOOL)a5 rank:(unint64_t)a6;
+- (void)_updateWidgetAddSheetDictionariesForStack:(id)stack suggestedSize:(unint64_t)size;
+- (void)_updateWidgetAddSheetDictionariesWithDictionary:(id)dictionary suggestedSize:(unint64_t)size inStack:(BOOL)stack rank:(unint64_t)rank;
 - (void)sendToCoreAnalytics;
-- (void)updateWidgetAddSheetSummaryForDefaultStack:(id)a3;
-- (void)updateWidgetAddSheetSummaryForSuggestions:(id)a3;
+- (void)updateWidgetAddSheetSummaryForDefaultStack:(id)stack;
+- (void)updateWidgetAddSheetSummaryForSuggestions:(id)suggestions;
 @end
 
 @implementation ATXHomeScreenLogWidgetAddSheetDictionaries
@@ -55,22 +55,22 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createNewWidgetAddSheetDictionaryForBundleId:(id)a3 kind:(id)a4
+- (id)_createNewWidgetAddSheetDictionaryForBundleId:(id)id kind:(id)kind
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  kindCopy = kind;
   v7 = objc_opt_new();
-  v19 = v6;
-  v8 = [MEMORY[0x277CEB9B0] stringRepresentationForExtensionBundleId:v5 kind:v6];
+  v19 = kindCopy;
+  v8 = [MEMORY[0x277CEB9B0] stringRepresentationForExtensionBundleId:idCopy kind:kindCopy];
   [v7 setObject:v8 forKeyedSubscript:@"WidgetBundleIdAndKind"];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [objc_opt_class() rankKeysSplitBySize];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  rankKeysSplitBySize = [objc_opt_class() rankKeysSplitBySize];
+  v10 = [rankKeysSplitBySize countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -81,7 +81,7 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(rankKeysSplitBySize);
         }
 
         v14 = 0;
@@ -97,7 +97,7 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
         while (v14 != 3);
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [rankKeysSplitBySize countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -108,15 +108,15 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
   return v7;
 }
 
-- (void)updateWidgetAddSheetSummaryForSuggestions:(id)a3
+- (void)updateWidgetAddSheetSummaryForSuggestions:(id)suggestions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -129,7 +129,7 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
@@ -138,10 +138,10 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _widgetAddSheetDictionaryForStack];
-          v13 = [v11 suggestedSize];
+          _widgetAddSheetDictionaryForStack = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _widgetAddSheetDictionaryForStack];
+          suggestedSize = [v11 suggestedSize];
 
-          [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesWithDictionary:v12 suggestedSize:v13 inStack:0 rank:v7];
+          [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesWithDictionary:_widgetAddSheetDictionaryForStack suggestedSize:suggestedSize inStack:0 rank:v7];
         }
 
         else
@@ -157,7 +157,7 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [suggestionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -166,29 +166,29 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWidgetAddSheetSummaryForDefaultStack:(id)a3
+- (void)updateWidgetAddSheetSummaryForDefaultStack:(id)stack
 {
-  v4 = a3;
-  v5 = [v4 smallDefaultStack];
-  [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForStack:v5 suggestedSize:0];
+  stackCopy = stack;
+  smallDefaultStack = [stackCopy smallDefaultStack];
+  [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForStack:smallDefaultStack suggestedSize:0];
 
-  v6 = [v4 mediumDefaultStack];
-  [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForStack:v6 suggestedSize:1];
+  mediumDefaultStack = [stackCopy mediumDefaultStack];
+  [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForStack:mediumDefaultStack suggestedSize:1];
 
-  v7 = [v4 largeDefaultStack];
+  largeDefaultStack = [stackCopy largeDefaultStack];
 
-  [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForStack:v7 suggestedSize:2];
+  [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForStack:largeDefaultStack suggestedSize:2];
 }
 
-- (void)_updateWidgetAddSheetDictionariesForStack:(id)a3 suggestedSize:(unint64_t)a4
+- (void)_updateWidgetAddSheetDictionariesForStack:(id)stack suggestedSize:(unint64_t)size
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stackCopy = stack;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [stackCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -201,14 +201,14 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stackCopy);
         }
 
         [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _updateWidgetAddSheetDictionariesForDescriptor:*(*(&v12 + 1) + 8 * v10++) inStack:1 rank:++v8];
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [stackCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -217,31 +217,31 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWidgetAddSheetDictionariesWithDictionary:(id)a3 suggestedSize:(unint64_t)a4 inStack:(BOOL)a5 rank:(unint64_t)a6
+- (void)_updateWidgetAddSheetDictionariesWithDictionary:(id)dictionary suggestedSize:(unint64_t)size inStack:(BOOL)stack rank:(unint64_t)rank
 {
-  v7 = a5;
+  stackCopy = stack;
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  dictionaryCopy = dictionary;
   v10 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 objectForKeyedSubscript:@"WidgetBundleIdAndKind"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"WidgetBundleIdAndKind"];
     v12 = ATXCAStringForStackLayoutSize();
     v17 = 138413058;
     v18 = v11;
     v19 = 2114;
     v20 = v12;
     v21 = 2048;
-    v22 = a6;
+    rankCopy = rank;
     v23 = 1024;
-    v24 = v7;
+    v24 = stackCopy;
     _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenLogUploader: suggested: %@ of size %{public}@ in pos %lu in stack? %d", &v17, 0x26u);
   }
 
-  if (v9)
+  if (dictionaryCopy)
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
-    if (v7)
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:rank];
+    if (stackCopy)
     {
       v14 = @"RankInStack";
     }
@@ -251,36 +251,36 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
       v14 = @"RankInGallery";
     }
 
-    v15 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:v14 withSize:a4];
-    [v9 setObject:v13 forKeyedSubscript:v15];
+    v15 = [ATXHomeScreenLogUploaderUtilities keyByConcatenatingAccumulatorKey:v14 withSize:size];
+    [dictionaryCopy setObject:v13 forKeyedSubscript:v15];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_widgetAddSheetDictionaryForDescriptor:(id)a3
+- (id)_widgetAddSheetDictionaryForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 extensionBundleIdForMetrics];
-  v6 = [v4 widgetKind];
+  descriptorCopy = descriptor;
+  extensionBundleIdForMetrics = [descriptorCopy extensionBundleIdForMetrics];
+  widgetKind = [descriptorCopy widgetKind];
 
-  v7 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _widgetAddSheetDictionaryForWidgetId:v5 widgetKind:v6];
+  v7 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _widgetAddSheetDictionaryForWidgetId:extensionBundleIdForMetrics widgetKind:widgetKind];
 
   return v7;
 }
 
-- (id)_widgetAddSheetDictionaryForWidgetId:(id)a3 widgetKind:(id)a4
+- (id)_widgetAddSheetDictionaryForWidgetId:(id)id widgetKind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  idCopy = id;
+  kindCopy = kind;
+  if ([idCopy length] && objc_msgSend(kindCopy, "length"))
   {
-    v8 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self widgetAddSheetDictionaryKeyWithWidgetId:v6 widgetKind:v7];
+    v8 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self widgetAddSheetDictionaryKeyWithWidgetId:idCopy widgetKind:kindCopy];
     v9 = [(NSMutableDictionary *)self->_widgetAddSheetDictionaries objectForKeyedSubscript:v8];
 
     if (!v9)
     {
-      v10 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _createNewWidgetAddSheetDictionaryForBundleId:v6 kind:v7];
+      v10 = [(ATXHomeScreenLogWidgetAddSheetDictionaries *)self _createNewWidgetAddSheetDictionaryForBundleId:idCopy kind:kindCopy];
       [(NSMutableDictionary *)self->_widgetAddSheetDictionaries setObject:v10 forKeyedSubscript:v8];
     }
 
@@ -292,7 +292,7 @@ void __65__ATXHomeScreenLogWidgetAddSheetDictionaries_rankKeysSplitBySize__block
     v12 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ATXHomeScreenLogWidgetAddSheetDictionaries *)v6 _widgetAddSheetDictionaryForWidgetId:v7 widgetKind:v12];
+      [(ATXHomeScreenLogWidgetAddSheetDictionaries *)idCopy _widgetAddSheetDictionaryForWidgetId:kindCopy widgetKind:v12];
     }
 
     v11 = 0;

@@ -1,39 +1,39 @@
 @interface CRSUIDashboardWidgetWindowProxy
 - (CRSUIDashboardWidgetWindowClient)delegate;
-- (CRSUIDashboardWidgetWindowProxy)initWithDelegate:(id)a3;
-- (void)hostSelectedFocusableItem:(id)a3;
-- (void)hostSetWidgetSizes:(id)a3;
+- (CRSUIDashboardWidgetWindowProxy)initWithDelegate:(id)delegate;
+- (void)hostSelectedFocusableItem:(id)item;
+- (void)hostSetWidgetSizes:(id)sizes;
 @end
 
 @implementation CRSUIDashboardWidgetWindowProxy
 
-- (CRSUIDashboardWidgetWindowProxy)initWithDelegate:(id)a3
+- (CRSUIDashboardWidgetWindowProxy)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CRSUIDashboardWidgetWindowProxy;
   v5 = [(CRSUIDashboardWidgetWindowProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)hostSelectedFocusableItem:(id)a3
+- (void)hostSelectedFocusableItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CRSUIDashboardWidgetWindowProxy *)self delegate];
-  [v5 hostSelectedFocusableItem:v4];
+  itemCopy = item;
+  delegate = [(CRSUIDashboardWidgetWindowProxy *)self delegate];
+  [delegate hostSelectedFocusableItem:itemCopy];
 }
 
-- (void)hostSetWidgetSizes:(id)a3
+- (void)hostSetWidgetSizes:(id)sizes
 {
-  v4 = a3;
-  v5 = [(CRSUIDashboardWidgetWindowProxy *)self delegate];
-  [v5 hostSetWidgetSizes:v4];
+  sizesCopy = sizes;
+  delegate = [(CRSUIDashboardWidgetWindowProxy *)self delegate];
+  [delegate hostSetWidgetSizes:sizesCopy];
 }
 
 - (CRSUIDashboardWidgetWindowClient)delegate

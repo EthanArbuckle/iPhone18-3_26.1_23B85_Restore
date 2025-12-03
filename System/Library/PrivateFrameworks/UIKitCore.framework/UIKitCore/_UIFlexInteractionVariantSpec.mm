@@ -1,15 +1,15 @@
 @interface _UIFlexInteractionVariantSpec
 + (id)settingsControllerModule;
-- (void)setScaleSpring:(id)a3;
+- (void)setScaleSpring:(id)spring;
 @end
 
 @implementation _UIFlexInteractionVariantSpec
 
-- (void)setScaleSpring:(id)a3
+- (void)setScaleSpring:(id)spring
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIFlexInteractionVariantSpec_scaleSpring);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIFlexInteractionVariantSpec_scaleSpring) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit29_UIFlexInteractionVariantSpec_scaleSpring) = spring;
+  springCopy = spring;
 }
 
 + (id)settingsControllerModule

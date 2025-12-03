@@ -1,49 +1,49 @@
 @interface TVRCUTSPersonRequest
-- (void)requestForPersonID:(id)a3 completion:(id)a4;
+- (void)requestForPersonID:(id)d completion:(id)completion;
 @end
 
 @implementation TVRCUTSPersonRequest
 
-- (void)requestForPersonID:(id)a3 completion:(id)a4
+- (void)requestForPersonID:(id)d completion:(id)completion
 {
   v37[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  dCopy = d;
+  completionCopy = completion;
+  if ([dCopy length])
   {
-    v8 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v9 = [v8 ams_activeiTunesAccount];
-    v10 = [v9 ams_storefront];
-    v11 = [v10 componentsSeparatedByString:@"-"];
-    v12 = [v11 firstObject];
-    v13 = v12;
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+    ams_storefront = [ams_activeiTunesAccount ams_storefront];
+    v11 = [ams_storefront componentsSeparatedByString:@"-"];
+    firstObject = [v11 firstObject];
+    v13 = firstObject;
     v14 = @"143441";
-    if (v12)
+    if (firstObject)
     {
-      v14 = v12;
+      v14 = firstObject;
     }
 
     v15 = v14;
 
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"canvases/Persons/%@", v6];
-    v17 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v18 = [v17 firstObject];
-    v19 = v18;
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"canvases/Persons/%@", dCopy];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject2 = [preferredLanguages firstObject];
+    v19 = firstObject2;
     v20 = @"en-US";
-    if (v18)
+    if (firstObject2)
     {
-      v20 = v18;
+      v20 = firstObject2;
     }
 
     v21 = v20;
 
-    v22 = [MEMORY[0x277CBEAF8] currentLocale];
-    v23 = [v22 countryCode];
-    v24 = v23;
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    countryCode = [currentLocale countryCode];
+    v24 = countryCode;
     v25 = @"US";
-    if (v23)
+    if (countryCode)
     {
-      v25 = v23;
+      v25 = countryCode;
     }
 
     v26 = v25;
@@ -64,7 +64,7 @@
     v37[6] = @"82";
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:7];
 
-    v28 = [(TVRCUTSPersonRequest *)self _requestPropertiesForEndPoint:v16 apiVersion:&unk_287E66B20 headersDict:MEMORY[0x277CBEC10] queryParamsDict:v27];
+    v28 = [(TVRCUTSPersonRequest *)self _requestPropertiesForEndPoint:dCopy apiVersion:&unk_287E66B20 headersDict:MEMORY[0x277CBEC10] queryParamsDict:v27];
 
     v29 = [objc_alloc(MEMORY[0x277D7A980]) initWithRequestProperties:v28];
     objc_initWeak(&location, v29);
@@ -73,10 +73,10 @@
     v32[2] = __54__TVRCUTSPersonRequest_requestForPersonID_completion___block_invoke;
     v32[3] = &unk_279D82F58;
     objc_copyWeak(&v34, &location);
-    v33 = v7;
+    v33 = completionCopy;
     [v29 setCompletionBlock:v32];
-    v30 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
-    [v30 addOperation:v29];
+    wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+    [wlkDefaultConcurrentQueue addOperation:v29];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(&location);
@@ -84,7 +84,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v31 = *MEMORY[0x277D85DE8];

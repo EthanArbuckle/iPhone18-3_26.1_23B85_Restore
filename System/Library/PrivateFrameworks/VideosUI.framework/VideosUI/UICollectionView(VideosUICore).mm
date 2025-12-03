@@ -10,7 +10,7 @@
 + (id)collectionViewWithFrame:()VideosUICore parentView:collectionViewLayout:
 {
   v14 = a7;
-  v31.receiver = a1;
+  v31.receiver = self;
   v31.super_class = &OBJC_METACLASS___UICollectionView_0;
   v15 = a8;
   v16 = objc_msgSendSuper2(&v31, sel_alloc);
@@ -20,24 +20,24 @@
   {
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 addSubview:v17];
-    v18 = [v17 topAnchor];
-    v19 = [v14 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [v17 topAnchor];
+    topAnchor2 = [v14 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v20 setActive:1];
 
-    v21 = [v17 bottomAnchor];
-    v22 = [v14 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor = [v17 bottomAnchor];
+    bottomAnchor2 = [v14 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v23 setActive:1];
 
-    v24 = [v17 leftAnchor];
-    v25 = [v14 leftAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leftAnchor = [v17 leftAnchor];
+    leftAnchor2 = [v14 leftAnchor];
+    v26 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v26 setActive:1];
 
-    v27 = [v17 rightAnchor];
-    v28 = [v14 rightAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    rightAnchor = [v17 rightAnchor];
+    rightAnchor2 = [v14 rightAnchor];
+    v29 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v29 setActive:1];
   }
 
@@ -47,22 +47,22 @@
 - (void)vui_scrollToItemAtIndexPath:()VideosUICore atScrollPosition:animated:completionHandler:
 {
   v8 = a3;
-  if ([a1 vui_isIndexPathValid:?])
+  if ([self vui_isIndexPathValid:?])
   {
-    [a1 scrollToItemAtIndexPath:v8 atScrollPosition:a4 animated:a5];
+    [self scrollToItemAtIndexPath:v8 atScrollPosition:a4 animated:a5];
   }
 }
 
 - (id)_preciseIndexPathsForVisibleItems:()VideosUICore
 {
   v52 = *MEMORY[0x1E69E9840];
-  v46 = [a1 vuiIndexPathsForVisibleItems];
-  v5 = [v46 sortedArrayUsingComparator:&__block_literal_global_17];
+  vuiIndexPathsForVisibleItems = [self vuiIndexPathsForVisibleItems];
+  v5 = [vuiIndexPathsForVisibleItems sortedArrayUsingComparator:&__block_literal_global_17];
   v6 = objc_opt_new();
-  [a1 contentOffset];
+  [self contentOffset];
   v8 = v7;
   v10 = v9;
-  [a1 bounds];
+  [self bounds];
   v12 = v11;
   v14 = v13;
   v47 = 0u;
@@ -85,7 +85,7 @@
         }
 
         v20 = *(*(&v47 + 1) + 8 * i);
-        v21 = [a1 cellForItemAtIndexPath:v20];
+        v21 = [self cellForItemAtIndexPath:v20];
         v22 = v21;
         if (v21)
         {
@@ -94,8 +94,8 @@
           v26 = v25;
           v28 = v27;
           v30 = v29;
-          v31 = [v22 superview];
-          [a1 convertRect:v31 fromView:{v24, v26, v28, v30}];
+          superview = [v22 superview];
+          [self convertRect:superview fromView:{v24, v26, v28, v30}];
           v33 = v32;
           v35 = v34;
           v37 = v36;
@@ -138,16 +138,16 @@ LABEL_12:
 - (BOOL)vui_isIndexPathValid:()VideosUICore
 {
   v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= [a1 numberOfSections])
+  section = [v4 section];
+  if (section >= [self numberOfSections])
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [v4 item];
-    v7 = v6 < [a1 numberOfItemsInSection:{objc_msgSend(v4, "section")}];
+    item = [v4 item];
+    v7 = item < [self numberOfItemsInSection:{objc_msgSend(v4, "section")}];
   }
 
   return v7;

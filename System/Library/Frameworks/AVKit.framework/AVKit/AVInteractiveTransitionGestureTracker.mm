@@ -2,10 +2,10 @@
 - (AVInteractiveTransitionGestureTracker)init;
 - (AVTransitionDriverDelegate)transitionDriverDelegate;
 - (BOOL)_isWaitingToContinue;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)_filteredUntranslatedLocationInWindow;
 - (CGPoint)_untranslatedUnfilteredLocationInFixedCoordinateSpace;
 - (CGPoint)anchorLocationInWindow;
@@ -22,21 +22,21 @@
 - (double)rotation;
 - (double)rotationVelocity;
 - (id)_locationRecognizer;
-- (void)_beginTracking:(int64_t)a3;
+- (void)_beginTracking:(int64_t)tracking;
 - (void)_cancel;
 - (void)_finish;
-- (void)_handlePanGesture:(id)a3;
-- (void)_handlePinchGesture:(id)a3;
-- (void)_handleRotationGesture:(id)a3;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_handlePinchGesture:(id)gesture;
+- (void)_handleRotationGesture:(id)gesture;
 - (void)_reset;
 - (void)_resetGesturesIfPossible;
 - (void)_setHasContinuedIfNeeded;
 - (void)_updateLastNonZeroVelocityDirection;
-- (void)addRecognizersToView:(id)a3;
+- (void)addRecognizersToView:(id)view;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)setContentTransitioningViewGestureRecognizer:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setContentTransitioningViewGestureRecognizer:(id)recognizer;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation AVInteractiveTransitionGestureTracker
@@ -153,11 +153,11 @@
     [(AVInteractiveTransitionGestureTracker *)self setLastNonZeroVelocityWasDownward:0];
     [(AVInteractiveTransitionGestureTracker *)self locationInWindow];
     [(AVInteractiveTransitionGestureTracker *)self setAnchorLocationInWindow:?];
-    v3 = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
-    [v3 setRotation:0.0];
+    rotationGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
+    [rotationGestureRecognizer setRotation:0.0];
 
-    v4 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
-    [v4 setScale:1.0];
+    pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+    [pinchGestureRecognizer setScale:1.0];
   }
 }
 
@@ -188,11 +188,11 @@
 
 - (BOOL)_isWaitingToContinue
 {
-  v3 = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
-  v4 = v3;
+  _locationRecognizer = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
+  v4 = _locationRecognizer;
   if (self)
   {
-    v5 = [v3 _activeEventOfType:10];
+    v5 = [_locationRecognizer _activeEventOfType:10];
     v6 = v5;
     if (v5)
     {
@@ -214,11 +214,11 @@
 
   if ([(AVInteractiveTransitionGestureTracker *)self isWaitingForBoundsChange])
   {
-    v9 = [(AVInteractiveTransitionGestureTracker *)self view];
-    v10 = [v9 window];
-    v11 = [v10 windowScene];
-    v12 = [v11 coordinateSpace];
-    [v12 bounds];
+    view = [(AVInteractiveTransitionGestureTracker *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    coordinateSpace = [windowScene coordinateSpace];
+    [coordinateSpace bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -254,10 +254,10 @@
     }
   }
 
-  v27 = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
-  v28 = [v27 state];
+  _locationRecognizer2 = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
+  state = [_locationRecognizer2 state];
 
-  if (v28 > 2)
+  if (state > 2)
   {
     return 0;
   }
@@ -283,8 +283,8 @@
     }
   }
 
-  v4 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-  [v4 transitionDriverDidFinishInteraction:self];
+  transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+  [transitionDriverDelegate transitionDriverDidFinishInteraction:self];
 
   [(AVInteractiveTransitionGestureTracker *)self _reset];
 }
@@ -301,13 +301,13 @@
     }
   }
 
-  v4 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-  [v4 transitionDriverDidCancelInteraction:self];
+  transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+  [transitionDriverDelegate transitionDriverDidCancelInteraction:self];
 
   [(AVInteractiveTransitionGestureTracker *)self _reset];
 }
 
-- (void)_beginTracking:(int64_t)a3
+- (void)_beginTracking:(int64_t)tracking
 {
   [(AVInteractiveTransitionGestureTracker *)self _filteredUntranslatedLocationInWindow];
   if ([(AVInteractiveTransitionGestureTracker *)self isTracking])
@@ -321,25 +321,25 @@
   }
 
   [(AVInteractiveTransitionGestureTracker *)self setWaitingForTransition:1];
-  v6 = [(AVInteractiveTransitionGestureTracker *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  view = [(AVInteractiveTransitionGestureTracker *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  -[AVInteractiveTransitionGestureTracker setInitialInterfaceOrientation:](self, "setInitialInterfaceOrientation:", [v8 interfaceOrientation]);
-  v9 = [v8 coordinateSpace];
-  [v9 bounds];
+  -[AVInteractiveTransitionGestureTracker setInitialInterfaceOrientation:](self, "setInitialInterfaceOrientation:", [windowScene interfaceOrientation]);
+  coordinateSpace = [windowScene coordinateSpace];
+  [coordinateSpace bounds];
   [(AVInteractiveTransitionGestureTracker *)self setInitialCoordinateSpaceBounds:?];
 
-  [(AVInteractiveTransitionGestureTracker *)self setTransitionInteraction:a3];
+  [(AVInteractiveTransitionGestureTracker *)self setTransitionInteraction:tracking];
   [(AVInteractiveTransitionGestureTracker *)self _resetGesturesIfPossible];
-  v10 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-  v11 = [(AVInteractiveTransitionGestureTracker *)self transitionInteraction];
+  transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+  transitionInteraction = [(AVInteractiveTransitionGestureTracker *)self transitionInteraction];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__AVInteractiveTransitionGestureTracker__beginTracking___block_invoke;
   v12[3] = &unk_1E720A090;
   v12[4] = self;
-  [v10 transitionDriver:self didBeginTrackingTransitionInteraction:v11 readyToProceedHandler:v12];
+  [transitionDriverDelegate transitionDriver:self didBeginTrackingTransitionInteraction:transitionInteraction readyToProceedHandler:v12];
 }
 
 void __56__AVInteractiveTransitionGestureTracker__beginTracking___block_invoke(uint64_t a1)
@@ -379,9 +379,9 @@ void __56__AVInteractiveTransitionGestureTracker__beginTracking___block_invoke(u
   [*(a1 + 32) _filteredUntranslatedLocationInWindow];
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (![(AVInteractiveTransitionGestureTracker *)self isPanToDismissEnabled])
   {
     v5 = _AVLog();
@@ -392,28 +392,28 @@ void __56__AVInteractiveTransitionGestureTracker__beginTracking___block_invoke(u
     }
   }
 
-  v6 = [v4 state];
-  if (v6 <= 2)
+  state = [gestureCopy state];
+  if (state <= 2)
   {
-    if (v6 == 1)
+    if (state == 1)
     {
       [(AVInteractiveTransitionGestureTracker *)self _beginTracking:3];
     }
 
-    else if (v6 == 2 && ![(AVInteractiveTransitionGestureTracker *)self _isWaitingToContinue])
+    else if (state == 2 && ![(AVInteractiveTransitionGestureTracker *)self _isWaitingToContinue])
     {
       [(AVInteractiveTransitionGestureTracker *)self _setHasContinuedIfNeeded];
       [(AVInteractiveTransitionGestureTracker *)self _updateLastNonZeroVelocityDirection];
-      v7 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-      [v7 transitionDriverDidContinueInteraction:self];
+      transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+      [transitionDriverDelegate transitionDriverDidContinueInteraction:self];
     }
   }
 
   else
   {
-    if (v6 != 3)
+    if (state != 3)
     {
-      if (v6 != 4 && v6 != 5)
+      if (state != 4 && state != 5)
       {
         goto LABEL_20;
       }
@@ -439,14 +439,14 @@ LABEL_15:
 LABEL_20:
 }
 
-- (void)_handleRotationGesture:(id)a3
+- (void)_handleRotationGesture:(id)gesture
 {
-  v11 = a3;
-  v4 = [v11 state];
-  v5 = v11;
-  if (v4 != 1)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  v5 = gestureCopy;
+  if (state != 1)
   {
-    if (v4 != 2)
+    if (state != 2)
     {
       goto LABEL_11;
     }
@@ -454,15 +454,15 @@ LABEL_20:
     if (![(AVInteractiveTransitionGestureTracker *)self hasRotated])
     {
       [(AVInteractiveTransitionGestureTracker *)self setHasRotated:1];
-      [v11 setRotation:0.0];
+      [gestureCopy setRotation:0.0];
     }
 
-    v6 = [(AVInteractiveTransitionGestureTracker *)self hasRotated];
-    v5 = v11;
-    if (v6)
+    hasRotated = [(AVInteractiveTransitionGestureTracker *)self hasRotated];
+    v5 = gestureCopy;
+    if (hasRotated)
     {
-      [v11 rotation];
-      v5 = v11;
+      [gestureCopy rotation];
+      v5 = gestureCopy;
       if (v7 < 0.0)
       {
         v7 = -v7;
@@ -472,9 +472,9 @@ LABEL_20:
       {
         [(AVInteractiveTransitionGestureTracker *)self _rotation];
         v9 = v8;
-        [v11 rotation];
+        [gestureCopy rotation];
         [(AVInteractiveTransitionGestureTracker *)self _setRotation:v9 + v10];
-        v5 = v11;
+        v5 = gestureCopy;
       }
     }
   }
@@ -483,9 +483,9 @@ LABEL_20:
 LABEL_11:
 }
 
-- (void)_handlePinchGesture:(id)a3
+- (void)_handlePinchGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (![(AVInteractiveTransitionGestureTracker *)self isPinchToPresentEnabled]&& ![(AVInteractiveTransitionGestureTracker *)self isPinchToDismissEnabled])
   {
     v5 = _AVLog();
@@ -496,8 +496,8 @@ LABEL_11:
     }
   }
 
-  v6 = [(AVInteractiveTransitionGestureTracker *)self isPinchToPresentEnabled];
-  if (v6 == [(AVInteractiveTransitionGestureTracker *)self isPinchToDismissEnabled])
+  isPinchToPresentEnabled = [(AVInteractiveTransitionGestureTracker *)self isPinchToPresentEnabled];
+  if (isPinchToPresentEnabled == [(AVInteractiveTransitionGestureTracker *)self isPinchToDismissEnabled])
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -507,10 +507,10 @@ LABEL_11:
     }
   }
 
-  v8 = [v4 state];
-  if (v8 > 2)
+  state = [gestureCopy state];
+  if (state > 2)
   {
-    if (v8 == 3)
+    if (state == 3)
     {
       if (![(AVInteractiveTransitionGestureTracker *)self _isWaitingToContinue])
       {
@@ -519,7 +519,7 @@ LABEL_11:
       }
     }
 
-    else if (v8 != 4 && v8 != 5)
+    else if (state != 4 && state != 5)
     {
       goto LABEL_33;
     }
@@ -528,7 +528,7 @@ LABEL_11:
     goto LABEL_33;
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     if ([(AVInteractiveTransitionGestureTracker *)self isPinchToDismissEnabled])
     {
@@ -541,34 +541,34 @@ LABEL_11:
     }
 
     [(AVInteractiveTransitionGestureTracker *)self _beginTracking:v28];
-    [v4 scale];
+    [gestureCopy scale];
     [(AVInteractiveTransitionGestureTracker *)self setPreviousPinchScale:?];
   }
 
-  else if (v8 == 2 && ![(AVInteractiveTransitionGestureTracker *)self _isWaitingToContinue])
+  else if (state == 2 && ![(AVInteractiveTransitionGestureTracker *)self _isWaitingToContinue])
   {
     [(AVInteractiveTransitionGestureTracker *)self _setHasContinuedIfNeeded];
     if ([(AVInteractiveTransitionGestureTracker *)self isPinchToPresentEnabled])
     {
-      v9 = [v4 view];
-      [v9 bounds];
+      view = [gestureCopy view];
+      [view bounds];
       Width = CGRectGetWidth(v31);
-      v11 = [v4 view];
-      v12 = [v11 window];
-      [v12 bounds];
+      view2 = [gestureCopy view];
+      window = [view2 window];
+      [window bounds];
       v13 = Width / CGRectGetWidth(v32);
 
-      v14 = [v4 view];
-      [v14 bounds];
+      view3 = [gestureCopy view];
+      [view3 bounds];
       Height = CGRectGetHeight(v33);
-      v16 = [v4 view];
-      v17 = [v16 window];
-      [v17 bounds];
+      view4 = [gestureCopy view];
+      window2 = [view4 window];
+      [window2 bounds];
       v18 = Height / CGRectGetHeight(v34);
 
       [(AVInteractiveTransitionGestureTracker *)self previousPinchScale];
       v20 = v19;
-      [v4 scale];
+      [gestureCopy scale];
       v22 = v21;
       [(AVInteractiveTransitionGestureTracker *)self previousPinchScale];
       v24 = v22 - v23;
@@ -582,56 +582,56 @@ LABEL_11:
         v25 = v18;
       }
 
-      [v4 setScale:v20 + v24 * v25];
+      [gestureCopy setScale:v20 + v24 * v25];
     }
 
-    [v4 scale];
+    [gestureCopy scale];
     [(AVInteractiveTransitionGestureTracker *)self setPreviousPinchScale:?];
     if (![(AVInteractiveTransitionGestureTracker *)self hasRotated])
     {
-      v26 = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
-      [v26 setRotation:0.0];
+      rotationGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
+      [rotationGestureRecognizer setRotation:0.0];
     }
 
-    v27 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-    [v27 transitionDriverDidContinueInteraction:self];
+    transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+    [transitionDriverDelegate transitionDriverDidContinueInteraction:self];
   }
 
 LABEL_33:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
 
-  if (v8 == v6)
+  if (pinchGestureRecognizer == recognizerCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     goto LABEL_11;
   }
 
-  v9 = [(AVInteractiveTransitionGestureTracker *)self panGestureRecognizer];
-  v10 = v9;
-  if (v9 == v6)
+  panGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self panGestureRecognizer];
+  v10 = panGestureRecognizer;
+  if (panGestureRecognizer == recognizerCopy)
   {
   }
 
   else
   {
-    v11 = [(AVInteractiveTransitionGestureTracker *)self indirectPanGestureRecognizer];
+    indirectPanGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self indirectPanGestureRecognizer];
 
-    if (v11 != v6)
+    if (indirectPanGestureRecognizer != recognizerCopy)
     {
       isKindOfClass = 0;
       goto LABEL_11;
     }
   }
 
-  v13 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
-  if (v13 == v7)
+  contentTransitioningViewGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+  if (contentTransitioningViewGestureRecognizer == gestureRecognizerCopy)
   {
     isKindOfClass = 0;
   }
@@ -646,23 +646,23 @@ LABEL_11:
   return isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
 
-  v9 = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
+  rotationGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
 
-  if (v8 == v6)
+  if (pinchGestureRecognizer == recognizerCopy)
   {
-    v10 = v9 == v7;
+    v10 = rotationGestureRecognizer == gestureRecognizerCopy;
   }
 
-  else if (v9 == v6)
+  else if (rotationGestureRecognizer == recognizerCopy)
   {
-    v11 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
-    v10 = v11 == v7;
+    pinchGestureRecognizer2 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+    v10 = pinchGestureRecognizer2 == gestureRecognizerCopy;
   }
 
   else
@@ -673,14 +673,14 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = a3;
+  beginCopy = begin;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    objc_storeStrong(&self->_activePanGestureRecognizer, a3);
+    objc_storeStrong(&self->_activePanGestureRecognizer, begin);
     [(UIPanGestureRecognizer *)self->_activePanGestureRecognizer velocityInView:0];
     v8 = v7;
     v10 = v9;
@@ -688,13 +688,13 @@ LABEL_11:
     v12 = v11;
     v14 = v13;
     activePanGestureRecognizer = self->_activePanGestureRecognizer;
-    v16 = [v5 view];
-    [(UIPanGestureRecognizer *)activePanGestureRecognizer locationInView:v16];
+    view = [beginCopy view];
+    [(UIPanGestureRecognizer *)activePanGestureRecognizer locationInView:view];
     v18 = v17;
     v20 = v19;
 
-    v21 = [v5 view];
-    [v21 bounds];
+    view2 = [beginCopy view];
+    [view2 bounds];
     v36.origin.x = v22 + 16.0;
     v36.origin.y = v23 + 16.0;
     v36.size.width = v24 + -32.0;
@@ -716,27 +716,27 @@ LABEL_11:
     }
   }
 
-  v26 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
-  v27 = v26;
-  if (v26 == v5)
+  pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+  v27 = pinchGestureRecognizer;
+  if (pinchGestureRecognizer == beginCopy)
   {
   }
 
   else
   {
-    v28 = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
+    rotationGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
 
-    if (v28 != v5)
+    if (rotationGestureRecognizer != beginCopy)
     {
       if (isKindOfClass)
       {
         if (![(AVInteractiveTransitionGestureTracker *)self isTracking])
         {
-          v29 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-          -[AVInteractiveTransitionGestureTracker setPanToDismissEnabled:](self, "setPanToDismissEnabled:", [v29 transitionDriver:self shouldDriveTransitionInteractionOfType:3]);
+          transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+          -[AVInteractiveTransitionGestureTracker setPanToDismissEnabled:](self, "setPanToDismissEnabled:", [transitionDriverDelegate transitionDriver:self shouldDriveTransitionInteractionOfType:3]);
         }
 
-        v30 = [(AVInteractiveTransitionGestureTracker *)self isPanToDismissEnabled];
+        isPanToDismissEnabled = [(AVInteractiveTransitionGestureTracker *)self isPanToDismissEnabled];
         goto LABEL_16;
       }
 
@@ -746,18 +746,18 @@ LABEL_11:
 
   if (![(AVInteractiveTransitionGestureTracker *)self isTracking])
   {
-    v31 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-    -[AVInteractiveTransitionGestureTracker setPinchToDismissEnabled:](self, "setPinchToDismissEnabled:", [v31 transitionDriver:self shouldDriveTransitionInteractionOfType:2]);
+    transitionDriverDelegate2 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+    -[AVInteractiveTransitionGestureTracker setPinchToDismissEnabled:](self, "setPinchToDismissEnabled:", [transitionDriverDelegate2 transitionDriver:self shouldDriveTransitionInteractionOfType:2]);
 
-    v32 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-    -[AVInteractiveTransitionGestureTracker setPinchToPresentEnabled:](self, "setPinchToPresentEnabled:", [v32 transitionDriver:self shouldDriveTransitionInteractionOfType:1]);
+    transitionDriverDelegate3 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+    -[AVInteractiveTransitionGestureTracker setPinchToPresentEnabled:](self, "setPinchToPresentEnabled:", [transitionDriverDelegate3 transitionDriver:self shouldDriveTransitionInteractionOfType:1]);
   }
 
   if (![(AVInteractiveTransitionGestureTracker *)self isPinchToDismissEnabled])
   {
-    v30 = [(AVInteractiveTransitionGestureTracker *)self isPinchToPresentEnabled];
+    isPanToDismissEnabled = [(AVInteractiveTransitionGestureTracker *)self isPinchToPresentEnabled];
 LABEL_16:
-    v33 = v30;
+    v33 = isPanToDismissEnabled;
     goto LABEL_17;
   }
 
@@ -768,19 +768,19 @@ LABEL_17:
   return v33;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 _isPointerTouch])
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if ([touchCopy _isPointerTouch])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
-    v8 = [v9 transitionDriver:self gestureRecognizer:v6 shouldReceiveTouch:v7];
+    transitionDriverDelegate = [(AVInteractiveTransitionGestureTracker *)self transitionDriverDelegate];
+    v8 = [transitionDriverDelegate transitionDriver:self gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
   }
 
   return v8;
@@ -793,8 +793,8 @@ LABEL_17:
     return 0.0;
   }
 
-  v3 = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
-  [v3 velocity];
+  rotationGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self rotationGestureRecognizer];
+  [rotationGestureRecognizer velocity];
   v5 = v4;
 
   return v5;
@@ -818,8 +818,8 @@ LABEL_17:
     return 0.0;
   }
 
-  v3 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
-  [v3 velocity];
+  pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer velocity];
   v5 = v4;
 
   return v5;
@@ -832,8 +832,8 @@ LABEL_17:
     return 0.0;
   }
 
-  v3 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
-  [v3 scale];
+  pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer scale];
   v5 = v4;
 
   return v5;
@@ -844,35 +844,35 @@ LABEL_17:
   if ([(AVInteractiveTransitionGestureTracker *)self transitionInteraction]== 3)
   {
     activePanGestureRecognizer = self->_activePanGestureRecognizer;
-    v4 = [(AVInteractiveTransitionGestureTracker *)self view];
-    v5 = [v4 window];
-    [(UIPanGestureRecognizer *)activePanGestureRecognizer velocityInView:v5];
+    view = [(AVInteractiveTransitionGestureTracker *)self view];
+    window = [view window];
+    [(UIPanGestureRecognizer *)activePanGestureRecognizer velocityInView:window];
     v16 = v7;
     v17 = v6;
 
-    v8 = [(AVInteractiveTransitionGestureTracker *)self initialInterfaceOrientation];
-    v9 = [(AVInteractiveTransitionGestureTracker *)self view];
-    v10 = [v9 window];
-    v11 = [v10 interfaceOrientation];
+    initialInterfaceOrientation = [(AVInteractiveTransitionGestureTracker *)self initialInterfaceOrientation];
+    view2 = [(AVInteractiveTransitionGestureTracker *)self view];
+    window2 = [view2 window];
+    interfaceOrientation = [window2 interfaceOrientation];
 
-    if ((v8 - 2) > 2)
+    if ((initialInterfaceOrientation - 2) > 2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = qword_18B6EC6F0[v8 - 2];
+      v12 = qword_18B6EC6F0[initialInterfaceOrientation - 2];
     }
 
-    if ((v11 - 2) > 2)
+    if ((interfaceOrientation - 2) > 2)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = qword_18B6EC708[v11 - 2];
+      v14 = qword_18B6EC708[interfaceOrientation - 2];
     }
 
     CGAffineTransformMakeRotation(&v18, (v14 + v12) * 1.57079633);
@@ -908,37 +908,37 @@ LABEL_17:
   [(AVInteractiveTransitionGestureTracker *)self _filteredUntranslatedLocationInWindow];
   v4 = v3;
   v6 = v5;
-  v7 = [(AVInteractiveTransitionGestureTracker *)self initialInterfaceOrientation];
-  v8 = [(AVInteractiveTransitionGestureTracker *)self view];
-  v9 = [v8 window];
-  v10 = [v9 interfaceOrientation];
+  initialInterfaceOrientation = [(AVInteractiveTransitionGestureTracker *)self initialInterfaceOrientation];
+  view = [(AVInteractiveTransitionGestureTracker *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  v11 = [(AVInteractiveTransitionGestureTracker *)self view];
-  v12 = [v11 window];
-  [v12 bounds];
+  view2 = [(AVInteractiveTransitionGestureTracker *)self view];
+  window2 = [view2 window];
+  [window2 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  if ((v7 - 2) > 2)
+  if ((initialInterfaceOrientation - 2) > 2)
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = qword_18B6EC6F0[v7 - 2];
+    v21 = qword_18B6EC6F0[initialInterfaceOrientation - 2];
   }
 
-  if ((v10 - 2) > 2)
+  if ((interfaceOrientation - 2) > 2)
   {
     v22 = 0;
   }
 
   else
   {
-    v22 = qword_18B6EC708[v10 - 2];
+    v22 = qword_18B6EC708[interfaceOrientation - 2];
   }
 
   v23 = v22 + v21;
@@ -990,10 +990,10 @@ LABEL_15:
 
 - (CGPoint)_filteredUntranslatedLocationInWindow
 {
-  v3 = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
-  v4 = [(AVInteractiveTransitionGestureTracker *)self view];
-  v5 = [v4 window];
-  [v3 locationInView:v5];
+  _locationRecognizer = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
+  view = [(AVInteractiveTransitionGestureTracker *)self view];
+  window = [view window];
+  [_locationRecognizer locationInView:window];
   v7 = v6;
   v9 = v8;
 
@@ -1010,21 +1010,21 @@ LABEL_15:
 
 - (CGPoint)_untranslatedUnfilteredLocationInFixedCoordinateSpace
 {
-  v3 = [(AVInteractiveTransitionGestureTracker *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 coordinateSpace];
+  view = [(AVInteractiveTransitionGestureTracker *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  coordinateSpace = [windowScene coordinateSpace];
 
-  v7 = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
-  [v7 locationInView:0];
+  _locationRecognizer = [(AVInteractiveTransitionGestureTracker *)self _locationRecognizer];
+  [_locationRecognizer locationInView:0];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVInteractiveTransitionGestureTracker *)self view];
-  v13 = [v12 window];
-  v14 = [v13 screen];
-  v15 = [v14 fixedCoordinateSpace];
-  [v15 convertPoint:v6 fromCoordinateSpace:{v9, v11}];
+  view2 = [(AVInteractiveTransitionGestureTracker *)self view];
+  window2 = [view2 window];
+  screen = [window2 screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
+  [fixedCoordinateSpace convertPoint:coordinateSpace fromCoordinateSpace:{v9, v11}];
   v17 = v16;
   v19 = v18;
 
@@ -1037,27 +1037,27 @@ LABEL_15:
 
 - (id)_locationRecognizer
 {
-  v3 = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
+  pinchGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self pinchGestureRecognizer];
   if ([(AVInteractiveTransitionGestureTracker *)self isPanToDismissEnabled])
   {
     v4 = self->_activePanGestureRecognizer;
 
-    v3 = v4;
+    pinchGestureRecognizer = v4;
   }
 
-  return v3;
+  return pinchGestureRecognizer;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(AVInteractiveTransitionGestureTracker *)self recognizers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  recognizers = [(AVInteractiveTransitionGestureTracker *)self recognizers];
+  v6 = [recognizers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1069,61 +1069,61 @@ LABEL_15:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(recognizers);
         }
 
-        [v4 removeGestureRecognizer:*(*(&v13 + 1) + 8 * v9++)];
+        [viewCopy removeGestureRecognizer:*(*(&v13 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [recognizers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
-  v11 = [v10 view];
-  v12 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
-  [v11 removeGestureRecognizer:v12];
+  contentTransitioningViewGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+  view = [contentTransitioningViewGestureRecognizer view];
+  contentTransitioningViewGestureRecognizer2 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+  [view removeGestureRecognizer:contentTransitioningViewGestureRecognizer2];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  [(AVInteractiveTransitionGestureTracker *)self setView:v4];
-  [(AVInteractiveTransitionGestureTracker *)self addRecognizersToView:v4];
+  viewCopy = view;
+  [(AVInteractiveTransitionGestureTracker *)self setView:viewCopy];
+  [(AVInteractiveTransitionGestureTracker *)self addRecognizersToView:viewCopy];
 }
 
-- (void)setContentTransitioningViewGestureRecognizer:(id)a3
+- (void)setContentTransitioningViewGestureRecognizer:(id)recognizer
 {
-  obj = a3;
+  obj = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_contentTransitioningViewGestureRecognizer);
 
   if (WeakRetained != obj)
   {
     v5 = objc_loadWeakRetained(&self->_contentTransitioningViewGestureRecognizer);
-    v6 = [v5 view];
+    view = [v5 view];
     v7 = objc_loadWeakRetained(&self->_contentTransitioningViewGestureRecognizer);
-    [v6 removeGestureRecognizer:v7];
+    [view removeGestureRecognizer:v7];
 
     objc_storeWeak(&self->_contentTransitioningViewGestureRecognizer, obj);
-    v8 = [(AVInteractiveTransitionGestureTracker *)self view];
+    view2 = [(AVInteractiveTransitionGestureTracker *)self view];
     v9 = objc_loadWeakRetained(&self->_contentTransitioningViewGestureRecognizer);
-    [v8 addGestureRecognizer:v9];
+    [view2 addGestureRecognizer:v9];
   }
 }
 
-- (void)addRecognizersToView:(id)a3
+- (void)addRecognizersToView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(AVInteractiveTransitionGestureTracker *)self recognizers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  recognizers = [(AVInteractiveTransitionGestureTracker *)self recognizers];
+  v6 = [recognizers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1135,25 +1135,25 @@ LABEL_15:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(recognizers);
         }
 
-        [v4 addGestureRecognizer:*(*(&v12 + 1) + 8 * v9++)];
+        [viewCopy addGestureRecognizer:*(*(&v12 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [recognizers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+  contentTransitioningViewGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
 
-  if (v10)
+  if (contentTransitioningViewGestureRecognizer)
   {
-    v11 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
-    [v4 addGestureRecognizer:v11];
+    contentTransitioningViewGestureRecognizer2 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+    [viewCopy addGestureRecognizer:contentTransitioningViewGestureRecognizer2];
   }
 }
 
@@ -1164,8 +1164,8 @@ LABEL_15:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(AVInteractiveTransitionGestureTracker *)self recognizers];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  recognizers = [(AVInteractiveTransitionGestureTracker *)self recognizers];
+  v4 = [recognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1176,24 +1176,24 @@ LABEL_15:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(recognizers);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 view];
-        [v9 removeGestureRecognizer:v8];
+        view = [v8 view];
+        [view removeGestureRecognizer:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [recognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
-  v11 = [v10 view];
-  v12 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
-  [v11 addGestureRecognizer:v12];
+  contentTransitioningViewGestureRecognizer = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+  view2 = [contentTransitioningViewGestureRecognizer view];
+  contentTransitioningViewGestureRecognizer2 = [(AVInteractiveTransitionGestureTracker *)self contentTransitioningViewGestureRecognizer];
+  [view2 addGestureRecognizer:contentTransitioningViewGestureRecognizer2];
 
   v13.receiver = self;
   v13.super_class = AVInteractiveTransitionGestureTracker;

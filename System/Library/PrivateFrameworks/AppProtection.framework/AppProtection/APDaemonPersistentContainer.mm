@@ -1,6 +1,6 @@
 @interface APDaemonPersistentContainer
 - (_TtC13AppProtection27APDaemonPersistentContainer)init;
-- (_TtC13AppProtection27APDaemonPersistentContainer)initWithName:(id)a3 managedObjectModel:(id)a4;
+- (_TtC13AppProtection27APDaemonPersistentContainer)initWithName:(id)name managedObjectModel:(id)model;
 @end
 
 @implementation APDaemonPersistentContainer
@@ -18,7 +18,7 @@
   return v6;
 }
 
-- (_TtC13AppProtection27APDaemonPersistentContainer)initWithName:(id)a3 managedObjectModel:(id)a4
+- (_TtC13AppProtection27APDaemonPersistentContainer)initWithName:(id)name managedObjectModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

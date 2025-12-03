@@ -1,30 +1,30 @@
 @interface NRConcurrentPipeManager
-- (id)newIDSPairingToUUID:(id)a3 pairingUUID:(id)a4 oobKey:(id)a5 withExtensiblePairingDelegate:(id)a6 withDelegate:(id)a7;
+- (id)newIDSPairingToUUID:(id)d pairingUUID:(id)iD oobKey:(id)key withExtensiblePairingDelegate:(id)delegate withDelegate:(id)withDelegate;
 - (void)createResource;
 @end
 
 @implementation NRConcurrentPipeManager
 
-- (id)newIDSPairingToUUID:(id)a3 pairingUUID:(id)a4 oobKey:(id)a5 withExtensiblePairingDelegate:(id)a6 withDelegate:(id)a7
+- (id)newIDSPairingToUUID:(id)d pairingUUID:(id)iD oobKey:(id)key withExtensiblePairingDelegate:(id)delegate withDelegate:(id)withDelegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  keyCopy = key;
+  delegateCopy = delegate;
+  withDelegateCopy = withDelegate;
   uuid = self->_uuid;
-  if (uuid && ![(NSUUID *)uuid isEqual:v13])
+  if (uuid && ![(NSUUID *)uuid isEqual:dCopy])
   {
     v19 = 0;
   }
 
   else
   {
-    objc_storeStrong(&self->_uuid, a3);
-    objc_storeStrong(&self->_oobKey, a5);
-    objc_storeWeak(&self->_epDelegate, v16);
-    objc_storeStrong(&self->_pairingID, a4);
-    v19 = [(EPResourceManager *)self newResourceWithDelegate:v17];
+    objc_storeStrong(&self->_uuid, d);
+    objc_storeStrong(&self->_oobKey, key);
+    objc_storeWeak(&self->_epDelegate, delegateCopy);
+    objc_storeStrong(&self->_pairingID, iD);
+    v19 = [(EPResourceManager *)self newResourceWithDelegate:withDelegateCopy];
   }
 
   return v19;
@@ -37,7 +37,7 @@
   [(EPResourceManager *)&v9 createResource];
   if (self->_idsIsPaired)
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 1;
     idsPairingFailureError = 0;
   }
@@ -59,11 +59,11 @@
       return;
     }
 
-    v3 = self;
+    selfCopy2 = self;
     v4 = 2;
   }
 
-  [(EPResourceManager *)v3 setAvailability:v4 withError:idsPairingFailureError];
+  [(EPResourceManager *)selfCopy2 setAvailability:v4 withError:idsPairingFailureError];
 }
 
 @end

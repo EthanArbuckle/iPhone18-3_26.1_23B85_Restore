@@ -16,7 +16,7 @@
 + (id)hdhr_heartRhythmProtectedSyncedDomainForProfile:()HKHeartRhythm
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 initWithCategory:105 domainName:*MEMORY[0x277CCE460] profile:v4];
 
   return v6;
@@ -25,7 +25,7 @@
 + (id)hdhr_heartRhythmProtectedLocalDomainForProfile:()HKHeartRhythm
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 initWithCategory:100 domainName:*MEMORY[0x277CCE460] profile:v4];
 
   return v6;
@@ -34,7 +34,7 @@
 + (id)hdhr_aFibBurdenProtectedLocalDomainForProfile:()HKHeartRhythm
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 initWithCategory:100 domainName:*MEMORY[0x277D12EA0] profile:v4];
 
   return v6;
@@ -43,7 +43,7 @@
 + (id)hdhr_aFibBurdenProtectedSyncedDomainForProfile:()HKHeartRhythm
 {
   v4 = a3;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [v5 initWithCategory:105 domainName:*MEMORY[0x277D12EA0] profile:v4];
 
   return v6;
@@ -52,14 +52,14 @@
 - (id)hdhr_atrialFibrillationOnboardingCountryCodeWithError:()HKHeartRhythm
 {
   v25 = *MEMORY[0x277D85DE8];
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(HKHeartRhythm) hdhr_atrialFibrillationOnboardingCountryCodeWithError:];
   }
 
   v7 = *MEMORY[0x277CCB838];
   v22 = 0;
-  v8 = [a1 stringForKey:v7 error:&v22];
+  v8 = [self stringForKey:v7 error:&v22];
   v9 = v22;
   v10 = v9;
   if (v8)
@@ -74,16 +74,16 @@
 
   if (v11)
   {
-    v12 = [v8 hk_copyNonEmptyString];
+    hk_copyNonEmptyString = [v8 hk_copyNonEmptyString];
   }
 
   else
   {
-    v13 = [v9 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v9 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v14 = *MEMORY[0x277CCC2D8];
     v15 = *MEMORY[0x277CCC2D8];
-    if (v13)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -104,27 +104,27 @@
     if (a3)
     {
       v19 = v10;
-      v12 = 0;
+      hk_copyNonEmptyString = 0;
       *a3 = v10;
     }
 
     else
     {
       _HKLogDroppedError();
-      v12 = 0;
+      hk_copyNonEmptyString = 0;
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return hk_copyNonEmptyString;
 }
 
 - (id)hdhr_irregularRhythmNotificationsOnboardingCompletionForFeatureIdentifier:()HKHeartRhythm error:
 {
   v6 = a3;
   v18 = 0;
-  v7 = [a1 hdhr_atrialFibrillationOnboardingCompletionVersionWithError:&v18];
+  v7 = [self hdhr_atrialFibrillationOnboardingCompletionVersionWithError:&v18];
   v8 = v18;
   v9 = v8;
   if (v7)
@@ -136,12 +136,12 @@
     }
 
     v17 = v9;
-    v10 = [a1 hdhr_atrialFibrillationOnboardingCompletedDateWithError:&v17];
+    v10 = [self hdhr_atrialFibrillationOnboardingCompletedDateWithError:&v17];
     v11 = v17;
 
     if (v10)
     {
-      v12 = [a1 hdhr_atrialFibrillationOnboardingCountryCodeWithError:0];
+      v12 = [self hdhr_atrialFibrillationOnboardingCountryCodeWithError:0];
       v13 = [objc_alloc(MEMORY[0x277CCD740]) initWithFeatureIdentifier:v6 version:objc_msgSend(v7 completionDate:"integerValue") countryCode:v10 countryCodeProvenance:{v12, 0}];
 LABEL_17:
 
@@ -195,12 +195,12 @@ LABEL_19:
 
 - (id)hdhr_atrialFibrillationOnboardingCompletionVersionWithError:()HKHeartRhythm
 {
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(HKHeartRhythm) hdhr_atrialFibrillationOnboardingCompletionVersionWithError:];
   }
 
-  v7 = [a1 numberForKey:*MEMORY[0x277CCB840] error:a3];
+  v7 = [self numberForKey:*MEMORY[0x277CCB840] error:a3];
   if ([v7 integerValue])
   {
     v8 = v7;
@@ -217,7 +217,7 @@ LABEL_19:
 - (id)hdhr_atrialFibrillationOnboardingCompletedDateWithError:()HKHeartRhythm
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(HKHeartRhythm) hdhr_atrialFibrillationOnboardingCompletedDateWithError:];
   }
@@ -226,7 +226,7 @@ LABEL_19:
   v7 = v30[0];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
   v27 = 0;
-  v9 = [a1 modificationDatesForKeys:v8 error:&v27];
+  v9 = [self modificationDatesForKeys:v8 error:&v27];
   v10 = v27;
   v11 = [v9 objectForKeyedSubscript:v7];
 
@@ -245,11 +245,11 @@ LABEL_19:
     if (v11)
     {
       v26 = v10;
-      v13 = [a1 hdhr_atrialFibrillationOnboardingCompletionVersionWithError:&v26];
+      v13 = [self hdhr_atrialFibrillationOnboardingCompletionVersionWithError:&v26];
       v14 = v26;
 
-      v15 = [v13 integerValue];
-      if (!v15)
+      integerValue = [v13 integerValue];
+      if (!integerValue)
       {
         v16 = 0;
         v10 = v14;
@@ -263,11 +263,11 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v17 = [v10 hk_isDatabaseAccessibilityError];
+  hk_isDatabaseAccessibilityError = [v10 hk_isDatabaseAccessibilityError];
   _HKInitializeLogging();
   v18 = *MEMORY[0x277CCC2D8];
   v19 = *MEMORY[0x277CCC2D8];
-  if (v17)
+  if (hk_isDatabaseAccessibilityError)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -309,7 +309,7 @@ LABEL_21:
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CCE460]), v7, (v8 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CCE460]), v7, (v8 & 1) == 0))
   {
     [HDKeyValueDomain(HKHeartRhythm) hdhr_setAtrialFibrillationDetectionCurrentOnboardingVersionCompletedInCountryCode:error:];
   }
@@ -320,7 +320,7 @@ LABEL_21:
   v15[0] = v6;
   v15[1] = &unk_283CD2650;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  v11 = [a1 setValuesWithDictionary:v10 error:a4];
+  v11 = [self setValuesWithDictionary:v10 error:a4];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
@@ -329,7 +329,7 @@ LABEL_21:
 - (uint64_t)hdhr_resetAtrialFibrillationDetectionOnboardingWithError:()HKHeartRhythm
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  if ([a1 category] != 105 || (objc_msgSend(a1, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
+  if ([self category] != 105 || (objc_msgSend(self, "domainName"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCE460]), v5, (v6 & 1) == 0))
   {
     [HDKeyValueDomain(HKHeartRhythm) hdhr_resetAtrialFibrillationDetectionOnboardingWithError:];
   }
@@ -340,7 +340,7 @@ LABEL_21:
   v13[0] = &stru_283CC4740;
   v13[1] = &unk_283CD2668;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v9 = [a1 setValuesWithDictionary:v8 error:a3];
+  v9 = [self setValuesWithDictionary:v8 error:a3];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;

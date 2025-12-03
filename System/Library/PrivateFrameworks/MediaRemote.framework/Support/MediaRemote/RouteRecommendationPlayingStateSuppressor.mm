@@ -1,14 +1,14 @@
 @interface RouteRecommendationPlayingStateSuppressor
-- (id)suppressionPolicyWithContext:(id)a3;
+- (id)suppressionPolicyWithContext:(id)context;
 @end
 
 @implementation RouteRecommendationPlayingStateSuppressor
 
-- (id)suppressionPolicyWithContext:(id)a3
+- (id)suppressionPolicyWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
 
-  v4 = sub_100359E60(v3);
+  v4 = sub_100359E60(contextCopy);
 
   return v4;
 }

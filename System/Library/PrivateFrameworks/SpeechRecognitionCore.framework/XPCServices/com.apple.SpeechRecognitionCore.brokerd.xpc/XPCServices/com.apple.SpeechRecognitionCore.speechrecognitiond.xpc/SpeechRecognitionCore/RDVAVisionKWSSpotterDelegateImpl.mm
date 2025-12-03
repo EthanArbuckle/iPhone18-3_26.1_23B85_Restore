@@ -1,35 +1,35 @@
 @interface RDVAVisionKWSSpotterDelegateImpl
-- (RDVAVisionKWSSpotterDelegateImpl)initWithDelegate:(RDKeywordSpotterDelegate *)a3;
-- (void)didDetectKeywordWithKeyword:(id)a3 score:(float)a4 silenceAfter:(BOOL)a5 silenceBefore:(BOOL)a6 speechDuring:(BOOL)a7;
+- (RDVAVisionKWSSpotterDelegateImpl)initWithDelegate:(RDKeywordSpotterDelegate *)delegate;
+- (void)didDetectKeywordWithKeyword:(id)keyword score:(float)score silenceAfter:(BOOL)after silenceBefore:(BOOL)before speechDuring:(BOOL)during;
 @end
 
 @implementation RDVAVisionKWSSpotterDelegateImpl
 
-- (RDVAVisionKWSSpotterDelegateImpl)initWithDelegate:(RDKeywordSpotterDelegate *)a3
+- (RDVAVisionKWSSpotterDelegateImpl)initWithDelegate:(RDKeywordSpotterDelegate *)delegate
 {
   v6.receiver = self;
   v6.super_class = RDVAVisionKWSSpotterDelegateImpl;
   result = [(RDVAVisionKWSSpotterDelegateImpl *)&v6 init];
   if (result)
   {
-    v5 = *&a3->ctx;
-    result->_keywordSpotterDelegate.KeywordSpotterDidStop = a3->KeywordSpotterDidStop;
+    v5 = *&delegate->ctx;
+    result->_keywordSpotterDelegate.KeywordSpotterDidStop = delegate->KeywordSpotterDidStop;
     *&result->_keywordSpotterDelegate.ctx = v5;
   }
 
   return result;
 }
 
-- (void)didDetectKeywordWithKeyword:(id)a3 score:(float)a4 silenceAfter:(BOOL)a5 silenceBefore:(BOOL)a6 speechDuring:(BOOL)a7
+- (void)didDetectKeywordWithKeyword:(id)keyword score:(float)score silenceAfter:(BOOL)after silenceBefore:(BOOL)before speechDuring:(BOOL)during
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a3;
-  if (v8 && v7)
+  duringCopy = during;
+  beforeCopy = before;
+  keywordCopy = keyword;
+  if (beforeCopy && duringCopy)
   {
-    v12 = v11;
-    (self->_keywordSpotterDelegate.KeywordSpotted)(self->_keywordSpotterDelegate.ctx, v11, a4);
-    v11 = v12;
+    v12 = keywordCopy;
+    (self->_keywordSpotterDelegate.KeywordSpotted)(self->_keywordSpotterDelegate.ctx, keywordCopy, score);
+    keywordCopy = v12;
   }
 }
 

@@ -1,30 +1,30 @@
 @interface CVAMetadataWrapperTracks
-+ (BOOL)locationFromTrackName:(id)a3 location:(int64_t *)a4;
-+ (id)trackNameFromPrefix:(int64_t *)a3 prefix:(id)a4 defaultValue:(id)a5;
++ (BOOL)locationFromTrackName:(id)name location:(int64_t *)location;
++ (id)trackNameFromPrefix:(int64_t *)prefix prefix:(id)a4 defaultValue:(id)value;
 + (id)validTracks;
 @end
 
 @implementation CVAMetadataWrapperTracks
 
-+ (id)trackNameFromPrefix:(int64_t *)a3 prefix:(id)a4 defaultValue:(id)a5
++ (id)trackNameFromPrefix:(int64_t *)prefix prefix:(id)a4 defaultValue:(id)value
 {
   v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  valueCopy = value;
+  v9 = valueCopy;
   if (v7)
   {
-    if (a3)
+    if (prefix)
     {
 LABEL_3:
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", v7, *a3];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%ld", v7, *prefix];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v7 = [v8 copy];
-    if (a3)
+    v7 = [valueCopy copy];
+    if (prefix)
     {
       goto LABEL_3;
     }
@@ -53,25 +53,25 @@ LABEL_6:
   return v3;
 }
 
-+ (BOOL)locationFromTrackName:(id)a3 location:(int64_t *)a4
++ (BOOL)locationFromTrackName:(id)name location:(int64_t *)location
 {
   LOBYTE(v4) = 0;
-  if (a3 && a4)
+  if (name && location)
   {
     v6 = MEMORY[0x277CBEB18];
-    v7 = [a3 componentsSeparatedByString:@"."];
+    v7 = [name componentsSeparatedByString:@"."];
     v8 = [v6 arrayWithArray:v7];
 
     if ([v8 count] >= 2)
     {
       v9 = +[CVAMetadataWrapperTracks validTracks];
-      v10 = [v8 lastObject];
+      lastObject = [v8 lastObject];
       [v8 removeLastObject];
       v11 = [v8 componentsJoinedByString:@"."];
       v4 = [v9 containsObject:v11];
       if (v4)
       {
-        *a4 = [v10 integerValue];
+        *location = [lastObject integerValue];
       }
     }
 

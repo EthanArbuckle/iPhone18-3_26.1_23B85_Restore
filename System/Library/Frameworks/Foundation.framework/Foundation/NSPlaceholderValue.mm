@@ -1,7 +1,7 @@
 @interface NSPlaceholderValue
 - (const)objCType;
-- (void)getValue:(void *)a3;
-- (void)getValue:(void *)a3 size:(unint64_t)a4;
+- (void)getValue:(void *)value;
+- (void)getValue:(void *)value size:(unint64_t)size;
 @end
 
 @implementation NSPlaceholderValue
@@ -20,9 +20,9 @@
   NSRequestConcreteImplementation(self, a2, *v6);
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
-  NSLog(@"Did you forget to nest alloc and init?", a2, a3);
+  NSLog(@"Did you forget to nest alloc and init?", a2, value);
   v5 = objc_opt_class();
   v6 = objc_opt_self();
   v7 = __SCR_NSValue;
@@ -36,9 +36,9 @@
   NSRequestConcreteImplementation(self, a2, v8);
 }
 
-- (void)getValue:(void *)a3 size:(unint64_t)a4
+- (void)getValue:(void *)value size:(unint64_t)size
 {
-  NSLog(@"Did you forget to nest alloc and init?", a2, a3, a4);
+  NSLog(@"Did you forget to nest alloc and init?", a2, value, size);
   v6 = objc_opt_class();
   v7 = objc_opt_self();
   v8 = __SCR_NSValue;

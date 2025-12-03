@@ -1,73 +1,73 @@
 @interface SearchResultsDataSource
-- (BOOL)_showBottomRoundedCorners:(id)a3 rows:(int64_t)a4;
-- (BOOL)_showTopRoundedCorners:(id)a3 rows:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldHaveFullLengthBottomSeparatorForSection:(int64_t)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)_showBottomRoundedCorners:(id)corners rows:(int64_t)rows;
+- (BOOL)_showTopRoundedCorners:(id)corners rows:(int64_t)rows;
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHaveFullLengthBottomSeparatorForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (ErrorModeView)structuredRAPAffordance;
 - (MKCollectionCarouselRoutingDelegate)collectionCarouselRoutingDelegate;
 - (NSDictionary)itemCountInVenue;
 - (NSIndexPath)indexPathForRelatedCollectionSection;
-- (SearchResultsDataSource)initWithTableView:(id)a3;
+- (SearchResultsDataSource)initWithTableView:(id)view;
 - (ShareDelegate)shareDelegate;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)curatedGuideCellViewModelForSearchResult:(id)a3 indexPath:(id)a4;
-- (id)etaProviderForMapItem:(id)a3;
-- (id)impressionElementForSearchResult:(id)a3 indexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)curatedGuideCellViewModelForSearchResult:(id)result indexPath:(id)path;
+- (id)etaProviderForMapItem:(id)item;
+- (id)impressionElementForSearchResult:(id)result indexPath:(id)path;
 - (id)objectsForAnalytics;
-- (id)personalizedItemForQuickActionMenuWithCell:(id)a3;
-- (id)placeSummaryTemplateAtIndexPath:(id)a3;
-- (id)placeSummaryTemplateForSearchResult:(id)a3 indexPath:(id)a4;
-- (id)shareContextualActionAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)personalizedItemForQuickActionMenuWithCell:(id)cell;
+- (id)placeSummaryTemplateAtIndexPath:(id)path;
+- (id)placeSummaryTemplateForSearchResult:(id)result indexPath:(id)path;
+- (id)shareContextualActionAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)visibleImpressionElements;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)addMetricsForGuideSummaryViewModel:(id)a3 atIndexPath:(id)a4;
-- (void)addMetricsForPlaceSummaryTemplate:(id)a3 indexPath:(id)a4;
-- (void)adjustRAPAffordanceFrameWithTopPadding:(double)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)addMetricsForGuideSummaryViewModel:(id)model atIndexPath:(id)path;
+- (void)addMetricsForPlaceSummaryTemplate:(id)template indexPath:(id)path;
+- (void)adjustRAPAffordanceFrameWithTopPadding:(double)padding;
 - (void)buildAndCacheCuratedGuideViewModels;
 - (void)cachePlaceSummaryTemplates;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)createEVChargersRefreshDownloader;
 - (void)dealloc;
-- (void)didTapOnAccessoryEntityCallWithCell:(id)a3;
-- (void)didTapOnAccessoryEntityDirectionsWithCell:(id)a3;
-- (void)didTapOnAccessoryEntityFlyoverWithCell:(id)a3;
-- (void)didTapOnAccessoryEntityLookAroundWithCell:(id)a3;
-- (void)didTapOnAccessoryEntityWebsiteWithCell:(id)a3;
-- (void)didTapOnAddStop:(id)a3;
-- (void)didTapOnContainmentParentMapItem:(id)a3 cell:(id)a4;
-- (void)didTapOnCuratedGuide:(id)a3 cell:(id)a4;
-- (void)didTapOnCuratedGuides:(id)a3 cell:(id)a4;
-- (void)didTapOnPhotoCarousel:(id)a3 photoIndex:(int64_t)a4;
-- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)a3 cell:(id)a4;
-- (void)didTapOnUserGeneratedGuide:(id)a3 cell:(id)a4;
-- (void)didTapOnUserLibrary:(id)a3 mapItem:(id)a4;
-- (void)iterateThroughIndexPathsAndExecuteBlock:(id)a3;
+- (void)didTapOnAccessoryEntityCallWithCell:(id)cell;
+- (void)didTapOnAccessoryEntityDirectionsWithCell:(id)cell;
+- (void)didTapOnAccessoryEntityFlyoverWithCell:(id)cell;
+- (void)didTapOnAccessoryEntityLookAroundWithCell:(id)cell;
+- (void)didTapOnAccessoryEntityWebsiteWithCell:(id)cell;
+- (void)didTapOnAddStop:(id)stop;
+- (void)didTapOnContainmentParentMapItem:(id)item cell:(id)cell;
+- (void)didTapOnCuratedGuide:(id)guide cell:(id)cell;
+- (void)didTapOnCuratedGuides:(id)guides cell:(id)cell;
+- (void)didTapOnPhotoCarousel:(id)carousel photoIndex:(int64_t)index;
+- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)identifier cell:(id)cell;
+- (void)didTapOnUserGeneratedGuide:(id)guide cell:(id)cell;
+- (void)didTapOnUserLibrary:(id)library mapItem:(id)item;
+- (void)iterateThroughIndexPathsAndExecuteBlock:(id)block;
 - (void)locationDidUpdate;
 - (void)notifyDelegateDidCachePlaceSummaryTemplates;
-- (void)refreshEVChargers:(id)a3;
-- (void)relatedSectionRouteToCuratedCollection:(id)a3;
+- (void)refreshEVChargers:(id)chargers;
+- (void)relatedSectionRouteToCuratedCollection:(id)collection;
 - (void)relatedSectionTableViewCellDidScrollBackward;
 - (void)relatedSectionTableViewCellDidScrollForward;
-- (void)relatedSectionTappedOnCollectionId:(id)a3 atIndex:(int64_t)a4 isSaved:(BOOL)a5;
+- (void)relatedSectionTappedOnCollectionId:(id)id atIndex:(int64_t)index isSaved:(BOOL)saved;
 - (void)resetMapServiceTicket;
-- (void)setContent:(id)a3;
-- (void)setContent:(id)a3 openAt:(id)a4;
-- (void)setEnableStructuredRAPAffordance:(BOOL)a3;
-- (void)setGuideSummaryLayoutMetadata:(id)a3;
-- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)a3;
-- (void)setIsPresentingVenueClusterResults:(BOOL)a3;
-- (void)setPlaceSummaryMetadata:(id)a3;
-- (void)shareRowAtIndexPath:(id)a3 completion:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
+- (void)setContent:(id)content;
+- (void)setContent:(id)content openAt:(id)at;
+- (void)setEnableStructuredRAPAffordance:(BOOL)affordance;
+- (void)setGuideSummaryLayoutMetadata:(id)metadata;
+- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)results;
+- (void)setIsPresentingVenueClusterResults:(BOOL)results;
+- (void)setPlaceSummaryMetadata:(id)metadata;
+- (void)shareRowAtIndexPath:(id)path completion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation SearchResultsDataSource
@@ -91,10 +91,10 @@
   indexPathForRelatedCollectionSection = self->_indexPathForRelatedCollectionSection;
   if (!indexPathForRelatedCollectionSection)
   {
-    v4 = [(SearchResultsDataSource *)self content];
-    v5 = [v4 numberOfSections];
+    content = [(SearchResultsDataSource *)self content];
+    numberOfSections = [content numberOfSections];
 
-    if (v5 < 1)
+    if (numberOfSections < 1)
     {
       goto LABEL_13;
     }
@@ -102,8 +102,8 @@
     v6 = 0;
     while (1)
     {
-      v7 = [(SearchResultsDataSource *)self content];
-      v8 = [v7 numberOfRowsInSection:v6];
+      content2 = [(SearchResultsDataSource *)self content];
+      v8 = [content2 numberOfRowsInSection:v6];
 
       if (v8 < 1)
       {
@@ -114,8 +114,8 @@
       while (1)
       {
         v10 = [NSIndexPath indexPathForRow:v9 inSection:v6];
-        v11 = [(SearchResultsDataSource *)self content];
-        v12 = [v11 objectAtIndexPath:v10];
+        content3 = [(SearchResultsDataSource *)self content];
+        v12 = [content3 objectAtIndexPath:v10];
 
         if ([v12 type] == 11)
         {
@@ -125,8 +125,8 @@
 LABEL_9:
 
         ++v9;
-        v14 = [(SearchResultsDataSource *)self content];
-        v15 = [v14 numberOfRowsInSection:v6];
+        content4 = [(SearchResultsDataSource *)self content];
+        v15 = [content4 numberOfRowsInSection:v6];
 
         if (v9 >= v15)
         {
@@ -134,8 +134,8 @@ LABEL_9:
         }
       }
 
-      v13 = [v12 searchSection];
-      if ([v13 sectionType] != 2)
+      searchSection = [v12 searchSection];
+      if ([searchSection sectionType] != 2)
       {
         break;
       }
@@ -145,10 +145,10 @@ LABEL_9:
 
 LABEL_12:
       ++v6;
-      v17 = [(SearchResultsDataSource *)self content];
-      v18 = [v17 numberOfSections];
+      content5 = [(SearchResultsDataSource *)self content];
+      numberOfSections2 = [content5 numberOfSections];
 
-      if (v6 >= v18)
+      if (v6 >= numberOfSections2)
       {
 LABEL_13:
         indexPathForRelatedCollectionSection = self->_indexPathForRelatedCollectionSection;
@@ -165,51 +165,51 @@ LABEL_14:
   return v19;
 }
 
-- (void)relatedSectionRouteToCuratedCollection:(id)a3
+- (void)relatedSectionRouteToCuratedCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(SearchResultsDataSource *)self collectionCarouselRoutingDelegate];
-  [v5 routeToCuratedCollection:v4];
+  collectionCopy = collection;
+  collectionCarouselRoutingDelegate = [(SearchResultsDataSource *)self collectionCarouselRoutingDelegate];
+  [collectionCarouselRoutingDelegate routeToCuratedCollection:collectionCopy];
 }
 
-- (void)relatedSectionTappedOnCollectionId:(id)a3 atIndex:(int64_t)a4 isSaved:(BOOL)a5
+- (void)relatedSectionTappedOnCollectionId:(id)id atIndex:(int64_t)index isSaved:(BOOL)saved
 {
-  v5 = a5;
-  v8 = a3;
-  v11 = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
-  v9 = [v8 muid];
+  savedCopy = saved;
+  idCopy = id;
+  curatedCollectionsAnalyticsManager = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
+  muid = [idCopy muid];
 
-  v10 = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
-  [v11 carouselCollectionTappedWithMuid:v9 verticalIndex:objc_msgSend(v10 horizontalIndex:"row") isCurrentlySaved:{a4, v5}];
+  indexPathForRelatedCollectionSection = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
+  [curatedCollectionsAnalyticsManager carouselCollectionTappedWithMuid:muid verticalIndex:objc_msgSend(indexPathForRelatedCollectionSection horizontalIndex:"row") isCurrentlySaved:{index, savedCopy}];
 }
 
 - (void)relatedSectionTableViewCellDidScrollBackward
 {
-  v4 = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
-  v3 = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
-  [v4 carouselScrolledBackwardAtVerticalIndex:{objc_msgSend(v3, "row")}];
+  curatedCollectionsAnalyticsManager = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
+  indexPathForRelatedCollectionSection = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
+  [curatedCollectionsAnalyticsManager carouselScrolledBackwardAtVerticalIndex:{objc_msgSend(indexPathForRelatedCollectionSection, "row")}];
 }
 
 - (void)relatedSectionTableViewCellDidScrollForward
 {
-  v4 = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
-  v3 = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
-  [v4 carouselScrolledForwardAtVerticalIndex:{objc_msgSend(v3, "row")}];
+  curatedCollectionsAnalyticsManager = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
+  indexPathForRelatedCollectionSection = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
+  [curatedCollectionsAnalyticsManager carouselScrolledForwardAtVerticalIndex:{objc_msgSend(indexPathForRelatedCollectionSection, "row")}];
 }
 
 - (void)resetMapServiceTicket
 {
-  v3 = [(SearchResultsDataSource *)self mapServiceTicket];
-  [v3 cancel];
+  mapServiceTicket = [(SearchResultsDataSource *)self mapServiceTicket];
+  [mapServiceTicket cancel];
 
   [(SearchResultsDataSource *)self setMapServiceTicket:0];
 }
 
-- (void)didTapOnPhotoCarousel:(id)a3 photoIndex:(int64_t)a4
+- (void)didTapOnPhotoCarousel:(id)carousel photoIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [(DataSource *)self tableView];
-  v12 = [v6 indexPathForCell:v5];
+  carouselCopy = carousel;
+  tableView = [(DataSource *)self tableView];
+  v12 = [tableView indexPathForCell:carouselCopy];
 
   v7 = [(SearchResultsDataSource *)self objectAtIndexPath:v12];
   objc_opt_class();
@@ -223,47 +223,47 @@ LABEL_14:
     [v10 collectSearchSessionAnalytics:v9];
 
     [(DataSource *)self sendAnalyticsForDataAtIndexPath:v12 object:v8 action:[(SearchSessionAnalytics *)v9 action] populateSearchTapEvent:1];
-    v11 = [(DataSource *)self delegate];
-    [v11 dataSource:self itemTapped:v8];
+    delegate = [(DataSource *)self delegate];
+    [delegate dataSource:self itemTapped:v8];
   }
 }
 
-- (void)didTapOnUserLibrary:(id)a3 mapItem:(id)a4
+- (void)didTapOnUserLibrary:(id)library mapItem:(id)item
 {
-  v8 = a4;
-  v5 = [(DataSource *)self delegate];
+  itemCopy = item;
+  delegate = [(DataSource *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DataSource *)self delegate];
-    [v7 didTapOnUserLibraryMapItem:v8];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnUserLibraryMapItem:itemCopy];
   }
 }
 
-- (void)didTapOnAddStop:(id)a3
+- (void)didTapOnAddStop:(id)stop
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v13 = [v5 indexPathForCell:v4];
+  stopCopy = stop;
+  tableView = [(DataSource *)self tableView];
+  v13 = [tableView indexPathForCell:stopCopy];
 
   v6 = [(SearchResultsDataSource *)self objectAtIndexPath:v13];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
       v9 = v6;
-      v10 = [(DataSource *)self delegate];
-      [v10 didTapOnAddStopWithSearchResult:v9 atIndexPath:v13];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnAddStopWithSearchResult:v9 atIndexPath:v13];
     }
 
     else
     {
-      v11 = [(DataSource *)self delegate];
+      delegate3 = [(DataSource *)self delegate];
       v12 = objc_opt_respondsToSelector();
 
       if ((v12 & 1) == 0)
@@ -271,20 +271,20 @@ LABEL_14:
         goto LABEL_7;
       }
 
-      v10 = [(DataSource *)self delegate];
-      [v10 didTapOnAddStopAtIndex:{objc_msgSend(v13, "row")}];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnAddStopAtIndex:{objc_msgSend(v13, "row")}];
     }
   }
 
 LABEL_7:
 }
 
-- (id)etaProviderForMapItem:(id)a3
+- (id)etaProviderForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SearchResultsDataSource *)self etaProviders];
-  v6 = [v4 _identifier];
-  v7 = [v5 objectForKey:v6];
+  itemCopy = item;
+  etaProviders = [(SearchResultsDataSource *)self etaProviders];
+  _identifier = [itemCopy _identifier];
+  v7 = [etaProviders objectForKey:_identifier];
 
   if (v7)
   {
@@ -293,20 +293,20 @@ LABEL_7:
 
   else
   {
-    v8 = [[MKETAProvider alloc] initWithMapItem:v4];
-    v9 = [(SearchResultsDataSource *)self etaProviders];
-    v10 = [v4 _identifier];
-    [v9 setObject:v8 forKey:v10];
+    v8 = [[MKETAProvider alloc] initWithMapItem:itemCopy];
+    etaProviders2 = [(SearchResultsDataSource *)self etaProviders];
+    _identifier2 = [itemCopy _identifier];
+    [etaProviders2 setObject:v8 forKey:_identifier2];
   }
 
   return v8;
 }
 
-- (id)personalizedItemForQuickActionMenuWithCell:(id)a3
+- (id)personalizedItemForQuickActionMenuWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v6 = [tableView indexPathForCell:cellCopy];
 
   v7 = [(SearchResultsDataSource *)self objectAtIndexPath:v6];
   objc_opt_class();
@@ -323,12 +323,12 @@ LABEL_7:
   return v8;
 }
 
-- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)a3 cell:(id)a4
+- (void)didTapOnTappableEntryWithMapItemIdentifier:(id)identifier cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  cellCopy = cell;
   [(SearchResultsDataSource *)self resetMapServiceTicket];
-  v8 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v6];
+  v8 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:identifierCopy];
   v9 = +[MKMapService sharedService];
   v16 = v8;
   v10 = [NSArray arrayWithObjects:&v16 count:1];
@@ -336,159 +336,159 @@ LABEL_7:
   [(SearchResultsDataSource *)self setMapServiceTicket:v11];
 
   objc_initWeak(&location, self);
-  v12 = [(SearchResultsDataSource *)self mapServiceTicket];
+  mapServiceTicket = [(SearchResultsDataSource *)self mapServiceTicket];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10092E884;
   v13[3] = &unk_10165F290;
   objc_copyWeak(&v14, &location);
-  [v12 submitWithHandler:v13 networkActivity:0];
+  [mapServiceTicket submitWithHandler:v13 networkActivity:0];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)didTapOnContainmentParentMapItem:(id)a3 cell:(id)a4
+- (void)didTapOnContainmentParentMapItem:(id)item cell:(id)cell
 {
-  v8 = a3;
-  v5 = [(DataSource *)self delegate];
+  itemCopy = item;
+  delegate = [(DataSource *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DataSource *)self delegate];
-    [v7 didTapOnContainmentParentMapItem:v8];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnContainmentParentMapItem:itemCopy];
   }
 }
 
-- (void)didTapOnAccessoryEntityFlyoverWithCell:(id)a3
+- (void)didTapOnAccessoryEntityFlyoverWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v10 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v10 = [tableView indexPathForCell:cellCopy];
 
   v6 = [(SearchResultsDataSource *)self objectAtIndexPath:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DataSource *)self delegate];
-      [v9 didTapOnFlyoverWithSearchResult:v6];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnFlyoverWithSearchResult:v6];
     }
   }
 }
 
-- (void)didTapOnAccessoryEntityWebsiteWithCell:(id)a3
+- (void)didTapOnAccessoryEntityWebsiteWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v10 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v10 = [tableView indexPathForCell:cellCopy];
 
   v6 = [(SearchResultsDataSource *)self objectAtIndexPath:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DataSource *)self delegate];
-      [v9 didTapOnWebsiteWithSearchResult:v6];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnWebsiteWithSearchResult:v6];
     }
   }
 }
 
-- (void)didTapOnAccessoryEntityCallWithCell:(id)a3
+- (void)didTapOnAccessoryEntityCallWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v10 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v10 = [tableView indexPathForCell:cellCopy];
 
   v6 = [(SearchResultsDataSource *)self objectAtIndexPath:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DataSource *)self delegate];
-      [v9 didTapOnCallWithSearchResult:v6];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnCallWithSearchResult:v6];
     }
   }
 }
 
-- (void)didTapOnAccessoryEntityLookAroundWithCell:(id)a3
+- (void)didTapOnAccessoryEntityLookAroundWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v10 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v10 = [tableView indexPathForCell:cellCopy];
 
   v6 = [(SearchResultsDataSource *)self objectAtIndexPath:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DataSource *)self delegate];
-      [v9 didTapOnLookAroundWithSearchResult:v6];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnLookAroundWithSearchResult:v6];
     }
   }
 }
 
-- (void)didTapOnAccessoryEntityDirectionsWithCell:(id)a3
+- (void)didTapOnAccessoryEntityDirectionsWithCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(DataSource *)self tableView];
-  v10 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  tableView = [(DataSource *)self tableView];
+  v10 = [tableView indexPathForCell:cellCopy];
 
   v6 = [(SearchResultsDataSource *)self objectAtIndexPath:v10];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(DataSource *)self delegate];
+    delegate = [(DataSource *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(DataSource *)self delegate];
-      [v9 didTapOnDirectionsWithSearchResult:v6];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didTapOnDirectionsWithSearchResult:v6];
     }
   }
 }
 
-- (void)didTapOnCuratedGuides:(id)a3 cell:(id)a4
+- (void)didTapOnCuratedGuides:(id)guides cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DataSource *)self delegate];
+  guidesCopy = guides;
+  cellCopy = cell;
+  delegate = [(DataSource *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DataSource *)self delegate];
-    [v10 didTapOnCuratedGuides:v6];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnCuratedGuides:guidesCopy];
   }
 
-  v11 = [(DataSource *)self tableView];
-  v23 = v7;
-  v12 = [v11 indexPathForCell:v7];
+  tableView = [(DataSource *)self tableView];
+  v23 = cellCopy;
+  v12 = [tableView indexPathForCell:cellCopy];
 
-  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(guidesCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v6;
+  v14 = guidesCopy;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -504,8 +504,8 @@ LABEL_7:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * v18) collectionIdentifier];
-        v20 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v19 muid]);
+        collectionIdentifier = [*(*(&v24 + 1) + 8 * v18) collectionIdentifier];
+        v20 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [collectionIdentifier muid]);
         [v13 addObject:v20];
 
         v18 = v18 + 1;
@@ -518,79 +518,79 @@ LABEL_7:
     while (v16);
   }
 
-  v21 = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
+  curatedCollectionsAnalyticsManager = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
   v22 = [v13 copy];
-  [v21 placeContextMultipleCollectionsTappedWithMuids:v22 verticalIndex:{objc_msgSend(v12, "row")}];
+  [curatedCollectionsAnalyticsManager placeContextMultipleCollectionsTappedWithMuids:v22 verticalIndex:{objc_msgSend(v12, "row")}];
 }
 
-- (void)didTapOnCuratedGuide:(id)a3 cell:(id)a4
+- (void)didTapOnCuratedGuide:(id)guide cell:(id)cell
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(DataSource *)self delegate];
+  guideCopy = guide;
+  cellCopy = cell;
+  delegate = [(DataSource *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DataSource *)self delegate];
-    [v9 didTapOnCuratedGuide:v17];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnCuratedGuide:guideCopy];
   }
 
-  v10 = [(DataSource *)self tableView];
-  v11 = [v10 indexPathForCell:v6];
+  tableView = [(DataSource *)self tableView];
+  v11 = [tableView indexPathForCell:cellCopy];
 
-  v12 = [v17 collectionIdentifier];
-  v13 = [v12 muid];
+  collectionIdentifier = [guideCopy collectionIdentifier];
+  muid = [collectionIdentifier muid];
 
   v14 = +[CuratedCollectionSyncManager sharedManager];
-  v15 = [v14 collectionIsSaved:v17];
+  v15 = [v14 collectionIsSaved:guideCopy];
 
-  v16 = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
-  [v16 placeContextSingleCollectionTappedWithMuid:v13 isCurrentlySaved:v15 verticalIndex:{objc_msgSend(v11, "row")}];
+  curatedCollectionsAnalyticsManager = [(SearchResultsDataSource *)self curatedCollectionsAnalyticsManager];
+  [curatedCollectionsAnalyticsManager placeContextSingleCollectionTappedWithMuid:muid isCurrentlySaved:v15 verticalIndex:{objc_msgSend(v11, "row")}];
 }
 
-- (void)didTapOnUserGeneratedGuide:(id)a3 cell:(id)a4
+- (void)didTapOnUserGeneratedGuide:(id)guide cell:(id)cell
 {
-  v8 = a3;
-  v5 = [(DataSource *)self delegate];
+  guideCopy = guide;
+  delegate = [(DataSource *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(DataSource *)self delegate];
-    [v7 didTapOnUserGeneratedGuide:v8];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 didTapOnUserGeneratedGuide:guideCopy];
   }
 }
 
-- (void)setEnableStructuredRAPAffordance:(BOOL)a3
+- (void)setEnableStructuredRAPAffordance:(BOOL)affordance
 {
-  v3 = a3;
-  self->_enableStructuredRAPAffordance = a3;
-  if (a3)
+  affordanceCopy = affordance;
+  self->_enableStructuredRAPAffordance = affordance;
+  if (affordance)
   {
-    v6 = [(SearchResultsDataSource *)self structuredRAPAffordance];
+    structuredRAPAffordance = [(SearchResultsDataSource *)self structuredRAPAffordance];
   }
 
   else
   {
-    v6 = 0;
+    structuredRAPAffordance = 0;
   }
 
-  v5 = [(DataSource *)self tableView];
-  [v5 setTableFooterView:v6];
+  tableView = [(DataSource *)self tableView];
+  [tableView setTableFooterView:structuredRAPAffordance];
 
-  if (v3)
+  if (affordanceCopy)
   {
   }
 }
 
-- (void)adjustRAPAffordanceFrameWithTopPadding:(double)a3
+- (void)adjustRAPAffordanceFrameWithTopPadding:(double)padding
 {
-  v8 = [(DataSource *)self tableView];
-  [v8 frame];
+  tableView = [(DataSource *)self tableView];
+  [tableView frame];
   v6 = v5;
   [(ErrorModeView *)self->_structuredRAPAffordance fittingHeight];
-  [(ErrorModeView *)self->_structuredRAPAffordance setFrame:0.0, 0.0, v6, v7 + a3];
+  [(ErrorModeView *)self->_structuredRAPAffordance setFrame:0.0, 0.0, v6, v7 + padding];
 }
 
 - (ErrorModeView)structuredRAPAffordance
@@ -634,40 +634,40 @@ LABEL_7:
   return v3;
 }
 
-- (void)shareRowAtIndexPath:(id)a3 completion:(id)a4
+- (void)shareRowAtIndexPath:(id)path completion:(id)completion
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SearchResultsDataSource *)self objectAtIndexPath:v20];
+  pathCopy = path;
+  completionCopy = completion;
+  v7 = [(SearchResultsDataSource *)self objectAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
-    v9 = [(DataSource *)self tableView];
-    v10 = [v9 cellForRowAtIndexPath:v20];
+    tableView = [(DataSource *)self tableView];
+    v10 = [tableView cellForRowAtIndexPath:pathCopy];
     v11 = [MUPresentationOptions optionsWithSender:v10];
 
-    v12 = [v8 placeCollection];
+    placeCollection = [v8 placeCollection];
 
-    if (v12)
+    if (placeCollection)
     {
       v13 = [CuratedCollectionShareItemSource alloc];
-      v14 = [v8 placeCollection];
-      v15 = [(CuratedCollectionShareItemSource *)v13 initWithPlaceCollection:v14 refinedMapItems:&__NSArray0__struct];
+      placeCollection2 = [v8 placeCollection];
+      shareDelegate2 = [(CuratedCollectionShareItemSource *)v13 initWithPlaceCollection:placeCollection2 refinedMapItems:&__NSArray0__struct];
 
-      v16 = [(SearchResultsDataSource *)self shareDelegate];
-      [v16 shareItem:v15 presentationOptions:v11 completion:v6];
+      shareDelegate = [(SearchResultsDataSource *)self shareDelegate];
+      [shareDelegate shareItem:shareDelegate2 presentationOptions:v11 completion:completionCopy];
     }
 
     else
     {
-      v15 = [(SearchResultsDataSource *)self shareDelegate];
-      v16 = [v8 unknownContact];
-      v17 = [ShareItem shareItemWithSearchResult:v8 contact:v16 includePrintActivity:1];
-      [(CuratedCollectionShareItemSource *)v15 shareItem:v17 presentationOptions:v11 completion:v6];
+      shareDelegate2 = [(SearchResultsDataSource *)self shareDelegate];
+      shareDelegate = [v8 unknownContact];
+      v17 = [ShareItem shareItemWithSearchResult:v8 contact:shareDelegate includePrintActivity:1];
+      [(CuratedCollectionShareItemSource *)shareDelegate2 shareItem:v17 presentationOptions:v11 completion:completionCopy];
     }
 
-    [(DataSource *)self sendAnalyticsForDataAtIndexPath:v20 object:v8 action:2008];
+    [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v8 action:2008];
     v18 = objc_alloc_init(SearchSessionAnalytics);
     [(SearchSessionAnalytics *)v18 setAction:2008];
     [(SearchSessionAnalytics *)v18 setTarget:101];
@@ -675,17 +675,17 @@ LABEL_7:
     [v19 collectSearchSessionAnalytics:v18];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
 - (void)locationDidUpdate
 {
-  v3 = [(DataSource *)self currentLocation];
+  currentLocation = [(DataSource *)self currentLocation];
 
-  if (v3)
+  if (currentLocation)
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
@@ -696,51 +696,51 @@ LABEL_7:
   }
 }
 
-- (void)iterateThroughIndexPathsAndExecuteBlock:(id)a3
+- (void)iterateThroughIndexPathsAndExecuteBlock:(id)block
 {
-  v11 = a3;
-  v4 = [(SearchResultsDataSource *)self content];
-  v5 = [v4 numberOfSections];
+  blockCopy = block;
+  content = [(SearchResultsDataSource *)self content];
+  numberOfSections = [content numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
-      v7 = [(SearchResultsDataSource *)self content];
-      v8 = [v7 numberOfRowsInSection:i];
+      content2 = [(SearchResultsDataSource *)self content];
+      v8 = [content2 numberOfRowsInSection:i];
 
       if (v8 >= 1)
       {
         for (j = 0; j != v8; ++j)
         {
           v10 = [NSIndexPath indexPathForRow:j inSection:i];
-          v11[2](v11, v10);
+          blockCopy[2](blockCopy, v10);
         }
       }
     }
   }
 }
 
-- (id)placeSummaryTemplateAtIndexPath:(id)a3
+- (id)placeSummaryTemplateAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
-  v6 = [v5 objectForKey:v4];
+  pathCopy = path;
+  placeSummaryTemplateViewModels = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
+  v6 = [placeSummaryTemplateViewModels objectForKey:pathCopy];
 
   return v6;
 }
 
 - (void)notifyDelegateDidCachePlaceSummaryTemplates
 {
-  v3 = [(DataSource *)self delegate];
+  delegate = [(DataSource *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
     if (+[NSThread isMainThread])
     {
-      v5 = [(DataSource *)self delegate];
-      [v5 didCachePlaceSummaryTemplates];
+      delegate2 = [(DataSource *)self delegate];
+      [delegate2 didCachePlaceSummaryTemplates];
     }
 
     else
@@ -779,22 +779,22 @@ LABEL_7:
   }
 }
 
-- (BOOL)_showBottomRoundedCorners:(id)a3 rows:(int64_t)a4
+- (BOOL)_showBottomRoundedCorners:(id)corners rows:(int64_t)rows
 {
-  v6 = a3;
-  v7 = [v6 section] + 1;
-  v8 = [(SearchResultsDataSource *)self content];
-  v9 = [v8 numberOfSections];
+  cornersCopy = corners;
+  v7 = [cornersCopy section] + 1;
+  content = [(SearchResultsDataSource *)self content];
+  numberOfSections = [content numberOfSections];
 
-  if (v7 >= v9)
+  if (v7 >= numberOfSections)
   {
     v12 = 0;
   }
 
   else
   {
-    v10 = [(SearchResultsDataSource *)self content];
-    v11 = [v10 titleForHeaderInSection:v7];
+    content2 = [(SearchResultsDataSource *)self content];
+    v11 = [content2 titleForHeaderInSection:v7];
 
     if (v11)
     {
@@ -807,19 +807,19 @@ LABEL_7:
     }
   }
 
-  v13 = [v6 section];
-  v14 = [(SearchResultsDataSource *)self content];
-  v15 = [v14 numberOfSections];
+  section = [cornersCopy section];
+  content3 = [(SearchResultsDataSource *)self content];
+  numberOfSections2 = [content3 numberOfSections];
 
-  v16 = [v6 item];
-  return v16 == (a4 - 1) && (v13 == v15 - 1 || v12);
+  item = [cornersCopy item];
+  return item == (rows - 1) && (section == numberOfSections2 - 1 || v12);
 }
 
-- (BOOL)_showTopRoundedCorners:(id)a3 rows:(int64_t)a4
+- (BOOL)_showTopRoundedCorners:(id)corners rows:(int64_t)rows
 {
-  v5 = a3;
-  v6 = [(SearchResultsDataSource *)self content];
-  v7 = [v6 titleForHeaderInSection:{objc_msgSend(v5, "section")}];
+  cornersCopy = corners;
+  content = [(SearchResultsDataSource *)self content];
+  v7 = [content titleForHeaderInSection:{objc_msgSend(cornersCopy, "section")}];
 
   if (v7)
   {
@@ -831,27 +831,27 @@ LABEL_7:
     v8 = 0;
   }
 
-  if ([v5 item])
+  if ([cornersCopy item])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v5 section] == 0 || v8;
+    v9 = [cornersCopy section] == 0 || v8;
   }
 
   return v9;
 }
 
-- (void)addMetricsForPlaceSummaryTemplate:(id)a3 indexPath:(id)a4
+- (void)addMetricsForPlaceSummaryTemplate:(id)template indexPath:(id)path
 {
-  v34 = a3;
-  v6 = a4;
+  templateCopy = template;
+  pathCopy = path;
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v7 = [(DataSource *)self tableView];
-    if (sub_10000FA08(v7) == 5)
+    tableView = [(DataSource *)self tableView];
+    if (sub_10000FA08(tableView) == 5)
     {
       v8 = _UISolariumEnabled();
 
@@ -894,8 +894,8 @@ LABEL_7:
     {
     }
 
-    v21 = [(DataSource *)self tableView];
-    if (sub_10000FA08(v21) == 5)
+    tableView2 = [(DataSource *)self tableView];
+    if (sub_10000FA08(tableView2) == 5)
     {
       v22 = 12.0;
     }
@@ -907,9 +907,9 @@ LABEL_7:
 
     if ([(SearchResultsDataSource *)self placeSummaryUsesRichLayout])
     {
-      v23 = [(DataSource *)self tableView];
+      tableView3 = [(DataSource *)self tableView];
       v24 = 3.0;
-      if (sub_10000FA08(v23) == 5)
+      if (sub_10000FA08(tableView3) == 5)
       {
         v25 = 3.0;
       }
@@ -919,15 +919,15 @@ LABEL_7:
         v25 = 5.0;
       }
 
-      v26 = [(DataSource *)self tableView];
-      if (sub_10000FA08(v26) != 5)
+      tableView4 = [(DataSource *)self tableView];
+      if (sub_10000FA08(tableView4) != 5)
       {
         v24 = 5.0;
       }
 
       +[_TtC4Maps23MapsDesignConstantsShim contentHorizontalPadding];
       v28 = v27;
-      if (![v6 item] && !objc_msgSend(v6, "section"))
+      if (![pathCopy item] && !objc_msgSend(pathCopy, "section"))
       {
         v24 = 0.0;
       }
@@ -941,11 +941,11 @@ LABEL_7:
 
     else
     {
-      v29 = [(SearchResultsDataSource *)self content];
-      v30 = [v29 numberOfRowsInSection:{objc_msgSend(v6, "section")}];
+      content = [(SearchResultsDataSource *)self content];
+      v30 = [content numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}];
 
-      v31 = [(SearchResultsDataSource *)self _showTopRoundedCorners:v6 rows:v30];
-      v32 = [(SearchResultsDataSource *)self _showBottomRoundedCorners:v6 rows:v30];
+      v31 = [(SearchResultsDataSource *)self _showTopRoundedCorners:pathCopy rows:v30];
+      v32 = [(SearchResultsDataSource *)self _showBottomRoundedCorners:pathCopy rows:v30];
       v11 = [_TtC4Maps19PlaceSummaryMetrics alloc];
       if (!v31 || !v32)
       {
@@ -974,7 +974,7 @@ LABEL_11:
           v20 = 1;
 LABEL_31:
           v33 = [(PlaceSummaryMetrics *)v11 initWithLeadingMargin:v20 trailingMargin:1 topMargin:v12 bottomMargin:v17 topLeadingCornerRadius:v18 topTrailingCornerRadius:v19 bottomLeadingCornerRadius:v13 bottomTrailingCornerRadius:v14 showsDivider:v15 showPlatter:v16];
-          [v34 setMetrics:v33];
+          [templateCopy setMetrics:v33];
 
           goto LABEL_32;
         }
@@ -1003,14 +1003,14 @@ LABEL_30:
 LABEL_32:
 }
 
-- (id)placeSummaryTemplateForSearchResult:(id)a3 indexPath:(id)a4
+- (id)placeSummaryTemplateForSearchResult:(id)result indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SearchResultsDataSource *)self usePlaceSummaryForSearchResult:v6])
+  resultCopy = result;
+  pathCopy = path;
+  if ([(SearchResultsDataSource *)self usePlaceSummaryForSearchResult:resultCopy])
   {
-    v8 = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
-    v9 = [v8 objectForKey:v7];
+    placeSummaryTemplateViewModels = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
+    v9 = [placeSummaryTemplateViewModels objectForKey:pathCopy];
 
     if (v9)
     {
@@ -1019,16 +1019,16 @@ LABEL_32:
 
     else
     {
-      [v6 setRepresentsIntermediateStop:{-[SearchResultsDataSource isPresentingAddStopResultsFromWaypointEditor](self, "isPresentingAddStopResultsFromWaypointEditor")}];
-      v11 = [(SearchResultsDataSource *)self placeSummaryMetadata];
-      v12 = [(DataSource *)self currentLocation];
-      v10 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:v6 metadata:v11 currentLocation:v12 searchAlongRoute:[(SearchResultsDataSource *)self isPresentingSearchAlongTheRouteResults] openAt:self->_openAt];
+      [resultCopy setRepresentsIntermediateStop:{-[SearchResultsDataSource isPresentingAddStopResultsFromWaypointEditor](self, "isPresentingAddStopResultsFromWaypointEditor")}];
+      placeSummaryMetadata = [(SearchResultsDataSource *)self placeSummaryMetadata];
+      currentLocation = [(DataSource *)self currentLocation];
+      v10 = [_TtC4Maps36PlaceSummaryViewModelTemplateFactory viewModelWithSearchResult:resultCopy metadata:placeSummaryMetadata currentLocation:currentLocation searchAlongRoute:[(SearchResultsDataSource *)self isPresentingSearchAlongTheRouteResults] openAt:self->_openAt];
 
-      [(SearchResultsDataSource *)self addMetricsForPlaceSummaryTemplate:v10 indexPath:v7];
+      [(SearchResultsDataSource *)self addMetricsForPlaceSummaryTemplate:v10 indexPath:pathCopy];
       if (v10)
       {
-        v13 = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
-        [v13 setObject:v10 forKey:v7];
+        placeSummaryTemplateViewModels2 = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
+        [placeSummaryTemplateViewModels2 setObject:v10 forKey:pathCopy];
 
         v14 = v10;
       }
@@ -1043,10 +1043,10 @@ LABEL_32:
   return v10;
 }
 
-- (void)addMetricsForGuideSummaryViewModel:(id)a3 atIndexPath:(id)a4
+- (void)addMetricsForGuideSummaryViewModel:(id)model atIndexPath:(id)path
 {
-  v24 = a3;
-  v6 = a4;
+  modelCopy = model;
+  pathCopy = path;
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     +[_TtC4Maps23MapsDesignConstantsShim contentHorizontalPadding];
@@ -1066,11 +1066,11 @@ LABEL_32:
 
     else
     {
-      v20 = [(SearchResultsDataSource *)self content];
-      v21 = [v20 numberOfRowsInSection:{objc_msgSend(v6, "section")}];
+      content = [(SearchResultsDataSource *)self content];
+      v21 = [content numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}];
 
-      v22 = [(SearchResultsDataSource *)self _showTopRoundedCorners:v6 rows:v21];
-      v23 = [(SearchResultsDataSource *)self _showBottomRoundedCorners:v6 rows:v21];
+      v22 = [(SearchResultsDataSource *)self _showTopRoundedCorners:pathCopy rows:v21];
+      v23 = [(SearchResultsDataSource *)self _showBottomRoundedCorners:pathCopy rows:v21];
       v9 = [_TtC4Maps19GuideSummaryMetrics alloc];
       if (v22 && v23)
       {
@@ -1123,35 +1123,35 @@ LABEL_32:
     v18 = 0;
 LABEL_6:
     v19 = [(GuideSummaryMetrics *)v9 initWithLeadingMargin:v18 trailingMargin:v16 topMargin:v17 bottomMargin:v10 topLeadingCornerRadius:v11 topTrailingCornerRadius:v12 bottomLeadingCornerRadius:v13 bottomTrailingCornerRadius:v14 showsDivider:v15];
-    [v24 setMetrics:v19];
+    [modelCopy setMetrics:v19];
   }
 }
 
-- (id)curatedGuideCellViewModelForSearchResult:(id)a3 indexPath:(id)a4
+- (id)curatedGuideCellViewModelForSearchResult:(id)result indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 placeCollection];
+  resultCopy = result;
+  pathCopy = path;
+  placeCollection = [resultCopy placeCollection];
 
-  if (v8)
+  if (placeCollection)
   {
-    v9 = [(SearchResultsDataSource *)self curatedGuideViewModels];
-    v8 = [v9 objectForKey:v7];
+    curatedGuideViewModels = [(SearchResultsDataSource *)self curatedGuideViewModels];
+    placeCollection = [curatedGuideViewModels objectForKey:pathCopy];
 
-    if (!v8)
+    if (!placeCollection)
     {
       v10 = [_TtC4Maps21CuratedGuideViewModel alloc];
-      v11 = [v6 placeCollection];
-      v12 = [(SearchResultsDataSource *)self guideSummaryUsesRichLayout]|| [(SearchResultsDataSource *)self placeSummaryUsesRichLayout];
-      v8 = [(CuratedGuideViewModel *)v10 initWithPlaceCollection:v11 useRichLayout:v12 isAutocompleteContext:0];
+      placeCollection2 = [resultCopy placeCollection];
+      placeSummaryUsesRichLayout = [(SearchResultsDataSource *)self guideSummaryUsesRichLayout]|| [(SearchResultsDataSource *)self placeSummaryUsesRichLayout];
+      placeCollection = [(CuratedGuideViewModel *)v10 initWithPlaceCollection:placeCollection2 useRichLayout:placeSummaryUsesRichLayout isAutocompleteContext:0];
 
-      [(SearchResultsDataSource *)self addMetricsForGuideSummaryViewModel:v8 atIndexPath:v7];
-      v13 = [(SearchResultsDataSource *)self curatedGuideViewModels];
-      [v13 setObject:v8 forKey:v7];
+      [(SearchResultsDataSource *)self addMetricsForGuideSummaryViewModel:placeCollection atIndexPath:pathCopy];
+      curatedGuideViewModels2 = [(SearchResultsDataSource *)self curatedGuideViewModels];
+      [curatedGuideViewModels2 setObject:placeCollection forKey:pathCopy];
     }
   }
 
-  return v8;
+  return placeCollection;
 }
 
 - (void)buildAndCacheCuratedGuideViewModels
@@ -1206,18 +1206,18 @@ LABEL_6:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 mapItem];
+          mapItem = [v8 mapItem];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v25 = v9;
-          v10 = [v9 venueAreaIdentifiers];
-          v11 = v10;
+          v25 = mapItem;
+          venueAreaIdentifiers = [mapItem venueAreaIdentifiers];
+          v11 = venueAreaIdentifiers;
           v12 = &__NSArray0__struct;
-          if (v10)
+          if (venueAreaIdentifiers)
           {
-            v12 = v10;
+            v12 = venueAreaIdentifiers;
           }
 
           v13 = v12;
@@ -1269,15 +1269,15 @@ LABEL_6:
 {
   if (MapsFeature_IsEnabled_SearchResultsImpressions())
   {
-    v3 = [(DataSource *)self tableView];
-    v4 = [v3 visibleCells];
+    tableView = [(DataSource *)self tableView];
+    visibleCells = [tableView visibleCells];
 
-    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(visibleCells, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = visibleCells;
     v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
@@ -1293,15 +1293,15 @@ LABEL_6:
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [(DataSource *)self tableView];
-          v13 = [v12 indexPathForCell:v11];
+          tableView2 = [(DataSource *)self tableView];
+          v13 = [tableView2 indexPathForCell:v11];
 
           if (v13)
           {
             v14 = [(SearchResultsDataSource *)self objectAtIndexPath:v13];
             v15 = [(SearchResultsDataSource *)self impressionElementForSearchResult:v14 indexPath:v13];
-            v16 = [(DataSource *)self tableView];
-            [v16 rectForRowAtIndexPath:v13];
+            tableView3 = [(DataSource *)self tableView];
+            [tableView3 rectForRowAtIndexPath:v13];
             [v15 setFrame:?];
 
             [v5 addObject:v15];
@@ -1325,13 +1325,13 @@ LABEL_6:
   return v17;
 }
 
-- (BOOL)tableView:(id)a3 shouldHaveFullLengthBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldHaveFullLengthBottomSeparatorForSection:(int64_t)section
 {
-  v6 = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
-  if (v6)
+  indexPathForRelatedCollectionSection = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
+  if (indexPathForRelatedCollectionSection)
   {
-    v7 = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
-    v8 = [v7 section] == a4;
+    indexPathForRelatedCollectionSection2 = [(SearchResultsDataSource *)self indexPathForRelatedCollectionSection];
+    v8 = [indexPathForRelatedCollectionSection2 section] == section;
   }
 
   else
@@ -1342,20 +1342,20 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawBottomSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawBottomSeparatorForSection:(int64_t)section
 {
-  v6 = [(SearchResultsDataSource *)self content];
-  v7 = [v6 numberOfSections] - 1;
+  content = [(SearchResultsDataSource *)self content];
+  v7 = [content numberOfSections] - 1;
 
-  return v7 != a4 || self->_enableStructuredRAPAffordance;
+  return v7 != section || self->_enableStructuredRAPAffordance;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (![(SearchResultsDataSource *)self isSimpleSearchResults])
   {
-    v7 = [(SearchResultsDataSource *)self objectAtIndexPath:v5];
+    v7 = [(SearchResultsDataSource *)self objectAtIndexPath:pathCopy];
     if ([v7 type] != 11)
     {
       objc_opt_class();
@@ -1372,18 +1372,18 @@ LABEL_6:
       goto LABEL_22;
     }
 
-    v8 = [v7 relatedSection];
+    relatedSection = [v7 relatedSection];
 
-    if (v8)
+    if (relatedSection)
     {
-      v9 = [v7 relatedSection];
-      v10 = [v9 sectionType];
+      relatedSection2 = [v7 relatedSection];
+      sectionType = [relatedSection2 sectionType];
 
-      if (v10 == 1)
+      if (sectionType == 1)
       {
-        v11 = [v7 relatedSection];
-        v12 = [v11 relatedPlaceCollections];
-        v13 = [v12 count];
+        relatedSection3 = [v7 relatedSection];
+        relatedPlaceCollections = [relatedSection3 relatedPlaceCollections];
+        v13 = [relatedPlaceCollections count];
 
         if (!v13)
         {
@@ -1400,23 +1400,23 @@ LABEL_23:
 
     else
     {
-      v18 = [v7 searchSection];
+      searchSection = [v7 searchSection];
 
-      if (v18)
+      if (searchSection)
       {
-        v19 = [v7 searchSection];
-        v20 = [v19 sectionType];
-        if (v20 == 2)
+        searchSection2 = [v7 searchSection];
+        sectionType2 = [searchSection2 sectionType];
+        if (sectionType2 == 2)
         {
-          v22 = [v19 sectionGuide];
-          v23 = [v22 placeCollections];
-          v24 = [v23 count];
+          sectionGuide = [searchSection2 sectionGuide];
+          placeCollections = [sectionGuide placeCollections];
+          v24 = [placeCollections count];
 
           if (v24)
           {
-            v25 = [v19 sectionGuide];
-            v26 = [v25 placeCollections];
-            +[RelatedCollectionsSectionTableViewCell cellHeightWithCollectionsCount:](RelatedCollectionsSectionTableViewCell, "cellHeightWithCollectionsCount:", [v26 count]);
+            sectionGuide2 = [searchSection2 sectionGuide];
+            placeCollections2 = [sectionGuide2 placeCollections];
+            +[RelatedCollectionsSectionTableViewCell cellHeightWithCollectionsCount:](RelatedCollectionsSectionTableViewCell, "cellHeightWithCollectionsCount:", [placeCollections2 count]);
             v6 = v27;
           }
 
@@ -1428,7 +1428,7 @@ LABEL_23:
 
         else
         {
-          if (v20)
+          if (sectionType2)
           {
 
             goto LABEL_20;
@@ -1457,19 +1457,19 @@ LABEL_24:
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SearchResultsDataSource *)self objectAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SearchResultsDataSource *)self objectAtIndexPath:pathCopy];
   if ([v8 type] != 11 || (MapsFeature_IsEnabled_SearchAndDiscovery() & 1) != 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 personalizedCompoundItem];
-      v10 = [v9 address];
-      if (v10)
+      personalizedCompoundItem = [v8 personalizedCompoundItem];
+      address = [personalizedCompoundItem address];
+      if (address)
       {
 
 LABEL_7:
@@ -1480,9 +1480,9 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v18 = [(SearchResultsDataSource *)self displaysAsChainResult];
+      displaysAsChainResult = [(SearchResultsDataSource *)self displaysAsChainResult];
 
-      if (v18)
+      if (displaysAsChainResult)
       {
         goto LABEL_7;
       }
@@ -1493,22 +1493,22 @@ LABEL_28:
       goto LABEL_7;
     }
 
-    v19 = [v8 placeCollection];
+    placeCollection = [v8 placeCollection];
 
-    if (!v19)
+    if (!placeCollection)
     {
-      v23 = [(SearchResultsDataSource *)self placeSummaryTemplateForSearchResult:v8 indexPath:v7];
-      v24 = [(DataSource *)self tableView];
-      [v24 bounds];
+      v23 = [(SearchResultsDataSource *)self placeSummaryTemplateForSearchResult:v8 indexPath:pathCopy];
+      tableView = [(DataSource *)self tableView];
+      [tableView bounds];
       [v23 setContainerWidth:v25];
 
       v22 = UITableViewAutomaticDimension;
       goto LABEL_29;
     }
 
-    v20 = [(SearchResultsDataSource *)self curatedGuideCellViewModelForSearchResult:v8 indexPath:v7];
-    [v6 bounds];
-    [v20 setWidth:v21];
+    searchSection2 = [(SearchResultsDataSource *)self curatedGuideCellViewModelForSearchResult:v8 indexPath:pathCopy];
+    [viewCopy bounds];
+    [searchSection2 setWidth:v21];
 LABEL_15:
     v22 = UITableViewAutomaticDimension;
 LABEL_16:
@@ -1516,29 +1516,29 @@ LABEL_16:
     goto LABEL_29;
   }
 
-  v12 = [v8 relatedSection];
+  relatedSection = [v8 relatedSection];
 
-  if (!v12)
+  if (!relatedSection)
   {
-    v26 = [v8 searchSection];
+    searchSection = [v8 searchSection];
 
-    if (v26)
+    if (searchSection)
     {
-      v20 = [v8 searchSection];
-      v27 = [v20 sectionType];
-      if (v27 == 2)
+      searchSection2 = [v8 searchSection];
+      sectionType = [searchSection2 sectionType];
+      if (sectionType == 2)
       {
         if (!MapsFeature_IsEnabled_SearchAndDiscovery())
         {
-          v29 = [v20 sectionGuide];
-          v30 = [v29 placeCollections];
-          v31 = [v30 count];
+          sectionGuide = [searchSection2 sectionGuide];
+          placeCollections = [sectionGuide placeCollections];
+          v31 = [placeCollections count];
 
           if (v31)
           {
-            v32 = [v20 sectionGuide];
-            v33 = [v32 placeCollections];
-            +[RelatedCollectionsSectionTableViewCell cellHeightWithCollectionsCount:](RelatedCollectionsSectionTableViewCell, "cellHeightWithCollectionsCount:", [v33 count]);
+            sectionGuide2 = [searchSection2 sectionGuide];
+            placeCollections2 = [sectionGuide2 placeCollections];
+            +[RelatedCollectionsSectionTableViewCell cellHeightWithCollectionsCount:](RelatedCollectionsSectionTableViewCell, "cellHeightWithCollectionsCount:", [placeCollections2 count]);
             v22 = v34;
           }
 
@@ -1553,7 +1553,7 @@ LABEL_16:
         goto LABEL_15;
       }
 
-      if (!v27)
+      if (!sectionType)
       {
         +[RelatedSectionTableViewCell cellHeight];
         v22 = v28;
@@ -1566,17 +1566,17 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v13 = [v8 relatedSection];
-  v14 = [v13 sectionType];
+  relatedSection2 = [v8 relatedSection];
+  sectionType2 = [relatedSection2 sectionType];
 
-  if (v14 != 1)
+  if (sectionType2 != 1)
   {
     goto LABEL_27;
   }
 
-  v15 = [v8 relatedSection];
-  v16 = [v15 relatedPlaceCollections];
-  v17 = [v16 count];
+  relatedSection3 = [v8 relatedSection];
+  relatedPlaceCollections = [relatedSection3 relatedPlaceCollections];
+  v17 = [relatedPlaceCollections count];
 
   if (v17)
   {
@@ -1590,12 +1590,12 @@ LABEL_29:
   return v22;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [(SearchResultsDataSource *)self resetMapServiceTicket];
-  v8 = [(SearchResultsDataSource *)self objectAtIndexPath:v7];
+  v8 = [(SearchResultsDataSource *)self objectAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1603,21 +1603,21 @@ LABEL_29:
     if ([v9 type] != 11)
     {
       v10 = objc_alloc_init(SearchSessionAnalytics);
-      v11 = [v9 placeCollection];
-      if (v11)
+      placeCollection = [v9 placeCollection];
+      if (placeCollection)
       {
         [(SearchSessionAnalytics *)v10 setAction:2099];
         [(SearchSessionAnalytics *)v10 setTarget:101];
-        v12 = [v11 collectionIdentifier];
-        v26 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 muid]);
+        collectionIdentifier = [placeCollection collectionIdentifier];
+        v26 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [collectionIdentifier muid]);
 
-        v13 = [v11 publisher];
-        v25 = v6;
-        if (v13)
+        publisher = [placeCollection publisher];
+        v25 = viewCopy;
+        if (publisher)
         {
-          v14 = [v11 publisher];
-          v15 = [v14 identifier];
-          v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v15 muid]);
+          publisher2 = [placeCollection publisher];
+          identifier = [publisher2 identifier];
+          v16 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [identifier muid]);
           v27 = v16;
           v24 = [NSArray arrayWithObjects:&v27 count:1];
         }
@@ -1627,79 +1627,79 @@ LABEL_29:
           v24 = 0;
         }
 
-        v23 = [(SearchSessionAnalytics *)v10 action];
-        v22 = [(SearchSessionAnalytics *)v10 target];
-        v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 row]);
-        v18 = [v11 collectionIdentifier];
-        v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v18 resultProviderID]);
-        [GEOAPPortal captureCuratedCollectionUserAction:v23 target:v22 value:0 publisherId:v24 following:0 collectionId:v26 collectionCategory:0 collectionCurrentlySaved:0 verticalIndex:v17 horizontalIndex:0 placeCardType:0 possibleActions:0 impossibleActions:0 providerId:v19 repeatableSectionIndex:0 modules:0];
+        action = [(SearchSessionAnalytics *)v10 action];
+        target = [(SearchSessionAnalytics *)v10 target];
+        v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [pathCopy row]);
+        collectionIdentifier2 = [placeCollection collectionIdentifier];
+        v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [collectionIdentifier2 resultProviderID]);
+        [GEOAPPortal captureCuratedCollectionUserAction:action target:target value:0 publisherId:v24 following:0 collectionId:v26 collectionCategory:0 collectionCurrentlySaved:0 verticalIndex:v17 horizontalIndex:0 placeCardType:0 possibleActions:0 impossibleActions:0 providerId:v19 repeatableSectionIndex:0 modules:0];
 
-        v6 = v25;
+        viewCopy = v25;
       }
 
       else
       {
         [(SearchSessionAnalytics *)v10 setAction:2007];
         [(SearchSessionAnalytics *)v10 setTarget:101];
-        [(DataSource *)self sendAnalyticsForDataAtIndexPath:v7 object:v9 action:[(SearchSessionAnalytics *)v10 action] populateSearchTapEvent:1];
+        [(DataSource *)self sendAnalyticsForDataAtIndexPath:pathCopy object:v9 action:[(SearchSessionAnalytics *)v10 action] populateSearchTapEvent:1];
       }
 
       v20 = +[SearchSessionAnalyticsAggregator sharedAggregator];
       [v20 collectSearchSessionAnalytics:v10];
 
-      v21 = [(DataSource *)self delegate];
-      [v21 dataSource:self itemTapped:v9];
+      delegate = [(DataSource *)self delegate];
+      [delegate dataSource:self itemTapped:v9];
 
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 }
 
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v12 = a3;
-  v7 = [a4 nextFocusedItem];
+  viewCopy = view;
+  nextFocusedItem = [context nextFocusedItem];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v12 indexPathForCell:v7], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([viewCopy indexPathForCell:nextFocusedItem], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = v8;
-    v10 = [(DataSource *)self delegate];
-    v11 = [(SearchResultsDataSource *)self objectAtIndexPath:v9];
-    [v10 dataSource:self itemFocused:v11];
+    delegate2 = v8;
+    delegate = [(DataSource *)self delegate];
+    v11 = [(SearchResultsDataSource *)self objectAtIndexPath:delegate2];
+    [delegate dataSource:self itemFocused:v11];
   }
 
   else
   {
-    v9 = [(DataSource *)self delegate];
-    [v9 dataSource:self itemFocused:0];
+    delegate2 = [(DataSource *)self delegate];
+    [delegate2 dataSource:self itemFocused:0];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(SearchResultsDataSource *)self objectAtIndexPath:a4];
+  v4 = [(SearchResultsDataSource *)self objectAtIndexPath:path];
   objc_opt_class();
   v5 = (objc_opt_isKindOfClass() & 1) == 0 || [v4 type] != 11;
 
   return v5;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = +[NSMutableArray array];
-  v7 = [(SearchResultsDataSource *)self objectAtIndexPath:v5];
+  v7 = [(SearchResultsDataSource *)self objectAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
     if (MapsFeature_IsEnabled_SearchAndDiscovery())
     {
-      v9 = [v8 placeCollection];
+      placeCollection = [v8 placeCollection];
 
-      if (v9)
+      if (placeCollection)
       {
-        v10 = [(SearchResultsDataSource *)self shareContextualActionAtIndexPath:v5];
+        v10 = [(SearchResultsDataSource *)self shareContextualActionAtIndexPath:pathCopy];
         v19 = v10;
         v11 = [NSArray arrayWithObjects:&v19 count:1];
 
@@ -1707,10 +1707,10 @@ LABEL_29:
       }
     }
 
-    v12 = [v8 mapItem];
-    v13 = [v12 _hasHikeInfo];
+    mapItem = [v8 mapItem];
+    _hasHikeInfo = [mapItem _hasHikeInfo];
 
-    if (v13)
+    if (_hasHikeInfo)
     {
 
       v14 = 0;
@@ -1719,7 +1719,7 @@ LABEL_29:
 
     if ([v8 type] != 11)
     {
-      v15 = [(SearchResultsDataSource *)self shareContextualActionAtIndexPath:v5];
+      v15 = [(SearchResultsDataSource *)self shareContextualActionAtIndexPath:pathCopy];
       v18 = v15;
       v16 = [NSArray arrayWithObjects:&v18 count:1];
 
@@ -1733,20 +1733,20 @@ LABEL_11:
   return v14;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(SearchResultsDataSource *)self objectAtIndexPath:a4];
+  v4 = [(SearchResultsDataSource *)self objectAtIndexPath:path];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SearchResultsDataSource *)self objectAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SearchResultsDataSource *)self objectAtIndexPath:pathCopy];
   v9 = +[UIFont accessibilityTextEnabled];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1762,24 +1762,24 @@ LABEL_11:
   v11 = v10;
   if ([v11 type] == 11 && (MapsFeature_IsEnabled_SearchAndDiscovery() & 1) == 0)
   {
-    v22 = [v11 relatedSection];
+    relatedSection = [v11 relatedSection];
 
-    if (v22)
+    if (relatedSection)
     {
-      v20 = [v11 relatedSection];
-      v23 = [v20 sectionType];
-      if (v23 == 2)
+      relatedSection2 = [v11 relatedSection];
+      sectionType = [relatedSection2 sectionType];
+      if (sectionType == 2)
       {
-        v12 = 0;
+        personalizedCompoundItem = 0;
         v16 = 0;
         goto LABEL_37;
       }
 
-      if (v23 == 1)
+      if (sectionType == 1)
       {
-        v24 = [v11 relatedSection];
-        v25 = [v24 relatedPlaceCollections];
-        v26 = [v25 count];
+        relatedSection3 = [v11 relatedSection];
+        relatedPlaceCollections = [relatedSection3 relatedPlaceCollections];
+        v26 = [relatedPlaceCollections count];
 
         if (v26)
         {
@@ -1792,15 +1792,15 @@ LABEL_11:
           {
             +[(RelatedSectionTableViewCell *)RelatedCollectionsSectionTableViewCell];
           }
-          v12 = ;
-          v33 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
-          v34 = [v11 relatedSection];
-          v35 = [v34 relatedPlaceCollections];
-          [v33 setPlaceCollections:v35 delegate:self];
+          personalizedCompoundItem = ;
+          v33 = [viewCopy dequeueReusableCellWithIdentifier:personalizedCompoundItem forIndexPath:pathCopy];
+          relatedSection4 = [v11 relatedSection];
+          relatedPlaceCollections2 = [relatedSection4 relatedPlaceCollections];
+          [v33 setPlaceCollections:relatedPlaceCollections2 delegate:self];
 
           v16 = v33;
-          v36 = [v20 name];
-          [v16 setSectionName:v36];
+          name = [relatedSection2 name];
+          [v16 setSectionName:name];
 
           v37 = +[UIColor clearColor];
           [v16 setBackgroundColor:v37];
@@ -1814,20 +1814,20 @@ LABEL_11:
 
     else
     {
-      v29 = [v11 searchSection];
+      searchSection = [v11 searchSection];
 
-      if (!v29)
+      if (!searchSection)
       {
         goto LABEL_6;
       }
 
-      v20 = [v11 searchSection];
-      v23 = [v20 sectionType];
-      if (v23 == 2)
+      relatedSection2 = [v11 searchSection];
+      sectionType = [relatedSection2 sectionType];
+      if (sectionType == 2)
       {
-        v30 = [v20 sectionGuide];
-        v31 = [v30 placeCollections];
-        v32 = [v31 count];
+        sectionGuide = [relatedSection2 sectionGuide];
+        placeCollections = [sectionGuide placeCollections];
+        v32 = [placeCollections count];
 
         if (v32)
         {
@@ -1840,13 +1840,13 @@ LABEL_11:
           {
             +[(RelatedSectionTableViewCell *)RelatedCollectionsSectionTableViewCell];
           }
-          v12 = ;
-          v16 = [v6 dequeueReusableCellWithIdentifier:v12 forIndexPath:v7];
-          v38 = [v30 placeCollections];
-          [v16 setPlaceCollections:v38 delegate:self];
+          personalizedCompoundItem = ;
+          v16 = [viewCopy dequeueReusableCellWithIdentifier:personalizedCompoundItem forIndexPath:pathCopy];
+          placeCollections2 = [sectionGuide placeCollections];
+          [v16 setPlaceCollections:placeCollections2 delegate:self];
 
-          v39 = [v20 name];
-          [v16 setSectionName:v39];
+          name2 = [relatedSection2 name];
+          [v16 setSectionName:name2];
 
           v40 = +[UIColor clearColor];
           [v16 setBackgroundColor:v40];
@@ -1855,19 +1855,19 @@ LABEL_11:
         else
         {
           v16 = objc_opt_new();
-          v12 = 0;
+          personalizedCompoundItem = 0;
         }
 
         goto LABEL_37;
       }
 
-      if (v23 == 1)
+      if (sectionType == 1)
       {
         goto LABEL_25;
       }
     }
 
-    if (v23)
+    if (sectionType)
     {
 
       goto LABEL_6;
@@ -1875,21 +1875,21 @@ LABEL_11:
 
 LABEL_25:
     v16 = objc_opt_new();
-    v12 = 0;
+    personalizedCompoundItem = 0;
     goto LABEL_37;
   }
 
 LABEL_6:
-  v12 = [v11 personalizedCompoundItem];
-  v13 = [v12 address];
+  personalizedCompoundItem = [v11 personalizedCompoundItem];
+  address = [personalizedCompoundItem address];
 
-  if (v13)
+  if (address)
   {
-    v14 = [v12 address];
+    address2 = [personalizedCompoundItem address];
     v15 = +[TwoLinesTableViewCell identifier];
-    v16 = [v6 dequeueReusableCellWithIdentifier:v15 forIndexPath:v7];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v15 forIndexPath:pathCopy];
 
-    v17 = [TwoLinesContentViewModelComposer cellModelForAddressBookAddress:v14];
+    v17 = [TwoLinesContentViewModelComposer cellModelForAddressBookAddress:address2];
     [v16 setViewModel:v17];
 
     goto LABEL_38;
@@ -1898,12 +1898,12 @@ LABEL_6:
   if (MapsFeature_IsEnabled_SearchAndDiscovery() && ([v11 placeCollection], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
   {
     v19 = +[_TtC4Maps25CuratedGuideTableViewCell reuseIdentifier];
-    v16 = [v6 dequeueReusableCellWithIdentifier:v19 forIndexPath:v7];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v19 forIndexPath:pathCopy];
 
-    v20 = [(SearchResultsDataSource *)self curatedGuideCellViewModelForSearchResult:v11 indexPath:v7];
-    [v6 bounds];
-    [v20 setWidth:v21];
-    [v16 configureWith:v20 delegate:self template:0];
+    relatedSection2 = [(SearchResultsDataSource *)self curatedGuideCellViewModelForSearchResult:v11 indexPath:pathCopy];
+    [viewCopy bounds];
+    [relatedSection2 setWidth:v21];
+    [v16 configureWith:relatedSection2 delegate:self template:0];
   }
 
   else
@@ -1914,12 +1914,12 @@ LABEL_6:
       goto LABEL_38;
     }
 
-    v20 = [(SearchResultsDataSource *)self placeSummaryTemplateForSearchResult:v11 indexPath:v7];
+    relatedSection2 = [(SearchResultsDataSource *)self placeSummaryTemplateForSearchResult:v11 indexPath:pathCopy];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    v16 = [v6 dequeueReusableCellWithIdentifier:v28];
+    v16 = [viewCopy dequeueReusableCellWithIdentifier:v28];
 
-    [v16 configureWithTemplate:v20 query:0 asyncDataManager:self->_placeSummaryAsyncDataManager delegate:self];
+    [v16 configureWithTemplate:relatedSection2 query:0 asyncDataManager:self->_placeSummaryAsyncDataManager delegate:self];
   }
 
 LABEL_37:
@@ -1929,17 +1929,17 @@ LABEL_38:
   return v16;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(SearchResultsDataSource *)self content];
-  v8 = [v7 titleForHeaderInSection:a4];
+  viewCopy = view;
+  content = [(SearchResultsDataSource *)self content];
+  v8 = [content titleForHeaderInSection:section];
 
   if ([v8 length])
   {
-    v9 = [v6 _maps_indexOfFirstNonEmptySection] == a4;
-    v10 = [v6 traitCollection];
-    [ResultsSectionHeaderView heightWhenFirstNonEmptySection:v9 title:v8 traitCollection:v10];
+    v9 = [viewCopy _maps_indexOfFirstNonEmptySection] == section;
+    traitCollection = [viewCopy traitCollection];
+    [ResultsSectionHeaderView heightWhenFirstNonEmptySection:v9 title:v8 traitCollection:traitCollection];
     v12 = v11;
   }
 
@@ -1951,65 +1951,65 @@ LABEL_38:
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [a3 _maps_indexOfFirstNonEmptySection] == a4;
-  v7 = [(SearchResultsDataSource *)self content];
-  v8 = [v7 viewForHeaderInSection:a4 isFirstNonEmptySection:v6];
+  v6 = [view _maps_indexOfFirstNonEmptySection] == section;
+  content = [(SearchResultsDataSource *)self content];
+  v8 = [content viewForHeaderInSection:section isFirstNonEmptySection:v6];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(SearchResultsDataSource *)self content];
-  v6 = [v5 numberOfRowsInSection:a4];
+  content = [(SearchResultsDataSource *)self content];
+  v6 = [content numberOfRowsInSection:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(SearchResultsDataSource *)self content];
-  v4 = [v3 numberOfSections];
+  content = [(SearchResultsDataSource *)self content];
+  numberOfSections = [content numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
-- (void)setIsPresentingVenueClusterResults:(BOOL)a3
+- (void)setIsPresentingVenueClusterResults:(BOOL)results
 {
-  if (self->_isPresentingVenueClusterResults != a3)
+  if (self->_isPresentingVenueClusterResults != results)
   {
-    self->_isPresentingVenueClusterResults = a3;
-    v4 = [(SearchResultsDataSource *)self content];
+    self->_isPresentingVenueClusterResults = results;
+    content = [(SearchResultsDataSource *)self content];
 
-    if (v4)
+    if (content)
     {
-      v5 = [(DataSource *)self delegate];
-      [v5 dataSourceUpdated:self];
+      delegate = [(DataSource *)self delegate];
+      [delegate dataSourceUpdated:self];
     }
   }
 }
 
-- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)a3
+- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)results
 {
-  if (self->_isPresentingSearchAlongTheRouteResults != a3)
+  if (self->_isPresentingSearchAlongTheRouteResults != results)
   {
-    self->_isPresentingSearchAlongTheRouteResults = a3;
-    v4 = [(SearchResultsDataSource *)self content];
+    self->_isPresentingSearchAlongTheRouteResults = results;
+    content = [(SearchResultsDataSource *)self content];
 
-    if (v4)
+    if (content)
     {
-      v5 = [(DataSource *)self delegate];
-      [v5 dataSourceUpdated:self];
+      delegate = [(DataSource *)self delegate];
+      [delegate dataSourceUpdated:self];
     }
   }
 }
 
 - (void)createEVChargersRefreshDownloader
 {
-  v3 = [(SearchResultsDataSourceContent *)self->_content objects];
-  v4 = [v3 count];
+  objects = [(SearchResultsDataSourceContent *)self->_content objects];
+  v4 = [objects count];
 
   if (v4)
   {
@@ -2029,13 +2029,13 @@ LABEL_38:
   }
 }
 
-- (void)refreshEVChargers:(id)a3
+- (void)refreshEVChargers:(id)chargers
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = chargers;
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -2051,17 +2051,17 @@ LABEL_38:
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 mapItem];
-        v10 = [v9 _identifier];
+        mapItem = [v8 mapItem];
+        _identifier = [mapItem _identifier];
 
-        v11 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:v10];
+        v11 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:_identifier];
 
         if (v11)
         {
           evChargerDownloader = self->_evChargerDownloader;
-          v13 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:v10];
-          v14 = [v8 mapItem];
-          [(PlaceSummaryEVChargerDownloader *)evChargerDownloader refreshResultForForTemplate:v13 mapItem:v14];
+          v13 = [(NSMutableDictionary *)self->_mapitemTemplates objectForKeyedSubscript:_identifier];
+          mapItem2 = [v8 mapItem];
+          [(PlaceSummaryEVChargerDownloader *)evChargerDownloader refreshResultForForTemplate:v13 mapItem:mapItem2];
         }
 
         if (_UISolariumEnabled())
@@ -2072,7 +2072,7 @@ LABEL_38:
           v16[3] = &unk_10162EFC0;
           v16[4] = self;
           v16[5] = v8;
-          v17 = v10;
+          v17 = _identifier;
           [(SearchResultsDataSource *)self iterateThroughIndexPathsAndExecuteBlock:v16];
         }
       }
@@ -2084,20 +2084,20 @@ LABEL_38:
   }
 }
 
-- (void)setContent:(id)a3 openAt:(id)a4
+- (void)setContent:(id)content openAt:(id)at
 {
-  objc_storeStrong(&self->_openAt, a4);
-  v6 = a3;
-  [(SearchResultsDataSource *)self setContent:v6];
+  objc_storeStrong(&self->_openAt, at);
+  contentCopy = content;
+  [(SearchResultsDataSource *)self setContent:contentCopy];
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
-  if (self->_content != v5)
+  contentCopy = content;
+  if (self->_content != contentCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_content, a3);
+    v14 = contentCopy;
+    objc_storeStrong(&self->_content, content);
     [(SearchResultsDataSource *)self setIndexPathForRelatedCollectionSection:0];
     v6 = objc_alloc_init(_TtC4Maps28PlaceSummaryAsyncDataManager);
     placeSummaryAsyncDataManager = self->_placeSummaryAsyncDataManager;
@@ -2107,69 +2107,69 @@ LABEL_38:
     curatedGuideDataDownloader = self->_curatedGuideDataDownloader;
     self->_curatedGuideDataDownloader = v8;
 
-    v10 = [(SearchResultsDataSource *)self impressionElements];
-    [v10 removeAllObjects];
+    impressionElements = [(SearchResultsDataSource *)self impressionElements];
+    [impressionElements removeAllObjects];
 
-    v11 = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
-    [v11 removeAllObjects];
+    placeSummaryTemplateViewModels = [(SearchResultsDataSource *)self placeSummaryTemplateViewModels];
+    [placeSummaryTemplateViewModels removeAllObjects];
 
-    v12 = [(SearchResultsDataSource *)self curatedGuideViewModels];
-    [v12 removeAllObjects];
+    curatedGuideViewModels = [(SearchResultsDataSource *)self curatedGuideViewModels];
+    [curatedGuideViewModels removeAllObjects];
 
     [(SearchResultsDataSource *)self cachePlaceSummaryTemplates];
     [(SearchResultsDataSource *)self buildAndCacheCuratedGuideViewModels];
-    v13 = [(DataSource *)self delegate];
-    [v13 dataSourceUpdated:self];
+    delegate = [(DataSource *)self delegate];
+    [delegate dataSourceUpdated:self];
 
     [(SearchResultsDataSource *)self createEVChargersRefreshDownloader];
-    v5 = v14;
+    contentCopy = v14;
   }
 }
 
-- (id)impressionElementForSearchResult:(id)a3 indexPath:(id)a4
+- (id)impressionElementForSearchResult:(id)result indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  pathCopy = path;
   if (MapsFeature_IsEnabled_SearchResultsImpressions())
   {
-    v8 = [(SearchResultsDataSource *)self impressionElements];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    impressionElements = [(SearchResultsDataSource *)self impressionElements];
+    v9 = [impressionElements objectForKeyedSubscript:pathCopy];
 
     if (v9)
     {
-      v10 = [(SearchResultsDataSource *)self impressionElements];
-      v11 = [(SearchResultsImpressionMetadata *)v10 objectForKeyedSubscript:v7];
+      impressionElements2 = [(SearchResultsDataSource *)self impressionElements];
+      v11 = [(SearchResultsImpressionMetadata *)impressionElements2 objectForKeyedSubscript:pathCopy];
     }
 
     else
     {
       v28 = [SearchResultsImpressionMetadata alloc];
-      v12 = [v6 resultIndex];
-      v13 = [v6 mapItem];
-      v14 = [v13 _muid];
-      v15 = [v6 mapItem];
-      v16 = [v15 place];
-      v17 = [v16 localSearchProviderID];
-      v18 = [(SearchResultsDataSource *)self searchQuery];
-      v10 = [(SearchResultsImpressionMetadata *)v28 initWithResultIndex:v12 businessId:v14 localSearchProviderId:v17 query:v18];
+      resultIndex = [resultCopy resultIndex];
+      mapItem = [resultCopy mapItem];
+      _muid = [mapItem _muid];
+      mapItem2 = [resultCopy mapItem];
+      place = [mapItem2 place];
+      localSearchProviderID = [place localSearchProviderID];
+      searchQuery = [(SearchResultsDataSource *)self searchQuery];
+      impressionElements2 = [(SearchResultsImpressionMetadata *)v28 initWithResultIndex:resultIndex businessId:_muid localSearchProviderId:localSearchProviderID query:searchQuery];
 
       v19 = [MUImpressionElement alloc];
-      v20 = [v6 impressionElementIdentifier];
+      impressionElementIdentifier = [resultCopy impressionElementIdentifier];
       GEOConfigGetDouble();
-      v11 = [v19 initWithElementIdentifier:v20 visibilityThreshold:?];
+      v11 = [v19 initWithElementIdentifier:impressionElementIdentifier visibilityThreshold:?];
 
-      [v11 setCustomData:v10];
-      v21 = [(SearchResultsDataSource *)self impressionsSessionIdentifier];
-      [v11 setSessionIdentifier:v21];
+      [v11 setCustomData:impressionElements2];
+      impressionsSessionIdentifier = [(SearchResultsDataSource *)self impressionsSessionIdentifier];
+      [v11 setSessionIdentifier:impressionsSessionIdentifier];
 
-      v22 = [v7 section];
-      v23 = [v7 row];
-      v24 = [v6 mapItem];
-      v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"SearchResult at section %ld, index %ld, muid %llu", v22, v23, [v24 _muid]);
+      section = [pathCopy section];
+      v23 = [pathCopy row];
+      mapItem3 = [resultCopy mapItem];
+      v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"SearchResult at section %ld, index %ld, muid %llu", section, v23, [mapItem3 _muid]);
       [v11 setDebugString:v25];
 
-      v26 = [(SearchResultsDataSource *)self impressionElements];
-      [v26 setObject:v11 forKeyedSubscript:v7];
+      impressionElements3 = [(SearchResultsDataSource *)self impressionElements];
+      [impressionElements3 setObject:v11 forKeyedSubscript:pathCopy];
     }
   }
 
@@ -2183,22 +2183,22 @@ LABEL_38:
 
 - (id)objectsForAnalytics
 {
-  v2 = [(SearchResultsDataSourceContent *)self->_content objects];
-  v3 = [v2 copy];
+  objects = [(SearchResultsDataSourceContent *)self->_content objects];
+  v3 = [objects copy];
 
   return v3;
 }
 
-- (id)shareContextualActionAtIndexPath:(id)a3
+- (id)shareContextualActionAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100932ED4;
   v8[3] = &unk_1016603D0;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = pathCopy;
   v9 = v5;
   v6 = sub_100DCCCC0(v8);
 
@@ -2208,17 +2208,17 @@ LABEL_38:
   return v6;
 }
 
-- (void)setGuideSummaryLayoutMetadata:(id)a3
+- (void)setGuideSummaryLayoutMetadata:(id)metadata
 {
-  v5 = a3;
-  objc_storeStrong(&self->_guideSummaryLayoutMetadata, a3);
-  -[SearchResultsDataSource setGuideSummaryUsesRichLayout:](self, "setGuideSummaryUsesRichLayout:", [v5 guideSummaryUsesRichLayout]);
+  metadataCopy = metadata;
+  objc_storeStrong(&self->_guideSummaryLayoutMetadata, metadata);
+  -[SearchResultsDataSource setGuideSummaryUsesRichLayout:](self, "setGuideSummaryUsesRichLayout:", [metadataCopy guideSummaryUsesRichLayout]);
   v6 = sub_100067540();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SearchResultsDataSource *)self guideSummaryUsesRichLayout];
+    guideSummaryUsesRichLayout = [(SearchResultsDataSource *)self guideSummaryUsesRichLayout];
     v8 = @"NO";
-    if (v7)
+    if (guideSummaryUsesRichLayout)
     {
       v8 = @"YES";
     }
@@ -2229,23 +2229,23 @@ LABEL_38:
   }
 }
 
-- (void)setPlaceSummaryMetadata:(id)a3
+- (void)setPlaceSummaryMetadata:(id)metadata
 {
-  v5 = a3;
-  objc_storeStrong(&self->_placeSummaryMetadata, a3);
+  metadataCopy = metadata;
+  objc_storeStrong(&self->_placeSummaryMetadata, metadata);
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     [(SearchResultsDataSource *)self setPlaceSummaryUsesRichLayout:[(PlaceSummaryMetadata *)self->_placeSummaryMetadata containsPhotoCarouselLine]];
-    v6 = [(SearchResultsDataSource *)self isShowingClusterResults]&& [(SearchResultsDataSource *)self isPresentingSearchAlongTheRouteResults];
-    v7 = [(DataSource *)self tableView];
-    [v7 setSeparatorStyle:v6];
+    isPresentingSearchAlongTheRouteResults = [(SearchResultsDataSource *)self isShowingClusterResults]&& [(SearchResultsDataSource *)self isPresentingSearchAlongTheRouteResults];
+    tableView = [(DataSource *)self tableView];
+    [tableView setSeparatorStyle:isPresentingSearchAlongTheRouteResults];
 
     v8 = sub_100067540();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SearchResultsDataSource *)self placeSummaryUsesRichLayout];
+      placeSummaryUsesRichLayout = [(SearchResultsDataSource *)self placeSummaryUsesRichLayout];
       v10 = @"NO";
-      if (v9)
+      if (placeSummaryUsesRichLayout)
       {
         v10 = @"YES";
       }
@@ -2257,7 +2257,7 @@ LABEL_38:
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   if ([(SearchResultsDataSource *)self enableStructuredRAPAffordance])
   {
@@ -2276,46 +2276,46 @@ LABEL_38:
   [(SearchResultsDataSource *)&v4 dealloc];
 }
 
-- (SearchResultsDataSource)initWithTableView:(id)a3
+- (SearchResultsDataSource)initWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v37.receiver = self;
   v37.super_class = SearchResultsDataSource;
-  v5 = [(DataSource *)&v37 initWithTableView:v4 updateLocation:1];
+  v5 = [(DataSource *)&v37 initWithTableView:viewCopy updateLocation:1];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = +[TwoLinesTableViewCell identifier];
-    [v4 registerClass:v6 forCellReuseIdentifier:v7];
+    [viewCopy registerClass:v6 forCellReuseIdentifier:v7];
 
     v8 = objc_opt_class();
     v9 = +[RelatedSectionTableViewCell identifier];
-    [v4 registerClass:v8 forCellReuseIdentifier:v9];
+    [viewCopy registerClass:v8 forCellReuseIdentifier:v9];
 
     v10 = objc_opt_class();
     v11 = +[RelatedSectionTableViewCell accessibilityIdentifier];
-    [v4 registerClass:v10 forCellReuseIdentifier:v11];
+    [viewCopy registerClass:v10 forCellReuseIdentifier:v11];
 
     v12 = objc_opt_class();
     v13 = +[(RelatedSectionTableViewCell *)RelatedCollectionsSectionTableViewCell];
-    [v4 registerClass:v12 forCellReuseIdentifier:v13];
+    [viewCopy registerClass:v12 forCellReuseIdentifier:v13];
 
     v14 = objc_opt_class();
     v15 = +[(RelatedSectionTableViewCell *)RelatedCollectionsSectionTableViewCell];
-    [v4 registerClass:v14 forCellReuseIdentifier:v15];
+    [viewCopy registerClass:v14 forCellReuseIdentifier:v15];
 
     v16 = objc_opt_class();
     v17 = +[_TtC4Maps25PlaceSummaryTableViewCell reuseIdentifier];
-    [v4 registerClass:v16 forCellReuseIdentifier:v17];
+    [viewCopy registerClass:v16 forCellReuseIdentifier:v17];
 
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v4 registerClass:v18 forCellReuseIdentifier:v20];
+    [viewCopy registerClass:v18 forCellReuseIdentifier:v20];
 
     v21 = objc_opt_class();
     v22 = +[_TtC4Maps25CuratedGuideTableViewCell reuseIdentifier];
-    [v4 registerClass:v21 forCellReuseIdentifier:v22];
+    [viewCopy registerClass:v21 forCellReuseIdentifier:v22];
 
     v5->_displayDistance = 1;
     v23 = objc_alloc_init(SearchResultsCuratedCollectionsAnalyticsManager);

@@ -1,38 +1,38 @@
 @interface TPSAnalyticsEvent
 - (TPSAnalyticsDataProvider)dataProvider;
-- (TPSAnalyticsEvent)initWithCoder:(id)a3;
-- (TPSAnalyticsEvent)initWithDate:(id)a3;
+- (TPSAnalyticsEvent)initWithCoder:(id)coder;
+- (TPSAnalyticsEvent)initWithDate:(id)date;
 - (id)analyticsEventRepresentation;
 - (id)eventName;
 - (id)mutableAnalyticsEventRepresentation;
 - (void)log;
-- (void)setDataProvider:(id)a3;
+- (void)setDataProvider:(id)provider;
 @end
 
 @implementation TPSAnalyticsEvent
 
-- (TPSAnalyticsEvent)initWithDate:(id)a3
+- (TPSAnalyticsEvent)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v7.receiver = self;
   v7.super_class = TPSAnalyticsEvent;
   v5 = [(TPSAnalyticsEvent *)&v7 init];
   if (v5)
   {
-    if (!v4)
+    if (!dateCopy)
     {
-      v4 = [MEMORY[0x1E695DF00] date];
+      dateCopy = [MEMORY[0x1E695DF00] date];
     }
 
-    objc_storeStrong(&v5->_date, v4);
+    objc_storeStrong(&v5->_date, dateCopy);
   }
 
   return v5;
 }
 
-- (void)setDataProvider:(id)a3
+- (void)setDataProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
 
   v6 = obj;
@@ -43,16 +43,16 @@
     if (deliveryInfoVersion)
     {
       v8 = deliveryInfoVersion;
-      v9 = self->_deliveryInfoVersion;
+      dataProvider = self->_deliveryInfoVersion;
       self->_deliveryInfoVersion = v8;
     }
 
     else
     {
-      v9 = [(TPSAnalyticsEvent *)self dataProvider];
-      v10 = [v9 deliveryInfoVersion];
+      dataProvider = [(TPSAnalyticsEvent *)self dataProvider];
+      deliveryInfoVersion = [dataProvider deliveryInfoVersion];
       v11 = self->_deliveryInfoVersion;
-      self->_deliveryInfoVersion = v10;
+      self->_deliveryInfoVersion = deliveryInfoVersion;
     }
 
     v6 = obj;
@@ -63,21 +63,21 @@
 
 - (id)analyticsEventRepresentation
 {
-  v2 = [(TPSAnalyticsEvent *)self mutableAnalyticsEventRepresentation];
-  v3 = [v2 copy];
+  mutableAnalyticsEventRepresentation = [(TPSAnalyticsEvent *)self mutableAnalyticsEventRepresentation];
+  v3 = [mutableAnalyticsEventRepresentation copy];
 
   return v3;
 }
 
-- (TPSAnalyticsEvent)initWithCoder:(id)a3
+- (TPSAnalyticsEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TPSAnalyticsEvent;
   v5 = [(TPSAnalyticsEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
   }

@@ -1,26 +1,26 @@
 @interface PPEventMetricsLogger
 + (id)defaultLogger;
-+ (unint64_t)numberOfDaysBetweenDate:(id)a3 andDate:(id)a4;
-- (BOOL)_removeInteractionsSummaryLogsFromLogsAndResetStoreAge:(id)a3;
++ (unint64_t)numberOfDaysBetweenDate:(id)date andDate:(id)andDate;
+- (BOOL)_removeInteractionsSummaryLogsFromLogsAndResetStoreAge:(id)age;
 - (BOOL)resetLogs;
 - (BOOL)storeToDisk;
 - (PPEventMetricsLogger)init;
-- (PPEventMetricsLogger)initWithCoder:(id)a3;
-- (PPEventMetricsLogger)initWithFileName:(id)a3;
+- (PPEventMetricsLogger)initWithCoder:(id)coder;
+- (PPEventMetricsLogger)initWithFileName:(id)name;
 - (double)_storeAge;
 - (id)_createRTCReporting;
-- (id)_descriptionForActionType:(unsigned __int16)a3;
-- (id)_descriptionForInterface:(unsigned __int16)a3;
-- (id)_descriptionForPPRTCCategory:(unsigned __int16)a3;
-- (id)_interactionAttributesForEventHighlight:(id)a3;
-- (id)allowedLogFromLog:(id)a3;
-- (id)eventsAndExtraordinaryEventsDictFromDate:(id)a3;
+- (id)_descriptionForActionType:(unsigned __int16)type;
+- (id)_descriptionForInterface:(unsigned __int16)interface;
+- (id)_descriptionForPPRTCCategory:(unsigned __int16)category;
+- (id)_interactionAttributesForEventHighlight:(id)highlight;
+- (id)allowedLogFromLog:(id)log;
+- (id)eventsAndExtraordinaryEventsDictFromDate:(id)date;
 - (id)loggedInteractionsSummaryMetrics;
 - (id)logsToSend;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)logNewInteractionSummaryWithDictionary:(id)a3;
-- (void)sendRTCLogsWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)logNewInteractionSummaryWithDictionary:(id)dictionary;
+- (void)sendRTCLogsWithCompletion:(id)completion;
 - (void)updateAndScheduleDiskWrite;
 @end
 
@@ -51,54 +51,54 @@
   return v3;
 }
 
-- (id)_descriptionForPPRTCCategory:(unsigned __int16)a3
+- (id)_descriptionForPPRTCCategory:(unsigned __int16)category
 {
-  if ((a3 + 1) > 0xAu)
+  if ((category + 1) > 0xAu)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_278972870[(a3 + 1)];
+    return off_278972870[(category + 1)];
   }
 }
 
-- (id)_descriptionForActionType:(unsigned __int16)a3
+- (id)_descriptionForActionType:(unsigned __int16)type
 {
-  if (a3 > 4u)
+  if (type > 4u)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_278972848[a3];
+    return off_278972848[type];
   }
 }
 
-- (id)_descriptionForInterface:(unsigned __int16)a3
+- (id)_descriptionForInterface:(unsigned __int16)interface
 {
-  if (a3 > 0xAu)
+  if (interface > 0xAu)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2789727F0[a3];
+    return off_2789727F0[interface];
   }
 }
 
-- (id)_interactionAttributesForEventHighlight:(id)a3
+- (id)_interactionAttributesForEventHighlight:(id)highlight
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = [v3 alloc];
-  v6 = [v4 features];
+  features = [highlightCopy features];
 
-  v7 = [v6 _pas_componentsJoinedByString:{@", "}];
+  v7 = [features _pas_componentsJoinedByString:{@", "}];
   v8 = [v5 initWithFormat:@"[%@]", v7, @"rankingFeatures"];
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
@@ -108,13 +108,13 @@
   return v9;
 }
 
-- (id)allowedLogFromLog:(id)a3
+- (id)allowedLogFromLog:(id)log
 {
-  v3 = a3;
-  [v3 removeObjectForKey:@"eventIdentifier"];
-  [v3 removeObjectForKey:@"expirationDate"];
+  logCopy = log;
+  [logCopy removeObjectForKey:@"eventIdentifier"];
+  [logCopy removeObjectForKey:@"expirationDate"];
 
-  return v3;
+  return logCopy;
 }
 
 - (id)logsToSend
@@ -163,10 +163,10 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)_removeInteractionsSummaryLogsFromLogsAndResetStoreAge:(id)a3
+- (BOOL)_removeInteractionsSummaryLogsFromLogsAndResetStoreAge:(id)age
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ageCopy = age;
   pthread_mutex_lock(&self->_lock);
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_storeCreationDate = v5;
@@ -174,7 +174,7 @@ LABEL_9:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = ageCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -201,10 +201,10 @@ LABEL_9:
   }
 
   pthread_mutex_unlock(&self->_lock);
-  v11 = [(PPEventMetricsLogger *)self storeToDisk];
+  storeToDisk = [(PPEventMetricsLogger *)self storeToDisk];
 
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return storeToDisk;
 }
 
 - (double)_storeAge
@@ -228,20 +228,20 @@ LABEL_9:
   return [(PPEventMetricsLogger *)self storeToDisk];
 }
 
-- (id)eventsAndExtraordinaryEventsDictFromDate:(id)a3
+- (id)eventsAndExtraordinaryEventsDictFromDate:(id)date
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v5 = objc_opt_new();
     [v5 setDay:-7];
-    v6 = [v4 dateByAddingComponents:v5 toDate:v3 options:0];
+    v6 = [currentCalendar dateByAddingComponents:v5 toDate:dateCopy options:0];
     if (v6)
     {
       v7 = +[PPLocalEventStore defaultStore];
-      v8 = [v7 eventHighlightsFrom:v6 to:v3 options:1];
+      v8 = [v7 eventHighlightsFrom:v6 to:dateCopy options:1];
 
       v22 = 0u;
       v23 = 0u;
@@ -292,11 +292,11 @@ LABEL_9:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412802;
-        v28 = v4;
+        v28 = currentCalendar;
         v29 = 2112;
         v30 = v5;
         v31 = 2112;
-        v32 = v3;
+        v32 = dateCopy;
         _os_log_fault_impl(&dword_23224A000, v9, OS_LOG_TYPE_FAULT, "eventsAndExtraordinaryEventsDictFromDate failed to get startDate from c:%@ add:%@ d:%@", buf, 0x20u);
       }
 
@@ -314,20 +314,20 @@ LABEL_9:
   return v15;
 }
 
-- (void)logNewInteractionSummaryWithDictionary:(id)a3
+- (void)logNewInteractionSummaryWithDictionary:(id)dictionary
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = pp_events_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = dictionaryCopy;
     _os_log_debug_impl(&dword_23224A000, v5, OS_LOG_TYPE_DEBUG, "PPEventMetricsLogger: log new interaction summary: %@", &v7, 0xCu);
   }
 
   pthread_mutex_lock(&self->_lock);
-  [(NSMutableArray *)self->_loggedInteractionsSummary addObject:v4];
+  [(NSMutableArray *)self->_loggedInteractionsSummary addObject:dictionaryCopy];
   pthread_mutex_unlock(&self->_lock);
   [(PPEventMetricsLogger *)self updateAndScheduleDiskWrite];
 
@@ -355,25 +355,25 @@ LABEL_9:
   dispatch_source_set_timer(persistenceTimerSource, v6, 0xFFFFFFFFFFFFFFFFLL, 0xB2D05E00uLL);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   pthread_mutex_lock(&self->_lock);
-  [v4 encodeObject:self->_path forKey:@"path"];
-  [v4 encodeObject:self->_loggedInteractionsSummary forKey:@"loggedInteractionsSummary"];
+  [coderCopy encodeObject:self->_path forKey:@"path"];
+  [coderCopy encodeObject:self->_loggedInteractionsSummary forKey:@"loggedInteractionsSummary"];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_storeCreationDate];
-  [v4 encodeObject:v5 forKey:@"storeCreationDate"];
+  [coderCopy encodeObject:v5 forKey:@"storeCreationDate"];
 
   pthread_mutex_unlock(&self->_lock);
 }
 
-- (PPEventMetricsLogger)initWithCoder:(id)a3
+- (PPEventMetricsLogger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PPEventMetricsLogger *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v6;
 
@@ -386,7 +386,7 @@ LABEL_9:
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v8 initWithObjects:{v9, v10, v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"loggedInteractionsSummary"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"loggedInteractionsSummary"];
     v18 = v17;
     if (v17)
     {
@@ -401,7 +401,7 @@ LABEL_9:
     loggedInteractionsSummary = v5->_loggedInteractionsSummary;
     v5->_loggedInteractionsSummary = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeCreationDate"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeCreationDate"];
     [v21 doubleValue];
     v5->_storeCreationDate = v22;
 
@@ -415,10 +415,10 @@ LABEL_9:
   return v5;
 }
 
-- (void)sendRTCLogsWithCompletion:(id)a3
+- (void)sendRTCLogsWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pp_events_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -427,9 +427,9 @@ LABEL_9:
   }
 
   pthread_mutex_lock(&self->_lock);
-  v6 = [(PPEventMetricsLogger *)self logsToSend];
+  logsToSend = [(PPEventMetricsLogger *)self logsToSend];
   pthread_mutex_unlock(&self->_lock);
-  v7 = [v6 count] == 0;
+  v7 = [logsToSend count] == 0;
   v8 = pp_events_log_handle();
   v9 = v8;
   if (v7)
@@ -440,22 +440,22 @@ LABEL_9:
       _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_INFO, "PPEventMetricsLogger: No RTC logs to send this time. Skipping.", buf, 2u);
     }
 
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v6 count];
+      v13 = [logsToSend count];
       *buf = 134218242;
       *&buf[4] = v13;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = logsToSend;
       _os_log_debug_impl(&dword_23224A000, v9, OS_LOG_TYPE_DEBUG, "PPEventMetricsLogger: Selected logs (%lu): %@", buf, 0x16u);
     }
 
-    v10 = [(PPEventMetricsLogger *)self _createRTCReporting];
+    _createRTCReporting = [(PPEventMetricsLogger *)self _createRTCReporting];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
@@ -468,10 +468,10 @@ LABEL_9:
     v14[1] = 3221225472;
     v14[2] = __50__PPEventMetricsLogger_sendRTCLogsWithCompletion___block_invoke;
     v14[3] = &unk_2789727D0;
-    v18 = v4;
-    v15 = v6;
-    v16 = self;
-    v11 = v10;
+    v18 = completionCopy;
+    v15 = logsToSend;
+    selfCopy = self;
+    v11 = _createRTCReporting;
     v17 = v11;
     v19 = buf;
     v20 = v21;
@@ -691,14 +691,14 @@ LABEL_35:
   return v6;
 }
 
-- (PPEventMetricsLogger)initWithFileName:(id)a3
+- (PPEventMetricsLogger)initWithFileName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = [(PPEventMetricsLogger *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, name);
   }
 
   return v7;
@@ -762,14 +762,14 @@ void __28__PPEventMetricsLogger_init__block_invoke(uint64_t a1)
   [WeakRetained storeToDisk];
 }
 
-+ (unint64_t)numberOfDaysBetweenDate:(id)a3 andDate:(id)a4
++ (unint64_t)numberOfDaysBetweenDate:(id)date andDate:(id)andDate
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
+  andDateCopy = andDate;
+  dateCopy = date;
   v8 = [v5 alloc];
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-  v10 = [v9 components:16 fromDate:v7 toDate:v6 options:0];
+  v10 = [v9 components:16 fromDate:dateCopy toDate:andDateCopy options:0];
 
   v11 = [v10 day];
   return v11;

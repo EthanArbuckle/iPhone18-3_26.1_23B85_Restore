@@ -11,9 +11,9 @@
 - (uint64_t)brc_isBlacklistedPackageExtension
 {
   v2 = [BRCUserDefaults defaultsForMangledID:0];
-  v3 = [v2 blacklistedPackageExtensions];
-  v4 = [a1 lowercaseString];
-  v5 = [v3 containsObject:v4];
+  blacklistedPackageExtensions = [v2 blacklistedPackageExtensions];
+  lowercaseString = [self lowercaseString];
+  v5 = [blacklistedPackageExtensions containsObject:lowercaseString];
 
   return v5;
 }
@@ -22,8 +22,8 @@
 {
   pthread_rwlock_rdlock(&_forcedPackageExtensionsMutex);
   v2 = _unifiedForcedPackageExtensions;
-  v3 = [a1 lowercaseString];
-  v4 = [v2 containsObject:v3];
+  lowercaseString = [self lowercaseString];
+  v4 = [v2 containsObject:lowercaseString];
 
   pthread_rwlock_unlock(&_forcedPackageExtensionsMutex);
   return v4;
@@ -51,9 +51,9 @@
   v3 = a3;
   pthread_rwlock_wrlock(&_forcedPackageExtensionsMutex);
   v4 = _unifiedForcedPackageExtensions;
-  v5 = [v3 lowercaseString];
+  lowercaseString = [v3 lowercaseString];
 
-  [v4 addObject:v5];
+  [v4 addObject:lowercaseString];
   pthread_rwlock_unlock(&_forcedPackageExtensionsMutex);
 
   return _BRCWritePackageExtensions();

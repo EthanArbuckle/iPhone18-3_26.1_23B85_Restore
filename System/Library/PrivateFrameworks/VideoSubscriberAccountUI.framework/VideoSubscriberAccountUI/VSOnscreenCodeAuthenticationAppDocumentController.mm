@@ -1,18 +1,18 @@
 @interface VSOnscreenCodeAuthenticationAppDocumentController
-- (BOOL)_updateOnscreenCodeViewModel:(id)a3 error:(id *)a4;
-- (BOOL)_updateOnscreenCodeViewModel:(id)a3 withTemplate:(id)a4;
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4;
+- (BOOL)_updateOnscreenCodeViewModel:(id)model error:(id *)error;
+- (BOOL)_updateOnscreenCodeViewModel:(id)model withTemplate:(id)template;
+- (BOOL)_updateViewModel:(id)model error:(id *)error;
 - (id)_newViewModel;
-- (id)_onscreenCodeViewModelWithViewModel:(id)a3;
+- (id)_onscreenCodeViewModelWithViewModel:(id)model;
 - (void)onscreenCodeViewModelButtonLockupPressed;
 @end
 
 @implementation VSOnscreenCodeAuthenticationAppDocumentController
 
-- (id)_onscreenCodeViewModelWithViewModel:(id)a3
+- (id)_onscreenCodeViewModelWithViewModel:(id)model
 {
-  v3 = a3;
-  if (!v3)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
@@ -27,23 +27,23 @@
     [v4 raise:v5 format:{@"Unexpectedly, viewModel was %@, instead of VSOnscreenCodeViewModel.", v7}];
   }
 
-  return v3;
+  return modelCopy;
 }
 
-- (BOOL)_updateOnscreenCodeViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateOnscreenCodeViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
-  v7 = [(VSAppDocumentController *)self templateElement];
-  if ([v7 vs_elementType] == 164)
+  templateElement = [(VSAppDocumentController *)self templateElement];
+  if ([templateElement vs_elementType] == 164)
   {
-    v8 = [(VSOnscreenCodeAuthenticationAppDocumentController *)self _updateOnscreenCodeViewModel:v6 withTemplate:v7];
+    v8 = [(VSOnscreenCodeAuthenticationAppDocumentController *)self _updateOnscreenCodeViewModel:modelCopy withTemplate:templateElement];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -53,11 +53,11 @@
 
   v9 = VSPrivateError();
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_8:
@@ -65,13 +65,13 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_updateOnscreenCodeViewModel:(id)a3 withTemplate:(id)a4
+- (BOOL)_updateOnscreenCodeViewModel:(id)model withTemplate:(id)template
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  templateCopy = template;
   v7 = MEMORY[0x277CBE660];
-  if (!v5)
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
@@ -80,9 +80,9 @@ LABEL_8:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v42 = v6;
-  v8 = [v6 children];
-  v9 = [v8 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  v42 = templateCopy;
+  children = [templateCopy children];
+  v9 = [children countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v9)
   {
     v10 = v9;
@@ -94,37 +94,37 @@ LABEL_8:
       {
         if (*v46 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(children);
         }
 
         v14 = *(*(&v45 + 1) + 8 * i);
-        v15 = [v14 vs_elementType];
-        if (v15 == 157)
+        vs_elementType = [v14 vs_elementType];
+        if (vs_elementType == 157)
         {
-          v26 = [v14 attributes];
-          v19 = [v26 objectForKey:@"label"];
+          attributes = [v14 attributes];
+          string = [attributes objectForKey:@"label"];
 
-          if (v19 && ([v19 isEqualToString:&stru_2880B8BB0] & 1) == 0)
+          if (string && ([string isEqualToString:&stru_2880B8BB0] & 1) == 0)
           {
-            [v5 setWebPageLabel:v19];
+            [modelCopy setWebPageLabel:string];
           }
 
-          v27 = [v14 attributes];
-          v25 = [v27 objectForKey:@"src"];
+          attributes2 = [v14 attributes];
+          elementName = [attributes2 objectForKey:@"src"];
 
-          if (v25)
+          if (elementName)
           {
-            v28 = [MEMORY[0x277CBEBC0] vs_URLWithString:v25];
+            v28 = [MEMORY[0x277CBEBC0] vs_URLWithString:elementName];
             if (v28)
             {
-              [v5 setWebPageURL:v28];
+              [modelCopy setWebPageURL:v28];
             }
           }
 
           goto LABEL_25;
         }
 
-        if (v15 == 138)
+        if (vs_elementType == 138)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -136,14 +136,14 @@ LABEL_8:
           }
 
           v23 = v14;
-          v24 = [v23 text];
-          v19 = [v24 string];
+          text = [v23 text];
+          string = [text string];
 
-          v25 = [v23 elementName];
+          elementName = [v23 elementName];
 
-          if ([v25 isEqualToString:@"onscreenCode"])
+          if ([elementName isEqualToString:@"onscreenCode"])
           {
-            [v5 setOnscreenCode:v19];
+            [modelCopy setOnscreenCode:string];
           }
 
 LABEL_25:
@@ -151,7 +151,7 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        if (v15 != 49)
+        if (vs_elementType != 49)
         {
           continue;
         }
@@ -165,28 +165,28 @@ LABEL_25:
           [v16 raise:v12 format:{@"Unexpectedly, childElement was %@, instead of IKImageElement.", v18}];
         }
 
-        v19 = [(VSAppDocumentController *)self _imageItemProviderWithImageElement:v14];
-        [v5 setLogoProvider:v19];
+        string = [(VSAppDocumentController *)self _imageItemProviderWithImageElement:v14];
+        [modelCopy setLogoProvider:string];
 LABEL_26:
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v10 = [children countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v10);
   }
 
-  v29 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v30 = [v29 localizedStringForKey:@"ONSCREEN_CODE_REGENERATION_BUTTON_TITLE" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v30 = [vs_frameworkBundle localizedStringForKey:@"ONSCREEN_CODE_REGENERATION_BUTTON_TITLE" value:0 table:0];
 
-  v31 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-  v32 = [v31 count];
+  filteredButtonLockupElements = [(VSAppDocumentController *)self filteredButtonLockupElements];
+  v32 = [filteredButtonLockupElements count];
 
   if (v32)
   {
-    v33 = [(VSAppDocumentController *)self filteredButtonLockupElements];
-    v34 = [v33 firstObject];
-    [(VSOnscreenCodeAuthenticationAppDocumentController *)self setButtonLockupViewElement:v34];
+    filteredButtonLockupElements2 = [(VSAppDocumentController *)self filteredButtonLockupElements];
+    firstObject = [filteredButtonLockupElements2 firstObject];
+    [(VSOnscreenCodeAuthenticationAppDocumentController *)self setButtonLockupViewElement:firstObject];
 
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
@@ -196,13 +196,13 @@ LABEL_26:
     v44.receiver = self;
     v44.super_class = VSOnscreenCodeAuthenticationAppDocumentController;
     v38 = [(VSAppDocumentController *)&v44 _getSupportedButtonTextsforTemplate:v36 andElementKeys:v37 supportedCount:1];
-    v39 = [v38 firstObject];
+    firstObject2 = [v38 firstObject];
 
-    v30 = v39;
+    v30 = firstObject2;
   }
 
-  [v5 setButtonLockupTitle:v30];
-  [v5 setShowButtonLockup:v32 != 0];
+  [modelCopy setButtonLockupTitle:v30];
+  [modelCopy setShowButtonLockup:v32 != 0];
 
   v40 = *MEMORY[0x277D85DE8];
   return 1;
@@ -210,8 +210,8 @@ LABEL_26:
 
 - (void)onscreenCodeViewModelButtonLockupPressed
 {
-  v2 = [(VSOnscreenCodeAuthenticationAppDocumentController *)self buttonLockupViewElement];
-  [v2 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  buttonLockupViewElement = [(VSOnscreenCodeAuthenticationAppDocumentController *)self buttonLockupViewElement];
+  [buttonLockupViewElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
 - (id)_newViewModel
@@ -221,28 +221,28 @@ LABEL_26:
   return v3;
 }
 
-- (BOOL)_updateViewModel:(id)a3 error:(id *)a4
+- (BOOL)_updateViewModel:(id)model error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The viewModel parameter must not be nil."];
   }
 
   v14.receiver = self;
   v14.super_class = VSOnscreenCodeAuthenticationAppDocumentController;
-  [(VSAppDocumentController *)&v14 _updateViewModel:v6 error:a4];
-  v7 = [(VSAppDocumentController *)self appDocument];
-  v8 = [v7 error];
+  [(VSAppDocumentController *)&v14 _updateViewModel:modelCopy error:error];
+  appDocument = [(VSAppDocumentController *)self appDocument];
+  error = [appDocument error];
 
-  if (!v8)
+  if (!error)
   {
-    v12 = [(VSOnscreenCodeAuthenticationAppDocumentController *)self _onscreenCodeViewModelWithViewModel:v6];
+    v12 = [(VSOnscreenCodeAuthenticationAppDocumentController *)self _onscreenCodeViewModelWithViewModel:modelCopy];
     v13 = 0;
     v9 = [(VSOnscreenCodeAuthenticationAppDocumentController *)self _updateOnscreenCodeViewModel:v12 error:&v13];
-    v8 = v13;
+    error = v13;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -251,11 +251,11 @@ LABEL_26:
   }
 
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_5:
-    v10 = v8;
-    *a4 = v8;
+    v10 = error;
+    *error = error;
   }
 
 LABEL_6:

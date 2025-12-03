@@ -1,6 +1,6 @@
 @interface WBSSafariScribbleFeedbackSyncEngine
 - (WBSSafariScribbleFeedbackSyncEngine)init;
-- (void)syncScribbleFeedbackUp:(id)a3 withCompletion:(id)a4;
+- (void)syncScribbleFeedbackUp:(id)up withCompletion:(id)completion;
 @end
 
 @implementation WBSSafariScribbleFeedbackSyncEngine
@@ -22,19 +22,19 @@
   return v2;
 }
 
-- (void)syncScribbleFeedbackUp:(id)a3 withCompletion:(id)a4
+- (void)syncScribbleFeedbackUp:(id)up withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  upCopy = up;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__WBSSafariScribbleFeedbackSyncEngine_syncScribbleFeedbackUp_withCompletion___block_invoke;
   v11[3] = &unk_1E7FB6F08;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = upCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = upCopy;
   dispatch_async(internalQueue, v11);
 }
 

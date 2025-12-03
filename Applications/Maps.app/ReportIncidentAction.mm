@@ -1,33 +1,33 @@
 @interface ReportIncidentAction
-- (ReportIncidentAction)initWithIncidentIntent:(id)a3;
-- (ReportIncidentAction)initWithIncidentType:(int)a3;
+- (ReportIncidentAction)initWithIncidentIntent:(id)intent;
+- (ReportIncidentAction)initWithIncidentType:(int)type;
 @end
 
 @implementation ReportIncidentAction
 
-- (ReportIncidentAction)initWithIncidentType:(int)a3
+- (ReportIncidentAction)initWithIncidentType:(int)type
 {
   v5.receiver = self;
   v5.super_class = ReportIncidentAction;
   result = [(ReportIncidentAction *)&v5 init];
   if (result)
   {
-    result->_incidentType = a3;
+    result->_incidentType = type;
   }
 
   return result;
 }
 
-- (ReportIncidentAction)initWithIncidentIntent:(id)a3
+- (ReportIncidentAction)initWithIncidentIntent:(id)intent
 {
-  v5 = a3;
+  intentCopy = intent;
   v9.receiver = self;
   v9.super_class = ReportIncidentAction;
   v6 = [(ReportIncidentAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_incidentIntent, a3);
+    objc_storeStrong(&v6->_incidentIntent, intent);
   }
 
   return v7;

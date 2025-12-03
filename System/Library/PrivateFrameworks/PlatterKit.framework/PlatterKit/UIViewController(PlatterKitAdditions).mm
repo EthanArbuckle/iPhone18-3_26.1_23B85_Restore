@@ -7,42 +7,42 @@
 
 - (id)pl_presentationControllerIfPresented
 {
-  v2 = [a1 presentingViewController];
-  if (v2)
+  presentingViewController = [self presentingViewController];
+  if (presentingViewController)
   {
-    v3 = [a1 parentViewController];
-    if (v3)
+    parentViewController = [self parentViewController];
+    if (parentViewController)
     {
-      v4 = 0;
+      presentationController = 0;
     }
 
     else
     {
-      v4 = [a1 presentationController];
+      presentationController = [self presentationController];
     }
   }
 
   else
   {
-    v4 = 0;
+    presentationController = 0;
   }
 
-  return v4;
+  return presentationController;
 }
 
 - (id)pl_presentingPresentationController
 {
-  v1 = a1;
+  selfCopy = self;
   do
   {
-    v2 = v1;
-    v3 = [v1 pl_presentationControllerIfPresented];
-    v1 = [v1 parentViewController];
+    v2 = selfCopy;
+    pl_presentationControllerIfPresented = [selfCopy pl_presentationControllerIfPresented];
+    selfCopy = [selfCopy parentViewController];
   }
 
-  while (!v3 && v1);
+  while (!pl_presentationControllerIfPresented && selfCopy);
 
-  return v3;
+  return pl_presentationControllerIfPresented;
 }
 
 @end

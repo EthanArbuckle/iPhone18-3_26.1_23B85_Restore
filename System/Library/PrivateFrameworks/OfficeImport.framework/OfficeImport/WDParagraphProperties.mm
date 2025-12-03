@@ -1,14 +1,14 @@
 @interface WDParagraphProperties
 - ($06D0163FE0D7AFE752A9F21F38483579)dropCap;
-- ($373952EDE9DECE7FE473A72CF4B2C093)tabStopAddedAt:(unint64_t)a3;
+- ($373952EDE9DECE7FE473A72CF4B2C093)tabStopAddedAt:(unint64_t)at;
 - (BOOL)anchorLock;
 - (BOOL)biDi;
 - (BOOL)contextualSpacing;
-- (BOOL)hasTabStopAddedAtPosition:(signed __int16)a3;
-- (BOOL)hasTabStopDeletedAtPosition:(signed __int16)a3;
+- (BOOL)hasTabStopAddedAtPosition:(signed __int16)position;
+- (BOOL)hasTabStopDeletedAtPosition:(signed __int16)position;
 - (BOOL)isAnchorLockOverridden;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isAnythingOverriddenIn:(id)a3;
+- (BOOL)isAnythingOverriddenIn:(id)in;
 - (BOOL)isBarBorderOverridden;
 - (BOOL)isBaseStyleOverridden;
 - (BOOL)isBetweenBorderOverridden;
@@ -70,13 +70,13 @@
 - (BOOL)widowControl;
 - (BOOL)wrap;
 - (WDDocument)document;
-- (WDParagraphProperties)initWithDocument:(id)a3;
+- (WDParagraphProperties)initWithDocument:(id)document;
 - (char)wrapCode;
 - (id)barBorder;
 - (id)baseStyle;
 - (id)betweenBorder;
 - (id)bottomBorder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)leftBorder;
 - (id)mutableBarBorder;
@@ -113,7 +113,7 @@
 - (signed)lineSpacing;
 - (signed)rightIndent;
 - (signed)rightIndentChars;
-- (signed)tabStopDeletedPositionAt:(unint64_t)a3;
+- (signed)tabStopDeletedPositionAt:(unint64_t)at;
 - (unint64_t)listIndex;
 - (unint64_t)tabStopAddedCount;
 - (unint64_t)tabStopDeletedPositionCount;
@@ -122,8 +122,8 @@
 - (unsigned)outlineLevel;
 - (unsigned)spaceAfter;
 - (unsigned)spaceBefore;
-- (void)addTabStopAdded:(id *)a3;
-- (void)addTabStopDeletedPosition:(signed __int16)a3;
+- (void)addTabStopAdded:(id *)added;
+- (void)addTabStopDeletedPosition:(signed __int16)position;
 - (void)clearBaseStyle;
 - (void)clearChararacterProperties;
 - (void)clearFirstLineIndent;
@@ -131,57 +131,57 @@
 - (void)clearLeadingIndent;
 - (void)clearLeftIndent;
 - (void)clearRightIndent;
-- (void)copyPropertiesInto:(id)a3;
-- (void)negateFormattingChangesWithDefaults:(id)a3;
-- (void)removeTabStopAddedWithPosition:(signed __int16)a3;
-- (void)removeTabStopDeletedPosition:(signed __int16)a3;
-- (void)setAnchorLock:(BOOL)a3;
-- (void)setBaseStyle:(id)a3;
-- (void)setBiDi:(BOOL)a3;
-- (void)setContextualSpacing:(BOOL)a3;
-- (void)setDropCap:(id)a3;
-- (void)setFirstLineIndent:(signed __int16)a3;
-- (void)setFirstLineIndentChars:(signed __int16)a3;
-- (void)setFollowingIndent:(signed __int16)a3;
-- (void)setFormattingChanged:(int)a3;
-- (void)setHeight:(int64_t)a3;
-- (void)setHeightRule:(int)a3;
-- (void)setHorizontalAnchor:(int)a3;
-- (void)setHorizontalPosition:(int64_t)a3;
-- (void)setHorizontalSpace:(int64_t)a3;
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3;
-- (void)setJustification:(int)a3;
-- (void)setKeepLinesTogether:(BOOL)a3;
-- (void)setKeepNextParagraphTogether:(BOOL)a3;
-- (void)setKinsokuOff:(BOOL)a3;
-- (void)setLeadingIndent:(signed __int16)a3;
-- (void)setLeftIndent:(signed __int16)a3;
-- (void)setLeftIndentChars:(signed __int16)a3;
-- (void)setLineSpacing:(signed __int16)a3;
-- (void)setLineSpacingRule:(int)a3;
-- (void)setListIndex:(unint64_t)a3;
-- (void)setListLevel:(unsigned __int8)a3;
-- (void)setOutlineLevel:(unsigned __int16)a3;
-- (void)setPageBreakBefore:(BOOL)a3;
-- (void)setPhysicalJustification:(int)a3;
-- (void)setResolveMode:(int)a3;
-- (void)setRightIndent:(signed __int16)a3;
-- (void)setRightIndentChars:(signed __int16)a3;
-- (void)setSpaceAfter:(unsigned __int16)a3;
-- (void)setSpaceAfterAuto:(BOOL)a3;
-- (void)setSpaceBefore:(unsigned __int16)a3;
-- (void)setSpaceBeforeAuto:(BOOL)a3;
-- (void)setSuppressAutoHyphens:(BOOL)a3;
-- (void)setSuppressLineNumbers:(BOOL)a3;
-- (void)setTabStopAddedCount:(unint64_t)a3;
-- (void)setTabStopDeletedPositionCount:(unint64_t)a3;
-- (void)setVerticalAnchor:(int)a3;
-- (void)setVerticalPosition:(int64_t)a3;
-- (void)setVerticalSpace:(int64_t)a3;
-- (void)setWidowControl:(BOOL)a3;
-- (void)setWidth:(int64_t)a3;
-- (void)setWrap:(BOOL)a3;
-- (void)setWrapCode:(char)a3;
+- (void)copyPropertiesInto:(id)into;
+- (void)negateFormattingChangesWithDefaults:(id)defaults;
+- (void)removeTabStopAddedWithPosition:(signed __int16)position;
+- (void)removeTabStopDeletedPosition:(signed __int16)position;
+- (void)setAnchorLock:(BOOL)lock;
+- (void)setBaseStyle:(id)style;
+- (void)setBiDi:(BOOL)di;
+- (void)setContextualSpacing:(BOOL)spacing;
+- (void)setDropCap:(id)cap;
+- (void)setFirstLineIndent:(signed __int16)indent;
+- (void)setFirstLineIndentChars:(signed __int16)chars;
+- (void)setFollowingIndent:(signed __int16)indent;
+- (void)setFormattingChanged:(int)changed;
+- (void)setHeight:(int64_t)height;
+- (void)setHeightRule:(int)rule;
+- (void)setHorizontalAnchor:(int)anchor;
+- (void)setHorizontalPosition:(int64_t)position;
+- (void)setHorizontalSpace:(int64_t)space;
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change;
+- (void)setJustification:(int)justification;
+- (void)setKeepLinesTogether:(BOOL)together;
+- (void)setKeepNextParagraphTogether:(BOOL)together;
+- (void)setKinsokuOff:(BOOL)off;
+- (void)setLeadingIndent:(signed __int16)indent;
+- (void)setLeftIndent:(signed __int16)indent;
+- (void)setLeftIndentChars:(signed __int16)chars;
+- (void)setLineSpacing:(signed __int16)spacing;
+- (void)setLineSpacingRule:(int)rule;
+- (void)setListIndex:(unint64_t)index;
+- (void)setListLevel:(unsigned __int8)level;
+- (void)setOutlineLevel:(unsigned __int16)level;
+- (void)setPageBreakBefore:(BOOL)before;
+- (void)setPhysicalJustification:(int)justification;
+- (void)setResolveMode:(int)mode;
+- (void)setRightIndent:(signed __int16)indent;
+- (void)setRightIndentChars:(signed __int16)chars;
+- (void)setSpaceAfter:(unsigned __int16)after;
+- (void)setSpaceAfterAuto:(BOOL)auto;
+- (void)setSpaceBefore:(unsigned __int16)before;
+- (void)setSpaceBeforeAuto:(BOOL)auto;
+- (void)setSuppressAutoHyphens:(BOOL)hyphens;
+- (void)setSuppressLineNumbers:(BOOL)numbers;
+- (void)setTabStopAddedCount:(unint64_t)count;
+- (void)setTabStopDeletedPositionCount:(unint64_t)count;
+- (void)setVerticalAnchor:(int)anchor;
+- (void)setVerticalPosition:(int64_t)position;
+- (void)setVerticalSpace:(int64_t)space;
+- (void)setWidowControl:(BOOL)control;
+- (void)setWidth:(int64_t)width;
+- (void)setWrap:(BOOL)wrap;
+- (void)setWrapCode:(char)code;
 @end
 
 @implementation WDParagraphProperties
@@ -211,9 +211,9 @@
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties topBorderOverridden];
+    topBorderOverridden = [(WDParagraphPropertiesValues *)mTrackedProperties topBorderOverridden];
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!topBorderOverridden)
     {
       [(WDParagraphPropertiesValues *)v9 setTopBorderOverridden:1];
       v10 = self->mTrackedProperties;
@@ -221,7 +221,7 @@
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 topBorder];
+    topBorder = [(WDParagraphPropertiesValues *)v9 topBorder];
     goto LABEL_16;
   }
 
@@ -243,7 +243,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    topBorder = 0;
     goto LABEL_16;
   }
 
@@ -255,9 +255,9 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties topBorderOverridden];
+  topBorderOverridden2 = [(WDParagraphPropertiesValues *)mOriginalProperties topBorderOverridden];
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (topBorderOverridden2)
   {
     goto LABEL_12;
   }
@@ -265,11 +265,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setTopBorderOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDBorder);
-  [(WDParagraphPropertiesValues *)v10 setTopBorder:v17];
+  topBorder = objc_alloc_init(WDBorder);
+  [(WDParagraphPropertiesValues *)v10 setTopBorder:topBorder];
 LABEL_16:
 
-  return v17;
+  return topBorder;
 }
 
 - (id)mutableLeftBorder
@@ -297,9 +297,9 @@ LABEL_16:
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties leftBorderOverridden];
+    leftBorderOverridden = [(WDParagraphPropertiesValues *)mTrackedProperties leftBorderOverridden];
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!leftBorderOverridden)
     {
       [(WDParagraphPropertiesValues *)v9 setLeftBorderOverridden:1];
       v10 = self->mTrackedProperties;
@@ -307,7 +307,7 @@ LABEL_16:
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 leftBorder];
+    leftBorder = [(WDParagraphPropertiesValues *)v9 leftBorder];
     goto LABEL_16;
   }
 
@@ -329,7 +329,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    leftBorder = 0;
     goto LABEL_16;
   }
 
@@ -341,9 +341,9 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties leftBorderOverridden];
+  leftBorderOverridden2 = [(WDParagraphPropertiesValues *)mOriginalProperties leftBorderOverridden];
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (leftBorderOverridden2)
   {
     goto LABEL_12;
   }
@@ -351,11 +351,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setLeftBorderOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDBorder);
-  [(WDParagraphPropertiesValues *)v10 setLeftBorder:v17];
+  leftBorder = objc_alloc_init(WDBorder);
+  [(WDParagraphPropertiesValues *)v10 setLeftBorder:leftBorder];
 LABEL_16:
 
-  return v17;
+  return leftBorder;
 }
 
 - (id)mutableBottomBorder
@@ -383,9 +383,9 @@ LABEL_16:
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties bottomBorderOverridden];
+    bottomBorderOverridden = [(WDParagraphPropertiesValues *)mTrackedProperties bottomBorderOverridden];
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!bottomBorderOverridden)
     {
       [(WDParagraphPropertiesValues *)v9 setBottomBorderOverridden:1];
       v10 = self->mTrackedProperties;
@@ -393,7 +393,7 @@ LABEL_16:
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 bottomBorder];
+    bottomBorder = [(WDParagraphPropertiesValues *)v9 bottomBorder];
     goto LABEL_16;
   }
 
@@ -415,7 +415,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    bottomBorder = 0;
     goto LABEL_16;
   }
 
@@ -427,9 +427,9 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties bottomBorderOverridden];
+  bottomBorderOverridden2 = [(WDParagraphPropertiesValues *)mOriginalProperties bottomBorderOverridden];
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (bottomBorderOverridden2)
   {
     goto LABEL_12;
   }
@@ -437,11 +437,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setBottomBorderOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDBorder);
-  [(WDParagraphPropertiesValues *)v10 setBottomBorder:v17];
+  bottomBorder = objc_alloc_init(WDBorder);
+  [(WDParagraphPropertiesValues *)v10 setBottomBorder:bottomBorder];
 LABEL_16:
 
-  return v17;
+  return bottomBorder;
 }
 
 - (id)mutableRightBorder
@@ -469,10 +469,10 @@ LABEL_16:
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties rightBorder];
+    rightBorder = [(WDParagraphPropertiesValues *)mTrackedProperties rightBorder];
 
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!rightBorder)
     {
       [(WDParagraphPropertiesValues *)v9 setRightBorderOverridden:1];
       v10 = self->mTrackedProperties;
@@ -480,7 +480,7 @@ LABEL_16:
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 rightBorder];
+    rightBorder2 = [(WDParagraphPropertiesValues *)v9 rightBorder];
     goto LABEL_16;
   }
 
@@ -502,7 +502,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    rightBorder2 = 0;
     goto LABEL_16;
   }
 
@@ -514,10 +514,10 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties rightBorder];
+  rightBorder3 = [(WDParagraphPropertiesValues *)mOriginalProperties rightBorder];
 
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (rightBorder3)
   {
     goto LABEL_12;
   }
@@ -525,11 +525,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setRightBorderOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDBorder);
-  [(WDParagraphPropertiesValues *)v10 setRightBorder:v17];
+  rightBorder2 = objc_alloc_init(WDBorder);
+  [(WDParagraphPropertiesValues *)v10 setRightBorder:rightBorder2];
 LABEL_16:
 
-  return v17;
+  return rightBorder2;
 }
 
 - (id)mutableBetweenBorder
@@ -557,10 +557,10 @@ LABEL_16:
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties betweenBorder];
+    betweenBorder = [(WDParagraphPropertiesValues *)mTrackedProperties betweenBorder];
 
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!betweenBorder)
     {
       [(WDParagraphPropertiesValues *)v9 setBetweenBorderOverridden:1];
       v10 = self->mTrackedProperties;
@@ -568,7 +568,7 @@ LABEL_16:
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 betweenBorder];
+    betweenBorder2 = [(WDParagraphPropertiesValues *)v9 betweenBorder];
     goto LABEL_16;
   }
 
@@ -590,7 +590,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    betweenBorder2 = 0;
     goto LABEL_16;
   }
 
@@ -602,10 +602,10 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties betweenBorder];
+  betweenBorder3 = [(WDParagraphPropertiesValues *)mOriginalProperties betweenBorder];
 
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (betweenBorder3)
   {
     goto LABEL_12;
   }
@@ -613,11 +613,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setBetweenBorderOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDBorder);
-  [(WDParagraphPropertiesValues *)v10 setBetweenBorder:v17];
+  betweenBorder2 = objc_alloc_init(WDBorder);
+  [(WDParagraphPropertiesValues *)v10 setBetweenBorder:betweenBorder2];
 LABEL_16:
 
-  return v17;
+  return betweenBorder2;
 }
 
 - (id)mutableBarBorder
@@ -645,9 +645,9 @@ LABEL_16:
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties barBorderOverridden];
+    barBorderOverridden = [(WDParagraphPropertiesValues *)mTrackedProperties barBorderOverridden];
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!barBorderOverridden)
     {
       [(WDParagraphPropertiesValues *)v9 setBarBorderOverridden:1];
       v10 = self->mTrackedProperties;
@@ -655,7 +655,7 @@ LABEL_16:
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 barBorder];
+    barBorder = [(WDParagraphPropertiesValues *)v9 barBorder];
     goto LABEL_16;
   }
 
@@ -677,7 +677,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    barBorder = 0;
     goto LABEL_16;
   }
 
@@ -689,9 +689,9 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties barBorderOverridden];
+  barBorderOverridden2 = [(WDParagraphPropertiesValues *)mOriginalProperties barBorderOverridden];
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (barBorderOverridden2)
   {
     goto LABEL_12;
   }
@@ -699,11 +699,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setBarBorderOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDBorder);
-  [(WDParagraphPropertiesValues *)v10 setBarBorder:v17];
+  barBorder = objc_alloc_init(WDBorder);
+  [(WDParagraphPropertiesValues *)v10 setBarBorder:barBorder];
 LABEL_16:
 
-  return v17;
+  return barBorder;
 }
 
 - (id)mutableShading
@@ -731,10 +731,10 @@ LABEL_16:
       mTrackedProperties = self->mTrackedProperties;
     }
 
-    v16 = [(WDParagraphPropertiesValues *)mTrackedProperties shading];
+    shading = [(WDParagraphPropertiesValues *)mTrackedProperties shading];
 
     v9 = self->mTrackedProperties;
-    if (!v16)
+    if (!shading)
     {
       [(WDParagraphPropertiesValues *)v9 setShadingOverridden:1];
       v10 = self->mTrackedProperties;
@@ -742,7 +742,7 @@ LABEL_16:
     }
 
 LABEL_12:
-    v17 = [(WDParagraphPropertiesValues *)v9 shading];
+    shading2 = [(WDParagraphPropertiesValues *)v9 shading];
     goto LABEL_16;
   }
 
@@ -764,7 +764,7 @@ LABEL_12:
   if (!self->mOriginalProperties)
   {
 LABEL_13:
-    v17 = 0;
+    shading2 = 0;
     goto LABEL_16;
   }
 
@@ -776,10 +776,10 @@ LABEL_13:
 
   mOriginalProperties = self->mOriginalProperties;
 LABEL_6:
-  v8 = [(WDParagraphPropertiesValues *)mOriginalProperties shading];
+  shading3 = [(WDParagraphPropertiesValues *)mOriginalProperties shading];
 
   v9 = self->mOriginalProperties;
-  if (v8)
+  if (shading3)
   {
     goto LABEL_12;
   }
@@ -787,11 +787,11 @@ LABEL_6:
   [(WDParagraphPropertiesValues *)v9 setShadingOverridden:1];
   v10 = self->mOriginalProperties;
 LABEL_15:
-  v17 = objc_alloc_init(WDShading);
-  [(WDParagraphPropertiesValues *)v10 setShading:v17];
+  shading2 = objc_alloc_init(WDShading);
+  [(WDParagraphPropertiesValues *)v10 setShading:shading2];
 LABEL_16:
 
-  return v17;
+  return shading2;
 }
 
 - (void)clearBaseStyle
@@ -1122,7 +1122,7 @@ LABEL_10:
       if ([(WDParagraphPropertiesValues *)mTrackedProperties baseStyleOverridden])
       {
 LABEL_9:
-        v6 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties baseStyle];
+        baseStyle = [(WDParagraphPropertiesValues *)*p_mTrackedProperties baseStyle];
         goto LABEL_11;
       }
 
@@ -1134,23 +1134,23 @@ LABEL_9:
   {
     mOriginalProperties = self->mOriginalProperties;
     p_mOriginalProperties = &self->mOriginalProperties;
-    v6 = mOriginalProperties;
+    baseStyle = mOriginalProperties;
     if (!mOriginalProperties)
     {
       goto LABEL_11;
     }
 
     p_mTrackedProperties = p_mOriginalProperties;
-    if ([v6 baseStyleOverridden])
+    if ([baseStyle baseStyleOverridden])
     {
       goto LABEL_9;
     }
   }
 
-  v6 = 0;
+  baseStyle = 0;
 LABEL_11:
 
-  return v6;
+  return baseStyle;
 }
 
 - (BOOL)isSpaceAfterOverridden
@@ -2202,7 +2202,7 @@ LABEL_10:
         if ([(WDParagraphPropertiesValues *)mTrackedProperties bottomBorderOverridden])
         {
 LABEL_14:
-          v8 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties bottomBorder];
+          bottomBorder = [(WDParagraphPropertiesValues *)*p_mTrackedProperties bottomBorder];
           goto LABEL_16;
         }
 
@@ -2214,24 +2214,24 @@ LABEL_14:
     {
       mOriginalProperties = self->mOriginalProperties;
       p_mOriginalProperties = &self->mOriginalProperties;
-      v8 = mOriginalProperties;
+      bottomBorder = mOriginalProperties;
       if (!mOriginalProperties)
       {
         goto LABEL_16;
       }
 
       p_mTrackedProperties = p_mOriginalProperties;
-      if ([v8 bottomBorderOverridden])
+      if ([bottomBorder bottomBorderOverridden])
       {
         goto LABEL_14;
       }
     }
   }
 
-  v8 = 0;
+  bottomBorder = 0;
 LABEL_16:
 
-  return v8;
+  return bottomBorder;
 }
 
 - (id)shading
@@ -2246,7 +2246,7 @@ LABEL_16:
       if ([(WDParagraphPropertiesValues *)mTrackedProperties shadingOverridden])
       {
 LABEL_9:
-        v6 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties shading];
+        shading = [(WDParagraphPropertiesValues *)*p_mTrackedProperties shading];
         goto LABEL_11;
       }
 
@@ -2258,23 +2258,23 @@ LABEL_9:
   {
     mOriginalProperties = self->mOriginalProperties;
     p_mOriginalProperties = &self->mOriginalProperties;
-    v6 = mOriginalProperties;
+    shading = mOriginalProperties;
     if (!mOriginalProperties)
     {
       goto LABEL_11;
     }
 
     p_mTrackedProperties = p_mOriginalProperties;
-    if ([v6 shadingOverridden])
+    if ([shading shadingOverridden])
     {
       goto LABEL_9;
     }
   }
 
-  v6 = 0;
+  shading = 0;
 LABEL_11:
 
-  return v6;
+  return shading;
 }
 
 - (signed)rightIndent
@@ -2622,16 +2622,16 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 verticalPosition];
 }
 
-- (WDParagraphProperties)initWithDocument:(id)a3
+- (WDParagraphProperties)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v11.receiver = self;
   v11.super_class = WDParagraphProperties;
   v5 = [(WDParagraphProperties *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mDocument, v4);
+    objc_storeWeak(&v5->mDocument, documentCopy);
     *(v6 + 17) = *(v6 + 17) & 0xF8 | 1;
     mCharacterProperties = v6->mCharacterProperties;
     v6->mCharacterProperties = 0;
@@ -2670,10 +2670,10 @@ LABEL_9:
   return (v3 & 6) != 0 && ([(WDParagraphProperties *)self isAnythingOverriddenIn:self->mTrackedProperties]|| [(WDCharacterProperties *)self->mCharacterProperties isAnythingOverridden]);
 }
 
-- (void)setResolveMode:(int)a3
+- (void)setResolveMode:(int)mode
 {
-  v3 = (2 * (a3 == 1)) | (4 * (a3 == 2));
-  if (!a3)
+  v3 = (2 * (mode == 1)) | (4 * (mode == 2));
+  if (!mode)
   {
     ++v3;
   }
@@ -2682,15 +2682,15 @@ LABEL_9:
   [(WDCharacterProperties *)self->mCharacterProperties setResolveMode:?];
 }
 
-- (void)negateFormattingChangesWithDefaults:(id)a3
+- (void)negateFormattingChangesWithDefaults:(id)defaults
 {
-  v166 = a3;
-  v4 = [(WDParagraphProperties *)self resolveMode];
+  defaultsCopy = defaults;
+  resolveMode = [(WDParagraphProperties *)self resolveMode];
   [(WDParagraphProperties *)self setResolveMode:2];
   if ([(WDParagraphProperties *)self isFormattingChangedOverridden]&& [(WDParagraphProperties *)self formattingChanged])
   {
     [(WDParagraphProperties *)self setResolveMode:1];
-    [v166 setResolveMode:2];
+    [defaultsCopy setResolveMode:2];
     mOriginalProperties = self->mOriginalProperties;
     if (mOriginalProperties)
     {
@@ -2699,17 +2699,17 @@ LABEL_9:
         mTrackedProperties = self->mTrackedProperties;
         if (!mTrackedProperties || ![(WDParagraphPropertiesValues *)mTrackedProperties pageBreakBeforeOverridden])
         {
-          if ([v166 isPageBreakBeforeOverridden])
+          if ([defaultsCopy isPageBreakBeforeOverridden])
           {
-            v7 = [v166 isPageBreakBefore];
+            isPageBreakBefore = [defaultsCopy isPageBreakBefore];
           }
 
           else
           {
-            v7 = 0;
+            isPageBreakBefore = 0;
           }
 
-          [(WDParagraphProperties *)self setPageBreakBefore:v7];
+          [(WDParagraphProperties *)self setPageBreakBefore:isPageBreakBefore];
         }
       }
 
@@ -2721,17 +2721,17 @@ LABEL_9:
           v9 = self->mTrackedProperties;
           if (!v9 || ![(WDParagraphPropertiesValues *)v9 listLevelOverridden])
           {
-            if ([v166 isListLevelOverridden])
+            if ([defaultsCopy isListLevelOverridden])
             {
-              v10 = [v166 listLevel];
+              listLevel = [defaultsCopy listLevel];
             }
 
             else
             {
-              v10 = 0;
+              listLevel = 0;
             }
 
-            [(WDParagraphProperties *)self setListLevel:v10];
+            [(WDParagraphProperties *)self setListLevel:listLevel];
           }
         }
 
@@ -2743,17 +2743,17 @@ LABEL_9:
             v12 = self->mTrackedProperties;
             if (!v12 || ![(WDParagraphPropertiesValues *)v12 listIndexOverridden])
             {
-              if ([v166 isListIndexOverridden])
+              if ([defaultsCopy isListIndexOverridden])
               {
-                v13 = [v166 listIndex];
+                listIndex = [defaultsCopy listIndex];
               }
 
               else
               {
-                v13 = -1;
+                listIndex = -1;
               }
 
-              [(WDParagraphProperties *)self setListIndex:v13];
+              [(WDParagraphProperties *)self setListIndex:listIndex];
             }
           }
 
@@ -2765,17 +2765,17 @@ LABEL_9:
               v15 = self->mTrackedProperties;
               if (!v15 || ![(WDParagraphPropertiesValues *)v15 widthOverridden])
               {
-                if ([v166 isWidthOverridden])
+                if ([defaultsCopy isWidthOverridden])
                 {
-                  v16 = [v166 width];
+                  width = [defaultsCopy width];
                 }
 
                 else
                 {
-                  v16 = 0;
+                  width = 0;
                 }
 
-                [(WDParagraphProperties *)self setWidth:v16];
+                [(WDParagraphProperties *)self setWidth:width];
               }
             }
 
@@ -2787,17 +2787,17 @@ LABEL_9:
                 v18 = self->mTrackedProperties;
                 if (!v18 || ![(WDParagraphPropertiesValues *)v18 heightOverridden])
                 {
-                  if ([v166 isHeightOverridden])
+                  if ([defaultsCopy isHeightOverridden])
                   {
-                    v19 = [v166 height];
+                    height = [defaultsCopy height];
                   }
 
                   else
                   {
-                    v19 = 0;
+                    height = 0;
                   }
 
-                  [(WDParagraphProperties *)self setHeight:v19];
+                  [(WDParagraphProperties *)self setHeight:height];
                 }
               }
 
@@ -2809,17 +2809,17 @@ LABEL_9:
                   v21 = self->mTrackedProperties;
                   if (!v21 || ![(WDParagraphPropertiesValues *)v21 heightRuleOverridden])
                   {
-                    if ([v166 isHeightRuleOverridden])
+                    if ([defaultsCopy isHeightRuleOverridden])
                     {
-                      v22 = [v166 heightRule];
+                      heightRule = [defaultsCopy heightRule];
                     }
 
                     else
                     {
-                      v22 = 1;
+                      heightRule = 1;
                     }
 
-                    [(WDParagraphProperties *)self setHeightRule:v22];
+                    [(WDParagraphProperties *)self setHeightRule:heightRule];
                   }
                 }
 
@@ -2831,17 +2831,17 @@ LABEL_9:
                     v24 = self->mTrackedProperties;
                     if (!v24 || ![(WDParagraphPropertiesValues *)v24 verticalSpaceOverridden])
                     {
-                      if ([v166 isVerticalSpaceOverridden])
+                      if ([defaultsCopy isVerticalSpaceOverridden])
                       {
-                        v25 = [v166 verticalSpace];
+                        verticalSpace = [defaultsCopy verticalSpace];
                       }
 
                       else
                       {
-                        v25 = 0;
+                        verticalSpace = 0;
                       }
 
-                      [(WDParagraphProperties *)self setVerticalSpace:v25];
+                      [(WDParagraphProperties *)self setVerticalSpace:verticalSpace];
                     }
                   }
 
@@ -2853,17 +2853,17 @@ LABEL_9:
                       v27 = self->mTrackedProperties;
                       if (!v27 || ![(WDParagraphPropertiesValues *)v27 horizontalSpaceOverridden])
                       {
-                        if ([v166 isHorizontalSpaceOverridden])
+                        if ([defaultsCopy isHorizontalSpaceOverridden])
                         {
-                          v28 = [v166 horizontalSpace];
+                          horizontalSpace = [defaultsCopy horizontalSpace];
                         }
 
                         else
                         {
-                          v28 = 0;
+                          horizontalSpace = 0;
                         }
 
-                        [(WDParagraphProperties *)self setHorizontalSpace:v28];
+                        [(WDParagraphProperties *)self setHorizontalSpace:horizontalSpace];
                       }
                     }
 
@@ -2875,17 +2875,17 @@ LABEL_9:
                         v30 = self->mTrackedProperties;
                         if (!v30 || ![(WDParagraphPropertiesValues *)v30 wrapOverridden])
                         {
-                          if ([v166 isWrapOverridden])
+                          if ([defaultsCopy isWrapOverridden])
                           {
-                            v31 = [v166 wrap];
+                            wrap = [defaultsCopy wrap];
                           }
 
                           else
                           {
-                            v31 = 0;
+                            wrap = 0;
                           }
 
-                          [(WDParagraphProperties *)self setWrap:v31];
+                          [(WDParagraphProperties *)self setWrap:wrap];
                         }
                       }
 
@@ -2897,17 +2897,17 @@ LABEL_9:
                           v33 = self->mTrackedProperties;
                           if (!v33 || ![(WDParagraphPropertiesValues *)v33 horizontalAnchorOverridden])
                           {
-                            if ([v166 isHorizontalAnchorOverridden])
+                            if ([defaultsCopy isHorizontalAnchorOverridden])
                             {
-                              v34 = [v166 horizontalAnchor];
+                              horizontalAnchor = [defaultsCopy horizontalAnchor];
                             }
 
                             else
                             {
-                              v34 = 2;
+                              horizontalAnchor = 2;
                             }
 
-                            [(WDParagraphProperties *)self setHorizontalAnchor:v34];
+                            [(WDParagraphProperties *)self setHorizontalAnchor:horizontalAnchor];
                           }
                         }
 
@@ -2919,17 +2919,17 @@ LABEL_9:
                             v36 = self->mTrackedProperties;
                             if (!v36 || ![(WDParagraphPropertiesValues *)v36 verticalAnchorOverridden])
                             {
-                              if ([v166 isVerticalAnchorOverridden])
+                              if ([defaultsCopy isVerticalAnchorOverridden])
                               {
-                                v37 = [v166 verticalAnchor];
+                                verticalAnchor = [defaultsCopy verticalAnchor];
                               }
 
                               else
                               {
-                                v37 = 1;
+                                verticalAnchor = 1;
                               }
 
-                              [(WDParagraphProperties *)self setVerticalAnchor:v37];
+                              [(WDParagraphProperties *)self setVerticalAnchor:verticalAnchor];
                             }
                           }
 
@@ -2941,17 +2941,17 @@ LABEL_9:
                               v39 = self->mTrackedProperties;
                               if (!v39 || ![(WDParagraphPropertiesValues *)v39 horizontalPositionOverridden])
                               {
-                                if ([v166 isHorizontalPositionOverridden])
+                                if ([defaultsCopy isHorizontalPositionOverridden])
                                 {
-                                  v40 = [v166 horizontalPosition];
+                                  horizontalPosition = [defaultsCopy horizontalPosition];
                                 }
 
                                 else
                                 {
-                                  v40 = 0;
+                                  horizontalPosition = 0;
                                 }
 
-                                [(WDParagraphProperties *)self setHorizontalPosition:v40];
+                                [(WDParagraphProperties *)self setHorizontalPosition:horizontalPosition];
                               }
                             }
 
@@ -2963,17 +2963,17 @@ LABEL_9:
                                 v42 = self->mTrackedProperties;
                                 if (!v42 || ![(WDParagraphPropertiesValues *)v42 verticalPositionOverridden])
                                 {
-                                  if ([v166 isVerticalPositionOverridden])
+                                  if ([defaultsCopy isVerticalPositionOverridden])
                                   {
-                                    v43 = [v166 verticalPosition];
+                                    verticalPosition = [defaultsCopy verticalPosition];
                                   }
 
                                   else
                                   {
-                                    v43 = 0;
+                                    verticalPosition = 0;
                                   }
 
-                                  [(WDParagraphProperties *)self setVerticalPosition:v43];
+                                  [(WDParagraphProperties *)self setVerticalPosition:verticalPosition];
                                 }
                               }
 
@@ -2985,17 +2985,17 @@ LABEL_9:
                                   v45 = self->mTrackedProperties;
                                   if (!v45 || ![(WDParagraphPropertiesValues *)v45 wrapCodeOverridden])
                                   {
-                                    if ([v166 isWrapCodeOverridden])
+                                    if ([defaultsCopy isWrapCodeOverridden])
                                     {
-                                      v46 = [v166 wrapCode];
+                                      wrapCode = [defaultsCopy wrapCode];
                                     }
 
                                     else
                                     {
-                                      v46 = 0;
+                                      wrapCode = 0;
                                     }
 
-                                    [(WDParagraphProperties *)self setWrapCode:v46];
+                                    [(WDParagraphProperties *)self setWrapCode:wrapCode];
                                   }
                                 }
 
@@ -3007,17 +3007,17 @@ LABEL_9:
                                     v48 = self->mTrackedProperties;
                                     if (!v48 || ![(WDParagraphPropertiesValues *)v48 anchorLockOverridden])
                                     {
-                                      if ([v166 isAnchorLockOverridden])
+                                      if ([defaultsCopy isAnchorLockOverridden])
                                       {
-                                        v49 = [v166 anchorLock];
+                                        anchorLock = [defaultsCopy anchorLock];
                                       }
 
                                       else
                                       {
-                                        v49 = 0;
+                                        anchorLock = 0;
                                       }
 
-                                      [(WDParagraphProperties *)self setAnchorLock:v49];
+                                      [(WDParagraphProperties *)self setAnchorLock:anchorLock];
                                     }
                                   }
 
@@ -3029,17 +3029,17 @@ LABEL_9:
                                       v51 = self->mTrackedProperties;
                                       if (!v51 || ![(WDParagraphPropertiesValues *)v51 spaceBeforeOverridden])
                                       {
-                                        if ([v166 isSpaceBeforeOverridden])
+                                        if ([defaultsCopy isSpaceBeforeOverridden])
                                         {
-                                          v52 = [v166 spaceBefore];
+                                          spaceBefore = [defaultsCopy spaceBefore];
                                         }
 
                                         else
                                         {
-                                          v52 = 0;
+                                          spaceBefore = 0;
                                         }
 
-                                        [(WDParagraphProperties *)self setSpaceBefore:v52];
+                                        [(WDParagraphProperties *)self setSpaceBefore:spaceBefore];
                                       }
                                     }
 
@@ -3051,17 +3051,17 @@ LABEL_9:
                                         v54 = self->mTrackedProperties;
                                         if (!v54 || ![(WDParagraphPropertiesValues *)v54 spaceBeforeAutoOverridden])
                                         {
-                                          if ([v166 isSpaceBeforeAutoOverridden])
+                                          if ([defaultsCopy isSpaceBeforeAutoOverridden])
                                           {
-                                            v55 = [v166 spaceBeforeAuto];
+                                            spaceBeforeAuto = [defaultsCopy spaceBeforeAuto];
                                           }
 
                                           else
                                           {
-                                            v55 = 0;
+                                            spaceBeforeAuto = 0;
                                           }
 
-                                          [(WDParagraphProperties *)self setSpaceBeforeAuto:v55];
+                                          [(WDParagraphProperties *)self setSpaceBeforeAuto:spaceBeforeAuto];
                                         }
                                       }
 
@@ -3073,17 +3073,17 @@ LABEL_9:
                                           v57 = self->mTrackedProperties;
                                           if (!v57 || ![(WDParagraphPropertiesValues *)v57 spaceAfterOverridden])
                                           {
-                                            if ([v166 isSpaceAfterOverridden])
+                                            if ([defaultsCopy isSpaceAfterOverridden])
                                             {
-                                              v58 = [v166 spaceAfter];
+                                              spaceAfter = [defaultsCopy spaceAfter];
                                             }
 
                                             else
                                             {
-                                              v58 = 0;
+                                              spaceAfter = 0;
                                             }
 
-                                            [(WDParagraphProperties *)self setSpaceAfter:v58];
+                                            [(WDParagraphProperties *)self setSpaceAfter:spaceAfter];
                                           }
                                         }
 
@@ -3095,17 +3095,17 @@ LABEL_9:
                                             v60 = self->mTrackedProperties;
                                             if (!v60 || ![(WDParagraphPropertiesValues *)v60 spaceAfterAutoOverridden])
                                             {
-                                              if ([v166 isSpaceAfterAutoOverridden])
+                                              if ([defaultsCopy isSpaceAfterAutoOverridden])
                                               {
-                                                v61 = [v166 spaceAfterAuto];
+                                                spaceAfterAuto = [defaultsCopy spaceAfterAuto];
                                               }
 
                                               else
                                               {
-                                                v61 = 0;
+                                                spaceAfterAuto = 0;
                                               }
 
-                                              [(WDParagraphProperties *)self setSpaceAfterAuto:v61];
+                                              [(WDParagraphProperties *)self setSpaceAfterAuto:spaceAfterAuto];
                                             }
                                           }
 
@@ -3117,17 +3117,17 @@ LABEL_9:
                                               v63 = self->mTrackedProperties;
                                               if (!v63 || ![(WDParagraphPropertiesValues *)v63 lineSpacingOverridden])
                                               {
-                                                if ([v166 isLineSpacingOverridden])
+                                                if ([defaultsCopy isLineSpacingOverridden])
                                                 {
-                                                  v64 = [v166 lineSpacing];
+                                                  lineSpacing = [defaultsCopy lineSpacing];
                                                 }
 
                                                 else
                                                 {
-                                                  v64 = 0;
+                                                  lineSpacing = 0;
                                                 }
 
-                                                [(WDParagraphProperties *)self setLineSpacing:v64];
+                                                [(WDParagraphProperties *)self setLineSpacing:lineSpacing];
                                               }
                                             }
 
@@ -3139,17 +3139,17 @@ LABEL_9:
                                                 v66 = self->mTrackedProperties;
                                                 if (!v66 || ![(WDParagraphPropertiesValues *)v66 lineSpacingRuleOverridden])
                                                 {
-                                                  if ([v166 isLineSpacingRuleOverridden])
+                                                  if ([defaultsCopy isLineSpacingRuleOverridden])
                                                   {
-                                                    v67 = [v166 lineSpacingRule];
+                                                    lineSpacingRule = [defaultsCopy lineSpacingRule];
                                                   }
 
                                                   else
                                                   {
-                                                    v67 = 0;
+                                                    lineSpacingRule = 0;
                                                   }
 
-                                                  [(WDParagraphProperties *)self setLineSpacingRule:v67];
+                                                  [(WDParagraphProperties *)self setLineSpacingRule:lineSpacingRule];
                                                 }
                                               }
 
@@ -3161,17 +3161,17 @@ LABEL_9:
                                                   v69 = self->mTrackedProperties;
                                                   if (!v69 || ![(WDParagraphPropertiesValues *)v69 leftIndentOverridden])
                                                   {
-                                                    if ([v166 isLeftIndentOverridden])
+                                                    if ([defaultsCopy isLeftIndentOverridden])
                                                     {
-                                                      v70 = [v166 leftIndent];
+                                                      leftIndent = [defaultsCopy leftIndent];
                                                     }
 
                                                     else
                                                     {
-                                                      v70 = 0;
+                                                      leftIndent = 0;
                                                     }
 
-                                                    [(WDParagraphProperties *)self setLeftIndent:v70];
+                                                    [(WDParagraphProperties *)self setLeftIndent:leftIndent];
                                                   }
                                                 }
 
@@ -3183,17 +3183,17 @@ LABEL_9:
                                                     v72 = self->mTrackedProperties;
                                                     if (!v72 || ![(WDParagraphPropertiesValues *)v72 leadingIndentOverridden])
                                                     {
-                                                      if ([v166 isLeadingIndentOverridden])
+                                                      if ([defaultsCopy isLeadingIndentOverridden])
                                                       {
-                                                        v73 = [v166 leadingIndent];
+                                                        leadingIndent = [defaultsCopy leadingIndent];
                                                       }
 
                                                       else
                                                       {
-                                                        v73 = 0;
+                                                        leadingIndent = 0;
                                                       }
 
-                                                      [(WDParagraphProperties *)self setLeadingIndent:v73];
+                                                      [(WDParagraphProperties *)self setLeadingIndent:leadingIndent];
                                                     }
                                                   }
 
@@ -3205,17 +3205,17 @@ LABEL_9:
                                                       v75 = self->mTrackedProperties;
                                                       if (!v75 || ![(WDParagraphPropertiesValues *)v75 followingIndentOverridden])
                                                       {
-                                                        if ([v166 isFollowingIndentOverridden])
+                                                        if ([defaultsCopy isFollowingIndentOverridden])
                                                         {
-                                                          v76 = [v166 followingIndent];
+                                                          followingIndent = [defaultsCopy followingIndent];
                                                         }
 
                                                         else
                                                         {
-                                                          v76 = 0;
+                                                          followingIndent = 0;
                                                         }
 
-                                                        [(WDParagraphProperties *)self setFollowingIndent:v76];
+                                                        [(WDParagraphProperties *)self setFollowingIndent:followingIndent];
                                                       }
                                                     }
 
@@ -3227,17 +3227,17 @@ LABEL_9:
                                                         v78 = self->mTrackedProperties;
                                                         if (!v78 || ![(WDParagraphPropertiesValues *)v78 rightIndentOverridden])
                                                         {
-                                                          if ([v166 isRightIndentOverridden])
+                                                          if ([defaultsCopy isRightIndentOverridden])
                                                           {
-                                                            v79 = [v166 rightIndent];
+                                                            rightIndent = [defaultsCopy rightIndent];
                                                           }
 
                                                           else
                                                           {
-                                                            v79 = 0;
+                                                            rightIndent = 0;
                                                           }
 
-                                                          [(WDParagraphProperties *)self setRightIndent:v79];
+                                                          [(WDParagraphProperties *)self setRightIndent:rightIndent];
                                                         }
                                                       }
 
@@ -3249,17 +3249,17 @@ LABEL_9:
                                                           v81 = self->mTrackedProperties;
                                                           if (!v81 || ![(WDParagraphPropertiesValues *)v81 firstLineIndentOverridden])
                                                           {
-                                                            if ([v166 isFirstLineIndentOverridden])
+                                                            if ([defaultsCopy isFirstLineIndentOverridden])
                                                             {
-                                                              v82 = [v166 firstLineIndent];
+                                                              firstLineIndent = [defaultsCopy firstLineIndent];
                                                             }
 
                                                             else
                                                             {
-                                                              v82 = 0;
+                                                              firstLineIndent = 0;
                                                             }
 
-                                                            [(WDParagraphProperties *)self setFirstLineIndent:v82];
+                                                            [(WDParagraphProperties *)self setFirstLineIndent:firstLineIndent];
                                                           }
                                                         }
 
@@ -3271,17 +3271,17 @@ LABEL_9:
                                                             v84 = self->mTrackedProperties;
                                                             if (!v84 || ![(WDParagraphPropertiesValues *)v84 justificationOverridden])
                                                             {
-                                                              if ([v166 isJustificationOverridden])
+                                                              if ([defaultsCopy isJustificationOverridden])
                                                               {
-                                                                v85 = [v166 justification];
+                                                                justification = [defaultsCopy justification];
                                                               }
 
                                                               else
                                                               {
-                                                                v85 = 0;
+                                                                justification = 0;
                                                               }
 
-                                                              [(WDParagraphProperties *)self setJustification:v85];
+                                                              [(WDParagraphProperties *)self setJustification:justification];
                                                             }
                                                           }
 
@@ -3293,17 +3293,17 @@ LABEL_9:
                                                               v87 = self->mTrackedProperties;
                                                               if (!v87 || ![(WDParagraphPropertiesValues *)v87 physicalJustificationOverridden])
                                                               {
-                                                                if ([v166 isPhysicalJustificationOverridden])
+                                                                if ([defaultsCopy isPhysicalJustificationOverridden])
                                                                 {
-                                                                  v88 = [v166 physicalJustification];
+                                                                  physicalJustification = [defaultsCopy physicalJustification];
                                                                 }
 
                                                                 else
                                                                 {
-                                                                  v88 = 0;
+                                                                  physicalJustification = 0;
                                                                 }
 
-                                                                [(WDParagraphProperties *)self setPhysicalJustification:v88];
+                                                                [(WDParagraphProperties *)self setPhysicalJustification:physicalJustification];
                                                               }
                                                             }
 
@@ -3315,9 +3315,9 @@ LABEL_9:
                                                                 v90 = self->mTrackedProperties;
                                                                 if (!v90 || ![(WDParagraphPropertiesValues *)v90 outlineLevelOverridden])
                                                                 {
-                                                                  if ([v166 isOutlineLevelOverridden])
+                                                                  if ([defaultsCopy isOutlineLevelOverridden])
                                                                   {
-                                                                    -[WDParagraphProperties setOutlineLevel:](self, "setOutlineLevel:", [v166 outlineLevel]);
+                                                                    -[WDParagraphProperties setOutlineLevel:](self, "setOutlineLevel:", [defaultsCopy outlineLevel]);
                                                                   }
                                                                 }
                                                               }
@@ -3330,17 +3330,17 @@ LABEL_9:
                                                                   v92 = self->mTrackedProperties;
                                                                   if (!v92 || ![(WDParagraphPropertiesValues *)v92 keepNextParagraphTogetherOverridden])
                                                                   {
-                                                                    if ([v166 isKeepNextParagraphTogetherOverridden])
+                                                                    if ([defaultsCopy isKeepNextParagraphTogetherOverridden])
                                                                     {
-                                                                      v93 = [v166 keepNextParagraphTogether];
+                                                                      keepNextParagraphTogether = [defaultsCopy keepNextParagraphTogether];
                                                                     }
 
                                                                     else
                                                                     {
-                                                                      v93 = 0;
+                                                                      keepNextParagraphTogether = 0;
                                                                     }
 
-                                                                    [(WDParagraphProperties *)self setKeepNextParagraphTogether:v93];
+                                                                    [(WDParagraphProperties *)self setKeepNextParagraphTogether:keepNextParagraphTogether];
                                                                   }
                                                                 }
 
@@ -3352,17 +3352,17 @@ LABEL_9:
                                                                     v95 = self->mTrackedProperties;
                                                                     if (!v95 || ![(WDParagraphPropertiesValues *)v95 keepLinesTogetherOverridden])
                                                                     {
-                                                                      if ([v166 isKeepLinesTogetherOverridden])
+                                                                      if ([defaultsCopy isKeepLinesTogetherOverridden])
                                                                       {
-                                                                        v96 = [v166 keepLinesTogether];
+                                                                        keepLinesTogether = [defaultsCopy keepLinesTogether];
                                                                       }
 
                                                                       else
                                                                       {
-                                                                        v96 = 0;
+                                                                        keepLinesTogether = 0;
                                                                       }
 
-                                                                      [(WDParagraphProperties *)self setKeepLinesTogether:v96];
+                                                                      [(WDParagraphProperties *)self setKeepLinesTogether:keepLinesTogether];
                                                                     }
                                                                   }
 
@@ -3374,17 +3374,17 @@ LABEL_9:
                                                                       v98 = self->mTrackedProperties;
                                                                       if (!v98 || ![(WDParagraphPropertiesValues *)v98 suppressAutoHyphensOverridden])
                                                                       {
-                                                                        if ([v166 isSuppressAutoHyphensOverridden])
+                                                                        if ([defaultsCopy isSuppressAutoHyphensOverridden])
                                                                         {
-                                                                          v99 = [v166 suppressAutoHyphens];
+                                                                          suppressAutoHyphens = [defaultsCopy suppressAutoHyphens];
                                                                         }
 
                                                                         else
                                                                         {
-                                                                          v99 = 0;
+                                                                          suppressAutoHyphens = 0;
                                                                         }
 
-                                                                        [(WDParagraphProperties *)self setSuppressAutoHyphens:v99];
+                                                                        [(WDParagraphProperties *)self setSuppressAutoHyphens:suppressAutoHyphens];
                                                                       }
                                                                     }
 
@@ -3396,17 +3396,17 @@ LABEL_9:
                                                                         v101 = self->mTrackedProperties;
                                                                         if (!v101 || ![(WDParagraphPropertiesValues *)v101 suppressLineNumbersOverridden])
                                                                         {
-                                                                          if ([v166 isSuppressLineNumbersOverridden])
+                                                                          if ([defaultsCopy isSuppressLineNumbersOverridden])
                                                                           {
-                                                                            v102 = [v166 suppressLineNumbers];
+                                                                            suppressLineNumbers = [defaultsCopy suppressLineNumbers];
                                                                           }
 
                                                                           else
                                                                           {
-                                                                            v102 = 0;
+                                                                            suppressLineNumbers = 0;
                                                                           }
 
-                                                                          [(WDParagraphProperties *)self setSuppressLineNumbers:v102];
+                                                                          [(WDParagraphProperties *)self setSuppressLineNumbers:suppressLineNumbers];
                                                                         }
                                                                       }
 
@@ -3418,17 +3418,17 @@ LABEL_9:
                                                                           v104 = self->mTrackedProperties;
                                                                           if (!v104 || ![(WDParagraphPropertiesValues *)v104 widowControlOverridden])
                                                                           {
-                                                                            if ([v166 isWidowControlOverridden])
+                                                                            if ([defaultsCopy isWidowControlOverridden])
                                                                             {
-                                                                              v105 = [v166 widowControl];
+                                                                              widowControl = [defaultsCopy widowControl];
                                                                             }
 
                                                                             else
                                                                             {
-                                                                              v105 = 0;
+                                                                              widowControl = 0;
                                                                             }
 
-                                                                            [(WDParagraphProperties *)self setWidowControl:v105];
+                                                                            [(WDParagraphProperties *)self setWidowControl:widowControl];
                                                                           }
                                                                         }
 
@@ -3440,17 +3440,17 @@ LABEL_9:
                                                                             v107 = self->mTrackedProperties;
                                                                             if (!v107 || ![(WDParagraphPropertiesValues *)v107 biDiOverridden])
                                                                             {
-                                                                              if ([v166 isBiDiOverridden])
+                                                                              if ([defaultsCopy isBiDiOverridden])
                                                                               {
-                                                                                v108 = [v166 biDi];
+                                                                                biDi = [defaultsCopy biDi];
                                                                               }
 
                                                                               else
                                                                               {
-                                                                                v108 = 0;
+                                                                                biDi = 0;
                                                                               }
 
-                                                                              [(WDParagraphProperties *)self setBiDi:v108];
+                                                                              [(WDParagraphProperties *)self setBiDi:biDi];
                                                                             }
                                                                           }
 
@@ -3462,17 +3462,17 @@ LABEL_9:
                                                                               v110 = self->mTrackedProperties;
                                                                               if (!v110 || ![(WDParagraphPropertiesValues *)v110 kinsokuOffOverridden])
                                                                               {
-                                                                                if ([v166 isKinsokuOffOverridden])
+                                                                                if ([defaultsCopy isKinsokuOffOverridden])
                                                                                 {
-                                                                                  v111 = [v166 kinsokuOff];
+                                                                                  kinsokuOff = [defaultsCopy kinsokuOff];
                                                                                 }
 
                                                                                 else
                                                                                 {
-                                                                                  v111 = 0;
+                                                                                  kinsokuOff = 0;
                                                                                 }
 
-                                                                                [(WDParagraphProperties *)self setKinsokuOff:v111];
+                                                                                [(WDParagraphProperties *)self setKinsokuOff:kinsokuOff];
                                                                               }
                                                                             }
 
@@ -3484,24 +3484,24 @@ LABEL_9:
                                                                                 v113 = self->mTrackedProperties;
                                                                                 if (!v113 || ![(WDParagraphPropertiesValues *)v113 topBorderOverridden])
                                                                                 {
-                                                                                  v114 = [(WDParagraphProperties *)self mutableTopBorder];
-                                                                                  v115 = [(WDParagraphPropertiesValues *)self->mOriginalProperties topBorder];
-                                                                                  v116 = [v115 style];
+                                                                                  mutableTopBorder = [(WDParagraphProperties *)self mutableTopBorder];
+                                                                                  topBorder = [(WDParagraphPropertiesValues *)self->mOriginalProperties topBorder];
+                                                                                  style = [topBorder style];
 
-                                                                                  if (v116)
+                                                                                  if (style)
                                                                                   {
-                                                                                    [v114 setNullBorder];
+                                                                                    [mutableTopBorder setNullBorder];
                                                                                   }
 
-                                                                                  else if ([v166 isTopBorderOverridden])
+                                                                                  else if ([defaultsCopy isTopBorderOverridden])
                                                                                   {
-                                                                                    v117 = [v166 topBorder];
-                                                                                    [v114 setBorder:v117];
+                                                                                    topBorder2 = [defaultsCopy topBorder];
+                                                                                    [mutableTopBorder setBorder:topBorder2];
                                                                                   }
 
                                                                                   else
                                                                                   {
-                                                                                    [v114 setSingleBlackBorder];
+                                                                                    [mutableTopBorder setSingleBlackBorder];
                                                                                   }
                                                                                 }
                                                                               }
@@ -3514,24 +3514,24 @@ LABEL_9:
                                                                                   v119 = self->mTrackedProperties;
                                                                                   if (!v119 || ![(WDParagraphPropertiesValues *)v119 leftBorderOverridden])
                                                                                   {
-                                                                                    v120 = [(WDParagraphProperties *)self mutableLeftBorder];
-                                                                                    v121 = [(WDParagraphPropertiesValues *)self->mOriginalProperties leftBorder];
-                                                                                    v122 = [v121 style];
+                                                                                    mutableLeftBorder = [(WDParagraphProperties *)self mutableLeftBorder];
+                                                                                    leftBorder = [(WDParagraphPropertiesValues *)self->mOriginalProperties leftBorder];
+                                                                                    style2 = [leftBorder style];
 
-                                                                                    if (v122)
+                                                                                    if (style2)
                                                                                     {
-                                                                                      [v120 setNullBorder];
+                                                                                      [mutableLeftBorder setNullBorder];
                                                                                     }
 
-                                                                                    else if ([v166 isLeftBorderOverridden])
+                                                                                    else if ([defaultsCopy isLeftBorderOverridden])
                                                                                     {
-                                                                                      v123 = [v166 leftBorder];
-                                                                                      [v120 setBorder:v123];
+                                                                                      leftBorder2 = [defaultsCopy leftBorder];
+                                                                                      [mutableLeftBorder setBorder:leftBorder2];
                                                                                     }
 
                                                                                     else
                                                                                     {
-                                                                                      [v120 setSingleBlackBorder];
+                                                                                      [mutableLeftBorder setSingleBlackBorder];
                                                                                     }
                                                                                   }
                                                                                 }
@@ -3544,24 +3544,24 @@ LABEL_9:
                                                                                     v125 = self->mTrackedProperties;
                                                                                     if (!v125 || ![(WDParagraphPropertiesValues *)v125 bottomBorderOverridden])
                                                                                     {
-                                                                                      v126 = [(WDParagraphProperties *)self mutableBottomBorder];
-                                                                                      v127 = [(WDParagraphPropertiesValues *)self->mOriginalProperties bottomBorder];
-                                                                                      v128 = [v127 style];
+                                                                                      mutableBottomBorder = [(WDParagraphProperties *)self mutableBottomBorder];
+                                                                                      bottomBorder = [(WDParagraphPropertiesValues *)self->mOriginalProperties bottomBorder];
+                                                                                      style3 = [bottomBorder style];
 
-                                                                                      if (v128)
+                                                                                      if (style3)
                                                                                       {
-                                                                                        [v126 setNullBorder];
+                                                                                        [mutableBottomBorder setNullBorder];
                                                                                       }
 
-                                                                                      else if ([v166 isBottomBorderOverridden])
+                                                                                      else if ([defaultsCopy isBottomBorderOverridden])
                                                                                       {
-                                                                                        v129 = [v166 bottomBorder];
-                                                                                        [v126 setBorder:v129];
+                                                                                        bottomBorder2 = [defaultsCopy bottomBorder];
+                                                                                        [mutableBottomBorder setBorder:bottomBorder2];
                                                                                       }
 
                                                                                       else
                                                                                       {
-                                                                                        [v126 setSingleBlackBorder];
+                                                                                        [mutableBottomBorder setSingleBlackBorder];
                                                                                       }
                                                                                     }
                                                                                   }
@@ -3574,24 +3574,24 @@ LABEL_9:
                                                                                       v131 = self->mTrackedProperties;
                                                                                       if (!v131 || ![(WDParagraphPropertiesValues *)v131 rightBorderOverridden])
                                                                                       {
-                                                                                        v132 = [(WDParagraphProperties *)self mutableRightBorder];
-                                                                                        v133 = [(WDParagraphPropertiesValues *)self->mOriginalProperties rightBorder];
-                                                                                        v134 = [v133 style];
+                                                                                        mutableRightBorder = [(WDParagraphProperties *)self mutableRightBorder];
+                                                                                        rightBorder = [(WDParagraphPropertiesValues *)self->mOriginalProperties rightBorder];
+                                                                                        style4 = [rightBorder style];
 
-                                                                                        if (v134)
+                                                                                        if (style4)
                                                                                         {
-                                                                                          [v132 setNullBorder];
+                                                                                          [mutableRightBorder setNullBorder];
                                                                                         }
 
-                                                                                        else if ([v166 isRightBorderOverridden])
+                                                                                        else if ([defaultsCopy isRightBorderOverridden])
                                                                                         {
-                                                                                          v135 = [v166 rightBorder];
-                                                                                          [v132 setBorder:v135];
+                                                                                          rightBorder2 = [defaultsCopy rightBorder];
+                                                                                          [mutableRightBorder setBorder:rightBorder2];
                                                                                         }
 
                                                                                         else
                                                                                         {
-                                                                                          [v132 setSingleBlackBorder];
+                                                                                          [mutableRightBorder setSingleBlackBorder];
                                                                                         }
                                                                                       }
                                                                                     }
@@ -3604,24 +3604,24 @@ LABEL_9:
                                                                                         v137 = self->mTrackedProperties;
                                                                                         if (!v137 || ![(WDParagraphPropertiesValues *)v137 betweenBorderOverridden])
                                                                                         {
-                                                                                          v138 = [(WDParagraphProperties *)self mutableBetweenBorder];
-                                                                                          v139 = [(WDParagraphPropertiesValues *)self->mOriginalProperties betweenBorder];
-                                                                                          v140 = [v139 style];
+                                                                                          mutableBetweenBorder = [(WDParagraphProperties *)self mutableBetweenBorder];
+                                                                                          betweenBorder = [(WDParagraphPropertiesValues *)self->mOriginalProperties betweenBorder];
+                                                                                          style5 = [betweenBorder style];
 
-                                                                                          if (v140)
+                                                                                          if (style5)
                                                                                           {
-                                                                                            [v138 setNullBorder];
+                                                                                            [mutableBetweenBorder setNullBorder];
                                                                                           }
 
-                                                                                          else if ([v166 isBetweenBorderOverridden])
+                                                                                          else if ([defaultsCopy isBetweenBorderOverridden])
                                                                                           {
-                                                                                            v141 = [v166 betweenBorder];
-                                                                                            [v138 setBorder:v141];
+                                                                                            betweenBorder2 = [defaultsCopy betweenBorder];
+                                                                                            [mutableBetweenBorder setBorder:betweenBorder2];
                                                                                           }
 
                                                                                           else
                                                                                           {
-                                                                                            [v138 setSingleBlackBorder];
+                                                                                            [mutableBetweenBorder setSingleBlackBorder];
                                                                                           }
                                                                                         }
                                                                                       }
@@ -3634,24 +3634,24 @@ LABEL_9:
                                                                                           v143 = self->mTrackedProperties;
                                                                                           if (!v143 || ![(WDParagraphPropertiesValues *)v143 barBorderOverridden])
                                                                                           {
-                                                                                            v144 = [(WDParagraphProperties *)self mutableBarBorder];
-                                                                                            v145 = [(WDParagraphPropertiesValues *)self->mOriginalProperties barBorder];
-                                                                                            v146 = [v145 style];
+                                                                                            mutableBarBorder = [(WDParagraphProperties *)self mutableBarBorder];
+                                                                                            barBorder = [(WDParagraphPropertiesValues *)self->mOriginalProperties barBorder];
+                                                                                            style6 = [barBorder style];
 
-                                                                                            if (v146)
+                                                                                            if (style6)
                                                                                             {
-                                                                                              [v144 setNullBorder];
+                                                                                              [mutableBarBorder setNullBorder];
                                                                                             }
 
-                                                                                            else if ([v166 isBarBorderOverridden])
+                                                                                            else if ([defaultsCopy isBarBorderOverridden])
                                                                                             {
-                                                                                              v147 = [v166 barBorder];
-                                                                                              [v144 setBorder:v147];
+                                                                                              barBorder2 = [defaultsCopy barBorder];
+                                                                                              [mutableBarBorder setBorder:barBorder2];
                                                                                             }
 
                                                                                             else
                                                                                             {
-                                                                                              [v144 setSingleBlackBorder];
+                                                                                              [mutableBarBorder setSingleBlackBorder];
                                                                                             }
                                                                                           }
                                                                                         }
@@ -3664,34 +3664,34 @@ LABEL_9:
                                                                                             v149 = self->mTrackedProperties;
                                                                                             if (!v149 || ![(WDParagraphPropertiesValues *)v149 shadingOverridden])
                                                                                             {
-                                                                                              v150 = [(WDParagraphProperties *)self mutableShading];
-                                                                                              v151 = [(WDParagraphPropertiesValues *)self->mOriginalProperties shading];
-                                                                                              v152 = [v151 style];
+                                                                                              mutableShading = [(WDParagraphProperties *)self mutableShading];
+                                                                                              shading = [(WDParagraphPropertiesValues *)self->mOriginalProperties shading];
+                                                                                              style7 = [shading style];
 
-                                                                                              if (v152)
+                                                                                              if (style7)
                                                                                               {
-                                                                                                [v150 setStyle:0];
+                                                                                                [mutableShading setStyle:0];
                                                                                                 v153 = +[WDShading autoForegroundColor];
-                                                                                                [v150 setForeground:v153];
+                                                                                                [mutableShading setForeground:v153];
 
-                                                                                                v154 = +[WDShading autoBackgroundColor];
-                                                                                                [v150 setBackground:v154];
+                                                                                                shading2 = +[WDShading autoBackgroundColor];
+                                                                                                [mutableShading setBackground:shading2];
                                                                                               }
 
-                                                                                              else if ([v166 isShadingOverridden])
+                                                                                              else if ([defaultsCopy isShadingOverridden])
                                                                                               {
-                                                                                                v154 = [v166 shading];
-                                                                                                [v150 setShading:v154];
+                                                                                                shading2 = [defaultsCopy shading];
+                                                                                                [mutableShading setShading:shading2];
                                                                                               }
 
                                                                                               else
                                                                                               {
-                                                                                                [v150 setStyle:1];
+                                                                                                [mutableShading setStyle:1];
                                                                                                 v155 = +[OITSUColor blackColor];
-                                                                                                [v150 setForeground:v155];
+                                                                                                [mutableShading setForeground:v155];
 
-                                                                                                v154 = +[OITSUColor whiteColor];
-                                                                                                [v150 setBackground:v154];
+                                                                                                shading2 = +[OITSUColor whiteColor];
+                                                                                                [mutableShading setBackground:shading2];
                                                                                               }
                                                                                             }
                                                                                           }
@@ -3704,9 +3704,9 @@ LABEL_9:
                                                                                               v157 = self->mTrackedProperties;
                                                                                               if (!v157 || ![(WDParagraphPropertiesValues *)v157 dropCapOverridden])
                                                                                               {
-                                                                                                if ([v166 isDropCapOverridden])
+                                                                                                if ([defaultsCopy isDropCapOverridden])
                                                                                                 {
-                                                                                                  -[WDParagraphProperties setDropCap:](self, "setDropCap:", [v166 dropCap]);
+                                                                                                  -[WDParagraphProperties setDropCap:](self, "setDropCap:", [defaultsCopy dropCap]);
                                                                                                 }
 
                                                                                                 else
@@ -3724,13 +3724,13 @@ LABEL_9:
                                                                                                 v159 = self->mTrackedProperties;
                                                                                                 if (!v159 || ![(WDParagraphPropertiesValues *)v159 tabStopAddedCountOverridden])
                                                                                                 {
-                                                                                                  v160 = [v166 tabStopAddedCount];
-                                                                                                  if (v160)
+                                                                                                  tabStopAddedCount = [defaultsCopy tabStopAddedCount];
+                                                                                                  if (tabStopAddedCount)
                                                                                                   {
-                                                                                                    [(WDParagraphProperties *)self setTabStopAddedCount:v160];
-                                                                                                    for (i = 0; i != v160; ++i)
+                                                                                                    [(WDParagraphProperties *)self setTabStopAddedCount:tabStopAddedCount];
+                                                                                                    for (i = 0; i != tabStopAddedCount; ++i)
                                                                                                     {
-                                                                                                      -[WDParagraphProperties addTabStopAdded:](self, "addTabStopAdded:", [v166 tabStopAddedAt:i]);
+                                                                                                      -[WDParagraphProperties addTabStopAdded:](self, "addTabStopAdded:", [defaultsCopy tabStopAddedAt:i]);
                                                                                                     }
                                                                                                   }
 
@@ -3749,13 +3749,13 @@ LABEL_9:
                                                                                                   v163 = self->mTrackedProperties;
                                                                                                   if (!v163 || ![(WDParagraphPropertiesValues *)v163 tabStopDeletedCountOverridden])
                                                                                                   {
-                                                                                                    v164 = [v166 tabStopDeletedPositionCount];
-                                                                                                    if (v164)
+                                                                                                    tabStopDeletedPositionCount = [defaultsCopy tabStopDeletedPositionCount];
+                                                                                                    if (tabStopDeletedPositionCount)
                                                                                                     {
-                                                                                                      [(WDParagraphProperties *)self setTabStopDeletedPositionCount:v164];
-                                                                                                      for (j = 0; j != v164; ++j)
+                                                                                                      [(WDParagraphProperties *)self setTabStopDeletedPositionCount:tabStopDeletedPositionCount];
+                                                                                                      for (j = 0; j != tabStopDeletedPositionCount; ++j)
                                                                                                       {
-                                                                                                        -[WDParagraphProperties addTabStopDeletedPosition:](self, "addTabStopDeletedPosition:", [v166 tabStopDeletedPositionAt:j]);
+                                                                                                        -[WDParagraphProperties addTabStopDeletedPosition:](self, "addTabStopDeletedPosition:", [defaultsCopy tabStopDeletedPositionAt:j]);
                                                                                                       }
                                                                                                     }
 
@@ -3812,13 +3812,13 @@ LABEL_9:
       }
     }
 
-    [(WDParagraphProperties *)self setResolveMode:v4];
+    [(WDParagraphProperties *)self setResolveMode:resolveMode];
   }
 }
 
-- (void)setBaseStyle:(id)a3
+- (void)setBaseStyle:(id)style
 {
-  v16 = a3;
+  styleCopy = style;
   if ((*(self + 17) & 2) != 0)
   {
     mTrackedProperties = self->mTrackedProperties;
@@ -3876,7 +3876,7 @@ LABEL_9:
     }
   }
 
-  [v4 setBaseStyle:v16];
+  [v4 setBaseStyle:styleCopy];
   [*p_mTrackedProperties setBaseStyleOverridden:1];
 LABEL_11:
 }
@@ -3924,9 +3924,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 pageBreakBefore];
 }
 
-- (void)setPageBreakBefore:(BOOL)a3
+- (void)setPageBreakBefore:(BOOL)before
 {
-  v3 = a3;
+  beforeCopy = before;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -3977,7 +3977,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setPageBreakBefore:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setPageBreakBefore:beforeCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setPageBreakBeforeOverridden:1];
@@ -4037,9 +4037,9 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 pageBreakBeforeOverridden];
 }
 
-- (void)setListLevel:(unsigned __int8)a3
+- (void)setListLevel:(unsigned __int8)level
 {
-  v3 = a3;
+  levelCopy = level;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -4090,13 +4090,13 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setListLevel:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setListLevel:levelCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setListLevelOverridden:1];
 }
 
-- (void)setListIndex:(unint64_t)a3
+- (void)setListIndex:(unint64_t)index
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -4148,7 +4148,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setListIndex:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setListIndex:index];
   v12 = *p_mOriginalProperties;
 
   [v12 setListIndexOverridden:1];
@@ -4221,7 +4221,7 @@ LABEL_15:
   return (v8 | (v11 << 8));
 }
 
-- (void)setDropCap:(id)a3
+- (void)setDropCap:(id)cap
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -4273,7 +4273,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setDropCap:*&a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setDropCap:*&cap];
   v12 = *p_mOriginalProperties;
 
   [v12 setDropCapOverridden:1];
@@ -4333,7 +4333,7 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 dropCapOverridden];
 }
 
-- (void)setWidth:(int64_t)a3
+- (void)setWidth:(int64_t)width
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -4385,7 +4385,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setWidth:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setWidth:width];
   v12 = *p_mOriginalProperties;
 
   [v12 setWidthOverridden:1];
@@ -4429,9 +4429,9 @@ LABEL_9:
   return 0;
 }
 
-- (void)setHeight:(int64_t)a3
+- (void)setHeight:(int64_t)height
 {
-  v3 = a3;
+  heightCopy = height;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -4482,7 +4482,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setHeight:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setHeight:heightCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setHeightOverridden:1];
@@ -4578,9 +4578,9 @@ LABEL_10:
   return 1;
 }
 
-- (void)setHeightRule:(int)a3
+- (void)setHeightRule:(int)rule
 {
-  v3 = a3;
+  ruleCopy = rule;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -4631,7 +4631,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setHeightRule:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setHeightRule:ruleCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setHeightRuleOverridden:1];
@@ -4734,7 +4734,7 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 verticalSpace];
 }
 
-- (void)setVerticalSpace:(int64_t)a3
+- (void)setVerticalSpace:(int64_t)space
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -4786,7 +4786,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setVerticalSpace:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setVerticalSpace:space];
   v12 = *p_mOriginalProperties;
 
   [v12 setVerticalSpaceOverridden:1];
@@ -4889,7 +4889,7 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 horizontalSpace];
 }
 
-- (void)setHorizontalSpace:(int64_t)a3
+- (void)setHorizontalSpace:(int64_t)space
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -4941,7 +4941,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setHorizontalSpace:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setHorizontalSpace:space];
   v12 = *p_mOriginalProperties;
 
   [v12 setHorizontalSpaceOverridden:1];
@@ -5044,9 +5044,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 wrap];
 }
 
-- (void)setWrap:(BOOL)a3
+- (void)setWrap:(BOOL)wrap
 {
-  v3 = a3;
+  wrapCopy = wrap;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -5097,7 +5097,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setWrap:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setWrap:wrapCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setWrapOverridden:1];
@@ -5157,9 +5157,9 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 wrapOverridden];
 }
 
-- (void)setHorizontalAnchor:(int)a3
+- (void)setHorizontalAnchor:(int)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -5210,15 +5210,15 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setHorizontalAnchor:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setHorizontalAnchor:anchorCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setHorizontalAnchorOverridden:1];
 }
 
-- (void)setVerticalAnchor:(int)a3
+- (void)setVerticalAnchor:(int)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -5269,13 +5269,13 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setVerticalAnchor:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setVerticalAnchor:anchorCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setVerticalAnchorOverridden:1];
 }
 
-- (void)setHorizontalPosition:(int64_t)a3
+- (void)setHorizontalPosition:(int64_t)position
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -5327,13 +5327,13 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setHorizontalPosition:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setHorizontalPosition:position];
   v12 = *p_mOriginalProperties;
 
   [v12 setHorizontalPositionOverridden:1];
 }
 
-- (void)setVerticalPosition:(int64_t)a3
+- (void)setVerticalPosition:(int64_t)position
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -5385,7 +5385,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setVerticalPosition:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setVerticalPosition:position];
   v12 = *p_mOriginalProperties;
 
   [v12 setVerticalPositionOverridden:1];
@@ -5434,9 +5434,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 wrapCode];
 }
 
-- (void)setWrapCode:(char)a3
+- (void)setWrapCode:(char)code
 {
-  v3 = a3;
+  codeCopy = code;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -5487,7 +5487,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setWrapCode:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setWrapCode:codeCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setWrapCodeOverridden:1];
@@ -5590,9 +5590,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 anchorLock];
 }
 
-- (void)setAnchorLock:(BOOL)a3
+- (void)setAnchorLock:(BOOL)lock
 {
-  v3 = a3;
+  lockCopy = lock;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -5643,7 +5643,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setAnchorLock:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setAnchorLock:lockCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setAnchorLockOverridden:1];
@@ -5717,7 +5717,7 @@ LABEL_10:
         if ([(WDParagraphPropertiesValues *)mTrackedProperties topBorderOverridden])
         {
 LABEL_14:
-          v8 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties topBorder];
+          topBorder = [(WDParagraphPropertiesValues *)*p_mTrackedProperties topBorder];
           goto LABEL_16;
         }
 
@@ -5729,24 +5729,24 @@ LABEL_14:
     {
       mOriginalProperties = self->mOriginalProperties;
       p_mOriginalProperties = &self->mOriginalProperties;
-      v8 = mOriginalProperties;
+      topBorder = mOriginalProperties;
       if (!mOriginalProperties)
       {
         goto LABEL_16;
       }
 
       p_mTrackedProperties = p_mOriginalProperties;
-      if ([v8 topBorderOverridden])
+      if ([topBorder topBorderOverridden])
       {
         goto LABEL_14;
       }
     }
   }
 
-  v8 = 0;
+  topBorder = 0;
 LABEL_16:
 
-  return v8;
+  return topBorder;
 }
 
 - (BOOL)isTopBorderOverridden
@@ -5817,7 +5817,7 @@ LABEL_10:
         if ([(WDParagraphPropertiesValues *)mTrackedProperties leftBorderOverridden])
         {
 LABEL_14:
-          v8 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties leftBorder];
+          leftBorder = [(WDParagraphPropertiesValues *)*p_mTrackedProperties leftBorder];
           goto LABEL_16;
         }
 
@@ -5829,24 +5829,24 @@ LABEL_14:
     {
       mOriginalProperties = self->mOriginalProperties;
       p_mOriginalProperties = &self->mOriginalProperties;
-      v8 = mOriginalProperties;
+      leftBorder = mOriginalProperties;
       if (!mOriginalProperties)
       {
         goto LABEL_16;
       }
 
       p_mTrackedProperties = p_mOriginalProperties;
-      if ([v8 leftBorderOverridden])
+      if ([leftBorder leftBorderOverridden])
       {
         goto LABEL_14;
       }
     }
   }
 
-  v8 = 0;
+  leftBorder = 0;
 LABEL_16:
 
-  return v8;
+  return leftBorder;
 }
 
 - (BOOL)isLeftBorderOverridden
@@ -5917,7 +5917,7 @@ LABEL_10:
         if ([(WDParagraphPropertiesValues *)mTrackedProperties rightBorderOverridden])
         {
 LABEL_14:
-          v8 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties rightBorder];
+          rightBorder = [(WDParagraphPropertiesValues *)*p_mTrackedProperties rightBorder];
           goto LABEL_16;
         }
 
@@ -5929,24 +5929,24 @@ LABEL_14:
     {
       mOriginalProperties = self->mOriginalProperties;
       p_mOriginalProperties = &self->mOriginalProperties;
-      v8 = mOriginalProperties;
+      rightBorder = mOriginalProperties;
       if (!mOriginalProperties)
       {
         goto LABEL_16;
       }
 
       p_mTrackedProperties = p_mOriginalProperties;
-      if ([v8 rightBorderOverridden])
+      if ([rightBorder rightBorderOverridden])
       {
         goto LABEL_14;
       }
     }
   }
 
-  v8 = 0;
+  rightBorder = 0;
 LABEL_16:
 
-  return v8;
+  return rightBorder;
 }
 
 - (BOOL)isRightBorderOverridden
@@ -6015,7 +6015,7 @@ LABEL_10:
       if ([(WDParagraphPropertiesValues *)mTrackedProperties betweenBorderOverridden])
       {
 LABEL_9:
-        v6 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties betweenBorder];
+        betweenBorder = [(WDParagraphPropertiesValues *)*p_mTrackedProperties betweenBorder];
         goto LABEL_11;
       }
 
@@ -6027,23 +6027,23 @@ LABEL_9:
   {
     mOriginalProperties = self->mOriginalProperties;
     p_mOriginalProperties = &self->mOriginalProperties;
-    v6 = mOriginalProperties;
+    betweenBorder = mOriginalProperties;
     if (!mOriginalProperties)
     {
       goto LABEL_11;
     }
 
     p_mTrackedProperties = p_mOriginalProperties;
-    if ([v6 betweenBorderOverridden])
+    if ([betweenBorder betweenBorderOverridden])
     {
       goto LABEL_9;
     }
   }
 
-  v6 = 0;
+  betweenBorder = 0;
 LABEL_11:
 
-  return v6;
+  return betweenBorder;
 }
 
 - (BOOL)isBetweenBorderOverridden
@@ -6112,7 +6112,7 @@ LABEL_10:
       if ([(WDParagraphPropertiesValues *)mTrackedProperties barBorderOverridden])
       {
 LABEL_9:
-        v6 = [(WDParagraphPropertiesValues *)*p_mTrackedProperties barBorder];
+        barBorder = [(WDParagraphPropertiesValues *)*p_mTrackedProperties barBorder];
         goto LABEL_11;
       }
 
@@ -6124,23 +6124,23 @@ LABEL_9:
   {
     mOriginalProperties = self->mOriginalProperties;
     p_mOriginalProperties = &self->mOriginalProperties;
-    v6 = mOriginalProperties;
+    barBorder = mOriginalProperties;
     if (!mOriginalProperties)
     {
       goto LABEL_11;
     }
 
     p_mTrackedProperties = p_mOriginalProperties;
-    if ([v6 barBorderOverridden])
+    if ([barBorder barBorderOverridden])
     {
       goto LABEL_9;
     }
   }
 
-  v6 = 0;
+  barBorder = 0;
 LABEL_11:
 
-  return v6;
+  return barBorder;
 }
 
 - (BOOL)isBarBorderOverridden
@@ -6197,9 +6197,9 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 barBorderOverridden];
 }
 
-- (void)setSpaceBefore:(unsigned __int16)a3
+- (void)setSpaceBefore:(unsigned __int16)before
 {
-  v3 = a3;
+  beforeCopy = before;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6250,7 +6250,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceBefore:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceBefore:beforeCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setSpaceBeforeOverridden:1];
@@ -6299,9 +6299,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 spaceBeforeAuto];
 }
 
-- (void)setSpaceBeforeAuto:(BOOL)a3
+- (void)setSpaceBeforeAuto:(BOOL)auto
 {
-  v3 = a3;
+  autoCopy = auto;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6352,7 +6352,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceBeforeAuto:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceBeforeAuto:autoCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setSpaceBeforeAutoOverridden:1];
@@ -6412,9 +6412,9 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 spaceBeforeAutoOverridden];
 }
 
-- (void)setSpaceAfter:(unsigned __int16)a3
+- (void)setSpaceAfter:(unsigned __int16)after
 {
-  v3 = a3;
+  afterCopy = after;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6465,7 +6465,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceAfter:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceAfter:afterCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setSpaceAfterOverridden:1];
@@ -6514,9 +6514,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 spaceAfterAuto];
 }
 
-- (void)setSpaceAfterAuto:(BOOL)a3
+- (void)setSpaceAfterAuto:(BOOL)auto
 {
-  v3 = a3;
+  autoCopy = auto;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6567,7 +6567,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceAfterAuto:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setSpaceAfterAuto:autoCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setSpaceAfterAutoOverridden:1];
@@ -6627,9 +6627,9 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 spaceAfterAutoOverridden];
 }
 
-- (void)setLineSpacing:(signed __int16)a3
+- (void)setLineSpacing:(signed __int16)spacing
 {
-  v3 = a3;
+  spacingCopy = spacing;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6680,15 +6680,15 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setLineSpacing:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setLineSpacing:spacingCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setLineSpacingOverridden:1];
 }
 
-- (void)setLineSpacingRule:(int)a3
+- (void)setLineSpacingRule:(int)rule
 {
-  v3 = a3;
+  ruleCopy = rule;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6739,15 +6739,15 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setLineSpacingRule:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setLineSpacingRule:ruleCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setLineSpacingRuleOverridden:1];
 }
 
-- (void)setLeftIndent:(signed __int16)a3
+- (void)setLeftIndent:(signed __int16)indent
 {
-  v3 = a3;
+  indentCopy = indent;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6798,7 +6798,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setLeftIndent:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setLeftIndent:indentCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setLeftIndentOverridden:1];
@@ -6880,9 +6880,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 leadingIndent];
 }
 
-- (void)setLeadingIndent:(signed __int16)a3
+- (void)setLeadingIndent:(signed __int16)indent
 {
-  v3 = a3;
+  indentCopy = indent;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -6933,7 +6933,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setLeadingIndent:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setLeadingIndent:indentCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setLeadingIndentOverridden:1];
@@ -7069,9 +7069,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 followingIndent];
 }
 
-- (void)setFollowingIndent:(signed __int16)a3
+- (void)setFollowingIndent:(signed __int16)indent
 {
-  v3 = a3;
+  indentCopy = indent;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7122,7 +7122,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setFollowingIndent:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setFollowingIndent:indentCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setFollowingIndentOverridden:1];
@@ -7215,9 +7215,9 @@ LABEL_10:
   [(WDParagraphPropertiesValues *)v4 setFollowingIndentOverridden:0];
 }
 
-- (void)setRightIndent:(signed __int16)a3
+- (void)setRightIndent:(signed __int16)indent
 {
-  v3 = a3;
+  indentCopy = indent;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7268,7 +7268,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setRightIndent:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setRightIndent:indentCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setRightIndentOverridden:1];
@@ -7307,9 +7307,9 @@ LABEL_9:
   [(WDParagraphPropertiesValues *)v4 setRightIndentOverridden:0];
 }
 
-- (void)setFirstLineIndent:(signed __int16)a3
+- (void)setFirstLineIndent:(signed __int16)indent
 {
-  v3 = a3;
+  indentCopy = indent;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7360,7 +7360,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setFirstLineIndent:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setFirstLineIndent:indentCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setFirstLineIndentOverridden:1];
@@ -7442,9 +7442,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 leftIndentChars];
 }
 
-- (void)setLeftIndentChars:(signed __int16)a3
+- (void)setLeftIndentChars:(signed __int16)chars
 {
-  v3 = a3;
+  charsCopy = chars;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7495,7 +7495,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setLeftIndentChars:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setLeftIndentChars:charsCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setLeftIndentCharsOverridden:1];
@@ -7598,9 +7598,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 rightIndentChars];
 }
 
-- (void)setRightIndentChars:(signed __int16)a3
+- (void)setRightIndentChars:(signed __int16)chars
 {
-  v3 = a3;
+  charsCopy = chars;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7651,7 +7651,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setRightIndentChars:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setRightIndentChars:charsCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setRightIndentCharsOverridden:1];
@@ -7754,9 +7754,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 firstLineIndentChars];
 }
 
-- (void)setFirstLineIndentChars:(signed __int16)a3
+- (void)setFirstLineIndentChars:(signed __int16)chars
 {
-  v3 = a3;
+  charsCopy = chars;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7807,7 +7807,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setFirstLineIndentChars:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setFirstLineIndentChars:charsCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setFirstLineIndentCharsOverridden:1];
@@ -7867,9 +7867,9 @@ LABEL_10:
   return [(WDParagraphPropertiesValues *)v5 firstLineIndentCharsOverridden];
 }
 
-- (void)setJustification:(int)a3
+- (void)setJustification:(int)justification
 {
-  v3 = a3;
+  justificationCopy = justification;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -7920,7 +7920,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setJustification:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setJustification:justificationCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setJustificationOverridden:1];
@@ -7967,9 +7967,9 @@ LABEL_10:
   return v6;
 }
 
-- (void)setPhysicalJustification:(int)a3
+- (void)setPhysicalJustification:(int)justification
 {
-  v3 = a3;
+  justificationCopy = justification;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8020,7 +8020,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setPhysicalJustification:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setPhysicalJustification:justificationCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setPhysicalJustificationOverridden:1];
@@ -8123,9 +8123,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 outlineLevel];
 }
 
-- (void)setOutlineLevel:(unsigned __int16)a3
+- (void)setOutlineLevel:(unsigned __int16)level
 {
-  v3 = a3;
+  levelCopy = level;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8176,7 +8176,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setOutlineLevel:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setOutlineLevel:levelCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setOutlineLevelOverridden:1];
@@ -8279,9 +8279,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 keepNextParagraphTogether];
 }
 
-- (void)setKeepNextParagraphTogether:(BOOL)a3
+- (void)setKeepNextParagraphTogether:(BOOL)together
 {
-  v3 = a3;
+  togetherCopy = together;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8332,7 +8332,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setKeepNextParagraphTogether:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setKeepNextParagraphTogether:togetherCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setKeepNextParagraphTogetherOverridden:1];
@@ -8435,9 +8435,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 keepLinesTogether];
 }
 
-- (void)setKeepLinesTogether:(BOOL)a3
+- (void)setKeepLinesTogether:(BOOL)together
 {
-  v3 = a3;
+  togetherCopy = together;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8488,7 +8488,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setKeepLinesTogether:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setKeepLinesTogether:togetherCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setKeepLinesTogetherOverridden:1];
@@ -8591,9 +8591,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 suppressAutoHyphens];
 }
 
-- (void)setSuppressAutoHyphens:(BOOL)a3
+- (void)setSuppressAutoHyphens:(BOOL)hyphens
 {
-  v3 = a3;
+  hyphensCopy = hyphens;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8644,7 +8644,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setSuppressAutoHyphens:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setSuppressAutoHyphens:hyphensCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setSuppressAutoHyphensOverridden:1];
@@ -8747,9 +8747,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 suppressLineNumbers];
 }
 
-- (void)setSuppressLineNumbers:(BOOL)a3
+- (void)setSuppressLineNumbers:(BOOL)numbers
 {
-  v3 = a3;
+  numbersCopy = numbers;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8800,7 +8800,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setSuppressLineNumbers:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setSuppressLineNumbers:numbersCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setSuppressLineNumbersOverridden:1];
@@ -8903,9 +8903,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 widowControl];
 }
 
-- (void)setWidowControl:(BOOL)a3
+- (void)setWidowControl:(BOOL)control
 {
-  v3 = a3;
+  controlCopy = control;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -8956,7 +8956,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setWidowControl:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setWidowControl:controlCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setWidowControlOverridden:1];
@@ -9059,9 +9059,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 biDi];
 }
 
-- (void)setBiDi:(BOOL)a3
+- (void)setBiDi:(BOOL)di
 {
-  v3 = a3;
+  diCopy = di;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -9112,7 +9112,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setBiDi:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setBiDi:diCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setBiDiOverridden:1];
@@ -9215,9 +9215,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 kinsokuOff];
 }
 
-- (void)setKinsokuOff:(BOOL)a3
+- (void)setKinsokuOff:(BOOL)off
 {
-  v3 = a3;
+  offCopy = off;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -9268,7 +9268,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setKinsokuOff:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setKinsokuOff:offCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setKinsokuOffOverridden:1];
@@ -9338,8 +9338,8 @@ LABEL_10:
     {
       if ([(WDParagraphPropertiesValues *)mTrackedProperties tabStopAddedCountOverridden])
       {
-        v5 = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopAddedTable];
-        v6 = [v5 length];
+        tabStopAddedTable = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopAddedTable];
+        v6 = [tabStopAddedTable length];
         goto LABEL_11;
       }
 
@@ -9358,15 +9358,15 @@ LABEL_10:
     return 0;
   }
 
-  v5 = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopAddedTable];
-  v6 = [v5 length];
+  tabStopAddedTable = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopAddedTable];
+  v6 = [tabStopAddedTable length];
 LABEL_11:
   v8 = v6 >> 2;
 
   return v8;
 }
 
-- (void)setTabStopAddedCount:(unint64_t)a3
+- (void)setTabStopAddedCount:(unint64_t)count
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -9418,23 +9418,23 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopAddedCount:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopAddedCount:count];
   v12 = *p_mOriginalProperties;
 
   [v12 setTabStopAddedCountOverridden:1];
 }
 
-- (BOOL)hasTabStopAddedAtPosition:(signed __int16)a3
+- (BOOL)hasTabStopAddedAtPosition:(signed __int16)position
 {
-  v5 = [(WDParagraphProperties *)self tabStopAddedCount];
-  if (v5 < 1)
+  tabStopAddedCount = [(WDParagraphProperties *)self tabStopAddedCount];
+  if (tabStopAddedCount < 1)
   {
     return 0;
   }
 
-  v6 = v5;
-  v7 = a3;
-  if (*[(WDParagraphProperties *)self tabStopAddedAt:0]== a3)
+  v6 = tabStopAddedCount;
+  positionCopy = position;
+  if (*[(WDParagraphProperties *)self tabStopAddedAt:0]== position)
   {
     return 1;
   }
@@ -9452,21 +9452,21 @@ LABEL_9:
     v9 = v10 + 1;
   }
 
-  while (v11->var0 != v7);
+  while (v11->var0 != positionCopy);
   return v10 < v6;
 }
 
-- (BOOL)hasTabStopDeletedAtPosition:(signed __int16)a3
+- (BOOL)hasTabStopDeletedAtPosition:(signed __int16)position
 {
-  v3 = a3;
-  v5 = [(WDParagraphProperties *)self tabStopDeletedPositionCount];
-  if (v5 < 1)
+  positionCopy = position;
+  tabStopDeletedPositionCount = [(WDParagraphProperties *)self tabStopDeletedPositionCount];
+  if (tabStopDeletedPositionCount < 1)
   {
     return 0;
   }
 
-  v6 = v5;
-  if ([(WDParagraphProperties *)self tabStopDeletedPositionAt:0]== v3)
+  v6 = tabStopDeletedPositionCount;
+  if ([(WDParagraphProperties *)self tabStopDeletedPositionAt:0]== positionCopy)
   {
     return 1;
   }
@@ -9484,13 +9484,13 @@ LABEL_9:
     v8 = v9 + 1;
   }
 
-  while (v10 != v3);
+  while (v10 != positionCopy);
   return v9 < v6;
 }
 
-- ($373952EDE9DECE7FE473A72CF4B2C093)tabStopAddedAt:(unint64_t)a3
+- ($373952EDE9DECE7FE473A72CF4B2C093)tabStopAddedAt:(unint64_t)at
 {
-  v4 = 4 * a3;
+  v4 = 4 * at;
   v5 = *(self + 17);
   if ((v5 & 6) != 0)
   {
@@ -9499,8 +9499,8 @@ LABEL_9:
     {
       if ([(WDParagraphPropertiesValues *)mTrackedProperties tabStopAddedCountOverridden])
       {
-        v7 = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopAddedTable];
-        v8 = [v7 subdataWithRange:{v4, 4}];
+        tabStopAddedTable = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopAddedTable];
+        v8 = [tabStopAddedTable subdataWithRange:{v4, 4}];
         goto LABEL_11;
       }
 
@@ -9514,18 +9514,18 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v7 = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopAddedTable];
-  v8 = [v7 subdataWithRange:{v4, 4}];
+  tabStopAddedTable = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopAddedTable];
+  v8 = [tabStopAddedTable subdataWithRange:{v4, 4}];
 LABEL_11:
   v10 = v8;
 
 LABEL_13:
-  v11 = [v10 bytes];
+  bytes = [v10 bytes];
 
-  return v11;
+  return bytes;
 }
 
-- (void)addTabStopAdded:(id *)a3
+- (void)addTabStopAdded:(id *)added
 {
   if ((*(self + 17) & 2) != 0)
   {
@@ -9582,8 +9582,8 @@ LABEL_13:
     }
   }
 
-  v14 = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopAddedTable];
-  [v14 appendBytes:a3 length:4];
+  tabStopAddedTable = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopAddedTable];
+  [tabStopAddedTable appendBytes:added length:4];
 
   [*p_mTrackedProperties setTabStopAddedCount:{objc_msgSend(*p_mTrackedProperties, "tabStopAddedCount") + 1}];
   v15 = *p_mTrackedProperties;
@@ -9591,7 +9591,7 @@ LABEL_13:
   [v15 setTabStopAddedCountOverridden:1];
 }
 
-- (void)removeTabStopAddedWithPosition:(signed __int16)a3
+- (void)removeTabStopAddedWithPosition:(signed __int16)position
 {
   if ((*(self + 17) & 2) != 0)
   {
@@ -9599,7 +9599,7 @@ LABEL_13:
     if (!mTrackedProperties)
     {
 LABEL_4:
-      v13 = 0;
+      tabStopAddedTable = 0;
       goto LABEL_7;
     }
   }
@@ -9608,7 +9608,7 @@ LABEL_4:
   {
     if ((*(self + 17) & 1) == 0)
     {
-      v13 = 0;
+      tabStopAddedTable = 0;
       goto LABEL_19;
     }
 
@@ -9619,41 +9619,41 @@ LABEL_4:
     }
   }
 
-  v13 = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopAddedTable];
+  tabStopAddedTable = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopAddedTable];
 LABEL_7:
-  v6 = [(WDParagraphProperties *)self tabStopAddedCount];
-  if (!v6)
+  tabStopAddedCount = [(WDParagraphProperties *)self tabStopAddedCount];
+  if (!tabStopAddedCount)
   {
     goto LABEL_19;
   }
 
   v7 = 0;
-  v8 = a3;
+  positionCopy = position;
   while (1)
   {
-    v9 = [v13 subdataWithRange:{v7, 4}];
-    v10 = [v9 bytes];
+    v9 = [tabStopAddedTable subdataWithRange:{v7, 4}];
+    bytes = [v9 bytes];
 
-    if (v10)
+    if (bytes)
     {
-      if (*v10 == v8)
+      if (*bytes == positionCopy)
       {
         break;
       }
     }
 
     v7 += 4;
-    if (!--v6)
+    if (!--tabStopAddedCount)
     {
       goto LABEL_19;
     }
   }
 
-  [v13 replaceBytesInRange:v7 withBytes:4 length:{0, 0}];
+  [tabStopAddedTable replaceBytesInRange:v7 withBytes:4 length:{0, 0}];
   if ((*(self + 17) & 2) != 0)
   {
     mOriginalProperties = self->mTrackedProperties;
-    v12 = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopAddedCount];
+    tabStopAddedCount2 = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopAddedCount];
   }
 
   else
@@ -9664,10 +9664,10 @@ LABEL_7:
     }
 
     mOriginalProperties = self->mOriginalProperties;
-    v12 = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopAddedCount];
+    tabStopAddedCount2 = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopAddedCount];
   }
 
-  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopAddedCount:v12 - 1];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopAddedCount:tabStopAddedCount2 - 1];
 LABEL_19:
 }
 
@@ -9681,8 +9681,8 @@ LABEL_19:
     {
       if ([(WDParagraphPropertiesValues *)mTrackedProperties tabStopDeletedCountOverridden])
       {
-        v5 = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopDeletedTable];
-        v6 = [v5 length];
+        tabStopDeletedTable = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopDeletedTable];
+        v6 = [tabStopDeletedTable length];
         goto LABEL_11;
       }
 
@@ -9701,15 +9701,15 @@ LABEL_19:
     return 0;
   }
 
-  v5 = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopDeletedTable];
-  v6 = [v5 length];
+  tabStopDeletedTable = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopDeletedTable];
+  v6 = [tabStopDeletedTable length];
 LABEL_11:
   v8 = v6 >> 1;
 
   return v8;
 }
 
-- (void)setTabStopDeletedPositionCount:(unint64_t)a3
+- (void)setTabStopDeletedPositionCount:(unint64_t)count
 {
   if ((*(self + 17) & 2) == 0)
   {
@@ -9761,16 +9761,16 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopDeletedCount:a3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopDeletedCount:count];
   v12 = *p_mOriginalProperties;
 
   [v12 setTabStopDeletedCountOverridden:1];
 }
 
-- (signed)tabStopDeletedPositionAt:(unint64_t)a3
+- (signed)tabStopDeletedPositionAt:(unint64_t)at
 {
   v10 = 0;
-  v4 = 2 * a3;
+  v4 = 2 * at;
   v5 = *(self + 17);
   if ((v5 & 6) != 0)
   {
@@ -9779,8 +9779,8 @@ LABEL_9:
     {
       if ([(WDParagraphPropertiesValues *)mTrackedProperties tabStopDeletedCountOverridden])
       {
-        v7 = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopDeletedTable];
-        [v7 getBytes:&v10 range:{v4, 2}];
+        tabStopDeletedTable = [(WDParagraphPropertiesValues *)self->mTrackedProperties tabStopDeletedTable];
+        [tabStopDeletedTable getBytes:&v10 range:{v4, 2}];
 LABEL_11:
 
         return v10;
@@ -9797,8 +9797,8 @@ LABEL_11:
     {
       if ([(WDParagraphPropertiesValues *)mOriginalProperties tabStopDeletedCountOverridden])
       {
-        v7 = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopDeletedTable];
-        [v7 getBytes:&v10 range:{v4, 2}];
+        tabStopDeletedTable = [(WDParagraphPropertiesValues *)self->mOriginalProperties tabStopDeletedTable];
+        [tabStopDeletedTable getBytes:&v10 range:{v4, 2}];
         goto LABEL_11;
       }
     }
@@ -9807,9 +9807,9 @@ LABEL_11:
   return v10;
 }
 
-- (void)addTabStopDeletedPosition:(signed __int16)a3
+- (void)addTabStopDeletedPosition:(signed __int16)position
 {
-  v14 = a3;
+  positionCopy = position;
   if ((*(self + 17) & 2) != 0)
   {
     p_mTrackedProperties = &self->mTrackedProperties;
@@ -9865,14 +9865,14 @@ LABEL_11:
     }
   }
 
-  v13 = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopDeletedTable];
-  [v13 appendBytes:&v14 length:2];
+  tabStopDeletedTable = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopDeletedTable];
+  [tabStopDeletedTable appendBytes:&positionCopy length:2];
 
   [*p_mTrackedProperties setTabStopDeletedCount:{objc_msgSend(*p_mTrackedProperties, "tabStopDeletedCount") + 1}];
   [*p_mTrackedProperties setTabStopDeletedCountOverridden:1];
 }
 
-- (void)removeTabStopDeletedPosition:(signed __int16)a3
+- (void)removeTabStopDeletedPosition:(signed __int16)position
 {
   if ((*(self + 17) & 2) != 0)
   {
@@ -9880,7 +9880,7 @@ LABEL_11:
     if (!mTrackedProperties)
     {
 LABEL_4:
-      v13 = 0;
+      tabStopDeletedTable = 0;
       goto LABEL_7;
     }
   }
@@ -9889,7 +9889,7 @@ LABEL_4:
   {
     if ((*(self + 17) & 1) == 0)
     {
-      v13 = 0;
+      tabStopDeletedTable = 0;
       goto LABEL_19;
     }
 
@@ -9900,41 +9900,41 @@ LABEL_4:
     }
   }
 
-  v13 = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopDeletedTable];
+  tabStopDeletedTable = [(WDParagraphPropertiesValues *)mTrackedProperties tabStopDeletedTable];
 LABEL_7:
-  v6 = [(WDParagraphProperties *)self tabStopDeletedPositionCount];
-  if (!v6)
+  tabStopDeletedPositionCount = [(WDParagraphProperties *)self tabStopDeletedPositionCount];
+  if (!tabStopDeletedPositionCount)
   {
     goto LABEL_19;
   }
 
   v7 = 0;
-  v8 = a3;
+  positionCopy = position;
   while (1)
   {
-    v9 = [v13 subdataWithRange:{v7, 2}];
-    v10 = [v9 bytes];
+    v9 = [tabStopDeletedTable subdataWithRange:{v7, 2}];
+    bytes = [v9 bytes];
 
-    if (v10)
+    if (bytes)
     {
-      if (*v10 == v8)
+      if (*bytes == positionCopy)
       {
         break;
       }
     }
 
     v7 += 2;
-    if (!--v6)
+    if (!--tabStopDeletedPositionCount)
     {
       goto LABEL_19;
     }
   }
 
-  [v13 replaceBytesInRange:v7 withBytes:2 length:{0, 0}];
+  [tabStopDeletedTable replaceBytesInRange:v7 withBytes:2 length:{0, 0}];
   if ((*(self + 17) & 2) != 0)
   {
     mOriginalProperties = self->mTrackedProperties;
-    v12 = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopDeletedCount];
+    tabStopDeletedCount = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopDeletedCount];
   }
 
   else
@@ -9945,10 +9945,10 @@ LABEL_7:
     }
 
     mOriginalProperties = self->mOriginalProperties;
-    v12 = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopDeletedCount];
+    tabStopDeletedCount = [(WDParagraphPropertiesValues *)mOriginalProperties tabStopDeletedCount];
   }
 
-  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopDeletedCount:v12 - 1];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setTabStopDeletedCount:tabStopDeletedCount - 1];
 LABEL_19:
 }
 
@@ -9993,9 +9993,9 @@ LABEL_10:
   return v6;
 }
 
-- (void)setFormattingChanged:(int)a3
+- (void)setFormattingChanged:(int)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -10046,7 +10046,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setFormattingChanged:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setFormattingChanged:changedCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setFormattingChangedOverridden:1];
@@ -10149,9 +10149,9 @@ LABEL_9:
   return [(WDParagraphPropertiesValues *)v9 indexToAuthorIDOfFormattingChange];
 }
 
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change
 {
-  v3 = a3;
+  changeCopy = change;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -10202,7 +10202,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setIndexToAuthorIDOfFormattingChange:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setIndexToAuthorIDOfFormattingChange:changeCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setIndexToAuthorIDOfFormattingChangeOverridden:1];
@@ -10310,9 +10310,9 @@ LABEL_6:
   return [(WDParagraphPropertiesValues *)v6 contextualSpacing];
 }
 
-- (void)setContextualSpacing:(BOOL)a3
+- (void)setContextualSpacing:(BOOL)spacing
 {
-  v3 = a3;
+  spacingCopy = spacing;
   if ((*(self + 17) & 2) == 0)
   {
     if ((*(self + 17) & 1) == 0)
@@ -10363,7 +10363,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(WDParagraphPropertiesValues *)mOriginalProperties setContextualSpacing:v3];
+  [(WDParagraphPropertiesValues *)mOriginalProperties setContextualSpacing:spacingCopy];
   v12 = *p_mOriginalProperties;
 
   [v12 setContextualSpacingOverridden:1];
@@ -10430,7 +10430,7 @@ LABEL_6:
   return [(WDParagraphPropertiesValues *)mTrackedProperties contextualSpacingOverridden];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDParagraphProperties allocWithZone:?]];
   if (v4)
@@ -10465,72 +10465,72 @@ LABEL_6:
   return v4;
 }
 
-- (void)copyPropertiesInto:(id)a3
+- (void)copyPropertiesInto:(id)into
 {
-  v15 = a3;
-  if (v15)
+  intoCopy = into;
+  if (intoCopy)
   {
-    v4 = *(v15 + 3);
+    v4 = *(intoCopy + 3);
     if (v4)
     {
-      *(v15 + 3) = 0;
+      *(intoCopy + 3) = 0;
     }
 
-    v5 = *(v15 + 4);
+    v5 = *(intoCopy + 4);
     if (v5)
     {
-      *(v15 + 4) = 0;
+      *(intoCopy + 4) = 0;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->mDocument);
-    objc_storeWeak(v15 + 5, WeakRetained);
+    objc_storeWeak(intoCopy + 5, WeakRetained);
 
     v7 = [(WDCharacterProperties *)self->mCharacterProperties copy];
-    v8 = *(v15 + 1);
-    *(v15 + 1) = v7;
+    v8 = *(intoCopy + 1);
+    *(intoCopy + 1) = v7;
 
-    *(v15 + 16) = self->mCharacterPropertiesOverridden;
+    *(intoCopy + 16) = self->mCharacterPropertiesOverridden;
     mOriginalProperties = self->mOriginalProperties;
     if (mOriginalProperties)
     {
       v10 = [(WDParagraphPropertiesValues *)mOriginalProperties copy];
-      v11 = *(v15 + 3);
-      *(v15 + 3) = v10;
+      v11 = *(intoCopy + 3);
+      *(intoCopy + 3) = v10;
     }
 
     mTrackedProperties = self->mTrackedProperties;
     if (mTrackedProperties)
     {
       v13 = [(WDParagraphPropertiesValues *)mTrackedProperties copy];
-      v14 = *(v15 + 4);
-      *(v15 + 4) = v13;
+      v14 = *(intoCopy + 4);
+      *(intoCopy + 4) = v13;
     }
   }
 }
 
-- (BOOL)isAnythingOverriddenIn:(id)a3
+- (BOOL)isAnythingOverriddenIn:(id)in
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  inCopy = in;
+  v4 = inCopy;
+  if (inCopy)
   {
-    if ([v3 baseStyleOverridden] & 1) != 0 || (objc_msgSend(v4, "pageBreakBeforeOverridden") & 1) != 0 || (objc_msgSend(v4, "listLevelOverridden") & 1) != 0 || (objc_msgSend(v4, "listIndexOverridden") & 1) != 0 || (objc_msgSend(v4, "topBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "leftBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "bottomBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "rightBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "betweenBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "barBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "shadingOverridden") & 1) != 0 || (objc_msgSend(v4, "dropCapOverridden") & 1) != 0 || (objc_msgSend(v4, "widthOverridden") & 1) != 0 || (objc_msgSend(v4, "heightOverridden") & 1) != 0 || (objc_msgSend(v4, "heightRuleOverridden") & 1) != 0 || (objc_msgSend(v4, "verticalSpaceOverridden") & 1) != 0 || (objc_msgSend(v4, "horizontalSpaceOverridden") & 1) != 0 || (objc_msgSend(v4, "wrapOverridden") & 1) != 0 || (objc_msgSend(v4, "horizontalAnchorOverridden") & 1) != 0 || (objc_msgSend(v4, "verticalAnchorOverridden") & 1) != 0 || (objc_msgSend(v4, "horizontalPositionOverridden") & 1) != 0 || (objc_msgSend(v4, "verticalPositionOverridden") & 1) != 0 || (objc_msgSend(v4, "wrapCodeOverridden") & 1) != 0 || (objc_msgSend(v4, "anchorLockOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceBeforeOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceBeforeAutoOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceAfterOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceAfterAutoOverridden") & 1) != 0 || (objc_msgSend(v4, "lineSpacingOverridden") & 1) != 0 || (objc_msgSend(v4, "lineSpacingRuleOverridden") & 1) != 0 || (objc_msgSend(v4, "leftIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "leadingIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "followingIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "rightIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "firstLineIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "justificationOverridden") & 1) != 0 || (objc_msgSend(v4, "physicalJustificationOverridden") & 1) != 0 || (objc_msgSend(v4, "outlineLevelOverridden") & 1) != 0 || (objc_msgSend(v4, "keepNextParagraphTogetherOverridden") & 1) != 0 || (objc_msgSend(v4, "keepLinesTogetherOverridden") & 1) != 0 || (objc_msgSend(v4, "suppressAutoHyphensOverridden") & 1) != 0 || (objc_msgSend(v4, "suppressLineNumbersOverridden") & 1) != 0 || (objc_msgSend(v4, "widowControlOverridden") & 1) != 0 || (objc_msgSend(v4, "biDiOverridden") & 1) != 0 || (objc_msgSend(v4, "kinsokuOffOverridden") & 1) != 0 || (objc_msgSend(v4, "tabStopAddedCountOverridden") & 1) != 0 || (objc_msgSend(v4, "tabStopDeletedCountOverridden") & 1) != 0 || (objc_msgSend(v4, "formattingChangedOverridden"))
+    if ([inCopy baseStyleOverridden] & 1) != 0 || (objc_msgSend(v4, "pageBreakBeforeOverridden") & 1) != 0 || (objc_msgSend(v4, "listLevelOverridden") & 1) != 0 || (objc_msgSend(v4, "listIndexOverridden") & 1) != 0 || (objc_msgSend(v4, "topBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "leftBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "bottomBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "rightBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "betweenBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "barBorderOverridden") & 1) != 0 || (objc_msgSend(v4, "shadingOverridden") & 1) != 0 || (objc_msgSend(v4, "dropCapOverridden") & 1) != 0 || (objc_msgSend(v4, "widthOverridden") & 1) != 0 || (objc_msgSend(v4, "heightOverridden") & 1) != 0 || (objc_msgSend(v4, "heightRuleOverridden") & 1) != 0 || (objc_msgSend(v4, "verticalSpaceOverridden") & 1) != 0 || (objc_msgSend(v4, "horizontalSpaceOverridden") & 1) != 0 || (objc_msgSend(v4, "wrapOverridden") & 1) != 0 || (objc_msgSend(v4, "horizontalAnchorOverridden") & 1) != 0 || (objc_msgSend(v4, "verticalAnchorOverridden") & 1) != 0 || (objc_msgSend(v4, "horizontalPositionOverridden") & 1) != 0 || (objc_msgSend(v4, "verticalPositionOverridden") & 1) != 0 || (objc_msgSend(v4, "wrapCodeOverridden") & 1) != 0 || (objc_msgSend(v4, "anchorLockOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceBeforeOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceBeforeAutoOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceAfterOverridden") & 1) != 0 || (objc_msgSend(v4, "spaceAfterAutoOverridden") & 1) != 0 || (objc_msgSend(v4, "lineSpacingOverridden") & 1) != 0 || (objc_msgSend(v4, "lineSpacingRuleOverridden") & 1) != 0 || (objc_msgSend(v4, "leftIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "leadingIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "followingIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "rightIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "firstLineIndentOverridden") & 1) != 0 || (objc_msgSend(v4, "justificationOverridden") & 1) != 0 || (objc_msgSend(v4, "physicalJustificationOverridden") & 1) != 0 || (objc_msgSend(v4, "outlineLevelOverridden") & 1) != 0 || (objc_msgSend(v4, "keepNextParagraphTogetherOverridden") & 1) != 0 || (objc_msgSend(v4, "keepLinesTogetherOverridden") & 1) != 0 || (objc_msgSend(v4, "suppressAutoHyphensOverridden") & 1) != 0 || (objc_msgSend(v4, "suppressLineNumbersOverridden") & 1) != 0 || (objc_msgSend(v4, "widowControlOverridden") & 1) != 0 || (objc_msgSend(v4, "biDiOverridden") & 1) != 0 || (objc_msgSend(v4, "kinsokuOffOverridden") & 1) != 0 || (objc_msgSend(v4, "tabStopAddedCountOverridden") & 1) != 0 || (objc_msgSend(v4, "tabStopDeletedCountOverridden") & 1) != 0 || (objc_msgSend(v4, "formattingChangedOverridden"))
     {
-      v5 = 1;
+      indexToAuthorIDOfFormattingChangeOverridden = 1;
     }
 
     else
     {
-      v5 = [v4 indexToAuthorIDOfFormattingChangeOverridden];
+      indexToAuthorIDOfFormattingChangeOverridden = [v4 indexToAuthorIDOfFormattingChangeOverridden];
     }
   }
 
   else
   {
-    v5 = 0;
+    indexToAuthorIDOfFormattingChangeOverridden = 0;
   }
 
-  return v5;
+  return indexToAuthorIDOfFormattingChangeOverridden;
 }
 
 - (id)description

@@ -1,23 +1,23 @@
 @interface _PXZoomablePhotosUserDefaultsCuratedLibrary
 - (NSNumber)preferredIndividualItemsColumnsNumber;
-- (void)setPreferredIndividualItemsColumnsNumber:(id)a3;
+- (void)setPreferredIndividualItemsColumnsNumber:(id)number;
 @end
 
 @implementation _PXZoomablePhotosUserDefaultsCuratedLibrary
 
 - (NSNumber)preferredIndividualItemsColumnsNumber
 {
-  v2 = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
-  v3 = [v2 allPhotosLibraryPreferredIndividualItemsColumns];
+  defaults = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
+  allPhotosLibraryPreferredIndividualItemsColumns = [defaults allPhotosLibraryPreferredIndividualItemsColumns];
 
-  return v3;
+  return allPhotosLibraryPreferredIndividualItemsColumns;
 }
 
-- (void)setPreferredIndividualItemsColumnsNumber:(id)a3
+- (void)setPreferredIndividualItemsColumnsNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
-  [v5 setAllPhotosLibraryPreferredIndividualItemsColumns:v4];
+  numberCopy = number;
+  defaults = [(_PXZoomablePhotosUserDefaultsImp *)self defaults];
+  [defaults setAllPhotosLibraryPreferredIndividualItemsColumns:numberCopy];
 }
 
 @end

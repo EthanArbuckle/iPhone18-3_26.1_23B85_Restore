@@ -8,10 +8,10 @@
 {
   if ([(HDSPWakeUpResultsNotificationStateMachineState *)self isNotificationEnabled])
   {
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    v3 = [(HKSPStateMachineState *)self stateMachine];
-    v4 = [v3 waitingForWakeUpState];
-    [v5 enterState:v4];
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    waitingForWakeUpState = [stateMachine2 waitingForWakeUpState];
+    [stateMachine enterState:waitingForWakeUpState];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface PDPushLocalClassChanges
-- (BOOL)_deleteSyncItemsWithIDs:(id)a3;
-- (BOOL)_shouldSkipGeneratingPayload:(id)a3;
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4;
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5;
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4;
-- (BOOL)shouldProcessPayload:(id)a3;
+- (BOOL)_deleteSyncItemsWithIDs:(id)ds;
+- (BOOL)_shouldSkipGeneratingPayload:(id)payload;
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error;
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error;
+- (BOOL)processResponseObject:(id)object error:(id *)error;
+- (BOOL)shouldProcessPayload:(id)payload;
 - (BOOL)wantsToExecute;
-- (PDPushLocalClassChanges)initWithDatabase:(id)a3;
+- (PDPushLocalClassChanges)initWithDatabase:(id)database;
 - (id)requestData;
-- (void)_updateAssetStatusUsingPendingCLSSyncItemsWithIDs:(id)a3 status:(int64_t)a4;
+- (void)_updateAssetStatusUsingPendingCLSSyncItemsWithIDs:(id)ds status:(int64_t)status;
 - (void)prepare;
-- (void)updateSchdeuleSyncStatus:(id)a3 status:(int64_t)a4;
-- (void)updateSurveySyncStatus:(id)a3 status:(int64_t)a4;
+- (void)updateSchdeuleSyncStatus:(id)status status:(int64_t)a4;
+- (void)updateSurveySyncStatus:(id)status status:(int64_t)a4;
 @end
 
 @implementation PDPushLocalClassChanges
 
-- (PDPushLocalClassChanges)initWithDatabase:(id)a3
+- (PDPushLocalClassChanges)initWithDatabase:(id)database
 {
   v9.receiver = self;
   v9.super_class = PDPushLocalClassChanges;
-  v3 = [(PDURLRequestOperation *)&v9 initWithDatabase:a3];
+  v3 = [(PDURLRequestOperation *)&v9 initWithDatabase:database];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -39,17 +39,17 @@
 {
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    immutableData = 0;
     goto LABEL_26;
   }
 
-  v4 = [(PDURLRequestOperation *)self stats];
-  if (v4)
+  stats = [(PDURLRequestOperation *)self stats];
+  if (stats)
   {
-    v4[14] = 0;
+    stats[14] = 0;
   }
 
-  v27 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v28 = objc_alloc_init(PBDataWriter);
   v5 = objc_alloc_init(PDDPPublishHandoutRequest);
   v34[0] = 0;
@@ -57,7 +57,7 @@
   v34[2] = 0x3032000000;
   v34[3] = sub_100157370;
   v34[4] = sub_100157380;
-  v35 = [(PDURLRequestOperation *)self operationID];
+  operationID = [(PDURLRequestOperation *)self operationID];
   v6 = objc_opt_new();
   v7 = *(&self->super._responseStatusPayloadFailed + 3);
   *(&self->super._responseStatusPayloadFailed + 3) = v6;
@@ -91,7 +91,7 @@
           objc_enumerationMutation(v11);
         }
 
-        (v10[2])(v10, *(*(&v29 + 1) + 8 * i), *(&self->super._responseStatusPayloadFailed + 3), *(&self->_toBePushedSyncableOtherItems + 3), v5, v28, v27);
+        (v10[2])(v10, *(*(&v29 + 1) + 8 * i), *(&self->super._responseStatusPayloadFailed + 3), *(&self->_toBePushedSyncableOtherItems + 3), v5, v28, database);
       }
 
       v12 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
@@ -101,9 +101,9 @@
   }
 
   [*(&self->_beingPushedSyncableOtherItems + 3) removeObjectsInArray:*(&self->super._responseStatusPayloadFailed + 3)];
-  v15 = [(PDURLRequestOperation *)self stats];
-  v16 = v15;
-  if (v15 && *(v15 + 112))
+  stats2 = [(PDURLRequestOperation *)self stats];
+  firstObject = stats2;
+  if (stats2 && *(stats2 + 112))
   {
     goto LABEL_16;
   }
@@ -116,8 +116,8 @@
     v19 = *(&self->super.super._responseStatusError + 3);
     *(&self->super.super._responseStatusError + 3) = v18;
 
-    v16 = [*(&self->_beingPushedSyncableCLSAssetItems + 3) firstObject];
-    (v10[2])(v10, v16, *(&self->super.super._responseStatusError + 3), *(&self->_toBePushedSyncableOtherItems + 3), v5, v28, v27);
+    firstObject = [*(&self->_beingPushedSyncableCLSAssetItems + 3) firstObject];
+    (v10[2])(v10, firstObject, *(&self->super.super._responseStatusError + 3), *(&self->_toBePushedSyncableOtherItems + 3), v5, v28, database);
     [*(&self->_beingPushedSyncableCLSAssetItems + 3) removeObjectsInArray:*(&self->super.super._responseStatusError + 3)];
 LABEL_16:
   }
@@ -126,11 +126,11 @@ LABEL_16:
   v20 = CLSLogDefault;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(PDURLRequestOperation *)self stats];
-    v22 = v21;
-    if (v21)
+    stats3 = [(PDURLRequestOperation *)self stats];
+    v22 = stats3;
+    if (stats3)
     {
-      v23 = *(v21 + 112);
+      v23 = *(stats3 + 112);
     }
 
     else
@@ -143,29 +143,29 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "PDPushLocalClassChanges payloadItemCount:%ld.", buf, 0xCu);
   }
 
-  v24 = [(PDURLRequestOperation *)self stats];
-  if (!v24 || (v25 = v24[14] == 0, v24, v25))
+  stats4 = [(PDURLRequestOperation *)self stats];
+  if (!stats4 || (v25 = stats4[14] == 0, stats4, v25))
   {
     [(PDEndpointRequestOperation *)self markAsFinished];
-    v3 = 0;
+    immutableData = 0;
   }
 
   else
   {
-    v3 = [v28 immutableData];
+    immutableData = [v28 immutableData];
   }
 
   _Block_object_dispose(v34, 8);
 LABEL_26:
 
-  return v3;
+  return immutableData;
 }
 
-- (BOOL)processResponseObject:(id)a3 error:(id *)a4
+- (BOOL)processResponseObject:(id)object error:(id *)error
 {
   v43.receiver = self;
   v43.super_class = PDPushLocalClassChanges;
-  v5 = [(PDAbstractClassZoneOperation *)&v43 processResponseObject:a3 error:a4];
+  v5 = [(PDAbstractClassZoneOperation *)&v43 processResponseObject:object error:error];
   if (v5)
   {
     if ([*(&self->super._responseStatusPayloadFailed + 3) count])
@@ -191,9 +191,9 @@ LABEL_26:
               objc_enumerationMutation(v7);
             }
 
-            v12 = [*(*(&v39 + 1) + 8 * v11) syncItem];
-            v13 = [v12 identityValue];
-            [v6 addObject:v13];
+            syncItem = [*(*(&v39 + 1) + 8 * v11) syncItem];
+            identityValue = [syncItem identityValue];
+            [v6 addObject:identityValue];
 
             v11 = v11 + 1;
           }
@@ -208,11 +208,11 @@ LABEL_26:
       if (![(PDPushLocalClassChanges *)self _deleteSyncItemsWithIDs:v6])
       {
         CLSInitLog();
-        v14 = [(PDPushLocalClassChanges *)self logSubsystem];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        logSubsystem = [(PDPushLocalClassChanges *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "failed to delete processed pending sync items (other)", buf, 2u);
+          _os_log_error_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_ERROR, "failed to delete processed pending sync items (other)", buf, 2u);
         }
       }
 
@@ -225,9 +225,9 @@ LABEL_26:
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       v18 = [*(&self->_surveyPayloadIDMap + 3) objectForKeyedSubscript:v17];
-      v19 = [v18 allObjects];
+      allObjects = [v18 allObjects];
 
-      [(PDPushLocalClassChanges *)self updateSurveySyncStatus:v19 status:3];
+      [(PDPushLocalClassChanges *)self updateSurveySyncStatus:allObjects status:3];
       v15 = *(&self->_multipleChoiceAnswerItemParentChildMap + 3);
     }
 
@@ -236,9 +236,9 @@ LABEL_26:
       v20 = objc_opt_class();
       v21 = NSStringFromClass(v20);
       v22 = [*(&self->_surveyPayloadIDMap + 3) objectForKeyedSubscript:v21];
-      v23 = [v22 allObjects];
+      allObjects2 = [v22 allObjects];
 
-      [(PDPushLocalClassChanges *)self updateSchdeuleSyncStatus:v23 status:3];
+      [(PDPushLocalClassChanges *)self updateSchdeuleSyncStatus:allObjects2 status:3];
     }
 
     if ([*(&self->super.super._responseStatusError + 3) count])
@@ -264,9 +264,9 @@ LABEL_26:
               objc_enumerationMutation(v25);
             }
 
-            v30 = [*(*(&v34 + 1) + 8 * v29) syncItem];
-            v31 = [v30 identityValue];
-            [v24 addObject:v31];
+            syncItem2 = [*(*(&v34 + 1) + 8 * v29) syncItem];
+            identityValue2 = [syncItem2 identityValue];
+            [v24 addObject:identityValue2];
 
             v29 = v29 + 1;
           }
@@ -281,11 +281,11 @@ LABEL_26:
       if (![(PDPushLocalClassChanges *)self _deleteSyncItemsWithIDs:v24])
       {
         CLSInitLog();
-        v32 = [(PDPushLocalClassChanges *)self logSubsystem];
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+        logSubsystem2 = [(PDPushLocalClassChanges *)self logSubsystem];
+        if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_ERROR))
         {
           *buf = 0;
-          _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "failed to delete processed pending sync items (CLSAsset)", buf, 2u);
+          _os_log_error_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_ERROR, "failed to delete processed pending sync items (CLSAsset)", buf, 2u);
         }
       }
 
@@ -296,40 +296,40 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v25.receiver = self;
   v25.super_class = PDPushLocalClassChanges;
-  v7 = [(PDAbstractClassZoneOperation *)&v25 processPayloadFromResponse:v6 error:a4];
-  if ([v6 hasStatus])
+  v7 = [(PDAbstractClassZoneOperation *)&v25 processPayloadFromResponse:responseCopy error:error];
+  if ([responseCopy hasStatus])
   {
-    v8 = [v6 status];
-    if ([v8 code] == 112)
+    status = [responseCopy status];
+    if ([status code] == 112)
     {
 
       goto LABEL_5;
     }
 
-    v9 = [v6 status];
-    v10 = [v9 code];
+    status2 = [responseCopy status];
+    code = [status2 code];
 
-    if (v10 == 2)
+    if (code == 2)
     {
 LABEL_5:
-      v11 = [v6 type];
+      type = [responseCopy type];
       v12 = 0;
-      if (v11 > 29)
+      if (type > 29)
       {
-        if (v11 != 30)
+        if (type != 30)
         {
           v13 = 0;
-          if (v11 == 31)
+          if (type == 31)
           {
             *(&self->_multipleChoiceAnswerItemParentChildMap + 3) = (*(&self->_multipleChoiceAnswerItemParentChildMap + 3) | 0x20);
             v16 = objc_opt_class();
             v13 = NSStringFromClass(v16);
-            v15 = [v6 scheduledEvent];
+            scheduledEvent = [responseCopy scheduledEvent];
             goto LABEL_12;
           }
 
@@ -341,25 +341,25 @@ LABEL_22:
         *(&self->_multipleChoiceAnswerItemParentChildMap + 3) = (*(&self->_multipleChoiceAnswerItemParentChildMap + 3) | 0x20);
         v21 = objc_opt_class();
         v13 = NSStringFromClass(v21);
-        v20 = [v6 schedule];
+        schedule = [responseCopy schedule];
       }
 
       else
       {
-        if (v11 != 25)
+        if (type != 25)
         {
           v13 = 0;
-          if (v11 == 26)
+          if (type == 26)
           {
             *(&self->_multipleChoiceAnswerItemParentChildMap + 3) = (*(&self->_multipleChoiceAnswerItemParentChildMap + 3) | 0x10);
             v14 = objc_opt_class();
             v13 = NSStringFromClass(v14);
-            v15 = [v6 surveyStep];
+            scheduledEvent = [responseCopy surveyStep];
 LABEL_12:
-            v17 = v15;
-            v18 = [v15 parentObjectId];
+            v17 = scheduledEvent;
+            parentObjectId = [scheduledEvent parentObjectId];
 LABEL_16:
-            v12 = v18;
+            v12 = parentObjectId;
 
             if (v13 && v12)
             {
@@ -388,11 +388,11 @@ LABEL_16:
         *(&self->_multipleChoiceAnswerItemParentChildMap + 3) = (*(&self->_multipleChoiceAnswerItemParentChildMap + 3) | 0x10);
         v19 = objc_opt_class();
         v13 = NSStringFromClass(v19);
-        v20 = [v6 survey];
+        schedule = [responseCopy survey];
       }
 
-      v17 = v20;
-      v18 = [v20 objectId];
+      v17 = schedule;
+      parentObjectId = [schedule objectId];
       goto LABEL_16;
     }
   }
@@ -402,15 +402,15 @@ LABEL_23:
   return v7;
 }
 
-- (void)_updateAssetStatusUsingPendingCLSSyncItemsWithIDs:(id)a3 status:(int64_t)a4
+- (void)_updateAssetStatusUsingPendingCLSSyncItemsWithIDs:(id)ds status:(int64_t)status
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = +[(PDPendingSyncItem *)PDPendingCLSSyncItem];
   v8 = [v7 stringByAppendingString:@" in "];
 
-  v9 = [PDDatabase whereSQLForArray:v6 prefix:v8];
+  v9 = [PDDatabase whereSQLForArray:dsCopy prefix:v8];
 
-  v10 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v11 = objc_opt_new();
   v12 = objc_opt_class();
   v14[0] = _NSConcreteStackBlock;
@@ -419,80 +419,80 @@ LABEL_23:
   v14[3] = &unk_1002063E8;
   v13 = v11;
   v15 = v13;
-  [v10 selectAll:v12 where:v9 bindings:v6 block:v14];
+  [database selectAll:v12 where:v9 bindings:dsCopy block:v14];
 
   if ([v13 count])
   {
-    sub_10015D0C8(v10, v13, a4);
+    sub_10015D0C8(database, v13, status);
   }
 }
 
-- (void)updateSurveySyncStatus:(id)a3 status:(int64_t)a4
+- (void)updateSurveySyncStatus:(id)status status:(int64_t)a4
 {
-  v7 = a3;
-  v6 = [(PDOperation *)self database];
-  if ([v7 count])
+  statusCopy = status;
+  database = [(PDOperation *)self database];
+  if ([statusCopy count])
   {
-    sub_1000C8DF8(v6, v7, a4);
+    sub_1000C8DF8(database, statusCopy, a4);
   }
 }
 
-- (void)updateSchdeuleSyncStatus:(id)a3 status:(int64_t)a4
+- (void)updateSchdeuleSyncStatus:(id)status status:(int64_t)a4
 {
-  v7 = a3;
-  v6 = [(PDOperation *)self database];
-  if ([v7 count])
+  statusCopy = status;
+  database = [(PDOperation *)self database];
+  if ([statusCopy count])
   {
-    sub_1000C2538(v6, v7, a4);
+    sub_1000C2538(database, statusCopy, a4);
   }
 }
 
-- (BOOL)_deleteSyncItemsWithIDs:(id)a3
+- (BOOL)_deleteSyncItemsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[(PDPendingSyncItem *)PDPendingCLSSyncItem];
   v6 = [v5 stringByAppendingString:@" in "];
 
-  v7 = [PDDatabase whereSQLForArray:v4 prefix:v6];
+  v7 = [PDDatabase whereSQLForArray:dsCopy prefix:v6];
 
-  v8 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v9 = objc_opt_class();
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100158360;
   v12[3] = &unk_1002063E8;
-  v13 = v8;
-  v10 = v8;
-  [v10 selectAll:v9 where:v7 bindings:v4 block:v12];
-  LOBYTE(v9) = [v10 deleteAll:objc_opt_class() where:v7 bindings:v4];
+  v13 = database;
+  v10 = database;
+  [v10 selectAll:v9 where:v7 bindings:dsCopy block:v12];
+  LOBYTE(v9) = [v10 deleteAll:objc_opt_class() where:v7 bindings:dsCopy];
 
   return v9;
 }
 
 - (void)prepare
 {
-  v2 = self;
+  selfCopy = self;
   v71.receiver = self;
   v71.super_class = PDPushLocalClassChanges;
   [(PDAsyncOperation *)&v71 prepare];
   context = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [(PDOperation *)v2 database];
+  database = [(PDOperation *)selfCopy database];
   v5 = objc_opt_new();
-  v6 = *(&v2->_beingPushedSyncableCLSAssetItems + 3);
-  *(&v2->_beingPushedSyncableCLSAssetItems + 3) = v5;
+  v6 = *(&selfCopy->_beingPushedSyncableCLSAssetItems + 3);
+  *(&selfCopy->_beingPushedSyncableCLSAssetItems + 3) = v5;
 
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = *(&v2->_beingPushedSyncableOtherItems + 3);
-  *(&v2->_beingPushedSyncableOtherItems + 3) = v8;
+  v9 = *(&selfCopy->_beingPushedSyncableOtherItems + 3);
+  *(&selfCopy->_beingPushedSyncableOtherItems + 3) = v8;
 
   v10 = objc_opt_class();
-  v11 = [(PDEndpointRequestOperation *)v2 endpointInfo];
-  v12 = v11;
-  if (v11)
+  endpointInfo = [(PDEndpointRequestOperation *)selfCopy endpointInfo];
+  v12 = endpointInfo;
+  if (endpointInfo)
   {
-    v13 = *(v11 + 64);
+    v13 = *(endpointInfo + 64);
   }
 
   else
@@ -504,8 +504,8 @@ LABEL_23:
   v67[1] = 3221225472;
   v67[2] = sub_100158B94;
   v67[3] = &unk_100206410;
-  v67[4] = v2;
-  v14 = v4;
+  v67[4] = selfCopy;
+  v14 = database;
   v68 = v14;
   v51 = v3;
   v69 = v51;
@@ -513,7 +513,7 @@ LABEL_23:
   v70 = v15;
   [v14 selectAll:v10 where:@"entity != ?" orderBy:@"rowid asc limit:position asc offset:state desc bindings:syncOrder asc" block:{v13, 0, &off_10021BA78, v67}];
 
-  if ([*(&v2->_beingPushedSyncableCLSAssetItems + 3) count])
+  if ([*(&selfCopy->_beingPushedSyncableCLSAssetItems + 3) count])
   {
     v49 = v15;
     v50 = v14;
@@ -522,7 +522,7 @@ LABEL_23:
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    obj = *(&v2->_beingPushedSyncableOtherItems + 3);
+    obj = *(&selfCopy->_beingPushedSyncableOtherItems + 3);
     v16 = [obj countByEnumeratingWithState:&v63 objects:v75 count:16];
     if (v16)
     {
@@ -530,7 +530,7 @@ LABEL_23:
       v18 = *v64;
       v19 = &CLSLogAsset_ptr;
       v54 = *v64;
-      v55 = v2;
+      v55 = selfCopy;
       do
       {
         v20 = 0;
@@ -543,24 +543,24 @@ LABEL_23:
           }
 
           v21 = *(*(&v63 + 1) + 8 * v20);
-          v22 = [v21 syncableItem];
-          if (v22)
+          syncableItem = [v21 syncableItem];
+          if (syncableItem)
           {
-            v23 = [v21 syncItem];
-            v24 = [v23 entity];
+            syncItem = [v21 syncItem];
+            entity = [syncItem entity];
 
             v25 = v19[90];
             v26 = objc_opt_self();
-            LODWORD(v24) = [v24 isSubclassOfClass:v26];
+            LODWORD(entity) = [entity isSubclassOfClass:v26];
 
-            if (v24)
+            if (entity)
             {
               v58 = v20;
               v61 = 0u;
               v62 = 0u;
               v59 = 0u;
               v60 = 0u;
-              v27 = *(&v2->_beingPushedSyncableCLSAssetItems + 3);
+              v27 = *(&selfCopy->_beingPushedSyncableCLSAssetItems + 3);
               v28 = [v27 countByEnumeratingWithState:&v59 objects:v74 count:16];
               if (v28)
               {
@@ -576,13 +576,13 @@ LABEL_13:
                   }
 
                   v32 = *(*(&v59 + 1) + 8 * v31);
-                  v33 = [v32 syncableItem];
-                  v34 = v33;
-                  if (v33)
+                  syncableItem2 = [v32 syncableItem];
+                  v34 = syncableItem2;
+                  if (syncableItem2)
                   {
-                    v35 = [v33 parentObjectID];
-                    v36 = [v22 objectID];
-                    v37 = [v35 isEqualToString:v36];
+                    parentObjectID = [syncableItem2 parentObjectID];
+                    objectID = [syncableItem objectID];
+                    v37 = [parentObjectID isEqualToString:objectID];
 
                     if (v37)
                     {
@@ -610,7 +610,7 @@ LABEL_13:
                 }
 
                 [v53 addObject:v38];
-                v2 = v55;
+                selfCopy = v55;
                 [*(&v55->_beingPushedSyncableCLSAssetItems + 3) removeObject:v38];
                 CLSInitLog();
                 v39 = CLSLogDefault;
@@ -620,10 +620,10 @@ LABEL_13:
                 if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
                 {
                   v40 = v39;
-                  v41 = [v38 syncableItem];
-                  v42 = [v41 objectID];
+                  syncableItem3 = [v38 syncableItem];
+                  objectID2 = [syncableItem3 objectID];
                   *buf = 138412290;
-                  v73 = v42;
+                  v73 = objectID2;
                   _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "PDPushLocalClassChanges: remove CLSAsset sync item (%@) from _toBePushedSyncableNewCLSAssetItems", buf, 0xCu);
                 }
 
@@ -642,7 +642,7 @@ LABEL_20:
                 v38 = 0;
 LABEL_26:
                 v18 = v54;
-                v2 = v55;
+                selfCopy = v55;
                 v17 = v56;
                 v19 = &CLSLogAsset_ptr;
                 v20 = v58;
@@ -662,7 +662,7 @@ LABEL_26:
 
 LABEL_30:
 
-    [*(&v2->_beingPushedSyncableOtherItems + 3) addObjectsFromArray:v53];
+    [*(&selfCopy->_beingPushedSyncableOtherItems + 3) addObjectsFromArray:v53];
     CLSInitLog();
     v43 = CLSLogDefault;
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -680,7 +680,7 @@ LABEL_30:
     v14 = v50;
   }
 
-  [*(&v2->_beingPushedSyncableOtherItems + 3) addObjectsFromArray:v15];
+  [*(&selfCopy->_beingPushedSyncableOtherItems + 3) addObjectsFromArray:v15];
   CLSInitLog();
   v46 = CLSLogDefault;
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -695,7 +695,7 @@ LABEL_30:
   [v15 removeAllObjects];
   if ([v51 count])
   {
-    [(PDPushLocalClassChanges *)v2 _deleteSyncItemsWithIDs:v51];
+    [(PDPushLocalClassChanges *)selfCopy _deleteSyncItemsWithIDs:v51];
   }
 
   objc_autoreleasePoolPop(context);
@@ -739,60 +739,60 @@ LABEL_30:
   return v3;
 }
 
-- (BOOL)shouldProcessPayload:(id)a3
+- (BOOL)shouldProcessPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 status];
-  v5 = [v3 type];
+  payloadCopy = payload;
+  status = [payloadCopy status];
+  type = [payloadCopy type];
 
-  v6 = [v4 code];
-  if (v5 == 1)
+  code = [status code];
+  if (type == 1)
   {
-    v7 = v6 == 1 || [v4 code] == 112;
+    v7 = code == 1 || [status code] == 112;
   }
 
   else
   {
-    v7 = v6 - 1 < 2 || v6 == 112;
+    v7 = code - 1 < 2 || code == 112;
   }
 
   return v7;
 }
 
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 status];
-  if ([v9 hasInternalMessage])
+  statusCopy = status;
+  status = [statusCopy status];
+  if ([status hasInternalMessage])
   {
     CLSInitLog();
-    v10 = [(PDPushLocalClassChanges *)self logSubsystem];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDPushLocalClassChanges *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v27 = objc_opt_class();
       v37 = v27;
-      v28 = [(PDURLRequestOperation *)self operationID];
-      v35 = [v9 code];
-      v29 = [v9 message];
-      [v9 internalMessage];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      code = [status code];
+      message = [status message];
+      [status internalMessage];
       *buf = 138544386;
       v44 = v27;
       v45 = 2114;
-      v46 = v28;
+      v46 = operationID;
       v47 = 1024;
-      *v48 = v35;
+      *v48 = code;
       *&v48[4] = 2112;
-      *&v48[6] = v29;
+      *&v48[6] = message;
       v50 = v49 = 2112;
       v30 = v50;
-      _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
     }
   }
 
-  v11 = sub_100105CA4(v9);
+  v11 = sub_100105CA4(status);
   [(PDEndpointRequestOperation *)self handleServerAlerts:v11];
 
-  if ([(PDPushLocalClassChanges *)self shouldProcessPayload:v8])
+  if ([(PDPushLocalClassChanges *)self shouldProcessPayload:statusCopy])
   {
     v12 = 0;
 LABEL_24:
@@ -800,38 +800,38 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v12 = sub_1001055FC(v9, a4);
+  v12 = sub_1001055FC(status, response);
   if (!v12)
   {
     goto LABEL_24;
   }
 
   [(PDEndpointRequestOperation *)self setResponseStatusError:v12];
-  if (a5)
+  if (error)
   {
     v13 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   CLSInitLog();
-  v14 = [(PDPushLocalClassChanges *)self logSubsystem];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  logSubsystem2 = [(PDPushLocalClassChanges *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_ERROR))
   {
     v31 = objc_opt_class();
     v32 = v31;
-    v33 = [(PDURLRequestOperation *)self operationID];
+    operationID2 = [(PDURLRequestOperation *)self operationID];
     *buf = 138543874;
     v44 = v31;
     v45 = 2114;
-    v46 = v33;
+    v46 = operationID2;
     v47 = 2114;
     *v48 = v12;
-    _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
+    _os_log_error_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
   }
 
   if ([*(&self->super.super._responseStatusError + 3) count])
   {
-    v36 = v8;
+    v36 = statusCopy;
     v15 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
@@ -853,9 +853,9 @@ LABEL_24:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v38 + 1) + 8 * i) syncItem];
-          v22 = [v21 identityValue];
-          [v15 addObject:v22];
+          syncItem = [*(*(&v38 + 1) + 8 * i) syncItem];
+          identityValue = [syncItem identityValue];
+          [v15 addObject:identityValue];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -864,8 +864,8 @@ LABEL_24:
       while (v18);
     }
 
-    v23 = [(PDEndpointRequestOperation *)self responseStatusError];
-    if ([v23 code] == 336)
+    responseStatusError = [(PDEndpointRequestOperation *)self responseStatusError];
+    if ([responseStatusError code] == 336)
     {
       v24 = 4;
     }
@@ -879,7 +879,7 @@ LABEL_24:
     [*(&self->super.super.super.super.super.super.super.isa + v34) removeAllObjects];
 
     v25 = 0;
-    v8 = v36;
+    statusCopy = v36;
   }
 
   else
@@ -892,19 +892,19 @@ LABEL_25:
   return v25;
 }
 
-- (BOOL)_shouldSkipGeneratingPayload:(id)a3
+- (BOOL)_shouldSkipGeneratingPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 parentObjectID];
-    v6 = [*(&self->_toBePushedSyncableNewCLSAssetItems + 3) objectForKey:v5];
+    parentObjectID = [payloadCopy parentObjectID];
+    v6 = [*(&self->_toBePushedSyncableNewCLSAssetItems + 3) objectForKey:parentObjectID];
     v7 = v6 != 0;
 
     if (!v6)
     {
-      [*(&self->_toBePushedSyncableNewCLSAssetItems + 3) setObject:&off_10021B7B0 forKeyedSubscript:v5];
+      [*(&self->_toBePushedSyncableNewCLSAssetItems + 3) setObject:&off_10021B7B0 forKeyedSubscript:parentObjectID];
     }
   }
 

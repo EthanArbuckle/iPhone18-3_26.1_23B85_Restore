@@ -1,18 +1,18 @@
 @interface _UIFeedbackSystemSoundEngine
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3;
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback;
 + (id)_internalQueue;
 + (id)sharedEngine;
-- (BOOL)_internal_playFeedbackData:(id)a3 forFeedback:(id)a4 atTime:(double)a5;
-- (BOOL)_internal_prepareSystemSoundID:(unsigned int)a3 forBeingActive:(BOOL)a4;
-- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3;
-- (void)_internal_performForEachSSIDsInFeedbacks:(id)a3 block:(id)a4;
-- (void)_internal_playFeedbackDataNow:(id)a3 forFeedback:(id)a4 withOptions:(id)a5;
-- (void)_internal_startWarmingFeedbacks:(id)a3;
-- (void)_internal_stopFeedbackData:(id)a3 forFeedback:(id)a4;
-- (void)_internal_stopWarmingFeedbacks:(id)a3;
+- (BOOL)_internal_playFeedbackData:(id)data forFeedback:(id)feedback atTime:(double)time;
+- (BOOL)_internal_prepareSystemSoundID:(unsigned int)d forBeingActive:(BOOL)active;
+- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block;
+- (void)_internal_performForEachSSIDsInFeedbacks:(id)feedbacks block:(id)block;
+- (void)_internal_playFeedbackDataNow:(id)now forFeedback:(id)feedback withOptions:(id)options;
+- (void)_internal_startWarmingFeedbacks:(id)feedbacks;
+- (void)_internal_stopFeedbackData:(id)data forFeedback:(id)feedback;
+- (void)_internal_stopWarmingFeedbacks:(id)feedbacks;
 - (void)_internal_updateSuspension;
-- (void)_playFeedback:(id)a3 atTime:(double)a4;
-- (void)_stopFeedback:(id)a3;
+- (void)_playFeedback:(id)feedback atTime:(double)time;
+- (void)_stopFeedback:(id)feedback;
 @end
 
 @implementation _UIFeedbackSystemSoundEngine
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __44___UIFeedbackSystemSoundEngine_sharedEngine__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49A688 != -1)
   {
     dispatch_once(&qword_1ED49A688, block);
@@ -137,21 +137,21 @@
   }
 }
 
-+ (BOOL)_supportsPlayingIndividualFeedback:(id)a3
++ (BOOL)_supportsPlayingIndividualFeedback:(id)feedback
 {
-  v3 = [a3 _allSystemSoundIDs];
-  v4 = [v3 count] != 0;
+  _allSystemSoundIDs = [feedback _allSystemSoundIDs];
+  v4 = [_allSystemSoundIDs count] != 0;
 
   return v4;
 }
 
-- (BOOL)_internal_prepareSystemSoundID:(unsigned int)a3 forBeingActive:(BOOL)a4
+- (BOOL)_internal_prepareSystemSoundID:(unsigned int)d forBeingActive:(BOOL)active
 {
-  v4 = a4;
-  v11 = a3;
+  activeCopy = active;
+  dCopy = d;
   [objc_opt_class() _internalQueue];
 
-  v10 = v4;
+  v10 = activeCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -173,30 +173,30 @@
   _Block_object_dispose(&v17, 8);
   if (v5)
   {
-    return v5(1633907828, 4, &v11, 4, &v10) == 0;
+    return v5(1633907828, 4, &dCopy, 4, &v10) == 0;
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"OSStatus __AudioServicesSetProperty(AudioServicesPropertyID, UInt32, const void * _Nullable, UInt32, const void *)"}];
-  [v8 handleFailureInFunction:v9 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:26 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v9 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:26 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-- (void)_internal_performForEachSSIDsInFeedbacks:(id)a3 block:(id)a4
+- (void)_internal_performForEachSSIDsInFeedbacks:(id)feedbacks block:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  feedbacksCopy = feedbacks;
+  blockCopy = block;
   [objc_opt_class() _internalQueue];
 
-  v7 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = feedbacksCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -212,8 +212,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) _allSystemSoundIDs];
-        [v7 addIndexes:v13];
+        _allSystemSoundIDs = [*(*(&v17 + 1) + 8 * v12) _allSystemSoundIDs];
+        [indexSet addIndexes:_allSystemSoundIDs];
 
         ++v12;
       }
@@ -229,14 +229,14 @@
   v15[1] = 3221225472;
   v15[2] = __79___UIFeedbackSystemSoundEngine__internal_performForEachSSIDsInFeedbacks_block___block_invoke;
   v15[3] = &unk_1E7107F70;
-  v16 = v6;
-  v14 = v6;
-  [v7 enumerateIndexesUsingBlock:v15];
+  v16 = blockCopy;
+  v14 = blockCopy;
+  [indexSet enumerateIndexesUsingBlock:v15];
 }
 
-- (void)_internal_startWarmingFeedbacks:(id)a3
+- (void)_internal_startWarmingFeedbacks:(id)feedbacks
 {
-  v4 = a3;
+  feedbacksCopy = feedbacks;
   [objc_opt_class() _internalQueue];
 
   if (!self->_warmSSIDs)
@@ -251,12 +251,12 @@
   v7[2] = __64___UIFeedbackSystemSoundEngine__internal_startWarmingFeedbacks___block_invoke;
   v7[3] = &unk_1E7107F98;
   v7[4] = self;
-  [(_UIFeedbackSystemSoundEngine *)self _internal_performForEachSSIDsInFeedbacks:v4 block:v7];
+  [(_UIFeedbackSystemSoundEngine *)self _internal_performForEachSSIDsInFeedbacks:feedbacksCopy block:v7];
 }
 
-- (void)_internal_stopWarmingFeedbacks:(id)a3
+- (void)_internal_stopWarmingFeedbacks:(id)feedbacks
 {
-  v4 = a3;
+  feedbacksCopy = feedbacks;
   [objc_opt_class() _internalQueue];
 
   v5[0] = MEMORY[0x1E69E9820];
@@ -264,52 +264,52 @@
   v5[2] = __63___UIFeedbackSystemSoundEngine__internal_stopWarmingFeedbacks___block_invoke;
   v5[3] = &unk_1E7107F98;
   v5[4] = self;
-  [(_UIFeedbackSystemSoundEngine *)self _internal_performForEachSSIDsInFeedbacks:v4 block:v5];
+  [(_UIFeedbackSystemSoundEngine *)self _internal_performForEachSSIDsInFeedbacks:feedbacksCopy block:v5];
 }
 
-- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)a3
+- (void)_internal_dequeueReusableFeedbackPlayerWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [objc_opt_class() _internalQueue];
 
-  v4[2](v4, self);
+  blockCopy[2](blockCopy, self);
 }
 
-- (void)_playFeedback:(id)a3 atTime:(double)a4
+- (void)_playFeedback:(id)feedback atTime:(double)time
 {
-  v6 = a3;
-  v7 = [v6 _effectiveFeedbackData];
-  v8 = [objc_opt_class() _internalQueue];
+  feedbackCopy = feedback;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
+  _internalQueue = [objc_opt_class() _internalQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53___UIFeedbackSystemSoundEngine__playFeedback_atTime___block_invoke;
   v14[3] = &unk_1E7107CE8;
   v14[4] = self;
-  v15 = v7;
-  v16 = v6;
-  v17 = a4;
-  v9 = v8;
-  if (!v8)
+  v15 = _effectiveFeedbackData;
+  v16 = feedbackCopy;
+  timeCopy = time;
+  v9 = _internalQueue;
+  if (!_internalQueue)
   {
     v9 = MEMORY[0x1E69E96A0];
     v10 = MEMORY[0x1E69E96A0];
   }
 
-  v11 = v8;
-  v12 = v6;
-  v13 = v7;
+  v11 = _internalQueue;
+  v12 = feedbackCopy;
+  v13 = _effectiveFeedbackData;
   dispatch_async(v9, v14);
 }
 
-- (BOOL)_internal_playFeedbackData:(id)a3 forFeedback:(id)a4 atTime:(double)a5
+- (BOOL)_internal_playFeedbackData:(id)data forFeedback:(id)feedback atTime:(double)time
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  feedbackCopy = feedback;
   [objc_opt_class() _internalQueue];
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v11 = [v8 count];
+  v11 = [dataCopy count];
   if (has_internal_diagnostics)
   {
     if (v11 != 1)
@@ -318,7 +318,7 @@
       if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
       {
         LODWORD(buf) = 134217984;
-        *(&buf + 4) = [v8 count];
+        *(&buf + 4) = [dataCopy count];
         _os_log_fault_impl(&dword_188A29000, v35, OS_LOG_TYPE_FAULT, "_UIFeedbackSystemSoundEngine only supports playing single feedbacks. Instead got: %lu", &buf, 0xCu);
       }
     }
@@ -331,13 +331,13 @@
     {
       v38 = v36;
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v8 count];
+      *(&buf + 4) = [dataCopy count];
       _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_ERROR, "_UIFeedbackSystemSoundEngine only supports playing single feedbacks. Instead got: %lu", &buf, 0xCu);
     }
   }
 
-  v12 = [v8 firstObject];
-  v13 = [v12 effectiveEnabledFeedbackTypes];
+  firstObject = [dataCopy firstObject];
+  effectiveEnabledFeedbackTypes = [firstObject effectiveEnabledFeedbackTypes];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v63 = 0x3032000000;
@@ -349,7 +349,7 @@
   v55 = __78___UIFeedbackSystemSoundEngine__internal_playFeedbackData_forFeedback_atTime___block_invoke;
   v56 = &unk_1E7107FC0;
   p_buf = &buf;
-  v14 = v13 & 3;
+  v14 = effectiveEnabledFeedbackTypes & 3;
   if (v14 != 3)
   {
     v58 = 0;
@@ -373,9 +373,9 @@
     _Block_object_dispose(&v58, 8);
     if (!v15)
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkAudioServicesPlaySystemSoundOptionFlagsKey(void)"];
-      [v39 handleFailureInFunction:v40 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:27 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v40 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:27 description:{@"%s", dlerror()}];
 
       goto LABEL_26;
     }
@@ -385,8 +385,8 @@
     v55(v54, v17, v18);
   }
 
-  v19 = [v12 audioParameters];
-  [v19 _effectiveVolume];
+  audioParameters = [firstObject audioParameters];
+  [audioParameters _effectiveVolume];
   v21 = v20;
 
   if (v21 >= 1.0)
@@ -415,9 +415,9 @@
   _Block_object_dispose(&v58, 8);
   if (!v22)
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkAudioServicesPlaySystemSoundOptionVolumeKey(void)"];
-    [v41 handleFailureInFunction:v42 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v42 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:28 description:{@"%s", dlerror()}];
 
 LABEL_26:
     __break(1u);
@@ -430,10 +430,10 @@ LABEL_26:
 
 LABEL_14:
   [(_UIFeedbackEngine *)self currentTime];
-  v28 = a5 - v27;
+  v28 = time - v27;
   if (v28 <= 0.0)
   {
-    [(_UIFeedbackSystemSoundEngine *)self _internal_playFeedbackDataNow:v12 forFeedback:v9 withOptions:*(*(&buf + 1) + 40)];
+    [(_UIFeedbackSystemSoundEngine *)self _internal_playFeedbackDataNow:firstObject forFeedback:feedbackCopy withOptions:*(*(&buf + 1) + 40)];
   }
 
   else
@@ -444,23 +444,23 @@ LABEL_14:
     v51 = __Block_byref_object_copy__79;
     v52 = __Block_byref_object_dispose__79;
     v53 = 0;
-    v29 = [objc_opt_class() _internalQueue];
+    _internalQueue = [objc_opt_class() _internalQueue];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __78___UIFeedbackSystemSoundEngine__internal_playFeedbackData_forFeedback_atTime___block_invoke_2;
     v43[3] = &unk_1E7107FE8;
     v43[4] = self;
-    v44 = v12;
-    v30 = v9;
+    v44 = firstObject;
+    v30 = feedbackCopy;
     v45 = v30;
     v46 = &buf;
     v47 = &v48;
-    v31 = _UIFeedbackPreciseDispatchAfter(v29, v43, v28);
+    v31 = _UIFeedbackPreciseDispatchAfter(_internalQueue, v43, v28);
     v32 = *(v49 + 40);
     *(v49 + 40) = v31;
 
-    v33 = [v30 systemSoundSources];
-    [v33 addObject:*(v49 + 40)];
+    systemSoundSources = [v30 systemSoundSources];
+    [systemSoundSources addObject:*(v49 + 40)];
 
     _Block_object_dispose(&v48, 8);
   }
@@ -470,16 +470,16 @@ LABEL_14:
   return 1;
 }
 
-- (void)_internal_playFeedbackDataNow:(id)a3 forFeedback:(id)a4 withOptions:(id)a5
+- (void)_internal_playFeedbackDataNow:(id)now forFeedback:(id)feedback withOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nowCopy = now;
+  feedbackCopy = feedback;
+  optionsCopy = options;
   [objc_opt_class() _internalQueue];
 
-  v11 = [v8 effectiveSystemSoundID];
+  effectiveSystemSoundID = [nowCopy effectiveSystemSoundID];
   [(_UIFeedbackEngine *)self currentTime];
-  [(_UIFeedbackEngine *)self _internal_willPlayFeedback:v9 atTime:?];
+  [(_UIFeedbackEngine *)self _internal_willPlayFeedback:feedbackCopy atTime:?];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -496,55 +496,55 @@ LABEL_14:
   _Block_object_dispose(&v16, 8);
   if (v12)
   {
-    v12(v11, v10, 0);
+    v12(effectiveSystemSoundID, optionsCopy, 0);
     kdebug_trace();
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void __AudioServicesPlaySystemSoundWithOptions(SystemSoundID, CFDictionaryRef, __strong dispatch_block_t)"}];
-    [v14 handleFailureInFunction:v15 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:24 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:24 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 }
 
-- (void)_stopFeedback:(id)a3
+- (void)_stopFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [v4 _effectiveFeedbackData];
-  v6 = [objc_opt_class() _internalQueue];
+  feedbackCopy = feedback;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
+  _internalQueue = [objc_opt_class() _internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46___UIFeedbackSystemSoundEngine__stopFeedback___block_invoke;
   block[3] = &unk_1E70F6228;
   block[4] = self;
-  v13 = v5;
-  v14 = v4;
-  v7 = v6;
-  if (!v6)
+  v13 = _effectiveFeedbackData;
+  v14 = feedbackCopy;
+  v7 = _internalQueue;
+  if (!_internalQueue)
   {
     v7 = MEMORY[0x1E69E96A0];
     v8 = MEMORY[0x1E69E96A0];
   }
 
-  v9 = v6;
-  v10 = v4;
-  v11 = v5;
+  v9 = _internalQueue;
+  v10 = feedbackCopy;
+  v11 = _effectiveFeedbackData;
   dispatch_async(v7, block);
 }
 
-- (void)_internal_stopFeedbackData:(id)a3 forFeedback:(id)a4
+- (void)_internal_stopFeedbackData:(id)data forFeedback:(id)feedback
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  feedbackCopy = feedback;
   [objc_opt_class() _internalQueue];
   p_buf = &buf;
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  v9 = [v5 count];
+  v9 = [dataCopy count];
   if (has_internal_diagnostics)
   {
     if (v9 != 1)
@@ -552,7 +552,7 @@ LABEL_14:
       v20 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        v24 = [v5 count];
+        v24 = [dataCopy count];
         LODWORD(buf) = 134217984;
         *(&buf + 4) = v24;
         _os_log_fault_impl(&dword_188A29000, v20, OS_LOG_TYPE_FAULT, "_UIFeedbackSystemSoundEngine only supports playing single feedbacks. Instead got: %lu", &buf, 0xCu);
@@ -567,13 +567,13 @@ LABEL_14:
 
   while (1)
   {
-    v10 = [v5 firstObject];
+    firstObject = [dataCopy firstObject];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [v6 systemSoundSources];
-    v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    systemSoundSources = [feedbackCopy systemSoundSources];
+    v12 = [systemSoundSources countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v12)
     {
       v13 = *v26;
@@ -583,24 +583,24 @@ LABEL_14:
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(systemSoundSources);
           }
 
           dispatch_source_cancel(*(*(&v25 + 1) + 8 * i));
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v12 = [systemSoundSources countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [v6 systemSoundSources];
-    [v15 removeAllObjects];
+    systemSoundSources2 = [feedbackCopy systemSoundSources];
+    [systemSoundSources2 removeAllObjects];
 
-    p_buf = [v10 effectiveSystemSoundID];
+    p_buf = [firstObject effectiveSystemSoundID];
     v16 = +[_UIFeedbackSystemSoundEngine sharedEngine];
-    [v16 _internal_willCancelFeedback:v6];
+    [v16 _internal_willCancelFeedback:feedbackCopy];
 
     v29 = 0;
     v30 = &v29;
@@ -627,9 +627,9 @@ LABEL_14:
       break;
     }
 
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void __AudioServicesStopSystemSound(SystemSoundID, Boolean)"}];
-    [v5 handleFailureInFunction:v6 file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:25 description:{@"%s", dlerror()}];
+    dataCopy = [MEMORY[0x1E696AAA8] currentHandler];
+    feedbackCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void __AudioServicesStopSystemSound(SystemSoundID, Boolean)"}];
+    [dataCopy handleFailureInFunction:feedbackCopy file:@"_UIFeedbackSystemSoundEngine.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
 LABEL_19:
@@ -637,7 +637,7 @@ LABEL_19:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v22 = v21;
-      v23 = [v5 count];
+      v23 = [dataCopy count];
       LODWORD(buf) = 134217984;
       *(p_buf + 4) = v23;
       _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "_UIFeedbackSystemSoundEngine only supports playing single feedbacks. Instead got: %lu", &buf, 0xCu);

@@ -1,5 +1,5 @@
 @interface LPStreamingMediaMetadataProviderSpecialization
-+ (id)specializedMetadataProviderForResourceWithContext:(id)a3;
++ (id)specializedMetadataProviderForResourceWithContext:(id)context;
 - (void)cancel;
 - (void)done;
 - (void)fail;
@@ -8,15 +8,15 @@
 
 @implementation LPStreamingMediaMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForResourceWithContext:(id)a3
++ (id)specializedMetadataProviderForResourceWithContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 MIMEType];
-  v5 = [LPMIMETypeRegistry isMediaType:v4];
+  contextCopy = context;
+  mIMEType = [contextCopy MIMEType];
+  v5 = [LPMIMETypeRegistry isMediaType:mIMEType];
 
   if (v5)
   {
-    v6 = [(LPMetadataProviderSpecialization *)[LPStreamingMediaMetadataProviderSpecialization alloc] initWithContext:v3];
+    v6 = [(LPMetadataProviderSpecialization *)[LPStreamingMediaMetadataProviderSpecialization alloc] initWithContext:contextCopy];
   }
 
   else
@@ -30,20 +30,20 @@
 - (void)start
 {
   v3 = objc_alloc_init(LPFetcherConfiguration);
-  v4 = [(LPMetadataProviderSpecialization *)self context];
-  v5 = [v4 webView];
-  [(LPFetcherConfiguration *)v3 setWebViewForProcessSharing:v5];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  webView = [context webView];
+  [(LPFetcherConfiguration *)v3 setWebViewForProcessSharing:webView];
 
-  v6 = [(LPMetadataProviderSpecialization *)self context];
-  -[LPFetcherConfiguration setFetchIsNotUserInitiated:](v3, "setFetchIsNotUserInitiated:", [v6 fetchIsNotUserInitiated]);
+  context2 = [(LPMetadataProviderSpecialization *)self context];
+  -[LPFetcherConfiguration setFetchIsNotUserInitiated:](v3, "setFetchIsNotUserInitiated:", [context2 fetchIsNotUserInitiated]);
 
   v7 = objc_alloc_init(LPMediaAssetFetcher);
   fetcher = self->_fetcher;
   self->_fetcher = v7;
 
-  v9 = [(LPMetadataProviderSpecialization *)self context];
-  v10 = [v9 postRedirectURL];
-  [(LPMediaAssetFetcher *)self->_fetcher setURL:v10];
+  context3 = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL = [context3 postRedirectURL];
+  [(LPMediaAssetFetcher *)self->_fetcher setURL:postRedirectURL];
 
   v11 = self->_fetcher;
   v12[0] = MEMORY[0x1E69E9820];
@@ -243,16 +243,16 @@ uint64_t __55__LPStreamingMediaMetadataProviderSpecialization_start__block_invok
 
 - (void)fail
 {
-  v3 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v3 metadataProviderSpecializationDidFail:self];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecializationDidFail:self];
 
   [(LPStreamingMediaMetadataProviderSpecialization *)self cancel];
 }
 
 - (void)done
 {
-  v3 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v3 metadataProviderSpecialization:self didCompleteWithMetadata:self->_metadata];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecialization:self didCompleteWithMetadata:self->_metadata];
 }
 
 @end

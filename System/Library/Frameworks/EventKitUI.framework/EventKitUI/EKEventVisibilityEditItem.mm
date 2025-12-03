@@ -1,21 +1,21 @@
 @interface EKEventVisibilityEditItem
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (BOOL)shouldAppear;
 - (EKEventVisibilityEditItem)init;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (double)footerHeightForWidth:(double)a3;
-- (id)_editItemForIndex:(unint64_t)a3;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (double)footerHeightForWidth:(double)width;
+- (id)_editItemForIndex:(unint64_t)index;
 - (id)_lowestEditItem;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
 - (id)footerTitle;
 - (id)footerView;
 - (unint64_t)numberOfSubitems;
 - (unint64_t)onSaveEditorReloadBehavior;
 - (void)reset;
-- (void)setCalendarItem:(id)a3 store:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)setCalendarItem:(id)item store:(id)store;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation EKEventVisibilityEditItem
@@ -49,20 +49,20 @@
 
 - (unint64_t)onSaveEditorReloadBehavior
 {
-  v3 = [(EKCalendarItemEditItem *)self->_availabilityEditItem onSaveEditorReloadBehavior];
+  onSaveEditorReloadBehavior = [(EKCalendarItemEditItem *)self->_availabilityEditItem onSaveEditorReloadBehavior];
   result = [(EKEventPrivacyLevelInlineEditItem *)self->_privacyLevelEditItem onSaveEditorReloadBehavior];
-  if (v3 > result)
+  if (onSaveEditorReloadBehavior > result)
   {
-    return v3;
+    return onSaveEditorReloadBehavior;
   }
 
   return result;
 }
 
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(EKEventAvailabilityEditItem *)self->_availabilityEditItem canBeConfiguredForCalendarConstraints:v4]|| [(EKEventPrivacyLevelInlineEditItem *)self->_privacyLevelEditItem canBeConfiguredForCalendarConstraints:v4];
+  constraintsCopy = constraints;
+  v5 = [(EKEventAvailabilityEditItem *)self->_availabilityEditItem canBeConfiguredForCalendarConstraints:constraintsCopy]|| [(EKEventPrivacyLevelInlineEditItem *)self->_privacyLevelEditItem canBeConfiguredForCalendarConstraints:constraintsCopy];
 
   return v5;
 }
@@ -79,25 +79,25 @@
   return [(EKEventPrivacyLevelInlineEditItem *)privacyLevelEditItem shouldAppear];
 }
 
-- (void)setCalendarItem:(id)a3 store:(id)a4
+- (void)setCalendarItem:(id)item store:(id)store
 {
   v8.receiver = self;
   v8.super_class = EKEventVisibilityEditItem;
-  v6 = a4;
-  v7 = a3;
-  [(EKEventEditItem *)&v8 setCalendarItem:v7 store:v6];
-  [(EKEventEditItem *)self->_availabilityEditItem setCalendarItem:v7 store:v6, v8.receiver, v8.super_class];
-  [(EKEventEditItem *)self->_privacyLevelEditItem setCalendarItem:v7 store:v6];
+  storeCopy = store;
+  itemCopy = item;
+  [(EKEventEditItem *)&v8 setCalendarItem:itemCopy store:storeCopy];
+  [(EKEventEditItem *)self->_availabilityEditItem setCalendarItem:itemCopy store:storeCopy, v8.receiver, v8.super_class];
+  [(EKEventEditItem *)self->_privacyLevelEditItem setCalendarItem:itemCopy store:storeCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = EKEventVisibilityEditItem;
-  v4 = a3;
-  [(EKCalendarItemEditItem *)&v5 setDelegate:v4];
-  [(EKCalendarItemEditItem *)self->_availabilityEditItem setDelegate:v4, v5.receiver, v5.super_class];
-  [(EKCalendarItemEditItem *)self->_privacyLevelEditItem setDelegate:v4];
+  delegateCopy = delegate;
+  [(EKCalendarItemEditItem *)&v5 setDelegate:delegateCopy];
+  [(EKCalendarItemEditItem *)self->_availabilityEditItem setDelegate:delegateCopy, v5.receiver, v5.super_class];
+  [(EKCalendarItemEditItem *)self->_privacyLevelEditItem setDelegate:delegateCopy];
 }
 
 - (unint64_t)numberOfSubitems
@@ -116,30 +116,30 @@
   return result;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
-  v5 = [(EKEventVisibilityEditItem *)self _editItemForIndex:a3];
-  [v5 defaultCellHeightForSubitemAtIndex:0 forWidth:a4];
+  v5 = [(EKEventVisibilityEditItem *)self _editItemForIndex:index];
+  [v5 defaultCellHeightForSubitemAtIndex:0 forWidth:width];
   v7 = v6;
 
   return v7;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v3 = [(EKEventVisibilityEditItem *)self _editItemForIndex:a3];
+  v3 = [(EKEventVisibilityEditItem *)self _editItemForIndex:index];
   v4 = [v3 cellForSubitemAtIndex:0];
 
   return v4;
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(EKEventVisibilityEditItem *)self _editItemForIndex:a4];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = [(EKEventVisibilityEditItem *)self _editItemForIndex:index];
   subitemOfLastDetailViewControllerRequested = self->_subitemOfLastDetailViewControllerRequested;
   self->_subitemOfLastDetailViewControllerRequested = v9;
 
@@ -148,17 +148,17 @@
   return [(EKCalendarItemEditItem *)v11 detailViewControllerWithFrame:0 forSubitemAtIndex:x, y, width, height];
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
-  v3 = a3;
+  forceCopy = force;
   v5 = [(EKEventAvailabilityEditItem *)self->_availabilityEditItem saveAndDismissWithForce:?];
-  return v5 | [(EKEventPrivacyLevelInlineEditItem *)self->_privacyLevelEditItem saveAndDismissWithForce:v3];
+  return v5 | [(EKEventPrivacyLevelInlineEditItem *)self->_privacyLevelEditItem saveAndDismissWithForce:forceCopy];
 }
 
-- (double)footerHeightForWidth:(double)a3
+- (double)footerHeightForWidth:(double)width
 {
-  v4 = [(EKEventVisibilityEditItem *)self _lowestEditItem];
-  [v4 footerHeightForWidth:a3];
+  _lowestEditItem = [(EKEventVisibilityEditItem *)self _lowestEditItem];
+  [_lowestEditItem footerHeightForWidth:width];
   v6 = v5;
 
   return v6;
@@ -166,18 +166,18 @@
 
 - (id)footerTitle
 {
-  v2 = [(EKEventVisibilityEditItem *)self _lowestEditItem];
-  v3 = [v2 footerTitle];
+  _lowestEditItem = [(EKEventVisibilityEditItem *)self _lowestEditItem];
+  footerTitle = [_lowestEditItem footerTitle];
 
-  return v3;
+  return footerTitle;
 }
 
 - (id)footerView
 {
-  v2 = [(EKEventVisibilityEditItem *)self _lowestEditItem];
-  v3 = [v2 footerView];
+  _lowestEditItem = [(EKEventVisibilityEditItem *)self _lowestEditItem];
+  footerView = [_lowestEditItem footerView];
 
-  return v3;
+  return footerView;
 }
 
 - (id)_lowestEditItem
@@ -203,7 +203,7 @@ LABEL_5:
   {
     v7 = self->_lastKnownNumberOfSubitems;
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = v7;
     _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_ERROR, "Cannot find lowest edit item for [%@] with number of subitems: [%lu]", &v9, 0x16u);
@@ -215,9 +215,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)_editItemForIndex:(unint64_t)a3
+- (id)_editItemForIndex:(unint64_t)index
 {
-  if (!a3)
+  if (!index)
   {
     v4 = &OBJC_IVAR___EKEventVisibilityEditItem__availabilityEditItem;
 LABEL_5:
@@ -226,7 +226,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v4 = &OBJC_IVAR___EKEventVisibilityEditItem__privacyLevelEditItem;
     goto LABEL_5;

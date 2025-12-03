@@ -1,5 +1,5 @@
 @interface MPModelShimRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)middlewareClasses;
 @end
@@ -15,11 +15,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MPModelShimRequest;
-  v4 = [(MPRequest *)&v8 copyWithZone:a3];
+  v4 = [(MPRequest *)&v8 copyWithZone:zone];
   v5 = [(MPModelRequest *)self->_modelRequest copy];
   v6 = v4[9];
   v4[9] = v5;

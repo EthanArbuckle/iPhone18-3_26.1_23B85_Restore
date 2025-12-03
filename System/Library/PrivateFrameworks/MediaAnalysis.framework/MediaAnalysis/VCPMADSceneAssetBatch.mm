@@ -1,40 +1,40 @@
 @interface VCPMADSceneAssetBatch
 + (BOOL)_allowConcurrentSceneProcessing;
-+ (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5 resources:(id)a6;
-- (VCPMADSceneAssetBatch)initWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5 resources:(id)a6;
++ (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block resources:(id)resources;
+- (VCPMADSceneAssetBatch)initWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block resources:(id)resources;
 - (double)_downloadInactiveTimeInterval;
-- (id)_extractAndSortBoundingBoxFromDetectedObjects:(id)a3;
-- (id)_generateSceneClassificationsFromRequests:(id)a3 safetyNResults:(id)a4 safetyGVResults:(id)a5;
-- (id)_processBoundingBoxFromDetectedObjects:(id)a3 forSceneClassID:(id)a4;
-- (int)_collectResultsForAssetEntry:(id)a3 fromRequests:(id)a4 safetyNResults:(id)a5 safetyGVResults:(id)a6 safetyQRResults:(unint64_t)a7;
-- (int)_createRequests:(id *)a3 forAssetEntry:(id)a4;
-- (int)_performBlurAnalysisForAssetEntry:(id)a3 withLumaPixelBuffer:(__CVBuffer *)a4;
-- (int)_performEmbeddingAnalysisForAssetEntry:(id)a3 withColorPixelBuffer:(__CVBuffer *)a4;
-- (int)_performExposureAnalysisForAssetEntry:(id)a3 withLumaPixelBuffer:(__CVBuffer *)a4;
-- (int)_performIVSAnalysisForAssetEntry:(id)a3 pixelBuffer:(__CVBuffer *)a4 results:(id *)a5 safetyQRResults:(unint64_t *)a6;
-- (int)_performRotationAnalysisForAssetEntry:(id)a3 withColorPixelBuffer:(__CVBuffer *)a4;
-- (int)_performSceneNetAnalysisForAssetEntry:(id)a3 withImage:(id)a4 andRequests:(id)a5;
-- (int)_performWallpaperAnalysisForAssetEntry:(id)a3 withSceneprint:(id)a4;
-- (int)_prepareWithCurrentDate:(id)a3;
+- (id)_extractAndSortBoundingBoxFromDetectedObjects:(id)objects;
+- (id)_generateSceneClassificationsFromRequests:(id)requests safetyNResults:(id)results safetyGVResults:(id)vResults;
+- (id)_processBoundingBoxFromDetectedObjects:(id)objects forSceneClassID:(id)d;
+- (int)_collectResultsForAssetEntry:(id)entry fromRequests:(id)requests safetyNResults:(id)results safetyGVResults:(id)vResults safetyQRResults:(unint64_t)rResults;
+- (int)_createRequests:(id *)requests forAssetEntry:(id)entry;
+- (int)_performBlurAnalysisForAssetEntry:(id)entry withLumaPixelBuffer:(__CVBuffer *)buffer;
+- (int)_performEmbeddingAnalysisForAssetEntry:(id)entry withColorPixelBuffer:(__CVBuffer *)buffer;
+- (int)_performExposureAnalysisForAssetEntry:(id)entry withLumaPixelBuffer:(__CVBuffer *)buffer;
+- (int)_performIVSAnalysisForAssetEntry:(id)entry pixelBuffer:(__CVBuffer *)buffer results:(id *)results safetyQRResults:(unint64_t *)rResults;
+- (int)_performRotationAnalysisForAssetEntry:(id)entry withColorPixelBuffer:(__CVBuffer *)buffer;
+- (int)_performSceneNetAnalysisForAssetEntry:(id)entry withImage:(id)image andRequests:(id)requests;
+- (int)_performWallpaperAnalysisForAssetEntry:(id)entry withSceneprint:(id)sceneprint;
+- (int)_prepareWithCurrentDate:(id)date;
 - (int)_propagateAssetProcessingStatus;
-- (int)_publishEmbeddingResultsWithPhotoLibrary:(id)a3;
-- (int)_publishPhotosResultsWithPhotoLibrary:(id)a3;
-- (int)_publishProcessingStatusForPhotoLibrary:(id)a3;
+- (int)_publishEmbeddingResultsWithPhotoLibrary:(id)library;
+- (int)_publishPhotosResultsWithPhotoLibrary:(id)library;
+- (int)_publishProcessingStatusForPhotoLibrary:(id)library;
 - (int)_publishProcessingStatusToLegacyDatabase;
-- (int)_removeDownloadRequestIDForAsset:(id)a3;
-- (int)_requestDownloadThumbnailResource:(id)a3 entry:(id)a4;
+- (int)_removeDownloadRequestIDForAsset:(id)asset;
+- (int)_requestDownloadThumbnailResource:(id)resource entry:(id)entry;
 - (int)prepare;
 - (int)process;
 - (int)publish;
-- (void)_addDownloadRequestID:(int)a3 asset:(id)a4;
-- (void)_cancelRemainingDownloadsWithStatus:(int)a3;
-- (void)_insertBoundingBox:(id)a3 toSortedBoundingBoxes:(id)a4;
-- (void)_parseClassificationObservations:(id)a3 withPrefix:(id)a4 toClassificationResults:(id)a5;
-- (void)_parsePhotosTaxonomyClassificationObservations:(id)a3 toClassificationResults:(id)a4 andDetectorSceneClassIds:(id)a5 isEntityNet:(BOOL)a6;
-- (void)_processAssetEntry:(id)a3 resourceURL:(id)a4 completionHandler:(id)a5;
-- (void)_reportCoreAnalyticsWithEntry:(id)a3;
-- (void)_reportRunSessionAnalyticsWithPublishInterval:(double)a3;
-- (void)addPhotosAsset:(id)a3 withPreviousStatus:(unint64_t)a4 attempts:(unint64_t)a5 andAttemptDate:(id)a6;
+- (void)_addDownloadRequestID:(int)d asset:(id)asset;
+- (void)_cancelRemainingDownloadsWithStatus:(int)status;
+- (void)_insertBoundingBox:(id)box toSortedBoundingBoxes:(id)boxes;
+- (void)_parseClassificationObservations:(id)observations withPrefix:(id)prefix toClassificationResults:(id)results;
+- (void)_parsePhotosTaxonomyClassificationObservations:(id)observations toClassificationResults:(id)results andDetectorSceneClassIds:(id)ids isEntityNet:(BOOL)net;
+- (void)_processAssetEntry:(id)entry resourceURL:(id)l completionHandler:(id)handler;
+- (void)_reportCoreAnalyticsWithEntry:(id)entry;
+- (void)_reportRunSessionAnalyticsWithPublishInterval:(double)interval;
+- (void)addPhotosAsset:(id)asset withPreviousStatus:(unint64_t)status attempts:(unint64_t)attempts andAttemptDate:(id)date;
 @end
 
 @implementation VCPMADSceneAssetBatch
@@ -50,11 +50,11 @@
   return byte_1002B8198;
 }
 
-- (VCPMADSceneAssetBatch)initWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5 resources:(id)a6
+- (VCPMADSceneAssetBatch)initWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block resources:(id)resources
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  databaseCopy = database;
+  blockCopy = block;
+  resourcesCopy = resources;
   v44.receiver = self;
   v44.super_class = VCPMADSceneAssetBatch;
   v14 = [(VCPMADSceneAssetBatch *)&v44 init];
@@ -69,16 +69,16 @@ LABEL_15:
   assetEntries = v14->_assetEntries;
   v14->_assetEntries = v15;
 
-  objc_storeStrong(&v14->_analysisDatabase, a3);
-  v14->_allowDownload = a4;
-  v17 = objc_retainBlock(v12);
+  objc_storeStrong(&v14->_analysisDatabase, database);
+  v14->_allowDownload = download;
+  v17 = objc_retainBlock(blockCopy);
   cancelBlock = v14->_cancelBlock;
   v14->_cancelBlock = v17;
 
   v19 = +[VCPMADProcessingJobManager sharedManager];
-  v20 = [v19 inProcessAssetBudget];
+  inProcessAssetBudget = [v19 inProcessAssetBudget];
   inProcessAssetBudget = v14->_inProcessAssetBudget;
-  v14->_inProcessAssetBudget = v20;
+  v14->_inProcessAssetBudget = inProcessAssetBudget;
 
   v14->_scenenetQueuesAllowed = 1;
   if ([objc_opt_class() _allowConcurrentSceneProcessing])
@@ -119,13 +119,13 @@ LABEL_15:
   assetProcessCompletionGroup = v14->_assetProcessCompletionGroup;
   v14->_assetProcessCompletionGroup = v28;
 
-  v30 = [v19 getJobScheduler];
+  getJobScheduler = [v19 getJobScheduler];
   scheduler = v14->_scheduler;
-  v14->_scheduler = v30;
+  v14->_scheduler = getJobScheduler;
 
   if (v14->_scheduler)
   {
-    objc_storeStrong(&v14->_resources, a6);
+    objc_storeStrong(&v14->_resources, resources);
     if (v14->_allowDownload)
     {
       if (MediaAnalysisLogLevel() >= 7)
@@ -171,23 +171,23 @@ LABEL_20:
   return v40;
 }
 
-+ (id)batchWithAnalysisDatabase:(id)a3 allowDownload:(BOOL)a4 cancelBlock:(id)a5 resources:(id)a6
++ (id)batchWithAnalysisDatabase:(id)database allowDownload:(BOOL)download cancelBlock:(id)block resources:(id)resources
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[a1 alloc] initWithAnalysisDatabase:v10 allowDownload:v8 cancelBlock:v11 resources:v12];
+  downloadCopy = download;
+  databaseCopy = database;
+  blockCopy = block;
+  resourcesCopy = resources;
+  v13 = [[self alloc] initWithAnalysisDatabase:databaseCopy allowDownload:downloadCopy cancelBlock:blockCopy resources:resourcesCopy];
 
   return v13;
 }
 
-- (void)addPhotosAsset:(id)a3 withPreviousStatus:(unint64_t)a4 attempts:(unint64_t)a5 andAttemptDate:(id)a6
+- (void)addPhotosAsset:(id)asset withPreviousStatus:(unint64_t)status attempts:(unint64_t)attempts andAttemptDate:(id)date
 {
-  v27 = a4;
-  v28 = a5;
-  v8 = a3;
-  v29 = a6;
+  statusCopy = status;
+  attemptsCopy = attempts;
+  assetCopy = asset;
+  dateCopy = date;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -206,10 +206,10 @@ LABEL_20:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v31 + 1) + 8 * i) asset];
-        v14 = [v13 localIdentifier];
-        v15 = [v8 localIdentifier];
-        v16 = [v14 isEqualToString:v15];
+        asset = [*(*(&v31 + 1) + 8 * i) asset];
+        localIdentifier = [asset localIdentifier];
+        localIdentifier2 = [assetCopy localIdentifier];
+        v16 = [localIdentifier isEqualToString:localIdentifier2];
 
         if (v16)
         {
@@ -218,9 +218,9 @@ LABEL_20:
             v22 = VCPLogToOSLogType[4];
             if (os_log_type_enabled(&_os_log_default, v22))
             {
-              v23 = [v8 localIdentifier];
+              localIdentifier3 = [assetCopy localIdentifier];
               *buf = 138412290;
-              *&buf[4] = v23;
+              *&buf[4] = localIdentifier3;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[Scene][%@] Batch already contains asset; ignoring", buf, 0xCu);
             }
           }
@@ -244,39 +244,39 @@ LABEL_20:
   if (!+[MADManagedProcessingStatus isMACDReadEnabled])
   {
     analysisDatabase = self->_analysisDatabase;
-    v19 = [v8 localIdentifier];
-    [(VCPDatabaseWriter *)analysisDatabase fetchProcessingErrorCode:buf errorLine:&v30 taskID:2 localIdentifier:v19];
+    localIdentifier4 = [assetCopy localIdentifier];
+    [(VCPDatabaseWriter *)analysisDatabase fetchProcessingErrorCode:buf errorLine:&v30 taskID:2 localIdentifier:localIdentifier4];
     goto LABEL_17;
   }
 
-  v17 = [v8 photoLibrary];
-  v18 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v17];
+  photoLibrary = [assetCopy photoLibrary];
+  v18 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary];
 
   if ((v18 & 1) == 0)
   {
-    v19 = [v8 photoLibrary];
-    v20 = [v19 mad_fetchRequest];
-    v21 = [v8 localIdentifier];
-    [v20 fetchProcessingErrorCode:buf errorLine:&v30 taskID:2 localIdentifier:v21];
+    localIdentifier4 = [assetCopy photoLibrary];
+    mad_fetchRequest = [localIdentifier4 mad_fetchRequest];
+    localIdentifier5 = [assetCopy localIdentifier];
+    [mad_fetchRequest fetchProcessingErrorCode:buf errorLine:&v30 taskID:2 localIdentifier:localIdentifier5];
 
 LABEL_17:
   }
 
   assetEntries = self->_assetEntries;
-  v26 = [VCPMADSceneAssetEntry entryWithAsset:v8 previousStatus:v27 previousAttempts:v28 andLastAttemptDate:v29 previousErrorCode:*buf previousErrorLine:v30, v27, v28];
-  [(NSMutableArray *)assetEntries addObject:v26];
+  attemptsCopy = [VCPMADSceneAssetEntry entryWithAsset:assetCopy previousStatus:statusCopy previousAttempts:attemptsCopy andLastAttemptDate:dateCopy previousErrorCode:*buf previousErrorLine:v30, statusCopy, attemptsCopy];
+  [(NSMutableArray *)assetEntries addObject:attemptsCopy];
 
 LABEL_19:
 }
 
-- (int)_prepareWithCurrentDate:(id)a3
+- (int)_prepareWithCurrentDate:(id)date
 {
-  v23 = a3;
+  dateCopy = date;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = self->_assetEntries;
   v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
@@ -297,13 +297,13 @@ LABEL_19:
 
         v8 = *(*(&v25 + 1) + 8 * v6);
         context = objc_autoreleasePoolPush();
-        analysisDatabase = v21->_analysisDatabase;
-        v10 = [v8 previousAttempts];
-        v11 = [v8 asset];
-        v12 = [v8 asset];
-        v13 = [v12 mediaType];
-        v14 = [v8 asset];
-        v15 = -[VCPDatabaseWriter setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:](analysisDatabase, "setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:", v10 + 1, v11, 2, 1, v23, v13, [v14 mediaSubtypes], objc_msgSend(v8, "previousErrorCode"), objc_msgSend(v8, "previousErrorLine"));
+        analysisDatabase = selfCopy->_analysisDatabase;
+        previousAttempts = [v8 previousAttempts];
+        asset = [v8 asset];
+        asset2 = [v8 asset];
+        mediaType = [asset2 mediaType];
+        asset3 = [v8 asset];
+        v15 = -[VCPDatabaseWriter setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:](analysisDatabase, "setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:", previousAttempts + 1, asset, 2, 1, dateCopy, mediaType, [asset3 mediaSubtypes], objc_msgSend(v8, "previousErrorCode"), objc_msgSend(v8, "previousErrorLine"));
 
         if (v15 == -108 || v15 == -36)
         {
@@ -352,24 +352,24 @@ LABEL_19:
   return v16;
 }
 
-- (void)_addDownloadRequestID:(int)a3 asset:(id)a4
+- (void)_addDownloadRequestID:(int)d asset:(id)asset
 {
-  v6 = a4;
+  assetCopy = asset;
   downloadStateQueue = self->_downloadStateQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B080;
   block[3] = &unk_100283770;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = assetCopy;
+  dCopy = d;
+  v8 = assetCopy;
   dispatch_sync(downloadStateQueue, block);
 }
 
-- (int)_removeDownloadRequestIDForAsset:(id)a3
+- (int)_removeDownloadRequestIDForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -379,10 +379,10 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_10002B200;
   block[3] = &unk_100283798;
-  v9 = v4;
+  v9 = assetCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = assetCopy;
   dispatch_sync(downloadStateQueue, block);
   LODWORD(downloadStateQueue) = *(v12 + 6);
 
@@ -409,7 +409,7 @@ LABEL_19:
   return v3;
 }
 
-- (void)_cancelRemainingDownloadsWithStatus:(int)a3
+- (void)_cancelRemainingDownloadsWithStatus:(int)status
 {
   downloadStateQueue = self->_downloadStateQueue;
   v5[0] = _NSConcreteStackBlock;
@@ -417,17 +417,17 @@ LABEL_19:
   v5[2] = sub_10002B4F0;
   v5[3] = &unk_1002837C0;
   v5[4] = self;
-  v6 = a3;
+  statusCopy = status;
   dispatch_sync(downloadStateQueue, v5);
   dispatch_group_wait(self->_downloadGroup, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (int)_requestDownloadThumbnailResource:(id)a3 entry:(id)a4
+- (int)_requestDownloadThumbnailResource:(id)resource entry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 assetLocalIdentifier];
-  v9 = [NSString stringWithFormat:@"[Scene][Download][%@]", v8];
+  resourceCopy = resource;
+  entryCopy = entry;
+  assetLocalIdentifier = [resourceCopy assetLocalIdentifier];
+  v9 = [NSString stringWithFormat:@"[Scene][Download][%@]", assetLocalIdentifier];
 
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -437,7 +437,7 @@ LABEL_19:
       *buf = 138412546;
       v30 = v9;
       v31 = 2112;
-      v32 = v6;
+      v32 = resourceCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v10, "%@ Attempted resource %@", buf, 0x16u);
     }
   }
@@ -465,13 +465,13 @@ LABEL_19:
   v22[2] = sub_10002BC80;
   v22[3] = &unk_100283838;
   v22[4] = self;
-  v15 = v7;
+  v15 = entryCopy;
   v23 = v15;
   v16 = v13;
   v24 = v16;
   v17 = objc_retainBlock(v22);
   v18 = +[PHAssetResourceManager defaultManager];
-  v19 = [v18 requestFileURLForAssetResource:v6 options:v11 urlReceivedHandler:v14 completionHandler:v17];
+  v19 = [v18 requestFileURLForAssetResource:resourceCopy options:v11 urlReceivedHandler:v14 completionHandler:v17];
 
   if (!v19 && MediaAnalysisLogLevel() >= 3)
   {
@@ -508,11 +508,11 @@ LABEL_19:
 
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
-    v5 = [(NSMutableArray *)self->_assetEntries firstObject];
-    v6 = [v5 asset];
-    v7 = [v6 photoLibrary];
+    firstObject = [(NSMutableArray *)self->_assetEntries firstObject];
+    asset = [firstObject asset];
+    photoLibrary = [asset photoLibrary];
 
-    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v7])
+    if ([MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary])
     {
       if (!self->_allowBeforeMigration)
       {
@@ -561,13 +561,13 @@ LABEL_19:
       v61[4] = self;
       v62 = v51;
       v60 = 0;
-      v21 = [v7 mad_performAnalysisDataStoreChanges:v61 error:&v60];
+      v21 = [photoLibrary mad_performAnalysisDataStoreChanges:v61 error:&v60];
       v22 = v60;
       v23 = v22;
       if ((v21 & 1) == 0)
       {
-        v14 = [v22 code];
-        if (v14)
+        code = [v22 code];
+        if (code)
         {
           if (MediaAnalysisLogLevel() >= 3)
           {
@@ -633,21 +633,21 @@ LABEL_41:
             v35 = *(*(&v56 + 1) + 8 * i);
             if ([v35 previousStatus] == 2)
             {
-              v36 = [v35 asset];
-              v37 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v36];
+              asset2 = [v35 asset];
+              v37 = [PHAssetResource vcp_allAcceptableResourcesForAsset:asset2];
 
-              v38 = [v37 vcp_thumbnailResource];
-              v39 = v38;
-              if (v38)
+              vcp_thumbnailResource = [v37 vcp_thumbnailResource];
+              v39 = vcp_thumbnailResource;
+              if (vcp_thumbnailResource)
               {
-                if (([v38 vcp_isLocallyAvailable] & 1) == 0)
+                if (([vcp_thumbnailResource vcp_isLocallyAvailable] & 1) == 0)
                 {
                   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v33))
                   {
-                    v40 = [v35 asset];
-                    v41 = [v40 localIdentifier];
+                    asset3 = [v35 asset];
+                    localIdentifier = [asset3 localIdentifier];
                     *buf = 138412290;
-                    v65 = v41;
+                    v65 = localIdentifier;
                     _os_log_impl(&_mh_execute_header, &_os_log_default, v33, "[Scene][%@] Issuing thumbnail download ...", buf, 0xCu);
                   }
 
@@ -667,10 +667,10 @@ LABEL_41:
 
               else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v33))
               {
-                v44 = [v35 asset];
-                v45 = [v44 localIdentifier];
+                asset4 = [v35 asset];
+                localIdentifier2 = [asset4 localIdentifier];
                 *buf = 138412290;
-                v65 = v45;
+                v65 = localIdentifier2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v33, "[Scene][%@] No thumbnail resource; skipping download", buf, 0xCu);
               }
             }
@@ -695,10 +695,10 @@ LABEL_41:
       }
     }
 
-    v7 = +[VCPMADCoreAnalyticsManager sharedManager];
+    photoLibrary = +[VCPMADCoreAnalyticsManager sharedManager];
     [v51 timeIntervalSinceNow];
-    [v7 accumulateDoubleValue:@"TotalPrepareTimeInSeconds" forField:@"com.apple.mediaanalysisd.SceneAnalysisRunSession" andEvent:-v47];
-    v14 = v50;
+    [photoLibrary accumulateDoubleValue:@"TotalPrepareTimeInSeconds" forField:@"com.apple.mediaanalysisd.SceneAnalysisRunSession" andEvent:-v47];
+    code = v50;
 LABEL_68:
 
     goto LABEL_69;
@@ -716,9 +716,9 @@ LABEL_68:
   }
 
   v50 = [(VCPMADSceneAssetBatch *)self _prepareWithCurrentDate:v51];
-  v13 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-  v14 = v13;
-  if (v13 != -108 && v13 != -36 && v13 != -23)
+  commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+  code = commit;
+  if (commit != -108 && commit != -36 && commit != -23)
   {
     v15 = VCPSignPostLog();
     v16 = v15;
@@ -728,7 +728,7 @@ LABEL_68:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_INTERVAL_END, v10, "VCPMADSceneAssetBatch_LegacyPrepare", "", buf, 2u);
     }
 
-    if (v14 != -36 && v14 != -23)
+    if (code != -36 && code != -23)
     {
       goto LABEL_41;
     }
@@ -736,12 +736,12 @@ LABEL_68:
 
 LABEL_69:
 
-  return v14;
+  return code;
 }
 
-- (int)_createRequests:(id *)a3 forAssetEntry:(id)a4
+- (int)_createRequests:(id *)requests forAssetEntry:(id)entry
 {
-  v5 = a4;
+  entryCopy = entry;
   v6 = objc_alloc_init(VCPPreAnalysisRequests);
   v7 = +[VNClassifyImageAestheticsRequest vcp_sceneRequest];
   [v6 setAestheticsRequest:v7];
@@ -829,10 +829,10 @@ LABEL_69:
 
   if (+[VCPPreAnalysisRequests includeDMF])
   {
-    v23 = [v5 asset];
-    v24 = [v23 mediaType];
+    asset = [entryCopy asset];
+    mediaType = [asset mediaType];
 
-    if (v24 != 2)
+    if (mediaType != 2)
     {
       v25 = +[VNCreateImageFingerprintsRequest vcp_sceneRequest];
       [v6 setImagefingerprintsRequest:v25];
@@ -846,16 +846,16 @@ LABEL_69:
   }
 
   v27 = v6;
-  *a3 = v6;
+  *requests = v6;
 
   return 0;
 }
 
-- (int)_performWallpaperAnalysisForAssetEntry:(id)a3 withSceneprint:(id)a4
+- (int)_performWallpaperAnalysisForAssetEntry:(id)entry withSceneprint:(id)sceneprint
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  entryCopy = entry;
+  sceneprintCopy = sceneprint;
+  if (sceneprintCopy)
   {
     v7 = VCPSignPostLog();
     v8 = os_signpost_id_generate(v7);
@@ -870,8 +870,8 @@ LABEL_69:
 
     v11 = objc_alloc_init(VCPWallpaperAnalyzer);
     v31 = 0;
-    v12 = [v11 analyzeWithSceneprint:v6 results:&v31 cancel:&stru_100283858];
-    v13 = v31;
+    v12 = [v11 analyzeWithSceneprint:sceneprintCopy results:&v31 cancel:&stru_100283858];
+    results2 = v31;
     v14 = VCPSignPostLog();
     v15 = v14;
     if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
@@ -896,12 +896,12 @@ LABEL_69:
     else
     {
       v19 = MediaAnalysisWPResultsKey;
-      v20 = [v13 objectForKeyedSubscript:MediaAnalysisWPResultsKey];
+      v20 = [results2 objectForKeyedSubscript:MediaAnalysisWPResultsKey];
       v21 = [v20 count] == 1;
 
       if (v21)
       {
-        v22 = [v13 objectForKeyedSubscript:v19];
+        v22 = [results2 objectForKeyedSubscript:v19];
         v23 = [v22 objectAtIndexedSubscript:0];
 
         if (v23)
@@ -912,9 +912,9 @@ LABEL_69:
           {
             [v24 floatValue];
             v27 = v26;
-            v28 = [v5 results];
+            results = [entryCopy results];
             LODWORD(v29) = v27;
-            [v28 setWallpaperScore:v29];
+            [results setWallpaperScore:v29];
 
             v12 = 0;
           }
@@ -951,21 +951,21 @@ LABEL_69:
       }
     }
 
-    v13 = [v5 results];
+    results2 = [entryCopy results];
     LODWORD(v18) = 0.5;
-    [v13 setWallpaperScore:v18];
+    [results2 setWallpaperScore:v18];
     v12 = 0;
   }
 
   return v12;
 }
 
-- (id)_processBoundingBoxFromDetectedObjects:(id)a3 forSceneClassID:(id)a4
+- (id)_processBoundingBoxFromDetectedObjects:(id)objects forSceneClassID:(id)d
 {
-  v5 = a3;
-  v59 = a4;
-  v60 = v5;
-  if (![v5 count])
+  objectsCopy = objects;
+  dCopy = d;
+  v60 = objectsCopy;
+  if (![objectsCopy count])
   {
     if (MediaAnalysisLogLevel() < 4)
     {
@@ -985,24 +985,24 @@ LABEL_69:
     goto LABEL_22;
   }
 
-  if ([v5 count] == 1)
+  if ([objectsCopy count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 objectForKeyedSubscript:VCPConfidenceKey];
+    firstObject = [objectsCopy firstObject];
+    v7 = [firstObject objectForKeyedSubscript:VCPConfidenceKey];
     [v7 floatValue];
     v9 = v8;
 
-    v10 = [v5 firstObject];
-    v11 = [v10 objectForKeyedSubscript:@"size"];
+    firstObject2 = [objectsCopy firstObject];
+    v11 = [firstObject2 objectForKeyedSubscript:@"size"];
     [v11 floatValue];
     v13 = v12;
 
-    v80[0] = v59;
+    v80[0] = dCopy;
     v14 = VCPBoundingBoxKey;
     v79[0] = @"classID";
     v79[1] = VCPBoundingBoxKey;
-    v15 = [v5 firstObject];
-    v16 = [v15 objectForKeyedSubscript:v14];
+    firstObject3 = [objectsCopy firstObject];
+    v16 = [firstObject3 objectForKeyedSubscript:v14];
     v80[1] = v16;
     v79[2] = @"score";
     *&v17 = v9 * v13;
@@ -1017,7 +1017,7 @@ LABEL_69:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v24 = v5;
+  v24 = objectsCopy;
   v25 = [v24 countByEnumeratingWithState:&v65 objects:v78 count:16];
   if (v25)
   {
@@ -1160,7 +1160,7 @@ LABEL_23:
   {
     v69[0] = @"classID";
     v69[1] = VCPBoundingBoxKey;
-    v70[0] = v59;
+    v70[0] = dCopy;
     v70[1] = v38;
     v69[2] = @"score";
     *&v54 = v42 * v43;
@@ -1174,19 +1174,19 @@ LABEL_47:
   return v19;
 }
 
-- (void)_insertBoundingBox:(id)a3 toSortedBoundingBoxes:(id)a4
+- (void)_insertBoundingBox:(id)box toSortedBoundingBoxes:(id)boxes
 {
-  v14 = a3;
-  v5 = a4;
-  if (v14 && v5)
+  boxCopy = box;
+  boxesCopy = boxes;
+  if (boxCopy && boxesCopy)
   {
-    v6 = [v14 objectForKeyedSubscript:@"score"];
+    v6 = [boxCopy objectForKeyedSubscript:@"score"];
     [v6 floatValue];
     v8 = v7;
 
-    for (i = 0; i < [v5 count]; ++i)
+    for (i = 0; i < [boxesCopy count]; ++i)
     {
-      v10 = [v5 objectAtIndexedSubscript:i];
+      v10 = [boxesCopy objectAtIndexedSubscript:i];
       v11 = [v10 objectForKeyedSubscript:@"score"];
       [v11 floatValue];
       v13 = v12;
@@ -1197,20 +1197,20 @@ LABEL_47:
       }
     }
 
-    [v5 insertObject:v14 atIndex:i];
+    [boxesCopy insertObject:boxCopy atIndex:i];
   }
 }
 
-- (id)_extractAndSortBoundingBoxFromDetectedObjects:(id)a3
+- (id)_extractAndSortBoundingBoxFromDetectedObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   +[NSMutableDictionary dictionary];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002DD8C;
   v5 = v12[3] = &unk_100283880;
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [objectsCopy enumerateObjectsUsingBlock:v12];
   +[NSMutableArray array];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -1225,16 +1225,16 @@ LABEL_47:
   return v6;
 }
 
-- (void)_parseClassificationObservations:(id)a3 withPrefix:(id)a4 toClassificationResults:(id)a5
+- (void)_parseClassificationObservations:(id)observations withPrefix:(id)prefix toClassificationResults:(id)results
 {
-  v7 = a3;
-  v8 = a4;
-  v24 = a5;
+  observationsCopy = observations;
+  prefixCopy = prefix;
+  resultsCopy = results;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v7;
+  v9 = observationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v10)
   {
@@ -1251,15 +1251,15 @@ LABEL_47:
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 identifier];
+        identifier = [v13 identifier];
         [v13 confidence];
         if (v15 >= 0.01)
         {
-          if (v8 && ([v14 hasPrefix:v8] & 1) == 0)
+          if (prefixCopy && ([identifier hasPrefix:prefixCopy] & 1) == 0)
           {
-            v16 = [NSString stringWithFormat:@"%@%@", v8, v14];
+            v16 = [NSString stringWithFormat:@"%@%@", prefixCopy, identifier];
 
-            v14 = v16;
+            identifier = v16;
           }
 
           v17 = VCPSpecialLabelToExtendedSceneClassificationID();
@@ -1270,15 +1270,15 @@ LABEL_47:
             v18 = [NSNumber numberWithFloat:?];
             v32 = v18;
             v19 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-            v20 = [v17 stringValue];
-            [v24 setObject:v19 forKeyedSubscript:v20];
+            stringValue = [v17 stringValue];
+            [resultsCopy setObject:v19 forKeyedSubscript:stringValue];
           }
 
           else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
           {
-            v21 = [v13 identifier];
+            identifier2 = [v13 identifier];
             *buf = 138412290;
-            v30 = v21;
+            v30 = identifier2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Unsupported observation label %@", buf, 0xCu);
           }
         }
@@ -1291,17 +1291,17 @@ LABEL_47:
   }
 }
 
-- (void)_parsePhotosTaxonomyClassificationObservations:(id)a3 toClassificationResults:(id)a4 andDetectorSceneClassIds:(id)a5 isEntityNet:(BOOL)a6
+- (void)_parsePhotosTaxonomyClassificationObservations:(id)observations toClassificationResults:(id)results andDetectorSceneClassIds:(id)ids isEntityNet:(BOOL)net
 {
-  v39 = a6;
-  v8 = a3;
-  v38 = a4;
-  v40 = a5;
+  netCopy = net;
+  observationsCopy = observations;
+  resultsCopy = results;
+  idsCopy = ids;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v9 = v8;
+  v9 = observationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v10)
   {
@@ -1324,8 +1324,8 @@ LABEL_47:
         if (v15 >= 0.01)
         {
           v16 = +[PFSceneTaxonomy vcp_sharedTaxonomy];
-          v17 = [v13 identifier];
-          v18 = [v16 nodeForName:v17];
+          identifier = [v13 identifier];
+          v18 = [v16 nodeForName:identifier];
 
           if (v18)
           {
@@ -1360,44 +1360,44 @@ LABEL_47:
             if (v26 <= v27)
             {
               v28 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v18 extendedSceneClassId]);
-              v29 = [v28 stringValue];
+              stringValue = [v28 stringValue];
 
               v49 = v37;
               [v13 confidence];
               v30 = [NSNumber numberWithFloat:?];
               v50 = v30;
               v31 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-              [v38 setObject:v31 forKeyedSubscript:v29];
+              [resultsCopy setObject:v31 forKeyedSubscript:stringValue];
 
-              if (v40)
+              if (idsCopy)
               {
-                v32 = [v18 detectors];
+                detectors = [v18 detectors];
                 v41[0] = _NSConcreteStackBlock;
                 v41[1] = 3221225472;
                 v41[2] = sub_10002EA00;
                 v41[3] = &unk_1002838D0;
-                v42 = v40;
-                [v32 enumerateObjectsUsingBlock:v41];
+                v42 = idsCopy;
+                [detectors enumerateObjectsUsingBlock:v41];
               }
             }
           }
 
-          else if (v39)
+          else if (netCopy)
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
             {
-              v33 = [v13 identifier];
+              identifier2 = [v13 identifier];
               *buf = 138412290;
-              v48 = v33;
+              v48 = identifier2;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Unsupported EntityNet label in PFSceneTaxonomyNode: %@", buf, 0xCu);
             }
           }
 
           else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v36))
           {
-            v34 = [v13 identifier];
+            identifier3 = [v13 identifier];
             *buf = 138412290;
-            v48 = v34;
+            v48 = identifier3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v36, "Unsupported SceneNet label in PFSceneTaxonomyNode: %@", buf, 0xCu);
           }
         }
@@ -1412,16 +1412,16 @@ LABEL_47:
   }
 }
 
-- (id)_generateSceneClassificationsFromRequests:(id)a3 safetyNResults:(id)a4 safetyGVResults:(id)a5
+- (id)_generateSceneClassificationsFromRequests:(id)requests safetyNResults:(id)results safetyGVResults:(id)vResults
 {
-  v8 = a3;
-  v45 = a4;
-  v9 = a5;
+  requestsCopy = requests;
+  resultsCopy = results;
+  vResultsCopy = vResults;
   v10 = +[NSMutableDictionary dictionary];
   v11 = +[VCPPreAnalysisRequests includeDO];
   v12 = +[NSMutableSet set];
-  v13 = [v8 classificationRequest];
-  v14 = [v13 results];
+  classificationRequest = [requestsCopy classificationRequest];
+  results = [classificationRequest results];
   if (v11)
   {
     v15 = v12;
@@ -1432,14 +1432,14 @@ LABEL_47:
     v15 = 0;
   }
 
-  [(VCPMADSceneAssetBatch *)self _parsePhotosTaxonomyClassificationObservations:v14 toClassificationResults:v10 andDetectorSceneClassIds:v15 isEntityNet:0, v45];
+  [(VCPMADSceneAssetBatch *)self _parsePhotosTaxonomyClassificationObservations:results toClassificationResults:v10 andDetectorSceneClassIds:v15 isEntityNet:0, resultsCopy];
 
   if (v11)
   {
-    v16 = [v8 objectRequest];
-    v17 = [v16 results];
+    objectRequest = [requestsCopy objectRequest];
+    results2 = [objectRequest results];
 
-    v18 = [(VCPMADSceneAssetBatch *)self _extractAndSortBoundingBoxFromDetectedObjects:v17];
+    v18 = [(VCPMADSceneAssetBatch *)self _extractAndSortBoundingBoxFromDetectedObjects:results2];
     v57[0] = 0;
     v57[1] = v57;
     v57[2] = 0x2020000000;
@@ -1456,46 +1456,46 @@ LABEL_47:
     _Block_object_dispose(v57, 8);
   }
 
-  v19 = [v8 classifyImageRequest];
-  v20 = [v19 results];
-  [(VCPMADSceneAssetBatch *)self _parsePhotosTaxonomyClassificationObservations:v20 toClassificationResults:v10 andDetectorSceneClassIds:0 isEntityNet:1];
+  classifyImageRequest = [requestsCopy classifyImageRequest];
+  results3 = [classifyImageRequest results];
+  [(VCPMADSceneAssetBatch *)self _parsePhotosTaxonomyClassificationObservations:results3 toClassificationResults:v10 andDetectorSceneClassIds:0 isEntityNet:1];
 
-  v21 = [v8 junkImageRequest];
-  v22 = [v21 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v22 withPrefix:0 toClassificationResults:v10];
+  junkImageRequest = [requestsCopy junkImageRequest];
+  results4 = [junkImageRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results4 withPrefix:0 toClassificationResults:v10];
 
-  v23 = [v8 landmarkRequest];
-  v24 = [v23 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v24 withPrefix:0 toClassificationResults:v10];
+  landmarkRequest = [requestsCopy landmarkRequest];
+  results5 = [landmarkRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results5 withPrefix:0 toClassificationResults:v10];
 
-  v25 = [v8 nsfwRequest];
-  v26 = [v25 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v26 withPrefix:0 toClassificationResults:v10];
+  nsfwRequest = [requestsCopy nsfwRequest];
+  results6 = [nsfwRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results6 withPrefix:0 toClassificationResults:v10];
 
-  v27 = [v8 tabooRequest];
-  v28 = [v27 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v28 withPrefix:0 toClassificationResults:v10];
+  tabooRequest = [requestsCopy tabooRequest];
+  results7 = [tabooRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results7 withPrefix:0 toClassificationResults:v10];
 
-  v29 = [v8 semanticRequest];
-  v30 = [v29 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v30 withPrefix:0 toClassificationResults:v10];
+  semanticRequest = [requestsCopy semanticRequest];
+  results8 = [semanticRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results8 withPrefix:0 toClassificationResults:v10];
 
-  v31 = [v8 memeRequest];
-  v32 = [v31 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v32 withPrefix:@"meme_" toClassificationResults:v10];
+  memeRequest = [requestsCopy memeRequest];
+  results9 = [memeRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results9 withPrefix:@"meme_" toClassificationResults:v10];
 
-  v33 = [v8 cityNatureRequest];
-  v34 = [v33 results];
-  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v34 withPrefix:0 toClassificationResults:v10];
+  cityNatureRequest = [requestsCopy cityNatureRequest];
+  results10 = [cityNatureRequest results];
+  [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:results10 withPrefix:0 toClassificationResults:v10];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v35 = [v8 documentRequest];
-  v36 = [v35 results];
+  documentRequest = [requestsCopy documentRequest];
+  results11 = [documentRequest results];
 
-  v37 = [v36 countByEnumeratingWithState:&v49 objects:v58 count:16];
+  v37 = [results11 countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v37)
   {
     v38 = *v50;
@@ -1505,14 +1505,14 @@ LABEL_47:
       {
         if (*v50 != v38)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(results11);
         }
 
-        v40 = [*(*(&v49 + 1) + 8 * i) labels];
-        [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:v40 withPrefix:0 toClassificationResults:v10];
+        labels = [*(*(&v49 + 1) + 8 * i) labels];
+        [(VCPMADSceneAssetBatch *)self _parseClassificationObservations:labels withPrefix:0 toClassificationResults:v10];
       }
 
-      v37 = [v36 countByEnumeratingWithState:&v49 objects:v58 count:16];
+      v37 = [results11 countByEnumeratingWithState:&v49 objects:v58 count:16];
     }
 
     while (v37);
@@ -1524,9 +1524,9 @@ LABEL_47:
     [v10 addEntriesFromDictionary:v41];
   }
 
-  if (v9)
+  if (vResultsCopy)
   {
-    v42 = [v9 mad_sceneClassifications:@"SafetyTypeGV"];
+    v42 = [vResultsCopy mad_sceneClassifications:@"SafetyTypeGV"];
     [v10 addEntriesFromDictionary:v42];
   }
 
@@ -1541,67 +1541,67 @@ LABEL_47:
   return v43;
 }
 
-- (int)_collectResultsForAssetEntry:(id)a3 fromRequests:(id)a4 safetyNResults:(id)a5 safetyGVResults:(id)a6 safetyQRResults:(unint64_t)a7
+- (int)_collectResultsForAssetEntry:(id)entry fromRequests:(id)requests safetyNResults:(id)results safetyGVResults:(id)vResults safetyQRResults:(unint64_t)rResults
 {
-  v12 = a3;
-  v13 = a4;
-  v290 = a5;
-  v289 = a6;
-  v14 = [v12 asset];
-  v15 = [v14 vcp_abnormalImageDimensionForSceneNet];
+  entryCopy = entry;
+  requestsCopy = requests;
+  resultsCopy = results;
+  vResultsCopy = vResults;
+  asset = [entryCopy asset];
+  vcp_abnormalImageDimensionForSceneNet = [asset vcp_abnormalImageDimensionForSceneNet];
 
-  if ((v15 & 1) == 0)
+  if ((vcp_abnormalImageDimensionForSceneNet & 1) == 0)
   {
-    v16 = [(VCPMADSceneAssetBatch *)self _generateSceneClassificationsFromRequests:v13 safetyNResults:v290 safetyGVResults:v289];
-    v17 = [v12 results];
-    [v17 setSceneClassifications:v16];
+    v16 = [(VCPMADSceneAssetBatch *)self _generateSceneClassificationsFromRequests:requestsCopy safetyNResults:resultsCopy safetyGVResults:vResultsCopy];
+    results = [entryCopy results];
+    [results setSceneClassifications:v16];
 
-    if (!v290 && !v289 && !a7 || ([v12 asset], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "mad_isShared"), v18, !v19))
+    if (!resultsCopy && !vResultsCopy && !rResults || ([entryCopy asset], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "mad_isShared"), v18, !v19))
     {
 LABEL_37:
-      v56 = [v12 results];
-      v57 = [v56 sceneClassifications];
-      v34 = [v57 allObjects];
+      results2 = [entryCopy results];
+      sceneClassifications = [results2 sceneClassifications];
+      allObjects = [sceneClassifications allObjects];
 
-      v58 = [v12 asset];
-      v59 = [v58 location];
-      [v59 coordinate];
+      asset2 = [entryCopy asset];
+      location = [asset2 location];
+      [location coordinate];
       v61 = v60;
 
-      v62 = [v12 asset];
-      v63 = [v62 location];
-      [v63 coordinate];
+      asset3 = [entryCopy asset];
+      location2 = [asset3 location];
+      [location2 coordinate];
       v65 = v64;
 
-      v35 = +[PFSceneGeography vcp_sharedSceneGeography];
+      results7 = +[PFSceneGeography vcp_sharedSceneGeography];
       v66 = +[PFSceneTaxonomy vcp_sharedTaxonomy];
-      [PNAssetCurationUtilities assetIconicScoreForSceneClassifications:v34 assetLatitude:v35 assetLongitude:v66 sceneGeography:v61 sceneTaxonomy:v65];
+      [PNAssetCurationUtilities assetIconicScoreForSceneClassifications:allObjects assetLatitude:results7 assetLongitude:v66 sceneGeography:v61 sceneTaxonomy:v65];
       v68 = v67;
       if (MediaAnalysisLogLevel() >= 7)
       {
         v69 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v69))
         {
-          v70 = [v12 asset];
-          v71 = [v70 localIdentifier];
+          asset4 = [entryCopy asset];
+          localIdentifier = [asset4 localIdentifier];
           *buf = 138412546;
-          v303 = v71;
+          v303 = localIdentifier;
           v304 = 2048;
           v305 = v68;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v69, "[%@] Accepting iconicScore: %.3f", buf, 0x16u);
         }
       }
 
-      v72 = [v12 results];
+      results3 = [entryCopy results];
       *&v73 = v68;
-      [v72 setIconicScore:v73];
+      [results3 setIconicScore:v73];
 
       goto LABEL_41;
     }
 
-    if (v290)
+    if (resultsCopy)
     {
-      v20 = [v290 mad_sensitivityAnalysis:1];
+      v20 = [resultsCopy mad_sensitivityAnalysis:1];
       v21 = [SCMLImageAnalysisResult mad_mergeSensitiveAnalysisResults:0 withSensitiveAnalysisResults:v20];
     }
 
@@ -1610,9 +1610,9 @@ LABEL_37:
       v21 = 0;
     }
 
-    if (v289)
+    if (vResultsCopy)
     {
-      v36 = [v289 mad_sensitivityAnalysis:2];
+      v36 = [vResultsCopy mad_sensitivityAnalysis:2];
     }
 
     else
@@ -1642,7 +1642,7 @@ LABEL_37:
 
     v21 = v38;
 LABEL_24:
-    if (a7)
+    if (rResults)
     {
       v310[0] = SCMLImageExplicitSensitivity;
       v310[1] = SCMLImageExplicitSensitivity;
@@ -1658,7 +1658,7 @@ LABEL_24:
       v21 = v40;
     }
 
-    if ((a7 & 2) != 0)
+    if ((rResults & 2) != 0)
     {
       v308[0] = SCMLImageGoreSensitivity;
       v308[1] = SCMLImageGoreSensitivityScore;
@@ -1683,14 +1683,14 @@ LABEL_24:
     v44 = v299;
     if (v43)
     {
-      v45 = [v43 compactAnalysis];
-      v46 = [v12 results];
-      [v46 setCompactSCSensitivityAnalysisIVS:v45];
+      compactAnalysis = [v43 compactAnalysis];
+      results4 = [entryCopy results];
+      [results4 setCompactSCSensitivityAnalysisIVS:compactAnalysis];
 
-      v47 = [v12 results];
-      LODWORD(v45) = [v47 compactSCSensitivityAnalysisIVS] == 0;
+      results5 = [entryCopy results];
+      LODWORD(compactAnalysis) = [results5 compactSCSensitivityAnalysisIVS] == 0;
 
-      if (v45)
+      if (compactAnalysis)
       {
         if (MediaAnalysisLogLevel() >= 3)
         {
@@ -1698,12 +1698,12 @@ LABEL_24:
           if (os_log_type_enabled(&_os_log_default, v48))
           {
             v49 = objc_opt_class();
-            v50 = [v12 asset];
-            v51 = [v50 localIdentifier];
+            asset5 = [entryCopy asset];
+            localIdentifier2 = [asset5 localIdentifier];
             *buf = 138412546;
             v303 = v49;
             v304 = 2112;
-            v305 = *&v51;
+            v305 = *&localIdentifier2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v48, "[%@][%@] compactSCSensitivityAnalysisIVS is 0", buf, 0x16u);
           }
         }
@@ -1716,14 +1716,14 @@ LABEL_24:
       if (os_log_type_enabled(&_os_log_default, v52))
       {
         v53 = objc_opt_class();
-        v54 = [v12 asset];
-        v55 = [v54 localIdentifier];
+        asset6 = [entryCopy asset];
+        localIdentifier3 = [asset6 localIdentifier];
         *buf = 138412802;
         v303 = v53;
         v304 = 2112;
-        v305 = *&v55;
+        v305 = *&localIdentifier3;
         v306 = 2112;
-        v307 = v44;
+        compactAnalysis3 = v44;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v52, "[%@][%@] Failed to instantiate SCSensitivityAnalysis (%@)", buf, 0x20u);
       }
     }
@@ -1731,15 +1731,15 @@ LABEL_24:
     goto LABEL_37;
   }
 
-  v22 = [v12 asset];
-  v23 = [v22 mad_isShared];
+  asset7 = [entryCopy asset];
+  mad_isShared = [asset7 mad_isShared];
 
-  if (v23)
+  if (mad_isShared)
   {
-    v24 = [sub_100031648() presumedSensitiveAnalysis];
-    v25 = [v24 compactAnalysis];
-    v26 = [v12 results];
-    [v26 setCompactSCSensitivityAnalysisIVS:v25];
+    presumedSensitiveAnalysis = [sub_100031648() presumedSensitiveAnalysis];
+    compactAnalysis2 = [presumedSensitiveAnalysis compactAnalysis];
+    results6 = [entryCopy results];
+    [results6 setCompactSCSensitivityAnalysisIVS:compactAnalysis2];
 
     if (MediaAnalysisLogLevel() >= 7)
     {
@@ -1747,14 +1747,14 @@ LABEL_24:
       if (os_log_type_enabled(&_os_log_default, v27))
       {
         v28 = objc_opt_class();
-        v29 = [v12 asset];
-        v30 = [v29 localIdentifier];
+        asset8 = [entryCopy asset];
+        localIdentifier4 = [asset8 localIdentifier];
         *buf = 138412802;
         v303 = v28;
         v304 = 2112;
-        v305 = *&v30;
+        v305 = *&localIdentifier4;
         v306 = 2048;
-        v307 = [v24 compactAnalysis];
+        compactAnalysis3 = [presumedSensitiveAnalysis compactAnalysis];
         _os_log_impl(&_mh_execute_header, &_os_log_default, v27, "[%@][%@] Setting compactSCSensitivityAnalysisIVS to %llu for tiny shared asset", buf, 0x20u);
       }
     }
@@ -1765,22 +1765,22 @@ LABEL_24:
     v31 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v31))
     {
-      v32 = [v12 asset];
-      v33 = [v32 localIdentifier];
+      asset9 = [entryCopy asset];
+      localIdentifier5 = [asset9 localIdentifier];
       *buf = 138412290;
-      v303 = v33;
+      v303 = localIdentifier5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v31, "[%@] Ignoring SceneNet result for tiny asset", buf, 0xCu);
     }
   }
 
-  v34 = +[NSSet set];
-  v35 = [v12 results];
-  [v35 setSceneClassifications:v34];
+  allObjects = +[NSSet set];
+  results7 = [entryCopy results];
+  [results7 setSceneClassifications:allObjects];
 LABEL_41:
 
-  v74 = [v13 aestheticsRequest];
-  v75 = [v74 results];
-  v76 = [v75 count] == 1;
+  aestheticsRequest = [requestsCopy aestheticsRequest];
+  results8 = [aestheticsRequest results];
+  v76 = [results8 count] == 1;
 
   if (!v76)
   {
@@ -1788,155 +1788,155 @@ LABEL_41:
     goto LABEL_56;
   }
 
-  v77 = [v13 aestheticsRequest];
-  v78 = [v77 results];
-  v79 = [v78 firstObject];
+  aestheticsRequest2 = [requestsCopy aestheticsRequest];
+  results9 = [aestheticsRequest2 results];
+  firstObject = [results9 firstObject];
 
-  [v79 aestheticScore];
+  [firstObject aestheticScore];
   v81 = v80;
-  v82 = [v12 results];
+  results10 = [entryCopy results];
   LODWORD(v83) = v81;
-  [v82 setOverallAestheticScore:v83];
+  [results10 setOverallAestheticScore:v83];
 
-  [v79 wellFramedSubjectScore];
+  [firstObject wellFramedSubjectScore];
   v85 = v84;
-  v86 = [v12 results];
+  results11 = [entryCopy results];
   LODWORD(v87) = v85;
-  [v86 setWellFramedSubjectScore:v87];
+  [results11 setWellFramedSubjectScore:v87];
 
-  [v79 wellChosenBackgroundScore];
+  [firstObject wellChosenBackgroundScore];
   v89 = v88;
-  v90 = [v12 results];
+  results12 = [entryCopy results];
   LODWORD(v91) = v89;
-  [v90 setWellChosenSubjectScore:v91];
+  [results12 setWellChosenSubjectScore:v91];
 
-  [v79 tastefullyBlurredScore];
+  [firstObject tastefullyBlurredScore];
   v93 = v92;
-  v94 = [v12 results];
+  results13 = [entryCopy results];
   LODWORD(v95) = v93;
-  [v94 setTastefullyBlurredScore:v95];
+  [results13 setTastefullyBlurredScore:v95];
 
-  [v79 sharplyFocusedSubjectScore];
+  [firstObject sharplyFocusedSubjectScore];
   v97 = v96;
-  v98 = [v12 results];
+  results14 = [entryCopy results];
   LODWORD(v99) = v97;
-  [v98 setSharplyFocusedSubjectScore:v99];
+  [results14 setSharplyFocusedSubjectScore:v99];
 
-  [v79 wellTimedShotScore];
+  [firstObject wellTimedShotScore];
   v101 = v100;
-  v102 = [v12 results];
+  results15 = [entryCopy results];
   LODWORD(v103) = v101;
-  [v102 setWellTimedShotScore:v103];
+  [results15 setWellTimedShotScore:v103];
 
-  [v79 pleasantLightingScore];
+  [firstObject pleasantLightingScore];
   v105 = v104;
-  v106 = [v12 results];
+  results16 = [entryCopy results];
   LODWORD(v107) = v105;
-  [v106 setPleasantLightingScore:v107];
+  [results16 setPleasantLightingScore:v107];
 
-  [v79 pleasantReflectionsScore];
+  [firstObject pleasantReflectionsScore];
   v109 = v108;
-  v110 = [v12 results];
+  results17 = [entryCopy results];
   LODWORD(v111) = v109;
-  [v110 setPleasantReflectionsScore:v111];
+  [results17 setPleasantReflectionsScore:v111];
 
-  [v79 harmoniousColorScore];
+  [firstObject harmoniousColorScore];
   v113 = v112;
-  v114 = [v12 results];
+  results18 = [entryCopy results];
   LODWORD(v115) = v113;
-  [v114 setHarmoniousColorScore:v115];
+  [results18 setHarmoniousColorScore:v115];
 
-  [v79 livelyColorScore];
+  [firstObject livelyColorScore];
   v117 = v116;
-  v118 = [v12 results];
+  results19 = [entryCopy results];
   LODWORD(v119) = v117;
-  [v118 setLivelyColorScore:v119];
+  [results19 setLivelyColorScore:v119];
 
-  [v79 pleasantSymmetryScore];
+  [firstObject pleasantSymmetryScore];
   v121 = v120;
-  v122 = [v12 results];
+  results20 = [entryCopy results];
   LODWORD(v123) = v121;
-  [v122 setPleasantSymmetryScore:v123];
+  [results20 setPleasantSymmetryScore:v123];
 
-  [v79 pleasantPatternScore];
+  [firstObject pleasantPatternScore];
   v125 = v124;
-  v126 = [v12 results];
+  results21 = [entryCopy results];
   LODWORD(v127) = v125;
-  [v126 setPleasantPatternScore:v127];
+  [results21 setPleasantPatternScore:v127];
 
-  [v79 immersivenessScore];
+  [firstObject immersivenessScore];
   v129 = v128;
-  v130 = [v12 results];
+  results22 = [entryCopy results];
   LODWORD(v131) = v129;
-  [v130 setImmersivenessScore:v131];
+  [results22 setImmersivenessScore:v131];
 
-  [v79 pleasantPerspectiveScore];
+  [firstObject pleasantPerspectiveScore];
   v133 = v132;
-  v134 = [v12 results];
+  results23 = [entryCopy results];
   LODWORD(v135) = v133;
-  [v134 setPleasantPerspectiveScore:v135];
+  [results23 setPleasantPerspectiveScore:v135];
 
-  [v79 pleasantPostProcessingScore];
+  [firstObject pleasantPostProcessingScore];
   v137 = v136;
-  v138 = [v12 results];
+  results24 = [entryCopy results];
   LODWORD(v139) = v137;
-  [v138 setPleasantPostProcessingScore:v139];
+  [results24 setPleasantPostProcessingScore:v139];
 
-  [v79 noiseScore];
+  [firstObject noiseScore];
   v141 = v140;
-  v142 = [v12 results];
+  results25 = [entryCopy results];
   LODWORD(v143) = v141;
-  [v142 setNoiseScore:v143];
+  [results25 setNoiseScore:v143];
 
-  [v79 failureScore];
+  [firstObject failureScore];
   v145 = v144;
-  v146 = [v12 results];
+  results26 = [entryCopy results];
   LODWORD(v147) = v145;
-  [v146 setFailureScore:v147];
+  [results26 setFailureScore:v147];
 
-  [v79 pleasantCompositionScore];
+  [firstObject pleasantCompositionScore];
   v149 = v148;
-  v150 = [v12 results];
+  results27 = [entryCopy results];
   LODWORD(v151) = v149;
-  [v150 setPleasantCompositionScore:v151];
+  [results27 setPleasantCompositionScore:v151];
 
-  [v79 interestingSubjectScore];
+  [firstObject interestingSubjectScore];
   v153 = v152;
-  v154 = [v12 results];
+  results28 = [entryCopy results];
   LODWORD(v155) = v153;
-  [v154 setInterestingSubjectScore:v155];
+  [results28 setInterestingSubjectScore:v155];
 
-  [v79 intrusiveObjectPresenceScore];
+  [firstObject intrusiveObjectPresenceScore];
   v157 = v156;
-  v158 = [v12 results];
+  results29 = [entryCopy results];
   LODWORD(v159) = v157;
-  [v158 setIntrusiveObjectPresenceScore:v159];
+  [results29 setIntrusiveObjectPresenceScore:v159];
 
-  [v79 pleasantCameraTiltScore];
+  [firstObject pleasantCameraTiltScore];
   v161 = v160;
-  v162 = [v12 results];
+  results30 = [entryCopy results];
   LODWORD(v163) = v161;
-  [v162 setPleasantCameraTiltScore:v163];
+  [results30 setPleasantCameraTiltScore:v163];
 
-  [v79 lowKeyLightingScore];
+  [firstObject lowKeyLightingScore];
   v165 = v164;
-  v166 = [v12 results];
+  results31 = [entryCopy results];
   LODWORD(v167) = v165;
-  [v166 setLowLight:v167];
+  [results31 setLowLight:v167];
 
-  v168 = [v13 saliencyRequest];
-  v169 = [v168 results];
-  v170 = [v169 count] == 1;
+  saliencyRequest = [requestsCopy saliencyRequest];
+  results32 = [saliencyRequest results];
+  v170 = [results32 count] == 1;
 
   if (!v170)
   {
     goto LABEL_53;
   }
 
-  v171 = [v13 saliencyRequest];
-  v172 = [v171 results];
-  v173 = [v172 firstObject];
-  [v173 boundingBox];
+  saliencyRequest2 = [requestsCopy saliencyRequest];
+  results33 = [saliencyRequest2 results];
+  firstObject2 = [results33 firstObject];
+  [firstObject2 boundingBox];
   x = v314.origin.x;
   y = v314.origin.y;
   width = v314.size.width;
@@ -1958,15 +1958,15 @@ LABEL_41:
 LABEL_51:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
-      v180 = [v12 asset];
-      v181 = [v180 localIdentifier];
-      v182 = [v13 saliencyRequest];
-      v183 = [v182 results];
-      v184 = [v183 firstObject];
-      [v184 boundingBox];
+      asset10 = [entryCopy asset];
+      localIdentifier6 = [asset10 localIdentifier];
+      saliencyRequest3 = [requestsCopy saliencyRequest];
+      results34 = [saliencyRequest3 results];
+      firstObject3 = [results34 firstObject];
+      [firstObject3 boundingBox];
       v185 = NSStringFromRect(v321);
       *buf = 138412546;
-      v303 = v181;
+      v303 = localIdentifier6;
       v304 = 2112;
       v305 = *&v185;
       _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "[%@] Unnormalized saliencyRequest bounding box %@; skip", buf, 0x16u);
@@ -1975,21 +1975,21 @@ LABEL_51:
     goto LABEL_53;
   }
 
-  v187 = [v13 saliencyRequest];
-  v188 = [v187 results];
-  v189 = [v188 firstObject];
-  [v189 boundingBox];
+  saliencyRequest4 = [requestsCopy saliencyRequest];
+  results35 = [saliencyRequest4 results];
+  firstObject4 = [results35 firstObject];
+  [firstObject4 boundingBox];
   v191 = v190;
   v193 = v192;
   v195 = v194;
   v197 = v196;
-  v198 = [v12 results];
-  [v198 setPreferredCropRect:{v191, v193, v195, v197}];
+  results36 = [entryCopy results];
+  [results36 setPreferredCropRect:{v191, v193, v195, v197}];
 
-  v199 = [v13 saliencyRequest];
-  v200 = [v199 results];
-  v201 = [v200 firstObject];
-  [v201 narrowedBoundingBox];
+  saliencyRequest5 = [requestsCopy saliencyRequest];
+  results37 = [saliencyRequest5 results];
+  firstObject5 = [results37 firstObject];
+  [firstObject5 narrowedBoundingBox];
   v202 = v323.origin.x;
   v203 = v323.origin.y;
   v204 = v323.size.width;
@@ -2011,15 +2011,15 @@ LABEL_51:
 LABEL_66:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
     {
-      v206 = [v12 asset];
-      v207 = [v206 localIdentifier];
-      v208 = [v13 saliencyRequest];
-      v209 = [v208 results];
-      v210 = [v209 firstObject];
-      [v210 narrowedBoundingBox];
+      asset11 = [entryCopy asset];
+      localIdentifier7 = [asset11 localIdentifier];
+      saliencyRequest6 = [requestsCopy saliencyRequest];
+      results38 = [saliencyRequest6 results];
+      firstObject6 = [results38 firstObject];
+      [firstObject6 narrowedBoundingBox];
       v211 = NSStringFromRect(v330);
       *buf = 138412546;
-      v303 = v207;
+      v303 = localIdentifier7;
       v304 = 2112;
       v305 = *&v211;
       _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "[%@] Unnormalized saliencyRequest narrowed bounding box %@; skip", buf, 0x16u);
@@ -2028,39 +2028,39 @@ LABEL_66:
     goto LABEL_53;
   }
 
-  v213 = [v13 saliencyRequest];
-  v214 = [v213 results];
-  v215 = [v214 firstObject];
-  [v215 narrowedBoundingBox];
+  saliencyRequest7 = [requestsCopy saliencyRequest];
+  results39 = [saliencyRequest7 results];
+  firstObject7 = [results39 firstObject];
+  [firstObject7 narrowedBoundingBox];
   v217 = v216;
   v219 = v218;
   v221 = v220;
   v223 = v222;
-  v224 = [v12 results];
-  [v224 setAcceptableCropRect:{v217, v219, v221, v223}];
+  results40 = [entryCopy results];
+  [results40 setAcceptableCropRect:{v217, v219, v221, v223}];
 
   if (+[VCPPreAnalysisRequests includeSO])
   {
-    v225 = [v13 saliencyObjectnessRequest];
-    v226 = [v225 results];
-    v227 = [v226 count] == 1;
+    saliencyObjectnessRequest = [requestsCopy saliencyObjectnessRequest];
+    results41 = [saliencyObjectnessRequest results];
+    v227 = [results41 count] == 1;
 
     if (!v227)
     {
       goto LABEL_53;
     }
 
-    v228 = [v13 saliencyObjectnessRequest];
-    v229 = [v228 results];
-    v230 = [v229 firstObject];
-    v283 = [v230 salientObjects];
+    saliencyObjectnessRequest2 = [requestsCopy saliencyObjectnessRequest];
+    results42 = [saliencyObjectnessRequest2 results];
+    firstObject8 = [results42 firstObject];
+    salientObjects = [firstObject8 salientObjects];
 
     v231 = +[NSMutableArray array];
     v297 = 0u;
     v298 = 0u;
     v295 = 0u;
     v296 = 0u;
-    v232 = v283;
+    v232 = salientObjects;
     v233 = [v232 countByEnumeratingWithState:&v295 objects:v301 count:16];
     if (v233)
     {
@@ -2089,12 +2089,12 @@ LABEL_73:
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
           {
-            v279 = [v12 asset];
-            v280 = [v279 localIdentifier];
+            asset12 = [entryCopy asset];
+            localIdentifier8 = [asset12 localIdentifier];
             [v235 boundingBox];
             v281 = NSStringFromRect(v340);
             *buf = 138412546;
-            v303 = v280;
+            v303 = localIdentifier8;
             v304 = 2112;
             v305 = *&v281;
             _os_log_fault_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_FAULT, "[%@] Unnormalized salientObject bounding box %@; skip", buf, 0x16u);
@@ -2120,73 +2120,73 @@ LABEL_73:
       }
     }
 
-    v241 = [v12 results];
-    [v241 setObjectSaliencyRects:v231];
+    results43 = [entryCopy results];
+    [results43 setObjectSaliencyRects:v231];
   }
 
-  v242 = [v13 sceneprintRequest];
-  v243 = [v242 results];
-  v244 = [v243 count] == 1;
+  sceneprintRequest = [requestsCopy sceneprintRequest];
+  results44 = [sceneprintRequest results];
+  v244 = [results44 count] == 1;
 
   if (v244)
   {
-    v245 = [v13 sceneprintRequest];
-    v246 = [v245 results];
-    v247 = [v246 firstObject];
-    v248 = [v247 sceneprints];
-    v249 = [v248 firstObject];
+    sceneprintRequest2 = [requestsCopy sceneprintRequest];
+    results45 = [sceneprintRequest2 results];
+    firstObject9 = [results45 firstObject];
+    sceneprints = [firstObject9 sceneprints];
+    firstObject10 = [sceneprints firstObject];
 
-    if ([v249 elementType] == 1 && objc_msgSend(v249, "elementCount") == 768)
+    if ([firstObject10 elementType] == 1 && objc_msgSend(firstObject10, "elementCount") == 768)
     {
-      v250 = [v249 descriptorData];
-      v251 = [v250 length] == 3072;
+      descriptorData = [firstObject10 descriptorData];
+      v251 = [descriptorData length] == 3072;
 
       if (v251)
       {
-        v252 = [NSKeyedArchiver archivedDataWithRootObject:v249 requiringSecureCoding:1 error:0];
-        v253 = [v12 results];
-        [v253 setSceneprintData:v252];
+        v252 = [NSKeyedArchiver archivedDataWithRootObject:firstObject10 requiringSecureCoding:1 error:0];
+        results46 = [entryCopy results];
+        [results46 setSceneprintData:v252];
 
         if (!+[VCPPreAnalysisRequests includePA])
         {
 LABEL_102:
-          v266 = [v13 imagefingerprintsRequest];
-          v268 = (v15 & 1) == 0 && v266 != 0;
+          imagefingerprintsRequest = [requestsCopy imagefingerprintsRequest];
+          v268 = (vcp_abnormalImageDimensionForSceneNet & 1) == 0 && imagefingerprintsRequest != 0;
 
           if (v268)
           {
-            v269 = [v13 imagefingerprintsRequest];
-            v270 = [v269 results];
+            imagefingerprintsRequest2 = [requestsCopy imagefingerprintsRequest];
+            results47 = [imagefingerprintsRequest2 results];
 
-            if ([v270 count])
+            if ([results47 count])
             {
-              v271 = [v270 firstObject];
-              v272 = [v271 fingerprintHashes];
+              firstObject11 = [results47 firstObject];
+              fingerprintHashes = [firstObject11 fingerprintHashes];
 
-              if (v272 && [v272 count] == 2)
+              if (fingerprintHashes && [fingerprintHashes count] == 2)
               {
-                v273 = [v272 objectAtIndexedSubscript:0];
-                v274 = [v273 hashData];
+                v273 = [fingerprintHashes objectAtIndexedSubscript:0];
+                hashData = [v273 hashData];
 
-                if ([v274 length] == 24)
+                if ([hashData length] == 24)
                 {
-                  v275 = [v272 objectAtIndexedSubscript:1];
-                  v276 = [v275 hashData];
+                  v275 = [fingerprintHashes objectAtIndexedSubscript:1];
+                  hashData2 = [v275 hashData];
 
-                  if ([v276 length] == 24)
+                  if ([hashData2 length] == 24)
                   {
                     v285 = [NSMutableData dataWithBytes:&unk_10024CB74 length:1];
-                    [v285 appendData:v276];
+                    [v285 appendData:hashData2];
                     v288 = v285;
 
-                    v277 = [v12 results];
-                    [v277 setDuplicateMatchingFeature:v274];
+                    results48 = [entryCopy results];
+                    [results48 setDuplicateMatchingFeature:hashData];
 
-                    v278 = [v12 results];
-                    [v278 setDuplicateMatchingAlternateFeature:v288];
+                    results49 = [entryCopy results];
+                    [results49 setDuplicateMatchingAlternateFeature:v288];
 
                     v178 = 0;
-                    v276 = v288;
+                    hashData2 = v288;
                   }
 
                   else
@@ -2221,15 +2221,15 @@ LABEL_102:
           goto LABEL_116;
         }
 
-        v254 = [v13 adjustmentsRequest];
-        v255 = [v254 results];
-        v256 = [v255 count] == 0;
+        adjustmentsRequest = [requestsCopy adjustmentsRequest];
+        results50 = [adjustmentsRequest results];
+        v256 = [results50 count] == 0;
 
         if (!v256)
         {
-          v257 = [v13 adjustmentsRequest];
-          v258 = [v257 results];
-          v287 = [v258 objectAtIndexedSubscript:0];
+          adjustmentsRequest2 = [requestsCopy adjustmentsRequest];
+          results51 = [adjustmentsRequest2 results];
+          v287 = [results51 objectAtIndexedSubscript:0];
 
           v284 = +[NSMutableDictionary dictionary];
           v293 = 0u;
@@ -2262,8 +2262,8 @@ LABEL_102:
           }
 
           v264 = PHAssetMediaAnalysisDataWithColorNormalizationDictionaryAndRevision();
-          v265 = [v12 results];
-          [v265 setColorNormalizationData:v264];
+          results52 = [entryCopy results];
+          [results52 setColorNormalizationData:v264];
 
           goto LABEL_102;
         }
@@ -2284,13 +2284,13 @@ LABEL_56:
   return v178;
 }
 
-- (int)_performIVSAnalysisForAssetEntry:(id)a3 pixelBuffer:(__CVBuffer *)a4 results:(id *)a5 safetyQRResults:(unint64_t *)a6
+- (int)_performIVSAnalysisForAssetEntry:(id)entry pixelBuffer:(__CVBuffer *)buffer results:(id *)results safetyQRResults:(unint64_t *)rResults
 {
-  v10 = a3;
-  v11 = [v10 asset];
-  v12 = [v11 vcp_abnormalImageDimensionForSceneNet];
+  entryCopy = entry;
+  asset = [entryCopy asset];
+  vcp_abnormalImageDimensionForSceneNet = [asset vcp_abnormalImageDimensionForSceneNet];
 
-  if (v12)
+  if (vcp_abnormalImageDimensionForSceneNet)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -2298,12 +2298,12 @@ LABEL_56:
       if (os_log_type_enabled(&_os_log_default, v21))
       {
         v22 = objc_opt_class();
-        v23 = [v10 asset];
-        v24 = [v23 localIdentifier];
+        asset2 = [entryCopy asset];
+        localIdentifier = [asset2 localIdentifier];
         *buf = 138412546;
         v52 = v22;
         v53 = 2112;
-        v54 = v24;
+        v54 = localIdentifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "[%@][%@] Tiny image, skipping performing IVS Analysis .", buf, 0x16u);
       }
     }
@@ -2313,8 +2313,8 @@ LABEL_56:
 
   else
   {
-    v13 = [v10 asset];
-    if ([v13 mad_isShared])
+    asset3 = [entryCopy asset];
+    if ([asset3 mad_isShared])
     {
       v14 = +[MADUserSafetyQRCodeDetector enabled];
 
@@ -2322,19 +2322,19 @@ LABEL_56:
       {
         v15 = objc_autoreleasePoolPush();
         v16 = objc_alloc_init(MADUserSafetyQRCodeDetector);
-        [v16 processPixelBuffer:a4 orientation:1 signpostPayload:&stru_1002890F8];
-        v17 = [v16 sensitivity];
-        if (v17)
+        [v16 processPixelBuffer:buffer orientation:1 signpostPayload:&stru_1002890F8];
+        sensitivity = [v16 sensitivity];
+        if (sensitivity)
         {
           v18 = _os_feature_enabled_impl();
-          v19 = [v17 unsignedIntegerValue];
+          unsignedIntegerValue = [sensitivity unsignedIntegerValue];
           v20 = 3;
           if (!v18)
           {
             v20 = 1;
           }
 
-          *a6 = v19 & v20;
+          *rResults = unsignedIntegerValue & v20;
         }
 
         else if (MediaAnalysisLogLevel() >= 4)
@@ -2343,12 +2343,12 @@ LABEL_56:
           if (os_log_type_enabled(&_os_log_default, v26))
           {
             v49 = objc_opt_class();
-            v27 = [v10 asset];
-            v28 = [v27 localIdentifier];
+            asset4 = [entryCopy asset];
+            localIdentifier2 = [asset4 localIdentifier];
             *buf = 138412546;
             v52 = v49;
             v53 = 2112;
-            v54 = v28;
+            v54 = localIdentifier2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v26, "[%@][%@] processing failed.", buf, 0x16u);
           }
         }
@@ -2361,13 +2361,13 @@ LABEL_56:
     {
     }
 
-    v29 = [(MADSceneResources *)self->_resources safetyTypeNPool];
-    v30 = [v29 getObject];
+    safetyTypeNPool = [(MADSceneResources *)self->_resources safetyTypeNPool];
+    getObject = [safetyTypeNPool getObject];
 
-    v31 = [v30 object];
-    LODWORD(v29) = v31 == 0;
+    object = [getObject object];
+    LODWORD(safetyTypeNPool) = object == 0;
 
-    if (v29)
+    if (safetyTypeNPool)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -2399,9 +2399,9 @@ LABEL_56:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v35, OS_SIGNPOST_INTERVAL_BEGIN, v33, "SCMLHandler_analyzePixelBufferN", "", buf, 2u);
       }
 
-      v36 = [v30 object];
+      object2 = [getObject object];
       v50 = 0;
-      v37 = [v36 analyzePixelBuffer:a4 error:&v50];
+      v37 = [object2 analyzePixelBuffer:buffer error:&v50];
       v38 = v50;
 
       v39 = VCPSignPostLog();
@@ -2432,11 +2432,11 @@ LABEL_56:
         v25 = -18;
       }
 
-      else if (a5)
+      else if (results)
       {
         v47 = v37;
         v25 = 0;
-        *a5 = v37;
+        *results = v37;
       }
 
       else
@@ -2449,23 +2449,23 @@ LABEL_56:
   return v25;
 }
 
-- (int)_performSceneNetAnalysisForAssetEntry:(id)a3 withImage:(id)a4 andRequests:(id)a5
+- (int)_performSceneNetAnalysisForAssetEntry:(id)entry withImage:(id)image andRequests:(id)requests
 {
-  v7 = a3;
-  v100 = a4;
-  v91 = v7;
-  v92 = a5;
+  entryCopy = entry;
+  imageCopy = image;
+  v91 = entryCopy;
+  requestsCopy = requests;
   v120 = 0;
-  v8 = [v7 asset];
-  v9 = [v8 vcp_abnormalImageDimensionForSceneNet];
+  asset = [entryCopy asset];
+  vcp_abnormalImageDimensionForSceneNet = [asset vcp_abnormalImageDimensionForSceneNet];
 
-  if (v9)
+  if (vcp_abnormalImageDimensionForSceneNet)
   {
     v10 = objc_autoreleasePoolPush();
     v11 = [VNImageRequestHandler alloc];
-    v12 = [v100 sourcePixelBuffer];
-    v13 = [(MADSceneResources *)self->_resources session];
-    v14 = [v11 initWithCVPixelBuffer:v12 options:&__NSDictionary0__struct session:v13];
+    sourcePixelBuffer = [imageCopy sourcePixelBuffer];
+    session = [(MADSceneResources *)self->_resources session];
+    v14 = [v11 initWithCVPixelBuffer:sourcePixelBuffer options:&__NSDictionary0__struct session:session];
 
     v15 = VCPSignPostLog();
     v16 = os_signpost_id_generate(v15);
@@ -2478,9 +2478,9 @@ LABEL_56:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "VNImageRequestHandler_PerformRequests", "", buf, 2u);
     }
 
-    v19 = [v92 gatherAvailableRequests];
+    gatherAvailableRequests = [requestsCopy gatherAvailableRequests];
     v119 = 0;
-    v20 = [v14 performRequests:v19 error:&v119];
+    v20 = [v14 performRequests:gatherAvailableRequests error:&v119];
     v21 = v119;
 
     v22 = VCPSignPostLog();
@@ -2497,7 +2497,7 @@ LABEL_56:
       {
         v24 = objc_autoreleasePoolPush();
         v118 = 0;
-        v98 = -[VCPMADSceneAssetBatch _performIVSAnalysisForAssetEntry:pixelBuffer:results:safetyQRResults:](self, "_performIVSAnalysisForAssetEntry:pixelBuffer:results:safetyQRResults:", v91, [v100 sourcePixelBuffer], &v118, &v120);
+        v98 = -[VCPMADSceneAssetBatch _performIVSAnalysisForAssetEntry:pixelBuffer:results:safetyQRResults:](self, "_performIVSAnalysisForAssetEntry:pixelBuffer:results:safetyQRResults:", v91, [imageCopy sourcePixelBuffer], &v118, &v120);
         v25 = v118;
         objc_autoreleasePoolPop(v24);
         if (v98)
@@ -2546,14 +2546,14 @@ LABEL_68:
     if (+[VCPPreAnalysisRequests includeWP])
     {
       v58 = objc_autoreleasePoolPush();
-      v59 = [v92 sceneprintRequest];
-      v60 = [v59 results];
+      sceneprintRequest = [requestsCopy sceneprintRequest];
+      results = [sceneprintRequest results];
 
-      v61 = [v60 firstObject];
-      v62 = [v61 sceneprints];
-      v63 = [v62 firstObject];
+      firstObject = [results firstObject];
+      sceneprints = [firstObject sceneprints];
+      firstObject2 = [sceneprints firstObject];
 
-      v64 = [(VCPMADSceneAssetBatch *)self _performWallpaperAnalysisForAssetEntry:v91 withSceneprint:v63];
+      v64 = [(VCPMADSceneAssetBatch *)self _performWallpaperAnalysisForAssetEntry:v91 withSceneprint:firstObject2];
       objc_autoreleasePoolPop(v58);
       if (v64)
       {
@@ -2564,20 +2564,20 @@ LABEL_68:
 
     if (_os_feature_enabled_impl())
     {
-      v65 = [v92 sceneprintRequest];
-      v66 = [v65 results];
+      sceneprintRequest2 = [requestsCopy sceneprintRequest];
+      results2 = [sceneprintRequest2 results];
 
-      v67 = [v66 firstObject];
-      v68 = [v67 sceneprints];
-      v69 = [v68 firstObject];
+      firstObject3 = [results2 firstObject];
+      sceneprints2 = [firstObject3 sceneprints];
+      firstObject4 = [sceneprints2 firstObject];
 
-      if (v69)
+      if (firstObject4)
       {
-        v70 = [(MADSceneResources *)self->_resources safetyTypeGVPool];
-        v71 = [v70 getObject];
+        safetyTypeGVPool = [(MADSceneResources *)self->_resources safetyTypeGVPool];
+        getObject = [safetyTypeGVPool getObject];
 
-        v72 = [v71 object];
-        v73 = v72 == 0;
+        object = [getObject object];
+        v73 = object == 0;
 
         if (!v73)
         {
@@ -2592,10 +2592,10 @@ LABEL_68:
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v77, OS_SIGNPOST_INTERVAL_BEGIN, v75, "SCMLHandler_analyzePixelBufferGV", "", buf, 2u);
           }
 
-          v78 = [v71 object];
-          v79 = [v69 descriptorData];
+          object2 = [getObject object];
+          descriptorData = [firstObject4 descriptorData];
           v101 = 0;
-          v80 = [v78 analyzePixelBuffer:0 scenePrint:v79 error:&v101];
+          v80 = [object2 analyzePixelBuffer:0 scenePrint:descriptorData error:&v101];
           v81 = v101;
 
           v82 = VCPSignPostLog();
@@ -2652,21 +2652,21 @@ LABEL_68:
 
     v80 = 0;
 LABEL_88:
-    v98 = [(VCPMADSceneAssetBatch *)self _collectResultsForAssetEntry:v91 fromRequests:v92 safetyNResults:v25 safetyGVResults:v80 safetyQRResults:v120];
+    v98 = [(VCPMADSceneAssetBatch *)self _collectResultsForAssetEntry:v91 fromRequests:requestsCopy safetyNResults:v25 safetyGVResults:v80 safetyQRResults:v120];
 LABEL_94:
 
     goto LABEL_95;
   }
 
   cf = 0;
-  [v92 mapAvailableRequestsToResolution];
+  [requestsCopy mapAvailableRequestsToResolution];
   v115 = 0u;
   v116 = 0u;
   v113 = 0u;
   v95 = v114 = 0u;
-  v27 = [v95 allKeys];
-  obj = v27;
-  v28 = [v27 countByEnumeratingWithState:&v113 objects:v123 count:16];
+  allKeys = [v95 allKeys];
+  obj = allKeys;
+  v28 = [allKeys countByEnumeratingWithState:&v113 objects:v123 count:16];
   v30 = 0;
   if (v28)
   {
@@ -2689,8 +2689,8 @@ LABEL_94:
         context = objc_autoreleasePoolPush();
         if ([VCPPreAnalysisRequests isDimensionUnknown:v33])
         {
-          Width = CVPixelBufferGetWidth([v100 sourcePixelBuffer]);
-          Height = CVPixelBufferGetHeight([v100 sourcePixelBuffer]);
+          Width = CVPixelBufferGetWidth([imageCopy sourcePixelBuffer]);
+          Height = CVPixelBufferGetHeight([imageCopy sourcePixelBuffer]);
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_100032C60;
@@ -2718,7 +2718,7 @@ LABEL_94:
           cf = 0;
         }
 
-        v38 = [v100 pixelBuffer:&cf width:Width height:{Height, v90}];
+        v38 = [imageCopy pixelBuffer:&cf width:Width height:{Height, v90}];
         if (v38)
         {
           v39 = 0;
@@ -2729,8 +2729,8 @@ LABEL_94:
         {
           v40 = [VNImageRequestHandler alloc];
           v41 = cf;
-          v42 = [(MADSceneResources *)self->_resources session];
-          v43 = [v40 initWithCVPixelBuffer:v41 options:&__NSDictionary0__struct session:v42];
+          session2 = [(MADSceneResources *)self->_resources session];
+          v43 = [v40 initWithCVPixelBuffer:v41 options:&__NSDictionary0__struct session:session2];
 
           v44 = [v95 objectForKeyedSubscript:v33];
           if ([v44 count] == 1)
@@ -2806,7 +2806,7 @@ LABEL_94:
       }
 
       while (v96 != v32);
-      v27 = obj;
+      allKeys = obj;
       v28 = [obj countByEnumeratingWithState:&v113 objects:v123 count:16];
       if (v28)
       {
@@ -2834,7 +2834,7 @@ LABEL_65:
     cf = 0;
   }
 
-  v56 = [v100 pixelBuffer:&cf width:299 height:299];
+  v56 = [imageCopy pixelBuffer:&cf width:299 height:299];
   if (v56)
   {
     v57 = 0;
@@ -2875,11 +2875,11 @@ LABEL_95:
   return v98;
 }
 
-- (int)_performBlurAnalysisForAssetEntry:(id)a3 withLumaPixelBuffer:(__CVBuffer *)a4
+- (int)_performBlurAnalysisForAssetEntry:(id)entry withLumaPixelBuffer:(__CVBuffer *)buffer
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (buffer)
   {
     v8 = VCPSignPostLog();
     v9 = os_signpost_id_generate(v8);
@@ -2894,16 +2894,16 @@ LABEL_95:
 
     v12 = +[VCPPreAnalysisRequests sharpnessRevision];
     v13 = [VCPImageBlurAnalyzer alloc];
-    v14 = [v7 asset];
-    v62 = [v13 initWithFaceResults:0 sdof:objc_msgSend(v14 revision:{"vcp_isSdofPhoto"), v12}];
+    asset = [v7 asset];
+    v62 = [v13 initWithFaceResults:0 sdof:objc_msgSend(asset revision:{"vcp_isSdofPhoto"), v12}];
 
-    v15 = [v7 asset];
-    LOBYTE(v12) = [v15 vcp_abnormalImageDimensionForSceneNet] == 0;
+    asset2 = [v7 asset];
+    LOBYTE(v12) = [asset2 vcp_abnormalImageDimensionForSceneNet] == 0;
 
     if (v12)
     {
       v63 = 0;
-      v22 = [v62 analyzePixelBuffer:a4 flags:0 results:&v63 cancel:&stru_100283988];
+      v22 = [v62 analyzePixelBuffer:buffer flags:0 results:&v63 cancel:&stru_100283988];
       v23 = v63;
       v24 = v23;
       if (!v22)
@@ -2916,8 +2916,8 @@ LABEL_95:
         [v28 floatValue];
         v30 = v29;
 
-        v31 = [v7 results];
-        v32 = v31;
+        results = [v7 results];
+        v32 = results;
         LODWORD(v33) = 1.0;
         if (v30 < 1.0)
         {
@@ -2929,7 +2929,7 @@ LABEL_95:
           *&v33 = 0.0;
         }
 
-        [v31 setBlurrinessScore:v33];
+        [results setBlurrinessScore:v33];
 
 LABEL_40:
         v37 = VCPSignPostLog();
@@ -2946,8 +2946,8 @@ LABEL_40:
 
     else
     {
-      Width = CVPixelBufferGetWidth(a4);
-      Height = CVPixelBufferGetHeight(a4);
+      Width = CVPixelBufferGetWidth(buffer);
+      Height = CVPixelBufferGetHeight(buffer);
       v18 = Height;
       if (Width <= Height)
       {
@@ -2960,16 +2960,16 @@ LABEL_40:
       }
 
       v72 = 0;
-      v34 = [(MADSceneResources *)self->_resources monochromeBufferCreator];
-      v22 = [v34 createPixelBuffer:&v72];
+      monochromeBufferCreator = [(MADSceneResources *)self->_resources monochromeBufferCreator];
+      v22 = [monochromeBufferCreator createPixelBuffer:&v72];
 
       if (!v22)
       {
-        v70 = a4;
+        bufferCopy = buffer;
         v71 = 1;
-        v22 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+        v22 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
         LODWORD(v69) = v22;
-        if (!v22 || os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = v70, WORD2(buf.height) = 1024, *(&buf.height + 6) = v22, _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v22 = v69) == 0))
+        if (!v22 || os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = bufferCopy, WORD2(buf.height) = 1024, *(&buf.height + 6) = v22, _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v22 = v69) == 0))
         {
           LODWORD(v66) = 0;
           pixelBuffer = v72;
@@ -2989,8 +2989,8 @@ LABEL_25:
               }
             }
 
-            BaseAddress = CVPixelBufferGetBaseAddress(a4);
-            BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
+            BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+            BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
             if (v19)
             {
               v41 = 0;
@@ -3074,8 +3074,8 @@ LABEL_58:
               goto LABEL_25;
             }
 
-            v51 = [v7 results];
-            v52 = v51;
+            results2 = [v7 results];
+            v52 = results2;
             v53 = 1.0;
             if ((v43 / v50) < 1.0)
             {
@@ -3088,7 +3088,7 @@ LABEL_58:
               *&v54 = v53;
             }
 
-            [v51 setBlurrinessScore:v54];
+            [results2 setBlurrinessScore:v54];
 
             v22 = 0;
             v35 = 1;
@@ -3113,17 +3113,17 @@ LABEL_29:
             sub_10003B148();
           }
 
-          if (v70)
+          if (bufferCopy)
           {
             if (!v69)
             {
-              v36 = CVPixelBufferUnlockBaseAddress(v70, v71);
+              v36 = CVPixelBufferUnlockBaseAddress(bufferCopy, v71);
               if (v36)
               {
                 if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
                 {
                   LODWORD(buf.data) = 134218240;
-                  *(&buf.data + 4) = v70;
+                  *(&buf.data + 4) = bufferCopy;
                   WORD2(buf.height) = 1024;
                   *(&buf.height + 6) = v36;
                   _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to unlock CVPixelBuffer (%p, %d)", &buf, 0x12u);
@@ -3151,9 +3151,9 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v20 = [v6 results];
+  results3 = [entryCopy results];
   LODWORD(v21) = 0.5;
-  [v20 setBlurrinessScore:v21];
+  [results3 setBlurrinessScore:v21];
 
   v22 = 0;
 LABEL_45:
@@ -3161,11 +3161,11 @@ LABEL_45:
   return v22;
 }
 
-- (int)_performExposureAnalysisForAssetEntry:(id)a3 withLumaPixelBuffer:(__CVBuffer *)a4
+- (int)_performExposureAnalysisForAssetEntry:(id)entry withLumaPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  entryCopy = entry;
+  v6 = entryCopy;
+  if (buffer)
   {
     v7 = VCPSignPostLog();
     v8 = os_signpost_id_generate(v7);
@@ -3180,7 +3180,7 @@ LABEL_45:
 
     v11 = objc_alloc_init(VCPImageExposurePreAnalyzer);
     v28 = 0;
-    v12 = [v11 analyzePixelBuffer:a4 flags:0 results:&v28 cancel:&stru_1002839A8];
+    v12 = [v11 analyzePixelBuffer:buffer flags:0 results:&v28 cancel:&stru_1002839A8];
     v13 = v28;
     if (!v12)
     {
@@ -3198,8 +3198,8 @@ LABEL_45:
       [v18 floatValue];
       v20 = v19;
 
-      v21 = [v6 results];
-      v22 = v21;
+      results = [v6 results];
+      v22 = results;
       LODWORD(v23) = 1.0;
       if (v20 < 1.0)
       {
@@ -3211,15 +3211,15 @@ LABEL_45:
         *&v23 = 0.0;
       }
 
-      [v21 setExposureScore:v23];
+      [results setExposureScore:v23];
     }
   }
 
   else
   {
-    v24 = [v5 results];
+    results2 = [entryCopy results];
     LODWORD(v25) = 0.5;
-    [v24 setExposureScore:v25];
+    [results2 setExposureScore:v25];
 
     v12 = 0;
   }
@@ -3227,11 +3227,11 @@ LABEL_45:
   return v12;
 }
 
-- (int)_performRotationAnalysisForAssetEntry:(id)a3 withColorPixelBuffer:(__CVBuffer *)a4
+- (int)_performRotationAnalysisForAssetEntry:(id)entry withColorPixelBuffer:(__CVBuffer *)buffer
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (buffer)
   {
     v8 = VCPSignPostLog();
     v9 = os_signpost_id_generate(v8);
@@ -3245,21 +3245,21 @@ LABEL_45:
     }
 
     cf = 0;
-    v12 = [(MADSceneResources *)self->_resources rotationBufferCreator];
-    v13 = [v12 createPixelBuffer:&cf];
+    rotationBufferCreator = [(MADSceneResources *)self->_resources rotationBufferCreator];
+    v13 = [rotationBufferCreator createPixelBuffer:&cf];
 
     if (!v13)
     {
-      pixelBuffer = a4;
+      pixelBuffer = buffer;
       unlockFlags = 1;
-      v13 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+      v13 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
       LODWORD(v50) = v13;
       if (!v13 || os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = pixelBuffer, WORD2(buf.height) = 1024, *(&buf.height + 6) = v13, _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v13 = v50) == 0))
       {
-        buf.data = CVPixelBufferGetBaseAddress(a4);
-        buf.height = CVPixelBufferGetHeight(a4);
-        buf.width = CVPixelBufferGetWidth(a4);
-        buf.rowBytes = CVPixelBufferGetBytesPerRow(a4);
+        buf.data = CVPixelBufferGetBaseAddress(buffer);
+        buf.height = CVPixelBufferGetHeight(buffer);
+        buf.width = CVPixelBufferGetWidth(buffer);
+        buf.rowBytes = CVPixelBufferGetBytesPerRow(buffer);
         LODWORD(v47) = 0;
         v48 = cf;
         v49 = 0;
@@ -3301,28 +3301,28 @@ LABEL_45:
                     _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPSceneAnalyzerRotationAnalysisInference", "", v46, 2u);
                   }
 
-                  v22 = [(MADSceneResources *)self->_resources rotationModel];
+                  rotationModel = [(MADSceneResources *)self->_resources rotationModel];
                   v23 = cf;
-                  v24 = [v22 inputFeatureName];
-                  v25 = [VCPMAMLFeatureProvider featureProviderWithCVPixelBuffer:v23 andFeatureName:v24];
+                  inputFeatureName = [rotationModel inputFeatureName];
+                  v25 = [VCPMAMLFeatureProvider featureProviderWithCVPixelBuffer:v23 andFeatureName:inputFeatureName];
 
-                  v26 = [v22 model];
+                  model = [rotationModel model];
                   v45 = 0;
-                  v27 = [v26 predictionFromFeatures:v25 error:&v45];
+                  v27 = [model predictionFromFeatures:v25 error:&v45];
                   v43 = v45;
 
-                  v28 = [v22 outputFeatureName];
-                  v29 = [v27 featureValueForName:v28];
+                  outputFeatureName = [rotationModel outputFeatureName];
+                  v29 = [v27 featureValueForName:outputFeatureName];
 
-                  v30 = [v29 multiArrayValue];
-                  if ([v30 count] == 4)
+                  multiArrayValue = [v29 multiArrayValue];
+                  if ([multiArrayValue count] == 4)
                   {
                     v31 = 0;
                     v32 = 0;
                     v33 = 0.0;
                     do
                     {
-                      v34 = [v30 objectAtIndexedSubscript:v31];
+                      v34 = [multiArrayValue objectAtIndexedSubscript:v31];
                       [v34 floatValue];
                       v36 = v35;
 
@@ -3336,12 +3336,12 @@ LABEL_45:
                     }
 
                     while (v31 != 4);
-                    v37 = [v7 results];
-                    [v37 setProbableRotationDirection:(v32 + 1)];
+                    results = [v7 results];
+                    [results setProbableRotationDirection:(v32 + 1)];
 
-                    v38 = [v7 results];
+                    results2 = [v7 results];
                     *&v39 = v33;
-                    [v38 setProbableRotationDirectionConfidence:v39];
+                    [results2 setProbableRotationDirectionConfidence:v39];
 
                     v40 = VCPSignPostLog();
                     v41 = v40;
@@ -3401,11 +3401,11 @@ LABEL_45:
 
   else
   {
-    v14 = [v6 results];
-    [v14 setProbableRotationDirection:1];
+    results3 = [entryCopy results];
+    [results3 setProbableRotationDirection:1];
 
-    v15 = [v7 results];
-    [v15 setProbableRotationDirectionConfidence:0.0];
+    results4 = [v7 results];
+    [results4 setProbableRotationDirectionConfidence:0.0];
 
     v13 = 0;
   }
@@ -3413,12 +3413,12 @@ LABEL_45:
   return v13;
 }
 
-- (int)_performEmbeddingAnalysisForAssetEntry:(id)a3 withColorPixelBuffer:(__CVBuffer *)a4
+- (int)_performEmbeddingAnalysisForAssetEntry:(id)entry withColorPixelBuffer:(__CVBuffer *)buffer
 {
-  v6 = a3;
-  v7 = [v6 asset];
-  v8 = [v7 localIdentifier];
-  v9 = [NSString stringWithFormat:@"[Scene][Embedding][%@]", v8];
+  entryCopy = entry;
+  asset = [entryCopy asset];
+  localIdentifier = [asset localIdentifier];
+  v9 = [NSString stringWithFormat:@"[Scene][Embedding][%@]", localIdentifier];
 
   v10 = VCPSignPostLog();
   v11 = os_signpost_id_generate(v10);
@@ -3432,15 +3432,15 @@ LABEL_45:
   }
 
   cf = 0;
-  v14 = [(MADSceneResources *)self->_resources embeddingBufferCreator];
-  v15 = [v14 createPixelBuffer:&cf];
+  embeddingBufferCreator = [(MADSceneResources *)self->_resources embeddingBufferCreator];
+  v15 = [embeddingBufferCreator createPixelBuffer:&cf];
 
   if (!v15)
   {
     LODWORD(v50) = 0;
-    pixelBuffer = a4;
+    pixelBuffer = buffer;
     unlockFlags = 1;
-    if (!a4)
+    if (!buffer)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -3451,7 +3451,7 @@ LABEL_45:
       goto LABEL_5;
     }
 
-    v15 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+    v15 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
     LODWORD(v50) = v15;
     if (v15)
     {
@@ -3472,10 +3472,10 @@ LABEL_45:
       }
     }
 
-    buf.data = CVPixelBufferGetBaseAddress(a4);
-    buf.height = CVPixelBufferGetHeight(a4);
-    buf.width = CVPixelBufferGetWidth(a4);
-    buf.rowBytes = CVPixelBufferGetBytesPerRow(a4);
+    buf.data = CVPixelBufferGetBaseAddress(buffer);
+    buf.height = CVPixelBufferGetHeight(buffer);
+    buf.width = CVPixelBufferGetWidth(buffer);
+    buf.rowBytes = CVPixelBufferGetBytesPerRow(buffer);
     LODWORD(v47) = 0;
     v48 = cf;
     v49 = 0;
@@ -3580,8 +3580,8 @@ LABEL_58:
       goto LABEL_57;
     }
 
-    v29 = [v28 firstObject];
-    v30 = [v29 objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
+    firstObject = [v28 firstObject];
+    v30 = [firstObject objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
     v44 = [v30 objectForKeyedSubscript:MediaAnalysisResultEmbeddingAttributeKey];
 
     if (!v44)
@@ -3601,22 +3601,22 @@ LABEL_58:
       goto LABEL_56;
     }
 
-    v31 = [v6 asset];
-    v32 = [v31 localIdentifier];
+    asset2 = [entryCopy asset];
+    localIdentifier2 = [asset2 localIdentifier];
     v58 = MediaAnalysisResultsKey;
     v59 = v25;
     v33 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
     v45 = 0;
-    v34 = [VSKAsset mad_imageAssetWithLocalIdentifier:v32 mediaAnalysisResults:v33 error:&v45];
+    v34 = [VSKAsset mad_imageAssetWithLocalIdentifier:localIdentifier2 mediaAnalysisResults:v33 error:&v45];
     v43 = v45;
-    v35 = [v6 results];
-    [v35 setImageEmbeddingResults:v34];
+    results = [entryCopy results];
+    [results setImageEmbeddingResults:v34];
 
-    v36 = [v6 results];
-    v37 = [v36 imageEmbeddingResults];
-    LODWORD(v35) = v37 == 0;
+    results2 = [entryCopy results];
+    imageEmbeddingResults = [results2 imageEmbeddingResults];
+    LODWORD(results) = imageEmbeddingResults == 0;
 
-    if (v35)
+    if (results)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -3644,8 +3644,8 @@ LABEL_57:
 
     else
     {
-      v38 = [v6 results];
-      [v38 setImageEmbeddingVersion:75];
+      results3 = [entryCopy results];
+      [results3 setImageEmbeddingVersion:75];
 
       v15 = 0;
     }
@@ -3660,16 +3660,16 @@ LABEL_5:
   return v15;
 }
 
-- (void)_processAssetEntry:(id)a3 resourceURL:(id)a4 completionHandler:(id)a5
+- (void)_processAssetEntry:(id)entry resourceURL:(id)l completionHandler:(id)handler
 {
-  v8 = a3;
-  v56 = a4;
-  v9 = a5;
-  v10 = [v8 asset];
-  v11 = [v10 localIdentifier];
-  v57 = [NSString stringWithFormat:@"[Scene][%@]", v11];
+  entryCopy = entry;
+  lCopy = l;
+  handlerCopy = handler;
+  asset = [entryCopy asset];
+  localIdentifier = [asset localIdentifier];
+  v57 = [NSString stringWithFormat:@"[Scene][%@]", localIdentifier];
 
-  if (([v8 needsSceneProcessing] & 1) == 0 && (objc_msgSend(v8, "needsEmbeddingProcessing") & 1) == 0)
+  if (([entryCopy needsSceneProcessing] & 1) == 0 && (objc_msgSend(entryCopy, "needsEmbeddingProcessing") & 1) == 0)
   {
     if (MediaAnalysisLogLevel() >= 6)
     {
@@ -3690,14 +3690,14 @@ LABEL_5:
     v12 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v12))
     {
-      v13 = [v8 asset];
-      v14 = [v13 vcp_typeDescription];
-      v15 = [v8 needsSceneProcessing];
-      v16 = [v8 needsEmbeddingProcessing];
+      asset2 = [entryCopy asset];
+      vcp_typeDescription = [asset2 vcp_typeDescription];
+      needsSceneProcessing = [entryCopy needsSceneProcessing];
+      needsEmbeddingProcessing = [entryCopy needsEmbeddingProcessing];
       v17 = @"NO";
       *buf = 138413058;
       *&buf[4] = v57;
-      if (v15)
+      if (needsSceneProcessing)
       {
         v18 = @"YES";
       }
@@ -3708,8 +3708,8 @@ LABEL_5:
       }
 
       *&buf[12] = 2112;
-      *&buf[14] = v14;
-      if (v16)
+      *&buf[14] = vcp_typeDescription;
+      if (needsEmbeddingProcessing)
       {
         v17 = @"YES";
       }
@@ -3739,9 +3739,9 @@ LABEL_5:
       }
     }
 
-    [v8 setStatus:4294967168];
+    [entryCopy setStatus:4294967168];
 LABEL_28:
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
     goto LABEL_55;
   }
 
@@ -3764,7 +3764,7 @@ LABEL_28:
   *&v82 = sub_100035844;
   *(&v82 + 1) = 0;
   v75 = 0;
-  v26 = [(VCPMADSceneAssetBatch *)self _createRequests:&v75 forAssetEntry:v8];
+  v26 = [(VCPMADSceneAssetBatch *)self _createRequests:&v75 forAssetEntry:entryCopy];
   objc_storeStrong(&v82 + 1, v75);
   if (v26)
   {
@@ -3780,7 +3780,7 @@ LABEL_28:
     }
 
     dispatch_semaphore_signal(self->_inProcessAssetBudget);
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -3804,17 +3804,17 @@ LABEL_28:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_INTERVAL_BEGIN, v32, "VCPMADSceneAssetEntryProcess_Decode", "", v76, 2u);
     }
 
-    v35 = [*(*&buf[8] + 40) mapAvailableRequestsToResolution];
-    v55 = [v35 allKeys];
+    mapAvailableRequestsToResolution = [*(*&buf[8] + 40) mapAvailableRequestsToResolution];
+    allKeys = [mapAvailableRequestsToResolution allKeys];
 
     cf = 0;
     v74 = 0;
-    v36 = [(MADSceneResources *)self->_resources imageLoader];
-    v37 = [v8 asset];
-    v38 = [v37 vcp_abnormalImageDimensionForSceneNet];
-    if ([v8 needsSceneProcessing])
+    imageLoader = [(MADSceneResources *)self->_resources imageLoader];
+    asset3 = [entryCopy asset];
+    vcp_abnormalImageDimensionForSceneNet = [asset3 vcp_abnormalImageDimensionForSceneNet];
+    if ([entryCopy needsSceneProcessing])
     {
-      v39 = v55;
+      v39 = allKeys;
     }
 
     else
@@ -3823,9 +3823,9 @@ LABEL_28:
     }
 
     v72 = 0;
-    v40 = [v36 loadImageURL:v56 abnormalDimension:v38 withNonPanoPreWarmSizes:v39 toColorPixelBuffer:&cf lumaPixelBuffer:&v74 andImage:&v72];
+    v40 = [imageLoader loadImageURL:lCopy abnormalDimension:vcp_abnormalImageDimensionForSceneNet withNonPanoPreWarmSizes:v39 toColorPixelBuffer:&cf lumaPixelBuffer:&v74 andImage:&v72];
     v41 = v72;
-    [v8 setStatus:v40];
+    [entryCopy setStatus:v40];
 
     v42 = VCPSignPostLog();
     v43 = v42;
@@ -3835,7 +3835,7 @@ LABEL_28:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v43, OS_SIGNPOST_INTERVAL_END, v32, "VCPMADSceneAssetEntryProcess_Decode", "", v76, 2u);
     }
 
-    if ([v8 status])
+    if ([entryCopy status])
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -3845,15 +3845,15 @@ LABEL_28:
           *v76 = 138412546;
           v77 = v57;
           v78 = 2112;
-          v79 = v56;
+          v79 = lCopy;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v44, "%@ Failed to load resourceURL: %@", v76, 0x16u);
         }
       }
 
-      [v8 setErrorCode:100];
-      [v8 setErrorLine:1592];
+      [entryCopy setErrorCode:100];
+      [entryCopy setErrorLine:1592];
       dispatch_semaphore_signal(self->_inProcessAssetBudget);
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
     }
 
     else
@@ -3864,14 +3864,14 @@ LABEL_28:
       v65[1] = 3221225472;
       v65[2] = sub_10003584C;
       v65[3] = &unk_100283A18;
-      v47 = v8;
+      v47 = entryCopy;
       v66 = v47;
       v48 = v57;
       v67 = v48;
-      v68 = self;
+      selfCopy = self;
       v69 = v41;
       v71 = buf;
-      v49 = v9;
+      v49 = handlerCopy;
       v70 = v49;
       scheduler[2](scheduler, @"Scenenet", scenenetGroup, v65);
       if (v74)
@@ -3904,7 +3904,7 @@ LABEL_28:
       v58[3] = &unk_100283A40;
       v59 = v52;
       v60 = v47;
-      v61 = self;
+      selfCopy2 = self;
       v63 = v50;
       v64 = v51;
       v62 = v49;
@@ -3966,34 +3966,34 @@ LABEL_55:
       }
     }
 
-    v11 = self;
+    selfCopy3 = self;
     while (1)
     {
-      downloadGroup = v11->_downloadGroup;
+      downloadGroup = selfCopy3->_downloadGroup;
       v13 = dispatch_time(0, 500000000);
       if (!dispatch_group_wait(downloadGroup, v13))
       {
         goto LABEL_28;
       }
 
-      cancelBlock = v11->_cancelBlock;
+      cancelBlock = selfCopy3->_cancelBlock;
       if (cancelBlock)
       {
-        v11 = self;
+        selfCopy3 = self;
         if (cancelBlock[2]())
         {
           break;
         }
       }
 
-      [(VCPMADSceneAssetBatch *)v11 _downloadInactiveTimeInterval];
-      v11 = self;
+      [(VCPMADSceneAssetBatch *)selfCopy3 _downloadInactiveTimeInterval];
+      selfCopy3 = self;
       if (v15 > 60.0)
       {
         if (MediaAnalysisLogLevel() >= 5)
         {
           v16 = VCPLogToOSLogType[5];
-          v17 = self;
+          selfCopy6 = self;
           if (os_log_type_enabled(&_os_log_default, v16))
           {
             *buf = 0;
@@ -4006,9 +4006,9 @@ LABEL_55:
 
         v18 = 4294943494;
 LABEL_26:
-        v17 = self;
+        selfCopy6 = self;
 LABEL_27:
-        [(VCPMADSceneAssetBatch *)v17 _cancelRemainingDownloadsWithStatus:v18];
+        [(VCPMADSceneAssetBatch *)selfCopy6 _cancelRemainingDownloadsWithStatus:v18];
         goto LABEL_28;
       }
     }
@@ -4016,7 +4016,7 @@ LABEL_27:
     if (MediaAnalysisLogLevel() >= 5)
     {
       v19 = VCPLogToOSLogType[5];
-      v17 = self;
+      selfCopy6 = self;
       if (os_log_type_enabled(&_os_log_default, v19))
       {
         *buf = 0;
@@ -4039,18 +4039,18 @@ LABEL_28:
   v92 = VCPLogToOSLogType[5];
   v93 = VCPLogToOSLogType[7];
   v94 = MediaAnalysisEmbeddingForwardCompatibleVersion;
-  v20 = self;
-  while (v104 < [(NSMutableArray *)v20->_assetEntries count])
+  selfCopy8 = self;
+  while (v104 < [(NSMutableArray *)selfCopy8->_assetEntries count])
   {
     context = objc_autoreleasePoolPush();
     v105 = [(NSMutableArray *)self->_assetEntries objectAtIndexedSubscript:v104];
-    v21 = [v105 asset];
-    v22 = [v21 localIdentifier];
-    v102 = [NSString stringWithFormat:@"[Scene][%@]", v22];
+    asset = [v105 asset];
+    localIdentifier = [asset localIdentifier];
+    v102 = [NSString stringWithFormat:@"[Scene][%@]", localIdentifier];
 
-    v23 = [v105 asset];
-    v24 = [v23 adjustmentVersion];
-    v25 = v24 == 0;
+    asset2 = [v105 asset];
+    adjustmentVersion = [asset2 adjustmentVersion];
+    v25 = adjustmentVersion == 0;
 
     if (!v25)
     {
@@ -4065,10 +4065,10 @@ LABEL_28:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v29, OS_SIGNPOST_INTERVAL_BEGIN, v27, "VCPMADSceneAssetEntry_QueryResource", "", buf, 2u);
       }
 
-      v30 = [v105 asset];
-      v101 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v30];
+      asset3 = [v105 asset];
+      v101 = [PHAssetResource vcp_allAcceptableResourcesForAsset:asset3];
 
-      v99 = [v101 vcp_thumbnailResource];
+      vcp_thumbnailResource = [v101 vcp_thumbnailResource];
       v31 = VCPSignPostLog();
       v32 = v31;
       if (v27 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v31))
@@ -4077,21 +4077,21 @@ LABEL_28:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v32, OS_SIGNPOST_INTERVAL_END, v27, "VCPMADSceneAssetEntry_QueryResource", "", buf, 2u);
       }
 
-      v33 = v99;
-      if ([v99 vcp_isLocallyAvailable])
+      v33 = vcp_thumbnailResource;
+      if ([vcp_thumbnailResource vcp_isLocallyAvailable])
       {
-        if ([v99 vcp_hasExtremeAbnormalDimensionForScene])
+        if ([vcp_thumbnailResource vcp_hasExtremeAbnormalDimensionForScene])
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
           {
-            v34 = [v99 pixelWidth];
-            v35 = [v99 pixelHeight];
+            pixelWidth = [vcp_thumbnailResource pixelWidth];
+            pixelHeight = [vcp_thumbnailResource pixelHeight];
             *buf = 138412802;
             v115 = v102;
             v116 = 1024;
-            *v117 = v34;
+            *v117 = pixelWidth;
             *&v117[4] = 1024;
-            *&v117[6] = v35;
+            *&v117[6] = pixelHeight;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ Asset has extreme abnormal dimension %dx%d; skipping", buf, 0x18u);
           }
 
@@ -4115,9 +4115,9 @@ LABEL_28:
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v42, OS_SIGNPOST_INTERVAL_BEGIN, v40, "VCPMADSceneAssetBatch_UnpackComputeSync", "", buf, 2u);
             }
 
-            v43 = [v101 mad_computeSyncResource];
-            v44 = [v105 asset];
-            v45 = [v43 mad_existingAnalysisFromComputeSyncForAsset:v44 allowDownload:0 cancel:self->_cancelBlock];
+            mad_computeSyncResource = [v101 mad_computeSyncResource];
+            asset4 = [v105 asset];
+            v45 = [mad_computeSyncResource mad_existingAnalysisFromComputeSyncForAsset:asset4 allowDownload:0 cancel:self->_cancelBlock];
 
             v46 = VCPSignPostLog();
             v47 = v46;
@@ -4127,85 +4127,85 @@ LABEL_28:
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v47, OS_SIGNPOST_INTERVAL_END, v40, "VCPMADSceneAssetBatch_UnpackComputeSync", "", buf, 2u);
             }
 
-            v48 = [v45 imageEmbeddingVSKAsset];
-            if (v48)
+            imageEmbeddingVSKAsset = [v45 imageEmbeddingVSKAsset];
+            if (imageEmbeddingVSKAsset)
             {
               v49 = v94 > [v45 imageEmbeddingVersion];
 
               if (!v49)
               {
-                v50 = [v45 imageEmbeddingVSKAsset];
-                v51 = [v105 results];
-                [v51 setImageEmbeddingResults:v50];
+                imageEmbeddingVSKAsset2 = [v45 imageEmbeddingVSKAsset];
+                results = [v105 results];
+                [results setImageEmbeddingResults:imageEmbeddingVSKAsset2];
 
-                v52 = [v45 imageEmbeddingVersion];
-                v53 = [v105 results];
-                [v53 setImageEmbeddingVersion:v52];
+                imageEmbeddingVersion = [v45 imageEmbeddingVersion];
+                results2 = [v105 results];
+                [results2 setImageEmbeddingVersion:imageEmbeddingVersion];
 
                 if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v92))
                 {
-                  v54 = [v105 results];
-                  v55 = [v54 imageEmbeddingVersion];
+                  results3 = [v105 results];
+                  imageEmbeddingVersion2 = [results3 imageEmbeddingVersion];
                   *buf = 138412546;
                   v115 = v102;
                   v116 = 1024;
-                  *v117 = v55;
+                  *v117 = imageEmbeddingVersion2;
                   _os_log_impl(&_mh_execute_header, &_os_log_default, v92, "%@ Reusing image embedding results (v%d) from compute sync", buf, 0x12u);
                 }
               }
             }
 
-            v56 = [v105 results];
-            v57 = [v56 imageEmbeddingVersion] == 74;
+            results4 = [v105 results];
+            v57 = [results4 imageEmbeddingVersion] == 74;
 
             if (v57)
             {
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v93))
               {
-                v58 = [v105 results];
-                v59 = [v58 imageEmbeddingVersion];
+                results5 = [v105 results];
+                imageEmbeddingVersion3 = [results5 imageEmbeddingVersion];
                 *buf = 138412802;
                 v115 = v102;
                 v116 = 1024;
-                *v117 = v59;
+                *v117 = imageEmbeddingVersion3;
                 *&v117[4] = 1024;
                 *&v117[6] = 75;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v93, "%@ Bumping image embedding v%d->v%d to avoid reprocessing", buf, 0x18u);
               }
 
-              v60 = [v105 results];
-              [v60 setImageEmbeddingVersion:75];
+              results6 = [v105 results];
+              [results6 setImageEmbeddingVersion:75];
             }
 
-            v61 = [v105 results];
-            v62 = [v61 imageEmbeddingResults];
-            v63 = [v62 mad_embeddingVersion] == 8;
+            results7 = [v105 results];
+            imageEmbeddingResults = [results7 imageEmbeddingResults];
+            v63 = [imageEmbeddingResults mad_embeddingVersion] == 8;
 
             if (v63)
             {
-              v64 = [v105 results];
-              v65 = [v64 imageEmbeddingResults];
-              v66 = [v65 mad_updateAssetWithEmbeddingVersion:9];
-              v67 = [v105 results];
-              [v67 setImageEmbeddingResults:v66];
+              results8 = [v105 results];
+              imageEmbeddingResults2 = [results8 imageEmbeddingResults];
+              v66 = [imageEmbeddingResults2 mad_updateAssetWithEmbeddingVersion:9];
+              results9 = [v105 results];
+              [results9 setImageEmbeddingResults:v66];
             }
           }
 
           else
           {
-            v74 = [v105 asset];
-            v43 = [VSKAsset mad_fetchImageEmbeddingForPhotosAsset:v74];
+            asset5 = [v105 asset];
+            mad_computeSyncResource = [VSKAsset mad_fetchImageEmbeddingForPhotosAsset:asset5];
 
-            if (v43)
+            if (mad_computeSyncResource)
             {
-              v75 = [v105 results];
-              [v75 setImageEmbeddingResults:v43];
+              results10 = [v105 results];
+              [results10 setImageEmbeddingResults:mad_computeSyncResource];
 
-              v76 = [v105 asset];
-              v77 = [v76 mediaAnalysisProperties];
-              v78 = [v77 imageEmbeddingVersion];
-              v79 = [v105 results];
-              [v79 setImageEmbeddingVersion:v78];
+              asset6 = [v105 asset];
+              mediaAnalysisProperties = [asset6 mediaAnalysisProperties];
+              imageEmbeddingVersion4 = [mediaAnalysisProperties imageEmbeddingVersion];
+              results11 = [v105 results];
+              [results11 setImageEmbeddingVersion:imageEmbeddingVersion4];
             }
 
             else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v91))
@@ -4231,32 +4231,32 @@ LABEL_28:
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v84, OS_SIGNPOST_INTERVAL_BEGIN, v82, "VCPMADSceneAssetEntry_ProcessAsset", "", buf, 2u);
         }
 
-        v85 = [v99 privateFileURL];
+        privateFileURL = [vcp_thumbnailResource privateFileURL];
         v109[0] = _NSConcreteStackBlock;
         v109[1] = 3221225472;
         v109[2] = sub_100037648;
         v109[3] = &unk_100283A60;
         v109[4] = v82;
         v109[5] = 0;
-        [(VCPMADSceneAssetBatch *)self _processAssetEntry:v105 resourceURL:v85 completionHandler:v109];
+        [(VCPMADSceneAssetBatch *)self _processAssetEntry:v105 resourceURL:privateFileURL completionHandler:v109];
 
-        v33 = v99;
+        v33 = vcp_thumbnailResource;
         objc_autoreleasePoolPop(v80);
       }
 
       else
       {
-        if (v99)
+        if (vcp_thumbnailResource)
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, type))
           {
-            v37 = [v99 isLocallyAvailable];
+            isLocallyAvailable = [vcp_thumbnailResource isLocallyAvailable];
             *buf = 138412802;
             v115 = v102;
             v116 = 2112;
             *v117 = &stru_1002890F8;
             *&v117[8] = 1024;
-            v118 = v37;
+            v118 = isLocallyAvailable;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ %@Thumbnail PHAssetResource not locally available (Local: %d)", buf, 0x1Cu);
           }
 
@@ -4304,7 +4304,7 @@ LABEL_28:
           }
 
           v36 = 4294943494;
-          v33 = v99;
+          v33 = vcp_thumbnailResource;
         }
 
 LABEL_84:
@@ -4325,11 +4325,11 @@ LABEL_84:
 LABEL_96:
 
     objc_autoreleasePoolPop(context);
-    v20 = self;
+    selfCopy8 = self;
     ++v104;
   }
 
-  objc_initWeak(buf, v20);
+  objc_initWeak(buf, selfCopy8);
   v106[0] = _NSConcreteStackBlock;
   v106[1] = 3221225472;
   v106[2] = sub_1000376F8;
@@ -4360,9 +4360,9 @@ LABEL_96:
   return v89;
 }
 
-- (int)_publishEmbeddingResultsWithPhotoLibrary:(id)a3
+- (int)_publishEmbeddingResultsWithPhotoLibrary:(id)library
 {
-  v34 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:a3];
+  v34 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:library];
   if (v34)
   {
     v44 = 0u;
@@ -4388,19 +4388,19 @@ LABEL_96:
 
           v6 = *(*(&v42 + 1) + 8 * v5);
           v7 = objc_autoreleasePoolPush();
-          v8 = [v6 asset];
-          v9 = [v8 localIdentifier];
-          v10 = [NSString stringWithFormat:@"[Scene][Embedding][%@]", v9];
+          asset = [v6 asset];
+          localIdentifier = [asset localIdentifier];
+          v10 = [NSString stringWithFormat:@"[Scene][Embedding][%@]", localIdentifier];
 
           if ([v6 status] || objc_msgSend(v6, "imageEmbeddingStatus"))
           {
             if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
             {
-              v11 = [v6 status];
+              status = [v6 status];
               *buf = 138412546;
               v48 = v10;
               v49 = 1024;
-              v50 = v11;
+              v50 = status;
               v12 = type;
               v13 = "%@ Analysis failed (%d); skipping";
               v14 = 18;
@@ -4411,9 +4411,9 @@ LABEL_12:
 
           else if ([v6 needsEmbeddingProcessing])
           {
-            v15 = [v6 results];
-            v16 = [v15 imageEmbeddingResults];
-            v17 = v16 == 0;
+            results = [v6 results];
+            imageEmbeddingResults = [results imageEmbeddingResults];
+            v17 = imageEmbeddingResults == 0;
 
             if (v17)
             {
@@ -4429,10 +4429,10 @@ LABEL_12:
 
             else
             {
-              v18 = [v6 results];
-              v19 = [v18 imageEmbeddingResults];
-              v20 = [v6 results];
-              v21 = +[MADVSKEmbeddingResults resultsWithImageEmbedding:imageEmbeddingVersion:videoEmbeddingAsset:videoEmbeddingVersion:](MADVSKEmbeddingResults, "resultsWithImageEmbedding:imageEmbeddingVersion:videoEmbeddingAsset:videoEmbeddingVersion:", v19, [v20 imageEmbeddingVersion], 0, 0);
+              results2 = [v6 results];
+              imageEmbeddingResults2 = [results2 imageEmbeddingResults];
+              results3 = [v6 results];
+              v21 = +[MADVSKEmbeddingResults resultsWithImageEmbedding:imageEmbeddingVersion:videoEmbeddingAsset:videoEmbeddingVersion:](MADVSKEmbeddingResults, "resultsWithImageEmbedding:imageEmbeddingVersion:videoEmbeddingAsset:videoEmbeddingVersion:", imageEmbeddingResults2, [results3 imageEmbeddingVersion], 0, 0);
 
               [v34 addPendingEmbeddingResults:v21];
             }
@@ -4460,8 +4460,8 @@ LABEL_12:
       while (v22);
     }
 
-    v23 = [v34 publishPendingChanges];
-    if (v23)
+    publishPendingChanges = [v34 publishPendingChanges];
+    if (publishPendingChanges)
     {
       v40 = 0u;
       v41 = 0u;
@@ -4521,15 +4521,15 @@ LABEL_12:
       }
     }
 
-    v23 = -18;
+    publishPendingChanges = -18;
   }
 
-  return v23;
+  return publishPendingChanges;
 }
 
-- (int)_publishPhotosResultsWithPhotoLibrary:(id)a3
+- (int)_publishPhotosResultsWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = +[MADStateHandler sharedStateHandler];
   [v5 addBreadcrumb:{@"[Scene] Persisting %d assets to Photos", -[NSMutableArray count](self->_assetEntries, "count")}];
 
@@ -4547,7 +4547,7 @@ LABEL_12:
   v8 = objc_retainBlock(v29);
   cancelBlock = self->_cancelBlock;
   v28 = 0;
-  v10 = [v4 mad_performChangesAndWait:v8 activity:2 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100283AA8 error:&v28];
+  v10 = [libraryCopy mad_performChangesAndWait:v8 activity:2 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100283AA8 error:&v28];
   v11 = v28;
   v12 = +[MADStateHandler sharedStateHandler];
   [v12 exitKnownTimeoutRisk];
@@ -4557,7 +4557,7 @@ LABEL_12:
 
   if (v10)
   {
-    v14 = 0;
+    code = 0;
   }
 
   else
@@ -4617,10 +4617,10 @@ LABEL_12:
       while (v18);
     }
 
-    v14 = [v11 code];
+    code = [v11 code];
   }
 
-  return v14;
+  return code;
 }
 
 - (int)_propagateAssetProcessingStatus
@@ -4646,8 +4646,8 @@ LABEL_3:
 
       v7 = *(*(&v11 + 1) + 8 * v6);
       v8 = objc_autoreleasePoolPush();
-      v9 = [v7 status];
-      if (v9 == -128)
+      status = [v7 status];
+      if (status == -128)
       {
         v3 = -128;
       }
@@ -4658,7 +4658,7 @@ LABEL_3:
       }
 
       objc_autoreleasePoolPop(v8);
-      if (v9 == -128)
+      if (status == -128)
       {
         break;
       }
@@ -4708,23 +4708,23 @@ LABEL_3:
 
       v5 = *(*(&v42 + 1) + 8 * v4);
       context = objc_autoreleasePoolPush();
-      v6 = [v5 asset];
-      v7 = [v6 localIdentifier];
-      v41 = [NSString stringWithFormat:@"[Scene][%@][Legacy]", v7];
+      asset = [v5 asset];
+      localIdentifier = [asset localIdentifier];
+      v41 = [NSString stringWithFormat:@"[Scene][%@][Legacy]", localIdentifier];
 
       if (![v5 status])
       {
         if ([v5 sceneStatus])
         {
-          v8 = [v5 sceneStatus];
+          sceneStatus = [v5 sceneStatus];
         }
 
         else
         {
-          v8 = [v5 imageEmbeddingStatus];
+          sceneStatus = [v5 imageEmbeddingStatus];
         }
 
-        [v5 setStatus:v8];
+        [v5 setStatus:sceneStatus];
       }
 
       if (![v5 status])
@@ -4738,9 +4738,9 @@ LABEL_3:
 
 LABEL_40:
         analysisDatabase = self->_analysisDatabase;
-        v28 = [v5 asset];
-        v29 = [v28 localIdentifier];
-        v30 = [(VCPDatabaseWriter *)analysisDatabase removeProcessingStatusForLocalIdentifier:v29 andTaskID:2];
+        asset2 = [v5 asset];
+        localIdentifier2 = [asset2 localIdentifier];
+        v30 = [(VCPDatabaseWriter *)analysisDatabase removeProcessingStatusForLocalIdentifier:localIdentifier2 andTaskID:2];
 
         if (v30 == -108 || v30 == -36)
         {
@@ -4777,14 +4777,14 @@ LABEL_40:
           }
 
           v9 = self->_analysisDatabase;
-          v10 = [v5 previousAttempts];
-          v33 = [v5 asset];
-          v11 = [v5 previousStatus];
-          v32 = [v5 lastAttemptDate];
-          v12 = [v5 asset];
-          v13 = [v12 mediaType];
-          v14 = [v5 asset];
-          v15 = -[VCPDatabaseWriter setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:](v9, "setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:", v10, v33, 2, v11, v32, v13, [v14 mediaSubtypes], objc_msgSend(v5, "previousErrorCode"), objc_msgSend(v5, "previousErrorLine"));
+          previousAttempts = [v5 previousAttempts];
+          asset3 = [v5 asset];
+          previousStatus = [v5 previousStatus];
+          lastAttemptDate = [v5 lastAttemptDate];
+          asset4 = [v5 asset];
+          mediaType = [asset4 mediaType];
+          asset5 = [v5 asset];
+          v15 = -[VCPDatabaseWriter setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:](v9, "setAttempts:asset:taskID:status:lastAttemptDate:mediaType:mediaSubtypes:errorCode:errorLine:", previousAttempts, asset3, 2, previousStatus, lastAttemptDate, mediaType, [asset5 mediaSubtypes], objc_msgSend(v5, "previousErrorCode"), objc_msgSend(v5, "previousErrorLine"));
 
           if (v15 == -108 || v15 == -36)
           {
@@ -4828,16 +4828,16 @@ LABEL_40:
 
       [v5 status];
       v16 = MADProcessingStatusForOSStatus();
-      v17 = [v5 asset];
-      v18 = [v5 currentAttemptDate];
-      v19 = [v17 mad_nextAttemptDateForStatus:v16 currentAttemptDate:v18 attemptCount:{objc_msgSend(v5, "previousAttempts") + 1}];
+      asset6 = [v5 asset];
+      currentAttemptDate = [v5 currentAttemptDate];
+      v19 = [asset6 mad_nextAttemptDateForStatus:v16 currentAttemptDate:currentAttemptDate attemptCount:{objc_msgSend(v5, "previousAttempts") + 1}];
 
       v20 = self->_analysisDatabase;
-      v21 = [v5 errorCode];
-      v22 = [v5 errorLine];
-      v23 = [v5 asset];
-      v24 = [v23 localIdentifier];
-      v25 = [(VCPDatabaseWriter *)v20 updateProcessingStatus:v16 andNextAttemptDate:v19 andErrorCode:v21 andErrorLine:v22 forLocalIdentifier:v24 andTaskID:2];
+      errorCode = [v5 errorCode];
+      errorLine = [v5 errorLine];
+      asset7 = [v5 asset];
+      localIdentifier3 = [asset7 localIdentifier];
+      v25 = [(VCPDatabaseWriter *)v20 updateProcessingStatus:v16 andNextAttemptDate:v19 andErrorCode:errorCode andErrorLine:errorLine forLocalIdentifier:localIdentifier3 andTaskID:2];
 
       if (v25 == -108 || v25 == -36)
       {
@@ -4884,7 +4884,7 @@ LABEL_58:
   return v2;
 }
 
-- (int)_publishProcessingStatusForPhotoLibrary:(id)a3
+- (int)_publishProcessingStatusForPhotoLibrary:(id)library
 {
   v8 = 0;
   v9[0] = _NSConcreteStackBlock;
@@ -4892,23 +4892,23 @@ LABEL_58:
   v9[2] = sub_100039968;
   v9[3] = &unk_100283AD0;
   v9[4] = self;
-  v3 = [a3 mad_performAnalysisDataStoreChanges:v9 error:&v8];
+  v3 = [library mad_performAnalysisDataStoreChanges:v9 error:&v8];
   v4 = v8;
   v5 = v4;
   if (v3)
   {
-    v6 = 0;
+    code = 0;
   }
 
   else
   {
-    v6 = [v4 code];
+    code = [v4 code];
   }
 
-  return v6;
+  return code;
 }
 
-- (void)_reportRunSessionAnalyticsWithPublishInterval:(double)a3
+- (void)_reportRunSessionAnalyticsWithPublishInterval:(double)interval
 {
   v17 = +[VCPMADCoreAnalyticsManager sharedManager];
   v26 = 0u;
@@ -4957,10 +4957,10 @@ LABEL_58:
 
             if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, type))
             {
-              v13 = [v9 asset];
-              v14 = [v13 localIdentifier];
+              asset = [v9 asset];
+              localIdentifier = [asset localIdentifier];
               *buf = 138412546;
-              v29 = v14;
+              v29 = localIdentifier;
               v30 = 2112;
               v31 = v11;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[Scene][%@] Asset failed processing. Failure: %@", buf, 0x16u);
@@ -4969,8 +4969,8 @@ LABEL_58:
             if ([v9 previousAttempts] >= v21 && objc_msgSend(v9, "previousAttempts") <= v19)
             {
               v15 = +[VCPAutoBugCapture sharedCapturer];
-              v16 = [v9 asset];
-              [v15 captureProcessingFailure:v11 taskID:2 asset:v16 previousAttempts:{objc_msgSend(v9, "previousAttempts")}];
+              asset2 = [v9 asset];
+              [v15 captureProcessingFailure:v11 taskID:2 asset:asset2 previousAttempts:{objc_msgSend(v9, "previousAttempts")}];
             }
           }
         }
@@ -5001,16 +5001,16 @@ LABEL_58:
   [v17 accumulateInt64Value:v22 forField:@"NumberOfAssetsNoResource" andEvent:@"com.apple.mediaanalysisd.SceneAnalysisRunSession"];
   [v17 accumulateDoubleValue:@"TimeAnalyzingInSeconds" forField:@"com.apple.mediaanalysisd.SceneAnalysisRunSession" andEvent:self->_processDuration];
   [v17 accumulateDoubleValue:@"TotalProcessTimeInSeconds" forField:@"com.apple.mediaanalysisd.SceneAnalysisRunSession" andEvent:self->_processDuration];
-  [v17 accumulateDoubleValue:@"TotalPublishTimeInSeconds" forField:@"com.apple.mediaanalysisd.SceneAnalysisRunSession" andEvent:a3];
+  [v17 accumulateDoubleValue:@"TotalPublishTimeInSeconds" forField:@"com.apple.mediaanalysisd.SceneAnalysisRunSession" andEvent:interval];
 }
 
 - (int)publish
 {
   (*(self->_waitForProcessToComplete + 2))();
   v3 = VCPTaskIDDescription();
-  v4 = [objc_opt_class() _allowConcurrentSceneProcessing];
+  _allowConcurrentSceneProcessing = [objc_opt_class() _allowConcurrentSceneProcessing];
   v5 = @"Serial";
-  if (v4)
+  if (_allowConcurrentSceneProcessing)
   {
     v5 = @"Concurrent";
   }
@@ -5036,11 +5036,11 @@ LABEL_58:
 
   if ([(NSMutableArray *)self->_assetEntries count])
   {
-    v10 = [(NSMutableArray *)self->_assetEntries firstObject];
-    v11 = [v10 asset];
-    v12 = [v11 photoLibrary];
+    firstObject = [(NSMutableArray *)self->_assetEntries firstObject];
+    asset = [firstObject asset];
+    photoLibrary = [asset photoLibrary];
 
-    v13 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:v12];
+    v13 = [MADPhotosDataStoreClient needsDataStoreMigrationForPhotoLibrary:photoLibrary];
     v14 = v13;
     if (v13 && !self->_allowBeforeMigration)
     {
@@ -5054,7 +5054,7 @@ LABEL_58:
         }
       }
 
-      v20 = -18;
+      _propagateAssetProcessingStatus = -18;
     }
 
     else
@@ -5071,18 +5071,18 @@ LABEL_58:
       }
 
       v19 = +[NSDate now];
-      v20 = [(VCPMADSceneAssetBatch *)self _propagateAssetProcessingStatus];
+      _propagateAssetProcessingStatus = [(VCPMADSceneAssetBatch *)self _propagateAssetProcessingStatus];
       if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
       {
-        v21 = [(VCPMADSceneAssetBatch *)self _publishEmbeddingResultsWithPhotoLibrary:v12];
-        if (!v20 && v21 != 0)
+        v21 = [(VCPMADSceneAssetBatch *)self _publishEmbeddingResultsWithPhotoLibrary:photoLibrary];
+        if (!_propagateAssetProcessingStatus && v21 != 0)
         {
-          v20 = v21;
+          _propagateAssetProcessingStatus = v21;
         }
       }
 
-      v23 = [(VCPMADSceneAssetBatch *)self _publishPhotosResultsWithPhotoLibrary:v12];
-      if (v20)
+      v23 = [(VCPMADSceneAssetBatch *)self _publishPhotosResultsWithPhotoLibrary:photoLibrary];
+      if (_propagateAssetProcessingStatus)
       {
         v24 = 1;
       }
@@ -5094,7 +5094,7 @@ LABEL_58:
 
       if (!v24)
       {
-        v20 = v23;
+        _propagateAssetProcessingStatus = v23;
       }
 
       if (v14)
@@ -5114,35 +5114,35 @@ LABEL_58:
       {
         if (+[MADManagedProcessingStatus isMACDPersistEnabled])
         {
-          v26 = [(VCPMADSceneAssetBatch *)self _publishProcessingStatusForPhotoLibrary:v12];
-          if (!v20 && v26 != 0)
+          v26 = [(VCPMADSceneAssetBatch *)self _publishProcessingStatusForPhotoLibrary:photoLibrary];
+          if (!_propagateAssetProcessingStatus && v26 != 0)
           {
-            v20 = v26;
+            _propagateAssetProcessingStatus = v26;
           }
         }
 
         if (+[VCPDatabaseWriter isLegacyPersistEnabled])
         {
-          v28 = [(VCPMADSceneAssetBatch *)self _publishProcessingStatusToLegacyDatabase];
-          v29 = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
-          if (v20)
+          _publishProcessingStatusToLegacyDatabase = [(VCPMADSceneAssetBatch *)self _publishProcessingStatusToLegacyDatabase];
+          commit = [(VCPDatabaseWriter *)self->_analysisDatabase commit];
+          if (_propagateAssetProcessingStatus)
           {
             v30 = 1;
           }
 
           else
           {
-            v30 = v28 == 0;
+            v30 = _publishProcessingStatusToLegacyDatabase == 0;
           }
 
           if (v30)
           {
-            v31 = v20;
+            v31 = _propagateAssetProcessingStatus;
           }
 
           else
           {
-            v31 = v28;
+            v31 = _publishProcessingStatusToLegacyDatabase;
           }
 
           if (v31)
@@ -5152,17 +5152,17 @@ LABEL_58:
 
           else
           {
-            v32 = v29 == 0;
+            v32 = commit == 0;
           }
 
           if (v32)
           {
-            v20 = v31;
+            _propagateAssetProcessingStatus = v31;
           }
 
           else
           {
-            v20 = v29;
+            _propagateAssetProcessingStatus = commit;
           }
         }
       }
@@ -5199,7 +5199,7 @@ LABEL_58:
           }
         }
 
-        v38 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v12];
+        v38 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:photoLibrary];
         v39 = [v38 rebuildWithForce:0 cancelBlock:self->_cancelBlock extendTimeoutBlock:&stru_100283AF0 totalEmbeddingCount:0];
         if (v39)
         {
@@ -5213,7 +5213,7 @@ LABEL_58:
             }
           }
 
-          v20 = v39;
+          _propagateAssetProcessingStatus = v39;
         }
       }
     }
@@ -5221,38 +5221,38 @@ LABEL_58:
 
   else
   {
-    v20 = 0;
+    _propagateAssetProcessingStatus = 0;
   }
 
-  return v20;
+  return _propagateAssetProcessingStatus;
 }
 
-- (void)_reportCoreAnalyticsWithEntry:(id)a3
+- (void)_reportCoreAnalyticsWithEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v4 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v4))
     {
-      v5 = [v3 asset];
-      v6 = [v5 localIdentifier];
+      asset = [entryCopy asset];
+      localIdentifier = [asset localIdentifier];
       *buf = 138412290;
-      v17 = v6;
+      v17 = localIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v4, "[Scene] Prepare to report CoreAnalytics for asset %@ ... ", buf, 0xCu);
     }
   }
 
   v7 = +[NSMutableDictionary dictionary];
   [v7 setObject:@"Scene" forKeyedSubscript:@"Activity"];
-  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 status] == 0);
+  v8 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [entryCopy status] == 0);
   [v7 setObject:v8 forKeyedSubscript:@"AnalyzeSuccess"];
 
-  v9 = [v3 asset];
-  v10 = [v9 vcp_typeDescription];
-  [v7 setObject:v10 forKeyedSubscript:@"AssetType"];
+  asset2 = [entryCopy asset];
+  vcp_typeDescription = [asset2 vcp_typeDescription];
+  [v7 setObject:vcp_typeDescription forKeyedSubscript:@"AssetType"];
 
-  if ([v3 status] == -23802)
+  if ([entryCopy status] == -23802)
   {
     v11 = @"-NoResource";
 LABEL_10:
@@ -5260,32 +5260,32 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v3 status] == -23808)
+  if ([entryCopy status] == -23808)
   {
     v11 = @"-DownloadThrottled";
     goto LABEL_10;
   }
 
-  if ([v3 status] == -128)
+  if ([entryCopy status] == -128)
   {
     v11 = @"-Canceled";
     goto LABEL_10;
   }
 
-  if ([v3 status])
+  if ([entryCopy status])
   {
-    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"-SoftFailure-%d", [v3 status]);
+    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"-SoftFailure-%d", [entryCopy status]);
     [v7 setObject:v15 forKeyedSubscript:@"AnalysisStatusExtension"];
   }
 
 LABEL_11:
-  if ([v3 errorCode] >= 2 && objc_msgSend(v3, "errorCode") <= 0x9F)
+  if ([entryCopy errorCode] >= 2 && objc_msgSend(entryCopy, "errorCode") <= 0x9F)
   {
-    [v3 errorCode];
+    [entryCopy errorCode];
     v12 = MADErrorStringFromCode();
     [v7 setObject:v12 forKeyedSubscript:VCPAnalyticsFieldMADErrorCode];
 
-    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 errorLine]);
+    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [entryCopy errorLine]);
     [v7 setObject:v13 forKeyedSubscript:VCPAnalyticsFieldMADErrorLine];
   }
 

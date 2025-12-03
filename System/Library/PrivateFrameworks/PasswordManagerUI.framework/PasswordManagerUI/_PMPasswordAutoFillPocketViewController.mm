@@ -1,14 +1,14 @@
 @interface _PMPasswordAutoFillPocketViewController
 - (_ASPasswordManagerIconController)iconController;
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithCoder:(id)a3;
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)a3 appID:(id)a4 credentialTypes:(int64_t)a5 promptString:(id)a6 promptStringWhenPasskeysAreAvailable:(id)a7 serviceNameHintStrings:(id)a8 domainNameHintStrings:(id)a9 savedAccountStore:(id)a10 suggestedDomainForNewAccount:(id)a11 localizedHostAppNameForNewAccount:(id)a12 bundleIDForFallbackIconForNewAccount:(id)a13 autoFillQuirksManager:(id)a14 shouldShowAutoFillPasskeys:(BOOL)a15 currentWebFrameIdentifierForAutoFillPasskeys:(id)a16 connectedAppAuditToken:(id *)a17 isConnectedAppAWebBrowser:(BOOL)a18 initialSearchQuery:(id)a19 savedAccountToInitiallyShowDetailsFor:(id)a20 shouldAllowAddingNewPasswords:(BOOL)a21 bypassLockoutPolicy:(BOOL)a22 authenticatedContext:(id)a23 savedAccountContext:(id)a24 didSelectAccountHandler:(id)a25 didSelectTextToInsertHandler:(id)a26;
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)a3 appID:(id)a4 credentialTypes:(int64_t)a5 promptString:(id)a6 promptStringWhenPasskeysAreAvailable:(id)a7 serviceNameHintStrings:(id)a8 domainNameHintStrings:(id)a9 savedAccountStore:(id)a10 suggestedDomainForNewAccount:(id)a11 localizedHostAppNameForNewAccount:(id)a12 bundleIDForFallbackIconForNewAccount:(id)a13 autoFillQuirksManager:(id)a14 shouldShowAutoFillPasskeys:(BOOL)a15 currentWebFrameIdentifierForAutoFillPasskeys:(id)a16 connectedAppAuditToken:(id *)a17 isConnectedAppAWebBrowser:(BOOL)a18 initialSearchQuery:(id)a19 savedAccountToInitiallyShowDetailsFor:(id)a20 shouldAllowAddingNewPasswords:(BOOL)a21 bypassLockoutPolicy:(BOOL)a22 authenticatedContext:(id)a23 savedAccountContext:(id)a24 savedAccountForHistorySection:(id)a25 didSelectHistoryItem:(id)aBlock didSelectAccountHandler:(id)a27 didSelectTextToInsertHandler:(id)a28;
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithCoder:(id)coder;
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)persona appID:(id)d credentialTypes:(int64_t)types promptString:(id)string promptStringWhenPasskeysAreAvailable:(id)available serviceNameHintStrings:(id)strings domainNameHintStrings:(id)hintStrings savedAccountStore:(id)self0 suggestedDomainForNewAccount:(id)self1 localizedHostAppNameForNewAccount:(id)self2 bundleIDForFallbackIconForNewAccount:(id)self3 autoFillQuirksManager:(id)self4 shouldShowAutoFillPasskeys:(BOOL)self5 currentWebFrameIdentifierForAutoFillPasskeys:(id)self6 connectedAppAuditToken:(id *)self7 isConnectedAppAWebBrowser:(BOOL)self8 initialSearchQuery:(id)self9 savedAccountToInitiallyShowDetailsFor:(id)for shouldAllowAddingNewPasswords:(BOOL)passwords bypassLockoutPolicy:(BOOL)policy authenticatedContext:(id)context savedAccountContext:(id)accountContext didSelectAccountHandler:(id)handler didSelectTextToInsertHandler:(id)insertHandler;
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)persona appID:(id)d credentialTypes:(int64_t)types promptString:(id)string promptStringWhenPasskeysAreAvailable:(id)available serviceNameHintStrings:(id)strings domainNameHintStrings:(id)hintStrings savedAccountStore:(id)self0 suggestedDomainForNewAccount:(id)self1 localizedHostAppNameForNewAccount:(id)self2 bundleIDForFallbackIconForNewAccount:(id)self3 autoFillQuirksManager:(id)self4 shouldShowAutoFillPasskeys:(BOOL)self5 currentWebFrameIdentifierForAutoFillPasskeys:(id)self6 connectedAppAuditToken:(id *)self7 isConnectedAppAWebBrowser:(BOOL)self8 initialSearchQuery:(id)self9 savedAccountToInitiallyShowDetailsFor:(id)for shouldAllowAddingNewPasswords:(BOOL)passwords bypassLockoutPolicy:(BOOL)policy authenticatedContext:(id)context savedAccountContext:(id)accountContext savedAccountForHistorySection:(id)section didSelectHistoryItem:(id)aBlock didSelectAccountHandler:(id)handler didSelectTextToInsertHandler:(id)insertHandler;
 - (id)searchQuery;
 - (void)loadView;
-- (void)setAuthenticatedContext:(id)a3;
-- (void)setSearchQuery:(id)a3;
-- (void)updateHintStringsWithServiceNameHintStrings:(id)a3 domainNameHintStrings:(id)a4 suggestedDomainForNewAccount:(id)a5;
+- (void)setAuthenticatedContext:(id)context;
+- (void)setSearchQuery:(id)query;
+- (void)updateHintStringsWithServiceNameHintStrings:(id)strings domainNameHintStrings:(id)hintStrings suggestedDomainForNewAccount:(id)account;
 @end
 
 @implementation _PMPasswordAutoFillPocketViewController
@@ -25,18 +25,18 @@
   return v2;
 }
 
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)a3 appID:(id)a4 credentialTypes:(int64_t)a5 promptString:(id)a6 promptStringWhenPasskeysAreAvailable:(id)a7 serviceNameHintStrings:(id)a8 domainNameHintStrings:(id)a9 savedAccountStore:(id)a10 suggestedDomainForNewAccount:(id)a11 localizedHostAppNameForNewAccount:(id)a12 bundleIDForFallbackIconForNewAccount:(id)a13 autoFillQuirksManager:(id)a14 shouldShowAutoFillPasskeys:(BOOL)a15 currentWebFrameIdentifierForAutoFillPasskeys:(id)a16 connectedAppAuditToken:(id *)a17 isConnectedAppAWebBrowser:(BOOL)a18 initialSearchQuery:(id)a19 savedAccountToInitiallyShowDetailsFor:(id)a20 shouldAllowAddingNewPasswords:(BOOL)a21 bypassLockoutPolicy:(BOOL)a22 authenticatedContext:(id)a23 savedAccountContext:(id)a24 didSelectAccountHandler:(id)a25 didSelectTextToInsertHandler:(id)a26
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)persona appID:(id)d credentialTypes:(int64_t)types promptString:(id)string promptStringWhenPasskeysAreAvailable:(id)available serviceNameHintStrings:(id)strings domainNameHintStrings:(id)hintStrings savedAccountStore:(id)self0 suggestedDomainForNewAccount:(id)self1 localizedHostAppNameForNewAccount:(id)self2 bundleIDForFallbackIconForNewAccount:(id)self3 autoFillQuirksManager:(id)self4 shouldShowAutoFillPasskeys:(BOOL)self5 currentWebFrameIdentifierForAutoFillPasskeys:(id)self6 connectedAppAuditToken:(id *)self7 isConnectedAppAWebBrowser:(BOOL)self8 initialSearchQuery:(id)self9 savedAccountToInitiallyShowDetailsFor:(id)for shouldAllowAddingNewPasswords:(BOOL)passwords bypassLockoutPolicy:(BOOL)policy authenticatedContext:(id)context savedAccountContext:(id)accountContext didSelectAccountHandler:(id)handler didSelectTextToInsertHandler:(id)insertHandler
 {
-  v75 = *&a17->var0[2];
-  v76 = *a17->var0;
-  v71 = *&a17->var0[6];
-  v72 = *&a17->var0[4];
-  v67 = _Block_copy(a25);
-  v68 = _Block_copy(a26);
+  v75 = *&token->var0[2];
+  v76 = *token->var0;
+  v71 = *&token->var0[6];
+  v72 = *&token->var0[4];
+  v67 = _Block_copy(handler);
+  v68 = _Block_copy(insertHandler);
   v28 = sub_21CB855C4();
   v73 = v29;
   v74 = v28;
-  if (a6)
+  if (string)
   {
     v30 = sub_21CB855C4();
     v69 = v31;
@@ -49,7 +49,7 @@
     v70 = 0;
   }
 
-  if (a7)
+  if (available)
   {
     v32 = sub_21CB855C4();
     v65 = v33;
@@ -64,7 +64,7 @@
 
   v64 = sub_21CB85824();
   v63 = sub_21CB85824();
-  if (a11)
+  if (account)
   {
     v34 = sub_21CB855C4();
     v60 = v35;
@@ -77,22 +77,22 @@
     v61 = 0;
   }
 
-  v62 = a10;
-  v36 = a12;
-  v37 = a13;
-  v59 = a14;
-  v58 = a16;
-  v38 = a19;
-  v57 = a20;
-  v39 = a23;
-  v40 = a24;
-  if (v36)
+  storeCopy = store;
+  newAccountCopy = newAccount;
+  forNewAccountCopy = forNewAccount;
+  managerCopy = manager;
+  fillPasskeysCopy = fillPasskeys;
+  queryCopy = query;
+  forCopy = for;
+  contextCopy = context;
+  accountContextCopy = accountContext;
+  if (newAccountCopy)
   {
     v41 = sub_21CB855C4();
     v55 = v42;
     v56 = v41;
 
-    if (v37)
+    if (forNewAccountCopy)
     {
 LABEL_12:
       v43 = sub_21CB855C4();
@@ -107,7 +107,7 @@ LABEL_12:
   {
     v55 = 0;
     v56 = 0;
-    if (v37)
+    if (forNewAccountCopy)
     {
       goto LABEL_12;
     }
@@ -116,7 +116,7 @@ LABEL_12:
   v53 = 0;
   v54 = 0;
 LABEL_15:
-  if (v38)
+  if (queryCopy)
   {
     v45 = sub_21CB855C4();
     v47 = v46;
@@ -134,24 +134,24 @@ LABEL_15:
   *(v49 + 16) = v68;
   *(&v52 + 1) = v60;
   *&v52 = v61;
-  v50 = sub_21CB0165C(a3, v74, v73, a5, v70, v69, v66, v65, v64, v63, v62, v52, v56, v55, v54, v53, v59, a15, v58, v76, v75, v72, v71, a18, v45, v47, v57, a21, a22, v39, v40, sub_21CB03008, v48, sub_21CB03004, v49);
+  v50 = sub_21CB0165C(persona, v74, v73, types, v70, v69, v66, v65, v64, v63, storeCopy, v52, v56, v55, v54, v53, managerCopy, passkeys, fillPasskeysCopy, v76, v75, v72, v71, browser, v45, v47, forCopy, passwords, policy, contextCopy, accountContextCopy, sub_21CB03008, v48, sub_21CB03004, v49);
 
   return v50;
 }
 
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)a3 appID:(id)a4 credentialTypes:(int64_t)a5 promptString:(id)a6 promptStringWhenPasskeysAreAvailable:(id)a7 serviceNameHintStrings:(id)a8 domainNameHintStrings:(id)a9 savedAccountStore:(id)a10 suggestedDomainForNewAccount:(id)a11 localizedHostAppNameForNewAccount:(id)a12 bundleIDForFallbackIconForNewAccount:(id)a13 autoFillQuirksManager:(id)a14 shouldShowAutoFillPasskeys:(BOOL)a15 currentWebFrameIdentifierForAutoFillPasskeys:(id)a16 connectedAppAuditToken:(id *)a17 isConnectedAppAWebBrowser:(BOOL)a18 initialSearchQuery:(id)a19 savedAccountToInitiallyShowDetailsFor:(id)a20 shouldAllowAddingNewPasswords:(BOOL)a21 bypassLockoutPolicy:(BOOL)a22 authenticatedContext:(id)a23 savedAccountContext:(id)a24 savedAccountForHistorySection:(id)a25 didSelectHistoryItem:(id)aBlock didSelectAccountHandler:(id)a27 didSelectTextToInsertHandler:(id)a28
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithPersona:(int64_t)persona appID:(id)d credentialTypes:(int64_t)types promptString:(id)string promptStringWhenPasskeysAreAvailable:(id)available serviceNameHintStrings:(id)strings domainNameHintStrings:(id)hintStrings savedAccountStore:(id)self0 suggestedDomainForNewAccount:(id)self1 localizedHostAppNameForNewAccount:(id)self2 bundleIDForFallbackIconForNewAccount:(id)self3 autoFillQuirksManager:(id)self4 shouldShowAutoFillPasskeys:(BOOL)self5 currentWebFrameIdentifierForAutoFillPasskeys:(id)self6 connectedAppAuditToken:(id *)self7 isConnectedAppAWebBrowser:(BOOL)self8 initialSearchQuery:(id)self9 savedAccountToInitiallyShowDetailsFor:(id)for shouldAllowAddingNewPasswords:(BOOL)passwords bypassLockoutPolicy:(BOOL)policy authenticatedContext:(id)context savedAccountContext:(id)accountContext savedAccountForHistorySection:(id)section didSelectHistoryItem:(id)aBlock didSelectAccountHandler:(id)handler didSelectTextToInsertHandler:(id)insertHandler
 {
-  v75 = *&a17->var0[2];
-  v76 = *a17->var0;
-  v73 = *&a17->var0[6];
-  v74 = *&a17->var0[4];
+  v75 = *&token->var0[2];
+  v76 = *token->var0;
+  v73 = *&token->var0[6];
+  v74 = *&token->var0[4];
   v64 = _Block_copy(aBlock);
-  v66 = _Block_copy(a27);
-  v68 = _Block_copy(a28);
+  v66 = _Block_copy(handler);
+  v68 = _Block_copy(insertHandler);
   v30 = sub_21CB855C4();
   v71 = v31;
   v72 = v30;
-  if (a6)
+  if (string)
   {
     v32 = sub_21CB855C4();
     v69 = v33;
@@ -164,7 +164,7 @@ LABEL_15:
     v70 = 0;
   }
 
-  if (a7)
+  if (available)
   {
     v67 = sub_21CB855C4();
     v65 = v34;
@@ -178,7 +178,7 @@ LABEL_15:
 
   v63 = sub_21CB85824();
   v62 = sub_21CB85824();
-  if (a11)
+  if (account)
   {
     v35 = sub_21CB855C4();
     v60 = v36;
@@ -191,22 +191,22 @@ LABEL_15:
     v61 = 0;
   }
 
-  v59 = a10;
-  v37 = a12;
-  v38 = a13;
-  v58 = a14;
-  v57 = a16;
-  v39 = a19;
-  v56 = a20;
-  v55 = a23;
-  v53 = a24;
-  v51 = a25;
-  if (v37)
+  storeCopy = store;
+  newAccountCopy = newAccount;
+  forNewAccountCopy = forNewAccount;
+  managerCopy = manager;
+  fillPasskeysCopy = fillPasskeys;
+  queryCopy = query;
+  forCopy = for;
+  contextCopy = context;
+  accountContextCopy = accountContext;
+  sectionCopy = section;
+  if (newAccountCopy)
   {
     v54 = sub_21CB855C4();
     v52 = v40;
 
-    if (v38)
+    if (forNewAccountCopy)
     {
 LABEL_12:
       v41 = sub_21CB855C4();
@@ -220,7 +220,7 @@ LABEL_12:
   {
     v54 = 0;
     v52 = 0;
-    if (v38)
+    if (forNewAccountCopy)
     {
       goto LABEL_12;
     }
@@ -229,7 +229,7 @@ LABEL_12:
   v41 = 0;
   v43 = 0;
 LABEL_15:
-  if (v39)
+  if (queryCopy)
   {
     v44 = sub_21CB855C4();
     v46 = v45;
@@ -247,10 +247,10 @@ LABEL_15:
   *(v48 + 16) = v66;
   v49 = swift_allocObject();
   *(v49 + 16) = v68;
-  return _PMPasswordAutoFillPocketViewController.init(persona:appID:credentialTypes:promptString:promptStringWhenPasskeysAreAvailable:serviceNameHintStrings:domainNameHintStrings:savedAccountStore:suggestedDomainForNewAccount:localizedHostAppNameForNewAccount:bundleIDForFallbackIconForNewAccount:autoFillQuirksManager:shouldShowAutoFillPasskeys:currentWebFrameIdentifierForAutoFillPasskeys:connectedAppAuditToken:isConnectedAppAWebBrowser:initialSearchQuery:savedAccountToInitiallyShowDetailsFor:shouldAllowAddingNewPasswords:bypassLockoutPolicy:authenticatedContext:savedAccountContext:savedAccountForHistorySection:didSelectHistoryItem:didSelectAccountHandler:didSelectTextToInsertHandler:)(a3, v72, v71, a5, v70, v69, v67, v65, v63, v62, v59, v61, v60, v54, v52, v41, v43, v58, a15, v57, v76, HIDWORD(v76), v75, HIDWORD(v75), v74, HIDWORD(v74), v73, HIDWORD(v73), a18, v44, v46, v56, a21, a22, v55, v53, v51, sub_21CB02D88, v47, sub_21CB02D90, v48, sub_21CB02DA4, v49);
+  return _PMPasswordAutoFillPocketViewController.init(persona:appID:credentialTypes:promptString:promptStringWhenPasskeysAreAvailable:serviceNameHintStrings:domainNameHintStrings:savedAccountStore:suggestedDomainForNewAccount:localizedHostAppNameForNewAccount:bundleIDForFallbackIconForNewAccount:autoFillQuirksManager:shouldShowAutoFillPasskeys:currentWebFrameIdentifierForAutoFillPasskeys:connectedAppAuditToken:isConnectedAppAWebBrowser:initialSearchQuery:savedAccountToInitiallyShowDetailsFor:shouldAllowAddingNewPasswords:bypassLockoutPolicy:authenticatedContext:savedAccountContext:savedAccountForHistorySection:didSelectHistoryItem:didSelectAccountHandler:didSelectTextToInsertHandler:)(persona, v72, v71, types, v70, v69, v67, v65, v63, v62, storeCopy, v61, v60, v54, v52, v41, v43, managerCopy, passkeys, fillPasskeysCopy, v76, HIDWORD(v76), v75, HIDWORD(v75), v74, HIDWORD(v74), v73, HIDWORD(v73), browser, v44, v46, forCopy, passwords, policy, contextCopy, accountContextCopy, sectionCopy, sub_21CB02D88, v47, sub_21CB02D90, v48, sub_21CB02DA4, v49);
 }
 
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithCoder:(id)a3
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController_savedAccountForHistorySection;
   v5 = type metadata accessor for PMAccount(0);
@@ -265,15 +265,15 @@ LABEL_15:
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_21CAFFD7C();
 }
 
-- (void)setAuthenticatedContext:(id)a3
+- (void)setAuthenticatedContext:(id)context
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController_pickerModel);
   v4 = *(v3 + 352);
-  *(v3 + 352) = a3;
+  *(v3 + 352) = context;
 }
 
 - (id)searchQuery
@@ -281,7 +281,7 @@ LABEL_15:
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController_pickerModel);
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
 
   sub_21CB81DB4();
 
@@ -290,24 +290,24 @@ LABEL_15:
   return v5;
 }
 
-- (void)setSearchQuery:(id)a3
+- (void)setSearchQuery:(id)query
 {
   v4 = sub_21CB855C4();
   v6 = v5;
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController_pickerModel);
-  v8 = self;
+  selfCopy = self;
 
   sub_21C7A6110(v4, v6);
 }
 
-- (void)updateHintStringsWithServiceNameHintStrings:(id)a3 domainNameHintStrings:(id)a4 suggestedDomainForNewAccount:(id)a5
+- (void)updateHintStringsWithServiceNameHintStrings:(id)strings domainNameHintStrings:(id)hintStrings suggestedDomainForNewAccount:(id)account
 {
   v7 = sub_21CB85824();
   v8 = sub_21CB85824();
-  if (a5)
+  if (account)
   {
     v9 = sub_21CB855C4();
-    a5 = v10;
+    account = v10;
   }
 
   else
@@ -315,11 +315,11 @@ LABEL_15:
     v9 = 0;
   }
 
-  v11 = self;
-  sub_21CB00354(v7, v8, v9, a5);
+  selfCopy = self;
+  sub_21CB00354(v7, v8, v9, account);
 }
 
-- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17PasswordManagerUI39_PMPasswordAutoFillPocketViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

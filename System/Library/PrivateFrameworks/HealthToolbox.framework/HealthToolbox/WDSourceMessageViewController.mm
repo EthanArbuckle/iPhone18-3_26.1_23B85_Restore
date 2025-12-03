@@ -1,37 +1,37 @@
 @interface WDSourceMessageViewController
-- (WDSourceMessageViewController)initWithStyle:(int64_t)a3 source:(id)a4;
+- (WDSourceMessageViewController)initWithStyle:(int64_t)style source:(id)source;
 - (void)_updateFont;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation WDSourceMessageViewController
 
-- (WDSourceMessageViewController)initWithStyle:(int64_t)a3 source:(id)a4
+- (WDSourceMessageViewController)initWithStyle:(int64_t)style source:(id)source
 {
-  v7 = a4;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = WDSourceMessageViewController;
   v8 = [(WDSourceMessageViewController *)&v16 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    v8->_style = a3;
-    objc_storeStrong(&v8->_source, a4);
+    v8->_style = style;
+    objc_storeStrong(&v8->_source, source);
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
     messageLabel = v9->_messageLabel;
     v9->_messageLabel = v10;
 
     [(UILabel *)v9->_messageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v9->_messageLabel setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v9->_messageLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v9->_messageLabel setNumberOfLines:0];
     [(UILabel *)v9->_messageLabel setTextAlignment:1];
     [(WDSourceMessageViewController *)v9 _updateFont];
-    v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v14 = [(WDSourceMessageViewController *)v9 view];
-    [v14 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    view = [(WDSourceMessageViewController *)v9 view];
+    [view setBackgroundColor:systemBackgroundColor];
   }
 
   return v9;
@@ -51,30 +51,30 @@
   v34.receiver = self;
   v34.super_class = WDSourceMessageViewController;
   [(WDSourceMessageViewController *)&v34 viewDidLoad];
-  v3 = [(WDSourceMessageViewController *)self view];
-  [v3 addSubview:self->_messageLabel];
+  view = [(WDSourceMessageViewController *)self view];
+  [view addSubview:self->_messageLabel];
 
-  v4 = [(WDSourceMessageViewController *)self view];
+  view2 = [(WDSourceMessageViewController *)self view];
   v5 = MEMORY[0x277CCAAD0];
   messageLabel = self->_messageLabel;
-  v7 = [(WDSourceMessageViewController *)self view];
-  v8 = [v5 constraintWithItem:messageLabel attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:0.0];
-  [v4 addConstraint:v8];
+  view3 = [(WDSourceMessageViewController *)self view];
+  v8 = [v5 constraintWithItem:messageLabel attribute:9 relatedBy:0 toItem:view3 attribute:9 multiplier:1.0 constant:0.0];
+  [view2 addConstraint:v8];
 
-  v9 = [(WDSourceMessageViewController *)self view];
+  view4 = [(WDSourceMessageViewController *)self view];
   v10 = MEMORY[0x277CCAAD0];
   v11 = self->_messageLabel;
-  v12 = [(WDSourceMessageViewController *)self view];
-  v13 = [v10 constraintWithItem:v11 attribute:3 relatedBy:0 toItem:v12 attribute:10 multiplier:0.6 constant:0.0];
-  [v9 addConstraint:v13];
+  view5 = [(WDSourceMessageViewController *)self view];
+  v13 = [v10 constraintWithItem:v11 attribute:3 relatedBy:0 toItem:view5 attribute:10 multiplier:0.6 constant:0.0];
+  [view4 addConstraint:v13];
 
-  v14 = [(WDSourceMessageViewController *)self view];
+  view6 = [(WDSourceMessageViewController *)self view];
   v15 = MEMORY[0x277CCAAD0];
   v16 = self->_messageLabel;
-  v17 = [(WDSourceMessageViewController *)self view];
-  [v17 bounds];
+  view7 = [(WDSourceMessageViewController *)self view];
+  [view7 bounds];
   v18 = [v15 constraintWithItem:v16 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:CGRectGetWidth(v35) + -60.0];
-  [v14 addConstraint:v18];
+  [view6 addConstraint:v18];
 
   style = self->_style;
   if (style > 2)
@@ -100,8 +100,8 @@
 
     v30 = self->_messageLabel;
     v31 = MEMORY[0x277CCACA8];
-    v32 = [(HKSource *)self->_source name];
-    v33 = [v31 localizedStringWithFormat:v29, v32];
+    name = [(HKSource *)self->_source name];
+    v33 = [v31 localizedStringWithFormat:v29, name];
     [(UILabel *)v30 setText:v33];
   }
 
@@ -132,24 +132,24 @@ LABEL_9:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = WDSourceMessageViewController;
-  [(WDSourceMessageViewController *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(WDSourceMessageViewController *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(WDSourceMessageViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(WDSourceMessageViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
       [(WDSourceMessageViewController *)self _updateFont];
-      v9 = [(WDSourceMessageViewController *)self view];
-      [v9 setNeedsLayout];
+      view = [(WDSourceMessageViewController *)self view];
+      [view setNeedsLayout];
     }
   }
 }

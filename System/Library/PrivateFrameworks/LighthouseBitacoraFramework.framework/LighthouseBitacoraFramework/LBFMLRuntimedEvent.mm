@@ -1,19 +1,19 @@
 @interface LBFMLRuntimedEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation LBFMLRuntimedEvent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     goto LABEL_9;
   }
 
-  if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v68 = LBFLogContextEventManager;
     if (os_log_type_enabled(LBFLogContextEventManager, OS_LOG_TYPE_ERROR))

@@ -1,14 +1,14 @@
 @interface PSGInternalClient
 + (id)sharedInstance;
 - (PSGInternalClient)init;
-- (id)sysdiagnoseInformationWithError:(id *)a3;
+- (id)sysdiagnoseInformationWithError:(id *)error;
 @end
 
 @implementation PSGInternalClient
 
-- (id)sysdiagnoseInformationWithError:(id *)a3
+- (id)sysdiagnoseInformationWithError:(id *)error
 {
-  v4 = [(PSGInternalClient *)self _remoteObjectProxy];
+  _remoteObjectProxy = [(PSGInternalClient *)self _remoteObjectProxy];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -30,11 +30,11 @@
   v13 = &v14;
   v6 = v5;
   v11 = v6;
-  [v4 sysdiagnoseInformationWithCompletion:v10];
+  [_remoteObjectProxy sysdiagnoseInformationWithCompletion:v10];
   [MEMORY[0x277D425A0] waitForSemaphore:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v7 = v21[5];

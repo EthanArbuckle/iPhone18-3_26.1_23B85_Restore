@@ -9,7 +9,7 @@
 - (SRModeSystemState)init;
 - (id)_requestOptions;
 - (id)description;
-- (void)_connectedOutputDevicesDidChange:(id)a3;
+- (void)_connectedOutputDevicesDidChange:(id)change;
 - (void)_fetchConnectedAudioAccessoryState;
 @end
 
@@ -38,15 +38,15 @@
   if (v2)
   {
     v3 = +[AFPreferences sharedPreferences];
-    v4 = [v3 useDeviceSpeakerForTTS];
-    if (v4 > 3)
+    useDeviceSpeakerForTTS = [v3 useDeviceSpeakerForTTS];
+    if (useDeviceSpeakerForTTS > 3)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = qword_1000F6930[v4];
+      v5 = qword_1000F6930[useDeviceSpeakerForTTS];
     }
 
     v2->_voiceFeedbackSetting = v5;
@@ -77,47 +77,47 @@
 
 - (BOOL)userTypedInSiri
 {
-  v2 = [(SRModeSystemState *)self _requestOptions];
-  v3 = [v2 requestSource];
+  _requestOptions = [(SRModeSystemState *)self _requestOptions];
+  requestSource = [_requestOptions requestSource];
 
-  return v3 == 33 || v3 == 24;
+  return requestSource == 33 || requestSource == 24;
 }
 
 - (BOOL)isVoiceTriggerRequest
 {
-  v3 = [(SRModeSystemState *)self _requestOptions];
-  v4 = [v3 requestSource];
+  _requestOptions = [(SRModeSystemState *)self _requestOptions];
+  requestSource = [_requestOptions requestSource];
 
-  v5 = [(SRModeSystemState *)self _requestOptions];
-  v6 = [v5 speechRequestOptions];
-  v7 = [v6 activationEvent];
+  _requestOptions2 = [(SRModeSystemState *)self _requestOptions];
+  speechRequestOptions = [_requestOptions2 speechRequestOptions];
+  activationEvent = [speechRequestOptions activationEvent];
 
-  v10 = v4 == 19 && v7 == 15 || v4 == 45;
-  return v4 == 8 || v10;
+  v10 = requestSource == 19 && activationEvent == 15 || requestSource == 45;
+  return requestSource == 8 || v10;
 }
 
 - (BOOL)isConnectedToCarPlay
 {
-  v2 = [(SRModeSystemState *)self _requestOptions];
-  v3 = [v2 isConnectedToCarPlay];
+  _requestOptions = [(SRModeSystemState *)self _requestOptions];
+  isConnectedToCarPlay = [_requestOptions isConnectedToCarPlay];
 
-  return v3;
+  return isConnectedToCarPlay;
 }
 
 - (BOOL)isForCarDND
 {
-  v2 = [(SRModeSystemState *)self _requestOptions];
-  v3 = [v2 isForCarDND];
+  _requestOptions = [(SRModeSystemState *)self _requestOptions];
+  isForCarDND = [_requestOptions isForCarDND];
 
-  return v3;
+  return isForCarDND;
 }
 
 - (BOOL)isEyesFree
 {
-  v2 = [(SRModeSystemState *)self _requestOptions];
-  v3 = [v2 isHeadunitEyesFree];
+  _requestOptions = [(SRModeSystemState *)self _requestOptions];
+  isHeadunitEyesFree = [_requestOptions isHeadunitEyesFree];
 
-  return v3;
+  return isHeadunitEyesFree;
 }
 
 - (BOOL)isConnectedToAudioAccessory
@@ -141,10 +141,10 @@
 
 - (BOOL)isRequestMadeWithPhysicalDeviceInteraction
 {
-  v2 = [(SRModeSystemState *)self _requestOptions];
-  v3 = [v2 requestSource];
+  _requestOptions = [(SRModeSystemState *)self _requestOptions];
+  requestSource = [_requestOptions requestSource];
 
-  return (v3 > 0x3C) | (0x66F001C3101000EuLL >> v3) & 1;
+  return (requestSource > 0x3C) | (0x66F001C3101000EuLL >> requestSource) & 1;
 }
 
 - (id)description
@@ -155,14 +155,14 @@
   v21[1] = v19;
   v18 = [NSString stringWithFormat:@"userTouchedSnippet=%i", [(SRModeSystemState *)self userTouchedSnippet]];
   v21[2] = v18;
-  v3 = [(SRModeSystemState *)self voiceFeedbackSetting];
+  voiceFeedbackSetting = [(SRModeSystemState *)self voiceFeedbackSetting];
   v4 = @"SRModeVoiceFeedbackPreferSilentResponses";
-  if (v3 == 1)
+  if (voiceFeedbackSetting == 1)
   {
     v4 = @"SRModeVoiceFeedbackAutomatic";
   }
 
-  if (v3 == 2)
+  if (voiceFeedbackSetting == 2)
   {
     v4 = @"SRModeVoiceFeedbackPreferSpokenResponses";
   }
@@ -197,16 +197,16 @@
 
 - (id)_requestOptions
 {
-  v3 = [(SRModeSystemState *)self requestOptions];
-  if ([v3 requestSource] == 9)
+  requestOptions = [(SRModeSystemState *)self requestOptions];
+  if ([requestOptions requestSource] == 9)
   {
-    v4 = [(SRModeSystemState *)self requestOptions];
-    v5 = [v4 originalRequestOptions];
+    requestOptions2 = [(SRModeSystemState *)self requestOptions];
+    originalRequestOptions = [requestOptions2 originalRequestOptions];
 
-    if (v5)
+    if (originalRequestOptions)
     {
-      v6 = [(SRModeSystemState *)self requestOptions];
-      v7 = [v6 originalRequestOptions];
+      requestOptions3 = [(SRModeSystemState *)self requestOptions];
+      originalRequestOptions2 = [requestOptions3 originalRequestOptions];
 
       goto LABEL_6;
     }
@@ -216,13 +216,13 @@
   {
   }
 
-  v7 = [(SRModeSystemState *)self requestOptions];
+  originalRequestOptions2 = [(SRModeSystemState *)self requestOptions];
 LABEL_6:
 
-  return v7;
+  return originalRequestOptions2;
 }
 
-- (void)_connectedOutputDevicesDidChange:(id)a3
+- (void)_connectedOutputDevicesDidChange:(id)change
 {
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))

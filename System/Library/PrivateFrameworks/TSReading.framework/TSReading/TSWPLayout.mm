@@ -7,16 +7,16 @@
 - (BOOL)shouldWrapAroundExternalDrawables;
 - (BOOL)textIsVertical;
 - (CGPoint)anchorPoint;
-- (CGPoint)calculatePointFromSearchReference:(id)a3;
+- (CGPoint)calculatePointFromSearchReference:(id)reference;
 - (CGPoint)capturedInfoPositionForAttachment;
 - (CGPoint)position;
 - (CGRect)frameForCulling;
 - (CGRect)maskRect;
-- (CGRect)p_protectedRectWithinLayoutForSelectionRect:(CGRect)a3;
-- (CGRect)p_rectForSelection:(id)a3 useParagraphModeRects:(BOOL)a4;
-- (CGRect)rectForPresentingAnnotationPopoverForSelection:(id)a3;
-- (CGRect)rectForSelection:(id)a3;
-- (CGRect)targetRectForCanvasRect:(CGRect)a3;
+- (CGRect)p_protectedRectWithinLayoutForSelectionRect:(CGRect)rect;
+- (CGRect)p_rectForSelection:(id)selection useParagraphModeRects:(BOOL)rects;
+- (CGRect)rectForPresentingAnnotationPopoverForSelection:(id)selection;
+- (CGRect)rectForSelection:(id)selection;
+- (CGRect)targetRectForCanvasRect:(CGRect)rect;
 - (CGSize)currentSize;
 - (CGSize)maxSize;
 - (CGSize)minSize;
@@ -25,22 +25,22 @@
 - (TSDCanvas)canvas;
 - (TSWPFootnoteHeightMeasurer)footnoteHeightMeasurer;
 - (TSWPFootnoteMarkProvider)footnoteMarkProvider;
-- (TSWPLayout)initWithInfo:(id)a3 frame:(CGRect)a4;
+- (TSWPLayout)initWithInfo:(id)info frame:(CGRect)frame;
 - (TSWPLayoutManager)layoutManager;
-- (double)baselineForCharIndex:(unsigned int)a3;
+- (double)baselineForCharIndex:(unsigned int)index;
 - (double)maxAnchorY;
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (id)layoutForInlineDrawable:(id)a3;
-- (id)lineHintsForTarget:(id)a3;
-- (id)p_firstAncestorRespondingToSelector:(SEL)a3;
+- (id)layoutForInlineDrawable:(id)drawable;
+- (id)lineHintsForTarget:(id)target;
+- (id)p_firstAncestorRespondingToSelector:(SEL)selector;
 - (id)p_wpLayoutParent;
 - (id)reliedOnLayouts;
 - (id)styleProvider;
 - (id)textColorOverride;
 - (id)textWrapper;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
 - (unint64_t)pageCount;
 - (unint64_t)pageNumber;
 - (unsigned)autosizeFlags;
@@ -48,7 +48,7 @@
 - (unsigned)maxLineCount;
 - (unsigned)naturalAlignment;
 - (unsigned)verticalAlignment;
-- (void)addAttachmentLayout:(id)a3;
+- (void)addAttachmentLayout:(id)layout;
 - (void)dealloc;
 - (void)initialLayoutState;
 - (void)invalidateForFootnoteNumberingChange;
@@ -56,35 +56,35 @@
 - (void)invalidateParentForAutosizing;
 - (void)invalidateSize;
 - (void)invalidateTextLayout;
-- (void)layoutManagerNeedsLayout:(id)a3;
-- (void)layoutSearchForAnnotationWithHitBlock:(id)a3;
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5;
+- (void)layoutManagerNeedsLayout:(id)layout;
+- (void)layoutSearchForAnnotationWithHitBlock:(id)block;
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block;
 - (void)p_invalidateTextLayout;
 - (void)p_validateTextLayout;
 - (void)parentDidChange;
-- (void)parentWillChangeTo:(id)a3;
+- (void)parentWillChangeTo:(id)to;
 - (void)validate;
-- (void)wrappableChildInvalidated:(id)a3;
+- (void)wrappableChildInvalidated:(id)invalidated;
 @end
 
 @implementation TSWPLayout
 
-- (TSWPLayout)initWithInfo:(id)a3 frame:(CGRect)a4
+- (TSWPLayout)initWithInfo:(id)info frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = TSWPLayout;
-  v8 = [(TSDLayout *)&v11 initWithInfo:a3];
+  v8 = [(TSDLayout *)&v11 initWithInfo:info];
   if (v8)
   {
     v8->_columns = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (width > 0.0)
     {
-      v9 = [[TSDLayoutGeometry alloc] initWithFrame:x, y, width, height];
-      [(TSDAbstractLayout *)v8 setGeometry:v9];
+      height = [[TSDLayoutGeometry alloc] initWithFrame:x, y, width, height];
+      [(TSDAbstractLayout *)v8 setGeometry:height];
     }
   }
 
@@ -139,13 +139,13 @@
 
 - (BOOL)p_parentAutosizes
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (v3)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (p_wpLayoutParent)
   {
-    LOBYTE(v3) = [v3 autosizeFlagsForTextLayout:self] != 0;
+    LOBYTE(p_wpLayoutParent) = [p_wpLayoutParent autosizeFlagsForTextLayout:self] != 0;
   }
 
-  return v3;
+  return p_wpLayoutParent;
 }
 
 - (id)dependentLayouts
@@ -153,13 +153,13 @@
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = TSWPLayout;
-  v3 = [(TSDLayout *)&v17 dependentLayouts];
-  v4 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (v4)
+  dependentLayouts = [(TSDLayout *)&v17 dependentLayouts];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (p_wpLayoutParent)
   {
-    v5 = v4;
-    v6 = v3 ? [v3 mutableCopy] : objc_msgSend(MEMORY[0x277CBEB18], "array");
-    v3 = v6;
+    v5 = p_wpLayoutParent;
+    v6 = dependentLayouts ? [dependentLayouts mutableCopy] : objc_msgSend(MEMORY[0x277CBEB18], "array");
+    dependentLayouts = v6;
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -180,7 +180,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [v3 addObject:*(*(&v13 + 1) + 8 * v11++)];
+          [dependentLayouts addObject:*(*(&v13 + 1) + 8 * v11++)];
         }
 
         while (v9 != v11);
@@ -191,7 +191,7 @@
     }
   }
 
-  return v3;
+  return dependentLayouts;
 }
 
 - (id)reliedOnLayouts
@@ -234,16 +234,16 @@
     textLayoutValid = self->_textLayoutValid;
     if (!textLayoutValid)
     {
-      v4 = [(TSWPLayout *)self p_wpLayoutParent];
+      p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
       v5 = objc_opt_respondsToSelector();
       v6 = 10.0;
       v7 = 10.0;
       if (v5)
       {
-        [v4 initialTextSize];
+        [p_wpLayoutParent initialTextSize];
       }
 
-      [v4 autosizedFrameForTextLayout:self textSize:{v7, v6}];
+      [p_wpLayoutParent autosizedFrameForTextLayout:self textSize:{v7, v6}];
       if (v10 > 0.0)
       {
         v12 = [[TSDLayoutGeometry alloc] initWithFrame:v8, v9, v10, v11];
@@ -284,11 +284,11 @@ LABEL_12:
     v7 = *(MEMORY[0x277CBF398] + 8);
     v8 = *(MEMORY[0x277CBF398] + 16);
     v9 = *(MEMORY[0x277CBF398] + 24);
-    v10 = [(TSWPLayout *)self p_wpLayoutParent];
-    if (v10)
+    p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+    if (p_wpLayoutParent)
     {
-      v11 = v10;
-      if ([v10 autosizeFlagsForTextLayout:self])
+      v11 = p_wpLayoutParent;
+      if ([p_wpLayoutParent autosizeFlagsForTextLayout:self])
       {
         x = *v5;
         y = v5[1];
@@ -377,9 +377,9 @@ LABEL_12:
 
       else
       {
-        v43 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayout computeLayoutGeometry]"];
-        [v43 handleFailureInFunction:v44 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 288, @"TSWPLayout requires a parent"}];
+        [currentHandler handleFailureInFunction:v44 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 288, @"TSWPLayout requires a parent"}];
       }
     }
 
@@ -391,12 +391,12 @@ LABEL_12:
 
 - (void)initialLayoutState
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
   if (objc_opt_respondsToSelector())
   {
     if (objc_opt_respondsToSelector())
     {
-      [v3 allowsLastLineTruncation:self];
+      [p_wpLayoutParent allowsLastLineTruncation:self];
     }
 
     operator new();
@@ -421,12 +421,12 @@ LABEL_12:
 
 - (void)p_invalidateTextLayout
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
   self->_textLayoutValid = 0;
-  if (v3)
+  if (p_wpLayoutParent)
   {
-    v4 = v3;
-    if ([v3 autosizeFlagsForTextLayout:self])
+    v4 = p_wpLayoutParent;
+    if ([p_wpLayoutParent autosizeFlagsForTextLayout:self])
     {
       if (([v4 invalidGeometry] & 1) == 0)
       {
@@ -487,12 +487,12 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
 
 - (void)invalidateParentForAutosizing
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
 
-  [v3 invalidateForAutosizingTextLayout:self];
+  [p_wpLayoutParent invalidateForAutosizingTextLayout:self];
 }
 
-- (double)baselineForCharIndex:(unsigned int)a3
+- (double)baselineForCharIndex:(unsigned int)index
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
@@ -516,10 +516,10 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 range];
-        if (a3 >= v11 && a3 - v11 < v12)
+        range = [v10 range];
+        if (index >= range && index - range < v12)
         {
-          [v10 baselineOfLineFragmentAtCharIndex:a3];
+          [v10 baselineOfLineFragmentAtCharIndex:index];
           return v14;
         }
       }
@@ -546,7 +546,7 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)parentWillChangeTo:(id)a3
+- (void)parentWillChangeTo:(id)to
 {
   [(TSWPLayoutManager *)self->_layoutManager clearOwner];
   layoutManager = self->_layoutManager;
@@ -567,7 +567,7 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
   }
 }
 
-- (void)wrappableChildInvalidated:(id)a3
+- (void)wrappableChildInvalidated:(id)invalidated
 {
   v4.receiver = self;
   v4.super_class = TSWPLayout;
@@ -589,8 +589,8 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = [(TSWPLayout *)self columns];
-  v12 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  columns = [(TSWPLayout *)self columns];
+  v12 = [(NSMutableArray *)columns countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -602,7 +602,7 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(columns);
         }
 
         [*(*(&v24 + 1) + 8 * v15) erasableBounds:0];
@@ -623,7 +623,7 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
       }
 
       while (v13 != v15);
-      v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v13 = [(NSMutableArray *)columns countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v13);
@@ -640,13 +640,13 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
   return result;
 }
 
-- (CGRect)p_protectedRectWithinLayoutForSelectionRect:(CGRect)a3
+- (CGRect)p_protectedRectWithinLayoutForSelectionRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!TSDRectIsFinite(a3.origin.x, a3.origin.y, a3.size.width, a3.size.height))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!TSDRectIsFinite(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height))
   {
     [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self geometry] size];
     y = v8;
@@ -666,10 +666,10 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
   return result;
 }
 
-- (CGPoint)calculatePointFromSearchReference:(id)a3
+- (CGPoint)calculatePointFromSearchReference:(id)reference
 {
   objc_opt_class();
-  [a3 selection];
+  [reference selection];
   v5 = TSUDynamicCast();
   v6 = 0.0;
   if (v5)
@@ -699,17 +699,17 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block
 {
-  v9 = [(TSDLayout *)self info];
-  v10 = [(TSDInfo *)v9 range];
+  info = [(TSDLayout *)self info];
+  range = [(TSDInfo *)info range];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__TSWPLayout_layoutSearchForString_options_hitBlock___block_invoke;
   v14[3] = &unk_279D497A0;
   v14[4] = self;
-  v14[5] = a5;
-  v12 = [(TSDInfo *)v9 searchInRange:v10 forString:v11 options:a3 onHit:a4, v14];
+  v14[5] = block;
+  v12 = [(TSDInfo *)info searchInRange:range forString:v11 options:string onHit:options, v14];
   if (v12)
   {
     v13 = v12;
@@ -717,7 +717,7 @@ uint64_t __42__TSWPLayout_invalidateForPageCountChange__block_invoke(uint64_t a1
     {
       do
       {
-        [(TSDInfo *)v9 continueSearch:v13];
+        [(TSDInfo *)info continueSearch:v13];
       }
 
       while (![v13 isComplete]);
@@ -734,25 +734,25 @@ uint64_t __53__TSWPLayout_layoutSearchForString_options_hitBlock___block_invoke(
   return v4();
 }
 
-- (void)layoutSearchForAnnotationWithHitBlock:(id)a3
+- (void)layoutSearchForAnnotationWithHitBlock:(id)block
 {
-  v5 = [(TSDLayout *)self info];
-  v6 = [(TSDInfo *)v5 range];
+  info = [(TSDLayout *)self info];
+  range = [(TSDInfo *)info range];
   v8 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke;
   v10[3] = &unk_279D497A0;
   v10[4] = self;
-  v10[5] = a3;
-  [(TSDInfo *)v5 findCommentsInRange:v6 onHit:v7, v10];
+  v10[5] = block;
+  [(TSDInfo *)info findCommentsInRange:range onHit:v7, v10];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke_2;
   v9[3] = &unk_279D497A0;
   v9[4] = self;
-  v9[5] = a3;
-  [(TSDInfo *)v5 findChangesInRange:v6 onHit:v8, v9];
+  v9[5] = block;
+  [(TSDInfo *)info findChangesInRange:range onHit:v8, v9];
 }
 
 uint64_t __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke(uint64_t a1, void *a2)
@@ -773,12 +773,12 @@ uint64_t __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke_2
   return v4();
 }
 
-- (id)columnMetricsForCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (id)columnMetricsForCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
-  if (a4)
+  if (range)
   {
-    a4->location = [(TSWPStorage *)[(TSWPLayoutManager *)[(TSWPLayout *)self layoutManager] storage] range];
-    a4->length = v6;
+    range->location = [(TSWPStorage *)[(TSWPLayoutManager *)[(TSWPLayout *)self layoutManager] storage] range];
+    range->length = v6;
   }
 
   [(TSDAbstractLayout *)self parent];
@@ -805,8 +805,8 @@ uint64_t __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke_2
   [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self geometry] size];
   v4 = v3;
   v6 = v5;
-  v7 = [(TSWPLayout *)self textIsVertical];
-  if (v7)
+  textIsVertical = [(TSWPLayout *)self textIsVertical];
+  if (textIsVertical)
   {
     v8 = v6;
   }
@@ -816,15 +816,15 @@ uint64_t __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke_2
     v8 = v4;
   }
 
-  if (!v7)
+  if (!textIsVertical)
   {
     v4 = v6;
   }
 
-  v9 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (v9)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (p_wpLayoutParent)
   {
-    v10 = [v9 autosizeFlagsForTextLayout:self];
+    v10 = [p_wpLayoutParent autosizeFlagsForTextLayout:self];
     if ((v10 & 8) != 0)
     {
       v8 = 0.0;
@@ -848,16 +848,16 @@ uint64_t __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke_2
   [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self geometry] size];
   v4 = v3;
   v6 = v5;
-  v7 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (!v7)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (!p_wpLayoutParent)
   {
     v10 = v4;
     goto LABEL_17;
   }
 
-  v8 = v7;
-  v9 = [(TSWPLayout *)self textIsVertical];
-  if (v9)
+  v8 = p_wpLayoutParent;
+  textIsVertical = [(TSWPLayout *)self textIsVertical];
+  if (textIsVertical)
   {
     v10 = v6;
   }
@@ -867,7 +867,7 @@ uint64_t __52__TSWPLayout_layoutSearchForAnnotationWithHitBlock___block_invoke_2
     v10 = v4;
   }
 
-  if (v9)
+  if (textIsVertical)
   {
     v6 = v4;
   }
@@ -919,9 +919,9 @@ LABEL_17:
 
 - (CGSize)currentSize
 {
-  v2 = [(TSDAbstractLayout *)self geometry];
+  geometry = [(TSDAbstractLayout *)self geometry];
 
-  [(TSDLayoutGeometry *)v2 size];
+  [(TSDLayoutGeometry *)geometry size];
   result.height = v4;
   result.width = v3;
   return result;
@@ -929,9 +929,9 @@ LABEL_17:
 
 - (CGPoint)position
 {
-  v2 = [(TSDAbstractLayout *)self geometry];
+  geometry = [(TSDAbstractLayout *)self geometry];
 
-  [(TSDLayoutGeometry *)v2 frame];
+  [(TSDLayoutGeometry *)geometry frame];
   result.y = v4;
   result.x = v3;
   return result;
@@ -948,37 +948,37 @@ LABEL_17:
 
 - (unsigned)autosizeFlags
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (v3)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (p_wpLayoutParent)
   {
 
-    LODWORD(v3) = [v3 autosizeFlagsForTextLayout:self];
+    LODWORD(p_wpLayoutParent) = [p_wpLayoutParent autosizeFlagsForTextLayout:self];
   }
 
-  return v3;
+  return p_wpLayoutParent;
 }
 
 - (unsigned)verticalAlignment
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (v3)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (p_wpLayoutParent)
   {
 
-    LODWORD(v3) = [v3 verticalAlignmentForTextLayout:self];
+    LODWORD(p_wpLayoutParent) = [p_wpLayoutParent verticalAlignmentForTextLayout:self];
   }
 
-  return v3;
+  return p_wpLayoutParent;
 }
 
 - (unsigned)naturalAlignment
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (!v3)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (!p_wpLayoutParent)
   {
     return 4;
   }
 
-  v4 = v3;
+  v4 = p_wpLayoutParent;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 4;
@@ -987,12 +987,12 @@ LABEL_17:
   return [v4 naturalAlignmentForTextLayout:self];
 }
 
-- (CGRect)targetRectForCanvasRect:(CGRect)a3
+- (CGRect)targetRectForCanvasRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TSDAbstractLayout *)self frameInRoot];
   v8 = -v7;
   v10 = -v9;
@@ -1006,12 +1006,12 @@ LABEL_17:
 
 - (TSDCanvas)canvas
 {
-  v2 = [(TSDLayout *)self layoutController];
+  layoutController = [(TSDLayout *)self layoutController];
 
-  return [v2 canvas];
+  return [layoutController canvas];
 }
 
-- (id)layoutForInlineDrawable:(id)a3
+- (id)layoutForInlineDrawable:(id)drawable
 {
   v18 = *MEMORY[0x277D85DE8];
   v14 = 0u;
@@ -1037,7 +1037,7 @@ LABEL_3:
       if (v10)
       {
         v11 = v10;
-        if ([v10 info] == a3)
+        if ([v10 info] == drawable)
         {
           break;
         }
@@ -1059,7 +1059,7 @@ LABEL_3:
   else
   {
 LABEL_10:
-    v11 = [objc_alloc(objc_msgSend(a3 "layoutClass"))];
+    v11 = [objc_alloc(objc_msgSend(drawable "layoutClass"))];
     if (v11)
     {
       [(TSDAbstractLayout *)self addChild:v11];
@@ -1070,22 +1070,22 @@ LABEL_10:
   return v11;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayout validatedLayoutForAnchoredDrawable:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 783, @"Anchored attachments not supported in non-body text."}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 783, @"Anchored attachments not supported in non-body text."}];
   return 0;
 }
 
-- (void)addAttachmentLayout:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  if ([a3 parent] != self)
+  if ([layout parent] != self)
   {
-    [(TSDAbstractLayout *)self addChild:a3];
+    [(TSDAbstractLayout *)self addChild:layout];
   }
 
-  [a3 updateChildrenFromInfo];
+  [layout updateChildrenFromInfo];
 }
 
 - (double)maxAnchorY
@@ -1096,20 +1096,20 @@ LABEL_10:
   return v4 + v5;
 }
 
-- (id)p_firstAncestorRespondingToSelector:(SEL)a3
+- (id)p_firstAncestorRespondingToSelector:(SEL)selector
 {
   while (1)
   {
-    v3 = [(TSDAbstractLayout *)self parent];
-    if (!v3 || (objc_opt_respondsToSelector() & 1) != 0)
+    parent = [(TSDAbstractLayout *)self parent];
+    if (!parent || (objc_opt_respondsToSelector() & 1) != 0)
     {
       break;
     }
 
-    self = v3;
+    self = parent;
   }
 
-  return v3;
+  return parent;
 }
 
 - (unint64_t)pageNumber
@@ -1136,13 +1136,13 @@ LABEL_10:
 
 - (BOOL)textIsVertical
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (!v3)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (!p_wpLayoutParent)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = p_wpLayoutParent;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -1157,10 +1157,10 @@ LABEL_10:
   v4 = *(MEMORY[0x277CBF398] + 8);
   v5 = *(MEMORY[0x277CBF398] + 16);
   v6 = *(MEMORY[0x277CBF398] + 24);
-  v7 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
   if (objc_opt_respondsToSelector())
   {
-    [v7 maskRectForTextLayout:self];
+    [p_wpLayoutParent maskRectForTextLayout:self];
     v3 = v8;
     v4 = v9;
     v5 = v10;
@@ -1180,52 +1180,52 @@ LABEL_10:
 
 - (BOOL)isLayoutOffscreen
 {
-  v2 = [(TSDLayout *)self layoutController];
+  layoutController = [(TSDLayout *)self layoutController];
 
-  return [v2 isLayoutOffscreen];
+  return [layoutController isLayoutOffscreen];
 }
 
 - (BOOL)allowsLastLineTruncation
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [v3 allowsLastLineTruncation:self];
+  return [p_wpLayoutParent allowsLastLineTruncation:self];
 }
 
 - (unsigned)maxLineCount
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [v3 maxLineCountForTextLayout:self];
+  return [p_wpLayoutParent maxLineCountForTextLayout:self];
 }
 
 - (BOOL)shouldHyphenate
 {
   v3 = [objc_msgSend(objc_msgSend(-[TSDLayout layoutController](self "layoutController")];
-  v4 = [(TSWPLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return v3;
   }
 
-  return [v4 shouldHyphenateTextLayout:self];
+  return [p_wpLayoutParent shouldHyphenateTextLayout:self];
 }
 
-- (void)layoutManagerNeedsLayout:(id)a3
+- (void)layoutManagerNeedsLayout:(id)layout
 {
-  if ([(TSWPLayout *)self layoutManager]!= a3)
+  if ([(TSWPLayout *)self layoutManager]!= layout)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayout layoutManagerNeedsLayout:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 952, @"bad layout manager"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 952, @"bad layout manager"}];
   }
 
   [(TSWPLayout *)self invalidateTextLayout];
@@ -1239,17 +1239,17 @@ LABEL_10:
 
 - (id)textWrapper
 {
-  v2 = [(TSDAbstractLayout *)self parent];
+  parent = [(TSDAbstractLayout *)self parent];
   if (objc_opt_respondsToSelector())
   {
 
-    return [(TSDAbstractLayout *)v2 textWrapperForExteriorWrap];
+    return [(TSDAbstractLayout *)parent textWrapperForExteriorWrap];
   }
 
   else if (objc_opt_respondsToSelector())
   {
 
-    return [(TSDAbstractLayout *)v2 textWrapper];
+    return [(TSDAbstractLayout *)parent textWrapper];
   }
 
   else
@@ -1258,13 +1258,13 @@ LABEL_10:
   }
 }
 
-- (id)lineHintsForTarget:(id)a3
+- (id)lineHintsForTarget:(id)target
 {
-  if (a3 != self)
+  if (target != self)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPLayout lineHintsForTarget:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 987, @"unexpected target"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPLayout.mm"), 987, @"unexpected target"}];
   }
 
   [(TSWPLayout *)self p_wpLayoutParent];
@@ -1272,17 +1272,17 @@ LABEL_10:
   result = TSUDynamicCast();
   if (result)
   {
-    v7 = [result info];
+    info = [result info];
 
-    return [v7 lineHints];
+    return [info lineHints];
   }
 
   return result;
 }
 
-- (CGRect)rectForSelection:(id)a3
+- (CGRect)rectForSelection:(id)selection
 {
-  [(TSWPLayout *)self p_rectForSelection:a3 useParagraphModeRects:1];
+  [(TSWPLayout *)self p_rectForSelection:selection useParagraphModeRects:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1290,9 +1290,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)rectForPresentingAnnotationPopoverForSelection:(id)a3
+- (CGRect)rectForPresentingAnnotationPopoverForSelection:(id)selection
 {
-  [(TSWPLayout *)self p_rectForSelection:a3 useParagraphModeRects:0];
+  [(TSWPLayout *)self p_rectForSelection:selection useParagraphModeRects:0];
 
   [(TSWPLayout *)self p_protectedRectWithinLayoutForSelectionRect:?];
   result.size.height = v7;
@@ -1302,9 +1302,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)p_rectForSelection:(id)a3 useParagraphModeRects:(BOOL)a4
+- (CGRect)p_rectForSelection:(id)selection useParagraphModeRects:(BOOL)rects
 {
-  v4 = a4;
+  rectsCopy = rects;
   v23.receiver = self;
   v23.super_class = TSWPLayout;
   [(TSDLayout *)&v23 rectForSelection:?];
@@ -1316,7 +1316,7 @@ LABEL_10:
   v14 = TSUDynamicCast();
   if (v14)
   {
-    [TSWPColumn rectForSelection:v14 withColumns:[(TSWPLayout *)self columns] useParagraphModeRects:v4];
+    [TSWPColumn rectForSelection:v14 withColumns:[(TSWPLayout *)self columns] useParagraphModeRects:rectsCopy];
     v7 = v15;
     v9 = v16;
     v11 = v17;
@@ -1336,12 +1336,12 @@ LABEL_10:
 
 - (id)styleProvider
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (!v3 || (v4 = v3, (objc_opt_respondsToSelector() & 1) == 0) || (result = [v4 styleProviderForLayout:self]) == 0)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (!p_wpLayoutParent || (v4 = p_wpLayoutParent, (objc_opt_respondsToSelector() & 1) == 0) || (result = [v4 styleProviderForLayout:self]) == 0)
   {
-    v6 = [(TSWPLayoutManager *)[(TSWPLayout *)self layoutManager] storage];
+    storage = [(TSWPLayoutManager *)[(TSWPLayout *)self layoutManager] storage];
 
-    return [TSWPStorageStyleProvider styleProviderForStorage:v6];
+    return [TSWPStorageStyleProvider styleProviderForStorage:storage];
   }
 
   return result;
@@ -1349,13 +1349,13 @@ LABEL_10:
 
 - (TSDBezierPath)interiorClippingPath
 {
-  v2 = [(TSDAbstractLayout *)self parent];
+  parent = [(TSDAbstractLayout *)self parent];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [(TSDAbstractLayout *)v2 interiorClippingPath];
+  return [(TSDAbstractLayout *)parent interiorClippingPath];
 }
 
 - (unsigned)lineCount
@@ -1412,13 +1412,13 @@ LABEL_10:
 
 - (BOOL)shouldWrapAroundExternalDrawables
 {
-  v3 = [(TSWPLayout *)self p_wpLayoutParent];
-  if (!v3)
+  p_wpLayoutParent = [(TSWPLayout *)self p_wpLayoutParent];
+  if (!p_wpLayoutParent)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = p_wpLayoutParent;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;

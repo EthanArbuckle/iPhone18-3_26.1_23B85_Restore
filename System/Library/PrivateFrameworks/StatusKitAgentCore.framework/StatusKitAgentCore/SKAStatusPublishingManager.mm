@@ -1,42 +1,42 @@
 @interface SKAStatusPublishingManager
-+ (id)_errorForDuplicateStatusPublishRequestWithIdentifier:(id)a3;
-+ (id)_errorForStatusPublishRequestWithIdentifier:(id)a3 requestedStatusCreationDate:(id)a4 isOlderThanExistingStatus:(id)a5 existingStatusCreationDate:(id)a6;
++ (id)_errorForDuplicateStatusPublishRequestWithIdentifier:(id)identifier;
++ (id)_errorForStatusPublishRequestWithIdentifier:(id)identifier requestedStatusCreationDate:(id)date isOlderThanExistingStatus:(id)status existingStatusCreationDate:(id)creationDate;
 + (id)logger;
-- (BOOL)_shouldAbandonRequestForError:(id)a3;
-- (BOOL)_shouldAllowPublishForPublishRequest:(id)a3 onChannel:(id)a4 error:(id *)a5;
+- (BOOL)_shouldAbandonRequestForError:(id)error;
+- (BOOL)_shouldAllowPublishForPublishRequest:(id)request onChannel:(id)channel error:(id *)error;
 - (BOOL)_shouldClientRateLimit;
-- (BOOL)_shouldRetryWithDelayForError:(id)a3;
-- (BOOL)_shouldRollChannelForError:(id)a3;
-- (SKAStatusPublishingManager)initWithDatabaseManager:(id)a3 channelManager:(id)a4 accountProvider:(id)a5 encryptionManager:(id)a6 invitationManager:(id)a7;
+- (BOOL)_shouldRetryWithDelayForError:(id)error;
+- (BOOL)_shouldRollChannelForError:(id)error;
+- (SKAStatusPublishingManager)initWithDatabaseManager:(id)manager channelManager:(id)channelManager accountProvider:(id)provider encryptionManager:(id)encryptionManager invitationManager:(id)invitationManager;
 - (double)_pendingDelayTime;
 - (double)_rapidPublishesTimescale;
 - (double)_rateLimitDelayTime;
-- (id)pendingPublishRequestsForStatusTypeIdentifier:(id)a3;
+- (id)pendingPublishRequestsForStatusTypeIdentifier:(id)identifier;
 - (int64_t)_maxRapidPublishes;
 - (int64_t)_maxRetryCount;
 - (void)_markPublishAttempt;
-- (void)_publishStatusRequest:(id)a3 statusTypeIdentifier:(id)a4 afterTime:(double)a5 isPendingPublish:(BOOL)a6 retryCount:(unint64_t)a7 completion:(id)a8;
-- (void)_removePendingPublishRequestWithUniqueIdentifier:(id)a3 databaseContext:(id)a4;
-- (void)_removePendingPublishRequestsForStatusTypeIdentifier:(id)a3 olderThanRequest:(id)a4 databaseContext:(id)a5;
+- (void)_publishStatusRequest:(id)request statusTypeIdentifier:(id)identifier afterTime:(double)time isPendingPublish:(BOOL)publish retryCount:(unint64_t)count completion:(id)completion;
+- (void)_removePendingPublishRequestWithUniqueIdentifier:(id)identifier databaseContext:(id)context;
+- (void)_removePendingPublishRequestsForStatusTypeIdentifier:(id)identifier olderThanRequest:(id)request databaseContext:(id)context;
 - (void)_shouldClientRateLimit;
-- (void)createPersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4 completion:(id)a5;
-- (void)ensurePendingPublishRequestExistsWithPublishRequest:(id)a3 forStatusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (void)findOrCreatePersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4 completion:(id)a5;
-- (void)provisionPayloads:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5;
-- (void)publishPendingRequestForReason:(int64_t)a3;
-- (void)publishPendingRequestsWithDelay:(double)a3;
-- (void)removePendingPublishRequestsForStatusTypeIdentifier:(id)a3 olderThanRequest:(id)a4;
+- (void)createPersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context completion:(id)completion;
+- (void)ensurePendingPublishRequestExistsWithPublishRequest:(id)request forStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (void)findOrCreatePersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context completion:(id)completion;
+- (void)provisionPayloads:(id)payloads statusTypeIdentifier:(id)identifier completion:(id)completion;
+- (void)publishPendingRequestForReason:(int64_t)reason;
+- (void)publishPendingRequestsWithDelay:(double)delay;
+- (void)removePendingPublishRequestsForStatusTypeIdentifier:(id)identifier olderThanRequest:(id)request;
 @end
 
 @implementation SKAStatusPublishingManager
 
-- (SKAStatusPublishingManager)initWithDatabaseManager:(id)a3 channelManager:(id)a4 accountProvider:(id)a5 encryptionManager:(id)a6 invitationManager:(id)a7
+- (SKAStatusPublishingManager)initWithDatabaseManager:(id)manager channelManager:(id)channelManager accountProvider:(id)provider encryptionManager:(id)encryptionManager invitationManager:(id)invitationManager
 {
-  v24 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  managerCopy = manager;
+  channelManagerCopy = channelManager;
+  providerCopy = provider;
+  encryptionManagerCopy = encryptionManager;
+  invitationManagerCopy = invitationManager;
   v25.receiver = self;
   v25.super_class = SKAStatusPublishingManager;
   v17 = [(SKAStatusPublishingManager *)&v25 init];
@@ -44,11 +44,11 @@
   if (v17)
   {
     *&v17->_pendingRequestScheduled = 0;
-    objc_storeStrong(&v17->_databaseManager, a3);
-    objc_storeStrong(&v18->_channelManager, a4);
-    objc_storeStrong(&v18->_encryptionManager, a6);
-    objc_storeStrong(&v18->_accountProvider, a5);
-    objc_storeStrong(&v18->_invitationManager, a7);
+    objc_storeStrong(&v17->_databaseManager, manager);
+    objc_storeStrong(&v18->_channelManager, channelManager);
+    objc_storeStrong(&v18->_encryptionManager, encryptionManager);
+    objc_storeStrong(&v18->_accountProvider, provider);
+    objc_storeStrong(&v18->_invitationManager, invitationManager);
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v20 = dispatch_queue_attr_make_with_qos_class(v19, QOS_CLASS_DEFAULT, 0);
 
@@ -60,39 +60,39 @@
   return v18;
 }
 
-- (void)removePendingPublishRequestsForStatusTypeIdentifier:(id)a3 olderThanRequest:(id)a4
+- (void)removePendingPublishRequestsForStatusTypeIdentifier:(id)identifier olderThanRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKAStatusPublishingManager *)self databaseManager];
-  v9 = [v8 newBackgroundContext];
+  requestCopy = request;
+  identifierCopy = identifier;
+  databaseManager = [(SKAStatusPublishingManager *)self databaseManager];
+  newBackgroundContext = [databaseManager newBackgroundContext];
 
-  [(SKAStatusPublishingManager *)self _removePendingPublishRequestsForStatusTypeIdentifier:v7 olderThanRequest:v6 databaseContext:v9];
+  [(SKAStatusPublishingManager *)self _removePendingPublishRequestsForStatusTypeIdentifier:identifierCopy olderThanRequest:requestCopy databaseContext:newBackgroundContext];
 }
 
-- (void)provisionPayloads:(id)a3 statusTypeIdentifier:(id)a4 completion:(id)a5
+- (void)provisionPayloads:(id)payloads statusTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadsCopy = payloads;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = os_transaction_create();
-  v12 = [(SKAStatusPublishingManager *)self databaseManager];
-  v13 = [v12 newBackgroundContext];
+  databaseManager = [(SKAStatusPublishingManager *)self databaseManager];
+  newBackgroundContext = [databaseManager newBackgroundContext];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__SKAStatusPublishingManager_provisionPayloads_statusTypeIdentifier_completion___block_invoke;
   v18[3] = &unk_27843F290;
-  v19 = v8;
-  v20 = self;
-  v22 = v9;
-  v23 = v10;
+  v19 = payloadsCopy;
+  selfCopy = self;
+  v22 = identifierCopy;
+  v23 = completionCopy;
   v21 = v11;
-  v14 = v9;
+  v14 = identifierCopy;
   v15 = v11;
-  v16 = v10;
-  v17 = v8;
-  [(SKAStatusPublishingManager *)self findOrCreatePersonalChannelForStatusTypeIdentifier:v14 databaseContext:v13 completion:v18];
+  v16 = completionCopy;
+  v17 = payloadsCopy;
+  [(SKAStatusPublishingManager *)self findOrCreatePersonalChannelForStatusTypeIdentifier:v14 databaseContext:newBackgroundContext completion:v18];
 }
 
 void __80__SKAStatusPublishingManager_provisionPayloads_statusTypeIdentifier_completion___block_invoke(id *a1, void *a2, void *a3)
@@ -327,30 +327,30 @@ void __80__SKAStatusPublishingManager_provisionPayloads_statusTypeIdentifier_com
   v10 = objc_opt_self();
 }
 
-- (void)_publishStatusRequest:(id)a3 statusTypeIdentifier:(id)a4 afterTime:(double)a5 isPendingPublish:(BOOL)a6 retryCount:(unint64_t)a7 completion:(id)a8
+- (void)_publishStatusRequest:(id)request statusTypeIdentifier:(id)identifier afterTime:(double)time isPendingPublish:(BOOL)publish retryCount:(unint64_t)count completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  requestCopy = request;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v17 = os_transaction_create();
-  v18 = dispatch_time(0, (a5 * 1000000000.0));
-  v19 = [(SKAStatusPublishingManager *)self internalWorkQueue];
+  v18 = dispatch_time(0, (time * 1000000000.0));
+  internalWorkQueue = [(SKAStatusPublishingManager *)self internalWorkQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __122__SKAStatusPublishingManager__publishStatusRequest_statusTypeIdentifier_afterTime_isPendingPublish_retryCount_completion___block_invoke;
   block[3] = &unk_27843F358;
   block[4] = self;
-  v25 = v14;
-  v30 = a6;
-  v28 = v16;
-  v29 = a7;
-  v26 = v15;
+  v25 = requestCopy;
+  publishCopy = publish;
+  v28 = completionCopy;
+  countCopy = count;
+  v26 = identifierCopy;
   v27 = v17;
   v20 = v17;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
-  dispatch_after(v18, v19, block);
+  v21 = completionCopy;
+  v22 = identifierCopy;
+  v23 = requestCopy;
+  dispatch_after(v18, internalWorkQueue, block);
 }
 
 void __122__SKAStatusPublishingManager__publishStatusRequest_statusTypeIdentifier_afterTime_isPendingPublish_retryCount_completion___block_invoke(uint64_t a1)
@@ -708,59 +708,59 @@ void __122__SKAStatusPublishingManager__publishStatusRequest_statusTypeIdentifie
   }
 }
 
-- (void)publishPendingRequestsWithDelay:(double)a3
+- (void)publishPendingRequestsWithDelay:(double)delay
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(SKAStatusPublishingManager *)v4 pendingRequestScheduled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SKAStatusPublishingManager *)selfCopy pendingRequestScheduled])
   {
-    v5 = +[SKAStatusPublishingManager logger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    newBackgroundContext = +[SKAStatusPublishingManager logger];
+    if (os_log_type_enabled(newBackgroundContext, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Pending publish request has already been scheduled.  Not enqueuing again", buf, 2u);
+      _os_log_impl(&dword_220099000, newBackgroundContext, OS_LOG_TYPE_DEFAULT, "Pending publish request has already been scheduled.  Not enqueuing again", buf, 2u);
     }
   }
 
   else
   {
-    v6 = [(SKAStatusPublishingManager *)v4 databaseManager];
-    v5 = [v6 newBackgroundContext];
+    databaseManager = [(SKAStatusPublishingManager *)selfCopy databaseManager];
+    newBackgroundContext = [databaseManager newBackgroundContext];
 
     *buf = 0;
     v19 = buf;
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__2;
     v22 = __Block_byref_object_dispose__2;
-    v23 = [(SKADatabaseManaging *)v4->_databaseManager existingPendingPublishRequestsWithDatabaseContext:v5];
+    v23 = [(SKADatabaseManaging *)selfCopy->_databaseManager existingPendingPublishRequestsWithDatabaseContext:newBackgroundContext];
     if ([*(v19 + 5) count])
     {
       v7 = +[SKAStatusPublishingManager logger];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = [*(v19 + 5) count];
-        v9 = a3;
+        delayCopy = delay;
         *v24 = 134218240;
         v25 = v8;
         v26 = 2048;
-        v27 = v9;
+        v27 = delayCopy;
         _os_log_impl(&dword_220099000, v7, OS_LOG_TYPE_DEFAULT, "Will attempt to process %ld pending publish requests after a %.2f second delay", v24, 0x16u);
       }
 
       v10 = os_transaction_create();
-      [(SKAStatusPublishingManager *)v4 setPendingRequestScheduled:1];
-      v11 = dispatch_time(0, (a3 * 1000000000.0));
-      v12 = [(SKAStatusPublishingManager *)v4 internalWorkQueue];
+      [(SKAStatusPublishingManager *)selfCopy setPendingRequestScheduled:1];
+      v11 = dispatch_time(0, (delay * 1000000000.0));
+      internalWorkQueue = [(SKAStatusPublishingManager *)selfCopy internalWorkQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __62__SKAStatusPublishingManager_publishPendingRequestsWithDelay___block_invoke;
       block[3] = &unk_27843F3A8;
       v16 = v10;
       v17 = buf;
-      block[4] = v4;
+      block[4] = selfCopy;
       v13 = v10;
-      dispatch_after(v11, v12, block);
+      dispatch_after(v11, internalWorkQueue, block);
     }
 
     else
@@ -776,7 +776,7 @@ void __122__SKAStatusPublishingManager__publishStatusRequest_statusTypeIdentifie
     _Block_object_dispose(buf, 8);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -963,14 +963,14 @@ void __62__SKAStatusPublishingManager_publishPendingRequestsWithDelay___block_in
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishPendingRequestForReason:(int64_t)a3
+- (void)publishPendingRequestForReason:(int64_t)reason
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = +[SKAStatusPublishingManager logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Publish requested for reason: %ld", &v7, 0xCu);
   }
 
@@ -979,30 +979,30 @@ void __62__SKAStatusPublishingManager_publishPendingRequestsWithDelay___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pendingPublishRequestsForStatusTypeIdentifier:(id)a3
+- (id)pendingPublishRequestsForStatusTypeIdentifier:(id)identifier
 {
   databaseManager = self->_databaseManager;
-  v5 = a3;
-  v6 = [(SKADatabaseManaging *)databaseManager newBackgroundContext];
-  v7 = [(SKAStatusPublishingManager *)self _pendingPublishRequestsForStatusTypeIdentifier:v5 databaseContext:v6];
+  identifierCopy = identifier;
+  newBackgroundContext = [(SKADatabaseManaging *)databaseManager newBackgroundContext];
+  v7 = [(SKAStatusPublishingManager *)self _pendingPublishRequestsForStatusTypeIdentifier:identifierCopy databaseContext:newBackgroundContext];
 
   return v7;
 }
 
-- (BOOL)_shouldAllowPublishForPublishRequest:(id)a3 onChannel:(id)a4 error:(id *)a5
+- (BOOL)_shouldAllowPublishForPublishRequest:(id)request onChannel:(id)channel error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKAStatusPublishingManager *)self databaseManager];
-  v11 = [v10 newBackgroundContext];
+  requestCopy = request;
+  channelCopy = channel;
+  databaseManager = [(SKAStatusPublishingManager *)self databaseManager];
+  newBackgroundContext = [databaseManager newBackgroundContext];
 
-  v12 = [(SKAStatusPublishingManager *)self databaseManager];
-  v13 = [v12 existingStatusForChannel:v9 databaseContext:v11];
+  databaseManager2 = [(SKAStatusPublishingManager *)self databaseManager];
+  v13 = [databaseManager2 existingStatusForChannel:channelCopy databaseContext:newBackgroundContext];
 
-  v14 = [v13 uniqueIdentifier];
-  v15 = [v8 statusUniqueIdentifier];
-  if ([v14 isEqualToString:v15])
+  uniqueIdentifier = [v13 uniqueIdentifier];
+  statusUniqueIdentifier = [requestCopy statusUniqueIdentifier];
+  if ([uniqueIdentifier isEqualToString:statusUniqueIdentifier])
   {
     v16 = +[SKAStatusPublishingManager logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1010,10 +1010,10 @@ void __62__SKAStatusPublishingManager_publishPendingRequestsWithDelay___block_in
       [SKAStatusPublishingManager _shouldAllowPublishForPublishRequest:onChannel:error:];
     }
 
-    if (a5)
+    if (error)
     {
-      [SKAStatusPublishingManager _errorForDuplicateStatusPublishRequestWithIdentifier:v14];
-      *a5 = v17 = 0;
+      [SKAStatusPublishingManager _errorForDuplicateStatusPublishRequestWithIdentifier:uniqueIdentifier];
+      *error = v17 = 0;
     }
 
     else
@@ -1024,30 +1024,30 @@ void __62__SKAStatusPublishingManager_publishPendingRequestsWithDelay___block_in
 
   else
   {
-    v18 = [v13 dateCreated];
-    v19 = [v8 dateCreated];
-    v20 = v19;
+    dateCreated = [v13 dateCreated];
+    dateCreated2 = [requestCopy dateCreated];
+    v20 = dateCreated2;
     v17 = 1;
-    if (v18 && v19 && [v18 compare:v19] != -1)
+    if (dateCreated && dateCreated2 && [dateCreated compare:dateCreated2] != -1)
     {
       v21 = +[SKAStatusPublishingManager logger];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v24 = 138413058;
-        v25 = v14;
+        v25 = uniqueIdentifier;
         v26 = 2112;
-        v27 = v18;
+        v27 = dateCreated;
         v28 = 2112;
-        v29 = v15;
+        v29 = statusUniqueIdentifier;
         v30 = 2112;
         v31 = v20;
         _os_log_error_impl(&dword_220099000, v21, OS_LOG_TYPE_ERROR, "Dropping status publish request, existing status %@ was created at %@, publish request %@ from %@ is not newer.", &v24, 0x2Au);
       }
 
-      if (a5)
+      if (error)
       {
-        [SKAStatusPublishingManager _errorForStatusPublishRequestWithIdentifier:v15 requestedStatusCreationDate:v20 isOlderThanExistingStatus:v14 existingStatusCreationDate:v18];
-        *a5 = v17 = 0;
+        [SKAStatusPublishingManager _errorForStatusPublishRequestWithIdentifier:statusUniqueIdentifier requestedStatusCreationDate:v20 isOlderThanExistingStatus:uniqueIdentifier existingStatusCreationDate:dateCreated];
+        *error = v17 = 0;
       }
 
       else
@@ -1075,8 +1075,8 @@ void __62__SKAStatusPublishingManager_publishPendingRequestsWithDelay___block_in
     v5 = &unk_2833EBAB0;
   }
 
-  v6 = [(SKAStatusPublishingManager *)self _maxRapidPublishes];
-  if (v6 < [v5 intValue])
+  _maxRapidPublishes = [(SKAStatusPublishingManager *)self _maxRapidPublishes];
+  if (_maxRapidPublishes < [v5 intValue])
   {
     v7 = CFPreferencesCopyAppValue(@"lastPublishTime", @"com.apple.StatusKitAgent");
     if (v7)
@@ -1126,14 +1126,14 @@ LABEL_16:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (void)_removePendingPublishRequestsForStatusTypeIdentifier:(id)a3 olderThanRequest:(id)a4 databaseContext:(id)a5
+- (void)_removePendingPublishRequestsForStatusTypeIdentifier:(id)identifier olderThanRequest:(id)request databaseContext:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  v27 = v9;
-  v11 = [(SKAStatusPublishingManager *)self _pendingPublishRequestsForStatusTypeIdentifier:a3 databaseContext:?];
+  requestCopy = request;
+  contextCopy = context;
+  selfCopy = self;
+  v27 = contextCopy;
+  v11 = [(SKAStatusPublishingManager *)self _pendingPublishRequestsForStatusTypeIdentifier:identifier databaseContext:?];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1155,26 +1155,26 @@ LABEL_16:
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [v17 dateCreated];
-        v19 = [v8 dateCreated];
-        v20 = [v18 compare:v19];
+        dateCreated = [v17 dateCreated];
+        dateCreated2 = [requestCopy dateCreated];
+        v20 = [dateCreated compare:dateCreated2];
 
         if (v20 == -1)
         {
           v21 = +[SKAStatusPublishingManager logger];
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v17 statusUniqueIdentifier];
-            v23 = [v8 statusUniqueIdentifier];
+            statusUniqueIdentifier = [v17 statusUniqueIdentifier];
+            statusUniqueIdentifier2 = [requestCopy statusUniqueIdentifier];
             *buf = v26;
-            v33 = v22;
+            v33 = statusUniqueIdentifier;
             v34 = 2112;
-            v35 = v23;
+            v35 = statusUniqueIdentifier2;
             _os_log_impl(&dword_220099000, v21, OS_LOG_TYPE_DEFAULT, "Deleting pending publish request with ID: %@ because it is older than newly received publish request with ID %@", buf, 0x16u);
           }
 
-          v24 = [v17 statusUniqueIdentifier];
-          [(SKAStatusPublishingManager *)v10 _removePendingPublishRequestWithUniqueIdentifier:v24 databaseContext:v27];
+          statusUniqueIdentifier3 = [v17 statusUniqueIdentifier];
+          [(SKAStatusPublishingManager *)selfCopy _removePendingPublishRequestWithUniqueIdentifier:statusUniqueIdentifier3 databaseContext:v27];
         }
       }
 
@@ -1187,24 +1187,24 @@ LABEL_16:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ensurePendingPublishRequestExistsWithPublishRequest:(id)a3 forStatusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (void)ensurePendingPublishRequestExistsWithPublishRequest:(id)request forStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 statusUniqueIdentifier];
-  v12 = [(SKADatabaseManaging *)self->_databaseManager existingPendingPublishRequestForUniqueIdentifier:v11 withDatabaseContext:v10];
+  requestCopy = request;
+  identifierCopy = identifier;
+  contextCopy = context;
+  statusUniqueIdentifier = [requestCopy statusUniqueIdentifier];
+  v12 = [(SKADatabaseManaging *)self->_databaseManager existingPendingPublishRequestForUniqueIdentifier:statusUniqueIdentifier withDatabaseContext:contextCopy];
 
-  v13 = +[SKAStatusPublishingManager logger];
-  v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+  statusUniqueIdentifier2 = +[SKAStatusPublishingManager logger];
+  v14 = os_log_type_enabled(statusUniqueIdentifier2, OS_LOG_TYPE_DEFAULT);
   if (v12)
   {
     if (v14)
     {
       v21 = 138412290;
-      v22 = v11;
-      _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Pending status publish request already exists for status unique identifier: %@", &v21, 0xCu);
+      v22 = statusUniqueIdentifier;
+      _os_log_impl(&dword_220099000, statusUniqueIdentifier2, OS_LOG_TYPE_DEFAULT, "Pending status publish request already exists for status unique identifier: %@", &v21, 0xCu);
     }
   }
 
@@ -1213,43 +1213,43 @@ LABEL_16:
     if (v14)
     {
       v21 = 138412290;
-      v22 = v11;
-      _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Creating new pending status publish request for status unique identifier: %@", &v21, 0xCu);
+      v22 = statusUniqueIdentifier;
+      _os_log_impl(&dword_220099000, statusUniqueIdentifier2, OS_LOG_TYPE_DEFAULT, "Creating new pending status publish request for status unique identifier: %@", &v21, 0xCu);
     }
 
     databaseManager = self->_databaseManager;
-    v13 = [v8 statusUniqueIdentifier];
-    v16 = [v8 dateCreated];
-    v17 = [v8 statusPayload];
-    v18 = [v17 payloadData];
-    v19 = [(SKADatabaseManaging *)databaseManager createPendingPublishRequestWithUniqueIdentifier:v13 dateCreated:v16 payloadData:v18 statusTypeIdentifier:v9 databaseContext:v10];
+    statusUniqueIdentifier2 = [requestCopy statusUniqueIdentifier];
+    dateCreated = [requestCopy dateCreated];
+    statusPayload = [requestCopy statusPayload];
+    payloadData = [statusPayload payloadData];
+    v19 = [(SKADatabaseManaging *)databaseManager createPendingPublishRequestWithUniqueIdentifier:statusUniqueIdentifier2 dateCreated:dateCreated payloadData:payloadData statusTypeIdentifier:identifierCopy databaseContext:contextCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)findOrCreatePersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4 completion:(id)a5
+- (void)findOrCreatePersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SKADatabaseManaging *)self->_databaseManager existingPersonalChannelForStatusTypeIdentifier:v8 databaseContext:v9];
+  identifierCopy = identifier;
+  contextCopy = context;
+  completionCopy = completion;
+  v11 = [(SKADatabaseManaging *)self->_databaseManager existingPersonalChannelForStatusTypeIdentifier:identifierCopy databaseContext:contextCopy];
   v12 = +[SKAStatusPublishingManager logger];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
   if (v11)
   {
     if (v13)
     {
-      v14 = [v11 identifier];
+      identifier = [v11 identifier];
       *buf = 138412546;
-      v19 = v8;
+      v19 = identifierCopy;
       v20 = 2112;
-      v21 = v14;
+      v21 = identifier;
       _os_log_impl(&dword_220099000, v12, OS_LOG_TYPE_DEFAULT, "StatusTypeIdentifier %@ corresponds to personal channel %@", buf, 0x16u);
     }
 
-    v10[2](v10, v11, 0);
+    completionCopy[2](completionCopy, v11, 0);
   }
 
   else
@@ -1257,7 +1257,7 @@ LABEL_16:
     if (v13)
     {
       *buf = 138412290;
-      v19 = v8;
+      v19 = identifierCopy;
       _os_log_impl(&dword_220099000, v12, OS_LOG_TYPE_DEFAULT, "Could not find an existing personal status channel for statusTypeIdentifier %@, attempting to create a new one.", buf, 0xCu);
     }
 
@@ -1265,20 +1265,20 @@ LABEL_16:
     v16[1] = 3221225472;
     v16[2] = __108__SKAStatusPublishingManager_findOrCreatePersonalChannelForStatusTypeIdentifier_databaseContext_completion___block_invoke;
     v16[3] = &unk_27843DE78;
-    v17 = v10;
-    [(SKAStatusPublishingManager *)self createPersonalChannelForStatusTypeIdentifier:v8 databaseContext:v9 completion:v16];
+    v17 = completionCopy;
+    [(SKAStatusPublishingManager *)self createPersonalChannelForStatusTypeIdentifier:identifierCopy databaseContext:contextCopy completion:v16];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createPersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4 completion:(id)a5
+- (void)createPersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = +[SKAPowerLogger shared];
-  [v11 logEvent:1 ofType:0 channelType:0 identifier:v8];
+  [v11 logEvent:1 ofType:0 channelType:0 identifier:identifierCopy];
 
   objc_initWeak(&location, self);
   channelManager = self->_channelManager;
@@ -1288,11 +1288,11 @@ LABEL_16:
   v16[3] = &unk_27843F3F8;
   objc_copyWeak(&v20, &location);
   v16[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v19 = v13;
-  v14 = v8;
+  v14 = identifierCopy;
   v17 = v14;
-  v15 = v9;
+  v15 = contextCopy;
   v18 = v15;
   [(SKAChannelManaging *)channelManager createChannelWithCompletion:v16];
 
@@ -1386,20 +1386,20 @@ void __102__SKAStatusPublishingManager_createPersonalChannelForStatusTypeIdentif
   }
 }
 
-- (void)_removePendingPublishRequestWithUniqueIdentifier:(id)a3 databaseContext:(id)a4
+- (void)_removePendingPublishRequestWithUniqueIdentifier:(id)identifier databaseContext:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v8 = +[SKAStatusPublishingManager logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = identifierCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Deleting pending status publish request with identifier: %@", &v12, 0xCu);
   }
 
-  v9 = [(SKADatabaseManaging *)self->_databaseManager deletePendingPublishRequestWithWithUniqueIdentifier:v6 databaseContext:v7];
+  v9 = [(SKADatabaseManaging *)self->_databaseManager deletePendingPublishRequestWithWithUniqueIdentifier:identifierCopy databaseContext:contextCopy];
   if ((v9 & 1) == 0)
   {
     v10 = +[SKAStatusPublishingManager logger];
@@ -1412,17 +1412,17 @@ void __102__SKAStatusPublishingManager_createPersonalChannelForStatusTypeIdentif
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldAbandonRequestForError:(id)a3
+- (BOOL)_shouldAbandonRequestForError:(id)error
 {
-  v3 = a3;
-  if (![v3 isSKAError])
+  errorCopy = error;
+  if (![errorCopy isSKAError])
   {
     goto LABEL_9;
   }
 
-  if ([v3 code] != 805)
+  if ([errorCopy code] != 805)
   {
-    if ([v3 code] == 802)
+    if ([errorCopy code] == 802)
     {
       v4 = +[SKAStatusPublishingManager logger];
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1452,10 +1452,10 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)_shouldRollChannelForError:(id)a3
+- (BOOL)_shouldRollChannelForError:(id)error
 {
-  v3 = a3;
-  if ([v3 isSKAError] && objc_msgSend(v3, "code") == 803)
+  errorCopy = error;
+  if ([errorCopy isSKAError] && objc_msgSend(errorCopy, "code") == 803)
   {
     v4 = +[SKAStatusPublishingManager logger];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1474,10 +1474,10 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)_shouldRetryWithDelayForError:(id)a3
+- (BOOL)_shouldRetryWithDelayForError:(id)error
 {
-  v3 = a3;
-  if ([v3 isSKAError] && objc_msgSend(v3, "code") == 806)
+  errorCopy = error;
+  if ([errorCopy isSKAError] && objc_msgSend(errorCopy, "code") == 806)
   {
     v4 = +[SKAStatusPublishingManager logger];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1562,23 +1562,23 @@ LABEL_10:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     v5 = +[SKAStatusPublishingManager logger];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = v4;
+      v9 = integerValue;
       _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Server bag indicates our max retry count should be %ld", &v8, 0xCu);
     }
   }
 
   else
   {
-    v4 = 5;
+    integerValue = 5;
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)_maxRapidPublishes
@@ -1589,23 +1589,23 @@ LABEL_10:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     v5 = +[SKAStatusPublishingManager logger];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = v4;
+      v9 = integerValue;
       _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Server bag indicates our max rapid publishes should be %ld", &v8, 0xCu);
     }
   }
 
   else
   {
-    v4 = 50;
+    integerValue = 50;
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v4;
+  return integerValue;
 }
 
 - (double)_rapidPublishesTimescale
@@ -1614,25 +1614,25 @@ LABEL_10:
   v2 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v3 = [v2 objectForKey:@"shared-channels-client-rate-limit-rapid-publish-time-seconds"];
 
-  v4 = 10.0;
+  integerValue = 10.0;
   if (v3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 integerValue];
+      integerValue = [v3 integerValue];
       v5 = +[SKAStatusPublishingManager logger];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 134217984;
-        v9 = v4;
+        v9 = integerValue;
         _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Server bag indicates our rapid publish timescale should be %ld", &v8, 0xCu);
       }
     }
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v4;
+  return integerValue;
 }
 
 + (id)logger
@@ -1654,18 +1654,18 @@ uint64_t __36__SKAStatusPublishingManager_logger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_errorForStatusPublishRequestWithIdentifier:(id)a3 requestedStatusCreationDate:(id)a4 isOlderThanExistingStatus:(id)a5 existingStatusCreationDate:(id)a6
++ (id)_errorForStatusPublishRequestWithIdentifier:(id)identifier requestedStatusCreationDate:(id)date isOlderThanExistingStatus:(id)status existingStatusCreationDate:(id)creationDate
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Status publish request %@ created at %@ is not newer than existing status %@ at %@", a3, a4, a5, a6];
-  v7 = [SKAError errorWithCode:1103 customDescription:v6];
+  creationDate = [MEMORY[0x277CCACA8] stringWithFormat:@"Status publish request %@ created at %@ is not newer than existing status %@ at %@", identifier, date, status, creationDate];
+  v7 = [SKAError errorWithCode:1103 customDescription:creationDate];
 
   return v7;
 }
 
-+ (id)_errorForDuplicateStatusPublishRequestWithIdentifier:(id)a3
++ (id)_errorForDuplicateStatusPublishRequestWithIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Status publish request has the same status unique identifier as existing status: %@", a3];
-  v4 = [SKAError errorWithCode:1102 customDescription:v3];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"Status publish request has the same status unique identifier as existing status: %@", identifier];
+  v4 = [SKAError errorWithCode:1102 customDescription:identifier];
 
   return v4;
 }

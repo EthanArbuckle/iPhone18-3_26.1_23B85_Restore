@@ -2,7 +2,7 @@
 - (BOOL)_cacheRenditionProperties;
 - (CGRect)alphaCroppedRect;
 - (CGSize)size;
-- (CUINamedTexture)textureWithBufferAllocator:(id)a3;
+- (CUINamedTexture)textureWithBufferAllocator:(id)allocator;
 - (id)description;
 @end
 
@@ -12,14 +12,14 @@
 {
   v12.receiver = self;
   v12.super_class = CUINamedTexture;
-  LODWORD(v3) = [(CUINamedLookup *)&v12 _cacheRenditionProperties];
-  if (v3)
+  LODWORD(_rendition) = [(CUINamedLookup *)&v12 _cacheRenditionProperties];
+  if (_rendition)
   {
-    v3 = [(CUINamedLookup *)self _rendition];
-    if (v3)
+    _rendition = [(CUINamedLookup *)self _rendition];
+    if (_rendition)
     {
-      v4 = v3;
-      [(CUIThemeRendition *)v3 scale];
+      v4 = _rendition;
+      [(CUIThemeRendition *)_rendition scale];
       self->_scale = v5;
       self->_textureProperties = (*&self->_textureProperties & 0xFFFFFFF0 | [(CUIThemeRendition *)v4 exifOrientation]& 0xF);
       [(CUIThemeRendition *)v4 originalUncroppedSize];
@@ -45,11 +45,11 @@
       }
 
       self->_textureProperties = (*&self->_textureProperties & 0xFFFFFFDF | v10);
-      LOBYTE(v3) = 1;
+      LOBYTE(_rendition) = 1;
     }
   }
 
-  return v3;
+  return _rendition;
 }
 
 - (CGSize)size
@@ -64,17 +64,17 @@
   return result;
 }
 
-- (CUINamedTexture)textureWithBufferAllocator:(id)a3
+- (CUINamedTexture)textureWithBufferAllocator:(id)allocator
 {
-  v5 = [(CUINamedLookup *)self _rendition];
-  if (!v5 || [(CUIThemeRendition *)v5 type]!= 1007)
+  _rendition = [(CUINamedLookup *)self _rendition];
+  if (!_rendition || [(CUIThemeRendition *)_rendition type]!= 1007)
   {
     return 0;
   }
 
   v6 = objc_alloc_init(_CUTextureLink);
   [(_CUTextureLink *)v6 setNamedTexture:self];
-  [(_CUTextureLink *)v6 setBufferAllocator:a3];
+  [(_CUTextureLink *)v6 setBufferAllocator:allocator];
   v7 = [[TXRTexture alloc] initWithDataSourceProvider:v6];
   v8 = v6;
 
@@ -90,16 +90,16 @@
   v5 = v4;
   [(CUINamedTexture *)self size];
   v7 = [NSString stringWithFormat:@"width: %f height: %f", v5, v6];
-  v8 = [(CUINamedLookup *)self name];
+  name = [(CUINamedLookup *)self name];
   [(CUINamedTexture *)self scale];
-  return [NSString stringWithFormat:@"%@\n%@", v3, [NSString stringWithFormat:@"Name: %@\nScale: %d\nSize: %@\nexifOrientation: %d, \nCropped: %d\nDisplay Gamut: %d", v8, v9, v7, [(CUINamedTexture *)self exifOrientation], [(CUINamedTexture *)self isAlphaCropped], [(CUIRenditionKey *)[(CUINamedLookup *)self key] themeDisplayGamut]]];
+  return [NSString stringWithFormat:@"%@\n%@", v3, [NSString stringWithFormat:@"Name: %@\nScale: %d\nSize: %@\nexifOrientation: %d, \nCropped: %d\nDisplay Gamut: %d", name, v9, v7, [(CUINamedTexture *)self exifOrientation], [(CUINamedTexture *)self isAlphaCropped], [(CUIRenditionKey *)[(CUINamedLookup *)self key] themeDisplayGamut]]];
 }
 
 - (CGRect)alphaCroppedRect
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  [(CUIThemeRendition *)v2 alphaCroppedRect];
+  [(CUIThemeRendition *)_rendition alphaCroppedRect];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

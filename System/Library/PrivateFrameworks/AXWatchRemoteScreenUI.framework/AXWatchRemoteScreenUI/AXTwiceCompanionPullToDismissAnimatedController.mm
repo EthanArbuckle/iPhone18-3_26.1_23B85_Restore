@@ -1,15 +1,15 @@
 @interface AXTwiceCompanionPullToDismissAnimatedController
 - (_TtC21AXWatchRemoteScreenUI47AXTwiceCompanionPullToDismissAnimatedController)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AXTwiceCompanionPullToDismissAnimatedController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_23D6D1F28(a3);
+  selfCopy = self;
+  sub_23D6D1F28(transition);
   swift_unknownObjectRelease();
 }
 

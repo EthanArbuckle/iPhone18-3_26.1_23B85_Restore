@@ -1,38 +1,38 @@
 @interface HKGradientFillStyle
-- (BOOL)_needsRenderForSize:(CGSize)a3;
-- (HKGradientFillStyle)initWithFirstColor:(id)a3 secondColor:(id)a4 fillPercentage:(double)a5 fillDirection:(int64_t)a6 gradientSize:(double)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fillImageWithHeight:(double)a3;
-- (id)fillImageWithWidth:(double)a3;
-- (void)_renderCacheIfNecessaryForSize:(CGSize)a3;
-- (void)_renderInContext:(CGContext *)a3 size:(CGSize)a4;
+- (BOOL)_needsRenderForSize:(CGSize)size;
+- (HKGradientFillStyle)initWithFirstColor:(id)color secondColor:(id)secondColor fillPercentage:(double)percentage fillDirection:(int64_t)direction gradientSize:(double)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fillImageWithHeight:(double)height;
+- (id)fillImageWithWidth:(double)width;
+- (void)_renderCacheIfNecessaryForSize:(CGSize)size;
+- (void)_renderInContext:(CGContext *)context size:(CGSize)size;
 - (void)clearCache;
-- (void)renderPath:(CGPath *)a3 context:(CGContext *)a4 axisRect:(CGRect)a5 alpha:(double)a6;
+- (void)renderPath:(CGPath *)path context:(CGContext *)context axisRect:(CGRect)rect alpha:(double)alpha;
 @end
 
 @implementation HKGradientFillStyle
 
-- (HKGradientFillStyle)initWithFirstColor:(id)a3 secondColor:(id)a4 fillPercentage:(double)a5 fillDirection:(int64_t)a6 gradientSize:(double)a7
+- (HKGradientFillStyle)initWithFirstColor:(id)color secondColor:(id)secondColor fillPercentage:(double)percentage fillDirection:(int64_t)direction gradientSize:(double)size
 {
-  v13 = a3;
-  v14 = a4;
+  colorCopy = color;
+  secondColorCopy = secondColor;
   v22.receiver = self;
   v22.super_class = HKGradientFillStyle;
   v15 = [(HKGradientFillStyle *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_firstColor, a3);
-    objc_storeStrong(&v16->_secondColor, a4);
-    v17 = 0.0;
-    if (a5 >= 0.0)
+    objc_storeStrong(&v15->_firstColor, color);
+    objc_storeStrong(&v16->_secondColor, secondColor);
+    percentageCopy = 0.0;
+    if (percentage >= 0.0)
     {
-      v17 = a5;
+      percentageCopy = percentage;
     }
 
-    v16->_fillPercentage = fmin(v17, 1.0);
-    v16->_fillDirection = a6;
-    v16->_gradientSize = a7;
+    v16->_fillPercentage = fmin(percentageCopy, 1.0);
+    v16->_fillDirection = direction;
+    v16->_gradientSize = size;
     v18 = objc_alloc_init(MEMORY[0x1E696AD10]);
     gradientFillStyleLock = v16->_gradientFillStyleLock;
     v16->_gradientFillStyleLock = v18;
@@ -50,64 +50,64 @@
   v6.receiver = self;
   v6.super_class = HKGradientFillStyle;
   [(HKFillStyle *)&v6 clearCache];
-  v3 = [(HKGradientFillStyle *)self gradientFillStyleLock];
-  [v3 lock];
+  gradientFillStyleLock = [(HKGradientFillStyle *)self gradientFillStyleLock];
+  [gradientFillStyleLock lock];
 
   cachedImageStorage = self->_cachedImageStorage;
   self->_cachedImageStorage = 0;
 
-  v5 = [(HKGradientFillStyle *)self gradientFillStyleLock];
-  [v5 unlock];
+  gradientFillStyleLock2 = [(HKGradientFillStyle *)self gradientFillStyleLock];
+  [gradientFillStyleLock2 unlock];
 }
 
-- (id)fillImageWithHeight:(double)a3
+- (id)fillImageWithHeight:(double)height
 {
-  v5 = [(HKGradientFillStyle *)self gradientFillStyleLock];
-  [v5 lock];
+  gradientFillStyleLock = [(HKGradientFillStyle *)self gradientFillStyleLock];
+  [gradientFillStyleLock lock];
 
-  [(HKGradientFillStyle *)self _renderCacheIfNecessaryForHeight:a3];
+  [(HKGradientFillStyle *)self _renderCacheIfNecessaryForHeight:height];
   v6 = self->_cachedImageStorage;
-  v7 = [(HKGradientFillStyle *)self gradientFillStyleLock];
-  [v7 unlock];
+  gradientFillStyleLock2 = [(HKGradientFillStyle *)self gradientFillStyleLock];
+  [gradientFillStyleLock2 unlock];
 
   return v6;
 }
 
-- (id)fillImageWithWidth:(double)a3
+- (id)fillImageWithWidth:(double)width
 {
-  v5 = [(HKGradientFillStyle *)self gradientFillStyleLock];
-  [v5 lock];
+  gradientFillStyleLock = [(HKGradientFillStyle *)self gradientFillStyleLock];
+  [gradientFillStyleLock lock];
 
-  [(HKGradientFillStyle *)self _renderCacheIfNecessaryForWidth:a3];
+  [(HKGradientFillStyle *)self _renderCacheIfNecessaryForWidth:width];
   v6 = self->_cachedImageStorage;
-  v7 = [(HKGradientFillStyle *)self gradientFillStyleLock];
-  [v7 unlock];
+  gradientFillStyleLock2 = [(HKGradientFillStyle *)self gradientFillStyleLock];
+  [gradientFillStyleLock2 unlock];
 
   return v6;
 }
 
-- (void)renderPath:(CGPath *)a3 context:(CGContext *)a4 axisRect:(CGRect)a5 alpha:(double)a6
+- (void)renderPath:(CGPath *)path context:(CGContext *)context axisRect:(CGRect)rect alpha:(double)alpha
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
   v16.origin.x = x;
   v16.origin.y = y;
   v16.size.width = width;
   v16.size.height = height;
   v14 = [(HKGradientFillStyle *)self fillImageWithHeight:CGRectGetHeight(v16)];
-  CGContextAddPath(a4, a3);
-  CGContextClip(a4);
-  [v14 drawInRect:0 blendMode:x alpha:{y, width, height, a6}];
-  CGContextRestoreGState(a4);
+  CGContextAddPath(context, path);
+  CGContextClip(context);
+  [v14 drawInRect:0 blendMode:x alpha:{y, width, height, alpha}];
+  CGContextRestoreGState(context);
 }
 
-- (void)_renderCacheIfNecessaryForSize:(CGSize)a3
+- (void)_renderCacheIfNecessaryForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(HKGradientFillStyle *)self _needsRenderForSize:?])
   {
     v6 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{width, height}];
@@ -134,10 +134,10 @@ uint64_t __54__HKGradientFillStyle__renderCacheIfNecessaryForSize___block_invoke
   return [v3 _renderInContext:v4 size:{v5, v6}];
 }
 
-- (BOOL)_needsRenderForSize:(CGSize)a3
+- (BOOL)_needsRenderForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   cachedImageStorage = self->_cachedImageStorage;
   [(UIImage *)cachedImageStorage size];
   v7 = width != v6;
@@ -149,12 +149,12 @@ uint64_t __54__HKGradientFillStyle__renderCacheIfNecessaryForSize___block_invoke
   return !cachedImageStorage || v7;
 }
 
-- (void)_renderInContext:(CGContext *)a3 size:(CGSize)a4
+- (void)_renderInContext:(CGContext *)context size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   locations[2] = *MEMORY[0x1E69E9840];
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   fillPercentage = self->_fillPercentage;
   locations[0] = 0.0;
@@ -246,21 +246,21 @@ uint64_t __54__HKGradientFillStyle__renderCacheIfNecessaryForSize___block_invoke
     v17 = 0.0;
   }
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v29.origin.x = 0.0;
   v29.origin.y = 0.0;
   v29.size.width = width;
   v29.size.height = height;
-  CGContextAddRect(a3, v29);
-  CGContextClip(a3);
+  CGContextAddRect(context, v29);
+  CGContextClip(context);
   v27.x = v14;
   v27.y = v13;
   v28.x = v17;
   v28.y = v16;
-  CGContextDrawLinearGradient(a3, v11, v27, v28, 0);
+  CGContextDrawLinearGradient(context, v11, v27, v28, 0);
   if (gradientSize > 0.00000011920929)
   {
-    CGContextSetFillColorWithColor(a3, [(UIColor *)self->_secondColor CGColor]);
+    CGContextSetFillColorWithColor(context, [(UIColor *)self->_secondColor CGColor]);
     v20 = self->_fillDirection;
     if (v20 <= 1)
     {
@@ -295,21 +295,21 @@ LABEL_29:
 LABEL_31:
       v23 = height - v16;
       v24 = width - v17;
-      CGContextFillRect(a3, *&v21);
+      CGContextFillRect(context, *&v21);
     }
   }
 
 LABEL_32:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
   CGGradientRelease(v11);
   CGColorSpaceRelease(DeviceRGB);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HKGradientFillStyle;
-  v4 = [(HKFillStyle *)&v6 copyWithZone:a3];
+  v4 = [(HKFillStyle *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 1, self->_firstColor);
   objc_storeStrong(v4 + 2, self->_secondColor);
   v4[3] = *&self->_fillPercentage;

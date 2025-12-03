@@ -9,9 +9,9 @@
 - (NSString)debugDescription
 {
   v3 = *MEMORY[0x1E69E9840];
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = NSLocale_0;
-  return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ '%@'}", objc_msgSendSuper2(&v2, sel_debugDescription), [a1 localeIdentifier]);
+  return +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ '%@'}", objc_msgSendSuper2(&v2, sel_debugDescription), [self localeIdentifier]);
 }
 
 - (uint64_t)encodeWithCoder:()NSLocale
@@ -21,9 +21,9 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSLocales cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a1 localeIdentifier];
+  localeIdentifier = [self localeIdentifier];
 
-  return [a3 encodeObject:v5 forKey:@"NS.identifier"];
+  return [a3 encodeObject:localeIdentifier forKey:@"NS.identifier"];
 }
 
 - (uint64_t)initWithCoder:()NSLocale
@@ -38,7 +38,7 @@
   if (_NSIsNSString())
   {
 
-    return [a1 initWithLocaleIdentifier:v5];
+    return [self initWithLocaleIdentifier:v5];
   }
 
   else

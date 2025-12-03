@@ -1,14 +1,14 @@
 @interface FMItemDetailCardViewController
-- (_TtC6FindMy30FMItemDetailCardViewController)initWithCoder:(id)a3;
-- (_TtC6FindMy30FMItemDetailCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6FindMy30FMItemDetailCardViewController)initWithCoder:(id)coder;
+- (_TtC6FindMy30FMItemDetailCardViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleCloseAction;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMItemDetailCardViewController
 
-- (_TtC6FindMy30FMItemDetailCardViewController)initWithCoder:(id)a3
+- (_TtC6FindMy30FMItemDetailCardViewController)initWithCoder:(id)coder
 {
   type metadata accessor for FMSelectedSection();
   swift_storeEnumTagMultiPayload();
@@ -20,25 +20,25 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003E5D4C(a3);
+  selfCopy = self;
+  sub_1003E5D4C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1003E61B8(a3);
+  selfCopy = self;
+  sub_1003E61B8(disappear);
 }
 
 - (void)handleCloseAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003E6CF8();
 }
 
-- (_TtC6FindMy30FMItemDetailCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy30FMItemDetailCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

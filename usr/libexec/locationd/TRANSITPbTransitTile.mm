@@ -1,21 +1,21 @@
 @interface TRANSITPbTransitTile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unint64_t)marketId;
 - (unint64_t)securityKey;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExpirationAgeSecs:(BOOL)a3;
-- (void)setHasMarketId:(BOOL)a3;
-- (void)setHasSecurityKey:(BOOL)a3;
-- (void)setHasTileX:(BOOL)a3;
-- (void)setHasTileY:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasExpirationAgeSecs:(BOOL)secs;
+- (void)setHasMarketId:(BOOL)id;
+- (void)setHasSecurityKey:(BOOL)key;
+- (void)setHasTileX:(BOOL)x;
+- (void)setHasTileY:(BOOL)y;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TRANSITPbTransitTile
@@ -29,9 +29,9 @@
   [(TRANSITPbTransitTile *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 64;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasTileX:(BOOL)a3
+- (void)setHasTileX:(BOOL)x
 {
-  if (a3)
+  if (x)
   {
     v3 = 16;
   }
@@ -59,9 +59,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTileY:(BOOL)a3
+- (void)setHasTileY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 32;
   }
@@ -87,9 +87,9 @@
   }
 }
 
-- (void)setHasSecurityKey:(BOOL)a3
+- (void)setHasSecurityKey:(BOOL)key
 {
-  if (a3)
+  if (key)
   {
     v3 = 4;
   }
@@ -102,9 +102,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasExpirationAgeSecs:(BOOL)a3
+- (void)setHasExpirationAgeSecs:(BOOL)secs
 {
-  if (a3)
+  if (secs)
   {
     v3 = 8;
   }
@@ -130,9 +130,9 @@
   }
 }
 
-- (void)setHasMarketId:(BOOL)a3
+- (void)setHasMarketId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -247,7 +247,7 @@ LABEL_8:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -338,13 +338,13 @@ LABEL_8:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x40) != 0)
   {
-    *(a3 + 16) = self->_version;
-    *(a3 + 68) |= 0x40u;
+    *(to + 16) = self->_version;
+    *(to + 68) |= 0x40u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -363,8 +363,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 14) = self->_tileX;
-  *(a3 + 68) |= 0x10u;
+  *(to + 14) = self->_tileX;
+  *(to + 68) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -378,8 +378,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  *(a3 + 15) = self->_tileY;
-  *(a3 + 68) |= 0x20u;
+  *(to + 15) = self->_tileY;
+  *(to + 68) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -393,8 +393,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  *(a3 + 3) = self->_securityKey;
-  *(a3 + 68) |= 4u;
+  *(to + 3) = self->_securityKey;
+  *(to + 68) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -408,37 +408,37 @@ LABEL_6:
   }
 
 LABEL_20:
-  *(a3 + 1) = *&self->_generationTimeSecs;
-  *(a3 + 68) |= 1u;
+  *(to + 1) = *&self->_generationTimeSecs;
+  *(to + 68) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(a3 + 10) = self->_expirationAgeSecs;
-    *(a3 + 68) |= 8u;
+    *(to + 10) = self->_expirationAgeSecs;
+    *(to + 68) |= 8u;
   }
 
 LABEL_8:
   if (self->_dEPRECATEDFingerprints)
   {
-    [a3 setDEPRECATEDFingerprints:?];
+    [to setDEPRECATEDFingerprints:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 2) = self->_marketId;
-    *(a3 + 68) |= 2u;
+    *(to + 2) = self->_marketId;
+    *(to + 68) |= 2u;
   }
 
   if (self->_fingerprints)
   {
 
-    [a3 setFingerprints:?];
+    [to setFingerprints:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x40) != 0)
@@ -519,32 +519,32 @@ LABEL_7:
 
 LABEL_8:
 
-  v6[4] = [(TRANSITPbLocationFingerprintsV1 *)self->_dEPRECATEDFingerprints copyWithZone:a3];
+  v6[4] = [(TRANSITPbLocationFingerprintsV1 *)self->_dEPRECATEDFingerprints copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     v6[2] = self->_marketId;
     *(v6 + 68) |= 2u;
   }
 
-  v6[6] = [(TRANSITPbLocationFingerprints *)self->_fingerprints copyWithZone:a3];
+  v6[6] = [(TRANSITPbLocationFingerprints *)self->_fingerprints copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 68) & 0x40) == 0 || self->_version != *(a3 + 16))
+      if ((*(equal + 68) & 0x40) == 0 || self->_version != *(equal + 16))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 68) & 0x40) != 0)
+    else if ((*(equal + 68) & 0x40) != 0)
     {
 LABEL_42:
       LOBYTE(v5) = 0;
@@ -553,71 +553,71 @@ LABEL_42:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 68) & 0x10) == 0 || self->_tileX != *(a3 + 14))
+      if ((*(equal + 68) & 0x10) == 0 || self->_tileX != *(equal + 14))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 68) & 0x10) != 0)
+    else if ((*(equal + 68) & 0x10) != 0)
     {
       goto LABEL_42;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 68) & 0x20) == 0 || self->_tileY != *(a3 + 15))
+      if ((*(equal + 68) & 0x20) == 0 || self->_tileY != *(equal + 15))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 68) & 0x20) != 0)
+    else if ((*(equal + 68) & 0x20) != 0)
     {
       goto LABEL_42;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 68) & 4) == 0 || self->_securityKey != *(a3 + 3))
+      if ((*(equal + 68) & 4) == 0 || self->_securityKey != *(equal + 3))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 68) & 4) != 0)
+    else if ((*(equal + 68) & 4) != 0)
     {
       goto LABEL_42;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 68) & 1) == 0 || self->_generationTimeSecs != *(a3 + 1))
+      if ((*(equal + 68) & 1) == 0 || self->_generationTimeSecs != *(equal + 1))
       {
         goto LABEL_42;
       }
     }
 
-    else if (*(a3 + 68))
+    else if (*(equal + 68))
     {
       goto LABEL_42;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 68) & 8) == 0 || self->_expirationAgeSecs != *(a3 + 10))
+      if ((*(equal + 68) & 8) == 0 || self->_expirationAgeSecs != *(equal + 10))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 68) & 8) != 0)
+    else if ((*(equal + 68) & 8) != 0)
     {
       goto LABEL_42;
     }
 
     dEPRECATEDFingerprints = self->_dEPRECATEDFingerprints;
-    if (dEPRECATEDFingerprints | *(a3 + 4))
+    if (dEPRECATEDFingerprints | *(equal + 4))
     {
       v5 = [(TRANSITPbLocationFingerprintsV1 *)dEPRECATEDFingerprints isEqual:?];
       if (!v5)
@@ -630,19 +630,19 @@ LABEL_42:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 68) & 2) == 0 || self->_marketId != *(a3 + 2))
+      if ((*(equal + 68) & 2) == 0 || self->_marketId != *(equal + 2))
       {
         goto LABEL_42;
       }
     }
 
-    else if ((*(a3 + 68) & 2) != 0)
+    else if ((*(equal + 68) & 2) != 0)
     {
       goto LABEL_42;
     }
 
     fingerprints = self->_fingerprints;
-    if (fingerprints | *(a3 + 6))
+    if (fingerprints | *(equal + 6))
     {
 
       LOBYTE(v5) = [(TRANSITPbLocationFingerprints *)fingerprints isEqual:?];
@@ -771,14 +771,14 @@ LABEL_15:
   return v6 ^ v5 ^ v7 ^ v8 ^ v12 ^ v13 ^ v15 ^ v14 ^ [(TRANSITPbLocationFingerprints *)self->_fingerprints hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 0x40) != 0)
   {
-    self->_version = *(a3 + 16);
+    self->_version = *(from + 16);
     *&self->_has |= 0x40u;
-    v5 = *(a3 + 68);
+    v5 = *(from + 68);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -791,14 +791,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 68) & 0x10) == 0)
+  else if ((*(from + 68) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_tileX = *(a3 + 14);
+  self->_tileX = *(from + 14);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 0x20) == 0)
   {
 LABEL_4:
@@ -811,9 +811,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_tileY = *(a3 + 15);
+  self->_tileY = *(from + 15);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -826,9 +826,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_securityKey = *(a3 + 3);
+  self->_securityKey = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -841,18 +841,18 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_generationTimeSecs = *(a3 + 1);
+  self->_generationTimeSecs = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 68) & 8) != 0)
+  if ((*(from + 68) & 8) != 0)
   {
 LABEL_7:
-    self->_expirationAgeSecs = *(a3 + 10);
+    self->_expirationAgeSecs = *(from + 10);
     *&self->_has |= 8u;
   }
 
 LABEL_8:
   dEPRECATEDFingerprints = self->_dEPRECATEDFingerprints;
-  v7 = *(a3 + 4);
+  v7 = *(from + 4);
   if (dEPRECATEDFingerprints)
   {
     if (v7)
@@ -866,14 +866,14 @@ LABEL_8:
     [(TRANSITPbTransitTile *)self setDEPRECATEDFingerprints:?];
   }
 
-  if ((*(a3 + 68) & 2) != 0)
+  if ((*(from + 68) & 2) != 0)
   {
-    self->_marketId = *(a3 + 2);
+    self->_marketId = *(from + 2);
     *&self->_has |= 2u;
   }
 
   fingerprints = self->_fingerprints;
-  v9 = *(a3 + 6);
+  v9 = *(from + 6);
   if (fingerprints)
   {
     if (v9)

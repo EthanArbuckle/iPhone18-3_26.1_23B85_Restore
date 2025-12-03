@@ -1,47 +1,47 @@
 @interface NTKGreyhoundFaceView
-+ (id)swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_wantsStatusBarIconShadow;
-- (NTKGreyhoundFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentImageViewAlphaForEditMode:(int64_t)a3;
-- (double)_contentsScaleForDensity:(unint64_t)a3 statusBar:(BOOL)a4;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
-- (id)_complicationColorForEditMode:(int64_t)a3;
-- (id)_complicationFontForTypeface:(unint64_t)a3;
-- (id)_complicationFontForTypeface:(unint64_t)a3 complicationType:(unint64_t)a4;
+- (NTKGreyhoundFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentImageViewAlphaForEditMode:(int64_t)mode;
+- (double)_contentsScaleForDensity:(unint64_t)density statusBar:(BOOL)bar;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
+- (id)_complicationColorForEditMode:(int64_t)mode;
+- (id)_complicationFontForTypeface:(unint64_t)typeface;
+- (id)_complicationFontForTypeface:(unint64_t)typeface complicationType:(unint64_t)type;
 - (id)_dialComplicationView;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)createFaceColorPalette;
 - (void)_applyBreathingAndRubberbandingScale;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyRubberbandingAlpha;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupComplicationTransition;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
 - (void)_loadContentViews;
 - (void)_loadCurrentComplicationFont;
 - (void)_loadSnapshotContentViews;
 - (void)_unloadContentViews;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)a3;
-- (void)_updateContentViewColorsWithPalette:(id)a3;
-- (void)_updateDialComplicationWithFont:(id)a3;
-- (void)_updateDialComplicationWithTextColor:(id)a3;
+- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)style;
+- (void)_updateContentViewColorsWithPalette:(id)palette;
+- (void)_updateDialComplicationWithFont:(id)font;
+- (void)_updateDialComplicationWithTextColor:(id)color;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKGreyhoundFaceView
 
-- (NTKGreyhoundFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKGreyhoundFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = NTKGreyhoundFaceView;
-  v5 = [(NTKGreyhoundFaceView *)&v8 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKGreyhoundFaceView *)&v8 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
     v6 = objc_alloc_init(NTKSimpleTextFaceViewComplicationFactory);
@@ -52,16 +52,16 @@
   return v5;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v6.receiver = self;
   v6.super_class = NTKGreyhoundFaceView;
-  v3 = a3;
-  [(NTKGreyhoundFaceView *)&v6 _configureTimeView:v3];
+  viewCopy = view;
+  [(NTKGreyhoundFaceView *)&v6 _configureTimeView:viewCopy];
   v4 = [UIColor blackColor:v6.receiver];
-  v5 = [v3 secondHandView];
+  secondHandView = [viewCopy secondHandView];
 
-  [v5 setHandDotColor:v4];
+  [secondHandView setHandDotColor:v4];
 }
 
 - (void)_loadSnapshotContentViews
@@ -99,8 +99,8 @@
   [(NTKGreyhoundFaceView *)self bounds];
   [(UIView *)contentContainerView ntk_setBoundsAndPositionFromFrame:?];
   greyhoundContentView = self->_greyhoundContentView;
-  v6 = [(NTKGreyhoundFaceView *)self contentView];
-  [v6 bounds];
+  contentView = [(NTKGreyhoundFaceView *)self contentView];
+  [contentView bounds];
   [(NTKGreyhoundContentView *)greyhoundContentView ntk_setBoundsAndPositionFromFrame:?];
 }
 
@@ -112,8 +112,8 @@
     backgroundView = self->_backgroundView;
     self->_backgroundView = v3;
 
-    v5 = [(NTKGreyhoundFaceView *)self contentView];
-    [v5 addSubview:self->_backgroundView];
+    contentView = [(NTKGreyhoundFaceView *)self contentView];
+    [contentView addSubview:self->_backgroundView];
   }
 
   if (!self->_contentContainerView)
@@ -128,26 +128,26 @@
   if (!self->_greyhoundContentView)
   {
     v8 = [NTKGreyhoundContentView alloc];
-    v9 = [(NTKGreyhoundFaceView *)self contentView];
-    [v9 bounds];
+    contentView2 = [(NTKGreyhoundFaceView *)self contentView];
+    [contentView2 bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(NTKGreyhoundFaceView *)self device];
+    device = [(NTKGreyhoundFaceView *)self device];
     style = self->_style;
     density = self->_density;
     typeface = self->_typeface;
-    v22 = [(NTKGreyhoundFaceView *)self palette];
-    v23 = [(NTKGreyhoundContentView *)v8 initWithFrame:v18 device:style style:density density:typeface typeface:v22 colorPalette:v11, v13, v15, v17];
+    palette = [(NTKGreyhoundFaceView *)self palette];
+    v23 = [(NTKGreyhoundContentView *)v8 initWithFrame:device device:style style:density density:typeface typeface:palette colorPalette:v11, v13, v15, v17];
     greyhoundContentView = self->_greyhoundContentView;
     self->_greyhoundContentView = v23;
 
     [(UIView *)self->_contentContainerView addSubview:self->_greyhoundContentView];
     sx = 0.0;
     memset(v43, 0, sizeof(v43));
-    v25 = [(NTKGreyhoundFaceView *)self device];
-    sub_C514(v25, v43);
+    device2 = [(NTKGreyhoundFaceView *)self device];
+    sub_C514(device2, v43);
 
     CGAffineTransformMakeScale(&v42, sx, sx);
     v26 = self->_greyhoundContentView;
@@ -158,19 +158,19 @@
   if (!self->_cornerView)
   {
     v27 = [NTKRoundedCornerOverlayView alloc];
-    v28 = [(NTKGreyhoundFaceView *)self contentView];
-    [v28 bounds];
+    contentView3 = [(NTKGreyhoundFaceView *)self contentView];
+    [contentView3 bounds];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [(NTKGreyhoundFaceView *)self device];
-    v38 = [v27 initWithFrame:v37 forDeviceCornerRadius:{v30, v32, v34, v36}];
+    device3 = [(NTKGreyhoundFaceView *)self device];
+    v38 = [v27 initWithFrame:device3 forDeviceCornerRadius:{v30, v32, v34, v36}];
     cornerView = self->_cornerView;
     self->_cornerView = v38;
 
-    v40 = [(NTKGreyhoundFaceView *)self contentView];
-    [v40 addSubview:self->_cornerView];
+    contentView4 = [(NTKGreyhoundFaceView *)self contentView];
+    [contentView4 addSubview:self->_cornerView];
   }
 }
 
@@ -193,49 +193,49 @@
   self->_cornerView = 0;
 }
 
-- (void)_updateContentViewColorsWithPalette:(id)a3
+- (void)_updateContentViewColorsWithPalette:(id)palette
 {
   greyhoundContentView = self->_greyhoundContentView;
-  v5 = a3;
-  [(NTKGreyhoundContentView *)greyhoundContentView setColorPalette:v5];
-  v6 = [v5 background];
-  [(UIView *)self->_backgroundView setBackgroundColor:v6];
+  paletteCopy = palette;
+  [(NTKGreyhoundContentView *)greyhoundContentView setColorPalette:paletteCopy];
+  background = [paletteCopy background];
+  [(UIView *)self->_backgroundView setBackgroundColor:background];
 
-  v7 = [(NTKGreyhoundFaceView *)self timeView];
-  v8 = [v5 clockHands];
-  v9 = [v5 clockHandsInlay];
-  [v7 applyHourMinuteHandsStrokeColor:v8 fillColor:v9];
+  timeView = [(NTKGreyhoundFaceView *)self timeView];
+  clockHands = [paletteCopy clockHands];
+  clockHandsInlay = [paletteCopy clockHandsInlay];
+  [timeView applyHourMinuteHandsStrokeColor:clockHands fillColor:clockHandsInlay];
 
-  v10 = [(NTKGreyhoundFaceView *)self timeView];
-  v11 = [v5 secondHand];
-  [v10 applySecondHandColor:v11];
+  timeView2 = [(NTKGreyhoundFaceView *)self timeView];
+  secondHand = [paletteCopy secondHand];
+  [timeView2 applySecondHandColor:secondHand];
 
-  v12 = [v5 digit];
+  digit = [paletteCopy digit];
 
-  [(NTKGreyhoundFaceView *)self _updateDialComplicationWithTextColor:v12];
+  [(NTKGreyhoundFaceView *)self _updateDialComplicationWithTextColor:digit];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = NTKGreyhoundFaceView;
-  [(NTKGreyhoundFaceView *)&v14 _configureComplicationView:v6 forSlot:a4];
+  [(NTKGreyhoundFaceView *)&v14 _configureComplicationView:viewCopy forSlot:slot];
   v7 = [(NTKGreyhoundFaceView *)self optionForCustomEditMode:13 slot:0];
-  v8 = [v7 typeface];
+  typeface = [v7 typeface];
 
   v9 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:[(NTKGreyhoundFaceView *)self editing]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
-    v11 = [v10 label];
-    [v11 setTextColor:v9];
+    v10 = viewCopy;
+    label = [v10 label];
+    [label setTextColor:v9];
 
-    v12 = [v10 complicationType];
+    complicationType = [v10 complicationType];
 LABEL_5:
-    v13 = [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:v8 complicationType:v12];
-    [v6 setFont:v13];
+    v13 = [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:typeface complicationType:complicationType];
+    [viewCopy setFont:v13];
 
     goto LABEL_6;
   }
@@ -243,8 +243,8 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setTextColor:v9];
-    v12 = &stru_20 + 13;
+    [viewCopy setTextColor:v9];
+    complicationType = &stru_20 + 13;
     goto LABEL_5;
   }
 
@@ -254,9 +254,9 @@ LABEL_6:
 - (id)_dialComplicationView
 {
   v2 = [(NTKGreyhoundFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotSubdialTop];
-  v3 = [v2 display];
+  display = [v2 display];
 
-  return v3;
+  return display;
 }
 
 - (void)_loadCurrentComplicationFont
@@ -273,38 +273,38 @@ LABEL_6:
 {
   if ([(NTKGreyhoundFaceView *)self editing])
   {
-    v3 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
-    [v3 setAlpha:1.0];
+    dialComplicationContainerView = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+    [dialComplicationContainerView setAlpha:1.0];
 
-    v4 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+    dialComplicationContainerView2 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
     v5 = *&CGAffineTransformIdentity.c;
     v6[0] = *&CGAffineTransformIdentity.a;
     v6[1] = v5;
     v6[2] = *&CGAffineTransformIdentity.tx;
-    [v4 setTransform:v6];
+    [dialComplicationContainerView2 setTransform:v6];
   }
 }
 
-- (void)_updateDialComplicationWithFont:(id)a3
+- (void)_updateDialComplicationWithFont:(id)font
 {
-  v5 = a3;
-  v4 = [(NTKGreyhoundFaceView *)self _dialComplicationView];
+  fontCopy = font;
+  _dialComplicationView = [(NTKGreyhoundFaceView *)self _dialComplicationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v4 setFont:v5];
+    [_dialComplicationView setFont:fontCopy];
   }
 }
 
-- (void)_updateDialComplicationWithTextColor:(id)a3
+- (void)_updateDialComplicationWithTextColor:(id)color
 {
-  v6 = a3;
-  v4 = [(NTKGreyhoundFaceView *)self _dialComplicationView];
+  colorCopy = color;
+  _dialComplicationView = [(NTKGreyhoundFaceView *)self _dialComplicationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 label];
-    [v5 setTextColor:v6];
+    label = [_dialComplicationView label];
+    [label setTextColor:colorCopy];
   }
 
   else
@@ -312,39 +312,39 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setTextColor:v6];
+      [_dialComplicationView setTextColor:colorCopy];
     }
   }
 }
 
-- (id)_complicationFontForTypeface:(unint64_t)a3
+- (id)_complicationFontForTypeface:(unint64_t)typeface
 {
-  v5 = [(NTKGreyhoundFaceView *)self _dialComplicationView];
+  _dialComplicationView = [(NTKGreyhoundFaceView *)self _dialComplicationView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 complicationType];
+    complicationType = [_dialComplicationView complicationType];
   }
 
   else
   {
-    v6 = &stru_20 + 13;
+    complicationType = &stru_20 + 13;
   }
 
-  v7 = [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:a3 complicationType:v6];
+  v7 = [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:typeface complicationType:complicationType];
 
   return v7;
 }
 
-- (id)_complicationFontForTypeface:(unint64_t)a3 complicationType:(unint64_t)a4
+- (id)_complicationFontForTypeface:(unint64_t)typeface complicationType:(unint64_t)type
 {
   v15 = 0;
   v13 = 0u;
   memset(v14, 0, sizeof(v14));
-  v7 = [(NTKGreyhoundFaceView *)self device];
-  sub_C514(v7, &v13);
+  device = [(NTKGreyhoundFaceView *)self device];
+  sub_C514(device, &v13);
 
-  if (a4 == 3)
+  if (type == 3)
   {
     v8 = v14;
     v9 = 1;
@@ -352,7 +352,7 @@ LABEL_6:
 
   else
   {
-    if (a4 == 45 || a4 == 4)
+    if (type == 45 || type == 4)
     {
       v8 = v14 + 1;
       v9 = 1;
@@ -368,29 +368,29 @@ LABEL_6:
 LABEL_8:
   v11 = *v8;
 
-  return [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:a3 fontSize:v9 fontWeight:v10 useNumeralsFont:v11];
+  return [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:typeface fontSize:v9 fontWeight:v10 useNumeralsFont:v11];
 }
 
-- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)a3
+- (void)_updateComplicationCenterOffsetForStyle:(unint64_t)style
 {
   v11 = 0;
   memset(v10, 0, sizeof(v10));
   memset(v9, 0, sizeof(v9));
-  v5 = [(NTKGreyhoundFaceView *)self device];
-  sub_C514(v5, v9);
+  device = [(NTKGreyhoundFaceView *)self device];
+  sub_C514(device, v9);
 
   v6 = v10 + 1;
-  if (a3 != 4)
+  if (style != 4)
   {
     v6 = v10;
   }
 
   v7 = *v6;
-  v8 = [(NTKGreyhoundFaceView *)self complicationFactory];
-  [v8 verticalCenterOffset];
+  complicationFactory = [(NTKGreyhoundFaceView *)self complicationFactory];
+  [complicationFactory verticalCenterOffset];
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    [v8 setVerticalCenterOffset:v7];
+    [complicationFactory setVerticalCenterOffset:v7];
     [(NTKGreyhoundFaceView *)self invalidateComplicationLayout];
     [(NTKGreyhoundFaceView *)self layoutIfNeeded];
     [(NTKGreyhoundFaceView *)self layoutComplicationViews];
@@ -399,21 +399,21 @@ LABEL_8:
 
 - (BOOL)_wantsStatusBarIconShadow
 {
-  v2 = [(NTKGreyhoundFaceView *)self palette];
-  v3 = [v2 isBlackBackground];
+  palette = [(NTKGreyhoundFaceView *)self palette];
+  isBlackBackground = [palette isBlackBackground];
 
-  return v3 ^ 1;
+  return isBlackBackground ^ 1;
 }
 
-- (double)_contentsScaleForDensity:(unint64_t)a3 statusBar:(BOOL)a4
+- (double)_contentsScaleForDensity:(unint64_t)density statusBar:(BOOL)bar
 {
-  v4 = a4;
+  barCopy = bar;
   v12 = 0.0;
-  v6 = [(NTKGreyhoundFaceView *)self device:a3];
+  v6 = [(NTKGreyhoundFaceView *)self device:density];
   sub_C514(v6, &v10);
 
   v7 = 1.0;
-  if (v4)
+  if (barCopy)
   {
     if (self->_density)
     {
@@ -431,73 +431,73 @@ LABEL_8:
   return v7 * v12;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v16.receiver = self;
   v16.super_class = NTKGreyhoundFaceView;
   [(NTKGreyhoundFaceView *)&v16 _configureForEditMode:?];
-  v5 = [(NTKGreyhoundFaceView *)self palette];
-  [(NTKGreyhoundFaceView *)self _updateContentViewColorsWithPalette:v5];
+  palette = [(NTKGreyhoundFaceView *)self palette];
+  [(NTKGreyhoundFaceView *)self _updateContentViewColorsWithPalette:palette];
 
   [(NTKGreyhoundFaceView *)self _loadCurrentComplicationFont];
-  v6 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:a3];
+  v6 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:mode];
   [(NTKGreyhoundFaceView *)self _updateDialComplicationWithTextColor:v6];
 
-  [(NTKGreyhoundFaceView *)self _timeAlphaForEditMode:a3];
+  [(NTKGreyhoundFaceView *)self _timeAlphaForEditMode:mode];
   v8 = v7;
-  v9 = [(NTKGreyhoundFaceView *)self timeView];
-  [v9 setAlpha:v8];
+  timeView = [(NTKGreyhoundFaceView *)self timeView];
+  [timeView setAlpha:v8];
 
-  [(NTKGreyhoundFaceView *)self _complicationAlphaForEditMode:a3];
+  [(NTKGreyhoundFaceView *)self _complicationAlphaForEditMode:mode];
   v11 = v10;
-  v12 = [(NTKGreyhoundFaceView *)self complicationContainerView];
-  [v12 setAlpha:v11];
+  complicationContainerView = [(NTKGreyhoundFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v11];
 
-  [(NTKGreyhoundFaceView *)self _contentImageViewAlphaForEditMode:a3];
+  [(NTKGreyhoundFaceView *)self _contentImageViewAlphaForEditMode:mode];
   v14 = v13;
-  v15 = [(NTKGreyhoundFaceView *)self contentView];
-  [v15 setAlpha:v14];
+  contentView = [(NTKGreyhoundFaceView *)self contentView];
+  [contentView setAlpha:v14];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v20.receiver = self;
   v20.super_class = NTKGreyhoundFaceView;
   [NTKGreyhoundFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKGreyhoundFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKGreyhoundFaceView *)self _timeAlphaForEditMode:a5];
+  [(NTKGreyhoundFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKGreyhoundFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  v10 = [(NTKGreyhoundFaceView *)self timeView];
-  [v10 setAlpha:v9];
+  timeView = [(NTKGreyhoundFaceView *)self timeView];
+  [timeView setAlpha:v9];
 
-  [(NTKGreyhoundFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKGreyhoundFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKGreyhoundFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKGreyhoundFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v13 = [(NTKGreyhoundFaceView *)self complicationContainerView];
-  [v13 setAlpha:v12];
+  complicationContainerView = [(NTKGreyhoundFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v12];
 
-  [(NTKGreyhoundFaceView *)self _contentImageViewAlphaForEditMode:a4];
-  [(NTKGreyhoundFaceView *)self _contentImageViewAlphaForEditMode:a5];
+  [(NTKGreyhoundFaceView *)self _contentImageViewAlphaForEditMode:mode];
+  [(NTKGreyhoundFaceView *)self _contentImageViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v15 = v14;
-  v16 = [(NTKGreyhoundFaceView *)self contentView];
-  [v16 setAlpha:v15];
+  contentView = [(NTKGreyhoundFaceView *)self contentView];
+  [contentView setAlpha:v15];
 
   if (self->_density == 1)
   {
-    v17 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:a4];
-    v18 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:a5];
+    v17 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:mode];
+    v18 = [(NTKGreyhoundFaceView *)self _complicationColorForEditMode:editMode];
     v19 = NTKInterpolateBetweenColors();
     [(NTKGreyhoundFaceView *)self _updateDialComplicationWithTextColor:v19];
   }
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -505,15 +505,15 @@ LABEL_8:
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3 && a3 != 11)
+  if (mode && mode != 11)
   {
     if (self->_density)
     {
       result = NTKEditModeDimmedAlpha;
-      if (a3 != 15)
+      if (mode != 15)
       {
         return 1.0;
       }
@@ -528,10 +528,10 @@ LABEL_8:
   return result;
 }
 
-- (double)_contentImageViewAlphaForEditMode:(int64_t)a3
+- (double)_contentImageViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -539,83 +539,83 @@ LABEL_8:
   return result;
 }
 
-- (id)_complicationColorForEditMode:(int64_t)a3
+- (id)_complicationColorForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v3 = [UIColor colorWithWhite:0.95 alpha:1.0];
+    digit = [UIColor colorWithWhite:0.95 alpha:1.0];
   }
 
   else
   {
-    v4 = [(NTKGreyhoundFaceView *)self palette];
-    v3 = [v4 digit];
+    palette = [(NTKGreyhoundFaceView *)self palette];
+    digit = [palette digit];
   }
 
-  return v3;
+  return digit;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v14.receiver = self;
   v14.super_class = NTKGreyhoundFaceView;
-  [(NTKGreyhoundFaceView *)&v14 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 > 12)
+  [(NTKGreyhoundFaceView *)&v14 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode > 12)
   {
-    if (a4 == 13)
+    if (mode == 13)
     {
-      v13 = [v8 typeface];
-      self->_typeface = v13;
-      [(NTKGreyhoundContentView *)self->_greyhoundContentView setTypeface:v13];
+      typeface = [optionCopy typeface];
+      self->_typeface = typeface;
+      [(NTKGreyhoundContentView *)self->_greyhoundContentView setTypeface:typeface];
       [(NTKGreyhoundFaceView *)self _loadCurrentComplicationFont];
     }
 
-    else if (a4 == 15)
+    else if (mode == 15)
     {
-      v10 = [v8 style];
-      self->_style = v10;
-      [(NTKGreyhoundContentView *)self->_greyhoundContentView setStyle:v10];
+      style = [optionCopy style];
+      self->_style = style;
+      [(NTKGreyhoundContentView *)self->_greyhoundContentView setStyle:style];
       [(NTKGreyhoundFaceView *)self _updateComplicationCenterOffsetForStyle:self->_style];
     }
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
-    v11 = [(NTKGreyhoundFaceView *)self palette];
-    [(NTKGreyhoundFaceView *)self _updateContentViewColorsWithPalette:v11];
+    palette = [(NTKGreyhoundFaceView *)self palette];
+    [(NTKGreyhoundFaceView *)self _updateContentViewColorsWithPalette:palette];
 
-    v12 = [(NTKGreyhoundFaceView *)self delegate];
-    [v12 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKGreyhoundFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 
-  else if (a4 == 11)
+  else if (mode == 11)
   {
-    v9 = [v8 density];
-    self->_density = v9;
-    [(NTKGreyhoundContentView *)self->_greyhoundContentView setDensity:v9];
+    density = [optionCopy density];
+    self->_density = density;
+    [(NTKGreyhoundContentView *)self->_greyhoundContentView setDensity:density];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v51.receiver = self;
   v51.super_class = NTKGreyhoundFaceView;
-  [(NTKGreyhoundFaceView *)&v51 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 <= 12)
+  [(NTKGreyhoundFaceView *)&v51 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode <= 12)
   {
-    if (a6 != 10)
+    if (mode != 10)
     {
-      if (a6 == 11)
+      if (mode == 11)
       {
-        v14 = [v12 density];
-        v15 = [v13 density];
-        if (v14 != v15)
+        density = [optionCopy density];
+        density2 = [toOptionCopy density];
+        if (density != density2)
         {
-          v16 = v15;
-          if (a3 >= 0.5)
+          v16 = density2;
+          if (fraction >= 0.5)
           {
             CLKMapFractionIntoRange();
             v17 = v33;
@@ -628,10 +628,10 @@ LABEL_8:
             v17 = 0.0;
             CLKMapFractionIntoRange();
             v19 = v18;
-            v20 = v14;
+            v20 = density;
           }
 
-          [(NTKGreyhoundFaceView *)self _contentsScaleForDensity:v14 statusBar:0];
+          [(NTKGreyhoundFaceView *)self _contentsScaleForDensity:density statusBar:0];
           [(NTKGreyhoundFaceView *)self _contentsScaleForDensity:v16 statusBar:0];
           CLKInterpolateBetweenFloatsClipped();
           CLKMapFractionIntoRange();
@@ -641,12 +641,12 @@ LABEL_8:
           [(NTKGreyhoundContentView *)self->_greyhoundContentView setAlpha:v19];
           v49 = v50;
           [(NTKGreyhoundContentView *)self->_greyhoundContentView setTransform:&v49];
-          v35 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
-          [v35 setAlpha:v17];
+          dialComplicationContainerView = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+          [dialComplicationContainerView setAlpha:v17];
 
           v48 = v50;
-          v36 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
-          v37 = v36;
+          dialComplicationContainerView2 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+          v37 = dialComplicationContainerView2;
           *&v49.a = *&v48.a;
           *&v49.c = *&v48.c;
           v38 = *&v48.tx;
@@ -657,33 +657,33 @@ LABEL_8:
       goto LABEL_26;
     }
 
-    v26 = [(NTKGreyhoundFaceView *)self interpolatedColorPalette];
-    v27 = [v26 fromPalette];
-    v28 = [v26 toPalette];
-    if (([v27 isEqual:v28] & 1) == 0)
+    interpolatedColorPalette = [(NTKGreyhoundFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    toPalette = [interpolatedColorPalette toPalette];
+    if (([fromPalette isEqual:toPalette] & 1) == 0)
     {
-      [(NTKGreyhoundFaceView *)self _updateContentViewColorsWithPalette:v26];
+      [(NTKGreyhoundFaceView *)self _updateContentViewColorsWithPalette:interpolatedColorPalette];
     }
 
 LABEL_15:
     goto LABEL_26;
   }
 
-  if (a6 == 13)
+  if (mode == 13)
   {
-    v29 = [v12 typeface];
-    v30 = [v13 typeface];
-    if (v29 == v30)
+    typeface = [optionCopy typeface];
+    typeface2 = [toOptionCopy typeface];
+    if (typeface == typeface2)
     {
       goto LABEL_26;
     }
 
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
-      v41 = v30;
+      v41 = typeface2;
       CLKMapFractionIntoRange();
       v32 = v42;
-      v29 = v41;
+      typeface = v41;
     }
 
     else
@@ -692,42 +692,42 @@ LABEL_15:
       v32 = v31;
     }
 
-    v26 = [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:v29];
+    interpolatedColorPalette = [(NTKGreyhoundFaceView *)self _complicationFontForTypeface:typeface];
     [(NTKGreyhoundFaceView *)self _contentsScaleForDensity:self->_density statusBar:0];
     CLKMapFractionIntoRange();
     memset(&v50, 0, sizeof(v50));
     CGAffineTransformMakeScale(&v50, v43, v43);
-    [(NTKGreyhoundFaceView *)self _updateDialComplicationWithFont:v26];
-    [(NTKGreyhoundContentView *)self->_greyhoundContentView setTypeface:v29];
+    [(NTKGreyhoundFaceView *)self _updateDialComplicationWithFont:interpolatedColorPalette];
+    [(NTKGreyhoundContentView *)self->_greyhoundContentView setTypeface:typeface];
     [(NTKGreyhoundContentView *)self->_greyhoundContentView setAlpha:v32];
     v49 = v50;
     [(NTKGreyhoundContentView *)self->_greyhoundContentView setTransform:&v49];
     if (self->_density == 1)
     {
-      v44 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
-      [v44 setAlpha:v32];
+      dialComplicationContainerView3 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+      [dialComplicationContainerView3 setAlpha:v32];
 
       v47 = v50;
-      v45 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+      dialComplicationContainerView4 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
       v49 = v47;
-      [v45 setTransform:&v49];
+      [dialComplicationContainerView4 setTransform:&v49];
     }
 
     goto LABEL_15;
   }
 
-  if (a6 == 15)
+  if (mode == 15)
   {
-    v21 = [v12 style];
-    v22 = [v13 style];
-    if (v21 != v22)
+    style = [optionCopy style];
+    style2 = [toOptionCopy style];
+    if (style != style2)
     {
-      v23 = v22;
+      v23 = style2;
       CLKMapFractionIntoRange();
-      if (a3 >= 0.5)
+      if (fraction >= 0.5)
       {
         v25 = v24;
-        v21 = v23;
+        style = v23;
       }
 
       else
@@ -739,25 +739,25 @@ LABEL_15:
       CLKMapFractionIntoRange();
       memset(&v50, 0, sizeof(v50));
       CGAffineTransformMakeScale(&v50, v39, v39);
-      [(NTKGreyhoundContentView *)self->_greyhoundContentView setStyle:v21];
+      [(NTKGreyhoundContentView *)self->_greyhoundContentView setStyle:style];
       [(NTKGreyhoundContentView *)self->_greyhoundContentView setAlpha:v25];
       v49 = v50;
       [(NTKGreyhoundContentView *)self->_greyhoundContentView setTransform:&v49];
-      [(NTKGreyhoundFaceView *)self _updateComplicationCenterOffsetForStyle:v21];
+      [(NTKGreyhoundFaceView *)self _updateComplicationCenterOffsetForStyle:style];
       if (v23 == &dword_4 && self->_density == 1)
       {
-        v40 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
-        [v40 setAlpha:v25];
+        dialComplicationContainerView5 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+        [dialComplicationContainerView5 setAlpha:v25];
 
         v46 = v50;
-        v36 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
-        v37 = v36;
+        dialComplicationContainerView2 = [(NTKGreyhoundFaceView *)self dialComplicationContainerView];
+        v37 = dialComplicationContainerView2;
         *&v49.a = *&v46.a;
         *&v49.c = *&v46.c;
         v38 = *&v46.tx;
 LABEL_25:
         *&v49.tx = v38;
-        [v36 setTransform:&v49];
+        [dialComplicationContainerView2 setTransform:&v49];
       }
     }
   }
@@ -765,26 +765,26 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKGreyhoundFaceView;
-  [(NTKGreyhoundFaceView *)&v8 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKGreyhoundFaceView *)&v8 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
-    self->_breathingFraction = a3;
+    self->_breathingFraction = fraction;
     [(NTKGreyhoundFaceView *)self _applyBreathingAndRubberbandingScale];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKGreyhoundFaceView;
-  [(NTKGreyhoundFaceView *)&v8 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKGreyhoundFaceView *)&v8 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
-    self->_rubberbandingFraction = a3;
+    self->_rubberbandingFraction = fraction;
     [(NTKGreyhoundFaceView *)self _applyBreathingAndRubberbandingScale];
     [(NTKGreyhoundFaceView *)self _applyRubberbandingAlpha];
   }
@@ -799,17 +799,17 @@ LABEL_26:
   NTKScaleForRubberBandingFraction();
   memset(&v12, 0, sizeof(v12));
   CGAffineTransformMakeScale(&v12, v5 * v7, v5 * v7);
-  v8 = [(NTKGreyhoundFaceView *)self contentView];
+  contentView = [(NTKGreyhoundFaceView *)self contentView];
   v11 = v12;
-  [v8 setTransform:&v11];
+  [contentView setTransform:&v11];
 
-  v9 = [(NTKGreyhoundFaceView *)self timeView];
+  timeView = [(NTKGreyhoundFaceView *)self timeView];
   v11 = v12;
-  [v9 setTransform:&v11];
+  [timeView setTransform:&v11];
 
-  v10 = [(NTKGreyhoundFaceView *)self complicationContainerView];
+  complicationContainerView = [(NTKGreyhoundFaceView *)self complicationContainerView];
   v11 = v12;
-  [v10 setTransform:&v11];
+  [complicationContainerView setTransform:&v11];
 }
 
 - (void)_applyRubberbandingAlpha
@@ -820,61 +820,61 @@ LABEL_26:
   [(NTKGreyhoundFaceView *)self setAlpha:?];
 }
 
-+ (id)swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if ((a3 - 11) > 4)
+  if ((options - 11) > 4)
   {
     return 0;
   }
 
   else
   {
-    return (&off_146C0)[a3 - 11];
+    return (&off_146C0)[options - 11];
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 > 0xF || ((1 << a4) & 0xA800) == 0)
+  optionCopy = option;
+  optionsCopy = options;
+  v10 = optionsCopy;
+  if (mode > 0xF || ((1 << mode) & 0xA800) == 0)
   {
     v30.receiver = self;
     v30.super_class = NTKGreyhoundFaceView;
-    v17 = [(NTKGreyhoundFaceView *)&v30 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v17 = [(NTKGreyhoundFaceView *)&v30 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
     goto LABEL_16;
   }
 
-  v11 = [v9 objectForKeyedSubscript:&off_15B70];
+  v11 = [optionsCopy objectForKeyedSubscript:&off_15B70];
   v12 = [v10 objectForKeyedSubscript:&off_15B28];
   v13 = [v10 objectForKeyedSubscript:&off_15B40];
   v14 = [v10 objectForKeyedSubscript:&off_15B58];
-  if (a4 == 11)
+  if (mode == 11)
   {
     v15 = v11;
     v16 = v12;
-    v11 = v8;
+    v11 = optionCopy;
   }
 
-  else if (a4 == 15)
+  else if (mode == 15)
   {
     v15 = v13;
-    v13 = v8;
+    v13 = optionCopy;
     v16 = v12;
   }
 
   else
   {
     v15 = v12;
-    v16 = v8;
-    if (a4 != 13)
+    v16 = optionCopy;
+    if (mode != 13)
     {
       goto LABEL_11;
     }
   }
 
-  v18 = v8;
+  v18 = optionCopy;
 
   v12 = v16;
 LABEL_11:
@@ -890,8 +890,8 @@ LABEL_11:
   if (!v17)
   {
     v22 = [NTKGreyhoundFaceView alloc];
-    v23 = [(NTKGreyhoundFaceView *)self device];
-    v24 = [(NTKGreyhoundFaceView *)v22 initWithFaceStyle:44 forDevice:v23 clientIdentifier:0];
+    device = [(NTKGreyhoundFaceView *)self device];
+    v24 = [(NTKGreyhoundFaceView *)v22 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
     [(NTKGreyhoundFaceView *)self frame];
     [(NTKGreyhoundFaceView *)v24 setFrame:?];
@@ -909,8 +909,8 @@ LABEL_11:
     v32.width = v26;
     v32.height = v27;
     UIGraphicsBeginImageContextWithOptions(v32, 0, 0.0);
-    v28 = [(NTKGreyhoundFaceView *)v24 layer];
-    [v28 renderInContext:UIGraphicsGetCurrentContext()];
+    layer = [(NTKGreyhoundFaceView *)v24 layer];
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
 
     v17 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

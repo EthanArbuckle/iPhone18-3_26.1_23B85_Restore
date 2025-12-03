@@ -34,12 +34,12 @@
       [(CLKAssertionBlockSentinel *)self dealloc];
     }
 
-    v4 = [(CLKAssertionBlockSentinel *)self fallbackBlock];
+    fallbackBlock = [(CLKAssertionBlockSentinel *)self fallbackBlock];
 
-    if (v4)
+    if (fallbackBlock)
     {
-      v5 = [(CLKAssertionBlockSentinel *)self fallbackBlock];
-      v5[2]();
+      fallbackBlock2 = [(CLKAssertionBlockSentinel *)self fallbackBlock];
+      fallbackBlock2[2]();
     }
 
     if ([(CLKAssertionBlockSentinel *)self shouldBeFatal])

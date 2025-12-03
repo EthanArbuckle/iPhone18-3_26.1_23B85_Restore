@@ -1,27 +1,27 @@
 @interface NPKRemotePassAction
 - (BOOL)supportsCommutePlanRenewal;
 - (BOOL)supportsTopUp;
-- (NPKRemotePassAction)initWithCoder:(id)a3;
-- (NPKRemotePassAction)initWithMessage:(id)a3 protoEnvelope:(id)a4 image:(id)a5;
-- (NPKRemotePassAction)initWithProtoEnvelope:(id)a3 image:(id)a4;
-- (NPKRemotePassAction)initWithUnderlyingMessage:(id)a3;
-- (id)_imageForMessage:(id)a3;
-- (id)_messageDataURLWithData:(id)a3;
-- (id)_messageDataWithDataURL:(id)a3;
+- (NPKRemotePassAction)initWithCoder:(id)coder;
+- (NPKRemotePassAction)initWithMessage:(id)message protoEnvelope:(id)envelope image:(id)image;
+- (NPKRemotePassAction)initWithProtoEnvelope:(id)envelope image:(id)image;
+- (NPKRemotePassAction)initWithUnderlyingMessage:(id)message;
+- (id)_imageForMessage:(id)message;
+- (id)_messageDataURLWithData:(id)data;
+- (id)_messageDataWithDataURL:(id)l;
 - (id)description;
 - (unint64_t)cardType;
 - (void)_updateDataURL;
-- (void)_updateLayoutContentsWithImage:(id)a3;
+- (void)_updateLayoutContentsWithImage:(id)image;
 - (void)_updateSummaryText;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NPKRemotePassAction
 
-- (NPKRemotePassAction)initWithUnderlyingMessage:(id)a3
+- (NPKRemotePassAction)initWithUnderlyingMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  messageCopy = message;
+  v5 = [messageCopy URL];
   v6 = [(NPKRemotePassAction *)self _messageDataWithDataURL:v5];
 
   if (v6)
@@ -34,41 +34,41 @@
     v7 = 0;
   }
 
-  v8 = [(NPKRemotePassAction *)self _imageForMessage:v4];
-  v9 = [(NPKRemotePassAction *)self initWithMessage:v4 protoEnvelope:v7 image:v8];
+  v8 = [(NPKRemotePassAction *)self _imageForMessage:messageCopy];
+  v9 = [(NPKRemotePassAction *)self initWithMessage:messageCopy protoEnvelope:v7 image:v8];
 
   return v9;
 }
 
-- (NPKRemotePassAction)initWithProtoEnvelope:(id)a3 image:(id)a4
+- (NPKRemotePassAction)initWithProtoEnvelope:(id)envelope image:(id)image
 {
   v6 = MEMORY[0x277CD68F8];
-  v7 = a4;
-  v8 = a3;
+  imageCopy = image;
+  envelopeCopy = envelope;
   v9 = [v6 alloc];
   v10 = objc_alloc_init(MEMORY[0x277CD6920]);
   v11 = [v9 initWithSession:v10];
 
-  v12 = [(NPKRemotePassAction *)self initWithMessage:v11 protoEnvelope:v8 image:v7];
+  v12 = [(NPKRemotePassAction *)self initWithMessage:v11 protoEnvelope:envelopeCopy image:imageCopy];
   return v12;
 }
 
-- (NPKRemotePassAction)initWithMessage:(id)a3 protoEnvelope:(id)a4 image:(id)a5
+- (NPKRemotePassAction)initWithMessage:(id)message protoEnvelope:(id)envelope image:(id)image
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  envelopeCopy = envelope;
+  imageCopy = image;
   v14.receiver = self;
   v14.super_class = NPKRemotePassAction;
   v12 = [(NPKRemotePassAction *)&v14 init];
   if (v12)
   {
-    [v9 setRequiresValidation:1];
-    objc_storeStrong(&v12->_underlyingMessage, a3);
-    objc_storeStrong(&v12->_protoEnvelope, a4);
+    [messageCopy setRequiresValidation:1];
+    objc_storeStrong(&v12->_underlyingMessage, message);
+    objc_storeStrong(&v12->_protoEnvelope, envelope);
     [(NPKRemotePassAction *)v12 _updateDataURL];
     [(NPKRemotePassAction *)v12 _updateSummaryText];
-    [(NPKRemotePassAction *)v12 _updateLayoutContentsWithImage:v11];
+    [(NPKRemotePassAction *)v12 _updateLayoutContentsWithImage:imageCopy];
   }
 
   return v12;
@@ -88,27 +88,27 @@
     v5 = @"NO";
   }
 
-  v6 = [(NPKRemotePassAction *)self passLocalizedDescription];
-  v7 = [(NPKRemotePassAction *)self caption];
-  v8 = [(NPKRemotePassAction *)self image];
-  v9 = [v3 stringWithFormat:@"<%@: %p> isResponse: %@, passLocalizedDescription: %@, caption: %@, image: %@, underlyingMessage: %@", v4, self, v5, v6, v7, v8, self->_underlyingMessage];
+  passLocalizedDescription = [(NPKRemotePassAction *)self passLocalizedDescription];
+  caption = [(NPKRemotePassAction *)self caption];
+  image = [(NPKRemotePassAction *)self image];
+  v9 = [v3 stringWithFormat:@"<%@: %p> isResponse: %@, passLocalizedDescription: %@, caption: %@, image: %@, underlyingMessage: %@", v4, self, v5, passLocalizedDescription, caption, image, self->_underlyingMessage];
 
   return v9;
 }
 
-- (NPKRemotePassAction)initWithCoder:(id)a3
+- (NPKRemotePassAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NPKRemotePassAction;
   v5 = [(NPKRemotePassAction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"underlyingMessage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"underlyingMessage"];
     underlyingMessage = v5->_underlyingMessage;
     v5->_underlyingMessage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protoEnvelope"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protoEnvelope"];
     protoEnvelope = v5->_protoEnvelope;
     v5->_protoEnvelope = v8;
   }
@@ -116,12 +116,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   underlyingMessage = self->_underlyingMessage;
-  v5 = a3;
-  [v5 encodeObject:underlyingMessage forKey:@"underlyingMessage"];
-  [v5 encodeObject:self->_protoEnvelope forKey:@"protoEnvelope"];
+  coderCopy = coder;
+  [coderCopy encodeObject:underlyingMessage forKey:@"underlyingMessage"];
+  [coderCopy encodeObject:self->_protoEnvelope forKey:@"protoEnvelope"];
 }
 
 - (BOOL)supportsTopUp
@@ -151,16 +151,16 @@
     return 0;
   }
 
-  v3 = [(NPKProtoRemotePassActionEnvelope *)self->_protoEnvelope cardType];
+  cardType = [(NPKProtoRemotePassActionEnvelope *)self->_protoEnvelope cardType];
 
-  return NPKRemotePassActionCardTypeForNPKProtoRemotePassActionCardType(v3);
+  return NPKRemotePassActionCardTypeForNPKProtoRemotePassActionCardType(cardType);
 }
 
-- (id)_messageDataURLWithData:(id)a3
+- (id)_messageDataURLWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [a3 base64EncodedStringWithOptions:0];
+    v3 = [data base64EncodedStringWithOptions:0];
     if (v3)
     {
       v4 = [NPKRemotePassActionMessageAbsoluteDataURLPrefix stringByAppendingString:v3];
@@ -181,21 +181,21 @@
   return v5;
 }
 
-- (id)_messageDataWithDataURL:(id)a3
+- (id)_messageDataWithDataURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [v3 scheme];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  scheme = [lCopy scheme];
 
-  if ([v5 isEqualToString:@"data"])
+  if ([scheme isEqualToString:@"data"])
   {
-    v6 = [v4 hasPrefix:NPKRemotePassActionMessageAbsoluteDataURLPrefix];
+    v6 = [absoluteString hasPrefix:NPKRemotePassActionMessageAbsoluteDataURLPrefix];
 
     if (!v6)
     {
@@ -203,8 +203,8 @@
       goto LABEL_9;
     }
 
-    v5 = [v4 substringFromIndex:{objc_msgSend(NPKRemotePassActionMessageAbsoluteDataURLPrefix, "length")}];
-    v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v5 options:1];
+    scheme = [absoluteString substringFromIndex:{objc_msgSend(NPKRemotePassActionMessageAbsoluteDataURLPrefix, "length")}];
+    v7 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:scheme options:1];
   }
 
   else
@@ -221,11 +221,11 @@ LABEL_10:
 - (void)_updateDataURL
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKProtoRemotePassActionEnvelope *)self->_protoEnvelope data];
-  v4 = [(NPKRemotePassAction *)self _messageDataURLWithData:v3];
+  data = [(NPKProtoRemotePassActionEnvelope *)self->_protoEnvelope data];
+  v4 = [(NPKRemotePassAction *)self _messageDataURLWithData:data];
   [(MSMessage *)self->_underlyingMessage setURL:v4];
-  v5 = [v4 absoluteString];
-  v6 = [v5 length];
+  absoluteString = [v4 absoluteString];
+  v6 = [absoluteString length];
 
   v7 = pk_RemotePassAction_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -262,19 +262,19 @@ LABEL_10:
 
 - (void)_updateSummaryText
 {
-  v4 = [(NPKRemotePassAction *)self protoEnvelope];
-  v3 = [v4 summaryText];
-  [(MSMessage *)self->_underlyingMessage setSummaryText:v3];
+  protoEnvelope = [(NPKRemotePassAction *)self protoEnvelope];
+  summaryText = [protoEnvelope summaryText];
+  [(MSMessage *)self->_underlyingMessage setSummaryText:summaryText];
 }
 
-- (void)_updateLayoutContentsWithImage:(id)a3
+- (void)_updateLayoutContentsWithImage:(id)image
 {
-  v14 = a3;
-  v4 = [(MSMessage *)self->_underlyingMessage layout];
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  layout = [(MSMessage *)self->_underlyingMessage layout];
+  v5 = layout;
+  if (layout)
   {
-    v6 = v4;
+    v6 = layout;
   }
 
   else
@@ -290,32 +290,32 @@ LABEL_10:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v10 = 0;
+      alternateLayout = 0;
       v9 = 0;
       goto LABEL_11;
     }
 
-    v10 = v6;
+    alternateLayout = v6;
     v9 = 0;
-    if (!v10)
+    if (!alternateLayout)
     {
       goto LABEL_11;
     }
 
 LABEL_9:
-    v11 = [(NPKRemotePassAction *)self passLocalizedDescription];
-    [v10 setCaption:v11];
+    passLocalizedDescription = [(NPKRemotePassAction *)self passLocalizedDescription];
+    [alternateLayout setCaption:passLocalizedDescription];
 
-    v12 = [(NPKRemotePassAction *)self caption];
-    [v10 setSubcaption:v12];
+    caption = [(NPKRemotePassAction *)self caption];
+    [alternateLayout setSubcaption:caption];
 
-    [v10 setImage:v14];
+    [alternateLayout setImage:imageCopy];
     goto LABEL_11;
   }
 
   v9 = v6;
-  v10 = [v9 alternateLayout];
-  if (v10)
+  alternateLayout = [v9 alternateLayout];
+  if (alternateLayout)
   {
     goto LABEL_9;
   }
@@ -328,36 +328,36 @@ LABEL_11:
 
   else
   {
-    v13 = v10;
+    v13 = alternateLayout;
   }
 
   [(MSMessage *)self->_underlyingMessage setLayout:v13];
 }
 
-- (id)_imageForMessage:(id)a3
+- (id)_imageForMessage:(id)message
 {
-  v3 = [a3 layout];
+  layout = [message layout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 alternateLayout];
+    alternateLayout = [layout alternateLayout];
 LABEL_5:
-    v5 = v4;
+    v5 = alternateLayout;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    alternateLayout = layout;
     goto LABEL_5;
   }
 
   v5 = 0;
 LABEL_7:
-  v6 = [v5 image];
+  image = [v5 image];
 
-  return v6;
+  return image;
 }
 
 @end

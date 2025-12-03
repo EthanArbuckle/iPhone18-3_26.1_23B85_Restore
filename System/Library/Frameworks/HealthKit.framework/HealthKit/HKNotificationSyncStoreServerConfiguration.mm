@@ -1,20 +1,20 @@
 @interface HKNotificationSyncStoreServerConfiguration
-- (HKNotificationSyncStoreServerConfiguration)initWithClientIdentifier:(id)a3;
-- (HKNotificationSyncStoreServerConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKNotificationSyncStoreServerConfiguration)initWithClientIdentifier:(id)identifier;
+- (HKNotificationSyncStoreServerConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKNotificationSyncStoreServerConfiguration
 
-- (HKNotificationSyncStoreServerConfiguration)initWithClientIdentifier:(id)a3
+- (HKNotificationSyncStoreServerConfiguration)initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = HKNotificationSyncStoreServerConfiguration;
   v5 = [(HKNotificationSyncStoreServerConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
   }
@@ -22,15 +22,15 @@
   return v5;
 }
 
-- (HKNotificationSyncStoreServerConfiguration)initWithCoder:(id)a3
+- (HKNotificationSyncStoreServerConfiguration)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKNotificationSyncStoreServerConfiguration;
-  v6 = [(HKTaskConfiguration *)&v10 initWithCoder:v5];
+  v6 = [(HKTaskConfiguration *)&v10 initWithCoder:coderCopy];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     clientIdentifier = v6->_clientIdentifier;
     v6->_clientIdentifier = v7;
 
@@ -43,13 +43,13 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKNotificationSyncStoreServerConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_clientIdentifier forKey:{@"clientIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:{@"clientIdentifier", v5.receiver, v5.super_class}];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

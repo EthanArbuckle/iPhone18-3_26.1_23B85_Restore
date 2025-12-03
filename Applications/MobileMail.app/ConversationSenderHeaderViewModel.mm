@@ -5,17 +5,17 @@
 - (MUIAvatarImageGeneratorResult)avatarResult;
 - (NSString)informationButtonTitle;
 - (NSString)title;
-- (_TtC10MobileMail33ConversationSenderHeaderViewModel)initWithItemID:(id)a3 avatarResult:(id)a4 title:(id)a5 bucket:(int64_t)a6 isBucketSelected:(BOOL)a7 categoryMessageCount:(int64_t)a8 totalMessageCount:(int64_t)a9 newMessageCount:(int64_t)a10 unreadMessageCount:(int64_t)a11 forceCollapsed:(BOOL)a12;
-- (id)copyWithZone:(void *)a3;
+- (_TtC10MobileMail33ConversationSenderHeaderViewModel)initWithItemID:(id)d avatarResult:(id)result title:(id)title bucket:(int64_t)bucket isBucketSelected:(BOOL)selected categoryMessageCount:(int64_t)count totalMessageCount:(int64_t)messageCount newMessageCount:(int64_t)self0 unreadMessageCount:(int64_t)self1 forceCollapsed:(BOOL)self2;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)bucket;
-- (void)setAvatarResult:(id)a3;
-- (void)setBucket:(int64_t)a3;
-- (void)setForceCollapsed:(BOOL)a3;
-- (void)setInformationButtonTitle:(id)a3;
-- (void)setIsBucketSelected:(BOOL)a3;
-- (void)setItemID:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)updateSubtitleInformationWithBucket:(int64_t)a3 isBucketSelected:(BOOL)a4 categoryMessageCount:(int64_t)a5 totalMessageCount:(int64_t)a6 unreadMessageCount:(int64_t)a7 newMessageCount:(int64_t)a8;
+- (void)setAvatarResult:(id)result;
+- (void)setBucket:(int64_t)bucket;
+- (void)setForceCollapsed:(BOOL)collapsed;
+- (void)setInformationButtonTitle:(id)title;
+- (void)setIsBucketSelected:(BOOL)selected;
+- (void)setItemID:(id)d;
+- (void)setTitle:(id)title;
+- (void)updateSubtitleInformationWithBucket:(int64_t)bucket isBucketSelected:(BOOL)selected categoryMessageCount:(int64_t)count totalMessageCount:(int64_t)messageCount unreadMessageCount:(int64_t)unreadMessageCount newMessageCount:(int64_t)newMessageCount;
 @end
 
 @implementation ConversationSenderHeaderViewModel
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (void)setItemID:(id)a3
+- (void)setItemID:(id)d
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
-  sub_1002B25FC(a3);
+  sub_1002B25FC(d);
   _objc_release(self);
 }
 
@@ -46,11 +46,11 @@
   return v4;
 }
 
-- (void)setAvatarResult:(id)a3
+- (void)setAvatarResult:(id)result
 {
-  _objc_retain(a3);
+  _objc_retain(result);
   _objc_retain(self);
-  sub_1002B27C4(a3);
+  sub_1002B27C4(result);
   _objc_release(self);
 }
 
@@ -64,13 +64,13 @@
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  _objc_retain(a3);
+  _objc_retain(title);
   _objc_retain(self);
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1002B29D8(v4, v5);
-  _objc_release(a3);
+  _objc_release(title);
   _objc_release(self);
 }
 
@@ -82,10 +82,10 @@
   return v4;
 }
 
-- (void)setBucket:(int64_t)a3
+- (void)setBucket:(int64_t)bucket
 {
   _objc_retain(self);
-  sub_1002B2B90(a3);
+  sub_1002B2B90(bucket);
   _objc_release(self);
 }
 
@@ -97,7 +97,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setIsBucketSelected:(BOOL)a3
+- (void)setIsBucketSelected:(BOOL)selected
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -126,15 +126,15 @@
   return v5;
 }
 
-- (void)setInformationButtonTitle:(id)a3
+- (void)setInformationButtonTitle:(id)title
 {
-  _objc_retain(a3);
+  _objc_retain(title);
   _objc_retain(self);
-  if (a3)
+  if (title)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v5 = v3;
-    _objc_release(a3);
+    _objc_release(title);
     v6 = v4;
     v7 = v5;
   }
@@ -157,7 +157,7 @@
   return _convertBoolToObjCBool(_:)() & 1;
 }
 
-- (void)setForceCollapsed:(BOOL)a3
+- (void)setForceCollapsed:(BOOL)collapsed
 {
   _objc_retain(self);
   v3 = _convertObjCBoolToBool(_:)();
@@ -165,28 +165,28 @@
   _objc_release(self);
 }
 
-- (_TtC10MobileMail33ConversationSenderHeaderViewModel)initWithItemID:(id)a3 avatarResult:(id)a4 title:(id)a5 bucket:(int64_t)a6 isBucketSelected:(BOOL)a7 categoryMessageCount:(int64_t)a8 totalMessageCount:(int64_t)a9 newMessageCount:(int64_t)a10 unreadMessageCount:(int64_t)a11 forceCollapsed:(BOOL)a12
+- (_TtC10MobileMail33ConversationSenderHeaderViewModel)initWithItemID:(id)d avatarResult:(id)result title:(id)title bucket:(int64_t)bucket isBucketSelected:(BOOL)selected categoryMessageCount:(int64_t)count totalMessageCount:(int64_t)messageCount newMessageCount:(int64_t)self0 unreadMessageCount:(int64_t)self1 forceCollapsed:(BOOL)self2
 {
   swift_unknownObjectRetain();
-  _objc_retain(a4);
-  _objc_retain(a5);
+  _objc_retain(result);
+  _objc_retain(title);
   v16 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v17 = v12;
   v19 = _convertObjCBoolToBool(_:)();
   v13 = _convertObjCBoolToBool(_:)();
-  v23 = sub_1002B329C(a3, a4, v16, v17, a6, v19 & 1, a8, a9, a10, a11, v13 & 1);
-  _objc_release(a5);
+  v23 = sub_1002B329C(d, result, v16, v17, bucket, v19 & 1, count, messageCount, newMessageCount, unreadMessageCount, v13 & 1);
+  _objc_release(title);
   return v23;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v6 = self;
-  v5[1] = a3;
+  selfCopy = self;
+  v5[1] = zone;
   _objc_retain(self);
   v12 = v14;
   sub_1002B3934(v14);
-  _objc_release(v6);
+  _objc_release(selfCopy);
   v10 = v15;
   v3 = sub_10027EC3C(v14, v15);
   v8 = *(v10 - 8);
@@ -201,11 +201,11 @@
   return v13;
 }
 
-- (void)updateSubtitleInformationWithBucket:(int64_t)a3 isBucketSelected:(BOOL)a4 categoryMessageCount:(int64_t)a5 totalMessageCount:(int64_t)a6 unreadMessageCount:(int64_t)a7 newMessageCount:(int64_t)a8
+- (void)updateSubtitleInformationWithBucket:(int64_t)bucket isBucketSelected:(BOOL)selected categoryMessageCount:(int64_t)count totalMessageCount:(int64_t)messageCount unreadMessageCount:(int64_t)unreadMessageCount newMessageCount:(int64_t)newMessageCount
 {
   _objc_retain(self);
   v8 = _convertObjCBoolToBool(_:)();
-  sub_1002B3CE4(a3, v8 & 1, a5, a6, a7, a8);
+  sub_1002B3CE4(bucket, v8 & 1, count, messageCount, unreadMessageCount, newMessageCount);
   _objc_release(self);
 }
 

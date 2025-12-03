@@ -1,18 +1,18 @@
 @interface NSDictionary
-- (id)bds_subDictionaryWithKeys:(id)a3;
+- (id)bds_subDictionaryWithKeys:(id)keys;
 @end
 
 @implementation NSDictionary
 
-- (id)bds_subDictionaryWithKeys:(id)a3
+- (id)bds_subDictionaryWithKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  keysCopy = keys;
+  v5 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = keysCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {

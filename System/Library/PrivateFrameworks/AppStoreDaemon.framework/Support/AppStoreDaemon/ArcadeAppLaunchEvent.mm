@@ -1,10 +1,10 @@
 @interface ArcadeAppLaunchEvent
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ArcadeAppLaunchEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = ArcadeAppLaunchEvent;
@@ -16,7 +16,7 @@
   }
 
   v7 = sub_10023AC80(self);
-  v8 = [v7 copyWithZone:a3];
+  v8 = [v7 copyWithZone:zone];
   if (v5)
   {
     sub_10023E000(v5, v8, @"payload");

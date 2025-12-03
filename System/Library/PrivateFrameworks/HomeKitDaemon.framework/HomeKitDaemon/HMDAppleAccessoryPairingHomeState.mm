@@ -1,50 +1,50 @@
 @interface HMDAppleAccessoryPairingHomeState
-- (HMDAppleAccessoryPairingHomeState)initWithCloudZoneID:(id)a3 accessory:(id)a4;
-- (HMDAppleAccessoryPairingHomeState)initWithCoder:(id)a3;
+- (HMDAppleAccessoryPairingHomeState)initWithCloudZoneID:(id)d accessory:(id)accessory;
+- (HMDAppleAccessoryPairingHomeState)initWithCoder:(id)coder;
 - (HMDDevice)device;
 - (HMSoftwareUpdateDescriptor)lastPostedSoftwareUpdateDescriptor;
 - (NSUUID)deviceIdentifier;
 - (NSUUID)homeUUID;
 - (unint64_t)state;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setDeviceIdentifier:(id)a3;
-- (void)setHomeUUID:(id)a3;
-- (void)setLastPostedSoftwareUpdateDescriptor:(id)a3;
-- (void)setState:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDevice:(id)device;
+- (void)setDeviceIdentifier:(id)identifier;
+- (void)setHomeUUID:(id)d;
+- (void)setLastPostedSoftwareUpdateDescriptor:(id)descriptor;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation HMDAppleAccessoryPairingHomeState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDAppleAccessoryPairingHomeState *)self cloudZoneID];
-  [v4 encodeObject:v5 forKey:@"AAPS.cz"];
+  coderCopy = coder;
+  cloudZoneID = [(HMDAppleAccessoryPairingHomeState *)self cloudZoneID];
+  [coderCopy encodeObject:cloudZoneID forKey:@"AAPS.cz"];
 
-  v6 = [(HMDAppleAccessoryPairingHomeState *)self accessory];
-  [v4 encodeObject:v6 forKey:@"AAPS.a"];
+  accessory = [(HMDAppleAccessoryPairingHomeState *)self accessory];
+  [coderCopy encodeObject:accessory forKey:@"AAPS.a"];
 
-  [v4 encodeInteger:-[HMDAppleAccessoryPairingHomeState state](self forKey:{"state"), @"AAPS.st"}];
-  v7 = [(HMDAppleAccessoryPairingHomeState *)self homeUUID];
-  [v4 encodeObject:v7 forKey:@"AAPS.hu"];
+  [coderCopy encodeInteger:-[HMDAppleAccessoryPairingHomeState state](self forKey:{"state"), @"AAPS.st"}];
+  homeUUID = [(HMDAppleAccessoryPairingHomeState *)self homeUUID];
+  [coderCopy encodeObject:homeUUID forKey:@"AAPS.hu"];
 
-  v8 = [(HMDAppleAccessoryPairingHomeState *)self deviceIdentifier];
-  [v4 encodeObject:v8 forKey:@"AAPS.du"];
+  deviceIdentifier = [(HMDAppleAccessoryPairingHomeState *)self deviceIdentifier];
+  [coderCopy encodeObject:deviceIdentifier forKey:@"AAPS.du"];
 
-  v9 = [(HMDAppleAccessoryPairingHomeState *)self device];
-  [v4 encodeObject:v9 forKey:@"AAPS.d"];
+  device = [(HMDAppleAccessoryPairingHomeState *)self device];
+  [coderCopy encodeObject:device forKey:@"AAPS.d"];
 }
 
-- (HMDAppleAccessoryPairingHomeState)initWithCoder:(id)a3
+- (HMDAppleAccessoryPairingHomeState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.cz"];
-  v6 = [v4 decodeIntegerForKey:@"AAPS.st"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.a"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.d"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.du"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.hu"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.cz"];
+  v6 = [coderCopy decodeIntegerForKey:@"AAPS.st"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.a"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.d"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.du"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AAPS.hu"];
 
   v11 = [(HMDAppleAccessoryPairingHomeState *)self initWithCloudZoneID:v5 accessory:v7];
   v12 = v11;
@@ -59,12 +59,12 @@
   return v12;
 }
 
-- (void)setDeviceIdentifier:(id)a3
+- (void)setDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   deviceIdentifier = self->_deviceIdentifier;
-  self->_deviceIdentifier = v4;
+  self->_deviceIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -78,10 +78,10 @@
   return v3;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_state = a3;
+  self->_state = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -94,12 +94,12 @@
   return state;
 }
 
-- (void)setHomeUUID:(id)a3
+- (void)setHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
   homeUUID = self->_homeUUID;
-  self->_homeUUID = v4;
+  self->_homeUUID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -113,12 +113,12 @@
   return v3;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock_with_options();
   device = self->_device;
-  self->_device = v4;
+  self->_device = deviceCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -132,12 +132,12 @@
   return v3;
 }
 
-- (void)setLastPostedSoftwareUpdateDescriptor:(id)a3
+- (void)setLastPostedSoftwareUpdateDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock_with_options();
   lastPostedSoftwareUpdateDescriptor = self->_lastPostedSoftwareUpdateDescriptor;
-  self->_lastPostedSoftwareUpdateDescriptor = v4;
+  self->_lastPostedSoftwareUpdateDescriptor = descriptorCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -151,22 +151,22 @@
   return v3;
 }
 
-- (HMDAppleAccessoryPairingHomeState)initWithCloudZoneID:(id)a3 accessory:(id)a4
+- (HMDAppleAccessoryPairingHomeState)initWithCloudZoneID:(id)d accessory:(id)accessory
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  accessoryCopy = accessory;
   v13.receiver = self;
   v13.super_class = HMDAppleAccessoryPairingHomeState;
   v9 = [(HMDAppleAccessoryPairingHomeState *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cloudZoneID, a3);
+    objc_storeStrong(&v9->_cloudZoneID, d);
     v10->_state = 0;
     homeUUID = v10->_homeUUID;
     v10->_homeUUID = 0;
 
-    objc_storeStrong(&v10->_accessory, a4);
+    objc_storeStrong(&v10->_accessory, accessory);
   }
 
   return v10;

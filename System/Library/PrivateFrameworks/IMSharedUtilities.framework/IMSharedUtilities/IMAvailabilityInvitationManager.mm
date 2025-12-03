@@ -1,24 +1,24 @@
 @interface IMAvailabilityInvitationManager
 + (id)sharedInstance;
-- (BOOL)_isHandleIDEligibleToReceiveAutomaticInvitation:(id)a3;
+- (BOOL)_isHandleIDEligibleToReceiveAutomaticInvitation:(id)invitation;
 - (IMAvailabilityInvitationManager)init;
 - (SKStatusPublishingService)publishingService;
-- (id)_dndHandleForHandleID:(id)a3;
-- (id)_invitationCacheKeyForHandleID:(id)a3 fromHandleID:(id)a4;
+- (id)_dndHandleForHandleID:(id)d;
+- (id)_invitationCacheKeyForHandleID:(id)d fromHandleID:(id)iD;
 - (id)_newDNDModeConfigurationService;
-- (id)_skHandleForString:(id)a3;
+- (id)_skHandleForString:(id)string;
 - (id)dndGlobalConfigurationService;
-- (void)_invitablityForHandle:(id)a3 fromHandle:(id)a4 completion:(id)a5;
-- (void)_invitationPayloadForHandleID:(id)a3 completion:(id)a4;
-- (void)_isFocusStatusSharedWithHandle:(id)a3 fromHandle:(id)a4 completion:(id)a5;
+- (void)_invitablityForHandle:(id)handle fromHandle:(id)fromHandle completion:(id)completion;
+- (void)_invitationPayloadForHandleID:(id)d completion:(id)completion;
+- (void)_isFocusStatusSharedWithHandle:(id)handle fromHandle:(id)fromHandle completion:(id)completion;
 - (void)_republishCurrentAvailabilityStatus;
-- (void)_sharePersonalAvailabilityWithSKHandle:(id)a3 fromSKHandle:(id)a4 allowingInvitationOfRemovedUsers:(BOOL)a5 completion:(id)a6;
-- (void)attemptIfNeccessaryToAutomaticallyShareFocusStatusWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5;
-- (void)fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:(id)a3;
-- (void)isFocusStatusSharedWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5;
-- (void)manuallyRemoveSharingOfFocusStatusWithHandleID:(id)a3 completion:(id)a4;
-- (void)manuallyShareFocusStatusWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5;
-- (void)repairSharedFocusStatusFollowingFailedValidationWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5;
+- (void)_sharePersonalAvailabilityWithSKHandle:(id)handle fromSKHandle:(id)kHandle allowingInvitationOfRemovedUsers:(BOOL)users completion:(id)completion;
+- (void)attemptIfNeccessaryToAutomaticallyShareFocusStatusWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion;
+- (void)fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:(id)completion;
+- (void)isFocusStatusSharedWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion;
+- (void)manuallyRemoveSharingOfFocusStatusWithHandleID:(id)d completion:(id)completion;
+- (void)manuallyShareFocusStatusWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion;
+- (void)repairSharedFocusStatusFollowingFailedValidationWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion;
 @end
 
 @implementation IMAvailabilityInvitationManager
@@ -54,59 +54,59 @@
   return v2;
 }
 
-- (void)attemptIfNeccessaryToAutomaticallyShareFocusStatusWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5
+- (void)attemptIfNeccessaryToAutomaticallyShareFocusStatusWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1A860F064;
   v14[3] = &unk_1E7825EC0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = dCopy;
+  v16 = iDCopy;
+  v17 = completionCopy;
+  v11 = iDCopy;
+  v12 = dCopy;
+  v13 = completionCopy;
   [(IMAvailabilityInvitationManager *)self fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:v14];
 }
 
-- (void)repairSharedFocusStatusFollowingFailedValidationWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5
+- (void)repairSharedFocusStatusFollowingFailedValidationWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1A860F9E4;
   v14[3] = &unk_1E7825EC0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v15 = dCopy;
+  v16 = iDCopy;
+  v17 = completionCopy;
+  v11 = iDCopy;
+  v12 = dCopy;
+  v13 = completionCopy;
   [(IMAvailabilityInvitationManager *)self fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:v14];
 }
 
-- (void)manuallyShareFocusStatusWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5
+- (void)manuallyShareFocusStatusWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v18 = v8;
+      v18 = dCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = iDCopy;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Received request to manually share focus status with handleID: %@ fromHandleID: %@.", buf, 0x16u);
     }
   }
@@ -123,9 +123,9 @@
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
   }
 
@@ -135,26 +135,26 @@
     v13[1] = 3221225472;
     v13[2] = sub_1A86104A8;
     v13[3] = &unk_1E7825EC0;
-    v16 = v10;
+    v16 = completionCopy;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
+    v14 = dCopy;
+    v15 = iDCopy;
     [(IMAvailabilityInvitationManager *)self fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:v13];
   }
 }
 
-- (void)fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:(id)a3
+- (void)fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(IMAvailabilityInvitationManager *)self dndGlobalConfigurationService];
+  completionCopy = completion;
+  dndGlobalConfigurationService = [(IMAvailabilityInvitationManager *)self dndGlobalConfigurationService];
   if (objc_opt_respondsToSelector())
   {
-    [v4 isCloudSyncActiveWithCompletionHandler:v5];
+    [dndGlobalConfigurationService isCloudSyncActiveWithCompletionHandler:completionCopy];
   }
 
   else
   {
-    v5[2](v5, [v4 isCloudSyncActive]);
+    completionCopy[2](completionCopy, [dndGlobalConfigurationService isCloudSyncActive]);
   }
 }
 
@@ -204,18 +204,18 @@
   return v4;
 }
 
-- (void)manuallyRemoveSharingOfFocusStatusWithHandleID:(id)a3 completion:(id)a4
+- (void)manuallyRemoveSharingOfFocusStatusWithHandleID:(id)d completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v6;
+      v14 = dCopy;
       _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Received request to manually remove sharing of focus status with handleID: %@", buf, 0xCu);
     }
   }
@@ -232,9 +232,9 @@
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -244,33 +244,33 @@
     v10[1] = 3221225472;
     v10[2] = sub_1A8610B0C;
     v10[3] = &unk_1E7825F60;
-    v12 = v7;
+    v12 = completionCopy;
     v10[4] = self;
-    v11 = v6;
+    v11 = dCopy;
     [(IMAvailabilityInvitationManager *)self fetchIsFocusConfigurationShareAcrossDevicesEnabledWithCompletion:v10];
   }
 }
 
-- (void)_sharePersonalAvailabilityWithSKHandle:(id)a3 fromSKHandle:(id)a4 allowingInvitationOfRemovedUsers:(BOOL)a5 completion:(id)a6
+- (void)_sharePersonalAvailabilityWithSKHandle:(id)handle fromSKHandle:(id)kHandle allowingInvitationOfRemovedUsers:(BOOL)users completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(IMAvailabilityInvitationManager *)self publishingService];
+  handleCopy = handle;
+  kHandleCopy = kHandle;
+  completionCopy = completion;
+  publishingService = [(IMAvailabilityInvitationManager *)self publishingService];
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_1A8610EE0;
   v18[3] = &unk_1E7825FD8;
-  v14 = v10;
+  v14 = handleCopy;
   v19 = v14;
-  v15 = v12;
-  v25 = a5;
+  v15 = completionCopy;
+  usersCopy = users;
   v23 = v15;
-  v20 = self;
-  v16 = v11;
+  selfCopy = self;
+  v16 = kHandleCopy;
   v21 = v16;
-  v17 = v13;
+  v17 = publishingService;
   v22 = v17;
   objc_copyWeak(&v24, &location);
   [(IMAvailabilityInvitationManager *)self _invitablityForHandle:v14 fromHandle:v16 completion:v18];
@@ -279,86 +279,86 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_invitablityForHandle:(id)a3 fromHandle:(id)a4 completion:(id)a5
+- (void)_invitablityForHandle:(id)handle fromHandle:(id)fromHandle completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  fromHandleCopy = fromHandle;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v8 handleString];
-      v13 = [v9 handleString];
+      handleString = [handleCopy handleString];
+      handleString2 = [fromHandleCopy handleString];
       *buf = 138412546;
-      v19 = v12;
+      v19 = handleString;
       v20 = 2112;
-      v21 = v13;
+      v21 = handleString2;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Checking invitability for handle: %@ fromHandle: %@", buf, 0x16u);
     }
   }
 
-  v14 = [(IMAvailabilityInvitationManager *)self publishingService];
+  publishingService = [(IMAvailabilityInvitationManager *)self publishingService];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1A8611738;
   v16[3] = &unk_1E7826000;
-  v17 = v10;
-  v15 = v10;
-  [v14 fetchHandleInvitability:v8 fromSenderHandle:v9 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [publishingService fetchHandleInvitability:handleCopy fromSenderHandle:fromHandleCopy completion:v16];
 }
 
-- (void)isFocusStatusSharedWithHandleID:(id)a3 fromHandleID:(id)a4 completion:(id)a5
+- (void)isFocusStatusSharedWithHandleID:(id)d fromHandleID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [(IMAvailabilityInvitationManager *)self _skHandleForString:a3];
-  v10 = [(IMAvailabilityInvitationManager *)self _skHandleForString:v9];
+  completionCopy = completion;
+  iDCopy = iD;
+  v11 = [(IMAvailabilityInvitationManager *)self _skHandleForString:d];
+  v10 = [(IMAvailabilityInvitationManager *)self _skHandleForString:iDCopy];
 
-  [(IMAvailabilityInvitationManager *)self _isFocusStatusSharedWithHandle:v11 fromHandle:v10 completion:v8];
+  [(IMAvailabilityInvitationManager *)self _isFocusStatusSharedWithHandle:v11 fromHandle:v10 completion:completionCopy];
 }
 
-- (void)_isFocusStatusSharedWithHandle:(id)a3 fromHandle:(id)a4 completion:(id)a5
+- (void)_isFocusStatusSharedWithHandle:(id)handle fromHandle:(id)fromHandle completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  fromHandleCopy = fromHandle;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v8 handleString];
-      v13 = [v9 handleString];
+      handleString = [handleCopy handleString];
+      handleString2 = [fromHandleCopy handleString];
       *buf = 138412546;
-      v23 = v12;
+      v23 = handleString;
       v24 = 2112;
-      v25 = v13;
+      v25 = handleString2;
       _os_log_impl(&dword_1A85E5000, v11, OS_LOG_TYPE_INFO, "Checking (async) if handle is already invited: %@ fromHandle: %@", buf, 0x16u);
     }
   }
 
-  v14 = [(IMAvailabilityInvitationManager *)self publishingService];
+  publishingService = [(IMAvailabilityInvitationManager *)self publishingService];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = sub_1A8611B5C;
   v18[3] = &unk_1E7826028;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  [v14 isHandleInvited:v17 fromSenderHandle:v16 completion:v18];
+  v19 = handleCopy;
+  v20 = fromHandleCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = fromHandleCopy;
+  v17 = handleCopy;
+  [publishingService isHandleInvited:v17 fromSenderHandle:v16 completion:v18];
 }
 
-- (void)_invitationPayloadForHandleID:(id)a3 completion:(id)a4
+- (void)_invitationPayloadForHandleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = MEMORY[0x1AC570AA0](@"SKInvitationPayload", @"StatusKit");
   v9 = MEMORY[0x1AC570AA0](@"AKAvailabilityInvitation", @"AvailabilityKit");
   if (v8 && (v10 = v9) != 0)
@@ -370,8 +370,8 @@
     block[2] = sub_1A8611F7C;
     block[3] = &unk_1E7826050;
     objc_copyWeak(v16, &location);
-    v14 = v6;
-    v15 = v7;
+    v14 = dCopy;
+    v15 = completionCopy;
     v16[1] = v10;
     dispatch_async(dndBackgroundQueue, block);
 
@@ -387,7 +387,7 @@
       sub_1A88BFEBC();
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -444,9 +444,9 @@
   objc_destroyWeak(&location);
 }
 
-- (id)_dndHandleForHandleID:(id)a3
+- (id)_dndHandleForHandleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (IMStringIsEmail())
   {
     v4 = 1;
@@ -459,32 +459,32 @@
 
   v5 = objc_alloc_init(MEMORY[0x1AC570AA0](@"DNDMutableContactHandle", @"DoNotDisturb"));
   [v5 setType:v4];
-  [v5 setValue:v3];
+  [v5 setValue:dCopy];
 
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (id)_invitationCacheKeyForHandleID:(id)a3 fromHandleID:(id)a4
+- (id)_invitationCacheKeyForHandleID:(id)d fromHandleID:(id)iD
 {
-  v4 = &stru_1F1BB91F0;
-  if (a3)
+  iDCopy = &stru_1F1BB91F0;
+  if (d)
   {
-    v5 = a3;
+    dCopy = d;
   }
 
   else
   {
-    v5 = &stru_1F1BB91F0;
+    dCopy = &stru_1F1BB91F0;
   }
 
-  if (a4)
+  if (iD)
   {
-    v4 = a4;
+    iDCopy = iD;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@;%@", v5, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@;%@", dCopy, iDCopy];
 }
 
 - (SKStatusPublishingService)publishingService
@@ -504,18 +504,18 @@
   return publishingService;
 }
 
-- (id)_skHandleForString:(id)a3
+- (id)_skHandleForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [objc_alloc(MEMORY[0x1AC570AA0](@"SKHandle" @"StatusKit"))];
 
   return v4;
 }
 
-- (BOOL)_isHandleIDEligibleToReceiveAutomaticInvitation:(id)a3
+- (BOOL)_isHandleIDEligibleToReceiveAutomaticInvitation:(id)invitation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  invitationCopy = invitation;
   if (+[IMAppleStoreHelper isInAppleStoreDemoMode])
   {
     if (IMOSLoggingEnabled())
@@ -535,7 +535,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (MEMORY[0x1AC570A30](v3))
+  if (MEMORY[0x1AC570A30](invitationCopy))
   {
     if (IMOSLoggingEnabled())
     {
@@ -543,7 +543,7 @@ LABEL_15:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = invitationCopy;
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Handle %@ is a business ID, not eligible to receive availability subscription invitation.", &v11, 0xCu);
       }
 
@@ -555,7 +555,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (MEMORY[0x1AC570A60](v3))
+  if (MEMORY[0x1AC570A60](invitationCopy))
   {
     if (IMOSLoggingEnabled())
     {
@@ -563,7 +563,7 @@ LABEL_16:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = invitationCopy;
         _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "Handle %@ is a stewie ID, not eligible to receive availability subscription invitation.", &v11, 0xCu);
       }
 
@@ -573,7 +573,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [IMContactStore validateAndCleanupID:v3];
+  v7 = [IMContactStore validateAndCleanupID:invitationCopy];
   v8 = +[IMContactStore sharedInstance];
   v9 = [v8 fetchCNContactForHandleWithID:v7];
 
@@ -584,7 +584,7 @@ LABEL_16:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = invitationCopy;
       _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "Handle %@ is not in the users contacts, not eligible to receive availability subscription invitation.", &v11, 0xCu);
     }
   }

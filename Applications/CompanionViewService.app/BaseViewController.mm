@@ -1,17 +1,17 @@
 @interface BaseViewController
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation BaseViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 xpcEndpoint];
-  sub_1000012F8(self, v8);
+  completionCopy = completion;
+  contextCopy = context;
+  xpcEndpoint = [contextCopy xpcEndpoint];
+  sub_1000012F8(self, xpcEndpoint);
 
-  v9 = sub_1000043F8(self, v7);
+  v9 = sub_1000043F8(self, contextCopy);
 
   presentationContext = self->_presentationContext;
   self->_presentationContext = v9;
@@ -25,7 +25,7 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received presentation context: %@", &v13, 0xCu);
   }
 
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
 @end

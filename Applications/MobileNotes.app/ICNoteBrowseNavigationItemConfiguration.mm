@@ -1,8 +1,8 @@
 @interface ICNoteBrowseNavigationItemConfiguration
 - (BOOL)isEditing;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateAnimated:(BOOL)a3;
-- (ICNoteBrowseNavigationItemConfiguration)initWithDataSource:(id)a3 delegate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateAnimated:(BOOL)animated;
+- (ICNoteBrowseNavigationItemConfiguration)initWithDataSource:(id)source delegate:(id)delegate;
 - (ICNoteBrowseNavigationItemConfigurationDataSource)dataSource;
 - (ICNoteBrowseNavigationItemConfigurationDelegate)delegate;
 - (ICToolbarSummaryView)summaryView;
@@ -24,37 +24,37 @@
 - (UINavigationItem)navigationItem;
 - (UIViewController)presentingViewController;
 - (unint64_t)hash;
-- (void)addNoteAction:(id)a3 event:(id)a4;
-- (void)backAction:(id)a3;
-- (void)cancelSearchAction:(id)a3;
-- (void)debugAction:(id)a3;
-- (void)deleteAction:(id)a3;
-- (void)lockAction:(id)a3;
-- (void)moveAction:(id)a3;
+- (void)addNoteAction:(id)action event:(id)event;
+- (void)backAction:(id)action;
+- (void)cancelSearchAction:(id)action;
+- (void)debugAction:(id)action;
+- (void)deleteAction:(id)action;
+- (void)lockAction:(id)action;
+- (void)moveAction:(id)action;
 - (void)reset;
-- (void)shareAction:(id)a3;
-- (void)tagsAction:(id)a3;
+- (void)shareAction:(id)action;
+- (void)tagsAction:(id)action;
 - (void)updateEnabled;
 - (void)updateMenus;
-- (void)updateNavigationBarAnimated:(BOOL)a3;
+- (void)updateNavigationBarAnimated:(BOOL)animated;
 - (void)updateTitles;
-- (void)updateToolbarAnimated:(BOOL)a3;
+- (void)updateToolbarAnimated:(BOOL)animated;
 @end
 
 @implementation ICNoteBrowseNavigationItemConfiguration
 
-- (ICNoteBrowseNavigationItemConfiguration)initWithDataSource:(id)a3 delegate:(id)a4
+- (ICNoteBrowseNavigationItemConfiguration)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = ICNoteBrowseNavigationItemConfiguration;
   v8 = [(ICNoteBrowseNavigationItemConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v9->_noteContainerViewMode = -1;
     v9->_collectionType = 0;
   }
@@ -64,16 +64,16 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
-  v3 = [v2 navigationItem];
+  presentingViewController = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+  navigationItem = [presentingViewController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (ICToolbarSummaryView)summaryView
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteBrowseNavigationitemConfigurationNavigationToolbarSummaryView:self];
+  dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteBrowseNavigationitemConfigurationNavigationToolbarSummaryView:self];
 
   return v4;
 }
@@ -208,8 +208,8 @@
 
 - (UIBarButtonItem)collaborationBarButtonItem
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteBrowseNavigationItemConfigurationCollaborationBarButtonItem:self];
+  dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteBrowseNavigationItemConfigurationCollaborationBarButtonItem:self];
 
   return v4;
 }
@@ -263,10 +263,10 @@
   deleteBarButtonItem = self->_deleteBarButtonItem;
   if (!deleteBarButtonItem)
   {
-    v4 = [(ICNoteBrowseNavigationItemConfiguration *)self usesPlainBarButtonItems];
+    usesPlainBarButtonItems = [(ICNoteBrowseNavigationItemConfiguration *)self usesPlainBarButtonItems];
     v5 = [UIBarButtonItem alloc];
     v6 = v5;
-    if (v4)
+    if (usesPlainBarButtonItems)
     {
       v7 = [UIImage ic_systemImageNamed:@"trash"];
       v8 = [v6 initWithImage:v7 style:0 target:self action:"deleteAction:"];
@@ -291,10 +291,10 @@
 
 - (UIBarButtonItem)editBarButtonItem
 {
-  v2 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
-  v3 = [v2 editButtonItem];
+  presentingViewController = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+  editButtonItem = [presentingViewController editButtonItem];
 
-  return v3;
+  return editButtonItem;
 }
 
 - (UIBarButtonItem)lockBarButtonItem
@@ -331,10 +331,10 @@
   moveBarButtonItem = self->_moveBarButtonItem;
   if (!moveBarButtonItem)
   {
-    v4 = [(ICNoteBrowseNavigationItemConfiguration *)self usesPlainBarButtonItems];
+    usesPlainBarButtonItems = [(ICNoteBrowseNavigationItemConfiguration *)self usesPlainBarButtonItems];
     v5 = [UIBarButtonItem alloc];
     v6 = v5;
-    if (v4)
+    if (usesPlainBarButtonItems)
     {
       v7 = [UIImage ic_systemImageNamed:@"folder"];
       v8 = [v6 initWithImage:v7 style:0 target:self action:"moveAction:"];
@@ -390,15 +390,15 @@
 {
   if (self->_summaryBarButtonItem)
   {
-    v3 = [(ICNoteBrowseNavigationItemConfiguration *)self summaryView];
-    [(UIBarButtonItem *)self->_summaryBarButtonItem setCustomView:v3];
+    summaryView = [(ICNoteBrowseNavigationItemConfiguration *)self summaryView];
+    [(UIBarButtonItem *)self->_summaryBarButtonItem setCustomView:summaryView];
   }
 
   else
   {
     v4 = [UIBarButtonItem alloc];
-    v3 = [(ICNoteBrowseNavigationItemConfiguration *)self summaryView];
-    v5 = [v4 initWithCustomView:v3];
+    summaryView = [(ICNoteBrowseNavigationItemConfiguration *)self summaryView];
+    v5 = [v4 initWithCustomView:summaryView];
     summaryBarButtonItem = self->_summaryBarButtonItem;
     self->_summaryBarButtonItem = v5;
   }
@@ -413,11 +413,11 @@
   tagsBarButtonItem = self->_tagsBarButtonItem;
   if (!tagsBarButtonItem)
   {
-    v4 = [(ICNoteBrowseNavigationItemConfiguration *)self usesPlainBarButtonItems];
+    usesPlainBarButtonItems = [(ICNoteBrowseNavigationItemConfiguration *)self usesPlainBarButtonItems];
     v5 = [UIBarButtonItem alloc];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"Tags" value:&stru_100661CF0 table:0];
-    if (v4)
+    if (usesPlainBarButtonItems)
     {
       v8 = [UIImage ic_systemImageNamed:@"number"];
       v9 = [v5 initWithTitle:v7 image:v8 target:self action:"tagsAction:" menu:0];
@@ -449,108 +449,108 @@
   self->_addNoteBarButtonItem = 0;
 }
 
-- (BOOL)updateAnimated:(BOOL)a3
+- (BOOL)updateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self needsUpdate];
-  if (v5)
+  animatedCopy = animated;
+  needsUpdate = [(ICNoteBrowseNavigationItemConfiguration *)self needsUpdate];
+  if (needsUpdate)
   {
-    [(ICNoteBrowseNavigationItemConfiguration *)self updateNavigationBarAnimated:v3];
-    [(ICNoteBrowseNavigationItemConfiguration *)self updateToolbarAnimated:v3];
+    [(ICNoteBrowseNavigationItemConfiguration *)self updateNavigationBarAnimated:animatedCopy];
+    [(ICNoteBrowseNavigationItemConfiguration *)self updateToolbarAnimated:animatedCopy];
     [(ICNoteBrowseNavigationItemConfiguration *)self updateTitles];
     [(ICNoteBrowseNavigationItemConfiguration *)self updateMenus];
     [(ICNoteBrowseNavigationItemConfiguration *)self updateEnabled];
     v7.receiver = self;
     v7.super_class = ICNoteBrowseNavigationItemConfiguration;
-    LOBYTE(v5) = [(ICNoteBrowseNavigationItemConfiguration *)&v7 updateAnimated:v3];
+    LOBYTE(needsUpdate) = [(ICNoteBrowseNavigationItemConfiguration *)&v7 updateAnimated:animatedCopy];
   }
 
-  return v5;
+  return needsUpdate;
 }
 
 - (BOOL)isEditing
 {
-  v2 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
-  v3 = [v2 isEditing];
+  presentingViewController = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+  isEditing = [presentingViewController isEditing];
 
-  return v3;
+  return isEditing;
 }
 
 - (UINavigationController)navigationController
 {
-  v2 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
-  v3 = [v2 navigationController];
+  presentingViewController = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+  navigationController = [presentingViewController navigationController];
 
-  return v3;
+  return navigationController;
 }
 
 - (NSString)navigationTitle
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteBrowseNavigationItemConfigurationNavigationTitle:self];
+  dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteBrowseNavigationItemConfigurationNavigationTitle:self];
 
   return v4;
 }
 
-- (void)updateNavigationBarAnimated:(BOOL)a3
+- (void)updateNavigationBarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-  v6 = [v5 searchController];
-  if (![v6 isActive])
+  animatedCopy = animated;
+  navigationItem = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+  searchController = [navigationItem searchController];
+  if (![searchController isActive])
   {
 
 LABEL_7:
-    v8 = [(ICNoteBrowseNavigationItemConfiguration *)self isEditing];
-    v9 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    v10 = v9;
-    if (v8)
+    isEditing = [(ICNoteBrowseNavigationItemConfiguration *)self isEditing];
+    navigationItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    v10 = navigationItem2;
+    if (isEditing)
     {
-      [v9 setHidesBackButton:1 animated:v3];
+      [navigationItem2 setHidesBackButton:1 animated:animatedCopy];
 
-      v11 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-      v12 = [(ICNoteBrowseNavigationItemConfiguration *)self editBarButtonItem];
-      v48 = v12;
+      navigationItem3 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+      editBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self editBarButtonItem];
+      v48 = editBarButtonItem;
       v13 = [NSArray arrayWithObjects:&v48 count:1];
-      [v11 setRightBarButtonItems:v13 animated:v3];
+      [navigationItem3 setRightBarButtonItems:v13 animated:animatedCopy];
 
 LABEL_44:
       return;
     }
 
-    [v9 setHidesBackButton:-[ICNoteBrowseNavigationItemConfiguration usesCustomBackButton](self animated:{"usesCustomBackButton"), v3}];
+    [navigationItem2 setHidesBackButton:-[ICNoteBrowseNavigationItemConfiguration usesCustomBackButton](self animated:{"usesCustomBackButton"), animatedCopy}];
 
     if (-[ICNoteBrowseNavigationItemConfiguration usesCustomBackButton](self, "usesCustomBackButton") && (-[ICNoteBrowseNavigationItemConfiguration navigationController](self, "navigationController"), v14 = objc_claimAutoreleasedReturnValue(), [v14 viewControllers], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14, v16 >= 2))
     {
       v17 = [UIBarButtonItemGroup alloc];
-      v18 = [(ICNoteBrowseNavigationItemConfiguration *)self customBackBarButtonItem];
-      v47 = v18;
+      customBackBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self customBackBarButtonItem];
+      v47 = customBackBarButtonItem;
       v19 = [NSArray arrayWithObjects:&v47 count:1];
-      v20 = [v17 initWithBarButtonItems:v19 representativeItem:0];
+      navigationItem5 = [v17 initWithBarButtonItems:v19 representativeItem:0];
 
-      v46 = v20;
+      v46 = navigationItem5;
       v21 = [NSArray arrayWithObjects:&v46 count:1];
-      v22 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-      [v22 setLeadingItemGroups:v21];
+      navigationItem4 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+      [navigationItem4 setLeadingItemGroups:v21];
     }
 
     else
     {
-      v20 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-      [v20 setLeadingItemGroups:&__NSArray0__struct];
+      navigationItem5 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+      [navigationItem5 setLeadingItemGroups:&__NSArray0__struct];
     }
 
-    v11 = +[NSMutableArray array];
-    v23 = [(ICNoteBrowseNavigationItemConfiguration *)self collectionType];
-    if (v23 - 3 < 2)
+    navigationItem3 = +[NSMutableArray array];
+    collectionType = [(ICNoteBrowseNavigationItemConfiguration *)self collectionType];
+    if (collectionType - 3 < 2)
     {
-      v24 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
-      [v11 addObject:v24];
+      actionBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
+      [navigationItem3 addObject:actionBarButtonItem];
 
       if ([(ICNoteBrowseNavigationItemConfiguration *)self noteContainerViewMode]== 1 && ![(ICNoteBrowseNavigationItemConfiguration *)self isCompactWidth])
       {
-        v25 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-        [v11 insertObject:v25 atIndex:0];
+        addNoteBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+        [navigationItem3 insertObject:addNoteBarButtonItem atIndex:0];
       }
 
       if (![(ICNoteBrowseNavigationItemConfiguration *)self showsCalculatorModeButton])
@@ -559,21 +559,21 @@ LABEL_44:
       }
 
       v26 = +[UIBarButtonItem flexibleSpaceItem];
-      [v11 ic_addNonNilObject:v26];
-      v27 = [(ICNoteBrowseNavigationItemConfiguration *)self calculatorModeItem];
-      [v11 ic_addNonNilObject:v27];
+      [navigationItem3 ic_addNonNilObject:v26];
+      calculatorModeItem = [(ICNoteBrowseNavigationItemConfiguration *)self calculatorModeItem];
+      [navigationItem3 ic_addNonNilObject:calculatorModeItem];
     }
 
     else
     {
-      if (v23 == 2)
+      if (collectionType == 2)
       {
-        v28 = [(ICNoteBrowseNavigationItemConfiguration *)self editBarButtonItem];
+        editBarButtonItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self editBarButtonItem];
       }
 
       else
       {
-        if (v23 != 1)
+        if (collectionType != 1)
         {
           goto LABEL_37;
         }
@@ -588,19 +588,19 @@ LABEL_44:
           [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
         }
         v29 = ;
-        [v11 ic_addNonNilObject:v29];
+        [navigationItem3 ic_addNonNilObject:v29];
 
         if (![(ICNoteBrowseNavigationItemConfiguration *)self isCompactWidth])
         {
           if ([(ICNoteBrowseNavigationItemConfiguration *)self noteContainerViewMode]== 1 && ![(ICNoteBrowseNavigationItemConfiguration *)self isCompactHeight])
           {
-            v30 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-            [v11 ic_insertNonNilObject:v30 atIndex:0];
+            addNoteBarButtonItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+            [navigationItem3 ic_insertNonNilObject:addNoteBarButtonItem2 atIndex:0];
 
             if ([(ICNoteBrowseNavigationItemConfiguration *)self isAuthenticated])
             {
-              v31 = [(ICNoteBrowseNavigationItemConfiguration *)self lockBarButtonItem];
-              [v11 ic_addNonNilObject:v31];
+              lockBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self lockBarButtonItem];
+              [navigationItem3 ic_addNonNilObject:lockBarButtonItem];
             }
           }
 
@@ -612,8 +612,8 @@ LABEL_44:
 
         if ([(ICNoteBrowseNavigationItemConfiguration *)self canBeShared])
         {
-          v32 = [(ICNoteBrowseNavigationItemConfiguration *)self shareBarButtonItem];
-          [v11 ic_addNonNilObject:v32];
+          shareBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self shareBarButtonItem];
+          [navigationItem3 ic_addNonNilObject:shareBarButtonItem];
         }
 
         if (![(ICNoteBrowseNavigationItemConfiguration *)self isShared])
@@ -621,49 +621,49 @@ LABEL_44:
           goto LABEL_37;
         }
 
-        v28 = [(ICNoteBrowseNavigationItemConfiguration *)self collaborationBarButtonItem];
+        editBarButtonItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self collaborationBarButtonItem];
       }
 
-      v26 = v28;
-      [v11 ic_addNonNilObject:v28];
+      v26 = editBarButtonItem2;
+      [navigationItem3 ic_addNonNilObject:editBarButtonItem2];
     }
 
 LABEL_37:
     if (_UISolariumEnabled())
     {
-      v33 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-      v34 = [v11 containsObject:v33];
+      addNoteBarButtonItem3 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+      v34 = [navigationItem3 containsObject:addNoteBarButtonItem3];
 
       if (v34)
       {
-        v35 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-        [v11 removeObject:v35];
+        addNoteBarButtonItem4 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+        [navigationItem3 removeObject:addNoteBarButtonItem4];
 
         v36 = [UIBarButtonItem fixedSpaceItemOfWidth:0.0];
-        [v11 addObject:v36];
+        [navigationItem3 addObject:v36];
 
-        v37 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-        [v11 addObject:v37];
+        addNoteBarButtonItem5 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+        [navigationItem3 addObject:addNoteBarButtonItem5];
       }
     }
 
-    v38 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    [v38 _setSupportsTwoLineLargeTitles:1];
+    navigationItem6 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    [navigationItem6 _setSupportsTwoLineLargeTitles:1];
 
-    v39 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    v40 = [v11 copy];
-    [v39 setRightBarButtonItems:v40 animated:v3];
+    navigationItem7 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    v40 = [navigationItem3 copy];
+    [navigationItem7 setRightBarButtonItems:v40 animated:animatedCopy];
 
     LODWORD(v40) = [(ICNoteBrowseNavigationItemConfiguration *)self showsDebugItem];
-    v41 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    v42 = v41;
+    navigationItem8 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    v42 = navigationItem8;
     if (v40)
     {
-      v43 = [(ICNoteBrowseNavigationItemConfiguration *)self debugBarButtonItem];
-      [v42 setLeftBarButtonItem:v43 animated:v3];
+      debugBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self debugBarButtonItem];
+      [v42 setLeftBarButtonItem:debugBarButtonItem animated:animatedCopy];
 
-      v41 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-      v42 = v41;
+      navigationItem8 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+      v42 = navigationItem8;
       v44 = 1;
     }
 
@@ -672,137 +672,137 @@ LABEL_37:
       v44 = 0;
     }
 
-    [v41 setLeftItemsSupplementBackButton:v44];
+    [navigationItem8 setLeftItemsSupplementBackButton:v44];
 
     goto LABEL_44;
   }
 
-  v7 = [(ICNoteBrowseNavigationItemConfiguration *)self noteContainerViewMode];
+  noteContainerViewMode = [(ICNoteBrowseNavigationItemConfiguration *)self noteContainerViewMode];
 
-  if (v7 != 1)
+  if (noteContainerViewMode != 1)
   {
     goto LABEL_7;
   }
 
-  v45 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-  [v45 setRightBarButtonItems:&__NSArray0__struct animated:v3];
+  navigationItem9 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+  [navigationItem9 setRightBarButtonItems:&__NSArray0__struct animated:animatedCopy];
 }
 
 - (void)updateEnabled
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self canAddNote];
-  v4 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-  [v4 setEnabled:v3];
+  canAddNote = [(ICNoteBrowseNavigationItemConfiguration *)self canAddNote];
+  addNoteBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+  [addNoteBarButtonItem setEnabled:canAddNote];
 
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self canDeleteNotes];
-  v6 = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
-  [v6 setEnabled:v5];
+  canDeleteNotes = [(ICNoteBrowseNavigationItemConfiguration *)self canDeleteNotes];
+  deleteBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
+  [deleteBarButtonItem setEnabled:canDeleteNotes];
 
-  v7 = [(ICNoteBrowseNavigationItemConfiguration *)self canMoveNotes];
-  v8 = [(ICNoteBrowseNavigationItemConfiguration *)self moveBarButtonItem];
-  [v8 setEnabled:v7];
+  canMoveNotes = [(ICNoteBrowseNavigationItemConfiguration *)self canMoveNotes];
+  moveBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self moveBarButtonItem];
+  [moveBarButtonItem setEnabled:canMoveNotes];
 
-  v9 = [(ICNoteBrowseNavigationItemConfiguration *)self collectionType];
-  if (v9 > 2)
+  collectionType = [(ICNoteBrowseNavigationItemConfiguration *)self collectionType];
+  if (collectionType > 2)
   {
-    if ((v9 - 3) > 1)
+    if ((collectionType - 3) > 1)
     {
       return;
     }
   }
 
-  else if (v9)
+  else if (collectionType)
   {
-    if (v9 != 1)
+    if (collectionType != 1)
     {
-      if (v9 != 2)
+      if (collectionType != 2)
       {
         return;
       }
 
-      v10 = [(ICNoteBrowseNavigationItemConfiguration *)self noteCount]!= 0;
+      isEditing = [(ICNoteBrowseNavigationItemConfiguration *)self noteCount]!= 0;
       goto LABEL_8;
     }
 
     if ([(ICNoteBrowseNavigationItemConfiguration *)self isTrashFolder])
     {
-      v10 = 1;
+      isEditing = 1;
       goto LABEL_8;
     }
   }
 
-  v10 = [(ICNoteBrowseNavigationItemConfiguration *)self isEditing];
+  isEditing = [(ICNoteBrowseNavigationItemConfiguration *)self isEditing];
 LABEL_8:
-  v11 = [(ICNoteBrowseNavigationItemConfiguration *)self editBarButtonItem];
-  [v11 setEnabled:v10];
+  editBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self editBarButtonItem];
+  [editBarButtonItem setEnabled:isEditing];
 }
 
 - (void)updateMenus
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self collectionType];
-  if (v3 <= 1)
+  collectionType = [(ICNoteBrowseNavigationItemConfiguration *)self collectionType];
+  if (collectionType <= 1)
   {
-    if (v3)
+    if (collectionType)
     {
-      if (v3 != 1)
+      if (collectionType != 1)
       {
         return;
       }
 
-      v8 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-      v4 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
-      v5 = [v8 noteBrowseNavigationItemConfigurationNoteContainerActionMenu:self actionBarButtonItem:v4];
+      dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+      actionBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
+      v5 = [dataSource noteBrowseNavigationItemConfigurationNoteContainerActionMenu:self actionBarButtonItem:actionBarButtonItem];
       goto LABEL_11;
     }
   }
 
-  else if (v3 != 2)
+  else if (collectionType != 2)
   {
-    if (v3 == 3)
+    if (collectionType == 3)
     {
-      v8 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-      v4 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
-      v5 = [v8 noteBrowseNavigationItemConfigurationQueryActionMenu:self actionBarButtonItem:v4];
+      dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+      actionBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
+      v5 = [dataSource noteBrowseNavigationItemConfigurationQueryActionMenu:self actionBarButtonItem:actionBarButtonItem];
     }
 
     else
     {
-      if (v3 != 4)
+      if (collectionType != 4)
       {
         return;
       }
 
-      v8 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-      v4 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
-      v5 = [v8 noteBrowseNavigationItemConfigurationVirtualSmartFolderActionMenu:self actionBarButtonItem:v4];
+      dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+      actionBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
+      v5 = [dataSource noteBrowseNavigationItemConfigurationVirtualSmartFolderActionMenu:self actionBarButtonItem:actionBarButtonItem];
     }
 
 LABEL_11:
     v6 = v5;
-    v7 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
-    [v7 setMenu:v6];
+    actionBarButtonItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
+    [actionBarButtonItem2 setMenu:v6];
 
     goto LABEL_12;
   }
 
-  v8 = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
-  [v8 setMenu:0];
+  dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self actionBarButtonItem];
+  [dataSource setMenu:0];
 LABEL_12:
 }
 
 - (void)updateTitles
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 splitViewControllerLayoutEnvironment];
+  presentingViewController = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+  traitCollection = [presentingViewController traitCollection];
+  splitViewControllerLayoutEnvironment = [traitCollection splitViewControllerLayoutEnvironment];
 
-  v6 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationTitle];
-  v7 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-  [v7 setTitle:v6];
+  navigationTitle = [(ICNoteBrowseNavigationItemConfiguration *)self navigationTitle];
+  navigationItem = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+  [navigationItem setTitle:navigationTitle];
 
-  v8 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationTitle];
-  v9 = [v8 length];
-  if (v5 == 1 || v9 == 0)
+  navigationTitle2 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationTitle];
+  v9 = [navigationTitle2 length];
+  if (splitViewControllerLayoutEnvironment == 1 || v9 == 0)
   {
     v11 = 2;
   }
@@ -812,13 +812,13 @@ LABEL_12:
     v11 = 1;
   }
 
-  v12 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-  [v12 setLargeTitleDisplayMode:v11];
+  navigationItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+  [navigationItem2 setLargeTitleDisplayMode:v11];
 
-  v13 = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
+  selectedNoteCount = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
   v14 = +[NSBundle mainBundle];
   v15 = v14;
-  if (v13)
+  if (selectedNoteCount)
   {
     v16 = @"Move";
   }
@@ -829,13 +829,13 @@ LABEL_12:
   }
 
   v17 = [v14 localizedStringForKey:v16 value:&stru_100661CF0 table:0];
-  v18 = [(ICNoteBrowseNavigationItemConfiguration *)self moveBarButtonItem];
-  [v18 setTitle:v17];
+  moveBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self moveBarButtonItem];
+  [moveBarButtonItem setTitle:v17];
 
-  v19 = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
+  selectedNoteCount2 = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
   v20 = +[NSBundle mainBundle];
   v24 = v20;
-  if (v19)
+  if (selectedNoteCount2)
   {
     v21 = @"Delete";
   }
@@ -846,46 +846,46 @@ LABEL_12:
   }
 
   v22 = [v20 localizedStringForKey:v21 value:&stru_100661CF0 table:0];
-  v23 = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
-  [v23 setTitle:v22];
+  deleteBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
+  [deleteBarButtonItem setTitle:v22];
 }
 
-- (void)updateToolbarAnimated:(BOOL)a3
+- (void)updateToolbarAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self isCompactWidth];
+  animatedCopy = animated;
+  isCompactWidth = [(ICNoteBrowseNavigationItemConfiguration *)self isCompactWidth];
   v6 = +[UIBarButtonItem flexibleSpaceItem];
-  v7 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationController];
+  navigationController = [(ICNoteBrowseNavigationItemConfiguration *)self navigationController];
   if ([(ICNoteBrowseNavigationItemConfiguration *)self isEditing])
   {
-    v8 = [(ICNoteBrowseNavigationItemConfiguration *)self canAssignTags];
-    v9 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
-    v10 = [(ICNoteBrowseNavigationItemConfiguration *)self moveBarButtonItem];
-    v11 = v10;
-    if (v8)
+    canAssignTags = [(ICNoteBrowseNavigationItemConfiguration *)self canAssignTags];
+    presentingViewController = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+    moveBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self moveBarButtonItem];
+    v11 = moveBarButtonItem;
+    if (canAssignTags)
     {
-      v34[0] = v10;
+      v34[0] = moveBarButtonItem;
       v34[1] = v6;
-      v12 = [(ICNoteBrowseNavigationItemConfiguration *)self tagsBarButtonItem];
-      v34[2] = v12;
+      tagsBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self tagsBarButtonItem];
+      v34[2] = tagsBarButtonItem;
       v34[3] = v6;
-      v13 = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
-      v34[4] = v13;
+      deleteBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
+      v34[4] = deleteBarButtonItem;
       v14 = [NSArray arrayWithObjects:v34 count:5];
-      [v9 setToolbarItems:v14 animated:v3];
+      [presentingViewController setToolbarItems:v14 animated:animatedCopy];
     }
 
     else
     {
-      v33[0] = v10;
+      v33[0] = moveBarButtonItem;
       v33[1] = v6;
-      v12 = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
-      v33[2] = v12;
-      v13 = [NSArray arrayWithObjects:v33 count:3];
-      [v9 setToolbarItems:v13 animated:v3];
+      tagsBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self deleteBarButtonItem];
+      v33[2] = tagsBarButtonItem;
+      deleteBarButtonItem = [NSArray arrayWithObjects:v33 count:3];
+      [presentingViewController setToolbarItems:deleteBarButtonItem animated:animatedCopy];
     }
 
-    [v7 setToolbarHidden:0 animated:v3];
+    [navigationController setToolbarHidden:0 animated:animatedCopy];
     goto LABEL_30;
   }
 
@@ -906,34 +906,34 @@ LABEL_12:
 
   else
   {
-    v17 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    v18 = [v17 searchController];
-    if ([v18 isActive])
+    navigationItem = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    searchController = [navigationItem searchController];
+    if ([searchController isActive])
     {
       v16 = 1;
     }
 
     else
     {
-      v16 = (v5 ^ 1) & v15;
+      v16 = (isCompactWidth ^ 1) & v15;
     }
   }
 
-  [v7 setToolbarHidden:v16 animated:v3];
+  [navigationController setToolbarHidden:v16 animated:animatedCopy];
   v19 = +[NSMutableArray array];
   if (_UISolariumEnabled() && (-[ICNoteBrowseNavigationItemConfiguration navigationController](self, "navigationController"), v20 = objc_claimAutoreleasedReturnValue(), [v20 traitCollection], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "userInterfaceIdiom"), v21, v20, !v22))
   {
-    v24 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    v23 = [v24 searchController];
+    navigationItem2 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    searchController2 = [navigationItem2 searchController];
 
-    v25 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-    v26 = [v25 searchBarPlacementBarButtonItem];
+    navigationItem3 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+    searchBarPlacementBarButtonItem = [navigationItem3 searchBarPlacementBarButtonItem];
 
-    v27 = [v23 searchBar];
-    [v27 setShowsCancelButton:1];
+    searchBar = [searchController2 searchBar];
+    [searchBar setShowsCancelButton:1];
 
-    [v23 setAutomaticallyShowsCancelButton:1];
-    [v19 ic_addNonNilObject:v26];
+    [searchController2 setAutomaticallyShowsCancelButton:1];
+    [v19 ic_addNonNilObject:searchBarPlacementBarButtonItem];
   }
 
   else
@@ -943,120 +943,120 @@ LABEL_12:
       goto LABEL_22;
     }
 
-    v23 = +[UIBarButtonItem flexibleSpaceItem];
-    [v19 addObject:v23];
+    searchController2 = +[UIBarButtonItem flexibleSpaceItem];
+    [v19 addObject:searchController2];
   }
 
 LABEL_22:
   if ((v16 & 1) == 0 && (_UISolariumEnabled() & 1) == 0)
   {
-    v28 = [(ICNoteBrowseNavigationItemConfiguration *)self summaryBarButtonItem];
-    [v19 ic_addNonNilObject:v28];
+    summaryBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self summaryBarButtonItem];
+    [v19 ic_addNonNilObject:summaryBarButtonItem];
   }
 
   v29 = +[UIBarButtonItem flexibleSpaceItem];
   [v19 addObject:v29];
 
-  if ((v5 & 1) != 0 || [(ICNoteBrowseNavigationItemConfiguration *)self noteContainerViewMode]== 1 && [(ICNoteBrowseNavigationItemConfiguration *)self isCompactHeight])
+  if ((isCompactWidth & 1) != 0 || [(ICNoteBrowseNavigationItemConfiguration *)self noteContainerViewMode]== 1 && [(ICNoteBrowseNavigationItemConfiguration *)self isCompactHeight])
   {
-    v30 = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
-    [v19 addObject:v30];
+    addNoteBarButtonItem = [(ICNoteBrowseNavigationItemConfiguration *)self addNoteBarButtonItem];
+    [v19 addObject:addNoteBarButtonItem];
   }
 
-  v31 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
+  presentingViewController2 = [(ICNoteBrowseNavigationItemConfiguration *)self presentingViewController];
   v32 = [v19 copy];
-  [v31 setToolbarItems:v32 animated:v3];
+  [presentingViewController2 setToolbarItems:v32 animated:animatedCopy];
 
 LABEL_30:
 }
 
-- (void)addNoteAction:(id)a3 event:(id)a4
+- (void)addNoteAction:(id)action event:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  [v8 noteBrowseNavigationItemConfiguration:self shouldAddNoteFromBarButtonItem:v7 event:v6];
+  eventCopy = event;
+  actionCopy = action;
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  [delegate noteBrowseNavigationItemConfiguration:self shouldAddNoteFromBarButtonItem:actionCopy event:eventCopy];
 }
 
-- (void)backAction:(id)a3
+- (void)backAction:(id)action
 {
-  v4 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(ICNoteBrowseNavigationItemConfiguration *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)debugAction:(id)a3
+- (void)debugAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  [v5 noteBrowseNavigationItemConfiguration:self shouldShowDebugViewControllerFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  [delegate noteBrowseNavigationItemConfiguration:self shouldShowDebugViewControllerFromBarButtonItem:actionCopy];
 }
 
-- (void)deleteAction:(id)a3
+- (void)deleteAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
-  v6 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  v7 = v6;
-  if (v5)
+  actionCopy = action;
+  selectedNoteCount = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  v7 = delegate;
+  if (selectedNoteCount)
   {
-    [v6 noteBrowseNavigationItemConfiguration:self shouldDeleteSelectedFromBarButtonItem:v4];
+    [delegate noteBrowseNavigationItemConfiguration:self shouldDeleteSelectedFromBarButtonItem:actionCopy];
   }
 
   else
   {
-    [v6 noteBrowseNavigationItemConfiguration:self shouldDeleteAllFromBarButtonItem:v4];
+    [delegate noteBrowseNavigationItemConfiguration:self shouldDeleteAllFromBarButtonItem:actionCopy];
   }
 }
 
-- (void)lockAction:(id)a3
+- (void)lockAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  [v5 noteBrowseNavigationItemConfiguration:self shouldLockFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  [delegate noteBrowseNavigationItemConfiguration:self shouldLockFromBarButtonItem:actionCopy];
 }
 
-- (void)moveAction:(id)a3
+- (void)moveAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
-  v6 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  v7 = v6;
-  if (v5)
+  actionCopy = action;
+  selectedNoteCount = [(ICNoteBrowseNavigationItemConfiguration *)self selectedNoteCount];
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  v7 = delegate;
+  if (selectedNoteCount)
   {
-    [v6 noteBrowseNavigationItemConfiguration:self shouldMoveSelectedFromBarButtonItem:v4];
+    [delegate noteBrowseNavigationItemConfiguration:self shouldMoveSelectedFromBarButtonItem:actionCopy];
   }
 
   else
   {
-    [v6 noteBrowseNavigationItemConfiguration:self shouldMoveAllFromBarButtonItem:v4];
+    [delegate noteBrowseNavigationItemConfiguration:self shouldMoveAllFromBarButtonItem:actionCopy];
   }
 }
 
-- (void)shareAction:(id)a3
+- (void)shareAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  [v5 noteBrowseNavigationItemConfiguration:self shouldShareFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  [delegate noteBrowseNavigationItemConfiguration:self shouldShareFromBarButtonItem:actionCopy];
 }
 
-- (void)tagsAction:(id)a3
+- (void)tagsAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
-  [v5 noteBrowseNavigationItemConfiguration:self shouldAssignTagsFromBarButtonItem:v4];
+  actionCopy = action;
+  delegate = [(ICNoteBrowseNavigationItemConfiguration *)self delegate];
+  [delegate noteBrowseNavigationItemConfiguration:self shouldAssignTagsFromBarButtonItem:actionCopy];
 }
 
-- (void)cancelSearchAction:(id)a3
+- (void)cancelSearchAction:(id)action
 {
-  v4 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
-  v3 = [v4 searchController];
-  [v3 setActive:0];
+  navigationItem = [(ICNoteBrowseNavigationItemConfiguration *)self navigationItem];
+  searchController = [navigationItem searchController];
+  [searchController setActive:0];
 }
 
 - (UIViewController)presentingViewController
 {
-  v3 = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
-  v4 = [v3 noteBrowseNavigationItemConfigurationPresentingViewController:self];
+  dataSource = [(ICNoteBrowseNavigationItemConfiguration *)self dataSource];
+  v4 = [dataSource noteBrowseNavigationItemConfigurationPresentingViewController:self];
 
   return v4;
 }
@@ -1127,22 +1127,22 @@ LABEL_30:
   v9 = 0;
 LABEL_8:
 
-  v12 = [(ICNoteBrowseNavigationItemConfiguration *)self navigationTitle];
-  v20 = sub_10008A5D0(v9, v13, v14, v15, v16, v17, v18, v19, v12);
+  navigationTitle = [(ICNoteBrowseNavigationItemConfiguration *)self navigationTitle];
+  v20 = sub_10008A5D0(v9, v13, v14, v15, v16, v17, v18, v19, navigationTitle);
 
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(ICNoteBrowseNavigationItemConfiguration *)self hash];
     v7 = v6 == [(ICNoteBrowseNavigationItemConfiguration *)v5 hash];

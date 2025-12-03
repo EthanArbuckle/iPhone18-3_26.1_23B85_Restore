@@ -6,13 +6,13 @@
 
 - (id)mfiControllerCapabilities
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, "MFiControllerCapabilities");
+    v2 = objc_getAssociatedObject(self, "MFiControllerCapabilities");
     if (!v2)
     {
-      v2 = [[_GCMFiControllerCapabilites alloc] initWithServiceInfo:a1];
-      objc_setAssociatedObject(a1, "MFiControllerCapabilities", v2, 0x301);
+      v2 = [[_GCMFiControllerCapabilites alloc] initWithServiceInfo:self];
+      objc_setAssociatedObject(self, "MFiControllerCapabilities", v2, 0x301);
     }
   }
 

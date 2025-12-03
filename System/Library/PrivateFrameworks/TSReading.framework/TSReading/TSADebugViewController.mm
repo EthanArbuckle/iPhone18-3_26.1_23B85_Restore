@@ -1,16 +1,16 @@
 @interface TSADebugViewController
-- (TSADebugViewController)initWithDelegate:(id)a3;
+- (TSADebugViewController)initWithDelegate:(id)delegate;
 - (void)dealloc;
 - (void)loadView;
-- (void)showIt:(id)a3;
-- (void)toggleVisible:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)showIt:(id)it;
+- (void)toggleVisible:(id)visible;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TSADebugViewController
 
-- (TSADebugViewController)initWithDelegate:(id)a3
+- (TSADebugViewController)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = TSADebugViewController;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_delegate = a3;
+    v4->_delegate = delegate;
     v4->_debugTableViewController = [[TSADebugTableViewController alloc] initWithParent:v4];
   }
 
@@ -43,24 +43,24 @@
   [(TSADebugViewController *)self setView:v3];
 }
 
-- (void)toggleVisible:(id)a3
+- (void)toggleVisible:(id)visible
 {
   if ([(TSKPopoverBasedViewController *)self isVisible])
   {
 
-    [(TSADebugViewController *)self hideIt:a3];
+    [(TSADebugViewController *)self hideIt:visible];
   }
 
   else
   {
 
-    [(TSADebugViewController *)self showIt:a3];
+    [(TSADebugViewController *)self showIt:visible];
   }
 }
 
-- (void)showIt:(id)a3
+- (void)showIt:(id)it
 {
-  if (a3)
+  if (it)
   {
     objc_opt_class();
     [objc_msgSend(TSUDynamicCast() "rightApplicationToolbarItems")];
@@ -83,7 +83,7 @@
       {
         [v5 bounds];
         v8 = self->_delegate;
-        v9 = self;
+        selfCopy2 = self;
         v10 = v5;
       }
 
@@ -97,31 +97,31 @@
 
         [v6 bounds];
         v8 = self->_delegate;
-        v9 = self;
+        selfCopy2 = self;
         v10 = v11;
       }
 
-      [(TSKPopoverBasedViewController *)v9 presentModallyFromRect:v10 inView:v8 viewController:?];
+      [(TSKPopoverBasedViewController *)selfCopy2 presentModallyFromRect:v10 inView:v8 viewController:?];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = TSADebugViewController;
   [(TSKPopoverBasedViewController *)&v5 viewWillAppear:?];
-  [(TSADebugTableViewController *)self->_debugTableViewController viewWillAppear:v3];
+  [(TSADebugTableViewController *)self->_debugTableViewController viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(TSADebugTableViewController *)self->_debugTableViewController viewDidDisappear:?];
   v5.receiver = self;
   v5.super_class = TSADebugViewController;
-  [(TSKPopoverBasedViewController *)&v5 viewDidDisappear:v3];
+  [(TSKPopoverBasedViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 @end

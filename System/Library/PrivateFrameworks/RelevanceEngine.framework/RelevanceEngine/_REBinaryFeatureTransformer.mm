@@ -1,11 +1,11 @@
 @interface _REBinaryFeatureTransformer
-- (BOOL)_validateWithFeatures:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateWithFeatures:(id)features;
+- (BOOL)isEqual:(id)equal;
 - (_REBinaryFeatureTransformer)init;
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4;
-- (void)configureWithInvocation:(id)a3;
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count;
+- (void)configureWithInvocation:(id)invocation;
 - (void)dealloc;
-- (void)setThreshold:(unint64_t)a3;
+- (void)setThreshold:(unint64_t)threshold;
 @end
 
 @implementation _REBinaryFeatureTransformer
@@ -32,19 +32,19 @@
   [(_REBinaryFeatureTransformer *)&v3 dealloc];
 }
 
-- (void)setThreshold:(unint64_t)a3
+- (void)setThreshold:(unint64_t)threshold
 {
-  RERetainFeatureValueTaggedPointer(a3);
+  RERetainFeatureValueTaggedPointer(threshold);
   REReleaseFeatureValueTaggedPointer(self->_threshold);
-  self->_threshold = a3;
+  self->_threshold = threshold;
 }
 
-- (void)configureWithInvocation:(id)a3
+- (void)configureWithInvocation:(id)invocation
 {
-  v11 = a3;
-  if ([v11 numberOfArguments] == 1)
+  invocationCopy = invocation;
+  if ([invocationCopy numberOfArguments] == 1)
   {
-    -[_REBinaryFeatureTransformer setThreshold:](self, "setThreshold:", [v11 getArgumentAtIndex:0]);
+    -[_REBinaryFeatureTransformer setThreshold:](self, "setThreshold:", [invocationCopy getArgumentAtIndex:0]);
   }
 
   else
@@ -53,25 +53,25 @@
   }
 }
 
-- (unint64_t)_createTransformFromValues:(unint64_t *)a3 count:(unint64_t)a4
+- (unint64_t)_createTransformFromValues:(unint64_t *)values count:(unint64_t)count
 {
-  v4 = RECompareFeatureValues(*a3, self->_threshold) == 1;
+  v4 = RECompareFeatureValues(*values, self->_threshold) == 1;
 
   return RECreateBooleanFeatureValueTaggedPointer(v4);
 }
 
-- (BOOL)_validateWithFeatures:(id)a3
+- (BOOL)_validateWithFeatures:(id)features
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 featureType] == 2;
+  firstObject = [features firstObject];
+  v4 = [firstObject featureType] == 2;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -81,7 +81,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       threshold = self->_threshold;
       v7 = v5->_threshold;
       if (threshold == v7)

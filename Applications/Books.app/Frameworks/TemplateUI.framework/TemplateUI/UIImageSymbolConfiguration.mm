@@ -1,58 +1,58 @@
 @interface UIImageSymbolConfiguration
-+ (id)tui_configurationWithPointSize:(double)a3 weight:(int64_t)a4 scale:(int64_t)a5 renderingMode:(unint64_t)a6 colors:(id)a7;
-+ (id)tui_configurationWithRenderingMode:(unint64_t)a3 colors:(id)a4;
++ (id)tui_configurationWithPointSize:(double)size weight:(int64_t)weight scale:(int64_t)scale renderingMode:(unint64_t)mode colors:(id)colors;
++ (id)tui_configurationWithRenderingMode:(unint64_t)mode colors:(id)colors;
 @end
 
 @implementation UIImageSymbolConfiguration
 
-+ (id)tui_configurationWithRenderingMode:(unint64_t)a3 colors:(id)a4
++ (id)tui_configurationWithRenderingMode:(unint64_t)mode colors:(id)colors
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 3)
+  colorsCopy = colors;
+  v6 = colorsCopy;
+  if (mode == 3)
   {
     v9 = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
-    if (![v5 count])
+    if (![colorsCopy count])
     {
       goto LABEL_8;
     }
 
     v9 = [UIImageSymbolConfiguration configurationWithPaletteColors:v6];
 LABEL_10:
-    v7 = v9;
+    firstObject = v9;
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (mode != 1)
   {
 LABEL_8:
-    v7 = 0;
+    firstObject = 0;
     goto LABEL_11;
   }
 
-  v7 = [v5 firstObject];
+  firstObject = [colorsCopy firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v6 firstObject];
-    v7 = [UIImageSymbolConfiguration configurationWithHierarchicalColor:v8];
+    firstObject2 = [v6 firstObject];
+    firstObject = [UIImageSymbolConfiguration configurationWithHierarchicalColor:firstObject2];
   }
 
 LABEL_11:
 
-  return v7;
+  return firstObject;
 }
 
-+ (id)tui_configurationWithPointSize:(double)a3 weight:(int64_t)a4 scale:(int64_t)a5 renderingMode:(unint64_t)a6 colors:(id)a7
++ (id)tui_configurationWithPointSize:(double)size weight:(int64_t)weight scale:(int64_t)scale renderingMode:(unint64_t)mode colors:(id)colors
 {
-  v12 = a7;
-  v13 = [UIImageSymbolConfiguration configurationWithPointSize:a4 weight:a5 scale:a3];
-  v14 = [a1 tui_configurationWithRenderingMode:a6 colors:v12];
+  colorsCopy = colors;
+  v13 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:scale scale:size];
+  v14 = [self tui_configurationWithRenderingMode:mode colors:colorsCopy];
 
   v15 = [v13 configurationByApplyingConfiguration:v14];
 

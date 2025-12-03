@@ -1,55 +1,55 @@
 @interface PKColorMatrixView
-+ (double)_rgbDistanceFromColor:(id)a3 toColor:(id)a4;
-+ (id)_representableColorForColor:(id)a3;
++ (double)_rgbDistanceFromColor:(id)color toColor:(id)toColor;
++ (id)_representableColorForColor:(id)color;
 + (id)defaultColorMatrix;
-+ (id)flippedColorMatrix:(id)a3;
-- (CGRect)_frameForViewWithPoint:(id)a3;
-- (CGRect)frameForColorPickerCrosshairView:(id)a3;
-- (PKColorMatrixView)initWithFrame:(CGRect)a3;
++ (id)flippedColorMatrix:(id)matrix;
+- (CGRect)_frameForViewWithPoint:(id)point;
+- (CGRect)frameForColorPickerCrosshairView:(id)view;
+- (PKColorMatrixView)initWithFrame:(CGRect)frame;
 - (_PKColorPickerImplementationDelegate)colorPickerDelegate;
-- (id)_boundedPointForPoint:(id)a3;
-- (id)_colorForPoint:(id)a3;
-- (id)_pointForCGPoint:(CGPoint)a3;
-- (id)_pointForColor:(id)a3;
-- (id)_pointFromButton:(id)a3;
-- (id)representableColorForColor:(id)a3;
+- (id)_boundedPointForPoint:(id)point;
+- (id)_colorForPoint:(id)point;
+- (id)_pointForCGPoint:(CGPoint)point;
+- (id)_pointForColor:(id)color;
+- (id)_pointFromButton:(id)button;
+- (id)representableColorForColor:(id)color;
 - (id)uiColorMatrix;
 - (int64_t)_uiColorUserInterfaceStyle;
-- (unint64_t)cornerPositionForColorPickerCrosshairView:(id)a3;
-- (void)colorPickerCrosshairViewShouldUpdateColor:(id)a3 point:(CGPoint)a4;
-- (void)colorPickerCrosshairViewShouldUpdateWithColor:(id)a3;
-- (void)didTapColorButton:(id)a3;
+- (unint64_t)cornerPositionForColorPickerCrosshairView:(id)view;
+- (void)colorPickerCrosshairViewShouldUpdateColor:(id)color point:(CGPoint)point;
+- (void)colorPickerCrosshairViewShouldUpdateWithColor:(id)color;
+- (void)didTapColorButton:(id)button;
 - (void)layoutSubviews;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation PKColorMatrixView
 
-- (PKColorMatrixView)initWithFrame:(CGRect)a3
+- (PKColorMatrixView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = PKColorMatrixView;
-  v3 = [(PKColorMatrixView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [objc_opt_class() defaultColorMatrix];
+  v3 = [(PKColorMatrixView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  defaultColorMatrix = [objc_opt_class() defaultColorMatrix];
   colorMatrix = v3->_colorMatrix;
-  v3->_colorMatrix = v4;
+  v3->_colorMatrix = defaultColorMatrix;
 
   v6 = [PKColorMatrixView flippedColorMatrix:v3->_colorMatrix];
   darkColorMatrix = v3->_darkColorMatrix;
   v3->_darkColorMatrix = v6;
 
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(PKColorMatrixView *)v3 colorMatrix];
-  v10 = [v9 count];
+  array = [MEMORY[0x1E695DF70] array];
+  colorMatrix = [(PKColorMatrixView *)v3 colorMatrix];
+  v10 = [colorMatrix count];
 
   if (v10)
   {
     v11 = 0;
     do
     {
-      v12 = [MEMORY[0x1E695DF70] array];
-      v13 = [(PKColorMatrixView *)v3 colorMatrix];
-      v14 = [v13 objectAtIndexedSubscript:0];
+      array2 = [MEMORY[0x1E695DF70] array];
+      colorMatrix2 = [(PKColorMatrixView *)v3 colorMatrix];
+      v14 = [colorMatrix2 objectAtIndexedSubscript:0];
       v15 = [v14 count];
 
       if (v15)
@@ -59,90 +59,90 @@
         {
           v17 = [MEMORY[0x1E69DC738] buttonWithType:0];
           [v17 addTarget:v3 action:sel_didTapColorButton_ forControlEvents:64];
-          [v12 addObject:v17];
+          [array2 addObject:v17];
           [(PKColorMatrixView *)v3 addSubview:v17];
 
           ++v16;
-          v18 = [(PKColorMatrixView *)v3 colorMatrix];
-          v19 = [v18 objectAtIndexedSubscript:0];
+          colorMatrix3 = [(PKColorMatrixView *)v3 colorMatrix];
+          v19 = [colorMatrix3 objectAtIndexedSubscript:0];
           v20 = [v19 count];
         }
 
         while (v16 < v20);
       }
 
-      v21 = [v12 copy];
-      [v8 addObject:v21];
+      v21 = [array2 copy];
+      [array addObject:v21];
 
       ++v11;
-      v22 = [(PKColorMatrixView *)v3 colorMatrix];
-      v23 = [v22 count];
+      colorMatrix4 = [(PKColorMatrixView *)v3 colorMatrix];
+      v23 = [colorMatrix4 count];
     }
 
     while (v11 < v23);
   }
 
-  v24 = [v8 copy];
+  v24 = [array copy];
   [(PKColorMatrixView *)v3 setColorButtons:v24];
 
   return v3;
 }
 
-+ (id)flippedColorMatrix:(id)a3
++ (id)flippedColorMatrix:(id)matrix
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [v4 objectAtIndexedSubscript:0];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
-  [v5 addObject:v8];
+  matrixCopy = matrix;
+  v5 = [[v3 alloc] initWithCapacity:{objc_msgSend(matrixCopy, "count")}];
+  v6 = [matrixCopy objectAtIndexedSubscript:0];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  [v5 addObject:allObjects];
 
-  v9 = [v4 subarrayWithRange:{1, objc_msgSend(v4, "count") - 1}];
+  v9 = [matrixCopy subarrayWithRange:{1, objc_msgSend(matrixCopy, "count") - 1}];
 
-  v10 = [v9 reverseObjectEnumerator];
-  v11 = [v10 allObjects];
-  [v5 addObjectsFromArray:v11];
+  reverseObjectEnumerator2 = [v9 reverseObjectEnumerator];
+  allObjects2 = [reverseObjectEnumerator2 allObjects];
+  [v5 addObjectsFromArray:allObjects2];
 
   return v5;
 }
 
-- (void)didTapColorButton:(id)a3
+- (void)didTapColorButton:(id)button
 {
-  v11 = [(PKColorMatrixView *)self _pointFromButton:a3];
+  v11 = [(PKColorMatrixView *)self _pointFromButton:button];
   v4 = [(PKColorMatrixView *)self _colorForPoint:?];
   [(PKColorMatrixView *)self setSelectedColor:v4];
-  v5 = [(PKColorMatrixView *)self colorPickerDelegate];
-  [v5 colorPickerImplementationDidChangeSelectedColor:self];
+  colorPickerDelegate = [(PKColorMatrixView *)self colorPickerDelegate];
+  [colorPickerDelegate colorPickerImplementationDidChangeSelectedColor:self];
 
-  v6 = [(PKColorMatrixView *)self colorPickerDelegate];
-  if (v6)
+  colorPickerDelegate2 = [(PKColorMatrixView *)self colorPickerDelegate];
+  if (colorPickerDelegate2)
   {
-    v7 = v6;
-    v8 = [(PKColorMatrixView *)self colorPickerDelegate];
+    v7 = colorPickerDelegate2;
+    colorPickerDelegate3 = [(PKColorMatrixView *)self colorPickerDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(PKColorMatrixView *)self colorPickerDelegate];
-      [v10 colorPickerImplementationUserDidTouchUpInside:self];
+      colorPickerDelegate4 = [(PKColorMatrixView *)self colorPickerDelegate];
+      [colorPickerDelegate4 colorPickerImplementationUserDidTouchUpInside:self];
     }
   }
 }
 
-- (id)_pointFromButton:(id)a3
+- (id)_pointFromButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PKColorMatrixView *)self colorButtons];
-  v6 = [v5 count];
+  buttonCopy = button;
+  colorButtons = [(PKColorMatrixView *)self colorButtons];
+  v6 = [colorButtons count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(PKColorMatrixView *)self colorButtons];
-      v9 = [v8 objectAtIndexedSubscript:0];
+      colorButtons2 = [(PKColorMatrixView *)self colorButtons];
+      v9 = [colorButtons2 objectAtIndexedSubscript:0];
       v10 = [v9 count];
 
       if (v10)
@@ -152,8 +152,8 @@
 
 LABEL_7:
       ++v7;
-      v18 = [(PKColorMatrixView *)self colorButtons];
-      v19 = [v18 count];
+      colorButtons3 = [(PKColorMatrixView *)self colorButtons];
+      v19 = [colorButtons3 count];
 
       if (v7 >= v19)
       {
@@ -164,18 +164,18 @@ LABEL_7:
     v11 = 0;
     while (1)
     {
-      v12 = [(PKColorMatrixView *)self colorButtons];
-      v13 = [v12 objectAtIndexedSubscript:v7];
+      colorButtons4 = [(PKColorMatrixView *)self colorButtons];
+      v13 = [colorButtons4 objectAtIndexedSubscript:v7];
       v14 = [v13 objectAtIndexedSubscript:v11];
 
-      if (v14 == v4)
+      if (v14 == buttonCopy)
       {
         break;
       }
 
       ++v11;
-      v15 = [(PKColorMatrixView *)self colorButtons];
-      v16 = [v15 objectAtIndexedSubscript:0];
+      colorButtons5 = [(PKColorMatrixView *)self colorButtons];
+      v16 = [colorButtons5 objectAtIndexedSubscript:0];
       v17 = [v16 count];
 
       if (v11 >= v17)
@@ -196,22 +196,22 @@ LABEL_8:
   return v20;
 }
 
-- (CGRect)_frameForViewWithPoint:(id)a3
+- (CGRect)_frameForViewWithPoint:(id)point
 {
-  if (a3)
+  if (point)
   {
-    v4 = a3;
-    v5 = [(PKColorMatrixView *)self uiColorMatrix];
-    [v5 count];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    pointCopy = point;
+    uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
+    [uiColorMatrix count];
+    v6 = [uiColorMatrix objectAtIndexedSubscript:0];
     [v6 count];
 
     [(PKColorMatrixView *)self bounds];
-    [v4 col];
-    [v4 row];
+    [pointCopy col];
+    [pointCopy row];
 
-    v7 = [(PKColorMatrixView *)self traitCollection];
-    [v7 displayScale];
+    traitCollection = [(PKColorMatrixView *)self traitCollection];
+    [traitCollection displayScale];
     UIRectIntegralWithScale();
     v9 = v8;
     v11 = v10;
@@ -238,13 +238,13 @@ LABEL_8:
   return result;
 }
 
-- (id)_pointForCGPoint:(CGPoint)a3
+- (id)_pointForCGPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKColorMatrixView *)self uiColorMatrix];
-  v7 = [v6 count];
-  v8 = [v6 objectAtIndexedSubscript:0];
+  y = point.y;
+  x = point.x;
+  uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
+  v7 = [uiColorMatrix count];
+  v8 = [uiColorMatrix objectAtIndexedSubscript:0];
   v9 = [v8 count];
 
   [(PKColorMatrixView *)self bounds];
@@ -253,14 +253,14 @@ LABEL_8:
   return v12;
 }
 
-- (id)_colorForPoint:(id)a3
+- (id)_colorForPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(PKColorMatrixView *)self uiColorMatrix];
-  if (v4 && (v6 = [v4 row], v6 < objc_msgSend(v5, "count")) && (v7 = objc_msgSend(v4, "col"), objc_msgSend(v5, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7 < v9))
+  pointCopy = point;
+  uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
+  if (pointCopy && (v6 = [pointCopy row], v6 < objc_msgSend(uiColorMatrix, "count")) && (v7 = objc_msgSend(pointCopy, "col"), objc_msgSend(uiColorMatrix, "objectAtIndexedSubscript:", 0), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v7 < v9))
   {
-    v10 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v4, "col")}];
+    v10 = [uiColorMatrix objectAtIndexedSubscript:{objc_msgSend(pointCopy, "row")}];
+    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(pointCopy, "col")}];
   }
 
   else
@@ -271,11 +271,11 @@ LABEL_8:
   return v11;
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
-  if (self->_colorUserInterfaceStyle != a3)
+  if (self->_colorUserInterfaceStyle != style)
   {
-    self->_colorUserInterfaceStyle = a3;
+    self->_colorUserInterfaceStyle = style;
     [(PKColorMatrixView *)self setNeedsLayout];
   }
 }
@@ -290,10 +290,10 @@ LABEL_8:
 
   else
   {
-    v4 = [(PKColorMatrixView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(PKColorMatrixView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    return v5;
+    return userInterfaceStyle;
   }
 }
 
@@ -313,18 +313,18 @@ LABEL_8:
   return v3;
 }
 
-- (id)_pointForColor:(id)a3
+- (id)_pointForColor:(id)color
 {
-  v4 = a3;
-  if (v4 && (-[PKColorMatrixView uiColorMatrix](self, "uiColorMatrix"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6))
+  colorCopy = color;
+  if (colorCopy && (-[PKColorMatrixView uiColorMatrix](self, "uiColorMatrix"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6))
   {
     v7 = 0;
     v8 = 0;
     v9 = 1.79769313e308;
     do
     {
-      v10 = [(PKColorMatrixView *)self uiColorMatrix];
-      v11 = [v10 objectAtIndexedSubscript:0];
+      uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
+      v11 = [uiColorMatrix objectAtIndexedSubscript:0];
       v12 = [v11 count];
 
       if (v12)
@@ -332,11 +332,11 @@ LABEL_8:
         v13 = 0;
         do
         {
-          v14 = [(PKColorMatrixView *)self uiColorMatrix];
-          v15 = [v14 objectAtIndexedSubscript:v7];
+          uiColorMatrix2 = [(PKColorMatrixView *)self uiColorMatrix];
+          v15 = [uiColorMatrix2 objectAtIndexedSubscript:v7];
           v16 = [v15 objectAtIndexedSubscript:v13];
 
-          [v16 _colorDifferenceFromColor:v4];
+          [v16 _colorDifferenceFromColor:colorCopy];
           if (v17 < v9)
           {
             v18 = v17;
@@ -347,8 +347,8 @@ LABEL_8:
           }
 
           ++v13;
-          v20 = [(PKColorMatrixView *)self uiColorMatrix];
-          v21 = [v20 objectAtIndexedSubscript:0];
+          uiColorMatrix3 = [(PKColorMatrixView *)self uiColorMatrix];
+          v21 = [uiColorMatrix3 objectAtIndexedSubscript:0];
           v22 = [v21 count];
         }
 
@@ -356,8 +356,8 @@ LABEL_8:
       }
 
       ++v7;
-      v23 = [(PKColorMatrixView *)self uiColorMatrix];
-      v24 = [v23 count];
+      uiColorMatrix4 = [(PKColorMatrixView *)self uiColorMatrix];
+      v24 = [uiColorMatrix4 count];
     }
 
     while (v7 < v24);
@@ -371,14 +371,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)_boundedPointForPoint:(id)a3
+- (id)_boundedPointForPoint:(id)point
 {
-  if (a3)
+  if (point)
   {
-    v4 = a3;
-    v5 = [(PKColorMatrixView *)self uiColorMatrix];
-    v6 = [v4 row];
-    v7 = ([v5 count] - 1);
+    pointCopy = point;
+    uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
+    v6 = [pointCopy row];
+    v7 = ([uiColorMatrix count] - 1);
     if (v6 < v7)
     {
       v7 = v6;
@@ -390,10 +390,10 @@ LABEL_8:
     }
 
     v8 = v7;
-    v9 = [v4 col];
+    v9 = [pointCopy col];
 
     v10 = v9;
-    v11 = [v5 objectAtIndexedSubscript:0];
+    v11 = [uiColorMatrix objectAtIndexedSubscript:0];
     v12 = [v11 count] - 1;
 
     v13 = v12;
@@ -423,9 +423,9 @@ LABEL_8:
   v24.receiver = self;
   v24.super_class = PKColorMatrixView;
   [(PKColorMatrixView *)&v24 layoutSubviews];
-  v22 = [(PKColorMatrixView *)self _uiColorUserInterfaceStyle];
-  v3 = [(PKColorMatrixView *)self uiColorMatrix];
-  v21 = [v3 count];
+  _uiColorUserInterfaceStyle = [(PKColorMatrixView *)self _uiColorUserInterfaceStyle];
+  uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
+  v21 = [uiColorMatrix count];
   if (v21 >= 1)
   {
     v4 = 0;
@@ -433,7 +433,7 @@ LABEL_8:
     v6 = off_1E82D4000;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:0];
+      v7 = [uiColorMatrix objectAtIndexedSubscript:0];
       v8 = [v7 count];
 
       if (v8 >= 1)
@@ -449,10 +449,10 @@ LABEL_8:
           v14 = [v13 objectAtIndexedSubscript:v9];
 
           v15 = v5[97];
-          v16 = [v3 objectAtIndexedSubscript:v12];
+          v16 = [uiColorMatrix objectAtIndexedSubscript:v12];
           [v16 objectAtIndexedSubscript:v9];
           v18 = v17 = v5;
-          v19 = [(__objc2_class *)v15 convertColor:v18 fromUserInterfaceStyle:1 to:v22];
+          v19 = [(__objc2_class *)v15 convertColor:v18 fromUserInterfaceStyle:1 to:_uiColorUserInterfaceStyle];
           [v14 setBackgroundColor:v19];
 
           v6 = v10;
@@ -475,28 +475,28 @@ LABEL_8:
   }
 }
 
-- (id)representableColorForColor:(id)a3
+- (id)representableColorForColor:(id)color
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _representableColorForColor:v3];
+  colorCopy = color;
+  v4 = [objc_opt_class() _representableColorForColor:colorCopy];
 
   return v4;
 }
 
-+ (id)_representableColorForColor:(id)a3
++ (id)_representableColorForColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v5 = [a1 defaultColorMatrix];
-    if ([v5 count])
+    defaultColorMatrix = [self defaultColorMatrix];
+    if ([defaultColorMatrix count])
     {
       v6 = 0;
       v7 = 0;
       v8 = 1.79769313e308;
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:0];
+        v9 = [defaultColorMatrix objectAtIndexedSubscript:0];
         v10 = [v9 count];
 
         if (v10)
@@ -504,10 +504,10 @@ LABEL_8:
           v11 = 0;
           do
           {
-            v12 = [v5 objectAtIndexedSubscript:v6];
+            v12 = [defaultColorMatrix objectAtIndexedSubscript:v6];
             v13 = [v12 objectAtIndexedSubscript:v11];
 
-            [a1 _rgbDistanceFromColor:v13 toColor:v4];
+            [self _rgbDistanceFromColor:v13 toColor:colorCopy];
             if (v14 < v8)
             {
               v15 = v14;
@@ -518,7 +518,7 @@ LABEL_8:
             }
 
             ++v11;
-            v17 = [v5 objectAtIndexedSubscript:0];
+            v17 = [defaultColorMatrix objectAtIndexedSubscript:0];
             v18 = [v17 count];
           }
 
@@ -528,7 +528,7 @@ LABEL_8:
         ++v6;
       }
 
-      while (v6 < [v5 count]);
+      while (v6 < [defaultColorMatrix count]);
     }
 
     else
@@ -545,16 +545,16 @@ LABEL_8:
   return v7;
 }
 
-+ (double)_rgbDistanceFromColor:(id)a3 toColor:(id)a4
++ (double)_rgbDistanceFromColor:(id)color toColor:(id)toColor
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  toColorCopy = toColor;
   v11 = 0u;
   v12 = 0u;
-  [a3 getRed:&v11 green:&v11 + 8 blue:&v12 alpha:&v12 + 8];
+  [color getRed:&v11 green:&v11 + 8 blue:&v12 alpha:&v12 + 8];
   v9 = 0u;
   v10 = 0u;
-  [v5 getRed:&v9 green:&v9 + 8 blue:&v10 alpha:&v10 + 8];
+  [toColorCopy getRed:&v9 green:&v9 + 8 blue:&v10 alpha:&v10 + 8];
   v6 = 0;
   v7 = 0.0;
   do
@@ -568,11 +568,11 @@ LABEL_8:
   return sqrt(v7);
 }
 
-- (CGRect)frameForColorPickerCrosshairView:(id)a3
+- (CGRect)frameForColorPickerCrosshairView:(id)view
 {
-  v4 = a3;
-  v5 = [(PKColorMatrixView *)self selectedColor];
-  v6 = [(PKColorMatrixView *)self _pointForColor:v5];
+  viewCopy = view;
+  selectedColor = [(PKColorMatrixView *)self selectedColor];
+  v6 = [(PKColorMatrixView *)self _pointForColor:selectedColor];
   v7 = [(PKColorMatrixView *)self _boundedPointForPoint:v6];
   [(PKColorMatrixView *)self _frameForViewWithPoint:v7];
   v9 = v8;
@@ -580,9 +580,9 @@ LABEL_8:
   v13 = v12;
   v15 = v14;
 
-  v16 = [v4 superview];
+  superview = [viewCopy superview];
 
-  [v16 convertRect:self fromView:{v9, v11, v13, v15}];
+  [superview convertRect:self fromView:{v9, v11, v13, v15}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -599,17 +599,17 @@ LABEL_8:
   return result;
 }
 
-- (unint64_t)cornerPositionForColorPickerCrosshairView:(id)a3
+- (unint64_t)cornerPositionForColorPickerCrosshairView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
-  [(PKColorMatrixView *)self convertRect:v4 fromView:?];
+  viewCopy = view;
+  [viewCopy bounds];
+  [(PKColorMatrixView *)self convertRect:viewCopy fromView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PKColorMatrixView *)self uiColorMatrix];
+  uiColorMatrix = [(PKColorMatrixView *)self uiColorMatrix];
   v25.origin.x = v6;
   v25.origin.y = v8;
   v25.size.width = v10;
@@ -629,7 +629,7 @@ LABEL_8:
     }
 
     v21 = [v15 col];
-    v22 = [v13 objectAtIndexedSubscript:0];
+    v22 = [uiColorMatrix objectAtIndexedSubscript:0];
     v23 = [v22 count] - 1;
 
     if (v21 == v23)
@@ -644,7 +644,7 @@ LABEL_9:
   }
 
   v16 = [v15 row];
-  if (v16 != [v13 count] - 1)
+  if (v16 != [uiColorMatrix count] - 1)
   {
     goto LABEL_9;
   }
@@ -656,7 +656,7 @@ LABEL_9:
   }
 
   v17 = [v15 col];
-  v18 = [v13 objectAtIndexedSubscript:0];
+  v18 = [uiColorMatrix objectAtIndexedSubscript:0];
   v19 = [v18 count] - 1;
 
   if (v17 != v19)
@@ -670,12 +670,12 @@ LABEL_12:
   return v20;
 }
 
-- (void)colorPickerCrosshairViewShouldUpdateColor:(id)a3 point:(CGPoint)a4
+- (void)colorPickerCrosshairViewShouldUpdateColor:(id)color point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [a3 superview];
-  [(PKColorMatrixView *)self convertPoint:v7 fromView:x, y];
+  y = point.y;
+  x = point.x;
+  superview = [color superview];
+  [(PKColorMatrixView *)self convertPoint:superview fromView:x, y];
   v9 = v8;
   v11 = v10;
 
@@ -683,28 +683,28 @@ LABEL_12:
   v13 = [(PKColorMatrixView *)self _boundedPointForPoint:v12];
   v16 = [(PKColorMatrixView *)self _colorForPoint:v13];
 
-  v14 = [(PKColorMatrixView *)self selectedColor];
-  LOBYTE(v13) = [v14 isEqual:v16];
+  selectedColor = [(PKColorMatrixView *)self selectedColor];
+  LOBYTE(v13) = [selectedColor isEqual:v16];
 
   if ((v13 & 1) == 0)
   {
     [(PKColorMatrixView *)self setSelectedColor:v16];
-    v15 = [(PKColorMatrixView *)self colorPickerDelegate];
-    [v15 colorPickerImplementationDidChangeSelectedColor:self];
+    colorPickerDelegate = [(PKColorMatrixView *)self colorPickerDelegate];
+    [colorPickerDelegate colorPickerImplementationDidChangeSelectedColor:self];
   }
 }
 
-- (void)colorPickerCrosshairViewShouldUpdateWithColor:(id)a3
+- (void)colorPickerCrosshairViewShouldUpdateWithColor:(id)color
 {
-  v7 = a3;
-  v4 = [(PKColorMatrixView *)self selectedColor];
-  v5 = [v4 isEqual:v7];
+  colorCopy = color;
+  selectedColor = [(PKColorMatrixView *)self selectedColor];
+  v5 = [selectedColor isEqual:colorCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(PKColorMatrixView *)self setSelectedColor:v7];
-    v6 = [(PKColorMatrixView *)self colorPickerDelegate];
-    [v6 colorPickerImplementationDidChangeSelectedColor:self];
+    [(PKColorMatrixView *)self setSelectedColor:colorCopy];
+    colorPickerDelegate = [(PKColorMatrixView *)self colorPickerDelegate];
+    [colorPickerDelegate colorPickerImplementationDidChangeSelectedColor:self];
   }
 }
 

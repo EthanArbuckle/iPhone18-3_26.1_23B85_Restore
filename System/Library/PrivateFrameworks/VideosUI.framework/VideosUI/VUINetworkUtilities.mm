@@ -39,8 +39,8 @@ void __37__VUINetworkUtilities_sharedInstance__block_invoke()
     networkUtilityQueue = v2->_networkUtilityQueue;
     v2->_networkUtilityQueue = v3;
 
-    v5 = [MEMORY[0x1E69E4428] sharedMonitor];
-    [v5 registerObserver:v2];
+    mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+    [mEMORY[0x1E69E4428] registerObserver:v2];
 
     v6 = objc_alloc(MEMORY[0x1E698B6B0]);
     v7 = [v6 initWithQueue:MEMORY[0x1E69E96A0]];
@@ -55,8 +55,8 @@ void __37__VUINetworkUtilities_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69E4428] sharedMonitor];
-  [v3 unregisterObserver:self];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  [mEMORY[0x1E69E4428] unregisterObserver:self];
 
   [(RadiosPreferences *)self->_radioPrefs setDelegate:0];
   v4.receiver = self;
@@ -66,52 +66,52 @@ void __37__VUINetworkUtilities_sharedInstance__block_invoke()
 
 - (BOOL)isNetworkReachable
 {
-  v2 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v3 = [v2 isRemoteServerLikelyReachable];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  isRemoteServerLikelyReachable = [mEMORY[0x1E69E4428] isRemoteServerLikelyReachable];
 
-  return v3;
+  return isRemoteServerLikelyReachable;
 }
 
 - (NSString)networkType
 {
-  v2 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v3 = [v2 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  networkType = [mEMORY[0x1E69E4428] networkType];
   v4 = @"Unknown";
-  if (v3 > 99)
+  if (networkType > 99)
   {
-    if (v3 > 1000)
+    if (networkType > 1000)
     {
       v5 = @"Bridged WiFi";
       v6 = @"Wired Ethernet";
       v8 = @"Other";
-      if (v3 != 3000)
+      if (networkType != 3000)
       {
         v8 = @"Unknown";
       }
 
-      if (v3 != 2000)
+      if (networkType != 2000)
       {
         v6 = v8;
       }
 
-      v7 = v3 == 1001;
+      v7 = networkType == 1001;
     }
 
     else
     {
-      if (v3 == 100)
+      if (networkType == 100)
       {
         goto LABEL_3;
       }
 
       v5 = @"Bluetooth";
       v6 = @"WiFi";
-      if (v3 != 1000)
+      if (networkType != 1000)
       {
         v6 = @"Unknown";
       }
 
-      v7 = v3 == 500;
+      v7 = networkType == 500;
     }
 
     if (v7)
@@ -125,7 +125,7 @@ void __37__VUINetworkUtilities_sharedInstance__block_invoke()
     }
   }
 
-  else if ((v3 - 1) < 8)
+  else if ((networkType - 1) < 8)
   {
 LABEL_3:
     v4 = @"Cellular";

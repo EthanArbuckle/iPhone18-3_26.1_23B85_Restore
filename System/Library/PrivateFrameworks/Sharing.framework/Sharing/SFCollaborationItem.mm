@@ -4,55 +4,55 @@
 - (NSArray)sendCopyItemPlaceholderValues;
 - (NSArray)sendCopyItems;
 - (NSString)description;
-- (SFCollaborationItem)initWithItemProvider:(id)a3 activityItem:(id)a4 placeholderActivityItem:(id)a5 defaultCollaboration:(BOOL)a6;
+- (SFCollaborationItem)initWithItemProvider:(id)provider activityItem:(id)item placeholderActivityItem:(id)activityItem defaultCollaboration:(BOOL)collaboration;
 - (id)_optionsSummary;
 - (id)createCollaborationFooterViewModel;
 - (id)workQueue;
-- (void)_didLoadMetadata:(id)a3;
-- (void)_didLoadOptions:(id)a3 ckOptions:(id)a4;
-- (void)_didLoadSendCopyRepresentation:(id)a3;
+- (void)_didLoadMetadata:(id)metadata;
+- (void)_didLoadOptions:(id)options ckOptions:(id)ckOptions;
+- (void)_didLoadSendCopyRepresentation:(id)representation;
 - (void)_loadMetadataIfNeeded;
 - (void)_loadOptionsIfNeeded;
 - (void)_loadSendCopyRepresentationIfNeeded;
 - (void)_startLoading;
 - (void)_updateLoadingState;
-- (void)registerChangeObserver:(id)a3;
-- (void)setCanAddPeople:(id)a3;
-- (void)setCloudSharingResult:(id)a3;
-- (void)setShareOptions:(id)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)registerChangeObserver:(id)observer;
+- (void)setCanAddPeople:(id)people;
+- (void)setCloudSharingResult:(id)result;
+- (void)setShareOptions:(id)options;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation SFCollaborationItem
 
-- (SFCollaborationItem)initWithItemProvider:(id)a3 activityItem:(id)a4 placeholderActivityItem:(id)a5 defaultCollaboration:(BOOL)a6
+- (SFCollaborationItem)initWithItemProvider:(id)provider activityItem:(id)item placeholderActivityItem:(id)activityItem defaultCollaboration:(BOOL)collaboration
 {
-  v6 = a6;
+  collaborationCopy = collaboration;
   v40 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  providerCopy = provider;
+  itemCopy = item;
+  activityItemCopy = activityItem;
   v27.receiver = self;
   v27.super_class = SFCollaborationItem;
   v14 = [(SFCollaborationItem *)&v27 init];
   if (v14)
   {
-    v15 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v14->_identifier;
-    v14->_identifier = v15;
+    v14->_identifier = uUID;
 
-    objc_storeStrong(&v14->_itemProvider, a3);
-    objc_storeStrong(&v14->_activityItem, a4);
-    objc_storeStrong(&v14->_placeholderActivityItem, a5);
+    objc_storeStrong(&v14->_itemProvider, provider);
+    objc_storeStrong(&v14->_activityItem, item);
+    objc_storeStrong(&v14->_placeholderActivityItem, activityItem);
     v17 = objc_alloc_init(SFChangePublisher);
     changePublisher = v14->_changePublisher;
     v14->_changePublisher = v17;
 
-    v14->_defaultCollaboration = v6;
-    v19 = [MEMORY[0x1E696AAE8] mainBundle];
-    v20 = [v19 bundleIdentifier];
+    v14->_defaultCollaboration = collaborationCopy;
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     contentIdentifier = v14->_contentIdentifier;
-    v14->_contentIdentifier = v20;
+    v14->_contentIdentifier = bundleIdentifier;
 
     v22 = share_sheet_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -60,7 +60,7 @@
       v23 = "no";
       v24 = v14->_identifier;
       *buf = 138413571;
-      if (v6)
+      if (collaborationCopy)
       {
         v23 = "yes";
       }
@@ -69,11 +69,11 @@
       v30 = 2112;
       v31 = v24;
       v32 = 2112;
-      v33 = v11;
+      v33 = providerCopy;
       v34 = 2113;
-      v35 = v12;
+      v35 = itemCopy;
       v36 = 2113;
-      v37 = v13;
+      v37 = activityItemCopy;
       v38 = 2080;
       v39 = v23;
       _os_log_impl(&dword_1A9662000, v22, OS_LOG_TYPE_DEFAULT, "%@: identifier:%@ itemProvider:%@ activityItem:%{private}@ placeholderActivityItem:%{private}@ defaultCollaboration:%s", buf, 0x3Eu);
@@ -88,112 +88,112 @@
 
 - (NSArray)sendCopyItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SFCollaborationItem *)self sendCopyRepresentation];
-  v5 = [(SFCollaborationItem *)self type];
-  if (!v5)
+  array = [MEMORY[0x1E695DF70] array];
+  sendCopyRepresentation = [(SFCollaborationItem *)self sendCopyRepresentation];
+  type = [(SFCollaborationItem *)self type];
+  if (!type)
   {
-    v8 = [(SFCollaborationItem *)self sendCopyRepresentationURL];
+    sendCopyRepresentationURL = [(SFCollaborationItem *)self sendCopyRepresentationURL];
 
-    if (!v8)
+    if (!sendCopyRepresentationURL)
     {
-      v9 = [(SFCollaborationItem *)self activityItem];
+      activityItem = [(SFCollaborationItem *)self activityItem];
 
-      v4 = v9;
+      sendCopyRepresentation = activityItem;
     }
 
     goto LABEL_9;
   }
 
-  if (v5 != 2 && v5 != 1)
+  if (type != 2 && type != 1)
   {
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!sendCopyRepresentation)
   {
-    v6 = [(SFCollaborationItem *)self itemProvider];
-    v7 = [v6 supportsShareSheetSendCopyRepresentation];
+    itemProvider = [(SFCollaborationItem *)self itemProvider];
+    supportsShareSheetSendCopyRepresentation = [itemProvider supportsShareSheetSendCopyRepresentation];
 
-    if (!v7)
+    if (!supportsShareSheetSendCopyRepresentation)
     {
       goto LABEL_11;
     }
 
-    v4 = [(SFCollaborationItem *)self itemProvider];
+    sendCopyRepresentation = [(SFCollaborationItem *)self itemProvider];
 LABEL_9:
-    if (!v4)
+    if (!sendCopyRepresentation)
     {
       goto LABEL_11;
     }
   }
 
-  [v3 addObject:v4];
+  [array addObject:sendCopyRepresentation];
 
 LABEL_11:
-  v10 = [(SFCollaborationItem *)self sendCopyActivityItems];
-  [v3 addObjectsFromArray:v10];
+  sendCopyActivityItems = [(SFCollaborationItem *)self sendCopyActivityItems];
+  [array addObjectsFromArray:sendCopyActivityItems];
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
 - (NSArray)sendCopyItemPlaceholderValues
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SFCollaborationItem *)self sendCopyRepresentation];
-  v5 = [(SFCollaborationItem *)self type];
-  if (!v5)
+  array = [MEMORY[0x1E695DF70] array];
+  sendCopyRepresentation = [(SFCollaborationItem *)self sendCopyRepresentation];
+  type = [(SFCollaborationItem *)self type];
+  if (!type)
   {
-    v8 = self;
-    v9 = [(SFCollaborationItem *)v8 sendCopyRepresentationURL];
+    selfCopy = self;
+    sendCopyRepresentationURL = [(SFCollaborationItem *)selfCopy sendCopyRepresentationURL];
 
-    if (v9)
+    if (sendCopyRepresentationURL)
     {
-      [(SFCollaborationItem *)v8 sendCopyRepresentationURL];
+      [(SFCollaborationItem *)selfCopy sendCopyRepresentationURL];
     }
 
     else
     {
-      [(SFCollaborationItem *)v8 fileURL];
+      [(SFCollaborationItem *)selfCopy fileURL];
     }
     v10 = ;
 
-    v4 = v10;
+    sendCopyRepresentation = v10;
     goto LABEL_11;
   }
 
-  if (v5 != 2 && v5 != 1)
+  if (type != 2 && type != 1)
   {
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!sendCopyRepresentation)
   {
-    v6 = [(SFCollaborationItem *)self itemProvider];
-    v7 = [v6 supportsShareSheetSendCopyRepresentation];
+    itemProvider = [(SFCollaborationItem *)self itemProvider];
+    supportsShareSheetSendCopyRepresentation = [itemProvider supportsShareSheetSendCopyRepresentation];
 
-    if (!v7)
+    if (!supportsShareSheetSendCopyRepresentation)
     {
       goto LABEL_13;
     }
 
-    v4 = [(SFCollaborationItem *)self itemProvider];
+    sendCopyRepresentation = [(SFCollaborationItem *)self itemProvider];
 LABEL_11:
-    if (!v4)
+    if (!sendCopyRepresentation)
     {
       goto LABEL_13;
     }
   }
 
-  [v3 addObject:v4];
+  [array addObject:sendCopyRepresentation];
 
 LABEL_13:
-  v11 = [(SFCollaborationItem *)self sendCopyActivityItemValues];
-  [v3 addObjectsFromArray:v11];
+  sendCopyActivityItemValues = [(SFCollaborationItem *)self sendCopyActivityItemValues];
+  [array addObjectsFromArray:sendCopyActivityItemValues];
 
-  v12 = [v3 copy];
+  v12 = [array copy];
 
   return v12;
 }
@@ -223,15 +223,15 @@ void __32__SFCollaborationItem_workQueue__block_invoke()
   v15.receiver = self;
   v15.super_class = SFCollaborationItem;
   v4 = [(SFCollaborationItem *)&v15 description];
-  v5 = [(SFCollaborationItem *)self identifier];
-  v6 = [(SFCollaborationItem *)self type];
-  v7 = [(SFCollaborationItem *)self itemProvider];
-  v8 = [(SFCollaborationItem *)self activityItem];
-  v9 = [(SFCollaborationItem *)self placeholderActivityItem];
-  v10 = [(SFCollaborationItem *)self options];
-  v11 = [(SFCollaborationItem *)self sendCopyRepresentation];
-  v12 = [(SFCollaborationItem *)self canAddPeople];
-  v13 = [v3 stringWithFormat:@"%@ identifier:%@, type:%ld, itemProvider:%@, activityItem:%@, placeholderActivityItem:%@, options:%@, sendCopyRepresentation:%@, canAddPeople:%@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  identifier = [(SFCollaborationItem *)self identifier];
+  type = [(SFCollaborationItem *)self type];
+  itemProvider = [(SFCollaborationItem *)self itemProvider];
+  activityItem = [(SFCollaborationItem *)self activityItem];
+  placeholderActivityItem = [(SFCollaborationItem *)self placeholderActivityItem];
+  options = [(SFCollaborationItem *)self options];
+  sendCopyRepresentation = [(SFCollaborationItem *)self sendCopyRepresentation];
+  canAddPeople = [(SFCollaborationItem *)self canAddPeople];
+  v13 = [v3 stringWithFormat:@"%@ identifier:%@, type:%ld, itemProvider:%@, activityItem:%@, placeholderActivityItem:%@, options:%@, sendCopyRepresentation:%@, canAddPeople:%@", v4, identifier, type, itemProvider, activityItem, placeholderActivityItem, options, sendCopyRepresentation, canAddPeople];
 
   return v13;
 }
@@ -252,7 +252,7 @@ void __32__SFCollaborationItem_workQueue__block_invoke()
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "No metadata to load: %@", &v5, 0xCu);
   }
 
@@ -261,19 +261,19 @@ void __32__SFCollaborationItem_workQueue__block_invoke()
 
 - (void)_loadOptionsIfNeeded
 {
-  v3 = [(SFCollaborationItem *)self options];
+  options = [(SFCollaborationItem *)self options];
 
-  if (!v3)
+  if (!options)
   {
     [(SFCollaborationItem *)self setIsLoadingOptions:1];
     objc_initWeak(&location, self);
-    v4 = [(SFCollaborationItem *)self itemProvider];
+    itemProvider = [(SFCollaborationItem *)self itemProvider];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __43__SFCollaborationItem__loadOptionsIfNeeded__block_invoke;
     v5[3] = &unk_1E788CDB8;
     objc_copyWeak(&v6, &location);
-    [SFCollaborationUtilities loadShareOptionsForItemProvider:v4 completionHandler:v5];
+    [SFCollaborationUtilities loadShareOptionsForItemProvider:itemProvider completionHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -306,27 +306,27 @@ void __43__SFCollaborationItem__loadOptionsIfNeeded__block_invoke_2(uint64_t a1)
 
 - (void)_loadSendCopyRepresentationIfNeeded
 {
-  v3 = [(SFCollaborationItem *)self sendCopyRepresentation];
-  if (v3)
+  sendCopyRepresentation = [(SFCollaborationItem *)self sendCopyRepresentation];
+  if (sendCopyRepresentation)
   {
   }
 
   else
   {
-    v4 = [(SFCollaborationItem *)self itemProvider];
-    v5 = [v4 supportsShareSheetSendCopyRepresentation];
+    itemProvider = [(SFCollaborationItem *)self itemProvider];
+    supportsShareSheetSendCopyRepresentation = [itemProvider supportsShareSheetSendCopyRepresentation];
 
-    if (v5)
+    if (supportsShareSheetSendCopyRepresentation)
     {
       [(SFCollaborationItem *)self setIsLoadingSendCopyRepresentation:1];
       objc_initWeak(&location, self);
-      v6 = [(SFCollaborationItem *)self itemProvider];
+      itemProvider2 = [(SFCollaborationItem *)self itemProvider];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke;
       v7[3] = &unk_1E788CDE0;
       objc_copyWeak(&v8, &location);
-      [SFCollaborationUtilities loadSendCopyRepresentationIfNeededForItemProvider:v6 completion:v7];
+      [SFCollaborationUtilities loadSendCopyRepresentationIfNeededForItemProvider:itemProvider2 completion:v7];
 
       objc_destroyWeak(&v8);
       objc_destroyWeak(&location);
@@ -355,37 +355,37 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
   [WeakRetained _didLoadSendCopyRepresentation:*(a1 + 32)];
 }
 
-- (void)_didLoadMetadata:(id)a3
+- (void)_didLoadMetadata:(id)metadata
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = metadataCopy;
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "did load metadata:%@", &v12, 0xCu);
   }
 
   v6 = share_sheet_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 defaultShareOptions];
-    v8 = [SFCollaborationUtilities descriptionForShareOptions:v7];
+    defaultShareOptions = [metadataCopy defaultShareOptions];
+    v8 = [SFCollaborationUtilities descriptionForShareOptions:defaultShareOptions];
     v12 = 138412290;
     v13 = v8;
     _os_log_impl(&dword_1A9662000, v6, OS_LOG_TYPE_DEFAULT, "loaded options:%@", &v12, 0xCu);
   }
 
   [(SFCollaborationItem *)self setIsLoadingMetadata:0];
-  if (v4)
+  if (metadataCopy)
   {
-    [(SFCollaborationItem *)self setMetadata:v4];
-    v9 = [v4 defaultShareOptions];
-    [(SFCollaborationItem *)self setShareOptions:v9];
+    [(SFCollaborationItem *)self setMetadata:metadataCopy];
+    defaultShareOptions2 = [metadataCopy defaultShareOptions];
+    [(SFCollaborationItem *)self setShareOptions:defaultShareOptions2];
 
-    v10 = [(SFCollaborationItem *)self changePublisher];
-    [v10 publishChangeDescriptor:1 forObservable:self];
+    changePublisher = [(SFCollaborationItem *)self changePublisher];
+    [changePublisher publishChangeDescriptor:1 forObservable:self];
   }
 
   [(SFCollaborationItem *)self _updateLoadingState];
@@ -393,29 +393,29 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didLoadOptions:(id)a3 ckOptions:(id)a4
+- (void)_didLoadOptions:(id)options ckOptions:(id)ckOptions
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  ckOptionsCopy = ckOptions;
   v8 = share_sheet_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [SFCollaborationUtilities descriptionForShareOptions:v6];
+    v9 = [SFCollaborationUtilities descriptionForShareOptions:optionsCopy];
     v11 = 138412290;
     v12 = v9;
     _os_log_impl(&dword_1A9662000, v8, OS_LOG_TYPE_DEFAULT, "did load options:%@", &v11, 0xCu);
   }
 
   [(SFCollaborationItem *)self setIsLoadingOptions:0];
-  if (v7 && [(SFCollaborationItem *)self type]== 1)
+  if (ckOptionsCopy && [(SFCollaborationItem *)self type]== 1)
   {
-    [(SFCollaborationItem *)self setCkOptions:v7];
+    [(SFCollaborationItem *)self setCkOptions:ckOptionsCopy];
   }
 
-  if (v6)
+  if (optionsCopy)
   {
-    [(SFCollaborationItem *)self setShareOptions:v6];
+    [(SFCollaborationItem *)self setShareOptions:optionsCopy];
   }
 
   [(SFCollaborationItem *)self _updateLoadingState];
@@ -423,24 +423,24 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didLoadSendCopyRepresentation:(id)a3
+- (void)_didLoadSendCopyRepresentation:(id)representation
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = representationCopy;
     _os_log_impl(&dword_1A9662000, v5, OS_LOG_TYPE_DEFAULT, "did load send copy representation:%@", &v8, 0xCu);
   }
 
   [(SFCollaborationItem *)self setIsLoadingSendCopyRepresentation:0];
-  if (v4)
+  if (representationCopy)
   {
-    [(SFCollaborationItem *)self setSendCopyRepresentation:v4];
-    v6 = [(SFCollaborationItem *)self changePublisher];
-    [v6 publishChangeDescriptor:8 forObservable:self];
+    [(SFCollaborationItem *)self setSendCopyRepresentation:representationCopy];
+    changePublisher = [(SFCollaborationItem *)self changePublisher];
+    [changePublisher publishChangeDescriptor:8 forObservable:self];
   }
 
   [(SFCollaborationItem *)self _updateLoadingState];
@@ -448,18 +448,18 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCanAddPeople:(id)a3
+- (void)setCanAddPeople:(id)people
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  peopleCopy = people;
+  if (peopleCopy)
   {
     v6 = share_sheet_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 BOOLValue];
+      bOOLValue = [peopleCopy BOOLValue];
       v8 = @"NO";
-      if (v7)
+      if (bOOLValue)
       {
         v8 = @"YES";
       }
@@ -470,9 +470,9 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
     }
 
     [(SFCollaborationItem *)self setIsLoadingCanAddPeople:0];
-    objc_storeStrong(&self->_canAddPeople, a3);
-    v9 = [(SFCollaborationItem *)self changePublisher];
-    [v9 publishChangeDescriptor:16 forObservable:self];
+    objc_storeStrong(&self->_canAddPeople, people);
+    changePublisher = [(SFCollaborationItem *)self changePublisher];
+    [changePublisher publishChangeDescriptor:16 forObservable:self];
 
     [(SFCollaborationItem *)self _updateLoadingState];
   }
@@ -489,12 +489,12 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A9662000, v3, OS_LOG_TYPE_DEFAULT, "Did finish loading for collaboration item:%@", &v6, 0xCu);
     }
 
-    v4 = [(SFCollaborationItem *)self changePublisher];
-    [v4 publishChangeDescriptor:4 forObservable:self];
+    changePublisher = [(SFCollaborationItem *)self changePublisher];
+    [changePublisher publishChangeDescriptor:4 forObservable:self];
   }
 
   v5 = *MEMORY[0x1E69E9840];
@@ -512,13 +512,13 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
 
 - (BOOL)isPostShare
 {
-  v3 = [(SFCollaborationItem *)self type];
-  if (v3)
+  type = [(SFCollaborationItem *)self type];
+  if (type)
   {
-    if (v3 == 1)
+    if (type == 1)
     {
-      v4 = [(SFCollaborationItem *)self itemProvider];
-      v5 = [SFCollaborationUtilities isPostCKShareItemProvider:v4];
+      itemProvider = [(SFCollaborationItem *)self itemProvider];
+      v5 = [SFCollaborationUtilities isPostCKShareItemProvider:itemProvider];
 
       return v5;
     }
@@ -536,24 +536,24 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
   }
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SFCollaborationItem *)self changePublisher];
-  [v5 registerChangeObserver:v4];
+  observerCopy = observer;
+  changePublisher = [(SFCollaborationItem *)self changePublisher];
+  [changePublisher registerChangeObserver:observerCopy];
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SFCollaborationItem *)self changePublisher];
-  [v5 unregisterChangeObserver:v4];
+  observerCopy = observer;
+  changePublisher = [(SFCollaborationItem *)self changePublisher];
+  [changePublisher unregisterChangeObserver:observerCopy];
 }
 
 - (id)createCollaborationFooterViewModel
 {
-  v2 = [(SFCollaborationItem *)self _optionsSummary];
-  if (v2)
+  _optionsSummary = [(SFCollaborationItem *)self _optionsSummary];
+  if (_optionsSummary)
   {
     v8 = 0;
     v9 = &v8;
@@ -574,7 +574,7 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
     v4 = v3;
     _Block_object_dispose(&v8, 8);
     v5 = [[v3 alloc] initWithTitle:0 subtitle:0];
-    [v5 setOptionsSummary:v2];
+    [v5 setOptionsSummary:_optionsSummary];
   }
 
   else
@@ -594,90 +594,90 @@ void __58__SFCollaborationItem__loadSendCopyRepresentationIfNeeded__block_invoke
 
   if (![(SFCollaborationItem *)self isLoading])
   {
-    v5 = [(SFCollaborationItem *)self canAddPeople];
-    if (v5)
+    canAddPeople = [(SFCollaborationItem *)self canAddPeople];
+    if (canAddPeople)
     {
-      v6 = v5;
-      v7 = [(SFCollaborationItem *)self canAddPeople];
-      v8 = [v7 BOOLValue];
+      v6 = canAddPeople;
+      canAddPeople2 = [(SFCollaborationItem *)self canAddPeople];
+      bOOLValue = [canAddPeople2 BOOLValue];
 
-      if (!v8)
+      if (!bOOLValue)
       {
         v4 = @"SHARE_OPTIONS_CANNOT_ADD";
         goto LABEL_12;
       }
     }
 
-    v9 = [(SFCollaborationItem *)self shareOptions];
-    v10 = [v9 summary];
+    shareOptions = [(SFCollaborationItem *)self shareOptions];
+    summary = [shareOptions summary];
 
-    if (v10)
+    if (summary)
     {
       goto LABEL_14;
     }
 
-    v11 = [(SFCollaborationItem *)self options];
+    options = [(SFCollaborationItem *)self options];
 
-    if (v11)
+    if (options)
     {
       v4 = @"SHARE_OPTIONS";
       goto LABEL_12;
     }
 
 LABEL_10:
-    v10 = 0;
+    summary = 0;
     goto LABEL_14;
   }
 
-  v3 = [(SFCollaborationItem *)self _defaultLoadingOptionsSummary];
-  if (!v3)
+  _defaultLoadingOptionsSummary = [(SFCollaborationItem *)self _defaultLoadingOptionsSummary];
+  if (!_defaultLoadingOptionsSummary)
   {
     v4 = @"PREPARING_SHARE_OPTIONS";
 LABEL_12:
-    v3 = SFLocalizedStringForKey(v4);
+    _defaultLoadingOptionsSummary = SFLocalizedStringForKey(v4);
   }
 
-  v10 = v3;
+  summary = _defaultLoadingOptionsSummary;
 LABEL_14:
 
-  return v10;
+  return summary;
 }
 
-- (void)setShareOptions:(id)a3
+- (void)setShareOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   shareOptions = self->_shareOptions;
-  if (shareOptions != v5)
+  if (shareOptions != optionsCopy)
   {
-    v10 = v5;
+    v10 = optionsCopy;
     if (shareOptions)
     {
       self->_optionsChanged = 1;
     }
 
-    objc_storeStrong(&self->_shareOptions, a3);
-    v7 = [(_SWCollaborationShareOptions *)v10 optionsGroups];
+    objc_storeStrong(&self->_shareOptions, options);
+    optionsGroups = [(_SWCollaborationShareOptions *)v10 optionsGroups];
     options = self->_options;
-    self->_options = v7;
+    self->_options = optionsGroups;
 
-    v9 = [(SFCollaborationItem *)self changePublisher];
-    [v9 publishChangeDescriptor:2 forObservable:self];
+    changePublisher = [(SFCollaborationItem *)self changePublisher];
+    [changePublisher publishChangeDescriptor:2 forObservable:self];
 
-    v5 = v10;
+    optionsCopy = v10;
   }
 }
 
-- (void)setCloudSharingResult:(id)a3
+- (void)setCloudSharingResult:(id)result
 {
-  v5 = a3;
-  if (self->_cloudSharingResult != v5)
+  resultCopy = result;
+  if (self->_cloudSharingResult != resultCopy)
   {
-    objc_storeStrong(&self->_cloudSharingResult, a3);
+    objc_storeStrong(&self->_cloudSharingResult, result);
     if ([(SFCollaborationItem *)self type]== 1)
     {
-      v6 = [(SFCollaborationCloudSharingResult *)v5 error];
+      error = [(SFCollaborationCloudSharingResult *)resultCopy error];
       v15 = 0;
-      v7 = [SFCollaborationUtilities isOplockError:v6 updatedShare:&v15];
+      v7 = [SFCollaborationUtilities isOplockError:error updatedShare:&v15];
       v8 = v15;
 
       if (v7 && v8)
@@ -691,9 +691,9 @@ LABEL_14:
 
         [(SFCollaborationItem *)self setUpdatedShare:v8];
         [(SFCollaborationItem *)self setIsLoadingOptions:1];
-        v10 = [(SFCollaborationItem *)self ckOptions];
+        ckOptions = [(SFCollaborationItem *)self ckOptions];
         v13 = 0;
-        v11 = [SFCollaborationUtilities optionsFromCKShare:v8 previousCKOptions:v10 newCKOptions:&v13];
+        v11 = [SFCollaborationUtilities optionsFromCKShare:v8 previousCKOptions:ckOptions newCKOptions:&v13];
         v12 = v13;
         [(SFCollaborationItem *)self _didLoadOptions:v11 ckOptions:v12];
       }

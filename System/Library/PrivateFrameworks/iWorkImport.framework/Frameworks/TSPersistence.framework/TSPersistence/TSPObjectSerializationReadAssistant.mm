@@ -1,13 +1,13 @@
 @interface TSPObjectSerializationReadAssistant
-- (BOOL)processMetadataObject:(id)a3 error:(id *)a4;
+- (BOOL)processMetadataObject:(id)object error:(id *)error;
 - (TSPObjectSerializationReadAssistant)init;
-- (TSPObjectSerializationReadAssistant)initWithContext:(id)a3;
-- (id)cachedDataForIdentifier:(int64_t)a3;
-- (id)dataInfoForIdentifier:(int64_t)a3;
-- (id)decodeObjectWithData:(id)a3 packageURL:(id)a4 options:(id)a5 error:(id *)a6;
+- (TSPObjectSerializationReadAssistant)initWithContext:(id)context;
+- (id)cachedDataForIdentifier:(int64_t)identifier;
+- (id)dataInfoForIdentifier:(int64_t)identifier;
+- (id)decodeObjectWithData:(id)data packageURL:(id)l options:(id)options error:(id *)error;
 - (id)metadataComponent;
-- (id)objectUUIDForExternalReferenceToIdentifier:(int64_t)a3;
-- (id)resourceURLForIdentifier:(int64_t)a3;
+- (id)objectUUIDForExternalReferenceToIdentifier:(int64_t)identifier;
+- (id)resourceURLForIdentifier:(int64_t)identifier;
 - (unsigned)sourceType;
 @end
 
@@ -29,26 +29,26 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectSerializationReadAssistant)initWithContext:(id)a3
+- (TSPObjectSerializationReadAssistant)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = TSPObjectSerializationReadAssistant;
   v5 = [(TSPObjectSerializationReadAssistant *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
   }
 
   return v6;
 }
 
-- (id)decodeObjectWithData:(id)a3 packageURL:(id)a4 options:(id)a5 error:(id *)a6
+- (id)decodeObjectWithData:(id)data packageURL:(id)l options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v13 = a5;
+  dataCopy = data;
+  lCopy = l;
+  optionsCopy = options;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -61,17 +61,17 @@
   v38 = sub_276AA0524;
   v39 = sub_276AA0534;
   v40 = 0;
-  if (v11)
+  if (lCopy)
   {
-    v14 = objc_msgSend_URLByAppendingPathComponent_(v11, v12, @"Resources");
+    v14 = objc_msgSend_URLByAppendingPathComponent_(lCopy, v12, @"Resources");
     resourcesFolderURL = self->_resourcesFolderURL;
     self->_resourcesFolderURL = v14;
   }
 
-  if (v10)
+  if (dataCopy)
   {
     v16 = [TSPObjectSerializationDecoder alloc];
-    v19 = objc_msgSend_initWithEncodedData_(v16, v17, v10);
+    v19 = objc_msgSend_initWithEncodedData_(v16, v17, dataCopy);
     if (v19)
     {
       WeakRetained = objc_loadWeakRetained(&self->_context);
@@ -82,8 +82,8 @@
       v21 = v19;
       v29 = v21;
       v30 = WeakRetained;
-      v31 = self;
-      v32 = v13;
+      selfCopy = self;
+      v32 = optionsCopy;
       v33 = &v41;
       v34 = &v35;
       v22 = WeakRetained;
@@ -105,9 +105,9 @@
   }
 
   v25 = v42[5];
-  if (a6 && !v25)
+  if (error && !v25)
   {
-    *a6 = v36[5];
+    *error = v36[5];
     v25 = v42[5];
   }
 
@@ -119,12 +119,12 @@
   return v26;
 }
 
-- (id)resourceURLForIdentifier:(int64_t)a3
+- (id)resourceURLForIdentifier:(int64_t)identifier
 {
   if (self->_resourcesFolderURL)
   {
     identifierToResourceNameDictionary = self->_identifierToResourceNameDictionary;
-    v5 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, a3);
+    v5 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, identifier);
     v7 = objc_msgSend_objectForKeyedSubscript_(identifierToResourceNameDictionary, v6, v5);
 
     if (v7)
@@ -157,16 +157,16 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)processMetadataObject:(id)a3 error:(id *)a4
+- (BOOL)processMetadataObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v10 = objc_msgSend_message(v7, v8, v9);
   v12 = v10;
   if (!v10)
   {
-    if (!a4)
+    if (!error)
     {
       v26 = 0;
       v27 = 0;
@@ -178,7 +178,7 @@ LABEL_9:
 LABEL_10:
     v29 = v27;
     v26 = 0;
-    *a4 = v27;
+    *error = v27;
     goto LABEL_16;
   }
 
@@ -187,7 +187,7 @@ LABEL_10:
   {
     v28 = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v14, 11);
     v27 = v28;
-    if (!a4)
+    if (!error)
     {
       v26 = 0;
       goto LABEL_16;
@@ -248,18 +248,18 @@ LABEL_16:
   return v26;
 }
 
-- (id)objectUUIDForExternalReferenceToIdentifier:(int64_t)a3
+- (id)objectUUIDForExternalReferenceToIdentifier:(int64_t)identifier
 {
   identifierToObjectUUIDDictionary = self->_identifierToObjectUUIDDictionary;
-  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, a3);
+  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, identifier);
   v6 = objc_msgSend_objectForKeyedSubscript_(identifierToObjectUUIDDictionary, v5, v4);
 
   return v6;
 }
 
-- (id)cachedDataForIdentifier:(int64_t)a3
+- (id)cachedDataForIdentifier:(int64_t)identifier
 {
-  v5 = objc_msgSend_dataInfoForIdentifier_(self, a2, a3);
+  v5 = objc_msgSend_dataInfoForIdentifier_(self, a2, identifier);
   v8 = v5;
   if (v5)
   {
@@ -289,7 +289,7 @@ LABEL_16:
       v29 = objc_msgSend_initWithDigestString_locator_fileExtension_fileSize_tags_pixelSize_fallbackColor_(v32, v36, v24, v12, v35, 0, 0, 0, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
     }
 
-    v37 = objc_msgSend_resourceURLForIdentifier_(self, v30, a3, v56);
+    v37 = objc_msgSend_resourceURLForIdentifier_(self, v30, identifier, v56);
     v39 = objc_msgSend_dataForDocumentResourceInfo_fromFileURL_(v16, v38, v29, v37);
 
     if (!v39)
@@ -311,7 +311,7 @@ LABEL_6:
   }
 
   identifierToResourceNameDictionary = self->_identifierToResourceNameDictionary;
-  v42 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v6, a3);
+  v42 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v6, identifier);
   v44 = objc_msgSend_objectForKeyedSubscript_(identifierToResourceNameDictionary, v43, v42);
 
   v46 = MEMORY[0x277D81408];
@@ -326,7 +326,7 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  v47 = objc_msgSend_resourceURLForIdentifier_(self, v45, a3);
+  v47 = objc_msgSend_resourceURLForIdentifier_(self, v45, identifier);
   if (!v47 || (v48 = objc_loadWeakRetained(&self->_context), objc_msgSend_dataFromURL_context_(TSPData, v49, v47, v48), v39 = objc_claimAutoreleasedReturnValue(), v48, !v39))
   {
 LABEL_17:
@@ -358,10 +358,10 @@ LABEL_25:
   return v39;
 }
 
-- (id)dataInfoForIdentifier:(int64_t)a3
+- (id)dataInfoForIdentifier:(int64_t)identifier
 {
   dataInfos = self->_dataInfos;
-  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, a3);
+  v4 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], a2, identifier);
   v6 = objc_msgSend_objectForKeyedSubscript_(dataInfos, v5, v4);
 
   return v6;

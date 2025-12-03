@@ -1,44 +1,44 @@
 @interface PUOneUpVisualImageAnalyzingController
-+ (BOOL)canPerformAnalysisWithEnabled:(BOOL)a3 browsingViewModel:(id)a4 assetViewModel:(id)a5;
-+ (void)_clearImageAnalysisFromAssetViewModel:(id)a3;
-+ (void)_setVisualImageAnalysis:(id)a3 forAssetViewModel:(id)a4;
++ (BOOL)canPerformAnalysisWithEnabled:(BOOL)enabled browsingViewModel:(id)model assetViewModel:(id)viewModel;
++ (void)_clearImageAnalysisFromAssetViewModel:(id)model;
++ (void)_setVisualImageAnalysis:(id)analysis forAssetViewModel:(id)model;
 - (PUOneUpVisualImageAnalyzingController)init;
-- (PUOneUpVisualImageAnalyzingController)initWithBrowsingViewModel:(id)a3;
+- (PUOneUpVisualImageAnalyzingController)initWithBrowsingViewModel:(id)model;
 - (void)_cancelCurrentAnalysis;
-- (void)_cancelVKImageAnalysisForAssetViewModel:(id)a3;
+- (void)_cancelVKImageAnalysisForAssetViewModel:(id)model;
 - (void)_discardCurrentAnalysis;
-- (void)_handleAnalysisResult:(id)a3 error:(id)a4 forAssetViewModel:(id)a5 requestID:(int)a6;
-- (void)_handleAssetViewModelChange:(id)a3;
-- (void)_handleBrowsingViewModelChange:(id)a3;
-- (void)_handleVideoFrameImage:(id)a3 pixelBufferRef:(__CVBuffer *)a4 preferredTransform:(CGAffineTransform *)a5 forAssetViewModel:(id)a6 requestID:(int64_t)a7;
+- (void)_handleAnalysisResult:(id)result error:(id)error forAssetViewModel:(id)model requestID:(int)d;
+- (void)_handleAssetViewModelChange:(id)change;
+- (void)_handleBrowsingViewModelChange:(id)change;
+- (void)_handleVideoFrameImage:(id)image pixelBufferRef:(__CVBuffer *)ref preferredTransform:(CGAffineTransform *)transform forAssetViewModel:(id)model requestID:(int64_t)d;
 - (void)_invalidateAnalysisSuspended;
 - (void)_invalidateAssetViewModel;
 - (void)_invalidateCanPerformAnalysis;
 - (void)_invalidateCurrentAnalysis;
-- (void)_requestAnalysisForVideoFrameOfAssetViewModel:(id)a3 asset:(id)a4 playerLayer:(id)a5 preferredTransform:(CGAffineTransform *)a6;
-- (void)_requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel:(id)a3;
-- (void)_requestVKImageAnalysisForAssetViewModel:(id)a3;
+- (void)_requestAnalysisForVideoFrameOfAssetViewModel:(id)model asset:(id)asset playerLayer:(id)layer preferredTransform:(CGAffineTransform *)transform;
+- (void)_requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel:(id)model;
+- (void)_requestVKImageAnalysisForAssetViewModel:(id)model;
 - (void)_setNeedsUpdate;
 - (void)_updateAnalysisSuspended;
 - (void)_updateAssetViewModel;
 - (void)_updateCanPerformAnalysis;
 - (void)_updateCurrentAnalysis;
-- (void)setAssetViewModel:(id)a3;
-- (void)setCanPerformAnalysis:(BOOL)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)setAssetViewModel:(id)model;
+- (void)setCanPerformAnalysis:(BOOL)analysis;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUOneUpVisualImageAnalyzingController
 
-- (void)_cancelVKImageAnalysisForAssetViewModel:(id)a3
+- (void)_cancelVKImageAnalysisForAssetViewModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 visualIntelligenceAnalyzeRequestID])
+  modelCopy = model;
+  v5 = modelCopy;
+  if (modelCopy && [modelCopy visualIntelligenceAnalyzeRequestID])
   {
-    v6 = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
-    [v6 cancelRequestByID:{objc_msgSend(v5, "visualIntelligenceAnalyzeRequestID")}];
+    visualImageManager = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
+    [visualImageManager cancelRequestByID:{objc_msgSend(v5, "visualIntelligenceAnalyzeRequestID")}];
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -49,22 +49,22 @@
   }
 }
 
-- (void)_handleAnalysisResult:(id)a3 error:(id)a4 forAssetViewModel:(id)a5 requestID:(int)a6
+- (void)_handleAnalysisResult:(id)result error:(id)error forAssetViewModel:(id)model requestID:(int)d
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  resultCopy = result;
+  errorCopy = error;
+  modelCopy = model;
+  if (modelCopy)
   {
-    v12 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-    v13 = v12;
-    if (v12 == v11)
+    assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+    v13 = assetViewModel;
+    if (assetViewModel == modelCopy)
     {
-      v14 = [(PUOneUpVisualImageAnalyzingController *)self currentAnalysisRequestID];
+      currentAnalysisRequestID = [(PUOneUpVisualImageAnalyzingController *)self currentAnalysisRequestID];
 
-      if (v14 == a6)
+      if (currentAnalysisRequestID == d)
       {
-        [PUOneUpVisualImageAnalyzingController _setVisualImageAnalysis:v15 forAssetViewModel:v11];
+        [PUOneUpVisualImageAnalyzingController _setVisualImageAnalysis:resultCopy forAssetViewModel:modelCopy];
       }
     }
 
@@ -74,29 +74,29 @@
   }
 }
 
-- (void)_handleVideoFrameImage:(id)a3 pixelBufferRef:(__CVBuffer *)a4 preferredTransform:(CGAffineTransform *)a5 forAssetViewModel:(id)a6 requestID:(int64_t)a7
+- (void)_handleVideoFrameImage:(id)image pixelBufferRef:(__CVBuffer *)ref preferredTransform:(CGAffineTransform *)transform forAssetViewModel:(id)model requestID:(int64_t)d
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-  v15 = v14;
-  if (v14 == v13)
+  imageCopy = image;
+  modelCopy = model;
+  assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+  v15 = assetViewModel;
+  if (assetViewModel == modelCopy)
   {
-    v16 = [(PUOneUpVisualImageAnalyzingController *)self videoFrameRequestID];
+    videoFrameRequestID = [(PUOneUpVisualImageAnalyzingController *)self videoFrameRequestID];
 
-    if (v16 == a7)
+    if (videoFrameRequestID == d)
     {
-      objc_initWeak(&location, v13);
+      objc_initWeak(&location, modelCopy);
       objc_initWeak(&from, self);
-      v17 = [v13 asset];
+      asset = [modelCopy asset];
       v32 = 0;
       v33 = &v32;
       v34 = 0x2020000000;
-      v18 = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
-      v19 = *&a5->c;
-      v29 = *&a5->a;
+      visualImageManager = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
+      v19 = *&transform->c;
+      v29 = *&transform->a;
       v30 = v19;
-      v31 = *&a5->tx;
+      v31 = *&transform->tx;
       v20 = PXVKImageOrientationFromPreferredTransform();
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
@@ -104,7 +104,7 @@
       v26[3] = &unk_1E7B73D88;
       objc_copyWeak(&v27, &from);
       objc_copyWeak(&v28, &location);
-      v21 = [v18 requestVKImageAnalysisForAsset:v17 pixelBuffer:a4 orientation:v20 resultHandler:v26];
+      v21 = [visualImageManager requestVKImageAnalysisForAsset:asset pixelBuffer:ref orientation:v20 resultHandler:v26];
 
       v35 = v21;
       [(PUOneUpVisualImageAnalyzingController *)self setCurrentAnalysisRequestID:*(v33 + 6)];
@@ -112,9 +112,9 @@
       v22[1] = 3221225472;
       v22[2] = __126__PUOneUpVisualImageAnalyzingController__handleVideoFrameImage_pixelBufferRef_preferredTransform_forAssetViewModel_requestID___block_invoke_3;
       v22[3] = &unk_1E7B7FFC0;
-      v23 = v13;
+      v23 = modelCopy;
       v25 = &v32;
-      v24 = v12;
+      v24 = imageCopy;
       [v23 performChanges:v22];
 
       _Block_object_dispose(&v32, 8);
@@ -164,27 +164,27 @@ void __126__PUOneUpVisualImageAnalyzingController__handleVideoFrameImage_pixelBu
   [WeakRetained _handleAnalysisResult:v2 error:v3 forAssetViewModel:v4 requestID:*(a1 + 64)];
 }
 
-- (void)_requestAnalysisForVideoFrameOfAssetViewModel:(id)a3 asset:(id)a4 playerLayer:(id)a5 preferredTransform:(CGAffineTransform *)a6
+- (void)_requestAnalysisForVideoFrameOfAssetViewModel:(id)model asset:(id)asset playerLayer:(id)layer preferredTransform:(CGAffineTransform *)transform
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10 && v11)
+  modelCopy = model;
+  assetCopy = asset;
+  layerCopy = layer;
+  if (modelCopy && assetCopy)
   {
     [(PUOneUpVisualImageAnalyzingController *)self setVideoFrameRequestID:[(PUOneUpVisualImageAnalyzingController *)self videoFrameRequestID]+ 1];
-    v13 = [(PUOneUpVisualImageAnalyzingController *)self videoFrameRequestID];
-    if (v12 && (v14 = v13, (v15 = [v12 copyDisplayedPixelBuffer]) != 0))
+    videoFrameRequestID = [(PUOneUpVisualImageAnalyzingController *)self videoFrameRequestID];
+    if (layerCopy && (v14 = videoFrameRequestID, (v15 = [layerCopy copyDisplayedPixelBuffer]) != 0))
     {
       v16 = v15;
       imageOut = 0;
       VTCreateCGImageFromCVPixelBuffer(v15, 0, &imageOut);
       if (imageOut)
       {
-        v17 = *&a6->c;
-        *buf = *&a6->a;
+        v17 = *&transform->c;
+        *buf = *&transform->a;
         *&buf[16] = v17;
-        v29 = *&a6->tx;
+        v29 = *&transform->tx;
         v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:imageOut scale:PXVKImageOrientationFromPreferredTransform() orientation:1.0];
         CGImageRelease(imageOut);
         imageOut = 0;
@@ -199,11 +199,11 @@ void __126__PUOneUpVisualImageAnalyzingController__handleVideoFrameImage_pixelBu
       objc_copyWeak(v22, buf);
       v19 = v18;
       v22[1] = v16;
-      v20 = *&a6->c;
-      v23 = *&a6->a;
+      v20 = *&transform->c;
+      v23 = *&transform->a;
       v24 = v20;
-      v25 = *&a6->tx;
-      v21 = v10;
+      v25 = *&transform->tx;
+      v21 = modelCopy;
       v26 = v14;
       px_dispatch_on_main_queue();
 
@@ -217,9 +217,9 @@ void __126__PUOneUpVisualImageAnalyzingController__handleVideoFrameImage_pixelBu
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *&buf[4] = v11;
+        *&buf[4] = assetCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = layerCopy;
         _os_log_impl(&dword_1B36F3000, v19, OS_LOG_TYPE_ERROR, "Unable to produce analysis for video frame of asset: %@, playerLayer: %@", buf, 0x16u);
       }
     }
@@ -242,24 +242,24 @@ void __124__PUOneUpVisualImageAnalyzingController__requestAnalysisForVideoFrameO
   CVPixelBufferRelease(*(a1 + 56));
 }
 
-- (void)_requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel:(id)a3
+- (void)_requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel:(id)model
 {
-  v5 = a3;
-  if (!v5)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"assetViewModel != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"assetViewModel != nil"}];
   }
 
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
-  v6 = [v5 videoPlayer];
-  v7 = [v6 videoSession];
-  v8 = v7;
-  if (v7)
+  videoPlayer = [modelCopy videoPlayer];
+  videoSession = [videoPlayer videoSession];
+  v8 = videoSession;
+  if (videoSession)
   {
-    [v7 preferredTransform];
+    [videoSession preferredTransform];
   }
 
   else
@@ -269,28 +269,28 @@ void __124__PUOneUpVisualImageAnalyzingController__requestAnalysisForVideoFrameO
     v26 = 0u;
   }
 
-  v9 = [v5 primaryVideoLayerSource];
-  v10 = [v9 playerLayer];
+  primaryVideoLayerSource = [modelCopy primaryVideoLayerSource];
+  playerLayer = [primaryVideoLayerSource playerLayer];
 
-  v11 = [v5 asset];
-  [objc_opt_class() _clearImageAnalysisFromAssetViewModel:v5];
-  objc_initWeak(&location, v5);
+  asset = [modelCopy asset];
+  [objc_opt_class() _clearImageAnalysisFromAssetViewModel:modelCopy];
+  objc_initWeak(&location, modelCopy);
   objc_initWeak(&from, self);
-  v12 = [(PUOneUpVisualImageAnalyzingController *)self loadVideoFrameQueue];
+  loadVideoFrameQueue = [(PUOneUpVisualImageAnalyzingController *)self loadVideoFrameQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__PUOneUpVisualImageAnalyzingController__requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel___block_invoke;
   block[3] = &unk_1E7B73D10;
   objc_copyWeak(&v19, &from);
   objc_copyWeak(&v20, &location);
-  v17 = v11;
-  v18 = v10;
+  v17 = asset;
+  v18 = playerLayer;
   v21 = v26;
   v22 = v27;
   v23 = v28;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, block);
+  v13 = playerLayer;
+  v14 = asset;
+  dispatch_async(loadVideoFrameQueue, block);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v19);
@@ -311,44 +311,44 @@ void __101__PUOneUpVisualImageAnalyzingController__requestVKImageAnalysisByCurre
   [WeakRetained _requestAnalysisForVideoFrameOfAssetViewModel:v3 asset:v4 playerLayer:v5 preferredTransform:v7];
 }
 
-- (void)_requestVKImageAnalysisForAssetViewModel:(id)a3
+- (void)_requestVKImageAnalysisForAssetViewModel:(id)model
 {
-  v5 = a3;
-  if (!v5)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"assetViewModel != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"assetViewModel != nil"}];
   }
 
-  v6 = [v5 visualImageAnalysis];
+  visualImageAnalysis = [modelCopy visualImageAnalysis];
 
-  if (!v6)
+  if (!visualImageAnalysis)
   {
-    v7 = [v5 asset];
-    v8 = [v7 playbackStyle];
+    asset = [modelCopy asset];
+    playbackStyle = [asset playbackStyle];
 
-    if (v8 == 4)
+    if (playbackStyle == 4)
     {
-      [(PUOneUpVisualImageAnalyzingController *)self _requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel:v5];
+      [(PUOneUpVisualImageAnalyzingController *)self _requestVKImageAnalysisByCurrentVideoFrameForAssetViewModel:modelCopy];
     }
 
     else
     {
-      objc_initWeak(&location, v5);
-      v9 = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
-      v10 = [v5 asset];
+      objc_initWeak(&location, modelCopy);
+      visualImageManager = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
+      asset2 = [modelCopy asset];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __82__PUOneUpVisualImageAnalyzingController__requestVKImageAnalysisForAssetViewModel___block_invoke;
       v16[3] = &unk_1E7B73CE8;
       objc_copyWeak(&v17, &location);
-      v11 = [v9 requestVKImageAnalysisForAsset:v10 resultHandler:v16];
+      v11 = [visualImageManager requestVKImageAnalysisForAsset:asset2 resultHandler:v16];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __82__PUOneUpVisualImageAnalyzingController__requestVKImageAnalysisForAssetViewModel___block_invoke_4;
       v13[3] = &unk_1E7B761F0;
-      v14 = v5;
+      v14 = modelCopy;
       v15 = v11;
       [v14 performChanges:v13];
 
@@ -405,58 +405,58 @@ void __82__PUOneUpVisualImageAnalyzingController__requestVKImageAnalysisForAsset
   [v6 setVisualIntelligenceAnalyzeRequestID:0];
 }
 
-- (void)_handleAssetViewModelChange:(id)a3
+- (void)_handleAssetViewModelChange:(id)change
 {
-  v12 = a3;
-  if ([v12 assetContentChanged])
+  changeCopy = change;
+  if ([changeCopy assetContentChanged])
   {
     [(PUOneUpVisualImageAnalyzingController *)self _discardCurrentAnalysis];
   }
 
-  if (([v12 focusValueChanged] & 1) != 0 || (objc_msgSend(v12, "videoPlayerDidChange") & 1) != 0 || (objc_msgSend(v12, "assetChanged") & 1) != 0 || objc_msgSend(v12, "visualImageAnalysisChanged"))
+  if (([changeCopy focusValueChanged] & 1) != 0 || (objc_msgSend(changeCopy, "videoPlayerDidChange") & 1) != 0 || (objc_msgSend(changeCopy, "assetChanged") & 1) != 0 || objc_msgSend(changeCopy, "visualImageAnalysisChanged"))
   {
     [(PUOneUpVisualImageAnalyzingController *)self _invalidateCanPerformAnalysis];
   }
 
-  v4 = [v12 videoPlayerChange];
+  videoPlayerChange = [changeCopy videoPlayerChange];
 
-  v5 = v12;
-  if (v4)
+  v5 = changeCopy;
+  if (videoPlayerChange)
   {
-    v6 = [v12 videoPlayerChange];
-    if ([v6 desiredPlayStateDidChange])
+    videoPlayerChange2 = [changeCopy videoPlayerChange];
+    if ([videoPlayerChange2 desiredPlayStateDidChange])
     {
       [(PUOneUpVisualImageAnalyzingController *)self _invalidateCanPerformAnalysis];
-      v7 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-      v8 = [v7 videoPlayer];
-      v9 = [v8 isPlaybackDesired];
+      assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+      videoPlayer = [assetViewModel videoPlayer];
+      isPlaybackDesired = [videoPlayer isPlaybackDesired];
 
-      if (v9)
+      if (isPlaybackDesired)
       {
         v10 = objc_opt_class();
-        v11 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-        [v10 _clearImageAnalysisFromAssetViewModel:v11];
+        assetViewModel2 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+        [v10 _clearImageAnalysisFromAssetViewModel:assetViewModel2];
       }
     }
 
-    v5 = v12;
+    v5 = changeCopy;
   }
 }
 
-- (void)_handleBrowsingViewModelChange:(id)a3
+- (void)_handleBrowsingViewModelChange:(id)change
 {
-  v8 = a3;
-  if (([v8 isScrollingDidChange] & 1) != 0 || (objc_msgSend(v8, "isScrubbingDidChange") & 1) != 0 || objc_msgSend(v8, "livePhotoShouldPlayDidChange"))
+  changeCopy = change;
+  if (([changeCopy isScrollingDidChange] & 1) != 0 || (objc_msgSend(changeCopy, "isScrubbingDidChange") & 1) != 0 || objc_msgSend(changeCopy, "livePhotoShouldPlayDidChange"))
   {
     goto LABEL_4;
   }
 
-  if ([v8 isInteractingWithVideoScrubberDidChange])
+  if ([changeCopy isInteractingWithVideoScrubberDidChange])
   {
-    v4 = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
-    v5 = [v4 isInteractingWithVideoScrubber];
+    browsingViewModel = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
+    isInteractingWithVideoScrubber = [browsingViewModel isInteractingWithVideoScrubber];
 
-    if (!v5)
+    if (!isInteractingWithVideoScrubber)
     {
 LABEL_4:
       [(PUOneUpVisualImageAnalyzingController *)self _invalidateCanPerformAnalysis];
@@ -464,43 +464,43 @@ LABEL_4:
     }
 
     v6 = objc_opt_class();
-    v7 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-    [v6 _clearImageAnalysisFromAssetViewModel:v7];
+    assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+    [v6 _clearImageAnalysisFromAssetViewModel:assetViewModel];
   }
 
 LABEL_5:
-  if ([v8 currentAssetDidChange])
+  if ([changeCopy currentAssetDidChange])
   {
     [(PUOneUpVisualImageAnalyzingController *)self _invalidateAssetViewModel];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
+  modelCopy = model;
+  changeCopy = change;
+  browsingViewModel = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
 
-  if (v7 == v9)
+  if (browsingViewModel == modelCopy)
   {
-    [(PUOneUpVisualImageAnalyzingController *)self _handleBrowsingViewModelChange:v6];
+    [(PUOneUpVisualImageAnalyzingController *)self _handleBrowsingViewModelChange:changeCopy];
   }
 
   else
   {
-    v8 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+    assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
 
-    if (v8 == v9)
+    if (assetViewModel == modelCopy)
     {
-      [(PUOneUpVisualImageAnalyzingController *)self _handleAssetViewModelChange:v6];
+      [(PUOneUpVisualImageAnalyzingController *)self _handleAssetViewModelChange:changeCopy];
     }
   }
 }
 
 - (void)_updateAnalysisSuspended
 {
-  v5 = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
-  if ([v5 isScrubbing] & 1) != 0 || (objc_msgSend(v5, "livePhotoShouldPlay") & 1) != 0 || (objc_msgSend(v5, "isScrolling"))
+  browsingViewModel = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
+  if ([browsingViewModel isScrubbing] & 1) != 0 || (objc_msgSend(browsingViewModel, "livePhotoShouldPlay") & 1) != 0 || (objc_msgSend(browsingViewModel, "isScrolling"))
   {
     v3 = 1;
   }
@@ -510,30 +510,30 @@ LABEL_5:
     v3 = [(PUOneUpVisualImageAnalyzingController *)self isEnabled]^ 1;
   }
 
-  v4 = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
-  [v4 setAnalysisSuspended:v3];
+  visualImageManager = [(PUOneUpVisualImageAnalyzingController *)self visualImageManager];
+  [visualImageManager setAnalysisSuspended:v3];
 }
 
 - (void)_invalidateAnalysisSuspended
 {
-  v2 = [(PUOneUpVisualImageAnalyzingController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAnalysisSuspended];
+  updater = [(PUOneUpVisualImageAnalyzingController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAnalysisSuspended];
 }
 
 - (void)_updateCurrentAnalysis
 {
   if ([(PUOneUpVisualImageAnalyzingController *)self canPerformAnalysis]&& ![(PUOneUpVisualImageAnalyzingController *)self currentAnalysisRequestID])
   {
-    v3 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-    [(PUOneUpVisualImageAnalyzingController *)self _requestVKImageAnalysisForAssetViewModel:v3];
+    assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+    [(PUOneUpVisualImageAnalyzingController *)self _requestVKImageAnalysisForAssetViewModel:assetViewModel];
   }
 }
 
 - (void)_discardCurrentAnalysis
 {
   v3 = objc_opt_class();
-  v4 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-  [v3 _clearImageAnalysisFromAssetViewModel:v4];
+  assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+  [v3 _clearImageAnalysisFromAssetViewModel:assetViewModel];
 
   [(PUOneUpVisualImageAnalyzingController *)self _invalidateCurrentAnalysis];
 }
@@ -541,42 +541,42 @@ LABEL_5:
 - (void)_invalidateCurrentAnalysis
 {
   [(PUOneUpVisualImageAnalyzingController *)self setCurrentAnalysisRequestID:0];
-  v3 = [(PUOneUpVisualImageAnalyzingController *)self updater];
-  [v3 setNeedsUpdateOf:sel__updateCurrentAnalysis];
+  updater = [(PUOneUpVisualImageAnalyzingController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentAnalysis];
 }
 
 - (void)_updateCanPerformAnalysis
 {
   v3 = objc_opt_class();
-  v4 = [(PUOneUpVisualImageAnalyzingController *)self isEnabled];
-  v6 = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
-  v5 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-  -[PUOneUpVisualImageAnalyzingController setCanPerformAnalysis:](self, "setCanPerformAnalysis:", [v3 canPerformAnalysisWithEnabled:v4 browsingViewModel:v6 assetViewModel:v5]);
+  isEnabled = [(PUOneUpVisualImageAnalyzingController *)self isEnabled];
+  browsingViewModel = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
+  assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+  -[PUOneUpVisualImageAnalyzingController setCanPerformAnalysis:](self, "setCanPerformAnalysis:", [v3 canPerformAnalysisWithEnabled:isEnabled browsingViewModel:browsingViewModel assetViewModel:assetViewModel]);
 }
 
 - (void)_invalidateCanPerformAnalysis
 {
-  v2 = [(PUOneUpVisualImageAnalyzingController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCanPerformAnalysis];
+  updater = [(PUOneUpVisualImageAnalyzingController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCanPerformAnalysis];
 }
 
 - (void)_updateAssetViewModel
 {
-  v4 = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
-  v3 = [v4 assetViewModelForCurrentAssetReference];
-  [(PUOneUpVisualImageAnalyzingController *)self setAssetViewModel:v3];
+  browsingViewModel = [(PUOneUpVisualImageAnalyzingController *)self browsingViewModel];
+  assetViewModelForCurrentAssetReference = [browsingViewModel assetViewModelForCurrentAssetReference];
+  [(PUOneUpVisualImageAnalyzingController *)self setAssetViewModel:assetViewModelForCurrentAssetReference];
 }
 
 - (void)_invalidateAssetViewModel
 {
-  v2 = [(PUOneUpVisualImageAnalyzingController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetViewModel];
+  updater = [(PUOneUpVisualImageAnalyzingController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetViewModel];
 }
 
 - (void)_cancelCurrentAnalysis
 {
-  v3 = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
-  [(PUOneUpVisualImageAnalyzingController *)self _cancelVKImageAnalysisForAssetViewModel:v3];
+  assetViewModel = [(PUOneUpVisualImageAnalyzingController *)self assetViewModel];
+  [(PUOneUpVisualImageAnalyzingController *)self _cancelVKImageAnalysisForAssetViewModel:assetViewModel];
 }
 
 - (void)_setNeedsUpdate
@@ -595,12 +595,12 @@ void __56__PUOneUpVisualImageAnalyzingController__setNeedsUpdate__block_invoke(u
   [v1 updateIfNeeded];
 }
 
-- (void)setCanPerformAnalysis:(BOOL)a3
+- (void)setCanPerformAnalysis:(BOOL)analysis
 {
-  if (self->_canPerformAnalysis != a3)
+  if (self->_canPerformAnalysis != analysis)
   {
-    self->_canPerformAnalysis = a3;
-    if (!a3)
+    self->_canPerformAnalysis = analysis;
+    if (!analysis)
     {
       [(PUOneUpVisualImageAnalyzingController *)self _cancelCurrentAnalysis];
     }
@@ -609,40 +609,40 @@ void __56__PUOneUpVisualImageAnalyzingController__setNeedsUpdate__block_invoke(u
   }
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_assetViewModel != v5)
+  modelCopy = model;
+  if (self->_assetViewModel != modelCopy)
   {
-    v6 = v5;
+    v6 = modelCopy;
     [(PUOneUpVisualImageAnalyzingController *)self _cancelCurrentAnalysis];
     [(PUAssetViewModel *)self->_assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
+    objc_storeStrong(&self->_assetViewModel, model);
     [(PUAssetViewModel *)self->_assetViewModel registerChangeObserver:self];
     [(PUOneUpVisualImageAnalyzingController *)self _invalidateCanPerformAnalysis];
     [(PUOneUpVisualImageAnalyzingController *)self _invalidateCurrentAnalysis];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  if (self->_isEnabled != a3)
+  if (self->_isEnabled != enabled)
   {
-    self->_isEnabled = a3;
+    self->_isEnabled = enabled;
     [(PUOneUpVisualImageAnalyzingController *)self _invalidateCanPerformAnalysis];
 
     [(PUOneUpVisualImageAnalyzingController *)self _invalidateAnalysisSuspended];
   }
 }
 
-- (PUOneUpVisualImageAnalyzingController)initWithBrowsingViewModel:(id)a3
+- (PUOneUpVisualImageAnalyzingController)initWithBrowsingViewModel:(id)model
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"browsingViewModel != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"browsingViewModel != nil"}];
   }
 
   v17.receiver = self;
@@ -659,11 +659,11 @@ void __56__PUOneUpVisualImageAnalyzingController__setNeedsUpdate__block_invoke(u
     [(PXUpdater *)v7->_updater addUpdateSelector:sel__updateCanPerformAnalysis needsUpdate:1];
     [(PXUpdater *)v7->_updater addUpdateSelector:sel__updateCurrentAnalysis needsUpdate:1];
     v7->_isEnabled = 0;
-    objc_storeStrong(&v7->_browsingViewModel, a3);
+    objc_storeStrong(&v7->_browsingViewModel, model);
     [(PUBrowsingViewModel *)v7->_browsingViewModel registerChangeObserver:v7];
-    v10 = [MEMORY[0x1E69C3C88] sharedManager];
+    mEMORY[0x1E69C3C88] = [MEMORY[0x1E69C3C88] sharedManager];
     visualImageManager = v7->_visualImageManager;
-    v7->_visualImageManager = v10;
+    v7->_visualImageManager = mEMORY[0x1E69C3C88];
 
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v13 = dispatch_queue_create("com.apple.1UpVisualImageAnalyzing.loadCurrentVideoFrame", v12);
@@ -678,30 +678,30 @@ void __56__PUOneUpVisualImageAnalyzingController__setNeedsUpdate__block_invoke(u
 
 - (PUOneUpVisualImageAnalyzingController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PUOneUpVisualImageAnalyzingController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PUOneUpVisualImageAnalyzingController init]"}];
 
   abort();
 }
 
-+ (void)_setVisualImageAnalysis:(id)a3 forAssetViewModel:(id)a4
++ (void)_setVisualImageAnalysis:(id)analysis forAssetViewModel:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  analysisCopy = analysis;
+  modelCopy = model;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:370 description:{@"%s must be called on the main thread", "+[PUOneUpVisualImageAnalyzingController _setVisualImageAnalysis:forAssetViewModel:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUOneUpVisualImageAnalyzingController.m" lineNumber:370 description:{@"%s must be called on the main thread", "+[PUOneUpVisualImageAnalyzingController _setVisualImageAnalysis:forAssetViewModel:]"}];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__PUOneUpVisualImageAnalyzingController__setVisualImageAnalysis_forAssetViewModel___block_invoke;
   v12[3] = &unk_1E7B80C38;
-  v13 = v8;
-  v14 = v7;
-  v9 = v7;
-  v10 = v8;
+  v13 = modelCopy;
+  v14 = analysisCopy;
+  v9 = analysisCopy;
+  v10 = modelCopy;
   [v10 performChanges:v12];
 }
 
@@ -714,15 +714,15 @@ uint64_t __83__PUOneUpVisualImageAnalyzingController__setVisualImageAnalysis_for
   return [v2 setVisualIntelligenceAnalyzeRequestID:0];
 }
 
-+ (void)_clearImageAnalysisFromAssetViewModel:(id)a3
++ (void)_clearImageAnalysisFromAssetViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __79__PUOneUpVisualImageAnalyzingController__clearImageAnalysisFromAssetViewModel___block_invoke;
   v5[3] = &unk_1E7B80DD0;
-  v6 = v3;
-  v4 = v3;
+  v6 = modelCopy;
+  v4 = modelCopy;
   [v4 performChanges:v5];
 }
 
@@ -735,25 +735,25 @@ uint64_t __79__PUOneUpVisualImageAnalyzingController__clearImageAnalysisFromAsse
   return [v2 setVisualIntelligenceAnalyzeRequestID:0];
 }
 
-+ (BOOL)canPerformAnalysisWithEnabled:(BOOL)a3 browsingViewModel:(id)a4 assetViewModel:(id)a5
++ (BOOL)canPerformAnalysisWithEnabled:(BOOL)enabled browsingViewModel:(id)model assetViewModel:(id)viewModel
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v6)
+  enabledCopy = enabled;
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  if (enabledCopy)
   {
-    if ([v7 isScrolling])
+    if ([modelCopy isScrolling])
     {
 LABEL_3:
-      LOBYTE(v6) = 0;
+      LOBYTE(enabledCopy) = 0;
       goto LABEL_4;
     }
 
-    v10 = [v7 isScrubbing];
-    LOBYTE(v6) = 0;
-    if (v8 && (v10 & 1) == 0)
+    isScrubbing = [modelCopy isScrubbing];
+    LOBYTE(enabledCopy) = 0;
+    if (viewModelCopy && (isScrubbing & 1) == 0)
     {
-      v11 = [v8 asset];
+      asset = [viewModelCopy asset];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -762,28 +762,28 @@ LABEL_3:
         goto LABEL_3;
       }
 
-      [v8 focusValue];
+      [viewModelCopy focusValue];
       if (fabs(v13) > 1.0)
       {
         goto LABEL_3;
       }
 
-      v14 = [v8 visualImageAnalysis];
+      visualImageAnalysis = [viewModelCopy visualImageAnalysis];
 
-      if (v14)
+      if (visualImageAnalysis)
       {
         goto LABEL_3;
       }
 
-      v15 = [v8 asset];
-      v16 = [v15 playbackStyle];
+      asset2 = [viewModelCopy asset];
+      playbackStyle = [asset2 playbackStyle];
 
-      if (v16 == 4)
+      if (playbackStyle == 4)
       {
-        v17 = [v8 videoPlayer];
-        v18 = [v17 isPlaybackDesired];
+        videoPlayer = [viewModelCopy videoPlayer];
+        isPlaybackDesired = [videoPlayer isPlaybackDesired];
 
-        if (v18 & 1) != 0 || ![v8 isFullyInFocus] || (objc_msgSend(v7, "isInteractingWithVideoScrubber"))
+        if (isPlaybackDesired & 1) != 0 || ![viewModelCopy isFullyInFocus] || (objc_msgSend(modelCopy, "isInteractingWithVideoScrubber"))
         {
           goto LABEL_3;
         }
@@ -792,22 +792,22 @@ LABEL_3:
       else
       {
         v19 = MEMORY[0x1E69C3C88];
-        v20 = [v8 asset];
-        v6 = [v19 canRequestVKImageAnalysisForAsset:v20];
+        asset3 = [viewModelCopy asset];
+        enabledCopy = [v19 canRequestVKImageAnalysisForAsset:asset3];
 
-        if (!v6)
+        if (!enabledCopy)
         {
           goto LABEL_4;
         }
       }
 
-      LOBYTE(v6) = 1;
+      LOBYTE(enabledCopy) = 1;
     }
   }
 
 LABEL_4:
 
-  return v6;
+  return enabledCopy;
 }
 
 @end

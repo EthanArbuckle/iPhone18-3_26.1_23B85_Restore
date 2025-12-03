@@ -1,23 +1,23 @@
 @interface CrossLinkLockupView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
 @implementation CrossLinkLockupView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = type metadata accessor for SmallLockupLayout.Metrics();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = self;
+  selfCopy = self;
   sub_10013F3FC(v9);
-  [(CrossLinkLockupView *)v10 layoutMargins];
-  v13 = sub_100508464(v9, v10, width, height, v11, v12);
+  [(CrossLinkLockupView *)selfCopy layoutMargins];
+  v13 = sub_100508464(v9, selfCopy, width, height, v11, v12);
   v15 = v14;
 
   (*(v7 + 8))(v9, v6);
@@ -38,7 +38,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10013FBB4();
 }
 

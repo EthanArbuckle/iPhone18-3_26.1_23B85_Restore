@@ -1,10 +1,10 @@
 @interface ADClientRotatingIdentifier
 - (ADClientRotatingIdentifier)init;
-- (ADClientRotatingIdentifier)initWithRotatingIdentifier:(id)a3;
+- (ADClientRotatingIdentifier)initWithRotatingIdentifier:(id)identifier;
 - (NSString)value;
 - (int64_t)type;
-- (void)setType:(int64_t)a3;
-- (void)setValue:(id)a3;
+- (void)setType:(int64_t)type;
+- (void)setValue:(id)value;
 @end
 
 @implementation ADClientRotatingIdentifier
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v4 = sub_264E56394();
   v6 = v5;
@@ -39,16 +39,16 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR___ADClientRotatingIdentifier_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
-- (ADClientRotatingIdentifier)initWithRotatingIdentifier:(id)a3
+- (ADClientRotatingIdentifier)initWithRotatingIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = sub_264E53B58();
 
   return v4;

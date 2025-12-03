@@ -1,8 +1,8 @@
 @interface HAENotificationCenterManager
 + (id)sharedInstance;
 - (HAENotificationCenterManager)init;
-- (id)addHAENotificationEvent:(id)a3;
-- (void)donateSignalToTipsKit:(id)a3;
+- (id)addHAENotificationEvent:(id)event;
+- (void)donateSignalToTipsKit:(id)kit;
 @end
 
 @implementation HAENotificationCenterManager
@@ -53,16 +53,16 @@ uint64_t __46__HAENotificationCenterManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)addHAENotificationEvent:(id)a3
+- (id)addHAENotificationEvent:(id)event
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uuid];
+    uuid = [eventCopy uuid];
     *buf = 138412290;
-    v26 = v6;
+    v26 = uuid;
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "HAENotificationCenterManager starting event: [%@]", buf, 0xCu);
   }
 
@@ -73,9 +73,9 @@ uint64_t __46__HAENotificationCenterManager_sharedInstance__block_invoke()
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
-    v11 = [v4 uuid];
+    uuid2 = [eventCopy uuid];
     *buf = 138412290;
-    v26 = v11;
+    v26 = uuid2;
     _os_signpost_emit_with_name_impl(&dword_25081E000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "AddHAENotificationEvent", "%@", buf, 0xCu);
   }
 
@@ -84,17 +84,17 @@ uint64_t __46__HAENotificationCenterManager_sharedInstance__block_invoke()
   v20 = 3221225472;
   v21 = __56__HAENotificationCenterManager_addHAENotificationEvent___block_invoke;
   v22 = &unk_27969F240;
-  v13 = v4;
+  v13 = eventCopy;
   v23 = v13;
-  v24 = self;
+  selfCopy = self;
   dispatch_sync(eventQueue, &v19);
   v14 = HAENotificationsLog();
   v15 = v14;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
-    v16 = [v13 uuid];
+    uuid3 = [v13 uuid];
     *buf = 138412290;
-    v26 = v16;
+    v26 = uuid3;
     _os_signpost_emit_with_name_impl(&dword_25081E000, v15, OS_SIGNPOST_INTERVAL_END, v8, "AddHAENotificationEvent", "%@", buf, 0xCu);
   }
 
@@ -147,26 +147,26 @@ void __56__HAENotificationCenterManager_addHAENotificationEvent___block_invoke_2
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateSignalToTipsKit:(id)a3
+- (void)donateSignalToTipsKit:(id)kit
 {
-  v3 = [a3 eventType];
-  if (v3 == 1818850917)
+  eventType = [kit eventType];
+  if (eventType == 1818850917)
   {
     v4 = @"com.apple.coreaudio.hae.notifications.loud";
     goto LABEL_5;
   }
 
-  if (v3 == 2003133803)
+  if (eventType == 2003133803)
   {
     v4 = @"com.apple.coreaudio.hae.notifications.weekly";
 LABEL_5:
     v5 = BiomeLibrary();
-    v6 = [v5 Discoverability];
-    v10 = [v6 Signals];
+    discoverability = [v5 Discoverability];
+    signals = [discoverability Signals];
 
-    v7 = [v10 source];
+    source = [signals source];
     v8 = [objc_alloc(MEMORY[0x277CF1160]) initWithContentIdentifier:v4 context:0 osBuild:0 userInfo:0];
-    [v7 sendEvent:v8];
+    [source sendEvent:v8];
 
     return;
   }

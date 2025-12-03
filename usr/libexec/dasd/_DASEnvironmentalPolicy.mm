@@ -1,9 +1,9 @@
 @interface _DASEnvironmentalPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASEnvironmentalPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASEnvironmentalPolicy
@@ -39,9 +39,9 @@
     policyName = v2->_policyName;
     v2->_policyName = @"Environmental Policy";
 
-    v5 = [(_DASEnvironmentalPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASEnvironmentalPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v5;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_100045F90;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B078 != -1)
   {
     dispatch_once(&qword_10020B078, block);
@@ -64,38 +64,38 @@
   return v2;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  if (([v3 backlogged] & 1) != 0 || (objc_msgSend(v3, "requestsImmediateRuntime") & 1) != 0 || !objc_msgSend(v3, "requiresPlugin"))
+  activityCopy = activity;
+  if (([activityCopy backlogged] & 1) != 0 || (objc_msgSend(activityCopy, "requestsImmediateRuntime") & 1) != 0 || !objc_msgSend(activityCopy, "requiresPlugin"))
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [v3 schedulingPriority];
-    v5 = v4 <= _DASSchedulingPriorityBackground;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v5 = schedulingPriority <= _DASSchedulingPriorityBackground;
   }
 
   return v5;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"Environmental Policy"];
   if (!+[_DASConfig hasRecentlyUpdated])
   {
     v6 = +[_DASGridDataManager sharedInstance];
     if ([v6 isHighCarbonImpactWindow])
     {
-      v7 = [v4 startDate];
+      startDate = [activityCopy startDate];
 
-      if (!v7)
+      if (!startDate)
       {
         [(_DASPolicyResponseRationale *)v5 addRationaleForCondition:@"isInHighCarbonImpactWindow" withRequiredValue:0.0 withCurrentValue:1.0];
-        if (!+[_DASActivityDurationTracker shouldTrackActivity:](_DASActivityDurationTracker, "shouldTrackActivity:", v4) || (+[_DASActivityDurationTracker sharedInstance](_DASActivityDurationTracker, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 activityHadEnoughRuntime:v4], v8, (v9 & 1) != 0))
+        if (!+[_DASActivityDurationTracker shouldTrackActivity:](_DASActivityDurationTracker, "shouldTrackActivity:", activityCopy) || (+[_DASActivityDurationTracker sharedInstance](_DASActivityDurationTracker, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 activityHadEnoughRuntime:activityCopy], v8, (v9 & 1) != 0))
         {
           v10 = 33;
           goto LABEL_9;

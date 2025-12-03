@@ -1,37 +1,37 @@
 @interface AACloudServicesClient
 - (AACloudServicesClient)init;
-- (AACloudServicesClient)initWithCoder:(id)a3;
+- (AACloudServicesClient)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (void)_activate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchAAProxCardsInfoForDeviceWithAddress:(id)a3 completion:(id)a4;
-- (void)fetchHMDeviceCloudRecordInfoWithAddress:(id)a3 completion:(id)a4;
-- (void)hmDeviceCloudRecordInfosUpdated:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchAAProxCardsInfoForDeviceWithAddress:(id)address completion:(id)completion;
+- (void)fetchHMDeviceCloudRecordInfoWithAddress:(id)address completion:(id)completion;
+- (void)hmDeviceCloudRecordInfosUpdated:(id)updated;
 - (void)invalidate;
-- (void)modifyAAProxCardsInfo:(id)a3 completion:(id)a4;
-- (void)modifyHMDeviceCloudRecordInfo:(id)a3 completion:(id)a4;
-- (void)removeAAProxCardsInfoForDeviceWithAddress:(id)a3 completion:(id)a4;
-- (void)removeHMDeviceCloudRecordInfoForDeviceWithAddress:(id)a3 completion:(id)a4;
+- (void)modifyAAProxCardsInfo:(id)info completion:(id)completion;
+- (void)modifyHMDeviceCloudRecordInfo:(id)info completion:(id)completion;
+- (void)removeAAProxCardsInfoForDeviceWithAddress:(id)address completion:(id)completion;
+- (void)removeHMDeviceCloudRecordInfoForDeviceWithAddress:(id)address completion:(id)completion;
 @end
 
 @implementation AACloudServicesClient
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   internalFlags = self->_internalFlags;
   if (internalFlags)
   {
-    [a3 encodeInt64:internalFlags forKey:@"inf"];
+    [coder encodeInt64:internalFlags forKey:@"inf"];
   }
 }
 
-- (AACloudServicesClient)initWithCoder:(id)a3
+- (AACloudServicesClient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AACloudServicesClient *)self init];
   if (v5)
   {
@@ -64,17 +64,17 @@
   return v2;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__AACloudServicesClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -125,7 +125,7 @@ void __48__AACloudServicesClient_activateWithCompletion___block_invoke(uint64_t 
   if (self->_invalidateCalled)
   {
     v7 = BTErrorF();
-    v4 = v15[5];
+    _ensureXPCStarted = v15[5];
     v15[5] = v7;
   }
 
@@ -142,8 +142,8 @@ void __48__AACloudServicesClient_activateWithCompletion___block_invoke(uint64_t 
       LogPrintF();
     }
 
-    v4 = [(AACloudServicesClient *)self _ensureXPCStarted];
-    if (v4)
+    _ensureXPCStarted = [(AACloudServicesClient *)self _ensureXPCStarted];
+    if (_ensureXPCStarted)
     {
       v8 = BTErrorF();
       v9 = v15[5];
@@ -386,20 +386,20 @@ uint64_t __35__AACloudServicesClient_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)fetchAAProxCardsInfoForDeviceWithAddress:(id)a3 completion:(id)a4
+- (void)fetchAAProxCardsInfoForDeviceWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__AACloudServicesClient_fetchAAProxCardsInfoForDeviceWithAddress_completion___block_invoke;
   block[3] = &unk_278CDE3C8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = addressCopy;
+  v9 = addressCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -494,20 +494,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)modifyAAProxCardsInfo:(id)a3 completion:(id)a4
+- (void)modifyAAProxCardsInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__AACloudServicesClient_modifyAAProxCardsInfo_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = infoCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -604,20 +604,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)removeAAProxCardsInfoForDeviceWithAddress:(id)a3 completion:(id)a4
+- (void)removeAAProxCardsInfoForDeviceWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__AACloudServicesClient_removeAAProxCardsInfoForDeviceWithAddress_completion___block_invoke;
   block[3] = &unk_278CDE3C8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = addressCopy;
+  v9 = addressCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -712,20 +712,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)fetchHMDeviceCloudRecordInfoWithAddress:(id)a3 completion:(id)a4
+- (void)fetchHMDeviceCloudRecordInfoWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__AACloudServicesClient_fetchHMDeviceCloudRecordInfoWithAddress_completion___block_invoke;
   block[3] = &unk_278CDE3C8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = addressCopy;
+  v9 = addressCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -820,20 +820,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)modifyHMDeviceCloudRecordInfo:(id)a3 completion:(id)a4
+- (void)modifyHMDeviceCloudRecordInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__AACloudServicesClient_modifyHMDeviceCloudRecordInfo_completion___block_invoke;
   block[3] = &unk_278CDDE48;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = infoCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -930,20 +930,20 @@ LABEL_7:
   return v5();
 }
 
-- (void)removeHMDeviceCloudRecordInfoForDeviceWithAddress:(id)a3 completion:(id)a4
+- (void)removeHMDeviceCloudRecordInfoForDeviceWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__AACloudServicesClient_removeHMDeviceCloudRecordInfoForDeviceWithAddress_completion___block_invoke;
   block[3] = &unk_278CDE3C8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = addressCopy;
+  v9 = addressCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -1038,15 +1038,15 @@ LABEL_7:
   return v5();
 }
 
-- (void)hmDeviceCloudRecordInfosUpdated:(id)a3
+- (void)hmDeviceCloudRecordInfosUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (self->_hmDeviceCloudRecordUpdateHandler)
   {
     if (gLogCategory_AACloudServicesClient <= 30 && (gLogCategory_AACloudServicesClient != -1 || _LogCategory_Initialize()))
     {
-      [(AACloudServicesClient *)self hmDeviceCloudRecordInfosUpdated:v4];
+      [(AACloudServicesClient *)self hmDeviceCloudRecordInfosUpdated:updatedCopy];
     }
 
     (*(self->_hmDeviceCloudRecordUpdateHandler + 2))();
@@ -1058,9 +1058,9 @@ LABEL_7:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_AACloudServicesClient <= 90 && (gLogCategory_AACloudServicesClient != -1 || _LogCategory_Initialize()))
   {
     [AACloudServicesClient _reportError:];
@@ -1072,7 +1072,7 @@ LABEL_7:
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 

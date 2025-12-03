@@ -1,47 +1,47 @@
 @interface TVDocumentViewController
-+ (id)viewControllerWithContext:(id)a3 forAppController:(id)a4;
-- (BOOL)handleEvent:(id)a3 withElement:(id)a4 targetResponder:(id)a5;
++ (id)viewControllerWithContext:(id)context forAppController:(id)controller;
+- (BOOL)handleEvent:(id)event withElement:(id)element targetResponder:(id)responder;
 - (TVApplicationController)appController;
 - (TVDocumentViewControllerDelegate)delegate;
-- (id)tvdvc_initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didFailUpdateWithError:(id)a3;
+- (id)tvdvc_initWithNibName:(id)name bundle:(id)bundle;
+- (void)didFailUpdateWithError:(id)error;
 - (void)didUpdateDocument;
-- (void)didUpdateWithContext:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)updateUsingContext:(id)a3;
+- (void)didUpdateWithContext:(id)context;
+- (void)setDelegate:(id)delegate;
+- (void)updateUsingContext:(id)context;
 - (void)willUpdateDocument;
 @end
 
 @implementation TVDocumentViewController
 
-- (id)tvdvc_initWithNibName:(id)a3 bundle:(id)a4
+- (id)tvdvc_initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = TVDocumentViewController;
-  v6 = [(TVDocumentViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v6 = [(TVDocumentViewController *)&v8 initWithNibName:name bundle:bundle];
 
   return v6;
 }
 
-+ (id)viewControllerWithContext:(id)a3 forAppController:(id)a4
++ (id)viewControllerWithContext:(id)context forAppController:(id)controller
 {
   v5 = MEMORY[0x277D1B0D8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithContextDictionary:v7 element:0];
+  controllerCopy = controller;
+  contextCopy = context;
+  v8 = [[v5 alloc] initWithContextDictionary:contextCopy element:0];
   v9 = objc_alloc(MEMORY[0x277D1B090]);
-  v10 = [v6 _appContext];
+  _appContext = [controllerCopy _appContext];
 
-  v11 = [v9 initWithAppContext:v10 serviceContext:v8];
+  v11 = [v9 initWithAppContext:_appContext serviceContext:v8];
   v12 = [[_TVAppDocumentRequestController alloc] initWithDocumentServiceRequest:v11];
-  [(TVDocumentViewController *)v12 setDocumentContext:v7];
+  [(TVDocumentViewController *)v12 setDocumentContext:contextCopy];
 
   return v12;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v6 = obj;
@@ -80,15 +80,15 @@
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)updateUsingContext:(id)a3
+- (void)updateUsingContext:(id)context
 {
-  v4 = a3;
-  v6 = [(TVDocumentViewController *)self documentContext];
-  [(TVDocumentViewController *)self setDocumentContext:v4];
+  contextCopy = context;
+  documentContext = [(TVDocumentViewController *)self documentContext];
+  [(TVDocumentViewController *)self setDocumentContext:contextCopy];
 
-  v5 = [(TVDocumentViewController *)self documentContext];
+  documentContext2 = [(TVDocumentViewController *)self documentContext];
 
-  if (v6 != v5)
+  if (documentContext != documentContext2)
   {
     [(TVDocumentViewController *)self didChangeDocumentContext];
   }
@@ -98,8 +98,8 @@
 {
   if (self->_delegateFlags.respondsToWillUpdate)
   {
-    v4 = [(TVDocumentViewController *)self delegate];
-    [v4 documentViewControllerWillUpdate:self];
+    delegate = [(TVDocumentViewController *)self delegate];
+    [delegate documentViewControllerWillUpdate:self];
   }
 }
 
@@ -107,45 +107,45 @@
 {
   if (self->_delegateFlags.respondsToDidUpdate)
   {
-    v4 = [(TVDocumentViewController *)self delegate];
-    [v4 documentViewControllerDidUpdate:self];
+    delegate = [(TVDocumentViewController *)self delegate];
+    [delegate documentViewControllerDidUpdate:self];
   }
 }
 
-- (void)didUpdateWithContext:(id)a3
+- (void)didUpdateWithContext:(id)context
 {
   if (self->_delegateFlags.respondsToDidUpdateWithContext)
   {
-    v5 = a3;
-    v6 = [(TVDocumentViewController *)self delegate];
-    [v6 documentViewController:self didUpdateWithContext:v5];
+    contextCopy = context;
+    delegate = [(TVDocumentViewController *)self delegate];
+    [delegate documentViewController:self didUpdateWithContext:contextCopy];
   }
 }
 
-- (void)didFailUpdateWithError:(id)a3
+- (void)didFailUpdateWithError:(id)error
 {
   if (self->_delegateFlags.respondsToDidFailWithError)
   {
-    v5 = a3;
-    v6 = [(TVDocumentViewController *)self delegate];
-    [v6 documentViewController:self didFailUpdateWithError:v5];
+    errorCopy = error;
+    delegate = [(TVDocumentViewController *)self delegate];
+    [delegate documentViewController:self didFailUpdateWithError:errorCopy];
   }
 }
 
-- (BOOL)handleEvent:(id)a3 withElement:(id)a4 targetResponder:(id)a5
+- (BOOL)handleEvent:(id)event withElement:(id)element targetResponder:(id)responder
 {
   if (!self->_delegateFlags.respondsToHandleEvent)
   {
     return 0;
   }
 
-  v6 = self;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(TVDocumentViewController *)v6 delegate];
-  LOBYTE(v6) = [v9 documentViewController:v6 handleEvent:v8 withElement:v7];
+  selfCopy = self;
+  elementCopy = element;
+  eventCopy = event;
+  delegate = [(TVDocumentViewController *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate documentViewController:selfCopy handleEvent:eventCopy withElement:elementCopy];
 
-  return v6;
+  return selfCopy;
 }
 
 - (TVApplicationController)appController

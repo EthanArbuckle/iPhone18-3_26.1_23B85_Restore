@@ -1,9 +1,9 @@
 @interface CACGridOverlayNumberOfColumnsController
 - (CACGridOverlayNumberOfColumnsController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CACGridOverlayNumberOfColumnsController
@@ -72,21 +72,21 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = CACGridOverlayNumberOfColumnsController;
-  v6 = a4;
-  v7 = [(CACGridOverlayNumberOfColumnsController *)&v16 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(CACGridOverlayNumberOfColumnsController *)self specifierAtIndexPath:v6, v16.receiver, v16.super_class];
+  pathCopy = path;
+  v7 = [(CACGridOverlayNumberOfColumnsController *)&v16 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(CACGridOverlayNumberOfColumnsController *)self specifierAtIndexPath:pathCopy, v16.receiver, v16.super_class];
 
   v9 = [v8 propertyForKey:@"GridOverlayNumberOfColumns"];
   v10 = +[CACPreferences sharedPreferences];
-  v11 = [v10 gridOverlayCustomColumnsEnabled];
+  gridOverlayCustomColumnsEnabled = [v10 gridOverlayCustomColumnsEnabled];
 
   if ([v9 integerValue])
   {
-    if (v11)
+    if (gridOverlayCustomColumnsEnabled)
     {
       v12 = +[CACPreferences sharedPreferences];
       [v7 setChecked:{objc_msgSend(v12, "gridOverlayCustomColumnsCount") == objc_msgSend(v9, "integerValue")}];
@@ -100,7 +100,7 @@
 
   else
   {
-    v13 = v11 ^ 1;
+    v13 = gridOverlayCustomColumnsEnabled ^ 1;
     v14 = v7;
   }
 
@@ -110,18 +110,18 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = CACGridOverlayNumberOfColumnsController;
-  [(CACGridOverlayNumberOfColumnsController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(CACGridOverlayNumberOfColumnsController *)self specifierAtIndexPath:v6];
+  [(CACGridOverlayNumberOfColumnsController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(CACGridOverlayNumberOfColumnsController *)self specifierAtIndexPath:pathCopy];
   v8 = [v7 propertyForKey:@"GridOverlayNumberOfColumns"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = +[CACPreferences sharedPreferences];
   v11 = v10;
-  if (v9)
+  if (integerValue)
   {
     [v10 setGridOverlayCustomColumnsEnabled:1];
 
@@ -134,7 +134,7 @@ LABEL_7:
     [v10 setGridOverlayCustomColumnsEnabled:0];
   }
 
-  [(CACGridOverlayNumberOfColumnsController *)self updateTableCheckedSelection:v6];
+  [(CACGridOverlayNumberOfColumnsController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface AEEPubPicturebookMinifiedController
 - (AEAssetMinifiedControllerDelegate)minifiedControllerDelegate;
-- (AEEPubPicturebookMinifiedController)initWithHelper:(id)a3;
+- (AEEPubPicturebookMinifiedController)initWithHelper:(id)helper;
 - (void)minifiedControllerSaveState;
 - (void)minifiedControllerWillUnloadAsset;
 @end
 
 @implementation AEEPubPicturebookMinifiedController
 
-- (AEEPubPicturebookMinifiedController)initWithHelper:(id)a3
+- (AEEPubPicturebookMinifiedController)initWithHelper:(id)helper
 {
-  v5 = a3;
+  helperCopy = helper;
   v9.receiver = self;
   v9.super_class = AEEPubPicturebookMinifiedController;
   v6 = [(AEEPubPicturebookMinifiedController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_helper, a3);
+    objc_storeStrong(&v6->_helper, helper);
   }
 
   return v7;
@@ -24,23 +24,23 @@
 
 - (void)minifiedControllerWillUnloadAsset
 {
-  v3 = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
-  [v3 close:0];
+  minifiedControllerLoadedAssetViewController = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
+  [minifiedControllerLoadedAssetViewController close:0];
 
-  v4 = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
+  minifiedControllerLoadedAssetViewController2 = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
-    [v6 assetViewControllerWillUnload];
+    minifiedControllerLoadedAssetViewController3 = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
+    [minifiedControllerLoadedAssetViewController3 assetViewControllerWillUnload];
   }
 }
 
 - (void)minifiedControllerSaveState
 {
-  v2 = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
-  [v2 saveStateClosing:0];
+  minifiedControllerLoadedAssetViewController = [(AEEPubPicturebookMinifiedController *)self minifiedControllerLoadedAssetViewController];
+  [minifiedControllerLoadedAssetViewController saveStateClosing:0];
 }
 
 - (AEAssetMinifiedControllerDelegate)minifiedControllerDelegate

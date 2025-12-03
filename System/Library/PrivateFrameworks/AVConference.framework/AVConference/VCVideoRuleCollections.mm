@@ -1,32 +1,32 @@
 @interface VCVideoRuleCollections
-+ (id)newCorrectedVideoRules:(id)a3 payload:(int)a4;
++ (id)newCorrectedVideoRules:(id)rules payload:(int)payload;
 + (id)newU1VideoRuleCollections;
-+ (void)addRulesForU1ToCollection:(id)a3;
++ (void)addRulesForU1ToCollection:(id)collection;
 + (void)newU1VideoRuleCollections;
 - (BOOL)isDecodeSupported;
 - (BOOL)isEncodeSupported;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isPayloadSupported:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isPayloadSupported:(int)supported;
 - (NSSet)supportedTransportTypes;
 - (VCVideoRuleCollections)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)filterRules:(id)a3 byBitrateRule:(id)a4;
-- (id)getVideoRulesForTransport:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5;
-- (id)supportedVideoRulesForBitrate:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6;
-- (id)supportedVideoRulesSizesForBitrate:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6;
-- (id)supportedVideoRulesSyncForTransportType:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5;
-- (id)supportedVideoSizesForKey:(id)a3;
-- (id)videoRulesCollectionsByRemovingPayload:(int)a3 andPayload:(int)a4 removeCellular:(BOOL)a5;
-- (void)addSupportedPayload:(int)a3;
-- (void)addVideoRules:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6;
-- (void)appendVideoRules:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6;
+- (id)filterRules:(id)rules byBitrateRule:(id)rule;
+- (id)getVideoRulesForTransport:(unsigned __int8)transport payload:(int)payload encodingType:(unsigned __int8)type;
+- (id)supportedVideoRulesForBitrate:(id)bitrate transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType;
+- (id)supportedVideoRulesSizesForBitrate:(id)bitrate transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType;
+- (id)supportedVideoRulesSyncForTransportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType;
+- (id)supportedVideoSizesForKey:(id)key;
+- (id)videoRulesCollectionsByRemovingPayload:(int)payload andPayload:(int)andPayload removeCellular:(BOOL)cellular;
+- (void)addSupportedPayload:(int)payload;
+- (void)addVideoRules:(id)rules transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType;
+- (void)appendVideoRules:(id)rules transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType;
 - (void)dealloc;
 - (void)init;
-- (void)limitRulesFromVideoRules:(int)a3 frameHeight:(int)a4 videoRules:(id)a5;
-- (void)limitVideoRulesToMaxWidth:(int)a3 maxHeight:(int)a4 transportType:(unsigned __int8)a5;
-- (void)removeVideoRulesForEncodingType:(unsigned __int8)a3;
-- (void)removeVideoRulesWithWidth:(int)a3 height:(int)a4 transportType:(unsigned __int8)a5 encodingType:(unsigned __int8)a6;
+- (void)limitRulesFromVideoRules:(int)rules frameHeight:(int)height videoRules:(id)videoRules;
+- (void)limitVideoRulesToMaxWidth:(int)width maxHeight:(int)height transportType:(unsigned __int8)type;
+- (void)removeVideoRulesForEncodingType:(unsigned __int8)type;
+- (void)removeVideoRulesWithWidth:(int)width height:(int)height transportType:(unsigned __int8)type encodingType:(unsigned __int8)encodingType;
 @end
 
 @implementation VCVideoRuleCollections
@@ -73,17 +73,17 @@
   [(VCVideoRuleCollections *)&v3 dealloc];
 }
 
-- (id)filterRules:(id)a3 byBitrateRule:(id)a4
+- (id)filterRules:(id)rules byBitrateRule:(id)rule
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (rule)
   {
     v6 = objc_opt_new();
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+    v7 = [rules countByEnumeratingWithState:&v25 objects:v24 count:16];
     if (v7)
     {
       v8 = v7;
@@ -94,30 +94,30 @@
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(rules);
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          if ([v11 compare:a4] <= 0)
+          if ([v11 compare:rule] <= 0)
           {
             [v6 addObject:v11];
           }
         }
 
-        v8 = [a3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+        v8 = [rules countByEnumeratingWithState:&v25 objects:v24 count:16];
       }
 
       while (v8);
     }
 
-    if ([v6 count] || !objc_msgSend(a3, "count"))
+    if ([v6 count] || !objc_msgSend(rules, "count"))
     {
       [v6 sortUsingSelector:sel_compare_];
     }
 
     else
     {
-      [v6 addObject:a4];
+      [v6 addObject:rule];
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -156,24 +156,24 @@
   }
 }
 
-- (id)supportedVideoRulesSyncForTransportType:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5
+- (id)supportedVideoRulesSyncForTransportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = a3;
+  encodingTypeCopy = encodingType;
+  v6 = *&payload;
+  typeCopy = type;
   objc_sync_enter(self);
-  v9 = [(VCVideoRuleCollections *)self getVideoRulesForTransport:v7 payload:v6 encodingType:v5];
+  v9 = [(VCVideoRuleCollections *)self getVideoRulesForTransport:typeCopy payload:v6 encodingType:encodingTypeCopy];
   v10 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v9];
   objc_sync_exit(self);
 
   return v10;
 }
 
-- (id)supportedVideoSizesForKey:(id)a3
+- (id)supportedVideoSizesForKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(NSMutableDictionary *)self->_rules objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_rules objectForKeyedSubscript:key];
   if ([v6 count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
@@ -198,8 +198,8 @@
           }
 
           v7 = *(*(&v17 + 1) + 8 * v11);
-          v13 = [v7 iWidth];
-          if (v13 != [v12 iWidth] || (v14 = objc_msgSend(v7, "iHeight"), v14 != objc_msgSend(v12, "iHeight")))
+          iWidth = [v7 iWidth];
+          if (iWidth != [v12 iWidth] || (v14 = objc_msgSend(v7, "iHeight"), v14 != objc_msgSend(v12, "iHeight")))
           {
             [v5 addObject:v12];
           }
@@ -277,9 +277,9 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   return [*(a1 + 32) appendString:@"\n"];
 }
 
-- (id)getVideoRulesForTransport:(unsigned __int8)a3 payload:(int)a4 encodingType:(unsigned __int8)a5
+- (id)getVideoRulesForTransport:(unsigned __int8)transport payload:(int)payload encodingType:(unsigned __int8)type
 {
-  v6 = [[VCVideoRuleCollectionKey alloc] initWithPayload:*&a4 transportType:a3 encodingType:a5];
+  v6 = [[VCVideoRuleCollectionKey alloc] initWithPayload:*&payload transportType:transport encodingType:type];
   v7 = [(NSMutableDictionary *)self->_rules objectForKeyedSubscript:v6];
 
   v8 = [v7 copy];
@@ -287,25 +287,25 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   return v8;
 }
 
-- (id)supportedVideoRulesSizesForBitrate:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6
+- (id)supportedVideoRulesSizesForBitrate:(id)bitrate transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType
 {
-  v9 = [[VCVideoRuleCollectionKey alloc] initWithPayload:*&a5 transportType:a4 encodingType:a6];
+  v9 = [[VCVideoRuleCollectionKey alloc] initWithPayload:*&payload transportType:type encodingType:encodingType];
   v10 = [(VCVideoRuleCollections *)self supportedVideoSizesForKey:v9];
 
-  if (a5 != 126 || !v10)
+  if (payload != 126 || !v10)
   {
     return v10;
   }
 
-  return [(VCVideoRuleCollections *)self filterRules:v10 byBitrateRule:a3];
+  return [(VCVideoRuleCollections *)self filterRules:v10 byBitrateRule:bitrate];
 }
 
-- (id)supportedVideoRulesForBitrate:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6
+- (id)supportedVideoRulesForBitrate:(id)bitrate transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType
 {
-  v9 = [(VCVideoRuleCollections *)self supportedVideoRulesSyncForTransportType:a4 payload:*&a5 encodingType:a6];
-  if (a5 == 126)
+  v9 = [(VCVideoRuleCollections *)self supportedVideoRulesSyncForTransportType:type payload:*&payload encodingType:encodingType];
+  if (payload == 126)
   {
-    v10 = [(VCVideoRuleCollections *)self filterRules:v9 byBitrateRule:a3];
+    v10 = [(VCVideoRuleCollections *)self filterRules:v9 byBitrateRule:bitrate];
   }
 
   else
@@ -355,19 +355,19 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   return v3;
 }
 
-+ (id)newCorrectedVideoRules:(id)a3 payload:(int)a4
++ (id)newCorrectedVideoRules:(id)rules payload:(int)payload
 {
-  v4 = *&a4;
+  v4 = *&payload;
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [a3 firstObject];
-  if ([a3 count] && objc_msgSend(v5, "iPayload") != v4 && ((v7 = objc_msgSend(v5, "iPayload"), v4 == 126) && v7 == 123 || (v8 = objc_msgSend(v5, "iPayload"), v4 == 123) && v8 == 126))
+  firstObject = [rules firstObject];
+  if ([rules count] && objc_msgSend(firstObject, "iPayload") != v4 && ((v7 = objc_msgSend(firstObject, "iPayload"), v4 == 126) && v7 == 123 || (v8 = objc_msgSend(firstObject, "iPayload"), v4 == 123) && v8 == 126))
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(rules, "count")}];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+    v10 = [rules countByEnumeratingWithState:&v26 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -378,23 +378,23 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
         {
           if (*v27 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(rules);
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
           v15 = [VCVideoRule alloc];
-          v16 = [v14 iWidth];
-          v17 = [v14 iHeight];
+          iWidth = [v14 iWidth];
+          iHeight = [v14 iHeight];
           [v14 fRate];
           v19 = v18;
           [v14 fPref];
           LODWORD(v21) = v20;
           LODWORD(v22) = v19;
-          v23 = [(VCVideoRule *)v15 initWithFrameWidth:v16 frameHeight:v17 frameRate:v4 payload:v22 priority:v21];
+          v23 = [(VCVideoRule *)v15 initWithFrameWidth:iWidth frameHeight:iHeight frameRate:v4 payload:v22 priority:v21];
           [v9 addObject:v23];
         }
 
-        v11 = [a3 countByEnumeratingWithState:&v26 objects:v25 count:16];
+        v11 = [rules countByEnumeratingWithState:&v26 objects:v25 count:16];
       }
 
       while (v11);
@@ -406,18 +406,18 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   else
   {
 
-    return a3;
+    return rules;
   }
 }
 
-- (void)addVideoRules:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6
+- (void)addVideoRules:(id)rules transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType
 {
-  if (a3)
+  if (rules)
   {
-    v6 = a6;
-    v7 = *&a5;
-    v8 = a4;
-    v10 = [VCVideoRuleCollections newCorrectedVideoRules:a3 payload:*&a5];
+    encodingTypeCopy = encodingType;
+    v7 = *&payload;
+    typeCopy = type;
+    v10 = [VCVideoRuleCollections newCorrectedVideoRules:rules payload:*&payload];
     if (v10)
     {
       v12 = v10;
@@ -426,25 +426,25 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
         -[NSMutableArray addObject:](self->_supportedPayloads, "addObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7]);
       }
 
-      v11 = [[VCVideoRuleCollectionKey alloc] initWithPayload:v7 transportType:v8 encodingType:v6];
+      v11 = [[VCVideoRuleCollectionKey alloc] initWithPayload:v7 transportType:typeCopy encodingType:encodingTypeCopy];
       [v12 sortUsingSelector:sel_compare_];
       [(NSMutableDictionary *)self->_rules setObject:v12 forKeyedSubscript:v11];
     }
   }
 }
 
-- (void)appendVideoRules:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 encodingType:(unsigned __int8)a6
+- (void)appendVideoRules:(id)rules transportType:(unsigned __int8)type payload:(int)payload encodingType:(unsigned __int8)encodingType
 {
-  v6 = a6;
-  v7 = *&a5;
-  v8 = a4;
+  encodingTypeCopy = encodingType;
+  v7 = *&payload;
+  typeCopy = type;
   v25 = *MEMORY[0x1E69E9840];
-  v11 = [[VCVideoRuleCollectionKey alloc] initWithPayload:*&a5 transportType:a4 encodingType:a6];
+  v11 = [[VCVideoRuleCollectionKey alloc] initWithPayload:*&payload transportType:type encodingType:encodingType];
   v12 = [(NSMutableDictionary *)self->_rules objectForKeyedSubscript:v11];
 
   if (v12)
   {
-    v13 = [VCVideoRuleCollections newCorrectedVideoRules:a3 payload:v7];
+    v13 = [VCVideoRuleCollections newCorrectedVideoRules:rules payload:v7];
     if (v13)
     {
       v14 = v13;
@@ -486,14 +486,14 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   else
   {
 
-    [(VCVideoRuleCollections *)self addVideoRules:a3 transportType:v8 payload:v7 encodingType:v6];
+    [(VCVideoRuleCollections *)self addVideoRules:rules transportType:typeCopy payload:v7 encodingType:encodingTypeCopy];
   }
 }
 
-- (void)removeVideoRulesWithWidth:(int)a3 height:(int)a4 transportType:(unsigned __int8)a5 encodingType:(unsigned __int8)a6
+- (void)removeVideoRulesWithWidth:(int)width height:(int)height transportType:(unsigned __int8)type encodingType:(unsigned __int8)encodingType
 {
-  v20 = a5;
-  v21 = a6;
+  typeCopy = type;
+  encodingTypeCopy = encodingType;
   v33 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
@@ -513,7 +513,7 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
           objc_enumerationMutation(obj);
         }
 
-        v9 = -[VCVideoRuleCollectionKey initWithPayload:transportType:encodingType:]([VCVideoRuleCollectionKey alloc], "initWithPayload:transportType:encodingType:", [*(*(&v29 + 1) + 8 * i) intValue], v20, v21);
+        v9 = -[VCVideoRuleCollectionKey initWithPayload:transportType:encodingType:]([VCVideoRuleCollectionKey alloc], "initWithPayload:transportType:encodingType:", [*(*(&v29 + 1) + 8 * i) intValue], typeCopy, encodingTypeCopy);
         v10 = [(NSMutableDictionary *)self->_rules objectForKeyedSubscript:v9];
         v11 = objc_opt_new();
         v24 = 0u;
@@ -535,7 +535,7 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
               }
 
               v16 = *(*(&v24 + 1) + 8 * j);
-              if ([v16 iWidth] == a3 && objc_msgSend(v16, "iHeight") == a4)
+              if ([v16 iWidth] == width && objc_msgSend(v16, "iHeight") == height)
               {
                 [v11 addObject:v16];
               }
@@ -557,17 +557,17 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)removeVideoRulesForEncodingType:(unsigned __int8)a3
+- (void)removeVideoRulesForEncodingType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSMutableDictionary *)self->_rules allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  allKeys = [(NSMutableDictionary *)self->_rules allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v7)
   {
     v8 = v7;
@@ -578,26 +578,26 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 encodingType] == v3)
+        if ([v11 encodingType] == typeCopy)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v8);
   }
 
-  [(NSMutableDictionary *)self->_rules removeObjectsForKeys:v5];
+  [(NSMutableDictionary *)self->_rules removeObjectsForKeys:array];
 }
 
-- (void)limitRulesFromVideoRules:(int)a3 frameHeight:(int)a4 videoRules:(id)a5
+- (void)limitRulesFromVideoRules:(int)rules frameHeight:(int)height videoRules:(id)videoRules
 {
   v19 = *MEMORY[0x1E69E9840];
   v8 = objc_opt_new();
@@ -605,7 +605,7 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [a5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v9 = [videoRules countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v9)
   {
     v10 = v9;
@@ -616,30 +616,30 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(videoRules);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if ([v13 iWidth] > a3 || objc_msgSend(v13, "iHeight") > a4)
+        if ([v13 iWidth] > rules || objc_msgSend(v13, "iHeight") > height)
         {
           [v8 addObject:v13];
         }
       }
 
-      v10 = [a5 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v10 = [videoRules countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v10);
   }
 
-  [a5 removeObjectsInArray:v8];
+  [videoRules removeObjectsInArray:v8];
 }
 
-- (void)limitVideoRulesToMaxWidth:(int)a3 maxHeight:(int)a4 transportType:(unsigned __int8)a5
+- (void)limitVideoRulesToMaxWidth:(int)width maxHeight:(int)height transportType:(unsigned __int8)type
 {
-  v21 = a5;
-  v5 = *&a4;
-  v6 = *&a3;
+  typeCopy = type;
+  v5 = *&height;
+  v6 = *&width;
   v39 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -653,7 +653,7 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
       v29 = 2080;
       v30 = "[VCVideoRuleCollections limitVideoRulesToMaxWidth:maxHeight:transportType:]";
       v31 = 1024;
-      if (v21 == 1)
+      if (typeCopy == 1)
       {
         v10 = "WiFi";
       }
@@ -695,7 +695,7 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
               objc_enumerationMutation(supportedPayloads);
             }
 
-            v18 = -[VCVideoRuleCollectionKey initWithPayload:transportType:encodingType:]([VCVideoRuleCollectionKey alloc], "initWithPayload:transportType:encodingType:", [*(*(&v23 + 1) + 8 * i) intValue], v21, objc_msgSend(objc_msgSend(&unk_1F579E328, "objectAtIndexedSubscript:", v11), "intValue"));
+            v18 = -[VCVideoRuleCollectionKey initWithPayload:transportType:encodingType:]([VCVideoRuleCollectionKey alloc], "initWithPayload:transportType:encodingType:", [*(*(&v23 + 1) + 8 * i) intValue], typeCopy, objc_msgSend(objc_msgSend(&unk_1F579E328, "objectAtIndexedSubscript:", v11), "intValue"));
             [(VCVideoRuleCollections *)self limitRulesFromVideoRules:v6 frameHeight:v5 videoRules:[(NSMutableDictionary *)self->_rules objectForKeyedSubscript:v18]];
           }
 
@@ -714,58 +714,58 @@ uint64_t __37__VCVideoRuleCollections_description__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)addSupportedPayload:(int)a3
+- (void)addSupportedPayload:(int)payload
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&payload];
   [(NSMutableArray *)self->_supportedPayloads addObject:v4];
 }
 
-- (BOOL)isPayloadSupported:(int)a3
+- (BOOL)isPayloadSupported:(int)supported
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&supported];
   LOBYTE(self) = [(NSMutableArray *)self->_supportedPayloads containsObject:v4];
 
   return self;
 }
 
-+ (void)addRulesForU1ToCollection:(id)a3
++ (void)addRulesForU1ToCollection:(id)collection
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCVideoRuleCollections *)v4 addRulesForU1ToCollection:a1];
+      [(VCVideoRuleCollections *)v4 addRulesForU1ToCollection:self];
     }
   }
 }
 
 + (id)newU1VideoRuleCollections
 {
-  v3 = objc_alloc_init(a1);
+  v3 = objc_alloc_init(self);
   if (!v3)
   {
-    +[(VCVideoRuleCollections *)a1];
+    +[(VCVideoRuleCollections *)self];
 LABEL_6:
 
     return 0;
   }
 
-  [a1 addRulesForU1ToCollection:v3];
+  [self addRulesForU1ToCollection:v3];
   if (![objc_msgSend(v3 "rules")])
   {
-    +[(VCVideoRuleCollections *)a1];
+    +[(VCVideoRuleCollections *)self];
     goto LABEL_6;
   }
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = -[NSMutableArray count](self->_supportedPayloads, "count"), v5 != [objc_msgSend(a3 "supportedPayloads")]))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v5 = -[NSMutableArray count](self->_supportedPayloads, "count"), v5 != [objc_msgSend(equal "supportedPayloads")]))
   {
 LABEL_12:
     v11 = 0;
@@ -790,7 +790,7 @@ LABEL_5:
         objc_enumerationMutation(supportedPayloads);
       }
 
-      if (![objc_msgSend(a3 "supportedPayloads")])
+      if (![objc_msgSend(equal "supportedPayloads")])
       {
         goto LABEL_12;
       }
@@ -817,7 +817,7 @@ LABEL_5:
   v13[1] = 3221225472;
   v13[2] = __34__VCVideoRuleCollections_isEqual___block_invoke;
   v13[3] = &unk_1E85F9F88;
-  v13[4] = a3;
+  v13[4] = equal;
   v13[5] = &v14;
   [(NSMutableDictionary *)rules enumerateKeysAndObjectsUsingBlock:v13];
   v11 = *(v15 + 24);
@@ -953,7 +953,7 @@ uint64_t __43__VCVideoRuleCollections_isDecodeSupported__block_invoke(uint64_t a
   return result;
 }
 
-- (id)videoRulesCollectionsByRemovingPayload:(int)a3 andPayload:(int)a4 removeCellular:(BOOL)a5
+- (id)videoRulesCollectionsByRemovingPayload:(int)payload andPayload:(int)andPayload removeCellular:(BOOL)cellular
 {
   v24 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(VCVideoRuleCollections);
@@ -976,14 +976,14 @@ uint64_t __43__VCVideoRuleCollections_isDecodeSupported__block_invoke(uint64_t a
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v20 + 1) + 8 * i) unsignedIntValue];
-        if (v13 != a3 && v13 != a4)
+        unsignedIntValue = [*(*(&v20 + 1) + 8 * i) unsignedIntValue];
+        if (unsignedIntValue != payload && unsignedIntValue != andPayload)
         {
-          v15 = v13;
-          [(VCVideoRuleCollections *)v8 addSupportedPayload:v13];
+          v15 = unsignedIntValue;
+          [(VCVideoRuleCollections *)v8 addSupportedPayload:unsignedIntValue];
           -[VCVideoRuleCollections addVideoRules:transportType:payload:encodingType:](v8, "addVideoRules:transportType:payload:encodingType:", [MEMORY[0x1E695DF70] arrayWithArray:{-[VCVideoRuleCollections getVideoRulesForTransport:payload:encodingType:](self, "getVideoRulesForTransport:payload:encodingType:", 1, v15, 1)}], 1, v15, 1);
           -[VCVideoRuleCollections addVideoRules:transportType:payload:encodingType:](v8, "addVideoRules:transportType:payload:encodingType:", [MEMORY[0x1E695DF70] arrayWithArray:{-[VCVideoRuleCollections getVideoRulesForTransport:payload:encodingType:](self, "getVideoRulesForTransport:payload:encodingType:", 1, v15, 2)}], 1, v15, 2);
-          if (!a5)
+          if (!cellular)
           {
             -[VCVideoRuleCollections addVideoRules:transportType:payload:encodingType:](v8, "addVideoRules:transportType:payload:encodingType:", [MEMORY[0x1E695DF70] arrayWithArray:{-[VCVideoRuleCollections getVideoRulesForTransport:payload:encodingType:](self, "getVideoRulesForTransport:payload:encodingType:", 2, v15, 1)}], 2, v15, 1);
             -[VCVideoRuleCollections addVideoRules:transportType:payload:encodingType:](v8, "addVideoRules:transportType:payload:encodingType:", [MEMORY[0x1E695DF70] arrayWithArray:{-[VCVideoRuleCollections getVideoRulesForTransport:payload:encodingType:](self, "getVideoRulesForTransport:payload:encodingType:", 2, v15, 2)}], 2, v15, 2);
@@ -1000,13 +1000,13 @@ uint64_t __43__VCVideoRuleCollections_isDecodeSupported__block_invoke(uint64_t a
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableArray *)self->_supportedPayloads mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableArray *)self->_supportedPayloads mutableCopyWithZone:zone];
   [v5 setSupportedPayloads:v6];
 
-  v7 = [(NSMutableDictionary *)self->_rules mutableCopyWithZone:a3];
+  v7 = [(NSMutableDictionary *)self->_rules mutableCopyWithZone:zone];
   [v5 setRules:v7];
 
   return v5;
@@ -1054,7 +1054,7 @@ uint64_t __43__VCVideoRuleCollections_isDecodeSupported__block_invoke(uint64_t a
     VRTraceErrorLogLevelToCSTR();
     if (OUTLINED_FUNCTION_34())
     {
-      class_getName(a1);
+      class_getName(self);
       OUTLINED_FUNCTION_1_1();
       OUTLINED_FUNCTION_7();
       OUTLINED_FUNCTION_4_8();

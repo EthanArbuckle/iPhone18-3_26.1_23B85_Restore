@@ -1,23 +1,23 @@
 @interface SUUIEditorTemplateViewElement
-- (SUUIEditorTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIEditorTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIEditorTemplateViewElement
 
-- (SUUIEditorTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIEditorTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SUUIEditorTemplateViewElement;
-  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"contentId"];
+    v10 = [elementCopy getAttribute:@"contentId"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 longLongValue];
-      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:v12];
+      longLongValue = [v10 longLongValue];
+      v13 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
       contentId = v9->_contentId;
       v9->_contentId = v13;
     }

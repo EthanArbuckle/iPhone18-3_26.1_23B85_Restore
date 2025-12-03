@@ -1,31 +1,31 @@
 @interface CACDictationRecognizerModeOverlayView
-- (CACDictationRecognizerModeOverlayView)initWithFrame:(CGRect)a3;
+- (CACDictationRecognizerModeOverlayView)initWithFrame:(CGRect)frame;
 - (CGRect)boundsForLastReload;
-- (id)_createInvertedMaskedImage:(id)a3 withColor:(id)a4;
+- (id)_createInvertedMaskedImage:(id)image withColor:(id)color;
 - (id)_imageForCurrentDictiationRecognizerMode;
 - (id)imageBundle;
-- (void)_addIconContrasted:(BOOL)a3;
+- (void)_addIconContrasted:(BOOL)contrasted;
 - (void)_updateOverlayImage;
-- (void)setDictationRecognizerMode:(int)a3;
-- (void)setImageRect:(CGRect)a3 withColor:(id)a4;
+- (void)setDictationRecognizerMode:(int)mode;
+- (void)setImageRect:(CGRect)rect withColor:(id)color;
 @end
 
 @implementation CACDictationRecognizerModeOverlayView
 
-- (CACDictationRecognizerModeOverlayView)initWithFrame:(CGRect)a3
+- (CACDictationRecognizerModeOverlayView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CACDictationRecognizerModeOverlayView;
-  return [(CACDictationRecognizerModeOverlayView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(CACDictationRecognizerModeOverlayView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setImageRect:(CGRect)a3 withColor:(id)a4
+- (void)setImageRect:(CGRect)rect withColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
@@ -36,32 +36,32 @@
     self->_imageRect.origin.y = y;
     self->_imageRect.size.width = width;
     self->_imageRect.size.height = height;
-    objc_storeStrong(&self->_tintColor, a4);
+    objc_storeStrong(&self->_tintColor, color);
     [(CACDictationRecognizerModeOverlayView *)self _updateOverlayImage];
   }
 }
 
-- (void)setDictationRecognizerMode:(int)a3
+- (void)setDictationRecognizerMode:(int)mode
 {
-  if (self->_dictationRecognizerMode != a3)
+  if (self->_dictationRecognizerMode != mode)
   {
-    self->_dictationRecognizerMode = a3;
+    self->_dictationRecognizerMode = mode;
     [(CACDictationRecognizerModeOverlayView *)self _updateOverlayImage];
   }
 }
 
-- (id)_createInvertedMaskedImage:(id)a3 withColor:(id)a4
+- (id)_createInvertedMaskedImage:(id)image withColor:(id)color
 {
   v5 = MEMORY[0x277CBF758];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithImage:v7];
+  colorCopy = color;
+  imageCopy = image;
+  v8 = [[v5 alloc] initWithImage:imageCopy];
   v9 = [MEMORY[0x277CBF750] filterWithName:@"CIColorInvert"];
   [v9 setValue:v8 forKey:*MEMORY[0x277CBFAF0]];
   v27 = [MEMORY[0x277CBF740] contextWithOptions:0];
-  v10 = [v9 outputImage];
+  outputImage = [v9 outputImage];
   [v8 extent];
-  v11 = [v27 createCGImage:v10 fromRect:?];
+  v11 = [v27 createCGImage:outputImage fromRect:?];
 
   Width = CGImageGetWidth(v11);
   Height = CGImageGetHeight(v11);
@@ -70,13 +70,13 @@
   BytesPerRow = CGImageGetBytesPerRow(v11);
   DataProvider = CGImageGetDataProvider(v11);
   v18 = CGImageMaskCreate(Width, Height, BitsPerComponent, BitsPerPixel, BytesPerRow, DataProvider, 0, 1);
-  v19 = [v7 _flatImageWithColor:v6];
+  v19 = [imageCopy _flatImageWithColor:colorCopy];
 
-  v20 = [v19 CGImage];
-  v21 = CGImageCreateWithMask(v20, v18);
+  cGImage = [v19 CGImage];
+  v21 = CGImageCreateWithMask(cGImage, v18);
   CGImageRelease(v18);
   v22 = MEMORY[0x277D755B8];
-  [v7 scale];
+  [imageCopy scale];
   v24 = v23;
 
   v25 = [v22 imageWithCGImage:v21 scale:0 orientation:v24];
@@ -141,22 +141,22 @@ uint64_t __60__CACDictationRecognizerModeOverlayView__updateOverlayImage__block_
   return [*(a1 + 32) setNeedsDisplay];
 }
 
-- (void)_addIconContrasted:(BOOL)a3
+- (void)_addIconContrasted:(BOOL)contrasted
 {
-  v3 = a3;
+  contrastedCopy = contrasted;
   v41[4] = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   [(CACDictationRecognizerModeOverlayView *)self addSubview:v5];
   v6 = objc_alloc(MEMORY[0x277D755E8]);
-  v7 = [(CACDictationRecognizerModeOverlayView *)self _imageForCurrentDictiationRecognizerMode];
-  v8 = [v6 initWithImage:v7];
+  _imageForCurrentDictiationRecognizerMode = [(CACDictationRecognizerModeOverlayView *)self _imageForCurrentDictiationRecognizerMode];
+  v8 = [v6 initWithImage:_imageForCurrentDictiationRecognizerMode];
 
   [v8 setContentMode:0];
   p_imageRect = &self->_imageRect;
   [v8 setOrigin:{self->_imageRect.origin.x, self->_imageRect.origin.y}];
   v40 = v8;
   [v5 addSubview:v8];
-  if (v3)
+  if (contrastedCopy)
   {
     v10 = [CACAdaptiveBackdropView contrastAdaptiveBackdropViewWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   }
@@ -168,27 +168,27 @@ uint64_t __60__CACDictationRecognizerModeOverlayView__updateOverlayImage__block_
 
   v11 = v10;
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [v11 layer];
-  [v12 setCaptureOnly:0];
+  layer = [v11 layer];
+  [layer setCaptureOnly:0];
 
   v13 = *MEMORY[0x277CDA610];
-  v14 = [v11 layer];
-  [v14 setCompositingFilter:v13];
+  layer2 = [v11 layer];
+  [layer2 setCompositingFilter:v13];
 
   [v5 addSubview:v11];
-  v15 = [(CACDictationRecognizerModeOverlayView *)self layer];
-  [v15 setAllowsGroupBlending:0];
+  layer3 = [(CACDictationRecognizerModeOverlayView *)self layer];
+  [layer3 setAllowsGroupBlending:0];
 
-  v16 = [(CACDictationRecognizerModeOverlayView *)self _imageForCurrentDictiationRecognizerMode];
-  v17 = [MEMORY[0x277D75348] systemWhiteColor];
-  if (v3)
+  _imageForCurrentDictiationRecognizerMode2 = [(CACDictationRecognizerModeOverlayView *)self _imageForCurrentDictiationRecognizerMode];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  if (contrastedCopy)
   {
-    [v16 _flatImageWithColor:v17];
+    [_imageForCurrentDictiationRecognizerMode2 _flatImageWithColor:systemWhiteColor];
   }
 
   else
   {
-    [(CACDictationRecognizerModeOverlayView *)self _createInvertedMaskedImage:v16 withColor:v17];
+    [(CACDictationRecognizerModeOverlayView *)self _createInvertedMaskedImage:_imageForCurrentDictiationRecognizerMode2 withColor:systemWhiteColor];
   }
   v18 = ;
 
@@ -196,35 +196,35 @@ uint64_t __60__CACDictationRecognizerModeOverlayView__updateOverlayImage__block_
   v19 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v18];
   [v19 setContentMode:0];
   [v19 setOrigin:{p_imageRect->origin.x, p_imageRect->origin.y}];
-  if (v3)
+  if (contrastedCopy)
   {
     [v19 frame];
     [v19 setFrame:{CACCGRectIncreasedByPercentage(v20, v21, v22, v23, 0.08)}];
   }
 
   [v5 addSubview:v19];
-  v32 = [MEMORY[0x277CBEB18] array];
-  v38 = [v11 topAnchor];
-  v37 = [v19 topAnchor];
-  v35 = [v38 constraintEqualToAnchor:v37 constant:0.0];
+  array = [MEMORY[0x277CBEB18] array];
+  topAnchor = [v11 topAnchor];
+  topAnchor2 = [v19 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   v41[0] = v35;
-  v34 = [v11 bottomAnchor];
-  v33 = [v19 bottomAnchor];
-  v31 = [v34 constraintEqualToAnchor:v33 constant:0.0];
+  bottomAnchor = [v11 bottomAnchor];
+  bottomAnchor2 = [v19 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   v41[1] = v31;
-  v24 = [v11 leadingAnchor];
-  v25 = [v19 leadingAnchor];
-  [v24 constraintEqualToAnchor:v25 constant:0.0];
+  leadingAnchor = [v11 leadingAnchor];
+  leadingAnchor2 = [v19 leadingAnchor];
+  [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v26 = v36 = v5;
   v41[2] = v26;
-  v27 = [v11 trailingAnchor];
-  v28 = [v19 trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:0.0];
+  trailingAnchor = [v11 trailingAnchor];
+  trailingAnchor2 = [v19 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   v41[3] = v29;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:4];
-  [v32 addObjectsFromArray:v30];
+  [array addObjectsFromArray:v30];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v32];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (id)_imageForCurrentDictiationRecognizerMode
@@ -265,8 +265,8 @@ uint64_t __60__CACDictationRecognizerModeOverlayView__updateOverlayImage__block_
 
 LABEL_11:
     v5 = MEMORY[0x277D755B8];
-    v6 = [(CACDictationRecognizerModeOverlayView *)self imageBundle];
-    v7 = [v5 imageNamed:v3 inBundle:v6];
+    imageBundle = [(CACDictationRecognizerModeOverlayView *)self imageBundle];
+    v7 = [v5 imageNamed:v3 inBundle:imageBundle];
 
     goto LABEL_12;
   }

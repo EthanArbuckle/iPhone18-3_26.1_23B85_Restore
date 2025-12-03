@@ -22,9 +22,9 @@
   {
     v6.receiver = self;
     v6.super_class = MFIMAPMessageWithCache;
-    v4 = [(MFIMAPMessageWithCache *)&v6 messageData];
+    messageData = [(MFIMAPMessageWithCache *)&v6 messageData];
 
-    v3 = v4;
+    v3 = messageData;
   }
 
   return v3;
@@ -45,16 +45,16 @@
 
 - (id)headerData
 {
-  v3 = [(MFIMAPMessageWithCache *)self messageData];
-  v5 = v3;
-  if (!v3 || (v4 = [v3 mf_rangeOfRFC822HeaderData], v4 == 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(v5, "mf_subdataWithRange:", v4, v6), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  messageData = [(MFIMAPMessageWithCache *)self messageData];
+  v5 = messageData;
+  if (!messageData || (v4 = [messageData mf_rangeOfRFC822HeaderData], v4 == 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(v5, "mf_subdataWithRange:", v4, v6), (headerData = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v9.receiver = self;
     v9.super_class = MFIMAPMessageWithCache;
-    v7 = [(MFIMAPMessageWithCache *)&v9 headerData];
+    headerData = [(MFIMAPMessageWithCache *)&v9 headerData];
   }
 
-  return v7;
+  return headerData;
 }
 
 @end

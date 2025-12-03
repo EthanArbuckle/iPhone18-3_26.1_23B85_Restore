@@ -1,14 +1,14 @@
 @interface _DASNetworkUsageTracker
-+ (BOOL)shouldTrackActivity:(id)a3;
++ (BOOL)shouldTrackActivity:(id)activity;
 + (id)sharedInstance;
 - (_DASNetworkUsageTracker)init;
 - (double)dailyBudget;
-- (double)dailyDataBudgetFromPlan:(id)a3 error:(id)a4;
-- (double)getDataConsumedFromBytesOnCell:(double)result bytesOnCellExpensive:(double)a4 bytesOnCellInexpensive:(double)a5 bytesOnWiFiExpensive:(double)a6;
-- (double)stopTrackingActivity:(id)a3;
-- (double)updateDataForActivity:(id)a3 bytesOnCell:(double)a4 bytesOnCellExpensive:(double)a5 bytesOnCellInexpensive:(double)a6 bytesOnWiFiExpensive:(double)a7 bytesOnWiFiInexpensive:(double)a8;
+- (double)dailyDataBudgetFromPlan:(id)plan error:(id)error;
+- (double)getDataConsumedFromBytesOnCell:(double)result bytesOnCellExpensive:(double)expensive bytesOnCellInexpensive:(double)inexpensive bytesOnWiFiExpensive:(double)fiExpensive;
+- (double)stopTrackingActivity:(id)activity;
+- (double)updateDataForActivity:(id)activity bytesOnCell:(double)cell bytesOnCellExpensive:(double)expensive bytesOnCellInexpensive:(double)inexpensive bytesOnWiFiExpensive:(double)fiExpensive bytesOnWiFiInexpensive:(double)fiInexpensive;
 - (void)dataPlanMetricsDidChange;
-- (void)startTrackingActivity:(id)a3;
+- (void)startTrackingActivity:(id)activity;
 @end
 
 @implementation _DASNetworkUsageTracker
@@ -67,7 +67,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002137C;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020AE80 != -1)
   {
     dispatch_once(&qword_10020AE80, block);
@@ -91,12 +91,12 @@
   [(_DASBudgetModulator *)self->_modulator updateCapacity:@"com.apple.dasd.systemCellular" forBudgetWithName:?];
 }
 
-- (double)dailyDataBudgetFromPlan:(id)a3 error:(id)a4
+- (double)dailyDataBudgetFromPlan:(id)plan error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || v7)
+  planCopy = plan;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!planCopy || errorCopy)
   {
     log = self->_log;
     v14 = -1.0;
@@ -115,9 +115,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [v6 domestic];
+  domestic = [planCopy domestic];
 
-  if (!v9)
+  if (!domestic)
   {
     v20 = self->_log;
     v14 = -1.0;
@@ -133,10 +133,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = [v6 domestic];
-  v11 = [v10 capacityBytes];
+  domestic2 = [planCopy domestic];
+  capacityBytes = [domestic2 capacityBytes];
 
-  [v11 doubleValue];
+  [capacityBytes doubleValue];
   v13 = v12 / 100.0;
   if (v13 <= 1073741820.0)
   {
@@ -152,7 +152,7 @@ LABEL_14:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138543618;
-    v23 = v11;
+    v23 = capacityBytes;
     v24 = 2048;
     v25 = v14;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Data plan budget is for %{public}@ bytes. Discretionary budget is now %lf bytes", &v22, 0x16u);
@@ -195,48 +195,48 @@ LABEL_15:
   return v7;
 }
 
-+ (BOOL)shouldTrackActivity:(id)a3
++ (BOOL)shouldTrackActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 clientDataBudgetName];
-  if (!v5)
+  activityCopy = activity;
+  clientDataBudgetName = [activityCopy clientDataBudgetName];
+  if (!clientDataBudgetName)
   {
-    v7 = [v4 schedulingPriority];
+    schedulingPriority = [activityCopy schedulingPriority];
     v8 = _DASSchedulingPriorityUserInitiated;
-    if (v7 < _DASSchedulingPriorityUserInitiated)
+    if (schedulingPriority < _DASSchedulingPriorityUserInitiated)
     {
-      v9 = [v4 widgetID];
-      if (v9)
+      widgetID = [activityCopy widgetID];
+      if (widgetID)
       {
         v6 = 1;
         goto LABEL_20;
       }
     }
 
-    if (([v4 budgeted] & 1) != 0 || objc_msgSend(v4, "dataBudgeted"))
+    if (([activityCopy budgeted] & 1) != 0 || objc_msgSend(activityCopy, "dataBudgeted"))
     {
-      v10 = [v4 requiresNetwork];
-      if (v10)
+      requiresNetwork = [activityCopy requiresNetwork];
+      if (requiresNetwork)
       {
-        v3 = [v4 userInfo];
-        v11 = [v3 objectForKeyedSubscript:kNWEndpointKey];
+        userInfo = [activityCopy userInfo];
+        v11 = [userInfo objectForKeyedSubscript:kNWEndpointKey];
         if (v11)
         {
 
           v6 = 1;
 LABEL_18:
-          if (v7 >= v8)
+          if (schedulingPriority >= v8)
           {
             goto LABEL_21;
           }
 
-          v9 = 0;
+          widgetID = 0;
 LABEL_20:
 
           goto LABEL_21;
         }
 
-        if (([v4 requestsApplicationLaunch] & 1) == 0)
+        if (([activityCopy requestsApplicationLaunch] & 1) == 0)
         {
           v6 = 0;
 LABEL_17:
@@ -245,10 +245,10 @@ LABEL_17:
         }
 
 LABEL_14:
-        v12 = [v4 relatedApplications];
-        v6 = [v12 count] != 0;
+        relatedApplications = [activityCopy relatedApplications];
+        v6 = [relatedApplications count] != 0;
 
-        if (!v10)
+        if (!requiresNetwork)
         {
           goto LABEL_18;
         }
@@ -256,7 +256,7 @@ LABEL_14:
         goto LABEL_17;
       }
 
-      if ([v4 requestsApplicationLaunch])
+      if ([activityCopy requestsApplicationLaunch])
       {
         goto LABEL_14;
       }
@@ -272,58 +272,58 @@ LABEL_21:
   return v6;
 }
 
-- (void)startTrackingActivity:(id)a3
+- (void)startTrackingActivity:(id)activity
 {
-  v5 = a3;
-  if ([_DASNetworkUsageTracker shouldTrackActivity:v5])
+  activityCopy = activity;
+  if ([_DASNetworkUsageTracker shouldTrackActivity:activityCopy])
   {
     os_unfair_lock_lock(&self->_lock);
     startedActivites = self->_startedActivites;
-    v7 = [v5 name];
-    [(NSMutableSet *)startedActivites addObject:v7];
+    name = [activityCopy name];
+    [(NSMutableSet *)startedActivites addObject:name];
 
     os_unfair_lock_unlock(&self->_lock);
-    v8 = [v5 clientDataBudgetName];
-    if (v8)
+    clientDataBudgetName = [activityCopy clientDataBudgetName];
+    if (clientDataBudgetName)
     {
       goto LABEL_3;
     }
 
-    v8 = [v5 relatedApplications];
-    if (![v8 count])
+    clientDataBudgetName = [activityCopy relatedApplications];
+    if (![clientDataBudgetName count])
     {
 LABEL_34:
 
       goto LABEL_35;
     }
 
-    if ([v5 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
 LABEL_3:
     }
 
     else
     {
-      v10 = [v5 widgetID];
+      widgetID = [activityCopy widgetID];
 
-      if (!v10)
+      if (!widgetID)
       {
         goto LABEL_35;
       }
     }
 
     os_unfair_lock_lock(&self->_lock);
-    v8 = [(NSMutableDictionary *)self->_activityToDataMap objectForKeyedSubscript:v5];
-    if (!v8)
+    clientDataBudgetName = [(NSMutableDictionary *)self->_activityToDataMap objectForKeyedSubscript:activityCopy];
+    if (!clientDataBudgetName)
     {
-      v8 = +[NSMutableDictionary dictionary];
-      [(NSMutableDictionary *)self->_activityToDataMap setObject:v8 forKeyedSubscript:v5];
+      clientDataBudgetName = +[NSMutableDictionary dictionary];
+      [(NSMutableDictionary *)self->_activityToDataMap setObject:clientDataBudgetName forKeyedSubscript:activityCopy];
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    if ([v5 pid])
+    if ([activityCopy pid])
     {
-      v9 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [v5 pid]);
+      v9 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [activityCopy pid]);
     }
 
     else
@@ -331,13 +331,13 @@ LABEL_3:
       v9 = 0;
     }
 
-    v11 = [v5 requestsApplicationLaunch];
-    if ((v11 & 1) != 0 || ([v5 widgetID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    requestsApplicationLaunch = [activityCopy requestsApplicationLaunch];
+    if ((requestsApplicationLaunch & 1) != 0 || ([activityCopy widgetID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [v5 relatedApplications];
-      v13 = [NSSet setWithArray:v12];
+      relatedApplications = [activityCopy relatedApplications];
+      v13 = [NSSet setWithArray:relatedApplications];
 
-      if (v11)
+      if (requestsApplicationLaunch)
       {
         if (!v13)
         {
@@ -371,16 +371,16 @@ LABEL_33:
     }
 
 LABEL_23:
-    if ([v5 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
       v14 = kUsageProcessBundleName;
     }
 
     else
     {
-      v15 = [v5 widgetID];
+      widgetID2 = [activityCopy widgetID];
       v16 = &kUsageProcessProcName;
-      if (v15)
+      if (widgetID2)
       {
         v16 = &kUsageProcessBundleName;
       }
@@ -397,8 +397,8 @@ LABEL_23:
     v22[2] = sub_100021CC8;
     v22[3] = &unk_1001B59F8;
     v22[4] = self;
-    v23 = v8;
-    v24 = v5;
+    v23 = clientDataBudgetName;
+    v24 = activityCopy;
     v19 = v18;
     v25 = v19;
     v20 = objc_retainBlock(v22);
@@ -419,22 +419,22 @@ LABEL_23:
 LABEL_35:
 }
 
-- (double)stopTrackingActivity:(id)a3
+- (double)stopTrackingActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
   v45 = 0;
-  if (![_DASNetworkUsageTracker shouldTrackActivity:v4])
+  if (![_DASNetworkUsageTracker shouldTrackActivity:activityCopy])
   {
     goto LABEL_10;
   }
 
   os_unfair_lock_lock(&self->_lock);
   startedActivites = self->_startedActivites;
-  v6 = [v4 name];
-  LODWORD(startedActivites) = [(NSMutableSet *)startedActivites containsObject:v6];
+  name = [activityCopy name];
+  LODWORD(startedActivites) = [(NSMutableSet *)startedActivites containsObject:name];
 
   if (!startedActivites)
   {
@@ -448,32 +448,32 @@ LABEL_35:
   }
 
   v7 = self->_startedActivites;
-  v8 = [v4 name];
-  [(NSMutableSet *)v7 removeObject:v8];
+  name2 = [activityCopy name];
+  [(NSMutableSet *)v7 removeObject:name2];
 
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [v4 clientDataBudgetName];
-  if (v9)
+  clientDataBudgetName = [activityCopy clientDataBudgetName];
+  if (clientDataBudgetName)
   {
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  v9 = [v4 relatedApplications];
-  if (![(__objc2_class *)v9 count])
+  clientDataBudgetName = [activityCopy relatedApplications];
+  if (![(__objc2_class *)clientDataBudgetName count])
   {
 
     goto LABEL_10;
   }
 
-  if ([v4 requestsApplicationLaunch])
+  if ([activityCopy requestsApplicationLaunch])
   {
     goto LABEL_4;
   }
 
-  v11 = [v4 widgetID];
-  v12 = v11 == 0;
+  widgetID = [activityCopy widgetID];
+  v12 = widgetID == 0;
 
   if (v12)
   {
@@ -483,10 +483,10 @@ LABEL_10:
   }
 
 LABEL_5:
-  if ([v4 pid])
+  if ([activityCopy pid])
   {
-    v9 = _DASUtils;
-    v37 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [v4 pid]);
+    clientDataBudgetName = _DASUtils;
+    v37 = +[_DASUtils processNameFromPID:](_DASUtils, "processNameFromPID:", [activityCopy pid]);
   }
 
   else
@@ -494,13 +494,13 @@ LABEL_5:
     v37 = 0;
   }
 
-  v13 = [v4 requestsApplicationLaunch];
-  if ((v13 & 1) != 0 || ([v4 widgetID], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  requestsApplicationLaunch = [activityCopy requestsApplicationLaunch];
+  if ((requestsApplicationLaunch & 1) != 0 || ([activityCopy widgetID], (clientDataBudgetName = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v14 = [v4 relatedApplications];
-    v15 = [NSSet setWithArray:v14];
+    relatedApplications = [activityCopy relatedApplications];
+    v15 = [NSSet setWithArray:relatedApplications];
 
-    if (v13)
+    if (requestsApplicationLaunch)
     {
       goto LABEL_26;
     }
@@ -518,22 +518,22 @@ LABEL_5:
       v15 = 0;
     }
 
-    v9 = 0;
+    clientDataBudgetName = 0;
   }
 
 LABEL_26:
   if (v15)
   {
-    if ([v4 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
       v16 = kUsageProcessBundleName;
     }
 
     else
     {
-      v18 = [v4 widgetID];
+      widgetID2 = [activityCopy widgetID];
       v19 = &kUsageProcessProcName;
-      if (v18)
+      if (widgetID2)
       {
         v19 = &kUsageProcessBundleName;
       }
@@ -550,7 +550,7 @@ LABEL_26:
     v38[2] = sub_100022544;
     v38[3] = &unk_1001B5A20;
     v38[4] = self;
-    v21 = v4;
+    v21 = activityCopy;
     v39 = v21;
     v41 = &v42;
     dsema = v20;
@@ -567,13 +567,13 @@ LABEL_26:
       sub_10011CD48();
     }
 
-    v23 = [v21 widgetID];
+    widgetID3 = [v21 widgetID];
 
-    if (v23)
+    if (widgetID3)
     {
-      v24 = [v21 relatedApplications];
-      v25 = [v24 firstObject];
-      v26 = [NSString stringWithFormat:@"com.apple.dasd.bytes.widgets.%@", v25];
+      relatedApplications2 = [v21 relatedApplications];
+      firstObject = [relatedApplications2 firstObject];
+      v26 = [NSString stringWithFormat:@"com.apple.dasd.bytes.widgets.%@", firstObject];
 
       v51[0] = @"com.apple.dasd.bytes.widgets";
       v51[1] = v26;
@@ -603,8 +603,8 @@ LABEL_26:
   else
   {
     os_unfair_lock_lock(&self->_lock);
-    v17 = [(_DASNetworkUsageTracker *)self activityToDataMap];
-    [v17 removeObjectForKey:v4];
+    activityToDataMap = [(_DASNetworkUsageTracker *)self activityToDataMap];
+    [activityToDataMap removeObjectForKey:activityCopy];
 
     os_unfair_lock_unlock(&self->_lock);
     v10 = 0.0;
@@ -616,10 +616,10 @@ LABEL_43:
   return v10;
 }
 
-- (double)getDataConsumedFromBytesOnCell:(double)result bytesOnCellExpensive:(double)a4 bytesOnCellInexpensive:(double)a5 bytesOnWiFiExpensive:(double)a6
+- (double)getDataConsumedFromBytesOnCell:(double)result bytesOnCellExpensive:(double)expensive bytesOnCellInexpensive:(double)inexpensive bytesOnWiFiExpensive:(double)fiExpensive
 {
-  v6 = a4 + a5 + a6;
-  v7 = a5 * 0.05 + a4 + a6;
+  v6 = expensive + inexpensive + fiExpensive;
+  v7 = inexpensive * 0.05 + expensive + fiExpensive;
   if (v6 != 0.0)
   {
     return v7;
@@ -628,16 +628,16 @@ LABEL_43:
   return result;
 }
 
-- (double)updateDataForActivity:(id)a3 bytesOnCell:(double)a4 bytesOnCellExpensive:(double)a5 bytesOnCellInexpensive:(double)a6 bytesOnWiFiExpensive:(double)a7 bytesOnWiFiInexpensive:(double)a8
+- (double)updateDataForActivity:(id)activity bytesOnCell:(double)cell bytesOnCellExpensive:(double)expensive bytesOnCellInexpensive:(double)inexpensive bytesOnWiFiExpensive:(double)fiExpensive bytesOnWiFiInexpensive:(double)fiInexpensive
 {
-  v14 = a3;
-  v15 = [_DASPhotosPolicy isiCPLActivity:v14];
-  v16 = [v14 relatedApplications];
-  v17 = [v16 sortedArrayUsingSelector:"compare:"];
-  v18 = [v17 firstObject];
+  activityCopy = activity;
+  v15 = [_DASPhotosPolicy isiCPLActivity:activityCopy];
+  relatedApplications = [activityCopy relatedApplications];
+  v17 = [relatedApplications sortedArrayUsingSelector:"compare:"];
+  firstObject = [v17 firstObject];
 
-  v19 = [v14 schedulingPriority];
-  if (v19 <= _DASSchedulingPriorityDefault)
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority <= _DASSchedulingPriorityDefault)
   {
     v20 = @"disc";
   }
@@ -647,9 +647,9 @@ LABEL_43:
     v20 = @"non-disc";
   }
 
-  v21 = [NSString stringWithFormat:@"com.apple.dasd.bytes.%@.%@.cell", v18, v20];
-  v22 = [v14 schedulingPriority];
-  if (v22 <= _DASSchedulingPriorityDefault)
+  v21 = [NSString stringWithFormat:@"com.apple.dasd.bytes.%@.%@.cell", firstObject, v20];
+  schedulingPriority2 = [activityCopy schedulingPriority];
+  if (schedulingPriority2 <= _DASSchedulingPriorityDefault)
   {
     v23 = @"disc";
   }
@@ -659,32 +659,32 @@ LABEL_43:
     v23 = @"non-disc";
   }
 
-  v24 = [NSString stringWithFormat:@"com.apple.dasd.bytes.%@.%@.wifi", v18, v23];
+  v24 = [NSString stringWithFormat:@"com.apple.dasd.bytes.%@.%@.wifi", firstObject, v23];
   v25 = v24;
-  if (a5 + a6 + a7 + a8 > 0.0)
+  if (expensive + inexpensive + fiExpensive + fiInexpensive > 0.0)
   {
     v88[0] = v24;
     v88[1] = v21;
     v26 = [NSArray arrayWithObjects:v88 count:2];
-    v27 = v14;
+    v27 = activityCopy;
     v28 = v15;
-    v29 = self;
-    v30 = v18;
+    selfCopy = self;
+    v30 = firstObject;
     v31 = v25;
     v32 = v21;
-    v33 = [NSNumber numberWithDouble:a7 + a8];
-    v87[0] = v33;
-    v34 = [NSNumber numberWithDouble:a5 + a6];
-    v87[1] = v34;
+    fiInexpensive = [NSNumber numberWithDouble:fiExpensive + fiInexpensive];
+    v87[0] = fiInexpensive;
+    inexpensive = [NSNumber numberWithDouble:expensive + inexpensive];
+    v87[1] = inexpensive;
     v35 = [NSArray arrayWithObjects:v87 count:2];
     [_DASMetricRecorder incrementOccurrencesForKeys:v26 byCounts:v35];
 
     v21 = v32;
     v25 = v31;
-    v18 = v30;
-    self = v29;
+    firstObject = v30;
+    self = selfCopy;
     v15 = v28;
-    v14 = v27;
+    activityCopy = v27;
   }
 
   if (v15)
@@ -695,11 +695,11 @@ LABEL_43:
       v72 = v25;
       v37 = v21;
       v38 = v36;
-      v39 = [NSNumber numberWithDouble:a5];
-      v40 = [NSNumber numberWithDouble:a6];
-      v41 = [NSNumber numberWithDouble:a7];
-      v42 = [NSNumber numberWithDouble:a8];
-      v43 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 schedulingPriority]);
+      v39 = [NSNumber numberWithDouble:expensive];
+      v40 = [NSNumber numberWithDouble:inexpensive];
+      v41 = [NSNumber numberWithDouble:fiExpensive];
+      v42 = [NSNumber numberWithDouble:fiInexpensive];
+      v43 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [activityCopy schedulingPriority]);
       *buf = 138544386;
       v76 = v39;
       v77 = 2114;
@@ -719,8 +719,8 @@ LABEL_43:
 
   else
   {
-    v44 = [v14 relatedApplications];
-    v45 = [v44 count];
+    relatedApplications2 = [activityCopy relatedApplications];
+    v45 = [relatedApplications2 count];
 
     v46 = self->_log;
     v47 = os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT);
@@ -729,15 +729,15 @@ LABEL_43:
       if (v47)
       {
         log = v46;
-        v67 = [NSNumber numberWithDouble:a5];
-        v48 = [NSNumber numberWithDouble:a6];
-        v49 = [NSNumber numberWithDouble:a7];
-        [NSNumber numberWithDouble:a8];
+        v67 = [NSNumber numberWithDouble:expensive];
+        v48 = [NSNumber numberWithDouble:inexpensive];
+        v49 = [NSNumber numberWithDouble:fiExpensive];
+        [NSNumber numberWithDouble:fiInexpensive];
         v70 = v21;
         v50 = v73 = v25;
-        v51 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 schedulingPriority]);
-        v52 = [v14 relatedApplications];
-        v53 = [v52 firstObject];
+        v51 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [activityCopy schedulingPriority]);
+        relatedApplications3 = [activityCopy relatedApplications];
+        firstObject2 = [relatedApplications3 firstObject];
         *buf = 138544642;
         v76 = v67;
         v77 = 2114;
@@ -749,7 +749,7 @@ LABEL_43:
         v83 = 2114;
         v84 = v51;
         v85 = 2112;
-        v86 = v53;
+        v86 = firstObject2;
         _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Cell Expensive Bytes: %{public}@, Cell Inexpensive Bytes: %{public}@, WiFi Expensive Bytes: %{public}@, WiFi Inexpensive Bytes: %{public}@, Priority: %{public}@, Applications: %@", buf, 0x3Eu);
 
         v21 = v70;
@@ -760,14 +760,14 @@ LABEL_43:
     else if (v47)
     {
       loga = v46;
-      v54 = [NSNumber numberWithDouble:a5];
-      v55 = [NSNumber numberWithDouble:a6];
-      v56 = [NSNumber numberWithDouble:a7];
-      [NSNumber numberWithDouble:a8];
+      v54 = [NSNumber numberWithDouble:expensive];
+      v55 = [NSNumber numberWithDouble:inexpensive];
+      v56 = [NSNumber numberWithDouble:fiExpensive];
+      [NSNumber numberWithDouble:fiInexpensive];
       v71 = v21;
       v57 = v74 = v25;
-      v58 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 schedulingPriority]);
-      v59 = [v14 relatedApplications];
+      v58 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [activityCopy schedulingPriority]);
+      relatedApplications4 = [activityCopy relatedApplications];
       *buf = 138544642;
       v76 = v54;
       v77 = 2114;
@@ -779,7 +779,7 @@ LABEL_43:
       v83 = 2114;
       v84 = v58;
       v85 = 2112;
-      v86 = v59;
+      v86 = relatedApplications4;
       _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEFAULT, "Cell Expensive Bytes: %{public}@, Cell Inexpensive Bytes: %{public}@, WiFi Expensive Bytes: %{public}@, WiFi Inexpensive Bytes: %{public}@, Priority: %{public}@, Applications: %@", buf, 0x3Eu);
 
       v21 = v71;
@@ -788,12 +788,12 @@ LABEL_43:
   }
 
   v60 = 0.0;
-  if ([_DASNetworkUsageTracker shouldTrackActivity:v14])
+  if ([_DASNetworkUsageTracker shouldTrackActivity:activityCopy])
   {
     os_unfair_lock_lock(&self->_lock);
     startedActivites = self->_startedActivites;
-    v62 = [v14 name];
-    LOBYTE(startedActivites) = [(NSMutableSet *)startedActivites containsObject:v62];
+    name = [activityCopy name];
+    LOBYTE(startedActivites) = [(NSMutableSet *)startedActivites containsObject:name];
 
     if ((startedActivites & 1) == 0)
     {
@@ -803,12 +803,12 @@ LABEL_43:
       }
 
       v63 = self->_startedActivites;
-      v64 = [v14 name];
-      [(NSMutableSet *)v63 addObject:v64];
+      name2 = [activityCopy name];
+      [(NSMutableSet *)v63 addObject:name2];
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    [(_DASNetworkUsageTracker *)self getDataConsumedFromBytesOnCell:a4 bytesOnCellExpensive:a5 bytesOnCellInexpensive:a6 bytesOnWiFiExpensive:a7];
+    [(_DASNetworkUsageTracker *)self getDataConsumedFromBytesOnCell:cell bytesOnCellExpensive:expensive bytesOnCellInexpensive:inexpensive bytesOnWiFiExpensive:fiExpensive];
     v60 = v65;
   }
 

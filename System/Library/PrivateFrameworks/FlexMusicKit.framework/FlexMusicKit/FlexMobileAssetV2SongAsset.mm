@@ -1,35 +1,35 @@
 @interface FlexMobileAssetV2SongAsset
-- (FlexMobileAssetV2SongAsset)initWithAssetID:(id)a3 localURL:(id)a4 cloudManager:(id)a5 contentVersion:(int64_t)a6 compatibilityVersion:(int64_t)a7;
-- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)a3;
-- (int64_t)contentVersionForAssetLocation:(unint64_t)a3;
+- (FlexMobileAssetV2SongAsset)initWithAssetID:(id)d localURL:(id)l cloudManager:(id)manager contentVersion:(int64_t)version compatibilityVersion:(int64_t)compatibilityVersion;
+- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)location;
+- (int64_t)contentVersionForAssetLocation:(unint64_t)location;
 - (unint64_t)assetStatus;
 @end
 
 @implementation FlexMobileAssetV2SongAsset
 
-- (FlexMobileAssetV2SongAsset)initWithAssetID:(id)a3 localURL:(id)a4 cloudManager:(id)a5 contentVersion:(int64_t)a6 compatibilityVersion:(int64_t)a7
+- (FlexMobileAssetV2SongAsset)initWithAssetID:(id)d localURL:(id)l cloudManager:(id)manager contentVersion:(int64_t)version compatibilityVersion:(int64_t)compatibilityVersion
 {
   v18.receiver = self;
   v18.super_class = FlexMobileAssetV2SongAsset;
-  v9 = [(FlexCloudSongAsset *)&v18 initWithAssetID:a3 assetStatus:a4 == 0 localURL:a4 cloudManager:a5 contentVersion:a6 compatibilityVersion:a7];
+  v9 = [(FlexCloudSongAsset *)&v18 initWithAssetID:d assetStatus:l == 0 localURL:l cloudManager:manager contentVersion:version compatibilityVersion:compatibilityVersion];
   v13 = v9;
   if (v9)
   {
-    objc_msgSend_setNewestContentVersion_(v9, v10, a6, v11, v12);
-    objc_msgSend_setNewestCompatibilityVersion_(v13, v14, a7, v15, v16);
+    objc_msgSend_setNewestContentVersion_(v9, v10, version, v11, v12);
+    objc_msgSend_setNewestCompatibilityVersion_(v13, v14, compatibilityVersion, v15, v16);
   }
 
   return v13;
 }
 
-- (int64_t)contentVersionForAssetLocation:(unint64_t)a3
+- (int64_t)contentVersionForAssetLocation:(unint64_t)location
 {
-  if (a3 == 1)
+  if (location == 1)
   {
     return objc_msgSend_newestContentVersion(self, a2, 1, v3, v4);
   }
 
-  if (a3)
+  if (location)
   {
     return 0;
   }
@@ -37,14 +37,14 @@
   return objc_msgSend_contentVersion(self, a2, 0, v3, v4);
 }
 
-- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)a3
+- (int64_t)compatibilityVersionForAssetLocation:(unint64_t)location
 {
-  if (a3 == 1)
+  if (location == 1)
   {
     return objc_msgSend_newestCompatibilityVersion(self, a2, 1, v3, v4);
   }
 
-  if (a3)
+  if (location)
   {
     return 0;
   }

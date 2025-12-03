@@ -1,66 +1,66 @@
 @interface CSFBnnsIrLookUp
-+ (id)_generateHashBnnsIrPathForMilFile:(id)a3;
-+ (id)getBnnsIrPathFromMilFile:(id)a3;
-+ (id)readBnnsIrFromCacheMapWithMilFile:(id)a3;
++ (id)_generateHashBnnsIrPathForMilFile:(id)file;
++ (id)getBnnsIrPathFromMilFile:(id)file;
++ (id)readBnnsIrFromCacheMapWithMilFile:(id)file;
 + (void)initialize;
-+ (void)removeBnnsIrFromCacheMapWithMilFile:(id)a3;
-+ (void)setCacheMapWithMilFile:(id)a3 bnnsIr:(id)a4;
++ (void)removeBnnsIrFromCacheMapWithMilFile:(id)file;
++ (void)setCacheMapWithMilFile:(id)file bnnsIr:(id)ir;
 @end
 
 @implementation CSFBnnsIrLookUp
 
-+ (id)_generateHashBnnsIrPathForMilFile:(id)a3
++ (id)_generateHashBnnsIrPathForMilFile:(id)file
 {
-  v3 = [CSFHashUtils sha256HashStringFromInputString:a3];
+  v3 = [CSFHashUtils sha256HashStringFromInputString:file];
   v4 = [v3 substringWithRange:{0, 10}];
 
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 getOnDeviceCompilationCacheDirectoryForBenchmark];
+  getOnDeviceCompilationCacheDirectoryForBenchmark = [v5 getOnDeviceCompilationCacheDirectoryForBenchmark];
 
-  v7 = [v6 stringByAppendingPathComponent:v4];
+  v7 = [getOnDeviceCompilationCacheDirectoryForBenchmark stringByAppendingPathComponent:v4];
   v8 = [v7 stringByAppendingPathExtension:@"bnnsir"];
 
   return v8;
 }
 
-+ (void)removeBnnsIrFromCacheMapWithMilFile:(id)a3
++ (void)removeBnnsIrFromCacheMapWithMilFile:(id)file
 {
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
-    v4 = v3;
+    v4 = fileCopy;
     os_unfair_lock_lock(&milBnnsIrCacheMapLock);
     [modelMilBnnsIrCacheMap removeObjectForKey:v4];
     os_unfair_lock_lock(&milBnnsIrCacheMapLock);
-    v3 = v4;
+    fileCopy = v4;
   }
 }
 
-+ (void)setCacheMapWithMilFile:(id)a3 bnnsIr:(id)a4
++ (void)setCacheMapWithMilFile:(id)file bnnsIr:(id)ir
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8 && v5)
+  fileCopy = file;
+  irCopy = ir;
+  if (fileCopy && irCopy)
   {
     os_unfair_lock_lock(&milBnnsIrCacheMapLock);
     v6 = modelMilBnnsIrCacheMap;
-    v7 = [v8 stringByStandardizingPath];
-    [v6 setObject:v5 forKey:v7];
+    stringByStandardizingPath = [fileCopy stringByStandardizingPath];
+    [v6 setObject:irCopy forKey:stringByStandardizingPath];
 
     os_unfair_lock_unlock(&milBnnsIrCacheMapLock);
   }
 }
 
-+ (id)readBnnsIrFromCacheMapWithMilFile:(id)a3
++ (id)readBnnsIrFromCacheMapWithMilFile:(id)file
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
     os_unfair_lock_lock(&milBnnsIrCacheMapLock);
     v4 = modelMilBnnsIrCacheMap;
-    v5 = [v3 stringByStandardizingPath];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    stringByStandardizingPath = [fileCopy stringByStandardizingPath];
+    v6 = [v4 objectForKeyedSubscript:stringByStandardizingPath];
 
     os_unfair_lock_unlock(&milBnnsIrCacheMapLock);
     v7 = CSLogContextFacilityCoreSpeech;
@@ -71,7 +71,7 @@
       v12 = 2112;
       v13 = v6;
       v14 = 2112;
-      v15 = v3;
+      v15 = fileCopy;
       _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s obtained bnnsir : %@ for milFile: %@", &v10, 0x20u);
     }
   }
@@ -86,15 +86,15 @@
   return v6;
 }
 
-+ (id)getBnnsIrPathFromMilFile:(id)a3
++ (id)getBnnsIrPathFromMilFile:(id)file
 {
-  v4 = a3;
-  if ([v4 hasSuffix:@"bnns.mil"])
+  fileCopy = file;
+  if ([fileCopy hasSuffix:@"bnns.mil"])
   {
-    v5 = [CSFBnnsIrLookUp readBnnsIrFromCacheMapWithMilFile:v4];
+    v5 = [CSFBnnsIrLookUp readBnnsIrFromCacheMapWithMilFile:fileCopy];
     if (!v5)
     {
-      v5 = [a1 _generateHashBnnsIrPathForMilFile:v4];
+      v5 = [self _generateHashBnnsIrPathForMilFile:fileCopy];
     }
   }
 
@@ -108,7 +108,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && +[CSFBnnsIrLookUp initialize]::onceToken != -1)
+  if (objc_opt_class() == self && +[CSFBnnsIrLookUp initialize]::onceToken != -1)
   {
 
     dispatch_once(&+[CSFBnnsIrLookUp initialize]::onceToken, &__block_literal_global_1105);

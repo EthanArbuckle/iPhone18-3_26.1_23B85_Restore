@@ -1,19 +1,19 @@
 @interface MRDAVRemoteControlClusterOutputDevice
-- (MRDAVRemoteControlClusterOutputDevice)initWithDevices:(id)a3;
-- (MRDAVRemoteControlClusterOutputDevice)initWithPrimaryOutputDevice:(id)a3 members:(id)a4;
-- (id)_calculateHierarchy:(id)a3;
-- (id)_createStereoPairRepresentationFrom:(id)a3;
+- (MRDAVRemoteControlClusterOutputDevice)initWithDevices:(id)devices;
+- (MRDAVRemoteControlClusterOutputDevice)initWithPrimaryOutputDevice:(id)device members:(id)members;
+- (id)_calculateHierarchy:(id)hierarchy;
+- (id)_createStereoPairRepresentationFrom:(id)from;
 @end
 
 @implementation MRDAVRemoteControlClusterOutputDevice
 
-- (MRDAVRemoteControlClusterOutputDevice)initWithDevices:(id)a3
+- (MRDAVRemoteControlClusterOutputDevice)initWithDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 clusterType];
+  devicesCopy = devices;
+  firstObject = [devicesCopy firstObject];
+  clusterType = [firstObject clusterType];
 
-  if (v6 == 2)
+  if (clusterType == 2)
   {
     v37 = 0;
     v38 = &v37;
@@ -25,16 +25,16 @@
     v34[1] = 3221225472;
     v34[2] = sub_1000C1B44;
     v34[3] = &unk_1004BAEF0;
-    v7 = [v4 mutableCopy];
+    v7 = [devicesCopy mutableCopy];
     v35 = v7;
     v36 = &v37;
-    [v4 enumerateObjectsUsingBlock:v34];
+    [devicesCopy enumerateObjectsUsingBlock:v34];
     v8 = v38[5];
     if (v8)
     {
       v9 = [v7 copy];
       self = [(MRDAVRemoteControlClusterOutputDevice *)self initWithPrimaryOutputDevice:v8 members:v9];
-      v10 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -42,10 +42,10 @@
       v9 = _MRLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_1003A76B8(v4, v9);
+        sub_1003A76B8(devicesCopy, v9);
       }
 
-      v10 = 0;
+      selfCopy2 = 0;
     }
 
     _Block_object_dispose(&v37, 8);
@@ -53,7 +53,7 @@
 
   else
   {
-    v11 = [v4 msv_firstWhere:&stru_1004BAF10];
+    v11 = [devicesCopy msv_firstWhere:&stru_1004BAF10];
 
     if (v11)
     {
@@ -86,21 +86,21 @@
       v31 = [NSArray arrayWithObjects:v43 count:5];
     }
 
-    v20 = [v4 sortedArrayUsingDescriptors:v31];
-    v21 = [v20 firstObject];
-    if ((([v21 clusterType] - 1) & 0xFFFFFFFD) == 0)
+    v20 = [devicesCopy sortedArrayUsingDescriptors:v31];
+    firstObject2 = [v20 firstObject];
+    if ((([firstObject2 clusterType] - 1) & 0xFFFFFFFD) == 0)
     {
       v22 = [v20 mr_first:&stru_1004BAF30];
       if (v22)
       {
         v23 = +[MRDeviceInfoRequest localDeviceInfo];
-        v24 = [v23 parentGroupContainsDiscoverableGroupLeader];
+        parentGroupContainsDiscoverableGroupLeader = [v23 parentGroupContainsDiscoverableGroupLeader];
 
-        if ((v24 & 1) == 0)
+        if ((parentGroupContainsDiscoverableGroupLeader & 1) == 0)
         {
           v25 = v22;
 
-          v21 = v25;
+          firstObject2 = v25;
         }
       }
     }
@@ -109,29 +109,29 @@
     v32[1] = 3221225472;
     v32[2] = sub_1000C1BDC;
     v32[3] = &unk_1004B8A40;
-    v33 = v21;
-    v26 = v21;
+    v33 = firstObject2;
+    v26 = firstObject2;
     v27 = [v20 mr_filter:v32];
     self = [(MRDAVRemoteControlClusterOutputDevice *)self initWithPrimaryOutputDevice:v26 members:v27];
 
-    v10 = self;
+    selfCopy2 = self;
   }
 
-  return v10;
+  return selfCopy2;
 }
 
-- (MRDAVRemoteControlClusterOutputDevice)initWithPrimaryOutputDevice:(id)a3 members:(id)a4
+- (MRDAVRemoteControlClusterOutputDevice)initWithPrimaryOutputDevice:(id)device members:(id)members
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 descriptor];
+  deviceCopy = device;
+  membersCopy = members;
+  descriptor = [deviceCopy descriptor];
   v13.receiver = self;
   v13.super_class = MRDAVRemoteControlClusterOutputDevice;
-  v9 = [(MRDAVRemoteControlClusterOutputDevice *)&v13 initWithDescriptor:v8];
+  v9 = [(MRDAVRemoteControlClusterOutputDevice *)&v13 initWithDescriptor:descriptor];
 
   if (v9)
   {
-    v10 = [v7 arrayByAddingObject:v6];
+    v10 = [membersCopy arrayByAddingObject:deviceCopy];
     memberOutputDevices = v9->_memberOutputDevices;
     v9->_memberOutputDevices = v10;
   }
@@ -139,19 +139,19 @@
   return v9;
 }
 
-- (id)_calculateHierarchy:(id)a3
+- (id)_calculateHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  hierarchyCopy = hierarchy;
+  if ([hierarchyCopy count] > 1)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [hierarchyCopy mutableCopy];
     v7 = objc_alloc_init(NSMutableDictionary);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = v4;
-    v8 = v4;
+    v18 = hierarchyCopy;
+    v8 = hierarchyCopy;
     v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v9)
     {
@@ -167,14 +167,14 @@
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 tightSyncID];
-          if (v14)
+          tightSyncID = [v13 tightSyncID];
+          if (tightSyncID)
           {
-            v15 = [v7 objectForKeyedSubscript:v14];
+            v15 = [v7 objectForKeyedSubscript:tightSyncID];
             if (!v15)
             {
               v15 = objc_alloc_init(NSMutableArray);
-              [v7 setObject:v15 forKeyedSubscript:v14];
+              [v7 setObject:v15 forKeyedSubscript:tightSyncID];
             }
 
             [v15 addObject:v13];
@@ -194,46 +194,46 @@
     v19[3] = &unk_1004BAFB8;
     v16 = v6;
     v20 = v16;
-    v21 = self;
+    selfCopy = self;
     [v7 enumerateKeysAndObjectsUsingBlock:v19];
     v5 = v16;
 
-    v4 = v18;
+    hierarchyCopy = v18;
   }
 
   else
   {
-    v5 = v4;
+    v5 = hierarchyCopy;
   }
 
   return v5;
 }
 
-- (id)_createStereoPairRepresentationFrom:(id)a3
+- (id)_createStereoPairRepresentationFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 mr_first:&stru_1004BAFD8];
-  if (!v4)
+  fromCopy = from;
+  firstObject = [fromCopy mr_first:&stru_1004BAFD8];
+  if (!firstObject)
   {
-    v4 = [v3 firstObject];
+    firstObject = [fromCopy firstObject];
   }
 
   v5 = objc_alloc_init(_MRAVOutputDeviceDescriptorProtobuf);
-  v6 = [v4 tightSyncID];
-  [v5 setUniqueIdentifier:v6];
+  tightSyncID = [firstObject tightSyncID];
+  [v5 setUniqueIdentifier:tightSyncID];
 
-  v7 = [v4 name];
-  [v5 setName:v7];
+  name = [firstObject name];
+  [v5 setName:name];
 
   [v5 setClusterType:1];
   [v5 setDeviceType:1];
   [v5 setDeviceSubType:15];
   v8 = [NSString alloc];
-  v9 = [v4 modelID];
-  v10 = [v8 initWithFormat:@"%@-%@", v9, @"TightSyncCluster"];
+  modelID = [firstObject modelID];
+  v10 = [v8 initWithFormat:@"%@-%@", modelID, @"TightSyncCluster"];
   [v5 setModelID:v10];
 
-  v11 = [v3 mr_map:&stru_1004BAFF8];
+  v11 = [fromCopy mr_map:&stru_1004BAFF8];
   v12 = [v11 mutableCopy];
   [v5 setAllClusterMembers:v12];
 

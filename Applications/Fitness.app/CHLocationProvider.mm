@@ -1,7 +1,7 @@
 @interface CHLocationProvider
 + (CHLocationProvider)shared;
 - (CHLocationProvider)init;
-- (CHLocationProvider)initWithBridgedValue:(id)a3;
+- (CHLocationProvider)initWithBridgedValue:(id)value;
 @end
 
 @implementation CHLocationProvider
@@ -18,12 +18,12 @@
   return v3;
 }
 
-- (CHLocationProvider)initWithBridgedValue:(id)a3
+- (CHLocationProvider)initWithBridgedValue:(id)value
 {
-  *(&self->super.isa + OBJC_IVAR___CHLocationProvider_bridgedValue) = a3;
+  *(&self->super.isa + OBJC_IVAR___CHLocationProvider_bridgedValue) = value;
   v6.receiver = self;
   v6.super_class = type metadata accessor for LocationProviderBridge();
-  v4 = a3;
+  valueCopy = value;
   return [(CHLocationProvider *)&v6 init];
 }
 

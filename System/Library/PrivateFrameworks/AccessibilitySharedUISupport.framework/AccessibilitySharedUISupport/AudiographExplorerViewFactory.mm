@@ -1,14 +1,14 @@
 @interface AudiographExplorerViewFactory
-+ (id)makeAudiographExplorerUIFor:(id)a3;
++ (id)makeAudiographExplorerUIFor:(id)for;
 - (_TtC28AccessibilitySharedUISupport29AudiographExplorerViewFactory)init;
 @end
 
 @implementation AudiographExplorerViewFactory
 
-+ (id)makeAudiographExplorerUIFor:(id)a3
++ (id)makeAudiographExplorerUIFor:(id)for
 {
-  v3 = a3;
-  v4 = sub_23DB3BFB4(v3);
+  forCopy = for;
+  v4 = sub_23DB3BFB4(forCopy);
 
   return v4;
 }

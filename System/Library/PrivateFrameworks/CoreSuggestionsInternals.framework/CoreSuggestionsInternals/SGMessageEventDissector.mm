@@ -1,62 +1,62 @@
 @interface SGMessageEventDissector
-+ (id)dateFromString:(id)a3;
-+ (id)describeCategory:(unsigned __int8)a3;
-+ (id)enrichmentsFromSchema:(id)a3 forMessage:(id)a4 forEntity:(id)a5 category:(id)a6;
-+ (id)fallbackSchemaForGenericEventWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5;
-+ (id)getFlightInformationForFlightEventData:(id)a3;
-+ (id)loadEventClassifierModelFromPath:(id)a3;
-+ (id)loadLazyPlistWithBasename:(id)a3;
-+ (id)nilEntities:(id)a3;
-+ (id)schemaOrgAndMissingEntitiesForExtractedEvent:(id)a3;
++ (id)dateFromString:(id)string;
++ (id)describeCategory:(unsigned __int8)category;
++ (id)enrichmentsFromSchema:(id)schema forMessage:(id)message forEntity:(id)entity category:(id)category;
++ (id)fallbackSchemaForGenericEventWithTitle:(id)title startDate:(id)date endDate:(id)endDate;
++ (id)getFlightInformationForFlightEventData:(id)data;
++ (id)loadEventClassifierModelFromPath:(id)path;
++ (id)loadLazyPlistWithBasename:(id)basename;
++ (id)nilEntities:(id)entities;
++ (id)schemaOrgAndMissingEntitiesForExtractedEvent:(id)event;
 + (id)sharedInstance;
-+ (id)tupleWithEntity:(id)a3 label:(id)a4;
-+ (unsigned)messageEventCategoryForCategoryString:(id)a3;
-+ (void)logMLMessageEventExtractionInteractions:(id)a3 context:(id)a4;
++ (id)tupleWithEntity:(id)entity label:(id)label;
++ (unsigned)messageEventCategoryForCategoryString:(id)string;
++ (void)logMLMessageEventExtractionInteractions:(id)interactions context:(id)context;
 - (BOOL)isDissectorProcessingWithinRateLimit;
-- (BOOL)isMessageOfTypeEvent:(id)a3;
-- (BOOL)shouldProcessTextMessage:(id)a3 entity:(id)a4;
+- (BOOL)isMessageOfTypeEvent:(id)event;
+- (BOOL)shouldProcessTextMessage:(id)message entity:(id)entity;
 - (id)_init;
 - (id)eventClassifierMobileAssetsPath;
 - (id)eventExtractionMobileAssetsPath;
-- (id)eventsFromMessage:(id)a3 eventExtractionAssetsPath:(id)a4;
+- (id)eventsFromMessage:(id)message eventExtractionAssetsPath:(id)path;
 - (id)loadEventClassifierModel;
-- (id)schemaOrgAndMissingEntitiesForMessage:(id)a3 withMLModelParameters:(id)a4;
-- (void)addEnrichmentForEvents:(id)a3 toEntity:(id)a4 message:(id)a5 context:(id)a6 timingProcessingInMs:(unint64_t)a7;
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5;
-- (void)logFailedEventExtractionForMessage:(id)a3 category:(id)a4 missingEntities:(id)a5 timingProcessingInMs:(unint64_t)a6;
-- (void)logFailedEventExtractionForMessage:(id)a3 failureCode:(int64_t)a4;
-- (void)logMLMessageEventExtractionForSchema:(id)a3 message:(id)a4 category:(id)a5 timingProcessingInMs:(unint64_t)a6;
+- (id)schemaOrgAndMissingEntitiesForMessage:(id)message withMLModelParameters:(id)parameters;
+- (void)addEnrichmentForEvents:(id)events toEntity:(id)entity message:(id)message context:(id)context timingProcessingInMs:(unint64_t)ms;
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context;
+- (void)logFailedEventExtractionForMessage:(id)message category:(id)category missingEntities:(id)entities timingProcessingInMs:(unint64_t)ms;
+- (void)logFailedEventExtractionForMessage:(id)message failureCode:(int64_t)code;
+- (void)logMLMessageEventExtractionForSchema:(id)schema message:(id)message category:(id)category timingProcessingInMs:(unint64_t)ms;
 @end
 
 @implementation SGMessageEventDissector
 
-- (id)schemaOrgAndMissingEntitiesForMessage:(id)a3 withMLModelParameters:(id)a4
+- (id)schemaOrgAndMissingEntitiesForMessage:(id)message withMLModelParameters:(id)parameters
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  parametersCopy = parameters;
   if ([objc_opt_class() featureEnabled])
   {
     v8 = objc_autoreleasePoolPush();
     v9 = objc_opt_new();
     v10 = objc_autoreleasePoolPush();
     v11 = objc_opt_class();
-    v12 = [v7 objectForKeyedSubscript:@"eventClassifierPath"];
+    v12 = [parametersCopy objectForKeyedSubscript:@"eventClassifierPath"];
     v13 = [v11 loadEventClassifierModelFromPath:v12];
 
     objc_autoreleasePoolPop(v10);
     if (v13)
     {
-      v14 = [v6 textContent];
-      v15 = [v13 predictedLabelHypothesesForString:v14 maximumCount:1];
+      textContent = [messageCopy textContent];
+      v15 = [v13 predictedLabelHypothesesForString:textContent maximumCount:1];
 
       v16 = sgEventsLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v15 allKeys];
-        v17 = [v28 objectAtIndexedSubscript:0];
-        v27 = [v15 allKeys];
-        [v27 objectAtIndexedSubscript:0];
+        allKeys = [v15 allKeys];
+        v17 = [allKeys objectAtIndexedSubscript:0];
+        allKeys2 = [v15 allKeys];
+        [allKeys2 objectAtIndexedSubscript:0];
         v18 = v29 = v8;
         v19 = [v15 objectForKeyedSubscript:v18];
         [v19 doubleValue];
@@ -75,8 +75,8 @@
       }
     }
 
-    v21 = [v7 objectForKeyedSubscript:@"assetFolderPath"];
-    v22 = [(SGMessageEventDissector *)self eventsFromMessage:v6 eventExtractionAssetsPath:v21];
+    v21 = [parametersCopy objectForKeyedSubscript:@"assetFolderPath"];
+    v22 = [(SGMessageEventDissector *)self eventsFromMessage:messageCopy eventExtractionAssetsPath:v21];
 
     if (v22 && [v22 count])
     {
@@ -113,23 +113,23 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
   return v4;
 }
 
-- (void)logFailedEventExtractionForMessage:(id)a3 failureCode:(int64_t)a4
+- (void)logFailedEventExtractionForMessage:(id)message failureCode:(int64_t)code
 {
-  v6 = a3;
+  messageCopy = message;
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v8 localeIdentifier];
-  [v7 setObject:v9 forKeyedSubscript:@"deviceLocale"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [v7 setObject:localeIdentifier forKeyedSubscript:@"deviceLocale"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:code];
   [v7 setObject:v10 forKeyedSubscript:@"failureReasonCode"];
 
-  v11 = [objc_opt_class() mobileAssetsEnabled];
+  mobileAssetsEnabled = [objc_opt_class() mobileAssetsEnabled];
   v12 = MEMORY[0x277CCABB0];
-  if (v11)
+  if (mobileAssetsEnabled)
   {
     v13 = [(NSDictionary *)self->_dissectorConfig objectForKeyedSubscript:@"EventExtractionMessageProcessingLimit"];
-    v14 = [v13 intValue];
+    intValue = [v13 intValue];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -146,16 +146,16 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     v16 = v28[5];
     _Block_object_dispose(&v27, 8);
 
-    v17 = [v16 intValue];
-    v18 = [v12 numberWithInt:(v14 - v17)];
-    [v7 setObject:v18 forKeyedSubscript:@"messageProcessingRate"];
+    intValue2 = [v16 intValue];
+    messageProcessingLimit = [v12 numberWithInt:(intValue - intValue2)];
+    [v7 setObject:messageProcessingLimit forKeyedSubscript:@"messageProcessingRate"];
   }
 
   else
   {
     v13 = +[SGMessageEventDissectorTrialClientWrapper sharedInstance];
-    v18 = [v13 messageProcessingLimit];
-    v19 = [v18 intValue];
+    messageProcessingLimit = [v13 messageProcessingLimit];
+    intValue3 = [messageProcessingLimit intValue];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -172,8 +172,8 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     v21 = v28[5];
     _Block_object_dispose(&v27, 8);
 
-    v22 = [v21 intValue];
-    v23 = [v12 numberWithInt:(v19 - v22)];
+    intValue4 = [v21 intValue];
+    v23 = [v12 numberWithInt:(intValue3 - intValue4)];
     [v7 setObject:v23 forKeyedSubscript:@"messageProcessingRate"];
   }
 
@@ -181,23 +181,23 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
   [v24 logMLMessageEventExtractionForTemplateName:@"ML_EventMessage" extractionStatus:1 outputInfo:v7 outputExceptions:MEMORY[0x277CBEBF8] timingProcessing:0];
 }
 
-- (void)logFailedEventExtractionForMessage:(id)a3 category:(id)a4 missingEntities:(id)a5 timingProcessingInMs:(unint64_t)a6
+- (void)logFailedEventExtractionForMessage:(id)message category:(id)category missingEntities:(id)entities timingProcessingInMs:(unint64_t)ms
 {
-  v29 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  categoryCopy = category;
+  entitiesCopy = entities;
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
-  v14 = [v13 localeIdentifier];
-  [v12 setObject:v14 forKeyedSubscript:@"deviceLocale"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [v12 setObject:localeIdentifier forKeyedSubscript:@"deviceLocale"];
 
-  [v12 setObject:v10 forKeyedSubscript:@"outputCategory"];
-  v15 = [objc_opt_class() mobileAssetsEnabled];
+  [v12 setObject:categoryCopy forKeyedSubscript:@"outputCategory"];
+  mobileAssetsEnabled = [objc_opt_class() mobileAssetsEnabled];
   v16 = MEMORY[0x277CCABB0];
-  if (v15)
+  if (mobileAssetsEnabled)
   {
     v17 = [(NSDictionary *)self->_dissectorConfig objectForKeyedSubscript:@"EventExtractionMessageProcessingLimit"];
-    v18 = [v17 intValue];
+    intValue = [v17 intValue];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
@@ -214,16 +214,16 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     v20 = v33[5];
     _Block_object_dispose(&v32, 8);
 
-    v21 = [v20 intValue];
-    v22 = [v16 numberWithInt:(v18 - v21)];
-    [v12 setObject:v22 forKeyedSubscript:@"messageProcessingRate"];
+    intValue2 = [v20 intValue];
+    messageProcessingLimit = [v16 numberWithInt:(intValue - intValue2)];
+    [v12 setObject:messageProcessingLimit forKeyedSubscript:@"messageProcessingRate"];
   }
 
   else
   {
     v17 = +[SGMessageEventDissectorTrialClientWrapper sharedInstance];
-    v22 = [v17 messageProcessingLimit];
-    v23 = [v22 intValue];
+    messageProcessingLimit = [v17 messageProcessingLimit];
+    intValue3 = [messageProcessingLimit intValue];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
@@ -240,32 +240,32 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     v25 = v33[5];
     _Block_object_dispose(&v32, 8);
 
-    v26 = [v25 intValue];
-    v27 = [v16 numberWithInt:(v23 - v26)];
+    intValue4 = [v25 intValue];
+    v27 = [v16 numberWithInt:(intValue3 - intValue4)];
     [v12 setObject:v27 forKeyedSubscript:@"messageProcessingRate"];
   }
 
   v28 = +[SGRTCLogging defaultLogger];
-  [v28 logMLMessageEventExtractionForTemplateName:@"ML_EventMessage" extractionStatus:1 outputInfo:v12 outputExceptions:v11 timingProcessing:a6];
+  [v28 logMLMessageEventExtractionForTemplateName:@"ML_EventMessage" extractionStatus:1 outputInfo:v12 outputExceptions:entitiesCopy timingProcessing:ms];
 }
 
-- (void)logMLMessageEventExtractionForSchema:(id)a3 message:(id)a4 category:(id)a5 timingProcessingInMs:(unint64_t)a6
+- (void)logMLMessageEventExtractionForSchema:(id)schema message:(id)message category:(id)category timingProcessingInMs:(unint64_t)ms
 {
-  v29 = a3;
-  v10 = a4;
-  v11 = a5;
+  schemaCopy = schema;
+  messageCopy = message;
+  categoryCopy = category;
   v12 = objc_opt_new();
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
-  v14 = [v13 localeIdentifier];
-  [v12 setObject:v14 forKeyedSubscript:@"deviceLocale"];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [v12 setObject:localeIdentifier forKeyedSubscript:@"deviceLocale"];
 
-  [v12 setObject:v11 forKeyedSubscript:@"outputCategory"];
-  v15 = [objc_opt_class() mobileAssetsEnabled];
+  [v12 setObject:categoryCopy forKeyedSubscript:@"outputCategory"];
+  mobileAssetsEnabled = [objc_opt_class() mobileAssetsEnabled];
   v16 = MEMORY[0x277CCABB0];
-  if (v15)
+  if (mobileAssetsEnabled)
   {
     v17 = [(NSDictionary *)self->_dissectorConfig objectForKeyedSubscript:@"EventExtractionMessageProcessingLimit"];
-    v18 = [v17 intValue];
+    intValue = [v17 intValue];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
@@ -282,16 +282,16 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     v20 = v33[5];
     _Block_object_dispose(&v32, 8);
 
-    v21 = [v20 intValue];
-    v22 = [v16 numberWithInt:(v18 - v21)];
-    [v12 setObject:v22 forKeyedSubscript:@"messageProcessingRate"];
+    intValue2 = [v20 intValue];
+    messageProcessingLimit = [v16 numberWithInt:(intValue - intValue2)];
+    [v12 setObject:messageProcessingLimit forKeyedSubscript:@"messageProcessingRate"];
   }
 
   else
   {
     v17 = +[SGMessageEventDissectorTrialClientWrapper sharedInstance];
-    v22 = [v17 messageProcessingLimit];
-    v23 = [v22 intValue];
+    messageProcessingLimit = [v17 messageProcessingLimit];
+    intValue3 = [messageProcessingLimit intValue];
     v32 = 0;
     v33 = &v32;
     v34 = 0x3032000000;
@@ -308,18 +308,18 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     v25 = v33[5];
     _Block_object_dispose(&v32, 8);
 
-    v26 = [v25 intValue];
-    v27 = [v16 numberWithInt:(v23 - v26)];
+    intValue4 = [v25 intValue];
+    v27 = [v16 numberWithInt:(intValue3 - intValue4)];
     [v12 setObject:v27 forKeyedSubscript:@"messageProcessingRate"];
   }
 
   v28 = +[SGRTCLogging defaultLogger];
-  [v28 logMLMessageEventExtractionForTemplateName:@"ML_EventMessage" extractionStatus:0 outputInfo:v12 outputExceptions:MEMORY[0x277CBEBF8] timingProcessing:a6];
+  [v28 logMLMessageEventExtractionForTemplateName:@"ML_EventMessage" extractionStatus:0 outputInfo:v12 outputExceptions:MEMORY[0x277CBEBF8] timingProcessing:ms];
 }
 
-- (BOOL)isMessageOfTypeEvent:(id)a3
+- (BOOL)isMessageOfTypeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -333,18 +333,18 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
   v14[3] = &unk_27894F058;
   v14[4] = self;
   v16 = &v17;
-  v6 = v4;
+  v6 = eventCopy;
   v15 = v6;
   [(_PASLock *)lock runWithLockAcquired:v14];
   if ([objc_opt_class() mobileAssetsEnabled])
   {
-    v7 = [(NSDictionary *)self->_dissectorConfig objectForKeyedSubscript:@"EventClassifierThreshold"];
+    eventClassifierThreshold = [(NSDictionary *)self->_dissectorConfig objectForKeyedSubscript:@"EventClassifierThreshold"];
   }
 
   else
   {
     v8 = +[SGMessageEventDissectorTrialClientWrapper sharedInstance];
-    v7 = [v8 eventClassifierThreshold];
+    eventClassifierThreshold = [v8 eventClassifierThreshold];
   }
 
   v9 = v18[5];
@@ -354,7 +354,7 @@ id __87__SGMessageEventDissector_schemaOrgAndMissingEntitiesForMessage_withMLMod
     if (v10)
     {
       v11 = [v18[5] objectForKeyedSubscript:@"Event"];
-      v12 = [v11 compare:v7] == 1;
+      v12 = [v11 compare:eventClassifierThreshold] == 1;
     }
 
     else
@@ -501,29 +501,29 @@ LABEL_16:
   return v11;
 }
 
-- (id)eventsFromMessage:(id)a3 eventExtractionAssetsPath:(id)a4
+- (id)eventsFromMessage:(id)message eventExtractionAssetsPath:(id)path
 {
   v76[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  pathCopy = path;
   v8 = sgEventsLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = pathCopy;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEFAULT, "SGMessageEventDissector: Fetching events from ML Runtime Plugin com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin eventExtractionAssetsPath: %{private}@", &buf, 0xCu);
   }
 
-  v9 = [v6 textContent];
-  v10 = v9;
-  if (v9)
+  textContent = [messageCopy textContent];
+  v10 = textContent;
+  if (textContent)
   {
     v75[0] = @"TaskName";
     v75[1] = @"InputMessage";
     v76[0] = @"EventSuggestionsFromMessage";
-    v76[1] = v9;
+    v76[1] = textContent;
     v75[2] = @"AssetFolderPath";
-    v76[2] = v7;
+    v76[2] = pathCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:3];
     v12 = [objc_alloc(MEMORY[0x277D253F0]) initWithParametersDict:v11];
     *&buf = 0;
@@ -565,7 +565,7 @@ LABEL_16:
         v50 = 103;
       }
 
-      [(SGMessageEventDissector *)self logFailedEventExtractionForMessage:v6 failureCode:v50];
+      [(SGMessageEventDissector *)self logFailedEventExtractionForMessage:messageCopy failureCode:v50];
       v19 = 0;
       goto LABEL_33;
     }
@@ -581,7 +581,7 @@ LABEL_16:
       }
 
       v23 = [*(*(&buf + 1) + 40) objectForKeyedSubscript:@"errorCode"];
-      -[SGMessageEventDissector logFailedEventExtractionForMessage:failureCode:](self, "logFailedEventExtractionForMessage:failureCode:", v6, [v23 intValue]);
+      -[SGMessageEventDissector logFailedEventExtractionForMessage:failureCode:](self, "logFailedEventExtractionForMessage:failureCode:", messageCopy, [v23 intValue]);
       v19 = 0;
     }
 
@@ -603,7 +603,7 @@ LABEL_33:
       }
 
       v23 = objc_opt_new();
-      v59 = [v23 getFlightReferencesAndReservationId:v6];
+      v59 = [v23 getFlightReferencesAndReservationId:messageCopy];
       v24 = [v59 objectForKeyedSubscript:@"flightReferences"];
       if (v24)
       {
@@ -744,24 +744,24 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEnrichmentForEvents:(id)a3 toEntity:(id)a4 message:(id)a5 context:(id)a6 timingProcessingInMs:(unint64_t)a7
+- (void)addEnrichmentForEvents:(id)events toEntity:(id)entity message:(id)message context:(id)context timingProcessingInMs:(unint64_t)ms
 {
   v68 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v47 = a5;
-  v42 = a6;
+  eventsCopy = events;
+  entityCopy = entity;
+  messageCopy = message;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v11;
+  obj = eventsCopy;
   v48 = [obj countByEnumeratingWithState:&v58 objects:v67 count:16];
   if (v48)
   {
     v45 = *v59;
-    v40 = self;
+    selfCopy = self;
     do
     {
       v13 = 0;
@@ -785,9 +785,9 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
         v22 = v21;
         if (v19)
         {
-          [(SGMessageEventDissector *)self logMLMessageEventExtractionForSchema:v19 message:v47 category:v20 timingProcessingInMs:a7];
+          [(SGMessageEventDissector *)self logMLMessageEventExtractionForSchema:v19 message:messageCopy category:v20 timingProcessingInMs:ms];
           v23 = objc_autoreleasePoolPush();
-          v24 = [objc_opt_class() enrichmentsFromSchema:v19 forMessage:v47 forEntity:v12 category:v20];
+          v24 = [objc_opt_class() enrichmentsFromSchema:v19 forMessage:messageCopy forEntity:entityCopy category:v20];
           objc_autoreleasePoolPop(v23);
           log = v24;
           if (v24)
@@ -829,11 +829,11 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
                     *buf = 138412546;
                     v63 = v30;
                     v64 = 2112;
-                    v65 = v12;
+                    v65 = entityCopy;
                     _os_log_impl(&dword_231E60000, v34, OS_LOG_TYPE_DEFAULT, "SGMessageEventDissector: Adding Enrichment: %@ to entity:%@", buf, 0x16u);
                   }
 
-                  [v12 addEnrichment:v30];
+                  [entityCopy addEnrichment:v30];
                   objc_autoreleasePoolPop(v31);
                 }
 
@@ -843,14 +843,14 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
               while (v27);
             }
 
-            self = v40;
+            self = selfCopy;
             v20 = v43;
             v18 = v44;
             v22 = v49;
             v19 = v51;
           }
 
-          [objc_opt_class() logMLMessageEventExtractionInteractions:v12 context:v42];
+          [objc_opt_class() logMLMessageEventExtractionInteractions:entityCopy context:contextCopy];
           v35 = v52;
         }
 
@@ -859,7 +859,7 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
           v50 = v21;
           v36 = v18;
           v37 = [v18 objectForKeyedSubscript:@"missingEntities"];
-          [(SGMessageEventDissector *)self logFailedEventExtractionForMessage:v47 category:v20 missingEntities:v37 timingProcessingInMs:a7];
+          [(SGMessageEventDissector *)self logFailedEventExtractionForMessage:messageCopy category:v20 missingEntities:v37 timingProcessingInMs:ms];
 
           log = sgEventsLogHandle();
           if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -867,7 +867,7 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
             *buf = 138412546;
             v63 = v14;
             v64 = 2112;
-            v65 = v12;
+            v65 = entityCopy;
             _os_log_error_impl(&dword_231E60000, log, OS_LOG_TYPE_ERROR, "SGMessageEventDissector: Could not extract event deatils from event dictionary: %@ for entity: %@", buf, 0x16u);
           }
 
@@ -978,20 +978,20 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
   return v4;
 }
 
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
   if ([objc_opt_class() featureEnabled])
   {
     v11 = mach_absolute_time();
     v12 = objc_autoreleasePoolPush();
-    if ([(SGMessageEventDissector *)self shouldProcessTextMessage:v8 entity:v9])
+    if ([(SGMessageEventDissector *)self shouldProcessTextMessage:messageCopy entity:entityCopy])
     {
-      v13 = [v9 hasEventEnrichment];
+      hasEventEnrichment = [entityCopy hasEventEnrichment];
       objc_autoreleasePoolPop(v12);
-      if ((v13 & 1) == 0)
+      if ((hasEventEnrichment & 1) == 0)
       {
         v14 = sgEventsLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1002,11 +1002,11 @@ void __71__SGMessageEventDissector_eventsFromMessage_eventExtractionAssetsPath__
 
         if ([objc_opt_class() mobileAssetsEnabled])
         {
-          v15 = [(SGMessageEventDissector *)self eventExtractionMobileAssetsPath];
-          if (v15)
+          eventExtractionMobileAssetsPath = [(SGMessageEventDissector *)self eventExtractionMobileAssetsPath];
+          if (eventExtractionMobileAssetsPath)
           {
 LABEL_8:
-            v16 = [(SGMessageEventDissector *)self eventsFromMessage:v8 eventExtractionAssetsPath:v15];
+            v16 = [(SGMessageEventDissector *)self eventsFromMessage:messageCopy eventExtractionAssetsPath:eventExtractionMobileAssetsPath];
             v17 = v16;
             if (v16 && [v16 count])
             {
@@ -1026,9 +1026,9 @@ LABEL_8:
               v21 = v19 / v20;
               v17 = v17;
               v25 = v17;
-              v26 = v9;
-              v27 = v8;
-              v28 = v10;
+              v26 = entityCopy;
+              v27 = messageCopy;
+              v28 = contextCopy;
               v29 = v21;
               [v26 runWithDissectorLock:v24];
             }
@@ -1052,9 +1052,9 @@ LABEL_20:
         else
         {
           v22 = +[SGMessageEventDissectorTrialClientWrapper sharedInstance];
-          v15 = [v22 eventExtractionAssetsPath];
+          eventExtractionMobileAssetsPath = [v22 eventExtractionAssetsPath];
 
-          if (v15)
+          if (eventExtractionMobileAssetsPath)
           {
             goto LABEL_8;
           }
@@ -1080,10 +1080,10 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)shouldProcessTextMessage:(id)a3 entity:(id)a4
+- (BOOL)shouldProcessTextMessage:(id)message entity:(id)entity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  messageCopy = message;
   if (!+[SGMessageEventDissector allowMessageEventDissector])
   {
     v11 = sgEventsLogHandle();
@@ -1105,16 +1105,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = [v5 textContent];
-  v7 = [v6 length];
+  textContent = [messageCopy textContent];
+  v7 = [textContent length];
 
-  if (!v7 || (_os_feature_enabled_impl() & 1) == 0 && ![v5 isPotentialEventMessage])
+  if (!v7 || (_os_feature_enabled_impl() & 1) == 0 && ![messageCopy isPotentialEventMessage])
   {
     goto LABEL_12;
   }
 
-  v8 = [v5 textContent];
-  v9 = [(SGMessageEventDissector *)self isMessageOfTypeEvent:v8];
+  textContent2 = [messageCopy textContent];
+  v9 = [(SGMessageEventDissector *)self isMessageOfTypeEvent:textContent2];
 
   if (!v9)
   {
@@ -1141,7 +1141,7 @@ LABEL_10:
       _os_log_impl(&dword_231E60000, v17, OS_LOG_TYPE_DEFAULT, "SGMessageEventDissector: Skipping Message: Exceeded Rate Limit", &v18, 2u);
     }
 
-    [(SGMessageEventDissector *)self logFailedEventExtractionForMessage:v5 failureCode:101];
+    [(SGMessageEventDissector *)self logFailedEventExtractionForMessage:messageCopy failureCode:101];
     goto LABEL_12;
   }
 
@@ -1265,14 +1265,14 @@ void __63__SGMessageEventDissector_isDissectorProcessingWithinRateLimit__block_i
     else
     {
       v12 = +[SGMessageEventDissectorTrialClientWrapper sharedInstance];
-      v13 = [v12 messageProcessingLimit];
+      messageProcessingLimit = [v12 messageProcessingLimit];
       v14 = v3[2];
-      v3[2] = v13;
+      v3[2] = messageProcessingLimit;
     }
 
-    v15 = [(SGMessageEventDissector *)v2 loadEventClassifierModel];
+    loadEventClassifierModel = [(SGMessageEventDissector *)v2 loadEventClassifierModel];
     v16 = v3[3];
-    v3[3] = v15;
+    v3[3] = loadEventClassifierModel;
 
     v17 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v3];
     lock = v2->_lock;
@@ -1283,13 +1283,13 @@ void __63__SGMessageEventDissector_isDissectorProcessingWithinRateLimit__block_i
   return v2;
 }
 
-+ (id)loadEventClassifierModelFromPath:(id)a3
++ (id)loadEventClassifierModelFromPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v3];
+    v4 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:pathCopy];
     v5 = objc_opt_new();
     [v5 setComputeUnits:0];
     v16 = 0;
@@ -1354,18 +1354,18 @@ void __63__SGMessageEventDissector_isDissectorProcessingWithinRateLimit__block_i
   return v11;
 }
 
-+ (void)logMLMessageEventExtractionInteractions:(id)a3 context:(id)a4
++ (void)logMLMessageEventExtractionInteractions:(id)interactions context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  interactionsCopy = interactions;
+  contextCopy = context;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = v5;
-  v7 = [v5 enrichments];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v20 = interactionsCopy;
+  enrichments = [interactionsCopy enrichments];
+  v8 = [enrichments countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1376,24 +1376,24 @@ void __63__SGMessageEventDissector_isDissectorProcessingWithinRateLimit__block_i
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(enrichments);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 duplicateKey];
-        [v14 entityType];
+        duplicateKey = [v12 duplicateKey];
+        [duplicateKey entityType];
         if (SGEntityTypeIsEvent())
         {
-          v15 = [v12 isNaturalLanguageEvent];
+          isNaturalLanguageEvent = [v12 isNaturalLanguageEvent];
 
-          if (v15)
+          if (isNaturalLanguageEvent)
           {
             goto LABEL_16;
           }
 
-          v16 = [v6 backpressureHazard];
-          if (v16 == 1)
+          backpressureHazard = [contextCopy backpressureHazard];
+          if (backpressureHazard == 1)
           {
             v17 = 12;
           }
@@ -1403,7 +1403,7 @@ void __63__SGMessageEventDissector_isDissectorProcessingWithinRateLimit__block_i
             v17 = 0;
           }
 
-          if (v16)
+          if (backpressureHazard)
           {
             v18 = v17;
           }
@@ -1413,15 +1413,15 @@ void __63__SGMessageEventDissector_isDissectorProcessingWithinRateLimit__block_i
             v18 = 13;
           }
 
-          v14 = +[SGRTCLogging defaultLogger];
-          [v14 logMLMessageEventInteractionForEntity:v12 interface:0 actionType:v18];
+          duplicateKey = +[SGRTCLogging defaultLogger];
+          [duplicateKey logMLMessageEventInteractionForEntity:v12 interface:0 actionType:v18];
         }
 
 LABEL_16:
         objc_autoreleasePoolPop(v13);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [enrichments countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -1430,17 +1430,17 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getFlightInformationForFlightEventData:(id)a3
++ (id)getFlightInformationForFlightEventData:(id)data
 {
   v130 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION"];
-  v107 = [v3 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION"];
-  v98 = [v3 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-  v6 = [v3 objectForKeyedSubscript:@"carrierCode"];
-  v99 = [v3 objectForKeyedSubscript:@"flightNumber"];
-  v95 = [v3 objectForKeyedSubscript:@"reservationId"];
+  v5 = [dataCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION"];
+  v107 = [dataCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION"];
+  v98 = [dataCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+  v6 = [dataCopy objectForKeyedSubscript:@"carrierCode"];
+  v99 = [dataCopy objectForKeyedSubscript:@"flightNumber"];
+  v95 = [dataCopy objectForKeyedSubscript:@"reservationId"];
   v96 = v6;
   if (!v6 || !v99 || !v98)
   {
@@ -1455,13 +1455,13 @@ LABEL_16:
     goto LABEL_89;
   }
 
-  v94 = v3;
+  v94 = dataCopy;
   v7 = objc_opt_new();
   [v7 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
   v8 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
   [v7 setTimeZone:v8];
 
-  v9 = [a1 dateFromString:v98];
+  v9 = [self dateFromString:v98];
   log = v7;
   v10 = [v7 stringFromDate:v9];
 
@@ -1570,7 +1570,7 @@ LABEL_83:
           v29 = [v28 objectForKeyedSubscript:@"departureAirport"];
           v30 = [v28 objectForKeyedSubscript:@"arrivalAirport"];
           v31 = [v28 objectForKeyedSubscript:@"departureActualTime"];
-          v32 = [a1 dateFromString:v31];
+          v32 = [self dateFromString:v31];
           v33 = [log stringFromDate:v32];
 
           v34 = [v29 objectForKeyedSubscript:@"code"];
@@ -1694,27 +1694,27 @@ LABEL_51:
   if (v15 && v18)
   {
     v49 = [v15 objectForKeyedSubscript:@"carrierCode"];
-    v50 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v49 != v50)
+    if (v49 != null)
     {
       v51 = [v15 objectForKeyedSubscript:@"carrierCode"];
       [v4 setObject:v51 forKeyedSubscript:@"carrierCode"];
     }
 
     v52 = [v15 objectForKeyedSubscript:@"carrierName"];
-    v53 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
 
-    if (v52 != v53)
+    if (v52 != null2)
     {
       v54 = [v15 objectForKeyedSubscript:@"carrierName"];
       [v4 setObject:v54 forKeyedSubscript:@"carrierName"];
     }
 
     v55 = [v15 objectForKeyedSubscript:@"flightNumber"];
-    v56 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
 
-    if (v55 != v56)
+    if (v55 != null3)
     {
       v57 = [v15 objectForKeyedSubscript:@"flightNumber"];
       [v4 setObject:v57 forKeyedSubscript:@"flightNumber"];
@@ -1726,36 +1726,36 @@ LABEL_51:
     }
 
     v58 = [v18 objectForKeyedSubscript:@"departureActualTime"];
-    v59 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
 
-    if (v58 != v59)
+    if (v58 != null4)
     {
       v60 = [v18 objectForKeyedSubscript:@"departureActualTime"];
       [v4 setObject:v60 forKeyedSubscript:@"departureActualTime"];
     }
 
     v61 = [v18 objectForKeyedSubscript:@"arrivalActualTime"];
-    v62 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
 
-    if (v61 != v62)
+    if (v61 != null5)
     {
       v63 = [v18 objectForKeyedSubscript:@"arrivalActualTime"];
       [v4 setObject:v63 forKeyedSubscript:@"arrivalActualTime"];
     }
 
     v64 = [v18 objectForKeyedSubscript:@"departureGate"];
-    v65 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
 
-    if (v64 != v65)
+    if (v64 != null6)
     {
       v66 = [v18 objectForKeyedSubscript:@"departureGate"];
       [v4 setObject:v66 forKeyedSubscript:@"departureGate"];
     }
 
     v67 = [v18 objectForKeyedSubscript:@"arrivalGate"];
-    v68 = [MEMORY[0x277CBEB68] null];
+    null7 = [MEMORY[0x277CBEB68] null];
 
-    if (v67 != v68)
+    if (v67 != null7)
     {
       v69 = [v18 objectForKeyedSubscript:@"arrivalGate"];
       [v4 setObject:v69 forKeyedSubscript:@"arrivalGate"];
@@ -1763,9 +1763,9 @@ LABEL_51:
 
     v115 = v19;
     v70 = [v18 objectForKeyedSubscript:@"departureTerminal"];
-    v71 = [MEMORY[0x277CBEB68] null];
+    null8 = [MEMORY[0x277CBEB68] null];
 
-    if (v70 != v71)
+    if (v70 != null8)
     {
       v72 = [v18 objectForKeyedSubscript:@"departureTerminal"];
       [v4 setObject:v72 forKeyedSubscript:@"departureTerminal"];
@@ -1773,9 +1773,9 @@ LABEL_51:
 
     v73 = v15;
     v74 = [v18 objectForKeyedSubscript:@"arrivalTerminal"];
-    v75 = [MEMORY[0x277CBEB68] null];
+    null9 = [MEMORY[0x277CBEB68] null];
 
-    if (v74 != v75)
+    if (v74 != null9)
     {
       v76 = [v18 objectForKeyedSubscript:@"arrivalTerminal"];
       [v4 setObject:v76 forKeyedSubscript:@"arrivalTerminal"];
@@ -1784,36 +1784,36 @@ LABEL_51:
     v77 = [v18 objectForKeyedSubscript:@"departureAirport"];
     v78 = [v18 objectForKeyedSubscript:@"arrivalAirport"];
     v79 = [v77 objectForKeyedSubscript:@"name"];
-    v80 = [MEMORY[0x277CBEB68] null];
+    null10 = [MEMORY[0x277CBEB68] null];
 
-    if (v79 != v80)
+    if (v79 != null10)
     {
       v81 = [v77 objectForKeyedSubscript:@"name"];
       [v4 setObject:v81 forKeyedSubscript:@"departureAirportName"];
     }
 
     v82 = [v78 objectForKeyedSubscript:@"name"];
-    v83 = [MEMORY[0x277CBEB68] null];
+    null11 = [MEMORY[0x277CBEB68] null];
 
-    if (v82 != v83)
+    if (v82 != null11)
     {
       v84 = [v78 objectForKeyedSubscript:@"name"];
       [v4 setObject:v84 forKeyedSubscript:@"arrivalAirportName"];
     }
 
     v85 = [v77 objectForKeyedSubscript:@"code"];
-    v86 = [MEMORY[0x277CBEB68] null];
+    null12 = [MEMORY[0x277CBEB68] null];
 
-    if (v85 != v86)
+    if (v85 != null12)
     {
       v87 = [v77 objectForKeyedSubscript:@"code"];
       [v4 setObject:v87 forKeyedSubscript:@"departureAirportCode"];
     }
 
     v88 = [v78 objectForKeyedSubscript:@"code"];
-    v89 = [MEMORY[0x277CBEB68] null];
+    null13 = [MEMORY[0x277CBEB68] null];
 
-    if (v88 != v89)
+    if (v88 != null13)
     {
       v90 = [v78 objectForKeyedSubscript:@"code"];
       [v4 setObject:v90 forKeyedSubscript:@"arrivalAirportCode"];
@@ -1841,7 +1841,7 @@ LABEL_84:
 LABEL_87:
 
 LABEL_88:
-  v3 = v94;
+  dataCopy = v94;
 
 LABEL_89:
   v91 = *MEMORY[0x277D85DE8];
@@ -1849,48 +1849,48 @@ LABEL_89:
   return v20;
 }
 
-+ (id)describeCategory:(unsigned __int8)a3
++ (id)describeCategory:(unsigned __int8)category
 {
-  if (a3 > 6u)
+  if (category > 6u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27894F0C8[a3];
+    return off_27894F0C8[category];
   }
 }
 
-+ (unsigned)messageEventCategoryForCategoryString:(id)a3
++ (unsigned)messageEventCategoryForCategoryString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Flight"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Flight"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Bus"])
+  else if ([stringCopy isEqualToString:@"Bus"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Train"])
+  else if ([stringCopy isEqualToString:@"Train"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Hotel"])
+  else if ([stringCopy isEqualToString:@"Hotel"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([stringCopy isEqualToString:@"Movie"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"GenericEvent"])
+  else if ([stringCopy isEqualToString:@"GenericEvent"])
   {
     v4 = 6;
   }
@@ -1903,16 +1903,16 @@ LABEL_89:
   return v4;
 }
 
-+ (id)nilEntities:(id)a3
++ (id)nilEntities:(id)entities
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = entitiesCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1928,25 +1928,25 @@ LABEL_89:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 first];
+        first = [v10 first];
 
-        if (!v11)
+        if (!first)
         {
-          v12 = [v10 second];
+          second = [v10 second];
 
-          if (v12)
+          if (second)
           {
-            v13 = [v10 second];
-            [v4 addObject:v13];
+            second2 = [v10 second];
+            [v4 addObject:second2];
           }
 
           else
           {
-            v13 = sgEventsLogHandle();
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+            second2 = sgEventsLogHandle();
+            if (os_log_type_enabled(second2, OS_LOG_TYPE_ERROR))
             {
               *v16 = 0;
-              _os_log_error_impl(&dword_231E60000, v13, OS_LOG_TYPE_ERROR, "SGMessageEventDissector: No name for missing entity", v16, 2u);
+              _os_log_error_impl(&dword_231E60000, second2, OS_LOG_TYPE_ERROR, "SGMessageEventDissector: No name for missing entity", v16, 2u);
             }
           }
         }
@@ -1963,40 +1963,40 @@ LABEL_89:
   return v4;
 }
 
-+ (id)tupleWithEntity:(id)a3 label:(id)a4
++ (id)tupleWithEntity:(id)entity label:(id)label
 {
   v5 = MEMORY[0x277D42648];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFirst:v7 second:v6];
+  labelCopy = label;
+  entityCopy = entity;
+  v8 = [[v5 alloc] initWithFirst:entityCopy second:labelCopy];
 
   return v8;
 }
 
-+ (id)dateFromString:(id)a3
++ (id)dateFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  v5 = [v4 dateFromString:v3];
+  v5 = [v4 dateFromString:stringCopy];
 
   return v5;
 }
 
-+ (id)enrichmentsFromSchema:(id)a3 forMessage:(id)a4 forEntity:(id)a5 category:(id)a6
++ (id)enrichmentsFromSchema:(id)schema forMessage:(id)message forEntity:(id)entity category:(id)category
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_opt_class() messageEventCategoryForCategoryString:v12];
+  schemaCopy = schema;
+  messageCopy = message;
+  entityCopy = entity;
+  categoryCopy = category;
+  v13 = [objc_opt_class() messageEventCategoryForCategoryString:categoryCopy];
 
   if ((v13 - 1) < 5)
   {
     v14 = objc_opt_new();
-    v40[0] = v9;
+    v40[0] = schemaCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
-    v16 = [v14 enrichmentsFromSchemas:v15 inTextMessage:v10 parentEntity:v11];
+    v16 = [v14 enrichmentsFromSchemas:v15 inTextMessage:messageCopy parentEntity:entityCopy];
 
 LABEL_3:
     v16 = v16;
@@ -2010,7 +2010,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v20 = [v9 objectForKeyedSubscript:@"reservationFor"];
+  v20 = [schemaCopy objectForKeyedSubscript:@"reservationFor"];
   v21 = [v20 objectForKeyedSubscript:@"name"];
   v22 = objc_opt_class();
   v23 = [v20 objectForKeyedSubscript:@"startDate"];
@@ -2038,21 +2038,21 @@ LABEL_3:
       v37 = [v29 initWithFormat:@"GenericEvent|%@|%@|%@", v21, v30, v31];
       v38 = v21;
 
-      v32 = [v11 duplicateKey];
-      v36 = [SGDuplicateKey duplicateKeyForPseudoEventWithGroupId:v37 parentKey:v32];
+      duplicateKey = [entityCopy duplicateKey];
+      v36 = [SGDuplicateKey duplicateKeyForPseudoEventWithGroupId:v37 parentKey:duplicateKey];
 
-      v33 = [[SGPipelineEnrichment alloc] initWithDuplicateKey:v36 title:v21 parent:v11];
+      v33 = [[SGPipelineEnrichment alloc] initWithDuplicateKey:v36 title:v21 parent:entityCopy];
       v28 = 1;
       [(SGEntity *)v33 setState:1];
       v34 = [MEMORY[0x277D020E8] floatingRangeWithLocalStartDate:v24 endDate:v27];
       [(SGEntity *)v33 setTimeRange:v34];
       [(SGEntity *)v33 setTitle:v38];
-      [v11 creationTimestamp];
+      [entityCopy creationTimestamp];
       [(SGPipelineEnrichment *)v33 setCreationTimestamp:?];
-      [v11 lastModifiedTimestamp];
+      [entityCopy lastModifiedTimestamp];
       [(SGPipelineEnrichment *)v33 setLastModifiedTimestamp:?];
-      v35 = [MEMORY[0x277D01FA0] extractedEvent];
-      [(SGEntity *)v33 addTag:v35];
+      extractedEvent = [MEMORY[0x277D01FA0] extractedEvent];
+      [(SGEntity *)v33 addTag:extractedEvent];
 
       v39 = v33;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
@@ -2074,7 +2074,7 @@ LABEL_4:
   return v17;
 }
 
-+ (id)fallbackSchemaForGenericEventWithTitle:(id)a3 startDate:(id)a4 endDate:(id)a5
++ (id)fallbackSchemaForGenericEventWithTitle:(id)title startDate:(id)date endDate:(id)endDate
 {
   v18[4] = *MEMORY[0x277D85DE8];
   v17[0] = @"@context";
@@ -2087,15 +2087,15 @@ LABEL_4:
   v15[0] = @"@type";
   v15[1] = @"name";
   v16[0] = @"http://schema.org/Event";
-  v16[1] = a3;
+  v16[1] = title;
   v15[2] = @"startDate";
   v15[3] = @"endDate";
-  v16[2] = a4;
-  v16[3] = a5;
+  v16[2] = date;
+  v16[3] = endDate;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  titleCopy = title;
   v11 = [v7 dictionaryWithObjects:v16 forKeys:v15 count:4];
   v18[3] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
@@ -2105,16 +2105,16 @@ LABEL_4:
   return v12;
 }
 
-+ (id)schemaOrgAndMissingEntitiesForExtractedEvent:(id)a3
++ (id)schemaOrgAndMissingEntitiesForExtractedEvent:(id)event
 {
   v178[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
   v6 = objc_opt_class();
-  v7 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__CATEGORY"];
+  v7 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__CATEGORY"];
   v8 = [v6 messageEventCategoryForCategoryString:v7];
 
-  v9 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__CATEGORY"];
+  v9 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__CATEGORY"];
   [v5 setObject:v9 forKeyedSubscript:@"category"];
 
   v10 = 0;
@@ -2124,15 +2124,15 @@ LABEL_4:
     {
       if (v8 != 3)
       {
-        v11 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__NAME"];
-        v134 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-        v12 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
-        v13 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT"];
-        v14 = [v13 BOOLValue];
+        v11 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__NAME"];
+        v134 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+        v12 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
+        v13 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT"];
+        bOOLValue = [v13 BOOLValue];
 
-        v15 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
+        v15 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
         v16 = v15;
-        if (v11 && v134 && v12 && v14)
+        if (v11 && v134 && v12 && bOOLValue)
         {
           v165[0] = @"http://schema.org";
           v165[1] = @"http://schema.org/LodgingReservation";
@@ -2201,16 +2201,16 @@ LABEL_120:
         goto LABEL_124;
       }
 
-      v11 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION"];
-      v134 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION"];
-      v12 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-      v18 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
-      v34 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT"];
-      v35 = [v34 BOOLValue];
+      v11 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION"];
+      v134 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION"];
+      v12 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+      v18 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
+      v34 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT"];
+      bOOLValue2 = [v34 BOOLValue];
 
-      v36 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
+      v36 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
       v22 = v36;
-      if (v11 && v134 && v12 && v18 && v35)
+      if (v11 && v134 && v12 && v18 && bOOLValue2)
       {
         v150[0] = @"@context";
         v150[1] = @"@type";
@@ -2306,9 +2306,9 @@ LABEL_133:
         goto LABEL_129;
       }
 
-      v11 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
-      v134 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-      v12 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
+      v11 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
+      v134 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+      v12 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
       v28 = objc_opt_class();
       v29 = v28;
       if (v11 && v134 && v12)
@@ -2343,10 +2343,10 @@ LABEL_133:
       goto LABEL_124;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__NAME"];
-    v134 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-    v12 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
-    v41 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
+    v11 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__NAME"];
+    v134 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+    v12 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
+    v41 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
     v42 = v41;
     if (v11 && v134)
     {
@@ -2422,16 +2422,16 @@ LABEL_115:
         goto LABEL_129;
       }
 
-      v11 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION"];
-      v134 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION"];
-      v12 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-      v18 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
-      v19 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT"];
-      v20 = [v19 BOOLValue];
+      v11 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION"];
+      v134 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION"];
+      v12 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+      v18 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
+      v19 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT"];
+      bOOLValue3 = [v19 BOOLValue];
 
-      v21 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
+      v21 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
       v22 = v21;
-      if (v11 && v134 && v12 && v18 && v20)
+      if (v11 && v134 && v12 && v18 && bOOLValue3)
       {
         v159[0] = @"@context";
         v159[1] = @"@type";
@@ -2527,7 +2527,7 @@ LABEL_122:
     }
 
     v44 = objc_autoreleasePoolPush();
-    v11 = [a1 getFlightInformationForFlightEventData:v4];
+    v11 = [self getFlightInformationForFlightEventData:eventCopy];
     objc_autoreleasePoolPop(v44);
     if (v11)
     {
@@ -2714,9 +2714,9 @@ LABEL_122:
       v30 = 0;
     }
 
-    v134 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
-    v12 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
-    v42 = [v4 objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
+    v134 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__START_DATETIME"];
+    v12 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__END_DATETIME"];
+    v42 = [eventCopy objectForKeyedSubscript:@"EventMetaDataExtractor_ML_EVENT__TITLE"];
     if (v42 && v134 && v12)
     {
       v82 = sgEventsLogHandle();
@@ -2769,10 +2769,10 @@ LABEL_129:
   return v5;
 }
 
-+ (id)loadLazyPlistWithBasename:(id)a3
++ (id)loadLazyPlistWithBasename:(id)basename
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [a3 stringByAppendingPathExtension:@"plplist"];
+  v3 = [basename stringByAppendingPathExtension:@"plplist"];
   if (!v3)
   {
     v11 = 0;

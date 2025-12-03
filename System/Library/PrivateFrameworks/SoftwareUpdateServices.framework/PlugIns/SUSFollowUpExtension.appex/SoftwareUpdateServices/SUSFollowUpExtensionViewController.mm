@@ -1,27 +1,27 @@
 @interface SUSFollowUpExtensionViewController
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation SUSFollowUpExtensionViewController
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, action);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
-  objc_storeStrong(&v39->_activeAction, v37);
+  objc_storeStrong(&v36, completion);
+  objc_storeStrong(&selfCopy->_activeAction, v37);
   v6 = location[0];
   SULogInfo();
-  v7 = [v37 identifier];
+  identifier = [v37 identifier];
   SULogInfo();
 
-  v28 = [v37 identifier];
-  v29 = [v28 isEqualToString:@"com.followup.install_now_action"];
+  identifier2 = [v37 identifier];
+  v29 = [identifier2 isEqualToString:@"com.followup.install_now_action"];
 
   if (v29)
   {
@@ -33,8 +33,8 @@
 
   else
   {
-    v23 = [v37 identifier];
-    v24 = [v23 isEqualToString:@"com.followup.install_later_action"];
+    identifier3 = [v37 identifier];
+    v24 = [identifier3 isEqualToString:@"com.followup.install_later_action"];
 
     if (v24)
     {
@@ -52,8 +52,8 @@
       }
 
       v18 = v34;
-      v20 = [location[0] uniqueIdentifier];
-      v41 = v20;
+      uniqueIdentifier = [location[0] uniqueIdentifier];
+      v41 = uniqueIdentifier;
       v19 = [NSArray arrayWithObjects:&v41 count:1];
       v32 = v35;
       v21 = [v18 clearPendingFollowUpItemsWithUniqueIdentifiers:? error:?];
@@ -70,16 +70,16 @@
 
     else
     {
-      v16 = [v37 identifier];
-      v17 = [v16 isEqualToString:@"com.followup.clear_item_action"];
+      identifier4 = [v37 identifier];
+      v17 = [identifier4 isEqualToString:@"com.followup.clear_item_action"];
 
       if (v17)
       {
         SULogInfo();
         v31 = objc_alloc_init(FLFollowUpController);
         v13 = v31;
-        v15 = [location[0] uniqueIdentifier];
-        v40 = v15;
+        uniqueIdentifier2 = [location[0] uniqueIdentifier];
+        v40 = uniqueIdentifier2;
         v14 = [NSArray arrayWithObjects:&v40 count:1];
         [v13 clearPendingFollowUpItemsWithUniqueIdentifiers:? error:?];
 
@@ -88,8 +88,8 @@
 
       else
       {
-        v11 = [v37 identifier];
-        v12 = [v11 isEqualToString:@"com.followup.go_to_update_pane"];
+        identifier5 = [v37 identifier];
+        v12 = [identifier5 isEqualToString:@"com.followup.go_to_update_pane"];
 
         SULogInfo();
         if (v12)

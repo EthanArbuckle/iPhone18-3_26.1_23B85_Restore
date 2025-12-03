@@ -1,25 +1,25 @@
 @interface JavaUtilCollections_SetFromMap
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
 - (NSString)description;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (unint64_t)hash;
 - (void)clear;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SetFromMap
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   backingSet = self->backingSet_;
   if (!backingSet)
@@ -27,7 +27,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)backingSet isEqual:a3];
+  return [(JavaUtilSet *)backingSet isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -41,7 +41,7 @@
   return [(JavaUtilSet *)backingSet hash];
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -54,7 +54,7 @@
     sub_100129828();
   }
 
-  return [(JavaUtilMap *)m putWithId:a3 withId:JavaLangBoolean_TRUE__]== 0;
+  return [(JavaUtilMap *)m putWithId:id withId:JavaLangBoolean_TRUE__]== 0;
 }
 
 - (void)clear
@@ -79,7 +79,7 @@
   return [(JavaUtilSet *)backingSet description];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   backingSet = self->backingSet_;
   if (!backingSet)
@@ -87,10 +87,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)backingSet containsWithId:a3];
+  return [(JavaUtilSet *)backingSet containsWithId:id];
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   backingSet = self->backingSet_;
   if (!backingSet)
@@ -98,7 +98,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)backingSet containsAllWithJavaUtilCollection:a3];
+  return [(JavaUtilSet *)backingSet containsAllWithJavaUtilCollection:collection];
 }
 
 - (BOOL)isEmpty
@@ -112,7 +112,7 @@
   return [(JavaUtilMap *)m isEmpty];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   m = self->m_;
   if (!m)
@@ -120,10 +120,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)m removeWithId:a3]!= 0;
+  return [(JavaUtilMap *)m removeWithId:id]!= 0;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   backingSet = self->backingSet_;
   if (!backingSet)
@@ -131,7 +131,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)backingSet retainAllWithJavaUtilCollection:a3];
+  return [(JavaUtilSet *)backingSet retainAllWithJavaUtilCollection:collection];
 }
 
 - (id)toArray
@@ -145,7 +145,7 @@
   return [(JavaUtilSet *)backingSet toArray];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   backingSet = self->backingSet_;
   if (!backingSet)
@@ -153,7 +153,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)backingSet toArrayWithNSObjectArray:a3];
+  return [(JavaUtilSet *)backingSet toArrayWithNSObjectArray:array];
 }
 
 - (id)iterator
@@ -178,16 +178,16 @@
   return [(JavaUtilMap *)m size];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultReadObject], (m = self->m_) == 0))
+  if (!stream || ([stream defaultReadObject], (m = self->m_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilMap *)m keySet];
+  keySet = [(JavaUtilMap *)m keySet];
 
-  JreStrongAssign(&self->backingSet_, v5);
+  JreStrongAssign(&self->backingSet_, keySet);
 }
 
 - (void)dealloc

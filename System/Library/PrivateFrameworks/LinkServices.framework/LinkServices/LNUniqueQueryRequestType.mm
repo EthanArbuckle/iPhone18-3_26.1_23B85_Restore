@@ -1,7 +1,7 @@
 @interface LNUniqueQueryRequestType
 + (id)queryRequest;
 - (LNUniqueQueryRequestType)init;
-- (LNUniqueQueryRequestType)initWithCoder:(id)a3;
+- (LNUniqueQueryRequestType)initWithCoder:(id)coder;
 - (unint64_t)hash;
 @end
 
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (LNUniqueQueryRequestType)initWithCoder:(id)a3
+- (LNUniqueQueryRequestType)initWithCoder:(id)coder
 {
-  v4 = [objc_opt_class() queryRequest];
+  queryRequest = [objc_opt_class() queryRequest];
 
-  return v4;
+  return queryRequest;
 }
 
 - (LNUniqueQueryRequestType)init
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __40__LNUniqueQueryRequestType_queryRequest__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (queryRequest_onceToken != -1)
   {
     dispatch_once(&queryRequest_onceToken, block);

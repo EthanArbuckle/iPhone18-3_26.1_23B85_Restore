@@ -1,26 +1,26 @@
 @interface EMReadLater
 - (BOOL)isActive;
-- (BOOL)isEqual:(id)a3;
-- (EMReadLater)initWithCoder:(id)a3;
-- (EMReadLater)initWithDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EMReadLater)initWithCoder:(id)coder;
+- (EMReadLater)initWithDate:(id)date;
 - (NSString)description;
 - (NSString)ef_publicDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMReadLater
 
-- (EMReadLater)initWithDate:(id)a3
+- (EMReadLater)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = EMReadLater;
   v6 = [(EMReadLater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
   }
 
   return v7;
@@ -28,24 +28,24 @@
 
 - (NSString)description
 {
-  v2 = [(EMReadLater *)self date];
-  v3 = [v2 description];
+  date = [(EMReadLater *)self date];
+  v3 = [date description];
 
   return v3;
 }
 
 - (BOOL)isActive
 {
-  v2 = [(EMReadLater *)self date];
-  v3 = [v2 ef_isEarlierThanNow];
+  date = [(EMReadLater *)self date];
+  ef_isEarlierThanNow = [date ef_isEarlierThanNow];
 
-  return v3;
+  return ef_isEarlierThanNow;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -55,8 +55,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(EMReadLater *)self date];
-      v6 = [(EMReadLater *)v4 date];
+      date = [(EMReadLater *)self date];
+      date2 = [(EMReadLater *)equalCopy date];
       v7 = EFObjectsAreEqual();
     }
 
@@ -71,8 +71,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(EMReadLater *)self date];
-  v3 = [v2 hash];
+  date = [(EMReadLater *)self date];
+  v3 = [date hash];
 
   return v3;
 }
@@ -80,26 +80,26 @@
 - (NSString)ef_publicDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(EMReadLater *)self date];
-  v5 = [v3 stringWithFormat:@"date:%@, isActive:%d", v4, -[EMReadLater isActive](self, "isActive")];
+  date = [(EMReadLater *)self date];
+  v5 = [v3 stringWithFormat:@"date:%@, isActive:%d", date, -[EMReadLater isActive](self, "isActive")];
 
   return v5;
 }
 
-- (EMReadLater)initWithCoder:(id)a3
+- (EMReadLater)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_date"];
   v6 = [(EMReadLater *)self initWithDate:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(EMReadLater *)self date];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_date"];
+  coderCopy = coder;
+  date = [(EMReadLater *)self date];
+  [coderCopy encodeObject:date forKey:@"EFPropertyKey_date"];
 }
 
 @end

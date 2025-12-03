@@ -1,8 +1,8 @@
 @interface AMDSQLiteTableSchema
-- (AMDSQLiteTableSchema)initWithDict:(id)a3 withName:(id)a4 error:(id *)a5;
+- (AMDSQLiteTableSchema)initWithDict:(id)dict withName:(id)name error:(id *)error;
 - (id)getCreateTableStatement;
-- (id)getInsertStatement:(id)a3;
-- (id)getSpecForColumn:(id)a3;
+- (id)getInsertStatement:(id)statement;
+- (id)getSpecForColumn:(id)column;
 @end
 
 @implementation AMDSQLiteTableSchema
@@ -10,17 +10,17 @@
 - (id)getCreateTableStatement
 {
   v29 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
   v17 = objc_alloc(MEMORY[0x277CBEB18]);
-  v18 = [(AMDSQLiteTableSchema *)v27 columns];
-  v26[0] = [v17 initWithCapacity:{-[NSDictionary count](v18, "count")}];
-  MEMORY[0x277D82BD8](v18);
+  columns = [(AMDSQLiteTableSchema *)selfCopy columns];
+  v26[0] = [v17 initWithCapacity:{-[NSDictionary count](columns, "count")}];
+  MEMORY[0x277D82BD8](columns);
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
-  v19 = [(AMDSQLiteTableSchema *)v27 columns];
-  obj = [(NSDictionary *)v19 allValues];
-  MEMORY[0x277D82BD8](v19);
+  columns2 = [(AMDSQLiteTableSchema *)selfCopy columns];
+  obj = [(NSDictionary *)columns2 allValues];
+  MEMORY[0x277D82BD8](columns2);
   v21 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v28 count:16];
   if (v21)
   {
@@ -37,15 +37,15 @@
 
       v24 = *(__b[1] + 8 * v15);
       v11 = v26[0];
-      v12 = [v24 getCreateStatementPart];
+      getCreateStatementPart = [v24 getCreateStatementPart];
       [v11 addObject:?];
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](getCreateStatementPart);
       if ([v24 unique])
       {
         v9 = v25;
-        v10 = [v24 name];
+        name = [v24 name];
         [v9 addObject:?];
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](name);
       }
 
       ++v15;
@@ -73,11 +73,11 @@
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v6 = [(AMDSQLiteTableSchema *)v27 name];
+  name2 = [(AMDSQLiteTableSchema *)selfCopy name];
   v4 = [v26[0] componentsJoinedByString:{@", "}];
-  v5 = [v3 stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@)", v6, v4];
+  v5 = [v3 stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@)", name2, v4];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](name2);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(v26, 0);
   *MEMORY[0x277D85DE8];
@@ -85,20 +85,20 @@
   return v5;
 }
 
-- (id)getInsertStatement:(id)a3
+- (id)getInsertStatement:(id)statement
 {
   v28 = *MEMORY[0x277D85DE8];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = [(AMDSQLiteTableSchema *)v26 columns];
-  v24 = [(NSDictionary *)v16 allKeys];
-  MEMORY[0x277D82BD8](v16);
-  v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSArray count](v24, "count")}];
+  objc_storeStrong(location, statement);
+  columns = [(AMDSQLiteTableSchema *)selfCopy columns];
+  allKeys = [(NSDictionary *)columns allKeys];
+  MEMORY[0x277D82BD8](columns);
+  v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSArray count](allKeys, "count")}];
   v22 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v24);
+  obj = MEMORY[0x277D82BE0](allKeys);
   v18 = [obj countByEnumeratingWithState:__b objects:v27 count:16];
   if (v18)
   {
@@ -114,9 +114,9 @@
       }
 
       v21 = *(__b[1] + 8 * v14);
-      v11 = [(AMDSQLiteTableSchema *)v26 columns];
-      v19 = [(NSDictionary *)v11 objectForKey:v21];
-      MEMORY[0x277D82BD8](v11);
+      columns2 = [(AMDSQLiteTableSchema *)selfCopy columns];
+      v19 = [(NSDictionary *)columns2 objectForKey:v21];
+      MEMORY[0x277D82BD8](columns2);
       [location[0] addObject:v19];
       if ([v19 unique])
       {
@@ -147,51 +147,51 @@
   }
 
   v5 = v3;
-  v10 = [(AMDSQLiteTableSchema *)v26 name];
-  v9 = [(NSArray *)v24 componentsJoinedByString:?];
+  name = [(AMDSQLiteTableSchema *)selfCopy name];
+  v9 = [(NSArray *)allKeys componentsJoinedByString:?];
   v7 = [v23 componentsJoinedByString:{@", "}];
-  v8 = [v6 stringWithFormat:v5, v10, v9, v7];
+  v8 = [v6 stringWithFormat:v5, name, v9, v7];
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](name);
   objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&allKeys, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (id)getSpecForColumn:(id)a3
+- (id)getSpecForColumn:(id)column
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AMDSQLiteTableSchema *)v7 columns];
-  v5 = [(NSDictionary *)v4 objectForKey:location[0]];
-  MEMORY[0x277D82BD8](v4);
+  objc_storeStrong(location, column);
+  columns = [(AMDSQLiteTableSchema *)selfCopy columns];
+  v5 = [(NSDictionary *)columns objectForKey:location[0]];
+  MEMORY[0x277D82BD8](columns);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (AMDSQLiteTableSchema)initWithDict:(id)a3 withName:(id)a4 error:(id *)a5
+- (AMDSQLiteTableSchema)initWithDict:(id)dict withName:(id)name error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dict);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
-  v35 = a5;
-  v5 = v38;
-  v38 = 0;
+  objc_storeStrong(&v36, name);
+  errorCopy = error;
+  v5 = selfCopy;
+  selfCopy = 0;
   v34.receiver = v5;
   v34.super_class = AMDSQLiteTableSchema;
-  v38 = [(AMDSQLiteTableSchema *)&v34 init];
-  objc_storeStrong(&v38, v38);
+  selfCopy = [(AMDSQLiteTableSchema *)&v34 init];
+  objc_storeStrong(&selfCopy, selfCopy);
   v33 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -201,7 +201,7 @@
   }
 
   objc_storeStrong(&v33, 0);
-  [v38 setName:v36];
+  [selfCopy setName:v36];
   v31 = [location[0] count];
   if (v31)
   {
@@ -236,7 +236,7 @@
         if (objc_opt_isKindOfClass())
         {
           v9 = [AMDSQLiteColumnSpec alloc];
-          v23 = [(AMDSQLiteColumnSpec *)v9 initWithDict:v24 withName:v25 error:v35];
+          v23 = [(AMDSQLiteColumnSpec *)v9 initWithDict:v24 withName:v25 error:errorCopy];
           if (v23)
           {
             if ([v23 isRequired])
@@ -261,7 +261,7 @@
         {
           v11 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"Column spec not a dict"];
           v8 = v11;
-          *v35 = v11;
+          *errorCopy = v11;
           v39 = 0;
           v30 = 1;
         }
@@ -287,7 +287,7 @@
 
       v12 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"Column name not string"];
       v7 = v12;
-      *v35 = v12;
+      *errorCopy = v12;
       v39 = 0;
       v30 = 1;
     }
@@ -302,8 +302,8 @@ LABEL_23:
     MEMORY[0x277D82BD8](v17);
     if (!v30)
     {
-      [v38 setColumns:v29];
-      [v38 setRequiredColumns:v28];
+      [selfCopy setColumns:v29];
+      [selfCopy setRequiredColumns:v28];
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
       {
@@ -312,7 +312,7 @@ LABEL_23:
       }
 
       objc_storeStrong(&oslog, 0);
-      v39 = MEMORY[0x277D82BE0](v38);
+      v39 = MEMORY[0x277D82BE0](selfCopy);
       v30 = 1;
     }
 
@@ -324,14 +324,14 @@ LABEL_23:
   {
     v19 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"No columns in table"];
     v6 = v19;
-    *v35 = v19;
+    *errorCopy = v19;
     v39 = 0;
     v30 = 1;
   }
 
   objc_storeStrong(&v36, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v38, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v39;
 }

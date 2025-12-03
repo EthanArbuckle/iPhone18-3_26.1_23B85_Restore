@@ -1,14 +1,14 @@
 @interface HMProxyObject
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMemberOfClass:(Class)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMemberOfClass:(Class)class;
 - (Class)superclass;
 - (id)debugDescription;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)performSelector:(SEL)a3;
-- (id)performSelector:(SEL)a3 withObject:(id)a4;
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)performSelector:(SEL)selector;
+- (id)performSelector:(SEL)selector withObject:(id)object;
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject;
 - (unint64_t)hash;
 @end
 
@@ -35,53 +35,53 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4 = objc_opt_self();
 
   return [v4 isEqual:self];
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4 withObject:(id)a5
+- (id)performSelector:(SEL)selector withObject:(id)object withObject:(id)withObject
 {
   v8 = objc_opt_self();
 
-  return [v8 performSelector:a3 withObject:a4 withObject:a5];
+  return [v8 performSelector:selector withObject:object withObject:withObject];
 }
 
-- (id)performSelector:(SEL)a3 withObject:(id)a4
+- (id)performSelector:(SEL)selector withObject:(id)object
 {
   v6 = objc_opt_self();
 
-  return [v6 performSelector:a3 withObject:a4];
+  return [v6 performSelector:selector withObject:object];
 }
 
-- (id)performSelector:(SEL)a3
+- (id)performSelector:(SEL)selector
 {
   v4 = objc_opt_self();
 
-  return [v4 performSelector:a3];
+  return [v4 performSelector:selector];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v4 = objc_opt_self();
 
-  return [v4 methodSignatureForSelector:a3];
+  return [v4 methodSignatureForSelector:selector];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v4 = objc_opt_self();
 
-  return [v4 conformsToProtocol:a3];
+  return [v4 conformsToProtocol:protocol];
 }
 
-- (BOOL)isMemberOfClass:(Class)a3
+- (BOOL)isMemberOfClass:(Class)class
 {
   v4 = objc_opt_self();
 
-  return [v4 isMemberOfClass:a3];
+  return [v4 isMemberOfClass:class];
 }
 
 - (Class)superclass

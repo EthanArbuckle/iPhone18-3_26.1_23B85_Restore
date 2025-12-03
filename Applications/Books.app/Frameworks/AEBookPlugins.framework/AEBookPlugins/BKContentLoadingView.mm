@@ -1,22 +1,22 @@
 @interface BKContentLoadingView
-- (BKContentLoadingView)initWithFrame:(CGRect)a3 theme:(id)a4;
+- (BKContentLoadingView)initWithFrame:(CGRect)frame theme:(id)theme;
 - (void)_updateColors;
-- (void)setTheme:(id)a3;
+- (void)setTheme:(id)theme;
 @end
 
 @implementation BKContentLoadingView
 
-- (BKContentLoadingView)initWithFrame:(CGRect)a3 theme:(id)a4
+- (BKContentLoadingView)initWithFrame:(CGRect)frame theme:(id)theme
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  themeCopy = theme;
   v29.receiver = self;
   v29.super_class = BKContentLoadingView;
-  v10 = [(BKContentLoadingView *)&v29 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(BKContentLoadingView *)&v29 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = CGRectZero.origin.y;
     v30.origin.x = CGRectZero.origin.x;
@@ -41,8 +41,8 @@
     v33.size.width = v17;
     v33.size.height = v18;
     [v14 setFrame:{floor((v12 - v19) * 0.5), floor((v13 - CGRectGetHeight(v33)) * 0.5) + -13.0, v17, v18}];
-    [(BKContentLoadingView *)v10 addSubview:v14];
-    objc_storeStrong(&v10->_spinner, v14);
+    [(BKContentLoadingView *)height addSubview:v14];
+    objc_storeStrong(&height->_spinner, v14);
     [v14 startAnimating];
     v20 = objc_alloc_init(UILabel);
     v21 = AEBundle();
@@ -58,36 +58,36 @@
     [v20 setBackgroundColor:v24];
 
     [v20 setOpaque:0];
-    objc_storeStrong(&v10->_label, v20);
-    [(BKContentLoadingView *)v10 addSubview:v20];
-    [(BKContentLoadingView *)v10 setTheme:v9];
-    v25 = [(BKContentLoadingView *)v10 layer];
-    [v25 setCornerRadius:7.0];
+    objc_storeStrong(&height->_label, v20);
+    [(BKContentLoadingView *)height addSubview:v20];
+    [(BKContentLoadingView *)height setTheme:themeCopy];
+    layer = [(BKContentLoadingView *)height layer];
+    [layer setCornerRadius:7.0];
 
     v26 = +[UITraitCollection bc_allAPITraits];
-    v27 = [(BKContentLoadingView *)v10 registerForTraitChanges:v26 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
+    v27 = [(BKContentLoadingView *)height registerForTraitChanges:v26 withAction:"_traitCollectionDidChange:previousTraitCollection:"];
   }
 
-  return v10;
+  return height;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  objc_storeStrong(&self->_theme, a3);
+  objc_storeStrong(&self->_theme, theme);
 
   [(BKContentLoadingView *)self _updateColors];
 }
 
 - (void)_updateColors
 {
-  v7 = [(BKContentLoadingView *)self theme];
-  v3 = [(BKContentLoadingView *)self traitCollection];
-  v4 = [v7 backgroundColorForTraitCollection:v3];
+  theme = [(BKContentLoadingView *)self theme];
+  traitCollection = [(BKContentLoadingView *)self traitCollection];
+  v4 = [theme backgroundColorForTraitCollection:traitCollection];
   [(BKContentLoadingView *)self setBackgroundColor:v4];
 
-  v5 = [v7 contentTextColor];
-  v6 = [(BKContentLoadingView *)self label];
-  [v6 setTextColor:v5];
+  contentTextColor = [theme contentTextColor];
+  label = [(BKContentLoadingView *)self label];
+  [label setTextColor:contentTextColor];
 }
 
 @end

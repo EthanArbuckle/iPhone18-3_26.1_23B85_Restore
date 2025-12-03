@@ -4,7 +4,7 @@
 - (NSString)localizedCarrierName;
 - (TPSCarrierBundleController)carrierBundleController;
 - (TPSCloudCallingThumperController)init;
-- (TPSCloudCallingThumperController)initWithSubscriptionContext:(id)a3;
+- (TPSCloudCallingThumperController)initWithSubscriptionContext:(id)context;
 - (TPSCloudCallingThumperControllerDelegate)delegate;
 - (TUSenderIdentityCapabilities)subscriptionCapabilities;
 @end
@@ -18,16 +18,16 @@
   return 0;
 }
 
-- (TPSCloudCallingThumperController)initWithSubscriptionContext:(id)a3
+- (TPSCloudCallingThumperController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TPSCloudCallingThumperController;
   v6 = [(TPSCloudCallingThumperController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
+    objc_storeStrong(&v6->_subscriptionContext, context);
   }
 
   return v7;
@@ -40,15 +40,15 @@
   subscriptionCapabilities = self->_subscriptionCapabilities;
   if (!subscriptionCapabilities)
   {
-    v5 = [MEMORY[0x277D6EDE8] senderIdentityCapabilities];
-    v6 = [(TPSCloudCallingThumperController *)self subscriptionContext];
-    v7 = [v6 uuid];
+    senderIdentityCapabilities = [MEMORY[0x277D6EDE8] senderIdentityCapabilities];
+    subscriptionContext = [(TPSCloudCallingThumperController *)self subscriptionContext];
+    uuid = [subscriptionContext uuid];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v5;
+    v8 = senderIdentityCapabilities;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -64,8 +64,8 @@
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 senderIdentityUUID];
-          v15 = [v14 isEqual:v7];
+          senderIdentityUUID = [v13 senderIdentityUUID];
+          v15 = [senderIdentityUUID isEqual:uuid];
 
           if (v15)
           {
@@ -89,18 +89,18 @@
 
 - (BOOL)isThumperCallingEnabled
 {
-  v2 = [(TPSCloudCallingThumperController *)self subscriptionCapabilities];
-  v3 = [v2 isThumperCallingEnabled];
+  subscriptionCapabilities = [(TPSCloudCallingThumperController *)self subscriptionCapabilities];
+  isThumperCallingEnabled = [subscriptionCapabilities isThumperCallingEnabled];
 
-  return v3;
+  return isThumperCallingEnabled;
 }
 
 - (BOOL)supportsThumperCalling
 {
-  v2 = [(TPSCloudCallingThumperController *)self subscriptionCapabilities];
-  v3 = [v2 supportsThumperCalling];
+  subscriptionCapabilities = [(TPSCloudCallingThumperController *)self subscriptionCapabilities];
+  supportsThumperCalling = [subscriptionCapabilities supportsThumperCalling];
 
-  return v3;
+  return supportsThumperCalling;
 }
 
 - (TPSCarrierBundleController)carrierBundleController
@@ -120,9 +120,9 @@
 
 - (NSString)localizedCarrierName
 {
-  v3 = [(TPSCloudCallingThumperController *)self carrierBundleController];
-  v4 = [(TPSCloudCallingThumperController *)self subscriptionContext];
-  v5 = [v3 localizedCarrierNameForSubscriptionContext:v4];
+  carrierBundleController = [(TPSCloudCallingThumperController *)self carrierBundleController];
+  subscriptionContext = [(TPSCloudCallingThumperController *)self subscriptionContext];
+  v5 = [carrierBundleController localizedCarrierNameForSubscriptionContext:subscriptionContext];
 
   return v5;
 }

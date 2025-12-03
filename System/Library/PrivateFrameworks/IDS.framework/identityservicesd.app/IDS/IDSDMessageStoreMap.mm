@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (IDSDMessageStoreMap)init;
 - (NSArray)messageStores;
-- (id)getOrCreateMessageStoreForDataProtectionClass:(unsigned int)a3;
+- (id)getOrCreateMessageStoreForDataProtectionClass:(unsigned int)class;
 - (void)dealloc;
 @end
 
@@ -23,10 +23,10 @@
 - (NSArray)messageStores
 {
   pthread_mutex_lock(&self->_mutex);
-  v3 = [(NSMutableDictionary *)self->_messageStores allValues];
+  allValues = [(NSMutableDictionary *)self->_messageStores allValues];
   pthread_mutex_unlock(&self->_mutex);
 
-  return v3;
+  return allValues;
 }
 
 - (IDSDMessageStoreMap)init
@@ -58,13 +58,13 @@
   [(IDSDMessageStoreMap *)&v3 dealloc];
 }
 
-- (id)getOrCreateMessageStoreForDataProtectionClass:(unsigned int)a3
+- (id)getOrCreateMessageStoreForDataProtectionClass:(unsigned int)class
 {
-  v3 = *&a3;
+  v3 = *&class;
   v5 = +[FTDeviceSupport sharedInstance];
-  v6 = [v5 supportsHandoff];
+  supportsHandoff = [v5 supportsHandoff];
 
-  if (v3 <= 1 && !v6)
+  if (v3 <= 1 && !supportsHandoff)
   {
     v7 = 0;
     goto LABEL_14;
@@ -73,15 +73,15 @@
   v8 = IDSDataProtectionClassStringFromDataProtectionClass();
   pthread_mutex_lock(&self->_mutex);
   v9 = +[IMSystemMonitor sharedInstance];
-  v10 = [v9 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v9 isUnderFirstDataProtectionLock];
 
   v11 = +[IMSystemMonitor sharedInstance];
-  v12 = [v11 isUnderDataProtectionLock];
+  isUnderDataProtectionLock = [v11 isUnderDataProtectionLock];
 
   v7 = [(NSMutableDictionary *)self->_messageStores objectForKey:v8];
   if (!v7)
   {
-    v13 = v12 ^ 1;
+    v13 = isUnderDataProtectionLock ^ 1;
     if (v3 != 1)
     {
       v13 = 1;
@@ -92,7 +92,7 @@
       goto LABEL_12;
     }
 
-    v14 = v10 ^ 1;
+    v14 = isUnderFirstDataProtectionLock ^ 1;
     if (v3 == 2)
     {
       v14 = 1;

@@ -4,20 +4,20 @@
 - (NSString)dateStyle;
 - (NSString)relativeDateStyle;
 - (NSString)timeStyle;
-- (id)processedContentClasses:(id)a3;
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4;
+- (id)processedContentClasses:(id)classes;
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler;
 @end
 
 @implementation WFDateFormatVariableAggrandizement
 
-- (void)applyToContentCollection:(id)a3 completionHandler:(id)a4
+- (void)applyToContentCollection:(id)collection completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __81__WFDateFormatVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke;
   v4[3] = &unk_1E837D860;
   v4[4] = self;
-  [a3 transformItemsUsingBlock:v4 completionHandler:a4];
+  [collection transformItemsUsingBlock:v4 completionHandler:handler];
 }
 
 void __81__WFDateFormatVariableAggrandizement_applyToContentCollection_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -67,7 +67,7 @@ LABEL_4:
 LABEL_5:
 }
 
-- (id)processedContentClasses:(id)a3
+- (id)processedContentClasses:(id)classes
 {
   v3 = MEMORY[0x1E695DFB8];
   v4 = objc_opt_class();
@@ -77,41 +77,41 @@ LABEL_5:
 
 - (BOOL)includesTimeForISO8601
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"WFISO8601IncludeTime"];
-  v4 = [v3 BOOLValue];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFISO8601IncludeTime"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)customDateFormat
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"WFDateFormat"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFDateFormat"];
 
   return v3;
 }
 
 - (NSString)relativeDateStyle
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"WFRelativeDateFormatStyle"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFRelativeDateFormatStyle"];
 
   return v3;
 }
 
 - (NSString)timeStyle
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"WFTimeFormatStyle"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFTimeFormatStyle"];
 
   return v3;
 }
 
 - (NSString)dateStyle
 {
-  v2 = [(WFVariableAggrandizement *)self dictionary];
-  v3 = [v2 objectForKey:@"WFDateFormatStyle"];
+  dictionary = [(WFVariableAggrandizement *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFDateFormatStyle"];
 
   return v3;
 }

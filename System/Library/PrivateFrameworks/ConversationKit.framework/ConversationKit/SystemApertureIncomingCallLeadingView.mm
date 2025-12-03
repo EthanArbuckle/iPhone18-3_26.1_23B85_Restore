@@ -1,6 +1,6 @@
 @interface SystemApertureIncomingCallLeadingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (void)layoutSubviews;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureIncomingCallLeadingView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v5 = SystemApertureIncomingCallLeadingView.sizeThatFits(_:)(a3);
+  v5 = SystemApertureIncomingCallLeadingView.sizeThatFits(_:)(fits);
   height = v5.height;
   width = v5.width;
   result.height = height;
@@ -22,9 +22,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  v4 = self;
+  selfCopy = self;
   SystemApertureIncomingCallLeadingView.sizeThatFits(_:for:)();
   v6 = v5;
   v8 = v7;

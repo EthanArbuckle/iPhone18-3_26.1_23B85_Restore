@@ -1,28 +1,28 @@
 @interface TDPersistentDocument
-+ (id)_fileModificationDateForURL:(id)a3;
-- (BOOL)configurePersistentStoreCoordinatorForURL:(id)a3 ofType:(id)a4 modelConfiguration:(id)a5 storeOptions:(id)a6 error:(id *)a7;
-- (BOOL)readFromURL:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (TDPersistentDocument)initWithContentsOfURL:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (TDPersistentDocument)initWithType:(id)a3 error:(id *)a4;
++ (id)_fileModificationDateForURL:(id)l;
+- (BOOL)configurePersistentStoreCoordinatorForURL:(id)l ofType:(id)type modelConfiguration:(id)configuration storeOptions:(id)options error:(id *)error;
+- (BOOL)readFromURL:(id)l ofType:(id)type error:(id *)error;
+- (TDPersistentDocument)initWithContentsOfURL:(id)l ofType:(id)type error:(id *)error;
+- (TDPersistentDocument)initWithType:(id)type error:(id *)error;
 - (id)_persistentStoreCoordinator;
 - (id)managedObjectContext;
 - (id)managedObjectModel;
 - (void)close;
 - (void)dealloc;
-- (void)setFileURL:(id)a3;
-- (void)setManagedObjectContext:(id)a3;
+- (void)setFileURL:(id)l;
+- (void)setManagedObjectContext:(id)context;
 @end
 
 @implementation TDPersistentDocument
 
-- (TDPersistentDocument)initWithContentsOfURL:(id)a3 ofType:(id)a4 error:(id *)a5
+- (TDPersistentDocument)initWithContentsOfURL:(id)l ofType:(id)type error:(id *)error
 {
   v8 = [(TDPersistentDocument *)self init];
   if (v8)
   {
-    v9 = a3;
-    v8->_fileURL = v9;
-    if (![(TDPersistentDocument *)v8 readFromURL:v9 ofType:a4 error:a5])
+    lCopy = l;
+    v8->_fileURL = lCopy;
+    if (![(TDPersistentDocument *)v8 readFromURL:lCopy ofType:type error:error])
     {
 
       return 0;
@@ -32,19 +32,19 @@
   return v8;
 }
 
-- (TDPersistentDocument)initWithType:(id)a3 error:(id *)a4
+- (TDPersistentDocument)initWithType:(id)type error:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v6 = [(TDPersistentDocument *)self init];
   if (v6)
   {
-    v6->_fileType = [a3 copy];
+    v6->_fileType = [type copy];
     [(NSString *)NSTemporaryDirectory() getFileSystemRepresentation:v12 maxLength:1024];
     __strcat_chk();
     v7 = mkstemps(v12, 10);
     v8 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithFileSystemRepresentation:v12 isDirectory:0 relativeToURL:0];
     v6->_temporaryFileURL = v8;
-    v9 = [(TDPersistentDocument *)v6 configurePersistentStoreCoordinatorForURL:v8 ofType:a3 modelConfiguration:0 storeOptions:0 error:a4];
+    v9 = [(TDPersistentDocument *)v6 configurePersistentStoreCoordinatorForURL:v8 ofType:type modelConfiguration:0 storeOptions:0 error:error];
     close(v7);
     if (!v9)
     {
@@ -67,7 +67,7 @@
   [(TDPersistentDocument *)&v3 dealloc];
 }
 
-- (BOOL)readFromURL:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)readFromURL:(id)l ofType:(id)type error:(id *)error
 {
   if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
   {
@@ -79,15 +79,15 @@
     else
     {
 
-      return [(TDPersistentDocument *)self configurePersistentStoreCoordinatorForURL:a3 ofType:a4 modelConfiguration:0 storeOptions:0 error:a5];
+      return [(TDPersistentDocument *)self configurePersistentStoreCoordinatorForURL:l ofType:type modelConfiguration:0 storeOptions:0 error:error];
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:260 userInfo:0];
     result = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
   else
@@ -110,13 +110,13 @@
   return result;
 }
 
-- (void)setManagedObjectContext:(id)a3
+- (void)setManagedObjectContext:(id)context
 {
   managedObjectContext = self->_managedObjectContext;
-  if (managedObjectContext != a3)
+  if (managedObjectContext != context)
   {
 
-    self->_managedObjectContext = a3;
+    self->_managedObjectContext = context;
   }
 }
 
@@ -138,8 +138,8 @@
 
 - (id)_persistentStoreCoordinator
 {
-  v2 = [(TDPersistentDocument *)self managedObjectContext];
-  if (!v2)
+  managedObjectContext = [(TDPersistentDocument *)self managedObjectContext];
+  if (!managedObjectContext)
   {
     v4 = MEMORY[0x277CBEAD8];
     v5 = *MEMORY[0x277CBE658];
@@ -147,7 +147,7 @@
     goto LABEL_6;
   }
 
-  result = [v2 persistentStoreCoordinator];
+  result = [managedObjectContext persistentStoreCoordinator];
   if (!result)
   {
     v4 = MEMORY[0x277CBEAD8];
@@ -160,22 +160,22 @@ LABEL_6:
   return result;
 }
 
-+ (id)_fileModificationDateForURL:(id)a3
++ (id)_fileModificationDateForURL:(id)l
 {
   v4 = 0;
-  [a3 getResourceValue:&v4 forKey:*MEMORY[0x277CBE7B0] error:0];
+  [l getResourceValue:&v4 forKey:*MEMORY[0x277CBE7B0] error:0];
   return v4;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
   fileURL = self->_fileURL;
-  if (fileURL != a3)
+  if (fileURL != l)
   {
     v16[7] = v3;
     v16[8] = v4;
 
-    v9 = [a3 copy];
+    v9 = [l copy];
     self->_fileURL = v9;
     temporaryFileURL = self->_temporaryFileURL;
     if (temporaryFileURL && v9 != 0)
@@ -184,13 +184,13 @@ LABEL_6:
       v12 = temporaryFileURL;
       [(TDPersistentDocument *)self saveDocument:0];
       v13 = [-[TDPersistentDocument managedObjectContext](self "managedObjectContext")];
-      v14 = [v13 persistentStores];
-      if ([v14 count] != 1)
+      persistentStores = [v13 persistentStores];
+      if ([persistentStores count] != 1)
       {
         [(TDPersistentDocument *)a2 setFileURL:?];
       }
 
-      v15 = [objc_msgSend(v14 objectAtIndex:{0), "options"}];
+      v15 = [objc_msgSend(persistentStores objectAtIndex:{0), "options"}];
       if (([v13 _replacePersistentStoreAtURL:self->_fileURL destinationOptions:v15 withPersistentStoreFromURL:v12 sourceOptions:v15 storeType:*MEMORY[0x277CBE2E8] error:v16] & 1) == 0)
       {
         NSLog(&cfstr_Tdpersistentdo_1.isa, v12, self->_fileURL, v16[0]);
@@ -232,8 +232,8 @@ LABEL_6:
     while (v5);
   }
 
-  v8 = [(TDPersistentDocument *)self temporaryFileURL];
-  if (v8)
+  temporaryFileURL = [(TDPersistentDocument *)self temporaryFileURL];
+  if (temporaryFileURL)
   {
     [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
     [(TDPersistentDocument *)self setTemporaryFileURL:0];
@@ -242,24 +242,24 @@ LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)configurePersistentStoreCoordinatorForURL:(id)a3 ofType:(id)a4 modelConfiguration:(id)a5 storeOptions:(id)a6 error:(id *)a7
+- (BOOL)configurePersistentStoreCoordinatorForURL:(id)l ofType:(id)type modelConfiguration:(id)configuration storeOptions:(id)options error:(id *)error
 {
-  v20 = [(TDPersistentDocument *)self _persistentStoreCoordinator];
-  v10 = [(TDPersistentDocument *)self fileURL];
-  v19 = [objc_msgSend(a6 objectForKey:{*MEMORY[0x277CBE1D8]), "BOOLValue"}];
+  _persistentStoreCoordinator = [(TDPersistentDocument *)self _persistentStoreCoordinator];
+  fileURL = [(TDPersistentDocument *)self fileURL];
+  v19 = [objc_msgSend(options objectForKey:{*MEMORY[0x277CBE1D8]), "BOOLValue"}];
   v11 = 0;
   v12 = 0;
   v13 = 0;
-  if (a3 && v10)
+  if (l && fileURL)
   {
-    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSURL path](v10, "path")}];
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:{objc_msgSend(a3, "path")}];
-    v13 = [objc_opt_class() _fileModificationDateForURL:a3];
+    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSURL path](fileURL, "path")}];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:{objc_msgSend(l, "path")}];
+    v13 = [objc_opt_class() _fileModificationDateForURL:l];
   }
 
-  if (a6)
+  if (options)
   {
-    v14 = [a6 mutableCopy];
+    v14 = [options mutableCopy];
   }
 
   else
@@ -270,7 +270,7 @@ LABEL_6:
   v15 = v14;
   [v14 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", 1), @"NSPersistentStoreRemoveStoreOnCleanup"}];
   [v15 setObject:&unk_2859AC560 forKey:*MEMORY[0x277CBE2E0]];
-  v16 = [v20 addPersistentStoreWithType:-[TDPersistentDocument persistentStoreTypeForFileType:](self configuration:"persistentStoreTypeForFileType:" URL:a4) options:a5 error:{a3, v15, a7}] != 0;
+  v16 = [_persistentStoreCoordinator addPersistentStoreWithType:-[TDPersistentDocument persistentStoreTypeForFileType:](self configuration:"persistentStoreTypeForFileType:" URL:type) options:configuration error:{l, v15, error}] != 0;
 
   if (v13)
   {

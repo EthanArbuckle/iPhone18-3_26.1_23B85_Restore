@@ -1,5 +1,5 @@
 @interface _SBHLibraryPodIconViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsHiddenPod;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
@@ -8,13 +8,13 @@
 
 @implementation _SBHLibraryPodIconViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SBHLibraryPodIconView" isKindOfClass:@"SBIconView"];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"customIconImageViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHLibraryCategoryIconViewController" hasInstanceMethod:@"_canBeLocked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHLibraryCategoryIconViewController" hasInstanceMethod:@"isLocked" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SBHLibraryPodIconView" isKindOfClass:@"SBIconView"];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"customIconImageViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHLibraryCategoryIconViewController" hasInstanceMethod:@"_canBeLocked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHLibraryCategoryIconViewController" hasInstanceMethod:@"isLocked" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityHint

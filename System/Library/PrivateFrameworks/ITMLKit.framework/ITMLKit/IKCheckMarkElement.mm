@@ -6,8 +6,8 @@
 
 - (unint64_t)alignment
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"alignment"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"alignment"];
 
   if ([v3 isEqualToString:@"left"])
   {

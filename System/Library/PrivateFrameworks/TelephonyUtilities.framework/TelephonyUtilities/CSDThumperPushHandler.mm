@@ -1,12 +1,12 @@
 @interface CSDThumperPushHandler
 - (id)serviceDescription;
-- (void)displayIncomingPinCode:(id)a3 fromID:(id)a4 completionHandler:(id)a5;
-- (void)displayPinMessageForDevice:(id)a3 completionHandler:(id)a4;
+- (void)displayIncomingPinCode:(id)code fromID:(id)d completionHandler:(id)handler;
+- (void)displayPinMessageForDevice:(id)device completionHandler:(id)handler;
 - (void)displayPinRequestFailure;
-- (void)displayServiceConfirmationWithCompletionHandler:(id)a3;
-- (void)enrollDevice:(id)a3 forSenderIdentityUUID:(id)a4;
-- (void)pinCodeEnteredSuccessfully:(BOOL)a3 cancelled:(BOOL)a4 onPrimaryDevice:(id)a5;
-- (void)unenrollDevice:(id)a3;
+- (void)displayServiceConfirmationWithCompletionHandler:(id)handler;
+- (void)enrollDevice:(id)device forSenderIdentityUUID:(id)d;
+- (void)pinCodeEnteredSuccessfully:(BOOL)successfully cancelled:(BOOL)cancelled onPrimaryDevice:(id)device;
+- (void)unenrollDevice:(id)device;
 - (void)updateUINotification;
 @end
 
@@ -21,52 +21,52 @@
   return v4;
 }
 
-- (void)enrollDevice:(id)a3 forSenderIdentityUUID:(id)a4
+- (void)enrollDevice:(id)device forSenderIdentityUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  dCopy = d;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Enabling relay calling on secondary device %@.", &v11, 0xCu);
   }
 
-  v8 = [v5 uniqueIDOverride];
-  [TUCallCapabilities setRelayCallingEnabled:1 forDeviceWithID:v8];
+  uniqueIDOverride = [deviceCopy uniqueIDOverride];
+  [TUCallCapabilities setRelayCallingEnabled:1 forDeviceWithID:uniqueIDOverride];
 
   v9 = sub_100004778();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v5;
+    v12 = deviceCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Activating Thumper calling on secondary device %@ for telephony subscription with UUID %@.", &v11, 0x16u);
   }
 
-  v10 = [v5 uniqueIDOverride];
-  [TUCallCapabilities setThumperCallingAllowed:1 onSecondaryDeviceWithID:v10 forSenderIdentityWithUUID:v6];
+  uniqueIDOverride2 = [deviceCopy uniqueIDOverride];
+  [TUCallCapabilities setThumperCallingAllowed:1 onSecondaryDeviceWithID:uniqueIDOverride2 forSenderIdentityWithUUID:dCopy];
 }
 
-- (void)unenrollDevice:(id)a3
+- (void)unenrollDevice:(id)device
 {
-  v4 = [a3 uniqueIDOverride];
-  [TUCallCapabilities setThumperCallingAllowed:0 onSecondaryDeviceWithID:v4];
+  uniqueIDOverride = [device uniqueIDOverride];
+  [TUCallCapabilities setThumperCallingAllowed:0 onSecondaryDeviceWithID:uniqueIDOverride];
 
   [(CSDThumperPushHandler *)self updateUINotification];
 }
 
-- (void)displayPinMessageForDevice:(id)a3 completionHandler:(id)a4
+- (void)displayPinMessageForDevice:(id)device completionHandler:(id)handler
 {
-  v32 = a4;
-  v5 = a3;
-  v31 = [v5 name];
+  handlerCopy = handler;
+  deviceCopy = device;
+  name = [deviceCopy name];
   v6 = TUStringKeyForNetwork();
-  v7 = [v5 normalizedDeviceType];
+  normalizedDeviceType = [deviceCopy normalizedDeviceType];
 
-  v33 = [v6 stringByAppendingFormat:@"_%@", v7];
+  v33 = [v6 stringByAppendingFormat:@"_%@", normalizedDeviceType];
 
   v8 = TUBundle();
   v30 = [v8 localizedStringForKey:v33 value:&stru_100631E68 table:@"TelephonyUtilities"];
@@ -82,7 +82,7 @@
   v13 = [v12 localizedStringForKey:@"CANCEL" value:&stru_100631E68 table:@"TelephonyUtilities"];
 
   v27 = IMUserNotificationTitleKey;
-  v14 = [NSString stringWithFormat:v30, v31];
+  v14 = [NSString stringWithFormat:v30, name];
   v15 = IMUserNotificationMessageKey;
   v16 = [NSArray arrayWithObject:&stru_100631E68];
   v17 = IMUserNotificationTextFieldValuesKey;
@@ -99,14 +99,14 @@
   v34[1] = 3221225472;
   v34[2] = sub_10010B42C;
   v34[3] = &unk_10061BC40;
-  v35 = v32;
-  v26 = v32;
+  v35 = handlerCopy;
+  v26 = handlerCopy;
   [v25 addUserNotification:v24 listener:0 completionHandler:v34];
 }
 
-- (void)displayServiceConfirmationWithCompletionHandler:(id)a3
+- (void)displayServiceConfirmationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -135,22 +135,22 @@
   v19[1] = 3221225472;
   v19[2] = sub_10010B824;
   v19[3] = &unk_10061BC40;
-  v20 = v3;
-  v18 = v3;
+  v20 = handlerCopy;
+  v18 = handlerCopy;
   [v17 addUserNotification:v16 listener:0 completionHandler:v19];
 }
 
-- (void)pinCodeEnteredSuccessfully:(BOOL)a3 cancelled:(BOOL)a4 onPrimaryDevice:(id)a5
+- (void)pinCodeEnteredSuccessfully:(BOOL)successfully cancelled:(BOOL)cancelled onPrimaryDevice:(id)device
 {
-  v5 = a4;
-  v6 = a3;
+  cancelledCopy = cancelled;
+  successfullyCopy = successfully;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11[0] = 67109376;
-    v11[1] = v6;
+    v11[1] = successfullyCopy;
     v12 = 1024;
-    v13 = v5;
+    v13 = cancelledCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PIN code entered with success=%d cancelled=%d", v11, 0xEu);
   }
 
@@ -161,18 +161,18 @@
   [v10 removeNotificationsForServiceIdentifier:@"SecondaryDeviceNotification"];
 
   [(CSDThumperPushHandler *)self updateUINotification];
-  if (v6)
+  if (successfullyCopy)
   {
     [TUCallCapabilities setRelayCallingEnabled:1];
     [TUCallCapabilities setThumperCallingEnabled:1];
   }
 }
 
-- (void)displayIncomingPinCode:(id)a3 fromID:(id)a4 completionHandler:(id)a5
+- (void)displayIncomingPinCode:(id)code fromID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  codeCopy = code;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = sub_100004778();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -181,7 +181,7 @@
   }
 
   v11 = +[CSDThumperIDSService sharedInstance];
-  v12 = [v11 deviceForFromID:v8];
+  v12 = [v11 deviceForFromID:dCopy];
 
   if ([v12 supportsPhoneCalls])
   {
@@ -189,8 +189,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v12 linkedUserURIs];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    linkedUserURIs = [v12 linkedUserURIs];
+    v14 = [linkedUserURIs countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v14)
     {
       v15 = v14;
@@ -201,7 +201,7 @@ LABEL_6:
       {
         if (*v35 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(linkedUserURIs);
         }
 
         v18 = *(*(&v34 + 1) + 8 * v17);
@@ -213,7 +213,7 @@ LABEL_6:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v15 = [linkedUserURIs countByEnumeratingWithState:&v34 objects:v38 count:16];
           if (v15)
           {
             goto LABEL_6;
@@ -237,8 +237,8 @@ LABEL_12:
     }
 
     v21 = +[CSDThumperIDSService sharedInstance];
-    v22 = [v21 service];
-    v23 = [v22 uriForFromID:v8];
+    service = [v21 service];
+    v23 = [service uriForFromID:dCopy];
 
     v20 = IDSCopyRawAddressForDestination();
 LABEL_17:
@@ -249,8 +249,8 @@ LABEL_17:
     v27 = TUBundle();
     v28 = [v27 localizedStringForKey:@"CANCEL" value:&stru_100631E68 table:@"TelephonyUtilities"];
 
-    v29 = [NSString stringWithFormat:v26, v20, v7];
-    v30 = [IMUserNotification userNotificationWithIdentifier:@"SecondaryDeviceNotification" title:v29 message:0 defaultButton:v28 alternateButton:0 otherButton:0];
+    codeCopy = [NSString stringWithFormat:v26, v20, codeCopy];
+    v30 = [IMUserNotification userNotificationWithIdentifier:@"SecondaryDeviceNotification" title:codeCopy message:0 defaultButton:v28 alternateButton:0 otherButton:0];
 
     if (v30)
     {
@@ -261,7 +261,7 @@ LABEL_17:
       v32[1] = 3221225472;
       v32[2] = sub_10010BE30;
       v32[3] = &unk_10061BC40;
-      v33 = v9;
+      v33 = handlerCopy;
       [v31 addUserNotification:v30 listener:0 completionHandler:v32];
     }
   }

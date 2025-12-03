@@ -1,36 +1,36 @@
 @interface TSCERelativeCoordRefFormulaNode
 - (TSCECrossTableReference)crossTableRef;
-- (TSCERelativeCoordRefFormulaNode)initWithTableUID:(TSKUIDStruct)a3 refFlags:(const TSCEASTRefFlags *)a4 relativeCellCoord:(const TSCERelativeCellCoordinate *)a5 undoTractList:(id)a6;
+- (TSCERelativeCoordRefFormulaNode)initWithTableUID:(TSKUIDStruct)d refFlags:(const TSCEASTRefFlags *)flags relativeCellCoord:(const TSCERelativeCellCoordinate *)coord undoTractList:(id)list;
 - (TSKUIDStruct)tableUID;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCERelativeCoordRefFormulaNode
 
-- (TSCERelativeCoordRefFormulaNode)initWithTableUID:(TSKUIDStruct)a3 refFlags:(const TSCEASTRefFlags *)a4 relativeCellCoord:(const TSCERelativeCellCoordinate *)a5 undoTractList:(id)a6
+- (TSCERelativeCoordRefFormulaNode)initWithTableUID:(TSKUIDStruct)d refFlags:(const TSCEASTRefFlags *)flags relativeCellCoord:(const TSCERelativeCellCoordinate *)coord undoTractList:(id)list
 {
-  upper = a3._upper;
-  lower = a3._lower;
-  v12 = a6;
+  upper = d._upper;
+  lower = d._lower;
+  listCopy = list;
   v16.receiver = self;
   v16.super_class = TSCERelativeCoordRefFormulaNode;
   v13 = [(TSCEFormulaNode *)&v16 initWithNodeType:11];
   v14 = v13;
   if (v13)
   {
-    *(v13 + 44) = *a5;
-    v13[80] = a4->_flags;
+    *(v13 + 44) = *coord;
+    v13[80] = flags->_flags;
     *(v13 + 7) = lower;
     *(v13 + 8) = upper;
-    objc_storeStrong(v13 + 9, a6);
+    objc_storeStrong(v13 + 9, list);
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCERelativeCoordRefFormulaNode;
@@ -57,7 +57,7 @@
   return TSCERelativeCellCoordinate::setPreserveFlags(&retstr->var1, &v20);
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
   if (BYTE2(self->_relativeCellCoord._row))
   {
@@ -70,12 +70,12 @@
   }
 
   LOBYTE(v19._row) = v8 | HIBYTE(self->_relativeCellCoord._row);
-  TSCEASTRelativeCoordRefElement::appendRelativeCoordRefElement(a3, &self->_tableUID, (&self->super._nodeType + 4), &v19, self->_undoTractList, a6);
+  TSCEASTRelativeCoordRefElement::appendRelativeCoordRefElement(array, &self->_tableUID, (&self->super._nodeType + 4), &v19, self->_undoTractList, engine);
   v13 = objc_msgSend_whitespaceBefore(self, v9, v10, v11, v12);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v13);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v13);
 
   v18 = objc_msgSend_whitespaceAfter(self, v14, v15, v16, v17);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v18);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v18);
 }
 
 - (TSKUIDStruct)tableUID

@@ -1,6 +1,6 @@
 @interface PXStoryStyleChromeContainerLayout
 - (PXStoryStyleChromeContainerLayout)init;
-- (PXStoryStyleChromeContainerLayout)initWithViewModel:(id)a3;
+- (PXStoryStyleChromeContainerLayout)initWithViewModel:(id)model;
 - (void)_invalidateResourcePreloading;
 - (void)_invalidateStoryModel;
 - (void)_invalidateStyleLayouts;
@@ -12,35 +12,35 @@
 - (void)_updateStyleLayouts;
 - (void)_updateStyleLayoutsContent;
 - (void)_updateStyleManager;
-- (void)_updateVisibilityAnimator:(BOOL)a3;
+- (void)_updateVisibilityAnimator:(BOOL)animator;
 - (void)dealloc;
 - (void)displayScaleDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
-- (void)setArtworkPreloadingRecords:(id)a3;
-- (void)setStoryModel:(id)a3;
-- (void)setStyleManager:(id)a3;
+- (void)setArtworkPreloadingRecords:(id)records;
+- (void)setStoryModel:(id)model;
+- (void)setStyleManager:(id)manager;
 - (void)update;
 @end
 
 @implementation PXStoryStyleChromeContainerLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (StoryViewModelObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (StoryViewModelObservationContext == context)
   {
-    v11 = v9;
-    if ((v6 & 0x40) != 0)
+    v11 = observableCopy;
+    if ((changeCopy & 0x40) != 0)
     {
       [(PXStoryStyleChromeContainerLayout *)self _invalidateStoryModel];
-      v9 = v11;
-      if ((v6 & 0x20) == 0)
+      observableCopy = v11;
+      if ((changeCopy & 0x20) == 0)
       {
 LABEL_9:
-        if ((v6 & 0x8000) == 0)
+        if ((changeCopy & 0x8000) == 0)
         {
           goto LABEL_21;
         }
@@ -48,20 +48,20 @@ LABEL_9:
 LABEL_15:
         [(PXStoryStyleChromeContainerLayout *)self _invalidateVisibilityAnimator];
 LABEL_20:
-        v9 = v11;
+        observableCopy = v11;
         goto LABEL_21;
       }
     }
 
-    else if ((v6 & 0x20) == 0)
+    else if ((changeCopy & 0x20) == 0)
     {
       goto LABEL_9;
     }
 
     [(PXStoryStyleChromeContainerLayout *)self _invalidateStyleLayoutsContent];
     [(PXStoryStyleChromeContainerLayout *)self _invalidateResourcePreloading];
-    v9 = v11;
-    if ((v6 & 0x8000) == 0)
+    observableCopy = v11;
+    if ((changeCopy & 0x8000) == 0)
     {
       goto LABEL_21;
     }
@@ -69,28 +69,28 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (StoryModelObservationContext_218526 == a5)
+  if (StoryModelObservationContext_218526 == context)
   {
-    if ((v6 & 0x10000) == 0)
+    if ((changeCopy & 0x10000) == 0)
     {
       goto LABEL_21;
     }
 
-    v11 = v9;
+    v11 = observableCopy;
     goto LABEL_15;
   }
 
-  if (StyleManagerObservationContext_218527 == a5)
+  if (StyleManagerObservationContext_218527 == context)
   {
-    v11 = v9;
-    if ((v6 & 0x20) != 0)
+    v11 = observableCopy;
+    if ((changeCopy & 0x20) != 0)
     {
       [(PXStoryStyleChromeContainerLayout *)self _invalidateStyleLayouts];
       [(PXStoryStyleChromeContainerLayout *)self _invalidateResourcePreloading];
-      v9 = v11;
+      observableCopy = v11;
     }
 
-    if ((v6 & 0x100) != 0)
+    if ((changeCopy & 0x100) != 0)
     {
       goto LABEL_19;
     }
@@ -98,17 +98,17 @@ LABEL_20:
 
   else
   {
-    if (VisibilityAnimatorObservationContext != a5)
+    if (VisibilityAnimatorObservationContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:307 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:307 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
-      v11 = v9;
+      v11 = observableCopy;
 LABEL_19:
       [(PXStoryStyleChromeContainerLayout *)self _invalidateStyleLayoutsContent];
       goto LABEL_20;
@@ -120,28 +120,28 @@ LABEL_21:
 
 - (void)_updateResourcePreloading
 {
-  v3 = [(PXStoryStyleChromeContainerLayout *)self styleManager];
-  v13 = [v3 selectionDataSource];
+  styleManager = [(PXStoryStyleChromeContainerLayout *)self styleManager];
+  selectionDataSource = [styleManager selectionDataSource];
 
-  v4 = [(PXStoryStyleChromeContainerLayout *)self viewModel];
-  v5 = [v4 viewLayoutSpec];
+  viewModel = [(PXStoryStyleChromeContainerLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
 
   [(PXStoryStyleChromeContainerLayout *)self displayScale];
   v7 = v6;
-  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v13, "numberOfStyles")}];
-  if ([v13 numberOfStyles] >= 1)
+  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(selectionDataSource, "numberOfStyles")}];
+  if ([selectionDataSource numberOfStyles] >= 1)
   {
     v9 = 0;
     do
     {
-      v10 = [v13 styleInfoAtIndex:v9];
-      v11 = [[_PXStoryStyleChromePreloadingRecord alloc] initWithDisplayScale:v10 styleInfo:v5 viewLayoutSpec:v7];
+      v10 = [selectionDataSource styleInfoAtIndex:v9];
+      v11 = [[_PXStoryStyleChromePreloadingRecord alloc] initWithDisplayScale:v10 styleInfo:viewLayoutSpec viewLayoutSpec:v7];
       [v8 addObject:v11];
 
       ++v9;
     }
 
-    while (v9 < [v13 numberOfStyles]);
+    while (v9 < [selectionDataSource numberOfStyles]);
   }
 
   v12 = [v8 copy];
@@ -164,9 +164,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x80) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout _invalidateResourcePreloading]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:261 description:{@"invalidating %lu after it already has been updated", 128}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:261 description:{@"invalidating %lu after it already has been updated", 128}];
 
       abort();
     }
@@ -192,13 +192,13 @@ LABEL_5:
 {
   [(PXStoryStyleChromeContainerLayout *)self referenceSize];
   [(PXStoryStyleChromeContainerLayout *)self storyModel];
-  v3 = [objc_claimAutoreleasedReturnValue() layoutSpec];
-  v4 = [(PXStoryStyleChromeContainerLayout *)self viewModel];
-  [v4 viewLayoutSpec];
+  layoutSpec = [objc_claimAutoreleasedReturnValue() layoutSpec];
+  viewModel = [(PXStoryStyleChromeContainerLayout *)self viewModel];
+  [viewModel viewLayoutSpec];
   objc_claimAutoreleasedReturnValue();
 
-  [v3 styleSwitcherViewportSpacing];
-  [v3 styleSwitcherChromeInset];
+  [layoutSpec styleSwitcherViewportSpacing];
+  [layoutSpec styleSwitcherChromeInset];
   PXEdgeInsetsInsetRect();
 }
 
@@ -256,9 +256,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x40) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout _invalidateStyleLayoutsContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:219 description:{@"invalidating %lu after it already has been updated", 64}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:219 description:{@"invalidating %lu after it already has been updated", 64}];
 
       abort();
     }
@@ -280,27 +280,27 @@ LABEL_5:
   }
 }
 
-- (void)_updateVisibilityAnimator:(BOOL)a3
+- (void)_updateVisibilityAnimator:(BOOL)animator
 {
-  v3 = a3;
-  v5 = [(PXStoryStyleChromeContainerLayout *)self storyModel];
+  animatorCopy = animator;
+  storyModel = [(PXStoryStyleChromeContainerLayout *)self storyModel];
   v6 = 0.0;
-  if ([v5 viewMode] == 4)
+  if ([storyModel viewMode] == 4)
   {
-    v7 = [(PXStoryStyleChromeContainerLayout *)self viewModel];
-    v6 = ([v7 wantsRelatedOverlayVisible] ^ 1);
+    viewModel = [(PXStoryStyleChromeContainerLayout *)self viewModel];
+    v6 = ([viewModel wantsRelatedOverlayVisible] ^ 1);
   }
 
-  v8 = [(PXStoryStyleChromeContainerLayout *)self visibilityAnimator];
-  v9 = v8;
-  if (v3)
+  visibilityAnimator = [(PXStoryStyleChromeContainerLayout *)self visibilityAnimator];
+  v9 = visibilityAnimator;
+  if (animatorCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __63__PXStoryStyleChromeContainerLayout__updateVisibilityAnimator___block_invoke;
     v11[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
     *&v11[4] = v6;
-    [v8 performChangesUsingDefaultOpacityAnimation:v11];
+    [visibilityAnimator performChangesUsingDefaultOpacityAnimation:v11];
   }
 
   else
@@ -310,7 +310,7 @@ LABEL_5:
     v10[2] = __63__PXStoryStyleChromeContainerLayout__updateVisibilityAnimator___block_invoke_2;
     v10[3] = &__block_descriptor_40_e35_v16__0___PXMutableNumberAnimator__8l;
     *&v10[4] = v6;
-    [v8 performChangesWithoutAnimation:v10];
+    [visibilityAnimator performChangesWithoutAnimation:v10];
   }
 }
 
@@ -330,9 +330,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout _invalidateVisibilityAnimator]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:201 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:201 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -362,9 +362,9 @@ LABEL_5:
     [(PXGAbsoluteCompositeLayout *)self removeSublayoutsInRange:p_styleSublayoutRange->location];
   }
 
-  v4 = [(PXStoryStyleChromeContainerLayout *)self styleManager];
-  v5 = [v4 selectionDataSource];
-  p_styleSublayoutRange->length = [v5 numberOfStyles];
+  styleManager = [(PXStoryStyleChromeContainerLayout *)self styleManager];
+  selectionDataSource = [styleManager selectionDataSource];
+  p_styleSublayoutRange->length = [selectionDataSource numberOfStyles];
 
   if (p_styleSublayoutRange->length)
   {
@@ -372,8 +372,8 @@ LABEL_5:
     do
     {
       v7 = [PXStoryStyleChromeLayout alloc];
-      v8 = [(PXStoryStyleChromeContainerLayout *)self viewModel];
-      v9 = [(PXStoryStyleChromeLayout *)v7 initWithViewModel:v8];
+      viewModel = [(PXStoryStyleChromeContainerLayout *)self viewModel];
+      v9 = [(PXStoryStyleChromeLayout *)v7 initWithViewModel:viewModel];
       [(PXStoryStyleChromeContainerLayout *)self addSublayout:v9];
 
       ++v6;
@@ -401,9 +401,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout _invalidateStyleLayouts]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:186 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:186 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -427,9 +427,9 @@ LABEL_5:
 
 - (void)_updateStyleManager
 {
-  v4 = [(PXStoryStyleChromeContainerLayout *)self storyModel];
-  v3 = [v4 styleManager];
-  [(PXStoryStyleChromeContainerLayout *)self setStyleManager:v3];
+  storyModel = [(PXStoryStyleChromeContainerLayout *)self storyModel];
+  styleManager = [storyModel styleManager];
+  [(PXStoryStyleChromeContainerLayout *)self setStyleManager:styleManager];
 }
 
 - (void)_invalidateStyleManager
@@ -448,9 +448,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout _invalidateStyleManager]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:178 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:178 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -474,9 +474,9 @@ LABEL_5:
 
 - (void)_updateStoryModel
 {
-  v4 = [(PXStoryStyleChromeContainerLayout *)self viewModel];
-  v3 = [v4 mainModel];
-  [(PXStoryStyleChromeContainerLayout *)self setStoryModel:v3];
+  viewModel = [(PXStoryStyleChromeContainerLayout *)self viewModel];
+  mainModel = [viewModel mainModel];
+  [(PXStoryStyleChromeContainerLayout *)self setStoryModel:mainModel];
 }
 
 - (void)_invalidateStoryModel
@@ -495,9 +495,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout _invalidateStoryModel]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:170 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:170 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -528,9 +528,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -543,9 +543,9 @@ LABEL_5:
       [(PXStoryStyleChromeContainerLayout *)self _updateStoryModel];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-        [v12 handleFailureInFunction:v13 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v13 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -559,9 +559,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v15 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -574,9 +574,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v17 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -589,9 +589,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-      [v18 handleFailureInFunction:v19 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v19 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -604,9 +604,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-      [v20 handleFailureInFunction:v21 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v21 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -621,9 +621,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v9)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryStyleChromeContainerLayout update]"];
-      [v22 handleFailureInFunction:v23 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:165 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler7 handleFailureInFunction:v23 file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:165 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -675,11 +675,11 @@ void __44__PXStoryStyleChromeContainerLayout_dealloc__block_invoke(uint64_t a1, 
   [PXStoryStyleChromeLayout stopCachingResourcesForStyleInfo:v6 viewLayoutSpec:v3 displayScale:v5];
 }
 
-- (void)setArtworkPreloadingRecords:(id)a3
+- (void)setArtworkPreloadingRecords:(id)records
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_artworkPreloadingRecords != v4 && ([(NSSet *)v4 isEqual:?]& 1) == 0)
+  recordsCopy = records;
+  v5 = recordsCopy;
+  if (self->_artworkPreloadingRecords != recordsCopy && ([(NSSet *)recordsCopy isEqual:?]& 1) == 0)
   {
     v6 = self->_artworkPreloadingRecords;
     v7 = [(NSSet *)v5 copy];
@@ -727,19 +727,19 @@ void __65__PXStoryStyleChromeContainerLayout_setArtworkPreloadingRecords___block
   [PXStoryStyleChromeLayout startCachingResourcesForStyleInfo:v6 viewLayoutSpec:v3 displayScale:v5];
 }
 
-- (void)setStyleManager:(id)a3
+- (void)setStyleManager:(id)manager
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_styleManager != v5)
+  managerCopy = manager;
+  v6 = managerCopy;
+  if (self->_styleManager != managerCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryStyleManager *)v5 isEqual:?];
+    v8 = managerCopy;
+    v7 = [(PXStoryStyleManager *)managerCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
       [(PXStoryStyleManager *)self->_styleManager unregisterChangeObserver:self context:StyleManagerObservationContext_218527];
-      objc_storeStrong(&self->_styleManager, a3);
+      objc_storeStrong(&self->_styleManager, manager);
       [(PXStoryStyleManager *)self->_styleManager registerChangeObserver:self context:StyleManagerObservationContext_218527];
       [(PXStoryStyleChromeContainerLayout *)self _invalidateStyleLayouts];
       v6 = v8;
@@ -747,19 +747,19 @@ void __65__PXStoryStyleChromeContainerLayout_setArtworkPreloadingRecords___block
   }
 }
 
-- (void)setStoryModel:(id)a3
+- (void)setStoryModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_storyModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_storyModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(PXStoryModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
       [(PXStoryModel *)self->_storyModel unregisterChangeObserver:self context:StoryModelObservationContext_218526];
-      objc_storeStrong(&self->_storyModel, a3);
+      objc_storeStrong(&self->_storyModel, model);
       [(PXStoryModel *)self->_storyModel registerChangeObserver:self context:StoryModelObservationContext_218526];
       [(PXStoryStyleChromeContainerLayout *)self _invalidateStyleManager];
       [(PXStoryStyleChromeContainerLayout *)self _invalidateVisibilityAnimator];
@@ -770,15 +770,15 @@ void __65__PXStoryStyleChromeContainerLayout_setArtworkPreloadingRecords___block
 
 - (PXStoryStyleChromeContainerLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXStoryStyleChromeContainerLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryStyleChromeContainerLayout.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXStoryStyleChromeContainerLayout init]"}];
 
   abort();
 }
 
-- (PXStoryStyleChromeContainerLayout)initWithViewModel:(id)a3
+- (PXStoryStyleChromeContainerLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = PXStoryStyleChromeContainerLayout;
   v6 = [(PXGAbsoluteCompositeLayout *)&v15 init];
@@ -788,7 +788,7 @@ void __65__PXStoryStyleChromeContainerLayout_setArtworkPreloadingRecords___block
     framesArrayStore = v6->_framesArrayStore;
     v6->_framesArrayStore = v7;
 
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     [(PXStoryViewModel *)v6->_viewModel registerChangeObserver:v6 context:StoryViewModelObservationContext];
     v9 = [[off_1E77217D0 alloc] initWithValue:0.0];
     visibilityAnimator = v6->_visibilityAnimator;
@@ -801,8 +801,8 @@ void __65__PXStoryStyleChromeContainerLayout_setArtworkPreloadingRecords___block
     artworkPreloadingRecords = v6->_artworkPreloadingRecords;
     v6->_artworkPreloadingRecords = v11;
 
-    v13 = [v5 mainModel];
-    [(PXStoryStyleChromeContainerLayout *)v6 setStoryModel:v13];
+    mainModel = [modelCopy mainModel];
+    [(PXStoryStyleChromeContainerLayout *)v6 setStoryModel:mainModel];
 
     [(PXStoryStyleChromeContainerLayout *)v6 _updateVisibilityAnimator:0];
   }

@@ -1,7 +1,7 @@
 @interface ADRansacLine1DSolver
-- (ADRansacLine1DSolver)initWithParameters:(id)a3;
+- (ADRansacLine1DSolver)initWithParameters:(id)parameters;
 - (id).cxx_construct;
-- (id)fitWithX:(float *)a3 y:(float *)a4 count:(unsigned int)a5;
+- (id)fitWithX:(float *)x y:(float *)y count:(unsigned int)count;
 @end
 
 @implementation ADRansacLine1DSolver
@@ -13,12 +13,12 @@
   return self;
 }
 
-- (id)fitWithX:(float *)a3 y:(float *)a4 count:(unsigned int)a5
+- (id)fitWithX:(float *)x y:(float *)y count:(unsigned int)count
 {
   v16 = 0;
   v17 = 0;
   v18 = 0;
-  if (a5)
+  if (count)
   {
     operator new();
   }
@@ -62,9 +62,9 @@ LABEL_8:
   return v9;
 }
 
-- (ADRansacLine1DSolver)initWithParameters:(id)a3
+- (ADRansacLine1DSolver)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v6.receiver = self;
   v6.super_class = ADRansacLine1DSolver;
   if ([(ADRansacLine1DSolver *)&v6 init])

@@ -1,18 +1,18 @@
 @interface SecureBackupDaemonLoggerObservers
-- (SecureBackupDaemonLoggerObservers)initWithLogger:(id)a3;
+- (SecureBackupDaemonLoggerObservers)initWithLogger:(id)logger;
 @end
 
 @implementation SecureBackupDaemonLoggerObservers
 
-- (SecureBackupDaemonLoggerObservers)initWithLogger:(id)a3
+- (SecureBackupDaemonLoggerObservers)initWithLogger:(id)logger
 {
-  v4 = a3;
+  loggerCopy = logger;
   v8.receiver = self;
   v8.super_class = SecureBackupDaemonLoggerObservers;
   v5 = [(SecureBackupDaemonLoggerObservers *)&v8 init];
   if (v5)
   {
-    [v4 updateExistingOperations];
+    [loggerCopy updateExistingOperations];
     v6 = v5;
   }
 

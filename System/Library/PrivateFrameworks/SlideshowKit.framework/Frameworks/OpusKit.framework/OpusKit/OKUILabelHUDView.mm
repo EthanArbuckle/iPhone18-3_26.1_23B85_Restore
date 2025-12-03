@@ -1,9 +1,9 @@
 @interface OKUILabelHUDView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (OKUILabelHUDView)init;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)sizeToFit;
 - (void)updateShadowPath;
 @end
@@ -45,9 +45,9 @@
     [-[OKUILabelHUDView layer](v7 "layer")];
     [-[OKUILabelHUDView layer](v7 "layer")];
     [-[OKUILabelHUDView layer](v7 "layer")];
-    v8 = [(OKUILabelHUDView *)v7 layer];
+    layer = [(OKUILabelHUDView *)v7 layer];
     LODWORD(v9) = 0.5;
-    [v8 setShadowOpacity:v9];
+    [layer setShadowOpacity:v9];
     [-[OKUILabelHUDView layer](v7 "layer")];
     v10 = MEMORY[0x277D75208];
     [(OKUILabelHUDView *)v7 bounds];
@@ -97,12 +97,12 @@
   [(OKUILabelHUDView *)&v4 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OKUILabelHUDView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -115,12 +115,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OKUILabelHUDView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -138,9 +138,9 @@
   v3 = MEMORY[0x277D75208];
   [(OKUILabelHUDView *)self bounds];
   v4 = [objc_msgSend(v3 "bezierPathWithRoundedRect:"CGPath" cornerRadius:?")];
-  v5 = [(OKUILabelHUDView *)self layer];
+  layer = [(OKUILabelHUDView *)self layer];
 
-  [v5 setShadowPath:v4];
+  [layer setShadowPath:v4];
 }
 
 - (void)sizeToFit
@@ -154,9 +154,9 @@
   [(OKUILabelHUDView *)self setCenter:v4, v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_label sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_label sizeThatFits:fits.width, fits.height];
   v4 = v3;
   v6 = v5;
   v7 = [objc_msgSend(MEMORY[0x277D75418] "currentDevice")];

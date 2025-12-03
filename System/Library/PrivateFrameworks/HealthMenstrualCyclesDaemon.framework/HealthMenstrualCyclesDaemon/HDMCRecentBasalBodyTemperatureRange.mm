@@ -1,52 +1,52 @@
 @interface HDMCRecentBasalBodyTemperatureRange
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithUpperQuantileValue:(double)a3 medianValue:(double)a4 lowerQuantileValue:(double)a5 unit:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithUpperQuantileValue:(double)value medianValue:(double)medianValue lowerQuantileValue:(double)quantileValue unit:(id)unit;
 - (id)description;
-- (id)recentBasalBodyTemperatureWithMostRecentQuantity:(id)a3;
+- (id)recentBasalBodyTemperatureWithMostRecentQuantity:(id)quantity;
 - (unint64_t)hash;
-- (void)initWithUpperQuantileQuantity:(void *)a3 medianQuantity:(void *)a4 lowerQuantileQuantity:;
+- (void)initWithUpperQuantileQuantity:(void *)quantity medianQuantity:(void *)medianQuantity lowerQuantileQuantity:;
 @end
 
 @implementation HDMCRecentBasalBodyTemperatureRange
 
-- (id)_initWithUpperQuantileValue:(double)a3 medianValue:(double)a4 lowerQuantileValue:(double)a5 unit:(id)a6
+- (id)_initWithUpperQuantileValue:(double)value medianValue:(double)medianValue lowerQuantileValue:(double)quantileValue unit:(id)unit
 {
-  v10 = a6;
-  v11 = [MEMORY[0x277CCD7E8] quantityWithUnit:v10 doubleValue:a3];
-  v12 = [MEMORY[0x277CCD7E8] quantityWithUnit:v10 doubleValue:a4];
-  v13 = [MEMORY[0x277CCD7E8] quantityWithUnit:v10 doubleValue:a5];
+  unitCopy = unit;
+  v11 = [MEMORY[0x277CCD7E8] quantityWithUnit:unitCopy doubleValue:value];
+  v12 = [MEMORY[0x277CCD7E8] quantityWithUnit:unitCopy doubleValue:medianValue];
+  v13 = [MEMORY[0x277CCD7E8] quantityWithUnit:unitCopy doubleValue:quantileValue];
   v14 = [(HDMCRecentBasalBodyTemperatureRange *)self initWithUpperQuantileQuantity:v11 medianQuantity:v12 lowerQuantileQuantity:v13];
 
   return v14;
 }
 
-- (void)initWithUpperQuantileQuantity:(void *)a3 medianQuantity:(void *)a4 lowerQuantileQuantity:
+- (void)initWithUpperQuantileQuantity:(void *)quantity medianQuantity:(void *)medianQuantity lowerQuantileQuantity:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  quantityCopy = quantity;
+  medianQuantityCopy = medianQuantity;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = HDMCRecentBasalBodyTemperatureRange;
-    a1 = objc_msgSendSuper2(&v17, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel_init);
+    if (self)
     {
       v10 = [v7 copy];
-      v11 = a1[1];
-      a1[1] = v10;
+      v11 = self[1];
+      self[1] = v10;
 
-      v12 = [v8 copy];
-      v13 = a1[2];
-      a1[2] = v12;
+      v12 = [quantityCopy copy];
+      v13 = self[2];
+      self[2] = v12;
 
-      v14 = [v9 copy];
-      v15 = a1[3];
-      a1[3] = v14;
+      v14 = [medianQuantityCopy copy];
+      v15 = self[3];
+      self[3] = v14;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -57,12 +57,12 @@
   return [v3 stringWithFormat:@"<%@: %@, %@, %@>", v4, self->_lowerQuantile, median, self->_upperQuantile];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = HDMCRecentBasalBodyTemperatureRange;
-  if (![(HDMCRecentBasalBodyTemperatureRange *)&v14 isEqual:v4])
+  if (![(HDMCRecentBasalBodyTemperatureRange *)&v14 isEqual:equalCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -71,7 +71,7 @@
       goto LABEL_16;
     }
 
-    v6 = v4;
+    v6 = equalCopy;
     upperQuantile = self->_upperQuantile;
     v8 = v6[1];
     if (upperQuantile != v8 && (!v8 || ![(HKQuantity *)upperQuantile isEqual:?]))
@@ -123,10 +123,10 @@ LABEL_16:
   return v4 ^ [(HKQuantity *)self->_lowerQuantile hash];
 }
 
-- (id)recentBasalBodyTemperatureWithMostRecentQuantity:(id)a3
+- (id)recentBasalBodyTemperatureWithMostRecentQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D119E0]) initWithMostRecent:v4 upperQuantile:self->_upperQuantile median:self->_median lowerQuantile:self->_lowerQuantile];
+  quantityCopy = quantity;
+  v5 = [objc_alloc(MEMORY[0x277D119E0]) initWithMostRecent:quantityCopy upperQuantile:self->_upperQuantile median:self->_median lowerQuantile:self->_lowerQuantile];
 
   return v5;
 }

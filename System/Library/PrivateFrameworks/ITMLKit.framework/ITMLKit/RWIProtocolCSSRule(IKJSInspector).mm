@@ -13,38 +13,38 @@
   v14 = MEMORY[0x277D7B6C8];
   v15 = a7;
   v16 = a6;
-  v17 = [v12 selectorList];
-  v18 = [v14 ik_cssSelectorListFromSelectorList:v17 forStyleMarkup:v16 withNewLineIndexSet:v15];
+  selectorList = [v12 selectorList];
+  v18 = [v14 ik_cssSelectorListFromSelectorList:selectorList forStyleMarkup:v16 withNewLineIndexSet:v15];
 
   v19 = MEMORY[0x277D7B6E0];
-  v20 = [v12 declarationList];
-  v21 = [v19 ik_cssStyleFromDeclarationList:v20 forStyleMarkup:v16 withNewLineIndexSet:v15 existingStyle:0];
+  declarationList = [v12 declarationList];
+  v21 = [v19 ik_cssStyleFromDeclarationList:declarationList forStyleMarkup:v16 withNewLineIndexSet:v15 existingStyle:0];
 
   v22 = MEMORY[0x277D7B6F0];
-  v23 = [v13 styleSheetId];
-  v24 = [v22 safe_initWithStyleSheetId:v23 ordinal:a4];
+  styleSheetId = [v13 styleSheetId];
+  v24 = [v22 safe_initWithStyleSheetId:styleSheetId ordinal:a4];
 
   [v21 setStyleId:v24];
   v25 = MEMORY[0x277D7B6A8];
   if (v16)
   {
-    v7 = [v18 range];
-    v26 = [v7 startLine];
+    range = [v18 range];
+    startLine = [range startLine];
   }
 
   else
   {
-    v26 = 0;
+    startLine = 0;
   }
 
-  v27 = [v25 safe_initWithSelectorList:v18 sourceLine:v26 origin:objc_msgSend(v13 style:{"origin"), v21}];
+  v27 = [v25 safe_initWithSelectorList:v18 sourceLine:startLine origin:objc_msgSend(v13 style:{"origin"), v21}];
   if (v16)
   {
   }
 
   v28 = MEMORY[0x277D7B6B0];
-  v29 = [v13 styleSheetId];
-  v30 = [v28 safe_initWithStyleSheetId:v29 ordinal:a4];
+  styleSheetId2 = [v13 styleSheetId];
+  v30 = [v28 safe_initWithStyleSheetId:styleSheetId2 ordinal:a4];
 
   [v27 setRuleId:v30];
   objc_opt_class();
@@ -53,10 +53,10 @@
     v31 = MEMORY[0x277D7B680];
     v32 = v12;
     v33 = [v31 safe_initWithType:0];
-    v34 = [v32 mediaQuery];
+    mediaQuery = [v32 mediaQuery];
 
-    v35 = [v34 queryExpression];
-    [v33 setText:v35];
+    queryExpression = [mediaQuery queryExpression];
+    [v33 setText:queryExpression];
 
     v39[0] = v33;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
@@ -72,28 +72,28 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v27 = a1;
-  v9 = [a1 selectorList];
-  v10 = [v9 selectors];
-  v11 = [v10 count];
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  selectorList = [self selectorList];
+  selectors = [selectorList selectors];
+  v11 = [selectors count];
 
   if (v11)
   {
     v12 = 0;
     while (1)
     {
-      v13 = [v9 selectors];
-      v14 = [v13 objectAtIndex:v12];
+      selectors2 = [selectorList selectors];
+      v14 = [selectors2 objectAtIndex:v12];
 
       if ([v7 length])
       {
-        v15 = [v14 text];
-        if ([v15 hasPrefix:@"#"])
+        text = [v14 text];
+        if ([text hasPrefix:@"#"])
         {
-          v16 = [v14 text];
+          text2 = [v14 text];
           v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"#%@", v7];
-          v18 = [v16 isEqualToString:v17];
+          v18 = [text2 isEqualToString:v17];
 
           if (v18)
           {
@@ -108,14 +108,14 @@
 
       if ([v6 count])
       {
-        v19 = [v14 text];
-        if (![v19 hasPrefix:@"."])
+        text3 = [v14 text];
+        if (![text3 hasPrefix:@"."])
         {
           goto LABEL_12;
         }
 
-        v20 = [v14 text];
-        v21 = [v20 substringFromIndex:1];
+        text4 = [v14 text];
+        v21 = [text4 substringFromIndex:1];
         v22 = [v6 containsObject:v21];
 
         if (v22)
@@ -127,8 +127,8 @@
 LABEL_13:
 
       ++v12;
-      v23 = [v9 selectors];
-      v24 = [v23 count];
+      selectors3 = [selectorList selectors];
+      v24 = [selectors3 count];
 
       if (v12 >= v24)
       {
@@ -136,15 +136,15 @@ LABEL_13:
       }
     }
 
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
-    [v8 addObject:v19];
+    text3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
+    [array addObject:text3];
 LABEL_12:
 
     goto LABEL_13;
   }
 
 LABEL_14:
-  v25 = [MEMORY[0x277D7B6B8] safe_initWithRule:v27 matchingSelectors:v8];
+  v25 = [MEMORY[0x277D7B6B8] safe_initWithRule:selfCopy matchingSelectors:array];
 
   return v25;
 }

@@ -1,15 +1,15 @@
 @interface CMVehicleConnectionData
-- (CMVehicleConnectionData)initWithCoder:(id)a3;
-- (CMVehicleConnectionData)initWithStartDate:(double)a3 endDate:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMVehicleConnectionData)initWithCoder:(id)coder;
+- (CMVehicleConnectionData)initWithStartDate:(double)date endDate:(double)endDate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMVehicleConnectionData
 
-- (CMVehicleConnectionData)initWithStartDate:(double)a3 endDate:(double)a4
+- (CMVehicleConnectionData)initWithStartDate:(double)date endDate:(double)endDate
 {
   v14.receiver = self;
   v14.super_class = CMVehicleConnectionData;
@@ -17,9 +17,9 @@
   if (v6)
   {
     v7 = objc_alloc(MEMORY[0x1E695DF00]);
-    v6->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v7, v8, v9, a3);
+    v6->fStartDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v7, v8, v9, date);
     v10 = objc_alloc(MEMORY[0x1E695DF00]);
-    v6->fEndDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v10, v11, v12, a4);
+    v6->fEndDate = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v10, v11, v12, endDate);
   }
 
   return v6;
@@ -32,10 +32,10 @@
   [(CMVehicleConnectionData *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend_init(v7, v8, v9);
   if (v12)
   {
@@ -46,7 +46,7 @@
   return v12;
 }
 
-- (CMVehicleConnectionData)initWithCoder:(id)a3
+- (CMVehicleConnectionData)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CMVehicleConnectionData;
@@ -54,20 +54,20 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->fStartDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMVehicleConnectionDataCodingKeyStartDate");
+    v4->fStartDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMVehicleConnectionDataCodingKeyStartDate");
     v7 = objc_opt_class();
-    v4->fEndDate = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"kCMVehicleConnectionDataCodingKeyEndDate");
+    v4->fEndDate = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"kCMVehicleConnectionDataCodingKeyEndDate");
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fStartDate, @"kCMVehicleConnectionDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fStartDate, @"kCMVehicleConnectionDataCodingKeyStartDate");
   fEndDate = self->fEndDate;
 
-  objc_msgSend_encodeObject_forKey_(a3, v5, fEndDate, @"kCMVehicleConnectionDataCodingKeyEndDate");
+  objc_msgSend_encodeObject_forKey_(coder, v5, fEndDate, @"kCMVehicleConnectionDataCodingKeyEndDate");
 }
 
 - (id)description

@@ -1,23 +1,23 @@
 @interface SKUIContentUnavailableCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUIContentUnavailableCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUIContentUnavailableCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIContentUnavailableCollectionViewCell
 
-- (SKUIContentUnavailableCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIContentUnavailableCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,24 +32,24 @@
 
   v21.receiver = self;
   v21.super_class = SKUIContentUnavailableCollectionViewCell;
-  v16 = [(SKUICollectionViewCell *)&v21 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUICollectionViewCell *)&v21 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = objc_alloc_init(SKUIContentUnavailableView);
-    contentUnavailableView = v16->_contentUnavailableView;
-    v16->_contentUnavailableView = v17;
+    contentUnavailableView = height->_contentUnavailableView;
+    height->_contentUnavailableView = v17;
 
-    v19 = [(SKUIContentUnavailableCollectionViewCell *)v16 contentView];
-    [v19 addSubview:v16->_contentUnavailableView];
+    contentView = [(SKUIContentUnavailableCollectionViewCell *)height contentView];
+    [contentView addSubview:height->_contentUnavailableView];
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -62,15 +62,15 @@
     }
   }
 
-  v17 = [SKUIContentUnavailableView prefetchResourcesForViewElement:v7 reason:a4 context:v8];
+  v17 = [SKUIContentUnavailableView prefetchResourcesForViewElement:elementCopy reason:reason context:contextCopy];
 
   return v17;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -83,7 +83,7 @@
     }
   }
 
-  [SKUIContentUnavailableView preferredSizeForViewElement:v5 context:v6];
+  [SKUIContentUnavailableView preferredSizeForViewElement:elementCopy context:contextCopy];
   v16 = v15;
   v18 = v17;
 
@@ -94,10 +94,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -110,13 +110,13 @@
     }
   }
 
-  [SKUIContentUnavailableView requestLayoutForViewElement:v7 width:v8 context:a4];
+  [SKUIContentUnavailableView requestLayoutForViewElement:elementCopy width:contextCopy context:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -129,7 +129,7 @@
     }
   }
 
-  [SKUIContentUnavailableView sizeThatFitsWidth:v7 viewElement:v8 context:a3];
+  [SKUIContentUnavailableView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
   v18 = v17;
   v20 = v19;
 
@@ -140,29 +140,29 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIContentUnavailableCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   contentUnavailableView = self->_contentUnavailableView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SKUIViewReuseView *)contentUnavailableView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)contentUnavailableView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SKUIContentUnavailableCollectionViewCell;
-  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SKUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
 - (void)layoutSubviews
@@ -171,19 +171,19 @@
   v9.super_class = SKUIContentUnavailableCollectionViewCell;
   [(SKUICollectionViewCell *)&v9 layoutSubviews];
   contentUnavailableView = self->_contentUnavailableView;
-  v4 = [(SKUIContentUnavailableCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUIContentUnavailableCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIContentUnavailableView *)contentUnavailableView setFrame:v5 + self->_contentInset.left, v6 + self->_contentInset.top, v7 - (self->_contentInset.left + self->_contentInset.right), v8 - (self->_contentInset.top + self->_contentInset.bottom)];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   contentUnavailableView = self->_contentUnavailableView;
-  v5 = a3;
-  [(SKUIViewReuseView *)contentUnavailableView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)contentUnavailableView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIContentUnavailableCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

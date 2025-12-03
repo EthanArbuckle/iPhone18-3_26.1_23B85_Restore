@@ -1,7 +1,7 @@
 @interface MPSNNGramMatrixCalculationGradientNode
 + (MPSNNGramMatrixCalculationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState;
 + (MPSNNGramMatrixCalculationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState alpha:(float)alpha;
-- (MPSNNGramMatrixCalculationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSNNGramMatrixCalculationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSNNGramMatrixCalculationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState alpha:(float)alpha;
 @end
 
@@ -9,7 +9,7 @@
 
 + (MPSNNGramMatrixCalculationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState alpha:(float)alpha
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   *&v11 = alpha;
   v16 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_alpha_(v10, v12, sourceGradient, sourceImage, gradientState, v13, v14, v15, v11);
 
@@ -32,18 +32,18 @@
 
 + (MPSNNGramMatrixCalculationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_(v8, v9, sourceGradient, sourceImage, gradientState, v10, v11, v12);
 
   return v13;
 }
 
-- (MPSNNGramMatrixCalculationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSNNGramMatrixCalculationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   v6.receiver = self;
   v6.super_class = MPSNNGramMatrixCalculationGradientNode;
-  result = [(MPSNNGradientFilterNode *)&v6 initWithGradientImages:a3 forwardFilter:?];
-  result->_alpha = *(a4 + 14);
+  result = [(MPSNNGradientFilterNode *)&v6 initWithGradientImages:images forwardFilter:?];
+  result->_alpha = *(filter + 14);
   return result;
 }
 

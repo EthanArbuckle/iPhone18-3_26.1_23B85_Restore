@@ -1,17 +1,17 @@
 @interface NESMURLFilterSessionStateStarting
 - (NESMURLFilterSessionStateStarting)init;
-- (void)enterWithSession:(id)a3;
-- (void)handlePluginStatusDidChangeToRunning:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handlePluginStatusDidChangeToRunning:(id)running;
 @end
 
 @implementation NESMURLFilterSessionStateStarting
 
-- (void)handlePluginStatusDidChangeToRunning:(id)a3
+- (void)handlePluginStatusDidChangeToRunning:(id)running
 {
   v11.receiver = self;
   v11.super_class = NESMURLFilterSessionStateStarting;
-  v4 = a3;
-  [(NESMURLFilterSessionState *)&v11 handlePluginStatusDidChangeToRunning:v4];
+  runningCopy = running;
+  [(NESMURLFilterSessionState *)&v11 handlePluginStatusDidChangeToRunning:runningCopy];
   if (self)
   {
     Property = objc_getProperty(self, v5, 16, 1);
@@ -28,7 +28,7 @@
 
   v8 = Property;
 
-  if (v8 == v4)
+  if (v8 == runningCopy)
   {
     if (self)
     {
@@ -44,11 +44,11 @@
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v15.receiver = self;
   v15.super_class = NESMURLFilterSessionStateStarting;
-  [(NESMURLFilterSessionState *)&v15 enterWithSession:a3];
+  [(NESMURLFilterSessionState *)&v15 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);
@@ -85,8 +85,8 @@
       v13 = 0;
     }
 
-    v14 = [v13 configuration];
-    sub_1000187A4(v11, v14);
+    configuration = [v13 configuration];
+    sub_1000187A4(v11, configuration);
   }
 }
 

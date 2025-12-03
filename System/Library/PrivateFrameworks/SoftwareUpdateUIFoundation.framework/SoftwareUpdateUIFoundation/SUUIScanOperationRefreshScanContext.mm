@@ -1,6 +1,6 @@
 @interface SUUIScanOperationRefreshScanContext
 - (SUUIScanOperationRefreshScanContext)init;
-- (SUUIScanOperationRefreshScanContext)initWithPreviousDownload:(id)a3 previousEncounteredError:(id)a4;
+- (SUUIScanOperationRefreshScanContext)initWithPreviousDownload:(id)download previousEncounteredError:(id)error;
 @end
 
 @implementation SUUIScanOperationRefreshScanContext
@@ -14,31 +14,31 @@
   return v3;
 }
 
-- (SUUIScanOperationRefreshScanContext)initWithPreviousDownload:(id)a3 previousEncounteredError:(id)a4
+- (SUUIScanOperationRefreshScanContext)initWithPreviousDownload:(id)download previousEncounteredError:(id)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, download);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, error);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = SUUIScanOperationRefreshScanContext;
   v8 = [(SUUIScanOperationRefreshScanContext *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_previousDownload, location[0]);
-    objc_storeStrong(&v12->_previousEncounteredError, v10);
+    objc_storeStrong(&selfCopy->_previousDownload, location[0]);
+    objc_storeStrong(&selfCopy->_previousEncounteredError, v10);
   }
 
-  v6 = MEMORY[0x277D82BE0](v12);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 

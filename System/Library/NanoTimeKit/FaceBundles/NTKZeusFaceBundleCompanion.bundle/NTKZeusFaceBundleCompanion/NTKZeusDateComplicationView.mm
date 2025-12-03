@@ -1,35 +1,35 @@
 @interface NTKZeusDateComplicationView
-- (CGRect)_visualBoundsForLabel:(id)a3;
+- (CGRect)_visualBoundsForLabel:(id)label;
 - (CGRect)contentFrame;
-- (NTKZeusDateComplicationView)initWithBackgroundView:(id)a3;
+- (NTKZeusDateComplicationView)initWithBackgroundView:(id)view;
 - (void)_updateText;
-- (void)applyPalette:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromMode:(int64_t)a4 toMode:(int64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
-- (void)blancEditModeApplyPalette:(id)a3;
+- (void)applyPalette:(id)palette;
+- (void)applyTransitionFraction:(double)fraction fromMode:(int64_t)mode toMode:(int64_t)toMode;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
+- (void)blancEditModeApplyPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5;
-- (void)setStyle:(unint64_t)a3;
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation NTKZeusDateComplicationView
 
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style
 {
-  v6 = [a3 intValue];
-  if (v6 != self->_currentDayNumber)
+  intValue = [text intValue];
+  if (intValue != self->_currentDayNumber)
   {
-    self->_currentDayNumber = v6;
+    self->_currentDayNumber = intValue;
 
     [(NTKZeusDateComplicationView *)self _updateText];
   }
 }
 
-- (NTKZeusDateComplicationView)initWithBackgroundView:(id)a3
+- (NTKZeusDateComplicationView)initWithBackgroundView:(id)view
 {
   v10.receiver = self;
   v10.super_class = NTKZeusDateComplicationView;
-  v3 = [(NTKZeusComplicationView *)&v10 initWithBackgroundView:a3];
+  v3 = [(NTKZeusComplicationView *)&v10 initWithBackgroundView:view];
   if (v3)
   {
     v4 = objc_alloc_init(NTKZeusColorPalette);
@@ -39,8 +39,8 @@
 
     [(UILabel *)v3->_label setTextAlignment:1];
     v7 = v3->_label;
-    v8 = [(NTKZeusColorPalette *)v4 silver];
-    [(UILabel *)v7 setTextColor:v8];
+    silver = [(NTKZeusColorPalette *)v4 silver];
+    [(UILabel *)v7 setTextColor:silver];
 
     [(NTKZeusDateComplicationView *)v3 addSubview:v3->_label];
   }
@@ -48,15 +48,15 @@
   return v3;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if ([(NTKZeusComplicationView *)self style]!= a3)
+  if ([(NTKZeusComplicationView *)self style]!= style)
   {
     v6.receiver = self;
     v6.super_class = NTKZeusDateComplicationView;
-    [(NTKZeusComplicationView *)&v6 setStyle:a3];
-    v5 = [(NTKZeusComplicationView *)self backgroundView];
-    [v5 setStyle:a3];
+    [(NTKZeusComplicationView *)&v6 setStyle:style];
+    backgroundView = [(NTKZeusComplicationView *)self backgroundView];
+    [backgroundView setStyle:style];
 
     [(NTKZeusDateComplicationView *)self _updateText];
   }
@@ -75,22 +75,22 @@
   v7 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
   v8 = [v5 initWithString:v6 attributes:v7];
 
-  v9 = [(NTKZeusComplicationView *)self device];
-  v10 = [CLKDeviceMetrics metricsWithDevice:v9 identitySizeClass:2];
+  device = [(NTKZeusComplicationView *)self device];
+  v10 = [CLKDeviceMetrics metricsWithDevice:device identitySizeClass:2];
 
-  v11 = [(NTKZeusComplicationView *)self style];
-  if (v11 > 1)
+  style = [(NTKZeusComplicationView *)self style];
+  if (style > 1)
   {
-    if (v11 == 2)
+    if (style == 2)
     {
       v13 = +[NTKZeusFontLoader espaceFontDescriptor];
-      v14 = [(NTKZeusComplicationView *)self device];
-      sub_C038(v14, v29);
+      device2 = [(NTKZeusComplicationView *)self device];
+      sub_C038(device2, v29);
       v15 = &v30;
       goto LABEL_18;
     }
 
-    if (v11 == 3)
+    if (style == 3)
     {
       if (self->_currentDayNumber == 21)
       {
@@ -100,8 +100,8 @@
       }
 
       v13 = +[NTKZeusFontLoader carrickFontDescriptor];
-      v17 = [(NTKZeusComplicationView *)self device];
-      v14 = v17;
+      device3 = [(NTKZeusComplicationView *)self device];
+      device2 = device3;
       v18 = v28;
       v19 = v28;
       goto LABEL_13;
@@ -109,19 +109,19 @@
 
 LABEL_12:
     v13 = +[NTKZeusFontLoader carrickFontDescriptor];
-    v17 = [(NTKZeusComplicationView *)self device];
-    v14 = v17;
+    device3 = [(NTKZeusComplicationView *)self device];
+    device2 = device3;
     v18 = v27;
     v19 = v27;
 LABEL_13:
-    sub_C038(v17, v19);
+    sub_C038(device3, v19);
     v15 = (v18 + 72);
     goto LABEL_18;
   }
 
-  if (v11)
+  if (style)
   {
-    if (v11 == 1)
+    if (style == 1)
     {
       if (self->_currentDayNumber == 1)
       {
@@ -131,8 +131,8 @@ LABEL_13:
       }
 
       v13 = +[NTKZeusFontLoader capeCodFontDescriptor];
-      v14 = [(NTKZeusComplicationView *)self device];
-      sub_C038(v14, v31);
+      device2 = [(NTKZeusComplicationView *)self device];
+      sub_C038(device2, v31);
       v15 = &v32;
       goto LABEL_18;
     }
@@ -148,8 +148,8 @@ LABEL_13:
   }
 
   v13 = +[NTKZeusFontLoader clipperFontDescriptor];
-  v14 = [(NTKZeusComplicationView *)self device];
-  sub_C038(v14, v33);
+  device2 = [(NTKZeusComplicationView *)self device];
+  sub_C038(device2, v33);
   v15 = &v34;
 LABEL_18:
   v21 = *v15;
@@ -167,35 +167,35 @@ LABEL_18:
   [(NTKZeusDateComplicationView *)self setNeedsLayout];
 }
 
-- (CGRect)_visualBoundsForLabel:(id)a3
+- (CGRect)_visualBoundsForLabel:(id)label
 {
-  v4 = a3;
-  [v4 bounds];
+  labelCopy = label;
+  [labelCopy bounds];
   v6 = v5;
-  v7 = [(NTKZeusComplicationView *)self device];
-  [v7 screenScale];
+  device = [(NTKZeusComplicationView *)self device];
+  [device screenScale];
   v9 = (v6 * v8);
 
-  [v4 bounds];
+  [labelCopy bounds];
   v11 = v10;
-  v12 = [(NTKZeusComplicationView *)self device];
-  [v12 screenScale];
+  device2 = [(NTKZeusComplicationView *)self device];
+  [device2 screenScale];
   v14 = (v11 * v13);
 
   v15 = 1;
   v16 = malloc_type_calloc(v14 * v9, 1uLL, 0x100004077774924uLL);
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v18 = CGBitmapContextCreate(v16, v9, v14, 8uLL, v9, DeviceGray, 7u);
-  v19 = [(NTKZeusComplicationView *)self device];
-  [v19 screenScale];
+  device3 = [(NTKZeusComplicationView *)self device];
+  [device3 screenScale];
   v21 = v20;
-  v22 = [(NTKZeusComplicationView *)self device];
-  [v22 screenScale];
+  device4 = [(NTKZeusComplicationView *)self device];
+  [device4 screenScale];
   CGAffineTransformMakeScale(&v52, v21, v23);
   CGContextSetCTM();
 
-  v24 = [v4 layer];
-  [v24 renderInContext:v18];
+  layer = [labelCopy layer];
+  [layer renderInContext:v18];
 
   CGContextRelease(v18);
   CGColorSpaceRelease(DeviceGray);
@@ -279,18 +279,18 @@ LABEL_18:
   }
 
   free(v16);
-  v36 = [(NTKZeusComplicationView *)self device];
-  [v36 screenScale];
+  device5 = [(NTKZeusComplicationView *)self device];
+  [device5 screenScale];
   v38 = v28 / v37;
-  v39 = [(NTKZeusComplicationView *)self device];
-  [v39 screenScale];
+  device6 = [(NTKZeusComplicationView *)self device];
+  [device6 screenScale];
   v41 = v30 / v40;
 
-  v42 = [(NTKZeusComplicationView *)self device];
-  [v42 screenScale];
+  device7 = [(NTKZeusComplicationView *)self device];
+  [device7 screenScale];
   v44 = (v15 - v28) / v43;
-  v45 = [(NTKZeusComplicationView *)self device];
-  [v45 screenScale];
+  device8 = [(NTKZeusComplicationView *)self device];
+  [device8 screenScale];
   v47 = (v26 - v30 + 1) / v46;
 
   v48 = v38;
@@ -330,11 +330,11 @@ LABEL_18:
   sub_C038(v3, v17);
 
   [(NTKZeusComplicationView *)self style];
-  v4 = [(NTKZeusComplicationView *)self device];
+  device = [(NTKZeusComplicationView *)self device];
   CLKCeilForDevice();
   v6 = v5 + v5;
 
-  v7 = [(NTKZeusComplicationView *)self device];
+  device2 = [(NTKZeusComplicationView *)self device];
   CLKCeilForDevice();
   v9 = v8 + v8;
 
@@ -352,57 +352,57 @@ LABEL_18:
   return result;
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
   v7.receiver = self;
   v7.super_class = NTKZeusDateComplicationView;
-  v4 = a3;
-  [(NTKZeusComplicationView *)&v7 applyPalette:v4];
+  paletteCopy = palette;
+  [(NTKZeusComplicationView *)&v7 applyPalette:paletteCopy];
   label = self->_label;
-  v6 = [v4 bottomComplication];
+  bottomComplication = [paletteCopy bottomComplication];
 
-  [(UILabel *)label setTextColor:v6];
+  [(UILabel *)label setTextColor:bottomComplication];
 }
 
-- (void)blancEditModeApplyPalette:(id)a3
+- (void)blancEditModeApplyPalette:(id)palette
 {
   v7.receiver = self;
   v7.super_class = NTKZeusDateComplicationView;
-  v4 = a3;
-  [(NTKZeusComplicationView *)&v7 blancEditModeApplyPalette:v4];
+  paletteCopy = palette;
+  [(NTKZeusComplicationView *)&v7 blancEditModeApplyPalette:paletteCopy];
   label = self->_label;
-  v6 = [v4 editMode];
+  editMode = [paletteCopy editMode];
 
-  [(UILabel *)label setTextColor:v6];
+  [(UILabel *)label setTextColor:editMode];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
   v13.receiver = self;
   v13.super_class = NTKZeusDateComplicationView;
-  v8 = a5;
-  v9 = a4;
-  [(NTKZeusComplicationView *)&v13 applyTransitionFraction:v9 fromPalette:v8 toPalette:a3];
-  v10 = [v9 bottomComplication];
+  toPaletteCopy = toPalette;
+  paletteCopy = palette;
+  [(NTKZeusComplicationView *)&v13 applyTransitionFraction:paletteCopy fromPalette:toPaletteCopy toPalette:fraction];
+  bottomComplication = [paletteCopy bottomComplication];
 
-  v11 = [v8 bottomComplication];
+  bottomComplication2 = [toPaletteCopy bottomComplication];
 
   v12 = NTKInterpolateBetweenColors();
 
   [(UILabel *)self->_label setTextColor:v12];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromMode:(int64_t)a4 toMode:(int64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromMode:(int64_t)mode toMode:(int64_t)toMode
 {
   v13.receiver = self;
   v13.super_class = NTKZeusDateComplicationView;
   [NTKZeusComplicationView applyTransitionFraction:"applyTransitionFraction:fromMode:toMode:" fromMode:? toMode:?];
   v12.receiver = self;
   v12.super_class = NTKZeusDateComplicationView;
-  v8 = [(NTKZeusComplicationView *)&v12 complicationColorForBlancEditMode:a4];
+  v8 = [(NTKZeusComplicationView *)&v12 complicationColorForBlancEditMode:mode];
   v11.receiver = self;
   v11.super_class = NTKZeusDateComplicationView;
-  v9 = [(NTKZeusComplicationView *)&v11 complicationColorForBlancEditMode:a5];
+  v9 = [(NTKZeusComplicationView *)&v11 complicationColorForBlancEditMode:toMode];
   v10 = NTKInterpolateBetweenColors();
 
   [(UILabel *)self->_label setTextColor:v10];

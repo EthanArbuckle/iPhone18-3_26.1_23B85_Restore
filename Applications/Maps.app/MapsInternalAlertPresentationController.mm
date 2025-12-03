@@ -1,16 +1,16 @@
 @interface MapsInternalAlertPresentationController
 + (id)sharedInstance;
 - (MapsInternalAlertPresentationController)init;
-- (id)_windowForScene:(id)a3;
-- (void)_dismissalTransitionDidEndNotification:(id)a3;
-- (void)presentAlertController:(id)a3 fromWindowScene:(id)a4;
+- (id)_windowForScene:(id)scene;
+- (void)_dismissalTransitionDidEndNotification:(id)notification;
+- (void)presentAlertController:(id)controller fromWindowScene:(id)scene;
 @end
 
 @implementation MapsInternalAlertPresentationController
 
-- (void)_dismissalTransitionDidEndNotification:(id)a3
+- (void)_dismissalTransitionDidEndNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -50,23 +50,23 @@
     }
   }
 
-  v8 = [v4 object];
+  object = [notificationCopy object];
   v9 = +[NSNotificationCenter defaultCenter];
-  [v9 removeObserver:self name:UIPresentationControllerDismissalTransitionDidEndNotification object:v8];
+  [v9 removeObserver:self name:UIPresentationControllerDismissalTransitionDidEndNotification object:object];
 
-  v10 = [v8 view];
-  v11 = [v10 window];
-  v12 = [v11 windowScene];
+  view = [object view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v12)
+  if (windowScene)
   {
-    [(NSMapTable *)self->_windowMap objectForKey:v12];
+    [(NSMapTable *)self->_windowMap objectForKey:windowScene];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10085EE48;
     v20 = block[3] = &unk_101661A40;
-    v21 = self;
-    v22 = v12;
+    selfCopy = self;
+    v22 = windowScene;
     v13 = v20;
     dispatch_async(&_dispatch_main_q, block);
 
@@ -103,9 +103,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_windowForScene:(id)a3
+- (id)_windowForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -145,7 +145,7 @@ LABEL_10:
     }
   }
 
-  if (!v4)
+  if (!sceneCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -174,25 +174,25 @@ LABEL_10:
     }
   }
 
-  v8 = [(NSMapTable *)self->_windowMap objectForKey:v4];
+  v8 = [(NSMapTable *)self->_windowMap objectForKey:sceneCopy];
   if (!v8)
   {
-    v8 = [[PassThroughWindow alloc] initWithWindowScene:v4];
+    v8 = [[PassThroughWindow alloc] initWithWindowScene:sceneCopy];
     [(PassThroughWindow *)v8 setWindowLevel:UIWindowLevelAlert];
     v9 = objc_alloc_init(UIApplicationRotationFollowingController);
     [v9 setSizesWindowToScene:1];
     [(PassThroughWindow *)v8 setRootViewController:v9];
     [(PassThroughWindow *)v8 setHidden:0];
-    [(NSMapTable *)self->_windowMap setObject:v8 forKey:v4];
+    [(NSMapTable *)self->_windowMap setObject:v8 forKey:sceneCopy];
   }
 
   return v8;
 }
 
-- (void)presentAlertController:(id)a3 fromWindowScene:(id)a4
+- (void)presentAlertController:(id)controller fromWindowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -232,14 +232,14 @@ LABEL_10:
     }
   }
 
-  if (v7)
+  if (sceneCopy)
   {
     v11 = +[NSNotificationCenter defaultCenter];
-    [v11 addObserver:self selector:"_dismissalTransitionDidEndNotification:" name:UIPresentationControllerDismissalTransitionDidEndNotification object:v6];
+    [v11 addObserver:self selector:"_dismissalTransitionDidEndNotification:" name:UIPresentationControllerDismissalTransitionDidEndNotification object:controllerCopy];
 
-    v12 = [(MapsInternalAlertPresentationController *)self _windowForScene:v7];
-    v13 = [v12 rootViewController];
-    [v13 _maps_topMostPresentViewController:v6 animated:1 completion:0];
+    v12 = [(MapsInternalAlertPresentationController *)self _windowForScene:sceneCopy];
+    rootViewController = [v12 rootViewController];
+    [rootViewController _maps_topMostPresentViewController:controllerCopy animated:1 completion:0];
     goto LABEL_9;
   }
 
@@ -265,9 +265,9 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v13 = +[NSThread callStackSymbols];
+    rootViewController = +[NSThread callStackSymbols];
     v18 = 138412290;
-    v19 = v13;
+    v19 = rootViewController;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", &v18, 0xCu);
 LABEL_9:
 

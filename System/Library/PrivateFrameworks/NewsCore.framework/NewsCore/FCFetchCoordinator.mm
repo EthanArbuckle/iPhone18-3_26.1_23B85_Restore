@@ -1,12 +1,12 @@
 @interface FCFetchCoordinator
 - (FCFetchCoordinator)init;
 - (FCFetchCoordinatorDelegate)delegate;
-- (id)fetchKey:(id)a3 qualityOfService:(int64_t)a4 completionQueue:(id)a5 completion:(id)a6;
-- (id)fetchKeys:(id)a3 context:(id)a4 qualityOfService:(int64_t)a5 relativePriority:(int64_t)a6 completionQueue:(id)a7 completion:(id)a8;
-- (id)fetchKeysUnconditionally:(id)a3 context:(id)a4 qualityOfService:(int64_t)a5 relativePriority:(int64_t)a6 completionQueue:(id)a7 completion:(id)a8;
-- (void)addFetchGroup:(uint64_t)a1;
-- (void)operationThrottlerPerformOperation:(id)a3;
-- (void)removeFetchGroup:(uint64_t)a1;
+- (id)fetchKey:(id)key qualityOfService:(int64_t)service completionQueue:(id)queue completion:(id)completion;
+- (id)fetchKeys:(id)keys context:(id)context qualityOfService:(int64_t)service relativePriority:(int64_t)priority completionQueue:(id)queue completion:(id)completion;
+- (id)fetchKeysUnconditionally:(id)unconditionally context:(id)context qualityOfService:(int64_t)service relativePriority:(int64_t)priority completionQueue:(id)queue completion:(id)completion;
+- (void)addFetchGroup:(uint64_t)group;
+- (void)operationThrottlerPerformOperation:(id)operation;
+- (void)removeFetchGroup:(uint64_t)group;
 @end
 
 @implementation FCFetchCoordinator
@@ -82,33 +82,33 @@ uint64_t __50__FCFetchCoordinator_beginFetchesIfNeededWithLock__block_invoke(uin
   return WeakRetained;
 }
 
-- (id)fetchKey:(id)a3 qualityOfService:(int64_t)a4 completionQueue:(id)a5 completion:(id)a6
+- (id)fetchKey:(id)key qualityOfService:(int64_t)service completionQueue:(id)queue completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  keyCopy = key;
   v10 = MEMORY[0x1E695DEC8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 arrayWithObjects:&v18 count:1];
+  completionCopy = completion;
+  queueCopy = queue;
+  keyCopy2 = key;
+  v14 = [v10 arrayWithObjects:&keyCopy count:1];
 
-  v15 = [(FCFetchCoordinator *)self fetchKeys:v14 context:0 qualityOfService:a4 relativePriority:0 completionQueue:v12 completion:v11, v18, v19];
+  v15 = [(FCFetchCoordinator *)self fetchKeys:v14 context:0 qualityOfService:service relativePriority:0 completionQueue:queueCopy completion:completionCopy, keyCopy, v19];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-- (id)fetchKeys:(id)a3 context:(id)a4 qualityOfService:(int64_t)a5 relativePriority:(int64_t)a6 completionQueue:(id)a7 completion:(id)a8
+- (id)fetchKeys:(id)keys context:(id)context qualityOfService:(int64_t)service relativePriority:(int64_t)priority completionQueue:(id)queue completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a4;
-  v17 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  contextCopy = context;
+  keysCopy = keys;
   v18 = [FCFetchGroup alloc];
-  v19 = [MEMORY[0x1E695DFD8] setWithArray:v17];
+  v19 = [MEMORY[0x1E695DFD8] setWithArray:keysCopy];
 
-  v20 = [(FCFetchGroup *)&v18->super.isa initWithKeys:v19 context:v16 shouldFilter:1 qualityOfService:a5 relativePriority:a6 completionQueue:v15 completion:v14];
+  v20 = [(FCFetchGroup *)&v18->super.isa initWithKeys:v19 context:contextCopy shouldFilter:1 qualityOfService:service relativePriority:priority completionQueue:queueCopy completion:completionCopy];
   [(FCFetchCoordinator *)self addFetchGroup:v20];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -122,50 +122,50 @@ uint64_t __50__FCFetchCoordinator_beginFetchesIfNeededWithLock__block_invoke(uin
   return v22;
 }
 
-- (void)addFetchGroup:(uint64_t)a1
+- (void)addFetchGroup:(uint64_t)group
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (group)
   {
-    v5 = *(a1 + 48);
+    v5 = *(group + 48);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __36__FCFetchCoordinator_addFetchGroup___block_invoke;
     v6[3] = &unk_1E7C36C58;
-    v6[4] = a1;
+    v6[4] = group;
     v7 = v3;
     [v5 performWithLockSync:v6];
   }
 }
 
-- (void)removeFetchGroup:(uint64_t)a1
+- (void)removeFetchGroup:(uint64_t)group
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (group)
   {
-    v5 = *(a1 + 48);
+    v5 = *(group + 48);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __39__FCFetchCoordinator_removeFetchGroup___block_invoke;
     v6[3] = &unk_1E7C36C58;
-    v6[4] = a1;
+    v6[4] = group;
     v7 = v3;
     [v5 performWithLockSync:v6];
   }
 }
 
-- (id)fetchKeysUnconditionally:(id)a3 context:(id)a4 qualityOfService:(int64_t)a5 relativePriority:(int64_t)a6 completionQueue:(id)a7 completion:(id)a8
+- (id)fetchKeysUnconditionally:(id)unconditionally context:(id)context qualityOfService:(int64_t)service relativePriority:(int64_t)priority completionQueue:(id)queue completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a4;
-  v17 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
+  contextCopy = context;
+  unconditionallyCopy = unconditionally;
   v18 = [FCFetchGroup alloc];
-  v19 = [MEMORY[0x1E695DFD8] setWithArray:v17];
+  v19 = [MEMORY[0x1E695DFD8] setWithArray:unconditionallyCopy];
 
-  v20 = [(FCFetchGroup *)&v18->super.isa initWithKeys:v19 context:v16 shouldFilter:0 qualityOfService:a5 relativePriority:a6 completionQueue:v15 completion:v14];
+  v20 = [(FCFetchGroup *)&v18->super.isa initWithKeys:v19 context:contextCopy shouldFilter:0 qualityOfService:service relativePriority:priority completionQueue:queueCopy completion:completionCopy];
   [(FCFetchCoordinator *)self addFetchGroup:v20];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -179,7 +179,7 @@ uint64_t __50__FCFetchCoordinator_beginFetchesIfNeededWithLock__block_invoke(uin
   return v22;
 }
 
-- (void)operationThrottlerPerformOperation:(id)a3
+- (void)operationThrottlerPerformOperation:(id)operation
 {
   if (self)
   {

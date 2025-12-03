@@ -1,12 +1,12 @@
 @interface PrivacyDefinitionCollectionViewCell
-- (_TtC8AppStore35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation PrivacyDefinitionCollectionViewCell
 
-- (_TtC8AppStore35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore35PrivacyDefinitionCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100027A20();
 }
 

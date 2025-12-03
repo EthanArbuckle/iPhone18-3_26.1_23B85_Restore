@@ -1,25 +1,25 @@
 @interface SDPMediaLine
-+ (void)fillImageArray:(id)a3 imageArray:(imageTag *)a4;
-+ (void)fillImageStruct:(id)a3 imageStruct:(imageTag *)a4;
-+ (void)fillImageStructWithDictionary:(id)a3 forInterface:(int)a4 imageStruct:(imageTag *)a5;
-- (BOOL)supportImage:(id)a3 width:(int)a4 height:(int)a5 rate:(int)a6;
-- (BOOL)videoDisplayAttribute:(int *)a3 withHeight:(int *)a4;
++ (void)fillImageArray:(id)array imageArray:(imageTag *)imageArray;
++ (void)fillImageStruct:(id)struct imageStruct:(imageTag *)imageStruct;
++ (void)fillImageStructWithDictionary:(id)dictionary forInterface:(int)interface imageStruct:(imageTag *)struct;
+- (BOOL)supportImage:(id)image width:(int)width height:(int)height rate:(int)rate;
+- (BOOL)videoDisplayAttribute:(int *)attribute withHeight:(int *)height;
 - (NSString)string;
 - (SDPMediaLine)init;
-- (SDPMediaLine)initWithParser:(id)a3 rtpPort:(int)a4 payloads:(id)a5;
-- (id)getVideoRecvImages:(id)a3;
-- (id)getVideoSendImages:(id)a3;
-- (id)videoImageAttributes:(int)a3;
-- (void)addImageAttributeRules:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 direction:(int)a6 attributeString:(id)a7;
-- (void)addPayload:(int)a3 rtpMap:(id)a4 formatParameters:(id)a5;
-- (void)addVideoImageAttr:(id)a3 ForPayload:(int)a4;
-- (void)addWifiRules:(id)a3 cellularRules:(id)a4 payload:(int)a5 direction:(int)a6;
-- (void)appendPayload:(int)a3 dimensions:(imageTag *)a4 direction:(int)a5 attributeString:(id)a6;
-- (void)createVideoImageAttr:(int)a3 direction:(int)a4 dimensions:(imageTag *)a5 count:(int)a6;
+- (SDPMediaLine)initWithParser:(id)parser rtpPort:(int)port payloads:(id)payloads;
+- (id)getVideoRecvImages:(id)images;
+- (id)getVideoSendImages:(id)images;
+- (id)videoImageAttributes:(int)attributes;
+- (void)addImageAttributeRules:(id)rules transportType:(unsigned __int8)type payload:(int)payload direction:(int)direction attributeString:(id)string;
+- (void)addPayload:(int)payload rtpMap:(id)map formatParameters:(id)parameters;
+- (void)addVideoImageAttr:(id)attr ForPayload:(int)payload;
+- (void)addWifiRules:(id)rules cellularRules:(id)cellularRules payload:(int)payload direction:(int)direction;
+- (void)appendPayload:(int)payload dimensions:(imageTag *)dimensions direction:(int)direction attributeString:(id)string;
+- (void)createVideoImageAttr:(int)attr direction:(int)direction dimensions:(imageTag *)dimensions count:(int)count;
 - (void)dealloc;
-- (void)parseAttribute:(id)a3;
-- (void)parseImageAttributeRules:(id)a3;
-- (void)parseMediaLine:(id)a3;
+- (void)parseAttribute:(id)attribute;
+- (void)parseImageAttributeRules:(id)rules;
+- (void)parseMediaLine:(id)line;
 @end
 
 @implementation SDPMediaLine
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (SDPMediaLine)initWithParser:(id)a3 rtpPort:(int)a4 payloads:(id)a5
+- (SDPMediaLine)initWithParser:(id)parser rtpPort:(int)port payloads:(id)payloads
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -50,9 +50,9 @@
   {
     v8->_attributes = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
     v8->_imageAttributeRules = objc_opt_new();
-    v8->_payloads = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:a5];
-    v8->_rtpPort = a4;
-    [(SDPMediaLine *)v8 parseMediaLine:a3];
+    v8->_payloads = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:payloads];
+    v8->_rtpPort = port;
+    [(SDPMediaLine *)v8 parseMediaLine:parser];
   }
 
   return v8;
@@ -67,25 +67,25 @@
   [(SDPMediaLine *)&v3 dealloc];
 }
 
-- (void)addPayload:(int)a3 rtpMap:(id)a4 formatParameters:(id)a5
+- (void)addPayload:(int)payload rtpMap:(id)map formatParameters:(id)parameters
 {
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&a3];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:*&payload];
   if (([(NSMutableArray *)self->_payloads containsObject:?]& 1) == 0)
   {
     [(NSMutableArray *)self->_payloads addObject:v8];
   }
 
-  if (([(NSMutableArray *)self->_attributes containsObject:a4]& 1) == 0)
+  if (([(NSMutableArray *)self->_attributes containsObject:map]& 1) == 0)
   {
-    [(NSMutableArray *)self->_attributes addObject:a4];
-    [(NSMutableArray *)self->_attributes addObject:a5];
+    [(NSMutableArray *)self->_attributes addObject:map];
+    [(NSMutableArray *)self->_attributes addObject:parameters];
   }
 }
 
-- (void)addVideoImageAttr:(id)a3 ForPayload:(int)a4
+- (void)addVideoImageAttr:(id)attr ForPayload:(int)payload
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"imageattr:%d", *&a4];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"imageattr:%d", *&payload];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -108,7 +108,7 @@
         v12 = *(*(&v14 + 1) + 8 * i);
         if ([v12 hasPrefix:v6])
         {
-          -[NSMutableArray addObject:](self->_attributes, "addObject:", [v12 stringByAppendingFormat:@" %@", a3]);
+          -[NSMutableArray addObject:](self->_attributes, "addObject:", [v12 stringByAppendingFormat:@" %@", attr]);
           [(NSMutableArray *)self->_attributes removeObject:v12];
           return;
         }
@@ -124,69 +124,69 @@
     }
   }
 
-  -[NSMutableArray addObject:](self->_attributes, "addObject:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v6, a3]);
+  -[NSMutableArray addObject:](self->_attributes, "addObject:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v6, attr]);
 }
 
-- (void)appendPayload:(int)a3 dimensions:(imageTag *)a4 direction:(int)a5 attributeString:(id)a6
+- (void)appendPayload:(int)payload dimensions:(imageTag *)dimensions direction:(int)direction attributeString:(id)string
 {
-  var0 = a4->var0;
-  if (a4->var3 * var0 * a4->var6)
+  var0 = dimensions->var0;
+  if (dimensions->var3 * var0 * dimensions->var6)
   {
-    v8 = *&a5;
-    v10 = *&a3;
-    var2 = a4->var2;
+    v8 = *&direction;
+    v10 = *&payload;
+    var2 = dimensions->var2;
     if (var0 == var2)
     {
-      [a6 appendFormat:@" [x=%d, ", a4->var0, v17, v19];
+      [string appendFormat:@" [x=%d, ", dimensions->var0, v17, v19];
     }
 
     else
     {
-      [a6 appendFormat:@" [x=[%d:%d:%d], ", var0, a4->var1, var2];
+      [string appendFormat:@" [x=[%d:%d:%d], ", var0, dimensions->var1, var2];
     }
 
-    var3 = a4->var3;
-    var5 = a4->var5;
+    var3 = dimensions->var3;
+    var5 = dimensions->var5;
     if (var3 == var5)
     {
-      [a6 appendFormat:@"y=%d, ", a4->var3, v18, v20];
+      [string appendFormat:@"y=%d, ", dimensions->var3, v18, v20];
     }
 
     else
     {
-      [a6 appendFormat:@"y=[%d:%d:%d], ", var3, a4->var4, var5];
+      [string appendFormat:@"y=[%d:%d:%d], ", var3, dimensions->var4, var5];
     }
 
-    [a6 appendFormat:@"fps=%d", a4->var6];
-    if (a4->var8 == 1)
+    [string appendFormat:@"fps=%d", dimensions->var6];
+    if (dimensions->var8 == 1)
     {
-      [a6 appendString:{@", i=1"}];
+      [string appendString:{@", i=1"}];
     }
 
-    var7 = a4->var7;
+    var7 = dimensions->var7;
     if (var7 == 0.5)
     {
-      [a6 appendString:@"]"];
+      [string appendString:@"]"];
     }
 
     else
     {
-      [a6 appendFormat:@", q=%.2f]", var7];
+      [string appendFormat:@", q=%.2f]", var7];
     }
 
-    LODWORD(v16) = a4->var8;
-    [(VCImageAttributeRules *)self->_imageAttributeRules addRuleForVideoPayload:v10 withDirection:v8 width:a4->var2 height:a4->var5 frameRate:a4->var6 priority:a4->var7 interface:v16];
+    LODWORD(v16) = dimensions->var8;
+    [(VCImageAttributeRules *)self->_imageAttributeRules addRuleForVideoPayload:v10 withDirection:v8 width:dimensions->var2 height:dimensions->var5 frameRate:dimensions->var6 priority:dimensions->var7 interface:v16];
   }
 }
 
-- (void)addImageAttributeRules:(id)a3 transportType:(unsigned __int8)a4 payload:(int)a5 direction:(int)a6 attributeString:(id)a7
+- (void)addImageAttributeRules:(id)rules transportType:(unsigned __int8)type payload:(int)payload direction:(int)direction attributeString:(id)string
 {
-  v8 = *&a6;
-  v9 = *&a5;
+  v8 = *&direction;
+  v9 = *&payload;
   v29 = *MEMORY[0x1E69E9840];
   memset(v21, 170, sizeof(v21));
   v22 = -1431655766;
-  if (a4 == 1)
+  if (type == 1)
   {
     v12 = 2;
   }
@@ -201,7 +201,7 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [a3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  v13 = [rules countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -212,36 +212,36 @@
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(rules);
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
         LODWORD(v21[1]) = [v17 iWidth];
         LODWORD(v21[0]) = v21[1];
-        v18 = [v17 iHeight];
+        iHeight = [v17 iHeight];
         LODWORD(v21[2]) = 0;
-        HIDWORD(v21[2]) = v18;
-        HIDWORD(v21[1]) = v18;
+        HIDWORD(v21[2]) = iHeight;
+        HIDWORD(v21[1]) = iHeight;
         HIDWORD(v21[0]) = 0;
         [v17 fPref];
         HIDWORD(v22) = v19;
         [v17 fRate];
         LODWORD(v22) = v20;
-        [(SDPMediaLine *)self appendPayload:v9 dimensions:v21 direction:v8 attributeString:a7];
+        [(SDPMediaLine *)self appendPayload:v9 dimensions:v21 direction:v8 attributeString:string];
       }
 
-      v14 = [a3 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v14 = [rules countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)addWifiRules:(id)a3 cellularRules:(id)a4 payload:(int)a5 direction:(int)a6
+- (void)addWifiRules:(id)rules cellularRules:(id)cellularRules payload:(int)payload direction:(int)direction
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  if (a3 && [a3 count] || a4 && objc_msgSend(a4, "count"))
+  v6 = *&direction;
+  v7 = *&payload;
+  if (rules && [rules count] || cellularRules && objc_msgSend(cellularRules, "count"))
   {
     v11 = objc_alloc(MEMORY[0x1E696AD60]);
     if (v6)
@@ -255,32 +255,32 @@
     }
 
     v13 = [v11 initWithString:v12];
-    if (a3 && [a3 count])
+    if (rules && [rules count])
     {
-      [(SDPMediaLine *)self addImageAttributeRules:a3 transportType:1 payload:v7 direction:v6 attributeString:v13];
+      [(SDPMediaLine *)self addImageAttributeRules:rules transportType:1 payload:v7 direction:v6 attributeString:v13];
     }
 
-    if (a4 && [a4 count])
+    if (cellularRules && [cellularRules count])
     {
-      [(SDPMediaLine *)self addImageAttributeRules:a4 transportType:2 payload:v7 direction:v6 attributeString:v13];
+      [(SDPMediaLine *)self addImageAttributeRules:cellularRules transportType:2 payload:v7 direction:v6 attributeString:v13];
     }
 
     [(SDPMediaLine *)self addVideoImageAttr:v13 ForPayload:v7];
   }
 }
 
-- (void)createVideoImageAttr:(int)a3 direction:(int)a4 dimensions:(imageTag *)a5 count:(int)a6
+- (void)createVideoImageAttr:(int)attr direction:(int)direction dimensions:(imageTag *)dimensions count:(int)count
 {
-  if (a5)
+  if (dimensions)
   {
-    LODWORD(v6) = a6;
-    if (a6 >= 1)
+    LODWORD(v6) = count;
+    if (count >= 1)
     {
-      v7 = a5;
-      v8 = *&a4;
-      v9 = *&a3;
+      dimensionsCopy = dimensions;
+      v8 = *&direction;
+      v9 = *&attr;
       v11 = "recv";
-      if (!a4)
+      if (!direction)
       {
         v11 = "send";
       }
@@ -289,7 +289,7 @@
       v6 = v6;
       do
       {
-        [(SDPMediaLine *)self appendPayload:v9 dimensions:v7++ direction:v8 attributeString:v12];
+        [(SDPMediaLine *)self appendPayload:v9 dimensions:dimensionsCopy++ direction:v8 attributeString:v12];
         --v6;
       }
 
@@ -300,10 +300,10 @@
   }
 }
 
-- (id)videoImageAttributes:(int)a3
+- (id)videoImageAttributes:(int)attributes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"imageattr:%d", *&a3];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"imageattr:%d", *&attributes];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
@@ -350,25 +350,25 @@
   return v5;
 }
 
-- (id)getVideoSendImages:(id)a3
+- (id)getVideoSendImages:(id)images
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!images)
   {
     return 0;
   }
 
-  v3 = [a3 objectEnumerator];
-  v4 = [v3 nextObject];
-  if (v4)
+  objectEnumerator = [images objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v4;
+    nextObject2 = nextObject;
     v7 = 0;
     *&v5 = 136315650;
     v15 = v5;
     do
     {
-      if ([v6 isEqualToString:{@"send", v15}])
+      if ([nextObject2 isEqualToString:{@"send", v15}])
       {
         if (v7)
         {
@@ -395,7 +395,7 @@
         }
       }
 
-      else if ([v6 isEqualToString:@"recv"])
+      else if ([nextObject2 isEqualToString:@"recv"])
       {
         if (v7)
         {
@@ -403,9 +403,9 @@
         }
       }
 
-      else if (v7 && [v6 hasPrefix:@"["] && (objc_msgSend(v6, "hasSuffix:", @"]") & 1) != 0)
+      else if (v7 && [nextObject2 hasPrefix:@"["] && (objc_msgSend(nextObject2, "hasSuffix:", @"]") & 1) != 0)
       {
-        v8 = [objc_msgSend(v6 substringToIndex:{objc_msgSend(v6, "length") - 1), "substringFromIndex:", 1}];
+        v8 = [objc_msgSend(nextObject2 substringToIndex:{objc_msgSend(nextObject2, "length") - 1), "substringFromIndex:", 1}];
         v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v10 = [v8 componentsSeparatedByString:{@", "}];
         if ([v10 count] >= 1)
@@ -422,10 +422,10 @@
         [v7 addObject:v9];
       }
 
-      v6 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
   else
@@ -436,25 +436,25 @@
   return v7;
 }
 
-- (id)getVideoRecvImages:(id)a3
+- (id)getVideoRecvImages:(id)images
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!images)
   {
     return 0;
   }
 
-  v3 = [a3 objectEnumerator];
-  v4 = [v3 nextObject];
-  if (v4)
+  objectEnumerator = [images objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v4;
+    nextObject2 = nextObject;
     v7 = 0;
     *&v5 = 136315650;
     v15 = v5;
     do
     {
-      if ([v6 isEqualToString:{@"recv", v15}])
+      if ([nextObject2 isEqualToString:{@"recv", v15}])
       {
         if (v7)
         {
@@ -481,7 +481,7 @@
         }
       }
 
-      else if ([v6 isEqualToString:@"send"])
+      else if ([nextObject2 isEqualToString:@"send"])
       {
         if (v7)
         {
@@ -489,9 +489,9 @@
         }
       }
 
-      else if (v7 && [v6 hasPrefix:@"["] && (objc_msgSend(v6, "hasSuffix:", @"]") & 1) != 0)
+      else if (v7 && [nextObject2 hasPrefix:@"["] && (objc_msgSend(nextObject2, "hasSuffix:", @"]") & 1) != 0)
       {
-        v8 = [objc_msgSend(v6 substringToIndex:{objc_msgSend(v6, "length") - 1), "substringFromIndex:", 1}];
+        v8 = [objc_msgSend(nextObject2 substringToIndex:{objc_msgSend(nextObject2, "length") - 1), "substringFromIndex:", 1}];
         v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v10 = [v8 componentsSeparatedByString:{@", "}];
         if ([v10 count] >= 1)
@@ -508,10 +508,10 @@
         [v7 addObject:v9];
       }
 
-      v6 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
   else
@@ -522,81 +522,81 @@
   return v7;
 }
 
-+ (void)fillImageStructWithDictionary:(id)a3 forInterface:(int)a4 imageStruct:(imageTag *)a5
++ (void)fillImageStructWithDictionary:(id)dictionary forInterface:(int)interface imageStruct:(imageTag *)struct
 {
-  if ([a3 objectForKeyedSubscript:@"width"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"height") && objc_msgSend(a3, "objectForKeyedSubscript:", @"frameRate"))
+  if ([dictionary objectForKeyedSubscript:@"width"] && objc_msgSend(dictionary, "objectForKeyedSubscript:", @"height") && objc_msgSend(dictionary, "objectForKeyedSubscript:", @"frameRate"))
   {
-    if ([a3 objectForKeyedSubscript:@"priority"])
+    if ([dictionary objectForKeyedSubscript:@"priority"])
     {
-      v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"width", "intValue"}];
-      a5->var0 = v8;
-      a5->var1 = 0;
-      a5->var2 = v8;
-      v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"height", "intValue"}];
-      a5->var3 = v9;
-      a5->var4 = 0;
-      a5->var5 = v9;
-      a5->var6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"frameRate", "intValue"}];
-      [objc_msgSend(a3 objectForKeyedSubscript:{@"priority", "floatValue"}];
-      a5->var7 = v10;
-      a5->var8 = a4;
+      v8 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"width", "intValue"}];
+      struct->var0 = v8;
+      struct->var1 = 0;
+      struct->var2 = v8;
+      v9 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"height", "intValue"}];
+      struct->var3 = v9;
+      struct->var4 = 0;
+      struct->var5 = v9;
+      struct->var6 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"frameRate", "intValue"}];
+      [objc_msgSend(dictionary objectForKeyedSubscript:{@"priority", "floatValue"}];
+      struct->var7 = v10;
+      struct->var8 = interface;
     }
   }
 }
 
-+ (void)fillImageStruct:(id)a3 imageStruct:(imageTag *)a4
++ (void)fillImageStruct:(id)struct imageStruct:(imageTag *)imageStruct
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (struct)
   {
-    *&a4->var7 = 0x23F000000;
-    v5 = [a3 objectEnumerator];
-    v6 = [v5 nextObject];
-    if (v6)
+    *&imageStruct->var7 = 0x23F000000;
+    objectEnumerator = [struct objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v7 = v6;
+      nextObject2 = nextObject;
       do
       {
-        if ([v7 hasPrefix:@"x=["])
+        if ([nextObject2 hasPrefix:@"x=["])
         {
-          v8 = [objc_msgSend(objc_msgSend(v7 substringToIndex:{objc_msgSend(v7, "length") - 1), "substringFromIndex:", 3), "componentsSeparatedByString:", @":"}];
+          v8 = [objc_msgSend(objc_msgSend(nextObject2 substringToIndex:{objc_msgSend(nextObject2, "length") - 1), "substringFromIndex:", 3), "componentsSeparatedByString:", @":"}];
           if ([v8 count] == 3)
           {
-            a4->var0 = [objc_msgSend(v8 objectAtIndexedSubscript:{0), "intValue"}];
-            a4->var1 = [objc_msgSend(v8 objectAtIndexedSubscript:{1), "intValue"}];
+            imageStruct->var0 = [objc_msgSend(v8 objectAtIndexedSubscript:{0), "intValue"}];
+            imageStruct->var1 = [objc_msgSend(v8 objectAtIndexedSubscript:{1), "intValue"}];
             v9 = [objc_msgSend(v8 objectAtIndexedSubscript:{2), "intValue"}];
 LABEL_9:
-            a4->var2 = v9;
+            imageStruct->var2 = v9;
           }
         }
 
         else
         {
-          if ([v7 hasPrefix:@"x="])
+          if ([nextObject2 hasPrefix:@"x="])
           {
-            v9 = [objc_msgSend(v7 substringFromIndex:{2), "intValue"}];
-            *&a4->var0 = v9;
+            v9 = [objc_msgSend(nextObject2 substringFromIndex:{2), "intValue"}];
+            *&imageStruct->var0 = v9;
             goto LABEL_9;
           }
 
-          if (![v7 hasPrefix:@"y=["])
+          if (![nextObject2 hasPrefix:@"y=["])
           {
-            if (![v7 hasPrefix:@"y="])
+            if (![nextObject2 hasPrefix:@"y="])
             {
-              if ([v7 hasPrefix:@"fps="])
+              if ([nextObject2 hasPrefix:@"fps="])
               {
-                a4->var6 = [objc_msgSend(v7 substringFromIndex:{4), "intValue"}];
+                imageStruct->var6 = [objc_msgSend(nextObject2 substringFromIndex:{4), "intValue"}];
               }
 
-              else if ([v7 hasPrefix:@"q="])
+              else if ([nextObject2 hasPrefix:@"q="])
               {
-                [objc_msgSend(v7 substringFromIndex:{2), "floatValue"}];
-                a4->var7 = v12;
+                [objc_msgSend(nextObject2 substringFromIndex:{2), "floatValue"}];
+                imageStruct->var7 = v12;
               }
 
-              else if ([v7 hasPrefix:@"i="])
+              else if ([nextObject2 hasPrefix:@"i="])
               {
-                a4->var8 = [objc_msgSend(v7 substringFromIndex:{2), "intValue"}];
+                imageStruct->var8 = [objc_msgSend(nextObject2 substringFromIndex:{2), "intValue"}];
               }
 
               else if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -608,7 +608,7 @@ LABEL_9:
                 {
                   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
                   {
-                    v15 = [objc_msgSend(v7 "description")];
+                    v15 = [objc_msgSend(nextObject2 "description")];
                     *buf = 136315906;
                     v19 = v17;
                     v20 = 2080;
@@ -623,7 +623,7 @@ LABEL_9:
 
                 else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
                 {
-                  v16 = [objc_msgSend(v7 "description")];
+                  v16 = [objc_msgSend(nextObject2 "description")];
                   *buf = 136315906;
                   v19 = v17;
                   v20 = 2080;
@@ -639,49 +639,49 @@ LABEL_9:
               goto LABEL_10;
             }
 
-            v11 = [objc_msgSend(v7 substringFromIndex:{2), "intValue"}];
-            *&a4->var3 = v11;
+            v11 = [objc_msgSend(nextObject2 substringFromIndex:{2), "intValue"}];
+            *&imageStruct->var3 = v11;
             goto LABEL_17;
           }
 
-          v10 = [objc_msgSend(objc_msgSend(v7 substringToIndex:{objc_msgSend(v7, "length") - 1), "substringFromIndex:", 3), "componentsSeparatedByString:", @":"}];
+          v10 = [objc_msgSend(objc_msgSend(nextObject2 substringToIndex:{objc_msgSend(nextObject2, "length") - 1), "substringFromIndex:", 3), "componentsSeparatedByString:", @":"}];
           if ([v10 count] == 3)
           {
-            a4->var3 = [objc_msgSend(v10 objectAtIndexedSubscript:{0), "intValue"}];
-            a4->var4 = [objc_msgSend(v10 objectAtIndexedSubscript:{1), "intValue"}];
+            imageStruct->var3 = [objc_msgSend(v10 objectAtIndexedSubscript:{0), "intValue"}];
+            imageStruct->var4 = [objc_msgSend(v10 objectAtIndexedSubscript:{1), "intValue"}];
             v11 = [objc_msgSend(v10 objectAtIndexedSubscript:{2), "intValue"}];
 LABEL_17:
-            a4->var5 = v11;
+            imageStruct->var5 = v11;
           }
         }
 
 LABEL_10:
-        v7 = [v5 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
       }
 
-      while (v7);
+      while (nextObject2);
     }
   }
 }
 
-+ (void)fillImageArray:(id)a3 imageArray:(imageTag *)a4
++ (void)fillImageArray:(id)array imageArray:(imageTag *)imageArray
 {
-  if (a3 && [a3 count] >= 1)
+  if (array && [array count] >= 1)
   {
     v7 = 0;
     do
     {
-      [a1 fillImageStruct:objc_msgSend(a3 imageStruct:{"objectAtIndexedSubscript:", v7++), a4++}];
+      [self fillImageStruct:objc_msgSend(array imageStruct:{"objectAtIndexedSubscript:", v7++), imageArray++}];
     }
 
-    while (v7 < [a3 count]);
+    while (v7 < [array count]);
   }
 }
 
-- (BOOL)supportImage:(id)a3 width:(int)a4 height:(int)a5 rate:(int)a6
+- (BOOL)supportImage:(id)image width:(int)width height:(int)height rate:(int)rate
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
@@ -689,13 +689,13 @@ LABEL_10:
   v16 = 0;
   v14 = 0u;
   v15 = 0u;
-  [SDPMediaLine fillImageStruct:a3 imageStruct:&v14];
+  [SDPMediaLine fillImageStruct:image imageStruct:&v14];
   v9 = 0;
-  if (a4 >= v14 && SDWORD2(v14) >= a4)
+  if (width >= v14 && SDWORD2(v14) >= width)
   {
     if (DWORD1(v14))
     {
-      v9 = (a4 - v14) % SDWORD1(v14) == 0;
+      v9 = (width - v14) % SDWORD1(v14) == 0;
     }
 
     else
@@ -704,12 +704,12 @@ LABEL_10:
     }
   }
 
-  if (a5 < SHIDWORD(v14) || SDWORD1(v15) < a5)
+  if (height < SHIDWORD(v14) || SDWORD1(v15) < height)
   {
     v12 = 0;
     if (v9)
     {
-      return SDWORD2(v15) >= a6 && v12;
+      return SDWORD2(v15) >= rate && v12;
     }
 
     return 0;
@@ -717,10 +717,10 @@ LABEL_10:
 
   if (v15)
   {
-    v12 = (a5 - HIDWORD(v14)) % v15 == 0;
+    v12 = (height - HIDWORD(v14)) % v15 == 0;
     if (v9)
     {
-      return SDWORD2(v15) >= a6 && v12;
+      return SDWORD2(v15) >= rate && v12;
     }
 
     return 0;
@@ -732,10 +732,10 @@ LABEL_10:
     return 0;
   }
 
-  return SDWORD2(v15) >= a6 && v12;
+  return SDWORD2(v15) >= rate && v12;
 }
 
-- (BOOL)videoDisplayAttribute:(int *)a3 withHeight:(int *)a4
+- (BOOL)videoDisplayAttribute:(int *)attribute withHeight:(int *)height
 {
   v42 = *MEMORY[0x1E69E9840];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ftdisplayattr:resolution"];
@@ -775,20 +775,20 @@ LABEL_10:
           if ([v16 hasSuffix:@"]"])
           {
             v17 = [objc_msgSend(objc_msgSend(v16 substringToIndex:{objc_msgSend(v16, "length") - 1), "componentsSeparatedByString:", @", "), "objectEnumerator"}];
-            v18 = [v17 nextObject];
-            if (v18)
+            nextObject = [v17 nextObject];
+            if (nextObject)
             {
-              v19 = v18;
+              nextObject2 = nextObject;
               do
               {
-                if ([v19 hasPrefix:@"x="])
+                if ([nextObject2 hasPrefix:@"x="])
                 {
-                  *a3 = [objc_msgSend(v19 substringFromIndex:{2), "intValue"}];
+                  *attribute = [objc_msgSend(nextObject2 substringFromIndex:{2), "intValue"}];
                 }
 
-                else if ([v19 hasPrefix:@"y="])
+                else if ([nextObject2 hasPrefix:@"y="])
                 {
-                  *a4 = [objc_msgSend(v19 substringFromIndex:{2), "intValue"}];
+                  *height = [objc_msgSend(nextObject2 substringFromIndex:{2), "intValue"}];
                 }
 
                 else if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -800,7 +800,7 @@ LABEL_10:
                   {
                     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                     {
-                      v23 = [objc_msgSend(v19 "description")];
+                      v23 = [objc_msgSend(nextObject2 "description")];
                       *buf = v26;
                       v30 = v20;
                       v31 = 2080;
@@ -815,7 +815,7 @@ LABEL_10:
 
                   else if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
                   {
-                    v24 = [objc_msgSend(v19 "description")];
+                    v24 = [objc_msgSend(nextObject2 "description")];
                     *buf = v26;
                     v30 = v20;
                     v31 = 2080;
@@ -828,10 +828,10 @@ LABEL_10:
                   }
                 }
 
-                v19 = [v17 nextObject];
+                nextObject2 = [v17 nextObject];
               }
 
-              while (v19);
+              while (nextObject2);
             }
 
             v11 = 1;
@@ -848,7 +848,7 @@ LABEL_10:
   return v11;
 }
 
-- (void)parseImageAttributeRules:(id)a3
+- (void)parseImageAttributeRules:(id)rules
 {
   v26 = *MEMORY[0x1E69E9840];
   v22 = 0u;
@@ -881,9 +881,9 @@ LABEL_10:
             v20 = -1431655766;
             +[SDPMediaLine fillImageStruct:imageStruct:](SDPMediaLine, "fillImageStruct:imageStruct:", [v6 objectAtIndexedSubscript:v7], v18);
             imageAttributeRules = self->_imageAttributeRules;
-            v9 = [v5 intValue];
+            intValue = [v5 intValue];
             LODWORD(v14) = v20;
-            [(VCImageAttributeRules *)imageAttributeRules addRuleForVideoPayload:v9 withDirection:0 width:LODWORD(v18[1]) height:HIDWORD(v18[2]) frameRate:v19 priority:*(&v19 + 1) interface:v14];
+            [(VCImageAttributeRules *)imageAttributeRules addRuleForVideoPayload:intValue withDirection:0 width:LODWORD(v18[1]) height:HIDWORD(v18[2]) frameRate:v19 priority:*(&v19 + 1) interface:v14];
             ++v7;
           }
 
@@ -901,9 +901,9 @@ LABEL_10:
             v20 = -1431655766;
             +[SDPMediaLine fillImageStruct:imageStruct:](SDPMediaLine, "fillImageStruct:imageStruct:", [v10 objectAtIndexedSubscript:v11], v18);
             v12 = self->_imageAttributeRules;
-            v13 = [v5 intValue];
+            intValue2 = [v5 intValue];
             LODWORD(v14) = v20;
-            [(VCImageAttributeRules *)v12 addRuleForVideoPayload:v13 withDirection:1 width:LODWORD(v18[1]) height:HIDWORD(v18[2]) frameRate:v19 priority:*(&v19 + 1) interface:v14];
+            [(VCImageAttributeRules *)v12 addRuleForVideoPayload:intValue2 withDirection:1 width:LODWORD(v18[1]) height:HIDWORD(v18[2]) frameRate:v19 priority:*(&v19 + 1) interface:v14];
             ++v11;
           }
 
@@ -918,10 +918,10 @@ LABEL_10:
   }
 }
 
-- (void)parseAttribute:(id)a3
+- (void)parseAttribute:(id)attribute
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 componentsSeparatedByString:@";"];
+  v4 = [attribute componentsSeparatedByString:@";"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -979,20 +979,20 @@ LABEL_10:
   }
 }
 
-- (void)parseMediaLine:(id)a3
+- (void)parseMediaLine:(id)line
 {
   v5 = 0;
-  while (([a3 parsingDone] & 1) == 0)
+  while (([line parsingDone] & 1) == 0)
   {
-    v6 = [a3 fieldType];
-    if ((v6 - 1) >= 4)
+    fieldType = [line fieldType];
+    if ((fieldType - 1) >= 4)
     {
-      if (v6 != 5)
+      if (fieldType != 5)
       {
         return;
       }
 
-      -[SDPMediaLine parseAttribute:](self, "parseAttribute:", [a3 fieldValue]);
+      -[SDPMediaLine parseAttribute:](self, "parseAttribute:", [line fieldValue]);
       v5 = 1;
     }
 
@@ -1006,7 +1006,7 @@ LABEL_10:
       v5 = 0;
     }
 
-    [a3 nextLine];
+    [line nextLine];
   }
 }
 

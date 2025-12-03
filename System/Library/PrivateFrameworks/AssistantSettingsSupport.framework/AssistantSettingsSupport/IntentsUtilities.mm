@@ -1,16 +1,16 @@
 @interface IntentsUtilities
-+ (BOOL)isIntentsEnabledForAppId:(id)a3;
-+ (id)_displayNameForApp:(id)a3;
++ (BOOL)isIntentsEnabledForAppId:(id)id;
++ (id)_displayNameForApp:(id)app;
 + (id)fetchEnabledAppIds;
-+ (void)intentsAppsWithCompletion:(id)a3;
-+ (void)setAccess:(BOOL)a3 appID:(id)a4;
++ (void)intentsAppsWithCompletion:(id)completion;
++ (void)setAccess:(BOOL)access appID:(id)d;
 @end
 
 @implementation IntentsUtilities
 
-+ (void)intentsAppsWithCompletion:(id)a3
++ (void)intentsAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = MEMORY[0x277CCA9C8];
   v9[0] = MEMORY[0x277D85DD0];
@@ -18,10 +18,10 @@
   v9[2] = __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke;
   v9[3] = &unk_278CD1F08;
   v10 = v5;
-  v11 = v4;
-  v12 = a1;
+  v11 = completionCopy;
+  selfCopy = self;
   v7 = v5;
-  v8 = v4;
+  v8 = completionCopy;
   [v6 _intents_findSiriEntitledAppsContainingAnIntentsExtensionWithCompletion:v9];
 }
 
@@ -120,7 +120,7 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
     _os_log_impl(&dword_2413B9000, v2, OS_LOG_TYPE_DEFAULT, "%s Fetching enabled app TCC ids", buf, 0xCu);
   }
 
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = *MEMORY[0x277D6C210];
   v18 = 0u;
   v19 = 0u;
@@ -149,7 +149,7 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
         if ([v14 BOOLValue])
         {
           v15 = CFBundleGetIdentifier(v13);
-          [v3 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -161,13 +161,13 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-+ (BOOL)isIntentsEnabledForAppId:(id)a3
++ (BOOL)isIntentsEnabledForAppId:(id)id
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"com.apple.Home", @"com.apple.MobileSMS", 0}];
   v5 = +[IntentsUtilities fetchEnabledAppIds];
   v6 = [v4 arrayByAddingObjectsFromArray:v5];
@@ -175,7 +175,7 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 containsObject:v3];
+    v9 = [v6 containsObject:idCopy];
     v10 = @"disabled";
     v15 = "+[IntentsUtilities isIntentsEnabledForAppId:]";
     *buf = 136315650;
@@ -187,21 +187,21 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
 
     v17 = v10;
     v18 = 2112;
-    v19 = v3;
+    v19 = idCopy;
     _os_log_impl(&dword_2413B9000, v8, OS_LOG_TYPE_DEFAULT, "%s Intent is %@ for app id: %@", buf, 0x20u);
   }
 
-  v11 = [v6 containsObject:v3];
+  v11 = [v6 containsObject:idCopy];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-+ (void)setAccess:(BOOL)a3 appID:(id)a4
++ (void)setAccess:(BOOL)access appID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [MEMORY[0x277CC1E88] bundleProxyForIdentifier:v4];
+  dCopy = d;
+  v5 = [MEMORY[0x277CC1E88] bundleProxyForIdentifier:dCopy];
   v6 = CFBundleCreate(0, [v5 bundleURL]);
   if (v6)
   {
@@ -216,14 +216,14 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
         *buf = 136315394;
         v12 = "+[IntentsUtilities setAccess:appID:]";
         v13 = 2112;
-        v14 = v4;
+        v14 = dCopy;
         _os_log_impl(&dword_2413B9000, v9, OS_LOG_TYPE_DEFAULT, "%s Successfully set TCC access for app %@", buf, 0x16u);
       }
     }
 
     else
     {
-      NSLog(&cfstr_FailedToSetTcc.isa, v4);
+      NSLog(&cfstr_FailedToSetTcc.isa, dCopy);
     }
 
     CFRelease(v7);
@@ -232,36 +232,36 @@ uint64_t __46__IntentsUtilities_intentsAppsWithCompletion___block_invoke_2(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_displayNameForApp:(id)a3
++ (id)_displayNameForApp:(id)app
 {
-  v3 = a3;
-  v4 = [v3 localizedNameForContext:0];
-  v5 = [v3 bundleIdentifier];
+  appCopy = app;
+  v4 = [appCopy localizedNameForContext:0];
+  bundleIdentifier = [appCopy bundleIdentifier];
 
-  BundleWithIdentifier = CFBundleGetBundleWithIdentifier(v5);
+  BundleWithIdentifier = CFBundleGetBundleWithIdentifier(bundleIdentifier);
   if (![v4 length])
   {
     v7 = CFBundleGetInfoDictionary(BundleWithIdentifier);
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBEC40]];
+    stringByDeletingPathExtension = [v7 objectForKeyedSubscript:*MEMORY[0x277CBEC40]];
 
-    if (![v8 length])
+    if (![stringByDeletingPathExtension length])
     {
       v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBED50]];
 
       if ([v9 length])
       {
-        v8 = v9;
+        stringByDeletingPathExtension = v9;
       }
 
       else
       {
         v10 = CFBundleCopyBundleURL(BundleWithIdentifier);
-        v11 = [(__CFURL *)v10 lastPathComponent];
-        v8 = [v11 stringByDeletingPathExtension];
+        lastPathComponent = [(__CFURL *)v10 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
       }
     }
 
-    v4 = v8;
+    v4 = stringByDeletingPathExtension;
   }
 
   return v4;

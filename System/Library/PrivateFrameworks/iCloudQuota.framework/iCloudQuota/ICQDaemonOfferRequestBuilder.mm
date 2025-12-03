@@ -1,42 +1,42 @@
 @interface ICQDaemonOfferRequestBuilder
-- (ICQDaemonOfferRequestBuilder)initWithAccount:(id)a3 accountManager:(id)a4;
-- (id)requestWithQuotaKey:(id)a3 reason:(id)a4 offerStub:(id)a5 notificationID:(id)a6 contextDictionary:(id)a7 mlDaemonExtraFields:(id)a8 sourceIsServerSample:(BOOL)a9;
-- (void)addPremiumOffersHeaderIfNeededForRequest:(id)a3;
-- (void)renewAuthHeadersForRequest:(id)a3 completion:(id)a4;
+- (ICQDaemonOfferRequestBuilder)initWithAccount:(id)account accountManager:(id)manager;
+- (id)requestWithQuotaKey:(id)key reason:(id)reason offerStub:(id)stub notificationID:(id)d contextDictionary:(id)dictionary mlDaemonExtraFields:(id)fields sourceIsServerSample:(BOOL)sample;
+- (void)addPremiumOffersHeaderIfNeededForRequest:(id)request;
+- (void)renewAuthHeadersForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ICQDaemonOfferRequestBuilder
 
-- (ICQDaemonOfferRequestBuilder)initWithAccount:(id)a3 accountManager:(id)a4
+- (ICQDaemonOfferRequestBuilder)initWithAccount:(id)account accountManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = ICQDaemonOfferRequestBuilder;
   v9 = [(ICQDaemonOfferRequestBuilder *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    v11 = [[ICQRequestProvider alloc] initWithAccount:v7];
+    objc_storeStrong(&v9->_account, account);
+    v11 = [[ICQRequestProvider alloc] initWithAccount:accountCopy];
     requestProvider = v10->_requestProvider;
     v10->_requestProvider = v11;
 
-    objc_storeStrong(&v10->_accountManager, a4);
+    objc_storeStrong(&v10->_accountManager, manager);
   }
 
   return v10;
 }
 
-- (id)requestWithQuotaKey:(id)a3 reason:(id)a4 offerStub:(id)a5 notificationID:(id)a6 contextDictionary:(id)a7 mlDaemonExtraFields:(id)a8 sourceIsServerSample:(BOOL)a9
+- (id)requestWithQuotaKey:(id)key reason:(id)reason offerStub:(id)stub notificationID:(id)d contextDictionary:(id)dictionary mlDaemonExtraFields:(id)fields sourceIsServerSample:(BOOL)sample
 {
   v90 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [a3 copy];
+  reasonCopy = reason;
+  stubCopy = stub;
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  fieldsCopy = fields;
+  v20 = [key copy];
   v21 = [(__CFString *)v20 isEqualToString:@"buddy:quotaFetchOffersURL"];
   if (v21)
   {
@@ -45,16 +45,16 @@
     v20 = v22;
   }
 
-  v23 = [(ICQRequestProvider *)self->_requestProvider urlForQuotaKey:v20 offerStub:v16 notificationID:v17];
+  v23 = [(ICQRequestProvider *)self->_requestProvider urlForQuotaKey:v20 offerStub:stubCopy notificationID:dCopy];
   v24 = v23;
   if (v23)
   {
     v82 = v23;
-    v83 = v19;
+    v83 = fieldsCopy;
     v25 = [MEMORY[0x277CCAB70] requestWithURL:v23 cachePolicy:1 timeoutInterval:30.0];
     requestProvider = self->_requestProvider;
-    v27 = [v16 offerId];
-    LODWORD(requestProvider) = [(ICQRequestProvider *)requestProvider willUseNewKey:v20 offerID:v27 notificationID:v17];
+    offerId = [stubCopy offerId];
+    LODWORD(requestProvider) = [(ICQRequestProvider *)requestProvider willUseNewKey:v20 offerID:offerId notificationID:dCopy];
 
     v81 = v21;
     if (!requestProvider)
@@ -64,15 +64,15 @@
       v85[0] = @"quota_alert";
       v85[1] = @"ALL";
       v84[2] = @"dsid";
-      v34 = [(ACAccount *)self->_account aa_personID];
-      v85[2] = v34;
+      aa_personID = [(ACAccount *)self->_account aa_personID];
+      v85[2] = aa_personID;
       v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v85 forKeys:v84 count:3];
       v36 = [v35 mutableCopy];
 
-      [v36 setObject:v15 forKeyedSubscript:@"reason"];
-      if (v16)
+      [v36 setObject:reasonCopy forKeyedSubscript:@"reason"];
+      if (stubCopy)
       {
-        [ICQRequestProvider addEntriesToPostDictionary:v36 forStub:v16];
+        [ICQRequestProvider addEntriesToPostDictionary:v36 forStub:stubCopy];
         v37 = v83;
       }
 
@@ -81,7 +81,7 @@
         v37 = v83;
         if ([(__CFString *)v20 isEqualToString:@"quotaFetchOffersURL"])
         {
-          if (a9)
+          if (sample)
           {
             [v25 setValue:@"true" forHTTPHeaderField:@"X-Apple-All-Device-Offers"];
             [v25 setValue:@"t" forHTTPHeaderField:@"X-Apple-InvoiceEvent-Simulate"];
@@ -110,14 +110,14 @@
         [v36 setObject:@"true" forKey:@"useWlanTerm"];
       }
 
-      if (v17)
+      if (dCopy)
       {
-        [v36 setObject:v17 forKey:@"notificationId"];
+        [v36 setObject:dCopy forKey:@"notificationId"];
       }
 
-      if (v18)
+      if (dictionaryCopy)
       {
-        [v36 setObject:v18 forKey:@"contextDictionary"];
+        [v36 setObject:dictionaryCopy forKey:@"contextDictionary"];
       }
 
       if (v37)
@@ -147,15 +147,15 @@
       {
         v33 = 0;
 LABEL_76:
-        v19 = v83;
+        fieldsCopy = v83;
 
         v24 = v82;
         goto LABEL_77;
       }
 
-      v80 = v18;
+      v80 = dictionaryCopy;
 LABEL_67:
-      v64 = v15;
+      v64 = reasonCopy;
       [(ICQDaemonOfferRequestBuilder *)self addPremiumOffersHeaderIfNeededForRequest:v25];
       if (v81)
       {
@@ -163,8 +163,8 @@ LABEL_67:
       }
 
       account = self->_account;
-      v66 = [(_ICQAccountManager *)self->_accountManager accountStore];
-      v67 = [_ICQHelperFunctions isBackupEnabledForAccount:account accountStore:v66];
+      accountStore = [(_ICQAccountManager *)self->_accountManager accountStore];
+      v67 = [_ICQHelperFunctions isBackupEnabledForAccount:account accountStore:accountStore];
 
       if (v67)
       {
@@ -172,48 +172,48 @@ LABEL_67:
       }
 
       [(ICQRequestProvider *)self->_requestProvider addCommonHeadersToRequest:v25];
-      v68 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-      v69 = [v68 ams_activeiTunesAccount];
-      v70 = v69;
-      if (v69)
+      ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+      ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+      v70 = ams_activeiTunesAccount;
+      if (ams_activeiTunesAccount)
       {
-        v71 = [v69 ams_DSID];
+        ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-        if (v71)
+        if (ams_DSID)
         {
-          v72 = [v70 ams_DSID];
-          v73 = [v72 stringValue];
-          [v25 setValue:v73 forHTTPHeaderField:@"X-Apple-Itunes-DSID"];
+          ams_DSID2 = [v70 ams_DSID];
+          stringValue = [ams_DSID2 stringValue];
+          [v25 setValue:stringValue forHTTPHeaderField:@"X-Apple-Itunes-DSID"];
         }
       }
 
       v33 = [v25 copy];
 
-      v15 = v64;
-      v18 = v80;
+      reasonCopy = v64;
+      dictionaryCopy = v80;
       goto LABEL_76;
     }
 
-    v77 = v17;
-    v80 = v18;
-    v28 = [v16 conditionsWhenChosen];
+    v77 = dCopy;
+    v80 = dictionaryCopy;
+    conditionsWhenChosen = [stubCopy conditionsWhenChosen];
 
-    if (v28)
+    if (conditionsWhenChosen)
     {
-      v29 = [v16 conditionsWhenChosen];
-      v30 = [v29 isPhotosCloudEnabled];
+      conditionsWhenChosen2 = [stubCopy conditionsWhenChosen];
+      isPhotosCloudEnabled = [conditionsWhenChosen2 isPhotosCloudEnabled];
 
-      v31 = [v16 conditionsWhenChosen];
-      v32 = [v31 isPhotosOptimizeEnabled];
+      conditionsWhenChosen3 = [stubCopy conditionsWhenChosen];
+      isPhotosOptimizeEnabled = [conditionsWhenChosen3 isPhotosOptimizeEnabled];
     }
 
     else
     {
-      v30 = +[ICQDaemonOfferConditions isPhotosCloudEnabled];
-      v32 = +[ICQDaemonOfferConditions isPhotosOptimizeEnabled];
+      isPhotosCloudEnabled = +[ICQDaemonOfferConditions isPhotosCloudEnabled];
+      isPhotosOptimizeEnabled = +[ICQDaemonOfferConditions isPhotosOptimizeEnabled];
     }
 
-    if (v30)
+    if (isPhotosCloudEnabled)
     {
       v38 = @"true";
     }
@@ -224,7 +224,7 @@ LABEL_67:
     }
 
     v39 = v38;
-    if (v32)
+    if (isPhotosOptimizeEnabled)
     {
       v40 = @"true";
     }
@@ -241,9 +241,9 @@ LABEL_67:
       v42 = v41;
       v43 = objc_opt_new();
       v36 = v43;
-      if (v15)
+      if (reasonCopy)
       {
-        v44 = v15;
+        v44 = reasonCopy;
       }
 
       else
@@ -255,14 +255,14 @@ LABEL_67:
       [v36 setObject:v39 forKey:@"iCPLEnabled"];
       [v36 setObject:v42 forKey:@"optimizeEnabled"];
       v45 = +[ICQAppLaunchLinkTracker shared];
-      v46 = [v45 allDaysSinceLastShown];
+      allDaysSinceLastShown = [v45 allDaysSinceLastShown];
 
-      if (v46)
+      if (allDaysSinceLastShown)
       {
-        [v36 setObject:v46 forKey:@"appLaunch"];
+        [v36 setObject:allDaysSinceLastShown forKey:@"appLaunch"];
       }
 
-      if (a9)
+      if (sample)
       {
         [v25 setValue:@"true" forHTTPHeaderField:@"X-Apple-All-Device-Offers"];
         [v25 setValue:@"t" forHTTPHeaderField:@"X-Apple-InvoiceEvent-Simulate"];
@@ -287,8 +287,8 @@ LABEL_67:
         v36 = 0;
 LABEL_47:
         v57 = self->_requestProvider;
-        v58 = [v16 offerId];
-        v59 = [(ICQRequestProvider *)v57 httpMethodForKey:v20 offerID:v58 notificationID:v17];
+        offerId2 = [stubCopy offerId];
+        v59 = [(ICQRequestProvider *)v57 httpMethodForKey:v20 offerID:offerId2 notificationID:dCopy];
         [v25 setHTTPMethod:v59];
 
         goto LABEL_67;
@@ -312,7 +312,7 @@ LABEL_47:
 
       v25 = v54;
       [v54 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-      v17 = v77;
+      dCopy = v77;
       if (v83 && [v83 count])
       {
         v55 = _ICQGetLogSystem();
@@ -365,20 +365,20 @@ LABEL_77:
   return v33;
 }
 
-- (void)renewAuthHeadersForRequest:(id)a3 completion:(id)a4
+- (void)renewAuthHeadersForRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   account = self->_account;
   accountManager = self->_accountManager;
-  v9 = a3;
-  v10 = [(_ICQAccountManager *)accountManager accountStore];
+  requestCopy = request;
+  accountStore = [(_ICQAccountManager *)accountManager accountStore];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__ICQDaemonOfferRequestBuilder_renewAuthHeadersForRequest_completion___block_invoke;
   v12[3] = &unk_27A651608;
-  v13 = v6;
-  v11 = v6;
-  [v9 icq_renewAuthorizationHeadersForAccount:account store:v10 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [requestCopy icq_renewAuthorizationHeadersForAccount:account store:accountStore completion:v12];
 }
 
 uint64_t __70__ICQDaemonOfferRequestBuilder_renewAuthHeadersForRequest_completion___block_invoke(uint64_t a1, char a2)
@@ -392,14 +392,14 @@ uint64_t __70__ICQDaemonOfferRequestBuilder_renewAuthHeadersForRequest_completio
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)addPremiumOffersHeaderIfNeededForRequest:(id)a3
+- (void)addPremiumOffersHeaderIfNeededForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [_ICQHelperFunctions defaultValueForKey:@"_ICQEnableServerPremiumOffers"];
   v5 = v4;
   if (v4 && [v4 BOOLValue])
   {
-    [v3 setValue:@"true" forHTTPHeaderField:@"x-apple-opt-in-flow"];
+    [requestCopy setValue:@"true" forHTTPHeaderField:@"x-apple-opt-in-flow"];
   }
 
   v6 = [_ICQHelperFunctions defaultValueForKey:@"_ICQAddFetchOffersHeaders"];
@@ -407,8 +407,8 @@ uint64_t __70__ICQDaemonOfferRequestBuilder_renewAuthHeadersForRequest_completio
   v8[1] = 3221225472;
   v8[2] = __73__ICQDaemonOfferRequestBuilder_addPremiumOffersHeaderIfNeededForRequest___block_invoke;
   v8[3] = &unk_27A651630;
-  v9 = v3;
-  v7 = v3;
+  v9 = requestCopy;
+  v7 = requestCopy;
   [v6 enumerateKeysAndObjectsUsingBlock:v8];
 }
 

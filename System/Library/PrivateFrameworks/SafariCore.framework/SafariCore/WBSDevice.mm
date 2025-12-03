@@ -10,7 +10,7 @@
 - (WBSDevice)init;
 - (void)dealloc;
 - (void)registerForNotifications;
-- (void)test_setUserAssignedName:(id)a3;
+- (void)test_setUserAssignedName:(id)name;
 - (void)unregisterForNotifications;
 @end
 
@@ -196,10 +196,10 @@ LABEL_12:
     userUniqueDeviceIdentifier = self->_userUniqueDeviceIdentifier;
     if (!userUniqueDeviceIdentifier)
     {
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v7 = [v6 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
       v8 = self->_userUniqueDeviceIdentifier;
-      self->_userUniqueDeviceIdentifier = v7;
+      self->_userUniqueDeviceIdentifier = uUIDString;
 
       userUniqueDeviceIdentifier = self->_userUniqueDeviceIdentifier;
     }
@@ -253,10 +253,10 @@ void __37__WBSDevice_registerForNotifications__block_invoke(uint64_t a1, void *a
   deviceTypeIdentifier = self->_deviceTypeIdentifier;
   if (!deviceTypeIdentifier)
   {
-    v4 = [MEMORY[0x1E6982C40] _typeOfCurrentDevice];
-    v5 = [v4 identifier];
+    _typeOfCurrentDevice = [MEMORY[0x1E6982C40] _typeOfCurrentDevice];
+    identifier = [_typeOfCurrentDevice identifier];
     v6 = self->_deviceTypeIdentifier;
-    self->_deviceTypeIdentifier = v5;
+    self->_deviceTypeIdentifier = identifier;
 
     deviceTypeIdentifier = self->_deviceTypeIdentifier;
   }
@@ -264,12 +264,12 @@ void __37__WBSDevice_registerForNotifications__block_invoke(uint64_t a1, void *a
   return deviceTypeIdentifier;
 }
 
-- (void)test_setUserAssignedName:(id)a3
+- (void)test_setUserAssignedName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (+[WBSFeatureAvailability isInternalInstall])
   {
-    [(WBSDevice *)self _setUserAssignedName:v4];
+    [(WBSDevice *)self _setUserAssignedName:nameCopy];
   }
 }
 

@@ -1,25 +1,25 @@
 @interface AMDAppSegment
-+ (BOOL)evaluatePredicate:(id)a3 withOperands:(id)a4;
-+ (id)assignSegmentsToApps:(id)a3 withFeatureDictionary:(id)a4 predicate:(id)a5;
-+ (id)assignSegmentsWithParameters:(id)a3 error:(id *)a4;
-+ (id)computeSegmentsForApps:(id)a3 withRules:(id)a4 error:(id *)a5;
-+ (id)deleteAllSegments:(id *)a3;
-+ (id)getSegmentsDictForAllTreatments:(id *)a3;
-+ (id)getSegmentsForTreatmentId:(id)a3 error:(id *)a4;
-+ (id)getSegmentsInfoForTreatment:(id)a3 error:(id *)a4;
-+ (id)refreshSegments:(id)a3 error:(id *)a4;
-+ (id)refreshSegmentsForAllTreatmentsForUser:(id)a3 error:(id *)a4;
-+ (void)saveSegments:(id)a3 withTreatmentId:(id)a4 andAlgoId:(id)a5 error:(id *)a6;
-+ (void)validatePredicate:(id)a3 withFeatureList:(id)a4 error:(id *)a5;
++ (BOOL)evaluatePredicate:(id)predicate withOperands:(id)operands;
++ (id)assignSegmentsToApps:(id)apps withFeatureDictionary:(id)dictionary predicate:(id)predicate;
++ (id)assignSegmentsWithParameters:(id)parameters error:(id *)error;
++ (id)computeSegmentsForApps:(id)apps withRules:(id)rules error:(id *)error;
++ (id)deleteAllSegments:(id *)segments;
++ (id)getSegmentsDictForAllTreatments:(id *)treatments;
++ (id)getSegmentsForTreatmentId:(id)id error:(id *)error;
++ (id)getSegmentsInfoForTreatment:(id)treatment error:(id *)error;
++ (id)refreshSegments:(id)segments error:(id *)error;
++ (id)refreshSegmentsForAllTreatmentsForUser:(id)user error:(id *)error;
++ (void)saveSegments:(id)segments withTreatmentId:(id)id andAlgoId:(id)algoId error:(id *)error;
++ (void)validatePredicate:(id)predicate withFeatureList:(id)list error:(id *)error;
 @end
 
 @implementation AMDAppSegment
 
-+ (id)deleteAllSegments:(id *)a3
++ (id)deleteAllSegments:(id *)segments
 {
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
+  segmentsCopy = segments;
   v30 = +[AMDCoreDataPersistentContainer sharedContainer];
   location = [v30 getManagedObjectContext];
   v22 = 0;
@@ -51,7 +51,7 @@
   {
     v6 = v23[5];
     v3 = v6;
-    *v31 = v6;
+    *segmentsCopy = v6;
     v34 = 0;
   }
 
@@ -116,17 +116,17 @@ void __35__AMDAppSegment_deleteAllSegments___block_invoke(void *a1)
   objc_storeStrong(v18, 0);
 }
 
-+ (id)refreshSegmentsForAllTreatmentsForUser:(id)a3 error:(id *)a4
++ (id)refreshSegmentsForAllTreatmentsForUser:(id)user error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v49 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v47 = a4;
+  objc_storeStrong(location, user);
+  errorCopy = error;
   [AMDPerf startMonitoringEvent:@"RefreshSegments"];
-  v46 = [AMDWorkflow getAllActiveWorkflowsForDomain:[AMDDomains getCodeForDomain:@"apps"] andUseCaseId:0x2852AAC08 error:a4];
-  if (*a4)
+  v46 = [AMDWorkflow getAllActiveWorkflowsForDomain:[AMDDomains getCodeForDomain:@"apps"] andUseCaseId:0x2852AAC08 error:error];
+  if (*error)
   {
     v50 = 0;
     v45 = 1;
@@ -184,13 +184,13 @@ void __35__AMDAppSegment_deleteAllSegments___block_invoke(void *a1)
 
           else
           {
-            v7 = [v49 assignSegmentsWithParameters:v38 error:v47];
+            v7 = [selfCopy assignSegmentsWithParameters:v38 error:errorCopy];
             v8 = v32;
             v32 = v7;
             MEMORY[0x277D82BD8](v8);
           }
 
-          if (*v47)
+          if (*errorCopy)
           {
             v50 = 0;
             v45 = 1;
@@ -236,7 +236,7 @@ void __35__AMDAppSegment_deleteAllSegments___block_invoke(void *a1)
         {
           v19 = [AMDError allocError:16 withMessage:@"no segment aggregation params"];
           v4 = v19;
-          *v47 = v19;
+          *errorCopy = v19;
           v50 = 0;
           v45 = 1;
         }
@@ -272,8 +272,8 @@ LABEL_36:
     MEMORY[0x277D82BD8](v24);
     if (!v45)
     {
-      v27 = [AMDAppSegment refreshSegments:v41 error:v47];
-      if (*v47)
+      v27 = [AMDAppSegment refreshSegments:v41 error:errorCopy];
+      if (*errorCopy)
       {
         v50 = 0;
       }
@@ -318,16 +318,16 @@ LABEL_36:
   return v9;
 }
 
-+ (id)refreshSegments:(id)a3 error:(id *)a4
++ (id)refreshSegments:(id)segments error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v32 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = a4;
-  v29 = [v32 deleteAllSegments:a4];
-  if (*a4)
+  objc_storeStrong(location, segments);
+  errorCopy = error;
+  v29 = [selfCopy deleteAllSegments:error];
+  if (*error)
   {
     v33 = 0;
     v28 = 1;
@@ -365,16 +365,16 @@ LABEL_36:
 
         v23 = *(__b[1] + 8 * v15);
         v21 = [location[0] objectForKey:v23];
-        v20 = [v21 first];
-        v4 = [v20 count];
+        first = [v21 first];
+        v4 = [first count];
         v24 += v4;
-        v11 = v32;
-        v9 = v20;
+        v11 = selfCopy;
+        v9 = first;
         v10 = v23;
-        v12 = [v21 second];
+        second = [v21 second];
         [v11 saveSegments:v9 withTreatmentId:v10 andAlgoId:? error:?];
-        MEMORY[0x277D82BD8](v12);
-        if (*v30)
+        MEMORY[0x277D82BD8](second);
+        if (*errorCopy)
         {
           v33 = 0;
           v28 = 1;
@@ -385,7 +385,7 @@ LABEL_36:
           v28 = 0;
         }
 
-        objc_storeStrong(&v20, 0);
+        objc_storeStrong(&first, 0);
         objc_storeStrong(&v21, 0);
         if (v28)
         {
@@ -433,19 +433,19 @@ LABEL_15:
   return v5;
 }
 
-+ (void)saveSegments:(id)a3 withTreatmentId:(id)a4 andAlgoId:(id)a5 error:(id *)a6
++ (void)saveSegments:(id)segments withTreatmentId:(id)id andAlgoId:(id)algoId error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, segments);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, id);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
-  v31 = a6;
+  objc_storeStrong(&v32, algoId);
+  errorCopy = error;
   v30 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v29 = [v30 getManagedObjectContext];
+  getManagedObjectContext = [v30 getManagedObjectContext];
   v22 = 0;
   v23 = &v22;
   v24 = 838860800;
@@ -453,14 +453,14 @@ LABEL_15:
   v26 = __Block_byref_object_copy__13;
   v27 = __Block_byref_object_dispose__13;
   v28 = 0;
-  v11 = v29;
+  v11 = getManagedObjectContext;
   v12 = MEMORY[0x277D85DD0];
   v13 = -1073741824;
   v14 = 0;
   v15 = __62__AMDAppSegment_saveSegments_withTreatmentId_andAlgoId_error___block_invoke;
   v16 = &unk_278CB65F0;
   v17 = MEMORY[0x277D82BE0](location[0]);
-  v18 = MEMORY[0x277D82BE0](v29);
+  v18 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v19 = MEMORY[0x277D82BE0](v33);
   v20 = MEMORY[0x277D82BE0](v32);
   v21[0] = MEMORY[0x277D82BE0](v30);
@@ -470,7 +470,7 @@ LABEL_15:
   {
     v7 = v23[5];
     v6 = v7;
-    *v31 = v7;
+    *errorCopy = v7;
   }
 
   objc_storeStrong(v21, 0);
@@ -480,7 +480,7 @@ LABEL_15:
   objc_storeStrong(&v17, 0);
   _Block_object_dispose(&v22, 8);
   objc_storeStrong(&v28, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(&v33, 0);
@@ -576,15 +576,15 @@ void __62__AMDAppSegment_saveSegments_withTreatmentId_andAlgoId_error___block_in
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)getSegmentsForTreatmentId:(id)a3 error:(id *)a4
++ (id)getSegmentsForTreatmentId:(id)id error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, id);
+  errorCopy = error;
   v32 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v31 = [v32 getManagedObjectContext];
+  getManagedObjectContext = [v32 getManagedObjectContext];
   v24 = 0;
   v25 = &v24;
   v26 = 838860800;
@@ -599,7 +599,7 @@ void __62__AMDAppSegment_saveSegments_withTreatmentId_andAlgoId_error___block_in
   v21 = __Block_byref_object_copy__13;
   v22 = __Block_byref_object_dispose__13;
   v23 = 0;
-  v9 = v31;
+  v9 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
@@ -607,14 +607,14 @@ void __62__AMDAppSegment_saveSegments_withTreatmentId_andAlgoId_error___block_in
   v14 = &unk_278CB5AA8;
   v15 = MEMORY[0x277D82BE0](location[0]);
   v16[1] = &v17;
-  v16[0] = MEMORY[0x277D82BE0](v31);
+  v16[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v16[2] = &v24;
   [v9 performBlockAndWait:&v10];
   if (v25[5])
   {
     v7 = v25[5];
     v4 = v7;
-    *v33 = v7;
+    *errorCopy = v7;
     v35 = 0;
   }
 
@@ -629,7 +629,7 @@ void __62__AMDAppSegment_saveSegments_withTreatmentId_andAlgoId_error___block_in
   objc_storeStrong(&v23, 0);
   _Block_object_dispose(&v24, 8);
   objc_storeStrong(&v30, 0);
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(location, 0);
   v5 = v35;
@@ -667,16 +667,16 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
   objc_storeStrong(v12, 0);
 }
 
-+ (id)getSegmentsInfoForTreatment:(id)a3 error:(id *)a4
++ (id)getSegmentsInfoForTreatment:(id)treatment error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v30 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v28[1] = a4;
-  v28[0] = [v30 getSegmentsForTreatmentId:location[0] error:a4];
-  if (*a4)
+  objc_storeStrong(location, treatment);
+  v28[1] = error;
+  v28[0] = [selfCopy getSegmentsForTreatmentId:location[0] error:error];
+  if (*error)
   {
     v31 = 0;
     v27 = 1;
@@ -738,9 +738,9 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
     }
 
     MEMORY[0x277D82BD8](obj);
-    v9 = [v28[0] firstObject];
-    v19 = [v9 objectForKey:@"algoId"];
-    MEMORY[0x277D82BD8](v9);
+    firstObject = [v28[0] firstObject];
+    v19 = [firstObject objectForKey:@"algoId"];
+    MEMORY[0x277D82BD8](firstObject);
     v6 = [AMDPair alloc];
     v31 = [(AMDPair *)v6 initWith:v26 and:v19];
     v27 = 1;
@@ -763,14 +763,14 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
   return v7;
 }
 
-+ (id)getSegmentsDictForAllTreatments:(id *)a3
++ (id)getSegmentsDictForAllTreatments:(id *)treatments
 {
   v36 = *MEMORY[0x277D85DE8];
-  v33 = a1;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
-  v30 = [a1 getSegmentsForTreatmentId:0 error:a3];
-  if (*v31)
+  treatmentsCopy = treatments;
+  v30 = [self getSegmentsForTreatmentId:0 error:treatments];
+  if (*treatmentsCopy)
   {
     v34 = 0;
     v29 = 1;
@@ -813,9 +813,9 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
         }
 
         [v28 setObject:v21 forKey:v25];
-        v20 = [v21 first];
+        first = [v21 first];
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v23];
-        location = [v20 objectForKey:v19];
+        location = [first objectForKey:v19];
         if (location)
         {
           [location addObject:v22];
@@ -823,7 +823,7 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
 
         else
         {
-          v8 = v20;
+          v8 = first;
           v5 = objc_alloc(MEMORY[0x277CBEB18]);
           v9 = [v5 initWithObjects:{v22, 0}];
           [v8 setObject:? forKey:?];
@@ -832,7 +832,7 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
 
         objc_storeStrong(&location, 0);
         objc_storeStrong(&v19, 0);
-        objc_storeStrong(&v20, 0);
+        objc_storeStrong(&first, 0);
         objc_storeStrong(&v21, 0);
         objc_storeStrong(&v22, 0);
         objc_storeStrong(&v23, 0);
@@ -864,16 +864,16 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
   return v6;
 }
 
-+ (void)validatePredicate:(id)a3 withFeatureList:(id)a4 error:(id *)a5
++ (void)validatePredicate:(id)predicate withFeatureList:(id)list error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, predicate);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  v17[1] = a5;
+  objc_storeStrong(&v18, list);
+  v17[1] = error;
   v17[0] = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
   v10 = MEMORY[0x277D82BE0](v18);
@@ -918,14 +918,14 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
   *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)evaluatePredicate:(id)a3 withOperands:(id)a4
++ (BOOL)evaluatePredicate:(id)predicate withOperands:(id)operands
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, predicate);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, operands);
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:location[0]];
   v8 = [v6 predicateWithSubstitutionVariables:v9];
   MEMORY[0x277D82BD8](v6);
@@ -936,17 +936,17 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
   return v7;
 }
 
-+ (id)assignSegmentsToApps:(id)a3 withFeatureDictionary:(id)a4 predicate:(id)a5
++ (id)assignSegmentsToApps:(id)apps withFeatureDictionary:(id)dictionary predicate:(id)predicate
 {
   v43 = *MEMORY[0x277D85DE8];
-  v38 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, apps);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, dictionary);
   v35 = 0;
-  objc_storeStrong(&v35, a5);
+  objc_storeStrong(&v35, predicate);
   v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
   v26 = MEMORY[0x277D82BE0](location[0]);
@@ -1011,7 +1011,7 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
       }
 
       MEMORY[0x277D82BD8](v18);
-      if ([v38 evaluatePredicate:v35 withOperands:v31])
+      if ([selfCopy evaluatePredicate:v35 withOperands:v31])
       {
         v10 = v34;
         v40 = @"1";
@@ -1058,22 +1058,22 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
   return v6;
 }
 
-+ (id)computeSegmentsForApps:(id)a3 withRules:(id)a4 error:(id *)a5
++ (id)computeSegmentsForApps:(id)apps withRules:(id)rules error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v36 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, apps);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
-  v33 = a5;
+  objc_storeStrong(&v34, rules);
+  errorCopy = error;
   v32 = [v34 objectForKey:@"features"];
   v31 = [v34 objectForKey:@"predicate"];
   if (v32 && v31)
   {
-    [v36 validatePredicate:v31 withFeatureList:v32 error:v33];
-    if (*v33)
+    [selfCopy validatePredicate:v31 withFeatureList:v32 error:errorCopy];
+    if (*errorCopy)
     {
       v37 = 0;
       v27 = 1;
@@ -1100,8 +1100,8 @@ void __49__AMDAppSegment_getSegmentsForTreatmentId_error___block_invoke(void *a1
           }
 
           v24 = *(__b[1] + 8 * v13);
-          v22 = [AMDTasteProfile getFeatureValueWithName:v24 inDomain:@"apps" error:v33];
-          if (*v33)
+          v22 = [AMDTasteProfile getFeatureValueWithName:v24 inDomain:@"apps" error:errorCopy];
+          if (*errorCopy)
           {
             v27 = 2;
           }
@@ -1147,7 +1147,7 @@ LABEL_21:
       }
 
       MEMORY[0x277D82BD8](v15);
-      if (*v33)
+      if (*errorCopy)
       {
         v37 = 0;
         v27 = 1;
@@ -1158,7 +1158,7 @@ LABEL_21:
         v10 = [v32 count];
         if (v10 == [v26 count])
         {
-          v20 = [v36 assignSegmentsToApps:location[0] withFeatureDictionary:v26 predicate:v31];
+          v20 = [selfCopy assignSegmentsToApps:location[0] withFeatureDictionary:v26 predicate:v31];
           v37 = MEMORY[0x277D82BE0](v20);
           v27 = 1;
           objc_storeStrong(&v20, 0);
@@ -1169,7 +1169,7 @@ LABEL_21:
           v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requested features are absent: %@", v25];
           v9 = [AMDError allocError:21 withMessage:v21];
           v6 = v9;
-          *v33 = v9;
+          *errorCopy = v9;
           v37 = 0;
           v27 = 1;
           objc_storeStrong(&v21, 0);
@@ -1195,7 +1195,7 @@ LABEL_21:
     objc_storeStrong(&v29, 0);
     v17 = [AMDError allocError:21 withMessage:v30];
     v5 = v17;
-    *v33 = v17;
+    *errorCopy = v17;
     v37 = 0;
     v27 = 1;
     objc_storeStrong(&v30, 0);
@@ -1211,16 +1211,16 @@ LABEL_21:
   return v7;
 }
 
-+ (id)assignSegmentsWithParameters:(id)a3 error:(id *)a4
++ (id)assignSegmentsWithParameters:(id)parameters error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v48 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v46 = a4;
-  v45 = [AMDTasteProfile getFeatureValueWithName:0x2852B1168 inDomain:@"apps" error:a4];
-  if (*a4)
+  objc_storeStrong(location, parameters);
+  errorCopy = error;
+  v45 = [AMDTasteProfile getFeatureValueWithName:0x2852B1168 inDomain:@"apps" error:error];
+  if (*error)
   {
     v49 = 0;
     v44 = 1;
@@ -1255,15 +1255,15 @@ LABEL_21:
         {
           v32 = 0;
           v30 = 0;
-          v17 = [v48 computeSegmentsForApps:v33 withRules:v34 error:&v30];
+          v17 = [selfCopy computeSegmentsForApps:v33 withRules:v34 error:&v30];
           objc_storeStrong(&v32, v30);
           v31 = v17;
           if (v32)
           {
             v15 = v38;
-            v16 = [v32 localizedDescription];
+            localizedDescription = [v32 localizedDescription];
             [v15 setObject:? forKey:?];
-            MEMORY[0x277D82BD8](v16);
+            MEMORY[0x277D82BD8](localizedDescription);
             [v40 addObject:v33];
             v44 = 3;
           }
@@ -1311,15 +1311,15 @@ LABEL_21:
     if (v28)
     {
       v26 = v29;
-      v12 = [v48 computeSegmentsForApps:v40 withRules:v28 error:&v26];
+      v12 = [selfCopy computeSegmentsForApps:v40 withRules:v28 error:&v26];
       objc_storeStrong(&v29, v26);
       v27 = v12;
       if (v29)
       {
         v10 = v38;
-        v11 = [v29 localizedDescription];
+        localizedDescription2 = [v29 localizedDescription];
         [v10 setObject:? forKey:?];
-        MEMORY[0x277D82BD8](v11);
+        MEMORY[0x277D82BD8](localizedDescription2);
       }
 
       else
@@ -1367,7 +1367,7 @@ LABEL_21:
     [AMDFrameworkMetrics log:v43 withKey:@"SegmentComputationFailed" atVerbosity:0];
     v24 = [AMDError allocError:21 withMessage:v43];
     v4 = v24;
-    *v46 = v24;
+    *errorCopy = v24;
     v49 = 0;
     v44 = 1;
     objc_storeStrong(&v43, 0);

@@ -1,8 +1,8 @@
 @interface PXGBaseTexture
-- (BOOL)hasPendingTextureRequestID:(int)a3 deliveryOrder:(unsigned int)a4;
+- (BOOL)hasPendingTextureRequestID:(int)d deliveryOrder:(unsigned int)order;
 - (BOOL)hasSprites;
 - (BOOL)isOpaque;
-- (BOOL)removePendingSpriteWithTextureRequestID:(int)a3 ifDeliveredBefore:(unsigned int)a4;
+- (BOOL)removePendingSpriteWithTextureRequestID:(int)d ifDeliveredBefore:(unsigned int)before;
 - (CGImage)imageRepresentation;
 - (CGSize)pixelSize;
 - (NSIndexSet)spriteIndexes;
@@ -10,14 +10,14 @@
 - (PXGBaseTexture)init;
 - (int64_t)estimatedByteSize;
 - (unsigned)presentationType;
-- (void)_filterPendingTextureRequestIDsWithPredicate:(id)a3;
+- (void)_filterPendingTextureRequestIDsWithPredicate:(id)predicate;
 - (void)_lock_resizeStorageIfNeeded;
-- (void)addSpriteWithTextureRequestID:(int)a3 deliveryOrder:(unsigned int)a4;
-- (void)applyChangeDetails:(id)a3;
+- (void)addSpriteWithTextureRequestID:(int)d deliveryOrder:(unsigned int)order;
+- (void)applyChangeDetails:(id)details;
 - (void)dealloc;
-- (void)enumerateSpriteIndexes:(id)a3;
-- (void)getSpriteIndexes:(unsigned int *)a3 maxSpriteCount:(unsigned int)a4;
-- (void)processPendingTextureRequestIDsWithHandler:(id)a3;
+- (void)enumerateSpriteIndexes:(id)indexes;
+- (void)getSpriteIndexes:(unsigned int *)indexes maxSpriteCount:(unsigned int)count;
+- (void)processPendingTextureRequestIDsWithHandler:(id)handler;
 @end
 
 @implementation PXGBaseTexture
@@ -85,69 +85,69 @@
 
 - (BOOL)isOpaque
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:227 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture isOpaque]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:227 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture isOpaque]", v6}];
 
   abort();
 }
 
 - (CGSize)pixelSize
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:223 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture pixelSize]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:223 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture pixelSize]", v6}];
 
   abort();
 }
 
 - (CGImage)imageRepresentation
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:219 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture imageRepresentation]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:219 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture imageRepresentation]", v6}];
 
   abort();
 }
 
 - (unsigned)presentationType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:215 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture presentationType]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:215 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture presentationType]", v6}];
 
   abort();
 }
 
 - (int64_t)estimatedByteSize
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:211 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture estimatedByteSize]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:211 description:{@"Method %s is a responsibility of subclass %@", "-[PXGBaseTexture estimatedByteSize]", v6}];
 
   abort();
 }
 
-- (void)applyChangeDetails:(id)a3
+- (void)applyChangeDetails:(id)details
 {
-  v7 = a3;
-  if ([v7 hasAnyInsertionsRemovalsOrMoves])
+  detailsCopy = details;
+  if ([detailsCopy hasAnyInsertionsRemovalsOrMoves])
   {
-    v4 = [v7 indexSetAfterApplyingChangeDetails:self->_spriteIndexes];
+    v4 = [detailsCopy indexSetAfterApplyingChangeDetails:self->_spriteIndexes];
     v5 = [v4 mutableCopy];
     spriteIndexes = self->_spriteIndexes;
     self->_spriteIndexes = v5;
   }
 }
 
-- (void)_filterPendingTextureRequestIDsWithPredicate:(id)a3
+- (void)_filterPendingTextureRequestIDsWithPredicate:(id)predicate
 {
-  v7 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_lock);
   lock_pendingImageRequestInfoCount = self->_lock_pendingImageRequestInfoCount;
   if (lock_pendingImageRequestInfoCount >= 1)
@@ -156,7 +156,7 @@
     v6 = lock_pendingImageRequestInfoCount;
     do
     {
-      if (((*(v7 + 2))(v7, self->_lock_pendingImageRequestInfo[v6 - 1].var0, self->_lock_pendingImageRequestInfo[v6 - 1].var1) & 1) == 0)
+      if (((*(predicateCopy + 2))(predicateCopy, self->_lock_pendingImageRequestInfo[v6 - 1].var0, self->_lock_pendingImageRequestInfo[v6 - 1].var1) & 1) == 0)
       {
         _PXGArrayRemoveRange(self->_lock_pendingImageRequestInfo, 8, self->_lock_pendingImageRequestInfoCount, v5 - 2, 1);
         --self->_lock_pendingImageRequestInfoCount;
@@ -172,9 +172,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)processPendingTextureRequestIDsWithHandler:(id)a3
+- (void)processPendingTextureRequestIDsWithHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   lock_pendingImageRequestInfoCount = self->_lock_pendingImageRequestInfoCount;
   if (lock_pendingImageRequestInfoCount >= 1)
@@ -182,7 +182,7 @@
     v5 = 0;
     do
     {
-      v6 = (*(v7 + 2))(v7, self->_lock_pendingImageRequestInfo[v5].var0, self->_lock_pendingImageRequestInfo[v5].var1);
+      v6 = (*(handlerCopy + 2))(handlerCopy, self->_lock_pendingImageRequestInfo[v5].var0, self->_lock_pendingImageRequestInfo[v5].var1);
       if (v6 != -1)
       {
         [(PXGBaseTexture *)self _addSpriteIndex:v6];
@@ -199,7 +199,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)hasPendingTextureRequestID:(int)a3 deliveryOrder:(unsigned int)a4
+- (BOOL)hasPendingTextureRequestID:(int)d deliveryOrder:(unsigned int)order
 {
   os_unfair_lock_lock(&self->_lock);
   lock_pendingImageRequestInfoCount = self->_lock_pendingImageRequestInfoCount;
@@ -216,7 +216,7 @@
     v11 = 1;
     do
     {
-      if (*(p_var1 - 1) == a3 && *p_var1 == a4)
+      if (*(p_var1 - 1) == d && *p_var1 == order)
       {
         break;
       }
@@ -233,25 +233,25 @@
   return v11;
 }
 
-- (void)enumerateSpriteIndexes:(id)a3
+- (void)enumerateSpriteIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   spriteIndexes = self->_spriteIndexes;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__PXGBaseTexture_enumerateSpriteIndexes___block_invoke;
   v7[3] = &unk_2782AA5E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = indexesCopy;
+  v6 = indexesCopy;
   [(NSMutableIndexSet *)spriteIndexes enumerateIndexesUsingBlock:v7];
 }
 
-- (void)getSpriteIndexes:(unsigned int *)a3 maxSpriteCount:(unsigned int)a4
+- (void)getSpriteIndexes:(unsigned int *)indexes maxSpriteCount:(unsigned int)count
 {
-  if ([(PXGBaseTexture *)self spriteCount]< a4)
+  if ([(PXGBaseTexture *)self spriteCount]< count)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"maxSpriteCount <= self.spriteCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGBaseTexture.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"maxSpriteCount <= self.spriteCount"}];
   }
 
   v12[0] = 0;
@@ -264,8 +264,8 @@
   v10[2] = __50__PXGBaseTexture_getSpriteIndexes_maxSpriteCount___block_invoke;
   v10[3] = &unk_2782AA5B8;
   v10[4] = v12;
-  v10[5] = a3;
-  v11 = a4;
+  v10[5] = indexes;
+  countCopy = count;
   [(NSMutableIndexSet *)spriteIndexes enumerateRangesUsingBlock:v10];
   _Block_object_dispose(v12, 8);
 }
@@ -299,7 +299,7 @@ uint64_t __50__PXGBaseTexture_getSpriteIndexes_maxSpriteCount___block_invoke(uin
   return result;
 }
 
-- (BOOL)removePendingSpriteWithTextureRequestID:(int)a3 ifDeliveredBefore:(unsigned int)a4
+- (BOOL)removePendingSpriteWithTextureRequestID:(int)d ifDeliveredBefore:(unsigned int)before
 {
   v9 = 0;
   v10 = &v9;
@@ -309,8 +309,8 @@ uint64_t __50__PXGBaseTexture_getSpriteIndexes_maxSpriteCount___block_invoke(uin
   v6[1] = 3221225472;
   v6[2] = __76__PXGBaseTexture_removePendingSpriteWithTextureRequestID_ifDeliveredBefore___block_invoke;
   v6[3] = &unk_2782AA590;
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  beforeCopy = before;
   v6[4] = &v9;
   [(PXGBaseTexture *)self _filterPendingTextureRequestIDsWithPredicate:v6];
   v4 = *(v10 + 24);
@@ -336,15 +336,15 @@ uint64_t __76__PXGBaseTexture_removePendingSpriteWithTextureRequestID_ifDelivere
   return result;
 }
 
-- (void)addSpriteWithTextureRequestID:(int)a3 deliveryOrder:(unsigned int)a4
+- (void)addSpriteWithTextureRequestID:(int)d deliveryOrder:(unsigned int)order
 {
   os_unfair_lock_lock(&self->_lock);
   lock_pendingImageRequestInfoCount = self->_lock_pendingImageRequestInfoCount;
   self->_lock_pendingImageRequestInfoCount = lock_pendingImageRequestInfoCount + 1;
   [(PXGBaseTexture *)self _lock_resizeStorageIfNeeded];
   v8 = &self->_lock_pendingImageRequestInfo[lock_pendingImageRequestInfoCount];
-  v8->var0 = a3;
-  v8->var1 = a4;
+  v8->var0 = d;
+  v8->var1 = order;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -369,8 +369,8 @@ uint64_t __76__PXGBaseTexture_removePendingSpriteWithTextureRequestID_ifDelivere
   v9.super_class = PXGBaseTexture;
   v4 = [(PXGBaseTexture *)&v9 description];
   lock_pendingImageRequestInfoCount = self->_lock_pendingImageRequestInfoCount;
-  v6 = [(NSMutableIndexSet *)self->_spriteIndexes px_shortDescription];
-  v7 = [v3 stringWithFormat:@"<%@ pendingRequestIDs:%lu spriteIndexes:%@ >", v4, lock_pendingImageRequestInfoCount, v6];
+  px_shortDescription = [(NSMutableIndexSet *)self->_spriteIndexes px_shortDescription];
+  v7 = [v3 stringWithFormat:@"<%@ pendingRequestIDs:%lu spriteIndexes:%@ >", v4, lock_pendingImageRequestInfoCount, px_shortDescription];
 
   return v7;
 }

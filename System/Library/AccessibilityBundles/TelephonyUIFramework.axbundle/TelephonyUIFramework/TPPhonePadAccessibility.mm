@@ -26,33 +26,33 @@
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 accessibilityLabel];
-        if ([v13 length])
+        accessibilityLabel = [v11 accessibilityLabel];
+        if ([accessibilityLabel length])
         {
-          v14 = v13;
+          v14 = accessibilityLabel;
 
-          v15 = [v12 accessibilityTraits];
+          accessibilityTraits = [v12 accessibilityTraits];
           v10 = v14;
         }
 
         else
         {
-          v15 = v28;
+          accessibilityTraits = v28;
         }
       }
 
       else
       {
-        v15 = v28;
+        accessibilityTraits = v28;
       }
 
-      [v9 setAccessibilityTraits:v15];
+      [v9 setAccessibilityTraits:accessibilityTraits];
       v16 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v10];
       [v16 setAttribute:v8 forKey:*MEMORY[0x29EDBD960]];
       [v9 setAccessibilityLabel:v16];
       v17 = MEMORY[0x29EDBD7E8];
-      v18 = [(__CFString *)AX_kLettersStrings[v7] lowercaseString];
-      v19 = [v17 axAttributedStringWithString:v18];
+      lowercaseString = [(__CFString *)AX_kLettersStrings[v7] lowercaseString];
+      v19 = [v17 axAttributedStringWithString:lowercaseString];
 
       [v19 setAttribute:v8 forKey:*MEMORY[0x29EDBD930]];
       [v9 setAccessibilityHint:v19];
@@ -69,8 +69,8 @@
       v23 = v31[7];
       _Block_object_dispose(&v30, 8);
       [v9 setAccessibilityFrameInContainerSpace:{v20, v21, v22, v23}];
-      v24 = [v9 accessibilityLabel];
-      v25 = [v24 length];
+      accessibilityLabel2 = [v9 accessibilityLabel];
+      v25 = [accessibilityLabel2 length];
 
       if (v25)
       {
@@ -104,7 +104,7 @@ uint64_t __48__TPPhonePadAccessibility_accessibilityElements__block_invoke(uint6
 {
   v19[2] = *MEMORY[0x29EDCA608];
   v17 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:4];
-  v16 = [(TPPhonePadAccessibility *)self accessibilityElements];
+  accessibilityElements = [(TPPhonePadAccessibility *)self accessibilityElements];
   v3 = 0;
   v4 = 0;
   v5 = 0;
@@ -124,8 +124,8 @@ uint64_t __48__TPPhonePadAccessibility_accessibilityElements__block_invoke(uint6
       else
       {
         v10 = [(TPPhonePadAccessibility *)self _buttonForKeyAtIndex:v3 + v7];
-        v11 = [v10 accessibilityLabel];
-        v9 = [v11 length] != 0;
+        accessibilityLabel = [v10 accessibilityLabel];
+        v9 = [accessibilityLabel length] != 0;
       }
 
       v8 += v9;
@@ -133,7 +133,7 @@ uint64_t __48__TPPhonePadAccessibility_accessibilityElements__block_invoke(uint6
     }
 
     while (v7 != 3);
-    v12 = [v16 subarrayWithRange:{v4, v8}];
+    v12 = [accessibilityElements subarrayWithRange:{v4, v8}];
     v18[0] = @"GroupElements";
     v18[1] = @"GroupTraits";
     v19[0] = v12;

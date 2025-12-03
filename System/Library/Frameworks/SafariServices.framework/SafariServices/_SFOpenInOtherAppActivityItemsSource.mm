@@ -1,20 +1,20 @@
 @interface _SFOpenInOtherAppActivityItemsSource
-- (_SFOpenInOtherAppActivityItemsSource)initWithFilePath:(id)a3;
-- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItems:(id)a3;
+- (_SFOpenInOtherAppActivityItemsSource)initWithFilePath:(id)path;
+- (id)activityViewController:(id)controller itemsForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItems:(id)items;
 @end
 
 @implementation _SFOpenInOtherAppActivityItemsSource
 
-- (_SFOpenInOtherAppActivityItemsSource)initWithFilePath:(id)a3
+- (_SFOpenInOtherAppActivityItemsSource)initWithFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _SFOpenInOtherAppActivityItemsSource;
   v5 = [(_SFOpenInOtherAppActivityItemsSource *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v4];
+    v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:pathCopy];
     fileURL = v5->_fileURL;
     v5->_fileURL = v6;
   }
@@ -22,24 +22,24 @@
   return v5;
 }
 
-- (id)activityViewControllerPlaceholderItems:(id)a3
+- (id)activityViewControllerPlaceholderItems:(id)items
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
   if (self->_fileURL)
   {
-    [v4 addObject:?];
+    [array addObject:?];
   }
 
   return v5;
 }
 
-- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemsForActivityType:(id)type
 {
-  v6 = a3;
-  if ([a4 isEqualToString:*MEMORY[0x1E69CDAA0]])
+  controllerCopy = controller;
+  if ([type isEqualToString:*MEMORY[0x1E69CDAA0]])
   {
-    v7 = [(_SFOpenInOtherAppActivityItemsSource *)self activityViewControllerPlaceholderItems:v6];
+    v7 = [(_SFOpenInOtherAppActivityItemsSource *)self activityViewControllerPlaceholderItems:controllerCopy];
   }
 
   else

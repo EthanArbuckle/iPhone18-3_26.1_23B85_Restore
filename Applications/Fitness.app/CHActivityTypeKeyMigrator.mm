@@ -1,19 +1,19 @@
 @interface CHActivityTypeKeyMigrator
 - (CHActivityTypeKeyMigrator)init;
-- (CHActivityTypeKeyMigrator)initWithMigrationKeys:(id)a3;
+- (CHActivityTypeKeyMigrator)initWithMigrationKeys:(id)keys;
 - (void)migrateIfNeeded;
 @end
 
 @implementation CHActivityTypeKeyMigrator
 
-- (CHActivityTypeKeyMigrator)initWithMigrationKeys:(id)a3
+- (CHActivityTypeKeyMigrator)initWithMigrationKeys:(id)keys
 {
   v4 = type metadata accessor for ActivityTypeKeyMigrator();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   ActivityTypeKeyMigrator.init(migrationKeys:userDefaults:)();
   (*(v5 + 32))(self + OBJC_IVAR___CHActivityTypeKeyMigrator_activityTypeKeyMigrator, v7, v4);
   v9 = type metadata accessor for ActivityTypeKeyMigratorBridge();
@@ -24,7 +24,7 @@
 
 - (void)migrateIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   ActivityTypeKeyMigrator.migrateIfNeeded()();
 }
 

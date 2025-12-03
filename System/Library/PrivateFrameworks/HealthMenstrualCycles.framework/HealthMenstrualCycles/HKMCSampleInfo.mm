@@ -1,28 +1,28 @@
 @interface HKMCSampleInfo
-- (BOOL)isEqual:(id)a3;
-- (HKMCSampleInfo)initWithAnchor:(int64_t)a3 UUID:(id)a4 deleted:(BOOL)a5;
-- (HKMCSampleInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKMCSampleInfo)initWithAnchor:(int64_t)anchor UUID:(id)d deleted:(BOOL)deleted;
+- (HKMCSampleInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCSampleInfo
 
-- (HKMCSampleInfo)initWithAnchor:(int64_t)a3 UUID:(id)a4 deleted:(BOOL)a5
+- (HKMCSampleInfo)initWithAnchor:(int64_t)anchor UUID:(id)d deleted:(BOOL)deleted
 {
-  v8 = a4;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = HKMCSampleInfo;
   v9 = [(HKMCSampleInfo *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_anchor = a3;
-    v11 = [v8 copy];
+    v9->_anchor = anchor;
+    v11 = [dCopy copy];
     UUID = v10->_UUID;
     v10->_UUID = v11;
 
-    v10->_deleted = a5;
+    v10->_deleted = deleted;
   }
 
   return v10;
@@ -49,10 +49,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = self->_anchor == v5->_anchor && ((UUID = self->_UUID, v7 = v5->_UUID, UUID == v7) || v7 && [(NSUUID *)UUID isEqual:?]) && self->_deleted == v5->_deleted;
     }
 
@@ -75,31 +75,31 @@
   return v8;
 }
 
-- (HKMCSampleInfo)initWithCoder:(id)a3
+- (HKMCSampleInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
   if (v5)
   {
-    self = -[HKMCSampleInfo initWithAnchor:UUID:deleted:](self, "initWithAnchor:UUID:deleted:", [v4 decodeInt64ForKey:@"Anchor"], v5, objc_msgSend(v4, "decodeBoolForKey:", @"Deleted"));
-    v6 = self;
+    self = -[HKMCSampleInfo initWithAnchor:UUID:deleted:](self, "initWithAnchor:UUID:deleted:", [coderCopy decodeInt64ForKey:@"Anchor"], v5, objc_msgSend(coderCopy, "decodeBoolForKey:", @"Deleted"));
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   anchor = self->_anchor;
-  v5 = a3;
-  [v5 encodeInt64:anchor forKey:@"Anchor"];
-  [v5 encodeObject:self->_UUID forKey:@"UUID"];
-  [v5 encodeBool:self->_deleted forKey:@"Deleted"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:anchor forKey:@"Anchor"];
+  [coderCopy encodeObject:self->_UUID forKey:@"UUID"];
+  [coderCopy encodeBool:self->_deleted forKey:@"Deleted"];
 }
 
 @end

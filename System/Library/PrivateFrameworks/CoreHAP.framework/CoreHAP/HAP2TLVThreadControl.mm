@@ -1,12 +1,12 @@
 @interface HAP2TLVThreadControl
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAP2TLVThreadControl)init;
-- (HAP2TLVThreadControl)initWithOperationType:(id)a3 threadNetworkCredentials:(id)a4 formingAllowed:(id)a5;
+- (HAP2TLVThreadControl)initWithOperationType:(id)type threadNetworkCredentials:(id)credentials formingAllowed:(id)allowed;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAP2TLVThreadControl
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAP2TLVThreadControl *)self operationType];
-  v5 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
-  v6 = [(HAP2TLVThreadControl *)self formingAllowed];
-  v7 = [v3 stringWithFormat:@"<HAP2TLVThreadControl operationType=%@, threadNetworkCredentials=%@, formingAllowed=%@>", v4, v5, v6];
+  operationType = [(HAP2TLVThreadControl *)self operationType];
+  threadNetworkCredentials = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
+  formingAllowed = [(HAP2TLVThreadControl *)self formingAllowed];
+  v7 = [v3 stringWithFormat:@"<HAP2TLVThreadControl operationType=%@, threadNetworkCredentials=%@, formingAllowed=%@>", operationType, threadNetworkCredentials, formingAllowed];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAP2TLVThreadControl *)self operationType];
-      v9 = [(HAP2TLVThreadControl *)v7 operationType];
-      if (v8 != v9)
+      v7 = equalCopy;
+      operationType = [(HAP2TLVThreadControl *)self operationType];
+      operationType2 = [(HAP2TLVThreadControl *)v7 operationType];
+      if (operationType != operationType2)
       {
-        v3 = [(HAP2TLVThreadControl *)self operationType];
-        v4 = [(HAP2TLVThreadControl *)v7 operationType];
-        if (![v3 isEqual:v4])
+        operationType3 = [(HAP2TLVThreadControl *)self operationType];
+        operationType4 = [(HAP2TLVThreadControl *)v7 operationType];
+        if (![operationType3 isEqual:operationType4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
-      v12 = [(HAP2TLVThreadControl *)v7 threadNetworkCredentials];
-      v13 = v12;
-      if (v11 == v12)
+      threadNetworkCredentials = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
+      threadNetworkCredentials2 = [(HAP2TLVThreadControl *)v7 threadNetworkCredentials];
+      v13 = threadNetworkCredentials2;
+      if (threadNetworkCredentials == threadNetworkCredentials2)
       {
-        v28 = v12;
+        v28 = threadNetworkCredentials2;
       }
 
       else
       {
-        v14 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
-        v27 = [(HAP2TLVThreadControl *)v7 threadNetworkCredentials];
-        if (![v14 isEqual:?])
+        threadNetworkCredentials3 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
+        threadNetworkCredentials4 = [(HAP2TLVThreadControl *)v7 threadNetworkCredentials];
+        if (![threadNetworkCredentials3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = threadNetworkCredentials3;
         v28 = v13;
       }
 
-      v15 = [(HAP2TLVThreadControl *)self formingAllowed];
-      v16 = [(HAP2TLVThreadControl *)v7 formingAllowed];
-      v17 = v16;
-      if (v15 == v16)
+      formingAllowed = [(HAP2TLVThreadControl *)self formingAllowed];
+      formingAllowed2 = [(HAP2TLVThreadControl *)v7 formingAllowed];
+      v17 = formingAllowed2;
+      if (formingAllowed == formingAllowed2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAP2TLVThreadControl *)self formingAllowed];
-        v18 = v25 = v3;
+        v18 = v25 = operationType3;
         [(HAP2TLVThreadControl *)v7 formingAllowed];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = threadNetworkCredentials;
+        v19 = operationType4;
+        v20 = operationType2;
+        v22 = v21 = operationType;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        operationType = v21;
+        operationType2 = v20;
+        operationType4 = v19;
+        threadNetworkCredentials = v24;
 
-        v3 = v25;
+        operationType3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      threadNetworkCredentials3 = v26;
+      if (threadNetworkCredentials == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (operationType == operationType2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAP2TLVThreadControl allocWithZone:a3];
-  v5 = [(HAP2TLVThreadControl *)self operationType];
-  v6 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
-  v7 = [(HAP2TLVThreadControl *)self formingAllowed];
-  v8 = [(HAP2TLVThreadControl *)v4 initWithOperationType:v5 threadNetworkCredentials:v6 formingAllowed:v7];
+  v4 = [HAP2TLVThreadControl allocWithZone:zone];
+  operationType = [(HAP2TLVThreadControl *)self operationType];
+  threadNetworkCredentials = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
+  formingAllowed = [(HAP2TLVThreadControl *)self formingAllowed];
+  v8 = [(HAP2TLVThreadControl *)v4 initWithOperationType:operationType threadNetworkCredentials:threadNetworkCredentials formingAllowed:formingAllowed];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v44 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v27 = 0u;
   v25 = 0u;
   TLV8BufferInit();
-  v5 = [(HAP2TLVThreadControl *)self operationType];
+  operationType = [(HAP2TLVThreadControl *)self operationType];
 
-  if (v5)
+  if (operationType)
   {
-    v6 = [(HAP2TLVThreadControl *)self operationType];
+    operationType2 = [(HAP2TLVThreadControl *)self operationType];
     v24 = 0;
-    v7 = [v6 serializeWithError:&v24];
+    v7 = [operationType2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
@@ -190,21 +190,21 @@ LABEL_21:
     }
   }
 
-  v10 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
+  threadNetworkCredentials = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
 
-  if (!v10)
+  if (!threadNetworkCredentials)
   {
 LABEL_13:
-    v16 = [(HAP2TLVThreadControl *)self formingAllowed];
+    formingAllowed = [(HAP2TLVThreadControl *)self formingAllowed];
 
-    if (!v16)
+    if (!formingAllowed)
     {
       goto LABEL_21;
     }
 
-    v17 = [(HAP2TLVThreadControl *)self formingAllowed];
+    formingAllowed2 = [(HAP2TLVThreadControl *)self formingAllowed];
     v22 = 0;
-    v7 = [v17 serializeWithError:&v22];
+    v7 = [formingAllowed2 serializeWithError:&v22];
     v8 = v22;
 
     if (v8)
@@ -225,11 +225,11 @@ LABEL_21:
     }
 
 LABEL_19:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus(v9);
       v8 = 0;
-      *a3 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_24;
     }
 
@@ -237,26 +237,26 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  v11 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
+  threadNetworkCredentials2 = [(HAP2TLVThreadControl *)self threadNetworkCredentials];
   v23 = 0;
-  v7 = [v11 serializeWithError:&v23];
+  v7 = [threadNetworkCredentials2 serializeWithError:&v23];
   v8 = v23;
 
   if (!v8)
   {
-    v12 = [v7 bytes];
-    v13 = v12 + [v7 length];
+    bytes = [v7 bytes];
+    v13 = bytes + [v7 length];
     while (1)
     {
-      v14 = (v13 - v12) >= 255 ? 255 : v13 - v12;
+      v14 = (v13 - bytes) >= 255 ? 255 : v13 - bytes;
       v15 = TLV8BufferAppend();
       if (v15)
       {
         break;
       }
 
-      v12 += v14;
-      if (v12 >= v13)
+      bytes += v14;
+      if (bytes >= v13)
       {
 
         goto LABEL_13;
@@ -270,11 +270,11 @@ LABEL_19:
 
 LABEL_15:
 
-  if (a3)
+  if (error)
   {
     v18 = v8;
     v19 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_24;
   }
 
@@ -288,11 +288,11 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -307,12 +307,12 @@ LABEL_18:
     goto LABEL_25;
   }
 
-  v25 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v32 = 0;
@@ -322,10 +322,10 @@ LABEL_18:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v25)
+      if (errorCopy)
       {
         HMErrorFromOSStatus(Next);
-        *v25 = v21 = 0;
+        *errorCopy = v21 = 0;
         goto LABEL_25;
       }
 
@@ -354,7 +354,7 @@ LABEL_13:
         break;
       case 2:
         v28 = v9;
-        v15 = HAPTLVParseContiguousTlvs(2, v7, v13, v30, &v28);
+        v15 = HAPTLVParseContiguousTlvs(2, bytes, v13, v30, &v28);
         v17 = v28;
 
         if (!v17)
@@ -379,7 +379,7 @@ LABEL_13:
         goto LABEL_12;
     }
 
-    v7 = v30[0];
+    bytes = v30[0];
     if (v30[0] >= v13)
     {
       if (!v9)
@@ -400,11 +400,11 @@ LABEL_13:
   }
 
 LABEL_22:
-  if (v25)
+  if (errorCopy)
   {
     v23 = v9;
     v21 = 0;
-    *v25 = v9;
+    *errorCopy = v9;
     goto LABEL_25;
   }
 
@@ -415,20 +415,20 @@ LABEL_25:
   return v21;
 }
 
-- (HAP2TLVThreadControl)initWithOperationType:(id)a3 threadNetworkCredentials:(id)a4 formingAllowed:(id)a5
+- (HAP2TLVThreadControl)initWithOperationType:(id)type threadNetworkCredentials:(id)credentials formingAllowed:(id)allowed
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  credentialsCopy = credentials;
+  allowedCopy = allowed;
   v15.receiver = self;
   v15.super_class = HAP2TLVThreadControl;
   v12 = [(HAP2TLVThreadControl *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_operationType, a3);
-    objc_storeStrong(&v13->_threadNetworkCredentials, a4);
-    objc_storeStrong(&v13->_formingAllowed, a5);
+    objc_storeStrong(&v12->_operationType, type);
+    objc_storeStrong(&v13->_threadNetworkCredentials, credentials);
+    objc_storeStrong(&v13->_formingAllowed, allowed);
   }
 
   return v13;
@@ -441,24 +441,24 @@ LABEL_25:
   return [(HAP2TLVThreadControl *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAP2TLVThreadControl);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAP2TLVThreadControl *)v6 parseFromData:v5 error:&v11];
+    [(HAP2TLVThreadControl *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

@@ -1,37 +1,37 @@
 @interface FHBatchProcessor
-+ (FHBatchProcessor)initWithBuilder:(id)a3;
++ (FHBatchProcessor)initWithBuilder:(id)builder;
 - (FHDatabaseManager)databaseManager;
 - (NSSet)merchantsWithSignificantCount;
-- (id)_init:(id)a3;
+- (id)_init:(id)_init;
 - (void)fetchAndProcessInBatchMode;
-- (void)processBatch:(id)a3;
+- (void)processBatch:(id)batch;
 @end
 
 @implementation FHBatchProcessor
 
-+ (FHBatchProcessor)initWithBuilder:(id)a3
++ (FHBatchProcessor)initWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_opt_new();
-  v3[2](v3, v4);
+  builderCopy[2](builderCopy, v4);
 
   v5 = [[FHBatchProcessor alloc] _init:v4];
 
   return v5;
 }
 
-- (id)_init:(id)a3
+- (id)_init:(id)_init
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  _initCopy = _init;
   v47.receiver = self;
   v47.super_class = FHBatchProcessor;
   v5 = [(FHBatchProcessor *)&v47 init];
   if (v5)
   {
     v6 = MEMORY[0x277CCA980];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 86400];
-    v8 = [v6 decimalNumberWithString:v7];
+    86400 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 86400];
+    v8 = [v6 decimalNumberWithString:86400];
     secondsInDay = v5->_secondsInDay;
     v5->_secondsInDay = v8;
 
@@ -48,9 +48,9 @@
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v42 = v4;
-    v15 = [v4 internalStates];
-    v16 = [v15 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    v42 = _initCopy;
+    internalStates = [_initCopy internalStates];
+    v16 = [internalStates countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v16)
     {
       v17 = v16;
@@ -61,14 +61,14 @@
         {
           if (*v44 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(internalStates);
           }
 
           v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF.%K == %lu", @"transactionInternalState", objc_msgSend(*(*(&v43 + 1) + 8 * i), "integerValue")];
           [v14 addObject:v20];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v17 = [internalStates countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v17);
@@ -86,25 +86,25 @@
     predicates = v5->_predicates;
     v5->_predicates = v28;
 
-    v4 = v42;
-    v30 = [v42 databaseManager];
-    objc_storeWeak(&v5->_databaseManager, v30);
+    _initCopy = v42;
+    databaseManager = [v42 databaseManager];
+    objc_storeWeak(&v5->_databaseManager, databaseManager);
 
-    v31 = [v42 startDate];
-    if (v31)
+    startDate = [v42 startDate];
+    if (startDate)
     {
-      v32 = v31;
-      v33 = [v42 endDate];
+      v32 = startDate;
+      endDate = [v42 endDate];
 
-      if (v33)
+      if (endDate)
       {
-        v34 = [v42 startDate];
+        startDate2 = [v42 startDate];
         startDate = v5->_startDate;
-        v5->_startDate = v34;
+        v5->_startDate = startDate2;
 
-        v36 = [v42 endDate];
+        endDate2 = [v42 endDate];
         endDate = v5->_endDate;
-        v5->_endDate = v36;
+        v5->_endDate = endDate2;
 
         v38 = objc_opt_new();
         resultArray = v5->_resultArray;
@@ -145,9 +145,9 @@
   v8 = FinHealthLogObject(@"FinHealthCore");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v33 stringValue];
+    stringValue = [v33 stringValue];
     *buf = 138412290;
-    v42 = v9;
+    v42 = stringValue;
     _os_log_impl(&dword_226DD4000, v8, OS_LOG_TYPE_DEBUG, "mostRecentDate %@", buf, 0xCu);
   }
 
@@ -173,8 +173,8 @@
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
-        v16 = [v15 featureRank];
-        v17 = [v11 decimalNumberBySubtracting:v16];
+        featureRank = [v15 featureRank];
+        v17 = [v11 decimalNumberBySubtracting:featureRank];
         v18 = [v17 decimalNumberByDividingBy:self->_secondsInDay];
 
         v19 = [(NSMutableArray *)self->_indexedAmountArray objectAtIndex:v13];
@@ -184,19 +184,19 @@
         [v18 doubleValue];
         if (v21 > 0.0 && v21 * exp(v22 * -0.074) >= 0.1)
         {
-          v23 = [v15 featureLabel];
-          v24 = [v3 objectForKey:v23];
+          featureLabel = [v15 featureLabel];
+          zero = [v3 objectForKey:featureLabel];
 
           v25 = v3;
-          if (!v24)
+          if (!zero)
           {
-            v24 = [MEMORY[0x277CCA980] zero];
+            zero = [MEMORY[0x277CCA980] zero];
           }
 
           v26 = [MEMORY[0x277CCA980] one];
-          v27 = [v24 decimalNumberByAdding:v26];
-          v28 = [v15 featureLabel];
-          [v25 setValue:v27 forKey:v28];
+          v27 = [zero decimalNumberByAdding:v26];
+          featureLabel2 = [v15 featureLabel];
+          [v25 setValue:v27 forKey:featureLabel2];
 
           v3 = v25;
           v11 = v33;
@@ -219,16 +219,16 @@
   return v29;
 }
 
-- (void)processBatch:(id)a3
+- (void)processBatch:(id)batch
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 filteredArrayUsingPredicate:self->_predicates];
+  batchCopy = batch;
+  v5 = [batchCopy filteredArrayUsingPredicate:self->_predicates];
   v6 = v5;
   if (self->_computeMerchantCounts)
   {
     v31 = v5;
-    v32 = v4;
+    v32 = batchCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -249,8 +249,8 @@
           }
 
           v11 = *(*(&v34 + 1) + 8 * i);
-          v12 = [v11 transactionDate];
-          [v12 timeIntervalSinceReferenceDate];
+          transactionDate = [v11 transactionDate];
+          [transactionDate timeIntervalSinceReferenceDate];
           v14 = v13;
 
           v15 = objc_autoreleasePoolPush();
@@ -259,13 +259,13 @@
           v18 = [v16 decimalNumberWithString:v17];
 
           v19 = [FHSmartCompoundFeatureRankedValue alloc];
-          v20 = [v11 displayName];
-          v21 = [(FHSmartCompoundFeatureRankedValue *)v19 initWithLabelAndRank:v20 featureRank:v18];
+          displayName = [v11 displayName];
+          v21 = [(FHSmartCompoundFeatureRankedValue *)v19 initWithLabelAndRank:displayName featureRank:v18];
 
           [(NSMutableArray *)self->_merchantWithTimeStampPairs addObject:v21];
           indexedAmountArray = self->_indexedAmountArray;
-          v23 = [v11 amount];
-          [(NSMutableArray *)indexedAmountArray addObject:v23];
+          amount = [v11 amount];
+          [(NSMutableArray *)indexedAmountArray addObject:amount];
 
           objc_autoreleasePoolPop(v15);
         }
@@ -277,7 +277,7 @@
     }
 
     v6 = v31;
-    v4 = v32;
+    batchCopy = v32;
   }
 
   startDate = self->_startDate;
@@ -287,8 +287,8 @@
     if (endDate)
     {
       resultArray = self->_resultArray;
-      v27 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(SELF.%K >= %@) AND (SELF.%K <= %@)", @"transactionDate", startDate, @"transactionDate", endDate];
-      v28 = [v6 filteredArrayUsingPredicate:v27];
+      endDate = [MEMORY[0x277CCAC30] predicateWithFormat:@"(SELF.%K >= %@) AND (SELF.%K <= %@)", @"transactionDate", startDate, @"transactionDate", endDate];
+      v28 = [v6 filteredArrayUsingPredicate:endDate];
       v29 = [v28 valueForKey:@"amountFromDatabase"];
       [(NSMutableArray *)resultArray addObjectsFromArray:v29];
     }

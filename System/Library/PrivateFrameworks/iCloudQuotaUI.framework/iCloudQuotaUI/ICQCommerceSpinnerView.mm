@@ -1,15 +1,15 @@
 @interface ICQCommerceSpinnerView
-- (ICQCommerceSpinnerView)initWithFrame:(CGRect)a3;
+- (ICQCommerceSpinnerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ICQCommerceSpinnerView
 
-- (ICQCommerceSpinnerView)initWithFrame:(CGRect)a3
+- (ICQCommerceSpinnerView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = ICQCommerceSpinnerView;
-  v3 = [(ICQCommerceSpinnerView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ICQCommerceSpinnerView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -27,14 +27,14 @@
     v10 = [v9 localizedStringForKey:@"COMLPETING_PURCHASE" value:&stru_28844FC60 table:@"Localizable"];
     [(UILabel *)v3->_completeingPurchaseLabel setText:v10];
 
-    v11 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v3->_completeingPurchaseLabel setTextColor:v11];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v3->_completeingPurchaseLabel setTextColor:grayColor];
 
     v12 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
     [(UILabel *)v3->_completeingPurchaseLabel setFont:v12];
 
-    v13 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_completeingPurchaseLabel setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_completeingPurchaseLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v3->_completeingPurchaseLabel sizeToFit];
     [(ICQCommerceSpinnerView *)v3 addSubview:v3->_completeingPurchaseLabel];

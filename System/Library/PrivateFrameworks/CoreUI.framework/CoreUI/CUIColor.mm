@@ -1,28 +1,28 @@
 @interface CUIColor
-+ (id)colorWithCGColor:(CGColor *)a3;
-- (CUIColor)initWithCGColor:(CGColor *)a3;
-- (id)colorUsingCGColorSpace:(CGColorSpace *)a3;
++ (id)colorWithCGColor:(CGColor *)color;
+- (CUIColor)initWithCGColor:(CGColor *)color;
+- (id)colorUsingCGColorSpace:(CGColorSpace *)space;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CUIColor
 
-+ (id)colorWithCGColor:(CGColor *)a3
++ (id)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[a1 alloc] initWithCGColor:a3];
+  v3 = [[self alloc] initWithCGColor:color];
 
   return v3;
 }
 
-- (CUIColor)initWithCGColor:(CGColor *)a3
+- (CUIColor)initWithCGColor:(CGColor *)color
 {
   v6.receiver = self;
   v6.super_class = CUIColor;
   v4 = [(CUIColor *)&v6 init];
   if (v4)
   {
-    v4->_cgColor = CGColorRetain(a3);
+    v4->_cgColor = CGColorRetain(color);
   }
 
   return v4;
@@ -56,9 +56,9 @@
   }
 }
 
-- (id)colorUsingCGColorSpace:(CGColorSpace *)a3
+- (id)colorUsingCGColorSpace:(CGColorSpace *)space
 {
-  v3 = MEMORY[0x193AC52E0](a3, 0);
+  v3 = MEMORY[0x193AC52E0](space, 0);
   if (v3)
   {
     v4 = CGColorTransformConvertColor();

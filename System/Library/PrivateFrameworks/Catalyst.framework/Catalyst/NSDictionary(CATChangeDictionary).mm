@@ -9,15 +9,15 @@
 
 - (id)cat_calculateAddedObjects
 {
-  v6 = [a1 valueForKey:*MEMORY[0x277CCA2E8]];
-  v7 = [v6 unsignedIntValue];
+  v6 = [self valueForKey:*MEMORY[0x277CCA2E8]];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  if (!v7)
+  if (!unsignedIntValue)
   {
     [(NSDictionary(CATChangeDictionary) *)a2 cat_calculateAddedObjects];
   }
 
-  v8 = [a1 valueForKey:*MEMORY[0x277CCA2F0]];
+  v8 = [self valueForKey:*MEMORY[0x277CCA2F0]];
   if (!v8 || ([MEMORY[0x277CBEB68] null], v2 = objc_claimAutoreleasedReturnValue(), v8 == v2))
   {
     v10 = [MEMORY[0x277CBEB98] set];
@@ -44,11 +44,11 @@
   }
 
 LABEL_12:
-  v11 = [a1 valueForKey:*MEMORY[0x277CCA300]];
+  v11 = [self valueForKey:*MEMORY[0x277CCA300]];
   if (v11)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
-    if (v11 != v3)
+    null = [MEMORY[0x277CBEB68] null];
+    if (v11 != null)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -72,21 +72,21 @@ LABEL_12:
 LABEL_20:
   }
 
-  if ((v7 - 2) >= 3)
+  if ((unsignedIntValue - 2) >= 3)
   {
-    if (v7 == 1)
+    if (unsignedIntValue == 1)
     {
-      v14 = [v10 mutableCopy];
-      [v14 minusSet:v13];
-      v15 = [v14 copy];
+      currentHandler = [v10 mutableCopy];
+      [currentHandler minusSet:v13];
+      v15 = [currentHandler copy];
 
       v10 = v15;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:a1 file:@"NSDictionary+ChangeDictionary.m" lineNumber:40 description:@"Unexpected change type from a KVO'd collection"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSDictionary+ChangeDictionary.m" lineNumber:40 description:@"Unexpected change type from a KVO'd collection"];
     }
   }
 
@@ -95,15 +95,15 @@ LABEL_20:
 
 - (id)cat_calculateRemovedObjects
 {
-  v6 = [a1 valueForKey:*MEMORY[0x277CCA2E8]];
-  v7 = [v6 unsignedIntValue];
+  v6 = [self valueForKey:*MEMORY[0x277CCA2E8]];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  if (!v7)
+  if (!unsignedIntValue)
   {
     [(NSDictionary(CATChangeDictionary) *)a2 cat_calculateRemovedObjects];
   }
 
-  v8 = [a1 valueForKey:*MEMORY[0x277CCA2F0]];
+  v8 = [self valueForKey:*MEMORY[0x277CCA2F0]];
   if (!v8 || ([MEMORY[0x277CBEB68] null], v2 = objc_claimAutoreleasedReturnValue(), v8 == v2))
   {
     v10 = [MEMORY[0x277CBEB98] set];
@@ -130,11 +130,11 @@ LABEL_20:
   }
 
 LABEL_12:
-  v11 = [a1 valueForKey:*MEMORY[0x277CCA300]];
+  v11 = [self valueForKey:*MEMORY[0x277CCA300]];
   if (v11)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
-    if (v11 != v3)
+    null = [MEMORY[0x277CBEB68] null];
+    if (v11 != null)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -158,21 +158,21 @@ LABEL_12:
 LABEL_20:
   }
 
-  if ((v7 - 2) >= 3)
+  if ((unsignedIntValue - 2) >= 3)
   {
-    if (v7 == 1)
+    if (unsignedIntValue == 1)
     {
-      v14 = [v13 mutableCopy];
-      [v14 minusSet:v10];
-      v15 = [v14 copy];
+      currentHandler = [v13 mutableCopy];
+      [currentHandler minusSet:v10];
+      v15 = [currentHandler copy];
 
       v13 = v15;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:a1 file:@"NSDictionary+ChangeDictionary.m" lineNumber:72 description:@"Unexpected change type from a KVO'd collection"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSDictionary+ChangeDictionary.m" lineNumber:72 description:@"Unexpected change type from a KVO'd collection"];
     }
   }
 
@@ -181,14 +181,14 @@ LABEL_20:
 
 - (void)cat_calculateAddedObjects
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"NSDictionary+ChangeDictionary.m" lineNumber:18 description:@"This is not a KVO change dictionary"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"NSDictionary+ChangeDictionary.m" lineNumber:18 description:@"This is not a KVO change dictionary"];
 }
 
 - (void)cat_calculateRemovedObjects
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"NSDictionary+ChangeDictionary.m" lineNumber:50 description:@"This is not a KVO change dictionary"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"NSDictionary+ChangeDictionary.m" lineNumber:50 description:@"This is not a KVO change dictionary"];
 }
 
 @end

@@ -11,8 +11,8 @@
   v4 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v2 nrDeviceUUID];
-    v6 = v5;
+    nrDeviceUUID = [v2 nrDeviceUUID];
+    v6 = nrDeviceUUID;
     v7 = @"does not support";
     if (v3)
     {
@@ -20,7 +20,7 @@
     }
 
     *buf = 138412546;
-    v17 = v5;
+    v17 = nrDeviceUUID;
     v18 = 2114;
     v19 = v7;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "CLKDevice: %@ %{public}@ multiple timers.", buf, 0x16u);

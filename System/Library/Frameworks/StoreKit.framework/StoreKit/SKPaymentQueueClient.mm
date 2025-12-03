@@ -2,11 +2,11 @@
 - (NSNumber)storeExternalVersion;
 - (NSNumber)storeItemIdentifier;
 - (SKPaymentQueueClientDelegate)delegate;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)plist;
-- (void)setDelegate:(id)a3;
-- (void)setStoreExternalVersion:(id)a3;
-- (void)setStoreItemIdentifier:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setStoreExternalVersion:(id)version;
+- (void)setStoreItemIdentifier:(id)identifier;
 @end
 
 @implementation SKPaymentQueueClient
@@ -18,10 +18,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SKPaymentQueueClient.delegate.setter();
 }
 
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)setStoreExternalVersion:(id)a3
+- (void)setStoreExternalVersion:(id)version
 {
-  v5 = a3;
-  v6 = self;
-  SKPaymentQueueClient.storeExternalVersion.setter(a3);
+  versionCopy = version;
+  selfCopy = self;
+  SKPaymentQueueClient.storeExternalVersion.setter(version);
 }
 
 - (NSNumber)storeItemIdentifier
@@ -46,16 +46,16 @@
   return v2;
 }
 
-- (void)setStoreItemIdentifier:(id)a3
+- (void)setStoreItemIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = self;
-  SKPaymentQueueClient.storeItemIdentifier.setter(a3);
+  identifierCopy = identifier;
+  selfCopy = self;
+  SKPaymentQueueClient.storeItemIdentifier.setter(identifier);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SKPaymentQueueClient.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -66,7 +66,7 @@
 
 - (id)plist
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B2495688();
 
   v3 = sub_1B256D86C();

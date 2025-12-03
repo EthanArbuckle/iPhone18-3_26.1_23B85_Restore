@@ -3,7 +3,7 @@
 + (BOOL)deviceIsGreenTea;
 + (WFDevice)currentDevice;
 + (id)systemShortcutsUserDefaults;
-- (BOOL)hasCapability:(id)a3;
+- (BOOL)hasCapability:(id)capability;
 - (BOOL)hasPairedAndSetUpWatch;
 - (BOOL)isChineseRegionDevice;
 - (CGRect)screenBounds;
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __25__WFDevice_currentDevice__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (currentDevice_onceToken != -1)
   {
     dispatch_once(&currentDevice_onceToken, block);
@@ -87,15 +87,15 @@
     dispatch_once(&idiom_onceTokenkMGQDeviceClassNumber, &__block_literal_global_324);
   }
 
-  v2 = [idiom_cachedAnswer integerValue];
-  if ((v2 - 1) > 0xA)
+  integerValue = [idiom_cachedAnswer integerValue];
+  if ((integerValue - 1) > 0xA)
   {
     return -1;
   }
 
   else
   {
-    return qword_1B1F36980[v2 - 1];
+    return qword_1B1F36980[integerValue - 1];
   }
 }
 
@@ -189,26 +189,26 @@ void __16__WFDevice_name__block_invoke()
   v11.receiver = self;
   v11.super_class = WFDevice;
   v4 = [(WFDevice *)&v11 description];
-  v5 = [(WFDevice *)self marketingName];
-  v6 = [(WFDevice *)self systemName];
-  v7 = [(WFDevice *)self systemVersion];
-  v8 = [(WFDevice *)self systemBuildNumber];
-  v9 = [v3 stringWithFormat:@"<%@: %@ (%@ %@ %@)>", v4, v5, v6, v7, v8];
+  marketingName = [(WFDevice *)self marketingName];
+  systemName = [(WFDevice *)self systemName];
+  systemVersion = [(WFDevice *)self systemVersion];
+  systemBuildNumber = [(WFDevice *)self systemBuildNumber];
+  v9 = [v3 stringWithFormat:@"<%@: %@ (%@ %@ %@)>", v4, marketingName, systemName, systemVersion, systemBuildNumber];
 
   return v9;
 }
 
 - (NSString)symbolName
 {
-  v3 = [(WFDevice *)self idiom];
-  if (v3 > 2)
+  idiom = [(WFDevice *)self idiom];
+  if (idiom > 2)
   {
-    if (v3 == 3)
+    if (idiom == 3)
     {
       return @"applewatch";
     }
 
-    if (v3 == 4)
+    if (idiom == 4)
     {
       return @"ipodtouch";
     }
@@ -216,13 +216,13 @@ void __16__WFDevice_name__block_invoke()
     goto LABEL_11;
   }
 
-  if (v3 == 1)
+  if (idiom == 1)
   {
-    v8 = [(WFDevice *)self hasCapability:@"HomeButton"];
+    hasSystemAperture = [(WFDevice *)self hasCapability:@"HomeButton"];
     v9 = @"ipad.gen2";
     v10 = @"ipad.gen1";
 LABEL_16:
-    if (v8)
+    if (hasSystemAperture)
     {
       return v10;
     }
@@ -233,7 +233,7 @@ LABEL_16:
     }
   }
 
-  if (v3 != 2)
+  if (idiom != 2)
   {
 LABEL_11:
     if ([(WFDevice *)self hasCapability:@"HomeButton"])
@@ -241,7 +241,7 @@ LABEL_11:
       return @"iphone.gen1";
     }
 
-    v8 = [(WFDevice *)self hasSystemAperture];
+    hasSystemAperture = [(WFDevice *)self hasSystemAperture];
     v9 = @"iphone.gen2";
     v10 = @"iphone.gen3";
     goto LABEL_16;
@@ -268,15 +268,15 @@ LABEL_11:
 
 - (NSString)localStorageDisplayName
 {
-  v2 = [(WFDevice *)self idiom];
-  if (v2 > 4)
+  idiom = [(WFDevice *)self idiom];
+  if (idiom > 4)
   {
     v3 = @"On My Device";
   }
 
   else
   {
-    v3 = off_1E7B02CF8[v2];
+    v3 = off_1E7B02CF8[idiom];
   }
 
   v4 = WFLocalizedString(v3);
@@ -304,9 +304,9 @@ LABEL_11:
 
   v3 = v2;
   _Block_object_dispose(&v9, 8);
-  v4 = [v2 sharedInstance];
-  v5 = [v4 getSetupCompletedDevices];
-  v6 = [v5 count] != 0;
+  sharedInstance = [v2 sharedInstance];
+  getSetupCompletedDevices = [sharedInstance getSetupCompletedDevices];
+  v6 = [getSetupCompletedDevices count] != 0;
 
   return v6;
 }
@@ -457,11 +457,11 @@ void __25__WFDevice_marketingName__block_invoke()
   return v3;
 }
 
-- (BOOL)hasCapability:(id)a3
+- (BOOL)hasCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(WFDevice *)self capabilities];
-  v6 = [v5 containsObject:v4];
+  capabilityCopy = capability;
+  capabilities = [(WFDevice *)self capabilities];
+  v6 = [capabilities containsObject:capabilityCopy];
 
   return v6;
 }
@@ -635,10 +635,10 @@ void __25__WFDevice_marketingName__block_invoke()
 
       v7 = v6;
       _Block_object_dispose(&v19, 8);
-      v8 = [v6 sharedConnection];
-      v9 = [v8 isPersonalHotspotModificationAllowed];
+      sharedConnection = [v6 sharedConnection];
+      isPersonalHotspotModificationAllowed = [sharedConnection isPersonalHotspotModificationAllowed];
 
-      if (v9)
+      if (isPersonalHotspotModificationAllowed)
       {
 LABEL_61:
         [v3 addObject:@"PersonalHotspot"];

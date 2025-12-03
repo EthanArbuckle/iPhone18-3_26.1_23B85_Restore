@@ -5,10 +5,10 @@
 + (NEFilterDataVerdict)needRulesVerdict;
 + (NEFilterDataVerdict)pauseVerdict;
 + (NEFilterDataVerdict)remediateVerdictWithRemediationURLMapKey:(NSString *)remediationURLMapKey remediationButtonTextMapKey:(NSString *)remediationButtonTextMapKey;
-- (NEFilterDataVerdict)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEFilterDataVerdict)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)filterAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterDataVerdict
@@ -34,39 +34,39 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NEFilterDataVerdict;
-  v4 = [(NEFilterVerdict *)&v6 copyWithZone:a3];
+  v4 = [(NEFilterVerdict *)&v6 copyWithZone:zone];
   [v4 setPassBytes:{-[NEFilterDataVerdict passBytes](self, "passBytes")}];
   [v4 setPeekBytes:{-[NEFilterDataVerdict peekBytes](self, "peekBytes")}];
   [v4 setStatisticsReportFrequency:{-[NEFilterDataVerdict statisticsReportFrequency](self, "statisticsReportFrequency")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NEFilterDataVerdict;
-  v4 = a3;
-  [(NEFilterVerdict *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:-[NEFilterDataVerdict passBytes](self forKey:{"passBytes", v5.receiver, v5.super_class), @"PassBytes"}];
-  [v4 encodeInt64:-[NEFilterDataVerdict peekBytes](self forKey:{"peekBytes"), @"PeekBytes"}];
-  [v4 encodeInt:-[NEFilterDataVerdict statisticsReportFrequency](self forKey:{"statisticsReportFrequency"), @"StatisticsReportFrequency"}];
+  coderCopy = coder;
+  [(NEFilterVerdict *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:-[NEFilterDataVerdict passBytes](self forKey:{"passBytes", v5.receiver, v5.super_class), @"PassBytes"}];
+  [coderCopy encodeInt64:-[NEFilterDataVerdict peekBytes](self forKey:{"peekBytes"), @"PeekBytes"}];
+  [coderCopy encodeInt:-[NEFilterDataVerdict statisticsReportFrequency](self forKey:{"statisticsReportFrequency"), @"StatisticsReportFrequency"}];
 }
 
-- (NEFilterDataVerdict)initWithCoder:(id)a3
+- (NEFilterDataVerdict)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = NEFilterDataVerdict;
-  v5 = [(NEFilterVerdict *)&v7 initWithCoder:v4];
+  v5 = [(NEFilterVerdict *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_passBytes = [v4 decodeInt64ForKey:@"PassBytes"];
-    v5->_peekBytes = [v4 decodeInt64ForKey:@"PeekBytes"];
-    v5->_statisticsReportFrequency = [v4 decodeIntForKey:@"StatisticsReportFrequency"];
+    v5->_passBytes = [coderCopy decodeInt64ForKey:@"PassBytes"];
+    v5->_peekBytes = [coderCopy decodeInt64ForKey:@"PeekBytes"];
+    v5->_statisticsReportFrequency = [coderCopy decodeIntForKey:@"StatisticsReportFrequency"];
   }
 
   return v5;

@@ -1,6 +1,6 @@
 @interface MSRColorConfigMemoryPool
-- (MSRColorConfigMemoryPool)initWithCapacity:(unsigned int)a3 Size:(unsigned int)a4;
-- (id)generateColorConfig:(id)a3 msrCU:(void *)a4;
+- (MSRColorConfigMemoryPool)initWithCapacity:(unsigned int)capacity Size:(unsigned int)size;
+- (id)generateColorConfig:(id)config msrCU:(void *)u;
 - (id)getAlloc;
 - (void)dealloc;
 - (void)dumpPoolState;
@@ -8,7 +8,7 @@
 
 @implementation MSRColorConfigMemoryPool
 
-- (MSRColorConfigMemoryPool)initWithCapacity:(unsigned int)a3 Size:(unsigned int)a4
+- (MSRColorConfigMemoryPool)initWithCapacity:(unsigned int)capacity Size:(unsigned int)size
 {
   v9.receiver = self;
   v9.super_class = MSRColorConfigMemoryPool;
@@ -17,8 +17,8 @@
   if (v6)
   {
     v6->_data = 0;
-    v6->_size = a4;
-    v6->_capacity = a3;
+    v6->_size = size;
+    v6->_capacity = capacity;
     *&v6->_allocated = 0;
     v6->_array = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v6->_capacity];
   }
@@ -183,21 +183,21 @@ LABEL_27:
   return v17;
 }
 
-- (id)generateColorConfig:(id)a3 msrCU:(void *)a4
+- (id)generateColorConfig:(id)config msrCU:(void *)u
 {
   if (GetConfig())
   {
     Config = GetConfig();
     if (*HDRConfig::GetConfigEntryValue(Config, 0x16u, 0))
     {
-      return a3;
+      return config;
     }
   }
 
   v9 = MEMORY[0x277CBEA90];
   size = self->_size;
 
-  return [v9 dataWithBytes:a4 length:size];
+  return [v9 dataWithBytes:u length:size];
 }
 
 @end

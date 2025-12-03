@@ -1,5 +1,5 @@
 @interface DOCTagsCollectionViewTagCell
-- (DOCTagsCollectionViewTagCell)initWithFrame:(CGRect)a3;
+- (DOCTagsCollectionViewTagCell)initWithFrame:(CGRect)frame;
 - (double)maxTagWidth;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
@@ -7,54 +7,54 @@
 
 @implementation DOCTagsCollectionViewTagCell
 
-- (DOCTagsCollectionViewTagCell)initWithFrame:(CGRect)a3
+- (DOCTagsCollectionViewTagCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v37[5] = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = DOCTagsCollectionViewTagCell;
   v7 = [(DOCTagsCollectionViewTagCell *)&v36 initWithFrame:?];
   if (v7)
   {
-    v8 = [[DOCTagsCollectionItemContentView alloc] initWithFrame:x, y, width, height];
+    height = [[DOCTagsCollectionItemContentView alloc] initWithFrame:x, y, width, height];
     tagView = v7->_tagView;
-    v7->_tagView = v8;
+    v7->_tagView = height;
 
     [(DOCTagsCollectionItemContentView *)v7->_tagView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(DOCTagsCollectionViewTagCell *)v7 contentView];
-    v11 = [(DOCTagsCollectionViewTagCell *)v7 contentView];
-    v12 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
-    [v11 addSubview:v12];
+    contentView = [(DOCTagsCollectionViewTagCell *)v7 contentView];
+    contentView2 = [(DOCTagsCollectionViewTagCell *)v7 contentView];
+    tagView = [(DOCTagsCollectionViewTagCell *)v7 tagView];
+    [contentView2 addSubview:tagView];
 
-    v27 = v10;
+    v27 = contentView;
     v28 = MEMORY[0x277CCAAD0];
-    v34 = [v10 leadingAnchor];
-    v35 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
-    v33 = [v35 leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    leadingAnchor = [contentView leadingAnchor];
+    tagView2 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
+    leadingAnchor2 = [tagView2 leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[0] = v32;
-    v31 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
-    v30 = [v31 widthAnchor];
+    tagView3 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
+    widthAnchor = [tagView3 widthAnchor];
     [(DOCTagsCollectionViewTagCell *)v7 maxTagWidth];
-    v29 = [v30 constraintLessThanOrEqualToConstant:?];
+    v29 = [widthAnchor constraintLessThanOrEqualToConstant:?];
     v37[1] = v29;
-    v25 = [v10 trailingAnchor];
-    v26 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
-    v24 = [v26 trailingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24];
+    trailingAnchor = [contentView trailingAnchor];
+    tagView4 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
+    trailingAnchor2 = [tagView4 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[2] = v23;
-    v13 = [v10 topAnchor];
-    v14 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
-    v15 = [v14 topAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    topAnchor = [contentView topAnchor];
+    tagView5 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
+    topAnchor2 = [tagView5 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[3] = v16;
-    v17 = [v10 bottomAnchor];
-    v18 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
-    v19 = [v18 bottomAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    bottomAnchor = [contentView bottomAnchor];
+    tagView6 = [(DOCTagsCollectionViewTagCell *)v7 tagView];
+    bottomAnchor2 = [tagView6 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[4] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:5];
     [v28 activateConstraints:v21];
@@ -65,8 +65,8 @@
 
 - (double)maxTagWidth
 {
-  v2 = [MEMORY[0x277D75520] defaultMetrics];
-  [v2 scaledValueForValue:125.0];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:125.0];
   v4 = v3;
 
   return v4;
@@ -74,18 +74,18 @@
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(DOCTagsCollectionViewTagCell *)self tagView];
-  v3 = [v2 viewForFirstBaselineLayout];
+  tagView = [(DOCTagsCollectionViewTagCell *)self tagView];
+  viewForFirstBaselineLayout = [tagView viewForFirstBaselineLayout];
 
-  return v3;
+  return viewForFirstBaselineLayout;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(DOCTagsCollectionViewTagCell *)self tagView];
-  v3 = [v2 viewForLastBaselineLayout];
+  tagView = [(DOCTagsCollectionViewTagCell *)self tagView];
+  viewForLastBaselineLayout = [tagView viewForLastBaselineLayout];
 
-  return v3;
+  return viewForLastBaselineLayout;
 }
 
 @end

@@ -1,83 +1,83 @@
 @interface ICCollaborationBeginResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (ICCollaborationBeginResponseParserDelegate)initWithResponse:(id)a3;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (ICCollaborationBeginResponseParserDelegate)initWithResponse:(id)response;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
 @end
 
 @implementation ICCollaborationBeginResponseParserDelegate
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 <= 1634354039)
+  parserCopy = parser;
+  if (code <= 1634354039)
   {
-    if (a4 == 1634353999)
+    if (code == 1634353999)
     {
-      v16 = v10;
-      [(ICCollaborationBeginResponse *)self->_response setCollaborationMode:bswap32(*a5)];
+      v16 = parserCopy;
+      [(ICCollaborationBeginResponse *)self->_response setCollaborationMode:bswap32(*bytes)];
       goto LABEL_21;
     }
 
-    if (a4 == 1634354021)
+    if (code == 1634354021)
     {
-      v16 = v10;
-      [(ICCollaborationBeginResponse *)self->_response setIsCollaborative:*a5 != 0];
+      v16 = parserCopy;
+      [(ICCollaborationBeginResponse *)self->_response setIsCollaborative:*bytes != 0];
       goto LABEL_21;
     }
 
-    if (a4 != 1634354025)
+    if (code != 1634354025)
     {
       goto LABEL_22;
     }
 
     response = self->_response;
-    v16 = v10;
-    v12 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v16 = parserCopy;
+    v12 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     [(ICCollaborationBeginResponse *)response setCollaborationInviteURL:v12];
     goto LABEL_10;
   }
 
-  if (a4 <= 1835624803)
+  if (code <= 1835624803)
   {
-    if (a4 == 1634354040)
+    if (code == 1634354040)
     {
-      v16 = v10;
-      [(ICCollaborationBeginResponse *)self->_response setCollaborationInviteURLExpirationDate:bswap32(*a5)];
+      v16 = parserCopy;
+      [(ICCollaborationBeginResponse *)self->_response setCollaborationInviteURLExpirationDate:bswap32(*bytes)];
       goto LABEL_21;
     }
 
-    if (a4 != 1634357319)
+    if (code != 1634357319)
     {
       goto LABEL_22;
     }
 
     v11 = self->_response;
-    v16 = v10;
-    v12 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v16 = parserCopy;
+    v12 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     [(ICCollaborationBeginResponse *)v11 setCollaborationGlobalID:v12];
 LABEL_10:
 
     goto LABEL_21;
   }
 
-  if (a4 == 1836413042)
+  if (code == 1836413042)
   {
-    v16 = v10;
-    [(ICCollaborationBeginResponse *)self->_response setUpdateRequired:*a5 != 0];
+    v16 = parserCopy;
+    [(ICCollaborationBeginResponse *)self->_response setUpdateRequired:*bytes != 0];
   }
 
   else
   {
-    if (a4 != 1835624804)
+    if (code != 1835624804)
     {
       goto LABEL_22;
     }
 
-    v14 = bswap32(*a5);
+    v14 = bswap32(*bytes);
     currentContainerDAAPCode = self->_currentContainerDAAPCode;
     if (currentContainerDAAPCode == 1836409964)
     {
-      v16 = v10;
+      v16 = parserCopy;
       [(ICCollaborationBeginResponse *)self->_response setPlaylistCloudLibraryIDToDelete:v14];
     }
 
@@ -88,22 +88,22 @@ LABEL_10:
         goto LABEL_22;
       }
 
-      v16 = v10;
+      v16 = parserCopy;
       [(ICCollaborationBeginResponse *)self->_response setCollaborationCloudLibraryID:v14];
     }
   }
 
 LABEL_21:
-  v10 = v16;
+  parserCopy = v16;
 LABEL_22:
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 <= 1634357318)
+  if (code <= 1634357318)
   {
-    if (a4 - 1634353999 <= 0x29 && ((1 << (a4 - 79)) & 0x20004400009) != 0)
+    if (code - 1634353999 <= 0x29 && ((1 << (code - 79)) & 0x20004400009) != 0)
     {
       return result;
     }
@@ -111,9 +111,9 @@ LABEL_22:
     return 0;
   }
 
-  if (a4 > 1835821427)
+  if (code > 1835821427)
   {
-    if (a4 == 1835821428)
+    if (code == 1835821428)
     {
       return result;
     }
@@ -123,7 +123,7 @@ LABEL_22:
 
   else
   {
-    if (a4 == 1634357319)
+    if (code == 1634357319)
     {
       return result;
     }
@@ -131,7 +131,7 @@ LABEL_22:
     v5 = 1835624804;
   }
 
-  if (a4 != v5)
+  if (code != v5)
   {
     return 0;
   }
@@ -139,14 +139,14 @@ LABEL_22:
   return result;
 }
 
-- (ICCollaborationBeginResponseParserDelegate)initWithResponse:(id)a3
+- (ICCollaborationBeginResponseParserDelegate)initWithResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v6 = [(ICCollaborationBeginResponseParserDelegate *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_response, a3);
+    objc_storeStrong(&v6->_response, response);
   }
 
   return v7;

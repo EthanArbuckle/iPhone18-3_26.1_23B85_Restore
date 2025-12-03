@@ -3,11 +3,11 @@
 - (BOOL)decomposeUARP;
 - (BOOL)expandMTICPayloads;
 - (BOOL)findMatchingTMAP;
-- (BOOL)getAppleModelNumber:(id)a3 inPayload:(id)a4;
-- (BOOL)getEventID:(unsigned int *)a3 inPayload:(id)a4;
+- (BOOL)getAppleModelNumber:(id)number inPayload:(id)payload;
+- (BOOL)getEventID:(unsigned int *)d inPayload:(id)payload;
 - (BOOL)prepareAndSend;
 - (UARPDynamicAssetMappedAnalyticsEvent)init;
-- (UARPDynamicAssetMappedAnalyticsEvent)initWithURL:(id)a3 serialNumber:(id)a4;
+- (UARPDynamicAssetMappedAnalyticsEvent)initWithURL:(id)l serialNumber:(id)number;
 - (id)description;
 - (void)decomposeUARP;
 - (void)findMatchingTMAP;
@@ -23,17 +23,17 @@
   return 0;
 }
 
-- (UARPDynamicAssetMappedAnalyticsEvent)initWithURL:(id)a3 serialNumber:(id)a4
+- (UARPDynamicAssetMappedAnalyticsEvent)initWithURL:(id)l serialNumber:(id)number
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  numberCopy = number;
   v20.receiver = self;
   v20.super_class = UARPDynamicAssetMappedAnalyticsEvent;
   v9 = [(UARPDynamicAssetMappedAnalyticsEvent *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
+    objc_storeStrong(&v9->_url, l);
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
     coreAnalyticsEvents = v10->_coreAnalyticsEvents;
     v10->_coreAnalyticsEvents = v11;
@@ -46,7 +46,7 @@
     log = v10->_log;
     v10->_log = v15;
 
-    v17 = [v8 copy];
+    v17 = [numberCopy copy];
     serialNumber = v10->_serialNumber;
     v10->_serialNumber = v17;
   }
@@ -189,7 +189,7 @@
           }
 
           v9 = *(*(&v23 + 1) + 8 * i);
-          v10 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v22 = 0;
           if (![(UARPDynamicAssetMappedAnalyticsEvent *)self getEventID:&v22 inPayload:v9])
           {
@@ -197,7 +197,7 @@
           }
 
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v22];
-          [v10 setObject:v11 forKeyedSubscript:@"EventID"];
+          [dictionary setObject:v11 forKeyedSubscript:@"EventID"];
 
           v12 = objc_alloc_init(MEMORY[0x277CCAB68]);
           if (![(UARPDynamicAssetMappedAnalyticsEvent *)self getAppleModelNumber:v12 inPayload:v9])
@@ -206,7 +206,7 @@
           }
 
           v13 = [v12 copy];
-          [v10 setObject:v13 forKeyedSubscript:@"AppleModelNumber"];
+          [dictionary setObject:v13 forKeyedSubscript:@"AppleModelNumber"];
 
           [v9 rangePayload];
           v15 = [(UARPSuperBinaryAsset *)self->_asset payloadData:v9 range:0 error:v14, 0];
@@ -226,8 +226,8 @@ LABEL_18:
           }
 
           v16 = v15;
-          [v10 setObject:v15 forKeyedSubscript:@"Events"];
-          [(NSMutableArray *)self->_payloads addObject:v10];
+          [dictionary setObject:v15 forKeyedSubscript:@"Events"];
+          [(NSMutableArray *)self->_payloads addObject:dictionary];
         }
 
         v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -363,9 +363,9 @@ LABEL_14:
           v10 = [v9 copy];
 
           v11 = [v6 objectForKeyedSubscript:@"EventID"];
-          v12 = [v11 unsignedIntValue];
+          unsignedIntValue = [v11 unsignedIntValue];
 
-          v13 = [(UARPDynamicAssetTmapDatabase *)self->_tmapDatabase expandMticData:v8 withEventID:v12 appleModelNumber:v10 serialNumber:self->_serialNumber];
+          v13 = [(UARPDynamicAssetTmapDatabase *)self->_tmapDatabase expandMticData:v8 withEventID:unsignedIntValue appleModelNumber:v10 serialNumber:self->_serialNumber];
           if (!v13)
           {
             if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -444,19 +444,19 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)getEventID:(unsigned int *)a3 inPayload:(id)a4
+- (BOOL)getEventID:(unsigned int *)d inPayload:(id)payload
 {
-  v6 = [a4 tlvs];
-  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:538280449 tlvs:v6];
+  tlvs = [payload tlvs];
+  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:538280449 tlvs:tlvs];
 
   if (v7)
   {
-    v8 = [v7 valueAsNumber];
-    v9 = v8;
-    v10 = v8 != 0;
-    if (v8)
+    valueAsNumber = [v7 valueAsNumber];
+    v9 = valueAsNumber;
+    v10 = valueAsNumber != 0;
+    if (valueAsNumber)
     {
-      *a3 = [v8 unsignedIntValue];
+      *d = [valueAsNumber unsignedIntValue];
     }
 
     else if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
@@ -478,19 +478,19 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)getAppleModelNumber:(id)a3 inPayload:(id)a4
+- (BOOL)getAppleModelNumber:(id)number inPayload:(id)payload
 {
-  v5 = a3;
-  v6 = [a4 tlvs];
-  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:538280448 tlvs:v6];
+  numberCopy = number;
+  tlvs = [payload tlvs];
+  v7 = [UARPSuperBinaryAssetTLV findTLVWithType:538280448 tlvs:tlvs];
 
   if (v7)
   {
-    v8 = [v7 valueAsString];
-    v9 = v8 != 0;
-    if (v8)
+    valueAsString = [v7 valueAsString];
+    v9 = valueAsString != 0;
+    if (valueAsString)
     {
-      [v5 setString:v8];
+      [numberCopy setString:valueAsString];
     }
 
     else
@@ -529,7 +529,7 @@ LABEL_9:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_247AA7000, a2, OS_LOG_TYPE_ERROR, "MTIC has no Payload Data: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -538,7 +538,7 @@ LABEL_9:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_247AA7000, a2, OS_LOG_TYPE_ERROR, "Unable to find Matching TMAP for Apple Model Number: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

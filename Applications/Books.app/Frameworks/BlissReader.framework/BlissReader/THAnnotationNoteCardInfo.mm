@@ -1,10 +1,10 @@
 @interface THAnnotationNoteCardInfo
-- (BOOL)shouldShowWithStudyOptions:(id)a3;
+- (BOOL)shouldShowWithStudyOptions:(id)options;
 - (THAnnotationNoteCardInfo)init;
-- (int64_t)compareToNoteCard:(id)a3;
+- (int64_t)compareToNoteCard:(id)card;
 - (void)dealloc;
-- (void)populateNoteCardBack:(id)a3;
-- (void)populateNoteCardFront:(id)a3;
+- (void)populateNoteCardBack:(id)back;
+- (void)populateNoteCardFront:(id)front;
 @end
 
 @implementation THAnnotationNoteCardInfo
@@ -30,7 +30,7 @@
   [(THAnnotationNoteCardInfo *)&v3 dealloc];
 }
 
-- (int64_t)compareToNoteCard:(id)a3
+- (int64_t)compareToNoteCard:(id)card
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -39,20 +39,20 @@
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THAnnotationNoteCardInfo *)self pageIndex];
-  if (v5 == [v4 pageIndex])
+  pageIndex = [(THAnnotationNoteCardInfo *)self pageIndex];
+  if (pageIndex == [v4 pageIndex])
   {
-    v6 = [(THAnnotationNoteCardInfo *)self bodyPosition];
-    v7 = [v4 bodyPosition];
+    bodyPosition = [(THAnnotationNoteCardInfo *)self bodyPosition];
+    bodyPosition2 = [v4 bodyPosition];
   }
 
   else
   {
-    v6 = [(THAnnotationNoteCardInfo *)self pageIndex];
-    v7 = [v4 pageIndex];
+    bodyPosition = [(THAnnotationNoteCardInfo *)self pageIndex];
+    bodyPosition2 = [v4 pageIndex];
   }
 
-  if (v6 > v7)
+  if (bodyPosition > bodyPosition2)
   {
     return -1;
   }
@@ -63,20 +63,20 @@
   }
 }
 
-- (BOOL)shouldShowWithStudyOptions:(id)a3
+- (BOOL)shouldShowWithStudyOptions:(id)options
 {
-  v5 = [a3 showAnnotations];
-  if (v5)
+  showAnnotations = [options showAnnotations];
+  if (showAnnotations)
   {
-    v6 = [(THAnnotation *)self->annotation annotationStyle];
+    annotationStyle = [(THAnnotation *)self->annotation annotationStyle];
 
-    LOBYTE(v5) = [a3 shouldShowAnnotationStyle:v6];
+    LOBYTE(showAnnotations) = [options shouldShowAnnotationStyle:annotationStyle];
   }
 
-  return v5;
+  return showAnnotations;
 }
 
-- (void)populateNoteCardFront:(id)a3
+- (void)populateNoteCardFront:(id)front
 {
   v5 = [AEAnnotationTheme themeForAnnotationStyle:[(THAnnotation *)self->annotation annotationStyle] pageTheme:4 isUnderline:[(THAnnotation *)self->annotation annotationIsUnderline]];
   if ([v5 isUnderline] && (v6 = objc_msgSend(v5, "highlightColor")) != 0)
@@ -91,24 +91,24 @@
 
   v8 = objc_alloc_init(THNoteCardStorageLayer);
   storage = self->storage;
-  v10 = [(THAnnotation *)self->annotation annotationStorageRange];
-  [(THNoteCardStorageLayer *)v8 setStorage:storage range:v10, v11];
+  annotationStorageRange = [(THAnnotation *)self->annotation annotationStorageRange];
+  [(THNoteCardStorageLayer *)v8 setStorage:storage range:annotationStorageRange, v11];
   -[THNoteCardStorageLayer setFontFamily:textColor:underlineColor:characterSpacing:lineSpacingMode:lineSpacingAmount:alignment:](v8, "setFontFamily:textColor:underlineColor:characterSpacing:lineSpacingMode:lineSpacingAmount:alignment:", [+[TSUFont systemFontOfSize:](TSUFont systemFontOfSize:{12.0), "familyName"}], THNoteCardFrontTextColor(-[THAnnotationNoteCardInfo darkMode](self, "darkMode")), v7, 0, 4, 0.0, 1.0);
-  [a3 setBodyLayer:v8];
-  [a3 setShowFlipGlyph:{-[THAnnotationNoteCardInfo hasBackContent](self, "hasBackContent")}];
+  [front setBodyLayer:v8];
+  [front setShowFlipGlyph:{-[THAnnotationNoteCardInfo hasBackContent](self, "hasBackContent")}];
 
-  [a3 setTitle:self->title];
+  [front setTitle:self->title];
   if (self->pageNumberString)
   {
-    [a3 setPageNumber:?];
+    [front setPageNumber:?];
   }
 
   v12 = [objc_msgSend(v5 "notesSidebarBarColor")];
 
-  [a3 setColorBarColor:v12];
+  [front setColorBarColor:v12];
 }
 
-- (void)populateNoteCardBack:(id)a3
+- (void)populateNoteCardBack:(id)back
 {
   if (![(THAnnotation *)self->annotation annotationNote])
   {
@@ -118,14 +118,14 @@
   v5 = objc_alloc_init(THNoteCardStorageLayer);
   [(THNoteCardStorageLayer *)v5 setText:[(THAnnotation *)self->annotation annotationNote] context:[(THWPStorage *)self->storage context]];
   -[THNoteCardStorageLayer setFontFamily:textColor:underlineColor:characterSpacing:lineSpacingMode:lineSpacingAmount:alignment:](v5, "setFontFamily:textColor:underlineColor:characterSpacing:lineSpacingMode:lineSpacingAmount:alignment:", [+[TSUFont systemFontOfSize:](TSUFont systemFontOfSize:{12.0), "familyName"}], THNoteCardBackTextColor(-[THAnnotationNoteCardInfo darkMode](self, "darkMode")), 0, 0, 4, -0.01, 1.0);
-  [a3 setBodyLayer:v5];
-  [a3 setShowFlipGlyph:{-[THAnnotationNoteCardInfo hasBackContent](self, "hasBackContent")}];
+  [back setBodyLayer:v5];
+  [back setShowFlipGlyph:{-[THAnnotationNoteCardInfo hasBackContent](self, "hasBackContent")}];
 
-  [a3 setTitle:self->title];
+  [back setTitle:self->title];
   if (self->pageNumberString)
   {
 
-    [a3 setPageNumber:?];
+    [back setPageNumber:?];
   }
 }
 

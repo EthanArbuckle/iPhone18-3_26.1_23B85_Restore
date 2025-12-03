@@ -1,9 +1,9 @@
 @interface ASDTNullStream
-- (BOOL)changePhysicalFormat:(id)a3;
+- (BOOL)changePhysicalFormat:(id)format;
 - (id)updateClientPositionBlock;
 - (unsigned)ioBufferSize;
 - (void)configureStreamBuffer;
-- (void)setPhysicalFormat:(id)a3;
+- (void)setPhysicalFormat:(id)format;
 - (void)startStream;
 - (void)stopStream;
 @end
@@ -12,8 +12,8 @@
 
 - (unsigned)ioBufferSize
 {
-  v2 = [(ASDTNullStream *)self streamBuffer];
-  v3 = [v2 length];
+  streamBuffer = [(ASDTNullStream *)self streamBuffer];
+  v3 = [streamBuffer length];
 
   return v3;
 }
@@ -33,49 +33,49 @@
 - (void)configureStreamBuffer
 {
   [(ASDTNullStream *)self setStreamBuffer:0];
-  v10 = [(ASDStream *)self physicalFormat];
-  [v10 sampleRate];
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  [physicalFormat sampleRate];
   if (v3 != 0.0)
   {
-    v4 = [(ASDStream *)self physicalFormat];
-    v5 = [v4 bytesPerFrame];
+    physicalFormat2 = [(ASDStream *)self physicalFormat];
+    bytesPerFrame = [physicalFormat2 bytesPerFrame];
 
-    if (!v5)
+    if (!bytesPerFrame)
     {
       return;
     }
 
-    v11 = [(ASDStream *)self physicalFormat];
-    [v11 sampleRate];
+    physicalFormat3 = [(ASDStream *)self physicalFormat];
+    [physicalFormat3 sampleRate];
     v7 = v6;
-    v8 = [(ASDStream *)self physicalFormat];
-    v9 = [v8 bytesPerFrame] * (v7 * 300.0 / 1000.0);
+    physicalFormat4 = [(ASDStream *)self physicalFormat];
+    v9 = [physicalFormat4 bytesPerFrame] * (v7 * 300.0 / 1000.0);
 
     v12 = [MEMORY[0x277CBEB28] dataWithLength:v9];
     [(ASDTNullStream *)self setStreamBuffer:?];
 
-    v10 = [(ASDTNullStream *)self streamBuffer];
-    -[ASDTStream setIoBufferPtr:](self, "setIoBufferPtr:", [v10 mutableBytes]);
+    physicalFormat = [(ASDTNullStream *)self streamBuffer];
+    -[ASDTStream setIoBufferPtr:](self, "setIoBufferPtr:", [physicalFormat mutableBytes]);
   }
 }
 
-- (BOOL)changePhysicalFormat:(id)a3
+- (BOOL)changePhysicalFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(ASDStream *)self physicalFormat];
-  v6 = [v5 isEqual:v4];
+  formatCopy = format;
+  physicalFormat = [(ASDStream *)self physicalFormat];
+  v6 = [physicalFormat isEqual:formatCopy];
 
   if ((v6 & 1) == 0)
   {
     objc_initWeak(&location, self);
-    v7 = [(ASDTStream *)self device];
+    device = [(ASDTStream *)self device];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __39__ASDTNullStream_changePhysicalFormat___block_invoke;
     v9[3] = &unk_278CE64A8;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
-    [v7 requestConfigurationChange:v9];
+    v10 = formatCopy;
+    [device requestConfigurationChange:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -107,12 +107,12 @@ void __39__ASDTNullStream_changePhysicalFormat___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPhysicalFormat:(id)a3
+- (void)setPhysicalFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5.receiver = self;
   v5.super_class = ASDTNullStream;
-  [(ASDTStream *)&v5 setPhysicalFormat:v4];
+  [(ASDTStream *)&v5 setPhysicalFormat:formatCopy];
   [(ASDTNullStream *)self configureStreamBuffer];
 }
 

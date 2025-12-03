@@ -1,15 +1,15 @@
 @interface StoreKitPaymentDelegate
-- (void)handleEngagementRequest:(id)a3 replyBlock:(id)a4;
-- (void)handlePaymentSheetRequest:(id)a3 replyBlock:(id)a4;
-- (void)shouldContinueTransactionWithNewStorefront:(id)a3 replyBlock:(id)a4;
+- (void)handleEngagementRequest:(id)request replyBlock:(id)block;
+- (void)handlePaymentSheetRequest:(id)request replyBlock:(id)block;
+- (void)shouldContinueTransactionWithNewStorefront:(id)storefront replyBlock:(id)block;
 @end
 
 @implementation StoreKitPaymentDelegate
 
-- (void)handlePaymentSheetRequest:(id)a3 replyBlock:(id)a4
+- (void)handlePaymentSheetRequest:(id)request replyBlock:(id)block
 {
-  v5 = _Block_copy(a4);
-  v6 = a3;
+  v5 = _Block_copy(block);
+  requestCopy = request;
 
   v7 = sub_1B256D22C();
   v9 = v8;
@@ -21,9 +21,9 @@
   sub_1B2443AE4(v7, v9);
 }
 
-- (void)shouldContinueTransactionWithNewStorefront:(id)a3 replyBlock:(id)a4
+- (void)shouldContinueTransactionWithNewStorefront:(id)storefront replyBlock:(id)block
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(block);
   v5 = sub_1B256D9BC();
   v7 = v6;
   v8 = swift_allocObject();
@@ -32,10 +32,10 @@
   sub_1B253D4F0(v5, v7, sub_1B253E904, v8);
 }
 
-- (void)handleEngagementRequest:(id)a3 replyBlock:(id)a4
+- (void)handleEngagementRequest:(id)request replyBlock:(id)block
 {
-  v5 = _Block_copy(a4);
-  v6 = a3;
+  v5 = _Block_copy(block);
+  requestCopy = request;
 
   v7 = sub_1B256D22C();
   v9 = v8;

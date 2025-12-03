@@ -1,19 +1,19 @@
 @interface WK_RTCLocalVideoH264H265VP9Decoder
-- (id)initH264DecoderWithCallback:(id)a3;
-- (id)initH265DecoderWithCallback:(id)a3;
-- (id)initVP9DecoderWithCallback:(id)a3;
-- (int64_t)decodeData:(const char *)a3 size:(unint64_t)a4 timeStamp:(int64_t)a5;
+- (id)initH264DecoderWithCallback:(id)callback;
+- (id)initH265DecoderWithCallback:(id)callback;
+- (id)initVP9DecoderWithCallback:(id)callback;
+- (int64_t)decodeData:(const char *)data size:(unint64_t)size timeStamp:(int64_t)stamp;
 - (int64_t)releaseDecoder;
-- (int64_t)setFormat:(const char *)a3 size:(unint64_t)a4 width:(unsigned __int16)a5 height:(unsigned __int16)a6;
+- (int64_t)setFormat:(const char *)format size:(unint64_t)size width:(unsigned __int16)width height:(unsigned __int16)height;
 - (void)flush;
-- (void)setWidth:(unsigned __int16)a3 height:(unsigned __int16)a4;
+- (void)setWidth:(unsigned __int16)width height:(unsigned __int16)height;
 @end
 
 @implementation WK_RTCLocalVideoH264H265VP9Decoder
 
-- (id)initH264DecoderWithCallback:(id)a3
+- (id)initH264DecoderWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v12.receiver = self;
   v12.super_class = WK_RTCLocalVideoH264H265VP9Decoder;
   v5 = [(WK_RTCLocalVideoH264H265VP9Decoder *)&v12 init];
@@ -28,16 +28,16 @@
     v10[1] = 3221225472;
     v10[2] = __66__WK_RTCLocalVideoH264H265VP9Decoder_initH264DecoderWithCallback___block_invoke;
     v10[3] = &unk_279E95CA0;
-    v11 = v4;
+    v11 = callbackCopy;
     [(WK_RTCVideoDecoderH264 *)v8 setCallback:v10];
   }
 
   return v5;
 }
 
-- (id)initH265DecoderWithCallback:(id)a3
+- (id)initH265DecoderWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v12.receiver = self;
   v12.super_class = WK_RTCLocalVideoH264H265VP9Decoder;
   v5 = [(WK_RTCLocalVideoH264H265VP9Decoder *)&v12 init];
@@ -52,16 +52,16 @@
     v10[1] = 3221225472;
     v10[2] = __66__WK_RTCLocalVideoH264H265VP9Decoder_initH265DecoderWithCallback___block_invoke;
     v10[3] = &unk_279E95CA0;
-    v11 = v4;
+    v11 = callbackCopy;
     [(WK_RTCVideoDecoderH265 *)v8 setCallback:v10];
   }
 
   return v5;
 }
 
-- (id)initVP9DecoderWithCallback:(id)a3
+- (id)initVP9DecoderWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v12.receiver = self;
   v12.super_class = WK_RTCLocalVideoH264H265VP9Decoder;
   v5 = [(WK_RTCLocalVideoH264H265VP9Decoder *)&v12 init];
@@ -76,58 +76,58 @@
     v10[1] = 3221225472;
     v10[2] = __65__WK_RTCLocalVideoH264H265VP9Decoder_initVP9DecoderWithCallback___block_invoke;
     v10[3] = &unk_279E95CA0;
-    v11 = v4;
+    v11 = callbackCopy;
     [(WK_RTCVideoDecoderVTBVP9 *)v8 setCallback:v10];
   }
 
   return v5;
 }
 
-- (int64_t)setFormat:(const char *)a3 size:(unint64_t)a4 width:(unsigned __int16)a5 height:(unsigned __int16)a6
+- (int64_t)setFormat:(const char *)format size:(unint64_t)size width:(unsigned __int16)width height:(unsigned __int16)height
 {
   if (self->m_h264Decoder)
   {
-    return [(WK_RTCVideoDecoderH264 *)self->m_h264Decoder setAVCFormat:a3 size:a4 width:a5 height:a6];
+    return [(WK_RTCVideoDecoderH264 *)self->m_h264Decoder setAVCFormat:format size:size width:width height:height];
   }
 
   result = self->m_h265Decoder;
   if (result)
   {
-    return [result setHVCCFormat:a3 size:a4 width:a5 height:a6];
+    return [result setHVCCFormat:format size:size width:width height:height];
   }
 
   return result;
 }
 
-- (int64_t)decodeData:(const char *)a3 size:(unint64_t)a4 timeStamp:(int64_t)a5
+- (int64_t)decodeData:(const char *)data size:(unint64_t)size timeStamp:(int64_t)stamp
 {
   result = self->m_h264Decoder;
   if (result)
   {
-    return [result decodeData:a3 size:a4 timeStamp:a5];
+    return [result decodeData:data size:size timeStamp:stamp];
   }
 
   result = self->m_h265Decoder;
   if (result)
   {
-    return [result decodeData:a3 size:a4 timeStamp:a5];
+    return [result decodeData:data size:size timeStamp:stamp];
   }
 
   result = self->m_vp9Decoder;
   if (result)
   {
-    return [result decodeData:a3 size:a4 timeStamp:a5];
+    return [result decodeData:data size:size timeStamp:stamp];
   }
 
   return result;
 }
 
-- (void)setWidth:(unsigned __int16)a3 height:(unsigned __int16)a4
+- (void)setWidth:(unsigned __int16)width height:(unsigned __int16)height
 {
   m_vp9Decoder = self->m_vp9Decoder;
   if (m_vp9Decoder)
   {
-    [(WK_RTCVideoDecoderVTBVP9 *)m_vp9Decoder setWidth:a3 height:a4];
+    [(WK_RTCVideoDecoderVTBVP9 *)m_vp9Decoder setWidth:width height:height];
   }
 }
 

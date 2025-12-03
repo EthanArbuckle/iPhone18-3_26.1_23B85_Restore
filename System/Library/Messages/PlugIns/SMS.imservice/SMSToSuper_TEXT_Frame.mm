@@ -1,15 +1,15 @@
 @interface SMSToSuper_TEXT_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters;
 @end
 
 @implementation SMSToSuper_TEXT_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v12 = IMCopyNormalizedAttributes();
-  v13 = [objc_msgSend(a4 "orderedParts")];
+  v13 = [objc_msgSend(context "orderedParts")];
   if (!v13)
   {
     if (IMOSLoggingEnabled())
@@ -23,7 +23,7 @@
     }
 
     v13 = objc_alloc_init(IMDSMSPart);
-    [a4 _addPart:v13];
+    [context _addPart:v13];
   }
 
   [v12 objectForKey:@"src"];
@@ -36,7 +36,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = v12;
+      nameCopy = v12;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, "Found text part with attributes: %@", &v23, 0xCu);
     }
   }
@@ -47,7 +47,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = a5;
+      nameCopy = element;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_INFO, "    element name: %@", &v23, 0xCu);
     }
   }
@@ -58,7 +58,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = a6;
+      nameCopy = i;
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "    namespaceURI: %@", &v23, 0xCu);
     }
   }
@@ -69,7 +69,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = a7;
+      nameCopy = name;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "   qualifiedName: %@", &v23, 0xCu);
     }
   }
@@ -80,7 +80,7 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = v13;
+      nameCopy = v13;
       _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "      latestPart: %@", &v23, 0xCu);
     }
   }
@@ -91,15 +91,15 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = v16;
+      nameCopy = v16;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_INFO, "        textPart: %@", &v23, 0xCu);
     }
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters
 {
-  v9 = [objc_msgSend(objc_msgSend(objc_msgSend(a4 "orderedParts")];
+  v9 = [objc_msgSend(objc_msgSend(objc_msgSend(context "orderedParts")];
   v10 = IMOSLoggingEnabled();
   if (v9)
   {
@@ -116,7 +116,7 @@
       }
     }
 
-    [v9 appendText:a5];
+    [v9 appendText:characters];
   }
 
   else
@@ -134,21 +134,21 @@
 
     v13.receiver = self;
     v13.super_class = SMSToSuper_TEXT_Frame;
-    [(SMSToSuper_Default_Frame *)&v13 parser:a3 context:a4 foundCharacters:a5];
+    [(SMSToSuper_Default_Frame *)&v13 parser:parser context:context foundCharacters:characters];
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = [objc_msgSend(a4 orderedParts];
-  v8 = [objc_msgSend(v7 "textParts")];
+  orderedParts = [objc_msgSend(context orderedParts];
+  v8 = [objc_msgSend(orderedParts "textParts")];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = 138412546;
-      v11 = v7;
+      v11 = orderedParts;
       v12 = 2112;
       v13 = v8;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Ending SMSPart(%@)'s textPart: %@", &v10, 0x16u);

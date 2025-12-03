@@ -1,13 +1,13 @@
 @interface IMBaseStoreService
-+ (BOOL)isValidResponseJson:(id)a3 response:(id)a4 error:(id)a5;
++ (BOOL)isValidResponseJson:(id)json response:(id)response error:(id)error;
 + (id)signatureQueryParams;
-- (IMBaseStoreService)initWithConcurrentOperationCount:(int64_t)a3 requestEncodingType:(unint64_t)a4;
+- (IMBaseStoreService)initWithConcurrentOperationCount:(int64_t)count requestEncodingType:(unint64_t)type;
 - (IMBaseStoreServiceDelegate)delegate;
 - (void)cancelAllRequests;
-- (void)performDataRequest:(id)a3 account:(id)a4 telemetryIdentifier:(id)a5 callback:(id)a6;
-- (void)performUrlRequest:(id)a3 callback:(id)a4;
-- (void)setURLProtocolDelegate:(id)a3;
-- (void)signRequest:(id)a3;
+- (void)performDataRequest:(id)request account:(id)account telemetryIdentifier:(id)identifier callback:(id)callback;
+- (void)performUrlRequest:(id)request callback:(id)callback;
+- (void)setURLProtocolDelegate:(id)delegate;
+- (void)signRequest:(id)request;
 @end
 
 @implementation IMBaseStoreService
@@ -19,20 +19,20 @@
   return WeakRetained;
 }
 
-- (IMBaseStoreService)initWithConcurrentOperationCount:(int64_t)a3 requestEncodingType:(unint64_t)a4
+- (IMBaseStoreService)initWithConcurrentOperationCount:(int64_t)count requestEncodingType:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = IMBaseStoreService;
   v6 = [(IMBaseStoreService *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
     configuration = v6->_configuration;
-    v6->_configuration = v7;
+    v6->_configuration = defaultSessionConfiguration;
 
-    if (a3 != -1)
+    if (count != -1)
     {
-      [(NSURLSessionConfiguration *)v6->_configuration setHTTPMaximumConnectionsPerHost:a3];
+      [(NSURLSessionConfiguration *)v6->_configuration setHTTPMaximumConnectionsPerHost:count];
     }
 
     v9 = [(AMSURLSession *)[IMURLSession alloc] initWithConfiguration:v6->_configuration];
@@ -40,8 +40,8 @@
     v6->_amsUrlSession = v9;
 
     -[IMURLSession setFollowsRedirects:](v6->_amsUrlSession, "setFollowsRedirects:", [objc_opt_class() shouldFollowRedirects]);
-    v6->_encodingType = a4;
-    if (a4 == 1)
+    v6->_encodingType = type;
+    if (type == 1)
     {
       v6->_personalizeRequests = 1;
     }
@@ -50,39 +50,39 @@
   return v6;
 }
 
-- (void)setURLProtocolDelegate:(id)a3
+- (void)setURLProtocolDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(IMBaseStoreService *)self amsUrlSession];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  amsUrlSession = [(IMBaseStoreService *)self amsUrlSession];
+  [amsUrlSession setDelegate:delegateCopy];
 }
 
-+ (BOOL)isValidResponseJson:(id)a3 response:(id)a4 error:(id)a5
++ (BOOL)isValidResponseJson:(id)json response:(id)response error:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  jsonCopy = json;
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = _IMStoreLogCategoryDefault();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543362;
-      v17 = v9;
+      statusCode = errorCopy;
       v11 = "performUrlRequest completed with error %{public}@";
 LABEL_9:
       _os_log_impl(&dword_1D8CEC000, v10, OS_LOG_TYPE_ERROR, v11, &v16, 0xCu);
     }
   }
 
-  else if (v8 && ([v8 statusCode] < 200 || objc_msgSend(v8, "statusCode") >= 300))
+  else if (responseCopy && ([responseCopy statusCode] < 200 || objc_msgSend(responseCopy, "statusCode") >= 300))
   {
     v10 = _IMStoreLogCategoryDefault();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 134217984;
-      v17 = [v8 statusCode];
+      statusCode = [responseCopy statusCode];
       v11 = "performUrlRequest completed with bad status code: %ld";
       goto LABEL_9;
     }
@@ -101,8 +101,8 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543362;
-      v17 = objc_opt_class();
-      v15 = v17;
+      statusCode = objc_opt_class();
+      v15 = statusCode;
       _os_log_impl(&dword_1D8CEC000, v10, OS_LOG_TYPE_ERROR, "Recived non-dictionary response. Discarding. (%{public}@)", &v16, 0xCu);
     }
   }
@@ -114,16 +114,16 @@ LABEL_11:
   return v12;
 }
 
-- (void)performUrlRequest:(id)a3 callback:(id)a4
+- (void)performUrlRequest:(id)request callback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__IMBaseStoreService_performUrlRequest_callback___block_invoke;
   v8[3] = &unk_1E856B0D0;
-  v9 = v6;
-  v7 = v6;
-  [(IMBaseStoreService *)self performDataRequest:a3 callback:v8];
+  v9 = callbackCopy;
+  v7 = callbackCopy;
+  [(IMBaseStoreService *)self performDataRequest:request callback:v8];
 }
 
 void __49__IMBaseStoreService_performUrlRequest_callback___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -148,12 +148,12 @@ void __49__IMBaseStoreService_performUrlRequest_callback___block_invoke(uint64_t
   }
 }
 
-- (void)performDataRequest:(id)a3 account:(id)a4 telemetryIdentifier:(id)a5 callback:(id)a6
+- (void)performDataRequest:(id)request account:(id)account telemetryIdentifier:(id)identifier callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  accountCopy = account;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   wantsJSSignature = self->_wantsJSSignature;
   encodingType = self->_encodingType;
@@ -179,13 +179,13 @@ LABEL_5:
   v20 = 0;
 LABEL_7:
   [v20 setPersonalizeRequests:{-[IMBaseStoreService personalizeRequests](self, "personalizeRequests")}];
-  v21 = [(IMBaseStoreService *)self delegate];
+  delegate = [(IMBaseStoreService *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(IMBaseStoreService *)self delegate];
-    [v23 baseStoreService:self didBeginEncoding:v12];
+    delegate2 = [(IMBaseStoreService *)self delegate];
+    [delegate2 baseStoreService:self didBeginEncoding:identifierCopy];
   }
 
   v26[0] = MEMORY[0x1E69E9820];
@@ -193,13 +193,13 @@ LABEL_7:
   v26[2] = __78__IMBaseStoreService_performDataRequest_account_telemetryIdentifier_callback___block_invoke;
   v26[3] = &unk_1E856B198;
   v26[4] = self;
-  v24 = v12;
+  v24 = identifierCopy;
   v27 = v24;
   v30 = wantsJSSignature;
   objc_copyWeak(&v29, &location);
-  v25 = v13;
+  v25 = callbackCopy;
   v28 = v25;
-  [v20 prepareRequest:v10 account:v11 completion:v26];
+  [v20 prepareRequest:requestCopy account:accountCopy completion:v26];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
@@ -358,40 +358,40 @@ LABEL_8:
   [(IMURLSession *)v5 invalidateAndCancel];
 }
 
-- (void)signRequest:(id)a3
+- (void)signRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v6 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v8 = v7;
 
   [v5 appendFormat:@"%.0f", v8];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"X-JS-TIMESTAMP=%.0f", v8];
   [v4 addObject:v9];
 
-  v10 = [v3 valueForHTTPHeaderField:@"X-Apple-Store-Front"];
+  v10 = [requestCopy valueForHTTPHeaderField:@"X-Apple-Store-Front"];
   if (v10)
   {
     [v5 appendString:v10];
   }
 
   v11 = MEMORY[0x1E696AF20];
-  v12 = [v3 URL];
+  v12 = [requestCopy URL];
   v13 = [v11 componentsWithURL:v12 resolvingAgainstBaseURL:0];
 
   v29 = v13;
-  v14 = [v13 query];
-  v15 = [NSURLUtil queryStringToQueryDictionary:v14];
+  query = [v13 query];
+  v15 = [NSURLUtil queryStringToQueryDictionary:query];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v16 = [objc_opt_class() signatureQueryParams];
-  v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  signatureQueryParams = [objc_opt_class() signatureQueryParams];
+  v17 = [signatureQueryParams countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v17)
   {
     v18 = v17;
@@ -403,7 +403,7 @@ LABEL_8:
       {
         if (*v31 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(signatureQueryParams);
         }
 
         v21 = [v15 valueForKey:*(*(&v30 + 1) + 8 * v20)];
@@ -416,16 +416,16 @@ LABEL_8:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v18 = [signatureQueryParams countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v18);
   }
 
-  v22 = [v5 UTF8String];
-  if (v22)
+  uTF8String = [v5 UTF8String];
+  if (uTF8String)
   {
-    v23 = v22;
+    v23 = uTF8String;
     v24 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:20];
     CC_SHA1(v23, [v5 length], objc_msgSend(v24, "mutableBytes"));
     [v24 setLength:16];
@@ -441,7 +441,7 @@ LABEL_8:
   if ([v4 count])
   {
     v27 = [v4 componentsJoinedByString:@" "];;
-    [v3 setValue:v27 forHTTPHeaderField:@"Cookie"];
+    [requestCopy setValue:v27 forHTTPHeaderField:@"Cookie"];
   }
 
   v28 = *MEMORY[0x1E69E9840];

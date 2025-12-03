@@ -2,20 +2,20 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionLocationSignalEnvironmentMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
+- (VLFSessionLocationSignalEnvironmentMonitor)initWithObserver:(id)observer locationManager:(id)manager;
 - (void)_buildAllowedLocationSignalEnvironments;
-- (void)_updateStateWithLocation:(id)a3;
+- (void)_updateStateWithLocation:(id)location;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation VLFSessionLocationSignalEnvironmentMonitor
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = key.var1;
+  var0 = key.var0;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v7 = dispatch_queue_get_label(0);
   if (label != v7)
@@ -65,9 +65,9 @@
     }
 
     [(VLFSessionLocationSignalEnvironmentMonitor *)self _buildAllowedLocationSignalEnvironments];
-    v10 = [(VLFSessionLocationSignalEnvironmentMonitor *)self locationManager];
-    v11 = [v10 lastLocation];
-    [(VLFSessionLocationSignalEnvironmentMonitor *)self _updateStateWithLocation:v11];
+    locationManager = [(VLFSessionLocationSignalEnvironmentMonitor *)self locationManager];
+    lastLocation = [locationManager lastLocation];
+    [(VLFSessionLocationSignalEnvironmentMonitor *)self _updateStateWithLocation:lastLocation];
 
 LABEL_20:
     return;
@@ -87,23 +87,23 @@ LABEL_20:
 
   if (sub_100E03634())
   {
-    v10 = sub_10006D178();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    locationManager = sub_10006D178();
+    if (os_log_type_enabled(locationManager, OS_LOG_TYPE_ERROR))
     {
       v13 = +[NSThread callStackSymbols];
       v17 = 138412290;
       v18 = v13;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
+      _os_log_impl(&_mh_execute_header, locationManager, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
     }
 
     goto LABEL_20;
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -143,7 +143,7 @@ LABEL_20:
     }
   }
 
-  [(VLFSessionLocationSignalEnvironmentMonitor *)self _updateStateWithLocation:v7];
+  [(VLFSessionLocationSignalEnvironmentMonitor *)self _updateStateWithLocation:locationCopy];
 }
 
 - (NSString)debugDescription
@@ -183,22 +183,22 @@ LABEL_20:
   }
 
   v7 = v6;
-  v8 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v9 = @"Hide";
-  if (v8 == 1)
+  if (state == 1)
   {
     v9 = @"EnablePuck";
   }
 
-  if (v8 == 2)
+  if (state == 2)
   {
     v9 = @"EnablePuckAndBanner";
   }
 
   v24 = v9;
-  v25 = [(VLFSessionLocationSignalEnvironmentMonitor *)self locationManager];
-  v10 = [v25 lastLocation];
-  v11 = [v10 signalEnvironmentType] - 1;
+  locationManager = [(VLFSessionLocationSignalEnvironmentMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  v11 = [lastLocation signalEnvironmentType] - 1;
   if (v11 > 5)
   {
     v12 = @"Unavailable";
@@ -389,9 +389,9 @@ LABEL_20:
   [(VLFSessionLocationSignalEnvironmentMonitor *)self setAllowedLocationSignalEnvironments:v14];
 }
 
-- (void)_updateStateWithLocation:(id)a3
+- (void)_updateStateWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -433,11 +433,11 @@ LABEL_20:
 
   v8 = sub_10006D228();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (locationCopy)
   {
     if (v9)
     {
-      v10 = [v4 signalEnvironmentType] - 1;
+      v10 = [locationCopy signalEnvironmentType] - 1;
       if (v10 > 5)
       {
         v11 = @"Unavailable";
@@ -453,20 +453,20 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Got location with signal environment: %@", &v31, 0xCu);
     }
 
-    v12 = [(VLFSessionLocationSignalEnvironmentMonitor *)self allowedLocationSignalEnvironments];
-    v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 signalEnvironmentType]);
-    v14 = [v12 containsObject:v13];
+    allowedLocationSignalEnvironments = [(VLFSessionLocationSignalEnvironmentMonitor *)self allowedLocationSignalEnvironments];
+    v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [locationCopy signalEnvironmentType]);
+    v14 = [allowedLocationSignalEnvironments containsObject:v13];
 
-    v15 = [(VLFSessionMonitor *)self state];
+    state = [(VLFSessionMonitor *)self state];
     if (v14)
     {
-      if (v15 != 2)
+      if (state != 2)
       {
         v16 = sub_10006D228();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v4 signalEnvironmentType];
-          v18 = [v4 signalEnvironmentType] - 1;
+          signalEnvironmentType = [locationCopy signalEnvironmentType];
+          v18 = [locationCopy signalEnvironmentType] - 1;
           if (v18 > 5)
           {
             v19 = @"Unavailable";
@@ -477,30 +477,30 @@ LABEL_20:
             v19 = *(&off_101623FB0 + v18);
           }
 
-          v27 = [(VLFSessionLocationSignalEnvironmentMonitor *)self allowedLocationSignalEnvironments];
+          allowedLocationSignalEnvironments2 = [(VLFSessionLocationSignalEnvironmentMonitor *)self allowedLocationSignalEnvironments];
           v31 = 67109634;
-          *v32 = v17;
+          *v32 = signalEnvironmentType;
           *&v32[4] = 2112;
           *&v32[6] = v19;
           *&v32[14] = 2112;
-          *&v32[16] = v27;
+          *&v32[16] = allowedLocationSignalEnvironments2;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Location signal environment (%d:%@) is in the allowed set (%@); updating state", &v31, 0x1Cu);
         }
       }
 
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2;
     }
 
     else
     {
-      if (v15)
+      if (state)
       {
         v20 = sub_10006D228();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [v4 signalEnvironmentType];
-          v22 = [v4 signalEnvironmentType] - 1;
+          signalEnvironmentType2 = [locationCopy signalEnvironmentType];
+          v22 = [locationCopy signalEnvironmentType] - 1;
           if (v22 > 5)
           {
             v23 = @"Unavailable";
@@ -511,22 +511,22 @@ LABEL_20:
             v23 = *(&off_101623FB0 + v22);
           }
 
-          v24 = [(VLFSessionLocationSignalEnvironmentMonitor *)self allowedLocationSignalEnvironments];
+          allowedLocationSignalEnvironments3 = [(VLFSessionLocationSignalEnvironmentMonitor *)self allowedLocationSignalEnvironments];
           v31 = 67109634;
-          *v32 = v21;
+          *v32 = signalEnvironmentType2;
           *&v32[4] = 2112;
           *&v32[6] = v23;
           *&v32[14] = 2112;
-          *&v32[16] = v24;
+          *&v32[16] = allowedLocationSignalEnvironments3;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Location signal environment (%d:%@) is NOT in the allowed set (%@); updating state", &v31, 0x1Cu);
         }
       }
 
-      v25 = self;
+      selfCopy2 = self;
       v26 = 0;
     }
 
-    [(VLFSessionMonitor *)v25 setState:v26];
+    [(VLFSessionMonitor *)selfCopy2 setState:v26];
   }
 
   else
@@ -548,11 +548,11 @@ LABEL_20:
   [(VLFSessionLocationSignalEnvironmentMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionLocationSignalEnvironmentMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (VLFSessionLocationSignalEnvironmentMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!observerCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -581,7 +581,7 @@ LABEL_20:
     }
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -612,11 +612,11 @@ LABEL_20:
 
   v18.receiver = self;
   v18.super_class = VLFSessionLocationSignalEnvironmentMonitor;
-  v8 = [(VLFSessionMonitor *)&v18 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v18 initWithObserver:observerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     [(VLFLocationManager *)v9->_locationManager addObserver:v9];
     _GEOConfigAddDelegateListenerForKey();
     _GEOConfigAddDelegateListenerForKey();
@@ -626,8 +626,8 @@ LABEL_20:
 
     _GEOConfigAddDelegateListenerForKey();
     [(VLFSessionLocationSignalEnvironmentMonitor *)v9 _buildAllowedLocationSignalEnvironments];
-    v10 = [(VLFLocationManager *)v9->_locationManager lastLocation];
-    [(VLFSessionLocationSignalEnvironmentMonitor *)v9 _updateStateWithLocation:v10];
+    lastLocation = [(VLFLocationManager *)v9->_locationManager lastLocation];
+    [(VLFSessionLocationSignalEnvironmentMonitor *)v9 _updateStateWithLocation:lastLocation];
   }
 
   return v9;

@@ -1,6 +1,6 @@
 @interface AVTChromaKeyPresentationConfiguration
 - (AVTChromaKeyPresentationConfiguration)init;
-- (void)setKeyColor:(id)a3;
+- (void)setKeyColor:(id)color;
 @end
 
 @implementation AVTChromaKeyPresentationConfiguration
@@ -10,22 +10,22 @@
   v2 = [(AVTPresentationConfiguration *)self _initWithStyle:3];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] greenColor];
-    [(AVTChromaKeyPresentationConfiguration *)v2 setKeyColor:v3];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    [(AVTChromaKeyPresentationConfiguration *)v2 setKeyColor:greenColor];
   }
 
   return v2;
 }
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
-  v5 = a3;
-  if (self->_keyColor != v5)
+  colorCopy = color;
+  if (self->_keyColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_keyColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(&self->_keyColor, color);
     v6 = AVTGetColorComponentsMetal(self->_keyColor);
-    v5 = v7;
+    colorCopy = v7;
     *self->_shadableKeyColorComponents = v6;
   }
 }

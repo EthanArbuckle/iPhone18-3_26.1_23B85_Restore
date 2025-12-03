@@ -3,14 +3,14 @@
 - (NSArray)allBackgroundFadingLayers;
 - (NSArray)elementFadingLayers;
 - (NSArray)layersAlreadyHaveProperTransforms;
-- (id)layersRequiringGeometryTransformsBackgroundOnly:(BOOL)a3;
+- (id)layersRequiringGeometryTransformsBackgroundOnly:(BOOL)only;
 @end
 
 @implementation TSCHMultiDataChartRepMultiDataBuildAnimatedLayers
 
 + (id)animatedLayers
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -46,7 +46,7 @@
   return v26;
 }
 
-- (id)layersRequiringGeometryTransformsBackgroundOnly:(BOOL)a3
+- (id)layersRequiringGeometryTransformsBackgroundOnly:(BOOL)only
 {
   v47[2] = *MEMORY[0x277D85DE8];
   v8 = objc_msgSend_backgroundLayer(self, a2, v3, v4, v5);
@@ -57,7 +57,7 @@
 
   v23 = objc_msgSend_array(MEMORY[0x277CBEB18], v19, v20, v21, v22);
   objc_msgSend_addObjectsFromArray_(v23, v24, v25, v26, v27, v18);
-  if (!a3)
+  if (!only)
   {
     v32 = objc_msgSend_elementLayers(self, v28, v29, v30, v31);
     objc_msgSend_addObjectsFromArray_(v23, v33, v34, v35, v36, v32);

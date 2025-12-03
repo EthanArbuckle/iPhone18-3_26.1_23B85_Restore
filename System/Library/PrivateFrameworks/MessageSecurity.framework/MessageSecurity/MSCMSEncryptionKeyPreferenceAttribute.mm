@@ -1,41 +1,41 @@
 @interface MSCMSEncryptionKeyPreferenceAttribute
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithAttribute:(id)a3 certificates:(id)a4 LAContext:(id)a5 error:(id *)a6;
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithCertificate:(__SecCertificate *)a3;
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithEmailAddress:(id)a3;
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithIdentity:(__SecIdentity *)a3;
-- (id)encodeAttributeWithError:(id *)a3;
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithAttribute:(id)attribute certificates:(id)certificates LAContext:(id)context error:(id *)error;
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithCertificate:(__SecCertificate *)certificate;
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithEmailAddress:(id)address;
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithIdentity:(__SecIdentity *)identity;
+- (id)encodeAttributeWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MSCMSEncryptionKeyPreferenceAttribute
 
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithAttribute:(id)a3 certificates:(id)a4 LAContext:(id)a5 error:(id *)a6
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithAttribute:(id)attribute certificates:(id)certificates LAContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  attributeCopy = attribute;
+  certificatesCopy = certificates;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = MSCMSEncryptionKeyPreferenceAttribute;
   v13 = [(MSCMSEncryptionKeyPreferenceAttribute *)&v31 init];
-  v14 = [v10 attributeType];
-  v15 = [v14 isEqualToString:@"1.2.840.113549.1.9.16.2.11"];
+  attributeType = [attributeCopy attributeType];
+  v15 = [attributeType isEqualToString:@"1.2.840.113549.1.9.16.2.11"];
 
   if (v15)
   {
-    v16 = [v10 attributeValues];
-    v17 = [v16 count];
+    attributeValues = [attributeCopy attributeValues];
+    v17 = [attributeValues count];
 
     if (v17 == 1)
     {
       memset(&v30[1], 0, 48);
-      v18 = [v10 attributeValues];
-      v19 = [v18 objectAtIndex:0];
+      attributeValues2 = [attributeCopy attributeValues];
+      v19 = [attributeValues2 objectAtIndex:0];
       v20 = nsheim_decode_SMIMEEncryptionKeyPreference(v19);
 
       if (v20)
       {
-        v21 = [v10 attributeValues];
-        v22 = [v21 objectAtIndex:0];
+        attributeValues3 = [attributeCopy attributeValues];
+        v22 = [attributeValues3 objectAtIndex:0];
         v23 = nsheim_decode_SecCMS_SMIMEEncryptionKeyPreference(v22);
 
         if (v23)
@@ -51,7 +51,7 @@
 
       if (LODWORD(v30[1]) == 3 || LODWORD(v30[1]) == 2)
       {
-        CertificateBySubjectKeyID = findCertificateBySubjectKeyID(&v30[2], v11, v12, a6);
+        CertificateBySubjectKeyID = findCertificateBySubjectKeyID(&v30[2], certificatesCopy, contextCopy, error);
       }
 
       else
@@ -62,7 +62,7 @@
           goto LABEL_14;
         }
 
-        CertificateBySubjectKeyID = findCertificateByIssuerAndSerialNumber(&v30[2], v11, v12, a6);
+        CertificateBySubjectKeyID = findCertificateByIssuerAndSerialNumber(&v30[2], certificatesCopy, contextCopy, error);
       }
 
       if (CertificateBySubjectKeyID)
@@ -97,11 +97,11 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a6)
+  if (error)
   {
     v27 = v25;
     v28 = 0;
-    *a6 = v25;
+    *error = v25;
   }
 
   else
@@ -114,28 +114,28 @@ LABEL_18:
   return v28;
 }
 
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithCertificate:(__SecCertificate *)a3
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithCertificate:(__SecCertificate *)certificate
 {
   v6.receiver = self;
   v6.super_class = MSCMSEncryptionKeyPreferenceAttribute;
   v4 = [(MSCMSEncryptionKeyPreferenceAttribute *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (certificate)
     {
-      CFRetain(a3);
+      CFRetain(certificate);
     }
 
-    v4->_encryptionCertificate = a3;
+    v4->_encryptionCertificate = certificate;
   }
 
   return v4;
 }
 
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithIdentity:(__SecIdentity *)a3
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithIdentity:(__SecIdentity *)identity
 {
   certificateRef = 0;
-  if (!SecIdentityCopyCertificate(a3, &certificateRef))
+  if (!SecIdentityCopyCertificate(identity, &certificateRef))
   {
     self = [(MSCMSEncryptionKeyPreferenceAttribute *)self initWithCertificate:certificateRef];
   }
@@ -148,25 +148,25 @@ LABEL_18:
   return self;
 }
 
-- (MSCMSEncryptionKeyPreferenceAttribute)initWithEmailAddress:(id)a3
+- (MSCMSEncryptionKeyPreferenceAttribute)initWithEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (CertificateByEmailAddress = findCertificateByEmailAddress(v4, 0, 0)) != 0)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy && (CertificateByEmailAddress = findCertificateByEmailAddress(addressCopy, 0, 0)) != 0)
   {
     self->_encryptionCertificate = CertificateByEmailAddress;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)encodeAttributeWithError:(id *)a3
+- (id)encodeAttributeWithError:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
   error = 0;
@@ -193,9 +193,9 @@ LABEL_18:
   if (v9)
   {
     v10 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = error;
+      *error = error;
     }
 
     goto LABEL_32;
@@ -225,7 +225,7 @@ LABEL_18:
       v20 = v19;
 
       v17 = v20;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -234,7 +234,7 @@ LABEL_18:
     else
     {
       v17 = 12;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -264,7 +264,7 @@ LABEL_18:
     v16 = v15;
 
     v17 = v16;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -278,7 +278,7 @@ LABEL_20:
     asn1_abort();
 LABEL_22:
     v17 = 12;
-    if (a3)
+    if (error)
     {
 LABEL_23:
       v21 = MEMORY[0x277CCA9B8];
@@ -289,7 +289,7 @@ LABEL_23:
       v24 = &v37;
 LABEL_26:
       v25 = [v22 dictionaryWithObjects:v23 forKeys:v24 count:1];
-      *a3 = [v21 errorWithDomain:@"com.apple.HeimASN1" code:v17 userInfo:v25];
+      *error = [v21 errorWithDomain:@"com.apple.HeimASN1" code:v17 userInfo:v25];
     }
 
 LABEL_27:
@@ -299,7 +299,7 @@ LABEL_27:
   if ([v14 length])
   {
     v26 = [MSCMSAttribute alloc];
-    v27 = [MSOID OIDWithString:@"1.2.840.113549.1.9.16.2.11" error:a3];
+    v27 = [MSOID OIDWithString:@"1.2.840.113549.1.9.16.2.11" error:error];
     v28 = [MEMORY[0x277CBEA60] arrayWithObject:v14];
     v10 = [(MSCMSAttribute *)v26 initWithAttributeType:v27 values:v28];
   }

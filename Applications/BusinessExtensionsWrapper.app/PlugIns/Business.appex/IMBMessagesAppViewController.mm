@@ -1,29 +1,29 @@
 @interface IMBMessagesAppViewController
-- (CGSize)contentSizeThatFits:(CGSize)a3;
-- (IMBMessagesAppViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
+- (IMBMessagesAppViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation IMBMessagesAppViewController
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_100076270(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_100076270(conversationCopy);
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
-  v4 = self;
-  sub_100076470(a3);
+  selfCopy = self;
+  sub_100076470(style);
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR___IMBMessagesAppViewController_embeddedTranscriptViewController);
   if (v5)
   {
@@ -31,7 +31,7 @@
     v8 = *(&self->super.super.super.super.isa + OBJC_IVAR___IMBMessagesAppViewController_embeddedTranscriptViewController);
     ObjectType = swift_getObjectType();
     v10 = *(v7 + 16);
-    v11 = self;
+    selfCopy = self;
     v12 = v5;
     width = v10(ObjectType, v7, width, height);
     height = v13;
@@ -44,9 +44,9 @@
   return result;
 }
 
-- (IMBMessagesAppViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (IMBMessagesAppViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000AC06C();
     v7 = v6;
@@ -58,8 +58,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000783AC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000783AC(v5, v7, bundle);
 }
 
 @end

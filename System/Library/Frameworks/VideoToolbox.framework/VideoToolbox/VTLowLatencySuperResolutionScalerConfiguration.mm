@@ -1,14 +1,14 @@
 @interface VTLowLatencySuperResolutionScalerConfiguration
 + ($2825F4736939C4A6D3AD43837233062D)maximumDimensions;
 + ($2825F4736939C4A6D3AD43837233062D)minimumDimensions;
-+ (id)supportedScaleFactorsForFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4;
-- (VTLowLatencySuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(float)a5;
++ (id)supportedScaleFactorsForFrameWidth:(int64_t)width frameHeight:(int64_t)height;
+- (VTLowLatencySuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(float)factor;
 - (void)dealloc;
 @end
 
 @implementation VTLowLatencySuperResolutionScalerConfiguration
 
-- (VTLowLatencySuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4 scaleFactor:(float)a5
+- (VTLowLatencySuperResolutionScalerConfiguration)initWithFrameWidth:(int64_t)width frameHeight:(int64_t)height scaleFactor:(float)factor
 {
   if ((loadVCPFrameworkOnce() & 1) == 0)
   {
@@ -26,8 +26,8 @@
   }
 
   v10 = objc_alloc(NSClassFromString(&cfstr_Vcpframesuperr.isa));
-  *&v11 = a5;
-  v12 = [v10 initWithFrameWidth:a3 sourceframeHeight:a4 scaleFactor:v11];
+  *&v11 = factor;
+  v12 = [v10 initWithFrameWidth:width sourceframeHeight:height scaleFactor:v11];
   v9->vcpConfiguration = v12;
   if (!v12)
   {
@@ -35,8 +35,8 @@
     return 0;
   }
 
-  v9->_frameWidth = a3;
-  v9->_frameHeight = a4;
+  v9->_frameWidth = width;
+  v9->_frameHeight = height;
   v9->_frameSupportedPixelFormats = [-[VCPFrameSuperResolutionConfiguration supportedPixelFormats](v12 "supportedPixelFormats")];
   v9->_sourcePixelBufferAttributes = [-[VCPFrameSuperResolutionConfiguration sourcePixelBufferAttributes](v9->vcpConfiguration "sourcePixelBufferAttributes")];
   v9->_destinationPixelBufferAttributes = [-[VCPFrameSuperResolutionConfiguration destinationPixelBufferAttributes](v9->vcpConfiguration "destinationPixelBufferAttributes")];
@@ -50,11 +50,11 @@
   [(VTLowLatencySuperResolutionScalerConfiguration *)&v3 dealloc];
 }
 
-+ (id)supportedScaleFactorsForFrameWidth:(int64_t)a3 frameHeight:(int64_t)a4
++ (id)supportedScaleFactorsForFrameWidth:(int64_t)width frameHeight:(int64_t)height
 {
   if (loadVCPFrameworkOnce())
   {
-    result = [-[objc_class supportedScaleFactorsForFrameWidth:frameHeight:](NSClassFromString(&cfstr_Vcpframesuperr.isa) supportedScaleFactorsForFrameWidth:a3 frameHeight:{a4), "copy"}];
+    result = [-[objc_class supportedScaleFactorsForFrameWidth:frameHeight:](NSClassFromString(&cfstr_Vcpframesuperr.isa) supportedScaleFactorsForFrameWidth:width frameHeight:{height), "copy"}];
     if (result)
     {
       return result;
@@ -76,8 +76,8 @@
   if (loadVCPFrameworkOnce())
   {
     v2 = NSClassFromString(&cfstr_Vcpframesuperr.isa);
-    v3 = [(objc_class *)v2 maximumSupportedWidth];
-    return (v3 | ([(objc_class *)v2 maximumSupportedHeight]<< 32));
+    maximumSupportedWidth = [(objc_class *)v2 maximumSupportedWidth];
+    return (maximumSupportedWidth | ([(objc_class *)v2 maximumSupportedHeight]<< 32));
   }
 
   else
@@ -91,8 +91,8 @@
   if (loadVCPFrameworkOnce())
   {
     v2 = NSClassFromString(&cfstr_Vcpframesuperr.isa);
-    v3 = [(objc_class *)v2 minimumSupportedWidth];
-    return (v3 | ([(objc_class *)v2 minimumSupportedHeight]<< 32));
+    minimumSupportedWidth = [(objc_class *)v2 minimumSupportedWidth];
+    return (minimumSupportedWidth | ([(objc_class *)v2 minimumSupportedHeight]<< 32));
   }
 
   else

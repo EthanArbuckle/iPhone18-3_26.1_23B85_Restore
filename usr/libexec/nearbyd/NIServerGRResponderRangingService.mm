@@ -1,29 +1,29 @@
 @interface NIServerGRResponderRangingService
 + (id)sharedInstance;
-- (BOOL)_updateThrottleRateForDevice:(id)a3 session:(shared_ptr<rose:(unsigned __int16)a5 :objects::GRSession>)a4 ticketId:;
-- (BOOL)_validateDiscoveryTokenDict:(id)a3;
-- (BOOL)throttleSuperframeParticipationWithRate:(float)a3 forTicket:(unsigned __int16)a4 clientIdentifier:(id)a5;
+- (BOOL)_updateThrottleRateForDevice:(id)device session:(shared_ptr<rose:(unsigned __int16)session :objects::GRSession>)a4 ticketId:;
+- (BOOL)_validateDiscoveryTokenDict:(id)dict;
+- (BOOL)throttleSuperframeParticipationWithRate:(float)rate forTicket:(unsigned __int16)ticket clientIdentifier:(id)identifier;
 - (id).cxx_construct;
-- (id)_getDevice:(shared_ptr<rose::objects::RoseBaseSession>)a3;
+- (id)_getDevice:(shared_ptr<rose::objects::RoseBaseSession>)device;
 - (id)_initInternal;
 - (id)_internalPrintableState;
 - (id)printableState;
-- (id)triggerRangingForTicket:(unsigned __int16)a3 device:(id)a4 updatedDevice:(id)a5 clientIdentifier:(id)a6 uwbAddressRotated:(BOOL)a7;
-- (optional<rose::RoseServiceRequest>)_prepareServiceRequestWithDevice:(SEL)a3;
-- (optional<unsigned)_getTicket:(shared_ptr<rose::objects::RoseBaseSession>)a3;
-- (optional<unsigned)getSessionTicketForDevice:(id)a3 clientIdentifier:(id)a4 clientQueue:(id)a5 forDelegate:(id)a6;
-- (shared_ptr<rose::objects::GRSession>)_getSession:(unsigned __int16)a3;
-- (shared_ptr<rose::objects::GRSession>)_getSessionWithAddress:(unint64_t)a3;
-- (unsigned)_homeAnchorVariantFromDiscoveryToken:(id)a3;
-- (void)_didReceiveDeviceMotion:(const void *)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4;
-- (void)_didReceiveNewSolution:(const void *)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4;
-- (void)_didReceiveRemoteData:(const void *)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4;
-- (void)_getClientDelegateAndQueueMap:(shared_ptr<rose:(id)a4 :objects::RoseBaseSession>)a3 completion:;
-- (void)_sendHangupSignalForSession:(shared_ptr<rose::objects::GRSession>)a3;
-- (void)_serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4;
-- (void)_sessionDidInvalidatedWithReason:(int)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4;
-- (void)removeAsInterestedClientIdentifier:(id)a3;
-- (void)stopRangingForTicket:(unsigned __int16)a3 clientIdentifier:(id)a4 uwbAddress:(unint64_t)a5 sendingHangUp:(BOOL)a6;
+- (id)triggerRangingForTicket:(unsigned __int16)ticket device:(id)device updatedDevice:(id)updatedDevice clientIdentifier:(id)identifier uwbAddressRotated:(BOOL)rotated;
+- (optional<rose::RoseServiceRequest>)_prepareServiceRequestWithDevice:(SEL)device;
+- (optional<unsigned)_getTicket:(shared_ptr<rose::objects::RoseBaseSession>)ticket;
+- (optional<unsigned)getSessionTicketForDevice:(id)device clientIdentifier:(id)identifier clientQueue:(id)queue forDelegate:(id)delegate;
+- (shared_ptr<rose::objects::GRSession>)_getSession:(unsigned __int16)session;
+- (shared_ptr<rose::objects::GRSession>)_getSessionWithAddress:(unint64_t)address;
+- (unsigned)_homeAnchorVariantFromDiscoveryToken:(id)token;
+- (void)_didReceiveDeviceMotion:(const void *)motion session:(shared_ptr<rose::objects::RoseBaseSession>)session;
+- (void)_didReceiveNewSolution:(const void *)solution session:(shared_ptr<rose::objects::RoseBaseSession>)session;
+- (void)_didReceiveRemoteData:(const void *)data session:(shared_ptr<rose::objects::RoseBaseSession>)session;
+- (void)_getClientDelegateAndQueueMap:(shared_ptr<rose:(id)map :objects::RoseBaseSession>)a3 completion:;
+- (void)_sendHangupSignalForSession:(shared_ptr<rose::objects::GRSession>)session;
+- (void)_serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status session:(shared_ptr<rose::objects::RoseBaseSession>)session;
+- (void)_sessionDidInvalidatedWithReason:(int)reason session:(shared_ptr<rose::objects::RoseBaseSession>)session;
+- (void)removeAsInterestedClientIdentifier:(id)identifier;
+- (void)stopRangingForTicket:(unsigned __int16)ticket clientIdentifier:(id)identifier uwbAddress:(unint64_t)address sendingHangUp:(BOOL)up;
 @end
 
 @implementation NIServerGRResponderRangingService
@@ -54,8 +54,8 @@
     v2->_queue = v5;
 
     v7 = objc_opt_new();
-    v8 = [v7 UUIDString];
-    sub_100004A08(&v14, [v8 UTF8String]);
+    uUIDString = [v7 UUIDString];
+    sub_100004A08(&v14, [uUIDString UTF8String]);
     if (*(&v2->_containerIdentifier.__rep_.__l + 23) < 0)
     {
       operator delete(v2->_containerIdentifier.__rep_.__l.__data_);
@@ -77,12 +77,12 @@
   return v3;
 }
 
-- (optional<unsigned)getSessionTicketForDevice:(id)a3 clientIdentifier:(id)a4 clientQueue:(id)a5 forDelegate:(id)a6
+- (optional<unsigned)getSessionTicketForDevice:(id)device clientIdentifier:(id)identifier clientQueue:(id)queue forDelegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3812000000;
@@ -96,14 +96,14 @@
   block[1] = 3221225472;
   block[2] = sub_10001B448;
   block[3] = &unk_10098A238;
-  v15 = v11;
+  v15 = identifierCopy;
   v24 = v15;
-  v25 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = queueCopy;
   v26 = v16;
-  v17 = v13;
+  v17 = delegateCopy;
   v27 = v17;
-  v18 = v10;
+  v18 = deviceCopy;
   v28 = v18;
   v29 = &v30;
   dispatch_sync(queue, block);
@@ -131,14 +131,14 @@
   return v21;
 }
 
-- (id)triggerRangingForTicket:(unsigned __int16)a3 device:(id)a4 updatedDevice:(id)a5 clientIdentifier:(id)a6 uwbAddressRotated:(BOOL)a7
+- (id)triggerRangingForTicket:(unsigned __int16)ticket device:(id)device updatedDevice:(id)updatedDevice clientIdentifier:(id)identifier uwbAddressRotated:(BOOL)rotated
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12 && ([v12 cbDevice], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+  deviceCopy = device;
+  updatedDeviceCopy = updatedDevice;
+  identifierCopy = identifier;
+  if (deviceCopy && ([deviceCopy cbDevice], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "identifier"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
   {
-    v17 = [v13 btAdvertisingAddress];
+    btAdvertisingAddress = [updatedDeviceCopy btAdvertisingAddress];
     memset(&v53[3], 0, 52);
     v25 = 0;
     v26 = &v25;
@@ -146,8 +146,8 @@
     v28 = sub_10001BE94;
     v29 = sub_10001BEA4;
     v30 = 0;
-    v18 = v14;
-    sub_100004A08(v23, [v14 UTF8String]);
+    v18 = identifierCopy;
+    sub_100004A08(v23, [identifierCopy UTF8String]);
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3321888768;
@@ -165,17 +165,17 @@
       v37 = v24;
     }
 
-    v32 = v14;
-    v33 = v12;
-    v21 = v13;
+    v32 = identifierCopy;
+    v33 = deviceCopy;
+    v21 = updatedDeviceCopy;
     v48 = *v53;
-    v51 = a3;
+    ticketCopy = ticket;
     v38 = 2;
     v39 = 0;
     v40 = 0;
     v41 = 0;
-    v43 = WORD2(v17);
-    v42 = v17;
+    v43 = WORD2(btAdvertisingAddress);
+    v42 = btAdvertisingAddress;
     v44 = 1;
     v45 = 1;
     v46 = 0;
@@ -185,7 +185,7 @@
     *&v50[15] = *&v53[47];
     v34 = v21;
     v35 = &v25;
-    v52 = a7;
+    rotatedCopy = rotated;
     dispatch_sync(queue, block);
     v20 = v26[5];
 
@@ -210,26 +210,26 @@
   return v20;
 }
 
-- (void)stopRangingForTicket:(unsigned __int16)a3 clientIdentifier:(id)a4 uwbAddress:(unint64_t)a5 sendingHangUp:(BOOL)a6
+- (void)stopRangingForTicket:(unsigned __int16)ticket clientIdentifier:(id)identifier uwbAddress:(unint64_t)address sendingHangUp:(BOOL)up
 {
-  v10 = a4;
+  identifierCopy = identifier;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001C8B4;
   v13[3] = &unk_10098A298;
-  v15 = self;
-  v16 = a5;
-  v18 = a6;
-  v14 = v10;
-  v17 = a3;
-  v12 = v10;
+  selfCopy = self;
+  addressCopy = address;
+  upCopy = up;
+  v14 = identifierCopy;
+  ticketCopy = ticket;
+  v12 = identifierCopy;
   dispatch_sync(queue, v13);
 }
 
-- (BOOL)throttleSuperframeParticipationWithRate:(float)a3 forTicket:(unsigned __int16)a4 clientIdentifier:(id)a5
+- (BOOL)throttleSuperframeParticipationWithRate:(float)rate forTicket:(unsigned __int16)ticket clientIdentifier:(id)identifier
 {
-  v8 = a5;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -239,12 +239,12 @@
   v12[1] = 3221225472;
   v12[2] = sub_10001CF04;
   v12[3] = &unk_10098A2C0;
-  v16 = a4;
-  v15 = a3;
+  ticketCopy = ticket;
+  rateCopy = rate;
   v12[4] = self;
-  v13 = v8;
+  v13 = identifierCopy;
   v14 = &v17;
-  v10 = v8;
+  v10 = identifierCopy;
   dispatch_sync(queue, v12);
   LOBYTE(self) = *(v18 + 24);
 
@@ -252,17 +252,17 @@
   return self;
 }
 
-- (void)removeAsInterestedClientIdentifier:(id)a3
+- (void)removeAsInterestedClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001D2FC;
   v7[3] = &unk_10098A2E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -297,8 +297,8 @@
   for (i = self->clientMap.__table_.__first_node_.__next_; i; i = *i)
   {
     sub_100023B54(&__p, i + 1);
-    v6 = [v15 clientId];
-    v7 = [NSMutableString stringWithFormat:@"[ClientId: %@: <", v6, context];
+    clientId = [v15 clientId];
+    context = [NSMutableString stringWithFormat:@"[ClientId: %@: <", clientId, context];
 
     if (v15)
     {
@@ -311,7 +311,7 @@
           v9 = @"TicketId: %hu";
           do
           {
-            [v7 appendFormat:v9, *(v8 + 8)];
+            [context appendFormat:v9, *(v8 + 8)];
             v8 = *v8;
             v9 = @", TicketId: %hu";
           }
@@ -328,8 +328,8 @@
       v17 = 0u;
     }
 
-    [v7 appendFormat:@">]"];
-    [v4 addObject:v7];
+    [context appendFormat:@">]"];
+    [v4 addObject:context];
     sub_100021914(&v16);
 
     if (v14 < 0)
@@ -345,7 +345,7 @@
   return v10;
 }
 
-- (optional<rose::RoseServiceRequest>)_prepareServiceRequestWithDevice:(SEL)a3
+- (optional<rose::RoseServiceRequest>)_prepareServiceRequestWithDevice:(SEL)device
 {
   v6 = a4;
   v7 = +[NSUserDefaults standardUserDefaults];
@@ -385,8 +385,8 @@
 
   if (![v6 systemKeyRelationship] || (objc_msgSend(v6, "cbDevice"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "model"), v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 == 0, v16, v15, v17))
   {
-    v23 = [v6 discoveryToken];
-    v24 = [(NIServerGRResponderRangingService *)self _homeAnchorVariantFromDiscoveryToken:v23];
+    discoveryToken = [v6 discoveryToken];
+    v24 = [(NIServerGRResponderRangingService *)self _homeAnchorVariantFromDiscoveryToken:discoveryToken];
 
     if (v24 != 999)
     {
@@ -405,9 +405,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v18 = [v6 cbDevice];
-  v19 = [v18 model];
-  v20 = sub_10001E184(v19);
+  cbDevice = [v6 cbDevice];
+  model = [cbDevice model];
+  v20 = sub_10001E184(model);
 
   v21 = sub_10041C974(v20);
   if (v21 == 999)
@@ -498,12 +498,12 @@ LABEL_33:
   return result;
 }
 
-- (BOOL)_updateThrottleRateForDevice:(id)a3 session:(shared_ptr<rose:(unsigned __int16)a5 :objects::GRSession>)a4 ticketId:
+- (BOOL)_updateThrottleRateForDevice:(id)device session:(shared_ptr<rose:(unsigned __int16)session :objects::GRSession>)a4 ticketId:
 {
   cntrl = a4.__cntrl_;
   ptr = a4.__ptr_;
-  v7 = a3;
-  [v7 currentHighestThrottleRate];
+  deviceCopy = device;
+  [deviceCopy currentHighestThrottleRate];
   v9 = v8;
   v10 = sub_10034041C(*ptr, v8);
   v11 = qword_1009F9820;
@@ -549,11 +549,11 @@ LABEL_33:
   return 1;
 }
 
-- (void)_sendHangupSignalForSession:(shared_ptr<rose::objects::GRSession>)a3
+- (void)_sendHangupSignalForSession:(shared_ptr<rose::objects::GRSession>)session
 {
-  if (*a3.__ptr_)
+  if (*session.__ptr_)
   {
-    ptr = a3.__ptr_;
+    ptr = session.__ptr_;
     v5 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
@@ -600,18 +600,18 @@ LABEL_33:
   }
 }
 
-- (void)_didReceiveNewSolution:(const void *)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4
+- (void)_didReceiveNewSolution:(const void *)solution session:(shared_ptr<rose::objects::RoseBaseSession>)session
 {
-  var0 = a4.var0;
-  v7 = *(a3 + 1);
-  v33 = *a3;
+  var0 = session.var0;
+  v7 = *(solution + 1);
+  v33 = *solution;
   v34 = v7;
-  v35 = *(a3 + 2);
-  sub_100020458(v36, a3 + 48);
-  sub_1000206E0(v42, a3 + 608);
-  sub_1000207A0(v45, a3 + 95);
-  memcpy(v49, a3 + 880, sizeof(v49));
-  sub_10002096C(v50, a3 + 91);
+  v35 = *(solution + 2);
+  sub_100020458(v36, solution + 48);
+  sub_1000206E0(v42, solution + 608);
+  sub_1000207A0(v45, solution + 95);
+  memcpy(v49, solution + 880, sizeof(v49));
+  sub_10002096C(v50, solution + 91);
   v8 = *(var0 + 1);
   v9 = *var0;
   v10 = v8;
@@ -703,15 +703,15 @@ LABEL_33:
   }
 }
 
-- (void)_didReceiveRemoteData:(const void *)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4
+- (void)_didReceiveRemoteData:(const void *)data session:(shared_ptr<rose::objects::RoseBaseSession>)session
 {
-  var0 = a4.var0;
-  v16 = *a3;
+  var0 = session.var0;
+  v16 = *data;
   v18 = 0;
   v19 = 0;
   v17 = 0;
-  sub_100009A48(&v17, *(a3 + 1), *(a3 + 2), *(a3 + 2) - *(a3 + 1));
-  v20 = *(a3 + 2);
+  sub_100009A48(&v17, *(data + 1), *(data + 2), *(data + 2) - *(data + 1));
+  v20 = *(data + 2);
   v7 = *(var0 + 1);
   v14 = *var0;
   v15 = v7;
@@ -749,10 +749,10 @@ LABEL_33:
   }
 }
 
-- (void)_serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4
+- (void)_serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status session:(shared_ptr<rose::objects::RoseBaseSession>)session
 {
-  v4 = *(a4.var0 + 1);
-  v7 = *a4.var0;
+  v4 = *(session.var0 + 1);
+  v7 = *session.var0;
   v8 = v4;
   if (v4)
   {
@@ -763,7 +763,7 @@ LABEL_33:
   v5[1] = 3221225472;
   v5[2] = sub_10001F51C;
   v5[3] = &unk_10098A428;
-  v6 = a3;
+  statusCopy = status;
   [(NIServerGRResponderRangingService *)self _getClientDelegateAndQueueMap:&v7 completion:v5];
   if (v8)
   {
@@ -771,11 +771,11 @@ LABEL_33:
   }
 }
 
-- (void)_sessionDidInvalidatedWithReason:(int)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4
+- (void)_sessionDidInvalidatedWithReason:(int)reason session:(shared_ptr<rose::objects::RoseBaseSession>)session
 {
-  var0 = a4.var0;
-  v7 = *(a4.var0 + 1);
-  v15 = *a4.var0;
+  var0 = session.var0;
+  v7 = *(session.var0 + 1);
+  v15 = *session.var0;
   v16 = v7;
   if (v7)
   {
@@ -802,7 +802,7 @@ LABEL_33:
     v10[1] = 3221225472;
     v10[2] = sub_10001F74C;
     v10[3] = &unk_10098A470;
-    v11 = a3;
+    reasonCopy = reason;
     v12 = v8 & 0xFFFFFF;
     [(NIServerGRResponderRangingService *)self _getClientDelegateAndQueueMap:&v13 completion:v10];
     if (v14)
@@ -817,26 +817,26 @@ LABEL_33:
   }
 }
 
-- (void)_didReceiveDeviceMotion:(const void *)a3 session:(shared_ptr<rose::objects::RoseBaseSession>)a4
+- (void)_didReceiveDeviceMotion:(const void *)motion session:(shared_ptr<rose::objects::RoseBaseSession>)session
 {
-  v4 = *(a3 + 9);
-  v32 = *(a3 + 8);
+  v4 = *(motion + 9);
+  v32 = *(motion + 8);
   v33 = v4;
-  v34 = *(a3 + 10);
-  v5 = *(a3 + 5);
-  v28 = *(a3 + 4);
+  v34 = *(motion + 10);
+  v5 = *(motion + 5);
+  v28 = *(motion + 4);
   v29 = v5;
-  v6 = *(a3 + 7);
-  v30 = *(a3 + 6);
+  v6 = *(motion + 7);
+  v30 = *(motion + 6);
   v31 = v6;
-  v7 = *(a3 + 1);
-  v24 = *a3;
+  v7 = *(motion + 1);
+  v24 = *motion;
   v25 = v7;
-  v8 = *(a3 + 3);
-  v26 = *(a3 + 2);
+  v8 = *(motion + 3);
+  v26 = *(motion + 2);
   v27 = v8;
-  v9 = *(a4.var0 + 1);
-  v22 = *a4.var0;
+  v9 = *(session.var0 + 1);
+  v22 = *session.var0;
   v23 = v9;
   if (v9)
   {
@@ -858,22 +858,22 @@ LABEL_33:
   v12 = v25;
   v13 = v26;
   v14 = v27;
-  [(NIServerGRResponderRangingService *)self _getClientDelegateAndQueueMap:&v22 completion:v10, a4.var1];
+  [(NIServerGRResponderRangingService *)self _getClientDelegateAndQueueMap:&v22 completion:v10, session.var1];
   if (v23)
   {
     sub_10000AD84(v23);
   }
 }
 
-- (shared_ptr<rose::objects::GRSession>)_getSession:(unsigned __int16)a3
+- (shared_ptr<rose::objects::GRSession>)_getSession:(unsigned __int16)session
 {
   v5 = v3;
-  v9 = a3;
-  v6 = sub_1000222CC(&self->serviceMap.__table_.__bucket_list_.__ptr_, &v9);
+  sessionCopy = session;
+  v6 = sub_1000222CC(&self->serviceMap.__table_.__bucket_list_.__ptr_, &sessionCopy);
   if (v6)
   {
-    v10 = &v9;
-    v6 = sub_10002385C(&self->serviceMap.__table_.__bucket_list_.__ptr_, &v9);
+    v10 = &sessionCopy;
+    v6 = sub_10002385C(&self->serviceMap.__table_.__bucket_list_.__ptr_, &sessionCopy);
     v8 = v6[4];
     *v5 = v6[3];
     v5[1] = v8;
@@ -894,10 +894,10 @@ LABEL_33:
   return result;
 }
 
-- (shared_ptr<rose::objects::GRSession>)_getSessionWithAddress:(unint64_t)a3
+- (shared_ptr<rose::objects::GRSession>)_getSessionWithAddress:(unint64_t)address
 {
   v5 = v3;
-  v9[0] = a3;
+  v9[0] = address;
   v6 = sub_100009BCC(&self->deviceMap.__table_.__bucket_list_.__ptr_, v9);
   if (v6)
   {
@@ -917,11 +917,11 @@ LABEL_33:
   return result;
 }
 
-- (id)_getDevice:(shared_ptr<rose::objects::RoseBaseSession>)a3
+- (id)_getDevice:(shared_ptr<rose::objects::RoseBaseSession>)device
 {
-  if (*(*a3.var0 + 754))
+  if (*(*device.var0 + 754))
   {
-    var0 = a3.var0;
+    var0 = device.var0;
     p_first_node = &self->deviceMap.__table_.__first_node_;
     while (1)
     {
@@ -931,14 +931,14 @@ LABEL_33:
         break;
       }
 
-      v6 = [p_first_node[3].__next_ gr_session_ticket_id];
+      gr_session_ticket_id = [p_first_node[3].__next_ gr_session_ticket_id];
       v7 = *(*var0 + 752);
       if ((v7 & 0x10000) == 0)
       {
         sub_1000195BC();
       }
 
-      if (v6 == v7)
+      if (gr_session_ticket_id == v7)
       {
         v3 = p_first_node[3].__next_;
         goto LABEL_8;
@@ -952,10 +952,10 @@ LABEL_8:
   return v3;
 }
 
-- (optional<unsigned)_getTicket:(shared_ptr<rose::objects::RoseBaseSession>)a3
+- (optional<unsigned)_getTicket:(shared_ptr<rose::objects::RoseBaseSession>)ticket
 {
-  v3 = *(*a3.var0 + 752);
-  if ((v3 & 0x10000) != 0 && (var0 = a3.var0, v9 = *(*a3.var0 + 752), v10 = BYTE2(v3), sub_1000222CC(&self->serviceMap.__table_.__bucket_list_.__ptr_, &v9)))
+  v3 = *(*ticket.var0 + 752);
+  if ((v3 & 0x10000) != 0 && (var0 = ticket.var0, v9 = *(*ticket.var0 + 752), v10 = BYTE2(v3), sub_1000222CC(&self->serviceMap.__table_.__bucket_list_.__ptr_, &v9)))
   {
     if ((*(*var0 + 752) & 0x10000) == 0)
     {
@@ -977,7 +977,7 @@ LABEL_8:
   return (v6 | v7 | v5);
 }
 
-- (void)_getClientDelegateAndQueueMap:(shared_ptr<rose:(id)a4 :objects::RoseBaseSession>)a3 completion:
+- (void)_getClientDelegateAndQueueMap:(shared_ptr<rose:(id)map :objects::RoseBaseSession>)a3 completion:
 {
   var0 = a3.var0;
   v6 = a3.var1;
@@ -1014,13 +1014,13 @@ LABEL_8:
   }
 }
 
-- (BOOL)_validateDiscoveryTokenDict:(id)a3
+- (BOOL)_validateDiscoveryTokenDict:(id)dict
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictCopy = dict;
+  v4 = dictCopy;
+  if (dictCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:&off_1009C3D10];
+    v5 = [dictCopy objectForKeyedSubscript:&off_1009C3D10];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v6 = [v4 objectForKeyedSubscript:&off_1009C3D28];
@@ -1064,9 +1064,9 @@ LABEL_8:
   return v7;
 }
 
-- (unsigned)_homeAnchorVariantFromDiscoveryToken:(id)a3
+- (unsigned)_homeAnchorVariantFromDiscoveryToken:(id)token
 {
-  v4 = sub_1003005A0(a3);
+  v4 = sub_1003005A0(token);
   if ([(NIServerGRResponderRangingService *)self _validateDiscoveryTokenDict:v4])
   {
     v5 = [v4 objectForKeyedSubscript:&off_1009C3D40];

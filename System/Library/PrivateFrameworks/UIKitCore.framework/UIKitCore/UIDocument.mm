@@ -1,12 +1,12 @@
 @interface UIDocument
-+ (BOOL)_url:(id)a3 matchesURL:(id)a4;
-+ (id)_customizationOfError:(id)a3 withDescription:(id)a4 recoverySuggestion:(id)a5 recoveryAttempter:(id)a6;
-+ (id)_documentWithContentsOfFileURL:(id)a3 error:(id *)a4;
-+ (id)_fileModificationDateForURL:(id)a3;
-+ (id)_typeForContentsOfURL:(id)a3 error:(id *)a4;
-+ (void)_autosavingTimerDidFireSoContinue:(id)a3;
-+ (void)_finishWritingToURL:(id)a3 withTemporaryDirectoryURL:(id)a4 newContentsURL:(id)a5 afterSuccess:(BOOL)a6;
-- (BOOL)_coordinateWritingItemAtURL:(id)a3 error:(id *)a4 byAccessor:(id)a5;
++ (BOOL)_url:(id)_url matchesURL:(id)l;
++ (id)_customizationOfError:(id)error withDescription:(id)description recoverySuggestion:(id)suggestion recoveryAttempter:(id)attempter;
++ (id)_documentWithContentsOfFileURL:(id)l error:(id *)error;
++ (id)_fileModificationDateForURL:(id)l;
++ (id)_typeForContentsOfURL:(id)l error:(id *)error;
++ (void)_autosavingTimerDidFireSoContinue:(id)continue;
++ (void)_finishWritingToURL:(id)l withTemporaryDirectoryURL:(id)rL newContentsURL:(id)uRL afterSuccess:(BOOL)success;
+- (BOOL)_coordinateWritingItemAtURL:(id)l error:(id *)error byAccessor:(id)accessor;
 - (BOOL)_hasSavingError;
 - (BOOL)_hasUnsavedChanges;
 - (BOOL)_isEditingDisabledDueToPermissions;
@@ -33,51 +33,51 @@
 - (UIDocument)init;
 - (UIDocument)initWithFileURL:(NSURL *)url;
 - (UIDocumentState)documentState;
-- (id)_defaultUserActivityForActivityType:(id)a3;
+- (id)_defaultUserActivityForActivityType:(id)type;
 - (id)_defaultUserActivityType;
-- (id)_presentableFileNameForSaveOperation:(int64_t)a3 url:(id)a4;
-- (id)_readingProgressForURL:(id)a3;
+- (id)_presentableFileNameForSaveOperation:(int64_t)operation url:(id)url;
+- (id)_readingProgressForURL:(id)l;
 - (id)_userActivity;
-- (id)_writingProgressForURL:(id)a3 indeterminate:(BOOL)a4;
+- (id)_writingProgressForURL:(id)l indeterminate:(BOOL)indeterminate;
 - (id)changeCountTokenForSaveOperation:(UIDocumentSaveOperation)saveOperation;
 - (id)contentsForType:(NSString *)typeName error:(NSError *)outError;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_autosaveWithCompletionHandler:(id)a3;
-- (void)_autosavingCompletedSuccessfully:(BOOL)a3;
-- (void)_changeWasDone:(id)a3;
-- (void)_changeWasRedone:(id)a3;
-- (void)_changeWasUndone:(id)a3;
-- (void)_finishSavingToURL:(id)a3 forSaveOperation:(int64_t)a4 changeCount:(id)a5;
-- (void)_generatePDFInWindowScene:(void *)a3 completionHandler:;
-- (void)_lockFileAccessQueueAndPerformBlock:(id)a3;
-- (void)_performBlock:(id)a3 synchronouslyOnQueue:(id)a4;
-- (void)_performBlockOnMainThread:(id)a3;
-- (void)_performBlockSynchronouslyOnMainThread:(id)a3;
-- (void)_progressPublished:(id)a3;
-- (void)_progressUnpublished:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_autosaveWithCompletionHandler:(id)handler;
+- (void)_autosavingCompletedSuccessfully:(BOOL)successfully;
+- (void)_changeWasDone:(id)done;
+- (void)_changeWasRedone:(id)redone;
+- (void)_changeWasUndone:(id)undone;
+- (void)_finishSavingToURL:(id)l forSaveOperation:(int64_t)operation changeCount:(id)count;
+- (void)_generatePDFInWindowScene:(void *)scene completionHandler:;
+- (void)_lockFileAccessQueueAndPerformBlock:(id)block;
+- (void)_performBlock:(id)block synchronouslyOnQueue:(id)queue;
+- (void)_performBlockOnMainThread:(id)thread;
+- (void)_performBlockSynchronouslyOnMainThread:(id)thread;
+- (void)_progressPublished:(id)published;
+- (void)_progressUnpublished:(id)unpublished;
 - (void)_registerAsFilePresenterIfNecessary;
 - (void)_releaseUndoManager;
 - (void)_rescheduleAutosaving;
-- (void)_saveUnsavedChangesWithCompletionHandler:(id)a3;
+- (void)_saveUnsavedChangesWithCompletionHandler:(id)handler;
 - (void)_scheduleAutosaving;
-- (void)_scheduleAutosavingAfterDelay:(double)a3 reset:(BOOL)a4;
+- (void)_scheduleAutosavingAfterDelay:(double)delay reset:(BOOL)reset;
 - (void)_sendStateChangedNotification;
-- (void)_setFileURL:(id)a3;
-- (void)_setHasSavingError:(BOOL)a3;
-- (void)_setInConflict:(BOOL)a3;
-- (void)_setInOpen:(BOOL)a3;
-- (void)_setOpen:(BOOL)a3;
-- (void)_setUserActivity:(id)a3;
+- (void)_setFileURL:(id)l;
+- (void)_setHasSavingError:(BOOL)error;
+- (void)_setInConflict:(BOOL)conflict;
+- (void)_setInOpen:(BOOL)open;
+- (void)_setOpen:(BOOL)open;
+- (void)_setUserActivity:(id)activity;
 - (void)_unregisterAsFilePresenterIfNecessary;
 - (void)_updateConflictState;
-- (void)_updateDefaultUserActivityBecomingCurrent:(BOOL)a3;
+- (void)_updateDefaultUserActivityBecomingCurrent:(BOOL)current;
 - (void)_updateLastUsedDate;
 - (void)_updateLocalizedName;
-- (void)_updatePermissionsState:(BOOL)a3;
-- (void)_updateUserActivityState:(id)a3;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
-- (void)accommodatePresentedSubitemDeletionAtURL:(id)a3 completionHandler:(id)a4;
+- (void)_updatePermissionsState:(BOOL)state;
+- (void)_updateUserActivityState:(id)state;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
+- (void)accommodatePresentedSubitemDeletionAtURL:(id)l completionHandler:(id)handler;
 - (void)closeWithCompletionHandler:(void *)completionHandler;
 - (void)dealloc;
 - (void)finishedHandlingError:(NSError *)error recovered:(BOOL)recovered;
@@ -85,25 +85,25 @@
 - (void)openWithCompletionHandler:(void *)completionHandler;
 - (void)performAsynchronousFileAccessUsingBlock:(void *)block;
 - (void)presentedItemDidChange;
-- (void)presentedItemDidGainVersion:(id)a3;
-- (void)presentedItemDidLoseVersion:(id)a3;
-- (void)presentedItemDidMoveToURL:(id)a3;
+- (void)presentedItemDidGainVersion:(id)version;
+- (void)presentedItemDidLoseVersion:(id)version;
+- (void)presentedItemDidMoveToURL:(id)l;
 - (void)presentedItemDidMoveToWritableLocation;
-- (void)presentedItemDidResolveConflictVersion:(id)a3;
-- (void)presentedItemHasUnsavedChangesWithCompletionHandler:(id)a3;
-- (void)presentedSubitemAtURL:(id)a3 didGainVersion:(id)a4;
-- (void)presentedSubitemAtURL:(id)a3 didLoseVersion:(id)a4;
-- (void)presentedSubitemAtURL:(id)a3 didMoveToURL:(id)a4;
-- (void)presentedSubitemAtURL:(id)a3 didResolveConflictVersion:(id)a4;
-- (void)presentedSubitemDidAppearAtURL:(id)a3;
-- (void)presentedSubitemDidChangeAtURL:(id)a3;
-- (void)relinquishPresentedItemToReader:(id)a3;
-- (void)relinquishPresentedItemToWriter:(id)a3;
+- (void)presentedItemDidResolveConflictVersion:(id)version;
+- (void)presentedItemHasUnsavedChangesWithCompletionHandler:(id)handler;
+- (void)presentedSubitemAtURL:(id)l didGainVersion:(id)version;
+- (void)presentedSubitemAtURL:(id)l didLoseVersion:(id)version;
+- (void)presentedSubitemAtURL:(id)l didMoveToURL:(id)rL;
+- (void)presentedSubitemAtURL:(id)l didResolveConflictVersion:(id)version;
+- (void)presentedSubitemDidAppearAtURL:(id)l;
+- (void)presentedSubitemDidChangeAtURL:(id)l;
+- (void)relinquishPresentedItemToReader:(id)reader;
+- (void)relinquishPresentedItemToWriter:(id)writer;
 - (void)revertToContentsOfURL:(NSURL *)url completionHandler:(void *)completionHandler;
-- (void)savePresentedItemChangesWithCompletionHandler:(id)a3;
+- (void)savePresentedItemChangesWithCompletionHandler:(id)handler;
 - (void)saveToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation completionHandler:(void *)completionHandler;
 - (void)setFileModificationDate:(NSDate *)fileModificationDate;
-- (void)setFileType:(id)a3;
+- (void)setFileType:(id)type;
 - (void)setUndoManager:(NSUndoManager *)undoManager;
 - (void)setUserActivity:(NSUserActivity *)userActivity;
 - (void)updateChangeCount:(UIDocumentChangeKind)change;
@@ -163,33 +163,33 @@ void __74__UIDocument_UIPDFGeneration___getPrintPageRendererWithCompletionHandle
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_generatePDFInWindowScene:(void *)a3 completionHandler:
+- (void)_generatePDFInWindowScene:(void *)scene completionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  sceneCopy = scene;
+  if (!self)
   {
     goto LABEL_8;
   }
 
   if (pthread_main_np() != 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:sel__generatePDFInWindowScene_completionHandler_ object:a1 file:@"UIDocument_PDFGeneration.m" lineNumber:45 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__generatePDFInWindowScene_completionHandler_ object:self file:@"UIDocument_PDFGeneration.m" lineNumber:45 description:@"Call must be made on main thread"];
 
-    if (v6)
+    if (sceneCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_10:
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:sel__generatePDFInWindowScene_completionHandler_ object:a1 file:@"UIDocument_PDFGeneration.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != NULL"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__generatePDFInWindowScene_completionHandler_ object:self file:@"UIDocument_PDFGeneration.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != NULL"}];
 
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!sceneCopy)
   {
     goto LABEL_10;
   }
@@ -199,18 +199,18 @@ LABEL_4:
   v12[1] = 3221225472;
   v13 = __75__UIDocument_UIPDFGeneration___generatePDFInWindowScene_completionHandler___block_invoke;
   v14 = &unk_1E7102278;
-  v16 = v6;
+  v16 = sceneCopy;
   v15 = v5;
   v7 = v12;
-  v8 = [a1 fileURL];
-  if (v8)
+  fileURL = [self fileURL];
+  if (fileURL)
   {
     v9 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__UIDocument_UIPDFGeneration___getPrintPageRendererWithCompletionHandler___block_invoke;
     block[3] = &unk_1E70F37C0;
-    v18 = v8;
+    v18 = fileURL;
     v19 = v7;
     dispatch_async(v9, block);
   }
@@ -319,13 +319,13 @@ uint64_t __75__UIDocument_UIPDFGeneration___generatePDFInWindowScene_completionH
   }
 }
 
-+ (id)_typeForContentsOfURL:(id)a3 error:(id *)a4
++ (id)_typeForContentsOfURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v25 = 0;
   v6 = *MEMORY[0x1E695DC68];
   v24 = 0;
-  v7 = [v5 getResourceValue:&v25 forKey:v6 error:&v24];
+  v7 = [lCopy getResourceValue:&v25 forKey:v6 error:&v24];
   v8 = v25;
   v9 = v24;
   v10 = v9;
@@ -342,42 +342,42 @@ uint64_t __75__UIDocument_UIPDFGeneration___generatePDFInWindowScene_completionH
   v12 = !v11 || v8 == 0;
   if (v12 || ![v8 length])
   {
-    v13 = [v5 absoluteString];
-    v14 = [v13 pathExtension];
+    absoluteString = [lCopy absoluteString];
+    pathExtension = [absoluteString pathExtension];
 
-    if ([v14 length])
+    if ([pathExtension length])
     {
-      v15 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v14];
-      v16 = [v15 identifier];
+      v15 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
+      identifier = [v15 identifier];
 
-      if (v16)
+      if (identifier)
       {
 
         v10 = 0;
       }
 
-      if (a4 && v10)
+      if (error && v10)
       {
         v17 = v10;
-        *a4 = v10;
+        *error = v10;
       }
 
-      v8 = v16;
+      v8 = identifier;
     }
 
     else
     {
-      v18 = [v5 hasDirectoryPath];
+      hasDirectoryPath = [lCopy hasDirectoryPath];
       v19 = MEMORY[0x1E6982DC8];
-      if (!v18)
+      if (!hasDirectoryPath)
       {
         v19 = MEMORY[0x1E6982D60];
       }
 
-      v20 = [*v19 identifier];
+      identifier2 = [*v19 identifier];
 
       v10 = 0;
-      v8 = v20;
+      v8 = identifier2;
     }
   }
 
@@ -403,8 +403,8 @@ uint64_t __75__UIDocument_UIPDFGeneration___generatePDFInWindowScene_completionH
 
 - (UIDocument)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:364 description:@"do not call -[UIDocument init] - the designated initializer is -[UIDocument initWithFileURL:]"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:364 description:@"do not call -[UIDocument init] - the designated initializer is -[UIDocument initWithFileURL:]"];
 
   return 0;
 }
@@ -413,20 +413,20 @@ uint64_t __75__UIDocument_UIPDFGeneration___generatePDFInWindowScene_completionH
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = url;
-  v5 = [(NSURL *)v4 absoluteString];
-  if (![v5 length])
+  absoluteString = [(NSURL *)v4 absoluteString];
+  if (![absoluteString length])
   {
 
     goto LABEL_9;
   }
 
-  v6 = [(NSURL *)v4 isFileURL];
+  isFileURL = [(NSURL *)v4 isFileURL];
 
-  if (!v6)
+  if (!isFileURL)
   {
 LABEL_9:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"must pass a valid file URL to -[UIDocument initWithFileURL:]"];
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -472,9 +472,9 @@ LABEL_9:
     progresses = v8->_progresses;
     v8->_progresses = v23;
 
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v8 selector:sel__applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
-    [v25 addObserver:v8 selector:sel__applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__applicationWillResignActive_ name:@"UIApplicationWillResignActiveNotification" object:0];
+    [defaultCenter addObserver:v8 selector:sel__applicationDidBecomeActive_ name:@"UIApplicationDidBecomeActiveNotification" object:0];
     v26 = _UIDocumentLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -485,10 +485,10 @@ LABEL_9:
   }
 
   self = v8;
-  v27 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v27;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -498,7 +498,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "deallocing document instance: %@", buf, 0xCu);
   }
 
@@ -510,7 +510,7 @@ LABEL_10:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v16 = self;
+        selfCopy3 = self;
         _os_log_fault_impl(&dword_188A29000, v11, OS_LOG_TYPE_FAULT, "Document %@ is deallocating even though it is currently registered as a file presenter.", buf, 0xCu);
       }
     }
@@ -522,16 +522,16 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Document %@ is deallocating even though it is currently registered as a file presenter.", buf, 0xCu);
     }
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v14[0] = @"UIApplicationWillResignActiveNotification";
   v14[1] = @"UIApplicationDidBecomeActiveNotification";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  [(NSNotificationCenter *)v4 _uiRemoveObserver:v5 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v5 names:?];
 
   [(UIDocument *)self _releaseUndoManager];
   autosavingTimer = self->_autosavingTimer;
@@ -574,16 +574,16 @@ LABEL_10:
   v5 = [v3 stringWithString:v4];
 
   [v5 appendFormat:@" fileURL: %@ documentState: [", self->_fileURL];
-  v6 = [(UIDocument *)self documentState];
-  if (!v6)
+  documentState = [(UIDocument *)self documentState];
+  if (!documentState)
   {
     v9 = @"Normal]";
     goto LABEL_34;
   }
 
-  v7 = v6;
-  v8 = v6 & 1;
-  if (v6)
+  v7 = documentState;
+  v8 = documentState & 1;
+  if (documentState)
   {
     [v5 appendString:@"Closed"];
     if ((v7 & 8) == 0)
@@ -598,7 +598,7 @@ LABEL_4:
     }
   }
 
-  else if ((v6 & 8) == 0)
+  else if ((documentState & 8) == 0)
   {
     goto LABEL_4;
   }
@@ -688,15 +688,15 @@ LABEL_26:
     }
 
     [v5 appendString:v14];
-    v15 = [(UIDocument *)self progress];
-    if ([v15 isIndeterminate])
+    progress = [(UIDocument *)self progress];
+    if ([progress isIndeterminate])
     {
       [v5 appendString:@" (indet)"];
     }
 
     else
     {
-      [v15 fractionCompleted];
+      [progress fractionCompleted];
       [v5 appendFormat:@" (%.0g)", v16];
     }
   }
@@ -716,7 +716,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "document will register as file presenter if necessary on main thread: %@", buf, 0xCu);
   }
 
@@ -763,7 +763,7 @@ void __49__UIDocument__registerAsFilePresenterIfNecessary__block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "document will unregister as file presenter if necessary on main thread: %@", buf, 0xCu);
   }
 
@@ -805,20 +805,20 @@ void __51__UIDocument__unregisterAsFilePresenterIfNecessary__block_invoke(uint64
 
 - (BOOL)_isUbiquitous
 {
-  v3 = [(UIDocument *)self fileURL];
+  fileURL = [(UIDocument *)self fileURL];
 
-  if (!v3)
+  if (!fileURL)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 ubiquityIdentityToken];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  ubiquityIdentityToken = [defaultManager ubiquityIdentityToken];
 
-  if (v5)
+  if (ubiquityIdentityToken)
   {
-    v6 = [(UIDocument *)self fileURL];
-    v7 = [v4 isUbiquitousItemAtURL:v6];
+    fileURL2 = [(UIDocument *)self fileURL];
+    v7 = [defaultManager isUbiquitousItemAtURL:fileURL2];
   }
 
   else
@@ -834,14 +834,14 @@ void __51__UIDocument__unregisterAsFilePresenterIfNecessary__block_invoke(uint64
   v45 = *MEMORY[0x1E69E9840];
   if ([(UIDocument *)self _isUbiquitous])
   {
-    v2 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v2 infoDictionary];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
 
-    v4 = [v3 objectForKeyedSubscript:@"CFBundleDocumentTypes"];
+    v4 = [infoDictionary objectForKeyedSubscript:@"CFBundleDocumentTypes"];
     if (_UIStateRestorationDebugLogEnabled())
     {
-      v5 = [(UIDocument *)self fileType];
-      NSLog(&cfstr_SCheckingForDo.isa, "[UIDocument _defaultUserActivityType]", v5, v4);
+      fileType = [(UIDocument *)self fileType];
+      NSLog(&cfstr_SCheckingForDo.isa, "[UIDocument _defaultUserActivityType]", fileType, v4);
     }
 
     objc_opt_class();
@@ -863,7 +863,7 @@ void __51__UIDocument__unregisterAsFilePresenterIfNecessary__block_invoke(uint64
       {
         v9 = v8;
         v26 = v4;
-        v27 = v3;
+        v27 = infoDictionary;
         v10 = 0;
         v32 = *v40;
         v30 = v7;
@@ -953,24 +953,24 @@ void __51__UIDocument__unregisterAsFilePresenterIfNecessary__block_invoke(uint64
                               NSLog(&cfstr_SContenttypeIs.isa, v6);
                             }
 
-                            v20 = [(UIDocument *)self fileType];
-                            if (v20)
+                            fileType2 = [(UIDocument *)self fileType];
+                            if (fileType2)
                             {
                               v21 = v6;
-                              v22 = [MEMORY[0x1E6982C40] _typeWithIdentifier:v20 allowUndeclared:1];
+                              v22 = [MEMORY[0x1E6982C40] _typeWithIdentifier:fileType2 allowUndeclared:1];
                               v23 = [MEMORY[0x1E6982C40] _typeWithIdentifier:v19 allowUndeclared:1];
                               if ([v22 conformsToType:v23])
                               {
                                 if (_UIStateRestorationDebugLogEnabled())
                                 {
-                                  NSLog(&cfstr_SDocumentFilet.isa, v21, v20, v19, v31);
+                                  NSLog(&cfstr_SDocumentFilet.isa, v21, fileType2, v19, v31);
                                 }
 
                                 v10 = v31;
 
                                 v24 = v10;
                                 v4 = v26;
-                                v3 = v27;
+                                infoDictionary = v27;
                                 v7 = v30;
                                 goto LABEL_56;
                               }
@@ -1015,7 +1015,7 @@ void __51__UIDocument__unregisterAsFilePresenterIfNecessary__block_invoke(uint64
 
         while (v9);
         v4 = v26;
-        v3 = v27;
+        infoDictionary = v27;
       }
 
       else
@@ -1042,11 +1042,11 @@ LABEL_56:
   return v24;
 }
 
-- (id)_defaultUserActivityForActivityType:(id)a3
+- (id)_defaultUserActivityForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*&self->_docFlags & 0x4000) != 0 || ![(__CFString *)v4 length])
+  typeCopy = type;
+  v5 = typeCopy;
+  if ((*&self->_docFlags & 0x4000) != 0 || ![(__CFString *)typeCopy length])
   {
     v6 = 0;
   }
@@ -1068,58 +1068,58 @@ LABEL_56:
   return v6;
 }
 
-- (void)_updateDefaultUserActivityBecomingCurrent:(BOOL)a3
+- (void)_updateDefaultUserActivityBecomingCurrent:(BOOL)current
 {
   if ((*&self->_docFlags & 0x4000) == 0)
   {
-    v3 = a3;
-    v10 = [(UIDocument *)self _userActivity];
-    v5 = [(UIDocument *)self _defaultUserActivityType];
-    if (v10 && ([v10 activityType], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v5), v6, (v7 & 1) != 0))
+    currentCopy = current;
+    _userActivity = [(UIDocument *)self _userActivity];
+    _defaultUserActivityType = [(UIDocument *)self _defaultUserActivityType];
+    if (_userActivity && ([_userActivity activityType], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", _defaultUserActivityType), v6, (v7 & 1) != 0))
     {
-      [v10 setNeedsSave:1];
-      v8 = v10;
+      [_userActivity setNeedsSave:1];
+      v8 = _userActivity;
     }
 
     else
     {
-      v9 = [(UIDocument *)self _defaultUserActivityForActivityType:v5];
+      v9 = [(UIDocument *)self _defaultUserActivityForActivityType:_defaultUserActivityType];
 
       [(UIDocument *)self _setUserActivity:v9];
       v8 = v9;
     }
 
     v11 = v8;
-    if (v3)
+    if (currentCopy)
     {
       [v8 becomeCurrent];
     }
   }
 }
 
-- (void)_setUserActivity:(id)a3
+- (void)_setUserActivity:(id)activity
 {
-  v7 = a3;
+  activityCopy = activity;
   [(NSLock *)self->_activityContinuationLock lock];
   v5 = self->_currentUserActivity;
-  if (self->_currentUserActivity != v7)
+  if (self->_currentUserActivity != activityCopy)
   {
-    objc_storeStrong(&self->_currentUserActivity, a3);
+    objc_storeStrong(&self->_currentUserActivity, activity);
   }
 
   [(NSLock *)self->_activityContinuationLock unlock];
-  v6 = v7;
-  if (v5 != v7)
+  v6 = activityCopy;
+  if (v5 != activityCopy)
   {
     if (v5)
     {
       [UIApp _removeDocument:self forUserActivity:v5];
-      v6 = v7;
+      v6 = activityCopy;
     }
 
     if (v6 && [(UIDocument *)self _isOpen])
     {
-      [UIApp _addDocument:self forUserActivity:v7];
+      [UIApp _addDocument:self forUserActivity:activityCopy];
     }
   }
 }
@@ -1147,19 +1147,19 @@ LABEL_56:
 
 - (NSUserActivity)userActivity
 {
-  v3 = [(UIDocument *)self _userActivity];
-  if (!v3)
+  _userActivity = [(UIDocument *)self _userActivity];
+  if (!_userActivity)
   {
-    v4 = [(UIDocument *)self _defaultUserActivityType];
-    v5 = [(UIDocument *)self _defaultUserActivityForActivityType:v4];
-    v3 = v5;
+    _defaultUserActivityType = [(UIDocument *)self _defaultUserActivityType];
+    v5 = [(UIDocument *)self _defaultUserActivityForActivityType:_defaultUserActivityType];
+    _userActivity = v5;
     if (v5)
     {
       [(UIDocument *)self _setUserActivity:v5];
     }
   }
 
-  return v3;
+  return _userActivity;
 }
 
 - (id)_userActivity
@@ -1171,14 +1171,14 @@ LABEL_56:
   return v3;
 }
 
-- (void)_updateUserActivityState:(id)a3
+- (void)_updateUserActivityState:(id)state
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIDocument *)self localizedName];
-  if ([v5 length])
+  stateCopy = state;
+  localizedName = [(UIDocument *)self localizedName];
+  if ([localizedName length])
   {
-    v6 = v5;
+    v6 = localizedName;
   }
 
   else
@@ -1187,15 +1187,15 @@ LABEL_56:
   }
 
   v7 = v6;
-  [v4 setTitle:v6];
-  v8 = [(UIDocument *)self fileURL];
-  v9 = v8;
-  if (v8)
+  [stateCopy setTitle:v6];
+  fileURL = [(UIDocument *)self fileURL];
+  v9 = fileURL;
+  if (fileURL)
   {
     v11 = @"NSUserActivityDocumentURL";
-    v12[0] = v8;
+    v12[0] = fileURL;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    [v4 addUserInfoEntriesFromDictionary:v10];
+    [stateCopy addUserInfoEntriesFromDictionary:v10];
   }
 }
 
@@ -1205,21 +1205,21 @@ LABEL_56:
   v5 = completionHandler;
   if ([(UIDocument *)self _isInOpen])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    v15 = [(UIDocument *)self fileURL];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:701 description:{@"attempt to open or a revert document that already has an open or revert operation in flight: %@", v15}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    fileURL = [(UIDocument *)self fileURL];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:701 description:{@"attempt to open or a revert document that already has an open or revert operation in flight: %@", fileURL}];
   }
 
   v6 = _UIDocumentLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "opening document: %@", buf, 0xCu);
   }
 
   [(UIDocument *)self _setInOpen:1];
-  v7 = [(UIDocument *)self fileURL];
+  fileURL2 = [(UIDocument *)self fileURL];
   v8 = dispatch_get_current_queue();
   if (v8 == self->_fileAccessQueue)
   {
@@ -1236,10 +1236,10 @@ LABEL_56:
   v16[3] = &unk_1E70F5F08;
   v16[4] = self;
   v17 = v8;
-  v18 = v7;
+  v18 = fileURL2;
   v19 = v5;
   v11 = v5;
-  v12 = v7;
+  v12 = fileURL2;
   v13 = v8;
   [(UIDocument *)self performAsynchronousFileAccessUsingBlock:v16];
 }
@@ -1447,26 +1447,26 @@ uint64_t __40__UIDocument_openWithCompletionHandler___block_invoke_279(uint64_t 
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_setFileURL:(id)a3
+- (void)_setFileURL:(id)l
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 ui_URLByResolvingSymlinksAndCopyingSecurityScope];
-  p_fileURL = &v5->_fileURL;
-  if (v6 != v5->_fileURL)
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ui_URLByResolvingSymlinksAndCopyingSecurityScope = [lCopy ui_URLByResolvingSymlinksAndCopyingSecurityScope];
+  p_fileURL = &selfCopy->_fileURL;
+  if (ui_URLByResolvingSymlinksAndCopyingSecurityScope != selfCopy->_fileURL)
   {
-    if (v5->_progressSubscriber)
+    if (selfCopy->_progressSubscriber)
     {
       [MEMORY[0x1E696AE38] _removeSubscriber:?];
     }
 
-    if ((*&v5->_docFlags & 0x2000) != 0)
+    if ((*&selfCopy->_docFlags & 0x2000) != 0)
     {
       [*p_fileURL stopAccessingSecurityScopedResource];
     }
 
-    objc_storeStrong(&v5->_fileURL, v6);
+    objc_storeStrong(&selfCopy->_fileURL, ui_URLByResolvingSymlinksAndCopyingSecurityScope);
     if (dyld_program_sdk_at_least())
     {
       if ([*p_fileURL startAccessingSecurityScopedResource])
@@ -1479,27 +1479,27 @@ uint64_t __40__UIDocument_openWithCompletionHandler___block_invoke_279(uint64_t 
         v8 = 0;
       }
 
-      *&v5->_docFlags = *&v5->_docFlags & 0xDFFF | v8;
+      *&selfCopy->_docFlags = *&selfCopy->_docFlags & 0xDFFF | v8;
     }
 
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, selfCopy);
     v9 = MEMORY[0x1E696AE38];
-    fileURL = v5->_fileURL;
+    fileURL = selfCopy->_fileURL;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __26__UIDocument__setFileURL___block_invoke;
     v13[3] = &unk_1E7105A48;
     objc_copyWeak(&v14, &location);
     v11 = [v9 _addSubscriberForFileURL:fileURL withPublishingHandler:v13];
-    progressSubscriber = v5->_progressSubscriber;
-    v5->_progressSubscriber = v11;
+    progressSubscriber = selfCopy->_progressSubscriber;
+    selfCopy->_progressSubscriber = v11;
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
-  [(UIDocument *)v5 _updateConflictState];
+  objc_sync_exit(selfCopy);
+  [(UIDocument *)selfCopy _updateConflictState];
 }
 
 id __26__UIDocument__setFileURL___block_invoke(uint64_t a1, void *a2)
@@ -1530,34 +1530,34 @@ void __26__UIDocument__setFileURL___block_invoke_2(uint64_t a1)
 
 - (NSURL)fileURL
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fileURL;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fileURL;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setFileType:(id)a3
+- (void)setFileType:(id)type
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_fileType != v7)
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fileType != typeCopy)
   {
-    v5 = [(NSString *)v7 copy];
-    fileType = v4->_fileType;
-    v4->_fileType = v5;
+    v5 = [(NSString *)typeCopy copy];
+    fileType = selfCopy->_fileType;
+    selfCopy->_fileType = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)fileType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  fileType = v2->_fileType;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fileType = selfCopy->_fileType;
   if (fileType)
   {
     v4 = fileType;
@@ -1566,12 +1566,12 @@ void __26__UIDocument__setFileURL___block_invoke_2(uint64_t a1)
   else
   {
     v5 = objc_opt_class();
-    v6 = [(UIDocument *)v2 fileURL];
+    fileURL = [(UIDocument *)selfCopy fileURL];
     v8 = 0;
-    v4 = [v5 _typeForContentsOfURL:v6 error:&v8];
+    v4 = [v5 _typeForContentsOfURL:fileURL error:&v8];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -1579,24 +1579,24 @@ void __26__UIDocument__setFileURL___block_invoke_2(uint64_t a1)
 - (void)setFileModificationDate:(NSDate *)fileModificationDate
 {
   v7 = fileModificationDate;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_fileModificationDate != v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fileModificationDate != v7)
   {
     v5 = [(NSDate *)v7 copy];
-    v6 = v4->_fileModificationDate;
-    v4->_fileModificationDate = v5;
+    v6 = selfCopy->_fileModificationDate;
+    selfCopy->_fileModificationDate = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSDate)fileModificationDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fileModificationDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fileModificationDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1605,7 +1605,7 @@ void __26__UIDocument__setFileURL___block_invoke_2(uint64_t a1)
 {
   if (FileProviderLibraryCore())
   {
-    v3 = [(UIDocument *)self fileURL];
+    fileURL = [(UIDocument *)self fileURL];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __33__UIDocument__updateLastUsedDate__block_invoke;
@@ -1634,14 +1634,14 @@ void __26__UIDocument__setFileURL___block_invoke_2(uint64_t a1)
     _Block_object_dispose(&v12, 8);
     if (v5)
     {
-      v5(v3, v4);
+      v5(fileURL, v4);
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _FPUpdateLastUsedDate(CFURLRef, void (^__strong)(CFErrorRef))"}];
-      [v8 handleFailureInFunction:v9 file:@"UIDocument.m" lineNumber:64 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v9 file:@"UIDocument.m" lineNumber:64 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -1668,35 +1668,35 @@ void __33__UIDocument__updateLastUsedDate__block_invoke(uint64_t a1, uint64_t a2
 
 - (BOOL)_isEditingTemporarilyDisabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_docFlags >> 7) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_docFlags >> 7) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)_isEditingDisabledDueToPermissions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = HIBYTE(*&v2->_docFlags) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = HIBYTE(*&selfCopy->_docFlags) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setOpen:(BOOL)a3
+- (void)_setOpen:(BOOL)open
 {
-  v3 = a3;
-  v11 = [(UIDocument *)self fileURL];
-  v5 = self;
-  objc_sync_enter(v5);
-  docFlags = v5->_docFlags;
-  v7 = ((docFlags & 2) == 0) ^ v3;
+  openCopy = open;
+  fileURL = [(UIDocument *)self fileURL];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  docFlags = selfCopy->_docFlags;
+  v7 = ((docFlags & 2) == 0) ^ openCopy;
   if ((v7 & 1) == 0)
   {
-    if (v3)
+    if (openCopy)
     {
       v8 = 2;
     }
@@ -1707,43 +1707,43 @@ void __33__UIDocument__updateLastUsedDate__block_invoke(uint64_t a1, uint64_t a2
     }
 
     docFlags = docFlags & 0xFFFD | v8;
-    *&v5->_docFlags = docFlags;
+    *&selfCopy->_docFlags = docFlags;
   }
 
   v9 = v7 ^ 1;
-  if (v3)
+  if (openCopy)
   {
-    v10 = [MEMORY[0x1E696AC30] unresolvedConflictVersionsOfItemAtURL:v11];
-    *&v5->_docFlags = *&v5->_docFlags & 0xEFFF | (([v10 count] != 0) << 12);
+    v10 = [MEMORY[0x1E696AC30] unresolvedConflictVersionsOfItemAtURL:fileURL];
+    *&selfCopy->_docFlags = *&selfCopy->_docFlags & 0xEFFF | (([v10 count] != 0) << 12);
 
-    v9 |= ((*&v5->_docFlags ^ docFlags) & 0x1000) >> 12;
+    v9 |= ((*&selfCopy->_docFlags ^ docFlags) & 0x1000) >> 12;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(UIDocument *)v5 _updatePermissionsState:v3];
+  [(UIDocument *)selfCopy _updatePermissionsState:openCopy];
   if (v9)
   {
-    [(UIDocument *)v5 _sendStateChangedNotification];
+    [(UIDocument *)selfCopy _sendStateChangedNotification];
   }
 }
 
 - (BOOL)_isOpen
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_docFlags >> 1) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_docFlags >> 1) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setInOpen:(BOOL)a3
+- (void)_setInOpen:(BOOL)open
 {
-  v3 = a3;
+  openCopy = open;
   obj = self;
   objc_sync_enter(obj);
-  if (v3)
+  if (openCopy)
   {
     v4 = 4;
   }
@@ -1759,28 +1759,28 @@ void __33__UIDocument__updateLastUsedDate__block_invoke(uint64_t a1, uint64_t a2
 
 - (BOOL)_isInOpen
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_docFlags >> 2) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_docFlags >> 2) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setHasSavingError:(BOOL)a3
+- (void)_setHasSavingError:(BOOL)error
 {
-  v3 = a3;
+  errorCopy = error;
   obj = self;
   objc_sync_enter(obj);
   docFlags = obj->_docFlags;
-  if ((((docFlags & 0x800) == 0) ^ v3))
+  if ((((docFlags & 0x800) == 0) ^ errorCopy))
   {
     objc_sync_exit(obj);
   }
 
   else
   {
-    if (v3)
+    if (errorCopy)
     {
       v5 = 2048;
     }
@@ -1799,28 +1799,28 @@ void __33__UIDocument__updateLastUsedDate__block_invoke(uint64_t a1, uint64_t a2
 
 - (BOOL)_hasSavingError
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_docFlags >> 11) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_docFlags >> 11) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setInConflict:(BOOL)a3
+- (void)_setInConflict:(BOOL)conflict
 {
-  v3 = a3;
+  conflictCopy = conflict;
   obj = self;
   objc_sync_enter(obj);
   docFlags = obj->_docFlags;
-  if ((((docFlags & 0x1000) == 0) ^ v3))
+  if ((((docFlags & 0x1000) == 0) ^ conflictCopy))
   {
     objc_sync_exit(obj);
   }
 
   else
   {
-    if (v3)
+    if (conflictCopy)
     {
       v5 = 4096;
     }
@@ -1839,10 +1839,10 @@ void __33__UIDocument__updateLastUsedDate__block_invoke(uint64_t a1, uint64_t a2
 
 - (BOOL)_isInConflict
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_docFlags >> 12) & 1;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_docFlags >> 12) & 1;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1854,7 +1854,7 @@ void __33__UIDocument__updateLastUsedDate__block_invoke(uint64_t a1, uint64_t a2
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "document will send state changed notification on main thread: %@", buf, 0xCu);
   }
 
@@ -1884,10 +1884,10 @@ void __43__UIDocument__sendStateChangedNotification__block_invoke(uint64_t a1)
 
 - (UIDocumentState)documentState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  docFlags = v2->_docFlags;
-  v4 = [(NSMutableSet *)v2->_progresses count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  docFlags = selfCopy->_docFlags;
+  v4 = [(NSMutableSet *)selfCopy->_progresses count];
   v5 = (*&docFlags & 2) == 0;
   v6 = 8;
   if ((*&docFlags & 2) == 0)
@@ -1911,7 +1911,7 @@ void __43__UIDocument__sendStateChangedNotification__block_invoke(uint64_t a1)
     v8 = v7;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
@@ -1934,10 +1934,10 @@ void __43__UIDocument__sendStateChangedNotification__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_lockFileAccessQueueAndPerformBlock:(id)a3
+- (void)_lockFileAccessQueueAndPerformBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  blockCopy = block;
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   v7 = dispatch_get_current_queue();
   fileAccessQueue = self->_fileAccessQueue;
@@ -1980,26 +1980,26 @@ LABEL_13:
   }
 
 LABEL_4:
-  if (!v5)
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:1067 description:@"UIDocument bug: file access queue is being locked without an unlock handler"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:1067 description:@"UIDocument bug: file access queue is being locked without an unlock handler"];
   }
 
-  v5[2](v5);
+  blockCopy[2](blockCopy);
   dispatch_semaphore_wait(self->_fileAccessSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)_progressPublished:(id)a3
+- (void)_progressPublished:(id)published
 {
-  v4 = a3;
+  publishedCopy = published;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__UIDocument__progressPublished___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = publishedCopy;
+  v5 = publishedCopy;
   [(UIDocument *)self _performBlockSynchronouslyOnMainThread:v6];
 }
 
@@ -2020,16 +2020,16 @@ void __33__UIDocument__progressPublished___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_progressUnpublished:(id)a3
+- (void)_progressUnpublished:(id)unpublished
 {
-  v4 = a3;
+  unpublishedCopy = unpublished;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__UIDocument__progressUnpublished___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = unpublishedCopy;
+  v5 = unpublishedCopy;
   [(UIDocument *)self _performBlockSynchronouslyOnMainThread:v6];
 }
 
@@ -2052,20 +2052,20 @@ void __35__UIDocument__progressUnpublished___block_invoke(uint64_t a1)
 
 - (NSProgress)progress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_progresses allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSMutableSet *)selfCopy->_progresses allObjects];
+  objc_sync_exit(selfCopy);
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __22__UIDocument_progress__block_invoke_2;
   v7[3] = &unk_1E7105AB8;
   v8 = &__block_literal_global_291;
-  v4 = [v3 sortedArrayUsingComparator:v7];
-  v5 = [v4 firstObject];
+  v4 = [allObjects sortedArrayUsingComparator:v7];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 uint64_t __22__UIDocument_progress__block_invoke(uint64_t a1, void *a2)
@@ -2130,87 +2130,87 @@ uint64_t __22__UIDocument_progress__block_invoke_2(uint64_t a1, uint64_t a2, voi
   }
 }
 
-+ (id)_customizationOfError:(id)a3 withDescription:(id)a4 recoverySuggestion:(id)a5 recoveryAttempter:(id)a6
++ (id)_customizationOfError:(id)error withDescription:(id)description recoverySuggestion:(id)suggestion recoveryAttempter:(id)attempter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 userInfo];
-  v14 = [v13 mutableCopy];
+  errorCopy = error;
+  descriptionCopy = description;
+  suggestionCopy = suggestion;
+  attempterCopy = attempter;
+  userInfo = [errorCopy userInfo];
+  v14 = [userInfo mutableCopy];
 
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [v14 setObject:v9 forKey:*MEMORY[0x1E696AA08]];
-  if (v10)
+  [v14 setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
+  if (descriptionCopy)
   {
-    v15 = v10;
+    localizedDescription = descriptionCopy;
   }
 
   else
   {
-    v15 = [v9 localizedDescription];
-    if (!v15)
+    localizedDescription = [errorCopy localizedDescription];
+    if (!localizedDescription)
     {
       goto LABEL_7;
     }
   }
 
-  [v14 setObject:v15 forKey:*MEMORY[0x1E696A578]];
+  [v14 setObject:localizedDescription forKey:*MEMORY[0x1E696A578]];
 
 LABEL_7:
-  v16 = [v9 localizedFailureReason];
-  if (v16)
+  localizedFailureReason = [errorCopy localizedFailureReason];
+  if (localizedFailureReason)
   {
-    [v14 setObject:v16 forKey:*MEMORY[0x1E696A588]];
+    [v14 setObject:localizedFailureReason forKey:*MEMORY[0x1E696A588]];
   }
 
-  if (v11)
+  if (suggestionCopy)
   {
-    v17 = v11;
+    localizedRecoverySuggestion = suggestionCopy;
   }
 
   else
   {
-    v17 = [v9 localizedRecoverySuggestion];
-    if (!v17)
+    localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
+    if (!localizedRecoverySuggestion)
     {
       goto LABEL_13;
     }
   }
 
-  [v14 setObject:v17 forKey:*MEMORY[0x1E696A598]];
+  [v14 setObject:localizedRecoverySuggestion forKey:*MEMORY[0x1E696A598]];
 
 LABEL_13:
-  v18 = [v9 localizedRecoveryOptions];
-  if (v18)
+  localizedRecoveryOptions = [errorCopy localizedRecoveryOptions];
+  if (localizedRecoveryOptions)
   {
-    [v14 setObject:v18 forKey:*MEMORY[0x1E696A590]];
+    [v14 setObject:localizedRecoveryOptions forKey:*MEMORY[0x1E696A590]];
   }
 
-  if (v12)
+  if (attempterCopy)
   {
-    v19 = v12;
+    recoveryAttempter = attempterCopy;
   }
 
   else
   {
-    v19 = [v9 recoveryAttempter];
-    if (!v19)
+    recoveryAttempter = [errorCopy recoveryAttempter];
+    if (!recoveryAttempter)
     {
       goto LABEL_19;
     }
   }
 
-  [v14 setObject:v19 forKey:*MEMORY[0x1E696A8A8]];
+  [v14 setObject:recoveryAttempter forKey:*MEMORY[0x1E696A8A8]];
 
 LABEL_19:
   v20 = MEMORY[0x1E696ABC0];
-  v21 = [v9 domain];
-  v22 = [v20 errorWithDomain:v21 code:objc_msgSend(v9 userInfo:{"code"), v14}];
+  domain = [errorCopy domain];
+  v22 = [v20 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v14}];
 
   return v22;
 }
@@ -2222,16 +2222,16 @@ LABEL_19:
   v8 = completionHandler;
   if (![(UIDocument *)self _isOpen])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = [(UIDocument *)self fileURL];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:1192 description:{@"attempt to revert document at URL (%@) to URL (%@) that is not yet open", v12, v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    fileURL = [(UIDocument *)self fileURL];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocument.m" lineNumber:1192 description:{@"attempt to revert document at URL (%@) to URL (%@) that is not yet open", fileURL, v7}];
   }
 
   v9 = _UIDocumentLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v7;
     _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "document: %@ reverting to contents of URL: %@", buf, 0x16u);
@@ -2430,16 +2430,16 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
   return 0;
 }
 
-+ (void)_finishWritingToURL:(id)a3 withTemporaryDirectoryURL:(id)a4 newContentsURL:(id)a5 afterSuccess:(BOOL)a6
++ (void)_finishWritingToURL:(id)l withTemporaryDirectoryURL:(id)rL newContentsURL:(id)uRL afterSuccess:(BOOL)success
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (v9 && !a6)
+  rLCopy = rL;
+  uRLCopy = uRL;
+  if (uRLCopy && !success)
   {
     v10 = objc_alloc_init(MEMORY[0x1E696AC08]);
     v14 = 0;
-    v11 = [v10 removeItemAtURL:v9 error:&v14];
+    v11 = [v10 removeItemAtURL:uRLCopy error:&v14];
     v12 = v14;
     if ((v11 & 1) == 0)
     {
@@ -2447,7 +2447,7 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v16 = v9;
+        v16 = uRLCopy;
         v17 = 2112;
         v18 = v12;
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "UIDocument could not delete the temporary item at %@. Here's the error:\n%@", buf, 0x16u);
@@ -2455,64 +2455,64 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
     }
   }
 
-  [MEMORY[0x1E696AC38] _removeTemporaryDirectoryAtURL:v8];
+  [MEMORY[0x1E696AC38] _removeTemporaryDirectoryAtURL:rLCopy];
 }
 
-- (id)_presentableFileNameForSaveOperation:(int64_t)a3 url:(id)a4
+- (id)_presentableFileNameForSaveOperation:(int64_t)operation url:(id)url
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 != 1 || (v11 = 0, [v5 getResourceValue:&v11 forKey:*MEMORY[0x1E695DC10] error:0], (v7 = v11) == 0))
+  urlCopy = url;
+  v6 = urlCopy;
+  if (operation != 1 || (v11 = 0, [urlCopy getResourceValue:&v11 forKey:*MEMORY[0x1E695DC10] error:0], (stringByDeletingPathExtension = v11) == 0))
   {
-    v8 = [v6 lastPathComponent];
-    v9 = [v8 stringByReplacingOccurrencesOfString:@":" withString:@"/"];
-    v7 = [v9 stringByDeletingPathExtension];
+    lastPathComponent = [v6 lastPathComponent];
+    v9 = [lastPathComponent stringByReplacingOccurrencesOfString:@":" withString:@"/"];
+    stringByDeletingPathExtension = [v9 stringByDeletingPathExtension];
   }
 
-  return v7;
+  return stringByDeletingPathExtension;
 }
 
-- (id)_readingProgressForURL:(id)a3
+- (id)_readingProgressForURL:(id)l
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AE38];
-  v4 = a3;
+  lCopy = l;
   v5 = [v3 alloc];
-  v6 = [MEMORY[0x1E696AE38] currentProgress];
+  currentProgress = [MEMORY[0x1E696AE38] currentProgress];
   v7 = *MEMORY[0x1E696A858];
   v12[0] = *MEMORY[0x1E696A880];
   v12[1] = v7;
   v8 = *MEMORY[0x1E696A860];
-  v13[0] = v4;
+  v13[0] = lCopy;
   v13[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  v10 = [v5 initWithParent:v6 userInfo:v9];
+  v10 = [v5 initWithParent:currentProgress userInfo:v9];
   [v10 setKind:*MEMORY[0x1E696A888]];
   [v10 setTotalUnitCount:1];
 
   return v10;
 }
 
-- (id)_writingProgressForURL:(id)a3 indeterminate:(BOOL)a4
+- (id)_writingProgressForURL:(id)l indeterminate:(BOOL)indeterminate
 {
-  v4 = a4;
+  indeterminateCopy = indeterminate;
   v16[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AE38];
-  v6 = a3;
+  lCopy = l;
   v7 = [v5 alloc];
-  v8 = [MEMORY[0x1E696AE38] currentProgress];
+  currentProgress = [MEMORY[0x1E696AE38] currentProgress];
   v9 = *MEMORY[0x1E696A858];
   v15[0] = *MEMORY[0x1E696A880];
   v15[1] = v9;
   v10 = *MEMORY[0x1E696A840];
-  v16[0] = v6;
+  v16[0] = lCopy;
   v16[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  v12 = [v7 initWithParent:v8 userInfo:v11];
+  v12 = [v7 initWithParent:currentProgress userInfo:v11];
   [v12 setKind:*MEMORY[0x1E696A888]];
-  if (v4)
+  if (indeterminateCopy)
   {
     v13 = -1;
   }
@@ -2537,7 +2537,7 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "document performing writeContents:andAttributes:safelyToURL: %@", buf, 0xCu);
   }
 
@@ -2549,9 +2549,9 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
     v32 = v16;
     v33 = v13;
     v19 = MEMORY[0x1E695DFF8];
-    v20 = [v17 path];
-    v21 = [(NSURL *)v14 lastPathComponent];
-    [v20 stringByAppendingPathComponent:v21];
+    path = [v17 path];
+    lastPathComponent = [(NSURL *)v14 lastPathComponent];
+    [path stringByAppendingPathComponent:lastPathComponent];
     v22 = saveOperation;
     v24 = v23 = v12;
     v25 = [v19 fileURLWithPath:v24 isDirectory:0];
@@ -2559,8 +2559,8 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
     v12 = v23;
     v26 = v22;
 
-    v27 = [(UIDocument *)self fileURL];
-    if ([(UIDocument *)self writeContents:v12 toURL:v25 forSaveOperation:v22 originalContentsURL:v27 error:outError])
+    fileURL = [(UIDocument *)self fileURL];
+    if ([(UIDocument *)self writeContents:v12 toURL:v25 forSaveOperation:v22 originalContentsURL:fileURL error:outError])
     {
       v28 = v32;
       v13 = v33;
@@ -2615,7 +2615,7 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_DEFAULT, "document performing writeContents:toURL: %@", buf, 0xCu);
   }
 
@@ -2629,8 +2629,8 @@ void __32__UIDocument_readFromURL_error___block_invoke(uint64_t a1)
     goto LABEL_18;
   }
 
-  v17 = [(UIDocument *)self fileURL];
-  v18 = [(UIDocument *)self _writingProgressForURL:v17 indeterminate:1];
+  fileURL = [(UIDocument *)self fileURL];
+  v18 = [(UIDocument *)self _writingProgressForURL:fileURL indeterminate:1];
 
   if (dyld_program_sdk_at_least())
   {
@@ -2685,32 +2685,32 @@ LABEL_18:
 
 - (NSDictionary)fileAttributesToWriteToURL:(NSURL *)url forSaveOperation:(UIDocumentSaveOperation)saveOperation error:(NSError *)outError
 {
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (saveOperation != UIDocumentSaveForOverwriting)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v6 setObject:v7 forKey:*MEMORY[0x1E696A318]];
+    [dictionary setObject:v7 forKey:*MEMORY[0x1E696A318]];
   }
 
-  return v6;
+  return dictionary;
 }
 
-+ (BOOL)_url:(id)a3 matchesURL:(id)a4
++ (BOOL)_url:(id)_url matchesURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 isEqual:v5];
+  _urlCopy = _url;
+  lCopy = l;
+  v7 = [lCopy isEqual:_urlCopy];
   v8 = v7;
-  if (v6 && v5 && !v7)
+  if (lCopy && _urlCopy && !v7)
   {
     v14 = 0;
     v9 = *MEMORY[0x1E695DB00];
-    v10 = [v5 getResourceValue:&v14 forKey:*MEMORY[0x1E695DB00] error:0];
+    v10 = [_urlCopy getResourceValue:&v14 forKey:*MEMORY[0x1E695DB00] error:0];
     v11 = v14;
     if (v10)
     {
       v13 = 0;
-      if ([v6 getResourceValue:&v13 forKey:v9 error:0])
+      if ([lCopy getResourceValue:&v13 forKey:v9 error:0])
       {
         v8 = [v11 isEqual:v13];
       }
@@ -2720,14 +2720,14 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)_coordinateWritingItemAtURL:(id)a3 error:(id *)a4 byAccessor:(id)a5
+- (BOOL)_coordinateWritingItemAtURL:(id)l error:(id *)error byAccessor:(id)accessor
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  accessorCopy = accessor;
   v10 = objc_opt_class();
-  v11 = [(UIDocument *)self fileURL];
-  LOBYTE(v10) = [v10 _url:v11 matchesURL:v8];
+  fileURL = [(UIDocument *)self fileURL];
+  LOBYTE(v10) = [v10 _url:fileURL matchesURL:lCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -2747,22 +2747,22 @@ LABEL_18:
     if (v15)
     {
       *buf = 138412546;
-      v33 = self;
+      selfCopy3 = self;
       v34 = 2112;
-      v35 = v8;
+      v35 = lCopy;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "document: %@ attempting coordinated writing for moving to new URL: %@", buf, 0x16u);
     }
 
-    v18 = [(UIDocument *)self fileURL];
+    fileURL2 = [(UIDocument *)self fileURL];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __59__UIDocument__coordinateWritingItemAtURL_error_byAccessor___block_invoke;
     v25[3] = &unk_1E7105B08;
     v25[4] = self;
     v27[1] = &v28;
-    v27[0] = v9;
+    v27[0] = accessorCopy;
     v26 = v12;
-    [v26 coordinateWritingItemAtURL:v18 options:2 writingItemAtURL:v8 options:8 error:a4 byAccessor:v25];
+    [v26 coordinateWritingItemAtURL:fileURL2 options:2 writingItemAtURL:lCopy options:8 error:error byAccessor:v25];
 
     v16 = v27;
     v17 = &v26;
@@ -2773,7 +2773,7 @@ LABEL_18:
     if (v15)
     {
       *buf = 138412290;
-      v33 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "document attempting coordinated writing: %@", buf, 0xCu);
     }
 
@@ -2783,9 +2783,9 @@ LABEL_18:
     v22[3] = &unk_1E7105B30;
     v22[4] = self;
     v24[1] = &v28;
-    v24[0] = v9;
+    v24[0] = accessorCopy;
     v23 = v12;
-    [v23 coordinateWritingItemAtURL:v8 options:0 error:a4 byAccessor:v22];
+    [v23 coordinateWritingItemAtURL:lCopy options:0 error:error byAccessor:v22];
     v16 = v24;
     v17 = &v23;
   }
@@ -2801,11 +2801,11 @@ LABEL_18:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_DEFAULT, "document failed to start coordinated writing: %@", buf, 0xCu);
     }
 
-    (*(v9 + 2))(v9, 0, 0);
+    (*(accessorCopy + 2))(accessorCopy, 0, 0);
     v19 = *(v29 + 24);
   }
 
@@ -2855,7 +2855,7 @@ void __59__UIDocument__coordinateWritingItemAtURL_error_byAccessor___block_invok
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document invoked default implementation of contentsForType:error: which only returns nil: %@", &v7, 0xCu);
   }
 
@@ -2867,10 +2867,10 @@ void __59__UIDocument__coordinateWritingItemAtURL_error_byAccessor___block_invok
   v49 = *MEMORY[0x1E69E9840];
   v8 = url;
   v9 = completionHandler;
-  v10 = [(UIDocument *)self savingFileType];
-  v11 = [(UIDocument *)self fileType];
-  v12 = v10;
-  v13 = v11;
+  savingFileType = [(UIDocument *)self savingFileType];
+  fileType = [(UIDocument *)self fileType];
+  v12 = savingFileType;
+  v13 = fileType;
   v14 = v13;
   if (v12 == v13)
   {
@@ -2894,15 +2894,15 @@ LABEL_7:
 
 LABEL_9:
   v17 = [(UIDocument *)self fileNameExtensionForType:v12 saveOperation:saveOperation];
-  v18 = [(NSURL *)v8 URLByDeletingPathExtension];
-  v16 = [v18 URLByAppendingPathExtension:v17];
+  uRLByDeletingPathExtension = [(NSURL *)v8 URLByDeletingPathExtension];
+  v16 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v17];
 
 LABEL_10:
   v19 = _UIDocumentLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v42 = self;
+    selfCopy3 = self;
     v43 = 2112;
     v44 = v8;
     v45 = 2112;
@@ -2931,8 +2931,8 @@ LABEL_10:
 
 LABEL_21:
     [(UIDocument *)self _registerAsFilePresenterIfNecessary];
-    v27 = [(UIDocument *)self undoManager];
-    [v27 _processEndOfEventNotification:0];
+    undoManager = [(UIDocument *)self undoManager];
+    [undoManager _processEndOfEventNotification:0];
 
     v28 = [(UIDocument *)self changeCountTokenForSaveOperation:saveOperation];
     v31[0] = MEMORY[0x1E69E9820];
@@ -2962,7 +2962,7 @@ LABEL_14:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v42 = self;
+    selfCopy3 = self;
     v43 = 2112;
     v44 = v21;
     _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_DEFAULT, "document: %@ got error from contentsForType:error: %@", buf, 0x16u);
@@ -2975,7 +2975,7 @@ LABEL_14:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEFAULT, "document will perform saving completion handler on completion handler queue: %@", buf, 0xCu);
     }
 
@@ -3246,37 +3246,37 @@ uint64_t __59__UIDocument_saveToURL_forSaveOperation_completionHandler___block_i
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_finishSavingToURL:(id)a3 forSaveOperation:(int64_t)a4 changeCount:(id)a5
+- (void)_finishSavingToURL:(id)l forSaveOperation:(int64_t)operation changeCount:(id)count
 {
-  v14 = a3;
-  v8 = a5;
+  lCopy = l;
+  countCopy = count;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E695DA98], *MEMORY[0x1E695DC10], 0}];
-  v10 = [v14 resourceValuesForKeys:v9 error:0];
+  v10 = [lCopy resourceValuesForKeys:v9 error:0];
 
   v11 = objc_opt_class();
-  if (a4 <= 1)
+  if (operation <= 1)
   {
     v12 = v11;
-    [(UIDocument *)self _setFileURL:v14];
+    [(UIDocument *)self _setFileURL:lCopy];
     [(UIDocument *)self setFileType:0];
-    v13 = [v12 _fileModificationDateForURL:v14];
+    v13 = [v12 _fileModificationDateForURL:lCopy];
     [(UIDocument *)self setFileModificationDate:v13];
 
     [(UIDocument *)self _updateLocalizedName];
-    [(UIDocument *)self updateChangeCountWithToken:v8 forSaveOperation:a4];
+    [(UIDocument *)self updateChangeCountWithToken:countCopy forSaveOperation:operation];
   }
 }
 
-+ (void)_autosavingTimerDidFireSoContinue:(id)a3
++ (void)_autosavingTimerDidFireSoContinue:(id)continue
 {
-  v3 = [a3 userInfo];
-  v3[2]();
+  userInfo = [continue userInfo];
+  userInfo[2]();
 }
 
-- (void)_autosavingCompletedSuccessfully:(BOOL)a3
+- (void)_autosavingCompletedSuccessfully:(BOOL)successfully
 {
   *&self->_docFlags &= ~0x10u;
-  if (a3)
+  if (successfully)
   {
     if ([(UIDocument *)self hasUnsavedChanges])
     {
@@ -3294,7 +3294,7 @@ uint64_t __59__UIDocument_saveToURL_forSaveOperation_completionHandler___block_i
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "document is rescheduling autosaving: %@", &v9, 0xCu);
   }
 
@@ -3336,10 +3336,10 @@ uint64_t __59__UIDocument_saveToURL_forSaveOperation_completionHandler___block_i
   }
 }
 
-- (void)_scheduleAutosavingAfterDelay:(double)a3 reset:(BOOL)a4
+- (void)_scheduleAutosavingAfterDelay:(double)delay reset:(BOOL)reset
 {
   v24 = *MEMORY[0x1E69E9840];
-  if ((*&self->_docFlags & 0x10) != 0 || ((v5 = a4, v7 = [(UIDocument *)self hasUnsavedChanges], a3 < 1.79769313e308) ? (v8 = !v7) : (v8 = 1), v8))
+  if ((*&self->_docFlags & 0x10) != 0 || ((v5 = reset, v7 = [(UIDocument *)self hasUnsavedChanges], delay < 1.79769313e308) ? (v8 = !v7) : (v8 = 1), v8))
   {
     if (self->_autosavingTimer)
     {
@@ -3347,7 +3347,7 @@ uint64_t __59__UIDocument_saveToURL_forSaveOperation_completionHandler___block_i
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "document is unscheduling autosaving: %@", buf, 0xCu);
       }
 
@@ -3384,9 +3384,9 @@ LABEL_16:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2048;
-        v23 = a3;
+        delayCopy = delay;
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "document: %@ scheduling autosaving with delay: %f", buf, 0x16u);
       }
 
@@ -3398,7 +3398,7 @@ LABEL_16:
       v19[3] = &unk_1E70F3590;
       v19[4] = self;
       v16 = [v19 copy];
-      v17 = [v14 scheduledTimerWithTimeInterval:v15 target:sel__autosavingTimerDidFireSoContinue_ selector:v16 userInfo:0 repeats:a3];
+      v17 = [v14 scheduledTimerWithTimeInterval:v15 target:sel__autosavingTimerDidFireSoContinue_ selector:v16 userInfo:0 repeats:delay];
       v18 = self->_autosavingTimer;
       self->_autosavingTimer = v17;
     }
@@ -3424,15 +3424,15 @@ uint64_t __50__UIDocument__scheduleAutosavingAfterDelay_reset___block_invoke(uin
   [(UIDocument *)self _scheduleAutosavingAfterDelay:0 reset:?];
 }
 
-- (void)_saveUnsavedChangesWithCompletionHandler:(id)a3
+- (void)_saveUnsavedChangesWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document will save if necessary: %@", buf, 0xCu);
   }
 
@@ -3450,10 +3450,10 @@ uint64_t __50__UIDocument__scheduleAutosavingAfterDelay_reset___block_invoke(uin
   v11[2] = __55__UIDocument__saveUnsavedChangesWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E70F6150;
   v12 = v6;
-  v13 = v4;
+  v13 = handlerCopy;
   v11[4] = self;
   v9 = v6;
-  v10 = v4;
+  v10 = handlerCopy;
   [(UIDocument *)self performAsynchronousFileAccessUsingBlock:v11];
 }
 
@@ -3651,15 +3651,15 @@ uint64_t __55__UIDocument__saveUnsavedChangesWithCompletionHandler___block_invok
   return result;
 }
 
-- (void)_autosaveWithCompletionHandler:(id)a3
+- (void)_autosaveWithCompletionHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document is invoking autosaving and waiting for completion handler: %@", buf, 0xCu);
   }
 
@@ -3668,8 +3668,8 @@ uint64_t __55__UIDocument__saveUnsavedChangesWithCompletionHandler___block_invok
   v7[2] = __45__UIDocument__autosaveWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E70FE248;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(UIDocument *)self autosaveWithCompletionHandler:v7];
 }
 
@@ -3698,44 +3698,44 @@ uint64_t __45__UIDocument__autosaveWithCompletionHandler___block_invoke(uint64_t
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  docFlags = v5->_docFlags;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  docFlags = selfCopy->_docFlags;
   if ((docFlags & 3) == 2)
   {
-    *&v5->_docFlags = docFlags | 1;
+    *&selfCopy->_docFlags = docFlags | 1;
     v7 = _UIDocumentLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = selfCopy;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "document now closing: %@", buf, 0xCu);
     }
 
-    v8 = [(UIDocument *)v5 _userActivity];
-    if (v8)
+    _userActivity = [(UIDocument *)selfCopy _userActivity];
+    if (_userActivity)
     {
-      [UIApp _removeDocument:v5 forUserActivity:v8];
+      [UIApp _removeDocument:selfCopy forUserActivity:_userActivity];
     }
 
-    autosavingTimer = v5->_autosavingTimer;
+    autosavingTimer = selfCopy->_autosavingTimer;
     if (autosavingTimer)
     {
       [(NSTimer *)autosavingTimer invalidate];
-      v10 = v5->_autosavingTimer;
-      v5->_autosavingTimer = 0;
+      v10 = selfCopy->_autosavingTimer;
+      selfCopy->_autosavingTimer = 0;
     }
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __41__UIDocument_closeWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E70FE248;
-    v11[4] = v5;
+    v11[4] = selfCopy;
     v12 = v4;
-    [(UIDocument *)v5 _saveUnsavedChangesWithCompletionHandler:v11];
+    [(UIDocument *)selfCopy _saveUnsavedChangesWithCompletionHandler:v11];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __41__UIDocument_closeWithCompletionHandler___block_invoke(uint64_t a1)
@@ -3760,16 +3760,16 @@ uint64_t __41__UIDocument_closeWithCompletionHandler___block_invoke(uint64_t a1)
 
 - (BOOL)_hasUnsavedChanges
 {
-  v3 = [(UIDocument *)self differenceSinceSaving];
-  if ([v3 generationCount])
+  differenceSinceSaving = [(UIDocument *)self differenceSinceSaving];
+  if ([differenceSinceSaving generationCount])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UIDocument *)self differenceSinceSaving];
-    v4 = [v5 changeCount] != 0;
+    differenceSinceSaving2 = [(UIDocument *)self differenceSinceSaving];
+    v4 = [differenceSinceSaving2 changeCount] != 0;
   }
 
   return v4;
@@ -3782,7 +3782,7 @@ uint64_t __41__UIDocument_closeWithCompletionHandler___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 138412546;
-    v29 = self;
+    selfCopy = self;
     v30 = 2048;
     v31 = change;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document: %@ updating change count with change type: %ld", &v28, 0x16u);
@@ -3794,20 +3794,20 @@ uint64_t __41__UIDocument_closeWithCompletionHandler___block_invoke(uint64_t a1)
     {
       if (change == UIDocumentChangeCleared)
       {
-        v10 = [(UIDocument *)self differenceSinceSaving];
-        [v10 setGenerationCount:0];
+        differenceSinceSaving = [(UIDocument *)self differenceSinceSaving];
+        [differenceSinceSaving setGenerationCount:0];
 
-        v11 = [(UIDocument *)self differenceSinceSaving];
-        [v11 setChangeCount:0];
+        differenceSinceSaving2 = [(UIDocument *)self differenceSinceSaving];
+        [differenceSinceSaving2 setChangeCount:0];
 
-        v12 = [(UIDocument *)self differenceDueToRecentChanges];
-        [v12 setGenerationCount:0];
+        differenceDueToRecentChanges = [(UIDocument *)self differenceDueToRecentChanges];
+        [differenceDueToRecentChanges setGenerationCount:0];
 
-        v13 = [(UIDocument *)self differenceDueToRecentChanges];
-        v8 = v13;
+        differenceDueToRecentChanges2 = [(UIDocument *)self differenceDueToRecentChanges];
+        differenceSinceSaving7 = differenceDueToRecentChanges2;
         v9 = 0;
 LABEL_22:
-        [v13 setChangeCount:v9];
+        [differenceDueToRecentChanges2 setChangeCount:v9];
 
         goto LABEL_23;
       }
@@ -3815,16 +3815,16 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v26 = [(UIDocument *)self differenceDueToRecentChanges];
-    [v26 setChangeCount:{objc_msgSend(v26, "changeCount") + 1}];
+    differenceDueToRecentChanges3 = [(UIDocument *)self differenceDueToRecentChanges];
+    [differenceDueToRecentChanges3 setChangeCount:{objc_msgSend(differenceDueToRecentChanges3, "changeCount") + 1}];
 
-    v27 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-    [v27 setChangeCount:{objc_msgSend(v27, "changeCount") + 1}];
+    differenceSincePreservingPreviousVersion = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+    [differenceSincePreservingPreviousVersion setChangeCount:{objc_msgSend(differenceSincePreservingPreviousVersion, "changeCount") + 1}];
 
-    v25 = [(UIDocument *)self differenceSinceSaving];
+    differenceSinceSaving3 = [(UIDocument *)self differenceSinceSaving];
 LABEL_20:
-    v8 = v25;
-    v9 = [v25 changeCount] + 1;
+    differenceSinceSaving7 = differenceSinceSaving3;
+    v9 = [differenceSinceSaving3 changeCount] + 1;
     goto LABEL_21;
   }
 
@@ -3835,55 +3835,55 @@ LABEL_20:
       self->_lastSaveTime = CFAbsoluteTimeGetCurrent();
     }
 
-    v14 = [(UIDocument *)self differenceSinceSaving];
-    v15 = [v14 changeCount];
+    differenceSinceSaving4 = [(UIDocument *)self differenceSinceSaving];
+    changeCount = [differenceSinceSaving4 changeCount];
 
-    if (v15 < 0)
+    if (changeCount < 0)
     {
-      v16 = [(UIDocument *)self differenceSinceSaving];
-      [v16 setGenerationCount:{objc_msgSend(v16, "generationCount") + 1}];
+      differenceSinceSaving5 = [(UIDocument *)self differenceSinceSaving];
+      [differenceSinceSaving5 setGenerationCount:{objc_msgSend(differenceSinceSaving5, "generationCount") + 1}];
     }
 
-    v17 = [(UIDocument *)self differenceSinceSaving];
-    [v17 setChangeCount:{objc_msgSend(v17, "changeCount") + 1}];
+    differenceSinceSaving6 = [(UIDocument *)self differenceSinceSaving];
+    [differenceSinceSaving6 setChangeCount:{objc_msgSend(differenceSinceSaving6, "changeCount") + 1}];
 
-    v18 = [(UIDocument *)self differenceDueToRecentChanges];
-    v19 = [v18 changeCount];
+    differenceDueToRecentChanges4 = [(UIDocument *)self differenceDueToRecentChanges];
+    changeCount2 = [differenceDueToRecentChanges4 changeCount];
 
-    if (v19 < 0)
+    if (changeCount2 < 0)
     {
-      v20 = [(UIDocument *)self differenceDueToRecentChanges];
-      [v20 setGenerationCount:{objc_msgSend(v20, "generationCount") + 1}];
+      differenceDueToRecentChanges5 = [(UIDocument *)self differenceDueToRecentChanges];
+      [differenceDueToRecentChanges5 setGenerationCount:{objc_msgSend(differenceDueToRecentChanges5, "generationCount") + 1}];
     }
 
-    v21 = [(UIDocument *)self differenceDueToRecentChanges];
-    [v21 setChangeCount:{objc_msgSend(v21, "changeCount") + 1}];
+    differenceDueToRecentChanges6 = [(UIDocument *)self differenceDueToRecentChanges];
+    [differenceDueToRecentChanges6 setChangeCount:{objc_msgSend(differenceDueToRecentChanges6, "changeCount") + 1}];
 
-    v22 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-    v23 = [v22 changeCount];
+    differenceSincePreservingPreviousVersion2 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+    changeCount3 = [differenceSincePreservingPreviousVersion2 changeCount];
 
-    if (v23 < 0)
+    if (changeCount3 < 0)
     {
-      v24 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-      [v24 setGenerationCount:{objc_msgSend(v24, "generationCount") + 1}];
+      differenceSincePreservingPreviousVersion3 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+      [differenceSincePreservingPreviousVersion3 setGenerationCount:{objc_msgSend(differenceSincePreservingPreviousVersion3, "generationCount") + 1}];
     }
 
-    v25 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+    differenceSinceSaving3 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
     goto LABEL_20;
   }
 
   if (change == UIDocumentChangeUndone)
   {
-    v6 = [(UIDocument *)self differenceDueToRecentChanges];
-    [v6 setChangeCount:{objc_msgSend(v6, "changeCount") - 1}];
+    differenceDueToRecentChanges7 = [(UIDocument *)self differenceDueToRecentChanges];
+    [differenceDueToRecentChanges7 setChangeCount:{objc_msgSend(differenceDueToRecentChanges7, "changeCount") - 1}];
 
-    v7 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-    [v7 setChangeCount:{objc_msgSend(v7, "changeCount") - 1}];
+    differenceSincePreservingPreviousVersion4 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+    [differenceSincePreservingPreviousVersion4 setChangeCount:{objc_msgSend(differenceSincePreservingPreviousVersion4, "changeCount") - 1}];
 
-    v8 = [(UIDocument *)self differenceSinceSaving];
-    v9 = [v8 changeCount] - 1;
+    differenceSinceSaving7 = [(UIDocument *)self differenceSinceSaving];
+    v9 = [differenceSinceSaving7 changeCount] - 1;
 LABEL_21:
-    v13 = v8;
+    differenceDueToRecentChanges2 = differenceSinceSaving7;
     goto LABEL_22;
   }
 
@@ -3894,46 +3894,46 @@ LABEL_23:
 - (id)changeCountTokenForSaveOperation:(UIDocumentSaveOperation)saveOperation
 {
   v5 = objc_alloc_init(NSDocumentDifferenceSizeTriple);
-  v6 = [(UIDocument *)self differenceDueToRecentChanges];
-  v7 = [v6 generationCount];
-  v8 = [(NSDocumentDifferenceSizeTriple *)v5 dueToRecentChangesBeforeSaving];
-  [v8 setGenerationCount:v7];
+  differenceDueToRecentChanges = [(UIDocument *)self differenceDueToRecentChanges];
+  generationCount = [differenceDueToRecentChanges generationCount];
+  dueToRecentChangesBeforeSaving = [(NSDocumentDifferenceSizeTriple *)v5 dueToRecentChangesBeforeSaving];
+  [dueToRecentChangesBeforeSaving setGenerationCount:generationCount];
 
-  v9 = [(UIDocument *)self differenceDueToRecentChanges];
-  v10 = [v9 changeCount];
-  v11 = [(NSDocumentDifferenceSizeTriple *)v5 dueToRecentChangesBeforeSaving];
-  [v11 setChangeCount:v10];
+  differenceDueToRecentChanges2 = [(UIDocument *)self differenceDueToRecentChanges];
+  changeCount = [differenceDueToRecentChanges2 changeCount];
+  dueToRecentChangesBeforeSaving2 = [(NSDocumentDifferenceSizeTriple *)v5 dueToRecentChangesBeforeSaving];
+  [dueToRecentChangesBeforeSaving2 setChangeCount:changeCount];
 
-  v12 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-  v13 = [v12 generationCount];
-  v14 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreservingPreviousVersionAndSaving];
-  [v14 setGenerationCount:v13];
+  differenceSincePreservingPreviousVersion = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+  generationCount2 = [differenceSincePreservingPreviousVersion generationCount];
+  betweenPreservingPreviousVersionAndSaving = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreservingPreviousVersionAndSaving];
+  [betweenPreservingPreviousVersionAndSaving setGenerationCount:generationCount2];
 
-  v15 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-  v16 = [v15 changeCount];
-  v17 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreservingPreviousVersionAndSaving];
-  [v17 setChangeCount:v16];
+  differenceSincePreservingPreviousVersion2 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+  changeCount2 = [differenceSincePreservingPreviousVersion2 changeCount];
+  betweenPreservingPreviousVersionAndSaving2 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreservingPreviousVersionAndSaving];
+  [betweenPreservingPreviousVersionAndSaving2 setChangeCount:changeCount2];
 
   if (saveOperation > UIDocumentSaveForOverwriting)
   {
-    v24 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
-    [v24 setGenerationCount:0];
+    betweenPreviousSavingAndSaving = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
+    [betweenPreviousSavingAndSaving setGenerationCount:0];
 
-    v21 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
-    [v21 setChangeCount:0];
+    betweenPreviousSavingAndSaving2 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
+    [betweenPreviousSavingAndSaving2 setChangeCount:0];
   }
 
   else
   {
-    v18 = [(UIDocument *)self differenceSinceSaving];
-    v19 = [v18 generationCount];
-    v20 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
-    [v20 setGenerationCount:v19];
+    differenceSinceSaving = [(UIDocument *)self differenceSinceSaving];
+    generationCount3 = [differenceSinceSaving generationCount];
+    betweenPreviousSavingAndSaving3 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
+    [betweenPreviousSavingAndSaving3 setGenerationCount:generationCount3];
 
-    v21 = [(UIDocument *)self differenceSinceSaving];
-    v22 = [v21 changeCount];
-    v23 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
-    [v23 setChangeCount:v22];
+    betweenPreviousSavingAndSaving2 = [(UIDocument *)self differenceSinceSaving];
+    changeCount3 = [betweenPreviousSavingAndSaving2 changeCount];
+    betweenPreviousSavingAndSaving4 = [(NSDocumentDifferenceSizeTriple *)v5 betweenPreviousSavingAndSaving];
+    [betweenPreviousSavingAndSaving4 setChangeCount:changeCount3];
   }
 
   return v5;
@@ -3944,71 +3944,71 @@ LABEL_23:
   if (saveOperation <= UIDocumentSaveForOverwriting)
   {
     v5 = changeCountToken;
-    v6 = [(UIDocument *)self differenceSinceSaving];
-    v7 = [v5 betweenPreviousSavingAndSaving];
-    [v6 setGenerationCount:{objc_msgSend(v6, "generationCount") - objc_msgSend(v7, "generationCount")}];
+    differenceSinceSaving = [(UIDocument *)self differenceSinceSaving];
+    betweenPreviousSavingAndSaving = [v5 betweenPreviousSavingAndSaving];
+    [differenceSinceSaving setGenerationCount:{objc_msgSend(differenceSinceSaving, "generationCount") - objc_msgSend(betweenPreviousSavingAndSaving, "generationCount")}];
 
-    v8 = [(UIDocument *)self differenceSinceSaving];
-    v9 = [v5 betweenPreviousSavingAndSaving];
-    [v8 setChangeCount:{objc_msgSend(v8, "changeCount") - objc_msgSend(v9, "changeCount")}];
+    differenceSinceSaving2 = [(UIDocument *)self differenceSinceSaving];
+    betweenPreviousSavingAndSaving2 = [v5 betweenPreviousSavingAndSaving];
+    [differenceSinceSaving2 setChangeCount:{objc_msgSend(differenceSinceSaving2, "changeCount") - objc_msgSend(betweenPreviousSavingAndSaving2, "changeCount")}];
 
-    v10 = [(UIDocument *)self differenceDueToRecentChanges];
-    v11 = [v5 dueToRecentChangesBeforeSaving];
-    [v10 setGenerationCount:{objc_msgSend(v10, "generationCount") - objc_msgSend(v11, "generationCount")}];
+    differenceDueToRecentChanges = [(UIDocument *)self differenceDueToRecentChanges];
+    dueToRecentChangesBeforeSaving = [v5 dueToRecentChangesBeforeSaving];
+    [differenceDueToRecentChanges setGenerationCount:{objc_msgSend(differenceDueToRecentChanges, "generationCount") - objc_msgSend(dueToRecentChangesBeforeSaving, "generationCount")}];
 
-    v12 = [(UIDocument *)self differenceDueToRecentChanges];
-    v13 = [v5 dueToRecentChangesBeforeSaving];
-    [v12 setChangeCount:{objc_msgSend(v12, "changeCount") - objc_msgSend(v13, "changeCount")}];
+    differenceDueToRecentChanges2 = [(UIDocument *)self differenceDueToRecentChanges];
+    dueToRecentChangesBeforeSaving2 = [v5 dueToRecentChangesBeforeSaving];
+    [differenceDueToRecentChanges2 setChangeCount:{objc_msgSend(differenceDueToRecentChanges2, "changeCount") - objc_msgSend(dueToRecentChangesBeforeSaving2, "changeCount")}];
 
-    v14 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-    v15 = [v5 betweenPreservingPreviousVersionAndSaving];
-    [v14 setGenerationCount:{objc_msgSend(v14, "generationCount") - objc_msgSend(v15, "generationCount")}];
+    differenceSincePreservingPreviousVersion = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+    betweenPreservingPreviousVersionAndSaving = [v5 betweenPreservingPreviousVersionAndSaving];
+    [differenceSincePreservingPreviousVersion setGenerationCount:{objc_msgSend(differenceSincePreservingPreviousVersion, "generationCount") - objc_msgSend(betweenPreservingPreviousVersionAndSaving, "generationCount")}];
 
-    v16 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
-    v17 = [v5 dueToRecentChangesBeforeSaving];
+    differenceSincePreservingPreviousVersion2 = [(UIDocument *)self differenceSincePreservingPreviousVersion];
+    dueToRecentChangesBeforeSaving3 = [v5 dueToRecentChangesBeforeSaving];
 
-    [v16 setChangeCount:{objc_msgSend(v16, "changeCount") - objc_msgSend(v17, "changeCount")}];
+    [differenceSincePreservingPreviousVersion2 setChangeCount:{objc_msgSend(differenceSincePreservingPreviousVersion2, "changeCount") - objc_msgSend(dueToRecentChangesBeforeSaving3, "changeCount")}];
   }
 
   [(UIDocument *)self _scheduleAutosaving];
 }
 
-- (void)_changeWasDone:(id)a3
+- (void)_changeWasDone:(id)done
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  doneCopy = done;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document undoManager change was done: %@", &v11, 0xCu);
   }
 
-  v6 = [v4 object];
-  v7 = [v6 groupingLevel];
+  object = [doneCopy object];
+  groupingLevel = [object groupingLevel];
 
-  if (v7 <= 1)
+  if (groupingLevel <= 1)
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:@"NSUndoManagerGroupIsEmpty"];
-    v10 = [v9 BOOLValue];
+    userInfo = [doneCopy userInfo];
+    v9 = [userInfo objectForKey:@"NSUndoManagerGroupIsEmpty"];
+    bOOLValue = [v9 BOOLValue];
 
-    if ((v10 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [(UIDocument *)self updateChangeCount:0];
     }
   }
 }
 
-- (void)_changeWasUndone:(id)a3
+- (void)_changeWasUndone:(id)undone
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIDocumentLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "document undoManager change was undone: %@", &v5, 0xCu);
   }
 
@@ -4018,14 +4018,14 @@ LABEL_23:
   }
 }
 
-- (void)_changeWasRedone:(id)a3
+- (void)_changeWasRedone:(id)redone
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIDocumentLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "document undoManager change was redone: %@", &v5, 0xCu);
   }
 
@@ -4039,11 +4039,11 @@ LABEL_23:
 {
   if (self->_undoManager)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA30] object:self->_undoManager];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA28] object:self->_undoManager];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA38] object:self->_undoManager];
-    [v4 removeObserver:self name:*MEMORY[0x1E696AA20] object:self->_undoManager];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA30] object:self->_undoManager];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA28] object:self->_undoManager];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA38] object:self->_undoManager];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E696AA20] object:self->_undoManager];
     undoManager = self->_undoManager;
     self->_undoManager = 0;
   }
@@ -4064,10 +4064,10 @@ LABEL_23:
     objc_storeStrong(&self->_undoManager, undoManager);
     if (self->_undoManager)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:self selector:sel__changeWasUndone_ name:*MEMORY[0x1E696AA30] object:self->_undoManager];
-      [v7 addObserver:self selector:sel__changeWasRedone_ name:*MEMORY[0x1E696AA28] object:self->_undoManager];
-      [v7 addObserver:self selector:sel__changeWasDone_ name:*MEMORY[0x1E696AA38] object:self->_undoManager];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__changeWasUndone_ name:*MEMORY[0x1E696AA30] object:self->_undoManager];
+      [defaultCenter addObserver:self selector:sel__changeWasRedone_ name:*MEMORY[0x1E696AA28] object:self->_undoManager];
+      [defaultCenter addObserver:self selector:sel__changeWasDone_ name:*MEMORY[0x1E696AA38] object:self->_undoManager];
     }
   }
 }
@@ -4098,15 +4098,15 @@ LABEL_23:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v6;
     _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "document: %@ handling error: %@", buf, 0x16u);
   }
 
-  v8 = [(NSError *)v6 recoveryAttempter];
-  v9 = v8;
-  if (v4 && v8)
+  recoveryAttempter = [(NSError *)v6 recoveryAttempter];
+  v9 = recoveryAttempter;
+  if (v4 && recoveryAttempter)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v9 attemptSilentRecoveryFromError:v6 error:0])
@@ -4124,7 +4124,7 @@ LABEL_23:
       goto LABEL_13;
     }
 
-    v10 = self;
+    selfCopy3 = self;
     v11 = v6;
     v12 = 1;
   }
@@ -4134,21 +4134,21 @@ LABEL_23:
     v13 = _UIDocumentLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(NSError *)v6 localizedDescription];
-      v15 = [(NSError *)v6 localizedFailureReason];
+      localizedDescription = [(NSError *)v6 localizedDescription];
+      localizedFailureReason = [(NSError *)v6 localizedFailureReason];
       *buf = 138412546;
-      v21 = v14;
+      selfCopy = localizedDescription;
       v22 = 2112;
-      v23 = v15;
+      v23 = localizedFailureReason;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "UIDocument unrecoverable error with description: %@ reason: %@", buf, 0x16u);
     }
 
-    v10 = self;
+    selfCopy3 = self;
     v11 = v6;
     v12 = 0;
   }
 
-  [(UIDocument *)v10 finishedHandlingError:v11 recovered:v12];
+  [(UIDocument *)selfCopy3 finishedHandlingError:v11 recovered:v12];
 LABEL_13:
 }
 
@@ -4174,12 +4174,12 @@ uint64_t __51__UIDocument_handleError_userInteractionPermitted___block_invoke(ui
     v7 = _UIDocumentLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NSError *)v6 localizedDescription];
-      v9 = [(NSError *)v6 localizedFailureReason];
+      localizedDescription = [(NSError *)v6 localizedDescription];
+      localizedFailureReason = [(NSError *)v6 localizedFailureReason];
       v10 = 138412546;
-      v11 = v8;
+      v11 = localizedDescription;
       v12 = 2112;
-      v13 = v9;
+      v13 = localizedFailureReason;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEFAULT, "Failed to recover from error with description: %@ reason: %@", &v10, 0x16u);
     }
   }
@@ -4189,21 +4189,21 @@ uint64_t __51__UIDocument_handleError_userInteractionPermitted___block_invoke(ui
 
 - (void)_updateLocalizedName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(NSURL *)v2->_fileURL path];
-  v5 = [v3 displayNameAtPath:v4];
-  v6 = [v5 stringByDeletingPathExtension];
-  localizedName = v2->_localizedName;
-  v2->_localizedName = v6;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [(NSURL *)selfCopy->_fileURL path];
+  v5 = [defaultManager displayNameAtPath:path];
+  stringByDeletingPathExtension = [v5 stringByDeletingPathExtension];
+  localizedName = selfCopy->_localizedName;
+  selfCopy->_localizedName = stringByDeletingPathExtension;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__UIDocument__updateLocalizedName__block_invoke;
   block[3] = &unk_1E70F3590;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -4215,10 +4215,10 @@ void __34__UIDocument__updateLocalizedName__block_invoke(uint64_t a1)
 
 - (NSString)localizedName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_localizedName;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_localizedName;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -4226,56 +4226,56 @@ void __34__UIDocument__updateLocalizedName__block_invoke(uint64_t a1)
 - (NSString)fileNameExtensionForType:(NSString *)typeName saveOperation:(UIDocumentSaveOperation)saveOperation
 {
   v4 = [MEMORY[0x1E6982C40] typeWithIdentifier:{typeName, saveOperation}];
-  v5 = [v4 preferredFilenameExtension];
+  preferredFilenameExtension = [v4 preferredFilenameExtension];
 
-  return v5;
+  return preferredFilenameExtension;
 }
 
-- (void)relinquishPresentedItemToReader:(id)a3
+- (void)relinquishPresentedItemToReader:(id)reader
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  readerCopy = reader;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document relinquishing to reader: %@", &v6, 0xCu);
   }
 
-  if (v4)
+  if (readerCopy)
   {
-    v4[2](v4, 0);
+    readerCopy[2](readerCopy, 0);
   }
 }
 
 - (BOOL)_shouldAllowWritingInResponseToPresenterMessage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = (*&v2->_docFlags & 6) == 2;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = (*&selfCopy->_docFlags & 6) == 2;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_updatePermissionsState:(BOOL)a3
+- (void)_updatePermissionsState:(BOOL)state
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  if (a3 && dyld_program_sdk_at_least())
+  if (state && dyld_program_sdk_at_least())
   {
     v4 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:self];
-    v5 = [(UIDocument *)self fileURL];
+    fileURL = [(UIDocument *)self fileURL];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __38__UIDocument__updatePermissionsState___block_invoke;
     v6[3] = &unk_1E7105BF8;
     v6[4] = self;
     v6[5] = &v7;
-    [v4 coordinateReadingItemAtURL:v5 options:4 error:0 byAccessor:v6];
+    [v4 coordinateReadingItemAtURL:fileURL options:4 error:0 byAccessor:v6];
   }
 
   [(UIDocument *)self _setEditingDisabledDueToPermissions:*(v8 + 24)];
@@ -4290,29 +4290,29 @@ void __38__UIDocument__updatePermissionsState___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) |= [v4 isWritableFileAtPath:v3] ^ 1;
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  writerCopy = writer;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document relinquishing to writer: %@", buf, 0xCu);
   }
 
   if ([(UIDocument *)self _shouldAllowWritingInResponseToPresenterMessage])
   {
-    if (v4)
+    if (writerCopy)
     {
-      v6 = [(UIDocument *)self _isEditingTemporarilyDisabled];
+      _isEditingTemporarilyDisabled = [(UIDocument *)self _isEditingTemporarilyDisabled];
       [(UIDocument *)self _setEditingTemporarilyDisabled:1];
       v7 = objc_opt_class();
-      v8 = [(UIDocument *)self fileURL];
-      if (v8)
+      fileURL = [(UIDocument *)self fileURL];
+      if (fileURL)
       {
-        v9 = [v7 _fileModificationDateForURL:v8];
+        v9 = [v7 _fileModificationDateForURL:fileURL];
       }
 
       else
@@ -4324,7 +4324,7 @@ void __38__UIDocument__updatePermissionsState___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "document waiting for writer to finish and invoke reacquirer: %@", buf, 0xCu);
       }
 
@@ -4332,19 +4332,19 @@ void __38__UIDocument__updatePermissionsState___block_invoke(uint64_t a1)
       v13[1] = 3221225472;
       v13[2] = __46__UIDocument_relinquishPresentedItemToWriter___block_invoke;
       v13[3] = &unk_1E7105C20;
-      v16 = v6;
+      v16 = _isEditingTemporarilyDisabled;
       v13[4] = self;
       v14 = v9;
       v15 = v7;
-      v11 = v4[2];
+      v11 = writerCopy[2];
       v12 = v9;
-      v11(v4, v13);
+      v11(writerCopy, v13);
     }
   }
 
-  else if (v4)
+  else if (writerCopy)
   {
-    (v4[2])(v4, 0);
+    (writerCopy[2])(writerCopy, 0);
   }
 }
 
@@ -4481,15 +4481,15 @@ LABEL_22:
   [*(a1 + 32) _setEditingTemporarilyDisabled:*(a1 + 56)];
 }
 
-- (void)savePresentedItemChangesWithCompletionHandler:(id)a3
+- (void)savePresentedItemChangesWithCompletionHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document saving presented item changes: %@", buf, 0xCu);
   }
 
@@ -4499,7 +4499,7 @@ LABEL_22:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "document will save changes on main thread: %@", buf, 0xCu);
     }
 
@@ -4508,13 +4508,13 @@ LABEL_22:
     v7[2] = __60__UIDocument_savePresentedItemChangesWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E70F37C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(UIDocument *)self _performBlockSynchronouslyOnMainThread:v7];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -4550,10 +4550,10 @@ uint64_t __60__UIDocument_savePresentedItemChangesWithCompletionHandler___block_
   return result;
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activeCopy = active;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4564,12 +4564,12 @@ uint64_t __60__UIDocument_savePresentedItemChangesWithCompletionHandler___block_
 
   if ([(UIDocument *)self _isOpen])
   {
-    v6 = [MEMORY[0x1E69C7640] currentProcess];
+    currentProcess = [MEMORY[0x1E69C7640] currentProcess];
     v7 = [MEMORY[0x1E69C7560] attributeWithDomain:@"com.apple.uikit" name:@"SaveDocument"];
     v8 = objc_alloc(MEMORY[0x1E69C7548]);
     v31 = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-    v10 = [v8 initWithExplanation:@"UIDocument resigning as file presenter" target:v6 attributes:v9];
+    v10 = [v8 initWithExplanation:@"UIDocument resigning as file presenter" target:currentProcess attributes:v9];
 
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
@@ -4589,7 +4589,7 @@ uint64_t __60__UIDocument_savePresentedItemChangesWithCompletionHandler___block_
     [(UIDocument *)self _saveUnsavedChangesWithCompletionHandler:v24];
     if (FileProviderLibraryCore())
     {
-      v13 = [(UIDocument *)self fileURL];
+      fileURL = [(UIDocument *)self fileURL];
       v27 = 0;
       v28 = &v27;
       v29 = 0x2020000000;
@@ -4612,14 +4612,14 @@ uint64_t __60__UIDocument_savePresentedItemChangesWithCompletionHandler___block_
       _Block_object_dispose(&v27, 8);
       if (!v14)
       {
-        v20 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CFStringRef _FPCreateBookmarkableStringFromDocumentURL(CFURLRef, CFErrorRef *)"}];
-        [v20 handleFailureInFunction:v21 file:@"UIDocument.m" lineNumber:65 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v21 file:@"UIDocument.m" lineNumber:65 description:{@"%s", dlerror()}];
 
         __break(1u);
       }
 
-      v17 = v14(v13, 0);
+      v17 = v14(fileURL, 0);
       fileBookmark = self->_fileBookmark;
       self->_fileBookmark = v17;
     }
@@ -4666,14 +4666,14 @@ void __43__UIDocument__applicationWillResignActive___block_invoke_375(uint64_t a
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = _UIDocumentLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "document is handling application becoming active: %@", buf, 0xCu);
   }
 
@@ -4821,39 +4821,39 @@ LABEL_17:
   [*(a1 + 32) saveToURL:v4 forSaveOperation:0 completionHandler:0];
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document presented item will be deleted: %@", &v6, 0xCu);
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document: %@ did move to new URL: %@", buf, 0x16u);
   }
 
-  [(UIDocument *)self _setFileURL:v4];
+  [(UIDocument *)self _setFileURL:lCopy];
   [(UIDocument *)self _updateLocalizedName];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -4886,7 +4886,7 @@ void __52__UIDocument_presentedItemDidMoveToWritableLocation__block_invoke(uint6
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEFAULT, "document presented item did change: %@", &v4, 0xCu);
   }
 }
@@ -4910,209 +4910,209 @@ void __34__UIDocument__updateConflictState__block_invoke(uint64_t a1)
   [*(a1 + 32) _setInConflict:{objc_msgSend(v3, "count") != 0}];
 }
 
-- (void)presentedItemDidGainVersion:(id)a3
+- (void)presentedItemDidGainVersion:(id)version
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIDocumentLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "document did gain version: %@", &v5, 0xCu);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)presentedItemDidLoseVersion:(id)a3
+- (void)presentedItemDidLoseVersion:(id)version
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIDocumentLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "document did lose version: %@", &v5, 0xCu);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)accommodatePresentedSubitemDeletionAtURL:(id)a3 completionHandler:(id)a4
+- (void)accommodatePresentedSubitemDeletionAtURL:(id)l completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = _UIDocumentLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = lCopy;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "document: %@ subitem will be deleted at URL: %@", &v9, 0x16u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)presentedSubitemDidAppearAtURL:(id)a3
+- (void)presentedSubitemDidAppearAtURL:(id)l
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = lCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document: %@ subitem did appear at URL: %@", &v6, 0x16u);
   }
 }
 
-- (void)presentedSubitemDidChangeAtURL:(id)a3
+- (void)presentedSubitemDidChangeAtURL:(id)l
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = _UIDocumentLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = lCopy;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "document: %@ subitem did change at URL: %@", &v6, 0x16u);
   }
 }
 
-- (void)presentedSubitemAtURL:(id)a3 didMoveToURL:(id)a4
+- (void)presentedSubitemAtURL:(id)l didMoveToURL:(id)rL
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = _UIDocumentLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = lCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = rLCopy;
     _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "document: %@ subitem at URL: %@ did move to URL: %@", &v9, 0x20u);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)presentedSubitemAtURL:(id)a3 didGainVersion:(id)a4
+- (void)presentedSubitemAtURL:(id)l didGainVersion:(id)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = _UIDocumentLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = lCopy;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "document: %@ subitem did gain version at URL: %@", &v7, 0x16u);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)presentedSubitemAtURL:(id)a3 didLoseVersion:(id)a4
+- (void)presentedSubitemAtURL:(id)l didLoseVersion:(id)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = _UIDocumentLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = lCopy;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "document: %@ subitem did lose version at URL: %@", &v7, 0x16u);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)presentedItemDidResolveConflictVersion:(id)a3
+- (void)presentedItemDidResolveConflictVersion:(id)version
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = _UIDocumentLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "document: %@ did resolve conflict version", &v5, 0xCu);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)presentedSubitemAtURL:(id)a3 didResolveConflictVersion:(id)a4
+- (void)presentedSubitemAtURL:(id)l didResolveConflictVersion:(id)version
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = _UIDocumentLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = lCopy;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "document: %@ did resolve conflict at URL: %@", &v7, 0x16u);
   }
 
   [(UIDocument *)self _updateConflictState];
 }
 
-- (void)presentedItemHasUnsavedChangesWithCompletionHandler:(id)a3
+- (void)presentedItemHasUnsavedChangesWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIDocument *)self hasUnsavedChanges];
-  if (v4)
+  handlerCopy = handler;
+  hasUnsavedChanges = [(UIDocument *)self hasUnsavedChanges];
+  if (handlerCopy)
   {
-    v4[2](v4, v5);
+    handlerCopy[2](handlerCopy, hasUnsavedChanges);
   }
 
   v6 = _UIDocumentLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v5)
+    if (hasUnsavedChanges)
     {
       v7 = @"YES";
     }
 
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v7;
     _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_DEFAULT, "document: %@ did report %@ for unsaved changes", &v8, 0x16u);
   }
 }
 
-+ (id)_documentWithContentsOfFileURL:(id)a3 error:(id *)a4
++ (id)_documentWithContentsOfFileURL:(id)l error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v7 = [v6 utTypeToDocumentClassMap];
+  utTypeToDocumentClassMap = [v6 utTypeToDocumentClassMap];
 
-  v8 = [v5 startAccessingSecurityScopedResource];
+  startAccessingSecurityScopedResource = [lCopy startAccessingSecurityScopedResource];
   v38 = 0;
   v9 = *MEMORY[0x1E695DAA0];
   v37 = 0;
-  LODWORD(v6) = [v5 getResourceValue:&v38 forKey:v9 error:&v37];
+  LODWORD(v6) = [lCopy getResourceValue:&v38 forKey:v9 error:&v37];
   v10 = v38;
   v11 = v37;
   v12 = v11;
@@ -5122,14 +5122,14 @@ void __34__UIDocument__updateConflictState__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v40 = v5;
+      v40 = lCopy;
       v41 = 2112;
       v42 = v12;
       _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "Unable to create document from file at URL <%@>: %@", buf, 0x16u);
     }
 
     v24 = 0;
-    if (v8)
+    if (startAccessingSecurityScopedResource)
     {
       goto LABEL_26;
     }
@@ -5138,18 +5138,18 @@ void __34__UIDocument__updateConflictState__block_invoke(uint64_t a1)
   }
 
   v31 = v11;
-  v32 = v8;
+  v32 = startAccessingSecurityScopedResource;
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = [v7 allKeys];
-  v14 = [v13 countByEnumeratingWithState:&v33 objects:v43 count:16];
+  allKeys = [utTypeToDocumentClassMap allKeys];
+  v14 = [allKeys countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v14)
   {
     v15 = v14;
-    v29 = a4;
-    v30 = v5;
+    errorCopy = error;
+    v30 = lCopy;
     v16 = 0;
     v17 = 0;
     v18 = *v34;
@@ -5159,13 +5159,13 @@ void __34__UIDocument__updateConflictState__block_invoke(uint64_t a1)
       {
         if (*v34 != v18)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v20 = *(*(&v33 + 1) + 8 * i);
-        if ([v10 conformsToType:{v20, v29}] && (!v17 || objc_msgSend(v17, "isSupertypeOfType:", v20)))
+        if ([v10 conformsToType:{v20, errorCopy}] && (!v17 || objc_msgSend(v17, "isSupertypeOfType:", v20)))
         {
-          v21 = [v7 objectForKey:v20];
+          v21 = [utTypeToDocumentClassMap objectForKey:v20];
           if (v21)
           {
             v22 = v21;
@@ -5177,22 +5177,22 @@ void __34__UIDocument__updateConflictState__block_invoke(uint64_t a1)
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v33 objects:v43 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v33 objects:v43 count:16];
     }
 
     while (v15);
 
     if (v16)
     {
-      v5 = v30;
+      lCopy = v30;
       v24 = [[v16 alloc] initWithFileURL:v30];
-      a4 = v29;
+      error = errorCopy;
       v12 = v31;
       goto LABEL_25;
     }
 
-    a4 = v29;
-    v5 = v30;
+    error = errorCopy;
+    lCopy = v30;
   }
 
   else
@@ -5206,7 +5206,7 @@ void __34__UIDocument__updateConflictState__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v40 = v5;
+    v40 = lCopy;
     _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_ERROR, "Unable to create document from file at URL <%@>: no document class found. Define the correct UIDocument subclass with the key UIDocumentClass in the info.plist's CFBundleDocumentTypes dictionary.", buf, 0xCu);
   }
 
@@ -5216,27 +5216,27 @@ LABEL_25:
   if (v32)
   {
 LABEL_26:
-    [v5 stopAccessingSecurityScopedResource];
+    [lCopy stopAccessingSecurityScopedResource];
   }
 
 LABEL_27:
-  if (a4 && v12)
+  if (error && v12)
   {
     v27 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v24;
 }
 
-+ (id)_fileModificationDateForURL:(id)a3
++ (id)_fileModificationDateForURL:(id)l
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v12 = 0;
   v4 = *MEMORY[0x1E695DA98];
   v11 = 0;
-  v5 = [v3 getResourceValue:&v12 forKey:v4 error:&v11];
+  v5 = [lCopy getResourceValue:&v12 forKey:v4 error:&v11];
   v6 = v12;
   v7 = v11;
   if ((v5 & 1) == 0)
@@ -5244,11 +5244,11 @@ LABEL_27:
     v8 = _UIDocumentLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 138412546;
-      v14 = v3;
+      v14 = lCopy;
       v15 = 2112;
-      v16 = v9;
+      v16 = localizedDescription;
       _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "failed to get modification date for URL: %@ with error: %@", buf, 0x16u);
     }
   }
@@ -5256,26 +5256,26 @@ LABEL_27:
   return v6;
 }
 
-- (void)_performBlock:(id)a3 synchronouslyOnQueue:(id)a4
+- (void)_performBlock:(id)block synchronouslyOnQueue:(id)queue
 {
-  queue = a4;
+  queue = queue;
   v5 = dispatch_get_current_queue();
-  v6 = a3;
+  blockCopy = block;
 
   if (v5 == queue)
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    dispatch_sync(queue, v6);
+    dispatch_sync(queue, blockCopy);
   }
 }
 
-- (void)_performBlockOnMainThread:(id)a3
+- (void)_performBlockOnMainThread:(id)thread
 {
-  block = a3;
+  block = thread;
   if (pthread_main_np() == 1)
   {
     block[2]();
@@ -5287,17 +5287,17 @@ LABEL_27:
   }
 }
 
-- (void)_performBlockSynchronouslyOnMainThread:(id)a3
+- (void)_performBlockSynchronouslyOnMainThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   if (pthread_main_np() == 1)
   {
-    v4[2]();
+    threadCopy[2]();
   }
 
   else
   {
-    [(UIDocument *)self _performBlock:v4 synchronouslyOnQueue:MEMORY[0x1E69E96A0]];
+    [(UIDocument *)self _performBlock:threadCopy synchronouslyOnQueue:MEMORY[0x1E69E96A0]];
   }
 }
 

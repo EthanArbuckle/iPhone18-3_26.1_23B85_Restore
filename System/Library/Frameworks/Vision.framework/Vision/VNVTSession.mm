@@ -1,5 +1,5 @@
 @interface VNVTSession
-- (VNVTSession)initWithSession:(void *)a3;
+- (VNVTSession)initWithSession:(void *)session;
 - (void)dealloc;
 @end
 
@@ -13,9 +13,9 @@
   [(VNVTSession *)&v3 dealloc];
 }
 
-- (VNVTSession)initWithSession:(void *)a3
+- (VNVTSession)initWithSession:(void *)session
 {
-  self->_session = a3;
+  self->_session = session;
   v4.receiver = self;
   v4.super_class = VNVTSession;
   return [(VNVTSession *)&v4 init];

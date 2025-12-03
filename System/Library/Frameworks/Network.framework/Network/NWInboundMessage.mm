@@ -6,11 +6,11 @@
 
 - (NSData)content
 {
-  v2 = [(NWMessage *)self internalContent];
-  v3 = v2;
-  if (v2)
+  internalContent = [(NWMessage *)self internalContent];
+  v3 = internalContent;
+  if (internalContent)
   {
-    v4 = v2;
+    v4 = internalContent;
   }
 
   return v3;

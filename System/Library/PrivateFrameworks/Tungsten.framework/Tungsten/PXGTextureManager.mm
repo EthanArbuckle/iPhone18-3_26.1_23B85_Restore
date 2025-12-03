@@ -1,66 +1,66 @@
 @interface PXGTextureManager
-- (BOOL)_getRequestDetails:(id *)a3 forRequestID:(int)a4;
-- (BOOL)streamUpdatedTexturesForDisplayLinkIfNeeded:(id)a3;
-- (CGImage)textureSnapshotForSpriteIndex:(unsigned int)a3;
+- (BOOL)_getRequestDetails:(id *)details forRequestID:(int)d;
+- (BOOL)streamUpdatedTexturesForDisplayLinkIfNeeded:(id)needed;
+- (CGImage)textureSnapshotForSpriteIndex:(unsigned int)index;
 - (NSString)description;
-- (PXGTextureManager)initWithEntityManager:(id)a3 layoutQueue:(id)a4;
+- (PXGTextureManager)initWithEntityManager:(id)manager layoutQueue:(id)queue;
 - (PXGTextureManagerDelegate)delegate;
 - (id).cxx_construct;
-- (id)_createTextureForCGImage:(CGImage *)a3 requestID:(int)a4 requestDetails:(id)a5 processingOptions:(id)a6 fromTextureProvider:(id)a7 withTextureConverter:(id)a8;
-- (id)_createTextureForCVPixelBuffer:(__CVBuffer *)a3 requestID:(int)a4 requestDetails:(id)a5 processingOptions:(id)a6 fromTextureProvider:(id)a7 withTextureConverter:(id)a8;
-- (id)_existingAdjustedTextureForSourceTexture:(id)a3 adjustment:(id)a4 wantsMipmaps:(BOOL)a5 presentationType:(unsigned __int8)a6;
-- (id)_existingTextureForCGImage:(CGImage *)a3 processingOptions:(id)a4 presentationType:(unsigned __int8)a5;
-- (id)_existingTextureForKey:(id)a3 presentationType:(unsigned __int8)a4;
-- (id)_existingTextureForPayload:(id)a3 presentationType:(unsigned __int8)a4;
-- (id)_existingTextureForPixelBuffer:(__CVBuffer *)a3 processingOptions:(id)a4 presentationType:(unsigned __int8)a5;
-- (id)_storeAdjustedTexture:(id)a3 forSourceTexture:(id)a4 adjustment:(id)a5 mipmaps:(BOOL)a6;
-- (id)_storeTexture:(id)a3 forKey:(id)a4;
-- (id)_storeTexture:(id)a3 forKey:(id)a4 replaceExisting:(BOOL)a5 presentationType:(unsigned __int8)a6;
-- (id)_storeTexture:(id)a3 forPayload:(id)a4;
-- (id)_textureAtlasManagerForImageDataSpec:(id *)a3;
-- (id)_textureConverterForPresentationType:(unsigned __int8)a3 contentType:(unint64_t)a4;
-- (id)textureProvider:(id)a3 requestRenderSnapshot:(id *)a4 offscreenEffect:(id)a5;
+- (id)_createTextureForCGImage:(CGImage *)image requestID:(int)d requestDetails:(id)details processingOptions:(id)options fromTextureProvider:(id)provider withTextureConverter:(id)converter;
+- (id)_createTextureForCVPixelBuffer:(__CVBuffer *)buffer requestID:(int)d requestDetails:(id)details processingOptions:(id)options fromTextureProvider:(id)provider withTextureConverter:(id)converter;
+- (id)_existingAdjustedTextureForSourceTexture:(id)texture adjustment:(id)adjustment wantsMipmaps:(BOOL)mipmaps presentationType:(unsigned __int8)type;
+- (id)_existingTextureForCGImage:(CGImage *)image processingOptions:(id)options presentationType:(unsigned __int8)type;
+- (id)_existingTextureForKey:(id)key presentationType:(unsigned __int8)type;
+- (id)_existingTextureForPayload:(id)payload presentationType:(unsigned __int8)type;
+- (id)_existingTextureForPixelBuffer:(__CVBuffer *)buffer processingOptions:(id)options presentationType:(unsigned __int8)type;
+- (id)_storeAdjustedTexture:(id)texture forSourceTexture:(id)sourceTexture adjustment:(id)adjustment mipmaps:(BOOL)mipmaps;
+- (id)_storeTexture:(id)texture forKey:(id)key;
+- (id)_storeTexture:(id)texture forKey:(id)key replaceExisting:(BOOL)existing presentationType:(unsigned __int8)type;
+- (id)_storeTexture:(id)texture forPayload:(id)payload;
+- (id)_textureAtlasManagerForImageDataSpec:(id *)spec;
+- (id)_textureConverterForPresentationType:(unsigned __int8)type contentType:(unint64_t)contentType;
+- (id)textureProvider:(id)provider requestRenderSnapshot:(id *)snapshot offscreenEffect:(id)effect;
 - (int64_t)_processTextureProviderResults;
-- (void)_addTextureToTexturesInUse:(id)a3;
-- (void)_applyAdjustment:(id)a3 withMipmaps:(BOOL)a4 toTexture:(id)a5 fromTextureProvider:(id)a6 withTextureConverter:(id)a7 forRequestID:(int)a8 deliveryOrder:(unsigned int)a9 requestDetails:(id)a10;
+- (void)_addTextureToTexturesInUse:(id)use;
+- (void)_applyAdjustment:(id)adjustment withMipmaps:(BOOL)mipmaps toTexture:(id)texture fromTextureProvider:(id)provider withTextureConverter:(id)converter forRequestID:(int)d deliveryOrder:(unsigned int)order requestDetails:(id)self0;
 - (void)_configureAllTextureConverters;
 - (void)_configureAllTextureProviders;
-- (void)_configureTextureConverter:(id)a3;
-- (void)_configureTextureProvider:(id)a3;
-- (void)_enumerateSpriteTextures:(id)a3;
-- (void)_enumerateTextureConverters:(id)a3;
-- (void)_enumerateTextureProviders:(id)a3;
-- (void)_handleProvidedSpriteTexture:(id)a3 fromTextureProvider:(id)a4 requestID:(int)a5 deliveryOrder:(unsigned int)a6;
-- (void)_lookupLock_requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 textureProvider:(id)a4 mediaKind:(unsigned __int8)a5 presentationType:(unsigned __int8)a6 isAppearing:(BOOL)a7 layout:(id)a8 leafSpriteIndexRange:(_PXGSpriteIndexRange)a9 sprites:(id *)a10 textureStreamInfos:(id *)a11 loadingStatus:(id)a12;
-- (void)_processCGImage:(CGImage *)a3 options:(id)a4 adjustment:(id)a5 isDegraded:(BOOL)a6 fromTextureProvider:(id)a7 withTextureConverter:(id)a8 requestID:(int)a9 requestDetails:(id)a10 deliveryOrder:(unsigned int)a11;
-- (void)_processPixelBuffer:(__CVBuffer *)a3 options:(id)a4 adjustment:(id)a5 fromTextureProvider:(id)a6 withTextureConverter:(id)a7 forRequestID:(int)a8 requestDetails:(id)a9 deliveryOrder:(unsigned int)a10;
-- (void)_pruneTextures:(id)a3;
-- (void)_registerTextureConverter:(id)a3 forPresentationType:(unsigned __int8)a4;
-- (void)_removeAllTexturesForPresentationType:(unsigned __int8)a3;
+- (void)_configureTextureConverter:(id)converter;
+- (void)_configureTextureProvider:(id)provider;
+- (void)_enumerateSpriteTextures:(id)textures;
+- (void)_enumerateTextureConverters:(id)converters;
+- (void)_enumerateTextureProviders:(id)providers;
+- (void)_handleProvidedSpriteTexture:(id)texture fromTextureProvider:(id)provider requestID:(int)d deliveryOrder:(unsigned int)order;
+- (void)_lookupLock_requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range textureProvider:(id)provider mediaKind:(unsigned __int8)kind presentationType:(unsigned __int8)type isAppearing:(BOOL)appearing layout:(id)layout leafSpriteIndexRange:(_PXGSpriteIndexRange)indexRange sprites:(id *)self0 textureStreamInfos:(id *)self1 loadingStatus:(id)self2;
+- (void)_processCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded fromTextureProvider:(id)provider withTextureConverter:(id)converter requestID:(int)d requestDetails:(id)self0 deliveryOrder:(unsigned int)self1;
+- (void)_processPixelBuffer:(__CVBuffer *)buffer options:(id)options adjustment:(id)adjustment fromTextureProvider:(id)provider withTextureConverter:(id)converter forRequestID:(int)d requestDetails:(id)details deliveryOrder:(unsigned int)self0;
+- (void)_pruneTextures:(id)textures;
+- (void)_registerTextureConverter:(id)converter forPresentationType:(unsigned __int8)type;
+- (void)_removeAllTexturesForPresentationType:(unsigned __int8)type;
 - (void)_requestQueue_scheduleUpdateIfAllowed;
-- (void)_resizeStorageIfNeededForSpriteCount:(int64_t)a3;
+- (void)_resizeStorageIfNeededForSpriteCount:(int64_t)count;
 - (void)_setNeedsUpdate;
-- (void)_streamTexturesForSpritesInDataStore:(id)a3 presentationDataStore:(id)a4 changeDetails:(id)a5 layout:(id)a6 interactionState:(id *)a7 loadingStatus:(id)a8;
+- (void)_streamTexturesForSpritesInDataStore:(id)store presentationDataStore:(id)dataStore changeDetails:(id)details layout:(id)layout interactionState:(id *)state loadingStatus:(id)status;
 - (void)_updatePreheatingStrategy;
 - (void)dealloc;
-- (void)registerTextureProvider:(id)a3 forMediaKind:(unsigned __int8)a4;
+- (void)registerTextureProvider:(id)provider forMediaKind:(unsigned __int8)kind;
 - (void)releaseCachedResources;
-- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)a3;
-- (void)setLowMemoryMode:(BOOL)a3;
-- (void)setPreferBGRA:(BOOL)a3;
-- (void)setPreferMipmaps:(BOOL)a3;
-- (void)setPreferredColorSpaceName:(unint64_t)a3;
-- (void)setTextureConverters:(id)a3;
-- (void)setViewEnvironment:(id)a3;
-- (void)streamTexturesForSpritesInDataStore:(id)a3 presentationDataStore:(id)a4 changeDetails:(id)a5 layout:(id)a6 interactionState:(id *)a7;
-- (void)textureProvider:(id)a3 didProvideCGImage:(CGImage *)a4 options:(id)a5 adjustment:(id)a6 isDegraded:(BOOL)a7 forRequestID:(int)a8;
-- (void)textureProvider:(id)a3 didProvideFailureWithError:(id)a4 forRequestID:(int)a5;
-- (void)textureProvider:(id)a3 didProvideImageData:(id)a4 withSpecAtIndex:(int64_t)a5 size:(CGSize)a6 bytesPerRow:(unint64_t)a7 contentsRect:(CGRect)a8 forRequestID:(int)a9;
-- (void)textureProvider:(id)a3 didProvideNothingForRequestID:(int)a4;
-- (void)textureProvider:(id)a3 didProvidePayload:(id)a4 forRequestID:(int)a5;
-- (void)textureProvider:(id)a3 didProvidePixelBuffer:(__CVBuffer *)a4 options:(id)a5 adjustment:(id)a6 forRequestID:(int)a7;
-- (void)textureProviderNeedsToRegisterToDisplayLinkUpdates:(id)a3;
-- (void)textureProviderNeedsToUnregisterFromDisplayLinkUpdates:(id)a3;
+- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)mode;
+- (void)setLowMemoryMode:(BOOL)mode;
+- (void)setPreferBGRA:(BOOL)a;
+- (void)setPreferMipmaps:(BOOL)mipmaps;
+- (void)setPreferredColorSpaceName:(unint64_t)name;
+- (void)setTextureConverters:(id)converters;
+- (void)setViewEnvironment:(id)environment;
+- (void)streamTexturesForSpritesInDataStore:(id)store presentationDataStore:(id)dataStore changeDetails:(id)details layout:(id)layout interactionState:(id *)state;
+- (void)textureProvider:(id)provider didProvideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded forRequestID:(int)d;
+- (void)textureProvider:(id)provider didProvideFailureWithError:(id)error forRequestID:(int)d;
+- (void)textureProvider:(id)provider didProvideImageData:(id)data withSpecAtIndex:(int64_t)index size:(CGSize)size bytesPerRow:(unint64_t)row contentsRect:(CGRect)rect forRequestID:(int)d;
+- (void)textureProvider:(id)provider didProvideNothingForRequestID:(int)d;
+- (void)textureProvider:(id)provider didProvidePayload:(id)payload forRequestID:(int)d;
+- (void)textureProvider:(id)provider didProvidePixelBuffer:(__CVBuffer *)buffer options:(id)options adjustment:(id)adjustment forRequestID:(int)d;
+- (void)textureProviderNeedsToRegisterToDisplayLinkUpdates:(id)updates;
+- (void)textureProviderNeedsToUnregisterFromDisplayLinkUpdates:(id)updates;
 @end
 
 @implementation PXGTextureManager
@@ -94,11 +94,11 @@
 
 - (void)_setNeedsUpdate
 {
-  v3 = [(PXGTextureManager *)self layoutQueue];
-  dispatch_assert_queue_V2(v3);
+  layoutQueue = [(PXGTextureManager *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
-  v4 = [(PXGTextureManager *)self delegate];
-  [v4 textureManagerNeedsUpdate:self];
+  delegate = [(PXGTextureManager *)self delegate];
+  [delegate textureManagerNeedsUpdate:self];
 }
 
 - (PXGTextureManagerDelegate)delegate
@@ -120,22 +120,22 @@
 
 - (int64_t)_processTextureProviderResults
 {
-  v3 = [(PXGTextureManager *)self layoutQueue];
-  dispatch_assert_queue_V2(v3);
+  layoutQueue = [(PXGTextureManager *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [(PXGTextureManager *)self entityManager];
-  v5 = [v4 loadingStatus];
+  entityManager = [(PXGTextureManager *)self entityManager];
+  loadingStatus = [entityManager loadingStatus];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__PXGTextureManager__processTextureProviderResults__block_invoke;
   v8[3] = &unk_2782AC208;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 performChanges:v8];
+  [loadingStatus performChanges:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -216,13 +216,13 @@ void __51__PXGTextureManager__processTextureProviderResults__block_invoke_2(uint
     block[7] = v2;
     block[8] = v3;
     self->_requestQueue_pendingSetNeedsUpdate = 0;
-    v5 = [(PXGTextureManager *)self layoutQueue];
+    layoutQueue = [(PXGTextureManager *)self layoutQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__PXGTextureManager__requestQueue_scheduleUpdateIfAllowed__block_invoke;
     block[3] = &unk_2782ABE50;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(layoutQueue, block);
   }
 }
 
@@ -504,45 +504,45 @@ LABEL_30:
   return 0xFFFFFFFFLL;
 }
 
-- (id)textureProvider:(id)a3 requestRenderSnapshot:(id *)a4 offscreenEffect:(id)a5
+- (id)textureProvider:(id)provider requestRenderSnapshot:(id *)snapshot offscreenEffect:(id)effect
 {
-  v7 = a5;
-  v8 = [(PXGTextureManager *)self delegate];
-  v9 = *&a4->var1.origin.y;
-  v12[0] = *&a4->var0;
+  effectCopy = effect;
+  delegate = [(PXGTextureManager *)self delegate];
+  v9 = *&snapshot->var1.origin.y;
+  v12[0] = *&snapshot->var0;
   v12[1] = v9;
-  height = a4->var1.size.height;
-  v10 = [v8 textureManager:self requestRenderSnapshot:v12 offscreenEffect:v7];
+  height = snapshot->var1.size.height;
+  v10 = [delegate textureManager:self requestRenderSnapshot:v12 offscreenEffect:effectCopy];
 
   return v10;
 }
 
-- (void)textureProviderNeedsToUnregisterFromDisplayLinkUpdates:(id)a3
+- (void)textureProviderNeedsToUnregisterFromDisplayLinkUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(PXGTextureManager *)self layoutQueue];
+  updatesCopy = updates;
+  layoutQueue = [(PXGTextureManager *)self layoutQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__PXGTextureManager_textureProviderNeedsToUnregisterFromDisplayLinkUpdates___block_invoke;
   v7[3] = &unk_2782AC0A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatesCopy;
+  v6 = updatesCopy;
+  dispatch_async(layoutQueue, v7);
 }
 
-- (void)textureProviderNeedsToRegisterToDisplayLinkUpdates:(id)a3
+- (void)textureProviderNeedsToRegisterToDisplayLinkUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(PXGTextureManager *)self layoutQueue];
+  updatesCopy = updates;
+  layoutQueue = [(PXGTextureManager *)self layoutQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__PXGTextureManager_textureProviderNeedsToRegisterToDisplayLinkUpdates___block_invoke;
   v7[3] = &unk_2782AC0A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatesCopy;
+  v6 = updatesCopy;
+  dispatch_async(layoutQueue, v7);
 }
 
 uint64_t __72__PXGTextureManager_textureProviderNeedsToRegisterToDisplayLinkUpdates___block_invoke(uint64_t a1)
@@ -553,32 +553,32 @@ uint64_t __72__PXGTextureManager_textureProviderNeedsToRegisterToDisplayLinkUpda
   return [v2 _setNeedsUpdate];
 }
 
-- (void)textureProvider:(id)a3 didProvidePayload:(id)a4 forRequestID:(int)a5
+- (void)textureProvider:(id)provider didProvidePayload:(id)payload forRequestID:(int)d
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&d;
+  providerCopy = provider;
+  payloadCopy = payload;
   dispatch_assert_queue_V2(self->_requestQueue);
   v10 = +[PXTungstenSettings sharedInstance];
-  v11 = [v10 requestThumbnailsOnly];
+  requestThumbnailsOnly = [v10 requestThumbnailsOnly];
 
-  if ((v11 & 1) == 0 && [v8 isRequestActive:v5] && -[PXGTextureManager _getRequestDetails:forRequestID:](self, "_getRequestDetails:forRequestID:", v16, v5))
+  if ((requestThumbnailsOnly & 1) == 0 && [providerCopy isRequestActive:v5] && -[PXGTextureManager _getRequestDetails:forRequestID:](self, "_getRequestDetails:forRequestID:", v16, v5))
   {
     add = atomic_fetch_add(PXGMakeNextTextureDeliveryOrderID_lastRequestID, 1u);
-    v13 = [(PXGTextureManager *)self _existingTextureForPayload:v9 presentationType:v16[0]];
+    v13 = [(PXGTextureManager *)self _existingTextureForPayload:payloadCopy presentationType:v16[0]];
     if (v13)
     {
-      [(PXGTextureManager *)self _handleProvidedSpriteTexture:v13 fromTextureProvider:v8 requestID:v5 deliveryOrder:add];
+      [(PXGTextureManager *)self _handleProvidedSpriteTexture:v13 fromTextureProvider:providerCopy requestID:v5 deliveryOrder:add];
     }
 
     else
     {
       v14 = [(PXGTextureManager *)self _textureConverterForPresentationType:v16[0] contentType:4];
-      v15 = [v14 createPayloadTextureFromPayload:v9];
+      v15 = [v14 createPayloadTextureFromPayload:payloadCopy];
       if (v15)
       {
-        v13 = [(PXGTextureManager *)self _storeTexture:v15 forPayload:v9];
-        [(PXGTextureManager *)self _handleProvidedSpriteTexture:v13 fromTextureProvider:v8 requestID:v5 deliveryOrder:add];
+        v13 = [(PXGTextureManager *)self _storeTexture:v15 forPayload:payloadCopy];
+        [(PXGTextureManager *)self _handleProvidedSpriteTexture:v13 fromTextureProvider:providerCopy requestID:v5 deliveryOrder:add];
       }
 
       else
@@ -589,19 +589,19 @@ uint64_t __72__PXGTextureManager_textureProviderNeedsToRegisterToDisplayLinkUpda
   }
 }
 
-- (void)textureProvider:(id)a3 didProvideFailureWithError:(id)a4 forRequestID:(int)a5
+- (void)textureProvider:(id)provider didProvideFailureWithError:(id)error forRequestID:(int)d
 {
-  v7 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_requestQueue);
   layoutQueue = self->_layoutQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__PXGTextureManager_textureProvider_didProvideFailureWithError_forRequestID___block_invoke;
   block[3] = &unk_2782AC3E8;
-  v12 = a5;
+  dCopy = d;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = errorCopy;
+  v9 = errorCopy;
   dispatch_async(layoutQueue, block);
 }
 
@@ -725,55 +725,55 @@ LABEL_24:
   [v16 setError:*(a1 + 40) forEntity:v14];
 }
 
-- (void)textureProvider:(id)a3 didProvideImageData:(id)a4 withSpecAtIndex:(int64_t)a5 size:(CGSize)a6 bytesPerRow:(unint64_t)a7 contentsRect:(CGRect)a8 forRequestID:(int)a9
+- (void)textureProvider:(id)provider didProvideImageData:(id)data withSpecAtIndex:(int64_t)index size:(CGSize)size bytesPerRow:(unint64_t)row contentsRect:(CGRect)rect forRequestID:(int)d
 {
-  v9 = *&a9;
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v15 = a6.height;
-  v16 = a6.width;
-  v20 = a3;
-  v21 = a4;
+  v9 = *&d;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = size.height;
+  v16 = size.width;
+  providerCopy = provider;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_requestQueue);
-  if ([v20 isRequestActive:v9])
+  if ([providerCopy isRequestActive:v9])
   {
-    v22 = [v20 textureAtlasManagerAtSpecIndex:a5];
+    v22 = [providerCopy textureAtlasManagerAtSpecIndex:index];
     if (!v22)
     {
       v25 = 0uLL;
       v26 = 0;
-      if (v20)
+      if (providerCopy)
       {
-        [v20 imageDataSpecAtIndex:a5];
+        [providerCopy imageDataSpecAtIndex:index];
       }
 
       v23 = v25;
       v24 = v26;
       v22 = [(PXGTextureManager *)self _textureAtlasManagerForImageDataSpec:&v23];
-      [v20 setTextureAtlasManager:v22 atSpecIndex:a5];
+      [providerCopy setTextureAtlasManager:v22 atSpecIndex:index];
     }
 
-    [v22 addSpriteWithTextureRequestID:v9 thumbnailData:v21 size:a7 bytesPerRow:v16 contentsRect:{v15, x, y, width, height}];
+    [v22 addSpriteWithTextureRequestID:v9 thumbnailData:dataCopy size:row bytesPerRow:v16 contentsRect:{v15, x, y, width, height}];
     [(PXGTextureManager *)self _requestQueue_setNeedsUpdate];
   }
 }
 
-- (void)textureProvider:(id)a3 didProvidePixelBuffer:(__CVBuffer *)a4 options:(id)a5 adjustment:(id)a6 forRequestID:(int)a7
+- (void)textureProvider:(id)provider didProvidePixelBuffer:(__CVBuffer *)buffer options:(id)options adjustment:(id)adjustment forRequestID:(int)d
 {
-  v8 = *&a5.var2;
-  v9 = *&a5.var0;
-  v12 = a3;
+  v8 = *&options.var2;
+  v9 = *&options.var0;
+  providerCopy = provider;
   v13 = v8;
   dispatch_assert_queue_V2(self->_requestQueue);
-  if (([v12 isRequestActive:a6] & 1) != 0 && -[PXGTextureManager _getRequestDetails:forRequestID:](self, "_getRequestDetails:forRequestID:", &v51, a6))
+  if (([providerCopy isRequestActive:adjustment] & 1) != 0 && -[PXGTextureManager _getRequestDetails:forRequestID:](self, "_getRequestDetails:forRequestID:", &v51, adjustment))
   {
     add = atomic_fetch_add(PXGMakeNextTextureDeliveryOrderID_lastRequestID, 1u);
     v15 = v9[1];
     *location = *v9;
     v50 = v15;
-    v16 = [(PXGTextureManager *)self _existingTextureForPixelBuffer:a4 processingOptions:location presentationType:v51];
+    v16 = [(PXGTextureManager *)self _existingTextureForPixelBuffer:buffer processingOptions:location presentationType:v51];
     if (v16)
     {
       if (v13 || (v9[1] & 1) != 0)
@@ -781,7 +781,7 @@ LABEL_24:
         v21 = [(PXGTextureManager *)self _existingAdjustedTextureForSourceTexture:v16 adjustment:v13 wantsMipmaps:(v13 == 0) | (v9[1] & 1) presentationType:v51];
         if (v21)
         {
-          [(PXGTextureManager *)self _handleProvidedSpriteTexture:v21 fromTextureProvider:v12 requestID:a6 deliveryOrder:add];
+          [(PXGTextureManager *)self _handleProvidedSpriteTexture:v21 fromTextureProvider:providerCopy requestID:adjustment deliveryOrder:add];
         }
 
         else
@@ -802,9 +802,9 @@ LABEL_24:
             v38 = *v9;
             v39 = v25;
             v41 = v16;
-            v42 = v12;
+            v42 = providerCopy;
             v43 = v23;
-            v45 = a6;
+            adjustmentCopy = adjustment;
             v46 = add;
             v47 = v51;
             v48 = v52;
@@ -816,21 +816,21 @@ LABEL_24:
 
           else
           {
-            [(PXGTextureManager *)self _handleProvidedSpriteTexture:v16 fromTextureProvider:v12 requestID:a6 deliveryOrder:add];
+            [(PXGTextureManager *)self _handleProvidedSpriteTexture:v16 fromTextureProvider:providerCopy requestID:adjustment deliveryOrder:add];
           }
         }
       }
 
       else
       {
-        [(PXGTextureManager *)self _handleProvidedSpriteTexture:v16 fromTextureProvider:v12 requestID:a6 deliveryOrder:add];
+        [(PXGTextureManager *)self _handleProvidedSpriteTexture:v16 fromTextureProvider:providerCopy requestID:adjustment deliveryOrder:add];
       }
     }
 
     else
     {
       v17 = [(PXGTextureManager *)self _textureConverterForPresentationType:v51 contentType:1];
-      CVPixelBufferRetain(a4);
+      CVPixelBufferRetain(buffer);
       objc_initWeak(location, self);
       processQueue = self->_processQueue;
       v26[0] = MEMORY[0x277D85DD0];
@@ -838,17 +838,17 @@ LABEL_24:
       v26[2] = __91__PXGTextureManager_textureProvider_didProvidePixelBuffer_options_adjustment_forRequestID___block_invoke_2;
       v26[3] = &unk_2782AC398;
       objc_copyWeak(v32, location);
-      v32[1] = a4;
+      v32[1] = buffer;
       v19 = v9[1];
       v27 = *v9;
       v28 = v19;
       v29 = v13;
-      v30 = v12;
+      v30 = providerCopy;
       v31 = v17;
       v34 = add;
       v35 = v51;
       v36 = v52;
-      v33 = a6;
+      adjustmentCopy2 = adjustment;
       v20 = v17;
       dispatch_async(processQueue, v26);
 
@@ -879,33 +879,33 @@ void __91__PXGTextureManager_textureProvider_didProvidePixelBuffer_options_adjus
   CVPixelBufferRelease(*(a1 + 96));
 }
 
-- (void)textureProvider:(id)a3 didProvideCGImage:(CGImage *)a4 options:(id)a5 adjustment:(id)a6 isDegraded:(BOOL)a7 forRequestID:(int)a8
+- (void)textureProvider:(id)provider didProvideCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded forRequestID:(int)d
 {
-  v8 = a7;
-  v9 = a6;
-  v10 = *&a5.var2;
-  v11 = *&a5.var0;
+  degradedCopy = degraded;
+  adjustmentCopy = adjustment;
+  v10 = *&options.var2;
+  v11 = *&options.var0;
   v58 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  providerCopy = provider;
   v15 = v10;
   dispatch_assert_queue_V2(self->_requestQueue);
   v16 = +[PXTungstenSettings sharedInstance];
-  v17 = [v16 requestThumbnailsOnly];
+  requestThumbnailsOnly = [v16 requestThumbnailsOnly];
 
-  if ((v17 & 1) == 0 && [v14 isRequestActive:v8] && -[PXGTextureManager _getRequestDetails:forRequestID:](self, "_getRequestDetails:forRequestID:", &v55, v8))
+  if ((requestThumbnailsOnly & 1) == 0 && [providerCopy isRequestActive:degradedCopy] && -[PXGTextureManager _getRequestDetails:forRequestID:](self, "_getRequestDetails:forRequestID:", &v55, degradedCopy))
   {
     add = atomic_fetch_add(PXGMakeNextTextureDeliveryOrderID_lastRequestID, 1u);
-    if (a4)
+    if (image)
     {
       v19 = v11[1];
       *buf = *v11;
       *&buf[16] = v19;
-      v20 = [(PXGTextureManager *)self _existingTextureForCGImage:a4 processingOptions:buf presentationType:v55];
+      v20 = [(PXGTextureManager *)self _existingTextureForCGImage:image processingOptions:buf presentationType:v55];
       if (v20)
       {
         if (!v15 && (v11[1] & 1) == 0)
         {
-          [(PXGTextureManager *)self _handleProvidedSpriteTexture:v20 fromTextureProvider:v14 requestID:v8 deliveryOrder:add];
+          [(PXGTextureManager *)self _handleProvidedSpriteTexture:v20 fromTextureProvider:providerCopy requestID:degradedCopy deliveryOrder:add];
 LABEL_23:
 
           goto LABEL_24;
@@ -915,7 +915,7 @@ LABEL_23:
         v26 = [(PXGTextureManager *)self _existingAdjustedTextureForSourceTexture:v20 adjustment:v15 wantsMipmaps:(v15 == 0) | (v11[1] & 1) presentationType:v55];
         if (v26)
         {
-          [(PXGTextureManager *)self _handleProvidedSpriteTexture:v26 fromTextureProvider:v14 requestID:v8 deliveryOrder:add];
+          [(PXGTextureManager *)self _handleProvidedSpriteTexture:v26 fromTextureProvider:providerCopy requestID:degradedCopy deliveryOrder:add];
         }
 
         else
@@ -935,9 +935,9 @@ LABEL_23:
             v44 = *v11;
             v45 = v29;
             v47 = v20;
-            v48 = v14;
+            v48 = providerCopy;
             v49 = v27;
-            v51 = v8;
+            v51 = degradedCopy;
             v52 = add;
             v53 = v55;
             v54 = v56;
@@ -948,7 +948,7 @@ LABEL_23:
 
           else
           {
-            [(PXGTextureManager *)self _handleProvidedSpriteTexture:v20 fromTextureProvider:v14 requestID:v8 deliveryOrder:add];
+            [(PXGTextureManager *)self _handleProvidedSpriteTexture:v20 fromTextureProvider:providerCopy requestID:degradedCopy deliveryOrder:add];
           }
 
           objc_destroyWeak(buf);
@@ -959,7 +959,7 @@ LABEL_23:
       {
         v30 = 0;
         v22 = [(PXGTextureManager *)self _textureConverterForPresentationType:v55 contentType:1];
-        CGImageRetain(a4);
+        CGImageRetain(image);
         objc_initWeak(buf, self);
         processQueue = self->_processQueue;
         block[0] = MEMORY[0x277D85DD0];
@@ -967,17 +967,17 @@ LABEL_23:
         block[2] = __98__PXGTextureManager_textureProvider_didProvideCGImage_options_adjustment_isDegraded_forRequestID___block_invoke_2;
         block[3] = &unk_2782AC370;
         objc_copyWeak(v37, buf);
-        v37[1] = a4;
+        v37[1] = image;
         v24 = v11[1];
         v32 = *v11;
         v33 = v24;
         v34 = v15;
-        v40 = v9;
-        v35 = v14;
+        v40 = adjustmentCopy;
+        v35 = providerCopy;
         v36 = v22;
         v41 = v55;
         v42 = v56;
-        v38 = v8;
+        v38 = degradedCopy;
         v39 = add;
         v25 = v22;
         dispatch_async(processQueue, block);
@@ -994,15 +994,15 @@ LABEL_23:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *&buf[4] = v14;
+      *&buf[4] = providerCopy;
       *&buf[12] = 1024;
-      *&buf[14] = v8;
+      *&buf[14] = degradedCopy;
       *&buf[18] = 2112;
       *&buf[20] = 0;
       _os_log_impl(&dword_21AD38000, v21, OS_LOG_TYPE_ERROR, "Error textureProvider:%@ requestID:%d provided invalid cgImage:%@", buf, 0x1Cu);
     }
 
-    [(PXGTextureManager *)self _handleProvidedSpriteTexture:self->_emptyTexture fromTextureProvider:v14 requestID:v8 deliveryOrder:add];
+    [(PXGTextureManager *)self _handleProvidedSpriteTexture:self->_emptyTexture fromTextureProvider:providerCopy requestID:degradedCopy deliveryOrder:add];
   }
 
 LABEL_24:
@@ -1030,19 +1030,19 @@ void __98__PXGTextureManager_textureProvider_didProvideCGImage_options_adjustmen
   CGImageRelease(*(a1 + 96));
 }
 
-- (void)textureProvider:(id)a3 didProvideNothingForRequestID:(int)a4
+- (void)textureProvider:(id)provider didProvideNothingForRequestID:(int)d
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&d;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_requestQueue);
   emptyTexture = self->_emptyTexture;
   atomic_fetch_add(PXGMakeNextTextureDeliveryOrderID_lastRequestID, 1u);
-  [(PXGTextureManager *)self _handleProvidedSpriteTexture:emptyTexture fromTextureProvider:v7 requestID:v4 deliveryOrder:?];
+  [(PXGTextureManager *)self _handleProvidedSpriteTexture:emptyTexture fromTextureProvider:providerCopy requestID:v4 deliveryOrder:?];
 }
 
-- (BOOL)_getRequestDetails:(id *)a3 forRequestID:(int)a4
+- (BOOL)_getRequestDetails:(id *)details forRequestID:(int)d
 {
-  v17 = a4;
+  dCopy = d;
   os_unfair_lock_assert_not_owner(&self->_lookupLock);
   os_unfair_lock_lock(&self->_lookupLock);
   size = self->_lookupLock_requestDetailsByRequestID.__table_.__bucket_list_.__deleter_.__size_;
@@ -1055,19 +1055,19 @@ void __98__PXGTextureManager_textureProvider_didProvideCGImage_options_adjustmen
   v8.i16[0] = vaddlv_u8(v8);
   if (v8.u32[0] > 1uLL)
   {
-    v9 = a4;
-    if (size <= a4)
+    dCopy2 = d;
+    if (size <= d)
     {
-      v9 = a4 % size;
+      dCopy2 = d % size;
     }
   }
 
   else
   {
-    v9 = (size - 1) & a4;
+    dCopy2 = (size - 1) & d;
   }
 
-  v10 = self->_lookupLock_requestDetailsByRequestID.__table_.__bucket_list_.__ptr_[v9];
+  v10 = self->_lookupLock_requestDetailsByRequestID.__table_.__bucket_list_.__ptr_[dCopy2];
   if (!v10 || (v11 = *v10) == 0)
   {
 LABEL_17:
@@ -1078,7 +1078,7 @@ LABEL_17:
   while (1)
   {
     v12 = v11[1];
-    if (v12 == a4)
+    if (v12 == d)
     {
       break;
     }
@@ -1096,7 +1096,7 @@ LABEL_17:
       v12 &= size - 1;
     }
 
-    if (v12 != v9)
+    if (v12 != dCopy2)
     {
       goto LABEL_17;
     }
@@ -1109,37 +1109,37 @@ LABEL_16:
     }
   }
 
-  if (*(v11 + 4) != a4)
+  if (*(v11 + 4) != d)
   {
     goto LABEL_16;
   }
 
-  v18 = &v17;
-  v14 = std::__hash_table<std::__hash_value_type<int,PXGRequestDetails>,std::__unordered_map_hasher<int,std::__hash_value_type<int,PXGRequestDetails>,std::hash<int>,std::equal_to<int>,true>,std::__unordered_map_equal<int,std::__hash_value_type<int,PXGRequestDetails>,std::equal_to<int>,std::hash<int>,true>,std::allocator<std::__hash_value_type<int,PXGRequestDetails>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&self->_lookupLock_requestDetailsByRequestID.__table_.__bucket_list_.__ptr_, a4);
+  v18 = &dCopy;
+  v14 = std::__hash_table<std::__hash_value_type<int,PXGRequestDetails>,std::__unordered_map_hasher<int,std::__hash_value_type<int,PXGRequestDetails>,std::hash<int>,std::equal_to<int>,true>,std::__unordered_map_equal<int,std::__hash_value_type<int,PXGRequestDetails>,std::equal_to<int>,std::hash<int>,true>,std::allocator<std::__hash_value_type<int,PXGRequestDetails>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&self->_lookupLock_requestDetailsByRequestID.__table_.__bucket_list_.__ptr_, d);
   v15 = *(v14 + 5);
-  LOBYTE(a3->var1) = *(v14 + 24);
-  *&a3->var0 = v15;
+  LOBYTE(details->var1) = *(v14 + 24);
+  *&details->var0 = v15;
   v16 = 1;
 LABEL_18:
   os_unfair_lock_unlock(&self->_lookupLock);
   return v16;
 }
 
-- (void)_applyAdjustment:(id)a3 withMipmaps:(BOOL)a4 toTexture:(id)a5 fromTextureProvider:(id)a6 withTextureConverter:(id)a7 forRequestID:(int)a8 deliveryOrder:(unsigned int)a9 requestDetails:(id)a10
+- (void)_applyAdjustment:(id)adjustment withMipmaps:(BOOL)mipmaps toTexture:(id)texture fromTextureProvider:(id)provider withTextureConverter:(id)converter forRequestID:(int)d deliveryOrder:(unsigned int)order requestDetails:(id)self0
 {
-  v10 = *&a8;
-  v14 = a4;
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  v10 = *&d;
+  mipmapsCopy = mipmaps;
+  adjustmentCopy = adjustment;
+  textureCopy = texture;
+  providerCopy = provider;
+  converterCopy = converter;
   dispatch_assert_queue_V2(self->_adjustQueue);
-  if ([v18 isRequestActive:v10])
+  if ([providerCopy isRequestActive:v10])
   {
-    v20 = -[PXGTextureManager _existingAdjustedTextureForSourceTexture:adjustment:wantsMipmaps:presentationType:](self, "_existingAdjustedTextureForSourceTexture:adjustment:wantsMipmaps:presentationType:", v17, v16, v14, [v19 presentationType]);
+    v20 = -[PXGTextureManager _existingAdjustedTextureForSourceTexture:adjustment:wantsMipmaps:presentationType:](self, "_existingAdjustedTextureForSourceTexture:adjustment:wantsMipmaps:presentationType:", textureCopy, adjustmentCopy, mipmapsCopy, [converterCopy presentationType]);
     if (!v20)
     {
-      if (v14)
+      if (mipmapsCopy)
       {
         v21 = 0x100000000;
       }
@@ -1149,10 +1149,10 @@ LABEL_18:
         v21 = 0;
       }
 
-      v20 = [v19 applyAdjustment:v16 toTexture:v17 options:{v21 & 0xFFFFFFFF00000000 | (*&a10 >> 8), 0}];
+      v20 = [converterCopy applyAdjustment:adjustmentCopy toTexture:textureCopy options:{v21 & 0xFFFFFFFF00000000 | (*&details >> 8), 0}];
       if (!v20)
       {
-        v20 = v17;
+        v20 = textureCopy;
 LABEL_11:
         objc_initWeak(&location, self);
         requestQueue = self->_requestQueue;
@@ -1162,9 +1162,9 @@ LABEL_11:
         block[3] = &unk_2782AC320;
         objc_copyWeak(&v28, &location);
         v26 = v20;
-        v27 = v18;
+        v27 = providerCopy;
         v29 = v10;
-        v30 = a9;
+        orderCopy = order;
         v24 = v20;
         dispatch_async(requestQueue, block);
 
@@ -1173,13 +1173,13 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v22 = [(PXGTextureManager *)self _storeAdjustedTexture:v20 forSourceTexture:v17 adjustment:v16 mipmaps:v14];
+      v22 = [(PXGTextureManager *)self _storeAdjustedTexture:v20 forSourceTexture:textureCopy adjustment:adjustmentCopy mipmaps:mipmapsCopy];
     }
 
-    if (v20 != v17)
+    if (v20 != textureCopy)
     {
-      [v20 setSourceCGImage:{objc_msgSend(v17, "sourceCGImage")}];
-      [v20 setSourceCVPixelBuffer:{objc_msgSend(v17, "sourceCVPixelBuffer")}];
+      [v20 setSourceCGImage:{objc_msgSend(textureCopy, "sourceCGImage")}];
+      [v20 setSourceCVPixelBuffer:{objc_msgSend(textureCopy, "sourceCVPixelBuffer")}];
     }
 
     goto LABEL_11;
@@ -1194,32 +1194,32 @@ void __143__PXGTextureManager__applyAdjustment_withMipmaps_toTexture_fromTexture
   [WeakRetained _handleProvidedSpriteTexture:*(a1 + 32) fromTextureProvider:*(a1 + 40) requestID:*(a1 + 56) deliveryOrder:*(a1 + 60)];
 }
 
-- (id)_createTextureForCVPixelBuffer:(__CVBuffer *)a3 requestID:(int)a4 requestDetails:(id)a5 processingOptions:(id)a6 fromTextureProvider:(id)a7 withTextureConverter:(id)a8
+- (id)_createTextureForCVPixelBuffer:(__CVBuffer *)buffer requestID:(int)d requestDetails:(id)details processingOptions:(id)options fromTextureProvider:(id)provider withTextureConverter:(id)converter
 {
-  v9 = *&a6.var0;
-  v14 = *&a6.var2;
-  v15 = a7;
+  v9 = *&options.var0;
+  v14 = *&options.var2;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_processQueue);
   v16 = v9[1];
   *location = *v9;
   v32 = v16;
-  v17 = -[PXGTextureManager _existingTextureForPixelBuffer:processingOptions:presentationType:](self, "_existingTextureForPixelBuffer:processingOptions:presentationType:", a3, location, [v15 presentationType]);
+  v17 = -[PXGTextureManager _existingTextureForPixelBuffer:processingOptions:presentationType:](self, "_existingTextureForPixelBuffer:processingOptions:presentationType:", buffer, location, [providerCopy presentationType]);
   if (!v17)
   {
-    CVPixelBufferGetWidth(a3);
-    CVPixelBufferGetHeight(a3);
+    CVPixelBufferGetWidth(buffer);
+    CVPixelBufferGetHeight(buffer);
     kdebug_trace();
     v18 = *(v9 + 6);
     v19 = *v9;
     LODWORD(v20) = *(v9 + 5);
     v30 = 0;
-    v21 = [v15 createTextureFromCVPixelBuffer:a3 transform:(*&a5 >> 8) alpha:v18 options:&v30 error:{*&v19, v20}];
+    v21 = [providerCopy createTextureFromCVPixelBuffer:buffer transform:(*&details >> 8) alpha:v18 options:&v30 error:{*&v19, v20}];
     v22 = v30;
     [v21 pixelSize];
     kdebug_trace();
     if (v21)
     {
-      v17 = -[PXGTextureManager _storeTexture:forKey:replaceExisting:presentationType:](self, "_storeTexture:forKey:replaceExisting:presentationType:", v21, a3, *(v9 + 28), [v15 presentationType]);
+      v17 = -[PXGTextureManager _storeTexture:forKey:replaceExisting:presentationType:](self, "_storeTexture:forKey:replaceExisting:presentationType:", v21, buffer, *(v9 + 28), [providerCopy presentationType]);
     }
 
     else
@@ -1233,7 +1233,7 @@ void __143__PXGTextureManager__applyAdjustment_withMipmaps_toTexture_fromTexture
       objc_copyWeak(&v28, location);
       v26 = v14;
       v27 = v22;
-      v29 = a4;
+      dCopy = d;
       dispatch_async(requestQueue, block);
 
       objc_destroyWeak(&v28);
@@ -1251,22 +1251,22 @@ void __136__PXGTextureManager__createTextureForCVPixelBuffer_requestID_requestDe
   [WeakRetained textureProvider:*(a1 + 32) didProvideFailureWithError:*(a1 + 40) forRequestID:*(a1 + 56)];
 }
 
-- (void)_processPixelBuffer:(__CVBuffer *)a3 options:(id)a4 adjustment:(id)a5 fromTextureProvider:(id)a6 withTextureConverter:(id)a7 forRequestID:(int)a8 requestDetails:(id)a9 deliveryOrder:(unsigned int)a10
+- (void)_processPixelBuffer:(__CVBuffer *)buffer options:(id)options adjustment:(id)adjustment fromTextureProvider:(id)provider withTextureConverter:(id)converter forRequestID:(int)d requestDetails:(id)details deliveryOrder:(unsigned int)self0
 {
-  v13 = *&a4.var0;
-  v16 = *&a4.var2;
-  v17 = a5;
-  v18 = a6;
+  v13 = *&options.var0;
+  v16 = *&options.var2;
+  adjustmentCopy = adjustment;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_processQueue);
-  if ([v17 isRequestActive:a7])
+  if ([adjustmentCopy isRequestActive:converter])
   {
     v19 = v13[1];
     *location = *v13;
     v44 = v19;
-    v20 = [(PXGTextureManager *)self _createTextureForCVPixelBuffer:a3 requestID:a7 requestDetails:*&a8 & 0xFFFFFFFFFFLL processingOptions:location fromTextureProvider:v17 withTextureConverter:v18];
+    v20 = [(PXGTextureManager *)self _createTextureForCVPixelBuffer:buffer requestID:converter requestDetails:*&d & 0xFFFFFFFFFFLL processingOptions:location fromTextureProvider:adjustmentCopy withTextureConverter:providerCopy];
     if (v20)
     {
-      if (v16 || *(v13 + 16) == 1 && [v18 supportsMipmaps])
+      if (v16 || *(v13 + 16) == 1 && [providerCopy supportsMipmaps])
       {
         objc_initWeak(location, self);
         adjustQueue = self->_adjustQueue;
@@ -1280,12 +1280,12 @@ void __136__PXGTextureManager__createTextureForCVPixelBuffer_requestID_requestDe
         v32 = *v13;
         v33 = v22;
         v35 = v20;
-        v36 = v17;
-        v37 = v18;
-        v39 = a7;
-        v40 = *&a9.var0;
+        v36 = adjustmentCopy;
+        v37 = providerCopy;
+        converterCopy = converter;
+        v40 = *&details.var0;
         v42 = v45;
-        v41 = a8;
+        dCopy = d;
         dispatch_async(adjustQueue, block);
 
         v23 = &v38;
@@ -1301,9 +1301,9 @@ void __136__PXGTextureManager__createTextureForCVPixelBuffer_requestID_requestDe
         v25[3] = &unk_2782AC320;
         objc_copyWeak(&v28, location);
         v26 = v20;
-        v27 = v17;
-        v29 = a7;
-        v30 = *&a9.var0;
+        v27 = adjustmentCopy;
+        converterCopy2 = converter;
+        v30 = *&details.var0;
         dispatch_async(requestQueue, v25);
 
         v23 = &v28;
@@ -1329,33 +1329,33 @@ void __143__PXGTextureManager__processPixelBuffer_options_adjustment_fromTexture
   [WeakRetained _handleProvidedSpriteTexture:*(a1 + 32) fromTextureProvider:*(a1 + 40) requestID:*(a1 + 56) deliveryOrder:*(a1 + 60)];
 }
 
-- (id)_createTextureForCGImage:(CGImage *)a3 requestID:(int)a4 requestDetails:(id)a5 processingOptions:(id)a6 fromTextureProvider:(id)a7 withTextureConverter:(id)a8
+- (id)_createTextureForCGImage:(CGImage *)image requestID:(int)d requestDetails:(id)details processingOptions:(id)options fromTextureProvider:(id)provider withTextureConverter:(id)converter
 {
-  v9 = *&a6.var0;
-  v14 = *&a6.var2;
-  v15 = a7;
+  v9 = *&options.var0;
+  v14 = *&options.var2;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_processQueue);
   v16 = v9[1];
   *location = *v9;
   v32 = v16;
-  v17 = -[PXGTextureManager _existingTextureForCGImage:processingOptions:presentationType:](self, "_existingTextureForCGImage:processingOptions:presentationType:", a3, location, [v15 presentationType]);
+  v17 = -[PXGTextureManager _existingTextureForCGImage:processingOptions:presentationType:](self, "_existingTextureForCGImage:processingOptions:presentationType:", image, location, [providerCopy presentationType]);
   if (!v17)
   {
-    CGImageGetWidth(a3);
-    CGImageGetHeight(a3);
+    CGImageGetWidth(image);
+    CGImageGetHeight(image);
     kdebug_trace();
     v18 = *(v9 + 6);
     v19 = *v9;
     LODWORD(v20) = *(v9 + 5);
     v30 = 0;
-    v21 = [v15 createTextureFromCGImage:a3 transform:(*&a5 >> 8) alpha:v18 options:&v30 error:{*&v19, v20}];
+    v21 = [providerCopy createTextureFromCGImage:image transform:(*&details >> 8) alpha:v18 options:&v30 error:{*&v19, v20}];
     v22 = v30;
     [v21 pixelSize];
     kdebug_trace();
     if (v21)
     {
-      [v21 setSourceCGImage:a3];
-      v17 = -[PXGTextureManager _storeTexture:forKey:replaceExisting:presentationType:](self, "_storeTexture:forKey:replaceExisting:presentationType:", v21, a3, *(v9 + 28), [v15 presentationType]);
+      [v21 setSourceCGImage:image];
+      v17 = -[PXGTextureManager _storeTexture:forKey:replaceExisting:presentationType:](self, "_storeTexture:forKey:replaceExisting:presentationType:", v21, image, *(v9 + 28), [providerCopy presentationType]);
     }
 
     else
@@ -1369,7 +1369,7 @@ void __143__PXGTextureManager__processPixelBuffer_options_adjustment_fromTexture
       objc_copyWeak(&v28, location);
       v26 = v14;
       v27 = v22;
-      v29 = a4;
+      dCopy = d;
       dispatch_async(requestQueue, block);
 
       objc_destroyWeak(&v28);
@@ -1387,24 +1387,24 @@ void __130__PXGTextureManager__createTextureForCGImage_requestID_requestDetails_
   [WeakRetained textureProvider:*(a1 + 32) didProvideFailureWithError:*(a1 + 40) forRequestID:*(a1 + 56)];
 }
 
-- (void)_processCGImage:(CGImage *)a3 options:(id)a4 adjustment:(id)a5 isDegraded:(BOOL)a6 fromTextureProvider:(id)a7 withTextureConverter:(id)a8 requestID:(int)a9 requestDetails:(id)a10 deliveryOrder:(unsigned int)a11
+- (void)_processCGImage:(CGImage *)image options:(id)options adjustment:(id)adjustment isDegraded:(BOOL)degraded fromTextureProvider:(id)provider withTextureConverter:(id)converter requestID:(int)d requestDetails:(id)self0 deliveryOrder:(unsigned int)self1
 {
-  v12 = a6;
-  v14 = *&a4.var0;
-  v17 = *&a4.var2;
-  v18 = v12;
-  v19 = a7;
+  degradedCopy = degraded;
+  v14 = *&options.var0;
+  v17 = *&options.var2;
+  v18 = degradedCopy;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_processQueue);
-  if ([v18 isRequestActive:a8])
+  if ([v18 isRequestActive:converter])
   {
     v20 = v14[1];
     *location = *v14;
     v45 = v20;
-    v21 = [(PXGTextureManager *)self _createTextureForCGImage:a3 requestID:a8 requestDetails:*&a9 & 0xFFFFFFFFFFLL processingOptions:location fromTextureProvider:v18 withTextureConverter:v19];
-    [v21 setIsDegraded:a5];
+    v21 = [(PXGTextureManager *)self _createTextureForCGImage:image requestID:converter requestDetails:*&d & 0xFFFFFFFFFFLL processingOptions:location fromTextureProvider:v18 withTextureConverter:providerCopy];
+    [v21 setIsDegraded:adjustment];
     if (v21)
     {
-      if (v17 || *(v14 + 16) == 1 && [v19 supportsMipmaps])
+      if (v17 || *(v14 + 16) == 1 && [providerCopy supportsMipmaps])
       {
         objc_initWeak(location, self);
         adjustQueue = self->_adjustQueue;
@@ -1419,11 +1419,11 @@ void __130__PXGTextureManager__createTextureForCGImage_requestID_requestDetails_
         v34 = v23;
         v36 = v21;
         v37 = v18;
-        v38 = v19;
-        v40 = a8;
-        v41 = *&a10.var0;
+        v38 = providerCopy;
+        converterCopy = converter;
+        v41 = *&details.var0;
         v43 = v46;
-        v42 = a9;
+        dCopy = d;
         dispatch_async(adjustQueue, block);
 
         v24 = &v39;
@@ -1440,8 +1440,8 @@ void __130__PXGTextureManager__createTextureForCGImage_requestID_requestDetails_
         objc_copyWeak(&v29, location);
         v27 = v21;
         v28 = v18;
-        v30 = a8;
-        v31 = *&a10.var0;
+        converterCopy2 = converter;
+        v31 = *&details.var0;
         dispatch_async(requestQueue, v26);
 
         v24 = &v29;
@@ -1467,16 +1467,16 @@ void __147__PXGTextureManager__processCGImage_options_adjustment_isDegraded_from
   [WeakRetained _handleProvidedSpriteTexture:*(a1 + 32) fromTextureProvider:*(a1 + 40) requestID:*(a1 + 56) deliveryOrder:*(a1 + 60)];
 }
 
-- (void)_addTextureToTexturesInUse:(id)a3
+- (void)_addTextureToTexturesInUse:(id)use
 {
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 integerValue];
-  v7 = [v4 objectAtIndexedSubscript:1];
-  v8 = [v7 unsignedIntValue];
+  useCopy = use;
+  v5 = [useCopy objectAtIndexedSubscript:0];
+  integerValue = [v5 integerValue];
+  v7 = [useCopy objectAtIndexedSubscript:1];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  v9 = [v4 objectAtIndexedSubscript:2];
-  if (([v9 hasPendingTextureRequestID:v6 deliveryOrder:v8] & 1) == 0)
+  v9 = [useCopy objectAtIndexedSubscript:2];
+  if (([v9 hasPendingTextureRequestID:integerValue deliveryOrder:unsignedIntValue] & 1) == 0)
   {
     goto LABEL_12;
   }
@@ -1485,9 +1485,9 @@ void __147__PXGTextureManager__processCGImage_options_adjustment_isDegraded_from
   v11 = v10;
   if (v10 && v10 != v9)
   {
-    if (![v10 removePendingSpriteWithTextureRequestID:v6 ifDeliveredBefore:v8])
+    if (![v10 removePendingSpriteWithTextureRequestID:integerValue ifDeliveredBefore:unsignedIntValue])
     {
-      [v9 removePendingSpriteWithTextureRequestID:v6 ifDeliveredBefore:0xFFFFFFFFLL];
+      [v9 removePendingSpriteWithTextureRequestID:integerValue ifDeliveredBefore:0xFFFFFFFFLL];
       goto LABEL_9;
     }
 
@@ -1514,26 +1514,26 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)_handleProvidedSpriteTexture:(id)a3 fromTextureProvider:(id)a4 requestID:(int)a5 deliveryOrder:(unsigned int)a6
+- (void)_handleProvidedSpriteTexture:(id)texture fromTextureProvider:(id)provider requestID:(int)d deliveryOrder:(unsigned int)order
 {
-  v6 = *&a6;
-  v7 = *&a5;
+  v6 = *&order;
+  v7 = *&d;
   v23[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  textureCopy = texture;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_requestQueue);
-  if ([v11 isRequestActive:v7])
+  if ([providerCopy isRequestActive:v7])
   {
-    [v10 addSpriteWithTextureRequestID:v7 deliveryOrder:v6];
+    [textureCopy addSpriteWithTextureRequestID:v7 deliveryOrder:v6];
     v12 = [MEMORY[0x277CCABB0] numberWithInt:v7];
     v23[0] = v12;
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
     v23[1] = v13;
-    v23[2] = v10;
+    v23[2] = textureCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:3];
 
-    v15 = [(PXGTextureManager *)self layoutQueue];
-    LODWORD(v12) = v15 == MEMORY[0x277D85CD0];
+    layoutQueue = [(PXGTextureManager *)self layoutQueue];
+    LODWORD(v12) = layoutQueue == MEMORY[0x277D85CD0];
 
     if (v12)
     {
@@ -1542,21 +1542,21 @@ LABEL_12:
 
     else
     {
-      v16 = [(PXGTextureManager *)self layoutQueue];
+      layoutQueue2 = [(PXGTextureManager *)self layoutQueue];
       v17 = MEMORY[0x277D85DD0];
       v18 = 3221225472;
       v19 = __94__PXGTextureManager__handleProvidedSpriteTexture_fromTextureProvider_requestID_deliveryOrder___block_invoke;
       v20 = &unk_2782AC0A8;
-      v21 = self;
+      selfCopy = self;
       v22 = v14;
-      dispatch_async(v16, &v17);
+      dispatch_async(layoutQueue2, &v17);
     }
 
     [(PXGTextureManager *)self _requestQueue_setNeedsUpdate:v17];
   }
 }
 
-- (id)_textureAtlasManagerForImageDataSpec:(id *)a3
+- (id)_textureAtlasManagerForImageDataSpec:(id *)spec
 {
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_requestQueue);
@@ -1580,12 +1580,12 @@ LABEL_3:
 
       v9 = *(*(&v19 + 1) + 8 * v8);
       [v9 thumbnailSize];
-      LOWORD(v10) = a3->var2;
+      LOWORD(v10) = spec->var2;
       if (v11 == v10)
       {
         [v9 thumbnailSize];
-        LOWORD(v12) = a3->var3;
-        if (v13 == v12 && [v9 pixelFormat] == a3->var0)
+        LOWORD(v12) = spec->var3;
+        if (v13 == v12 && [v9 pixelFormat] == spec->var0)
         {
           break;
         }
@@ -1619,8 +1619,8 @@ LABEL_11:
   atlasTextureConverter = self->_atlasTextureConverter;
   if (atlasTextureConverter)
   {
-    v17 = *&a3->var0;
-    LODWORD(v18) = *&a3->var2;
+    v17 = *&spec->var0;
+    LODWORD(v18) = *&spec->var2;
     atlasTextureConverter = [atlasTextureConverter createTextureAtlasManagerForImageDataSpec:&v17 mipmapped:{-[PXGTextureManager preferMipmaps](self, "preferMipmaps", v17, v18)}];
     [atlasTextureConverter setDelegate:self];
     v15 = [v5 arrayByAddingObject:atlasTextureConverter];
@@ -1632,73 +1632,73 @@ LABEL_15:
   return atlasTextureConverter;
 }
 
-- (id)_storeTexture:(id)a3 forPayload:(id)a4
+- (id)_storeTexture:(id)texture forPayload:(id)payload
 {
-  v4 = [(PXGTextureManager *)self _storeTexture:a3 forKey:a4];
+  v4 = [(PXGTextureManager *)self _storeTexture:texture forKey:payload];
 
   return v4;
 }
 
-- (id)_storeAdjustedTexture:(id)a3 forSourceTexture:(id)a4 adjustment:(id)a5 mipmaps:(BOOL)a6
+- (id)_storeAdjustedTexture:(id)texture forSourceTexture:(id)sourceTexture adjustment:(id)adjustment mipmaps:(BOOL)mipmaps
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[PXGAdjustedTexturePayload alloc] initWithTexture:v11 adjustment:v12 mipmaps:v6];
-  [v10 setCacheKey:v13];
-  v14 = [(PXGTextureManager *)self _storeTexture:v10 forKey:v13];
+  mipmapsCopy = mipmaps;
+  textureCopy = texture;
+  sourceTextureCopy = sourceTexture;
+  adjustmentCopy = adjustment;
+  v13 = [[PXGAdjustedTexturePayload alloc] initWithTexture:sourceTextureCopy adjustment:adjustmentCopy mipmaps:mipmapsCopy];
+  [textureCopy setCacheKey:v13];
+  v14 = [(PXGTextureManager *)self _storeTexture:textureCopy forKey:v13];
 
   return v14;
 }
 
-- (id)_storeTexture:(id)a3 forKey:(id)a4 replaceExisting:(BOOL)a5 presentationType:(unsigned __int8)a6
+- (id)_storeTexture:(id)texture forKey:(id)key replaceExisting:(BOOL)existing presentationType:(unsigned __int8)type
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  typeCopy = type;
+  existingCopy = existing;
+  textureCopy = texture;
+  keyCopy = key;
   os_unfair_lock_assert_not_owner(&self->_lookupLock);
   os_unfair_lock_lock(&self->_lookupLock);
-  v12 = [(PXGSpriteTextureStore *)self->_lookupLock_textureCache storedTextureForTexture:v10 key:v11 presentationType:v6 policy:v7];
+  v12 = [(PXGSpriteTextureStore *)self->_lookupLock_textureCache storedTextureForTexture:textureCopy key:keyCopy presentationType:typeCopy policy:existingCopy];
   os_unfair_lock_unlock(&self->_lookupLock);
 
   return v12;
 }
 
-- (id)_storeTexture:(id)a3 forKey:(id)a4
+- (id)_storeTexture:(id)texture forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PXGTextureManager _storeTexture:forKey:replaceExisting:presentationType:](self, "_storeTexture:forKey:replaceExisting:presentationType:", v6, v7, 0, [v6 presentationType]);
+  textureCopy = texture;
+  keyCopy = key;
+  v8 = -[PXGTextureManager _storeTexture:forKey:replaceExisting:presentationType:](self, "_storeTexture:forKey:replaceExisting:presentationType:", textureCopy, keyCopy, 0, [textureCopy presentationType]);
 
   return v8;
 }
 
-- (id)_existingTextureForPayload:(id)a3 presentationType:(unsigned __int8)a4
+- (id)_existingTextureForPayload:(id)payload presentationType:(unsigned __int8)type
 {
-  v4 = [(PXGTextureManager *)self _existingTextureForKey:a3 presentationType:a4];
+  v4 = [(PXGTextureManager *)self _existingTextureForKey:payload presentationType:type];
 
   return v4;
 }
 
-- (id)_existingAdjustedTextureForSourceTexture:(id)a3 adjustment:(id)a4 wantsMipmaps:(BOOL)a5 presentationType:(unsigned __int8)a6
+- (id)_existingAdjustedTextureForSourceTexture:(id)texture adjustment:(id)adjustment wantsMipmaps:(BOOL)mipmaps presentationType:(unsigned __int8)type
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [[PXGAdjustedTexturePayload alloc] initWithTexture:v10 adjustment:v11 mipmaps:v7];
-  v13 = [(PXGTextureManager *)self _existingTextureForKey:v12 presentationType:v6];
+  typeCopy = type;
+  mipmapsCopy = mipmaps;
+  textureCopy = texture;
+  adjustmentCopy = adjustment;
+  v12 = [[PXGAdjustedTexturePayload alloc] initWithTexture:textureCopy adjustment:adjustmentCopy mipmaps:mipmapsCopy];
+  v13 = [(PXGTextureManager *)self _existingTextureForKey:v12 presentationType:typeCopy];
 
   return v13;
 }
 
-- (id)_existingTextureForPixelBuffer:(__CVBuffer *)a3 processingOptions:(id)a4 presentationType:(unsigned __int8)a5
+- (id)_existingTextureForPixelBuffer:(__CVBuffer *)buffer processingOptions:(id)options presentationType:(unsigned __int8)type
 {
-  v5 = *&a4.var2;
-  v6 = *&a4.var0;
-  v9 = [(PXGTextureManager *)self _existingTextureForKey:a3 presentationType:*&a4.var2];
+  v5 = *&options.var2;
+  v6 = *&options.var0;
+  v9 = [(PXGTextureManager *)self _existingTextureForKey:buffer presentationType:*&options.var2];
   [v9 alpha];
   if (v12 != v6[1].f32[1] || ([v9 suppressContentsRect], v13 != v6[1].f32[2]) || (objc_msgSend(v9, "orientationTransform"), v10 = *v6, (vminv_u16(vmovn_s32(vceqq_f32(v14, *v6))) & 1) == 0))
   {
@@ -1707,24 +1707,24 @@ LABEL_15:
     v15 = [v9 copyWithOrientationTransform:*v6->i64 alpha:*v10.i64 suppressContentsRect:v11];
 
     v9 = v15;
-    v16 = [(PXGTextureManager *)self _storeTexture:v15 forKey:a3 replaceExisting:v6[1].u8[12] presentationType:v5];
+    v16 = [(PXGTextureManager *)self _storeTexture:v15 forKey:buffer replaceExisting:v6[1].u8[12] presentationType:v5];
   }
 
   return v9;
 }
 
-- (id)_existingTextureForCGImage:(CGImage *)a3 processingOptions:(id)a4 presentationType:(unsigned __int8)a5
+- (id)_existingTextureForCGImage:(CGImage *)image processingOptions:(id)options presentationType:(unsigned __int8)type
 {
-  v5 = *&a4.var2;
-  v6 = *&a4.var0;
-  v9 = [(PXGTextureManager *)self _existingTextureForKey:a3 presentationType:*&a4.var2];
+  v5 = *&options.var2;
+  v6 = *&options.var0;
+  v9 = [(PXGTextureManager *)self _existingTextureForKey:image presentationType:*&options.var2];
   [v9 alpha];
   if (v12 != v6[1].f32[1] || ([v9 suppressContentsRect], v13 != v6[1].f32[2]) || (objc_msgSend(v9, "orientationTransform"), v10 = *v6, (vminv_u16(vmovn_s32(vceqq_f32(v14, *v6))) & 1) == 0))
   {
     v10.i32[0] = v6[1].i32[1];
     LODWORD(v11) = v6[1].i32[2];
     v15 = [v9 copyWithOrientationTransform:*v6->i64 alpha:*v10.i64 suppressContentsRect:v11];
-    v16 = [(PXGTextureManager *)self _storeTexture:v15 forKey:a3 replaceExisting:v6[1].u8[12] presentationType:v5];
+    v16 = [(PXGTextureManager *)self _storeTexture:v15 forKey:image replaceExisting:v6[1].u8[12] presentationType:v5];
 
     v9 = v16;
   }
@@ -1732,38 +1732,38 @@ LABEL_15:
   return v9;
 }
 
-- (id)_existingTextureForKey:(id)a3 presentationType:(unsigned __int8)a4
+- (id)_existingTextureForKey:(id)key presentationType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  keyCopy = key;
   os_unfair_lock_assert_not_owner(&self->_lookupLock);
   os_unfair_lock_lock(&self->_lookupLock);
-  v7 = [(PXGSpriteTextureStore *)self->_lookupLock_textureCache textureForKey:v6 presentationType:v4];
+  v7 = [(PXGSpriteTextureStore *)self->_lookupLock_textureCache textureForKey:keyCopy presentationType:typeCopy];
   os_unfair_lock_unlock(&self->_lookupLock);
 
   return v7;
 }
 
-- (void)_removeAllTexturesForPresentationType:(unsigned __int8)a3
+- (void)_removeAllTexturesForPresentationType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   os_unfair_lock_assert_not_owner(&self->_lookupLock);
   os_unfair_lock_lock(&self->_lookupLock);
-  [(PXGSpriteTextureStore *)self->_lookupLock_textureCache removeAllTexturesForPresentationType:v3];
+  [(PXGSpriteTextureStore *)self->_lookupLock_textureCache removeAllTexturesForPresentationType:typeCopy];
 
   os_unfair_lock_unlock(&self->_lookupLock);
 }
 
-- (void)_enumerateTextureConverters:(id)a3
+- (void)_enumerateTextureConverters:(id)converters
 {
-  v4 = a3;
+  convertersCopy = converters;
   textureConverterByPresentationType = self->_textureConverterByPresentationType;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__PXGTextureManager__enumerateTextureConverters___block_invoke;
   v7[3] = &unk_2782AC2D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = convertersCopy;
+  v6 = convertersCopy;
   [(NSDictionary *)textureConverterByPresentationType enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1774,16 +1774,16 @@ void __49__PXGTextureManager__enumerateTextureConverters___block_invoke(uint64_t
   (*(*(a1 + 32) + 16))(*(a1 + 32), [v6 integerValue], v5);
 }
 
-- (void)_enumerateTextureProviders:(id)a3
+- (void)_enumerateTextureProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   textureProviderByMediaKind = self->_textureProviderByMediaKind;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__PXGTextureManager__enumerateTextureProviders___block_invoke;
   v7[3] = &unk_2782AC2A8;
-  v8 = v4;
-  v6 = v4;
+  v8 = providersCopy;
+  v6 = providersCopy;
   [(NSMutableDictionary *)textureProviderByMediaKind enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -1794,21 +1794,21 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
   (*(*(a1 + 32) + 16))(*(a1 + 32), [v6 integerValue], v5);
 }
 
-- (void)_configureTextureProvider:(id)a3
+- (void)_configureTextureProvider:(id)provider
 {
-  v4 = a3;
-  [v4 setLowMemoryMode:{-[PXGTextureManager lowMemoryMode](self, "lowMemoryMode")}];
-  [v4 setAllowLargerImagesDuringScrollingInLowMemoryMode:{-[PXGTextureManager allowLargerImagesDuringScrollingInLowMemoryMode](self, "allowLargerImagesDuringScrollingInLowMemoryMode")}];
-  [v4 setCanDeliverThumbnailData:self->_atlasTextureConverter != 0];
-  [v4 setPreferBGRA:{-[PXGTextureManager preferBGRA](self, "preferBGRA")}];
-  [v4 setPreferMipmaps:{-[PXGTextureManager preferMipmaps](self, "preferMipmaps")}];
-  [v4 setPreferredColorSpaceName:{-[PXGTextureManager preferredColorSpaceName](self, "preferredColorSpaceName")}];
+  providerCopy = provider;
+  [providerCopy setLowMemoryMode:{-[PXGTextureManager lowMemoryMode](self, "lowMemoryMode")}];
+  [providerCopy setAllowLargerImagesDuringScrollingInLowMemoryMode:{-[PXGTextureManager allowLargerImagesDuringScrollingInLowMemoryMode](self, "allowLargerImagesDuringScrollingInLowMemoryMode")}];
+  [providerCopy setCanDeliverThumbnailData:self->_atlasTextureConverter != 0];
+  [providerCopy setPreferBGRA:{-[PXGTextureManager preferBGRA](self, "preferBGRA")}];
+  [providerCopy setPreferMipmaps:{-[PXGTextureManager preferMipmaps](self, "preferMipmaps")}];
+  [providerCopy setPreferredColorSpaceName:{-[PXGTextureManager preferredColorSpaceName](self, "preferredColorSpaceName")}];
 }
 
-- (void)_configureTextureConverter:(id)a3
+- (void)_configureTextureConverter:(id)converter
 {
-  v4 = a3;
-  [v4 setLowMemoryMode:{-[PXGTextureManager lowMemoryMode](self, "lowMemoryMode")}];
+  converterCopy = converter;
+  [converterCopy setLowMemoryMode:{-[PXGTextureManager lowMemoryMode](self, "lowMemoryMode")}];
 }
 
 - (void)_configureAllTextureConverters
@@ -1821,11 +1821,11 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
   [(PXGTextureManager *)self _enumerateTextureConverters:v2];
 }
 
-- (void)setLowMemoryMode:(BOOL)a3
+- (void)setLowMemoryMode:(BOOL)mode
 {
-  if (self->_lowMemoryMode != a3)
+  if (self->_lowMemoryMode != mode)
   {
-    self->_lowMemoryMode = a3;
+    self->_lowMemoryMode = mode;
     [(PXGTextureManager *)self _updatePreheatingStrategy];
     [(PXGTextureManager *)self _configureAllTextureProviders];
 
@@ -1833,57 +1833,57 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
   }
 }
 
-- (void)setPreferredColorSpaceName:(unint64_t)a3
+- (void)setPreferredColorSpaceName:(unint64_t)name
 {
-  if (self->_preferredColorSpaceName != a3)
+  if (self->_preferredColorSpaceName != name)
   {
-    self->_preferredColorSpaceName = a3;
+    self->_preferredColorSpaceName = name;
     [(PXGTextureManager *)self _configureAllTextureProviders];
   }
 }
 
-- (void)setPreferMipmaps:(BOOL)a3
+- (void)setPreferMipmaps:(BOOL)mipmaps
 {
-  if (self->_preferMipmaps != a3)
+  if (self->_preferMipmaps != mipmaps)
   {
-    self->_preferMipmaps = a3;
+    self->_preferMipmaps = mipmaps;
     [(PXGTextureManager *)self _configureAllTextureProviders];
   }
 }
 
-- (void)setPreferBGRA:(BOOL)a3
+- (void)setPreferBGRA:(BOOL)a
 {
-  if (self->_preferBGRA != a3)
+  if (self->_preferBGRA != a)
   {
-    self->_preferBGRA = a3;
+    self->_preferBGRA = a;
     [(PXGTextureManager *)self _configureAllTextureProviders];
   }
 }
 
-- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)a3
+- (void)setAllowLargerImagesDuringScrollingInLowMemoryMode:(BOOL)mode
 {
-  if (self->_allowLargerImagesDuringScrollingInLowMemoryMode != a3)
+  if (self->_allowLargerImagesDuringScrollingInLowMemoryMode != mode)
   {
-    self->_allowLargerImagesDuringScrollingInLowMemoryMode = a3;
+    self->_allowLargerImagesDuringScrollingInLowMemoryMode = mode;
     [(PXGTextureManager *)self _configureAllTextureProviders];
   }
 }
 
-- (BOOL)streamUpdatedTexturesForDisplayLinkIfNeeded:(id)a3
+- (BOOL)streamUpdatedTexturesForDisplayLinkIfNeeded:(id)needed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PXGTextureManager *)self layoutQueue];
-  dispatch_assert_queue_V2(v5);
+  neededCopy = needed;
+  layoutQueue = [(PXGTextureManager *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   kdebug_trace();
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
+  objectEnumerator = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
   v7 = 0;
-  v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -1893,19 +1893,19 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [(NSMapTable *)self->_textureProvidersDisplayLinkRegistrationState objectForKey:v11];
         if ([v12 BOOLValue])
         {
-          [v11 requestUpdatedTexturesForDisplayLink:v4];
+          [v11 requestUpdatedTexturesForDisplayLink:neededCopy];
           v7 = 1;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1918,15 +1918,15 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
 - (void)releaseCachedResources
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(PXGTextureManager *)self layoutQueue];
-  dispatch_assert_queue_V2(v3);
+  layoutQueue = [(PXGTextureManager *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v4 = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -1937,21 +1937,21 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) releaseCachedResources];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (CGImage)textureSnapshotForSpriteIndex:(unsigned int)a3
+- (CGImage)textureSnapshotForSpriteIndex:(unsigned int)index
 {
   v7 = 0;
   v8 = &v7;
@@ -1961,7 +1961,7 @@ void __48__PXGTextureManager__enumerateTextureProviders___block_invoke(uint64_t 
   v5[1] = 3221225472;
   v5[2] = __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke;
   v5[3] = &unk_2782AC230;
-  v6 = a3;
+  indexCopy = index;
   v5[4] = &v7;
   [(PXGTextureManager *)self _enumerateSpriteTextures:v5];
   v3 = v8[3];
@@ -1979,57 +1979,57 @@ void __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke(uint64
   }
 }
 
-- (void)_enumerateSpriteTextures:(id)a3
+- (void)_enumerateSpriteTextures:(id)textures
 {
-  v4 = a3;
+  texturesCopy = textures;
   os_unfair_lock_assert_not_owner(&self->_lookupLock);
   os_unfair_lock_lock(&self->_lookupLock);
-  [(PXGSpriteTextureStore *)self->_lookupLock_textureCache enumerateTexturesWithHandler:v4];
+  [(PXGSpriteTextureStore *)self->_lookupLock_textureCache enumerateTexturesWithHandler:texturesCopy];
 
   os_unfair_lock_unlock(&self->_lookupLock);
 }
 
-- (void)_lookupLock_requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 textureProvider:(id)a4 mediaKind:(unsigned __int8)a5 presentationType:(unsigned __int8)a6 isAppearing:(BOOL)a7 layout:(id)a8 leafSpriteIndexRange:(_PXGSpriteIndexRange)a9 sprites:(id *)a10 textureStreamInfos:(id *)a11 loadingStatus:(id)a12
+- (void)_lookupLock_requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range textureProvider:(id)provider mediaKind:(unsigned __int8)kind presentationType:(unsigned __int8)type isAppearing:(BOOL)appearing layout:(id)layout leafSpriteIndexRange:(_PXGSpriteIndexRange)indexRange sprites:(id *)self0 textureStreamInfos:(id *)self1 loadingStatus:(id)self2
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v18 = a4;
-  v19 = a8;
-  v55 = a12;
-  v62 = [v55 mutableStates];
-  var2 = a10->var2;
-  var3 = a10->var3;
-  var4 = a10->var4;
-  v21 = [(PXGTextureManager *)self entityManager];
-  v22 = [v21 effectComponent];
-  v61 = [v22 effectIds];
+  appearingCopy = appearing;
+  typeCopy = type;
+  kindCopy = kind;
+  providerCopy = provider;
+  layoutCopy = layout;
+  statusCopy = status;
+  mutableStates = [statusCopy mutableStates];
+  var2 = sprites->var2;
+  var3 = sprites->var3;
+  var4 = sprites->var4;
+  entityManager = [(PXGTextureManager *)self entityManager];
+  effectComponent = [entityManager effectComponent];
+  effectIds = [effectComponent effectIds];
 
   os_unfair_lock_assert_owner(&self->_lookupLock);
-  v23 = 0;
-  if (v15 == 2 && v13)
+  transparentTexture = 0;
+  if (kindCopy == 2 && appearingCopy)
   {
-    v24 = [(PXGTextureManager *)self _textureConverterForPresentationType:v14 contentType:1];
-    v25 = [v24 presentationType];
+    v24 = [(PXGTextureManager *)self _textureConverterForPresentationType:typeCopy contentType:1];
+    presentationType = [v24 presentationType];
     if (v24)
     {
-      v26 = v25;
-      v59 = [v19 contentSource];
-      v27 = [v59 desiredPlaceholderStyleInLayout:v19];
+      v26 = presentationType;
+      contentSource = [layoutCopy contentSource];
+      v27 = [contentSource desiredPlaceholderStyleInLayout:layoutCopy];
       if (v27 == 1)
       {
-        v28 = [v18 viewEnvironment];
-        v29 = [v28 userInterfaceStyle];
+        viewEnvironment = [providerCopy viewEnvironment];
+        userInterfaceStyle = [viewEnvironment userInterfaceStyle];
         v30 = 280;
-        if (v29 == 2)
+        if (userInterfaceStyle == 2)
         {
           v30 = 288;
         }
 
         v31 = *(&self->super.isa + v30);
 
-        v23 = [(PXGSpriteTextureStore *)self->_lookupLock_textureCache textureForKey:v31 presentationType:v26];
-        if (!v23 && v31)
+        transparentTexture = [(PXGSpriteTextureStore *)self->_lookupLock_textureCache textureForKey:v31 presentationType:v26];
+        if (!transparentTexture && v31)
         {
           if (v26 == 1)
           {
@@ -2043,8 +2043,8 @@ void __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke(uint64
             block[3] = &unk_2782AC0A8;
             block[4] = self;
             v35 = &v71;
-            v23 = v33;
-            v71 = v23;
+            transparentTexture = v33;
+            v71 = transparentTexture;
             dispatch_async(processQueue, block);
           }
 
@@ -2058,51 +2058,51 @@ void __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke(uint64
             v66[4] = self;
             v69 = v31;
             v35 = &v67;
-            v67 = v18;
+            v67 = providerCopy;
             v68 = v24;
             dispatch_async(v36, v66);
 
-            v23 = 0;
+            transparentTexture = 0;
           }
         }
       }
 
       else if (v27 == 2)
       {
-        v23 = [v24 transparentTexture];
+        transparentTexture = [v24 transparentTexture];
       }
 
       else
       {
-        v23 = 0;
+        transparentTexture = 0;
       }
     }
 
     else
     {
-      v23 = 0;
+      transparentTexture = 0;
     }
   }
 
-  v37 = [v18 requestTexturesForSpritesInRange:a9 geometries:var2 + 32 * (a3.location - a9.location) styles:var3 + 160 * (a3.location - a9.location) infos:var4 + 40 * (a3.location - a9.location) inLayout:v19];
-  v38 = HIDWORD(*&a9);
-  if (HIDWORD(*&a9))
+  v37 = [providerCopy requestTexturesForSpritesInRange:indexRange geometries:var2 + 32 * (range.location - indexRange.location) styles:var3 + 160 * (range.location - indexRange.location) infos:var4 + 40 * (range.location - indexRange.location) inLayout:layoutCopy];
+  v38 = HIDWORD(*&indexRange);
+  if (HIDWORD(*&indexRange))
   {
     v39 = v37;
-    v64 = v23;
-    v54 = v19;
+    v64 = transparentTexture;
+    v54 = layoutCopy;
     v58 = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
     {
       v65 = v39;
-      v41 = (&a11->var0.var0 + 66 * a3.location);
-      v42 = a10->var4 + 40 * a3.location;
-      *(v62 + *v41) = v42[1] != 0;
+      v41 = (&infos->var0.var0 + 66 * range.location);
+      v42 = sprites->var4 + 40 * range.location;
+      *(mutableStates + *v41) = v42[1] != 0;
       v72 = &v65;
-      *(std::__hash_table<std::__hash_value_type<int,unsigned int>,std::__unordered_map_hasher<int,std::__hash_value_type<int,unsigned int>,std::hash<int>,std::equal_to<int>,true>,std::__unordered_map_equal<int,std::__hash_value_type<int,unsigned int>,std::equal_to<int>,std::hash<int>,true>,std::allocator<std::__hash_value_type<int,unsigned int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&self->_spriteIndexByRequestID.__table_.__bucket_list_.__ptr_, v39) + 5) = a3.location;
+      *(std::__hash_table<std::__hash_value_type<int,unsigned int>,std::__unordered_map_hasher<int,std::__hash_value_type<int,unsigned int>,std::hash<int>,std::equal_to<int>,true>,std::__unordered_map_equal<int,std::__hash_value_type<int,unsigned int>,std::equal_to<int>,std::hash<int>,true>,std::allocator<std::__hash_value_type<int,unsigned int>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&self->_spriteIndexByRequestID.__table_.__bucket_list_.__ptr_, v39) + 5) = range.location;
       v43 = *v42;
-      v44 = *(v61 + 4 * *v41);
+      v44 = *(effectIds + 4 * *v41);
       v72 = &v65;
       v45 = std::__hash_table<std::__hash_value_type<int,PXGRequestDetails>,std::__unordered_map_hasher<int,std::__hash_value_type<int,PXGRequestDetails>,std::hash<int>,std::equal_to<int>,true>,std::__unordered_map_equal<int,std::__hash_value_type<int,PXGRequestDetails>,std::equal_to<int>,std::hash<int>,true>,std::allocator<std::__hash_value_type<int,PXGRequestDetails>>>::__emplace_unique_key_args<int,std::piecewise_construct_t const&,std::tuple<int const&>,std::tuple<>>(&self->_lookupLock_requestDetailsByRequestID.__table_.__bucket_list_.__ptr_, v65);
       *(v45 + 20) = v43;
@@ -2123,7 +2123,7 @@ void __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke(uint64
       if (v47)
       {
         v48 = v47;
-        [v48 removeSpriteIndex:a3];
+        [v48 removeSpriteIndex:range];
 
         *(v41 + 64) = 0;
         *(v41 + 9) = 0;
@@ -2156,7 +2156,7 @@ void __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke(uint64
         goto LABEL_34;
       }
 
-      if (v58 + location != a3.location)
+      if (v58 + location != range.location)
       {
         break;
       }
@@ -2164,11 +2164,11 @@ void __51__PXGTextureManager_textureSnapshotForSpriteIndex___block_invoke(uint64
       ++v58;
 LABEL_35:
       ++v39;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       if (!--v38)
       {
-        v19 = v54;
-        v23 = v64;
+        layoutCopy = v54;
+        transparentTexture = v64;
         if (v58)
         {
           [v64 addSpriteIndexRange:location];
@@ -2180,7 +2180,7 @@ LABEL_35:
 
     [v51 addSpriteIndexRange:location];
 LABEL_34:
-    location = a3.location;
+    location = range.location;
     v58 = 1;
     goto LABEL_35;
   }
@@ -2270,32 +2270,32 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   return result;
 }
 
-- (void)_pruneTextures:(id)a3
+- (void)_pruneTextures:(id)textures
 {
-  v4 = a3;
+  texturesCopy = textures;
   deallocationsQueue = self->_deallocationsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__PXGTextureManager__pruneTextures___block_invoke;
   block[3] = &unk_2782ABE50;
-  v8 = v4;
-  v6 = v4;
+  v8 = texturesCopy;
+  v6 = texturesCopy;
   dispatch_async(deallocationsQueue, block);
 }
 
-- (void)_streamTexturesForSpritesInDataStore:(id)a3 presentationDataStore:(id)a4 changeDetails:(id)a5 layout:(id)a6 interactionState:(id *)a7 loadingStatus:(id)a8
+- (void)_streamTexturesForSpritesInDataStore:(id)store presentationDataStore:(id)dataStore changeDetails:(id)details layout:(id)layout interactionState:(id *)state loadingStatus:(id)status
 {
   v216 = *MEMORY[0x277D85DE8];
-  v123 = a3;
-  v116 = a4;
-  v121 = a5;
-  v14 = a6;
-  v15 = a8;
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  detailsCopy = details;
+  layoutCopy = layout;
+  statusCopy = status;
   v16 = self->_streamCount + 1;
   self->_streamCount = v16;
-  v105 = v14;
-  v106 = v15;
-  v17 = [v106 mutableStates];
+  v105 = layoutCopy;
+  v106 = statusCopy;
+  mutableStates = [v106 mutableStates];
   if (atomic_exchange(&self->_isPerformingUpdateFromRequestQueue, 0))
   {
     requestQueue = self->_requestQueue;
@@ -2307,24 +2307,24 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
     dispatch_async(requestQueue, block);
   }
 
-  v113 = [v14 fences];
-  [v14 removeAllFences];
-  v19 = [(PXGTextureManager *)self preheatingStrategy];
-  v20 = *&a7->var4;
-  *buf = *&a7->var0;
+  fences = [layoutCopy fences];
+  [layoutCopy removeAllFences];
+  preheatingStrategy = [(PXGTextureManager *)self preheatingStrategy];
+  v20 = *&state->var4;
+  *buf = *&state->var0;
   v213 = v20;
-  size = a7->var8.size;
-  origin = a7->var8.origin;
+  size = state->var8.size;
+  origin = state->var8.origin;
   v215 = size;
-  [v19 preheatingRectForLayout:v14 interactionState:buf];
+  [preheatingStrategy preheatingRectForLayout:layoutCopy interactionState:buf];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
   kdebug_trace();
-  -[PXGTextureManager _resizeStorageIfNeededForSpriteCount:](self, "_resizeStorageIfNeededForSpriteCount:", [v123 count]);
-  self->_streamInfoBySpriteIndexCount = [v123 count];
+  -[PXGTextureManager _resizeStorageIfNeededForSpriteCount:](self, "_resizeStorageIfNeededForSpriteCount:", [storeCopy count]);
+  self->_streamInfoBySpriteIndexCount = [storeCopy count];
   streamInfoBySpriteIndex = self->_streamInfoBySpriteIndex;
   v107 = self->_textureProviderByMediaKind;
   v205[0] = MEMORY[0x277D85DD0];
@@ -2337,8 +2337,8 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v108 = MEMORY[0x21CEE40A0](v205);
   p_loadedSpriteIndexes = &self->_loadedSpriteIndexes;
   loadedSpriteIndexes = self->_loadedSpriteIndexes;
-  v32 = [v121 removedSpriteIndexes];
-  v115 = [(NSIndexSet *)loadedSpriteIndexes px_intersectionWithIndexSet:v32];
+  removedSpriteIndexes = [detailsCopy removedSpriteIndexes];
+  v115 = [(NSIndexSet *)loadedSpriteIndexes px_intersectionWithIndexSet:removedSpriteIndexes];
 
   v199[0] = MEMORY[0x277D85DD0];
   v199[1] = 3221225472;
@@ -2351,27 +2351,27 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   p_spriteIndexByRequestID = &self->_spriteIndexByRequestID;
   v111 = v107;
   v200 = v111;
-  v204 = v17;
+  v204 = mutableStates;
   v118 = MEMORY[0x21CEE40A0](v199);
   os_unfair_lock_lock(&self->_lookupLock);
   [v115 enumerateRangesUsingBlock:v118];
   os_unfair_lock_unlock(&self->_lookupLock);
-  if ([v121 hasAnyInsertionsRemovalsOrMoves])
+  if ([detailsCopy hasAnyInsertionsRemovalsOrMoves])
   {
-    v33 = v123;
-    v34 = [v123 entities];
+    v33 = storeCopy;
+    entities = [storeCopy entities];
     v35 = self->_streamInfoBySpriteIndex;
     streamInfoBySpriteIndexCount = self->_streamInfoBySpriteIndexCount;
     v198[0] = MEMORY[0x277D85DD0];
     v198[1] = 3221225472;
     v198[2] = __132__PXGTextureManager__streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState_loadingStatus___block_invoke_4;
     v198[3] = &unk_2782ABF18;
-    v198[5] = v34;
+    v198[5] = entities;
     v198[4] = self;
     v198[6] = a2;
     v198[7] = streamInfoBySpriteIndex;
-    [v121 applyToArray:v35 elementSize:66 countAfterChanges:streamInfoBySpriteIndexCount insertionHandler:v198 modifiedHandler:0];
-    v37 = [v121 indexSetAfterApplyingChangeDetails:*p_loadedSpriteIndexes];
+    [detailsCopy applyToArray:v35 elementSize:66 countAfterChanges:streamInfoBySpriteIndexCount insertionHandler:v198 modifiedHandler:0];
+    v37 = [detailsCopy indexSetAfterApplyingChangeDetails:*p_loadedSpriteIndexes];
     v38 = self->_loadedSpriteIndexes;
     self->_loadedSpriteIndexes = v37;
 
@@ -2379,15 +2379,15 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
     v196[1] = 3221225472;
     v196[2] = __132__PXGTextureManager__streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState_loadingStatus___block_invoke_5;
     v196[3] = &unk_2782ABF40;
-    v39 = v121;
+    v39 = detailsCopy;
     v197 = v39;
     [(PXGTextureManager *)self _enumerateSpriteTextures:v196];
     v195 = 0u;
     v194 = 0u;
     v193 = 0u;
     v192 = 0u;
-    v40 = [(PXGTextureManager *)self textureAtlasManagers];
-    v41 = [v40 countByEnumeratingWithState:&v192 objects:v211 count:16];
+    textureAtlasManagers = [(PXGTextureManager *)self textureAtlasManagers];
+    v41 = [textureAtlasManagers countByEnumeratingWithState:&v192 objects:v211 count:16];
     if (v41)
     {
       v42 = *v193;
@@ -2397,34 +2397,34 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
         {
           if (*v193 != v42)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(textureAtlasManagers);
           }
 
           [*(*(&v192 + 1) + 8 * i) applyChangeDetails:v39];
         }
 
-        v41 = [v40 countByEnumeratingWithState:&v192 objects:v211 count:16];
+        v41 = [textureAtlasManagers countByEnumeratingWithState:&v192 objects:v211 count:16];
       }
 
       while (v41);
     }
 
     v44 = v39;
-    v45 = [v39 spriteIndexAfterChangeBySpriteIndexBeforeChange];
+    spriteIndexAfterChangeBySpriteIndexBeforeChange = [v39 spriteIndexAfterChangeBySpriteIndexBeforeChange];
     for (j = self->_spriteIndexByRequestID.__table_.__first_node_.__next_; j; j = *j)
     {
-      j[5] = *(v45 + 4 * j[5]);
+      j[5] = *(spriteIndexAfterChangeBySpriteIndexBeforeChange + 4 * j[5]);
     }
   }
 
-  v47 = [(PXGTextureManager *)self isInactive];
-  v131 = [(PXGTextureManager *)self viewEnvironment];
+  isInactive = [(PXGTextureManager *)self isInactive];
+  viewEnvironment = [(PXGTextureManager *)self viewEnvironment];
   v191 = 0u;
   v190 = 0u;
   v189 = 0u;
   v188 = 0u;
-  v48 = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
-  v49 = [v48 countByEnumeratingWithState:&v188 objects:v210 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
+  v49 = [objectEnumerator countByEnumeratingWithState:&v188 objects:v210 count:16];
   if (v49)
   {
     v50 = *v189;
@@ -2434,21 +2434,21 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
       {
         if (*v189 != v50)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v52 = *(*(&v188 + 1) + 8 * k);
-        [v52 setViewEnvironment:v131];
-        v53 = *&a7->var4;
-        *buf = *&a7->var0;
+        [v52 setViewEnvironment:viewEnvironment];
+        v53 = *&state->var4;
+        *buf = *&state->var0;
         v213 = v53;
-        v54 = a7->var8.size;
-        origin = a7->var8.origin;
+        v54 = state->var8.size;
+        origin = state->var8.origin;
         v215 = v54;
         [v52 setInteractionState:buf];
       }
 
-      v49 = [v48 countByEnumeratingWithState:&v188 objects:v210 count:16];
+      v49 = [objectEnumerator countByEnumeratingWithState:&v188 objects:v210 count:16];
     }
 
     while (v49);
@@ -2459,9 +2459,9 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v187 = 0;
   v186 = 0u;
   v185 = 0u;
-  if (v123)
+  if (storeCopy)
   {
-    [v123 sprites];
+    [storeCopy sprites];
     v109 = v186;
     v55 = v187;
   }
@@ -2472,10 +2472,10 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
     v109 = 0;
   }
 
-  if (v47)
+  if (isInactive)
   {
-    v56 = [MEMORY[0x277CCAA78] indexSet];
-    v117 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
+    indexSet2 = [MEMORY[0x277CCAA78] indexSet];
     v57 = PXGTungstenGetLog();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
@@ -2488,53 +2488,53 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   else
   {
     v57 = objc_alloc_init(MEMORY[0x277CCAB58]);
-    v58 = [v123 spriteIndexesInRect:{v23, v25, v27, v29}];
-    if (CGRectIsNull(a7->var8))
+    v58 = [storeCopy spriteIndexesInRect:{v23, v25, v27, v29}];
+    if (CGRectIsNull(state->var8))
     {
-      v117 = 0;
+      indexSet2 = 0;
     }
 
     else
     {
-      v117 = [v123 spriteIndexesInRect:{a7->var8.origin.x, a7->var8.origin.y, a7->var8.size.width, a7->var8.size.height}];
+      indexSet2 = [storeCopy spriteIndexesInRect:{state->var8.origin.x, state->var8.origin.y, state->var8.size.width, state->var8.size.height}];
     }
 
-    v59 = [v123 spriteIndexesWithSpriteInfoFlags:1];
+    v59 = [storeCopy spriteIndexesWithSpriteInfoFlags:1];
     [v57 addIndexes:v58];
     [v57 addIndexes:v59];
-    v56 = [v57 copy];
+    indexSet = [v57 copy];
   }
 
-  v119 = [v56 mutableCopy];
+  v119 = [indexSet mutableCopy];
   [v119 removeIndexes:v114];
   v122 = [(NSIndexSet *)v114 mutableCopy];
-  [v122 removeIndexes:v56];
+  [v122 removeIndexes:indexSet];
   if (self->_didSwitchTextureConverter)
   {
-    v120 = [v56 mutableCopy];
+    v120 = [indexSet mutableCopy];
   }
 
   else
   {
-    v60 = [v121 modifiedSpriteIndexes];
-    v120 = [v60 mutableCopy];
+    modifiedSpriteIndexes = [detailsCopy modifiedSpriteIndexes];
+    v120 = [modifiedSpriteIndexes mutableCopy];
   }
 
   [v120 removeIndexes:v122];
   [v120 removeIndexes:v119];
-  if (v116 && [v122 count] != 0 && !v47)
+  if (dataStoreCopy && [v122 count] != 0 && !isInactive)
   {
-    v62 = [v116 spriteAtIndexes:v122 inRect:{v23, v25, v27, v29}];
+    v62 = [dataStoreCopy spriteAtIndexes:v122 inRect:{v23, v25, v27, v29}];
     if ([v62 count])
     {
       [v122 removeIndexes:v62];
-      v63 = [v56 mutableCopy];
+      v63 = [indexSet mutableCopy];
       [v63 addIndexes:v62];
     }
 
     else
     {
-      v63 = v56;
+      v63 = indexSet;
     }
 
     v61 = v63;
@@ -2542,7 +2542,7 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
 
   else
   {
-    v61 = v56;
+    v61 = indexSet;
   }
 
   v103 = v61;
@@ -2563,7 +2563,7 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v65 = v105;
   v179 = v55;
   v176 = v65;
-  v177 = self;
+  selfCopy = self;
   v180 = v185;
   v181 = v186;
   v182 = v187;
@@ -2572,7 +2572,7 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v178 = v66;
   [v119 enumerateRangesUsingBlock:v175];
   [v122 enumerateRangesUsingBlock:v118];
-  if ([(PXGTextureManager *)self deferModifiedTextureRequestsDuringViewResizing]&& !a7->var5 && self->_hasDeferredRequests)
+  if ([(PXGTextureManager *)self deferModifiedTextureRequestsDuringViewResizing]&& !state->var5 && self->_hasDeferredRequests)
   {
     v67 = *p_loadedSpriteIndexes;
     v172[0] = MEMORY[0x277D85DD0];
@@ -2588,7 +2588,7 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
 
   if ([(PXGTextureManager *)self deferModifiedTextureRequestsDuringViewResizing])
   {
-    var5 = a7->var5;
+    var5 = state->var5;
   }
 
   else
@@ -2618,17 +2618,17 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v100 = v66;
   v162 = v100;
   [v120 enumerateRangesUsingBlock:v159];
-  if (v117)
+  if (indexSet2)
   {
-    v70 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet3 = [MEMORY[0x277CCAB58] indexSet];
     v156[0] = MEMORY[0x277D85DD0];
     v156[1] = 3221225472;
     v156[2] = __132__PXGTextureManager__streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState_loadingStatus___block_invoke_59;
     v156[3] = &unk_2782ABFE0;
     v158 = streamInfoBySpriteIndex;
-    v130 = v70;
+    v130 = indexSet3;
     v157 = v130;
-    [v117 enumerateRangesUsingBlock:v156];
+    [indexSet2 enumerateRangesUsingBlock:v156];
   }
 
   else
@@ -2641,8 +2641,8 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v155 = 0u;
   v152 = 0u;
   v153 = 0u;
-  v71 = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
-  v72 = [v71 countByEnumeratingWithState:&v152 objects:v209 count:16];
+  objectEnumerator2 = [(NSMutableDictionary *)self->_textureProviderByMediaKind objectEnumerator];
+  v72 = [objectEnumerator2 countByEnumeratingWithState:&v152 objects:v209 count:16];
   if (v72)
   {
     v73 = *v153;
@@ -2652,20 +2652,20 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
       {
         if (*v153 != v73)
         {
-          objc_enumerationMutation(v71);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v75 = *(*(&v152 + 1) + 8 * m);
         [v75 setRequestIDsInTargetRect:v130];
         [v75 performDeferredCancellations];
         [v75 didFinishRequestingTextures];
-        if (v47)
+        if (isInactive)
         {
           [v75 releaseCachedResources];
         }
       }
 
-      v72 = [v71 countByEnumeratingWithState:&v152 objects:v209 count:16];
+      v72 = [objectEnumerator2 countByEnumeratingWithState:&v152 objects:v209 count:16];
     }
 
     while (v72);
@@ -2680,14 +2680,14 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v151[5] = v16;
   dispatch_async(v76, v151);
   [v112 visibleRect];
-  v77 = *&a7->var4;
-  *buf = *&a7->var0;
+  v77 = *&state->var4;
+  *buf = *&state->var0;
   v213 = v77;
-  v78 = a7->var8.size;
-  origin = a7->var8.origin;
+  v78 = state->var8.size;
+  origin = state->var8.origin;
   v215 = v78;
-  [(PXGTextureManager *)self _blockOnThumbnailsIfNeededWithGeometries:v109 visibleRect:buf interactionState:v113 fences:?];
-  v79 = [MEMORY[0x277CBEB38] dictionary];
+  [(PXGTextureManager *)self _blockOnThumbnailsIfNeededWithGeometries:v109 visibleRect:buf interactionState:fences fences:?];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   *buf = 0;
   *&buf[8] = buf;
   v213 = 0x2020000000uLL;
@@ -2695,12 +2695,12 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v148[1] = 3221225472;
   v148[2] = __132__PXGTextureManager__streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState_loadingStatus___block_invoke_3_61;
   v148[3] = &unk_2782AC058;
-  obj = v79;
-  v99 = v79;
+  obj = dictionary;
+  v99 = dictionary;
   v149 = v99;
   v150 = buf;
   v104 = MEMORY[0x21CEE40A0](v148);
-  v95 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet4 = [MEMORY[0x277CCAB58] indexSet];
   v96 = self->_emptyTexture;
   v80 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v142[0] = MEMORY[0x277D85DD0];
@@ -2711,17 +2711,17 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v143 = v97;
   v81 = v104;
   v147 = v81;
-  v128 = v95;
+  v128 = indexSet4;
   v144 = v128;
-  v145 = self;
+  selfCopy2 = self;
   v82 = v80;
   v146 = v82;
   v110 = v82;
-  [(PXGTextureManager *)self _enumerateSpriteTextures:v142, v95, v96];
+  [(PXGTextureManager *)self _enumerateSpriteTextures:v142, indexSet4, v96];
   if ([v82 count])
   {
-    v83 = [(PXGTextureManager *)self layoutQueue];
-    v84 = v83 == MEMORY[0x277D85CD0];
+    layoutQueue = [(PXGTextureManager *)self layoutQueue];
+    v84 = layoutQueue == MEMORY[0x277D85CD0];
 
     if (v84)
     {
@@ -2730,14 +2730,14 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
 
     else
     {
-      v85 = [(PXGTextureManager *)self layoutQueue];
+      layoutQueue2 = [(PXGTextureManager *)self layoutQueue];
       v140[0] = MEMORY[0x277D85DD0];
       v140[1] = 3221225472;
       v140[2] = __132__PXGTextureManager__streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState_loadingStatus___block_invoke_5_67;
       v140[3] = &unk_2782AC0A8;
       v140[4] = self;
       v141 = v110;
-      dispatch_async(v85, v140);
+      dispatch_async(layoutQueue2, v140);
     }
   }
 
@@ -2745,11 +2745,11 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
   v139 = 0u;
   v136 = 0u;
   v137 = 0u;
-  v86 = [(PXGTextureManager *)self textureAtlasManagers];
-  v87 = [v86 countByEnumeratingWithState:&v136 objects:v208 count:16];
+  textureAtlasManagers2 = [(PXGTextureManager *)self textureAtlasManagers];
+  v87 = [textureAtlasManagers2 countByEnumeratingWithState:&v136 objects:v208 count:16];
   if (v87)
   {
-    v125 = v86;
+    v125 = textureAtlasManagers2;
     v126 = *v137;
     do
     {
@@ -2757,7 +2757,7 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
       {
         if (*v137 != v126)
         {
-          objc_enumerationMutation(v86);
+          objc_enumerationMutation(textureAtlasManagers2);
         }
 
         v89 = *(*(&v136 + 1) + 8 * n);
@@ -2767,8 +2767,8 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
         v135 = 0u;
         v132 = 0u;
         v133 = 0u;
-        v90 = [v89 textures];
-        v91 = [v90 countByEnumeratingWithState:&v132 objects:v207 count:16];
+        textures = [v89 textures];
+        v91 = [textures countByEnumeratingWithState:&v132 objects:v207 count:16];
         if (v91)
         {
           v92 = *v133;
@@ -2778,7 +2778,7 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
             {
               if (*v133 != v92)
               {
-                objc_enumerationMutation(v90);
+                objc_enumerationMutation(textures);
               }
 
               v94 = *(*(&v132 + 1) + 8 * ii);
@@ -2788,13 +2788,13 @@ uint64_t __98__PXGTextureManager__blockOnThumbnailsIfNeededWithGeometries_visibl
               }
             }
 
-            v91 = [v90 countByEnumeratingWithState:&v132 objects:v207 count:16];
+            v91 = [textures countByEnumeratingWithState:&v132 objects:v207 count:16];
           }
 
           while (v91);
         }
 
-        v86 = v125;
+        textureAtlasManagers2 = v125;
       }
 
       v87 = [v125 countByEnumeratingWithState:&v136 objects:v208 count:16];
@@ -3670,34 +3670,34 @@ void __132__PXGTextureManager__streamTexturesForSpritesInDataStore_presentationD
   }
 }
 
-- (void)streamTexturesForSpritesInDataStore:(id)a3 presentationDataStore:(id)a4 changeDetails:(id)a5 layout:(id)a6 interactionState:(id *)a7
+- (void)streamTexturesForSpritesInDataStore:(id)store presentationDataStore:(id)dataStore changeDetails:(id)details layout:(id)layout interactionState:(id *)state
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v23 = a6;
-  v15 = [(PXGTextureManager *)self entityManager];
-  v16 = [v15 loadingStatus];
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  detailsCopy = details;
+  layoutCopy = layout;
+  entityManager = [(PXGTextureManager *)self entityManager];
+  loadingStatus = [entityManager loadingStatus];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState___block_invoke;
   v24[3] = &unk_2782ABEA0;
   v24[4] = self;
-  v17 = v12;
+  v17 = storeCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = dataStoreCopy;
   v26 = v18;
-  v19 = v14;
+  v19 = detailsCopy;
   v27 = v19;
-  v20 = v23;
+  v20 = layoutCopy;
   v28 = v20;
-  v21 = *&a7->var4;
-  v29 = *&a7->var0;
+  v21 = *&state->var4;
+  v29 = *&state->var0;
   v30 = v21;
-  size = a7->var8.size;
-  origin = a7->var8.origin;
+  size = state->var8.size;
+  origin = state->var8.origin;
   v32 = size;
-  [v16 performChanges:v24];
+  [loadingStatus performChanges:v24];
 }
 
 uint64_t __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentationDataStore_changeDetails_layout_interactionState___block_invoke(uint64_t a1, uint64_t a2)
@@ -3716,10 +3716,10 @@ uint64_t __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentati
   return [v3 _streamTexturesForSpritesInDataStore:v2 presentationDataStore:v4 changeDetails:v5 layout:v6 interactionState:v10 loadingStatus:a2];
 }
 
-- (void)_resizeStorageIfNeededForSpriteCount:(int64_t)a3
+- (void)_resizeStorageIfNeededForSpriteCount:(int64_t)count
 {
   streamInfoBySpriteIndexCapacity = self->_streamInfoBySpriteIndexCapacity;
-  if (streamInfoBySpriteIndexCapacity < a3)
+  if (streamInfoBySpriteIndexCapacity < count)
   {
     if (!streamInfoBySpriteIndexCapacity)
     {
@@ -3727,14 +3727,14 @@ uint64_t __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentati
       self->_streamInfoBySpriteIndexCapacity = 10;
     }
 
-    if (streamInfoBySpriteIndexCapacity < a3)
+    if (streamInfoBySpriteIndexCapacity < count)
     {
       do
       {
         streamInfoBySpriteIndexCapacity *= 2;
       }
 
-      while (streamInfoBySpriteIndexCapacity < a3);
+      while (streamInfoBySpriteIndexCapacity < count);
       self->_streamInfoBySpriteIndexCapacity = streamInfoBySpriteIndexCapacity;
     }
 
@@ -3742,11 +3742,11 @@ uint64_t __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentati
   }
 }
 
-- (void)setViewEnvironment:(id)a3
+- (void)setViewEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v6 = self->_viewEnvironment;
-  v7 = v5;
+  v7 = environmentCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -3758,36 +3758,36 @@ uint64_t __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentati
 
     if (!v8)
     {
-      objc_storeStrong(&self->_viewEnvironment, a3);
+      objc_storeStrong(&self->_viewEnvironment, environment);
       [(PXGTextureManager *)self _setNeedsUpdate];
     }
   }
 }
 
-- (void)registerTextureProvider:(id)a3 forMediaKind:(unsigned __int8)a4
+- (void)registerTextureProvider:(id)provider forMediaKind:(unsigned __int8)kind
 {
-  v4 = a4;
-  v9 = a3;
+  kindCopy = kind;
+  providerCopy = provider;
   textureProviderByMediaKind = self->_textureProviderByMediaKind;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4];
-  [(NSMutableDictionary *)textureProviderByMediaKind setObject:v9 forKeyedSubscript:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:kindCopy];
+  [(NSMutableDictionary *)textureProviderByMediaKind setObject:providerCopy forKeyedSubscript:v7];
 
-  [(NSMapTable *)self->_textureProvidersDisplayLinkRegistrationState setObject:MEMORY[0x277CBEC28] forKey:v9];
-  [v9 setLayoutQueue:self->_layoutQueue];
-  [v9 setRequestQueue:self->_requestQueue];
-  [v9 setWorkQueue:self->_workQueue];
-  [v9 setProcessingQueue:self->_processQueue];
-  v8 = [(PXGTextureManager *)self viewEnvironment];
-  [v9 setViewEnvironment:v8];
+  [(NSMapTable *)self->_textureProvidersDisplayLinkRegistrationState setObject:MEMORY[0x277CBEC28] forKey:providerCopy];
+  [providerCopy setLayoutQueue:self->_layoutQueue];
+  [providerCopy setRequestQueue:self->_requestQueue];
+  [providerCopy setWorkQueue:self->_workQueue];
+  [providerCopy setProcessingQueue:self->_processQueue];
+  viewEnvironment = [(PXGTextureManager *)self viewEnvironment];
+  [providerCopy setViewEnvironment:viewEnvironment];
 
-  [v9 setDelegate:self];
-  [(PXGTextureManager *)self _configureTextureProvider:v9];
-  [v9 prepareImageDataSpecs];
+  [providerCopy setDelegate:self];
+  [(PXGTextureManager *)self _configureTextureProvider:providerCopy];
+  [providerCopy prepareImageDataSpecs];
 }
 
-- (id)_textureConverterForPresentationType:(unsigned __int8)a3 contentType:(unint64_t)a4
+- (id)_textureConverterForPresentationType:(unsigned __int8)type contentType:(unint64_t)contentType
 {
-  v5 = a3;
+  typeCopy = type;
   v26 = *MEMORY[0x277D85DE8];
   textureConverterByPresentationType = self->_textureConverterByPresentationType;
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:?];
@@ -3799,8 +3799,8 @@ uint64_t __117__PXGTextureManager_streamTexturesForSpritesInDataStore_presentati
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(PXGTextureManager *)self textureConverters];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    textureConverters = [(PXGTextureManager *)self textureConverters];
+    v11 = [textureConverters countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v11)
     {
       v12 = *v18;
@@ -3810,18 +3810,18 @@ LABEL_4:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(textureConverters);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        if ((a4 & ~[v14 supportedContentTypes]) == 0)
+        if ((contentType & ~[v14 supportedContentTypes]) == 0)
         {
           break;
         }
 
         if (v11 == ++v13)
         {
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          v11 = [textureConverters countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v11)
           {
             goto LABEL_4;
@@ -3848,9 +3848,9 @@ LABEL_10:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v22 = v5;
+      v22 = typeCopy;
       v23 = 2048;
-      v24 = a4;
+      contentTypeCopy = contentType;
       _os_log_impl(&dword_21AD38000, v15, OS_LOG_TYPE_DEFAULT, "Missing textureConverter for presentationType:%d contentType:%lu", buf, 0x12u);
     }
 
@@ -3862,14 +3862,14 @@ LABEL_15:
   return v9;
 }
 
-- (void)_registerTextureConverter:(id)a3 forPresentationType:(unsigned __int8)a4
+- (void)_registerTextureConverter:(id)converter forPresentationType:(unsigned __int8)type
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v4];
+  typeCopy = type;
+  converterCopy = converter;
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:typeCopy];
   v9 = [(NSDictionary *)self->_textureConverterByPresentationType objectForKeyedSubscript:v8];
   v10 = v9;
-  if (v9 != v7)
+  if (v9 != converterCopy)
   {
     if (v9)
     {
@@ -3883,7 +3883,7 @@ LABEL_15:
         do
         {
           v15 = streamInfoBySpriteIndex + 66 * v12;
-          if (v15[8] == v4)
+          if (v15[8] == typeCopy)
           {
             v16 = *(v15 + 6);
             v17 = v16;
@@ -3921,15 +3921,15 @@ LABEL_15:
       textureAtlasManagers = self->_textureAtlasManagers;
       self->_textureAtlasManagers = MEMORY[0x277CBEBF8];
 
-      v23 = [(NSMutableDictionary *)self->_textureProviderByMediaKind allValues];
+      allValues = [(NSMutableDictionary *)self->_textureProviderByMediaKind allValues];
       requestQueue = self->_requestQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __67__PXGTextureManager__registerTextureConverter_forPresentationType___block_invoke;
       block[3] = &unk_2782ABE78;
-      v25 = v23;
+      v25 = allValues;
       v37 = v25;
-      v38 = self;
+      selfCopy = self;
       v26 = v21;
       v39 = v26;
       dispatch_async(requestQueue, block);
@@ -3940,7 +3940,7 @@ LABEL_15:
       v35[3] = &unk_2782ABE50;
       v35[4] = self;
       dispatch_async(processQueue, v35);
-      [(PXGTextureManager *)self _removeAllTexturesForPresentationType:v4];
+      [(PXGTextureManager *)self _removeAllTexturesForPresentationType:typeCopy];
       v28 = [(PXGTextureManager *)self _storeTexture:self->_emptyTexture forKey:self->_emptyTexture];
       [(PXGTextureManager *)self _setNeedsUpdate];
 
@@ -3948,26 +3948,26 @@ LABEL_15:
     }
 
     v29 = [(NSDictionary *)self->_textureConverterByPresentationType mutableCopy];
-    [v29 setObject:v7 forKeyedSubscript:v8];
+    [v29 setObject:converterCopy forKeyedSubscript:v8];
     v30 = [v29 copy];
     textureConverterByPresentationType = self->_textureConverterByPresentationType;
     self->_textureConverterByPresentationType = v30;
 
-    if (v7)
+    if (converterCopy)
     {
-      if (([v7 supportedContentTypes] & 8) != 0)
+      if (([converterCopy supportedContentTypes] & 8) != 0)
       {
-        objc_storeStrong(&self->_atlasTextureConverter, a3);
-        self->_atlasPresentationType = v4;
+        objc_storeStrong(&self->_atlasTextureConverter, converter);
+        self->_atlasPresentationType = typeCopy;
       }
 
-      [v7 setRequestQueue:self->_requestQueue];
-      [v7 setProcessingQueue:self->_processQueue];
-      [(PXGTextureManager *)self _configureTextureConverter:v7];
-      v32 = [v7 transparentTexture];
-      if (v32)
+      [converterCopy setRequestQueue:self->_requestQueue];
+      [converterCopy setProcessingQueue:self->_processQueue];
+      [(PXGTextureManager *)self _configureTextureConverter:converterCopy];
+      transparentTexture = [converterCopy transparentTexture];
+      if (transparentTexture)
       {
-        v33 = [(PXGTextureManager *)self _storeTexture:v32 forKey:v32];
+        v33 = [(PXGTextureManager *)self _storeTexture:transparentTexture forKey:transparentTexture];
       }
     }
   }
@@ -4014,12 +4014,12 @@ void __67__PXGTextureManager__registerTextureConverter_forPresentationType___blo
   dispatch_async(v6, block);
 }
 
-- (void)setTextureConverters:(id)a3
+- (void)setTextureConverters:(id)converters
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  convertersCopy = converters;
   v5 = self->_textureConverters;
-  v6 = v4;
+  v6 = convertersCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -4135,8 +4135,8 @@ BOOL __42__PXGTextureManager_setTextureConverters___block_invoke(uint64_t a1, vo
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(PXGTextureManager *)self textureAtlasManagers];
-  v4 = [v3 countByEnumeratingWithState:&v28 objects:v42 count:16];
+  textureAtlasManagers = [(PXGTextureManager *)self textureAtlasManagers];
+  v4 = [textureAtlasManagers countByEnumeratingWithState:&v28 objects:v42 count:16];
   if (v4)
   {
     v5 = *v29;
@@ -4146,7 +4146,7 @@ BOOL __42__PXGTextureManager_setTextureConverters___block_invoke(uint64_t a1, vo
       {
         if (*v29 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(textureAtlasManagers);
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
@@ -4154,8 +4154,8 @@ BOOL __42__PXGTextureManager_setTextureConverters___block_invoke(uint64_t a1, vo
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v8 = [v7 textures];
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v41 count:16];
+        textures = [v7 textures];
+        v9 = [textures countByEnumeratingWithState:&v24 objects:v41 count:16];
         if (v9)
         {
           v10 = *v25;
@@ -4165,21 +4165,21 @@ BOOL __42__PXGTextureManager_setTextureConverters___block_invoke(uint64_t a1, vo
             {
               if (*v25 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(textures);
               }
 
-              v12 = [*(*(&v24 + 1) + 8 * j) estimatedByteSize];
-              v38[3] += v12;
+              estimatedByteSize = [*(*(&v24 + 1) + 8 * j) estimatedByteSize];
+              v38[3] += estimatedByteSize;
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v24 objects:v41 count:16];
+            v9 = [textures countByEnumeratingWithState:&v24 objects:v41 count:16];
           }
 
           while (v9);
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v28 objects:v42 count:16];
+      v4 = [textureAtlasManagers countByEnumeratingWithState:&v28 objects:v42 count:16];
     }
 
     while (v4);
@@ -4191,8 +4191,8 @@ BOOL __42__PXGTextureManager_setTextureConverters___block_invoke(uint64_t a1, vo
   v14 = [(PXGTextureManager *)&v23 description];
   v15 = v38[3];
   v16 = v34[3];
-  v17 = [(PXGTextureManager *)self textureAtlasManagers];
-  v18 = [v13 stringWithFormat:@"<%@ totalMemory:%.2fMB imageTextures:%lu atlasManagers:%@>", v14, vcvtd_n_f64_u64(v15, 0xAuLL) * 0.0009765625, v16, v17];
+  textureAtlasManagers2 = [(PXGTextureManager *)self textureAtlasManagers];
+  v18 = [v13 stringWithFormat:@"<%@ totalMemory:%.2fMB imageTextures:%lu atlasManagers:%@>", v14, vcvtd_n_f64_u64(v15, 0xAuLL) * 0.0009765625, v16, textureAtlasManagers2];
 
   do
   {
@@ -4257,25 +4257,25 @@ void __32__PXGTextureManager_description__block_invoke(uint64_t a1, void *a2)
   [(PXGTextureManager *)&v11 dealloc];
 }
 
-- (PXGTextureManager)initWithEntityManager:(id)a3 layoutQueue:(id)a4
+- (PXGTextureManager)initWithEntityManager:(id)manager layoutQueue:(id)queue
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v55.receiver = self;
   v55.super_class = PXGTextureManager;
   v9 = [(PXGTextureManager *)&v55 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entityManager, a3);
-    v11 = [v7 loadingStatus];
-    v62[0] = v11;
+    objc_storeStrong(&v9->_entityManager, manager);
+    loadingStatus = [managerCopy loadingStatus];
+    v62[0] = loadingStatus;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
     trackedComponents = v10->_trackedComponents;
     v10->_trackedComponents = v12;
 
-    objc_storeStrong(&v10->_layoutQueue, a4);
+    objc_storeStrong(&v10->_layoutQueue, queue);
     textureConverterByPresentationType = v10->_textureConverterByPresentationType;
     v10->_textureConverterByPresentationType = MEMORY[0x277CBEC10];
 
@@ -4283,9 +4283,9 @@ void __32__PXGTextureManager_description__block_invoke(uint64_t a1, void *a2)
     textureProviderByMediaKind = v10->_textureProviderByMediaKind;
     v10->_textureProviderByMediaKind = v15;
 
-    v17 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     textureProvidersDisplayLinkRegistrationState = v10->_textureProvidersDisplayLinkRegistrationState;
-    v10->_textureProvidersDisplayLinkRegistrationState = v17;
+    v10->_textureProvidersDisplayLinkRegistrationState = strongToStrongObjectsMapTable;
 
     v19 = objc_alloc_init(PXGSpriteTextureStore);
     lookupLock_textureCache = v10->_lookupLock_textureCache;
@@ -4295,16 +4295,16 @@ void __32__PXGTextureManager_description__block_invoke(uint64_t a1, void *a2)
     spriteTexturesInUse = v10->_spriteTexturesInUse;
     v10->_spriteTexturesInUse = v21;
 
-    v23 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     pendingSpriteTextureByRequestID = v10->_pendingSpriteTextureByRequestID;
-    v10->_pendingSpriteTextureByRequestID = v23;
+    v10->_pendingSpriteTextureByRequestID = strongToWeakObjectsMapTable;
 
     textureAtlasManagers = v10->_textureAtlasManagers;
     v10->_textureAtlasManagers = MEMORY[0x277CBEBF8];
 
-    v26 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet = [MEMORY[0x277CCAA78] indexSet];
     loadedSpriteIndexes = v10->_loadedSpriteIndexes;
-    v10->_loadedSpriteIndexes = v26;
+    v10->_loadedSpriteIndexes = indexSet;
 
     [(PXGTextureManager *)v10 _updatePreheatingStrategy];
     v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

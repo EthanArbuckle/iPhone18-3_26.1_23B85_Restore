@@ -8,14 +8,14 @@
 - (CGRect)verticalRuleFrame;
 - (UIEdgeInsets)attributesContentViewInsets;
 - (UIEdgeInsets)attributesContentViewScrollIndicatorInsets;
-- (double)initWithContainerSize:(uint64_t)a3 insets:(char)a4 userInfoViewHeight:(uint64_t)a5 screenScale:(uint64_t)a6 RTL:(uint64_t)a7 avatarViewContainerFrame:(uint64_t)a8 attributesContentViewFrameExtraHeight:(double)a9 avatarViewAlpha:(double)a10 showSideGroupPicker:(double)a11;
+- (double)initWithContainerSize:(uint64_t)size insets:(char)insets userInfoViewHeight:(uint64_t)height screenScale:(uint64_t)scale RTL:(uint64_t)l avatarViewContainerFrame:(uint64_t)frame attributesContentViewFrameExtraHeight:(double)extraHeight avatarViewAlpha:(double)self0 showSideGroupPicker:(double)self1;
 @end
 
 @implementation AVTAvatarAttributeEditorTransitionFromActionsStartingPortraitLayout
 
-- (double)initWithContainerSize:(uint64_t)a3 insets:(char)a4 userInfoViewHeight:(uint64_t)a5 screenScale:(uint64_t)a6 RTL:(uint64_t)a7 avatarViewContainerFrame:(uint64_t)a8 attributesContentViewFrameExtraHeight:(double)a9 avatarViewAlpha:(double)a10 showSideGroupPicker:(double)a11
+- (double)initWithContainerSize:(uint64_t)size insets:(char)insets userInfoViewHeight:(uint64_t)height screenScale:(uint64_t)scale RTL:(uint64_t)l avatarViewContainerFrame:(uint64_t)frame attributesContentViewFrameExtraHeight:(double)extraHeight avatarViewAlpha:(double)self0 showSideGroupPicker:(double)self1
 {
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = AVTAvatarAttributeEditorTransitionFromActionsStartingPortraitLayout;
   v15 = objc_msgSendSuper2(&v17, sel_initWithContainerSize_insets_userInfoViewHeight_screenScale_RTL_showSideGroupPicker_);
   if (v15)
@@ -27,7 +27,7 @@
     v15[18] = a20;
     *(v15 + 14) = a21;
     *(v15 + 13) = a22;
-    *(v15 + 96) = a4;
+    *(v15 + 96) = insets;
   }
 
   return result;

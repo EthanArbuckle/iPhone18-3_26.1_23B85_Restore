@@ -1,37 +1,37 @@
 @interface PXPhotosSectionHeaderMetrics
 + (PXPhotosSectionHeaderMetrics)sharedMetrics;
 - (PXPhotosSectionHeaderMetrics)init;
-- (double)accessibilitySectionHeaderHeightForStyle:(int64_t)a3 width:(double)a4 actionButton:(BOOL)a5 disclosure:(BOOL)a6 title:(id)a7 startDate:(id)a8 endDate:(id)a9 locations:(id)a10 actionButtonSpec:(id)a11;
-- (double)sectionHeaderHeightForStyle:(int64_t)a3 hasTitle:(BOOL)a4 hasDates:(BOOL)a5 hasLocation:(BOOL)a6;
+- (double)accessibilitySectionHeaderHeightForStyle:(int64_t)style width:(double)width actionButton:(BOOL)button disclosure:(BOOL)disclosure title:(id)title startDate:(id)date endDate:(id)endDate locations:(id)self0 actionButtonSpec:(id)self1;
+- (double)sectionHeaderHeightForStyle:(int64_t)style hasTitle:(BOOL)title hasDates:(BOOL)dates hasLocation:(BOOL)location;
 @end
 
 @implementation PXPhotosSectionHeaderMetrics
 
-- (double)accessibilitySectionHeaderHeightForStyle:(int64_t)a3 width:(double)a4 actionButton:(BOOL)a5 disclosure:(BOOL)a6 title:(id)a7 startDate:(id)a8 endDate:(id)a9 locations:(id)a10 actionButtonSpec:(id)a11
+- (double)accessibilitySectionHeaderHeightForStyle:(int64_t)style width:(double)width actionButton:(BOOL)button disclosure:(BOOL)disclosure title:(id)title startDate:(id)date endDate:(id)endDate locations:(id)self0 actionButtonSpec:(id)self1
 {
-  v14 = a7;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = a11;
+  titleCopy = title;
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationsCopy = locations;
+  specCopy = spec;
   if (accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__onceToken != -1)
   {
     dispatch_once(&accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__onceToken, &__block_literal_global_427);
   }
 
-  v19 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v19 scale];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen scale];
 
   [accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__measuringLabel setNumberOfLines:2];
-  _PXConfigurePhotoCollectionHeaderTitleLabel(accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__measuringLabel, a3);
-  v20 = [accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__measuringLabel font];
+  _PXConfigurePhotoCollectionHeaderTitleLabel(accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__measuringLabel, style);
+  font = [accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__measuringLabel font];
   v21 = 26.0;
-  if (a3 == 1)
+  if (style == 1)
   {
     v21 = 30.0;
   }
 
-  [v20 _scaledValueForValue:v21];
+  [font _scaledValueForValue:v21];
   PXFloatRoundToPixel();
 }
 
@@ -56,41 +56,41 @@ void __154__PXPhotosSectionHeaderMetrics_accessibilitySectionHeaderHeightForStyl
   accessibilitySectionHeaderHeightForStyle_width_actionButton_disclosure_title_startDate_endDate_locations_actionButtonSpec__dateRangeFormatter = v2;
 }
 
-- (double)sectionHeaderHeightForStyle:(int64_t)a3 hasTitle:(BOOL)a4 hasDates:(BOOL)a5 hasLocation:(BOOL)a6
+- (double)sectionHeaderHeightForStyle:(int64_t)style hasTitle:(BOOL)title hasDates:(BOOL)dates hasLocation:(BOOL)location
 {
-  v7 = a4 && a5 || a6;
+  v7 = title && dates || location;
   v8 = 2;
   if (v7)
   {
     v8 = 3;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v9 = v8;
   }
 
   else
   {
-    v9 = (a4 && a5) | a6;
+    v9 = (title && dates) | location;
   }
 
   v10 = self->_cachedHeights[v9];
-  v11 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v11 scale];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen scale];
 
   if (v10 == 0.0)
   {
-    v13 = _PXPhotoCollectionHeaderTitleLabelFontForStyle(a3);
+    v13 = _PXPhotoCollectionHeaderTitleLabelFontForStyle(style);
     if (v7)
     {
-      _PXPhotoCollectionHeaderSubtitleFontForStyle(a3);
+      _PXPhotoCollectionHeaderSubtitleFontForStyle(style);
       [objc_claimAutoreleasedReturnValue() _scaledValueForValue:20.0];
       PXFloatRoundToPixel();
     }
 
     v14 = 26.0;
-    if (a3 == 1)
+    if (style == 1)
     {
       v14 = 30.0;
     }
@@ -111,8 +111,8 @@ void __154__PXPhotosSectionHeaderMetrics_accessibilitySectionHeaderHeightForStyl
   if (v2)
   {
     [(PXPhotosSectionHeaderMetrics *)v2 _invalidateCache];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -124,7 +124,7 @@ void __154__PXPhotosSectionHeaderMetrics_accessibilitySectionHeaderHeightForStyl
   block[1] = 3221225472;
   block[2] = __45__PXPhotosSectionHeaderMetrics_sharedMetrics__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMetrics_onceToken != -1)
   {
     dispatch_once(&sharedMetrics_onceToken, block);

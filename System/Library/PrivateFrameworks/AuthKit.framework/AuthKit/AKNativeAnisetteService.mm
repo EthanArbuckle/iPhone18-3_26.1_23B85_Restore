@@ -1,51 +1,51 @@
 @interface AKNativeAnisetteService
 - (AKNativeAnisetteService)init;
-- (AKNativeAnisetteService)initWithClient:(id)a3;
+- (AKNativeAnisetteService)initWithClient:(id)client;
 - (BOOL)_isProcessExemptedFromVMBAA;
-- (id)_tq_anisetteDataForDSID:(unint64_t)a3 withError:(id *)a4;
-- (id)_tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:(id *)a3;
-- (void)_addDeviceTokenToHeaders:(id)a3 completion:(id)a4;
-- (void)_addProvisioningBAAV1HeadersToRequest:(id)a3 completion:(id)a4;
-- (void)_cleanUpCPIMBytes:(char *)a3 provisioningContext:(unsigned int)a4;
-- (void)_createProvisioningEndURLRequestWithCPIM:(id)a3 withPreviousTransactionID:(id)a4 completion:(id)a5;
-- (void)_createProvisioningStartURLRequestWithPreviousTXID:(id)a3 completion:(id)a4;
-- (void)_createSyncURLRequestWithMID:(id)a3 SRM:(id)a4 routingInfo:(unint64_t)a5 completion:(id)a6;
-- (void)_endProvisioningWithPreviousTransactionId:(id)a3 cpimData:(id)a4 cpimBytes:(char *)a5 provisioningContext:(unsigned int)a6 completion:(id)a7;
-- (void)_invokeTrafficRequest:(id)a3;
-- (void)_processEndProvisioningData:(id)a3 withResponse:(id)a4 error:(id)a5 previousTransactionId:(id)a6 cpimBytes:(char *)a7 provisioningContext:(unsigned int)a8 completion:(id)a9;
+- (id)_tq_anisetteDataForDSID:(unint64_t)d withError:(id *)error;
+- (id)_tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:(id *)error;
+- (void)_addDeviceTokenToHeaders:(id)headers completion:(id)completion;
+- (void)_addProvisioningBAAV1HeadersToRequest:(id)request completion:(id)completion;
+- (void)_cleanUpCPIMBytes:(char *)bytes provisioningContext:(unsigned int)context;
+- (void)_createProvisioningEndURLRequestWithCPIM:(id)m withPreviousTransactionID:(id)d completion:(id)completion;
+- (void)_createProvisioningStartURLRequestWithPreviousTXID:(id)d completion:(id)completion;
+- (void)_createSyncURLRequestWithMID:(id)d SRM:(id)m routingInfo:(unint64_t)info completion:(id)completion;
+- (void)_endProvisioningWithPreviousTransactionId:(id)id cpimData:(id)data cpimBytes:(char *)bytes provisioningContext:(unsigned int)context completion:(id)completion;
+- (void)_invokeTrafficRequest:(id)request;
+- (void)_processEndProvisioningData:(id)data withResponse:(id)response error:(id)error previousTransactionId:(id)id cpimBytes:(char *)bytes provisioningContext:(unsigned int)context completion:(id)completion;
 - (void)_processPendingRequests;
-- (void)_processStartProvisioningData:(id)a3 withResponse:(id)a4 error:(id)a5 previousTransactionId:(id)a6 completion:(id)a7;
-- (void)_processSyncAnisetteResponse:(id)a3 completion:(id)a4;
-- (void)_shouldAddBAAV1HeadersWithCompletion:(id)a3;
-- (void)_signAppropriateBAAForProvisioningRequest:(id)a3 urlKey:(id)a4 completion:(id)a5;
-- (void)_signRequestWithProvisioningHeaders:(id)a3 forUrlKey:(id)a4;
-- (void)_signWithBAAHeadersIfNeededForKey:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)_startProvisioningWithPreviousTransactionId:(id)a3 completion:(id)a4;
-- (void)_syncAnisetteWithMIDData:(id)a3 srmData:(id)a4 routingInfo:(unint64_t)a5 completion:(id)a6;
-- (void)_tq_activateAndExecuteRequest:(id)a3;
-- (void)_tq_eraseAnisetteWithCompletion:(id)a3;
-- (void)_tq_invokeAnisetteTrafficRequest:(id)a3 withCompletion:(id)a4;
-- (void)_tq_invokeAttestationRequestWithTrafficClearance:(id)a3 completion:(id)a4;
-- (void)_tq_legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)_tq_processEndProvisioningResponse:(id)a3 error:(id)a4 cpimBytes:(char *)a5 provisioningContext:(unsigned int)a6 completion:(id)a7;
-- (void)_tq_processStartProvisioningResponse:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)_tq_provisionAnisetteWithCompletion:(id)a3;
-- (void)_tq_syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)fetchAttestationDataForRequestData:(id)a3 completion:(id)a4;
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)resetDeviceIdentityWithCompletion:(id)a3;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (void)_processStartProvisioningData:(id)data withResponse:(id)response error:(id)error previousTransactionId:(id)id completion:(id)completion;
+- (void)_processSyncAnisetteResponse:(id)response completion:(id)completion;
+- (void)_shouldAddBAAV1HeadersWithCompletion:(id)completion;
+- (void)_signAppropriateBAAForProvisioningRequest:(id)request urlKey:(id)key completion:(id)completion;
+- (void)_signRequestWithProvisioningHeaders:(id)headers forUrlKey:(id)key;
+- (void)_signWithBAAHeadersIfNeededForKey:(id)key withRequest:(id)request completion:(id)completion;
+- (void)_startProvisioningWithPreviousTransactionId:(id)id completion:(id)completion;
+- (void)_syncAnisetteWithMIDData:(id)data srmData:(id)srmData routingInfo:(unint64_t)info completion:(id)completion;
+- (void)_tq_activateAndExecuteRequest:(id)request;
+- (void)_tq_eraseAnisetteWithCompletion:(id)completion;
+- (void)_tq_invokeAnisetteTrafficRequest:(id)request withCompletion:(id)completion;
+- (void)_tq_invokeAttestationRequestWithTrafficClearance:(id)clearance completion:(id)completion;
+- (void)_tq_legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)_tq_processEndProvisioningResponse:(id)response error:(id)error cpimBytes:(char *)bytes provisioningContext:(unsigned int)context completion:(id)completion;
+- (void)_tq_processStartProvisioningResponse:(id)response error:(id)error completion:(id)completion;
+- (void)_tq_provisionAnisetteWithCompletion:(id)completion;
+- (void)_tq_syncAnisetteWithSIMData:(id)data completion:(id)completion;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)fetchAttestationDataForRequestData:(id)data completion:(id)completion;
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)resetDeviceIdentityWithCompletion:(id)completion;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation AKNativeAnisetteService
 
 - (void)_processPendingRequests
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v3 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
   queue = [v3 trafficQueue];
@@ -54,7 +54,7 @@
   v6 = 0;
   v7 = sub_100010AEC;
   v8 = &unk_10031F8B0;
-  v9[0] = _objc_retain(v10);
+  v9[0] = _objc_retain(selfCopy);
   dispatch_async(queue, &v4);
   _objc_release(queue);
   _objc_release(v3);
@@ -70,45 +70,45 @@
   return v3;
 }
 
-- (AKNativeAnisetteService)initWithClient:(id)a3
+- (AKNativeAnisetteService)initWithClient:(id)client
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKNativeAnisetteService;
-  v12 = [(AKNativeAnisetteService *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(AKNativeAnisetteService *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v12->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
     v4 = +[AKMIDValidator sharedValidator];
-    midValidator = v12->_midValidator;
-    v12->_midValidator = v4;
+    midValidator = selfCopy->_midValidator;
+    selfCopy->_midValidator = v4;
     _objc_release(midValidator);
     v6 = +[AKStrongDeviceIdentitySigner sharedSigner];
-    strongDeviceIdentitySigner = v12->_strongDeviceIdentitySigner;
-    v12->_strongDeviceIdentitySigner = v6;
+    strongDeviceIdentitySigner = selfCopy->_strongDeviceIdentitySigner;
+    selfCopy->_strongDeviceIdentitySigner = v6;
     _objc_release(strongDeviceIdentitySigner);
   }
 
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)fetchAttestationDataForRequestData:(id)a3 completion:(id)a4
+- (void)fetchAttestationDataForRequestData:(id)data completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = os_transaction_create();
   if (!location[0])
   {
@@ -118,7 +118,7 @@
     _objc_release(v5);
   }
 
-  [location[0] setClient:v21->_client];
+  [location[0] setClient:selfCopy->_client];
   v7 = [AKSigningTrafficClearanceRequest alloc];
   v6 = location[0];
   v9 = _NSConcreteStackBlock;
@@ -126,12 +126,12 @@
   v11 = 0;
   v12 = sub_10005ADB0;
   v13 = &unk_100320738;
-  v14 = _objc_retain(v21);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v18);
   v16 = _objc_retain(v19);
   v17 = [(AKSigningTrafficClearanceRequest *)v7 initWithRequestData:v6 signingBlock:&v9];
   [(AKSigningTrafficClearanceRequest *)v17 setShouldProvisionIfNeccessary:1];
-  [(AKNativeAnisetteService *)v21 _invokeTrafficRequest:v17];
+  [(AKNativeAnisetteService *)selfCopy _invokeTrafficRequest:v17];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
@@ -141,18 +141,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_invokeAttestationRequestWithTrafficClearance:(id)a3 completion:(id)a4
+- (void)_tq_invokeAttestationRequestWithTrafficClearance:(id)clearance completion:(id)completion
 {
-  v87 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, clearance);
   v85 = 0;
-  objc_storeStrong(&v85, a4);
+  objc_storeStrong(&v85, completion);
   v18 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v17 = [v18 trafficQueue];
-  dispatch_assert_queue_V2(v17);
-  _objc_release(v17);
+  trafficQueue = [v18 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v18);
   v79[0] = 0;
   v79[1] = v79;
@@ -223,7 +223,7 @@
   [(AKBAADeviceTokenController *)v11 refreshCertWithTokenFeatureWithCompletionHandler:&v46];
   _objc_release(v11);
   dispatch_group_enter(group);
-  v10 = v87;
+  v10 = selfCopy;
   v9 = location[0];
   v40 = _NSConcreteStackBlock;
   v41 = -1073741824;
@@ -235,21 +235,21 @@
   v45[0] = _objc_retain(group);
   [(AKNativeAnisetteService *)v10 _tq_invokeAnisetteTrafficRequest:v9 withCompletion:&v40];
   v39 = +[NSMutableDictionary dictionary];
-  v38 = _objc_retain(v87->_strongDeviceIdentitySigner);
-  v37 = [location[0] attestationRequestData];
+  v38 = _objc_retain(selfCopy->_strongDeviceIdentitySigner);
+  attestationRequestData = [location[0] attestationRequestData];
   dispatch_group_enter(group);
-  v8 = v87;
+  v8 = selfCopy;
   v28 = _NSConcreteStackBlock;
   v29 = -1073741824;
   v30 = 0;
   v31 = sub_10005BBC0;
   v32 = &unk_1003207B0;
   v33 = _objc_retain(v38);
-  v34 = _objc_retain(v37);
+  v34 = _objc_retain(attestationRequestData);
   v36[1] = v53;
   v35 = _objc_retain(group);
   v36[2] = v73;
-  v36[0] = _objc_retain(v87);
+  v36[0] = _objc_retain(selfCopy);
   [(AKNativeAnisetteService *)v8 _shouldAddBAAV1HeadersWithCompletion:&v28];
   v7 = group;
   v6 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
@@ -275,7 +275,7 @@
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v33, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&attestationRequestData, 0);
   objc_storeStrong(&v38, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(v45, 0);
@@ -293,18 +293,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_addDeviceTokenToHeaders:(id)a3 completion:(id)a4
+- (void)_addDeviceTokenToHeaders:(id)headers completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, completion);
   v8 = +[AKDevice currentDevice];
-  v9 = [v8 isInRecoveryPartition];
+  isInRecoveryPartition = [v8 isInRecoveryPartition];
   _objc_release(v8);
-  if (v9)
+  if (isInRecoveryPartition)
   {
     v21 = _AKLogSystem();
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -349,22 +349,22 @@
 
 - (BOOL)_isProcessExemptedFromVMBAA
 {
-  v3 = [(AKClient *)self->_client name];
+  name = [(AKClient *)self->_client name];
   v7 = 0;
   v5 = 0;
   v4 = 1;
-  if (![(NSString *)v3 hasPrefix:@"AKTester"])
+  if (![(NSString *)name hasPrefix:@"AKTester"])
   {
     v8 = +[NSProcessInfo processInfo];
     v7 = 1;
-    v6 = [(NSProcessInfo *)v8 processName];
+    processName = [(NSProcessInfo *)v8 processName];
     v5 = 1;
-    v4 = [(NSString *)v6 hasPrefix:@"AKTester"];
+    v4 = [(NSString *)processName hasPrefix:@"AKTester"];
   }
 
   if (v5)
   {
-    _objc_release(v6);
+    _objc_release(processName);
   }
 
   if (v7)
@@ -372,20 +372,20 @@
     _objc_release(v8);
   }
 
-  _objc_release(v3);
+  _objc_release(name);
   return v4 & 1;
 }
 
-- (void)_shouldAddBAAV1HeadersWithCompletion:(id)a3
+- (void)_shouldAddBAAV1HeadersWithCompletion:(id)completion
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v15 = +[AKDevice currentDevice];
-  v16 = [v15 isStrongDeviceIdentitySupported];
+  isStrongDeviceIdentitySupported = [v15 isStrongDeviceIdentitySupported];
   _objc_release(v15);
-  if (!v16)
+  if (!isStrongDeviceIdentitySupported)
   {
     v35 = _AKTrafficLogSubsystem();
     v34 = 2;
@@ -404,11 +404,11 @@
   }
 
   v11 = +[AKDevice currentDevice];
-  v12 = [v11 isVirtualMachine];
+  isVirtualMachine = [v11 isVirtualMachine];
   _objc_release(v11);
-  if (v12)
+  if (isVirtualMachine)
   {
-    if ([(AKNativeAnisetteService *)v37 _isProcessExemptedFromVMBAA])
+    if ([(AKNativeAnisetteService *)selfCopy _isProcessExemptedFromVMBAA])
     {
       (*(location[0] + 2))(location[0], 0);
       v32 = 1;
@@ -432,9 +432,9 @@ LABEL_14:
   }
 
   v7 = +[AKFeatureManager sharedManager];
-  v8 = [v7 isPhysicalDeviceBAAEnabled];
+  isPhysicalDeviceBAAEnabled = [v7 isPhysicalDeviceBAAEnabled];
   _objc_release(v7);
-  if (v8)
+  if (isPhysicalDeviceBAAEnabled)
   {
     v4 = +[AKURLBag sharedBag];
     v3 = AKURLBagKeyDeviceBAADisabled;
@@ -467,22 +467,22 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)resetDeviceIdentityWithCompletion:(id)a3
+- (void)resetDeviceIdentityWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKStrongDeviceIdentitySigner *)v4->_strongDeviceIdentitySigner resetDeviceIdentityWithCompletion:location[0]];
+  objc_storeStrong(location, completion);
+  [(AKStrongDeviceIdentitySigner *)selfCopy->_strongDeviceIdentitySigner resetDeviceIdentityWithCompletion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_invokeTrafficRequest:(id)a3
+- (void)_invokeTrafficRequest:(id)request
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v13 = _AKTrafficLogSubsystem();
   v12 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -500,7 +500,7 @@ LABEL_15:
   v8 = sub_10005D434;
   v9 = &unk_10031F078;
   v10 = _objc_retain(location[0]);
-  v11 = _objc_retain(v15);
+  v11 = _objc_retain(selfCopy);
   dispatch_async(queue, &v5);
   _objc_release(queue);
   _objc_release(v4);
@@ -509,21 +509,21 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_activateAndExecuteRequest:(id)a3
+- (void)_tq_activateAndExecuteRequest:(id)request
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v6 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v5 = [v6 trafficQueue];
-  dispatch_assert_queue_V2(v5);
-  _objc_release(v5);
+  trafficQueue = [v6 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v6);
-  v21 = [location[0] requestQosClass];
-  v19 = v21;
+  requestQosClass = [location[0] requestQosClass];
+  v19 = requestQosClass;
   v18 = 25;
-  if (v21 >= 0x19)
+  if (requestQosClass >= 0x19)
   {
     v4 = v19;
   }
@@ -539,7 +539,7 @@ LABEL_15:
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    sub_10005D934(v24, v21, v20, location[0]);
+    sub_10005D934(v24, requestQosClass, v20, location[0]);
     _os_log_debug_impl(&_mh_execute_header, v16, v15, "Executing signing request with QoS: original=%d, enforced=%d, request=%@", v24, 0x18u);
   }
 
@@ -551,7 +551,7 @@ LABEL_15:
   v10 = sub_10005D9A0;
   v11 = &unk_10031F078;
   v12 = _objc_retain(location[0]);
-  v13 = _objc_retain(v23);
+  v13 = _objc_retain(selfCopy);
   v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qos_class, 0, &v7);
   v14[2]();
   objc_storeStrong(&v14, 0);
@@ -560,27 +560,27 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  necessaryCopy = necessary;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, completion);
   v15 = os_transaction_create();
   v5 = [AKSigningTrafficClearanceRequest alloc];
-  client = v19->_client;
+  client = selfCopy->_client;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10005DE0C;
   v10 = &unk_100320738;
-  v11 = _objc_retain(v19);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(v15);
   v13 = _objc_retain(location);
   v14 = [(AKSigningTrafficClearanceRequest *)v5 initWithClient:client signingBlock:?];
-  [(AKSigningTrafficClearanceRequest *)v14 setShouldProvisionIfNeccessary:v17];
-  [(AKNativeAnisetteService *)v19 _invokeTrafficRequest:v14];
+  [(AKSigningTrafficClearanceRequest *)v14 setShouldProvisionIfNeccessary:necessaryCopy];
+  [(AKNativeAnisetteService *)selfCopy _invokeTrafficRequest:v14];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
@@ -589,22 +589,22 @@ LABEL_15:
   objc_storeStrong(&location, 0);
 }
 
-- (void)_tq_invokeAnisetteTrafficRequest:(id)a3 withCompletion:(id)a4
+- (void)_tq_invokeAnisetteTrafficRequest:(id)request withCompletion:(id)completion
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, completion);
   v17 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v16 = [v17 trafficQueue];
-  dispatch_assert_queue_V2(v16);
-  _objc_release(v16);
+  trafficQueue = [v17 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v17);
   v41 = 0;
   v39 = 0;
-  v18 = [(AKNativeAnisetteService *)v44 _tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:&v39];
+  v18 = [(AKNativeAnisetteService *)selfCopy _tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:&v39];
   objc_storeStrong(&v41, v39);
   v40 = v18;
   if (!v18)
@@ -620,7 +620,7 @@ LABEL_15:
     objc_storeStrong(&v38, 0);
     objc_storeStrong(&v41, 0);
     v36 = v41;
-    v14 = [(AKNativeAnisetteService *)v44 _tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:&v36];
+    v14 = [(AKNativeAnisetteService *)selfCopy _tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:&v36];
     objc_storeStrong(&v41, v36);
     v4 = v40;
     v40 = v14;
@@ -641,12 +641,12 @@ LABEL_15:
     }
   }
 
-  v11 = [v41 userInfo];
-  v32 = [v11 objectForKeyedSubscript:NSUnderlyingErrorKey];
-  _objc_release(v11);
+  userInfo = [v41 userInfo];
+  v32 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
+  _objc_release(userInfo);
   if (v40 || ([v32 isAccountNotProvisioned] & 1) == 0)
   {
-    [(AKMIDValidator *)v44->_midValidator validateMID:v40 anisetteFetchError:v41];
+    [(AKMIDValidator *)selfCopy->_midValidator validateMID:v40 anisetteFetchError:v41];
     if (v42)
     {
       (*(v42 + 2))(v42, v40, v41);
@@ -655,7 +655,7 @@ LABEL_15:
 
   else if ([location[0] shouldProvisionIfNeccessary])
   {
-    [(AKMIDValidator *)v44->_midValidator validateMID:v40 anisetteFetchError:v41];
+    [(AKMIDValidator *)selfCopy->_midValidator validateMID:v40 anisetteFetchError:v41];
     v31 = _AKTrafficLogSubsystem();
     v30 = 2;
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -670,13 +670,13 @@ LABEL_15:
     v7 = +[AKURLBagService sharedBagService];
     [v7 clearCache];
     _objc_release(v7);
-    v8 = v44;
+    v8 = selfCopy;
     v22 = _NSConcreteStackBlock;
     v23 = -1073741824;
     v24 = 0;
     v25 = sub_10005E614;
     v26 = &unk_10031F838;
-    v27 = _objc_retain(v44);
+    v27 = _objc_retain(selfCopy);
     v28 = _objc_retain(v42);
     [(AKNativeAnisetteService *)v8 _tq_provisionAnisetteWithCompletion:&v22];
     objc_storeStrong(&v28, 0);
@@ -709,26 +709,26 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = [AKSigningTrafficClearanceRequest alloc];
-  client = v18->_client;
+  client = selfCopy->_client;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_10005EC10;
   v11 = &unk_100320738;
-  v12 = _objc_retain(v18);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v16);
   v15 = [(AKSigningTrafficClearanceRequest *)v6 initWithClient:client signingBlock:?];
-  [(AKNativeAnisetteService *)v18 _invokeTrafficRequest:v15];
+  [(AKNativeAnisetteService *)selfCopy _invokeTrafficRequest:v15];
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
@@ -737,18 +737,18 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)_tq_legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v9 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v8 = [v9 trafficQueue];
-  dispatch_assert_queue_V2(v8);
-  _objc_release(v8);
+  trafficQueue = [v9 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v9);
   v15 = [NSScanner scannerWithString:location[0]];
   v14 = 0;
@@ -757,7 +757,7 @@ LABEL_15:
   {
     v12 = 0;
     v10 = 0;
-    v4 = [(AKNativeAnisetteService *)v18 _tq_anisetteDataForDSID:v14 withError:&v10];
+    v4 = [(AKNativeAnisetteService *)selfCopy _tq_anisetteDataForDSID:v14 withError:&v10];
     objc_storeStrong(&v12, v10);
     v11 = v4;
     (*(v16 + 2))(v16, v4, v12);
@@ -778,19 +778,19 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchPeerAttestationDataForRequest:(id)a3 completion:(id)a4
+- (void)fetchPeerAttestationDataForRequest:(id)request completion:(id)completion
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, completion);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    sub_10001B098(v11, v10, location[0]);
+    sub_10001B098(v11, selfCopy, location[0]);
     _os_log_impl(&_mh_execute_header, v7, v6, "%@: Fetching peer attestation data for request (%@)", v11, 0x16u);
   }
 
@@ -803,15 +803,15 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (id)_tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:(id *)a3
+- (id)_tq_anisetteDataWithRoutingInfoForLastKnownDSIDWithError:(id *)error
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
+  errorCopy = error;
   v9 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v8 = [v9 trafficQueue];
-  dispatch_assert_queue_V2(v8);
-  _objc_release(v8);
+  trafficQueue = [v9 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v9);
   v15 = +[AKActiveAnisetteDSIDFetcher activeAnisettDSIDFromLastKnownIDMSEnvironment];
   v14 = 0;
@@ -829,11 +829,11 @@ LABEL_15:
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v16)
+    if (errorCopy)
     {
       v6 = [NSError ak_wrappedAnisetteError:-8025 underlyingADIErrorCode:v13];
       v3 = v6;
-      *v16 = v6;
+      *errorCopy = v6;
     }
 
     v19 = 0;
@@ -841,7 +841,7 @@ LABEL_15:
 
   else
   {
-    v10 = [(AKNativeAnisetteService *)v18 _tq_anisetteDataForDSID:v15 withError:v16];
+    v10 = [(AKNativeAnisetteService *)selfCopy _tq_anisetteDataForDSID:v15 withError:errorCopy];
     [v10 setRoutingInfo:v14];
     v19 = _objc_retain(v10);
     objc_storeStrong(&v10, 0);
@@ -852,16 +852,16 @@ LABEL_15:
   return v4;
 }
 
-- (id)_tq_anisetteDataForDSID:(unint64_t)a3 withError:(id *)a4
+- (id)_tq_anisetteDataForDSID:(unint64_t)d withError:(id *)error
 {
-  v46 = self;
+  selfCopy = self;
   v45 = a2;
-  v44 = a3;
-  v43 = a4;
+  dCopy = d;
+  errorCopy = error;
   v21 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v20 = [v21 trafficQueue];
-  dispatch_assert_queue_V2(v20);
-  _objc_release(v20);
+  trafficQueue = [v21 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v21);
   location = _AKTrafficLogSubsystem();
   v41 = 2;
@@ -878,7 +878,7 @@ LABEL_15:
   v38 = 0;
   v37 = 0;
   v36 = 0;
-  v35 = [AKADIProxy requestOTPForDSID:v44 outMID:&v39 outMIDSize:&v37 outOTP:&v38 outOTPSize:&v36];
+  v35 = [AKADIProxy requestOTPForDSID:dCopy outMID:&v39 outMIDSize:&v37 outOTP:&v38 outOTPSize:&v36];
   if (v35)
   {
     v34 = [NSError ak_wrappedAnisetteError:v35];
@@ -888,7 +888,7 @@ LABEL_15:
       v32 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v17 = [NSNumber numberWithUnsignedLongLong:v44];
+        v17 = [NSNumber numberWithUnsignedLongLong:dCopy];
         sub_1000194D4(v50, v17);
         _os_log_error_impl(&_mh_execute_header, v33, v32, "The DSID %@ is not provisioned for Anisette.", v50, 0xCu);
         _objc_release(v17);
@@ -912,11 +912,11 @@ LABEL_15:
       objc_storeStrong(&v31, 0);
     }
 
-    if (v43)
+    if (errorCopy)
     {
       v15 = v34;
       v4 = v34;
-      *v43 = v15;
+      *errorCopy = v15;
     }
 
     v47 = 0;
@@ -939,13 +939,13 @@ LABEL_15:
       v11 = v24;
       v9 = geteuid();
       v14 = +[AKDevice currentDevice];
-      v13 = [v14 localUserUUID];
-      v12 = [v13 ak_truncatedCopy];
-      v23 = _objc_retain(v12);
+      localUserUUID = [v14 localUserUUID];
+      ak_truncatedCopy = [localUserUUID ak_truncatedCopy];
+      v23 = _objc_retain(ak_truncatedCopy);
       sub_10005FA18(v48, v27, v26, v9, v23);
       _os_log_debug_impl(&_mh_execute_header, v10, v11, "Anisette Info: mid - %@ otp - %@ euid - %d localUserUUID %@", v48, 0x26u);
-      _objc_release(v12);
-      _objc_release(v13);
+      _objc_release(ak_truncatedCopy);
+      _objc_release(localUserUUID);
       _objc_release(v14);
       objc_storeStrong(&v23, 0);
     }
@@ -977,38 +977,38 @@ LABEL_15:
   return v7;
 }
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = [AKSigningTrafficClearanceRequest alloc];
-  client = v14->_client;
+  client = selfCopy->_client;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_10005FBE8;
   v9 = &unk_1003208F0;
-  v10 = _objc_retain(v14);
+  v10 = _objc_retain(selfCopy);
   v11 = _objc_retain(location[0]);
   v12 = [(AKSigningTrafficClearanceRequest *)v4 initWithClient:client signingBlock:?];
-  [(AKNativeAnisetteService *)v14 _invokeTrafficRequest:v12];
+  [(AKNativeAnisetteService *)selfCopy _invokeTrafficRequest:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_startProvisioningWithPreviousTransactionId:(id)a3 completion:(id)a4
+- (void)_startProvisioningWithPreviousTransactionId:(id)id completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v6 = v17;
+  objc_storeStrong(&v15, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -1016,7 +1016,7 @@ LABEL_15:
   v10 = sub_10005FF2C;
   v11 = &unk_100320940;
   v14 = _objc_retain(v15);
-  v12 = _objc_retain(v17);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   [(AKNativeAnisetteService *)v6 _createProvisioningStartURLRequestWithPreviousTXID:v5 completion:?];
   objc_storeStrong(&v13, 0);
@@ -1026,20 +1026,20 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)_processStartProvisioningData:(id)a3 withResponse:(id)a4 error:(id)a5 previousTransactionId:(id)a6 completion:(id)a7
+- (void)_processStartProvisioningData:(id)data withResponse:(id)response error:(id)error previousTransactionId:(id)id completion:(id)completion
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v50 = 0;
-  objc_storeStrong(&v50, a4);
+  objc_storeStrong(&v50, response);
   v49 = 0;
-  objc_storeStrong(&v49, a5);
+  objc_storeStrong(&v49, error);
   v48 = 0;
-  objc_storeStrong(&v48, a6);
+  objc_storeStrong(&v48, id);
   v47 = 0;
-  objc_storeStrong(&v47, a7);
+  objc_storeStrong(&v47, completion);
   v46 = 0;
   if (v49)
   {
@@ -1085,19 +1085,19 @@ LABEL_15:
     goto LABEL_34;
   }
 
-  v40 = [v50 statusCode];
+  statusCode = [v50 statusCode];
   v39 = _AKLogSystem();
   v38 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [NSNumber numberWithInteger:v40];
+    v15 = [NSNumber numberWithInteger:statusCode];
     sub_1000194D4(v54, v15);
     _os_log_impl(&_mh_execute_header, v39, v38, "Start provisioning response code: %@", v54, 0xCu);
     _objc_release(v15);
   }
 
   objc_storeStrong(&v39, 0);
-  if (v40 != 200 && location[0])
+  if (statusCode != 200 && location[0])
   {
     v7 = [NSString alloc];
     v37 = [v7 initWithData:location[0] encoding:4];
@@ -1121,7 +1121,7 @@ LABEL_15:
     _objc_release(v9);
   }
 
-  if (v40 != 436 || v48)
+  if (statusCode != 436 || v48)
   {
     v11 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
     queue = [v11 trafficQueue];
@@ -1130,7 +1130,7 @@ LABEL_15:
     v24 = 0;
     v25 = sub_100060B4C;
     v26 = &unk_1003200A8;
-    v27 = _objc_retain(v52);
+    v27 = _objc_retain(selfCopy);
     v28 = _objc_retain(v46);
     v29 = _objc_retain(v49);
     v30 = _objc_retain(v47);
@@ -1167,7 +1167,7 @@ LABEL_33:
     }
 
     objc_storeStrong(&v33, 0);
-    [(AKNativeAnisetteService *)v52 _startProvisioningWithPreviousTransactionId:v48 completion:v47];
+    [(AKNativeAnisetteService *)selfCopy _startProvisioningWithPreviousTransactionId:v48 completion:v47];
     v43 = 1;
   }
 
@@ -1186,20 +1186,20 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_processStartProvisioningResponse:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_tq_processStartProvisioningResponse:(id)response error:(id)error completion:(id)completion
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, error);
   v46 = 0;
-  objc_storeStrong(&v46, a5);
+  objc_storeStrong(&v46, completion);
   v23 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v22 = [v23 trafficQueue];
-  dispatch_assert_queue_V2(v22);
-  _objc_release(v22);
+  trafficQueue = [v23 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v23);
   v45 = +[AKActiveAnisetteDSIDFetcher activeAnisettDSIDFromCurrentIDMSEnvironment];
   if (location[0])
@@ -1211,13 +1211,13 @@ LABEL_34:
     {
       v36 = [[NSData alloc] initWithBase64EncodedString:v40 options:0];
       v5 = v36;
-      v35 = [v36 bytes];
+      bytes = [v36 bytes];
       v34 = [v36 length];
       v33 = 0;
       v32 = 0;
       v31 = 0;
       v30 = 0;
-      v33 = [AKADIProxy startProvisioningWithDSID:v45 SPIM:v35 SPIMLength:v34 outCPIM:&v32 outCPIMLength:&v31 outSession:&v30];
+      v33 = [AKADIProxy startProvisioningWithDSID:v45 SPIM:bytes SPIMLength:v34 outCPIM:&v32 outCPIMLength:&v31 outSession:&v30];
       if (!v33 && v32)
       {
         v27 = _AKLogSystem();
@@ -1254,7 +1254,7 @@ LABEL_34:
         }
 
         objc_storeStrong(&v29, 0);
-        [(AKNativeAnisetteService *)v49 _cleanUpCPIMBytes:v32 provisioningContext:v30];
+        [(AKNativeAnisetteService *)selfCopy _cleanUpCPIMBytes:v32 provisioningContext:v30];
         if (v46)
         {
           v8 = v46;
@@ -1321,19 +1321,19 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_endProvisioningWithPreviousTransactionId:(id)a3 cpimData:(id)a4 cpimBytes:(char *)a5 provisioningContext:(unsigned int)a6 completion:(id)a7
+- (void)_endProvisioningWithPreviousTransactionId:(id)id cpimData:(id)data cpimBytes:(char *)bytes provisioningContext:(unsigned int)context completion:(id)completion
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
-  v25 = a5;
-  v24 = a6;
+  objc_storeStrong(&v26, data);
+  bytesCopy = bytes;
+  contextCopy = context;
   v23 = 0;
-  objc_storeStrong(&v23, a7);
-  v13 = v28;
+  objc_storeStrong(&v23, completion);
+  v13 = selfCopy;
   v11 = v26;
   v12 = location[0];
   v14 = _NSConcreteStackBlock;
@@ -1341,9 +1341,9 @@ LABEL_34:
   v16 = 0;
   v17 = sub_100061404;
   v18 = &unk_100320990;
-  v19 = _objc_retain(v28);
-  v21[1] = v25;
-  v22 = v24;
+  v19 = _objc_retain(selfCopy);
+  v21[1] = bytesCopy;
+  v22 = contextCopy;
   v21[0] = _objc_retain(v23);
   v20 = _objc_retain(location[0]);
   [(AKNativeAnisetteService *)v13 _createProvisioningEndURLRequestWithCPIM:v11 withPreviousTransactionID:v12 completion:?];
@@ -1355,22 +1355,22 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_processEndProvisioningData:(id)a3 withResponse:(id)a4 error:(id)a5 previousTransactionId:(id)a6 cpimBytes:(char *)a7 provisioningContext:(unsigned int)a8 completion:(id)a9
+- (void)_processEndProvisioningData:(id)data withResponse:(id)response error:(id)error previousTransactionId:(id)id cpimBytes:(char *)bytes provisioningContext:(unsigned int)context completion:(id)completion
 {
-  v64 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v62 = 0;
-  objc_storeStrong(&v62, a4);
+  objc_storeStrong(&v62, response);
   v61 = 0;
-  objc_storeStrong(&v61, a5);
+  objc_storeStrong(&v61, error);
   v60 = 0;
-  objc_storeStrong(&v60, a6);
-  v59 = a7;
-  v58 = a8;
+  objc_storeStrong(&v60, id);
+  bytesCopy = bytes;
+  contextCopy = context;
   v57 = 0;
-  objc_storeStrong(&v57, a9);
+  objc_storeStrong(&v57, completion);
   v56 = 0;
   if (v61)
   {
@@ -1396,8 +1396,8 @@ LABEL_34:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v50 = [v62 statusCode];
-      if (v50 != 200 && location[0])
+      statusCode = [v62 statusCode];
+      if (statusCode != 200 && location[0])
       {
         v9 = [NSString alloc];
         v49 = [v9 initWithData:location[0] encoding:4];
@@ -1421,7 +1421,7 @@ LABEL_34:
         _objc_release(v11);
       }
 
-      if (v50 != 436 || v60)
+      if (statusCode != 436 || v60)
       {
         v13 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
         queue = [v13 trafficQueue];
@@ -1430,11 +1430,11 @@ LABEL_34:
         v27 = 0;
         v28 = sub_100062184;
         v29 = &unk_1003209E0;
-        v30 = _objc_retain(v64);
+        v30 = _objc_retain(selfCopy);
         v31 = _objc_retain(v56);
         v32 = _objc_retain(v61);
-        v33[1] = v59;
-        v34 = v58;
+        v33[1] = bytesCopy;
+        v34 = contextCopy;
         v33[0] = _objc_retain(v57);
         dispatch_async(queue, &v25);
         _objc_release(queue);
@@ -1463,13 +1463,13 @@ LABEL_34:
           }
 
           objc_storeStrong(&v45, 0);
-          v14 = v64;
+          v14 = selfCopy;
           v35 = _NSConcreteStackBlock;
           v36 = -1073741824;
           v37 = 0;
           v38 = sub_100062088;
           v39 = &unk_1003209B8;
-          v40 = _objc_retain(v64);
+          v40 = _objc_retain(selfCopy);
           v41 = _objc_retain(v60);
           v42 = _objc_retain(v57);
           [(AKNativeAnisetteService *)v14 _startProvisioningWithPreviousTransactionId:0 completion:&v35];
@@ -1515,22 +1515,22 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_processEndProvisioningResponse:(id)a3 error:(id)a4 cpimBytes:(char *)a5 provisioningContext:(unsigned int)a6 completion:(id)a7
+- (void)_tq_processEndProvisioningResponse:(id)response error:(id)error cpimBytes:(char *)bytes provisioningContext:(unsigned int)context completion:(id)completion
 {
-  v78 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v76 = 0;
-  objc_storeStrong(&v76, a4);
-  v75 = a5;
-  v74 = a6;
+  objc_storeStrong(&v76, error);
+  bytesCopy = bytes;
+  contextCopy = context;
   v73 = 0;
-  objc_storeStrong(&v73, a7);
+  objc_storeStrong(&v73, completion);
   v39 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v38 = [v39 trafficQueue];
-  dispatch_assert_queue_V2(v38);
-  _objc_release(v38);
+  trafficQueue = [v39 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v39);
   v72 = +[AKActiveAnisetteDSIDFetcher activeAnisettDSIDFromCurrentIDMSEnvironment];
   if (location[0])
@@ -1591,8 +1591,8 @@ LABEL_34:
 
     if (v63 && v67 && v59)
     {
-      v55 = [v59 integerValue];
-      v54 = [AKADIProxy setIDMSRoutingInfo:v55 forDSID:v72];
+      integerValue = [v59 integerValue];
+      v54 = [AKADIProxy setIDMSRoutingInfo:integerValue forDSID:v72];
       if (v54)
       {
         oslog = _AKLogSystem();
@@ -1606,7 +1606,7 @@ LABEL_34:
         }
 
         objc_storeStrong(&oslog, 0);
-        [(AKNativeAnisetteService *)v78 _cleanUpCPIMBytes:v75 provisioningContext:v74];
+        [(AKNativeAnisetteService *)selfCopy _cleanUpCPIMBytes:bytesCopy provisioningContext:contextCopy];
         v16 = v73;
         v17 = [NSError ak_wrappedAnisetteError:v54];
         v16[2](v16, 0);
@@ -1621,12 +1621,12 @@ LABEL_34:
         v8 = [NSData alloc];
         v50 = [v8 initWithBase64EncodedString:v63 options:0];
         v9 = v51;
-        v49 = [v51 bytes];
+        bytes = [v51 bytes];
         v48 = [v51 length];
         v10 = v50;
-        v47 = [v50 bytes];
+        bytes2 = [v50 bytes];
         v46 = [v50 length];
-        v45 = [AKADIProxy endProvisioningWithSession:v74 PTM:v49 PTMLength:v48 TK:v47 TKLength:v46];
+        v45 = [AKADIProxy endProvisioningWithSession:contextCopy PTM:bytes PTMLength:v48 TK:bytes2 TKLength:v46];
         if (v45)
         {
           v44 = _AKLogSystem();
@@ -1640,7 +1640,7 @@ LABEL_34:
           }
 
           objc_storeStrong(&v44, 0);
-          [(AKNativeAnisetteService *)v78 _cleanUpCPIMBytes:v75 provisioningContext:v74];
+          [(AKNativeAnisetteService *)selfCopy _cleanUpCPIMBytes:bytesCopy provisioningContext:contextCopy];
           v13 = v73;
           v14 = [NSError ak_wrappedAnisetteError:v45];
           v13[2](v13, 0);
@@ -1650,7 +1650,7 @@ LABEL_34:
 
         else
         {
-          [(AKNativeAnisetteService *)v78 _cleanUpCPIMBytes:v75 provisioningContext:v74];
+          [(AKNativeAnisetteService *)selfCopy _cleanUpCPIMBytes:bytesCopy provisioningContext:contextCopy];
           v42 = _AKLogSystem();
           v41 = OS_LOG_TYPE_DEFAULT;
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -1673,7 +1673,7 @@ LABEL_34:
 
     else
     {
-      [(AKNativeAnisetteService *)v78 _cleanUpCPIMBytes:v75 provisioningContext:v74];
+      [(AKNativeAnisetteService *)selfCopy _cleanUpCPIMBytes:bytesCopy provisioningContext:contextCopy];
       v19 = v73;
       v20 = [NSError errorWithDomain:AKAnisetteErrorDomain code:-8008 userInfo:0];
       v19[2](v19, 0);
@@ -1688,7 +1688,7 @@ LABEL_34:
 
   else
   {
-    [(AKNativeAnisetteService *)v78 _cleanUpCPIMBytes:v75 provisioningContext:v74];
+    [(AKNativeAnisetteService *)selfCopy _cleanUpCPIMBytes:bytesCopy provisioningContext:contextCopy];
     v71 = _AKLogSystem();
     v70 = 16;
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
@@ -1712,18 +1712,18 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_cleanUpCPIMBytes:(char *)a3 provisioningContext:(unsigned int)a4
+- (void)_cleanUpCPIMBytes:(char *)bytes provisioningContext:(unsigned int)context
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
-  if (a3)
+  bytesCopy = bytes;
+  contextCopy = context;
+  if (bytes)
   {
-    [AKADIProxy dispose:v10];
+    [AKADIProxy dispose:bytesCopy];
   }
 
-  if (v9)
+  if (contextCopy)
   {
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_DEFAULT;
@@ -1736,16 +1736,16 @@ LABEL_34:
     }
 
     objc_storeStrong(&oslog, 0);
-    [AKADIProxy destroyProvisioningSession:v9];
+    [AKADIProxy destroyProvisioningSession:contextCopy];
   }
 }
 
-- (void)_tq_provisionAnisetteWithCompletion:(id)a3
+- (void)_tq_provisionAnisetteWithCompletion:(id)completion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v32 = 0;
   v16 = 0;
   if (!+[AAFDeviceInfo isDeviceInDiagnosticMode])
@@ -1787,9 +1787,9 @@ LABEL_34:
   else
   {
     v11 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-    v10 = [v11 trafficQueue];
-    dispatch_assert_queue_V2(v10);
-    _objc_release(v10);
+    trafficQueue = [v11 trafficQueue];
+    dispatch_assert_queue_V2(trafficQueue);
+    _objc_release(trafficQueue);
     _objc_release(v11);
     v27 = _AKLogSystem();
     v26 = OS_LOG_TYPE_DEFAULT;
@@ -1807,8 +1807,8 @@ LABEL_34:
     v22 = [NSError ak_wrappedAnisetteError:v23];
     if ([v22 isAccountNotProvisioned])
     {
-      v3 = v35;
-      v17 = _objc_retain(v35);
+      v3 = selfCopy;
+      v17 = _objc_retain(selfCopy);
       v18 = _objc_retain(location[0]);
       [AKNativeAnisetteService _startProvisioningWithPreviousTransactionId:v3 completion:"_startProvisioningWithPreviousTransactionId:completion:"];
       objc_storeStrong(&v18, 0);
@@ -1842,16 +1842,16 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_signWithBAAHeadersIfNeededForKey:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)_signWithBAAHeadersIfNeededForKey:(id)key withRequest:(id)request completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, request);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, completion);
   v9 = +[AKURLBag sharedBag];
   v10 = [v9 isBaaEnabledForKey:location[0]];
   _objc_release(v9);
@@ -1892,26 +1892,26 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v6 = [AKSigningTrafficClearanceRequest alloc];
-  client = v18->_client;
+  client = selfCopy->_client;
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_100063A2C;
   v11 = &unk_100320738;
-  v12 = _objc_retain(v18);
+  v12 = _objc_retain(selfCopy);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v16);
   v15 = [(AKSigningTrafficClearanceRequest *)v6 initWithClient:client signingBlock:?];
-  [(AKNativeAnisetteService *)v18 _invokeTrafficRequest:v15];
+  [(AKNativeAnisetteService *)selfCopy _invokeTrafficRequest:v15];
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
@@ -1920,27 +1920,27 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_syncAnisetteWithMIDData:(id)a3 srmData:(id)a4 routingInfo:(unint64_t)a5 completion:(id)a6
+- (void)_syncAnisetteWithMIDData:(id)data srmData:(id)srmData routingInfo:(unint64_t)info completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = a5;
+  objc_storeStrong(&v21, srmData);
+  infoCopy = info;
   v19 = 0;
-  objc_storeStrong(&v19, a6);
-  v12 = v23;
+  objc_storeStrong(&v19, completion);
+  v12 = selfCopy;
   v9 = location[0];
   v10 = v21;
-  v11 = v20;
+  v11 = infoCopy;
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_100063D98;
   v16 = &unk_100320AA8;
   v18 = _objc_retain(v19);
-  v17 = _objc_retain(v23);
+  v17 = _objc_retain(selfCopy);
   [(AKNativeAnisetteService *)v12 _createSyncURLRequestWithMID:v9 SRM:v10 routingInfo:v11 completion:?];
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
@@ -1949,14 +1949,14 @@ LABEL_34:
   objc_storeStrong(location, 0);
 }
 
-- (void)_processSyncAnisetteResponse:(id)a3 completion:(id)a4
+- (void)_processSyncAnisetteResponse:(id)response completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, completion);
   v52 = +[AKActiveAnisetteDSIDFetcher activeAnisettDSIDFromCurrentIDMSEnvironment];
   if (location[0])
   {
@@ -2054,8 +2054,8 @@ LABEL_34:
       }
 
       objc_storeStrong(&v33, 0);
-      v30 = [v34 integerValue];
-      v29 = [AKADIProxy setIDMSRoutingInfo:v30 forDSID:v52];
+      integerValue = [v34 integerValue];
+      v29 = [AKADIProxy setIDMSRoutingInfo:integerValue forDSID:v52];
       if (v29)
       {
         oslog = _AKLogSystem();
@@ -2124,18 +2124,18 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)_tq_syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
-  v68 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v66 = 0;
-  objc_storeStrong(&v66, a4);
+  objc_storeStrong(&v66, completion);
   v26 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v25 = [v26 trafficQueue];
-  dispatch_assert_queue_V2(v25);
-  _objc_release(v25);
+  trafficQueue = [v26 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v26);
   if (location[0] && [location[0] length])
   {
@@ -2158,8 +2158,8 @@ LABEL_30:
     v16 = v58;
     v15 = location[0];
     v4 = location[0];
-    v17 = [v15 bytes];
-    v53 = +[AKADIProxy synchronizeWithDSID:SIM:SIMLength:outMID:outMIDLength:outSRM:outSRMLength:](AKADIProxy, "synchronizeWithDSID:SIM:SIMLength:outMID:outMIDLength:outSRM:outSRMLength:", v16, v17, [location[0] length], &v57, &v55, &v56, &v54);
+    bytes = [v15 bytes];
+    v53 = +[AKADIProxy synchronizeWithDSID:SIM:SIMLength:outMID:outMIDLength:outSRM:outSRMLength:](AKADIProxy, "synchronizeWithDSID:SIM:SIMLength:outMID:outMIDLength:outSRM:outSRMLength:", v16, bytes, [location[0] length], &v57, &v55, &v56, &v54);
     v45 = _NSConcreteStackBlock;
     v46 = -1073741824;
     v47 = 0;
@@ -2200,7 +2200,7 @@ LABEL_30:
         objc_storeStrong(&v35, 0);
       }
 
-      v8 = v68;
+      v8 = selfCopy;
       v5 = v39;
       v6 = v38;
       v7 = v37;
@@ -2267,39 +2267,39 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v4 = [AKSigningTrafficClearanceRequest alloc];
-  client = v14->_client;
+  client = selfCopy->_client;
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1000657CC;
   v9 = &unk_1003208F0;
-  v10 = _objc_retain(v14);
+  v10 = _objc_retain(selfCopy);
   v11 = _objc_retain(location[0]);
   v12 = [(AKSigningTrafficClearanceRequest *)v4 initWithClient:client signingBlock:?];
-  [(AKNativeAnisetteService *)v14 _invokeTrafficRequest:v12];
+  [(AKNativeAnisetteService *)selfCopy _invokeTrafficRequest:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tq_eraseAnisetteWithCompletion:(id)a3
+- (void)_tq_eraseAnisetteWithCompletion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v13 = +[AKNativeAnisetteServiceTrafficManager sharedSigningService];
-  v12 = [v13 trafficQueue];
-  dispatch_assert_queue_V2(v12);
-  _objc_release(v12);
+  trafficQueue = [v13 trafficQueue];
+  dispatch_assert_queue_V2(trafficQueue);
+  _objc_release(trafficQueue);
   _objc_release(v13);
   v28 = _AKLogSystem();
   v27 = OS_LOG_TYPE_DEFAULT;
@@ -2348,7 +2348,7 @@ LABEL_30:
 
     objc_storeStrong(&v20, 0);
     v17 = 0;
-    midValidator = v30->_midValidator;
+    midValidator = selfCopy->_midValidator;
     v15 = 0;
     v4 = [(AKMIDValidator *)midValidator resetKeychainCacheWithError:&v15];
     objc_storeStrong(&v17, v15);
@@ -2373,14 +2373,14 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_createProvisioningStartURLRequestWithPreviousTXID:(id)a3 completion:(id)a4
+- (void)_createProvisioningStartURLRequestWithPreviousTXID:(id)d completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, completion);
   v6 = +[AKURLBag sharedBag];
   v5 = AKURLBagKeyStartProvisioning;
   v7 = _NSConcreteStackBlock;
@@ -2390,7 +2390,7 @@ LABEL_30:
   v11 = &unk_100320AF0;
   v14 = _objc_retain(v15);
   v12 = _objc_retain(location[0]);
-  v13 = _objc_retain(v17);
+  v13 = _objc_retain(selfCopy);
   [v6 urlForKey:v5 completion:?];
   _objc_release(v6);
   objc_storeStrong(&v13, 0);
@@ -2400,16 +2400,16 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_createProvisioningEndURLRequestWithCPIM:(id)a3 withPreviousTransactionID:(id)a4 completion:(id)a5
+- (void)_createProvisioningEndURLRequestWithCPIM:(id)m withPreviousTransactionID:(id)d completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, m);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, d);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, completion);
   v8 = +[AKURLBag sharedBag];
   v7 = AKURLBagKeyEndProvisioning;
   v9 = _NSConcreteStackBlock;
@@ -2419,7 +2419,7 @@ LABEL_30:
   v16 = _objc_retain(v17);
   v13 = _objc_retain(location[0]);
   v14 = _objc_retain(v18);
-  v15 = _objc_retain(v20);
+  v15 = _objc_retain(selfCopy);
   [v8 urlForKey:v7 completion:?];
   _objc_release(v8);
   objc_storeStrong(&v15, 0);
@@ -2431,23 +2431,23 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_signAppropriateBAAForProvisioningRequest:(id)a3 urlKey:(id)a4 completion:(id)a5
+- (void)_signAppropriateBAAForProvisioningRequest:(id)request urlKey:(id)key completion:(id)completion
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, key);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
-  v7 = v20;
+  objc_storeStrong(&v17, completion);
+  v7 = selfCopy;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_1000668B8;
   v12 = &unk_100320B68;
-  v13 = _objc_retain(v20);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(location[0]);
   v16 = _objc_retain(v17);
   v15 = _objc_retain(v18);
@@ -2461,17 +2461,17 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_createSyncURLRequestWithMID:(id)a3 SRM:(id)a4 routingInfo:(unint64_t)a5 completion:(id)a6
+- (void)_createSyncURLRequestWithMID:(id)d SRM:(id)m routingInfo:(unint64_t)info completion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = a5;
+  objc_storeStrong(&v22, m);
+  infoCopy = info;
   v20 = 0;
-  objc_storeStrong(&v20, a6);
+  objc_storeStrong(&v20, completion);
   v10 = +[AKURLBag sharedBag];
   v9 = AKURLBagKeySyncAnisette;
   v11 = _NSConcreteStackBlock;
@@ -2480,10 +2480,10 @@ LABEL_30:
   v14 = sub_100066DC4;
   v15 = &unk_100320B90;
   v19[0] = _objc_retain(v20);
-  v16 = _objc_retain(v24);
+  v16 = _objc_retain(selfCopy);
   v17 = _objc_retain(location[0]);
   v18 = _objc_retain(v22);
-  v19[1] = v21;
+  v19[1] = infoCopy;
   [v10 urlForKey:v9 completion:?];
   _objc_release(v10);
   objc_storeStrong(&v18, 0);
@@ -2495,14 +2495,14 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_signRequestWithProvisioningHeaders:(id)a3 forUrlKey:(id)a4
+- (void)_signRequestWithProvisioningHeaders:(id)headers forUrlKey:(id)key
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, key);
   [location[0] ak_addClientInfoHeader];
   [location[0] ak_addClientTimeHeader];
   [location[0] ak_addDeviceMLBHeader];
@@ -2518,29 +2518,29 @@ LABEL_30:
     [location[0] ak_addProvisioningUDIDHeader];
   }
 
-  v6 = [(AKClient *)v11->_client fullName];
-  v7 = [(NSString *)v6 length];
-  _objc_release(v6);
+  fullName = [(AKClient *)selfCopy->_client fullName];
+  v7 = [(NSString *)fullName length];
+  _objc_release(fullName);
   if (v7)
   {
     v4 = location[0];
-    v5 = [(AKClient *)v11->_client fullName];
+    fullName2 = [(AKClient *)selfCopy->_client fullName];
     [v4 ak_addClientApp:?];
-    _objc_release(v5);
+    _objc_release(fullName2);
   }
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_addProvisioningBAAV1HeadersToRequest:(id)a3 completion:(id)a4
+- (void)_addProvisioningBAAV1HeadersToRequest:(id)request completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v6 = +[AKDevice currentDevice];
   v17 = 0;
   v7 = 0;
@@ -2569,7 +2569,7 @@ LABEL_30:
 
   else
   {
-    v4 = v21;
+    v4 = selfCopy;
     v8 = _NSConcreteStackBlock;
     v9 = -1073741824;
     v10 = 0;
@@ -2577,7 +2577,7 @@ LABEL_30:
     v12 = &unk_10031FF18;
     v15 = _objc_retain(v19);
     v13 = _objc_retain(location[0]);
-    v14 = _objc_retain(v21);
+    v14 = _objc_retain(selfCopy);
     [(AKNativeAnisetteService *)v4 _shouldAddBAAV1HeadersWithCompletion:&v8];
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v13, 0);

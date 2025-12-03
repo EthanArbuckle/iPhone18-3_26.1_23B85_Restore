@@ -1,33 +1,33 @@
 @interface TSTStrokeSidecarLookupMap
 - (BOOL)anyCellBordersInThisRow;
-- (BOOL)cellBorderAtColumn:(unsigned __int16)a3;
-- (TSTStrokeSidecarLookupMap)initWithStrokeSidecar:(id)a3 region:(id)a4;
-- (void)setIteratorToRow:(unsigned int)a3;
+- (BOOL)cellBorderAtColumn:(unsigned __int16)column;
+- (TSTStrokeSidecarLookupMap)initWithStrokeSidecar:(id)sidecar region:(id)region;
+- (void)setIteratorToRow:(unsigned int)row;
 @end
 
 @implementation TSTStrokeSidecarLookupMap
 
-- (TSTStrokeSidecarLookupMap)initWithStrokeSidecar:(id)a3 region:(id)a4
+- (TSTStrokeSidecarLookupMap)initWithStrokeSidecar:(id)sidecar region:(id)region
 {
-  v7 = a3;
-  v8 = a4;
+  sidecarCopy = sidecar;
+  regionCopy = region;
   v12.receiver = self;
   v12.super_class = TSTStrokeSidecarLookupMap;
   v9 = [(TSTStrokeSidecarLookupMap *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_strokeSidecar, a3);
-    objc_storeStrong(&v10->_region, a4);
+    objc_storeStrong(&v9->_strokeSidecar, sidecar);
+    objc_storeStrong(&v10->_region, region);
   }
 
   return v10;
 }
 
-- (void)setIteratorToRow:(unsigned int)a3
+- (void)setIteratorToRow:(unsigned int)row
 {
-  v5 = *&a3;
-  v7 = objc_msgSend_intersectingColumnsInRow_(self->_region, a2, *&a3, v3, v4);
+  v5 = *&row;
+  v7 = objc_msgSend_intersectingColumnsInRow_(self->_region, a2, *&row, v3, v4);
   if (objc_msgSend_count(v7, v8, v9, v10, v11))
   {
     v16 = objc_msgSend_mutableCopy(v7, v12, v13, v14, v15);
@@ -124,13 +124,13 @@
   return v10;
 }
 
-- (BOOL)cellBorderAtColumn:(unsigned __int16)a3
+- (BOOL)cellBorderAtColumn:(unsigned __int16)column
 {
-  v5 = a3;
-  v6 = objc_msgSend_columnIndexesInRow(self, a2, a3, v3, v4);
-  LOBYTE(v5) = objc_msgSend_containsIndex_(v6, v7, v5, v8, v9);
+  columnCopy = column;
+  v6 = objc_msgSend_columnIndexesInRow(self, a2, column, v3, v4);
+  LOBYTE(columnCopy) = objc_msgSend_containsIndex_(v6, v7, columnCopy, v8, v9);
 
-  return v5;
+  return columnCopy;
 }
 
 @end

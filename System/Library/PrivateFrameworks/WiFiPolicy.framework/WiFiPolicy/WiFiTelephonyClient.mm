@@ -8,13 +8,13 @@
 - (NSString)cellularInterfaceName;
 - (NSString)description;
 - (WiFiTelephonyClient)init;
-- (id)_dataIndicatorToString:(int)a3;
+- (id)_dataIndicatorToString:(int)string;
 - (id)_getCurrentDataServiceContext;
 - (void)_getCurrentDataServiceContext;
 - (void)_updateCellularMEIAndDataStatus;
-- (void)carrierBundleChange:(id)a3;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)imsRegistrationChanged:(id)a3 info:(id)a4;
+- (void)carrierBundleChange:(id)change;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)imsRegistrationChanged:(id)changed info:(id)info;
 @end
 
 @implementation WiFiTelephonyClient
@@ -82,19 +82,19 @@ void __27__WiFiTelephonyClient_init__block_invoke(uint64_t a1)
 - (id)_getCurrentDataServiceContext
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiTelephonyClient *)self coreTelephonyClient];
+  coreTelephonyClient = [(WiFiTelephonyClient *)self coreTelephonyClient];
 
-  if (v3)
+  if (coreTelephonyClient)
   {
-    v4 = [(WiFiTelephonyClient *)self coreTelephonyClient];
+    coreTelephonyClient2 = [(WiFiTelephonyClient *)self coreTelephonyClient];
     v24 = 0;
-    v5 = [v4 getSubscriptionInfoWithError:&v24];
+    v5 = [coreTelephonyClient2 getSubscriptionInfoWithError:&v24];
     v6 = v24;
-    v7 = [v5 subscriptions];
+    subscriptions = [v5 subscriptions];
 
-    v8 = [(WiFiTelephonyClient *)self coreTelephonyClient];
+    coreTelephonyClient3 = [(WiFiTelephonyClient *)self coreTelephonyClient];
     v23 = v6;
-    v9 = [v8 getCurrentDataSubscriptionContextSync:&v23];
+    v9 = [coreTelephonyClient3 getCurrentDataSubscriptionContextSync:&v23];
     v10 = v23;
 
     if (!v9)
@@ -103,7 +103,7 @@ void __27__WiFiTelephonyClient_init__block_invoke(uint64_t a1)
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = v7;
+      v11 = subscriptions;
       v9 = [v11 countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v9)
       {
@@ -118,10 +118,10 @@ void __27__WiFiTelephonyClient_init__block_invoke(uint64_t a1)
             }
 
             v14 = *(*(&v19 + 1) + 8 * i);
-            v15 = [v14 userDataPreferred];
-            v16 = [v15 intValue];
+            userDataPreferred = [v14 userDataPreferred];
+            intValue = [userDataPreferred intValue];
 
-            if (v16)
+            if (intValue)
             {
               v9 = v14;
               goto LABEL_16;
@@ -201,18 +201,18 @@ void __66__WiFiTelephonyClient_reliableNetworkFallbackChanged_userEnabled___bloc
   }
 }
 
-- (void)imsRegistrationChanged:(id)a3 info:(id)a4
+- (void)imsRegistrationChanged:(id)changed info:(id)info
 {
-  v5 = a4;
-  v6 = [(WiFiTelephonyClient *)self internalQueue];
+  infoCopy = info;
+  internalQueue = [(WiFiTelephonyClient *)self internalQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__WiFiTelephonyClient_imsRegistrationChanged_info___block_invoke;
   v8[3] = &unk_2789C6608;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = infoCopy;
+  selfCopy = self;
+  v7 = infoCopy;
+  dispatch_async(internalQueue, v8);
 }
 
 void __51__WiFiTelephonyClient_imsRegistrationChanged_info___block_invoke(uint64_t a1)
@@ -240,9 +240,9 @@ void __82__WiFiTelephonyClient_connectionStateChanged_connection_dataConnectionS
   }
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v5 = [(WiFiTelephonyClient *)self internalQueue:a3];
+  v5 = [(WiFiTelephonyClient *)self internalQueue:changed];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__WiFiTelephonyClient_displayStatusChanged_status___block_invoke;
@@ -263,15 +263,15 @@ void __51__WiFiTelephonyClient_displayStatusChanged_status___block_invoke(uint64
   }
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = [(WiFiTelephonyClient *)self internalQueue];
+  internalQueue = [(WiFiTelephonyClient *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__WiFiTelephonyClient_carrierBundleChange___block_invoke;
   block[3] = &unk_2789C6630;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(internalQueue, block);
 }
 
 void __43__WiFiTelephonyClient_carrierBundleChange___block_invoke(uint64_t a1)
@@ -286,34 +286,34 @@ void __43__WiFiTelephonyClient_carrierBundleChange___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_dataIndicatorToString:(int)a3
+- (id)_dataIndicatorToString:(int)string
 {
-  if (a3 > 0x12)
+  if (string > 0x12)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2789C7DB8[a3];
+    return off_2789C7DB8[string];
   }
 }
 
 - (BOOL)isCellular5GActive
 {
-  v2 = [(WiFiTelephonyClient *)self dataStatus];
-  [v2 indicator];
+  dataStatus = [(WiFiTelephonyClient *)self dataStatus];
+  [dataStatus indicator];
 
   return 0;
 }
 
 - (BOOL)isCellularLTEActive
 {
-  v2 = [(WiFiTelephonyClient *)self dataStatus];
-  v3 = v2;
-  if (v2)
+  dataStatus = [(WiFiTelephonyClient *)self dataStatus];
+  v3 = dataStatus;
+  if (dataStatus)
   {
-    v4 = [v2 indicator] > 6;
+    v4 = [dataStatus indicator] > 6;
   }
 
   else
@@ -326,32 +326,32 @@ void __43__WiFiTelephonyClient_carrierBundleChange___block_invoke(uint64_t a1)
 
 - (BOOL)isCellularDataInRoaming
 {
-  v2 = [(WiFiTelephonyClient *)self registrationStatus];
-  v3 = [v2 isEqualToString:*MEMORY[0x277CC3E78]];
+  registrationStatus = [(WiFiTelephonyClient *)self registrationStatus];
+  v3 = [registrationStatus isEqualToString:*MEMORY[0x277CC3E78]];
 
   return v3;
 }
 
 - (NSString)cellularICCID
 {
-  v2 = [(WiFiTelephonyClient *)self mobileEquipmentInfo];
-  v3 = [v2 ICCID];
+  mobileEquipmentInfo = [(WiFiTelephonyClient *)self mobileEquipmentInfo];
+  iCCID = [mobileEquipmentInfo ICCID];
 
-  return v3;
+  return iCCID;
 }
 
 - (NSString)cellularInterfaceName
 {
-  v2 = [(WiFiTelephonyClient *)self connectionStatus];
-  v3 = [v2 interfaceName];
+  connectionStatus = [(WiFiTelephonyClient *)self connectionStatus];
+  interfaceName = [connectionStatus interfaceName];
 
-  return v3;
+  return interfaceName;
 }
 
 - (NSString)cellularDataIndicator
 {
-  v3 = [(WiFiTelephonyClient *)self dataStatus];
-  v4 = -[WiFiTelephonyClient _dataIndicatorToString:](self, "_dataIndicatorToString:", [v3 indicator]);
+  dataStatus = [(WiFiTelephonyClient *)self dataStatus];
+  v4 = -[WiFiTelephonyClient _dataIndicatorToString:](self, "_dataIndicatorToString:", [dataStatus indicator]);
 
   if (v4)
   {
@@ -375,20 +375,20 @@ void __43__WiFiTelephonyClient_carrierBundleChange___block_invoke(uint64_t a1)
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@:%p ", v5, self];
 
-  v7 = [(WiFiTelephonyClient *)self cellularDataIndicator];
-  [v6 appendFormat:@"Indicator:%@ ", v7];
+  cellularDataIndicator = [(WiFiTelephonyClient *)self cellularDataIndicator];
+  [v6 appendFormat:@"Indicator:%@ ", cellularDataIndicator];
 
-  v8 = [(WiFiTelephonyClient *)self radioAccessTechnology];
-  [v6 appendFormat:@"RAT:%@ ", v8];
+  radioAccessTechnology = [(WiFiTelephonyClient *)self radioAccessTechnology];
+  [v6 appendFormat:@"RAT:%@ ", radioAccessTechnology];
 
-  v9 = [(WiFiTelephonyClient *)self registrationStatus];
-  [v6 appendFormat:@"Reg:%@ ", v9];
+  registrationStatus = [(WiFiTelephonyClient *)self registrationStatus];
+  [v6 appendFormat:@"Reg:%@ ", registrationStatus];
 
-  v10 = [(WiFiTelephonyClient *)self cellularInterfaceName];
-  [v6 appendFormat:@"IfName:%@ ", v10];
+  cellularInterfaceName = [(WiFiTelephonyClient *)self cellularInterfaceName];
+  [v6 appendFormat:@"IfName:%@ ", cellularInterfaceName];
 
-  v11 = [(WiFiTelephonyClient *)self carrierName];
-  [v6 appendFormat:@"Carrier:%@ ", v11];
+  carrierName = [(WiFiTelephonyClient *)self carrierName];
+  [v6 appendFormat:@"Carrier:%@ ", carrierName];
 
   if ([(WiFiTelephonyClient *)self isCellular5GSupported])
   {

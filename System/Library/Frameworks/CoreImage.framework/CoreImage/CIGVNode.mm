@@ -11,12 +11,12 @@
 - (CGSize)contentCornerSize;
 - (CGSize)contentInsertSize;
 - (CIGVNode)init;
-- (CIGVNode)initWithCINode:(void *)a3 extent:(CGRect)a4;
-- (void)addImage:(CGImage *)a3;
-- (void)addRoi:(CGRect)a3;
+- (CIGVNode)initWithCINode:(void *)node extent:(CGRect)extent;
+- (void)addImage:(CGImage *)image;
+- (void)addRoi:(CGRect)roi;
 - (void)dealloc;
-- (void)setLabel:(__CFString *)a3;
-- (void)setTitle:(__CFString *)a3;
+- (void)setLabel:(__CFString *)label;
+- (void)setTitle:(__CFString *)title;
 - (void)updateBadgeSize;
 - (void)updateContentSize;
 - (void)updateSize;
@@ -104,12 +104,12 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
   return v3;
 }
 
-- (CIGVNode)initWithCINode:(void *)a3 extent:(CGRect)a4
+- (CIGVNode)initWithCINode:(void *)node extent:(CGRect)extent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v8 = [(CIGVNode *)self init];
   v9 = v8;
   if (v8)
@@ -167,7 +167,7 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
   return result;
 }
 
-- (void)setTitle:(__CFString *)a3
+- (void)setTitle:(__CFString *)title
 {
   title = self->title;
   if (title)
@@ -175,7 +175,7 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
     CFRelease(title);
   }
 
-  v6 = CFRetain(a3);
+  v6 = CFRetain(title);
   self->title = v6;
   self->titleSize.width = sizeForStringWithAttributes(v6, +[CIGVNode textAttributesForTitle]);
   self->titleSize.height = v7;
@@ -183,7 +183,7 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
   [(CIGVNode *)self updateBadgeSize];
 }
 
-- (void)setLabel:(__CFString *)a3
+- (void)setLabel:(__CFString *)label
 {
   label = self->label;
   if (label)
@@ -191,7 +191,7 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
     CFRelease(label);
   }
 
-  v6 = CFRetain(a3);
+  v6 = CFRetain(label);
   self->label = v6;
   self->labelSize.width = sizeForStringWithAttributes(v6, +[CIGVNode textAttributesForLabel]);
   self->labelSize.height = v7;
@@ -199,10 +199,10 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
   [(CIGVNode *)self updateContentSize];
 }
 
-- (void)addImage:(CGImage *)a3
+- (void)addImage:(CGImage *)image
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (image)
   {
     [(NSMutableArray *)self->images addObject:?];
     images = self->images;
@@ -248,11 +248,11 @@ void __34__CIGVNode_textAttributesForLabel__block_invoke()
   }
 }
 
-- (void)addRoi:(CGRect)a3
+- (void)addRoi:(CGRect)roi
 {
   v21 = *MEMORY[0x1E69E9840];
   v20 = *contentScale;
-  v22 = CGRectApplyAffineTransform(a3, &v20);
+  v22 = CGRectApplyAffineTransform(roi, &v20);
   [(NSMutableArray *)self->rois addObject:valueWithRect(v22.origin.x, v22.origin.y, v22.size.width, v22.size.height)];
   rois = self->rois;
   x = self->extent.origin.x;

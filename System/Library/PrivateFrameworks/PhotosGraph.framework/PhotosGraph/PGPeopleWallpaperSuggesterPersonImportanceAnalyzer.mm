@@ -1,19 +1,19 @@
 @interface PGPeopleWallpaperSuggesterPersonImportanceAnalyzer
-- (BOOL)_isVeryImportantPersonWithPersonNode:(id)a3;
-- (PGPeopleWallpaperSuggesterPersonImportanceAnalyzer)initWithGraph:(id)a3 curationContext:(id)a4 loggingConnection:(id)a5;
-- (id)personInformationsWithProgress:(id)a3;
-- (void)computePersonImportancesWithProgress:(id)a3;
-- (void)gatherMomentInformationWithProgress:(id)a3;
-- (void)gatherPersonInformationWithProgress:(id)a3;
+- (BOOL)_isVeryImportantPersonWithPersonNode:(id)node;
+- (PGPeopleWallpaperSuggesterPersonImportanceAnalyzer)initWithGraph:(id)graph curationContext:(id)context loggingConnection:(id)connection;
+- (id)personInformationsWithProgress:(id)progress;
+- (void)computePersonImportancesWithProgress:(id)progress;
+- (void)gatherMomentInformationWithProgress:(id)progress;
+- (void)gatherPersonInformationWithProgress:(id)progress;
 @end
 
 @implementation PGPeopleWallpaperSuggesterPersonImportanceAnalyzer
 
-- (id)personInformationsWithProgress:(id)a3
+- (id)personInformationsWithProgress:(id)progress
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  progressCopy = progress;
+  v5 = _Block_copy(progressCopy);
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -116,13 +116,13 @@ LABEL_18:
       [(NSMutableDictionary *)personInformationByPersonLocalIdentifier enumerateKeysAndObjectsUsingBlock:v26];
       if (!v5 || (v15 = CFAbsoluteTimeGetCurrent(), v15 - v44[3] < 0.01) || (v44[3] = v15, v42 = 0, (*(v11 + 2))(v11, &v42, 0.9), v16 = *(v48 + 24) | v42, *(v48 + 24) = v16, (v16 & 1) == 0))
       {
-        v17 = [(NSMutableDictionary *)self->_personInformationByPersonLocalIdentifier allValues];
+        allValues = [(NSMutableDictionary *)self->_personInformationByPersonLocalIdentifier allValues];
         v18 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"importance" ascending:0];
         v51[0] = v18;
         v19 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"personLocalIdentifier" ascending:0];
         v51[1] = v19;
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:2];
-        v21 = [v17 sortedArrayUsingDescriptors:v20];
+        v21 = [allValues sortedArrayUsingDescriptors:v20];
 
         if (v5 && (Current = CFAbsoluteTimeGetCurrent(), Current - v44[3] >= 0.01) && (v44[3] = Current, v42 = 0, (*(v11 + 2))(v11, &v42, 1.0), v23 = *(v48 + 24) | v42, *(v48 + 24) = v23, (v23 & 1) != 0))
         {
@@ -297,11 +297,11 @@ void __85__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_personInformations
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)computePersonImportancesWithProgress:(id)a3
+- (void)computePersonImportancesWithProgress:(id)progress
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  progressCopy = progress;
+  v5 = _Block_copy(progressCopy);
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -313,7 +313,7 @@ void __85__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_personInformations
   if (!v5 || (v6 = CFAbsoluteTimeGetCurrent(), v6 - v23[3] < 0.01) || (v23[3] = v6, v21 = 0, (*(v5 + 2))(v5, &v21, 0.0), v7 = *(v27 + 24) | v21, *(v27 + 24) = v7, (v7 & 1) == 0))
   {
     v8 = MEMORY[0x277D27688];
-    v9 = [(NSMutableDictionary *)self->_momentLocalIdentifiersByPersonLocalIdentifier allKeys];
+    allKeys = [(NSMutableDictionary *)self->_momentLocalIdentifiersByPersonLocalIdentifier allKeys];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __91__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_computePersonImportancesWithProgress___block_invoke;
@@ -329,7 +329,7 @@ void __85__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_personInformations
     v18 = &v26;
     v15[4] = self;
     v16 = v10;
-    [v8 calculateStandardDeviationForItems:v9 valueBlock:v20 result:v15];
+    [v8 calculateStandardDeviationForItems:allKeys valueBlock:v20 result:v15];
 
     if (*(v27 + 24) == 1)
     {
@@ -516,10 +516,10 @@ void __91__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_computePersonImpor
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gatherMomentInformationWithProgress:(id)a3
+- (void)gatherMomentInformationWithProgress:(id)progress
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(progress);
   v5 = 0.0;
   if (!v4 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
@@ -562,19 +562,19 @@ LABEL_4:
     momentLocalIdentifiersByPersonLocalIdentifier = self->_momentLocalIdentifiersByPersonLocalIdentifier;
     self->_momentLocalIdentifiersByPersonLocalIdentifier = v18;
 
-    v20 = [v17 transposed];
-    v21 = [v20 intersectingTargetsWith:v14];
-    v22 = [v20 sources];
+    transposed = [v17 transposed];
+    v21 = [transposed intersectingTargetsWith:v14];
+    sources = [transposed sources];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __90__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_gatherMomentInformationWithProgress___block_invoke;
     v26[3] = &unk_278888960;
     v26[4] = self;
     v27 = v21;
-    v28 = v20;
-    v23 = v20;
+    v28 = transposed;
+    v23 = transposed;
     v24 = v21;
-    [v22 enumerateNodesUsingBlock:v26];
+    [sources enumerateNodesUsingBlock:v26];
 
     if (v4)
     {
@@ -706,9 +706,9 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gatherPersonInformationWithProgress:(id)a3
+- (void)gatherPersonInformationWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -716,7 +716,7 @@ LABEL_16:
     _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PersonImportanceAnalyzer] Gathering Person Information", buf, 2u);
   }
 
-  v6 = [(CLSCurationContext *)self->_curationContext personUUIDByMergeCandidateUUID];
+  personUUIDByMergeCandidateUUID = [(CLSCurationContext *)self->_curationContext personUUIDByMergeCandidateUUID];
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -724,7 +724,7 @@ LABEL_16:
   v19[3] = &unk_278888938;
   v8 = v7;
   v20 = v8;
-  [v6 enumerateKeysAndObjectsUsingBlock:v19];
+  [personUUIDByMergeCandidateUUID enumerateKeysAndObjectsUsingBlock:v19];
   if ([(NSString *)self->_mePersonLocalIdentifier length])
   {
     v9 = [v8 objectForKeyedSubscript:self->_mePersonLocalIdentifier];
@@ -733,8 +733,8 @@ LABEL_16:
   }
 
   v11 = [PGGraphPersonNodeCollection personNodesExcludingMeInGraph:self->_graph];
-  v12 = [(CLSCurationContext *)self->_curationContext userFeedbackCalculator];
-  v13 = [v12 personUUIDsWithNegativeFeedback];
+  userFeedbackCalculator = [(CLSCurationContext *)self->_curationContext userFeedbackCalculator];
+  personUUIDsWithNegativeFeedback = [userFeedbackCalculator personUUIDsWithNegativeFeedback];
 
   self->_hasFavoritedPersons = 0;
   v16[0] = MEMORY[0x277D85DD0];
@@ -742,10 +742,10 @@ LABEL_16:
   v16[2] = __90__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_gatherPersonInformationWithProgress___block_invoke_2;
   v16[3] = &unk_278888960;
   v16[4] = self;
-  v17 = v13;
+  v17 = personUUIDsWithNegativeFeedback;
   v18 = v8;
   v14 = v8;
-  v15 = v13;
+  v15 = personUUIDsWithNegativeFeedback;
   [v11 enumerateNodesUsingBlock:v16];
 }
 
@@ -855,32 +855,32 @@ void __90__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_gatherPersonInform
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isVeryImportantPersonWithPersonNode:(id)a3
+- (BOOL)_isVeryImportantPersonWithPersonNode:(id)node
 {
-  v4 = a3;
-  if ([v4 isMyPartner] & 1) != 0 || (objc_msgSend(v4, "isMyInferredPartner") & 1) != 0 || (objc_msgSend(v4, "isMyChild"))
+  nodeCopy = node;
+  if ([nodeCopy isMyPartner] & 1) != 0 || (objc_msgSend(nodeCopy, "isMyInferredPartner") & 1) != 0 || (objc_msgSend(nodeCopy, "isMyChild"))
   {
-    v5 = 1;
+    isFavorite = 1;
   }
 
   else if (self->_favoritePersonsAreVIPs)
   {
-    v5 = [v4 isFavorite];
+    isFavorite = [nodeCopy isFavorite];
   }
 
   else
   {
-    v5 = 0;
+    isFavorite = 0;
   }
 
-  return v5;
+  return isFavorite;
 }
 
-- (PGPeopleWallpaperSuggesterPersonImportanceAnalyzer)initWithGraph:(id)a3 curationContext:(id)a4 loggingConnection:(id)a5
+- (PGPeopleWallpaperSuggesterPersonImportanceAnalyzer)initWithGraph:(id)graph curationContext:(id)context loggingConnection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  graphCopy = graph;
+  contextCopy = context;
+  connectionCopy = connection;
   v28.receiver = self;
   v28.super_class = PGPeopleWallpaperSuggesterPersonImportanceAnalyzer;
   v12 = [(PGPeopleWallpaperSuggesterPersonImportanceAnalyzer *)&v28 init];
@@ -889,19 +889,19 @@ void __90__PGPeopleWallpaperSuggesterPersonImportanceAnalyzer_gatherPersonInform
   {
     *&v12->_normalizedDeviationForVeryImportantPersons = xmmword_22F78C140;
     v12->_favoritePersonsAreVIPs = 1;
-    objc_storeStrong(&v12->_graph, a3);
-    objc_storeStrong(&v13->_curationContext, a4);
-    objc_storeStrong(&v13->_loggingConnection, a5);
-    v14 = [(PGGraph *)v13->_graph meNodeWithFallbackInferredMeNode];
-    v15 = [v14 localIdentifier];
+    objc_storeStrong(&v12->_graph, graph);
+    objc_storeStrong(&v13->_curationContext, context);
+    objc_storeStrong(&v13->_loggingConnection, connection);
+    meNodeWithFallbackInferredMeNode = [(PGGraph *)v13->_graph meNodeWithFallbackInferredMeNode];
+    localIdentifier = [meNodeWithFallbackInferredMeNode localIdentifier];
     mePersonLocalIdentifier = v13->_mePersonLocalIdentifier;
-    v13->_mePersonLocalIdentifier = v15;
+    v13->_mePersonLocalIdentifier = localIdentifier;
 
     v17 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v13->_graph];
-    v18 = [v17 universalDateInterval];
-    v19 = [v18 endDate];
+    universalDateInterval = [v17 universalDateInterval];
+    endDate = [universalDateInterval endDate];
     latestLibraryDate = v13->_latestLibraryDate;
-    v13->_latestLibraryDate = v19;
+    v13->_latestLibraryDate = endDate;
 
     if (v13->_latestLibraryDate)
     {

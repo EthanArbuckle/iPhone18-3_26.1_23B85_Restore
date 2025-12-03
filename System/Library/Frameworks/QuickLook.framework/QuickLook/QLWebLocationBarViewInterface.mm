@@ -1,11 +1,11 @@
 @interface QLWebLocationBarViewInterface
-+ (id)makeLocationBarUI:(id)a3;
++ (id)makeLocationBarUI:(id)i;
 - (_TtC9QuickLook29QLWebLocationBarViewInterface)init;
 @end
 
 @implementation QLWebLocationBarViewInterface
 
-+ (id)makeLocationBarUI:(id)a3
++ (id)makeLocationBarUI:(id)i
 {
   v3 = type metadata accessor for QLWebLocationBarView();
   v4 = *(*(v3 - 8) + 64);

@@ -1,39 +1,39 @@
 @interface NUApplicationAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation NUApplicationAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_286E338F8 factory:&__block_literal_global_15];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_286E338F8 factory:&__block_literal_global_15];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_286E4ADB0 factory:&__block_literal_global_56];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_286E4ADB0 factory:&__block_literal_global_56];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_286E13A60 factory:&__block_literal_global_65];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerProtocol:&unk_286E13A60 factory:&__block_literal_global_65];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerProtocol:&unk_286E25D28 factory:&__block_literal_global_79];
+  publicContainer4 = [registryCopy publicContainer];
+  v11 = [publicContainer4 registerProtocol:&unk_286E25D28 factory:&__block_literal_global_79];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerProtocol:&unk_286E25F18 factory:&__block_literal_global_91];
+  publicContainer5 = [registryCopy publicContainer];
+  v13 = [publicContainer5 registerProtocol:&unk_286E25F18 factory:&__block_literal_global_91];
 
-  v14 = [v3 publicContainer];
-  v15 = [v14 registerProtocol:&unk_286E2EDF8 factory:&__block_literal_global_98];
+  publicContainer6 = [registryCopy publicContainer];
+  v15 = [publicContainer6 registerProtocol:&unk_286E2EDF8 factory:&__block_literal_global_98];
 
-  v16 = [v3 publicContainer];
-  v17 = [v16 registerProtocol:&unk_286E35228 factory:&__block_literal_global_106];
+  publicContainer7 = [registryCopy publicContainer];
+  v17 = [publicContainer7 registerProtocol:&unk_286E35228 factory:&__block_literal_global_106];
 
-  v18 = [v3 publicContainer];
-  v19 = [v18 registerProtocol:&unk_286E261B8 factory:&__block_literal_global_121_0];
+  publicContainer8 = [registryCopy publicContainer];
+  v19 = [publicContainer8 registerProtocol:&unk_286E261B8 factory:&__block_literal_global_121_0];
 
-  v22 = [v3 privateContainer];
+  privateContainer = [registryCopy privateContainer];
 
-  v20 = [v22 registerProtocol:&unk_286E25F78 factory:&__block_literal_global_124];
+  v20 = [privateContainer registerProtocol:&unk_286E25F78 factory:&__block_literal_global_124];
   v21 = [v20 inScope:2];
 }
 

@@ -2,30 +2,30 @@
 - (AVCaptureFileOutputRecordingDelegatePrivate)currentRecordingDelegate;
 - (AVCapturePhotoCaptureDelegate)currentStillImageDelegate;
 - (AVMomentCaptureMovieRecordingDelegate)currentMomentCaptureMovieRecordingDelegate;
-- (BOOL)_shouldEnableApertureSliderForMode:(int64_t)a3 devicePosition:(int64_t)a4 depthSuggestionEnabled:(BOOL)a5 recording:(BOOL)a6;
-- (BOOL)_shouldEnableLensSelectorForMode:(int64_t)a3 devicePosition:(int64_t)a4 recording:(BOOL)a5;
-- (CAMCaptureCommandContext)initWithCaptureEngine:(id)a3;
+- (BOOL)_shouldEnableApertureSliderForMode:(int64_t)mode devicePosition:(int64_t)position depthSuggestionEnabled:(BOOL)enabled recording:(BOOL)recording;
+- (BOOL)_shouldEnableLensSelectorForMode:(int64_t)mode devicePosition:(int64_t)position recording:(BOOL)recording;
+- (CAMCaptureCommandContext)initWithCaptureEngine:(id)engine;
 - (CAMCaptureEngine)_captureEngine;
-- (id)_captureEngineDeviceForMode:(int64_t)a3 desiredDevice:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7 resolvedDevice:(int64_t *)a8;
-- (id)_metadataOutputForMode:(int64_t)a3;
+- (id)_captureEngineDeviceForMode:(int64_t)mode desiredDevice:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled resolvedDevice:(int64_t *)resolvedDevice;
+- (id)_metadataOutputForMode:(int64_t)mode;
 - (id)audioDeviceInput;
-- (id)cachedMomentCaptureSettingsForIdentifier:(id)a3;
-- (id)controlsForGraphConfiguration:(id)a3 recording:(BOOL)a4;
-- (id)outputsForGraphConfiguration:(id)a3;
-- (id)primaryOutputForMode:(int64_t)a3 graphConfiguration:(id)a4;
-- (id)primaryVideoPreviewLayerForGraphConfiguration:(id)a3;
-- (id)secondaryVideoPreviewLayerForGraphConfiguration:(id)a3;
-- (void)cacheMomentCaptureSettings:(id)a3 forIdentifier:(id)a4;
+- (id)cachedMomentCaptureSettingsForIdentifier:(id)identifier;
+- (id)controlsForGraphConfiguration:(id)configuration recording:(BOOL)recording;
+- (id)outputsForGraphConfiguration:(id)configuration;
+- (id)primaryOutputForMode:(int64_t)mode graphConfiguration:(id)configuration;
+- (id)primaryVideoPreviewLayerForGraphConfiguration:(id)configuration;
+- (id)secondaryVideoPreviewLayerForGraphConfiguration:(id)configuration;
+- (void)cacheMomentCaptureSettings:(id)settings forIdentifier:(id)identifier;
 - (void)clear;
-- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)a3;
-- (void)registerStillImageCaptureRequest:(id)a3 withSettings:(id)a4;
-- (void)registerVideoCaptureRequest:(id)a3;
-- (void)registerVideoEndZoomFactor:(double)a3;
-- (void)startPanoramaCaptureWithRequest:(id)a3;
-- (void)stopPanoramaCaptureInterrupted:(BOOL)a3;
-- (void)updateControlEnablementForFilters:(id)a3 captureMode:(int64_t)a4;
-- (void)updateControlEnablementForRecording:(BOOL)a3 mode:(int64_t)a4 devicePosition:(int64_t)a5 depthSuggestionEnabled:(BOOL)a6;
-- (void)updateLensSelectorForRecording:(BOOL)a3 mode:(int64_t)a4 devicePosition:(int64_t)a5;
+- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)identifier;
+- (void)registerStillImageCaptureRequest:(id)request withSettings:(id)settings;
+- (void)registerVideoCaptureRequest:(id)request;
+- (void)registerVideoEndZoomFactor:(double)factor;
+- (void)startPanoramaCaptureWithRequest:(id)request;
+- (void)stopPanoramaCaptureInterrupted:(BOOL)interrupted;
+- (void)updateControlEnablementForFilters:(id)filters captureMode:(int64_t)mode;
+- (void)updateControlEnablementForRecording:(BOOL)recording mode:(int64_t)mode devicePosition:(int64_t)position depthSuggestionEnabled:(BOOL)enabled;
+- (void)updateLensSelectorForRecording:(BOOL)recording mode:(int64_t)mode devicePosition:(int64_t)position;
 @end
 
 @implementation CAMCaptureCommandContext
@@ -73,28 +73,28 @@
   return WeakRetained;
 }
 
-- (CAMCaptureCommandContext)initWithCaptureEngine:(id)a3
+- (CAMCaptureCommandContext)initWithCaptureEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = CAMCaptureCommandContext;
   v5 = [(CAMCaptureCommandContext *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->__captureEngine, v4);
+    objc_storeWeak(&v5->__captureEngine, engineCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)registerStillImageCaptureRequest:(id)a3 withSettings:(id)a4
+- (void)registerStillImageCaptureRequest:(id)request withSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAMCaptureCommandContext *)self _captureEngine];
-  [v8 registerStillImageCaptureRequest:v7 withSettings:v6];
+  settingsCopy = settings;
+  requestCopy = request;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  [_captureEngine registerStillImageCaptureRequest:requestCopy withSettings:settingsCopy];
 }
 
 - (AVMomentCaptureMovieRecordingDelegate)currentMomentCaptureMovieRecordingDelegate
@@ -104,38 +104,38 @@
   return WeakRetained;
 }
 
-- (void)cacheMomentCaptureSettings:(id)a3 forIdentifier:(id)a4
+- (void)cacheMomentCaptureSettings:(id)settings forIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAMCaptureCommandContext *)self _captureEngine];
-  [v8 cacheMomentCaptureSettings:v7 forIdentifier:v6];
+  identifierCopy = identifier;
+  settingsCopy = settings;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  [_captureEngine cacheMomentCaptureSettings:settingsCopy forIdentifier:identifierCopy];
 }
 
-- (id)cachedMomentCaptureSettingsForIdentifier:(id)a3
+- (id)cachedMomentCaptureSettingsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine];
-  v6 = [v5 cachedMomentCaptureSettingsForIdentifier:v4];
+  identifierCopy = identifier;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  v6 = [_captureEngine cachedMomentCaptureSettingsForIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)a3
+- (void)clearCachedMomentCaptureSettingsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine];
-  [v5 clearCachedMomentCaptureSettingsForIdentifier:v4];
+  identifierCopy = identifier;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  [_captureEngine clearCachedMomentCaptureSettingsForIdentifier:identifierCopy];
 }
 
-- (void)registerVideoCaptureRequest:(id)a3
+- (void)registerVideoCaptureRequest:(id)request
 {
-  v4 = a3;
-  v7 = [(CAMCaptureCommandContext *)self _captureEngine];
-  v5 = [v7 movieFileOutput];
-  v6 = [MEMORY[0x1E695DF20] dictionaryWithObject:v4 forKey:@"CAMCaptureEngineCurrentRequestKey"];
-  [v5 setUserInfo:v6];
-  [v7 registerVideoCaptureRequest:v4];
+  requestCopy = request;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  movieFileOutput = [_captureEngine movieFileOutput];
+  v6 = [MEMORY[0x1E695DF20] dictionaryWithObject:requestCopy forKey:@"CAMCaptureEngineCurrentRequestKey"];
+  [movieFileOutput setUserInfo:v6];
+  [_captureEngine registerVideoCaptureRequest:requestCopy];
 }
 
 - (AVCaptureFileOutputRecordingDelegatePrivate)currentRecordingDelegate
@@ -145,33 +145,33 @@
   return WeakRetained;
 }
 
-- (void)registerVideoEndZoomFactor:(double)a3
+- (void)registerVideoEndZoomFactor:(double)factor
 {
-  v4 = [(CAMCaptureCommandContext *)self _captureEngine];
-  [v4 registerVideoEndZoomFactor:a3];
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  [_captureEngine registerVideoEndZoomFactor:factor];
 }
 
-- (void)startPanoramaCaptureWithRequest:(id)a3
+- (void)startPanoramaCaptureWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine];
-  [v5 startPanoramaCaptureWithRequest:v4];
+  requestCopy = request;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  [_captureEngine startPanoramaCaptureWithRequest:requestCopy];
 }
 
-- (void)stopPanoramaCaptureInterrupted:(BOOL)a3
+- (void)stopPanoramaCaptureInterrupted:(BOOL)interrupted
 {
-  v3 = a3;
-  v4 = [(CAMCaptureCommandContext *)self _captureEngine];
-  [v4 stopPanoramaCaptureInterrupted:v3];
+  interruptedCopy = interrupted;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  [_captureEngine stopPanoramaCaptureInterrupted:interruptedCopy];
 }
 
-- (id)_captureEngineDeviceForMode:(int64_t)a3 desiredDevice:(int64_t)a4 videoConfiguration:(int64_t)a5 videoStabilizationStrength:(int64_t)a6 frontRearSimultaneousVideoEnabled:(BOOL)a7 resolvedDevice:(int64_t *)a8
+- (id)_captureEngineDeviceForMode:(int64_t)mode desiredDevice:(int64_t)device videoConfiguration:(int64_t)configuration videoStabilizationStrength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)enabled resolvedDevice:(int64_t *)resolvedDevice
 {
-  v9 = a7;
+  enabledCopy = enabled;
   v34 = *MEMORY[0x1E69E9840];
-  v14 = [(CAMCaptureCommandContext *)self _captureEngine];
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
   v15 = +[CAMCaptureCapabilities capabilities];
-  v16 = [v15 resolvedDeviceForDesiredDevice:a4 mode:a3 videoConfiguration:a5 videoStabilizationStrength:a6 frontRearSimultaneousVideoEnabled:v9];
+  v16 = [v15 resolvedDeviceForDesiredDevice:device mode:mode videoConfiguration:configuration videoStabilizationStrength:strength frontRearSimultaneousVideoEnabled:enabledCopy];
   v17 = v16;
   if (v16 > 5)
   {
@@ -180,13 +180,13 @@
       switch(v16)
       {
         case 9:
-          v18 = [v14 frontPearlCameraDevice];
+          frontPearlCameraDevice = [_captureEngine frontPearlCameraDevice];
           break;
         case 10:
-          v18 = [v14 frontSuperWideCameraDevice];
+          frontPearlCameraDevice = [_captureEngine frontSuperWideCameraDevice];
           break;
         case 11:
-          v18 = [v14 systemPreferredCameraDevice];
+          frontPearlCameraDevice = [_captureEngine systemPreferredCameraDevice];
           break;
         default:
           goto LABEL_37;
@@ -197,7 +197,7 @@
 
     if (v16 == 6)
     {
-      v18 = [v14 backWideDualCameraDevice];
+      frontPearlCameraDevice = [_captureEngine backWideDualCameraDevice];
     }
 
     else
@@ -205,11 +205,11 @@
       if (v16 != 7)
       {
 LABEL_10:
-        v18 = [v14 frontCameraDevice];
+        frontPearlCameraDevice = [_captureEngine frontCameraDevice];
         goto LABEL_25;
       }
 
-      v18 = [v14 backTripleCameraDevice];
+      frontPearlCameraDevice = [_captureEngine backTripleCameraDevice];
     }
   }
 
@@ -220,7 +220,7 @@ LABEL_10:
       if (!v16)
       {
 LABEL_6:
-        v18 = [v14 backCameraDevice];
+        frontPearlCameraDevice = [_captureEngine backCameraDevice];
         goto LABEL_25;
       }
 
@@ -239,30 +239,30 @@ LABEL_6:
 
     if (v16 == 3)
     {
-      v18 = [v14 backTelephotoCameraDevice];
+      frontPearlCameraDevice = [_captureEngine backTelephotoCameraDevice];
     }
 
     else
     {
       if (v16 == 4)
       {
-        [v14 backDualCameraDevice];
+        [_captureEngine backDualCameraDevice];
       }
 
       else
       {
-        [v14 backSuperWideCameraDevice];
+        [_captureEngine backSuperWideCameraDevice];
       }
-      v18 = ;
+      frontPearlCameraDevice = ;
     }
   }
 
 LABEL_25:
-  v19 = v18;
-  if (v18)
+  frontCameraDevice = frontPearlCameraDevice;
+  if (frontPearlCameraDevice)
   {
     v20 = v17;
-    if (!a8)
+    if (!resolvedDevice)
     {
       goto LABEL_28;
     }
@@ -272,14 +272,14 @@ LABEL_25:
 
   if (v17 - 8 < 4 || v17 == 1)
   {
-    v19 = [v14 frontCameraDevice];
+    frontCameraDevice = [_captureEngine frontCameraDevice];
     v23 = @"FrontAuto";
     v20 = 1;
     goto LABEL_38;
   }
 
 LABEL_37:
-  v19 = [v14 backCameraDevice];
+  frontCameraDevice = [_captureEngine backCameraDevice];
   v23 = @"BackWide";
   v20 = 2;
 LABEL_38:
@@ -296,14 +296,14 @@ LABEL_38:
       v25 = off_1E76FA498[v17];
     }
 
-    if (a3 > 9)
+    if (mode > 9)
     {
       v26 = 0;
     }
 
     else
     {
-      v26 = off_1E76FA4F8[a3];
+      v26 = off_1E76FA4F8[mode];
     }
 
     v27 = v23;
@@ -316,44 +316,44 @@ LABEL_38:
     _os_log_error_impl(&dword_1A3640000, v24, OS_LOG_TYPE_ERROR, "Failed to find device %{public}@ for mode %{public}@. Falling back to %{public}@", &v28, 0x20u);
   }
 
-  if (a8)
+  if (resolvedDevice)
   {
 LABEL_27:
-    *a8 = v20;
+    *resolvedDevice = v20;
   }
 
 LABEL_28:
 
-  return v19;
+  return frontCameraDevice;
 }
 
 - (id)audioDeviceInput
 {
-  v2 = [(CAMCaptureCommandContext *)self _captureEngine];
-  v3 = [v2 audioCaptureDeviceInput];
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  audioCaptureDeviceInput = [_captureEngine audioCaptureDeviceInput];
 
-  return v3;
+  return audioCaptureDeviceInput;
 }
 
-- (id)primaryOutputForMode:(int64_t)a3 graphConfiguration:(id)a4
+- (id)primaryOutputForMode:(int64_t)mode graphConfiguration:(id)configuration
 {
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine:a3];
+  v5 = [(CAMCaptureCommandContext *)self _captureEngine:mode];
   v6 = v5;
-  if (a3 > 9)
+  if (mode > 9)
   {
     v8 = 0;
   }
 
   else
   {
-    if (((1 << a3) & 0x271) != 0)
+    if (((1 << mode) & 0x271) != 0)
     {
-      v7 = [v5 stillImageOutput];
+      stillImageOutput = [v5 stillImageOutput];
     }
 
     else
     {
-      if (((1 << a3) & 0x186) != 0)
+      if (((1 << mode) & 0x186) != 0)
       {
         [v5 movieFileOutput];
       }
@@ -362,96 +362,96 @@ LABEL_28:
       {
         [v5 panoramaVideoDataOutput];
       }
-      v7 = ;
+      stillImageOutput = ;
     }
 
-    v8 = v7;
+    v8 = stillImageOutput;
   }
 
   return v8;
 }
 
-- (id)outputsForGraphConfiguration:(id)a3
+- (id)outputsForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine];
+  configurationCopy = configuration;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
   v6 = +[CAMCaptureCapabilities capabilities];
-  v7 = [v4 videoThumbnailOutputConfiguration];
+  videoThumbnailOutputConfiguration = [configurationCopy videoThumbnailOutputConfiguration];
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v4 mode];
-  if (v9 > 3)
+  mode = [configurationCopy mode];
+  if (mode > 3)
   {
-    if (v9 > 9)
+    if (mode > 9)
     {
       goto LABEL_20;
     }
 
-    if (((1 << v9) & 0x250) == 0)
+    if (((1 << mode) & 0x250) == 0)
     {
-      if (((1 << v9) & 0x180) != 0)
+      if (((1 << mode) & 0x180) != 0)
       {
-        v10 = [v5 movieFileOutput];
+        movieFileOutput = [_captureEngine movieFileOutput];
 LABEL_19:
-        v15 = v10;
-        [v8 addObject:v10];
+        v15 = movieFileOutput;
+        [v8 addObject:movieFileOutput];
 
         goto LABEL_20;
       }
 
-      if (v9 != 5)
+      if (mode != 5)
       {
         goto LABEL_20;
       }
 
 LABEL_17:
-      v10 = [v5 stillImageOutput];
+      movieFileOutput = [_captureEngine stillImageOutput];
       goto LABEL_19;
     }
 
 LABEL_10:
-    v11 = [v5 stillImageOutput];
-    [v8 addObject:v11];
+    stillImageOutput = [_captureEngine stillImageOutput];
+    [v8 addObject:stillImageOutput];
 
     if (![v6 isLiveFilteringSupported])
     {
       goto LABEL_20;
     }
 
-    if (v7)
+    if (videoThumbnailOutputConfiguration)
     {
-      [v5 videoThumbnailOutput];
+      [_captureEngine videoThumbnailOutput];
     }
 
     else
     {
-      [v5 effectsPreviewVideoDataOutput];
+      [_captureEngine effectsPreviewVideoDataOutput];
     }
-    v10 = ;
+    movieFileOutput = ;
     goto LABEL_19;
   }
 
-  if ((v9 - 1) >= 2)
+  if ((mode - 1) >= 2)
   {
-    if (v9)
+    if (mode)
     {
-      if (v9 != 3)
+      if (mode != 3)
       {
         goto LABEL_20;
       }
 
-      v10 = [v5 panoramaVideoDataOutput];
+      movieFileOutput = [_captureEngine panoramaVideoDataOutput];
       goto LABEL_19;
     }
 
     goto LABEL_10;
   }
 
-  v12 = [v5 movieFileOutput];
-  [v8 addObject:v12];
+  movieFileOutput2 = [_captureEngine movieFileOutput];
+  [v8 addObject:movieFileOutput2];
 
   v13 = +[CAMCaptureCapabilities capabilities];
-  v14 = [v13 isStillDuringVideoSupportedForVideoEncodingBehavior:{objc_msgSend(v4, "videoEncodingBehavior")}];
+  v14 = [v13 isStillDuringVideoSupportedForVideoEncodingBehavior:{objc_msgSend(configurationCopy, "videoEncodingBehavior")}];
 
   if (v14)
   {
@@ -459,7 +459,7 @@ LABEL_10:
   }
 
 LABEL_20:
-  v16 = -[CAMCaptureCommandContext _metadataOutputForMode:](self, "_metadataOutputForMode:", [v4 mode]);
+  v16 = -[CAMCaptureCommandContext _metadataOutputForMode:](self, "_metadataOutputForMode:", [configurationCopy mode]);
   if (v16)
   {
     [v8 addObject:v16];
@@ -468,48 +468,48 @@ LABEL_20:
   return v8;
 }
 
-- (id)primaryVideoPreviewLayerForGraphConfiguration:(id)a3
+- (id)primaryVideoPreviewLayerForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine];
-  v6 = [v4 mode];
+  configurationCopy = configuration;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  mode = [configurationCopy mode];
 
-  if (v6 > 9)
+  if (mode > 9)
   {
-    v7 = 0;
+    videoPreviewLayer = 0;
   }
 
   else
   {
-    v7 = [v5 videoPreviewLayer];
+    videoPreviewLayer = [_captureEngine videoPreviewLayer];
   }
 
-  return v7;
+  return videoPreviewLayer;
 }
 
-- (id)secondaryVideoPreviewLayerForGraphConfiguration:(id)a3
+- (id)secondaryVideoPreviewLayerForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMCaptureCommandContext *)self _captureEngine];
-  if ([v4 mode] == 1 && objc_msgSend(v4, "frontRearSimultaneousVideoEnabled"))
+  configurationCopy = configuration;
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  if ([configurationCopy mode] == 1 && objc_msgSend(configurationCopy, "frontRearSimultaneousVideoEnabled"))
   {
-    v6 = [v5 secondaryVideoPreviewLayer];
+    secondaryVideoPreviewLayer = [_captureEngine secondaryVideoPreviewLayer];
   }
 
   else
   {
-    v6 = 0;
+    secondaryVideoPreviewLayer = 0;
   }
 
-  return v6;
+  return secondaryVideoPreviewLayer;
 }
 
-- (id)controlsForGraphConfiguration:(id)a3 recording:(BOOL)a4
+- (id)controlsForGraphConfiguration:(id)configuration recording:(BOOL)recording
 {
-  v4 = a4;
+  recordingCopy = recording;
   v133[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CAMCaptureCommandContext *)self currentCaptureSession];
+  configurationCopy = configuration;
+  currentCaptureSession = [(CAMCaptureCommandContext *)self currentCaptureSession];
   v8 = CFPreferencesCopyAppValue(@"CAMUserPreferenceOverlayEnabledControls", @"com.apple.camera");
   keyExistsAndHasValidFormat = 0;
   v9 = 0;
@@ -553,41 +553,41 @@ LABEL_20:
   }
 
   v106 = +[CAMCaptureCapabilities capabilities];
-  if ([v7 supportsControls] && objc_msgSend(v8, "count"))
+  if ([currentCaptureSession supportsControls] && objc_msgSend(v8, "count"))
   {
-    v95 = v4;
-    v13 = [v6 mode];
-    v14 = [v6 device];
-    v96 = [v6 devicePosition];
-    v15 = [(CAMCaptureCommandContext *)self _captureEngine];
-    v16 = [v6 videoConfiguration];
-    v17 = [v6 videoStabilizationStrength];
-    v18 = -[CAMCaptureCommandContext _captureEngineDeviceForMode:desiredDevice:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:resolvedDevice:](self, "_captureEngineDeviceForMode:desiredDevice:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:resolvedDevice:", v13, v14, v16, v17, [v6 frontRearSimultaneousVideoEnabled], 0);
-    v110 = v15;
+    v95 = recordingCopy;
+    mode = [configurationCopy mode];
+    device = [configurationCopy device];
+    devicePosition = [configurationCopy devicePosition];
+    _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+    videoConfiguration = [configurationCopy videoConfiguration];
+    videoStabilizationStrength = [configurationCopy videoStabilizationStrength];
+    v18 = -[CAMCaptureCommandContext _captureEngineDeviceForMode:desiredDevice:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:resolvedDevice:](self, "_captureEngineDeviceForMode:desiredDevice:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:resolvedDevice:", mode, device, videoConfiguration, videoStabilizationStrength, [configurationCopy frontRearSimultaneousVideoEnabled], 0);
+    v110 = _captureEngine;
     if (v18)
     {
       v93 = v8;
-      v91 = v7;
-      [v15 ensureControlsForGraphConfiguration:v6];
+      v91 = currentCaptureSession;
+      [_captureEngine ensureControlsForGraphConfiguration:configurationCopy];
       v111 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v108 = [v18 systemZoomSlider];
+      systemZoomSlider = [v18 systemZoomSlider];
       v109 = v18;
-      v105 = [v18 systemLensSelector];
+      systemLensSelector = [v18 systemLensSelector];
       v126 = 0;
       v127 = 0;
-      v103 = v17;
-      v104 = v16;
-      v19 = +[CAMZoomControlUtilities shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:](CAMZoomControlUtilities, "shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:", v13, v14, v16, v17, [v6 frontRearSimultaneousVideoEnabled], &v127, &v126);
+      v103 = videoStabilizationStrength;
+      v104 = videoConfiguration;
+      v19 = +[CAMZoomControlUtilities shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:](CAMZoomControlUtilities, "shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:", mode, device, videoConfiguration, videoStabilizationStrength, [configurationCopy frontRearSimultaneousVideoEnabled], &v127, &v126);
       v107 = v127;
       v20 = v126;
-      v97 = v6;
-      v21 = v13;
-      v94 = v13;
-      v92 = self;
+      v97 = configurationCopy;
+      v21 = mode;
+      v94 = mode;
+      selfCopy = self;
       if (v19)
       {
-        v99 = v14;
-        [v6 customLensGroup];
+        v99 = device;
+        [configurationCopy customLensGroup];
         v22 = v101 = v20;
         v23 = [CAMZoomPoint zoomPointsWithFactors:v107 displayZoomFactors:v20 customLensGroup:?];
         v24 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v23, "count")}];
@@ -626,23 +626,23 @@ LABEL_20:
           while (v27);
         }
 
-        [v108 setDisplayValuesByZoomFactorValue:v24];
-        v6 = v97;
-        self = v92;
+        [systemZoomSlider setDisplayValuesByZoomFactorValue:v24];
+        configurationCopy = v97;
+        self = selfCopy;
         v21 = v94;
-        v14 = v99;
+        device = v99;
         v20 = v101;
       }
 
-      v35 = [MEMORY[0x1E695DF90] dictionary];
-      if (v96 == 1)
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      if (devicePosition == 1)
       {
         v36 = 0;
       }
 
       else
       {
-        v36 = v14;
+        v36 = device;
       }
 
       v37 = [CAMCaptureCommandContext _shouldEnableLensSelectorForMode:"_shouldEnableLensSelectorForMode:devicePosition:recording:" devicePosition:v21 recording:?];
@@ -659,7 +659,7 @@ LABEL_20:
 
       v120 = v20;
       v121 = v107;
-      +[CAMZoomControlUtilities shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:](CAMZoomControlUtilities, "shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:", v21, v38, v104, v103, [v6 frontRearSimultaneousVideoEnabled], &v121, &v120);
+      +[CAMZoomControlUtilities shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:](CAMZoomControlUtilities, "shouldApplyContinuousZoomForMode:device:videoConfiguration:videoStabilizationStrength:frontRearSimultaneousVideoEnabled:zoomFactors:displayZoomFactors:", v21, v38, v104, v103, [configurationCopy frontRearSimultaneousVideoEnabled], &v121, &v120);
       v39 = v121;
 
       v40 = v120;
@@ -685,9 +685,9 @@ LABEL_20:
             }
 
             v46 = *(*(&v116 + 1) + 8 * j);
-            v47 = [v41 lastObject];
+            lastObject = [v41 lastObject];
 
-            if (v46 != v47)
+            if (v46 != lastObject)
             {
               v48 = MEMORY[0x1E696AD98];
               [v46 displayZoomFactor];
@@ -704,7 +704,7 @@ LABEL_20:
               }
 
               v51 = [v50 numberWithDouble:?];
-              [v35 setObject:v49 forKeyedSubscript:v51];
+              [dictionary setObject:v49 forKeyedSubscript:v51];
             }
           }
 
@@ -716,7 +716,7 @@ LABEL_20:
 
       v52 = [v106 isSupportedMode:v94 withDevice:1];
       v54 = !v95;
-      if (v96 == 1)
+      if (devicePosition == 1)
       {
         v54 = 1;
       }
@@ -728,12 +728,12 @@ LABEL_20:
         v56 = [MEMORY[0x1E696AD98] numberWithFloat:v53];
         LODWORD(v57) = *v55;
         v58 = [MEMORY[0x1E696AD98] numberWithFloat:v57];
-        [v35 setObject:v56 forKeyedSubscript:v58];
+        [dictionary setObject:v56 forKeyedSubscript:v58];
       }
 
-      [v105 setDisplayValuesByZoomFactorValue:v35];
+      [systemLensSelector setDisplayValuesByZoomFactorValue:dictionary];
 
-      v59 = [v106 semanticStyleSupportForMode:v94 devicePosition:v96];
+      v59 = [v106 semanticStyleSupportForMode:v94 devicePosition:devicePosition];
       v112 = 0u;
       v113 = 0u;
       v114 = 0u;
@@ -764,27 +764,27 @@ LABEL_20:
           v66 = *(*(&v112 + 1) + 8 * k);
           if ([v66 isEqualToString:@"Exposure"])
           {
-            v67 = [v109 systemExposureSlider];
-            [v111 addObject:v67];
+            systemExposureSlider = [v109 systemExposureSlider];
+            [v111 addObject:systemExposureSlider];
 
             continue;
           }
 
-          v68 = [v62 apertureSlider];
-          if (v68)
+          apertureSlider = [v62 apertureSlider];
+          if (apertureSlider)
           {
-            v69 = v68;
+            v69 = apertureSlider;
             v70 = [v66 isEqualToString:@"Depth"];
 
             if (v70)
             {
               v62 = v110;
-              v71 = [v110 apertureSlider];
+              apertureSlider2 = [v110 apertureSlider];
 LABEL_57:
-              v72 = v71;
+              intensitySlider = apertureSlider2;
               v73 = v111;
 LABEL_58:
-              [v73 addObject:v72];
+              [v73 addObject:intensitySlider];
 
               continue;
             }
@@ -792,7 +792,7 @@ LABEL_58:
 
           if ([v66 isEqualToString:@"Zoom"])
           {
-            [v111 addObject:v108];
+            [v111 addObject:systemZoomSlider];
             v62 = v110;
           }
 
@@ -801,19 +801,19 @@ LABEL_58:
             v62 = v110;
             if ([v66 isEqualToString:@"Cameras"])
             {
-              [v111 addObject:v105];
+              [v111 addObject:systemLensSelector];
             }
 
             else if ([v66 isEqual:@"Styles"] && objc_msgSend(v106, "smartStylesSupported"))
             {
               if (v100 == 1)
               {
-                v71 = [v110 systemStylePicker];
+                apertureSlider2 = [v110 systemStylePicker];
                 goto LABEL_57;
               }
 
-              v76 = [v97 smartStyles];
-              v77 = [v110 creativeStylePickerWithStyles:v76];
+              smartStyles = [v97 smartStyles];
+              v77 = [v110 creativeStylePickerWithStyles:smartStyles];
 
               [v111 addObject:v77];
               v102 = v77;
@@ -823,17 +823,17 @@ LABEL_58:
             {
               if ([v106 smartStylesSupported])
               {
-                v74 = [v110 toneBiasSlider];
-                [v111 addObject:v74];
+                toneBiasSlider = [v110 toneBiasSlider];
+                [v111 addObject:toneBiasSlider];
 
                 if ((v98 & 8) != 0)
                 {
                   if ([v106 smartStylesShowExtraControls])
                   {
-                    v75 = [v110 colorBiasSlider];
-                    [v111 addObject:v75];
+                    colorBiasSlider = [v110 colorBiasSlider];
+                    [v111 addObject:colorBiasSlider];
 
-                    v72 = [v110 intensitySlider];
+                    intensitySlider = [v110 intensitySlider];
                     v73 = v111;
                     goto LABEL_58;
                   }
@@ -848,30 +848,30 @@ LABEL_58:
         {
 LABEL_81:
 
-          v78 = v108;
-          [v108 setEnabled:[(CAMCaptureCommandContext *)v92 _shouldEnableSystemZoomSliderForMode:v94 devicePosition:v96]];
-          [v105 setEnabled:{-[CAMCaptureCommandContext _shouldEnableLensSelectorForMode:devicePosition:recording:](v92, "_shouldEnableLensSelectorForMode:devicePosition:recording:", v94, v96, v95)}];
-          v80 = [(CAMCaptureCommandContext *)v92 _shouldEnableSystemExposureForRecording:v95 mode:v94];
+          v78 = systemZoomSlider;
+          [systemZoomSlider setEnabled:[(CAMCaptureCommandContext *)selfCopy _shouldEnableSystemZoomSliderForMode:v94 devicePosition:devicePosition]];
+          [systemLensSelector setEnabled:{-[CAMCaptureCommandContext _shouldEnableLensSelectorForMode:devicePosition:recording:](selfCopy, "_shouldEnableLensSelectorForMode:devicePosition:recording:", v94, devicePosition, v95)}];
+          v80 = [(CAMCaptureCommandContext *)selfCopy _shouldEnableSystemExposureForRecording:v95 mode:v94];
           v18 = v109;
-          v81 = [v109 systemExposureSlider];
-          [v81 setEnabled:v80];
+          systemExposureSlider2 = [v109 systemExposureSlider];
+          [systemExposureSlider2 setEnabled:v80];
 
           v79 = v62;
-          v6 = v97;
-          v82 = -[CAMCaptureCommandContext _shouldEnableApertureSliderForMode:devicePosition:depthSuggestionEnabled:recording:](v92, "_shouldEnableApertureSliderForMode:devicePosition:depthSuggestionEnabled:recording:", v94, v96, [v97 enableDepthSuggestion], v95);
-          v83 = [v79 apertureSlider];
-          [v83 setEnabled:v82];
+          configurationCopy = v97;
+          v82 = -[CAMCaptureCommandContext _shouldEnableApertureSliderForMode:devicePosition:depthSuggestionEnabled:recording:](selfCopy, "_shouldEnableApertureSliderForMode:devicePosition:depthSuggestionEnabled:recording:", v94, devicePosition, [v97 enableDepthSuggestion], v95);
+          apertureSlider3 = [v79 apertureSlider];
+          [apertureSlider3 setEnabled:v82];
 
-          v84 = [(CAMCaptureCommandContext *)v92 _shouldEnableSystemStylePickerForMode:v94 recording:v95];
-          v85 = [v79 systemStylePicker];
-          [v85 setEnabled:v84];
+          v84 = [(CAMCaptureCommandContext *)selfCopy _shouldEnableSystemStylePickerForMode:v94 recording:v95];
+          systemStylePicker = [v79 systemStylePicker];
+          [systemStylePicker setEnabled:v84];
 
-          [v102 setEnabled:{-[CAMCaptureCommandContext _shouldEnableCreativeStylePickerForMode:recording:](v92, "_shouldEnableCreativeStylePickerForMode:recording:", v94, v95)}];
-          v86 = [(CAMCaptureCommandContext *)v92 _shouldEnableToneBiasForMode:v94 recording:v95];
-          v87 = [v79 toneBiasSlider];
-          [v87 setEnabled:v86];
+          [v102 setEnabled:{-[CAMCaptureCommandContext _shouldEnableCreativeStylePickerForMode:recording:](selfCopy, "_shouldEnableCreativeStylePickerForMode:recording:", v94, v95)}];
+          v86 = [(CAMCaptureCommandContext *)selfCopy _shouldEnableToneBiasForMode:v94 recording:v95];
+          toneBiasSlider2 = [v79 toneBiasSlider];
+          [toneBiasSlider2 setEnabled:v86];
 
-          v7 = v91;
+          currentCaptureSession = v91;
           v8 = v93;
           goto LABEL_82;
         }
@@ -885,7 +885,7 @@ LABEL_81:
     }
 
     v111 = MEMORY[0x1E695E0F0];
-    v79 = v15;
+    v79 = _captureEngine;
 LABEL_82:
   }
 
@@ -897,54 +897,54 @@ LABEL_82:
   return v111;
 }
 
-- (void)updateControlEnablementForRecording:(BOOL)a3 mode:(int64_t)a4 devicePosition:(int64_t)a5 depthSuggestionEnabled:(BOOL)a6
+- (void)updateControlEnablementForRecording:(BOOL)recording mode:(int64_t)mode devicePosition:(int64_t)position depthSuggestionEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v9 = a3;
-  v24 = [(CAMCaptureCommandContext *)self currentCaptureSession];
-  if ([v24 supportsControls])
+  enabledCopy = enabled;
+  recordingCopy = recording;
+  currentCaptureSession = [(CAMCaptureCommandContext *)self currentCaptureSession];
+  if ([currentCaptureSession supportsControls])
   {
-    v11 = [(CAMCaptureCommandContext *)self _captureEngine];
-    v12 = [(CAMCaptureCommandContext *)self _shouldEnableApertureSliderForMode:a4 devicePosition:a5 depthSuggestionEnabled:v6 recording:v9];
-    v13 = [v11 apertureSlider];
-    [v13 setEnabled:v12];
+    _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+    v12 = [(CAMCaptureCommandContext *)self _shouldEnableApertureSliderForMode:mode devicePosition:position depthSuggestionEnabled:enabledCopy recording:recordingCopy];
+    apertureSlider = [_captureEngine apertureSlider];
+    [apertureSlider setEnabled:v12];
 
-    v14 = [(CAMCaptureCommandContext *)self _shouldEnableSystemExposureForRecording:v9 mode:a4];
-    v15 = [(CAMCaptureCommandContext *)self systemExposureBiasSlider];
-    [v15 setEnabled:v14];
+    v14 = [(CAMCaptureCommandContext *)self _shouldEnableSystemExposureForRecording:recordingCopy mode:mode];
+    systemExposureBiasSlider = [(CAMCaptureCommandContext *)self systemExposureBiasSlider];
+    [systemExposureBiasSlider setEnabled:v14];
 
-    v16 = [(CAMCaptureCommandContext *)self _shouldEnableLensSelectorForMode:a4 devicePosition:a5 recording:v9];
-    v17 = [(CAMCaptureCommandContext *)self systemLensSelector];
-    [v17 setEnabled:v16];
+    v16 = [(CAMCaptureCommandContext *)self _shouldEnableLensSelectorForMode:mode devicePosition:position recording:recordingCopy];
+    systemLensSelector = [(CAMCaptureCommandContext *)self systemLensSelector];
+    [systemLensSelector setEnabled:v16];
 
-    v18 = [(CAMCaptureCommandContext *)self _shouldEnableSystemStylePickerForMode:a4 recording:v9];
-    v19 = [v11 systemStylePicker];
-    [v19 setEnabled:v18];
+    v18 = [(CAMCaptureCommandContext *)self _shouldEnableSystemStylePickerForMode:mode recording:recordingCopy];
+    systemStylePicker = [_captureEngine systemStylePicker];
+    [systemStylePicker setEnabled:v18];
 
-    v20 = [(CAMCaptureCommandContext *)self _shouldEnableCreativeStylePickerForMode:a4 recording:v9];
-    v21 = [v11 creativeStylePicker];
-    [v21 setEnabled:v20];
+    v20 = [(CAMCaptureCommandContext *)self _shouldEnableCreativeStylePickerForMode:mode recording:recordingCopy];
+    creativeStylePicker = [_captureEngine creativeStylePicker];
+    [creativeStylePicker setEnabled:v20];
 
-    v22 = [(CAMCaptureCommandContext *)self _shouldEnableToneBiasForMode:a4 recording:v9];
-    v23 = [v11 toneBiasSlider];
-    [v23 setEnabled:v22];
+    v22 = [(CAMCaptureCommandContext *)self _shouldEnableToneBiasForMode:mode recording:recordingCopy];
+    toneBiasSlider = [_captureEngine toneBiasSlider];
+    [toneBiasSlider setEnabled:v22];
   }
 }
 
-- (void)updateLensSelectorForRecording:(BOOL)a3 mode:(int64_t)a4 devicePosition:(int64_t)a5
+- (void)updateLensSelectorForRecording:(BOOL)recording mode:(int64_t)mode devicePosition:(int64_t)position
 {
-  v7 = a3;
-  v22 = [(CAMCaptureCommandContext *)self systemLensSelector];
-  v8 = [v22 displayValuesByZoomFactorValue];
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
+  recordingCopy = recording;
+  systemLensSelector = [(CAMCaptureCommandContext *)self systemLensSelector];
+  displayValuesByZoomFactorValue = [systemLensSelector displayValuesByZoomFactorValue];
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:displayValuesByZoomFactorValue];
   v10 = +[CAMCaptureCapabilities capabilities];
   v11 = MEMORY[0x1E69938E8];
   LODWORD(v12) = *MEMORY[0x1E69938E8];
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
-  v14 = [v8 objectForKeyedSubscript:v13];
+  v14 = [displayValuesByZoomFactorValue objectForKeyedSubscript:v13];
 
-  v15 = [v10 isSupportedMode:a4 withDevice:1];
-  v17 = a5 != 1 && v7;
+  v15 = [v10 isSupportedMode:mode withDevice:1];
+  v17 = position != 1 && recordingCopy;
   v18 = v17 | v15 ^ 1;
   if ((v18 & 1) == 0 && !v14)
   {
@@ -972,86 +972,86 @@ LABEL_11:
   }
 
 LABEL_12:
-  [v22 setDisplayValuesByZoomFactorValue:v9];
+  [systemLensSelector setDisplayValuesByZoomFactorValue:v9];
 }
 
-- (void)updateControlEnablementForFilters:(id)a3 captureMode:(int64_t)a4
+- (void)updateControlEnablementForFilters:(id)filters captureMode:(int64_t)mode
 {
-  v16 = a3;
-  v6 = [(CAMCaptureCommandContext *)self currentCaptureSession];
-  if ([v6 supportsControls])
+  filtersCopy = filters;
+  currentCaptureSession = [(CAMCaptureCommandContext *)self currentCaptureSession];
+  if ([currentCaptureSession supportsControls])
   {
-    v7 = [(CAMCaptureCommandContext *)self _captureEngine];
-    v8 = [CAMEffectFilterManager isLightingEffectInFilters:v16];
+    _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+    v8 = [CAMEffectFilterManager isLightingEffectInFilters:filtersCopy];
     if (v8)
     {
-      v9 = [v7 systemStylePicker];
-      [v9 setEnabled:0];
+      systemStylePicker = [_captureEngine systemStylePicker];
+      [systemStylePicker setEnabled:0];
 
       v10 = 0;
     }
 
     else
     {
-      v11 = [(CAMCaptureCommandContext *)self _shouldEnableSystemStylePickerForMode:a4 recording:0];
-      v12 = [v7 systemStylePicker];
-      [v12 setEnabled:v11];
+      v11 = [(CAMCaptureCommandContext *)self _shouldEnableSystemStylePickerForMode:mode recording:0];
+      systemStylePicker2 = [_captureEngine systemStylePicker];
+      [systemStylePicker2 setEnabled:v11];
 
-      v10 = [(CAMCaptureCommandContext *)self _shouldEnableCreativeStylePickerForMode:a4 recording:0];
+      v10 = [(CAMCaptureCommandContext *)self _shouldEnableCreativeStylePickerForMode:mode recording:0];
     }
 
-    v13 = [v7 creativeStylePicker];
-    [v13 setEnabled:v10];
+    creativeStylePicker = [_captureEngine creativeStylePicker];
+    [creativeStylePicker setEnabled:v10];
 
-    v14 = !v8 && [(CAMCaptureCommandContext *)self _shouldEnableToneBiasForMode:a4 recording:0];
-    v15 = [v7 toneBiasSlider];
-    [v15 setEnabled:v14];
+    v14 = !v8 && [(CAMCaptureCommandContext *)self _shouldEnableToneBiasForMode:mode recording:0];
+    toneBiasSlider = [_captureEngine toneBiasSlider];
+    [toneBiasSlider setEnabled:v14];
   }
 }
 
-- (id)_metadataOutputForMode:(int64_t)a3
+- (id)_metadataOutputForMode:(int64_t)mode
 {
-  v4 = [(CAMCaptureCommandContext *)self _captureEngine];
-  v5 = 0;
-  if (a3 <= 9)
+  _captureEngine = [(CAMCaptureCommandContext *)self _captureEngine];
+  metadataOutput = 0;
+  if (mode <= 9)
   {
-    if (((1 << a3) & 0x3D7) != 0 || a3 == 5 && (+[CAMCaptureCapabilities capabilities](CAMCaptureCapabilities, "capabilities"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isExposureClippingIndicatorSupportedForMode:5 videoConfiguration:0], v7, v5 = 0, v8))
+    if (((1 << mode) & 0x3D7) != 0 || mode == 5 && (+[CAMCaptureCapabilities capabilities](CAMCaptureCapabilities, "capabilities"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isExposureClippingIndicatorSupportedForMode:5 videoConfiguration:0], v7, metadataOutput = 0, v8))
     {
-      v5 = [v4 metadataOutput];
+      metadataOutput = [_captureEngine metadataOutput];
     }
   }
 
-  return v5;
+  return metadataOutput;
 }
 
-- (BOOL)_shouldEnableApertureSliderForMode:(int64_t)a3 devicePosition:(int64_t)a4 depthSuggestionEnabled:(BOOL)a5 recording:(BOOL)a6
+- (BOOL)_shouldEnableApertureSliderForMode:(int64_t)mode devicePosition:(int64_t)position depthSuggestionEnabled:(BOOL)enabled recording:(BOOL)recording
 {
-  v7 = a5;
+  enabledCopy = enabled;
   v10 = +[CAMCaptureCapabilities capabilities];
-  LOBYTE(v7) = [v10 isDepthEffectApertureSupportedForMode:a3 devicePosition:a4 depthSuggestionEnabled:v7];
+  LOBYTE(enabledCopy) = [v10 isDepthEffectApertureSupportedForMode:mode devicePosition:position depthSuggestionEnabled:enabledCopy];
 
-  return !a6 & v7;
+  return !recording & enabledCopy;
 }
 
-- (BOOL)_shouldEnableLensSelectorForMode:(int64_t)a3 devicePosition:(int64_t)a4 recording:(BOOL)a5
+- (BOOL)_shouldEnableLensSelectorForMode:(int64_t)mode devicePosition:(int64_t)position recording:(BOOL)recording
 {
   v7 = 1;
-  if (a3 <= 9)
+  if (mode <= 9)
   {
-    if (((1 << a3) & 0x2C) != 0 || ((1 << a3) & 0x300) != 0)
+    if (((1 << mode) & 0x2C) != 0 || ((1 << mode) & 0x300) != 0)
     {
       v7 = 0;
     }
 
-    else if (a3 == 1 && a5)
+    else if (mode == 1 && recording)
     {
-      v9 = [(CAMCaptureCommandContext *)self currentMovieFileOutput];
-      v10 = [v9 bravoCameraSelectionBehaviorForRecording];
-      v7 = v10 != *MEMORY[0x1E69868C8];
+      currentMovieFileOutput = [(CAMCaptureCommandContext *)self currentMovieFileOutput];
+      bravoCameraSelectionBehaviorForRecording = [currentMovieFileOutput bravoCameraSelectionBehaviorForRecording];
+      v7 = bravoCameraSelectionBehaviorForRecording != *MEMORY[0x1E69868C8];
     }
   }
 
-  return ((a4 != 1) | ~a5) & v7;
+  return ((position != 1) | ~recording) & v7;
 }
 
 @end

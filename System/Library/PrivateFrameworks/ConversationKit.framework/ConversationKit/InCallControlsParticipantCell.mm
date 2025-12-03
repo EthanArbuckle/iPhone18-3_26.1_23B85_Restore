@@ -5,11 +5,11 @@
 - (_TtC15ConversationKit19InCallControlButton)kickMemberButton;
 - (_TtC15ConversationKit19InCallControlButton)lmiApproveButton;
 - (_TtC15ConversationKit19InCallControlButton)lmiRejectButton;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setKickMemberButton:(id)a3;
-- (void)setLmiApproveButton:(id)a3;
-- (void)setLmiRejectButton:(id)a3;
+- (void)setKickMemberButton:(id)button;
+- (void)setLmiApproveButton:(id)button;
+- (void)setLmiRejectButton:(id)button;
 @end
 
 @implementation InCallControlsParticipantCell
@@ -37,60 +37,60 @@
 
 - (_TtC15ConversationKit19InCallControlButton)lmiApproveButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsParticipantCell.lmiApproveButton.getter(&OBJC_IVAR____TtC15ConversationKit29InCallControlsParticipantCell____lazy_storage___lmiApproveButton, closure #1 in InCallControlsParticipantCell.lmiApproveButton.getter);
 
   return v3;
 }
 
-- (void)setLmiApproveButton:(id)a3
+- (void)setLmiApproveButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsParticipantCell.lmiApproveButton.setter(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  InCallControlsParticipantCell.lmiApproveButton.setter(buttonCopy);
 }
 
 - (_TtC15ConversationKit19InCallControlButton)lmiRejectButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsParticipantCell.lmiApproveButton.getter(&OBJC_IVAR____TtC15ConversationKit29InCallControlsParticipantCell____lazy_storage___lmiRejectButton, closure #1 in InCallControlsParticipantCell.lmiRejectButton.getter);
 
   return v3;
 }
 
-- (void)setLmiRejectButton:(id)a3
+- (void)setLmiRejectButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsParticipantCell.lmiRejectButton.setter(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  InCallControlsParticipantCell.lmiRejectButton.setter(buttonCopy);
 }
 
 - (_TtC15ConversationKit19InCallControlButton)kickMemberButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsParticipantCell.lmiApproveButton.getter(&OBJC_IVAR____TtC15ConversationKit29InCallControlsParticipantCell____lazy_storage___kickMemberButton, closure #1 in InCallControlsParticipantCell.kickMemberButton.getter);
 
   return v3;
 }
 
-- (void)setKickMemberButton:(id)a3
+- (void)setKickMemberButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsParticipantCell.kickMemberButton.setter(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  InCallControlsParticipantCell.kickMemberButton.setter(buttonCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   InCallControlsParticipantCell.layoutSubviews()();
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6.super.isa = InCallControlsParticipantCell.preferredLayoutAttributesFitting(_:)(v4).super.isa;
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6.super.isa = InCallControlsParticipantCell.preferredLayoutAttributesFitting(_:)(attributesCopy).super.isa;
 
   return v6.super.isa;
 }

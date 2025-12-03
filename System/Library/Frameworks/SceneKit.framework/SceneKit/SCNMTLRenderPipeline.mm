@@ -1,8 +1,8 @@
 @interface SCNMTLRenderPipeline
-- (BOOL)matchesRenderPassDescriptor:(id)a3;
+- (BOOL)matchesRenderPassDescriptor:(id)descriptor;
 - (SCNMTLRenderPipeline)init;
 - (id)description;
-- (void)_computeUsageForArguments:(id)a3 function:(id)a4;
+- (void)_computeUsageForArguments:(id)arguments function:(id)function;
 - (void)dealloc;
 @end
 
@@ -31,13 +31,13 @@
 - (id)description
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@: %p>", NSStringFromClass(v4), self];
-  [v3 appendFormat:@"<state: %@>", self->_state];
+  [string appendFormat:@"<%@: %p>", NSStringFromClass(v4), self];
+  [string appendFormat:@"<state: %@>", self->_state];
   if (self->_frameBufferBindings)
   {
-    [v3 appendString:@"\n\tFrameBuffer bindings:\n"];
+    [string appendString:@"\n\tFrameBuffer bindings:\n"];
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -58,8 +58,8 @@
           }
 
           v10 = *(*(&v52 + 1) + 8 * i);
-          [v3 appendString:@"\t\t"];
-          [v3 appendString:{objc_msgSend(v10, "name")}];
+          [string appendString:@"\t\t"];
+          [string appendString:{objc_msgSend(v10, "name")}];
         }
 
         v7 = [(NSArray *)frameBufferBindings countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -71,7 +71,7 @@
 
   if (self->_nodeBufferBindings)
   {
-    [v3 appendString:@"\n\tNode bindings:\n"];
+    [string appendString:@"\n\tNode bindings:\n"];
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
@@ -92,8 +92,8 @@
           }
 
           v16 = *(*(&v48 + 1) + 8 * j);
-          [v3 appendString:@"\t\t"];
-          [v3 appendString:{objc_msgSend(v16, "name")}];
+          [string appendString:@"\t\t"];
+          [string appendString:{objc_msgSend(v16, "name")}];
         }
 
         v13 = [(NSArray *)nodeBufferBindings countByEnumeratingWithState:&v48 objects:v59 count:16];
@@ -105,7 +105,7 @@
 
   if (self->_passBufferBindings)
   {
-    [v3 appendString:@"\n\tPass bindings:\n"];
+    [string appendString:@"\n\tPass bindings:\n"];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -126,8 +126,8 @@
           }
 
           v22 = *(*(&v44 + 1) + 8 * k);
-          [v3 appendString:@"\t\t"];
-          [v3 appendString:{objc_msgSend(v22, "name")}];
+          [string appendString:@"\t\t"];
+          [string appendString:{objc_msgSend(v22, "name")}];
         }
 
         v19 = [(NSArray *)passBufferBindings countByEnumeratingWithState:&v44 objects:v58 count:16];
@@ -139,7 +139,7 @@
 
   if (self->_shadableBufferBindings)
   {
-    [v3 appendString:@"\n\tShadable bindings:\n"];
+    [string appendString:@"\n\tShadable bindings:\n"];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -160,8 +160,8 @@
           }
 
           v28 = *(*(&v40 + 1) + 8 * m);
-          [v3 appendString:@"\t\t"];
-          [v3 appendString:{objc_msgSend(v28, "name")}];
+          [string appendString:@"\t\t"];
+          [string appendString:{objc_msgSend(v28, "name")}];
         }
 
         v25 = [(NSArray *)shadableBufferBindings countByEnumeratingWithState:&v40 objects:v57 count:16];
@@ -173,7 +173,7 @@
 
   if (self->_lightBufferBindings)
   {
-    [v3 appendString:@"\n\tLight bindings:\n"];
+    [string appendString:@"\n\tLight bindings:\n"];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -194,8 +194,8 @@
           }
 
           v34 = *(*(&v36 + 1) + 8 * n);
-          [v3 appendString:@"\t\t"];
-          [v3 appendString:{objc_msgSend(v34, "name")}];
+          [string appendString:@"\t\t"];
+          [string appendString:{objc_msgSend(v34, "name")}];
         }
 
         v31 = [(NSArray *)lightBufferBindings countByEnumeratingWithState:&v36 objects:v56 count:16];
@@ -205,16 +205,16 @@
     }
   }
 
-  return v3;
+  return string;
 }
 
-- (BOOL)matchesRenderPassDescriptor:(id)a3
+- (BOOL)matchesRenderPassDescriptor:(id)descriptor
 {
   v5 = 0;
   p_renderPassDesc = &self->_renderPassDesc;
   while (1)
   {
-    v7 = [objc_msgSend(objc_msgSend(a3 "colorAttachments")];
+    v7 = [objc_msgSend(objc_msgSend(descriptor "colorAttachments")];
     v8 = p_renderPassDesc->colorFormat[v5];
     if (v8 != [v7 pixelFormat])
     {
@@ -232,13 +232,13 @@
 
     if (++v5 == 8)
     {
-      v10 = [objc_msgSend(a3 "depthAttachment")];
+      v10 = [objc_msgSend(descriptor "depthAttachment")];
       depthFormat = self->_renderPassDesc.depthFormat;
       if (depthFormat == [v10 pixelFormat])
       {
         if (!v10 || (v12 = self->_renderPassDesc.sampleCount, [v10 sampleCount] == v12))
         {
-          v13 = [objc_msgSend(a3 "stencilAttachment")];
+          v13 = [objc_msgSend(descriptor "stencilAttachment")];
           stencilFormat = self->_renderPassDesc.stencilFormat;
           if (stencilFormat == [v13 pixelFormat])
           {
@@ -263,10 +263,10 @@
   return 0;
 }
 
-- (void)_computeUsageForArguments:(id)a3 function:(id)a4
+- (void)_computeUsageForArguments:(id)arguments function:(id)function
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = SCNMTLFunctionTypeToProgramStage([a4 functionType]);
+  v6 = SCNMTLFunctionTypeToProgramStage([function functionType]);
   if (v6 >= 2)
   {
     v7 = scn_default_log();
@@ -285,7 +285,7 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v17 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v17 = [arguments countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v17)
   {
     v18 = v17;
@@ -296,20 +296,20 @@
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(arguments);
         }
 
         v21 = *(*(&v24 + 1) + 8 * i);
         if ([v21 isActive])
         {
-          v22 = [v21 type];
+          type = [v21 type];
           v23 = v16 - 16;
-          if (!v22)
+          if (!type)
           {
             goto LABEL_15;
           }
 
-          if (v22 == 3)
+          if (type == 3)
           {
             v23 = v16;
 LABEL_15:
@@ -318,14 +318,14 @@ LABEL_15:
           }
 
           v23 = v16 - 8;
-          if (v22 == 2)
+          if (type == 2)
           {
             goto LABEL_15;
           }
         }
       }
 
-      v18 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v18 = [arguments countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v18);

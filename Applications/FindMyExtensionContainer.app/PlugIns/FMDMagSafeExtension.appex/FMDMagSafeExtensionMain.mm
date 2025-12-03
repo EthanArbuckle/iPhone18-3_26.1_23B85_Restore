@@ -1,26 +1,26 @@
 @interface FMDMagSafeExtensionMain
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)connectionStatusForAccessory:(id)a3 withCompletion:(id)a4;
-- (void)fetchAllAccessoriesInfoWithInfo:(id)a3 withCompletion:(id)a4;
-- (void)getStyleForAccessory:(id)a3 info:(id)a4 withCompletion:(id)a5;
-- (void)launchSetupModuleWithInfo:(id)a3 withCompletion:(id)a4;
-- (void)removeAccesoryWithSerialNumber:(id)a3 completion:(id)a4;
-- (void)setPhoneNumberForAccessoryId:(id)a3 phoneNumber:(id)a4 info:(id)a5 completion:(id)a6;
-- (void)updateCompletedFor:(id)a3 withCompletion:(id)a4;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)connectionStatusForAccessory:(id)accessory withCompletion:(id)completion;
+- (void)fetchAllAccessoriesInfoWithInfo:(id)info withCompletion:(id)completion;
+- (void)getStyleForAccessory:(id)accessory info:(id)info withCompletion:(id)completion;
+- (void)launchSetupModuleWithInfo:(id)info withCompletion:(id)completion;
+- (void)removeAccesoryWithSerialNumber:(id)number completion:(id)completion;
+- (void)setPhoneNumberForAccessoryId:(id)id phoneNumber:(id)number info:(id)info completion:(id)completion;
+- (void)updateCompletedFor:(id)for withCompletion:(id)completion;
 @end
 
 @implementation FMDMagSafeExtensionMain
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = sub_100001508();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v4;
+    v14 = contextCopy;
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "beginRequestWithExtensionCalled with context %@ and accessory provider = %@", &v13, 0x16u);
   }
 
@@ -37,13 +37,13 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "beginRequestWithExtensionCalled with context %@", &v13, 0xCu);
     }
 
-    [v4 setAccessoryProvider:self];
+    [contextCopy setAccessoryProvider:self];
   }
 
-  v9 = [v4 _auxiliaryConnection];
-  v10 = [v9 remoteObjectProxy];
-  v11 = v10;
-  if (v10 && [v10 conformsToProtocol:&OBJC_PROTOCOL___FMDExtAccessoryDelegateProtocol])
+  _auxiliaryConnection = [contextCopy _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
+  v11 = remoteObjectProxy;
+  if (remoteObjectProxy && [remoteObjectProxy conformsToProtocol:&OBJC_PROTOCOL___FMDExtAccessoryDelegateProtocol])
   {
     [(FMDMagSafeExtensionMain *)self setHostProxy:v11];
   }
@@ -58,19 +58,19 @@
   }
 }
 
-- (void)fetchAllAccessoriesInfoWithInfo:(id)a3 withCompletion:(id)a4
+- (void)fetchAllAccessoriesInfoWithInfo:(id)info withCompletion:(id)completion
 {
-  v23 = a4;
+  completionCopy = completion;
   v4 = objc_alloc_init(NSMutableArray);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v5 = +[FMDMagSafeAccessoryManager sharedInstance];
-  v6 = [v5 getAllAccessories];
-  v7 = [v6 allValues];
+  getAllAccessories = [v5 getAllAccessories];
+  allValues = [getAllAccessories allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -82,36 +82,36 @@
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
         v13 = objc_alloc_init(FMDExtAccessoryInfo);
-        v14 = [v12 accessoryIdentifier];
-        [v13 setAccessoryIdentifier:v14];
+        accessoryIdentifier = [v12 accessoryIdentifier];
+        [v13 setAccessoryIdentifier:accessoryIdentifier];
 
-        v15 = [v12 accessoryType];
-        [v13 setAccessoryType:v15];
+        accessoryType = [v12 accessoryType];
+        [v13 setAccessoryType:accessoryType];
 
-        v16 = [v12 name];
-        [v13 setName:v16];
+        name = [v12 name];
+        [v13 setName:name];
 
-        v17 = [v12 serialNumbers];
-        [v13 setSerialNumbers:v17];
+        serialNumbers = [v12 serialNumbers];
+        [v13 setSerialNumbers:serialNumbers];
 
-        v18 = [v12 deviceDiscoveryId];
-        [v13 setDeviceDiscoveryId:v18];
+        deviceDiscoveryId = [v12 deviceDiscoveryId];
+        [v13 setDeviceDiscoveryId:deviceDiscoveryId];
 
-        v19 = [v12 firmwareVersion];
-        [v13 setFirmwareVersion:v19];
+        firmwareVersion = [v12 firmwareVersion];
+        [v13 setFirmwareVersion:firmwareVersion];
 
-        v20 = [v12 lastLostModeKeyRollTime];
+        lastLostModeKeyRollTime = [v12 lastLostModeKeyRollTime];
 
-        if (v20)
+        if (lastLostModeKeyRollTime)
         {
           v28 = @"lastLostModeKeyRollTime";
-          v21 = [v12 lastLostModeKeyRollTime];
-          v29 = v21;
+          lastLostModeKeyRollTime2 = [v12 lastLostModeKeyRollTime];
+          v29 = lastLostModeKeyRollTime2;
           v22 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
           [v13 setAdditionalInfo:v22];
         }
@@ -122,72 +122,72 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v9);
   }
 
-  v23[2](v23, v4, 0);
+  completionCopy[2](completionCopy, v4, 0);
 }
 
-- (void)connectionStatusForAccessory:(id)a3 withCompletion:(id)a4
+- (void)connectionStatusForAccessory:(id)accessory withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  accessoryCopy = accessory;
   v7 = +[FMDMagSafeAccessoryManager sharedInstance];
-  [v7 conncetionStatusFor:v6 withCompletion:v5];
+  [v7 conncetionStatusFor:accessoryCopy withCompletion:completionCopy];
 }
 
-- (void)getStyleForAccessory:(id)a3 info:(id)a4 withCompletion:(id)a5
+- (void)getStyleForAccessory:(id)accessory info:(id)info withCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  accessoryCopy = accessory;
   v10 = +[FMDMagSafeAccessoryManager sharedInstance];
-  v9 = [v10 styleFor:v8];
+  v9 = [v10 styleFor:accessoryCopy];
 
-  (*(a5 + 2))(v7, v9, 0);
+  (*(completion + 2))(completionCopy, v9, 0);
 }
 
-- (void)removeAccesoryWithSerialNumber:(id)a3 completion:(id)a4
+- (void)removeAccesoryWithSerialNumber:(id)number completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v7 = +[FMDMagSafeAccessoryManager sharedInstance];
-  [v7 removeAccesoryWithSerialNumber:v6 completion:v5];
+  [v7 removeAccesoryWithSerialNumber:numberCopy completion:completionCopy];
 }
 
-- (void)setPhoneNumberForAccessoryId:(id)a3 phoneNumber:(id)a4 info:(id)a5 completion:(id)a6
+- (void)setPhoneNumberForAccessoryId:(id)id phoneNumber:(id)number info:(id)info completion:(id)completion
 {
-  v8 = a6;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  numberCopy = number;
+  idCopy = id;
   v11 = +[FMDMagSafeAccessoryManager sharedInstance];
-  [v11 setPhoneNumberForAccessoryId:v10 phoneNumber:v9 completion:v8];
+  [v11 setPhoneNumberForAccessoryId:idCopy phoneNumber:numberCopy completion:completionCopy];
 }
 
-- (void)launchSetupModuleWithInfo:(id)a3 withCompletion:(id)a4
+- (void)launchSetupModuleWithInfo:(id)info withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v7 = sub_100004FC8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = infoCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "### context = %@", &v9, 0xCu);
   }
 
   v8 = +[FMDMagSafeAccessoryManager sharedInstance];
-  [v8 launchSetupModuleWithInfo:v5 withCompletion:v6];
+  [v8 launchSetupModuleWithInfo:infoCopy withCompletion:completionCopy];
 }
 
-- (void)updateCompletedFor:(id)a3 withCompletion:(id)a4
+- (void)updateCompletedFor:(id)for withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  forCopy = for;
   v7 = +[FMDMagSafeAccessoryManager sharedInstance];
-  [v7 updateCompletedFor:v6 withCompletion:v5];
+  [v7 updateCompletedFor:forCopy withCompletion:completionCopy];
 }
 
 @end

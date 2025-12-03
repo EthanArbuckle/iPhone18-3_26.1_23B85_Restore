@@ -1,11 +1,11 @@
 @interface SADaemonXPC
-+ (id)newWithInvalidationHandler:(id)a3;
++ (id)newWithInvalidationHandler:(id)handler;
 - (SADaemonXPC)init;
-- (SADaemonXPC)initWithInvalidationHandler:(id)a3;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (SADaemonXPC)initWithInvalidationHandler:(id)handler;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)invalidate;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation SADaemonXPC
@@ -39,39 +39,39 @@
   return v2;
 }
 
-- (SADaemonXPC)initWithInvalidationHandler:(id)a3
+- (SADaemonXPC)initWithInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(SADaemonXPC *)self init];
   v6 = v5;
   if (v5)
   {
-    [(SADaemonXPC *)v5 setInvalidationHandler:v4];
+    [(SADaemonXPC *)v5 setInvalidationHandler:handlerCopy];
   }
 
   return v6;
 }
 
-+ (id)newWithInvalidationHandler:(id)a3
++ (id)newWithInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithInvalidationHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithInvalidationHandler:handlerCopy];
 
   return v5;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     xpcConnection = self->xpcConnection;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __38__SADaemonXPC_setInvalidationHandler___block_invoke;
     v11[3] = &unk_279CD6DE8;
-    v7 = v4;
+    v7 = handlerCopy;
     v12 = v7;
     [(NSXPCConnection *)xpcConnection setInvalidationHandler:v11];
     v8 = self->xpcConnection;
@@ -117,16 +117,16 @@ void __38__SADaemonXPC_setInvalidationHandler___block_invoke_112(uint64_t a1)
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   xpcConnection = self->xpcConnection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__SADaemonXPC_remoteObjectProxyWithErrorHandler___block_invoke;
   v9[3] = &unk_279CD6E10;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
@@ -144,16 +144,16 @@ void __49__SADaemonXPC_remoteObjectProxyWithErrorHandler___block_invoke(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   xpcConnection = self->xpcConnection;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SADaemonXPC_synchronousRemoteObjectProxyWithErrorHandler___block_invoke;
   v9[3] = &unk_279CD6E10;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(NSXPCConnection *)xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;

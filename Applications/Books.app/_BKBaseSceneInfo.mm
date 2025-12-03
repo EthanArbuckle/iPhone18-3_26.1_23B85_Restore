@@ -2,32 +2,32 @@
 - (BKSceneControlling)sceneController;
 - (BOOL)supportsOpeningToAuxiliaryScene;
 - (NSString)openBookAssetID;
-- (_BKBaseSceneInfo)initWithSceneSession:(id)a3 userData:(id)a4;
+- (_BKBaseSceneInfo)initWithSceneSession:(id)session userData:(id)data;
 @end
 
 @implementation _BKBaseSceneInfo
 
 - (NSString)openBookAssetID
 {
-  v2 = [(_BKBaseSceneInfo *)self userData];
-  v3 = [v2 objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
+  userData = [(_BKBaseSceneInfo *)self userData];
+  v3 = [userData objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
 
   return v3;
 }
 
-- (_BKBaseSceneInfo)initWithSceneSession:(id)a3 userData:(id)a4
+- (_BKBaseSceneInfo)initWithSceneSession:(id)session userData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  dataCopy = data;
   v9 = [(_BKBaseSceneInfo *)self init];
   if (v9)
   {
-    v10 = [v7 persistentIdentifier];
+    persistentIdentifier = [sessionCopy persistentIdentifier];
     sceneIdentifier = v9->_sceneIdentifier;
-    v9->_sceneIdentifier = v10;
+    v9->_sceneIdentifier = persistentIdentifier;
 
-    objc_storeStrong(&v9->_sceneSession, a3);
-    objc_storeStrong(&v9->_userData, a4);
+    objc_storeStrong(&v9->_sceneSession, session);
+    objc_storeStrong(&v9->_userData, data);
   }
 
   return v9;
@@ -35,15 +35,15 @@
 
 - (BOOL)supportsOpeningToAuxiliaryScene
 {
-  v2 = self;
-  v3 = [(_BKBaseSceneInfo *)self userData];
-  v4 = [v3 objectForKeyedSubscript:@"BKSceneInfoIsAudiobookKey"];
-  v5 = [v4 BOOLValue];
+  selfCopy = self;
+  userData = [(_BKBaseSceneInfo *)self userData];
+  v4 = [userData objectForKeyedSubscript:@"BKSceneInfoIsAudiobookKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(_BKBaseSceneInfo *)v2 openBookAssetID];
-  LOBYTE(v2) = v6 != 0;
+  openBookAssetID = [(_BKBaseSceneInfo *)selfCopy openBookAssetID];
+  LOBYTE(selfCopy) = openBookAssetID != 0;
 
-  return v2 & (v5 ^ 1);
+  return selfCopy & (bOOLValue ^ 1);
 }
 
 - (BKSceneControlling)sceneController

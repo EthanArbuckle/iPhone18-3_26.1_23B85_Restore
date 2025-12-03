@@ -1,23 +1,23 @@
 @interface SHHapticsConfiguration
-- (SHHapticsConfiguration)initWithConfiguration:(id)a3;
+- (SHHapticsConfiguration)initWithConfiguration:(id)configuration;
 - (id)baseURLString;
-- (id)fetchHapticsURLStringForClientIdentifier:(id)a3 songResourceIDType:(int64_t)a4;
-- (id)hapticsAvailableURLStringForClientIdentifier:(id)a3 songResourceIDType:(int64_t)a4;
-- (id)hapticsEndpointsForStorefront:(id)a3 clientIdentifier:(id)a4;
-- (id)pathStringForClientIdentifier:(id)a3 songResourceIDType:(int64_t)a4 requestKey:(id)a5;
+- (id)fetchHapticsURLStringForClientIdentifier:(id)identifier songResourceIDType:(int64_t)type;
+- (id)hapticsAvailableURLStringForClientIdentifier:(id)identifier songResourceIDType:(int64_t)type;
+- (id)hapticsEndpointsForStorefront:(id)storefront clientIdentifier:(id)identifier;
+- (id)pathStringForClientIdentifier:(id)identifier songResourceIDType:(int64_t)type requestKey:(id)key;
 @end
 
 @implementation SHHapticsConfiguration
 
-- (SHHapticsConfiguration)initWithConfiguration:(id)a3
+- (SHHapticsConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = SHHapticsConfiguration;
   v5 = [(SHHapticsConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     hapticsEndpoints = v5->_hapticsEndpoints;
     v5->_hapticsEndpoints = v6;
   }
@@ -25,16 +25,16 @@
   return v5;
 }
 
-- (id)fetchHapticsURLStringForClientIdentifier:(id)a3 songResourceIDType:(int64_t)a4
+- (id)fetchHapticsURLStringForClientIdentifier:(id)identifier songResourceIDType:(int64_t)type
 {
   v7 = @"/v1/catalog/{storefront}/songs/{id}?fields=name,hapticsAssetUrl,durationInMillis,spatialOffsets&format[resources]=map&extend=spatialOffsets";
-  if (a4 == 2)
+  if (type == 2)
   {
     v7 = @"/v1/catalog/{storefront}/songs?filter[isrc]={id}&fields=name,hapticsAssetUrl,durationInMillis,spatialOffsets&format[resources]=map&extend=spatialOffsets";
   }
 
   v8 = v7;
-  v9 = [(SHHapticsConfiguration *)self pathStringForClientIdentifier:a3 songResourceIDType:a4 requestKey:@"fetchHapticsPath"];
+  v9 = [(SHHapticsConfiguration *)self pathStringForClientIdentifier:identifier songResourceIDType:type requestKey:@"fetchHapticsPath"];
   v10 = v9;
   if (v9)
   {
@@ -50,69 +50,69 @@
 
   v13 = [SHTokenizedURL alloc];
   v14 = MEMORY[0x277CBEBC0];
-  v15 = [(SHHapticsConfiguration *)self baseURLString];
-  v16 = [v14 URLWithString:v15];
+  baseURLString = [(SHHapticsConfiguration *)self baseURLString];
+  v16 = [v14 URLWithString:baseURLString];
   v17 = [(SHTokenizedURL *)v13 initWithBaseURL:v16 URLPath:v12];
 
   return v17;
 }
 
-- (id)hapticsAvailableURLStringForClientIdentifier:(id)a3 songResourceIDType:(int64_t)a4
+- (id)hapticsAvailableURLStringForClientIdentifier:(id)identifier songResourceIDType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(SHHapticsConfiguration *)self pathStringForClientIdentifier:v6 songResourceIDType:a4 requestKey:@"hasHapticsPath"];
+  identifierCopy = identifier;
+  v7 = [(SHHapticsConfiguration *)self pathStringForClientIdentifier:identifierCopy songResourceIDType:type requestKey:@"hasHapticsPath"];
   if (v7)
   {
     v8 = [SHTokenizedURL alloc];
     v9 = MEMORY[0x277CBEBC0];
-    v10 = [(SHHapticsConfiguration *)self baseURLString];
-    v11 = [v9 URLWithString:v10];
+    baseURLString = [(SHHapticsConfiguration *)self baseURLString];
+    v11 = [v9 URLWithString:baseURLString];
     v12 = [(SHTokenizedURL *)v8 initWithBaseURL:v11 URLPath:v7];
   }
 
   else
   {
-    v12 = [(SHHapticsConfiguration *)self fetchHapticsURLStringForClientIdentifier:v6 songResourceIDType:a4];
+    v12 = [(SHHapticsConfiguration *)self fetchHapticsURLStringForClientIdentifier:identifierCopy songResourceIDType:type];
   }
 
   return v12;
 }
 
-- (id)hapticsEndpointsForStorefront:(id)a3 clientIdentifier:(id)a4
+- (id)hapticsEndpointsForStorefront:(id)storefront clientIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SHHapticsConfiguration *)self fetchHapticsURLStringForClientIdentifier:v6 songResourceIDType:1];
-  [v8 updateToken:3 withValue:v7];
-  v9 = [(SHHapticsConfiguration *)self hapticsAvailableURLStringForClientIdentifier:v6 songResourceIDType:1];
-  [v9 updateToken:3 withValue:v7];
-  v10 = [(SHHapticsConfiguration *)self fetchHapticsURLStringForClientIdentifier:v6 songResourceIDType:2];
-  [v10 updateToken:3 withValue:v7];
-  v11 = [(SHHapticsConfiguration *)self hapticsAvailableURLStringForClientIdentifier:v6 songResourceIDType:2];
+  identifierCopy = identifier;
+  storefrontCopy = storefront;
+  v8 = [(SHHapticsConfiguration *)self fetchHapticsURLStringForClientIdentifier:identifierCopy songResourceIDType:1];
+  [v8 updateToken:3 withValue:storefrontCopy];
+  v9 = [(SHHapticsConfiguration *)self hapticsAvailableURLStringForClientIdentifier:identifierCopy songResourceIDType:1];
+  [v9 updateToken:3 withValue:storefrontCopy];
+  v10 = [(SHHapticsConfiguration *)self fetchHapticsURLStringForClientIdentifier:identifierCopy songResourceIDType:2];
+  [v10 updateToken:3 withValue:storefrontCopy];
+  v11 = [(SHHapticsConfiguration *)self hapticsAvailableURLStringForClientIdentifier:identifierCopy songResourceIDType:2];
 
-  [v11 updateToken:3 withValue:v7];
+  [v11 updateToken:3 withValue:storefrontCopy];
   v12 = [[SHHapticsEndpoints alloc] initWithFetchHapticByAdamIDURL:v8 hasHapticForAdamIDURL:v9 fetchHapticByISRCURL:v10 hasHapticForISRCURL:v11];
 
   return v12;
 }
 
-- (id)pathStringForClientIdentifier:(id)a3 songResourceIDType:(int64_t)a4 requestKey:(id)a5
+- (id)pathStringForClientIdentifier:(id)identifier songResourceIDType:(int64_t)type requestKey:(id)key
 {
-  v8 = a5;
+  keyCopy = key;
   v9 = @"adamIDLookup";
-  if (a4 == 2)
+  if (type == 2)
   {
     v9 = @"isrcLookup";
   }
 
   v10 = v9;
-  v11 = a3;
-  v12 = [(SHHapticsConfiguration *)self hapticsEndpoints];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  identifierCopy = identifier;
+  hapticsEndpoints = [(SHHapticsConfiguration *)self hapticsEndpoints];
+  v13 = [hapticsEndpoints objectForKeyedSubscript:v10];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, v11];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", keyCopy, identifierCopy];
 
-  v15 = [v13 objectForKeyedSubscript:v14];
+  v15 = [v13 objectForKeyedSubscript:identifierCopy];
   v16 = v15;
   if (v15)
   {
@@ -121,7 +121,7 @@
 
   else
   {
-    v17 = [v13 objectForKeyedSubscript:v8];
+    v17 = [v13 objectForKeyedSubscript:keyCopy];
   }
 
   v18 = v17;
@@ -131,8 +131,8 @@
 
 - (id)baseURLString
 {
-  v2 = [(SHHapticsConfiguration *)self hapticsEndpoints];
-  v3 = [v2 objectForKeyedSubscript:@"baseURL"];
+  hapticsEndpoints = [(SHHapticsConfiguration *)self hapticsEndpoints];
+  v3 = [hapticsEndpoints objectForKeyedSubscript:@"baseURL"];
 
   if (v3)
   {

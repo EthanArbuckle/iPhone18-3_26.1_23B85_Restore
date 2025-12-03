@@ -1,49 +1,49 @@
 @interface VUIMetricsRenderSessionListViewController
-- (VUIMetricsRenderSessionListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (VUIMetricsRenderSessionListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)didTapClearAllSessions;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VUIMetricsRenderSessionListViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MetricsRenderSessionListViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  MetricsRenderSessionListViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  MetricsRenderSessionListViewController.viewWillAppear(_:)(appear);
 }
 
-- (VUIMetricsRenderSessionListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VUIMetricsRenderSessionListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   MetricsRenderSessionListViewController.init(nibName:bundle:)();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
-  v8 = MetricsRenderSessionListViewController.tableView(_:numberOfRowsInSection:)(v6, v7);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = MetricsRenderSessionListViewController.tableView(_:numberOfRowsInSection:)(selfCopy, v7);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_1_23();
@@ -58,7 +58,7 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_1_23();
@@ -74,7 +74,7 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   OUTLINED_FUNCTION_17_0();
   OUTLINED_FUNCTION_1_23();
@@ -90,7 +90,7 @@
 
 - (void)didTapClearAllSessions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3CED744();
 }
 

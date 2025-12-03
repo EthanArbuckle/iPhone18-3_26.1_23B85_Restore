@@ -10,13 +10,13 @@
 - (void)_endBackgroundTask;
 - (void)_expireBackgroundTask;
 - (void)_shutdownRequest;
-- (void)_shutdownRequestWithMessageID:(int64_t)a3;
-- (void)_startWithMessageID:(int64_t)a3 messageBlock:(id)a4;
+- (void)_shutdownRequestWithMessageID:(int64_t)d;
+- (void)_startWithMessageID:(int64_t)d messageBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 - (void)disconnect;
-- (void)setShouldCancelAfterTaskExpiration:(BOOL)a3;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)setShouldCancelAfterTaskExpiration:(BOOL)expiration;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation SSRequest
@@ -73,19 +73,19 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v7 = v5;
     }
@@ -109,9 +109,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v16}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v16}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_15;
@@ -138,19 +138,19 @@ LABEL_16:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v7 = v5;
     }
@@ -174,9 +174,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v16}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v16}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_15;
@@ -233,17 +233,17 @@ void __18__SSRequest_start__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
+    blockCopy = block;
     v5 = SSError(@"SSErrorDomain", 100, 0, 0);
-    (*(a3 + 2))(v4, v5);
+    (*(block + 2))(blockCopy, v5);
   }
 }
 
-- (void)setShouldCancelAfterTaskExpiration:(BOOL)a3
+- (void)setShouldCancelAfterTaskExpiration:(BOOL)expiration
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -251,7 +251,7 @@ void __18__SSRequest_start__block_invoke_2(uint64_t a1)
   v4[2] = __48__SSRequest_setShouldCancelAfterTaskExpiration___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  expirationCopy = expiration;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -307,14 +307,14 @@ void __18__SSRequest_start__block_invoke_2(uint64_t a1)
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_startWithMessageID:(int64_t)a3 messageBlock:(id)a4
+- (void)_startWithMessageID:(int64_t)d messageBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = [(SSRequest *)self copyXPCEncoding];
+  copyXPCEncoding = [(SSRequest *)self copyXPCEncoding];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -322,10 +322,10 @@ void __18__SSRequest_start__block_invoke_2(uint64_t a1)
   block[3] = &unk_1E84AD7F8;
   block[4] = self;
   v14 = &v16;
-  v9 = v6;
+  v9 = blockCopy;
   v13 = v9;
-  v15 = a3;
-  v10 = v7;
+  dCopy = d;
+  v10 = copyXPCEncoding;
   v12 = v10;
   dispatch_sync(dispatchQueue, block);
   if (*(v17 + 24) == 1)
@@ -487,19 +487,19 @@ uint64_t __46__SSRequest__startWithMessageID_messageBlock___block_invoke_5(uint6
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
-    v7 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v6 &= 2u;
     }
@@ -524,9 +524,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v29, v26}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, &v29, v26}];
       free(v9);
-      SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, v7);
+      SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
     }
 
     goto LABEL_13;
@@ -624,19 +624,19 @@ LABEL_11:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    oSLogObject = [v3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v5 &= 2u;
     }
@@ -661,9 +661,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v17, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v18, v17, v18}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_13;
@@ -682,19 +682,19 @@ LABEL_14:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -712,21 +712,21 @@ LABEL_14:
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v21, v18}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, &v21, v18}];
     free(v8);
-    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
-  v15 = [(SSXPCConnection *)self->_requestConnection disconnectBlock];
+  disconnectBlock = [(SSXPCConnection *)self->_requestConnection disconnectBlock];
   v16 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__SSRequest__expireBackgroundTask__block_invoke;
   block[3] = &unk_1E84AC338;
   block[4] = self;
-  v20 = v15;
-  v17 = v15;
+  v20 = disconnectBlock;
+  v17 = disconnectBlock;
   dispatch_async(v16, block);
 
   [(SSRequest *)self _cancelBackgroundTaskExpirationTimer];
@@ -766,15 +766,15 @@ uint64_t __34__SSRequest__expireBackgroundTask__block_invoke_2(uint64_t a1)
   return [v1 _shutdownRequestWithMessageID:v2];
 }
 
-- (void)_shutdownRequestWithMessageID:(int64_t)a3
+- (void)_shutdownRequestWithMessageID:(int64_t)d
 {
   requestConnection = self->_requestConnection;
   if (requestConnection)
   {
-    if (a3)
+    if (d)
     {
       v6 = xpc_dictionary_create(0, 0, 0);
-      xpc_dictionary_set_int64(v6, "0", a3);
+      xpc_dictionary_set_int64(v6, "0", d);
       [(SSXPCConnection *)self->_requestConnection sendMessage:v6];
 
       requestConnection = self->_requestConnection;

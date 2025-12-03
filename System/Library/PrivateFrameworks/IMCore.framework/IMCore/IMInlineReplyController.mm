@@ -1,29 +1,29 @@
 @interface IMInlineReplyController
-- (BOOL)itemMatchesFilter:(id)a3;
-- (IMInlineReplyController)initWithChat:(id)a3 threadIdentifier:(id)a4 threadOriginator:(id)a5;
+- (BOOL)itemMatchesFilter:(id)filter;
+- (IMInlineReplyController)initWithChat:(id)chat threadIdentifier:(id)identifier threadOriginator:(id)originator;
 - (id)generateChatItemRules;
 - (id)itemsToPrepend;
 @end
 
 @implementation IMInlineReplyController
 
-- (IMInlineReplyController)initWithChat:(id)a3 threadIdentifier:(id)a4 threadOriginator:(id)a5
+- (IMInlineReplyController)initWithChat:(id)chat threadIdentifier:(id)identifier threadOriginator:(id)originator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  chatCopy = chat;
+  identifierCopy = identifier;
+  originatorCopy = originator;
   v20.receiver = self;
   v20.super_class = IMInlineReplyController;
-  v11 = [(IMChatItemFilterController *)&v20 initWithChat:v8];
+  v11 = [(IMChatItemFilterController *)&v20 initWithChat:chatCopy];
   v13 = v11;
   if (v11)
   {
-    objc_msgSend_setThreadIdentifier_(v11, v12, v9);
-    objc_msgSend_setThreadOriginator_(v13, v14, v10);
-    if (v10)
+    objc_msgSend_setThreadIdentifier_(v11, v12, identifierCopy);
+    objc_msgSend_setThreadOriginator_(v13, v14, originatorCopy);
+    if (originatorCopy)
     {
-      v17 = objc_msgSend_chatStyle(v8, v15, v16);
-      objc_msgSend__handleItem_forChatStyle_(v13, v18, v10, v17);
+      v17 = objc_msgSend_chatStyle(chatCopy, v15, v16);
+      objc_msgSend__handleItem_forChatStyle_(v13, v18, originatorCopy, v17);
     }
   }
 
@@ -47,18 +47,18 @@
   return v12;
 }
 
-- (BOOL)itemMatchesFilter:(id)a3
+- (BOOL)itemMatchesFilter:(id)filter
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filterCopy = filter;
   v62.receiver = self;
   v62.super_class = IMInlineReplyController;
-  if ([(IMChatItemFilterController *)&v62 itemMatchesFilter:v4])
+  if ([(IMChatItemFilterController *)&v62 itemMatchesFilter:filterCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = filterCopy;
       v8 = objc_msgSend_threadIdentifier(v5, v6, v7);
       if (v8)
       {

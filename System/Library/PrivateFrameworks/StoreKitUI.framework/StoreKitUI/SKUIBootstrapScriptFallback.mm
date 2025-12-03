@@ -1,21 +1,21 @@
 @interface SKUIBootstrapScriptFallback
-+ (id)cacheFilenameForStoreFrontIdentifier:(id)a3;
++ (id)cacheFilenameForStoreFrontIdentifier:(id)identifier;
 + (id)defaultCacheFolder;
-- (BOOL)_setCacheAge:(id)a3 error:(id *)a4;
-- (BOOL)canFallbackForError:(id)a3;
+- (BOOL)_setCacheAge:(id)age error:(id *)error;
+- (BOOL)canFallbackForError:(id)error;
 - (BOOL)isBagAvailable;
 - (NSURL)cachedFileLocation;
 - (SKUIBootstrapScriptFallback)init;
-- (SKUIBootstrapScriptFallback)initWithCacheFolder:(id)a3 filename:(id)a4;
-- (SKUIBootstrapScriptFallback)initWithFilename:(id)a3;
-- (id)retrieveScript:(id *)a3;
+- (SKUIBootstrapScriptFallback)initWithCacheFolder:(id)folder filename:(id)filename;
+- (SKUIBootstrapScriptFallback)initWithFilename:(id)filename;
+- (id)retrieveScript:(id *)script;
 - (int64_t)_unsynchronizedState;
 - (int64_t)state;
 - (void)_createCacheDirectoriesIfNeeded;
-- (void)_logError:(id)a3 forOperation:(id)a4;
-- (void)_runWhenBackgroundWorkFinished:(id)a3;
+- (void)_logError:(id)error forOperation:(id)operation;
+- (void)_runWhenBackgroundWorkFinished:(id)finished;
 - (void)invalidate;
-- (void)scriptEvaluated:(id)a3;
+- (void)scriptEvaluated:(id)evaluated;
 @end
 
 @implementation SKUIBootstrapScriptFallback
@@ -34,9 +34,9 @@
     }
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v20 = 0;
-  v11 = [v10 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v20];
+  v11 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v20];
   v12 = v20;
 
   if (!v11)
@@ -47,12 +47,12 @@
     v11 = [v13 fileURLWithPath:v14];
   }
 
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v16 length])
+  if ([bundleIdentifier length])
   {
-    v17 = [v11 URLByAppendingPathComponent:v16];
+    v17 = [v11 URLByAppendingPathComponent:bundleIdentifier];
 
     v11 = v17;
   }
@@ -62,9 +62,9 @@
   return v18;
 }
 
-+ (id)cacheFilenameForStoreFrontIdentifier:(id)a3
++ (id)cacheFilenameForStoreFrontIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -77,16 +77,16 @@
     }
   }
 
-  v12 = [v3 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+  v12 = [identifierCopy stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@.%@", v12, @"v1", @"js"];
 
   return v13;
 }
 
-- (SKUIBootstrapScriptFallback)initWithCacheFolder:(id)a3 filename:(id)a4
+- (SKUIBootstrapScriptFallback)initWithCacheFolder:(id)folder filename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
+  folderCopy = folder;
+  filenameCopy = filename;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -105,8 +105,8 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_cacheFolder, a3);
-    v19 = [v8 copy];
+    objc_storeStrong(&v17->_cacheFolder, folder);
+    v19 = [filenameCopy copy];
     cacheFilename = v18->_cacheFilename;
     v18->_cacheFilename = v19;
 
@@ -121,9 +121,9 @@
   return v18;
 }
 
-- (SKUIBootstrapScriptFallback)initWithFilename:(id)a3
+- (SKUIBootstrapScriptFallback)initWithFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -136,8 +136,8 @@
     }
   }
 
-  v13 = [objc_opt_class() defaultCacheFolder];
-  v14 = [(SKUIBootstrapScriptFallback *)self initWithCacheFolder:v13 filename:v4];
+  defaultCacheFolder = [objc_opt_class() defaultCacheFolder];
+  v14 = [(SKUIBootstrapScriptFallback *)self initWithCacheFolder:defaultCacheFolder filename:filenameCopy];
 
   return v14;
 }
@@ -151,21 +151,21 @@
 
 - (int64_t)state
 {
-  v3 = [(SKUIBootstrapScriptFallback *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(SKUIBootstrapScriptFallback *)self queue];
+  queue2 = [(SKUIBootstrapScriptFallback *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__SKUIBootstrapScriptFallback_state__block_invoke;
   v7[3] = &unk_2781F8608;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -181,9 +181,9 @@ uint64_t __36__SKUIBootstrapScriptFallback_state__block_invoke(uint64_t a1)
 
 - (NSURL)cachedFileLocation
 {
-  v3 = [(SKUIBootstrapScriptFallback *)self cacheFolder];
-  v4 = [(SKUIBootstrapScriptFallback *)self cacheFilename];
-  v5 = [v3 URLByAppendingPathComponent:v4];
+  cacheFolder = [(SKUIBootstrapScriptFallback *)self cacheFolder];
+  cacheFilename = [(SKUIBootstrapScriptFallback *)self cacheFilename];
+  v5 = [cacheFolder URLByAppendingPathComponent:cacheFilename];
 
   return v5;
 }
@@ -191,20 +191,20 @@ uint64_t __36__SKUIBootstrapScriptFallback_state__block_invoke(uint64_t a1)
 - (BOOL)isBagAvailable
 {
   v2 = [MEMORY[0x277D69C90] contextWithBagType:0];
-  v3 = [MEMORY[0x277D7FD50] sharedCache];
-  v4 = [v3 URLBagForContext:v2];
+  mEMORY[0x277D7FD50] = [MEMORY[0x277D7FD50] sharedCache];
+  v4 = [mEMORY[0x277D7FD50] URLBagForContext:v2];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (BOOL)canFallbackForError:(id)a3
+- (BOOL)canFallbackForError:(id)error
 {
-  v4 = a3;
-  v5 = [(SKUIBootstrapScriptFallback *)self state];
-  if (v5)
+  errorCopy = error;
+  state = [(SKUIBootstrapScriptFallback *)self state];
+  if (state)
   {
-    if (v5 == -1)
+    if (state == -1)
     {
       [(SKUIBootstrapScriptFallback *)self invalidate];
     }
@@ -212,7 +212,7 @@ uint64_t __36__SKUIBootstrapScriptFallback_state__block_invoke(uint64_t a1)
     goto LABEL_21;
   }
 
-  v6 = v4;
+  v6 = errorCopy;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -225,15 +225,15 @@ uint64_t __36__SKUIBootstrapScriptFallback_state__block_invoke(uint64_t a1)
     }
   }
 
-  v15 = [v6 domain];
-  if ([v15 isEqualToString:*MEMORY[0x277CCA738]])
+  domain = [v6 domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA738]])
   {
-    v16 = [v6 code];
+    code = [v6 code];
 
-    if (v16 == -1001)
+    if (code == -1001)
     {
 LABEL_19:
-      v31 = [(SKUIBootstrapScriptFallback *)self isBagAvailable];
+      isBagAvailable = [(SKUIBootstrapScriptFallback *)self isBagAvailable];
       goto LABEL_22;
     }
   }
@@ -255,36 +255,36 @@ LABEL_19:
     }
   }
 
-  v26 = [v17 userInfo];
-  v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D6A118]];
-  v28 = [v27 integerValue];
+  userInfo = [v17 userInfo];
+  v27 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D6A118]];
+  integerValue = [v27 integerValue];
 
-  v29 = [v17 domain];
-  if (([v29 isEqualToString:*MEMORY[0x277D6A110]] & 1) == 0)
+  domain2 = [v17 domain];
+  if (([domain2 isEqualToString:*MEMORY[0x277D6A110]] & 1) == 0)
   {
 
 LABEL_21:
-    v31 = 0;
+    isBagAvailable = 0;
     goto LABEL_22;
   }
 
-  v30 = [v17 code];
+  code2 = [v17 code];
 
-  v31 = 0;
-  if (v30 == 109 && (v28 - 500) <= 0x63)
+  isBagAvailable = 0;
+  if (code2 == 109 && (integerValue - 500) <= 0x63)
   {
     goto LABEL_19;
   }
 
 LABEL_22:
 
-  return v31;
+  return isBagAvailable;
 }
 
-- (id)retrieveScript:(id *)a3
+- (id)retrieveScript:(id *)script
 {
-  v5 = [(SKUIBootstrapScriptFallback *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v10 = 0;
   v11 = &v10;
@@ -292,15 +292,15 @@ LABEL_22:
   v13 = __Block_byref_object_copy__101;
   v14 = __Block_byref_object_dispose__101;
   v15 = 0;
-  v6 = [(SKUIBootstrapScriptFallback *)self queue];
+  queue2 = [(SKUIBootstrapScriptFallback *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SKUIBootstrapScriptFallback_retrieveScript___block_invoke;
   block[3] = &unk_278200C38;
   block[5] = &v10;
-  block[6] = a3;
+  block[6] = script;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue2, block);
 
   dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_63);
   v7 = v11[5];
@@ -376,18 +376,18 @@ void __46__SKUIBootstrapScriptFallback_retrieveScript___block_invoke(uint64_t a1
   }
 }
 
-- (void)scriptEvaluated:(id)a3
+- (void)scriptEvaluated:(id)evaluated
 {
-  v4 = a3;
-  v5 = [(SKUIBootstrapScriptFallback *)self queue];
+  evaluatedCopy = evaluated;
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SKUIBootstrapScriptFallback_scriptEvaluated___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = evaluatedCopy;
+  selfCopy = self;
+  v6 = evaluatedCopy;
+  dispatch_async(queue, v7);
 }
 
 void __47__SKUIBootstrapScriptFallback_scriptEvaluated___block_invoke(uint64_t a1)
@@ -406,13 +406,13 @@ void __47__SKUIBootstrapScriptFallback_scriptEvaluated___block_invoke(uint64_t a
 
 - (void)invalidate
 {
-  v3 = [(SKUIBootstrapScriptFallback *)self queue];
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SKUIBootstrapScriptFallback_invalidate__block_invoke;
   block[3] = &unk_2781F80F0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __41__SKUIBootstrapScriptFallback_invalidate__block_invoke(uint64_t a1)
@@ -563,13 +563,13 @@ LABEL_33:
 
 - (void)_createCacheDirectoriesIfNeeded
 {
-  v3 = [(SKUIBootstrapScriptFallback *)self queue];
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SKUIBootstrapScriptFallback__createCacheDirectoriesIfNeeded__block_invoke;
   block[3] = &unk_2781F80F0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __62__SKUIBootstrapScriptFallback__createCacheDirectoriesIfNeeded__block_invoke(uint64_t a1)
@@ -588,21 +588,21 @@ void __62__SKUIBootstrapScriptFallback__createCacheDirectoriesIfNeeded__block_in
 
 - (int64_t)_unsynchronizedState
 {
-  v3 = [(SKUIBootstrapScriptFallback *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SKUIBootstrapScriptFallback *)self cachedFileLocation];
+  cachedFileLocation = [(SKUIBootstrapScriptFallback *)self cachedFileLocation];
   v16 = 0;
   v5 = *MEMORY[0x277CBE7B0];
   v15 = 0;
-  v6 = [v4 getResourceValue:&v16 forKey:v5 error:&v15];
+  v6 = [cachedFileLocation getResourceValue:&v16 forKey:v5 error:&v15];
   v7 = v16;
   v8 = v15;
 
   if (v6)
   {
-    v9 = [(SKUIBootstrapScriptFallback *)self cachedFileLocation];
-    [v9 removeCachedResourceValueForKey:v5];
+    cachedFileLocation2 = [(SKUIBootstrapScriptFallback *)self cachedFileLocation];
+    [cachedFileLocation2 removeCachedResourceValueForKey:v5];
 
     [v7 timeIntervalSinceNow];
     v11 = fabs(v10);
@@ -626,25 +626,25 @@ void __62__SKUIBootstrapScriptFallback__createCacheDirectoriesIfNeeded__block_in
   return v13;
 }
 
-- (void)_logError:(id)a3 forOperation:(id)a4
+- (void)_logError:(id)error forOperation:(id)operation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D69B38] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  errorCopy = error;
+  operationCopy = operation;
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  v10 = [v7 OSLogObject];
-  if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 &= 2u;
   }
@@ -658,56 +658,56 @@ void __62__SKUIBootstrapScriptFallback__createCacheDirectoriesIfNeeded__block_in
   NSStringFromClass(v11);
   v15 = v14 = 138412802;
   v16 = 2112;
-  v17 = v6;
+  v17 = operationCopy;
   v18 = 2112;
-  v19 = v5;
+  v19 = errorCopy;
   LODWORD(v13) = 32;
   v12 = _os_log_send_and_compose_impl();
 
   if (v12)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, &v14, v13}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v12 encoding:{4, &v14, v13}];
     free(v12);
     SSFileLog();
 LABEL_9:
   }
 }
 
-- (void)_runWhenBackgroundWorkFinished:(id)a3
+- (void)_runWhenBackgroundWorkFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(SKUIBootstrapScriptFallback *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  finishedCopy = finished;
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(SKUIBootstrapScriptFallback *)self queue];
-  dispatch_barrier_async(v6, v4);
+  queue2 = [(SKUIBootstrapScriptFallback *)self queue];
+  dispatch_barrier_async(queue2, finishedCopy);
 }
 
-- (BOOL)_setCacheAge:(id)a3 error:(id *)a4
+- (BOOL)_setCacheAge:(id)age error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SKUIBootstrapScriptFallback *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  ageCopy = age;
+  queue = [(SKUIBootstrapScriptFallback *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [(SKUIBootstrapScriptFallback *)self queue];
+  queue2 = [(SKUIBootstrapScriptFallback *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__SKUIBootstrapScriptFallback__setCacheAge_error___block_invoke;
   v11[3] = &unk_278200C60;
   v11[4] = self;
-  v12 = v6;
+  v12 = ageCopy;
   v13 = &v15;
-  v14 = a4;
-  v9 = v6;
-  dispatch_sync(v8, v11);
+  errorCopy = error;
+  v9 = ageCopy;
+  dispatch_sync(queue2, v11);
 
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(ageCopy) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return ageCopy;
 }
 
 void __50__SKUIBootstrapScriptFallback__setCacheAge_error___block_invoke(uint64_t a1)

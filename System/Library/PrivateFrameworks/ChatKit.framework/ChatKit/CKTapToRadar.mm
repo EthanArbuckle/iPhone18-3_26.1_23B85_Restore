@@ -1,41 +1,41 @@
 @interface CKTapToRadar
-+ (void)launchTapToRadarForChatControllerLeak:(id)a3;
-+ (void)launchTapToRadarForFailedMessage:(id)a3 inChat:(id)a4;
-+ (void)launchTapToRadarForFailedMessageGUID:(id)a3 chatGUID:(id)a4 messageDescription:(id)a5 error:(int64_t)a6;
-+ (void)launchTapToRadarForTranscriptDynamicsWatchdogWithTimeInterval:(double)a3;
-+ (void)launchTapToRadarWithTitle:(id)a3 description:(id)a4 bundleID:(id)a5 componentID:(id)a6 componentName:(id)a7 componentVersion:(id)a8 autodiagnostics:(id)a9 classification:(id)a10 reproducibility:(id)a11;
++ (void)launchTapToRadarForChatControllerLeak:(id)leak;
++ (void)launchTapToRadarForFailedMessage:(id)message inChat:(id)chat;
++ (void)launchTapToRadarForFailedMessageGUID:(id)d chatGUID:(id)iD messageDescription:(id)description error:(int64_t)error;
++ (void)launchTapToRadarForTranscriptDynamicsWatchdogWithTimeInterval:(double)interval;
++ (void)launchTapToRadarWithTitle:(id)title description:(id)description bundleID:(id)d componentID:(id)iD componentName:(id)name componentVersion:(id)version autodiagnostics:(id)autodiagnostics classification:(id)self0 reproducibility:(id)self1;
 @end
 
 @implementation CKTapToRadar
 
-+ (void)launchTapToRadarWithTitle:(id)a3 description:(id)a4 bundleID:(id)a5 componentID:(id)a6 componentName:(id)a7 componentVersion:(id)a8 autodiagnostics:(id)a9 classification:(id)a10 reproducibility:(id)a11
++ (void)launchTapToRadarWithTitle:(id)title description:(id)description bundleID:(id)d componentID:(id)iD componentName:(id)name componentVersion:(id)version autodiagnostics:(id)autodiagnostics classification:(id)self0 reproducibility:(id)self1
 {
   v51 = *MEMORY[0x1E69E9840];
-  v35 = a3;
-  v36 = a4;
-  v37 = a5;
-  v38 = a6;
-  v40 = a7;
-  v41 = a8;
-  v39 = a9;
-  v42 = a10;
-  v43 = a11;
-  v16 = [MEMORY[0x1E69A60F0] sharedInstance];
-  LODWORD(a7) = [v16 isInternalInstall];
+  titleCopy = title;
+  descriptionCopy = description;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
+  versionCopy = version;
+  autodiagnosticsCopy = autodiagnostics;
+  classificationCopy = classification;
+  reproducibilityCopy = reproducibility;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  LODWORD(name) = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (a7)
+  if (name)
   {
-    v17 = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
+    uRLHostAllowedCharacterSet = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [v35 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v20 = [v36 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v21 = [v37 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v22 = [v38 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v23 = [v40 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v24 = [v41 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v25 = [v42 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v26 = [v43 stringByAddingPercentEncodingWithAllowedCharacters:v17];
-    v27 = [v18 stringWithFormat:@"tap-to-radar://new?Title=%@&Description=%@&BundleID=%@&ComponentID=%@&ComponentName=%@&ComponentVersion=%@&AutoDiagnostics=%@&Classification=%@&Reproducibility=%@&IncludeDevicePrefixInTitle=1", v19, v20, v21, v22, v23, v24, v39, v25, v26];
+    v19 = [titleCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v20 = [descriptionCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v21 = [dCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v22 = [iDCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v23 = [nameCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v24 = [versionCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v25 = [classificationCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v26 = [reproducibilityCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
+    v27 = [v18 stringWithFormat:@"tap-to-radar://new?Title=%@&Description=%@&BundleID=%@&ComponentID=%@&ComponentName=%@&ComponentVersion=%@&AutoDiagnostics=%@&Classification=%@&Reproducibility=%@&IncludeDevicePrefixInTitle=1", v19, v20, v21, v22, v23, v24, autodiagnosticsCopy, v25, v26];
 
     v28 = [MEMORY[0x1E695DFF8] URLWithString:v27];
     v44 = 0;
@@ -56,8 +56,8 @@
 
     v30 = v29;
     _Block_object_dispose(&v44, 8);
-    v31 = [v29 defaultWorkspace];
-    v32 = [v31 openURL:v28 withOptions:0];
+    defaultWorkspace = [v29 defaultWorkspace];
+    v32 = [defaultWorkspace openURL:v28 withOptions:0];
 
     if (IMOSLoggingEnabled())
     {
@@ -80,64 +80,64 @@
   }
 }
 
-+ (void)launchTapToRadarForFailedMessageGUID:(id)a3 chatGUID:(id)a4 messageDescription:(id)a5 error:(int64_t)a6
++ (void)launchTapToRadarForFailedMessageGUID:(id)d chatGUID:(id)iD messageDescription:(id)description error:(int64_t)error
 {
-  v17 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Additional Notes:\n\n\nGUID: %@", a3];
-  if (v17)
+  iDCopy = iD;
+  descriptionCopy = description;
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Additional Notes:\n\n\nGUID: %@", d];
+  if (iDCopy)
   {
-    v12 = [v11 stringByAppendingFormat:@"\n\nChat GUID: %@", v17];
+    iDCopy = [v11 stringByAppendingFormat:@"\n\nChat GUID: %@", iDCopy];
 
-    v11 = v12;
+    v11 = iDCopy;
   }
 
-  if (a6)
+  if (error)
   {
     v13 = _NSStringFromIMMessageError();
-    v14 = [v11 stringByAppendingFormat:@"\n\nError: %@ (%llu)", v13, a6];
+    error = [v11 stringByAppendingFormat:@"\n\nError: %@ (%llu)", v13, error];
 
-    v11 = v14;
+    v11 = error;
   }
 
-  if (v10)
+  if (descriptionCopy)
   {
-    v15 = [v11 stringByAppendingFormat:@"\n\nDescription: %@", v10];
+    descriptionCopy = [v11 stringByAppendingFormat:@"\n\nDescription: %@", descriptionCopy];
 
-    v11 = v15;
+    v11 = descriptionCopy;
   }
 
-  v16 = [a1 _titleForFailedMessageRadar];
-  [a1 launchTapToRadarWithTitle:v16 description:v11];
+  _titleForFailedMessageRadar = [self _titleForFailedMessageRadar];
+  [self launchTapToRadarWithTitle:_titleForFailedMessageRadar description:v11];
 }
 
-+ (void)launchTapToRadarForFailedMessage:(id)a3 inChat:(id)a4
++ (void)launchTapToRadarForFailedMessage:(id)message inChat:(id)chat
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [v7 guid];
-  v8 = [v6 guid];
+  chatCopy = chat;
+  messageCopy = message;
+  guid = [messageCopy guid];
+  guid2 = [chatCopy guid];
 
-  v9 = [v7 description];
-  v10 = [v7 error];
+  v9 = [messageCopy description];
+  error = [messageCopy error];
 
-  [a1 launchTapToRadarForFailedMessageGUID:v11 chatGUID:v8 messageDescription:v9 error:{objc_msgSend(v10, "code")}];
+  [self launchTapToRadarForFailedMessageGUID:guid chatGUID:guid2 messageDescription:v9 error:{objc_msgSend(error, "code")}];
 }
 
-+ (void)launchTapToRadarForChatControllerLeak:(id)a3
++ (void)launchTapToRadarForChatControllerLeak:(id)leak
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v7 = [v4 stringWithFormat:@"%@ Leak", v5];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ leak detected with chat controller leak detector", v5];
+  leakCopy = leak;
+  leakCopy = [v4 stringWithFormat:@"%@ Leak", leakCopy];
+  leakCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ leak detected with chat controller leak detector", leakCopy];
 
-  [a1 launchTapToRadarWithTitle:v7 description:v6];
+  [self launchTapToRadarWithTitle:leakCopy description:leakCopy2];
 }
 
-+ (void)launchTapToRadarForTranscriptDynamicsWatchdogWithTimeInterval:(double)a3
++ (void)launchTapToRadarForTranscriptDynamicsWatchdogWithTimeInterval:(double)interval
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Transcript Dynamics Running For More Than %.1f Seconds", *&a3];
-  [a1 launchTapToRadarWithTitle:v4 description:{@"Transcript dynamics wathdog fired. Animations have been invalidated, likely leading to an incorrect transcript layout.\n\nPlease describe what you were doing when this occured:\n"}];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Transcript Dynamics Running For More Than %.1f Seconds", *&interval];
+  [self launchTapToRadarWithTitle:v4 description:{@"Transcript dynamics wathdog fired. Animations have been invalidated, likely leading to an incorrect transcript layout.\n\nPlease describe what you were doing when this occured:\n"}];
 }
 
 @end

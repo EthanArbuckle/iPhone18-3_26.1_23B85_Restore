@@ -9,9 +9,9 @@
 
 - (id)createViewController
 {
-  v3 = [objc_opt_class() viewControllerProviderClass];
+  viewControllerProviderClass = [objc_opt_class() viewControllerProviderClass];
 
-  if (v3)
+  if (viewControllerProviderClass)
   {
     v4 = [[DDRemoteActionManagerViewController alloc] initWithAction:self];
   }
@@ -26,25 +26,25 @@
 
 + (id)viewControllerProviderClass
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"DDRemoteAction.m" lineNumber:73 description:@"This method should never be called in the class DDRemoteAction. This method should be overriden."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DDRemoteAction.m" lineNumber:73 description:@"This method should never be called in the class DDRemoteAction. This method should be overriden."];
 
   return 0;
 }
 
 - (id)previewActions
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DDRemoteAction.m" lineNumber:78 description:@"This method should never be called in the class DDRemoteAction. This method should be overriden."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DDRemoteAction.m" lineNumber:78 description:@"This method should never be called in the class DDRemoteAction. This method should be overriden."];
 
   return 0;
 }
 
 - (id)createMenuHeaderView
 {
-  v3 = [objc_opt_class() menuHeaderViewProviderClass];
+  menuHeaderViewProviderClass = [objc_opt_class() menuHeaderViewProviderClass];
 
-  if (v3)
+  if (menuHeaderViewProviderClass)
   {
     v4 = [[DDRemoteHeaderView alloc] initWithAction:self];
   }

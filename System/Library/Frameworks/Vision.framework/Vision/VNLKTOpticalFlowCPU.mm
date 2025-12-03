@@ -1,24 +1,24 @@
 @interface VNLKTOpticalFlowCPU
-- (BOOL)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4 error:(id *)a5;
-- (BOOL)estimateFlowStream:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)setOutputUV:(__CVBuffer *)a3 error:(id *)a4;
-- (VNLKTOpticalFlowCPU)initWithWidth:(int)a3 height:(int)a4 numScales:(int)a5;
+- (BOOL)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target error:(id *)error;
+- (BOOL)estimateFlowStream:(__CVBuffer *)stream error:(id *)error;
+- (BOOL)setOutputUV:(__CVBuffer *)v error:(id *)error;
+- (VNLKTOpticalFlowCPU)initWithWidth:(int)width height:(int)height numScales:(int)scales;
 @end
 
 @implementation VNLKTOpticalFlowCPU
 
-- (BOOL)estimateFlowStream:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)estimateFlowStream:(__CVBuffer *)stream error:(id *)error
 {
   if ([(VNLKTOpticalFlow *)self isValid])
   {
-    LODWORD(v7) = [(VNLKTOpticalFlow *)self _validateInputImage:a3 error:a4];
+    LODWORD(v7) = [(VNLKTOpticalFlow *)self _validateInputImage:stream error:error];
     if (v7)
     {
       v17[0] = [(VNLKTOpticalFlow *)self numScales];
       v17[1] = [(VNLKTOpticalFlow *)self numWarpings];
-      v18 = [(VNLKTOpticalFlow *)self useNonLocalRegularization];
-      v19 = [(VNLKTOpticalFlow *)self nlreg_radius];
-      v20 = [(VNLKTOpticalFlow *)self nlreg_padding];
+      useNonLocalRegularization = [(VNLKTOpticalFlow *)self useNonLocalRegularization];
+      nlreg_radius = [(VNLKTOpticalFlow *)self nlreg_radius];
+      nlreg_padding = [(VNLKTOpticalFlow *)self nlreg_padding];
       [(VNLKTOpticalFlow *)self nlreg_sigma_l];
       v21 = v8;
       [(VNLKTOpticalFlow *)self nlreg_sigma_c];
@@ -26,10 +26,10 @@
       [(VNLKTOpticalFlow *)self nlreg_sigma_w];
       v23 = v10;
       ptr = self->_opticalFlow.__ptr_;
-      v16 = a3;
-      if (a3)
+      streamCopy = stream;
+      if (stream)
       {
-        CVPixelBufferRetain(a3);
+        CVPixelBufferRetain(stream);
       }
 
       uv_user_ref = self->_uv_user_ref;
@@ -39,19 +39,19 @@
         CVPixelBufferRetain(uv_user_ref);
       }
 
-      (*(*ptr + 24))(ptr, &v16, &v15, v17);
+      (*(*ptr + 24))(ptr, &streamCopy, &v15, v17);
       apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v15);
-      apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v16);
+      apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&streamCopy);
       LOBYTE(v7) = 1;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = [VNError errorWithCode:15 message:@"CPU optical flow not properly initialized"];
     v7 = v13;
     LOBYTE(v7) = 0;
-    *a4 = v13;
+    *error = v13;
   }
 
   else
@@ -62,21 +62,21 @@
   return v7;
 }
 
-- (BOOL)estimateFlowFromReference:(__CVBuffer *)a3 target:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)estimateFlowFromReference:(__CVBuffer *)reference target:(__CVBuffer *)target error:(id *)error
 {
   if ([(VNLKTOpticalFlow *)self isValid])
   {
-    LODWORD(v9) = [(VNLKTOpticalFlow *)self _validateInputImage:a3 error:a5];
+    LODWORD(v9) = [(VNLKTOpticalFlow *)self _validateInputImage:reference error:error];
     if (v9)
     {
-      LODWORD(v9) = [(VNLKTOpticalFlow *)self _validateInputImage:a4 error:a5];
+      LODWORD(v9) = [(VNLKTOpticalFlow *)self _validateInputImage:target error:error];
       if (v9)
       {
         v20[0] = [(VNLKTOpticalFlow *)self numScales];
         v20[1] = [(VNLKTOpticalFlow *)self numWarpings];
-        v21 = [(VNLKTOpticalFlow *)self useNonLocalRegularization];
-        v22 = [(VNLKTOpticalFlow *)self nlreg_radius];
-        v23 = [(VNLKTOpticalFlow *)self nlreg_padding];
+        useNonLocalRegularization = [(VNLKTOpticalFlow *)self useNonLocalRegularization];
+        nlreg_radius = [(VNLKTOpticalFlow *)self nlreg_radius];
+        nlreg_padding = [(VNLKTOpticalFlow *)self nlreg_padding];
         [(VNLKTOpticalFlow *)self nlreg_sigma_l];
         v24 = v10;
         [(VNLKTOpticalFlow *)self nlreg_sigma_c];
@@ -84,16 +84,16 @@
         [(VNLKTOpticalFlow *)self nlreg_sigma_w];
         v26 = v12;
         ptr = self->_opticalFlow.__ptr_;
-        v19 = a3;
-        if (a3)
+        referenceCopy = reference;
+        if (reference)
         {
-          CVPixelBufferRetain(a3);
+          CVPixelBufferRetain(reference);
         }
 
-        v18 = a4;
-        if (a4)
+        targetCopy = target;
+        if (target)
         {
-          CVPixelBufferRetain(a4);
+          CVPixelBufferRetain(target);
         }
 
         uv_user_ref = self->_uv_user_ref;
@@ -103,21 +103,21 @@
           CVPixelBufferRetain(uv_user_ref);
         }
 
-        (*(*ptr + 16))(ptr, &v19, &v18, &v17, v20);
+        (*(*ptr + 16))(ptr, &referenceCopy, &targetCopy, &v17, v20);
         apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v17);
-        apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v18);
-        apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&v19);
+        apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&targetCopy);
+        apple::vision::CVPixelBufferWrapper::~CVPixelBufferWrapper(&referenceCopy);
         LOBYTE(v9) = 1;
       }
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = [VNError errorWithCode:15 message:@"CPU optical flow not properly initialized"];
     v9 = v15;
     LOBYTE(v9) = 0;
-    *a5 = v15;
+    *error = v15;
   }
 
   else
@@ -128,14 +128,14 @@
   return v9;
 }
 
-- (BOOL)setOutputUV:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)setOutputUV:(__CVBuffer *)v error:(id *)error
 {
   [(VNLKTOpticalFlow *)self setIsValid:0];
-  if (a3)
+  if (v)
   {
-    if ([(VNLKTOpticalFlow *)self _validateOutputImage:a3 error:a4])
+    if ([(VNLKTOpticalFlow *)self _validateOutputImage:v error:error])
     {
-      self->_uv_user_ref = a3;
+      self->_uv_user_ref = v;
       v7 = 1;
       [(VNLKTOpticalFlow *)self setIsValid:1];
     }
@@ -155,11 +155,11 @@
   return v7;
 }
 
-- (VNLKTOpticalFlowCPU)initWithWidth:(int)a3 height:(int)a4 numScales:(int)a5
+- (VNLKTOpticalFlowCPU)initWithWidth:(int)width height:(int)height numScales:(int)scales
 {
   v9.receiver = self;
   v9.super_class = VNLKTOpticalFlowCPU;
-  v5 = [(VNLKTOpticalFlow *)&v9 initWithWidth:*&a3 height:*&a4 numScales:*&a5];
+  v5 = [(VNLKTOpticalFlow *)&v9 initWithWidth:*&width height:*&height numScales:*&scales];
   v6 = v5;
   if (v5)
   {

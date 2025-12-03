@@ -1,8 +1,8 @@
 @interface ITIdleTimerStateModel
-- (BOOL)handleIdleEvent:(unint64_t)a3 usingConfigurationWithIdentifier:(id)a4;
+- (BOOL)handleIdleEvent:(unint64_t)event usingConfigurationWithIdentifier:(id)identifier;
 - (ITIdleTimerStateModel)init;
-- (id)_access_newIdleTimerAssertionWithConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5;
-- (id)newIdleTimerAssertionWithConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5;
+- (id)_access_newIdleTimerAssertionWithConfiguration:(id)configuration forReason:(id)reason error:(id *)error;
+- (id)newIdleTimerAssertionWithConfiguration:(id)configuration forReason:(id)reason error:(id *)error;
 - (void)_addStateCaptureHandler;
 - (void)dealloc;
 - (void)resendIdleTimerAssertions;
@@ -48,18 +48,18 @@
   [(ITIdleTimerStateModel *)&v5 dealloc];
 }
 
-- (id)newIdleTimerAssertionWithConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5
+- (id)newIdleTimerAssertionWithConfiguration:(id)configuration forReason:(id)reason error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  configurationCopy = configuration;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [ITIdleTimerStateModel newIdleTimerAssertionWithConfiguration:forReason:error:];
   }
 
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v10 = [(ITIdleTimerStateModel *)self _access_newIdleTimerAssertionWithConfiguration:v8 forReason:v9 error:a5];
+  v10 = [(ITIdleTimerStateModel *)self _access_newIdleTimerAssertionWithConfiguration:configurationCopy forReason:reasonCopy error:error];
   os_unfair_lock_unlock(&self->_accessLock);
 
   return v10;
@@ -81,8 +81,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(NSMutableDictionary *)self->_access_idleTimerAssertionsByConfigIdentifier allValues];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_access_idleTimerAssertionsByConfigIdentifier allValues];
+  v5 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
     v7 = v5;
@@ -95,15 +95,15 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 configuration];
-        v12 = [v10 _uniqueReason];
+        configuration = [v10 configuration];
+        _uniqueReason = [v10 _uniqueReason];
         requestHandler = self->_requestHandler;
         v18 = 0;
-        [(ITIdleTimerStateRequestHandling *)requestHandler addIdleTimerConfiguration:v11 forReason:v12 error:&v18];
+        [(ITIdleTimerStateRequestHandling *)requestHandler addIdleTimerConfiguration:configuration forReason:_uniqueReason error:&v18];
         v14 = v18;
         if (v14)
         {
@@ -117,7 +117,7 @@
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v7);
@@ -127,32 +127,32 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleIdleEvent:(unint64_t)a3 usingConfigurationWithIdentifier:(id)a4
+- (BOOL)handleIdleEvent:(unint64_t)event usingConfigurationWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = ITLogIdleTimer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134218242;
-    v17 = a3;
+    eventCopy = event;
     v18 = 2114;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_impl(&dword_254ABE000, v7, OS_LOG_TYPE_DEFAULT, "[ITIdleTimerStateModel handleIdleEvent: %lu usingConfigurationWithIdentifier: %{public}@]", &v16, 0x16u);
   }
 
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_lock_lock(&self->_accessLock);
-  v8 = [(NSMutableDictionary *)self->_access_idleTimerAssertionsByConfigIdentifier objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_access_idleTimerAssertionsByConfigIdentifier objectForKey:identifierCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 configuration];
-    v11 = [v10 _idleEventHandlerBlock];
-    v12 = v11;
-    if (v11)
+    configuration = [v8 configuration];
+    _idleEventHandlerBlock = [configuration _idleEventHandlerBlock];
+    v12 = _idleEventHandlerBlock;
+    if (_idleEventHandlerBlock)
     {
-      v13 = (*(v11 + 16))(v11, a3);
+      v13 = (*(_idleEventHandlerBlock + 16))(_idleEventHandlerBlock, event);
     }
 
     else
@@ -205,19 +205,19 @@ void __111__ITIdleTimerStateModel__access_newIdleTimerAssertionOnBehalfOfSceneWi
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_access_newIdleTimerAssertionWithConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5
+- (id)_access_newIdleTimerAssertionWithConfiguration:(id)configuration forReason:(id)reason error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  configurationCopy = configuration;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [ITIdleTimerStateModel _access_newIdleTimerAssertionWithConfiguration:forReason:error:];
   }
 
   os_unfair_lock_assert_owner(&self->_accessLock);
   v10 = self->_requestHandler;
-  v11 = [v8 _uniquedReason:v9];
+  v11 = [configurationCopy _uniquedReason:reasonCopy];
   v12 = ITLogIdleTimer();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -231,16 +231,16 @@ void __111__ITIdleTimerStateModel__access_newIdleTimerAssertionOnBehalfOfSceneWi
   }
 
   v29 = 0;
-  [(ITIdleTimerStateRequestHandling *)v10 addIdleTimerConfiguration:v8 forReason:v11 error:&v29];
+  [(ITIdleTimerStateRequestHandling *)v10 addIdleTimerConfiguration:configurationCopy forReason:v11 error:&v29];
   v15 = v29;
   v16 = v15;
   if (v15)
   {
-    if (a5)
+    if (error)
     {
       v17 = v15;
       v18 = 0;
-      *a5 = v16;
+      *error = v16;
     }
 
     else
@@ -251,19 +251,19 @@ void __111__ITIdleTimerStateModel__access_newIdleTimerAssertionOnBehalfOfSceneWi
 
   else
   {
-    v19 = self;
+    selfCopy = self;
     v20 = [ITIdleTimerAssertion alloc];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __88__ITIdleTimerStateModel__access_newIdleTimerAssertionWithConfiguration_forReason_error___block_invoke;
     v26[3] = &unk_2797A54A0;
-    v27 = v19;
+    v27 = selfCopy;
     v28 = v10;
-    v21 = v19;
-    v18 = [(ITIdleTimerAssertion *)v20 _initWithConfiguration:v8 forReason:v9 invalidationBlock:v26];
+    v21 = selfCopy;
+    v18 = [(ITIdleTimerAssertion *)v20 _initWithConfiguration:configurationCopy forReason:reasonCopy invalidationBlock:v26];
     access_idleTimerAssertionsByConfigIdentifier = v21->_access_idleTimerAssertionsByConfigIdentifier;
-    v23 = [v8 _identifier];
-    [(NSMutableDictionary *)access_idleTimerAssertionsByConfigIdentifier setObject:v18 forKey:v23];
+    _identifier = [configurationCopy _identifier];
+    [(NSMutableDictionary *)access_idleTimerAssertionsByConfigIdentifier setObject:v18 forKey:_identifier];
   }
 
   v24 = *MEMORY[0x277D85DE8];

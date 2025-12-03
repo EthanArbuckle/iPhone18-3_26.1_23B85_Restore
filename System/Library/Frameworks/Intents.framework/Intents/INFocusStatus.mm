@@ -1,11 +1,11 @@
 @interface INFocusStatus
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INFocusStatus)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INFocusStatus)initWithCoder:(id)coder;
 - (INFocusStatus)initWithIsFocused:(NSNumber *)isFocused;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 @end
 
 @implementation INFocusStatus
@@ -15,13 +15,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"isFocused";
   isFocused = self->_isFocused;
-  v3 = isFocused;
+  null = isFocused;
   if (!isFocused)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!isFocused)
   {
@@ -32,44 +32,44 @@
   return v4;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INFocusStatus;
   v6 = [(INFocusStatus *)&v11 description];
-  v7 = [(INFocusStatus *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INFocusStatus *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_isFocused];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_isFocused];
 
-  [v7 if_setObjectIfNonNil:v8 forKey:@"isFocused"];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"isFocused"];
 
-  return v7;
+  return dictionary;
 }
 
-- (INFocusStatus)initWithCoder:(id)a3
+- (INFocusStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isFocused"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isFocused"];
 
   v6 = [(INFocusStatus *)self initWithIsFocused:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -79,7 +79,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isFocused = self->_isFocused;
       v7 = isFocused == v5->_isFocused || [(NSNumber *)isFocused isEqual:?];
     }
@@ -109,14 +109,14 @@
   return v5;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"isFocused"];
-    v8 = [[a1 alloc] initWithIsFocused:v7];
+    v7 = [fromCopy objectForKeyedSubscript:@"isFocused"];
+    v8 = [[self alloc] initWithIsFocused:v7];
   }
 
   else

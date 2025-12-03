@@ -1,7 +1,7 @@
 @interface _LSAppLinkPlugIn
-+ (BOOL)canHandleURLComponents:(id)a3;
++ (BOOL)canHandleURLComponents:(id)components;
 + (id)plugInClasses;
-- (id)appLinksWithContext:(LSContext *)a3 error:(id *)a4;
+- (id)appLinksWithContext:(LSContext *)context error:(id *)error;
 @end
 
 @implementation _LSAppLinkPlugIn
@@ -16,28 +16,28 @@
   return v2;
 }
 
-+ (BOOL)canHandleURLComponents:(id)a3
++ (BOOL)canHandleURLComponents:(id)components
 {
-  v4 = a3;
-  if (v4 && objc_opt_class() != a1)
+  componentsCopy = components;
+  if (componentsCopy && objc_opt_class() != self)
   {
-    v5 = [v4 scheme];
-    v6 = [v4 host];
-    if (v5)
+    scheme = [componentsCopy scheme];
+    host = [componentsCopy host];
+    if (scheme)
     {
       v7 = 0;
-      if (![v5 length] || !v6)
+      if (![scheme length] || !host)
       {
         goto LABEL_17;
       }
 
-      if ([v6 length])
+      if ([host length])
       {
-        v8 = [v5 caseInsensitiveCompare:@"http"];
+        v8 = [scheme caseInsensitiveCompare:@"http"];
         v9 = v8 == 0;
         if (v8)
         {
-          v10 = [v5 caseInsensitiveCompare:@"https"];
+          v10 = [scheme caseInsensitiveCompare:@"https"];
           v11 = v10 == 0;
           v7 = v10 == 0;
         }
@@ -48,19 +48,19 @@
           v11 = 1;
         }
 
-        if (([v6 containsString:@"."] & v11) == 1)
+        if (([host containsString:@"."] & v11) == 1)
         {
-          v12 = [v4 port];
-          v13 = v12;
-          if (v12)
+          port = [componentsCopy port];
+          v13 = port;
+          if (port)
           {
-            v14 = [v12 unsignedIntegerValue];
-            if (v14 == 80)
+            unsignedIntegerValue = [port unsignedIntegerValue];
+            if (unsignedIntegerValue == 80)
             {
               v7 = v9;
             }
 
-            else if (v14 != 443)
+            else if (unsignedIntegerValue != 443)
             {
               v7 = 0;
             }
@@ -88,11 +88,11 @@ LABEL_18:
   return v7;
 }
 
-- (id)appLinksWithContext:(LSContext *)a3 error:(id *)a4
+- (id)appLinksWithContext:(LSContext *)context error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSAppLinkPlugIn appLinksWithContext:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAppLinkPlugIn.mm", 134);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -4, 0, "[_LSAppLinkPlugIn appLinksWithContext:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSAppLinkPlugIn.mm", 134);
   }
 
   return 0;

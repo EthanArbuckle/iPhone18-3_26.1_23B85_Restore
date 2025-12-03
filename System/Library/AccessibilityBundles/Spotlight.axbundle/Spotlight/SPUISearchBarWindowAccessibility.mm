@@ -23,7 +23,7 @@
   v6.receiver = self;
   v6.super_class = SPUISearchBarWindowAccessibility;
   [(SPUISearchBarWindowAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [MEMORY[0x29EDBDFA8] server];
+  server = [MEMORY[0x29EDBDFA8] server];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __78__SPUISearchBarWindowAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
@@ -34,7 +34,7 @@
   v4[2] = __78__SPUISearchBarWindowAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_297;
   v4[3] = &unk_29F2FAC80;
   v4[4] = self;
-  [v3 registerSpringBoardActionHandler:v5 withIdentifierCallback:v4];
+  [server registerSpringBoardActionHandler:v5 withIdentifierCallback:v4];
 
   AXPerformBlockAsynchronouslyOnMainThread();
 }
@@ -86,9 +86,9 @@ void __78__SPUISearchBarWindowAccessibility__accessibilityLoadAccessibilityInfor
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBDFA8] server];
+  server = [MEMORY[0x29EDBDFA8] server];
   v4 = [(SPUISearchBarWindowAccessibility *)self _accessibilityValueForKey:@"actionHandlerIdentifier"];
-  [v3 removeActionHandler:v4];
+  [server removeActionHandler:v4];
 
   v5.receiver = self;
   v5.super_class = SPUISearchBarWindowAccessibility;
@@ -118,7 +118,7 @@ void __78__SPUISearchBarWindowAccessibility__accessibilityLoadAccessibilityInfor
 {
   v4 = *MEMORY[0x29EDCA608];
   v3[0] = 67109120;
-  v3[1] = a1 & 1;
+  v3[1] = self & 1;
   _os_log_debug_impl(&dword_29C372000, a2, OS_LOG_TYPE_DEBUG, "Spotlight visible status: %d", v3, 8u);
   v2 = *MEMORY[0x29EDCA608];
 }

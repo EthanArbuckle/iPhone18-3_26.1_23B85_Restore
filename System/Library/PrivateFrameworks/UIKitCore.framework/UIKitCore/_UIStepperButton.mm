@@ -6,22 +6,22 @@
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x10) != 0)
+  if ((focusGroupContainmentBehavior & 0x10) != 0)
   {
-    v5 = 0;
+    _systemDefaultFocusGroupIdentifier = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _UIStepperButton;
-    v5 = [(UIControl *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIControl *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
 @end

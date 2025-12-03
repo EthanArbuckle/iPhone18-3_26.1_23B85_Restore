@@ -1,54 +1,54 @@
 @interface ADLKTFlow
-- (ADLKTFlow)initWithExecutor:(id)a3 forTemporalOpticalFlow:(BOOL)a4;
-- (void)processMatch:(id)a3;
-- (void)pushColor:(double)a3 pose:(double)a4 calibration:(double)a5 metadata:(double)a6 timestamp:(uint64_t)a7;
-- (void)pushSecondaryColor:(double)a3 pose:(double)a4 calibration:(double)a5 timestamp:(double)a6;
-- (void)setDelegate:(id)a3;
+- (ADLKTFlow)initWithExecutor:(id)executor forTemporalOpticalFlow:(BOOL)flow;
+- (void)processMatch:(id)match;
+- (void)pushColor:(double)color pose:(double)pose calibration:(double)calibration metadata:(double)metadata timestamp:(uint64_t)timestamp;
+- (void)pushSecondaryColor:(double)color pose:(double)pose calibration:(double)calibration timestamp:(double)timestamp;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ADLKTFlow
 
-- (void)processMatch:(id)a3
+- (void)processMatch:(id)match
 {
-  v21 = a3;
-  v4 = [v21 matchedObjectsForStream:0];
-  v5 = [v4 firstObject];
+  matchCopy = match;
+  v4 = [matchCopy matchedObjectsForStream:0];
+  firstObject = [v4 firstObject];
 
   v6 = objc_opt_new();
-  v7 = [v5 data];
-  [v6 setColor:v7];
+  data = [firstObject data];
+  [v6 setColor:data];
 
-  v8 = [(ADLKTExecutor *)self->_executor createOpticalFlowBuffer];
-  v9 = [(ADLKTExecutor *)self->_executor createConfidenceBuffer];
+  createOpticalFlowBuffer = [(ADLKTExecutor *)self->_executor createOpticalFlowBuffer];
+  createConfidenceBuffer = [(ADLKTExecutor *)self->_executor createConfidenceBuffer];
   if (self->_isTemporal)
   {
-    v10 = -[ADLKTExecutor executeFromFrameToPreviousFrame:outputOpticalFlow:outputConfidence:](self->_executor, "executeFromFrameToPreviousFrame:outputOpticalFlow:outputConfidence:", [v6 color], v8, v9);
+    v10 = -[ADLKTExecutor executeFromFrameToPreviousFrame:outputOpticalFlow:outputConfidence:](self->_executor, "executeFromFrameToPreviousFrame:outputOpticalFlow:outputConfidence:", [v6 color], createOpticalFlowBuffer, createConfidenceBuffer);
     if (v10)
     {
 LABEL_3:
-      v11 = [(ADLKTFlow *)self delegate];
+      delegate = [(ADLKTFlow *)self delegate];
 
-      if (!v11)
+      if (!delegate)
       {
         goto LABEL_11;
       }
 
-      v12 = [(ADLKTFlow *)self delegate];
-      [v5 timestamp];
-      [v12 didFailOnFrame:v6 input:@"failed executing LKT" message:v10 error:?];
+      delegate2 = [(ADLKTFlow *)self delegate];
+      [firstObject timestamp];
+      [delegate2 didFailOnFrame:v6 input:@"failed executing LKT" message:v10 error:?];
       goto LABEL_10;
     }
   }
 
   else
   {
-    v13 = [v21 matchedObjectsForStream:1];
-    v14 = [v13 firstObject];
+    v13 = [matchCopy matchedObjectsForStream:1];
+    firstObject2 = [v13 firstObject];
 
-    v15 = [v14 data];
-    [v6 setSecondaryColor:v15];
+    data2 = [firstObject2 data];
+    [v6 setSecondaryColor:data2];
 
-    v10 = -[ADLKTExecutor executeFromFrame:toFrame:outputOpticalFlow:outputConfidence:](self->_executor, "executeFromFrame:toFrame:outputOpticalFlow:outputConfidence:", [v6 color], objc_msgSend(v6, "secondaryColor"), v8, v9);
+    v10 = -[ADLKTExecutor executeFromFrame:toFrame:outputOpticalFlow:outputConfidence:](self->_executor, "executeFromFrame:toFrame:outputOpticalFlow:outputConfidence:", [v6 color], objc_msgSend(v6, "secondaryColor"), createOpticalFlowBuffer, createConfidenceBuffer);
     if (v10)
     {
       goto LABEL_3;
@@ -60,31 +60,31 @@ LABEL_3:
     goto LABEL_11;
   }
 
-  v12 = objc_opt_new();
-  [v12 setDepth:v8];
-  [v12 setConfidence:v9];
-  v16 = [(ADExecutor *)self->_executor executorParameters];
-  v17 = [v16 enableStatistics];
+  delegate2 = objc_opt_new();
+  [delegate2 setDepth:createOpticalFlowBuffer];
+  [delegate2 setConfidence:createConfidenceBuffer];
+  executorParameters = [(ADExecutor *)self->_executor executorParameters];
+  enableStatistics = [executorParameters enableStatistics];
 
-  if (v17)
+  if (enableStatistics)
   {
-    v18 = [(ADLKTExecutor *)self->_executor lastExecutionStatistics];
-    v19 = [v18 dictionaryRepresentation];
-    [v12 setFiguresOfMerit:v19];
+    lastExecutionStatistics = [(ADLKTExecutor *)self->_executor lastExecutionStatistics];
+    dictionaryRepresentation = [lastExecutionStatistics dictionaryRepresentation];
+    [delegate2 setFiguresOfMerit:dictionaryRepresentation];
   }
 
-  v20 = [(ADLKTFlow *)self delegate];
-  [v5 timestamp];
-  [v20 didProcessFrame:v6 input:v12 output:?];
+  delegate3 = [(ADLKTFlow *)self delegate];
+  [firstObject timestamp];
+  [delegate3 didProcessFrame:v6 input:delegate2 output:?];
 
 LABEL_10:
 LABEL_11:
 }
 
-- (ADLKTFlow)initWithExecutor:(id)a3 forTemporalOpticalFlow:(BOOL)a4
+- (ADLKTFlow)initWithExecutor:(id)executor forTemporalOpticalFlow:(BOOL)flow
 {
-  v4 = a4;
-  v7 = a3;
+  flowCopy = flow;
+  executorCopy = executor;
   v18.receiver = self;
   v18.super_class = ADLKTFlow;
   v8 = [(ADLKTFlow *)&v18 init];
@@ -92,9 +92,9 @@ LABEL_11:
   v10 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_executor, a3);
-    v10->_isTemporal = v4;
-    if (v4)
+    objc_storeStrong(&v8->_executor, executor);
+    v10->_isTemporal = flowCopy;
+    if (flowCopy)
     {
       v11 = [objc_alloc(MEMORY[0x277CED120]) initWithStreamCount:1 allowedMatchTimeInterval:1.0];
       p_streamSync = &v9->_streamSync;
@@ -121,28 +121,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)pushSecondaryColor:(double)a3 pose:(double)a4 calibration:(double)a5 timestamp:(double)a6
+- (void)pushSecondaryColor:(double)color pose:(double)pose calibration:(double)calibration timestamp:(double)timestamp
 {
-  v10 = [a1[4] pushData:a8 streamIndex:1 timestamp:a9 pose:a6 calibration:{a2, a3, a4, a5}];
+  v10 = [self[4] pushData:a8 streamIndex:1 timestamp:a9 pose:timestamp calibration:{a2, color, pose, calibration}];
   if (v10)
   {
-    [a1 processMatch:v10];
+    [self processMatch:v10];
   }
 }
 
-- (void)pushColor:(double)a3 pose:(double)a4 calibration:(double)a5 metadata:(double)a6 timestamp:(uint64_t)a7
+- (void)pushColor:(double)color pose:(double)pose calibration:(double)calibration metadata:(double)metadata timestamp:(uint64_t)timestamp
 {
-  v10 = [a1[4] pushData:a8 streamIndex:0 timestamp:a9 pose:a6 calibration:{a2, a3, a4, a5}];
+  v10 = [self[4] pushData:a8 streamIndex:0 timestamp:a9 pose:metadata calibration:{a2, color, pose, calibration}];
   if (v10)
   {
-    [a1 processMatch:v10];
+    [self processMatch:v10];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v7 = a3;
-  objc_storeStrong(&self->_delegate, a3);
+  delegateCopy = delegate;
+  objc_storeStrong(&self->_delegate, delegate);
   delegate = self->_delegate;
   if (delegate)
   {

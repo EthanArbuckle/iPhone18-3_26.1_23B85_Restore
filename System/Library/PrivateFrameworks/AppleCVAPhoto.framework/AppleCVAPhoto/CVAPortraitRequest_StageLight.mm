@@ -1,5 +1,5 @@
 @interface CVAPortraitRequest_StageLight
-- (CVAPortraitRequest_StageLight)initWithMattingRequest:(id)a3 destinationColorPixelBuffer:(__CVBuffer *)a4 proxyCubeData:(id)a5 cubeData:(id)a6 vignetteIntensity:(float)a7 stageLightIntensity:(float)a8;
+- (CVAPortraitRequest_StageLight)initWithMattingRequest:(id)request destinationColorPixelBuffer:(__CVBuffer *)buffer proxyCubeData:(id)data cubeData:(id)cubeData vignetteIntensity:(float)intensity stageLightIntensity:(float)lightIntensity;
 - (void)dealloc;
 @end
 
@@ -13,24 +13,24 @@
   [(CVAPortraitRequest_StageLight *)&v3 dealloc];
 }
 
-- (CVAPortraitRequest_StageLight)initWithMattingRequest:(id)a3 destinationColorPixelBuffer:(__CVBuffer *)a4 proxyCubeData:(id)a5 cubeData:(id)a6 vignetteIntensity:(float)a7 stageLightIntensity:(float)a8
+- (CVAPortraitRequest_StageLight)initWithMattingRequest:(id)request destinationColorPixelBuffer:(__CVBuffer *)buffer proxyCubeData:(id)data cubeData:(id)cubeData vignetteIntensity:(float)intensity stageLightIntensity:(float)lightIntensity
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
+  requestCopy = request;
+  dataCopy = data;
+  cubeDataCopy = cubeData;
   v22.receiver = self;
   v22.super_class = CVAPortraitRequest_StageLight;
   v18 = [(CVAPortraitRequest_StageLight *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_mattingRequest, a3);
-    v19->_destinationColorPixelBuffer = a4;
-    CVPixelBufferRetain(a4);
-    objc_storeStrong(&v19->_proxyCubeData, a5);
-    objc_storeStrong(&v19->_cubeData, a6);
-    v19->_vignetteIntensity = a7;
-    v19->_stageLightIntensity = a8;
+    objc_storeStrong(&v18->_mattingRequest, request);
+    v19->_destinationColorPixelBuffer = buffer;
+    CVPixelBufferRetain(buffer);
+    objc_storeStrong(&v19->_proxyCubeData, data);
+    objc_storeStrong(&v19->_cubeData, cubeData);
+    v19->_vignetteIntensity = intensity;
+    v19->_stageLightIntensity = lightIntensity;
     v20 = v19;
   }
 

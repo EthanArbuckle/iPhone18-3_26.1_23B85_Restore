@@ -1,6 +1,6 @@
 @interface _MKFCharacteristicWriteAction
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFCharacteristicWriteActionDatabaseID)databaseID;
 - (MKFHome)home;
 - (void)willSave;
@@ -10,10 +10,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFCharacteristicWriteAction *)self actionSet];
-  v3 = [v2 home];
+  actionSet = [(_MKFCharacteristicWriteAction *)self actionSet];
+  home = [actionSet home];
 
-  return v3;
+  return home;
 }
 
 - (MKFCharacteristicWriteActionDatabaseID)databaseID
@@ -23,26 +23,26 @@
   return v2;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v9.receiver = self;
   v9.super_class = _MKFCharacteristicWriteAction;
   LODWORD(v5) = [(_MKFModel *)&v9 validateForInsertOrUpdate:?];
   if (v5)
   {
-    v6 = [(_MKFCharacteristicWriteAction *)self service];
+    service = [(_MKFCharacteristicWriteAction *)self service];
 
-    if (v6)
+    if (service)
     {
       LOBYTE(v5) = 1;
     }
 
-    else if (a3)
+    else if (update)
     {
       v7 = [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:@"service is required"];
       v5 = v7;
       LOBYTE(v5) = 0;
-      *a3 = v7;
+      *update = v7;
     }
 
     else
@@ -59,24 +59,24 @@
   v7.receiver = self;
   v7.super_class = _MKFCharacteristicWriteAction;
   [(_MKFModel *)&v7 willSave];
-  v3 = [(_MKFCharacteristicWriteAction *)self service];
-  v4 = [v3 accessory];
+  service = [(_MKFCharacteristicWriteAction *)self service];
+  accessory = [service accessory];
 
-  if (v4)
+  if (accessory)
   {
-    v5 = [(_MKFCharacteristicWriteAction *)self accessory];
+    accessory2 = [(_MKFCharacteristicWriteAction *)self accessory];
     v6 = HMFEqualObjects();
 
     if ((v6 & 1) == 0)
     {
-      [(_MKFCharacteristicWriteAction *)self setAccessory:v4];
+      [(_MKFCharacteristicWriteAction *)self setAccessory:accessory];
     }
   }
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

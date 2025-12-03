@@ -10,7 +10,7 @@
   if (result)
   {
 
-    return [a1 setDisableGlassPlatter:1];
+    return [self setDisableGlassPlatter:1];
   }
 
   return result;

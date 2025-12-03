@@ -4,45 +4,45 @@
 - (BOOL)_queue_isAutoInstallOperationReadyToBegin;
 - (BOOL)_queue_isExpired;
 - (BOOL)isAutoInstallOperationReadyToBegin;
-- (SUAutoInstallManager)initWithManager:(id)a3;
+- (SUAutoInstallManager)initWithManager:(id)manager;
 - (SUAutoInstallManagerDelegate)delegate;
 - (_SUAutoInstallOperationModel)operationModel;
 - (id)_createOperationModel;
-- (id)_queue_currentAutoInstallOperationCreatingIfNecessary:(BOOL)a3 notifyIfExpired:(BOOL)a4 error:(id *)a5;
-- (id)currentAutoInstallOperationCreatingIfNecessary:(BOOL)a3 error:(id *)a4;
+- (id)_queue_currentAutoInstallOperationCreatingIfNecessary:(BOOL)necessary notifyIfExpired:(BOOL)expired error:(id *)error;
+- (id)currentAutoInstallOperationCreatingIfNecessary:(BOOL)necessary error:(id *)error;
 - (void)_installAttemptDone;
-- (void)_queue_cancelAutoInstallOperation:(id)a3;
-- (void)_queue_clearAutoInstallOperationForReason:(id)a3 disableKeybagStash:(BOOL)a4;
-- (void)_queue_consentToAutoInstallOperation:(id)a3;
+- (void)_queue_cancelAutoInstallOperation:(id)operation;
+- (void)_queue_clearAutoInstallOperationForReason:(id)reason disableKeybagStash:(BOOL)stash;
+- (void)_queue_consentToAutoInstallOperation:(id)operation;
 - (void)_queue_noteAutoInstallOperationDidExpire;
 - (void)_queue_noteAutoInstallOperationWantsToBegin;
 - (void)_queue_resumeOrResetStateIfNecessary;
-- (void)_queue_setFailedToAutoInstallError:(id)a3;
-- (void)_queue_trySchedulingAnotherTimeInInstallWindow:(double)a3;
-- (void)cancelAutoInstallOperation:(id)a3;
-- (void)consentToAutoInstallOperation:(id)a3;
-- (void)copyAutoInstallOperationForecast:(id *)a3 error:(id *)a4;
+- (void)_queue_setFailedToAutoInstallError:(id)error;
+- (void)_queue_trySchedulingAnotherTimeInInstallWindow:(double)window;
+- (void)cancelAutoInstallOperation:(id)operation;
+- (void)consentToAutoInstallOperation:(id)operation;
+- (void)copyAutoInstallOperationForecast:(id *)forecast error:(id *)error;
 - (void)dealloc;
-- (void)downloadWasInvalidated:(id)a3;
-- (void)installDidFail:(id)a3 withError:(id)a4;
-- (void)installDidFinish:(id)a3;
-- (void)keybagInterfacePasscodeDidChange:(id)a3;
+- (void)downloadWasInvalidated:(id)invalidated;
+- (void)installDidFail:(id)fail withError:(id)error;
+- (void)installDidFinish:(id)finish;
+- (void)keybagInterfacePasscodeDidChange:(id)change;
 - (void)noteAutoInstallOperationDidExpire;
 - (void)noteAutoInstallOperationUnlockWindowDidBegin;
 - (void)noteAutoInstallOperationWantsToBegin;
-- (void)passcodePolicyInterface:(id)a3 passcodePolicyTypeChanged:(unint64_t)a4;
+- (void)passcodePolicyInterface:(id)interface passcodePolicyTypeChanged:(unint64_t)changed;
 - (void)resumeOrResetStateIfNecessary;
-- (void)setFailedToAutoInstallError:(id)a3;
-- (void)trySchedulingAnotherTimeInInstallWindow:(double)a3;
+- (void)setFailedToAutoInstallError:(id)error;
+- (void)trySchedulingAnotherTimeInInstallWindow:(double)window;
 - (void)trySchedulingAutoInstallAgainLater;
 - (void)unattendedInstallationKeybagCreated;
 @end
 
 @implementation SUAutoInstallManager
 
-- (SUAutoInstallManager)initWithManager:(id)a3
+- (SUAutoInstallManager)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = SUAutoInstallManager;
   v6 = [(SUAutoInstallManager *)&v22 init];
@@ -54,7 +54,7 @@
     state = v6->_state;
     v6->_state = v8;
 
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
     v10 = +[SUAutoUpdatePasscodePolicy sharedInstance];
     passcodePolicy = v6->_passcodePolicy;
     v6->_passcodePolicy = v10;
@@ -62,9 +62,9 @@
     operationModel = v6->_operationModel;
     v6->_operationModel = 0;
 
-    v13 = [(SUState *)v6->_state failedToAutoInstallError];
+    failedToAutoInstallError = [(SUState *)v6->_state failedToAutoInstallError];
     failedToAutoInstallError = v6->_failedToAutoInstallError;
-    v6->_failedToAutoInstallError = v13;
+    v6->_failedToAutoInstallError = failedToAutoInstallError;
 
     [(SUManagerInterface *)v6->_manager setPasscodePolicy:v6->_passcodePolicy];
     [(SUAutoUpdatePasscodePolicy *)v6->_passcodePolicy addObserver:v6];
@@ -114,17 +114,17 @@
   v3 = +[SUScheduler sharedInstance];
   [v3 scheduleSimulatedAutoInstallTask];
 
-  v4 = [(SUState *)self->_state lastAutoInstallOperationModel];
+  lastAutoInstallOperationModel = [(SUState *)self->_state lastAutoInstallOperationModel];
   SULogInfo(@"%s: lastOperation = %@", v5, v6, v7, v8, v9, v10, v11, "[SUAutoInstallManager _queue_resumeOrResetStateIfNecessary]");
-  if (v4)
+  if (lastAutoInstallOperationModel)
   {
-    v12 = [(SUState *)self->_state lastProductBuild];
-    v13 = [(SUState *)self->_state lastProductVersion];
+    lastProductBuild = [(SUState *)self->_state lastProductBuild];
+    lastProductVersion = [(SUState *)self->_state lastProductVersion];
     v14 = +[SUUtility currentProductBuild];
     v15 = +[SUUtility currentProductVersion];
     v119 = v14;
-    v120 = v12;
-    if ([v13 isEqualToString:v15] && (objc_msgSend(v12, "isEqualToString:", v14) & 1) != 0)
+    v120 = lastProductBuild;
+    if ([lastProductVersion isEqualToString:v15] && (objc_msgSend(lastProductBuild, "isEqualToString:", v14) & 1) != 0)
     {
       v23 = 0;
     }
@@ -135,10 +135,10 @@
       v23 = 1;
     }
 
-    v24 = [MEMORY[0x277CBEAA8] date];
-    v25 = [v4 forecast];
-    v26 = [v25 suEndDate];
-    v27 = [v24 compare:v26];
+    date = [MEMORY[0x277CBEAA8] date];
+    forecast = [lastAutoInstallOperationModel forecast];
+    suEndDate = [forecast suEndDate];
+    v27 = [date compare:suEndDate];
 
     if (v27 == 1)
     {
@@ -146,31 +146,31 @@
       v23 = 1;
     }
 
-    v35 = [(SUManagerInterface *)self->_manager download];
-    if (!v35)
+    download = [(SUManagerInterface *)self->_manager download];
+    if (!download)
     {
       goto LABEL_12;
     }
 
-    v43 = v35;
-    v44 = [(SUManagerInterface *)self->_manager download];
-    v45 = [v44 progress];
-    v46 = [v45 isDone];
+    v43 = download;
+    download2 = [(SUManagerInterface *)self->_manager download];
+    progress = [download2 progress];
+    isDone = [progress isDone];
 
-    if (v46)
+    if (isDone)
     {
       if (!v23)
       {
-        SULogInfo(@"Last AutoInstall operation found\n %@", v36, v37, v38, v39, v40, v41, v42, v4);
-        objc_storeStrong(&self->_operationModel, v4);
+        SULogInfo(@"Last AutoInstall operation found\n %@", v36, v37, v38, v39, v40, v41, v42, lastAutoInstallOperationModel);
+        objc_storeStrong(&self->_operationModel, lastAutoInstallOperationModel);
         [(SUAutoUpdatePasscodePolicy *)self->_passcodePolicy setCurrentPolicyType:1];
 LABEL_21:
-        if ([v4 agreementStatus] == 1)
+        if ([lastAutoInstallOperationModel agreementStatus] == 1)
         {
-          v91 = [MEMORY[0x277CBEAA8] date];
-          v92 = [v4 forecast];
-          v93 = [v92 unlockStartDate];
-          v94 = [v91 compare:v93];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          forecast2 = [lastAutoInstallOperationModel forecast];
+          unlockStartDate = [forecast2 unlockStartDate];
+          v94 = [date2 compare:unlockStartDate];
 
           if (v94 == 1)
           {
@@ -179,18 +179,18 @@ LABEL_21:
           }
         }
 
-        v102 = [(SUManagerInterface *)self->_manager download];
-        v103 = [v102 progress];
-        v104 = [v103 isDone];
+        download3 = [(SUManagerInterface *)self->_manager download];
+        progress2 = [download3 progress];
+        isDone2 = [progress2 isDone];
 
-        if (v104)
+        if (isDone2)
         {
           SULogInfo(@"%s: Scheduling tonight activity because the download is finished", v105, v106, v107, v108, v109, v110, v111, "[SUAutoInstallManager _queue_resumeOrResetStateIfNecessary]");
           v112 = +[SUScheduler sharedInstance];
-          v113 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-          v114 = [(SUManagerInterface *)self->_manager download];
-          v115 = [v114 descriptor];
-          [v112 scheduleAllAutoInstallUpdateTasks:v113 descriptor:v115];
+          forecast3 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+          download4 = [(SUManagerInterface *)self->_manager download];
+          descriptor = [download4 descriptor];
+          [v112 scheduleAllAutoInstallUpdateTasks:forecast3 descriptor:descriptor];
 
           [(SUManagerInterface *)self->_manager setIsInstallTonightScheduled:1];
         }
@@ -214,20 +214,20 @@ LABEL_12:
 
     if ([(SUAutoInstallManager *)self isAutoUpdateEnabled])
     {
-      v54 = [(SUManagerInterface *)self->_manager download];
-      v55 = [v54 progress];
-      v56 = [v55 isDone];
+      download5 = [(SUManagerInterface *)self->_manager download];
+      progress3 = [download5 progress];
+      isDone3 = [progress3 isDone];
 
       SULogInfo(@"%s: canceling %@", v57, v58, v59, v60, v61, v62, v63, "[SUAutoInstallManager _queue_resumeOrResetStateIfNecessary]");
       v64 = +[SUScheduler sharedInstance];
       [v64 cancelAllAutoInstallTasks];
 
       [(SUAutoUpdatePasscodePolicy *)self->_passcodePolicy setCurrentPolicyType:0];
-      if (v56)
+      if (isDone3)
       {
         [(SUState *)self->_state setLastAutoInstallOperationModel:0];
         [(SUState *)self->_state save];
-        SULogInfo(@"Last AutoInstall operation found\n %@", v65, v66, v67, v68, v69, v70, v71, v4);
+        SULogInfo(@"Last AutoInstall operation found\n %@", v65, v66, v67, v68, v69, v70, v71, lastAutoInstallOperationModel);
         if (![(SUAutoInstallManager *)self isAutoUpdateEnabled])
         {
           goto LABEL_21;
@@ -275,7 +275,7 @@ LABEL_28:
 LABEL_29:
 }
 
-- (id)currentAutoInstallOperationCreatingIfNecessary:(BOOL)a3 error:(id *)a4
+- (id)currentAutoInstallOperationCreatingIfNecessary:(BOOL)necessary error:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v12 = 0;
@@ -291,8 +291,8 @@ LABEL_29:
   v10[3] = &unk_279CACF90;
   v10[4] = self;
   v10[5] = &v12;
-  v11 = a3;
-  v10[6] = a4;
+  necessaryCopy = necessary;
+  v10[6] = error;
   dispatch_sync(stateQueue, v10);
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -310,7 +310,7 @@ uint64_t __77__SUAutoInstallManager_currentAutoInstallOperationCreatingIfNecessa
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)copyAutoInstallOperationForecast:(id *)a3 error:(id *)a4
+- (void)copyAutoInstallOperationForecast:(id *)forecast error:(id *)error
 {
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v11 = 0;
@@ -333,15 +333,15 @@ uint64_t __77__SUAutoInstallManager_currentAutoInstallOperationCreatingIfNecessa
     v8 = [SUUtility errorWithCode:49];
   }
 
-  if (a3)
+  if (forecast)
   {
-    *a3 = v12[5];
+    *forecast = v12[5];
   }
 
-  if (a4)
+  if (error)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   _Block_object_dispose(&v11, 8);
@@ -386,9 +386,9 @@ uint64_t __63__SUAutoInstallManager_copyAutoInstallOperationForecast_error___blo
 {
   dispatch_assert_queue_V2(self->_stateQueue);
   v3 = +[SUPreferences sharedInstance];
-  v4 = [v3 isAutoSUDisabled];
+  isAutoSUDisabled = [v3 isAutoSUDisabled];
 
-  if (v4)
+  if (isAutoSUDisabled)
   {
     SULogInfo(@"AutoSU disabled. Not scheduling AutoSU timers", v5, v6, v7, v8, v9, v10, v11, v26);
     return 0;
@@ -396,59 +396,59 @@ uint64_t __63__SUAutoInstallManager_copyAutoInstallOperationForecast_error___blo
 
   else
   {
-    v13 = [(SUManagerInterface *)self->_manager preferredLastScannedDescriptor];
-    v14 = [SUManagerEngine SUDescriptorFromCoreDescriptor:v13];
+    preferredLastScannedDescriptor = [(SUManagerInterface *)self->_manager preferredLastScannedDescriptor];
+    v14 = [SUManagerEngine SUDescriptorFromCoreDescriptor:preferredLastScannedDescriptor];
 
     if (v14 && [v14 installTonightDisabled])
     {
       SULogInfo(@"AutoSU disabled for this update. Not scheduling AutoSU timers", v15, v16, v17, v18, v19, v20, v21, v26);
-      v12 = 0;
+      isDownloading = 0;
     }
 
     else
     {
-      v22 = [(SUManagerInterface *)self->_manager download];
-      v23 = v22;
-      if (v22)
+      download = [(SUManagerInterface *)self->_manager download];
+      v23 = download;
+      if (download)
       {
-        v24 = [v22 progress];
-        if ([v24 isDone])
+        progress = [download progress];
+        if ([progress isDone])
         {
-          v12 = 1;
+          isDownloading = 1;
         }
 
         else
         {
-          v12 = [(SUManagerInterface *)self->_manager isDownloading];
+          isDownloading = [(SUManagerInterface *)self->_manager isDownloading];
         }
       }
 
       else
       {
-        v12 = 0;
+        isDownloading = 0;
       }
     }
   }
 
-  return v12;
+  return isDownloading;
 }
 
-- (id)_queue_currentAutoInstallOperationCreatingIfNecessary:(BOOL)a3 notifyIfExpired:(BOOL)a4 error:(id *)a5
+- (id)_queue_currentAutoInstallOperationCreatingIfNecessary:(BOOL)necessary notifyIfExpired:(BOOL)expired error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  expiredCopy = expired;
+  necessaryCopy = necessary;
   dispatch_assert_queue_V2(self->_stateQueue);
   if (![(SUAutoInstallManager *)self _queue_canGetAutoInstallOperation])
   {
     goto LABEL_25;
   }
 
-  v9 = [(SUManagerInterface *)self->_manager download];
+  download = [(SUManagerInterface *)self->_manager download];
   v10 = self->_operationModel;
   if (!v10)
   {
 LABEL_6:
-    if (v7)
+    if (necessaryCopy)
     {
       goto LABEL_7;
     }
@@ -458,10 +458,10 @@ LABEL_6:
 
   if (![(SUAutoInstallManager *)self _queue_isExpired])
   {
-    v31 = [v9 progress];
-    v32 = [v31 isDone];
+    progress = [download progress];
+    isDone = [progress isDone];
 
-    if (v32)
+    if (isDone)
     {
       if ([(SUManagerInterface *)self->_manager isInstallTonightScheduled])
       {
@@ -472,9 +472,9 @@ LABEL_6:
       {
         SULogInfo(@"%s: Scheduling tonight activity because the download is finished", v40, v41, v42, v43, v44, v45, v46, "[SUAutoInstallManager _queue_currentAutoInstallOperationCreatingIfNecessary:notifyIfExpired:error:]");
         v48 = +[SUScheduler sharedInstance];
-        v49 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-        v50 = [v9 descriptor];
-        [v48 scheduleAllAutoInstallUpdateTasks:v49 descriptor:v50];
+        forecast = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+        descriptor = [download descriptor];
+        [v48 scheduleAllAutoInstallUpdateTasks:forecast descriptor:descriptor];
 
         [(SUManagerInterface *)self->_manager setIsInstallTonightScheduled:1];
       }
@@ -490,7 +490,7 @@ LABEL_6:
     goto LABEL_30;
   }
 
-  if (v6)
+  if (expiredCopy)
   {
     [(SUAutoInstallManager *)self _queue_noteAutoInstallOperationDidExpire];
     goto LABEL_6;
@@ -499,27 +499,27 @@ LABEL_6:
   operationModel = self->_operationModel;
   self->_operationModel = 0;
 
-  if (v7)
+  if (necessaryCopy)
   {
 LABEL_7:
-    v11 = [(SUAutoInstallManager *)self _createOperationModel];
+    _createOperationModel = [(SUAutoInstallManager *)self _createOperationModel];
     v12 = self->_operationModel;
-    self->_operationModel = v11;
+    self->_operationModel = _createOperationModel;
 
     if (self->_operationModel)
     {
-      v13 = [v9 downloadOptions];
-      v14 = [v13 termsAndConditionsAgreementStatus];
+      downloadOptions = [download downloadOptions];
+      termsAndConditionsAgreementStatus = [downloadOptions termsAndConditionsAgreementStatus];
 
-      if (v14 == 1)
+      if (termsAndConditionsAgreementStatus == 1)
       {
         [(_SUAutoInstallOperationModel *)self->_operationModel setAgreementStatus:1];
       }
 
-      v15 = [v9 progress];
-      v16 = [v15 isDone];
+      progress2 = [download progress];
+      isDone2 = [progress2 isDone];
 
-      if (v16)
+      if (isDone2)
       {
         if ([(SUManagerInterface *)self->_manager isInstallTonightScheduled])
         {
@@ -530,9 +530,9 @@ LABEL_7:
         {
           SULogInfo(@"%s: Scheduling tonight activity because the download is finished", v24, v25, v26, v27, v28, v29, v30, "[SUAutoInstallManager _queue_currentAutoInstallOperationCreatingIfNecessary:notifyIfExpired:error:]");
           v52 = +[SUScheduler sharedInstance];
-          v53 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-          v54 = [v9 descriptor];
-          [v52 scheduleAllAutoInstallUpdateTasks:v53 descriptor:v54];
+          forecast2 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+          descriptor2 = [download descriptor];
+          [v52 scheduleAllAutoInstallUpdateTasks:forecast2 descriptor:descriptor2];
 
           [(SUManagerInterface *)self->_manager setIsInstallTonightScheduled:1];
         }
@@ -552,9 +552,9 @@ LABEL_24:
 
 LABEL_25:
   v55 = self->_operationModel;
-  if (a5 && !v55 && v7)
+  if (error && !v55 && necessaryCopy)
   {
-    *a5 = [SUUtility errorWithCode:45];
+    *error = [SUUtility errorWithCode:45];
     v55 = self->_operationModel;
   }
 
@@ -564,9 +564,9 @@ LABEL_30:
   return v51;
 }
 
-- (void)cancelAutoInstallOperation:(id)a3
+- (void)cancelAutoInstallOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -574,22 +574,22 @@ LABEL_30:
   v7[2] = __51__SUAutoInstallManager_cancelAutoInstallOperation___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)_queue_cancelAutoInstallOperation:(id)a3
+- (void)_queue_cancelAutoInstallOperation:(id)operation
 {
-  v15 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(self->_stateQueue);
   v4 = [(_SUAutoInstallOperationModel *)self->_operationModel id];
-  v5 = [v4 isEqual:v15];
+  v5 = [v4 isEqual:operationCopy];
 
   if (v5)
   {
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"SUAutoInstallOperationCancelledNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUAutoInstallOperationCancelledNotification" object:0];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained autoInstallManager:self didCancelOperation:self->_operationModel];
@@ -603,9 +603,9 @@ LABEL_30:
   }
 }
 
-- (void)consentToAutoInstallOperation:(id)a3
+- (void)consentToAutoInstallOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -613,18 +613,18 @@ LABEL_30:
   v7[2] = __54__SUAutoInstallManager_consentToAutoInstallOperation___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   dispatch_async(stateQueue, v7);
 }
 
-- (void)_queue_consentToAutoInstallOperation:(id)a3
+- (void)_queue_consentToAutoInstallOperation:(id)operation
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  operationCopy = operation;
   dispatch_assert_queue_V2(stateQueue);
   v6 = [(_SUAutoInstallOperationModel *)self->_operationModel id];
-  v7 = [v6 isEqual:v5];
+  v7 = [v6 isEqual:operationCopy];
 
   if (!v7)
   {
@@ -633,15 +633,15 @@ LABEL_30:
 
   SULogInfo(@"AutoSU consented", v8, v9, v10, v11, v12, v13, v14, v44);
   [(_SUAutoInstallOperationModel *)self->_operationModel setAgreementStatus:1];
-  v15 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-  v16 = [v15 unlockStartDate];
-  v17 = [MEMORY[0x277CBEAA8] date];
-  if ([v16 compare:v17] == -1)
+  forecast = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+  unlockStartDate = [forecast unlockStartDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  if ([unlockStartDate compare:date] == -1)
   {
-    v18 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-    v19 = [v18 unlockEndDate];
-    v20 = [MEMORY[0x277CBEAA8] date];
-    v21 = [v19 compare:v20];
+    forecast2 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+    unlockEndDate = [forecast2 unlockEndDate];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v21 = [unlockEndDate compare:date2];
 
     if (v21 == 1)
     {
@@ -656,15 +656,15 @@ LABEL_30:
 
   [(SUState *)self->_state setLastAutoInstallOperationModel:self->_operationModel];
   [(SUState *)self->_state save];
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 postNotificationName:@"SUAutoInstallOperationDidConsentNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUAutoInstallOperationDidConsentNotification" object:0];
 
   if ([(SUManagerInterface *)self->_manager isAutoUpdateEnabled])
   {
     v30 = +[SUKeybagInterface sharedInstance];
-    v31 = [v30 hasPasscodeSet];
+    hasPasscodeSet = [v30 hasPasscodeSet];
 
-    if (!v31)
+    if (!hasPasscodeSet)
     {
       v35 = @"Auto update consented and no passcode set. Displaying banner";
       goto LABEL_13;
@@ -673,11 +673,11 @@ LABEL_30:
 
   if ([(SUManagerInterface *)self->_manager isInstallTonightScheduled])
   {
-    v32 = [(SUManagerInterface *)self->_manager download];
-    v33 = [v32 progress];
-    v34 = [v33 isDone];
+    download = [(SUManagerInterface *)self->_manager download];
+    progress = [download progress];
+    isDone = [progress isDone];
 
-    if (v34)
+    if (isDone)
     {
       v35 = @"Install tonight is scheduled and download is done. Displaying banner";
 LABEL_13:
@@ -696,21 +696,21 @@ LABEL_13:
 - (void)trySchedulingAutoInstallAgainLater
 {
   v3 = +[SUPreferences sharedInstance];
-  v36 = [v3 autoInstallRetryDelay];
+  autoInstallRetryDelay = [v3 autoInstallRetryDelay];
 
-  SULogDebug(@"defaultDelay = %@", v4, v5, v6, v7, v8, v9, v10, v36);
+  SULogDebug(@"defaultDelay = %@", v4, v5, v6, v7, v8, v9, v10, autoInstallRetryDelay);
   v11 = 900.0;
-  if (v36 && [v36 intValue] >= 1)
+  if (autoInstallRetryDelay && [autoInstallRetryDelay intValue] >= 1)
   {
-    v12 = [v36 intValue];
-    v11 = v12;
-    SULogInfo(@"delay is set to %d seconds by default", v13, v14, v15, v16, v17, v18, v19, v12);
+    intValue = [autoInstallRetryDelay intValue];
+    v11 = intValue;
+    SULogInfo(@"delay is set to %d seconds by default", v13, v14, v15, v16, v17, v18, v19, intValue);
   }
 
   v20 = +[SUPreferences sharedInstance];
-  v21 = [v20 disableAutoInstallJitter];
+  disableAutoInstallJitter = [v20 disableAutoInstallJitter];
 
-  if (v21)
+  if (disableAutoInstallJitter)
   {
     SULogInfo(@"%s: disableAutoInstallJitter default is set, ignoring jitter", v22, v23, v24, v25, v26, v27, v28, "[SUAutoInstallManager trySchedulingAutoInstallAgainLater]");
   }
@@ -724,7 +724,7 @@ LABEL_13:
   [(SUAutoInstallManager *)self trySchedulingAnotherTimeInInstallWindow:v11];
 }
 
-- (void)trySchedulingAnotherTimeInInstallWindow:(double)a3
+- (void)trySchedulingAnotherTimeInInstallWindow:(double)window
 {
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
@@ -733,25 +733,25 @@ LABEL_13:
   v6[2] = __64__SUAutoInstallManager_trySchedulingAnotherTimeInInstallWindow___block_invoke;
   v6[3] = &unk_279CAA9C0;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = window;
   dispatch_async(stateQueue, v6);
 }
 
-- (void)_queue_trySchedulingAnotherTimeInInstallWindow:(double)a3
+- (void)_queue_trySchedulingAnotherTimeInInstallWindow:(double)window
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v5 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-  v20 = [v5 suEndDate];
+  forecast = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+  suEndDate = [forecast suEndDate];
 
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v7 = [MEMORY[0x277CCA968] localizedStringFromDate:v20 dateStyle:1 timeStyle:1];
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:window];
+  v7 = [MEMORY[0x277CCA968] localizedStringFromDate:suEndDate dateStyle:1 timeStyle:1];
   v8 = [MEMORY[0x277CCA968] localizedStringFromDate:v6 dateStyle:1 timeStyle:1];
-  if ([v6 compare:v20] == -1)
+  if ([v6 compare:suEndDate] == -1)
   {
     v17 = +[SUScheduler sharedInstance];
-    v18 = [(SUManagerInterface *)self->_manager download];
-    v19 = [v18 descriptor];
-    [v17 scheduleAutoInstallStartInstallTaskWithDate:v6 descriptor:v19 fromFailure:1];
+    download = [(SUManagerInterface *)self->_manager download];
+    descriptor = [download descriptor];
+    [v17 scheduleAutoInstallStartInstallTaskWithDate:v6 descriptor:descriptor fromFailure:1];
 
     v16 = @"Window ends on %@; attempting to reschedule auto install on %@";
   }
@@ -774,23 +774,23 @@ LABEL_13:
 
 - (BOOL)isAutoInstallOperationReadyToBegin
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  stateQueue = v2->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__SUAutoInstallManager_isAutoInstallOperationReadyToBegin__block_invoke;
   v5[3] = &unk_279CAA858;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(stateQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __58__SUAutoInstallManager_isAutoInstallOperationReadyToBegin__block_invoke(uint64_t a1)
@@ -827,9 +827,9 @@ uint64_t __58__SUAutoInstallManager_isAutoInstallOperationReadyToBegin__block_in
 {
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v3 = +[SUPreferences sharedInstance];
-  v4 = [v3 disableAutoInstallJitter];
+  disableAutoInstallJitter = [v3 disableAutoInstallJitter];
 
-  if (v4)
+  if (disableAutoInstallJitter)
   {
     SULogInfo(@"%s: disableAutoInstallJitter default is set, ignoring jitter", v5, v6, v7, v8, v9, v10, v11, "[SUAutoInstallManager noteAutoInstallOperationWantsToBegin]");
     stateQueue = self->_stateQueue;
@@ -1056,8 +1056,8 @@ LABEL_11:
       [(SUManagerInterface *)self->_manager autoSUFailedWithError:v28];
     }
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 postNotificationName:@"SUAutoInstallOperationDidExpireNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SUAutoInstallOperationDidExpireNotification" object:0];
   }
 
   [(SUManagerInterface *)self->_manager reportPostponedEvent:v28 withStatus:*MEMORY[0x277D64648]];
@@ -1067,9 +1067,9 @@ LABEL_11:
   [(SUAutoInstallManager *)self _queue_clearAutoInstallOperationForReason:@"Expired" disableKeybagStash:[(SUAutoInstallManager *)self isCurrentUpdateAutoUpdate]^ 1];
 }
 
-- (void)keybagInterfacePasscodeDidChange:(id)a3
+- (void)keybagInterfacePasscodeDidChange:(id)change
 {
-  SULogInfo(@"Device passcode changed", a2, a3, v3, v4, v5, v6, v7, v10);
+  SULogInfo(@"Device passcode changed", a2, change, v3, v4, v5, v6, v7, v10);
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1097,7 +1097,7 @@ uint64_t __57__SUAutoInstallManager_keybagInterfacePasscodeDidChange___block_inv
   return result;
 }
 
-- (void)passcodePolicyInterface:(id)a3 passcodePolicyTypeChanged:(unint64_t)a4
+- (void)passcodePolicyInterface:(id)interface passcodePolicyTypeChanged:(unint64_t)changed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -1109,12 +1109,12 @@ uint64_t __57__SUAutoInstallManager_keybagInterfacePasscodeDidChange___block_inv
     if (v9)
     {
       v10 = objc_loadWeakRetained(&self->_delegate);
-      [v10 autoInstallManager:self passcodePolicyChanged:a4 forOperation:self->_operationModel];
+      [v10 autoInstallManager:self passcodePolicyChanged:changed forOperation:self->_operationModel];
     }
   }
 }
 
-- (void)downloadWasInvalidated:(id)a3
+- (void)downloadWasInvalidated:(id)invalidated
 {
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1164,7 +1164,7 @@ uint64_t __59__SUAutoInstallManager_unattendedInstallationKeybagCreated__block_i
   return result;
 }
 
-- (void)installDidFinish:(id)a3
+- (void)installDidFinish:(id)finish
 {
   v4 = dispatch_time(0, 60000000000);
   stateQueue = self->_stateQueue;
@@ -1190,46 +1190,46 @@ void __41__SUAutoInstallManager_installDidFinish___block_invoke(uint64_t a1)
   [v1 cancelAutoInstallStartInstallTask];
 }
 
-- (void)installDidFail:(id)a3 withError:(id)a4
+- (void)installDidFail:(id)fail withError:(id)error
 {
-  v15 = a4;
+  errorCopy = error;
   [(SUAutoInstallManager *)self _installAttemptDone];
-  v5 = [v15 userInfo];
-  v6 = [v5 safeObjectForKey:@"SUAutomaticInstallation" ofClass:objc_opt_class()];
-  v7 = [v6 BOOLValue];
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo safeObjectForKey:@"SUAutomaticInstallation" ofClass:objc_opt_class()];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    SULogInfo(@"[SUAutoInstallManager] A previous auto installation failed due to error %@, retrying...", v8, v9, v10, v11, v12, v13, v14, v15);
+    SULogInfo(@"[SUAutoInstallManager] A previous auto installation failed due to error %@, retrying...", v8, v9, v10, v11, v12, v13, v14, errorCopy);
 
     [(SUAutoInstallManager *)self trySchedulingAutoInstallAgainLater];
   }
 
   else
   {
-    SULogInfo(@"[SUAutoInstallManager] A previous manual installation failed due to error %@, nothing to do here", v8, v9, v10, v11, v12, v13, v14, v15);
+    SULogInfo(@"[SUAutoInstallManager] A previous manual installation failed due to error %@, nothing to do here", v8, v9, v10, v11, v12, v13, v14, errorCopy);
   }
 }
 
 - (BOOL)_queue_isExpired
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
-  v4 = [v3 suEndDate];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 compare:v5] == -1;
+  forecast = [(_SUAutoInstallOperationModel *)self->_operationModel forecast];
+  suEndDate = [forecast suEndDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [suEndDate compare:date] == -1;
 
   return v6;
 }
 
-- (void)_queue_clearAutoInstallOperationForReason:(id)a3 disableKeybagStash:(BOOL)a4
+- (void)_queue_clearAutoInstallOperationForReason:(id)reason disableKeybagStash:(BOOL)stash
 {
-  v4 = a4;
+  stashCopy = stash;
   stateQueue = self->_stateQueue;
-  v7 = a3;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(stateQueue);
-  SULogInfo(@"clearing autoInstallOperation for reason: %@, destroying keybag stash: %@", v8, v9, v10, v11, v12, v13, v14, v7);
-  LODWORD(stateQueue) = [v7 isEqualToString:@"InstallDidFinish"];
+  SULogInfo(@"clearing autoInstallOperation for reason: %@, destroying keybag stash: %@", v8, v9, v10, v11, v12, v13, v14, reasonCopy);
+  LODWORD(stateQueue) = [reasonCopy isEqualToString:@"InstallDidFinish"];
 
   v15 = +[SUScheduler sharedInstance];
   [v15 cancelAllAutoInstallTasksIncludingStartInstallTask:stateQueue ^ 1];
@@ -1243,12 +1243,12 @@ void __41__SUAutoInstallManager_installDidFinish___block_invoke(uint64_t a1)
   if ((stateQueue & 1) == 0)
   {
     manager = self->_manager;
-    v31 = [(SUManagerInterface *)manager download];
-    v32 = [v31 descriptor];
-    [(SUManagerInterface *)manager badgeSettingsForManualSoftwareUpdate:v32];
+    download = [(SUManagerInterface *)manager download];
+    descriptor = [download descriptor];
+    [(SUManagerInterface *)manager badgeSettingsForManualSoftwareUpdate:descriptor];
   }
 
-  if (v4)
+  if (stashCopy)
   {
     [(SUManagerInterface *)self->_manager destroyInstallationKeybag];
   }
@@ -1314,9 +1314,9 @@ void __41__SUAutoInstallManager_installDidFinish___block_invoke(uint64_t a1)
   [v2 setAutoInstallActivityStateDone];
 }
 
-- (void)setFailedToAutoInstallError:(id)a3
+- (void)setFailedToAutoInstallError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -1324,19 +1324,19 @@ void __41__SUAutoInstallManager_installDidFinish___block_invoke(uint64_t a1)
   v7[2] = __52__SUAutoInstallManager_setFailedToAutoInstallError___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)_queue_setFailedToAutoInstallError:(id)a3
+- (void)_queue_setFailedToAutoInstallError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_stateQueue);
   SULogInfo(@"_failedToAutoInstallError changed from %@ to %@", v5, v6, v7, v8, v9, v10, v11, self->_failedToAutoInstallError);
   failedToAutoInstallError = self->_failedToAutoInstallError;
-  self->_failedToAutoInstallError = v4;
-  v13 = v4;
+  self->_failedToAutoInstallError = errorCopy;
+  v13 = errorCopy;
 
   [(SUState *)self->_state setFailedToAutoInstallError:v13];
   [(SUState *)self->_state save];
@@ -1348,11 +1348,11 @@ void __41__SUAutoInstallManager_installDidFinish___block_invoke(uint64_t a1)
   v10 = v2;
   if (v2)
   {
-    v11 = [v2 getUnlockAndSoftwareUpdateTimes];
-    v19 = v11;
-    if (v11)
+    getUnlockAndSoftwareUpdateTimes = [v2 getUnlockAndSoftwareUpdateTimes];
+    v19 = getUnlockAndSoftwareUpdateTimes;
+    if (getUnlockAndSoftwareUpdateTimes)
     {
-      v20 = [v11 objectForKeyedSubscript:*MEMORY[0x277CFE308]];
+      v20 = [getUnlockAndSoftwareUpdateTimes objectForKeyedSubscript:*MEMORY[0x277CFE308]];
     }
 
     else

@@ -7,13 +7,13 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIButtonAccessibility__MapKit__UIKit *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"AccessibilityMoreInfoButtonIdentifier"])
+  accessibilityIdentifier = [(UIButtonAccessibility__MapKit__UIKit *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"AccessibilityMoreInfoButtonIdentifier"])
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = AXMapKitLocString(@"MORE_INFO_WITH_CONTEXT");
-    v6 = [(UIButtonAccessibility__MapKit__UIKit *)self _accessibilityInfoButtonContext];
-    v7 = [v4 localizedStringWithFormat:v5, v6];
+    _accessibilityInfoButtonContext = [(UIButtonAccessibility__MapKit__UIKit *)self _accessibilityInfoButtonContext];
+    v7 = [v4 localizedStringWithFormat:v5, _accessibilityInfoButtonContext];
 
     goto LABEL_10;
   }
@@ -30,16 +30,16 @@
     {
       v12.receiver = self;
       v12.super_class = UIButtonAccessibility__MapKit__UIKit;
-      v10 = [(UIButtonAccessibility__MapKit__UIKit *)&v12 accessibilityLabel];
+      accessibilityLabel = [(UIButtonAccessibility__MapKit__UIKit *)&v12 accessibilityLabel];
       goto LABEL_9;
     }
 
     v9 = @"MORE_INFO";
   }
 
-  v10 = AXMapKitLocString(v9);
+  accessibilityLabel = AXMapKitLocString(v9);
 LABEL_9:
-  v7 = v10;
+  v7 = accessibilityLabel;
 
 LABEL_10:
 
@@ -53,15 +53,15 @@ LABEL_10:
   if (v2)
   {
     v4 = [v2 safeValueForKey:@"_title"];
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
   }
 
   else
   {
-    v5 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

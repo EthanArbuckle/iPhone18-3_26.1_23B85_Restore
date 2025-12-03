@@ -1,71 +1,71 @@
 @interface CarplayDetailViewController
 - (BOOL)organizerCanBeMessaged;
-- (CarplayDetailViewController)initWithEvent:(id)a3 showDayName:(BOOL)a4;
+- (CarplayDetailViewController)initWithEvent:(id)event showDayName:(BOOL)name;
 - (id)_createTableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)_donateUserActivity:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)_donateUserActivity:(id)activity;
 - (void)_initActionIdentifiers;
 - (void)createAndActivateLayoutConstraints;
-- (void)eventStoreChanged:(id)a3;
-- (void)pushViewController:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)eventStoreChanged:(id)changed;
+- (void)pushViewController:(id)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateViewWithEvent;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarplayDetailViewController
 
-- (CarplayDetailViewController)initWithEvent:(id)a3 showDayName:(BOOL)a4
+- (CarplayDetailViewController)initWithEvent:(id)event showDayName:(BOOL)name
 {
-  v7 = a3;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = CarplayDetailViewController;
   v8 = [(CarplayDetailViewController *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_showDayName = a4;
-    objc_storeStrong(&v8->_event, a3);
+    v8->_showDayName = name;
+    objc_storeStrong(&v8->_event, event);
     v10 = objc_opt_new();
     actionIdentifiers = v9->_actionIdentifiers;
     v9->_actionIdentifiers = v10;
 
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"Event Details" value:&stru_1002133B8 table:0];
-    v14 = [(CarplayDetailViewController *)v9 navigationItem];
-    [v14 setTitle:v13];
+    navigationItem = [(CarplayDetailViewController *)v9 navigationItem];
+    [navigationItem setTitle:v13];
 
     [(CarplayDetailViewController *)v9 _initActionIdentifiers];
     [(CarplayDetailViewController *)v9 _donateUserActivity:v9->_event];
-    [EKMapsUtilities geocodeEventIfNeeded:v7];
+    [EKMapsUtilities geocodeEventIfNeeded:eventCopy];
   }
 
   return v9;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(CarplayDetailViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0];
+  appearCopy = appear;
+  navigationController = [(CarplayDetailViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0];
 
   v6 = +[NSNotificationCenter defaultCenter];
   [v6 addObserver:self selector:"eventStoreChanged:" name:EKEventStoreChangedNotification object:0];
   v7.receiver = self;
   v7.super_class = CarplayDetailViewController;
-  [(CarplayDetailViewController *)&v7 viewWillAppear:v3];
+  [(CarplayDetailViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 removeObserver:self name:EKEventStoreChangedNotification object:0];
   v6.receiver = self;
   v6.super_class = CarplayDetailViewController;
-  [(CarplayDetailViewController *)&v6 viewWillDisappear:v3];
+  [(CarplayDetailViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (id)_createTableView
@@ -129,12 +129,12 @@
 
   if (!self->_tableView)
   {
-    v11 = [(CarplayDetailViewController *)self _createTableView];
+    _createTableView = [(CarplayDetailViewController *)self _createTableView];
     tableView = self->_tableView;
-    self->_tableView = v11;
+    self->_tableView = _createTableView;
 
-    v13 = [(CarplayDetailViewController *)self view];
-    [v13 addSubview:self->_tableView];
+    view = [(CarplayDetailViewController *)self view];
+    [view addSubview:self->_tableView];
 
     [(CarplayDetailViewController *)self createAndActivateLayoutConstraints];
   }
@@ -142,30 +142,30 @@
 
 - (void)createAndActivateLayoutConstraints
 {
-  v3 = [(CarplayDetailViewController *)self view];
+  view = [(CarplayDetailViewController *)self view];
   if (CalSystemSolariumEnabled())
   {
     v4 = +[UIColor clearColor];
-    [v3 setBackgroundColor:v4];
+    [view setBackgroundColor:v4];
   }
 
-  v19 = [(UITableView *)self->_tableView leadingAnchor];
-  v20 = [v3 safeAreaLayoutGuide];
-  v18 = [v20 leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v17;
-  v15 = [(UITableView *)self->_tableView trailingAnchor];
-  v16 = [v3 safeAreaLayoutGuide];
-  v5 = [v16 trailingAnchor];
-  v6 = [v15 constraintEqualToAnchor:v5];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v6 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v6;
-  v7 = [(UITableView *)self->_tableView topAnchor];
-  v8 = [v3 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v9;
-  v10 = [(UITableView *)self->_tableView bottomAnchor];
-  v11 = [v3 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v12;
   v13 = [NSArray arrayWithObjects:v21 count:4];
   [v14 activateConstraints:v13];
@@ -173,11 +173,11 @@
 
 - (BOOL)organizerCanBeMessaged
 {
-  v3 = [(EKEvent *)self->_event organizer];
-  if (v3)
+  organizer = [(EKEvent *)self->_event organizer];
+  if (organizer)
   {
-    v4 = [(EKEvent *)self->_event organizer];
-    v5 = [v4 isCurrentUser] ^ 1;
+    organizer2 = [(EKEvent *)self->_event organizer];
+    v5 = [organizer2 isCurrentUser] ^ 1;
   }
 
   else
@@ -188,7 +188,7 @@
   return v5;
 }
 
-- (void)eventStoreChanged:(id)a3
+- (void)eventStoreChanged:(id)changed
 {
   if (([(EKEvent *)self->_event refreshIfRefreshableAndNotify:1]& 1) != 0)
   {
@@ -198,8 +198,8 @@
 
   else
   {
-    v5 = [(CarplayDetailViewController *)self navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
+    navigationController = [(CarplayDetailViewController *)self navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -211,53 +211,53 @@
   [(UITableView *)tableView reloadData];
 }
 
-- (void)_donateUserActivity:(id)a3
+- (void)_donateUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [[NSUserActivity alloc] initWithActivityType:@"com.apple.mobilecal"];
   v6 = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"com.apple.mobilecal"];
-  v7 = [v4 title];
-  [v6 setContentDescription:v7];
+  title = [activityCopy title];
+  [v6 setContentDescription:title];
 
-  v8 = [v4 structuredLocation];
-  v9 = v8;
-  if (v8)
+  structuredLocation = [activityCopy structuredLocation];
+  v9 = structuredLocation;
+  if (structuredLocation)
   {
-    v10 = [v8 title];
-    [v6 setNamedLocation:v10];
+    title2 = [structuredLocation title];
+    [v6 setNamedLocation:title2];
 
-    v11 = [v9 geoLocation];
-    [v11 coordinate];
+    geoLocation = [v9 geoLocation];
+    [geoLocation coordinate];
     v12 = [NSNumber numberWithDouble:?];
     [v6 setLatitude:v12];
 
-    v13 = [v9 geoLocation];
-    [v13 coordinate];
+    geoLocation2 = [v9 geoLocation];
+    [geoLocation2 coordinate];
     v15 = [NSNumber numberWithDouble:v14];
     [v6 setLongitude:v15];
 
     [v6 setSupportsNavigation:&__kCFBooleanTrue];
   }
 
-  v16 = [v4 virtualConference];
-  v17 = [v16 firstPhoneNumber];
-  v18 = v17;
-  if (v17)
+  virtualConference = [activityCopy virtualConference];
+  firstPhoneNumber = [virtualConference firstPhoneNumber];
+  v18 = firstPhoneNumber;
+  if (firstPhoneNumber)
   {
-    v19 = v17;
+    conferenceURLForDisplay = firstPhoneNumber;
   }
 
   else
   {
-    v19 = [v4 conferenceURLForDisplay];
+    conferenceURLForDisplay = [activityCopy conferenceURLForDisplay];
   }
 
-  v20 = v19;
+  v20 = conferenceURLForDisplay;
 
   if ([v20 cal_hasSchemeTel])
   {
-    v21 = [v20 absoluteString];
-    v23 = v21;
+    absoluteString = [v20 absoluteString];
+    v23 = absoluteString;
     v22 = [NSArray arrayWithObjects:&v23 count:1];
     [v6 setPhoneNumbers:v22];
 
@@ -271,13 +271,13 @@
   [(CarplayDetailViewController *)self setUserActivity:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   actionIdentifiers = self->_actionIdentifiers;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](actionIdentifiers, "objectAtIndexedSubscript:", [v7 row]);
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9 forIndexPath:v7];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](actionIdentifiers, "objectAtIndexedSubscript:", [pathCopy row]);
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   if ([v10 conformsToProtocol:&OBJC_PROTOCOL___DayNameToggleable])
   {
@@ -290,13 +290,13 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   if ([v6 isSelectable])
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else
@@ -307,20 +307,20 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  viewCopy = view;
+  v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v7 cellWasTapped];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)pushViewController:(id)a3
+- (void)pushViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CarplayDetailViewController *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  controllerCopy = controller;
+  navigationController = [(CarplayDetailViewController *)self navigationController];
+  [navigationController pushViewController:controllerCopy animated:1];
 }
 
 @end

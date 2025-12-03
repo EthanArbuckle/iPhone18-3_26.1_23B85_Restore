@@ -1,24 +1,24 @@
 @interface _CNImageDataDonationValue
-- (BOOL)isEqual:(id)a3;
-- (_CNImageDataDonationValue)initWithCoder:(id)a3;
-- (_CNImageDataDonationValue)initWithImageData:(id)a3 origin:(id)a4;
-- (id)copyWithNewExpirationDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CNImageDataDonationValue)initWithCoder:(id)coder;
+- (_CNImageDataDonationValue)initWithImageData:(id)data origin:(id)origin;
+- (id)copyWithNewExpirationDate:(id)date;
 - (unint64_t)hash;
-- (void)acceptDonationValueVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptDonationValueVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CNImageDataDonationValue
 
-- (_CNImageDataDonationValue)initWithImageData:(id)a3 origin:(id)a4
+- (_CNImageDataDonationValue)initWithImageData:(id)data origin:(id)origin
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = _CNImageDataDonationValue;
-  v7 = [(CNDonationValue *)&v12 initWithOrigin:a4];
+  v7 = [(CNDonationValue *)&v12 initWithOrigin:origin];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dataCopy copy];
     imageData = v7->_imageData;
     v7->_imageData = v8;
 
@@ -28,29 +28,29 @@
   return v7;
 }
 
-- (id)copyWithNewExpirationDate:(id)a3
+- (id)copyWithNewExpirationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CNDonationValue *)self origin];
-  v6 = [v5 mutableCopy];
+  dateCopy = date;
+  origin = [(CNDonationValue *)self origin];
+  v6 = [origin mutableCopy];
 
-  [v6 setExpirationDate:v4];
+  [v6 setExpirationDate:dateCopy];
   v7 = objc_alloc(objc_opt_class());
-  v8 = [(_CNImageDataDonationValue *)self imageData];
-  v9 = [v7 initWithImageData:v8 origin:v6];
+  imageData = [(_CNImageDataDonationValue *)self imageData];
+  v9 = [v7 initWithImageData:imageData origin:v6];
 
   return v9;
 }
 
-- (_CNImageDataDonationValue)initWithCoder:(id)a3
+- (_CNImageDataDonationValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _CNImageDataDonationValue;
-  v5 = [(CNDonationValue *)&v11 initWithCoder:v4];
+  v5 = [(CNDonationValue *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
     v7 = [v6 copy];
     imageData = v5->_imageData;
     v5->_imageData = v7;
@@ -61,34 +61,34 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _CNImageDataDonationValue;
-  v4 = a3;
-  [(CNDonationValue *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_imageData forKey:{@"_imageData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNDonationValue *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_imageData forKey:{@"_imageData", v5.receiver, v5.super_class}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CFBE18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __37___CNImageDataDonationValue_isEqual___block_invoke;
   v15[3] = &unk_2785698D8;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __37___CNImageDataDonationValue_isEqual___block_invoke_2;
   v12 = &unk_2785698D8;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = MEMORY[0x22AA69CD0](&v9);
-  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, v9, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, v9, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -112,11 +112,11 @@
   return v4;
 }
 
-- (void)acceptDonationValueVisitor:(id)a3
+- (void)acceptDonationValueVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [(_CNImageDataDonationValue *)self imageData];
-  [v4 visitDonationValue:self imageData:v5];
+  visitorCopy = visitor;
+  imageData = [(_CNImageDataDonationValue *)self imageData];
+  [visitorCopy visitDonationValue:self imageData:imageData];
 }
 
 @end

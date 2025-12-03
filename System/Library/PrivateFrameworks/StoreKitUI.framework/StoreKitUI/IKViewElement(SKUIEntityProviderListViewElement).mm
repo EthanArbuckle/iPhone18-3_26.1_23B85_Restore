@@ -7,10 +7,10 @@
 - (id)entityProviderList
 {
   v14 = *MEMORY[0x277D85DE8];
-  v1 = [a1 appDocument];
-  v2 = [v1 headElement];
+  appDocument = [self appDocument];
+  headElement = [appDocument headElement];
 
-  [v2 children];
+  [headElement children];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;

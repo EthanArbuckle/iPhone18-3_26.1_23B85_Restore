@@ -1,30 +1,30 @@
 @interface ALAssetsGroupPrivate
-- (ALAssetsGroupPrivate)initWithAlbum:(id)a3 library:(id)a4;
-- (id)valueForProperty:(id)a3;
+- (ALAssetsGroupPrivate)initWithAlbum:(id)album library:(id)library;
+- (id)valueForProperty:(id)property;
 - (int)albumFilter;
-- (void)_performBlockAndWait:(id)a3;
+- (void)_performBlockAndWait:(id)wait;
 - (void)dealloc;
 - (void)populateAssets;
 - (void)resetAssets;
-- (void)setAssetsFilter:(id)a3;
-- (void)setValue:(id)a3 forProperty:(id)a4;
+- (void)setAssetsFilter:(id)filter;
+- (void)setValue:(id)value forProperty:(id)property;
 - (void)updateAlbumFiltering;
 @end
 
 @implementation ALAssetsGroupPrivate
 
-- (void)_performBlockAndWait:(id)a3
+- (void)_performBlockAndWait:(id)wait
 {
-  v5 = [(ALAssetsGroupPrivate *)self library];
-  if (v5)
+  library = [(ALAssetsGroupPrivate *)self library];
+  if (library)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __45__ALAssetsGroupPrivate__performBlockAndWait___block_invoke;
     v9[3] = &unk_278A07C08;
     v9[4] = self;
-    v9[5] = a3;
-    [(ALAssetsLibrary *)v5 _performBlockAndWait:v9];
+    v9[5] = wait;
+    [(ALAssetsLibrary *)library _performBlockAndWait:v9];
   }
 
   else if (_CFExecutableLinkedOnOrAfter())
@@ -52,7 +52,7 @@
       block[7] = __45__ALAssetsGroupPrivate__performBlockAndWait___block_invoke_3;
       block[8] = &unk_278A07C30;
       block[9] = self;
-      block[10] = a3;
+      block[10] = wait;
     }
 
     else
@@ -64,7 +64,7 @@
       block[13] = __45__ALAssetsGroupPrivate__performBlockAndWait___block_invoke_2;
       block[14] = &unk_278A07C30;
       block[15] = self;
-      block[16] = a3;
+      block[16] = wait;
     }
 
     [(PLPhotoLibrary *)photoLibrary withDispatchGroup:v6 performBlock:?];
@@ -121,20 +121,20 @@ void __45__ALAssetsGroupPrivate__performBlockAndWait___block_invoke_4(uint64_t a
   NSLog(&cfstr_InvalidAttempt.isa, v3, *(a1 + 32));
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4
+- (void)setValue:(id)value forProperty:(id)property
 {
   propertyValues = self->_propertyValues;
   objc_sync_enter(propertyValues);
-  [(NSMutableDictionary *)self->_propertyValues setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->_propertyValues setObject:value forKey:property];
 
   objc_sync_exit(propertyValues);
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
   propertyValues = self->_propertyValues;
   objc_sync_enter(propertyValues);
-  v6 = [(NSMutableDictionary *)self->_propertyValues objectForKey:a3];
+  v6 = [(NSMutableDictionary *)self->_propertyValues objectForKey:property];
   objc_sync_exit(propertyValues);
   return v6;
 }
@@ -197,9 +197,9 @@ uint64_t __44__ALAssetsGroupPrivate_updateAlbumFiltering__block_invoke(uint64_t 
     v4 = [(ALAssetsFilter *)assetsFilter _filter]| 0x2600;
   }
 
-  v5 = [(ALAssetsGroupPrivate *)self isCloudSharedGroup];
+  isCloudSharedGroup = [(ALAssetsGroupPrivate *)self isCloudSharedGroup];
   v6 = v4 | 0x80;
-  if (!v5)
+  if (!isCloudSharedGroup)
   {
     v6 = v4;
   }
@@ -224,13 +224,13 @@ uint64_t __44__ALAssetsGroupPrivate_updateAlbumFiltering__block_invoke(uint64_t 
   return v9 | 0x1000;
 }
 
-- (void)setAssetsFilter:(id)a3
+- (void)setAssetsFilter:(id)filter
 {
   assetsFilter = self->_assetsFilter;
-  if (assetsFilter != a3)
+  if (assetsFilter != filter)
   {
 
-    self->_assetsFilter = a3;
+    self->_assetsFilter = filter;
 
     [(ALAssetsGroupPrivate *)self updateAlbumFiltering];
   }
@@ -246,7 +246,7 @@ uint64_t __44__ALAssetsGroupPrivate_updateAlbumFiltering__block_invoke(uint64_t 
   [(ALAssetsGroupPrivate *)&v3 dealloc];
 }
 
-- (ALAssetsGroupPrivate)initWithAlbum:(id)a3 library:(id)a4
+- (ALAssetsGroupPrivate)initWithAlbum:(id)album library:(id)library
 {
   v9.receiver = self;
   v9.super_class = ALAssetsGroupPrivate;
@@ -258,11 +258,11 @@ uint64_t __44__ALAssetsGroupPrivate_updateAlbumFiltering__block_invoke(uint64_t 
       v6->_applyHyperionFilter = 1;
     }
 
-    [(ALAssetsGroupPrivate *)v6 setAlbum:a3];
+    [(ALAssetsGroupPrivate *)v6 setAlbum:album];
     v6->_propertyValues = objc_alloc_init(MEMORY[0x277CBEB38]);
     v6->_loadedAssets = 0;
     v6->_isValid = 1;
-    [(ALAssetsGroupPrivate *)v6 setLibrary:a4];
+    [(ALAssetsGroupPrivate *)v6 setLibrary:library];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __46__ALAssetsGroupPrivate_initWithAlbum_library___block_invoke;

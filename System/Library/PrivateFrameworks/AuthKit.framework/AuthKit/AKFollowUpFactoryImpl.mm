@@ -1,32 +1,32 @@
 @interface AKFollowUpFactoryImpl
-- (BOOL)IsFollowUpItemNotificationForced:(id)a3;
-- (BOOL)_itemShouldSuppressNotification:(id)a3;
-- (id)_actionFromInfo:(id)a3 pushMessageInfo:(id)a4;
-- (id)_actionsFromPayload:(id)a3 pushMessageInfo:(id)a4;
+- (BOOL)IsFollowUpItemNotificationForced:(id)forced;
+- (BOOL)_itemShouldSuppressNotification:(id)notification;
+- (id)_actionFromInfo:(id)info pushMessageInfo:(id)messageInfo;
+- (id)_actionsFromPayload:(id)payload pushMessageInfo:(id)info;
 - (id)_clearAction;
-- (id)_extensionIDFromPayload:(id)a3;
-- (id)_groupIdentifierFromPayload:(id)a3;
-- (id)_itemFromPayload:(id)a3 pushMessageInfo:(id)a4 withAltDSID:(id)a5;
-- (id)_notificationFromPayload:(id)a3 pushMessageInfo:(id)a4;
-- (id)actionWithTitle:(id)a3 andActionKey:(id)a4;
-- (id)itemIdentifiersRequiringNotificationClearFromPayload:(id)a3;
-- (id)itemsForAltDSID:(id)a3 pushMessageInfo:(id)a4 fromIDMSPayload:(id)a5;
+- (id)_extensionIDFromPayload:(id)payload;
+- (id)_groupIdentifierFromPayload:(id)payload;
+- (id)_itemFromPayload:(id)payload pushMessageInfo:(id)info withAltDSID:(id)d;
+- (id)_notificationFromPayload:(id)payload pushMessageInfo:(id)info;
+- (id)actionWithTitle:(id)title andActionKey:(id)key;
+- (id)itemIdentifiersRequiringNotificationClearFromPayload:(id)payload;
+- (id)itemsForAltDSID:(id)d pushMessageInfo:(id)info fromIDMSPayload:(id)payload;
 @end
 
 @implementation AKFollowUpFactoryImpl
 
-- (id)itemsForAltDSID:(id)a3 pushMessageInfo:(id)a4 fromIDMSPayload:(id)a5
+- (id)itemsForAltDSID:(id)d pushMessageInfo:(id)info fromIDMSPayload:(id)payload
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, info);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, payload);
   v8 = v13;
-  v10 = MEMORY[0x1E69E5928](v16);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   v11 = MEMORY[0x1E69E5928](v14);
   v12 = MEMORY[0x1E69E5928](location[0]);
   v9 = [v8 aaf_map:?];
@@ -51,12 +51,12 @@ id __73__AKFollowUpFactoryImpl_itemsForAltDSID_pushMessageInfo_fromIDMSPayload__
   return v4;
 }
 
-- (id)itemIdentifiersRequiringNotificationClearFromPayload:(id)a3
+- (id)itemIdentifiersRequiringNotificationClearFromPayload:(id)payload
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v4 = [location[0] aaf_map:&__block_literal_global_30];
   objc_storeStrong(location, 0);
 
@@ -97,12 +97,12 @@ id __78__AKFollowUpFactoryImpl_itemIdentifiersRequiringNotificationClearFromPayl
   return v3;
 }
 
-- (BOOL)_itemShouldSuppressNotification:(id)a3
+- (BOOL)_itemShouldSuppressNotification:(id)notification
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v9 = [location[0] objectForKeyedSubscript:@"id"];
   if ([v9 isEqualToString:@"adpUpsell"])
   {
@@ -130,17 +130,17 @@ id __78__AKFollowUpFactoryImpl_itemIdentifiersRequiringNotificationClearFromPayl
   return v11 & 1;
 }
 
-- (id)_itemFromPayload:(id)a3 pushMessageInfo:(id)a4 withAltDSID:(id)a5
+- (id)_itemFromPayload:(id)payload pushMessageInfo:(id)info withAltDSID:(id)d
 {
   v65 = *MEMORY[0x1E69E9840];
-  v61 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v59 = 0;
-  objc_storeStrong(&v59, a4);
+  objc_storeStrong(&v59, info);
   v58 = 0;
-  objc_storeStrong(&v58, a5);
+  objc_storeStrong(&v58, d);
   v57 = _AKLogSystem();
   v56 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
@@ -192,13 +192,13 @@ id __78__AKFollowUpFactoryImpl_itemIdentifiersRequiringNotificationClearFromPayl
   v48 = [location[0] objectForKeyedSubscript:@"iconName"];
   v47 = [location[0] objectForKeyedSubscript:@"notifyingAppBundleID"];
   [v50 setUniqueIdentifier:v55];
-  v27 = [(AKFollowUpFactoryImpl *)v61 _extensionIDFromPayload:location[0]];
+  v27 = [(AKFollowUpFactoryImpl *)selfCopy _extensionIDFromPayload:location[0]];
   [v50 setExtensionIdentifier:?];
   MEMORY[0x1E69E5920](v27);
-  v28 = [(AKFollowUpFactoryImpl *)v61 _actionsFromPayload:location[0] pushMessageInfo:v59];
+  v28 = [(AKFollowUpFactoryImpl *)selfCopy _actionsFromPayload:location[0] pushMessageInfo:v59];
   [v50 setActions:?];
   MEMORY[0x1E69E5920](v28);
-  v29 = [(AKFollowUpFactoryImpl *)v61 _notificationFromPayload:location[0] pushMessageInfo:v59];
+  v29 = [(AKFollowUpFactoryImpl *)selfCopy _notificationFromPayload:location[0] pushMessageInfo:v59];
   [v50 setNotification:?];
   MEMORY[0x1E69E5920](v29);
   v30 = [location[0] objectForKeyedSubscript:@"title"];
@@ -211,29 +211,29 @@ id __78__AKFollowUpFactoryImpl_itemIdentifiersRequiringNotificationClearFromPayl
 
   else
   {
-    v46 = [v50 notification];
+    notification = [v50 notification];
     v45 = 1;
-    v44 = [v46 title];
+    title = [notification title];
     v43 = 1;
-    v26 = v44;
+    v26 = title;
   }
 
   [v50 setTitle:v26];
   if (v43)
   {
-    MEMORY[0x1E69E5920](v44);
+    MEMORY[0x1E69E5920](title);
   }
 
   if (v45)
   {
-    MEMORY[0x1E69E5920](v46);
+    MEMORY[0x1E69E5920](notification);
   }
 
   MEMORY[0x1E69E5920](v30);
   v24 = [location[0] objectForKeyedSubscript:@"body"];
   [v50 setInformativeText:?];
   MEMORY[0x1E69E5920](v24);
-  v25 = [(AKFollowUpFactoryImpl *)v61 _groupIdentifierFromPayload:location[0]];
+  v25 = [(AKFollowUpFactoryImpl *)selfCopy _groupIdentifierFromPayload:location[0]];
   [v50 setGroupIdentifier:?];
   MEMORY[0x1E69E5920](v25);
   if (v49)
@@ -243,7 +243,7 @@ id __78__AKFollowUpFactoryImpl_itemIdentifiersRequiringNotificationClearFromPayl
 
   else
   {
-    [v50 setRepresentingBundlePath:v61->_representingBundlePath];
+    [v50 setRepresentingBundlePath:selfCopy->_representingBundlePath];
   }
 
   if (v48)
@@ -253,13 +253,13 @@ id __78__AKFollowUpFactoryImpl_itemIdentifiersRequiringNotificationClearFromPayl
 
   else
   {
-    [v50 setBundleIconName:v61->_bundleIconName];
+    [v50 setBundleIconName:selfCopy->_bundleIconName];
   }
 
   v22 = [location[0] objectForKeyedSubscript:@"priority"];
-  v23 = [v22 integerValue];
+  integerValue = [v22 integerValue];
   MEMORY[0x1E69E5920](v22);
-  switch(v23)
+  switch(integerValue)
   {
     case 0:
       goto LABEL_31;
@@ -276,33 +276,33 @@ LABEL_31:
   }
 
   v20 = [location[0] objectForKeyedSubscript:@"zeroAction"];
-  v21 = [v20 BOOLValue];
+  bOOLValue = [v20 BOOLValue];
   MEMORY[0x1E69E5920](v20);
-  if (v21)
+  if (bOOLValue)
   {
     [v50 setDisplayStyle:{objc_msgSend(v50, "displayStyle") | 2}];
   }
 
   v18 = [location[0] objectForKeyedSubscript:@"badgeOnly"];
-  v19 = [v18 BOOLValue];
+  bOOLValue2 = [v18 BOOLValue];
   MEMORY[0x1E69E5920](v18);
-  if (v19)
+  if (bOOLValue2)
   {
     [v50 setDisplayStyle:{objc_msgSend(v50, "displayStyle") | 8}];
   }
 
   v16 = [location[0] objectForKeyedSubscript:@"omitBadge"];
-  v17 = [v16 BOOLValue];
+  bOOLValue3 = [v16 BOOLValue];
   MEMORY[0x1E69E5920](v16);
-  if (v17)
+  if (bOOLValue3)
   {
     [v50 setDisplayStyle:{objc_msgSend(v50, "displayStyle") | 0x10}];
   }
 
-  v42 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (v58)
   {
-    [v42 setObject:v58 forKeyedSubscript:@"AKFollowUpAltDSIDKey"];
+    [dictionary setObject:v58 forKeyedSubscript:@"AKFollowUpAltDSIDKey"];
   }
 
   v15 = [location[0] objectForKeyedSubscript:@"idmsdata"];
@@ -310,7 +310,7 @@ LABEL_31:
   if (v15)
   {
     v14 = [location[0] objectForKeyedSubscript:@"idmsdata"];
-    [v42 setObject:? forKeyedSubscript:?];
+    [dictionary setObject:? forKeyedSubscript:?];
     MEMORY[0x1E69E5920](v14);
   }
 
@@ -319,7 +319,7 @@ LABEL_31:
   if (v13)
   {
     v12 = [v59 objectForKeyedSubscript:@"txnid"];
-    [v42 setObject:? forKeyedSubscript:?];
+    [dictionary setObject:? forKeyedSubscript:?];
     MEMORY[0x1E69E5920](v12);
   }
 
@@ -328,13 +328,13 @@ LABEL_31:
   if (v11)
   {
     v10 = [v59 objectForKeyedSubscript:?];
-    [v42 setObject:? forKeyedSubscript:?];
+    [dictionary setObject:? forKeyedSubscript:?];
     MEMORY[0x1E69E5920](v10);
   }
 
   else
   {
-    [v42 setObject:&unk_1F07B4F70 forKeyedSubscript:@"cmd"];
+    [dictionary setObject:&unk_1F07B4F70 forKeyedSubscript:@"cmd"];
   }
 
   if (v47)
@@ -348,11 +348,11 @@ LABEL_31:
     }
 
     objc_storeStrong(&v41, 0);
-    [v42 setObject:v47 forKeyedSubscript:@"notifyingAppId"];
+    [dictionary setObject:v47 forKeyedSubscript:@"notifyingAppId"];
   }
 
-  [v50 setUserInfo:v42];
-  if ([(AKFollowUpFactoryImpl *)v61 _itemShouldSuppressNotification:location[0]])
+  [v50 setUserInfo:dictionary];
+  if ([(AKFollowUpFactoryImpl *)selfCopy _itemShouldSuppressNotification:location[0]])
   {
     oslog = _AKLogSystem();
     v38 = OS_LOG_TYPE_DEBUG;
@@ -370,7 +370,7 @@ LABEL_31:
 
   v62 = MEMORY[0x1E69E5928](v50);
   v51 = 1;
-  objc_storeStrong(&v42, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(&v47, 0);
   objc_storeStrong(&v48, 0);
   objc_storeStrong(&v49, 0);
@@ -386,33 +386,33 @@ LABEL_56:
   return v6;
 }
 
-- (id)_extensionIDFromPayload:(id)a3
+- (id)_extensionIDFromPayload:(id)payload
 {
   v12 = *MEMORY[0x1E69E9840];
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v7 = [location[0] objectForKeyedSubscript:@"extension"];
   if (v7 && [v7 length])
   {
     if ([v7 isEqual:@"data"])
     {
-      v10 = MEMORY[0x1E69E5928](@"com.apple.CoreCDPUI.CDPFollowUpExtension");
+      extensionIdentifier = MEMORY[0x1E69E5928](@"com.apple.CoreCDPUI.CDPFollowUpExtension");
       v6 = 1;
       goto LABEL_13;
     }
 
     if ([v7 isEqual:@"account"])
     {
-      v10 = MEMORY[0x1E69E5928](@"com.apple.AuthKitUI.AKFollowUpServerUIExtension");
+      extensionIdentifier = MEMORY[0x1E69E5928](@"com.apple.AuthKitUI.AKFollowUpServerUIExtension");
       v6 = 1;
       goto LABEL_13;
     }
 
     if ([v7 isEqual:@"threatNotification"])
     {
-      v10 = MEMORY[0x1E69E5928](@"com.apple.ThreatNotificationUI.FollowUpExtension");
+      extensionIdentifier = MEMORY[0x1E69E5928](@"com.apple.ThreatNotificationUI.FollowUpExtension");
       v6 = 1;
       goto LABEL_13;
     }
@@ -427,23 +427,23 @@ LABEL_56:
     objc_storeStrong(&oslog, 0);
   }
 
-  v10 = [(AKFollowUpFactoryImpl *)v9 extensionIdentifier];
+  extensionIdentifier = [(AKFollowUpFactoryImpl *)selfCopy extensionIdentifier];
   v6 = 1;
 LABEL_13:
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x1E69E9840];
-  v3 = v10;
+  v3 = extensionIdentifier;
 
   return v3;
 }
 
-- (id)_groupIdentifierFromPayload:(id)a3
+- (id)_groupIdentifierFromPayload:(id)payload
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v12 = [location[0] objectForKeyedSubscript:@"groupId"];
   v11 = [location[0] objectForKeyedSubscript:@"id"];
   if ([v12 isEqualToString:@"noGroup"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"com.apple.ThreatNotificationUI.FollowUpItem.general"))
@@ -498,17 +498,17 @@ LABEL_13:
   return v5;
 }
 
-- (id)_actionsFromPayload:(id)a3 pushMessageInfo:(id)a4
+- (id)_actionsFromPayload:(id)payload pushMessageInfo:(id)info
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, info);
   v10 = [location[0] objectForKeyedSubscript:@"actions"];
   v6 = v10;
-  v8 = MEMORY[0x1E69E5928](v13);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   v9 = MEMORY[0x1E69E5928](v11);
   v7 = [v6 aaf_map:?];
   objc_storeStrong(&v9, 0);
@@ -531,14 +531,14 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
   return v4;
 }
 
-- (id)_actionFromInfo:(id)a3 pushMessageInfo:(id)a4
+- (id)_actionFromInfo:(id)info pushMessageInfo:(id)messageInfo
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, messageInfo);
   if (CoreFollowUpLibraryCore(0))
   {
     v4 = objc_alloc_init(getFLFollowUpActionClass());
@@ -557,38 +557,38 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
   v14 = [location[0] objectForKeyedSubscript:@"localUrlKey"];
   v13 = [location[0] objectForKeyedSubscript:@"root"];
   v8 = [v20 objectForKeyedSubscript:@"cmd"];
-  v9 = [v8 unsignedIntValue];
+  unsignedIntValue = [v8 unsignedIntValue];
   MEMORY[0x1E69E5920](v8);
-  v12 = v9;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  v12 = unsignedIntValue;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (v17)
   {
-    [v11 setObject:v17 forKeyedSubscript:@"ak-action"];
+    [dictionary setObject:v17 forKeyedSubscript:@"ak-action"];
   }
 
   if (v16)
   {
-    [v11 setObject:v16 forKeyedSubscript:@"ak-native-action"];
+    [dictionary setObject:v16 forKeyedSubscript:@"ak-native-action"];
   }
 
   if (v18)
   {
-    [v11 setObject:v18 forKeyedSubscript:@"AKFollowUpServerURL"];
+    [dictionary setObject:v18 forKeyedSubscript:@"AKFollowUpServerURL"];
   }
 
   if (v15)
   {
-    [v11 setObject:v15 forKeyedSubscript:@"AKFollowUpSafariURL"];
+    [dictionary setObject:v15 forKeyedSubscript:@"AKFollowUpSafariURL"];
   }
 
   if (v14)
   {
-    [v11 setObject:v14 forKeyedSubscript:@"AKFollowUpLocalURLKey"];
+    [dictionary setObject:v14 forKeyedSubscript:@"AKFollowUpLocalURLKey"];
   }
 
   if (v13)
   {
-    [v11 setObject:v13 forKeyedSubscript:@"AKFollowUpAppleAccountRootKey"];
+    [dictionary setObject:v13 forKeyedSubscript:@"AKFollowUpAppleAccountRootKey"];
   }
 
   if (v12 == 1900)
@@ -596,12 +596,12 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
     [v19 setIdentifier:@"continuity_push_followup_notification"];
   }
 
-  [v19 setUserInfo:v11];
+  [v19 setUserInfo:dictionary];
   v6 = [location[0] objectForKeyedSubscript:@"title"];
   [v19 setLabel:?];
   MEMORY[0x1E69E5920](v6);
   v7 = MEMORY[0x1E69E5928](v19);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
@@ -615,21 +615,21 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
   return v7;
 }
 
-- (id)_notificationFromPayload:(id)a3 pushMessageInfo:(id)a4
+- (id)_notificationFromPayload:(id)payload pushMessageInfo:(id)info
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v98 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v96 = 0;
-  objc_storeStrong(&v96, a4);
+  objc_storeStrong(&v96, info);
   v95 = 0;
   v94 = [location[0] objectForKeyedSubscript:@"notification"];
   v64 = [v96 objectForKeyedSubscript:@"cmd"];
-  v65 = [v64 unsignedIntValue];
+  unsignedIntValue = [v64 unsignedIntValue];
   MEMORY[0x1E69E5920](v64);
-  v93 = v65;
+  v93 = unsignedIntValue;
   if (v94)
   {
     if (CoreFollowUpLibraryCore(0))
@@ -661,11 +661,11 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
     [v95 setFirstNotificationDelay:?];
     MEMORY[0x1E69E5920](v60);
     v61 = [v94 objectForKeyedSubscript:@"force"];
-    v62 = [v61 BOOLValue];
+    bOOLValue = [v61 BOOLValue];
     MEMORY[0x1E69E5920](v61);
-    if (v62)
+    if (bOOLValue)
     {
-      v56 = [v95 options];
+      options = [v95 options];
       v91 = 0;
       if (CoreFollowUpLibraryCore(0))
       {
@@ -681,7 +681,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
       v105[0] = v55;
       v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:1];
-      v53 = [v56 setByAddingObjectsFromArray:?];
+      v53 = [options setByAddingObjectsFromArray:?];
       [v95 setOptions:?];
       MEMORY[0x1E69E5920](v53);
       MEMORY[0x1E69E5920](v54);
@@ -690,15 +690,15 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         MEMORY[0x1E69E5920](v92);
       }
 
-      MEMORY[0x1E69E5920](v56);
+      MEMORY[0x1E69E5920](options);
     }
 
     v51 = [v94 objectForKeyedSubscript:@"osAlert"];
-    v52 = [v51 BOOLValue];
+    bOOLValue2 = [v51 BOOLValue];
     MEMORY[0x1E69E5920](v51);
-    if (v52)
+    if (bOOLValue2)
     {
-      v50 = [v95 options];
+      options2 = [v95 options];
       v89 = 0;
       if (CoreFollowUpLibraryCore(0))
       {
@@ -714,7 +714,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
       v104 = v49;
       v48 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v104 count:1];
-      v47 = [v50 setByAddingObjectsFromArray:?];
+      v47 = [options2 setByAddingObjectsFromArray:?];
       [v95 setOptions:?];
       MEMORY[0x1E69E5920](v47);
       MEMORY[0x1E69E5920](v48);
@@ -723,13 +723,13 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         MEMORY[0x1E69E5920](v90);
       }
 
-      MEMORY[0x1E69E5920](v50);
+      MEMORY[0x1E69E5920](options2);
     }
 
     v45 = [v94 objectForKeyedSubscript:@"osAlertActionOnly"];
-    v46 = [v45 BOOLValue];
+    bOOLValue3 = [v45 BOOLValue];
     MEMORY[0x1E69E5920](v45);
-    if (v46)
+    if (bOOLValue3)
     {
       v88 = _AKLogSystem();
       v87 = OS_LOG_TYPE_DEBUG;
@@ -740,7 +740,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
       }
 
       objc_storeStrong(&v88, 0);
-      v44 = [v95 options];
+      options3 = [v95 options];
       v85 = 0;
       if (CoreFollowUpLibraryCore(0))
       {
@@ -770,7 +770,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
       v102[1] = v42;
       v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:2];
-      v40 = [v44 setByAddingObjectsFromArray:?];
+      v40 = [options3 setByAddingObjectsFromArray:?];
       [v95 setOptions:?];
       MEMORY[0x1E69E5920](v40);
       MEMORY[0x1E69E5920](v41);
@@ -784,15 +784,15 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         MEMORY[0x1E69E5920](v86);
       }
 
-      MEMORY[0x1E69E5920](v44);
+      MEMORY[0x1E69E5920](options3);
     }
 
     v38 = [v94 objectForKeyedSubscript:@"bannerAlert"];
-    v39 = [v38 BOOLValue];
+    bOOLValue4 = [v38 BOOLValue];
     MEMORY[0x1E69E5920](v38);
-    if (v39)
+    if (bOOLValue4)
     {
-      v37 = [v95 options];
+      options4 = [v95 options];
       v81 = 0;
       if (CoreFollowUpLibraryCore(0))
       {
@@ -808,7 +808,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
       v101 = v36;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v101 count:1];
-      v34 = [v37 setByAddingObjectsFromArray:?];
+      v34 = [options4 setByAddingObjectsFromArray:?];
       [v95 setOptions:?];
       MEMORY[0x1E69E5920](v34);
       MEMORY[0x1E69E5920](v35);
@@ -817,14 +817,14 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         MEMORY[0x1E69E5920](v82);
       }
 
-      MEMORY[0x1E69E5920](v37);
+      MEMORY[0x1E69E5920](options4);
     }
 
     v33 = [v94 objectForKeyedSubscript:@"defbtn"];
     MEMORY[0x1E69E5920](v33);
     if (v33)
     {
-      v30 = v98;
+      v30 = selfCopy;
       v32 = [v94 objectForKeyedSubscript:@"defbtn"];
       v31 = [AKFollowUpFactoryImpl actionWithTitle:v30 andActionKey:"actionWithTitle:andActionKey:"];
       [v95 setActivateAction:?];
@@ -835,7 +835,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
     v80 = [v94 objectForKeyedSubscript:@"albtn"];
     if (v80 && [v80 length])
     {
-      v27 = v98;
+      v27 = selfCopy;
       v29 = [v94 objectForKeyedSubscript:@"albtn"];
       v28 = [AKFollowUpFactoryImpl actionWithTitle:v27 andActionKey:"actionWithTitle:andActionKey:"];
       [v95 setClearAction:?];
@@ -845,19 +845,19 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
     else
     {
-      v26 = [(AKFollowUpFactoryImpl *)v98 _clearAction];
+      _clearAction = [(AKFollowUpFactoryImpl *)selfCopy _clearAction];
       [v95 setClearAction:?];
-      MEMORY[0x1E69E5920](v26);
+      MEMORY[0x1E69E5920](_clearAction);
     }
 
     v24 = [location[0] objectForKeyedSubscript:@"zeroAction"];
     v77 = 0;
-    v25 = 1;
+    bOOLValue5 = 1;
     if (([v24 BOOLValue] & 1) == 0)
     {
       v78 = [v94 objectForKeyedSubscript:@"zeroAction"];
       v77 = 1;
-      v25 = [v78 BOOLValue];
+      bOOLValue5 = [v78 BOOLValue];
     }
 
     if (v77)
@@ -866,20 +866,20 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
     }
 
     MEMORY[0x1E69E5920](v24);
-    v79 = v25 & 1;
+    v79 = bOOLValue5 & 1;
     if (v93 == 1900 || (v79 & 1) == 1)
     {
-      v76 = [(AKFollowUpFactoryImpl *)v98 _actionsFromPayload:location[0] pushMessageInfo:v96];
-      v23 = [v76 firstObject];
-      MEMORY[0x1E69E5920](v23);
-      if (v23)
+      v76 = [(AKFollowUpFactoryImpl *)selfCopy _actionsFromPayload:location[0] pushMessageInfo:v96];
+      firstObject = [v76 firstObject];
+      MEMORY[0x1E69E5920](firstObject);
+      if (firstObject)
       {
-        v22 = [v76 firstObject];
+        firstObject2 = [v76 firstObject];
         [v95 setActivateAction:?];
-        MEMORY[0x1E69E5920](v22);
+        MEMORY[0x1E69E5920](firstObject2);
       }
 
-      v21 = [v95 options];
+      options5 = [v95 options];
       v74 = 0;
       if (CoreFollowUpLibraryCore(0))
       {
@@ -895,7 +895,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
       v100 = v20;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
-      v18 = [v21 setByAddingObjectsFromArray:?];
+      v18 = [options5 setByAddingObjectsFromArray:?];
       [v95 setOptions:?];
       MEMORY[0x1E69E5920](v18);
       MEMORY[0x1E69E5920](v19);
@@ -904,8 +904,8 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         MEMORY[0x1E69E5920](v75);
       }
 
-      MEMORY[0x1E69E5920](v21);
-      v17 = [v95 options];
+      MEMORY[0x1E69E5920](options5);
+      options6 = [v95 options];
       v72 = 0;
       if (CoreFollowUpLibraryCore(0))
       {
@@ -921,7 +921,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
 
       v99 = v16;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v99 count:1];
-      v14 = [v17 setByAddingObjectsFromArray:?];
+      v14 = [options6 setByAddingObjectsFromArray:?];
       [v95 setOptions:?];
       MEMORY[0x1E69E5920](v14);
       MEMORY[0x1E69E5920](v15);
@@ -930,7 +930,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         MEMORY[0x1E69E5920](v73);
       }
 
-      MEMORY[0x1E69E5920](v17);
+      MEMORY[0x1E69E5920](options6);
       if (v80 && [v80 length])
       {
         oslog = _AKLogSystem();
@@ -944,7 +944,7 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
         }
 
         objc_storeStrong(&oslog, 0);
-        v11 = [(AKFollowUpFactoryImpl *)v98 actionWithTitle:v80 andActionKey:@"clear_followup_notification"];
+        v11 = [(AKFollowUpFactoryImpl *)selfCopy actionWithTitle:v80 andActionKey:@"clear_followup_notification"];
         [v95 setClearAction:?];
         MEMORY[0x1E69E5920](v11);
       }
@@ -995,25 +995,25 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
   }
 
   v6[0] = v2;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:@"clear_followup_notification" forKeyedSubscript:@"ak-action"];
-  [v6[0] setUserInfo:v5];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"clear_followup_notification" forKeyedSubscript:@"ak-action"];
+  [v6[0] setUserInfo:dictionary];
   v4 = MEMORY[0x1E69E5928](v6[0]);
-  objc_storeStrong(&v5, 0);
+  objc_storeStrong(&dictionary, 0);
   objc_storeStrong(v6, 0);
 
   return v4;
 }
 
-- (id)actionWithTitle:(id)a3 andActionKey:(id)a4
+- (id)actionWithTitle:(id)title andActionKey:(id)key
 {
   v13[1] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, key);
   if (CoreFollowUpLibraryCore(0))
   {
     v4 = objc_alloc_init(getFLFollowUpActionClass());
@@ -1040,14 +1040,14 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
   return v7;
 }
 
-- (BOOL)IsFollowUpItemNotificationForced:(id)a3
+- (BOOL)IsFollowUpItemNotificationForced:(id)forced
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] notification];
-  v6 = [v5 options];
+  objc_storeStrong(location, forced);
+  notification = [location[0] notification];
+  options = [notification options];
   v7 = 0;
   if (CoreFollowUpLibraryCore(0))
   {
@@ -1061,14 +1061,14 @@ id __61__AKFollowUpFactoryImpl__actionsFromPayload_pushMessageInfo___block_invok
     v4 = 0;
   }
 
-  v10 = [v6 containsObject:v4] & 1;
+  v10 = [options containsObject:v4] & 1;
   if (v7)
   {
     MEMORY[0x1E69E5920](v8);
   }
 
-  MEMORY[0x1E69E5920](v6);
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](options);
+  MEMORY[0x1E69E5920](notification);
   objc_storeStrong(location, 0);
   return v10 & 1;
 }

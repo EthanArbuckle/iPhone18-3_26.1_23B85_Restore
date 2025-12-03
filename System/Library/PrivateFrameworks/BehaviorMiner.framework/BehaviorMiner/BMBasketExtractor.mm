@@ -1,91 +1,91 @@
 @interface BMBasketExtractor
-- (BMBasketExtractor)initWithSamplingInterval:(double)a3;
-- (id)extractBasketsFromEvents:(id)a3 itemTypes:(id)a4;
-- (id)extractDatedBasketsFromEvents:(id)a3 itemTypes:(id)a4;
-- (id)slotForHourOfDay:(id)a3 slotDuration:(id)a4;
+- (BMBasketExtractor)initWithSamplingInterval:(double)interval;
+- (id)extractBasketsFromEvents:(id)events itemTypes:(id)types;
+- (id)extractDatedBasketsFromEvents:(id)events itemTypes:(id)types;
+- (id)slotForHourOfDay:(id)day slotDuration:(id)duration;
 @end
 
 @implementation BMBasketExtractor
 
-- (BMBasketExtractor)initWithSamplingInterval:(double)a3
+- (BMBasketExtractor)initWithSamplingInterval:(double)interval
 {
-  if (a3 >= 0.0)
+  if (interval >= 0.0)
   {
     v7.receiver = self;
     v7.super_class = BMBasketExtractor;
     v5 = [(BMBasketExtractor *)&v7 init];
     if (v5)
     {
-      v5->_samplingInterval = a3;
+      v5->_samplingInterval = interval;
       v5->_shouldStop = 0;
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)slotForHourOfDay:(id)a3 slotDuration:(id)a4
+- (id)slotForHourOfDay:(id)day slotDuration:(id)duration
 {
-  v5 = a4;
-  v6 = [a3 integerValue];
-  v7 = [v5 integerValue];
+  durationCopy = duration;
+  integerValue = [day integerValue];
+  integerValue2 = [durationCopy integerValue];
 
   v8 = MEMORY[0x277CCABB0];
 
-  return [v8 numberWithUnsignedInteger:v6 / v7];
+  return [v8 numberWithUnsignedInteger:integerValue / integerValue2];
 }
 
-- (id)extractBasketsFromEvents:(id)a3 itemTypes:(id)a4
+- (id)extractBasketsFromEvents:(id)events itemTypes:(id)types
 {
-  v4 = [(BMBasketExtractor *)self extractDatedBasketsFromEvents:a3 itemTypes:a4];
+  v4 = [(BMBasketExtractor *)self extractDatedBasketsFromEvents:events itemTypes:types];
   v5 = [v4 valueForKey:@"basket"];
 
   return v5;
 }
 
-- (id)extractDatedBasketsFromEvents:(id)a3 itemTypes:(id)a4
+- (id)extractDatedBasketsFromEvents:(id)events itemTypes:(id)types
 {
   v85[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  eventsCopy = events;
+  typesCopy = types;
+  if (![eventsCopy count])
   {
     v66 = MEMORY[0x277CBEBF8];
     goto LABEL_39;
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v70 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
   v85[0] = v70;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:1];
-  v71 = v6;
-  v10 = [v6 sortedArrayUsingDescriptors:v9];
+  v71 = eventsCopy;
+  v10 = [eventsCopy sortedArrayUsingDescriptors:v9];
 
   v11 = [v10 objectAtIndexedSubscript:0];
-  v12 = [v11 startDate];
+  startDate = [v11 startDate];
 
-  v75 = self;
-  v13 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v14 = v10;
-  [(BMBasketExtractor *)v13 samplingInterval];
-  v79 = [v12 dateByAddingTimeInterval:?];
+  [(BMBasketExtractor *)selfCopy2 samplingInterval];
+  v79 = [startDate dateByAddingTimeInterval:?];
   [MEMORY[0x277CBEA80] currentCalendar];
-  v74 = v73 = v7;
+  v74 = v73 = typesCopy;
   v15 = 0x277CBE000uLL;
-  v72 = v8;
+  v72 = array;
   v69 = v10;
   while (1)
   {
     v16 = [*(v15 + 2904) set];
-    v17 = v12;
+    v17 = startDate;
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
@@ -98,26 +98,26 @@
     }
 
     v78 = 0;
-    v12 = v17;
+    startDate = v17;
 LABEL_30:
 
     if ([v16 count])
     {
-      v64 = BMTemporalItemsForDate(v17, v74, v7);
+      v64 = BMTemporalItemsForDate(v17, v74, typesCopy);
       if ([v64 count])
       {
         [v16 unionSet:v64];
       }
 
       v65 = [[BMDatedBasket alloc] initWithBasket:v16 Date:v17];
-      [v8 addObject:v65];
+      [array addObject:v65];
     }
 
     v15 = 0x277CBE000;
     if (v78)
     {
-      v66 = v8;
-      v17 = v12;
+      v66 = array;
+      v17 = startDate;
       goto LABEL_37;
     }
   }
@@ -126,7 +126,7 @@ LABEL_30:
   v78 = 0;
   v76 = v16;
   v77 = *v81;
-  v21 = v75;
+  v21 = selfCopy;
 LABEL_5:
   v22 = 0;
   while (1)
@@ -142,14 +142,14 @@ LABEL_5:
       break;
     }
 
-    v24 = [v23 startDate];
-    [v24 timeIntervalSince1970];
+    startDate2 = [v23 startDate];
+    [startDate2 timeIntervalSince1970];
     v26 = v25;
     [v17 timeIntervalSince1970];
     if (v26 >= v27)
     {
-      v28 = [v23 startDate];
-      [v28 timeIntervalSince1970];
+      startDate3 = [v23 startDate];
+      [startDate3 timeIntervalSince1970];
       v30 = v29;
       [v79 timeIntervalSince1970];
       v32 = v31;
@@ -165,8 +165,8 @@ LABEL_5:
     {
     }
 
-    v33 = [v23 endDate];
-    [v33 timeIntervalSince1970];
+    endDate = [v23 endDate];
+    [endDate timeIntervalSince1970];
     v35 = v34;
     [v17 timeIntervalSince1970];
     if (v35 <= v36)
@@ -174,8 +174,8 @@ LABEL_5:
       goto LABEL_15;
     }
 
-    v37 = [v23 endDate];
-    [v37 timeIntervalSince1970];
+    endDate2 = [v23 endDate];
+    [endDate2 timeIntervalSince1970];
     v39 = v38;
     [v79 timeIntervalSince1970];
     if (v39 > v40)
@@ -187,30 +187,30 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v55 = [v23 startDate];
-    v56 = [v23 endDate];
-    v57 = [v55 isEqualToDate:v56];
+    startDate4 = [v23 startDate];
+    endDate3 = [v23 endDate];
+    v57 = [startDate4 isEqualToDate:endDate3];
 
-    v21 = v75;
+    v21 = selfCopy;
     v16 = v76;
     if ((v57 & 1) == 0)
     {
 LABEL_22:
-      v58 = [v23 item];
-      [v16 addObject:v58];
+      item = [v23 item];
+      [v16 addObject:item];
 
       goto LABEL_23;
     }
 
 LABEL_16:
-    v41 = [v23 startDate];
-    [v41 timeIntervalSince1970];
+    startDate5 = [v23 startDate];
+    [startDate5 timeIntervalSince1970];
     v43 = v42;
     [v17 timeIntervalSince1970];
     if (v43 <= v44)
     {
-      v45 = [v23 endDate];
-      [v45 timeIntervalSince1970];
+      endDate4 = [v23 endDate];
+      [endDate4 timeIntervalSince1970];
       v47 = v46;
       [v79 timeIntervalSince1970];
       v49 = v48;
@@ -225,23 +225,23 @@ LABEL_16:
     {
     }
 
-    v50 = [v23 startDate];
-    [v50 timeIntervalSince1970];
+    startDate6 = [v23 startDate];
+    [startDate6 timeIntervalSince1970];
     v52 = v51;
     [v79 timeIntervalSince1970];
     v54 = v53;
 
     if (v52 >= v54)
     {
-      v12 = [v23 startDate];
+      startDate = [v23 startDate];
 
       [(BMBasketExtractor *)v21 samplingInterval];
-      v63 = [v12 dateByAddingTimeInterval:?];
+      v63 = [startDate dateByAddingTimeInterval:?];
 
       v79 = v63;
 LABEL_29:
-      v8 = v72;
-      v7 = v73;
+      array = v72;
+      typesCopy = v73;
       v14 = v69;
       goto LABEL_30;
     }
@@ -252,8 +252,8 @@ LABEL_23:
 
     if (v60)
     {
-      v61 = [v23 item];
-      v62 = [v16 containsObject:v61];
+      item2 = [v23 item];
+      v62 = [v16 containsObject:item2];
 
       v78 |= v62;
     }
@@ -266,17 +266,17 @@ LABEL_23:
         goto LABEL_5;
       }
 
-      v12 = v17;
+      startDate = v17;
       goto LABEL_29;
     }
   }
 
   v66 = MEMORY[0x277CBEBF8];
-  v8 = v72;
-  v7 = v73;
+  array = v72;
+  typesCopy = v73;
 LABEL_37:
 
-  v6 = v71;
+  eventsCopy = v71;
 LABEL_39:
 
   v67 = *MEMORY[0x277D85DE8];

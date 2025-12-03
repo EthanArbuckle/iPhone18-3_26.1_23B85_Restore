@@ -2,21 +2,21 @@
 - (NSSet)assignments;
 - (REMAssignment)currentAssignment;
 - (REMReminder)reminder;
-- (REMReminderAssignmentContext)initWithReminder:(id)a3;
+- (REMReminderAssignmentContext)initWithReminder:(id)reminder;
 @end
 
 @implementation REMReminderAssignmentContext
 
-- (REMReminderAssignmentContext)initWithReminder:(id)a3
+- (REMReminderAssignmentContext)initWithReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   v8.receiver = self;
   v8.super_class = REMReminderAssignmentContext;
   v5 = [(REMReminderAssignmentContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_reminder, v4);
+    objc_storeWeak(&v5->_reminder, reminderCopy);
   }
 
   return v6;
@@ -24,30 +24,30 @@
 
 - (REMAssignment)currentAssignment
 {
-  v2 = [(REMReminderAssignmentContext *)self reminder];
-  v3 = [v2 storage];
-  v4 = [v3 currentAssignment];
+  reminder = [(REMReminderAssignmentContext *)self reminder];
+  storage = [reminder storage];
+  currentAssignment = [storage currentAssignment];
 
-  return v4;
+  return currentAssignment;
 }
 
 - (NSSet)assignments
 {
-  v3 = [(REMReminderAssignmentContext *)self reminder];
-  v4 = [v3 assignments];
+  reminder = [(REMReminderAssignmentContext *)self reminder];
+  assignments = [reminder assignments];
 
-  if (v4)
+  if (assignments)
   {
-    v5 = [(REMReminderAssignmentContext *)self reminder];
-    v6 = [v5 assignments];
+    reminder2 = [(REMReminderAssignmentContext *)self reminder];
+    assignments2 = [reminder2 assignments];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFD8] set];
+    assignments2 = [MEMORY[0x1E695DFD8] set];
   }
 
-  return v6;
+  return assignments2;
 }
 
 - (REMReminder)reminder

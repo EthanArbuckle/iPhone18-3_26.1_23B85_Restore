@@ -1,14 +1,14 @@
 @interface WFLibraryRecord
-+ (int64_t)syncHashFromData:(id)a3;
++ (int64_t)syncHashFromData:(id)data;
 @end
 
 @implementation WFLibraryRecord
 
-+ (int64_t)syncHashFromData:(id)a3
++ (int64_t)syncHashFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v4 combineContentsOfPropertyListObject:v3];
+  v5 = [v4 combineContentsOfPropertyListObject:dataCopy];
   v6 = [v4 finalize];
 
   return v6;

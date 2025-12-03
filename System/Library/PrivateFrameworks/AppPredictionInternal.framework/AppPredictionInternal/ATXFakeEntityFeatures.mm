@@ -1,6 +1,6 @@
 @interface ATXFakeEntityFeatures
 - (ATXFakeEntityFeatures)init;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 @end
 
@@ -21,15 +21,15 @@
   return v2;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v9.receiver = self;
   v9.super_class = ATXFakeEntityFeatures;
   v5 = [(ATXFakeEntityFeatures *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifiersAndDates"];
+    v6 = [nCopy objectForKeyedSubscript:@"identifiersAndDates"];
     identifiersAndDates = v5->_identifiersAndDates;
     v5->_identifiersAndDates = v6;
   }

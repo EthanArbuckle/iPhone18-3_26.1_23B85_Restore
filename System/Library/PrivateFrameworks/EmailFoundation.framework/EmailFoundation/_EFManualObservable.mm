@@ -1,11 +1,11 @@
 @interface _EFManualObservable
-- (BOOL)_addObserver:(id)a3 failureError:(id *)a4;
+- (BOOL)_addObserver:(id)observer failureError:(id *)error;
 - (_EFManualObservable)init;
-- (id)subscribe:(id)a3;
-- (void)_removeObserver:(id)a3;
+- (id)subscribe:(id)subscribe;
+- (void)_removeObserver:(id)observer;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _EFManualObservable
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v12 = 0;
-  v5 = [(_EFManualObservable *)self _addObserver:v4 failureError:&v12];
+  v5 = [(_EFManualObservable *)self _addObserver:subscribeCopy failureError:&v12];
   v6 = v12;
   v7 = objc_alloc_init(EFManualCancelationToken);
   v10[0] = MEMORY[0x1E69E9820];
@@ -43,7 +43,7 @@
   v10[2] = __33___EFManualObservable_subscribe___block_invoke;
   v10[3] = &unk_1E82485D0;
   v10[4] = self;
-  v8 = v4;
+  v8 = subscribeCopy;
   v11 = v8;
   [(EFManualCancelationToken *)v7 addCancelationBlock:v10];
   if (v5)
@@ -62,10 +62,10 @@
   return v7;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   os_unfair_lock_lock(&self->_lock);
   if (self->_didCompleteOrFail)
   {
@@ -97,7 +97,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) observerDidReceiveResult:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) observerDidReceiveResult:{resultCopy, v11}];
       }
 
       while (v7 != v9);
@@ -158,10 +158,10 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   if (self->_didCompleteOrFail)
   {
@@ -171,7 +171,7 @@
   else
   {
     self->_didCompleteOrFail = 1;
-    objc_storeStrong(&self->_failureError, a3);
+    objc_storeStrong(&self->_failureError, error);
     v6 = [(NSMutableArray *)self->_observers copy];
   }
 
@@ -195,7 +195,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) observerDidFailWithError:{v5, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) observerDidFailWithError:{errorCopy, v12}];
       }
 
       while (v8 != v10);
@@ -208,39 +208,39 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_addObserver:(id)a3 failureError:(id *)a4
+- (BOOL)_addObserver:(id)observer failureError:(id *)error
 {
-  v7 = a3;
-  if (v7 == self)
+  observerCopy = observer;
+  if (observerCopy == self)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_EFManualObservable.m" lineNumber:107 description:@"can't observe self"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_EFManualObservable.m" lineNumber:107 description:@"can't observe self"];
 
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     goto LABEL_3;
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"_EFManualObservable.m" lineNumber:108 description:@"out variable should always be provided"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_EFManualObservable.m" lineNumber:108 description:@"out variable should always be provided"];
 
 LABEL_3:
   os_unfair_lock_lock(&self->_lock);
   didCompleteOrFail = self->_didCompleteOrFail;
   if (didCompleteOrFail)
   {
-    *a4 = self->_failureError;
+    *error = self->_failureError;
   }
 
   else
   {
-    [(NSMutableArray *)self->_observers addObject:v7];
+    [(NSMutableArray *)self->_observers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -248,11 +248,11 @@ LABEL_3:
   return didCompleteOrFail;
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_observers removeObject:v4];
+  [(NSMutableArray *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

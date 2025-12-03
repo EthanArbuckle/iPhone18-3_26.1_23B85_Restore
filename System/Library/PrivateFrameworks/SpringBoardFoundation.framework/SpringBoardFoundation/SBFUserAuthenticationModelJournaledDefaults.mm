@@ -5,26 +5,26 @@
 - (SBFUserAuthenticationModelJournaledDefaults)init;
 - (double)timeUntilUnblockedSinceReferenceDate;
 - (id)_copyLockControllerDefaults;
-- (id)_initWithJournalPath:(id)a3 securityDefaults:(id)a4 profileConnection:(id)a5;
-- (id)updateLockControllerDefaultsWithBlock:(id)a3 journaled:(BOOL)a4;
+- (id)_initWithJournalPath:(id)path securityDefaults:(id)defaults profileConnection:(id)connection;
+- (id)updateLockControllerDefaultsWithBlock:(id)block journaled:(BOOL)journaled;
 - (void)_evaluatePendingWipe;
-- (void)_loadLockControllerDefaults:(id)a3;
+- (void)_loadLockControllerDefaults:(id)defaults;
 - (void)_loadLockControllerDefaultsJournalIfNecessary;
 - (void)_persistentStateQueue_beginSpeculativeFailureCharge;
 - (void)_persistentStateQueue_cancelSpeculativeFailureCharge;
 - (void)_persistentStateQueue_clearBlockedState;
 - (void)_persistentStateQueue_evaluatePendingWipe;
 - (void)_persistentStateQueue_loadLockState;
-- (void)_persistentStateQueue_unlockFailedWithError:(id)a3;
+- (void)_persistentStateQueue_unlockFailedWithError:(id)error;
 - (void)_persistentStateQueue_unlockSucceeded;
 - (void)_updateLockControllerDefaultsJournal;
 - (void)clearBlockedState;
 - (void)notePasscodeEntryBegan;
 - (void)notePasscodeEntryCancelled;
-- (void)notePasscodeUnlockFailedWithError:(id)a3;
+- (void)notePasscodeUnlockFailedWithError:(id)error;
 - (void)notePasscodeUnlockSucceeded;
-- (void)performPasswordTest:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)performPasswordTest:(id)test;
+- (void)setDelegate:(id)delegate;
 - (void)synchronize;
 - (void)test_reloadState;
 @end
@@ -33,28 +33,28 @@
 
 - (SBFUserAuthenticationModelJournaledDefaults)init
 {
-  v3 = [@"~/Library/SpringBoard/LockoutStateJournal.plist" stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [@"~/Library/SpringBoard/LockoutStateJournal.plist" stringByExpandingTildeInPath];
   v4 = objc_alloc_init(SBSecurityDefaults);
-  v5 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v6 = [(SBFUserAuthenticationModelJournaledDefaults *)self _initWithJournalPath:v3 securityDefaults:v4 profileConnection:v5];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v6 = [(SBFUserAuthenticationModelJournaledDefaults *)self _initWithJournalPath:stringByExpandingTildeInPath securityDefaults:v4 profileConnection:mEMORY[0x1E69ADFB8]];
 
   return v6;
 }
 
-- (id)_initWithJournalPath:(id)a3 securityDefaults:(id)a4 profileConnection:(id)a5
+- (id)_initWithJournalPath:(id)path securityDefaults:(id)defaults profileConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  defaultsCopy = defaults;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = SBFUserAuthenticationModelJournaledDefaults;
   v11 = [(SBFUserAuthenticationModelJournaledDefaults *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_securityDefaults, a4);
-    objc_storeStrong(&v12->_profileConnection, a5);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_securityDefaults, defaults);
+    objc_storeStrong(&v12->_profileConnection, connection);
+    v13 = [pathCopy copy];
     journalPath = v12->_journalPath;
     v12->_journalPath = v13;
 
@@ -143,13 +143,13 @@
   [(SBFUserAuthenticationModelDelegate *)self->_delegate deviceLockStateMayHaveChangedForModel:self];
 }
 
-- (void)notePasscodeUnlockFailedWithError:(id)a3
+- (void)notePasscodeUnlockFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogAuthenticationModel();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SBFUserAuthenticationModelEducationalMode *)v4 notePasscodeUnlockFailedWithError:v5];
+    [(SBFUserAuthenticationModelEducationalMode *)errorCopy notePasscodeUnlockFailedWithError:v5];
   }
 
   persistentStateQueue = self->_persistentStateQueue;
@@ -157,16 +157,16 @@
   v9 = 3221225472;
   v10 = __81__SBFUserAuthenticationModelJournaledDefaults_notePasscodeUnlockFailedWithError___block_invoke;
   v11 = &unk_1E807F290;
-  v12 = self;
-  v13 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v13 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(persistentStateQueue, &v8);
-  [(SBFUserAuthenticationModelDelegate *)self->_delegate deviceLockStateMayHaveChangedForModel:self, v8, v9, v10, v11, v12];
+  [(SBFUserAuthenticationModelDelegate *)self->_delegate deviceLockStateMayHaveChangedForModel:self, v8, v9, v10, v11, selfCopy];
 }
 
-- (void)performPasswordTest:(id)a3
+- (void)performPasswordTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = SBLogAuthenticationModel();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -179,8 +179,8 @@
   v8[2] = __67__SBFUserAuthenticationModelJournaledDefaults_performPasswordTest___block_invoke;
   v8[3] = &unk_1E807F9B0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = testCopy;
+  v7 = testCopy;
   dispatch_sync(persistentStateQueue, v8);
 }
 
@@ -202,11 +202,11 @@
   [(SBFUserAuthenticationModelDelegate *)self->_delegate deviceLockStateMayHaveChangedForModel:self];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     [(SBFUserAuthenticationModelJournaledDefaults *)self _evaluatePendingWipe];
   }
 }
@@ -277,8 +277,8 @@ double __83__SBFUserAuthenticationModelJournaledDefaults_timeUntilUnblockedSince
 
 - (void)_persistentStateQueue_beginSpeculativeFailureCharge
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a3 file:@"SBFUserAuthenticationModelJournaledDefaults.m" lineNumber:214 description:{@"We should not have rollback values when beginning a speculative failure charge, but we had %@", *a1}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:a3 file:@"SBFUserAuthenticationModelJournaledDefaults.m" lineNumber:214 description:{@"We should not have rollback values when beginning a speculative failure charge, but we had %@", *self}];
 }
 
 void __98__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue_beginSpeculativeFailureCharge__block_invoke(uint64_t a1)
@@ -357,7 +357,7 @@ uint64_t __84__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
   return [v2 setBlockedForPasscode:0];
 }
 
-- (void)_persistentStateQueue_unlockFailedWithError:(id)a3
+- (void)_persistentStateQueue_unlockFailedWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_persistentStateQueue);
@@ -366,9 +366,9 @@ uint64_t __84__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
     v4 = SBLogAuthenticationModel();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v7 = 138543362;
-      v8 = v5;
+      v8 = callStackSymbols;
       _os_log_impl(&dword_1BEA11000, v4, OS_LOG_TYPE_INFO, "A passcode attempt failed without a corresponding speculative failure charge. Callstack %{public}@", &v7, 0xCu);
     }
 
@@ -386,26 +386,26 @@ uint64_t __84__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
 - (void)_persistentStateQueue_loadLockState
 {
   dispatch_assert_queue_V2(self->_persistentStateQueue);
-  v3 = [(SBSecurityDefaults *)self->_securityDefaults unblockTimeFromReferenceDate];
-  v9 = v3;
-  if (v3)
+  unblockTimeFromReferenceDate = [(SBSecurityDefaults *)self->_securityDefaults unblockTimeFromReferenceDate];
+  v9 = unblockTimeFromReferenceDate;
+  if (unblockTimeFromReferenceDate)
   {
-    [v3 doubleValue];
+    [unblockTimeFromReferenceDate doubleValue];
     self->_unblockTime = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] distantPast];
-    [v5 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     self->_unblockTime = v6;
   }
 
-  v7 = [(SBSecurityDefaults *)self->_securityDefaults isPendingDeviceWipe];
-  self->_pendingWipe = [v7 BOOLValue];
+  isPendingDeviceWipe = [(SBSecurityDefaults *)self->_securityDefaults isPendingDeviceWipe];
+  self->_pendingWipe = [isPendingDeviceWipe BOOLValue];
 
-  v8 = [(SBSecurityDefaults *)self->_securityDefaults isBlockedForPasscode];
-  self->_permanentlyBlocked = [v8 BOOLValue];
+  isBlockedForPasscode = [(SBSecurityDefaults *)self->_securityDefaults isBlockedForPasscode];
+  self->_permanentlyBlocked = [isBlockedForPasscode BOOLValue];
 }
 
 - (void)_persistentStateQueue_evaluatePendingWipe
@@ -468,25 +468,25 @@ uint64_t __86__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
   dispatch_sync(persistentStateQueue, block);
 }
 
-- (id)updateLockControllerDefaultsWithBlock:(id)a3 journaled:(BOOL)a4
+- (id)updateLockControllerDefaultsWithBlock:(id)block journaled:(BOOL)journaled
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBFUserAuthenticationModelJournaledDefaults *)self _copyLockControllerDefaults];
-  v8 = [(SBSecurityDefaults *)self->_securityDefaults blockStateGeneration];
-  v9 = [v8 longLongValue];
+  journaledCopy = journaled;
+  blockCopy = block;
+  _copyLockControllerDefaults = [(SBFUserAuthenticationModelJournaledDefaults *)self _copyLockControllerDefaults];
+  blockStateGeneration = [(SBSecurityDefaults *)self->_securityDefaults blockStateGeneration];
+  longLongValue = [blockStateGeneration longLongValue];
 
-  v6[2](v6);
+  blockCopy[2](blockCopy);
   securityDefaults = self->_securityDefaults;
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:v9 + 1];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue + 1];
   [(SBSecurityDefaults *)securityDefaults setBlockStateGeneration:v11];
 
-  if (v4)
+  if (journaledCopy)
   {
     [(SBFUserAuthenticationModelJournaledDefaults *)self _updateLockControllerDefaultsJournal];
   }
 
-  return v7;
+  return _copyLockControllerDefaults;
 }
 
 + (id)_journaledDefaultsAndTypes
@@ -510,13 +510,13 @@ uint64_t __86__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
 - (id)_copyLockControllerDefaults
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() _journaledDefaultsAndTypes];
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  _journaledDefaultsAndTypes = [objc_opt_class() _journaledDefaultsAndTypes];
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(_journaledDefaultsAndTypes, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = _journaledDefaultsAndTypes;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -551,8 +551,8 @@ uint64_t __86__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
 
 - (void)_updateLockControllerDefaultsJournal
 {
-  v3 = [(SBFUserAuthenticationModelJournaledDefaults *)self _copyLockControllerDefaults];
-  [v3 writeToFile:self->_journalPath atomically:1];
+  _copyLockControllerDefaults = [(SBFUserAuthenticationModelJournaledDefaults *)self _copyLockControllerDefaults];
+  [_copyLockControllerDefaults writeToFile:self->_journalPath atomically:1];
   sync();
   v4 = SBLogAuthenticationModel();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -562,10 +562,10 @@ uint64_t __86__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
   }
 }
 
-- (void)_loadLockControllerDefaults:(id)a3
+- (void)_loadLockControllerDefaults:(id)defaults
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  defaultsCopy = defaults;
   [objc_opt_class() _journaledDefaultsAndTypes];
   v28 = 0u;
   v29 = 0u;
@@ -586,7 +586,7 @@ uint64_t __86__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [defaultsCopy objectForKeyedSubscript:v10];
         if (v11)
         {
           v12 = [v5 objectForKeyedSubscript:v10];
@@ -644,7 +644,7 @@ uint64_t __86__SBFUserAuthenticationModelJournaledDefaults__persistentStateQueue
 
         v18 = *(*(&v24 + 1) + 8 * j);
         securityDefaults = self->_securityDefaults;
-        v20 = [v4 objectForKeyedSubscript:{v18, v24}];
+        v20 = [defaultsCopy objectForKeyedSubscript:{v18, v24}];
         [(SBSecurityDefaults *)securityDefaults setDeviceLockDefault:v20 forKey:v18];
       }
 
@@ -664,20 +664,20 @@ LABEL_21:
   if (v3)
   {
     v4 = [v3 bs_safeObjectForKey:@"SBDeviceLockBlockStateGeneration" ofType:objc_opt_class()];
-    v5 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
 
-    v6 = [(SBSecurityDefaults *)self->_securityDefaults blockStateGeneration];
-    v7 = [v6 longLongValue];
+    blockStateGeneration = [(SBSecurityDefaults *)self->_securityDefaults blockStateGeneration];
+    longLongValue2 = [blockStateGeneration longLongValue];
 
-    if (v7 < v5)
+    if (longLongValue2 < longLongValue)
     {
       v8 = SBLogAuthenticationModel();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = 134218240;
-        v10 = v5;
+        v10 = longLongValue;
         v11 = 2048;
-        v12 = v7;
+        v12 = longLongValue2;
         _os_log_impl(&dword_1BEA11000, v8, OS_LOG_TYPE_INFO, "journalGeneration = %lld defaultsGeneration = %lld. Updating defaults from journal", &v9, 0x16u);
       }
 

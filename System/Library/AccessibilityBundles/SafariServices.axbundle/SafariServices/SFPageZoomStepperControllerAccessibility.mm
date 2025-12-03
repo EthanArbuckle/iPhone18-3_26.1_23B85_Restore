@@ -1,25 +1,25 @@
 @interface SFPageZoomStepperControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)a3;
-- (void)prepareStepper:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)factor;
+- (void)prepareStepper:(id)stepper;
 @end
 
 @implementation SFPageZoomStepperControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFPageZoomStepperController" hasInstanceVariable:@"_stepper" withType:"<_SFSettingsAlertStepperConfiguration>"];
-  [v3 validateClass:@"SFPageZoomStepperController" hasInstanceVariable:@"_percentFormatter" withType:"NSNumberFormatter"];
-  [v3 validateClass:@"SFPageZoomStepperController" hasInstanceMethod:@"prepareStepper:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFPageZoomStepperController" hasInstanceMethod:@"_updateButtonsEnabledOnMainQueueWithZoomFactor:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFPageZoomStepperController" hasInstanceVariable:@"_stepper" withType:"<_SFSettingsAlertStepperConfiguration>"];
+  [validationsCopy validateClass:@"SFPageZoomStepperController" hasInstanceVariable:@"_percentFormatter" withType:"NSNumberFormatter"];
+  [validationsCopy validateClass:@"SFPageZoomStepperController" hasInstanceMethod:@"prepareStepper:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFPageZoomStepperController" hasInstanceMethod:@"_updateButtonsEnabledOnMainQueueWithZoomFactor:" withFullSignature:{"v", "d", 0}];
 }
 
-- (void)prepareStepper:(id)a3
+- (void)prepareStepper:(id)stepper
 {
   v8.receiver = self;
   v8.super_class = SFPageZoomStepperControllerAccessibility;
-  [(SFPageZoomStepperControllerAccessibility *)&v8 prepareStepper:a3];
+  [(SFPageZoomStepperControllerAccessibility *)&v8 prepareStepper:stepper];
   v4 = accessibilitySafariServicesLocalizedString(@"page.zoom");
   v5 = [(SFPageZoomStepperControllerAccessibility *)self safeUIViewForKey:@"_stepper"];
   [v5 setAccessibilityLabel:v4];
@@ -50,7 +50,7 @@ id __59__SFPageZoomStepperControllerAccessibility_prepareStepper___block_invoke(
   return v5;
 }
 
-- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)a3
+- (void)_updateButtonsEnabledOnMainQueueWithZoomFactor:(double)factor
 {
   v10.receiver = self;
   v10.super_class = SFPageZoomStepperControllerAccessibility;
@@ -59,7 +59,7 @@ id __59__SFPageZoomStepperControllerAccessibility_prepareStepper___block_invoke(
   v5 = [(SFPageZoomStepperControllerAccessibility *)self safeValueForKey:@"_percentFormatter"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [MEMORY[0x29EDBA070] numberWithDouble:a3];
+  v7 = [MEMORY[0x29EDBA070] numberWithDouble:factor];
   v8 = [v6 stringFromNumber:v7];
   v9 = [(SFPageZoomStepperControllerAccessibility *)self safeUIViewForKey:@"_stepper"];
   [v9 setAccessibilityValue:v8];

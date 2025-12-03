@@ -1,48 +1,48 @@
 @interface BTDevicePickerServiceViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_btSSPConfirmationHandler:(id)a3;
-- (void)_btSSPNumericComparisonHandler:(id)a3;
-- (void)_btSSPPasskeyDisplayHandler:(id)a3;
-- (void)alertSheetDismissed:(id)a3;
-- (void)authenticationRequestHandler:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_btSSPConfirmationHandler:(id)handler;
+- (void)_btSSPNumericComparisonHandler:(id)handler;
+- (void)_btSSPPasskeyDisplayHandler:(id)handler;
+- (void)alertSheetDismissed:(id)dismissed;
+- (void)authenticationRequestHandler:(id)handler;
 - (void)cancelDevicePicker;
 - (void)checkAttachTimeout;
 - (void)cleanupPairing;
-- (void)deviceConnectionCompleteHandler:(id)a3;
-- (void)deviceDiscoveryStoppedHandler:(id)a3;
-- (void)deviceFoundHandler:(id)a3;
-- (void)deviceLostHandler:(id)a3;
-- (void)deviceNameChangedHandler:(id)a3;
-- (void)devicePairedHandler:(id)a3;
-- (void)didDismissWithResult:(int64_t)a3 deviceAddress:(id)a4;
-- (void)discoveredDevice:(id)a3 deviceAddress:(id)a4;
-- (void)dismissPairingAlert:(id)a3;
-- (void)displayDevice:(id)a3 deviceAddress:(id)a4;
+- (void)deviceConnectionCompleteHandler:(id)handler;
+- (void)deviceDiscoveryStoppedHandler:(id)handler;
+- (void)deviceFoundHandler:(id)handler;
+- (void)deviceLostHandler:(id)handler;
+- (void)deviceNameChangedHandler:(id)handler;
+- (void)devicePairedHandler:(id)handler;
+- (void)didDismissWithResult:(int64_t)result deviceAddress:(id)address;
+- (void)discoveredDevice:(id)device deviceAddress:(id)address;
+- (void)dismissPairingAlert:(id)alert;
+- (void)displayDevice:(id)device deviceAddress:(id)address;
 - (void)loadView;
-- (void)powerChanged:(id)a3;
-- (void)showAlert:(id)a3;
-- (void)showBTDevicePickerWithTitle:(id)a3 Service:(unsigned int)a4;
+- (void)powerChanged:(id)changed;
+- (void)showAlert:(id)alert;
+- (void)showBTDevicePickerWithTitle:(id)title Service:(unsigned int)service;
 - (void)showInternal;
-- (void)showPairingAlert:(id)a3;
+- (void)showPairingAlert:(id)alert;
 - (void)startScanning;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation BTDevicePickerServiceViewController
 
-- (void)didDismissWithResult:(int64_t)a3 deviceAddress:(id)a4
+- (void)didDismissWithResult:(int64_t)result deviceAddress:(id)address
 {
-  v6 = a4;
-  v7 = [(BTDevicePickerServiceViewController *)self host];
-  [v7 didDismissWithResult:a3 deviceAddress:v6];
+  addressCopy = address;
+  host = [(BTDevicePickerServiceViewController *)self host];
+  [host didDismissWithResult:result deviceAddress:addressCopy];
 }
 
-- (void)discoveredDevice:(id)a3 deviceAddress:(id)a4
+- (void)discoveredDevice:(id)device deviceAddress:(id)address
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BTDevicePickerServiceViewController *)self host];
-  [v8 discoveredDevice:v7 deviceAddress:v6];
+  addressCopy = address;
+  deviceCopy = device;
+  host = [(BTDevicePickerServiceViewController *)self host];
+  [host discoveredDevice:deviceCopy deviceAddress:addressCopy];
 }
 
 - (void)loadView
@@ -51,9 +51,9 @@
   [(BTDevicePickerServiceViewController *)self setView:v3];
 
   v4 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/BluetoothManager.framework"];
-  v5 = [v4 load];
+  load = [v4 load];
 
-  if (v5)
+  if (load)
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 addObserver:self selector:"powerChanged:" name:@"BluetoothPowerChangedNotification" object:0];
@@ -97,9 +97,9 @@
     v19 = +[NSNotificationCenter defaultCenter];
     [v19 addObserver:self selector:"deviceConnectionCompleteHandler:" name:@"BluetoothDeviceConnectFailedNotification" object:0];
 
-    v20 = [NSClassFromString(@"BluetoothManager") sharedInstance];
+    nSClassFromString(@"BluetoothManager") = [NSClassFromString(@"BluetoothManager") sharedInstance];
     btManager = self->_btManager;
-    self->_btManager = v20;
+    self->_btManager = nSClassFromString(@"BluetoothManager");
 
     v22 = NSClassFromString(@"BTSSPPairingRequest");
     self->_btSSPRequestClass = v22;
@@ -115,9 +115,9 @@
   }
 }
 
-- (void)showBTDevicePickerWithTitle:(id)a3 Service:(unsigned int)a4
+- (void)showBTDevicePickerWithTitle:(id)title Service:(unsigned int)service
 {
-  v7 = a3;
+  titleCopy = title;
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -130,8 +130,8 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Preparing BT device picker UI", buf, 2u);
   }
 
-  objc_storeStrong(&self->_title, a3);
-  self->_service = a4;
+  objc_storeStrong(&self->_title, title);
+  self->_service = service;
   if (self->_showingAlert || self->_btSSPAlert)
   {
     if (BTDevicePickerUILogInitOnce != -1)
@@ -174,9 +174,9 @@
   }
 }
 
-- (void)displayDevice:(id)a3 deviceAddress:(id)a4
+- (void)displayDevice:(id)device deviceAddress:(id)address
 {
-  v5 = [(BluetoothManager *)self->_btManager deviceFromAddressString:a4];
+  v5 = [(BluetoothManager *)self->_btManager deviceFromAddressString:address];
   if (v5)
   {
     if (BTDevicePickerUILogInitOnce != -1)
@@ -188,12 +188,12 @@
     if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [v5 name];
-      v9 = [v5 address];
+      name = [v5 name];
+      address = [v5 address];
       *buf = 138412546;
-      v22 = v8;
+      v22 = name;
       v23 = 2112;
-      v24 = v9;
+      v24 = address;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Insert device: %@ with address: %@ to device picker list", buf, 0x16u);
     }
 
@@ -204,10 +204,10 @@
       {
         do
         {
-          v11 = [v5 name];
+          name2 = [v5 name];
           v12 = [(NSMutableArray *)self->_deviceList objectAtIndexedSubscript:v10];
-          v13 = [v12 name];
-          v14 = [v11 caseInsensitiveCompare:v13];
+          name3 = [v12 name];
+          v14 = [name2 caseInsensitiveCompare:name3];
 
           if (v14 == -1)
           {
@@ -319,8 +319,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(BluetoothManager *)self->_btManager pairedDevices];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  pairedDevices = [(BluetoothManager *)self->_btManager pairedDevices];
+  v5 = [pairedDevices countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -331,7 +331,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pairedDevices);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) isServiceSupported:self->_service])
@@ -341,7 +341,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [pairedDevices countByEnumeratingWithState:&v12 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -424,7 +424,7 @@ LABEL_15:
   self->_btSSPAlert = 0;
 }
 
-- (void)powerChanged:(id)a3
+- (void)powerChanged:(id)changed
 {
   if (([(BluetoothManager *)self->_btManager available]& 1) != 0)
   {
@@ -485,9 +485,9 @@ LABEL_15:
   }
 }
 
-- (void)deviceDiscoveryStoppedHandler:(id)a3
+- (void)deviceDiscoveryStoppedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -497,9 +497,9 @@ LABEL_15:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 name];
+    name = [handlerCopy name];
     v10 = 138412290;
-    v11 = v7;
+    v11 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received %@", &v10, 0xCu);
   }
 
@@ -524,10 +524,10 @@ LABEL_15:
   }
 }
 
-- (void)deviceFoundHandler:(id)a3
+- (void)deviceFoundHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -537,24 +537,24 @@ LABEL_15:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 name];
-    v9 = [v5 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     v12 = 138412546;
-    v13 = v8;
+    v13 = name;
     v14 = 2112;
-    v15 = v9;
+    v15 = name2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", &v12, 0x16u);
   }
 
-  v10 = [v5 name];
-  v11 = [v5 address];
-  [(BTDevicePickerServiceViewController *)self discoveredDevice:v10 deviceAddress:v11];
+  name3 = [object name];
+  address = [object address];
+  [(BTDevicePickerServiceViewController *)self discoveredDevice:name3 deviceAddress:address];
 }
 
-- (void)deviceNameChangedHandler:(id)a3
+- (void)deviceNameChangedHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [v6 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -564,16 +564,16 @@ LABEL_15:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 name];
-    v11 = [v7 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     *buf = 138412546;
-    v31 = v10;
+    v31 = name;
     v32 = 2112;
-    v33 = v11;
+    v33 = name2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", buf, 0x16u);
   }
 
-  v12 = [(NSMutableArray *)self->_deviceList indexOfObject:v7];
+  v12 = [(NSMutableArray *)self->_deviceList indexOfObject:object];
   v13 = v12;
   if (!v12)
   {
@@ -602,9 +602,9 @@ LABEL_9:
         v27 = 0;
         v26 = 1;
 LABEL_18:
-        v17 = [v16 name];
-        v18 = [v7 name];
-        v25 = [v17 caseInsensitiveCompare:v18];
+        name3 = [v16 name];
+        name4 = [object name];
+        v25 = [name3 caseInsensitiveCompare:name4];
 
         if ((v26 & 1) == 0)
         {
@@ -627,9 +627,9 @@ LABEL_23:
       }
     }
 
-    v3 = [v14 name];
-    v4 = [v7 name];
-    if ([v3 caseInsensitiveCompare:v4] != -1)
+    name5 = [v14 name];
+    name6 = [object name];
+    if ([name5 caseInsensitiveCompare:name6] != -1)
     {
 
 LABEL_21:
@@ -640,7 +640,7 @@ LABEL_21:
       v21 = [NSArray arrayWithObjects:&v28 count:1];
       [(UITableView *)v19 deleteRowsAtIndexPaths:v21 withRowAnimation:0];
 
-      [(BTDevicePickerServiceViewController *)self deviceFoundHandler:v6];
+      [(BTDevicePickerServiceViewController *)self deviceFoundHandler:handlerCopy];
 LABEL_24:
 
       goto LABEL_25;
@@ -666,10 +666,10 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)deviceLostHandler:(id)a3
+- (void)deviceLostHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -679,16 +679,16 @@ LABEL_25:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 name];
-    v9 = [v5 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     *buf = 138412546;
-    v17 = v8;
+    v17 = name;
     v18 = 2112;
-    v19 = v9;
+    v19 = name2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", buf, 0x16u);
   }
 
-  v10 = [(NSMutableArray *)self->_deviceList indexOfObject:v5];
+  v10 = [(NSMutableArray *)self->_deviceList indexOfObject:object];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v10;
@@ -701,10 +701,10 @@ LABEL_25:
   }
 }
 
-- (void)authenticationRequestHandler:(id)a3
+- (void)authenticationRequestHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (!self->_btSSPRequestClass)
   {
     [(BluetoothManager *)self->_btManager cancelPairing];
@@ -727,25 +727,25 @@ LABEL_25:
     goto LABEL_9;
   }
 
-  v7 = [v4 name];
-  if ([v7 isEqualToString:@"BluetoothPairingUserNumericComparisionNotification"])
+  name = [handlerCopy name];
+  if ([name isEqualToString:@"BluetoothPairingUserNumericComparisionNotification"])
   {
   }
 
   else
   {
-    v8 = [v5 name];
-    v9 = [v8 isEqualToString:@"BluetoothPairingPassKeyDisplayNotification"];
+    name2 = [v5 name];
+    v9 = [name2 isEqualToString:@"BluetoothPairingPassKeyDisplayNotification"];
 
     if (!v9)
     {
-      v11 = [v5 object];
+      object = [v5 object];
       goto LABEL_15;
     }
   }
 
-  v10 = [v5 object];
-  v11 = [v10 valueForKey:@"device"];
+  object2 = [v5 object];
+  object = [object2 valueForKey:@"device"];
 
 LABEL_15:
   if (BTDevicePickerUILogInitOnce != -1)
@@ -757,24 +757,24 @@ LABEL_15:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v5 name];
-    v15 = [v11 name];
+    name3 = [v5 name];
+    name4 = [object name];
     *buf = 138412546;
-    v40 = v14;
+    v40 = name3;
     v41 = 2112;
-    v42 = v15;
+    v42 = name4;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", buf, 0x16u);
   }
 
-  v16 = [(PSSpecifierStub *)self->_connectingSpec device];
-  v17 = [v16 address];
-  v18 = [v11 address];
-  v19 = [v17 isEqualToString:v18];
+  device = [(PSSpecifierStub *)self->_connectingSpec device];
+  address = [device address];
+  address2 = [object address];
+  v19 = [address isEqualToString:address2];
 
   if (v19)
   {
-    v20 = [v5 name];
-    v21 = [v20 isEqualToString:@"BluetoothPairingPINRequestNotification"];
+    name5 = [v5 name];
+    v21 = [name5 isEqualToString:@"BluetoothPairingPINRequestNotification"];
 
     if (v21)
     {
@@ -784,8 +784,8 @@ LABEL_15:
       v22 = [v37 localizedStringForKey:@"OLD_DEVICE_TITLE" value:&stru_100008478 table:@"BTClassic"];
       v23 = [NSBundle bundleForClass:objc_opt_class()];
       v24 = [v23 localizedStringForKey:@"OLD_DEVICE_MESSAGE" value:&stru_100008478 table:@"BTClassic"];
-      v25 = [v11 name];
-      v26 = [NSString stringWithFormat:v24, v25];
+      name6 = [object name];
+      v26 = [NSString stringWithFormat:v24, name6];
       v27 = [UIAlertController alertControllerWithTitle:v22 message:v26 preferredStyle:1];
 
       v28 = [NSBundle bundleForClass:objc_opt_class()];
@@ -803,8 +803,8 @@ LABEL_15:
 
     else
     {
-      v31 = [v5 name];
-      v32 = [v31 isEqualToString:@"BluetoothPairingUserConfirmationNotification"];
+      name7 = [v5 name];
+      v32 = [name7 isEqualToString:@"BluetoothPairingUserConfirmationNotification"];
 
       if (v32)
       {
@@ -813,8 +813,8 @@ LABEL_15:
 
       else
       {
-        v33 = [v5 name];
-        v34 = [v33 isEqualToString:@"BluetoothPairingUserNumericComparisionNotification"];
+        name8 = [v5 name];
+        v34 = [name8 isEqualToString:@"BluetoothPairingUserNumericComparisionNotification"];
 
         if (v34)
         {
@@ -823,8 +823,8 @@ LABEL_15:
 
         else
         {
-          v35 = [v5 name];
-          v36 = [v35 isEqualToString:@"BluetoothPairingPassKeyDisplayNotification"];
+          name9 = [v5 name];
+          v36 = [name9 isEqualToString:@"BluetoothPairingPassKeyDisplayNotification"];
 
           if (v36)
           {
@@ -838,13 +838,13 @@ LABEL_15:
 LABEL_9:
 }
 
-- (void)_btSSPConfirmationHandler:(id)a3
+- (void)_btSSPConfirmationHandler:(id)handler
 {
-  v7 = [a3 object];
+  object = [handler object];
   btSSPAlert = self->_btSSPAlert;
   self->_btSSPAlert = 0;
 
-  v5 = [objc_alloc(self->_btSSPRequestClass) initWithDevice:v7 andSpecifier:self->_connectingSpec];
+  v5 = [objc_alloc(self->_btSSPRequestClass) initWithDevice:object andSpecifier:self->_connectingSpec];
   v6 = self->_btSSPAlert;
   self->_btSSPAlert = v5;
 
@@ -853,11 +853,11 @@ LABEL_9:
   [self->_btSSPAlert show];
 }
 
-- (void)_btSSPNumericComparisonHandler:(id)a3
+- (void)_btSSPNumericComparisonHandler:(id)handler
 {
-  v9 = [a3 object];
-  v4 = [v9 valueForKey:@"device"];
-  v5 = [v9 valueForKey:@"value"];
+  object = [handler object];
+  v4 = [object valueForKey:@"device"];
+  v5 = [object valueForKey:@"value"];
   btSSPAlert = self->_btSSPAlert;
   self->_btSSPAlert = 0;
 
@@ -870,11 +870,11 @@ LABEL_9:
   [self->_btSSPAlert show];
 }
 
-- (void)_btSSPPasskeyDisplayHandler:(id)a3
+- (void)_btSSPPasskeyDisplayHandler:(id)handler
 {
-  v9 = [a3 object];
-  v4 = [v9 valueForKey:@"device"];
-  v5 = [v9 valueForKey:@"value"];
+  object = [handler object];
+  v4 = [object valueForKey:@"device"];
+  v5 = [object valueForKey:@"value"];
   btSSPAlert = self->_btSSPAlert;
   self->_btSSPAlert = 0;
 
@@ -887,10 +887,10 @@ LABEL_9:
   [self->_btSSPAlert show];
 }
 
-- (void)devicePairedHandler:(id)a3
+- (void)devicePairedHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -900,30 +900,30 @@ LABEL_9:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 name];
-    v9 = [v5 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     v23 = 138412546;
-    v24 = v8;
+    v24 = name;
     v25 = 2112;
-    v26 = v9;
+    v26 = name2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", &v23, 0x16u);
   }
 
-  v10 = [v5 address];
-  v11 = [(PSSpecifierStub *)self->_connectingSpec device];
-  v12 = [v11 address];
-  v13 = [v10 isEqualToString:v12];
+  address = [object address];
+  device = [(PSSpecifierStub *)self->_connectingSpec device];
+  address2 = [device address];
+  v13 = [address isEqualToString:address2];
 
   if (v13)
   {
     [(BTDevicePickerServiceViewController *)self cleanupPairing];
-    v14 = [v4 name];
-    v15 = [v14 isEqualToString:@"BluetoothPairingPINResultFailedNotification"];
+    name3 = [handlerCopy name];
+    v15 = [name3 isEqualToString:@"BluetoothPairingPINResultFailedNotification"];
 
     if (v15)
     {
-      v16 = [(PSSpecifierStub *)self->_connectingSpec userInfo];
-      v17 = [v16 objectForKeyedSubscript:@"PIN-ended"];
+      userInfo = [(PSSpecifierStub *)self->_connectingSpec userInfo];
+      v17 = [userInfo objectForKeyedSubscript:@"PIN-ended"];
 
       [(BTDevicePickerServiceViewController *)self dismissAnimated:1];
       if ([v17 isEqualToString:@"cancelled"])
@@ -933,15 +933,15 @@ LABEL_9:
 
       else if (!self->_btAlert)
       {
-        v18 = [objc_alloc(self->_btAlertClass) initWithDevice:v5];
+        v18 = [objc_alloc(self->_btAlertClass) initWithDevice:object];
         btAlert = self->_btAlert;
         self->_btAlert = v18;
 
         [self->_btAlert setDelegate:self];
         if (v17 || (btSSPAlert = self->_btSSPAlert) == 0 || [btSSPAlert pairingStyle] == 2 || objc_msgSend(self->_btSSPAlert, "pairingStyle") == 3)
         {
-          v20 = [v4 userInfo];
-          v21 = [v20 objectForKeyedSubscript:@"BluetoothErrorKey"];
+          userInfo2 = [handlerCopy userInfo];
+          v21 = [userInfo2 objectForKeyedSubscript:@"BluetoothErrorKey"];
         }
 
         else
@@ -955,10 +955,10 @@ LABEL_9:
   }
 }
 
-- (void)deviceConnectionCompleteHandler:(id)a3
+- (void)deviceConnectionCompleteHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 object];
+  handlerCopy = handler;
+  object = [handlerCopy object];
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -968,44 +968,44 @@ LABEL_9:
   if (os_log_type_enabled(BTDevicePickerUILogComponent, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 name];
-    v9 = [v5 name];
+    name = [handlerCopy name];
+    name2 = [object name];
     v21 = 138412546;
-    v22 = v8;
+    v22 = name;
     v23 = 2112;
-    v24 = v9;
+    v24 = name2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", &v21, 0x16u);
   }
 
-  v10 = [v5 address];
-  v11 = [(PSSpecifierStub *)self->_connectingSpec device];
-  v12 = [v11 address];
-  v13 = [v10 isEqualToString:v12];
+  address = [object address];
+  device = [(PSSpecifierStub *)self->_connectingSpec device];
+  address2 = [device address];
+  v13 = [address isEqualToString:address2];
 
   if (v13)
   {
     [(BTDevicePickerServiceViewController *)self cleanupPairing];
-    v14 = [v4 name];
-    v15 = [v14 isEqualToString:@"BluetoothDeviceConnectFailedNotification"];
+    name3 = [handlerCopy name];
+    v15 = [name3 isEqualToString:@"BluetoothDeviceConnectFailedNotification"];
 
     if (!v15)
     {
-      v19 = [v5 address];
-      [(BTDevicePickerServiceViewController *)self didDismissWithResult:0 deviceAddress:v19];
+      address3 = [object address];
+      [(BTDevicePickerServiceViewController *)self didDismissWithResult:0 deviceAddress:address3];
       goto LABEL_10;
     }
 
     [(BTDevicePickerServiceViewController *)self dismissAnimated:1];
     if (!self->_btAlert)
     {
-      v16 = [objc_alloc(self->_btAlertClass) initWithDevice:v5];
+      v16 = [objc_alloc(self->_btAlertClass) initWithDevice:object];
       btAlert = self->_btAlert;
       self->_btAlert = v16;
 
       [self->_btAlert setDelegate:self];
       v18 = self->_btAlert;
-      v19 = [v4 userInfo];
-      v20 = [v19 objectForKeyedSubscript:@"BluetoothErrorKey"];
+      address3 = [handlerCopy userInfo];
+      v20 = [address3 objectForKeyedSubscript:@"BluetoothErrorKey"];
       [v18 showAlertWithResult:v20];
 
 LABEL_10:
@@ -1013,9 +1013,9 @@ LABEL_10:
   }
 }
 
-- (void)alertSheetDismissed:(id)a3
+- (void)alertSheetDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -1034,9 +1034,9 @@ LABEL_10:
   [(BTDevicePickerServiceViewController *)self didDismissWithResult:3 deviceAddress:0];
 }
 
-- (void)showAlert:(id)a3
+- (void)showAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -1050,12 +1050,12 @@ LABEL_10:
   }
 
   [(BTDevicePickerServiceViewController *)self dismissViewControllerAnimated:1 completion:0];
-  [(BTDevicePickerServiceViewController *)self presentViewController:v4 animated:1 completion:0];
+  [(BTDevicePickerServiceViewController *)self presentViewController:alertCopy animated:1 completion:0];
 }
 
-- (void)showPairingAlert:(id)a3
+- (void)showPairingAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -1069,12 +1069,12 @@ LABEL_10:
   }
 
   [(BTDevicePickerServiceViewController *)self dismissViewControllerAnimated:1 completion:0];
-  [(BTDevicePickerServiceViewController *)self presentViewController:v4 animated:1 completion:0];
+  [(BTDevicePickerServiceViewController *)self presentViewController:alertCopy animated:1 completion:0];
 }
 
-- (void)dismissPairingAlert:(id)a3
+- (void)dismissPairingAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   if (BTDevicePickerUILogInitOnce != -1)
   {
     sub_100003BCC();
@@ -1090,40 +1090,40 @@ LABEL_10:
   [(BTDevicePickerServiceViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [v7 cellForRowAtIndexPath:v6];
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_deviceList, "objectAtIndexedSubscript:", [v6 row]);
+  pathCopy = path;
+  viewCopy = view;
+  v12 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_deviceList, "objectAtIndexedSubscript:", [pathCopy row]);
   v9 = objc_alloc_init(PSSpecifierStub);
   connectingSpec = self->_connectingSpec;
   self->_connectingSpec = v9;
 
   [(PSSpecifierStub *)self->_connectingSpec setDevice:v8];
-  [v7 setUserInteractionEnabled:0];
+  [viewCopy setUserInteractionEnabled:0];
   [(BluetoothManager *)self->_btManager setDeviceScanningEnabled:0];
   [(BluetoothManager *)self->_btManager resetDeviceScanning];
   v11 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [v12 setAccessoryView:v11];
   [v11 startAnimating];
   [v8 connect];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"BTDevice"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"BTDevice"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"BTDevice"];
   }
 
-  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_deviceList, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [v8 name];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  v8 = -[NSMutableArray objectAtIndexedSubscript:](self->_deviceList, "objectAtIndexedSubscript:", [pathCopy row]);
+  name = [v8 name];
+  textLabel = [v7 textLabel];
+  [textLabel setText:name];
 
   return v7;
 }

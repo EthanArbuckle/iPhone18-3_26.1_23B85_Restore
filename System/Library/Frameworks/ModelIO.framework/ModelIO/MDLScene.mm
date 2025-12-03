@@ -1,10 +1,10 @@
 @interface MDLScene
 - (MDLScene)init;
-- (__n128)hitTestRayFrom:(uint64_t)a1 withDirection:(uint64_t)a2 usingCamera:(void *)a3;
+- (__n128)hitTestRayFrom:(uint64_t)from withDirection:(uint64_t)direction usingCamera:(void *)camera;
 - (id).cxx_construct;
-- (id)raytraceSceneWithCamera:(const RTCamera *)a3 reflection:(id)a4 irradiance:(id)a5 size:;
+- (id)raytraceSceneWithCamera:(const RTCamera *)camera reflection:(id)reflection irradiance:(id)irradiance size:;
 - (int)acquireLockGuard;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 - (void)clear;
 - (void)dealloc;
 @end
@@ -55,14 +55,14 @@
   return result;
 }
 
-- (__n128)hitTestRayFrom:(uint64_t)a1 withDirection:(uint64_t)a2 usingCamera:(void *)a3
+- (__n128)hitTestRayFrom:(uint64_t)from withDirection:(uint64_t)direction usingCamera:(void *)camera
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cameraCopy = camera;
   __asm { FMOV            V0.2S, #1.0 }
 
-  v12 = *(a1 + 16);
-  v11 = *(a1 + 24);
+  v12 = *(from + 16);
+  v11 = *(from + 24);
   v13.i64[0] = 0x80000000800000;
   v13.i64[1] = 0x80000000800000;
   v14 = vnegq_f32(v13);
@@ -97,10 +97,10 @@
   return v19;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  objc_msgSend_addObject_(self->_objects, v5, v4);
+  objectCopy = object;
+  objc_msgSend_addObject_(self->_objects, v5, objectCopy);
   sceneMutex = self->_sceneMutex;
   std::mutex::lock(sceneMutex);
   objc_opt_class();
@@ -109,7 +109,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v4;
+      v7 = objectCopy;
       objc_msgSend_vertexCount(v7, v8, v9);
       objc_msgSend_vertexCount(v7, v10, v11);
       objc_msgSend_vertexCount(v7, v12, v13);
@@ -122,7 +122,7 @@
     operator new();
   }
 
-  v22 = v4;
+  v22 = objectCopy;
   sub_239F5469C(&self->_sceneLights.__begin_, &v22);
 
   std::mutex::unlock(sceneMutex);
@@ -155,11 +155,11 @@
   std::mutex::unlock(sceneMutex);
 }
 
-- (id)raytraceSceneWithCamera:(const RTCamera *)a3 reflection:(id)a4 irradiance:(id)a5 size:
+- (id)raytraceSceneWithCamera:(const RTCamera *)camera reflection:(id)reflection irradiance:(id)irradiance size:
 {
   v47 = v5;
-  v9 = a4;
-  v10 = a5;
+  reflectionCopy = reflection;
+  irradianceCopy = irradiance;
   v11 = objc_alloc(MEMORY[0x277CBEB28]);
   v13 = objc_msgSend_initWithLength_(v11, v12, 4 * v47.i32[1] * v47.i32[0]);
   v14 = v13;
@@ -172,21 +172,21 @@
   v18 = objc_autoreleasePoolPush();
   v21 = objc_msgSend_acquireLockGuard(self, v19, v20);
   v22 = clock();
-  objc_msgSend_translation(a3->var10, v23, v24);
+  objc_msgSend_translation(camera->var10, v23, v24);
   v43 = v25;
   v45 = dispatch_queue_create("trace", 0);
   v44 = dispatch_group_create();
   v26 = dispatch_get_global_queue(33, 0);
   v46 = COERCE_DOUBLE(vcvt_f32_s32(v47));
-  *&v27 = sub_239F1633C(a3, 0.0, v46);
+  *&v27 = sub_239F1633C(camera, 0.0, v46);
   v42 = v27;
-  *&v28 = sub_239F1633C(a3, COERCE_DOUBLE(LODWORD(v46)), v46);
+  *&v28 = sub_239F1633C(camera, COERCE_DOUBLE(LODWORD(v46)), v46);
   v41 = v28;
   DWORD1(v28) = HIDWORD(v46);
   LODWORD(v28) = 0;
-  *&v29 = sub_239F1633C(a3, *&v28, v46);
+  *&v29 = sub_239F1633C(camera, *&v28, v46);
   v40 = v29;
-  *&v30 = sub_239F1633C(a3, v46, v46);
+  *&v30 = sub_239F1633C(camera, v46, v46);
   v31 = vrsqrte_f32(1062333316);
   v32 = vmul_f32(vrsqrts_f32(1062333316, vmul_f32(v31, v31)), v31);
   block[1] = 3221225472;
@@ -198,14 +198,14 @@
   v50 = v40;
   v51 = v41;
   v52 = v30;
-  v55 = self;
+  selfCopy = self;
   v61 = v17;
-  v62 = a3;
+  cameraCopy = camera;
   v53 = v43;
   v54 = vmulq_n_f32(xmmword_239F9EB30, vmul_f32(v32, vrsqrts_f32(1062333316, vmul_f32(v32, v32))).f32[0]);
-  v33 = v9;
+  v33 = reflectionCopy;
   v56 = v33;
-  v34 = v10;
+  v34 = irradianceCopy;
   v57 = v34;
   v35 = v44;
   v58 = v35;

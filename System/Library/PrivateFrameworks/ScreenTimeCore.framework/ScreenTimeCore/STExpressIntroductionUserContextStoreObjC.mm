@@ -1,7 +1,7 @@
 @interface STExpressIntroductionUserContextStoreObjC
 + (id)sharedInstance;
 - (_TtC15ScreenTimeAgent41STExpressIntroductionUserContextStoreObjC)init;
-- (void)markUserAsRecentlyCreatedWithDSID:(id)a3;
+- (void)markUserAsRecentlyCreatedWithDSID:(id)d;
 @end
 
 @implementation STExpressIntroductionUserContextStoreObjC
@@ -21,11 +21,11 @@
   return [(STExpressIntroductionUserContextStoreObjC *)&v4 init];
 }
 
-- (void)markUserAsRecentlyCreatedWithDSID:(id)a3
+- (void)markUserAsRecentlyCreatedWithDSID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  STExpressIntroduction.Internal.UserDefaultsBackedUserContextStore.markUserAsRecentlyCreated(withDSID:)([v4 integerValue]);
+  dCopy = d;
+  selfCopy = self;
+  STExpressIntroduction.Internal.UserDefaultsBackedUserContextStore.markUserAsRecentlyCreated(withDSID:)([dCopy integerValue]);
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface ARInternalFaceTrackingConfiguration
 + (BOOL)isSupported;
 - (ARInternalFaceTrackingConfiguration)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)imageSensorSettings;
-- (void)createTechniques:(id)a3;
-- (void)setCameraPosition:(int64_t)a3;
-- (void)setLightEstimationEnabled:(BOOL)a3;
-- (void)setMaximumNumberOfTrackedFaces:(int64_t)a3;
+- (void)createTechniques:(id)techniques;
+- (void)setCameraPosition:(int64_t)position;
+- (void)setLightEstimationEnabled:(BOOL)enabled;
+- (void)setMaximumNumberOfTrackedFaces:(int64_t)faces;
 @end
 
 @implementation ARInternalFaceTrackingConfiguration
@@ -16,20 +16,20 @@
 {
   v5.receiver = self;
   v5.super_class = ARInternalFaceTrackingConfiguration;
-  v2 = [(ARConfiguration *)&v5 initPrivate];
-  v3 = v2;
-  if (v2)
+  initPrivate = [(ARConfiguration *)&v5 initPrivate];
+  v3 = initPrivate;
+  if (initPrivate)
   {
-    [(ARInternalFaceTrackingConfiguration *)v2 setLightEstimationEnabled:1];
+    [(ARInternalFaceTrackingConfiguration *)initPrivate setLightEstimationEnabled:1];
     [(ARInternalFaceTrackingConfiguration *)v3 setMaximumNumberOfTrackedFaces:1];
   }
 
   return v3;
 }
 
-- (void)setLightEstimationEnabled:(BOOL)a3
+- (void)setLightEstimationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -42,31 +42,31 @@
   [(ARConfiguration *)self setLightEstimation:v3];
 }
 
-- (void)setCameraPosition:(int64_t)a3
+- (void)setCameraPosition:(int64_t)position
 {
   v19 = *MEMORY[0x1E69E9840];
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.faceTracking.backCamera.allowed"])
   {
-    if (a3 && (-[ARConfiguration videoFormat](self, "videoFormat"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 captureDevicePosition], v5, v6 != a3))
+    if (position && (-[ARConfiguration videoFormat](self, "videoFormat"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 captureDevicePosition], v5, v6 != position))
     {
       v14.receiver = self;
       v14.super_class = ARInternalFaceTrackingConfiguration;
-      [(ARConfiguration *)&v14 setCameraPosition:a3];
+      [(ARConfiguration *)&v14 setCameraPosition:position];
     }
 
     else
     {
-      v7 = [objc_opt_class() supportedVideoFormats];
+      supportedVideoFormats = [objc_opt_class() supportedVideoFormats];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __57__ARInternalFaceTrackingConfiguration_setCameraPosition___block_invoke;
       v13[3] = &__block_descriptor_40_e30_B32__0__ARVideoFormat_8Q16_B24l;
-      v13[4] = a3;
-      v8 = [v7 ar_firstObjectPassingTest:v13];
+      v13[4] = position;
+      v8 = [supportedVideoFormats ar_firstObjectPassingTest:v13];
       videoFormat = self->super._videoFormat;
       self->super._videoFormat = v8;
 
-      self->super._cameraPosition = a3;
+      self->super._cameraPosition = position;
     }
   }
 
@@ -80,7 +80,7 @@
       *buf = 138543618;
       v16 = v12;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: setCameraPosition failed: The camera position for face tracking cannot be changed.", buf, 0x16u);
     }
   }
@@ -88,7 +88,7 @@
 
 + (BOOL)isSupported
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___ARInternalFaceTrackingConfiguration;
   v2 = objc_msgSendSuper2(&v4, sel_isSupported);
   if (v2)
@@ -99,10 +99,10 @@
   return v2;
 }
 
-- (void)createTechniques:(id)a3
+- (void)createTechniques:(id)techniques
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  techniquesCopy = techniques;
   if ([(ARInternalFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces]< 1)
   {
     goto LABEL_4;
@@ -117,20 +117,20 @@
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v9 = [(ARParentTechnique *)v7 initWithParallelTechniques:v8];
 
-    [v4 addObject:v9];
+    [techniquesCopy addObject:v9];
 LABEL_4:
     v10.receiver = self;
     v10.super_class = ARInternalFaceTrackingConfiguration;
-    [(ARConfiguration *)&v10 createTechniques:v4];
+    [(ARConfiguration *)&v10 createTechniques:techniquesCopy];
   }
 }
 
-- (void)setMaximumNumberOfTrackedFaces:(int64_t)a3
+- (void)setMaximumNumberOfTrackedFaces:(int64_t)faces
 {
   if (ARLinkedOnOrAfterYukon())
   {
     v5 = +[ARFaceTrackingConfiguration supportedNumberOfTrackedFaces];
-    if ((a3 & 0x8000000000000000) == 0)
+    if ((faces & 0x8000000000000000) == 0)
     {
       goto LABEL_3;
     }
@@ -141,15 +141,15 @@ LABEL_6:
   }
 
   v5 = 1;
-  if (a3 < 0)
+  if (faces < 0)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (v5 >= a3)
+  if (v5 >= faces)
   {
-    self->_maximumNumberOfTrackedFaces = a3;
+    self->_maximumNumberOfTrackedFaces = faces;
   }
 
   else
@@ -158,19 +158,19 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = ARInternalFaceTrackingConfiguration;
-  if ([(ARConfiguration *)&v10 isEqual:v4])
+  if ([(ARConfiguration *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARInternalFaceTrackingConfiguration *)self useAlternativeResources];
-    if (v6 == [v5 useAlternativeResources])
+    v5 = equalCopy;
+    useAlternativeResources = [(ARInternalFaceTrackingConfiguration *)self useAlternativeResources];
+    if (useAlternativeResources == [v5 useAlternativeResources])
     {
-      v8 = [(ARInternalFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces];
-      v7 = v8 == [v5 maximumNumberOfTrackedFaces];
+      maximumNumberOfTrackedFaces = [(ARInternalFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces];
+      v7 = maximumNumberOfTrackedFaces == [v5 maximumNumberOfTrackedFaces];
     }
 
     else
@@ -187,11 +187,11 @@ LABEL_3:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = ARInternalFaceTrackingConfiguration;
-  v4 = [(ARConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(ARConfiguration *)&v6 copyWithZone:zone];
   [v4 setUseAlternativeResources:{-[ARInternalFaceTrackingConfiguration useAlternativeResources](self, "useAlternativeResources")}];
   v4[15] = self->_maximumNumberOfTrackedFaces;
   return v4;
@@ -201,10 +201,10 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = ARInternalFaceTrackingConfiguration;
-  v2 = [(ARConfiguration *)&v4 imageSensorSettings];
-  [v2 setMetaData:*MEMORY[0x1E6986FE8]];
+  imageSensorSettings = [(ARConfiguration *)&v4 imageSensorSettings];
+  [imageSensorSettings setMetaData:*MEMORY[0x1E6986FE8]];
 
-  return v2;
+  return imageSensorSettings;
 }
 
 @end

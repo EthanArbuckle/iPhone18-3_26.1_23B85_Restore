@@ -47,16 +47,16 @@
   v22[1] = v5;
   v23[0] = v9;
   v22[0] = v3;
-  v10 = [MEMORY[0x1E695F610] whiteColor];
-  v23[1] = v10;
+  whiteColor = [MEMORY[0x1E695F610] whiteColor];
+  v23[1] = whiteColor;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v32[4] = v11;
   v31[5] = @"inputColor1";
   v20[1] = v5;
   v21[0] = v9;
   v20[0] = v3;
-  v12 = [MEMORY[0x1E695F610] blackColor];
-  v21[1] = v12;
+  blackColor = [MEMORY[0x1E695F610] blackColor];
+  v21[1] = blackColor;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v32[5] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:6];
@@ -67,39 +67,39 @@
 - (id)outputImage
 {
   v49[5] = *MEMORY[0x1E69E9840];
-  v3 = [(PIRadialGradient *)self inputColor0];
-  v4 = v3;
-  if (v3)
+  inputColor0 = [(PIRadialGradient *)self inputColor0];
+  v4 = inputColor0;
+  if (inputColor0)
   {
-    v5 = v3;
+    whiteColor = inputColor0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695F610] whiteColor];
+    whiteColor = [MEMORY[0x1E695F610] whiteColor];
   }
 
-  v6 = v5;
+  v6 = whiteColor;
 
-  v7 = [(PIRadialGradient *)self inputColor1];
-  v8 = v7;
-  if (v7)
+  inputColor1 = [(PIRadialGradient *)self inputColor1];
+  v8 = inputColor1;
+  if (inputColor1)
   {
-    v9 = v7;
+    blackColor = inputColor1;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695F610] blackColor];
+    blackColor = [MEMORY[0x1E695F610] blackColor];
   }
 
-  v10 = v9;
+  v10 = blackColor;
 
-  v11 = [(PIRadialGradient *)self inputCenter];
-  v12 = v11;
-  if (v11)
+  inputCenter = [(PIRadialGradient *)self inputCenter];
+  v12 = inputCenter;
+  if (inputCenter)
   {
-    v13 = v11;
+    v13 = inputCenter;
   }
 
   else
@@ -109,11 +109,11 @@
 
   v14 = v13;
 
-  v15 = [(PIRadialGradient *)self inputPoint0];
-  v16 = v15;
-  if (v15)
+  inputPoint0 = [(PIRadialGradient *)self inputPoint0];
+  v16 = inputPoint0;
+  if (inputPoint0)
   {
-    v17 = v15;
+    v17 = inputPoint0;
   }
 
   else
@@ -123,11 +123,11 @@
 
   v18 = v17;
 
-  v19 = [(PIRadialGradient *)self inputPoint1];
-  v20 = v19;
-  if (v19)
+  inputPoint1 = [(PIRadialGradient *)self inputPoint1];
+  v20 = inputPoint1;
+  if (inputPoint1)
   {
-    v21 = v19;
+    v21 = inputPoint1;
   }
 
   else
@@ -174,9 +174,9 @@
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:5];
   v40 = [v35 filterWithName:@"CIRadialGradient" withInputParameters:v39];
 
-  v41 = [v40 outputImage];
+  outputImage = [v40 outputImage];
 
-  return v41;
+  return outputImage;
 }
 
 @end

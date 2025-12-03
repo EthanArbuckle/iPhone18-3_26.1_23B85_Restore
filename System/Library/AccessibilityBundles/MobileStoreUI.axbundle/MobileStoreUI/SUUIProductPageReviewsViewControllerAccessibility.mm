@@ -1,26 +1,26 @@
 @interface SUUIProductPageReviewsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setFacebookLikeStatus:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setFacebookLikeStatus:(id)status;
 @end
 
 @implementation SUUIProductPageReviewsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIProductPageReviewsViewController" hasInstanceMethod:@"setFacebookLikeStatus:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SUUIProductPageReviewsViewController" hasInstanceVariable:@"_headerViewController" withType:"SUUIProductPageHeaderViewController"];
-  [v3 validateClass:@"SUUIReviewsFacebookViewController" hasInstanceVariable:@"_facebookLikeStatus" withType:"SUUIFacebookLikeStatus"];
-  [v3 validateClass:@"SUUIProductPageReviewsViewController" hasInstanceVariable:@"_facebookViewController" withType:"SUUIReviewsFacebookViewController"];
-  [v3 validateClass:@"SUUIFacebookLikeStatus" hasInstanceMethod:@"friendNames" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIProductPageReviewsViewController" hasInstanceMethod:@"setFacebookLikeStatus:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageReviewsViewController" hasInstanceVariable:@"_headerViewController" withType:"SUUIProductPageHeaderViewController"];
+  [validationsCopy validateClass:@"SUUIReviewsFacebookViewController" hasInstanceVariable:@"_facebookLikeStatus" withType:"SUUIFacebookLikeStatus"];
+  [validationsCopy validateClass:@"SUUIProductPageReviewsViewController" hasInstanceVariable:@"_facebookViewController" withType:"SUUIReviewsFacebookViewController"];
+  [validationsCopy validateClass:@"SUUIFacebookLikeStatus" hasInstanceMethod:@"friendNames" withFullSignature:{"@", 0}];
 }
 
-- (void)setFacebookLikeStatus:(id)a3
+- (void)setFacebookLikeStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v13.receiver = self;
   v13.super_class = SUUIProductPageReviewsViewControllerAccessibility;
-  [(SUUIProductPageReviewsViewControllerAccessibility *)&v13 setFacebookLikeStatus:v4];
+  [(SUUIProductPageReviewsViewControllerAccessibility *)&v13 setFacebookLikeStatus:statusCopy];
   v5 = [(SUUIProductPageReviewsViewControllerAccessibility *)self safeValueForKey:@"_facebookViewController"];
   v6 = [v5 safeValueForKey:@"_facebookLikeStatus"];
   v7 = [v6 safeValueForKey:@"friendNames"];

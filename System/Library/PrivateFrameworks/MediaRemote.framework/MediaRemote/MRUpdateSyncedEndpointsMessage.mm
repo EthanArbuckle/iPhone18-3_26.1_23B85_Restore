@@ -10,9 +10,9 @@
   endpoints = self->_endpoints;
   if (!endpoints)
   {
-    v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v5 = [v4 endpoints];
-    v6 = [v5 mr_map:&__block_literal_global_80];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    endpoints = [underlyingCodableMessage endpoints];
+    v6 = [endpoints mr_map:&__block_literal_global_80];
     v7 = self->_endpoints;
     self->_endpoints = v6;
 
@@ -32,10 +32,10 @@ MRAVDistantEndpoint *__43__MRUpdateSyncedEndpointsMessage_endpoints__block_invok
 
 - (unsigned)features
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 endpointFeatures];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  endpointFeatures = [underlyingCodableMessage endpointFeatures];
 
-  return v3;
+  return endpointFeatures;
 }
 
 @end

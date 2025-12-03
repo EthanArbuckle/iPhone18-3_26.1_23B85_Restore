@@ -1,14 +1,14 @@
 @interface SiriNLUExternalTypesUsoGraphCppConverter
-+ (id)convertCppGraph:(const void *)a3;
++ (id)convertCppGraph:(const void *)graph;
 @end
 
 @implementation SiriNLUExternalTypesUsoGraphCppConverter
 
-+ (id)convertCppGraph:(const void *)a3
++ (id)convertCppGraph:(const void *)graph
 {
-  if (a3)
+  if (graph)
   {
-    siri::ontology::UsoGraphProtoWriter::toProtobuf(a3, a2);
+    siri::ontology::UsoGraphProtoWriter::toProtobuf(graph, a2);
   }
 
   return 0;

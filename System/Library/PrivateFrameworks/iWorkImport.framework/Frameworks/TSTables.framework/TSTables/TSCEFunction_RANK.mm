@@ -1,44 +1,44 @@
 @interface TSCEFunction_RANK
-+ (double)computeRankWithVector:(id)a3 functionSpec:(id)a4 vector:(id)a5 numberToRankValue:(id)a6 rankDescending:(BOOL)a7 returnAverage:(BOOL)a8 outError:(id *)a9;
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (double)computeRankWithVector:(id)vector functionSpec:(id)spec vector:(id)a5 numberToRankValue:(id)value rankDescending:(BOOL)descending returnAverage:(BOOL)average outError:(id *)error;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_RANK
 
-+ (double)computeRankWithVector:(id)a3 functionSpec:(id)a4 vector:(id)a5 numberToRankValue:(id)a6 rankDescending:(BOOL)a7 returnAverage:(BOOL)a8 outError:(id *)a9
++ (double)computeRankWithVector:(id)vector functionSpec:(id)spec vector:(id)a5 numberToRankValue:(id)value rankDescending:(BOOL)descending returnAverage:(BOOL)average outError:(id *)error
 {
-  v127 = a8;
-  v9 = a7;
-  v13 = a3;
+  averageCopy = average;
+  descendingCopy = descending;
+  vectorCopy = vector;
   v14 = a5;
-  v15 = a6;
+  valueCopy = value;
   __key[0] = 0.0;
   v129 = objc_msgSend_zero(TSCENumberValue, v16, v17, v18, v19);
-  v24 = objc_msgSend_deepType_(v15, v20, v13, v21, v22);
+  v24 = objc_msgSend_deepType_(valueCopy, v20, vectorCopy, v21, v22);
   if (v24 == 3)
   {
-    v25 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v15, v23, v13, a4, 0, a9);
+    v25 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(valueCopy, v23, vectorCopy, spec, 0, error);
     objc_msgSend_mapDateToDouble_(TSCECalendar, v26, v25, v27, v28);
     __key[0] = v29;
   }
 
   else
   {
-    v32 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v15, v23, v13, a4, 0, a9);
+    v32 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(valueCopy, v23, vectorCopy, spec, 0, error);
 
     objc_msgSend_doubleRepresentation(v32, v33, v34, v35, v36);
     __key[0] = v37;
     v129 = v32;
   }
 
-  if (*a9)
+  if (*error)
   {
     goto LABEL_7;
   }
 
-  if (objc_msgSend_deepType_outError_(v14, v30, v13, a9, v31) == 10)
+  if (objc_msgSend_deepType_outError_(v14, v30, vectorCopy, error, v31) == 10)
   {
-    *a9 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v38, v14, v13, a4, 1);
+    *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v38, v14, vectorCopy, spec, 1);
 LABEL_7:
     v42 = NAN;
     goto LABEL_8;
@@ -56,10 +56,10 @@ LABEL_7:
     goto LABEL_74;
   }
 
-  v123 = v9;
-  v48 = v13;
+  v123 = descendingCopy;
+  v48 = vectorCopy;
   v130[0] = v48;
-  v130[1] = a4;
+  v130[1] = spec;
   v131 = 0;
   v132[0] = 1;
   *(v132 + 7) = 0;
@@ -69,7 +69,7 @@ LABEL_7:
   if (!v44)
   {
     v70 = v45;
-    if (*a9)
+    if (*error)
     {
       goto LABEL_56;
     }
@@ -95,8 +95,8 @@ LABEL_7:
 
     if (v54 == 3)
     {
-      v62 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v50, v58, v48, a4, 1, a9);
-      if (*a9)
+      v62 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v50, v58, v48, spec, 1, error);
+      if (*error)
       {
         goto LABEL_28;
       }
@@ -118,8 +118,8 @@ LABEL_24:
     }
   }
 
-  v62 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v50, v58, v48, a4, 1, a9);
-  if (*a9)
+  v62 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v50, v58, v48, spec, 1, error);
+  if (*error)
   {
 LABEL_28:
 
@@ -139,12 +139,12 @@ LABEL_23:
   }
 
 LABEL_29:
-  v71 = objc_msgSend_functionName(a4, v63, v64, v65, v66);
-  *a9 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v72, v71, v73, v74);
+  v71 = objc_msgSend_functionName(spec, v63, v64, v65, v66);
+  *error = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v72, v71, v73, v74);
 
 LABEL_30:
   v70 = v125;
-  if (*a9)
+  if (*error)
   {
 LABEL_31:
     v42 = NAN;
@@ -156,8 +156,8 @@ LABEL_31:
   if (!v126)
   {
 LABEL_53:
-    v50 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v15, v46, v48, a4, 0, a9);
-    if (*a9)
+    v50 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(valueCopy, v46, v48, spec, 0, error);
+    if (*error)
     {
 LABEL_54:
 
@@ -165,8 +165,8 @@ LABEL_54:
       goto LABEL_74;
     }
 
-    v94 = objc_msgSend_functionName(a4, v90, v91, v92, v93);
-    *a9 = objc_msgSend_matchNotFoundErrorForValue_isRegex_functionName_(TSCEError, v95, v50, 0, v94);
+    v94 = objc_msgSend_functionName(spec, v90, v91, v92, v93);
+    *error = objc_msgSend_matchNotFoundErrorForValue_isRegex_functionName_(TSCEError, v95, v50, 0, v94);
 
 LABEL_56:
     v42 = NAN;
@@ -183,14 +183,14 @@ LABEL_56:
     v106 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v102, v103, v104, v105, __key[0]);
     v110 = objc_msgSend_descriptionWithLocale_(v106, v107, v101, v108, v109);
 
-    v115 = objc_msgSend_functionName(a4, v111, v112, v113, v114);
-    *a9 = objc_msgSend_matchNotFoundErrorForValue_isRegex_functionName_(TSCEError, v116, v110, 0, v115);
+    v115 = objc_msgSend_functionName(spec, v111, v112, v113, v114);
+    *error = objc_msgSend_matchNotFoundErrorForValue_isRegex_functionName_(TSCEError, v116, v110, 0, v115);
 
     goto LABEL_31;
   }
 
   v80 = (v75 - v124) >> 3;
-  if (v127)
+  if (averageCopy)
   {
     if (v123)
     {
@@ -313,28 +313,28 @@ LABEL_8:
   return v42;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   v49 = 0;
-  v11 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v10, a3, a4, 1, 1, &v49);
+  v11 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v9, v10, context, spec, 1, 1, &v49);
   v12 = v49;
   if (v12)
   {
     v16 = v12;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v12, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v13, v12, v14, v15);
 LABEL_9:
     v29 = v17;
     goto LABEL_10;
   }
 
-  if (*(a5 + 1) - *a5 < 0x11uLL)
+  if (*(arguments + 1) - *arguments < 0x11uLL)
   {
     goto LABEL_6;
   }
 
-  v18 = *(*a5 + 16);
+  v18 = *(*arguments + 16);
   if (objc_msgSend_isTokenOrEmptyArg(v18, v19, v20, v21, v22))
   {
 
@@ -344,7 +344,7 @@ LABEL_6:
   }
 
   v48 = 0;
-  v34 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v18, v23, a3, a4, 2, &v48);
+  v34 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v18, v23, context, spec, 2, &v48);
   v16 = v48;
   if (!v16)
   {
@@ -355,20 +355,20 @@ LABEL_6:
 
     if (v16)
     {
-      v17 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v16, v42, v43);
+      v17 = objc_msgSend_raiseErrorOrConvert_(context, v13, v16, v42, v43);
       goto LABEL_9;
     }
 
 LABEL_7:
     v46 = 0;
-    objc_msgSend_computeRankWithVector_functionSpec_vector_numberToRankValue_rankDescending_returnAverage_outError_(TSCEFunction_RANK, v13, a3, a4, v11, v8, v24, 0, &v46);
+    objc_msgSend_computeRankWithVector_functionSpec_vector_numberToRankValue_rankDescending_returnAverage_outError_(TSCEFunction_RANK, v13, context, spec, v11, v8, v24, 0, &v46);
     v25 = v46;
     if (!v25)
     {
       TSUDecimal::operator=();
       if (v8)
       {
-        objc_msgSend_formatWithContext_(v8, v31, a3, v32, v33);
+        objc_msgSend_formatWithContext_(v8, v31, context, v32, v33);
       }
 
       else
@@ -382,11 +382,11 @@ LABEL_7:
     }
 
     v16 = v25;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v26, v25, v27, v28);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v26, v25, v27, v28);
     goto LABEL_9;
   }
 
-  v29 = objc_msgSend_raiseErrorOrConvert_(a3, v35, v16, v37, v38);
+  v29 = objc_msgSend_raiseErrorOrConvert_(context, v35, v16, v37, v38);
 
 LABEL_10:
 

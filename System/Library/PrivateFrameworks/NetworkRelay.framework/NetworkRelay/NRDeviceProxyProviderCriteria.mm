@@ -2,13 +2,13 @@
 + (id)copyCriteriaForCellularSlicing;
 - (BOOL)hasProxyCriteriaAssigningTokens;
 - (BOOL)hasValidProxyCriteria;
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceProxyProviderCriteria)initWithCoder:(id)a3;
-- (NRDeviceProxyProviderCriteria)initWithReceivedData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceProxyProviderCriteria)initWithCoder:(id)coder;
+- (NRDeviceProxyProviderCriteria)initWithReceivedData:(id)data;
 - (id)copySendData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceProxyProviderCriteria
@@ -16,13 +16,13 @@
 - (id)description
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"["];
-  v4 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-  v5 = [v4 count];
+  proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+  v5 = [proxyUsageRules count];
 
   if (v5)
   {
-    v6 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-    [v3 appendFormat:@"%@ ", v6];
+    proxyUsageRules2 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+    [v3 appendFormat:@"%@ ", proxyUsageRules2];
   }
 
   if ([(NRDeviceProxyProviderCriteria *)self forwardNonMatchingTraffic])
@@ -62,8 +62,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+  v3 = [proxyUsageRules countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -73,7 +73,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(proxyUsageRules);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) hasMatchRulesWithTokens])
@@ -83,7 +83,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [proxyUsageRules countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -101,8 +101,8 @@ LABEL_11:
 
 - (BOOL)hasValidProxyCriteria
 {
-  v3 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-  v4 = [v3 count];
+  proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+  v4 = [proxyUsageRules count];
 
   if (v4)
   {
@@ -112,18 +112,18 @@ LABEL_11:
   return [(NRDeviceProxyProviderCriteria *)self forwardNonMatchingTraffic];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[NRDeviceProxyProviderCriteria flags](self forKey:{"flags"), @"flags"}];
-  v5 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-  [v4 encodeObject:v5 forKey:@"proxyUsageRules"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[NRDeviceProxyProviderCriteria flags](self forKey:{"flags"), @"flags"}];
+  proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+  [coderCopy encodeObject:proxyUsageRules forKey:@"proxyUsageRules"];
 }
 
-- (NRDeviceProxyProviderCriteria)initWithCoder:(id)a3
+- (NRDeviceProxyProviderCriteria)initWithCoder:(id)coder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = NRDeviceProxyProviderCriteria;
   v5 = [(NRDeviceProxyProviderCriteria *)&v24 init];
@@ -160,47 +160,47 @@ LABEL_7:
   }
 
   v6 = v5;
-  -[NRDeviceProxyProviderCriteria setFlags:](v5, "setFlags:", [v4 decodeInt64ForKey:@"flags"]);
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"proxyUsageRules"];
+  -[NRDeviceProxyProviderCriteria setFlags:](v5, "setFlags:", [coderCopy decodeInt64ForKey:@"flags"]);
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"proxyUsageRules"];
   [(NRDeviceProxyProviderCriteria *)v6 setProxyUsageRules:v7];
 
   v8 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setFlags:{-[NRDeviceProxyProviderCriteria flags](self, "flags")}];
-  v5 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-  v6 = [v5 copy];
+  proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+  v6 = [proxyUsageRules copy];
   [v4 setProxyUsageRules:v6];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(NRDeviceProxyProviderCriteria *)self flags];
-      if (v6 == [v5 flags])
+      v5 = equalCopy;
+      flags = [(NRDeviceProxyProviderCriteria *)self flags];
+      if (flags == [v5 flags])
       {
-        v7 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-        if (v7)
+        proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+        if (proxyUsageRules)
         {
         }
 
         else
         {
-          v9 = [v5 proxyUsageRules];
+          proxyUsageRules2 = [v5 proxyUsageRules];
 
-          if (!v9)
+          if (!proxyUsageRules2)
           {
 LABEL_9:
             v8 = 1;
@@ -210,9 +210,9 @@ LABEL_11:
           }
         }
 
-        v10 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-        v11 = [v5 proxyUsageRules];
-        v12 = [v10 isEqual:v11];
+        proxyUsageRules3 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+        proxyUsageRules4 = [v5 proxyUsageRules];
+        v12 = [proxyUsageRules3 isEqual:proxyUsageRules4];
 
         if (v12)
         {
@@ -235,8 +235,8 @@ LABEL_12:
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  v4 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-  v5 = [v4 count];
+  proxyUsageRules = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+  v5 = [proxyUsageRules count];
 
   if (v5)
   {
@@ -244,8 +244,8 @@ LABEL_12:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    proxyUsageRules2 = [(NRDeviceProxyProviderCriteria *)self proxyUsageRules];
+    v7 = [proxyUsageRules2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -257,18 +257,18 @@ LABEL_12:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(proxyUsageRules2);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * v10) copySendData];
+          copySendData = [*(*(&v16 + 1) + 8 * v10) copySendData];
           v12 = v3;
-          NRTLVAdd(v12, 50, [v11 length], objc_msgSend(v11, "bytes"));
+          NRTLVAdd(v12, 50, [copySendData length], objc_msgSend(copySendData, "bytes"));
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [proxyUsageRules2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -285,10 +285,10 @@ LABEL_12:
   return v3;
 }
 
-- (NRDeviceProxyProviderCriteria)initWithReceivedData:(id)a3
+- (NRDeviceProxyProviderCriteria)initWithReceivedData:(id)data
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = NRDeviceProxyProviderCriteria;
   v5 = [(NRDeviceProxyProviderCriteria *)&v33 init];
@@ -337,7 +337,7 @@ LABEL_12:
   v26 = &v27;
   v6 = v5;
   v25 = v6;
-  NRTLVParse(v4, v24);
+  NRTLVParse(dataCopy, v24);
   if ([v28[5] count])
   {
     [(NRDeviceProxyProviderCriteria *)v6 setProxyUsageRules:v28[5]];

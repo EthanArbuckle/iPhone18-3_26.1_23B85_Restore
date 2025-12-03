@@ -1,19 +1,19 @@
 @interface DAIDSDestination
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIDSDevice:(id)a3;
-- (BOOL)isEqualToNRDevice:(id)a3;
-- (DAIDSDestination)initWithCoder:(id)a3;
-- (DAIDSDestination)initWithIDSDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIDSDevice:(id)device;
+- (BOOL)isEqualToNRDevice:(id)device;
+- (DAIDSDestination)initWithCoder:(id)coder;
+- (DAIDSDestination)initWithIDSDevice:(id)device;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAIDSDestination
 
-- (DAIDSDestination)initWithIDSDevice:(id)a3
+- (DAIDSDestination)initWithIDSDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = DAIDSDestination;
   v5 = [(DAIDSDestination *)&v17 init];
@@ -23,19 +23,19 @@
     idsDestination = v5->_idsDestination;
     v5->_idsDestination = v6;
 
-    v8 = [v4 nsuuid];
+    nsuuid = [deviceCopy nsuuid];
     bluetoothID = v5->_bluetoothID;
-    v5->_bluetoothID = v8;
+    v5->_bluetoothID = nsuuid;
 
-    v10 = [v4 uniqueID];
+    uniqueID = [deviceCopy uniqueID];
     uniqueID = v5->_uniqueID;
-    v5->_uniqueID = v10;
+    v5->_uniqueID = uniqueID;
 
-    v12 = [v4 uniqueIDOverride];
+    uniqueIDOverride = [deviceCopy uniqueIDOverride];
     uniqueIDOverride = v5->_uniqueIDOverride;
-    v5->_uniqueIDOverride = v12;
+    v5->_uniqueIDOverride = uniqueIDOverride;
 
-    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 isLocallyPaired]);
+    v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deviceCopy isLocallyPaired]);
     locallyPaired = v5->_locallyPaired;
     v5->_locallyPaired = v14;
   }
@@ -43,29 +43,29 @@
   return v5;
 }
 
-- (DAIDSDestination)initWithCoder:(id)a3
+- (DAIDSDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DAIDSDestination *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
     idsDestination = v5->_idsDestination;
     v5->_idsDestination = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothID"];
     bluetoothID = v5->_bluetoothID;
     v5->_bluetoothID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIDOverride"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIDOverride"];
     uniqueIDOverride = v5->_uniqueIDOverride;
     v5->_uniqueIDOverride = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locallyPaired"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locallyPaired"];
     locallyPaired = v5->_locallyPaired;
     v5->_locallyPaired = v14;
   }
@@ -73,42 +73,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DAIDSDestination *)self idsDestination];
-  [v4 encodeObject:v5 forKey:@"destination"];
+  coderCopy = coder;
+  idsDestination = [(DAIDSDestination *)self idsDestination];
+  [coderCopy encodeObject:idsDestination forKey:@"destination"];
 
-  v6 = [(DAIDSDestination *)self bluetoothID];
-  [v4 encodeObject:v6 forKey:@"bluetoothID"];
+  bluetoothID = [(DAIDSDestination *)self bluetoothID];
+  [coderCopy encodeObject:bluetoothID forKey:@"bluetoothID"];
 
-  v7 = [(DAIDSDestination *)self uniqueID];
-  [v4 encodeObject:v7 forKey:@"uniqueID"];
+  uniqueID = [(DAIDSDestination *)self uniqueID];
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
 
-  v8 = [(DAIDSDestination *)self uniqueIDOverride];
-  [v4 encodeObject:v8 forKey:@"uniqueIDOverride"];
+  uniqueIDOverride = [(DAIDSDestination *)self uniqueIDOverride];
+  [coderCopy encodeObject:uniqueIDOverride forKey:@"uniqueIDOverride"];
 
-  v9 = [(DAIDSDestination *)self locallyPaired];
-  [v4 encodeObject:v9 forKey:@"locallyPaired"];
+  locallyPaired = [(DAIDSDestination *)self locallyPaired];
+  [coderCopy encodeObject:locallyPaired forKey:@"locallyPaired"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DAIDSDestination *)self uniqueIDOverride];
-  v3 = [v2 hash];
+  uniqueIDOverride = [(DAIDSDestination *)self uniqueIDOverride];
+  v3 = [uniqueIDOverride hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(DAIDSDestination *)self uniqueIDOverride];
-    v6 = [v4 uniqueIDOverride];
-    v7 = [v5 isEqualToString:v6];
+    uniqueIDOverride = [(DAIDSDestination *)self uniqueIDOverride];
+    uniqueIDOverride2 = [equalCopy uniqueIDOverride];
+    v7 = [uniqueIDOverride isEqualToString:uniqueIDOverride2];
   }
 
   else
@@ -116,7 +116,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(DAIDSDestination *)self isEqualToIDSDevice:v4];
+      v8 = [(DAIDSDestination *)self isEqualToIDSDevice:equalCopy];
     }
 
     else
@@ -128,7 +128,7 @@
         goto LABEL_9;
       }
 
-      v8 = [(DAIDSDestination *)self isEqualToNRDevice:v4];
+      v8 = [(DAIDSDestination *)self isEqualToNRDevice:equalCopy];
     }
 
     v7 = v8;
@@ -139,19 +139,19 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)isEqualToNRDevice:(id)a3
+- (BOOL)isEqualToNRDevice:(id)device
 {
   v4 = NRDevicePropertyIsPaired;
-  v5 = a3;
-  v6 = [v5 valueForProperty:v4];
+  deviceCopy = device;
+  v6 = [deviceCopy valueForProperty:v4];
   v7 = +[NRPairedDeviceRegistry sharedInstance];
-  v8 = [v7 deviceIDForNRDevice:v5];
+  v8 = [v7 deviceIDForNRDevice:deviceCopy];
 
-  v9 = [(DAIDSDestination *)self locallyPaired];
-  if ([v6 isEqualToNumber:v9])
+  locallyPaired = [(DAIDSDestination *)self locallyPaired];
+  if ([v6 isEqualToNumber:locallyPaired])
   {
-    v10 = [(DAIDSDestination *)self bluetoothID];
-    v11 = [v8 isEqual:v10];
+    bluetoothID = [(DAIDSDestination *)self bluetoothID];
+    v11 = [v8 isEqual:bluetoothID];
   }
 
   else
@@ -162,23 +162,23 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)isEqualToIDSDevice:(id)a3
+- (BOOL)isEqualToIDSDevice:(id)device
 {
-  v4 = [a3 uniqueIDOverride];
-  v5 = [(DAIDSDestination *)self uniqueIDOverride];
-  v6 = [v4 isEqualToString:v5];
+  uniqueIDOverride = [device uniqueIDOverride];
+  uniqueIDOverride2 = [(DAIDSDestination *)self uniqueIDOverride];
+  v6 = [uniqueIDOverride isEqualToString:uniqueIDOverride2];
 
   return v6;
 }
 
 - (id)description
 {
-  v3 = [(DAIDSDestination *)self idsDestination];
-  v4 = [(DAIDSDestination *)self bluetoothID];
-  v5 = [(DAIDSDestination *)self uniqueID];
-  v6 = [(DAIDSDestination *)self uniqueIDOverride];
-  v7 = [(DAIDSDestination *)self locallyPaired];
-  v8 = [NSString stringWithFormat:@"idsDestination: %@ bluetoothID: %@; unqiueID: %@; uniqueIDOverride: %@; isLocallyPaired: %@", v3, v4, v5, v6, v7];;
+  idsDestination = [(DAIDSDestination *)self idsDestination];
+  bluetoothID = [(DAIDSDestination *)self bluetoothID];
+  uniqueID = [(DAIDSDestination *)self uniqueID];
+  uniqueIDOverride = [(DAIDSDestination *)self uniqueIDOverride];
+  locallyPaired = [(DAIDSDestination *)self locallyPaired];
+  v8 = [NSString stringWithFormat:@"idsDestination: %@ bluetoothID: %@; unqiueID: %@; uniqueIDOverride: %@; isLocallyPaired: %@", idsDestination, bluetoothID, uniqueID, uniqueIDOverride, locallyPaired];;
 
   return v8;
 }

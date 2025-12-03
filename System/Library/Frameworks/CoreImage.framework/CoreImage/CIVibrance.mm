@@ -1,6 +1,6 @@
 @interface CIVibrance
 + (id)customAttributes;
-- (id)_initFromProperties:(id)a3;
+- (id)_initFromProperties:(id)properties;
 - (id)_outputProperties;
 - (id)outputImage;
 @end
@@ -62,36 +62,36 @@
 
   else
   {
-    v6 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
     if (v4 >= 0.0)
     {
-      v7 = [(CIVibrance *)self _kernelPos];
+      _kernelPos = [(CIVibrance *)self _kernelPos];
       v20 = [CIVector vectorWithX:v4 * 3.0 Y:v4 * -1.5 + v4 * -4.5 * v4 Z:v4 * -0.5 + v4 * (v4 * 4.5) * v4 W:v4 * (v4 * 4.5) + v4 * (v4 * -4.5) * v4 - v4];
-      [(CIImage *)v6 extent];
+      [(CIImage *)imageByUnpremultiplyingAlpha extent];
       v9 = v21;
       v11 = v22;
       v13 = v23;
       v15 = v24;
-      v25[0] = v6;
+      v25[0] = imageByUnpremultiplyingAlpha;
       v25[1] = v20;
       v17 = v25;
     }
 
     else
     {
-      v7 = [(CIVibrance *)self _kernelNeg];
-      [(CIImage *)v6 extent];
+      _kernelPos = [(CIVibrance *)self _kernelNeg];
+      [(CIImage *)imageByUnpremultiplyingAlpha extent];
       v9 = v8;
       v11 = v10;
       v13 = v12;
       v15 = v14;
       inputAmount = self->inputAmount;
-      v26[0] = v6;
+      v26[0] = imageByUnpremultiplyingAlpha;
       v26[1] = inputAmount;
       v17 = v26;
     }
 
-    return [objc_msgSend(v7 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v17, 2), v9, v11, v13, v15), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernelPos applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v17, 2), v9, v11, v13, v15), "imageByPremultiplyingAlpha"}];
   }
 }
 
@@ -111,10 +111,10 @@
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:3];
 }
 
-- (id)_initFromProperties:(id)a3
+- (id)_initFromProperties:(id)properties
 {
   v5 = 0.0;
-  if (metadataPropertyArrayGetDouble(a3, @"http://ns.apple.com/adjustment-settings/1.0/", @"Vibrance", &v5))
+  if (metadataPropertyArrayGetDouble(properties, @"http://ns.apple.com/adjustment-settings/1.0/", @"Vibrance", &v5))
   {
     -[CIVibrance setInputAmount:](self, "setInputAmount:", [MEMORY[0x1E696AD98] numberWithDouble:v5]);
   }

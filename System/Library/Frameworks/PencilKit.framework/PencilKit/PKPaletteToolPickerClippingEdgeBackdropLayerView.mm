@@ -1,14 +1,14 @@
 @interface PKPaletteToolPickerClippingEdgeBackdropLayerView
-- (PKPaletteToolPickerClippingEdgeBackdropLayerView)initWithEdge:(unint64_t)a3 isTopBackdropLayer:(BOOL)a4;
-- (void)addGradientMaskForEdge:(unint64_t)a3;
+- (PKPaletteToolPickerClippingEdgeBackdropLayerView)initWithEdge:(unint64_t)edge isTopBackdropLayer:(BOOL)layer;
+- (void)addGradientMaskForEdge:(unint64_t)edge;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPaletteToolPickerClippingEdgeBackdropLayerView
 
-- (PKPaletteToolPickerClippingEdgeBackdropLayerView)initWithEdge:(unint64_t)a3 isTopBackdropLayer:(BOOL)a4
+- (PKPaletteToolPickerClippingEdgeBackdropLayerView)initWithEdge:(unint64_t)edge isTopBackdropLayer:(BOOL)layer
 {
-  v4 = a4;
+  layerCopy = layer;
   v13.receiver = self;
   v13.super_class = PKPaletteToolPickerClippingEdgeBackdropLayerView;
   v6 = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)&v13 init];
@@ -18,28 +18,28 @@
     backdropLayer = v6->_backdropLayer;
     v6->_backdropLayer = v7;
 
-    v6->_isTopBackdropLayer = v4;
-    [(CABackdropLayer *)v6->_backdropLayer setCaptureOnly:!v4];
-    if (a3 - 1 > 7)
+    v6->_isTopBackdropLayer = layerCopy;
+    [(CABackdropLayer *)v6->_backdropLayer setCaptureOnly:!layerCopy];
+    if (edge - 1 > 7)
     {
       v9 = &stru_1F476BD20;
     }
 
     else
     {
-      v9 = off_1E82DC0B8[a3 - 1];
+      v9 = off_1E82DC0B8[edge - 1];
     }
 
     [(CABackdropLayer *)v6->_backdropLayer setGroupName:v9];
     LODWORD(v10) = 1.0;
     [(CABackdropLayer *)v6->_backdropLayer setOpacity:v10];
-    if (v4)
+    if (layerCopy)
     {
-      [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)v6 addGradientMaskForEdge:a3];
+      [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)v6 addGradientMaskForEdge:edge];
     }
 
-    v11 = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)v6 layer];
-    [v11 addSublayer:v6->_backdropLayer];
+    layer = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)v6 layer];
+    [layer addSublayer:v6->_backdropLayer];
   }
 
   return v6;
@@ -52,8 +52,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self backdropLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backdropLayer = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self backdropLayer];
+  [backdropLayer setFrame:{v4, v6, v8, v10}];
 
   if ([(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self isTopBackdropLayer])
   {
@@ -62,30 +62,30 @@
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v21 = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self layer];
-    v20 = [v21 mask];
-    [v20 setFrame:{v13, v15, v17, v19}];
+    layer = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self layer];
+    mask = [layer mask];
+    [mask setFrame:{v13, v15, v17, v19}];
   }
 }
 
-- (void)addGradientMaskForEdge:(unint64_t)a3
+- (void)addGradientMaskForEdge:(unint64_t)edge
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E6979380] layer];
+  layer = [MEMORY[0x1E6979380] layer];
   [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self bounds];
-  [v5 setFrame:?];
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  v14[0] = [v6 CGColor];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  v14[1] = [v7 CGColor];
+  [layer setFrame:?];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v14[0] = [blackColor CGColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v14[1] = [clearColor CGColor];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  [v5 setColors:v8];
+  [layer setColors:v8];
 
-  if (a3 <= 3)
+  if (edge <= 3)
   {
-    if (a3 != 1)
+    if (edge != 1)
     {
-      if (a3 == 2)
+      if (edge == 2)
       {
         v9 = 0.5;
         v10 = 1.0;
@@ -93,8 +93,8 @@
 LABEL_8:
         v12 = 0.5;
 LABEL_12:
-        [v5 setStartPoint:{v11, v9}];
-        [v5 setEndPoint:{v10, v12}];
+        [layer setStartPoint:{v11, v9}];
+        [layer setEndPoint:{v10, v12}];
         goto LABEL_13;
       }
 
@@ -109,7 +109,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 == 4)
+  if (edge == 4)
   {
     v12 = 0.0;
     v11 = 0.5;
@@ -117,7 +117,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3 == 8)
+  if (edge == 8)
   {
     v9 = 0.5;
     v10 = 0.0;
@@ -126,8 +126,8 @@ LABEL_11:
   }
 
 LABEL_13:
-  v13 = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self layer];
-  [v13 setMask:v5];
+  layer2 = [(PKPaletteToolPickerClippingEdgeBackdropLayerView *)self layer];
+  [layer2 setMask:layer];
 }
 
 @end

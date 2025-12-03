@@ -1,26 +1,26 @@
 @interface DIIOCacheDelete
 - (BOOL)registerPeriodicCallback;
-- (BOOL)setupNewConnection:(id)a3;
-- (DIIOCacheDelete)initWithDebugServiceName:(id)a3;
-- (id)onPeriodicWithInfo:(id)a3 urgency:(int)a4;
+- (BOOL)setupNewConnection:(id)connection;
+- (DIIOCacheDelete)initWithDebugServiceName:(id)name;
+- (id)onPeriodicWithInfo:(id)info urgency:(int)urgency;
 - (unint64_t)eraseOldCacheFiles;
 - (void)restartExitTimer;
-- (void)setupExitTimer:(id)a3;
+- (void)setupExitTimer:(id)timer;
 - (void)setupSigtermHandler;
 @end
 
 @implementation DIIOCacheDelete
 
-- (DIIOCacheDelete)initWithDebugServiceName:(id)a3
+- (DIIOCacheDelete)initWithDebugServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = DIIOCacheDelete;
   v6 = [(DIBaseServiceDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_debugServiceName, a3);
+    objc_storeStrong(&v6->_debugServiceName, name);
     [(DIIOCacheDelete *)v7 setupSigtermHandler];
   }
 
@@ -42,12 +42,12 @@
 
 - (void)restartExitTimer
 {
-  v3 = [(DIIOCacheDelete *)self exitTimer];
+  exitTimer = [(DIIOCacheDelete *)self exitTimer];
 
-  if (v3)
+  if (exitTimer)
   {
-    v4 = [(DIIOCacheDelete *)self exitTimer];
-    [v4 invalidate];
+    exitTimer2 = [(DIIOCacheDelete *)self exitTimer];
+    [exitTimer2 invalidate];
 
     [(DIIOCacheDelete *)self setExitTimer:0];
   }
@@ -55,9 +55,9 @@
   [(DIIOCacheDelete *)self performSelectorOnMainThread:"setupExitTimer:" withObject:0 waitUntilDone:0];
 }
 
-- (void)setupExitTimer:(id)a3
+- (void)setupExitTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -451,9 +451,9 @@ LABEL_51:
   return v42;
 }
 
-- (id)onPeriodicWithInfo:(id)a3 urgency:(int)a4
+- (id)onPeriodicWithInfo:(id)info urgency:(int)urgency
 {
-  v6 = [a3 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v6 = [info objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v7 = *__error();
   if (sub_1000E95F0())
   {
@@ -464,7 +464,7 @@ LABEL_51:
     v18 = 2080;
     v19 = "[DIIOCacheDelete onPeriodicWithInfo:urgency:]";
     v20 = 1024;
-    v21 = a4;
+    urgencyCopy2 = urgency;
     v22 = 2113;
     v23 = v6;
     v9 = _os_log_send_and_compose_impl();
@@ -486,7 +486,7 @@ LABEL_51:
       v18 = 2080;
       v19 = "[DIIOCacheDelete onPeriodicWithInfo:urgency:]";
       v20 = 1024;
-      v21 = a4;
+      urgencyCopy2 = urgency;
       v22 = 2113;
       v23 = v6;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%.*s: Reached periodic cache delete with urgency %d, volume: %{private}@", buf, 0x22u);
@@ -627,9 +627,9 @@ LABEL_24:
   return v3;
 }
 
-- (BOOL)setupNewConnection:(id)a3
+- (BOOL)setupNewConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = *__error();
   if (sub_1000E95F0())
   {

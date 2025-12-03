@@ -1,21 +1,21 @@
 @interface CACASceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation CACASceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 session];
-    v8 = [v7 role];
+    v6 = sceneCopy;
+    session = [v6 session];
+    role = [session role];
     v9 = _UIWindowSceneSessionRoleCarPlay;
-    if ([v8 isEqualToString:_UIWindowSceneSessionRoleCarPlay])
+    if ([role isEqualToString:_UIWindowSceneSessionRoleCarPlay])
     {
       v10 = _os_feature_enabled_impl();
 
@@ -40,11 +40,11 @@ LABEL_12:
     {
     }
 
-    v14 = [v6 screen];
-    v15 = [v14 displayIdentity];
-    v16 = [v15 type];
+    screen = [v6 screen];
+    displayIdentity = [screen displayIdentity];
+    type = [displayIdentity type];
 
-    if (v16 == 8)
+    if (type == 8)
     {
       v11 = CACLogGeneral();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -60,9 +60,9 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v17 = [v6 session];
-    v18 = [v17 role];
-    if ([v18 isEqualToString:UIWindowSceneSessionRoleApplication])
+    session2 = [v6 session];
+    role2 = [session2 role];
+    if ([role2 isEqualToString:UIWindowSceneSessionRoleApplication])
     {
 
 LABEL_16:
@@ -71,9 +71,9 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v19 = [v6 session];
-    v20 = [v19 role];
-    v21 = [v20 isEqualToString:v9];
+    session3 = [v6 session];
+    role3 = [session3 role];
+    v21 = [role3 isEqualToString:v9];
 
     if (v21)
     {
@@ -86,24 +86,24 @@ LABEL_16:
     v6 = CACLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10000226C(v5, v6);
+      sub_10000226C(sceneCopy, v6);
     }
   }
 
 LABEL_18:
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v7 = a3;
-  v3 = [v7 session];
-  v4 = [v3 role];
-  v5 = [v4 isEqualToString:_UIWindowSceneSessionRoleCarPlay];
+  disconnectCopy = disconnect;
+  session = [disconnectCopy session];
+  role = [session role];
+  v5 = [role isEqualToString:_UIWindowSceneSessionRoleCarPlay];
 
   if (v5)
   {
     v6 = +[CACDisplayManager sharedManager];
-    [v6 deinitializeWindowsWithScene:v7];
+    [v6 deinitializeWindowsWithScene:disconnectCopy];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface HFUserAccessLevelItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (unint64_t)cameraAccessLevel;
 @end
 
@@ -7,21 +7,21 @@
 
 - (unint64_t)cameraAccessLevel
 {
-  v3 = [(HFUserItem *)self home];
-  v4 = [(HFUserItem *)self user];
-  v5 = [v3 homeAccessControlForUser:v4];
-  v6 = [v5 camerasAccessLevel];
+  home = [(HFUserItem *)self home];
+  user = [(HFUserItem *)self user];
+  v5 = [home homeAccessControlForUser:user];
+  camerasAccessLevel = [v5 camerasAccessLevel];
 
-  return v6;
+  return camerasAccessLevel;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HFUserAccessLevelItem;
-  v5 = [(HFUserItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HFUserItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__HFUserAccessLevelItem__subclass_updateWithOptions___block_invoke;

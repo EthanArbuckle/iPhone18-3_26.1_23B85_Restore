@@ -6,13 +6,13 @@
 
 - (id)focusTarget
 {
-  if (a1)
+  if (self)
   {
-    a1 = [SBKeyboardFocusTarget targetForSceneIdentityToken:*(a1 + 32) pid:*(a1 + 12)];
+    self = [SBKeyboardFocusTarget targetForSceneIdentityToken:*(self + 32) pid:*(self + 12)];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface PKPaymentOfferDynamicContentIcon
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferDynamicContentIcon)initWithCoder:(id)a3;
-- (PKPaymentOfferDynamicContentIcon)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferDynamicContentIcon)initWithCoder:(id)coder;
+- (PKPaymentOfferDynamicContentIcon)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)urlForScreenScale:(double)a3 appearance:(int64_t)a4;
+- (id)urlForScreenScale:(double)scale appearance:(int64_t)appearance;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferDynamicContentIcon
 
-- (PKPaymentOfferDynamicContentIcon)initWithDictionary:(id)a3
+- (PKPaymentOfferDynamicContentIcon)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[PKPaymentOfferDynamicContentIconVariant alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[PKPaymentOfferDynamicContentIconVariant alloc] initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKDictionaryForKey:@"darkVariant"];
-    v7 = [v4 PKDictionaryForKey:@"lightVariant"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"darkVariant"];
+    v7 = [dictionaryCopy PKDictionaryForKey:@"lightVariant"];
     v16.receiver = self;
     v16.super_class = PKPaymentOfferDynamicContentIcon;
     v8 = [(PKPaymentOfferDynamicContentIcon *)&v16 init];
@@ -44,35 +44,35 @@
 
     self = v9;
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKPaymentOfferDynamicContentIconVariant *)self->_defaultVariant dictionaryRepresentation];
-  [v3 addEntriesFromDictionary:v4];
+  dictionaryRepresentation = [(PKPaymentOfferDynamicContentIconVariant *)self->_defaultVariant dictionaryRepresentation];
+  [v3 addEntriesFromDictionary:dictionaryRepresentation];
 
   darkVariant = self->_darkVariant;
   if (darkVariant)
   {
-    v6 = [(PKPaymentOfferDynamicContentIconVariant *)darkVariant dictionaryRepresentation];
-    [v3 setObject:v6 forKeyedSubscript:@"darkVariant"];
+    dictionaryRepresentation2 = [(PKPaymentOfferDynamicContentIconVariant *)darkVariant dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"darkVariant"];
   }
 
   lightVariant = self->_lightVariant;
   if (lightVariant)
   {
-    v8 = [(PKPaymentOfferDynamicContentIconVariant *)lightVariant dictionaryRepresentation];
-    [v3 setObject:v8 forKeyedSubscript:@"lightVariant"];
+    dictionaryRepresentation3 = [(PKPaymentOfferDynamicContentIconVariant *)lightVariant dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"lightVariant"];
   }
 
   v9 = [v3 copy];
@@ -80,21 +80,21 @@
   return v9;
 }
 
-- (id)urlForScreenScale:(double)a3 appearance:(int64_t)a4
+- (id)urlForScreenScale:(double)scale appearance:(int64_t)appearance
 {
   v7 = [(PKPaymentOfferDynamicContentIconVariant *)self->_defaultVariant urlForScreenScale:?];
   v8 = v7;
-  if (a4 == 2)
+  if (appearance == 2)
   {
     darkVariant = self->_darkVariant;
     goto LABEL_6;
   }
 
-  if (a4 == 1)
+  if (appearance == 1)
   {
     darkVariant = self->_lightVariant;
 LABEL_6:
-    v11 = [(PKPaymentOfferDynamicContentIconVariant *)darkVariant urlForScreenScale:a3];
+    v11 = [(PKPaymentOfferDynamicContentIconVariant *)darkVariant urlForScreenScale:scale];
     v12 = v11;
     if (v11)
     {
@@ -117,18 +117,18 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -228,23 +228,23 @@ LABEL_20:
   return v3;
 }
 
-- (PKPaymentOfferDynamicContentIcon)initWithCoder:(id)a3
+- (PKPaymentOfferDynamicContentIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentOfferDynamicContentIcon;
   v5 = [(PKPaymentOfferDynamicContentIcon *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultVariant"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultVariant"];
     defaultVariant = v5->_defaultVariant;
     v5->_defaultVariant = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lightVariant"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lightVariant"];
     lightVariant = v5->_lightVariant;
     v5->_lightVariant = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"darkVariant"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"darkVariant"];
     darkVariant = v5->_darkVariant;
     v5->_darkVariant = v10;
   }
@@ -252,27 +252,27 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   defaultVariant = self->_defaultVariant;
-  v5 = a3;
-  [v5 encodeObject:defaultVariant forKey:@"defaultVariant"];
-  [v5 encodeObject:self->_lightVariant forKey:@"lightVariant"];
-  [v5 encodeObject:self->_darkVariant forKey:@"darkVariant"];
+  coderCopy = coder;
+  [coderCopy encodeObject:defaultVariant forKey:@"defaultVariant"];
+  [coderCopy encodeObject:self->_lightVariant forKey:@"lightVariant"];
+  [coderCopy encodeObject:self->_darkVariant forKey:@"darkVariant"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferDynamicContentIcon allocWithZone:](PKPaymentOfferDynamicContentIcon init];
-  v6 = [(PKPaymentOfferDynamicContentIconVariant *)self->_defaultVariant copyWithZone:a3];
+  v6 = [(PKPaymentOfferDynamicContentIconVariant *)self->_defaultVariant copyWithZone:zone];
   defaultVariant = v5->_defaultVariant;
   v5->_defaultVariant = v6;
 
-  v8 = [(PKPaymentOfferDynamicContentIconVariant *)self->_lightVariant copyWithZone:a3];
+  v8 = [(PKPaymentOfferDynamicContentIconVariant *)self->_lightVariant copyWithZone:zone];
   lightVariant = v5->_lightVariant;
   v5->_lightVariant = v8;
 
-  v10 = [(PKPaymentOfferDynamicContentIconVariant *)self->_darkVariant copyWithZone:a3];
+  v10 = [(PKPaymentOfferDynamicContentIconVariant *)self->_darkVariant copyWithZone:zone];
   darkVariant = v5->_darkVariant;
   v5->_darkVariant = v10;
 

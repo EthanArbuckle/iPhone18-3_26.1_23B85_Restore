@@ -1,21 +1,21 @@
 @interface AATrustedDeviceListRequest
-- (AATrustedDeviceListRequest)initWithURLString:(id)a3 accountStore:(id)a4 grandSlamAccount:(id)a5;
+- (AATrustedDeviceListRequest)initWithURLString:(id)string accountStore:(id)store grandSlamAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AATrustedDeviceListRequest
 
-- (AATrustedDeviceListRequest)initWithURLString:(id)a3 accountStore:(id)a4 grandSlamAccount:(id)a5
+- (AATrustedDeviceListRequest)initWithURLString:(id)string accountStore:(id)store grandSlamAccount:(id)account
 {
-  v8 = a4;
-  v9 = a5;
+  storeCopy = store;
+  accountCopy = account;
   v14.receiver = self;
   v14.super_class = AATrustedDeviceListRequest;
-  v10 = [(AARequest *)&v14 initWithURLString:a3];
+  v10 = [(AARequest *)&v14 initWithURLString:string];
   if (v10)
   {
-    v11 = [[AAGrandSlamSigner alloc] initWithAccountStore:v8 grandSlamAccount:v9 appTokenID:@"com.apple.gs.appleid.auth"];
+    v11 = [[AAGrandSlamSigner alloc] initWithAccountStore:storeCopy grandSlamAccount:accountCopy appTokenID:@"com.apple.gs.appleid.auth"];
     grandSlamSigner = v10->_grandSlamSigner;
     v10->_grandSlamSigner = v11;
   }
@@ -28,9 +28,9 @@
   grandSlamSigner = self->_grandSlamSigner;
   if (grandSlamSigner)
   {
-    v4 = [grandSlamSigner grandSlamAccount];
+    grandSlamAccount = [grandSlamSigner grandSlamAccount];
 
-    if (v4 && ([(AAGrandSlamSigner *)self->_grandSlamSigner accountStore], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+    if (grandSlamAccount && ([(AAGrandSlamSigner *)self->_grandSlamSigner accountStore], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
       v7.receiver = self;
       v7.super_class = AATrustedDeviceListRequest;
@@ -51,8 +51,8 @@
   v16 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = AATrustedDeviceListRequest;
-  v3 = [(AARequest *)&v13 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v13 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -75,9 +75,9 @@
     }
   }
 
-  v8 = [(AAGrandSlamSigner *)self->_grandSlamSigner grandSlamAccount];
-  v9 = [v8 aida_alternateDSID];
-  [v4 aa_addGrandslamAuthorizationheaderWithAltDSID:v9 heartbeatToken:self->_heartbeatToken];
+  grandSlamAccount = [(AAGrandSlamSigner *)self->_grandSlamSigner grandSlamAccount];
+  aida_alternateDSID = [grandSlamAccount aida_alternateDSID];
+  [v4 aa_addGrandslamAuthorizationheaderWithAltDSID:aida_alternateDSID heartbeatToken:self->_heartbeatToken];
 
   [v4 aa_addDeviceIDHeader];
   v10 = +[AADeviceInfo serialNumber];

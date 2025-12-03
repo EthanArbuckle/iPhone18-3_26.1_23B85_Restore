@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (SYTransportLog)init;
 - (void)_createLog;
-- (void)logMessage:(id)a3 args:(char *)a4;
+- (void)logMessage:(id)message args:(char *)args;
 @end
 
 @implementation SYTransportLog
@@ -52,11 +52,11 @@ uint64_t __32__SYTransportLog_sharedInstance__block_invoke()
   MEMORY[0x1EEE66BB8](v3, log);
 }
 
-- (void)logMessage:(id)a3 args:(char *)a4
+- (void)logMessage:(id)message args:(char *)args
 {
   log = self->_log;
-  v6 = a3;
-  [a3 UTF8String];
+  messageCopy = message;
+  [message UTF8String];
   os_log_with_args();
 }
 

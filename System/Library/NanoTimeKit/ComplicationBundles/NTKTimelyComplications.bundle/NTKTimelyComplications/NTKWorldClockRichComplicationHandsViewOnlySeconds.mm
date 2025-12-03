@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = NTKWorldClockRichComplicationHandsViewOnlySeconds;
-  v2 = [(NTKWorldClockRichComplicationHandsViewOnlySeconds *)&v4 secondHandConfiguration];
-  [v2 setExcludeSecondTail:1];
+  secondHandConfiguration = [(NTKWorldClockRichComplicationHandsViewOnlySeconds *)&v4 secondHandConfiguration];
+  [secondHandConfiguration setExcludeSecondTail:1];
 
-  return v2;
+  return secondHandConfiguration;
 }
 
 @end

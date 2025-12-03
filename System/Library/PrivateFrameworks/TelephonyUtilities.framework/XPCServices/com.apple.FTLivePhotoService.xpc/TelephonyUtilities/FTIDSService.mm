@@ -1,20 +1,20 @@
 @interface FTIDSService
-- (BOOL)sendResourceAtURL:(id)a3 metadata:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9;
+- (BOOL)sendResourceAtURL:(id)l metadata:(id)metadata toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error;
 - (NSString)description;
 - (NSString)name;
 - (OS_dispatch_queue)queue;
 - (_TtP18FTLivePhotoService24FTIDSServiceDependencies_)idsService;
-- (void)addServiceDelegate:(id)a3 queue:(id)a4;
-- (void)setIdsService:(id)a3;
-- (void)setName:(id)a3;
-- (void)setQueue:(id)a3;
+- (void)addServiceDelegate:(id)delegate queue:(id)queue;
+- (void)setIdsService:(id)service;
+- (void)setName:(id)name;
+- (void)setQueue:(id)queue;
 @end
 
 @implementation FTIDSService
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100025C18();
 
   v3 = sub_10003985C();
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (void)setIdsService:(id)a3
+- (void)setIdsService:(id)service
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100023FDC(a3);
+  selfCopy = self;
+  sub_100023FDC(service);
 }
 
 - (NSString)name
@@ -44,11 +44,11 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_10003986C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100024030(v4, v6);
 }
 
@@ -59,16 +59,16 @@
   return v2;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002405C(v4);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_10002405C(queueCopy);
 }
 
-- (BOOL)sendResourceAtURL:(id)a3 metadata:(id)a4 toDestinations:(id)a5 priority:(int64_t)a6 options:(id)a7 identifier:(id *)a8 error:(id *)a9
+- (BOOL)sendResourceAtURL:(id)l metadata:(id)metadata toDestinations:(id)destinations priority:(int64_t)priority options:(id)options identifier:(id *)identifier error:(id *)error
 {
-  v21 = a8;
+  identifierCopy = identifier;
   v22 = sub_1000395CC();
   v12 = *(v22 - 8);
   v13 = *(v12 + 64);
@@ -77,25 +77,25 @@
   sub_10003958C();
   v16 = sub_10003980C();
   v17 = sub_10003995C();
-  if (a7)
+  if (options)
   {
-    a7 = sub_10003980C();
+    options = sub_10003980C();
   }
 
-  v18 = self;
-  sub_100024070(v15, v16, v17, a6, a7, v21);
+  selfCopy = self;
+  sub_100024070(v15, v16, v17, priority, options, identifierCopy);
   (*(v12 + 8))(v15, v22);
 
   return 1;
 }
 
-- (void)addServiceDelegate:(id)a3 queue:(id)a4
+- (void)addServiceDelegate:(id)delegate queue:(id)queue
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  sub_100027B34(a3, v7, v8);
+  queueCopy = queue;
+  selfCopy = self;
+  sub_100027B34(delegate, queueCopy, selfCopy);
   swift_unknownObjectRelease();
 }
 

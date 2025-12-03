@@ -3,16 +3,16 @@
 - (CGSize)pixelSize;
 - (CGSize)size;
 - (TSDImageDataAttributes)init;
-- (TSDImageDataAttributes)initWithIsSRGB:(BOOL)a3;
-- (TSDImageDataAttributes)initWithMessage:(const void *)a3;
-- (TSDImageDataAttributes)initWithPixelSize:(CGSize)a3;
-- (TSDImageDataAttributes)initWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)a3;
-- (id)copyWithIsSRGB:(BOOL)a3;
-- (id)copyWithPixelSize:(CGSize)a3;
-- (id)copyWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSDImageDataAttributes)initWithIsSRGB:(BOOL)b;
+- (TSDImageDataAttributes)initWithMessage:(const void *)message;
+- (TSDImageDataAttributes)initWithPixelSize:(CGSize)size;
+- (TSDImageDataAttributes)initWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)untagged;
+- (id)copyWithIsSRGB:(BOOL)b;
+- (id)copyWithPixelSize:(CGSize)size;
+- (id)copyWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)untagged;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)saveToMessage:(void *)a3;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSDImageDataAttributes
@@ -24,10 +24,10 @@
   return [(TSDImageDataAttributes *)&v3 init];
 }
 
-- (TSDImageDataAttributes)initWithPixelSize:(CGSize)a3
+- (TSDImageDataAttributes)initWithPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   result = objc_msgSend_init(self, a2, v3);
   if (result)
   {
@@ -39,30 +39,30 @@
   return result;
 }
 
-- (TSDImageDataAttributes)initWithIsSRGB:(BOOL)a3
+- (TSDImageDataAttributes)initWithIsSRGB:(BOOL)b
 {
-  result = objc_msgSend_init(self, a2, a3);
+  result = objc_msgSend_init(self, a2, b);
   if (result)
   {
-    result->_imageIsSRGB = a3;
+    result->_imageIsSRGB = b;
     result->_hasImageIsSRGB = 1;
   }
 
   return result;
 }
 
-- (TSDImageDataAttributes)initWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)a3
+- (TSDImageDataAttributes)initWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)untagged
 {
-  result = objc_msgSend_init(self, a2, a3);
+  result = objc_msgSend_init(self, a2, untagged);
   if (result)
   {
-    result->_shouldBeInterpretedAsGenericIfUntagged = a3;
+    result->_shouldBeInterpretedAsGenericIfUntagged = untagged;
   }
 
   return result;
 }
 
-- (TSDImageDataAttributes)initWithMessage:(const void *)a3
+- (TSDImageDataAttributes)initWithMessage:(const void *)message
 {
   v10.receiver = self;
   v10.super_class = TSDImageDataAttributes;
@@ -96,7 +96,7 @@
   return v3;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   v29.receiver = self;
   v29.super_class = TSDImageDataAttributes;
@@ -159,11 +159,11 @@
   *(v7 + 33) = shouldBeInterpretedAsGenericIfUntagged;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TSDImageDataAttributes;
-  result = [(TSPDataAttributes *)&v5 copyWithZone:a3];
+  result = [(TSPDataAttributes *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 1) = self->_pixelSize;
@@ -176,10 +176,10 @@
   return result;
 }
 
-- (id)copyWithPixelSize:(CGSize)a3
+- (id)copyWithPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   result = objc_msgSend_copy(self, a2, v3);
   if (result)
   {
@@ -191,24 +191,24 @@
   return result;
 }
 
-- (id)copyWithIsSRGB:(BOOL)a3
+- (id)copyWithIsSRGB:(BOOL)b
 {
-  result = objc_msgSend_copy(self, a2, a3);
+  result = objc_msgSend_copy(self, a2, b);
   if (result)
   {
-    *(result + 32) = a3;
+    *(result + 32) = b;
     *(result + 33) = 1;
   }
 
   return result;
 }
 
-- (id)copyWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)a3
+- (id)copyWithShouldBeInterpretedAsGenericIfUntagged:(BOOL)untagged
 {
-  result = objc_msgSend_copy(self, a2, a3);
+  result = objc_msgSend_copy(self, a2, untagged);
   if (result)
   {
-    *(result + 34) = a3;
+    *(result + 34) = untagged;
   }
 
   return result;

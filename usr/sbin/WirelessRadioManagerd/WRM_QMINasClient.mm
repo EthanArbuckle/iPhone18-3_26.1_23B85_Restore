@@ -1,25 +1,25 @@
 @interface WRM_QMINasClient
-- (WRM_QMINasClient)initWithSub:(int64_t)a3;
+- (WRM_QMINasClient)initWithSub:(int64_t)sub;
 - (id).cxx_construct;
-- (void)bindQMIClientToSlotType:(int64_t)a3;
+- (void)bindQMIClientToSlotType:(int64_t)type;
 - (void)dealloc;
-- (void)notifyAVStatus:(unsigned __int8)a3 :(unsigned __int16)a4;
-- (void)notifyBBCallState:(unsigned __int8)a3 :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6;
-- (void)notifyBBLockState:(unsigned __int8)a3 :(unsigned __int8)a4;
-- (void)notifyFTDupelicationState:(unsigned __int8)a3;
-- (void)notifyStreamingEBHState:(unsigned __int8)a3;
+- (void)notifyAVStatus:(unsigned __int8)status :(unsigned __int16)a4;
+- (void)notifyBBCallState:(unsigned __int8)state :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6;
+- (void)notifyBBLockState:(unsigned __int8)state :(unsigned __int8)a4;
+- (void)notifyFTDupelicationState:(unsigned __int8)state;
+- (void)notifyStreamingEBHState:(unsigned __int8)state;
 - (void)querySignalSinr;
 - (void)registerQmiIndHandler;
 - (void)sendNasConfigSigInfo2Request;
 - (void)sendNasIndicationRegister;
 - (void)sendSisNrAvailableRequest;
-- (void)sendWrmSdmLocationDbInfo:(int64_t)a3 dbAvailable:(BOOL)a4 mcc:(unsigned int)a5 mnc:(unsigned int)a6 cellId:(unint64_t)a7;
-- (void)setBBSAState:(BOOL)a3 :(unsigned __int8)a4;
+- (void)sendWrmSdmLocationDbInfo:(int64_t)info dbAvailable:(BOOL)available mcc:(unsigned int)mcc mnc:(unsigned int)mnc cellId:(unint64_t)id;
+- (void)setBBSAState:(BOOL)state :(unsigned __int8)a4;
 - (void)setHandlerLocationDbInfo;
 - (void)setHandlerNasSigInfoInd;
 - (void)setHandlerNasVoiceLqmInd;
 - (void)setHandlerSisNrAvailableInfoInd;
-- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)a3 cellType:(int)a4 anchorCellBandwidth:(unsigned int)a5 mmWavePresent:(BOOL)a6 downlinkThroughput:(unsigned int)a7 sampleCount:(unsigned int)a8 deploymentCount:(unsigned int)a9;
+- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)type cellType:(int)cellType anchorCellBandwidth:(unsigned int)bandwidth mmWavePresent:(BOOL)present downlinkThroughput:(unsigned int)throughput sampleCount:(unsigned int)count deploymentCount:(unsigned int)deploymentCount;
 - (void)start;
 - (void)started;
 - (void)stop;
@@ -28,7 +28,7 @@
 
 @implementation WRM_QMINasClient
 
-- (WRM_QMINasClient)initWithSub:(int64_t)a3
+- (WRM_QMINasClient)initWithSub:(int64_t)sub
 {
   v7.receiver = self;
   v7.super_class = WRM_QMINasClient;
@@ -43,7 +43,7 @@
       v4->mQueue = &_dispatch_main_q;
     }
 
-    v4->mSub = a3;
+    v4->mSub = sub;
     [(WRM_QMINasClient *)v4 initNewClient];
     v4->mQmiClientRunning = 0;
     v4->mIsEnhancedSisSupported = 0;
@@ -323,14 +323,14 @@
   }
 }
 
-- (void)bindQMIClientToSlotType:(int64_t)a3
+- (void)bindQMIClientToSlotType:(int64_t)type
 {
   qmi::MutableMessageBase::MutableMessageBase(v12, 0x45u);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000AF954;
   v11[3] = &unk_100240540;
-  v11[4] = a3;
+  v11[4] = type;
   v5 = sub_1000B6804(v12, 1);
   sub_1000AF954(v11, v5);
   v7[5] = self->mClient;
@@ -384,14 +384,14 @@
   qmi::MutableMessageBase::~MutableMessageBase(v6);
 }
 
-- (void)notifyBBCallState:(unsigned __int8)a3 :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6
+- (void)notifyBBCallState:(unsigned __int8)state :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6
 {
   qmi::MutableMessageBase::MutableMessageBase(v22, 0x5568u);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000AFD7C;
   v17[3] = &unk_100240588;
-  v18 = a3;
+  stateCopy = state;
   v19 = a4;
   v20 = a5;
   v21 = a6;
@@ -423,14 +423,14 @@
   qmi::MutableMessageBase::~MutableMessageBase(v22);
 }
 
-- (void)notifyBBLockState:(unsigned __int8)a3 :(unsigned __int8)a4
+- (void)notifyBBLockState:(unsigned __int8)state :(unsigned __int8)a4
 {
   qmi::MutableMessageBase::MutableMessageBase(v16, 0x5568u);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B0034;
   v13[3] = &unk_1002405B0;
-  v14 = a3;
+  stateCopy = state;
   v15 = a4;
   v13[4] = self;
   v7 = sub_1000147D8(v16, 17);
@@ -460,14 +460,14 @@
   qmi::MutableMessageBase::~MutableMessageBase(v16);
 }
 
-- (void)notifyAVStatus:(unsigned __int8)a3 :(unsigned __int16)a4
+- (void)notifyAVStatus:(unsigned __int8)status :(unsigned __int16)a4
 {
   qmi::MutableMessageBase::MutableMessageBase(v16, 0x5568u);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000B02D8;
   v13[3] = &unk_1002405D8;
-  v15 = a3;
+  statusCopy = status;
   v14 = a4;
   v13[4] = self;
   v7 = sub_1000B7C6C(v16, 18);
@@ -497,14 +497,14 @@
   qmi::MutableMessageBase::~MutableMessageBase(v16);
 }
 
-- (void)notifyFTDupelicationState:(unsigned __int8)a3
+- (void)notifyFTDupelicationState:(unsigned __int8)state
 {
   v5 = qmi::MutableMessageBase::MutableMessageBase(v14, 0x5568u);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000B0568;
   v12[3] = &unk_100240600;
-  v13 = a3;
+  stateCopy = state;
   v12[4] = self;
   v6 = sub_1000B7E80(v5, 19);
   sub_1000B0568(v12, v6);
@@ -533,14 +533,14 @@
   qmi::MutableMessageBase::~MutableMessageBase(v14);
 }
 
-- (void)notifyStreamingEBHState:(unsigned __int8)a3
+- (void)notifyStreamingEBHState:(unsigned __int8)state
 {
   v5 = qmi::MutableMessageBase::MutableMessageBase(v14, 0x5568u);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000B07EC;
   v12[3] = &unk_100240628;
-  v13 = a3;
+  stateCopy = state;
   v12[4] = self;
   v6 = sub_1000B8088(v5, 20);
   sub_1000B07EC(v12, v6);
@@ -569,17 +569,17 @@
   qmi::MutableMessageBase::~MutableMessageBase(v14);
 }
 
-- (void)setBBSAState:(BOOL)a3 :(unsigned __int8)a4
+- (void)setBBSAState:(BOOL)state :(unsigned __int8)a4
 {
-  if (self->mLastIsSaDisabled != a3)
+  if (self->mLastIsSaDisabled != state)
   {
-    self->mLastIsSaDisabled = a3;
+    self->mLastIsSaDisabled = state;
     v7 = qmi::MutableMessageBase::MutableMessageBase(v19, 0x556Au);
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000B0AEC;
     v17[3] = &unk_100240650;
-    v18 = a3;
+    stateCopy = state;
     v17[4] = self;
     v8 = sub_1000B8290(v7, 16);
     sub_1000B0AEC(v17, v8);
@@ -670,7 +670,7 @@
   qmi::MutableMessageBase::~MutableMessageBase(v10);
 }
 
-- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)a3 cellType:(int)a4 anchorCellBandwidth:(unsigned int)a5 mmWavePresent:(BOOL)a6 downlinkThroughput:(unsigned int)a7 sampleCount:(unsigned int)a8 deploymentCount:(unsigned int)a9
+- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)type cellType:(int)cellType anchorCellBandwidth:(unsigned int)bandwidth mmWavePresent:(BOOL)present downlinkThroughput:(unsigned int)throughput sampleCount:(unsigned int)count deploymentCount:(unsigned int)deploymentCount
 {
   mQueue = self->mQueue;
   v10[0] = _NSConcreteStackBlock;
@@ -678,27 +678,27 @@
   v10[2] = sub_1000B1360;
   v10[3] = &unk_10023E8A8;
   v10[4] = self;
-  v11 = a4;
-  v12 = a5;
-  v16 = a6;
-  v13 = a7;
-  v14 = a8;
-  v15 = a9;
+  cellTypeCopy = cellType;
+  bandwidthCopy = bandwidth;
+  presentCopy = present;
+  throughputCopy = throughput;
+  countCopy = count;
+  deploymentCountCopy = deploymentCount;
   dispatch_async(mQueue, v10);
 }
 
-- (void)sendWrmSdmLocationDbInfo:(int64_t)a3 dbAvailable:(BOOL)a4 mcc:(unsigned int)a5 mnc:(unsigned int)a6 cellId:(unint64_t)a7
+- (void)sendWrmSdmLocationDbInfo:(int64_t)info dbAvailable:(BOOL)available mcc:(unsigned int)mcc mnc:(unsigned int)mnc cellId:(unint64_t)id
 {
   mQueue = self->mQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000B16C8;
   v8[3] = &unk_100240858;
-  v11 = a4;
-  v9 = a5;
-  v10 = a6;
+  availableCopy = available;
+  mccCopy = mcc;
+  mncCopy = mnc;
   v8[4] = self;
-  v8[5] = a7;
+  v8[5] = id;
   dispatch_async(mQueue, v8);
 }
 

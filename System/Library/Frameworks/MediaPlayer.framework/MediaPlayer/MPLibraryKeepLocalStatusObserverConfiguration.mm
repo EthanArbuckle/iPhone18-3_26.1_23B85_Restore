@@ -1,5 +1,5 @@
 @interface MPLibraryKeepLocalStatusObserverConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -77,19 +77,19 @@
   return (v57 + v58) ^ __ROR8__(v57, 47) ^ v60 ^ __ROR8__(v57 + v58, 32) ^ v60 ^ __ROR8__(v58 ^ v59, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(MPLibraryKeepLocalStatusObserverConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(MPLibraryKeepLocalStatusObserverConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifyingModelObject = v5->_identifyingModelObject;
       v7 = self->_identifyingModelObject;
       v8 = v7;

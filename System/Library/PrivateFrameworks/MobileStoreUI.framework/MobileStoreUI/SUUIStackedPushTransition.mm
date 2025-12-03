@@ -1,20 +1,20 @@
 @interface SUUIStackedPushTransition
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SUUIStackedPushTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v133[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v108 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v107 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v5 = [v107 view];
-  v109 = [v108 view];
-  v101 = v4;
-  v6 = [v4 containerView];
-  [v4 finalFrameForViewController:v107];
+  transitionCopy = transition;
+  v108 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  v107 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  view = [v107 view];
+  view2 = [v108 view];
+  v101 = transitionCopy;
+  containerView = [transitionCopy containerView];
+  [transitionCopy finalFrameForViewController:v107];
   v8 = v7;
   v10 = v9;
   v102 = v12;
@@ -23,7 +23,7 @@
   [(SUUIStackedBar *)self->_toBar frame];
   MaxY = CGRectGetMaxY(v134);
   v132 = 0;
-  SUUIGetImagesFromView(v5, 0, &v132, MaxY);
+  SUUIGetImagesFromView(view, 0, &v132, MaxY);
   v106 = v132;
   v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v106];
   v15 = objc_alloc(MEMORY[0x277D75D18]);
@@ -35,9 +35,9 @@
   [v19 setBackgroundColor:v20];
 
   v97 = v14;
-  [v6 addSubview:v14];
+  [containerView addSubview:v14];
   v96 = v19;
-  [v6 addSubview:v19];
+  [containerView addSubview:v19];
   [v14 frame];
   v22 = v21;
   v24 = v23;
@@ -54,25 +54,25 @@
   v32 = v31;
   [(SUUIStackedBar *)self->_toBar frame];
   v34 = v25 - (v32 + v33);
-  v98 = v5;
-  [v5 frame];
+  v98 = view;
+  [view frame];
   [v30 setFrame:{v8, v34, v22}];
-  [v6 addSubview:v30];
-  [v6 sendSubviewToBack:v30];
+  [containerView addSubview:v30];
+  [containerView sendSubviewToBack:v30];
   [(SUUIStackedBar *)self->_toBar frame];
   v36 = v35;
   [(SUUIStackedBar *)self->_toBar frame];
   v93 = v29 - (v36 + v37);
   v89 = v29;
-  [v5 frame];
+  [view frame];
   [v30 bounds];
-  [v5 setFrame:?];
-  [v30 addSubview:v5];
+  [view setFrame:?];
+  [v30 addSubview:view];
   [(SUUIStackedBar *)self->_fromBar setHidden:1];
   split = self->_split;
   v130 = 0;
   v131 = 0;
-  SUUIGetImagesFromView(v109, &v131, &v130, split);
+  SUUIGetImagesFromView(view2, &v131, &v130, split);
   v100 = v131;
   v99 = v130;
   [(SUUIStackedBar *)self->_fromBar setHidden:0];
@@ -82,7 +82,7 @@
   v41 = v40;
   v43 = v42;
   [v39 setFrame:{v8, v10}];
-  [v6 addSubview:v39];
+  [containerView addSubview:v39];
   v92 = v29 - self->_split;
   v44 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v99];
   [v44 frame];
@@ -94,31 +94,31 @@
   v135.size.height = v43;
   v49 = CGRectGetMaxY(v135);
   [v44 setFrame:{v8, v49, v46, v48}];
-  [v6 addSubview:v44];
+  [containerView addSubview:v44];
   v90 = v49 + v48;
   v50 = objc_alloc_init(SUUIStackedBar);
   [(SUUIStackedBar *)v50 setSplitViewStyle:[(SUUIStackedBar *)self->_toBar splitViewStyle]];
   [(SUUIStackedBar *)v50 setHidesStatusBar:1];
-  v51 = [(SUUIStackedBar *)self->_toBar items];
-  -[SUUIStackedBar setAlwaysShowsBackButton:](v50, "setAlwaysShowsBackButton:", [v51 count] > 1);
+  items = [(SUUIStackedBar *)self->_toBar items];
+  -[SUUIStackedBar setAlwaysShowsBackButton:](v50, "setAlwaysShowsBackButton:", [items count] > 1);
 
-  v52 = [(SUUIStackedBar *)self->_toBar items];
-  v53 = [v52 lastObject];
-  v133[0] = v53;
+  items2 = [(SUUIStackedBar *)self->_toBar items];
+  lastObject = [items2 lastObject];
+  v133[0] = lastObject;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v133 count:1];
   v55 = SUUINavigationItemsShallowCopy(v54);
   [(SUUIStackedBar *)v50 setItems:v55];
 
   [(SUUIStackedBar *)v50 sizeToFit];
-  [v6 addSubview:v50];
+  [containerView addSubview:v50];
   [(SUUIStackedBar *)v50 frame];
   v57 = v56;
   [(SUUIStackedBar *)v50 setFrame:v8, v91 - v56, v22];
   [(SUUIStackedBar *)v50 setAlpha:0.0];
   v58 = objc_alloc_init(SUUIStackedBar);
   [(SUUIStackedBar *)v58 setSplitViewStyle:[(SUUIStackedBar *)self->_fromBar splitViewStyle]];
-  v59 = [(SUUIStackedBar *)self->_fromBar items];
-  v60 = SUUINavigationItemsShallowCopy(v59);
+  items3 = [(SUUIStackedBar *)self->_fromBar items];
+  v60 = SUUINavigationItemsShallowCopy(items3);
   [(SUUIStackedBar *)v58 setItems:v60];
 
   [(SUUIStackedBar *)self->_fromBar frame];
@@ -126,12 +126,12 @@
   v64 = v63;
   v66 = v65;
   v68 = v67;
-  v69 = [(SUUIStackedBar *)self->_fromBar superview];
-  [v6 convertRect:v69 fromView:{v62, v64, v66, v68}];
+  superview = [(SUUIStackedBar *)self->_fromBar superview];
+  [containerView convertRect:superview fromView:{v62, v64, v66, v68}];
   [(SUUIStackedBar *)v58 setFrame:?];
 
-  [v6 addSubview:v58];
-  [v109 removeFromSuperview];
+  [containerView addSubview:v58];
+  [view2 removeFromSuperview];
   [(SUUIStackedBar *)v58 setLastItemExpanded:0 animated:1];
   v70 = SUUIStackedBarSpringAnimationForExpandCollapse(v50, v8, v89 - v57);
   v71 = SUUIStackedBarSpringAnimationForExpandCollapse(v30, v8, v93);
@@ -168,7 +168,7 @@
   v123 = v104;
   v124 = v102;
   v112 = v98;
-  v113 = v6;
+  v113 = containerView;
   v114 = v58;
   v115 = v78;
   v116 = v97;
@@ -183,7 +183,7 @@
   v83 = v97;
   v84 = v78;
   v85 = v58;
-  v86 = v6;
+  v86 = containerView;
   v87 = v98;
   v88 = v111;
   [v95 animateWithDuration:v125 animations:v110 completion:v80];

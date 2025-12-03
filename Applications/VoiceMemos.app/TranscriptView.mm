@@ -1,18 +1,18 @@
 @interface TranscriptView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC10VoiceMemos14TranscriptView)initWithFrame:(CGRect)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC10VoiceMemos14TranscriptView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
-- (void)didReceivePan:(id)a3;
-- (void)didReceiveTap:(id)a3;
+- (void)didReceivePan:(id)pan;
+- (void)didReceiveTap:(id)tap;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)searchButtonTapped;
-- (void)selectAll:(id)a3;
+- (void)selectAll:(id)all;
 @end
 
 @implementation TranscriptView
@@ -23,8 +23,8 @@
   v4.super_class = type metadata accessor for TranscriptView();
   v2 = v4.receiver;
   [(TranscriptView *)&v4 didMoveToSuperview];
-  v3 = [v2 superview];
-  if (v3)
+  superview = [v2 superview];
+  if (superview)
   {
   }
 
@@ -43,21 +43,21 @@
   sub_100170A40();
 }
 
-- (void)didReceiveTap:(id)a3
+- (void)didReceiveTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001710CC(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_1001710CC(tapCopy);
 }
 
-- (void)didReceivePan:(id)a3
+- (void)didReceivePan:(id)pan
 {
   sub_1000CC430(self + OBJC_IVAR____TtC10VoiceMemos14TranscriptView_controller, v10);
   sub_10000AACC(v10, v10[3]);
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10VoiceMemos14TranscriptView_textView);
-  v6 = a3;
-  v7 = self;
-  [v6 velocityInView:v5];
+  panCopy = pan;
+  selfCopy = self;
+  [panCopy velocityInView:v5];
   sub_10017EAF0(v8, v9);
 
   sub_100014B64(v10);
@@ -66,75 +66,75 @@
 - (void)searchButtonTapped
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10VoiceMemos14TranscriptView_textView);
-  v5 = self;
-  v3 = [v2 findInteraction];
-  if (v3)
+  selfCopy = self;
+  findInteraction = [v2 findInteraction];
+  if (findInteraction)
   {
-    v4 = v3;
-    [v3 presentFindNavigatorShowingReplace:0];
+    v4 = findInteraction;
+    [findInteraction presentFindNavigatorShowingReplace:0];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10VoiceMemos14TranscriptView_textView);
-  v4 = self;
+  selfCopy = self;
   if (([v3 isScrollAnimating] & 1) == 0)
   {
     sub_10017191C();
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v10 = self;
-  v5 = [v4 panGestureRecognizer];
-  [v5 velocityInView:v4];
+  draggingCopy = dragging;
+  selfCopy = self;
+  panGestureRecognizer = [draggingCopy panGestureRecognizer];
+  [panGestureRecognizer velocityInView:draggingCopy];
   v7 = v6;
   v9 = v8;
 
-  sub_10000AACC((&v10->super.super.super.isa + OBJC_IVAR____TtC10VoiceMemos14TranscriptView_controller), *&v10->controller[OBJC_IVAR____TtC10VoiceMemos14TranscriptView_controller + 16]);
+  sub_10000AACC((&selfCopy->super.super.super.isa + OBJC_IVAR____TtC10VoiceMemos14TranscriptView_controller), *&selfCopy->controller[OBJC_IVAR____TtC10VoiceMemos14TranscriptView_controller + 16]);
   sub_10017EB84(v7, v9);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a3;
-  v6 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   sub_100172810();
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v3 = self;
+  selfCopy = self;
   sub_10017191C();
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100171B10(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_100171B10(beginCopy);
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100171C50(v6);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_100171C50(recognizerCopy);
 
   return v9;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -143,20 +143,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_100171EEC(a3, v10);
+  v8 = sub_100171EEC(action, v10);
 
   sub_100003CBC(v10, &qword_1002D06A8);
   return v8 & 1;
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  if (a3)
+  if (all)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -165,7 +165,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1001721D4(v6);
@@ -173,7 +173,7 @@
   sub_100003CBC(v6, &qword_1002D06A8);
 }
 
-- (_TtC10VoiceMemos14TranscriptView)initWithFrame:(CGRect)a3
+- (_TtC10VoiceMemos14TranscriptView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

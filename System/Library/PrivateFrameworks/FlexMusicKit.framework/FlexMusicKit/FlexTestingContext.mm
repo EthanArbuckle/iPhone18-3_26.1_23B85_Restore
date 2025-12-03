@@ -1,9 +1,9 @@
 @interface FlexTestingContext
 - (FlexTestingContext)init;
-- (void)setMaxSilenceDurationTime:(id *)a3;
-- (void)setMaxSilencePercentageTime:(id *)a3;
-- (void)setMaxSilenceUnderSetDurationTime:(id *)a3;
-- (void)setMinOutroDurationTime:(id *)a3;
+- (void)setMaxSilenceDurationTime:(id *)time;
+- (void)setMaxSilencePercentageTime:(id *)time;
+- (void)setMaxSilenceUnderSetDurationTime:(id *)time;
+- (void)setMinOutroDurationTime:(id *)time;
 @end
 
 @implementation FlexTestingContext
@@ -44,31 +44,31 @@
   return v3;
 }
 
-- (void)setMaxSilenceDurationTime:(id *)a3
+- (void)setMaxSilenceDurationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_maxSilenceDurationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_maxSilenceDurationTime.epoch = time->var3;
   *&self->_maxSilenceDurationTime.value = v3;
 }
 
-- (void)setMaxSilenceUnderSetDurationTime:(id *)a3
+- (void)setMaxSilenceUnderSetDurationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_maxSilenceUnderSetDurationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_maxSilenceUnderSetDurationTime.epoch = time->var3;
   *&self->_maxSilenceUnderSetDurationTime.value = v3;
 }
 
-- (void)setMaxSilencePercentageTime:(id *)a3
+- (void)setMaxSilencePercentageTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_maxSilencePercentageTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_maxSilencePercentageTime.epoch = time->var3;
   *&self->_maxSilencePercentageTime.value = v3;
 }
 
-- (void)setMinOutroDurationTime:(id *)a3
+- (void)setMinOutroDurationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_minOutroDurationTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_minOutroDurationTime.epoch = time->var3;
   *&self->_minOutroDurationTime.value = v3;
 }
 

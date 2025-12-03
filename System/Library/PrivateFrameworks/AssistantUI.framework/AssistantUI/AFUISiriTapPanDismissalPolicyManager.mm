@@ -1,39 +1,39 @@
 @interface AFUISiriTapPanDismissalPolicyManager
-- (AFUISiriTapPanDismissalPolicyManager)initWithPolicy:(int64_t)a3 delegate:(id)a4;
+- (AFUISiriTapPanDismissalPolicyManager)initWithPolicy:(int64_t)policy delegate:(id)delegate;
 - (AFUISiriTapPanDismissalPolicyManagerDelegate)_delegate;
-- (void)_dismissalPolicyForPassThroughAlways:(BOOL)a3 forSessionState:(int64_t)a4;
-- (void)_dismissalPolicyForPassThroughUnlessDimmed:(BOOL)a3 forSessionState:(int64_t)a4;
-- (void)_setShouldDismissForTapsAndPans:(BOOL)a3 shouldDelayDelegateUpdate:(BOOL)a4;
+- (void)_dismissalPolicyForPassThroughAlways:(BOOL)always forSessionState:(int64_t)state;
+- (void)_dismissalPolicyForPassThroughUnlessDimmed:(BOOL)dimmed forSessionState:(int64_t)state;
+- (void)_setShouldDismissForTapsAndPans:(BOOL)pans shouldDelayDelegateUpdate:(BOOL)update;
 - (void)_updateDelegateOfPolicyChange;
-- (void)dimmingLayerVisibilityDidChange:(BOOL)a3 forSessionState:(int64_t)a4;
-- (void)idleAndQuietDidChange:(BOOL)a3 forSessionState:(int64_t)a4;
-- (void)inputTypeDidChange:(int64_t)a3;
+- (void)dimmingLayerVisibilityDidChange:(BOOL)change forSessionState:(int64_t)state;
+- (void)idleAndQuietDidChange:(BOOL)change forSessionState:(int64_t)state;
+- (void)inputTypeDidChange:(int64_t)change;
 - (void)invalidate;
 @end
 
 @implementation AFUISiriTapPanDismissalPolicyManager
 
-- (AFUISiriTapPanDismissalPolicyManager)initWithPolicy:(int64_t)a3 delegate:(id)a4
+- (AFUISiriTapPanDismissalPolicyManager)initWithPolicy:(int64_t)policy delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = AFUISiriTapPanDismissalPolicyManager;
   v7 = [(AFUISiriTapPanDismissalPolicyManager *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(AFUISiriTapPanDismissalPolicyManager *)v7 _setDelegate:v6];
-    [(AFUISiriTapPanDismissalPolicyManager *)v8 _setDismissalPolicy:a3];
-    [(AFUISiriTapPanDismissalPolicyManager *)v8 _setShouldDismissForTapsAndPans:a3 == 1];
+    [(AFUISiriTapPanDismissalPolicyManager *)v7 _setDelegate:delegateCopy];
+    [(AFUISiriTapPanDismissalPolicyManager *)v8 _setDismissalPolicy:policy];
+    [(AFUISiriTapPanDismissalPolicyManager *)v8 _setShouldDismissForTapsAndPans:policy == 1];
     [(AFUISiriTapPanDismissalPolicyManager *)v8 _updateDelegateOfPolicyChange];
   }
 
   return v8;
 }
 
-- (void)idleAndQuietDidChange:(BOOL)a3 forSessionState:(int64_t)a4
+- (void)idleAndQuietDidChange:(BOOL)change forSessionState:(int64_t)state
 {
-  v5 = a3;
+  changeCopy = change;
   v19 = *MEMORY[0x277D85DE8];
   [(AFUISiriTapPanDismissalPolicyManager *)self _setIdleAndQuiet:?];
   v7 = *MEMORY[0x277CEF098];
@@ -41,8 +41,8 @@
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = v7;
-    v10 = [v8 numberWithInteger:a4];
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v10 = [v8 numberWithInteger:state];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:changeCopy];
     v13 = 136315650;
     v14 = "[AFUISiriTapPanDismissalPolicyManager idleAndQuietDidChange:forSessionState:]";
     v15 = 2112;
@@ -52,21 +52,21 @@
     _os_log_impl(&dword_241432000, v9, OS_LOG_TYPE_DEFAULT, "%s #dismissal: updating taps and pans should dismiss Siri for state:%@ siriIsIdleAndQuiet:%@", &v13, 0x20u);
   }
 
-  v12 = [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicy];
-  if (v12 == 2)
+  _dismissalPolicy = [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicy];
+  if (_dismissalPolicy == 2)
   {
-    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughUnlessDimmed:[(AFUISiriTapPanDismissalPolicyManager *)self _dimmingLayerVisible] forSessionState:a4];
+    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughUnlessDimmed:[(AFUISiriTapPanDismissalPolicyManager *)self _dimmingLayerVisible] forSessionState:state];
   }
 
-  else if (!v12)
+  else if (!_dismissalPolicy)
   {
-    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughAlways:v5 forSessionState:a4];
+    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughAlways:changeCopy forSessionState:state];
   }
 }
 
-- (void)dimmingLayerVisibilityDidChange:(BOOL)a3 forSessionState:(int64_t)a4
+- (void)dimmingLayerVisibilityDidChange:(BOOL)change forSessionState:(int64_t)state
 {
-  v5 = a3;
+  changeCopy = change;
   v18 = *MEMORY[0x277D85DE8];
   [(AFUISiriTapPanDismissalPolicyManager *)self _setDimmingLayerVisible:?];
   v7 = *MEMORY[0x277CEF098];
@@ -74,8 +74,8 @@
   {
     v8 = MEMORY[0x277CCABB0];
     v9 = v7;
-    v10 = [v8 numberWithBool:v5];
-    v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v10 = [v8 numberWithBool:changeCopy];
+    v11 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     v12 = 136315650;
     v13 = "[AFUISiriTapPanDismissalPolicyManager dimmingLayerVisibilityDidChange:forSessionState:]";
     v14 = 2112;
@@ -87,11 +87,11 @@
 
   if ([(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicy]== 2)
   {
-    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughUnlessDimmed:v5 forSessionState:a4];
+    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughUnlessDimmed:changeCopy forSessionState:state];
   }
 }
 
-- (void)inputTypeDidChange:(int64_t)a3
+- (void)inputTypeDidChange:(int64_t)change
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -108,7 +108,7 @@
 
   if ([(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicy]== 3)
   {
-    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughUnlessTypeToSiri:a3];
+    [(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicyForPassThroughUnlessTypeToSiri:change];
   }
 }
 
@@ -123,15 +123,15 @@
   }
 }
 
-- (void)_dismissalPolicyForPassThroughAlways:(BOOL)a3 forSessionState:(int64_t)a4
+- (void)_dismissalPolicyForPassThroughAlways:(BOOL)always forSessionState:(int64_t)state
 {
-  v5 = a3;
+  alwaysCopy = always;
   if (self->_dismissalPolicy)
   {
     [AFUISiriTapPanDismissalPolicyManager _dismissalPolicyForPassThroughAlways:a2 forSessionState:self];
   }
 
-  switch(a4)
+  switch(state)
   {
     case 4:
       goto LABEL_6;
@@ -141,20 +141,20 @@
     case 0:
 LABEL_6:
       v7 = 0;
-      v5 = 1;
+      alwaysCopy = 1;
       break;
     default:
-      v5 = 0;
+      alwaysCopy = 0;
       v7 = 0;
       break;
   }
 
-  [(AFUISiriTapPanDismissalPolicyManager *)self _setShouldDismissForTapsAndPans:v5 shouldDelayDelegateUpdate:v7];
+  [(AFUISiriTapPanDismissalPolicyManager *)self _setShouldDismissForTapsAndPans:alwaysCopy shouldDelayDelegateUpdate:v7];
 }
 
-- (void)_dismissalPolicyForPassThroughUnlessDimmed:(BOOL)a3 forSessionState:(int64_t)a4
+- (void)_dismissalPolicyForPassThroughUnlessDimmed:(BOOL)dimmed forSessionState:(int64_t)state
 {
-  v5 = a3;
+  dimmedCopy = dimmed;
   v12 = *MEMORY[0x277D85DE8];
   if ([(AFUISiriTapPanDismissalPolicyManager *)self _dismissalPolicy]== 1)
   {
@@ -169,34 +169,34 @@ LABEL_6:
 
   else
   {
-    if ((a4 - 1) >= 4)
+    if ((state - 1) >= 4)
     {
-      v8 = a4 == 0;
+      v8 = state == 0;
     }
 
     else
     {
-      v8 = v5;
+      v8 = dimmedCopy;
     }
 
-    v9 = (a4 - 1) < 4 && v5;
+    v9 = (state - 1) < 4 && dimmedCopy;
 
     [(AFUISiriTapPanDismissalPolicyManager *)self _setShouldDismissForTapsAndPans:v8 shouldDelayDelegateUpdate:v9];
   }
 }
 
-- (void)_setShouldDismissForTapsAndPans:(BOOL)a3 shouldDelayDelegateUpdate:(BOOL)a4
+- (void)_setShouldDismissForTapsAndPans:(BOOL)pans shouldDelayDelegateUpdate:(BOOL)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_shouldDismissForTapsAndPans != a3)
+  if (self->_shouldDismissForTapsAndPans != pans)
   {
-    v4 = a4;
-    v5 = a3;
+    updateCopy = update;
+    pansCopy = pans;
     [(AFUISiriTapPanDismissalPolicyManager *)self _setShouldDismissForTapsAndPans:?];
     v7 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (updateCopy)
       {
         v8 = 0.7;
       }
@@ -209,7 +209,7 @@ LABEL_6:
       v9 = MEMORY[0x277CCABB0];
       v10 = v7;
       v11 = [v9 numberWithDouble:v8];
-      v12 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+      v12 = [MEMORY[0x277CCABB0] numberWithBool:pansCopy];
       v13 = 136315650;
       v14 = "[AFUISiriTapPanDismissalPolicyManager _setShouldDismissForTapsAndPans:shouldDelayDelegateUpdate:]";
       v15 = 2112;
@@ -220,7 +220,7 @@ LABEL_6:
     }
 
     [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self selector:sel__updateDelegateOfPolicyChange object:0];
-    if (v4)
+    if (updateCopy)
     {
       [(AFUISiriTapPanDismissalPolicyManager *)self performSelector:sel__updateDelegateOfPolicyChange withObject:0 afterDelay:0.7];
     }
@@ -234,8 +234,8 @@ LABEL_6:
 
 - (void)_updateDelegateOfPolicyChange
 {
-  v3 = [(AFUISiriTapPanDismissalPolicyManager *)self _delegate];
-  [v3 tapPanDismissalPolicyManager:self dismissalPolicyDidChange:{-[AFUISiriTapPanDismissalPolicyManager _shouldDismissForTapsAndPans](self, "_shouldDismissForTapsAndPans")}];
+  _delegate = [(AFUISiriTapPanDismissalPolicyManager *)self _delegate];
+  [_delegate tapPanDismissalPolicyManager:self dismissalPolicyDidChange:{-[AFUISiriTapPanDismissalPolicyManager _shouldDismissForTapsAndPans](self, "_shouldDismissForTapsAndPans")}];
 }
 
 - (AFUISiriTapPanDismissalPolicyManagerDelegate)_delegate

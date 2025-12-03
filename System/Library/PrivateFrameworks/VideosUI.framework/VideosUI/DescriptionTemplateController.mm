@@ -1,5 +1,5 @@
 @interface DescriptionTemplateController
-- (_TtC8VideosUI29DescriptionTemplateController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI29DescriptionTemplateController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)vui_loadView;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)vui_loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E373BE6C();
 }
 
-- (_TtC8VideosUI29DescriptionTemplateController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI29DescriptionTemplateController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E373C578();
 }
 

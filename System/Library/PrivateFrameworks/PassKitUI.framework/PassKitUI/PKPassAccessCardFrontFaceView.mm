@@ -1,22 +1,22 @@
 @interface PKPassAccessCardFrontFaceView
-- (id)templateForLayoutMode:(int64_t)a3;
+- (id)templateForLayoutMode:(int64_t)mode;
 @end
 
 @implementation PKPassAccessCardFrontFaceView
 
-- (id)templateForLayoutMode:(int64_t)a3
+- (id)templateForLayoutMode:(int64_t)mode
 {
   PKPassFrontFaceContentSize();
   v6 = v5;
-  v7 = [(PKPassFaceView *)self pass];
-  [v7 thumbnailRect];
+  pass = [(PKPassFaceView *)self pass];
+  [pass thumbnailRect];
   x = v90.origin.x;
   y = v90.origin.y;
   width = v90.size.width;
   height = v90.size.height;
   if (CGRectIsEmpty(v90))
   {
-    [v7 stripRect];
+    [pass stripRect];
     x = v12;
     y = v13;
     width = v14;
@@ -36,15 +36,15 @@
   }
 
   v16 = objc_alloc_init(PKPassFaceTemplate);
-  v17 = [(PKPassFaceTemplate *)v16 defaultFieldTemplate];
-  [v17 setTextAlignment:0];
+  defaultFieldTemplate = [(PKPassFaceTemplate *)v16 defaultFieldTemplate];
+  [defaultFieldTemplate setTextAlignment:0];
 
-  v18 = [(PKPassFaceTemplate *)v16 defaultFieldTemplate];
+  defaultFieldTemplate2 = [(PKPassFaceTemplate *)v16 defaultFieldTemplate];
   v19 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:11.0];
-  [v18 setLabelFont:v19];
+  [defaultFieldTemplate2 setLabelFont:v19];
 
-  v20 = [(PKPassFaceTemplate *)v16 defaultFieldTemplate];
-  [v20 setTextAlignment:0];
+  defaultFieldTemplate3 = [(PKPassFaceTemplate *)v16 defaultFieldTemplate];
+  [defaultFieldTemplate3 setTextAlignment:0];
 
   v21 = [MEMORY[0x1E69DB878] systemFontOfSize:22.0 weight:*MEMORY[0x1E69DB980]];
   v22 = *MEMORY[0x1E69DDCF8];
@@ -90,18 +90,18 @@
   v92.size.height = height;
   [(PKPassBucketTemplate *)v55 setBucketRect:15.0, v43 + CGRectGetMaxY(v92), v86 + -30.0, v87 + v88 + v54];
   [(PKPassBucketTemplate *)v55 setMaxFields:1];
-  v56 = [(PKPassBucketTemplate *)v55 defaultFieldTemplate];
-  [v56 setTextAlignment:1];
-  [v56 setValueSignificant:1];
-  [v56 setSuppressesEmptyLabel:1];
-  [v56 setLabelCaseStyle:3];
+  defaultFieldTemplate4 = [(PKPassBucketTemplate *)v55 defaultFieldTemplate];
+  [defaultFieldTemplate4 setTextAlignment:1];
+  [defaultFieldTemplate4 setValueSignificant:1];
+  [defaultFieldTemplate4 setSuppressesEmptyLabel:1];
+  [defaultFieldTemplate4 setLabelCaseStyle:3];
   PKFloatRoundToPixel();
-  [v56 setVerticalPadding:?];
-  [v56 setValueFont:v21];
-  [v56 setLabelFont:v24];
+  [defaultFieldTemplate4 setVerticalPadding:?];
+  [defaultFieldTemplate4 setValueFont:v21];
+  [defaultFieldTemplate4 setLabelFont:v24];
   [(PKPassFaceTemplate *)v16 addBucketTemplate:v55];
 
-  LODWORD(v56) = a3 == 0;
+  LODWORD(defaultFieldTemplate4) = mode == 0;
   v57 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD10]];
   v58 = [v57 fontDescriptorWithSymbolicTraits:2];
 
@@ -126,34 +126,34 @@
 
   [(PKPassBucketTemplate *)v76 setBucketAlignment:3];
   v77 = v70 + -1.0 + v75;
-  [(PKPassBucketTemplate *)v76 setBucketRect:15.0, dbl_1BE114B20[v56], v86 + -30.0, v77];
+  [(PKPassBucketTemplate *)v76 setBucketRect:15.0, dbl_1BE114B20[defaultFieldTemplate4], v86 + -30.0, v77];
   [(PKPassBucketTemplate *)v76 setMaxFields:1];
-  v78 = [(PKPassBucketTemplate *)v76 defaultFieldTemplate];
-  [v78 setLabelFont:v59];
+  defaultFieldTemplate5 = [(PKPassBucketTemplate *)v76 defaultFieldTemplate];
+  [defaultFieldTemplate5 setLabelFont:v59];
 
-  v79 = [(PKPassBucketTemplate *)v76 defaultFieldTemplate];
-  [v79 setValueFont:v61];
+  defaultFieldTemplate6 = [(PKPassBucketTemplate *)v76 defaultFieldTemplate];
+  [defaultFieldTemplate6 setValueFont:v61];
 
-  v80 = [(PKPassBucketTemplate *)v76 defaultFieldTemplate];
+  defaultFieldTemplate7 = [(PKPassBucketTemplate *)v76 defaultFieldTemplate];
   PKFloatRoundToPixel();
-  [v80 setVerticalPadding:?];
+  [defaultFieldTemplate7 setVerticalPadding:?];
 
   [(PKPassFaceTemplate *)v16 addBucketTemplate:v76];
   v81 = objc_alloc_init(PKPassBucketTemplate);
 
   [(PKPassBucketTemplate *)v81 setBucketAlignment:3];
-  [(PKPassBucketTemplate *)v81 setBucketRect:15.0, dbl_1BE114B30[v56], v86 + -30.0, v77];
+  [(PKPassBucketTemplate *)v81 setBucketRect:15.0, dbl_1BE114B30[defaultFieldTemplate4], v86 + -30.0, v77];
   [(PKPassBucketTemplate *)v81 setMinFieldPadding:12.0];
   [(PKPassBucketTemplate *)v81 setMaxFields:4];
-  v82 = [(PKPassBucketTemplate *)v81 defaultFieldTemplate];
-  [v82 setLabelFont:v59];
+  defaultFieldTemplate8 = [(PKPassBucketTemplate *)v81 defaultFieldTemplate];
+  [defaultFieldTemplate8 setLabelFont:v59];
 
-  v83 = [(PKPassBucketTemplate *)v81 defaultFieldTemplate];
-  [v83 setValueFont:v61];
+  defaultFieldTemplate9 = [(PKPassBucketTemplate *)v81 defaultFieldTemplate];
+  [defaultFieldTemplate9 setValueFont:v61];
 
-  v84 = [(PKPassBucketTemplate *)v81 defaultFieldTemplate];
+  defaultFieldTemplate10 = [(PKPassBucketTemplate *)v81 defaultFieldTemplate];
   PKFloatRoundToPixel();
-  [v84 setVerticalPadding:?];
+  [defaultFieldTemplate10 setVerticalPadding:?];
 
   [(PKPassFaceTemplate *)v16 addBucketTemplate:v81];
 

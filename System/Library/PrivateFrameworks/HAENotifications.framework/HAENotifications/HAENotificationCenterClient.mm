@@ -1,34 +1,34 @@
 @interface HAENotificationCenterClient
-- (HAENotificationCenterClient)initWithBundleID:(id)a3;
+- (HAENotificationCenterClient)initWithBundleID:(id)d;
 - (id)setupConnection;
-- (void)addHAENotificationEvent:(id)a3;
+- (void)addHAENotificationEvent:(id)event;
 @end
 
 @implementation HAENotificationCenterClient
 
-- (HAENotificationCenterClient)initWithBundleID:(id)a3
+- (HAENotificationCenterClient)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = HAENotificationCenterClient;
   v5 = [(HAENotificationCenterClient *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(HAENotificationCenterClient *)v5 setupConnection];
+    setupConnection = [(HAENotificationCenterClient *)v5 setupConnection];
     connection = v6->connection;
-    v6->connection = v7;
+    v6->connection = setupConnection;
 
-    [(HAENotificationCenterClient *)v6 setBundleID:v4];
+    [(HAENotificationCenterClient *)v6 setBundleID:dCopy];
   }
 
   return v6;
 }
 
-- (void)addHAENotificationEvent:(id)a3
+- (void)addHAENotificationEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,12 +36,12 @@
     v9 = 138412546;
     v10 = bundleID;
     v11 = 2112;
-    v12 = v4;
+    v12 = eventCopy;
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "Sending event from client %@, %@", &v9, 0x16u);
   }
 
   v7 = [(NSXPCConnection *)self->connection remoteObjectProxyWithErrorHandler:&__block_literal_global_8];
-  [v7 addHAENotificationEvent:v4];
+  [v7 addHAENotificationEvent:eventCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }

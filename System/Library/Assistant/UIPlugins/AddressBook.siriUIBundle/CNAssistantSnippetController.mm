@@ -1,23 +1,23 @@
 @interface CNAssistantSnippetController
-- (CNAssistantSnippetController)initWithAceObject:(id)a3 contactStore:(id)a4 error:(id *)a5;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)_displayedPropertiesFromSiriDiplayedProperties:(id)a3;
-- (void)configureContentWithSizeClass:(int64_t)a3;
+- (CNAssistantSnippetController)initWithAceObject:(id)object contactStore:(id)store error:(id *)error;
+- (double)desiredHeightForWidth:(double)width;
+- (id)_displayedPropertiesFromSiriDiplayedProperties:(id)properties;
+- (void)configureContentWithSizeClass:(int64_t)class;
 @end
 
 @implementation CNAssistantSnippetController
 
-- (CNAssistantSnippetController)initWithAceObject:(id)a3 contactStore:(id)a4 error:(id *)a5
+- (CNAssistantSnippetController)initWithAceObject:(id)object contactStore:(id)store error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  storeCopy = store;
   v32.receiver = self;
   v32.super_class = CNAssistantSnippetController;
   v10 = [(CNAssistantSnippetController *)&v32 init];
   if (v10)
   {
-    v11 = [v8 persons];
-    v12 = [v11 count];
+    persons = [objectCopy persons];
+    v12 = [persons count];
 
     if (!v12)
     {
@@ -29,8 +29,8 @@
       v10 = 0;
     }
 
-    v13 = [v8 persons];
-    v14 = [v13 objectAtIndex:0];
+    persons2 = [objectCopy persons];
+    v14 = [persons2 objectAtIndex:0];
 
     v15 = [v14 me];
     if ([v15 BOOLValue])
@@ -39,9 +39,9 @@
 
     else
     {
-      v16 = [v14 identifier];
+      identifier = [v14 identifier];
 
-      if (!v16)
+      if (!identifier)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
@@ -61,13 +61,13 @@ LABEL_28:
     }
 
     v17 = [v14 me];
-    v18 = [v17 BOOLValue];
+    bOOLValue = [v17 BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
       v19 = +[CNAssistantSnippetView descriptorForRequiredKeys];
       v31 = 0;
-      v20 = [v9 _crossPlatformUnifiedMeContactWithKeysToFetch:v19 error:&v31];
+      v20 = [storeCopy _crossPlatformUnifiedMeContactWithKeysToFetch:v19 error:&v31];
       v21 = v31;
 
       if (!v20 && v21)
@@ -87,12 +87,12 @@ LABEL_26:
 
     else
     {
-      v22 = [v14 identifier];
-      v23 = [CNAssistantID contactIDFromAssistantID:v22];
+      identifier2 = [v14 identifier];
+      v23 = [CNAssistantID contactIDFromAssistantID:identifier2];
 
       v24 = +[CNAssistantSnippetView descriptorForRequiredKeys];
       v30 = 0;
-      v20 = [v9 unifiedContactWithIdentifier:v23 keysToFetch:v24 error:&v30];
+      v20 = [storeCopy unifiedContactWithIdentifier:v23 keysToFetch:v24 error:&v30];
       v21 = v30;
 
       if (!v20 && v21 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -103,8 +103,8 @@ LABEL_26:
 
     if (v20)
     {
-      v25 = [v8 displayProperties];
-      v26 = [(CNAssistantSnippetController *)v10 _displayedPropertiesFromSiriDiplayedProperties:v25];
+      displayProperties = [objectCopy displayProperties];
+      v26 = [(CNAssistantSnippetController *)v10 _displayedPropertiesFromSiriDiplayedProperties:displayProperties];
 
       v27 = [[CNAssistantSnippetView alloc] initWithFrame:v20 contact:v26 displayedProperties:v10 viewController:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       snippetView = v10->_snippetView;
@@ -121,30 +121,30 @@ LABEL_27:
   }
 
 LABEL_29:
-  if (a5 && !v10)
+  if (error && !v10)
   {
-    *a5 = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:101 userInfo:0];
+    *error = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:101 userInfo:0];
   }
 
   return v10;
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(CNAssistantSnippetController *)self snippetView];
-  [v4 desiredHeightForWidth:a3];
+  snippetView = [(CNAssistantSnippetController *)self snippetView];
+  [snippetView desiredHeightForWidth:width];
   v6 = v5;
 
   return v6;
 }
 
-- (id)_displayedPropertiesFromSiriDiplayedProperties:(id)a3
+- (id)_displayedPropertiesFromSiriDiplayedProperties:(id)properties
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  propertiesCopy = properties;
+  v4 = propertiesCopy;
+  if (propertiesCopy)
   {
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [propertiesCopy count]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -224,10 +224,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)configureContentWithSizeClass:(int64_t)a3
+- (void)configureContentWithSizeClass:(int64_t)class
 {
-  v4 = [(CNAssistantSnippetController *)self snippetView];
-  [v4 setSnippetSizeClass:a3];
+  snippetView = [(CNAssistantSnippetController *)self snippetView];
+  [snippetView setSnippetSizeClass:class];
 }
 
 @end

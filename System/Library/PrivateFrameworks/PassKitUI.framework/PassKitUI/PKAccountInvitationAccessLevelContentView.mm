@@ -1,33 +1,33 @@
 @interface PKAccountInvitationAccessLevelContentView
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountInvitationAccessLevelContentView)initWithConfiguration:(id)a3;
-- (PKAccountInvitationAccessLevelContentView)initWithFrame:(CGRect)a3;
-- (void)_applyConfiguration:(id)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountInvitationAccessLevelContentView)initWithConfiguration:(id)configuration;
+- (PKAccountInvitationAccessLevelContentView)initWithFrame:(CGRect)frame;
+- (void)_applyConfiguration:(id)configuration;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation PKAccountInvitationAccessLevelContentView
 
-- (PKAccountInvitationAccessLevelContentView)initWithConfiguration:(id)a3
+- (PKAccountInvitationAccessLevelContentView)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(PKAccountInvitationAccessLevelContentView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(PKAccountInvitationAccessLevelContentView *)v5 _applyConfiguration:v4];
+    [(PKAccountInvitationAccessLevelContentView *)v5 _applyConfiguration:configurationCopy];
   }
 
   return v6;
 }
 
-- (PKAccountInvitationAccessLevelContentView)initWithFrame:(CGRect)a3
+- (PKAccountInvitationAccessLevelContentView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = PKAccountInvitationAccessLevelContentView;
-  v3 = [(PKAccountInvitationAccessLevelContentView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKAccountInvitationAccessLevelContentView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -49,8 +49,8 @@
     [(UILabel *)v13 setFont:v14];
 
     v15 = v3->_titleLabel;
-    v16 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v15 setTextColor:labelColor];
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
     [(UILabel *)v3->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
@@ -64,8 +64,8 @@
     [(UILabel *)v19 setFont:v20];
 
     v21 = v3->_subtitleLabel;
-    v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v21 setTextColor:v22];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v21 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v3->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v3->_subtitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
@@ -79,8 +79,8 @@
     [(UILabel *)v25 setFont:v26];
 
     v27 = v3->_secondarySubtitleLabel;
-    v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v27 setTextColor:v28];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v27 setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v3->_secondarySubtitleLabel setNumberOfLines:0];
     [(UILabel *)v3->_secondarySubtitleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
@@ -100,58 +100,58 @@
   [(PKAccountInvitationAccessLevelContentView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKAccountInvitationAccessLevelContentView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKAccountInvitationAccessLevelContentView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PKAccountInvitationAccessLevelContentView *)self _applyConfiguration:v4];
+    [(PKAccountInvitationAccessLevelContentView *)self _applyConfiguration:configurationCopy];
   }
 }
 
-- (void)_applyConfiguration:(id)a3
+- (void)_applyConfiguration:(id)configuration
 {
-  v13 = a3;
+  configurationCopy = configuration;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_configuration, a3);
+    objc_storeStrong(&self->_configuration, configuration);
     imageView = self->_imageView;
-    v6 = [v13 image];
-    [(UIImageView *)imageView setImage:v6];
+    image = [configurationCopy image];
+    [(UIImageView *)imageView setImage:image];
 
     titleLabel = self->_titleLabel;
-    v8 = [v13 title];
-    [(UILabel *)titleLabel setText:v8];
+    title = [configurationCopy title];
+    [(UILabel *)titleLabel setText:title];
 
     subtitleLabel = self->_subtitleLabel;
-    v10 = [v13 subtitle];
-    [(UILabel *)subtitleLabel setText:v10];
+    subtitle = [configurationCopy subtitle];
+    [(UILabel *)subtitleLabel setText:subtitle];
 
     secondarySubtitleLabel = self->_secondarySubtitleLabel;
-    v12 = [v13 secondarySubtitle];
-    [(UILabel *)secondarySubtitleLabel setText:v12];
+    secondarySubtitle = [configurationCopy secondarySubtitle];
+    [(UILabel *)secondarySubtitleLabel setText:secondarySubtitle];
 
     [(PKAccountInvitationAccessLevelContentView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKAccountInvitationAccessLevelContentView *)self _shouldReverseLayoutDirection])
   {
     v8 = CGRectMaxXEdge;
@@ -193,9 +193,9 @@
     [(UIImageView *)self->_imageView setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
-  v12 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  if (v12)
+  if (text)
   {
     [(UILabel *)self->_titleLabel pkui_sizeThatFits:1 forceWordWrap:remainder.size.width, remainder.size.height];
     v14 = v13;
@@ -217,9 +217,9 @@
     }
   }
 
-  v16 = [(UILabel *)self->_subtitleLabel text];
+  text2 = [(UILabel *)self->_subtitleLabel text];
 
-  if (v16)
+  if (text2)
   {
     [(UILabel *)self->_subtitleLabel pkui_sizeThatFits:1 forceWordWrap:remainder.size.width, remainder.size.height];
     v18 = v17;
@@ -238,9 +238,9 @@
     [(UILabel *)self->_subtitleLabel setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
-  v19 = [(UILabel *)self->_secondarySubtitleLabel text];
+  text3 = [(UILabel *)self->_secondarySubtitleLabel text];
 
-  if (v19)
+  if (text3)
   {
     [(UILabel *)self->_secondarySubtitleLabel pkui_sizeThatFits:1 forceWordWrap:remainder.size.width, remainder.size.height];
     v21 = v20;

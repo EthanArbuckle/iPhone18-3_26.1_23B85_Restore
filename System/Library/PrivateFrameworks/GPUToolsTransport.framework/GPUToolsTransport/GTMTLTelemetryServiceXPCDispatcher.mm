@@ -1,19 +1,19 @@
 @interface GTMTLTelemetryServiceXPCDispatcher
-- (GTMTLTelemetryServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4 notifyConnection:(id)a5;
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4;
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4;
-- (void)query_:(id)a3 replyConnection:(id)a4;
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4;
-- (void)update_:(id)a3 replyConnection:(id)a4;
+- (GTMTLTelemetryServiceXPCDispatcher)initWithService:(id)service properties:(id)properties notifyConnection:(id)connection;
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection;
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)query_:(id)query_ replyConnection:(id)connection;
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection;
+- (void)update_:(id)update_ replyConnection:(id)connection;
 @end
 
 @implementation GTMTLTelemetryServiceXPCDispatcher
 
-- (GTMTLTelemetryServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4 notifyConnection:(id)a5
+- (GTMTLTelemetryServiceXPCDispatcher)initWithService:(id)service properties:(id)properties notifyConnection:(id)connection
 {
-  v8 = a3;
-  v9 = [a4 protocolMethods];
-  v10 = [v9 mutableCopy];
+  serviceCopy = service;
+  protocolMethods = [properties protocolMethods];
+  v10 = [protocolMethods mutableCopy];
 
   [v10 addObject:@"broadcastDisconnect"];
   v14.receiver = self;
@@ -22,50 +22,50 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_implInstance, a3);
+    objc_storeStrong(&v11->_implInstance, service);
   }
 
   return v12;
 }
 
-- (void)registerObserver_:(id)a3 replyConnection:(id)a4
+- (void)registerObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(GTServiceObserver *)[GTMTLTelemetryServiceObserver alloc] initWithMessage:v7 notifyConnection:v6];
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  v10 = [(GTServiceObserver *)[GTMTLTelemetryServiceObserver alloc] initWithMessage:observer_Copy notifyConnection:connectionCopy];
   v8 = [(GTMTLTelemetryService *)self->_implInstance registerObserver:v10];
-  v9 = gt_xpc_dictionary_create_reply(v7);
+  v9 = gt_xpc_dictionary_create_reply(observer_Copy);
 
   xpc_dictionary_set_uint64(v9, "observerId", v8);
-  [v6 sendMessage:v9];
+  [connectionCopy sendMessage:v9];
 }
 
-- (void)deregisterObserver_:(id)a3 replyConnection:(id)a4
+- (void)deregisterObserver_:(id)observer_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  [(GTMTLTelemetryService *)self->_implInstance deregisterObserver:xpc_dictionary_get_uint64(v7, "observerId")];
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  observer_Copy = observer_;
+  [(GTMTLTelemetryService *)self->_implInstance deregisterObserver:xpc_dictionary_get_uint64(observer_Copy, "observerId")];
+  v8 = gt_xpc_dictionary_create_reply(observer_Copy);
 
-  [v6 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 }
 
-- (void)broadcastDisconnect:(id)a3 replyConnection:(id)a4
+- (void)broadcastDisconnect:(id)disconnect replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = xpc_dictionary_get_array(a3, "_pathHistory");
-  [(GTMTLTelemetryService *)self->_implInstance deregisterObserversForConnection:v6 path:v7];
+  connectionCopy = connection;
+  v7 = xpc_dictionary_get_array(disconnect, "_pathHistory");
+  [(GTMTLTelemetryService *)self->_implInstance deregisterObserversForConnection:connectionCopy path:v7];
 }
 
-- (void)update_:(id)a3 replyConnection:(id)a4
+- (void)update_:(id)update_ replyConnection:(id)connection
 {
-  v6 = DispatchTelemetryBatchRequest(a4, a3);
+  v6 = DispatchTelemetryBatchRequest(connection, update_);
   v5 = [(GTMTLTelemetryService *)self->_implInstance update:v6];
 }
 
-- (void)query_:(id)a3 replyConnection:(id)a4
+- (void)query_:(id)query_ replyConnection:(id)connection
 {
-  v6 = DispatchTelemetryBatchRequest(a4, a3);
+  v6 = DispatchTelemetryBatchRequest(connection, query_);
   v5 = [(GTMTLTelemetryService *)self->_implInstance query:v6];
 }
 

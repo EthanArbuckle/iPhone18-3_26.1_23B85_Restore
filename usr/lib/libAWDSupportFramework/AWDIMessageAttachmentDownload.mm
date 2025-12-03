@@ -1,25 +1,25 @@
 @interface AWDIMessageAttachmentDownload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttachmentSize:(BOOL)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasDownloadDuration:(BOOL)a3;
-- (void)setHasFirstLevelMMCSError:(BOOL)a3;
-- (void)setHasFourthLevelMMCSError:(BOOL)a3;
-- (void)setHasFzError:(BOOL)a3;
-- (void)setHasGenericError:(BOOL)a3;
-- (void)setHasLinkQuality:(BOOL)a3;
-- (void)setHasMessageError:(BOOL)a3;
-- (void)setHasSecondLevelMMCSError:(BOOL)a3;
-- (void)setHasThirdLevelMMCSError:(BOOL)a3;
-- (void)setHasTokenError:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttachmentSize:(BOOL)size;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasDownloadDuration:(BOOL)duration;
+- (void)setHasFirstLevelMMCSError:(BOOL)error;
+- (void)setHasFourthLevelMMCSError:(BOOL)error;
+- (void)setHasFzError:(BOOL)error;
+- (void)setHasGenericError:(BOOL)error;
+- (void)setHasLinkQuality:(BOOL)quality;
+- (void)setHasMessageError:(BOOL)error;
+- (void)setHasSecondLevelMMCSError:(BOOL)error;
+- (void)setHasThirdLevelMMCSError:(BOOL)error;
+- (void)setHasTokenError:(BOOL)error;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageAttachmentDownload
@@ -36,9 +36,9 @@
   [(AWDIMessageAttachmentDownload *)&v3 dealloc];
 }
 
-- (void)setHasFzError:(BOOL)a3
+- (void)setHasFzError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 64;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasMessageError:(BOOL)a3
+- (void)setHasMessageError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 512;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasTokenError:(BOOL)a3
+- (void)setHasTokenError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4096;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasGenericError:(BOOL)a3
+- (void)setHasGenericError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 128;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasDownloadDuration:(BOOL)a3
+- (void)setHasDownloadDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -111,9 +111,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLinkQuality:(BOOL)a3
+- (void)setHasLinkQuality:(BOOL)quality
 {
-  if (a3)
+  if (quality)
   {
     v3 = 256;
   }
@@ -126,9 +126,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -141,9 +141,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasAttachmentSize:(BOOL)a3
+- (void)setHasAttachmentSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -156,9 +156,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasFirstLevelMMCSError:(BOOL)a3
+- (void)setHasFirstLevelMMCSError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 16;
   }
@@ -171,9 +171,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSecondLevelMMCSError:(BOOL)a3
+- (void)setHasSecondLevelMMCSError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 1024;
   }
@@ -186,9 +186,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasThirdLevelMMCSError:(BOOL)a3
+- (void)setHasThirdLevelMMCSError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2048;
   }
@@ -201,9 +201,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasFourthLevelMMCSError:(BOOL)a3
+- (void)setHasFourthLevelMMCSError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 32;
   }
@@ -225,12 +225,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -403,7 +403,7 @@ LABEL_14:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -588,18 +588,18 @@ LABEL_14:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 58) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 58) |= 1u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -618,8 +618,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 14) = self->_fzError;
-  *(a3 + 58) |= 0x40u;
+  *(to + 14) = self->_fzError;
+  *(to + 58) |= 0x40u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -633,8 +633,8 @@ LABEL_6:
   }
 
 LABEL_32:
-  *(a3 + 19) = self->_messageError;
-  *(a3 + 58) |= 0x200u;
+  *(to + 19) = self->_messageError;
+  *(to + 58) |= 0x200u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -648,8 +648,8 @@ LABEL_7:
   }
 
 LABEL_33:
-  *(a3 + 28) = self->_tokenError;
-  *(a3 + 58) |= 0x1000u;
+  *(to + 28) = self->_tokenError;
+  *(to + 58) |= 0x1000u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -663,8 +663,8 @@ LABEL_8:
   }
 
 LABEL_34:
-  *(a3 + 15) = self->_genericError;
-  *(a3 + 58) |= 0x80u;
+  *(to + 15) = self->_genericError;
+  *(to + 58) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -678,8 +678,8 @@ LABEL_9:
   }
 
 LABEL_35:
-  *(a3 + 6) = self->_downloadDuration;
-  *(a3 + 58) |= 8u;
+  *(to + 6) = self->_downloadDuration;
+  *(to + 58) |= 8u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -693,8 +693,8 @@ LABEL_10:
   }
 
 LABEL_36:
-  *(a3 + 18) = self->_linkQuality;
-  *(a3 + 58) |= 0x100u;
+  *(to + 18) = self->_linkQuality;
+  *(to + 58) |= 0x100u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -708,8 +708,8 @@ LABEL_11:
   }
 
 LABEL_37:
-  *(a3 + 5) = self->_connectionType;
-  *(a3 + 58) |= 4u;
+  *(to + 5) = self->_connectionType;
+  *(to + 58) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -723,61 +723,61 @@ LABEL_12:
   }
 
 LABEL_38:
-  *(a3 + 4) = self->_attachmentSize;
-  *(a3 + 58) |= 2u;
+  *(to + 4) = self->_attachmentSize;
+  *(to + 58) |= 2u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_13:
-    *(a3 + 7) = self->_firstLevelMMCSError;
-    *(a3 + 58) |= 0x10u;
+    *(to + 7) = self->_firstLevelMMCSError;
+    *(to + 58) |= 0x10u;
   }
 
 LABEL_14:
   if (self->_firstLevelMMCSErrorDomain)
   {
-    [a3 setFirstLevelMMCSErrorDomain:?];
+    [to setFirstLevelMMCSErrorDomain:?];
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    *(a3 + 20) = self->_secondLevelMMCSError;
-    *(a3 + 58) |= 0x400u;
+    *(to + 20) = self->_secondLevelMMCSError;
+    *(to + 58) |= 0x400u;
   }
 
   if (self->_secondLevelMMCSErrorDomain)
   {
-    [a3 setSecondLevelMMCSErrorDomain:?];
+    [to setSecondLevelMMCSErrorDomain:?];
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    *(a3 + 24) = self->_thirdLevelMMCSError;
-    *(a3 + 58) |= 0x800u;
+    *(to + 24) = self->_thirdLevelMMCSError;
+    *(to + 58) |= 0x800u;
   }
 
   if (self->_thirdLevelMMCSErrorDomain)
   {
-    [a3 setThirdLevelMMCSErrorDomain:?];
+    [to setThirdLevelMMCSErrorDomain:?];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    *(a3 + 10) = self->_fourthLevelMMCSError;
-    *(a3 + 58) |= 0x20u;
+    *(to + 10) = self->_fourthLevelMMCSError;
+    *(to + 58) |= 0x20u;
   }
 
   if (self->_fourthLevelMMCSErrorDomain)
   {
 
-    [a3 setFourthLevelMMCSErrorDomain:?];
+    [to setFourthLevelMMCSErrorDomain:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 64) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 64) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -917,44 +917,44 @@ LABEL_11:
 
 LABEL_12:
 
-  *(v5 + 32) = [(NSString *)self->_firstLevelMMCSErrorDomain copyWithZone:a3];
+  *(v5 + 32) = [(NSString *)self->_firstLevelMMCSErrorDomain copyWithZone:zone];
   if ((*&self->_has & 0x400) != 0)
   {
     *(v5 + 80) = self->_secondLevelMMCSError;
     *(v5 + 116) |= 0x400u;
   }
 
-  *(v5 + 88) = [(NSString *)self->_secondLevelMMCSErrorDomain copyWithZone:a3];
+  *(v5 + 88) = [(NSString *)self->_secondLevelMMCSErrorDomain copyWithZone:zone];
   if ((*&self->_has & 0x800) != 0)
   {
     *(v5 + 96) = self->_thirdLevelMMCSError;
     *(v5 + 116) |= 0x800u;
   }
 
-  *(v5 + 104) = [(NSString *)self->_thirdLevelMMCSErrorDomain copyWithZone:a3];
+  *(v5 + 104) = [(NSString *)self->_thirdLevelMMCSErrorDomain copyWithZone:zone];
   if ((*&self->_has & 0x20) != 0)
   {
     *(v5 + 40) = self->_fourthLevelMMCSError;
     *(v5 + 116) |= 0x20u;
   }
 
-  *(v5 + 48) = [(NSString *)self->_fourthLevelMMCSErrorDomain copyWithZone:a3];
+  *(v5 + 48) = [(NSString *)self->_fourthLevelMMCSErrorDomain copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 8)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 8)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       has = self->_has;
-      v8 = *(a3 + 58);
+      v8 = *(equal + 58);
       if (has)
       {
-        if ((v8 & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((v8 & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_80;
         }
@@ -969,7 +969,7 @@ LABEL_80:
 
       if ((has & 0x40) != 0)
       {
-        if ((v8 & 0x40) == 0 || self->_fzError != *(a3 + 14))
+        if ((v8 & 0x40) == 0 || self->_fzError != *(equal + 14))
         {
           goto LABEL_80;
         }
@@ -982,33 +982,33 @@ LABEL_80:
 
       if ((*&self->_has & 0x200) != 0)
       {
-        if ((*(a3 + 58) & 0x200) == 0 || self->_messageError != *(a3 + 19))
+        if ((*(equal + 58) & 0x200) == 0 || self->_messageError != *(equal + 19))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 58) & 0x200) != 0)
+      else if ((*(equal + 58) & 0x200) != 0)
       {
         goto LABEL_80;
       }
 
       if ((*&self->_has & 0x1000) != 0)
       {
-        if ((*(a3 + 58) & 0x1000) == 0 || self->_tokenError != *(a3 + 28))
+        if ((*(equal + 58) & 0x1000) == 0 || self->_tokenError != *(equal + 28))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 58) & 0x1000) != 0)
+      else if ((*(equal + 58) & 0x1000) != 0)
       {
         goto LABEL_80;
       }
 
       if ((has & 0x80) != 0)
       {
-        if ((v8 & 0x80) == 0 || self->_genericError != *(a3 + 15))
+        if ((v8 & 0x80) == 0 || self->_genericError != *(equal + 15))
         {
           goto LABEL_80;
         }
@@ -1021,7 +1021,7 @@ LABEL_80:
 
       if ((has & 8) != 0)
       {
-        if ((v8 & 8) == 0 || self->_downloadDuration != *(a3 + 6))
+        if ((v8 & 8) == 0 || self->_downloadDuration != *(equal + 6))
         {
           goto LABEL_80;
         }
@@ -1034,20 +1034,20 @@ LABEL_80:
 
       if ((*&self->_has & 0x100) != 0)
       {
-        if ((*(a3 + 58) & 0x100) == 0 || self->_linkQuality != *(a3 + 18))
+        if ((*(equal + 58) & 0x100) == 0 || self->_linkQuality != *(equal + 18))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 58) & 0x100) != 0)
+      else if ((*(equal + 58) & 0x100) != 0)
       {
         goto LABEL_80;
       }
 
       if ((has & 4) != 0)
       {
-        if ((v8 & 4) == 0 || self->_connectionType != *(a3 + 5))
+        if ((v8 & 4) == 0 || self->_connectionType != *(equal + 5))
         {
           goto LABEL_80;
         }
@@ -1060,7 +1060,7 @@ LABEL_80:
 
       if ((has & 2) != 0)
       {
-        if ((v8 & 2) == 0 || self->_attachmentSize != *(a3 + 4))
+        if ((v8 & 2) == 0 || self->_attachmentSize != *(equal + 4))
         {
           goto LABEL_80;
         }
@@ -1073,7 +1073,7 @@ LABEL_80:
 
       if ((has & 0x10) != 0)
       {
-        if ((v8 & 0x10) == 0 || self->_firstLevelMMCSError != *(a3 + 7))
+        if ((v8 & 0x10) == 0 || self->_firstLevelMMCSError != *(equal + 7))
         {
           goto LABEL_80;
         }
@@ -1085,7 +1085,7 @@ LABEL_80:
       }
 
       firstLevelMMCSErrorDomain = self->_firstLevelMMCSErrorDomain;
-      if (firstLevelMMCSErrorDomain | *(a3 + 4))
+      if (firstLevelMMCSErrorDomain | *(equal + 4))
       {
         v5 = [(NSString *)firstLevelMMCSErrorDomain isEqual:?];
         if (!v5)
@@ -1096,22 +1096,22 @@ LABEL_80:
         has = self->_has;
       }
 
-      v10 = *(a3 + 58);
+      v10 = *(equal + 58);
       if ((has & 0x400) != 0)
       {
-        if ((*(a3 + 58) & 0x400) == 0 || self->_secondLevelMMCSError != *(a3 + 20))
+        if ((*(equal + 58) & 0x400) == 0 || self->_secondLevelMMCSError != *(equal + 20))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 58) & 0x400) != 0)
+      else if ((*(equal + 58) & 0x400) != 0)
       {
         goto LABEL_80;
       }
 
       secondLevelMMCSErrorDomain = self->_secondLevelMMCSErrorDomain;
-      if (secondLevelMMCSErrorDomain | *(a3 + 11))
+      if (secondLevelMMCSErrorDomain | *(equal + 11))
       {
         v5 = [(NSString *)secondLevelMMCSErrorDomain isEqual:?];
         if (!v5)
@@ -1122,22 +1122,22 @@ LABEL_80:
         has = self->_has;
       }
 
-      v12 = *(a3 + 58);
+      v12 = *(equal + 58);
       if ((has & 0x800) != 0)
       {
-        if ((*(a3 + 58) & 0x800) == 0 || self->_thirdLevelMMCSError != *(a3 + 24))
+        if ((*(equal + 58) & 0x800) == 0 || self->_thirdLevelMMCSError != *(equal + 24))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 58) & 0x800) != 0)
+      else if ((*(equal + 58) & 0x800) != 0)
       {
         goto LABEL_80;
       }
 
       thirdLevelMMCSErrorDomain = self->_thirdLevelMMCSErrorDomain;
-      if (thirdLevelMMCSErrorDomain | *(a3 + 13))
+      if (thirdLevelMMCSErrorDomain | *(equal + 13))
       {
         v5 = [(NSString *)thirdLevelMMCSErrorDomain isEqual:?];
         if (!v5)
@@ -1148,10 +1148,10 @@ LABEL_80:
         has = self->_has;
       }
 
-      v14 = *(a3 + 58);
+      v14 = *(equal + 58);
       if ((has & 0x20) != 0)
       {
-        if ((v14 & 0x20) == 0 || self->_fourthLevelMMCSError != *(a3 + 10))
+        if ((v14 & 0x20) == 0 || self->_fourthLevelMMCSError != *(equal + 10))
         {
           goto LABEL_80;
         }
@@ -1163,7 +1163,7 @@ LABEL_80:
       }
 
       fourthLevelMMCSErrorDomain = self->_fourthLevelMMCSErrorDomain;
-      if (fourthLevelMMCSErrorDomain | *(a3 + 6))
+      if (fourthLevelMMCSErrorDomain | *(equal + 6))
       {
 
         LOBYTE(v5) = [(NSString *)fourthLevelMMCSErrorDomain isEqual:?];
@@ -1353,19 +1353,19 @@ LABEL_22:
   return v21 ^ v22 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(NSString *)self->_fourthLevelMMCSErrorDomain hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDIMessageAttachmentDownload *)self setGuid:?];
   }
 
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 58);
+    v5 = *(from + 58);
     if ((v5 & 0x40) == 0)
     {
 LABEL_5:
@@ -1383,9 +1383,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_fzError = *(a3 + 14);
+  self->_fzError = *(from + 14);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 0x200) == 0)
   {
 LABEL_6:
@@ -1398,9 +1398,9 @@ LABEL_6:
   }
 
 LABEL_32:
-  self->_messageError = *(a3 + 19);
+  self->_messageError = *(from + 19);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_7:
@@ -1413,9 +1413,9 @@ LABEL_7:
   }
 
 LABEL_33:
-  self->_tokenError = *(a3 + 28);
+  self->_tokenError = *(from + 28);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 0x80) == 0)
   {
 LABEL_8:
@@ -1428,9 +1428,9 @@ LABEL_8:
   }
 
 LABEL_34:
-  self->_genericError = *(a3 + 15);
+  self->_genericError = *(from + 15);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -1443,9 +1443,9 @@ LABEL_9:
   }
 
 LABEL_35:
-  self->_downloadDuration = *(a3 + 6);
+  self->_downloadDuration = *(from + 6);
   *&self->_has |= 8u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 0x100) == 0)
   {
 LABEL_10:
@@ -1458,9 +1458,9 @@ LABEL_10:
   }
 
 LABEL_36:
-  self->_linkQuality = *(a3 + 18);
+  self->_linkQuality = *(from + 18);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -1473,9 +1473,9 @@ LABEL_11:
   }
 
 LABEL_37:
-  self->_connectionType = *(a3 + 5);
+  self->_connectionType = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 58);
+  v5 = *(from + 58);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -1488,50 +1488,50 @@ LABEL_12:
   }
 
 LABEL_38:
-  self->_attachmentSize = *(a3 + 4);
+  self->_attachmentSize = *(from + 4);
   *&self->_has |= 2u;
-  if ((*(a3 + 58) & 0x10) != 0)
+  if ((*(from + 58) & 0x10) != 0)
   {
 LABEL_13:
-    self->_firstLevelMMCSError = *(a3 + 7);
+    self->_firstLevelMMCSError = *(from + 7);
     *&self->_has |= 0x10u;
   }
 
 LABEL_14:
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
     [(AWDIMessageAttachmentDownload *)self setFirstLevelMMCSErrorDomain:?];
   }
 
-  if ((*(a3 + 58) & 0x400) != 0)
+  if ((*(from + 58) & 0x400) != 0)
   {
-    self->_secondLevelMMCSError = *(a3 + 20);
+    self->_secondLevelMMCSError = *(from + 20);
     *&self->_has |= 0x400u;
   }
 
-  if (*(a3 + 11))
+  if (*(from + 11))
   {
     [(AWDIMessageAttachmentDownload *)self setSecondLevelMMCSErrorDomain:?];
   }
 
-  if ((*(a3 + 58) & 0x800) != 0)
+  if ((*(from + 58) & 0x800) != 0)
   {
-    self->_thirdLevelMMCSError = *(a3 + 24);
+    self->_thirdLevelMMCSError = *(from + 24);
     *&self->_has |= 0x800u;
   }
 
-  if (*(a3 + 13))
+  if (*(from + 13))
   {
     [(AWDIMessageAttachmentDownload *)self setThirdLevelMMCSErrorDomain:?];
   }
 
-  if ((*(a3 + 58) & 0x20) != 0)
+  if ((*(from + 58) & 0x20) != 0)
   {
-    self->_fourthLevelMMCSError = *(a3 + 10);
+    self->_fourthLevelMMCSError = *(from + 10);
     *&self->_has |= 0x20u;
   }
 
-  if (*(a3 + 6))
+  if (*(from + 6))
   {
 
     [(AWDIMessageAttachmentDownload *)self setFourthLevelMMCSErrorDomain:?];

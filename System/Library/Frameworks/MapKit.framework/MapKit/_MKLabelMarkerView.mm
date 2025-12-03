@@ -1,14 +1,14 @@
 @interface _MKLabelMarkerView
 - (BOOL)shouldShowCallout;
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3;
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated;
 - (MKMapView)mapView;
-- (_MKLabelMarkerView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (_MKLabelMarkerView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (void)_deregisterObserver;
 - (void)_registerObserver;
 - (void)_updateAnchorOffset;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAnnotation:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAnnotation:(id)annotation;
 @end
 
 @implementation _MKLabelMarkerView
@@ -20,47 +20,47 @@
   return WeakRetained;
 }
 
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(_MKLabelMarkerView *)self _updateAnchorOffset];
   v6.receiver = self;
   v6.super_class = _MKLabelMarkerView;
-  return [(MKAnnotationView *)&v6 updateCalloutViewIfNeededAnimated:v3];
+  return [(MKAnnotationView *)&v6 updateCalloutViewIfNeededAnimated:animatedCopy];
 }
 
 - (void)_updateAnchorOffset
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  [v3 calloutAnchorRect];
+  annotation = [(MKAnnotationView *)self annotation];
+  [annotation calloutAnchorRect];
   [(MKAnnotationView *)self setCalloutOffset:CGRectGetMidX(v5), -8.0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v7 = [(MKAnnotationView *)self annotation];
-  if ([v9 isEqualToString:@"leftCalloutAccessoryView"])
+  pathCopy = path;
+  annotation = [(MKAnnotationView *)self annotation];
+  if ([pathCopy isEqualToString:@"leftCalloutAccessoryView"])
   {
-    v8 = [v7 leftCalloutAccessoryView];
-    [(MKAnnotationView *)self setLeftCalloutAccessoryView:v8];
+    leftCalloutAccessoryView = [annotation leftCalloutAccessoryView];
+    [(MKAnnotationView *)self setLeftCalloutAccessoryView:leftCalloutAccessoryView];
   }
 
-  else if ([v9 isEqualToString:@"rightCalloutAccessoryView"])
+  else if ([pathCopy isEqualToString:@"rightCalloutAccessoryView"])
   {
-    v8 = [v7 rightCalloutAccessoryView];
-    [(MKAnnotationView *)self setRightCalloutAccessoryView:v8];
+    leftCalloutAccessoryView = [annotation rightCalloutAccessoryView];
+    [(MKAnnotationView *)self setRightCalloutAccessoryView:leftCalloutAccessoryView];
   }
 
   else
   {
-    if (![v9 isEqualToString:@"detailCalloutAccessoryView"])
+    if (![pathCopy isEqualToString:@"detailCalloutAccessoryView"])
     {
       goto LABEL_8;
     }
 
-    v8 = [v7 detailCalloutAccessoryView];
-    [(MKAnnotationView *)self setDetailCalloutAccessoryView:v8];
+    leftCalloutAccessoryView = [annotation detailCalloutAccessoryView];
+    [(MKAnnotationView *)self setDetailCalloutAccessoryView:leftCalloutAccessoryView];
   }
 
 LABEL_8:
@@ -74,11 +74,11 @@ LABEL_8:
   [(MKAnnotationView *)&v3 dealloc];
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   annotation = self->super._annotation;
-  if (annotation != v4)
+  if (annotation != annotationCopy)
   {
     if (annotation)
     {
@@ -87,9 +87,9 @@ LABEL_8:
 
     v17.receiver = self;
     v17.super_class = _MKLabelMarkerView;
-    [(MKAnnotationView *)&v17 setAnnotation:v4];
-    v6 = [(MKAnnotationView *)self annotation];
-    [v6 calloutAnchorRect];
+    [(MKAnnotationView *)&v17 setAnnotation:annotationCopy];
+    annotation = [(MKAnnotationView *)self annotation];
+    [annotation calloutAnchorRect];
     x = v18.origin.x;
     y = v18.origin.y;
     width = v18.size.width;
@@ -120,14 +120,14 @@ LABEL_8:
     v23.size.width = width;
     v23.size.height = height;
     [(MKAnnotationView *)self setRightCalloutOffset:MaxX, CGRectGetMidY(v23)];
-    v14 = [v6 leftCalloutAccessoryView];
-    [(MKAnnotationView *)self setLeftCalloutAccessoryView:v14];
+    leftCalloutAccessoryView = [annotation leftCalloutAccessoryView];
+    [(MKAnnotationView *)self setLeftCalloutAccessoryView:leftCalloutAccessoryView];
 
-    v15 = [v6 rightCalloutAccessoryView];
-    [(MKAnnotationView *)self setRightCalloutAccessoryView:v15];
+    rightCalloutAccessoryView = [annotation rightCalloutAccessoryView];
+    [(MKAnnotationView *)self setRightCalloutAccessoryView:rightCalloutAccessoryView];
 
-    v16 = [v6 detailCalloutAccessoryView];
-    [(MKAnnotationView *)self setDetailCalloutAccessoryView:v16];
+    detailCalloutAccessoryView = [annotation detailCalloutAccessoryView];
+    [(MKAnnotationView *)self setDetailCalloutAccessoryView:detailCalloutAccessoryView];
 
     [(MKAnnotationView *)self setCanShowCallout:[(_MKLabelMarkerView *)self shouldShowCallout]];
     [(_MKLabelMarkerView *)self _registerObserver];
@@ -136,43 +136,43 @@ LABEL_8:
 
 - (void)_deregisterObserver
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  [v3 removeObserver:self forKeyPath:@"leftCalloutAccessoryView"];
-  [v3 removeObserver:self forKeyPath:@"rightCalloutAccessoryView"];
-  [v3 removeObserver:self forKeyPath:@"detailCalloutAccessoryView"];
+  annotation = [(MKAnnotationView *)self annotation];
+  [annotation removeObserver:self forKeyPath:@"leftCalloutAccessoryView"];
+  [annotation removeObserver:self forKeyPath:@"rightCalloutAccessoryView"];
+  [annotation removeObserver:self forKeyPath:@"detailCalloutAccessoryView"];
 }
 
 - (void)_registerObserver
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  [v3 addObserver:self forKeyPath:@"leftCalloutAccessoryView" options:0 context:0];
-  [v3 addObserver:self forKeyPath:@"rightCalloutAccessoryView" options:0 context:0];
-  [v3 addObserver:self forKeyPath:@"detailCalloutAccessoryView" options:0 context:0];
+  annotation = [(MKAnnotationView *)self annotation];
+  [annotation addObserver:self forKeyPath:@"leftCalloutAccessoryView" options:0 context:0];
+  [annotation addObserver:self forKeyPath:@"rightCalloutAccessoryView" options:0 context:0];
+  [annotation addObserver:self forKeyPath:@"detailCalloutAccessoryView" options:0 context:0];
 }
 
 - (BOOL)shouldShowCallout
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  if ([v3 suppressCallout] & 1) != 0 || (objc_msgSend(v3, "isRouteEta"))
+  annotation = [(MKAnnotationView *)self annotation];
+  if ([annotation suppressCallout] & 1) != 0 || (objc_msgSend(annotation, "isRouteEta"))
   {
-    v4 = 0;
+    shouldShowCallout = 0;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = _MKLabelMarkerView;
-    v4 = [(MKAnnotationView *)&v6 shouldShowCallout];
+    shouldShowCallout = [(MKAnnotationView *)&v6 shouldShowCallout];
   }
 
-  return v4;
+  return shouldShowCallout;
 }
 
-- (_MKLabelMarkerView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_MKLabelMarkerView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = _MKLabelMarkerView;
-  v4 = [(MKAnnotationView *)&v7 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(MKAnnotationView *)&v7 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

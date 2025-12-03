@@ -26,7 +26,7 @@
   v11 = *MEMORY[0x1E695E480];
   v12 = a3;
   v13 = CFStringCreateWithFormatAndArguments(v11, 0, a4, &a9);
-  v14 = [a1 _ph_genericErrorWithUnderlyingError:v12 localizedDescription:v13];
+  v14 = [self _ph_genericErrorWithUnderlyingError:v12 localizedDescription:v13];
 
   return v14;
 }
@@ -34,7 +34,7 @@
 + (id)ph_genericErrorWithLocalizedDescription:()PHErrors_Private
 {
   v10 = CFStringCreateWithFormatAndArguments(*MEMORY[0x1E695E480], 0, a3, &a9);
-  v11 = [a1 _ph_genericErrorWithUnderlyingError:0 localizedDescription:v10];
+  v11 = [self _ph_genericErrorWithUnderlyingError:0 localizedDescription:v10];
 
   return v11;
 }
@@ -45,7 +45,7 @@
   v6 = CFStringCreateWithFormatAndArguments(*MEMORY[0x1E695E480], 0, format, va);
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v7 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  v8 = [a1 ph_errorWithDomain:@"PHPhotosErrorDomain" code:a3 userInfo:v7];
+  v8 = [self ph_errorWithDomain:@"PHPhotosErrorDomain" code:a3 userInfo:v7];
 
   return v8;
 }
@@ -59,7 +59,7 @@
   [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696AA08]];
 
   [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  v10 = [a1 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v9];
+  v10 = [self ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v9];
 
   return v10;
 }
@@ -79,13 +79,13 @@
 
   if (PHErrorAllowsInternalErrors())
   {
-    v12 = a1;
+    selfCopy4 = self;
     v13 = v8;
     v14 = a4;
 LABEL_6:
     v15 = v9;
 LABEL_43:
-    v31 = [v12 errorWithDomain:v13 code:v14 userInfo:v15];
+    v31 = [selfCopy4 errorWithDomain:v13 code:v14 userInfo:v15];
     goto LABEL_44;
   }
 
@@ -114,10 +114,10 @@ LABEL_43:
     if ([v17 count])
     {
       v40 = v16;
-      v41 = a1;
+      selfCopy2 = self;
       v42 = v9;
       v43 = v8;
-      v18 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
@@ -146,7 +146,7 @@ LABEL_43:
             if (v27)
             {
               v28 = [v19 objectForKeyedSubscript:v25];
-              [v18 setObject:v28 forKeyedSubscript:v25];
+              [dictionary setObject:v28 forKeyedSubscript:v25];
             }
           }
 
@@ -156,9 +156,9 @@ LABEL_43:
         while (v21);
       }
 
-      if ([v18 count])
+      if ([dictionary count])
       {
-        v29 = v18;
+        v29 = dictionary;
       }
 
       else
@@ -170,7 +170,7 @@ LABEL_43:
 
       v9 = v42;
       v8 = v43;
-      a1 = v41;
+      self = selfCopy2;
       v17 = v39;
       v16 = v40;
     }
@@ -180,7 +180,7 @@ LABEL_43:
       v30 = v17;
     }
 
-    v31 = [a1 errorWithDomain:v16 code:a4 userInfo:v30];
+    v31 = [self errorWithDomain:v16 code:a4 userInfo:v30];
 
     goto LABEL_44;
   }
@@ -190,7 +190,7 @@ LABEL_43:
 
     if (a4 == -1009)
     {
-      v12 = a1;
+      selfCopy4 = self;
       v13 = v16;
       v14 = -1009;
       goto LABEL_6;
@@ -206,7 +206,7 @@ LABEL_40:
   v33 = [(__CFString *)v8 isEqualToString:*MEMORY[0x1E6994990]];
   if ((a4 - 1005) <= 1 && v33 || (v35 = [(__CFString *)v8 isEqualToString:v32], (a4 - 80) <= 2) && v35 && (dyld_program_sdk_at_least() & 1) == 0)
   {
-    v12 = a1;
+    selfCopy4 = self;
     v13 = v8;
     v14 = a4;
     v15 = 0;
@@ -235,7 +235,7 @@ LABEL_40:
     v38 = -1;
   }
 
-  v31 = [a1 errorWithDomain:v10 code:v38 userInfo:0];
+  v31 = [self errorWithDomain:v10 code:v38 userInfo:0];
 
 LABEL_44:
 

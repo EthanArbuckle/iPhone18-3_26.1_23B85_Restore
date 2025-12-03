@@ -1,22 +1,22 @@
 @interface MTShareUtil
-+ (id)shareActivityItems:(id)a3;
-+ (id)shareActivityItemsWithEpisode:(id)a3;
-+ (id)shareActivityItemsWithPlayerItem:(id)a3;
-+ (id)shareActivityItemsWithPodcast:(id)a3;
-+ (id)shareActivityItemsWithPodcastDetails:(id)a3;
-+ (id)shareViewControllerWithDataSource:(id)a3;
-+ (id)shareViewControllerWithEpisode:(id)a3 selectedReferenceTime:(double)a4 selectedPlayerTime:(double)a5 currentPlayerTime:(double)a6;
-+ (id)shareViewControllerWithPlayerItem:(id)a3 selectedReferenceTime:(double)a4 selectedPlayerTime:(double)a5 currentPlayerTime:(double)a6;
-+ (id)shareViewControllerWithPodcast:(id)a3;
-+ (id)shareViewControllerWithPodcastDetails:(id)a3;
++ (id)shareActivityItems:(id)items;
++ (id)shareActivityItemsWithEpisode:(id)episode;
++ (id)shareActivityItemsWithPlayerItem:(id)item;
++ (id)shareActivityItemsWithPodcast:(id)podcast;
++ (id)shareActivityItemsWithPodcastDetails:(id)details;
++ (id)shareViewControllerWithDataSource:(id)source;
++ (id)shareViewControllerWithEpisode:(id)episode selectedReferenceTime:(double)time selectedPlayerTime:(double)playerTime currentPlayerTime:(double)currentPlayerTime;
++ (id)shareViewControllerWithPlayerItem:(id)item selectedReferenceTime:(double)time selectedPlayerTime:(double)playerTime currentPlayerTime:(double)currentPlayerTime;
++ (id)shareViewControllerWithPodcast:(id)podcast;
++ (id)shareViewControllerWithPodcastDetails:(id)details;
 @end
 
 @implementation MTShareUtil
 
-+ (id)shareViewControllerWithDataSource:(id)a3
++ (id)shareViewControllerWithDataSource:(id)source
 {
-  v3 = a3;
-  v4 = [[MTShareUtilActivityViewController alloc] initWithDataSource:v3];
+  sourceCopy = source;
+  v4 = [[MTShareUtilActivityViewController alloc] initWithDataSource:sourceCopy];
 
   [(MTShareUtilActivityViewController *)v4 setObjectManipulationDelegate:v4];
   v7[0] = UIActivityTypePrint;
@@ -32,91 +32,91 @@
   return v4;
 }
 
-+ (id)shareActivityItems:(id)a3
++ (id)shareActivityItems:(id)items
 {
-  v3 = a3;
-  v4 = [[MTTextActivityItemProvider alloc] initWithDataSource:v3];
-  v5 = [[MTEmailActivityItemProvider alloc] initWithDataSource:v3];
-  v6 = [[MTImageActivityItemProvider alloc] initWithDataSource:v3];
-  v7 = [[MTURLActivityItemProvider alloc] initWithDataSource:v3];
-  v8 = [[MTLinkPresentationActivityItemProvider alloc] initWithDataSource:v3];
+  itemsCopy = items;
+  v4 = [[MTTextActivityItemProvider alloc] initWithDataSource:itemsCopy];
+  v5 = [[MTEmailActivityItemProvider alloc] initWithDataSource:itemsCopy];
+  v6 = [[MTImageActivityItemProvider alloc] initWithDataSource:itemsCopy];
+  v7 = [[MTURLActivityItemProvider alloc] initWithDataSource:itemsCopy];
+  v8 = [[MTLinkPresentationActivityItemProvider alloc] initWithDataSource:itemsCopy];
 
   v9 = [[NSArray alloc] initWithObjects:{v4, v5, v6, v7, v8, 0}];
 
   return v9;
 }
 
-+ (id)shareViewControllerWithPlayerItem:(id)a3 selectedReferenceTime:(double)a4 selectedPlayerTime:(double)a5 currentPlayerTime:(double)a6
++ (id)shareViewControllerWithPlayerItem:(id)item selectedReferenceTime:(double)time selectedPlayerTime:(double)playerTime currentPlayerTime:(double)currentPlayerTime
 {
-  v9 = a3;
-  v10 = [[MTShareUtilDataSource alloc] initWithPlayerItem:v9 selectedReferenceTime:a4 selectedPlayerTime:a5 currentPlayerTime:a6];
+  itemCopy = item;
+  v10 = [[MTShareUtilDataSource alloc] initWithPlayerItem:itemCopy selectedReferenceTime:time selectedPlayerTime:playerTime currentPlayerTime:currentPlayerTime];
 
   v11 = [MTShareUtil shareViewControllerWithDataSource:v10];
 
   return v11;
 }
 
-+ (id)shareViewControllerWithEpisode:(id)a3 selectedReferenceTime:(double)a4 selectedPlayerTime:(double)a5 currentPlayerTime:(double)a6
++ (id)shareViewControllerWithEpisode:(id)episode selectedReferenceTime:(double)time selectedPlayerTime:(double)playerTime currentPlayerTime:(double)currentPlayerTime
 {
-  v9 = [a3 uuid];
-  v10 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:v9];
+  uuid = [episode uuid];
+  v10 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:uuid];
 
-  v11 = [[MTShareUtilDataSource alloc] initWithPlayerItem:v10 selectedReferenceTime:a4 selectedPlayerTime:a5 currentPlayerTime:a6];
+  v11 = [[MTShareUtilDataSource alloc] initWithPlayerItem:v10 selectedReferenceTime:time selectedPlayerTime:playerTime currentPlayerTime:currentPlayerTime];
   v12 = [MTShareUtil shareViewControllerWithDataSource:v11];
 
   return v12;
 }
 
-+ (id)shareViewControllerWithPodcast:(id)a3
++ (id)shareViewControllerWithPodcast:(id)podcast
 {
-  v3 = a3;
-  v4 = [[MTShareUtilDataSource alloc] initWithPodcast:v3];
+  podcastCopy = podcast;
+  v4 = [[MTShareUtilDataSource alloc] initWithPodcast:podcastCopy];
 
   v5 = [MTShareUtil shareViewControllerWithDataSource:v4];
 
   return v5;
 }
 
-+ (id)shareViewControllerWithPodcastDetails:(id)a3
++ (id)shareViewControllerWithPodcastDetails:(id)details
 {
-  v3 = a3;
-  v4 = [[MTShareUtilDataSource alloc] initWithPodcastDetails:v3];
+  detailsCopy = details;
+  v4 = [[MTShareUtilDataSource alloc] initWithPodcastDetails:detailsCopy];
 
   v5 = [MTShareUtil shareViewControllerWithDataSource:v4];
 
   return v5;
 }
 
-+ (id)shareActivityItemsWithPlayerItem:(id)a3
++ (id)shareActivityItemsWithPlayerItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = [MTShareUtilDataSource alloc];
-  [v3 playhead];
-  v6 = [(MTShareUtilDataSource *)v4 initWithPlayerItem:v3 selectedReferenceTime:0.0 selectedPlayerTime:0.0 currentPlayerTime:v5];
+  [itemCopy playhead];
+  v6 = [(MTShareUtilDataSource *)v4 initWithPlayerItem:itemCopy selectedReferenceTime:0.0 selectedPlayerTime:0.0 currentPlayerTime:v5];
 
   v7 = [MTShareUtil shareActivityItems:v6];
 
   return v7;
 }
 
-+ (id)shareActivityItemsWithPodcast:(id)a3
++ (id)shareActivityItemsWithPodcast:(id)podcast
 {
-  v3 = a3;
-  v4 = [[MTShareUtilDataSource alloc] initWithPodcast:v3];
+  podcastCopy = podcast;
+  v4 = [[MTShareUtilDataSource alloc] initWithPodcast:podcastCopy];
 
   v5 = [MTShareUtil shareActivityItems:v4];
 
   return v5;
 }
 
-+ (id)shareActivityItemsWithEpisode:(id)a3
++ (id)shareActivityItemsWithEpisode:(id)episode
 {
-  v3 = a3;
-  v4 = [v3 uuid];
-  v5 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:v4];
+  episodeCopy = episode;
+  uuid = [episodeCopy uuid];
+  v5 = [MTBaseEpisodeListManifest mediaItemForEpisodeWithUUID:uuid];
 
   v6 = [MTShareUtilDataSource alloc];
-  [v3 playhead];
+  [episodeCopy playhead];
   v8 = v7;
 
   v9 = [(MTShareUtilDataSource *)v6 initWithPlayerItem:v5 selectedReferenceTime:0.0 selectedPlayerTime:0.0 currentPlayerTime:v8];
@@ -125,10 +125,10 @@
   return v10;
 }
 
-+ (id)shareActivityItemsWithPodcastDetails:(id)a3
++ (id)shareActivityItemsWithPodcastDetails:(id)details
 {
-  v3 = a3;
-  v4 = [[MTShareUtilDataSource alloc] initWithPodcastDetails:v3];
+  detailsCopy = details;
+  v4 = [[MTShareUtilDataSource alloc] initWithPodcastDetails:detailsCopy];
 
   v5 = [MTShareUtil shareActivityItems:v4];
 

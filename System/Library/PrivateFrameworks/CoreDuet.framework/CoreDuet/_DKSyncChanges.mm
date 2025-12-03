@@ -1,12 +1,12 @@
 @interface _DKSyncChanges
-- (id)initWithAdditionChangeSets:(uint64_t)a1 deletionChangeSets:(void *)a2 startDate:endDate:;
+- (id)initWithAdditionChangeSets:(uint64_t)sets deletionChangeSets:(void *)changeSets startDate:endDate:;
 @end
 
 @implementation _DKSyncChanges
 
-- (id)initWithAdditionChangeSets:(uint64_t)a1 deletionChangeSets:(void *)a2 startDate:endDate:
+- (id)initWithAdditionChangeSets:(uint64_t)sets deletionChangeSets:(void *)changeSets startDate:endDate:
 {
-  v7 = OUTLINED_FUNCTION_18_3(a1, a2);
+  v7 = OUTLINED_FUNCTION_18_3(sets, changeSets);
   v8 = v4;
   v9 = v3;
   v10 = v2;

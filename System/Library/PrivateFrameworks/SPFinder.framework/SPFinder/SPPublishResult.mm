@@ -1,44 +1,44 @@
 @interface SPPublishResult
-- (SPPublishResult)initWithCoder:(id)a3;
-- (SPPublishResult)initWithRequestUUID:(id)a3 aaaPubKeyHash:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SPPublishResult)initWithCoder:(id)coder;
+- (SPPublishResult)initWithRequestUUID:(id)d aaaPubKeyHash:(id)hash;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPPublishResult
 
-- (SPPublishResult)initWithRequestUUID:(id)a3 aaaPubKeyHash:(id)a4
+- (SPPublishResult)initWithRequestUUID:(id)d aaaPubKeyHash:(id)hash
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  hashCopy = hash;
   v12.receiver = self;
   v12.super_class = SPPublishResult;
   v9 = [(SPPublishResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestUUID, a3);
-    objc_storeStrong(&v10->_aaaPubKeyHash, a4);
+    objc_storeStrong(&v9->_requestUUID, d);
+    objc_storeStrong(&v10->_aaaPubKeyHash, hash);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestUUID = self->_requestUUID;
-  v5 = a3;
-  [v5 encodeObject:requestUUID forKey:@"requestUUID"];
-  [v5 encodeObject:self->_aaaPubKeyHash forKey:@"aaaPubKeyHash"];
+  coderCopy = coder;
+  [coderCopy encodeObject:requestUUID forKey:@"requestUUID"];
+  [coderCopy encodeObject:self->_aaaPubKeyHash forKey:@"aaaPubKeyHash"];
 }
 
-- (SPPublishResult)initWithCoder:(id)a3
+- (SPPublishResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestUUID"];
   requestUUID = self->_requestUUID;
   self->_requestUUID = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"aaaPubKeyHash"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"aaaPubKeyHash"];
 
   aaaPubKeyHash = self->_aaaPubKeyHash;
   self->_aaaPubKeyHash = v7;

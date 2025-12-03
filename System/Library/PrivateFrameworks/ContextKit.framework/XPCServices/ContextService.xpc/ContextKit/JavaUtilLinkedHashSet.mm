@@ -1,6 +1,6 @@
 @interface JavaUtilLinkedHashSet
 - (JavaUtilLinkedHashSet)init;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation JavaUtilLinkedHashSet
@@ -12,11 +12,11 @@
   return self;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v6.receiver = self;
   v6.super_class = JavaUtilLinkedHashSet;
-  return [(JavaUtilHashSet *)&v6 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [(JavaUtilHashSet *)&v6 countByEnumeratingWithState:state objects:objects count:count];
 }
 
 @end

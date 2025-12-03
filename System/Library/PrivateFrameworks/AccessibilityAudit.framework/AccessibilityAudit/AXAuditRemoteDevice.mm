@@ -1,13 +1,13 @@
 @interface AXAuditRemoteDevice
 - (AXAuditRemoteDeviceDelegate)delegate;
-- (BOOL)_setupConnectionForFileDescriptor:(int)a3;
+- (BOOL)_setupConnectionForFileDescriptor:(int)descriptor;
 - (CGSize)deviceSize;
-- (int64_t)accessibilityHostCacheManagerDeviceOrientationForDeviceIdentifier:(id)a3;
-- (void)accessibilityTranslationTransportSendData:(id)a3 completionHandler:(id)a4;
+- (int64_t)accessibilityHostCacheManagerDeviceOrientationForDeviceIdentifier:(id)identifier;
+- (void)accessibilityTranslationTransportSendData:(id)data completionHandler:(id)handler;
 - (void)didDisconnect;
 - (void)notifyDelegateOfConnectionCompletionIfNecessary;
-- (void)orientationChangedToDegrees:(double)a3;
-- (void)processDataFromRemoteDevice:(id)a3;
+- (void)orientationChangedToDegrees:(double)degrees;
+- (void)processDataFromRemoteDevice:(id)device;
 - (void)requestDeviceAPIVersion;
 - (void)startAccessibility;
 - (void)stopAccessibility;
@@ -19,10 +19,10 @@
 {
   if ([(AXAuditRemoteDevice *)self deviceAPIVersion]>= 1)
   {
-    v3 = [(AXAuditRemoteDevice *)self delegate];
-    if (v3)
+    delegate = [(AXAuditRemoteDevice *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
+      v4 = delegate;
       if (objc_opt_respondsToSelector())
       {
         [v4 remoteDeviceDidCompleteConnection];
@@ -43,16 +43,16 @@
     _os_log_impl(&dword_23D6FE000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", &v5, 0xCu);
   }
 
-  v3 = [(AXAuditRemoteDevice *)self connection];
-  [v3 setDispatchTarget:0];
+  connection = [(AXAuditRemoteDevice *)self connection];
+  [connection setDispatchTarget:0];
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_setupConnectionForFileDescriptor:(int)a3
+- (BOOL)_setupConnectionForFileDescriptor:(int)descriptor
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = dup(a3);
+  v4 = dup(descriptor);
   v5 = objc_alloc(MEMORY[0x277D03680]);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -82,8 +82,8 @@
   v4 = [MEMORY[0x277CCABB0] numberWithBool:1];
   v6 = [v3 messageWithSelector:sel_clientNeedsAccessibility_ objectArguments:{v4, 0}];
 
-  v5 = [(AXAuditRemoteDevice *)self connection];
-  [v5 sendControlAsync:v6 replyHandler:&__block_literal_global_23];
+  connection = [(AXAuditRemoteDevice *)self connection];
+  [connection sendControlAsync:v6 replyHandler:&__block_literal_global_23];
 }
 
 void __41__AXAuditRemoteDevice_startAccessibility__block_invoke(uint64_t a1, void *a2)
@@ -116,8 +116,8 @@ void __41__AXAuditRemoteDevice_startAccessibility__block_invoke_2(uint64_t a1)
   v4 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v6 = [v3 messageWithSelector:sel_clientNeedsAccessibility_ objectArguments:{v4, 0}];
 
-  v5 = [(AXAuditRemoteDevice *)self connection];
-  [v5 sendControlAsync:v6 replyHandler:&__block_literal_global_11_1];
+  connection = [(AXAuditRemoteDevice *)self connection];
+  [connection sendControlAsync:v6 replyHandler:&__block_literal_global_11_1];
 }
 
 void __40__AXAuditRemoteDevice_stopAccessibility__block_invoke(uint64_t a1, void *a2)
@@ -129,19 +129,19 @@ void __40__AXAuditRemoteDevice_stopAccessibility__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)orientationChangedToDegrees:(double)a3
+- (void)orientationChangedToDegrees:(double)degrees
 {
-  if ([(AXAuditRemoteDevice *)self _degree1:a3 isAlmostEqualTo:90.0]|| [(AXAuditRemoteDevice *)self _degree1:a3 isAlmostEqualTo:-270.0])
+  if ([(AXAuditRemoteDevice *)self _degree1:degrees isAlmostEqualTo:90.0]|| [(AXAuditRemoteDevice *)self _degree1:degrees isAlmostEqualTo:-270.0])
   {
     v5 = 4;
   }
 
-  else if ([(AXAuditRemoteDevice *)self _degree1:a3 isAlmostEqualTo:-90.0]|| [(AXAuditRemoteDevice *)self _degree1:a3 isAlmostEqualTo:270.0])
+  else if ([(AXAuditRemoteDevice *)self _degree1:degrees isAlmostEqualTo:-90.0]|| [(AXAuditRemoteDevice *)self _degree1:degrees isAlmostEqualTo:270.0])
   {
     v5 = 3;
   }
 
-  else if ([(AXAuditRemoteDevice *)self _degree1:a3 isAlmostEqualTo:-180.0]|| [(AXAuditRemoteDevice *)self _degree1:a3 isAlmostEqualTo:180.0])
+  else if ([(AXAuditRemoteDevice *)self _degree1:degrees isAlmostEqualTo:-180.0]|| [(AXAuditRemoteDevice *)self _degree1:degrees isAlmostEqualTo:180.0])
   {
     v5 = 2;
   }
@@ -165,8 +165,8 @@ void __40__AXAuditRemoteDevice_stopAccessibility__block_invoke(uint64_t a1, void
   v4 = [MEMORY[0x277D03668] messageWithSelector:sel_deviceAPIVersion objectArguments:0];
   if ([(AXAuditRemoteDevice *)self deviceAPIVersion]<= 0)
   {
-    v5 = [(AXAuditRemoteDevice *)self connection];
-    [v5 sendControlAsync:v4 replyHandler:v3];
+    connection = [(AXAuditRemoteDevice *)self connection];
+    [connection sendControlAsync:v4 replyHandler:v3];
   }
 }
 
@@ -208,11 +208,11 @@ uint64_t __46__AXAuditRemoteDevice_requestDeviceAPIVersion__block_invoke_2(uint6
   return [*(a1 + 40) notifyDelegateOfConnectionCompletionIfNecessary];
 }
 
-- (int64_t)accessibilityHostCacheManagerDeviceOrientationForDeviceIdentifier:(id)a3
+- (int64_t)accessibilityHostCacheManagerDeviceOrientationForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AXAuditRemoteDevice *)self deviceID];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  deviceID = [(AXAuditRemoteDevice *)self deviceID];
+  v6 = [deviceID isEqualToString:identifierCopy];
 
   if (!v6)
   {
@@ -222,18 +222,18 @@ uint64_t __46__AXAuditRemoteDevice_requestDeviceAPIVersion__block_invoke_2(uint6
   return [(AXAuditRemoteDevice *)self deviceOrientation];
 }
 
-- (void)accessibilityTranslationTransportSendData:(id)a3 completionHandler:(id)a4
+- (void)accessibilityTranslationTransportSendData:(id)data completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277D03668] messageWithSelector:sel_processDataFromHost_ objectArguments:{a3, 0}];
-  v8 = [(AXAuditRemoteDevice *)self connection];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x277D03668] messageWithSelector:sel_processDataFromHost_ objectArguments:{data, 0}];
+  connection = [(AXAuditRemoteDevice *)self connection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__AXAuditRemoteDevice_accessibilityTranslationTransportSendData_completionHandler___block_invoke;
   v10[3] = &unk_278BE3298;
-  v11 = v6;
-  v9 = v6;
-  [v8 sendControlAsync:v7 replyHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [connection sendControlAsync:v7 replyHandler:v10];
 }
 
 void __83__AXAuditRemoteDevice_accessibilityTranslationTransportSendData_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -265,19 +265,19 @@ void __83__AXAuditRemoteDevice_accessibilityTranslationTransportSendData_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)processDataFromRemoteDevice:(id)a3
+- (void)processDataFromRemoteDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(AXAuditRemoteDevice *)self axpTransportDataHandler];
+  deviceCopy = device;
+  axpTransportDataHandler = [(AXAuditRemoteDevice *)self axpTransportDataHandler];
 
-  if (v5)
+  if (axpTransportDataHandler)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __51__AXAuditRemoteDevice_processDataFromRemoteDevice___block_invoke;
     v6[3] = &unk_278BE2CA8;
     v6[4] = self;
-    v7 = v4;
+    v7 = deviceCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 

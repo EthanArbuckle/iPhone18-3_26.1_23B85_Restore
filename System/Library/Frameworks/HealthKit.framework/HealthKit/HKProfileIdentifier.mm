@@ -1,12 +1,12 @@
 @interface HKProfileIdentifier
-+ (id)_profileWithUUID:(id)a3 type:(int64_t)a4;
++ (id)_profileWithUUID:(id)d type:(int64_t)type;
 + (id)primaryProfile;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKProfileIdentifier)init;
-- (HKProfileIdentifier)initWithCoder:(id)a3;
+- (HKProfileIdentifier)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKProfileIdentifier
@@ -54,29 +54,29 @@ uint64_t __37__HKProfileIdentifier_primaryProfile__block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-+ (id)_profileWithUUID:(id)a3 type:(int64_t)a4
++ (id)_profileWithUUID:(id)d type:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[HKProfileIdentifier alloc] _init];
-  v7 = [v5 copy];
+  dCopy = d;
+  _init = [[HKProfileIdentifier alloc] _init];
+  v7 = [dCopy copy];
 
-  v8 = v6[1];
-  v6[1] = v7;
+  v8 = _init[1];
+  _init[1] = v7;
 
-  v6[2] = a4;
+  _init[2] = type;
 
-  return v6;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
-    v7 = [(NSUUID *)identifier isEqual:v6];
+    identifier = [equalCopy identifier];
+    v7 = [(NSUUID *)identifier isEqual:identifier];
   }
 
   else
@@ -98,28 +98,28 @@ uint64_t __37__HKProfileIdentifier_primaryProfile__block_invoke()
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"pident"];
-  [v5 encodeInteger:self->_type forKey:@"ptype"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"pident"];
+  [coderCopy encodeInteger:self->_type forKey:@"ptype"];
 }
 
-- (HKProfileIdentifier)initWithCoder:(id)a3
+- (HKProfileIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKProfileIdentifier *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(HKProfileIdentifier *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pident"];
-    identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pident"];
+    identifier = _init->_identifier;
+    _init->_identifier = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"ptype"];
+    _init->_type = [coderCopy decodeIntegerForKey:@"ptype"];
   }
 
-  return v5;
+  return _init;
 }
 
 @end

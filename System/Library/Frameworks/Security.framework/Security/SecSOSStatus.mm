@@ -16,26 +16,26 @@
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.securityd.sos" options:0];
     [(SecSOSStatus *)v2 setConnection:v4];
 
-    v5 = [(SecSOSStatus *)v2 connection];
+    connection = [(SecSOSStatus *)v2 connection];
 
-    if (v5)
+    if (connection)
     {
-      v6 = [(SecSOSStatus *)v2 connection];
-      [v6 setRemoteObjectInterface:v3];
+      connection2 = [(SecSOSStatus *)v2 connection];
+      [connection2 setRemoteObjectInterface:v3];
 
-      v7 = [(SecSOSStatus *)v2 connection];
-      [v7 resume];
+      connection3 = [(SecSOSStatus *)v2 connection];
+      [connection3 resume];
 
-      v5 = v2;
+      connection = v2;
     }
   }
 
   else
   {
-    v5 = 0;
+    connection = 0;
   }
 
-  return v5;
+  return connection;
 }
 
 @end

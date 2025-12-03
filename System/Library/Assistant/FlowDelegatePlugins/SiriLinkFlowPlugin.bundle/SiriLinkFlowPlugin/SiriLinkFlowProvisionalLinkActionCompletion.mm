@@ -1,31 +1,31 @@
 @interface SiriLinkFlowProvisionalLinkActionCompletion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SiriLinkFlowProvisionalLinkActionCompletion)initWithDictionary:(id)a3;
-- (SiriLinkFlowProvisionalLinkActionCompletion)initWithJSON:(id)a3;
+- (SiriLinkFlowProvisionalLinkActionCompletion)initWithDictionary:(id)dictionary;
+- (SiriLinkFlowProvisionalLinkActionCompletion)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SiriLinkFlowProvisionalLinkActionCompletion
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
+  toCopy = to;
+  targetBundle = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
 
-  if (v4)
+  if (targetBundle)
   {
     targetBundle = self->_targetBundle;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
+  action = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
 
-  if (v6)
+  if (action)
   {
-    v7 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
+    action2 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
     PBDataWriterWriteSubmessage();
   }
 
@@ -35,39 +35,39 @@
     PBDataWriterWriteBOOLField();
   }
 
-  v9 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
+  errorDescription = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (errorDescription)
   {
     errorDescription = self->_errorDescription;
     PBDataWriterWriteStringField();
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
-  v6 = [v4 targetBundle];
-  if ((v5 != 0) == (v6 == 0))
+  targetBundle = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
+  targetBundle2 = [equalCopy targetBundle];
+  if ((targetBundle != 0) == (targetBundle2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
-  if (v7)
+  targetBundle3 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
+  if (targetBundle3)
   {
-    v8 = v7;
-    v9 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
-    v10 = [v4 targetBundle];
-    v11 = [v9 isEqual:v10];
+    v8 = targetBundle3;
+    targetBundle4 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
+    targetBundle5 = [equalCopy targetBundle];
+    v11 = [targetBundle4 isEqual:targetBundle5];
 
     if (!v11)
     {
@@ -79,20 +79,20 @@
   {
   }
 
-  v5 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
-  v6 = [v4 action];
-  if ((v5 != 0) == (v6 == 0))
+  targetBundle = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
+  targetBundle2 = [equalCopy action];
+  if ((targetBundle != 0) == (targetBundle2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
-  if (v12)
+  action = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
+  if (action)
   {
-    v13 = v12;
-    v14 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
-    v15 = [v4 action];
-    v16 = [v14 isEqual:v15];
+    v13 = action;
+    action2 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
+    action3 = [equalCopy action];
+    v16 = [action2 isEqual:action3];
 
     if (!v16)
     {
@@ -104,7 +104,7 @@
   {
   }
 
-  if ((v4[40] & 1) != (*&self->_has & 1))
+  if ((equalCopy[40] & 1) != (*&self->_has & 1))
   {
     goto LABEL_20;
   }
@@ -112,18 +112,18 @@
   if (*&self->_has)
   {
     isSuccess = self->_isSuccess;
-    if (isSuccess != [v4 isSuccess])
+    if (isSuccess != [equalCopy isSuccess])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
-  v6 = [v4 errorDescription];
-  if ((v5 != 0) != (v6 == 0))
+  targetBundle = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
+  targetBundle2 = [equalCopy errorDescription];
+  if ((targetBundle != 0) != (targetBundle2 == 0))
   {
-    v18 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
-    if (!v18)
+    errorDescription = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
+    if (!errorDescription)
     {
 
 LABEL_23:
@@ -131,10 +131,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
-    v21 = [v4 errorDescription];
-    v22 = [v20 isEqual:v21];
+    v19 = errorDescription;
+    errorDescription2 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
+    errorDescription3 = [equalCopy errorDescription];
+    v22 = [errorDescription2 isEqual:errorDescription3];
 
     if (v22)
     {
@@ -176,11 +176,11 @@ LABEL_21:
   v3 = +[NSMutableDictionary dictionary];
   if (self->_action)
   {
-    v4 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    action = [(SiriLinkFlowProvisionalLinkActionCompletion *)self action];
+    dictionaryRepresentation = [action dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"action"];
+      [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"action"];
     }
 
     else
@@ -192,8 +192,8 @@ LABEL_21:
 
   if (self->_errorDescription)
   {
-    v7 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
-    v8 = [v7 copy];
+    errorDescription = [(SiriLinkFlowProvisionalLinkActionCompletion *)self errorDescription];
+    v8 = [errorDescription copy];
     [v3 setObject:v8 forKeyedSubscript:@"errorDescription"];
   }
 
@@ -205,8 +205,8 @@ LABEL_21:
 
   if (self->_targetBundle)
   {
-    v10 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
-    v11 = [v10 copy];
+    targetBundle = [(SiriLinkFlowProvisionalLinkActionCompletion *)self targetBundle];
+    v11 = [targetBundle copy];
     [v3 setObject:v11 forKeyedSubscript:@"targetBundle"];
   }
 
@@ -215,10 +215,10 @@ LABEL_21:
 
 - (NSData)jsonData
 {
-  v2 = [(SiriLinkFlowProvisionalLinkActionCompletion *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(SiriLinkFlowProvisionalLinkActionCompletion *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -229,33 +229,33 @@ LABEL_21:
   return v3;
 }
 
-- (SiriLinkFlowProvisionalLinkActionCompletion)initWithJSON:(id)a3
+- (SiriLinkFlowProvisionalLinkActionCompletion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SiriLinkFlowProvisionalLinkActionCompletion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (SiriLinkFlowProvisionalLinkActionCompletion)initWithDictionary:(id)a3
+- (SiriLinkFlowProvisionalLinkActionCompletion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SiriLinkFlowProvisionalLinkActionCompletion;
   v5 = [(SiriLinkFlowProvisionalLinkActionCompletion *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"targetBundle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"targetBundle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -263,7 +263,7 @@ LABEL_21:
       [(SiriLinkFlowProvisionalLinkActionCompletion *)v5 setTargetBundle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"action"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"action"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -271,14 +271,14 @@ LABEL_21:
       [(SiriLinkFlowProvisionalLinkActionCompletion *)v5 setAction:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isSuccess"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SiriLinkFlowProvisionalLinkActionCompletion setIsSuccess:](v5, "setIsSuccess:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"errorDescription"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"errorDescription"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

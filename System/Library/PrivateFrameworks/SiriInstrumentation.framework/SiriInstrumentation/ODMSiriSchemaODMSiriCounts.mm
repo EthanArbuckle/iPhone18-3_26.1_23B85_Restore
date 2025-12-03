@@ -1,25 +1,25 @@
 @interface ODMSiriSchemaODMSiriCounts
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMSiriCounts)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMSiriCounts)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODMSiriSchemaODMSiriCounts)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMSiriCounts)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMSiriCounts
 
-- (ODMSiriSchemaODMSiriCounts)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMSiriCounts)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODMSiriSchemaODMSiriCounts;
   v5 = [(ODMSiriSchemaODMSiriCounts *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ODMSiriSchemaODMSiriCounts *)v5 setDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"taskCounts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"taskCounts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMSiriCounts)initWithJSON:(id)a3
+- (ODMSiriSchemaODMSiriCounts)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMSiriCounts *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMSiriCounts *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMSiriCounts *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dimensions)
   {
-    v4 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dimensions = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+    dictionaryRepresentation = [dimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dimensions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dimensions"];
     }
   }
 
   if (self->_taskCounts)
   {
-    v7 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    taskCounts = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+    dictionaryRepresentation2 = [taskCounts dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"taskCounts"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"taskCounts"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"taskCounts"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"taskCounts"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
-  v6 = [v4 dimensions];
-  if ((v5 != 0) == (v6 == 0))
+  dimensions = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+  dimensions2 = [equalCopy dimensions];
+  if ((dimensions != 0) == (dimensions2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
-  if (v7)
+  dimensions3 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+  if (dimensions3)
   {
-    v8 = v7;
-    v9 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
-    v10 = [v4 dimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = dimensions3;
+    dimensions4 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+    dimensions5 = [equalCopy dimensions];
+    v11 = [dimensions4 isEqual:dimensions5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
-  v6 = [v4 taskCounts];
-  if ((v5 != 0) != (v6 == 0))
+  dimensions = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+  dimensions2 = [equalCopy taskCounts];
+  if ((dimensions != 0) != (dimensions2 == 0))
   {
-    v12 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
-    if (!v12)
+    taskCounts = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+    if (!taskCounts)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
-    v15 = [v4 taskCounts];
-    v16 = [v14 isEqual:v15];
+    v13 = taskCounts;
+    taskCounts2 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+    taskCounts3 = [equalCopy taskCounts];
+    v16 = [taskCounts2 isEqual:taskCounts3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+  toCopy = to;
+  dimensions = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
 
-  if (v4)
+  if (dimensions)
   {
-    v5 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+    dimensions2 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+  taskCounts = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
 
-  if (v6)
+  if (taskCounts)
   {
-    v7 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+    taskCounts2 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ODMSiriSchemaODMSiriCounts;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  dimensions = [(ODMSiriSchemaODMSiriCounts *)self dimensions];
+  v7 = [dimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODMSiriSchemaODMSiriCounts *)self deleteDimensions];
   }
 
-  v9 = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  taskCounts = [(ODMSiriSchemaODMSiriCounts *)self taskCounts];
+  v10 = [taskCounts applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ODMSiriSchemaODMSiriCounts *)self deleteTaskCounts];
   }

@@ -1,18 +1,18 @@
 @interface _UIKBRTTimerBlock
-- (_UIKBRTTimerBlock)initWithTimeInterval:(double)a3 onQueue:(id)a4 do:(id)a5 owner:(id)a6;
+- (_UIKBRTTimerBlock)initWithTimeInterval:(double)interval onQueue:(id)queue do:(id)do owner:(id)owner;
 - (void)dealloc;
 - (void)fireNow;
 - (void)invalidate;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation _UIKBRTTimerBlock
 
-- (_UIKBRTTimerBlock)initWithTimeInterval:(double)a3 onQueue:(id)a4 do:(id)a5 owner:(id)a6
+- (_UIKBRTTimerBlock)initWithTimeInterval:(double)interval onQueue:(id)queue do:(id)do owner:(id)owner
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queueCopy = queue;
+  doCopy = do;
+  ownerCopy = owner;
   v23.receiver = self;
   v23.super_class = _UIKBRTTimerBlock;
   v14 = [(_UIKBRTTimerBlock *)&v23 init];
@@ -22,18 +22,18 @@
     selfQueue = v14->_selfQueue;
     v14->_selfQueue = v15;
 
-    objc_storeStrong(&v14->_queue, a4);
-    v17 = _Block_copy(v12);
+    objc_storeStrong(&v14->_queue, queue);
+    v17 = _Block_copy(doCopy);
     onTimer = v14->_onTimer;
     v14->_onTimer = v17;
 
-    objc_storeStrong(&v14->_owner, a6);
-    v19 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:v14 target:sel_timerFired_ selector:0 userInfo:0 repeats:a3];
+    objc_storeStrong(&v14->_owner, owner);
+    v19 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:v14 target:sel_timerFired_ selector:0 userInfo:0 repeats:interval];
     timer = v14->_timer;
     v14->_timer = v19;
 
-    v21 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v21 addTimer:v14->_timer forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:v14->_timer forMode:*MEMORY[0x1E695D918]];
   }
 
   return v14;
@@ -70,9 +70,9 @@
   dispatch_sync(selfQueue, block);
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -96,9 +96,9 @@
   block[1] = 3221225472;
   block[2] = __32___UIKBRTTimerBlock_timerFired___block_invoke;
   block[3] = &unk_1E7118888;
-  v6 = v4;
+  v6 = firedCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v23;
   v13 = &v17;
   v14 = v15;

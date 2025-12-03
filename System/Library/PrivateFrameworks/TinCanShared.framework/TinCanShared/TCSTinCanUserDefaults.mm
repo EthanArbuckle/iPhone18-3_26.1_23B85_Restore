@@ -32,14 +32,14 @@ void __37__TCSTinCanUserDefaults_allowListKey__block_invoke()
 
 + (NSString)storeDemoAllowlistKey
 {
-  v2 = [a1 allowListKey];
+  allowListKey = [self allowListKey];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__TCSTinCanUserDefaults_storeDemoAllowlistKey__block_invoke;
   block[3] = &unk_279DC19E0;
-  v9 = v2;
+  v9 = allowListKey;
   v3 = storeDemoAllowlistKey_onceToken;
-  v4 = v2;
+  v4 = allowListKey;
   if (v3 != -1)
   {
     dispatch_once(&storeDemoAllowlistKey_onceToken, block);
@@ -62,14 +62,14 @@ void __46__TCSTinCanUserDefaults_storeDemoAllowlistKey__block_invoke(uint64_t a1
 
 + (NSString)suggestionExpiryReasonAllowlistedValue
 {
-  v2 = [a1 allowListKey];
+  allowListKey = [self allowListKey];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__TCSTinCanUserDefaults_suggestionExpiryReasonAllowlistedValue__block_invoke;
   block[3] = &unk_279DC19E0;
-  v9 = v2;
+  v9 = allowListKey;
   v3 = suggestionExpiryReasonAllowlistedValue_onceToken;
-  v4 = v2;
+  v4 = allowListKey;
   if (v3 != -1)
   {
     dispatch_once(&suggestionExpiryReasonAllowlistedValue_onceToken, block);
@@ -92,21 +92,21 @@ void __63__TCSTinCanUserDefaults_suggestionExpiryReasonAllowlistedValue__block_i
 
 + (id)defaults
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [@"com.apple.tincan" isEqualToString:v4];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [@"com.apple.tincan" isEqualToString:bundleIdentifier];
 
   if (v5)
   {
-    v6 = [a1 standardUserDefaults];
+    standardUserDefaults = [self standardUserDefaults];
   }
 
   else
   {
-    v6 = [[a1 alloc] initWithSuiteName:@"com.apple.tincan"];
+    standardUserDefaults = [[self alloc] initWithSuiteName:@"com.apple.tincan"];
   }
 
-  v7 = v6;
+  v7 = standardUserDefaults;
   if (+[TCSBehavior isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot])
   {
     [v7 _tcsEnsureProtectionClass];
@@ -122,9 +122,9 @@ void __63__TCSTinCanUserDefaults_suggestionExpiryReasonAllowlistedValue__block_i
       _os_log_impl(&dword_26F110000, v8, OS_LOG_TYPE_DEFAULT, "TCSTinCanUserDefaults waiting for first-unlock.", v12, 2u);
     }
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v10 = +[TCSBehavior sharedBehavior];
-    [v9 addObserver:v7 selector:sel__tcsHandleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v10];
+    [defaultCenter addObserver:v7 selector:sel__tcsHandleDeviceFirstUnlock name:@"TCSFirstUnlockNotification" object:v10];
   }
 
   return v7;

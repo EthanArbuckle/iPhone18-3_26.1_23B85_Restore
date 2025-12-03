@@ -1,10 +1,10 @@
 @interface HKHRAFibBurdenNotificationSettingsFactory
-- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)a3 requirementsEvaluation:(id)a4;
+- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)onboarded requirementsEvaluation:(id)evaluation;
 - (BOOL)_isOnboarded;
-- (HKHRAFibBurdenNotificationSettingsFactory)initWithFeatureStatus:(id)a3;
+- (HKHRAFibBurdenNotificationSettingsFactory)initWithFeatureStatus:(id)status;
 - (id)_deviceRegionGatedBridgeSettingFooter;
 - (id)_deviceRegionGatedWatchSettingFooter;
-- (id)_evaluationForIsOnboarded:(BOOL)a3;
+- (id)_evaluationForIsOnboarded:(BOOL)onboarded;
 - (id)_genericBridgeSettingFooter;
 - (id)_genericWatchSettingFooter;
 - (id)_irnEnabledBridgeSettingFooter;
@@ -22,16 +22,16 @@
 
 @implementation HKHRAFibBurdenNotificationSettingsFactory
 
-- (HKHRAFibBurdenNotificationSettingsFactory)initWithFeatureStatus:(id)a3
+- (HKHRAFibBurdenNotificationSettingsFactory)initWithFeatureStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v9.receiver = self;
   v9.super_class = HKHRAFibBurdenNotificationSettingsFactory;
   v5 = [(HKHRAFibBurdenNotificationSettingsFactory *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(HKHRAFibBurdenNotificationSettingsFactory *)v5 setFeatureStatus:v4];
+    [(HKHRAFibBurdenNotificationSettingsFactory *)v5 setFeatureStatus:statusCopy];
     v7 = v6;
   }
 
@@ -40,16 +40,16 @@
 
 - (id)bridgeSettings
 {
-  v3 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _isOnboarded];
-  v4 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _evaluationForIsOnboarded:v3];
-  if ([(HKHRAFibBurdenNotificationSettingsFactory *)self _isFeatureOnboardedAndAvailableWithIsOnboarded:v3 requirementsEvaluation:v4])
+  _isOnboarded = [(HKHRAFibBurdenNotificationSettingsFactory *)self _isOnboarded];
+  v4 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _evaluationForIsOnboarded:_isOnboarded];
+  if ([(HKHRAFibBurdenNotificationSettingsFactory *)self _isFeatureOnboardedAndAvailableWithIsOnboarded:_isOnboarded requirementsEvaluation:v4])
   {
     v5 = [HKHRAFibBurdenBridgeSettings alloc];
-    v6 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericBridgeSettingFooter];
+    _genericBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericBridgeSettingFooter];
     v7 = v5;
     v8 = 0;
 LABEL_3:
-    v9 = [(HKHRAFibBurdenBridgeSettings *)v7 initWithSettingVisible:1 settingEnabled:1 showOnboarding:v8 footer:v6];
+    v9 = [(HKHRAFibBurdenBridgeSettings *)v7 initWithSettingVisible:1 settingEnabled:1 showOnboarding:v8 footer:_genericBridgeSettingFooter];
 
     goto LABEL_32;
   }
@@ -82,10 +82,10 @@ LABEL_3:
   if (!v18 || (v19 & 1) == 0)
   {
     v22 = [HKHRAFibBurdenBridgeSettings alloc];
-    v23 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _deviceRegionGatedBridgeSettingFooter];
+    _deviceRegionGatedBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _deviceRegionGatedBridgeSettingFooter];
 LABEL_25:
-    v24 = v23;
-    v9 = [(HKHRAFibBurdenBridgeSettings *)v22 initWithSettingVisible:1 settingEnabled:0 showOnboarding:v3 ^ 1 footer:v23];
+    v24 = _deviceRegionGatedBridgeSettingFooter;
+    v9 = [(HKHRAFibBurdenBridgeSettings *)v22 initWithSettingVisible:1 settingEnabled:0 showOnboarding:_isOnboarded ^ 1 footer:_deviceRegionGatedBridgeSettingFooter];
 
     goto LABEL_32;
   }
@@ -93,39 +93,39 @@ LABEL_25:
   if ((v15 & 1) == 0)
   {
     v22 = [HKHRAFibBurdenBridgeSettings alloc];
-    v23 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _remoteDisabledBridgeSettingFooter];
+    _deviceRegionGatedBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _remoteDisabledBridgeSettingFooter];
     goto LABEL_25;
   }
 
   if ((v16 & 1) == 0)
   {
     v22 = [HKHRAFibBurdenBridgeSettings alloc];
-    v23 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _seedExpiryBridgeSettingFooter];
+    _deviceRegionGatedBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _seedExpiryBridgeSettingFooter];
     goto LABEL_25;
   }
 
   if ((v14 & 1) == 0)
   {
     v22 = [HKHRAFibBurdenBridgeSettings alloc];
-    v23 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericBridgeSettingFooter];
+    _deviceRegionGatedBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericBridgeSettingFooter];
     goto LABEL_25;
   }
 
   if ((v17 & 1) == 0)
   {
     v22 = [HKHRAFibBurdenBridgeSettings alloc];
-    v23 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _wristDetectDisabledBridgeSettingFooter];
+    _deviceRegionGatedBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _wristDetectDisabledBridgeSettingFooter];
     goto LABEL_25;
   }
 
   if ((v20 & 1) == 0)
   {
     v22 = [HKHRAFibBurdenBridgeSettings alloc];
-    v23 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _irnEnabledBridgeSettingFooter];
+    _deviceRegionGatedBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _irnEnabledBridgeSettingFooter];
     goto LABEL_25;
   }
 
-  if (v3)
+  if (_isOnboarded)
   {
     _HKInitializeLogging();
     v21 = HKHRAFibBurdenLogForCategory(2);
@@ -140,7 +140,7 @@ LABEL_25:
     if ([v4 areAllRequirementsSatisfied])
     {
       v25 = [HKHRAFibBurdenBridgeSettings alloc];
-      v6 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericBridgeSettingFooter];
+      _genericBridgeSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericBridgeSettingFooter];
       v7 = v25;
       v8 = 1;
       goto LABEL_3;
@@ -229,9 +229,9 @@ LABEL_32:
 
 - (id)watchSettings
 {
-  v3 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _isOnboarded];
-  v4 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _evaluationForIsOnboarded:v3];
-  if ([(HKHRAFibBurdenNotificationSettingsFactory *)self _isFeatureOnboardedAndAvailableWithIsOnboarded:v3 requirementsEvaluation:v4])
+  _isOnboarded = [(HKHRAFibBurdenNotificationSettingsFactory *)self _isOnboarded];
+  v4 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _evaluationForIsOnboarded:_isOnboarded];
+  if ([(HKHRAFibBurdenNotificationSettingsFactory *)self _isFeatureOnboardedAndAvailableWithIsOnboarded:_isOnboarded requirementsEvaluation:v4])
   {
     v5 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF38]];
     v6 = [HKHRAFibBurdenWatchSettings alloc];
@@ -245,8 +245,8 @@ LABEL_32:
       +[_HKHeartSettingsUtilities detailStatusOffText];
     }
     v19 = ;
-    v20 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericWatchSettingFooter];
-    v18 = [(HKHRAFibBurdenWatchSettings *)v6 initWithSettingVisible:1 settingEnabled:1 statusText:v19 footer:v20];
+    _genericWatchSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _genericWatchSettingFooter];
+    v18 = [(HKHRAFibBurdenWatchSettings *)v6 initWithSettingVisible:1 settingEnabled:1 statusText:v19 footer:_genericWatchSettingFooter];
 
     goto LABEL_22;
   }
@@ -256,7 +256,7 @@ LABEL_32:
   v9 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF70]];
   v10 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBEF0]];
   v11 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFE8]];
-  if (!(v3 & v7 & v8 & v9 & v10) || (v11 & 1) == 0)
+  if (!(_isOnboarded & v7 & v8 & v9 & v10) || (v11 & 1) == 0)
   {
 LABEL_14:
     v18 = +[HKHRAFibBurdenWatchSettings hiddenSettings];
@@ -288,14 +288,14 @@ LABEL_14:
 
         v21 = [HKHRAFibBurdenWatchSettings alloc];
         v19 = +[_HKHeartSettingsUtilities aFibBurdenUnavailableDetailText];
-        v22 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _irnEnabledWatchSettingFooter];
+        _irnEnabledWatchSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _irnEnabledWatchSettingFooter];
       }
 
       else
       {
         v21 = [HKHRAFibBurdenWatchSettings alloc];
         v19 = +[_HKHeartSettingsUtilities aFibBurdenUnavailableDetailText];
-        v22 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _seedExpiryWatchSettingFooter];
+        _irnEnabledWatchSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _seedExpiryWatchSettingFooter];
       }
     }
 
@@ -303,7 +303,7 @@ LABEL_14:
     {
       v21 = [HKHRAFibBurdenWatchSettings alloc];
       v19 = +[_HKHeartSettingsUtilities aFibBurdenUnavailableDetailText];
-      v22 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _remoteDisabledWatchSettingFooter];
+      _irnEnabledWatchSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _remoteDisabledWatchSettingFooter];
     }
   }
 
@@ -311,11 +311,11 @@ LABEL_14:
   {
     v21 = [HKHRAFibBurdenWatchSettings alloc];
     v19 = +[_HKHeartSettingsUtilities aFibBurdenUnavailableDetailText];
-    v22 = [(HKHRAFibBurdenNotificationSettingsFactory *)self _deviceRegionGatedWatchSettingFooter];
+    _irnEnabledWatchSettingFooter = [(HKHRAFibBurdenNotificationSettingsFactory *)self _deviceRegionGatedWatchSettingFooter];
   }
 
-  v23 = v22;
-  v18 = [(HKHRAFibBurdenWatchSettings *)v21 initWithSettingVisible:1 settingEnabled:0 statusText:v19 footer:v22];
+  v23 = _irnEnabledWatchSettingFooter;
+  v18 = [(HKHRAFibBurdenWatchSettings *)v21 initWithSettingVisible:1 settingEnabled:0 statusText:v19 footer:_irnEnabledWatchSettingFooter];
 
 LABEL_22:
 LABEL_23:
@@ -375,39 +375,39 @@ LABEL_23:
     return 0;
   }
 
-  v3 = [(HKFeatureStatus *)self->_featureStatus onboardingRecord];
-  v4 = [v3 onboardingState] != 1;
+  onboardingRecord = [(HKFeatureStatus *)self->_featureStatus onboardingRecord];
+  v4 = [onboardingRecord onboardingState] != 1;
 
   return v4;
 }
 
-- (id)_evaluationForIsOnboarded:(BOOL)a3
+- (id)_evaluationForIsOnboarded:(BOOL)onboarded
 {
-  v3 = a3;
-  v4 = [(HKFeatureStatus *)self->_featureStatus requirementsEvaluationByContext];
-  v5 = v4;
+  onboardedCopy = onboarded;
+  requirementsEvaluationByContext = [(HKFeatureStatus *)self->_featureStatus requirementsEvaluationByContext];
+  v5 = requirementsEvaluationByContext;
   v6 = MEMORY[0x277CCBEA0];
-  if (!v3)
+  if (!onboardedCopy)
   {
     v6 = MEMORY[0x277CCBE50];
   }
 
-  v7 = [v4 objectForKeyedSubscript:*v6];
+  v7 = [requirementsEvaluationByContext objectForKeyedSubscript:*v6];
 
   return v7;
 }
 
-- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)a3 requirementsEvaluation:(id)a4
+- (BOOL)_isFeatureOnboardedAndAvailableWithIsOnboarded:(BOOL)onboarded requirementsEvaluation:(id)evaluation
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (onboarded)
   {
-    v4 = [a4 unsatisfiedRequirementIdentifiers];
-    if ([v4 count])
+    unsatisfiedRequirementIdentifiers = [evaluation unsatisfiedRequirementIdentifiers];
+    if ([unsatisfiedRequirementIdentifiers count])
     {
       v9[0] = *MEMORY[0x277CCBF38];
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-      v6 = [v4 isEqualToArray:v5];
+      v6 = [unsatisfiedRequirementIdentifiers isEqualToArray:v5];
     }
 
     else

@@ -1,8 +1,8 @@
 @interface FigCaptureSourceBacking
-- (FigCaptureSourceBacking)initWithMediaType:(unsigned int)a3 attributes:(id)a4 cachedProperties:(id)a5 formats:(id)a6 missingFormatNames:(id)a7 synchronizedStreamUniqueIDs:(id)a8 unsynchronizedStreamUniqueIDs:(id)a9;
+- (FigCaptureSourceBacking)initWithMediaType:(unsigned int)type attributes:(id)attributes cachedProperties:(id)properties formats:(id)formats missingFormatNames:(id)names synchronizedStreamUniqueIDs:(id)ds unsynchronizedStreamUniqueIDs:(id)iDs;
 - (NSDictionary)cachedProperties;
 - (void)dealloc;
-- (void)updateCachedProperties:(uint64_t)a1;
+- (void)updateCachedProperties:(uint64_t)properties;
 @end
 
 @implementation FigCaptureSourceBacking
@@ -15,7 +15,7 @@
   return v3;
 }
 
-- (FigCaptureSourceBacking)initWithMediaType:(unsigned int)a3 attributes:(id)a4 cachedProperties:(id)a5 formats:(id)a6 missingFormatNames:(id)a7 synchronizedStreamUniqueIDs:(id)a8 unsynchronizedStreamUniqueIDs:(id)a9
+- (FigCaptureSourceBacking)initWithMediaType:(unsigned int)type attributes:(id)attributes cachedProperties:(id)properties formats:(id)formats missingFormatNames:(id)names synchronizedStreamUniqueIDs:(id)ds unsynchronizedStreamUniqueIDs:(id)iDs
 {
   v18.receiver = self;
   v18.super_class = FigCaptureSourceBacking;
@@ -23,14 +23,14 @@
   v16 = v15;
   if (v15)
   {
-    v15->_mediaType = a3;
-    v15->_attributes = a4;
-    v16->_cachedProperties = [a5 mutableCopy];
+    v15->_mediaType = type;
+    v15->_attributes = attributes;
+    v16->_cachedProperties = [properties mutableCopy];
     v16->_cachedPropertiesLock._os_unfair_lock_opaque = 0;
-    v16->_formats = a6;
-    v16->_missingFormatNames = a7;
-    v16->_synchronizedStreamUniqueIDs = a8;
-    v16->_unsynchronizedStreamUniqueIDs = a9;
+    v16->_formats = formats;
+    v16->_missingFormatNames = names;
+    v16->_synchronizedStreamUniqueIDs = ds;
+    v16->_unsynchronizedStreamUniqueIDs = iDs;
   }
 
   return v16;
@@ -43,21 +43,21 @@
   [(FigCaptureSourceBacking *)&v3 dealloc];
 }
 
-- (void)updateCachedProperties:(uint64_t)a1
+- (void)updateCachedProperties:(uint64_t)properties
 {
-  if (a1)
+  if (properties)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v4 = *(a1 + 24);
+    os_unfair_lock_lock((properties + 32));
+    v4 = *(properties + 24);
     if (!v4)
     {
       v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      *(a1 + 24) = v4;
+      *(properties + 24) = v4;
     }
 
     [v4 addEntriesFromDictionary:a2];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((properties + 32));
   }
 }
 

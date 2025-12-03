@@ -1,78 +1,78 @@
 @interface PTPCPassiveCollectionService
-- (BOOL)_connectionIsEntitled:(id)a3 toEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_connectionIsEntitled:(id)entitled toEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PTPCPassiveCollectionService)init;
-- (void)_collectAndClearCurrentSettingWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 callback:(id)a5;
-- (void)_collectionQueue_collectWithStartDate:(id)a3 endDate:(id)a4 traceNamePrefix:(id)a5 collectionType:(unsigned __int8)a6 triggerUserNotification:(BOOL)a7 collectionConfig:(id)a8 clearPresetSettings:(BOOL)a9 callback:(id)a10;
+- (void)_collectAndClearCurrentSettingWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification callback:(id)callback;
+- (void)_collectionQueue_collectWithStartDate:(id)date endDate:(id)endDate traceNamePrefix:(id)prefix collectionType:(unsigned __int8)type triggerUserNotification:(BOOL)notification collectionConfig:(id)config clearPresetSettings:(BOOL)settings callback:(id)self0;
 - (void)_confirmTraceDirectoryExists;
-- (void)_generateCoreAnalyticsTelemetry:(id)a3 collectionEndDate:(id)a4 traceWindowStartDate:(id)a5 traceWindowEndDate:(id)a6 traceCount:(unint64_t)a7 totalTraceSizeBytes:(unint64_t)a8 archiveSizeBytes:(id)a9 collectionType:(unsigned __int8)a10;
+- (void)_generateCoreAnalyticsTelemetry:(id)telemetry collectionEndDate:(id)date traceWindowStartDate:(id)startDate traceWindowEndDate:(id)endDate traceCount:(unint64_t)count totalTraceSizeBytes:(unint64_t)bytes archiveSizeBytes:(id)sizeBytes collectionType:(unsigned __int8)self0;
 - (void)_initCollectionConfig;
 - (void)_initInstrumentationConfig;
 - (void)_registerForMetricMonitorTimeout;
-- (void)applyPresetSettings:(unint64_t)a3 callback:(id)a4;
-- (void)clearCurrentPresetSettings:(id)a3;
-- (void)collectLookbackIntervalWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 callback:(id)a5;
-- (void)collectWithStartDate:(id)a3 endDate:(id)a4 traceNamePrefix:(id)a5 triggerUserNotification:(BOOL)a6 callback:(id)a7;
-- (void)getCollectAppInFocus:(id)a3;
-- (void)getCollectLoggingAppLaunch:(id)a3;
-- (void)getCollectLoggingHangs:(id)a3;
-- (void)getCollectLoggingMetalFramePacing:(id)a3;
-- (void)getCollectLoggingPerfPowerMetrics:(id)a3;
-- (void)getCollectLoggingScrolling:(id)a3;
-- (void)getCollectLoggingUserInteraction:(id)a3;
-- (void)getCollectLookbackInterval:(id)a3;
-- (void)getCollectMSS:(id)a3;
-- (void)getCurrentPresetSettings:(id)a3;
-- (void)getImitationRecordStartDate:(id)a3;
-- (void)getInstrumentationConfigIsLocked:(id)a3;
-- (void)getMetalPerDrawableSignpostsEnabled:(id)a3;
-- (void)getMetricMonitoredAppProcessNames:(id)a3;
-- (void)getMetricMonitoringEnabled:(id)a3;
-- (void)getMssPmiCycleInterval:(id)a3;
-- (void)resetCollectAppInFocus:(id)a3;
-- (void)resetCollectLoggingAppLaunch:(id)a3;
-- (void)resetCollectLoggingHangs:(id)a3;
-- (void)resetCollectLoggingMetalFramePacing:(id)a3;
-- (void)resetCollectLoggingPerfPowerMetrics:(id)a3;
-- (void)resetCollectLoggingScrolling:(id)a3;
-- (void)resetCollectLoggingUserInteraction:(id)a3;
-- (void)resetCollectLookbackInterval:(id)a3;
-- (void)resetCollectMSS:(id)a3;
-- (void)resetSettings:(id)a3;
-- (void)setCollectLookbackInterval:(double)a3 callback:(id)a4;
-- (void)setImitationRecordStartDate:(id)a3 callback:(id)a4;
-- (void)setMetalPerDrawableSignpostsEnabled:(id)a3 callback:(id)a4;
-- (void)setMetricMonitoredAppProcessNames:(id)a3 callback:(id)a4;
-- (void)setMetricMonitoringEnabled:(id)a3 callback:(id)a4;
-- (void)setMssPmiCycleInterval:(id)a3 callback:(id)a4;
+- (void)applyPresetSettings:(unint64_t)settings callback:(id)callback;
+- (void)clearCurrentPresetSettings:(id)settings;
+- (void)collectLookbackIntervalWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification callback:(id)callback;
+- (void)collectWithStartDate:(id)date endDate:(id)endDate traceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification callback:(id)callback;
+- (void)getCollectAppInFocus:(id)focus;
+- (void)getCollectLoggingAppLaunch:(id)launch;
+- (void)getCollectLoggingHangs:(id)hangs;
+- (void)getCollectLoggingMetalFramePacing:(id)pacing;
+- (void)getCollectLoggingPerfPowerMetrics:(id)metrics;
+- (void)getCollectLoggingScrolling:(id)scrolling;
+- (void)getCollectLoggingUserInteraction:(id)interaction;
+- (void)getCollectLookbackInterval:(id)interval;
+- (void)getCollectMSS:(id)s;
+- (void)getCurrentPresetSettings:(id)settings;
+- (void)getImitationRecordStartDate:(id)date;
+- (void)getInstrumentationConfigIsLocked:(id)locked;
+- (void)getMetalPerDrawableSignpostsEnabled:(id)enabled;
+- (void)getMetricMonitoredAppProcessNames:(id)names;
+- (void)getMetricMonitoringEnabled:(id)enabled;
+- (void)getMssPmiCycleInterval:(id)interval;
+- (void)resetCollectAppInFocus:(id)focus;
+- (void)resetCollectLoggingAppLaunch:(id)launch;
+- (void)resetCollectLoggingHangs:(id)hangs;
+- (void)resetCollectLoggingMetalFramePacing:(id)pacing;
+- (void)resetCollectLoggingPerfPowerMetrics:(id)metrics;
+- (void)resetCollectLoggingScrolling:(id)scrolling;
+- (void)resetCollectLoggingUserInteraction:(id)interaction;
+- (void)resetCollectLookbackInterval:(id)interval;
+- (void)resetCollectMSS:(id)s;
+- (void)resetSettings:(id)settings;
+- (void)setCollectLookbackInterval:(double)interval callback:(id)callback;
+- (void)setImitationRecordStartDate:(id)date callback:(id)callback;
+- (void)setMetalPerDrawableSignpostsEnabled:(id)enabled callback:(id)callback;
+- (void)setMetricMonitoredAppProcessNames:(id)names callback:(id)callback;
+- (void)setMetricMonitoringEnabled:(id)enabled callback:(id)callback;
+- (void)setMssPmiCycleInterval:(id)interval callback:(id)callback;
 @end
 
 @implementation PTPCPassiveCollectionService
 
-- (BOOL)_connectionIsEntitled:(id)a3 toEntitlement:(id)a4
+- (BOOL)_connectionIsEntitled:(id)entitled toEntitlement:(id)entitlement
 {
-  v4 = [a3 valueForEntitlement:a4];
+  v4 = [entitled valueForEntitlement:entitlement];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 processIdentifier];
-  proc_name(v8, buffer, 0x20u);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  proc_name(processIdentifier, buffer, 0x20u);
   v9 = [NSString stringWithUTF8String:buffer];
-  if (![(PTPCPassiveCollectionService *)self _connectionIsEntitled:v7 toEntitlement:@"com.apple.PerformanceTrace.PassiveConfigurationAccess"])
+  if (![(PTPCPassiveCollectionService *)self _connectionIsEntitled:connectionCopy toEntitlement:@"com.apple.PerformanceTrace.PassiveConfigurationAccess"])
   {
     v16 = sub_10000B5D4();
     if (os_signpost_enabled(v16))
@@ -80,16 +80,16 @@
       *buf = 138543618;
       v42 = v9;
       v43 = 1024;
-      v44 = v8;
+      v44 = processIdentifier;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientLacksEntitlement", "Client '%{public}@ [%u]' is missing required entitlement", buf, 0x12u);
     }
 
     goto LABEL_9;
   }
 
-  v10 = [(PTPCPassiveCollectionService *)self pidToConnection];
-  v11 = [NSNumber numberWithInt:v8];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  pidToConnection = [(PTPCPassiveCollectionService *)self pidToConnection];
+  v11 = [NSNumber numberWithInt:processIdentifier];
+  v12 = [pidToConnection objectForKeyedSubscript:v11];
   v13 = v12 == 0;
 
   if (!v13)
@@ -97,13 +97,13 @@
     v14 = sub_10000B5D4();
     if (os_signpost_enabled(v14))
     {
-      v15 = [(PTPCPassiveCollectionService *)self pidToConnection];
+      pidToConnection2 = [(PTPCPassiveCollectionService *)self pidToConnection];
       *buf = 138543874;
       v42 = v9;
       v43 = 1024;
-      v44 = v8;
+      v44 = processIdentifier;
       v45 = 1024;
-      v46 = [v15 count];
+      v46 = [pidToConnection2 count];
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PreExistingClientProcessConnection", "Client '%{public}@ [%u]' already has a connection. %u concurrent client(s) at this time.", buf, 0x18u);
     }
 
@@ -114,50 +114,50 @@ LABEL_9:
 
   objc_initWeak(&location, self);
   v19 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PTPCPassiveCollectionConfigurationInterface];
-  [v7 setExportedInterface:v19];
+  [connectionCopy setExportedInterface:v19];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v20 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___PTPCPassiveCollectionClientDelegate];
-  [v7 setRemoteObjectInterface:v20];
+  [connectionCopy setRemoteObjectInterface:v20];
 
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10000B618;
   v36[3] = &unk_100020B00;
   objc_copyWeak(&v38, &location);
-  v39 = v8;
+  v39 = processIdentifier;
   v21 = v9;
   v37 = v21;
-  [v7 setInvalidationHandler:v36];
+  [connectionCopy setInvalidationHandler:v36];
   v28 = _NSConcreteStackBlock;
   v29 = 3221225472;
   v30 = sub_10000B79C;
   v31 = &unk_100020B28;
   objc_copyWeak(&v34, &location);
-  v35 = v8;
+  v35 = processIdentifier;
   v22 = v21;
   v32 = v22;
-  v33 = self;
-  [v7 setInterruptionHandler:&v28];
+  selfCopy = self;
+  [connectionCopy setInterruptionHandler:&v28];
   v23 = [(PTPCPassiveCollectionService *)self pidToConnection:v28];
-  v24 = [NSNumber numberWithInt:v8];
-  [v23 setObject:v7 forKeyedSubscript:v24];
+  v24 = [NSNumber numberWithInt:processIdentifier];
+  [v23 setObject:connectionCopy forKeyedSubscript:v24];
 
   v25 = sub_10000B758();
   if (os_signpost_enabled(v25))
   {
-    v26 = [(PTPCPassiveCollectionService *)self pidToConnection];
-    v27 = [v26 count];
+    pidToConnection3 = [(PTPCPassiveCollectionService *)self pidToConnection];
+    v27 = [pidToConnection3 count];
     *buf = 138543874;
     v42 = v22;
     v43 = 1024;
-    v44 = v8;
+    v44 = processIdentifier;
     v45 = 1024;
     v46 = v27;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v25, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "NewCollectionClientConnection", "Opened new connection for client '%{public}@ [%u]'. %u concurrent client(s) at this time.", buf, 0x18u);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   objc_destroyWeak(&v34);
 
   objc_destroyWeak(&v38);
@@ -176,19 +176,19 @@ LABEL_10:
   passiveCollectionConfig = self->_passiveCollectionConfig;
   self->_passiveCollectionConfig = v3;
 
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
 
-  if (!v6 || v4)
+  if (!passiveCollectionConfig || v4)
   {
     v7 = sub_10000B5D4();
     if (os_signpost_enabled(v7))
     {
-      v8 = [v4 localizedDescription];
-      v9 = v8;
+      localizedDescription = [v4 localizedDescription];
+      v9 = localizedDescription;
       v10 = @"Unknown";
-      if (v8)
+      if (localizedDescription)
       {
-        v10 = v8;
+        v10 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -208,9 +208,9 @@ LABEL_10:
       v15 = self->_passiveCollectionConfig;
       self->_passiveCollectionConfig = v13;
 
-      v16 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+      passiveCollectionConfig2 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
 
-      if (v16)
+      if (passiveCollectionConfig2)
       {
 
         return;
@@ -244,9 +244,9 @@ LABEL_10:
   instrumentationConfig = self->_instrumentationConfig;
   self->_instrumentationConfig = v3;
 
-  v6 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
 
-  if (!v6)
+  if (!instrumentationConfig)
   {
     v7 = sub_10000B5D4();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -277,13 +277,13 @@ LABEL_10:
 - (void)_registerForMetricMonitorTimeout
 {
   objc_initWeak(&location, self);
-  v3 = [(PTPCPassiveCollectionService *)self connectionQueue];
+  connectionQueue = [(PTPCPassiveCollectionService *)self connectionQueue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10000BD40;
   handler[3] = &unk_100020B50;
   objc_copyWeak(&v7, &location);
-  xpc_set_event_stream_handler("com.apple.notifyd.matching", v3, handler);
+  xpc_set_event_stream_handler("com.apple.notifyd.matching", connectionQueue, handler);
 
   v4 = sub_10000B758();
   if (os_signpost_enabled(v4))
@@ -338,154 +338,154 @@ LABEL_10:
   return v2;
 }
 
-- (void)getCollectMSS:(id)a3
+- (void)getCollectMSS:(id)s
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectMSS]);
+  sCopy = s;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(s + 2))(sCopy, [passiveCollectionConfig collectMSS]);
 }
 
-- (void)resetCollectMSS:(id)a3
+- (void)resetCollectMSS:(id)s
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectMSS];
+  sCopy = s;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectMSS];
 
-  v5[2](v5, 0);
+  sCopy[2](sCopy, 0);
 }
 
-- (void)getCollectAppInFocus:(id)a3
+- (void)getCollectAppInFocus:(id)focus
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectAppInFocus]);
+  focusCopy = focus;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(focus + 2))(focusCopy, [passiveCollectionConfig collectAppInFocus]);
 }
 
-- (void)resetCollectAppInFocus:(id)a3
+- (void)resetCollectAppInFocus:(id)focus
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectAppInFocus];
+  focusCopy = focus;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectAppInFocus];
 
-  v5[2](v5, 0);
+  focusCopy[2](focusCopy, 0);
 }
 
-- (void)getCollectLoggingPerfPowerMetrics:(id)a3
+- (void)getCollectLoggingPerfPowerMetrics:(id)metrics
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectLoggingPerfPowerMetrics]);
+  metricsCopy = metrics;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(metrics + 2))(metricsCopy, [passiveCollectionConfig collectLoggingPerfPowerMetrics]);
 }
 
-- (void)resetCollectLoggingPerfPowerMetrics:(id)a3
+- (void)resetCollectLoggingPerfPowerMetrics:(id)metrics
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectLoggingPerfPowerMetrics];
+  metricsCopy = metrics;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectLoggingPerfPowerMetrics];
 
-  v5[2](v5, 0);
+  metricsCopy[2](metricsCopy, 0);
 }
 
-- (void)getCollectLoggingHangs:(id)a3
+- (void)getCollectLoggingHangs:(id)hangs
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectLoggingHangs]);
+  hangsCopy = hangs;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(hangs + 2))(hangsCopy, [passiveCollectionConfig collectLoggingHangs]);
 }
 
-- (void)resetCollectLoggingHangs:(id)a3
+- (void)resetCollectLoggingHangs:(id)hangs
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectLoggingHangs];
+  hangsCopy = hangs;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectLoggingHangs];
 
-  v5[2](v5, 0);
+  hangsCopy[2](hangsCopy, 0);
 }
 
-- (void)getCollectLoggingUserInteraction:(id)a3
+- (void)getCollectLoggingUserInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectLoggingUserInteraction]);
+  interactionCopy = interaction;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(interaction + 2))(interactionCopy, [passiveCollectionConfig collectLoggingUserInteraction]);
 }
 
-- (void)resetCollectLoggingUserInteraction:(id)a3
+- (void)resetCollectLoggingUserInteraction:(id)interaction
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectLoggingUserInteraction];
+  interactionCopy = interaction;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectLoggingUserInteraction];
 
-  v5[2](v5, 0);
+  interactionCopy[2](interactionCopy, 0);
 }
 
-- (void)getCollectLoggingMetalFramePacing:(id)a3
+- (void)getCollectLoggingMetalFramePacing:(id)pacing
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectLoggingMetalFramePacing]);
+  pacingCopy = pacing;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(pacing + 2))(pacingCopy, [passiveCollectionConfig collectLoggingMetalFramePacing]);
 }
 
-- (void)resetCollectLoggingMetalFramePacing:(id)a3
+- (void)resetCollectLoggingMetalFramePacing:(id)pacing
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectLoggingMetalFramePacing];
+  pacingCopy = pacing;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectLoggingMetalFramePacing];
 
-  v5[2](v5, 0);
+  pacingCopy[2](pacingCopy, 0);
 }
 
-- (void)getCollectLoggingScrolling:(id)a3
+- (void)getCollectLoggingScrolling:(id)scrolling
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectLoggingScrolling]);
+  scrollingCopy = scrolling;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(scrolling + 2))(scrollingCopy, [passiveCollectionConfig collectLoggingScrolling]);
 }
 
-- (void)resetCollectLoggingScrolling:(id)a3
+- (void)resetCollectLoggingScrolling:(id)scrolling
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectLoggingScrolling];
+  scrollingCopy = scrolling;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectLoggingScrolling];
 
-  v5[2](v5, 0);
+  scrollingCopy[2](scrollingCopy, 0);
 }
 
-- (void)getCollectLoggingAppLaunch:(id)a3
+- (void)getCollectLoggingAppLaunch:(id)launch
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  (*(a3 + 2))(v5, [v6 collectLoggingAppLaunch]);
+  launchCopy = launch;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  (*(launch + 2))(launchCopy, [passiveCollectionConfig collectLoggingAppLaunch]);
 }
 
-- (void)resetCollectLoggingAppLaunch:(id)a3
+- (void)resetCollectLoggingAppLaunch:(id)launch
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectLoggingAppLaunch];
+  launchCopy = launch;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectLoggingAppLaunch];
 
-  v5[2](v5, 0);
+  launchCopy[2](launchCopy, 0);
 }
 
-- (void)resetSettings:(id)a3
+- (void)resetSettings:(id)settings
 {
-  v7 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetSettings];
+  settingsCopy = settings;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetSettings];
 
-  v5 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v6 = [v5 resetPersistedDefaultsAndRestoreDefaultInstrumentationSettings];
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  resetPersistedDefaultsAndRestoreDefaultInstrumentationSettings = [instrumentationConfig resetPersistedDefaultsAndRestoreDefaultInstrumentationSettings];
 
-  v7[2](v7, 0);
+  settingsCopy[2](settingsCopy, 0);
 }
 
-- (void)_generateCoreAnalyticsTelemetry:(id)a3 collectionEndDate:(id)a4 traceWindowStartDate:(id)a5 traceWindowEndDate:(id)a6 traceCount:(unint64_t)a7 totalTraceSizeBytes:(unint64_t)a8 archiveSizeBytes:(id)a9 collectionType:(unsigned __int8)a10
+- (void)_generateCoreAnalyticsTelemetry:(id)telemetry collectionEndDate:(id)date traceWindowStartDate:(id)startDate traceWindowEndDate:(id)endDate traceCount:(unint64_t)count totalTraceSizeBytes:(unint64_t)bytes archiveSizeBytes:(id)sizeBytes collectionType:(unsigned __int8)self0
 {
-  v17 = a9;
-  v18 = a6;
-  v19 = a5;
-  [a4 timeIntervalSinceDate:a3];
+  sizeBytesCopy = sizeBytes;
+  endDateCopy = endDate;
+  startDateCopy = startDate;
+  [date timeIntervalSinceDate:telemetry];
   v21 = v20;
-  [v18 timeIntervalSinceDate:v19];
+  [endDateCopy timeIntervalSinceDate:startDateCopy];
   v23 = v22;
 
   v49[0] = @"TimeToCollectSeconds";
@@ -495,25 +495,25 @@ LABEL_10:
   v25 = [NSNumber numberWithDouble:v23];
   v50[1] = v25;
   v49[2] = @"TraceCount";
-  v26 = [NSNumber numberWithUnsignedLongLong:a7];
+  v26 = [NSNumber numberWithUnsignedLongLong:count];
   v50[2] = v26;
   v49[3] = @"TotalTraceBytes";
-  v27 = [NSNumber numberWithUnsignedLongLong:a8];
+  v27 = [NSNumber numberWithUnsignedLongLong:bytes];
   v50[3] = v27;
   v49[4] = @"CollectionType";
-  v28 = [NSNumber numberWithUnsignedChar:a10];
+  v28 = [NSNumber numberWithUnsignedChar:type];
   v50[4] = v28;
   v29 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:5];
   v30 = [v29 mutableCopy];
 
-  if (v17)
+  if (sizeBytesCopy)
   {
-    [v30 setObject:v17 forKeyedSubscript:@"ArchiveSizeBytes"];
+    [v30 setObject:sizeBytesCopy forKeyedSubscript:@"ArchiveSizeBytes"];
   }
 
-  v31 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
   v42 = 0;
-  v32 = [v31 perDrawableEnabled:&v42];
+  v32 = [instrumentationConfig perDrawableEnabled:&v42];
   v33 = v42;
 
   if (v32)
@@ -521,9 +521,9 @@ LABEL_10:
     [v30 setObject:v32 forKeyedSubscript:@"MetalPerDrawableEnabled"];
   }
 
-  v34 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  instrumentationConfig2 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
   v41 = 0;
-  v35 = [v34 mssPMICycleInterval:&v41];
+  v35 = [instrumentationConfig2 mssPMICycleInterval:&v41];
   v36 = v41;
 
   if (v35)
@@ -534,21 +534,21 @@ LABEL_10:
   v37 = sub_10000CFA4();
   if (os_signpost_enabled(v37))
   {
-    v38 = [(PTPCPassiveCollectionService *)self generateCoreAnalyticsTelemetry];
+    generateCoreAnalyticsTelemetry = [(PTPCPassiveCollectionService *)self generateCoreAnalyticsTelemetry];
     v39 = @"NO";
-    if (v38)
+    if (generateCoreAnalyticsTelemetry)
     {
       v39 = @"YES";
     }
 
-    if ((a10 - 1) > 3u)
+    if ((type - 1) > 3u)
     {
       v40 = @"Unknown";
     }
 
     else
     {
-      v40 = *(&off_100020C40 + (a10 - 1));
+      v40 = *(&off_100020C40 + (type - 1));
     }
 
     *buf = 138543874;
@@ -566,34 +566,34 @@ LABEL_10:
   }
 }
 
-- (void)_collectionQueue_collectWithStartDate:(id)a3 endDate:(id)a4 traceNamePrefix:(id)a5 collectionType:(unsigned __int8)a6 triggerUserNotification:(BOOL)a7 collectionConfig:(id)a8 clearPresetSettings:(BOOL)a9 callback:(id)a10
+- (void)_collectionQueue_collectWithStartDate:(id)date endDate:(id)endDate traceNamePrefix:(id)prefix collectionType:(unsigned __int8)type triggerUserNotification:(BOOL)notification collectionConfig:(id)config clearPresetSettings:(BOOL)settings callback:(id)self0
 {
-  v142 = a7;
-  v144 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v154 = a8;
-  v17 = a10;
+  notificationCopy = notification;
+  typeCopy = type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  prefixCopy = prefix;
+  configCopy = config;
+  callbackCopy = callback;
   v148 = os_transaction_create();
-  if (!v16)
+  if (!prefixCopy)
   {
-    v16 = [v154 name];
+    prefixCopy = [configCopy name];
   }
 
-  v153 = self;
+  selfCopy = self;
   [(PTPCPassiveCollectionService *)self _confirmTraceDirectoryExists];
-  v18 = sub_10000AB30(v14);
-  v19 = sub_10000AB30(v15);
-  v151 = v16;
-  v20 = [NSString stringWithFormat:@"%@_%@_to_%@", v16, v18, v19];
+  v18 = sub_10000AB30(dateCopy);
+  v19 = sub_10000AB30(endDateCopy);
+  v151 = prefixCopy;
+  v20 = [NSString stringWithFormat:@"%@_%@_to_%@", prefixCopy, v18, v19];
 
   v21 = sub_10000B758();
   v22 = v21;
   v23 = qword_100025A60;
   if ((qword_100025A60 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
   {
-    if (v142)
+    if (notificationCopy)
     {
       v24 = @"Notification";
     }
@@ -603,13 +603,13 @@ LABEL_10:
       v24 = @"Handle";
     }
 
-    v25 = [v154 debugDescription];
+    v25 = [configCopy debugDescription];
     *buf = 138544386;
     v170 = v20;
     v171 = 2114;
-    v172 = v14;
+    v172 = dateCopy;
     v173 = 2114;
-    v174 = v15;
+    v174 = endDateCopy;
     v175 = 2114;
     v176 = v24;
     v177 = 2114;
@@ -624,30 +624,30 @@ LABEL_10:
 
   [NSURL fileURLWithPath:v28];
   v150 = v147 = v20;
-  v29 = [[_TtC20ptpassivecollectiond20PTPCPassiveCollector alloc] initWithConfig:v154 traceNamePrefix:v20 outputDirectory:v150];
+  v29 = [[_TtC20ptpassivecollectiond20PTPCPassiveCollector alloc] initWithConfig:configCopy traceNamePrefix:v20 outputDirectory:v150];
   v166 = 0;
-  v30 = v14;
-  v31 = [(PTPCPassiveCollector *)v29 collectWithStartDate:v14 endDate:v15 error:&v166];
+  v30 = dateCopy;
+  v31 = [(PTPCPassiveCollector *)v29 collectWithStartDate:dateCopy endDate:endDateCopy error:&v166];
   v32 = v166;
-  v33 = v15;
-  v149 = v17;
+  v33 = endDateCopy;
+  v149 = callbackCopy;
   v145 = v31;
   v146 = v29;
   if (v32)
   {
     v34 = v32;
     v35 = v151;
-    if (a9)
+    if (settings)
     {
-      v36 = [(PTPCPassiveCollectionService *)v153 instrumentationConfig];
-      v37 = [v36 clearPresetSettings];
+      instrumentationConfig = [(PTPCPassiveCollectionService *)selfCopy instrumentationConfig];
+      clearPresetSettings = [instrumentationConfig clearPresetSettings];
     }
 
     v38 = v30;
-    [(PTPCPassiveCollectionService *)v153 _generateCollectionErrorCoreAnalyticsTelemetry:2 traceWindowStartDate:v30 traceWindowEndDate:v33 collectionType:v144];
-    if (v17)
+    [(PTPCPassiveCollectionService *)selfCopy _generateCollectionErrorCoreAnalyticsTelemetry:2 traceWindowStartDate:v30 traceWindowEndDate:v33 collectionType:typeCopy];
+    if (callbackCopy)
     {
-      (v17[2])(v17, 0, 0, v34);
+      (callbackCopy[2])(callbackCopy, 0, 0, v34);
     }
 
     v39 = sub_10000B758();
@@ -656,12 +656,12 @@ LABEL_10:
     v42 = v152;
     if ((qword_100025A60 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
     {
-      v43 = [(__CFString *)v34 localizedDescription];
-      v44 = v43;
+      localizedDescription = [(__CFString *)v34 localizedDescription];
+      v44 = localizedDescription;
       v45 = @"Unknown";
-      if (v43)
+      if (localizedDescription)
       {
-        v45 = v43;
+        v45 = localizedDescription;
       }
 
       *buf = 138543362;
@@ -678,7 +678,7 @@ LABEL_10:
   if ([v31 count])
   {
     v141 = v28;
-    v140 = v15;
+    v140 = endDateCopy;
     v138 = v30;
     v164 = 0u;
     v165 = 0u;
@@ -702,11 +702,11 @@ LABEL_10:
           }
 
           v52 = *(*(&v162 + 1) + 8 * i);
-          v53 = [v47[192] defaultManager];
+          defaultManager = [v47[192] defaultManager];
           v161 = 0;
-          v54 = [v53 attributesOfItemAtPath:v52 error:&v161];
+          v54 = [defaultManager attributesOfItemAtPath:v52 error:&v161];
           v55 = v161;
-          v56 = [v54 fileSize];
+          fileSize = [v54 fileSize];
 
           v57 = sub_10000B758();
           if (os_signpost_enabled(v57))
@@ -714,13 +714,13 @@ LABEL_10:
             *buf = 138543874;
             v170 = v52;
             v171 = 2050;
-            v172 = v56;
+            v172 = fileSize;
             v173 = 2114;
             v174 = v55;
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v57, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CollectedTrace", "Collected trace: '%{public}@', %{public}llu bytes (size error: %{public}@", buf, 0x20u);
           }
 
-          v49 += v56;
+          v49 += fileSize;
           v47 = &AnalyticsSendEvent_ptr;
         }
 
@@ -735,7 +735,7 @@ LABEL_10:
       v49 = 0;
     }
 
-    if (v142)
+    if (notificationCopy)
     {
       v66 = @"/var/mobile/Library/Logs/CrashReporter/DiagnosticLogs/PerformanceTraces/";
     }
@@ -748,8 +748,8 @@ LABEL_10:
     v35 = v151;
     v67 = v141;
     v34 = v66;
-    v68 = [v67 lastPathComponent];
-    v69 = [NSString stringWithFormat:@"%@.aar", v68];
+    lastPathComponent = [v67 lastPathComponent];
+    v69 = [NSString stringWithFormat:@"%@.aar", lastPathComponent];
     v70 = [(__CFString *)v34 stringByAppendingPathComponent:v69];
 
     v167 = 0;
@@ -762,14 +762,14 @@ LABEL_10:
       v73 = sub_10000B5D4();
       if (os_signpost_enabled(v73))
       {
-        v74 = [v72 localizedDescription];
-        v75 = v74;
+        localizedDescription2 = [v72 localizedDescription];
+        v75 = localizedDescription2;
         v76 = @"Unknown";
         *buf = 138543874;
         v170 = v155;
-        if (v74)
+        if (localizedDescription2)
         {
-          v76 = v74;
+          v76 = localizedDescription2;
         }
 
         v171 = 2114;
@@ -787,9 +787,9 @@ LABEL_10:
       v40 = v70;
     }
 
-    v77 = [v47[192] defaultManager];
+    defaultManager2 = [v47[192] defaultManager];
     v160 = 0;
-    v78 = [v77 removeItemAtURL:v150 error:&v160];
+    v78 = [defaultManager2 removeItemAtURL:v150 error:&v160];
     v79 = v160;
 
     if (v78)
@@ -801,9 +801,9 @@ LABEL_10:
         goto LABEL_60;
       }
 
-      v81 = [v150 path];
+      path = [v150 path];
       *buf = 138543362;
-      v170 = v81;
+      v170 = path;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v80, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TraceFileCleanup", "Cleaned up '%{public}@'", buf, 0xCu);
     }
 
@@ -816,17 +816,17 @@ LABEL_10:
         goto LABEL_60;
       }
 
-      v81 = [v150 path];
-      v82 = [v79 localizedDescription];
-      v83 = v82;
+      path = [v150 path];
+      localizedDescription3 = [v79 localizedDescription];
+      v83 = localizedDescription3;
       v84 = @"Unknown";
-      if (v82)
+      if (localizedDescription3)
       {
-        v84 = v82;
+        v84 = localizedDescription3;
       }
 
       *buf = 138543618;
-      v170 = v81;
+      v170 = path;
       v171 = 2112;
       v172 = v84;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v80, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TraceFileCleanupFailure", "Failed to cleanup '%{public}@' due to error: %@", buf, 0x16u);
@@ -861,7 +861,7 @@ LABEL_60:
       v28 = v141;
     }
 
-    if (v142)
+    if (notificationCopy)
     {
       v159 = 0;
       v88 = sub_10000175C(v40, &v159);
@@ -871,18 +871,18 @@ LABEL_60:
         v90 = 0;
         v91 = 0;
         v156 = 0;
-        v92 = a9;
+        settingsCopy2 = settings;
         v93 = v139;
         v94 = &AnalyticsSendEvent_ptr;
 LABEL_112:
 
-        v130 = [v94[204] date];
-        LOBYTE(v137) = v144;
-        -[PTPCPassiveCollectionService _generateCoreAnalyticsTelemetry:collectionEndDate:traceWindowStartDate:traceWindowEndDate:traceCount:totalTraceSizeBytes:archiveSizeBytes:collectionType:](v153, "_generateCoreAnalyticsTelemetry:collectionEndDate:traceWindowStartDate:traceWindowEndDate:traceCount:totalTraceSizeBytes:archiveSizeBytes:collectionType:", v152, v130, v38, v140, [obj count], v49, v90, v137);
-        if (v92)
+        date = [v94[204] date];
+        LOBYTE(v137) = typeCopy;
+        -[PTPCPassiveCollectionService _generateCoreAnalyticsTelemetry:collectionEndDate:traceWindowStartDate:traceWindowEndDate:traceCount:totalTraceSizeBytes:archiveSizeBytes:collectionType:](selfCopy, "_generateCoreAnalyticsTelemetry:collectionEndDate:traceWindowStartDate:traceWindowEndDate:traceCount:totalTraceSizeBytes:archiveSizeBytes:collectionType:", v152, date, v38, v140, [obj count], v49, v90, v137);
+        if (settingsCopy2)
         {
-          v131 = [(PTPCPassiveCollectionService *)v153 instrumentationConfig];
-          v132 = [v131 clearPresetSettings];
+          instrumentationConfig2 = [(PTPCPassiveCollectionService *)selfCopy instrumentationConfig];
+          clearPresetSettings2 = [instrumentationConfig2 clearPresetSettings];
         }
 
         if (v149)
@@ -902,8 +902,8 @@ LABEL_112:
 
         sub_100002698();
         v135 = dispatch_time(0, 10000000000);
-        v136 = [(PTPCPassiveCollectionService *)v153 connectionQueue];
-        dispatch_after(v135, v136, &stru_100020B70);
+        connectionQueue = [(PTPCPassiveCollectionService *)selfCopy connectionQueue];
+        dispatch_after(v135, connectionQueue, &stru_100020B70);
 
         v35 = v151;
         v42 = v152;
@@ -920,12 +920,12 @@ LABEL_122:
       v94 = &AnalyticsSendEvent_ptr;
       if (os_signpost_enabled(v101))
       {
-        v102 = [v89 localizedDescription];
-        v103 = v102;
+        localizedDescription4 = [v89 localizedDescription];
+        v103 = localizedDescription4;
         v104 = @"Unknown";
-        if (v102)
+        if (localizedDescription4)
         {
-          v104 = v102;
+          v104 = localizedDescription4;
         }
 
         *buf = 138543618;
@@ -956,13 +956,13 @@ LABEL_122:
 
         v156 = [NSError passiveTraceError:2 description:@"Archiving collected trace files failed"];
         v33 = v140;
-        if (a9)
+        if (settings)
         {
-          v106 = [(PTPCPassiveCollectionService *)v153 instrumentationConfig];
-          v107 = [v106 clearPresetSettings];
+          instrumentationConfig3 = [(PTPCPassiveCollectionService *)selfCopy instrumentationConfig];
+          clearPresetSettings3 = [instrumentationConfig3 clearPresetSettings];
         }
 
-        [(PTPCPassiveCollectionService *)v153 _generateCollectionErrorCoreAnalyticsTelemetry:4 traceWindowStartDate:v38 traceWindowEndDate:v140 collectionType:v144];
+        [(PTPCPassiveCollectionService *)selfCopy _generateCollectionErrorCoreAnalyticsTelemetry:4 traceWindowStartDate:v38 traceWindowEndDate:v140 collectionType:typeCopy];
         if (v149)
         {
           v149[2]();
@@ -976,12 +976,12 @@ LABEL_122:
           goto LABEL_121;
         }
 
-        v110 = [v156 localizedDescription];
-        v111 = v110;
+        localizedDescription5 = [v156 localizedDescription];
+        v111 = localizedDescription5;
         v112 = @"Unknown";
-        if (v110)
+        if (localizedDescription5)
         {
-          v112 = v110;
+          v112 = localizedDescription5;
         }
 
         *buf = 138543362;
@@ -1021,12 +1021,12 @@ LABEL_122:
           v117 = sub_10000B5D4();
           if (os_signpost_enabled(v117))
           {
-            v118 = [v116 localizedDescription];
-            v119 = v118;
+            localizedDescription6 = [v116 localizedDescription];
+            v119 = localizedDescription6;
             v120 = @"Unknown";
-            if (v118)
+            if (localizedDescription6)
             {
-              v120 = v118;
+              v120 = localizedDescription6;
             }
 
             *buf = 138543618;
@@ -1038,13 +1038,13 @@ LABEL_122:
         }
 
         v121 = [NSError passiveTraceError:2 description:@"Failed to issue sandbox extension"];
-        if (a9)
+        if (settings)
         {
-          v122 = [(PTPCPassiveCollectionService *)v153 instrumentationConfig];
-          v123 = [v122 clearPresetSettings];
+          instrumentationConfig4 = [(PTPCPassiveCollectionService *)selfCopy instrumentationConfig];
+          clearPresetSettings4 = [instrumentationConfig4 clearPresetSettings];
         }
 
-        [(PTPCPassiveCollectionService *)v153 _generateCollectionErrorCoreAnalyticsTelemetry:5 traceWindowStartDate:v38 traceWindowEndDate:v140 collectionType:v144];
+        [(PTPCPassiveCollectionService *)selfCopy _generateCollectionErrorCoreAnalyticsTelemetry:5 traceWindowStartDate:v38 traceWindowEndDate:v140 collectionType:typeCopy];
         if (v149)
         {
           v149[2]();
@@ -1055,12 +1055,12 @@ LABEL_122:
         v126 = qword_100025A60;
         if ((qword_100025A60 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v124))
         {
-          v127 = [v121 localizedDescription];
-          v128 = v127;
+          localizedDescription7 = [v121 localizedDescription];
+          v128 = localizedDescription7;
           v129 = @"Unknown";
-          if (v127)
+          if (localizedDescription7)
           {
-            v129 = v127;
+            v129 = localizedDescription7;
           }
 
           *buf = 138543362;
@@ -1099,24 +1099,24 @@ LABEL_122:
       v156 = v100;
     }
 
-    v92 = a9;
+    settingsCopy2 = settings;
     v93 = v139;
     goto LABEL_112;
   }
 
   v34 = [NSError passiveTraceError:2 description:@"Failed to collect any trace files due to unknown error"];
   v38 = v30;
-  if (a9)
+  if (settings)
   {
-    v58 = [(PTPCPassiveCollectionService *)v153 instrumentationConfig];
-    v59 = [v58 clearPresetSettings];
+    instrumentationConfig5 = [(PTPCPassiveCollectionService *)selfCopy instrumentationConfig];
+    clearPresetSettings5 = [instrumentationConfig5 clearPresetSettings];
   }
 
-  [(PTPCPassiveCollectionService *)v153 _generateCollectionErrorCoreAnalyticsTelemetry:3 traceWindowStartDate:v30 traceWindowEndDate:v33 collectionType:v144];
+  [(PTPCPassiveCollectionService *)selfCopy _generateCollectionErrorCoreAnalyticsTelemetry:3 traceWindowStartDate:v30 traceWindowEndDate:v33 collectionType:typeCopy];
   v35 = v151;
-  if (v17)
+  if (callbackCopy)
   {
-    (v17[2])(v17, 0, 0, v34);
+    (callbackCopy[2])(callbackCopy, 0, 0, v34);
   }
 
   v60 = sub_10000B758();
@@ -1124,12 +1124,12 @@ LABEL_122:
   v61 = qword_100025A60;
   if ((qword_100025A60 - 1) <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v60))
   {
-    v62 = [(__CFString *)v34 localizedDescription];
-    v63 = v62;
+    localizedDescription8 = [(__CFString *)v34 localizedDescription];
+    v63 = localizedDescription8;
     v64 = @"Unknown";
-    if (v62)
+    if (localizedDescription8)
     {
-      v64 = v62;
+      v64 = localizedDescription8;
     }
 
     *buf = 138543362;
@@ -1144,41 +1144,41 @@ LABEL_122:
 LABEL_123:
 }
 
-- (void)collectWithStartDate:(id)a3 endDate:(id)a4 traceNamePrefix:(id)a5 triggerUserNotification:(BOOL)a6 callback:(id)a7
+- (void)collectWithStartDate:(id)date endDate:(id)endDate traceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification callback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(PTPCPassiveCollectionService *)self collectionQueue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  prefixCopy = prefix;
+  callbackCopy = callback;
+  collectionQueue = [(PTPCPassiveCollectionService *)self collectionQueue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10000E5F8;
   v21[3] = &unk_100020B98;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v26 = a6;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_async(v16, v21);
+  v22 = dateCopy;
+  v23 = endDateCopy;
+  v24 = prefixCopy;
+  notificationCopy = notification;
+  v25 = callbackCopy;
+  v17 = callbackCopy;
+  v18 = prefixCopy;
+  v19 = endDateCopy;
+  v20 = dateCopy;
+  dispatch_async(collectionQueue, v21);
 }
 
-- (void)collectLookbackIntervalWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 callback:(id)a5
+- (void)collectLookbackIntervalWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification callback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v10 collectionLookbackInterval];
+  prefixCopy = prefix;
+  callbackCopy = callback;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig collectionLookbackInterval];
   v12 = v11;
 
   v13 = [NSDate dateWithTimeIntervalSinceNow:-v12];
   v14 = +[NSDate date];
-  v15 = [(PTPCPassiveCollectionService *)self collectionQueue];
+  collectionQueue = [(PTPCPassiveCollectionService *)self collectionQueue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000E7F4;
@@ -1186,35 +1186,35 @@ LABEL_123:
   v20[4] = self;
   v21 = v13;
   v22 = v14;
-  v23 = v8;
-  v25 = a4;
-  v24 = v9;
-  v16 = v9;
-  v17 = v8;
+  v23 = prefixCopy;
+  notificationCopy = notification;
+  v24 = callbackCopy;
+  v16 = callbackCopy;
+  v17 = prefixCopy;
   v18 = v14;
   v19 = v13;
-  dispatch_async(v15, v20);
+  dispatch_async(collectionQueue, v20);
 }
 
-- (void)_collectAndClearCurrentSettingWithTraceNamePrefix:(id)a3 triggerUserNotification:(BOOL)a4 callback:(id)a5
+- (void)_collectAndClearCurrentSettingWithTraceNamePrefix:(id)prefix triggerUserNotification:(BOOL)notification callback:(id)callback
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  v11 = [v10 imitationRecordStartDate];
+  prefixCopy = prefix;
+  callbackCopy = callback;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  imitationRecordStartDate = [passiveCollectionConfig imitationRecordStartDate];
 
-  v12 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v12 setImitationRecordStartDate:0];
+  passiveCollectionConfig2 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig2 setImitationRecordStartDate:0];
 
-  v13 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v14 = [v13 currentPresetSetting];
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  currentPresetSetting = [instrumentationConfig currentPresetSetting];
 
-  if (v14)
+  if (currentPresetSetting)
   {
-    v15 = sub_1000041C0(v14);
-    if (v15 && v11)
+    v15 = sub_1000041C0(currentPresetSetting);
+    if (v15 && imitationRecordStartDate)
     {
-      if (v14 == 1)
+      if (currentPresetSetting == 1)
       {
         v16 = 3;
       }
@@ -1225,22 +1225,22 @@ LABEL_123:
       }
 
       v17 = +[NSDate date];
-      v18 = [(PTPCPassiveCollectionService *)self collectionQueue];
+      collectionQueue = [(PTPCPassiveCollectionService *)self collectionQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000EB00;
       block[3] = &unk_100020BC0;
       block[4] = self;
-      v25 = v11;
+      v25 = imitationRecordStartDate;
       v26 = v17;
       v30 = v16;
-      v31 = a4;
-      v27 = v8;
+      notificationCopy = notification;
+      v27 = prefixCopy;
       v28 = v15;
-      v29 = v9;
+      v29 = callbackCopy;
       v19 = v15;
       v20 = v17;
-      dispatch_async(v18, block);
+      dispatch_async(collectionQueue, block);
     }
 
     else
@@ -1252,204 +1252,204 @@ LABEL_123:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TraceCollectionFromRecordingSessionFailed", "", buf, 2u);
       }
 
-      v22 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-      v23 = [v22 clearPresetSettings];
+      instrumentationConfig2 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+      clearPresetSettings = [instrumentationConfig2 clearPresetSettings];
 
       v20 = [NSError passiveTraceError:0 description:@"Collection failed due to unknown internal error"];
-      (*(v9 + 2))(v9, 0, 0, v20);
+      (*(callbackCopy + 2))(callbackCopy, 0, 0, v20);
     }
   }
 }
 
-- (void)getCollectLookbackInterval:(id)a3
+- (void)getCollectLookbackInterval:(id)interval
 {
-  v5 = a3;
-  v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v6 collectionLookbackInterval];
-  (*(a3 + 2))(v5);
+  intervalCopy = interval;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig collectionLookbackInterval];
+  (*(interval + 2))(intervalCopy);
 }
 
-- (void)setCollectLookbackInterval:(double)a3 callback:(id)a4
+- (void)setCollectLookbackInterval:(double)interval callback:(id)callback
 {
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
-    v7 = a4;
-    v9 = [[NSString alloc] initWithFormat:@"Invalid lookback interval: %f seconds. Must be > 0", *&a3];
+    callbackCopy = callback;
+    callbackCopy2 = [[NSString alloc] initWithFormat:@"Invalid lookback interval: %f seconds. Must be > 0", *&interval];
     v8 = [NSError passiveTraceError:5 description:?];
-    v7[2](v7, v8);
+    callbackCopy[2](callbackCopy, v8);
   }
 
   else
   {
-    v9 = a4;
-    v6 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-    [v6 setCollectionLookbackInterval:a3];
+    callbackCopy2 = callback;
+    passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+    [passiveCollectionConfig setCollectionLookbackInterval:interval];
 
-    v9[2](v9, 0);
+    callbackCopy2[2](callbackCopy2, 0);
   }
 }
 
-- (void)resetCollectLookbackInterval:(id)a3
+- (void)resetCollectLookbackInterval:(id)interval
 {
-  v5 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v4 resetCollectionLookbackInterval];
+  intervalCopy = interval;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig resetCollectionLookbackInterval];
 
-  v5[2](v5, 0);
+  intervalCopy[2](intervalCopy, 0);
 }
 
-- (void)getImitationRecordStartDate:(id)a3
+- (void)getImitationRecordStartDate:(id)date
 {
-  v5 = a3;
-  v7 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  v6 = [v7 imitationRecordStartDate];
-  (*(a3 + 2))(v5, v6);
+  dateCopy = date;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  imitationRecordStartDate = [passiveCollectionConfig imitationRecordStartDate];
+  (*(date + 2))(dateCopy, imitationRecordStartDate);
 }
 
-- (void)setImitationRecordStartDate:(id)a3 callback:(id)a4
+- (void)setImitationRecordStartDate:(id)date callback:(id)callback
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v7 setImitationRecordStartDate:v6];
+  callbackCopy = callback;
+  dateCopy = date;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig setImitationRecordStartDate:dateCopy];
 
-  v8[2](v8, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
-- (void)getCurrentPresetSettings:(id)a3
+- (void)getCurrentPresetSettings:(id)settings
 {
-  v6 = a3;
-  v4 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v5 = [v4 currentPresetSetting];
+  settingsCopy = settings;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  currentPresetSetting = [instrumentationConfig currentPresetSetting];
 
-  if (v5)
+  if (currentPresetSetting)
   {
-    v5 = [NSNumber numberWithUnsignedInteger:v5];
+    currentPresetSetting = [NSNumber numberWithUnsignedInteger:currentPresetSetting];
   }
 
-  v6[2](v6, v5, 0);
+  settingsCopy[2](settingsCopy, currentPresetSetting, 0);
 }
 
-- (void)getInstrumentationConfigIsLocked:(id)a3
+- (void)getInstrumentationConfigIsLocked:(id)locked
 {
-  v5 = a3;
-  v7 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 instrumentationSettingsAreLocked]);
-  (*(a3 + 2))(v5, v6, 0);
+  lockedCopy = locked;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [instrumentationConfig instrumentationSettingsAreLocked]);
+  (*(locked + 2))(lockedCopy, v6, 0);
 }
 
-- (void)applyPresetSettings:(unint64_t)a3 callback:(id)a4
+- (void)applyPresetSettings:(unint64_t)settings callback:(id)callback
 {
-  v10 = a4;
-  v6 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v7 = [v6 applyPresetSettings:a3];
+  callbackCopy = callback;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  v7 = [instrumentationConfig applyPresetSettings:settings];
 
   if (!v7)
   {
     v8 = +[NSDate date];
-    v9 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-    [v9 setImitationRecordStartDate:v8];
+    passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+    [passiveCollectionConfig setImitationRecordStartDate:v8];
   }
 
-  v10[2](v10, v7);
+  callbackCopy[2](callbackCopy, v7);
 }
 
-- (void)clearCurrentPresetSettings:(id)a3
+- (void)clearCurrentPresetSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
-  [v5 setImitationRecordStartDate:0];
+  settingsCopy = settings;
+  passiveCollectionConfig = [(PTPCPassiveCollectionService *)self passiveCollectionConfig];
+  [passiveCollectionConfig setImitationRecordStartDate:0];
 
-  v7 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v6 = [v7 clearPresetSettings];
-  v4[2](v4, v6);
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  clearPresetSettings = [instrumentationConfig clearPresetSettings];
+  settingsCopy[2](settingsCopy, clearPresetSettings);
 }
 
-- (void)getMssPmiCycleInterval:(id)a3
+- (void)getMssPmiCycleInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  intervalCopy = interval;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
   v8 = 0;
-  v6 = [v5 mssPMICycleInterval:&v8];
+  v6 = [instrumentationConfig mssPMICycleInterval:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  intervalCopy[2](intervalCopy, v6, v7);
 }
 
-- (void)setMssPmiCycleInterval:(id)a3 callback:(id)a4
+- (void)setMssPmiCycleInterval:(id)interval callback:(id)callback
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v9 = [v10 setMssPMICycleInterval:v8];
+  callbackCopy = callback;
+  intervalCopy = interval;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  v9 = [instrumentationConfig setMssPMICycleInterval:intervalCopy];
 
-  (*(a4 + 2))(v7, v9);
+  (*(callback + 2))(callbackCopy, v9);
 }
 
-- (void)getMetalPerDrawableSignpostsEnabled:(id)a3
+- (void)getMetalPerDrawableSignpostsEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  enabledCopy = enabled;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
   v8 = 0;
-  v6 = [v5 perDrawableEnabled:&v8];
+  v6 = [instrumentationConfig perDrawableEnabled:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  enabledCopy[2](enabledCopy, v6, v7);
 }
 
-- (void)setMetalPerDrawableSignpostsEnabled:(id)a3 callback:(id)a4
+- (void)setMetalPerDrawableSignpostsEnabled:(id)enabled callback:(id)callback
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v9 = [v10 setPerDrawableEnabled:v8];
+  callbackCopy = callback;
+  enabledCopy = enabled;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  v9 = [instrumentationConfig setPerDrawableEnabled:enabledCopy];
 
-  (*(a4 + 2))(v7, v9);
+  (*(callback + 2))(callbackCopy, v9);
 }
 
-- (void)getMetricMonitoredAppProcessNames:(id)a3
+- (void)getMetricMonitoredAppProcessNames:(id)names
 {
-  v4 = a3;
-  v5 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  namesCopy = names;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
   v8 = 0;
-  v6 = [v5 metricMonitoredAppProcessNames:&v8];
+  v6 = [instrumentationConfig metricMonitoredAppProcessNames:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  namesCopy[2](namesCopy, v6, v7);
 }
 
-- (void)setMetricMonitoredAppProcessNames:(id)a3 callback:(id)a4
+- (void)setMetricMonitoredAppProcessNames:(id)names callback:(id)callback
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v9 = [v10 setMetricMonitoredAppProcessNames:v8];
+  callbackCopy = callback;
+  namesCopy = names;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  v9 = [instrumentationConfig setMetricMonitoredAppProcessNames:namesCopy];
 
-  (*(a4 + 2))(v7, v9);
+  (*(callback + 2))(callbackCopy, v9);
 }
 
-- (void)getMetricMonitoringEnabled:(id)a3
+- (void)getMetricMonitoringEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  enabledCopy = enabled;
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
   v8 = 0;
-  v6 = [v5 metricMonitoringEnabled:&v8];
+  v6 = [instrumentationConfig metricMonitoringEnabled:&v8];
   v7 = v8;
 
-  v4[2](v4, v6, v7);
+  enabledCopy[2](enabledCopy, v6, v7);
 }
 
-- (void)setMetricMonitoringEnabled:(id)a3 callback:(id)a4
+- (void)setMetricMonitoringEnabled:(id)enabled callback:(id)callback
 {
-  v8 = a4;
-  if (a3)
+  callbackCopy = callback;
+  if (enabled)
   {
-    a3 = [a3 BOOLValue];
+    enabled = [enabled BOOLValue];
   }
 
-  v6 = [(PTPCPassiveCollectionService *)self instrumentationConfig];
-  v7 = [v6 setMetricMonitoringEnabled:a3];
-  v8[2](v8, v7);
+  instrumentationConfig = [(PTPCPassiveCollectionService *)self instrumentationConfig];
+  v7 = [instrumentationConfig setMetricMonitoringEnabled:enabled];
+  callbackCopy[2](callbackCopy, v7);
 }
 
 @end

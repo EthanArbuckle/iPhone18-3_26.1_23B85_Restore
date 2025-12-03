@@ -1,15 +1,15 @@
 @interface VCLinkProbingResult
-- (VCLinkProbingResult)initWithProbingResults:(id)a3 linkProbingResultConfig:(id *)a4;
+- (VCLinkProbingResult)initWithProbingResults:(id)results linkProbingResultConfig:(id *)config;
 - (id)description;
-- (unsigned)getPLRTierFromPLREnvelope:(double)a3;
+- (unsigned)getPLRTierFromPLREnvelope:(double)envelope;
 - (void)dealloc;
-- (void)updateLinkStatsWithArrivingNewValueMeanRTT:(double)a3 arrivingNewValuePLR:(double)a4;
-- (void)updateProbingResult:(id)a3 initialResult:(BOOL)a4;
+- (void)updateLinkStatsWithArrivingNewValueMeanRTT:(double)t arrivingNewValuePLR:(double)r;
+- (void)updateProbingResult:(id)result initialResult:(BOOL)initialResult;
 @end
 
 @implementation VCLinkProbingResult
 
-- (VCLinkProbingResult)initWithProbingResults:(id)a3 linkProbingResultConfig:(id *)a4
+- (VCLinkProbingResult)initWithProbingResults:(id)results linkProbingResultConfig:(id *)config
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -18,15 +18,15 @@
   v7 = v6;
   if (v6)
   {
-    v8 = *&a4->var0;
-    v9 = *&a4->var3;
-    *(v6 + 11) = a4->var5;
+    v8 = *&config->var0;
+    v9 = *&config->var3;
+    *(v6 + 11) = config->var5;
     *(v6 + 72) = v9;
     *(v6 + 56) = v8;
     *(v6 + 4) = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:0.0];
     v7->_plrEnvelopeValue = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:-1.0];
     v7->_plrTier = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:0];
-    [(VCLinkProbingResult *)v7 updateProbingResult:a3 initialResult:1];
+    [(VCLinkProbingResult *)v7 updateProbingResult:results initialResult:1];
   }
 
   return v7;
@@ -41,15 +41,15 @@
   [(VCLinkProbingResult *)&v3 dealloc];
 }
 
-- (void)updateProbingResult:(id)a3 initialResult:(BOOL)a4
+- (void)updateProbingResult:(id)result initialResult:(BOOL)initialResult
 {
-  v4 = a4;
+  initialResultCopy = initialResult;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69A4A70]), "unsignedIntValue"}];
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69A4A78]), "unsignedIntValue"}];
-  v9 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69A4A68]), "unsignedIntValue"}];
+  v7 = [objc_msgSend(result objectForKeyedSubscript:{*MEMORY[0x1E69A4A70]), "unsignedIntValue"}];
+  v8 = [objc_msgSend(result objectForKeyedSubscript:{*MEMORY[0x1E69A4A78]), "unsignedIntValue"}];
+  v9 = [objc_msgSend(result objectForKeyedSubscript:{*MEMORY[0x1E69A4A68]), "unsignedIntValue"}];
   v10 = v7;
-  if (v4)
+  if (initialResultCopy)
   {
     self->_sentRequestCount = v7;
     self->_receivedResponseCount = v8;
@@ -66,8 +66,8 @@
     self->_reorderedPacketsCount = reorderedPacketsCount + v9;
   }
 
-  v13 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4AC0]];
-  v30 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69A4B30]), "unsignedIntValue"}];
+  v13 = [result objectForKeyedSubscript:*MEMORY[0x1E69A4AC0]];
+  v30 = [objc_msgSend(result objectForKeyedSubscript:{*MEMORY[0x1E69A4B30]), "unsignedIntValue"}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -99,10 +99,10 @@
           [(NSMutableArray *)[(VCLinkProbingResult *)self requestTimestampAndRTTList] removeFirstObject];
         }
 
-        v24 = [(VCLinkProbingResult *)self requestTimestampAndRTTList];
+        requestTimestampAndRTTList = [(VCLinkProbingResult *)self requestTimestampAndRTTList];
         v31[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v30 + v22];
         v31[1] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v23];
-        -[NSMutableArray addObject:](v24, "addObject:", [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2]);
+        -[NSMutableArray addObject:](requestTimestampAndRTTList, "addObject:", [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2]);
         if (v23 == 0xFFFF)
         {
           v25 = 0;
@@ -150,11 +150,11 @@
   [(VCLinkProbingResult *)self updateLinkStatsWithArrivingNewValueMeanRTT:v27 arrivingNewValuePLR:v15];
 }
 
-- (void)updateLinkStatsWithArrivingNewValueMeanRTT:(double)a3 arrivingNewValuePLR:(double)a4
+- (void)updateLinkStatsWithArrivingNewValueMeanRTT:(double)t arrivingNewValuePLR:(double)r
 {
   [(NSNumber *)self->_plrEnvelopeValue doubleValue];
   v7 = 80;
-  if (v8 < a4)
+  if (v8 < r)
   {
     v7 = 72;
   }
@@ -164,28 +164,28 @@
   if (v10 != -1.0)
   {
     [(NSNumber *)self->_plrEnvelopeValue doubleValue];
-    a4 = (1.0 - v9) * v11 + a4 * v9;
+    r = (1.0 - v9) * v11 + r * v9;
   }
 
-  self->_plrEnvelopeValue = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a4];
+  self->_plrEnvelopeValue = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:r];
   v12 = objc_alloc(MEMORY[0x1E696AD98]);
   [(NSNumber *)self->_plrEnvelopeValue doubleValue];
   self->_plrTier = [v12 initWithUnsignedInt:{-[VCLinkProbingResult getPLRTierFromPLREnvelope:](self, "getPLRTierFromPLREnvelope:")}];
-  if (a3 > 0.0)
+  if (t > 0.0)
   {
     [(NSNumber *)self->_expMovMeanRTT doubleValue];
     if (v13 != 0.0)
     {
       expMovMeanFactor = self->_linkProbingResultConfig.expMovMeanFactor;
       [(NSNumber *)self->_expMovMeanRTT doubleValue];
-      a3 = v15 * (1.0 - self->_linkProbingResultConfig.expMovMeanFactor) + a3 * expMovMeanFactor;
+      t = v15 * (1.0 - self->_linkProbingResultConfig.expMovMeanFactor) + t * expMovMeanFactor;
     }
 
-    self->_expMovMeanRTT = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a3];
+    self->_expMovMeanRTT = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:t];
   }
 }
 
-- (unsigned)getPLRTierFromPLREnvelope:(double)a3
+- (unsigned)getPLRTierFromPLREnvelope:(double)envelope
 {
   if (![(NSArray *)self->_linkProbingResultConfig.plrBuckets count])
   {
@@ -194,7 +194,7 @@
 
   v5 = 0;
   v6 = 0;
-  v7 = a3 * 100.0;
+  v7 = envelope * 100.0;
   do
   {
     [-[NSArray objectAtIndexedSubscript:](self->_linkProbingResultConfig.plrBuckets objectAtIndexedSubscript:{v5), "doubleValue"}];

@@ -1,38 +1,38 @@
 @interface WFColor
-+ (WFColor)colorWithCGColor:(CGColor *)a3;
-+ (WFColor)colorWithDisplayP3Red:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (WFColor)colorWithFocusColorName:(id)a3;
-+ (WFColor)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-+ (WFColor)colorWithPaletteColor:(unint64_t)a3;
-+ (WFColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (WFColor)colorWithSystemColor:(unint64_t)a3;
-+ (WFColor)colorWithWhite:(double)a3 alpha:(double)a4;
-+ (id)colorForName:(id)a3;
-+ (id)colorNamed:(id)a3 inBundle:(id)a4;
-+ (id)tintColorForBundleIdentifier:(id)a3;
-+ (id)tintedColorForName:(id)a3;
++ (WFColor)colorWithCGColor:(CGColor *)color;
++ (WFColor)colorWithDisplayP3Red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (WFColor)colorWithFocusColorName:(id)name;
++ (WFColor)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
++ (WFColor)colorWithPaletteColor:(unint64_t)color;
++ (WFColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (WFColor)colorWithSystemColor:(unint64_t)color;
++ (WFColor)colorWithWhite:(double)white alpha:(double)alpha;
++ (id)colorForName:(id)name;
++ (id)colorNamed:(id)named inBundle:(id)bundle;
++ (id)tintColorForBundleIdentifier:(id)identifier;
++ (id)tintedColorForName:(id)name;
 + (id)workflowGradientPalette;
 + (id)workflowPalette;
 + (id)workflowPaletteNames;
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
 - (BOOL)hasPaletteGradient;
-- (BOOL)isCloseToColor:(id)a3;
+- (BOOL)isCloseToColor:(id)color;
 - (BOOL)isDark;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)CGColor;
 - (NSString)localizedPaletteName;
 - (UIColor)UIColor;
-- (WFColor)colorWithAlphaComponent:(double)a3;
-- (WFColor)initWithCGColor:(CGColor *)a3;
-- (WFColor)initWithCoder:(id)a3;
-- (WFColor)initWithColorName:(id)a3 inBundle:(id)a4;
-- (WFColor)initWithDisplayP3Red:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (WFColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-- (WFColor)initWithPlatformColor:(id)a3;
-- (WFColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (WFColor)initWithSerializedRepresentation:(id)a3;
-- (WFColor)initWithSystemColor:(unint64_t)a3;
-- (WFColor)initWithWhite:(double)a3 alpha:(double)a4;
+- (WFColor)colorWithAlphaComponent:(double)component;
+- (WFColor)initWithCGColor:(CGColor *)color;
+- (WFColor)initWithCoder:(id)coder;
+- (WFColor)initWithColorName:(id)name inBundle:(id)bundle;
+- (WFColor)initWithDisplayP3Red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (WFColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
+- (WFColor)initWithPlatformColor:(id)color;
+- (WFColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (WFColor)initWithSerializedRepresentation:(id)representation;
+- (WFColor)initWithSystemColor:(unint64_t)color;
+- (WFColor)initWithWhite:(double)white alpha:(double)alpha;
 - (WFGradient)gradient;
 - (double)alpha;
 - (double)blue;
@@ -40,13 +40,13 @@
 - (double)perceivedBrightness;
 - (double)red;
 - (id)description;
-- (id)paletteGradientFallingBackToDefaultGradient:(BOOL)a3;
+- (id)paletteGradientFallingBackToDefaultGradient:(BOOL)gradient;
 - (id)serializedRepresentation;
 - (unint64_t)hash;
 - (unsigned)RGBAValue;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getHue:(double *)a3 saturation:(double *)a4 value:(double *)a5 alpha:(double *)a6;
+- (void)encodeWithCoder:(id)coder;
+- (void)getHue:(double *)hue saturation:(double *)saturation value:(double *)value alpha:(double *)alpha;
 @end
 
 @implementation WFColor
@@ -88,10 +88,10 @@
 
   else
   {
-    v4 = [(WFColor *)self platformColor];
-    v5 = [v4 CGColor];
+    platformColor = [(WFColor *)self platformColor];
+    cGColor = [platformColor CGColor];
 
-    return v5;
+    return cGColor;
   }
 }
 
@@ -147,7 +147,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
       *buf = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_1B1DE3000, v3, OS_LOG_TYPE_FAULT, "Could not get RGB components from color %{public}@", buf, 0xCu);
     }
   }
@@ -172,7 +172,7 @@
 {
   if ([(WFColor *)self hasPaletteGradient])
   {
-    v3 = [(WFColor *)self paletteGradient];
+    paletteGradient = [(WFColor *)self paletteGradient];
   }
 
   else
@@ -234,7 +234,7 @@
     v22 = [WFColor alloc];
     [(WFColor *)self alpha];
     v24 = [(WFColor *)v22 initWithRed:v15 green:v21 blue:v18 alpha:v23];
-    v25 = self;
+    selfCopy = self;
     if (v10 <= v11)
     {
       v26 = v24;
@@ -242,12 +242,12 @@
 
     else
     {
-      v26 = v25;
+      v26 = selfCopy;
     }
 
     if (v10 <= v11)
     {
-      v27 = v25;
+      v27 = selfCopy;
     }
 
     else
@@ -256,10 +256,10 @@
     }
 
     v28 = v24;
-    v3 = [[WFGradient alloc] initWithStartColor:v26 endColor:v27];
+    paletteGradient = [[WFGradient alloc] initWithStartColor:v26 endColor:v27];
   }
 
-  return v3;
+  return paletteGradient;
 }
 
 - (BOOL)hasPaletteGradient
@@ -275,83 +275,83 @@
   WeakRetained = objc_loadWeakRetained(&self->_platformColor);
   if (!WeakRetained)
   {
-    v4 = [(WFColor *)self representationType];
-    if (v4)
+    representationType = [(WFColor *)self representationType];
+    if (representationType)
     {
-      if (v4 != 2)
+      if (representationType != 2)
       {
-        if (v4 == 1)
+        if (representationType == 1)
         {
           switch([(WFColor *)self systemColor])
           {
             case 0uLL:
-              v5 = [(objc_class *)getUIColorClass() clearColor];
+              clearColor = [(objc_class *)getUIColorClass() clearColor];
               goto LABEL_10;
             case 1uLL:
-              v5 = [(objc_class *)getUIColorClass() labelColor];
+              clearColor = [(objc_class *)getUIColorClass() labelColor];
               goto LABEL_10;
             case 2uLL:
-              v5 = [(objc_class *)getUIColorClass() systemRedColor];
+              clearColor = [(objc_class *)getUIColorClass() systemRedColor];
               goto LABEL_10;
             case 3uLL:
-              v5 = [(objc_class *)getUIColorClass() systemGreenColor];
+              clearColor = [(objc_class *)getUIColorClass() systemGreenColor];
               goto LABEL_10;
             case 4uLL:
-              v5 = [(objc_class *)getUIColorClass() systemBlueColor];
+              clearColor = [(objc_class *)getUIColorClass() systemBlueColor];
               goto LABEL_10;
             case 5uLL:
-              v5 = [(objc_class *)getUIColorClass() systemOrangeColor];
+              clearColor = [(objc_class *)getUIColorClass() systemOrangeColor];
               goto LABEL_10;
             case 6uLL:
-              v5 = [(objc_class *)getUIColorClass() systemYellowColor];
+              clearColor = [(objc_class *)getUIColorClass() systemYellowColor];
               goto LABEL_10;
             case 7uLL:
-              v5 = [(objc_class *)getUIColorClass() systemPinkColor];
+              clearColor = [(objc_class *)getUIColorClass() systemPinkColor];
               goto LABEL_10;
             case 8uLL:
-              v5 = [(objc_class *)getUIColorClass() systemPurpleColor];
+              clearColor = [(objc_class *)getUIColorClass() systemPurpleColor];
               goto LABEL_10;
             case 9uLL:
-              v5 = [(objc_class *)getUIColorClass() systemTealColor];
+              clearColor = [(objc_class *)getUIColorClass() systemTealColor];
               goto LABEL_10;
             case 10uLL:
-              v5 = [(objc_class *)getUIColorClass() systemIndigoColor];
+              clearColor = [(objc_class *)getUIColorClass() systemIndigoColor];
               goto LABEL_10;
             case 11uLL:
-              v5 = [(objc_class *)getUIColorClass() systemBrownColor];
+              clearColor = [(objc_class *)getUIColorClass() systemBrownColor];
               goto LABEL_10;
             case 12uLL:
-              v5 = [(objc_class *)getUIColorClass() systemMintColor];
+              clearColor = [(objc_class *)getUIColorClass() systemMintColor];
               goto LABEL_10;
             case 13uLL:
-              v5 = [(objc_class *)getUIColorClass() systemCyanColor];
+              clearColor = [(objc_class *)getUIColorClass() systemCyanColor];
               goto LABEL_10;
             case 14uLL:
-              v5 = [(objc_class *)getUIColorClass() systemGrayColor];
+              clearColor = [(objc_class *)getUIColorClass() systemGrayColor];
               goto LABEL_10;
             case 15uLL:
-              v5 = [(objc_class *)getUIColorClass() secondaryLabelColor];
+              clearColor = [(objc_class *)getUIColorClass() secondaryLabelColor];
               goto LABEL_10;
             case 16uLL:
-              v5 = [(objc_class *)getUIColorClass() secondarySystemFillColor];
+              clearColor = [(objc_class *)getUIColorClass() secondarySystemFillColor];
               goto LABEL_10;
             case 17uLL:
-              v5 = [(objc_class *)getUIColorClass() secondarySystemBackgroundColor];
+              clearColor = [(objc_class *)getUIColorClass() secondarySystemBackgroundColor];
               goto LABEL_10;
             case 18uLL:
-              v5 = [(objc_class *)getUIColorClass() tertiarySystemBackgroundColor];
+              clearColor = [(objc_class *)getUIColorClass() tertiarySystemBackgroundColor];
               goto LABEL_10;
             case 19uLL:
-              v5 = [(objc_class *)getUIColorClass() systemGroupedBackgroundColor];
+              clearColor = [(objc_class *)getUIColorClass() systemGroupedBackgroundColor];
               goto LABEL_10;
             case 20uLL:
-              v5 = [(objc_class *)getUIColorClass() tertiarySystemGroupedBackgroundColor];
+              clearColor = [(objc_class *)getUIColorClass() tertiarySystemGroupedBackgroundColor];
               goto LABEL_10;
             case 21uLL:
-              v5 = [(objc_class *)getUIColorClass() whiteColor];
+              clearColor = [(objc_class *)getUIColorClass() whiteColor];
               goto LABEL_10;
             case 22uLL:
-              v5 = [(objc_class *)getUIColorClass() blackColor];
+              clearColor = [(objc_class *)getUIColorClass() blackColor];
               goto LABEL_10;
             default:
               break;
@@ -362,16 +362,16 @@
         goto LABEL_11;
       }
 
-      v5 = [(objc_class *)getUIColorClass() colorNamed:self->_colorName inBundle:self->_bundle compatibleWithTraitCollection:0];
+      clearColor = [(objc_class *)getUIColorClass() colorNamed:self->_colorName inBundle:self->_bundle compatibleWithTraitCollection:0];
     }
 
     else
     {
-      v5 = [objc_alloc(getUIColorClass()) initWithCGColor:{-[WFColor CGColor](self, "CGColor")}];
+      clearColor = [objc_alloc(getUIColorClass()) initWithCGColor:{-[WFColor CGColor](self, "CGColor")}];
     }
 
 LABEL_10:
-    WeakRetained = v5;
+    WeakRetained = clearColor;
 LABEL_11:
     objc_storeWeak(&self->_platformColor, WeakRetained);
   }
@@ -482,9 +482,9 @@ void __43__WFColor_WorkflowPalette__workflowPalette__block_invoke()
   v7[3] = &unk_1E7B00878;
   v7[4] = self;
   v4 = [v3 if_compactMap:v7];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 id __48__WFColor_WorkflowPalette__localizedPaletteName__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -503,9 +503,9 @@ id __48__WFColor_WorkflowPalette__localizedPaletteName__block_invoke(uint64_t a1
   return v5;
 }
 
-- (id)paletteGradientFallingBackToDefaultGradient:(BOOL)a3
+- (id)paletteGradientFallingBackToDefaultGradient:(BOOL)gradient
 {
-  v3 = a3;
+  gradientCopy = gradient;
   if (paletteGradientFallingBackToDefaultGradient__onceToken != -1)
   {
     dispatch_once(&paletteGradientFallingBackToDefaultGradient__onceToken, &__block_literal_global_5170);
@@ -517,18 +517,18 @@ id __48__WFColor_WorkflowPalette__localizedPaletteName__block_invoke(uint64_t a1
 
   if (v7)
   {
-    v8 = [objc_opt_class() workflowGradientPalette];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "unsignedIntegerValue")}];
+    workflowGradientPalette = [objc_opt_class() workflowGradientPalette];
+    lastObject = [workflowGradientPalette objectAtIndex:{objc_msgSend(v7, "unsignedIntegerValue")}];
 LABEL_7:
-    v10 = v9;
+    v10 = lastObject;
 
     goto LABEL_8;
   }
 
-  if (v3)
+  if (gradientCopy)
   {
-    v8 = [objc_opt_class() workflowGradientPalette];
-    v9 = [v8 lastObject];
+    workflowGradientPalette = [objc_opt_class() workflowGradientPalette];
+    lastObject = [workflowGradientPalette lastObject];
     goto LABEL_7;
   }
 
@@ -580,10 +580,10 @@ void __72__WFColor_WorkflowPalette__paletteGradientFallingBackToDefaultGradient_
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (WFColor)colorWithPaletteColor:(unint64_t)a3
++ (WFColor)colorWithPaletteColor:(unint64_t)color
 {
-  v4 = [a1 workflowPalette];
-  v5 = [v4 objectAtIndex:a3];
+  workflowPalette = [self workflowPalette];
+  v5 = [workflowPalette objectAtIndex:color];
 
   return v5;
 }
@@ -628,27 +628,27 @@ void __72__WFColor_WorkflowPalette__paletteGradientFallingBackToDefaultGradient_
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeInteger:-[WFColor representationType](self forKey:{"representationType"), @"representationType"}];
-  v5 = [(WFColor *)self representationType];
-  if (v5)
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WFColor representationType](self forKey:{"representationType"), @"representationType"}];
+  representationType = [(WFColor *)self representationType];
+  if (representationType)
   {
-    if (v5 == 1)
+    if (representationType == 1)
     {
-      [v4 encodeInteger:-[WFColor systemColor](self forKey:{"systemColor"), @"systemColor"}];
+      [coderCopy encodeInteger:-[WFColor systemColor](self forKey:{"systemColor"), @"systemColor"}];
     }
 
-    else if (v5 == 2)
+    else if (representationType == 2)
     {
-      v6 = [(WFColor *)self colorName];
-      [v4 encodeObject:v6 forKey:@"colorName"];
+      colorName = [(WFColor *)self colorName];
+      [coderCopy encodeObject:colorName forKey:@"colorName"];
 
-      v7 = [(WFColor *)self bundle];
-      v8 = [v7 bundleURL];
-      [v4 encodeObject:v8 forKey:@"bundle"];
+      bundle = [(WFColor *)self bundle];
+      bundleURL = [bundle bundleURL];
+      [coderCopy encodeObject:bundleURL forKey:@"bundle"];
     }
   }
 
@@ -660,10 +660,10 @@ void __72__WFColor_WorkflowPalette__paletteGradientFallingBackToDefaultGradient_
     v15 = 0.0;
     if ([(WFColor *)self getRed:&v17 green:&v16 blue:&v15 alpha:&v14])
     {
-      [v4 encodeDouble:@"redComponent" forKey:v17];
-      [v4 encodeDouble:@"greenComponent" forKey:v16];
-      [v4 encodeDouble:@"blueComponent" forKey:v15];
-      [v4 encodeDouble:@"alphaComponent" forKey:v14];
+      [coderCopy encodeDouble:@"redComponent" forKey:v17];
+      [coderCopy encodeDouble:@"greenComponent" forKey:v16];
+      [coderCopy encodeDouble:@"blueComponent" forKey:v15];
+      [coderCopy encodeDouble:@"alphaComponent" forKey:v14];
     }
 
     else
@@ -674,94 +674,94 @@ void __72__WFColor_WorkflowPalette__paletteGradientFallingBackToDefaultGradient_
       v19[0] = @"Unable to convert color to RGB color space for serialization";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v12 = [v9 errorWithDomain:v10 code:1 userInfo:v11];
-      [v4 failWithError:v12];
+      [coderCopy failWithError:v12];
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (WFColor)initWithCoder:(id)a3
+- (WFColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"representationType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"representationType"];
   if (!v5)
   {
-    if (![v4 containsValueForKey:@"redComponent"] || !objc_msgSend(v4, "containsValueForKey:", @"greenComponent") || !objc_msgSend(v4, "containsValueForKey:", @"blueComponent") || !objc_msgSend(v4, "containsValueForKey:", @"alphaComponent"))
+    if (![coderCopy containsValueForKey:@"redComponent"] || !objc_msgSend(coderCopy, "containsValueForKey:", @"greenComponent") || !objc_msgSend(coderCopy, "containsValueForKey:", @"blueComponent") || !objc_msgSend(coderCopy, "containsValueForKey:", @"alphaComponent"))
     {
       goto LABEL_15;
     }
 
-    [v4 decodeDoubleForKey:@"redComponent"];
+    [coderCopy decodeDoubleForKey:@"redComponent"];
     v13 = v12;
-    [v4 decodeDoubleForKey:@"greenComponent"];
+    [coderCopy decodeDoubleForKey:@"greenComponent"];
     v15 = v14;
-    [v4 decodeDoubleForKey:@"blueComponent"];
+    [coderCopy decodeDoubleForKey:@"blueComponent"];
     v17 = v16;
-    [v4 decodeDoubleForKey:@"alphaComponent"];
+    [coderCopy decodeDoubleForKey:@"alphaComponent"];
     v11 = [(WFColor *)self initWithRed:v13 green:v15 blue:v17 alpha:v18];
 LABEL_9:
     self = v11;
-    v10 = self;
+    selfCopy2 = self;
     goto LABEL_18;
   }
 
   if (v5 == 1)
   {
-    v11 = -[WFColor initWithSystemColor:](self, "initWithSystemColor:", [v4 decodeIntegerForKey:@"systemColor"]);
+    v11 = -[WFColor initWithSystemColor:](self, "initWithSystemColor:", [coderCopy decodeIntegerForKey:@"systemColor"]);
     goto LABEL_9;
   }
 
   if (v5 != 2)
   {
 LABEL_15:
-    v10 = 0;
+    selfCopy2 = 0;
     goto LABEL_18;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundle"];
   if (v7)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleWithURL:v7];
     v9 = v8;
-    v10 = 0;
+    selfCopy2 = 0;
     if (v6 && v8)
     {
       self = [(WFColor *)self initWithColorName:v6 inBundle:v8];
-      v10 = self;
+      selfCopy2 = self;
     }
   }
 
   else
   {
     v9 = 0;
-    v10 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_18:
-  return v10;
+  return selfCopy2;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFColor *)self CGColor];
+  cGColor = [(WFColor *)self CGColor];
 
-  return CFHash(v2);
+  return CFHash(cGColor);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v8) = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
@@ -785,16 +785,16 @@ LABEL_18:
 
     if ([(WFColor *)self systemColor]&& [(WFColor *)v9 systemColor])
     {
-      v10 = [(WFColor *)self systemColor];
-      LOBYTE(v8) = v10 == [(WFColor *)v9 systemColor];
+      systemColor = [(WFColor *)self systemColor];
+      LOBYTE(v8) = systemColor == [(WFColor *)v9 systemColor];
     }
 
     else
     {
-      v11 = [(WFColor *)v9 CGColor];
+      cGColor = [(WFColor *)v9 CGColor];
       if (v9)
       {
-        v12 = v11;
+        v12 = cGColor;
         ColorSpace = CGColorGetColorSpace([(WFColor *)self CGColor]);
         v14 = CGColorGetColorSpace(v12);
         LOBYTE(v8) = 0;
@@ -849,14 +849,14 @@ LABEL_18:
 - (id)serializedRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(WFColor *)self representationType];
+  representationType = [(WFColor *)self representationType];
   v5 = @"WFColorRepresentationTypeName";
-  if (v4 == 1)
+  if (representationType == 1)
   {
     v5 = @"WFColorRepresentationTypeSystem";
   }
 
-  if (v4)
+  if (representationType)
   {
     v6 = v5;
   }
@@ -867,8 +867,8 @@ LABEL_18:
   }
 
   [v3 setObject:v6 forKeyedSubscript:@"WFColorRepresentationType"];
-  v7 = [(WFColor *)self representationType];
-  if (!v7)
+  representationType2 = [(WFColor *)self representationType];
+  if (!representationType2)
   {
     v26 = 0.0;
     v27 = 0.0;
@@ -892,43 +892,43 @@ LABEL_18:
 
     HIDWORD(v20) = HIDWORD(v24);
     *&v20 = v24;
-    v9 = [MEMORY[0x1E696AD98] numberWithFloat:v20];
+    bundle = [MEMORY[0x1E696AD98] numberWithFloat:v20];
     v21 = @"alphaComponent";
 LABEL_15:
-    [v3 setObject:v9 forKeyedSubscript:v21];
+    [v3 setObject:bundle forKeyedSubscript:v21];
     goto LABEL_16;
   }
 
-  if (v7 == 1)
+  if (representationType2 == 1)
   {
-    v12 = [(WFColor *)self systemColor];
-    if (v12 > 0x16)
+    systemColor = [(WFColor *)self systemColor];
+    if (systemColor > 0x16)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = off_1E7B01768[v12];
+      v13 = off_1E7B01768[systemColor];
     }
 
-    v9 = v13;
+    bundle = v13;
     v21 = @"WFSystemColor";
     goto LABEL_15;
   }
 
-  if (v7 != 2)
+  if (representationType2 != 2)
   {
     goto LABEL_17;
   }
 
-  v8 = [(WFColor *)self colorName];
-  [v3 setObject:v8 forKeyedSubscript:@"WFColorName"];
+  colorName = [(WFColor *)self colorName];
+  [v3 setObject:colorName forKeyedSubscript:@"WFColorName"];
 
-  v9 = [(WFColor *)self bundle];
-  v10 = [(__CFString *)v9 bundleURL];
-  v11 = [v10 absoluteString];
-  [v3 setObject:v11 forKeyedSubscript:@"WFBundleURL"];
+  bundle = [(WFColor *)self bundle];
+  bundleURL = [(__CFString *)bundle bundleURL];
+  absoluteString = [bundleURL absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"WFBundleURL"];
 
 LABEL_16:
 LABEL_17:
@@ -937,32 +937,32 @@ LABEL_17:
   return v22;
 }
 
-- (WFColor)initWithSerializedRepresentation:(id)a3
+- (WFColor)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"WFColorRepresentationType"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"WFColorRepresentationType"];
   if ([v5 isEqualToString:@"WFColorRepresentationTypeName"])
   {
 
-    v6 = [v4 objectForKeyedSubscript:@"WFColorName"];
-    v7 = [v4 objectForKeyedSubscript:@"WFBundleURL"];
+    v6 = [representationCopy objectForKeyedSubscript:@"WFColorName"];
+    v7 = [representationCopy objectForKeyedSubscript:@"WFBundleURL"];
     v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
     if (v8)
     {
       v9 = [MEMORY[0x1E696AAE8] bundleWithURL:v8];
       v10 = v9;
-      v11 = 0;
+      selfCopy2 = 0;
       if (v6 && v9)
       {
         self = [(WFColor *)self initWithColorName:v6 inBundle:v9];
-        v11 = self;
+        selfCopy2 = self;
       }
     }
 
     else
     {
       v10 = 0;
-      v11 = 0;
+      selfCopy2 = 0;
     }
   }
 
@@ -971,7 +971,7 @@ LABEL_17:
     if ([v5 isEqualToString:@"WFColorRepresentationTypeSystem"])
     {
 
-      v12 = [v4 objectForKeyedSubscript:@"WFSystemColor"];
+      v12 = [representationCopy objectForKeyedSubscript:@"WFSystemColor"];
       v13 = 0;
       v14 = 0;
       while (1)
@@ -1000,19 +1000,19 @@ LABEL_17:
     {
       [v5 isEqualToString:@"WFColorRepresentationTypeCGColor"];
 
-      v18 = [v4 objectForKeyedSubscript:@"redComponent"];
+      v18 = [representationCopy objectForKeyedSubscript:@"redComponent"];
       [v18 floatValue];
       v20 = v19;
 
-      v21 = [v4 objectForKeyedSubscript:@"greenComponent"];
+      v21 = [representationCopy objectForKeyedSubscript:@"greenComponent"];
       [v21 floatValue];
       v23 = v22;
 
-      v24 = [v4 objectForKeyedSubscript:@"blueComponent"];
+      v24 = [representationCopy objectForKeyedSubscript:@"blueComponent"];
       [v24 floatValue];
       v26 = v25;
 
-      v27 = [v4 objectForKeyedSubscript:@"alphaComponent"];
+      v27 = [representationCopy objectForKeyedSubscript:@"alphaComponent"];
       [v27 floatValue];
       v29 = v28;
 
@@ -1020,10 +1020,10 @@ LABEL_17:
     }
 
     self = v17;
-    v11 = self;
+    selfCopy2 = self;
   }
 
-  return v11;
+  return selfCopy2;
 }
 
 - (double)perceivedBrightness
@@ -1049,7 +1049,7 @@ LABEL_17:
   return v3 < 0.5;
 }
 
-- (BOOL)isCloseToColor:(id)a3
+- (BOOL)isCloseToColor:(id)color
 {
   v13 = 0.0;
   v11 = 0.0;
@@ -1057,9 +1057,9 @@ LABEL_17:
   v9 = 0.0;
   v10 = 0.0;
   v8 = 0.0;
-  v4 = a3;
+  colorCopy = color;
   [(WFColor *)self getHue:&v13 saturation:&v12 value:&v11 alpha:0];
-  [v4 getHue:&v10 saturation:&v9 value:&v8 alpha:0];
+  [colorCopy getHue:&v10 saturation:&v9 value:&v8 alpha:0];
 
   if (vabdd_f64(v12, v9) > 0.0399999991 || vabdd_f64(v11, v8) > 0.0399999991)
   {
@@ -1086,29 +1086,29 @@ LABEL_17:
   return vabdd_f64(v6, v7) <= 0.0399999991;
 }
 
-- (void)getHue:(double *)a3 saturation:(double *)a4 value:(double *)a5 alpha:(double *)a6
+- (void)getHue:(double *)hue saturation:(double *)saturation value:(double *)value alpha:(double *)alpha
 {
-  v10 = [(WFColor *)self platformColor];
-  [v10 getHue:a3 saturation:a4 brightness:a5 alpha:a6];
+  platformColor = [(WFColor *)self platformColor];
+  [platformColor getHue:hue saturation:saturation brightness:value alpha:alpha];
 }
 
-- (WFColor)colorWithAlphaComponent:(double)a3
+- (WFColor)colorWithAlphaComponent:(double)component
 {
-  CopyWithAlpha = CGColorCreateCopyWithAlpha([(WFColor *)self CGColor], a3);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha([(WFColor *)self CGColor], component);
   v4 = [[WFColor alloc] initWithCGColor:CopyWithAlpha];
   CGColorRelease(CopyWithAlpha);
 
   return v4;
 }
 
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = [(WFColor *)self CGColor];
-  if (v10)
+  cGColor = [(WFColor *)self CGColor];
+  if (cGColor)
   {
-    v11 = v10;
-    Components = CGColorGetComponents(v10);
+    v11 = cGColor;
+    Components = CGColorGetComponents(cGColor);
     Alpha = CGColorGetAlpha(v11);
     ColorSpace = CGColorGetColorSpace(v11);
     if (Components)
@@ -1159,24 +1159,24 @@ LABEL_21:
       CGColorTransformRelease();
       Components = &v25;
 LABEL_11:
-      if (a3)
+      if (red)
       {
-        *a3 = *Components;
+        *red = *Components;
       }
 
-      if (a4)
+      if (green)
       {
-        *a4 = *v17;
+        *green = *v17;
       }
 
-      if (a5)
+      if (blue)
       {
-        *a5 = *v18;
+        *blue = *v18;
       }
 
-      if (a6)
+      if (alpha)
       {
-        *a6 = *v19;
+        *alpha = *v19;
       }
 
       v21 = 1;
@@ -1201,18 +1201,18 @@ LABEL_22:
   return [v3 stringWithFormat:@"Red:%f Green:%f Blue:%f", v5, v7, v8];
 }
 
-- (WFColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
+- (WFColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v7 = [objc_alloc(getUIColorClass()) initWithHue:fmax(fmin(a3 saturation:1.0) brightness:0.0) alpha:{fmax(fmin(a4, 1.0), 0.0), fmax(fmin(a5, 1.0), 0.0), a6}];
+  v7 = [objc_alloc(getUIColorClass()) initWithHue:fmax(fmin(hue saturation:1.0) brightness:0.0) alpha:{fmax(fmin(saturation, 1.0), 0.0), fmax(fmin(brightness, 1.0), 0.0), alpha}];
   v8 = [(WFColor *)self initWithPlatformColor:v7];
 
   return v8;
 }
 
-- (WFColor)initWithColorName:(id)a3 inBundle:(id)a4
+- (WFColor)initWithColorName:(id)name inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v14.receiver = self;
   v14.super_class = WFColor;
   v8 = [(WFColor *)&v14 init];
@@ -1220,18 +1220,18 @@ LABEL_22:
   if (v8)
   {
     v8->_representationType = 2;
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     colorName = v9->_colorName;
     v9->_colorName = v10;
 
-    objc_storeStrong(&v9->_bundle, a4);
+    objc_storeStrong(&v9->_bundle, bundle);
     v12 = v9;
   }
 
   return v9;
 }
 
-- (WFColor)initWithSystemColor:(unint64_t)a3
+- (WFColor)initWithSystemColor:(unint64_t)color
 {
   v8.receiver = self;
   v8.super_class = WFColor;
@@ -1240,31 +1240,31 @@ LABEL_22:
   if (v4)
   {
     v4->_representationType = 1;
-    v4->_systemColor = a3;
+    v4->_systemColor = color;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (WFColor)initWithPlatformColor:(id)a3
+- (WFColor)initWithPlatformColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
+  colorCopy = color;
+  cGColor = [color CGColor];
 
-  return [(WFColor *)self initWithCGColor:v6];
+  return [(WFColor *)self initWithCGColor:cGColor];
 }
 
-- (WFColor)initWithDisplayP3Red:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (WFColor)initWithDisplayP3Red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v25 = *MEMORY[0x1E69E9840];
   v7 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F0B8]);
-  v8.f64[0] = a3;
-  v8.f64[1] = a4;
+  v8.f64[0] = red;
+  v8.f64[1] = green;
   __asm { FMOV            V1.2D, #1.0 }
 
-  v14.f64[0] = a5;
-  v14.f64[1] = a6;
+  v14.f64[0] = blue;
+  v14.f64[1] = alpha;
   *components = vbicq_s8(vbslq_s8(vcgtq_f64(v8, _Q1), _Q1, v8), vcltzq_f64(v8));
   v24 = vbicq_s8(vbslq_s8(vcgtq_f64(v14, _Q1), _Q1, v14), vcltzq_f64(v14));
   v15 = CGColorCreate(v7, components);
@@ -1275,26 +1275,26 @@ LABEL_22:
   return v16;
 }
 
-- (WFColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (WFColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   components[4] = *MEMORY[0x1E69E9840];
   v11 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F110]);
   v12 = v11;
-  components[0] = a3;
-  components[1] = a4;
-  v13 = 1.0;
-  if (a6 <= 1.0)
+  components[0] = red;
+  components[1] = green;
+  alphaCopy = 1.0;
+  if (alpha <= 1.0)
   {
-    v13 = a6;
+    alphaCopy = alpha;
   }
 
-  if (a6 < 0.0)
+  if (alpha < 0.0)
   {
-    v13 = 0.0;
+    alphaCopy = 0.0;
   }
 
-  components[2] = a5;
-  components[3] = v13;
+  components[2] = blue;
+  components[3] = alphaCopy;
   v14 = CGColorCreate(v11, components);
   v15 = [(WFColor *)self initWithCGColor:v14];
   CGColorSpaceRelease(v12);
@@ -1303,24 +1303,24 @@ LABEL_22:
   return v15;
 }
 
-- (WFColor)initWithWhite:(double)a3 alpha:(double)a4
+- (WFColor)initWithWhite:(double)white alpha:(double)alpha
 {
   components[2] = *MEMORY[0x1E69E9840];
   v7 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F0E0]);
   v8 = v7;
-  v9 = 1.0;
-  if (a4 <= 1.0)
+  alphaCopy = 1.0;
+  if (alpha <= 1.0)
   {
-    v9 = a4;
+    alphaCopy = alpha;
   }
 
-  if (a4 < 0.0)
+  if (alpha < 0.0)
   {
-    v9 = 0.0;
+    alphaCopy = 0.0;
   }
 
-  components[0] = a3;
-  components[1] = v9;
+  components[0] = white;
+  components[1] = alphaCopy;
   v10 = CGColorCreate(v7, components);
   v11 = [(WFColor *)self initWithCGColor:v10];
   CGColorSpaceRelease(v8);
@@ -1329,12 +1329,12 @@ LABEL_22:
   return v11;
 }
 
-- (WFColor)initWithCGColor:(CGColor *)a3
+- (WFColor)initWithCGColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"WFColor.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"CGColor"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFColor.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"CGColor"}];
   }
 
   v11.receiver = self;
@@ -1344,16 +1344,16 @@ LABEL_22:
   if (v5)
   {
     v5->_representationType = 0;
-    v5->_CGColor = CGColorRetain(a3);
+    v5->_CGColor = CGColorRetain(color);
     v7 = v6;
   }
 
   return v6;
 }
 
-+ (id)tintedColorForName:(id)a3
++ (id)tintedColorForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.WorkflowKit"];
   if (!v5)
   {
@@ -1361,7 +1361,7 @@ LABEL_22:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"Red"])
+  if ([nameCopy isEqualToString:@"Red"])
   {
     v6 = @"systemRedTint";
 LABEL_9:
@@ -1369,19 +1369,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"Green"])
+  if ([nameCopy isEqualToString:@"Green"])
   {
     v6 = @"systemGreenTint";
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"Blue"])
+  if ([nameCopy isEqualToString:@"Blue"])
   {
     v6 = @"systemBlueTint";
     goto LABEL_9;
   }
 
-  v9 = [a1 colorForName:v4];
+  v9 = [self colorForName:nameCopy];
   v7 = [v9 colorWithAlphaComponent:0.1];
 
 LABEL_10:
@@ -1389,10 +1389,10 @@ LABEL_10:
   return v7;
 }
 
-+ (id)colorForName:(id)a3
++ (id)colorForName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Black"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Black"])
   {
     v4 = +[WFColor blackColor];
 LABEL_18:
@@ -1400,13 +1400,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v3 isEqualToString:@"White"])
+  if ([nameCopy isEqualToString:@"White"])
   {
     v4 = +[WFColor whiteColor];
     goto LABEL_18;
   }
 
-  if ([v3 isEqualToString:@"Label"])
+  if ([nameCopy isEqualToString:@"Label"])
   {
     v5 = 1;
 LABEL_17:
@@ -1414,91 +1414,91 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([v3 isEqualToString:@"Red"])
+  if ([nameCopy isEqualToString:@"Red"])
   {
     v5 = 2;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Green"])
+  if ([nameCopy isEqualToString:@"Green"])
   {
     v5 = 3;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Blue"])
+  if ([nameCopy isEqualToString:@"Blue"])
   {
     v5 = 4;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Orange"])
+  if ([nameCopy isEqualToString:@"Orange"])
   {
     v5 = 5;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Yellow"])
+  if ([nameCopy isEqualToString:@"Yellow"])
   {
     v5 = 6;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Yellow_Accessibility"])
+  if ([nameCopy isEqualToString:@"Yellow_Accessibility"])
   {
     v4 = [WFColor colorWithRed:1.0 green:0.720000029 blue:0.0 alpha:1.0];
     goto LABEL_18;
   }
 
-  if ([v3 isEqualToString:@"Pink"])
+  if ([nameCopy isEqualToString:@"Pink"])
   {
     v5 = 7;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Purple"])
+  if ([nameCopy isEqualToString:@"Purple"])
   {
     v5 = 8;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Teal"])
+  if ([nameCopy isEqualToString:@"Teal"])
   {
     v5 = 9;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Indigo"])
+  if ([nameCopy isEqualToString:@"Indigo"])
   {
     v5 = 10;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Brown"])
+  if ([nameCopy isEqualToString:@"Brown"])
   {
     v5 = 11;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Mint"])
+  if ([nameCopy isEqualToString:@"Mint"])
   {
     v5 = 12;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Cyan"])
+  if ([nameCopy isEqualToString:@"Cyan"])
   {
     v5 = 13;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Gray"])
+  if ([nameCopy isEqualToString:@"Gray"])
   {
     v5 = 14;
     goto LABEL_17;
   }
 
-  if ([v3 isEqualToString:@"Clear"])
+  if ([nameCopy isEqualToString:@"Clear"])
   {
     v4 = +[WFColor clearColor];
     goto LABEL_18;
@@ -1510,67 +1510,67 @@ LABEL_19:
   return v6;
 }
 
-+ (WFColor)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
++ (WFColor)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v6 = [[WFColor alloc] initWithHue:a3 saturation:a4 brightness:a5 alpha:a6];
+  v6 = [[WFColor alloc] initWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorNamed:(id)a3 inBundle:(id)a4
++ (id)colorNamed:(id)named inBundle:(id)bundle
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[WFColor alloc] initWithColorName:v6 inBundle:v5];
+  bundleCopy = bundle;
+  namedCopy = named;
+  v7 = [[WFColor alloc] initWithColorName:namedCopy inBundle:bundleCopy];
 
   return v7;
 }
 
-+ (WFColor)colorWithSystemColor:(unint64_t)a3
++ (WFColor)colorWithSystemColor:(unint64_t)color
 {
-  v3 = [[WFColor alloc] initWithSystemColor:a3];
+  v3 = [[WFColor alloc] initWithSystemColor:color];
 
   return v3;
 }
 
-+ (WFColor)colorWithDisplayP3Red:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (WFColor)colorWithDisplayP3Red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[WFColor alloc] initWithDisplayP3Red:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[WFColor alloc] initWithDisplayP3Red:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (WFColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (WFColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[WFColor alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[WFColor alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (WFColor)colorWithWhite:(double)a3 alpha:(double)a4
++ (WFColor)colorWithWhite:(double)white alpha:(double)alpha
 {
-  v4 = [[WFColor alloc] initWithWhite:a3 alpha:a4];
+  v4 = [[WFColor alloc] initWithWhite:white alpha:alpha];
 
   return v4;
 }
 
-+ (WFColor)colorWithCGColor:(CGColor *)a3
++ (WFColor)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[WFColor alloc] initWithCGColor:a3];
+  v3 = [[WFColor alloc] initWithCGColor:color];
 
   return v3;
 }
 
-+ (WFColor)colorWithFocusColorName:(id)a3
++ (WFColor)colorWithFocusColorName:(id)name
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  nameCopy = name;
   if (colorWithFocusColorName__onceToken != -1)
   {
     dispatch_once(&colorWithFocusColorName__onceToken, &__block_literal_global_19076);
   }
 
-  v4 = [colorWithFocusColorName__colorMapping objectForKeyedSubscript:v3];
+  v4 = [colorWithFocusColorName__colorMapping objectForKeyedSubscript:nameCopy];
   v5 = v4;
   if (v4)
   {
@@ -1585,7 +1585,7 @@ LABEL_19:
       v10 = 136315394;
       v11 = "+[WFColor(Focus) colorWithFocusColorName:]";
       v12 = 2112;
-      v13 = v3;
+      v13 = nameCopy;
       _os_log_impl(&dword_1B1DE3000, v7, OS_LOG_TYPE_FAULT, "%s Given a Focus color (%@), but we couldn't map it to a WFColor. Are there new Focus colors?", &v10, 0x16u);
     }
 
@@ -1603,16 +1603,16 @@ void __42__WFColor_Focus__colorWithFocusColorName___block_invoke()
   colorWithFocusColorName__colorMapping = &unk_1F29317E0;
 }
 
-+ (id)tintColorForBundleIdentifier:(id)a3
++ (id)tintColorForBundleIdentifier:(id)identifier
 {
   v3 = tintColorForBundleIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&tintColorForBundleIdentifier__onceToken, &__block_literal_global_135);
   }
 
-  v5 = [tintColorForBundleIdentifier__bundleIdentifierMapping objectForKeyedSubscript:v4];
+  v5 = [tintColorForBundleIdentifier__bundleIdentifierMapping objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }

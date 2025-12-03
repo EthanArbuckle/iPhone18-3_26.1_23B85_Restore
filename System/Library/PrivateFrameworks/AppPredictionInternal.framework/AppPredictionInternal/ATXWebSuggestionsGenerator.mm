@@ -1,13 +1,13 @@
 @interface ATXWebSuggestionsGenerator
 - (ATXWebSuggestionsGenerator)init;
-- (id)dedupedUrlsFromUrls:(id)a3 limit:(unint64_t)a4;
-- (id)rootUrlFromUrl:(id)a3;
-- (id)urlToDatesGivenWebpageHistory:(id)a3;
+- (id)dedupedUrlsFromUrls:(id)urls limit:(unint64_t)limit;
+- (id)rootUrlFromUrl:(id)url;
+- (id)urlToDatesGivenWebpageHistory:(id)history;
 - (id)webpageHistory;
-- (id)webpageTitlesAndSubtitlesGivenWebpageHistory:(id)a3;
+- (id)webpageTitlesAndSubtitlesGivenWebpageHistory:(id)history;
 - (id)websitePredictionsForAllContexts;
-- (id)websitePredictionsForContextType:(id)a3 limit:(unint64_t)a4;
-- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)a3 contextType:(id)a4;
+- (id)websitePredictionsForContextType:(id)type limit:(unint64_t)limit;
+- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)string contextType:(id)type;
 - (void)refreshWebsitePredictions;
 @end
 
@@ -31,8 +31,8 @@
 - (void)refreshWebsitePredictions
 {
   v55 = *MEMORY[0x277D85DE8];
-  v23 = [(ATXWebSuggestionsGenerator *)self webpageHistory];
-  v24 = [(ATXWebSuggestionsGenerator *)self urlToDatesGivenWebpageHistory:v23];
+  webpageHistory = [(ATXWebSuggestionsGenerator *)self webpageHistory];
+  v24 = [(ATXWebSuggestionsGenerator *)self urlToDatesGivenWebpageHistory:webpageHistory];
   if ([v24 count])
   {
     v22 = objc_alloc_init(ATXContextHeuristicsBiomeStream);
@@ -60,7 +60,7 @@
     v38[2] = __55__ATXWebSuggestionsGenerator_refreshWebsitePredictions__block_invoke_2;
     v38[3] = &unk_2785997A0;
     v39 = v24;
-    v40 = self;
+    selfCopy = self;
     v41 = v52;
     v42 = v44;
     v43 = &v46;
@@ -142,7 +142,7 @@
     [(ATXVerticalModelsCache *)cache writeWebsiteSuggestionsCache:v17];
 
     v18 = self->_cache;
-    v19 = [(ATXWebSuggestionsGenerator *)self webpageTitlesAndSubtitlesGivenWebpageHistory:v23];
+    v19 = [(ATXWebSuggestionsGenerator *)self webpageTitlesAndSubtitlesGivenWebpageHistory:webpageHistory];
     [(ATXVerticalModelsCache *)v18 writeWebsiteTitlesAndSubtitlesCache:v19];
 
     _Block_object_dispose(v44, 8);
@@ -304,35 +304,35 @@ LABEL_21:
 
 - (id)websitePredictionsForAllContexts
 {
-  v3 = [(ATXVerticalModelsCache *)self->_cache fetchWebsiteSuggestionsCache];
-  if (![v3 count])
+  fetchWebsiteSuggestionsCache = [(ATXVerticalModelsCache *)self->_cache fetchWebsiteSuggestionsCache];
+  if (![fetchWebsiteSuggestionsCache count])
   {
     [(ATXWebSuggestionsGenerator *)self refreshWebsitePredictions];
-    v4 = [(ATXVerticalModelsCache *)self->_cache fetchWebsiteSuggestionsCache];
+    fetchWebsiteSuggestionsCache2 = [(ATXVerticalModelsCache *)self->_cache fetchWebsiteSuggestionsCache];
 
-    v3 = v4;
+    fetchWebsiteSuggestionsCache = fetchWebsiteSuggestionsCache2;
   }
 
-  return v3;
+  return fetchWebsiteSuggestionsCache;
 }
 
-- (id)websitePredictionsForContextType:(id)a3 limit:(unint64_t)a4
+- (id)websitePredictionsForContextType:(id)type limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(ATXWebSuggestionsGenerator *)self websitePredictionsForAllContexts];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  typeCopy = type;
+  websitePredictionsForAllContexts = [(ATXWebSuggestionsGenerator *)self websitePredictionsForAllContexts];
+  v8 = [websitePredictionsForAllContexts objectForKeyedSubscript:typeCopy];
 
   if (v8)
   {
-    v9 = [v8 allObjects];
+    allObjects = [v8 allObjects];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit___block_invoke;
     v13[3] = &unk_278597CB8;
     v14 = v8;
-    v10 = [v9 sortedArrayUsingComparator:v13];
+    v10 = [allObjects sortedArrayUsingComparator:v13];
 
-    v11 = [(ATXWebSuggestionsGenerator *)self dedupedUrlsFromUrls:v10 limit:a4];
+    v11 = [(ATXWebSuggestionsGenerator *)self dedupedUrlsFromUrls:v10 limit:limit];
   }
 
   else
@@ -361,14 +361,14 @@ uint64_t __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit
   }
 }
 
-- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)a3 contextType:(id)a4
+- (void)overwriteWebsitePredictionsCacheWithWebsiteString:(id)string contextType:(id)type
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  typeCopy = type;
   [(ATXWebSuggestionsGenerator *)self refreshWebsitePredictions];
   v8 = objc_opt_new();
-  v9 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+  v9 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
   v10 = 10;
   do
   {
@@ -378,7 +378,7 @@ uint64_t __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit
 
   while (v10);
   cache = self->_cache;
-  v14 = v7;
+  v14 = typeCopy;
   v15[0] = v8;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   [(ATXVerticalModelsCache *)cache writeWebsiteSuggestionsCache:v12];
@@ -386,16 +386,16 @@ uint64_t __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)urlToDatesGivenWebpageHistory:(id)a3
+- (id)urlToDatesGivenWebpageHistory:(id)history
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  historyCopy = history;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = historyCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -411,17 +411,17 @@ uint64_t __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 action];
-        v12 = [v11 userActivity];
+        action = [v10 action];
+        userActivity = [action userActivity];
 
-        v13 = [v10 dateInterval];
-        v14 = [v13 startDate];
+        dateInterval = [v10 dateInterval];
+        startDate = [dateInterval startDate];
 
-        v15 = [v12 webpageURL];
-        v16 = v15;
-        if (v14)
+        webpageURL = [userActivity webpageURL];
+        v16 = webpageURL;
+        if (startDate)
         {
-          v17 = v15 == 0;
+          v17 = webpageURL == 0;
         }
 
         else
@@ -431,7 +431,7 @@ uint64_t __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit
 
         if (!v17)
         {
-          v18 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v14 forKey:v15];
+          v18 = [MEMORY[0x277CBEAC0] dictionaryWithObject:startDate forKey:webpageURL];
           [v4 addObject:v18];
         }
       }
@@ -457,33 +457,33 @@ uint64_t __69__ATXWebSuggestionsGenerator_websitePredictionsForContextType_limit
   return v5;
 }
 
-- (id)rootUrlFromUrl:(id)a3
+- (id)rootUrlFromUrl:(id)url
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
+  urlCopy = url;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 scheme];
-  [v5 setScheme:v6];
+  scheme = [urlCopy scheme];
+  [v5 setScheme:scheme];
 
-  v7 = [v4 host];
+  host = [urlCopy host];
 
-  [v5 setHost:v7];
+  [v5 setHost:host];
   v8 = [v5 URL];
 
   return v8;
 }
 
-- (id)dedupedUrlsFromUrls:(id)a3 limit:(unint64_t)a4
+- (id)dedupedUrlsFromUrls:(id)urls limit:(unint64_t)limit
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  urlsCopy = urls;
   v19 = objc_opt_new();
   v7 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = urlsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -499,7 +499,7 @@ LABEL_3:
         objc_enumerationMutation(v8);
       }
 
-      if (v11 == a4)
+      if (v11 == limit)
       {
         break;
       }
@@ -532,16 +532,16 @@ LABEL_3:
   return v16;
 }
 
-- (id)webpageTitlesAndSubtitlesGivenWebpageHistory:(id)a3
+- (id)webpageTitlesAndSubtitlesGivenWebpageHistory:(id)history
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  historyCopy = history;
   v4 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v3;
+  v5 = historyCopy;
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -556,16 +556,16 @@ LABEL_3:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * i) action];
-        v11 = [v10 userActivity];
-        v12 = [v11 webpageURL];
+        action = [*(*(&v22 + 1) + 8 * i) action];
+        userActivity = [action userActivity];
+        webpageURL = [userActivity webpageURL];
 
-        v13 = [v10 actionTitle];
-        v14 = [v10 actionSubtitle];
-        v15 = v14;
-        if (v12)
+        actionTitle = [action actionTitle];
+        actionSubtitle = [action actionSubtitle];
+        v15 = actionSubtitle;
+        if (webpageURL)
         {
-          v16 = v13 == 0;
+          v16 = actionTitle == 0;
         }
 
         else
@@ -573,12 +573,12 @@ LABEL_3:
           v16 = 1;
         }
 
-        if (!v16 && v14 != 0)
+        if (!v16 && actionSubtitle != 0)
         {
-          v26[0] = v13;
-          v26[1] = v14;
+          v26[0] = actionTitle;
+          v26[1] = actionSubtitle;
           v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-          [v4 setObject:v18 forKeyedSubscript:v12];
+          [v4 setObject:v18 forKeyedSubscript:webpageURL];
         }
       }
 

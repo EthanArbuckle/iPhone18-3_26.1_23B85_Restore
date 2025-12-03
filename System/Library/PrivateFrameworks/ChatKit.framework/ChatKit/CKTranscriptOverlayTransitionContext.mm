@@ -26,9 +26,9 @@
     v4 = @"NO";
   }
 
-  v6 = [(CKTranscriptOverlayTransitionContext *)self anchorChatItemGUID];
-  v7 = [(CKTranscriptOverlayTransitionContext *)self visibleChatItemToFrameMap];
-  v8 = [v3 stringWithFormat:@"modal %@ unanimated: %@ anchor GUID %@ frames: %@", v5, v4, v6, v7];
+  anchorChatItemGUID = [(CKTranscriptOverlayTransitionContext *)self anchorChatItemGUID];
+  visibleChatItemToFrameMap = [(CKTranscriptOverlayTransitionContext *)self visibleChatItemToFrameMap];
+  v8 = [v3 stringWithFormat:@"modal %@ unanimated: %@ anchor GUID %@ frames: %@", v5, v4, anchorChatItemGUID, visibleChatItemToFrameMap];
 
   return v8;
 }

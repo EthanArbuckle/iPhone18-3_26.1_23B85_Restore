@@ -1,19 +1,19 @@
 @interface GCSettingsCustomizationsController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (id)buttonsSectionsSpecifiers;
 - (id)getEnableCustomizationsValue;
 - (id)getHapticsValue;
-- (id)getMappableElementsToSystemGesturesElements:(id)a3;
-- (id)getRemappableElements:(id)a3;
+- (id)getMappableElementsToSystemGesturesElements:(id)elements;
+- (id)getRemappableElements:(id)elements;
 - (id)newSpecifiers;
-- (id)screenshotSettingStatus:(id)a3;
-- (id)shareGestureDetailLabel:(id)a3;
+- (id)screenshotSettingStatus:(id)status;
+- (id)shareGestureDetailLabel:(id)label;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)videoRecordingSettingStatus:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)videoRecordingSettingStatus:(id)status;
 - (void)dealloc;
 - (void)deleteAppSettings;
-- (void)didSelectItemInRemapController:(id)a3 item:(id)a4;
+- (void)didSelectItemInRemapController:(id)controller item:(id)item;
 - (void)filterSupportedApps;
 - (void)initSettings;
 - (void)launchAppsController;
@@ -21,14 +21,14 @@
 - (void)loadDevice;
 - (void)loadRemappableButtons;
 - (void)navigateBackToPreviousViewController;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onLoadItemInRemapController:(id)a3 item:(id)a4 cell:(id)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onLoadItemInRemapController:(id)controller item:(id)item cell:(id)cell;
 - (void)resetRemapping;
 - (void)restoreToDefaults;
-- (void)setEnableCustomizationsValue:(id)a3;
-- (void)setHapticsValue:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setEnableCustomizationsValue:(id)value;
+- (void)setHapticsValue:(id)value;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -69,17 +69,17 @@
         }
 
         v5 = *(*(&v30 + 1) + 8 * i);
-        v6 = [v5 bundleIdentifier];
+        bundleIdentifier = [v5 bundleIdentifier];
 
-        if (v6)
+        if (bundleIdentifier)
         {
           v24 = v5;
-          v7 = [v5 supportedGameControllers];
+          supportedGameControllers = [v5 supportedGameControllers];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v8 = v7;
+          v8 = supportedGameControllers;
           v9 = [v8 countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v9)
           {
@@ -100,9 +100,9 @@
                 if (v14)
                 {
 
-                  v15 = [(GCController *)self->_device identifier];
-                  v16 = [v24 bundleIdentifier];
-                  v17 = [GCControllerSettings settingsCustomizedForController:v15 forBundleIdentifier:v16];
+                  identifier = [(GCController *)self->_device identifier];
+                  bundleIdentifier2 = [v24 bundleIdentifier];
+                  v17 = [GCControllerSettings settingsCustomizedForController:identifier forBundleIdentifier:bundleIdentifier2];
 
                   if (v17)
                   {
@@ -147,8 +147,8 @@ LABEL_20:
 
 - (void)dealloc
 {
-  v3 = [(GCController *)self->_device identifier];
-  [GCControllerSettings unregisterSettingsCustomizedHandlerForController:v3 forKey:self->_settingsCustomizedIdentifier];
+  identifier = [(GCController *)self->_device identifier];
+  [GCControllerSettings unregisterSettingsCustomizedHandlerForController:identifier forKey:self->_settingsCustomizedIdentifier];
 
   [(GCControllerSettings *)self->_settings removeObserver:self forKeyPath:@"screenShotEnabled"];
   [(GCControllerSettings *)self->_settings removeObserver:self forKeyPath:@"videoRecordingEnabled"];
@@ -171,8 +171,8 @@ LABEL_20:
     v7 = v6;
     if (v5)
     {
-      v8 = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
-      v9 = [v7 initWithBundleIdentifier:v8 forController:self->_device];
+      bundleIdentifier = [(LSApplicationRecord *)self->_appRecord bundleIdentifier];
+      v9 = [v7 initWithBundleIdentifier:bundleIdentifier forController:self->_device];
       settings = self->_settings;
       self->_settings = v9;
     }
@@ -180,7 +180,7 @@ LABEL_20:
     else
     {
       v11 = [v6 initForController:self->_device];
-      v8 = self->_settings;
+      bundleIdentifier = self->_settings;
       self->_settings = v11;
     }
 
@@ -193,13 +193,13 @@ LABEL_20:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (off_115B40 == a6)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (off_115B40 == context)
   {
-    if ([v10 isEqualToString:@"screenShotEnabled"])
+    if ([pathCopy isEqualToString:@"screenShotEnabled"])
     {
       v12 = @"ScreenshotCustomization";
     }
@@ -230,24 +230,24 @@ LABEL_20:
 
   v15.receiver = self;
   v15.super_class = GCSettingsCustomizationsController;
-  [(GCSettingsCustomizationsController *)&v15 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(GCSettingsCustomizationsController *)&v15 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 LABEL_10:
 }
 
 - (void)navigateBackToPreviousViewController
 {
-  v3 = [(GCSettingsCustomizationsController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 indexOfObject:self];
+  navigationController = [(GCSettingsCustomizationsController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v5 = [viewControllers indexOfObject:self];
 
   if (v5 && v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(GCSettingsCustomizationsController *)self navigationController];
-    v7 = [v6 viewControllers];
-    v10 = [v7 objectAtIndex:v5 - 1];
+    navigationController2 = [(GCSettingsCustomizationsController *)self navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    v10 = [viewControllers2 objectAtIndex:v5 - 1];
 
-    v8 = [(GCSettingsCustomizationsController *)self navigationController];
-    v9 = [v8 popToViewController:v10 animated:1];
+    navigationController3 = [(GCSettingsCustomizationsController *)self navigationController];
+    v9 = [navigationController3 popToViewController:v10 animated:1];
   }
 }
 
@@ -280,15 +280,15 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (id)getRemappableElements:(id)a3
+- (id)getRemappableElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -307,11 +307,11 @@ LABEL_10:
         if ([v11 remappable])
         {
           elements = self->_elements;
-          v13 = [v11 primaryAlias];
-          [(NSMutableDictionary *)elements setObject:v11 forKey:v13];
+          primaryAlias = [v11 primaryAlias];
+          [(NSMutableDictionary *)elements setObject:v11 forKey:primaryAlias];
 
-          v14 = [v11 primaryAlias];
-          [v5 addObject:v14];
+          primaryAlias2 = [v11 primaryAlias];
+          [v5 addObject:primaryAlias2];
         }
       }
 
@@ -331,15 +331,15 @@ LABEL_10:
   return v15;
 }
 
-- (id)getMappableElementsToSystemGesturesElements:(id)a3
+- (id)getMappableElementsToSystemGesturesElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v5 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -358,11 +358,11 @@ LABEL_10:
         if ([v11 mappableToSystemGestures])
         {
           elements = self->_elements;
-          v13 = [v11 primaryAlias];
-          [(NSMutableDictionary *)elements setObject:v11 forKey:v13];
+          primaryAlias = [v11 primaryAlias];
+          [(NSMutableDictionary *)elements setObject:v11 forKey:primaryAlias];
 
-          v14 = [v11 primaryAlias];
-          [v5 addObject:v14];
+          primaryAlias2 = [v11 primaryAlias];
+          [v5 addObject:primaryAlias2];
         }
       }
 
@@ -406,16 +406,16 @@ LABEL_10:
     dstAuxiliaryButtons = self->_dstAuxiliaryButtons;
     self->_dstAuxiliaryButtons = v11;
 
-    v13 = [(GCController *)self->_device extendedGamepad];
-    v18 = [v13 allButtons];
+    extendedGamepad = [(GCController *)self->_device extendedGamepad];
+    allButtons = [extendedGamepad allButtons];
 
-    v14 = [(GCSettingsCustomizationsController *)self getRemappableElements:v18];
+    v14 = [(GCSettingsCustomizationsController *)self getRemappableElements:allButtons];
     [(NSMutableArray *)self->_srcElements addObjectsFromArray:v14];
     [(NSMutableArray *)self->_dstButtons addObjectsFromArray:v14];
-    v15 = [(GCController *)self->_device extendedGamepad];
-    v16 = [v15 allDpads];
+    extendedGamepad2 = [(GCController *)self->_device extendedGamepad];
+    allDpads = [extendedGamepad2 allDpads];
 
-    v17 = [(GCSettingsCustomizationsController *)self getRemappableElements:v16];
+    v17 = [(GCSettingsCustomizationsController *)self getRemappableElements:allDpads];
     [(NSMutableArray *)self->_srcElements addObjectsFromArray:v17];
     [(NSMutableArray *)self->_dstDpads addObjectsFromArray:v17];
   }
@@ -427,9 +427,9 @@ LABEL_10:
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(GCSettingsCustomizationsController *)self newSpecifiers];
+    newSpecifiers = [(GCSettingsCustomizationsController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -475,8 +475,8 @@ LABEL_10:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v9 unmappedLocalizedName];
-            v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+            unmappedLocalizedName = [v9 unmappedLocalizedName];
+            v11 = [PSSpecifier preferenceSpecifierNamed:unmappedLocalizedName target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
             [v11 setProperty:self->_dstButtons forKey:@"ButtonRemapControllerValues"];
 LABEL_12:
@@ -488,8 +488,8 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || [v9 mappableToSystemGestures] && (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v12 = [v9 unmappedLocalizedName];
-          v11 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+          unmappedLocalizedName2 = [v9 unmappedLocalizedName];
+          v11 = [PSSpecifier preferenceSpecifierNamed:unmappedLocalizedName2 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           goto LABEL_12;
         }
@@ -514,132 +514,132 @@ LABEL_19:
   return v16;
 }
 
-- (void)onLoadItemInRemapController:(id)a3 item:(id)a4 cell:(id)a5
+- (void)onLoadItemInRemapController:(id)controller item:(id)item cell:(id)cell
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 specifier];
-  v12 = [v11 propertyForKey:@"remapControllerType"];
+  cellCopy = cell;
+  itemCopy = item;
+  controllerCopy = controller;
+  specifier = [controllerCopy specifier];
+  v12 = [specifier propertyForKey:@"remapControllerType"];
   v13 = [v12 isEqualToString:@"ReplayKit"];
 
   if (v13)
   {
-    v14 = [v9 integerValue];
+    integerValue = [itemCopy integerValue];
 
-    v29 = sub_3544(v14);
-    v15 = [v8 titleLabel];
-    [v15 setText:v29];
+    v29 = sub_3544(integerValue);
+    titleLabel = [cellCopy titleLabel];
+    [titleLabel setText:v29];
 
-    v16 = [v10 specifier];
+    specifier2 = [controllerCopy specifier];
 
-    v17 = [v16 propertyForKey:@"GCGestureType"];
+    v17 = [specifier2 propertyForKey:@"GCGestureType"];
 
-    v18 = [(GCControllerSettings *)self->_settings replayKitGestureSettings];
-    v19 = [v18 gestureModeForGestureType:{objc_msgSend(v17, "intValue")}];
+    replayKitGestureSettings = [(GCControllerSettings *)self->_settings replayKitGestureSettings];
+    v19 = [replayKitGestureSettings gestureModeForGestureType:{objc_msgSend(v17, "intValue")}];
 
-    [v8 setChecked:v19 == v14];
+    [cellCopy setChecked:v19 == integerValue];
   }
 
   else
   {
-    v29 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v9];
+    v29 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:itemCopy];
 
-    v20 = [v29 unmappedSfSymbolsName];
-    sub_A26C(v8, v20);
+    unmappedSfSymbolsName = [v29 unmappedSfSymbolsName];
+    sub_A26C(cellCopy, unmappedSfSymbolsName);
 
-    v21 = [v8 titleLabel];
-    v22 = [v29 unmappedLocalizedName];
-    [v21 setText:v22];
+    titleLabel2 = [cellCopy titleLabel];
+    unmappedLocalizedName = [v29 unmappedLocalizedName];
+    [titleLabel2 setText:unmappedLocalizedName];
 
-    v23 = [v10 specifier];
+    specifier3 = [controllerCopy specifier];
 
-    v17 = [v23 propertyForKey:@"ControllerElement"];
+    v17 = [specifier3 propertyForKey:@"ControllerElement"];
 
     v24 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v17];
     v25 = [(GCControllerSettings *)self->_settings mappingForElement:v24];
-    v26 = [v29 primaryAlias];
-    v27 = [v25 primaryAlias];
-    v28 = [v26 isEqualToString:v27];
+    primaryAlias = [v29 primaryAlias];
+    primaryAlias2 = [v25 primaryAlias];
+    v28 = [primaryAlias isEqualToString:primaryAlias2];
 
-    [v8 setChecked:v28];
-    v8 = v24;
+    [cellCopy setChecked:v28];
+    cellCopy = v24;
   }
 }
 
-- (void)didSelectItemInRemapController:(id)a3 item:(id)a4
+- (void)didSelectItemInRemapController:(id)controller item:(id)item
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [v17 specifier];
-  v8 = [v7 propertyForKey:@"remapControllerType"];
+  controllerCopy = controller;
+  itemCopy = item;
+  specifier = [controllerCopy specifier];
+  v8 = [specifier propertyForKey:@"remapControllerType"];
   v9 = [v8 isEqualToString:@"ReplayKit"];
 
   if (v9)
   {
-    v10 = [v6 integerValue];
-    v11 = [v17 specifier];
-    v12 = [v11 propertyForKey:@"GCGestureType"];
+    integerValue = [itemCopy integerValue];
+    specifier2 = [controllerCopy specifier];
+    v12 = [specifier2 propertyForKey:@"GCGestureType"];
 
-    v13 = [v12 intValue];
-    v14 = [(GCControllerSettings *)self->_settings replayKitGestureSettings];
-    [v14 setGestureMode:v10 forGestureType:v13];
-    [(GCControllerSettings *)self->_settings setReplayKitGestureSettings:v14];
+    intValue = [v12 intValue];
+    replayKitGestureSettings = [(GCControllerSettings *)self->_settings replayKitGestureSettings];
+    [replayKitGestureSettings setGestureMode:integerValue forGestureType:intValue];
+    [(GCControllerSettings *)self->_settings setReplayKitGestureSettings:replayKitGestureSettings];
   }
 
   else
   {
-    v15 = [v17 specifier];
-    v12 = [v15 propertyForKey:@"ControllerElement"];
+    specifier3 = [controllerCopy specifier];
+    v12 = [specifier3 propertyForKey:@"ControllerElement"];
 
-    v14 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v12];
-    v16 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v6];
-    [(GCControllerSettings *)self->_settings setMappingForElement:v14 toElement:v16];
+    replayKitGestureSettings = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v12];
+    v16 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:itemCopy];
+    [(GCControllerSettings *)self->_settings setMappingForElement:replayKitGestureSettings toElement:v16];
     [(GCSettingsCustomizationsController *)self reloadSpecifiers];
   }
 }
 
 - (id)getEnableCustomizationsValue
 {
-  v2 = [(GCSettingsCustomizationsController *)self settings];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 customizationsEnabled]);
+  settings = [(GCSettingsCustomizationsController *)self settings];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [settings customizationsEnabled]);
 
   return v3;
 }
 
-- (void)setEnableCustomizationsValue:(id)a3
+- (void)setEnableCustomizationsValue:(id)value
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(GCSettingsCustomizationsController *)self settings];
-  [v5 setCustomizationsEnabled:v4];
+  bOOLValue = [value BOOLValue];
+  settings = [(GCSettingsCustomizationsController *)self settings];
+  [settings setCustomizationsEnabled:bOOLValue];
 }
 
-- (void)setHapticsValue:(id)a3
+- (void)setHapticsValue:(id)value
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(GCSettingsCustomizationsController *)self settings];
-  [v5 setHapticsEnabled:v4];
+  bOOLValue = [value BOOLValue];
+  settings = [(GCSettingsCustomizationsController *)self settings];
+  [settings setHapticsEnabled:bOOLValue];
 }
 
 - (id)getHapticsValue
 {
-  v2 = [(GCSettingsCustomizationsController *)self settings];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 hapticsEnabled]);
+  settings = [(GCSettingsCustomizationsController *)self settings];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [settings hapticsEnabled]);
 
   return v3;
 }
 
 - (void)deleteAppSettings
 {
-  v3 = [(GCSettingsCustomizationsController *)self settings];
-  [v3 eraseAllSettings];
+  settings = [(GCSettingsCustomizationsController *)self settings];
+  [settings eraseAllSettings];
 
-  v4 = [(GCSettingsCustomizationsController *)self parentController];
-  [v4 reloadSpecifiers];
+  parentController = [(GCSettingsCustomizationsController *)self parentController];
+  [parentController reloadSpecifiers];
   [(GCSettingsCustomizationsController *)self navigateBackToPreviousViewController];
 }
 
-- (id)screenshotSettingStatus:(id)a3
+- (id)screenshotSettingStatus:(id)status
 {
   if ([(GCControllerSettings *)self->_settings screenShotEnabled])
   {
@@ -656,7 +656,7 @@ LABEL_19:
   return v4;
 }
 
-- (id)videoRecordingSettingStatus:(id)a3
+- (id)videoRecordingSettingStatus:(id)status
 {
   if ([(GCControllerSettings *)self->_settings videoRecordingEnabled])
   {
@@ -680,36 +680,36 @@ LABEL_19:
   [(GCSettingsCustomizationsController *)self reloadSpecifiers];
 }
 
-- (id)shareGestureDetailLabel:(id)a3
+- (id)shareGestureDetailLabel:(id)label
 {
   settings = self->_settings;
-  v4 = a3;
-  v5 = [(GCControllerSettings *)settings replayKitGestureSettings];
-  v6 = [v4 propertyForKey:@"GCGestureType"];
+  labelCopy = label;
+  replayKitGestureSettings = [(GCControllerSettings *)settings replayKitGestureSettings];
+  v6 = [labelCopy propertyForKey:@"GCGestureType"];
 
-  v7 = sub_3544([v5 gestureModeForGestureType:{objc_msgSend(v6, "intValue")}]);
+  v7 = sub_3544([replayKitGestureSettings gestureModeForGestureType:{objc_msgSend(v6, "intValue")}]);
 
   return v7;
 }
 
 - (id)newSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   self->_buttonsSectionStart = -1;
   self->_appsSectionStart = -1;
   [(GCSettingsCustomizationsController *)self loadDevice];
-  [(GCSettingsCustomizationsController *)v2 loadCustomizableApps];
-  [(GCSettingsCustomizationsController *)v2 initSettings];
+  [(GCSettingsCustomizationsController *)selfCopy loadCustomizableApps];
+  [(GCSettingsCustomizationsController *)selfCopy initSettings];
   v3 = objc_alloc_init(NSMutableArray);
-  if (!v2->_device)
+  if (!selfCopy->_device)
   {
     return v3;
   }
 
-  if (v2->_appRecord && (-[GCSettingsCustomizationsController device](v2, "device"), v4 = objc_claimAutoreleasedReturnValue(), [v4 haptics], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  if (selfCopy->_appRecord && (-[GCSettingsCustomizationsController device](selfCopy, "device"), v4 = objc_claimAutoreleasedReturnValue(), [v4 haptics], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = sub_9E38(@"HAPTICS_TITLE");
-    v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:v2 set:"setHapticsValue:" get:"getHapticsValue" detail:0 cell:6 edit:0];
+    v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:selfCopy set:"setHapticsValue:" get:"getHapticsValue" detail:0 cell:6 edit:0];
 
     [v3 addObject:v7];
     v8 = 1;
@@ -723,37 +723,37 @@ LABEL_19:
   v9 = [PSSpecifier groupSpecifierWithID:@"ButtonsGroup"];
   [v3 addObject:v9];
 
-  v10 = [(GCSettingsCustomizationsController *)v2 buttonsSectionsSpecifiers];
-  [v3 addObjectsFromArray:v10];
+  buttonsSectionsSpecifiers = [(GCSettingsCustomizationsController *)selfCopy buttonsSectionsSpecifiers];
+  [v3 addObjectsFromArray:buttonsSectionsSpecifiers];
 
-  v2->_buttonsSectionStart = v8;
+  selfCopy->_buttonsSectionStart = v8;
   v68 = [PSSpecifier groupSpecifierWithID:@"ResetToDefaultsButtonGroup"];
   [v3 addObject:?];
   v11 = sub_9E38(@"RESTORE_BUTTON_DEFAULTS_TITLE");
-  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:v2 set:0 get:0 detail:0 cell:13 edit:0];
+  v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
   [v12 setButtonAction:"restoreToDefaults"];
   v69 = v12;
   [v3 addObject:v12];
-  v13 = [(GCSettingsCustomizationsController *)v2 device];
-  v14 = [v13 physicalInputProfile];
-  v15 = [v14 objectForKeyedSubscript:GCInputButtonShare];
+  device = [(GCSettingsCustomizationsController *)selfCopy device];
+  physicalInputProfile = [device physicalInputProfile];
+  v15 = [physicalInputProfile objectForKeyedSubscript:GCInputButtonShare];
   if (v15)
   {
 
 LABEL_9:
-    v19 = [(GCSettingsCustomizationsController *)v2 device];
-    v20 = [v19 physicalInputProfile];
-    v21 = [v20 objectForKeyedSubscript:GCInputButtonShare];
+    device2 = [(GCSettingsCustomizationsController *)selfCopy device];
+    physicalInputProfile2 = [device2 physicalInputProfile];
+    v21 = [physicalInputProfile2 objectForKeyedSubscript:GCInputButtonShare];
 
     v22 = sub_9E38(@"SHARE_GESTURES_TITLE");
     v23 = [PSSpecifier groupSpecifierWithName:v22];
 
     [v3 addObject:v23];
     v66 = sub_9EAC(@"%@", @"SHARE_GESTURES_DESC_ALT");
-    v24 = [(GCSettingsCustomizationsController *)v2 device];
-    v25 = [v24 physicalInputProfile];
-    v26 = v25;
+    device3 = [(GCSettingsCustomizationsController *)selfCopy device];
+    physicalInputProfile3 = [device3 physicalInputProfile];
+    v26 = physicalInputProfile3;
     if (v21)
     {
       v27 = GCInputButtonShare;
@@ -775,9 +775,9 @@ LABEL_9:
     }
 
     v64 = 2 * (v21 == 0);
-    v29 = [v25 objectForKeyedSubscript:v27];
-    v30 = [v29 localizedName];
-    v65 = [NSString stringWithFormat:v66, v30];
+    v29 = [physicalInputProfile3 objectForKeyedSubscript:v27];
+    localizedName = [v29 localizedName];
+    v65 = [NSString stringWithFormat:v66, localizedName];
 
     [v23 setProperty:v65 forKey:PSFooterTextGroupKey];
     v62 = sub_9E38(v28);
@@ -793,7 +793,7 @@ LABEL_9:
     v76[3] = v34;
     v35 = [NSArray arrayWithObjects:v76 count:4];
 
-    v36 = [PSSpecifier preferenceSpecifierNamed:v62 target:v2 set:0 get:"shareGestureDetailLabel:" detail:objc_opt_class() cell:2 edit:0];
+    v36 = [PSSpecifier preferenceSpecifierNamed:v62 target:selfCopy set:0 get:"shareGestureDetailLabel:" detail:objc_opt_class() cell:2 edit:0];
 
     [v36 setProperty:v35 forKey:@"ButtonRemapControllerValues"];
     v37 = PSIDKey;
@@ -806,7 +806,7 @@ LABEL_9:
     [v36 setProperty:v39 forKey:@"GCGestureType"];
 
     [v3 addObject:v36];
-    v40 = [PSSpecifier preferenceSpecifierNamed:v63 target:v2 set:0 get:"shareGestureDetailLabel:" detail:objc_opt_class() cell:2 edit:0];
+    v40 = [PSSpecifier preferenceSpecifierNamed:v63 target:selfCopy set:0 get:"shareGestureDetailLabel:" detail:objc_opt_class() cell:2 edit:0];
 
     [v40 setProperty:v35 forKey:@"ButtonRemapControllerValues"];
     [v40 setProperty:@"ReplayKitGestureSettingSecondOption" forKey:v37];
@@ -821,9 +821,9 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  v16 = [(GCSettingsCustomizationsController *)v2 device];
-  v17 = [v16 physicalInputProfile];
-  v18 = [v17 objectForKeyedSubscript:GCInputButtonOptions];
+  device4 = [(GCSettingsCustomizationsController *)selfCopy device];
+  physicalInputProfile4 = [device4 physicalInputProfile];
+  v18 = [physicalInputProfile4 objectForKeyedSubscript:GCInputButtonOptions];
 
   if (v18)
   {
@@ -833,13 +833,13 @@ LABEL_9:
   v61 = v8 | 2;
   v40 = v12;
 LABEL_16:
-  if (v2->_appRecord)
+  if (selfCopy->_appRecord)
   {
     v43 = [PSSpecifier groupSpecifierWithID:@"DeleteCustomizationGroup"];
     [v3 addObject:v43];
 
     v44 = sub_9E38(@"DELETE_CUSTOMIZATIONS_TITLE");
-    v45 = [PSSpecifier deleteButtonSpecifierWithName:v44 target:v2 action:"deleteAppSettings"];
+    v45 = [PSSpecifier deleteButtonSpecifierWithName:v44 target:selfCopy action:"deleteAppSettings"];
     [v3 addObject:v45];
 
     v46 = v68;
@@ -847,8 +847,8 @@ LABEL_16:
 
   else
   {
-    v47 = [(GCSettingsCustomizationsController *)v2 appsWithSettings];
-    v48 = [v47 count];
+    appsWithSettings = [(GCSettingsCustomizationsController *)selfCopy appsWithSettings];
+    v48 = [appsWithSettings count];
 
     v49 = sub_9E38(@"APP_CUSTOMIZATION_TITLE");
     v46 = [PSSpecifier groupSpecifierWithName:v49];
@@ -860,13 +860,13 @@ LABEL_16:
       v74 = 0u;
       v71 = 0u;
       v72 = 0u;
-      obj = [(GCSettingsCustomizationsController *)v2 appsWithSettings];
+      obj = [(GCSettingsCustomizationsController *)selfCopy appsWithSettings];
       v50 = [obj countByEnumeratingWithState:&v71 objects:v75 count:16];
       if (v50)
       {
         v51 = v50;
         v67 = v46;
-        v52 = v2;
+        v52 = selfCopy;
         v53 = 0;
         v54 = *v72;
         do
@@ -881,8 +881,8 @@ LABEL_16:
             }
 
             v57 = *(*(&v71 + 1) + 8 * v55);
-            v58 = [v57 localizedName];
-            v53 = [PSSpecifier preferenceSpecifierNamed:v58 target:v52 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+            localizedName2 = [v57 localizedName];
+            v53 = [PSSpecifier preferenceSpecifierNamed:localizedName2 target:v52 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
             [v53 setProperty:v52->_device forKey:@"Controller"];
             [v53 setProperty:v57 forKey:@"ApplicationRecord"];
@@ -897,11 +897,11 @@ LABEL_16:
 
         while (v51);
 
-        v2 = v52;
+        selfCopy = v52;
         v46 = v67;
       }
 
-      v2->_appsSectionStart = v61;
+      selfCopy->_appsSectionStart = v61;
       v46 = [PSSpecifier groupSpecifierWithID:@"AddAppButtonGroup"];
       v49 = v68;
     }
@@ -912,7 +912,7 @@ LABEL_16:
 
     [v3 addObject:v46];
     v59 = sub_9E38(@"ADD_APP_TITLE");
-    v44 = [PSSpecifier preferenceSpecifierNamed:v59 target:v2 set:0 get:0 detail:objc_opt_class() cell:13 edit:0];
+    v44 = [PSSpecifier preferenceSpecifierNamed:v59 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:13 edit:0];
 
     [v44 setButtonAction:"launchAppsController"];
     [v3 addObject:v44];
@@ -929,8 +929,8 @@ LABEL_16:
   [v3 setTitle:v4];
 
   [v3 setParentController:self];
-  v5 = [(GCSettingsCustomizationsController *)self appsWithoutSettings];
-  [v3 setApps:v5];
+  appsWithoutSettings = [(GCSettingsCustomizationsController *)self appsWithoutSettings];
+  [v3 setApps:appsWithoutSettings];
 
   [v6 setModalPresentationStyle:2];
   [v6 pushViewController:v3 animated:0];
@@ -940,91 +940,91 @@ LABEL_16:
 
 - (void)resetRemapping
 {
-  v3 = [(GCSettingsCustomizationsController *)self settings];
-  [v3 restoreElementMappingToDefault];
+  settings = [(GCSettingsCustomizationsController *)self settings];
+  [settings restoreElementMappingToDefault];
 
   [(GCSettingsCustomizationsController *)self reloadSpecifiers];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] == self->_buttonsSectionStart)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == self->_buttonsSectionStart)
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"RemappableElementCell" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"RemappableElementCell" forIndexPath:pathCopy];
     [v8 setAccessoryType:1];
-    v9 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:v7];
+    v9 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:pathCopy];
     v10 = [v9 propertyForKey:@"ControllerElement"];
     v11 = [(NSMutableDictionary *)self->_elements objectForKeyedSubscript:v10];
-    v12 = [v11 unmappedSfSymbolsName];
-    sub_A26C(v8, v12);
+    unmappedSfSymbolsName = [v11 unmappedSfSymbolsName];
+    sub_A26C(v8, unmappedSfSymbolsName);
 
-    v13 = [v8 titleLabel];
-    v14 = [v11 unmappedLocalizedName];
-    [v13 setText:v14];
+    titleLabel = [v8 titleLabel];
+    unmappedLocalizedName = [v11 unmappedLocalizedName];
+    [titleLabel setText:unmappedLocalizedName];
 
     v15 = [(GCControllerSettings *)self->_settings mappingForElement:v11];
     if ([v11 isEqual:v15])
     {
-      v16 = 0;
+      unmappedSfSymbolsName2 = 0;
     }
 
     else
     {
-      v16 = [v15 unmappedSfSymbolsName];
+      unmappedSfSymbolsName2 = [v15 unmappedSfSymbolsName];
     }
 
-    sub_A394(v8, v16);
+    sub_A394(v8, unmappedSfSymbolsName2);
   }
 
-  else if ([v7 section] == self->_appsSectionStart)
+  else if ([pathCopy section] == self->_appsSectionStart)
   {
     v27.receiver = self;
     v27.super_class = GCSettingsCustomizationsController;
-    v8 = [(GCSettingsCustomizationsController *)&v27 tableView:v6 cellForRowAtIndexPath:v7];
-    v17 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:v7];
+    v8 = [(GCSettingsCustomizationsController *)&v27 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+    v17 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:pathCopy];
     v18 = [v17 propertyForKey:@"ApplicationRecord"];
-    v19 = [v8 titleLabel];
-    v20 = [v18 localizedName];
-    [v19 setText:v20];
+    titleLabel2 = [v8 titleLabel];
+    localizedName = [v18 localizedName];
+    [titleLabel2 setText:localizedName];
 
-    v21 = [v18 bundleIdentifier];
-    v22 = [GCSettingsAppIcon appIconImageForBundleIdentifier:v21];
-    v23 = [v22 UIImage];
+    bundleIdentifier = [v18 bundleIdentifier];
+    v22 = [GCSettingsAppIcon appIconImageForBundleIdentifier:bundleIdentifier];
+    uIImage = [v22 UIImage];
 
-    [v17 setProperty:v23 forKey:PSIconImageKey];
-    v24 = [v8 iconImageView];
-    [v24 setImage:v23];
+    [v17 setProperty:uIImage forKey:PSIconImageKey];
+    iconImageView = [v8 iconImageView];
+    [iconImageView setImage:uIImage];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = GCSettingsCustomizationsController;
-    v8 = [(GCSettingsCustomizationsController *)&v26 tableView:v6 cellForRowAtIndexPath:v7];
+    v8 = [(GCSettingsCustomizationsController *)&v26 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = GCSettingsCustomizationsController;
-  [(GCSettingsCustomizationsController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(GCSettingsCustomizationsController *)&v4 tableView:view didSelectRowAtIndexPath:path];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v10 = 0;
-  if ([v5 section] == self->_appsSectionStart)
+  if ([pathCopy section] == self->_appsSectionStart)
   {
-    v6 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:v5];
-    v7 = [v6 identifier];
+    v6 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:pathCopy];
+    identifier = [v6 identifier];
     v8 = sub_9E38(@"ADD_APP_TITLE");
-    v9 = [v7 isEqualToString:v8];
+    v9 = [identifier isEqualToString:v8];
 
     if (!v9)
     {
@@ -1035,20 +1035,20 @@ LABEL_16:
   return v10;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v13 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:a5];
+    v13 = [(GCSettingsCustomizationsController *)self specifierAtIndexPath:path];
     v7 = [v13 propertyForKey:@"ApplicationRecord"];
     v8 = [GCControllerSettings alloc];
-    v9 = [v7 bundleIdentifier];
-    v10 = [(GCSettingsCustomizationsController *)self device];
-    v11 = [v8 initWithBundleIdentifier:v9 forController:v10];
+    bundleIdentifier = [v7 bundleIdentifier];
+    device = [(GCSettingsCustomizationsController *)self device];
+    v11 = [v8 initWithBundleIdentifier:bundleIdentifier forController:device];
 
     [v11 eraseAllSettings];
-    v12 = [(GCSettingsCustomizationsController *)self appsWithSettings];
-    [v12 removeObject:v7];
+    appsWithSettings = [(GCSettingsCustomizationsController *)self appsWithSettings];
+    [appsWithSettings removeObject:v7];
 
     [(GCSettingsCustomizationsController *)self removeSpecifier:v13 animated:1];
     [(GCSettingsCustomizationsController *)self reloadSpecifiers];

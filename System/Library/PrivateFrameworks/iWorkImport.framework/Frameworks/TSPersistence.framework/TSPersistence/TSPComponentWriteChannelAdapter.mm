@@ -1,17 +1,17 @@
 @interface TSPComponentWriteChannelAdapter
-- (TSPComponentWriteChannelAdapter)initWithChannel:(id)a3 handler:(id)a4;
+- (TSPComponentWriteChannelAdapter)initWithChannel:(id)channel handler:(id)handler;
 - (void)_close;
 - (void)close;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPComponentWriteChannelAdapter
 
-- (TSPComponentWriteChannelAdapter)initWithChannel:(id)a3 handler:(id)a4
+- (TSPComponentWriteChannelAdapter)initWithChannel:(id)channel handler:(id)handler
 {
-  v7 = a3;
-  v9 = a4;
-  if (v7)
+  channelCopy = channel;
+  handlerCopy = handler;
+  if (channelCopy)
   {
     v24.receiver = self;
     v24.super_class = TSPComponentWriteChannelAdapter;
@@ -24,11 +24,11 @@
       *(v10 + 1) = v12;
 
       dispatch_queue_set_specific(*(v10 + 1), qword_280A510A0, qword_280A510A0, 0);
-      v14 = _Block_copy(v9);
+      v14 = _Block_copy(handlerCopy);
       v15 = *(v10 + 3);
       *(v10 + 3) = v14;
 
-      objc_storeStrong(v10 + 2, a3);
+      objc_storeStrong(v10 + 2, channel);
     }
   }
 
@@ -46,17 +46,17 @@
   return v10;
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A58CA4;
   v7[3] = &unk_27A6E2898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 

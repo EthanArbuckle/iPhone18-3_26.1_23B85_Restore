@@ -1,6 +1,6 @@
 @interface MOVStreamMetalPixelBufferUtility
 + (id)sharedMetalPixelBufferUtility;
-- (BOOL)processBayerBuffer:(__CVBuffer *)a3 withWarholBuffer:(__CVBuffer *)a4 shiftCount:(int)a5 msbReplication:(BOOL)a6 operation:(int)a7 sampleSize:(int)a8;
+- (BOOL)processBayerBuffer:(__CVBuffer *)buffer withWarholBuffer:(__CVBuffer *)warholBuffer shiftCount:(int)count msbReplication:(BOOL)replication operation:(int)operation sampleSize:(int)size;
 - (MOVStreamMetalPixelBufferUtility)init;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __65__MOVStreamMetalPixelBufferUtility_sharedMetalPixelBufferUtility__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMetalPixelBufferUtility_onceToken != -1)
   {
     dispatch_once(&sharedMetalPixelBufferUtility_onceToken, block);
@@ -86,9 +86,9 @@ LABEL_65:
     v9 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 138543362;
-      v57 = v12;
+      v57 = localizedDescription;
       v34 = "Failed to find the default library. error: %{public}@";
       v35 = v9;
       v36 = 12;
@@ -105,8 +105,8 @@ LABEL_64:
   {
     if (+[MIOLog debugEnabled])
     {
-      v12 = +[MIOLog defaultLog];
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      localizedDescription = +[MIOLog defaultLog];
+      if (!os_log_type_enabled(localizedDescription, OS_LOG_TYPE_DEBUG))
       {
 LABEL_63:
 
@@ -115,7 +115,7 @@ LABEL_63:
 
       *buf = 0;
       v34 = "Failed to find the metal splitBayerIntoWarhol function.";
-      v35 = v12;
+      v35 = localizedDescription;
       v36 = 2;
 LABEL_24:
       _os_log_impl(&dword_257883000, v35, OS_LOG_TYPE_DEBUG, v34, buf, v36);
@@ -125,10 +125,10 @@ LABEL_24:
     goto LABEL_64;
   }
 
-  v12 = v11;
+  localizedDescription = v11;
   v13 = v2->_metalDevice;
   v53 = 0;
-  v14 = [(MTLDevice *)v13 newComputePipelineStateWithFunction:v12 error:&v53];
+  v14 = [(MTLDevice *)v13 newComputePipelineStateWithFunction:localizedDescription error:&v53];
   v15 = v53;
   v16 = v2->_pipeLineStates[0];
   v2->_pipeLineStates[0] = v14;
@@ -140,9 +140,9 @@ LABEL_24:
       v37 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
-        v38 = [v15 localizedDescription];
+        localizedDescription2 = [v15 localizedDescription];
         *buf = 138543362;
-        v57 = v38;
+        v57 = localizedDescription2;
         _os_log_impl(&dword_257883000, v37, OS_LOG_TYPE_DEBUG, "Failed to created pipeline state object, error %{public}@.", buf, 0xCu);
       }
     }
@@ -192,9 +192,9 @@ LABEL_39:
     v39 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [v20 localizedDescription];
+      localizedDescription3 = [v20 localizedDescription];
       *buf = 138543362;
-      v57 = v40;
+      v57 = localizedDescription3;
       _os_log_impl(&dword_257883000, v39, OS_LOG_TYPE_DEBUG, "Failed to created pipeline state object, error %{public}@.", buf, 0xCu);
     }
 
@@ -244,9 +244,9 @@ LABEL_49:
     v41 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
     {
-      v42 = [v25 localizedDescription];
+      localizedDescription4 = [v25 localizedDescription];
       *buf = 138543362;
-      v57 = v42;
+      v57 = localizedDescription4;
       _os_log_impl(&dword_257883000, v41, OS_LOG_TYPE_DEBUG, "Failed to created pipeline state object, error %{public}@.", buf, 0xCu);
     }
 
@@ -296,18 +296,18 @@ LABEL_60:
     v25 = v49;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
-      v48 = [v49 localizedDescription];
+      localizedDescription5 = [v49 localizedDescription];
       *buf = 138543362;
-      v57 = v48;
+      v57 = localizedDescription5;
       _os_log_impl(&dword_257883000, v43, OS_LOG_TYPE_DEBUG, "Failed to created pipeline state object, error %{public}@.", buf, 0xCu);
     }
 
     goto LABEL_60;
   }
 
-  v31 = [(MTLDevice *)v2->_metalDevice newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_metalDevice newCommandQueue];
   metalCommandQueue = v2->_metalCommandQueue;
-  v2->_metalCommandQueue = v31;
+  v2->_metalCommandQueue = newCommandQueue;
 
   if (!v2->_metalCommandQueue)
   {
@@ -341,29 +341,29 @@ LABEL_68:
   return v33;
 }
 
-- (BOOL)processBayerBuffer:(__CVBuffer *)a3 withWarholBuffer:(__CVBuffer *)a4 shiftCount:(int)a5 msbReplication:(BOOL)a6 operation:(int)a7 sampleSize:(int)a8
+- (BOOL)processBayerBuffer:(__CVBuffer *)buffer withWarholBuffer:(__CVBuffer *)warholBuffer shiftCount:(int)count msbReplication:(BOOL)replication operation:(int)operation sampleSize:(int)size
 {
-  v10 = a6;
+  replicationCopy = replication;
   v56 = *MEMORY[0x277D85DE8];
-  if (CVPixelBufferIsPlanar(a3))
+  if (CVPixelBufferIsPlanar(buffer))
   {
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
   }
 
   else
   {
-    WidthOfPlane = CVPixelBufferGetWidth(a3);
+    WidthOfPlane = CVPixelBufferGetWidth(buffer);
   }
 
   v16 = WidthOfPlane;
-  if (CVPixelBufferIsPlanar(a3))
+  if (CVPixelBufferIsPlanar(buffer))
   {
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   }
 
   else
   {
-    HeightOfPlane = CVPixelBufferGetHeight(a3);
+    HeightOfPlane = CVPixelBufferGetHeight(buffer);
   }
 
   v18 = HeightOfPlane;
@@ -383,18 +383,18 @@ LABEL_68:
 
   else
   {
-    v42 = a8;
-    v43 = a7;
-    unlockFlags = (a7 & 0xFFFFFFFD) == 0;
-    CVPixelBufferLockBaseAddress(a3, unlockFlags);
-    v45 = (a7 & 0xFFFFFFFD) != 0;
-    CVPixelBufferLockBaseAddress(a4, v45);
-    PixelBufferBaseAddress = GetPixelBufferBaseAddress(a3);
-    v22 = GetPixelBufferBaseAddress(a4);
-    PixelBufferRowBytes = GetPixelBufferRowBytes(a3);
+    sizeCopy = size;
+    operationCopy = operation;
+    unlockFlags = (operation & 0xFFFFFFFD) == 0;
+    CVPixelBufferLockBaseAddress(buffer, unlockFlags);
+    v45 = (operation & 0xFFFFFFFD) != 0;
+    CVPixelBufferLockBaseAddress(warholBuffer, v45);
+    PixelBufferBaseAddress = GetPixelBufferBaseAddress(buffer);
+    v22 = GetPixelBufferBaseAddress(warholBuffer);
+    PixelBufferRowBytes = GetPixelBufferRowBytes(buffer);
     v54 = PixelBufferRowBytes;
-    v46 = a4;
-    v24 = GetPixelBufferRowBytes(a4);
+    warholBufferCopy = warholBuffer;
+    v24 = GetPixelBufferRowBytes(warholBuffer);
     v52 = v16 >> 3;
     v53 = v24;
     v51 = (v16 >> 3) * v18;
@@ -404,44 +404,44 @@ LABEL_68:
     }
 
     v25 = v24;
-    v49 = v10;
-    v50 = a5;
+    v49 = replicationCopy;
+    countCopy = count;
     v26 = getpagesize();
     v27 = ((v25 * v18) + v26 - 1) / v26 * v26;
     v28 = [(MTLDevice *)self->_metalDevice newBufferWithBytesNoCopy:PixelBufferBaseAddress length:((PixelBufferRowBytes * v18) + v26 - 1) / v26 * v26 options:0 deallocator:0];
     v29 = [(MTLDevice *)self->_metalDevice newBufferWithBytesNoCopy:v22 length:v27 options:0 deallocator:0];
-    v30 = [(MTLCommandQueue *)self->_metalCommandQueue commandBuffer];
-    if (!v30)
+    commandBuffer = [(MTLCommandQueue *)self->_metalCommandQueue commandBuffer];
+    if (!commandBuffer)
     {
       [MOVStreamMetalPixelBufferUtility processBayerBuffer:withWarholBuffer:shiftCount:msbReplication:operation:sampleSize:];
     }
 
-    v31 = v30;
-    v32 = [v30 computeCommandEncoder];
-    if (!v32)
+    v31 = commandBuffer;
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       [MOVStreamMetalPixelBufferUtility processBayerBuffer:withWarholBuffer:shiftCount:msbReplication:operation:sampleSize:];
     }
 
-    v33 = v32;
+    v33 = computeCommandEncoder;
     v34 = v25 * (v18 >> 1);
-    v35 = &self->super.isa + v43;
-    [v32 setComputePipelineState:v35[3]];
+    v35 = &self->super.isa + operationCopy;
+    [computeCommandEncoder setComputePipelineState:v35[3]];
     [v33 setBuffer:v28 offset:0 atIndex:0];
     [v33 setBuffer:v29 offset:0 atIndex:1];
-    [v33 setBuffer:v29 offset:(v16 * v42) >> 1 atIndex:2];
+    [v33 setBuffer:v29 offset:(v16 * sizeCopy) >> 1 atIndex:2];
     [v33 setBuffer:v29 offset:v34 atIndex:3];
-    [v33 setBuffer:v29 offset:v34 + ((v16 * v42) >> 1) atIndex:4];
+    [v33 setBuffer:v29 offset:v34 + ((v16 * sizeCopy) >> 1) atIndex:4];
     [v33 setBytes:&v54 length:4 atIndex:5];
     [v33 setBytes:&v53 length:4 atIndex:6];
     [v33 setBytes:&v51 length:4 atIndex:7];
     [v33 setBytes:&v52 length:4 atIndex:8];
-    [v33 setBytes:&v50 length:4 atIndex:9];
+    [v33 setBytes:&countCopy length:4 atIndex:9];
     [v33 setBytes:&v49 length:4 atIndex:10];
-    v36 = [(objc_class *)v35[3] maxTotalThreadsPerThreadgroup];
-    if (v51 >= v36)
+    maxTotalThreadsPerThreadgroup = [(objc_class *)v35[3] maxTotalThreadsPerThreadgroup];
+    if (v51 >= maxTotalThreadsPerThreadgroup)
     {
-      v37 = v36;
+      v37 = maxTotalThreadsPerThreadgroup;
     }
 
     else
@@ -457,22 +457,22 @@ LABEL_68:
     [v33 endEncoding];
     [v31 commit];
     [v31 waitUntilCompleted];
-    v38 = [v31 error];
+    error = [v31 error];
 
-    if (v38)
+    if (error)
     {
       v39 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        v40 = [v31 error];
+        error2 = [v31 error];
         *buf = 138543362;
-        *&buf[4] = v40;
+        *&buf[4] = error2;
         _os_log_impl(&dword_257883000, v39, OS_LOG_TYPE_ERROR, "processBayerBuffer error recevied: %{public}@", buf, 0xCu);
       }
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, unlockFlags);
-    CVPixelBufferUnlockBaseAddress(v46, v45);
+    CVPixelBufferUnlockBaseAddress(buffer, unlockFlags);
+    CVPixelBufferUnlockBaseAddress(warholBufferCopy, v45);
 
     v19 = 0;
   }

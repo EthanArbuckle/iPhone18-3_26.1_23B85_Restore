@@ -1,31 +1,31 @@
 @interface VCLinkProbingHandler
-- (BOOL)isValidProbingResult:(id)a3;
-- (VCLinkProbingHandler)initWithDelegate:(id)a3;
-- (id)getProbingResultsForLinkID:(id)a3;
+- (BOOL)isValidProbingResult:(id)result;
+- (VCLinkProbingHandler)initWithDelegate:(id)delegate;
+- (id)getProbingResultsForLinkID:(id)d;
 - (void)dealloc;
-- (void)dispatchedUpdateProbingResults:(id)a3;
-- (void)dispatchedUpdateQRProbingResult:(id)a3;
-- (void)flushProbingResults:(id)a3;
+- (void)dispatchedUpdateProbingResults:(id)results;
+- (void)dispatchedUpdateQRProbingResult:(id)result;
+- (void)flushProbingResults:(id)results;
 - (void)loadStorebagValues;
 - (void)probingLockdownEnded;
 - (void)queryProbingResults;
-- (void)removeProbingResultsForLinks:(id)a3;
+- (void)removeProbingResultsForLinks:(id)links;
 - (void)requestStats;
 - (void)resetAggregatedProbingResults;
 - (void)setLinkProbingResultConfig;
-- (void)setQRLinkID:(id)a3;
-- (void)startActiveProbingOnLinks:(id)a3;
+- (void)setQRLinkID:(id)d;
+- (void)startActiveProbingOnLinks:(id)links;
 - (void)startActiveProbingQRLink;
-- (void)stopActiveProbingOnLinks:(id)a3 resetStats:(BOOL)a4;
+- (void)stopActiveProbingOnLinks:(id)links resetStats:(BOOL)stats;
 - (void)stopActiveProbingQRLink;
 - (void)updateLinkPreferenceOrder;
-- (void)updateProbingResults:(id)a3;
-- (void)updateQRProbingResult:(id)a3;
+- (void)updateProbingResults:(id)results;
+- (void)updateQRProbingResult:(id)result;
 @end
 
 @implementation VCLinkProbingHandler
 
-- (VCLinkProbingHandler)initWithDelegate:(id)a3
+- (VCLinkProbingHandler)initWithDelegate:(id)delegate
 {
   v19 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -35,7 +35,7 @@
   if (v4)
   {
     [(VCLinkProbingHandler *)v4 loadStorebagValues];
-    [(VCLinkProbingHandler *)v5 setLinkProbingHandlerDelegate:a3];
+    [(VCLinkProbingHandler *)v5 setLinkProbingHandlerDelegate:delegate];
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v5->_delegateQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.vcLinkProbing.delegateQueue", 0, CustomRootQueue);
     v5->_serialQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.vcLinkProbing.serialQueue", 0, CustomRootQueue);
@@ -112,12 +112,12 @@ uint64_t __41__VCLinkProbingHandler_initWithDelegate___block_invoke_3(uint64_t a
   [(VCLinkProbingHandler *)&v3 dealloc];
 }
 
-- (void)startActiveProbingOnLinks:(id)a3
+- (void)startActiveProbingOnLinks:(id)links
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_linkProbingCapabilityVersion)
   {
-    if (a3 && [a3 count])
+    if (links && [links count])
     {
       delegateQueue = self->_delegateQueue;
       v9[0] = MEMORY[0x1E69E9820];
@@ -125,7 +125,7 @@ uint64_t __41__VCLinkProbingHandler_initWithDelegate___block_invoke_3(uint64_t a
       v9[2] = __50__VCLinkProbingHandler_startActiveProbingOnLinks___block_invoke;
       v9[3] = &unk_1E85F37F0;
       v9[4] = self;
-      v9[5] = a3;
+      v9[5] = links;
       dispatch_async(delegateQueue, v9);
     }
 
@@ -194,7 +194,7 @@ void __50__VCLinkProbingHandler_startActiveProbingOnLinks___block_invoke(uint64_
   }
 }
 
-- (void)stopActiveProbingOnLinks:(id)a3 resetStats:(BOOL)a4
+- (void)stopActiveProbingOnLinks:(id)links resetStats:(BOOL)stats
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_linkProbingCapabilityVersion)
@@ -205,8 +205,8 @@ void __50__VCLinkProbingHandler_startActiveProbingOnLinks___block_invoke(uint64_
     block[2] = __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invoke;
     block[3] = &unk_1E85F37C8;
     block[4] = self;
-    block[5] = a3;
-    v8 = a4;
+    block[5] = links;
+    statsCopy = stats;
     dispatch_async(delegateQueue, block);
   }
 
@@ -289,7 +289,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
   }
 }
 
-- (void)updateProbingResults:(id)a3
+- (void)updateProbingResults:(id)results
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -298,11 +298,11 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
   block[2] = __45__VCLinkProbingHandler_updateProbingResults___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = results;
   dispatch_async(delegateQueue, block);
 }
 
-- (void)dispatchedUpdateProbingResults:(id)a3
+- (void)dispatchedUpdateProbingResults:(id)results
 {
   v33 = *MEMORY[0x1E69E9840];
   if (self->_linkProbingState == 1)
@@ -311,35 +311,35 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v5 = [a3 allKeys];
-    v22 = [v5 countByEnumeratingWithState:&v29 objects:v28 count:16];
+    allKeys = [results allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v29 objects:v28 count:16];
     if (v22)
     {
       v21 = *v30;
-      v20 = v5;
+      v20 = allKeys;
       do
       {
         for (i = 0; i != v22; ++i)
         {
           if (*v30 != v21)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v7 = *(*(&v29 + 1) + 8 * i);
-          v8 = -[VCLinkProbingHandler isValidProbingResult:](self, "isValidProbingResult:", [a3 objectForKeyedSubscript:v7]);
+          v8 = -[VCLinkProbingHandler isValidProbingResult:](self, "isValidProbingResult:", [results objectForKeyedSubscript:v7]);
           v9 = [(NSMutableDictionary *)self->_aggregatedProbingResults objectForKeyedSubscript:v7];
           if (v8)
           {
             if (v9)
             {
-              [-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregatedProbingResults objectForKeyedSubscript:{v7), "mergeProbingResults:", objc_msgSend(a3, "objectForKeyedSubscript:", v7)}];
+              [-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregatedProbingResults objectForKeyedSubscript:{v7), "mergeProbingResults:", objc_msgSend(results, "objectForKeyedSubscript:", v7)}];
             }
 
             else
             {
               v10 = [VCLinkProbingResult alloc];
-              v11 = [a3 objectForKeyedSubscript:v7];
+              v11 = [results objectForKeyedSubscript:v7];
               v12 = *&self->_linkProbingResultConfig.envelopeAttackFactor;
               *buf = *&self->_linkProbingResultConfig.linkProbingCapabilityVersion;
               *&buf[16] = v12;
@@ -350,7 +350,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
             if (VRTraceGetErrorLogLevelForModule() >= 7)
             {
               __str = 0;
-              v13 = [v7 intValue];
+              intValue = [v7 intValue];
               if ([(NSMutableDictionary *)self->_aggregatedProbingResults objectForKeyedSubscript:v7])
               {
                 v14 = [objc_msgSend(-[NSMutableDictionary objectForKeyedSubscript:](self->_aggregatedProbingResults objectForKeyedSubscript:{v7), "description"), "UTF8String"}];
@@ -361,7 +361,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
                 v14 = "<nil>";
               }
 
-              asprintf(&__str, "LinkProbing: Updated probing results for linkID: %d -> %s", v13, v14);
+              asprintf(&__str, "LinkProbing: Updated probing results for linkID: %d -> %s", intValue, v14);
               if (__str)
               {
                 __lasts = 0;
@@ -395,7 +395,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
                 free(__str);
               }
 
-              v5 = v20;
+              allKeys = v20;
             }
           }
 
@@ -406,7 +406,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
           }
         }
 
-        v22 = [v5 countByEnumeratingWithState:&v29 objects:v28 count:16];
+        v22 = [allKeys countByEnumeratingWithState:&v29 objects:v28 count:16];
       }
 
       while (v22);
@@ -432,46 +432,46 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
   }
 }
 
-- (void)flushProbingResults:(id)a3
+- (void)flushProbingResults:(id)results
 {
   if ([(VCLinkProbingHandler *)self linkProbingHandlerDelegate])
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     if ([(NSMutableSet *)self->_activelyProbingLinkIDs count])
     {
-      v5 = a3;
+      resultsCopy = results;
     }
 
     else
     {
-      v5 = *MEMORY[0x1E69A4AA8];
+      resultsCopy = *MEMORY[0x1E69A4AA8];
     }
 
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69A4AB8]];
+    [v6 setObject:resultsCopy forKeyedSubscript:*MEMORY[0x1E69A4AB8]];
     [(VCLinkProbingHandlerDelegate *)[(VCLinkProbingHandler *)self linkProbingHandlerDelegate] flushLinkProbingStatusWithOptions:v6];
   }
 }
 
-- (BOOL)isValidProbingResult:(id)a3
+- (BOOL)isValidProbingResult:(id)result
 {
   v5 = *MEMORY[0x1E69A4A70];
-  v6 = [a3 objectForKey:*MEMORY[0x1E69A4A70]];
+  v6 = [result objectForKey:*MEMORY[0x1E69A4A70]];
   if (v6)
   {
-    LOBYTE(v6) = [objc_msgSend(a3 objectForKeyedSubscript:{v5), "unsignedIntValue"}] >= self->_minSentRequestCountThreshold;
+    LOBYTE(v6) = [objc_msgSend(result objectForKeyedSubscript:{v5), "unsignedIntValue"}] >= self->_minSentRequestCountThreshold;
   }
 
   return v6;
 }
 
-- (void)removeProbingResultsForLinks:(id)a3
+- (void)removeProbingResultsForLinks:(id)links
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [links countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -482,7 +482,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(links);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -492,14 +492,14 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [links countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)getProbingResultsForLinkID:(id)a3
+- (id)getProbingResultsForLinkID:(id)d
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -514,7 +514,7 @@ void __60__VCLinkProbingHandler_stopActiveProbingOnLinks_resetStats___block_invo
   v6[2] = __51__VCLinkProbingHandler_getProbingResultsForLinkID___block_invoke;
   v6[3] = &unk_1E85F6638;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = d;
   v6[6] = &v7;
   dispatch_sync(delegateQueue, v6);
   v4 = v8[5];
@@ -538,7 +538,7 @@ id __51__VCLinkProbingHandler_getProbingResultsForLinkID___block_invoke(void *a1
   return result;
 }
 
-- (void)setQRLinkID:(id)a3
+- (void)setQRLinkID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -546,7 +546,7 @@ id __51__VCLinkProbingHandler_getProbingResultsForLinkID___block_invoke(void *a1
   block[1] = 3221225472;
   block[2] = __36__VCLinkProbingHandler_setQRLinkID___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = d;
   block[5] = self;
   dispatch_async(delegateQueue, block);
 }
@@ -712,7 +712,7 @@ void __47__VCLinkProbingHandler_stopActiveProbingQRLink__block_invoke(uint64_t a
   }
 }
 
-- (void)updateQRProbingResult:(id)a3
+- (void)updateQRProbingResult:(id)result
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -721,7 +721,7 @@ void __47__VCLinkProbingHandler_stopActiveProbingQRLink__block_invoke(uint64_t a
   block[2] = __46__VCLinkProbingHandler_updateQRProbingResult___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = result;
   dispatch_async(delegateQueue, block);
 }
 
@@ -1126,7 +1126,7 @@ void __36__VCLinkProbingHandler_requestStats__block_invoke(uint64_t a1)
   }
 }
 
-- (void)dispatchedUpdateQRProbingResult:(id)a3
+- (void)dispatchedUpdateQRProbingResult:(id)result
 {
   v31 = *MEMORY[0x1E69E9840];
   if (self->_qrLinkProbingState != 1)
@@ -1155,7 +1155,7 @@ LABEL_17:
     return;
   }
 
-  if (!a3)
+  if (!result)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
@@ -1180,8 +1180,8 @@ LABEL_17:
   }
 
   v5 = *MEMORY[0x1E69A4B10];
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4B10]];
-  v7 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4B18]];
+  v6 = [result objectForKeyedSubscript:*MEMORY[0x1E69A4B10]];
+  v7 = [result objectForKeyedSubscript:*MEMORY[0x1E69A4B18]];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (v6)
   {
@@ -1223,8 +1223,8 @@ LABEL_17:
     v16 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [a3 objectForKeyedSubscript:v5];
-      v18 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4B20]];
+      v17 = [result objectForKeyedSubscript:v5];
+      v18 = [result objectForKeyedSubscript:*MEMORY[0x1E69A4B20]];
       *buf = 136316162;
       v22 = v15;
       v23 = 2080;

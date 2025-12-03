@@ -21,7 +21,7 @@
   v12[3] = &unk_277D97D38;
   v13 = v10;
   v11 = v10;
-  [a1 _animateUsingSpringWithTension:0 friction:a5 interactive:v12 animations:a2 completion:a3];
+  [self _animateUsingSpringWithTension:0 friction:a5 interactive:v12 animations:a2 completion:a3];
 }
 
 @end

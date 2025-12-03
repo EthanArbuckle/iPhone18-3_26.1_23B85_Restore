@@ -43,30 +43,30 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 integerValue] < 0)
   {
-    v7 = 7;
+    integerValue = 7;
   }
 
   else
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
-  [(PXSharedLibrarySettings *)self setSharingSuggestionsBannerFirstCheckThreshold:v7];
+  [(PXSharedLibrarySettings *)self setSharingSuggestionsBannerFirstCheckThreshold:integerValue];
   v8 = PXSharedUserDefaults();
   v9 = [v8 objectForKey:@"PXSharedLibrarySharingSuggestionsBannerUnreadCountThreshold"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 integerValue] >= 1)
   {
-    v10 = [v9 integerValue];
+    integerValue2 = [v9 integerValue];
   }
 
   else
   {
-    v10 = 10;
+    integerValue2 = 10;
   }
 
-  [(PXSharedLibrarySettings *)self setSharingSuggestionsBannerUnreadCountThreshold:v10];
+  [(PXSharedLibrarySettings *)self setSharingSuggestionsBannerUnreadCountThreshold:integerValue2];
   [(PXSharedLibrarySettings *)self setSharingSuggestionsLegibilityStrength:0.8];
   v11 = PXSharedUserDefaults();
   v12 = [v11 objectForKey:@"PXSharedLibrarySharingSuggestionsMinimumTimeSinceLastBannerDismiss"];
@@ -413,7 +413,7 @@ void __41__PXSharedLibrarySettings_sharedInstance__block_invoke()
   v121 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:3];
   v122 = [v111 sectionWithRows:v121 title:@"Photos Challenge Questions"];
 
-  v123 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v124 = MEMORY[0x1E69C6638];
   v185[0] = v184;
   v185[1] = v179;
@@ -423,7 +423,7 @@ void __41__PXSharedLibrarySettings_sharedInstance__block_invoke()
   v185[5] = v159;
   v185[6] = v148;
   v185[7] = v122;
-  v185[8] = v123;
+  v185[8] = px_restoreDefaultsSection;
   v125 = [MEMORY[0x1E695DEC8] arrayWithObjects:v185 count:9];
   v126 = [v124 moduleWithTitle:@"Shared Library" contents:v125];
 

@@ -1,18 +1,18 @@
 @interface StackView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews9StackView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews9StackView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews9StackView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews9StackView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation StackView
 
-- (_TtC23ShelfKitCollectionViews9StackView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews9StackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews9StackView_distribution;
   *v7 = 0;
   v7[8] = 1;
@@ -24,7 +24,7 @@
   return [(StackView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC23ShelfKitCollectionViews9StackView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews9StackView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews9StackView_distribution;
   *v3 = 0;
@@ -48,11 +48,11 @@
   sub_2D3888();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_2D3BB0(width, height);
   v7 = v6;
   v9 = v8;

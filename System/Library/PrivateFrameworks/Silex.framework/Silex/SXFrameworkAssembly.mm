@@ -15,7 +15,7 @@
     SXSetupLogging();
     v51 = v2;
     v3 = objc_alloc_init(MEMORY[0x1E69CE170]);
-    v50 = [v3 assemblies];
+    assemblies = [v3 assemblies];
 
     v49 = objc_alloc_init(SXCoreAssembly);
     v53[0] = v49;
@@ -104,7 +104,7 @@
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:42];
 
     v2 = v51;
-    v14 = [v50 arrayByAddingObjectsFromArray:v20];
+    v14 = [assemblies arrayByAddingObjectsFromArray:v20];
     assemblies = v51->_assemblies;
     v51->_assemblies = v14;
   }

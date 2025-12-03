@@ -1,6 +1,6 @@
 @interface ComingSoonViewController
-- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
 @end
@@ -9,17 +9,17 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_6EA10C();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(ComingSoonViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(ComingSoonViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -30,34 +30,34 @@
   }
 }
 
-- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_769240();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_769210();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ComingSoonViewController();
-  v9 = [(ComingSoonViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(ComingSoonViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider24ComingSoonViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ComingSoonViewController();
-  v4 = a3;
-  v5 = [(ComingSoonViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ComingSoonViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

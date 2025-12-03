@@ -1,7 +1,7 @@
 @interface UIForceStageInteractionProgress
 - (UIForceStageInteractionProgress)init;
 - (void)dealloc;
-- (void)receiveObservedValue:(id)a3;
+- (void)receiveObservedValue:(id)value;
 @end
 
 @implementation UIForceStageInteractionProgress
@@ -13,8 +13,8 @@
   v2 = [(UIInteractionProgress *)&v7 init];
   if (v2)
   {
-    v3 = [UIApp _forceStageObservable];
-    v4 = [v3 addObserver:v2];
+    _forceStageObservable = [UIApp _forceStageObservable];
+    v4 = [_forceStageObservable addObserver:v2];
     observation = v2->_observation;
     v2->_observation = v4;
   }
@@ -24,23 +24,23 @@
 
 - (void)dealloc
 {
-  v3 = [UIApp _forceStageObservable];
-  [v3 removeObservation:self->_observation];
+  _forceStageObservable = [UIApp _forceStageObservable];
+  [_forceStageObservable removeObservation:self->_observation];
 
   v4.receiver = self;
   v4.super_class = UIForceStageInteractionProgress;
   [(UIForceStageInteractionProgress *)&v4 dealloc];
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 stage];
-  [v4 touchForce];
+  valueCopy = value;
+  stage = [valueCopy stage];
+  [valueCopy touchForce];
   v7 = v6;
-  v8 = [v4 isReset];
+  isReset = [valueCopy isReset];
 
-  if ((v8 & 1) != 0 || (v9 = fabs(v7), v9 < 2.22044605e-16) && self->_started && !v5)
+  if ((isReset & 1) != 0 || (v9 = fabs(v7), v9 < 2.22044605e-16) && self->_started && !stage)
   {
     if (!self->_completed)
     {
@@ -55,10 +55,10 @@
     self->_started = 1;
     if (!self->_completed)
     {
-      if (!self->_completesAtTargetState || v5 == 0)
+      if (!self->_completesAtTargetState || stage == 0)
       {
 
-        [(UIInteractionProgress *)self setPercentComplete:v7 + v5];
+        [(UIInteractionProgress *)self setPercentComplete:v7 + stage];
       }
 
       else

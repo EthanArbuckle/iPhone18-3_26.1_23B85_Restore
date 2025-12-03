@@ -1,8 +1,8 @@
 @interface CRLWPListLabelGeometry
 + (id)listLabelGeometry;
-- (BOOL)isEqual:(id)a3;
-- (CRLWPListLabelGeometry)initWithScale:(double)a3 scaleWithText:(BOOL)a4 baselineOffset:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRLWPListLabelGeometry)initWithScale:(double)scale scaleWithText:(BOOL)text baselineOffset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,34 +11,34 @@
 
 + (id)listLabelGeometry
 {
-  v2 = [[a1 alloc] initWithScale:1 scaleWithText:1.0 baselineOffset:0.0];
+  v2 = [[self alloc] initWithScale:1 scaleWithText:1.0 baselineOffset:0.0];
 
   return v2;
 }
 
-- (CRLWPListLabelGeometry)initWithScale:(double)a3 scaleWithText:(BOOL)a4 baselineOffset:(double)a5
+- (CRLWPListLabelGeometry)initWithScale:(double)scale scaleWithText:(BOOL)text baselineOffset:(double)offset
 {
   v9.receiver = self;
   v9.super_class = CRLWPListLabelGeometry;
   result = [(CRLWPListLabelGeometry *)&v9 init];
   if (result)
   {
-    result->mScaleWithText = a4;
-    result->mScale = a3;
-    result->mBaselineOffset = a5;
+    result->mScaleWithText = text;
+    result->mScale = scale;
+    result->mBaselineOffset = offset;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 == self;
-  if (v4 && v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  v6 = equalCopy == self;
+  if (equalCopy && equalCopy != self)
   {
-    if ([(CRLWPListLabelGeometry *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(CRLWPListLabelGeometry *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v7 = v5;
       mScale = self->mScale;
@@ -59,12 +59,12 @@
 {
   v3 = objc_alloc_init(CRLHasher);
   [(CRLHasher *)v3 addBool:self->mScaleWithText];
-  v4 = [(CRLHasher *)v3 hashValue];
+  hashValue = [(CRLHasher *)v3 hashValue];
 
-  return v4;
+  return hashValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRLWPListLabelGeometry alloc];
   mScaleWithText = self->mScaleWithText;

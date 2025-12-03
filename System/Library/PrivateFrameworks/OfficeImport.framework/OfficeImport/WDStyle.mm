@@ -1,13 +1,13 @@
 @interface WDStyle
 - (BOOL)isAnythingOverridden;
 - (WDStyle)baseStyle;
-- (WDStyle)initWithStyleSheet:(id)a3 id:(id)a4 type:(int)a5;
+- (WDStyle)initWithStyleSheet:(id)sheet id:(id)id type:(int)type;
 - (WDStyle)nextStyle;
 - (WDStyleSheet)styleSheet;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setBaseStyle:(id)a3;
-- (void)setName:(id)a3;
+- (void)setBaseStyle:(id)style;
+- (void)setName:(id)name;
 @end
 
 @implementation WDStyle
@@ -26,32 +26,32 @@
   return WeakRetained;
 }
 
-- (WDStyle)initWithStyleSheet:(id)a3 id:(id)a4 type:(int)a5
+- (WDStyle)initWithStyleSheet:(id)sheet id:(id)id type:(int)type
 {
-  v8 = a3;
-  v9 = a4;
+  sheetCopy = sheet;
+  idCopy = id;
   v29.receiver = self;
   v29.super_class = WDStyle;
   v10 = [(WDStyle *)&v29 init];
   if (v10)
   {
     v11 = [WDParagraphProperties alloc];
-    v12 = [v8 document];
-    v13 = [(WDParagraphProperties *)v11 initWithDocument:v12];
+    document = [sheetCopy document];
+    v13 = [(WDParagraphProperties *)v11 initWithDocument:document];
     mParagraphProperties = v10->mParagraphProperties;
     v10->mParagraphProperties = v13;
 
     v15 = [WDCharacterProperties alloc];
-    v16 = [v8 document];
-    v17 = [(WDCharacterProperties *)v15 initWithDocument:v16];
+    document2 = [sheetCopy document];
+    v17 = [(WDCharacterProperties *)v15 initWithDocument:document2];
     mCharacterProperties = v10->mCharacterProperties;
     v10->mCharacterProperties = v17;
 
-    v10->mStyleType = a5;
-    if (a5 == 3)
+    v10->mStyleType = type;
+    if (type == 3)
     {
-      v19 = [v8 document];
-      v20 = [[WDTableRowProperties alloc] initWithDocument:v19];
+      document3 = [sheetCopy document];
+      v20 = [[WDTableRowProperties alloc] initWithDocument:document3];
       mTableRowProperties = v10->mTableRowProperties;
       v10->mTableRowProperties = v20;
 
@@ -63,7 +63,7 @@
       mTableStyleOverrides = v10->mTableStyleOverrides;
       do
       {
-        v26 = [[WDTableStyleOverride alloc] initWithDocument:v19];
+        v26 = [[WDTableStyleOverride alloc] initWithDocument:document3];
         v27 = mTableStyleOverrides[v24];
         mTableStyleOverrides[v24] = v26;
 
@@ -74,8 +74,8 @@
       while (v24 != 12);
     }
 
-    objc_storeStrong(&v10->mId, a4);
-    objc_storeWeak(&v10->mStyleSheet, v8);
+    objc_storeStrong(&v10->mId, id);
+    objc_storeWeak(&v10->mStyleSheet, sheetCopy);
   }
 
   return v10;
@@ -93,27 +93,27 @@
   return [(WDCharacterProperties *)mCharacterProperties isAnythingOverridden];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  objc_storeStrong(&self->mName, a3);
-  v5 = a3;
+  objc_storeStrong(&self->mName, name);
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->mStyleSheet);
-  [WeakRetained setName:v5 forId:self->mId];
+  [WeakRetained setName:nameCopy forId:self->mId];
 }
 
-- (void)setBaseStyle:(id)a3
+- (void)setBaseStyle:(id)style
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  styleCopy = style;
+  v8 = styleCopy;
+  if (styleCopy)
   {
-    v5 = v4;
+    v5 = styleCopy;
     while (v5 != self)
     {
-      v6 = [(WDStyle *)v5 baseStyle];
+      baseStyle = [(WDStyle *)v5 baseStyle];
 
-      v5 = v6;
-      if (!v6)
+      v5 = baseStyle;
+      if (!baseStyle)
       {
         v7 = v8;
         goto LABEL_8;
@@ -132,7 +132,7 @@ LABEL_8:
   objc_storeWeak(&self->mBaseStyle, v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDStyle allocWithZone:?]];
   if (v4)

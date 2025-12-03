@@ -7,8 +7,8 @@
 - (id)_uufrShownRequestedByInstrumentationManager:()SiriUIUUFRShowable
 {
   v2 = objc_alloc_init(MEMORY[0x277D5AC58]);
-  v3 = [a1 aceId];
-  [v2 setAceViewID:v3];
+  aceId = [self aceId];
+  [v2 setAceViewID:aceId];
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);

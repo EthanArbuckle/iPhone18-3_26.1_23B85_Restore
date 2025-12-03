@@ -1,14 +1,14 @@
 @interface GKLimitedPresentationManager
-- (GKLimitedPresentationManager)initWithDefaultsKey:(id)a3;
-- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)a3 completionHandler:(id)a4;
-- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)a3 context:(GKLimitedPresentationContext *)a4 completionHandler:(id)a5;
+- (GKLimitedPresentationManager)initWithDefaultsKey:(id)key;
+- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)config completionHandler:(id)handler;
+- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)config context:(GKLimitedPresentationContext *)context completionHandler:(id)handler;
 @end
 
 @implementation GKLimitedPresentationManager
 
-- (GKLimitedPresentationManager)initWithDefaultsKey:(id)a3
+- (GKLimitedPresentationManager)initWithDefaultsKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v3 = sub_227A724EC();
   }
@@ -22,28 +22,28 @@
   return LimitedPresentationManager.init(defaultsKey:)(v3, v4);
 }
 
-- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)a3 context:(GKLimitedPresentationContext *)a4 completionHandler:(id)a5
+- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)config context:(GKLimitedPresentationContext *)context completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = config;
+  v9[3] = context;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
+  configCopy = config;
+  contextCopy = context;
 
   sub_227A62CD4(&unk_227AA6160, v9);
 }
 
-- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)a3 completionHandler:(id)a4
+- (void)presentationDisabledWithConfig:(GKLimitedPresentationConfig *)config completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = config;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
+  configCopy = config;
 
   sub_227A62CD4(&unk_227AA6150, v7);
 }

@@ -1,9 +1,9 @@
 @interface POIAnnotation
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMarkedLocation;
 - (NSSet)keys;
-- (POIAnnotation)initWithItem:(id)a3 defaultLocale:(id)a4;
+- (POIAnnotation)initWithItem:(id)item defaultLocale:(id)locale;
 - (id)debugDictionary;
 @end
 
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -31,11 +31,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(POIAnnotation *)self keys];
-      v7 = [(POIAnnotation *)v5 keys];
+      v5 = equalCopy;
+      keys = [(POIAnnotation *)self keys];
+      keys2 = [(POIAnnotation *)v5 keys];
 
-      v8 = [v6 intersectsSet:v7];
+      v8 = [keys intersectsSet:keys2];
     }
 
     else
@@ -58,9 +58,9 @@
   v5 = [(GEOFeatureStyleAttributes *)self->_styleAttributes description];
   [v3 setObject:v5 forKeyedSubscript:@"styleAttributes"];
 
-  v6 = [(POIAnnotation *)self address];
-  v7 = [v6 addressValue];
-  v8 = [v7 description];
+  address = [(POIAnnotation *)self address];
+  addressValue = [address addressValue];
+  v8 = [addressValue description];
   v9 = v8;
   if (v8)
   {
@@ -81,19 +81,19 @@
 
 - (BOOL)isMarkedLocation
 {
-  v2 = [(PersonalizedCompoundItem *)self->_compoundItem keys];
-  v3 = [v2 anyObject];
+  keys = [(PersonalizedCompoundItem *)self->_compoundItem keys];
+  anyObject = [keys anyObject];
 
   objc_opt_class();
-  LOBYTE(v2) = objc_opt_isKindOfClass();
+  LOBYTE(keys) = objc_opt_isKindOfClass();
 
-  return v2 & 1;
+  return keys & 1;
 }
 
 - (NSSet)keys
 {
-  v3 = [(PersonalizedCompoundItem *)self->_compoundItem keys];
-  if (v3)
+  keys = [(PersonalizedCompoundItem *)self->_compoundItem keys];
+  if (keys)
   {
     [(PersonalizedCompoundItem *)self->_compoundItem keys];
   }
@@ -107,10 +107,10 @@
   return v4;
 }
 
-- (POIAnnotation)initWithItem:(id)a3 defaultLocale:(id)a4
+- (POIAnnotation)initWithItem:(id)item defaultLocale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  localeCopy = locale;
   v139.receiver = self;
   v139.super_class = POIAnnotation;
   v9 = [(POIAnnotation *)&v139 init];
@@ -120,83 +120,83 @@
     goto LABEL_44;
   }
 
-  objc_storeStrong(&v9->_compoundItem, a3);
-  v10->_presentationAttributesHash = sub_100044AE0(v7);
-  [v7 coordinate];
+  objc_storeStrong(&v9->_compoundItem, item);
+  v10->_presentationAttributesHash = sub_100044AE0(itemCopy);
+  [itemCopy coordinate];
   v12 = v11;
-  [v7 coordinate];
+  [itemCopy coordinate];
   v10->_coordinate.latitude = v12;
   v10->_coordinate.longitude = v13;
-  v10->_showsBalloonCallout = [v7 showsBalloonCallout];
-  v10->_sortOrder = [v7 sortOrder];
-  v14 = [v7 title];
-  v15 = [v7 subtitle];
+  v10->_showsBalloonCallout = [itemCopy showsBalloonCallout];
+  v10->_sortOrder = [itemCopy sortOrder];
+  title = [itemCopy title];
+  subtitle = [itemCopy subtitle];
   if ([qword_10195F778 length])
   {
     v16 = qword_10195F778;
 
-    v8 = v16;
+    localeCopy = v16;
   }
 
-  v17 = [v14 value];
-  v18 = [v7 prefix];
-  v19 = [v18 value];
+  value = [title value];
+  prefix = [itemCopy prefix];
+  value2 = [prefix value];
 
-  if ([v19 length])
+  if ([value2 length])
   {
     v20 = +[NSBundle mainBundle];
     v21 = [v20 localizedStringForKey:@"Custom POI title with prefix" value:@"localized string not found" table:0];
-    v22 = [NSString stringWithFormat:v21, v19, v17];
+    v22 = [NSString stringWithFormat:v21, value2, value];
 
-    v17 = v22;
+    value = v22;
   }
 
-  objc_storeStrong(&v10->_text, v17);
-  v23 = [v14 locale];
-  if (v23)
+  objc_storeStrong(&v10->_text, value);
+  locale = [title locale];
+  if (locale)
   {
-    v24 = [v14 locale];
+    locale2 = [title locale];
   }
 
   else
   {
-    v24 = v8;
+    locale2 = localeCopy;
   }
 
   textLocale = v10->_textLocale;
-  v10->_textLocale = v24;
+  v10->_textLocale = locale2;
 
-  v26 = [v15 value];
+  value3 = [subtitle value];
   subtext = v10->_subtext;
-  v10->_subtext = v26;
+  v10->_subtext = value3;
 
-  v28 = [v15 locale];
-  if (v28)
+  locale3 = [subtitle locale];
+  if (locale3)
   {
-    v29 = [v15 locale];
+    locale4 = [subtitle locale];
   }
 
   else
   {
-    v29 = v8;
+    locale4 = localeCopy;
   }
 
   subtextLocale = v10->_subtextLocale;
-  v10->_subtextLocale = v29;
+  v10->_subtextLocale = locale4;
 
-  v31 = [v7 labelGeometry];
-  v32 = [v31 labelShape];
-  v33 = [v32 count];
+  labelGeometry = [itemCopy labelGeometry];
+  labelShape = [labelGeometry labelShape];
+  v33 = [labelShape count];
 
-  v137 = v15;
-  v138 = v14;
-  v135 = v19;
-  v136 = v17;
+  v137 = subtitle;
+  v138 = title;
+  v135 = value2;
+  v136 = value;
   if (v33)
   {
-    v34 = [v7 labelGeometry];
-    v35 = [v34 labelShape];
-    v36 = [v35 count];
+    labelGeometry2 = [itemCopy labelGeometry];
+    labelShape2 = [labelGeometry2 labelShape];
+    v36 = [labelShape2 count];
 
     v37 = malloc_type_malloc(24 * v36, 0x1000040504FFAC1uLL);
     v38 = v37;
@@ -206,9 +206,9 @@
       v40 = v37 + 2;
       do
       {
-        v41 = [v7 labelGeometry];
-        v42 = [v41 labelShape];
-        v43 = [v42 objectAtIndex:v39];
+        labelGeometry3 = [itemCopy labelGeometry];
+        labelShape3 = [labelGeometry3 labelShape];
+        v43 = [labelShape3 objectAtIndex:v39];
 
         [v43 lat];
         *(v40 - 2) = v44;
@@ -232,20 +232,20 @@
     goto LABEL_17;
   }
 
-  v75 = [v7 enhancedPlacement];
+  enhancedPlacement = [itemCopy enhancedPlacement];
 
-  if (v75)
+  if (enhancedPlacement)
   {
-    v76 = [v7 enhancedPlacement];
-    v77 = [v76 elevationInMeters];
+    enhancedPlacement2 = [itemCopy enhancedPlacement];
+    elevationInMeters = [enhancedPlacement2 elevationInMeters];
 
-    if (v77)
+    if (elevationInMeters)
     {
       latitude = v10->_coordinate.latitude;
       longitude = v10->_coordinate.longitude;
-      v80 = [v7 enhancedPlacement];
-      v81 = [v80 elevationInMeters];
-      [v81 doubleValue];
+      enhancedPlacement3 = [itemCopy enhancedPlacement];
+      elevationInMeters2 = [enhancedPlacement3 elevationInMeters];
+      [elevationInMeters2 doubleValue];
       v83 = v82;
 
       v84 = [[VKCustomFeature alloc] initWithCoordinate3D:{latitude, longitude, v83}];
@@ -259,27 +259,27 @@
     v96 = v10->_customFeature;
     v10->_customFeature = v84;
 
-    v97 = [v7 enhancedPlacement];
-    v98 = [v97 buildingHeightInMeters];
+    enhancedPlacement4 = [itemCopy enhancedPlacement];
+    buildingHeightInMeters = [enhancedPlacement4 buildingHeightInMeters];
 
-    if (v98)
+    if (buildingHeightInMeters)
     {
       v99 = v10->_customFeature;
-      v100 = [v7 enhancedPlacement];
-      v101 = [v100 buildingHeightInMeters];
-      [v101 floatValue];
+      enhancedPlacement5 = [itemCopy enhancedPlacement];
+      buildingHeightInMeters2 = [enhancedPlacement5 buildingHeightInMeters];
+      [buildingHeightInMeters2 floatValue];
       [(VKCustomFeature *)v99 setBuildingHeight:?];
     }
 
-    v102 = [v7 enhancedPlacement];
-    v103 = [v102 buildingFaceAzimuth];
+    enhancedPlacement6 = [itemCopy enhancedPlacement];
+    buildingFaceAzimuth = [enhancedPlacement6 buildingFaceAzimuth];
 
-    if (v103)
+    if (buildingFaceAzimuth)
     {
       v104 = v10->_customFeature;
-      v105 = [v7 enhancedPlacement];
-      v106 = [v105 buildingFaceAzimuth];
-      [v106 floatValue];
+      enhancedPlacement7 = [itemCopy enhancedPlacement];
+      buildingFaceAzimuth2 = [enhancedPlacement7 buildingFaceAzimuth];
+      [buildingFaceAzimuth2 floatValue];
       [(VKCustomFeature *)v104 setBuildingFaceAzimuth:?];
     }
 
@@ -292,51 +292,51 @@
     v88 = v10->_customFeature;
     v10->_customFeature = v87;
 
-    v89 = [v7 searchResult];
-    v90 = [v89 findMyHandle];
-    if (v90)
+    searchResult = [itemCopy searchResult];
+    findMyHandle = [searchResult findMyHandle];
+    if (findMyHandle)
     {
 
 LABEL_48:
-      v91 = [v7 searchResult];
-      v92 = [v91 findMyHandle];
-      v93 = [v92 identifier];
-      v94 = v93;
-      if (v93)
+      searchResult2 = [itemCopy searchResult];
+      findMyHandle2 = [searchResult2 findMyHandle];
+      identifier = [findMyHandle2 identifier];
+      v94 = identifier;
+      if (identifier)
       {
-        v95 = v93;
+        v95 = identifier;
       }
 
       else
       {
-        v133 = [v7 searchResult];
-        v113 = [v133 autocompletePerson];
-        v114 = [v113 handle];
-        v115 = [v114 handle];
-        v116 = [v115 handleIdentifier];
+        searchResult3 = [itemCopy searchResult];
+        autocompletePerson = [searchResult3 autocompletePerson];
+        handle = [autocompletePerson handle];
+        v114Handle = [handle handle];
+        handleIdentifier = [v114Handle handleIdentifier];
 
-        v95 = v116;
+        v95 = handleIdentifier;
       }
 
-      v117 = [v7 searchResult];
-      v118 = [v117 findMyHandle];
-      v119 = [v118 contact];
-      v120 = v119;
-      if (v119)
+      searchResult4 = [itemCopy searchResult];
+      findMyHandle3 = [searchResult4 findMyHandle];
+      contact = [findMyHandle3 contact];
+      v120 = contact;
+      if (contact)
       {
-        v121 = v119;
+        v121 = contact;
       }
 
       else
       {
         v122 = v95;
-        v134 = [v7 searchResult];
-        v123 = [v134 autocompletePerson];
-        v124 = [v123 contact];
-        v125 = v124;
-        if (v124)
+        searchResult5 = [itemCopy searchResult];
+        autocompletePerson2 = [searchResult5 autocompletePerson];
+        contact2 = [autocompletePerson2 contact];
+        v125 = contact2;
+        if (contact2)
         {
-          v126 = v124;
+          v126 = contact2;
         }
 
         else
@@ -379,22 +379,22 @@ LABEL_48:
       }
 
       v127 = v10->_customFeature;
-      v128 = [v121 identifier];
-      [(VKCustomFeature *)v127 setImageProvider:v121 withKey:v128];
+      identifier2 = [v121 identifier];
+      [(VKCustomFeature *)v127 setImageProvider:v121 withKey:identifier2];
 
       goto LABEL_17;
     }
 
-    v107 = [v7 searchResult];
-    v108 = [v107 autocompletePerson];
-    v109 = [v108 handle];
-    if (v109)
+    searchResult6 = [itemCopy searchResult];
+    autocompletePerson3 = [searchResult6 autocompletePerson];
+    handle2 = [autocompletePerson3 handle];
+    if (handle2)
     {
-      v110 = v109;
-      v111 = [v7 searchResult];
-      v112 = [v111 locationType];
+      v110 = handle2;
+      searchResult7 = [itemCopy searchResult];
+      locationType = [searchResult7 locationType];
 
-      if (v112 == 4)
+      if (locationType == 4)
       {
         goto LABEL_48;
       }
@@ -408,25 +408,25 @@ LABEL_48:
 LABEL_17:
   [(VKCustomFeature *)v10->_customFeature setText:v10->_text locale:v10->_textLocale];
   [(VKCustomFeature *)v10->_customFeature setAnnotationText:v10->_subtext locale:v10->_subtextLocale];
-  v49 = [v7 styleAttributes];
-  v50 = [v49 styleAttributes];
-  v51 = v50;
+  styleAttributes = [itemCopy styleAttributes];
+  v49StyleAttributes = [styleAttributes styleAttributes];
+  v51 = v49StyleAttributes;
   if (byte_10195F780 == 1)
   {
-    v52 = [v50 copyWithAirportStyleAttributes];
+    copyWithAirportStyleAttributes = [v49StyleAttributes copyWithAirportStyleAttributes];
   }
 
   else
   {
-    v52 = [v50 copy];
+    copyWithAirportStyleAttributes = [v49StyleAttributes copy];
   }
 
-  v53 = v52;
+  v53 = copyWithAirportStyleAttributes;
 
   v54 = 1;
   if (objc_opt_respondsToSelector())
   {
-    if ([v7 isRouteStartOrEnd])
+    if ([itemCopy isRouteStartOrEnd])
     {
       v54 = 2;
     }
@@ -441,9 +441,9 @@ LABEL_17:
   *v142 = v54;
   *&v142[4] = 0x100010024;
   [v53 replaceAttributes:buf count:2];
-  v55 = [v7 labelGeometry];
-  v56 = [v55 labelShape];
-  v57 = [v56 count];
+  labelGeometry4 = [itemCopy labelGeometry];
+  labelShape4 = [labelGeometry4 labelShape];
+  v57 = [labelShape4 count];
 
   if (v57)
   {
@@ -459,54 +459,54 @@ LABEL_17:
   }
 
   [(VKCustomFeature *)v10->_customFeature setStyleAttributes:v53];
-  v58 = [v7 clientFeatureID];
-  -[VKCustomFeature setClientFeatureID:](v10->_customFeature, "setClientFeatureID:", [v58 clientFeatureID]);
+  clientFeatureID = [itemCopy clientFeatureID];
+  -[VKCustomFeature setClientFeatureID:](v10->_customFeature, "setClientFeatureID:", [clientFeatureID clientFeatureID]);
 
   v10->_isLabelPOI = [v53 isLabelPOI];
-  v59 = [v7 mapItem];
-  v60 = v59;
-  if (v59)
+  mapItem = [itemCopy mapItem];
+  v60 = mapItem;
+  if (mapItem)
   {
-    -[VKCustomFeature setBusinessID:](v10->_customFeature, "setBusinessID:", [v59 _muid]);
+    -[VKCustomFeature setBusinessID:](v10->_customFeature, "setBusinessID:", [mapItem _muid]);
     -[VKCustomFeature setFeatureID:](v10->_customFeature, "setFeatureID:", [v60 _customIconID]);
     if ([v60 _hasAreaHighlightId])
     {
       -[VKCustomFeature setFeatureID:](v10->_customFeature, "setFeatureID:", [v60 _areaHighlightId]);
     }
 
-    -[VKCustomFeature setSortKey:](v10->_customFeature, "setSortKey:", [v7 sortOrder]);
-    v61 = [v60 _venueInfo];
+    -[VKCustomFeature setSortKey:](v10->_customFeature, "setSortKey:", [itemCopy sortOrder]);
+    _venueInfo = [v60 _venueInfo];
     v62 = v10->_customFeature;
-    v63 = [v61 venueIdentifier];
-    -[VKCustomFeature setVenueID:](v62, "setVenueID:", [v63 venueID]);
+    venueIdentifier = [_venueInfo venueIdentifier];
+    -[VKCustomFeature setVenueID:](v62, "setVenueID:", [venueIdentifier venueID]);
 
-    v132 = v61;
-    v64 = [v61 venueIdentifier];
-    v65 = [v64 componentIdentifiers];
-    v66 = [v65 firstObject];
+    v132 = _venueInfo;
+    venueIdentifier2 = [_venueInfo venueIdentifier];
+    componentIdentifiers = [venueIdentifier2 componentIdentifiers];
+    firstObject = [componentIdentifiers firstObject];
 
-    -[VKCustomFeature setVenueBuildingID:](v10->_customFeature, "setVenueBuildingID:", [v66 buildingID]);
+    -[VKCustomFeature setVenueBuildingID:](v10->_customFeature, "setVenueBuildingID:", [firstObject buildingID]);
     v67 = v10->_customFeature;
-    v68 = [v66 floorInfo];
-    -[VKCustomFeature setVenueLevelID:](v67, "setVenueLevelID:", [v68 levelID]);
+    floorInfo = [firstObject floorInfo];
+    -[VKCustomFeature setVenueLevelID:](v67, "setVenueLevelID:", [floorInfo levelID]);
 
-    -[VKCustomFeature setVenueComponentID:](v10->_customFeature, "setVenueComponentID:", [v66 unitID]);
-    v69 = [v7 searchResult];
-    if ([v69 type] == 3 && objc_msgSend(v69, "hasFloorOrdinal"))
+    -[VKCustomFeature setVenueComponentID:](v10->_customFeature, "setVenueComponentID:", [firstObject unitID]);
+    searchResult8 = [itemCopy searchResult];
+    if ([searchResult8 type] == 3 && objc_msgSend(searchResult8, "hasFloorOrdinal"))
     {
-      -[VKCustomFeature setVenueFloorOrdinal:](v10->_customFeature, "setVenueFloorOrdinal:", [v69 floorOrdinal]);
+      -[VKCustomFeature setVenueFloorOrdinal:](v10->_customFeature, "setVenueFloorOrdinal:", [searchResult8 floorOrdinal]);
     }
 
     else
     {
       v70 = v10->_customFeature;
-      [v66 floorInfo];
-      v71 = v49;
-      v73 = v72 = v8;
+      [firstObject floorInfo];
+      v71 = styleAttributes;
+      v73 = v72 = localeCopy;
       -[VKCustomFeature setVenueFloorOrdinal:](v70, "setVenueFloorOrdinal:", [v73 ordinal]);
 
-      v8 = v72;
-      v49 = v71;
+      localeCopy = v72;
+      styleAttributes = v71;
     }
 
     v74 = [v60 _venueFeatureType] == 1 || objc_msgSend(v60, "_venueFeatureType") == 2;

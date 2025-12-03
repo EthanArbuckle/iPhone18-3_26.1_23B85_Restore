@@ -4,22 +4,22 @@
 - (BOOL)isBatteryInServiceState;
 - (BOOL)isPreFlightDone;
 - (BOOL)isPreflightSuccessful;
-- (BOOL)isVaildCAA:(id)a3;
+- (BOOL)isVaildCAA:(id)a;
 - (BOOL)isbatteryLevelBelowThreshold;
 - (int64_t)getCpuUptimeInSec;
-- (void)_preflight:(id)a3;
+- (void)_preflight:(id)_preflight;
 - (void)clearCAARequestHistory;
-- (void)clearFollowUpForkey:(id)a3;
+- (void)clearFollowUpForkey:(id)forkey;
 - (void)getCAAForRepairHistory;
 - (void)getCpuUptimeInSec;
 - (void)isPreflightSuccessful;
 - (void)performBackGroundMiniPreflight;
-- (void)performInteractiveMiniPreflightWith:(id)a3;
+- (void)performInteractiveMiniPreflightWith:(id)with;
 - (void)requestCAA;
 - (void)retryCAA;
-- (void)scheduleNetworkActivityWith:(int64_t)a3;
+- (void)scheduleNetworkActivityWith:(int64_t)with;
 - (void)setBootIntentAndReboot;
-- (void)setupCAARetry:(id *)a3;
+- (void)setupCAARetry:(id *)retry;
 @end
 
 @implementation CoreRepairUIUtils
@@ -40,11 +40,11 @@
   [v3 setDouble:@"lastTime" forKey:0.0];
 }
 
-- (BOOL)isVaildCAA:(id)a3
+- (BOOL)isVaildCAA:(id)a
 {
-  v3 = a3;
+  aCopy = a;
   v4 = objc_opt_new();
-  if (v3)
+  if (aCopy)
   {
     v17 = 0;
     v5 = [MEMORY[0x277D01038] isServicePartWithError:&v17];
@@ -63,14 +63,14 @@
 
     if ([MEMORY[0x277D00FE0] isDcSignedComponent:1024 error:0])
     {
-      v9 = [v3 objectForKeyedSubscript:@"vcrt"];
+      v9 = [aCopy objectForKeyedSubscript:@"vcrt"];
       if (v9)
       {
       }
 
       else
       {
-        v10 = [v3 objectForKeyedSubscript:@"bcrt"];
+        v10 = [aCopy objectForKeyedSubscript:@"bcrt"];
 
         if (!v10)
         {
@@ -89,7 +89,7 @@
 
     if ([MEMORY[0x277D00FE0] isDcSignedComponent:1025 error:0])
     {
-      v11 = [v3 objectForKeyedSubscript:@"drp#"];
+      v11 = [aCopy objectForKeyedSubscript:@"drp#"];
 
       if (!v11)
       {
@@ -120,7 +120,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v12 = [v3 objectForKeyedSubscript:@"CmCl"];
+    v12 = [aCopy objectForKeyedSubscript:@"CmCl"];
 
     if (v12)
     {
@@ -148,14 +148,14 @@ LABEL_20:
 - (void)getCAAForRepairHistory
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:&unk_28597F158 forKeyedSubscript:*MEMORY[0x277D04948]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_28597F158 forKeyedSubscript:*MEMORY[0x277D04948]];
   v4 = *MEMORY[0x277D04908];
   v22[0] = *MEMORY[0x277D04900];
   v22[1] = v4;
   v22[2] = *MEMORY[0x277D04930];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x277D04928]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x277D04928]];
 
   v21[0] = 0;
   v21[1] = v21;
@@ -181,11 +181,11 @@ LABEL_20:
   block[2] = __43__CoreRepairUIUtils_getCAAForRepairHistory__block_invoke;
   block[3] = &unk_278EB1FC0;
   v13 = v6;
-  v14 = v3;
+  v14 = dictionary;
   v16 = v21;
   v17 = v19;
-  v15 = self;
-  v9 = v3;
+  selfCopy = self;
+  v9 = dictionary;
   v10 = v6;
   dispatch_async(v7, block);
 
@@ -310,11 +310,11 @@ LABEL_21:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preflight:(id)a3
+- (void)_preflight:(id)_preflight
 {
-  v3 = a3;
+  _preflightCopy = _preflight;
   v4 = objc_opt_new();
-  [v4 preflight:v3 withReply:&__block_literal_global_3];
+  [v4 preflight:_preflightCopy withReply:&__block_literal_global_3];
 }
 
 void __32__CoreRepairUIUtils__preflight___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -370,9 +370,9 @@ void __32__CoreRepairUIUtils__preflight___block_invoke(uint64_t a1, int a2, void
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performInteractiveMiniPreflightWith:(id)a3
+- (void)performInteractiveMiniPreflightWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = handleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -389,7 +389,7 @@ void __32__CoreRepairUIUtils__preflight___block_invoke(uint64_t a1, int a2, void
       _os_log_impl(&dword_247875000, v6, OS_LOG_TYPE_DEFAULT, "performInteractiveMiniPreflight skipped", buf, 2u);
     }
 
-    v4[2](v4);
+    withCopy[2](withCopy);
   }
 
   else
@@ -404,7 +404,7 @@ void __32__CoreRepairUIUtils__preflight___block_invoke(uint64_t a1, int a2, void
     block[3] = &unk_278EB2008;
     block[4] = self;
     v11 = v7;
-    v12 = v4;
+    v12 = withCopy;
     v9 = v7;
     dispatch_async(v8, block);
   }
@@ -431,10 +431,10 @@ uint64_t __57__CoreRepairUIUtils_performInteractiveMiniPreflightWith___block_inv
 
 - (void)performBackGroundMiniPreflight
 {
-  v3 = [(CoreRepairUIUtils *)self isPreFlightDone];
+  isPreFlightDone = [(CoreRepairUIUtils *)self isPreFlightDone];
   v4 = handleForCategory(0);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isPreFlightDone)
   {
     if (v5)
     {
@@ -665,10 +665,10 @@ void __36__CoreRepairUIUtils_getRepairTicket__block_invoke_121(void *a1, int a2,
   v5 = objc_opt_new();
   [v5 sendAsyncAnalyticsForEvent:@"BootIntent" moduleName:@"PartsAndServiceHistory"];
 
-  v6 = [v3 remoteObjectProxy];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v7 localeIdentifier];
-  [v6 setBootIntentAndRebootToCheckerboardWithLocale:v8 reply:&__block_literal_global_129];
+  remoteObjectProxy = [v3 remoteObjectProxy];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  [remoteObjectProxy setBootIntentAndRebootToCheckerboardWithLocale:localeIdentifier reply:&__block_literal_global_129];
 }
 
 void __43__CoreRepairUIUtils_setBootIntentAndReboot__block_invoke(uint64_t a1, int a2, void *a3)
@@ -688,9 +688,9 @@ void __43__CoreRepairUIUtils_setBootIntentAndReboot__block_invoke(uint64_t a1, i
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleNetworkActivityWith:(int64_t)a3
+- (void)scheduleNetworkActivityWith:(int64_t)with
 {
-  if (a3)
+  if (with)
   {
     v5 = @"com.apple.corerepair.preflight";
   }
@@ -700,15 +700,15 @@ void __43__CoreRepairUIUtils_setBootIntentAndReboot__block_invoke(uint64_t a1, i
     v5 = @"com.apple.corerepair.CAA";
   }
 
-  v6 = [(__CFString *)v5 UTF8String];
+  uTF8String = [(__CFString *)v5 UTF8String];
   v7 = *MEMORY[0x277D86238];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__CoreRepairUIUtils_scheduleNetworkActivityWith___block_invoke;
   v8[3] = &unk_278EB1E68;
   v8[4] = self;
-  v8[5] = a3;
-  xpc_activity_register(v6, v7, v8);
+  v8[5] = with;
+  xpc_activity_register(uTF8String, v7, v8);
 }
 
 void __49__CoreRepairUIUtils_scheduleNetworkActivityWith___block_invoke(uint64_t a1, void *a2)
@@ -822,9 +822,9 @@ LABEL_16:
   v6 = [v3 integerForKey:@"lastUptime"];
   [v3 doubleForKey:@"lastTime"];
   v8 = v7;
-  v9 = [(CoreRepairUIUtils *)self getCpuUptimeInSec];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  [v10 timeIntervalSince1970];
+  getCpuUptimeInSec = [(CoreRepairUIUtils *)self getCpuUptimeInSec];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v12 = v11;
 
   [v3 doubleForKey:@"timeIntervalOverride"];
@@ -849,7 +849,7 @@ LABEL_16:
     v28 = 2048;
     v29 = v6;
     v30 = 2048;
-    v31 = v9;
+    v31 = getCpuUptimeInSec;
     v32 = 2048;
     v33 = v8;
     v34 = 2048;
@@ -863,8 +863,8 @@ LABEL_16:
     [v19 sendAnalyticsForRepairHistoryMismatch];
 
     [(CoreRepairUIUtils *)self clearCAARequestHistory];
-    v20 = [MEMORY[0x277D00FE0] getLocalSealingManifest];
-    [v3 setObject:v20 forKey:@"cachedSealingManifest"];
+    getLocalSealingManifest = [MEMORY[0x277D00FE0] getLocalSealingManifest];
+    [v3 setObject:getLocalSealingManifest forKey:@"cachedSealingManifest"];
     [v3 synchronize];
   }
 
@@ -885,8 +885,8 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v21 = v9 - v6;
-    if (v9 < v6)
+    v21 = getCpuUptimeInSec - v6;
+    if (getCpuUptimeInSec < v6)
     {
       v17 = handleForCategory(0);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -902,7 +902,7 @@ LABEL_23:
       [v3 setInteger:v5 + 1 forKey:@"retryCount"];
       [v3 setInteger:6 * v15 + 4 forKey:@"backOffCount"];
       [v3 synchronize];
-      [v3 setInteger:v9 forKey:@"lastUptime"];
+      [v3 setInteger:getCpuUptimeInSec forKey:@"lastUptime"];
       [v3 setDouble:@"lastTime" forKey:v12];
       [v3 synchronize];
       goto LABEL_24;
@@ -950,12 +950,12 @@ LABEL_24:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupCAARetry:(id *)a3
+- (void)setupCAARetry:(id *)retry
 {
   v5 = [MEMORY[0x277CBEBD0] groupUserDefaultsWithSuiteName:@"com.apple.mobilerepaird"];
   v6 = [v5 objectForKey:@"cachedSealingManifest"];
 
-  v7 = [MEMORY[0x277D00FE0] getLocalSealingManifest];
+  getLocalSealingManifest = [MEMORY[0x277D00FE0] getLocalSealingManifest];
   v8 = [MEMORY[0x277D00FE0] isDcSignedSealingManifest:0];
   if (AMFDRSealingMapGetFDRDataVersionForDevice() != 1 && v8)
   {
@@ -964,10 +964,10 @@ LABEL_24:
 
     if (v10 && [v10 length])
     {
-      *a3 = [MEMORY[0x277CCAC58] propertyListWithData:v10 options:0 format:0 error:0];
+      *retry = [MEMORY[0x277CCAC58] propertyListWithData:v10 options:0 format:0 error:0];
     }
 
-    if ([v7 isEqualToData:v6])
+    if ([getLocalSealingManifest isEqualToData:v6])
     {
       v11 = handleForCategory(0);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1023,16 +1023,16 @@ LABEL_19:
   return v3;
 }
 
-- (void)clearFollowUpForkey:(id)a3
+- (void)clearFollowUpForkey:(id)forkey
 {
-  v6 = a3;
+  forkeyCopy = forkey;
   v3 = [MEMORY[0x277CBEBD0] groupUserDefaultsWithSuiteName:@"com.apple.mobilerepaird.systemhealth"];
-  v4 = [v3 integerForKey:v6];
+  v4 = [v3 integerForKey:forkeyCopy];
 
   if (v4 <= 1)
   {
     v5 = [MEMORY[0x277CBEBD0] groupUserDefaultsWithSuiteName:@"com.apple.mobilerepaird.systemhealth"];
-    [v5 setInteger:v4 + 1 forKey:v6];
+    [v5 setInteger:v4 + 1 forKey:forkeyCopy];
 
     notify_post("com.apple.mobilerepair.refreshui");
   }

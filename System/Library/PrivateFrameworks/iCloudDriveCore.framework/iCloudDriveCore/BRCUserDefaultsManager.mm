@@ -1,18 +1,18 @@
 @interface BRCUserDefaultsManager
-- (BRCUserDefaultsManager)initWithPersonaID:(id)a3;
-- (id)defaultsForIdentifier:(id)a3;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (BRCUserDefaultsManager)initWithPersonaID:(id)d;
+- (id)defaultsForIdentifier:(id)identifier;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)_loadServerConfigurationDictionary;
-- (void)_parsePlistWithURL:(id)a3;
+- (void)_parsePlistWithURL:(id)l;
 - (void)_prepopulateGlobalUserDefaults;
 - (void)_reset;
-- (void)_setServerConfigurationURL:(id)a3 whenLoaded:(id)a4;
+- (void)_setServerConfigurationURL:(id)l whenLoaded:(id)loaded;
 - (void)dealloc;
 - (void)loadCachedServerConfiguration;
 - (void)reset;
-- (void)setServerConfigurationURL:(id)a3 whenLoaded:(id)a4;
+- (void)setServerConfigurationURL:(id)l whenLoaded:(id)loaded;
 @end
 
 @implementation BRCUserDefaultsManager
@@ -32,9 +32,9 @@
   [(NSMutableDictionary *)self->_userDefaultsCache setObject:v6 forKeyedSubscript:@"default"];
 }
 
-- (BRCUserDefaultsManager)initWithPersonaID:(id)a3
+- (BRCUserDefaultsManager)initWithPersonaID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = BRCUserDefaultsManager;
   v5 = [(BRCUserDefaultsManager *)&v25 init];
@@ -63,15 +63,15 @@
     v5->_callbackQueue = v14;
 
     objc_initWeak(&location, v5);
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v17 = *MEMORY[0x277CCA858];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke;
     v21[3] = &unk_278507BF8;
-    v22 = v4;
+    v22 = dCopy;
     objc_copyWeak(&v23, &location);
-    v18 = [v16 addObserverForName:v17 object:0 queue:0 usingBlock:v21];
+    v18 = [defaultCenter addObserverForName:v17 object:0 queue:0 usingBlock:v21];
     defaultsDidChangeNotificationObserver = v5->_defaultsDidChangeNotificationObserver;
     v5->_defaultsDidChangeNotificationObserver = v18;
 
@@ -214,17 +214,17 @@ void __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke_2()
   BRCUserDefaultsPerVersionServerDictionaryKeyPrefix_block_invoke___personalPersona = v0;
 }
 
-- (id)defaultsForIdentifier:(id)a3
+- (id)defaultsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(__CFString *)v4 isEqualToString:@"default"])
+  identifierCopy = identifier;
+  if ([(__CFString *)identifierCopy isEqualToString:@"default"])
   {
     [BRCUserDefaultsManager defaultsForIdentifier:];
   }
 
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
   }
 
   else
@@ -238,7 +238,7 @@ void __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke_2()
   v8 = [(NSMutableDictionary *)self->_userDefaultsCache objectForKeyedSubscript:v6];
   if (!v8)
   {
-    if (!v4 || ([(NSMutableDictionary *)self->_userDefaultsCache objectForKeyedSubscript:@"default"], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+    if (!identifierCopy || ([(NSMutableDictionary *)self->_userDefaultsCache objectForKeyedSubscript:@"default"], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
     {
       v10 = brc_bread_crumbs();
       v11 = brc_default_log();
@@ -251,7 +251,7 @@ void __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke_2()
     v12 = [BRCUserDefaults alloc];
     v13 = [(NSDictionary *)self->_serverConfigurationDict objectForKeyedSubscript:v6];
     v14 = [(NSMutableDictionary *)self->_userDefaultsCache objectForKeyedSubscript:@"default"];
-    v8 = [(BRCUserDefaults *)v12 initWithServerConfiguration:v13 globalUserDefaults:v14 clientZoneIdentifier:v4];
+    v8 = [(BRCUserDefaults *)v12 initWithServerConfiguration:v13 globalUserDefaults:v14 clientZoneIdentifier:identifierCopy];
 
     [(NSMutableDictionary *)self->_userDefaultsCache setObject:v8 forKeyedSubscript:v6];
   }
@@ -261,14 +261,14 @@ void __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke_2()
   return v8;
 }
 
-- (void)_setServerConfigurationURL:(id)a3 whenLoaded:(id)a4
+- (void)_setServerConfigurationURL:(id)l whenLoaded:(id)loaded
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  loadedCopy = loaded;
   dispatch_assert_queue_V2(self->_callbackQueue);
   dispatch_assert_queue_V2(self->_queue);
-  objc_storeStrong(&self->_serverConfigurationURL, a3);
-  v9 = MEMORY[0x22AA4A310](v8);
+  objc_storeStrong(&self->_serverConfigurationURL, l);
+  v9 = MEMORY[0x22AA4A310](loadedCopy);
   configurationPlistDidUpdateBlock = self->_configurationPlistDidUpdateBlock;
   self->_configurationPlistDidUpdateBlock = v9;
 
@@ -304,7 +304,7 @@ void __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke_2()
 
   objc_initWeak(location, self);
   v17 = [BRCUserDefaults defaultsForMangledID:0];
-  v18 = [v17 configurationUpdateBGSystemTaskConfig];
+  configurationUpdateBGSystemTaskConfig = [v17 configurationUpdateBGSystemTaskConfig];
 
   v19 = +[BRCBGSystemTaskManager sharedManager];
   v20[0] = MEMORY[0x277D85DD0];
@@ -312,7 +312,7 @@ void __44__BRCUserDefaultsManager_initWithPersonaID___block_invoke_2()
   v20[2] = __64__BRCUserDefaultsManager__setServerConfigurationURL_whenLoaded___block_invoke;
   v20[3] = &unk_2784FFFD0;
   objc_copyWeak(&v21, location);
-  [v19 submitBGSystemTaskWithIdentifier:@"com.apple.bird.configuration-server-update" configuration:v18 block:v20];
+  [v19 submitBGSystemTaskWithIdentifier:@"com.apple.bird.configuration-server-update" configuration:configurationUpdateBGSystemTaskConfig block:v20];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(location);
@@ -353,20 +353,20 @@ void __64__BRCUserDefaultsManager__setServerConfigurationURL_whenLoaded___block_
   }
 }
 
-- (void)setServerConfigurationURL:(id)a3 whenLoaded:(id)a4
+- (void)setServerConfigurationURL:(id)l whenLoaded:(id)loaded
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  loadedCopy = loaded;
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_invoke;
   block[3] = &unk_2784FF5B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = loadedCopy;
+  v9 = loadedCopy;
+  v10 = lCopy;
   dispatch_sync(callbackQueue, block);
 }
 
@@ -385,12 +385,12 @@ void __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_i
   dispatch_sync(v4, block);
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(0, "[BRCUserDefaultsManager URLSession:downloadTask:didFinishDownloadingToURL:]", 398, 0, v27);
   v11 = brc_bread_crumbs();
@@ -400,9 +400,9 @@ void __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_i
     *buf = 134218754;
     v29 = v27[0];
     v30 = 2112;
-    v31 = v9;
+    v31 = taskCopy;
     v32 = 2112;
-    v33 = v10;
+    v33 = lCopy;
     v34 = 2112;
     v35 = v11;
     _os_log_debug_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx config: download task finished %@, plist %@%@", buf, 0x2Au);
@@ -412,9 +412,9 @@ void __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_i
   v14 = +[BRCUserDefaults cachedServerConfigurationPath];
   v15 = [v13 fileURLWithPath:v14];
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v26 = 0;
-  v17 = [v16 br_forceMoveItemAtURL:v10 toURL:v15 error:&v26];
+  v17 = [defaultManager br_forceMoveItemAtURL:lCopy toURL:v15 error:&v26];
   v18 = v26;
 
   if ((v17 & 1) == 0)
@@ -441,19 +441,19 @@ void __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_i
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v7 = brc_bread_crumbs();
   v8 = brc_default_log();
   if (os_log_type_enabled(v8, 0x90u))
   {
     v10 = 138412802;
-    v11 = v5;
+    v11 = sessionCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = errorCopy;
     v14 = 2112;
     v15 = v7;
     _os_log_error_impl(&dword_223E7A000, v8, 0x90u, "[ERROR] config: session %@ become invalid: %@%@", &v10, 0x20u);
@@ -462,16 +462,16 @@ void __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  taskCopy = task;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
-    v9 = [v7 domain];
-    if ([v9 isEqualToString:*MEMORY[0x277CCA738]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA738]])
     {
       if ([v8 code] == -1000)
       {
@@ -479,29 +479,29 @@ void __63__BRCUserDefaultsManager_setServerConfigurationURL_whenLoaded___block_i
 
       else
       {
-        v12 = [v8 code];
+        code = [v8 code];
 
-        if (v12 != -1002)
+        if (code != -1002)
         {
           v10 = 0;
           goto LABEL_14;
         }
       }
 
-      v13 = [v6 originalRequest];
-      v9 = [v13 URL];
+      originalRequest = [taskCopy originalRequest];
+      domain = [originalRequest URL];
 
-      v14 = [v6 currentRequest];
-      v15 = [v14 URL];
+      currentRequest = [taskCopy currentRequest];
+      v15 = [currentRequest URL];
 
-      if ([v9 isEqual:v15])
+      if ([domain isEqual:v15])
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@" (URL %@)", v9, v19];
+        [MEMORY[0x277CCACA8] stringWithFormat:@" (URL %@)", domain, v19];
       }
 
       else
       {
-        [MEMORY[0x277CCACA8] stringWithFormat:@" (original URL: %@, current URL %@)", v9, v15];
+        [MEMORY[0x277CCACA8] stringWithFormat:@" (original URL: %@, current URL %@)", domain, v15];
       }
       v10 = ;
     }
@@ -523,7 +523,7 @@ LABEL_14:
         v18 = v10;
       }
 
-      v21 = v6;
+      v21 = taskCopy;
       v22 = 2112;
       v23 = v8;
       v24 = 2112;
@@ -551,8 +551,8 @@ LABEL_16:
 - (void)loadCachedServerConfiguration
 {
   v3 = +[BRCUserDefaults cachedServerConfigurationPath];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
 
   if (v5)
   {
@@ -579,12 +579,12 @@ LABEL_16:
   objc_sync_exit(v7);
 }
 
-- (void)_parsePlistWithURL:(id)a3
+- (void)_parsePlistWithURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4];
+  v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
   if (!v5)
   {
 LABEL_11:
@@ -798,8 +798,8 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_defaultsDidChangeNotificationObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_defaultsDidChangeNotificationObserver];
 
   v4.receiver = self;
   v4.super_class = BRCUserDefaultsManager;

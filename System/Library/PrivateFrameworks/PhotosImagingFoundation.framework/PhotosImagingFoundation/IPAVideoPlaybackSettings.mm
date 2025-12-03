@@ -1,23 +1,23 @@
 @interface IPAVideoPlaybackSettings
-+ (Class)operationClassForIdentifier:(id)a3;
-+ (id)playbackSettingsForAdjustments:(id)a3;
++ (Class)operationClassForIdentifier:(id)identifier;
++ (id)playbackSettingsForAdjustments:(id)adjustments;
 + (void)initialize;
 - ($222789CE95D16A76D31543149FD45E96)naturalPlaybackRange;
-- ($222789CE95D16A76D31543149FD45E96)scaledPlaybackRangeForScaledDuration:(SEL)a3;
+- ($222789CE95D16A76D31543149FD45E96)scaledPlaybackRangeForScaledDuration:(SEL)duration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalTimeForPosterFrame;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalTimeFromScaledTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalTimeFromScaledTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)scaledDuration;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)scaledTimeFromNaturalTime:(SEL)a3;
-- (BOOL)isEqualToDescription:(id)a3;
-- (IPAVideoPlaybackSettings)initWithOperations:(id)a3;
-- (IPAVideoPlaybackSettings)initWithOperations:(id)a3 naturalDuration:(id *)a4;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)scaledTimeFromNaturalTime:(SEL)time;
+- (BOOL)isEqualToDescription:(id)description;
+- (IPAVideoPlaybackSettings)initWithOperations:(id)operations;
+- (IPAVideoPlaybackSettings)initWithOperations:(id)operations naturalDuration:(id *)duration;
 - (id)archivalRepresentation;
 - (id)debugDescription;
-- (id)descriptionByAddingOperation:(id)a3;
-- (id)descriptionByAddingOperation:(id)a3 atIndex:(unint64_t)a4;
-- (id)descriptionByInsertingOrReplacingOperation:(id)a3;
-- (id)descriptionByReplacingOperation:(id)a3 atIndex:(unint64_t)a4;
-- (id)descriptionWithOperations:(id)a3;
+- (id)descriptionByAddingOperation:(id)operation;
+- (id)descriptionByAddingOperation:(id)operation atIndex:(unint64_t)index;
+- (id)descriptionByInsertingOrReplacingOperation:(id)operation;
+- (id)descriptionByReplacingOperation:(id)operation atIndex:(unint64_t)index;
+- (id)descriptionWithOperations:(id)operations;
 @end
 
 @implementation IPAVideoPlaybackSettings
@@ -25,31 +25,31 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalTimeForPosterFrame
 {
   *retstr = **&MEMORY[0x277CC08F0];
-  v6 = [(IPAVideoPlaybackSettings *)self posterFrameOperation];
-  v4 = [(IPAVideoPlaybackSettings *)self trimOperation];
-  if (v6)
+  posterFrameOperation = [(IPAVideoPlaybackSettings *)self posterFrameOperation];
+  trimOperation = [(IPAVideoPlaybackSettings *)self trimOperation];
+  if (posterFrameOperation)
   {
-    [v6 frameTime];
+    [posterFrameOperation frameTime];
   }
 
-  else if (v4)
+  else if (trimOperation)
   {
-    [v4 startTime];
+    [trimOperation startTime];
   }
 
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalTimeFromScaledTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalTimeFromScaledTime:(SEL)time
 {
   *retstr = *a4;
-  v7 = [(IPAVideoPlaybackSettings *)self slomoOperation];
-  v8 = v7;
+  slomoOperation = [(IPAVideoPlaybackSettings *)self slomoOperation];
+  v8 = slomoOperation;
   memset(v19, 0, sizeof(v19));
   v18 = 0u;
-  if (v7)
+  if (slomoOperation)
   {
-    [v7 timeRange];
+    [slomoOperation timeRange];
     if ((BYTE12(v18) & 1) == 0 || (BYTE4(v19[1]) & 1) == 0 || *(&v19[1] + 1) || (*(&v19[0] + 1) & 0x8000000000000000) != 0 || (v11 = *(v19 + 8), *&v12 = *(&v19[1] + 1), time2 = **&MEMORY[0x277CC08F0], CMTimeCompare(&v11, &time2)))
     {
       memset(&time2, 0, sizeof(time2));
@@ -68,7 +68,7 @@
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)scaledTimeFromNaturalTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)scaledTimeFromNaturalTime:(SEL)time
 {
   [(IPAVideoPlaybackSettings *)self naturalPlaybackRange];
   time2 = *a4;
@@ -78,12 +78,12 @@
   a4->var3 = v13;
   *&retstr->var0 = *&a4->var0;
   retstr->var3 = v7;
-  v8 = [(IPAVideoPlaybackSettings *)self slomoOperation];
-  v9 = v8;
+  slomoOperation = [(IPAVideoPlaybackSettings *)self slomoOperation];
+  v9 = slomoOperation;
   memset(v19, 0, sizeof(v19));
-  if (v8)
+  if (slomoOperation)
   {
-    [v8 timeRange];
+    [slomoOperation timeRange];
     if ((BYTE12(v19[0]) & 1) == 0 || (BYTE4(v19[2]) & 1) == 0 || *(&v19[2] + 1) || (*(&v19[1] + 1) & 0x8000000000000000) != 0 || (v12 = *(&v19[1] + 8), *&v13 = *(&v19[2] + 1), time2 = **&MEMORY[0x277CC08F0], CMTimeCompare(&v12, &time2)))
     {
       memset(&time2, 0, sizeof(time2));
@@ -102,7 +102,7 @@
   return result;
 }
 
-- ($222789CE95D16A76D31543149FD45E96)scaledPlaybackRangeForScaledDuration:(SEL)a3
+- ($222789CE95D16A76D31543149FD45E96)scaledPlaybackRangeForScaledDuration:(SEL)duration
 {
   if (a4->var2)
   {
@@ -114,8 +114,8 @@
     CMTimeRangeGetEnd(&v17, &range);
     memset(&range, 0, 24);
     memset(&v15, 0, sizeof(v15));
-    v7 = [(IPAVideoPlaybackSettings *)self slomoOperation];
-    if (v7)
+    slomoOperation = [(IPAVideoPlaybackSettings *)self slomoOperation];
+    if (slomoOperation)
     {
       time1 = start;
       time2 = **&MEMORY[0x277CC08F0];
@@ -156,19 +156,19 @@
 - ($222789CE95D16A76D31543149FD45E96)naturalPlaybackRange
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(IPAVideoPlaybackSettings *)self trimOperation];
+  trimOperation = [(IPAVideoPlaybackSettings *)self trimOperation];
   memset(&v19, 0, sizeof(v19));
   [(IPAVideoPlaybackSettings *)self naturalDuration];
   *&start.start.value = *MEMORY[0x277CC08F0];
   start.start.epoch = *(MEMORY[0x277CC08F0] + 16);
   CMTimeRangeMake(&v19, &start.start, &duration.start);
-  if (!v5)
+  if (!trimOperation)
   {
     goto LABEL_4;
   }
 
   memset(&start, 0, sizeof(start));
-  [v5 trimRange];
+  [trimOperation trimRange];
   if ((start.start.flags & 1) == 0 || (start.duration.flags & 1) == 0 || start.duration.epoch || start.duration.value < 0)
   {
     duration = start;
@@ -226,8 +226,8 @@ LABEL_5:
   memset(&v14, 0, sizeof(v14));
   [(IPAVideoPlaybackSettings *)self naturalPlaybackRange];
   *retstr = v14.duration;
-  v5 = [(IPAVideoPlaybackSettings *)self slomoOperation];
-  if (v5)
+  slomoOperation = [(IPAVideoPlaybackSettings *)self slomoOperation];
+  if (slomoOperation)
   {
     v12 = *&v14.start.value;
     epoch = v14.start.epoch;
@@ -251,16 +251,16 @@ LABEL_5:
   return result;
 }
 
-- (id)descriptionByInsertingOrReplacingOperation:(id)a3
+- (id)descriptionByInsertingOrReplacingOperation:(id)operation
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     _PFAssertFailHandler();
   }
 
-  v27 = v4;
+  v27 = operationCopy;
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -429,14 +429,14 @@ LABEL_18:
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
-  v5 = [(IPAVideoPlaybackSettings *)self posterFrameOperation];
-  v6 = [(IPAVideoPlaybackSettings *)self trimOperation];
-  v7 = [(IPAVideoPlaybackSettings *)self slomoOperation];
-  [v3 appendFormat:@"<%@:%p pf=%@ trim=%@ slomo=%@>", v4, self, v5, v6, v7];
+  posterFrameOperation = [(IPAVideoPlaybackSettings *)self posterFrameOperation];
+  trimOperation = [(IPAVideoPlaybackSettings *)self trimOperation];
+  slomoOperation = [(IPAVideoPlaybackSettings *)self slomoOperation];
+  [string appendFormat:@"<%@:%p pf=%@ trim=%@ slomo=%@>", v4, self, posterFrameOperation, trimOperation, slomoOperation];
 
-  return v3;
+  return string;
 }
 
 - (id)archivalRepresentation
@@ -447,8 +447,8 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = self;
-  v5 = [(IPAEditDescription *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v5 = [(IPAEditDescription *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -459,27 +459,27 @@ LABEL_18:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) archivalRepresentation];
-        if (v9)
+        archivalRepresentation = [*(*(&v13 + 1) + 8 * i) archivalRepresentation];
+        if (archivalRepresentation)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v3 addObject:v9];
+            [v3 addObject:archivalRepresentation];
           }
 
           else
           {
-            v12 = v9;
+            v12 = archivalRepresentation;
             _PFAssertContinueHandler();
           }
         }
       }
 
-      v6 = [(IPAEditDescription *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [(IPAEditDescription *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -491,32 +491,32 @@ LABEL_18:
   return v10;
 }
 
-- (id)descriptionByReplacingOperation:(id)a3 atIndex:(unint64_t)a4
+- (id)descriptionByReplacingOperation:(id)operation atIndex:(unint64_t)index
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = _PFAssertFailHandler();
   return [(IPAVideoPlaybackSettings *)v5 descriptionByAddingOperation:v6, v7];
 }
 
-- (id)descriptionByAddingOperation:(id)a3
+- (id)descriptionByAddingOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v4 = _PFAssertFailHandler();
   return [(IPAVideoPlaybackSettings *)v4 descriptionByAddingOperation:v5 atIndex:v6, v7];
 }
 
-- (id)descriptionByAddingOperation:(id)a3 atIndex:(unint64_t)a4
+- (id)descriptionByAddingOperation:(id)operation atIndex:(unint64_t)index
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = _PFAssertFailHandler();
   return [(IPAVideoPlaybackSettings *)v5 descriptionWithOperations:v6, v7];
 }
 
-- (id)descriptionWithOperations:(id)a3
+- (id)descriptionWithOperations:(id)operations
 {
   v7.receiver = self;
   v7.super_class = IPAVideoPlaybackSettings;
-  v4 = [(IPAEditDescription *)&v7 descriptionWithOperations:a3];
+  v4 = [(IPAEditDescription *)&v7 descriptionWithOperations:operations];
   if (v4)
   {
     epoch = self->_naturalDuration.epoch;
@@ -527,13 +527,13 @@ LABEL_18:
   return v4;
 }
 
-- (BOOL)isEqualToDescription:(id)a3
+- (BOOL)isEqualToDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   [(IPAVideoPlaybackSettings *)self naturalDuration];
-  if (v4)
+  if (descriptionCopy)
   {
-    [v4 naturalDuration];
+    [descriptionCopy naturalDuration];
   }
 
   else
@@ -541,50 +541,50 @@ LABEL_18:
     memset(&v20, 0, sizeof(v20));
   }
 
-  if (CMTimeCompare(&time1, &v20) || (v5 = [v4 operationCount], v5 != -[IPAEditDescription operationCount](self, "operationCount")))
+  if (CMTimeCompare(&time1, &v20) || (v5 = [descriptionCopy operationCount], v5 != -[IPAEditDescription operationCount](self, "operationCount")))
   {
     v10 = 0;
   }
 
   else
   {
-    v6 = [(IPAVideoPlaybackSettings *)self posterFrameOperation];
-    v7 = [v4 posterFrameOperation];
-    v8 = v7;
-    if (v6 && v7)
+    posterFrameOperation = [(IPAVideoPlaybackSettings *)self posterFrameOperation];
+    posterFrameOperation2 = [descriptionCopy posterFrameOperation];
+    v8 = posterFrameOperation2;
+    if (posterFrameOperation && posterFrameOperation2)
     {
-      v9 = [v6 isEqual:v7];
+      v9 = [posterFrameOperation isEqual:posterFrameOperation2];
     }
 
     else
     {
-      v9 = (v6 | v7) == 0;
+      v9 = (posterFrameOperation | posterFrameOperation2) == 0;
     }
 
     v12 = [(IPAVideoPlaybackSettings *)self trimOperation:v20.value];
-    v13 = [v4 trimOperation];
-    v14 = v13;
-    if (v12 && v13)
+    trimOperation = [descriptionCopy trimOperation];
+    v14 = trimOperation;
+    if (v12 && trimOperation)
     {
-      v15 = [v12 isEqual:v13];
+      v15 = [v12 isEqual:trimOperation];
     }
 
     else
     {
-      v15 = (v12 | v13) == 0;
+      v15 = (v12 | trimOperation) == 0;
     }
 
-    v16 = [(IPAVideoPlaybackSettings *)self slomoOperation];
-    v17 = [v4 slomoOperation];
-    v18 = v17;
-    if (v16 && v17)
+    slomoOperation = [(IPAVideoPlaybackSettings *)self slomoOperation];
+    slomoOperation2 = [descriptionCopy slomoOperation];
+    v18 = slomoOperation2;
+    if (slomoOperation && slomoOperation2)
     {
-      v19 = [v16 isEqual:v17];
+      v19 = [slomoOperation isEqual:slomoOperation2];
     }
 
     else
     {
-      v19 = (v16 | v17) == 0;
+      v19 = (slomoOperation | slomoOperation2) == 0;
     }
 
     v10 = v9 & v15 & v19;
@@ -593,25 +593,25 @@ LABEL_18:
   return v10;
 }
 
-- (IPAVideoPlaybackSettings)initWithOperations:(id)a3 naturalDuration:(id *)a4
+- (IPAVideoPlaybackSettings)initWithOperations:(id)operations naturalDuration:(id *)duration
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationsCopy = operations;
   v7 = MEMORY[0x277CC08F0];
-  if ((a4->var2 & 0x1D) != 1 || (time1 = *a4, time2 = **&MEMORY[0x277CC08F0], CMTimeCompare(&time1, &time2) < 0))
+  if ((duration->var2 & 0x1D) != 1 || (time1 = *duration, time2 = **&MEMORY[0x277CC08F0], CMTimeCompare(&time1, &time2) < 0))
   {
     v8 = IPAVideoGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      time1 = *a4;
+      time1 = *duration;
       v9 = CMTimeCopyDescription(*MEMORY[0x277CBECE8], &time1);
       LODWORD(time1.value) = 138412290;
       *(&time1.value + 4) = v9;
       _os_log_impl(&dword_25E5BB000, v8, OS_LOG_TYPE_DEBUG, "%@ is either invalid, non-numeric or negative", &time1, 0xCu);
     }
 
-    *&a4->var0 = *v7;
-    a4->var3 = *(v7 + 16);
+    *&duration->var0 = *v7;
+    duration->var3 = *(v7 + 16);
   }
 
   v10 = objc_opt_new();
@@ -619,7 +619,7 @@ LABEL_18:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v6;
+  v11 = operationsCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v12)
   {
@@ -650,35 +650,35 @@ LABEL_18:
     while (v13);
   }
 
-  v19 = [v10 allValues];
+  allValues = [v10 allValues];
   v23.receiver = self;
   v23.super_class = IPAVideoPlaybackSettings;
-  v20 = [(IPAEditDescription *)&v23 initWithOperations:v19];
+  v20 = [(IPAEditDescription *)&v23 initWithOperations:allValues];
 
   if (v20)
   {
-    var3 = a4->var3;
-    *&v20->_naturalDuration.value = *&a4->var0;
+    var3 = duration->var3;
+    *&v20->_naturalDuration.value = *&duration->var0;
     v20->_naturalDuration.epoch = var3;
   }
 
   return v20;
 }
 
-- (IPAVideoPlaybackSettings)initWithOperations:(id)a3
+- (IPAVideoPlaybackSettings)initWithOperations:(id)operations
 {
-  v3 = a3;
+  operationsCopy = operations;
   v4 = _PFAssertFailHandler();
   return [(IPAVideoPlaybackSettings *)v4 presetifyAdjustmentStack:v5, v6];
 }
 
-+ (Class)operationClassForIdentifier:(id)a3
++ (Class)operationClassForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = v3;
-    v5 = [s_identifierToClassMapping objectForKeyedSubscript:v3];
+    v4 = identifierCopy;
+    v5 = [s_identifierToClassMapping objectForKeyedSubscript:identifierCopy];
     v6 = v5;
 
     return v5;
@@ -691,20 +691,20 @@ LABEL_18:
   }
 }
 
-+ (id)playbackSettingsForAdjustments:(id)a3
++ (id)playbackSettingsForAdjustments:(id)adjustments
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  adjustmentsCopy = adjustments;
+  if (adjustmentsCopy)
   {
     v22 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = v3;
-    v4 = [v3 adjustments];
-    v5 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    v21 = adjustmentsCopy;
+    adjustments = [adjustmentsCopy adjustments];
+    v5 = [adjustments countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v5)
     {
       v6 = v5;
@@ -715,18 +715,18 @@ LABEL_18:
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(adjustments);
           }
 
           v9 = *(*(&v23 + 1) + 8 * i);
-          v10 = [v9 identifier];
-          v11 = [IPAVideoPlaybackSettings operationClassForIdentifier:v10];
+          identifier = [v9 identifier];
+          v11 = [IPAVideoPlaybackSettings operationClassForIdentifier:identifier];
 
           if (v11)
           {
             v12 = [v11 alloc];
-            v13 = [v9 settings];
-            v14 = [v12 initWithSettingsDictionary:v13];
+            settings = [v9 settings];
+            v14 = [v12 initWithSettingsDictionary:settings];
 
             if (v14)
             {
@@ -738,9 +738,9 @@ LABEL_18:
               v16 = IPAVideoGetLog();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
-                v17 = [v9 settings];
+                settings2 = [v9 settings];
                 *buf = 138412546;
-                v28 = v17;
+                v28 = settings2;
                 v29 = 2112;
                 v30 = v11;
                 _os_log_impl(&dword_25E5BB000, v16, OS_LOG_TYPE_DEFAULT, "failed to unarchive %@ via %@", buf, 0x16u);
@@ -755,22 +755,22 @@ LABEL_18:
             v14 = IPAVideoGetLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
-              v15 = [v9 identifier];
+              identifier2 = [v9 identifier];
               *buf = 138412290;
-              v28 = v15;
+              v28 = identifier2;
               _os_log_impl(&dword_25E5BB000, v14, OS_LOG_TYPE_DEFAULT, "missing adjustment class for identifier %@", buf, 0xCu);
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v6 = [adjustments countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v6);
     }
 
     v18 = [IPAVideoPlaybackSettings alloc];
-    v3 = v21;
+    adjustmentsCopy = v21;
     [v21 naturalDuration];
     v19 = [(IPAVideoPlaybackSettings *)v18 initWithOperations:v22 naturalDuration:buf];
   }

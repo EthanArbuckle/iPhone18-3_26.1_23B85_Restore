@@ -1,25 +1,25 @@
 @interface HPSSpatialProfileEnrollmentControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)moveToStep:(int)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)moveToStep:(int)step;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HPSSpatialProfileEnrollmentControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_stepSerialQueue" withType:"NSObject<OS_dispatch_queue>"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_previousStep" withType:"i"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_currentStep" withType:"i"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_infoView" withType:"OBHeaderView"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_enrollView" withType:"HPSSpatialProfileUIPearlEnrollView"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_continueButton" withType:"OBTrayButton"];
-  [v3 validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceMethod:@"moveToStep:" withFullSignature:{"v", "i", 0}];
-  [v3 validateClass:@"OBHeaderView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBTemplateHeaderDetailLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_pillContainer" withType:"BKUIPearlPillContainerView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_stepSerialQueue" withType:"NSObject<OS_dispatch_queue>"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_previousStep" withType:"i"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_currentStep" withType:"i"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_infoView" withType:"OBHeaderView"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_enrollView" withType:"HPSSpatialProfileUIPearlEnrollView"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceVariable:@"_continueButton" withType:"OBTrayButton"];
+  [validationsCopy validateClass:@"HPSSpatialProfileEnrollmentController" hasInstanceMethod:@"moveToStep:" withFullSignature:{"v", "i", 0}];
+  [validationsCopy validateClass:@"OBHeaderView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBTemplateHeaderDetailLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_pillContainer" withType:"BKUIPearlPillContainerView"];
 }
 
 - (void)viewWillLayoutSubviews
@@ -30,19 +30,19 @@
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
   v4 = [(HPSSpatialProfileEnrollmentControllerAccessibility *)self safeIntegerForKey:@"_currentStep"];
-  v5 = [v3 presentedViewController];
+  presentedViewController = [v3 presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) != 0 && !v4)
   {
     v7 = *MEMORY[0x29EDC7ED8];
-    v8 = [(HPSSpatialProfileEnrollmentControllerAccessibility *)self _axContinueButton];
-    UIAccessibilityPostNotification(v7, v8);
+    _axContinueButton = [(HPSSpatialProfileEnrollmentControllerAccessibility *)self _axContinueButton];
+    UIAccessibilityPostNotification(v7, _axContinueButton);
   }
 }
 
-- (void)moveToStep:(int)a3
+- (void)moveToStep:(int)step
 {
   v8.receiver = self;
   v8.super_class = HPSSpatialProfileEnrollmentControllerAccessibility;
@@ -53,7 +53,7 @@
   v6[2] = __65__HPSSpatialProfileEnrollmentControllerAccessibility_moveToStep___block_invoke;
   v6[3] = &unk_29F2C2020;
   v6[4] = self;
-  v7 = a3;
+  stepCopy = step;
   dispatch_async(v5, v6);
 }
 

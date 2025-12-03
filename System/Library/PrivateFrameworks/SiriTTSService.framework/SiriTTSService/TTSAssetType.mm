@@ -54,7 +54,7 @@
 
 - (id)pathComponent
 {
-  v2 = self;
+  selfCopy = self;
   TTSAssetType.pathComponent()();
 
   v3 = sub_1B1C2CB28();

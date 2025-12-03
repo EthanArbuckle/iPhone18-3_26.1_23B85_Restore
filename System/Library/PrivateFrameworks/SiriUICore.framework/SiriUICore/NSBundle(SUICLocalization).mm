@@ -21,17 +21,17 @@
     v11 = __stringTables;
     if (!__stringTables)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v13 = __stringTables;
-      __stringTables = v12;
+      __stringTables = dictionary;
 
       v11 = __stringTables;
     }
 
-    v14 = [a1 bundleIdentifier];
-    v15 = [v11 objectForKey:v14];
+    bundleIdentifier = [self bundleIdentifier];
+    v15 = [v11 objectForKey:bundleIdentifier];
 
-    if (v15 || ([MEMORY[0x1E695DF90] dictionary], v15 = objc_claimAutoreleasedReturnValue(), v16 = __stringTables, objc_msgSend(a1, "bundleIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setObject:forKey:", v15, v17), v17, v15))
+    if (v15 || ([MEMORY[0x1E695DF90] dictionary], v15 = objc_claimAutoreleasedReturnValue(), v16 = __stringTables, objc_msgSend(self, "bundleIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setObject:forKey:", v15, v17), v17, v15))
     {
       v18 = [v15 objectForKey:v10];
       if (v18)
@@ -56,12 +56,12 @@ LABEL_19:
         v31 = v15;
         v32 = v9;
         v33 = v8;
-        v19 = [a1 localizations];
+        localizations = [self localizations];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v20 = CFBundleCopyLocalizationsForPreferences(v19, [MEMORY[0x1E695DEC8] arrayWithObject:__currentLanguageCode]);
+        v20 = CFBundleCopyLocalizationsForPreferences(localizations, [MEMORY[0x1E695DEC8] arrayWithObject:__currentLanguageCode]);
         v21 = [(__CFArray *)v20 countByEnumeratingWithState:&v34 objects:v38 count:16];
         if (v21)
         {
@@ -76,7 +76,7 @@ LABEL_19:
                 objc_enumerationMutation(v20);
               }
 
-              v25 = [a1 URLForResource:v10 withExtension:@"strings" subdirectory:0 localization:*(*(&v34 + 1) + 8 * i)];
+              v25 = [self URLForResource:v10 withExtension:@"strings" subdirectory:0 localization:*(*(&v34 + 1) + 8 * i)];
               v26 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v25];
               if (v26)
               {
@@ -100,9 +100,9 @@ LABEL_19:
           }
         }
 
-        v27 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v15 = v31;
-        [v31 setObject:v27 forKey:v10];
+        [v31 setObject:null forKey:v10];
 
         v18 = 0;
         v9 = v32;

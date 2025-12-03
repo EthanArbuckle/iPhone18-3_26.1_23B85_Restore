@@ -1,16 +1,16 @@
 @interface VOTUIElementVisualizationView
-- (VOTUIElementVisualizationView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setElementFrames:(id)a3 labels:(id)a4 uiClasses:(id)a5;
+- (VOTUIElementVisualizationView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setElementFrames:(id)frames labels:(id)labels uiClasses:(id)classes;
 @end
 
 @implementation VOTUIElementVisualizationView
 
-- (VOTUIElementVisualizationView)initWithFrame:(CGRect)a3
+- (VOTUIElementVisualizationView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = VOTUIElementVisualizationView;
-  v3 = [(VOTUIElementVisualizationView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VOTUIElementVisualizationView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = +[UIColor clearColor];
   [(VOTUIElementVisualizationView *)v3 setBackgroundColor:v4];
 
@@ -35,31 +35,31 @@
   return v3;
 }
 
-- (void)setElementFrames:(id)a3 labels:(id)a4 uiClasses:(id)a5
+- (void)setElementFrames:(id)frames labels:(id)labels uiClasses:(id)classes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  framesCopy = frames;
+  labelsCopy = labels;
+  classesCopy = classes;
   frames = self->_frames;
-  self->_frames = v8;
-  v12 = v8;
+  self->_frames = framesCopy;
+  v12 = framesCopy;
 
   labels = self->_labels;
-  self->_labels = v9;
-  v14 = v9;
+  self->_labels = labelsCopy;
+  v14 = labelsCopy;
 
   uiClasses = self->_uiClasses;
-  self->_uiClasses = v10;
+  self->_uiClasses = classesCopy;
 
   [(VOTUIElementVisualizationView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [UIColor colorWithWhite:0.0 alpha:0.0];
   [v8 set];
 

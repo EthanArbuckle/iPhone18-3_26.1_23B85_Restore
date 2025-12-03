@@ -1,20 +1,20 @@
 @interface GKShowcaseCellView
 - (CGRect)alignmentRectForText;
-- (GKShowcaseCellView)initWithFrame:(CGRect)a3;
+- (GKShowcaseCellView)initWithFrame:(CGRect)frame;
 - (SEL)touchedShowcaseCellAction;
 - (void)prepareForReuse;
-- (void)setCell:(id)a3;
-- (void)setTouchedShowcaseCellAction:(SEL)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setCell:(id)cell;
+- (void)setTouchedShowcaseCellAction:(SEL)action;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation GKShowcaseCellView
 
-- (GKShowcaseCellView)initWithFrame:(CGRect)a3
+- (GKShowcaseCellView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = GKShowcaseCellView;
-  v3 = [(GKShowcaseCellView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKShowcaseCellView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(GKHairlineView);
@@ -35,25 +35,25 @@
   return v3;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = GKShowcaseCellView;
-  [(GKShowcaseCellView *)&v16 touchesEnded:v6 withEvent:v7];
+  [(GKShowcaseCellView *)&v16 touchesEnded:endedCopy withEvent:eventCopy];
   if (self->_touchedShowcaseCellAction)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = v6;
+    v8 = endedCopy;
     if ([v8 countByEnumeratingWithState:&v12 objects:v17 count:16])
     {
-      v9 = [MEMORY[0x277D75128] sharedApplication];
-      v10 = v9;
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      v10 = mEMORY[0x277D75128];
       if (self->_touchedShowcaseCellAction)
       {
         touchedShowcaseCellAction = self->_touchedShowcaseCellAction;
@@ -64,29 +64,29 @@
         touchedShowcaseCellAction = 0;
       }
 
-      [v9 _gkSendAction:touchedShowcaseCellAction viaResponder:self withObject:self];
+      [mEMORY[0x277D75128] _gkSendAction:touchedShowcaseCellAction viaResponder:self withObject:self];
     }
   }
 }
 
-- (void)setCell:(id)a3
+- (void)setCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   cell = self->_cell;
-  if (cell != v5)
+  if (cell != cellCopy)
   {
-    v7 = v5;
+    v7 = cellCopy;
     [(UICollectionViewCell *)cell removeFromSuperview];
-    objc_storeStrong(&self->_cell, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_cell, cell);
+    cellCopy = v7;
     if (v7)
     {
       cell = [(GKShowcaseCellView *)self addSubview:self->_cell];
-      v5 = v7;
+      cellCopy = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](cell, v5);
+  MEMORY[0x2821F96F8](cell, cellCopy);
 }
 
 - (void)prepareForReuse
@@ -132,19 +132,19 @@
   }
 }
 
-- (void)setTouchedShowcaseCellAction:(SEL)a3
+- (void)setTouchedShowcaseCellAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_touchedShowcaseCellAction = v3;
+  self->_touchedShowcaseCellAction = actionCopy;
 }
 
 @end

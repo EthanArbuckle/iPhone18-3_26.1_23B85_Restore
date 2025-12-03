@@ -1,8 +1,8 @@
 @interface BuddyActivationFailureController
 - (BOOL)controllerNeedsToRun;
 - (BuddyActivationFailureController)init;
-- (void)_otherOptionsTapped:(id)a3;
-- (void)_tryAgainTapped:(id)a3;
+- (void)_otherOptionsTapped:(id)tapped;
+- (void)_tryAgainTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -26,23 +26,23 @@
 
 - (void)viewDidLoad
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   v31.receiver = self;
   v31.super_class = BuddyActivationFailureController;
   [(BuddyActivationFailureController *)&v31 viewDidLoad];
   location = 0;
-  v2 = [(BuddyActivationFailureController *)v33 activationState];
-  v3 = [(BuddyActivationState *)v2 error];
-  v4 = [(BuddyActivationError *)v3 isConnectionFailure];
+  activationState = [(BuddyActivationFailureController *)selfCopy activationState];
+  error = [(BuddyActivationState *)activationState error];
+  isConnectionFailure = [(BuddyActivationError *)error isConnectionFailure];
 
-  if (v4)
+  if (isConnectionFailure)
   {
-    v5 = [(BuddyActivationFailureController *)v33 activationState];
-    v6 = [(BuddyActivationState *)v5 error];
-    v7 = [(BuddyActivationError *)v6 isCellular];
+    activationState2 = [(BuddyActivationFailureController *)selfCopy activationState];
+    error2 = [(BuddyActivationState *)activationState2 error];
+    isCellular = [(BuddyActivationError *)error2 isCellular];
 
-    if (v7)
+    if (isCellular)
     {
       objc_storeStrong(&location, @"ACTIVATION_ERROR_DETAIL_CONNECTION_FAILURE_CELLULAR_WIFI");
     }
@@ -55,11 +55,11 @@
 
   else
   {
-    v8 = [(BuddyActivationFailureController *)v33 activationState];
-    v9 = [(BuddyActivationState *)v8 error];
-    v10 = [(BuddyActivationError *)v9 isCellular];
+    activationState3 = [(BuddyActivationFailureController *)selfCopy activationState];
+    error3 = [(BuddyActivationState *)activationState3 error];
+    isCellular2 = [(BuddyActivationError *)error3 isCellular];
 
-    if (v10)
+    if (isCellular2)
     {
       objc_storeStrong(&location, @"ACTIVATION_ERROR_DETAIL_OTHER_CELLULAR_WIFI");
     }
@@ -70,35 +70,35 @@
     }
   }
 
-  v11 = [(BuddyActivationFailureController *)v33 activationState];
-  v12 = [(BuddyActivationState *)v11 error];
-  v13 = [(BuddyActivationError *)v12 isCellular];
+  activationState4 = [(BuddyActivationFailureController *)selfCopy activationState];
+  error4 = [(BuddyActivationState *)activationState4 error];
+  isCellular3 = [(BuddyActivationError *)error4 isCellular];
 
-  if (v13)
+  if (isCellular3)
   {
-    v14 = [(BuddyActivationFailureController *)v33 navigationItem];
-    [v14 setHidesBackButton:1];
+    navigationItem = [(BuddyActivationFailureController *)selfCopy navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
-  v15 = [(BuddyActivationFailureController *)v33 headerView];
+  headerView = [(BuddyActivationFailureController *)selfCopy headerView];
   v16 = +[NSBundle mainBundle];
   v17 = [UIDevice modelSpecificLocalizedStringKeyForKey:location];
   v18 = SFLocalizableWAPIStringKeyForKey();
   v19 = [(NSBundle *)v16 localizedStringForKey:v18 value:&stru_10032F900 table:@"Localizable"];
-  [v15 setDetailText:v19];
+  [headerView setDetailText:v19];
 
-  v20 = [(BuddyActivationFailureController *)v33 headerView];
+  headerView2 = [(BuddyActivationFailureController *)selfCopy headerView];
   v21 = [UIImage imageNamed:@"Alert Icon"];
   v22 = +[UIColor redColor];
   v23 = [(UIImage *)v21 _flatImageWithColor:v22];
-  [v20 setIcon:v23 accessibilityLabel:0];
+  [headerView2 setIcon:v23 accessibilityLabel:0];
 
-  v24 = v33;
+  v24 = selfCopy;
   v25 = +[NSBundle mainBundle];
   v26 = [(NSBundle *)v25 localizedStringForKey:@"TRY_AGAIN" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v24 addBoldButton:v26 action:"_tryAgainTapped:"];
 
-  v27 = v33;
+  v27 = selfCopy;
   v28 = +[NSBundle mainBundle];
   v29 = [(NSBundle *)v28 localizedStringForKey:@"OTHER_OPTIONS" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v27 addLinkButton:v29 action:"_otherOptionsTapped:"];
@@ -106,31 +106,31 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)_tryAgainTapped:(id)a3
+- (void)_tryAgainTapped:(id)tapped
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyActivationFailureController *)v6 restartActivation];
+  objc_storeStrong(location, tapped);
+  restartActivation = [(BuddyActivationFailureController *)selfCopy restartActivation];
 
-  if (v3)
+  if (restartActivation)
   {
-    v4 = [(BuddyActivationFailureController *)v6 restartActivation];
-    v4[2](v4);
+    restartActivation2 = [(BuddyActivationFailureController *)selfCopy restartActivation];
+    restartActivation2[2](restartActivation2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_otherOptionsTapped:(id)a3
+- (void)_otherOptionsTapped:(id)tapped
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyWelcomeController *)v5 delegate];
-  [(BFFFlowItemDelegate *)v3 flowItemDone:v5];
+  objc_storeStrong(location, tapped);
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
@@ -138,8 +138,8 @@
 - (BOOL)controllerNeedsToRun
 {
   v2 = [(BuddyActivationFailureController *)self activationState:a2];
-  v3 = [(BuddyActivationState *)v2 error];
-  v4 = v3 != 0;
+  error = [(BuddyActivationState *)v2 error];
+  v4 = error != 0;
 
   return v4;
 }

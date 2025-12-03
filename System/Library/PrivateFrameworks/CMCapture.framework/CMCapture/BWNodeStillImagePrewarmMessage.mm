@@ -1,19 +1,19 @@
 @interface BWNodeStillImagePrewarmMessage
-+ (id)newMessageWithStillImageSettings:(id)a3 resourceConfig:(id)a4;
-- (id)_initWithStillImageSettings:(id)a3 resourceConfig:(id)a4;
++ (id)newMessageWithStillImageSettings:(id)settings resourceConfig:(id)config;
+- (id)_initWithStillImageSettings:(id)settings resourceConfig:(id)config;
 - (void)dealloc;
 @end
 
 @implementation BWNodeStillImagePrewarmMessage
 
-+ (id)newMessageWithStillImageSettings:(id)a3 resourceConfig:(id)a4
++ (id)newMessageWithStillImageSettings:(id)settings resourceConfig:(id)config
 {
   v6 = [BWNodeStillImagePrewarmMessage alloc];
 
-  return [(BWNodeStillImagePrewarmMessage *)v6 _initWithStillImageSettings:a3 resourceConfig:a4];
+  return [(BWNodeStillImagePrewarmMessage *)v6 _initWithStillImageSettings:settings resourceConfig:config];
 }
 
-- (id)_initWithStillImageSettings:(id)a3 resourceConfig:(id)a4
+- (id)_initWithStillImageSettings:(id)settings resourceConfig:(id)config
 {
   v9.receiver = self;
   v9.super_class = BWNodeStillImagePrewarmMessage;
@@ -22,8 +22,8 @@
   if (v6)
   {
     *&v6->super._category = 0x700000001;
-    v6->_stillImageSettings = a3;
-    v7->_resourceConfig = a4;
+    v6->_stillImageSettings = settings;
+    v7->_resourceConfig = config;
   }
 
   return v7;

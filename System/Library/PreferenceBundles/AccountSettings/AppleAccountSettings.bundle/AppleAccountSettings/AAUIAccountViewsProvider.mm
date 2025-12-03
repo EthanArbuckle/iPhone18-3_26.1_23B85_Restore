@@ -1,14 +1,14 @@
 @interface AAUIAccountViewsProvider
 - (ACUISignInControllerDelegate)delegate;
-- (BOOL)setDelegate:(id)a3 forSignInController:(id)a4;
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3;
-- (Class)viewControllerClassForViewingAccount:(id)a3;
-- (Class)viewControllerClassForViewingAccount:(id)a3 specifier:(id)a4 presentingVC:(id)a5;
+- (BOOL)setDelegate:(id)delegate forSignInController:(id)controller;
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type;
+- (Class)viewControllerClassForViewingAccount:(id)account;
+- (Class)viewControllerClassForViewingAccount:(id)account specifier:(id)specifier presentingVC:(id)c;
 - (id)_accountStore;
-- (id)configurationInfoForCreatingAccountWithType:(id)a3;
-- (id)localizedStringForDataclass:(id)a3 withSuffix:(id)a4 forAccount:(id)a5;
+- (id)configurationInfoForCreatingAccountWithType:(id)type;
+- (id)localizedStringForDataclass:(id)dataclass withSuffix:(id)suffix forAccount:(id)account;
 - (id)supportedAccountTypeIdentifiers;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)signInControllerDidCancel:(id)cancel;
 @end
 
 @implementation AAUIAccountViewsProvider
@@ -36,13 +36,13 @@
   return v2;
 }
 
-- (Class)viewControllerClassForCreatingAccountWithType:(id)a3
+- (Class)viewControllerClassForCreatingAccountWithType:(id)type
 {
-  v3 = [(AAUIAccountViewsProvider *)self _accountStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  _accountStore = [(AAUIAccountViewsProvider *)self _accountStore];
+  aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
 
   v5 = AAUISignInController_ptr;
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
     v5 = &off_58830;
   }
@@ -53,9 +53,9 @@
   return v7;
 }
 
-- (Class)viewControllerClassForViewingAccount:(id)a3
+- (Class)viewControllerClassForViewingAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   name = protocol_getMethodDescription(&OBJC_PROTOCOL___ACUIAccountViewsProviderProtocol, "viewControllerClassForViewingAccount:specifier:presentingVC:", 0, 1).name;
   v5 = _AAUILogSystem();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -74,7 +74,7 @@
       sub_33A28();
     }
 
-    if (+[AAUIFeatureFlags isShowDataclassDetailFromAppsEnabled](AAUIFeatureFlags, "isShowDataclassDetailFromAppsEnabled") && ([v3 aa_isAccountClass:AAAccountClassPrimary] & 1) != 0)
+    if (+[AAUIFeatureFlags isShowDataclassDetailFromAppsEnabled](AAUIFeatureFlags, "isShowDataclassDetailFromAppsEnabled") && ([accountCopy aa_isAccountClass:AAAccountClassPrimary] & 1) != 0)
     {
       v7 = off_58828;
       goto LABEL_11;
@@ -89,13 +89,13 @@ LABEL_11:
   return v9;
 }
 
-- (Class)viewControllerClassForViewingAccount:(id)a3 specifier:(id)a4 presentingVC:(id)a5
+- (Class)viewControllerClassForViewingAccount:(id)account specifier:(id)specifier presentingVC:(id)c
 {
-  v7 = a4;
-  v8 = a5;
-  if ([a3 aa_isAccountClass:AAAccountClassPrimary])
+  specifierCopy = specifier;
+  cCopy = c;
+  if ([account aa_isAccountClass:AAAccountClassPrimary])
   {
-    v9 = [v7 propertyForKey:PSAppSettingsBundleIDKey];
+    v9 = [specifierCopy propertyForKey:PSAppSettingsBundleIDKey];
     v10 = _AAUILogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -104,9 +104,9 @@ LABEL_11:
 
     if ([v9 isEqualToString:@"com.apple.mobilemail"])
     {
-      if (v8)
+      if (cCopy)
       {
-        v11 = [[iCloudMailUnifiedSettingsProviderObjc alloc] initWithPresenter:v8];
+        v11 = [[iCloudMailUnifiedSettingsProviderObjc alloc] initWithPresenter:cCopy];
         [v11 navigateToiCloudMailSettingsWithDeeplink:0];
 LABEL_21:
 
@@ -136,9 +136,9 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      if (v8)
+      if (cCopy)
       {
-        v11 = [[iCloudCalendarUnifiedSettingsProviderObjc alloc] initWithPresenter:v8];
+        v11 = [[iCloudCalendarUnifiedSettingsProviderObjc alloc] initWithPresenter:cCopy];
         [v11 navigateToiCloudCalendarSettingsWithDeeplink:0];
         goto LABEL_21;
       }
@@ -166,12 +166,12 @@ LABEL_23:
   return v13;
 }
 
-- (id)configurationInfoForCreatingAccountWithType:(id)a3
+- (id)configurationInfoForCreatingAccountWithType:(id)type
 {
-  v3 = [(AAUIAccountViewsProvider *)self _accountStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  _accountStore = [(AAUIAccountViewsProvider *)self _accountStore];
+  aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
 
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
     v11 = ACUIAccountIdentifierKey;
     v12 = @"secondary";
@@ -192,13 +192,13 @@ LABEL_23:
   return v7;
 }
 
-- (id)localizedStringForDataclass:(id)a3 withSuffix:(id)a4 forAccount:(id)a5
+- (id)localizedStringForDataclass:(id)dataclass withSuffix:(id)suffix forAccount:(id)account
 {
-  v6 = a4;
-  if ([a3 isEqualToString:kAccountDataclassMail])
+  suffixCopy = suffix;
+  if ([dataclass isEqualToString:kAccountDataclassMail])
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [@"ICLOUD_MAIL_" stringByAppendingString:v6];
+    v8 = [@"ICLOUD_MAIL_" stringByAppendingString:suffixCopy];
     v9 = [v7 localizedStringForKey:v8 value:&stru_5A5F0 table:@"Localizable"];
   }
 
@@ -210,14 +210,14 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)setDelegate:(id)a3 forSignInController:(id)a4
+- (BOOL)setDelegate:(id)delegate forSignInController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  if (controllerCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v7 setDelegate:self];
-    objc_storeWeak(&self->_delegate, v6);
+    [controllerCopy setDelegate:self];
+    objc_storeWeak(&self->_delegate, delegateCopy);
     v8 = 1;
   }
 
@@ -229,14 +229,14 @@ LABEL_23:
   return v8;
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = [(AAUIAccountViewsProvider *)self delegate];
+  delegate = [(AAUIAccountViewsProvider *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(AAUIAccountViewsProvider *)self delegate];
-    [v5 signInControllerDidCancel];
+    delegate2 = [(AAUIAccountViewsProvider *)self delegate];
+    [delegate2 signInControllerDidCancel];
   }
 }
 

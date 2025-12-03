@@ -1,6 +1,6 @@
 @interface ICDrawingRegressionTestDataCollectionViewCell
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation ICDrawingRegressionTestDataCollectionViewCell
@@ -20,24 +20,24 @@
     [(UIImageView *)self->_selectedImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ICDrawingRegressionTestDataCollectionViewCell *)self addSubview:self->_selectedImageView];
     v7 = [NSMutableArray arrayWithCapacity:4];
-    v8 = [(UIImageView *)self->_selectedImageView trailingAnchor];
-    v9 = [(ICDrawingRegressionTestDataCollectionViewCell *)self contentView];
-    v10 = [v9 trailingAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    trailingAnchor = [(UIImageView *)self->_selectedImageView trailingAnchor];
+    contentView = [(ICDrawingRegressionTestDataCollectionViewCell *)self contentView];
+    trailingAnchor2 = [contentView trailingAnchor];
+    v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v7 addObject:v11];
 
-    v12 = [(UIImageView *)self->_selectedImageView bottomAnchor];
-    v13 = [(ICDrawingRegressionTestDataCollectionViewCell *)self contentView];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [(UIImageView *)self->_selectedImageView bottomAnchor];
+    contentView2 = [(ICDrawingRegressionTestDataCollectionViewCell *)self contentView];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v7 addObject:v15];
 
-    v16 = [(UIImageView *)self->_selectedImageView widthAnchor];
-    v17 = [v16 constraintEqualToConstant:38.0];
+    widthAnchor = [(UIImageView *)self->_selectedImageView widthAnchor];
+    v17 = [widthAnchor constraintEqualToConstant:38.0];
     [v7 addObject:v17];
 
-    v18 = [(UIImageView *)self->_selectedImageView heightAnchor];
-    v19 = [v18 constraintEqualToConstant:38.0];
+    heightAnchor = [(UIImageView *)self->_selectedImageView heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:38.0];
     [v7 addObject:v19];
 
     [(UIImageView *)self->_selectedImageView setHidden:[(ICDrawingRegressionTestDataCollectionViewCell *)self isSelected]^ 1];
@@ -49,13 +49,13 @@
   [(ICDrawingRegressionTestDataCollectionViewCell *)&v20 layoutSubviews];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = ICDrawingRegressionTestDataCollectionViewCell;
   [(ICDrawingRegressionTestDataCollectionViewCell *)&v5 setSelected:?];
-  [(UIImageView *)self->_selectedImageView setHidden:!v3];
+  [(UIImageView *)self->_selectedImageView setHidden:!selectedCopy];
 }
 
 @end

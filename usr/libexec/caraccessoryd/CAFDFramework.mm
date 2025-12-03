@@ -1,14 +1,14 @@
 @interface CAFDFramework
 - (_TtC13caraccessoryd13CAFDFramework)init;
-- (_TtC13caraccessoryd13CAFDFramework)initWithCarManager:(id)a3;
+- (_TtC13caraccessoryd13CAFDFramework)initWithCarManager:(id)manager;
 @end
 
 @implementation CAFDFramework
 
-- (_TtC13caraccessoryd13CAFDFramework)initWithCarManager:(id)a3
+- (_TtC13caraccessoryd13CAFDFramework)initWithCarManager:(id)manager
 {
-  v3 = a3;
-  v4 = specialized CAFDFramework.init(carManager:)(v3);
+  managerCopy = manager;
+  v4 = specialized CAFDFramework.init(carManager:)(managerCopy);
 
   return v4;
 }

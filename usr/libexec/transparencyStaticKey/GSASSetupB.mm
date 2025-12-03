@@ -5,10 +5,10 @@
 - (NSData)publicInfo;
 - (NSData)sessionId;
 - (_TtC21transparencyStaticKey10GSASSetupB)init;
-- (void)setBRandom:(id)a3;
-- (void)setPeerSessionId:(id)a3;
-- (void)setPublicInfo:(id)a3;
-- (void)setSessionId:(id)a3;
+- (void)setBRandom:(id)random;
+- (void)setPeerSessionId:(id)id;
+- (void)setPublicInfo:(id)info;
+- (void)setSessionId:(id)id;
 @end
 
 @implementation GSASSetupB
@@ -20,7 +20,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = (&v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0));
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *v6;
@@ -33,14 +33,14 @@
   return v11.super.isa;
 }
 
-- (void)setSessionId:(id)a3
+- (void)setSessionId:(id)id
 {
-  v4 = a3;
-  v5 = self;
+  idCopy = id;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *v11;
@@ -60,7 +60,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *(v6 + 4);
@@ -73,14 +73,14 @@
   return v11.super.isa;
 }
 
-- (void)setPublicInfo:(id)a3
+- (void)setPublicInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
+  infoCopy = info;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *(v11 + 32);
@@ -100,7 +100,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *(v6 + 2);
@@ -113,14 +113,14 @@
   return v11.super.isa;
 }
 
-- (void)setBRandom:(id)a3
+- (void)setBRandom:(id)random
 {
-  v4 = a3;
-  v5 = self;
+  randomCopy = random;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *(v11 + 16);
@@ -140,7 +140,7 @@
   __chkstk_darwin(v3 - 8);
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
 
   v9 = *(v6 + 6);
@@ -153,14 +153,14 @@
   return v11.super.isa;
 }
 
-- (void)setPeerSessionId:(id)a3
+- (void)setPeerSessionId:(id)id
 {
-  v4 = a3;
-  v5 = self;
+  idCopy = id;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
-  v9 = *((swift_isaMask & v5->super.isa) + 0x68);
+  v9 = *((swift_isaMask & selfCopy->super.isa) + 0x68);
   sub_10005F0F8(v6, v8);
   v10 = v9(v14);
   v12 = *(v11 + 48);
@@ -194,7 +194,7 @@
   __chkstk_darwin(v3);
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((swift_isaMask & self->super.isa) + 0x58);
-  v8 = self;
+  selfCopy = self;
   v7();
   sub_10006CE3C(&qword_1000AE400, type metadata accessor for SASSetupB);
   v9 = Message.serializedData(partial:)();

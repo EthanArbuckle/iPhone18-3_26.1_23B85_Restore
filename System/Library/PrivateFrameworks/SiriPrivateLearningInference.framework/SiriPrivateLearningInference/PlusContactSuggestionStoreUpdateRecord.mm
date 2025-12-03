@@ -1,14 +1,14 @@
 @interface PlusContactSuggestionStoreUpdateRecord
-- (PlusContactSuggestionStoreUpdateRecord)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PlusContactSuggestionStoreUpdateRecord)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PlusContactSuggestionStoreUpdateRecord
 
-- (PlusContactSuggestionStoreUpdateRecord)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PlusContactSuggestionStoreUpdateRecord)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlusContactSuggestionStoreUpdateRecord();
-  return [(PlusContactSuggestionStoreUpdateRecord *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(PlusContactSuggestionStoreUpdateRecord *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

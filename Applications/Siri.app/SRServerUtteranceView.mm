@@ -1,23 +1,23 @@
 @interface SRServerUtteranceView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SRServerUtteranceView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SRServerUtteranceView)initWithFrame:(CGRect)frame;
 - (double)_scaledSiriCorrectionViewLeading;
 - (double)baselineOffsetFromBottom;
 - (double)firstLineBaselineOffsetFromTop;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setBlendEffectEnabled:(BOOL)a3;
-- (void)setChevronHidden:(BOOL)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setBlendEffectEnabled:(BOOL)enabled;
+- (void)setChevronHidden:(BOOL)hidden;
+- (void)setText:(id)text;
 @end
 
 @implementation SRServerUtteranceView
 
-- (SRServerUtteranceView)initWithFrame:(CGRect)a3
+- (SRServerUtteranceView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = SRServerUtteranceView;
-  v3 = [(SRServerUtteranceView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRServerUtteranceView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriSharedUIContentLabel label];
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (void)setChevronHidden:(BOOL)a3
+- (void)setChevronHidden:(BOOL)hidden
 {
-  if (!a3)
+  if (!hidden)
   {
     self->_chevronHasBeenShown = 1;
   }
@@ -61,8 +61,8 @@
 
 - (double)firstLineBaselineOffsetFromTop
 {
-  v2 = [(SiriSharedUIContentLabel *)self->_label font];
-  [v2 ascender];
+  font = [(SiriSharedUIContentLabel *)self->_label font];
+  [font ascender];
   v4 = v3;
 
   return v4;
@@ -70,19 +70,19 @@
 
 - (double)baselineOffsetFromBottom
 {
-  v2 = [(SiriSharedUIContentLabel *)self->_label font];
-  [v2 descender];
+  font = [(SiriSharedUIContentLabel *)self->_label font];
+  [font descender];
   v4 = -v3;
 
   return v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
-    v5 = v4;
+    v5 = textCopy;
   }
 
   else
@@ -95,9 +95,9 @@
   [(SRServerUtteranceView *)self setNeedsLayout];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  if (a3)
+  if (text)
   {
     [(SiriSharedUIContentLabel *)self->_label setAttributedText:?];
 
@@ -111,18 +111,18 @@
   }
 }
 
-- (void)setBlendEffectEnabled:(BOOL)a3
+- (void)setBlendEffectEnabled:(BOOL)enabled
 {
-  if (self->_blendEffectEnabled != a3)
+  if (self->_blendEffectEnabled != enabled)
   {
     v15 = v6;
     v16 = v5;
     v17 = v4;
     v18 = v3;
-    v11 = a3;
-    self->_blendEffectEnabled = a3;
+    enabledCopy = enabled;
+    self->_blendEffectEnabled = enabled;
     label = self->_label;
-    if (a3)
+    if (enabled)
     {
       +[UIColor siriui_blendEffectColor];
     }
@@ -134,15 +134,15 @@
     v14 = ;
     [(SiriSharedUIContentLabel *)label setTextColor:v14, v8, v7, v15, v16, v17, v18, v9];
 
-    [(SiriSharedUIContentLabel *)self->_label siriui_setBlendEffectEnabled:v11];
+    [(SiriSharedUIContentLabel *)self->_label siriui_setBlendEffectEnabled:enabledCopy];
 
     [(SRServerUtteranceView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   SiriUIUtteranceWidthForAvailableWidthAndInsets();
   [(SiriSharedUIContentLabel *)self->_label sizeThatFits:?];
   v6 = width;

@@ -1,27 +1,27 @@
 @interface IFTSchemaIFTRecoverableError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTPlanGenerationError)planGenerationError;
-- (IFTSchemaIFTRecoverableError)initWithDictionary:(id)a3;
-- (IFTSchemaIFTRecoverableError)initWithJSON:(id)a3;
+- (IFTSchemaIFTRecoverableError)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTRecoverableError)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deletePlanGenerationError;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTRecoverableError
 
-- (IFTSchemaIFTRecoverableError)initWithDictionary:(id)a3
+- (IFTSchemaIFTRecoverableError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = IFTSchemaIFTRecoverableError;
   v5 = [(IFTSchemaIFTRecoverableError *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"planGenerationError"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"planGenerationError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,30 +35,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTRecoverableError)initWithJSON:(id)a3
+- (IFTSchemaIFTRecoverableError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTRecoverableError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTRecoverableError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTRecoverableError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -71,43 +71,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_planGenerationError)
   {
-    v4 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    planGenerationError = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
+    dictionaryRepresentation = [planGenerationError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"planGenerationError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"planGenerationError"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"planGenerationError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"planGenerationError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichOneof_Recoverableerror = self->_whichOneof_Recoverableerror;
-    if (whichOneof_Recoverableerror == [v4 whichOneof_Recoverableerror])
+    if (whichOneof_Recoverableerror == [equalCopy whichOneof_Recoverableerror])
     {
-      v6 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
-      v7 = [v4 planGenerationError];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      planGenerationError = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
+      planGenerationError2 = [equalCopy planGenerationError];
+      v8 = planGenerationError2;
+      if ((planGenerationError != 0) != (planGenerationError2 == 0))
       {
-        v9 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
-        if (!v9)
+        planGenerationError3 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
+        if (!planGenerationError3)
         {
 
 LABEL_11:
@@ -115,10 +115,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
-        v12 = [v4 planGenerationError];
-        v13 = [v11 isEqual:v12];
+        v10 = planGenerationError3;
+        planGenerationError4 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
+        planGenerationError5 = [equalCopy planGenerationError];
+        v13 = [planGenerationError4 isEqual:planGenerationError5];
 
         if (v13)
         {
@@ -138,14 +138,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
+  toCopy = to;
+  planGenerationError = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
 
-  if (v4)
+  if (planGenerationError)
   {
-    v5 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
+    planGenerationError2 = [(IFTSchemaIFTRecoverableError *)self planGenerationError];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -175,17 +175,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IFTSchemaIFTRecoverableError;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTRecoverableError *)self planGenerationError:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IFTSchemaIFTRecoverableError *)self deletePlanGenerationError];
   }

@@ -1,14 +1,14 @@
 @interface TSProximitySIMTransferViewController
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_deactivate;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)proxCardFlowDidDismiss;
-- (void)setIdleTimerDisabled:(BOOL)a3;
-- (void)setViewDisappearHandler:(id)a3;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)setIdleTimerDisabled:(BOOL)disabled;
+- (void)setViewDisappearHandler:(id)handler;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 - (void)viewDidLoad;
 @end
 
@@ -22,21 +22,21 @@
   [(TSProximitySIMTransferViewController *)&v3 dealloc];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   v8 = sub_10000C1BC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v7;
+    v23 = userInfo;
     v24 = 2080;
     v25 = "[TSProximitySIMTransferViewController configureWithContext:completion:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "options:%@ @%s", buf, 0x16u);
   }
 
-  v9 = [v7 objectForKey:TSUserInfoResumeTransferProxCardKey];
+  v9 = [userInfo objectForKey:TSUserInfoResumeTransferProxCardKey];
   v10 = v9;
   if (v9)
   {
@@ -53,7 +53,7 @@
   }
 
   self->_isResumeTransferProxCard = v9;
-  v11 = [v7 objectForKey:TSUserInfoSupportsSyncTransferResultsKey];
+  v11 = [userInfo objectForKey:TSUserInfoSupportsSyncTransferResultsKey];
   v12 = v11;
   if (v11)
   {
@@ -71,7 +71,7 @@
 
   self->_targetSupportsUICapability = v11;
   self->_selectedTransferPlansCount = 0;
-  v13 = [v7 objectForKey:TSUserInfokSelectedTransferPlansCountKey];
+  v13 = [userInfo objectForKey:TSUserInfokSelectedTransferPlansCountKey];
   if (v13)
   {
     objc_opt_class();
@@ -81,7 +81,7 @@
     }
   }
 
-  v14 = [v7 objectForKey:TSUserInfoIsPreSharedKeyPresentKey];
+  v14 = [userInfo objectForKey:TSUserInfoIsPreSharedKeyPresentKey];
   v15 = v14;
   if (v14)
   {
@@ -98,7 +98,7 @@
   }
 
   self->_isPreSharedKeyPresent = v14;
-  v16 = [v7 objectForKeyedSubscript:@"device"];
+  v16 = [userInfo objectForKeyedSubscript:@"device"];
   if (!v16)
   {
     v17 = sub_10000C1BC();
@@ -120,25 +120,25 @@
     }
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
-    v6 = &stru_10001C8C0;
+    completionCopy = &stru_10001C8C0;
   }
 
-  v20 = [(TSProximitySIMTransferViewController *)self _remoteViewControllerProxy];
-  [v20 setWallpaperTunnelActive:0];
-  [v20 setWallpaperStyle:1 withDuration:0.0];
-  [v20 setDesiredHardwareButtonEvents:16];
-  [v20 setAllowsMenuButtonDismissal:0];
-  [v20 setAllowsAlertStacking:1];
-  v6->invoke(v6);
+  _remoteViewControllerProxy = [(TSProximitySIMTransferViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
+  [_remoteViewControllerProxy setWallpaperStyle:1 withDuration:0.0];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:0];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  completionCopy->invoke(completionCopy);
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v21 = [v6 userInfo];
+  contextCopy = context;
+  completionCopy = completion;
+  userInfo = [contextCopy userInfo];
   v26[0] = TSUserInfoFlowTypeKey;
   v8 = [NSNumber numberWithUnsignedInteger:TSFlowTypeProximityTransfer];
   v27[0] = v8;
@@ -214,7 +214,7 @@
   v22[2] = sub_10000A140;
   v22[3] = &unk_10001C8E8;
   objc_copyWeak(&v24, &location);
-  v20 = v7;
+  v20 = completionCopy;
   v23 = v20;
   [(TSSIMSetupFlow *)v19 firstViewController:v22];
 
@@ -222,24 +222,24 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10000A2A4;
   v3[3] = &unk_10001C778;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [actions enumerateObjectsUsingBlock:v3];
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   if (sub_10000C244())
   {
     v5 = sub_10000C1BC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000F4C0(a3, v5);
+      sub_10000F4C0(completed, v5);
     }
   }
 
@@ -251,11 +251,11 @@
   [(TSProximitySIMTransferViewController *)self dismissViewControllerWithTransition:7 completion:v6];
 }
 
-- (void)setIdleTimerDisabled:(BOOL)a3
+- (void)setIdleTimerDisabled:(BOOL)disabled
 {
-  if (self->_idleTimerDisabled != a3)
+  if (self->_idleTimerDisabled != disabled)
   {
-    self->_idleTimerDisabled = a3;
+    self->_idleTimerDisabled = disabled;
     v4 = sub_10000C1BC();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -267,14 +267,14 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "set idle timer disabled : %d @%s", v7, 0x12u);
     }
 
-    v6 = [(TSProximitySIMTransferViewController *)self _remoteViewControllerProxy];
-    [v6 setIdleTimerDisabled:self->_idleTimerDisabled forReason:@"SIMTransfer"];
+    _remoteViewControllerProxy = [(TSProximitySIMTransferViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setIdleTimerDisabled:self->_idleTimerDisabled forReason:@"SIMTransfer"];
   }
 }
 
-- (void)setViewDisappearHandler:(id)a3
+- (void)setViewDisappearHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   viewDisappearHandler = self->_viewDisappearHandler;
   self->_viewDisappearHandler = v4;
 

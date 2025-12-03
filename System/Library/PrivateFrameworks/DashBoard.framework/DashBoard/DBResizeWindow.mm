@@ -1,21 +1,21 @@
 @interface DBResizeWindow
-- (_TtC9DashBoard14DBResizeWindow)initWithWindowScene:(id)a3 frame:(CGRect)a4;
+- (_TtC9DashBoard14DBResizeWindow)initWithWindowScene:(id)scene frame:(CGRect)frame;
 @end
 
 @implementation DBResizeWindow
 
-- (_TtC9DashBoard14DBResizeWindow)initWithWindowScene:(id)a3 frame:(CGRect)a4
+- (_TtC9DashBoard14DBResizeWindow)initWithWindowScene:(id)scene frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  v9 = sub_248279ADC(v8, 12, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  sceneCopy = scene;
+  v9 = sub_248279ADC(sceneCopy, 12, x, y, width, height);
   v10 = objc_opt_self();
   v11 = v9;
-  v12 = [v10 blackColor];
-  [(DBResizeWindow *)v11 setBackgroundColor:v12];
+  blackColor = [v10 blackColor];
+  [(DBResizeWindow *)v11 setBackgroundColor:blackColor];
 
   return v11;
 }

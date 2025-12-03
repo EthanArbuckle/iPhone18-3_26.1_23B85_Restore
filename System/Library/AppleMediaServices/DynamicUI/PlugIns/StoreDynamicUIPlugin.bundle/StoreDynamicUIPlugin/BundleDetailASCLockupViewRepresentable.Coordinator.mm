@@ -1,15 +1,15 @@
 @interface BundleDetailASCLockupViewRepresentable.Coordinator
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
 @end
 
 @implementation BundleDetailASCLockupViewRepresentable.Coordinator
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_3B6B8(v6);
+  viewCopy = view;
+  changeCopy = change;
+  selfCopy = self;
+  sub_3B6B8(viewCopy);
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface ISDelegateProxy
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (ISDelegateProxy)init;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)sendInvocationToDelegate:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setShouldMessageMainThread:(BOOL)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)sendInvocationToDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate;
+- (void)setShouldMessageMainThread:(BOOL)thread;
 @end
 
 @implementation ISDelegateProxy
@@ -32,68 +32,68 @@
   [(ISDelegateProxy *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   [(NSLock *)self->_lock lock];
-  self->_delegate = a3;
+  self->_delegate = delegate;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)sendInvocationToDelegate:(id)a3
+- (void)sendInvocationToDelegate:(id)delegate
 {
   [(NSLock *)self->_lock lock];
   v5 = self->_delegate;
   [(NSLock *)self->_lock unlock];
-  v6 = self;
-  v7 = [a3 methodSignature];
-  v8 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v7];
-  v9 = [v7 numberOfArguments];
-  if (v9 >= 3)
+  selfCopy = self;
+  methodSignature = [delegate methodSignature];
+  v8 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  if (numberOfArguments >= 3)
   {
-    v10 = v9;
+    v10 = numberOfArguments;
     for (i = 2; i != v10; ++i)
     {
       v12 = 0;
-      [a3 getArgument:&v12 atIndex:i];
+      [delegate getArgument:&v12 atIndex:i];
       [v8 setArgument:&v12 atIndex:i];
     }
   }
 
-  [v8 setSelector:{objc_msgSend(a3, "selector")}];
+  [v8 setSelector:{objc_msgSend(delegate, "selector")}];
   [v8 invokeWithTarget:v5];
 }
 
-- (void)setShouldMessageMainThread:(BOOL)a3
+- (void)setShouldMessageMainThread:(BOOL)thread
 {
   [(NSLock *)self->_lock lock];
-  self->_shouldMessageMainThread = a3;
+  self->_shouldMessageMainThread = thread;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   [(NSLock *)self->_lock lock];
   shouldMessageMainThread = self->_shouldMessageMainThread;
   [(NSLock *)self->_lock unlock];
   if (shouldMessageMainThread)
   {
-    [a3 retainArguments];
+    [invocation retainArguments];
 
-    [(ISDelegateProxy *)self performSelectorOnMainThread:sel_sendInvocationToDelegate_ withObject:a3 waitUntilDone:0];
+    [(ISDelegateProxy *)self performSelectorOnMainThread:sel_sendInvocationToDelegate_ withObject:invocation waitUntilDone:0];
   }
 
   else
   {
 
-    [(ISDelegateProxy *)self sendInvocationToDelegate:a3];
+    [(ISDelegateProxy *)self sendInvocationToDelegate:invocation];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = ISDelegateProxy;
@@ -101,14 +101,14 @@
   if (!v5)
   {
     [(NSLock *)self->_lock lock];
-    v5 = [self->_delegate methodSignatureForSelector:a3];
+    v5 = [self->_delegate methodSignatureForSelector:selector];
     [(NSLock *)self->_lock unlock];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   [(NSLock *)self->_lock lock];
   delegate = self->_delegate;

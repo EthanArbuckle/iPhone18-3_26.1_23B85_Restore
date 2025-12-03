@@ -1,9 +1,9 @@
 @interface IDSPairedDeviceKeychainPersister
 - (BOOL)_removeFromKeychain;
-- (BOOL)_saveToKeychainWithDictionary:(id)a3;
-- (BOOL)savePairedDevices:(id)a3;
+- (BOOL)_saveToKeychainWithDictionary:(id)dictionary;
+- (BOOL)savePairedDevices:(id)devices;
 - (IDSPairedDeviceKeychainPersister)init;
-- (id)_pairedDevicesFromPropertyDictionaries:(id)a3;
+- (id)_pairedDevicesFromPropertyDictionaries:(id)dictionaries;
 - (id)loadPairedDevices;
 @end
 
@@ -72,32 +72,32 @@
   return v8;
 }
 
-- (BOOL)savePairedDevices:(id)a3
+- (BOOL)savePairedDevices:(id)devices
 {
-  v4 = a3;
-  if ([v4 count])
+  devicesCopy = devices;
+  if ([devicesCopy count])
   {
-    v5 = [(IDSPairedDeviceKeychainSchema *)self->_keychainSchema keychainDictionaryWithPairedDevices:v4];
-    v6 = [(IDSPairedDeviceKeychainPersister *)self _saveToKeychainWithDictionary:v5];
+    v5 = [(IDSPairedDeviceKeychainSchema *)self->_keychainSchema keychainDictionaryWithPairedDevices:devicesCopy];
+    _removeFromKeychain = [(IDSPairedDeviceKeychainPersister *)self _saveToKeychainWithDictionary:v5];
   }
 
   else
   {
-    v6 = [(IDSPairedDeviceKeychainPersister *)self _removeFromKeychain];
+    _removeFromKeychain = [(IDSPairedDeviceKeychainPersister *)self _removeFromKeychain];
   }
 
-  return v6;
+  return _removeFromKeychain;
 }
 
-- (id)_pairedDevicesFromPropertyDictionaries:(id)a3
+- (id)_pairedDevicesFromPropertyDictionaries:(id)dictionaries
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dictionariesCopy = dictionaries;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionariesCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -127,7 +127,7 @@
   return v4;
 }
 
-- (BOOL)_saveToKeychainWithDictionary:(id)a3
+- (BOOL)_saveToKeychainWithDictionary:(id)dictionary
 {
   v3 = JWEncodeDictionary();
   v4 = IMSetKeychainData();

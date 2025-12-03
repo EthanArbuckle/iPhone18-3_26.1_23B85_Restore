@@ -58,14 +58,14 @@
 - (NSArray)identifierHashComponents
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(NPKUserNotification *)self title];
-  [v3 safelyAddObject:v4];
+  title = [(NPKUserNotification *)self title];
+  [v3 safelyAddObject:title];
 
-  v5 = [(NPKUserNotification *)self body];
-  [v3 safelyAddObject:v5];
+  body = [(NPKUserNotification *)self body];
+  [v3 safelyAddObject:body];
 
-  v6 = [(NPKUserNotification *)self notificationCategoryIdentifier];
-  [v3 safelyAddObject:v6];
+  notificationCategoryIdentifier = [(NPKUserNotification *)self notificationCategoryIdentifier];
+  [v3 safelyAddObject:notificationCategoryIdentifier];
 
   return v3;
 }
@@ -73,8 +73,8 @@
 - (NSString)identifier
 {
   v3 = objc_opt_class();
-  v4 = [(NPKUserNotification *)self identifierHashComponents];
-  v5 = [v3 generateModelIdentifierWith:v4];
+  identifierHashComponents = [(NPKUserNotification *)self identifierHashComponents];
+  v5 = [v3 generateModelIdentifierWith:identifierHashComponents];
 
   return v5;
 }

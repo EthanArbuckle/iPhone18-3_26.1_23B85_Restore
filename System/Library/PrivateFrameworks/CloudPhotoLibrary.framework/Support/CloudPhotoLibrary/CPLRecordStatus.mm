@@ -1,54 +1,54 @@
 @interface CPLRecordStatus
-- (id)initFromPQLResultSet:(id)a3 center:(id)a4 error:(id *)a5;
+- (id)initFromPQLResultSet:(id)set center:(id)center error:(id *)error;
 @end
 
 @implementation CPLRecordStatus
 
-- (id)initFromPQLResultSet:(id)a3 center:(id)a4 error:(id *)a5
+- (id)initFromPQLResultSet:(id)set center:(id)center error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 integerAtIndex:0];
-  v11 = [v8 stringAtIndex:1];
-  v12 = [v9 scopedIdentifierForLocalIdentifier:v11 scopeIndex:v10];
+  setCopy = set;
+  centerCopy = center;
+  v10 = [setCopy integerAtIndex:0];
+  v11 = [setCopy stringAtIndex:1];
+  v12 = [centerCopy scopedIdentifierForLocalIdentifier:v11 scopeIndex:v10];
 
   if (v12)
   {
-    v13 = [v8 stringAtIndex:2];
-    v14 = [v8 unsignedIntegerAtIndex:3];
+    v13 = [setCopy stringAtIndex:2];
+    v14 = [setCopy unsignedIntegerAtIndex:3];
     v15 = NSClassFromString(v13);
     if ([(objc_class *)v15 isSubclassOfClass:objc_opt_class()])
     {
       v16 = [(objc_class *)v15 newRecordWithScopedIdentifier:v12];
       self = [(CPLRecordStatus *)self initWithRecord:v16 generation:v14];
 
-      v17 = self;
+      selfCopy = self;
     }
 
-    else if (a5)
+    else if (error)
     {
       +[CPLErrors unknownError];
-      *a5 = v17 = 0;
+      *error = selfCopy = 0;
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [CPLErrors invalidScopeErrorWithScopeIndex:v10];
-    *a5 = v17 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

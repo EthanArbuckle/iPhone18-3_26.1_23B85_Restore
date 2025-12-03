@@ -1,38 +1,38 @@
 @interface PKReaderModeProvisioningView
-+ (id)watchImage:(BOOL)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKReaderModeProvisioningView)initWithFrame:(CGRect)a3 context:(int64_t)a4 product:(id)a5 isWatch:(BOOL)a6;
++ (id)watchImage:(BOOL)image;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKReaderModeProvisioningView)initWithFrame:(CGRect)frame context:(int64_t)context product:(id)product isWatch:(BOOL)watch;
 - (void)_loadAnimation;
 - (void)layoutSubviews;
-- (void)setDigitalCardImage:(id)a3;
-- (void)setPlasticCardImage:(id)a3;
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setTransferringProgress:(double)a3 duration:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDigitalCardImage:(id)image;
+- (void)setPlasticCardImage:(id)image;
+- (void)setState:(unint64_t)state animated:(BOOL)animated;
+- (void)setTransferringProgress:(double)progress duration:(double)duration;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKReaderModeProvisioningView
 
-- (PKReaderModeProvisioningView)initWithFrame:(CGRect)a3 context:(int64_t)a4 product:(id)a5 isWatch:(BOOL)a6
+- (PKReaderModeProvisioningView)initWithFrame:(CGRect)frame context:(int64_t)context product:(id)product isWatch:(BOOL)watch
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
+  watchCopy = watch;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  productCopy = product;
   v26.receiver = self;
   v26.super_class = PKReaderModeProvisioningView;
-  v14 = [(PKReaderModeProvisioningView *)&v26 initWithFrame:x, y, width, height];
-  if (v14)
+  height = [(PKReaderModeProvisioningView *)&v26 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v15 = [v13 provisioningMethodMetadataForType:*MEMORY[0x1E69BC148]];
-    v16 = [v15 readerModeResources];
+    v15 = [productCopy provisioningMethodMetadataForType:*MEMORY[0x1E69BC148]];
+    readerModeResources = [v15 readerModeResources];
 
-    v17 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69BC160]];
+    v17 = [readerModeResources objectForKeyedSubscript:*MEMORY[0x1E69BC160]];
     v18 = [v17 objectForKeyedSubscript:*MEMORY[0x1E69BC150]];
-    cardPlacement = v14->_cardPlacement;
-    v14->_cardPlacement = v18;
+    cardPlacement = height->_cardPlacement;
+    height->_cardPlacement = v18;
 
     if (PKPaymentSetupContextIsBridge())
     {
@@ -41,33 +41,33 @@
 
     else
     {
-      v20 = PKPaymentSetupForceBridgeAppearance() | v6;
+      v20 = PKPaymentSetupForceBridgeAppearance() | watchCopy;
     }
 
-    v14->_isProvisioningToWatch = v20;
-    [(PKReaderModeProvisioningView *)v14 _loadAnimation];
-    v21 = [[PKReaderModeHeaderView alloc] initWithState:2 context:a4 product:v13];
-    headerView = v14->_headerView;
-    v14->_headerView = v21;
+    height->_isProvisioningToWatch = v20;
+    [(PKReaderModeProvisioningView *)height _loadAnimation];
+    v21 = [[PKReaderModeHeaderView alloc] initWithState:2 context:context product:productCopy];
+    headerView = height->_headerView;
+    height->_headerView = v21;
 
     v23 = [objc_alloc(MEMORY[0x1E69DCE48]) initWithProgressViewStyle:0];
-    progressView = v14->_progressView;
-    v14->_progressView = v23;
+    progressView = height->_progressView;
+    height->_progressView = v23;
 
-    [(UIProgressView *)v14->_progressView setHidden:1];
-    [(PKReaderModeProvisioningView *)v14 addSubview:v14->_headerView];
-    [(PKReaderModeProvisioningView *)v14 addSubview:v14->_progressView];
+    [(UIProgressView *)height->_progressView setHidden:1];
+    [(PKReaderModeProvisioningView *)height addSubview:height->_headerView];
+    [(PKReaderModeProvisioningView *)height addSubview:height->_progressView];
   }
 
-  return v14;
+  return height;
 }
 
 - (void)_loadAnimation
 {
-  v3 = [(PKReaderModeProvisioningView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(PKReaderModeProvisioningView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = @"Reader_mode_Dark_ICE";
   }
@@ -80,7 +80,7 @@
   v11 = v5;
   if (self->_isProvisioningToWatch)
   {
-    v6 = [PKReaderModeProvisioningView watchImage:v4 == 2];
+    v6 = [PKReaderModeProvisioningView watchImage:userInterfaceStyle == 2];
   }
 
   else
@@ -96,13 +96,13 @@
   animationView = self->_animationView;
   if (animationView)
   {
-    v8 = [(PKReaderModeAnimationView *)animationView state];
+    state = [(PKReaderModeAnimationView *)animationView state];
     [(PKReaderModeAnimationView *)self->_animationView removeFromSuperview];
   }
 
   else
   {
-    v8 = 0;
+    state = 0;
   }
 
   v9 = [[PKReaderModeAnimationView alloc] initWithAssetName:v11 forPhoneTarget:!self->_isProvisioningToWatch];
@@ -121,7 +121,7 @@
   }
 
   [(PKReaderModeAnimationView *)self->_animationView setWatchAssetImage:v6];
-  [(PKReaderModeAnimationView *)self->_animationView setState:v8];
+  [(PKReaderModeAnimationView *)self->_animationView setState:state];
   [(PKReaderModeProvisioningView *)self addSubview:self->_animationView];
   [(PKReaderModeProvisioningView *)self setNeedsLayout];
 }
@@ -147,10 +147,10 @@
   [(UIProgressView *)self->_progressView setFrame:80.0, v11 + v10, v15 + -160.0, v14];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKReaderModeAnimationView *)self->_animationView sizeThatFits:?];
   v7 = v6;
   [(PKTableHeaderView *)self->_headerView sizeThatFits:width, height];
@@ -168,12 +168,12 @@
   return result;
 }
 
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setState:(unint64_t)state animated:(BOOL)animated
 {
-  [(PKReaderModeAnimationView *)self->_animationView setState:a3 animated:a4];
-  [(PKReaderModeHeaderView *)self->_headerView setState:a3];
-  [(UIProgressView *)self->_progressView setHidden:a3 != 3];
-  if (!a3)
+  [(PKReaderModeAnimationView *)self->_animationView setState:state animated:animated];
+  [(PKReaderModeHeaderView *)self->_headerView setState:state];
+  [(UIProgressView *)self->_progressView setHidden:state != 3];
+  if (!state)
   {
     [(UIProgressView *)self->_progressView setProgress:0.0];
   }
@@ -181,15 +181,15 @@
   [(PKReaderModeProvisioningView *)self setNeedsLayout];
 }
 
-- (void)setTransferringProgress:(double)a3 duration:(double)a4
+- (void)setTransferringProgress:(double)progress duration:(double)duration
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PKReaderModeProvisioningView_setTransferringProgress_duration___block_invoke;
   block[3] = &unk_1E8012188;
   block[4] = self;
-  *&block[5] = a3;
-  *&block[6] = a4;
+  *&block[5] = progress;
+  *&block[6] = duration;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -200,33 +200,33 @@ uint64_t __65__PKReaderModeProvisioningView_setTransferringProgress_duration___b
   return [*(*(a1 + 32) + 424) _setProgressAnimated:4 duration:v1 delay:*(a1 + 48) options:0.0];
 }
 
-- (void)setPlasticCardImage:(id)a3
+- (void)setPlasticCardImage:(id)image
 {
-  objc_storeStrong(&self->_plasticCardImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_plasticCardImage, image);
+  imageCopy = image;
   [(PKReaderModeAnimationView *)self->_animationView setPlasticCardImage:self->_plasticCardImage];
 }
 
-- (void)setDigitalCardImage:(id)a3
+- (void)setDigitalCardImage:(id)image
 {
-  objc_storeStrong(&self->_digitalCardImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_digitalCardImage, image);
+  imageCopy = image;
   [(PKReaderModeAnimationView *)self->_animationView setDigitalCardImage:self->_digitalCardImage];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = PKReaderModeProvisioningView;
-  [(PKReaderModeProvisioningView *)&v8 traitCollectionDidChange:v4];
-  if (!v4 || (v5 = [v4 userInterfaceStyle], -[PKReaderModeProvisioningView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
+  [(PKReaderModeProvisioningView *)&v8 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || (v5 = [changeCopy userInterfaceStyle], -[PKReaderModeProvisioningView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
   {
     [(PKReaderModeProvisioningView *)self _loadAnimation];
   }
 }
 
-+ (id)watchImage:(BOOL)a3
++ (id)watchImage:(BOOL)image
 {
   v4 = objc_alloc_init(PKWatchHeroImageView);
   [(PKWatchHeroImageView *)v4 setHideDoneLabel:1];
@@ -246,8 +246,8 @@ uint64_t __65__PKReaderModeProvisioningView_setTransferringProgress_duration___b
   v20.height = height;
   UIGraphicsBeginImageContextWithOptions(v20, 0, v11);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v13 = [(PKWatchHeroImageView *)v4 layer];
-  [v13 renderInContext:CurrentContext];
+  layer = [(PKWatchHeroImageView *)v4 layer];
+  [layer renderInContext:CurrentContext];
 
   v14 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -255,7 +255,7 @@ uint64_t __65__PKReaderModeProvisioningView_setTransferringProgress_duration___b
   v21.height = v6;
   UIGraphicsBeginImageContextWithOptions(v21, 0, v11);
   v15 = UIGraphicsGetCurrentContext();
-  if (a3)
+  if (image)
   {
     [MEMORY[0x1E69DC888] blackColor];
   }

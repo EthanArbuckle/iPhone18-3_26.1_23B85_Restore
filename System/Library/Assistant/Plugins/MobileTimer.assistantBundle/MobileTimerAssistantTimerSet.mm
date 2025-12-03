@@ -1,21 +1,21 @@
 @interface MobileTimerAssistantTimerSet
 - (id)validateCommandArguments;
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MobileTimerAssistantTimerSet
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_CA6C(v5);
   }
 
-  [(MobileTimerAssistantTimerSet *)self _performWithCompletion:v4];
+  [(MobileTimerAssistantTimerSet *)self _performWithCompletion:completionCopy];
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -23,21 +23,21 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MobileTimerAssistantTimerSet *)self validateCommandArguments];
+  completionCopy = completion;
+  validateCommandArguments = [(MobileTimerAssistantTimerSet *)self validateCommandArguments];
   v6 = MTLogForCategory();
   v7 = v6;
-  if (v5)
+  if (validateCommandArguments)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_CB74(self, v5, v7);
+      sub_CB74(self, validateCommandArguments, v7);
     }
 
-    v8 = [v5 dictionary];
-    v4[2](v4, v8);
+    dictionary = [validateCommandArguments dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
   else
@@ -50,7 +50,7 @@
     }
 
     v9 = objc_opt_new();
-    v10 = [v9 currentTimer];
+    currentTimer = [v9 currentTimer];
     objc_initWeak(&location, self);
     v11 = dispatch_semaphore_create(0);
     *&buf = 0;
@@ -64,9 +64,9 @@
     v30[2] = sub_4024;
     v30[3] = &unk_14590;
     objc_copyWeak(&v32, &location);
-    v8 = v9;
-    v31 = v8;
-    v12 = [v10 flatMap:v30];
+    dictionary = v9;
+    v31 = dictionary;
+    v12 = [currentTimer flatMap:v30];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_4290;
@@ -89,18 +89,18 @@
     v17 = MTLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [*(*(&buf + 1) + 40) dictionary];
-      sub_CBFC(self, v18, v35);
+      dictionary2 = [*(*(&buf + 1) + 40) dictionary];
+      sub_CBFC(self, dictionary2, v35);
     }
 
-    v19 = [*(*(&buf + 1) + 40) dictionary];
-    v4[2](v4, v19);
+    dictionary3 = [*(*(&buf + 1) + 40) dictionary];
+    completionCopy[2](completionCopy, dictionary3);
 
     v20 = MTLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [*(*(&buf + 1) + 40) dictionary];
-      sub_CC60(self, v21, v34);
+      dictionary4 = [*(*(&buf + 1) + 40) dictionary];
+      sub_CC60(self, dictionary4, v34);
     }
 
     [MTAnalytics incrementEventCount:kMTCASiriTimerSets];
@@ -116,33 +116,33 @@
 
 - (id)validateCommandArguments
 {
-  v3 = [(MobileTimerAssistantTimerSet *)self timer];
-  v4 = [v3 state];
-  v5 = [v4 isEqualToString:SATimerStateUndefinedValue];
+  timer = [(MobileTimerAssistantTimerSet *)self timer];
+  state = [timer state];
+  v5 = [state isEqualToString:SATimerStateUndefinedValue];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(MobileTimerAssistantTimerSet *)self timer];
-    v7 = [v6 state];
-    NSLog(@"Unexpected timer state: %@", v7);
+    timer2 = [(MobileTimerAssistantTimerSet *)self timer];
+    state2 = [timer2 state];
+    NSLog(@"Unexpected timer state: %@", state2);
   }
 
-  v8 = [(MobileTimerAssistantTimerSet *)self timer];
-  v9 = [v8 timerValue];
+  timer3 = [(MobileTimerAssistantTimerSet *)self timer];
+  timerValue = [timer3 timerValue];
 
-  if (!v9)
+  if (!timerValue)
   {
     goto LABEL_7;
   }
 
-  v10 = [(MobileTimerAssistantTimerSet *)self timer];
-  v11 = [v10 timerValue];
-  v12 = [v11 integerValue];
-  v13 = v12;
+  timer4 = [(MobileTimerAssistantTimerSet *)self timer];
+  timerValue2 = [timer4 timerValue];
+  integerValue = [timerValue2 integerValue];
+  v13 = integerValue;
 
-  if (v12 < 86400)
+  if (integerValue < 86400)
   {
-    if (v12 <= 0)
+    if (integerValue <= 0)
     {
       [NSString stringWithFormat:@"SATimerSet.timer.timerValue: Duration must be greater than 0. Value = %f", *&v13, v18, v19, v20];
       goto LABEL_9;

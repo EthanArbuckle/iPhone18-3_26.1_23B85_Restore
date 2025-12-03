@@ -1,24 +1,24 @@
 @interface RemoteWebViewOperation
-- (RemoteWebViewOperation)initWithWebViewRequest:(id)a3;
-- (void)_sendActivationWithError:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (RemoteWebViewOperation)initWithWebViewRequest:(id)request;
+- (void)_sendActivationWithError:(id)error;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 - (void)run;
 @end
 
 @implementation RemoteWebViewOperation
 
-- (RemoteWebViewOperation)initWithWebViewRequest:(id)a3
+- (RemoteWebViewOperation)initWithWebViewRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = RemoteWebViewOperation;
   v6 = [(RemoteWebViewOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     v8 = dispatch_queue_create("com.apple.itunesstored.RemoteWebView", 0);
     queue = v7->_queue;
     v7->_queue = v8;
@@ -35,19 +35,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -56,12 +56,12 @@
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(RemoteWebViewOperation *)self request];
-    v10 = [v9 URLString];
+    request = [(RemoteWebViewOperation *)self request];
+    uRLString = [request URLString];
     v44 = 138543618;
     v45 = v7;
     v46 = 2114;
-    v47 = v10;
+    v47 = uRLString;
     LODWORD(v41) = 22;
     v40 = &v44;
     v11 = _os_log_send_and_compose_impl();
@@ -71,9 +71,9 @@
       goto LABEL_12;
     }
 
-    v6 = [NSString stringWithCString:v11 encoding:4, &v44, v41];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, &v44, v41];
     free(v11);
-    v40 = v6;
+    v40 = oSLogObject;
     SSFileLog();
   }
 
@@ -85,12 +85,12 @@ LABEL_12:
   v14 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:@"com.apple.ios.StoreKitUIService" viewControllerClassName:@"ServiceWebViewPromptViewController"];
   v15 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
   v42[0] = @"referrer";
-  v16 = [(RemoteWebViewOperation *)self request];
-  v17 = [v16 referrer];
-  v18 = v17;
-  if (v17)
+  request2 = [(RemoteWebViewOperation *)self request];
+  referrer = [request2 referrer];
+  v18 = referrer;
+  if (referrer)
   {
-    v19 = v17;
+    v19 = referrer;
   }
 
   else
@@ -100,12 +100,12 @@ LABEL_12:
 
   v42[1] = @"URLString";
   v43[0] = v19;
-  v20 = [(RemoteWebViewOperation *)self request];
-  v21 = [v20 URLString];
-  v22 = v21;
-  if (v21)
+  request3 = [(RemoteWebViewOperation *)self request];
+  uRLString2 = [request3 URLString];
+  v22 = uRLString2;
+  if (uRLString2)
   {
-    v23 = v21;
+    v23 = uRLString2;
   }
 
   else
@@ -123,8 +123,8 @@ LABEL_12:
   {
     [v25 addObserver:self];
     [v26 activateWithContext:0];
-    v27 = [(RemoteWebViewOperation *)self alertSemaphore];
-    dispatch_semaphore_wait(v27, 0xFFFFFFFFFFFFFFFFLL);
+    alertSemaphore = [(RemoteWebViewOperation *)self alertSemaphore];
+    dispatch_semaphore_wait(alertSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
 LABEL_20:
     v28 = +[SSLogConfig sharedDaemonConfig];
@@ -133,19 +133,19 @@ LABEL_20:
       v28 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v28 shouldLog];
+    shouldLog2 = [v28 shouldLog];
     if ([v28 shouldLogToDisk])
     {
-      v29 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v30 = [v28 OSLogObject];
-    if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v28 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v29 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (!v29)
+    if (!shouldLog2)
     {
       v34 = 0;
       goto LABEL_41;
@@ -165,7 +165,7 @@ LABEL_20:
     }
 
 LABEL_39:
-    v30 = [NSString stringWithCString:v33 encoding:4, &v44, v41];
+    oSLogObject2 = [NSString stringWithCString:v33 encoding:4, &v44, v41];
     free(v33);
     SSFileLog();
 LABEL_41:
@@ -186,19 +186,19 @@ LABEL_41:
     v28 = +[SSLogConfig sharedConfig];
   }
 
-  v36 = [v28 shouldLog];
+  shouldLog3 = [v28 shouldLog];
   if ([v28 shouldLogToDisk])
   {
-    v37 = v36 | 2;
+    v37 = shouldLog3 | 2;
   }
 
   else
   {
-    v37 = v36;
+    v37 = shouldLog3;
   }
 
-  v30 = [v28 OSLogObject];
-  if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v28 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v37 &= 2u;
   }
@@ -228,7 +228,7 @@ LABEL_42:
   [(RemoteWebViewOperation *)self setSuccess:1];
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -236,19 +236,19 @@ LABEL_42:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 &= 2u;
   }
@@ -266,7 +266,7 @@ LABEL_42:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
     free(v9);
     SSFileLog();
 LABEL_11:
@@ -275,7 +275,7 @@ LABEL_11:
   [(RemoteWebViewOperation *)self _sendActivationWithError:0];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -283,19 +283,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 &= 2u;
   }
@@ -313,7 +313,7 @@ LABEL_11:
 
   if (v9)
   {
-    v7 = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v11, v10, v11];
     free(v9);
     SSFileLog();
 LABEL_11:
@@ -323,28 +323,28 @@ LABEL_11:
   dispatch_semaphore_signal(self->_alertSemaphore);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = +[SSLogConfig sharedDaemonConfig];
   if (!v6)
   {
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 &= 2u;
   }
@@ -357,32 +357,32 @@ LABEL_11:
   *v13 = 138543618;
   *&v13[4] = objc_opt_class();
   *&v13[12] = 2114;
-  *&v13[14] = v5;
+  *&v13[14] = errorCopy;
   v10 = *&v13[4];
   LODWORD(v12) = 22;
   v11 = _os_log_send_and_compose_impl();
 
   if (v11)
   {
-    v9 = [NSString stringWithCString:v11 encoding:4, v13, v12, *v13, *&v13[16]];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, v13, v12, *v13, *&v13[16]];
     free(v11);
     SSFileLog();
 LABEL_11:
   }
 
-  [(RemoteWebViewOperation *)self _sendActivationWithError:v5];
+  [(RemoteWebViewOperation *)self _sendActivationWithError:errorCopy];
   dispatch_semaphore_signal(self->_alertSemaphore);
 }
 
-- (void)_sendActivationWithError:(id)a3
+- (void)_sendActivationWithError:(id)error
 {
-  v4 = [(RemoteWebViewOperation *)self queue];
+  queue = [(RemoteWebViewOperation *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E583C;
   block[3] = &unk_100327110;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 @end

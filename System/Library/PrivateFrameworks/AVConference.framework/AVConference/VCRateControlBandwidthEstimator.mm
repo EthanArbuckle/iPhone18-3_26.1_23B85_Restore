@@ -1,7 +1,7 @@
 @interface VCRateControlBandwidthEstimator
 - (VCRateControlBandwidthEstimator)init;
 - (void)dealloc;
-- (void)setServerBag:(id)a3;
+- (void)setServerBag:(id)bag;
 @end
 
 @implementation VCRateControlBandwidthEstimator
@@ -33,11 +33,11 @@
   [(VCRateControlBandwidthEstimator *)&v3 dealloc];
 }
 
-- (void)setServerBag:(id)a3
+- (void)setServerBag:(id)bag
 {
   v41 = *MEMORY[0x1E69E9840];
   serverBag = self->_serverBag;
-  if (serverBag == a3 || -[NSDictionary isEqualToDictionary:](-[VCRateControlServerBag serverBagDictionary](serverBag, "serverBagDictionary"), "isEqualToDictionary:", [a3 serverBagDictionary]))
+  if (serverBag == bag || -[NSDictionary isEqualToDictionary:](-[VCRateControlServerBag serverBagDictionary](serverBag, "serverBagDictionary"), "isEqualToDictionary:", [bag serverBagDictionary]))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -52,9 +52,9 @@
         v25 = 1024;
         v26 = 177;
         v27 = 2048;
-        v28 = a3;
+        selfCopy2 = bag;
         v29 = 2048;
-        v30 = self;
+        selfCopy = self;
         v8 = "VCRC [%s] %s:%d Same serverbag=%p is set to the bandwidthEstimator=%p";
         v9 = v7;
         v10 = 48;
@@ -67,9 +67,9 @@ LABEL_11:
   else
   {
 
-    v11 = a3;
-    self->_serverBag = v11;
-    v12 = [(VCRateControlServerBag *)v11 containsAllSecondaryKeysWithPrimaryKey:@"bwEstimation"];
+    bagCopy2 = bag;
+    self->_serverBag = bagCopy2;
+    v12 = [(VCRateControlServerBag *)bagCopy2 containsAllSecondaryKeysWithPrimaryKey:@"bwEstimation"];
     if (v12)
     {
       self->_fastSuddenBandwidthDetectionEnabled = [-[VCRateControlServerBag valueForSecondaryKeyWithPrimaryKey:secondaryKey:type:](self->_serverBag valueForSecondaryKeyWithPrimaryKey:@"bwEstimation" secondaryKey:@"aggModeEnabled" type:{0), "BOOLValue"}];
@@ -85,12 +85,12 @@ LABEL_11:
       v14 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [@"bwEstimation" UTF8String];
+        uTF8String = [@"bwEstimation" UTF8String];
         fastSuddenBandwidthDetectionEnabled = self->_fastSuddenBandwidthDetectionEnabled;
         minProbingSequenceSize = self->_minProbingSequenceSize;
         [(SuddenChangeParameters *)self->_suddenChangeParameters percentage];
         v19 = v18;
-        v20 = [(SuddenChangeParameters *)self->_suddenChangeParameters minSamplesCountFastBandwidthEstimation];
+        minSamplesCountFastBandwidthEstimation = [(SuddenChangeParameters *)self->_suddenChangeParameters minSamplesCountFastBandwidthEstimation];
         v21 = 136317442;
         v22 = v13;
         v23 = 2080;
@@ -98,9 +98,9 @@ LABEL_11:
         v25 = 1024;
         v26 = 190;
         v27 = 2048;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2080;
-        v30 = v15;
+        selfCopy = uTF8String;
         v31 = 1024;
         v32 = v12;
         v33 = 1024;
@@ -110,7 +110,7 @@ LABEL_11:
         v37 = 2048;
         v38 = v19;
         v39 = 1024;
-        v40 = v20;
+        v40 = minSamplesCountFastBandwidthEstimation;
         v8 = "VCRC [%s] %s:%d [%p] config for key=%s serverBagContainsGroup=%d fastSuddenBandwidthDetectionEnabled=%d minProbingSequenceSize=%d suddenBWDPercentage=%f minFastBWDSampleCount=%d";
         v9 = v14;
         v10 = 82;

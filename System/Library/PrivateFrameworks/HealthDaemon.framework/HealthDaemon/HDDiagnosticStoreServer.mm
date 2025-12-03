@@ -1,48 +1,48 @@
 @interface HDDiagnosticStoreServer
-- (void)remote_fetchDiagnosticsWithKeys:(id)a3 completion:(id)a4;
-- (void)remote_fetchSQLPragma:(int64_t)a3 completion:(id)a4;
-- (void)remote_fetchURLForAnalyticsFileWithName:(id)a3 completion:(id)a4;
+- (void)remote_fetchDiagnosticsWithKeys:(id)keys completion:(id)completion;
+- (void)remote_fetchSQLPragma:(int64_t)pragma completion:(id)completion;
+- (void)remote_fetchURLForAnalyticsFileWithName:(id)name completion:(id)completion;
 @end
 
 @implementation HDDiagnosticStoreServer
 
-- (void)remote_fetchDiagnosticsWithKeys:(id)a3 completion:(id)a4
+- (void)remote_fetchDiagnosticsWithKeys:(id)keys completion:(id)completion
 {
   v6 = MEMORY[0x277D10AF8];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 sharedDiagnosticManager];
-  v9 = [v10 diagnosticsForKeys:v8];
+  completionCopy = completion;
+  keysCopy = keys;
+  sharedDiagnosticManager = [v6 sharedDiagnosticManager];
+  v9 = [sharedDiagnosticManager diagnosticsForKeys:keysCopy];
 
-  (*(a4 + 2))(v7, v9, 0);
+  (*(completion + 2))(completionCopy, v9, 0);
 }
 
-- (void)remote_fetchURLForAnalyticsFileWithName:(id)a3 completion:(id)a4
+- (void)remote_fetchURLForAnalyticsFileWithName:(id)name completion:(id)completion
 {
   v6 = MEMORY[0x277D10AB0];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  nameCopy = name;
   v9 = [v6 alloc];
-  v10 = [(HDStandardTaskServer *)self profile];
-  v12 = [v9 initWithProfile:v10];
+  profile = [(HDStandardTaskServer *)self profile];
+  v12 = [v9 initWithProfile:profile];
 
-  v11 = [v12 URLForAnalyticsFileWithName:v8];
+  v11 = [v12 URLForAnalyticsFileWithName:nameCopy];
 
-  v7[2](v7, v11, 0);
+  completionCopy[2](completionCopy, v11, 0);
 }
 
-- (void)remote_fetchSQLPragma:(int64_t)a3 completion:(id)a4
+- (void)remote_fetchSQLPragma:(int64_t)pragma completion:(id)completion
 {
-  v6 = a4;
-  if (a3 >= 3)
+  completionCopy = completion;
+  if (pragma >= 3)
   {
     v13 = [MEMORY[0x277CCA9B8] hk_error:3 description:@"Unsupported PRAGMA"];
-    v6[2](v6, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   else
   {
-    v7 = off_278624128[a3];
+    v7 = off_278624128[pragma];
     v25 = 0;
     v26 = &v25;
     v27 = 0x3032000000;
@@ -63,15 +63,15 @@
     v17 = &v19;
     v18 = &v25;
     v8 = _Block_copy(aBlock);
-    v9 = [(HDStandardTaskServer *)self profile];
-    v10 = [v9 database];
+    profile = [(HDStandardTaskServer *)self profile];
+    database = [profile database];
     v11 = +[HDDatabaseTransactionContext contextForReadingProtectedData];
     v12 = (v20 + 5);
     obj = v20[5];
-    [v10 performTransactionWithContext:v11 error:&obj block:v8 inaccessibilityHandler:0];
+    [database performTransactionWithContext:v11 error:&obj block:v8 inaccessibilityHandler:0];
     objc_storeStrong(v12, obj);
 
-    v6[2](v6, v26[5], v20[5]);
+    completionCopy[2](completionCopy, v26[5], v20[5]);
     _Block_object_dispose(&v19, 8);
 
     _Block_object_dispose(&v25, 8);

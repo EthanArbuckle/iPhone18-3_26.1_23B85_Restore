@@ -2,24 +2,24 @@
 - (BOOL)keychainSyncAllowedByMDM;
 - (BOOL)keychainSyncAllowedByServer;
 - (BOOL)userHasExplicitlyDisabledSync;
-- (CDPDDefaultKeychainSyncPolicyProvider)initWithContext:(id)a3;
+- (CDPDDefaultKeychainSyncPolicyProvider)initWithContext:(id)context;
 @end
 
 @implementation CDPDDefaultKeychainSyncPolicyProvider
 
-- (CDPDDefaultKeychainSyncPolicyProvider)initWithContext:(id)a3
+- (CDPDDefaultKeychainSyncPolicyProvider)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CDPDDefaultKeychainSyncPolicyProvider;
   v6 = [(CDPDDefaultKeychainSyncPolicyProvider *)&v11 init];
   if (v6)
   {
-    v7 = [[CDPDAccount alloc] initWithContext:v5];
+    v7 = [[CDPDAccount alloc] initWithContext:contextCopy];
     account = v6->_account;
     v6->_account = v7;
 
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v9 = v6;
   }
 
@@ -28,26 +28,26 @@
 
 - (BOOL)keychainSyncAllowedByMDM
 {
-  v2 = [(CDPDDefaultKeychainSyncPolicyProvider *)self context];
-  v3 = [v2 keychainSyncAllowedByMDM];
+  context = [(CDPDDefaultKeychainSyncPolicyProvider *)self context];
+  keychainSyncAllowedByMDM = [context keychainSyncAllowedByMDM];
 
-  return v3;
+  return keychainSyncAllowedByMDM;
 }
 
 - (BOOL)keychainSyncAllowedByServer
 {
-  v2 = [(CDPDDefaultKeychainSyncPolicyProvider *)self context];
-  v3 = [v2 keychainSyncAllowedByServer];
+  context = [(CDPDDefaultKeychainSyncPolicyProvider *)self context];
+  keychainSyncAllowedByServer = [context keychainSyncAllowedByServer];
 
-  return v3;
+  return keychainSyncAllowedByServer;
 }
 
 - (BOOL)userHasExplicitlyDisabledSync
 {
-  v2 = [(CDPDDefaultKeychainSyncPolicyProvider *)self account];
-  v3 = [v2 hasDisabledKeychainExplicitly];
+  account = [(CDPDDefaultKeychainSyncPolicyProvider *)self account];
+  hasDisabledKeychainExplicitly = [account hasDisabledKeychainExplicitly];
 
-  return v3;
+  return hasDisabledKeychainExplicitly;
 }
 
 @end

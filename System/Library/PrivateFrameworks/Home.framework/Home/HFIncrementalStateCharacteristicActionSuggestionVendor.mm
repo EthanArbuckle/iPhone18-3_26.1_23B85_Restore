@@ -1,38 +1,38 @@
 @interface HFIncrementalStateCharacteristicActionSuggestionVendor
-- (HFIncrementalStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)a3;
-- (id)suggestedActionForCharacteristic:(id)a3 candidateActions:(id)a4;
+- (HFIncrementalStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)type;
+- (id)suggestedActionForCharacteristic:(id)characteristic candidateActions:(id)actions;
 @end
 
 @implementation HFIncrementalStateCharacteristicActionSuggestionVendor
 
-- (HFIncrementalStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)a3
+- (HFIncrementalStateCharacteristicActionSuggestionVendor)initWithCharacteristicType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = HFIncrementalStateCharacteristicActionSuggestionVendor;
   v6 = [(HFIncrementalStateCharacteristicActionSuggestionVendor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_characteristicType, a3);
+    objc_storeStrong(&v6->_characteristicType, type);
   }
 
   return v7;
 }
 
-- (id)suggestedActionForCharacteristic:(id)a3 candidateActions:(id)a4
+- (id)suggestedActionForCharacteristic:(id)characteristic candidateActions:(id)actions
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 na_map:&__block_literal_global_181];
+  characteristicCopy = characteristic;
+  actionsCopy = actions;
+  v7 = [actionsCopy na_map:&__block_literal_global_181];
   if ([v7 count])
   {
-    v8 = [v7 allObjects];
-    v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v7 allObjects];
+    v9 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-    v10 = [v9 lastObject];
-    v11 = [v5 metadata];
-    v12 = [v11 hf_normalizedValueForValue:v10];
+    lastObject = [v9 lastObject];
+    metadata = [characteristicCopy metadata];
+    v12 = [metadata hf_normalizedValueForValue:lastObject];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -40,8 +40,8 @@
     v17[3] = &unk_277DFF440;
     v18 = v12;
     v13 = v12;
-    v14 = [v6 na_filter:v17];
-    v15 = [[HFCustomCharacteristicActionSuggestionResult alloc] initWithCharacteristic:v5 targetValue:v13 matchingActions:v14];
+    v14 = [actionsCopy na_filter:v17];
+    v15 = [[HFCustomCharacteristicActionSuggestionResult alloc] initWithCharacteristic:characteristicCopy targetValue:v13 matchingActions:v14];
   }
 
   else

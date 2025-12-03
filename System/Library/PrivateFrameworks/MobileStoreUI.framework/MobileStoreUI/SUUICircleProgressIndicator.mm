@@ -2,44 +2,44 @@
 + (id)_borderImage;
 + (id)_fillImage;
 + (id)_indeterminateImage;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUICircleProgressIndicator)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUICircleProgressIndicator)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)imageInsets;
-- (void)_animateValueOnDisplayLink:(id)a3;
-- (void)_setHidesBorderView:(BOOL)a3;
+- (void)_animateValueOnDisplayLink:(id)link;
+- (void)_setHidesBorderView:(BOOL)view;
 - (void)_startIndeterminateAnimation;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageInsets:(UIEdgeInsets)a3;
-- (void)setIndeterminate:(BOOL)a3;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setImageInsets:(UIEdgeInsets)insets;
+- (void)setIndeterminate:(BOOL)indeterminate;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUICircleProgressIndicator
 
-- (SUUICircleProgressIndicator)initWithFrame:(CGRect)a3
+- (SUUICircleProgressIndicator)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SUUICircleProgressIndicator;
-  v3 = [(SUUICircleProgressIndicator *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICircleProgressIndicator *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SUUICircleProgressIndicator *)v3 tintColor];
-    v6 = [objc_opt_class() _borderImage];
-    v7 = [v6 _flatImageWithColor:v5];
+    tintColor = [(SUUICircleProgressIndicator *)v3 tintColor];
+    _borderImage = [objc_opt_class() _borderImage];
+    v7 = [_borderImage _flatImageWithColor:tintColor];
     borderImage = v4->_borderImage;
     v4->_borderImage = v7;
 
-    v9 = [objc_opt_class() _fillImage];
+    _fillImage = [objc_opt_class() _fillImage];
 
-    v10 = [v9 _flatImageWithColor:v5];
+    v10 = [_fillImage _flatImageWithColor:tintColor];
     fillImage = v4->_fillImage;
     v4->_fillImage = v10;
   }
@@ -49,18 +49,18 @@
 
 - (void)dealloc
 {
-  v3 = [(UIImageView *)self->_indeterminateView layer];
-  [v3 removeAllAnimations];
+  layer = [(UIImageView *)self->_indeterminateView layer];
+  [layer removeAllAnimations];
 
   v4.receiver = self;
   v4.super_class = SUUICircleProgressIndicator;
   [(SUUICircleProgressIndicator *)&v4 dealloc];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   highlighted = self->_highlighted;
-  if (highlighted != a3)
+  if (highlighted != highlighted)
   {
     if (highlighted)
     {
@@ -71,72 +71,72 @@
 
     else
     {
-      v7 = [(SUUICircleProgressIndicator *)self backgroundColor];
+      backgroundColor = [(SUUICircleProgressIndicator *)self backgroundColor];
       v8 = self->_unhighlightedBackgroundColor;
-      self->_unhighlightedBackgroundColor = v7;
+      self->_unhighlightedBackgroundColor = backgroundColor;
 
       unhighlightedBackgroundColor = [MEMORY[0x277D75348] clearColor];
       [(SUUICircleProgressIndicator *)self setBackgroundColor:unhighlightedBackgroundColor];
     }
 
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
 
     [(SUUICircleProgressIndicator *)self setNeedsDisplay];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  if (self->_centerImage != a3)
+  if (self->_centerImage != image)
   {
-    v4 = a3;
-    v5 = [(SUUICircleProgressIndicator *)self tintColor];
-    v6 = [v4 _flatImageWithColor:v5];
+    imageCopy = image;
+    tintColor = [(SUUICircleProgressIndicator *)self tintColor];
+    v6 = [imageCopy _flatImageWithColor:tintColor];
 
     centerImage = self->_centerImage;
     self->_centerImage = v6;
 
-    v8 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __40__SUUICircleProgressIndicator_setImage___block_invoke;
     v9[3] = &unk_2798F5BE8;
     v9[4] = self;
-    [v8 _performBlockAfterCATransactionCommits:v9];
+    [mEMORY[0x277D75128] _performBlockAfterCATransactionCommits:v9];
   }
 }
 
-- (void)setImageInsets:(UIEdgeInsets)a3
+- (void)setImageInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_centerImageInsets.top, v3), vceqq_f64(*&self->_centerImageInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_centerImageInsets = a3;
+    self->_centerImageInsets = insets;
     [(SUUICircleProgressIndicator *)self setNeedsDisplay];
   }
 }
 
-- (void)setIndeterminate:(BOOL)a3
+- (void)setIndeterminate:(BOOL)indeterminate
 {
   indeterminateView = self->_indeterminateView;
-  if (a3)
+  if (indeterminate)
   {
     if (!indeterminateView)
     {
-      v5 = [objc_opt_class() _indeterminateImage];
-      v6 = [(SUUICircleProgressIndicator *)self tintColor];
-      v13 = [v5 _flatImageWithColor:v6];
+      _indeterminateImage = [objc_opt_class() _indeterminateImage];
+      tintColor = [(SUUICircleProgressIndicator *)self tintColor];
+      v13 = [_indeterminateImage _flatImageWithColor:tintColor];
 
       v7 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v13];
       v8 = self->_indeterminateView;
       self->_indeterminateView = v7;
 
       v9 = self->_indeterminateView;
-      v10 = [(SUUICircleProgressIndicator *)self backgroundColor];
-      [(UIImageView *)v9 setBackgroundColor:v10];
+      backgroundColor = [(SUUICircleProgressIndicator *)self backgroundColor];
+      [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
       [(SUUICircleProgressIndicator *)self addSubview:self->_indeterminateView];
       [(SUUICircleProgressIndicator *)self setNeedsDisplay];
@@ -146,8 +146,8 @@
 
   else if (indeterminateView)
   {
-    v11 = [(UIImageView *)indeterminateView layer];
-    [v11 removeAllAnimations];
+    layer = [(UIImageView *)indeterminateView layer];
+    [layer removeAllAnimations];
 
     [(UIImageView *)self->_indeterminateView removeFromSuperview];
     v12 = self->_indeterminateView;
@@ -157,15 +157,15 @@
   }
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
   progress = self->_progress;
-  if (progress == a3)
+  if (progress == progress)
   {
     return;
   }
 
-  if (a4)
+  if (animated)
   {
     if (self->_isAnimating)
     {
@@ -183,46 +183,46 @@
       goto LABEL_10;
     }
 
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    v9 = [v8 displayLinkWithTarget:self selector:sel__animateValueOnDisplayLink_];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    v9 = [mainScreen displayLinkWithTarget:self selector:sel__animateValueOnDisplayLink_];
     displayLink = self->_displayLink;
     self->_displayLink = v9;
 
     v11 = self->_displayLink;
-    v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v11 addToRunLoop:v12 forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v11 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 
   else
   {
     self->_isAnimating = 0;
     [(CADisplayLink *)self->_displayLink invalidate];
-    v12 = self->_displayLink;
+    currentRunLoop = self->_displayLink;
     self->_displayLink = 0;
   }
 
 LABEL_10:
-  self->_progress = a3;
+  self->_progress = progress;
 
   [(SUUICircleProgressIndicator *)self setNeedsDisplay];
 }
 
 - (void)didMoveToWindow
 {
-  v3 = [(SUUICircleProgressIndicator *)self window];
-  if (v3)
+  window = [(SUUICircleProgressIndicator *)self window];
+  if (window)
   {
     indeterminateView = self->_indeterminateView;
 
     if (indeterminateView)
     {
-      v5 = [MEMORY[0x277D75128] sharedApplication];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke;
       v7[3] = &unk_2798F5BE8;
       v7[4] = self;
-      [v5 _performBlockAfterCATransactionCommits:v7];
+      [mEMORY[0x277D75128] _performBlockAfterCATransactionCommits:v7];
     }
   }
 
@@ -241,11 +241,11 @@ uint64_t __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke(uint64_
   return [v3 _startIndeterminateAnimation];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (!self->_indeterminateView)
   {
-    v23 = [MEMORY[0x277D75208] bezierPath];
+    bezierPath = [MEMORY[0x277D75208] bezierPath];
     [(SUUICircleProgressIndicator *)self bounds];
     v6 = v5;
     v8 = v7;
@@ -285,10 +285,10 @@ uint64_t __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke(uint64_
     }
 
     v22 = *(&self->super.super.super.isa + *v21);
-    [v23 moveToPoint:{MidX, MidY}];
-    [v23 addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v20 clockwise:{-1.57079633, v22 * 6.28318531 + -1.57079633}];
-    [v23 addLineToPoint:{MidX, MidY}];
-    [v23 clip];
+    [bezierPath moveToPoint:{MidX, MidY}];
+    [bezierPath addArcWithCenter:1 radius:MidX startAngle:MidY endAngle:v20 clockwise:{-1.57079633, v22 * 6.28318531 + -1.57079633}];
+    [bezierPath addLineToPoint:{MidX, MidY}];
+    [bezierPath clip];
     [(UIImage *)self->_fillImage drawInRect:v6, v8, v10, v12];
   }
 }
@@ -311,19 +311,19 @@ uint64_t __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke(uint64_
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   indeterminateView = self->_indeterminateView;
-  v5 = a3;
-  [(UIImageView *)indeterminateView setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIImageView *)indeterminateView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUICircleProgressIndicator;
-  [(SUUICircleProgressIndicator *)&v6 setBackgroundColor:v5];
+  [(SUUICircleProgressIndicator *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImage *)self->_fillImage size:a3.width];
+  [(UIImage *)self->_fillImage size:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -334,40 +334,40 @@ uint64_t __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke(uint64_
   v15.receiver = self;
   v15.super_class = SUUICircleProgressIndicator;
   [(SUUICircleProgressIndicator *)&v15 tintColorDidChange];
-  v3 = [(SUUICircleProgressIndicator *)self tintColor];
-  v4 = [(UIImage *)self->_centerImage _flatImageWithColor:v3];
+  tintColor = [(SUUICircleProgressIndicator *)self tintColor];
+  v4 = [(UIImage *)self->_centerImage _flatImageWithColor:tintColor];
   centerImage = self->_centerImage;
   self->_centerImage = v4;
 
   if (self->_borderImage)
   {
-    v6 = [objc_opt_class() _borderImage];
-    v7 = [v6 _flatImageWithColor:v3];
+    _borderImage = [objc_opt_class() _borderImage];
+    v7 = [_borderImage _flatImageWithColor:tintColor];
     borderImage = self->_borderImage;
     self->_borderImage = v7;
   }
 
-  v9 = [objc_opt_class() _fillImage];
-  v10 = [v9 _flatImageWithColor:v3];
+  _fillImage = [objc_opt_class() _fillImage];
+  v10 = [_fillImage _flatImageWithColor:tintColor];
   fillImage = self->_fillImage;
   self->_fillImage = v10;
 
   if (self->_indeterminateView)
   {
-    v12 = [objc_opt_class() _indeterminateImage];
-    v13 = [(SUUICircleProgressIndicator *)self tintColor];
-    v14 = [v12 _flatImageWithColor:v13];
+    _indeterminateImage = [objc_opt_class() _indeterminateImage];
+    tintColor2 = [(SUUICircleProgressIndicator *)self tintColor];
+    v14 = [_indeterminateImage _flatImageWithColor:tintColor2];
 
     [(UIImageView *)self->_indeterminateView setImage:v14];
-    v9 = v14;
+    _fillImage = v14;
   }
 
   [(SUUICircleProgressIndicator *)self setNeedsDisplay];
 }
 
-- (void)_setHidesBorderView:(BOOL)a3
+- (void)_setHidesBorderView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     borderImage = self->_borderImage;
     self->_borderImage = 0;
@@ -376,8 +376,8 @@ uint64_t __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke(uint64_
   else
   {
     borderImage = [objc_opt_class() _borderImage];
-    v5 = [(SUUICircleProgressIndicator *)self tintColor];
-    v6 = [borderImage _flatImageWithColor:v5];
+    tintColor = [(SUUICircleProgressIndicator *)self tintColor];
+    v6 = [borderImage _flatImageWithColor:tintColor];
     v7 = self->_borderImage;
     self->_borderImage = v6;
   }
@@ -436,9 +436,9 @@ uint64_t __46__SUUICircleProgressIndicator_didMoveToWindow__block_invoke(uint64_
   return v2;
 }
 
-- (void)_animateValueOnDisplayLink:(id)a3
+- (void)_animateValueOnDisplayLink:(id)link
 {
-  [a3 timestamp];
+  [link timestamp];
   v5 = (v4 - self->_animationStartTime) / (self->_animationEndTime - self->_animationStartTime);
   if (v5 >= 0.99)
   {

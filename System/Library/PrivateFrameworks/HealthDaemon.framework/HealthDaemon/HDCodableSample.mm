@@ -1,30 +1,30 @@
 @interface HDCodableSample
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSample
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v5 = [(HDCodableSample *)self object];
-  v6 = [v5 applyToObject:v4];
+  object = [(HDCodableSample *)self object];
+  v6 = [object applyToObject:objectCopy];
 
   if (!v6)
   {
@@ -32,9 +32,9 @@
   }
 
   v7 = (*&self->_has & 4) != 0 ? self->_startDate : 2.22507386e-308;
-  [v4 _setStartTimestamp:v7];
+  [objectCopy _setStartTimestamp:v7];
   v8 = (*&self->_has & 2) != 0 ? self->_endDate : 2.22507386e-308;
-  [v4 _setEndTimestamp:v8];
+  [objectCopy _setEndTimestamp:v8];
   if ((*&self->_has & 1) != 0 && (dataType = self->_dataType, _HKValidDataTypeCode()))
   {
     v10 = [MEMORY[0x277CCD720] dataTypeWithCode:dataType];
@@ -42,7 +42,7 @@
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      [v4 _setSampleType:v10];
+      [objectCopy _setSampleType:v10];
     }
   }
 
@@ -55,9 +55,9 @@ LABEL_14:
   return isKindOfClass & 1;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -70,9 +70,9 @@ LABEL_14:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -91,27 +91,27 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = HDCodableSample;
   v4 = [(HDCodableSample *)&v8 description];
-  v5 = [(HDCodableSample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   object = self->_object;
   if (object)
   {
-    v5 = [(HDCodableHealthObject *)object dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"object"];
+    dictionaryRepresentation = [(HDCodableHealthObject *)object dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"object"];
   }
 
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dataType];
-    [v3 setObject:v9 forKey:@"dataType"];
+    [dictionary setObject:v9 forKey:@"dataType"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -132,28 +132,28 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startDate];
-  [v3 setObject:v10 forKey:@"startDate"];
+  [dictionary setObject:v10 forKey:@"startDate"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_endDate];
-    [v3 setObject:v7 forKey:@"endDate"];
+    [dictionary setObject:v7 forKey:@"endDate"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_object)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -161,7 +161,7 @@ LABEL_7:
   {
     dataType = self->_dataType;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -182,33 +182,33 @@ LABEL_5:
 
   startDate = self->_startDate;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     endDate = self->_endDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_object)
   {
-    v6 = v4;
-    [v4 setObject:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setObject:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_dataType;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_dataType;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -227,22 +227,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 3) = *&self->_startDate;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 3) = *&self->_startDate;
+  *(toCopy + 40) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 2) = *&self->_endDate;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_endDate;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableHealthObject *)self->_object copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableHealthObject *)self->_object copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -284,16 +284,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   object = self->_object;
-  if (object | *(v4 + 4))
+  if (object | *(equalCopy + 4))
   {
     if (![(HDCodableHealthObject *)object isEqual:?])
     {
@@ -303,13 +303,13 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_dataType != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_dataType != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_18:
     v6 = 0;
@@ -318,21 +318,21 @@ LABEL_18:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_startDate != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_startDate != *(equalCopy + 3))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 2) == 0;
+  v6 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_endDate != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_endDate != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
@@ -431,11 +431,11 @@ LABEL_9:
   return v6 ^ v3 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   object = self->_object;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (object)
   {
     if (!v6)
@@ -443,7 +443,7 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     object = [(HDCodableHealthObject *)object mergeFrom:?];
   }
 
@@ -454,18 +454,18 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     object = [(HDCodableSample *)self setObject:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if (v7)
   {
-    self->_dataType = *(v4 + 1);
+    self->_dataType = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 4) == 0)
     {
 LABEL_9:
@@ -478,23 +478,23 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 40) & 4) == 0)
+  else if ((*(fromCopy + 40) & 4) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_startDate = *(v4 + 3);
+  self->_startDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
 LABEL_10:
-    self->_endDate = *(v4 + 2);
+    self->_endDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_11:
 
-  MEMORY[0x2821F96F8](object, v4);
+  MEMORY[0x2821F96F8](object, fromCopy);
 }
 
 @end

@@ -190,8 +190,8 @@ LABEL_25:
     self->_wpClient = v16;
 
     [(WPClient *)self->_wpClient disableScanning];
-    v18 = [(SFBluetoothPairingSession *)self _btEnsureStarted];
-    if (!v18)
+    _btEnsureStarted = [(SFBluetoothPairingSession *)self _btEnsureStarted];
+    if (!_btEnsureStarted)
     {
       return;
     }
@@ -200,9 +200,9 @@ LABEL_25:
   }
 
   [(SFBluetoothPairingSession *)p_ucat _activate];
-  v18 = v28;
+  _btEnsureStarted = v28;
 LABEL_26:
-  [(SFBluetoothPairingSession *)self _completed:v18, deviceAddress, guestAddress, v23, v24, v25, v26];
+  [(SFBluetoothPairingSession *)self _completed:_btEnsureStarted, deviceAddress, guestAddress, v23, v24, v25, v26];
 }
 
 uint64_t __38__SFBluetoothPairingSession__activate__block_invoke(uint64_t a1)
@@ -297,13 +297,13 @@ LABEL_5:
 
 LABEL_41:
   *&v127[0] = _btSessionEventHandler_0;
-  v20 = self;
+  selfCopy = self;
 
-  v21 = softLinkBTSessionAttachWithQueue_0(self->_ucat->var4, v127, v20, v20->_dispatchQueue);
+  v21 = softLinkBTSessionAttachWithQueue_0(self->_ucat->var4, v127, selfCopy, selfCopy->_dispatchQueue);
   if (v21)
   {
     v22 = v21;
-    CFRelease(v20);
+    CFRelease(selfCopy);
     Default = (v22 + 310000);
     v24 = self->_ucat->var0;
     if (v24 > 60)
@@ -411,8 +411,8 @@ LABEL_28:
 
   v126 = 0;
   v125 = 0;
-  v12 = [(NSString *)deviceAddress UTF8String];
-  v13 = softLinkBTDeviceAddressFromString_0(v12, &v125);
+  uTF8String = [(NSString *)deviceAddress UTF8String];
+  v13 = softLinkBTDeviceAddressFromString_0(uTF8String, &v125);
   if (v13)
   {
     Default = (v13 + 310000);
@@ -950,8 +950,8 @@ LABEL_144:
 
           WORD2(v121) = 0;
           LODWORD(v121) = 0;
-          v56 = [(NSString *)self->_guestAddress UTF8String];
-          v57 = softLinkBTDeviceAddressFromString_0(v56, &v121);
+          uTF8String2 = [(NSString *)self->_guestAddress UTF8String];
+          v57 = softLinkBTDeviceAddressFromString_0(uTF8String2, &v121);
           if (!v57)
           {
             v58 = softLinkBTDeviceConfigureLinkKey(*p_btDevice, &v121, v127, v55);
@@ -1667,7 +1667,7 @@ LABEL_15:
 
 - (uint64_t)_activate
 {
-  result = OUTLINED_FUNCTION_1_13(a1);
+  result = OUTLINED_FUNCTION_1_13(self);
   if (v7 ^ v8 | v6)
   {
     if (v5 == -1)
@@ -1678,7 +1678,7 @@ LABEL_15:
         goto LABEL_6;
       }
 
-      v9 = *a1;
+      v9 = *self;
     }
 
     result = LogPrintF();
@@ -1691,7 +1691,7 @@ LABEL_6:
 
 - (uint64_t)_btEnsureStarted
 {
-  result = OUTLINED_FUNCTION_0_14(a1, a2, a3, a4);
+  result = OUTLINED_FUNCTION_0_14(self, a2, a3, a4);
   if (v8 ^ v9 | v7)
   {
     if (v6 == -1)
@@ -1714,7 +1714,7 @@ LABEL_6:
 
 - (uint64_t)_btDeletePairingAndRetry
 {
-  result = OUTLINED_FUNCTION_1_13(a1);
+  result = OUTLINED_FUNCTION_1_13(self);
   if (v5 ^ v6 | v4)
   {
     if (v3 == -1)
@@ -1725,7 +1725,7 @@ LABEL_6:
         return result;
       }
 
-      v7 = *a1;
+      v7 = *self;
     }
 
     return LogPrintF();

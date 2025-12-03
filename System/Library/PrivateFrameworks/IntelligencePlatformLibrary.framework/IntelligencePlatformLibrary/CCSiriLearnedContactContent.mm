@@ -1,27 +1,27 @@
 @interface CCSiriLearnedContactContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCSiriLearnedContactContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCSiriLearnedContactContent)initWithUserPhrasedName:(id)a3 suggestedContactId:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCSiriLearnedContactContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCSiriLearnedContactContent)initWithUserPhrasedName:(id)name suggestedContactId:(id)id error:(id *)error;
 - (NSString)suggestedContactId;
 - (NSString)userPhrasedName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCSiriLearnedContactContent
 
-- (CCSiriLearnedContactContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCSiriLearnedContactContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"userPhrasedName"];
-    v10 = [v6 objectForKeyedSubscript:@"suggestedContactId"];
-    v11 = [[CCSiriLearnedContactContent alloc] initWithUserPhrasedName:v9 suggestedContactId:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"userPhrasedName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"suggestedContactId"];
+    v11 = [[CCSiriLearnedContactContent alloc] initWithUserPhrasedName:v9 suggestedContactId:v10 error:error];
   }
 
   else
@@ -38,14 +38,14 @@
   v3 = objc_opt_new();
   if (self->_userPhrasedName)
   {
-    v4 = [(CCSiriLearnedContactContent *)self userPhrasedName];
-    [v3 setObject:v4 forKeyedSubscript:@"userPhrasedName"];
+    userPhrasedName = [(CCSiriLearnedContactContent *)self userPhrasedName];
+    [v3 setObject:userPhrasedName forKeyedSubscript:@"userPhrasedName"];
   }
 
   if (self->_suggestedContactId)
   {
-    v5 = [(CCSiriLearnedContactContent *)self suggestedContactId];
-    [v3 setObject:v5 forKeyedSubscript:@"suggestedContactId"];
+    suggestedContactId = [(CCSiriLearnedContactContent *)self suggestedContactId];
+    [v3 setObject:suggestedContactId forKeyedSubscript:@"suggestedContactId"];
   }
 
   v6 = [v3 copy];
@@ -53,19 +53,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_userPhrasedName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:53604 stringValue:self->_userPhrasedName];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_suggestedContactId)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:53605 stringValue:self->_suggestedContactId];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -83,10 +83,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -235,15 +235,15 @@ LABEL_38:
   return v30;
 }
 
-- (CCSiriLearnedContactContent)initWithUserPhrasedName:(id)a3 suggestedContactId:(id)a4 error:(id *)a5
+- (CCSiriLearnedContactContent)initWithUserPhrasedName:(id)name suggestedContactId:(id)id error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  idCopy = id;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!nameCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!idCopy)
     {
       goto LABEL_8;
     }
@@ -257,7 +257,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -273,36 +273,36 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (idCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 11935) > 4u)
+  if ((identifier + 11935) > 4u)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E7AE8 + (a3 + 11935));
+    return *(&off_1E73E7AE8 + (identifier + 11935));
   }
 }
 

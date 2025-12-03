@@ -1,19 +1,19 @@
 @interface SSAppWakeRequest
-+ (id)familyContentRemovalRequestWithAppIdentifier:(id)a3 accountPairs:(id)a4;
-+ (id)newsstandFinishRequestWithAppIdentifier:(id)a3 issueIdentifiers:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)familyContentRemovalRequestWithAppIdentifier:(id)identifier accountPairs:(id)pairs;
++ (id)newsstandFinishRequestWithAppIdentifier:(id)identifier issueIdentifiers:(id)identifiers;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSAppWakeRequest
 
-+ (id)familyContentRemovalRequestWithAppIdentifier:(id)a3 accountPairs:(id)a4
++ (id)familyContentRemovalRequestWithAppIdentifier:(id)identifier accountPairs:(id)pairs
 {
-  v5 = a3;
-  v6 = [SSVFamilyContentDeletionEvent notificationPayloadWithAccountPairs:a4];
+  identifierCopy = identifier;
+  v6 = [SSVFamilyContentDeletionEvent notificationPayloadWithAccountPairs:pairs];
   if (v6)
   {
     v7 = objc_alloc_init(SSAppWakeRequest);
-    [(SSAppWakeRequest *)v7 setAppIdentifier:v5];
+    [(SSAppWakeRequest *)v7 setAppIdentifier:identifierCopy];
     [(SSAppWakeRequest *)v7 setShouldLaunchApp:1];
     v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"UIApplicationLaunchOptionsDeletedFamilyContentKey", 0}];
     [(SSAppWakeRequest *)v7 setLaunchOptions:v8];
@@ -30,14 +30,14 @@
   return v7;
 }
 
-+ (id)newsstandFinishRequestWithAppIdentifier:(id)a3 issueIdentifiers:(id)a4
++ (id)newsstandFinishRequestWithAppIdentifier:(id)identifier issueIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = a3;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(SSAppWakeRequest);
-  [(SSAppWakeRequest *)v7 setAppIdentifier:v6];
+  [(SSAppWakeRequest *)v7 setAppIdentifier:identifierCopy];
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v5, @"UIApplicationLaunchOptionsNewsstandDownloadsKey", 0}];
+  v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{identifiersCopy, @"UIApplicationLaunchOptionsNewsstandDownloadsKey", 0}];
   [(SSAppWakeRequest *)v7 setLaunchOptions:v8];
   [(SSAppWakeRequest *)v7 setShouldLaunchApp:1];
   [(SSAppWakeRequest *)v7 setProcessAssertionIdentifier:@"com.apple.itunesstored.finishdownload"];
@@ -47,23 +47,23 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSDictionary *)self->_launchOptions copyWithZone:a3];
+  v8 = [(NSDictionary *)self->_launchOptions copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_processAssertionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_processAssertionIdentifier copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
   *(v5 + 32) = self->_processAssertionInterval;
-  v12 = [(NSString *)self->_processAssertionReason copyWithZone:a3];
+  v12 = [(NSString *)self->_processAssertionReason copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 

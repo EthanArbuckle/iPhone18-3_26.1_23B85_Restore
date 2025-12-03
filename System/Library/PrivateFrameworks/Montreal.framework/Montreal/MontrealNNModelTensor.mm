@@ -1,15 +1,15 @@
 @interface MontrealNNModelTensor
-+ (id)createInputs:(id *)a3 inputChunks:(id)a4 nodeName:(id)a5;
-+ (id)createOutputs:(id *)a3 outputChunks:(id)a4 nodeName:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (MontrealNNModelTensor)initWithDictionary:(id)a3;
-- (MontrealNNModelTensor)initWithName:(id)a3 dimension:(id)a4;
++ (id)createInputs:(id *)inputs inputChunks:(id)chunks nodeName:(id)name;
++ (id)createOutputs:(id *)outputs outputChunks:(id)chunks nodeName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (MontrealNNModelTensor)initWithDictionary:(id)dictionary;
+- (MontrealNNModelTensor)initWithName:(id)name dimension:(id)dimension;
 - (id)checkForValidity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)jsonDescription;
 - (unint64_t)hash;
 - (unint64_t)tensorSize;
-- (void)description:(id)a3 indent:(id)a4;
+- (void)description:(id)description indent:(id)indent;
 @end
 
 @implementation MontrealNNModelTensor
@@ -28,18 +28,18 @@
   return self;
 }
 
-- (MontrealNNModelTensor)initWithName:(id)a3 dimension:(id)a4
+- (MontrealNNModelTensor)initWithName:(id)name dimension:(id)dimension
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dimensionCopy = dimension;
   v26.receiver = self;
   v26.super_class = MontrealNNModelTensor;
   v9 = [(MontrealNNModelTensor *)&v26 init];
   v13 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v13->_dimension, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v13->_dimension, dimension);
     v17 = objc_msgSend_weakObjectsHashTable(MEMORY[0x1E696AC70], v14, v15, v16);
     asInput = v13->_asInput;
     v13->_asInput = v17;
@@ -96,30 +96,30 @@
   return v12;
 }
 
-- (MontrealNNModelTensor)initWithDictionary:(id)a3
+- (MontrealNNModelTensor)initWithDictionary:(id)dictionary
 {
   v4 = off_1EB013688;
-  v5 = a3;
-  v8 = objc_msgSend_exMRL_stringForKey_(v5, v6, v4, v7);
-  v11 = objc_msgSend_exMRL_arrayForKey_(v5, v9, off_1EB013690, v10);
+  dictionaryCopy = dictionary;
+  v8 = objc_msgSend_exMRL_stringForKey_(dictionaryCopy, v6, v4, v7);
+  v11 = objc_msgSend_exMRL_arrayForKey_(dictionaryCopy, v9, off_1EB013690, v10);
 
   v13 = objc_msgSend_initWithName_dimension_(self, v12, v8, v11);
   return v13;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  indentCopy = indent;
   v11 = objc_msgSend_name(self, v8, v9, v10);
-  objc_msgSend_appendFormat_(v6, v12, @"\r %@ Name = %@", v13, v7, v11);
+  objc_msgSend_appendFormat_(descriptionCopy, v12, @"\r %@ Name = %@", v13, indentCopy, v11);
 
   v17 = objc_msgSend_dimension(self, v14, v15, v16);
   v21 = objc_msgSend_exMRL_numberArrayDescription(v17, v18, v19, v20);
-  objc_msgSend_appendFormat_(v6, v22, @"\r %@ Dimension = %@", v23, v7, v21);
+  objc_msgSend_appendFormat_(descriptionCopy, v22, @"\r %@ Dimension = %@", v23, indentCopy, v21);
 
-  objc_msgSend_appendFormat_(v6, v24, @"\r %@ As Input", v25, v7);
+  objc_msgSend_appendFormat_(descriptionCopy, v24, @"\r %@ As Input", v25, indentCopy);
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
@@ -143,9 +143,9 @@
         }
 
         v41 = *(*(&v78 + 1) + 8 * v40);
-        v42 = objc_msgSend_indentByFactor_(v7, v36, 1, v37);
+        v42 = objc_msgSend_indentByFactor_(indentCopy, v36, 1, v37);
         v46 = objc_msgSend_name(v41, v43, v44, v45);
-        objc_msgSend_appendFormat_(v6, v47, @"\r %@ %@", v48, v42, v46);
+        objc_msgSend_appendFormat_(descriptionCopy, v47, @"\r %@ %@", v48, v42, v46);
 
         ++v40;
       }
@@ -157,7 +157,7 @@
     while (v38);
   }
 
-  objc_msgSend_appendFormat_(v6, v49, @"\r %@ As Output", v50, v7);
+  objc_msgSend_appendFormat_(descriptionCopy, v49, @"\r %@ As Output", v50, indentCopy);
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
@@ -181,9 +181,9 @@
         }
 
         v66 = *(*(&v74 + 1) + 8 * v65);
-        v67 = objc_msgSend_indentByFactor_(v7, v61, 1, v62);
+        v67 = objc_msgSend_indentByFactor_(indentCopy, v61, 1, v62);
         v71 = objc_msgSend_name(v66, v68, v69, v70);
-        objc_msgSend_appendFormat_(v6, v72, @"\r %@ %@", v73, v67, v71);
+        objc_msgSend_appendFormat_(descriptionCopy, v72, @"\r %@ %@", v73, v67, v71);
 
         ++v65;
       }
@@ -210,13 +210,13 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v9 = objc_msgSend_name(self, v6, v7, v8);
     v13 = objc_msgSend_name(v5, v10, v11, v12);
 
@@ -239,17 +239,17 @@
   return v8;
 }
 
-+ (id)createInputs:(id *)a3 inputChunks:(id)a4 nodeName:(id)a5
++ (id)createInputs:(id *)inputs inputChunks:(id)chunks nodeName:(id)name
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
+  chunksCopy = chunks;
+  nameCopy = name;
   v11 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = chunksCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v32, v36, 16);
   if (v13)
   {
@@ -267,7 +267,7 @@
         v19 = *(*(&v32 + 1) + 8 * i);
         v20 = MEMORY[0x1E696AEC0];
         v21 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v14, 1, v15);
-        v24 = objc_msgSend_stringWithFormat_(v20, v22, @"tensor_input_%@_%@", v23, v7, v21);
+        v24 = objc_msgSend_stringWithFormat_(v20, v22, @"tensor_input_%@_%@", v23, nameCopy, v21);
 
         v25 = [MontrealNNModelTensor alloc];
         v27 = objc_msgSend_initWithName_dimension_(v25, v26, v24, v19);
@@ -283,17 +283,17 @@
   return v11;
 }
 
-+ (id)createOutputs:(id *)a3 outputChunks:(id)a4 nodeName:(id)a5
++ (id)createOutputs:(id *)outputs outputChunks:(id)chunks nodeName:(id)name
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
+  chunksCopy = chunks;
+  nameCopy = name;
   v11 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = chunksCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v32, v36, 16);
   if (v13)
   {
@@ -311,7 +311,7 @@
         v19 = *(*(&v32 + 1) + 8 * i);
         v20 = MEMORY[0x1E696AEC0];
         v21 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v14, 1, v15);
-        v24 = objc_msgSend_stringWithFormat_(v20, v22, @"tensor_output_%@_%@", v23, v7, v21);
+        v24 = objc_msgSend_stringWithFormat_(v20, v22, @"tensor_output_%@_%@", v23, nameCopy, v21);
 
         v25 = [MontrealNNModelTensor alloc];
         v27 = objc_msgSend_initWithName_dimension_(v25, v26, v24, v19);
@@ -327,10 +327,10 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_allocWithZone_(MontrealNNModelTensor, a2, a3, v3);
+  v5 = objc_msgSend_allocWithZone_(MontrealNNModelTensor, a2, zone, v3);
   v9 = objc_msgSend_name(self, v6, v7, v8);
   v13 = objc_msgSend_dimension(self, v10, v11, v12);
   v15 = objc_msgSend_initWithName_dimension_(v5, v14, v9, v13);

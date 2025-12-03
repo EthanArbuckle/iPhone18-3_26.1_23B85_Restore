@@ -1,49 +1,49 @@
 @interface BKMediaLibraryAssetCache
-- (BKMediaLibraryAssetCache)initWithDataSourceIdentifier:(id)a3;
+- (BKMediaLibraryAssetCache)initWithDataSourceIdentifier:(id)identifier;
 - (NSArray)cachedAssetIDs;
 - (NSArray)cachedAssets;
-- (id)assetFromAssetID:(id)a3;
-- (id)assetFromCacheID:(id)a3;
-- (id)assetsFromAssetIDs:(id)a3;
+- (id)assetFromAssetID:(id)d;
+- (id)assetFromCacheID:(id)d;
+- (id)assetsFromAssetIDs:(id)ds;
 - (id)description;
 - (id)mutableCacheIDSet;
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4;
-- (void)cacheAsset:(id)a3 cacheID:(id)a4;
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5;
-- (void)fetchBookCoverForAssetProperties:(id)a3 completion:(id)a4;
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion;
+- (void)cacheAsset:(id)asset cacheID:(id)d;
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion;
+- (void)fetchBookCoverForAssetProperties:(id)properties completion:(id)completion;
 - (void)uncacheAllAssets;
-- (void)uncacheAsset:(id)a3 cacheID:(id)a4;
+- (void)uncacheAsset:(id)asset cacheID:(id)d;
 @end
 
 @implementation BKMediaLibraryAssetCache
 
 - (void)uncacheAllAssets
 {
-  v3 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-  [v3 removeAllObjects];
+  assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+  [assetCacheByAssetID removeAllObjects];
 
-  v4 = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
-  [v4 removeAllObjects];
+  assetCacheByCacheID = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
+  [assetCacheByCacheID removeAllObjects];
 }
 
 - (id)mutableCacheIDSet
 {
-  v2 = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
-  v3 = [v2 allKeys];
-  v4 = [NSMutableSet setWithArray:v3];
+  assetCacheByCacheID = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
+  allKeys = [assetCacheByCacheID allKeys];
+  v4 = [NSMutableSet setWithArray:allKeys];
 
   return v4;
 }
 
-- (BKMediaLibraryAssetCache)initWithDataSourceIdentifier:(id)a3
+- (BKMediaLibraryAssetCache)initWithDataSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = BKMediaLibraryAssetCache;
   v5 = [(BKMediaLibraryAssetCache *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     dataSourceIdentifier = v5->_dataSourceIdentifier;
     v5->_dataSourceIdentifier = v6;
 
@@ -61,47 +61,47 @@
 
 - (NSArray)cachedAssets
 {
-  v2 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-  v3 = [v2 allValues];
+  assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+  allValues = [assetCacheByAssetID allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (NSArray)cachedAssetIDs
 {
-  v2 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-  v3 = [v2 allKeys];
+  assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+  allKeys = [assetCacheByAssetID allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)assetFromCacheID:(id)a3
+- (id)assetFromCacheID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  assetCacheByCacheID = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
+  v6 = [assetCacheByCacheID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)assetFromAssetID:(id)a3
+- (id)assetFromAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+  v6 = [assetCacheByAssetID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)assetsFromAssetIDs:(id)a3
+- (id)assetsFromAssetIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -117,8 +117,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+        v13 = [assetCacheByAssetID objectForKeyedSubscript:v11];
 
         if (v13)
         {
@@ -135,63 +135,63 @@
   return v5;
 }
 
-- (void)cacheAsset:(id)a3 cacheID:(id)a4
+- (void)cacheAsset:(id)asset cacheID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 assetID];
+  assetCopy = asset;
+  dCopy = d;
+  assetID = [assetCopy assetID];
 
-  if (v7)
+  if (assetID)
   {
-    v8 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-    v9 = [v11 assetID];
-    [v8 setObject:v11 forKeyedSubscript:v9];
+    assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+    assetID2 = [assetCopy assetID];
+    [assetCacheByAssetID setObject:assetCopy forKeyedSubscript:assetID2];
   }
 
-  v10 = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
-  [v10 setObject:v11 forKeyedSubscript:v6];
+  assetCacheByCacheID = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
+  [assetCacheByCacheID setObject:assetCopy forKeyedSubscript:dCopy];
 }
 
-- (void)uncacheAsset:(id)a3 cacheID:(id)a4
+- (void)uncacheAsset:(id)asset cacheID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 assetID];
+  assetCopy = asset;
+  dCopy = d;
+  assetID = [assetCopy assetID];
 
-  if (v7)
+  if (assetID)
   {
-    v8 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-    v9 = [v11 assetID];
-    [v8 setObject:0 forKeyedSubscript:v9];
+    assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+    assetID2 = [assetCopy assetID];
+    [assetCacheByAssetID setObject:0 forKeyedSubscript:assetID2];
   }
 
-  v10 = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
-  [v10 setObject:0 forKeyedSubscript:v6];
+  assetCacheByCacheID = [(BKMediaLibraryAssetCache *)self assetCacheByCacheID];
+  [assetCacheByCacheID setObject:0 forKeyedSubscript:dCopy];
 }
 
-- (void)fetchBookCoverForAssetProperties:(id)a3 completion:(id)a4
+- (void)fetchBookCoverForAssetProperties:(id)properties completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 objectForKey:@"assetID"];
+  completionCopy = completion;
+  v7 = [properties objectForKey:@"assetID"];
   if ([v7 length])
   {
     v8 = [(BKMediaLibraryAssetCache *)self assetFromAssetID:v7];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 representativeItem];
-      v11 = [v10 artworkCatalog];
+      representativeItem = [v8 representativeItem];
+      artworkCatalog = [representativeItem artworkCatalog];
 
-      if (v11)
+      if (artworkCatalog)
       {
-        [v11 setFittingSize:{1.79769313e308, 1.79769313e308}];
+        [artworkCatalog setFittingSize:{1.79769313e308, 1.79769313e308}];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_10011C0E0;
         v29[3] = &unk_100A05BB8;
         v30 = v7;
-        v31 = v6;
-        [v11 requestImageWithCompletion:v29];
+        v31 = completionCopy;
+        [artworkCatalog requestImageWithCompletion:v29];
 
         v12 = v30;
       }
@@ -204,7 +204,7 @@
           sub_100790304(v7, v21, v22, v23, v24, v25, v26, v27);
         }
 
-        v28 = objc_retainBlock(v6);
+        v28 = objc_retainBlock(completionCopy);
         v12 = v28;
         if (v28)
         {
@@ -221,21 +221,21 @@
         sub_100790370(v7, v14, v15, v16, v17, v18, v19, v20);
       }
 
-      v11 = objc_retainBlock(v6);
-      if (!v11)
+      artworkCatalog = objc_retainBlock(completionCopy);
+      if (!artworkCatalog)
       {
         goto LABEL_16;
       }
 
       v12 = [NSError errorWithDomain:kBKLibraryDataSourceDomain code:kBKLibraryDataSourceErrorAssetIDNotInCacheError userInfo:0];
-      (v11)[2](v11, 0, 0, v12);
+      (artworkCatalog)[2](artworkCatalog, 0, 0, v12);
     }
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = objc_retainBlock(v6);
+  v13 = objc_retainBlock(completionCopy);
   v9 = v13;
   if (v13)
   {
@@ -245,10 +245,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)deleteAssets:(id)a3 exhaustive:(BOOL)a4 completion:(id)a5
+- (void)deleteAssets:(id)assets exhaustive:(BOOL)exhaustive completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  assetsCopy = assets;
   v9 = BKLibraryDataSourceMediaLibraryLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -256,8 +256,8 @@ LABEL_17:
   }
 
   v10 = +[NSMutableArray array];
-  v11 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v8 count]);
-  +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v8 count]);
+  v11 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [assetsCopy count]);
+  +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [assetsCopy count]);
   v42 = _NSConcreteStackBlock;
   v43 = 3221225472;
   v44 = sub_10011C520;
@@ -268,7 +268,7 @@ LABEL_17:
   v48 = v13;
   v14 = v11;
   v49 = v14;
-  [v8 enumerateObjectsUsingBlock:&v42];
+  [assetsCopy enumerateObjectsUsingBlock:&v42];
 
   if ([v13 count])
   {
@@ -278,13 +278,13 @@ LABEL_17:
       [v15 setIgnoreSystemFilterPredicates:1];
       if (v15)
       {
-        v16 = [v12 allObjects];
-        v17 = [MPMediaPropertyPredicate predicateWithValue:v16 forProperty:MPMediaItemPropertyStorePlaylistID comparisonType:108];
+        allObjects = [v12 allObjects];
+        v17 = [MPMediaPropertyPredicate predicateWithValue:allObjects forProperty:MPMediaItemPropertyStorePlaylistID comparisonType:108];
 
         [v15 addFilterPredicate:v17];
         v18 = +[MPMediaLibrary defaultMediaLibrary];
-        v19 = [v15 items];
-        v20 = [v18 removeItems:v19];
+        items = [v15 items];
+        v20 = [v18 removeItems:items];
 
         v21 = BKLibraryDataSourceMediaLibraryLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -310,13 +310,13 @@ LABEL_17:
       [v28 setIgnoreSystemFilterPredicates:1];
       if (v28)
       {
-        v29 = [v14 allObjects];
-        v30 = [MPMediaPropertyPredicate predicateWithValue:v29 forProperty:MPMediaItemPropertyAlbumPersistentID comparisonType:108];
+        allObjects2 = [v14 allObjects];
+        v30 = [MPMediaPropertyPredicate predicateWithValue:allObjects2 forProperty:MPMediaItemPropertyAlbumPersistentID comparisonType:108];
 
         [v28 addFilterPredicate:v30];
         v31 = +[MPMediaLibrary defaultMediaLibrary];
-        v32 = [v28 items];
-        v20 = [v31 removeItems:v32];
+        items2 = [v28 items];
+        v20 = [v31 removeItems:items2];
 
         v33 = BKLibraryDataSourceMediaLibraryLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -332,7 +332,7 @@ LABEL_17:
     v20 = 0;
   }
 
-  v40 = objc_retainBlock(v7);
+  v40 = objc_retainBlock(completionCopy);
   v41 = v40;
   if (v40)
   {
@@ -340,20 +340,20 @@ LABEL_17:
   }
 }
 
-- (void)assetForLibraryAsset:(id)a3 completion:(id)a4
+- (void)assetForLibraryAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  assetCopy = asset;
+  completionCopy = completion;
+  if ([assetCopy length])
   {
-    v8 = [(BKMediaLibraryAssetCache *)self assetFromAssetID:v6];
+    v8 = [(BKMediaLibraryAssetCache *)self assetFromAssetID:assetCopy];
     v9 = BKLibraryDataSourceMediaLibraryLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 representativeItem];
-      v11 = [v10 valueForProperty:MPMediaItemPropertyAlbumPersistentID];
+      representativeItem = [v8 representativeItem];
+      v11 = [representativeItem valueForProperty:MPMediaItemPropertyAlbumPersistentID];
       v14 = 138412802;
-      v15 = v6;
+      v15 = assetCopy;
       v16 = 2112;
       v17 = v8;
       v18 = 2112;
@@ -361,7 +361,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "assetForLibraryAsset:completion:, (asset.assetID = %@) calling completion with asset:%@, albumPersistentID: %@", &v14, 0x20u);
     }
 
-    v12 = objc_retainBlock(v7);
+    v12 = objc_retainBlock(completionCopy);
     if (v12)
     {
       v12[2](v12, v8, 0);
@@ -374,11 +374,11 @@ LABEL_17:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = assetCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "assetForLibraryAsset:completion:, (asset.assetID = %@) calling completion with nil asset", &v14, 0xCu);
   }
 
-  v8 = objc_retainBlock(v7);
+  v8 = objc_retainBlock(completionCopy);
   if (v8)
   {
     v12 = [NSError errorWithDomain:kBKLibraryDataSourceDomain code:kBKLibraryDataSourceErrorAssetIDNotInCacheError userInfo:0];
@@ -391,12 +391,12 @@ LABEL_10:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKMediaLibraryAssetCache *)self dataSourceIdentifier];
-  v6 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-  v7 = [v6 allKeys];
-  v8 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
-  v9 = [v8 allValues];
-  v10 = [NSString stringWithFormat:@"<%@(%p) dataSourceIdentifier=%@ cachedAssetIDs=%@ cachedAssets=%@>", v4, self, v5, v7, v9];
+  dataSourceIdentifier = [(BKMediaLibraryAssetCache *)self dataSourceIdentifier];
+  assetCacheByAssetID = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+  allKeys = [assetCacheByAssetID allKeys];
+  assetCacheByAssetID2 = [(BKMediaLibraryAssetCache *)self assetCacheByAssetID];
+  allValues = [assetCacheByAssetID2 allValues];
+  v10 = [NSString stringWithFormat:@"<%@(%p) dataSourceIdentifier=%@ cachedAssetIDs=%@ cachedAssets=%@>", v4, self, dataSourceIdentifier, allKeys, allValues];
 
   return v10;
 }

@@ -1,63 +1,63 @@
 @interface TIWordSearchController
 + (id)sharedWordSearchController;
 - (TIWordSearchController)init;
-- (id)wordSearchForInputMode:(id)a3;
+- (id)wordSearchForInputMode:(id)mode;
 - (void)reset;
-- (void)setWordSearch:(id)a3 forInputMode:(id)a4;
+- (void)setWordSearch:(id)search forInputMode:(id)mode;
 @end
 
 @implementation TIWordSearchController
 
 - (void)reset
 {
-  v2 = [(TIWordSearchController *)self inputModeToWordSearchMapping];
-  [v2 removeAllObjects];
+  inputModeToWordSearchMapping = [(TIWordSearchController *)self inputModeToWordSearchMapping];
+  [inputModeToWordSearchMapping removeAllObjects];
 }
 
-- (id)wordSearchForInputMode:(id)a3
+- (id)wordSearchForInputMode:(id)mode
 {
-  v4 = a3;
-  v5 = [v4 normalizedIdentifier];
-  v6 = [v4 normalizedIdentifier];
-  if (![v6 isEqualToString:@"ko_KR"])
+  modeCopy = mode;
+  normalizedIdentifier = [modeCopy normalizedIdentifier];
+  normalizedIdentifier2 = [modeCopy normalizedIdentifier];
+  if (![normalizedIdentifier2 isEqualToString:@"ko_KR"])
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 originalIdentifier];
+  originalIdentifier = [modeCopy originalIdentifier];
   v8 = TIInputModeGetSWLayout();
 
   if (v8)
   {
-    v6 = [v4 originalIdentifier];
+    normalizedIdentifier2 = [modeCopy originalIdentifier];
     v9 = TIInputModeGetSWLayout();
 
-    v5 = v9;
+    normalizedIdentifier = v9;
 LABEL_4:
   }
 
-  if (!v5)
+  if (!normalizedIdentifier)
   {
     goto LABEL_10;
   }
 
-  v10 = [(TIWordSearchController *)self inputModeToWordSearchMapping];
-  v11 = [v10 objectForKey:v5];
+  inputModeToWordSearchMapping = [(TIWordSearchController *)self inputModeToWordSearchMapping];
+  v11 = [inputModeToWordSearchMapping objectForKey:normalizedIdentifier];
 
   if (v11)
   {
     goto LABEL_11;
   }
 
-  v12 = [v4 normalizedIdentifier];
+  normalizedIdentifier3 = [modeCopy normalizedIdentifier];
   v13 = TICanonicalInputModeName();
   v14 = TIInputManagerClassForInputMode();
 
-  if (([v14 isSubclassOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "normalizedIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "hasSuffix:", @"HWR"), v15, v16))
+  if (([v14 isSubclassOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(modeCopy, "normalizedIdentifier"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "hasSuffix:", @"HWR"), v15, v16))
   {
-    v11 = [objc_alloc(objc_msgSend(v14 performSelector:{sel_wordSearchClass)), "initTIWordSearchWithInputMode:", v4}];
-    v17 = [(TIWordSearchController *)self inputModeToWordSearchMapping];
-    [v17 setObject:v11 forKey:v5];
+    v11 = [objc_alloc(objc_msgSend(v14 performSelector:{sel_wordSearchClass)), "initTIWordSearchWithInputMode:", modeCopy}];
+    inputModeToWordSearchMapping2 = [(TIWordSearchController *)self inputModeToWordSearchMapping];
+    [inputModeToWordSearchMapping2 setObject:v11 forKey:normalizedIdentifier];
   }
 
   else
@@ -71,14 +71,14 @@ LABEL_11:
   return v11;
 }
 
-- (void)setWordSearch:(id)a3 forInputMode:(id)a4
+- (void)setWordSearch:(id)search forInputMode:(id)mode
 {
-  v8 = a3;
-  v6 = [a4 normalizedIdentifier];
-  if (v8 && v6)
+  searchCopy = search;
+  normalizedIdentifier = [mode normalizedIdentifier];
+  if (searchCopy && normalizedIdentifier)
   {
-    v7 = [(TIWordSearchController *)self inputModeToWordSearchMapping];
-    [v7 setObject:v8 forKey:v6];
+    inputModeToWordSearchMapping = [(TIWordSearchController *)self inputModeToWordSearchMapping];
+    [inputModeToWordSearchMapping setObject:searchCopy forKey:normalizedIdentifier];
   }
 }
 

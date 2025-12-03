@@ -1,34 +1,34 @@
 @interface VTSiriEnabledMonitor
 + (id)sharedInstance;
 - (VTSiriEnabledMonitor)init;
-- (void)_didReceiveSiriSettingChanged:(BOOL)a3;
-- (void)_notifyObserver:(id)a3 withEnabled:(BOOL)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveSiriSettingChanged:(BOOL)changed;
+- (void)_notifyObserver:(id)observer withEnabled:(BOOL)enabled;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation VTSiriEnabledMonitor
 
-- (void)_notifyObserver:(id)a3 withEnabled:(BOOL)a4
+- (void)_notifyObserver:(id)observer withEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  enabledCopy = enabled;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTSiriEnabledMonitor:self didReceiveEnabled:v4];
+    [observerCopy VTSiriEnabledMonitor:self didReceiveEnabled:enabledCopy];
   }
 }
 
-- (void)_didReceiveSiriSettingChanged:(BOOL)a3
+- (void)_didReceiveSiriSettingChanged:(BOOL)changed
 {
-  self->_isSiriEnabled = a3;
+  self->_isSiriEnabled = changed;
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __54__VTSiriEnabledMonitor__didReceiveSiriSettingChanged___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -44,7 +44,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _AssistantPrefsChangedNotification, *MEMORY[0x277CEF5B8], 0, CFNotificationSuspensionBehaviorDeliverImmediately);

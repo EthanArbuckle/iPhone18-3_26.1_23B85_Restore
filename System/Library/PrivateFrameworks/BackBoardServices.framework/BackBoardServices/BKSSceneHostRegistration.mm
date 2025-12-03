@@ -1,31 +1,31 @@
 @interface BKSSceneHostRegistration
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)invalidate;
-- (void)updateSettings:(id)a3;
+- (void)updateSettings:(id)settings;
 @end
 
 @implementation BKSSceneHostRegistration
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__BKSSceneHostRegistration_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 
 - (void)invalidate
 {
   service = self->_service;
-  v3 = self;
+  selfCopy = self;
   if (service)
   {
-    v12 = v3;
+    v12 = selfCopy;
     os_unfair_lock_lock(&service->_registrationLock);
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12->_contextID];
     v5 = [(NSMutableDictionary *)service->_registrationLock_registrationsByContextID objectForKey:v4];
@@ -40,11 +40,11 @@
       [(NSMutableDictionary *)service->_registrationLock_registrationsByContextID removeObjectForKey:v4];
     }
 
-    v7 = [v6 lastObject];
-    v8 = v7;
-    if (v7)
+    lastObject = [v6 lastObject];
+    v8 = lastObject;
+    if (lastObject)
     {
-      v9 = *(v7 + 24);
+      v9 = *(lastObject + 24);
     }
 
     else
@@ -55,26 +55,26 @@
     v10 = v9;
 
     os_unfair_lock_unlock(&service->_registrationLock);
-    v11 = [(BSServiceInitiatingConnection *)service->_connection remoteTarget];
-    [v11 setSceneHostSettings:v10 forContextID:v4];
+    remoteTarget = [(BSServiceInitiatingConnection *)service->_connection remoteTarget];
+    [remoteTarget setSceneHostSettings:v10 forContextID:v4];
 
-    v3 = v12;
+    selfCopy = v12;
   }
 }
 
-- (void)updateSettings:(id)a3
+- (void)updateSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   p_sceneHostSettings = &self->_sceneHostSettings;
-  if (self->_sceneHostSettings != v5)
+  if (self->_sceneHostSettings != settingsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_sceneHostSettings, a3);
+    v7 = settingsCopy;
+    objc_storeStrong(p_sceneHostSettings, settings);
     [(BKSTouchEventService *)self->_service _updateRegistration:?];
-    v5 = v7;
+    settingsCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_sceneHostSettings, v5);
+  MEMORY[0x1EEE66BB8](p_sceneHostSettings, settingsCopy);
 }
 
 @end

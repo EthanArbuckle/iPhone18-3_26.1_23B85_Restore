@@ -1,14 +1,14 @@
 @interface SKUIDownloadsView
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setOverlayView:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setOverlayView:(id)view;
 @end
 
 @implementation SKUIDownloadsView
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,16 +23,16 @@
 
   [(UIView *)self->_contentView removeFromSuperview];
   contentView = self->_contentView;
-  self->_contentView = v4;
-  v14 = v4;
+  self->_contentView = viewCopy;
+  v14 = viewCopy;
 
   [(SKUIDownloadsView *)self insertSubview:self->_contentView atIndex:0];
   [(SKUIDownloadsView *)self setNeedsLayout];
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -47,8 +47,8 @@
 
   [(UIView *)self->_overlayView removeFromSuperview];
   overlayView = self->_overlayView;
-  self->_overlayView = v4;
-  v14 = v4;
+  self->_overlayView = viewCopy;
+  v14 = viewCopy;
 
   [(SKUIDownloadsView *)self addSubview:self->_overlayView];
   [(SKUIDownloadsView *)self setNeedsLayout];

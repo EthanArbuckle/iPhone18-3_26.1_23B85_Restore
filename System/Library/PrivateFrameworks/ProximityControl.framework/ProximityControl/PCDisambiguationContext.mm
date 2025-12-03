@@ -1,37 +1,37 @@
 @interface PCDisambiguationContext
-- (PCDisambiguationContext)initWithCoder:(id)a3;
-- (PCDisambiguationContext)initWithIdentifier:(id)a3 direction:(int64_t)a4 activityData:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PCDisambiguationContext)initWithCoder:(id)coder;
+- (PCDisambiguationContext)initWithIdentifier:(id)identifier direction:(int64_t)direction activityData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)leadingImage;
 - (id)subtitleText;
 - (id)titleText;
-- (void)cacheActivityData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)cacheActivityData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCDisambiguationContext
 
-- (PCDisambiguationContext)initWithIdentifier:(id)a3 direction:(int64_t)a4 activityData:(id)a5
+- (PCDisambiguationContext)initWithIdentifier:(id)identifier direction:(int64_t)direction activityData:(id)data
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = PCDisambiguationContext;
   v11 = [(PCDisambiguationContext *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_deviceIdentifier, a3);
-    v12->_interactionDirection = a4;
-    [(PCDisambiguationContext *)v12 cacheActivityData:v10];
+    objc_storeStrong(&v11->_deviceIdentifier, identifier);
+    v12->_interactionDirection = direction;
+    [(PCDisambiguationContext *)v12 cacheActivityData:dataCopy];
   }
 
   return v12;
 }
 
-- (void)cacheActivityData:(id)a3
+- (void)cacheActivityData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   activityData = self->_activityData;
   self->_activityData = v4;
 
@@ -41,7 +41,7 @@
   self->_activity = v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PCDisambiguationContext alloc];
   deviceIdentifier = self->_deviceIdentifier;
@@ -51,29 +51,29 @@
   return [(PCDisambiguationContext *)v4 initWithIdentifier:deviceIdentifier direction:interactionDirection activityData:activityData];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   deviceIdentifier = self->_deviceIdentifier;
-  v8 = v4;
+  v8 = coderCopy;
   if (deviceIdentifier)
   {
-    [v4 encodeObject:deviceIdentifier forKey:@"did"];
-    v4 = v8;
+    [coderCopy encodeObject:deviceIdentifier forKey:@"did"];
+    coderCopy = v8;
   }
 
   interactionDirection = self->_interactionDirection;
   if (interactionDirection)
   {
     [v8 encodeInteger:interactionDirection forKey:@"id"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   activityData = self->_activityData;
   if (activityData)
   {
     [v8 encodeObject:activityData forKey:@"act"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
@@ -93,8 +93,8 @@ LABEL_5:
     v3 = [PCLocalizedString localizedStringForKey:12];
     v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v3];
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"iphone"];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v8 = [v6 imageWithTintColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v8 = [v6 imageWithTintColor:systemBlueColor];
 
     v9 = objc_alloc_init(MEMORY[0x277D74270]);
     [v9 setImage:v8];
@@ -120,45 +120,45 @@ LABEL_7:
     goto LABEL_2;
   }
 
-  v3 = [(PCDisambiguationContext *)self activity];
+  activity = [(PCDisambiguationContext *)self activity];
 
-  if (v3)
+  if (activity)
   {
-    v4 = [(PCDisambiguationContext *)self activity];
-    v5 = [v4 pcactivityType];
+    activity2 = [(PCDisambiguationContext *)self activity];
+    pcactivityType = [activity2 pcactivityType];
 
-    if (v5)
+    if (pcactivityType)
     {
-      if (v5 != 1)
+      if (pcactivityType != 1)
       {
 LABEL_2:
-        v3 = 0;
+        activity = 0;
         goto LABEL_9;
       }
 
-      v6 = [(PCDisambiguationContext *)self activity];
-      v7 = [v6 shortDescription];
+      activity3 = [(PCDisambiguationContext *)self activity];
+      shortDescription = [activity3 shortDescription];
     }
 
     else
     {
-      v6 = [(PCDisambiguationContext *)self activity];
-      v7 = [v6 description];
+      activity3 = [(PCDisambiguationContext *)self activity];
+      shortDescription = [activity3 description];
     }
 
-    v3 = v7;
+    activity = shortDescription;
   }
 
 LABEL_9:
 
-  return v3;
+  return activity;
 }
 
 - (id)leadingImage
 {
-  v3 = [(PCDisambiguationContext *)self activity];
+  activity = [(PCDisambiguationContext *)self activity];
 
-  if (!v3)
+  if (!activity)
   {
     v14 = objc_alloc_init(MEMORY[0x277D755B8]);
     goto LABEL_14;
@@ -169,33 +169,33 @@ LABEL_9:
   v6 = [v4 configurationWithFont:v5];
 
   v7 = [MEMORY[0x277D755B8] systemImageNamed:@"iphone.and.arrow.forward" withConfiguration:v6];
-  v8 = [MEMORY[0x277D75348] systemBlueColor];
-  v9 = [v7 imageWithTintColor:v8];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v9 = [v7 imageWithTintColor:systemBlueColor];
 
-  v10 = [(PCDisambiguationContext *)self activity];
-  v11 = [v10 pcactivityType];
+  activity2 = [(PCDisambiguationContext *)self activity];
+  pcactivityType = [activity2 pcactivityType];
 
-  v12 = [(PCDisambiguationContext *)self activity];
-  v13 = v12;
-  if (v11 == 1)
+  activity3 = [(PCDisambiguationContext *)self activity];
+  v13 = activity3;
+  if (pcactivityType == 1)
   {
-    if ([v12 direction] == 2)
+    if ([activity3 direction] == 2)
     {
       v14 = v9;
     }
 
     else
     {
-      v17 = [(PCDisambiguationContext *)self activity];
-      v14 = [PCActivityUtility disambiguationButtonImageForActivity:v17];
+      activity4 = [(PCDisambiguationContext *)self activity];
+      v14 = [PCActivityUtility disambiguationButtonImageForActivity:activity4];
     }
 
     goto LABEL_13;
   }
 
-  v15 = [v12 pcactivityType];
+  pcactivityType2 = [activity3 pcactivityType];
 
-  if (v15)
+  if (pcactivityType2)
   {
     v16 = objc_alloc_init(MEMORY[0x277D755B8]);
   }
@@ -204,8 +204,8 @@ LABEL_9:
   {
     if ([(PCDisambiguationContext *)self interactionDirection]!= 2)
     {
-      v19 = [(PCDisambiguationContext *)self activity];
-      v14 = [PCActivityUtility disambiguationButtonImageForActivity:v19];
+      activity5 = [(PCDisambiguationContext *)self activity];
+      v14 = [PCActivityUtility disambiguationButtonImageForActivity:activity5];
 
       goto LABEL_13;
     }
@@ -221,9 +221,9 @@ LABEL_14:
   return v14;
 }
 
-- (PCDisambiguationContext)initWithCoder:(id)a3
+- (PCDisambiguationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PCDisambiguationContext;
   v9 = 0;
@@ -232,7 +232,7 @@ LABEL_14:
   {
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"id"])
     {
       v5->_interactionDirection = [v6 decodeIntegerForKey:@"id"];

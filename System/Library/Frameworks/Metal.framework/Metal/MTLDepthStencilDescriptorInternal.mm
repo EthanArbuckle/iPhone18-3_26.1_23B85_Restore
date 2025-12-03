@@ -1,15 +1,15 @@
 @interface MTLDepthStencilDescriptorInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLDepthStencilDescriptorInternal)init;
 - (id)backFaceStencil;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (id)frontFaceStencil;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setBackFaceStencil:(id)a3;
-- (void)setFrontFaceStencil:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)setBackFaceStencil:(id)stencil;
+- (void)setFrontFaceStencil:(id)stencil;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLDepthStencilDescriptorInternal
@@ -79,9 +79,9 @@
   return _MTLHashState(v8, 0x28uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -94,10 +94,10 @@
   v21 = v3;
   Class = object_getClass(self);
   result = 0;
-  if (Class == object_getClass(a3) && (!self->_private.frontFaceStencil && !*(a3 + 1) || [-[MTLDepthStencilDescriptorInternal frontFaceStencil](self frontFaceStencil]) && (!self->_private.backFaceStencil && !*(a3 + 2) || objc_msgSend(-[MTLDepthStencilDescriptorInternal backFaceStencil](self, "backFaceStencil", v16, v17, v18, v19, v20, v21), "isEqual:", objc_msgSend(a3, "backFaceStencil"))) && self->_private.depthCompareFunction == *(a3 + 3) && self->_private.depthWriteEnabled == *(a3 + 32))
+  if (Class == object_getClass(equal) && (!self->_private.frontFaceStencil && !*(equal + 1) || [-[MTLDepthStencilDescriptorInternal frontFaceStencil](self frontFaceStencil]) && (!self->_private.backFaceStencil && !*(equal + 2) || objc_msgSend(-[MTLDepthStencilDescriptorInternal backFaceStencil](self, "backFaceStencil", v16, v17, v18, v19, v20, v21), "isEqual:", objc_msgSend(equal, "backFaceStencil"))) && self->_private.depthCompareFunction == *(equal + 3) && self->_private.depthWriteEnabled == *(equal + 32))
   {
     label = self->_private.label;
-    if ((label == *(a3 + 5) || [(NSString *)label isEqual:?]) && self->_private.resourceIndex == *(a3 + 6))
+    if ((label == *(equal + 5) || [(NSString *)label isEqual:?]) && self->_private.resourceIndex == *(equal + 6))
     {
       return 1;
     }
@@ -106,26 +106,26 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     if (self->_private.frontFaceStencil)
     {
-      *(v5 + 8) = [(MTLStencilDescriptorInternal *)self->_private.frontFaceStencil copyWithZone:a3];
+      *(v5 + 8) = [(MTLStencilDescriptorInternal *)self->_private.frontFaceStencil copyWithZone:zone];
     }
 
     backFaceStencil = self->_private.backFaceStencil;
     if (backFaceStencil)
     {
-      *(v6 + 16) = [(MTLStencilDescriptorInternal *)backFaceStencil copyWithZone:a3];
+      *(v6 + 16) = [(MTLStencilDescriptorInternal *)backFaceStencil copyWithZone:zone];
     }
 
     *(v6 + 24) = self->_private.depthCompareFunction;
     *(v6 + 32) = self->_private.depthWriteEnabled;
-    v8 = [(NSString *)self->_private.label copyWithZone:a3];
+    v8 = [(NSString *)self->_private.label copyWithZone:zone];
     resourceIndex = self->_private.resourceIndex;
     *(v6 + 40) = v8;
     *(v6 + 48) = resourceIndex;
@@ -134,11 +134,11 @@
   return v6;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v17[12] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v17[0] = [@"\n" stringByPaddingToLength:a3 + 8 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  v17[0] = [@"\n" stringByPaddingToLength:description + 8 withString:@" " startingAtIndex:0];
   v17[1] = @"stencilCompareFunction        = MTLCompareFunctionAlways";
   v17[2] = v17[0];
   v17[3] = @"stencilFailOperation          = MTLStencilOperationKeep";
@@ -176,7 +176,7 @@
   v11 = v6;
   if (p_private->frontFaceStencil)
   {
-    v11 = [(MTLStencilDescriptorInternal *)p_private->frontFaceStencil formattedDescription:a3 + 4];
+    v11 = [(MTLStencilDescriptorInternal *)p_private->frontFaceStencil formattedDescription:description + 4];
   }
 
   v16[11] = v11;
@@ -185,7 +185,7 @@
   backFaceStencil = p_private->backFaceStencil;
   if (backFaceStencil)
   {
-    v6 = [(MTLStencilDescriptorInternal *)backFaceStencil formattedDescription:a3 + 4];
+    v6 = [(MTLStencilDescriptorInternal *)backFaceStencil formattedDescription:description + 4];
   }
 
   v16[14] = v6;
@@ -197,11 +197,11 @@
   return result;
 }
 
-- (void)setFrontFaceStencil:(id)a3
+- (void)setFrontFaceStencil:(id)stencil
 {
-  if (self->_private.frontFaceStencil != a3)
+  if (self->_private.frontFaceStencil != stencil)
   {
-    if (a3)
+    if (stencil)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -211,18 +211,18 @@
       }
     }
 
-    v13 = [a3 copy];
+    v13 = [stencil copy];
 
     self->_private.frontFaceStencil = v13;
   }
 }
 
-- (void)setBackFaceStencil:(id)a3
+- (void)setBackFaceStencil:(id)stencil
 {
   p_private = &self->_private;
-  if (self->_private.backFaceStencil != a3)
+  if (self->_private.backFaceStencil != stencil)
   {
-    if (a3)
+    if (stencil)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -232,15 +232,15 @@
       }
     }
 
-    v13 = [a3 copy];
+    v13 = [stencil copy];
 
     p_private->backFaceStencil = v13;
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -257,10 +257,10 @@
 
   p_private = &self->_private;
   label = p_private->label;
-  if (label != a3)
+  if (label != label)
   {
 
-    p_private->label = [a3 copy];
+    p_private->label = [label copy];
   }
 }
 

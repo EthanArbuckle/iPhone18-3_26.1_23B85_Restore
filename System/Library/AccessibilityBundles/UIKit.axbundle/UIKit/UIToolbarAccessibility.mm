@@ -1,6 +1,6 @@
 @interface UIToolbarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category;
 - (BOOL)shouldGroupAccessibilityChildren;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
@@ -9,14 +9,14 @@
 
 @implementation UIToolbarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIToolbar" hasInstanceMethod:@"items" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
@@ -67,29 +67,29 @@
 
 - (BOOL)shouldGroupAccessibilityChildren
 {
-  v5 = [(UIToolbarAccessibility *)self accessibilityUserDefinedShouldGroupChildren];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  accessibilityUserDefinedShouldGroupChildren = [(UIToolbarAccessibility *)self accessibilityUserDefinedShouldGroupChildren];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedShouldGroupChildren).n128_u64[0];
+  if (!accessibilityUserDefinedShouldGroupChildren)
   {
     return 1;
   }
 
-  v4 = [(UIToolbarAccessibility *)self accessibilityUserDefinedShouldGroupChildren];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  accessibilityUserDefinedShouldGroupChildren2 = [(UIToolbarAccessibility *)self accessibilityUserDefinedShouldGroupChildren];
+  v7 = [accessibilityUserDefinedShouldGroupChildren2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](accessibilityUserDefinedShouldGroupChildren2);
   return v7;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
   v14 = *MEMORY[0x29EDCA608];
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = UIToolbarAccessibility;
   [(UIToolbarAccessibility *)&v10 _accessibilityLoadAccessibilityInformation];
   memset(__b, 0, sizeof(__b));
-  obj = [(UIToolbarAccessibility *)v12 safeValueForKey:@"items"];
+  obj = [(UIToolbarAccessibility *)selfCopy safeValueForKey:@"items"];
   v7 = [obj countByEnumeratingWithState:__b objects:v13 count:16];
   if (v7)
   {
@@ -122,12 +122,12 @@
   MEMORY[0x29EDC9740](obj);
 }
 
-- (BOOL)_accessibilitySupportsContentSizeCategory:(id)a3
+- (BOOL)_accessibilitySupportsContentSizeCategory:(id)category
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, category);
   v4 = [location[0] isEqual:*MEMORY[0x29EDC80A0]];
   objc_storeStrong(location, 0);
   return v4;

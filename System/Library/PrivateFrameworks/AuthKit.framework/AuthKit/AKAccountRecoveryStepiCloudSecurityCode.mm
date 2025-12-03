@@ -1,85 +1,85 @@
 @interface AKAccountRecoveryStepiCloudSecurityCode
-- (BOOL)canProcessResponse:(id)a3;
-- (id)_promptForPasscodeWithModel:(id)a3;
-- (id)_promptForRecoveryKeyWithModel:(id)a3;
-- (void)_beginICloudSecurityCodeWithResponse:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)_verifyClientInfoWithResponse:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)_verifyLocalSecretWithModel:(id)a3 completion:(id)a4;
-- (void)_verifyPinViewWithResponse:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)_verifyRemoteSecretWithRecoveryContext:(id)a3 recoveredInfo:(id)a4 recoveryError:(id)a5 model:(id)a6 completion:(id)a7;
-- (void)_verifyRemoteSecretWithServerInfo:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 presentRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4;
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7;
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5;
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6;
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5;
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5;
+- (BOOL)canProcessResponse:(id)response;
+- (id)_promptForPasscodeWithModel:(id)model;
+- (id)_promptForRecoveryKeyWithModel:(id)model;
+- (void)_beginICloudSecurityCodeWithResponse:(id)response model:(id)model completion:(id)completion;
+- (void)_verifyClientInfoWithResponse:(id)response model:(id)model completion:(id)completion;
+- (void)_verifyLocalSecretWithModel:(id)model completion:(id)completion;
+- (void)_verifyPinViewWithResponse:(id)response model:(id)model completion:(id)completion;
+- (void)_verifyRemoteSecretWithRecoveryContext:(id)context recoveredInfo:(id)info recoveryError:(id)error model:(id)model completion:(id)completion;
+- (void)_verifyRemoteSecretWithServerInfo:(id)info model:(id)model completion:(id)completion;
+- (void)cdpContext:(id)context presentRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c;
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator;
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion;
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator;
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator;
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion;
 @end
 
 @implementation AKAccountRecoveryStepiCloudSecurityCode
 
-- (void)processResponse:(id)a3 model:(id)a4 withCompletion:(id)a5
+- (void)processResponse:(id)response model:(id)model withCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, model);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
+  objc_storeStrong(&v9, completion);
   v5 = MEMORY[0x193B165F0](v9);
-  completion = v12->_completion;
-  v12->_completion = v5;
+  completion = selfCopy->_completion;
+  selfCopy->_completion = v5;
   MEMORY[0x1E69E5920](completion);
-  objc_storeStrong(&v12->_model, v10);
-  [(AKAccountRecoveryStepiCloudSecurityCode *)v12 _beginICloudSecurityCodeWithResponse:location[0] model:v10 completion:v9];
+  objc_storeStrong(&selfCopy->_model, v10);
+  [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _beginICloudSecurityCodeWithResponse:location[0] model:v10 completion:v9];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)canProcessResponse:(id)a3
+- (BOOL)canProcessResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] data];
+  objc_storeStrong(location, response);
+  data = [location[0] data];
   v23 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"navigationBar" error:?];
-  MEMORY[0x1E69E5920](v5);
-  v8 = [v23 firstObject];
-  v7 = [v8 objectForKeyedSubscript:@"title"];
-  v6 = [v7 lowercaseString];
-  v9 = [v6 containsString:@"passcode"];
-  MEMORY[0x1E69E5920](v6);
+  MEMORY[0x1E69E5920](data);
+  firstObject = [v23 firstObject];
+  v7 = [firstObject objectForKeyedSubscript:@"title"];
+  lowercaseString = [v7 lowercaseString];
+  v9 = [lowercaseString containsString:@"passcode"];
+  MEMORY[0x1E69E5920](lowercaseString);
   MEMORY[0x1E69E5920](v7);
-  MEMORY[0x1E69E5920](v8);
-  v12 = [location[0] httpResponse];
-  v11 = [v12 allHeaderFields];
-  v10 = [v11 objectForKey:@"X-Apple-AK-Action"];
+  MEMORY[0x1E69E5920](firstObject);
+  httpResponse = [location[0] httpResponse];
+  allHeaderFields = [httpResponse allHeaderFields];
+  v10 = [allHeaderFields objectForKey:@"X-Apple-AK-Action"];
   v13 = [v10 isEqualToString:@"start-icsc"];
   MEMORY[0x1E69E5920](v10);
-  MEMORY[0x1E69E5920](v11);
-  MEMORY[0x1E69E5920](v12);
-  v16 = [location[0] httpResponse];
-  v15 = [v16 allHeaderFields];
-  v14 = [v15 objectForKey:@"X-Apple-AK-Auth-Type"];
+  MEMORY[0x1E69E5920](allHeaderFields);
+  MEMORY[0x1E69E5920](httpResponse);
+  httpResponse2 = [location[0] httpResponse];
+  allHeaderFields2 = [httpResponse2 allHeaderFields];
+  v14 = [allHeaderFields2 objectForKey:@"X-Apple-AK-Auth-Type"];
   v17 = [v14 isEqualToString:@"hsa2"];
   MEMORY[0x1E69E5920](v14);
-  MEMORY[0x1E69E5920](v15);
-  MEMORY[0x1E69E5920](v16);
-  v20 = [location[0] httpResponse];
-  v19 = [v20 allHeaderFields];
-  v18 = [v19 objectForKey:@"X-Apple-AK-Action"];
+  MEMORY[0x1E69E5920](allHeaderFields2);
+  MEMORY[0x1E69E5920](httpResponse2);
+  httpResponse3 = [location[0] httpResponse];
+  allHeaderFields3 = [httpResponse3 allHeaderFields];
+  v18 = [allHeaderFields3 objectForKey:@"X-Apple-AK-Action"];
   v21 = [v18 isEqualToString:@"mk-validation"];
   MEMORY[0x1E69E5920](v18);
-  MEMORY[0x1E69E5920](v19);
-  MEMORY[0x1E69E5920](v20);
+  MEMORY[0x1E69E5920](allHeaderFields3);
+  MEMORY[0x1E69E5920](httpResponse3);
   v22 = 1;
   if ((v9 & 1) == 0)
   {
@@ -96,14 +96,14 @@
   return v22 & 1;
 }
 
-- (void)cdpContext:(id)a3 promptForAdoptionOfMultipleICSC:(id)a4
+- (void)cdpContext:(id)context promptForAdoptionOfMultipleICSC:(id)c
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, c);
   v11 = _AKLogSystem();
   v10 = 2;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -115,9 +115,9 @@
   }
 
   objc_storeStrong(&v11, 0);
-  if (v14->_completion)
+  if (selfCopy->_completion)
   {
-    completion = v14->_completion;
+    completion = selfCopy->_completion;
     v5 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7014];
     (*(completion + 2))(completion, 0, 0, 0);
     MEMORY[0x1E69E5920](v5);
@@ -127,14 +127,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cdpContext:(id)a3 promptForBeneficiaryAccessKeyWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForBeneficiaryAccessKeyWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = 2;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -146,9 +146,9 @@
   }
 
   objc_storeStrong(&v11, 0);
-  if (v14->_completion)
+  if (selfCopy->_completion)
   {
-    completion = v14->_completion;
+    completion = selfCopy->_completion;
     v5 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7014];
     (*(completion + 2))(completion, 0, 0, 0);
     MEMORY[0x1E69E5920](v5);
@@ -158,18 +158,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cdpContext:(id)a3 promptForICSCWithIsNumeric:(BOOL)a4 numericLength:(id)a5 isRandom:(BOOL)a6 validator:(id)a7
+- (void)cdpContext:(id)context promptForICSCWithIsNumeric:(BOOL)numeric numericLength:(id)length isRandom:(BOOL)random validator:(id)validator
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = a4;
+  objc_storeStrong(location, context);
+  numericCopy = numeric;
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v19 = a6;
+  objc_storeStrong(&v20, length);
+  randomCopy = random;
   v18 = 0;
-  objc_storeStrong(&v18, a7);
+  objc_storeStrong(&v18, validator);
   v17 = _AKLogSystem();
   v16 = 2;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -181,9 +181,9 @@
   }
 
   objc_storeStrong(&v17, 0);
-  if (v23->_completion)
+  if (selfCopy->_completion)
   {
-    completion = v23->_completion;
+    completion = selfCopy->_completion;
     v8 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7014];
     (*(completion + 2))(completion, 0, 0, 0);
     MEMORY[0x1E69E5920](v8);
@@ -194,14 +194,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cdpContext:(id)a3 promptForInteractiveAuthenticationWithCompletion:(id)a4
+- (void)cdpContext:(id)context promptForInteractiveAuthenticationWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, completion);
   v11 = _AKLogSystem();
   v10 = 2;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -213,9 +213,9 @@
   }
 
   objc_storeStrong(&v11, 0);
-  if (v14->_completion)
+  if (selfCopy->_completion)
   {
-    completion = v14->_completion;
+    completion = selfCopy->_completion;
     v5 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7014];
     (*(completion + 2))(completion, 0, 0, 0);
     MEMORY[0x1E69E5920](v5);
@@ -225,25 +225,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cdpContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 offeringRemoteApproval:(BOOL)a5 validator:(id)a6
+- (void)cdpContext:(id)context promptForRemoteSecretWithDevices:(id)devices offeringRemoteApproval:(BOOL)approval validator:(id)validator
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
-  v19 = a5;
+  objc_storeStrong(&v20, devices);
+  approvalCopy = approval;
   v18 = 0;
-  objc_storeStrong(&v18, a6);
-  v17 = [(AKAccountRecoveryStepiCloudSecurityCode *)v22 _promptForPasscodeWithModel:v22->_model];
+  objc_storeStrong(&v18, validator);
+  v17 = [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _promptForPasscodeWithModel:selfCopy->_model];
   v11 = v18;
   v9 = v17;
   v10 = v20;
-  v12 = MEMORY[0x1E69E5928](v22);
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E5928](location[0]);
   v14 = MEMORY[0x1E69E5928](v20);
-  v16 = v19;
+  v16 = approvalCopy;
   v15 = MEMORY[0x1E69E5928](v18);
   [v11 validateSecret:v9 devices:v10 type:0 withCompletion:?];
   objc_storeStrong(&v15, 0);
@@ -303,17 +303,17 @@ void __120__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRemoteSe
   *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpRecoveryFlowContext:(id)a3 promptForRemoteSecretWithDevices:(id)a4 validator:(id)a5
+- (void)cdpRecoveryFlowContext:(id)context promptForRemoteSecretWithDevices:(id)devices validator:(id)validator
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, devices);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v19 = [(AKAccountRecoveryStepiCloudSecurityCode *)v23 _promptForPasscodeWithModel:v23->_model];
+  objc_storeStrong(&v20, validator);
+  v19 = [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _promptForPasscodeWithModel:selfCopy->_model];
   v9 = v20;
   v7 = v19;
   v8 = v21;
@@ -322,7 +322,7 @@ void __120__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRemoteSe
   v12 = 0;
   v13 = __109__AKAccountRecoveryStepiCloudSecurityCode_cdpRecoveryFlowContext_promptForRemoteSecretWithDevices_validator___block_invoke;
   v14 = &unk_1E73D5EC8;
-  v15 = MEMORY[0x1E69E5928](v23);
+  v15 = MEMORY[0x1E69E5928](selfCopy);
   v16 = MEMORY[0x1E69E5928](location[0]);
   v17 = MEMORY[0x1E69E5928](v21);
   v18 = MEMORY[0x1E69E5928](v20);
@@ -384,17 +384,17 @@ void __109__AKAccountRecoveryStepiCloudSecurityCode_cdpRecoveryFlowContext_promp
   *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpContext:(id)a3 presentRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context presentRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, validator);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v14 = [(AKAccountRecoveryStepiCloudSecurityCode *)v18 _promptForRecoveryKeyWithModel:v18->_model];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _promptForRecoveryKeyWithModel:selfCopy->_model];
   v8 = v16;
   v7 = v14;
   v9 = MEMORY[0x1E69E9820];
@@ -435,17 +435,17 @@ void __97__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_presentRecoveryKey
   *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithValidator:(id)validator completion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, validator);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v14 = [(AKAccountRecoveryStepiCloudSecurityCode *)v18 _promptForRecoveryKeyWithModel:v18->_model];
+  objc_storeStrong(&v15, completion);
+  v14 = [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _promptForRecoveryKeyWithModel:selfCopy->_model];
   v8 = v16;
   v7 = v14;
   v9 = MEMORY[0x1E69E9820];
@@ -486,17 +486,17 @@ void __99__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecoveryK
   *MEMORY[0x1E69E9840];
 }
 
-- (void)cdpContext:(id)a3 promptForRecoveryKeyWithSecretValidator:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context promptForRecoveryKeyWithSecretValidator:(id)validator completion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, validator);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  v18 = [(AKAccountRecoveryStepiCloudSecurityCode *)v22 _promptForRecoveryKeyWithModel:v22->_model];
+  objc_storeStrong(&v19, completion);
+  v18 = [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _promptForRecoveryKeyWithModel:selfCopy->_model];
   v8 = v20;
   v7 = v18;
   v9 = MEMORY[0x1E69E9820];
@@ -504,7 +504,7 @@ void __99__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecoveryK
   v11 = 0;
   v12 = __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecoveryKeyWithSecretValidator_completion___block_invoke;
   v13 = &unk_1E73D5EF0;
-  v14 = MEMORY[0x1E69E5928](v22);
+  v14 = MEMORY[0x1E69E5928](selfCopy);
   v15 = MEMORY[0x1E69E5928](location[0]);
   v16 = MEMORY[0x1E69E5928](v20);
   v17 = MEMORY[0x1E69E5928](v19);
@@ -556,22 +556,22 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_beginICloudSecurityCodeWithResponse:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_beginICloudSecurityCodeWithResponse:(id)response model:(id)model completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, model);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v11 = [location[0] data];
+  objc_storeStrong(&v20, completion);
+  data = [location[0] data];
   v19 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"alert" error:?];
-  MEMORY[0x1E69E5920](v11);
-  v12 = [location[0] data];
+  MEMORY[0x1E69E5920](data);
+  data2 = [location[0] data];
   v18 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"button" error:?];
-  MEMORY[0x1E69E5920](v12);
+  MEMORY[0x1E69E5920](data2);
   v16 = 0;
   v14 = 0;
   v13 = 0;
@@ -580,9 +580,9 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
     v13 = 0;
     if ([v18 count] == 1)
     {
-      v17 = [v19 firstObject];
+      firstObject = [v19 firstObject];
       v16 = 1;
-      v15 = [v17 objectForKeyedSubscript:@"id"];
+      v15 = [firstObject objectForKeyedSubscript:@"id"];
       v14 = 1;
       v13 = [v15 isEqualToString:@"forgotpasscode"];
     }
@@ -595,26 +595,26 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
 
   if (v16)
   {
-    MEMORY[0x1E69E5920](v17);
+    MEMORY[0x1E69E5920](firstObject);
   }
 
   if (v13)
   {
-    v8 = [v21 cliUtilities];
-    v7 = [v21 configuration];
-    v6 = [v18 firstObject];
-    v5 = [location[0] httpResponse];
-    [v8 updateConfiguration:v7 fromXMLAttributes:v6 response:?];
-    MEMORY[0x1E69E5920](v5);
-    MEMORY[0x1E69E5920](v6);
-    MEMORY[0x1E69E5920](v7);
-    MEMORY[0x1E69E5920](v8);
-    [(AKAccountRecoveryStepiCloudSecurityCode *)v23 _verifyLocalSecretWithModel:v21 completion:v20];
+    cliUtilities = [v21 cliUtilities];
+    configuration = [v21 configuration];
+    firstObject2 = [v18 firstObject];
+    httpResponse = [location[0] httpResponse];
+    [cliUtilities updateConfiguration:configuration fromXMLAttributes:firstObject2 response:?];
+    MEMORY[0x1E69E5920](httpResponse);
+    MEMORY[0x1E69E5920](firstObject2);
+    MEMORY[0x1E69E5920](configuration);
+    MEMORY[0x1E69E5920](cliUtilities);
+    [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _verifyLocalSecretWithModel:v21 completion:v20];
   }
 
   else
   {
-    [(AKAccountRecoveryStepiCloudSecurityCode *)v23 _verifyClientInfoWithResponse:location[0] model:v21 completion:v20];
+    [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _verifyClientInfoWithResponse:location[0] model:v21 completion:v20];
   }
 
   objc_storeStrong(&v18, 0);
@@ -624,35 +624,35 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyClientInfoWithResponse:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_verifyClientInfoWithResponse:(id)response model:(id)model completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, model);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v10 = [location[0] data];
+  objc_storeStrong(&v13, completion);
+  data = [location[0] data];
   v12 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"clientInfo" error:?];
-  MEMORY[0x1E69E5920](v10);
+  MEMORY[0x1E69E5920](data);
   if ([v12 count] == 1)
   {
-    v7 = [location[0] httpResponse];
-    v6 = [v7 allHeaderFields];
-    v5 = [v12 firstObject];
-    v11 = [v6 aaf_dictionaryByAddingEntriesFromDictionary:?];
-    MEMORY[0x1E69E5920](v5);
-    MEMORY[0x1E69E5920](v6);
-    MEMORY[0x1E69E5920](v7);
-    [(AKAccountRecoveryStepiCloudSecurityCode *)v16 _verifyRemoteSecretWithServerInfo:v11 model:v14 completion:v13];
+    httpResponse = [location[0] httpResponse];
+    allHeaderFields = [httpResponse allHeaderFields];
+    firstObject = [v12 firstObject];
+    v11 = [allHeaderFields aaf_dictionaryByAddingEntriesFromDictionary:?];
+    MEMORY[0x1E69E5920](firstObject);
+    MEMORY[0x1E69E5920](allHeaderFields);
+    MEMORY[0x1E69E5920](httpResponse);
+    [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _verifyRemoteSecretWithServerInfo:v11 model:v14 completion:v13];
     objc_storeStrong(&v11, 0);
   }
 
   else
   {
-    [(AKAccountRecoveryStepiCloudSecurityCode *)v16 _verifyPinViewWithResponse:location[0] model:v14 completion:v13];
+    [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _verifyPinViewWithResponse:location[0] model:v14 completion:v13];
   }
 
   objc_storeStrong(&v12, 0);
@@ -661,31 +661,31 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyPinViewWithResponse:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_verifyPinViewWithResponse:(id)response model:(id)model completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, model);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v15 = [location[0] data];
+  objc_storeStrong(&v20, completion);
+  data = [location[0] data];
   v19 = [AKAppleIDAuthenticationCommandLineContext ruiElementsAttributesWithName:"ruiElementsAttributesWithName:data:error:" data:@"pinView" error:?];
-  MEMORY[0x1E69E5920](v15);
+  MEMORY[0x1E69E5920](data);
   if ([v19 count] == 1)
   {
-    v12 = [v21 cliUtilities];
-    v11 = [v21 configuration];
-    v10 = [v19 firstObject];
-    v9 = [location[0] httpResponse];
-    [v12 updateConfiguration:v11 fromXMLAttributes:v10 response:?];
-    MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
-    MEMORY[0x1E69E5920](v12);
-    [(AKAccountRecoveryStepiCloudSecurityCode *)v23 _verifyLocalSecretWithModel:v21 completion:v20];
+    cliUtilities = [v21 cliUtilities];
+    configuration = [v21 configuration];
+    firstObject = [v19 firstObject];
+    httpResponse = [location[0] httpResponse];
+    [cliUtilities updateConfiguration:configuration fromXMLAttributes:firstObject response:?];
+    MEMORY[0x1E69E5920](httpResponse);
+    MEMORY[0x1E69E5920](firstObject);
+    MEMORY[0x1E69E5920](configuration);
+    MEMORY[0x1E69E5920](cliUtilities);
+    [(AKAccountRecoveryStepiCloudSecurityCode *)selfCopy _verifyLocalSecretWithModel:v21 completion:v20];
   }
 
   else
@@ -716,32 +716,32 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyLocalSecretWithModel:(id)a3 completion:(id)a4
+- (void)_verifyLocalSecretWithModel:(id)model completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, completion);
   v16 = +[AKDevice currentDevice];
-  v17 = [v16 isProtectedWithPasscode];
+  isProtectedWithPasscode = [v16 isProtectedWithPasscode];
   MEMORY[0x1E69E5920](v16);
-  if (v17)
+  if (isProtectedWithPasscode)
   {
-    v28 = [location[0] configuration];
-    if (v28)
+    configuration = [location[0] configuration];
+    if (configuration)
     {
-      v4 = [v28 request];
-      v24 = [v4 mutableCopy];
-      MEMORY[0x1E69E5920](v4);
-      v5 = [location[0] cliUtilities];
-      [v5 signXMLRequest:v24 withPostbackDictionary:MEMORY[0x1E695E0F8]];
-      MEMORY[0x1E69E5920](v5);
-      v6 = [v28 resourceLoadDelegate];
-      [v6 signRequest:v24];
-      MEMORY[0x1E69E5920](v6);
-      v8 = [location[0] cliUtilities];
+      request = [configuration request];
+      v24 = [request mutableCopy];
+      MEMORY[0x1E69E5920](request);
+      cliUtilities = [location[0] cliUtilities];
+      [cliUtilities signXMLRequest:v24 withPostbackDictionary:MEMORY[0x1E695E0F8]];
+      MEMORY[0x1E69E5920](cliUtilities);
+      resourceLoadDelegate = [configuration resourceLoadDelegate];
+      [resourceLoadDelegate signRequest:v24];
+      MEMORY[0x1E69E5920](resourceLoadDelegate);
+      cliUtilities2 = [location[0] cliUtilities];
       v7 = v24;
       v18 = MEMORY[0x1E69E9820];
       v19 = -1073741824;
@@ -749,8 +749,8 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
       v21 = __82__AKAccountRecoveryStepiCloudSecurityCode__verifyLocalSecretWithModel_completion___block_invoke;
       v22 = &unk_1E73D41D8;
       v23 = MEMORY[0x1E69E5928](v30);
-      [v8 beginDataTaskWithRequest:v7 completionHandler:&v18];
-      MEMORY[0x1E69E5920](v8);
+      [cliUtilities2 beginDataTaskWithRequest:v7 completionHandler:&v18];
+      MEMORY[0x1E69E5920](cliUtilities2);
       objc_storeStrong(&v23, 0);
       objc_storeStrong(&v24, 0);
       v29 = 0;
@@ -780,7 +780,7 @@ void __105__AKAccountRecoveryStepiCloudSecurityCode_cdpContext_promptForRecovery
       v29 = 1;
     }
 
-    objc_storeStrong(&v28, 0);
+    objc_storeStrong(&configuration, 0);
   }
 
   else
@@ -819,28 +819,28 @@ void __82__AKAccountRecoveryStepiCloudSecurityCode__verifyLocalSecretWithModel_c
   objc_storeStrong(location, 0);
 }
 
-- (void)_verifyRemoteSecretWithServerInfo:(id)a3 model:(id)a4 completion:(id)a5
+- (void)_verifyRemoteSecretWithServerInfo:(id)info model:(id)model completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, model);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, completion);
   v27 = [AKAccountRecoveryContext recoveryContextWithServerInfo:location[0]];
   if ([v27 isValid])
   {
     v5 = [AKNativeAccountRecoveryController alloc];
-    v22 = [(AKNativeAccountRecoveryController *)v5 initWithContext:v27 uiProvider:v31 flowID:?];
+    v22 = [(AKNativeAccountRecoveryController *)v5 initWithContext:v27 uiProvider:selfCopy flowID:?];
     v6 = v22;
     v13 = MEMORY[0x1E69E9820];
     v14 = -1073741824;
     v15 = 0;
     v16 = __94__AKAccountRecoveryStepiCloudSecurityCode__verifyRemoteSecretWithServerInfo_model_completion___block_invoke;
     v17 = &unk_1E73D3A00;
-    v18 = MEMORY[0x1E69E5928](v31);
+    v18 = MEMORY[0x1E69E5928](selfCopy);
     v19 = MEMORY[0x1E69E5928](v27);
     v20 = MEMORY[0x1E69E5928](v29);
     v21 = MEMORY[0x1E69E5928](v28);
@@ -915,47 +915,47 @@ void __94__AKAccountRecoveryStepiCloudSecurityCode__verifyRemoteSecretWithServer
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_verifyRemoteSecretWithRecoveryContext:(id)a3 recoveredInfo:(id)a4 recoveryError:(id)a5 model:(id)a6 completion:(id)a7
+- (void)_verifyRemoteSecretWithRecoveryContext:(id)context recoveredInfo:(id)info recoveryError:(id)error model:(id)model completion:(id)completion
 {
   v43[2] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, info);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
+  objc_storeStrong(&v39, error);
   v38 = 0;
-  objc_storeStrong(&v38, a6);
+  objc_storeStrong(&v38, model);
   v37 = 0;
-  objc_storeStrong(&v37, a7);
-  v36 = [v38 configuration];
-  if (v36)
+  objc_storeStrong(&v37, completion);
+  configuration = [v38 configuration];
+  if (configuration)
   {
     v31 = [AKNativeAccountRecoveryController requestForRecoveryCompletionWithContext:location[0] recoveredInfo:v40 recoveryError:v39];
-    [v36 setRequest:v31];
-    v7 = [v36 request];
-    v30 = [v7 mutableCopy];
-    MEMORY[0x1E69E5920](v7);
-    v12 = [v38 cliUtilities];
+    [configuration setRequest:v31];
+    request = [configuration request];
+    v30 = [request mutableCopy];
+    MEMORY[0x1E69E5920](request);
+    cliUtilities = [v38 cliUtilities];
     v8 = v30;
     v42[0] = @"appleid";
-    v11 = [location[0] authContext];
-    v10 = [v11 username];
-    v43[0] = v10;
+    authContext = [location[0] authContext];
+    username = [authContext username];
+    v43[0] = username;
     v42[1] = @"status";
     v43[1] = @"success";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:v42 count:2];
-    [v12 signXMLRequest:v8 withPostbackDictionary:?];
+    [cliUtilities signXMLRequest:v8 withPostbackDictionary:?];
     MEMORY[0x1E69E5920](v9);
-    MEMORY[0x1E69E5920](v10);
-    MEMORY[0x1E69E5920](v11);
-    MEMORY[0x1E69E5920](v12);
-    v13 = [v36 resourceLoadDelegate];
-    [v13 signRequest:v30];
-    MEMORY[0x1E69E5920](v13);
-    v15 = [v38 cliUtilities];
+    MEMORY[0x1E69E5920](username);
+    MEMORY[0x1E69E5920](authContext);
+    MEMORY[0x1E69E5920](cliUtilities);
+    resourceLoadDelegate = [configuration resourceLoadDelegate];
+    [resourceLoadDelegate signRequest:v30];
+    MEMORY[0x1E69E5920](resourceLoadDelegate);
+    cliUtilities2 = [v38 cliUtilities];
     v14 = v30;
     v24 = MEMORY[0x1E69E9820];
     v25 = -1073741824;
@@ -963,8 +963,8 @@ void __94__AKAccountRecoveryStepiCloudSecurityCode__verifyRemoteSecretWithServer
     v27 = __127__AKAccountRecoveryStepiCloudSecurityCode__verifyRemoteSecretWithRecoveryContext_recoveredInfo_recoveryError_model_completion___block_invoke;
     v28 = &unk_1E73D41D8;
     v29 = MEMORY[0x1E69E5928](v37);
-    [v15 beginDataTaskWithRequest:v14 completionHandler:&v24];
-    MEMORY[0x1E69E5920](v15);
+    [cliUtilities2 beginDataTaskWithRequest:v14 completionHandler:&v24];
+    MEMORY[0x1E69E5920](cliUtilities2);
     objc_storeStrong(&v29, 0);
     objc_storeStrong(&v30, 0);
     objc_storeStrong(&v31, 0);
@@ -995,7 +995,7 @@ void __94__AKAccountRecoveryStepiCloudSecurityCode__verifyRemoteSecretWithServer
     v32 = 1;
   }
 
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&configuration, 0);
   objc_storeStrong(&v37, 0);
   objc_storeStrong(&v38, 0);
   objc_storeStrong(&v39, 0);
@@ -1023,63 +1023,63 @@ void __127__AKAccountRecoveryStepiCloudSecurityCode__verifyRemoteSecretWithRecov
   objc_storeStrong(location, 0);
 }
 
-- (id)_promptForPasscodeWithModel:(id)a3
+- (id)_promptForPasscodeWithModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] context];
-  v9 = [v8 localSecret];
-  MEMORY[0x1E69E5920](v8);
-  if (![v9 length])
+  objc_storeStrong(location, model);
+  context = [location[0] context];
+  localSecret = [context localSecret];
+  MEMORY[0x1E69E5920](context);
+  if (![localSecret length])
   {
     AKPrint(@"Enter device passcode: ");
     v3 = AKReadLine(1024);
-    v4 = v9;
-    v9 = v3;
+    v4 = localSecret;
+    localSecret = v3;
     MEMORY[0x1E69E5920](v4);
-    if (v9)
+    if (localSecret)
     {
-      v7 = [location[0] context];
-      [v7 setLocalSecret:v9];
-      MEMORY[0x1E69E5920](v7);
+      context2 = [location[0] context];
+      [context2 setLocalSecret:localSecret];
+      MEMORY[0x1E69E5920](context2);
     }
   }
 
-  v6 = MEMORY[0x1E69E5928](v9);
-  objc_storeStrong(&v9, 0);
+  v6 = MEMORY[0x1E69E5928](localSecret);
+  objc_storeStrong(&localSecret, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)_promptForRecoveryKeyWithModel:(id)a3
+- (id)_promptForRecoveryKeyWithModel:(id)model
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] context];
-  v9 = [v8 recoveryKey];
-  MEMORY[0x1E69E5920](v8);
-  if (![v9 length])
+  objc_storeStrong(location, model);
+  context = [location[0] context];
+  recoveryKey = [context recoveryKey];
+  MEMORY[0x1E69E5920](context);
+  if (![recoveryKey length])
   {
     AKPrint(@"Enter recovery key: ");
     v3 = AKReadLine(1024);
-    v4 = v9;
-    v9 = v3;
+    v4 = recoveryKey;
+    recoveryKey = v3;
     MEMORY[0x1E69E5920](v4);
-    if ([v9 length])
+    if ([recoveryKey length])
     {
-      v7 = [location[0] context];
-      [v7 setRecoveryKey:v9];
-      MEMORY[0x1E69E5920](v7);
+      context2 = [location[0] context];
+      [context2 setRecoveryKey:recoveryKey];
+      MEMORY[0x1E69E5920](context2);
     }
   }
 
-  v6 = MEMORY[0x1E69E5928](v9);
-  objc_storeStrong(&v9, 0);
+  v6 = MEMORY[0x1E69E5928](recoveryKey);
+  objc_storeStrong(&recoveryKey, 0);
   objc_storeStrong(location, 0);
 
   return v6;

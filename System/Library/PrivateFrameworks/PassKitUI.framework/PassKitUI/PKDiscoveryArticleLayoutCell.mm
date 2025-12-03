@@ -1,8 +1,8 @@
 @interface PKDiscoveryArticleLayoutCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setShelfView:(id)a3;
+- (void)setShelfView:(id)view;
 @end
 
 @implementation PKDiscoveryArticleLayoutCell
@@ -13,8 +13,8 @@
   v5.super_class = PKDiscoveryArticleLayoutCell;
   [(PKDiscoveryArticleLayoutCell *)&v5 layoutSubviews];
   shelfView = self->_shelfView;
-  v4 = [(PKDiscoveryArticleLayoutCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKDiscoveryArticleLayoutCell *)self contentView];
+  [contentView bounds];
   [(PKDiscoveryShelfView *)shelfView setFrame:?];
 }
 
@@ -28,11 +28,11 @@
   self->_shelfView = 0;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v13.receiver = self;
   v13.super_class = PKDiscoveryArticleLayoutCell;
-  v4 = [(PKDiscoveryArticleLayoutCell *)&v13 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(PKDiscoveryArticleLayoutCell *)&v13 preferredLayoutAttributesFittingAttributes:attributes];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -43,12 +43,12 @@
   return v4;
 }
 
-- (void)setShelfView:(id)a3
+- (void)setShelfView:(id)view
 {
-  objc_storeStrong(&self->_shelfView, a3);
-  v5 = a3;
-  v6 = [(PKDiscoveryArticleLayoutCell *)self contentView];
-  [v6 addSubview:v5];
+  objc_storeStrong(&self->_shelfView, view);
+  viewCopy = view;
+  contentView = [(PKDiscoveryArticleLayoutCell *)self contentView];
+  [contentView addSubview:viewCopy];
 
   [(PKDiscoveryArticleLayoutCell *)self setNeedsLayout];
 }

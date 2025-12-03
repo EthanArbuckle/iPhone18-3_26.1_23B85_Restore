@@ -2,24 +2,24 @@
 - (BOOL)hasAccessory;
 - (CGSize)accessoriesViewSize;
 - (CGSize)metricsViewSize;
-- (_TtC4Maps14NavMetricsView)initWithFrame:(CGRect)a3;
-- (_TtC4Maps14NavMetricsView)initWithParentViewController:(id)a3 delegate:(id)a4 eta:(id)a5 isCarPlay:(BOOL)a6;
+- (_TtC4Maps14NavMetricsView)initWithFrame:(CGRect)frame;
+- (_TtC4Maps14NavMetricsView)initWithParentViewController:(id)controller delegate:(id)delegate eta:(id)eta isCarPlay:(BOOL)play;
 - (void)didMoveToWindow;
-- (void)setAccessoriesViewSize:(CGSize)a3;
-- (void)setEta:(id)a3;
-- (void)setExpansionProgress:(double)a3;
-- (void)setMetricsViewSize:(CGSize)a3;
-- (void)setViewSize:(CGSize)a3;
+- (void)setAccessoriesViewSize:(CGSize)size;
+- (void)setEta:(id)eta;
+- (void)setExpansionProgress:(double)progress;
+- (void)setMetricsViewSize:(CGSize)size;
+- (void)setViewSize:(CGSize)size;
 @end
 
 @implementation NavMetricsView
 
-- (void)setEta:(id)a3
+- (void)setEta:(id)eta
 {
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps14NavMetricsView_eta);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps14NavMetricsView_eta) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC4Maps14NavMetricsView_eta) = eta;
+  etaCopy = eta;
+  selfCopy = self;
   sub_10006D77C(v6);
 }
 
@@ -33,11 +33,11 @@
   sub_10006DBC0();
 }
 
-- (void)setViewSize:(CGSize)a3
+- (void)setViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1004FC130(width, height);
 }
 
@@ -50,11 +50,11 @@
   return result;
 }
 
-- (void)setMetricsViewSize:(CGSize)a3
+- (void)setMetricsViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1004FC240(width, height);
 }
 
@@ -67,38 +67,38 @@
   return result;
 }
 
-- (void)setAccessoriesViewSize:(CGSize)a3
+- (void)setAccessoriesViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_1004FC2C8(width, height);
 }
 
 - (BOOL)hasAccessory
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004FC398();
 
   return v3 & 1;
 }
 
-- (void)setExpansionProgress:(double)a3
+- (void)setExpansionProgress:(double)progress
 {
-  v4 = self;
-  sub_1004FD128(a3);
+  selfCopy = self;
+  sub_1004FD128(progress);
 }
 
-- (_TtC4Maps14NavMetricsView)initWithParentViewController:(id)a3 delegate:(id)a4 eta:(id)a5 isCarPlay:(BOOL)a6
+- (_TtC4Maps14NavMetricsView)initWithParentViewController:(id)controller delegate:(id)delegate eta:(id)eta isCarPlay:(BOOL)play
 {
-  v6 = a6;
-  v9 = a3;
+  playCopy = play;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v10 = a5;
-  return sub_1004FD280(v9, a4, a5, v6);
+  etaCopy = eta;
+  return sub_1004FD280(controllerCopy, delegate, eta, playCopy);
 }
 
-- (_TtC4Maps14NavMetricsView)initWithFrame:(CGRect)a3
+- (_TtC4Maps14NavMetricsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

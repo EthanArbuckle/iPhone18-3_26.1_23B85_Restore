@@ -1,5 +1,5 @@
 @interface MPModelPlaylistEntry
-+ (id)_playlistEntryFromModel:(id)a3 source:(id)a4 occurrenceCount:(int64_t)a5;
++ (id)_playlistEntryFromModel:(id)model source:(id)source occurrenceCount:(int64_t)count;
 + (id)newUniversalIdentifier;
 + (id)requiredKeepLocalStatusObservationProperties;
 + (id)requiredLibraryAddStatusObservationProperties;
@@ -19,8 +19,8 @@
 - (id)humanDescription;
 - (id)mediaItemPropertyValues;
 - (id)newKeepLocalStatusObserverConfiguration;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
 - (int64_t)libraryRemovalSupportedOptions;
 - (int64_t)type;
@@ -69,28 +69,28 @@
 
 - (id)mediaItemPropertyValues
 {
-  v3 = [(MPModelPlaylistEntry *)self type];
-  switch(v3)
+  type = [(MPModelPlaylistEntry *)self type];
+  switch(type)
   {
     case 3:
-      v4 = [(MPModelPlaylistEntry *)self movie];
+      movie = [(MPModelPlaylistEntry *)self movie];
       goto LABEL_7;
     case 2:
-      v4 = [(MPModelPlaylistEntry *)self tvEpisode];
+      movie = [(MPModelPlaylistEntry *)self tvEpisode];
       goto LABEL_7;
     case 1:
-      v4 = [(MPModelPlaylistEntry *)self song];
+      movie = [(MPModelPlaylistEntry *)self song];
 LABEL_7:
-      v5 = v4;
-      v6 = [v4 mediaItemPropertyValues];
+      v5 = movie;
+      mediaItemPropertyValues = [movie mediaItemPropertyValues];
 
       goto LABEL_9;
   }
 
-  v6 = 0;
+  mediaItemPropertyValues = 0;
 LABEL_9:
 
-  return v6;
+  return mediaItemPropertyValues;
 }
 
 - (int64_t)type
@@ -209,21 +209,21 @@ void __33__MPModelPlaylistEntry_anyObject__block_invoke(uint64_t a1)
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MPModelPlaylistEntry *)self anyObject];
-  v5 = [v4 humanDescription];
-  v6 = [(MPModelObject *)self identifiers];
-  v7 = [v6 humanDescription];
-  v8 = [v3 stringWithFormat:@"playlist entry %@+%@", v5, v7];
+  anyObject = [(MPModelPlaylistEntry *)self anyObject];
+  humanDescription = [anyObject humanDescription];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription2 = [identifiers humanDescription];
+  v8 = [v3 stringWithFormat:@"playlist entry %@+%@", humanDescription, humanDescription2];
 
   return v8;
 }
 
-+ (id)_playlistEntryFromModel:(id)a3 source:(id)a4 occurrenceCount:(int64_t)a5
++ (id)_playlistEntryFromModel:(id)model source:(id)source occurrenceCount:(int64_t)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 identifiers];
-  v12 = [v11 _copyWithSource:v10 asPlaylistEntryOccurence:a5];
+  modelCopy = model;
+  sourceCopy = source;
+  identifiers = [modelCopy identifiers];
+  v12 = [identifiers _copyWithSource:sourceCopy asPlaylistEntryOccurence:count];
 
   if (v12)
   {
@@ -232,9 +232,9 @@ void __33__MPModelPlaylistEntry_anyObject__block_invoke(uint64_t a1)
     v16[1] = 3221225472;
     v16[2] = __71__MPModelPlaylistEntry__playlistEntryFromModel_source_occurrenceCount___block_invoke;
     v16[3] = &unk_1E767A0C8;
-    v17 = v9;
+    v17 = modelCopy;
     v18 = a2;
-    v19 = a1;
+    selfCopy = self;
     v14 = [(MPModelObject *)v13 initWithIdentifiers:v12 block:v16];
   }
 
@@ -289,103 +289,103 @@ void __71__MPModelPlaylistEntry__playlistEntryFromModel_source_occurrenceCount__
 
 + (void)___MPModelPropertyPlaylistEntryArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:120 description:@"Translator was missing mapping for _MPModelPropertyPlaylistEntryArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:120 description:@"Translator was missing mapping for _MPModelPropertyPlaylistEntryArtwork"];
 }
 
 + (void)__MPModelRelationshipPlaylistEntrySocialContributor__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:118 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntrySocialContributor"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:118 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntrySocialContributor"];
 }
 
 + (void)__MPModelRelationshipPlaylistEntryMovie__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:117 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntryMovie"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:117 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntryMovie"];
 }
 
 + (void)__MPModelRelationshipPlaylistEntryTVEpisode__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:116 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntryTVEpisode"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:116 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntryTVEpisode"];
 }
 
 + (void)__MPModelRelationshipPlaylistEntrySong__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:115 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntrySong"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:115 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntrySong"];
 }
 
 + (void)__MPModelRelationshipPlaylistEntryPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:114 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntryPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:114 description:@"Translator was missing mapping for MPModelRelationshipPlaylistEntryPlaylist"];
 }
 
 + (void)__MPModelPropertyPlaylistEntryPositionUniversalIdentifier__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:113 description:@"Translator was missing mapping for MPModelPropertyPlaylistEntryPositionUniversalIdentifier"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:113 description:@"Translator was missing mapping for MPModelPropertyPlaylistEntryPositionUniversalIdentifier"];
 }
 
 + (void)__MPModelPropertyPlaylistEntryUniversalIdentifier__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:112 description:@"Translator was missing mapping for MPModelPropertyPlaylistEntryUniversalIdentifier"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:112 description:@"Translator was missing mapping for MPModelPropertyPlaylistEntryUniversalIdentifier"];
 }
 
 + (void)__MPModelPropertyPlaylistEntryPosition__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelPlaylistEntry.m" lineNumber:111 description:@"Translator was missing mapping for MPModelPropertyPlaylistEntryPosition"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelPlaylistEntry.m" lineNumber:111 description:@"Translator was missing mapping for MPModelPropertyPlaylistEntryPosition"];
 }
 
 + (id)newUniversalIdentifier
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
-  v4 = [v3 lowercaseString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
 
-  return v4;
+  return lowercaseString;
 }
 
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
-  v2 = [(MPModelPlaylistEntry *)self song];
-  v3 = [v2 libraryAddStatusObserverConfiguration];
+  song = [(MPModelPlaylistEntry *)self song];
+  libraryAddStatusObserverConfiguration = [song libraryAddStatusObserverConfiguration];
 
-  return v3;
+  return libraryAddStatusObserverConfiguration;
 }
 
 - (id)newKeepLocalStatusObserverConfiguration
 {
-  v2 = [(MPModelPlaylistEntry *)self song];
-  v3 = [v2 newKeepLocalStatusObserverConfiguration];
+  song = [(MPModelPlaylistEntry *)self song];
+  newKeepLocalStatusObserverConfiguration = [song newKeepLocalStatusObserverConfiguration];
 
-  return v3;
+  return newKeepLocalStatusObserverConfiguration;
 }
 
 - (int64_t)libraryRemovalSupportedOptions
 {
-  v2 = [(MPModelPlaylistEntry *)self song];
-  v3 = [v2 libraryRemovalSupportedOptions];
+  song = [(MPModelPlaylistEntry *)self song];
+  libraryRemovalSupportedOptions = [song libraryRemovalSupportedOptions];
 
-  return v3;
+  return libraryRemovalSupportedOptions;
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MPModelObject *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MPModelObject *)self identifiers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __119__MPModelPlaylistEntry_MPStoreLibraryPersonalizingAdditions__objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_1E767B9B8;
   v9[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   v10 = v6;
-  v7 = [(MPModelObject *)self copyWithIdentifiers:v5 block:v9];
+  v7 = [(MPModelObject *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }
@@ -461,10 +461,10 @@ void __119__MPModelPlaylistEntry_MPStoreLibraryPersonalizingAdditions__objectWit
   v4[4] = self;
   v4[5] = &v5;
   [MPModelObject performWithoutEnforcement:v4];
-  v2 = [v6[5] relativeModelObjectForStoreLibraryPersonalization];
+  relativeModelObjectForStoreLibraryPersonalization = [v6[5] relativeModelObjectForStoreLibraryPersonalization];
   _Block_object_dispose(&v5, 8);
 
-  return v2;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
 void __111__MPModelPlaylistEntry_MPStoreLibraryPersonalizingAdditions__relativeModelObjectForStoreLibraryPersonalization__block_invoke(uint64_t a1)
@@ -491,9 +491,9 @@ void __111__MPModelPlaylistEntry_MPStoreLibraryPersonalizingAdditions__relativeM
   }
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -504,10 +504,10 @@ void __111__MPModelPlaylistEntry_MPStoreLibraryPersonalizingAdditions__relativeM
   v8[1] = 3221225472;
   v8[2] = __107__MPModelPlaylistEntry_MPStoreLibraryPersonalizingAdditions__personalizationScopedPropertiesForProperties___block_invoke;
   v8[3] = &unk_1E7681330;
-  v9 = v4;
+  v9 = propertiesCopy;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = propertiesCopy;
   [MPModelObject performWithoutEnforcement:v8];
   v6 = v12[5];
 

@@ -1,6 +1,6 @@
 @interface VKScreenLabelFeature
 - (CGPoint)position;
-- (VKScreenLabelFeature)initWithCGImage:(CGImage *)a3 scale:(double)a4 type:(unsigned int)a5;
+- (VKScreenLabelFeature)initWithCGImage:(CGImage *)image scale:(double)scale type:(unsigned int)type;
 - (void)dealloc;
 @end
 
@@ -29,7 +29,7 @@
   [(VKScreenLabelFeature *)&v4 dealloc];
 }
 
-- (VKScreenLabelFeature)initWithCGImage:(CGImage *)a3 scale:(double)a4 type:(unsigned int)a5
+- (VKScreenLabelFeature)initWithCGImage:(CGImage *)image scale:(double)scale type:(unsigned int)type
 {
   v11.receiver = self;
   v11.super_class = VKScreenLabelFeature;
@@ -37,9 +37,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a5;
-    v8->_image = CGImageRetain(a3);
-    v9->_scale = a4;
+    v8->_type = type;
+    v8->_image = CGImageRetain(image);
+    v9->_scale = scale;
   }
 
   return v9;

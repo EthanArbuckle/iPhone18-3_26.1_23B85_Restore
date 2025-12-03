@@ -1,23 +1,23 @@
 @interface BYNotesSyncTask
 - (ICCloudKitSyncerDelegate)delegate;
-- (id)initAndStartSyncWithDelegate:(id)a3;
+- (id)initAndStartSyncWithDelegate:(id)delegate;
 - (void)cancel;
-- (void)cloudKitSyncer:(id)a3 didFinishWithError:(id)a4;
-- (void)cloudKitSyncer:(id)a3 didUpdateProgress:(double)a4;
+- (void)cloudKitSyncer:(id)syncer didFinishWithError:(id)error;
+- (void)cloudKitSyncer:(id)syncer didUpdateProgress:(double)progress;
 @end
 
 @implementation BYNotesSyncTask
 
-- (id)initAndStartSyncWithDelegate:(id)a3
+- (id)initAndStartSyncWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = BYNotesSyncTask;
   v5 = [(BYNotesSyncTask *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(BYNotesSyncTask *)v5 setDelegate:v4];
+    [(BYNotesSyncTask *)v5 setDelegate:delegateCopy];
     v7 = os_transaction_create();
     [(BYNotesSyncTask *)v6 setTransaction:v7];
 
@@ -42,11 +42,11 @@
     v10 = objc_alloc_init(v8);
     [(BYNotesSyncTask *)v6 setNotesSyncer:v10];
 
-    v11 = [(BYNotesSyncTask *)v6 notesSyncer];
-    [v11 setDelegate:v6];
+    notesSyncer = [(BYNotesSyncTask *)v6 notesSyncer];
+    [notesSyncer setDelegate:v6];
 
-    v12 = [(BYNotesSyncTask *)v6 notesSyncer];
-    [v12 saveUnsyncedObjects];
+    notesSyncer2 = [(BYNotesSyncTask *)v6 notesSyncer];
+    [notesSyncer2 saveUnsyncedObjects];
 
     [(BYNotesSyncTask *)v6 setSelfReference:v6];
   }
@@ -62,11 +62,11 @@
   objc_sync_exit(obj);
 }
 
-- (void)cloudKitSyncer:(id)a3 didFinishWithError:(id)a4
+- (void)cloudKitSyncer:(id)syncer didFinishWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  syncerCopy = syncer;
+  errorCopy = error;
+  if (!errorCopy)
   {
     v19 = _BYLoggingFacility();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -77,12 +77,12 @@
     goto LABEL_15;
   }
 
-  v8 = v7;
-  v9 = [v7 domain];
+  v8 = errorCopy;
+  domain = [errorCopy domain];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
-  v10 = qword_100028C20;
+  domain2 = qword_100028C20;
   v29 = qword_100028C20;
   if (!qword_100028C20)
   {
@@ -95,23 +95,23 @@
     v12 = dlsym(v11, "ICCloudContextErrorDomain");
     *(v33[1] + 24) = v12;
     qword_100028C20 = *(v33[1] + 24);
-    v10 = v27[3];
+    domain2 = v27[3];
   }
 
   _Block_object_dispose(&v26, 8);
-  if (!v10)
+  if (!domain2)
   {
     goto LABEL_25;
   }
 
-  v13 = *v10;
-  if (![v9 isEqualToString:v13])
+  v13 = *domain2;
+  if (![domain isEqualToString:v13])
   {
 
     goto LABEL_17;
   }
 
-  v14 = [v8 code];
+  code = [v8 code];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -139,9 +139,9 @@ LABEL_25:
     __break(1u);
   }
 
-  v10 = v14 == *v15;
+  domain2 = code == *v15;
 
-  if (v10)
+  if (domain2)
   {
     v18 = _BYLoggingFacility();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -164,9 +164,9 @@ LABEL_17:
     v21 = v8;
     if ((v20 & 1) == 0)
     {
-      v10 = [v8 domain];
-      v22 = [v8 code];
-      v21 = [NSString stringWithFormat:@"<Error domain: %@, code %ld>", v10, v22, v26];
+      domain2 = [v8 domain];
+      code2 = [v8 code];
+      v21 = [NSString stringWithFormat:@"<Error domain: %@, code %ld>", domain2, code2, v26];
     }
 
     LODWORD(buf) = 138543362;
@@ -179,34 +179,34 @@ LABEL_17:
 
 LABEL_22:
 
-  v23 = self;
-  objc_sync_enter(v23);
-  v24 = [(BYNotesSyncTask *)v23 delegate];
-  v25 = v24;
-  if (v24)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  delegate = [(BYNotesSyncTask *)selfCopy delegate];
+  v25 = delegate;
+  if (delegate)
   {
-    [v24 cloudKitSyncer:v6 didFinishWithError:v8];
+    [delegate cloudKitSyncer:syncerCopy didFinishWithError:v8];
   }
 
-  objc_sync_exit(v23);
-  [(BYNotesSyncTask *)v23 setDelegate:0];
-  [(BYNotesSyncTask *)v23 setTransaction:0];
-  [(BYNotesSyncTask *)v23 setSelfReference:0];
+  objc_sync_exit(selfCopy);
+  [(BYNotesSyncTask *)selfCopy setDelegate:0];
+  [(BYNotesSyncTask *)selfCopy setTransaction:0];
+  [(BYNotesSyncTask *)selfCopy setSelfReference:0];
 }
 
-- (void)cloudKitSyncer:(id)a3 didUpdateProgress:(double)a4
+- (void)cloudKitSyncer:(id)syncer didUpdateProgress:(double)progress
 {
-  v9 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(BYNotesSyncTask *)v6 delegate];
-  v8 = v7;
-  if (v7)
+  syncerCopy = syncer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  delegate = [(BYNotesSyncTask *)selfCopy delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v7 cloudKitSyncer:v9 didUpdateProgress:a4];
+    [delegate cloudKitSyncer:syncerCopy didUpdateProgress:progress];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (ICCloudKitSyncerDelegate)delegate

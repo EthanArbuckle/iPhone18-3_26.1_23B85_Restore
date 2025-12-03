@@ -1,11 +1,11 @@
 @interface AccountApplicator
 + (id)supportedConfigurationTypes;
 - (AccountApplicator)init;
-- (AccountApplicator)initWithAdapter:(id)a3;
-- (void)_createAccountIfNeededAndApplyProperties:(id)a3 configuration:(id)a4 properties:(id)a5 completionHandler:(id)a6;
-- (void)_invalidateAllConfigurations:(id)a3 completionHandler:(id)a4;
-- (void)applyConfigurations:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6;
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
+- (AccountApplicator)initWithAdapter:(id)adapter;
+- (void)_createAccountIfNeededAndApplyProperties:(id)properties configuration:(id)configuration properties:(id)a5 completionHandler:(id)handler;
+- (void)_invalidateAllConfigurations:(id)configurations completionHandler:(id)handler;
+- (void)applyConfigurations:(id)configurations storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler;
 @end
 
 @implementation AccountApplicator
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (AccountApplicator)initWithAdapter:(id)a3
+- (AccountApplicator)initWithAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v9.receiver = self;
   v9.super_class = AccountApplicator;
   v6 = [(AccountApplicator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_adapter, a3);
+    objc_storeStrong(&v6->_adapter, adapter);
   }
 
   return v7;
@@ -47,32 +47,32 @@
   return v9;
 }
 
-- (void)applyConfigurations:(id)a3 storesByIdentifier:(id)a4 scope:(int64_t)a5 completionHandler:(id)a6
+- (void)applyConfigurations:(id)configurations storesByIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v60 = a3;
-  v58 = a4;
-  v59 = a6;
+  configurationsCopy = configurations;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = +[RMManagedDevice currentManagedDevice];
-  LODWORD(a4) = [v8 isSharediPad];
+  LODWORD(identifier) = [v8 isSharediPad];
 
-  if ((a4 ^ 1) == a5)
+  if ((identifier ^ 1) == scope)
   {
-    v9 = [(AccountApplicator *)self adapter];
-    v57 = [v9 getRemotelyManagedAccounts];
+    adapter = [(AccountApplicator *)self adapter];
+    getRemotelyManagedAccounts = [adapter getRemotelyManagedAccounts];
 
-    v10 = [v57 objectForKeyedSubscript:@"Managed"];
+    v10 = [getRemotelyManagedAccounts objectForKeyedSubscript:@"Managed"];
     v63 = [v10 mutableCopy];
 
-    v11 = [v57 objectForKeyedSubscript:@"Orphaned"];
-    v12 = [v11 allValues];
-    v56 = [v12 mutableCopy];
+    v11 = [getRemotelyManagedAccounts objectForKeyedSubscript:@"Orphaned"];
+    allValues = [v11 allValues];
+    v56 = [allValues mutableCopy];
 
     group = dispatch_group_create();
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
-    obj = v60;
+    obj = configurationsCopy;
     v64 = [obj countByEnumeratingWithState:&v91 objects:v104 count:16];
     if (v64)
     {
@@ -89,15 +89,15 @@
 
           v14 = *(*(&v91 + 1) + 8 * v13);
           dispatch_group_enter(group);
-          v15 = [v14 store];
-          v16 = [v15 scope];
+          store = [v14 store];
+          scope = [store scope];
           v17 = +[RMManagedDevice currentManagedDevice];
-          v18 = [v17 isSharediPad];
+          isSharediPad = [v17 isSharediPad];
 
-          if (v16 == (v18 ^ 1))
+          if (scope == (isSharediPad ^ 1))
           {
-            v19 = [(AccountApplicator *)self adapter];
-            v20 = [v19 accountKeyFromConfiguration:v14];
+            adapter2 = [(AccountApplicator *)self adapter];
+            v20 = [adapter2 accountKeyFromConfiguration:v14];
 
             *v100 = 0;
             *&v100[8] = v100;
@@ -105,23 +105,23 @@
             v101 = sub_10000301C;
             v102 = sub_10000302C;
             v103 = [v63 objectForKeyedSubscript:v20];
-            v21 = [*(*&v100[8] + 40) identifier];
-            v22 = v21;
+            identifier = [*(*&v100[8] + 40) identifier];
+            v22 = identifier;
             v23 = &stru_10001CEA8;
-            if (v21)
+            if (identifier)
             {
-              v23 = v21;
+              v23 = identifier;
             }
 
             v24 = v23;
 
-            v25 = [*(*&v100[8] + 40) accountType];
-            v26 = [v25 accountTypeDescription];
-            v27 = v26;
+            accountType = [*(*&v100[8] + 40) accountType];
+            accountTypeDescription = [accountType accountTypeDescription];
+            v27 = accountTypeDescription;
             v28 = &stru_10001CEA8;
-            if (v26)
+            if (accountTypeDescription)
             {
-              v28 = v26;
+              v28 = accountTypeDescription;
             }
 
             v29 = v28;
@@ -132,8 +132,8 @@
               goto LABEL_20;
             }
 
-            v30 = [(AccountApplicator *)self adapter];
-            v31 = [v30 combinedServerTokensFromConfiguration:v14];
+            adapter3 = [(AccountApplicator *)self adapter];
+            v31 = [adapter3 combinedServerTokensFromConfiguration:v14];
             v32 = [*(*&v100[8] + 40) objectForKeyedSubscript:@"RemoteManagementServerTokens"];
             v33 = [v31 isEqualToString:v32];
 
@@ -158,28 +158,28 @@ LABEL_20:
               v37 = +[RMLog accountApplicator];
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
               {
-                v40 = [v14 declaration];
-                v41 = [v40 declarationIdentifier];
+                declaration = [v14 declaration];
+                declarationIdentifier = [declaration declarationIdentifier];
                 *buf = 138543362;
-                v97 = v41;
+                v97 = declarationIdentifier;
                 _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "Processing configuration: %{public}@", buf, 0xCu);
               }
 
-              v38 = [(AccountApplicator *)self adapter];
+              adapter4 = [(AccountApplicator *)self adapter];
               v39 = *(*&v100[8] + 40);
               v79[0] = _NSConcreteStackBlock;
               v79[1] = 3221225472;
               v79[2] = sub_100003034;
               v79[3] = &unk_10001C708;
               v79[4] = v14;
-              v80 = v15;
+              v80 = store;
               v81 = group;
               v85 = v100;
               v82 = v24;
               v83 = v29;
-              v84 = self;
-              v86 = a5;
-              [v38 accountPropertiesFromConfiguration:v14 account:v39 completionHandler:v79];
+              selfCopy = self;
+              scopeCopy = scope;
+              [adapter4 accountPropertiesFromConfiguration:v14 account:v39 completionHandler:v79];
             }
 
             _Block_object_dispose(v100, 8);
@@ -193,13 +193,13 @@ LABEL_20:
               sub_100012A84(&v89, v90, v35);
             }
 
-            v36 = [v14 declaration];
+            declaration2 = [v14 declaration];
             v87[0] = _NSConcreteStackBlock;
             v87[1] = 3221225472;
             v87[2] = sub_100003014;
             v87[3] = &unk_10001C690;
             v88 = group;
-            [v15 configurationFailedToApply:v36 error:0 completionHandler:v87];
+            [store configurationFailedToApply:declaration2 error:0 completionHandler:v87];
 
             v20 = v88;
           }
@@ -214,8 +214,8 @@ LABEL_20:
       while (v64);
     }
 
-    v42 = [v63 allValues];
-    [v56 addObjectsFromArray:v42];
+    allValues2 = [v63 allValues];
+    [v56 addObjectsFromArray:allValues2];
 
     v77 = 0u;
     v78 = 0u;
@@ -238,31 +238,31 @@ LABEL_20:
 
           v46 = *(*(&v75 + 1) + 8 * v45);
           dispatch_group_enter(group);
-          v47 = [v46 identifier];
-          v48 = [v46 accountType];
-          v49 = [v48 accountTypeDescription];
+          identifier2 = [v46 identifier];
+          accountType2 = [v46 accountType];
+          accountTypeDescription2 = [accountType2 accountTypeDescription];
 
           v50 = +[RMLog accountApplicator];
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
           {
             *v100 = 138543618;
-            *&v100[4] = v47;
+            *&v100[4] = identifier2;
             *&v100[12] = 2114;
-            *&v100[14] = v49;
+            *&v100[14] = accountTypeDescription2;
             _os_log_debug_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEBUG, "Removing account: %{public}@ of type %{public}@", v100, 0x16u);
           }
 
-          v51 = [(AccountApplicator *)self adapter];
+          adapter5 = [(AccountApplicator *)self adapter];
           v71[0] = _NSConcreteStackBlock;
           v71[1] = 3221225472;
           v71[2] = sub_1000034C4;
           v71[3] = &unk_10001C730;
-          v72 = v47;
-          v73 = v49;
+          v72 = identifier2;
+          v73 = accountTypeDescription2;
           v74 = group;
-          v52 = v49;
-          v53 = v47;
-          [v51 removeAccount:v46 scope:a5 completionHandler:v71];
+          v52 = accountTypeDescription2;
+          v53 = identifier2;
+          [adapter5 removeAccount:v46 scope:scope completionHandler:v71];
 
           v45 = v45 + 1;
         }
@@ -279,32 +279,32 @@ LABEL_20:
     block[1] = 3221225472;
     block[2] = sub_100003558;
     block[3] = &unk_10001C758;
-    v70 = v59;
+    v70 = handlerCopy;
     dispatch_group_notify(group, v54, block);
 
-    v55 = v59;
+    v55 = handlerCopy;
   }
 
   else
   {
-    v55 = v59;
-    [(AccountApplicator *)self _invalidateAllConfigurations:v60 completionHandler:v59];
+    v55 = handlerCopy;
+    [(AccountApplicator *)self _invalidateAllConfigurations:configurationsCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+- (void)configurationUIForConfiguration:(id)configuration scope:(int64_t)scope completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(AccountApplicator *)self adapter];
-  [v9 configurationUIForConfiguration:v8 completionHandler:v7];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  adapter = [(AccountApplicator *)self adapter];
+  [adapter configurationUIForConfiguration:configurationCopy completionHandler:handlerCopy];
 }
 
-- (void)_invalidateAllConfigurations:(id)a3 completionHandler:(id)a4
+- (void)_invalidateAllConfigurations:(id)configurations completionHandler:(id)handler
 {
-  v5 = a3;
-  v18 = a4;
-  if ([v5 count])
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  if ([configurationsCopy count])
   {
     v6 = +[RMLog accountApplicator];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -318,7 +318,7 @@ LABEL_20:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = configurationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -336,14 +336,14 @@ LABEL_20:
 
         v13 = *(*(&v23 + 1) + 8 * v12);
         dispatch_group_enter(v7);
-        v14 = [v13 store];
-        v15 = [v13 declaration];
+        store = [v13 store];
+        declaration = [v13 declaration];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_100003860;
         v21[3] = &unk_10001C690;
         v22 = v7;
-        [v14 configurationFailedToApply:v15 error:0 completionHandler:v21];
+        [store configurationFailedToApply:declaration error:0 completionHandler:v21];
 
         v12 = v12 + 1;
       }
@@ -360,49 +360,49 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_100003868;
   block[3] = &unk_10001C758;
-  v20 = v18;
-  v17 = v18;
+  v20 = handlerCopy;
+  v17 = handlerCopy;
   dispatch_group_notify(v7, v16, block);
 }
 
-- (void)_createAccountIfNeededAndApplyProperties:(id)a3 configuration:(id)a4 properties:(id)a5 completionHandler:(id)a6
+- (void)_createAccountIfNeededAndApplyProperties:(id)properties configuration:(id)configuration properties:(id)a5 completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
+  propertiesCopy = properties;
+  configurationCopy = configuration;
   v12 = a5;
-  v13 = a6;
-  if (!v10)
+  handlerCopy = handler;
+  if (!propertiesCopy)
   {
     v14 = +[RMLog accountApplicator];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      sub_100012E08(v11, v14);
+      sub_100012E08(configurationCopy, v14);
     }
 
-    v15 = [(AccountApplicator *)self adapter];
+    adapter = [(AccountApplicator *)self adapter];
     v16 = [v12 objectForKeyedSubscript:@"RemoteManagementAccountType"];
-    v10 = [v15 createAccountWithTypeIdentifier:v16];
+    propertiesCopy = [adapter createAccountWithTypeIdentifier:v16];
   }
 
-  v17 = [v10 identifier];
+  identifier = [propertiesCopy identifier];
   v18 = +[RMLog accountApplicator];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    sub_100012EB8(v17, v11, v18);
+    sub_100012EB8(identifier, configurationCopy, v18);
   }
 
-  v19 = [(AccountApplicator *)self adapter];
+  adapter2 = [(AccountApplicator *)self adapter];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100003A64;
   v23[3] = &unk_10001C7A8;
-  v24 = v11;
-  v25 = v17;
-  v26 = v13;
-  v20 = v13;
-  v21 = v17;
-  v22 = v11;
-  [v19 applyProperties:v12 toAccount:v10 configuration:v22 completionHandler:v23];
+  v24 = configurationCopy;
+  v25 = identifier;
+  v26 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = identifier;
+  v22 = configurationCopy;
+  [adapter2 applyProperties:v12 toAccount:propertiesCopy configuration:v22 completionHandler:v23];
 }
 
 @end

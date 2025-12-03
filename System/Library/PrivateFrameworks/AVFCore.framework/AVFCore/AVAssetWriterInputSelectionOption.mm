@@ -1,17 +1,17 @@
 @interface AVAssetWriterInputSelectionOption
-+ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)a3;
-+ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)a3 displaysNonForcedSubtitles:(BOOL)a4;
-- (AVAssetWriterInputSelectionOption)initWithAssetWriterInput:(id)a3 displaysNonForcedSubtitles:(BOOL)a4;
-- (BOOL)_hasEqualValueForKey:(id)a3 asObject:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)input;
++ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)input displaysNonForcedSubtitles:(BOOL)subtitles;
+- (AVAssetWriterInputSelectionOption)initWithAssetWriterInput:(id)input displaysNonForcedSubtitles:(BOOL)subtitles;
+- (BOOL)_hasEqualValueForKey:(id)key asObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPlayable;
 - (id)_taggedCharacteristics;
-- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)a3;
+- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)group;
 - (id)availableMetadataFormats;
 - (id)commonMetadata;
 - (id)locale;
 - (id)mediaSubTypes;
-- (id)metadataForFormat:(id)a3;
+- (id)metadataForFormat:(id)format;
 - (id)propertyList;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -19,43 +19,43 @@
 
 @implementation AVAssetWriterInputSelectionOption
 
-+ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)a3
++ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)input
 {
-  v3 = [[AVAssetWriterInputSelectionOption alloc] initWithAssetWriterInput:a3];
+  v3 = [[AVAssetWriterInputSelectionOption alloc] initWithAssetWriterInput:input];
 
   return v3;
 }
 
-+ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)a3 displaysNonForcedSubtitles:(BOOL)a4
++ (id)assetWriterInputSelectionOptionWithAssetWriterInput:(id)input displaysNonForcedSubtitles:(BOOL)subtitles
 {
-  v4 = [[AVAssetWriterInputSelectionOption alloc] initWithAssetWriterInput:a3 displaysNonForcedSubtitles:a4];
+  v4 = [[AVAssetWriterInputSelectionOption alloc] initWithAssetWriterInput:input displaysNonForcedSubtitles:subtitles];
 
   return v4;
 }
 
-- (AVAssetWriterInputSelectionOption)initWithAssetWriterInput:(id)a3 displaysNonForcedSubtitles:(BOOL)a4
+- (AVAssetWriterInputSelectionOption)initWithAssetWriterInput:(id)input displaysNonForcedSubtitles:(BOOL)subtitles
 {
   v9.receiver = self;
   v9.super_class = AVAssetWriterInputSelectionOption;
   v6 = [(AVMediaSelectionOption *)&v9 init];
   if (v6)
   {
-    v6->_input = a3;
-    v6->_mediaType = [objc_msgSend(a3 "mediaType")];
-    v6->_outputSettings = [objc_msgSend(a3 "outputSettings")];
-    v7 = [a3 sourceFormatHint];
-    if (v7)
+    v6->_input = input;
+    v6->_mediaType = [objc_msgSend(input "mediaType")];
+    v6->_outputSettings = [objc_msgSend(input "outputSettings")];
+    sourceFormatHint = [input sourceFormatHint];
+    if (sourceFormatHint)
     {
-      v7 = CFRetain(v7);
+      sourceFormatHint = CFRetain(sourceFormatHint);
     }
 
-    v6->_sourceFormatHint = v7;
-    v6->_languageCode = [objc_msgSend(a3 "languageCode")];
-    v6->_extendedLanguageTag = [objc_msgSend(a3 "extendedLanguageTag")];
-    v6->_metadata = [objc_msgSend(a3 "metadata")];
-    v6->_trackReferences = [objc_msgSend(a3 "_trackReferences")];
-    v6->_displaysNonForcedSubtitles = a4;
-    v6->_enabled = [a3 marksOutputTrackAsEnabled];
+    v6->_sourceFormatHint = sourceFormatHint;
+    v6->_languageCode = [objc_msgSend(input "languageCode")];
+    v6->_extendedLanguageTag = [objc_msgSend(input "extendedLanguageTag")];
+    v6->_metadata = [objc_msgSend(input "metadata")];
+    v6->_trackReferences = [objc_msgSend(input "_trackReferences")];
+    v6->_displaysNonForcedSubtitles = subtitles;
+    v6->_enabled = [input marksOutputTrackAsEnabled];
   }
 
   return v6;
@@ -74,10 +74,10 @@
   [(AVMediaSelectionOption *)&v4 dealloc];
 }
 
-- (BOOL)_hasEqualValueForKey:(id)a3 asObject:(id)a4
+- (BOOL)_hasEqualValueForKey:(id)key asObject:(id)object
 {
   v6 = [(AVAssetWriterInputSelectionOption *)self valueForKey:?];
-  v7 = [a4 valueForKey:a3];
+  v7 = [object valueForKey:key];
   if (v6)
   {
     if ([v6 isEqual:v7])
@@ -94,9 +94,9 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
   }
@@ -104,22 +104,22 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (input = self->_input, input == [a3 input]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (input = self->_input, input == [equal input]))
     {
-      v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"languageCode" asObject:a3];
+      v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"languageCode" asObject:equal];
       if (v6)
       {
-        v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"extendedLanguageTag" asObject:a3];
+        v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"extendedLanguageTag" asObject:equal];
         if (v6)
         {
-          v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"metadata" asObject:a3];
+          v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"metadata" asObject:equal];
           if (v6)
           {
-            v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"trackReferences" asObject:a3];
+            v6 = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"trackReferences" asObject:equal];
             if (v6)
             {
 
-              LOBYTE(v6) = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"displaysNonForcedSubtitles" asObject:a3];
+              LOBYTE(v6) = [(AVAssetWriterInputSelectionOption *)self _hasEqualValueForKey:@"displaysNonForcedSubtitles" asObject:equal];
             }
           }
         }
@@ -248,42 +248,42 @@ LABEL_12:
 
 - (id)availableMetadataFormats
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)[AVMetadataItem metadataItemsFromArray:? withKey:? keySpace:?]
   {
-    [v3 addObject:@"com.apple.quicktime.udta"];
+    [array addObject:@"com.apple.quicktime.udta"];
   }
 
   if ([(NSArray *)[AVMetadataItem metadataItemsFromArray:? withKey:? keySpace:?]
   {
-    [v3 addObject:@"org.mp4ra"];
+    [array addObject:@"org.mp4ra"];
     if (+[AVMetadataItem _clientExpectsISOUserDataKeysInQuickTimeUserDataKeySpace])
     {
-      [v3 addObject:@"com.apple.quicktime.udta"];
+      [array addObject:@"com.apple.quicktime.udta"];
     }
   }
 
   if ([(NSArray *)[AVMetadataItem metadataItemsFromArray:? withKey:? keySpace:?]
   {
-    [v3 addObject:@"com.apple.quicktime.mdta"];
+    [array addObject:@"com.apple.quicktime.mdta"];
   }
 
   if ([(NSArray *)[AVMetadataItem metadataItemsFromArray:? withKey:? keySpace:?]
   {
-    [v3 addObject:@"com.apple.itunes"];
+    [array addObject:@"com.apple.itunes"];
   }
 
   if ([(NSArray *)[AVMetadataItem metadataItemsFromArray:? withKey:? keySpace:?]
   {
-    [v3 addObject:@"org.id3"];
+    [array addObject:@"org.id3"];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)metadataForFormat:(id)a3
+- (id)metadataForFormat:(id)format
 {
-  if ([a3 isEqualToString:@"com.apple.quicktime.udta"])
+  if ([format isEqualToString:@"com.apple.quicktime.udta"])
   {
     v5 = @"udta";
   }
@@ -293,7 +293,7 @@ LABEL_12:
     v5 = 0;
   }
 
-  if ([a3 isEqualToString:@"org.mp4ra"])
+  if ([format isEqualToString:@"org.mp4ra"])
   {
     v6 = &AVMetadataKeySpaceISOUserData;
 LABEL_10:
@@ -301,19 +301,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([a3 isEqualToString:@"com.apple.quicktime.mdta"])
+  if ([format isEqualToString:@"com.apple.quicktime.mdta"])
   {
     v6 = &AVMetadataKeySpaceQuickTimeMetadata;
     goto LABEL_10;
   }
 
-  if ([a3 isEqualToString:@"com.apple.itunes"])
+  if ([format isEqualToString:@"com.apple.itunes"])
   {
     v6 = &AVMetadataKeySpaceiTunes;
     goto LABEL_10;
   }
 
-  if ([a3 isEqualToString:@"org.id3"])
+  if ([format isEqualToString:@"org.id3"])
   {
     v7 = @"org.id3";
   }
@@ -347,7 +347,7 @@ uint64_t __55__AVAssetWriterInputSelectionOption_metadataForFormat___block_invok
   return [v2 isEqual:v3];
 }
 
-- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)a3
+- (id)associatedMediaSelectionOptionInMediaSelectionGroup:(id)group
 {
   v30 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -356,7 +356,7 @@ uint64_t __55__AVAssetWriterInputSelectionOption_metadataForFormat___block_invok
     return 0;
   }
 
-  v5 = [a3 inputs];
+  inputs = [group inputs];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -399,7 +399,7 @@ uint64_t __55__AVAssetWriterInputSelectionOption_metadataForFormat___block_invok
               }
 
               v17 = *(*(&v20 + 1) + 8 * j);
-              if ([v5 containsObject:v17])
+              if ([inputs containsObject:v17])
               {
                 return [AVAssetWriterInputSelectionOption assetWriterInputSelectionOptionWithAssetWriterInput:v17];
               }
@@ -432,9 +432,9 @@ uint64_t __55__AVAssetWriterInputSelectionOption_metadataForFormat___block_invok
 - (id)propertyList
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AVAssetWriterInputSelectionOption *)self input];
+  input = [(AVAssetWriterInputSelectionOption *)self input];
   v4 = @"UnsafeUnretainedPointerData";
-  v5[0] = [MEMORY[0x1E695DEF0] dataWithBytes:&v3 length:8];
+  v5[0] = [MEMORY[0x1E695DEF0] dataWithBytes:&input length:8];
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
 }
 

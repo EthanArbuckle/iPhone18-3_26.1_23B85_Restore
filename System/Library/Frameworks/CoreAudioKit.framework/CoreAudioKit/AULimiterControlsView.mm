@@ -1,7 +1,7 @@
 @interface AULimiterControlsView
 - (CGRect)bounds;
-- (_TtC12CoreAudioKit21AULimiterControlsView)initWithCoder:(id)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtC12CoreAudioKit21AULimiterControlsView)initWithCoder:(id)coder;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation AULimiterControlsView
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_23714993C(x, y, width, height);
 }
 
-- (_TtC12CoreAudioKit21AULimiterControlsView)initWithCoder:(id)a3
+- (_TtC12CoreAudioKit21AULimiterControlsView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC12CoreAudioKit21AULimiterControlsView_meter;
   *(&self->super.super.super.isa + v4) = sub_237149488();

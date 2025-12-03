@@ -1,15 +1,15 @@
 @interface SBHFloatingDockVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)maximumEditingIconSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation SBHFloatingDockVisualConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -33,7 +33,7 @@
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = (isKindOfClass & 1) != 0 && self->_maximumEditingIconSize.height == v4->_maximumEditingIconSize.height && self->_maximumEditingIconSize.width == v4->_maximumEditingIconSize.width;
+    v7 = (isKindOfClass & 1) != 0 && self->_maximumEditingIconSize.height == equalCopy->_maximumEditingIconSize.height && self->_maximumEditingIconSize.width == equalCopy->_maximumEditingIconSize.width;
   }
 
   return v7;
@@ -41,27 +41,27 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHFloatingDockVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHFloatingDockVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHFloatingDockVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHFloatingDockVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHFloatingDockVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHFloatingDockVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHFloatingDockVisualConfiguration *)self maximumEditingIconSize];
-  v5 = [v4 appendSize:@"maximumEditingIconSize" withName:?];
+  v5 = [succinctDescriptionBuilder appendSize:@"maximumEditingIconSize" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)maximumEditingIconSize

@@ -1,22 +1,22 @@
 @interface HDSPXPCActivityScheduler
-- (HDSPXPCActivityScheduler)initWithCallbackScheduler:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)scheduleActivity:(id)a3 activityHandler:(id)a4;
+- (HDSPXPCActivityScheduler)initWithCallbackScheduler:(id)scheduler;
+- (void)_withLock:(id)lock;
+- (void)scheduleActivity:(id)activity activityHandler:(id)handler;
 - (void)unscheduleActivities;
 @end
 
 @implementation HDSPXPCActivityScheduler
 
-- (HDSPXPCActivityScheduler)initWithCallbackScheduler:(id)a3
+- (HDSPXPCActivityScheduler)initWithCallbackScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v12.receiver = self;
   v12.super_class = HDSPXPCActivityScheduler;
   v6 = [(HDSPXPCActivityScheduler *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callbackScheduler, a3);
+    objc_storeStrong(&v6->_callbackScheduler, scheduler);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     eventNames = v7->_eventNames;
     v7->_eventNames = v8;
@@ -28,23 +28,23 @@
   return v7;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_eventNamesLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_eventNamesLock);
 }
 
-- (void)scheduleActivity:(id)a3 activityHandler:(id)a4
+- (void)scheduleActivity:(id)activity activityHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = activityCopy;
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __61__HDSPXPCActivityScheduler_scheduleActivity_activityHandler___block_invoke;
@@ -53,19 +53,19 @@
     v9 = v8;
     v24 = v9;
     [(HDSPXPCActivityScheduler *)self _withLock:v23];
-    v10 = [v9 name];
-    v11 = [v10 UTF8String];
-    v12 = [v9 criteria];
+    name = [v9 name];
+    uTF8String = [name UTF8String];
+    criteria = [v9 criteria];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __61__HDSPXPCActivityScheduler_scheduleActivity_activityHandler___block_invoke_2;
     handler[3] = &unk_279C7CE58;
     v13 = v9;
     v20 = v13;
-    v21 = self;
-    v14 = v7;
+    selfCopy = self;
+    v14 = handlerCopy;
     v22 = v14;
-    xpc_activity_register(v11, v12, handler);
+    xpc_activity_register(uTF8String, criteria, handler);
 
     if ([v13 options])
     {

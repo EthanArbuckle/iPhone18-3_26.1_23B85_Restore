@@ -2,35 +2,35 @@
 - (EdgeInsets)edgeInsets;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)setAttributedString:(__CFAttributedString *)a3;
-- (void)setRenderBlock:(id)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)setAttributedString:(__CFAttributedString *)string;
+- (void)setRenderBlock:(id)block;
 @end
 
 @implementation RETextLayer
 
-- (void)setAttributedString:(__CFAttributedString *)a3
+- (void)setAttributedString:(__CFAttributedString *)string
 {
   attributedString = self->_attributedString;
-  if (attributedString != a3)
+  if (attributedString != string)
   {
     if (attributedString)
     {
       CFRelease(attributedString);
     }
 
-    self->_attributedString = a3;
-    if (a3)
+    self->_attributedString = string;
+    if (string)
     {
 
-      CFRetain(a3);
+      CFRetain(string);
     }
   }
 }
 
-- (void)setRenderBlock:(id)a3
+- (void)setRenderBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   renderBlock = self->_renderBlock;
   self->_renderBlock = v4;
 }
@@ -48,7 +48,7 @@
   [(RETextLayer *)&v4 dealloc];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(RETextLayer *)self bounds];
   top = self->_edgeInsets.top;
@@ -63,7 +63,7 @@
   {
     v17 = v5 + top;
     attributedString = self->_attributedString;
-    v19 = [(RETextLayer *)self backgroundColor];
+    backgroundColor = [(RETextLayer *)self backgroundColor];
     [(RETextLayer *)self bounds];
     v20.n128_u64[0] = v25.n128_u64[0];
     v21.n128_u64[0] = v26.n128_u64[0];
@@ -73,7 +73,7 @@
     v25.n128_f64[0] = v11;
     v26.n128_f64[0] = v15;
 
-    v22(renderBlock, a3, attributedString, v19, v23, v24, v25, v26, v20, v21);
+    v22(renderBlock, context, attributedString, backgroundColor, v23, v24, v25, v26, v20, v21);
   }
 
   else
@@ -87,7 +87,7 @@
     v31.length = CFAttributedStringGetLength(self->_attributedString);
     v31.location = 0;
     Frame = CTFramesetterCreateFrame(v28, v31, v27, 0);
-    CTFrameDraw(Frame, a3);
+    CTFrameDraw(Frame, context);
     CFRelease(Frame);
     CFRelease(v28);
 

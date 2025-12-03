@@ -1,7 +1,7 @@
 @interface _PFGarbageManager
 + (void)initialize;
 - (uint64_t)doCleanupForURL:(uint64_t)result;
-- (void)temporaryLinksDirectoryForStore:(id *)a1;
+- (void)temporaryLinksDirectoryForStore:(id *)store;
 @end
 
 @implementation _PFGarbageManager
@@ -11,7 +11,7 @@
   objc_opt_self();
   if (!_NSTheOneGarbageManager)
   {
-    v3 = NSAllocateObject(a1, 0, 0);
+    v3 = NSAllocateObject(self, 0, 0);
     _NSTheOneGarbageManager = v3;
     if (v3)
     {
@@ -28,37 +28,37 @@
   }
 }
 
-- (void)temporaryLinksDirectoryForStore:(id *)a1
+- (void)temporaryLinksDirectoryForStore:(id *)store
 {
-  if (!a1)
+  if (!store)
   {
     return 0;
   }
 
-  objc_sync_enter(a1);
-  v4 = [a2 externalDataReferencesDirectory];
-  v5 = [a1[1] objectForKey:v4];
-  if (!v5)
+  objc_sync_enter(store);
+  externalDataReferencesDirectory = [a2 externalDataReferencesDirectory];
+  stringByDeletingLastPathComponent = [store[1] objectForKey:externalDataReferencesDirectory];
+  if (!stringByDeletingLastPathComponent)
   {
-    v5 = NSTemporaryDirectory();
-    if (!v5)
+    stringByDeletingLastPathComponent = NSTemporaryDirectory();
+    if (!stringByDeletingLastPathComponent)
     {
-      v5 = [v4 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [externalDataReferencesDirectory stringByDeletingLastPathComponent];
     }
 
-    [a1[1] setObject:v5 forKey:v4];
+    [store[1] setObject:stringByDeletingLastPathComponent forKey:externalDataReferencesDirectory];
   }
 
-  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:-[NSString stringByAppendingPathComponent:](-[NSString stringByAppendingPathComponent:](v5 isDirectory:{"stringByAppendingPathComponent:", @".LINKS", "stringByAppendingPathComponent:", +[_PFRoutines _getUUID]()), 1}];
+  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:-[NSString stringByAppendingPathComponent:](-[NSString stringByAppendingPathComponent:](stringByDeletingLastPathComponent isDirectory:{"stringByAppendingPathComponent:", @".LINKS", "stringByAppendingPathComponent:", +[_PFRoutines _getUUID]()), 1}];
   if (v6)
   {
     if ([objc_msgSend(MEMORY[0x1E696AC08] defaultManager])
     {
       v7 = [objc_msgSend(v6 "path")];
-      v8 = a1[2];
+      v8 = store[2];
       objc_sync_enter(v8);
-      [a1[2] addObject:{objc_msgSend(v6, "path")}];
-      v9 = [a1[2] copy];
+      [store[2] addObject:{objc_msgSend(v6, "path")}];
+      v9 = [store[2] copy];
       objc_sync_exit(v8);
       if (v9)
       {
@@ -69,7 +69,7 @@
         block[3] = &unk_1E6EC19D8;
         block[4] = v7;
         block[5] = v9;
-        block[6] = a1;
+        block[6] = store;
         dispatch_async(global_queue, block);
       }
     }
@@ -80,7 +80,7 @@
     }
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(store);
   return v6;
 }
 
@@ -89,23 +89,23 @@
   if (result && a2)
   {
     v2 = result;
-    v3 = [a2 path];
+    path = [a2 path];
     v4 = *(v2 + 16);
     objc_sync_enter(v4);
-    if ([*(v2 + 16) containsObject:v3])
+    if ([*(v2 + 16) containsObject:path])
     {
-      [*(v2 + 16) removeObject:v3];
-      v5 = [MEMORY[0x1E696AC08] defaultManager];
-      [v5 removeItemAtPath:v3 error:0];
-      v6 = [v3 stringByDeletingLastPathComponent];
-      if ([objc_msgSend(v6 "lastPathComponent")])
+      [*(v2 + 16) removeObject:path];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager removeItemAtPath:path error:0];
+      stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+      if ([objc_msgSend(stringByDeletingLastPathComponent "lastPathComponent")])
       {
-        v7 = [v5 contentsOfDirectoryAtPath:v6 error:0];
+        v7 = [defaultManager contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:0];
         if (v7)
         {
           if (![v7 count])
           {
-            [v5 removeItemAtPath:v6 error:0];
+            [defaultManager removeItemAtPath:stringByDeletingLastPathComponent error:0];
           }
         }
       }

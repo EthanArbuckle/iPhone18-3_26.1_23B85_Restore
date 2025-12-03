@@ -1,28 +1,28 @@
 @interface LNQueryParameterComparatorMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNQueryParameterComparatorMetadata)initWithCoder:(id)a3;
-- (LNQueryParameterComparatorMetadata)initWithComparatorType:(unint64_t)a3 valueType:(id)a4 resolvableInputTypes:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryParameterComparatorMetadata)initWithCoder:(id)coder;
+- (LNQueryParameterComparatorMetadata)initWithComparatorType:(unint64_t)type valueType:(id)valueType resolvableInputTypes:(id)types;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryParameterComparatorMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNQueryParameterComparatorMetadata *)self comparatorType];
-        if (v7 != [(LNQueryParameterComparatorMetadata *)v6 comparatorType])
+        comparatorType = [(LNQueryParameterComparatorMetadata *)self comparatorType];
+        if (comparatorType != [(LNQueryParameterComparatorMetadata *)v6 comparatorType])
         {
           LOBYTE(v13) = 0;
 LABEL_24:
@@ -30,10 +30,10 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v8 = [(LNQueryParameterComparatorMetadata *)self valueType];
-        v9 = [(LNQueryParameterComparatorMetadata *)v6 valueType];
-        v10 = v8;
-        v11 = v9;
+        valueType = [(LNQueryParameterComparatorMetadata *)self valueType];
+        valueType2 = [(LNQueryParameterComparatorMetadata *)v6 valueType];
+        v10 = valueType;
+        v11 = valueType2;
         v12 = v11;
         if (v10 == v11)
         {
@@ -60,10 +60,10 @@ LABEL_22:
           }
         }
 
-        v16 = [(LNQueryParameterComparatorMetadata *)self resolvableInputTypes];
-        v17 = [(LNQueryParameterComparatorMetadata *)v6 resolvableInputTypes];
-        v15 = v16;
-        v18 = v17;
+        resolvableInputTypes = [(LNQueryParameterComparatorMetadata *)self resolvableInputTypes];
+        resolvableInputTypes2 = [(LNQueryParameterComparatorMetadata *)v6 resolvableInputTypes];
+        v15 = resolvableInputTypes;
+        v18 = resolvableInputTypes2;
         v14 = v18;
         if (v15 == v18)
         {
@@ -106,11 +106,11 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(LNQueryParameterComparatorMetadata *)self comparatorType];
-  v4 = [(LNQueryParameterComparatorMetadata *)self valueType];
-  v5 = [v4 hash];
+  comparatorType = [(LNQueryParameterComparatorMetadata *)self comparatorType];
+  valueType = [(LNQueryParameterComparatorMetadata *)self valueType];
+  v5 = [valueType hash];
 
-  return v5 ^ v3;
+  return v5 ^ comparatorType;
 }
 
 - (id)description
@@ -119,25 +119,25 @@ LABEL_25:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[LNQueryParameterComparatorMetadata comparatorType](self, "comparatorType")}];
-  v7 = [(LNQueryParameterComparatorMetadata *)self valueType];
-  v8 = [(LNQueryParameterComparatorMetadata *)self resolvableInputTypes];
-  v9 = [v8 valueForKeyPath:@"description"];
+  valueType = [(LNQueryParameterComparatorMetadata *)self valueType];
+  resolvableInputTypes = [(LNQueryParameterComparatorMetadata *)self resolvableInputTypes];
+  v9 = [resolvableInputTypes valueForKeyPath:@"description"];
   v10 = [v9 componentsJoinedByString:{@", "}];
-  v11 = [v3 stringWithFormat:@"<%@: %p, comparatorType: %@, valueType: %@, resolvableInputTypes: [%@]>", v5, self, v6, v7, v10];
+  v11 = [v3 stringWithFormat:@"<%@: %p, comparatorType: %@, valueType: %@, resolvableInputTypes: [%@]>", v5, self, v6, valueType, v10];
 
   return v11;
 }
 
-- (LNQueryParameterComparatorMetadata)initWithCoder:(id)a3
+- (LNQueryParameterComparatorMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"comparatorType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"comparatorType"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"resolvableInputTypes"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"resolvableInputTypes"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
 
   if (v9)
   {
@@ -151,45 +151,45 @@ LABEL_25:
 
   if (v11)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LNQueryParameterComparatorMetadata *)self initWithComparatorType:v5 valueType:v10 resolvableInputTypes:v9];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNQueryParameterComparatorMetadata comparatorType](self forKey:{"comparatorType"), @"comparatorType"}];
-  v5 = [(LNQueryParameterComparatorMetadata *)self resolvableInputTypes];
-  [v4 encodeObject:v5 forKey:@"resolvableInputTypes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNQueryParameterComparatorMetadata comparatorType](self forKey:{"comparatorType"), @"comparatorType"}];
+  resolvableInputTypes = [(LNQueryParameterComparatorMetadata *)self resolvableInputTypes];
+  [coderCopy encodeObject:resolvableInputTypes forKey:@"resolvableInputTypes"];
 
-  v6 = [(LNQueryParameterComparatorMetadata *)self valueType];
-  [v4 encodeObject:v6 forKey:@"valueType"];
+  valueType = [(LNQueryParameterComparatorMetadata *)self valueType];
+  [coderCopy encodeObject:valueType forKey:@"valueType"];
 }
 
-- (LNQueryParameterComparatorMetadata)initWithComparatorType:(unint64_t)a3 valueType:(id)a4 resolvableInputTypes:(id)a5
+- (LNQueryParameterComparatorMetadata)initWithComparatorType:(unint64_t)type valueType:(id)valueType resolvableInputTypes:(id)types
 {
-  v8 = a4;
-  v9 = a5;
+  valueTypeCopy = valueType;
+  typesCopy = types;
   v18.receiver = self;
   v18.super_class = LNQueryParameterComparatorMetadata;
   v10 = [(LNQueryParameterComparatorMetadata *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    v10->_comparatorType = a3;
-    v12 = [v9 copy];
+    v10->_comparatorType = type;
+    v12 = [typesCopy copy];
     resolvableInputTypes = v11->_resolvableInputTypes;
     v11->_resolvableInputTypes = v12;
 
-    v14 = [v8 copy];
+    v14 = [valueTypeCopy copy];
     valueType = v11->_valueType;
     v11->_valueType = v14;
 

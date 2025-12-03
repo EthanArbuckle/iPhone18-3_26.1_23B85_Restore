@@ -1,8 +1,8 @@
 @interface MTRCameraAVStreamManagementClusterAudioStreamAllocateParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVStreamManagementClusterAudioStreamAllocateParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -44,32 +44,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams);
-  v5 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self streamUsage];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setStreamUsage:v5];
+  streamUsage = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self streamUsage];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setStreamUsage:streamUsage];
 
-  v6 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self audioCodec];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setAudioCodec:v6];
+  audioCodec = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self audioCodec];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setAudioCodec:audioCodec];
 
-  v7 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self channelCount];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setChannelCount:v7];
+  channelCount = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self channelCount];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setChannelCount:channelCount];
 
-  v8 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self sampleRate];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setSampleRate:v8];
+  sampleRate = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self sampleRate];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setSampleRate:sampleRate];
 
-  v9 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitRate];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setBitRate:v9];
+  bitRate = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitRate];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setBitRate:bitRate];
 
-  v10 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitDepth];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setBitDepth:v10];
+  bitDepth = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitDepth];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setBitDepth:bitDepth];
 
-  v11 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setTimedInvokeTimeoutMs:v11];
+  timedInvokeTimeoutMs = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v12 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setServerSideProcessingTimeout:v12];
+  serverSideProcessingTimeout = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -84,32 +84,32 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27 = 0;
-  v28 = 0;
+  unsignedCharValue = 0;
   v29 = 0;
-  v30 = 0;
+  unsignedCharValue2 = 0;
   v26[0] = 0;
   v26[1] = 0;
   v25 = v26;
-  v5 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self streamUsage];
-  LOBYTE(v27) = [v5 unsignedCharValue];
+  streamUsage = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self streamUsage];
+  LOBYTE(v27) = [streamUsage unsignedCharValue];
 
-  v6 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self audioCodec];
-  HIBYTE(v27) = [v6 unsignedCharValue];
+  audioCodec = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self audioCodec];
+  HIBYTE(v27) = [audioCodec unsignedCharValue];
 
-  v7 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self channelCount];
-  v28 = [v7 unsignedCharValue];
+  channelCount = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self channelCount];
+  unsignedCharValue = [channelCount unsignedCharValue];
 
-  v8 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self sampleRate];
-  LODWORD(v29) = [v8 unsignedIntValue];
+  sampleRate = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self sampleRate];
+  LODWORD(v29) = [sampleRate unsignedIntValue];
 
-  v9 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitRate];
-  HIDWORD(v29) = [v9 unsignedIntValue];
+  bitRate = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitRate];
+  HIDWORD(v29) = [bitRate unsignedIntValue];
 
-  v10 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitDepth];
-  v30 = [v10 unsignedCharValue];
+  bitDepth = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self bitDepth];
+  unsignedCharValue2 = [bitDepth unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v24);
   if (v24)
@@ -130,8 +130,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -159,19 +159,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVStreamManagementClusterAudioStreamAllocateParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -182,7 +182,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x84BA00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

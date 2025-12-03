@@ -1,19 +1,19 @@
 @interface SGMIMaintenance
-+ (void)executeDailyTasksWithShouldContinue:(id)a3;
++ (void)executeDailyTasksWithShouldContinue:(id)continue;
 @end
 
 @implementation SGMIMaintenance
 
-+ (void)executeDailyTasksWithShouldContinue:(id)a3
++ (void)executeDailyTasksWithShouldContinue:(id)continue
 {
-  v3 = a3;
+  continueCopy = continue;
   v4 = +[SGMITrialClientWrapper sharedInstance];
   [v4 refresh];
-  if (v3[2](v3))
+  if (continueCopy[2](continueCopy))
   {
     v5 = +[SGSqlEntityStore defaultStore];
     +[SGMIFollowUpAnalyzer logFollowUpStatsAndSetting];
-    if (v3[2](v3))
+    if (continueCopy[2](continueCopy))
     {
       v6 = +[SGMIEnablementConfig logWarningSignatureStats];
       v7 = sgMailIntelligenceLogHandle();
@@ -37,29 +37,29 @@
           _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Starting Task #1 for Signature Stats logging: [SGMIFeatureStore warningStatsForLogging:]", buf, 2u);
         }
 
-        v13 = [v5 sgmiFeatureStore];
-        v8 = [v13 warningStatsForLogging:1];
+        sgmiFeatureStore = [v5 sgmiFeatureStore];
+        v8 = [sgmiFeatureStore warningStatsForLogging:1];
 
         if (v8)
         {
-          v14 = [v4 trialMetadata];
-          [v8 setTrialMetadata:v14];
+          trialMetadata = [v4 trialMetadata];
+          [v8 setTrialMetadata:trialMetadata];
 
-          v15 = [MEMORY[0x277CBEAF8] currentLocale];
-          v16 = [v15 localeIdentifier];
-          [v8 setLocale:v16];
+          currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+          localeIdentifier = [currentLocale localeIdentifier];
+          [v8 setLocale:localeIdentifier];
 
-          v17 = [MEMORY[0x277D41DA8] sharedInstance];
-          [v17 logMessage:v8];
+          mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+          [mEMORY[0x277D41DA8] logMessage:v8];
         }
 
         else
         {
-          v17 = sgMailIntelligenceLogHandle();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          mEMORY[0x277D41DA8] = sgMailIntelligenceLogHandle();
+          if (os_log_type_enabled(mEMORY[0x277D41DA8], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&dword_231E60000, v17, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Signature Stats logging do not have enough new data point to submit new logs.", buf, 2u);
+            _os_log_impl(&dword_231E60000, mEMORY[0x277D41DA8], OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Signature Stats logging do not have enough new data point to submit new logs.", buf, 2u);
           }
         }
 
@@ -78,7 +78,7 @@
         _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance will not run signature stats logging (logWarningSignatureStats is disabled)", buf, 2u);
       }
 
-      if (v3[2](v3))
+      if (continueCopy[2](continueCopy))
       {
         v20 = sgMailIntelligenceLogHandle();
         v21 = os_signpost_id_generate(v20);
@@ -98,7 +98,7 @@
           _os_log_impl(&dword_231E60000, v24, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Starting Task NicknameMappingLookup", buf, 2u);
         }
 
-        [SGMINicknameManager lookForNicknamesInSentMailsAndStore:v5 shouldContinue:v3];
+        [SGMINicknameManager lookForNicknamesInSentMailsAndStore:v5 shouldContinue:continueCopy];
         v25 = sgMailIntelligenceLogHandle();
         v26 = v25;
         if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
@@ -107,19 +107,19 @@
           _os_signpost_emit_with_name_impl(&dword_231E60000, v26, OS_SIGNPOST_INTERVAL_END, v21, "DailyTasks.NicknameMappingLookup", " enableTelemetry=YES ", buf, 2u);
         }
 
-        if (v3[2](v3))
+        if (continueCopy[2](continueCopy))
         {
           if (+[SGMIEnablementConfig detectSalientMails])
           {
             v27 = objc_opt_new();
-            v28 = [v4 trialMetadata];
-            [v27 setTrialMetadata:v28];
+            trialMetadata2 = [v4 trialMetadata];
+            [v27 setTrialMetadata:trialMetadata2];
 
             v29 = objc_opt_new();
             [v29 timeIntervalSinceReferenceDate];
             [v27 setHoursSinceReference:(v30 / 3600.0)];
 
-            if (v3[2](v3))
+            if (continueCopy[2](continueCopy))
             {
               v31 = sgMailIntelligenceLogHandle();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -155,7 +155,7 @@
                 _os_log_impl(&dword_231E60000, v38, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Finished Task #1: SGMISubmodelsManager checkForAndProcessVersionChange", buf, 2u);
               }
 
-              if (v3[2](v3))
+              if (continueCopy[2](continueCopy))
               {
                 v39 = sgMailIntelligenceLogHandle();
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -176,7 +176,7 @@
                 }
 
                 v44 = mach_absolute_time();
-                [SGMISubmodelsManager incrementalSubmodelUpdateWithStore:v5 shouldContinue:v3 limit:1000 log:v27];
+                [SGMISubmodelsManager incrementalSubmodelUpdateWithStore:v5 shouldContinue:continueCopy limit:1000 log:v27];
                 v45 = mach_absolute_time();
                 v46 = SGMachTimeToNanoseconds(v45 - v44);
                 v47 = sgMailIntelligenceLogHandle();
@@ -194,7 +194,7 @@
                   _os_log_impl(&dword_231E60000, v49, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Finished Task #2: SGMISubmodelsManager incrementalSubmodelUpdate", buf, 2u);
                 }
 
-                if (v3[2](v3))
+                if (continueCopy[2](continueCopy))
                 {
                   v50 = sgMailIntelligenceLogHandle();
                   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
@@ -233,7 +233,7 @@
                     _os_log_impl(&dword_231E60000, v60, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Finished Task #3: SGMISubmodelsManager pruneDB", buf, 2u);
                   }
 
-                  if (v3[2](v3))
+                  if (continueCopy[2](continueCopy))
                   {
                     v61 = sgMailIntelligenceLogHandle();
                     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
@@ -277,16 +277,16 @@
                     [SGRTCLogging round:2 toSignificantFigures:?];
                     [v66 setSalientPredictedAsIgnorable:v71];
                     v72 = objc_opt_new();
-                    v73 = [v4 trialMetadata];
-                    [v72 setActiveTrialMetadata:v73];
+                    trialMetadata3 = [v4 trialMetadata];
+                    [v72 setActiveTrialMetadata:trialMetadata3];
 
                     [v72 setActiveAggregatedAccuracyLogSinceModelInitialization:v66];
-                    v74 = [MEMORY[0x277D41DA8] sharedInstance];
+                    mEMORY[0x277D41DA8]2 = [MEMORY[0x277D41DA8] sharedInstance];
                     v92 = v72;
-                    [v74 logMessage:v72];
+                    [mEMORY[0x277D41DA8]2 logMessage:v72];
 
-                    v75 = [MEMORY[0x277D41DA8] sharedInstance];
-                    [v75 logMessage:v27];
+                    mEMORY[0x277D41DA8]3 = [MEMORY[0x277D41DA8] sharedInstance];
+                    [mEMORY[0x277D41DA8]3 logMessage:v27];
 
                     v76 = sgMailIntelligenceLogHandle();
                     v77 = v76;
@@ -303,7 +303,7 @@
                       _os_log_impl(&dword_231E60000, v78, OS_LOG_TYPE_DEFAULT, "SGMIMaintenance Finished Task #4: Logging", buf, 2u);
                     }
 
-                    if (v3[2](v3))
+                    if (continueCopy[2](continueCopy))
                     {
                       v79 = sgMailIntelligenceLogHandle();
                       if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
@@ -324,8 +324,8 @@
                       }
 
                       v84 = +[SGSqlEntityStore defaultStore];
-                      v85 = [v84 sgmiFeatureStore];
-                      [v85 performMaintenanceWithShouldContinueBlock:v3];
+                      sgmiFeatureStore2 = [v84 sgmiFeatureStore];
+                      [sgmiFeatureStore2 performMaintenanceWithShouldContinueBlock:continueCopy];
 
                       v86 = sgMailIntelligenceLogHandle();
                       v87 = v86;

@@ -1,5 +1,5 @@
 @interface HMDNetworkMismatchDetectorResult
-- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)a3 accessoriesNotOnWiFiAndNotConnectingToPrimaryResident:(id)a4 accessoriesReportingDiagnostic:(id)a5;
+- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)fi accessoriesNotOnWiFiAndNotConnectingToPrimaryResident:(id)resident accessoriesReportingDiagnostic:(id)diagnostic;
 - (id)description;
 @end
 
@@ -17,25 +17,25 @@
   return v6;
 }
 
-- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)a3 accessoriesNotOnWiFiAndNotConnectingToPrimaryResident:(id)a4 accessoriesReportingDiagnostic:(id)a5
+- (HMDNetworkMismatchDetectorResult)initWithAccessoriesNotOnWiFi:(id)fi accessoriesNotOnWiFiAndNotConnectingToPrimaryResident:(id)resident accessoriesReportingDiagnostic:(id)diagnostic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fiCopy = fi;
+  residentCopy = resident;
+  diagnosticCopy = diagnostic;
   v19.receiver = self;
   v19.super_class = HMDNetworkMismatchDetectorResult;
   v11 = [(HMDNetworkMismatchDetectorResult *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [fiCopy copy];
     accessoriesNotOnWiFi = v11->_accessoriesNotOnWiFi;
     v11->_accessoriesNotOnWiFi = v12;
 
-    v14 = [v9 copy];
+    v14 = [residentCopy copy];
     accessoriesNotOnWiFiAndNotConnectingToPrimaryResident = v11->_accessoriesNotOnWiFiAndNotConnectingToPrimaryResident;
     v11->_accessoriesNotOnWiFiAndNotConnectingToPrimaryResident = v14;
 
-    v16 = [v10 copy];
+    v16 = [diagnosticCopy copy];
     accessoriesReportingDiagnostic = v11->_accessoriesReportingDiagnostic;
     v11->_accessoriesReportingDiagnostic = v16;
   }

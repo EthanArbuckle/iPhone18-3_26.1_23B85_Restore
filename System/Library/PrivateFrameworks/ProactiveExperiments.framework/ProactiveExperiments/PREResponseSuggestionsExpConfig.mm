@@ -1,41 +1,41 @@
 @interface PREResponseSuggestionsExpConfig
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConfig:(id)a3;
-- (PREResponseSuggestionsExpConfig)initWithNamespaceName:(id)a3 withTrialClient:(id)a4 shouldDownloadAssets:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConfig:(id)config;
+- (PREResponseSuggestionsExpConfig)initWithNamespaceName:(id)name withTrialClient:(id)client shouldDownloadAssets:(BOOL)assets;
 - (void)_fillDefaultValueForFactors;
 - (void)_setDefaultValuesForFactors;
 @end
 
 @implementation PREResponseSuggestionsExpConfig
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PREResponseSuggestionsExpConfig *)self isEqualToConfig:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PREResponseSuggestionsExpConfig *)self isEqualToConfig:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToConfig:(id)a3
+- (BOOL)isEqualToConfig:(id)config
 {
-  v4 = a3;
-  if (!v4)
+  configCopy = config;
+  if (!configCopy)
   {
     goto LABEL_28;
   }
 
   v5 = self->_treatmentName;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == configCopy[3])
   {
   }
 
@@ -51,7 +51,7 @@
 
   v8 = self->_inferenceModelFilePath;
   v9 = v8;
-  if (v8 == v4[5])
+  if (v8 == configCopy[5])
   {
   }
 
@@ -67,7 +67,7 @@
 
   v11 = self->_inferenceModelConfigPath;
   v12 = v11;
-  if (v11 == v4[6])
+  if (v11 == configCopy[6])
   {
   }
 
@@ -83,7 +83,7 @@
 
   v14 = self->_espressoBinFilePath;
   v15 = v14;
-  if (v14 == v4[7])
+  if (v14 == configCopy[7])
   {
   }
 
@@ -99,7 +99,7 @@
 
   v17 = self->_vocabFilePath;
   v18 = v17;
-  if (v17 == v4[8])
+  if (v17 == configCopy[8])
   {
   }
 
@@ -115,7 +115,7 @@
 
   v20 = self->_rolloutIdentifiers;
   v21 = v20;
-  if (v20 == v4[9])
+  if (v20 == configCopy[9])
   {
   }
 
@@ -131,7 +131,7 @@
 
   v23 = self->_experimentIdentifiers;
   v24 = v23;
-  if (v23 == v4[10])
+  if (v23 == configCopy[10])
   {
 
     goto LABEL_31;
@@ -142,7 +142,7 @@
   if (v25)
   {
 LABEL_31:
-    v26 = self->_isMLModelEnabled == *(v4 + 16);
+    v26 = self->_isMLModelEnabled == *(configCopy + 16);
     goto LABEL_29;
   }
 
@@ -211,8 +211,8 @@ LABEL_29:
   }
 
   objc_storeStrong(&self->_vocabFilePath, vocabFilePath);
-  v9 = [(TRIRolloutIdentifiers *)self->_rolloutIdentifiers rolloutId];
-  if ([v9 length])
+  rolloutId = [(TRIRolloutIdentifiers *)self->_rolloutIdentifiers rolloutId];
+  if ([rolloutId length])
   {
     rolloutIdentifiers = self->_rolloutIdentifiers;
   }
@@ -226,8 +226,8 @@ LABEL_29:
 
   experimentIdentifiers = self->_experimentIdentifiers;
   p_experimentIdentifiers = &self->_experimentIdentifiers;
-  v14 = [(TRIExperimentIdentifiers *)experimentIdentifiers treatmentId];
-  if ([v14 length])
+  treatmentId = [(TRIExperimentIdentifiers *)experimentIdentifiers treatmentId];
+  if ([treatmentId length])
   {
     v13 = *p_experimentIdentifiers;
   }
@@ -266,11 +266,11 @@ LABEL_29:
   self->_isMLModelEnabled = 0;
 }
 
-- (PREResponseSuggestionsExpConfig)initWithNamespaceName:(id)a3 withTrialClient:(id)a4 shouldDownloadAssets:(BOOL)a5
+- (PREResponseSuggestionsExpConfig)initWithNamespaceName:(id)name withTrialClient:(id)client shouldDownloadAssets:(BOOL)assets
 {
   v114[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  clientCopy = client;
   v95.receiver = self;
   v95.super_class = PREResponseSuggestionsExpConfig;
   v11 = [(PREResponseSuggestionsExpConfig *)&v95 init];
@@ -280,7 +280,7 @@ LABEL_29:
     goto LABEL_28;
   }
 
-  if (!v9)
+  if (!nameCopy)
   {
     [(PREResponseSuggestionsExpConfig *)v11 _setDefaultValuesForFactors];
     goto LABEL_32;
@@ -290,46 +290,46 @@ LABEL_29:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v97 = v9;
+    v97 = nameCopy;
     _os_log_impl(&dword_260CE3000, v13, OS_LOG_TYPE_DEFAULT, "PRE Experiment config -- setting up config for namespace %@", buf, 0xCu);
   }
 
-  [v10 refresh];
-  objc_storeStrong(&v12->_namespaceName, a3);
-  v14 = [v10 rolloutIdentifiersWithNamespaceName:v12->_namespaceName];
+  [clientCopy refresh];
+  objc_storeStrong(&v12->_namespaceName, name);
+  v14 = [clientCopy rolloutIdentifiersWithNamespaceName:v12->_namespaceName];
   rolloutIdentifiers = v12->_rolloutIdentifiers;
   v12->_rolloutIdentifiers = v14;
 
-  v16 = [v10 experimentIdentifiersWithNamespaceName:v12->_namespaceName];
+  v16 = [clientCopy experimentIdentifiersWithNamespaceName:v12->_namespaceName];
   experimentIdentifiers = v12->_experimentIdentifiers;
   v12->_experimentIdentifiers = v16;
 
-  v18 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers treatmentId];
-  if ([v18 length])
+  treatmentId = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers treatmentId];
+  if ([treatmentId length])
   {
     goto LABEL_6;
   }
 
-  v19 = [(TRIRolloutIdentifiers *)v12->_rolloutIdentifiers rolloutId];
-  v20 = [v19 length];
+  rolloutId = [(TRIRolloutIdentifiers *)v12->_rolloutIdentifiers rolloutId];
+  v20 = [rolloutId length];
 
   if (!v20)
   {
-    v18 = pre_responses_handle();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    treatmentId = pre_responses_handle();
+    if (os_log_type_enabled(treatmentId, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_260CE3000, v18, OS_LOG_TYPE_DEFAULT, "Smart Reply using on-device values since treatment id and rollout id is unset.", buf, 2u);
+      _os_log_impl(&dword_260CE3000, treatmentId, OS_LOG_TYPE_DEFAULT, "Smart Reply using on-device values since treatment id and rollout id is unset.", buf, 2u);
     }
 
 LABEL_6:
   }
 
-  v21 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers treatmentId];
-  if ([v21 length])
+  treatmentId2 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers treatmentId];
+  if ([treatmentId2 length])
   {
-    v22 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers experimentId];
-    v23 = [v22 length];
+    experimentId = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers experimentId];
+    v23 = [experimentId length];
 
     if (!v23)
     {
@@ -355,17 +355,17 @@ LABEL_66:
   {
   }
 
-  v29 = [v10 levelForFactor:@"modelName" withNamespaceName:v12->_namespaceName];
-  v30 = [v29 stringValue];
+  v29 = [clientCopy levelForFactor:@"modelName" withNamespaceName:v12->_namespaceName];
+  stringValue = [v29 stringValue];
   treatmentName = v12->_treatmentName;
-  v12->_treatmentName = v30;
+  v12->_treatmentName = stringValue;
 
-  v32 = [v10 levelForFactor:@"modelDescription" withNamespaceName:v12->_namespaceName];
-  v33 = [v32 stringValue];
+  v32 = [clientCopy levelForFactor:@"modelDescription" withNamespaceName:v12->_namespaceName];
+  stringValue2 = [v32 stringValue];
   inferenceModelDescription = v12->_inferenceModelDescription;
-  v12->_inferenceModelDescription = v33;
+  v12->_inferenceModelDescription = stringValue2;
 
-  v35 = [v10 levelForFactor:@"mlModelEnabled" withNamespaceName:v12->_namespaceName];
+  v35 = [clientCopy levelForFactor:@"mlModelEnabled" withNamespaceName:v12->_namespaceName];
   v12->_isMLModelEnabled = [v35 BOOLeanValue];
 
   if ([(NSString *)v12->_treatmentName length])
@@ -382,19 +382,19 @@ LABEL_66:
         }
       }
 
-      v37 = [v10 levelForFactor:@"modelAssets" withNamespaceName:v12->_namespaceName];
-      v38 = [v37 directoryValue];
+      v37 = [clientCopy levelForFactor:@"modelAssets" withNamespaceName:v12->_namespaceName];
+      directoryValue = [v37 directoryValue];
 
-      if ([v38 hasPath] & 1) != 0 || (objc_msgSend(v38, "isOnDemand"))
+      if ([directoryValue hasPath] & 1) != 0 || (objc_msgSend(directoryValue, "isOnDemand"))
       {
-        if (([v38 hasPath] & 1) != 0 || a5)
+        if (([directoryValue hasPath] & 1) != 0 || assets)
         {
-          if ([v38 hasPath])
+          if ([directoryValue hasPath])
           {
-            v39 = [v38 path];
+            path = [directoryValue path];
             v90 = 0;
-            v42 = [MEMORY[0x277CCAA00] defaultManager];
-            v43 = [v42 fileExistsAtPath:v39 isDirectory:&v90];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+            v43 = [defaultManager fileExistsAtPath:path isDirectory:&v90];
 
             if (v43 && (v90 & 1) != 0)
             {
@@ -402,27 +402,27 @@ LABEL_66:
               v45 = [(NSString *)v12->_treatmentName stringByAppendingString:@".config.plist"];
               v46 = [(NSString *)v12->_treatmentName stringByAppendingString:@".espresso.bin"];
               v47 = [(NSString *)v12->_treatmentName stringByAppendingString:@".vocab.trie"];
-              v48 = [v39 stringByAppendingPathComponent:v44];
+              v48 = [path stringByAppendingPathComponent:v44];
               inferenceModelFilePath = v12->_inferenceModelFilePath;
               v12->_inferenceModelFilePath = v48;
 
               v89 = v45;
-              v50 = [v39 stringByAppendingPathComponent:v45];
+              v50 = [path stringByAppendingPathComponent:v45];
               inferenceModelConfigPath = v12->_inferenceModelConfigPath;
               v12->_inferenceModelConfigPath = v50;
 
               v88 = v46;
-              v52 = [v39 stringByAppendingPathComponent:v46];
+              v52 = [path stringByAppendingPathComponent:v46];
               espressoBinFilePath = v12->_espressoBinFilePath;
               v12->_espressoBinFilePath = v52;
 
               v87 = v47;
-              v54 = [v39 stringByAppendingPathComponent:v47];
+              v54 = [path stringByAppendingPathComponent:v47];
               vocabFilePath = v12->_vocabFilePath;
               v12->_vocabFilePath = v54;
 
-              v56 = [MEMORY[0x277CCAA00] defaultManager];
-              LOBYTE(v46) = [v56 isReadableFileAtPath:v12->_inferenceModelFilePath];
+              defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+              LOBYTE(v46) = [defaultManager2 isReadableFileAtPath:v12->_inferenceModelFilePath];
 
               if ((v46 & 1) == 0)
               {
@@ -430,8 +430,8 @@ LABEL_66:
                 v12->_inferenceModelFilePath = 0;
               }
 
-              v58 = [MEMORY[0x277CCAA00] defaultManager];
-              v59 = [v58 isReadableFileAtPath:v12->_inferenceModelConfigPath];
+              defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+              v59 = [defaultManager3 isReadableFileAtPath:v12->_inferenceModelConfigPath];
 
               if ((v59 & 1) == 0)
               {
@@ -439,8 +439,8 @@ LABEL_66:
                 v12->_inferenceModelConfigPath = 0;
               }
 
-              v61 = [MEMORY[0x277CCAA00] defaultManager];
-              v62 = [v61 isReadableFileAtPath:v12->_espressoBinFilePath];
+              defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+              v62 = [defaultManager4 isReadableFileAtPath:v12->_espressoBinFilePath];
 
               if ((v62 & 1) == 0)
               {
@@ -448,8 +448,8 @@ LABEL_66:
                 v12->_espressoBinFilePath = 0;
               }
 
-              v64 = [MEMORY[0x277CCAA00] defaultManager];
-              v65 = [v64 isReadableFileAtPath:v12->_vocabFilePath];
+              defaultManager5 = [MEMORY[0x277CCAA00] defaultManager];
+              v65 = [defaultManager5 isReadableFileAtPath:v12->_vocabFilePath];
 
               if ((v65 & 1) == 0)
               {
@@ -468,8 +468,8 @@ LABEL_66:
                   v84 = v12->_inferenceModelConfigPath;
                   v85 = v12->_espressoBinFilePath;
                   v86 = v12->_vocabFilePath;
-                  v69 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers experimentId];
-                  v70 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers treatmentId];
+                  experimentId2 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers experimentId];
+                  treatmentId3 = [(TRIExperimentIdentifiers *)v12->_experimentIdentifiers treatmentId];
                   isMLModelEnabled = v12->_isMLModelEnabled;
                   *buf = 138414338;
                   v97 = v68;
@@ -484,9 +484,9 @@ LABEL_66:
                   v106 = 2112;
                   v107 = v86;
                   v108 = 2112;
-                  v109 = v69;
+                  v109 = experimentId2;
                   v110 = 2112;
-                  v111 = v70;
+                  v111 = treatmentId3;
                   v112 = 1024;
                   v113 = isMLModelEnabled;
                   _os_log_impl(&dword_260CE3000, v67, OS_LOG_TYPE_DEFAULT, "Smart Reply reading from trial factor values {treatmentName: %@ inferenceModelDescription: %@ inferenceModelFilePath: %@ inferenceModelConfigPath: %@ espresso.bin: %@ vocab: %@ experimentId: %@ treatmentId: %@ isMLModelEnabled: %d}", buf, 0x58u);
@@ -545,41 +545,41 @@ LABEL_66:
 
           v114[0] = @"modelAssets";
           v73 = MEMORY[0x277CBEA60];
-          v39 = initWithNamespaceName_withTrialClient_shouldDownloadAssets___pasExprOnceResult;
+          path = initWithNamespaceName_withTrialClient_shouldDownloadAssets___pasExprOnceResult;
           v74 = [v73 arrayWithObjects:v114 count:1];
           v75 = v12->_namespaceName;
           v93[0] = MEMORY[0x277D85DD0];
           v93[1] = 3221225472;
           v93[2] = __94__PREResponseSuggestionsExpConfig_initWithNamespaceName_withTrialClient_shouldDownloadAssets___block_invoke_2;
           v93[3] = &unk_279ABAEA8;
-          v94 = v9;
+          v94 = nameCopy;
           v91[0] = MEMORY[0x277D85DD0];
           v91[1] = 3221225472;
           v91[2] = __94__PREResponseSuggestionsExpConfig_initWithNamespaceName_withTrialClient_shouldDownloadAssets___block_invoke_76;
           v91[3] = &unk_279ABAED0;
           v92 = v12;
-          [v10 downloadLevelsForFactors:v74 withNamespace:v75 queue:v39 options:0 progress:v93 completion:v91];
+          [clientCopy downloadLevelsForFactors:v74 withNamespace:v75 queue:path options:0 progress:v93 completion:v91];
         }
 
         else
         {
-          v39 = pre_responses_handle();
-          if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+          path = pre_responses_handle();
+          if (os_log_type_enabled(path, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v97 = v9;
-            _os_log_impl(&dword_260CE3000, v39, OS_LOG_TYPE_DEFAULT, "Smart Reply: assets for %@ not found on device, not downloading for this request", buf, 0xCu);
+            v97 = nameCopy;
+            _os_log_impl(&dword_260CE3000, path, OS_LOG_TYPE_DEFAULT, "Smart Reply: assets for %@ not found on device, not downloading for this request", buf, 0xCu);
           }
         }
       }
 
       else
       {
-        v39 = pre_responses_handle();
-        if (os_log_type_enabled(v39, OS_LOG_TYPE_FAULT))
+        path = pre_responses_handle();
+        if (os_log_type_enabled(path, OS_LOG_TYPE_FAULT))
         {
           *buf = 0;
-          _os_log_fault_impl(&dword_260CE3000, v39, OS_LOG_TYPE_FAULT, "Smart Reply: directory factor isn't downloadable on-demand and also isn't found on device", buf, 2u);
+          _os_log_fault_impl(&dword_260CE3000, path, OS_LOG_TYPE_FAULT, "Smart Reply: directory factor isn't downloadable on-demand and also isn't found on device", buf, 2u);
         }
       }
 

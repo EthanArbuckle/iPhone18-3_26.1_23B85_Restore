@@ -1,20 +1,20 @@
 @interface CKDFetchWebAuthTokenOperation
-- (CKDFetchWebAuthTokenOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchWebAuthTokenOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)main;
 @end
 
 @implementation CKDFetchWebAuthTokenOperation
 
-- (CKDFetchWebAuthTokenOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchWebAuthTokenOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = CKDFetchWebAuthTokenOperation;
-  v9 = [(CKDDatabaseOperation *)&v16 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v16 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_APIToken(v6, v7, v8);
+    v10 = objc_msgSend_APIToken(infoCopy, v7, v8);
     v13 = objc_msgSend_copy(v10, v11, v12);
     APIToken = v9->_APIToken;
     v9->_APIToken = v13;
@@ -51,7 +51,7 @@
     *location = 138544130;
     *&location[4] = v21;
     v43 = 2048;
-    v44 = self;
+    selfCopy = self;
     v45 = 2114;
     v46 = v26;
     v47 = 2112;

@@ -1,38 +1,38 @@
 @interface PKDiscoveryCardMiniView
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 template:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDiscoveryCardMiniView)initWithArticleLayout:(id)a3;
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds template:(BOOL)template;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDiscoveryCardMiniView)initWithArticleLayout:(id)layout;
 - (PKDiscoveryCardViewDelegate)delegate;
 - (void)_loadImageData;
-- (void)_tapGestureRecognized:(id)a3;
+- (void)_tapGestureRecognized:(id)recognized;
 - (void)layoutSubviews;
 @end
 
 @implementation PKDiscoveryCardMiniView
 
-- (PKDiscoveryCardMiniView)initWithArticleLayout:(id)a3
+- (PKDiscoveryCardMiniView)initWithArticleLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v34.receiver = self;
   v34.super_class = PKDiscoveryCardMiniView;
   v6 = [(PKDiscoveryCardMiniView *)&v34 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_articleLayout, a3);
-    v8 = [v5 miniCard];
-    v9 = v8;
-    if (v8)
+    objc_storeStrong(&v6->_articleLayout, layout);
+    miniCard = [layoutCopy miniCard];
+    v9 = miniCard;
+    if (miniCard)
     {
-      v10 = v8;
+      card = miniCard;
     }
 
     else
     {
-      v10 = [v5 card];
+      card = [layoutCopy card];
     }
 
-    v11 = v10;
+    v11 = card;
 
     if (_UISolariumFeatureFlagEnabled())
     {
@@ -41,22 +41,22 @@
 
     else
     {
-      v12 = [(PKDiscoveryCardMiniView *)v7 layer];
-      [v12 setMasksToBounds:1];
+      layer = [(PKDiscoveryCardMiniView *)v7 layer];
+      [layer setMasksToBounds:1];
 
       [(PKDiscoveryCardMiniView *)v7 _setContinuousCornerRadius:14.0];
     }
 
-    v13 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(PKDiscoveryCardMiniView *)v7 setBackgroundColor:v13];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(PKDiscoveryCardMiniView *)v7 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     headingLabel = v7->_headingLabel;
     v7->_headingLabel = v14;
 
     v16 = v7->_headingLabel;
-    v17 = [v11 heading];
-    [(UILabel *)v16 setText:v17];
+    heading = [v11 heading];
+    [(UILabel *)v16 setText:heading];
 
     [(UILabel *)v7->_headingLabel setNumberOfLines:0];
     v18 = v7->_headingLabel;
@@ -69,8 +69,8 @@
     v7->_titleLabel = v20;
 
     v22 = v7->_titleLabel;
-    v23 = [v11 title];
-    [(UILabel *)v22 setText:v23];
+    title = [v11 title];
+    [(UILabel *)v22 setText:title];
 
     [(UILabel *)v7->_titleLabel setNumberOfLines:0];
     v24 = v7->_titleLabel;
@@ -91,8 +91,8 @@
 
     else
     {
-      v30 = [(UIImageView *)v29 layer];
-      [v30 setMasksToBounds:1];
+      layer2 = [(UIImageView *)v29 layer];
+      [layer2 setMasksToBounds:1];
 
       [(UIImageView *)v7->_imageView _setContinuousCornerRadius:8.0];
     }
@@ -119,28 +119,28 @@
   [(PKDiscoveryCardMiniView *)self _layoutSubviewsInBounds:0 template:?];
 }
 
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 template:(BOOL)a4
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds template:(BOOL)template
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(PKDiscoveryCardMiniView *)self traitCollection];
-  v11 = [v10 preferredContentSizeCategory];
-  v12 = UIContentSizeCategoryCompareToCategory(v11, *MEMORY[0x1E69DDC70]);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(PKDiscoveryCardMiniView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v12 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC70]);
 
-  v13 = [(PKDiscoveryArticleLayout *)self->_articleLayout isWritingDirectionRTL];
-  if (v13)
+  isWritingDirectionRTL = [(PKDiscoveryArticleLayout *)self->_articleLayout isWritingDirectionRTL];
+  if (isWritingDirectionRTL)
   {
-    v14 = v13 == 1;
+    _shouldReverseLayoutDirection = isWritingDirectionRTL == 1;
   }
 
   else
   {
-    v14 = [(PKDiscoveryCardMiniView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKDiscoveryCardMiniView *)self _shouldReverseLayoutDirection];
   }
 
-  if (v14)
+  if (_shouldReverseLayoutDirection)
   {
     v15 = 2;
   }
@@ -150,7 +150,7 @@
     v15 = 0;
   }
 
-  if (v14)
+  if (_shouldReverseLayoutDirection)
   {
     v16 = CGRectMinXEdge;
   }
@@ -181,11 +181,11 @@
   v21 = v52.size.height;
   remainder = v52;
   memset(&slice, 0, sizeof(slice));
-  v22 = [(UILabel *)self->_headingLabel text];
-  if ([v22 length])
+  text = [(UILabel *)self->_headingLabel text];
+  if ([text length])
   {
-    v23 = [(UILabel *)self->_titleLabel text];
-    if ([v23 length])
+    text2 = [(UILabel *)self->_titleLabel text];
+    if ([text2 length])
     {
       v24 = 2.0;
     }
@@ -201,23 +201,23 @@
     v24 = 0.0;
   }
 
-  v25 = [(UILabel *)self->_headingLabel text];
-  if ([v25 length])
+  text3 = [(UILabel *)self->_headingLabel text];
+  if ([text3 length])
   {
     v26 = 1;
   }
 
   else
   {
-    v27 = [(UILabel *)self->_titleLabel text];
-    v26 = [v27 length] != 0;
+    text4 = [(UILabel *)self->_titleLabel text];
+    v26 = [text4 length] != 0;
   }
 
   v28 = v17 + v17;
 
-  v29 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v29)
+  if (image)
   {
     if (v12 == NSOrderedDescending)
     {
@@ -246,7 +246,7 @@
     CGRectDivide(v53, &slice, &remainder, 116.0, v30);
     memset(&v47, 0, sizeof(v47));
     CGRectDivide(slice, &slice, &v47, 116.0, v31);
-    if (!a4)
+    if (!template)
     {
       [(UIImageView *)self->_imageView setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
     }
@@ -291,14 +291,14 @@
   PKSizeAlignedInRect();
   v47 = v54;
   CGRectDivide(v54, &slice, &v47, v37, CGRectMinYEdge);
-  if (!a4)
+  if (!template)
   {
     [(UILabel *)self->_headingLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
   }
 
   CGRectDivide(v47, &slice, &v47, v24, CGRectMinYEdge);
   CGRectDivide(v47, &slice, &v47, v39, CGRectMinYEdge);
-  if (!a4)
+  if (!template)
   {
     [(UILabel *)self->_titleLabel setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
   }
@@ -317,9 +317,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDiscoveryCardMiniView *)self _layoutSubviewsInBounds:1 template:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDiscoveryCardMiniView *)self _layoutSubviewsInBounds:1 template:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -327,28 +327,28 @@
 
 - (void)_loadImageData
 {
-  v3 = [(PKDiscoveryArticleLayout *)self->_articleLayout miniCard];
-  v4 = v3;
-  if (v3)
+  miniCard = [(PKDiscoveryArticleLayout *)self->_articleLayout miniCard];
+  v4 = miniCard;
+  if (miniCard)
   {
-    v5 = v3;
+    card = miniCard;
   }
 
   else
   {
-    v5 = [(PKDiscoveryArticleLayout *)self->_articleLayout card];
+    card = [(PKDiscoveryArticleLayout *)self->_articleLayout card];
   }
 
-  v6 = v5;
+  v6 = card;
 
   objc_initWeak(&location, self);
-  v7 = [v6 backgroundMedia];
+  backgroundMedia = [v6 backgroundMedia];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__PKDiscoveryCardMiniView__loadImageData__block_invoke;
   v8[3] = &unk_1E80203C0;
   objc_copyWeak(&v9, &location);
-  PKFetchImageForDiscoveryMedia(v7, 116.0, 116.0, 1, v8);
+  PKFetchImageForDiscoveryMedia(backgroundMedia, 116.0, 116.0, 1, v8);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -391,7 +391,7 @@ uint64_t __41__PKDiscoveryCardMiniView__loadImageData__block_invoke_2(uint64_t a
   return [v2 layoutIfNeeded];
 }
 
-- (void)_tapGestureRecognized:(id)a3
+- (void)_tapGestureRecognized:(id)recognized
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;

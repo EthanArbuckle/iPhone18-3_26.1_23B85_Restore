@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (_DASNotificationManager)init;
 - (id)defaultNotifcationRequest;
-- (void)postNotificationAtDate:(id)a3 withTitle:(id)a4 withTextContent:(id)a5 icon:(id)a6 url:(id)a7 expirationDate:(id)a8;
+- (void)postNotificationAtDate:(id)date withTitle:(id)title withTextContent:(id)content icon:(id)icon url:(id)url expirationDate:(id)expirationDate;
 @end
 
 @implementation _DASNotificationManager
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000613B8;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B2C8 != -1)
   {
     dispatch_once(&qword_10020B2C8, block);
@@ -65,28 +65,28 @@
   return v4;
 }
 
-- (void)postNotificationAtDate:(id)a3 withTitle:(id)a4 withTextContent:(id)a5 icon:(id)a6 url:(id)a7 expirationDate:(id)a8
+- (void)postNotificationAtDate:(id)date withTitle:(id)title withTextContent:(id)content icon:(id)icon url:(id)url expirationDate:(id)expirationDate
 {
-  v26 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dateCopy = date;
+  titleCopy = title;
+  contentCopy = content;
+  iconCopy = icon;
+  urlCopy = url;
+  expirationDateCopy = expirationDate;
   if (+[_DASConfig isInternalBuild])
   {
     v19 = objc_alloc_init(UNMutableNotificationContent);
     [v19 setCategoryIdentifier:@"dasInfoCategory"];
-    [v19 setTitle:v14];
-    [v19 setBody:v15];
-    if ([(__CFString *)v16 isEqualToString:@"TTR"])
+    [v19 setTitle:titleCopy];
+    [v19 setBody:contentCopy];
+    if ([(__CFString *)iconCopy isEqualToString:@"TTR"])
     {
       v20 = @"ant.fill";
     }
 
-    else if (v16)
+    else if (iconCopy)
     {
-      v20 = v16;
+      v20 = iconCopy;
     }
 
     else
@@ -97,19 +97,19 @@
     v21 = [UNNotificationIcon iconForSystemImageNamed:v20];
     [v19 setIcon:v21];
 
-    if (v18)
+    if (expirationDateCopy)
     {
-      [v19 setExpirationDate:v18];
+      [v19 setExpirationDate:expirationDateCopy];
     }
 
-    if (v17)
+    if (urlCopy)
     {
-      [v19 setDefaultActionURL:v17];
+      [v19 setDefaultActionURL:urlCopy];
     }
 
-    if (v26)
+    if (dateCopy)
     {
-      [v26 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       v22 = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:0 repeats:?];
     }
 

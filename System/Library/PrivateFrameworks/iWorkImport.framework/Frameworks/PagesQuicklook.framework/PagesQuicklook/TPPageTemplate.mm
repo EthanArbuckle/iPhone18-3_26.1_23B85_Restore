@@ -1,53 +1,53 @@
 @interface TPPageTemplate
-+ (BOOL)isUserDefinedTag:(id)a3;
-- (BOOL)containsModelObject:(id)a3;
-- (BOOL)isUniqueTag:(id)a3;
++ (BOOL)isUserDefinedTag:(id)tag;
+- (BOOL)containsModelObject:(id)object;
+- (BOOL)isUniqueTag:(id)tag;
 - (NSArray)childInfos;
 - (NSString)description;
-- (TPPageTemplate)initWithContext:(id)a3 name:(id)a4 placeholderDrawables:(id)a5 placeholderTagsInZOrder:(id)a6 sectionTemplateDrawables:(id)a7;
-- (id)boxedObjectForProperty:(int)a3;
+- (TPPageTemplate)initWithContext:(id)context name:(id)name placeholderDrawables:(id)drawables placeholderTagsInZOrder:(id)order sectionTemplateDrawables:(id)templateDrawables;
+- (id)boxedObjectForProperty:(int)property;
 - (id)childEnumerator;
-- (id)objectForProperty:(int)a3;
-- (id)tagForDrawable:(id)a3;
-- (id)topLevelParentInfoForInfo:(id)a3;
-- (id)userDefinedTagForDrawable:(id)a3;
-- (int)intValueForProperty:(int)a3;
+- (id)objectForProperty:(int)property;
+- (id)tagForDrawable:(id)drawable;
+- (id)topLevelParentInfoForInfo:(id)info;
+- (id)userDefinedTagForDrawable:(id)drawable;
+- (int)intValueForProperty:(int)property;
 - (unint64_t)numberOfDerivedPagesInDocument;
 - (unint64_t)templateIndex;
 - (unint64_t)templatePreviewPageIndex;
-- (void)addPlaceholderDrawable:(id)a3 afterDrawable:(id)a4;
-- (void)applyTag:(id)a3 toPlaceholder:(id)a4;
-- (void)enumeratePlaceholderDrawablesWithBlock:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setBackgroundFill:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setName:(id)a3;
-- (void)setParentInfo:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)addPlaceholderDrawable:(id)drawable afterDrawable:(id)afterDrawable;
+- (void)applyTag:(id)tag toPlaceholder:(id)placeholder;
+- (void)enumeratePlaceholderDrawablesWithBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setBackgroundFill:(id)fill;
+- (void)setGeometry:(id)geometry;
+- (void)setName:(id)name;
+- (void)setParentInfo:(id)info;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TPPageTemplate
 
-- (TPPageTemplate)initWithContext:(id)a3 name:(id)a4 placeholderDrawables:(id)a5 placeholderTagsInZOrder:(id)a6 sectionTemplateDrawables:(id)a7
+- (TPPageTemplate)initWithContext:(id)context name:(id)name placeholderDrawables:(id)drawables placeholderTagsInZOrder:(id)order sectionTemplateDrawables:(id)templateDrawables
 {
-  v12 = a3;
-  v124 = a4;
-  v13 = a5;
-  v14 = a6;
-  v125 = v12;
-  v126 = a7;
+  contextCopy = context;
+  nameCopy = name;
+  drawablesCopy = drawables;
+  orderCopy = order;
+  v125 = contextCopy;
+  templateDrawablesCopy = templateDrawables;
   v128.receiver = self;
   v128.super_class = TPPageTemplate;
-  v16 = [(TPPageTemplate *)&v128 initWithContext:v12];
+  v16 = [(TPPageTemplate *)&v128 initWithContext:contextCopy];
   if (v16)
   {
-    if (v126)
+    if (templateDrawablesCopy)
     {
-      objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v15, v17, v18, v19, v20, v126);
+      objc_msgSend_arrayWithArray_(MEMORY[0x277CBEB18], v15, v17, v18, v19, v20, templateDrawablesCopy);
     }
 
     else
@@ -58,25 +58,25 @@
     sectionTemplateDrawables = v16->_sectionTemplateDrawables;
     v16->_sectionTemplateDrawables = v21;
 
-    v28 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v23, v24, v25, v26, v27, v13);
+    v28 = objc_msgSend_dictionaryWithDictionary_(MEMORY[0x277CBEB38], v23, v24, v25, v26, v27, drawablesCopy);
     placeholderDrawables = v16->_placeholderDrawables;
     v16->_placeholderDrawables = v28;
 
     v30 = [TPDrawablesZOrder alloc];
-    v36 = objc_msgSend_initWithContext_(v30, v31, v32, v33, v34, v35, v12);
+    v36 = objc_msgSend_initWithContext_(v30, v31, v32, v33, v34, v35, contextCopy);
     drawablesZOrder = v16->_drawablesZOrder;
     v16->_drawablesZOrder = v36;
 
-    objc_storeStrong(&v16->_name, a4);
+    objc_storeStrong(&v16->_name, name);
     v43 = 0;
     v16->_headersFootersMatchPreviousPage = 1;
     v16->_hideHeadersFooters = 0;
     v44 = 0x277D81000uLL;
-    v127 = v13;
-    while (v43 < objc_msgSend_count(v14, v38, v39, v40, v41, v42))
+    v127 = drawablesCopy;
+    while (v43 < objc_msgSend_count(orderCopy, v38, v39, v40, v41, v42))
     {
-      v50 = objc_msgSend_objectAtIndexedSubscript_(v14, v45, v46, v47, v48, v49, v43);
-      v57 = objc_msgSend_objectForKeyedSubscript_(v13, v51, v52, v53, v54, v55, v50);
+      v50 = objc_msgSend_objectAtIndexedSubscript_(orderCopy, v45, v46, v47, v48, v49, v43);
+      v57 = objc_msgSend_objectForKeyedSubscript_(drawablesCopy, v51, v52, v53, v54, v55, v50);
       if (v57)
       {
         objc_msgSend_insertDrawable_atZOrder_(v16->_drawablesZOrder, v56, v58, v59, v60, v61, v57, v43);
@@ -92,7 +92,7 @@
 
         v44 = v64;
         v76 = *(v64 + 336);
-        v13 = v127;
+        drawablesCopy = v127;
         objc_msgSend_logBacktraceThrottled(v76, v77, v78, v79, v80, v81);
       }
 
@@ -116,22 +116,22 @@
   return v16;
 }
 
-- (void)setBackgroundFill:(id)a3
+- (void)setBackgroundFill:(id)fill
 {
-  v17 = a3;
-  if (self->_backgroundFill != v17)
+  fillCopy = fill;
+  if (self->_backgroundFill != fillCopy)
   {
     objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
     v14 = objc_msgSend_null(MEMORY[0x277CBEB68], v9, v10, v11, v12, v13);
 
-    if (v14 == v17)
+    if (v14 == fillCopy)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v17;
+      v15 = fillCopy;
     }
 
     backgroundFill = self->_backgroundFill;
@@ -139,25 +139,25 @@
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_msgSend_willModify(self, v5, v6, v7, v8, v9);
   name = self->_name;
-  self->_name = v4;
+  self->_name = nameCopy;
 }
 
-- (BOOL)isUniqueTag:(id)a3
+- (BOOL)isUniqueTag:(id)tag
 {
-  v7 = objc_msgSend_objectForKey_(self->_placeholderDrawables, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_objectForKey_(self->_placeholderDrawables, a2, v3, v4, v5, v6, tag);
   v8 = v7 == 0;
 
   return v8;
 }
 
-- (id)userDefinedTagForDrawable:(id)a3
+- (id)userDefinedTagForDrawable:(id)drawable
 {
-  v7 = objc_msgSend_tagForDrawable_(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_tagForDrawable_(self, a2, v3, v4, v5, v6, drawable);
   v8 = objc_opt_class();
   if (objc_msgSend_isUserDefinedTag_(v8, v9, v10, v11, v12, v13, v7))
   {
@@ -174,9 +174,9 @@
   return v14;
 }
 
-- (id)tagForDrawable:(id)a3
+- (id)tagForDrawable:(id)drawable
 {
-  v4 = a3;
+  drawableCopy = drawable;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -188,9 +188,9 @@
   v14[1] = 3221225472;
   v14[2] = sub_275FF1A50;
   v14[3] = &unk_27A6A89C8;
-  v15 = v4;
+  v15 = drawableCopy;
   v16 = &v17;
-  v6 = v4;
+  v6 = drawableCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(placeholderDrawables, v7, v8, v9, v10, v11, v14);
   v12 = v18[5];
 
@@ -199,32 +199,32 @@
   return v12;
 }
 
-- (void)enumeratePlaceholderDrawablesWithBlock:(id)a3
+- (void)enumeratePlaceholderDrawablesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   placeholderDrawables = self->_placeholderDrawables;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_275FF1B88;
   v12[3] = &unk_27A6A89F0;
   v12[4] = self;
-  v13 = v4;
-  v6 = v4;
+  v13 = blockCopy;
+  v6 = blockCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(placeholderDrawables, v7, v8, v9, v10, v11, v12);
 }
 
-- (void)applyTag:(id)a3 toPlaceholder:(id)a4
+- (void)applyTag:(id)tag toPlaceholder:(id)placeholder
 {
-  v23 = a3;
-  v6 = a4;
+  tagCopy = tag;
+  placeholderCopy = placeholder;
   objc_msgSend_willModify(self, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_tagForDrawable_(self, v12, v13, v14, v15, v16, v6);
+  v18 = objc_msgSend_tagForDrawable_(self, v12, v13, v14, v15, v16, placeholderCopy);
   if (v18)
   {
     objc_msgSend_removeObjectForKey_(self->_placeholderDrawables, v17, v19, v20, v21, v22, v18);
   }
 
-  objc_msgSend_setObject_forKey_(self->_placeholderDrawables, v17, v19, v20, v21, v22, v6, v23);
+  objc_msgSend_setObject_forKey_(self->_placeholderDrawables, v17, v19, v20, v21, v22, placeholderCopy, tagCopy);
 }
 
 - (unint64_t)templateIndex
@@ -311,12 +311,12 @@
   return v26;
 }
 
-- (void)addPlaceholderDrawable:(id)a3 afterDrawable:(id)a4
+- (void)addPlaceholderDrawable:(id)drawable afterDrawable:(id)afterDrawable
 {
-  v70 = a3;
-  v6 = a4;
-  objc_msgSend_setParentInfo_(v70, v7, v8, v9, v10, v11, self);
-  v17 = objc_msgSend_objectUUID(v70, v12, v13, v14, v15, v16);
+  drawableCopy = drawable;
+  afterDrawableCopy = afterDrawable;
+  objc_msgSend_setParentInfo_(drawableCopy, v7, v8, v9, v10, v11, self);
+  v17 = objc_msgSend_objectUUID(drawableCopy, v12, v13, v14, v15, v16);
   v23 = objc_msgSend_UUIDString(v17, v18, v19, v20, v21, v22);
 
   v29 = objc_msgSend_objectForKey_(self->_placeholderDrawables, v24, v25, v26, v27, v28, v23);
@@ -332,24 +332,24 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55, v56, v57, v58);
   }
 
-  objc_msgSend_setObject_forKey_(self->_placeholderDrawables, v30, v31, v32, v33, v34, v70, v23);
-  if (v6)
+  objc_msgSend_setObject_forKey_(self->_placeholderDrawables, v30, v31, v32, v33, v34, drawableCopy, v23);
+  if (afterDrawableCopy)
   {
-    v64 = objc_msgSend_zOrderOfDrawable_(self->_drawablesZOrder, v59, v60, v61, v62, v63, v6);
+    v64 = objc_msgSend_zOrderOfDrawable_(self->_drawablesZOrder, v59, v60, v61, v62, v63, afterDrawableCopy);
     if (v64 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertDrawable_atZOrder_(self->_drawablesZOrder, v65, v66, v67, v68, v69, v70, 0x7FFFFFFFFFFFFFFFLL);
+      objc_msgSend_insertDrawable_atZOrder_(self->_drawablesZOrder, v65, v66, v67, v68, v69, drawableCopy, 0x7FFFFFFFFFFFFFFFLL);
     }
 
     else
     {
-      objc_msgSend_insertDrawable_atZOrder_(self->_drawablesZOrder, v65, v66, v67, v68, v69, v70, v64 + 1);
+      objc_msgSend_insertDrawable_atZOrder_(self->_drawablesZOrder, v65, v66, v67, v68, v69, drawableCopy, v64 + 1);
     }
   }
 
   else
   {
-    objc_msgSend_insertDrawable_atZOrder_(self->_drawablesZOrder, v59, v60, v61, v62, v63, v70, 0);
+    objc_msgSend_insertDrawable_atZOrder_(self->_drawablesZOrder, v59, v60, v61, v62, v63, drawableCopy, 0);
   }
 }
 
@@ -365,11 +365,11 @@
   return v29;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -390,7 +390,7 @@
 
         v26 = *(*(&v50 + 1) + 8 * i);
         objc_msgSend_setParentInfo_(v26, v18, v20, v21, v22, v23, self);
-        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v26, v27, v28, v29, v30, v31, v6, v7);
+        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v26, v27, v28, v29, v30, v31, rootCopy, contextCopy);
       }
 
       v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v18, v20, v21, v22, v23, &v50, v55, 16);
@@ -417,7 +417,7 @@
           objc_enumerationMutation(v32);
         }
 
-        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v46 + 1) + 8 * j), v38, v40, v41, v42, v43, v6, v7, v46);
+        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v46 + 1) + 8 * j), v38, v40, v41, v42, v43, rootCopy, contextCopy, v46);
       }
 
       v39 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v38, v40, v41, v42, v43, &v46, v54, 16);
@@ -427,12 +427,12 @@
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v13 = objc_msgSend_context(v6, v8, v9, v10, v11, v12);
+  rootCopy = root;
+  contextCopy = context;
+  v13 = objc_msgSend_context(rootCopy, v8, v9, v10, v11, v12);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v14, v15, v16, v17, v18, v13);
 
   v57 = 0u;
@@ -454,7 +454,7 @@
           objc_enumerationMutation(v23);
         }
 
-        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v55 + 1) + 8 * v36++), v29, v31, v32, v33, v34, v6, v7);
+        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v55 + 1) + 8 * v36++), v29, v31, v32, v33, v34, rootCopy, contextCopy);
       }
 
       while (v30 != v36);
@@ -483,7 +483,7 @@
           objc_enumerationMutation(v37);
         }
 
-        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v51 + 1) + 8 * v50++), v43, v45, v46, v47, v48, v6, v7, v51);
+        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(*(*(&v51 + 1) + 8 * v50++), v43, v45, v46, v47, v48, rootCopy, contextCopy, v51);
       }
 
       while (v44 != v50);
@@ -494,10 +494,10 @@
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -517,7 +517,7 @@
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v52 + 1) + 8 * v22++), v15, v17, v18, v19, v20, v4);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v52 + 1) + 8 * v22++), v15, v17, v18, v19, v20, rootCopy);
       }
 
       while (v16 != v22);
@@ -546,7 +546,7 @@
           objc_enumerationMutation(v23);
         }
 
-        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v48 + 1) + 8 * v36++), v29, v31, v32, v33, v34, v4, v48);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(*(*(&v48 + 1) + 8 * v36++), v29, v31, v32, v33, v34, rootCopy, v48);
       }
 
       while (v30 != v36);
@@ -556,14 +556,14 @@
     while (v30);
   }
 
-  v42 = objc_msgSend_context(v4, v37, v38, v39, v40, v41);
+  v42 = objc_msgSend_context(rootCopy, v37, v38, v39, v40, v41);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v43, v44, v45, v46, v47, v42);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -583,7 +583,7 @@
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v41 + 1) + 8 * v22++), v15, v17, v18, v19, v20, v4);
+        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v41 + 1) + 8 * v22++), v15, v17, v18, v19, v20, rootCopy);
       }
 
       while (v16 != v22);
@@ -612,7 +612,7 @@
           objc_enumerationMutation(v23);
         }
 
-        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v37 + 1) + 8 * v36++), v29, v31, v32, v33, v34, v4, v37);
+        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v37 + 1) + 8 * v36++), v29, v31, v32, v33, v34, rootCopy, v37);
       }
 
       while (v30 != v36);
@@ -623,12 +623,12 @@
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v135 = *MEMORY[0x277D85DE8];
-  v124 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v126 = objc_msgSend_messageWithNewFunction_descriptor_(v124, v3, v4, v5, v6, v7, sub_275FF4608, off_2812F85B8[24]);
+  v126 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, v4, v5, v6, v7, sub_275FF4608, off_2812F85B8[24]);
 
   v13 = objc_msgSend_UTF8String(self->_name, v8, v9, v10, v11, v12);
   *(v126 + 16) |= 1u;
@@ -646,7 +646,7 @@
   *(v126 + 96) = headersFootersMatchPreviousPage;
   if (self->_backgroundFill)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v124, v14, v15, v16, v17, v18, 6, v126);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v14, v15, v16, v17, v18, 6, v126);
     backgroundFill = self->_backgroundFill;
     *(v126 + 16) |= 2u;
     v28 = *(v126 + 80);
@@ -662,7 +662,7 @@
       *(v126 + 80) = v28;
     }
 
-    objc_msgSend_saveToArchive_archiver_(backgroundFill, v22, v23, v24, v25, v26, v28, v124);
+    objc_msgSend_saveToArchive_archiver_(backgroundFill, v22, v23, v24, v25, v26, v28, archiverCopy);
     v19 = v126;
     v21 = *(v126 + 16);
   }
@@ -670,7 +670,7 @@
   hideHeadersFooters = self->_hideHeadersFooters;
   *(v19 + 16) = v21 | 0x10;
   *(v19 + 97) = hideHeadersFooters;
-  objc_msgSend_setStrongReferenceArray_message_(v124, v14, v15, v16, v17, v18, self->_sectionTemplateDrawables, v19 + 24);
+  objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v14, v15, v16, v17, v18, self->_sectionTemplateDrawables, v19 + 24);
   v36 = objc_msgSend_allKeys(self->_placeholderDrawables, v31, v32, v33, v34, v35);
   v42 = objc_msgSend_sortedArrayUsingComparator_(v36, v37, v38, v39, v40, v41, &unk_2885011F8);
 
@@ -768,7 +768,7 @@ LABEL_21:
           *(v61 + 32) = v120;
         }
 
-        objc_msgSend_setStrongReference_message_(v124, v77, v78, v79, v80, v81, v56, v120);
+        objc_msgSend_setStrongReference_message_(archiverCopy, v77, v78, v79, v80, v81, v56, v120);
       }
 
       v48 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v49, v50, v51, v52, v53, &v128, v134, 16);
@@ -778,18 +778,18 @@ LABEL_21:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v3 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithDescriptor_(v3, v4, v5, v6, v7, v8, off_2812F85B8[24]);
+  v9 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, v5, v6, v7, v8, off_2812F85B8[24]);
 
   v15 = *(v9 + 16);
   if (v15)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
     v22 = objc_msgSend_tsp_initWithProtobufString_(v16, v17, v18, v19, v20, v21, *(v9 + 72) & 0xFFFFFFFFFFFFFFFELL);
-    if (objc_msgSend_fileFormatVersion(v3, v23, v24, v25, v26, v27) < *MEMORY[0x277D809A8])
+    if (objc_msgSend_fileFormatVersion(unarchiverCopy, v23, v24, v25, v26, v27) < *MEMORY[0x277D809A8])
     {
       v33 = objc_msgSend_newlineCharacterSet(MEMORY[0x277CCA900], v28, v29, v30, v31, v32);
       v39 = objc_msgSend_tsu_stringByReplacingInstancesOfCharactersInSet_withString_(v22, v34, v35, v36, v37, v38, v33, @" ");
@@ -816,7 +816,7 @@ LABEL_21:
 
   if ((v15 & 2) != 0)
   {
-    v52 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v10, v11, v12, v13, v14, *(v9 + 80), v3);
+    v52 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v10, v11, v12, v13, v14, *(v9 + 80), unarchiverCopy);
     backgroundFill = self->_backgroundFill;
     self->_backgroundFill = v52;
 
@@ -833,7 +833,7 @@ LABEL_21:
   v133[2] = sub_275FF364C;
   v133[3] = &unk_27A6A8508;
   v133[4] = self;
-  v54 = v3;
+  v54 = unarchiverCopy;
   v55 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v54, v56, v57, v58, v59, v60, v9 + 24, v55, 0, v133);
 
@@ -982,7 +982,7 @@ LABEL_21:
   return v31;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPageTemplate setGeometry:]");
@@ -994,7 +994,7 @@ LABEL_21:
   objc_msgSend_logBacktraceThrottled(v25, v20, v21, v22, v23, v24);
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPageTemplate setParentInfo:]");
@@ -1027,9 +1027,9 @@ LABEL_21:
   return v15;
 }
 
-- (id)boxedObjectForProperty:(int)a3
+- (id)boxedObjectForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v6 = String();
   v11 = 0;
   if (v6 > 1)
@@ -1089,9 +1089,9 @@ LABEL_14:
   return v11;
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 225:
       v8 = 104;
@@ -1112,9 +1112,9 @@ LABEL_7:
   return v7;
 }
 
-- (int)intValueForProperty:(int)a3
+- (int)intValueForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 4216:
       return 0;
@@ -1127,13 +1127,13 @@ LABEL_7:
   return 0x80000000;
 }
 
-+ (BOOL)isUserDefinedTag:(id)a3
++ (BOOL)isUserDefinedTag:(id)tag
 {
-  v3 = a3;
-  if (v3)
+  tagCopy = tag;
+  if (tagCopy)
   {
     v4 = objc_alloc(MEMORY[0x277CCAD78]);
-    v10 = objc_msgSend_initWithUUIDString_(v4, v5, v6, v7, v8, v9, v3);
+    v10 = objc_msgSend_initWithUUIDString_(v4, v5, v6, v7, v8, v9, tagCopy);
     v11 = v10 == 0;
   }
 
@@ -1145,11 +1145,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)topLevelParentInfoForInfo:(id)a3
+- (id)topLevelParentInfoForInfo:(id)info
 {
-  v3 = a3;
-  v4 = v3;
-  objc_msgSend_parentInfo(v3, v5, v6, v7, v8, v9);
+  infoCopy = info;
+  v4 = infoCopy;
+  objc_msgSend_parentInfo(infoCopy, v5, v6, v7, v8, v9);
   while (1)
     v11 = {;
     if (!v11)
@@ -1175,9 +1175,9 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)containsModelObject:(id)a3
+- (BOOL)containsModelObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = TSUClassAndProtocolCast();
   if (v5)

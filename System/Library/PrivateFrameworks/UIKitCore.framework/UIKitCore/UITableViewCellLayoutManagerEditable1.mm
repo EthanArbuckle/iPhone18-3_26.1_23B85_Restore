@@ -1,64 +1,64 @@
 @interface UITableViewCellLayoutManagerEditable1
-- (CGSize)intrinsicContentSizeForCell:(id)a3 rowWidth:(double)a4;
-- (double)defaultTextFieldFontSizeForCell:(id)a3;
-- (id)editableTextFieldForCell:(id)a3;
-- (void)_textFieldEndEditing:(id)a3;
-- (void)_textFieldStartEditing:(id)a3;
-- (void)layoutSubviewsOfCell:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (CGSize)intrinsicContentSizeForCell:(id)cell rowWidth:(double)width;
+- (double)defaultTextFieldFontSizeForCell:(id)cell;
+- (id)editableTextFieldForCell:(id)cell;
+- (void)_textFieldEndEditing:(id)editing;
+- (void)_textFieldStartEditing:(id)editing;
+- (void)layoutSubviewsOfCell:(id)cell;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation UITableViewCellLayoutManagerEditable1
 
-- (double)defaultTextFieldFontSizeForCell:(id)a3
+- (double)defaultTextFieldFontSizeForCell:(id)cell
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellLayoutManagerEditable1;
-  [(UITableViewCellLayoutManager *)&v4 defaultDetailTextLabelFontSizeForCell:a3];
+  [(UITableViewCellLayoutManager *)&v4 defaultDetailTextLabelFontSizeForCell:cell];
   return result;
 }
 
-- (void)layoutSubviewsOfCell:(id)a3
+- (void)layoutSubviewsOfCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v99.receiver = self;
   v99.super_class = UITableViewCellLayoutManagerEditable1;
-  [(UITableViewCellLayoutManager *)&v99 layoutSubviewsOfCell:v4];
-  v5 = [v4 contentView];
-  [v5 bounds];
+  [(UITableViewCellLayoutManager *)&v99 layoutSubviewsOfCell:cellCopy];
+  contentView = [cellCopy contentView];
+  [contentView bounds];
   v89 = v6;
 
-  [v4 bounds];
-  [(UITableViewCellLayoutManager *)self textRectForCell:v4 rowWidth:0 forSizing:CGRectGetWidth(v100)];
+  [cellCopy bounds];
+  [(UITableViewCellLayoutManager *)self textRectForCell:cellCopy rowWidth:0 forSizing:CGRectGetWidth(v100)];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v15 = MEMORY[0x1E695F060];
-  v16 = [v4 _textLabel:0];
+  v16 = [cellCopy _textLabel:0];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 font];
-    [v18 pointSize];
+    font = [v16 font];
+    [font pointSize];
     v20 = v19;
 
     if (v20 == 0.0)
     {
-      v21 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:v4];
+      v21 = [(UITableViewCellLayoutManager *)self defaultTextLabelFontForCell:cellCopy];
       [v17 setFont:v21];
     }
 
-    v22 = [v17 text];
-    v23 = v22;
-    if (v22 && [v22 length])
+    text = [v17 text];
+    v23 = text;
+    if (text && [text length])
     {
-      v24 = [v17 superview];
+      superview = [v17 superview];
 
-      if (!v24)
+      if (!superview)
       {
-        v25 = [v4 contentView];
-        [v25 addSubview:v17];
+        contentView2 = [cellCopy contentView];
+        [contentView2 addSubview:v17];
       }
     }
 
@@ -69,18 +69,18 @@
   }
 
   v26 = v15[1];
-  v27 = [v4 _editableTextField:{1, v89}];
+  v27 = [cellCopy _editableTextField:{1, v89}];
   v28 = v27;
   v29 = v26;
   if (v27)
   {
-    v30 = [v27 font];
-    [v30 pointSize];
+    font2 = [v27 font];
+    [font2 pointSize];
     v32 = v31;
 
     if (v32 == 0.0)
     {
-      [(UITableViewCellLayoutManagerEditable1 *)self defaultTextFieldFontSizeForCell:v4];
+      [(UITableViewCellLayoutManagerEditable1 *)self defaultTextFieldFontSizeForCell:cellCopy];
       v33 = [off_1E70ECC18 systemFontOfSize:?];
       [v28 setFont:v33];
     }
@@ -88,8 +88,8 @@
     [v28 setFrame:{0.0, 0.0, v12, v14}];
     [v28 sizeThatFits:{v12, v14}];
     v29 = v34;
-    v35 = [v4 contentView];
-    [v35 addSubview:v28];
+    contentView3 = [cellCopy contentView];
+    [contentView3 addSubview:v28];
   }
 
   v36 = *v15;
@@ -104,7 +104,7 @@
   v97 = v38;
   if (v28)
   {
-    if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v4])
+    if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
     {
       v26 = v29;
       v36 = v12;
@@ -131,10 +131,10 @@
     }
   }
 
-  v41 = v4[13];
+  v41 = cellCopy[13];
   rect_16 = v8;
   rect_24 = v26;
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v4])
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
   {
     if ((v41 & 0x400000) != 0)
     {
@@ -171,31 +171,31 @@
     v47 = v36;
     v48 = v8;
     v49 = v10;
-    v50 = [v17 font];
-    [v50 ascender];
+    font3 = [v17 font];
+    [font3 ascender];
     v52 = v51;
-    v53 = [v28 font];
-    [v53 ascender];
+    font4 = [v28 font];
+    [font4 ascender];
     v55 = v54;
 
     if (v52 >= v55)
     {
-      v56 = [v17 font];
-      [v56 ascender];
+      font5 = [v17 font];
+      [font5 ascender];
       v64 = v63;
-      v59 = [v28 font];
-      [v59 ascender];
+      font6 = [v28 font];
+      [font6 ascender];
       v43 = round(v64 - v65);
       v44 = 0.0;
     }
 
     else
     {
-      v56 = [v28 font];
-      [v56 ascender];
+      font5 = [v28 font];
+      [font5 ascender];
       v58 = v57;
-      v59 = [v17 font];
-      [v59 ascender];
+      font6 = [v17 font];
+      [font6 ascender];
       v44 = round(v58 - v60);
       v43 = 0.0;
     }
@@ -292,9 +292,9 @@
   y = v109.origin.y;
   width = v109.size.width;
   v85 = v109.size.height;
-  if (![(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v4])
+  if (![(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
   {
-    [v4 textFieldOffset];
+    [cellCopy textFieldOffset];
     v74 = v86;
   }
 
@@ -312,26 +312,26 @@
     v82 = v74;
   }
 
-  v87 = [v17 superview];
+  superview2 = [v17 superview];
 
-  if (v87)
+  if (superview2)
   {
     [v17 setFrame:{x, rect_16a, recta, height}];
   }
 
-  v88 = [v28 superview];
+  superview3 = [v28 superview];
 
-  if (v88)
+  if (superview3)
   {
     [v28 setFrame:{v82, y, width, v85}];
   }
 }
 
-- (id)editableTextFieldForCell:(id)a3
+- (id)editableTextFieldForCell:(id)cell
 {
   v8.receiver = self;
   v8.super_class = UITableViewCellLayoutManagerEditable1;
-  v4 = [(UITableViewCellLayoutManager *)&v8 defaultEditableTextFieldForCell:a3];
+  v4 = [(UITableViewCellLayoutManager *)&v8 defaultEditableTextFieldForCell:cell];
   [v4 setAdjustsFontSizeToFitWidth:1];
   v5 = [off_1E70ECC18 systemFontOfSize:17.0];
   [v4 setFont:v5];
@@ -347,18 +347,18 @@
   return v4;
 }
 
-- (CGSize)intrinsicContentSizeForCell:(id)a3 rowWidth:(double)a4
+- (CGSize)intrinsicContentSizeForCell:(id)cell rowWidth:(double)width
 {
-  v6 = a3;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = UITableViewCellLayoutManagerEditable1;
-  [(UITableViewCellLayoutManager *)&v15 intrinsicContentSizeForCell:v6 rowWidth:a4];
+  [(UITableViewCellLayoutManager *)&v15 intrinsicContentSizeForCell:cellCopy rowWidth:width];
   v8 = v7;
   v10 = v9;
-  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:v6])
+  if ([(UITableViewCellLayoutManager *)self shouldApplyAccessibilityLargeTextLayoutForCell:cellCopy])
   {
-    v11 = [v6 _editableTextField:1];
-    [v11 sizeThatFits:{a4, 3.40282347e38}];
+    v11 = [cellCopy _editableTextField:1];
+    [v11 sizeThatFits:{width, 3.40282347e38}];
     v10 = v10 + v12;
   }
 
@@ -369,11 +369,11 @@
   return result;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v7 = a3;
-  v3 = [v7 superview];
-  if (v3)
+  editingCopy = editing;
+  superview = [editingCopy superview];
+  if (superview)
   {
     do
     {
@@ -383,33 +383,33 @@
         break;
       }
 
-      v4 = [v3 superview];
+      v3Superview = [superview superview];
 
-      v3 = v4;
+      superview = v3Superview;
     }
 
-    while (v4);
+    while (v3Superview);
   }
 
-  v5 = [v3 _tableView];
-  v6 = [v7 text];
-  [v5 _updateCell:v3 withValue:v6];
+  _tableView = [superview _tableView];
+  text = [editingCopy text];
+  [_tableView _updateCell:superview withValue:text];
 }
 
-- (void)_textFieldStartEditing:(id)a3
+- (void)_textFieldStartEditing:(id)editing
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 addObserver:self selector:sel__textValueChanged_ name:@"UITextFieldTextDidChangeNotification" object:v5];
+  editingCopy = editing;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter addObserver:self selector:sel__textValueChanged_ name:@"UITextFieldTextDidChangeNotification" object:editingCopy];
 }
 
-- (void)_textFieldEndEditing:(id)a3
+- (void)_textFieldEndEditing:(id)editing
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:v5];
+  editingCopy = editing;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:self name:@"UITextFieldTextDidChangeNotification" object:editingCopy];
 }
 
 @end

@@ -14,37 +14,37 @@
 - (_UIStatusBar)statusBar;
 - (_UIStatusBarDisplayItem)overflowedDisplayItem;
 - (_UIStatusBarRegion)enabilityRegion;
-- (_UIStatusBarRegion)initWithIdentifier:(id)a3;
-- (id)displayItemForHUDAtLocation:(CGPoint)a3;
+- (_UIStatusBarRegion)initWithIdentifier:(id)identifier;
+- (id)displayItemForHUDAtLocation:(CGPoint)location;
 - (int64_t)effectiveStyle;
-- (void)_addSubview:(id)a3 atBack:(BOOL)a4;
+- (void)_addSubview:(id)subview atBack:(BOOL)back;
 - (void)_overriddenStyleAttributesChanged;
-- (void)setAlpha:(double)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setDisplayItems:(id)a3;
-- (void)setFrozen:(BOOL)a3;
-- (void)setHighlightView:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setLayout:(id)a3;
-- (void)setOffset:(UIOffset)a3;
-- (void)setOffsetable:(BOOL)a3;
-- (void)setOverriddenStyle:(int64_t)a3;
-- (void)setOverriddenStyleAttributes:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBackgroundView:(id)view;
+- (void)setContentView:(id)view;
+- (void)setDisplayItems:(id)items;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setHighlightView:(id)view;
+- (void)setIdentifier:(id)identifier;
+- (void)setLayout:(id)layout;
+- (void)setOffset:(UIOffset)offset;
+- (void)setOffsetable:(BOOL)offsetable;
+- (void)setOverriddenStyle:(int64_t)style;
+- (void)setOverriddenStyleAttributes:(id)attributes;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation _UIStatusBarRegion
 
-- (_UIStatusBarRegion)initWithIdentifier:(id)a3
+- (_UIStatusBarRegion)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = _UIStatusBarRegion;
   v5 = [(_UIStatusBarRegion *)&v15 init];
   identifier = v5->_identifier;
-  v5->_identifier = v4;
-  v7 = v4;
+  v5->_identifier = identifierCopy;
+  v7 = identifierCopy;
 
   v8 = objc_alloc_init(UILayoutGuide);
   layoutGuide = v5->_layoutGuide;
@@ -54,9 +54,9 @@
   displayItems = v5->_displayItems;
   v5->_displayItems = v10;
 
-  v12 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   disablingTokens = v5->_disablingTokens;
-  v5->_disablingTokens = v12;
+  v5->_disablingTokens = indexSet;
 
   *&v5->_style = vdupq_n_s64(4uLL);
   return v5;
@@ -93,16 +93,16 @@
 - (CGRect)absoluteHoverFrame
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIStatusBarRegion *)self layoutItem];
-  v4 = [v3 _ui_superview];
-  v5 = [(_UIStatusBarRegion *)self layout];
-  v6 = [v5 displayItems];
+  layoutItem = [(_UIStatusBarRegion *)self layoutItem];
+  _ui_superview = [layoutItem _ui_superview];
+  layout = [(_UIStatusBarRegion *)self layout];
+  displayItems = [layout displayItems];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v6;
+  v7 = displayItems;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
@@ -227,27 +227,27 @@
   return v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (self->_identifier != v5)
+  identifierCopy = identifier;
+  if (self->_identifier != identifierCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_identifier, a3);
-    v6 = [(_UIStatusBarRegion *)self layoutGuide];
-    [v6 setIdentifier:v7];
+    v7 = identifierCopy;
+    objc_storeStrong(&self->_identifier, identifier);
+    layoutGuide = [(_UIStatusBarRegion *)self layoutGuide];
+    [layoutGuide setIdentifier:v7];
 
-    v5 = v7;
+    identifierCopy = v7;
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   p_layout = &self->_layout;
   layout = self->_layout;
-  v9 = v5;
-  if (layout != v5)
+  v9 = layoutCopy;
+  if (layout != layoutCopy)
   {
     if (layout)
     {
@@ -255,29 +255,29 @@
       [(_UIStatusBarRegionLayout *)*p_layout setDisplayItems:MEMORY[0x1E695E0F0]];
     }
 
-    objc_storeStrong(&self->_layout, a3);
+    objc_storeStrong(&self->_layout, layout);
     if (*p_layout)
     {
       [(_UIStatusBarRegionLayout *)*p_layout setRegion:self];
-      v8 = [(_UIStatusBarRegion *)self currentEnabledDisplayItems];
-      [(_UIStatusBarRegionLayout *)self->_layout setDisplayItems:v8];
+      currentEnabledDisplayItems = [(_UIStatusBarRegion *)self currentEnabledDisplayItems];
+      [(_UIStatusBarRegionLayout *)self->_layout setDisplayItems:currentEnabledDisplayItems];
     }
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_contentView = &self->_contentView;
-  if (self->_contentView != v5)
+  if (self->_contentView != viewCopy)
   {
-    v11 = v5;
-    v7 = [(_UIStatusBarRegion *)self layoutItem];
-    [v7 _ui_removeFromParentLayoutItem];
+    v11 = viewCopy;
+    layoutItem = [(_UIStatusBarRegion *)self layoutItem];
+    [layoutItem _ui_removeFromParentLayoutItem];
 
     if (v11)
     {
-      objc_storeStrong(&self->_contentView, a3);
+      objc_storeStrong(&self->_contentView, view);
       [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
       p_contentView = &self->_layoutGuide;
     }
@@ -292,17 +292,17 @@
     v10 = *p_contentView;
     *p_contentView = 0;
 
-    v5 = v11;
+    viewCopy = v11;
   }
 }
 
-- (void)setOffsetable:(BOOL)a3
+- (void)setOffsetable:(BOOL)offsetable
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  if (self->_offsetable != a3)
+  if (self->_offsetable != offsetable)
   {
-    self->_offsetable = a3;
-    if (a3)
+    self->_offsetable = offsetable;
+    if (offsetable)
     {
       if (!self->_contentView)
       {
@@ -315,15 +315,15 @@
       self->_layoutGuide = v5;
 
       [(UIView *)self->_contentView addLayoutGuide:self->_layoutGuide];
-      v7 = [(UILayoutGuide *)self->_layoutGuide centerXAnchor];
-      v8 = [(UIView *)self->_contentView centerXAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      centerXAnchor = [(UILayoutGuide *)self->_layoutGuide centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_contentView centerXAnchor];
+      v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       centerXConstraint = self->_centerXConstraint;
       self->_centerXConstraint = v9;
 
-      v11 = [(UILayoutGuide *)self->_layoutGuide centerYAnchor];
-      v12 = [(UIView *)self->_contentView centerYAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      centerYAnchor = [(UILayoutGuide *)self->_layoutGuide centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_contentView centerYAnchor];
+      v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       centerYConstraint = self->_centerYConstraint;
       self->_centerYConstraint = v13;
 
@@ -332,13 +332,13 @@
       v17 = self->_layoutGuide;
       v25[0] = self->_centerXConstraint;
       v25[1] = v16;
-      v18 = [(UILayoutGuide *)v17 widthAnchor];
-      v19 = [(UIView *)self->_contentView widthAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19];
+      widthAnchor = [(UILayoutGuide *)v17 widthAnchor];
+      widthAnchor2 = [(UIView *)self->_contentView widthAnchor];
+      v20 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v25[2] = v20;
-      v21 = [(UILayoutGuide *)self->_layoutGuide heightAnchor];
-      v22 = [(UIView *)self->_contentView heightAnchor];
-      v23 = [v21 constraintEqualToAnchor:v22];
+      heightAnchor = [(UILayoutGuide *)self->_layoutGuide heightAnchor];
+      heightAnchor2 = [(UIView *)self->_contentView heightAnchor];
+      v23 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v25[3] = v23;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
       [v15 activateConstraints:v24];
@@ -346,14 +346,14 @@
   }
 }
 
-- (void)setOffset:(UIOffset)a3
+- (void)setOffset:(UIOffset)offset
 {
   if (self->_offsetable)
   {
-    vertical = a3.vertical;
-    if (a3.horizontal != self->_offset.horizontal || a3.vertical != self->_offset.vertical)
+    vertical = offset.vertical;
+    if (offset.horizontal != self->_offset.horizontal || offset.vertical != self->_offset.vertical)
     {
-      self->_offset = a3;
+      self->_offset = offset;
       [(NSLayoutConstraint *)self->_centerXConstraint setConstant:?];
       centerYConstraint = self->_centerYConstraint;
 
@@ -362,86 +362,86 @@
   }
 }
 
-- (void)_addSubview:(id)a3 atBack:(BOOL)a4
+- (void)_addSubview:(id)subview atBack:(BOOL)back
 {
-  v4 = a4;
+  backCopy = back;
   v23[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(_UIStatusBarRegion *)self layoutItem];
-  v8 = [v7 _ui_superview];
-  v22 = v8;
-  if (v4)
+  subviewCopy = subview;
+  [subviewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  layoutItem = [(_UIStatusBarRegion *)self layoutItem];
+  _ui_superview = [layoutItem _ui_superview];
+  v22 = _ui_superview;
+  if (backCopy)
   {
-    [v8 insertSubview:v6 atIndex:0];
+    [_ui_superview insertSubview:subviewCopy atIndex:0];
   }
 
   else if (self->_contentView)
   {
-    [v8 insertSubview:v6 aboveSubview:?];
+    [_ui_superview insertSubview:subviewCopy aboveSubview:?];
   }
 
   else
   {
-    [v8 addSubview:v6];
+    [_ui_superview addSubview:subviewCopy];
   }
 
-  v21 = [v6 topAnchor];
-  v20 = [v7 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  topAnchor = [subviewCopy topAnchor];
+  topAnchor2 = [layoutItem topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[0] = v19;
-  v18 = [v6 leftAnchor];
-  v17 = [v7 leftAnchor];
-  v9 = [v18 constraintEqualToAnchor:v17];
+  leftAnchor = [subviewCopy leftAnchor];
+  leftAnchor2 = [layoutItem leftAnchor];
+  v9 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v23[1] = v9;
-  v10 = [v6 bottomAnchor];
-  v11 = [v7 bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  bottomAnchor = [subviewCopy bottomAnchor];
+  bottomAnchor2 = [layoutItem bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[2] = v12;
-  v13 = [v6 rightAnchor];
-  v14 = [v7 rightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  rightAnchor = [subviewCopy rightAnchor];
+  rightAnchor2 = [layoutItem rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v23[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
 
   [MEMORY[0x1E69977A0] activateConstraints:v16];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v7 = v5;
-    if (v5)
+    v7 = viewCopy;
+    if (viewCopy)
     {
-      [(_UIStatusBarRegion *)self _addSubview:v5 atBack:1];
+      [(_UIStatusBarRegion *)self _addSubview:viewCopy atBack:1];
       backgroundView = self->_backgroundView;
     }
 
     [(UIView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_backgroundView, view);
+    viewCopy = v7;
   }
 }
 
-- (void)setHighlightView:(id)a3
+- (void)setHighlightView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   highlightView = self->_highlightView;
-  if (highlightView != v5)
+  if (highlightView != viewCopy)
   {
-    v7 = v5;
-    if (v5)
+    v7 = viewCopy;
+    if (viewCopy)
     {
-      [(_UIStatusBarRegion *)self _addSubview:v5 atBack:0];
+      [(_UIStatusBarRegion *)self _addSubview:viewCopy atBack:0];
       highlightView = self->_highlightView;
     }
 
     [(UIView *)highlightView removeFromSuperview];
-    objc_storeStrong(&self->_highlightView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_highlightView, view);
+    viewCopy = v7;
   }
 }
 
@@ -452,19 +452,19 @@
   return result;
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  v3 = a3;
+  frozenCopy = frozen;
   v27[2] = *MEMORY[0x1E69E9840];
-  if ([(_UIStatusBarRegion *)self isFrozen]!= a3)
+  if ([(_UIStatusBarRegion *)self isFrozen]!= frozen)
   {
-    if (v3)
+    if (frozenCopy)
     {
       contentView = self->_contentView;
       if (!contentView)
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegion.m" lineNumber:269 description:@"Setting frozen requires a content view"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegion.m" lineNumber:269 description:@"Setting frozen requires a content view"];
 
         contentView = self->_contentView;
       }
@@ -483,19 +483,19 @@
       [(UIView *)self->_frozenView setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIView *)self->_frozenView setAlpha:v16];
       [(_UIStatusBarRegion *)self _addSubview:self->_frozenView atBack:1];
-      v18 = [(UIView *)self->_frozenView widthAnchor];
+      widthAnchor = [(UIView *)self->_frozenView widthAnchor];
       v29.origin.x = v8;
       v29.origin.y = v10;
       v29.size.width = v12;
       v29.size.height = v14;
-      v19 = [v18 constraintEqualToConstant:CGRectGetWidth(v29)];
+      v19 = [widthAnchor constraintEqualToConstant:CGRectGetWidth(v29)];
       v27[0] = v19;
-      v20 = [(UIView *)self->_frozenView heightAnchor];
+      heightAnchor = [(UIView *)self->_frozenView heightAnchor];
       v30.origin.x = v8;
       v30.origin.y = v10;
       v30.size.width = v12;
       v30.size.height = v14;
-      v21 = [v20 constraintEqualToConstant:CGRectGetHeight(v30)];
+      v21 = [heightAnchor constraintEqualToConstant:CGRectGetHeight(v30)];
       v27[1] = v21;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
 
@@ -507,8 +507,8 @@
     {
       [(UIView *)self->_frozenView alpha];
       v24 = v23;
-      v25 = [(_UIStatusBarRegion *)self containerView];
-      [v25 setAlpha:v24];
+      containerView = [(_UIStatusBarRegion *)self containerView];
+      [containerView setAlpha:v24];
 
       [(UIView *)self->_frozenView removeFromSuperview];
 
@@ -517,24 +517,24 @@
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   if (!self->_contentView)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegion.m" lineNumber:305 description:@"Setting alpha requires a content view"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegion.m" lineNumber:305 description:@"Setting alpha requires a content view"];
   }
 
-  v5 = [(_UIStatusBarRegion *)self isFrozen];
+  isFrozen = [(_UIStatusBarRegion *)self isFrozen];
   v6 = 104;
-  if (v5)
+  if (isFrozen)
   {
     v6 = 176;
   }
 
   v7 = *(&self->super.isa + v6);
 
-  [v7 setAlpha:a3];
+  [v7 setAlpha:alpha];
 }
 
 - (void)_overriddenStyleAttributesChanged
@@ -544,8 +544,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(_UIStatusBarRegion *)self currentEnabledDisplayItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  currentEnabledDisplayItems = [(_UIStatusBarRegion *)self currentEnabledDisplayItems];
+  v3 = [currentEnabledDisplayItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -557,17 +557,17 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(currentEnabledDisplayItems);
         }
 
-        v7 = [*(*(&v8 + 1) + 8 * v6) item];
-        [v7 setNeedsUpdate];
+        item = [*(*(&v8 + 1) + 8 * v6) item];
+        [item setNeedsUpdate];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [currentEnabledDisplayItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -585,11 +585,11 @@
   return result;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     if (self->_overriddenStyle == 4)
     {
       [(_UIStatusBarRegion *)self _overriddenStyleAttributesChanged];
@@ -597,20 +597,20 @@
   }
 }
 
-- (void)setOverriddenStyle:(int64_t)a3
+- (void)setOverriddenStyle:(int64_t)style
 {
-  if (self->_overriddenStyle != a3)
+  if (self->_overriddenStyle != style)
   {
-    self->_overriddenStyle = a3;
+    self->_overriddenStyle = style;
     [(_UIStatusBarRegion *)self _overriddenStyleAttributesChanged];
   }
 }
 
-- (void)setOverriddenStyleAttributes:(id)a3
+- (void)setOverriddenStyleAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   overriddenStyleAttributes = self->_overriddenStyleAttributes;
-  v9 = v5;
+  v9 = attributesCopy;
   v7 = overriddenStyleAttributes;
   if (v7 == v9)
   {
@@ -629,19 +629,19 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_overriddenStyleAttributes, a3);
+    objc_storeStrong(&self->_overriddenStyleAttributes, attributes);
     [(_UIStatusBarRegion *)self _overriddenStyleAttributesChanged];
   }
 
 LABEL_9:
 }
 
-- (void)setDisplayItems:(id)a3
+- (void)setDisplayItems:(id)items
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   displayItems = self->_displayItems;
-  if (displayItems != v5 && ([(NSOrderedSet *)displayItems isEqual:v5]& 1) == 0)
+  if (displayItems != itemsCopy && ([(NSOrderedSet *)displayItems isEqual:itemsCopy]& 1) == 0)
   {
     self->_needsReLayout = 0;
     goto LABEL_16;
@@ -658,7 +658,7 @@ LABEL_9:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [(NSOrderedSet *)v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (!v9)
   {
@@ -697,8 +697,8 @@ LABEL_29:
 LABEL_16:
     if (!self->_layout)
     {
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v33 handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegion.m" lineNumber:371 description:{@"%@ has no layout", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarRegion.m" lineNumber:371 description:{@"%@ has no layout", self}];
     }
 
     v15 = self->_displayItems;
@@ -706,19 +706,19 @@ LABEL_16:
     v37[1] = 3221225472;
     v37[2] = __38___UIStatusBarRegion_setDisplayItems___block_invoke;
     v37[3] = &unk_1E7121BB8;
-    v16 = v5;
+    v16 = itemsCopy;
     v38 = v16;
-    v39 = self;
+    selfCopy = self;
     [(NSOrderedSet *)v15 enumerateObjectsUsingBlock:v37];
     v17 = [(NSOrderedSet *)v16 copy];
     v18 = self->_displayItems;
     self->_displayItems = v17;
 
-    v19 = [(_UIStatusBarRegion *)self enabledDisplayItems];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && (v20 = self->_layout, [(_UIStatusBarRegion *)self containerItem], v21 = objc_claimAutoreleasedReturnValue(), LOBYTE(v20) = [(_UIStatusBarRegionLayout *)v20 mayFitDisplayItems:v19 inContainerItem:v21], v21, (v20 & 1) == 0))
+    enabledDisplayItems = [(_UIStatusBarRegion *)self enabledDisplayItems];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && (v20 = self->_layout, [(_UIStatusBarRegion *)self containerItem], v21 = objc_claimAutoreleasedReturnValue(), LOBYTE(v20) = [(_UIStatusBarRegionLayout *)v20 mayFitDisplayItems:enabledDisplayItems inContainerItem:v21], v21, (v20 & 1) == 0))
     {
       v23 = [(NSOrderedSet *)self->_displayItems mutableCopy];
-      v22 = [v19 mutableCopy];
+      v22 = [enabledDisplayItems mutableCopy];
       do
       {
         v24 = _UIStatusBarGetLowestPrioritizedItem(v22);
@@ -734,8 +734,8 @@ LABEL_16:
         [v25 setRegion:0];
 
         layout = self->_layout;
-        v27 = [(_UIStatusBarRegion *)self containerItem];
-        LODWORD(layout) = [(_UIStatusBarRegionLayout *)layout mayFitDisplayItems:v22 inContainerItem:v27];
+        containerItem = [(_UIStatusBarRegion *)self containerItem];
+        LODWORD(layout) = [(_UIStatusBarRegionLayout *)layout mayFitDisplayItems:v22 inContainerItem:containerItem];
       }
 
       while (!layout);
@@ -745,30 +745,30 @@ LABEL_16:
 
     else
     {
-      v22 = v19;
+      v22 = enabledDisplayItems;
     }
 
     contentView = self->_contentView;
     if (contentView)
     {
-      v30 = contentView;
+      owningView = contentView;
     }
 
     else
     {
-      v30 = [(UILayoutGuide *)self->_layoutGuide owningView];
+      owningView = [(UILayoutGuide *)self->_layoutGuide owningView];
     }
 
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __38___UIStatusBarRegion_setDisplayItems___block_invoke_2;
     v34[3] = &unk_1E7121BB8;
-    v35 = v30;
-    v36 = self;
-    v31 = v30;
+    v35 = owningView;
+    selfCopy2 = self;
+    v31 = owningView;
     [v22 enumerateObjectsUsingBlock:v34];
-    v32 = [(_UIStatusBarRegion *)self enabledDisplayItems];
-    [(_UIStatusBarRegionLayout *)self->_layout setDisplayItems:v32];
+    enabledDisplayItems2 = [(_UIStatusBarRegion *)self enabledDisplayItems];
+    [(_UIStatusBarRegionLayout *)self->_layout setDisplayItems:enabledDisplayItems2];
 
     v8 = v38;
     goto LABEL_29;
@@ -817,33 +817,33 @@ LABEL_30:
 
 - (NSDictionary)displayItemAbsoluteFrames
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_UIStatusBarRegion *)self layout];
-  v5 = [v4 displayItems];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  layout = [(_UIStatusBarRegion *)self layout];
+  displayItems = [layout displayItems];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47___UIStatusBarRegion_displayItemAbsoluteFrames__block_invoke;
   v8[3] = &unk_1E711FD88;
-  v6 = v3;
+  v6 = dictionary;
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [displayItems enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (id)displayItemForHUDAtLocation:(CGPoint)a3
+- (id)displayItemForHUDAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v34 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(_UIStatusBarRegion *)self layout];
-  v7 = [v6 displayItems];
+  layout = [(_UIStatusBarRegion *)self layout];
+  displayItems = [layout displayItems];
 
-  v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v8 = [displayItems countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -856,32 +856,32 @@ LABEL_3:
     {
       if (*v30 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(displayItems);
       }
 
       v14 = *(*(&v29 + 1) + 8 * v13);
-      v15 = [v14 view];
-      [v15 frame];
+      view = [v14 view];
+      [view frame];
       if (CGRectIsEmpty(v36))
       {
         goto LABEL_18;
       }
 
-      v16 = [(_UIStatusBarRegion *)self statusBar];
-      [v16 convertPoint:v15 toView:{x, y}];
+      statusBar = [(_UIStatusBarRegion *)self statusBar];
+      [statusBar convertPoint:view toView:{x, y}];
       v18 = v17;
 
-      [v15 bounds];
-      if ([v15 pointInside:0 withEvent:{v18, CGRectGetMidY(v37)}])
+      [view bounds];
+      if ([view pointInside:0 withEvent:{v18, CGRectGetMidY(v37)}])
       {
         v27 = v14;
 
         goto LABEL_24;
       }
 
-      [v15 bounds];
+      [view bounds];
       MinX = CGRectGetMinX(v38);
-      [v15 bounds];
+      [view bounds];
       if (v18 <= MinX)
       {
         break;
@@ -889,7 +889,7 @@ LABEL_3:
 
       if (v18 >= CGRectGetMaxX(*&v20))
       {
-        [v15 bounds];
+        [view bounds];
         v24 = v18 - CGRectGetMaxX(v39);
         goto LABEL_12;
       }
@@ -898,7 +898,7 @@ LABEL_18:
 
       if (v9 == ++v13)
       {
-        v9 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v9 = [displayItems countByEnumeratingWithState:&v29 objects:v33 count:16];
         if (v9)
         {
           goto LABEL_3;

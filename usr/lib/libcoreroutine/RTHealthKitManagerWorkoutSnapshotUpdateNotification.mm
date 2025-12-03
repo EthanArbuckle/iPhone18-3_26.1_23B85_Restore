@@ -1,18 +1,18 @@
 @interface RTHealthKitManagerWorkoutSnapshotUpdateNotification
-- (RTHealthKitManagerWorkoutSnapshotUpdateNotification)initWithWorkoutSnapshot:(id)a3;
+- (RTHealthKitManagerWorkoutSnapshotUpdateNotification)initWithWorkoutSnapshot:(id)snapshot;
 @end
 
 @implementation RTHealthKitManagerWorkoutSnapshotUpdateNotification
 
-- (RTHealthKitManagerWorkoutSnapshotUpdateNotification)initWithWorkoutSnapshot:(id)a3
+- (RTHealthKitManagerWorkoutSnapshotUpdateNotification)initWithWorkoutSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v9.receiver = self;
   v9.super_class = RTHealthKitManagerWorkoutSnapshotUpdateNotification;
   v5 = [(RTNotification *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [snapshotCopy copy];
     workoutSnapshot = v5->_workoutSnapshot;
     v5->_workoutSnapshot = v6;
   }

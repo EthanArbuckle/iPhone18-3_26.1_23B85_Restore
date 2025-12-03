@@ -11,25 +11,25 @@
 - (uint64_t)hk_morningIndexWithCalendar:()HKSleepDayIndex
 {
   v5 = a3;
-  v6 = [v5 calendarIdentifier];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E695D850]];
+  calendarIdentifier = [v5 calendarIdentifier];
+  v7 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
   if ((v7 & 1) == 0)
   {
-    [(NSDate(HKSleepDayIndex) *)a2 hk_morningIndexWithCalendar:a1];
+    [(NSDate(HKSleepDayIndex) *)a2 hk_morningIndexWithCalendar:self];
   }
 
-  v8 = [v5 components:60 fromDate:a1];
-  v9 = [v8 hour];
-  v10 = [v8 hk_dayIndex];
-  if (v9 < 18)
+  v8 = [v5 components:60 fromDate:self];
+  hour = [v8 hour];
+  hk_dayIndex = [v8 hk_dayIndex];
+  if (hour < 18)
   {
-    v11 = v10;
+    v11 = hk_dayIndex;
   }
 
   else
   {
-    v11 = v10 + 1;
+    v11 = hk_dayIndex + 1;
   }
 
   return v11;
@@ -38,15 +38,15 @@
 - (id)hk_sleepDayStartWithCalendar:()HKSleepDayIndex
 {
   v5 = a3;
-  v6 = [v5 calendarIdentifier];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E695D850]];
+  calendarIdentifier = [v5 calendarIdentifier];
+  v7 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
   if ((v7 & 1) == 0)
   {
-    [(NSDate(HKSleepDayIndex) *)a2 hk_sleepDayStartWithCalendar:a1];
+    [(NSDate(HKSleepDayIndex) *)a2 hk_sleepDayStartWithCalendar:self];
   }
 
-  v8 = [a1 hk_morningIndexWithCalendar:v5];
+  v8 = [self hk_morningIndexWithCalendar:v5];
   v9 = [MEMORY[0x1E695DF00] hk_sleepDayStartForMorningIndex:v8 calendar:v5];
 
   return v9;
@@ -55,7 +55,7 @@
 + (id)hk_sleepWeekStartForMorningIndex:()HKSleepDayIndex calendar:
 {
   v6 = a4;
-  v7 = [a1 hk_noonWithDayIndex:a3 calendar:v6];
+  v7 = [self hk_noonWithDayIndex:a3 calendar:v6];
   v8 = [v6 hk_startOfWeekWithFirstWeekday:objc_msgSend(v6 beforeDate:"firstWeekday") addingWeeks:{v7, 0}];
   v9 = [v8 hk_sleepDayStartWithCalendar:v6];
 
@@ -65,7 +65,7 @@
 + (id)hk_sleepMonthStartForMorningIndex:()HKSleepDayIndex calendar:
 {
   v6 = a4;
-  v7 = [a1 hk_noonWithDayIndex:a3 calendar:v6];
+  v7 = [self hk_noonWithDayIndex:a3 calendar:v6];
   v8 = [v6 hk_startOfMonthForDate:v7];
   v9 = [v8 hk_sleepDayStartWithCalendar:v6];
 
@@ -75,11 +75,11 @@
 - (id)hk_sleepDayMidnightWithCalendar:()HKSleepDayIndex
 {
   v4 = a3;
-  v5 = [a1 hk_morningIndexWithCalendar:v4];
+  v5 = [self hk_morningIndexWithCalendar:v4];
   v6 = [MEMORY[0x1E696AB80] hk_sleepDayIntervalForMorningIndex:v5 calendar:v4];
-  v7 = [v6 endDate];
+  endDate = [v6 endDate];
 
-  v8 = [v4 startOfDayForDate:v7];
+  v8 = [v4 startOfDayForDate:endDate];
 
   return v8;
 }

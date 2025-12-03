@@ -1,30 +1,30 @@
 @interface CoachingFeedbackFilter
-- (CoachingFeedbackFilter)initWithDelegate:(id)a3 feedbackSet:(id)a4 feedbackDuration:(double)a5 iconDuration:(double)a6;
+- (CoachingFeedbackFilter)initWithDelegate:(id)delegate feedbackSet:(id)set feedbackDuration:(double)duration iconDuration:(double)iconDuration;
 - (LACRemoteUI)delegate;
-- (double)_timeoutForFeedback:(int64_t)a3;
+- (double)_timeoutForFeedback:(int64_t)feedback;
 - (void)_dispatchPendingBlocks;
 - (void)_doneWaiting;
-- (void)_sendFeedback:(int64_t)a3;
-- (void)dispatchNowOrWhenFeedbackDurationAchieved:(BOOL)a3 finish:(BOOL)a4 block:(id)a5;
-- (void)scheduleFeedback:(int64_t)a3;
+- (void)_sendFeedback:(int64_t)feedback;
+- (void)dispatchNowOrWhenFeedbackDurationAchieved:(BOOL)achieved finish:(BOOL)finish block:(id)block;
+- (void)scheduleFeedback:(int64_t)feedback;
 @end
 
 @implementation CoachingFeedbackFilter
 
-- (CoachingFeedbackFilter)initWithDelegate:(id)a3 feedbackSet:(id)a4 feedbackDuration:(double)a5 iconDuration:(double)a6
+- (CoachingFeedbackFilter)initWithDelegate:(id)delegate feedbackSet:(id)set feedbackDuration:(double)duration iconDuration:(double)iconDuration
 {
-  v10 = a3;
-  v11 = a4;
+  delegateCopy = delegate;
+  setCopy = set;
   v17.receiver = self;
   v17.super_class = CoachingFeedbackFilter;
   v12 = [(CoachingFeedbackFilter *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v10);
-    objc_storeStrong(&v13->_feedbackSet, a4);
-    v13->_feedbackDuration = a5;
-    v13->_iconDuration = a6;
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_feedbackSet, set);
+    v13->_feedbackDuration = duration;
+    v13->_iconDuration = iconDuration;
     v14 = objc_opt_new();
     pendingBlocks = v13->_pendingBlocks;
     v13->_pendingBlocks = v14;
@@ -33,7 +33,7 @@
   return v13;
 }
 
-- (void)scheduleFeedback:(int64_t)a3
+- (void)scheduleFeedback:(int64_t)feedback
 {
   v5 = sub_1114();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -56,7 +56,7 @@ LABEL_10:
   }
 
   feedbackSet = self->_feedbackSet;
-  v8 = [NSNumber numberWithInteger:a3];
+  v8 = [NSNumber numberWithInteger:feedback];
   LODWORD(feedbackSet) = [(NSSet *)feedbackSet containsObject:v8];
 
   if (!feedbackSet)
@@ -65,7 +65,7 @@ LABEL_10:
   }
 
   lastFeedback = self->_lastFeedback;
-  v10 = [NSNumber numberWithInteger:a3];
+  v10 = [NSNumber numberWithInteger:feedback];
   LODWORD(lastFeedback) = [(NSNumber *)lastFeedback isEqualToNumber:v10];
 
   if (lastFeedback)
@@ -79,7 +79,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [NSNumber numberWithInteger:a3];
+  v11 = [NSNumber numberWithInteger:feedback];
   v12 = self->_lastFeedback;
   self->_lastFeedback = v11;
 
@@ -98,10 +98,10 @@ LABEL_10:
   }
 }
 
-- (double)_timeoutForFeedback:(int64_t)a3
+- (double)_timeoutForFeedback:(int64_t)feedback
 {
-  result = dbl_9550[a3 == 8];
-  if (a3 == 1)
+  result = dbl_9550[feedback == 8];
+  if (feedback == 1)
   {
     return 0.0;
   }
@@ -109,20 +109,20 @@ LABEL_10:
   return result;
 }
 
-- (void)_sendFeedback:(int64_t)a3
+- (void)_sendFeedback:(int64_t)feedback
 {
   self->_waiting = 1;
   v5 = [NSNumber numberWithInteger:?];
   lastSentFeedback = self->_lastSentFeedback;
   self->_lastSentFeedback = v5;
 
-  [(CoachingFeedbackFilter *)self _timeoutForFeedback:a3];
+  [(CoachingFeedbackFilter *)self _timeoutForFeedback:feedback];
   v8 = v7;
   v9 = sub_1114();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v22 = a3;
+    feedbackCopy = feedback;
     v23 = 2048;
     v24 = v8;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "sending feedback: %d, will wait %.2f sec", buf, 0x12u);
@@ -130,24 +130,24 @@ LABEL_10:
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v19 = &off_10A98;
-  v11 = [NSNumber numberWithInteger:a3];
+  v11 = [NSNumber numberWithInteger:feedback];
   v20 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   [WeakRetained noResponseEventWithParams:v12];
 
   v13 = objc_loadWeakRetained(&self->_delegate);
-  v14 = [NSNumber numberWithInteger:a3];
+  v14 = [NSNumber numberWithInteger:feedback];
   [v13 mechanismEvent:14 value:v14 reply:&stru_102D8];
 
   v15 = dispatch_time(0, (v8 * 1000000000.0));
   v16 = +[DaemonUtils sharedInstance];
-  v17 = [v16 serverQueue];
+  serverQueue = [v16 serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_13C4;
   block[3] = &unk_10300;
   block[4] = self;
-  dispatch_after(v15, v17, block);
+  dispatch_after(v15, serverQueue, block);
 }
 
 - (void)_doneWaiting
@@ -178,22 +178,22 @@ LABEL_10:
   }
 }
 
-- (void)dispatchNowOrWhenFeedbackDurationAchieved:(BOOL)a3 finish:(BOOL)a4 block:(id)a5
+- (void)dispatchNowOrWhenFeedbackDurationAchieved:(BOOL)achieved finish:(BOOL)finish block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  finishCopy = finish;
+  achievedCopy = achieved;
+  blockCopy = block;
   v9 = sub_1114();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315906;
     v17 = "[CoachingFeedbackFilter dispatchNowOrWhenFeedbackDurationAchieved:finish:block:]";
     v18 = 1024;
-    v19 = v6;
+    v19 = achievedCopy;
     v20 = 1024;
-    v21 = v5;
+    v21 = finishCopy;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%s %d, %d on %@", &v16, 0x22u);
   }
 
@@ -209,7 +209,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if (!v6 && self->_waiting)
+  if (!achievedCopy && self->_waiting)
   {
     v11 = sub_1114();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -218,10 +218,10 @@ LABEL_10:
     }
 
     pendingBlocks = self->_pendingBlocks;
-    v13 = objc_retainBlock(v8);
+    v13 = objc_retainBlock(blockCopy);
     [(NSMutableArray *)pendingBlocks addObject:v13];
 
-    if (!v5)
+    if (!finishCopy)
     {
       goto LABEL_19;
     }
@@ -233,7 +233,7 @@ LABEL_16:
       sub_73F4();
     }
 
-    self->_finished = v5;
+    self->_finished = finishCopy;
     goto LABEL_19;
   }
 
@@ -243,8 +243,8 @@ LABEL_16:
     sub_73B8();
   }
 
-  v8[2](v8);
-  if (v5)
+  blockCopy[2](blockCopy);
+  if (finishCopy)
   {
     goto LABEL_16;
   }

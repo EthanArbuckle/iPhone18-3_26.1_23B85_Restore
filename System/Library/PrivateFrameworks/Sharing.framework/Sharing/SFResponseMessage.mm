@@ -1,24 +1,24 @@
 @interface SFResponseMessage
-- (SFResponseMessage)initWithRequestMessage:(id)a3;
+- (SFResponseMessage)initWithRequestMessage:(id)message;
 @end
 
 @implementation SFResponseMessage
 
-- (SFResponseMessage)initWithRequestMessage:(id)a3
+- (SFResponseMessage)initWithRequestMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = SFResponseMessage;
   v5 = [(SFResponseMessage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [messageCopy identifier];
     identifier = v5->super._identifier;
-    v5->super._identifier = v6;
+    v5->super._identifier = identifier;
 
-    v8 = [v4 peerDevice];
+    peerDevice = [messageCopy peerDevice];
     peerDevice = v5->super._peerDevice;
-    v5->super._peerDevice = v8;
+    v5->super._peerDevice = peerDevice;
   }
 
   return v5;

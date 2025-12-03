@@ -1,21 +1,21 @@
 @interface NTKSiderealDialView
-- (NTKSiderealDialView)initWithFrame:(CGRect)a3 dialDiameter:(double)a4 device:(id)a5;
-- (id)_replicatorLayerWithCenter:(CGPoint)a3 bounds:(CGRect)a4 dialDiameter:(double)a5 instanceCount:(int64_t)a6 instanceRotation:(double)a7 tickOpacity:(double)a8 tickSize:(CGSize)a9 tickCornerRadius:(double)a10;
+- (NTKSiderealDialView)initWithFrame:(CGRect)frame dialDiameter:(double)diameter device:(id)device;
+- (id)_replicatorLayerWithCenter:(CGPoint)center bounds:(CGRect)bounds dialDiameter:(double)diameter instanceCount:(int64_t)count instanceRotation:(double)rotation tickOpacity:(double)opacity tickSize:(CGSize)size tickCornerRadius:(double)self0;
 @end
 
 @implementation NTKSiderealDialView
 
-- (NTKSiderealDialView)initWithFrame:(CGRect)a3 dialDiameter:(double)a4 device:(id)a5
+- (NTKSiderealDialView)initWithFrame:(CGRect)frame dialDiameter:(double)diameter device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v69 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v82.receiver = self;
   v82.super_class = NTKSiderealDialView;
-  v10 = [(NTKSiderealDialView *)&v82 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(NTKSiderealDialView *)&v82 initWithFrame:x, y, width, height];
+  if (height)
   {
     v80 = 0u;
     v81 = 0u;
@@ -23,18 +23,18 @@
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    sub_15D00(v69, &v76);
-    [(NTKSiderealDialView *)v10 setUserInteractionEnabled:0];
-    v11 = [(NTKSiderealDialView *)v10 layer];
-    [v11 setAllowsGroupOpacity:1];
+    sub_15D00(deviceCopy, &v76);
+    [(NTKSiderealDialView *)height setUserInteractionEnabled:0];
+    layer = [(NTKSiderealDialView *)height layer];
+    [layer setAllowsGroupOpacity:1];
 
     v12 = [UIView alloc];
-    [(NTKSiderealDialView *)v10 bounds];
+    [(NTKSiderealDialView *)height bounds];
     v13 = [v12 initWithFrame:?];
-    hourContainerView = v10->_hourContainerView;
-    v10->_hourContainerView = v13;
+    hourContainerView = height->_hourContainerView;
+    height->_hourContainerView = v13;
 
-    [(NTKSiderealDialView *)v10 addSubview:v10->_hourContainerView];
+    [(NTKSiderealDialView *)height addSubview:height->_hourContainerView];
     v75 = objc_opt_new();
     [v75 setNumberStyle:0];
     v15 = +[NSLocale currentLocale];
@@ -69,7 +69,7 @@
     v71 = [NSDictionary dictionaryWithObjects:v84 forKeys:v83 count:8];
 
     v23 = *(&v76 + 1);
-    [(NTKSiderealDialView *)v10 bounds];
+    [(NTKSiderealDialView *)height bounds];
     CLKRectGetCenter();
     v72 = v24;
     v74 = v25;
@@ -107,64 +107,64 @@
       }
 
       [v32 setCenter:{v40, v41}];
-      [(UIView *)v10->_hourContainerView addSubview:v32];
+      [(UIView *)height->_hourContainerView addSubview:v32];
 
       ++v30;
     }
 
-    v44 = [(NTKSiderealDialView *)v10 layer];
-    [(NTKSiderealDialView *)v10 bounds];
+    layer2 = [(NTKSiderealDialView *)height layer];
+    [(NTKSiderealDialView *)height bounds];
     v46 = v45;
     v48 = v47;
     v50 = v49;
     v52 = v51;
     v53 = *&v76;
     CLKDegreesToRadians();
-    v55 = [(NTKSiderealDialView *)v10 _replicatorLayerWithCenter:144 bounds:v72 dialDiameter:v74 instanceCount:v46 instanceRotation:v48 tickOpacity:v50 tickSize:v52 tickCornerRadius:v53, v54, 0x3FE0000000000000, *(&v79 + 1), v80, *(&v79 + 1) * 0.5];
-    [v44 addSublayer:v55];
+    v55 = [(NTKSiderealDialView *)height _replicatorLayerWithCenter:144 bounds:v72 dialDiameter:v74 instanceCount:v46 instanceRotation:v48 tickOpacity:v50 tickSize:v52 tickCornerRadius:v53, v54, 0x3FE0000000000000, *(&v79 + 1), v80, *(&v79 + 1) * 0.5];
+    [layer2 addSublayer:v55];
 
-    v56 = [(NTKSiderealDialView *)v10 layer];
-    [(NTKSiderealDialView *)v10 bounds];
-    v61 = [(NTKSiderealDialView *)v10 _replicatorLayerWithCenter:24 bounds:v72 dialDiameter:v74 instanceCount:v57 instanceRotation:v58 tickOpacity:v59 tickSize:v60 tickCornerRadius:v53, 0.261799388, 0x3FF0000000000000, *(&v78 + 1), v79, *(&v78 + 1) * 0.5];
-    [v56 addSublayer:v61];
+    layer3 = [(NTKSiderealDialView *)height layer];
+    [(NTKSiderealDialView *)height bounds];
+    v61 = [(NTKSiderealDialView *)height _replicatorLayerWithCenter:24 bounds:v72 dialDiameter:v74 instanceCount:v57 instanceRotation:v58 tickOpacity:v59 tickSize:v60 tickCornerRadius:v53, 0.261799388, 0x3FF0000000000000, *(&v78 + 1), v79, *(&v78 + 1) * 0.5];
+    [layer3 addSublayer:v61];
 
-    v62 = [(NTKSiderealDialView *)v10 layer];
-    [(NTKSiderealDialView *)v10 bounds];
-    v67 = [(NTKSiderealDialView *)v10 _replicatorLayerWithCenter:12 bounds:v72 dialDiameter:v74 instanceCount:v63 instanceRotation:v64 tickOpacity:v65 tickSize:v66 tickCornerRadius:v53, 0.523598776, 0x3FF0000000000000, *(&v77 + 1), v78, *(&v77 + 1) * 0.5];
-    [v62 addSublayer:v67];
+    layer4 = [(NTKSiderealDialView *)height layer];
+    [(NTKSiderealDialView *)height bounds];
+    v67 = [(NTKSiderealDialView *)height _replicatorLayerWithCenter:12 bounds:v72 dialDiameter:v74 instanceCount:v63 instanceRotation:v64 tickOpacity:v65 tickSize:v66 tickCornerRadius:v53, 0.523598776, 0x3FF0000000000000, *(&v77 + 1), v78, *(&v77 + 1) * 0.5];
+    [layer4 addSublayer:v67];
   }
 
-  return v10;
+  return height;
 }
 
-- (id)_replicatorLayerWithCenter:(CGPoint)a3 bounds:(CGRect)a4 dialDiameter:(double)a5 instanceCount:(int64_t)a6 instanceRotation:(double)a7 tickOpacity:(double)a8 tickSize:(CGSize)a9 tickCornerRadius:(double)a10
+- (id)_replicatorLayerWithCenter:(CGPoint)center bounds:(CGRect)bounds dialDiameter:(double)diameter instanceCount:(int64_t)count instanceRotation:(double)rotation tickOpacity:(double)opacity tickSize:(CGSize)size tickCornerRadius:(double)self0
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3.y;
-  v17 = a3.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v16 = center.y;
+  v17 = center.x;
   v18 = objc_opt_new();
   [v18 setFillMode:kCAFillModeBoth];
   [v18 setPosition:{v17, v16}];
   [v18 setBounds:{x, y, width, height}];
-  [v18 setInstanceCount:a6];
+  [v18 setInstanceCount:count];
   v19 = sub_15AC8();
   [v18 setInstanceColor:{objc_msgSend(v19, "CGColor")}];
 
-  CATransform3DMakeRotation(&v25, a7, 0.0, 0.0, 1.0);
+  CATransform3DMakeRotation(&v25, rotation, 0.0, 0.0, 1.0);
   [v18 setInstanceTransform:&v25];
   v20 = objc_opt_new();
   v21 = sub_15AC8();
   [v20 setBackgroundColor:{objc_msgSend(v21, "CGColor")}];
 
-  [v20 setBounds:{0.0, 0.0, a10, v27}];
-  HIDWORD(v22) = HIDWORD(a8);
-  *&v22 = a8;
+  [v20 setBounds:{0.0, 0.0, radius, v27}];
+  HIDWORD(v22) = HIDWORD(opacity);
+  *&v22 = opacity;
   [v20 setOpacity:v22];
   [v20 setCornerRadius:v28];
-  [v20 setPosition:{v17, v16 - a5 * 0.5 + v27 * 0.5 + 1.0}];
+  [v20 setPosition:{v17, v16 - diameter * 0.5 + v27 * 0.5 + 1.0}];
   [v18 addSublayer:v20];
 
   return v18;

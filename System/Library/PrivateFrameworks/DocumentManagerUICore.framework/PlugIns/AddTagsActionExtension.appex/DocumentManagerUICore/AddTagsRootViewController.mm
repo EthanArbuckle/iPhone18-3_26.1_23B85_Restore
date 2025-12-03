@@ -1,8 +1,8 @@
 @interface AddTagsRootViewController
-- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithRootViewController:(id)a3;
-- (void)done:(id)a3;
+- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithRootViewController:(id)controller;
+- (void)done:(id)done;
 - (void)viewDidLoad;
 @end
 
@@ -10,15 +10,15 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100001DD0();
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  if (a3)
+  if (done)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100004288();
     swift_unknownObjectRelease();
@@ -28,19 +28,19 @@
   {
     v6 = 0u;
     v7 = 0u;
-    v5 = self;
+    selfCopy2 = self;
   }
 
   [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC22AddTagsActionExtension25AddTagsRootViewController_addTagsViewController) dismissViewControllerAnimated:1 completion:{0, v6, v7}];
   sub_100003EA8(&v6, &qword_10000C5B8, &qword_100004890);
 }
 
-- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -51,7 +51,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -61,25 +61,25 @@ LABEL_3:
   return sub_10000287C(ObjCClassMetadata, v6);
 }
 
-- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithRootViewController:(id)a3
+- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithRootViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC22AddTagsActionExtension25AddTagsRootViewController_actionExtensionController;
   v6 = objc_allocWithZone(type metadata accessor for AddTagsActionExtensionController());
-  v7 = a3;
+  controllerCopy = controller;
   *(&self->super.super.super.super.isa + v5) = [v6 init];
   v8 = OBJC_IVAR____TtC22AddTagsActionExtension25AddTagsRootViewController_addTagsViewController;
   type metadata accessor for AddTagsActionViewController();
   *(&self->super.super.super.super.isa + v8) = [objc_allocWithZone(swift_getObjCClassFromMetadata()) init];
   v11.receiver = self;
   v11.super_class = type metadata accessor for AddTagsRootViewController();
-  v9 = [(AddTagsRootViewController *)&v11 initWithRootViewController:v7];
+  v9 = [(AddTagsRootViewController *)&v11 initWithRootViewController:controllerCopy];
 
   return v9;
 }
 
-- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22AddTagsActionExtension25AddTagsRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000041A8();
     v7 = v6;
@@ -91,8 +91,8 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100002A50(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100002A50(v5, v7, bundle);
 }
 
 @end

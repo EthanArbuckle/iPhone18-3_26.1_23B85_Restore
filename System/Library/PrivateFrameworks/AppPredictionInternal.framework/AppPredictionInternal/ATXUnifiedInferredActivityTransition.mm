@@ -1,40 +1,40 @@
 @interface ATXUnifiedInferredActivityTransition
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXUnifiedInferredActivityTransition)initWithCoder:(id)a3;
-- (ATXUnifiedInferredActivityTransition)initWithCoder_v1:(id)a3;
-- (ATXUnifiedInferredActivityTransition)initWithCoder_v2:(id)a3;
-- (ATXUnifiedInferredActivityTransition)initWithProto:(id)a3;
-- (ATXUnifiedInferredActivityTransition)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXUnifiedInferredActivityTransition:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXUnifiedInferredActivityTransition)initWithCoder:(id)coder;
+- (ATXUnifiedInferredActivityTransition)initWithCoder_v1:(id)coder_v1;
+- (ATXUnifiedInferredActivityTransition)initWithCoder_v2:(id)coder_v2;
+- (ATXUnifiedInferredActivityTransition)initWithProto:(id)proto;
+- (ATXUnifiedInferredActivityTransition)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXUnifiedInferredActivityTransition:(id)transition;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
-- (id)initFromTransitionTime:(double)a3 isEntryEvent:(BOOL)a4 source:(id)a5 activityType:(unint64_t)a6 confidence:(double)a7;
-- (id)initFromTransitionTime:(double)a3 isEntryEvent:(BOOL)a4 source:(id)a5 mode:(id)a6;
+- (id)initFromJSON:(id)n;
+- (id)initFromTransitionTime:(double)time isEntryEvent:(BOOL)event source:(id)source activityType:(unint64_t)type confidence:(double)confidence;
+- (id)initFromTransitionTime:(double)time isEntryEvent:(BOOL)event source:(id)source mode:(id)mode;
 - (id)json;
 - (id)jsonRepresentation;
 - (id)prettyRepresentation;
 - (id)proto;
 - (unint64_t)activityTypeAfterTransition;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUnifiedInferredActivityTransition
 
-- (id)initFromTransitionTime:(double)a3 isEntryEvent:(BOOL)a4 source:(id)a5 mode:(id)a6
+- (id)initFromTransitionTime:(double)time isEntryEvent:(BOOL)event source:(id)source mode:(id)mode
 {
-  v11 = a5;
-  v12 = a6;
+  sourceCopy = source;
+  modeCopy = mode;
   v16.receiver = self;
   v16.super_class = ATXUnifiedInferredActivityTransition;
   v13 = [(ATXUnifiedInferredActivityTransition *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_mode, a6);
-    objc_storeStrong(&v14->_source, a5);
-    v14->_transitionTime = a3;
-    v14->_isEntryEvent = a4;
+    objc_storeStrong(&v13->_mode, mode);
+    objc_storeStrong(&v14->_source, source);
+    v14->_transitionTime = time;
+    v14->_isEntryEvent = event;
     v14->_confidence = 1.0;
     ATXStringToMode();
     v14->_inferredActivityType = ATXActivityTypeFromMode();
@@ -43,20 +43,20 @@
   return v14;
 }
 
-- (id)initFromTransitionTime:(double)a3 isEntryEvent:(BOOL)a4 source:(id)a5 activityType:(unint64_t)a6 confidence:(double)a7
+- (id)initFromTransitionTime:(double)time isEntryEvent:(BOOL)event source:(id)source activityType:(unint64_t)type confidence:(double)confidence
 {
-  v13 = a5;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = ATXUnifiedInferredActivityTransition;
   v14 = [(ATXUnifiedInferredActivityTransition *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_source, a5);
-    v15->_transitionTime = a3;
-    v15->_isEntryEvent = a4;
-    v15->_inferredActivityType = a6;
-    v15->_confidence = a7;
+    objc_storeStrong(&v14->_source, source);
+    v15->_transitionTime = time;
+    v15->_isEntryEvent = event;
+    v15->_inferredActivityType = type;
+    v15->_confidence = confidence;
     ATXModeFromActivityType();
     v16 = ATXModeToString();
     mode = v15->_mode;
@@ -79,25 +79,25 @@
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXUnifiedInferredActivityTransition *)self jsonRepresentation];
-  v4 = [v2 dataWithJSONObject:v3 options:2 error:0];
+  jsonRepresentation = [(ATXUnifiedInferredActivityTransition *)self jsonRepresentation];
+  v4 = [v2 dataWithJSONObject:jsonRepresentation options:2 error:0];
 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
     v12 = 0;
-    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a1 fromData:v6 error:&v12];
+    v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:self fromData:dataCopy error:&v12];
     v10 = v12;
     objc_autoreleasePoolPop(v8);
     v7 = 0;
@@ -110,17 +110,17 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUnifiedInferredActivityTransition *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUnifiedInferredActivityTransition *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUnifiedInferredActivityTransition)initWithCoder:(id)a3
+- (ATXUnifiedInferredActivityTransition)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUnifiedInferredActivityTransition *)self initWithCoder_v2:v4];
+  coderCopy = coder;
+  v5 = [(ATXUnifiedInferredActivityTransition *)self initWithCoder_v2:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -129,7 +129,7 @@
 
   else
   {
-    v8 = [0 initWithCoder_v1:v4];
+    v8 = [0 initWithCoder_v1:coderCopy];
     v7 = v8;
     if (v8)
     {
@@ -149,46 +149,46 @@
   return v7;
 }
 
-- (ATXUnifiedInferredActivityTransition)initWithCoder_v2:(id)a3
+- (ATXUnifiedInferredActivityTransition)initWithCoder_v2:(id)coder_v2
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coder_v2Copy = coder_v2;
+  v5 = [coder_v2Copy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXUnifiedInferredActivityTransition *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ATXUnifiedInferredActivityTransition)initWithCoder_v1:(id)a3
+- (ATXUnifiedInferredActivityTransition)initWithCoder_v1:(id)coder_v1
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coder_v1Copy = coder_v1;
   v5 = MEMORY[0x277D42620];
   v6 = objc_opt_class();
   v7 = __atxlog_handle_modes();
-  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"inferredMode" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.decode.InferredModeSession" errorCode:-1 logHandle:v7];
+  v8 = [v5 robustDecodeObjectOfClass:v6 forKey:@"inferredMode" withCoder:coder_v1Copy expectNonNull:1 errorDomain:@"com.apple.proactive.decode.InferredModeSession" errorCode:-1 logHandle:v7];
 
-  v9 = [v4 error];
+  error = [coder_v1Copy error];
 
-  if (!v9 && v8)
+  if (!error && v8)
   {
     v10 = MEMORY[0x277D42620];
     v11 = objc_opt_class();
     v12 = __atxlog_handle_modes();
-    v13 = [v10 robustDecodeObjectOfClass:v11 forKey:@"source" withCoder:v4 expectNonNull:1 errorDomain:@"com.apple.proactive.decode.InferredModeSession" errorCode:-1 logHandle:v12];
+    v13 = [v10 robustDecodeObjectOfClass:v11 forKey:@"source" withCoder:coder_v1Copy expectNonNull:1 errorDomain:@"com.apple.proactive.decode.InferredModeSession" errorCode:-1 logHandle:v12];
 
-    v14 = [v4 error];
+    error2 = [coder_v1Copy error];
 
-    if (v14 || !v13)
+    if (error2 || !v13)
     {
       v18 = __atxlog_handle_modes();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -199,19 +199,19 @@
 
     else
     {
-      [v4 decodeDoubleForKey:@"transitionTime"];
+      [coder_v1Copy decodeDoubleForKey:@"transitionTime"];
       v16 = v15;
-      v17 = [v4 error];
+      error3 = [coder_v1Copy error];
 
-      if (!v17)
+      if (!error3)
       {
-        v25 = [v4 decodeBoolForKey:@"isEntryEvent"];
-        v26 = [v4 error];
+        v25 = [coder_v1Copy decodeBoolForKey:@"isEntryEvent"];
+        error4 = [coder_v1Copy error];
 
-        if (!v26)
+        if (!error4)
         {
           self = [(ATXUnifiedInferredActivityTransition *)self initFromTransitionTime:v25 isEntryEvent:v13 source:v8 mode:v16];
-          v22 = self;
+          selfCopy = self;
           goto LABEL_14;
         }
 
@@ -253,19 +253,19 @@ LABEL_12:
   }
 
 LABEL_13:
-  v22 = 0;
+  selfCopy = 0;
 LABEL_14:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 - (id)prettyRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CCA968]);
   v4 = MEMORY[0x277CCA968];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v4 dateFormatFromTemplate:@"EMMMd HH:mm ss ZZZZ" options:0 locale:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v6 = [v4 dateFormatFromTemplate:@"EMMMd HH:mm ss ZZZZ" options:0 locale:currentLocale];
 
   [v3 setDateFormat:v6];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_transitionTime];
@@ -288,29 +288,29 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUnifiedInferredActivityTransition *)self isEqualToATXUnifiedInferredActivityTransition:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXUnifiedInferredActivityTransition *)self isEqualToATXUnifiedInferredActivityTransition:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXUnifiedInferredActivityTransition:(id)a3
+- (BOOL)isEqualToATXUnifiedInferredActivityTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   [(ATXUnifiedInferredActivityTransition *)self transitionTime];
   v6 = v5;
-  [v4 transitionTime];
+  [transitionCopy transitionTime];
   v8 = v6 - v7;
   if (v8 >= 0.0)
   {
@@ -322,24 +322,24 @@ LABEL_14:
     v9 = -v8;
   }
 
-  v10 = [(ATXUnifiedInferredActivityTransition *)self isEntryEvent];
-  v11 = [v4 isEntryEvent];
-  v12 = [(ATXUnifiedInferredActivityTransition *)self mode];
-  v13 = [v4 mode];
-  v14 = [v12 isEqualToString:v13];
+  isEntryEvent = [(ATXUnifiedInferredActivityTransition *)self isEntryEvent];
+  isEntryEvent2 = [transitionCopy isEntryEvent];
+  mode = [(ATXUnifiedInferredActivityTransition *)self mode];
+  mode2 = [transitionCopy mode];
+  v14 = [mode isEqualToString:mode2];
 
-  v15 = [(ATXUnifiedInferredActivityTransition *)self inferredActivityType];
-  v16 = [v4 inferredActivityType];
+  inferredActivityType = [(ATXUnifiedInferredActivityTransition *)self inferredActivityType];
+  inferredActivityType2 = [transitionCopy inferredActivityType];
   [(ATXUnifiedInferredActivityTransition *)self confidence];
   v18 = v17;
-  [v4 confidence];
+  [transitionCopy confidence];
   v20 = v19;
-  v21 = [(ATXUnifiedInferredActivityTransition *)self source];
-  v22 = [v4 source];
+  source = [(ATXUnifiedInferredActivityTransition *)self source];
+  source2 = [transitionCopy source];
 
-  v23 = [v21 isEqualToString:v22];
+  v23 = [source isEqualToString:source2];
   result = 0;
-  if (v9 < 0.1 && ((v10 ^ v11) & 1) == 0 && v14 && v23)
+  if (v9 < 0.1 && ((isEntryEvent ^ isEntryEvent2) & 1) == 0 && v14 && v23)
   {
     v25 = v18 - v20;
     if (v18 - v20 < 0.0)
@@ -347,7 +347,7 @@ LABEL_14:
       v25 = -(v18 - v20);
     }
 
-    return v25 < 0.01 && v15 == v16;
+    return v25 < 0.01 && inferredActivityType == inferredActivityType2;
   }
 
   return result;
@@ -355,19 +355,19 @@ LABEL_14:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUnifiedInferredActivityTransition *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUnifiedInferredActivityTransition *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUnifiedInferredActivityTransition)initWithProto:(id)a3
+- (ATXUnifiedInferredActivityTransition)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -383,39 +383,39 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   [v5 transitionTime];
   v7 = v6;
-  v8 = [v5 isActivityStart];
-  v9 = [v5 source];
-  v10 = [v5 inferredActivity];
+  isActivityStart = [v5 isActivityStart];
+  source = [v5 source];
+  inferredActivity = [v5 inferredActivity];
   [v5 confidence];
   v12 = v11;
 
-  self = [(ATXUnifiedInferredActivityTransition *)self initFromTransitionTime:v8 isEntryEvent:v9 source:v10 activityType:v7 confidence:v12];
-  v13 = self;
+  self = [(ATXUnifiedInferredActivityTransition *)self initFromTransitionTime:isActivityStart isEntryEvent:source source:inferredActivity activityType:v7 confidence:v12];
+  selfCopy = self;
 LABEL_8:
 
-  return v13;
+  return selfCopy;
 }
 
-- (ATXUnifiedInferredActivityTransition)initWithProtoData:(id)a3
+- (ATXUnifiedInferredActivityTransition)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUnifiedInferredActivityTransition alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUnifiedInferredActivityTransition alloc] initWithData:dataCopy];
 
     self = [(ATXUnifiedInferredActivityTransition *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -427,16 +427,16 @@ LABEL_8:
   [(ATXUnifiedInferredActivityTransition *)self transitionTime];
   [v3 setTransitionTime:?];
   [v3 setIsActivityStart:{-[ATXUnifiedInferredActivityTransition isEntryEvent](self, "isEntryEvent")}];
-  v4 = [(ATXUnifiedInferredActivityTransition *)self source];
-  [v3 setSource:v4];
+  source = [(ATXUnifiedInferredActivityTransition *)self source];
+  [v3 setSource:source];
 
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUnifiedInferredActivityTransition alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUnifiedInferredActivityTransition alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUnifiedInferredActivityTransition *)self initWithProto:v5];
   return v6;
@@ -444,10 +444,10 @@ LABEL_8:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUnifiedInferredActivityTransition *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUnifiedInferredActivityTransition *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
 - (void)initWithCoder:.cold.1()

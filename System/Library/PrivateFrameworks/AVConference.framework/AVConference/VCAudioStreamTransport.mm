@@ -1,5 +1,5 @@
 @interface VCAudioStreamTransport
-- (VCAudioStreamTransport)initWithHandle:(tagHANDLE *)a3 callId:(unsigned int)a4 localSSRC:(unsigned int)a5 enableNetworkMonitor:(BOOL)a6;
+- (VCAudioStreamTransport)initWithHandle:(tagHANDLE *)handle callId:(unsigned int)id localSSRC:(unsigned int)c enableNetworkMonitor:(BOOL)monitor;
 - (int)onStart;
 - (void)dealloc;
 - (void)onStop;
@@ -9,19 +9,19 @@
 
 @implementation VCAudioStreamTransport
 
-- (VCAudioStreamTransport)initWithHandle:(tagHANDLE *)a3 callId:(unsigned int)a4 localSSRC:(unsigned int)a5 enableNetworkMonitor:(BOOL)a6
+- (VCAudioStreamTransport)initWithHandle:(tagHANDLE *)handle callId:(unsigned int)id localSSRC:(unsigned int)c enableNetworkMonitor:(BOOL)monitor
 {
-  v6 = a6;
-  v7 = *&a4;
+  monitorCopy = monitor;
+  v7 = *&id;
   v32 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = VCAudioStreamTransport;
-  v8 = [(VCMediaStreamTransport *)&v19 initWithHandle:a3 localSSRC:*&a5];
+  v8 = [(VCMediaStreamTransport *)&v19 initWithHandle:handle localSSRC:*&c];
   v9 = v8;
   if (v8)
   {
     v8->super._payloadType = 0;
-    if (v6)
+    if (monitorCopy)
     {
       v8->_wrmClient = [[WRMClient alloc] initWithDelegate:v8];
       rtpHandle = v9->super._rtpHandle;
@@ -136,13 +136,13 @@
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = VCAudioStreamTransport;
-  v3 = [(VCMediaStreamTransport *)&v5 onStart];
-  if ((v3 & 0x80000000) == 0)
+  onStart = [(VCMediaStreamTransport *)&v5 onStart];
+  if ((onStart & 0x80000000) == 0)
   {
     [(VCAudioStreamTransport *)self startWRM];
   }
 
-  return v3;
+  return onStart;
 }
 
 - (void)initWithHandle:(os_log_t)log callId:localSSRC:enableNetworkMonitor:.cold.1(uint64_t a1, int a2, os_log_t log)

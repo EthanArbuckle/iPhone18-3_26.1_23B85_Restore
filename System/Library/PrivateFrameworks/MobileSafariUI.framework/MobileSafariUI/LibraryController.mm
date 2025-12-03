@@ -1,52 +1,52 @@
 @interface LibraryController
-- (LibraryController)initWithConfiguration:(id)a3;
+- (LibraryController)initWithConfiguration:(id)configuration;
 - (NSString)currentCollection;
-- (void)_reportSelectedItemForAnalytics:(id)a3;
+- (void)_reportSelectedItemForAnalytics:(id)analytics;
 - (void)_updateSidebarButton;
 - (void)didSwitchProfile;
-- (void)libraryViewController:(id)a3 didSelectItem:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)libraryViewController:(id)controller didSelectItem:(id)item;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)reloadBookmarks;
-- (void)reloadExpansionStateForTabGroup:(id)a3;
-- (void)setCurrentCollection:(id)a3;
-- (void)setSidebarViewController:(id)a3;
+- (void)reloadExpansionStateForTabGroup:(id)group;
+- (void)setCurrentCollection:(id)collection;
+- (void)setSidebarViewController:(id)controller;
 - (void)toggleEditBookmarks;
 @end
 
 @implementation LibraryController
 
-- (LibraryController)initWithConfiguration:(id)a3
+- (LibraryController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = LibraryController;
   v6 = [(LibraryController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)reloadExpansionStateForTabGroup:(id)a3
+- (void)reloadExpansionStateForTabGroup:(id)group
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(LibraryViewController *)self->_sidebarViewController sectionControllers];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  sectionControllers = [(LibraryViewController *)self->_sidebarViewController sectionControllers];
+  v6 = [sectionControllers countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v29;
-    v21 = self;
-    v23 = v5;
+    selfCopy = self;
+    v23 = sectionControllers;
     v19 = *v29;
     do
     {
@@ -56,7 +56,7 @@
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sectionControllers);
         }
 
         v10 = *(*(&v28 + 1) + 8 * v9);
@@ -68,8 +68,8 @@
           v24 = 0u;
           v25 = 0u;
           v22 = v10;
-          v11 = [v10 itemControllers];
-          v12 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          itemControllers = [v10 itemControllers];
+          v12 = [itemControllers countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v12)
           {
             v13 = v12;
@@ -80,27 +80,27 @@
               {
                 if (*v25 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(itemControllers);
                 }
 
                 v16 = *(*(&v24 + 1) + 8 * i);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v17 = [v16 tabGroup];
-                  v18 = [v4 isEqual:v17];
+                  tabGroup = [v16 tabGroup];
+                  v18 = [groupCopy isEqual:tabGroup];
 
                   if (v18)
                   {
-                    [(LibraryViewController *)v21->_sidebarViewController reloadExpansionStateForItem:v16 inSection:v22];
+                    [(LibraryViewController *)selfCopy->_sidebarViewController reloadExpansionStateForItem:v16 inSection:v22];
 
-                    v5 = v23;
+                    sectionControllers = v23;
                     goto LABEL_21;
                   }
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v13 = [itemControllers countByEnumeratingWithState:&v24 objects:v32 count:16];
               if (v13)
               {
                 continue;
@@ -110,7 +110,7 @@
             }
           }
 
-          v5 = v23;
+          sectionControllers = v23;
           v8 = v19;
           v7 = v20;
         }
@@ -119,7 +119,7 @@
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [sectionControllers countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -130,58 +130,58 @@ LABEL_21:
 
 - (void)_updateSidebarButton
 {
-  v12 = [(SidebarUIProxy *)self->_sidebarUIProxy leadingSidebarButtonItem];
-  v3 = [(LibraryViewController *)self->_sidebarViewController navigationItem];
-  [v3 setLeftBarButtonItem:v12];
+  leadingSidebarButtonItem = [(SidebarUIProxy *)self->_sidebarUIProxy leadingSidebarButtonItem];
+  navigationItem = [(LibraryViewController *)self->_sidebarViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:leadingSidebarButtonItem];
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(SidebarUIProxy *)self->_sidebarUIProxy trailingSidebarButtonItem];
-  if (v5)
+  array = [MEMORY[0x277CBEB18] array];
+  trailingSidebarButtonItem = [(SidebarUIProxy *)self->_sidebarUIProxy trailingSidebarButtonItem];
+  if (trailingSidebarButtonItem)
   {
-    [v4 addObject:v5];
+    [array addObject:trailingSidebarButtonItem];
     v6 = [MEMORY[0x277D751E0] fixedSpaceItemOfWidth:16.0];
-    [v4 addObject:v6];
+    [array addObject:v6];
   }
 
-  v7 = [(LibraryViewController *)self->_sidebarViewController editButtonItem];
-  [v7 setAccessibilityIdentifier:@"TabsEditButton"];
-  [v4 safari_addObjectUnlessNil:v7];
+  editButtonItem = [(LibraryViewController *)self->_sidebarViewController editButtonItem];
+  [editButtonItem setAccessibilityIdentifier:@"TabsEditButton"];
+  [array safari_addObjectUnlessNil:editButtonItem];
 
-  v8 = [(LibraryViewController *)self->_sidebarViewController navigationItem];
-  [v8 setRightBarButtonItems:v4];
+  navigationItem2 = [(LibraryViewController *)self->_sidebarViewController navigationItem];
+  [navigationItem2 setRightBarButtonItems:array];
 
-  v9 = [(LibraryViewController *)self->_sidebarViewController navigationController];
-  v10 = [v9 topViewController];
+  navigationController = [(LibraryViewController *)self->_sidebarViewController navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v10 != self->_sidebarViewController)
+  if (topViewController != self->_sidebarViewController)
   {
-    v11 = [(LibraryViewController *)v10 navigationItem];
-    [v11 setRightBarButtonItem:v12];
+    navigationItem3 = [(LibraryViewController *)topViewController navigationItem];
+    [navigationItem3 setRightBarButtonItem:leadingSidebarButtonItem];
   }
 }
 
-- (void)setSidebarViewController:(id)a3
+- (void)setSidebarViewController:(id)controller
 {
   v30[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   sidebarViewController = self->_sidebarViewController;
-  if (sidebarViewController != v5)
+  if (sidebarViewController != controllerCopy)
   {
-    v7 = [(LibraryViewController *)sidebarViewController navigationController];
-    [v7 setDelegate:0];
+    navigationController = [(LibraryViewController *)sidebarViewController navigationController];
+    [navigationController setDelegate:0];
 
     [(LibraryViewController *)self->_sidebarViewController setDelegate:0];
-    objc_storeStrong(&self->_sidebarViewController, a3);
-    v8 = [(LibraryController *)self configuration];
-    [(LibraryViewController *)self->_sidebarViewController setConfiguration:v8];
+    objc_storeStrong(&self->_sidebarViewController, controller);
+    configuration = [(LibraryController *)self configuration];
+    [(LibraryViewController *)self->_sidebarViewController setConfiguration:configuration];
 
     [(LibraryViewController *)self->_sidebarViewController setDelegate:self];
-    v9 = [(LibraryViewController *)self->_sidebarViewController navigationController];
-    [v9 setDelegate:self];
+    navigationController2 = [(LibraryViewController *)self->_sidebarViewController navigationController];
+    [navigationController2 setDelegate:self];
 
-    v10 = [(LibraryViewController *)self->_sidebarViewController navigationController];
-    v11 = [v10 navigationBar];
-    [v11 setPrefersLargeTitles:1];
+    navigationController3 = [(LibraryViewController *)self->_sidebarViewController navigationController];
+    navigationBar = [navigationController3 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
     v12 = [[MainLibrarySectionController alloc] initWithConfiguration:self->_configuration];
     objc_storeWeak(&self->_mainLibrarySectionController, v12);
@@ -197,16 +197,16 @@ LABEL_21:
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:5];
     [(LibraryViewController *)self->_sidebarViewController setSectionControllers:v17];
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     itemsByCollection = self->_itemsByCollection;
-    self->_itemsByCollection = v18;
+    self->_itemsByCollection = dictionary;
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v20 = [(LibraryViewController *)self->_sidebarViewController sectionControllers];
-    v21 = [v20 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    sectionControllers = [(LibraryViewController *)self->_sidebarViewController sectionControllers];
+    v21 = [sectionControllers countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v21)
     {
       v22 = v21;
@@ -218,14 +218,14 @@ LABEL_21:
         {
           if (*v26 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(sectionControllers);
           }
 
           [*(*(&v25 + 1) + 8 * v24++) registerItemsWithRegistration:self];
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v22 = [sectionControllers countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v22);
@@ -237,19 +237,19 @@ LABEL_21:
 
 - (NSString)currentCollection
 {
-  v3 = [(LibraryViewController *)self->_sidebarViewController presentedItemController];
-  v4 = v3;
-  if (v3)
+  presentedItemController = [(LibraryViewController *)self->_sidebarViewController presentedItemController];
+  v4 = presentedItemController;
+  if (presentedItemController)
   {
-    v5 = v3;
+    selectedItemController = presentedItemController;
   }
 
   else
   {
-    v5 = [(LibraryViewController *)self->_sidebarViewController selectedItemController];
+    selectedItemController = [(LibraryViewController *)self->_sidebarViewController selectedItemController];
   }
 
-  v6 = v5;
+  v6 = selectedItemController;
 
   WeakRetained = objc_loadWeakRetained(&self->_viewControllerForLastSelectedItemController);
   v8 = objc_loadWeakRetained(&self->_lastSelectedItemController);
@@ -266,9 +266,9 @@ LABEL_21:
 
   if (!v10 && WeakRetained != 0)
   {
-    v12 = [(LibraryViewController *)self->_sidebarViewController navigationController];
-    v13 = [v12 viewControllers];
-    v14 = [v13 containsObject:WeakRetained];
+    navigationController = [(LibraryViewController *)self->_sidebarViewController navigationController];
+    viewControllers = [navigationController viewControllers];
+    v14 = [viewControllers containsObject:WeakRetained];
 
     if (v14)
     {
@@ -289,34 +289,34 @@ LABEL_21:
   v21 = v6;
   v16 = v6;
   v17 = [(NSMutableDictionary *)itemsByCollection keysOfEntriesPassingTest:v20];
-  v18 = [v17 anyObject];
+  anyObject = [v17 anyObject];
 
-  return v18;
+  return anyObject;
 }
 
-- (void)setCurrentCollection:(id)a3
+- (void)setCurrentCollection:(id)collection
 {
-  v7 = a3;
-  v4 = [(LibraryController *)self currentCollection];
-  v5 = [v4 isEqualToString:v7];
+  collectionCopy = collection;
+  currentCollection = [(LibraryController *)self currentCollection];
+  v5 = [currentCollection isEqualToString:collectionCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(NSMutableDictionary *)self->_itemsByCollection objectForKeyedSubscript:v7];
+    v6 = [(NSMutableDictionary *)self->_itemsByCollection objectForKeyedSubscript:collectionCopy];
     [(LibraryViewController *)self->_sidebarViewController setSelectedItemController:v6];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = [v12 viewControllers];
-  v9 = [v8 firstObject];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  viewControllers = [controllerCopy viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  if (v9 == v7)
+  if (firstObject == viewControllerCopy)
   {
-    [v12 setToolbarHidden:1 animated:1];
+    [controllerCopy setToolbarHidden:1 animated:1];
   }
 
   objc_opt_class();
@@ -325,12 +325,12 @@ LABEL_21:
     WeakRetained = objc_loadWeakRetained(&self->_mainLibrarySectionController);
     [WeakRetained updateToolbarIfNeeded];
 
-    [v12 setToolbarHidden:0 animated:1];
+    [controllerCopy setToolbarHidden:0 animated:1];
   }
 
   [(LibraryController *)self _updateSidebarButton];
   sidebarViewController = self->_sidebarViewController;
-  if (sidebarViewController == v7)
+  if (sidebarViewController == viewControllerCopy)
   {
     [(LibraryViewController *)sidebarViewController setPresentedItemController:0];
   }
@@ -339,22 +339,22 @@ LABEL_21:
 - (void)didSwitchProfile
 {
   [(LibraryController *)self setNeedsReloadForProfileSwitcher];
-  v6 = [(LibraryViewController *)self->_sidebarViewController navigationController];
-  v3 = [v6 topViewController];
+  navigationController = [(LibraryViewController *)self->_sidebarViewController navigationController];
+  topViewController = [navigationController topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v6 popToRootViewControllerAnimated:0];
+    v5 = [navigationController popToRootViewControllerAnimated:0];
   }
 }
 
 - (void)toggleEditBookmarks
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainLibrarySectionController);
-  v3 = [WeakRetained itemControllers];
-  v4 = [v3 safari_firstObjectPassingTest:&__block_literal_global_37];
+  itemControllers = [WeakRetained itemControllers];
+  v4 = [itemControllers safari_firstObjectPassingTest:&__block_literal_global_37];
 
   [v4 toggleEditBookmarks];
 }
@@ -371,8 +371,8 @@ uint64_t __40__LibraryController_toggleEditBookmarks__block_invoke(uint64_t a1, 
 - (void)reloadBookmarks
 {
   WeakRetained = objc_loadWeakRetained(&self->_mainLibrarySectionController);
-  v3 = [WeakRetained itemControllers];
-  v4 = [v3 safari_firstObjectPassingTest:&__block_literal_global_15];
+  itemControllers = [WeakRetained itemControllers];
+  v4 = [itemControllers safari_firstObjectPassingTest:&__block_literal_global_15];
 
   [v4 reloadBookmarksControllers];
 }
@@ -386,42 +386,42 @@ uint64_t __36__LibraryController_reloadBookmarks__block_invoke(uint64_t a1, void
   return isKindOfClass & 1;
 }
 
-- (void)libraryViewController:(id)a3 didSelectItem:(id)a4
+- (void)libraryViewController:(id)controller didSelectItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   isSelectingItem = self->_isSelectingItem;
   self->_isSelectingItem = 1;
-  obj = v5;
-  v7 = [v5 viewController];
-  if (v7)
+  obj = itemCopy;
+  viewController = [itemCopy viewController];
+  if (viewController)
   {
     objc_storeWeak(&self->_lastSelectedItemController, obj);
-    objc_storeWeak(&self->_viewControllerForLastSelectedItemController, v7);
-    v8 = [(LibraryViewController *)self->_sidebarViewController navigationController];
-    v9 = [v8 topViewController];
+    objc_storeWeak(&self->_viewControllerForLastSelectedItemController, viewController);
+    navigationController = [(LibraryViewController *)self->_sidebarViewController navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v9 == v7)
+    if (topViewController == viewController)
     {
-      v13 = [v8 popToRootViewControllerAnimated:1];
+      v13 = [navigationController popToRootViewControllerAnimated:1];
     }
 
     else
     {
-      v10 = [v8 viewControllers];
-      v11 = [v10 containsObject:v7];
+      viewControllers = [navigationController viewControllers];
+      v11 = [viewControllers containsObject:viewController];
 
       if (v11)
       {
-        v12 = [v8 popToViewController:v7 animated:0];
+        v12 = [navigationController popToViewController:viewController animated:0];
       }
 
       else
       {
-        v14 = [v8 viewControllers];
-        v15 = [v14 count] == 1;
+        viewControllers2 = [navigationController viewControllers];
+        v15 = [viewControllers2 count] == 1;
 
-        v16 = [v8 popToRootViewControllerAnimated:0];
-        [v8 pushViewController:v7 animated:v15];
+        v16 = [navigationController popToRootViewControllerAnimated:0];
+        [navigationController pushViewController:viewController animated:v15];
       }
     }
 
@@ -436,14 +436,14 @@ uint64_t __36__LibraryController_reloadBookmarks__block_invoke(uint64_t a1, void
   self->_isSelectingItem = isSelectingItem;
 }
 
-- (void)_reportSelectedItemForAnalytics:(id)a3
+- (void)_reportSelectedItemForAnalytics:(id)analytics
 {
   v3 = MEMORY[0x277D499B8];
-  v4 = a3;
-  v6 = [v3 sharedLogger];
-  v5 = [v4 sidebarSelectionAnalyticsAction];
+  analyticsCopy = analytics;
+  sharedLogger = [v3 sharedLogger];
+  sidebarSelectionAnalyticsAction = [analyticsCopy sidebarSelectionAnalyticsAction];
 
-  [v6 didUseSidebarAction:v5];
+  [sharedLogger didUseSidebarAction:sidebarSelectionAnalyticsAction];
 }
 
 @end

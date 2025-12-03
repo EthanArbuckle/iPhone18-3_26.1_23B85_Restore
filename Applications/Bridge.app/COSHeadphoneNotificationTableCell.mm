@@ -1,31 +1,31 @@
 @interface COSHeadphoneNotificationTableCell
-- (COSHeadphoneNotificationTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (id)accessibilityConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
-- (id)accessibilityHorizontalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
-- (id)accessibilityVerticalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
-- (id)regularConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
-- (id)regularHorizontalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
-- (id)regularVerticalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5;
+- (COSHeadphoneNotificationTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (id)accessibilityConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
+- (id)accessibilityHorizontalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
+- (id)accessibilityVerticalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
+- (id)regularConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
+- (id)regularHorizontalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
+- (id)regularVerticalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart;
 - (void)layoutSubviews;
 - (void)updateConstraints;
 @end
 
 @implementation COSHeadphoneNotificationTableCell
 
-- (COSHeadphoneNotificationTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (COSHeadphoneNotificationTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v30.receiver = self;
   v30.super_class = COSHeadphoneNotificationTableCell;
-  v9 = [(COSHeadphoneNotificationTableCell *)&v30 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(COSHeadphoneNotificationTableCell *)&v30 initWithStyle:style reuseIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    v11 = [(COSHeadphoneNotificationTableCell *)v9 titleLabel];
-    [v11 setHidden:1];
+    titleLabel = [(COSHeadphoneNotificationTableCell *)v9 titleLabel];
+    [titleLabel setHidden:1];
 
-    v12 = [(COSHeadphoneNotificationTableCell *)v10 valueLabel];
-    [v12 setHidden:1];
+    valueLabel = [(COSHeadphoneNotificationTableCell *)v10 valueLabel];
+    [valueLabel setHidden:1];
 
     v13 = sub_10001F4DC();
     titleLabel = v10->_titleLabel;
@@ -35,10 +35,10 @@
     countLabel = v10->_countLabel;
     v10->_countLabel = v15;
 
-    v17 = [(COSHeadphoneNotificationTableCell *)v10 contentView];
-    [v17 addSubview:v10->_titleLabel];
-    [v17 addSubview:v10->_countLabel];
-    v18 = [v8 propertyForKey:@"NotificationDataKey"];
+    contentView = [(COSHeadphoneNotificationTableCell *)v10 contentView];
+    [contentView addSubview:v10->_titleLabel];
+    [contentView addSubview:v10->_countLabel];
+    v18 = [specifierCopy propertyForKey:@"NotificationDataKey"];
     notificationData = v10->_notificationData;
     v10->_notificationData = v18;
 
@@ -53,14 +53,14 @@
       hostingController = v10->_hostingController;
       v10->_hostingController = v25;
 
-      v27 = [(UIViewController *)v10->_hostingController view];
+      view = [(UIViewController *)v10->_hostingController view];
       notificationChart = v10->_notificationChart;
-      v10->_notificationChart = v27;
+      v10->_notificationChart = view;
 
-      v29 = [(COSHeadphoneNotificationTableCell *)v10 backgroundColor];
-      [(UIView *)v10->_notificationChart setBackgroundColor:v29];
+      backgroundColor = [(COSHeadphoneNotificationTableCell *)v10 backgroundColor];
+      [(UIView *)v10->_notificationChart setBackgroundColor:backgroundColor];
 
-      [v17 addSubview:v10->_notificationChart];
+      [contentView addSubview:v10->_notificationChart];
       [(UIView *)v10->_notificationChart setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
@@ -77,14 +77,14 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(COSHeadphoneNotificationTableCell *)self textLabel];
-  v4 = [v3 text];
-  v5 = [NSString stringWithFormat:@"%@", v4];
+  textLabel = [(COSHeadphoneNotificationTableCell *)self textLabel];
+  text = [textLabel text];
+  v5 = [NSString stringWithFormat:@"%@", text];
   [(UILabel *)self->_titleLabel setText:v5];
 
-  v6 = [(COSHeadphoneNotificationTableCell *)self valueLabel];
-  v7 = [v6 text];
-  v8 = [NSString stringWithFormat:@"%@", v7];
+  valueLabel = [(COSHeadphoneNotificationTableCell *)self valueLabel];
+  text2 = [valueLabel text];
+  v8 = [NSString stringWithFormat:@"%@", text2];
   [(UILabel *)self->_countLabel setText:v8];
 
   v9.receiver = self;
@@ -116,9 +116,9 @@
     v4 = v8;
   }
 
-  v9 = [(COSHeadphoneNotificationTableCell *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+  traitCollection = [(COSHeadphoneNotificationTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   shouldHideChart = self->_shouldHideChart;
   if (IsAccessibilityCategory)
@@ -140,27 +140,27 @@
   [(COSHeadphoneNotificationTableCell *)&v15 updateConstraints];
 }
 
-- (id)regularConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)regularConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(COSHeadphoneNotificationTableCell *)self regularHorizontalConstraintsWithVariableBindings:v9 metrics:v8 hideChart:v5];
-  v11 = [(COSHeadphoneNotificationTableCell *)self regularVerticalConstraintsWithVariableBindings:v9 metrics:v8 hideChart:v5];
+  chartCopy = chart;
+  metricsCopy = metrics;
+  bindingsCopy = bindings;
+  v10 = [(COSHeadphoneNotificationTableCell *)self regularHorizontalConstraintsWithVariableBindings:bindingsCopy metrics:metricsCopy hideChart:chartCopy];
+  v11 = [(COSHeadphoneNotificationTableCell *)self regularVerticalConstraintsWithVariableBindings:bindingsCopy metrics:metricsCopy hideChart:chartCopy];
 
   v12 = [v10 arrayByAddingObjectsFromArray:v11];
 
   return v12;
 }
 
-- (id)regularHorizontalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)regularHorizontalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_titleLabel]-(>=minimumLabelMargin)-[_countLabel]-|", 0, v8, v7);
-  if (!a5)
+  bindingsCopy = bindings;
+  metricsCopy = metrics;
+  v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_titleLabel]-(>=minimumLabelMargin)-[_countLabel]-|", 0, metricsCopy, bindingsCopy);
+  if (!chart)
   {
-    v10 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-chartMargin-[_notificationChart]-chartMargin-|", 0, v8, v7);
+    v10 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-chartMargin-[_notificationChart]-chartMargin-|", 0, metricsCopy, bindingsCopy);
     v11 = [v9 arrayByAddingObjectsFromArray:v10];
 
     v9 = v11;
@@ -169,15 +169,15 @@
   return v9;
 }
 
-- (id)regularVerticalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)regularVerticalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  chartCopy = chart;
+  metricsCopy = metrics;
+  bindingsCopy = bindings;
   v9 = objc_alloc_init(NSArray);
   v10 = objc_alloc_init(NSArray);
   v11 = objc_alloc_init(NSArray);
-  if (v5)
+  if (chartCopy)
   {
     v12 = @"V:|-[_titleLabel]-|";
   }
@@ -187,7 +187,7 @@
     v12 = @"V:|-[_titleLabel]-(>=minimumLabelMargin)-[_notificationChart(>=minimumChartHeight)]-|";
   }
 
-  if (v5)
+  if (chartCopy)
   {
     v13 = @"V:|-[_countLabel]-|";
   }
@@ -197,38 +197,38 @@
     v13 = @"V:|-[_countLabel]-(>=minimumLabelMargin)-[_notificationChart(>=minimumChartHeight)]-|";
   }
 
-  v14 = [NSLayoutConstraint constraintsWithVisualFormat:v12 options:0 metrics:v7 views:v8];
+  v14 = [NSLayoutConstraint constraintsWithVisualFormat:v12 options:0 metrics:metricsCopy views:bindingsCopy];
 
-  v15 = [NSLayoutConstraint constraintsWithVisualFormat:v13 options:0 metrics:v7 views:v8];
+  v15 = [NSLayoutConstraint constraintsWithVisualFormat:v13 options:0 metrics:metricsCopy views:bindingsCopy];
 
   v16 = [v14 arrayByAddingObjectsFromArray:v15];
 
   return v16;
 }
 
-- (id)accessibilityConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)accessibilityConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(COSHeadphoneNotificationTableCell *)self accessibilityHorizontalConstraintsWithVariableBindings:v9 metrics:v8 hideChart:v5];
-  v11 = [(COSHeadphoneNotificationTableCell *)self accessibilityVerticalConstraintsWithVariableBindings:v9 metrics:v8 hideChart:v5];
+  chartCopy = chart;
+  metricsCopy = metrics;
+  bindingsCopy = bindings;
+  v10 = [(COSHeadphoneNotificationTableCell *)self accessibilityHorizontalConstraintsWithVariableBindings:bindingsCopy metrics:metricsCopy hideChart:chartCopy];
+  v11 = [(COSHeadphoneNotificationTableCell *)self accessibilityVerticalConstraintsWithVariableBindings:bindingsCopy metrics:metricsCopy hideChart:chartCopy];
 
   v12 = [v10 arrayByAddingObjectsFromArray:v11];
 
   return v12;
 }
 
-- (id)accessibilityHorizontalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)accessibilityHorizontalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_titleLabel]-|", 0, v8, v7);
-  v10 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_countLabel]-|", 0, v8, v7);
+  bindingsCopy = bindings;
+  metricsCopy = metrics;
+  v9 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_titleLabel]-|", 0, metricsCopy, bindingsCopy);
+  v10 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[_countLabel]-|", 0, metricsCopy, bindingsCopy);
   v11 = [v9 arrayByAddingObjectsFromArray:v10];
-  if (!a5)
+  if (!chart)
   {
-    v12 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-chartMargin-[_notificationChart]-chartMargin-|", 0, v8, v7);
+    v12 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-chartMargin-[_notificationChart]-chartMargin-|", 0, metricsCopy, bindingsCopy);
     v13 = [v11 arrayByAddingObjectsFromArray:v12];
 
     v11 = v13;
@@ -237,13 +237,13 @@
   return v11;
 }
 
-- (id)accessibilityVerticalConstraintsWithVariableBindings:(id)a3 metrics:(id)a4 hideChart:(BOOL)a5
+- (id)accessibilityVerticalConstraintsWithVariableBindings:(id)bindings metrics:(id)metrics hideChart:(BOOL)chart
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  chartCopy = chart;
+  metricsCopy = metrics;
+  bindingsCopy = bindings;
   v9 = objc_alloc_init(NSArray);
-  if (v5)
+  if (chartCopy)
   {
     v10 = @"V:|-[_titleLabel]-[_countLabel]-|";
   }
@@ -253,7 +253,7 @@
     v10 = @"V:|-[_titleLabel]-[_countLabel]-[_notificationChart(>=minimumChartHeight)]-|";
   }
 
-  v11 = [NSLayoutConstraint constraintsWithVisualFormat:v10 options:0 metrics:v7 views:v8];
+  v11 = [NSLayoutConstraint constraintsWithVisualFormat:v10 options:0 metrics:metricsCopy views:bindingsCopy];
 
   return v11;
 }

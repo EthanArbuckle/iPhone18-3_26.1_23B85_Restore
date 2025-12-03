@@ -1,10 +1,10 @@
 @interface HideMyEmailSignupBlueprintFooterView
-- (_TtC16NewsSubscription36HideMyEmailSignupBlueprintFooterView)initWithCoder:(id)a3;
+- (_TtC16NewsSubscription36HideMyEmailSignupBlueprintFooterView)initWithCoder:(id)coder;
 @end
 
 @implementation HideMyEmailSignupBlueprintFooterView
 
-- (_TtC16NewsSubscription36HideMyEmailSignupBlueprintFooterView)initWithCoder:(id)a3
+- (_TtC16NewsSubscription36HideMyEmailSignupBlueprintFooterView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16NewsSubscription36HideMyEmailSignupBlueprintFooterView_button;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(sub_1D78B4524()) initWithFrame_];

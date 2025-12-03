@@ -1,18 +1,18 @@
 @interface HMDMatterCommandsTransformer
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
-- (id)OPACKFromValue:(id)a3 error:(id *)a4;
-- (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)valueFromOPACK:(id)k error:(id *)error;
+- (id)OPACKFromValue:(id)value error:(id *)error;
+- (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDMatterCommandsTransformer
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -23,33 +23,33 @@
   v7 = v6;
   if (v7)
   {
-    a4 = [HMDMatterCommandActionUtilities commandsInMemoryRepresentation:v7];
+    error = [HMDMatterCommandActionUtilities commandsInMemoryRepresentation:v7];
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create commands: %@", v5];
-    *a4 = [v8 hmfErrorWithCode:3 reason:v9];
+    kCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create commands: %@", kCopy];
+    *error = [v8 hmfErrorWithCode:3 reason:kCopy];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
-- (id)valueFromOPACK:(id)a3 error:(id *)a4
+- (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() valueFromOPACK:v5 error:a4];
+  kCopy = k;
+  v6 = [objc_opt_class() valueFromOPACK:kCopy error:error];
 
   return v6;
 }
 
-- (id)OPACKFromValue:(id)a3 error:(id *)a4
+- (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() OPACKFromValue:v5 error:a4];
+  valueCopy = value;
+  v6 = [objc_opt_class() OPACKFromValue:valueCopy error:error];
 
   return v6;
 }

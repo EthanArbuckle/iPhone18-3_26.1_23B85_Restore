@@ -1,28 +1,28 @@
 @interface CKDAcceptSharesURLRequest
 - (BOOL)requiresCKAnonymousUserIDs;
-- (CKDAcceptSharesURLRequest)initWithOperation:(id)a3 shareMetadatasToAccept:(id)a4;
+- (CKDAcceptSharesURLRequest)initWithOperation:(id)operation shareMetadatasToAccept:(id)accept;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (id)returnVerificationKeyAndSignatureForRequestOperation:(id)a3 dataToBeSigned:(id)a4 error:(id *)a5;
+- (id)returnVerificationKeyAndSignatureForRequestOperation:(id)operation dataToBeSigned:(id)signed error:(id *)error;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDAcceptSharesURLRequest
 
-- (CKDAcceptSharesURLRequest)initWithOperation:(id)a3 shareMetadatasToAccept:(id)a4
+- (CKDAcceptSharesURLRequest)initWithOperation:(id)operation shareMetadatasToAccept:(id)accept
 {
-  v7 = a4;
+  acceptCopy = accept;
   v13.receiver = self;
   v13.super_class = CKDAcceptSharesURLRequest;
-  v8 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_shareMetadatasToAccept, a4);
+    objc_storeStrong(&v8->_shareMetadatasToAccept, accept);
     v10 = objc_opt_new();
     shareMetadataByRequestID = v9->_shareMetadataByRequestID;
     v9->_shareMetadataByRequestID = v10;
@@ -76,12 +76,12 @@
   return v21;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v17.receiver = self;
   v17.super_class = CKDAcceptSharesURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v17 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v17 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_shareMetadatasToAccept(self, v5, v6, v17.receiver, v17.super_class);
   v9 = objc_msgSend_CKMap_(v7, v8, &unk_28385E5E0);
 
@@ -89,19 +89,19 @@
   v13 = objc_msgSend_ckEquivalencyProperties(v9, v11, v12);
   v15 = objc_msgSend_setWithArray_(v10, v14, v13);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v16, v15, @"shareMetadatas");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v16, v15, @"shareMetadatas");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_shareMetadatasToAccept(self, v5, v6);
   v9 = objc_msgSend_CKMap_(v7, v8, &unk_28385E600);
 
-  objc_msgSend_setModifyRecordIDs_(v4, v10, v9);
+  objc_msgSend_setModifyRecordIDs_(propertiesCopy, v10, v9);
   v11.receiver = self;
   v11.super_class = CKDAcceptSharesURLRequest;
-  [(CKDURLRequest *)&v11 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v11 fillOutRequestProperties:propertiesCopy];
 }
 
 - (id)requestOperationClasses
@@ -275,11 +275,11 @@ LABEL_23:
   return v114;
 }
 
-- (id)returnVerificationKeyAndSignatureForRequestOperation:(id)a3 dataToBeSigned:(id)a4 error:(id *)a5
+- (id)returnVerificationKeyAndSignatureForRequestOperation:(id)operation dataToBeSigned:(id)signed error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a3;
+  signedCopy = signed;
+  operationCopy = operation;
   if ((objc_msgSend_requiresCKAnonymousUserIDs(self, v11, v12) & 1) == 0)
   {
     v54 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v13, v14);
@@ -287,7 +287,7 @@ LABEL_23:
   }
 
   v15 = objc_msgSend_shareMetadataByRequestID(self, v13, v14);
-  v18 = objc_msgSend_request(v10, v16, v17);
+  v18 = objc_msgSend_request(operationCopy, v16, v17);
 
   v21 = objc_msgSend_operationUUID(v18, v19, v20);
   v23 = objc_msgSend_objectForKeyedSubscript_(v15, v22, v21);
@@ -303,7 +303,7 @@ LABEL_23:
   v31 = objc_msgSend_pcsManager(v28, v29, v30);
   v34 = objc_msgSend_signingPCSIdentity(v23, v32, v33);
   v61 = 0;
-  v36 = objc_msgSend_createSignatureWithIdentity_dataToBeSigned_forScope_error_(v31, v35, v34, v9, 5, &v61);
+  v36 = objc_msgSend_createSignatureWithIdentity_dataToBeSigned_forScope_error_(v31, v35, v34, signedCopy, 5, &v61);
 
   v37 = v61;
   if (objc_msgSend_length(v36, v38, v39) && !v37)
@@ -313,14 +313,14 @@ LABEL_23:
     v43 = PCSIdentityCopyExportedPublicKey();
     v45 = objc_msgSend_initWithObject1_object2_(v40, v44, v43, v36);
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_15;
     }
 
 LABEL_14:
     v47 = v37;
-    *a5 = v37;
+    *error = v37;
     goto LABEL_15;
   }
 
@@ -342,7 +342,7 @@ LABEL_14:
   }
 
   v45 = 0;
-  if (a5)
+  if (error)
   {
     goto LABEL_14;
   }
@@ -354,22 +354,22 @@ LABEL_15:
   return v45;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v115 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_shareMetadataByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  if (!objc_msgSend_hasShareAcceptResponse(v4, v16, v17))
+  if (!objc_msgSend_hasShareAcceptResponse(objectCopy, v16, v17))
   {
     v23 = 0;
     goto LABEL_11;
   }
 
-  v20 = objc_msgSend_shareAcceptResponse(v4, v18, v19);
+  v20 = objc_msgSend_shareAcceptResponse(objectCopy, v18, v19);
   v23 = objc_msgSend_share(v20, v21, v22);
 
   if (!v23)
@@ -401,31 +401,31 @@ LABEL_11:
       _os_log_error_impl(&dword_22506F000, v31, OS_LOG_TYPE_ERROR, "Failed to convert share: %@", buf, 0xCu);
     }
 
-    v34 = objc_msgSend_result(v4, v32, v33);
+    v34 = objc_msgSend_result(objectCopy, v32, v33);
     objc_msgSend_setCode_(v34, v35, 3);
 
     v36 = objc_opt_new();
-    v39 = objc_msgSend_result(v4, v37, v38);
+    v39 = objc_msgSend_result(objectCopy, v37, v38);
     objc_msgSend_setError_(v39, v40, v36);
 
     v41 = objc_opt_new();
-    v44 = objc_msgSend_result(v4, v42, v43);
+    v44 = objc_msgSend_result(objectCopy, v42, v43);
     v47 = objc_msgSend_error(v44, v45, v46);
     objc_msgSend_setClientError_(v47, v48, v41);
 
-    v51 = objc_msgSend_result(v4, v49, v50);
+    v51 = objc_msgSend_result(objectCopy, v49, v50);
     v54 = objc_msgSend_error(v51, v52, v53);
     v57 = objc_msgSend_clientError(v54, v55, v56);
     objc_msgSend_setType_(v57, v58, 7);
 
-    v61 = objc_msgSend_result(v4, v59, v60);
+    v61 = objc_msgSend_result(objectCopy, v59, v60);
     v64 = objc_msgSend_error(v61, v62, v63);
     objc_msgSend_setErrorKey_(v64, v65, @"Invalid share");
 
     v66 = MEMORY[0x277CCACA8];
     v69 = objc_msgSend_localizedDescription(v30, v67, v68);
     v71 = objc_msgSend_stringWithFormat_(v66, v70, @"The share could not be converted because it is invalid: %@", v69);
-    v74 = objc_msgSend_result(v4, v72, v73);
+    v74 = objc_msgSend_result(objectCopy, v72, v73);
     v77 = objc_msgSend_error(v74, v75, v76);
     objc_msgSend_setErrorDescription_(v77, v78, v71);
     v29 = 0;
@@ -461,7 +461,7 @@ LABEL_16:
   {
     v100 = objc_msgSend_shareAcceptedBlock(self, v98, v99);
     v103 = objc_msgSend_shareURL(v15, v101, v102);
-    v106 = objc_msgSend_result(v4, v104, v105);
+    v106 = objc_msgSend_result(objectCopy, v104, v105);
     (v100)[2](v100, v103, v29, v106);
   }
 
@@ -471,11 +471,11 @@ LABEL_16:
   return v30;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v27 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_shareMetadataByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v27, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -485,7 +485,7 @@ LABEL_16:
   {
     v20 = objc_msgSend_shareAcceptedBlock(self, v18, v19);
     v23 = objc_msgSend_shareURL(v14, v21, v22);
-    v26 = objc_msgSend_result(v27, v24, v25);
+    v26 = objc_msgSend_result(failureCopy, v24, v25);
     (v20)[2](v20, v23, 0, v26);
   }
 }

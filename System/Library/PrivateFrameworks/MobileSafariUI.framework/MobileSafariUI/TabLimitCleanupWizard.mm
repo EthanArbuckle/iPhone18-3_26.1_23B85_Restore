@@ -1,25 +1,25 @@
 @interface TabLimitCleanupWizard
-- (id)_cleanupGroupForRange:(int64_t)a3;
+- (id)_cleanupGroupForRange:(int64_t)range;
 - (id)_smallCleanupGroup;
-- (id)initForPrivateBrowsing:(BOOL)a3 withBrowserController:(id)a4 resultHandler:(id)a5;
+- (id)initForPrivateBrowsing:(BOOL)browsing withBrowserController:(id)controller resultHandler:(id)handler;
 - (id)makeViewController;
 @end
 
 @implementation TabLimitCleanupWizard
 
-- (id)initForPrivateBrowsing:(BOOL)a3 withBrowserController:(id)a4 resultHandler:(id)a5
+- (id)initForPrivateBrowsing:(BOOL)browsing withBrowserController:(id)controller resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = TabLimitCleanupWizard;
   v10 = [(TabLimitCleanupWizard *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    v10->_privateBrowsing = a3;
-    objc_storeWeak(&v10->_browserController, v8);
-    v12 = _Block_copy(v9);
+    v10->_privateBrowsing = browsing;
+    objc_storeWeak(&v10->_browserController, controllerCopy);
+    v12 = _Block_copy(handlerCopy);
     resultHandler = v11->_resultHandler;
     v11->_resultHandler = v12;
 
@@ -31,18 +31,18 @@
 
 - (id)makeViewController
 {
-  v3 = [(TabLimitCleanupWizard *)self _smallCleanupGroup];
+  _smallCleanupGroup = [(TabLimitCleanupWizard *)self _smallCleanupGroup];
   v4 = [(TabLimitCleanupWizard *)self _cleanupGroupForRange:4];
   v5 = _WBSLocalizedString();
   v6 = MEMORY[0x277D75110];
-  v7 = [v3 message];
-  v8 = [v6 alertControllerWithTitle:v5 message:v7 preferredStyle:1];
+  message = [_smallCleanupGroup message];
+  v8 = [v6 alertControllerWithTitle:v5 message:message preferredStyle:1];
 
-  v9 = [v3 action];
-  [v8 addAction:v9];
+  action = [_smallCleanupGroup action];
+  [v8 addAction:action];
 
-  v10 = [v4 action];
-  [v8 addAction:v10];
+  action2 = [v4 action];
+  [v8 addAction:action2];
 
   v11 = MEMORY[0x277D750F8];
   v12 = _WBSLocalizedString();
@@ -78,30 +78,30 @@
   return v4;
 }
 
-- (id)_cleanupGroupForRange:(int64_t)a3
+- (id)_cleanupGroupForRange:(int64_t)range
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = v6;
+  tabController = [WeakRetained tabController];
+  v7 = tabController;
   if (self->_privateBrowsing)
   {
-    [v6 privateUnpinnedTabs];
+    [tabController privateUnpinnedTabs];
   }
 
   else
   {
-    [v6 normalUnpinnedTabs];
+    [tabController normalUnpinnedTabs];
   }
   v29 = ;
   v8 = [v29 count];
   v9 = 0;
-  if (a3 <= 1)
+  if (range <= 1)
   {
-    if (a3)
+    if (range)
     {
       v10 = 0;
       v11 = 0;
-      if (a3 != 1)
+      if (range != 1)
       {
         goto LABEL_17;
       }
@@ -133,7 +133,7 @@
     goto LABEL_16;
   }
 
-  if (a3 == 2)
+  if (range == 2)
   {
     v16 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v16 setWeekOfYear:-1];
@@ -147,7 +147,7 @@
     goto LABEL_16;
   }
 
-  if (a3 == 3)
+  if (range == 3)
   {
     v19 = [v7 oldestTabsWithLimit:100 inPrivateBrowsing:self->_privateBrowsing];
     v20 = MEMORY[0x277CCACA8];
@@ -172,7 +172,7 @@
 
   v10 = 0;
   v11 = 0;
-  if (a3 == 4)
+  if (range == 4)
   {
     v11 = v29;
     v9 = 0;

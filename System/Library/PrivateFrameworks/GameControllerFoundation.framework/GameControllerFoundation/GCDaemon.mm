@@ -1,7 +1,7 @@
 @interface GCDaemon
 + (id)createRootWorkloop;
 - (GCDaemon)init;
-- (id)serviceFor:(id)a3 client:(id)a4;
+- (id)serviceFor:(id)for client:(id)client;
 @end
 
 @implementation GCDaemon
@@ -11,9 +11,9 @@
   v12.receiver = self;
   v12.super_class = GCDaemon;
   v2 = [(GCDaemon *)&v12 init];
-  v3 = [objc_opt_class() createRootWorkloop];
+  createRootWorkloop = [objc_opt_class() createRootWorkloop];
   workloop = v2->_workloop;
-  v2->_workloop = v3;
+  v2->_workloop = createRootWorkloop;
 
   v5 = objc_opt_new();
   configServiceConnection = v2->_configServiceConnection;
@@ -90,57 +90,57 @@ uint64_t __16__GCDaemon_init__block_invoke_3(uint64_t a1, xpc_activity_t activit
   return result;
 }
 
-- (id)serviceFor:(id)a3 client:(id)a4
+- (id)serviceFor:(id)for client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if (&unk_1F4E42070 == v6)
+  forCopy = for;
+  clientCopy = client;
+  if (&unk_1F4E42070 == forCopy)
   {
     v8 = self->_workloop;
   }
 
   else
   {
-    if (&unk_1F4E3AFD8 == v6)
+    if (&unk_1F4E3AFD8 == forCopy)
     {
-      v9 = self;
-      objc_sync_enter(v9);
-      configAssetManagementServiceConnection = v9->_configAssetManagementServiceConnection;
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      configAssetManagementServiceConnection = selfCopy2->_configAssetManagementServiceConnection;
       if (!configAssetManagementServiceConnection)
       {
-        v11 = [(GCConfigXPCServiceServiceConnection *)GCConfigurationAssetManagementServiceConnection connection:v9->_configServiceConnection withClient:v7];
-        v12 = [v11 result];
-        v13 = v9->_configAssetManagementServiceConnection;
-        v9->_configAssetManagementServiceConnection = v12;
+        v11 = [(GCConfigXPCServiceServiceConnection *)GCConfigurationAssetManagementServiceConnection connection:selfCopy2->_configServiceConnection withClient:clientCopy];
+        result = [v11 result];
+        v13 = selfCopy2->_configAssetManagementServiceConnection;
+        selfCopy2->_configAssetManagementServiceConnection = result;
 
-        configAssetManagementServiceConnection = v9->_configAssetManagementServiceConnection;
+        configAssetManagementServiceConnection = selfCopy2->_configAssetManagementServiceConnection;
       }
     }
 
     else
     {
-      if (&unk_1F4E3BA08 != v6)
+      if (&unk_1F4E3BA08 != forCopy)
       {
         v8 = 0;
         goto LABEL_13;
       }
 
-      v9 = self;
-      objc_sync_enter(v9);
-      configGenericDeviceDBServiceConnection = v9->_configGenericDeviceDBServiceConnection;
+      selfCopy2 = self;
+      objc_sync_enter(selfCopy2);
+      configGenericDeviceDBServiceConnection = selfCopy2->_configGenericDeviceDBServiceConnection;
       if (!configGenericDeviceDBServiceConnection || [(GCConfigXPCServiceServiceConnection *)configGenericDeviceDBServiceConnection isInvalid])
       {
-        v15 = [(GCConfigXPCServiceServiceConnection *)_GCGenericDeviceDBServiceConnection connection:v9->_configServiceConnection withClient:v7];
-        v16 = [v15 result];
-        v17 = v9->_configGenericDeviceDBServiceConnection;
-        v9->_configGenericDeviceDBServiceConnection = v16;
+        v15 = [(GCConfigXPCServiceServiceConnection *)_GCGenericDeviceDBServiceConnection connection:selfCopy2->_configServiceConnection withClient:clientCopy];
+        result2 = [v15 result];
+        v17 = selfCopy2->_configGenericDeviceDBServiceConnection;
+        selfCopy2->_configGenericDeviceDBServiceConnection = result2;
       }
 
-      configAssetManagementServiceConnection = v9->_configGenericDeviceDBServiceConnection;
+      configAssetManagementServiceConnection = selfCopy2->_configGenericDeviceDBServiceConnection;
     }
 
     v8 = configAssetManagementServiceConnection;
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy2);
   }
 
 LABEL_13:

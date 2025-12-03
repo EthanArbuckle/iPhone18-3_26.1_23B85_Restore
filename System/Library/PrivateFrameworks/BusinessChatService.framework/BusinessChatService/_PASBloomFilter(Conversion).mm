@@ -11,8 +11,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 objectForKeyedSubscript:@"fields"];
+    firstObject = [v3 firstObject];
+    v5 = [firstObject objectForKeyedSubscript:@"fields"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,11 +51,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v4 = ABSLogCommon();
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  firstObject = ABSLogCommon();
+  if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
   {
     *v13 = 0;
-    _os_log_error_impl(&dword_242072000, v4, OS_LOG_TYPE_ERROR, "BCSChatSuggestBloomFilter records parameter is not an NSArray", v13, 2u);
+    _os_log_error_impl(&dword_242072000, firstObject, OS_LOG_TYPE_ERROR, "BCSChatSuggestBloomFilter records parameter is not an NSArray", v13, 2u);
   }
 
   v8 = 0;
@@ -66,7 +66,7 @@ LABEL_15:
 
 - (uint64_t)initWithJSONObj:()Conversion
 {
-  v2 = [a1 _bloomFilterStringWithJSONObj:?];
+  v2 = [self _bloomFilterStringWithJSONObj:?];
   v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v2 options:0];
   if (v3)
   {

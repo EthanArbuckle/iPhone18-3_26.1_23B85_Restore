@@ -1,15 +1,15 @@
 @interface VNPersonsModelFaceModelVIPv3
-+ (id)modelBuiltFromConfiguration:(id)a3 dataProvider:(id)a4 canceller:(id)a5 error:(id *)a6;
-+ (shared_ptr<vision::mod::ImageDescriptorBufferFloat32>)_concatenateFaceprintImageDescriptorBuffer:(shared_ptr<vision:(id)a4 :(int)a5 mod:(void *)a6 :ImageDescriptorBufferFloat32>)a3 withFaceprints:forIdentityWithSerialNumber:faceprintLabels:;
-- (BOOL)_getSerialNumber:(int *)a3 forPersonUniqueIdentifier:(id)a4 error:(id *)a5;
-- (VNPersonsModelFaceModelVIPv3)initWithCoder:(id)a3;
-- (VNPersonsModelFaceModelVIPv3)initWithFaceIDModel:(shared_ptr<vision:(unint64_t)a4 :(id)a5 mod::FaceID3Model>)a3 faceprintRequestRevision:personUniqueIdentifierToSerialNumberMapping:;
++ (id)modelBuiltFromConfiguration:(id)configuration dataProvider:(id)provider canceller:(id)canceller error:(id *)error;
++ (shared_ptr<vision::mod::ImageDescriptorBufferFloat32>)_concatenateFaceprintImageDescriptorBuffer:(shared_ptr<vision:(id)buffer :(int)a5 mod:(void *)mod :ImageDescriptorBufferFloat32>)a3 withFaceprints:forIdentityWithSerialNumber:faceprintLabels:;
+- (BOOL)_getSerialNumber:(int *)number forPersonUniqueIdentifier:(id)identifier error:(id *)error;
+- (VNPersonsModelFaceModelVIPv3)initWithCoder:(id)coder;
+- (VNPersonsModelFaceModelVIPv3)initWithFaceIDModel:(shared_ptr<vision:(unint64_t)model :(id)a5 mod::FaceID3Model>)a3 faceprintRequestRevision:personUniqueIdentifierToSerialNumberMapping:;
 - (id).cxx_construct;
-- (id)_personPredictionsForFace:(id)a3 withDescriptor:(const void *)a4 limit:(unint64_t)a5 faceIDCanceller:(CVMLCanceller *)a6 error:(id *)a7;
-- (id)personPredictionsForFace:(id)a3 withDescriptor:(const void *)a4 limit:(unint64_t)a5 canceller:(id)a6 error:(id *)a7;
+- (id)_personPredictionsForFace:(id)face withDescriptor:(const void *)descriptor limit:(unint64_t)limit faceIDCanceller:(CVMLCanceller *)canceller error:(id *)error;
+- (id)personPredictionsForFace:(id)face withDescriptor:(const void *)descriptor limit:(unint64_t)limit canceller:(id)canceller error:(id *)error;
 - (id)personUniqueIdentifiers;
-- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNPersonsModelFaceModelVIPv3
@@ -21,13 +21,13 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_faceprintRequestRevision forKey:@"faceprintRequestRevision"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_faceprintRequestRevision forKey:@"faceprintRequestRevision"];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable dictionaryRepresentation];
-  [v4 encodeObject:v6 forKey:@"serialNumberToIdentifier"];
+  dictionaryRepresentation = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"serialNumberToIdentifier"];
 
   objc_autoreleasePoolPop(v5);
   v7 = objc_autoreleasePoolPush();
@@ -48,7 +48,7 @@
 
   std::ostream::flush();
   v11 = v18;
-  [v4 encodeObject:v11 forKey:@"faceIDModel"];
+  [coderCopy encodeObject:v11 forKey:@"faceIDModel"];
 
   std::ostream::~ostream();
   __sb = MEMORY[0x1E69E5538] + 16;
@@ -56,9 +56,9 @@
   objc_autoreleasePoolPop(v7);
 }
 
-- (VNPersonsModelFaceModelVIPv3)initWithCoder:(id)a3
+- (VNPersonsModelFaceModelVIPv3)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = VNPersonsModelFaceModelVIPv3;
   v5 = [(VNPersonsModelFaceModelVIPv3 *)&v34 init];
@@ -74,12 +74,12 @@
     dispatch_once(&_serialNumberToPersonUniqueIdentifierDictionaryClasses(void)::onceToken, &__block_literal_global_98_35503);
   }
 
-  v8 = [v4 decodeObjectOfClasses:_serialNumberToPersonUniqueIdentifierDictionaryClasses(void)::classes forKey:@"serialNumberToIdentifier"];
+  v8 = [coderCopy decodeObjectOfClasses:_serialNumberToPersonUniqueIdentifierDictionaryClasses(void)::classes forKey:@"serialNumberToIdentifier"];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     serialNumberToPersonUniqueIdentifierMapTable = v5->_serialNumberToPersonUniqueIdentifierMapTable;
-    v5->_serialNumberToPersonUniqueIdentifierMapTable = v9;
+    v5->_serialNumberToPersonUniqueIdentifierMapTable = strongToStrongObjectsMapTable;
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -95,9 +95,9 @@
     goto LABEL_17;
   }
 
-  v5->_faceprintRequestRevision = [v4 decodeIntegerForKey:@"faceprintRequestRevision"];
+  v5->_faceprintRequestRevision = [coderCopy decodeIntegerForKey:@"faceprintRequestRevision"];
   v11 = objc_autoreleasePoolPush();
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"faceIDModel"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"faceIDModel"];
   if (!v12)
   {
     goto LABEL_13;
@@ -135,7 +135,7 @@
 
     v18 = VNErrorForCVMLStatus(v15);
     v19 = [VNError errorForInternalErrorWithLocalizedDescription:v17 underlyingError:v18];
-    [v4 failWithError:v19];
+    [coderCopy failWithError:v19];
   }
 
   std::istream::~istream();
@@ -169,11 +169,11 @@ LABEL_17:
   return v21;
 }
 
-- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)a3 error:(id *)a4
+- (id)trainingFaceprintsForPersonWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   LODWORD(v21) = 0;
-  if (![(VNPersonsModelFaceModelVIPv3 *)self _getSerialNumber:&v21 forPersonUniqueIdentifier:v6 error:a4])
+  if (![(VNPersonsModelFaceModelVIPv3 *)self _getSerialNumber:&v21 forPersonUniqueIdentifier:identifierCopy error:error])
   {
 LABEL_10:
     v12 = 0;
@@ -185,10 +185,10 @@ LABEL_10:
   v7 = v19;
   if (!v19)
   {
-    if (a4)
+    if (error)
     {
       VNErrorForCVMLStatus(v20);
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_13;
     }
 
@@ -206,14 +206,14 @@ LABEL_12:
 
   v9 = *(v19 + 8);
   v10 = *(v19 + 12);
-  v11 = [(VNPersonsModelFaceModelVIPv3 *)self faceprintRequestRevision];
+  faceprintRequestRevision = [(VNPersonsModelFaceModelVIPv3 *)self faceprintRequestRevision];
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
   for (i = 0; i != v8; ++i)
   {
     DataForKthDescriptor = vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(v7, i);
     v15 = [VNFaceprint alloc];
     LODWORD(v16) = 1.0;
-    v17 = [(VNFaceprint *)v15 initWithData:DataForKthDescriptor elementCount:v10 elementType:1 lengthInBytes:v9 confidence:v11 requestRevision:v16];
+    v17 = [(VNFaceprint *)v15 initWithData:DataForKthDescriptor elementCount:v10 elementType:1 lengthInBytes:v9 confidence:faceprintRequestRevision requestRevision:v16];
     [v12 addObject:v17];
   }
 
@@ -235,8 +235,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -246,13 +246,13 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [v3 addObject:*(*(&v9 + 1) + 8 * i)];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -261,16 +261,16 @@ LABEL_13:
   return v3;
 }
 
-- (id)personPredictionsForFace:(id)a3 withDescriptor:(const void *)a4 limit:(unint64_t)a5 canceller:(id)a6 error:(id *)a7
+- (id)personPredictionsForFace:(id)face withDescriptor:(const void *)descriptor limit:(unint64_t)limit canceller:(id)canceller error:(id *)error
 {
-  v12 = a3;
-  v13 = a6;
-  if (!v13)
+  faceCopy = face;
+  cancellerCopy = canceller;
+  if (!cancellerCopy)
   {
-    v13 = objc_alloc_init(VNCanceller);
+    cancellerCopy = objc_alloc_init(VNCanceller);
   }
 
-  v14 = v13;
+  v14 = cancellerCopy;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -298,9 +298,9 @@ LABEL_13:
   v21[3] = &unk_1E77B6390;
   v23 = &v37;
   v21[4] = self;
-  v15 = v12;
-  v26 = a4;
-  v27 = a5;
+  v15 = faceCopy;
+  descriptorCopy = descriptor;
+  limitCopy = limit;
   v22 = v15;
   v24 = v28;
   v25 = &v31;
@@ -318,19 +318,19 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    if (a7)
+    if (error)
     {
       v18 = v32[5];
       goto LABEL_10;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     v18 = VNPersonsModelErrorCancelledOperation();
 LABEL_10:
     v17 = 0;
-    *a7 = v18;
+    *error = v18;
     goto LABEL_12;
   }
 
@@ -361,18 +361,18 @@ void __94__VNPersonsModelFaceModelVIPv3_personPredictionsForFace_withDescriptor_
   *(v9 + 40) = v8;
 }
 
-- (id)_personPredictionsForFace:(id)a3 withDescriptor:(const void *)a4 limit:(unint64_t)a5 faceIDCanceller:(CVMLCanceller *)a6 error:(id *)a7
+- (id)_personPredictionsForFace:(id)face withDescriptor:(const void *)descriptor limit:(unint64_t)limit faceIDCanceller:(CVMLCanceller *)canceller error:(id *)error
 {
-  v30 = a3;
+  faceCopy = face;
   if ([(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable count])
   {
     v33 = 0;
     v34 = 0;
     v35 = 0;
-    v11 = vision::mod::FaceID3Model::predict(self->_faceIDModel.__ptr_, a4, &v33);
+    v11 = vision::mod::FaceID3Model::predict(self->_faceIDModel.__ptr_, descriptor, &v33);
     if (v11 == 128)
     {
-      v29 = a7;
+      errorCopy = error;
       v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:0xAAAAAAAAAAAAAAABLL * (v34 - v33)];
       v13 = v33;
       v28 = v34;
@@ -380,12 +380,12 @@ void __94__VNPersonsModelFaceModelVIPv3_personPredictionsForFace_withDescriptor_
       {
 LABEL_14:
         [v12 sortWithOptions:16 usingComparator:&__block_literal_global_35535];
-        if (a5)
+        if (limit)
         {
           v24 = [v12 count];
-          if (v24 > a5)
+          if (v24 > limit)
           {
-            [v12 removeObjectsInRange:{a5, v24 - a5}];
+            [v12 removeObjectsInRange:{limit, v24 - limit}];
           }
         }
 
@@ -418,7 +418,7 @@ LABEL_13:
           v16 = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable objectForKey:v15];
           if (!v16)
           {
-            if (!v29)
+            if (!errorCopy)
             {
               goto LABEL_28;
             }
@@ -431,7 +431,7 @@ LABEL_13:
           v17 = *(v14 + 5);
           v18 = [VNPersonsModelPrediction alloc];
           *&v19 = v17;
-          v20 = [(VNPersonsModelPrediction *)v18 initWithFaceObservation:v30 predictedPersonUniqueIdentifier:v16 confidence:v19];
+          v20 = [(VNPersonsModelPrediction *)v18 initWithFaceObservation:faceCopy predictedPersonUniqueIdentifier:v16 confidence:v19];
           if (!v20)
           {
             break;
@@ -470,14 +470,14 @@ LABEL_13:
           }
         }
 
-        if (!v29)
+        if (!errorCopy)
         {
           goto LABEL_27;
         }
 
         v26 = +[VNError errorForMemoryAllocationFailure];
 LABEL_26:
-        *v29 = v26;
+        *errorCopy = v26;
 LABEL_27:
 
 LABEL_28:
@@ -486,10 +486,10 @@ LABEL_28:
       }
     }
 
-    else if (a7)
+    else if (error)
     {
       VNErrorForCVMLStatus(v11);
-      *a7 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -528,17 +528,17 @@ uint64_t __101__VNPersonsModelFaceModelVIPv3__personPredictionsForFace_withDescr
   return v8;
 }
 
-- (BOOL)_getSerialNumber:(int *)a3 forPersonUniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)_getSerialNumber:(int *)number forPersonUniqueIdentifier:(id)identifier error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable keyEnumerator];
-  v17 = a3;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  keyEnumerator = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable keyEnumerator];
+  numberCopy = number;
+  v9 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -548,23 +548,23 @@ uint64_t __101__VNPersonsModelFaceModelVIPv3__personPredictionsForFace_withDescr
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = [(NSMapTable *)self->_serialNumberToPersonUniqueIdentifierMapTable objectForKey:v12];
-        v14 = [v13 isEqual:v7];
+        v14 = [v13 isEqual:identifierCopy];
 
         if (v14)
         {
-          *v17 = [v12 intValue];
+          *numberCopy = [v12 intValue];
 
           v15 = 1;
           goto LABEL_12;
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -574,10 +574,10 @@ uint64_t __101__VNPersonsModelFaceModelVIPv3__personPredictionsForFace_withDescr
     }
   }
 
-  if (a5)
+  if (error)
   {
-    VNPersonsModelErrorForUnknownPersonUniqueIdentifier(v7);
-    *a5 = v15 = 0;
+    VNPersonsModelErrorForUnknownPersonUniqueIdentifier(identifierCopy);
+    *error = v15 = 0;
   }
 
   else
@@ -590,11 +590,11 @@ LABEL_12:
   return v15;
 }
 
-- (VNPersonsModelFaceModelVIPv3)initWithFaceIDModel:(shared_ptr<vision:(unint64_t)a4 :(id)a5 mod::FaceID3Model>)a3 faceprintRequestRevision:personUniqueIdentifierToSerialNumberMapping:
+- (VNPersonsModelFaceModelVIPv3)initWithFaceIDModel:(shared_ptr<vision:(unint64_t)model :(id)a5 mod::FaceID3Model>)a3 faceprintRequestRevision:personUniqueIdentifierToSerialNumberMapping:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
-  v8 = a4;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = VNPersonsModelFaceModelVIPv3;
   v9 = [(VNPersonsModelFaceModelVIPv3 *)&v20 init];
@@ -618,44 +618,44 @@ LABEL_12:
     }
 
     v10->_faceprintRequestRevision = cntrl;
-    v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     serialNumberToPersonUniqueIdentifierMapTable = v10->_serialNumberToPersonUniqueIdentifierMapTable;
-    v10->_serialNumberToPersonUniqueIdentifierMapTable = v15;
+    v10->_serialNumberToPersonUniqueIdentifierMapTable = strongToStrongObjectsMapTable;
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __121__VNPersonsModelFaceModelVIPv3_initWithFaceIDModel_faceprintRequestRevision_personUniqueIdentifierToSerialNumberMapping___block_invoke;
     v18[3] = &unk_1E77B6348;
     v19 = v10;
-    [v8 enumerateKeysAndObjectsUsingBlock:v18];
+    [modelCopy enumerateKeysAndObjectsUsingBlock:v18];
   }
 
   return v10;
 }
 
-+ (id)modelBuiltFromConfiguration:(id)a3 dataProvider:(id)a4 canceller:(id)a5 error:(id *)a6
++ (id)modelBuiltFromConfiguration:(id)configuration dataProvider:(id)provider canceller:(id)canceller error:(id *)error
 {
-  v41 = a3;
-  v8 = a4;
-  v40 = a5;
-  v46 = v8;
-  v9 = [v8 faceModelPersonsCount];
+  configurationCopy = configuration;
+  providerCopy = provider;
+  cancellerCopy = canceller;
+  v46 = providerCopy;
+  faceModelPersonsCount = [providerCopy faceModelPersonsCount];
   v60 = 0;
   v61 = 0;
   v62 = 0;
-  v45 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v9];
-  if (!v9)
+  v45 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:faceModelPersonsCount];
+  if (!faceModelPersonsCount)
   {
     v44 = 0;
     v22 = 0;
-    v10 = 0;
+    requestRevision = 0;
 LABEL_18:
-    v23 = v41;
-    v24 = [v23 faceID3ModelMaximumIDs];
-    v25 = v40;
-    v26 = [v23 faceID3ModelMaximumElementsPerID];
-    v27 = [v23 faceID3ModelSeed];
-    v28 = [v23 faceID3IndexMode];
+    v23 = configurationCopy;
+    faceID3ModelMaximumIDs = [v23 faceID3ModelMaximumIDs];
+    v25 = cancellerCopy;
+    faceID3ModelMaximumElementsPerID = [v23 faceID3ModelMaximumElementsPerID];
+    faceID3ModelSeed = [v23 faceID3ModelSeed];
+    faceID3IndexMode = [v23 faceID3IndexMode];
     v71 = 0;
     v72 = &v71;
     v73 = 0x4012000000;
@@ -669,11 +669,11 @@ LABEL_18:
     v65 = ___ZL15_newFaceIDModelP27VNPersonsModelConfigurationPU15__autoreleasingP7NSError_block_invoke;
     v66 = &unk_1E77B63E0;
     v67 = &v71;
-    v68 = __PAIR64__(v24, v26);
-    v69 = v27;
-    v70 = v28;
+    v68 = __PAIR64__(faceID3ModelMaximumIDs, faceID3ModelMaximumElementsPerID);
+    v69 = faceID3ModelSeed;
+    v70 = faceID3IndexMode;
     v29 = _Block_copy(&aBlock);
-    if (VNExecuteBlock(v29, a6))
+    if (VNExecuteBlock(v29, error))
     {
       v30 = v72[2].__vftable;
       shared_owners = v72[2].__shared_owners_;
@@ -702,7 +702,7 @@ LABEL_18:
 
     if (v44)
     {
-      if (!v40)
+      if (!cancellerCopy)
       {
         v25 = objc_alloc_init(VNCanceller);
       }
@@ -753,7 +753,7 @@ LABEL_18:
       v49[4] = &v71;
       if (![(VNCanceller *)v25 tryToPerformBlock:v50 usingSignallingBlock:v49])
       {
-        if (a6)
+        if (error)
         {
           v36 = VNPersonsModelErrorCancelledOperation();
           goto LABEL_45;
@@ -794,11 +794,11 @@ LABEL_65:
       v35 = *(p_aBlock + 40);
       if (v35)
       {
-        if (a6)
+        if (error)
         {
           v36 = v35;
 LABEL_45:
-          *a6 = v36;
+          *error = v36;
           goto LABEL_46;
         }
 
@@ -826,7 +826,7 @@ LABEL_45:
       _Block_object_dispose(&v71, 8);
     }
 
-    v37 = [a1 alloc];
+    v37 = [self alloc];
     v47 = v30;
     v48 = shared_owners;
     if (shared_owners)
@@ -834,7 +834,7 @@ LABEL_45:
       atomic_fetch_add_explicit(&shared_owners->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v34 = [v37 initWithFaceIDModel:&v47 faceprintRequestRevision:v10 personUniqueIdentifierToSerialNumberMapping:v45];
+    v34 = [v37 initWithFaceIDModel:&v47 faceprintRequestRevision:requestRevision personUniqueIdentifierToSerialNumberMapping:v45];
     if (v48)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v48);
@@ -843,7 +843,7 @@ LABEL_45:
     goto LABEL_65;
   }
 
-  v10 = 0;
+  requestRevision = 0;
   v11 = 0;
   v12 = 0;
   v44 = 0;
@@ -869,7 +869,7 @@ LABEL_8:
       atomic_fetch_add_explicit(&v12->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    [a1 _concatenateFaceprintImageDescriptorBuffer:&v57 withFaceprints:v15 forIdentityWithSerialNumber:(v11 + 1) faceprintLabels:&v60];
+    [self _concatenateFaceprintImageDescriptorBuffer:&v57 withFaceprints:v15 forIdentityWithSerialNumber:(v11 + 1) faceprintLabels:&v60];
     v22 = v72;
     v44 = v71;
     v71 = 0;
@@ -892,7 +892,7 @@ LABEL_8:
 
     ++v11;
     v12 = v22;
-    if (v11 == v9)
+    if (v11 == faceModelPersonsCount)
     {
       goto LABEL_18;
     }
@@ -909,21 +909,21 @@ LABEL_8:
     }
 
     v59 = 0;
-    v19 = [v17 VNPersonsModelFaceprintWithRequestRevision:v10 error:&v59];
+    v19 = [v17 VNPersonsModelFaceprintWithRequestRevision:requestRevision error:&v59];
     v20 = v59;
     if (!v19)
     {
-      if (a6)
+      if (error)
       {
         v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mismatched faceprint request revision for observation at index %lu, person at index %lu", v16, v11];
-        *a6 = [VNError errorForInvalidModelWithLocalizedDescription:v33 underlyingError:v20];
+        *error = [VNError errorForInvalidModelWithLocalizedDescription:v33 underlyingError:v20];
       }
 
       v32 = v43;
       goto LABEL_26;
     }
 
-    v10 = [v19 requestRevision];
+    requestRevision = [v19 requestRevision];
     [v15 addObject:v19];
 
     if (v14 == ++v16)
@@ -933,18 +933,18 @@ LABEL_8:
   }
 
   v32 = v43;
-  if (!a6)
+  if (!error)
   {
     goto LABEL_27;
   }
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid face observation at index %lu for person at index %lu", v16, v11];
-  *a6 = [VNError errorForInvalidModelWithLocalizedDescription:v18];
+  *error = [VNError errorForInvalidModelWithLocalizedDescription:v18];
 LABEL_26:
 
 LABEL_27:
   v34 = 0;
-  v25 = v40;
+  v25 = cancellerCopy;
 LABEL_68:
 
   if (v60)
@@ -974,10 +974,10 @@ void *__89__VNPersonsModelFaceModelVIPv3_modelBuiltFromConfiguration_dataProvide
   return result;
 }
 
-+ (shared_ptr<vision::mod::ImageDescriptorBufferFloat32>)_concatenateFaceprintImageDescriptorBuffer:(shared_ptr<vision:(id)a4 :(int)a5 mod:(void *)a6 :ImageDescriptorBufferFloat32>)a3 withFaceprints:forIdentityWithSerialNumber:faceprintLabels:
++ (shared_ptr<vision::mod::ImageDescriptorBufferFloat32>)_concatenateFaceprintImageDescriptorBuffer:(shared_ptr<vision:(id)buffer :(int)a5 mod:(void *)mod :ImageDescriptorBufferFloat32>)a3 withFaceprints:forIdentityWithSerialNumber:faceprintLabels:
 {
   v7 = *&a5;
-  v36 = a4;
+  bufferCopy = buffer;
   var0 = a3.var0;
   v9 = v6;
   v10 = a3.var1;
@@ -985,11 +985,11 @@ void *__89__VNPersonsModelFaceModelVIPv3_modelBuiltFromConfiguration_dataProvide
   v11 = [(__shared_weak_count *)v10 count];
   if (v11)
   {
-    v35 = [(__shared_weak_count *)v10 firstObject];
-    v12 = [v35 lengthInBytes];
+    firstObject = [(__shared_weak_count *)v10 firstObject];
+    lengthInBytes = [firstObject lengthInBytes];
     v13 = *var0;
     v32 = v9;
-    __n = v12;
+    __n = lengthInBytes;
     if (!*var0)
     {
       std::vector<long long>::__init_with_size[abi:ne200100]<long long const*,long long const*>();
@@ -1003,11 +1003,11 @@ void *__89__VNPersonsModelFaceModelVIPv3_modelBuiltFromConfiguration_dataProvide
     do
     {
       v16 = [(__shared_weak_count *)v10 objectAtIndexedSubscript:v14, v32];
-      v17 = [v16 descriptorData];
+      descriptorData = [v16 descriptorData];
       DataForKthDescriptor = vision::mod::ImageDescriptorBufferAbstract::getDataForKthDescriptor(*var0, v15);
-      v19 = v17;
-      memcpy(DataForKthDescriptor, [v17 bytes], __n);
-      vision::mod::ImageDescriptorBufferAbstract::setDescriptorIdForKthDescriptor(*var0, v15, v36);
+      v19 = descriptorData;
+      memcpy(DataForKthDescriptor, [descriptorData bytes], __n);
+      vision::mod::ImageDescriptorBufferAbstract::setDescriptorIdForKthDescriptor(*var0, v15, bufferCopy);
       v21 = *(v7 + 8);
       v20 = *(v7 + 16);
       if (v21 >= v20)
@@ -1042,7 +1042,7 @@ void *__89__VNPersonsModelFaceModelVIPv3_modelBuiltFromConfiguration_dataProvide
           std::__allocate_at_least[abi:ne200100]<std::allocator<float>>(v28);
         }
 
-        *(4 * v25) = v36;
+        *(4 * v25) = bufferCopy;
         v22 = 4 * v25 + 4;
         memcpy(0, v23, v24);
         v29 = *v7;
@@ -1059,7 +1059,7 @@ void *__89__VNPersonsModelFaceModelVIPv3_modelBuiltFromConfiguration_dataProvide
 
       else
       {
-        *v21 = v36;
+        *v21 = bufferCopy;
         v22 = (v21 + 1);
       }
 

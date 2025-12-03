@@ -1,24 +1,24 @@
 @interface TIKeyEventMap_ja
 + (id)optionMap_JIS;
 + (id)shiftOptionMap_JIS;
-- (id)remapKeyWithString:(id)a3 stringWithoutModifiers:(id)a4 modifierFlags:(unint64_t)a5 keyboardState:(id)a6;
+- (id)remapKeyWithString:(id)string stringWithoutModifiers:(id)modifiers modifierFlags:(unint64_t)flags keyboardState:(id)state;
 @end
 
 @implementation TIKeyEventMap_ja
 
-- (id)remapKeyWithString:(id)a3 stringWithoutModifiers:(id)a4 modifierFlags:(unint64_t)a5 keyboardState:(id)a6
+- (id)remapKeyWithString:(id)string stringWithoutModifiers:(id)modifiers modifierFlags:(unint64_t)flags keyboardState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 isEqualToString:@" "])
+  stringCopy = string;
+  modifiersCopy = modifiers;
+  stateCopy = state;
+  if ([stringCopy isEqualToString:@" "])
   {
-    v13 = [v12 inputForMarkedText];
-    v14 = [v13 length];
+    inputForMarkedText = [stateCopy inputForMarkedText];
+    v14 = [inputForMarkedText length];
 
     if (!v14)
     {
-      if ((((a5 & 0x900000) == 0) & (((a5 & 0x220000) != 0) ^ [v12 shouldOutputFullwidthSpace])) != 0)
+      if ((((flags & 0x900000) == 0) & (((flags & 0x220000) != 0) ^ [stateCopy shouldOutputFullwidthSpace])) != 0)
       {
         v19 = @"　";
       }
@@ -33,10 +33,10 @@
     }
   }
 
-  if ((a5 & 0x480000) != 0 && (a5 & 0x220000) != 0)
+  if ((flags & 0x480000) != 0 && (flags & 0x220000) != 0)
   {
-    v15 = [objc_opt_class() shiftOptionMap_JIS];
-    v16 = [v15 objectForKeyedSubscript:v11];
+    shiftOptionMap_JIS = [objc_opt_class() shiftOptionMap_JIS];
+    v16 = [shiftOptionMap_JIS objectForKeyedSubscript:modifiersCopy];
 
     if (v16)
     {
@@ -44,8 +44,8 @@
     }
 
 LABEL_8:
-    v17 = [objc_opt_class() optionMap_JIS];
-    v16 = [v17 objectForKeyedSubscript:v11];
+    optionMap_JIS = [objc_opt_class() optionMap_JIS];
+    v16 = [optionMap_JIS objectForKeyedSubscript:modifiersCopy];
 
     if (v16)
     {
@@ -55,7 +55,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ((a5 & 0x480000) != 0)
+  if ((flags & 0x480000) != 0)
   {
     goto LABEL_8;
   }
@@ -63,7 +63,7 @@ LABEL_8:
 LABEL_9:
   v21.receiver = self;
   v21.super_class = TIKeyEventMap_ja;
-  v18 = [(TIKeyEventMap *)&v21 remapKeyWithString:v10 stringWithoutModifiers:v11 modifierFlags:a5 keyboardState:v12];
+  v18 = [(TIKeyEventMap *)&v21 remapKeyWithString:stringCopy stringWithoutModifiers:modifiersCopy modifierFlags:flags keyboardState:stateCopy];
 LABEL_14:
   v16 = v18;
 LABEL_15:

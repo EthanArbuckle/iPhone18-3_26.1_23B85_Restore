@@ -17,8 +17,8 @@
     [(STStorageSystemFakeApp *)v2 setBundleIdentifier:comApplePrefs];
     [(STStorageSystemFakeApp *)v3 setAppIdentifier:v4];
     v5 = [LSApplicationRecord alloc];
-    v6 = [(STStorageSystemFakeApp *)v3 bundleIdentifier];
-    v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+    bundleIdentifier = [(STStorageSystemFakeApp *)v3 bundleIdentifier];
+    v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:0];
     [(STStorageSystemFakeApp *)v3 setAppRecord:v7];
 
     v8 = STNameForCategoryKey();
@@ -32,8 +32,8 @@
 {
   v2 = STStorageLocStr(@"VERSION_FMT");
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 systemVersion];
-  v5 = [NSString stringWithFormat:v2, v4];
+  systemVersion = [v3 systemVersion];
+  v5 = [NSString stringWithFormat:v2, systemVersion];
 
   return v5;
 }

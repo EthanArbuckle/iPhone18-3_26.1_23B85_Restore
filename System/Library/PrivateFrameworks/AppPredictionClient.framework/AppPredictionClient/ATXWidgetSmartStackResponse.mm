@@ -1,20 +1,20 @@
 @interface ATXWidgetSmartStackResponse
-- (ATXWidgetSmartStackResponse)initWithCoder:(id)a3;
-- (ATXWidgetSmartStackResponse)initWithStacks:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXWidgetSmartStackResponse)initWithCoder:(id)coder;
+- (ATXWidgetSmartStackResponse)initWithStacks:(id)stacks;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXWidgetSmartStackResponse
 
-- (ATXWidgetSmartStackResponse)initWithStacks:(id)a3
+- (ATXWidgetSmartStackResponse)initWithStacks:(id)stacks
 {
-  v4 = a3;
+  stacksCopy = stacks;
   v9.receiver = self;
   v9.super_class = ATXWidgetSmartStackResponse;
   v5 = [(ATXWidgetSmartStackResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stacksCopy copy];
     stacks = v5->_stacks;
     v5->_stacks = v6;
   }
@@ -22,20 +22,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXWidgetSmartStackResponse *)self stacks];
-  [v4 encodeObject:v5 forKey:@"stacks"];
+  coderCopy = coder;
+  stacks = [(ATXWidgetSmartStackResponse *)self stacks];
+  [coderCopy encodeObject:stacks forKey:@"stacks"];
 }
 
-- (ATXWidgetSmartStackResponse)initWithCoder:(id)a3
+- (ATXWidgetSmartStackResponse)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"stacks"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"stacks"];
 
   v9 = [(ATXWidgetSmartStackResponse *)self initWithStacks:v8];
   return v9;

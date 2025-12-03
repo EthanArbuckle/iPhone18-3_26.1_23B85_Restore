@@ -1,11 +1,11 @@
 @interface CNSharedProfileAnimationGenerator
 + (id)log;
-- (id)springAnimationWithKeyPath:(id)a3 fromValue:(double)a4 toValue:(double)a5 stiffness:(double)a6 damping:(double)a7 mass:(double)a8;
-- (void)applyBlurFilterToLayer:(id)a3 inputRadius:(double)a4;
-- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)a3 pendingNickname:(id)a4 contact:(id)a5 completionHandler:(id)a6;
-- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)a3 toAvatarImage:(id)a4 completionHandler:(id)a5;
-- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)a3 toContact:(id)a4 rightToLeft:(BOOL)a5 avatarSize:(CGSize)a6 completionHandler:(id)a7;
-- (void)performPeekABooAnimationForAnimatingAvatarView:(id)a3 pendingNickname:(id)a4 contact:(id)a5 completionHandler:(id)a6;
+- (id)springAnimationWithKeyPath:(id)path fromValue:(double)value toValue:(double)toValue stiffness:(double)stiffness damping:(double)damping mass:(double)mass;
+- (void)applyBlurFilterToLayer:(id)layer inputRadius:(double)radius;
+- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)view pendingNickname:(id)nickname contact:(id)contact completionHandler:(id)handler;
+- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)view toAvatarImage:(id)image completionHandler:(id)handler;
+- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)view toContact:(id)contact rightToLeft:(BOOL)left avatarSize:(CGSize)size completionHandler:(id)handler;
+- (void)performPeekABooAnimationForAnimatingAvatarView:(id)view pendingNickname:(id)nickname contact:(id)contact completionHandler:(id)handler;
 @end
 
 @implementation CNSharedProfileAnimationGenerator
@@ -31,33 +31,33 @@ uint64_t __40__CNSharedProfileAnimationGenerator_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)applyBlurFilterToLayer:(id)a3 inputRadius:(double)a4
+- (void)applyBlurFilterToLayer:(id)layer inputRadius:(double)radius
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6979378];
   v6 = *MEMORY[0x1E6979928];
-  v7 = a3;
+  layerCopy = layer;
   v8 = [v5 filterWithType:v6];
   v11[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [v7 setFilters:v9];
+  [layerCopy setFilters:v9];
 
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
   [v8 setValue:v10 forKey:@"inputRadius"];
 }
 
-- (id)springAnimationWithKeyPath:(id)a3 fromValue:(double)a4 toValue:(double)a5 stiffness:(double)a6 damping:(double)a7 mass:(double)a8
+- (id)springAnimationWithKeyPath:(id)path fromValue:(double)value toValue:(double)toValue stiffness:(double)stiffness damping:(double)damping mass:(double)mass
 {
-  v13 = [MEMORY[0x1E69794A8] animationWithKeyPath:a3];
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v13 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [v13 setFromValue:v14];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:toValue];
   [v13 setToValue:v15];
 
-  [v13 setStiffness:a6];
-  [v13 setDamping:a7];
-  [v13 setMass:a8];
+  [v13 setStiffness:stiffness];
+  [v13 setDamping:damping];
+  [v13 setMass:mass];
   [v13 setInitialVelocity:0.0];
   [v13 settlingDuration];
   [v13 setDuration:?];
@@ -65,35 +65,35 @@ uint64_t __40__CNSharedProfileAnimationGenerator_log__block_invoke()
   return v13;
 }
 
-- (void)performPeekABooAnimationForAnimatingAvatarView:(id)a3 pendingNickname:(id)a4 contact:(id)a5 completionHandler:(id)a6
+- (void)performPeekABooAnimationForAnimatingAvatarView:(id)view pendingNickname:(id)nickname contact:(id)contact completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 sourceAvatarLayer];
-  v15 = [v13 destinationAvatarImageView];
-  v16 = [v13 destinationAvatarImageView];
-  [v16 bounds];
+  handlerCopy = handler;
+  contactCopy = contact;
+  nicknameCopy = nickname;
+  viewCopy = view;
+  sourceAvatarLayer = [viewCopy sourceAvatarLayer];
+  destinationAvatarImageView = [viewCopy destinationAvatarImageView];
+  destinationAvatarImageView2 = [viewCopy destinationAvatarImageView];
+  [destinationAvatarImageView2 bounds];
   v18 = v17;
   v20 = v19;
-  v21 = [v13 destinationAvatarImageView];
+  destinationAvatarImageView3 = [viewCopy destinationAvatarImageView];
 
-  v22 = [v21 traitCollection];
-  v23 = [v22 layoutDirection];
+  traitCollection = [destinationAvatarImageView3 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __126__CNSharedProfileAnimationGenerator_performPeekABooAnimationForAnimatingAvatarView_pendingNickname_contact_completionHandler___block_invoke;
   v28[3] = &unk_1E74E5E80;
-  v24 = v23 == 1;
-  v29 = v15;
-  v30 = v14;
-  v31 = self;
-  v32 = v10;
-  v25 = v10;
-  v26 = v14;
-  v27 = v15;
-  [CNSharedProfileAvatarImageGenerator sharedAvatarImageForNickname:v12 contact:v11 size:v24 isRTL:v28 completionHandler:v18, v20];
+  v24 = layoutDirection == 1;
+  v29 = destinationAvatarImageView;
+  v30 = sourceAvatarLayer;
+  selfCopy = self;
+  v32 = handlerCopy;
+  v25 = handlerCopy;
+  v26 = sourceAvatarLayer;
+  v27 = destinationAvatarImageView;
+  [CNSharedProfileAvatarImageGenerator sharedAvatarImageForNickname:nicknameCopy contact:contactCopy size:v24 isRTL:v28 completionHandler:v18, v20];
 }
 
 void __126__CNSharedProfileAnimationGenerator_performPeekABooAnimationForAnimatingAvatarView_pendingNickname_contact_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -265,60 +265,60 @@ uint64_t __126__CNSharedProfileAnimationGenerator_performPeekABooAnimationForAni
   return v5();
 }
 
-- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)a3 toAvatarImage:(id)a4 completionHandler:(id)a5
+- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)view toAvatarImage:(id)image completionHandler:(id)handler
 {
   v61[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v49 = a5;
-  v9 = a3;
-  v10 = [v9 sourceAvatarLayer];
-  v11 = [v9 destinationAvatarImageView];
+  imageCopy = image;
+  handlerCopy = handler;
+  viewCopy = view;
+  sourceAvatarLayer = [viewCopy sourceAvatarLayer];
+  destinationAvatarImageView = [viewCopy destinationAvatarImageView];
 
-  [v11 setImage:v8];
+  [destinationAvatarImageView setImage:imageCopy];
   v12 = [objc_opt_class() log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v48 = [v11 layer];
+    layer = [destinationAvatarImageView layer];
     LODWORD(buf.m11) = 134349312;
-    *(&buf.m11 + 4) = v8;
+    *(&buf.m11 + 4) = imageCopy;
     WORD2(buf.m12) = 2050;
-    *(&buf.m12 + 6) = v48;
+    *(&buf.m12 + 6) = layer;
     _os_log_debug_impl(&dword_199A75000, v12, OS_LOG_TYPE_DEBUG, "Setting contents (%{public}p) for coin flip animation on destination avatar layer: %{public}p", &buf, 0x16u);
   }
 
-  v51 = v8;
+  v51 = imageCopy;
 
-  v13 = [v10 mask];
+  mask = [sourceAvatarLayer mask];
 
-  if (!v13)
+  if (!mask)
   {
-    v14 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
     v15 = MEMORY[0x1E69DC728];
-    [v11 bounds];
+    [destinationAvatarImageView bounds];
     v17 = v16;
-    [v11 bounds];
+    [destinationAvatarImageView bounds];
     v18 = [v15 bezierPathWithOvalInRect:{0.0, 0.0, v17}];
-    [v14 setPath:{objc_msgSend(v18, "CGPath")}];
+    [layer2 setPath:{objc_msgSend(v18, "CGPath")}];
 
-    [v10 setMask:v14];
+    [sourceAvatarLayer setMask:layer2];
     v19 = [objc_opt_class() log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(buf.m11) = 134349312;
-      *(&buf.m11 + 4) = v14;
+      *(&buf.m11 + 4) = layer2;
       WORD2(buf.m12) = 2050;
-      *(&buf.m12 + 6) = v10;
+      *(&buf.m12 + 6) = sourceAvatarLayer;
       _os_log_debug_impl(&dword_199A75000, v19, OS_LOG_TYPE_DEBUG, "Setting source avatar layer mask (%{public}p) for coin flip animation on layer: %{public}p", &buf, 0x16u);
     }
   }
 
-  [v10 setDoubleSided:{0, v49}];
-  v20 = [v11 layer];
-  [v20 setDoubleSided:0];
+  [sourceAvatarLayer setDoubleSided:{0, handlerCopy}];
+  layer3 = [destinationAvatarImageView layer];
+  [layer3 setDoubleSided:0];
 
-  [(CNSharedProfileAnimationGenerator *)self applyBlurFilterToLayer:v10 inputRadius:0.0];
-  v21 = [v11 layer];
-  [(CNSharedProfileAnimationGenerator *)self applyBlurFilterToLayer:v21 inputRadius:13.0];
+  [(CNSharedProfileAnimationGenerator *)self applyBlurFilterToLayer:sourceAvatarLayer inputRadius:0.0];
+  layer4 = [destinationAvatarImageView layer];
+  [(CNSharedProfileAnimationGenerator *)self applyBlurFilterToLayer:layer4 inputRadius:13.0];
 
   v22 = objc_alloc_init(MEMORY[0x1E6979308]);
   v23 = [(CNSharedProfileAnimationGenerator *)self coinFlipSpringAnimationWithKeyPath:@"transform.rotation.y" fromValue:0.0 toValue:3.14159265];
@@ -333,9 +333,9 @@ uint64_t __126__CNSharedProfileAnimationGenerator_performPeekABooAnimationForAni
   [v22 setAnimations:v27];
 
   [v22 setBeginTime:CACurrentMediaTime()];
-  v28 = [v22 animations];
-  v29 = [v28 firstObject];
-  [v29 duration];
+  animations = [v22 animations];
+  firstObject = [animations firstObject];
+  [firstObject duration];
   [v22 setDuration:?];
 
   v30 = *MEMORY[0x1E69797E8];
@@ -348,9 +348,9 @@ uint64_t __126__CNSharedProfileAnimationGenerator_performPeekABooAnimationForAni
   [v31 setAnimations:v33];
 
   [v31 setBeginTime:CACurrentMediaTime()];
-  v34 = [v31 animations];
-  v35 = [v34 firstObject];
-  [v35 duration];
+  animations2 = [v31 animations];
+  firstObject2 = [animations2 firstObject];
+  [firstObject2 duration];
   [v31 setDuration:?];
 
   [v31 setFillMode:v30];
@@ -362,36 +362,36 @@ uint64_t __126__CNSharedProfileAnimationGenerator_performPeekABooAnimationForAni
   [v36 setAnimations:v38];
 
   [v36 setBeginTime:CACurrentMediaTime() + 0.2];
-  v39 = [v36 animations];
-  v40 = [v39 firstObject];
-  [v40 duration];
+  animations3 = [v36 animations];
+  firstObject3 = [animations3 firstObject];
+  [firstObject3 duration];
   [v36 setDuration:?];
 
   [v36 setFillMode:v30];
   [v36 setRemovedOnCompletion:0];
   CATransform3DMakeRotation(&v57, 3.14159265, 0.0, 1.0, 0.0);
   buf = v57;
-  [v11 setTransform3D:&buf];
+  [destinationAvatarImageView setTransform3D:&buf];
   v41 = MEMORY[0x1E6979518];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __116__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAnimatingAvatarView_toAvatarImage_completionHandler___block_invoke;
   v52[3] = &unk_1E74E5E08;
-  v53 = v10;
+  v53 = sourceAvatarLayer;
   v54 = v51;
-  v55 = v11;
+  v55 = destinationAvatarImageView;
   v56 = v50;
   v42 = v50;
-  v43 = v11;
+  v43 = destinationAvatarImageView;
   v44 = v51;
-  v45 = v10;
+  v45 = sourceAvatarLayer;
   [v41 setCompletionBlock:v52];
   [v45 addAnimation:v22 forKey:0];
-  v46 = [v43 layer];
-  [v46 addAnimation:v31 forKey:0];
+  layer5 = [v43 layer];
+  [layer5 addAnimation:v31 forKey:0];
 
-  v47 = [v43 layer];
-  [v47 addAnimation:v36 forKey:0];
+  layer6 = [v43 layer];
+  [layer6 addAnimation:v36 forKey:0];
 }
 
 uint64_t __116__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAnimatingAvatarView_toAvatarImage_completionHandler___block_invoke(uint64_t a1)
@@ -433,30 +433,30 @@ uint64_t __116__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAni
   return result;
 }
 
-- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)a3 pendingNickname:(id)a4 contact:(id)a5 completionHandler:(id)a6
+- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)view pendingNickname:(id)nickname contact:(id)contact completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [v10 destinationAvatarImageView];
-  [v14 bounds];
+  viewCopy = view;
+  handlerCopy = handler;
+  contactCopy = contact;
+  nicknameCopy = nickname;
+  destinationAvatarImageView = [viewCopy destinationAvatarImageView];
+  [destinationAvatarImageView bounds];
   v16 = v15;
   v18 = v17;
-  v19 = [v10 destinationAvatarImageView];
-  v20 = [v19 traitCollection];
-  v21 = [v20 layoutDirection];
+  destinationAvatarImageView2 = [viewCopy destinationAvatarImageView];
+  traitCollection = [destinationAvatarImageView2 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __126__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAnimatingAvatarView_pendingNickname_contact_completionHandler___block_invoke;
   v25[3] = &unk_1E74E5E30;
-  v22 = v21 == 1;
+  v22 = layoutDirection == 1;
   v25[4] = self;
-  v26 = v10;
-  v27 = v11;
-  v23 = v11;
-  v24 = v10;
-  [CNSharedProfileAvatarImageGenerator sharedAvatarImageForNickname:v13 contact:v12 size:v22 isRTL:v25 completionHandler:v16, v18];
+  v26 = viewCopy;
+  v27 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = viewCopy;
+  [CNSharedProfileAvatarImageGenerator sharedAvatarImageForNickname:nicknameCopy contact:contactCopy size:v22 isRTL:v25 completionHandler:v16, v18];
 }
 
 void __126__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAnimatingAvatarView_pendingNickname_contact_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -475,41 +475,41 @@ void __126__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAnimati
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)a3 toContact:(id)a4 rightToLeft:(BOOL)a5 avatarSize:(CGSize)a6 completionHandler:(id)a7
+- (void)performCoinFlipAnimationForAnimatingAvatarView:(id)view toContact:(id)contact rightToLeft:(BOOL)left avatarSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a6.height;
-  width = a6.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  leftCopy = left;
   v28[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = v15;
-  if (v14)
+  viewCopy = view;
+  contactCopy = contact;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (contactCopy)
   {
     v17 = [CNAvatarImageRenderer alloc];
     v18 = +[CNAvatarImageRendererSettings defaultSettings];
     v19 = [(CNAvatarImageRenderer *)v17 initWithSettings:v18];
 
-    v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v20 scale];
-    v22 = [CNAvatarImageRenderingScope scopeWithPointSize:v10 scale:0 rightToLeft:width style:height, v21];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v22 = [CNAvatarImageRenderingScope scopeWithPointSize:leftCopy scale:0 rightToLeft:width style:height, v21];
 
-    v28[0] = v14;
+    v28[0] = contactCopy;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __135__CNSharedProfileAnimationGenerator_performCoinFlipAnimationForAnimatingAvatarView_toContact_rightToLeft_avatarSize_completionHandler___block_invoke;
     v25[3] = &unk_1E74E5E30;
     v25[4] = self;
-    v26 = v13;
+    v26 = viewCopy;
     v27 = v16;
     v24 = [(CNAvatarImageRenderer *)v19 renderAvatarsForContacts:v23 scope:v22 imageHandler:v25];
   }
 
-  else if (v15)
+  else if (handlerCopy)
   {
-    (*(v15 + 2))(v15);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 

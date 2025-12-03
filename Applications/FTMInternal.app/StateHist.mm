@@ -1,16 +1,16 @@
 @interface StateHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRrcState:(id)a3;
+- (int)StringAsRrcState:(id)state;
 - (int)rrcState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInStateMs:(BOOL)a3;
-- (void)setHasRrcState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasInStateMs:(BOOL)ms;
+- (void)setHasRrcState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation StateHist
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasRrcState:(BOOL)a3
+- (void)setHasRrcState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -43,50 +43,50 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsRrcState:(id)a3
+- (int)StringAsRrcState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LTE_RRC_INACTIVE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"LTE_RRC_INACTIVE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_IDLE_NOT_CAMPED"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_IDLE_NOT_CAMPED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_IDLE_CAMPED"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_IDLE_CAMPED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_CONNECTING"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_CONNECTING"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_CONNECTED"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_CONNECTED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_SUSPENDED"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_SUSPENDED"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_IRAT_TO_LTE_STARTED"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_IRAT_TO_LTE_STARTED"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_CLOSING"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_CLOSING"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LTE_RRC_MAX_STATE"])
+  else if ([stateCopy isEqualToString:@"LTE_RRC_MAX_STATE"])
   {
     v4 = 8;
   }
@@ -99,9 +99,9 @@
   return v4;
 }
 
-- (void)setHasInStateMs:(BOOL)a3
+- (void)setHasInStateMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -119,8 +119,8 @@
   v7.receiver = self;
   v7.super_class = StateHist;
   v3 = [(StateHist *)&v7 description];
-  v4 = [(StateHist *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(StateHist *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -164,16 +164,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     rrcState = self->_rrcState;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -194,26 +194,26 @@ LABEL_3:
 
   inStateCount = self->_inStateCount;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     inStateMs = self->_inStateMs;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = self->_rrcState;
-    *(v4 + 20) |= 4u;
+    toCopy[4] = self->_rrcState;
+    *(toCopy + 20) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -232,21 +232,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_inStateCount;
-  *(v4 + 20) |= 1u;
+  toCopy[2] = self->_inStateCount;
+  *(toCopy + 20) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    v4[3] = self->_inStateMs;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_inStateMs;
+    *(toCopy + 20) |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -283,23 +283,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_rrcState != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_rrcState != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -308,21 +308,21 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_inStateCount != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_inStateCount != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 2) == 0;
+  v5 = (*(equalCopy + 20) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_inStateMs != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_inStateMs != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
@@ -375,15 +375,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) != 0)
   {
-    self->_rrcState = *(v4 + 4);
+    self->_rrcState = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -396,17 +396,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 1) == 0)
+  else if ((*(fromCopy + 20) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_inStateCount = *(v4 + 2);
+  self->_inStateCount = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 20) & 2) != 0)
+  if ((*(fromCopy + 20) & 2) != 0)
   {
 LABEL_4:
-    self->_inStateMs = *(v4 + 3);
+    self->_inStateMs = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

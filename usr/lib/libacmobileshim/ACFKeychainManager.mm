@@ -1,10 +1,10 @@
 @interface ACFKeychainManager
-- (BOOL)removeItemWithInfo:(id)a3;
+- (BOOL)removeItemWithInfo:(id)info;
 - (NSString)obtainAccessGroup;
-- (id)searchItemWithInfo:(id)a3;
-- (int)secItemCopyMatchingWithAttributes:(id)a3 result:(id *)a4;
-- (int)storeItemWithInfo:(id)a3 share:(BOOL)a4 result:(id *)a5;
-- (void)dumpResults:(id)a3 printAttributes:(BOOL)a4;
+- (id)searchItemWithInfo:(id)info;
+- (int)secItemCopyMatchingWithAttributes:(id)attributes result:(id *)result;
+- (int)storeItemWithInfo:(id)info share:(BOOL)share result:(id *)result;
+- (void)dumpResults:(id)results printAttributes:(BOOL)attributes;
 @end
 
 @implementation ACFKeychainManager
@@ -67,20 +67,20 @@
   return v8;
 }
 
-- (int)secItemCopyMatchingWithAttributes:(id)a3 result:(id *)a4
+- (int)secItemCopyMatchingWithAttributes:(id)attributes result:(id *)result
 {
-  v5 = [a3 mutableCopy];
+  v5 = [attributes mutableCopy];
 
-  return SecItemCopyMatching(v5, a4);
+  return SecItemCopyMatching(v5, result);
 }
 
-- (int)storeItemWithInfo:(id)a3 share:(BOOL)a4 result:(id *)a5
+- (int)storeItemWithInfo:(id)info share:(BOOL)share result:(id *)result
 {
-  v6 = a4;
+  shareCopy = share;
   if (qword_2A1EB8F80 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
     v9 = @"NO";
-    if (v6)
+    if (shareCopy)
     {
       v9 = @"YES";
     }
@@ -88,24 +88,24 @@
     ACFLog(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 110, 0, "Storing info to keychain for sharing: %@...", v9);
   }
 
-  if (v6)
+  if (shareCopy)
   {
-    [a3 setAccessGroup:{-[ACFKeychainManager universalAccessGroup](self, "universalAccessGroup")}];
+    [info setAccessGroup:{-[ACFKeychainManager universalAccessGroup](self, "universalAccessGroup")}];
   }
 
-  if (![a3 accessibleType])
+  if (![info accessibleType])
   {
-    [a3 setAccessibleType:*MEMORY[0x29EDBBB88]];
+    [info setAccessibleType:*MEMORY[0x29EDBBB88]];
   }
 
-  v10 = [a3 accessGroup];
-  if (qword_2A1EB8F88 && v10 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
+  accessGroup = [info accessGroup];
+  if (qword_2A1EB8F88 && accessGroup && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
-    v11 = [a3 accessGroup];
-    ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 129, 0, @"Trying to store item to access group = %@", v12, v13, v11);
+    accessGroup2 = [info accessGroup];
+    ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 129, 0, @"Trying to store item to access group = %@", v12, v13, accessGroup2);
   }
 
-  v14 = -[ACFKeychainManager secAddItemWithAttributes:result:](self, "secAddItemWithAttributes:result:", [a3 attributes], a5);
+  v14 = -[ACFKeychainManager secAddItemWithAttributes:result:](self, "secAddItemWithAttributes:result:", [info attributes], result);
   v15 = v14;
   switch(v14)
   {
@@ -121,68 +121,68 @@
       goto LABEL_31;
     case -25243:
 LABEL_17:
-      if (v6)
+      if (shareCopy)
       {
         if (qword_2A1EB8F80)
         {
           if ((ACFLogSettingsGetLevelMask() & 0x40) != 0)
           {
-            ACFLog(6, "-[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 135, 0, "Failed to add info to %@ access group", [a3 accessGroup]);
+            ACFLog(6, "-[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 135, 0, "Failed to add info to %@ access group", [info accessGroup]);
           }
 
-          v16 = [(ACFKeychainManager *)self obtainAccessGroup];
-          if (!v16)
+          obtainAccessGroup = [(ACFKeychainManager *)self obtainAccessGroup];
+          if (!obtainAccessGroup)
           {
             if ((ACFLogSettingsGetLevelMask() & 0x10) != 0)
             {
               ACFLog(4, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 139, 0, "Failed to resolve access application group. SSO between applications not available.");
             }
 
-            v16 = 0;
+            obtainAccessGroup = 0;
           }
         }
 
         else
         {
-          v16 = [(ACFKeychainManager *)self obtainAccessGroup];
+          obtainAccessGroup = [(ACFKeychainManager *)self obtainAccessGroup];
         }
 
         v18 = qword_2A1EB8F88;
-        [a3 setAccessGroup:v16];
+        [info setAccessGroup:obtainAccessGroup];
         if (v18 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
         {
-          v19 = [a3 accessGroup];
-          ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 143, 0, @"Trying to store item to access group = %@", v20, v21, v19);
+          accessGroup3 = [info accessGroup];
+          ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 143, 0, @"Trying to store item to access group = %@", v20, v21, accessGroup3);
         }
 
-        v22 = -[ACFKeychainManager secAddItemWithAttributes:result:](self, "secAddItemWithAttributes:result:", [a3 attributes], a5);
+        v22 = -[ACFKeychainManager secAddItemWithAttributes:result:](self, "secAddItemWithAttributes:result:", [info attributes], result);
         v15 = v22;
         v24 = v22 == -25243 || v22 == -34018;
-        if (v16 && v24)
+        if (obtainAccessGroup && v24)
         {
           if (qword_2A1EB8F88)
           {
             if ((ACFLogSettingsGetLevelMask() & 0x80) != 0)
             {
-              v25 = [a3 accessGroup];
-              ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 150, 0, @"Failed to add info to %@ access group", v26, v27, v25);
+              accessGroup4 = [info accessGroup];
+              ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 150, 0, @"Failed to add info to %@ access group", v26, v27, accessGroup4);
             }
 
-            [a3 setAccessGroup:0];
+            [info setAccessGroup:0];
             if ((ACFLogSettingsGetLevelMask() & 0x80) != 0)
             {
-              v28 = [a3 accessGroup];
-              ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 152, 0, @"Trying to store item to access group = %@ (without access group)", v29, v30, v28);
+              accessGroup5 = [info accessGroup];
+              ACFLogNS(7, "[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 152, 0, @"Trying to store item to access group = %@ (without access group)", v29, v30, accessGroup5);
             }
           }
 
           else
           {
-            [a3 setAccessGroup:0];
+            [info setAccessGroup:0];
           }
 
           v31 = qword_2A1EB8F80;
-          v32 = -[ACFKeychainManager secAddItemWithAttributes:result:](self, "secAddItemWithAttributes:result:", [a3 attributes], a5);
+          v32 = -[ACFKeychainManager secAddItemWithAttributes:result:](self, "secAddItemWithAttributes:result:", [info attributes], result);
           v15 = v32;
           if (v31 && v32)
           {
@@ -200,7 +200,7 @@ LABEL_17:
           }
 
 LABEL_62:
-          -[ACFKeychainManager setUsedAccessGroup:](self, "setUsedAccessGroup:", [a3 accessGroup]);
+          -[ACFKeychainManager setUsedAccessGroup:](self, "setUsedAccessGroup:", [info accessGroup]);
           return 0;
         }
 
@@ -221,7 +221,7 @@ LABEL_62:
 
         v17 = 166;
 LABEL_31:
-        ACFLog(6, "-[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", v17, 0, "Successfully stored info to access group %@", [a3 accessGroup]);
+        ACFLog(6, "-[ACFKeychainManager storeItemWithInfo:share:result:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", v17, 0, "Successfully stored info to access group %@", [info accessGroup]);
         goto LABEL_62;
       }
 
@@ -236,27 +236,27 @@ LABEL_31:
   return v15;
 }
 
-- (void)dumpResults:(id)a3 printAttributes:(BOOL)a4
+- (void)dumpResults:(id)results printAttributes:(BOOL)attributes
 {
   v15 = *MEMORY[0x29EDCA608];
-  if (a3)
+  if (results)
   {
-    v4 = a4;
+    attributesCopy = attributes;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (qword_2A1EB8F80 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
       {
-        ACFLog(7, "-[ACFKeychainManager dumpResults:printAttributes:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 201, 0, "FOUND %d ITEMS:", [a3 count]);
+        ACFLog(7, "-[ACFKeychainManager dumpResults:printAttributes:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 201, 0, "FOUND %d ITEMS:", [results count]);
       }
 
-      if (v4)
+      if (attributesCopy)
       {
         v12 = 0u;
         v13 = 0u;
         v10 = 0u;
         v11 = 0u;
-        v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [results countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           v7 = v6;
@@ -267,13 +267,13 @@ LABEL_31:
             {
               if (*v11 != v8)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(results);
               }
 
               [*(*(&v10 + 1) + 8 * i) dump];
             }
 
-            v7 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+            v7 = [results countByEnumeratingWithState:&v10 objects:v14 count:16];
           }
 
           while (v7);
@@ -288,7 +288,7 @@ LABEL_31:
         ACFLog(7, "[ACFKeychainManager dumpResults:printAttributes:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 196, 0, "FOUND ITEM:");
       }
 
-      [a3 dump];
+      [results dump];
     }
   }
 
@@ -298,17 +298,17 @@ LABEL_31:
   }
 }
 
-- (BOOL)removeItemWithInfo:(id)a3
+- (BOOL)removeItemWithInfo:(id)info
 {
   if (qword_2A1EB8F80 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
-    ACFLog(7, "-[ACFKeychainManager removeItemWithInfo:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 220, 0, "Deleting items with attributes: %@", [a3 attributes]);
+    ACFLog(7, "-[ACFKeychainManager removeItemWithInfo:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 220, 0, "Deleting items with attributes: %@", [info attributes]);
   }
 
   if ((ACFLogSettingsGetLevelMask() & 0x80) != 0)
   {
-    v5 = [a3 copy];
-    v6 = [a3 copy];
+    v5 = [info copy];
+    v6 = [info copy];
     [v6 setReturnLimit:-1];
     [(ACFKeychainManager *)self dumpResults:[(ACFKeychainManager *)self searchItemWithInfo:v6]];
   }
@@ -318,7 +318,7 @@ LABEL_31:
     v5 = 0;
   }
 
-  v7 = SecItemDelete([a3 attributes]);
+  v7 = SecItemDelete([info attributes]);
   v8 = v7;
   if (v7 != -25300 && v7)
   {
@@ -344,7 +344,7 @@ LABEL_31:
   return !v8 || v8 == -25300;
 }
 
-- (id)searchItemWithInfo:(id)a3
+- (id)searchItemWithInfo:(id)info
 {
   v20 = *MEMORY[0x29EDCA608];
   if (qword_2A1EB8F98)
@@ -354,7 +354,7 @@ LABEL_31:
       ACFProfileStart("[ACFKeychainManager searchItemWithInfo:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 252, 0, "OVERALL");
     }
 
-    [a3 setReturnAttributes:1];
+    [info setReturnAttributes:1];
     v18 = 0;
     if ((ACFLogSettingsGetLevelMask() & 0x100) != 0)
     {
@@ -364,11 +364,11 @@ LABEL_31:
 
   else
   {
-    [a3 setReturnAttributes:1];
+    [info setReturnAttributes:1];
     v18 = 0;
   }
 
-  v5 = -[ACFKeychainManager secItemCopyMatchingWithAttributes:result:](self, "secItemCopyMatchingWithAttributes:result:", [a3 attributes], &v18);
+  v5 = -[ACFKeychainManager secItemCopyMatchingWithAttributes:result:](self, "secItemCopyMatchingWithAttributes:result:", [info attributes], &v18);
   if (qword_2A1EB8F90 && (ACFLogSettingsGetLevelMask() & 0x100) != 0)
   {
     ACFProfileEnd("[ACFKeychainManager searchItemWithInfo:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Framework/SubProjects/Foundation/Sources/ACFKeychainManager.m", 261, 0, "SEARCH");

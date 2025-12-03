@@ -1,9 +1,9 @@
 @interface ARFaceData
 - (ARFaceData)init;
-- (ARFaceData)initWithCoder:(id)a3;
-- (ARFaceData)initWithMetadataObjects:(id)a3 mirroredVideoInput:(BOOL)a4 stripDetectionData:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ARFaceData)initWithCoder:(id)coder;
+- (ARFaceData)initWithMetadataObjects:(id)objects mirroredVideoInput:(BOOL)input stripDetectionData:(BOOL)data;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARFaceData
@@ -23,21 +23,21 @@
   return v3;
 }
 
-- (ARFaceData)initWithMetadataObjects:(id)a3 mirroredVideoInput:(BOOL)a4 stripDetectionData:(BOOL)a5
+- (ARFaceData)initWithMetadataObjects:(id)objects mirroredVideoInput:(BOOL)input stripDetectionData:(BOOL)data
 {
-  v46 = a5;
-  v5 = a4;
-  v44 = self;
+  dataCopy = data;
+  inputCopy = input;
+  selfCopy = self;
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectsCopy = objects;
   v47 = objc_opt_new();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v6;
+  obj = objectsCopy;
   v7 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
-  v45 = v5;
+  v45 = inputCopy;
   if (!v7)
   {
     v9 = 0;
@@ -60,8 +60,8 @@
       }
 
       v14 = *(*(&v54 + 1) + 8 * v13);
-      v15 = [v14 type];
-      v16 = [v15 isEqual:v11];
+      type = [v14 type];
+      v16 = [type isEqual:v11];
 
       if (v16)
       {
@@ -71,15 +71,15 @@
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        v26 = [(ARHWFaceDetection *)v17 faceID];
-        v27 = [(ARHWFaceDetection *)v17 hasRollAngle];
+        faceID = [(ARHWFaceDetection *)v17 faceID];
+        hasRollAngle = [(ARHWFaceDetection *)v17 hasRollAngle];
         v28 = 0.0;
-        if (v27)
+        if (hasRollAngle)
         {
           [(ARHWFaceDetection *)v17 rollAngle];
         }
 
-        if (v5)
+        if (inputCopy)
         {
           v29 = 180.0 - v28;
         }
@@ -89,13 +89,13 @@
           v29 = v28;
         }
 
-        if (v5)
+        if (inputCopy)
         {
           v21 = 1.0 - v21 - v25;
         }
 
         v30 = objc_alloc_init(ARHWFaceDetection);
-        [(ARHWFaceDetection *)v30 setID:v26];
+        [(ARHWFaceDetection *)v30 setID:faceID];
         [(ARHWFaceDetection *)v30 setRollAngleInDegrees:v29];
         [(ARHWFaceDetection *)v30 setBoundingBox:v19, v21, v23, v25];
         [(ARHWFaceDetection *)v30 setDetectionOrientation:3];
@@ -118,8 +118,8 @@
 
       else
       {
-        v31 = [v14 type];
-        v32 = [v31 isEqual:v12];
+        type2 = [v14 type];
+        v32 = [type2 isEqual:v12];
 
         if (!v32)
         {
@@ -127,22 +127,22 @@
         }
 
         v17 = v14;
-        v33 = [(ARHWFaceDetection *)v17 payload];
-        v34 = v33;
-        if (v46)
+        payload = [(ARHWFaceDetection *)v17 payload];
+        v34 = payload;
+        if (dataCopy)
         {
-          v35 = ARFilterFaceTrackingPayload(v33);
+          v35 = ARFilterFaceTrackingPayload(payload);
 
           v30 = v17;
           v17 = v34;
           v9 = v35;
-          v5 = v45;
+          inputCopy = v45;
         }
 
         else
         {
           v30 = v9;
-          v9 = v33;
+          v9 = payload;
         }
       }
 
@@ -166,7 +166,7 @@ LABEL_28:
       v38 = 0;
       do
       {
-        v39 = [v37 objectAtIndexedSubscript:{v38, v44}];
+        v39 = [v37 objectAtIndexedSubscript:{v38, selfCopy}];
         v40 = [ARHWFaceDetection faceDetectionFromDictionary:v39];
 
         if (v40)
@@ -180,10 +180,10 @@ LABEL_28:
       while ([v37 count] > v38);
     }
 
-    LOBYTE(v5) = v45;
+    LOBYTE(inputCopy) = v45;
   }
 
-  v49.receiver = v44;
+  v49.receiver = selfCopy;
   v49.super_class = ARFaceData;
   v41 = [(ARFaceData *)&v49 init];
   v42 = v41;
@@ -191,16 +191,16 @@ LABEL_28:
   {
     objc_storeStrong(&v41->_detectedFaces, v47);
     objc_storeStrong(&v42->_faceMeshPayload, v9);
-    v42->_mirrored = v5;
+    v42->_mirrored = inputCopy;
   }
 
   return v42;
 }
 
-- (ARFaceData)initWithCoder:(id)a3
+- (ARFaceData)initWithCoder:(id)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = ARFaceData;
   v5 = [(ARFaceData *)&v23 init];
@@ -210,7 +210,7 @@ LABEL_28:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"detectedFaces"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"detectedFaces"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -261,11 +261,11 @@ LABEL_28:
 
 LABEL_13:
     v15 = ARApprovedDecoderClasses();
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"faceMeshPayload"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"faceMeshPayload"];
 
-    if ([v4 containsValueForKey:@"mirrored"])
+    if ([coderCopy containsValueForKey:@"mirrored"])
     {
-      v17 = [v4 decodeBoolForKey:@"mirrored"];
+      v17 = [coderCopy decodeBoolForKey:@"mirrored"];
     }
 
     else
@@ -284,29 +284,29 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   detectedFaces = self->_detectedFaces;
-  v5 = a3;
-  [v5 encodeObject:detectedFaces forKey:@"detectedFaces"];
-  [v5 encodeObject:self->_faceMeshPayload forKey:@"faceMeshPayload"];
-  [v5 encodeBool:self->_mirrored forKey:@"mirrored"];
+  coderCopy = coder;
+  [coderCopy encodeObject:detectedFaces forKey:@"detectedFaces"];
+  [coderCopy encodeObject:self->_faceMeshPayload forKey:@"faceMeshPayload"];
+  [coderCopy encodeBool:self->_mirrored forKey:@"mirrored"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     faceMeshPayload = self->_faceMeshPayload;
-    v7 = [v5 faceMeshPayload];
-    if ([(NSDictionary *)faceMeshPayload isEqual:v7])
+    faceMeshPayload = [v5 faceMeshPayload];
+    if ([(NSDictionary *)faceMeshPayload isEqual:faceMeshPayload])
     {
       detectedFaces = self->_detectedFaces;
-      v9 = [v5 detectedFaces];
-      if ([(NSArray *)detectedFaces isEqual:v9])
+      detectedFaces = [v5 detectedFaces];
+      if ([(NSArray *)detectedFaces isEqual:detectedFaces])
       {
         v10 = self->_mirrored == v5[8];
       }

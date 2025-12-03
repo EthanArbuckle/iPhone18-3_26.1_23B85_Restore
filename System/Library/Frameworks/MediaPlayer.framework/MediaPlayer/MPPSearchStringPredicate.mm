@@ -1,23 +1,23 @@
 @interface MPPSearchStringPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addProperties:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addProperties:(id)properties;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MPPSearchStringPredicate
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((searchString = self->_searchString, !(searchString | v4[2])) || -[NSString isEqual:](searchString, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((searchString = self->_searchString, !(searchString | equalCopy[2])) || -[NSString isEqual:](searchString, "isEqual:")))
   {
     properties = self->_properties;
-    if (properties | v4[1])
+    if (properties | equalCopy[1])
     {
       v7 = [(NSMutableArray *)properties isEqual:?];
     }
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_searchString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_searchString copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -64,7 +64,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addProperties:v13];
 
         ++v12;
@@ -80,40 +80,40 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(MPPSearchStringPredicate *)self hasSearchString])
   {
-    v4 = [(MPPSearchStringPredicate *)self searchString];
-    [v9 setSearchString:v4];
+    searchString = [(MPPSearchStringPredicate *)self searchString];
+    [toCopy setSearchString:searchString];
   }
 
   if ([(MPPSearchStringPredicate *)self propertiesCount])
   {
-    [v9 clearProperties];
-    v5 = [(MPPSearchStringPredicate *)self propertiesCount];
-    if (v5)
+    [toCopy clearProperties];
+    propertiesCount = [(MPPSearchStringPredicate *)self propertiesCount];
+    if (propertiesCount)
     {
-      v6 = v5;
+      v6 = propertiesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(MPPSearchStringPredicate *)self propertiesAtIndex:i];
-        [v9 addProperties:v8];
+        [toCopy addProperties:v8];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   searchString = self->_searchString;
   if (searchString)
   {
-    [v4 writeString:searchString forTag:1];
+    [toCopy writeString:searchString forTag:1];
   }
 
   v14 = 0u;
@@ -147,12 +147,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   searchString = self->_searchString;
   if (searchString)
   {
-    [v3 setObject:searchString forKey:@"searchString"];
+    [dictionary setObject:searchString forKey:@"searchString"];
   }
 
   properties = self->_properties;
@@ -170,28 +170,28 @@
   v8.receiver = self;
   v8.super_class = MPPSearchStringPredicate;
   v4 = [(MPPSearchStringPredicate *)&v8 description];
-  v5 = [(MPPSearchStringPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MPPSearchStringPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_properties;
     self->_properties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSMutableArray *)properties addObject:v4];
+  [(NSMutableArray *)properties addObject:propertiesCopy];
 }
 
 - (void)dealloc

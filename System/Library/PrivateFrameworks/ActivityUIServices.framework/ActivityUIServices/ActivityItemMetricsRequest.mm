@@ -1,25 +1,25 @@
 @interface ActivityItemMetricsRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)initialSize;
 - (CGSize)maximumSize;
 - (NSNumber)watchDisplayVariant;
 - (NSString)description;
 - (_TtC18ActivityUIServices26ActivityItemMetricsRequest)init;
-- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithCoder:(id)a3;
-- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithWidth:(id)a3 height:(id)a4 cornerRadius:(double)a5 edgeInsets:(id)a6 clipMargin:(double)a7 scaleFactor:(double)a8 watchDisplayVariant:(id)a9;
-- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithXPCDictionary:(id)a3;
+- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithCoder:(id)coder;
+- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithWidth:(id)width height:(id)height cornerRadius:(double)radius edgeInsets:(id)insets clipMargin:(double)margin scaleFactor:(double)factor watchDisplayVariant:(id)variant;
+- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithXPCDictionary:(id)dictionary;
 - (double)clipMargin;
 - (double)cornerRadius;
 - (double)scaleFactor;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setClipMargin:(double)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setEdgeInsets:(id)a3;
-- (void)setScaleFactor:(double)a3;
-- (void)setWatchDisplayVariant:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setClipMargin:(double)margin;
+- (void)setCornerRadius:(double)radius;
+- (void)setEdgeInsets:(id)insets;
+- (void)setScaleFactor:(double)factor;
+- (void)setWatchDisplayVariant:(id)variant;
 @end
 
 @implementation ActivityItemMetricsRequest
@@ -31,11 +31,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityItemMetricsRequest_cornerRadius;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = radius;
 }
 
 - (double)clipMargin
@@ -45,11 +45,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setClipMargin:(double)a3
+- (void)setClipMargin:(double)margin
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityItemMetricsRequest_clipMargin;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = margin;
 }
 
 - (double)scaleFactor
@@ -59,11 +59,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityItemMetricsRequest_scaleFactor;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = factor;
 }
 
 - (NSNumber)watchDisplayVariant
@@ -73,20 +73,20 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setWatchDisplayVariant:(id)a3
+- (void)setWatchDisplayVariant:(id)variant
 {
   v5 = OBJC_IVAR____TtC18ActivityUIServices26ActivityItemMetricsRequest_watchDisplayVariant;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = variant;
+  variantCopy = variant;
 }
 
-- (void)setEdgeInsets:(id)a3
+- (void)setEdgeInsets:(id)insets
 {
-  v5 = a3;
-  v6 = self;
-  sub_18E653CD8(a3);
+  insetsCopy = insets;
+  selfCopy = self;
+  sub_18E653CD8(insets);
 }
 
 - (CGSize)initialSize
@@ -110,30 +110,30 @@
   return result;
 }
 
-- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithWidth:(id)a3 height:(id)a4 cornerRadius:(double)a5 edgeInsets:(id)a6 clipMargin:(double)a7 scaleFactor:(double)a8 watchDisplayVariant:(id)a9
+- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithWidth:(id)width height:(id)height cornerRadius:(double)radius edgeInsets:(id)insets clipMargin:(double)margin scaleFactor:(double)factor watchDisplayVariant:(id)variant
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
-  v19 = sub_18E655F48(v15, v16, a6, a9, a5, a7, a8);
+  widthCopy = width;
+  heightCopy = height;
+  insetsCopy = insets;
+  variantCopy = variant;
+  v19 = sub_18E655F48(widthCopy, heightCopy, insets, variant, radius, margin, factor);
 
   return v19;
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18E6549A0();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18E65FB60();
     swift_unknownObjectRelease();
@@ -142,7 +142,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_18E654B64(v8);
@@ -153,7 +153,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E654F54();
 
   v3 = sub_18E65F8F0();
@@ -161,25 +161,25 @@
   return v3;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18E6552A8(a3);
+  selfCopy = self;
+  sub_18E6552A8(dictionary);
   swift_unknownObjectRelease();
 }
 
-- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithXPCDictionary:(id)a3
+- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithXPCDictionary:(id)dictionary
 {
   swift_unknownObjectRetain();
-  v4 = sub_18E656188(a3);
+  v4 = sub_18E656188(dictionary);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_18E6555A4(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -188,17 +188,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_18E655940(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_18E655940(coderCopy);
 }
 
-- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithCoder:(id)a3
+- (_TtC18ActivityUIServices26ActivityItemMetricsRequest)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_18E65656C(v3);
+  coderCopy = coder;
+  v4 = sub_18E65656C(coderCopy);
 
   return v4;
 }

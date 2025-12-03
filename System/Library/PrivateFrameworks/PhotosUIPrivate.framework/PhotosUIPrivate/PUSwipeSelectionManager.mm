@@ -1,15 +1,15 @@
 @interface PUSwipeSelectionManager
 - (CGPoint)screenTouchLocation;
 - (PUSwipeSelectionManager)init;
-- (PUSwipeSelectionManager)initWithSelectionMode:(int64_t)a3 photoSelectionManager:(id)a4;
+- (PUSwipeSelectionManager)initWithSelectionMode:(int64_t)mode photoSelectionManager:(id)manager;
 - (PUSwipeSelectionManagerDataSource)datasource;
 - (PUSwipeSelectionManagerDelegate)delegate;
-- (id)_indexesPathsRangeForIndexPath:(id)a3;
-- (int64_t)_selectionModeForRestoringStateOfIndexPath:(id)a3;
-- (void)beginSelectionFromIndexPath:(id)a3;
+- (id)_indexesPathsRangeForIndexPath:(id)path;
+- (int64_t)_selectionModeForRestoringStateOfIndexPath:(id)path;
+- (void)beginSelectionFromIndexPath:(id)path;
 - (void)dealloc;
 - (void)endSelection;
-- (void)updateSelectionWithCurrentIndexPath:(id)a3 leftClosestIndexPath:(id)a4 aboveClosestIndexPath:(id)a5;
+- (void)updateSelectionWithCurrentIndexPath:(id)path leftClosestIndexPath:(id)indexPath aboveClosestIndexPath:(id)closestIndexPath;
 @end
 
 @implementation PUSwipeSelectionManager
@@ -37,31 +37,31 @@
   return WeakRetained;
 }
 
-- (void)updateSelectionWithCurrentIndexPath:(id)a3 leftClosestIndexPath:(id)a4 aboveClosestIndexPath:(id)a5
+- (void)updateSelectionWithCurrentIndexPath:(id)path leftClosestIndexPath:(id)indexPath aboveClosestIndexPath:(id)closestIndexPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  closestIndexPathCopy = closestIndexPath;
+  _startingIndexPath = [(PUSwipeSelectionManager *)self _startingIndexPath];
 
-  if (!v12)
+  if (!_startingIndexPath)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PUSwipeSelectionManager.m" lineNumber:148 description:@"Starting indexPath should be set"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSwipeSelectionManager.m" lineNumber:148 description:@"Starting indexPath should be set"];
   }
 
-  if (v9 | v10 || v11)
+  if (pathCopy | indexPathCopy || closestIndexPathCopy)
   {
-    if (v9 | v10)
+    if (pathCopy | indexPathCopy)
     {
-      if (v9)
+      if (pathCopy)
       {
-        v13 = v9;
+        v13 = pathCopy;
       }
 
       else
       {
-        v13 = v10;
+        v13 = indexPathCopy;
       }
 
       v14 = v13;
@@ -75,7 +75,7 @@ LABEL_10:
       v34[3] = &unk_1E7B7E350;
       v18 = v15;
       v35 = v18;
-      v36 = self;
+      selfCopy = self;
       v37 = v16;
       v38 = a2;
       v19 = v16;
@@ -90,25 +90,25 @@ LABEL_10:
       v33[3] = &unk_1E7B7E378;
       v33[4] = self;
       [(NSMutableDictionary *)v21 enumerateKeysAndObjectsUsingBlock:v33];
-      v22 = [(PUSwipeSelectionManager *)self _selectionMode];
+      _selectionMode = [(PUSwipeSelectionManager *)self _selectionMode];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __106__PUSwipeSelectionManager_updateSelectionWithCurrentIndexPath_leftClosestIndexPath_aboveClosestIndexPath___block_invoke_4;
       v32[3] = &unk_1E7B7E3A0;
       v32[4] = self;
-      v32[5] = v22 == 0;
+      v32[5] = _selectionMode == 0;
       [v19 enumerateKeysAndObjectsUsingBlock:v32];
 
       goto LABEL_19;
     }
 
-    if (!v11)
+    if (!closestIndexPathCopy)
     {
       goto LABEL_19;
     }
 
-    v23 = [(PUSwipeSelectionManager *)self _startingIndexPath];
-    v24 = [v23 compare:v11];
+    _startingIndexPath2 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+    v24 = [_startingIndexPath2 compare:closestIndexPathCopy];
 
     if (v24 != 1)
     {
@@ -117,22 +117,22 @@ LABEL_10:
         goto LABEL_19;
       }
 
-      v25 = [v11 copy];
+      v25 = [closestIndexPathCopy copy];
       goto LABEL_18;
     }
 
-    v26 = [v11 section];
-    v27 = [(PUSwipeSelectionManager *)self _startingIndexPath];
-    v28 = [v27 section];
+    section = [closestIndexPathCopy section];
+    _startingIndexPath3 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+    section2 = [_startingIndexPath3 section];
 
-    if (v26 < v28)
+    if (section < section2)
     {
-      v29 = [(PUSwipeSelectionManager *)self datasource];
-      v30 = [v29 swipeSelectionManager:self numberOfItemsInSection:{objc_msgSend(v11, "section") + 1}];
+      datasource = [(PUSwipeSelectionManager *)self datasource];
+      v30 = [datasource swipeSelectionManager:self numberOfItemsInSection:{objc_msgSend(closestIndexPathCopy, "section") + 1}];
 
       if (v30 >= 1)
       {
-        v25 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:{objc_msgSend(v11, "section") + 1}];
+        v25 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:{objc_msgSend(closestIndexPathCopy, "section") + 1}];
 LABEL_18:
         v14 = v25;
         if (!v25)
@@ -229,144 +229,144 @@ void __106__PUSwipeSelectionManager_updateSelectionWithCurrentIndexPath_leftClos
     [(PXUIAutoScroller *)selectionAutoScroller stop];
   }
 
-  v4 = [(PUSwipeSelectionManager *)self _pausingChangesToken];
+  _pausingChangesToken = [(PUSwipeSelectionManager *)self _pausingChangesToken];
 
-  if (v4)
+  if (_pausingChangesToken)
   {
-    v6 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v5 = [(PUSwipeSelectionManager *)self _pausingChangesToken];
-    [v6 px_endPausingChanges:v5];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    _pausingChangesToken2 = [(PUSwipeSelectionManager *)self _pausingChangesToken];
+    [px_deprecated_appPhotoLibrary px_endPausingChanges:_pausingChangesToken2];
 
     [(PUSwipeSelectionManager *)self _setPausingChangesToken:0];
   }
 }
 
-- (void)beginSelectionFromIndexPath:(id)a3
+- (void)beginSelectionFromIndexPath:(id)path
 {
-  [(PUSwipeSelectionManager *)self _setStartingIndexPath:a3];
-  v5 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v4 = [v5 px_beginPausingChangesWithTimeout:@"PUSwipeSelectionManager" identifier:60.0];
+  [(PUSwipeSelectionManager *)self _setStartingIndexPath:path];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v4 = [px_deprecated_appPhotoLibrary px_beginPausingChangesWithTimeout:@"PUSwipeSelectionManager" identifier:60.0];
   [(PUSwipeSelectionManager *)self _setPausingChangesToken:v4];
 }
 
-- (int64_t)_selectionModeForRestoringStateOfIndexPath:(id)a3
+- (int64_t)_selectionModeForRestoringStateOfIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUSwipeSelectionManager *)self datasource];
-  v6 = [v5 swipeSelectionManager:self photoCollectionAtIndex:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  datasource = [(PUSwipeSelectionManager *)self datasource];
+  v6 = [datasource swipeSelectionManager:self photoCollectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v7 = [(PUSwipeSelectionManager *)self _restorePhotoSelectionManager];
-  v8 = [v4 item];
+  _restorePhotoSelectionManager = [(PUSwipeSelectionManager *)self _restorePhotoSelectionManager];
+  item = [pathCopy item];
 
-  LODWORD(v4) = [v7 isAssetAtIndexSelected:v8 inAssetCollection:v6];
-  return v4 ^ 1;
+  LODWORD(pathCopy) = [_restorePhotoSelectionManager isAssetAtIndexSelected:item inAssetCollection:v6];
+  return pathCopy ^ 1;
 }
 
-- (id)_indexesPathsRangeForIndexPath:(id)a3
+- (id)_indexesPathsRangeForIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+  pathCopy = path;
+  _startingIndexPath = [(PUSwipeSelectionManager *)self _startingIndexPath];
 
-  if (!v6)
+  if (!_startingIndexPath)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PUSwipeSelectionManager.m" lineNumber:68 description:@"Starting indexPath should be set"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSwipeSelectionManager.m" lineNumber:68 description:@"Starting indexPath should be set"];
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [(PUSwipeSelectionManager *)self _startingIndexPath];
-  v9 = [v8 compare:v5];
+  _startingIndexPath2 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+  v9 = [_startingIndexPath2 compare:pathCopy];
 
   if (v9 == 1)
   {
     v33 = a2;
-    v11 = [v5 section];
-    v13 = [v5 item];
-    v16 = [(PUSwipeSelectionManager *)self _startingIndexPath];
-    v14 = [v16 section];
+    section = [pathCopy section];
+    item = [pathCopy item];
+    _startingIndexPath3 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+    section2 = [_startingIndexPath3 section];
 
     [(PUSwipeSelectionManager *)self _startingIndexPath];
-    v18 = v17 = v5;
-    v15 = [v18 item];
+    v18 = v17 = pathCopy;
+    item2 = [v18 item];
 
-    v5 = v17;
+    pathCopy = v17;
   }
 
   else
   {
     if (v9 && v9 != -1)
     {
-      v11 = 0;
-      v13 = 0;
-      v15 = 0;
+      section = 0;
+      item = 0;
+      item2 = 0;
       goto LABEL_21;
     }
 
     v33 = a2;
-    v10 = [(PUSwipeSelectionManager *)self _startingIndexPath];
-    v11 = [v10 section];
+    _startingIndexPath4 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+    section = [_startingIndexPath4 section];
 
-    v12 = [(PUSwipeSelectionManager *)self _startingIndexPath];
-    v13 = [v12 item];
+    _startingIndexPath5 = [(PUSwipeSelectionManager *)self _startingIndexPath];
+    item = [_startingIndexPath5 item];
 
-    v14 = [v5 section];
-    v15 = [v5 item];
+    section2 = [pathCopy section];
+    item2 = [pathCopy item];
   }
 
-  if (v11 >= v14)
+  if (section >= section2)
   {
-    if (v11 == v14)
+    if (section == section2)
     {
-      v11 = v14;
+      section = section2;
     }
 
     else
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:v33 object:self file:@"PUSwipeSelectionManager.m" lineNumber:109 description:@"Must be same section"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:v33 object:self file:@"PUSwipeSelectionManager.m" lineNumber:109 description:@"Must be same section"];
     }
   }
 
   else
   {
-    v32 = v5;
+    v32 = pathCopy;
     do
     {
-      v19 = [(PUSwipeSelectionManager *)self datasource];
+      datasource = [(PUSwipeSelectionManager *)self datasource];
 
-      if (!v19)
+      if (!datasource)
       {
-        v26 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v26 handleFailureInMethod:v33 object:self file:@"PUSwipeSelectionManager.m" lineNumber:98 description:@"Datasource should be set"];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:v33 object:self file:@"PUSwipeSelectionManager.m" lineNumber:98 description:@"Datasource should be set"];
       }
 
-      v20 = [(PUSwipeSelectionManager *)self datasource];
-      v21 = [v20 swipeSelectionManager:self numberOfItemsInSection:v11];
+      datasource2 = [(PUSwipeSelectionManager *)self datasource];
+      v21 = [datasource2 swipeSelectionManager:self numberOfItemsInSection:section];
 
       if (v21)
       {
-        v22 = v21 < v13;
-        v23 = v21 - v13;
+        v22 = v21 < item;
+        v23 = v21 - item;
         if (!v22)
         {
-          v24 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v13, v23}];
-          v25 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+          v24 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{item, v23}];
+          v25 = [MEMORY[0x1E696AD98] numberWithInteger:section];
           [v7 setObject:v24 forKeyedSubscript:v25];
         }
       }
 
-      v13 = 0;
-      ++v11;
+      item = 0;
+      ++section;
     }
 
-    while (v14 != v11);
-    v11 = v14;
-    v5 = v32;
+    while (section2 != section);
+    section = section2;
+    pathCopy = v32;
   }
 
 LABEL_21:
-  v27 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v13, v15 - v13 + 1}];
-  v28 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+  v27 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{item, item2 - item + 1}];
+  v28 = [MEMORY[0x1E696AD98] numberWithInteger:section];
   [v7 setObject:v27 forKeyedSubscript:v28];
 
   return v7;
@@ -380,13 +380,13 @@ LABEL_21:
     [(PXUIAutoScroller *)selectionAutoScroller stop];
   }
 
-  v4 = [(PUSwipeSelectionManager *)self _pausingChangesToken];
+  _pausingChangesToken = [(PUSwipeSelectionManager *)self _pausingChangesToken];
 
-  if (v4)
+  if (_pausingChangesToken)
   {
-    v5 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v6 = [(PUSwipeSelectionManager *)self _pausingChangesToken];
-    [v5 px_endPausingChanges:v6];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    _pausingChangesToken2 = [(PUSwipeSelectionManager *)self _pausingChangesToken];
+    [px_deprecated_appPhotoLibrary px_endPausingChanges:_pausingChangesToken2];
 
     [(PUSwipeSelectionManager *)self _setPausingChangesToken:0];
   }
@@ -396,17 +396,17 @@ LABEL_21:
   [(PUSwipeSelectionManager *)&v7 dealloc];
 }
 
-- (PUSwipeSelectionManager)initWithSelectionMode:(int64_t)a3 photoSelectionManager:(id)a4
+- (PUSwipeSelectionManager)initWithSelectionMode:(int64_t)mode photoSelectionManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = PUSwipeSelectionManager;
   v7 = [(PUSwipeSelectionManager *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->__selectionMode = a3;
-    v9 = [v6 copy];
+    v7->__selectionMode = mode;
+    v9 = [managerCopy copy];
     restorePhotoSelectionManager = v8->__restorePhotoSelectionManager;
     v8->__restorePhotoSelectionManager = v9;
   }

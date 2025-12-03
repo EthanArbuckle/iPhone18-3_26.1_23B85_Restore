@@ -1,12 +1,12 @@
 @interface SCNActionRunBlock
-+ (id)runBlock:(id)a3 queue:(id)a4;
++ (id)runBlock:(id)block queue:(id)queue;
 - (SCNActionRunBlock)init;
-- (SCNActionRunBlock)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionRunBlock)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
 @end
 
 @implementation SCNActionRunBlock
@@ -25,19 +25,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SCNActionRunBlock;
-  [(SCNAction *)&v3 encodeWithCoder:a3];
+  [(SCNAction *)&v3 encodeWithCoder:coder];
   NSLog(&cfstr_ScnactionRunBl.isa);
 }
 
-- (SCNActionRunBlock)initWithCoder:(id)a3
+- (SCNActionRunBlock)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SCNActionRunBlock;
-  v3 = [(SCNAction *)&v6 initWithCoder:a3];
+  v3 = [(SCNAction *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -61,7 +61,7 @@
   [(SCNAction *)&v4 dealloc];
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
   if (![(SCNAction *)self finished])
   {
@@ -76,36 +76,36 @@
         v11[2] = __46__SCNActionRunBlock_updateWithTarget_forTime___block_invoke;
         v11[3] = &unk_2782FC790;
         v11[4] = self;
-        v11[5] = a3;
+        v11[5] = target;
         dispatch_async(queue, v11);
       }
 
       else
       {
-        block[2](self->_block, a3);
+        block[2](self->_block, target);
       }
     }
 
-    v9 = [(SCNAction *)self caction];
-    v9->var11 = 0;
-    v10.n128_f64[0] = a4;
-    SCNCAction::didFinishWithTargetAtTime(v9, a3, v10);
+    caction = [(SCNAction *)self caction];
+    caction->var11 = 0;
+    v10.n128_f64[0] = time;
+    SCNCAction::didFinishWithTargetAtTime(caction, target, v10);
   }
 }
 
-+ (id)runBlock:(id)a3 queue:(id)a4
++ (id)runBlock:(id)block queue:(id)queue
 {
   v6 = objc_alloc_init(SCNActionRunBlock);
-  v6->_block = [a3 copy];
-  v6->_queue = a4;
+  v6->_block = [block copy];
+  v6->_queue = queue;
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SCNActionRunBlock;
-  v4 = [(SCNAction *)&v6 copyWithZone:a3];
+  v4 = [(SCNAction *)&v6 copyWithZone:zone];
   v4[2] = [self->_block copy];
   v4[3] = self->_queue;
   return v4;

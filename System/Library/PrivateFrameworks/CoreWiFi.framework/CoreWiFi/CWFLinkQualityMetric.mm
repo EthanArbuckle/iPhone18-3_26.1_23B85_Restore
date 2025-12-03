@@ -1,28 +1,28 @@
 @interface CWFLinkQualityMetric
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLinkQualityMetric:(id)a3;
-- (CWFLinkQualityMetric)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLinkQualityMetric:(id)metric;
+- (CWFLinkQualityMetric)initWithCoder:(id)coder;
 - (NSArray)mLOLinks;
 - (NSString)description;
 - (double)rxRate;
 - (double)txRate;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)RSSI;
 - (int64_t)noise;
 - (unint64_t)CCA;
 - (unint64_t)txPacketErrorRate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFLinkQualityMetric
 
 - (double)rxRate
 {
-  v2 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v3 = v2;
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v3 = linkQualityMetricData;
   v4 = 0.0;
-  if (v2 && [v2 length] == 472)
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472)
   {
     v4 = (*([v3 bytes] + 72) / 0x3E8u);
   }
@@ -32,9 +32,9 @@
 
 - (int64_t)RSSI
 {
-  v2 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v3 = v2;
-  if (v2 && [v2 length] == 472 && (v4 = objc_msgSend(v3, "bytes"), *v4))
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v3 = linkQualityMetricData;
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472 && (v4 = objc_msgSend(v3, "bytes"), *v4))
   {
     v5 = *(v4 + 4);
   }
@@ -49,9 +49,9 @@
 
 - (unint64_t)CCA
 {
-  v2 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v3 = v2;
-  if (v2 && [v2 length] == 472 && (v4 = objc_msgSend(v3, "bytes"), *(v4 + 18)))
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v3 = linkQualityMetricData;
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472 && (v4 = objc_msgSend(v3, "bytes"), *(v4 + 18)))
   {
     v5 = *(v4 + 19);
   }
@@ -66,10 +66,10 @@
 
 - (double)txRate
 {
-  v2 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v3 = v2;
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v3 = linkQualityMetricData;
   v4 = 0.0;
-  if (v2 && [v2 length] == 472)
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472)
   {
     v4 = (*([v3 bytes] + 64) / 0x3E8u);
   }
@@ -79,9 +79,9 @@
 
 - (int64_t)noise
 {
-  v2 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v3 = v2;
-  if (v2 && [v2 length] == 472 && (v4 = objc_msgSend(v3, "bytes"), *(v4 + 14)))
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v3 = linkQualityMetricData;
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472 && (v4 = objc_msgSend(v3, "bytes"), *(v4 + 14)))
   {
     v5 = *(v4 + 16);
   }
@@ -96,23 +96,23 @@
 
 - (NSString)description
 {
-  v3 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v4 = v3;
-  if (v3 && [v3 length] == 472)
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v4 = linkQualityMetricData;
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472)
   {
-    v5 = [v4 bytes];
-    v6 = [MEMORY[0x1E696AD60] string];
-    v8 = v6;
-    if (*v5)
+    bytes = [v4 bytes];
+    string = [MEMORY[0x1E696AD60] string];
+    v8 = string;
+    if (*bytes)
     {
-      [v6 appendFormat:@"rssi=%ddBm ", *(v5 + 4)];
+      [string appendFormat:@"rssi=%ddBm ", *(bytes + 4)];
     }
 
-    if (*(v5 + 8))
+    if (*(bytes + 8))
     {
       objc_msgSend(v8, "appendString:", @"per_ant_rssi=(");
-      [v8 appendFormat:@"%ddBm, ", *(v5 + 9)];
-      [v8 appendFormat:@"%ddBm, ", *(v5 + 10)];
+      [v8 appendFormat:@"%ddBm, ", *(bytes + 9)];
+      [v8 appendFormat:@"%ddBm, ", *(bytes + 10)];
       if ([v8 hasSuffix:{@", "}])
       {
         [v8 deleteCharactersInRange:{objc_msgSend(v8, "length") - 2, 2}];
@@ -121,42 +121,42 @@
       [v8 appendString:@" "]);
     }
 
-    if (*(v5 + 14))
+    if (*(bytes + 14))
     {
-      [v8 appendFormat:@"noise=%ddBm ", *(v5 + 16)];
+      [v8 appendFormat:@"noise=%ddBm ", *(bytes + 16)];
     }
 
-    if (*(v5 + 11))
+    if (*(bytes + 11))
     {
-      [v8 appendFormat:@"snr=%d ", *(v5 + 12)];
+      [v8 appendFormat:@"snr=%d ", *(bytes + 12)];
     }
 
-    if (*(v5 + 18))
+    if (*(bytes + 18))
     {
-      [v8 appendFormat:@"cca=%.1f%% ", *(v5 + 19)];
+      [v8 appendFormat:@"cca=%.1f%% ", *(bytes + 19)];
     }
 
-    if (*(v5 + 308))
+    if (*(bytes + 308))
     {
-      [v8 appendFormat:@"ccaSelfTotal=%d ccaOtherTotal=%d interferenceTotal=%d ", *(v5 + 312), *(v5 + 313), *(v5 + 314)];
+      [v8 appendFormat:@"ccaSelfTotal=%d ccaOtherTotal=%d interferenceTotal=%d ", *(bytes + 312), *(bytes + 313), *(bytes + 314)];
     }
 
-    LODWORD(v7) = *(v5 + 64);
+    LODWORD(v7) = *(bytes + 64);
     [v8 appendFormat:@"txRate=%.1fMbps ", v7 / 1000.0];
-    LODWORD(v9) = *(v5 + 68);
-    [v8 appendFormat:@"txFrames=%d txFail=%d txRetrans=%d txFallbackRate=%.1fMbps ", *(v5 + 28), *(v5 + 20), *(v5 + 24), v9 / 1000.0];
-    LODWORD(v10) = *(v5 + 72);
+    LODWORD(v9) = *(bytes + 68);
+    [v8 appendFormat:@"txFrames=%d txFail=%d txRetrans=%d txFallbackRate=%.1fMbps ", *(bytes + 28), *(bytes + 20), *(bytes + 24), v9 / 1000.0];
+    LODWORD(v10) = *(bytes + 72);
     [v8 appendFormat:@"rxRate=%.1fMbps ", v10 / 1000.0];
-    [v8 appendFormat:@"rxFrames=%d rxRetryFrames=%d ", *(v5 + 36), *(v5 + 32)];
-    [v8 appendFormat:@"rxToss=%d ", *(v5 + 76)];
-    if (*(v5 + 48))
+    [v8 appendFormat:@"rxFrames=%d rxRetryFrames=%d ", *(bytes + 36), *(bytes + 32)];
+    [v8 appendFormat:@"rxToss=%d ", *(bytes + 76)];
+    if (*(bytes + 48))
     {
-      [v8 appendFormat:@"beaconRecv=%d beaconSched=%d ", *(v5 + 40), *(v5 + 44)];
+      [v8 appendFormat:@"beaconRecv=%d beaconSched=%d ", *(bytes + 40), *(bytes + 44)];
     }
 
-    if (*(v5 + 49))
+    if (*(bytes + 49))
     {
-      [v8 appendFormat:@"txFwFrames=%d txFwFail=%d txFwRetrans=%d", *(v5 + 60), *(v5 + 52), *(v5 + 56)];
+      [v8 appendFormat:@"txFwFrames=%d txFwFail=%d txFwRetrans=%d", *(bytes + 60), *(bytes + 52), *(bytes + 56)];
     }
 
     v11 = [v8 copy];
@@ -175,8 +175,8 @@
 - (id)JSONCompatibleKeyValueMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CWFLinkQualityMetric *)self updatedAt];
-  [v3 setObject:v4 forKeyedSubscript:@"updated_at"];
+  updatedAt = [(CWFLinkQualityMetric *)self updatedAt];
+  [v3 setObject:updatedAt forKeyedSubscript:@"updated_at"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CWFLinkQualityMetric RSSI](self, "RSSI")}];
   [v3 setObject:v5 forKeyedSubscript:@"rssi"];
@@ -197,81 +197,81 @@
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFLinkQualityMetric CCA](self, "CCA")}];
   [v3 setObject:v11 forKeyedSubscript:@"cca"];
 
-  v12 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v13 = v12;
-  if (v12 && [v12 length] >= 0x1D8)
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v13 = linkQualityMetricData;
+  if (linkQualityMetricData && [linkQualityMetricData length] >= 0x1D8)
   {
-    v14 = [v13 bytes];
-    if (*(v14 + 8))
+    bytes = [v13 bytes];
+    if (*(bytes + 8))
     {
-      v15 = [MEMORY[0x1E695DF70] array];
-      v16 = [MEMORY[0x1E696AD98] numberWithChar:*(v14 + 9)];
-      [v15 addObject:v16];
+      array = [MEMORY[0x1E695DF70] array];
+      v16 = [MEMORY[0x1E696AD98] numberWithChar:*(bytes + 9)];
+      [array addObject:v16];
 
-      v17 = [MEMORY[0x1E696AD98] numberWithChar:*(v14 + 10)];
-      [v15 addObject:v17];
+      v17 = [MEMORY[0x1E696AD98] numberWithChar:*(bytes + 10)];
+      [array addObject:v17];
 
-      [v3 setObject:v15 forKeyedSubscript:@"per_ant_rssi"];
+      [v3 setObject:array forKeyedSubscript:@"per_ant_rssi"];
     }
 
-    if (*(v14 + 11))
+    if (*(bytes + 11))
     {
-      v18 = [MEMORY[0x1E696AD98] numberWithShort:*(v14 + 12)];
+      v18 = [MEMORY[0x1E696AD98] numberWithShort:*(bytes + 12)];
       [v3 setObject:v18 forKeyedSubscript:@"snr"];
     }
 
-    if (*(v14 + 308))
+    if (*(bytes + 308))
     {
-      v19 = [MEMORY[0x1E696AD98] numberWithChar:*(v14 + 312)];
+      v19 = [MEMORY[0x1E696AD98] numberWithChar:*(bytes + 312)];
       [v3 setObject:v19 forKeyedSubscript:@"cca_self_total"];
 
-      v20 = [MEMORY[0x1E696AD98] numberWithChar:*(v14 + 313)];
+      v20 = [MEMORY[0x1E696AD98] numberWithChar:*(bytes + 313)];
       [v3 setObject:v20 forKeyedSubscript:@"cca_other_total"];
 
-      v21 = [MEMORY[0x1E696AD98] numberWithChar:*(v14 + 314)];
+      v21 = [MEMORY[0x1E696AD98] numberWithChar:*(bytes + 314)];
       [v3 setObject:v21 forKeyedSubscript:@"cca_interference_total"];
     }
 
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 28)];
+    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 28)];
     [v3 setObject:v22 forKeyedSubscript:@"tx_frames"];
 
-    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 20)];
+    v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 20)];
     [v3 setObject:v23 forKeyedSubscript:@"tx_fail"];
 
-    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 24)];
+    v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 24)];
     [v3 setObject:v24 forKeyedSubscript:@"tx_retrans"];
 
-    LODWORD(v25) = *(v14 + 68);
+    LODWORD(v25) = *(bytes + 68);
     v26 = [MEMORY[0x1E696AD98] numberWithDouble:v25 / 1000.0];
     [v3 setObject:v26 forKeyedSubscript:@"tx_fallback_rate"];
 
-    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 36)];
+    v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 36)];
     [v3 setObject:v27 forKeyedSubscript:@"rx_frames"];
 
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 32)];
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 32)];
     [v3 setObject:v28 forKeyedSubscript:@"rx_retry_frames"];
 
-    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 76)];
+    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 76)];
     [v3 setObject:v29 forKeyedSubscript:@"rx_toss"];
 
-    if (*(v14 + 48))
+    if (*(bytes + 48))
     {
-      v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 40)];
+      v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 40)];
       [v3 setObject:v30 forKeyedSubscript:@"beacon_recv"];
 
-      v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 44)];
+      v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 44)];
       [v3 setObject:v31 forKeyedSubscript:@"beacon_sched"];
     }
 
-    if (*(v14 + 49))
+    if (*(bytes + 49))
     {
-      v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 60)];
+      v32 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 60)];
       [v3 setObject:v32 forKeyedSubscript:@"tx_fw_frames"];
 
-      v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 52)];
+      v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 52)];
       [v3 setObject:v33 forKeyedSubscript:@"tx_fw_fail"];
 
-      v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(v14 + 56)];
+      v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*(bytes + 56)];
       [v3 setObject:v34 forKeyedSubscript:@"tx_fw_retrans"];
     }
   }
@@ -292,9 +292,9 @@
 
 - (unint64_t)txPacketErrorRate
 {
-  v2 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v3 = v2;
-  if (v2 && [v2 length] == 472 && (v4 = objc_msgSend(v3, "bytes"), (v6 = *(v4 + 28)) != 0))
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v3 = linkQualityMetricData;
+  if (linkQualityMetricData && [linkQualityMetricData length] == 472 && (v4 = objc_msgSend(v3, "bytes"), (v6 = *(v4 + 28)) != 0))
   {
     LODWORD(v5) = *(v4 + 20);
     v7 = (v5 / v6 * 100.0);
@@ -310,19 +310,19 @@
 
 - (NSArray)mLOLinks
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CWFLinkQualityMetric *)self linkQualityMetricData];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  linkQualityMetricData = [(CWFLinkQualityMetric *)self linkQualityMetricData];
+  v5 = linkQualityMetricData;
+  if (linkQualityMetricData)
   {
-    if ([v4 length] == 472)
+    if ([linkQualityMetricData length] == 472)
     {
-      v6 = [v5 bytes];
-      if (*(v6 + 332))
+      bytes = [v5 bytes];
+      if (*(bytes + 332))
       {
-        v7 = v6;
+        v7 = bytes;
         v8 = 0;
-        v9 = (v6 + 349);
+        v9 = (bytes + 349);
         do
         {
           v10 = objc_alloc_init(CWFMLOLink);
@@ -331,7 +331,7 @@
           [(CWFMLOLink *)v10 setWidth:(*v9 >> 11) & 7];
           [(CWFMLOLink *)v10 setSubchannel:v9[1] & 7];
           [(CWFMLOLink *)v10 setIsPrimaryLink:*(v9 - 1) != 0];
-          [v3 addObject:v10];
+          [array addObject:v10];
 
           ++v8;
           v9 += 40;
@@ -342,19 +342,19 @@
     }
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
-- (BOOL)isEqualToLinkQualityMetric:(id)a3
+- (BOOL)isEqualToLinkQualityMetric:(id)metric
 {
-  v6 = a3;
+  metricCopy = metric;
   updatedAt = self->_updatedAt;
-  v8 = [v6 updatedAt];
-  if (updatedAt != v8)
+  updatedAt = [metricCopy updatedAt];
+  if (updatedAt != updatedAt)
   {
-    if (!self->_updatedAt || ([v6 updatedAt], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_updatedAt || ([metricCopy updatedAt], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_14;
@@ -362,8 +362,8 @@
 
     v3 = v9;
     v10 = self->_updatedAt;
-    v4 = [v6 updatedAt];
-    if (![(NSDate *)v10 isEqual:v4])
+    updatedAt2 = [metricCopy updatedAt];
+    if (![(NSDate *)v10 isEqual:updatedAt2])
     {
       v11 = 0;
 LABEL_13:
@@ -373,20 +373,20 @@ LABEL_13:
   }
 
   linkQualityMetricData = self->_linkQualityMetricData;
-  v13 = [v6 linkQualityMetricData];
-  v11 = linkQualityMetricData == v13;
+  linkQualityMetricData = [metricCopy linkQualityMetricData];
+  v11 = linkQualityMetricData == linkQualityMetricData;
   if (v11 || !self->_linkQualityMetricData)
   {
     goto LABEL_11;
   }
 
-  v14 = [v6 linkQualityMetricData];
-  if (v14)
+  linkQualityMetricData2 = [metricCopy linkQualityMetricData];
+  if (linkQualityMetricData2)
   {
-    v15 = v14;
+    v15 = linkQualityMetricData2;
     v16 = self->_linkQualityMetricData;
-    v17 = [v6 linkQualityMetricData];
-    v11 = [(NSData *)v16 isEqual:v17];
+    linkQualityMetricData3 = [metricCopy linkQualityMetricData];
+    v11 = [(NSData *)v16 isEqual:linkQualityMetricData3];
 
 LABEL_11:
     goto LABEL_12;
@@ -394,7 +394,7 @@ LABEL_11:
 
   v11 = 0;
 LABEL_12:
-  if (updatedAt != v8)
+  if (updatedAt != updatedAt)
   {
     goto LABEL_13;
   }
@@ -404,24 +404,24 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFLinkQualityMetric *)self isEqualToLinkQualityMetric:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFLinkQualityMetric *)self isEqualToLinkQualityMetric:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFLinkQualityMetric allocWithZone:?]];
   [(CWFLinkQualityMetric *)v4 setLinkQualityMetricData:self->_linkQualityMetricData];
@@ -429,27 +429,27 @@ LABEL_14:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   linkQualityMetricData = self->_linkQualityMetricData;
-  v5 = a3;
-  [v5 encodeObject:linkQualityMetricData forKey:@"_linkQualityMetricData"];
-  [v5 encodeObject:self->_updatedAt forKey:@"_updatedAt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:linkQualityMetricData forKey:@"_linkQualityMetricData"];
+  [coderCopy encodeObject:self->_updatedAt forKey:@"_updatedAt"];
 }
 
-- (CWFLinkQualityMetric)initWithCoder:(id)a3
+- (CWFLinkQualityMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CWFLinkQualityMetric;
   v5 = [(CWFLinkQualityMetric *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_linkQualityMetricData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_linkQualityMetricData"];
     linkQualityMetricData = v5->_linkQualityMetricData;
     v5->_linkQualityMetricData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_updatedAt"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_updatedAt"];
     updatedAt = v5->_updatedAt;
     v5->_updatedAt = v8;
   }

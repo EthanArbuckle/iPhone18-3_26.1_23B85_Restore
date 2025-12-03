@@ -1,24 +1,24 @@
 @interface CKSimpleAcknowledgementGlyphView
 - (CGPoint)glyphOffset;
-- (CKSimpleAcknowledgementGlyphView)initWithFrame:(CGRect)a3 color:(char)a4;
-- (id)glyphImageForType:(int64_t)a3 color:(char)a4;
+- (CKSimpleAcknowledgementGlyphView)initWithFrame:(CGRect)frame color:(char)color;
+- (id)glyphImageForType:(int64_t)type color:(char)color;
 - (void)layoutSubviews;
-- (void)setGlyphColor:(id)a3;
+- (void)setGlyphColor:(id)color;
 @end
 
 @implementation CKSimpleAcknowledgementGlyphView
 
-- (CKSimpleAcknowledgementGlyphView)initWithFrame:(CGRect)a3 color:(char)a4
+- (CKSimpleAcknowledgementGlyphView)initWithFrame:(CGRect)frame color:(char)color
 {
-  v4 = a4;
+  colorCopy = color;
   v10.receiver = self;
   v10.super_class = CKSimpleAcknowledgementGlyphView;
-  v5 = [(CKSimpleAcknowledgementGlyphView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CKSimpleAcknowledgementGlyphView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(CKSimpleAcknowledgementGlyphView *)v5 setBackgroundColor:0];
-    v7 = [(CKSimpleAcknowledgementGlyphView *)v6 glyphImageForType:[(CKAcknowledgmentGlyphView *)v6 acknowledgmentType] color:v4];
+    v7 = [(CKSimpleAcknowledgementGlyphView *)v6 glyphImageForType:[(CKAcknowledgmentGlyphView *)v6 acknowledgmentType] color:colorCopy];
     v8 = [[CKAcknowledgmentGlyphImageView alloc] initWithImage:v7];
     [(CKAcknowledgmentGlyphImageView *)v8 setAutoresizingMask:18];
     [(CKSimpleAcknowledgementGlyphView *)v6 setGlyph:v8];
@@ -28,29 +28,29 @@
   return v6;
 }
 
-- (id)glyphImageForType:(int64_t)a3 color:(char)a4
+- (id)glyphImageForType:(int64_t)type color:(char)color
 {
   v4 = 0;
-  if (a3 > 2001)
+  if (type > 2001)
   {
-    if (a3 != 2002)
+    if (type != 2002)
     {
-      if (a3 != 2003)
+      if (type != 2003)
       {
         goto LABEL_28;
       }
 
-      if (a4 == 4)
+      if (color == 4)
       {
         v5 = +[CKUIBehavior sharedBehaviors];
-        v6 = [v5 whiteHaAckImage];
+        whiteHaAckImage = [v5 whiteHaAckImage];
         goto LABEL_27;
       }
 
-      if (a4 == -1)
+      if (color == -1)
       {
         v5 = +[CKUIBehavior sharedBehaviors];
-        v6 = [v5 grayHaAckImage];
+        whiteHaAckImage = [v5 grayHaAckImage];
         goto LABEL_27;
       }
 
@@ -59,19 +59,19 @@ LABEL_21:
       goto LABEL_28;
     }
 
-    if (a4 == 4)
+    if (color == 4)
     {
       v5 = +[CKUIBehavior sharedBehaviors];
-      v6 = [v5 whiteThumbsDownAckImage];
+      whiteHaAckImage = [v5 whiteThumbsDownAckImage];
       goto LABEL_27;
     }
 
-    if (a4 != 3)
+    if (color != 3)
     {
-      if (a4 == -1)
+      if (color == -1)
       {
         v5 = +[CKUIBehavior sharedBehaviors];
-        v6 = [v5 grayThumbsDownAckImage];
+        whiteHaAckImage = [v5 grayThumbsDownAckImage];
         goto LABEL_27;
       }
 
@@ -80,25 +80,25 @@ LABEL_21:
 
 LABEL_22:
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 redHeartAckImage];
+    whiteHaAckImage = [v5 redHeartAckImage];
     goto LABEL_27;
   }
 
-  if (a3 == 2000)
+  if (type == 2000)
   {
-    if (a4 == 4)
+    if (color == 4)
     {
       v5 = +[CKUIBehavior sharedBehaviors];
-      v6 = [v5 whiteHeartAckImage];
+      whiteHaAckImage = [v5 whiteHeartAckImage];
       goto LABEL_27;
     }
 
-    if (a4 != 3)
+    if (color != 3)
     {
-      if (a4 == -1)
+      if (color == -1)
       {
         v5 = +[CKUIBehavior sharedBehaviors];
-        v6 = [v5 grayHeartAckImage];
+        whiteHaAckImage = [v5 grayHeartAckImage];
         goto LABEL_27;
       }
 
@@ -108,32 +108,32 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a3 != 2001)
+  if (type != 2001)
   {
     goto LABEL_28;
   }
 
-  if (a4 == 4)
+  if (color == 4)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 whiteThumbsUpAckImage];
+    whiteHaAckImage = [v5 whiteThumbsUpAckImage];
     goto LABEL_27;
   }
 
-  if (a4 == 3)
+  if (color == 3)
   {
     goto LABEL_22;
   }
 
-  if (a4 != -1)
+  if (color != -1)
   {
     goto LABEL_21;
   }
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 grayThumbsUpAckImage];
+  whiteHaAckImage = [v5 grayThumbsUpAckImage];
 LABEL_27:
-  v4 = v6;
+  v4 = whiteHaAckImage;
 
 LABEL_28:
 
@@ -154,24 +154,24 @@ LABEL_28:
   v4.receiver = self;
   v4.super_class = CKSimpleAcknowledgementGlyphView;
   [(CKSimpleAcknowledgementGlyphView *)&v4 layoutSubviews];
-  v3 = [(CKSimpleAcknowledgementGlyphView *)self glyph];
+  glyph = [(CKSimpleAcknowledgementGlyphView *)self glyph];
   [(CKSimpleAcknowledgementGlyphView *)self bounds];
-  [v3 setFrame:?];
+  [glyph setFrame:?];
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
   v11.receiver = self;
   v11.super_class = CKSimpleAcknowledgementGlyphView;
-  v4 = a3;
-  [(CKAcknowledgmentGlyphView *)&v11 setGlyphColor:v4];
+  colorCopy = color;
+  [(CKAcknowledgmentGlyphView *)&v11 setGlyphColor:colorCopy];
   v5 = [(CKSimpleAcknowledgementGlyphView *)self glyph:v11.receiver];
-  v6 = [(CKAcknowledgmentGlyphView *)self acknowledgmentType];
+  acknowledgmentType = [(CKAcknowledgmentGlyphView *)self acknowledgmentType];
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 theme];
-  v9 = [v8 ckAcknowledgementColorTypeForColor:v4];
+  theme = [v7 theme];
+  v9 = [theme ckAcknowledgementColorTypeForColor:colorCopy];
 
-  v10 = [(CKSimpleAcknowledgementGlyphView *)self glyphImageForType:v6 color:v9];
+  v10 = [(CKSimpleAcknowledgementGlyphView *)self glyphImageForType:acknowledgmentType color:v9];
   [v5 setImage:v10];
 }
 

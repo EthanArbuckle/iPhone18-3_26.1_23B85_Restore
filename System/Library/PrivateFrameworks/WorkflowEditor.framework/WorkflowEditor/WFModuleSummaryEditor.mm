@@ -1,28 +1,28 @@
 @interface WFModuleSummaryEditor
-+ (BOOL)supportsEditingTextAttachment:(id)a3 inSlotWithIdentifier:(id)a4;
++ (BOOL)supportsEditingTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier;
 - (BOOL)canTypeAlongsideVariables;
-- (BOOL)menuElementsContainDeferredElement:(id)a3 withEstimatedCountGreaterThan:(int64_t)a4;
-- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)a3;
+- (BOOL)menuElementsContainDeferredElement:(id)element withEstimatedCountGreaterThan:(int64_t)than;
+- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)identifier;
 - (WFEditorAuxiliaryViewPresenter)auxiliaryViewPresenter;
-- (WFModuleSummaryEditor)initWithParameter:(id)a3 arrayIndex:(unint64_t)a4 processing:(BOOL)a5;
+- (WFModuleSummaryEditor)initWithParameter:(id)parameter arrayIndex:(unint64_t)index processing:(BOOL)processing;
 - (WFMultipleValueParameterState)initialArrayState;
 - (WFParameterState)currentState;
 - (WFParameterState)initialState;
 - (WFSlotTemplateTextEntry)textEntry;
 - (WFVariableProvider)variableProvider;
 - (WFVariableUIDelegate)variableUIDelegate;
-- (id)clearButtonMenuItemForSlotWithIdentifier:(id)a3;
-- (id)menuForSlotWithIdentifier:(id)a3 style:(unint64_t)a4;
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4;
-- (id)variableMenuElementsForSlotWithIdentifier:(id)a3;
-- (void)_beginEditingVariableAttachment:(id)a3 slotIdentifier:(id)a4 presentationAnchor:(id)a5;
-- (void)beginEditingTextAttachment:(id)a3 inSlotWithIdentifier:(id)a4 presentationAnchor:(id)a5;
-- (void)commitAuxiliaryState:(id)a3 forKey:(id)a4;
-- (void)commitState:(id)a3;
-- (void)completeEditingWithTextAttachmentToEdit:(id)a3;
-- (void)requestEditingSlotIdentifier:(id)a3;
+- (id)clearButtonMenuItemForSlotWithIdentifier:(id)identifier;
+- (id)menuForSlotWithIdentifier:(id)identifier style:(unint64_t)style;
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable;
+- (id)variableMenuElementsForSlotWithIdentifier:(id)identifier;
+- (void)_beginEditingVariableAttachment:(id)attachment slotIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)beginEditingTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
+- (void)commitAuxiliaryState:(id)state forKey:(id)key;
+- (void)commitState:(id)state;
+- (void)completeEditingWithTextAttachmentToEdit:(id)edit;
+- (void)requestEditingSlotIdentifier:(id)identifier;
 - (void)requestTextEntry;
-- (void)stageState:(id)a3;
+- (void)stageState:(id)state;
 @end
 
 @implementation WFModuleSummaryEditor
@@ -55,18 +55,18 @@
   return WeakRetained;
 }
 
-- (void)_beginEditingVariableAttachment:(id)a3 slotIdentifier:(id)a4 presentationAnchor:(id)a5
+- (void)_beginEditingVariableAttachment:(id)attachment slotIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 token];
-  if (v9)
+  attachmentCopy = attachment;
+  anchorCopy = anchor;
+  token = [attachmentCopy token];
+  if (token)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = token;
     }
 
     else
@@ -82,15 +82,15 @@
 
   v11 = v10;
 
-  v12 = [v11 variable];
+  variable = [v11 variable];
 
-  [(WFModuleSummaryEditor *)self setLastValueForEditingVariable:v12];
-  v13 = [(WFModuleSummaryEditor *)self variableUIDelegate];
+  [(WFModuleSummaryEditor *)self setLastValueForEditingVariable:variable];
+  variableUIDelegate = [(WFModuleSummaryEditor *)self variableUIDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(WFModuleSummaryEditor *)self variableProvider];
+    variableProvider = [(WFModuleSummaryEditor *)self variableProvider];
 
-    if (v14)
+    if (variableProvider)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
@@ -105,34 +105,34 @@
       v34[4] = self;
       v16 = _Block_copy(v34);
       v17 = objc_opt_class();
-      v18 = [(WFModuleSummaryEditor *)self parameter];
-      v19 = [v17 variableResultTypeForParameter:v18];
+      parameter = [(WFModuleSummaryEditor *)self parameter];
+      v19 = [v17 variableResultTypeForParameter:parameter];
 
-      v20 = [v7 token];
+      token2 = [attachmentCopy token];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
         v22 = [WFVariableEditingAnchor alloc];
-        v23 = [v7 token];
-        [v23 variable];
+        token3 = [attachmentCopy token];
+        [token3 variable];
         v24 = v33 = v16;
-        v25 = [(WFModuleSummaryEditor *)self variableProvider];
+        variableProvider2 = [(WFModuleSummaryEditor *)self variableProvider];
         [(WFModuleSummaryEditor *)self parameter];
         v26 = v32 = v19;
-        [v8 sourceView];
+        [anchorCopy sourceView];
         v28 = v27 = v15;
-        [v8 sourceRect];
-        v29 = [(WFVariableEditingAnchor *)v22 initWithVariable:v24 variableProvider:v25 parameter:v26 sourceView:v28 sourceRect:?];
+        [anchorCopy sourceRect];
+        v29 = [(WFVariableEditingAnchor *)v22 initWithVariable:v24 variableProvider:variableProvider2 parameter:v26 sourceView:v28 sourceRect:?];
 
         v15 = v27;
         v16 = v33;
 
         v30 = [[WFVariableEditingOptions alloc] initWithAnchor:v29 resultType:v32 onChange:v27 onFinish:v33];
-        v31 = [(WFModuleSummaryEditor *)self variableUIDelegate];
-        [v8 sourceRect];
-        [v31 showVariableEditorWithOptions:v30 fromSourceRect:?];
+        variableUIDelegate2 = [(WFModuleSummaryEditor *)self variableUIDelegate];
+        [anchorCopy sourceRect];
+        [variableUIDelegate2 showVariableEditorWithOptions:v30 fromSourceRect:?];
       }
 
       else
@@ -182,12 +182,12 @@ uint64_t __91__WFModuleSummaryEditor__beginEditingVariableAttachment_slotIdentif
   return [v4 completeEditing];
 }
 
-- (id)stateByReplacingVariableFromCurrentState:(id)a3 withVariable:(id)a4
+- (id)stateByReplacingVariableFromCurrentState:(id)state withVariable:(id)variable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFModuleSummaryEditor *)self delegate];
-  v9 = [v8 initialStateForSummaryEditor:self];
+  stateCopy = state;
+  variableCopy = variable;
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  v9 = [delegate initialStateForSummaryEditor:self];
 
   v10 = v9;
   if (v10)
@@ -211,10 +211,10 @@ uint64_t __91__WFModuleSummaryEditor__beginEditingVariableAttachment_slotIdentif
 
   v12 = v11;
 
-  if (!v7 && v12)
+  if (!variableCopy && v12)
   {
-    v13 = [v12 parameterStates];
-    v14 = [v13 mutableCopy];
+    parameterStates = [v12 parameterStates];
+    v14 = [parameterStates mutableCopy];
 
     arrayIndex = self->_arrayIndex;
     if (arrayIndex != 0x7FFFFFFFFFFFFFFFLL && arrayIndex < [v14 count])
@@ -226,20 +226,20 @@ uint64_t __91__WFModuleSummaryEditor__beginEditingVariableAttachment_slotIdentif
     }
   }
 
-  v17 = [(WFModuleSummaryEditor *)self parameter];
-  v18 = [v17 stateClass];
+  parameter = [(WFModuleSummaryEditor *)self parameter];
+  stateClass = [parameter stateClass];
 
-  if (v18 == objc_opt_class() && (objc_opt_respondsToSelector() & 1) != 0)
+  if (stateClass == objc_opt_class() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = [v10 stateByReplacingVariable:v6 withVariable:v7];
+    v19 = [v10 stateByReplacingVariable:stateCopy withVariable:variableCopy];
 LABEL_18:
     v16 = v19;
     goto LABEL_20;
   }
 
-  if (v7 && [(objc_class *)v18 instancesRespondToSelector:sel_initWithVariable_])
+  if (variableCopy && [(objc_class *)stateClass instancesRespondToSelector:sel_initWithVariable_])
   {
-    v19 = [[v18 alloc] initWithVariable:v7];
+    v19 = [[stateClass alloc] initWithVariable:variableCopy];
     goto LABEL_18;
   }
 
@@ -251,23 +251,23 @@ LABEL_20:
 
 - (BOOL)canTypeAlongsideVariables
 {
-  v2 = [(WFModuleSummaryEditor *)self parameter];
-  v3 = [v2 stateClass];
+  parameter = [(WFModuleSummaryEditor *)self parameter];
+  stateClass = [parameter stateClass];
 
   v4 = objc_opt_class();
 
-  return [v3 isSubclassOfClass:v4];
+  return [stateClass isSubclassOfClass:v4];
 }
 
-- (void)beginEditingTextAttachment:(id)a3 inSlotWithIdentifier:(id)a4 presentationAnchor:(id)a5
+- (void)beginEditingTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
+  attachmentCopy = attachment;
+  identifierCopy = identifier;
+  anchorCopy = anchor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WFModuleSummaryEditor *)self _beginEditingVariableAttachment:v10 slotIdentifier:v8 presentationAnchor:v9];
+    [(WFModuleSummaryEditor *)self _beginEditingVariableAttachment:attachmentCopy slotIdentifier:identifierCopy presentationAnchor:anchorCopy];
   }
 
   else
@@ -276,21 +276,21 @@ LABEL_20:
   }
 }
 
-- (void)requestEditingSlotIdentifier:(id)a3
+- (void)requestEditingSlotIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFModuleSummaryEditor *)self delegate];
-  [v5 summaryEditor:self didRequestEditingSlotWithIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  [delegate summaryEditor:self didRequestEditingSlotWithIdentifier:identifierCopy];
 }
 
-- (id)menuForSlotWithIdentifier:(id)a3 style:(unint64_t)a4
+- (id)menuForSlotWithIdentifier:(id)identifier style:(unint64_t)style
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WFModuleSummaryEditor *)self clearButtonMenuItemForSlotWithIdentifier:v6];
-  v8 = [(WFModuleSummaryEditor *)self variableMenuElementsForSlotWithIdentifier:v6];
-  v9 = [(WFModuleSummaryEditor *)self customMenuElementsForSlotWithIdentifier:v6 style:a4];
-  if (a4 && (a4 != 1 || v7 || [v8 count]) || objc_msgSend(v9, "count"))
+  identifierCopy = identifier;
+  v7 = [(WFModuleSummaryEditor *)self clearButtonMenuItemForSlotWithIdentifier:identifierCopy];
+  v8 = [(WFModuleSummaryEditor *)self variableMenuElementsForSlotWithIdentifier:identifierCopy];
+  v9 = [(WFModuleSummaryEditor *)self customMenuElementsForSlotWithIdentifier:identifierCopy style:style];
+  if (style && (style != 1 || v7 || [v8 count]) || objc_msgSend(v9, "count"))
   {
     v10 = objc_opt_new();
     [v10 addObjectsFromArray:v9];
@@ -308,8 +308,8 @@ LABEL_20:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v12 menuElements];
-            v11 = [v13 count] > 1;
+            menuElements = [v12 menuElements];
+            v11 = [menuElements count] > 1;
           }
         }
 
@@ -332,7 +332,7 @@ LABEL_20:
         v17 = v16;
         v42 = v8;
         v46 = v7;
-        v43 = v6;
+        v43 = identifierCopy;
         v18 = 0;
         v19 = *v54;
         do
@@ -384,8 +384,8 @@ LABEL_20:
 
                 else
                 {
-                  v25 = [v24 menuElements];
-                  v18 += [v25 count];
+                  menuElements2 = [v24 menuElements];
+                  v18 += [menuElements2 count];
                 }
               }
             }
@@ -397,7 +397,7 @@ LABEL_20:
         while (v17);
         v26 = v18 > 10;
         v8 = v42;
-        v6 = v43;
+        identifierCopy = v43;
         v7 = v46;
       }
 
@@ -415,13 +415,13 @@ LABEL_20:
       v14 = 0;
     }
 
-    v27 = [(WFModuleSummaryEditor *)self initialState];
-    if (v27)
+    initialState = [(WFModuleSummaryEditor *)self initialState];
+    if (initialState)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v28 = v27;
+        v28 = initialState;
       }
 
       else
@@ -437,7 +437,7 @@ LABEL_20:
 
     v29 = v28;
 
-    v30 = [v29 variable];
+    variable = [v29 variable];
 
     if (v14)
     {
@@ -477,7 +477,7 @@ LABEL_20:
       if (v7)
       {
         v10 = v48;
-        if (v30)
+        if (variable)
         {
           v37 = [v8 arrayByAddingObject:v7];
 
@@ -526,15 +526,15 @@ LABEL_20:
   return v38;
 }
 
-- (BOOL)menuElementsContainDeferredElement:(id)a3 withEstimatedCountGreaterThan:(int64_t)a4
+- (BOOL)menuElementsContainDeferredElement:(id)element withEstimatedCountGreaterThan:(int64_t)than
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  elementCopy = element;
+  v7 = [elementCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -545,16 +545,16 @@ LABEL_20:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(elementCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 estimatedItemCount];
+          estimatedItemCount = [v11 estimatedItemCount];
           v13 = 1;
-          if (v12 < 0 || v12 > a4)
+          if (estimatedItemCount < 0 || estimatedItemCount > than)
           {
             goto LABEL_15;
           }
@@ -565,15 +565,15 @@ LABEL_20:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v11 menuElements];
-            v13 = [(WFModuleSummaryEditor *)self menuElementsContainDeferredElement:v14 withEstimatedCountGreaterThan:a4];
+            menuElements = [v11 menuElements];
+            v13 = [(WFModuleSummaryEditor *)self menuElementsContainDeferredElement:menuElements withEstimatedCountGreaterThan:than];
 
             goto LABEL_15;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [elementCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -589,33 +589,33 @@ LABEL_15:
   return v13;
 }
 
-- (id)clearButtonMenuItemForSlotWithIdentifier:(id)a3
+- (id)clearButtonMenuItemForSlotWithIdentifier:(id)identifier
 {
   if ([(WFModuleSummaryEditor *)self allowsPickingVariables])
   {
-    v4 = [(WFModuleSummaryEditor *)self initialState];
-    v5 = [v4 containedVariables];
+    initialState = [(WFModuleSummaryEditor *)self initialState];
+    containedVariables = [initialState containedVariables];
 
-    if ([v5 count] == 1)
+    if ([containedVariables count] == 1)
     {
-      v6 = [v5 firstObject];
+      firstObject = [containedVariables firstObject];
     }
 
     else
     {
-      v6 = 0;
+      firstObject = 0;
     }
 
-    v8 = [(WFModuleSummaryEditor *)self parameter];
-    v9 = [(WFModuleSummaryEditor *)self initialState];
+    parameter = [(WFModuleSummaryEditor *)self parameter];
+    initialState2 = [(WFModuleSummaryEditor *)self initialState];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __66__WFModuleSummaryEditor_clearButtonMenuItemForSlotWithIdentifier___block_invoke;
     v12[3] = &unk_279EDBDD0;
     v12[4] = self;
-    v13 = v6;
-    v10 = v6;
-    v7 = [v8 clearButtonMenuItemWithVariable:v10 parameterState:v9 setVariableHandler:v12];
+    v13 = firstObject;
+    v10 = firstObject;
+    v7 = [parameter clearButtonMenuItemWithVariable:v10 parameterState:initialState2 setVariableHandler:v12];
   }
 
   else
@@ -637,17 +637,17 @@ uint64_t __66__WFModuleSummaryEditor_clearButtonMenuItemForSlotWithIdentifier___
   return [v5 completeEditing];
 }
 
-- (id)variableMenuElementsForSlotWithIdentifier:(id)a3
+- (id)variableMenuElementsForSlotWithIdentifier:(id)identifier
 {
-  if ([(WFModuleSummaryEditor *)self variableMenuSupportsVariableSelectionForSlotWithIdentifier:a3]&& [(WFModuleSummaryEditor *)self allowsPickingVariables])
+  if ([(WFModuleSummaryEditor *)self variableMenuSupportsVariableSelectionForSlotWithIdentifier:identifier]&& [(WFModuleSummaryEditor *)self allowsPickingVariables])
   {
-    v4 = [(WFModuleSummaryEditor *)self parameter];
-    v5 = [(WFModuleSummaryEditor *)self initialState];
-    v6 = [v5 containedVariables];
+    parameter = [(WFModuleSummaryEditor *)self parameter];
+    initialState = [(WFModuleSummaryEditor *)self initialState];
+    containedVariables = [initialState containedVariables];
 
-    if ([v6 count] == 1)
+    if ([containedVariables count] == 1)
     {
-      v7 = [v6 objectAtIndexedSubscript:0];
+      v7 = [containedVariables objectAtIndexedSubscript:0];
     }
 
     else
@@ -655,9 +655,9 @@ uint64_t __66__WFModuleSummaryEditor_clearButtonMenuItemForSlotWithIdentifier___
       v7 = 0;
     }
 
-    v9 = [(WFModuleSummaryEditor *)self initialState];
-    v10 = [(WFModuleSummaryEditor *)self variableProvider];
-    v11 = [(WFModuleSummaryEditor *)self variableUIDelegate];
+    initialState2 = [(WFModuleSummaryEditor *)self initialState];
+    variableProvider = [(WFModuleSummaryEditor *)self variableProvider];
+    variableUIDelegate = [(WFModuleSummaryEditor *)self variableUIDelegate];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __67__WFModuleSummaryEditor_variableMenuElementsForSlotWithIdentifier___block_invoke;
@@ -665,7 +665,7 @@ uint64_t __66__WFModuleSummaryEditor_clearButtonMenuItemForSlotWithIdentifier___
     v14[4] = self;
     v15 = v7;
     v12 = v7;
-    v8 = [v4 variableMenuElementsWithVariable:v12 parameterState:v9 variableProvider:v10 variableUIDelegate:v11 setVariableHandler:v14];
+    v8 = [parameter variableMenuElementsWithVariable:v12 parameterState:initialState2 variableProvider:variableProvider variableUIDelegate:variableUIDelegate setVariableHandler:v14];
   }
 
   else
@@ -687,67 +687,67 @@ uint64_t __67__WFModuleSummaryEditor_variableMenuElementsForSlotWithIdentifier__
   return [v5 completeEditing];
 }
 
-- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)a3
+- (BOOL)variableMenuSupportsVariableSelectionForSlotWithIdentifier:(id)identifier
 {
-  v3 = [(WFModuleSummaryEditor *)self parameter];
-  v4 = [v3 stateClass];
+  parameter = [(WFModuleSummaryEditor *)self parameter];
+  stateClass = [parameter stateClass];
 
-  return [v4 instancesRespondToSelector:sel_initWithVariable_];
+  return [stateClass instancesRespondToSelector:sel_initWithVariable_];
 }
 
 - (void)requestTextEntry
 {
-  v3 = [(WFModuleSummaryEditor *)self delegate];
-  [v3 summaryEditorDidRequestTextEntry:self];
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  [delegate summaryEditorDidRequestTextEntry:self];
 }
 
-- (void)completeEditingWithTextAttachmentToEdit:(id)a3
+- (void)completeEditingWithTextAttachmentToEdit:(id)edit
 {
-  v4 = a3;
-  v5 = [(WFModuleSummaryEditor *)self delegate];
-  [v5 summaryEditorDidFinish:self returnToKeyboard:-[WFModuleSummaryEditor returnToKeyboardOnComplete](self withTextAttachmentToEdit:{"returnToKeyboardOnComplete"), v4}];
+  editCopy = edit;
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  [delegate summaryEditorDidFinish:self returnToKeyboard:-[WFModuleSummaryEditor returnToKeyboardOnComplete](self withTextAttachmentToEdit:{"returnToKeyboardOnComplete"), editCopy}];
 }
 
-- (void)commitAuxiliaryState:(id)a3 forKey:(id)a4
+- (void)commitAuxiliaryState:(id)state forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(WFModuleSummaryEditor *)self delegate];
+  stateCopy = state;
+  keyCopy = key;
+  delegate = [(WFModuleSummaryEditor *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(WFModuleSummaryEditor *)self delegate];
-    [v9 summaryEditor:self didCommitAuxiliaryParameterState:v10 forKey:v6];
+    delegate2 = [(WFModuleSummaryEditor *)self delegate];
+    [delegate2 summaryEditor:self didCommitAuxiliaryParameterState:stateCopy forKey:keyCopy];
   }
 }
 
-- (void)commitState:(id)a3
+- (void)commitState:(id)state
 {
-  objc_storeStrong(&self->_currentState, a3);
-  v5 = a3;
-  v6 = [(WFModuleSummaryEditor *)self delegate];
-  [v6 summaryEditor:self didCommitParameterState:v5];
+  objc_storeStrong(&self->_currentState, state);
+  stateCopy = state;
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  [delegate summaryEditor:self didCommitParameterState:stateCopy];
 }
 
-- (void)stageState:(id)a3
+- (void)stageState:(id)state
 {
-  v8 = a3;
-  objc_storeStrong(&self->_currentState, a3);
-  v5 = [(WFModuleSummaryEditor *)self delegate];
+  stateCopy = state;
+  objc_storeStrong(&self->_currentState, state);
+  delegate = [(WFModuleSummaryEditor *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WFModuleSummaryEditor *)self delegate];
-    [v7 summaryEditor:self didStageParameterState:v8];
+    delegate2 = [(WFModuleSummaryEditor *)self delegate];
+    [delegate2 summaryEditor:self didStageParameterState:stateCopy];
   }
 }
 
 - (WFMultipleValueParameterState)initialArrayState
 {
-  v3 = [(WFModuleSummaryEditor *)self delegate];
-  v4 = [v3 initialStateForSummaryEditor:self];
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  v4 = [delegate initialStateForSummaryEditor:self];
 
   v5 = v4;
   if (v5)
@@ -776,9 +776,9 @@ uint64_t __67__WFModuleSummaryEditor_variableMenuElementsForSlotWithIdentifier__
 
 - (WFParameterState)initialState
 {
-  v3 = [(WFModuleSummaryEditor *)self arrayIndex];
-  v4 = [(WFModuleSummaryEditor *)self delegate];
-  v5 = [v4 initialStateForSummaryEditor:self];
+  arrayIndex = [(WFModuleSummaryEditor *)self arrayIndex];
+  delegate = [(WFModuleSummaryEditor *)self delegate];
+  v5 = [delegate initialStateForSummaryEditor:self];
 
   v6 = v5;
   if (v6)
@@ -787,16 +787,16 @@ uint64_t __67__WFModuleSummaryEditor_variableMenuElementsForSlotWithIdentifier__
     v7 = v6;
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 parameterStates];
-      v9 = v8;
-      if (v3 == 0x7FFFFFFFFFFFFFFFLL || v3 >= [v8 count])
+      parameterStates = [v6 parameterStates];
+      v9 = parameterStates;
+      if (arrayIndex == 0x7FFFFFFFFFFFFFFFLL || arrayIndex >= [parameterStates count])
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = [v9 objectAtIndex:v3];
+        v7 = [v9 objectAtIndex:arrayIndex];
       }
     }
   }
@@ -814,38 +814,38 @@ uint64_t __67__WFModuleSummaryEditor_variableMenuElementsForSlotWithIdentifier__
   currentState = self->_currentState;
   if (currentState)
   {
-    v3 = currentState;
+    initialState = currentState;
   }
 
   else
   {
-    v3 = [(WFModuleSummaryEditor *)self initialState];
+    initialState = [(WFModuleSummaryEditor *)self initialState];
   }
 
-  return v3;
+  return initialState;
 }
 
-- (WFModuleSummaryEditor)initWithParameter:(id)a3 arrayIndex:(unint64_t)a4 processing:(BOOL)a5
+- (WFModuleSummaryEditor)initWithParameter:(id)parameter arrayIndex:(unint64_t)index processing:(BOOL)processing
 {
-  v9 = a3;
+  parameterCopy = parameter;
   v14.receiver = self;
   v14.super_class = WFModuleSummaryEditor;
   v10 = [(WFModuleSummaryEditor *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_parameter, a3);
-    v11->_arrayIndex = a4;
-    v11->_processing = a5;
+    objc_storeStrong(&v10->_parameter, parameter);
+    v11->_arrayIndex = index;
+    v11->_processing = processing;
     v12 = v11;
   }
 
   return v11;
 }
 
-+ (BOOL)supportsEditingTextAttachment:(id)a3 inSlotWithIdentifier:(id)a4
++ (BOOL)supportsEditingTextAttachment:(id)attachment inSlotWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

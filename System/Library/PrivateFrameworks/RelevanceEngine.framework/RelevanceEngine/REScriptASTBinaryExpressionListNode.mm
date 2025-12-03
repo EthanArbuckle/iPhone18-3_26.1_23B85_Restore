@@ -1,60 +1,60 @@
 @interface REScriptASTBinaryExpressionListNode
-+ (id)parseBuffer:(id)a3 error:(id *)a4;
-- (REScriptASTBinaryExpressionListNode)initWithExpressions:(id)a3;
++ (id)parseBuffer:(id)buffer error:(id *)error;
+- (REScriptASTBinaryExpressionListNode)initWithExpressions:(id)expressions;
 - (id)dependencies;
 @end
 
 @implementation REScriptASTBinaryExpressionListNode
 
-+ (id)parseBuffer:(id)a3 error:(id *)a4
++ (id)parseBuffer:(id)buffer error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  [v5 push];
-  v7 = [REScriptASTBinaryExpressionNode parseBuffer:v5 error:a4];
+  bufferCopy = buffer;
+  array = [MEMORY[0x277CBEB18] array];
+  [bufferCopy push];
+  v7 = [REScriptASTBinaryExpressionNode parseBuffer:bufferCopy error:error];
   if (v7)
   {
     v8 = v7;
     do
     {
-      [v6 addObject:v8];
-      [v5 consume];
+      [array addObject:v8];
+      [bufferCopy consume];
 
-      [v5 push];
-      v8 = [REScriptASTBinaryExpressionNode parseBuffer:v5 error:a4];
+      [bufferCopy push];
+      v8 = [REScriptASTBinaryExpressionNode parseBuffer:bufferCopy error:error];
     }
 
     while (v8);
   }
 
-  [v5 pop];
-  if ([v6 count] < 2)
+  [bufferCopy pop];
+  if ([array count] < 2)
   {
-    v9 = [v6 firstObject];
+    firstObject = [array firstObject];
   }
 
   else
   {
-    v9 = [[REScriptASTBinaryExpressionListNode alloc] initWithExpressions:v6];
+    firstObject = [[REScriptASTBinaryExpressionListNode alloc] initWithExpressions:array];
   }
 
-  v10 = v9;
+  v10 = firstObject;
 
   return v10;
 }
 
-- (REScriptASTBinaryExpressionListNode)initWithExpressions:(id)a3
+- (REScriptASTBinaryExpressionListNode)initWithExpressions:(id)expressions
 {
-  v5 = a3;
-  v6 = [v5 firstObject];
-  v7 = [v6 token];
+  expressionsCopy = expressions;
+  firstObject = [expressionsCopy firstObject];
+  token = [firstObject token];
   v10.receiver = self;
   v10.super_class = REScriptASTBinaryExpressionListNode;
-  v8 = [(REScriptASTNode *)&v10 initWithToken:v7];
+  v8 = [(REScriptASTNode *)&v10 initWithToken:token];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_expressions, a3);
+    objc_storeStrong(&v8->_expressions, expressions);
   }
 
   return v8;
@@ -83,8 +83,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) dependencies];
-        [v3 unionSet:v9];
+        dependencies = [*(*(&v13 + 1) + 8 * i) dependencies];
+        [v3 unionSet:dependencies];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];

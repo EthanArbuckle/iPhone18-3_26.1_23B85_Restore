@@ -1,16 +1,16 @@
 @interface VSBase64DataValueTransformer
-- (id)reverseTransformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
 @end
 
 @implementation VSBase64DataValueTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (valueCopy)
   {
-    v5 = v3;
+    v5 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -1,9 +1,9 @@
 @interface _UIKBRTDecayingObject
-- (_UIKBRTDecayingObject)initWithTimeoutDuration:(double)a3;
-- (void)onResetDo:(id)a3;
+- (_UIKBRTDecayingObject)initWithTimeoutDuration:(double)duration;
+- (void)onResetDo:(id)do;
 - (void)reset;
-- (void)resetActiveDecayTo:(double)a3;
-- (void)resetDecayTo:(double)a3;
+- (void)resetActiveDecayTo:(double)to;
+- (void)resetDecayTo:(double)to;
 - (void)startDecaying;
 - (void)startOrUpdateDecay;
 - (void)updateDecay;
@@ -11,14 +11,14 @@
 
 @implementation _UIKBRTDecayingObject
 
-- (_UIKBRTDecayingObject)initWithTimeoutDuration:(double)a3
+- (_UIKBRTDecayingObject)initWithTimeoutDuration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = _UIKBRTDecayingObject;
   result = [(_UIKBRTDecayingObject *)&v5 init];
   if (result)
   {
-    result->_timeoutDuration = a3;
+    result->_timeoutDuration = duration;
   }
 
   return result;
@@ -34,9 +34,9 @@
   }
 }
 
-- (void)resetDecayTo:(double)a3
+- (void)resetDecayTo:(double)to
 {
-  if (CFAbsoluteTimeGetCurrent() + *&sSystemUptimeFromAbsoluteTimeDiff - a3 >= self->_timeoutDuration)
+  if (CFAbsoluteTimeGetCurrent() + *&sSystemUptimeFromAbsoluteTimeDiff - to >= self->_timeoutDuration)
   {
 
     [(_UIKBRTDecayingObject *)self reset];
@@ -44,7 +44,7 @@
 
   else
   {
-    self->_lastUpdate = a3;
+    self->_lastUpdate = to;
     *&self->_isDecaying = 256;
   }
 }
@@ -78,30 +78,30 @@
   }
 }
 
-- (void)resetActiveDecayTo:(double)a3
+- (void)resetActiveDecayTo:(double)to
 {
   if (self->_isHolding || self->_isDecaying)
   {
-    [(_UIKBRTDecayingObject *)self resetDecayTo:a3];
+    [(_UIKBRTDecayingObject *)self resetDecayTo:to];
   }
 }
 
-- (void)onResetDo:(id)a3
+- (void)onResetDo:(id)do
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_resetBlocks)
+  doCopy = do;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_resetBlocks)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    resetBlocks = v4->_resetBlocks;
-    v4->_resetBlocks = v5;
+    resetBlocks = selfCopy->_resetBlocks;
+    selfCopy->_resetBlocks = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  v7 = v4->_resetBlocks;
-  v8 = [v10 copy];
+  v7 = selfCopy->_resetBlocks;
+  v8 = [doCopy copy];
   v9 = _Block_copy(v8);
   [(NSMutableArray *)v7 addObject:v9];
 }

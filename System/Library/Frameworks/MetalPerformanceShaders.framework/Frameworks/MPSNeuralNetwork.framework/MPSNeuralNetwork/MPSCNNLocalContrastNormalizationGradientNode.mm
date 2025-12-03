@@ -1,6 +1,6 @@
 @interface MPSCNNLocalContrastNormalizationGradientNode
 + (MPSCNNLocalContrastNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
-- (MPSCNNLocalContrastNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNLocalContrastNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNLocalContrastNormalizationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNLocalContrastNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight
 {
-  v12 = [a1 alloc];
+  v12 = [self alloc];
   v15 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_kernelWidth_kernelHeight_(v12, v13, sourceGradient, sourceImage, gradientState, kernelWidth, kernelHeight, v14);
 
   return v15;
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (MPSCNNLocalContrastNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNLocalContrastNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -48,17 +48,17 @@
   {
     v9.receiver = self;
     v9.super_class = MPSCNNLocalContrastNormalizationGradientNode;
-    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:a3 forwardFilter:a4];
+    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:images forwardFilter:filter];
     if (result)
     {
-      result->_kernelWidth = *(a4 + 10);
-      result->_kernelHeight = *(a4 + 11);
-      result->_alpha = *(a4 + 14);
-      result->_beta = *(a4 + 15);
-      result->_delta = *(a4 + 16);
-      result->_p0 = *(a4 + 19);
-      result->_pm = *(a4 + 17);
-      result->_ps = *(a4 + 18);
+      result->_kernelWidth = *(filter + 10);
+      result->_kernelHeight = *(filter + 11);
+      result->_alpha = *(filter + 14);
+      result->_beta = *(filter + 15);
+      result->_delta = *(filter + 16);
+      result->_p0 = *(filter + 19);
+      result->_pm = *(filter + 17);
+      result->_ps = *(filter + 18);
     }
   }
 

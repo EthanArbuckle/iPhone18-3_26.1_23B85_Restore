@@ -2,35 +2,35 @@
 - (BOOL)contentAllowsCellularDownload;
 - (BOOL)supportsStartingDownload;
 - (VUIContentRating)contentRating;
-- (VUIUniversalCollectionAssetController)initWithAssetControllers:(id)a3 completionCount:(unint64_t)a4 showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)a5;
-- (VUIUniversalCollectionAssetController)initWithMediaItemCollection:(id)a3;
+- (VUIUniversalCollectionAssetController)initWithAssetControllers:(id)controllers completionCount:(unint64_t)count showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)downloads;
+- (VUIUniversalCollectionAssetController)initWithMediaItemCollection:(id)collection;
 - (void)_updateDownloadStateAndNotifyListeners;
-- (void)addAssetControllers:(id)a3;
+- (void)addAssetControllers:(id)controllers;
 - (void)cancelAndRemoveDownload;
 - (void)dealloc;
-- (void)deleteAndRedownloadAllowingCellular:(BOOL)a3 quality:(int64_t)a4 shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)a5 completion:(id)a6;
+- (void)deleteAndRedownloadAllowingCellular:(BOOL)cellular quality:(int64_t)quality shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)failure completion:(id)completion;
 - (void)pauseDownload;
-- (void)removeAssetControllers:(id)a3;
+- (void)removeAssetControllers:(id)controllers;
 - (void)resumeDownload;
-- (void)setCompletionCount:(unint64_t)a3;
-- (void)setCompletionDispatchQueue:(id)a3;
-- (void)startDownloadAllowingCellular:(BOOL)a3 quality:(int64_t)a4 shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)a5 prefer3DOrImmersiveDownload:(BOOL)a6 isAutomatic:(BOOL)a7 completion:(id)a8;
+- (void)setCompletionCount:(unint64_t)count;
+- (void)setCompletionDispatchQueue:(id)queue;
+- (void)startDownloadAllowingCellular:(BOOL)cellular quality:(int64_t)quality shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)failure prefer3DOrImmersiveDownload:(BOOL)download isAutomatic:(BOOL)automatic completion:(id)completion;
 @end
 
 @implementation VUIUniversalCollectionAssetController
 
-- (VUIUniversalCollectionAssetController)initWithMediaItemCollection:(id)a3
+- (VUIUniversalCollectionAssetController)initWithMediaItemCollection:(id)collection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 valueForProperty:*MEMORY[0x1E696F8E0]];
+  v6 = [collectionCopy valueForProperty:*MEMORY[0x1E696F8E0]];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v4 items];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  items = [collectionCopy items];
+  v8 = [items countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -42,44 +42,44 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(items);
         }
 
         v12 = [[VUIUniversalAssetController alloc] initWithMPMediaItem:*(*(&v17 + 1) + 8 * v11)];
         [v5 addObject:v12];
         if (v6)
         {
-          [(VUIUniversalAssetController *)v12 setMpMediaItemCollection:v4];
+          [(VUIUniversalAssetController *)v12 setMpMediaItemCollection:collectionCopy];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [items countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [v4 items];
-  v14 = [v13 count];
+  items2 = [collectionCopy items];
+  v14 = [items2 count];
 
   v15 = [(VUIUniversalCollectionAssetController *)self initWithAssetControllers:v5 completionCount:v14 showDownloadingOnlyWhenWholeCollectionDownloads:0];
   return v15;
 }
 
-- (VUIUniversalCollectionAssetController)initWithAssetControllers:(id)a3 completionCount:(unint64_t)a4 showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)a5
+- (VUIUniversalCollectionAssetController)initWithAssetControllers:(id)controllers completionCount:(unint64_t)count showDownloadingOnlyWhenWholeCollectionDownloads:(BOOL)downloads
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  controllersCopy = controllers;
   v28.receiver = self;
   v28.super_class = VUIUniversalCollectionAssetController;
   v10 = [(VUIUniversalCollectionAssetController *)&v28 init];
   v11 = v10;
   if (v10)
   {
-    v23 = a4;
+    countCopy = count;
     objc_storeStrong(&v10->_completionDispatchQueueInternal, MEMORY[0x1E69E96A0]);
     v12 = objc_alloc_init(VUIMediaEntityAssetControllerState);
     stateInternal = v11->_stateInternal;
@@ -89,13 +89,13 @@
     [(VUIMediaEntityAssetControllerState *)v11->_stateInternal setDownloadProgress:-1.0];
     [(VUIMediaEntityAssetControllerState *)v11->_stateInternal setSupportsCancellation:1];
     [(VUIMediaEntityAssetControllerState *)v11->_stateInternal setSupportsPausing:1];
-    v11->_showDownloadingOnlyWhenWholeCollectionDownloads = a5;
+    v11->_showDownloadingOnlyWhenWholeCollectionDownloads = downloads;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v22 = v9;
-    v14 = v9;
+    v22 = controllersCopy;
+    v14 = controllersCopy;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v15)
     {
@@ -111,8 +111,8 @@
           }
 
           v19 = *(*(&v24 + 1) + 8 * i);
-          v20 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v20 addObserver:v11 selector:sel__assetControllerDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v19];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:v11 selector:sel__assetControllerDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v19];
 
           [v19 setCompletionDispatchQueue:v11->_completionDispatchQueueInternal];
         }
@@ -123,10 +123,10 @@
       while (v16);
     }
 
-    objc_storeStrong(&v11->_assetControllers, a3);
-    v11->_completionCount = v23;
+    objc_storeStrong(&v11->_assetControllers, controllers);
+    v11->_completionCount = countCopy;
     [(VUIUniversalCollectionAssetController *)v11 _updateDownloadStateAndNotifyListeners];
-    v9 = v22;
+    controllersCopy = v22;
   }
 
   return v11;
@@ -134,8 +134,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIUniversalCollectionAssetController;
@@ -149,8 +149,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v3 = [assetControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -160,7 +160,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetControllers);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) supportsStartingDownload])
@@ -170,7 +170,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [assetControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -192,8 +192,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v3 = [assetControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -204,7 +204,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetControllers);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) contentAllowsCellularDownload])
@@ -214,7 +214,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [assetControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -230,22 +230,22 @@ LABEL_11:
   return v7;
 }
 
-- (void)setCompletionDispatchQueue:(id)a3
+- (void)setCompletionDispatchQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     v5 = MEMORY[0x1E69E96A0];
-    v4 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
   }
 
-  v6 = v4;
-  [(VUIUniversalCollectionAssetController *)self setCompletionDispatchQueueInternal:v4];
+  v6 = queueCopy;
+  [(VUIUniversalCollectionAssetController *)self setCompletionDispatchQueueInternal:queueCopy];
 }
 
-- (void)startDownloadAllowingCellular:(BOOL)a3 quality:(int64_t)a4 shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)a5 prefer3DOrImmersiveDownload:(BOOL)a6 isAutomatic:(BOOL)a7 completion:(id)a8
+- (void)startDownloadAllowingCellular:(BOOL)cellular quality:(int64_t)quality shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)failure prefer3DOrImmersiveDownload:(BOOL)download isAutomatic:(BOOL)automatic completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x2020000000;
@@ -264,26 +264,26 @@ LABEL_11:
   v24[3] = &unk_1E8736E60;
   v24[4] = self;
   v17 = v15;
-  v29 = a3;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
+  cellularCopy = cellular;
+  failureCopy = failure;
+  downloadCopy = download;
+  automaticCopy = automatic;
   v25 = v17;
   v26 = v35;
   v27 = v33;
-  v28 = a4;
+  qualityCopy = quality;
   [v16 performBatchAddDownloadsWithBlock:v24];
 
-  v18 = [(VUIUniversalCollectionAssetController *)self completionDispatchQueue];
+  completionDispatchQueue = [(VUIUniversalCollectionAssetController *)self completionDispatchQueue];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellular_quality_shouldMarkAsDeletedOnCancellationOrFailure_prefer3DOrImmersiveDownload_isAutomatic_completion___block_invoke_3;
   v20[3] = &unk_1E8736E88;
-  v21 = v14;
+  v21 = completionCopy;
   v22 = v35;
   v23 = v33;
-  v19 = v14;
-  dispatch_group_notify(v17, v18, v20);
+  v19 = completionCopy;
+  dispatch_group_notify(v17, completionDispatchQueue, v20);
 
   _Block_object_dispose(v33, 8);
   _Block_object_dispose(v35, 8);
@@ -401,11 +401,11 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
   return result;
 }
 
-- (void)deleteAndRedownloadAllowingCellular:(BOOL)a3 quality:(int64_t)a4 shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)a5 completion:(id)a6
+- (void)deleteAndRedownloadAllowingCellular:(BOOL)cellular quality:(int64_t)quality shouldMarkAsDeletedOnCancellationOrFailure:(BOOL)failure completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6, 1, 0);
+    (*(completion + 2))(completion, 1, 0);
   }
 }
 
@@ -416,8 +416,8 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v3 = [assetControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -429,14 +429,14 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) pauseDownload];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [assetControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -450,8 +450,8 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v3 = [assetControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -463,14 +463,14 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) resumeDownload];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [assetControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -485,9 +485,9 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = self;
-  v4 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  selfCopy = self;
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v5 = [assetControllers countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -498,20 +498,20 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
       {
         if (*v25 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetControllers);
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 state];
-        v11 = [v10 status];
+        state = [v9 state];
+        status = [state status];
 
-        if (v11 <= 5 && ((1 << v11) & 0x2E) != 0)
+        if (status <= 5 && ((1 << status) & 0x2E) != 0)
         {
           [v3 addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v6 = [assetControllers countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v6);
@@ -519,19 +519,19 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
 
   if ([v3 count])
   {
-    v13 = v3;
+    assetControllers2 = v3;
   }
 
   else
   {
-    v13 = [(VUIUniversalCollectionAssetController *)v19 assetControllers];
+    assetControllers2 = [(VUIUniversalCollectionAssetController *)selfCopy assetControllers];
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = v13;
+  v14 = assetControllers2;
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v15)
   {
@@ -556,16 +556,16 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
   }
 }
 
-- (void)addAssetControllers:(id)a3
+- (void)addAssetControllers:(id)controllers
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = [(NSArray *)self->_assetControllers mutableCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = controllersCopy;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
@@ -617,8 +617,8 @@ uint64_t __173__VUIUniversalCollectionAssetController_startDownloadAllowingCellu
         _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, v15, buf, 0xCu);
 LABEL_12:
 
-        v16 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v16 addObserver:self selector:sel__assetControllerDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v11];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:self selector:sel__assetControllerDidChange_ name:@"VUIMediaEntityAssetControllerStateDidChangeNotification" object:v11];
 
         [v11 setCompletionDispatchQueue:self->_completionDispatchQueueInternal];
       }
@@ -633,13 +633,13 @@ LABEL_12:
   [(VUIUniversalCollectionAssetController *)self setAssetControllers:v17];
 }
 
-- (void)removeAssetControllers:(id)a3
+- (void)removeAssetControllers:(id)controllers
 {
   v14 = *MEMORY[0x1E69E9840];
   assetControllers = self->_assetControllers;
-  v5 = a3;
+  controllersCopy = controllers;
   v6 = [(NSArray *)assetControllers mutableCopy];
-  [v6 removeObjectsInArray:v5];
+  [v6 removeObjectsInArray:controllersCopy];
 
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -665,8 +665,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v3 = [assetControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -678,20 +678,20 @@ LABEL_12:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(assetControllers);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) contentRating];
-        v9 = [v8 rank];
-        if (v9 > [v5 rank])
+        contentRating = [*(*(&v12 + 1) + 8 * i) contentRating];
+        rank = [contentRating rank];
+        if (rank > [v5 rank])
         {
-          v10 = v8;
+          v10 = contentRating;
 
           v5 = v10;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [assetControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -705,11 +705,11 @@ LABEL_12:
   return v5;
 }
 
-- (void)setCompletionCount:(unint64_t)a3
+- (void)setCompletionCount:(unint64_t)count
 {
-  if (self->_completionCount != a3)
+  if (self->_completionCount != count)
   {
-    self->_completionCount = a3;
+    self->_completionCount = count;
     [(VUIUniversalCollectionAssetController *)self _updateDownloadStateAndNotifyListeners];
   }
 }
@@ -717,7 +717,7 @@ LABEL_12:
 - (void)_updateDownloadStateAndNotifyListeners
 {
   v65 = *MEMORY[0x1E69E9840];
-  v43 = [(VUIUniversalCollectionAssetController *)self completionDispatchQueueInternal];
+  completionDispatchQueueInternal = [(VUIUniversalCollectionAssetController *)self completionDispatchQueueInternal];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v48 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -726,8 +726,8 @@ LABEL_12:
   v59 = 0u;
   v60 = 0u;
   val = self;
-  v5 = [(VUIUniversalCollectionAssetController *)self assetControllers];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  assetControllers = [(VUIUniversalCollectionAssetController *)self assetControllers];
+  v6 = [assetControllers countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (!v6)
   {
     v46 = 0;
@@ -749,31 +749,31 @@ LABEL_12:
     {
       if (*v58 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(assetControllers);
       }
 
       v11 = *(*(&v57 + 1) + 8 * i);
-      v12 = [v11 state];
-      v13 = [v12 status];
+      state = [v11 state];
+      status = [state status];
 
-      if (v13)
+      if (status)
       {
-        v14 = [v11 state];
-        v15 = [v14 status];
+        state2 = [v11 state];
+        status2 = [state2 status];
 
-        if (v15 != 4)
+        if (status2 != 4)
         {
           [v4 addObject:v11];
           continue;
         }
 
         [v48 addObject:v11];
-        v16 = [v11 state];
-        v17 = [v16 downloadExpirationDate];
+        state3 = [v11 state];
+        downloadExpirationDate = [state3 downloadExpirationDate];
 
-        if (v17 && [MEMORY[0x1E695DF00] shouldShowLabelForDownloadExpirationDate:v17])
+        if (downloadExpirationDate && [MEMORY[0x1E695DF00] shouldShowLabelForDownloadExpirationDate:downloadExpirationDate])
         {
-          v18 = v17;
+          v18 = downloadExpirationDate;
 
           v47 = v18;
         }
@@ -782,29 +782,29 @@ LABEL_12:
       else
       {
         [v3 addObject:v11];
-        v19 = [v11 state];
-        v20 = [v19 downloadFailedDueToError];
+        state4 = [v11 state];
+        downloadFailedDueToError = [state4 downloadFailedDueToError];
 
-        if (v20)
+        if (downloadFailedDueToError)
         {
           ++v8;
           continue;
         }
 
-        v21 = [v11 state];
-        v17 = [v21 downloadExpirationDate];
+        state5 = [v11 state];
+        downloadExpirationDate = [state5 downloadExpirationDate];
 
-        if (v17 && [v17 vui_isInThePast])
+        if (downloadExpirationDate && [downloadExpirationDate vui_isInThePast])
         {
           ++v45;
-          v22 = v17;
+          v22 = downloadExpirationDate;
 
           v46 = v22;
         }
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v57 objects:v64 count:16];
+    v7 = [assetControllers countByEnumeratingWithState:&v57 objects:v64 count:16];
   }
 
   while (v7);
@@ -818,7 +818,7 @@ LABEL_22:
   v27 = [v4 count];
   if (!showDownloadingOnlyWhenWholeCollectionDownloads)
   {
-    v28 = v43;
+    v28 = completionDispatchQueueInternal;
     if (!v27)
     {
       goto LABEL_25;
@@ -827,7 +827,7 @@ LABEL_22:
     goto LABEL_28;
   }
 
-  v28 = v43;
+  v28 = completionDispatchQueueInternal;
   if (v27 && v27 + v24 == val->_completionCount)
   {
 LABEL_28:
@@ -852,8 +852,8 @@ LABEL_28:
             objc_enumerationMutation(v31);
           }
 
-          v37 = [*(*(&v53 + 1) + 8 * j) state];
-          [v37 downloadProgress];
+          state6 = [*(*(&v53 + 1) + 8 * j) state];
+          [state6 downloadProgress];
           v35 = v35 + v38;
         }
 

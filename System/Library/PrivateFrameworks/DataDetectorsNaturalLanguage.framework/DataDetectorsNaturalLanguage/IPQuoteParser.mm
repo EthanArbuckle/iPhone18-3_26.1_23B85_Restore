@@ -1,14 +1,14 @@
 @interface IPQuoteParser
-+ (id)strippedQuoteBlockWithHtml:(id)a3;
++ (id)strippedQuoteBlockWithHtml:(id)html;
 @end
 
 @implementation IPQuoteParser
 
-+ (id)strippedQuoteBlockWithHtml:(id)a3
++ (id)strippedQuoteBlockWithHtml:(id)html
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  htmlCopy = html;
+  v4 = htmlCopy;
+  if (!htmlCopy)
   {
     v151 = 0;
     goto LABEL_327;
@@ -22,7 +22,7 @@
   v184 = 0u;
   *buffer = 0u;
   v182 = 0u;
-  Length = CFStringGetLength(v3);
+  Length = CFStringGetLength(htmlCopy);
   theString[0] = v4;
   *(&v190 + 1) = 0;
   *&v191 = Length;
@@ -1236,16 +1236,16 @@ LABEL_163:
   if (v11 >= 1)
   {
 LABEL_320:
-    v149 = [(__CFString *)v4 stringByReplacingCharactersInRange:v153 withString:v11, &stru_285AD0E88, v153];
+    v153 = [(__CFString *)v4 stringByReplacingCharactersInRange:v153 withString:v11, &stru_285AD0E88, v153];
     goto LABEL_322;
   }
 
 LABEL_321:
-  v149 = 0;
+  v153 = 0;
 LABEL_322:
-  if (v149)
+  if (v153)
   {
-    v150 = v149;
+    v150 = v153;
   }
 
   else

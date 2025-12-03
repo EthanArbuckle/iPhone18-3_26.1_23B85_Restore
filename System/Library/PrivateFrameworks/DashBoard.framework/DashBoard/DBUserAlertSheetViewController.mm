@@ -1,23 +1,23 @@
 @interface DBUserAlertSheetViewController
-- (DBUserAlertSheetViewController)initWithAlert:(id)a3 environmentConfiguration:(id)a4;
+- (DBUserAlertSheetViewController)initWithAlert:(id)alert environmentConfiguration:(id)configuration;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation DBUserAlertSheetViewController
 
-- (DBUserAlertSheetViewController)initWithAlert:(id)a3 environmentConfiguration:(id)a4
+- (DBUserAlertSheetViewController)initWithAlert:(id)alert environmentConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  alertCopy = alert;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = DBUserAlertSheetViewController;
   v9 = [(DBUserAlertSheetViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_alert, a3);
-    objc_storeStrong(&v10->_environmentConfiguration, a4);
+    objc_storeStrong(&v9->_alert, alert);
+    objc_storeStrong(&v10->_environmentConfiguration, configuration);
   }
 
   return v10;
@@ -26,14 +26,14 @@
 - (void)loadView
 {
   v3 = [DBUserAlertSheetView alloc];
-  v4 = [(DBUserAlertSheetViewController *)self alert];
-  v5 = [(DBUserAlertSheetViewController *)self environmentConfiguration];
-  v6 = [(DBUserAlertSheetView *)v3 initWithAlert:v4 environmentConfiguration:v5];
+  alert = [(DBUserAlertSheetViewController *)self alert];
+  environmentConfiguration = [(DBUserAlertSheetViewController *)self environmentConfiguration];
+  v6 = [(DBUserAlertSheetView *)v3 initWithAlert:alert environmentConfiguration:environmentConfiguration];
 
   [(DBUserAlertSheetViewController *)self setView:v6];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3 = DBLogForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))

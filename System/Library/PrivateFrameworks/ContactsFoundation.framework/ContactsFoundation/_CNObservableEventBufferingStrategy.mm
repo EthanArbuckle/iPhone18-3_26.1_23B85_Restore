@@ -1,32 +1,32 @@
 @interface _CNObservableEventBufferingStrategy
-+ (id)strategyWithEvents:(id)a3;
-+ (id)strategyWithQueue:(id)a3;
++ (id)strategyWithEvents:(id)events;
++ (id)strategyWithQueue:(id)queue;
 - (BOOL)isSequenceTerminated;
 - (id)allEvents;
-- (void)addEvent:(id)a3;
+- (void)addEvent:(id)event;
 @end
 
 @implementation _CNObservableEventBufferingStrategy
 
-+ (id)strategyWithQueue:(id)a3
++ (id)strategyWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[_CNObservableEventDynamicQueueBufferingStrategy alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[_CNObservableEventDynamicQueueBufferingStrategy alloc] initWithQueue:queueCopy];
 
   return v4;
 }
 
-+ (id)strategyWithEvents:(id)a3
++ (id)strategyWithEvents:(id)events
 {
-  v3 = a3;
-  v4 = [[_CNObservableEventStaticArrayBufferingStrategy alloc] initWithEvents:v3];
+  eventsCopy = events;
+  v4 = [[_CNObservableEventStaticArrayBufferingStrategy alloc] initWithEvents:eventsCopy];
 
   return v4;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = CNAbstractMethodException(self, a2);
   objc_exception_throw(v6);
 }

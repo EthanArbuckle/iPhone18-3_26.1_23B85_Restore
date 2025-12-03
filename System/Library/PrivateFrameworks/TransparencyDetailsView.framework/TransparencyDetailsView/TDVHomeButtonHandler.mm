@@ -1,45 +1,45 @@
 @interface TDVHomeButtonHandler
-+ (id)handlerWithCompletion:(id)a3;
-- (TDVHomeButtonHandler)initWithCompletion:(id)a3;
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3;
-- (void)startConsumingHardwarePresses:(id)a3;
++ (id)handlerWithCompletion:(id)completion;
+- (TDVHomeButtonHandler)initWithCompletion:(id)completion;
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind;
+- (void)startConsumingHardwarePresses:(id)presses;
 - (void)stopConsumingHardwarePresses;
 @end
 
 @implementation TDVHomeButtonHandler
 
-- (TDVHomeButtonHandler)initWithCompletion:(id)a3
+- (TDVHomeButtonHandler)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8.receiver = self;
   v8.super_class = TDVHomeButtonHandler;
   v5 = [(TDVHomeButtonHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(TDVHomeButtonHandler *)v5 startConsumingHardwarePresses:v4];
+    [(TDVHomeButtonHandler *)v5 startConsumingHardwarePresses:completionCopy];
   }
 
   return v6;
 }
 
-+ (id)handlerWithCompletion:(id)a3
++ (id)handlerWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [[TDVHomeButtonHandler alloc] initWithCompletion:v3];
+  completionCopy = completion;
+  v4 = [[TDVHomeButtonHandler alloc] initWithCompletion:completionCopy];
 
   return v4;
 }
 
-- (void)startConsumingHardwarePresses:(id)a3
+- (void)startConsumingHardwarePresses:(id)presses
 {
-  [(TDVHomeButtonHandler *)self setHomeButtonHandlerCallback:a3];
-  v4 = [(TDVHomeButtonHandler *)self homeButtonAssertion];
+  [(TDVHomeButtonHandler *)self setHomeButtonHandlerCallback:presses];
+  homeButtonAssertion = [(TDVHomeButtonHandler *)self homeButtonAssertion];
 
-  if (!v4)
+  if (!homeButtonAssertion)
   {
-    v5 = [MEMORY[0x277D66AA0] sharedInstance];
-    v6 = [v5 beginConsumingPressesForButtonKind:1 eventConsumer:self priority:0];
+    mEMORY[0x277D66AA0] = [MEMORY[0x277D66AA0] sharedInstance];
+    v6 = [mEMORY[0x277D66AA0] beginConsumingPressesForButtonKind:1 eventConsumer:self priority:0];
 
     [(TDVHomeButtonHandler *)self setHomeButtonAssertion:v6];
   }
@@ -47,13 +47,13 @@
 
 - (void)stopConsumingHardwarePresses
 {
-  v3 = [(TDVHomeButtonHandler *)self homeButtonAssertion];
-  [v3 invalidate];
+  homeButtonAssertion = [(TDVHomeButtonHandler *)self homeButtonAssertion];
+  [homeButtonAssertion invalidate];
 
   [(TDVHomeButtonHandler *)self setHomeButtonAssertion:0];
 }
 
-- (void)consumeSinglePressUpForButtonKind:(int64_t)a3
+- (void)consumeSinglePressUpForButtonKind:(int64_t)kind
 {
   homeButtonHandlerCallback = self->_homeButtonHandlerCallback;
   if (homeButtonHandlerCallback)

@@ -1,18 +1,18 @@
 @interface TSCEFunction_WEEKNUM
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_WEEKNUM
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v73 = 0;
-  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v73);
+  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v73);
   v15 = v73;
   if (v15)
   {
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v11, v15, v13, v14);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v11, v15, v13, v14);
     goto LABEL_14;
   }
 
@@ -21,7 +21,7 @@
     TSUDecimal::operator=();
     v20 = objc_msgSend_numberWithDecimal_(TSCENumberValue, v17, &v64, v18, v19);
     v25 = v20;
-    if (*(a5 + 1) - *a5 < 9uLL)
+    if (*(arguments + 1) - *arguments < 9uLL)
     {
       v32 = v20;
       v39 = objc_msgSend_decimalRepresentation(v20, v21, v22, v23, v24);
@@ -46,7 +46,7 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v26 = *(*a5 + 8);
+    v26 = *(*arguments + 8);
     if (objc_msgSend_isTokenOrEmptyArg(v26, v27, v28, v29, v30))
     {
       v32 = v25;
@@ -57,7 +57,7 @@ LABEL_11:
     }
 
     v72 = 0;
-    v41 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v26, v31, a3, a4, 1, &v72);
+    v41 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v26, v31, context, spec, 1, &v72);
     v33 = v72;
     v32 = objc_msgSend_trunc(v41, v42, v43, v44, v45);
 
@@ -66,14 +66,14 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v46, v33, v47, v48);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v46, v33, v47, v48);
   }
 
   else
   {
-    v33 = objc_msgSend_functionName(a4, v11, v12, v13, v14);
+    v33 = objc_msgSend_functionName(spec, v11, v12, v13, v14);
     v32 = objc_msgSend_invalidArgumentsErrorForFunctionName_argumentIndex_(TSCEError, v34, v33, 1, v35);
-    v16 = objc_msgSend_raiseErrorOrConvert_(a3, v36, v32, v37, v38);
+    v16 = objc_msgSend_raiseErrorOrConvert_(context, v36, v32, v37, v38);
   }
 
 LABEL_13:

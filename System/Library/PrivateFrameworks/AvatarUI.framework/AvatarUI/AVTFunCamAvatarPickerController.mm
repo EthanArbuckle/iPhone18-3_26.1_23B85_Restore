@@ -1,66 +1,66 @@
 @interface AVTFunCamAvatarPickerController
-+ (id)createClippingViewForSize:(CGSize)a3;
-+ (id)funCamAvatarPickerControllerForStore:(id)a3 style:(id)a4;
-+ (id)funCamAvatarPickerControllerForStore:(id)a3 style:(id)a4 allowsCreation:(BOOL)a5;
-+ (id)itemsFromRecords:(id)a3;
++ (id)createClippingViewForSize:(CGSize)size;
++ (id)funCamAvatarPickerControllerForStore:(id)store style:(id)style;
++ (id)funCamAvatarPickerControllerForStore:(id)store style:(id)style allowsCreation:(BOOL)creation;
++ (id)itemsFromRecords:(id)records;
 + (id)newGridLayout;
-+ (id)sessionProviderWithEnvironment:(id)a3 delegate:(id)a4;
++ (id)sessionProviderWithEnvironment:(id)environment delegate:(id)delegate;
 - (AVTAvatarPickerDelegate)avatarPickerDelegate;
-- (AVTFunCamAvatarPickerController)initWithStore:(id)a3 environment:(id)a4 style:(id)a5 allowsCreation:(BOOL)a6;
+- (AVTFunCamAvatarPickerController)initWithStore:(id)store environment:(id)environment style:(id)style allowsCreation:(BOOL)creation;
 - (AVTPresenterDelegate)presenterDelegate;
 - (BOOL)canCreateAvatar;
 - (CGRect)lastUpdateViewBounds;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)gridItemSize;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (id)buildCollectionViewLayout;
 - (id)buildTitlesCollectionViewLayout;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)indexPathForNoneItem;
 - (id)selectedIndexPath;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)indexForRecord:(id)a3;
-- (int64_t)indexForRecordIdentifier:(id)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)indexForRecord:(id)record;
+- (int64_t)indexForRecordIdentifier:(id)identifier;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)buildCollectionView;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
 - (void)preloadAll;
 - (void)reloadData;
 - (void)reloadModel;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)selectAvatarRecordWithIdentifier:(id)a3 animated:(BOOL)a4;
-- (void)selectItemAtCenterNotifyDelegate:(BOOL)a3;
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)selectItemForAvatarRecord:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5;
-- (void)sendSelectionEventToDelegateForItemAtIndexPath:(id)a3;
-- (void)sessionProviderDidEndCameraSession:(id)a3;
-- (void)sessionProviderWillStartCameraSession:(id)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setStyle:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)selectAvatarRecordWithIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)selectItemAtCenterNotifyDelegate:(BOOL)delegate;
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
+- (void)selectItemForAvatarRecord:(id)record animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
+- (void)sendSelectionEventToDelegateForItemAtIndexPath:(id)path;
+- (void)sessionProviderDidEndCameraSession:(id)session;
+- (void)sessionProviderWillStartCameraSession:(id)session;
+- (void)setMode:(unint64_t)mode;
+- (void)setStyle:(id)style;
 - (void)startObservingChangesIfNeeded;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTitlesClippingViewMask;
 - (void)updateViewForCurrentMode;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AVTFunCamAvatarPickerController
 
-+ (id)itemsFromRecords:(id)a3
++ (id)itemsFromRecords:(id)records
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  recordsCopy = records;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = recordsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -78,7 +78,7 @@
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [AVTAvatarListRecordItem alloc];
         v12 = [(AVTAvatarListRecordItem *)v11 initWithAvatar:v10, v14];
-        [v4 addObject:v12];
+        [array addObject:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -87,7 +87,7 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (id)newGridLayout
@@ -99,78 +99,78 @@
   return v2;
 }
 
-+ (id)sessionProviderWithEnvironment:(id)a3 delegate:(id)a4
++ (id)sessionProviderWithEnvironment:(id)environment delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  [AVTViewSessionProvider backingSizeForEnvironment:v6];
+  delegateCopy = delegate;
+  environmentCopy = environment;
+  [AVTViewSessionProvider backingSizeForEnvironment:environmentCopy];
   v8 = v7;
   v10 = v9;
   v11 = +[AVTViewSessionProvider creatorForAVTView];
-  v12 = [[AVTViewSessionProvider alloc] initWithAVTViewBackingSize:v11 viewCreator:v6 environment:v8, v10];
+  v12 = [[AVTViewSessionProvider alloc] initWithAVTViewBackingSize:v11 viewCreator:environmentCopy environment:v8, v10];
 
-  [(AVTViewSessionProvider *)v12 setDelegate:v5];
+  [(AVTViewSessionProvider *)v12 setDelegate:delegateCopy];
 
   return v12;
 }
 
-+ (id)createClippingViewForSize:(CGSize)a3
++ (id)createClippingViewForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
-  v7 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{*MEMORY[0x1E695F058], v6, a3.width, a3.height}];
+  v7 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{*MEMORY[0x1E695F058], v6, size.width, size.height}];
   [v7 setUserInteractionEnabled:0];
-  v8 = [[AVTGradientView alloc] initWithFrame:v5, v6, width, height];
-  [(AVTGradientView *)v8 setAutoresizingMask:18];
-  [v7 addSubview:v8];
+  height = [[AVTGradientView alloc] initWithFrame:v5, v6, width, height];
+  [(AVTGradientView *)height setAutoresizingMask:18];
+  [v7 addSubview:height];
 
   return v7;
 }
 
-+ (id)funCamAvatarPickerControllerForStore:(id)a3 style:(id)a4
++ (id)funCamAvatarPickerControllerForStore:(id)store style:(id)style
 {
-  v5 = a4;
-  v6 = a3;
+  styleCopy = style;
+  storeCopy = store;
   v7 = +[AVTUIEnvironment createFunCamEnvironment];
-  v8 = [[AVTFunCamAvatarPickerController alloc] initWithStore:v6 environment:v7 style:v5];
+  v8 = [[AVTFunCamAvatarPickerController alloc] initWithStore:storeCopy environment:v7 style:styleCopy];
 
   return v8;
 }
 
-+ (id)funCamAvatarPickerControllerForStore:(id)a3 style:(id)a4 allowsCreation:(BOOL)a5
++ (id)funCamAvatarPickerControllerForStore:(id)store style:(id)style allowsCreation:(BOOL)creation
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  creationCopy = creation;
+  styleCopy = style;
+  storeCopy = store;
   v9 = +[AVTUIEnvironment createFunCamEnvironment];
-  v10 = [[AVTFunCamAvatarPickerController alloc] initWithStore:v8 environment:v9 style:v7 allowsCreation:v5];
+  v10 = [[AVTFunCamAvatarPickerController alloc] initWithStore:storeCopy environment:v9 style:styleCopy allowsCreation:creationCopy];
 
   return v10;
 }
 
-- (AVTFunCamAvatarPickerController)initWithStore:(id)a3 environment:(id)a4 style:(id)a5 allowsCreation:(BOOL)a6
+- (AVTFunCamAvatarPickerController)initWithStore:(id)store environment:(id)environment style:(id)style allowsCreation:(BOOL)creation
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  environmentCopy = environment;
+  styleCopy = style;
   v24.receiver = self;
   v24.super_class = AVTFunCamAvatarPickerController;
   v14 = [(AVTFunCamAvatarPickerController *)&v24 initWithNibName:0 bundle:0];
   if (v14)
   {
-    if (([v11 conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
+    if (([storeCopy conformsToProtocol:&unk_1F39DD3B0] & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", v11}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", storeCopy}];
     }
 
-    objc_storeStrong(&v14->_store, a3);
-    v15 = [v12 logger];
+    objc_storeStrong(&v14->_store, store);
+    logger = [environmentCopy logger];
     logger = v14->_logger;
-    v14->_logger = v15;
+    v14->_logger = logger;
 
-    v17 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:v12];
+    v17 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:environmentCopy];
     imageProvider = v14->_imageProvider;
     v14->_imageProvider = v17;
 
@@ -182,9 +182,9 @@
     gridRenderingScope = v14->_gridRenderingScope;
     v14->_gridRenderingScope = v21;
 
-    objc_storeStrong(&v14->_environment, a4);
-    objc_storeStrong(&v14->_style, a5);
-    v14->_allowsCreation = a6;
+    objc_storeStrong(&v14->_environment, environment);
+    objc_storeStrong(&v14->_style, style);
+    v14->_allowsCreation = creation;
     [(AVTFunCamAvatarPickerController *)v14 preloadAll];
     [(AVTFunCamAvatarPickerController *)v14 reloadModel];
   }
@@ -194,21 +194,21 @@
 
 - (id)selectedIndexPath
 {
-  v3 = [(AVTFunCamAvatarPickerController *)self selectedAvatarRecord];
+  selectedAvatarRecord = [(AVTFunCamAvatarPickerController *)self selectedAvatarRecord];
 
-  if (!v3 || (-[AVTFunCamAvatarPickerController selectedAvatarRecord](self, "selectedAvatarRecord"), v4 = objc_claimAutoreleasedReturnValue(), v5 = -[AVTFunCamAvatarPickerController indexForRecord:](self, "indexForRecord:", v4), v4, v5 == 0x7FFFFFFFFFFFFFFFLL) || ([MEMORY[0x1E696AC88] indexPathForItem:v5 inSection:0], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!selectedAvatarRecord || (-[AVTFunCamAvatarPickerController selectedAvatarRecord](self, "selectedAvatarRecord"), v4 = objc_claimAutoreleasedReturnValue(), v5 = -[AVTFunCamAvatarPickerController indexForRecord:](self, "indexForRecord:", v4), v4, v5 == 0x7FFFFFFFFFFFFFFFLL) || ([MEMORY[0x1E696AC88] indexPathForItem:v5 inSection:0], (indexPathForNoneItem = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [(AVTFunCamAvatarPickerController *)self indexPathForNoneItem];
+    indexPathForNoneItem = [(AVTFunCamAvatarPickerController *)self indexPathForNoneItem];
   }
 
-  return v6;
+  return indexPathForNoneItem;
 }
 
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = [v3 initWithFrame:?];
 
   [(AVTFunCamAvatarPickerController *)self setView:v5];
@@ -221,25 +221,25 @@
   if (AVTUIAvatarPreLoadOnLaunch())
   {
     v3 = MEMORY[0x1E698E328];
-    v4 = [(AVTFunCamAvatarPickerController *)self store];
-    [v3 preloadAllAvatarsWithStore:v4 completionHandler:0];
+    store = [(AVTFunCamAvatarPickerController *)self store];
+    [v3 preloadAllAvatarsWithStore:store completionHandler:0];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = AVTFunCamAvatarPickerController;
-  [(AVTFunCamAvatarPickerController *)&v7 traitCollectionDidChange:a3];
+  [(AVTFunCamAvatarPickerController *)&v7 traitCollectionDidChange:change];
   if ([(AVTFunCamAvatarPickerController *)self isViewLoaded])
   {
-    v4 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    v5 = [v4 visibleCells];
+    collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    if (v5)
+    if (visibleCells)
     {
-      v6 = [(AVTFunCamAvatarPickerController *)self collectionView];
-      [v6 reloadData];
+      collectionView2 = [(AVTFunCamAvatarPickerController *)self collectionView];
+      [collectionView2 reloadData];
     }
   }
 }
@@ -249,9 +249,9 @@
   v5.receiver = self;
   v5.super_class = AVTFunCamAvatarPickerController;
   [(AVTFunCamAvatarPickerController *)&v5 viewDidLayoutSubviews];
-  v3 = [(AVTFunCamAvatarPickerController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
-  [v4 invalidateLayout];
+  collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)viewWillLayoutSubviews
@@ -264,8 +264,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AVTFunCamAvatarPickerController *)self view];
-  [v11 bounds];
+  view = [(AVTFunCamAvatarPickerController *)self view];
+  [view bounds];
   v19.origin.x = v12;
   v19.origin.y = v13;
   v19.size.width = v14;
@@ -282,11 +282,11 @@
   }
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     if ([(AVTFunCamAvatarPickerController *)self isViewLoaded])
     {
 
@@ -295,27 +295,27 @@
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  objc_storeStrong(&self->_style, a3);
-  v4 = [(AVTFunCamAvatarPickerController *)self collectionView];
-  if (v4)
+  objc_storeStrong(&self->_style, style);
+  collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+  if (collectionView)
   {
-    v5 = v4;
-    v6 = [(AVTFunCamAvatarPickerController *)self isViewLoaded];
+    v5 = collectionView;
+    isViewLoaded = [(AVTFunCamAvatarPickerController *)self isViewLoaded];
 
-    if (v6)
+    if (isViewLoaded)
     {
-      v7 = [(AVTFunCamAvatarPickerController *)self buildCollectionViewLayout];
-      [(AVTFunCamAvatarPickerController *)self setListLayout:v7];
+      buildCollectionViewLayout = [(AVTFunCamAvatarPickerController *)self buildCollectionViewLayout];
+      [(AVTFunCamAvatarPickerController *)self setListLayout:buildCollectionViewLayout];
 
-      v8 = [(AVTFunCamAvatarPickerController *)self listLayout];
-      v9 = [(AVTFunCamAvatarPickerController *)self collectionView];
-      [v9 setCollectionViewLayout:v8];
+      listLayout = [(AVTFunCamAvatarPickerController *)self listLayout];
+      collectionView2 = [(AVTFunCamAvatarPickerController *)self collectionView];
+      [collectionView2 setCollectionViewLayout:listLayout];
 
-      v10 = [(AVTFunCamAvatarPickerController *)self buildTitlesCollectionViewLayout];
-      v11 = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
-      [v11 setCollectionViewLayout:v10];
+      buildTitlesCollectionViewLayout = [(AVTFunCamAvatarPickerController *)self buildTitlesCollectionViewLayout];
+      titlesCollectionView = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
+      [titlesCollectionView setCollectionViewLayout:buildTitlesCollectionViewLayout];
 
       [(AVTFunCamAvatarPickerController *)self updateViewForCurrentMode];
     }
@@ -325,16 +325,16 @@
 - (id)buildCollectionViewLayout
 {
   v3 = [AVTEngagementLayout alloc];
-  v4 = [(AVTFunCamAvatarPickerController *)self style];
-  [v4 cellSize];
+  style = [(AVTFunCamAvatarPickerController *)self style];
+  [style cellSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(AVTFunCamAvatarPickerController *)self style];
-  [v9 engagedCellSize];
+  style2 = [(AVTFunCamAvatarPickerController *)self style];
+  [style2 engagedCellSize];
   v11 = v10;
   v13 = v12;
-  v14 = [(AVTFunCamAvatarPickerController *)self style];
-  [v14 interitemSpacing];
+  style3 = [(AVTFunCamAvatarPickerController *)self style];
+  [style3 interitemSpacing];
   v16 = [(AVTEngagementLayout *)v3 initWithDefaultCellSize:v6 engagedCellSize:v8 baseInteritemSpacing:v11, v13, v15];
 
   v17 = [(AVTEngagementListCollectionViewLayout *)[AVTFunCamAvatarPickerCollectionViewLayout alloc] initWithEngagementLayout:v16];
@@ -345,18 +345,18 @@
 - (id)buildTitlesCollectionViewLayout
 {
   v3 = [AVTEngagementLayout alloc];
-  v4 = [(AVTFunCamAvatarPickerController *)self style];
-  [v4 cellSize];
+  style = [(AVTFunCamAvatarPickerController *)self style];
+  [style cellSize];
   v6 = v5;
-  v7 = [(AVTFunCamAvatarPickerController *)self style];
-  [v7 engagedCellSize];
+  style2 = [(AVTFunCamAvatarPickerController *)self style];
+  [style2 engagedCellSize];
   v9 = v8;
-  v10 = [(AVTFunCamAvatarPickerController *)self style];
-  [v10 engagedCellSize];
+  style3 = [(AVTFunCamAvatarPickerController *)self style];
+  [style3 engagedCellSize];
   v12 = v11;
   v14 = v13;
-  v15 = [(AVTFunCamAvatarPickerController *)self style];
-  [v15 interitemSpacing];
+  style4 = [(AVTFunCamAvatarPickerController *)self style];
+  [style4 interitemSpacing];
   v17 = [(AVTEngagementLayout *)v3 initWithDefaultCellSize:v6 engagedCellSize:v9 baseInteritemSpacing:v12, v14, v16];
 
   v18 = [(AVTEngagementListCollectionViewLayout *)[AVTFunCamAvatarPickerCollectionViewLayout alloc] initWithEngagementLayout:v17];
@@ -366,20 +366,20 @@
 
 - (void)buildCollectionView
 {
-  v38 = [(AVTFunCamAvatarPickerController *)self buildCollectionViewLayout];
+  buildCollectionViewLayout = [(AVTFunCamAvatarPickerController *)self buildCollectionViewLayout];
   v3 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v4 = [(AVTFunCamAvatarPickerController *)self view];
-  [v4 bounds];
-  v5 = [v3 initWithFrame:v38 collectionViewLayout:?];
+  view = [(AVTFunCamAvatarPickerController *)self view];
+  [view bounds];
+  v5 = [v3 initWithFrame:buildCollectionViewLayout collectionViewLayout:?];
 
   v6 = [AVTCenteringCollectionViewDelegate alloc];
-  v7 = [(AVTFunCamAvatarPickerController *)self environment];
-  v8 = [(AVTCenteringCollectionViewDelegate *)v6 initWithCollectionView:v5 delegate:self environment:v7];
+  environment = [(AVTFunCamAvatarPickerController *)self environment];
+  v8 = [(AVTCenteringCollectionViewDelegate *)v6 initWithCollectionView:v5 delegate:self environment:environment];
   [(AVTFunCamAvatarPickerController *)self setCenteringDelegate:v8];
 
   [v5 setDataSource:self];
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v5 setBackgroundColor:clearColor];
 
   [v5 setShowsHorizontalScrollIndicator:0];
   [v5 setShowsVerticalScrollIndicator:0];
@@ -390,40 +390,40 @@
   [v5 registerClass:v10 forCellWithReuseIdentifier:v11];
 
   [(AVTFunCamAvatarPickerController *)self setCollectionView:v5];
-  [(AVTFunCamAvatarPickerController *)self setListLayout:v38];
-  v12 = [objc_opt_class() newGridLayout];
-  [(AVTFunCamAvatarPickerController *)self setGridLayout:v12];
+  [(AVTFunCamAvatarPickerController *)self setListLayout:buildCollectionViewLayout];
+  newGridLayout = [objc_opt_class() newGridLayout];
+  [(AVTFunCamAvatarPickerController *)self setGridLayout:newGridLayout];
 
-  v13 = [(AVTFunCamAvatarPickerController *)self view];
-  [v13 addSubview:v5];
+  view2 = [(AVTFunCamAvatarPickerController *)self view];
+  [view2 addSubview:v5];
 
-  v14 = [(AVTFunCamAvatarPickerController *)self view];
-  [v14 bounds];
+  view3 = [(AVTFunCamAvatarPickerController *)self view];
+  [view3 bounds];
   v15 = CGRectGetMaxY(v40) + -14.0;
-  v16 = [(AVTFunCamAvatarPickerController *)self view];
-  [v16 bounds];
+  view4 = [(AVTFunCamAvatarPickerController *)self view];
+  [view4 bounds];
   Width = CGRectGetWidth(v41);
 
   v18 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, v15, Width, 14.0}];
   [(AVTFunCamAvatarPickerController *)self setTitlesContainer:v18];
 
-  v19 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v19 setUserInteractionEnabled:0];
+  titlesContainer = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [titlesContainer setUserInteractionEnabled:0];
 
   v20 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v21 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v21 bounds];
+  titlesContainer2 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [titlesContainer2 bounds];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(AVTFunCamAvatarPickerController *)self buildTitlesCollectionViewLayout];
-  v31 = [v20 initWithFrame:v30 collectionViewLayout:{v23, v25, v27, v29}];
+  buildTitlesCollectionViewLayout = [(AVTFunCamAvatarPickerController *)self buildTitlesCollectionViewLayout];
+  v31 = [v20 initWithFrame:buildTitlesCollectionViewLayout collectionViewLayout:{v23, v25, v27, v29}];
 
   [v31 setUserInteractionEnabled:0];
   [v31 setDataSource:self];
-  v32 = [MEMORY[0x1E69DC888] clearColor];
-  [v31 setBackgroundColor:v32];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [v31 setBackgroundColor:clearColor2];
 
   [v31 setShowsHorizontalScrollIndicator:0];
   [v31 setAutoresizingMask:18];
@@ -432,12 +432,12 @@
   [v31 registerClass:v33 forCellWithReuseIdentifier:v34];
 
   [(AVTFunCamAvatarPickerController *)self setTitlesCollectionView:v31];
-  v35 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v35 addSubview:v31];
+  titlesContainer3 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [titlesContainer3 addSubview:v31];
 
-  v36 = [(AVTFunCamAvatarPickerController *)self view];
-  v37 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v36 addSubview:v37];
+  view5 = [(AVTFunCamAvatarPickerController *)self view];
+  titlesContainer4 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [view5 addSubview:titlesContainer4];
 
   [(AVTFunCamAvatarPickerController *)self updateTitlesClippingViewMask];
 }
@@ -445,44 +445,44 @@
 - (void)updateTitlesClippingViewMask
 {
   v3 = objc_opt_class();
-  v4 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v4 bounds];
+  titlesContainer = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [titlesContainer bounds];
   v7 = [v3 createClippingViewForSize:{v5, v6}];
   [(AVTFunCamAvatarPickerController *)self setTitlesClippingView:v7];
 
-  v8 = [(AVTFunCamAvatarPickerController *)self titlesClippingView];
-  [v8 setAutoresizingMask:10];
+  titlesClippingView = [(AVTFunCamAvatarPickerController *)self titlesClippingView];
+  [titlesClippingView setAutoresizingMask:10];
 
-  v10 = [(AVTFunCamAvatarPickerController *)self titlesClippingView];
-  v9 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v9 setMaskView:v10];
+  titlesClippingView2 = [(AVTFunCamAvatarPickerController *)self titlesClippingView];
+  titlesContainer2 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [titlesContainer2 setMaskView:titlesClippingView2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AVTFunCamAvatarPickerController;
-  [(AVTFunCamAvatarPickerController *)&v5 viewWillAppear:a3];
-  v4 = [(AVTFunCamAvatarPickerController *)self selectedIndexPath];
-  [(AVTFunCamAvatarPickerController *)self selectItemAtIndexPath:v4 animated:0 notifyDelegate:0];
+  [(AVTFunCamAvatarPickerController *)&v5 viewWillAppear:appear];
+  selectedIndexPath = [(AVTFunCamAvatarPickerController *)self selectedIndexPath];
+  [(AVTFunCamAvatarPickerController *)self selectItemAtIndexPath:selectedIndexPath animated:0 notifyDelegate:0];
 }
 
 - (void)startObservingChangesIfNeeded
 {
-  v3 = [(AVTFunCamAvatarPickerController *)self changeNotificationToken];
+  changeNotificationToken = [(AVTFunCamAvatarPickerController *)self changeNotificationToken];
 
-  if (!v3)
+  if (!changeNotificationToken)
   {
     objc_initWeak(&location, self);
-    v4 = [(AVTFunCamAvatarPickerController *)self environment];
-    v5 = [v4 notificationCenter];
+    environment = [(AVTFunCamAvatarPickerController *)self environment];
+    notificationCenter = [environment notificationCenter];
     v6 = *MEMORY[0x1E698E308];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __64__AVTFunCamAvatarPickerController_startObservingChangesIfNeeded__block_invoke;
     v11 = &unk_1E7F3B248;
     objc_copyWeak(&v12, &location);
-    v7 = [v5 addObserverForName:v6 object:0 queue:0 usingBlock:&v8];
+    v7 = [notificationCenter addObserverForName:v6 object:0 queue:0 usingBlock:&v8];
     [(AVTFunCamAvatarPickerController *)self setChangeNotificationToken:v7, v8, v9, v10, v11];
 
     objc_destroyWeak(&v12);
@@ -511,18 +511,18 @@ void __64__AVTFunCamAvatarPickerController_startObservingChangesIfNeeded__block_
 {
   if ([(AVTFunCamAvatarPickerController *)self isViewLoaded])
   {
-    v3 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v3 reloadData];
+    collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView reloadData];
 
-    v4 = [(AVTFunCamAvatarPickerController *)self selectedIndexPath];
-    [(AVTFunCamAvatarPickerController *)self selectItemAtIndexPath:v4 animated:0 notifyDelegate:0];
+    selectedIndexPath = [(AVTFunCamAvatarPickerController *)self selectedIndexPath];
+    [(AVTFunCamAvatarPickerController *)self selectItemAtIndexPath:selectedIndexPath animated:0 notifyDelegate:0];
   }
 }
 
 - (BOOL)canCreateAvatar
 {
-  v2 = [(AVTFunCamAvatarPickerController *)self store];
-  v3 = [v2 canCreateAvatarWithError:0];
+  store = [(AVTFunCamAvatarPickerController *)self store];
+  v3 = [store canCreateAvatarWithError:0];
 
   return v3;
 }
@@ -530,19 +530,19 @@ void __64__AVTFunCamAvatarPickerController_startObservingChangesIfNeeded__block_
 - (void)reloadModel
 {
   [(AVTFunCamAvatarPickerController *)self startObservingChangesIfNeeded];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVTFunCamAvatarPickerController *)self allowsCreation];
+  array = [MEMORY[0x1E695DF70] array];
+  allowsCreation = [(AVTFunCamAvatarPickerController *)self allowsCreation];
   v5 = @"none";
-  if (v4)
+  if (allowsCreation)
   {
     v5 = @"add";
   }
 
   v6 = v5;
-  v7 = [(AVTFunCamAvatarPickerController *)self allowsCreation];
+  allowsCreation2 = [(AVTFunCamAvatarPickerController *)self allowsCreation];
   v8 = AVTAvatarUIBundle();
   v9 = v8;
-  if (v7)
+  if (allowsCreation2)
   {
     v10 = @"ADD";
   }
@@ -558,47 +558,47 @@ void __64__AVTFunCamAvatarPickerController_startObservingChangesIfNeeded__block_
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v14 = [v12 imageNamed:v6 inBundle:v13 compatibleWithTraitCollection:0];
 
-  v15 = [v14 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v14 _imageThatSuppressesAccessibilityHairlineThickening];
 
   v37 = v11;
-  v16 = [[AVTAvatarListImageItem alloc] initWithImage:v15 title:v11];
+  v16 = [[AVTAvatarListImageItem alloc] initWithImage:_imageThatSuppressesAccessibilityHairlineThickening title:v11];
   [(AVTFunCamAvatarPickerController *)self setNoneItem:v16];
 
-  v17 = [(AVTFunCamAvatarPickerController *)self noneItem];
-  [v3 addObject:v17];
+  noneItem = [(AVTFunCamAvatarPickerController *)self noneItem];
+  [array addObject:noneItem];
 
-  v18 = [MEMORY[0x1E698E310] requestForCustomAvatars];
-  v19 = [(AVTFunCamAvatarPickerController *)self store];
+  requestForCustomAvatars = [MEMORY[0x1E698E310] requestForCustomAvatars];
+  store = [(AVTFunCamAvatarPickerController *)self store];
   v39 = 0;
-  v20 = [v19 avatarsForFetchRequest:v18 error:&v39];
+  v20 = [store avatarsForFetchRequest:requestForCustomAvatars error:&v39];
   v21 = v39;
 
   if (!v20)
   {
-    v22 = [(AVTFunCamAvatarPickerController *)self logger];
+    logger = [(AVTFunCamAvatarPickerController *)self logger];
     v23 = [v21 description];
-    [v22 logErrorFetchingRecords:v23];
+    [logger logErrorFetchingRecords:v23];
   }
 
-  v24 = [v20 reverseObjectEnumerator];
-  v25 = [v24 allObjects];
+  reverseObjectEnumerator = [v20 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  [(AVTFunCamAvatarPickerController *)self setEditableRecords:v25];
-  v26 = [objc_opt_class() itemsFromRecords:v25];
-  [v3 addObjectsFromArray:v26];
+  [(AVTFunCamAvatarPickerController *)self setEditableRecords:allObjects];
+  v26 = [objc_opt_class() itemsFromRecords:allObjects];
+  [array addObjectsFromArray:v26];
 
-  v27 = [MEMORY[0x1E698E310] requestForPredefinedAvatars];
+  requestForPredefinedAvatars = [MEMORY[0x1E698E310] requestForPredefinedAvatars];
 
-  v28 = [(AVTFunCamAvatarPickerController *)self store];
+  store2 = [(AVTFunCamAvatarPickerController *)self store];
   v38 = 0;
-  v29 = [v28 avatarsForFetchRequest:v27 error:&v38];
+  v29 = [store2 avatarsForFetchRequest:requestForPredefinedAvatars error:&v38];
   v30 = v38;
 
   if (!v29)
   {
-    v31 = [(AVTFunCamAvatarPickerController *)self logger];
+    logger2 = [(AVTFunCamAvatarPickerController *)self logger];
     v32 = [v30 description];
-    [v31 logErrorFetchingRecords:v32];
+    [logger2 logErrorFetchingRecords:v32];
   }
 
   v33 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_11];
@@ -606,9 +606,9 @@ void __64__AVTFunCamAvatarPickerController_startObservingChangesIfNeeded__block_
 
   [(AVTFunCamAvatarPickerController *)self setPuppetRecords:v34];
   v35 = [objc_opt_class() itemsFromRecords:v34];
-  [v3 addObjectsFromArray:v35];
+  [array addObjectsFromArray:v35];
 
-  v36 = [v3 copy];
+  v36 = [array copy];
   [(AVTFunCamAvatarPickerController *)self setItems:v36];
 
   [(AVTFunCamAvatarPickerController *)self reloadData];
@@ -624,63 +624,63 @@ uint64_t __46__AVTFunCamAvatarPickerController_reloadModel__block_invoke(uint64_
 
 - (void)updateViewForCurrentMode
 {
-  v3 = [(AVTFunCamAvatarPickerController *)self view];
-  [v3 bounds];
+  view = [(AVTFunCamAvatarPickerController *)self view];
+  [view bounds];
   [(AVTFunCamAvatarPickerController *)self setLastUpdateViewBounds:?];
 
-  v4 = [(AVTFunCamAvatarPickerController *)self mode];
-  v5 = [(AVTFunCamAvatarPickerController *)self view];
-  [v5 bounds];
+  mode = [(AVTFunCamAvatarPickerController *)self mode];
+  view2 = [(AVTFunCamAvatarPickerController *)self view];
+  [view2 bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-  [v12 setHidden:v4 == 1];
+  titlesContainer = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+  [titlesContainer setHidden:mode == 1];
 
   v13 = v11 + -1.0;
-  if (v4 == 1)
+  if (mode == 1)
   {
-    v14 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v14 setFrame:{v7, 1.0, v9, v13}];
+    collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView setFrame:{v7, 1.0, v9, v13}];
 
-    v15 = [(AVTFunCamAvatarPickerController *)self gridLayout];
-    v16 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v16 setCollectionViewLayout:v15];
+    gridLayout = [(AVTFunCamAvatarPickerController *)self gridLayout];
+    collectionView2 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView2 setCollectionViewLayout:gridLayout];
 
-    v17 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v17 setDelegate:self];
+    collectionView3 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView3 setDelegate:self];
   }
 
   else
   {
-    v18 = [(AVTFunCamAvatarPickerController *)self view];
-    [v18 safeAreaInsets];
+    view3 = [(AVTFunCamAvatarPickerController *)self view];
+    [view3 safeAreaInsets];
     v20 = v7 + v19;
     v22 = v21 + 1.0;
     v24 = v9 - (v19 + v23);
     v26 = v13 - (v21 + v25);
 
-    v27 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v27 setFrame:{v20, v22, v24, v26}];
+    collectionView4 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView4 setFrame:{v20, v22, v24, v26}];
 
-    v28 = [(AVTFunCamAvatarPickerController *)self listLayout];
-    v29 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v29 setCollectionViewLayout:v28];
+    listLayout = [(AVTFunCamAvatarPickerController *)self listLayout];
+    collectionView5 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView5 setCollectionViewLayout:listLayout];
 
-    v30 = [(AVTFunCamAvatarPickerController *)self centeringDelegate];
-    v31 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v31 setDelegate:v30];
+    centeringDelegate = [(AVTFunCamAvatarPickerController *)self centeringDelegate];
+    collectionView6 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView6 setDelegate:centeringDelegate];
 
-    v32 = [(AVTFunCamAvatarPickerController *)self style];
-    [v32 engagedCellSize];
+    style = [(AVTFunCamAvatarPickerController *)self style];
+    [style engagedCellSize];
     v34 = v26 + (v26 - v33) * -0.5 + -14.0;
 
-    v35 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-    [v35 setFrame:{0.0, v34, v24, 14.0}];
+    titlesContainer2 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+    [titlesContainer2 setFrame:{0.0, v34, v24, 14.0}];
 
-    v36 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
-    [v36 setAutoresizingMask:10];
+    titlesContainer3 = [(AVTFunCamAvatarPickerController *)self titlesContainer];
+    [titlesContainer3 setAutoresizingMask:10];
 
     [(AVTFunCamAvatarPickerController *)self updateTitlesClippingViewMask];
   }
@@ -688,40 +688,40 @@ uint64_t __46__AVTFunCamAvatarPickerController_reloadModel__block_invoke(uint64_
   [(AVTFunCamAvatarPickerController *)self reloadData];
 }
 
-- (void)selectItemForAvatarRecord:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)selectItemForAvatarRecord:(id)record animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
-  [(AVTFunCamAvatarPickerController *)self setSelectedAvatarRecord:a3];
+  delegateCopy = delegate;
+  animatedCopy = animated;
+  [(AVTFunCamAvatarPickerController *)self setSelectedAvatarRecord:record];
   if ([(AVTFunCamAvatarPickerController *)self isViewLoaded])
   {
-    v8 = [(AVTFunCamAvatarPickerController *)self selectedIndexPath];
-    [(AVTFunCamAvatarPickerController *)self selectItemAtIndexPath:v8 animated:v6 notifyDelegate:v5];
+    selectedIndexPath = [(AVTFunCamAvatarPickerController *)self selectedIndexPath];
+    [(AVTFunCamAvatarPickerController *)self selectItemAtIndexPath:selectedIndexPath animated:animatedCopy notifyDelegate:delegateCopy];
   }
 }
 
-- (void)selectItemAtCenterNotifyDelegate:(BOOL)a3
+- (void)selectItemAtCenterNotifyDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   if (![(AVTFunCamAvatarPickerController *)self isDisplayingGridLayout])
   {
-    v5 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v5 contentOffset];
+    collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView contentOffset];
     v7 = v6;
     v9 = v8;
-    v10 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    v11 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:v10 collectionView:v7, v9];
+    collectionView2 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    v11 = [AVTCenteringCollectionViewHelper indexPathForNearestItemToCenterWithOffset:collectionView2 collectionView:v7, v9];
 
     if (v11)
     {
-      v12 = [v11 item];
-      v13 = [(AVTFunCamAvatarPickerController *)self items];
-      v14 = [v13 count];
+      item = [v11 item];
+      items = [(AVTFunCamAvatarPickerController *)self items];
+      v14 = [items count];
 
-      if (v12 < v14)
+      if (item < v14)
       {
-        v15 = [(AVTFunCamAvatarPickerController *)self items];
-        v16 = [v15 objectAtIndexedSubscript:{objc_msgSend(v11, "item")}];
+        items2 = [(AVTFunCamAvatarPickerController *)self items];
+        v16 = [items2 objectAtIndexedSubscript:{objc_msgSend(v11, "item")}];
 
         v18 = 0;
         v19 = &v18;
@@ -735,7 +735,7 @@ uint64_t __46__AVTFunCamAvatarPickerController_reloadModel__block_invoke(uint64_
         v17[3] = &unk_1E7F3B5C8;
         v17[4] = &v18;
         [v16 downcastWithRecordHandler:v17 imageHandler:0 viewHandler:0];
-        [(AVTFunCamAvatarPickerController *)self selectItemForAvatarRecord:v19[5] animated:1 notifyDelegate:v3];
+        [(AVTFunCamAvatarPickerController *)self selectItemForAvatarRecord:v19[5] animated:1 notifyDelegate:delegateCopy];
         _Block_object_dispose(&v18, 8);
       }
     }
@@ -752,11 +752,11 @@ uint64_t __68__AVTFunCamAvatarPickerController_selectItemAtCenterNotifyDelegate_
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)selectItemAtIndexPath:(id)a3 animated:(BOOL)a4 notifyDelegate:(BOOL)a5
+- (void)selectItemAtIndexPath:(id)path animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
-  v31 = a3;
+  delegateCopy = delegate;
+  animatedCopy = animated;
+  pathCopy = path;
   if ([(AVTFunCamAvatarPickerController *)self isDisplayingGridLayout])
   {
     v8 = 2;
@@ -764,49 +764,49 @@ uint64_t __68__AVTFunCamAvatarPickerController_selectItemAtCenterNotifyDelegate_
 
   else
   {
-    v9 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    v10 = [v9 collectionViewLayout];
-    v11 = [v31 item];
-    v12 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v12 bounds];
+    collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+    collectionViewLayout = [collectionView collectionViewLayout];
+    item = [pathCopy item];
+    collectionView2 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView2 bounds];
     v14 = v13;
     v16 = v15;
-    v17 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v17 bounds];
-    [v10 centerForCenteringElementAtIndex:v11 visibleBoundsSize:v14 proposedOrigin:{v16, v18, v19}];
+    collectionView3 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView3 bounds];
+    [collectionViewLayout centerForCenteringElementAtIndex:item visibleBoundsSize:v14 proposedOrigin:{v16, v18, v19}];
     v21 = v20;
     v23 = v22;
 
-    v24 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:v24 collectionView:v21, v23];
+    collectionView4 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [AVTCenteringCollectionViewHelper contentOffsetForCenteringPoint:collectionView4 collectionView:v21, v23];
     v26 = v25;
     v28 = v27;
 
-    v29 = [(AVTFunCamAvatarPickerController *)self collectionView];
-    [v29 setContentOffset:v6 animated:{v26, v28}];
+    collectionView5 = [(AVTFunCamAvatarPickerController *)self collectionView];
+    [collectionView5 setContentOffset:animatedCopy animated:{v26, v28}];
 
     v8 = 0;
   }
 
-  v30 = [(AVTFunCamAvatarPickerController *)self collectionView];
-  [v30 selectItemAtIndexPath:v31 animated:v6 scrollPosition:v8];
+  collectionView6 = [(AVTFunCamAvatarPickerController *)self collectionView];
+  [collectionView6 selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:v8];
 
-  if (v5)
+  if (delegateCopy)
   {
-    [(AVTFunCamAvatarPickerController *)self sendSelectionEventToDelegateForItemAtIndexPath:v31];
+    [(AVTFunCamAvatarPickerController *)self sendSelectionEventToDelegateForItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)sendSelectionEventToDelegateForItemAtIndexPath:(id)a3
+- (void)sendSelectionEventToDelegateForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
+  pathCopy = path;
+  avatarPickerDelegate = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVTFunCamAvatarPickerController *)self items];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "item")}];
+    items = [(AVTFunCamAvatarPickerController *)self items];
+    v8 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
     v11 = 0;
     v12 = &v11;
@@ -820,8 +820,8 @@ uint64_t __68__AVTFunCamAvatarPickerController_selectItemAtCenterNotifyDelegate_
     v10[3] = &unk_1E7F3B5C8;
     v10[4] = &v11;
     [v8 downcastWithRecordHandler:v10 imageHandler:0 viewHandler:0];
-    v9 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
-    [v9 avatarPicker:self didSelectAvatarRecord:v12[5]];
+    avatarPickerDelegate2 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
+    [avatarPickerDelegate2 avatarPicker:self didSelectAvatarRecord:v12[5]];
 
     _Block_object_dispose(&v11, 8);
   }
@@ -837,16 +837,16 @@ uint64_t __82__AVTFunCamAvatarPickerController_sendSelectionEventToDelegateForIt
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
+  viewCopy = view;
+  titlesCollectionView = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
 
-  if (v5 == v4)
+  if (titlesCollectionView == viewCopy)
   {
-    v6 = [(AVTFunCamAvatarPickerController *)self isDisplayingGridLayout];
+    isDisplayingGridLayout = [(AVTFunCamAvatarPickerController *)self isDisplayingGridLayout];
 
-    if (v6)
+    if (isDisplayingGridLayout)
     {
       return 0;
     }
@@ -859,27 +859,27 @@ uint64_t __82__AVTFunCamAvatarPickerController_sendSelectionEventToDelegateForIt
   return 1;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(AVTFunCamAvatarPickerController *)self items:a3];
+  v4 = [(AVTFunCamAvatarPickerController *)self items:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTFunCamAvatarPickerController *)self items];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  items = [(AVTFunCamAvatarPickerController *)self items];
+  v9 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v10 = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
+  titlesCollectionView = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
 
-  if (v10 == v6)
+  if (titlesCollectionView == viewCopy)
   {
     v14 = +[AVTFunCamAvatarPickerTitleCell cellIdentifier];
-    v15 = [v6 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v7];
+    v15 = [viewCopy dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -894,15 +894,15 @@ uint64_t __82__AVTFunCamAvatarPickerController_sendSelectionEventToDelegateForIt
   else
   {
     v11 = +[AVTFunCamAvatarPickerCollectionViewCell cellIdentifier];
-    v12 = [v6 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v7];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
     v13 = ![(AVTFunCamAvatarPickerController *)self allowsCreation]&& [(AVTFunCamAvatarPickerController *)self isDisplayingGridLayout];
     [v12 setSelectionVisible:v13];
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    [v12 setDisplaySessionUUID:v18];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [v12 setDisplaySessionUUID:uUID];
     [v12 setShowsTitle:{-[AVTFunCamAvatarPickerController isDisplayingGridLayout](self, "isDisplayingGridLayout") ^ 1}];
-    v19 = [(AVTFunCamAvatarPickerController *)self style];
-    [v19 engagedCellSize];
+    style = [(AVTFunCamAvatarPickerController *)self style];
+    [style engagedCellSize];
     [v12 setEngagedSize:?];
 
     v25[0] = MEMORY[0x1E69E9820];
@@ -911,7 +911,7 @@ uint64_t __82__AVTFunCamAvatarPickerController_sendSelectionEventToDelegateForIt
     v25[3] = &unk_1E7F3BD40;
     v25[4] = self;
     v26 = v12;
-    v27 = v18;
+    v27 = uUID;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __73__AVTFunCamAvatarPickerController_collectionView_cellForItemAtIndexPath___block_invoke_4;
@@ -919,7 +919,7 @@ uint64_t __82__AVTFunCamAvatarPickerController_sendSelectionEventToDelegateForIt
     v23[4] = self;
     v20 = v26;
     v24 = v20;
-    v17 = v18;
+    v17 = uUID;
     [v9 downcastWithRecordHandler:v25 imageHandler:v23 viewHandler:0];
     v21 = v24;
     v16 = v20;
@@ -1078,27 +1078,27 @@ void __73__AVTFunCamAvatarPickerController_collectionView_cellForItemAtIndexPath
 
 - (id)indexPathForNoneItem
 {
-  v3 = [(AVTFunCamAvatarPickerController *)self items];
-  v4 = [(AVTFunCamAvatarPickerController *)self noneItem];
-  v5 = [v3 indexOfObject:v4];
+  items = [(AVTFunCamAvatarPickerController *)self items];
+  noneItem = [(AVTFunCamAvatarPickerController *)self noneItem];
+  v5 = [items indexOfObject:noneItem];
 
   v6 = MEMORY[0x1E696AC88];
 
   return [v6 indexPathForItem:v5 inSection:0];
 }
 
-- (int64_t)indexForRecordIdentifier:(id)a3
+- (int64_t)indexForRecordIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(AVTFunCamAvatarPickerController *)self items];
+    items = [(AVTFunCamAvatarPickerController *)self items];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__AVTFunCamAvatarPickerController_indexForRecordIdentifier___block_invoke;
     v8[3] = &unk_1E7F3B5A0;
-    v9 = v4;
-    v6 = [v5 indexOfObjectPassingTest:v8];
+    v9 = identifierCopy;
+    v6 = [items indexOfObjectPassingTest:v8];
   }
 
   else
@@ -1136,22 +1136,22 @@ void __60__AVTFunCamAvatarPickerController_indexForRecordIdentifier___block_invo
   *(*(*(a1 + 40) + 8) + 24) = [v3 isEqualToString:*(a1 + 32)];
 }
 
-- (int64_t)indexForRecord:(id)a3
+- (int64_t)indexForRecord:(id)record
 {
-  v4 = [a3 identifier];
-  v5 = [(AVTFunCamAvatarPickerController *)self indexForRecordIdentifier:v4];
+  identifier = [record identifier];
+  v5 = [(AVTFunCamAvatarPickerController *)self indexForRecordIdentifier:identifier];
 
   return v5;
 }
 
 - (CGSize)gridItemSize
 {
-  v3 = [(AVTFunCamAvatarPickerController *)self style];
-  v4 = [(AVTFunCamAvatarPickerController *)self collectionView];
-  [v4 bounds];
+  style = [(AVTFunCamAvatarPickerController *)self style];
+  collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
+  [collectionView bounds];
   v6 = v5;
-  v7 = [(AVTFunCamAvatarPickerController *)self environment];
-  [v3 edgeLengthFittingWidth:v7 environment:v6];
+  environment = [(AVTFunCamAvatarPickerController *)self environment];
+  [style edgeLengthFittingWidth:environment environment:v6];
   v9 = v8;
 
   v10 = v9;
@@ -1161,12 +1161,12 @@ void __60__AVTFunCamAvatarPickerController_indexForRecordIdentifier___block_invo
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(AVTFunCamAvatarPickerController *)self gridLayout];
+  layoutCopy = layout;
+  gridLayout = [(AVTFunCamAvatarPickerController *)self gridLayout];
 
-  if (v7 != v6)
+  if (gridLayout != layoutCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Custom layout for list mode shouldn't call this method"];
   }
@@ -1177,18 +1177,18 @@ void __60__AVTFunCamAvatarPickerController_indexForRecordIdentifier___block_invo
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v6 = a4;
-  v7 = [(AVTFunCamAvatarPickerController *)self gridLayout];
+  layoutCopy = layout;
+  gridLayout = [(AVTFunCamAvatarPickerController *)self gridLayout];
 
-  if (v7 != v6)
+  if (gridLayout != layoutCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"Custom layout for list mode shouldn't call this method"];
   }
 
-  v8 = [(AVTFunCamAvatarPickerController *)self style];
-  [v8 gridEdgeInsets];
+  style = [(AVTFunCamAvatarPickerController *)self style];
+  [style gridEdgeInsets];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1205,12 +1205,12 @@ void __60__AVTFunCamAvatarPickerController_indexForRecordIdentifier___block_invo
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTFunCamAvatarPickerController *)self items];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  viewCopy = view;
+  pathCopy = path;
+  items = [(AVTFunCamAvatarPickerController *)self items];
+  v9 = [items objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   v11 = 0;
   v12 = &v11;
@@ -1238,70 +1238,70 @@ uint64_t __75__AVTFunCamAvatarPickerController_collectionView_didSelectItemAtInd
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v11 = a3;
-  v4 = [(AVTFunCamAvatarPickerController *)self collectionView];
+  scrollCopy = scroll;
+  collectionView = [(AVTFunCamAvatarPickerController *)self collectionView];
 
-  v5 = v11;
-  if (v4 == v11)
+  v5 = scrollCopy;
+  if (collectionView == scrollCopy)
   {
-    [v11 contentOffset];
+    [scrollCopy contentOffset];
     v7 = v6;
     v9 = v8;
-    v10 = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
-    [v10 setContentOffset:{v7, v9}];
+    titlesCollectionView = [(AVTFunCamAvatarPickerController *)self titlesCollectionView];
+    [titlesCollectionView setContentOffset:{v7, v9}];
 
-    v5 = v11;
+    v5 = scrollCopy;
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(AVTFunCamAvatarPickerController *)self selectItemAtCenterNotifyDelegate:1];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isTracking") & 1) == 0)
+  deceleratingCopy = decelerating;
+  if (([deceleratingCopy isDragging] & 1) == 0 && (objc_msgSend(deceleratingCopy, "isTracking") & 1) == 0)
   {
     [(AVTFunCamAvatarPickerController *)self selectItemAtCenterNotifyDelegate:1];
   }
 }
 
-- (void)sessionProviderDidEndCameraSession:(id)a3
+- (void)sessionProviderDidEndCameraSession:(id)session
 {
-  v4 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
+  avatarPickerDelegate = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
-    [v6 avatarPickerDidEndCameraSession:self];
+    avatarPickerDelegate2 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
+    [avatarPickerDelegate2 avatarPickerDidEndCameraSession:self];
   }
 }
 
-- (void)sessionProviderWillStartCameraSession:(id)a3
+- (void)sessionProviderWillStartCameraSession:(id)session
 {
-  v4 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
+  avatarPickerDelegate = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
-    [v6 avatarPickerWillStartCameraSession:self];
+    avatarPickerDelegate2 = [(AVTFunCamAvatarPickerController *)self avatarPickerDelegate];
+    [avatarPickerDelegate2 avatarPickerWillStartCameraSession:self];
   }
 }
 
-- (void)selectAvatarRecordWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)selectAvatarRecordWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v11 = a4;
+  animatedCopy = animated;
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1312,8 +1312,8 @@ uint64_t __75__AVTFunCamAvatarPickerController_collectionView_didSelectItemAtInd
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(AVTFunCamAvatarPickerController *)self items];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  items = [(AVTFunCamAvatarPickerController *)self items];
+  v7 = [items countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -1323,7 +1323,7 @@ LABEL_3:
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(items);
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
@@ -1331,7 +1331,7 @@ LABEL_3:
       v12[1] = 3221225472;
       v12[2] = __77__AVTFunCamAvatarPickerController_selectAvatarRecordWithIdentifier_animated___block_invoke;
       v12[3] = &unk_1E7F3BD90;
-      v13 = v5;
+      v13 = identifierCopy;
       v14 = &v19;
       [v10 downcastWithRecordHandler:v12 imageHandler:0 viewHandler:0];
       LOBYTE(v10) = v20[5] == 0;
@@ -1343,7 +1343,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v25 count:16];
+        v7 = [items countByEnumeratingWithState:&v15 objects:v25 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1354,7 +1354,7 @@ LABEL_3:
     }
   }
 
-  [(AVTFunCamAvatarPickerController *)self selectItemForAvatarRecord:v20[5] animated:v11 notifyDelegate:0];
+  [(AVTFunCamAvatarPickerController *)self selectItemForAvatarRecord:v20[5] animated:animatedCopy notifyDelegate:0];
   _Block_object_dispose(&v19, 8);
 }
 

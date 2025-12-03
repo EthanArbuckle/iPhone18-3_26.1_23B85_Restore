@@ -9,9 +9,9 @@
 {
   v14 = a9;
   v15 = a3;
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v59 = 0;
-  v17 = [v16 URLForDirectory:99 inDomain:1 appropriateForURL:v15 create:1 error:&v59];
+  v17 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:v15 create:1 error:&v59];
   v18 = v59;
 
   if (!v17)
@@ -27,15 +27,15 @@
   }
 
   v58 = v15;
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v20 = [v19 UUIDString];
-  v21 = [v17 URLByAppendingPathComponent:v20 isDirectory:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v21 = [v17 URLByAppendingPathComponent:uUIDString isDirectory:0];
 
-  v22 = [v21 fileSystemRepresentation];
-  v23 = v22;
+  fileSystemRepresentation = [v21 fileSystemRepresentation];
+  v23 = fileSystemRepresentation;
   if (a7 == -1)
   {
-    v24 = open(v22, 2818, a4);
+    v24 = open(fileSystemRepresentation, 2818, a4);
     if (v24 < 0)
     {
       v38 = *__error();
@@ -51,7 +51,7 @@
 
   else
   {
-    v24 = open_dprotected_np(v22, 2818, a7, 0, a4);
+    v24 = open_dprotected_np(fileSystemRepresentation, 2818, a7, 0, a4);
     if (v24 < 0)
     {
       v25 = *__error();
@@ -98,9 +98,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v42 = [a1 bytes];
-  v43 = [a1 length];
-  v44 = write(v24, v42, v43);
+  bytes = [self bytes];
+  v43 = [self length];
+  v44 = write(v24, bytes, v43);
   if (v44 < 0)
   {
     v47 = *__error();
@@ -158,8 +158,8 @@ LABEL_14:
   MOLogWrite();
 LABEL_39:
   close(v24);
-  v49 = [v58 fileSystemRepresentation];
-  rename(v23, v49, v50);
+  fileSystemRepresentation2 = [v58 fileSystemRepresentation];
+  rename(v23, fileSystemRepresentation2, v50);
   if (!v51)
   {
     v33 = 1;
@@ -209,16 +209,16 @@ LABEL_25:
 - (uint64_t)MI_writeAtomicallyToURLMatchingCurrentFileMetadata:()MobileInstallationAdditions error:
 {
   v6 = a3;
-  v7 = [v6 fileSystemRepresentation];
+  fileSystemRepresentation = [v6 fileSystemRepresentation];
   memset(&v29, 0, sizeof(v29));
-  v8 = open(v7, 256);
+  v8 = open(fileSystemRepresentation, 256);
   if (v8 < 0)
   {
     v15 = *__error();
     v16 = *MEMORY[0x1E696A798];
     v17 = v15;
     strerror(v15);
-    v14 = _CreateError("[NSData(MobileInstallationAdditions) MI_writeAtomicallyToURLMatchingCurrentFileMetadata:error:]", 166, v16, v17, 0, 0, @"open failed for %s : %s", v18, v7);
+    v14 = _CreateError("[NSData(MobileInstallationAdditions) MI_writeAtomicallyToURLMatchingCurrentFileMetadata:error:]", 166, v16, v17, 0, 0, @"open failed for %s : %s", v18, fileSystemRepresentation);
 LABEL_6:
     v19 = 0;
     if (!a4)
@@ -236,7 +236,7 @@ LABEL_6:
     v11 = *MEMORY[0x1E696A798];
     v12 = v10;
     strerror(v10);
-    _CreateError("[NSData(MobileInstallationAdditions) MI_writeAtomicallyToURLMatchingCurrentFileMetadata:error:]", 172, v11, v12, 0, 0, @"fstat failed for %s : %s", v13, v7);
+    _CreateError("[NSData(MobileInstallationAdditions) MI_writeAtomicallyToURLMatchingCurrentFileMetadata:error:]", 172, v11, v12, 0, 0, @"fstat failed for %s : %s", v13, fileSystemRepresentation);
     v14 = LABEL_4:;
     close(v9);
     goto LABEL_6;
@@ -249,14 +249,14 @@ LABEL_6:
     v25 = *MEMORY[0x1E696A798];
     v26 = *__error();
     strerror(v24);
-    _CreateError("[NSData(MobileInstallationAdditions) MI_writeAtomicallyToURLMatchingCurrentFileMetadata:error:]", 180, v25, v26, 0, 0, @"Failed to getclass of file %s: %s", v27, v7);
+    _CreateError("[NSData(MobileInstallationAdditions) MI_writeAtomicallyToURLMatchingCurrentFileMetadata:error:]", 180, v25, v26, 0, 0, @"Failed to getclass of file %s: %s", v27, fileSystemRepresentation);
     goto LABEL_4;
   }
 
   v23 = v22;
   close(v9);
   v28 = 0;
-  v19 = [a1 MI_writeAtomicallyToURL:v6 withMode:v29.st_mode owner:v29.st_uid group:v29.st_gid protectionClass:v23 error:&v28];
+  v19 = [self MI_writeAtomicallyToURL:v6 withMode:v29.st_mode owner:v29.st_uid group:v29.st_gid protectionClass:v23 error:&v28];
   v14 = v28;
   if (!a4)
   {

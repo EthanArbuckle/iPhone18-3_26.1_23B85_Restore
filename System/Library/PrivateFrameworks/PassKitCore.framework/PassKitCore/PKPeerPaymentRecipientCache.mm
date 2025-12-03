@@ -4,21 +4,21 @@
 - (BOOL)_canReadMap;
 - (BOOL)_canWriteMap;
 - (BOOL)_writeMapToDisk;
-- (BOOL)lowFrequencyDeviceScoreSubmissionRequiredForRecipientAddress:(id)a3;
+- (BOOL)lowFrequencyDeviceScoreSubmissionRequiredForRecipientAddress:(id)address;
 - (BOOL)purgeCache;
 - (PKPeerPaymentRecipientCache)init;
 - (id)__init;
-- (id)_keyForRecipientAddress:(id)a3;
-- (id)recipientForRecipientAddress:(id)a3;
-- (void)_handleDiskMapChangedNotification:(id)a3;
-- (void)_handlePurgedNotification:(id)a3;
+- (id)_keyForRecipientAddress:(id)address;
+- (id)recipientForRecipientAddress:(id)address;
+- (void)_handleDiskMapChangedNotification:(id)notification;
+- (void)_handlePurgedNotification:(id)notification;
 - (void)_locked_setMapNeedsWrite;
 - (void)_updateMapsFromDisk;
-- (void)cacheRecipient:(id)a3;
-- (void)cacheRecipients:(id)a3;
+- (void)cacheRecipient:(id)recipient;
+- (void)cacheRecipients:(id)recipients;
 - (void)dealloc;
-- (void)noteSubmittedLowFrequencyDeviceScoreForRecipientAddress:(id)a3;
-- (void)purgeRecipientWithRecipientAddress:(id)a3;
+- (void)noteSubmittedLowFrequencyDeviceScoreForRecipientAddress:(id)address;
+- (void)purgeRecipientWithRecipientAddress:(id)address;
 @end
 
 @implementation PKPeerPaymentRecipientCache
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_279 != -1)
   {
     dispatch_once(&_MergedGlobals_279, block);
@@ -49,9 +49,9 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
 
 - (PKPeerPaymentRecipientCache)init
 {
-  v3 = [objc_opt_class() sharedCache];
+  sharedCache = [objc_opt_class() sharedCache];
 
-  return v3;
+  return sharedCache;
 }
 
 - (id)__init
@@ -67,11 +67,11 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
 
     v2->_mapAccessLock._os_unfair_lock_opaque = 0;
     [(PKPeerPaymentRecipientCache *)v2 _updateMapsFromDisk];
-    v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handlePurgedNotification_ name:@"PKDistributedNotificationPeerPaymentRecipientCachePurged" object:0 suspensionBehavior:2];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handlePurgedNotification_ name:@"PKDistributedNotificationPeerPaymentRecipientCachePurged" object:0 suspensionBehavior:2];
 
-    v6 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleDiskMapChangedNotification_ name:@"PKDistributedNotificationPeerPaymentRecipientCacheWrittenToDisk" object:0 suspensionBehavior:2];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleDiskMapChangedNotification_ name:@"PKDistributedNotificationPeerPaymentRecipientCacheWrittenToDisk" object:0 suspensionBehavior:2];
   }
 
   return v2;
@@ -79,35 +79,35 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPeerPaymentRecipientCache;
   [(PKPeerPaymentRecipientCache *)&v4 dealloc];
 }
 
-- (id)recipientForRecipientAddress:(id)a3
+- (id)recipientForRecipientAddress:(id)address
 {
-  v4 = PKIDSNormalizedAddress(a3);
+  v4 = PKIDSNormalizedAddress(address);
   if (v4)
   {
     os_unfair_lock_lock(&self->_mapAccessLock);
     v5 = [(PKPeerPaymentRecipientCache *)self _keyForRecipientAddress:v4];
-    v6 = [(PKMapContainer *)self->_mapContainer recipientMap];
-    v7 = [v6 objectForKey:v5];
+    recipientMap = [(PKMapContainer *)self->_mapContainer recipientMap];
+    v7 = [recipientMap objectForKey:v5];
 
     if ([v7 hasExpired])
     {
-      v8 = [(PKMapContainer *)self->_mapContainer recipientMap];
-      [v8 removeObjectForKey:v5];
+      recipientMap2 = [(PKMapContainer *)self->_mapContainer recipientMap];
+      [recipientMap2 removeObjectForKey:v5];
       v9 = 0;
     }
 
     else
     {
-      v8 = [v7 item];
-      v9 = [v8 copy];
+      recipientMap2 = [v7 item];
+      v9 = [recipientMap2 copy];
     }
 
     os_unfair_lock_unlock(&self->_mapAccessLock);
@@ -121,33 +121,33 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)cacheRecipient:(id)a3
+- (void)cacheRecipient:(id)recipient
 {
-  v9 = a3;
-  v4 = [v9 idsQualifiedNormalizedAddress];
-  if (v9 && v4)
+  recipientCopy = recipient;
+  idsQualifiedNormalizedAddress = [recipientCopy idsQualifiedNormalizedAddress];
+  if (recipientCopy && idsQualifiedNormalizedAddress)
   {
     os_unfair_lock_lock(&self->_mapAccessLock);
-    v5 = [(PKPeerPaymentRecipientCache *)self _keyForRecipientAddress:v4];
-    v6 = [v9 cacheableCopy];
-    v7 = [(PKMapContainer *)self->_mapContainer recipientMap];
-    v8 = [[PKCacheRecipientItem alloc] initWithItem:v6];
-    [v7 setObject:v8 forKey:v5];
+    v5 = [(PKPeerPaymentRecipientCache *)self _keyForRecipientAddress:idsQualifiedNormalizedAddress];
+    cacheableCopy = [recipientCopy cacheableCopy];
+    recipientMap = [(PKMapContainer *)self->_mapContainer recipientMap];
+    v8 = [[PKCacheRecipientItem alloc] initWithItem:cacheableCopy];
+    [recipientMap setObject:v8 forKey:v5];
 
     [(PKPeerPaymentRecipientCache *)self _locked_setMapNeedsWrite];
     os_unfair_lock_unlock(&self->_mapAccessLock);
   }
 }
 
-- (void)cacheRecipients:(id)a3
+- (void)cacheRecipients:(id)recipients
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recipientsCopy = recipients;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [recipientsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -159,30 +159,30 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recipientsCopy);
         }
 
         [(PKPeerPaymentRecipientCache *)self cacheRecipient:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [recipientsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)purgeRecipientWithRecipientAddress:(id)a3
+- (void)purgeRecipientWithRecipientAddress:(id)address
 {
-  v4 = PKIDSNormalizedAddress(a3);
+  v4 = PKIDSNormalizedAddress(address);
   if (v4)
   {
     v7 = v4;
     os_unfair_lock_lock(&self->_mapAccessLock);
     v5 = [(PKPeerPaymentRecipientCache *)self _keyForRecipientAddress:v7];
-    v6 = [(PKMapContainer *)self->_mapContainer recipientMap];
-    [v6 removeObjectForKey:v5];
+    recipientMap = [(PKMapContainer *)self->_mapContainer recipientMap];
+    [recipientMap removeObjectForKey:v5];
 
     [(PKPeerPaymentRecipientCache *)self _locked_setMapNeedsWrite];
     os_unfair_lock_unlock(&self->_mapAccessLock);
@@ -196,22 +196,22 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
   os_unfair_lock_lock(&self->_mapAccessLock);
   [(PKMapContainer *)self->_mapContainer removeAllObjects];
   os_unfair_lock_unlock(&self->_mapAccessLock);
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  v4 = [objc_opt_class() _instanceName];
-  [v3 postNotificationName:@"PKDistributedNotificationPeerPaymentRecipientCachePurged" object:v4];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  _instanceName = [objc_opt_class() _instanceName];
+  [defaultCenter postNotificationName:@"PKDistributedNotificationPeerPaymentRecipientCachePurged" object:_instanceName];
 
   return [(PKPeerPaymentRecipientCache *)self _writeMapToDisk];
 }
 
-- (BOOL)lowFrequencyDeviceScoreSubmissionRequiredForRecipientAddress:(id)a3
+- (BOOL)lowFrequencyDeviceScoreSubmissionRequiredForRecipientAddress:(id)address
 {
-  v4 = PKIDSNormalizedAddress(a3);
+  v4 = PKIDSNormalizedAddress(address);
   if (v4)
   {
     os_unfair_lock_lock(&self->_mapAccessLock);
     v5 = [(PKPeerPaymentRecipientCache *)self _keyForRecipientAddress:v4];
-    v6 = [(PKMapContainer *)self->_mapContainer scoreMap];
-    v7 = [v6 objectForKey:v5];
+    scoreMap = [(PKMapContainer *)self->_mapContainer scoreMap];
+    v7 = [scoreMap objectForKey:v5];
 
     if (v7 && ![v7 hasExpired])
     {
@@ -220,8 +220,8 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
 
     else
     {
-      v8 = [(PKMapContainer *)self->_mapContainer scoreMap];
-      [v8 removeObjectForKey:v5];
+      scoreMap2 = [(PKMapContainer *)self->_mapContainer scoreMap];
+      [scoreMap2 removeObjectForKey:v5];
 
       [(PKPeerPaymentRecipientCache *)self _locked_setMapNeedsWrite];
       v9 = 1;
@@ -238,22 +238,22 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)noteSubmittedLowFrequencyDeviceScoreForRecipientAddress:(id)a3
+- (void)noteSubmittedLowFrequencyDeviceScoreForRecipientAddress:(id)address
 {
-  v4 = PKIDSNormalizedAddress(a3);
+  v4 = PKIDSNormalizedAddress(address);
   if (v4)
   {
     v10 = v4;
     os_unfair_lock_lock(&self->_mapAccessLock);
     v5 = [(PKPeerPaymentRecipientCache *)self _keyForRecipientAddress:v10];
-    v6 = [(PKMapContainer *)self->_mapContainer scoreMap];
-    v7 = [v6 objectForKey:v5];
+    scoreMap = [(PKMapContainer *)self->_mapContainer scoreMap];
+    v7 = [scoreMap objectForKey:v5];
 
     if (!v7)
     {
-      v8 = [(PKMapContainer *)self->_mapContainer scoreMap];
+      scoreMap2 = [(PKMapContainer *)self->_mapContainer scoreMap];
       v9 = objc_alloc_init(PKCacheScoreItem);
-      [v8 setObject:v9 forKey:v5];
+      [scoreMap2 setObject:v9 forKey:v5];
 
       [(PKPeerPaymentRecipientCache *)self _locked_setMapNeedsWrite];
     }
@@ -264,22 +264,22 @@ void __42__PKPeerPaymentRecipientCache_sharedCache__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_keyForRecipientAddress:(id)a3
+- (id)_keyForRecipientAddress:(id)address
 {
-  if (a3)
+  if (address)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PKPeerPaymentRecipientCache:%@", a3];
-    v4 = [v3 dataUsingEncoding:4];
-    v5 = [v4 SHA256Hash];
-    v6 = [v5 hexEncoding];
+    address = [MEMORY[0x1E696AEC0] stringWithFormat:@"PKPeerPaymentRecipientCache:%@", address];
+    v4 = [address dataUsingEncoding:4];
+    sHA256Hash = [v4 SHA256Hash];
+    hexEncoding = [sHA256Hash hexEncoding];
   }
 
   else
   {
-    v6 = 0;
+    hexEncoding = 0;
   }
 
-  return v6;
+  return hexEncoding;
 }
 
 - (BOOL)_canReadMap
@@ -336,11 +336,11 @@ void __43__PKPeerPaymentRecipientCache__canWriteMap__block_invoke(uint64_t a1, u
   _canWriteMap___writeAccess = access([v5 UTF8String], 2) == 0;
 }
 
-- (void)_handlePurgedNotification:(id)a3
+- (void)_handlePurgedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [objc_opt_class() _instanceName];
-  v6 = [v4 isEqualToString:v5];
+  object = [notification object];
+  _instanceName = [objc_opt_class() _instanceName];
+  v6 = [object isEqualToString:_instanceName];
 
   if ((v6 & 1) == 0)
   {
@@ -351,11 +351,11 @@ void __43__PKPeerPaymentRecipientCache__canWriteMap__block_invoke(uint64_t a1, u
   }
 }
 
-- (void)_handleDiskMapChangedNotification:(id)a3
+- (void)_handleDiskMapChangedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [objc_opt_class() _instanceName];
-  v6 = [v4 isEqualToString:v5];
+  object = [notification object];
+  _instanceName = [objc_opt_class() _instanceName];
+  v6 = [object isEqualToString:_instanceName];
 
   if ((v6 & 1) == 0)
   {
@@ -465,23 +465,23 @@ void __50__PKPeerPaymentRecipientCache__updateMapsFromDisk__block_invoke(uint64_
     mapNeedsWriteTimer = self->_mapNeedsWriteTimer;
     self->_mapNeedsWriteTimer = v5;
 
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v7 addTimer:self->_mapNeedsWriteTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_mapNeedsWriteTimer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
 - (BOOL)_writeMapToDisk
 {
-  v2 = self;
+  selfCopy = self;
   v11[1] = *MEMORY[0x1E69E9840];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
   os_unfair_lock_lock(&self->_mapAccessLock);
-  [(NSTimer *)v2->_mapNeedsWriteTimer invalidate];
-  mapNeedsWriteTimer = v2->_mapNeedsWriteTimer;
-  v2->_mapNeedsWriteTimer = 0;
+  [(NSTimer *)selfCopy->_mapNeedsWriteTimer invalidate];
+  mapNeedsWriteTimer = selfCopy->_mapNeedsWriteTimer;
+  selfCopy->_mapNeedsWriteTimer = 0;
 
   v11[0] = @"RecipientCache";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -489,14 +489,14 @@ void __50__PKPeerPaymentRecipientCache__updateMapsFromDisk__block_invoke(uint64_
   v6[1] = 3221225472;
   v6[2] = __46__PKPeerPaymentRecipientCache__writeMapToDisk__block_invoke;
   v6[3] = &unk_1E79C87C0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   PKSharedCacheCreateFileURLForWriting(v4, @"cache.data", v6);
 
-  os_unfair_lock_unlock(&v2->_mapAccessLock);
-  LOBYTE(v2) = *(v8 + 24);
+  os_unfair_lock_unlock(&selfCopy->_mapAccessLock);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __46__PKPeerPaymentRecipientCache__writeMapToDisk__block_invoke(uint64_t a1, void *a2)
@@ -560,7 +560,7 @@ void __46__PKPeerPaymentRecipientCache__writeMapToDisk__block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __44__PKPeerPaymentRecipientCache__instanceName__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6D2260 != -1)
   {
     dispatch_once(&qword_1ED6D2260, block);

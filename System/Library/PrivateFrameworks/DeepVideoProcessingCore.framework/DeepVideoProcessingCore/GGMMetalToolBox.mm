@@ -1,87 +1,87 @@
 @interface GGMMetalToolBox
-- ($D341E8FA52B8DFDE89B90A050A6B59DC)generateMetaContainerArrayBufFromMetaContainerBuf:(id)a3 imageRect:(CGRect)a4;
-- (GGMMetalToolBox)initWithMetalContext:(id)a3 commandQueue:(id)a4;
-- (GGMMetalToolBox)initWithMetalContext:(id)a3 commandQueue:(id)a4 tuningParamDict:(id)a5;
-- (id)clusterIndicesOfRois:(id *)a3 withExtendedRadius:(float)a4 roiCnt:(signed __int16)a5 imageRect:(CGRect)a6;
-- (id)createForwarpOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5;
+- ($D341E8FA52B8DFDE89B90A050A6B59DC)generateMetaContainerArrayBufFromMetaContainerBuf:(id)buf imageRect:(CGRect)rect;
+- (GGMMetalToolBox)initWithMetalContext:(id)context commandQueue:(id)queue;
+- (GGMMetalToolBox)initWithMetalContext:(id)context commandQueue:(id)queue tuningParamDict:(id)dict;
+- (id)clusterIndicesOfRois:(id *)rois withExtendedRadius:(float)radius roiCnt:(signed __int16)cnt imageRect:(CGRect)rect;
+- (id)createForwarpOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels;
 - (int)_compileShaders;
-- (int64_t)encodeAddMvf0ToMvf1ToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 mvf1:(id)a6 outMvf:(id)a7 meta:(id)a8;
-- (int64_t)encodeAlignBgAvgYUVToCommandEncoder:(id)a3 input:(id)a4 ref0:(id)a5 ref1:(id)a6 alignedRef0:(id)a7 alignedRef1:(id)a8 metaBuf:(id)a9;
-- (int64_t)encodeBMSearch1RefToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)a2 ref:(id)a3 reflect:(id)a4 normalizedTargetCenter:(id)a5 normalizedRefCenter:(BOOL)a6 bestMatchLoc:(id)a7 meta:(id)a8;
-- (int64_t)encodeBMSearch4RepairToCommandEncoder:(id)a3 hrTarget:(id)a4 target:(id)a5 ref0:(id)a6 ref1:(id)a7 forwarpHoleMap0:(id)a8 forwarpHoleMap1:(id)a9 probMap:(id)a10 mvf0:(id)a11 mvf1:(id)a12 meta:(id)a13;
-- (int64_t)encodeBMTransfer4RepairYUVToCommandEncoder:(id)a3 ref0:(id)a4 ref1:(id)a5 forwarpHoleMap0:(id)a6 forwarpHoleMap1:(id)a7 probMap:(id)a8 warpedRef0:(id)a9 warpedRef1:(id)a10 bmMvf0:(id)a11 bmMvf1:(id)a12 backwarpFlow0:(id)a13 backwarpFlow1:(id)a14 meta:(id)a15;
-- (int64_t)encodeBMTransferGrayToCommandEncoder:(id)a3 ref:(id)a4 warpedRef:(id)a5 bestMatchLoc:(id)a6 meta:(id)a7 sf:(int)a8;
-- (int64_t)encodeBMTransferYUVToCommandEncoder:(id)a3 ref:(id)a4 reflect:(BOOL)a5 normalizedCenter:(id)a6 warpedRef:(id)a7 bestMatchLoc:(id)a8 meta:(int)a9 sf:;
-- (int64_t)encodeBilinearRescale2ImgsYUV:(id)a3 fullResInput:(id)a4 input0:(id)a5 output0:(id)a6 input1:(id)a7 output1:(id)a8 meta:(id)a9;
-- (int64_t)encodeBilinearRescaleYUV:(id)a3 fullResInput:(id)a4 input:(id)a5 meta:(id)a6 blurBeforeSample:(BOOL)a7 output:(id)a8;
-- (int64_t)encodeBlendRefsYUVToCommandEncoder:(id)a3 hmgrphyRef0:(id)a4 hmgrphyRef1:(id)a5 bmRef0:(id)a6 bmRef1:(id)a7 output0:(id)a8 output1:(id)a9 metaBuf:(id)a10;
-- (int64_t)encodeBlendSpatialMitigatedYUVToCommandEncoder:(id)a3 inputTexture:(id)a4 probMapTexture:(id)a5 probMap4TradSpatialTexture:(id)a6 tradSpatialMitTexture:(id)a7 dlSpatialMitTexture:(id)a8 outputTexture:(id)a9 metaBuf:(id)a10;
-- (int64_t)encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:(id)a3 fullResInput:(id)a4 ref0:(id)a5 warpedRef0:(id)a6 ref1:(id)a7 warpedRef1:(id)a8 meta:(id)a9;
-- (int64_t)encodeCollectClusterBgAvgToCommandEncoder:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectClusterMaxAndAvgLuma:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectClusterMaxProb:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectClusterMv:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectClusterMvForMotionCueToCommandEncoder:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectClusterOverlapWithRefs:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectClusterTempRepairErr:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeCollectMetaContainers:(id)a3 metaBuf:(id)a4 lsCheckOutmetaBuf:(id)a5 redoTrackingOutmetaBuf:(id)a6 currTrackId:(int)a7;
-- (int64_t)encodeCollectMvToFuture:(id)a3 metaBuf:(id)a4;
-- (int64_t)encodeCombineMapWithRefMapToEncoder:(id)a3 map:(id)a4 ref:(id)a5 dilatedRef:(id)a6 lsMap:(id)a7 dilatedLsMap:(id)a8 refLsMap:(id)a9 motion:(id)a10 saliency:(id)a11 targetFrameYUV:(id)a12 blobSaliency:(id)a13 spaRef:(id)a14 mvf:(id)a15 output:(id)a16 spaOutput:(id)a17 meta:(id)a18 wRef:(float)a19;
-- (int64_t)encodeConditionalDilateProbMapYUV:(id)a3 inputYUV:(id)a4 probMap:(id)a5 dilatedProbMap:(id)a6 hardDilationRadius:(float)a7 softDilationRadius:(float)a8 meta:(id)a9;
-- (int64_t)encodeConvertFloatBuffer2TextureToCommandEncoder:(id)a3 inputBuffer0:(id)a4 inputBuffer1:(id)a5 meta:(id)a6 output0:(id)a7 outputMap0:(id)a8 output1:(id)a9 outputMap1:(id)a10;
-- (int64_t)encodeCopyCurrMetaForProcFuture:(id)a3 metaBuf:(id)a4 outMetaBuf:(id)a5;
-- (int64_t)encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:(id)a3 input:(id)a4 output:(id)a5;
-- (int64_t)encodeCopyMapToMap4RoiGenToCommandEncoder:(id)a3 input:(id)a4 output:(id)a5 metaBuf:(id)a6;
-- (int64_t)encodeCopyMvfToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 outMvf0:(id)a6 mvf1:(id)a7 outMvf1:(id)a8 meta:(id)a9;
-- (int64_t)encodeDilateForwarpHoleMap:(id)a3 fullResTarget:(id)a4 inputMap0:(id)a5 outputMap0:(id)a6 inputMap1:(id)a7 outputMap1:(id)a8 hardDilationRadius:(float)a9 softDilationRadius:(float)a10 meta:(id)a11;
-- (int64_t)encodeDilateGrayImg:(id)a3 input:(id)a4 output:(id)a5 hardDilationOutput:(id)a6 hardDilationRadius:(float)a7 softDilationRadius:(float)a8 meta:(id)a9;
-- (int64_t)encodeDilateProbMap:(id)a3 input:(id)a4 output:(id)a5 hardDilationRadius:(float)a6 softDilationRadius:(float)a7 meta:(id)a8;
-- (int64_t)encodeDilateReflLsMap:(id)a3 inputYUV:(id)a4 lsMap:(id)a5 dilatedLsMap:(id)a6 hardDilationRadius:(float)a7 softDilationRadius:(float)a8 meta:(id)a9;
-- (int64_t)encodeForwarpYUVToCommandEncoder:(id)a3 input0:(id)a4 input1:(id)a5 meta:(id)a6 mvf0:(id)a7 mvf1:(id)a8 intermediateOutput0:(id)a9 intermediateOutput1:(id)a10 output0:(id)a11 output1:(id)a12 outputMap0:(id)a13 outputMap1:(id)a14;
-- (int64_t)encodeFuse4DetectionYUVToCommandEncoder:(id)a3 inputTexture:(id)a4 probMapTexture:(id)a5 temporalMitTexture:(id)a6 spatialMitTexture:(id)a7 forceToSpatial:(BOOL)a8 outputTexture:(id)a9 metaBuf:(id)a10;
-- (int64_t)encodeGetBgAvgYUVToCommandEncoder:(id)a3 target:(id)a4 ref0:(id)a5 ref1:(id)a6 probMap:(id)a7 meta:(id)a8;
-- (int64_t)encodeGetBlobSaliency:(id)a3 inputYUV:(id)a4 blobSaliencyMap:(id)a5 meta:(id)a6;
-- (int64_t)encodeGetGhostProbMapToCommandEncoder:(id)a3 target:(id)a4 reflLsMap:(id)a5 motionMap:(id)a6 saliencyMap:(id)a7 isInitFrame:(BOOL)a8 probMap:(id)a9 meta:(id)a10;
-- (int64_t)encodeGetLsMapYUVToCommandEncoder:(id)a3 input:(id)a4 map:(id)a5;
-- (int64_t)encodeGetMotionMapYUVToCommandEncoder:(id)a3 ref:(id)a4 target:(id)a5 motionMap:(id)a6 meta:(id)a7;
-- (int64_t)encodeGetMvForMotionCueFromMvf:(GGMMetalToolBox *)self fullResInput:(SEL)a2 meta:(id)a3 mvf:(id)a4 opticalCenter:(id)a5 refOpticalCenter:(id)a6;
-- (int64_t)encodeGetMvFromLsToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)a2 lsMap:(id)a3 refLsMap:(id)a4 targetCenter:(id)a5 refCenter:(id)a6 meta:(id)a7;
-- (int64_t)encodeGetMvToFutureFromMvf:(id)a3 fullResInput:(id)a4 meta:(id)a5 mvf:(id)a6;
-- (int64_t)encodeGetOverlapWithRefs:(id)a3 input:(id)a4 probMap:(id)a5 metaBuf:(id)a6;
-- (int64_t)encodeGetRoiMaxAndAvgLumaYUV:(id)a3 target:(id)a4 lsMap:(id)a5 meta:(id)a6;
-- (int64_t)encodeGetRoiRepairMvFromMvfToCommandEncoder:(id)a3 fullResInput:(id)a4 probMap:(id)a5 mvf0:(id)a6 mvf1:(id)a7 meta:(id)a8;
-- (int64_t)encodeGetSaliencyMapToCommandEncoder:(id)a3 target:(id)a4 saliencyMap:(id)a5 meta:(id)a6;
-- (int64_t)encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:(id)a3 target:(id)a4 hmgrphyRef0:(id)a5 hmgrphyRef1:(id)a6 bmRef0:(id)a7 bmRef1:(id)a8 probMap:(id)a9 errRescaleProbMap:(id)a10 prevProbMap:(id)a11 flow0:(id)a12 flow1:(id)a13 meta:(id)a14;
-- (int64_t)encodePreprocessInputs4MotionCueYUVToCommandEncoder:(id)a3 input:(id)a4 ref:(id)a5 output:(id)a6 refOutput:(id)a7 metaBuf:(id)a8 processedFrameCount:(int)a9;
-- (int64_t)encodeRefineFutureHwLsMapWithTrackingToEncoder:(id)a3 reflHwMap:(id)a4 target:(id)a5 opticalCenter:(id)a6 warpedRefReflHwMap:(id)a7 warpedReflRef:(id)a8 metaBuf:;
-- (int64_t)encodeReflectYUVImg2:(GGMMetalToolBox *)self fullResInput:(SEL)a2 meta:(id)a3 input0:(id)a4 output0:(id)a5 center0:(id)a6 input1:(id)a7 output1:(id)a8 center1:(id)a9;
-- (int64_t)encodeResetOutputToCommandEncoder:(id)a3 input:(id)a4 meta:(id)a5 output0:(id)a6 output1:(id)a7;
-- (int64_t)encodeSpatialRepairYUVToCommandEncoder:(id)a3 input:(id)a4 probMap4Spatial:(id)a5 spatialOutput:(id)a6 metaBuf:(id)a7;
-- (int64_t)encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:(id)a3 input:(id)a4 frRef0:(id)a5 frRef1:(id)a6 temporalOutput:(id)a7 inputCopy:(id)a8 metaBuf:(id)a9;
-- (int64_t)encodeSyncWeightsOriginal:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5;
-- (int64_t)encodeUpdateOutputFloatToCommandEncoder:(id)a3 input0:(id)a4 flow0:(id)a5 input1:(id)a6 flow1:(id)a7 meta:(id)a8 output0:(id)a9 output1:(id)a10;
-- (int64_t)encodeUpscaleProbMap:(id)a3 probMap:(id)a4 refinedProbMap:(id)a5 inputFrame:(id)a6 upscaledProbMap:(id)a7 upscaledRefinedProbMap:(id)a8 meta:(id)a9;
-- (int64_t)encodeUpscaleThenReflectLsMap:(id)a3 input:(id)a4 normalizedCenter:(id)a5 output:;
-- (int64_t)encodeVisualizeMvfToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf:(id)a5 outMvf:(id)a6 meta:(id)a7;
-- (int64_t)encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 mvf1:(id)a6 mvf2:(id)a7 outMvf:(id)a8 meta:(id)a9;
-- (int64_t)encodeWarpMvf0WithMvf1ToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 mvf1:(id)a6 outMvf:(id)a7 meta:(id)a8;
-- (int64_t)encodeWarpRefMeta:(id)a3 refMetaBuf:(id)a4 metaBuf:(id)a5 outMetaBuf:(id)a6 lsCheckOutmetaBuf:(id)a7 redoTrackingOutmetaBuf:(id)a8 capRefMetaCnt:(BOOL)a9;
-- (int64_t)encodeWarpRefMetaLite:(id)a3 refMetaBuf:(id)a4 outMetaBuf:(id)a5;
-- (int64_t)resizeImageCmdBuf:(id)a3 inputTexture:(id)a4 withFactorX:(float)a5 withFactorY:(float)a6 outputTexture:(id)a7;
+- (int64_t)encodeAddMvf0ToMvf1ToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 mvf1:(id)mvf1 outMvf:(id)mvf meta:(id)meta;
+- (int64_t)encodeAlignBgAvgYUVToCommandEncoder:(id)encoder input:(id)input ref0:(id)ref0 ref1:(id)ref1 alignedRef0:(id)alignedRef0 alignedRef1:(id)alignedRef1 metaBuf:(id)buf;
+- (int64_t)encodeBMSearch1RefToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)target ref:(id)ref reflect:(id)reflect normalizedTargetCenter:(id)center normalizedRefCenter:(BOOL)refCenter bestMatchLoc:(id)loc meta:(id)meta;
+- (int64_t)encodeBMSearch4RepairToCommandEncoder:(id)encoder hrTarget:(id)target target:(id)a5 ref0:(id)ref0 ref1:(id)ref1 forwarpHoleMap0:(id)map0 forwarpHoleMap1:(id)map1 probMap:(id)self0 mvf0:(id)self1 mvf1:(id)self2 meta:(id)self3;
+- (int64_t)encodeBMTransfer4RepairYUVToCommandEncoder:(id)encoder ref0:(id)ref0 ref1:(id)ref1 forwarpHoleMap0:(id)map0 forwarpHoleMap1:(id)map1 probMap:(id)map warpedRef0:(id)warpedRef0 warpedRef1:(id)self0 bmMvf0:(id)self1 bmMvf1:(id)self2 backwarpFlow0:(id)self3 backwarpFlow1:(id)self4 meta:(id)self5;
+- (int64_t)encodeBMTransferGrayToCommandEncoder:(id)encoder ref:(id)ref warpedRef:(id)warpedRef bestMatchLoc:(id)loc meta:(id)meta sf:(int)sf;
+- (int64_t)encodeBMTransferYUVToCommandEncoder:(id)encoder ref:(id)ref reflect:(BOOL)reflect normalizedCenter:(id)center warpedRef:(id)warpedRef bestMatchLoc:(id)loc meta:(int)meta sf:;
+- (int64_t)encodeBilinearRescale2ImgsYUV:(id)v fullResInput:(id)input input0:(id)input0 output0:(id)output0 input1:(id)input1 output1:(id)output1 meta:(id)meta;
+- (int64_t)encodeBilinearRescaleYUV:(id)v fullResInput:(id)input input:(id)a5 meta:(id)meta blurBeforeSample:(BOOL)sample output:(id)output;
+- (int64_t)encodeBlendRefsYUVToCommandEncoder:(id)encoder hmgrphyRef0:(id)ref0 hmgrphyRef1:(id)ref1 bmRef0:(id)bmRef0 bmRef1:(id)bmRef1 output0:(id)output0 output1:(id)output1 metaBuf:(id)self0;
+- (int64_t)encodeBlendSpatialMitigatedYUVToCommandEncoder:(id)encoder inputTexture:(id)texture probMapTexture:(id)mapTexture probMap4TradSpatialTexture:(id)spatialTexture tradSpatialMitTexture:(id)mitTexture dlSpatialMitTexture:(id)spatialMitTexture outputTexture:(id)outputTexture metaBuf:(id)self0;
+- (int64_t)encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:(id)encoder fullResInput:(id)input ref0:(id)ref0 warpedRef0:(id)warpedRef0 ref1:(id)ref1 warpedRef1:(id)warpedRef1 meta:(id)meta;
+- (int64_t)encodeCollectClusterBgAvgToCommandEncoder:(id)encoder clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectClusterMaxAndAvgLuma:(id)luma clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectClusterMaxProb:(id)prob clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectClusterMv:(id)mv clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectClusterMvForMotionCueToCommandEncoder:(id)encoder clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectClusterOverlapWithRefs:(id)refs clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectClusterTempRepairErr:(id)err clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeCollectMetaContainers:(id)containers metaBuf:(id)buf lsCheckOutmetaBuf:(id)outmetaBuf redoTrackingOutmetaBuf:(id)trackingOutmetaBuf currTrackId:(int)id;
+- (int64_t)encodeCollectMvToFuture:(id)future metaBuf:(id)buf;
+- (int64_t)encodeCombineMapWithRefMapToEncoder:(id)encoder map:(id)map ref:(id)ref dilatedRef:(id)dilatedRef lsMap:(id)lsMap dilatedLsMap:(id)dilatedLsMap refLsMap:(id)refLsMap motion:(id)self0 saliency:(id)self1 targetFrameYUV:(id)self2 blobSaliency:(id)self3 spaRef:(id)self4 mvf:(id)self5 output:(id)self6 spaOutput:(id)self7 meta:(id)self8 wRef:(float)self9;
+- (int64_t)encodeConditionalDilateProbMapYUV:(id)v inputYUV:(id)uV probMap:(id)map dilatedProbMap:(id)probMap hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta;
+- (int64_t)encodeConvertFloatBuffer2TextureToCommandEncoder:(id)encoder inputBuffer0:(id)buffer0 inputBuffer1:(id)buffer1 meta:(id)meta output0:(id)output0 outputMap0:(id)map0 output1:(id)output1 outputMap1:(id)self0;
+- (int64_t)encodeCopyCurrMetaForProcFuture:(id)future metaBuf:(id)buf outMetaBuf:(id)metaBuf;
+- (int64_t)encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:(id)encoder input:(id)input output:(id)output;
+- (int64_t)encodeCopyMapToMap4RoiGenToCommandEncoder:(id)encoder input:(id)input output:(id)output metaBuf:(id)buf;
+- (int64_t)encodeCopyMvfToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 outMvf0:(id)outMvf0 mvf1:(id)mvf1 outMvf1:(id)outMvf1 meta:(id)meta;
+- (int64_t)encodeDilateForwarpHoleMap:(id)map fullResTarget:(id)target inputMap0:(id)map0 outputMap0:(id)outputMap0 inputMap1:(id)map1 outputMap1:(id)outputMap1 hardDilationRadius:(float)radius softDilationRadius:(float)self0 meta:(id)self1;
+- (int64_t)encodeDilateGrayImg:(id)img input:(id)input output:(id)output hardDilationOutput:(id)dilationOutput hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta;
+- (int64_t)encodeDilateProbMap:(id)map input:(id)input output:(id)output hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta;
+- (int64_t)encodeDilateReflLsMap:(id)map inputYUV:(id)v lsMap:(id)lsMap dilatedLsMap:(id)dilatedLsMap hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta;
+- (int64_t)encodeForwarpYUVToCommandEncoder:(id)encoder input0:(id)input0 input1:(id)input1 meta:(id)meta mvf0:(id)mvf0 mvf1:(id)mvf1 intermediateOutput0:(id)output0 intermediateOutput1:(id)self0 output0:(id)self1 output1:(id)self2 outputMap0:(id)self3 outputMap1:(id)self4;
+- (int64_t)encodeFuse4DetectionYUVToCommandEncoder:(id)encoder inputTexture:(id)texture probMapTexture:(id)mapTexture temporalMitTexture:(id)mitTexture spatialMitTexture:(id)spatialMitTexture forceToSpatial:(BOOL)spatial outputTexture:(id)outputTexture metaBuf:(id)self0;
+- (int64_t)encodeGetBgAvgYUVToCommandEncoder:(id)encoder target:(id)target ref0:(id)ref0 ref1:(id)ref1 probMap:(id)map meta:(id)meta;
+- (int64_t)encodeGetBlobSaliency:(id)saliency inputYUV:(id)v blobSaliencyMap:(id)map meta:(id)meta;
+- (int64_t)encodeGetGhostProbMapToCommandEncoder:(id)encoder target:(id)target reflLsMap:(id)map motionMap:(id)motionMap saliencyMap:(id)saliencyMap isInitFrame:(BOOL)frame probMap:(id)probMap meta:(id)self0;
+- (int64_t)encodeGetLsMapYUVToCommandEncoder:(id)encoder input:(id)input map:(id)map;
+- (int64_t)encodeGetMotionMapYUVToCommandEncoder:(id)encoder ref:(id)ref target:(id)target motionMap:(id)map meta:(id)meta;
+- (int64_t)encodeGetMvForMotionCueFromMvf:(GGMMetalToolBox *)self fullResInput:(SEL)input meta:(id)meta mvf:(id)mvf opticalCenter:(id)center refOpticalCenter:(id)opticalCenter;
+- (int64_t)encodeGetMvFromLsToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)target lsMap:(id)map refLsMap:(id)lsMap targetCenter:(id)center refCenter:(id)refCenter meta:(id)meta;
+- (int64_t)encodeGetMvToFutureFromMvf:(id)mvf fullResInput:(id)input meta:(id)meta mvf:(id)a6;
+- (int64_t)encodeGetOverlapWithRefs:(id)refs input:(id)input probMap:(id)map metaBuf:(id)buf;
+- (int64_t)encodeGetRoiMaxAndAvgLumaYUV:(id)v target:(id)target lsMap:(id)map meta:(id)meta;
+- (int64_t)encodeGetRoiRepairMvFromMvfToCommandEncoder:(id)encoder fullResInput:(id)input probMap:(id)map mvf0:(id)mvf0 mvf1:(id)mvf1 meta:(id)meta;
+- (int64_t)encodeGetSaliencyMapToCommandEncoder:(id)encoder target:(id)target saliencyMap:(id)map meta:(id)meta;
+- (int64_t)encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:(id)encoder target:(id)target hmgrphyRef0:(id)ref0 hmgrphyRef1:(id)ref1 bmRef0:(id)bmRef0 bmRef1:(id)bmRef1 probMap:(id)map errRescaleProbMap:(id)self0 prevProbMap:(id)self1 flow0:(id)self2 flow1:(id)self3 meta:(id)self4;
+- (int64_t)encodePreprocessInputs4MotionCueYUVToCommandEncoder:(id)encoder input:(id)input ref:(id)ref output:(id)output refOutput:(id)refOutput metaBuf:(id)buf processedFrameCount:(int)count;
+- (int64_t)encodeRefineFutureHwLsMapWithTrackingToEncoder:(id)encoder reflHwMap:(id)map target:(id)target opticalCenter:(id)center warpedRefReflHwMap:(id)hwMap warpedReflRef:(id)ref metaBuf:;
+- (int64_t)encodeReflectYUVImg2:(GGMMetalToolBox *)self fullResInput:(SEL)input meta:(id)meta input0:(id)input0 output0:(id)output0 center0:(id)center0 input1:(id)input1 output1:(id)output1 center1:(id)center1;
+- (int64_t)encodeResetOutputToCommandEncoder:(id)encoder input:(id)input meta:(id)meta output0:(id)output0 output1:(id)output1;
+- (int64_t)encodeSpatialRepairYUVToCommandEncoder:(id)encoder input:(id)input probMap4Spatial:(id)spatial spatialOutput:(id)output metaBuf:(id)buf;
+- (int64_t)encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:(id)encoder input:(id)input frRef0:(id)ref0 frRef1:(id)ref1 temporalOutput:(id)output inputCopy:(id)copy metaBuf:(id)buf;
+- (int64_t)encodeSyncWeightsOriginal:(id)original clusterMetaBuf:(id)buf metaBuf:(id)metaBuf;
+- (int64_t)encodeUpdateOutputFloatToCommandEncoder:(id)encoder input0:(id)input0 flow0:(id)flow0 input1:(id)input1 flow1:(id)flow1 meta:(id)meta output0:(id)output0 output1:(id)self0;
+- (int64_t)encodeUpscaleProbMap:(id)map probMap:(id)probMap refinedProbMap:(id)refinedProbMap inputFrame:(id)frame upscaledProbMap:(id)upscaledProbMap upscaledRefinedProbMap:(id)upscaledRefinedProbMap meta:(id)meta;
+- (int64_t)encodeUpscaleThenReflectLsMap:(id)map input:(id)input normalizedCenter:(id)center output:;
+- (int64_t)encodeVisualizeMvfToCommandEncoder:(id)encoder fullResTarget:(id)target mvf:(id)mvf outMvf:(id)outMvf meta:(id)meta;
+- (int64_t)encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 mvf1:(id)mvf1 mvf2:(id)mvf2 outMvf:(id)mvf meta:(id)meta;
+- (int64_t)encodeWarpMvf0WithMvf1ToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 mvf1:(id)mvf1 outMvf:(id)mvf meta:(id)meta;
+- (int64_t)encodeWarpRefMeta:(id)meta refMetaBuf:(id)buf metaBuf:(id)metaBuf outMetaBuf:(id)outMetaBuf lsCheckOutmetaBuf:(id)outmetaBuf redoTrackingOutmetaBuf:(id)trackingOutmetaBuf capRefMetaCnt:(BOOL)cnt;
+- (int64_t)encodeWarpRefMetaLite:(id)lite refMetaBuf:(id)buf outMetaBuf:(id)metaBuf;
+- (int64_t)resizeImageCmdBuf:(id)buf inputTexture:(id)texture withFactorX:(float)x withFactorY:(float)y outputTexture:(id)outputTexture;
 - (void)dealloc;
-- (void)rescaleMetaContainerBuffer:(id)a3 sf:(float)a4 sfInv:(float)a5;
-- (void)updateMetaContainerBuffer:(id)a3 withDetectedROI:(id)a4 isLowLight:(BOOL)a5 opticalCenter:(float)a6 opticalCenterShift:;
+- (void)rescaleMetaContainerBuffer:(id)buffer sf:(float)sf sfInv:(float)inv;
+- (void)updateMetaContainerBuffer:(id)buffer withDetectedROI:(id)i isLowLight:(BOOL)light opticalCenter:(float)center opticalCenterShift:;
 @end
 
 @implementation GGMMetalToolBox
 
-- (GGMMetalToolBox)initWithMetalContext:(id)a3 commandQueue:(id)a4 tuningParamDict:(id)a5
+- (GGMMetalToolBox)initWithMetalContext:(id)context commandQueue:(id)queue tuningParamDict:(id)dict
 {
-  v5 = [(GGMMetalToolBox *)self initWithMetalContext:a3 commandQueue:a4, a5];
-  v6 = v5;
-  if (v5)
+  dict = [(GGMMetalToolBox *)self initWithMetalContext:context commandQueue:queue, dict];
+  v6 = dict;
+  if (dict)
   {
-    [(GGMMetalToolBox *)v5 setRepairTuningParams:&v5->_tuningParams];
+    [(GGMMetalToolBox *)dict setRepairTuningParams:&dict->_tuningParams];
     v7 = v6;
   }
 
@@ -107,26 +107,26 @@
   [(GGMMetalToolBox *)&v4 dealloc];
 }
 
-- (void)updateMetaContainerBuffer:(id)a3 withDetectedROI:(id)a4 isLowLight:(BOOL)a5 opticalCenter:(float)a6 opticalCenterShift:
+- (void)updateMetaContainerBuffer:(id)buffer withDetectedROI:(id)i isLowLight:(BOOL)light opticalCenter:(float)center opticalCenterShift:
 {
   v7 = v6;
-  v8 = *&a6;
-  v11 = a4;
-  v12 = [a3 contents];
-  *(v12 + 8232) = a5;
-  *(v12 + 11824) = v8;
-  *(v12 + 71232) = v7;
-  if ([v11 count])
+  v8 = *&center;
+  iCopy = i;
+  contents = [buffer contents];
+  *(contents + 8232) = light;
+  *(contents + 11824) = v8;
+  *(contents + 71232) = v7;
+  if ([iCopy count])
   {
     v14 = 0;
     *&v13 = vneg_f32(0x80000000800000);
     v32 = v13;
-    v15 = (v12 + 56);
+    v15 = (contents + 56);
     *&v13 = 0x80000000800000;
     v33 = v13;
     while (1)
     {
-      v16 = [v11 objectAtIndexedSubscript:v14];
+      v16 = [iCopy objectAtIndexedSubscript:v14];
       [v16 roi];
       v37 = v17;
       [v16 roi];
@@ -153,7 +153,7 @@
       *v15[-1].f32 = v21;
       *&v15[-1].u32[2] = v23;
       *v15 = vmulq_f32(vcvtq_f32_s32(v25), v24);
-      *(v12 + 8236 + 4 * v14) = [v16 trackID];
+      *(contents + 8236 + 4 * v14) = [v16 trackID];
       if (global_logLevel)
       {
         NSLog(&cfstr_RoiToRepairFFF.isa, v38.f32[0], v38.f32[1], v36.f32[0], v36.f32[1]);
@@ -173,7 +173,7 @@
       ++v14;
 
       v15 += 2;
-      if (v14 >= [v11 count])
+      if (v14 >= [iCopy count])
       {
         v28 = *(&v33 + 1);
         v27 = *&v33;
@@ -211,28 +211,28 @@ LABEL_9:
     v27 = v34;
   }
 
-  *v12 = v14;
-  *(v12 + 2) = v14;
-  *(v12 + 8) = v32;
-  *(v12 + 12) = v27;
-  *(v12 + 16) = DWORD1(v32);
-  *(v12 + 20) = v28;
-  *(v12 + 24) = (v27 - *&v32);
-  *(v12 + 28) = (v28 - *(&v32 + 1));
+  *contents = v14;
+  *(contents + 2) = v14;
+  *(contents + 8) = v32;
+  *(contents + 12) = v27;
+  *(contents + 16) = DWORD1(v32);
+  *(contents + 20) = v28;
+  *(contents + 24) = (v27 - *&v32);
+  *(contents + 28) = (v28 - *(&v32 + 1));
   v29 = vaddq_f64(vcvtq_f64_f32(*&v32), vdupq_n_s64(0xC050000000000000));
   *&v29.f64[0] = vmovn_s64(vcvtq_s64_f64(vbicq_s8(v29, vcltzq_f64(v29))));
-  *(v12 + 32) = *&vsra_n_u32(*&v29.f64[0], vcltz_s32(*&v29.f64[0]), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
+  *(contents + 32) = *&vsra_n_u32(*&v29.f64[0], vcltz_s32(*&v29.f64[0]), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
 }
 
-- (void)rescaleMetaContainerBuffer:(id)a3 sf:(float)a4 sfInv:(float)a5
+- (void)rescaleMetaContainerBuffer:(id)buffer sf:(float)sf sfInv:(float)inv
 {
-  v10 = *&a5;
-  v5 = [a3 contents];
-  *(v5 + 1478) = vmul_n_f32(*(v5 + 5912), *v10.i32);
-  v6 = *v5;
-  if (*v5)
+  v10 = *&inv;
+  contents = [buffer contents];
+  *(contents + 1478) = vmul_n_f32(*(contents + 5912), *v10.i32);
+  v6 = *contents;
+  if (*contents)
   {
-    v7 = (v5 + 28);
+    v7 = (contents + 28);
     do
     {
       v8 = vmulq_n_f32(*v7, *v10.i32);
@@ -245,24 +245,24 @@ LABEL_9:
     while (v6);
   }
 
-  *(v5 + 4) = vmulq_n_f32(*(v5 + 4), *v10.i32);
-  v9 = vcvt_s32_f32(vmul_n_f32(vcvt_f32_s32(*(v5 + 16)), *v10.i32));
-  *(v5 + 3) = vcvt_u32_f32(vmul_f32(*&vdupq_lane_s32(v10, 0), vcvt_f32_u32(*(v5 + 12))));
-  *(v5 + 4) = *&vsra_n_u32(v9, vcltz_s32(v9), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
+  *(contents + 4) = vmulq_n_f32(*(contents + 4), *v10.i32);
+  v9 = vcvt_s32_f32(vmul_n_f32(vcvt_f32_s32(*(contents + 16)), *v10.i32));
+  *(contents + 3) = vcvt_u32_f32(vmul_f32(*&vdupq_lane_s32(v10, 0), vcvt_f32_u32(*(contents + 12))));
+  *(contents + 4) = *&vsra_n_u32(v9, vcltz_s32(v9), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
 }
 
-- (id)clusterIndicesOfRois:(id *)a3 withExtendedRadius:(float)a4 roiCnt:(signed __int16)a5 imageRect:(CGRect)a6
+- (id)clusterIndicesOfRois:(id *)rois withExtendedRadius:(float)radius roiCnt:(signed __int16)cnt imageRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v10 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cntCopy = cnt;
   v13 = 0x277CBE000uLL;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v68 = v15;
-  if (v10 < 1)
+  if (cntCopy < 1)
   {
     v33 = v14;
   }
@@ -271,8 +271,8 @@ LABEL_9:
   {
     v16 = v15;
     v17 = 0;
-    v18 = v10;
-    p_var2 = &a3->var2;
+    v18 = cntCopy;
+    p_var2 = &rois->var2;
     v65 = x;
     do
     {
@@ -284,14 +284,14 @@ LABEL_9:
       v25 = p_var2[1];
       p_var2 += 8;
       v26 = objc_alloc_init(boundingBoxForMerge);
-      v70.origin.x = (v20 - a4);
-      v70.origin.y = (v21 - a4);
+      v70.origin.x = (v20 - radius);
+      v70.origin.y = (v21 - radius);
       v27 = v24 - v20;
       height = v22;
-      v70.size.width = (v27 + (a4 * 2.0));
+      v70.size.width = (v27 + (radius * 2.0));
       v28 = v25 - v21;
       width = v23;
-      v70.size.height = (v28 + (a4 * 2.0));
+      v70.size.height = (v28 + (radius * 2.0));
       v73.origin.x = v65;
       v73.origin.y = y;
       v73.size.width = v23;
@@ -403,8 +403,8 @@ LABEL_11:
         do
         {
           v61 = [v56 objectAtIndexedSubscript:v60 >> 32];
-          v62 = [v61 index2RoiArray];
-          v63 = [MEMORY[0x277CCABB0] numberWithInt:v62];
+          index2RoiArray = [v61 index2RoiArray];
+          v63 = [MEMORY[0x277CCABB0] numberWithInt:index2RoiArray];
           [v57 addObject:v63];
 
           ++v59;
@@ -426,20 +426,20 @@ LABEL_11:
   return v67;
 }
 
-- (int64_t)encodeBMSearch1RefToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)a2 ref:(id)a3 reflect:(id)a4 normalizedTargetCenter:(id)a5 normalizedRefCenter:(BOOL)a6 bestMatchLoc:(id)a7 meta:(id)a8
+- (int64_t)encodeBMSearch1RefToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)target ref:(id)ref reflect:(id)reflect normalizedTargetCenter:(id)center normalizedRefCenter:(BOOL)refCenter bestMatchLoc:(id)loc meta:(id)meta
 {
   v12 = v9;
   v13 = v8;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v33 = a6;
+  refCopy = ref;
+  reflectCopy = reflect;
+  centerCopy = center;
+  refCenterCopy = refCenter;
   v31 = v12;
   v32 = v13;
-  v21 = a7;
-  v22 = a8;
-  v23 = v22;
-  if (!v19)
+  locCopy = loc;
+  metaCopy = meta;
+  v23 = metaCopy;
+  if (!reflectCopy)
   {
     [GGMMetalToolBox encodeBMSearch1RefToCommandEncoder:target:ref:reflect:normalizedTargetCenter:normalizedRefCenter:bestMatchLoc:meta:];
 LABEL_9:
@@ -447,57 +447,57 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v20)
+  if (!centerCopy)
   {
     [GGMMetalToolBox encodeBMSearch1RefToCommandEncoder:target:ref:reflect:normalizedTargetCenter:normalizedRefCenter:bestMatchLoc:meta:];
     goto LABEL_9;
   }
 
-  if (!v21)
+  if (!locCopy)
   {
     [GGMMetalToolBox encodeBMSearch1RefToCommandEncoder:target:ref:reflect:normalizedTargetCenter:normalizedRefCenter:bestMatchLoc:meta:];
     goto LABEL_9;
   }
 
-  v24 = *[v22 contents] & 0x1FFFFFFFFFFFFFFFLL;
-  [v18 setComputePipelineState:self->_bmSearch1RefFixedSampleCntYUV];
-  [v18 setTexture:v19 atIndex:0];
-  [v18 setTexture:v20 atIndex:1];
-  [v18 setBytes:&v33 length:1 atIndex:1];
-  [v18 setBytes:&v32 length:8 atIndex:2];
-  [v18 setBytes:&v31 length:8 atIndex:3];
-  [v18 setBuffer:v23 offset:0 atIndex:0];
+  v24 = *[metaCopy contents] & 0x1FFFFFFFFFFFFFFFLL;
+  [refCopy setComputePipelineState:self->_bmSearch1RefFixedSampleCntYUV];
+  [refCopy setTexture:reflectCopy atIndex:0];
+  [refCopy setTexture:centerCopy atIndex:1];
+  [refCopy setBytes:&refCenterCopy length:1 atIndex:1];
+  [refCopy setBytes:&v32 length:8 atIndex:2];
+  [refCopy setBytes:&v31 length:8 atIndex:3];
+  [refCopy setBuffer:v23 offset:0 atIndex:0];
   v29 = v24;
   v30 = vdupq_n_s64(1uLL);
   v27 = 8;
   v28 = xmmword_2487C3BF0;
-  [v18 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [refCopy dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
   v25 = 0;
 LABEL_5:
 
   return v25;
 }
 
-- (int64_t)encodeBMSearch4RepairToCommandEncoder:(id)a3 hrTarget:(id)a4 target:(id)a5 ref0:(id)a6 ref1:(id)a7 forwarpHoleMap0:(id)a8 forwarpHoleMap1:(id)a9 probMap:(id)a10 mvf0:(id)a11 mvf1:(id)a12 meta:(id)a13
+- (int64_t)encodeBMSearch4RepairToCommandEncoder:(id)encoder hrTarget:(id)target target:(id)a5 ref0:(id)ref0 ref1:(id)ref1 forwarpHoleMap0:(id)map0 forwarpHoleMap1:(id)map1 probMap:(id)self0 mvf0:(id)self1 mvf1:(id)self2 meta:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
+  encoderCopy = encoder;
+  targetCopy = target;
   v42 = a5;
-  v45 = a6;
-  v20 = a7;
-  v46 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v44 = a12;
-  v24 = a13;
-  v25 = v24;
-  if (!v19)
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  map0Copy = map0;
+  map1Copy = map1;
+  mapCopy = map;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  metaCopy = meta;
+  v25 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
-    v37 = v20;
+    v37 = ref1Copy;
     v38 = v49[0];
-    v27 = v44;
+    v27 = mvf1Copy;
     v26 = v42;
     goto LABEL_12;
   }
@@ -507,155 +507,155 @@ LABEL_5:
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
 LABEL_21:
-    v37 = v20;
+    v37 = ref1Copy;
     v38 = v49[0];
 LABEL_22:
-    v27 = v44;
+    v27 = mvf1Copy;
     goto LABEL_12;
   }
 
-  if (!v45)
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     goto LABEL_21;
   }
 
-  if (!v20)
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     goto LABEL_21;
   }
 
-  if (!v46)
+  if (!map0Copy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     goto LABEL_21;
   }
 
-  if (!v21)
+  if (!map1Copy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     goto LABEL_21;
   }
 
-  if (!v22)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     goto LABEL_21;
   }
 
-  if (!v23)
+  if (!mvf0Copy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     goto LABEL_21;
   }
 
-  v27 = v44;
-  if (!v44)
+  v27 = mvf1Copy;
+  if (!mvf1Copy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
-    v37 = v20;
+    v37 = ref1Copy;
     v38 = v49[0];
     goto LABEL_12;
   }
 
-  v40 = v22;
-  v28 = v20;
-  if (!v24)
+  v40 = mapCopy;
+  v28 = ref1Copy;
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeBMSearch4RepairToCommandEncoder:hrTarget:target:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:mvf0:mvf1:meta:];
     v38 = v49[0];
     v37 = v28;
-    v22 = v40;
+    mapCopy = v40;
     goto LABEL_22;
   }
 
-  v29 = [v24 contents];
-  v43 = v23;
-  v53[0] = [v19 width];
-  v52 = [v19 height];
-  v51 = [v42 width];
-  v30 = [v42 height];
-  v31.f32[0] = v51;
-  v31.f32[1] = v30;
+  contents = [metaCopy contents];
+  v43 = mvf0Copy;
+  v53[0] = [targetCopy width];
+  height = [targetCopy height];
+  width = [v42 width];
+  height2 = [v42 height];
+  v31.f32[0] = width;
+  v31.f32[1] = height2;
   v32.f32[0] = v53[0];
-  v32.f32[1] = v52;
+  v32.f32[1] = height;
   v33 = vdiv_f32(v31, v32);
-  v32.i32[0] = *(v29 + 24);
-  LODWORD(v34) = *(v29 + 28);
+  v32.i32[0] = *(contents + 24);
+  LODWORD(v34) = *(contents + 28);
   v35 = (((v32 + 128.0 + 4.0) * v33.f32[0] + 8.0 + -1.0) * 0.125);
-  v50 = v30;
+  v50 = height2;
   v36 = (((v34 + 128.0 + 4.0) * v33.f32[1] + 8.0 + -1.0) * 0.125);
-  [v18 setComputePipelineState:self->_bmSearch4RepairYUV];
-  [v18 setTexture:v42 atIndex:0];
-  [v18 setTexture:v45 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_bmSearch4RepairYUV];
+  [encoderCopy setTexture:v42 atIndex:0];
+  [encoderCopy setTexture:ref0Copy atIndex:1];
   v37 = v28;
-  [v18 setTexture:v28 atIndex:2];
-  [v18 setTexture:v46 atIndex:3];
-  [v18 setTexture:v21 atIndex:4];
-  v22 = v40;
-  [v18 setTexture:v40 atIndex:5];
-  [v18 setTexture:v43 atIndex:6];
-  v27 = v44;
-  [v18 setTexture:v44 atIndex:7];
-  [v18 setBytes:&v51 length:4 atIndex:1];
-  [v18 setBytes:&v50 length:4 atIndex:2];
-  [v18 setBytes:v53 length:4 atIndex:3];
-  [v18 setBytes:&v52 length:4 atIndex:4];
-  [v18 setBuffer:v25 offset:0 atIndex:0];
+  [encoderCopy setTexture:v28 atIndex:2];
+  [encoderCopy setTexture:map0Copy atIndex:3];
+  [encoderCopy setTexture:map1Copy atIndex:4];
+  mapCopy = v40;
+  [encoderCopy setTexture:v40 atIndex:5];
+  [encoderCopy setTexture:v43 atIndex:6];
+  v27 = mvf1Copy;
+  [encoderCopy setTexture:mvf1Copy atIndex:7];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&v50 length:4 atIndex:2];
+  [encoderCopy setBytes:v53 length:4 atIndex:3];
+  [encoderCopy setBytes:&height length:4 atIndex:4];
+  [encoderCopy setBuffer:v25 offset:0 atIndex:0];
   v49[0] = v35;
   v49[1] = v36;
-  v23 = v43;
+  mvf0Copy = v43;
   v49[2] = 1;
   v47 = vdupq_n_s64(8uLL);
   v48 = 1;
-  [v18 dispatchThreadgroups:v49 threadsPerThreadgroup:&v47];
+  [encoderCopy dispatchThreadgroups:v49 threadsPerThreadgroup:&v47];
   v38 = 0;
 LABEL_12:
 
   return v38;
 }
 
-- (int64_t)encodeBMTransfer4RepairYUVToCommandEncoder:(id)a3 ref0:(id)a4 ref1:(id)a5 forwarpHoleMap0:(id)a6 forwarpHoleMap1:(id)a7 probMap:(id)a8 warpedRef0:(id)a9 warpedRef1:(id)a10 bmMvf0:(id)a11 bmMvf1:(id)a12 backwarpFlow0:(id)a13 backwarpFlow1:(id)a14 meta:(id)a15
+- (int64_t)encodeBMTransfer4RepairYUVToCommandEncoder:(id)encoder ref0:(id)ref0 ref1:(id)ref1 forwarpHoleMap0:(id)map0 forwarpHoleMap1:(id)map1 probMap:(id)map warpedRef0:(id)warpedRef0 warpedRef1:(id)self0 bmMvf0:(id)self1 bmMvf1:(id)self2 backwarpFlow0:(id)self3 backwarpFlow1:(id)self4 meta:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v46 = a5;
-  v43 = a6;
-  v45 = a7;
-  v44 = a8;
-  v22 = a9;
-  v42 = a10;
-  v41 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = a15;
-  v27 = v26;
-  v40 = v21;
-  if (!v21)
+  encoderCopy = encoder;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  map0Copy = map0;
+  map1Copy = map1;
+  mapCopy = map;
+  warpedRef0Copy = warpedRef0;
+  warpedRef1Copy = warpedRef1;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  flow0Copy = flow0;
+  flow1Copy = flow1;
+  metaCopy = meta;
+  v27 = metaCopy;
+  v40 = ref0Copy;
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     v39 = v49[0];
-    v28 = v44;
-    v29 = v45;
+    v28 = mapCopy;
+    v29 = map1Copy;
 LABEL_22:
-    v36 = v41;
-    v30 = v42;
+    v36 = mvf0Copy;
+    v30 = warpedRef1Copy;
     goto LABEL_14;
   }
 
-  v28 = v44;
-  if (!v46)
+  v28 = mapCopy;
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     v39 = v49[0];
-    v29 = v45;
+    v29 = map1Copy;
     goto LABEL_22;
   }
 
-  v29 = v45;
-  if (!v43)
+  v29 = map1Copy;
+  if (!map0Copy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
 LABEL_21:
@@ -663,35 +663,35 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v45)
+  if (!map1Copy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     goto LABEL_21;
   }
 
-  if (!v44)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     goto LABEL_21;
   }
 
-  if (!v22)
+  if (!warpedRef0Copy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     goto LABEL_21;
   }
 
-  v30 = v42;
-  if (!v42)
+  v30 = warpedRef1Copy;
+  if (!warpedRef1Copy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     v39 = v49[0];
 LABEL_30:
-    v36 = v41;
+    v36 = mvf0Copy;
     goto LABEL_14;
   }
 
-  if (!v41)
+  if (!mvf0Copy)
   {
     v36 = 0;
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
@@ -700,82 +700,82 @@ LABEL_28:
     goto LABEL_14;
   }
 
-  if (!v23)
+  if (!mvf1Copy)
   {
-    v36 = v41;
+    v36 = mvf0Copy;
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     goto LABEL_28;
   }
 
-  if (!v24)
+  if (!flow0Copy)
   {
-    v36 = v41;
+    v36 = mvf0Copy;
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     goto LABEL_28;
   }
 
-  if (!v25)
+  if (!flow1Copy)
   {
-    v36 = v41;
+    v36 = mvf0Copy;
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     goto LABEL_28;
   }
 
-  if (!v26)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeBMTransfer4RepairYUVToCommandEncoder:ref0:ref1:forwarpHoleMap0:forwarpHoleMap1:probMap:warpedRef0:warpedRef1:bmMvf0:bmMvf1:backwarpFlow0:backwarpFlow1:meta:];
     v39 = v49[0];
-    v30 = v42;
+    v30 = warpedRef1Copy;
     goto LABEL_30;
   }
 
-  v31 = [v26 contents];
-  LODWORD(v32) = *(v31 + 24);
-  LODWORD(v33) = *(v31 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v32) = *(contents + 24);
+  LODWORD(v33) = *(contents + 28);
   v34 = ((v32 + 128.0 + 4.0 + 8.0 + -1.0) * 0.125);
   v35 = ((v33 + 128.0 + 4.0 + 8.0 + -1.0) * 0.125);
-  [v20 setComputePipelineState:self->_bmTransfer4RepairYUV];
-  [v20 setTexture:v40 atIndex:0];
-  [v20 setTexture:v46 atIndex:1];
-  [v20 setTexture:v43 atIndex:2];
-  [v20 setTexture:v45 atIndex:3];
-  [v20 setTexture:v44 atIndex:4];
-  v36 = v41;
-  [v20 setTexture:v41 atIndex:5];
-  [v20 setTexture:v23 atIndex:6];
-  [v20 setTexture:v24 atIndex:7];
-  [v20 setTexture:v25 atIndex:8];
-  [v20 setTexture:v22 atIndex:9];
-  v30 = v42;
-  [v20 setTexture:v42 atIndex:10];
-  [v20 setBuffer:v27 offset:0 atIndex:0];
-  [v20 setImageblockWidth:8 height:8];
+  [encoderCopy setComputePipelineState:self->_bmTransfer4RepairYUV];
+  [encoderCopy setTexture:v40 atIndex:0];
+  [encoderCopy setTexture:ref1Copy atIndex:1];
+  [encoderCopy setTexture:map0Copy atIndex:2];
+  [encoderCopy setTexture:map1Copy atIndex:3];
+  [encoderCopy setTexture:mapCopy atIndex:4];
+  v36 = mvf0Copy;
+  [encoderCopy setTexture:mvf0Copy atIndex:5];
+  [encoderCopy setTexture:mvf1Copy atIndex:6];
+  [encoderCopy setTexture:flow0Copy atIndex:7];
+  [encoderCopy setTexture:flow1Copy atIndex:8];
+  [encoderCopy setTexture:warpedRef0Copy atIndex:9];
+  v30 = warpedRef1Copy;
+  [encoderCopy setTexture:warpedRef1Copy atIndex:10];
+  [encoderCopy setBuffer:v27 offset:0 atIndex:0];
+  [encoderCopy setImageblockWidth:8 height:8];
   v49[0] = v34;
   v49[1] = v35;
-  v28 = v44;
-  v29 = v45;
+  v28 = mapCopy;
+  v29 = map1Copy;
   v49[2] = 1;
   v47 = vdupq_n_s64(8uLL);
   v48 = 1;
-  [v20 dispatchThreadgroups:v49 threadsPerThreadgroup:&v47];
+  [encoderCopy dispatchThreadgroups:v49 threadsPerThreadgroup:&v47];
   v39 = 0;
 LABEL_14:
 
   return v39;
 }
 
-- (int64_t)encodeGetGhostProbMapToCommandEncoder:(id)a3 target:(id)a4 reflLsMap:(id)a5 motionMap:(id)a6 saliencyMap:(id)a7 isInitFrame:(BOOL)a8 probMap:(id)a9 meta:(id)a10
+- (int64_t)encodeGetGhostProbMapToCommandEncoder:(id)encoder target:(id)target reflLsMap:(id)map motionMap:(id)motionMap saliencyMap:(id)saliencyMap isInitFrame:(BOOL)frame probMap:(id)probMap meta:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v38 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = v22;
-  if (!v17)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mapCopy = map;
+  motionMapCopy = motionMap;
+  saliencyMapCopy = saliencyMap;
+  frameCopy = frame;
+  probMapCopy = probMap;
+  metaCopy = meta;
+  v23 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeGetGhostProbMapToCommandEncoder:target:reflLsMap:motionMap:saliencyMap:isInitFrame:probMap:meta:];
 LABEL_15:
@@ -783,82 +783,82 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v18)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetGhostProbMapToCommandEncoder:target:reflLsMap:motionMap:saliencyMap:isInitFrame:probMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!motionMapCopy)
   {
     [GGMMetalToolBox encodeGetGhostProbMapToCommandEncoder:target:reflLsMap:motionMap:saliencyMap:isInitFrame:probMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!saliencyMapCopy)
   {
     [GGMMetalToolBox encodeGetGhostProbMapToCommandEncoder:target:reflLsMap:motionMap:saliencyMap:isInitFrame:probMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!probMapCopy)
   {
     [GGMMetalToolBox encodeGetGhostProbMapToCommandEncoder:target:reflLsMap:motionMap:saliencyMap:isInitFrame:probMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v22)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetGhostProbMapToCommandEncoder:target:reflLsMap:motionMap:saliencyMap:isInitFrame:probMap:meta:];
     goto LABEL_15;
   }
 
-  v24 = [v22 contents];
-  LODWORD(v25) = *(v24 + 24);
-  LODWORD(v26) = *(v24 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v25) = *(contents + 24);
+  LODWORD(v26) = *(contents + 28);
   v27 = (((v25 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v28 = (((v26 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v37 = [v17 width];
-  v36 = [v17 height];
-  v35 = [v19 width];
-  v34 = [v19 height];
-  [v16 setComputePipelineState:self->_getGhostProbMapYUV];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setTexture:v20 atIndex:3];
-  [v16 setTexture:v21 atIndex:4];
-  [v16 setBuffer:v23 offset:0 atIndex:0];
-  [v16 setBytes:&v37 length:4 atIndex:1];
-  [v16 setBytes:&v36 length:4 atIndex:2];
-  [v16 setBytes:&v35 length:4 atIndex:3];
-  [v16 setBytes:&v34 length:4 atIndex:4];
-  [v16 setBytes:&v38 length:1 atIndex:5];
+  width = [targetCopy width];
+  height = [targetCopy height];
+  width2 = [motionMapCopy width];
+  height2 = [motionMapCopy height];
+  [encoderCopy setComputePipelineState:self->_getGhostProbMapYUV];
+  [encoderCopy setTexture:targetCopy atIndex:0];
+  [encoderCopy setTexture:mapCopy atIndex:1];
+  [encoderCopy setTexture:motionMapCopy atIndex:2];
+  [encoderCopy setTexture:saliencyMapCopy atIndex:3];
+  [encoderCopy setTexture:probMapCopy atIndex:4];
+  [encoderCopy setBuffer:v23 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&height length:4 atIndex:2];
+  [encoderCopy setBytes:&width2 length:4 atIndex:3];
+  [encoderCopy setBytes:&height2 length:4 atIndex:4];
+  [encoderCopy setBytes:&frameCopy length:1 atIndex:5];
   v33[0] = v27;
   v33[1] = v28;
   v33[2] = 1;
   v31 = vdupq_n_s64(4uLL);
   v32 = 1;
-  [v16 dispatchThreadgroups:v33 threadsPerThreadgroup:&v31];
+  [encoderCopy dispatchThreadgroups:v33 threadsPerThreadgroup:&v31];
   v29 = 0;
 LABEL_8:
 
   return v29;
 }
 
-- (int64_t)encodeBMTransferYUVToCommandEncoder:(id)a3 ref:(id)a4 reflect:(BOOL)a5 normalizedCenter:(id)a6 warpedRef:(id)a7 bestMatchLoc:(id)a8 meta:(int)a9 sf:
+- (int64_t)encodeBMTransferYUVToCommandEncoder:(id)encoder ref:(id)ref reflect:(BOOL)reflect normalizedCenter:(id)center warpedRef:(id)warpedRef bestMatchLoc:(id)loc meta:(int)meta sf:
 {
   v13 = v9;
-  v17 = a9;
-  v18 = a3;
-  v19 = a4;
-  v35 = a5;
+  metaCopy = meta;
+  encoderCopy = encoder;
+  refCopy = ref;
+  reflectCopy = reflect;
   v34 = v13;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = v22;
-  if (!v19)
+  centerCopy = center;
+  warpedRefCopy = warpedRef;
+  locCopy = loc;
+  v23 = locCopy;
+  if (!refCopy)
   {
     [GGMMetalToolBox encodeBMTransferYUVToCommandEncoder:ref:reflect:normalizedCenter:warpedRef:bestMatchLoc:meta:sf:];
 LABEL_11:
@@ -866,60 +866,60 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v20)
+  if (!centerCopy)
   {
     [GGMMetalToolBox encodeBMTransferYUVToCommandEncoder:ref:reflect:normalizedCenter:warpedRef:bestMatchLoc:meta:sf:];
     goto LABEL_11;
   }
 
-  if (!v21)
+  if (!warpedRefCopy)
   {
     [GGMMetalToolBox encodeBMTransferYUVToCommandEncoder:ref:reflect:normalizedCenter:warpedRef:bestMatchLoc:meta:sf:];
     goto LABEL_11;
   }
 
-  if (!v22)
+  if (!locCopy)
   {
     [GGMMetalToolBox encodeBMTransferYUVToCommandEncoder:ref:reflect:normalizedCenter:warpedRef:bestMatchLoc:meta:sf:];
     goto LABEL_11;
   }
 
-  v24 = [v22 contents];
-  LODWORD(v25) = *(v24 + 24);
-  LODWORD(v26) = *(v24 + 28);
-  v27 = (((v25 + 128.0 + 4.0) / v17 + 8.0 + -1.0) * 0.125);
-  v28 = (((v26 + 128.0 + 4.0) / v17 + 8.0 + -1.0) * 0.125);
-  [v18 setComputePipelineState:self->_bmTransferYUV];
-  [v18 setTexture:v19 atIndex:0];
-  [v18 setTexture:v21 atIndex:1];
-  [v18 setBytes:&v35 length:1 atIndex:1];
-  [v18 setBytes:&v34 length:8 atIndex:2];
-  [v18 setTexture:v20 atIndex:2];
-  [v18 setBuffer:v23 offset:0 atIndex:0];
-  [v18 setBytes:&a9 length:4 atIndex:3];
-  [v18 setImageblockWidth:8 height:8];
+  contents = [locCopy contents];
+  LODWORD(v25) = *(contents + 24);
+  LODWORD(v26) = *(contents + 28);
+  v27 = (((v25 + 128.0 + 4.0) / metaCopy + 8.0 + -1.0) * 0.125);
+  v28 = (((v26 + 128.0 + 4.0) / metaCopy + 8.0 + -1.0) * 0.125);
+  [encoderCopy setComputePipelineState:self->_bmTransferYUV];
+  [encoderCopy setTexture:refCopy atIndex:0];
+  [encoderCopy setTexture:warpedRefCopy atIndex:1];
+  [encoderCopy setBytes:&reflectCopy length:1 atIndex:1];
+  [encoderCopy setBytes:&v34 length:8 atIndex:2];
+  [encoderCopy setTexture:centerCopy atIndex:2];
+  [encoderCopy setBuffer:v23 offset:0 atIndex:0];
+  [encoderCopy setBytes:&meta length:4 atIndex:3];
+  [encoderCopy setImageblockWidth:8 height:8];
   v33[0] = v27;
   v33[1] = v28;
   v33[2] = 1;
   v31 = vdupq_n_s64(8uLL);
   v32 = 1;
-  [v18 dispatchThreadgroups:v33 threadsPerThreadgroup:&v31];
+  [encoderCopy dispatchThreadgroups:v33 threadsPerThreadgroup:&v31];
   v29 = 0;
 LABEL_6:
 
   return v29;
 }
 
-- (int64_t)encodeBMTransferGrayToCommandEncoder:(id)a3 ref:(id)a4 warpedRef:(id)a5 bestMatchLoc:(id)a6 meta:(id)a7 sf:(int)a8
+- (int64_t)encodeBMTransferGrayToCommandEncoder:(id)encoder ref:(id)ref warpedRef:(id)warpedRef bestMatchLoc:(id)loc meta:(id)meta sf:(int)sf
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = v18;
-  v31 = a8;
-  if (!v15)
+  encoderCopy = encoder;
+  refCopy = ref;
+  warpedRefCopy = warpedRef;
+  locCopy = loc;
+  metaCopy = meta;
+  v19 = metaCopy;
+  sfCopy = sf;
+  if (!refCopy)
   {
     [GGMMetalToolBox encodeBMTransferGrayToCommandEncoder:ref:warpedRef:bestMatchLoc:meta:sf:];
 LABEL_11:
@@ -927,55 +927,55 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v16)
+  if (!warpedRefCopy)
   {
     [GGMMetalToolBox encodeBMTransferGrayToCommandEncoder:ref:warpedRef:bestMatchLoc:meta:sf:];
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!locCopy)
   {
     [GGMMetalToolBox encodeBMTransferGrayToCommandEncoder:ref:warpedRef:bestMatchLoc:meta:sf:];
     goto LABEL_11;
   }
 
-  if (!v18)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeBMTransferGrayToCommandEncoder:ref:warpedRef:bestMatchLoc:meta:sf:];
     goto LABEL_11;
   }
 
-  v20 = [v18 contents];
-  LODWORD(v21) = *(v20 + 24);
-  LODWORD(v22) = *(v20 + 28);
-  v23 = a8;
-  v24 = (((v21 + 128.0 + 4.0) / a8 + 16.0 + -1.0) * 0.0625);
-  v25 = (((v22 + 128.0 + 4.0) / v23 + 16.0 + -1.0) * 0.0625);
-  [v14 setComputePipelineState:self->_bmTransferGray];
-  [v14 setTexture:v15 atIndex:0];
-  [v14 setTexture:v17 atIndex:1];
-  [v14 setTexture:v16 atIndex:2];
-  [v14 setBuffer:v19 offset:0 atIndex:0];
-  [v14 setBytes:&v31 length:4 atIndex:1];
+  contents = [metaCopy contents];
+  LODWORD(v21) = *(contents + 24);
+  LODWORD(v22) = *(contents + 28);
+  sfCopy2 = sf;
+  v24 = (((v21 + 128.0 + 4.0) / sf + 16.0 + -1.0) * 0.0625);
+  v25 = (((v22 + 128.0 + 4.0) / sfCopy2 + 16.0 + -1.0) * 0.0625);
+  [encoderCopy setComputePipelineState:self->_bmTransferGray];
+  [encoderCopy setTexture:refCopy atIndex:0];
+  [encoderCopy setTexture:locCopy atIndex:1];
+  [encoderCopy setTexture:warpedRefCopy atIndex:2];
+  [encoderCopy setBuffer:v19 offset:0 atIndex:0];
+  [encoderCopy setBytes:&sfCopy length:4 atIndex:1];
   v30[0] = v24;
   v30[1] = v25;
   v30[2] = 1;
   v28 = vdupq_n_s64(0x10uLL);
   v29 = 1;
-  [v14 dispatchThreadgroups:v30 threadsPerThreadgroup:&v28];
+  [encoderCopy dispatchThreadgroups:v30 threadsPerThreadgroup:&v28];
   v26 = 0;
 LABEL_6:
 
   return v26;
 }
 
-- (int64_t)resizeImageCmdBuf:(id)a3 inputTexture:(id)a4 withFactorX:(float)a5 withFactorY:(float)a6 outputTexture:(id)a7
+- (int64_t)resizeImageCmdBuf:(id)buf inputTexture:(id)texture withFactorX:(float)x withFactorY:(float)y outputTexture:(id)outputTexture
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = v14;
-  if (!v13)
+  bufCopy = buf;
+  textureCopy = texture;
+  outputTextureCopy = outputTexture;
+  v15 = outputTextureCopy;
+  if (!textureCopy)
   {
     [GGMMetalToolBox resizeImageCmdBuf:inputTexture:withFactorX:withFactorY:outputTexture:];
 LABEL_9:
@@ -983,7 +983,7 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v14)
+  if (!outputTextureCopy)
   {
     [GGMMetalToolBox resizeImageCmdBuf:inputTexture:withFactorX:withFactorY:outputTexture:];
     goto LABEL_9;
@@ -997,12 +997,12 @@ LABEL_9:
   }
 
   v17 = v16;
-  v20[0] = a5;
-  v20[1] = a6;
+  v20[0] = x;
+  v20[1] = y;
   v20[2] = 0.0;
   v20[3] = 0.0;
   [v16 setScaleTransform:v20];
-  [v17 encodeToCommandBuffer:v12 sourceTexture:v13 destinationTexture:v15];
+  [v17 encodeToCommandBuffer:bufCopy sourceTexture:textureCopy destinationTexture:v15];
 
   v18 = 0;
 LABEL_5:
@@ -1010,21 +1010,21 @@ LABEL_5:
   return v18;
 }
 
-- (int64_t)encodeReflectYUVImg2:(GGMMetalToolBox *)self fullResInput:(SEL)a2 meta:(id)a3 input0:(id)a4 output0:(id)a5 center0:(id)a6 input1:(id)a7 output1:(id)a8 center1:(id)a9
+- (int64_t)encodeReflectYUVImg2:(GGMMetalToolBox *)self fullResInput:(SEL)input meta:(id)meta input0:(id)input0 output0:(id)output0 center0:(id)center0 input1:(id)input1 output1:(id)output1 center1:(id)center1
 {
   v11 = v10;
   v13 = v9;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
+  metaCopy = meta;
+  input0Copy = input0;
+  output0Copy = output0;
+  center0Copy = center0;
+  input1Copy = input1;
   v43 = v13;
-  v24 = a8;
-  v25 = a9;
-  v26 = v25;
+  output1Copy = output1;
+  center1Copy = center1;
+  v26 = center1Copy;
   v42 = v11;
-  if (!v20)
+  if (!input0Copy)
   {
     [GGMMetalToolBox encodeReflectYUVImg2:fullResInput:meta:input0:output0:center0:input1:output1:center1:];
 LABEL_15:
@@ -1032,81 +1032,81 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v21)
+  if (!output0Copy)
   {
     [GGMMetalToolBox encodeReflectYUVImg2:fullResInput:meta:input0:output0:center0:input1:output1:center1:];
     goto LABEL_15;
   }
 
-  if (!v22)
+  if (!center0Copy)
   {
     [GGMMetalToolBox encodeReflectYUVImg2:fullResInput:meta:input0:output0:center0:input1:output1:center1:];
     goto LABEL_15;
   }
 
-  if (!v23)
+  if (!input1Copy)
   {
     [GGMMetalToolBox encodeReflectYUVImg2:fullResInput:meta:input0:output0:center0:input1:output1:center1:];
     goto LABEL_15;
   }
 
-  if (!v24)
+  if (!output1Copy)
   {
     [GGMMetalToolBox encodeReflectYUVImg2:fullResInput:meta:input0:output0:center0:input1:output1:center1:];
     goto LABEL_15;
   }
 
-  if (!v25)
+  if (!center1Copy)
   {
     [GGMMetalToolBox encodeReflectYUVImg2:fullResInput:meta:input0:output0:center0:input1:output1:center1:];
     goto LABEL_15;
   }
 
-  v36 = [v23 width];
-  v27 = [v23 height];
-  v28.f32[0] = v36;
-  v28.f32[1] = v27;
+  width = [input1Copy width];
+  height = [input1Copy height];
+  v28.f32[0] = width;
+  v28.f32[1] = height;
   v37 = v28;
-  v35 = [v20 width];
-  v29 = [v20 height];
-  v30.f32[0] = v35;
-  v30.f32[1] = v29;
+  width2 = [input0Copy width];
+  height2 = [input0Copy height];
+  v30.f32[0] = width2;
+  v30.f32[1] = height2;
   v41 = vdiv_f32(v37, v30);
-  v31 = ([v23 width] + 15) >> 4;
-  v32 = ([v23 height] + 15) >> 4;
-  [v19 setComputePipelineState:self->_reflectYUVImg2];
-  [v19 setBuffer:v21 offset:0 atIndex:3];
-  [v19 setTexture:v22 atIndex:0];
-  [v19 setTexture:v23 atIndex:1];
-  [v19 setBytes:&v43 length:8 atIndex:0];
-  [v19 setTexture:v24 atIndex:2];
-  [v19 setTexture:v26 atIndex:3];
-  [v19 setBytes:&v42 length:8 atIndex:1];
-  [v19 setBytes:&v41 length:8 atIndex:2];
-  [v19 setImageblockWidth:16 height:16];
+  v31 = ([input1Copy width] + 15) >> 4;
+  v32 = ([input1Copy height] + 15) >> 4;
+  [metaCopy setComputePipelineState:self->_reflectYUVImg2];
+  [metaCopy setBuffer:output0Copy offset:0 atIndex:3];
+  [metaCopy setTexture:center0Copy atIndex:0];
+  [metaCopy setTexture:input1Copy atIndex:1];
+  [metaCopy setBytes:&v43 length:8 atIndex:0];
+  [metaCopy setTexture:output1Copy atIndex:2];
+  [metaCopy setTexture:v26 atIndex:3];
+  [metaCopy setBytes:&v42 length:8 atIndex:1];
+  [metaCopy setBytes:&v41 length:8 atIndex:2];
+  [metaCopy setImageblockWidth:16 height:16];
   v40[0] = v31;
   v40[1] = v32;
   v40[2] = 1;
   v38 = vdupq_n_s64(0x10uLL);
   v39 = 1;
-  [v19 dispatchThreadgroups:v40 threadsPerThreadgroup:&v38];
+  [metaCopy dispatchThreadgroups:v40 threadsPerThreadgroup:&v38];
   v33 = 0;
 LABEL_8:
 
   return v33;
 }
 
-- (int64_t)encodeDilateGrayImg:(id)a3 input:(id)a4 output:(id)a5 hardDilationOutput:(id)a6 hardDilationRadius:(float)a7 softDilationRadius:(float)a8 meta:(id)a9
+- (int64_t)encodeDilateGrayImg:(id)img input:(id)input output:(id)output hardDilationOutput:(id)dilationOutput hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v34 = a8;
-  v35 = a7;
-  v20 = a9;
-  v21 = v20;
-  if (!v17)
+  imgCopy = img;
+  inputCopy = input;
+  outputCopy = output;
+  dilationOutputCopy = dilationOutput;
+  dilationRadiusCopy = dilationRadius;
+  radiusCopy = radius;
+  metaCopy = meta;
+  v21 = metaCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeDilateGrayImg:input:output:hardDilationOutput:hardDilationRadius:softDilationRadius:meta:];
 LABEL_11:
@@ -1114,62 +1114,62 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v18)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeDilateGrayImg:input:output:hardDilationOutput:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  if (!v19)
+  if (!dilationOutputCopy)
   {
     [GGMMetalToolBox encodeDilateGrayImg:input:output:hardDilationOutput:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  if (!v20)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeDilateGrayImg:input:output:hardDilationOutput:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  v22 = [v20 contents];
-  LODWORD(v23) = *(v22 + 24);
-  LODWORD(v24) = *(v22 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v23) = *(contents + 24);
+  LODWORD(v24) = *(contents + 28);
   v25 = (((v23 + 128.0 + 4.0) * 0.5 + 32.0 + -1.0) * 0.03125);
   v26 = (((v24 + 128.0 + 4.0) * 0.5 + 32.0 + -1.0) * 0.03125);
-  v33 = [v18 width];
-  v32 = [v18 height];
-  [v16 setComputePipelineState:self->_dilateGrayImg];
-  [v16 setBuffer:v21 offset:0 atIndex:0];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setBytes:&v35 length:4 atIndex:1];
-  [v16 setBytes:&v34 length:4 atIndex:2];
-  [v16 setBytes:&v33 length:4 atIndex:3];
-  [v16 setBytes:&v32 length:4 atIndex:4];
+  width = [outputCopy width];
+  height = [outputCopy height];
+  [imgCopy setComputePipelineState:self->_dilateGrayImg];
+  [imgCopy setBuffer:v21 offset:0 atIndex:0];
+  [imgCopy setTexture:inputCopy atIndex:0];
+  [imgCopy setTexture:outputCopy atIndex:1];
+  [imgCopy setTexture:dilationOutputCopy atIndex:2];
+  [imgCopy setBytes:&radiusCopy length:4 atIndex:1];
+  [imgCopy setBytes:&dilationRadiusCopy length:4 atIndex:2];
+  [imgCopy setBytes:&width length:4 atIndex:3];
+  [imgCopy setBytes:&height length:4 atIndex:4];
   v31[0] = v25;
   v31[1] = v26;
   v31[2] = 1;
   v29 = vdupq_n_s64(0x20uLL);
   v30 = 1;
-  [v16 dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
+  [imgCopy dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
   v27 = 0;
 LABEL_6:
 
   return v27;
 }
 
-- (int64_t)encodeDilateProbMap:(id)a3 input:(id)a4 output:(id)a5 hardDilationRadius:(float)a6 softDilationRadius:(float)a7 meta:(id)a8
+- (int64_t)encodeDilateProbMap:(id)map input:(id)input output:(id)output hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v31 = a7;
-  v32 = a6;
-  v17 = a8;
-  v18 = v17;
-  if (!v15)
+  mapCopy = map;
+  inputCopy = input;
+  outputCopy = output;
+  dilationRadiusCopy = dilationRadius;
+  radiusCopy = radius;
+  metaCopy = meta;
+  v18 = metaCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeDilateProbMap:input:output:hardDilationRadius:softDilationRadius:meta:];
 LABEL_9:
@@ -1177,54 +1177,54 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v16)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeDilateProbMap:input:output:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_9;
   }
 
-  if (!v17)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeDilateProbMap:input:output:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_9;
   }
 
-  v19 = [v17 contents];
-  LODWORD(v20) = *(v19 + 24);
-  LODWORD(v21) = *(v19 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v20) = *(contents + 24);
+  LODWORD(v21) = *(contents + 28);
   v22 = (((v20 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v23 = (((v21 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v30 = [v15 width];
-  v29 = [v15 height];
-  [v14 setComputePipelineState:self->_dilateProbMap];
-  [v14 setBuffer:v18 offset:0 atIndex:0];
-  [v14 setTexture:v15 atIndex:0];
-  [v14 setTexture:v16 atIndex:1];
-  [v14 setBytes:&v32 length:4 atIndex:1];
-  [v14 setBytes:&v31 length:4 atIndex:2];
-  [v14 setBytes:&v30 length:4 atIndex:3];
-  [v14 setBytes:&v29 length:4 atIndex:4];
+  width = [inputCopy width];
+  height = [inputCopy height];
+  [mapCopy setComputePipelineState:self->_dilateProbMap];
+  [mapCopy setBuffer:v18 offset:0 atIndex:0];
+  [mapCopy setTexture:inputCopy atIndex:0];
+  [mapCopy setTexture:outputCopy atIndex:1];
+  [mapCopy setBytes:&radiusCopy length:4 atIndex:1];
+  [mapCopy setBytes:&dilationRadiusCopy length:4 atIndex:2];
+  [mapCopy setBytes:&width length:4 atIndex:3];
+  [mapCopy setBytes:&height length:4 atIndex:4];
   v28[0] = v22;
   v28[1] = v23;
   v28[2] = 1;
   v26 = vdupq_n_s64(4uLL);
   v27 = 1;
-  [v14 dispatchThreadgroups:v28 threadsPerThreadgroup:&v26];
+  [mapCopy dispatchThreadgroups:v28 threadsPerThreadgroup:&v26];
   v24 = 0;
 LABEL_5:
 
   return v24;
 }
 
-- (int64_t)encodeGetMotionMapYUVToCommandEncoder:(id)a3 ref:(id)a4 target:(id)a5 motionMap:(id)a6 meta:(id)a7
+- (int64_t)encodeGetMotionMapYUVToCommandEncoder:(id)encoder ref:(id)ref target:(id)target motionMap:(id)map meta:(id)meta
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v13)
+  encoderCopy = encoder;
+  refCopy = ref;
+  targetCopy = target;
+  mapCopy = map;
+  metaCopy = meta;
+  v17 = metaCopy;
+  if (!refCopy)
   {
     [GGMMetalToolBox encodeGetMotionMapYUVToCommandEncoder:ref:target:motionMap:meta:];
 LABEL_11:
@@ -1232,93 +1232,93 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeGetMotionMapYUVToCommandEncoder:ref:target:motionMap:meta:];
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetMotionMapYUVToCommandEncoder:ref:target:motionMap:meta:];
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetMotionMapYUVToCommandEncoder:ref:target:motionMap:meta:];
     goto LABEL_11;
   }
 
-  v18 = [v16 contents];
-  LODWORD(v19) = *(v18 + 24);
-  LODWORD(v20) = *(v18 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v19) = *(contents + 24);
+  LODWORD(v20) = *(contents + 28);
   v21 = (((v19 + 128.0 + 4.0) * 0.5 + 32.0 + -1.0) * 0.03125);
   v22 = (((v20 + 128.0 + 4.0) * 0.5 + 32.0 + -1.0) * 0.03125);
-  v29 = [v15 width];
-  v28 = [v15 height];
-  [v12 setComputePipelineState:self->_getMotionMapYUV];
-  [v12 setTexture:v13 atIndex:1];
-  [v12 setTexture:v14 atIndex:2];
-  [v12 setTexture:v15 atIndex:3];
-  [v12 setBuffer:v17 offset:0 atIndex:0];
-  [v12 setBytes:&v29 length:4 atIndex:1];
-  [v12 setBytes:&v28 length:4 atIndex:2];
+  width = [mapCopy width];
+  height = [mapCopy height];
+  [encoderCopy setComputePipelineState:self->_getMotionMapYUV];
+  [encoderCopy setTexture:refCopy atIndex:1];
+  [encoderCopy setTexture:targetCopy atIndex:2];
+  [encoderCopy setTexture:mapCopy atIndex:3];
+  [encoderCopy setBuffer:v17 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&height length:4 atIndex:2];
   v27[0] = v21;
   v27[1] = v22;
   v27[2] = 1;
   v25 = vdupq_n_s64(0x20uLL);
   v26 = 1;
-  [v12 dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
+  [encoderCopy dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
   v23 = 0;
 LABEL_6:
 
   return v23;
 }
 
-- (int64_t)encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:(id)a3 target:(id)a4 hmgrphyRef0:(id)a5 hmgrphyRef1:(id)a6 bmRef0:(id)a7 bmRef1:(id)a8 probMap:(id)a9 errRescaleProbMap:(id)a10 prevProbMap:(id)a11 flow0:(id)a12 flow1:(id)a13 meta:(id)a14
+- (int64_t)encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:(id)encoder target:(id)target hmgrphyRef0:(id)ref0 hmgrphyRef1:(id)ref1 bmRef0:(id)bmRef0 bmRef1:(id)bmRef1 probMap:(id)map errRescaleProbMap:(id)self0 prevProbMap:(id)self1 flow0:(id)self2 flow1:(id)self3 meta:(id)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v44 = a6;
-  v40 = a7;
-  v43 = a8;
-  v22 = a9;
-  v42 = a10;
-  v41 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = v25;
-  v39 = v20;
-  if (!v20)
+  encoderCopy = encoder;
+  targetCopy = target;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  bmRef0Copy = bmRef0;
+  bmRef1Copy = bmRef1;
+  mapCopy = map;
+  probMapCopy = probMap;
+  prevProbMapCopy = prevProbMap;
+  flow0Copy = flow0;
+  flow1Copy = flow1;
+  metaCopy = meta;
+  v26 = metaCopy;
+  v39 = targetCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     v34 = v26;
     v35 = v47[0];
-    v28 = v40;
-    v27 = v43;
+    v28 = bmRef0Copy;
+    v27 = bmRef1Copy;
 LABEL_20:
-    v29 = v21;
+    v29 = ref0Copy;
 LABEL_21:
-    v31 = v41;
-    v30 = v42;
+    v31 = prevProbMapCopy;
+    v30 = probMapCopy;
     goto LABEL_13;
   }
 
-  v27 = v43;
-  if (!v21)
+  v27 = bmRef1Copy;
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     v34 = v26;
     v35 = v47[0];
-    v28 = v40;
+    v28 = bmRef0Copy;
     goto LABEL_20;
   }
 
-  v28 = v40;
-  if (!v44)
+  v28 = bmRef0Copy;
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
 LABEL_19:
@@ -1327,20 +1327,20 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v40)
+  if (!bmRef0Copy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     goto LABEL_19;
   }
 
-  if (!v43)
+  if (!bmRef1Copy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     goto LABEL_19;
   }
 
-  v29 = v21;
-  if (!v22)
+  v29 = ref0Copy;
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     v34 = v26;
@@ -1348,18 +1348,18 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  v30 = v42;
-  if (!v42)
+  v30 = probMapCopy;
+  if (!probMapCopy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     v34 = v26;
     v35 = v47[0];
-    v31 = v41;
+    v31 = prevProbMapCopy;
     goto LABEL_13;
   }
 
-  v31 = v41;
-  if (!v41)
+  v31 = prevProbMapCopy;
+  if (!prevProbMapCopy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
 LABEL_26:
@@ -1368,45 +1368,45 @@ LABEL_26:
     goto LABEL_13;
   }
 
-  if (!v23)
+  if (!flow0Copy)
   {
     [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
     goto LABEL_26;
   }
 
-  if (v24)
+  if (flow1Copy)
   {
-    if (v25)
+    if (metaCopy)
     {
-      v32 = [v25 contents];
-      v38 = ((((*(v32 + 24) >> 1) + 128) + 4.0 + 8.0 + -1.0) * 0.125);
-      v33 = ((((*(v32 + 28) >> 1) + 128) + 4.0 + 8.0 + -1.0) * 0.125);
+      contents = [metaCopy contents];
+      v38 = ((((*(contents + 24) >> 1) + 128) + 4.0 + 8.0 + -1.0) * 0.125);
+      v33 = ((((*(contents + 28) >> 1) + 128) + 4.0 + 8.0 + -1.0) * 0.125);
       v49[0] = [v29 width];
-      v48 = [v29 height];
-      [v19 setComputePipelineState:self->_getTempRepairedBgAlignErrYUV];
-      [v19 setTexture:v39 atIndex:0];
-      [v19 setTexture:v29 atIndex:1];
-      [v19 setTexture:v44 atIndex:2];
-      [v19 setTexture:v40 atIndex:3];
-      [v19 setTexture:v43 atIndex:4];
-      [v19 setTexture:v22 atIndex:5];
-      v30 = v42;
-      [v19 setTexture:v42 atIndex:6];
-      v31 = v41;
-      [v19 setTexture:v41 atIndex:7];
-      [v19 setTexture:v23 atIndex:8];
-      [v19 setTexture:v24 atIndex:9];
-      [v19 setBuffer:v26 offset:0 atIndex:0];
-      [v19 setBytes:v49 length:4 atIndex:1];
-      [v19 setBytes:&v48 length:4 atIndex:2];
+      height = [v29 height];
+      [encoderCopy setComputePipelineState:self->_getTempRepairedBgAlignErrYUV];
+      [encoderCopy setTexture:v39 atIndex:0];
+      [encoderCopy setTexture:v29 atIndex:1];
+      [encoderCopy setTexture:ref1Copy atIndex:2];
+      [encoderCopy setTexture:bmRef0Copy atIndex:3];
+      [encoderCopy setTexture:bmRef1Copy atIndex:4];
+      [encoderCopy setTexture:mapCopy atIndex:5];
+      v30 = probMapCopy;
+      [encoderCopy setTexture:probMapCopy atIndex:6];
+      v31 = prevProbMapCopy;
+      [encoderCopy setTexture:prevProbMapCopy atIndex:7];
+      [encoderCopy setTexture:flow0Copy atIndex:8];
+      [encoderCopy setTexture:flow1Copy atIndex:9];
+      [encoderCopy setBuffer:v26 offset:0 atIndex:0];
+      [encoderCopy setBytes:v49 length:4 atIndex:1];
+      [encoderCopy setBytes:&height length:4 atIndex:2];
       v47[0] = v38;
       v47[1] = v33;
-      v27 = v43;
+      v27 = bmRef1Copy;
       v47[2] = 1;
-      v28 = v40;
+      v28 = bmRef0Copy;
       v45 = vdupq_n_s64(8uLL);
       v46 = 1;
-      [v19 dispatchThreadgroups:v47 threadsPerThreadgroup:&v45];
+      [encoderCopy dispatchThreadgroups:v47 threadsPerThreadgroup:&v45];
       v34 = v26;
       v35 = 0;
     }
@@ -1416,8 +1416,8 @@ LABEL_26:
       [GGMMetalToolBox encodeGetTempRepairedBgAlignErrYUVToCommandEncoder:target:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:probMap:errRescaleProbMap:prevProbMap:flow0:flow1:meta:];
       v34 = 0;
       v35 = v47[0];
-      v31 = v41;
-      v30 = v42;
+      v31 = prevProbMapCopy;
+      v30 = probMapCopy;
     }
   }
 
@@ -1433,81 +1433,81 @@ LABEL_13:
   return v35;
 }
 
-- (int64_t)encodeCombineMapWithRefMapToEncoder:(id)a3 map:(id)a4 ref:(id)a5 dilatedRef:(id)a6 lsMap:(id)a7 dilatedLsMap:(id)a8 refLsMap:(id)a9 motion:(id)a10 saliency:(id)a11 targetFrameYUV:(id)a12 blobSaliency:(id)a13 spaRef:(id)a14 mvf:(id)a15 output:(id)a16 spaOutput:(id)a17 meta:(id)a18 wRef:(float)a19
+- (int64_t)encodeCombineMapWithRefMapToEncoder:(id)encoder map:(id)map ref:(id)ref dilatedRef:(id)dilatedRef lsMap:(id)lsMap dilatedLsMap:(id)dilatedLsMap refLsMap:(id)refLsMap motion:(id)self0 saliency:(id)self1 targetFrameYUV:(id)self2 blobSaliency:(id)self3 spaRef:(id)self4 mvf:(id)self5 output:(id)self6 spaOutput:(id)self7 meta:(id)self8 wRef:(float)self9
 {
-  v25 = a3;
-  v26 = a4;
-  v27 = a5;
-  v28 = a6;
-  v69 = a7;
-  v73 = a8;
-  v71 = a9;
-  v65 = a10;
-  v72 = a11;
-  v29 = a12;
-  v30 = a13;
-  v31 = a14;
-  v70 = a15;
-  v68 = a16;
-  v67 = a17;
-  v32 = a18;
-  v79[0] = a19;
-  v66 = v26;
-  v63 = v29;
-  v64 = v31;
-  if (!v26)
+  encoderCopy = encoder;
+  mapCopy = map;
+  refCopy = ref;
+  dilatedRefCopy = dilatedRef;
+  lsMapCopy = lsMap;
+  dilatedLsMapCopy = dilatedLsMap;
+  refLsMapCopy = refLsMap;
+  motionCopy = motion;
+  saliencyCopy = saliency;
+  vCopy = v;
+  blobSaliencyCopy = blobSaliency;
+  spaRefCopy = spaRef;
+  mvfCopy = mvf;
+  outputCopy = output;
+  spaOutputCopy = spaOutput;
+  metaCopy = meta;
+  v79[0] = wRef;
+  v66 = mapCopy;
+  v63 = vCopy;
+  v64 = spaRefCopy;
+  if (!mapCopy)
   {
-    v51 = v32;
+    v51 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     v46 = v51;
     v62 = v76[0];
-    v47 = v27;
-    v48 = v69;
-    v33 = v70;
-    v34 = v71;
-    v49 = v65;
-    v35 = v30;
-    v38 = v67;
-    v36 = v68;
+    v47 = refCopy;
+    v48 = lsMapCopy;
+    v33 = mvfCopy;
+    v34 = refLsMapCopy;
+    v49 = motionCopy;
+    v35 = blobSaliencyCopy;
+    v38 = spaOutputCopy;
+    v36 = outputCopy;
     goto LABEL_17;
   }
 
-  v61 = v27;
-  if (!v27)
+  v61 = refCopy;
+  if (!refCopy)
   {
-    v52 = v32;
+    v52 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
 LABEL_21:
     v46 = v52;
     v62 = v76[0];
-    v48 = v69;
-    v33 = v70;
+    v48 = lsMapCopy;
+    v33 = mvfCopy;
 LABEL_23:
-    v34 = v71;
+    v34 = refLsMapCopy;
 LABEL_27:
-    v49 = v65;
+    v49 = motionCopy;
 LABEL_28:
-    v35 = v30;
+    v35 = blobSaliencyCopy;
 LABEL_29:
-    v36 = v68;
+    v36 = outputCopy;
 LABEL_36:
-    v38 = v67;
+    v38 = spaOutputCopy;
 LABEL_44:
     v47 = v61;
     goto LABEL_17;
   }
 
-  if (!v28)
+  if (!dilatedRefCopy)
   {
-    v52 = v32;
+    v52 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     goto LABEL_21;
   }
 
-  v33 = v70;
-  if (!v69)
+  v33 = mvfCopy;
+  if (!lsMapCopy)
   {
-    v53 = v32;
+    v53 = metaCopy;
     v48 = 0;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     v46 = v53;
@@ -1515,11 +1515,11 @@ LABEL_44:
     goto LABEL_23;
   }
 
-  v34 = v71;
-  if (!v73)
+  v34 = refLsMapCopy;
+  if (!dilatedLsMapCopy)
   {
-    v54 = v32;
-    v48 = v69;
+    v54 = metaCopy;
+    v48 = lsMapCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
 LABEL_26:
     v46 = v54;
@@ -1527,75 +1527,75 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v71)
+  if (!refLsMapCopy)
   {
-    v54 = v32;
-    v48 = v69;
+    v54 = metaCopy;
+    v48 = lsMapCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     goto LABEL_26;
   }
 
-  if (!v65)
+  if (!motionCopy)
   {
-    v55 = v32;
+    v55 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     v46 = v55;
-    v48 = v69;
+    v48 = lsMapCopy;
     v49 = 0;
     v62 = v76[0];
     goto LABEL_28;
   }
 
-  v35 = v30;
-  if (!v72)
+  v35 = blobSaliencyCopy;
+  if (!saliencyCopy)
   {
-    v56 = v32;
+    v56 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     v46 = v56;
-    v48 = v69;
-    v49 = v65;
+    v48 = lsMapCopy;
+    v49 = motionCopy;
     v62 = v76[0];
     goto LABEL_29;
   }
 
-  v36 = v68;
-  if (!v29)
+  v36 = outputCopy;
+  if (!vCopy)
   {
-    v57 = v32;
+    v57 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
 LABEL_35:
     v46 = v57;
-    v48 = v69;
-    v49 = v65;
+    v48 = lsMapCopy;
+    v49 = motionCopy;
     v62 = v76[0];
     goto LABEL_36;
   }
 
   if (!v35)
   {
-    v57 = v32;
+    v57 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     goto LABEL_35;
   }
 
-  if (!v31)
+  if (!spaRefCopy)
   {
-    v57 = v32;
+    v57 = metaCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     goto LABEL_35;
   }
 
   v59 = v35;
-  v37 = v32;
-  if (!v70)
+  v37 = metaCopy;
+  if (!mvfCopy)
   {
-    v58 = v69;
+    v58 = lsMapCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
 LABEL_39:
     v48 = v58;
-    v49 = v65;
+    v49 = motionCopy;
     v62 = v76[0];
-    v38 = v67;
+    v38 = spaOutputCopy;
 LABEL_41:
     v46 = v37;
 LABEL_43:
@@ -1603,92 +1603,92 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (!v68)
+  if (!outputCopy)
   {
-    v58 = v69;
+    v58 = lsMapCopy;
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     goto LABEL_39;
   }
 
-  v38 = v67;
-  if (!v67)
+  v38 = spaOutputCopy;
+  if (!spaOutputCopy)
   {
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
-    v48 = v69;
-    v49 = v65;
+    v48 = lsMapCopy;
+    v49 = motionCopy;
     v62 = v76[0];
     goto LABEL_41;
   }
 
-  if (!v32)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeCombineMapWithRefMapToEncoder:map:ref:dilatedRef:lsMap:dilatedLsMap:refLsMap:motion:saliency:targetFrameYUV:blobSaliency:spaRef:mvf:output:spaOutput:meta:wRef:];
     v46 = 0;
-    v49 = v65;
+    v49 = motionCopy;
     v62 = v76[0];
-    v38 = v67;
-    v36 = v68;
-    v48 = v69;
+    v38 = spaOutputCopy;
+    v36 = outputCopy;
+    v48 = lsMapCopy;
     goto LABEL_43;
   }
 
-  v39 = v29;
-  v40 = v32;
-  v41 = [v32 contents];
-  LODWORD(v42) = *(v41 + 24);
-  LODWORD(v43) = *(v41 + 28);
+  v39 = vCopy;
+  v40 = metaCopy;
+  contents = [metaCopy contents];
+  LODWORD(v42) = *(contents + 24);
+  LODWORD(v43) = *(contents + 28);
   v44 = (((v42 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v45 = (((v43 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v78 = [v65 width];
-  v77 = [v65 height];
-  [v25 setComputePipelineState:self->_combineMapWithRefMap];
-  [v25 setBuffer:v40 offset:0 atIndex:0];
-  [v25 setTexture:v66 atIndex:0];
-  [v25 setTexture:v27 atIndex:1];
-  [v25 setTexture:v28 atIndex:2];
-  [v25 setTexture:v69 atIndex:3];
-  [v25 setTexture:v73 atIndex:9];
-  [v25 setTexture:v71 atIndex:4];
-  [v25 setTexture:v65 atIndex:5];
-  [v25 setTexture:v72 atIndex:6];
-  [v25 setTexture:v39 atIndex:7];
-  [v25 setTexture:v59 atIndex:10];
-  [v25 setTexture:v31 atIndex:11];
-  [v25 setTexture:v70 atIndex:13];
-  v36 = v68;
-  [v25 setTexture:v68 atIndex:8];
-  v38 = v67;
-  [v25 setTexture:v67 atIndex:12];
-  [v25 setBytes:v79 length:4 atIndex:1];
-  [v25 setBytes:&v78 length:4 atIndex:2];
-  [v25 setBytes:&v77 length:4 atIndex:3];
+  width = [motionCopy width];
+  height = [motionCopy height];
+  [encoderCopy setComputePipelineState:self->_combineMapWithRefMap];
+  [encoderCopy setBuffer:v40 offset:0 atIndex:0];
+  [encoderCopy setTexture:v66 atIndex:0];
+  [encoderCopy setTexture:refCopy atIndex:1];
+  [encoderCopy setTexture:dilatedRefCopy atIndex:2];
+  [encoderCopy setTexture:lsMapCopy atIndex:3];
+  [encoderCopy setTexture:dilatedLsMapCopy atIndex:9];
+  [encoderCopy setTexture:refLsMapCopy atIndex:4];
+  [encoderCopy setTexture:motionCopy atIndex:5];
+  [encoderCopy setTexture:saliencyCopy atIndex:6];
+  [encoderCopy setTexture:v39 atIndex:7];
+  [encoderCopy setTexture:v59 atIndex:10];
+  [encoderCopy setTexture:spaRefCopy atIndex:11];
+  [encoderCopy setTexture:mvfCopy atIndex:13];
+  v36 = outputCopy;
+  [encoderCopy setTexture:outputCopy atIndex:8];
+  v38 = spaOutputCopy;
+  [encoderCopy setTexture:spaOutputCopy atIndex:12];
+  [encoderCopy setBytes:v79 length:4 atIndex:1];
+  [encoderCopy setBytes:&width length:4 atIndex:2];
+  [encoderCopy setBytes:&height length:4 atIndex:3];
   v76[0] = v44;
   v76[1] = v45;
   v35 = v59;
   v76[2] = 1;
   v74 = vdupq_n_s64(4uLL);
   v75 = 1;
-  v33 = v70;
-  v34 = v71;
-  [v25 dispatchThreadgroups:v76 threadsPerThreadgroup:&v74];
+  v33 = mvfCopy;
+  v34 = refLsMapCopy;
+  [encoderCopy dispatchThreadgroups:v76 threadsPerThreadgroup:&v74];
   v46 = v40;
-  v47 = v27;
-  v48 = v69;
-  v49 = v65;
+  v47 = refCopy;
+  v48 = lsMapCopy;
+  v49 = motionCopy;
   v62 = 0;
 LABEL_17:
 
   return v62;
 }
 
-- (int64_t)encodeGetSaliencyMapToCommandEncoder:(id)a3 target:(id)a4 saliencyMap:(id)a5 meta:(id)a6
+- (int64_t)encodeGetSaliencyMapToCommandEncoder:(id)encoder target:(id)target saliencyMap:(id)map meta:(id)meta
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mapCopy = map;
+  metaCopy = meta;
+  v14 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeGetSaliencyMapToCommandEncoder:target:saliencyMap:meta:];
 LABEL_9:
@@ -1696,53 +1696,53 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetSaliencyMapToCommandEncoder:target:saliencyMap:meta:];
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetSaliencyMapToCommandEncoder:target:saliencyMap:meta:];
     goto LABEL_9;
   }
 
-  v15 = [v13 contents];
-  LODWORD(v16) = *(v15 + 24);
-  LODWORD(v17) = *(v15 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v16) = *(contents + 24);
+  LODWORD(v17) = *(contents + 28);
   v18 = (((v16 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v19 = (((v17 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v26 = [v12 width];
-  v25 = [v12 height];
-  [v10 setComputePipelineState:self->_getSaliencyMapYUV];
-  [v10 setTexture:v11 atIndex:0];
-  [v10 setTexture:v12 atIndex:1];
-  [v10 setBuffer:v14 offset:0 atIndex:0];
-  [v10 setBytes:&v26 length:4 atIndex:1];
-  [v10 setBytes:&v25 length:4 atIndex:2];
+  width = [mapCopy width];
+  height = [mapCopy height];
+  [encoderCopy setComputePipelineState:self->_getSaliencyMapYUV];
+  [encoderCopy setTexture:targetCopy atIndex:0];
+  [encoderCopy setTexture:mapCopy atIndex:1];
+  [encoderCopy setBuffer:v14 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&height length:4 atIndex:2];
   v24[0] = v18;
   v24[1] = v19;
   v24[2] = 1;
   v22 = vdupq_n_s64(4uLL);
   v23 = 1;
-  [v10 dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
+  [encoderCopy dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
   v20 = 0;
 LABEL_5:
 
   return v20;
 }
 
-- (int64_t)encodeGetBgAvgYUVToCommandEncoder:(id)a3 target:(id)a4 ref0:(id)a5 ref1:(id)a6 probMap:(id)a7 meta:(id)a8
+- (int64_t)encodeGetBgAvgYUVToCommandEncoder:(id)encoder target:(id)target ref0:(id)ref0 ref1:(id)ref1 probMap:(id)map meta:(id)meta
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v15)
+  encoderCopy = encoder;
+  targetCopy = target;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  mapCopy = map;
+  metaCopy = meta;
+  v20 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeGetBgAvgYUVToCommandEncoder:target:ref0:ref1:probMap:meta:];
 LABEL_13:
@@ -1750,64 +1750,64 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v16)
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeGetBgAvgYUVToCommandEncoder:target:ref0:ref1:probMap:meta:];
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeGetBgAvgYUVToCommandEncoder:target:ref0:ref1:probMap:meta:];
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetBgAvgYUVToCommandEncoder:target:ref0:ref1:probMap:meta:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetBgAvgYUVToCommandEncoder:target:ref0:ref1:probMap:meta:];
     goto LABEL_13;
   }
 
-  v21 = [v19 contents];
-  LODWORD(v22) = *(v21 + 24);
-  LODWORD(v23) = *(v21 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v22) = *(contents + 24);
+  LODWORD(v23) = *(contents + 28);
   v24 = (((v22 + 128.0 + 4.0) * 0.25 + 8.0 + -1.0) * 0.125);
   v25 = (((v23 + 128.0 + 4.0) * 0.25 + 8.0 + -1.0) * 0.125);
-  v32 = [v15 width];
-  v31 = [v15 height];
-  [v14 setComputePipelineState:self->_getBgAvgYUV];
-  [v14 setTexture:v15 atIndex:0];
-  [v14 setTexture:v16 atIndex:1];
-  [v14 setTexture:v17 atIndex:2];
-  [v14 setTexture:v18 atIndex:3];
-  [v14 setBuffer:v20 offset:0 atIndex:0];
-  [v14 setBytes:&v32 length:4 atIndex:1];
-  [v14 setBytes:&v31 length:4 atIndex:2];
+  width = [targetCopy width];
+  height = [targetCopy height];
+  [encoderCopy setComputePipelineState:self->_getBgAvgYUV];
+  [encoderCopy setTexture:targetCopy atIndex:0];
+  [encoderCopy setTexture:ref0Copy atIndex:1];
+  [encoderCopy setTexture:ref1Copy atIndex:2];
+  [encoderCopy setTexture:mapCopy atIndex:3];
+  [encoderCopy setBuffer:v20 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&height length:4 atIndex:2];
   v30[0] = v24;
   v30[1] = v25;
   v30[2] = 1;
   v28 = vdupq_n_s64(8uLL);
   v29 = 1;
-  [v14 dispatchThreadgroups:v30 threadsPerThreadgroup:&v28];
+  [encoderCopy dispatchThreadgroups:v30 threadsPerThreadgroup:&v28];
   v26 = 0;
 LABEL_7:
 
   return v26;
 }
 
-- (int64_t)encodeCollectClusterBgAvgToCommandEncoder:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterBgAvgToCommandEncoder:(id)encoder clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  encoderCopy = encoder;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterBgAvgToCommandEncoder:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -1815,37 +1815,37 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterBgAvgToCommandEncoder:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectClusterBgAvg];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [encoderCopy setComputePipelineState:self->_collectClusterBgAvg];
+  [encoderCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [encoderCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeBilinearRescaleYUV:(id)a3 fullResInput:(id)a4 input:(id)a5 meta:(id)a6 blurBeforeSample:(BOOL)a7 output:(id)a8
+- (int64_t)encodeBilinearRescaleYUV:(id)v fullResInput:(id)input input:(id)a5 meta:(id)meta blurBeforeSample:(BOOL)sample output:(id)output
 {
-  v14 = a3;
-  v15 = a4;
+  vCopy = v;
+  inputCopy = input;
   v16 = a5;
-  v17 = a6;
-  v37 = a7;
-  v18 = a8;
-  v19 = v18;
-  if (!v15)
+  metaCopy = meta;
+  sampleCopy = sample;
+  outputCopy = output;
+  v19 = outputCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeBilinearRescaleYUV:fullResInput:input:meta:blurBeforeSample:output:];
 LABEL_11:
@@ -1859,62 +1859,62 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v18)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeBilinearRescaleYUV:fullResInput:input:meta:blurBeforeSample:output:];
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeBilinearRescaleYUV:fullResInput:input:meta:blurBeforeSample:output:];
     goto LABEL_11;
   }
 
-  v20 = [v17 contents];
-  v31 = [v19 width];
-  v21 = [v19 height];
-  v22.f32[0] = v31;
-  v22.f32[1] = v21;
+  contents = [metaCopy contents];
+  width = [v19 width];
+  height = [v19 height];
+  v22.f32[0] = width;
+  v22.f32[1] = height;
   v32 = v22;
-  v30 = [v15 width];
-  v23 = [v15 height];
-  v24.f32[0] = v30;
-  v24.f32[1] = v23;
+  width2 = [inputCopy width];
+  height2 = [inputCopy height];
+  v24.f32[0] = width2;
+  v24.f32[1] = height2;
   v36 = vdiv_f32(v32, v24);
-  v25 = *(v20 + 28);
-  v26 = (vcvtpd_u64_f64(((*(v20 + 24) + 128) + 128.0 + 4.0) * v36.f32[0]) + 15) >> 4;
+  v25 = *(contents + 28);
+  v26 = (vcvtpd_u64_f64(((*(contents + 24) + 128) + 128.0 + 4.0) * v36.f32[0]) + 15) >> 4;
   v27 = (vcvtpd_u64_f64(((v25 + 128) + 128.0 + 4.0) * v36.f32[1]) + 15) >> 4;
-  [v14 setComputePipelineState:self->_bilinearRescaleYUV];
-  [v14 setTexture:v16 atIndex:0];
-  [v14 setBuffer:v17 offset:0 atIndex:0];
-  [v14 setTexture:v19 atIndex:1];
-  [v14 setBytes:&v37 length:1 atIndex:1];
-  [v14 setBytes:&v36 length:8 atIndex:2];
-  [v14 setImageblockWidth:16 height:16];
+  [vCopy setComputePipelineState:self->_bilinearRescaleYUV];
+  [vCopy setTexture:v16 atIndex:0];
+  [vCopy setBuffer:metaCopy offset:0 atIndex:0];
+  [vCopy setTexture:v19 atIndex:1];
+  [vCopy setBytes:&sampleCopy length:1 atIndex:1];
+  [vCopy setBytes:&v36 length:8 atIndex:2];
+  [vCopy setImageblockWidth:16 height:16];
   v35[0] = v26;
   v35[1] = v27;
   v35[2] = 1;
   v33 = vdupq_n_s64(0x10uLL);
   v34 = 1;
-  [v14 dispatchThreadgroups:v35 threadsPerThreadgroup:&v33];
+  [vCopy dispatchThreadgroups:v35 threadsPerThreadgroup:&v33];
   v28 = 0;
 LABEL_6:
 
   return v28;
 }
 
-- (int64_t)encodeBilinearRescale2ImgsYUV:(id)a3 fullResInput:(id)a4 input0:(id)a5 output0:(id)a6 input1:(id)a7 output1:(id)a8 meta:(id)a9
+- (int64_t)encodeBilinearRescale2ImgsYUV:(id)v fullResInput:(id)input input0:(id)input0 output0:(id)output0 input1:(id)input1 output1:(id)output1 meta:(id)meta
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  vCopy = v;
+  inputCopy = input;
+  input0Copy = input0;
+  output0Copy = output0;
+  input1Copy = input1;
+  output1Copy = output1;
+  metaCopy = meta;
+  v22 = metaCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeBilinearRescale2ImgsYUV:fullResInput:input0:output0:input1:output1:meta:];
 LABEL_15:
@@ -1922,80 +1922,80 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!input0Copy)
   {
     [GGMMetalToolBox encodeBilinearRescale2ImgsYUV:fullResInput:input0:output0:input1:output1:meta:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!output0Copy)
   {
     [GGMMetalToolBox encodeBilinearRescale2ImgsYUV:fullResInput:input0:output0:input1:output1:meta:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!input1Copy)
   {
     [GGMMetalToolBox encodeBilinearRescale2ImgsYUV:fullResInput:input0:output0:input1:output1:meta:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!output1Copy)
   {
     [GGMMetalToolBox encodeBilinearRescale2ImgsYUV:fullResInput:input0:output0:input1:output1:meta:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeBilinearRescale2ImgsYUV:fullResInput:input0:output0:input1:output1:meta:];
     goto LABEL_15;
   }
 
-  v23 = [v21 contents];
-  v32 = [v18 width];
-  v24 = [v18 height];
-  v25.f32[0] = v32;
-  v25.f32[1] = v24;
+  contents = [metaCopy contents];
+  width = [output0Copy width];
+  height = [output0Copy height];
+  v25.f32[0] = width;
+  v25.f32[1] = height;
   v33 = v25;
-  v31 = [v16 width];
-  v26 = [v16 height];
-  v27.f32[0] = v31;
-  v27.f32[1] = v26;
+  width2 = [inputCopy width];
+  height2 = [inputCopy height];
+  v27.f32[0] = width2;
+  v27.f32[1] = height2;
   v38 = vdiv_f32(v33, v27);
-  v34 = (vcvtpd_u64_f64(((*(v23 + 24) + 128) + 128.0 + 4.0) * v38.f32[0]) + 15) >> 4;
-  v28 = (vcvtpd_u64_f64(((*(v23 + 28) + 128) + 128.0 + 4.0) * v38.f32[1]) + 15) >> 4;
-  [v15 setComputePipelineState:self->_bilinearRescale2ImgsYUV];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setTexture:v17 atIndex:0];
-  [v15 setTexture:v18 atIndex:1];
-  [v15 setTexture:v19 atIndex:2];
-  [v15 setTexture:v20 atIndex:3];
-  [v15 setBytes:&v38 length:8 atIndex:2];
-  [v15 setImageblockWidth:16 height:16];
+  v34 = (vcvtpd_u64_f64(((*(contents + 24) + 128) + 128.0 + 4.0) * v38.f32[0]) + 15) >> 4;
+  v28 = (vcvtpd_u64_f64(((*(contents + 28) + 128) + 128.0 + 4.0) * v38.f32[1]) + 15) >> 4;
+  [vCopy setComputePipelineState:self->_bilinearRescale2ImgsYUV];
+  [vCopy setBuffer:v22 offset:0 atIndex:0];
+  [vCopy setTexture:input0Copy atIndex:0];
+  [vCopy setTexture:output0Copy atIndex:1];
+  [vCopy setTexture:input1Copy atIndex:2];
+  [vCopy setTexture:output1Copy atIndex:3];
+  [vCopy setBytes:&v38 length:8 atIndex:2];
+  [vCopy setImageblockWidth:16 height:16];
   v37[0] = v34;
   v37[1] = v28;
   v37[2] = 1;
   v35 = vdupq_n_s64(0x10uLL);
   v36 = 1;
-  [v15 dispatchThreadgroups:v37 threadsPerThreadgroup:&v35];
+  [vCopy dispatchThreadgroups:v37 threadsPerThreadgroup:&v35];
   v29 = 0;
 LABEL_8:
 
   return v29;
 }
 
-- (int64_t)encodeDilateReflLsMap:(id)a3 inputYUV:(id)a4 lsMap:(id)a5 dilatedLsMap:(id)a6 hardDilationRadius:(float)a7 softDilationRadius:(float)a8 meta:(id)a9
+- (int64_t)encodeDilateReflLsMap:(id)map inputYUV:(id)v lsMap:(id)lsMap dilatedLsMap:(id)dilatedLsMap hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v38 = a8;
-  v39 = a7;
-  v20 = a9;
-  v21 = v20;
-  if (!v17)
+  mapCopy = map;
+  vCopy = v;
+  lsMapCopy = lsMap;
+  dilatedLsMapCopy = dilatedLsMap;
+  dilationRadiusCopy = dilationRadius;
+  radiusCopy = radius;
+  metaCopy = meta;
+  v21 = metaCopy;
+  if (!vCopy)
   {
     [GGMMetalToolBox encodeDilateReflLsMap:inputYUV:lsMap:dilatedLsMap:hardDilationRadius:softDilationRadius:meta:];
 LABEL_11:
@@ -2003,66 +2003,66 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v18)
+  if (!lsMapCopy)
   {
     [GGMMetalToolBox encodeDilateReflLsMap:inputYUV:lsMap:dilatedLsMap:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  if (!v19)
+  if (!dilatedLsMapCopy)
   {
     [GGMMetalToolBox encodeDilateReflLsMap:inputYUV:lsMap:dilatedLsMap:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  if (!v20)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeDilateReflLsMap:inputYUV:lsMap:dilatedLsMap:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  v22 = [v20 contents];
-  LODWORD(v23) = v22[3].i32[0];
-  LODWORD(v24) = v22[3].i32[1];
+  contents = [metaCopy contents];
+  LODWORD(v23) = contents[3].i32[0];
+  LODWORD(v24) = contents[3].i32[1];
   v25 = (((v23 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v26 = (((v24 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v37 = [v18 width];
-  v36 = [v18 height];
-  v27 = [v17 width];
-  v28 = [v17 height];
-  v29.f32[0] = v27;
-  v29.f32[1] = v28;
-  v35 = vdiv_f32(v22[1478], v29);
-  [v16 setComputePipelineState:self->_dilateReflLsMap];
-  [v16 setBuffer:v21 offset:0 atIndex:0];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setBytes:&v39 length:4 atIndex:1];
-  [v16 setBytes:&v38 length:4 atIndex:2];
-  [v16 setBytes:&v35 length:8 atIndex:3];
-  [v16 setBytes:&v37 length:4 atIndex:4];
-  [v16 setBytes:&v36 length:4 atIndex:5];
+  width = [lsMapCopy width];
+  height = [lsMapCopy height];
+  width2 = [vCopy width];
+  height2 = [vCopy height];
+  v29.f32[0] = width2;
+  v29.f32[1] = height2;
+  v35 = vdiv_f32(contents[1478], v29);
+  [mapCopy setComputePipelineState:self->_dilateReflLsMap];
+  [mapCopy setBuffer:v21 offset:0 atIndex:0];
+  [mapCopy setTexture:vCopy atIndex:0];
+  [mapCopy setTexture:lsMapCopy atIndex:1];
+  [mapCopy setTexture:dilatedLsMapCopy atIndex:2];
+  [mapCopy setBytes:&radiusCopy length:4 atIndex:1];
+  [mapCopy setBytes:&dilationRadiusCopy length:4 atIndex:2];
+  [mapCopy setBytes:&v35 length:8 atIndex:3];
+  [mapCopy setBytes:&width length:4 atIndex:4];
+  [mapCopy setBytes:&height length:4 atIndex:5];
   v34[0] = v25;
   v34[1] = v26;
   v34[2] = 1;
   v32 = vdupq_n_s64(4uLL);
   v33 = 1;
-  [v16 dispatchThreadgroups:v34 threadsPerThreadgroup:&v32];
+  [mapCopy dispatchThreadgroups:v34 threadsPerThreadgroup:&v32];
   v30 = 0;
 LABEL_6:
 
   return v30;
 }
 
-- (int64_t)encodeGetBlobSaliency:(id)a3 inputYUV:(id)a4 blobSaliencyMap:(id)a5 meta:(id)a6
+- (int64_t)encodeGetBlobSaliency:(id)saliency inputYUV:(id)v blobSaliencyMap:(id)map meta:(id)meta
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  saliencyCopy = saliency;
+  vCopy = v;
+  mapCopy = map;
+  metaCopy = meta;
+  v14 = metaCopy;
+  if (!vCopy)
   {
     [GGMMetalToolBox encodeGetBlobSaliency:inputYUV:blobSaliencyMap:meta:];
 LABEL_9:
@@ -2070,52 +2070,52 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetBlobSaliency:inputYUV:blobSaliencyMap:meta:];
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetBlobSaliency:inputYUV:blobSaliencyMap:meta:];
     goto LABEL_9;
   }
 
-  v15 = [v13 contents];
-  LODWORD(v16) = *(v15 + 24);
-  LODWORD(v17) = *(v15 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v16) = *(contents + 24);
+  LODWORD(v17) = *(contents + 28);
   v18 = (((v16 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v19 = (((v17 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v26 = [v12 width];
-  v25 = [v12 height];
-  [v10 setComputePipelineState:self->_getBlobSaliency];
-  [v10 setBuffer:v14 offset:0 atIndex:0];
-  [v10 setTexture:v11 atIndex:0];
-  [v10 setBytes:&v26 length:4 atIndex:1];
-  [v10 setBytes:&v25 length:4 atIndex:2];
-  [v10 setTexture:v12 atIndex:1];
+  width = [mapCopy width];
+  height = [mapCopy height];
+  [saliencyCopy setComputePipelineState:self->_getBlobSaliency];
+  [saliencyCopy setBuffer:v14 offset:0 atIndex:0];
+  [saliencyCopy setTexture:vCopy atIndex:0];
+  [saliencyCopy setBytes:&width length:4 atIndex:1];
+  [saliencyCopy setBytes:&height length:4 atIndex:2];
+  [saliencyCopy setTexture:mapCopy atIndex:1];
   v24[0] = v18;
   v24[1] = v19;
   v24[2] = 1;
   v22 = vdupq_n_s64(4uLL);
   v23 = 1;
-  [v10 dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
+  [saliencyCopy dispatchThreadgroups:v24 threadsPerThreadgroup:&v22];
   v20 = 0;
 LABEL_5:
 
   return v20;
 }
 
-- (int64_t)encodeSpatialRepairYUVToCommandEncoder:(id)a3 input:(id)a4 probMap4Spatial:(id)a5 spatialOutput:(id)a6 metaBuf:(id)a7
+- (int64_t)encodeSpatialRepairYUVToCommandEncoder:(id)encoder input:(id)input probMap4Spatial:(id)spatial spatialOutput:(id)output metaBuf:(id)buf
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v13)
+  encoderCopy = encoder;
+  inputCopy = input;
+  spatialCopy = spatial;
+  outputCopy = output;
+  bufCopy = buf;
+  v17 = bufCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeSpatialRepairYUVToCommandEncoder:input:probMap4Spatial:spatialOutput:metaBuf:];
 LABEL_11:
@@ -2123,44 +2123,44 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!spatialCopy)
   {
     [GGMMetalToolBox encodeSpatialRepairYUVToCommandEncoder:input:probMap4Spatial:spatialOutput:metaBuf:];
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeSpatialRepairYUVToCommandEncoder:input:probMap4Spatial:spatialOutput:metaBuf:];
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeSpatialRepairYUVToCommandEncoder:input:probMap4Spatial:spatialOutput:metaBuf:];
     goto LABEL_11;
   }
 
-  v39 = [v15 width];
-  v38 = [v15 height];
-  [v12 setComputePipelineState:self->_spatialRepairYUV];
-  [v12 setTexture:v13 atIndex:0];
-  [v12 setTexture:v14 atIndex:1];
-  [v12 setTexture:v15 atIndex:2];
-  [v12 setBuffer:v17 offset:0 atIndex:0];
-  [v12 setBytes:&v39 length:4 atIndex:1];
-  [v12 setBytes:&v38 length:4 atIndex:2];
-  [v12 setImageblockWidth:32 height:32];
-  v18 = [v17 contents];
-  v19.f32[0] = v39;
-  v19.f32[1] = v38;
+  width = [outputCopy width];
+  height = [outputCopy height];
+  [encoderCopy setComputePipelineState:self->_spatialRepairYUV];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:spatialCopy atIndex:1];
+  [encoderCopy setTexture:outputCopy atIndex:2];
+  [encoderCopy setBuffer:v17 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&height length:4 atIndex:2];
+  [encoderCopy setImageblockWidth:32 height:32];
+  contents = [v17 contents];
+  v19.f32[0] = width;
+  v19.f32[1] = height;
   v33 = v19;
-  v32 = [v13 width];
-  v20 = [v13 height];
-  v21.f32[0] = v32;
-  v21.f32[1] = v20;
+  width2 = [inputCopy width];
+  height2 = [inputCopy height];
+  v21.f32[0] = width2;
+  v21.f32[1] = height2;
   v22 = vdiv_f32(v33, v21);
-  v23 = vadd_s32(v18[3], 0x8000000080);
+  v23 = vadd_s32(contents[3], 0x8000000080);
   v24.i64[0] = v23.u32[0];
   v24.i64[1] = v23.u32[1];
   __asm { FMOV            V2.2D, #4.0 }
@@ -2169,24 +2169,24 @@ LABEL_11:
   v37 = 1;
   v34 = vdupq_n_s64(0x20uLL);
   v35 = 1;
-  [v12 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
+  [encoderCopy dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
   v30 = 0;
 LABEL_6:
 
   return v30;
 }
 
-- (int64_t)encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:(id)a3 input:(id)a4 frRef0:(id)a5 frRef1:(id)a6 temporalOutput:(id)a7 inputCopy:(id)a8 metaBuf:(id)a9
+- (int64_t)encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:(id)encoder input:(id)input frRef0:(id)ref0 frRef1:(id)ref1 temporalOutput:(id)output inputCopy:(id)copy metaBuf:(id)buf
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  encoderCopy = encoder;
+  inputCopy = input;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  outputCopy = output;
+  copyCopy = copy;
+  bufCopy = buf;
+  v22 = bufCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:input:frRef0:frRef1:temporalOutput:inputCopy:metaBuf:];
 LABEL_15:
@@ -2194,48 +2194,48 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:input:frRef0:frRef1:temporalOutput:inputCopy:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:input:frRef0:frRef1:temporalOutput:inputCopy:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:input:frRef0:frRef1:temporalOutput:inputCopy:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!copyCopy)
   {
     [GGMMetalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:input:frRef0:frRef1:temporalOutput:inputCopy:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeSpatialTemporalRepair4DetectionYUVToCommandEncoder:input:frRef0:frRef1:temporalOutput:inputCopy:metaBuf:];
     goto LABEL_15;
   }
 
-  v39 = [v16 width];
-  v38 = [v16 height];
-  [v15 setComputePipelineState:self->_spatialTemporalRepair4DetectionYUV];
-  [v15 setTexture:v16 atIndex:0];
-  [v15 setTexture:v17 atIndex:1];
-  [v15 setTexture:v18 atIndex:2];
-  [v15 setTexture:v19 atIndex:5];
-  [v15 setTexture:v20 atIndex:6];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setBytes:&v39 length:4 atIndex:1];
-  [v15 setBytes:&v38 length:4 atIndex:2];
-  [v15 setImageblockWidth:32 height:32];
+  width = [inputCopy width];
+  height = [inputCopy height];
+  [encoderCopy setComputePipelineState:self->_spatialTemporalRepair4DetectionYUV];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:ref0Copy atIndex:1];
+  [encoderCopy setTexture:ref1Copy atIndex:2];
+  [encoderCopy setTexture:outputCopy atIndex:5];
+  [encoderCopy setTexture:copyCopy atIndex:6];
+  [encoderCopy setBuffer:v22 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:1];
+  [encoderCopy setBytes:&height length:4 atIndex:2];
+  [encoderCopy setImageblockWidth:32 height:32];
   v23 = *([v22 contents] + 24);
   v24.i64[0] = v23;
   v24.i64[1] = HIDWORD(v23);
@@ -2248,25 +2248,25 @@ LABEL_15:
   v37 = 1;
   v34 = vdupq_n_s64(0x20uLL);
   v35 = 1;
-  [v15 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
+  [encoderCopy dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
   v32 = 0;
 LABEL_8:
 
   return v32;
 }
 
-- (int64_t)encodeFuse4DetectionYUVToCommandEncoder:(id)a3 inputTexture:(id)a4 probMapTexture:(id)a5 temporalMitTexture:(id)a6 spatialMitTexture:(id)a7 forceToSpatial:(BOOL)a8 outputTexture:(id)a9 metaBuf:(id)a10
+- (int64_t)encodeFuse4DetectionYUVToCommandEncoder:(id)encoder inputTexture:(id)texture probMapTexture:(id)mapTexture temporalMitTexture:(id)mitTexture spatialMitTexture:(id)spatialMitTexture forceToSpatial:(BOOL)spatial outputTexture:(id)outputTexture metaBuf:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v43 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = v22;
-  if (!v17)
+  encoderCopy = encoder;
+  textureCopy = texture;
+  mapTextureCopy = mapTexture;
+  mitTextureCopy = mitTexture;
+  spatialMitTextureCopy = spatialMitTexture;
+  spatialCopy = spatial;
+  outputTextureCopy = outputTexture;
+  bufCopy = buf;
+  v23 = bufCopy;
+  if (!textureCopy)
   {
     [GGMMetalToolBox encodeFuse4DetectionYUVToCommandEncoder:inputTexture:probMapTexture:temporalMitTexture:spatialMitTexture:forceToSpatial:outputTexture:metaBuf:];
 LABEL_15:
@@ -2274,49 +2274,49 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v18)
+  if (!mapTextureCopy)
   {
     [GGMMetalToolBox encodeFuse4DetectionYUVToCommandEncoder:inputTexture:probMapTexture:temporalMitTexture:spatialMitTexture:forceToSpatial:outputTexture:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!mitTextureCopy)
   {
     [GGMMetalToolBox encodeFuse4DetectionYUVToCommandEncoder:inputTexture:probMapTexture:temporalMitTexture:spatialMitTexture:forceToSpatial:outputTexture:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!spatialMitTextureCopy)
   {
     [GGMMetalToolBox encodeFuse4DetectionYUVToCommandEncoder:inputTexture:probMapTexture:temporalMitTexture:spatialMitTexture:forceToSpatial:outputTexture:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!outputTextureCopy)
   {
     [GGMMetalToolBox encodeFuse4DetectionYUVToCommandEncoder:inputTexture:probMapTexture:temporalMitTexture:spatialMitTexture:forceToSpatial:outputTexture:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v22)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeFuse4DetectionYUVToCommandEncoder:inputTexture:probMapTexture:temporalMitTexture:spatialMitTexture:forceToSpatial:outputTexture:metaBuf:];
     goto LABEL_15;
   }
 
-  v42 = [v17 width];
-  v41 = [v17 height];
-  [v16 setComputePipelineState:self->_fuse4DetectionYUV];
-  [v16 setBuffer:v23 offset:0 atIndex:0];
-  [v16 setBytes:&v42 length:4 atIndex:3];
-  [v16 setBytes:&v41 length:4 atIndex:4];
-  [v16 setBytes:&v43 length:1 atIndex:5];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v19 atIndex:1];
-  [v16 setTexture:v20 atIndex:2];
-  [v16 setTexture:v18 atIndex:3];
-  [v16 setTexture:v21 atIndex:5];
-  [v16 setImageblockWidth:16 height:16];
+  width = [textureCopy width];
+  height = [textureCopy height];
+  [encoderCopy setComputePipelineState:self->_fuse4DetectionYUV];
+  [encoderCopy setBuffer:v23 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:3];
+  [encoderCopy setBytes:&height length:4 atIndex:4];
+  [encoderCopy setBytes:&spatialCopy length:1 atIndex:5];
+  [encoderCopy setTexture:textureCopy atIndex:0];
+  [encoderCopy setTexture:mitTextureCopy atIndex:1];
+  [encoderCopy setTexture:spatialMitTextureCopy atIndex:2];
+  [encoderCopy setTexture:mapTextureCopy atIndex:3];
+  [encoderCopy setTexture:outputTextureCopy atIndex:5];
+  [encoderCopy setImageblockWidth:16 height:16];
   v24 = *([v23 contents] + 24);
   v25.i64[0] = v24;
   v25.i64[1] = HIDWORD(v24);
@@ -2332,20 +2332,20 @@ LABEL_15:
   v40 = 1;
   v37 = vdupq_n_s64(0x10uLL);
   v38 = 1;
-  [v16 dispatchThreadgroups:&v39 threadsPerThreadgroup:&v37];
+  [encoderCopy dispatchThreadgroups:&v39 threadsPerThreadgroup:&v37];
   v35 = 0;
 LABEL_8:
 
   return v35;
 }
 
-- (int64_t)encodeCollectClusterTempRepairErr:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterTempRepairErr:(id)err clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  errCopy = err;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterTempRepairErr:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -2353,34 +2353,34 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterTempRepairErr:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectClusterTempRepairErr];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [errCopy setComputePipelineState:self->_collectClusterTempRepairErr];
+  [errCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [errCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [errCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeCollectClusterMv:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterMv:(id)mv clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  mvCopy = mv;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMv:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -2388,38 +2388,38 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMv:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectClusterMv];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [mvCopy setComputePipelineState:self->_collectClusterMv];
+  [mvCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [mvCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [mvCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeUpscaleProbMap:(id)a3 probMap:(id)a4 refinedProbMap:(id)a5 inputFrame:(id)a6 upscaledProbMap:(id)a7 upscaledRefinedProbMap:(id)a8 meta:(id)a9
+- (int64_t)encodeUpscaleProbMap:(id)map probMap:(id)probMap refinedProbMap:(id)refinedProbMap inputFrame:(id)frame upscaledProbMap:(id)upscaledProbMap upscaledRefinedProbMap:(id)upscaledRefinedProbMap meta:(id)meta
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  mapCopy = map;
+  probMapCopy = probMap;
+  refinedProbMapCopy = refinedProbMap;
+  frameCopy = frame;
+  upscaledProbMapCopy = upscaledProbMap;
+  upscaledRefinedProbMapCopy = upscaledRefinedProbMap;
+  metaCopy = meta;
+  v22 = metaCopy;
+  if (!probMapCopy)
   {
     [GGMMetalToolBox encodeUpscaleProbMap:probMap:refinedProbMap:inputFrame:upscaledProbMap:upscaledRefinedProbMap:meta:];
 LABEL_15:
@@ -2427,73 +2427,73 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!refinedProbMapCopy)
   {
     [GGMMetalToolBox encodeUpscaleProbMap:probMap:refinedProbMap:inputFrame:upscaledProbMap:upscaledRefinedProbMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!frameCopy)
   {
     [GGMMetalToolBox encodeUpscaleProbMap:probMap:refinedProbMap:inputFrame:upscaledProbMap:upscaledRefinedProbMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!upscaledProbMapCopy)
   {
     [GGMMetalToolBox encodeUpscaleProbMap:probMap:refinedProbMap:inputFrame:upscaledProbMap:upscaledRefinedProbMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!upscaledRefinedProbMapCopy)
   {
     [GGMMetalToolBox encodeUpscaleProbMap:probMap:refinedProbMap:inputFrame:upscaledProbMap:upscaledRefinedProbMap:meta:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeUpscaleProbMap:probMap:refinedProbMap:inputFrame:upscaledProbMap:upscaledRefinedProbMap:meta:];
     goto LABEL_15;
   }
 
-  v23 = [v21 contents];
-  LODWORD(v24) = *(v23 + 24);
-  LODWORD(v25) = *(v23 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v24) = *(contents + 24);
+  LODWORD(v25) = *(contents + 28);
   v26 = ((v24 + 128.0 + 4.0 + 8.0 + -1.0) * 0.125);
   v27 = ((v25 + 128.0 + 4.0 + 8.0 + -1.0) * 0.125);
-  v34 = [v19 width];
-  v33 = [v19 height];
-  [v15 setComputePipelineState:self->_upscaleProbMap];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setTexture:v16 atIndex:0];
-  [v15 setTexture:v17 atIndex:1];
-  [v15 setTexture:v18 atIndex:2];
-  [v15 setTexture:v19 atIndex:3];
-  [v15 setTexture:v20 atIndex:4];
-  [v15 setBytes:&v34 length:4 atIndex:1];
-  [v15 setBytes:&v33 length:4 atIndex:2];
+  width = [upscaledProbMapCopy width];
+  height = [upscaledProbMapCopy height];
+  [mapCopy setComputePipelineState:self->_upscaleProbMap];
+  [mapCopy setBuffer:v22 offset:0 atIndex:0];
+  [mapCopy setTexture:probMapCopy atIndex:0];
+  [mapCopy setTexture:refinedProbMapCopy atIndex:1];
+  [mapCopy setTexture:frameCopy atIndex:2];
+  [mapCopy setTexture:upscaledProbMapCopy atIndex:3];
+  [mapCopy setTexture:upscaledRefinedProbMapCopy atIndex:4];
+  [mapCopy setBytes:&width length:4 atIndex:1];
+  [mapCopy setBytes:&height length:4 atIndex:2];
   v32[0] = v26;
   v32[1] = v27;
   v32[2] = 1;
   v30 = vdupq_n_s64(8uLL);
   v31 = 1;
-  [v15 dispatchThreadgroups:v32 threadsPerThreadgroup:&v30];
+  [mapCopy dispatchThreadgroups:v32 threadsPerThreadgroup:&v30];
   v28 = 0;
 LABEL_8:
 
   return v28;
 }
 
-- (int64_t)encodeUpscaleThenReflectLsMap:(id)a3 input:(id)a4 normalizedCenter:(id)a5 output:
+- (int64_t)encodeUpscaleThenReflectLsMap:(id)map input:(id)input normalizedCenter:(id)center output:
 {
   v7 = v5;
-  v10 = a3;
-  v11 = a4;
+  mapCopy = map;
+  inputCopy = input;
   v23 = v7;
-  v12 = a5;
-  v13 = v12;
-  if (!v11)
+  centerCopy = center;
+  v13 = centerCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeUpscaleThenReflectLsMap:input:normalizedCenter:output:];
 LABEL_7:
@@ -2501,42 +2501,42 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v12)
+  if (!centerCopy)
   {
     [GGMMetalToolBox encodeUpscaleThenReflectLsMap:input:normalizedCenter:output:];
     goto LABEL_7;
   }
 
-  v14 = ([v12 width] + 15) >> 4;
+  v14 = ([centerCopy width] + 15) >> 4;
   v15 = ([v13 height] + 15) >> 4;
-  v22 = [v13 width];
-  v21 = [v13 height];
-  [v10 setComputePipelineState:self->_upscaleThenReflectLsMap];
-  [v10 setTexture:v11 atIndex:0];
-  [v10 setBytes:&v23 length:8 atIndex:0];
-  [v10 setBytes:&v22 length:4 atIndex:1];
-  [v10 setBytes:&v21 length:4 atIndex:2];
-  [v10 setTexture:v13 atIndex:1];
+  width = [v13 width];
+  height = [v13 height];
+  [mapCopy setComputePipelineState:self->_upscaleThenReflectLsMap];
+  [mapCopy setTexture:inputCopy atIndex:0];
+  [mapCopy setBytes:&v23 length:8 atIndex:0];
+  [mapCopy setBytes:&width length:4 atIndex:1];
+  [mapCopy setBytes:&height length:4 atIndex:2];
+  [mapCopy setTexture:v13 atIndex:1];
   v20[0] = v14;
   v20[1] = v15;
   v20[2] = 1;
   v18 = vdupq_n_s64(0x10uLL);
   v19 = 1;
-  [v10 dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
+  [mapCopy dispatchThreadgroups:v20 threadsPerThreadgroup:&v18];
   v16 = 0;
 LABEL_4:
 
   return v16;
 }
 
-- (int64_t)encodeGetOverlapWithRefs:(id)a3 input:(id)a4 probMap:(id)a5 metaBuf:(id)a6
+- (int64_t)encodeGetOverlapWithRefs:(id)refs input:(id)input probMap:(id)map metaBuf:(id)buf
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  refsCopy = refs;
+  inputCopy = input;
+  mapCopy = map;
+  bufCopy = buf;
+  v14 = bufCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeGetOverlapWithRefs:input:probMap:metaBuf:];
 LABEL_9:
@@ -2544,30 +2544,30 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetOverlapWithRefs:input:probMap:metaBuf:];
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeGetOverlapWithRefs:input:probMap:metaBuf:];
     goto LABEL_9;
   }
 
-  v37 = [v11 width];
-  v36 = [v11 height];
-  v35 = [v12 width];
-  v34 = [v12 height];
-  [v10 setComputePipelineState:self->_getOverlapWithRefs];
-  [v10 setTexture:v11 atIndex:0];
-  [v10 setTexture:v12 atIndex:1];
-  [v10 setBuffer:v14 offset:0 atIndex:0];
-  [v10 setBytes:&v37 length:4 atIndex:3];
-  [v10 setBytes:&v36 length:4 atIndex:4];
-  [v10 setBytes:&v35 length:4 atIndex:5];
-  [v10 setBytes:&v34 length:4 atIndex:6];
+  width = [inputCopy width];
+  height = [inputCopy height];
+  width2 = [mapCopy width];
+  height2 = [mapCopy height];
+  [refsCopy setComputePipelineState:self->_getOverlapWithRefs];
+  [refsCopy setTexture:inputCopy atIndex:0];
+  [refsCopy setTexture:mapCopy atIndex:1];
+  [refsCopy setBuffer:v14 offset:0 atIndex:0];
+  [refsCopy setBytes:&width length:4 atIndex:3];
+  [refsCopy setBytes:&height length:4 atIndex:4];
+  [refsCopy setBytes:&width2 length:4 atIndex:5];
+  [refsCopy setBytes:&height2 length:4 atIndex:6];
   v15 = *([v14 contents] + 24);
   v16.i64[0] = v15;
   v16.i64[1] = HIDWORD(v15);
@@ -2586,20 +2586,20 @@ LABEL_9:
   v33 = 1;
   v30 = vdupq_n_s64(0x10uLL);
   v31 = 1;
-  [v10 dispatchThreadgroups:&v32 threadsPerThreadgroup:&v30];
+  [refsCopy dispatchThreadgroups:&v32 threadsPerThreadgroup:&v30];
   v28 = 0;
 LABEL_5:
 
   return v28;
 }
 
-- (int64_t)encodeCollectClusterOverlapWithRefs:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterOverlapWithRefs:(id)refs clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  refsCopy = refs;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterOverlapWithRefs:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -2607,37 +2607,37 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterOverlapWithRefs:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectOverlapWithRefs];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [refsCopy setComputePipelineState:self->_collectOverlapWithRefs];
+  [refsCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [refsCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [refsCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodePreprocessInputs4MotionCueYUVToCommandEncoder:(id)a3 input:(id)a4 ref:(id)a5 output:(id)a6 refOutput:(id)a7 metaBuf:(id)a8 processedFrameCount:(int)a9
+- (int64_t)encodePreprocessInputs4MotionCueYUVToCommandEncoder:(id)encoder input:(id)input ref:(id)ref output:(id)output refOutput:(id)refOutput metaBuf:(id)buf processedFrameCount:(int)count
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  if (!v16)
+  encoderCopy = encoder;
+  inputCopy = input;
+  refCopy = ref;
+  outputCopy = output;
+  refOutputCopy = refOutput;
+  bufCopy = buf;
+  v21 = bufCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:input:ref:output:refOutput:metaBuf:processedFrameCount:];
 LABEL_14:
@@ -2645,67 +2645,67 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!v17 && a9 >= 1)
+  if (!refCopy && count >= 1)
   {
     [GGMMetalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:input:ref:output:refOutput:metaBuf:processedFrameCount:];
     goto LABEL_14;
   }
 
-  if (!v18)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:input:ref:output:refOutput:metaBuf:processedFrameCount:];
     goto LABEL_14;
   }
 
-  if (!v19)
+  if (!refOutputCopy)
   {
     [GGMMetalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:input:ref:output:refOutput:metaBuf:processedFrameCount:];
     goto LABEL_14;
   }
 
-  if (!v20)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodePreprocessInputs4MotionCueYUVToCommandEncoder:input:ref:output:refOutput:metaBuf:processedFrameCount:];
     goto LABEL_14;
   }
 
-  v29 = [v18 width];
-  v28 = [v18 height];
-  [v15 setComputePipelineState:self->_preprocessInputs4MotionCueYUV];
-  [v15 setTexture:v16 atIndex:0];
-  [v15 setTexture:v17 atIndex:1];
-  [v15 setTexture:v18 atIndex:3];
-  [v15 setTexture:v19 atIndex:4];
-  [v15 setBuffer:v21 offset:0 atIndex:0];
-  [v15 setBytes:&v29 length:4 atIndex:2];
-  [v15 setBytes:&v28 length:4 atIndex:3];
-  [v15 setImageblockWidth:32 height:32];
+  width = [outputCopy width];
+  height = [outputCopy height];
+  [encoderCopy setComputePipelineState:self->_preprocessInputs4MotionCueYUV];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:refCopy atIndex:1];
+  [encoderCopy setTexture:outputCopy atIndex:3];
+  [encoderCopy setTexture:refOutputCopy atIndex:4];
+  [encoderCopy setBuffer:v21 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:2];
+  [encoderCopy setBytes:&height length:4 atIndex:3];
+  [encoderCopy setImageblockWidth:32 height:32];
   v26 = vshrq_n_u64(vaddw_s32(vdupq_n_s64(0x1FuLL), vadd_s32(*([v21 contents] + 24), 0x8800000088)), 5uLL);
   v27 = 1;
   v24 = vdupq_n_s64(0x20uLL);
   v25 = 1;
-  [v15 dispatchThreadgroups:&v26 threadsPerThreadgroup:&v24];
+  [encoderCopy dispatchThreadgroups:&v26 threadsPerThreadgroup:&v24];
   v22 = 0;
 LABEL_8:
 
   return v22;
 }
 
-- (int64_t)encodeCollectMvToFuture:(id)a3 metaBuf:(id)a4
+- (int64_t)encodeCollectMvToFuture:(id)future metaBuf:(id)buf
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  futureCopy = future;
+  bufCopy = buf;
+  v8 = bufCopy;
+  if (bufCopy)
   {
-    v9 = [v7 contents];
-    [v6 setComputePipelineState:self->_collectMvToFuture];
-    [v6 setBuffer:v8 offset:0 atIndex:0];
-    v14 = (*v9 + 31) >> 5;
+    contents = [bufCopy contents];
+    [futureCopy setComputePipelineState:self->_collectMvToFuture];
+    [futureCopy setBuffer:v8 offset:0 atIndex:0];
+    v14 = (*contents + 31) >> 5;
     v15 = vdupq_n_s64(1uLL);
     v12 = 32;
     v13 = xmmword_2487C3C20;
-    [v6 dispatchThreadgroups:&v14 threadsPerThreadgroup:&v12];
+    [futureCopy dispatchThreadgroups:&v14 threadsPerThreadgroup:&v12];
     v10 = 0;
   }
 
@@ -2718,17 +2718,17 @@ LABEL_8:
   return v10;
 }
 
-- (int64_t)encodeWarpRefMeta:(id)a3 refMetaBuf:(id)a4 metaBuf:(id)a5 outMetaBuf:(id)a6 lsCheckOutmetaBuf:(id)a7 redoTrackingOutmetaBuf:(id)a8 capRefMetaCnt:(BOOL)a9
+- (int64_t)encodeWarpRefMeta:(id)meta refMetaBuf:(id)buf metaBuf:(id)metaBuf outMetaBuf:(id)outMetaBuf lsCheckOutmetaBuf:(id)outmetaBuf redoTrackingOutmetaBuf:(id)trackingOutmetaBuf capRefMetaCnt:(BOOL)cnt
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = v20;
-  v28 = a9;
-  if (!v16)
+  metaCopy = meta;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  outMetaBufCopy = outMetaBuf;
+  outmetaBufCopy = outmetaBuf;
+  trackingOutmetaBufCopy = trackingOutmetaBuf;
+  v21 = trackingOutmetaBufCopy;
+  cntCopy = cnt;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMeta:refMetaBuf:metaBuf:outMetaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:capRefMetaCnt:];
 LABEL_13:
@@ -2736,57 +2736,57 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v17)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMeta:refMetaBuf:metaBuf:outMetaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:capRefMetaCnt:];
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!outMetaBufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMeta:refMetaBuf:metaBuf:outMetaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:capRefMetaCnt:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!outmetaBufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMeta:refMetaBuf:metaBuf:outMetaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:capRefMetaCnt:];
     goto LABEL_13;
   }
 
-  if (!v20)
+  if (!trackingOutmetaBufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMeta:refMetaBuf:metaBuf:outMetaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:capRefMetaCnt:];
     goto LABEL_13;
   }
 
-  [v15 setComputePipelineState:self->_warpRefMeta];
-  [v15 setBuffer:v16 offset:0 atIndex:0];
-  [v15 setBuffer:v17 offset:0 atIndex:1];
-  [v15 setBuffer:v18 offset:0 atIndex:2];
-  [v15 setBuffer:v19 offset:0 atIndex:3];
-  [v15 setBuffer:v21 offset:0 atIndex:4];
-  [v15 setBytes:&v28 length:1 atIndex:5];
+  [metaCopy setComputePipelineState:self->_warpRefMeta];
+  [metaCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [metaCopy setBuffer:metaBufCopy offset:0 atIndex:1];
+  [metaCopy setBuffer:outMetaBufCopy offset:0 atIndex:2];
+  [metaCopy setBuffer:outmetaBufCopy offset:0 atIndex:3];
+  [metaCopy setBuffer:v21 offset:0 atIndex:4];
+  [metaCopy setBytes:&cntCopy length:1 atIndex:5];
   v26 = vdupq_n_s64(1uLL);
   v27 = 1;
   v24 = xmmword_2487C3C00;
   v25 = 1;
-  [v15 dispatchThreadgroups:&v26 threadsPerThreadgroup:&v24];
+  [metaCopy dispatchThreadgroups:&v26 threadsPerThreadgroup:&v24];
   v22 = 0;
 LABEL_7:
 
   return v22;
 }
 
-- (int64_t)encodeCollectMetaContainers:(id)a3 metaBuf:(id)a4 lsCheckOutmetaBuf:(id)a5 redoTrackingOutmetaBuf:(id)a6 currTrackId:(int)a7
+- (int64_t)encodeCollectMetaContainers:(id)containers metaBuf:(id)buf lsCheckOutmetaBuf:(id)outmetaBuf redoTrackingOutmetaBuf:(id)trackingOutmetaBuf currTrackId:(int)id
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  v23 = a7;
-  if (!v13)
+  containersCopy = containers;
+  bufCopy = buf;
+  outmetaBufCopy = outmetaBuf;
+  trackingOutmetaBufCopy = trackingOutmetaBuf;
+  v16 = trackingOutmetaBufCopy;
+  idCopy = id;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectMetaContainers:metaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:currTrackId:];
 LABEL_9:
@@ -2794,45 +2794,45 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v14)
+  if (!outmetaBufCopy)
   {
     [GGMMetalToolBox encodeCollectMetaContainers:metaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:currTrackId:];
     goto LABEL_9;
   }
 
-  if (!v15)
+  if (!trackingOutmetaBufCopy)
   {
     [GGMMetalToolBox encodeCollectMetaContainers:metaBuf:lsCheckOutmetaBuf:redoTrackingOutmetaBuf:currTrackId:];
     goto LABEL_9;
   }
 
-  [v12 setComputePipelineState:self->_collectMetaContainers];
-  [v12 setBuffer:v13 offset:0 atIndex:0];
-  [v12 setBuffer:v14 offset:0 atIndex:1];
-  [v12 setBuffer:v16 offset:0 atIndex:2];
-  [v12 setBytes:&v23 length:4 atIndex:3];
+  [containersCopy setComputePipelineState:self->_collectMetaContainers];
+  [containersCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [containersCopy setBuffer:outmetaBufCopy offset:0 atIndex:1];
+  [containersCopy setBuffer:v16 offset:0 atIndex:2];
+  [containersCopy setBytes:&idCopy length:4 atIndex:3];
   v21 = vdupq_n_s64(1uLL);
   v22 = 1;
   v19 = xmmword_2487C3C00;
   v20 = 1;
-  [v12 dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
+  [containersCopy dispatchThreadgroups:&v21 threadsPerThreadgroup:&v19];
   v17 = 0;
 LABEL_5:
 
   return v17;
 }
 
-- (int64_t)encodeRefineFutureHwLsMapWithTrackingToEncoder:(id)a3 reflHwMap:(id)a4 target:(id)a5 opticalCenter:(id)a6 warpedRefReflHwMap:(id)a7 warpedReflRef:(id)a8 metaBuf:
+- (int64_t)encodeRefineFutureHwLsMapWithTrackingToEncoder:(id)encoder reflHwMap:(id)map target:(id)target opticalCenter:(id)center warpedRefReflHwMap:(id)hwMap warpedReflRef:(id)ref metaBuf:
 {
   v12 = v8;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = v21;
-  if (!v17)
+  encoderCopy = encoder;
+  mapCopy = map;
+  targetCopy = target;
+  centerCopy = center;
+  hwMapCopy = hwMap;
+  refCopy = ref;
+  v22 = refCopy;
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:reflHwMap:target:opticalCenter:warpedRefReflHwMap:warpedReflRef:metaBuf:];
 LABEL_13:
@@ -2840,71 +2840,71 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v18)
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:reflHwMap:target:opticalCenter:warpedRefReflHwMap:warpedReflRef:metaBuf:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!centerCopy)
   {
     [GGMMetalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:reflHwMap:target:opticalCenter:warpedRefReflHwMap:warpedReflRef:metaBuf:];
     goto LABEL_13;
   }
 
-  if (!v20)
+  if (!hwMapCopy)
   {
     [GGMMetalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:reflHwMap:target:opticalCenter:warpedRefReflHwMap:warpedReflRef:metaBuf:];
     goto LABEL_13;
   }
 
-  if (!v21)
+  if (!refCopy)
   {
     [GGMMetalToolBox encodeRefineFutureHwLsMapWithTrackingToEncoder:reflHwMap:target:opticalCenter:warpedRefReflHwMap:warpedReflRef:metaBuf:];
     goto LABEL_13;
   }
 
-  v23 = [v21 contents];
-  LODWORD(v24) = *(v23 + 24);
-  LODWORD(v25) = *(v23 + 28);
+  contents = [refCopy contents];
+  LODWORD(v24) = *(contents + 24);
+  LODWORD(v25) = *(contents + 28);
   v26 = (((v24 + 128.0 + 4.0) * 0.5 + 16.0 + -1.0) * 0.0625);
   v27 = (((v25 + 128.0 + 4.0) * 0.5 + 16.0 + -1.0) * 0.0625);
-  v38 = [v17 width];
-  v37 = [v17 height];
-  v28 = [v18 width];
-  v29 = [v18 height];
-  v30.f32[0] = v28;
-  v30.f32[1] = v29;
+  width = [mapCopy width];
+  height = [mapCopy height];
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v30.f32[0] = width2;
+  v30.f32[1] = height2;
   v36 = vdiv_f32(v12, v30);
-  [v16 setComputePipelineState:self->_refineFutureHwLsMapWithTrackingYUV];
-  [v16 setBuffer:v22 offset:0 atIndex:0];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setBytes:&v36 length:8 atIndex:1];
-  [v16 setBytes:&v38 length:4 atIndex:2];
-  [v16 setBytes:&v37 length:4 atIndex:3];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setTexture:v20 atIndex:3];
-  [v16 setTexture:v17 atIndex:4];
+  [encoderCopy setComputePipelineState:self->_refineFutureHwLsMapWithTrackingYUV];
+  [encoderCopy setBuffer:v22 offset:0 atIndex:0];
+  [encoderCopy setTexture:mapCopy atIndex:0];
+  [encoderCopy setTexture:targetCopy atIndex:1];
+  [encoderCopy setBytes:&v36 length:8 atIndex:1];
+  [encoderCopy setBytes:&width length:4 atIndex:2];
+  [encoderCopy setBytes:&height length:4 atIndex:3];
+  [encoderCopy setTexture:centerCopy atIndex:2];
+  [encoderCopy setTexture:hwMapCopy atIndex:3];
+  [encoderCopy setTexture:mapCopy atIndex:4];
   v35[0] = v26;
   v35[1] = v27;
   v35[2] = 1;
   v33 = vdupq_n_s64(0x10uLL);
   v34 = 1;
-  [v16 dispatchThreadgroups:v35 threadsPerThreadgroup:&v33];
+  [encoderCopy dispatchThreadgroups:v35 threadsPerThreadgroup:&v33];
   v31 = 0;
 LABEL_7:
 
   return v31;
 }
 
-- (int64_t)encodeCopyCurrMetaForProcFuture:(id)a3 metaBuf:(id)a4 outMetaBuf:(id)a5
+- (int64_t)encodeCopyCurrMetaForProcFuture:(id)future metaBuf:(id)buf outMetaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  futureCopy = future;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCopyCurrMetaForProcFuture:metaBuf:outMetaBuf:];
 LABEL_7:
@@ -2912,34 +2912,34 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCopyCurrMetaForProcFuture:metaBuf:outMetaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_copyCurrMetaForProcFuture];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [futureCopy setComputePipelineState:self->_copyCurrMetaForProcFuture];
+  [futureCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [futureCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [futureCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeCollectClusterMaxProb:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterMaxProb:(id)prob clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  probCopy = prob;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMaxProb:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -2947,34 +2947,34 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMaxProb:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectClusterMaxProb];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [probCopy setComputePipelineState:self->_collectClusterMaxProb];
+  [probCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [probCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [probCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeSyncWeightsOriginal:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeSyncWeightsOriginal:(id)original clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  originalCopy = original;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeSyncWeightsOriginal:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -2982,34 +2982,34 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeSyncWeightsOriginal:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  [v8 setComputePipelineState:self->_syncWeightsOriginal];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
+  [originalCopy setComputePipelineState:self->_syncWeightsOriginal];
+  [originalCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [originalCopy setBuffer:v11 offset:0 atIndex:1];
   v16 = vdupq_n_s64(1uLL);
   v17 = 1;
   v14 = xmmword_2487C3C00;
   v15 = 1;
-  [v8 dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
+  [originalCopy dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
   v12 = 0;
 LABEL_4:
 
   return v12;
 }
 
-- (int64_t)encodeGetRoiMaxAndAvgLumaYUV:(id)a3 target:(id)a4 lsMap:(id)a5 meta:(id)a6
+- (int64_t)encodeGetRoiMaxAndAvgLumaYUV:(id)v target:(id)target lsMap:(id)map meta:(id)meta
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  vCopy = v;
+  targetCopy = target;
+  mapCopy = map;
+  metaCopy = meta;
+  v14 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeGetRoiMaxAndAvgLumaYUV:target:lsMap:meta:];
 LABEL_9:
@@ -3017,19 +3017,19 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetRoiMaxAndAvgLumaYUV:target:lsMap:meta:];
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetRoiMaxAndAvgLumaYUV:target:lsMap:meta:];
     goto LABEL_9;
   }
 
-  v15 = *([v13 contents] + 24);
+  v15 = *([metaCopy contents] + 24);
   v16.i64[0] = v15;
   v16.i64[1] = HIDWORD(v15);
   __asm { FMOV            V1.2D, #4.0 }
@@ -3038,28 +3038,28 @@ LABEL_9:
   __asm { FMOV            V1.2D, #-1.0 }
 
   v26 = vcvtq_u64_f64(vmulq_f64(vaddq_f64(v22, _Q1), vdupq_n_s64(0x3FA0000000000000uLL)));
-  [v10 setComputePipelineState:self->_getRoiMaxAndAvgLumaYUV];
-  [v10 setBuffer:v14 offset:0 atIndex:0];
-  [v10 setTexture:v11 atIndex:0];
-  [v10 setTexture:v12 atIndex:1];
+  [vCopy setComputePipelineState:self->_getRoiMaxAndAvgLumaYUV];
+  [vCopy setBuffer:v14 offset:0 atIndex:0];
+  [vCopy setTexture:targetCopy atIndex:0];
+  [vCopy setTexture:mapCopy atIndex:1];
   v29 = v26;
   v30 = 1;
   v27 = vdupq_n_s64(0x20uLL);
   v28 = 1;
-  [v10 dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
+  [vCopy dispatchThreadgroups:&v29 threadsPerThreadgroup:&v27];
   v24 = 0;
 LABEL_5:
 
   return v24;
 }
 
-- (int64_t)encodeCollectClusterMaxAndAvgLuma:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterMaxAndAvgLuma:(id)luma clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  lumaCopy = luma;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMaxAndAvgLuma:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -3067,40 +3067,40 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMaxAndAvgLuma:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectClusterMaxAndAvgLuma];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [lumaCopy setComputePipelineState:self->_collectClusterMaxAndAvgLuma];
+  [lumaCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [lumaCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [lumaCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeGetMvFromLsToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)a2 lsMap:(id)a3 refLsMap:(id)a4 targetCenter:(id)a5 refCenter:(id)a6 meta:(id)a7
+- (int64_t)encodeGetMvFromLsToCommandEncoder:(GGMMetalToolBox *)self target:(SEL)target lsMap:(id)map refLsMap:(id)lsMap targetCenter:(id)center refCenter:(id)refCenter meta:(id)meta
 {
   v10 = v8;
   v11 = v7;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  mapCopy = map;
+  lsMapCopy = lsMap;
+  centerCopy = center;
+  refCenterCopy = refCenter;
   v31 = v10;
   v32 = v11;
-  v20 = a7;
-  v21 = v20;
-  if (!v17)
+  metaCopy = meta;
+  v21 = metaCopy;
+  if (!lsMapCopy)
   {
     [GGMMetalToolBox encodeGetMvFromLsToCommandEncoder:target:lsMap:refLsMap:targetCenter:refCenter:meta:];
 LABEL_11:
@@ -3108,57 +3108,57 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v18)
+  if (!centerCopy)
   {
     [GGMMetalToolBox encodeGetMvFromLsToCommandEncoder:target:lsMap:refLsMap:targetCenter:refCenter:meta:];
     goto LABEL_11;
   }
 
-  if (!v19)
+  if (!refCenterCopy)
   {
     [GGMMetalToolBox encodeGetMvFromLsToCommandEncoder:target:lsMap:refLsMap:targetCenter:refCenter:meta:];
     goto LABEL_11;
   }
 
-  if (!v20)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetMvFromLsToCommandEncoder:target:lsMap:refLsMap:targetCenter:refCenter:meta:];
     goto LABEL_11;
   }
 
-  v22 = [v20 contents];
-  v30 = [v17 width];
-  v29 = [v17 height];
-  [v16 setComputePipelineState:self->_getMvFromLs];
-  [v16 setTexture:v18 atIndex:0];
-  [v16 setTexture:v19 atIndex:1];
-  [v16 setBuffer:v21 offset:0 atIndex:0];
-  [v16 setBytes:&v30 length:8 atIndex:1];
-  [v16 setBytes:&v29 length:8 atIndex:2];
-  [v16 setBytes:&v32 length:8 atIndex:3];
-  [v16 setBytes:&v31 length:8 atIndex:4];
-  v27 = (*v22 + 31) >> 5;
+  contents = [metaCopy contents];
+  width = [lsMapCopy width];
+  height = [lsMapCopy height];
+  [mapCopy setComputePipelineState:self->_getMvFromLs];
+  [mapCopy setTexture:centerCopy atIndex:0];
+  [mapCopy setTexture:refCenterCopy atIndex:1];
+  [mapCopy setBuffer:v21 offset:0 atIndex:0];
+  [mapCopy setBytes:&width length:8 atIndex:1];
+  [mapCopy setBytes:&height length:8 atIndex:2];
+  [mapCopy setBytes:&v32 length:8 atIndex:3];
+  [mapCopy setBytes:&v31 length:8 atIndex:4];
+  v27 = (*contents + 31) >> 5;
   v28 = vdupq_n_s64(1uLL);
   v25 = 32;
   v26 = xmmword_2487C3C20;
-  [v16 dispatchThreadgroups:&v27 threadsPerThreadgroup:&v25];
+  [mapCopy dispatchThreadgroups:&v27 threadsPerThreadgroup:&v25];
   v23 = 0;
 LABEL_6:
 
   return v23;
 }
 
-- (int64_t)encodeConditionalDilateProbMapYUV:(id)a3 inputYUV:(id)a4 probMap:(id)a5 dilatedProbMap:(id)a6 hardDilationRadius:(float)a7 softDilationRadius:(float)a8 meta:(id)a9
+- (int64_t)encodeConditionalDilateProbMapYUV:(id)v inputYUV:(id)uV probMap:(id)map dilatedProbMap:(id)probMap hardDilationRadius:(float)radius softDilationRadius:(float)dilationRadius meta:(id)meta
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v34 = a8;
-  v35 = a7;
-  v20 = a9;
-  v21 = v20;
-  if (!v17)
+  vCopy = v;
+  uVCopy = uV;
+  mapCopy = map;
+  probMapCopy = probMap;
+  dilationRadiusCopy = dilationRadius;
+  radiusCopy = radius;
+  metaCopy = meta;
+  v21 = metaCopy;
+  if (!uVCopy)
   {
     [GGMMetalToolBox encodeConditionalDilateProbMapYUV:inputYUV:probMap:dilatedProbMap:hardDilationRadius:softDilationRadius:meta:];
 LABEL_11:
@@ -3166,60 +3166,60 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v18)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeConditionalDilateProbMapYUV:inputYUV:probMap:dilatedProbMap:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  if (!v19)
+  if (!probMapCopy)
   {
     [GGMMetalToolBox encodeConditionalDilateProbMapYUV:inputYUV:probMap:dilatedProbMap:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  if (!v20)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeConditionalDilateProbMapYUV:inputYUV:probMap:dilatedProbMap:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_11;
   }
 
-  v22 = [v20 contents];
-  LODWORD(v23) = *(v22 + 24);
-  LODWORD(v24) = *(v22 + 28);
+  contents = [metaCopy contents];
+  LODWORD(v23) = *(contents + 24);
+  LODWORD(v24) = *(contents + 28);
   v25 = (((v23 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
   v26 = (((v24 + 128.0 + 4.0) * 0.5 + 4.0 + -1.0) * 0.25);
-  v33 = [v19 width];
-  v32 = [v19 height];
-  [v16 setComputePipelineState:self->_conditionalDilateProbMapYUV];
-  [v16 setBuffer:v21 offset:0 atIndex:0];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setBytes:&v35 length:4 atIndex:1];
-  [v16 setBytes:&v34 length:4 atIndex:2];
-  [v16 setBytes:&v33 length:4 atIndex:3];
-  [v16 setBytes:&v32 length:4 atIndex:4];
+  width = [probMapCopy width];
+  height = [probMapCopy height];
+  [vCopy setComputePipelineState:self->_conditionalDilateProbMapYUV];
+  [vCopy setBuffer:v21 offset:0 atIndex:0];
+  [vCopy setTexture:uVCopy atIndex:0];
+  [vCopy setTexture:mapCopy atIndex:1];
+  [vCopy setTexture:probMapCopy atIndex:2];
+  [vCopy setBytes:&radiusCopy length:4 atIndex:1];
+  [vCopy setBytes:&dilationRadiusCopy length:4 atIndex:2];
+  [vCopy setBytes:&width length:4 atIndex:3];
+  [vCopy setBytes:&height length:4 atIndex:4];
   v31[0] = v25;
   v31[1] = v26;
   v31[2] = 1;
   v29 = vdupq_n_s64(4uLL);
   v30 = 1;
-  [v16 dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
+  [vCopy dispatchThreadgroups:v31 threadsPerThreadgroup:&v29];
   v27 = 0;
 LABEL_6:
 
   return v27;
 }
 
-- (int64_t)encodeCopyMapToMap4RoiGenToCommandEncoder:(id)a3 input:(id)a4 output:(id)a5 metaBuf:(id)a6
+- (int64_t)encodeCopyMapToMap4RoiGenToCommandEncoder:(id)encoder input:(id)input output:(id)output metaBuf:(id)buf
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  encoderCopy = encoder;
+  inputCopy = input;
+  outputCopy = output;
+  bufCopy = buf;
+  v14 = bufCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:input:output:metaBuf:];
 LABEL_9:
@@ -3227,23 +3227,23 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:input:output:metaBuf:];
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCopyMapToMap4RoiGenToCommandEncoder:input:output:metaBuf:];
     goto LABEL_9;
   }
 
-  [v10 setComputePipelineState:self->_copyMapToMap4RoiGen];
-  [v10 setBuffer:v14 offset:0 atIndex:0];
-  [v10 setTexture:v11 atIndex:0];
-  [v10 setTexture:v12 atIndex:1];
-  [v10 setImageblockWidth:32 height:32];
+  [encoderCopy setComputePipelineState:self->_copyMapToMap4RoiGen];
+  [encoderCopy setBuffer:v14 offset:0 atIndex:0];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:outputCopy atIndex:1];
+  [encoderCopy setImageblockWidth:32 height:32];
   v15 = *([v14 contents] + 24);
   v16.i64[0] = v15;
   v16.i64[1] = HIDWORD(v15);
@@ -3259,20 +3259,20 @@ LABEL_9:
   v31 = 1;
   v28 = vdupq_n_s64(0x20uLL);
   v29 = 1;
-  [v10 dispatchThreadgroups:&v30 threadsPerThreadgroup:&v28];
+  [encoderCopy dispatchThreadgroups:&v30 threadsPerThreadgroup:&v28];
   v26 = 0;
 LABEL_5:
 
   return v26;
 }
 
-- (int64_t)encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:(id)a3 input:(id)a4 output:(id)a5
+- (int64_t)encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:(id)encoder input:(id)input output:(id)output
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  encoderCopy = encoder;
+  inputCopy = input;
+  outputCopy = output;
+  v11 = outputCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:input:output:];
 LABEL_7:
@@ -3280,35 +3280,35 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!outputCopy)
   {
     [GGMMetalToolBox encodeCopyFullFrameMapToMap4RoiGenToCommandEncoder:input:output:];
     goto LABEL_7;
   }
 
-  [v8 setComputePipelineState:self->_copyFullFrameMapToMap4RoiGen];
-  [v8 setTexture:v9 atIndex:0];
-  [v8 setTexture:v11 atIndex:1];
-  [v8 setImageblockWidth:32 height:32];
+  [encoderCopy setComputePipelineState:self->_copyFullFrameMapToMap4RoiGen];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:v11 atIndex:1];
+  [encoderCopy setImageblockWidth:32 height:32];
   v16[0] = ([v11 width] + 31) >> 5;
   v16[1] = ([v11 height] + 31) >> 5;
   v16[2] = 1;
   v14 = vdupq_n_s64(0x20uLL);
   v15 = 1;
-  [v8 dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
+  [encoderCopy dispatchThreadgroups:v16 threadsPerThreadgroup:&v14];
   v12 = 0;
 LABEL_4:
 
   return v12;
 }
 
-- (int64_t)encodeWarpRefMetaLite:(id)a3 refMetaBuf:(id)a4 outMetaBuf:(id)a5
+- (int64_t)encodeWarpRefMetaLite:(id)lite refMetaBuf:(id)buf outMetaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  liteCopy = lite;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMetaLite:refMetaBuf:outMetaBuf:];
 LABEL_7:
@@ -3316,38 +3316,38 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeWarpRefMetaLite:refMetaBuf:outMetaBuf:];
     goto LABEL_7;
   }
 
-  [v8 setComputePipelineState:self->_warpRefMetaLite];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
+  [liteCopy setComputePipelineState:self->_warpRefMetaLite];
+  [liteCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [liteCopy setBuffer:v11 offset:0 atIndex:1];
   v16 = vdupq_n_s64(1uLL);
   v17 = 1;
   v14 = xmmword_2487C3C00;
   v15 = 1;
-  [v8 dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
+  [liteCopy dispatchThreadgroups:&v16 threadsPerThreadgroup:&v14];
   v12 = 0;
 LABEL_4:
 
   return v12;
 }
 
-- (int64_t)encodeBlendSpatialMitigatedYUVToCommandEncoder:(id)a3 inputTexture:(id)a4 probMapTexture:(id)a5 probMap4TradSpatialTexture:(id)a6 tradSpatialMitTexture:(id)a7 dlSpatialMitTexture:(id)a8 outputTexture:(id)a9 metaBuf:(id)a10
+- (int64_t)encodeBlendSpatialMitigatedYUVToCommandEncoder:(id)encoder inputTexture:(id)texture probMapTexture:(id)mapTexture probMap4TradSpatialTexture:(id)spatialTexture tradSpatialMitTexture:(id)mitTexture dlSpatialMitTexture:(id)spatialMitTexture outputTexture:(id)outputTexture metaBuf:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v23;
-  if (!v17)
+  encoderCopy = encoder;
+  textureCopy = texture;
+  mapTextureCopy = mapTexture;
+  spatialTextureCopy = spatialTexture;
+  mitTextureCopy = mitTexture;
+  spatialMitTextureCopy = spatialMitTexture;
+  outputTextureCopy = outputTexture;
+  bufCopy = buf;
+  v24 = bufCopy;
+  if (!textureCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
 LABEL_17:
@@ -3355,65 +3355,65 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if (!v18)
+  if (!mapTextureCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v19)
+  if (!spatialTextureCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v20)
+  if (!mitTextureCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v21)
+  if (!spatialMitTextureCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v22)
+  if (!outputTextureCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v23)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeBlendSpatialMitigatedYUVToCommandEncoder:inputTexture:probMapTexture:probMap4TradSpatialTexture:tradSpatialMitTexture:dlSpatialMitTexture:outputTexture:metaBuf:];
     goto LABEL_17;
   }
 
-  v46 = [v22 width];
-  v45 = [v22 height];
-  [v16 setComputePipelineState:self->_blendSpatialMitigatedYUV];
-  [v16 setBuffer:v24 offset:0 atIndex:0];
-  [v16 setBytes:&v46 length:4 atIndex:3];
-  [v16 setBytes:&v45 length:4 atIndex:4];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v20 atIndex:1];
-  [v16 setTexture:v21 atIndex:2];
-  [v16 setTexture:v18 atIndex:3];
-  [v16 setTexture:v19 atIndex:4];
-  [v16 setTexture:v22 atIndex:5];
-  [v16 setImageblockWidth:16 height:16];
-  v25 = [v24 contents];
-  v26.f32[0] = v46;
-  v26.f32[1] = v45;
+  width = [outputTextureCopy width];
+  height = [outputTextureCopy height];
+  [encoderCopy setComputePipelineState:self->_blendSpatialMitigatedYUV];
+  [encoderCopy setBuffer:v24 offset:0 atIndex:0];
+  [encoderCopy setBytes:&width length:4 atIndex:3];
+  [encoderCopy setBytes:&height length:4 atIndex:4];
+  [encoderCopy setTexture:textureCopy atIndex:0];
+  [encoderCopy setTexture:mitTextureCopy atIndex:1];
+  [encoderCopy setTexture:spatialMitTextureCopy atIndex:2];
+  [encoderCopy setTexture:mapTextureCopy atIndex:3];
+  [encoderCopy setTexture:spatialTextureCopy atIndex:4];
+  [encoderCopy setTexture:outputTextureCopy atIndex:5];
+  [encoderCopy setImageblockWidth:16 height:16];
+  contents = [v24 contents];
+  v26.f32[0] = width;
+  v26.f32[1] = height;
   v40 = v26;
-  v39 = [v17 width];
-  v27 = [v17 height];
-  v28.f32[0] = v39;
-  v28.f32[1] = v27;
+  width2 = [textureCopy width];
+  height2 = [textureCopy height];
+  v28.f32[0] = width2;
+  v28.f32[1] = height2;
   v29 = vdiv_f32(v40, v28);
-  v30 = vadd_s32(v25[3], 0x8000000080);
+  v30 = vadd_s32(contents[3], 0x8000000080);
   v31.i64[0] = v30.u32[0];
   v31.i64[1] = v30.u32[1];
   __asm { FMOV            V2.2D, #4.0 }
@@ -3422,25 +3422,25 @@ LABEL_17:
   v44 = 1;
   v41 = vdupq_n_s64(0x10uLL);
   v42 = 1;
-  [v16 dispatchThreadgroups:&v43 threadsPerThreadgroup:&v41];
+  [encoderCopy dispatchThreadgroups:&v43 threadsPerThreadgroup:&v41];
   v37 = 0;
 LABEL_9:
 
   return v37;
 }
 
-- (int64_t)encodeBlendRefsYUVToCommandEncoder:(id)a3 hmgrphyRef0:(id)a4 hmgrphyRef1:(id)a5 bmRef0:(id)a6 bmRef1:(id)a7 output0:(id)a8 output1:(id)a9 metaBuf:(id)a10
+- (int64_t)encodeBlendRefsYUVToCommandEncoder:(id)encoder hmgrphyRef0:(id)ref0 hmgrphyRef1:(id)ref1 bmRef0:(id)bmRef0 bmRef1:(id)bmRef1 output0:(id)output0 output1:(id)output1 metaBuf:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v23;
-  if (!v17)
+  encoderCopy = encoder;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  bmRef0Copy = bmRef0;
+  bmRef1Copy = bmRef1;
+  output0Copy = output0;
+  output1Copy = output1;
+  bufCopy = buf;
+  v24 = bufCopy;
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
 LABEL_17:
@@ -3448,51 +3448,51 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if (!v18)
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v19)
+  if (!bmRef0Copy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v20)
+  if (!bmRef1Copy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v21)
+  if (!output0Copy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v22)
+  if (!output1Copy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
     goto LABEL_17;
   }
 
-  if (!v23)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeBlendRefsYUVToCommandEncoder:hmgrphyRef0:hmgrphyRef1:bmRef0:bmRef1:output0:output1:metaBuf:];
     goto LABEL_17;
   }
 
-  [v16 setComputePipelineState:self->_blendRefsYUV];
-  [v16 setBuffer:v24 offset:0 atIndex:0];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setTexture:v20 atIndex:3];
-  [v16 setTexture:v21 atIndex:4];
-  [v16 setTexture:v22 atIndex:5];
-  [v16 setImageblockWidth:32 height:32];
+  [encoderCopy setComputePipelineState:self->_blendRefsYUV];
+  [encoderCopy setBuffer:v24 offset:0 atIndex:0];
+  [encoderCopy setTexture:ref0Copy atIndex:0];
+  [encoderCopy setTexture:ref1Copy atIndex:1];
+  [encoderCopy setTexture:bmRef0Copy atIndex:2];
+  [encoderCopy setTexture:bmRef1Copy atIndex:3];
+  [encoderCopy setTexture:output0Copy atIndex:4];
+  [encoderCopy setTexture:output1Copy atIndex:5];
+  [encoderCopy setImageblockWidth:32 height:32];
   v25 = *([v24 contents] + 24);
   v26.i64[0] = v25;
   v26.i64[1] = HIDWORD(v25);
@@ -3505,24 +3505,24 @@ LABEL_17:
   v39 = 1;
   v36 = vdupq_n_s64(0x20uLL);
   v37 = 1;
-  [v16 dispatchThreadgroups:&v38 threadsPerThreadgroup:&v36];
+  [encoderCopy dispatchThreadgroups:&v38 threadsPerThreadgroup:&v36];
   v34 = 0;
 LABEL_9:
 
   return v34;
 }
 
-- (int64_t)encodeAlignBgAvgYUVToCommandEncoder:(id)a3 input:(id)a4 ref0:(id)a5 ref1:(id)a6 alignedRef0:(id)a7 alignedRef1:(id)a8 metaBuf:(id)a9
+- (int64_t)encodeAlignBgAvgYUVToCommandEncoder:(id)encoder input:(id)input ref0:(id)ref0 ref1:(id)ref1 alignedRef0:(id)alignedRef0 alignedRef1:(id)alignedRef1 metaBuf:(id)buf
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  encoderCopy = encoder;
+  inputCopy = input;
+  ref0Copy = ref0;
+  ref1Copy = ref1;
+  alignedRef0Copy = alignedRef0;
+  alignedRef1Copy = alignedRef1;
+  bufCopy = buf;
+  v22 = bufCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeAlignBgAvgYUVToCommandEncoder:input:ref0:ref1:alignedRef0:alignedRef1:metaBuf:];
 LABEL_15:
@@ -3530,44 +3530,44 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeAlignBgAvgYUVToCommandEncoder:input:ref0:ref1:alignedRef0:alignedRef1:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeAlignBgAvgYUVToCommandEncoder:input:ref0:ref1:alignedRef0:alignedRef1:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!alignedRef0Copy)
   {
     [GGMMetalToolBox encodeAlignBgAvgYUVToCommandEncoder:input:ref0:ref1:alignedRef0:alignedRef1:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!alignedRef1Copy)
   {
     [GGMMetalToolBox encodeAlignBgAvgYUVToCommandEncoder:input:ref0:ref1:alignedRef0:alignedRef1:metaBuf:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeAlignBgAvgYUVToCommandEncoder:input:ref0:ref1:alignedRef0:alignedRef1:metaBuf:];
     goto LABEL_15;
   }
 
-  [v15 setComputePipelineState:self->_alignBgAvgYUV];
-  [v15 setTexture:v16 atIndex:0];
-  [v15 setTexture:v17 atIndex:1];
-  [v15 setTexture:v18 atIndex:2];
-  [v15 setTexture:v19 atIndex:3];
-  [v15 setTexture:v20 atIndex:4];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setImageblockWidth:32 height:32];
+  [encoderCopy setComputePipelineState:self->_alignBgAvgYUV];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:ref0Copy atIndex:1];
+  [encoderCopy setTexture:ref1Copy atIndex:2];
+  [encoderCopy setTexture:alignedRef0Copy atIndex:3];
+  [encoderCopy setTexture:alignedRef1Copy atIndex:4];
+  [encoderCopy setBuffer:v22 offset:0 atIndex:0];
+  [encoderCopy setImageblockWidth:32 height:32];
   v23 = *([v22 contents] + 24);
   v24.i64[0] = v23;
   v24.i64[1] = HIDWORD(v23);
@@ -3580,29 +3580,29 @@ LABEL_15:
   v37 = 1;
   v34 = vdupq_n_s64(0x20uLL);
   v35 = 1;
-  [v15 dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
+  [encoderCopy dispatchThreadgroups:&v36 threadsPerThreadgroup:&v34];
   v32 = 0;
 LABEL_8:
 
   return v32;
 }
 
-- (id)createForwarpOutputBufferWidth:(unint64_t)a3 height:(unint64_t)a4 channels:(unint64_t)a5
+- (id)createForwarpOutputBufferWidth:(unint64_t)width height:(unint64_t)height channels:(unint64_t)channels
 {
-  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) + a3 * ((a4 + 15) & 0x3FFFFFFFFFFFFFF0) * a5) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
+  v5 = [(MTLDevice *)self->super._device newBufferWithLength:(4 * (width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) + width * ((height + 15) & 0x3FFFFFFFFFFFFFF0) * channels) + 4095) & 0xFFFFFFFFFFFFF000 options:0];
 
   return v5;
 }
 
-- (int64_t)encodeResetOutputToCommandEncoder:(id)a3 input:(id)a4 meta:(id)a5 output0:(id)a6 output1:(id)a7
+- (int64_t)encodeResetOutputToCommandEncoder:(id)encoder input:(id)input meta:(id)meta output0:(id)output0 output1:(id)output1
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v13)
+  encoderCopy = encoder;
+  inputCopy = input;
+  metaCopy = meta;
+  output0Copy = output0;
+  output1Copy = output1;
+  v17 = output1Copy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeResetOutputToCommandEncoder:input:meta:output0:output1:];
 LABEL_11:
@@ -3610,30 +3610,30 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeResetOutputToCommandEncoder:input:meta:output0:output1:];
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!output0Copy)
   {
     [GGMMetalToolBox encodeResetOutputToCommandEncoder:input:meta:output0:output1:];
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!output1Copy)
   {
     [GGMMetalToolBox encodeResetOutputToCommandEncoder:input:meta:output0:output1:];
     goto LABEL_11;
   }
 
-  [v12 setComputePipelineState:self->_resetOutput];
-  [v12 setTexture:v13 atIndex:0];
-  [v12 setBuffer:v14 offset:0 atIndex:0];
-  [v12 setBuffer:v15 offset:0 atIndex:1];
-  [v12 setBuffer:v17 offset:0 atIndex:2];
-  v18 = *([v14 contents] + 24);
+  [encoderCopy setComputePipelineState:self->_resetOutput];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setBuffer:metaCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:output0Copy offset:0 atIndex:1];
+  [encoderCopy setBuffer:v17 offset:0 atIndex:2];
+  v18 = *([metaCopy contents] + 24);
   v19.i64[0] = v18;
   v19.i64[1] = HIDWORD(v18);
   __asm { FMOV            V1.2D, #4.0 }
@@ -3648,25 +3648,25 @@ LABEL_11:
   v34 = 1;
   v31 = vdupq_n_s64(0x10uLL);
   v32 = 1;
-  [v12 dispatchThreadgroups:&v33 threadsPerThreadgroup:&v31];
+  [encoderCopy dispatchThreadgroups:&v33 threadsPerThreadgroup:&v31];
   v29 = 0;
 LABEL_6:
 
   return v29;
 }
 
-- (int64_t)encodeUpdateOutputFloatToCommandEncoder:(id)a3 input0:(id)a4 flow0:(id)a5 input1:(id)a6 flow1:(id)a7 meta:(id)a8 output0:(id)a9 output1:(id)a10
+- (int64_t)encodeUpdateOutputFloatToCommandEncoder:(id)encoder input0:(id)input0 flow0:(id)flow0 input1:(id)input1 flow1:(id)flow1 meta:(id)meta output0:(id)output0 output1:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v23;
-  if (!v17)
+  encoderCopy = encoder;
+  input0Copy = input0;
+  flow0Copy = flow0;
+  input1Copy = input1;
+  flow1Copy = flow1;
+  metaCopy = meta;
+  output0Copy = output0;
+  output1Copy = output1;
+  v24 = output1Copy;
+  if (!input0Copy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
 LABEL_17:
@@ -3674,51 +3674,51 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if (!v18)
+  if (!flow0Copy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
     goto LABEL_17;
   }
 
-  if (!v19)
+  if (!input1Copy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
     goto LABEL_17;
   }
 
-  if (!v20)
+  if (!flow1Copy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
     goto LABEL_17;
   }
 
-  if (!v21)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
     goto LABEL_17;
   }
 
-  if (!v22)
+  if (!output0Copy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
     goto LABEL_17;
   }
 
-  if (!v23)
+  if (!output1Copy)
   {
     [GGMMetalToolBox encodeUpdateOutputFloatToCommandEncoder:input0:flow0:input1:flow1:meta:output0:output1:];
     goto LABEL_17;
   }
 
-  [v16 setComputePipelineState:self->_updateOutputFloat];
-  [v16 setTexture:v17 atIndex:0];
-  [v16 setTexture:v18 atIndex:1];
-  [v16 setTexture:v19 atIndex:2];
-  [v16 setTexture:v20 atIndex:3];
-  [v16 setBuffer:v21 offset:0 atIndex:0];
-  [v16 setBuffer:v22 offset:0 atIndex:1];
-  [v16 setBuffer:v24 offset:0 atIndex:2];
-  v25 = vadd_s32(*([v21 contents] + 24), 0x4000000040);
+  [encoderCopy setComputePipelineState:self->_updateOutputFloat];
+  [encoderCopy setTexture:input0Copy atIndex:0];
+  [encoderCopy setTexture:flow0Copy atIndex:1];
+  [encoderCopy setTexture:input1Copy atIndex:2];
+  [encoderCopy setTexture:flow1Copy atIndex:3];
+  [encoderCopy setBuffer:metaCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:output0Copy offset:0 atIndex:1];
+  [encoderCopy setBuffer:v24 offset:0 atIndex:2];
+  v25 = vadd_s32(*([metaCopy contents] + 24), 0x4000000040);
   v26.i64[0] = v25.u32[0];
   v26.i64[1] = v25.u32[1];
   __asm { FMOV            V1.2D, #4.0 }
@@ -3733,25 +3733,25 @@ LABEL_17:
   v41 = 1;
   v38 = vdupq_n_s64(0x10uLL);
   v39 = 1;
-  [v16 dispatchThreadgroups:&v40 threadsPerThreadgroup:&v38];
+  [encoderCopy dispatchThreadgroups:&v40 threadsPerThreadgroup:&v38];
   v36 = 0;
 LABEL_9:
 
   return v36;
 }
 
-- (int64_t)encodeConvertFloatBuffer2TextureToCommandEncoder:(id)a3 inputBuffer0:(id)a4 inputBuffer1:(id)a5 meta:(id)a6 output0:(id)a7 outputMap0:(id)a8 output1:(id)a9 outputMap1:(id)a10
+- (int64_t)encodeConvertFloatBuffer2TextureToCommandEncoder:(id)encoder inputBuffer0:(id)buffer0 inputBuffer1:(id)buffer1 meta:(id)meta output0:(id)output0 outputMap0:(id)map0 output1:(id)output1 outputMap1:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v23;
-  if (!v17)
+  encoderCopy = encoder;
+  buffer0Copy = buffer0;
+  buffer1Copy = buffer1;
+  metaCopy = meta;
+  output0Copy = output0;
+  map0Copy = map0;
+  output1Copy = output1;
+  map1Copy = map1;
+  v24 = map1Copy;
+  if (!buffer0Copy)
   {
     [GGMMetalToolBox encodeConvertFloatBuffer2TextureToCommandEncoder:inputBuffer0:inputBuffer1:meta:output0:outputMap0:output1:outputMap1:];
 LABEL_13:
@@ -3759,39 +3759,39 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v18)
+  if (!buffer1Copy)
   {
     [GGMMetalToolBox encodeConvertFloatBuffer2TextureToCommandEncoder:inputBuffer0:inputBuffer1:meta:output0:outputMap0:output1:outputMap1:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeConvertFloatBuffer2TextureToCommandEncoder:inputBuffer0:inputBuffer1:meta:output0:outputMap0:output1:outputMap1:];
     goto LABEL_13;
   }
 
-  if (!v21)
+  if (!map0Copy)
   {
     [GGMMetalToolBox encodeConvertFloatBuffer2TextureToCommandEncoder:inputBuffer0:inputBuffer1:meta:output0:outputMap0:output1:outputMap1:];
     goto LABEL_13;
   }
 
-  if (!v23)
+  if (!map1Copy)
   {
     [GGMMetalToolBox encodeConvertFloatBuffer2TextureToCommandEncoder:inputBuffer0:inputBuffer1:meta:output0:outputMap0:output1:outputMap1:];
     goto LABEL_13;
   }
 
-  [v16 setComputePipelineState:self->_convertFloatBuffer2Texture];
-  [v16 setBuffer:v19 offset:0 atIndex:0];
-  [v16 setBuffer:v17 offset:0 atIndex:1];
-  [v16 setBuffer:v18 offset:0 atIndex:2];
-  [v16 setTexture:v20 atIndex:0];
-  [v16 setTexture:v21 atIndex:1];
-  [v16 setTexture:v22 atIndex:2];
-  [v16 setTexture:v24 atIndex:3];
-  v25 = *([v19 contents] + 24);
+  [encoderCopy setComputePipelineState:self->_convertFloatBuffer2Texture];
+  [encoderCopy setBuffer:metaCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:buffer0Copy offset:0 atIndex:1];
+  [encoderCopy setBuffer:buffer1Copy offset:0 atIndex:2];
+  [encoderCopy setTexture:output0Copy atIndex:0];
+  [encoderCopy setTexture:map0Copy atIndex:1];
+  [encoderCopy setTexture:output1Copy atIndex:2];
+  [encoderCopy setTexture:v24 atIndex:3];
+  v25 = *([metaCopy contents] + 24);
   v26.i64[0] = v25;
   v26.i64[1] = HIDWORD(v25);
   __asm { FMOV            V1.2D, #4.0 }
@@ -3806,26 +3806,26 @@ LABEL_13:
   v41 = 1;
   v38 = vdupq_n_s64(0x10uLL);
   v39 = 1;
-  [v16 dispatchThreadgroups:&v40 threadsPerThreadgroup:&v38];
+  [encoderCopy dispatchThreadgroups:&v40 threadsPerThreadgroup:&v38];
   v36 = 0;
 LABEL_7:
 
   return v36;
 }
 
-- (int64_t)encodeDilateForwarpHoleMap:(id)a3 fullResTarget:(id)a4 inputMap0:(id)a5 outputMap0:(id)a6 inputMap1:(id)a7 outputMap1:(id)a8 hardDilationRadius:(float)a9 softDilationRadius:(float)a10 meta:(id)a11
+- (int64_t)encodeDilateForwarpHoleMap:(id)map fullResTarget:(id)target inputMap0:(id)map0 outputMap0:(id)outputMap0 inputMap1:(id)map1 outputMap1:(id)outputMap1 hardDilationRadius:(float)radius softDilationRadius:(float)self0 meta:(id)self1
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
-  v45 = a10;
-  v46 = a9;
-  v25 = a11;
-  v26 = v25;
-  if (!v20)
+  mapCopy = map;
+  targetCopy = target;
+  map0Copy = map0;
+  outputMap0Copy = outputMap0;
+  map1Copy = map1;
+  outputMap1Copy = outputMap1;
+  dilationRadiusCopy = dilationRadius;
+  radiusCopy = radius;
+  metaCopy = meta;
+  v26 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeDilateForwarpHoleMap:fullResTarget:inputMap0:outputMap0:inputMap1:outputMap1:hardDilationRadius:softDilationRadius:meta:];
 LABEL_15:
@@ -3833,83 +3833,83 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v21)
+  if (!map0Copy)
   {
     [GGMMetalToolBox encodeDilateForwarpHoleMap:fullResTarget:inputMap0:outputMap0:inputMap1:outputMap1:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_15;
   }
 
-  if (!v22)
+  if (!outputMap0Copy)
   {
     [GGMMetalToolBox encodeDilateForwarpHoleMap:fullResTarget:inputMap0:outputMap0:inputMap1:outputMap1:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_15;
   }
 
-  if (!v23)
+  if (!map1Copy)
   {
     [GGMMetalToolBox encodeDilateForwarpHoleMap:fullResTarget:inputMap0:outputMap0:inputMap1:outputMap1:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_15;
   }
 
-  if (!v24)
+  if (!outputMap1Copy)
   {
     [GGMMetalToolBox encodeDilateForwarpHoleMap:fullResTarget:inputMap0:outputMap0:inputMap1:outputMap1:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_15;
   }
 
-  if (!v25)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeDilateForwarpHoleMap:fullResTarget:inputMap0:outputMap0:inputMap1:outputMap1:hardDilationRadius:softDilationRadius:meta:];
     goto LABEL_15;
   }
 
-  v39 = [v22 width];
-  v27 = [v22 height];
-  v28.f32[0] = v39;
-  v28.f32[1] = v27;
+  width = [outputMap0Copy width];
+  height = [outputMap0Copy height];
+  v28.f32[0] = width;
+  v28.f32[1] = height;
   v40 = v28;
-  v38 = [v20 width];
-  v29 = [v20 height];
-  v30.f32[0] = v38;
-  v30.f32[1] = v29;
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v30.f32[0] = width2;
+  v30.f32[1] = height2;
   v44 = vdiv_f32(v40, v30);
-  v31 = [v26 contents];
-  LODWORD(v32) = *(v31 + 24);
-  LODWORD(v33) = *(v31 + 28);
+  contents = [v26 contents];
+  LODWORD(v32) = *(contents + 24);
+  LODWORD(v33) = *(contents + 28);
   v34 = (vcvtpd_u64_f64((v32 + 128.0 + 4.0) * v44.f32[0]) + 31) >> 5;
   v35 = (vcvtpd_u64_f64((v33 + 128.0 + 4.0) * v44.f32[1]) + 31) >> 5;
-  [v19 setComputePipelineState:self->_dilateForwarpHoleMap];
-  [v19 setBuffer:v26 offset:0 atIndex:0];
-  [v19 setTexture:v21 atIndex:0];
-  [v19 setTexture:v22 atIndex:1];
-  [v19 setTexture:v23 atIndex:2];
-  [v19 setTexture:v24 atIndex:3];
-  [v19 setBytes:&v46 length:4 atIndex:1];
-  [v19 setBytes:&v45 length:4 atIndex:2];
-  [v19 setBytes:&v44 length:8 atIndex:3];
+  [mapCopy setComputePipelineState:self->_dilateForwarpHoleMap];
+  [mapCopy setBuffer:v26 offset:0 atIndex:0];
+  [mapCopy setTexture:map0Copy atIndex:0];
+  [mapCopy setTexture:outputMap0Copy atIndex:1];
+  [mapCopy setTexture:map1Copy atIndex:2];
+  [mapCopy setTexture:outputMap1Copy atIndex:3];
+  [mapCopy setBytes:&radiusCopy length:4 atIndex:1];
+  [mapCopy setBytes:&dilationRadiusCopy length:4 atIndex:2];
+  [mapCopy setBytes:&v44 length:8 atIndex:3];
   v43[0] = v34;
   v43[1] = v35;
   v43[2] = 1;
   v41 = vdupq_n_s64(0x20uLL);
   v42 = 1;
-  [v19 dispatchThreadgroups:v43 threadsPerThreadgroup:&v41];
+  [mapCopy dispatchThreadgroups:v43 threadsPerThreadgroup:&v41];
   v36 = 0;
 LABEL_8:
 
   return v36;
 }
 
-- (int64_t)encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 mvf1:(id)a6 mvf2:(id)a7 outMvf:(id)a8 meta:(id)a9
+- (int64_t)encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 mvf1:(id)mvf1 mvf2:(id)mvf2 outMvf:(id)mvf meta:(id)meta
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  mvf2Copy = mvf2;
+  mvfCopy = mvf;
+  metaCopy = meta;
+  v22 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:fullResTarget:mvf0:mvf1:mvf2:outMvf:meta:];
 LABEL_15:
@@ -3917,79 +3917,79 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!mvf0Copy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:fullResTarget:mvf0:mvf1:mvf2:outMvf:meta:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!mvf1Copy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:fullResTarget:mvf0:mvf1:mvf2:outMvf:meta:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!mvf2Copy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:fullResTarget:mvf0:mvf1:mvf2:outMvf:meta:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!mvfCopy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:fullResTarget:mvf0:mvf1:mvf2:outMvf:meta:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ThenAddToMvf2ToCommandEncoder:fullResTarget:mvf0:mvf1:mvf2:outMvf:meta:];
     goto LABEL_15;
   }
 
-  v23 = [v21 contents];
-  v34 = [v20 width];
-  v24 = [v20 height];
-  v25.f32[0] = v34;
-  v25.f32[1] = v24;
+  contents = [metaCopy contents];
+  width = [mvfCopy width];
+  height = [mvfCopy height];
+  v25.f32[0] = width;
+  v25.f32[1] = height;
   v35 = v25;
-  v33 = [v16 width];
-  v26 = [v16 height];
-  v27.f32[0] = v33;
-  v27.f32[1] = v26;
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v27.f32[0] = width2;
+  v27.f32[1] = height2;
   v39 = vdiv_f32(v35, v27);
-  v28 = *(v23 + 28);
-  v29 = (vcvtpd_u64_f64(((*(v23 + 24) + 64) + 128.0 + 4.0) * v39.f32[0]) + 31) >> 5;
+  v28 = *(contents + 28);
+  v29 = (vcvtpd_u64_f64(((*(contents + 24) + 64) + 128.0 + 4.0) * v39.f32[0]) + 31) >> 5;
   v30 = (vcvtpd_u64_f64(((v28 + 64) + 128.0 + 4.0) * v39.f32[1]) + 31) >> 5;
-  [v15 setComputePipelineState:self->_warpMvf0WithMvf1ThenAddToMvf2];
-  [v15 setTexture:v17 atIndex:0];
-  [v15 setTexture:v18 atIndex:1];
-  [v15 setTexture:v19 atIndex:2];
-  [v15 setTexture:v20 atIndex:3];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setBytes:&v39 length:8 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_warpMvf0WithMvf1ThenAddToMvf2];
+  [encoderCopy setTexture:mvf0Copy atIndex:0];
+  [encoderCopy setTexture:mvf1Copy atIndex:1];
+  [encoderCopy setTexture:mvf2Copy atIndex:2];
+  [encoderCopy setTexture:mvfCopy atIndex:3];
+  [encoderCopy setBuffer:v22 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v39 length:8 atIndex:1];
   v38[0] = v29;
   v38[1] = v30;
   v38[2] = 1;
   v36 = vdupq_n_s64(0x20uLL);
   v37 = 1;
-  [v15 dispatchThreadgroups:v38 threadsPerThreadgroup:&v36];
+  [encoderCopy dispatchThreadgroups:v38 threadsPerThreadgroup:&v36];
   v31 = 0;
 LABEL_8:
 
   return v31;
 }
 
-- (int64_t)encodeWarpMvf0WithMvf1ToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 mvf1:(id)a6 outMvf:(id)a7 meta:(id)a8
+- (int64_t)encodeWarpMvf0WithMvf1ToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 mvf1:(id)mvf1 outMvf:(id)mvf meta:(id)meta
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v15)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  mvfCopy = mvf;
+  metaCopy = meta;
+  v20 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
 LABEL_13:
@@ -3997,74 +3997,74 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v16)
+  if (!mvf0Copy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!mvf1Copy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!mvfCopy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeWarpMvf0WithMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  v21 = [v19 contents];
-  v36 = [v18 width];
-  v22 = [v18 height];
-  v23.f32[0] = v36;
-  v23.f32[1] = v22;
+  contents = [metaCopy contents];
+  width = [mvfCopy width];
+  height = [mvfCopy height];
+  v23.f32[0] = width;
+  v23.f32[1] = height;
   v37 = v23;
-  v35 = [v15 width];
-  v24 = [v15 height];
-  v25.f32[0] = v35;
-  v25.f32[1] = v24;
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v25.f32[0] = width2;
+  v25.f32[1] = height2;
   v43 = vdiv_f32(v37, v25);
-  v26 = vadd_s32(v21[3], 0x4000000040);
+  v26 = vadd_s32(contents[3], 0x4000000040);
   v27.i64[0] = v26.u32[0];
   v27.i64[1] = v26.u32[1];
   __asm { FMOV            V2.2D, #4.0 }
 
   v38 = vshrq_n_u64(vaddq_s64(vcvtq_u64_f64(vrndpq_f64(vmulq_f64(vaddq_f64(vaddq_f64(vcvtq_f64_u64(v27), vdupq_n_s64(0x4060000000000000uLL)), _Q2), vcvtq_f64_f32(v43)))), vdupq_n_s64(0x1FuLL)), 5uLL);
-  [v14 setComputePipelineState:self->_warpMvf0WithMvf1];
-  [v14 setTexture:v16 atIndex:0];
-  [v14 setTexture:v17 atIndex:1];
-  [v14 setTexture:v18 atIndex:3];
-  [v14 setBuffer:v20 offset:0 atIndex:0];
-  [v14 setBytes:&v43 length:8 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_warpMvf0WithMvf1];
+  [encoderCopy setTexture:mvf0Copy atIndex:0];
+  [encoderCopy setTexture:mvf1Copy atIndex:1];
+  [encoderCopy setTexture:mvfCopy atIndex:3];
+  [encoderCopy setBuffer:v20 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v43 length:8 atIndex:1];
   v41 = v38;
   v42 = 1;
   v39 = vdupq_n_s64(0x20uLL);
   v40 = 1;
-  [v14 dispatchThreadgroups:&v41 threadsPerThreadgroup:&v39];
+  [encoderCopy dispatchThreadgroups:&v41 threadsPerThreadgroup:&v39];
   v33 = 0;
 LABEL_7:
 
   return v33;
 }
 
-- (int64_t)encodeAddMvf0ToMvf1ToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 mvf1:(id)a6 outMvf:(id)a7 meta:(id)a8
+- (int64_t)encodeAddMvf0ToMvf1ToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 mvf1:(id)mvf1 outMvf:(id)mvf meta:(id)meta
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v15)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  mvfCopy = mvf;
+  metaCopy = meta;
+  v20 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
 LABEL_13:
@@ -4072,75 +4072,75 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v16)
+  if (!mvf0Copy)
   {
     [GGMMetalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!mvf1Copy)
   {
     [GGMMetalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!mvfCopy)
   {
     [GGMMetalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeAddMvf0ToMvf1ToCommandEncoder:fullResTarget:mvf0:mvf1:outMvf:meta:];
     goto LABEL_13;
   }
 
-  v21 = [v19 contents];
-  v36 = [v18 width];
-  v22 = [v18 height];
-  v23.f32[0] = v36;
-  v23.f32[1] = v22;
+  contents = [metaCopy contents];
+  width = [mvfCopy width];
+  height = [mvfCopy height];
+  v23.f32[0] = width;
+  v23.f32[1] = height;
   v37 = v23;
-  v35 = [v15 width];
-  v24 = [v15 height];
-  v25.f32[0] = v35;
-  v25.f32[1] = v24;
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v25.f32[0] = width2;
+  v25.f32[1] = height2;
   v43 = vdiv_f32(v37, v25);
-  v26 = vadd_s32(v21[3], 0x4000000040);
+  v26 = vadd_s32(contents[3], 0x4000000040);
   v27.i64[0] = v26.u32[0];
   v27.i64[1] = v26.u32[1];
   __asm { FMOV            V2.2D, #4.0 }
 
   v38 = vshrq_n_u64(vaddq_s64(vcvtq_u64_f64(vrndpq_f64(vmulq_f64(vaddq_f64(vaddq_f64(vcvtq_f64_u64(v27), vdupq_n_s64(0x4060000000000000uLL)), _Q2), vcvtq_f64_f32(v43)))), vdupq_n_s64(0x1FuLL)), 5uLL);
-  [v14 setComputePipelineState:self->_addMvf0AndMvf1];
-  [v14 setTexture:v16 atIndex:0];
-  [v14 setTexture:v17 atIndex:1];
-  [v14 setTexture:v18 atIndex:3];
-  [v14 setBuffer:v20 offset:0 atIndex:0];
-  [v14 setBytes:&v43 length:8 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_addMvf0AndMvf1];
+  [encoderCopy setTexture:mvf0Copy atIndex:0];
+  [encoderCopy setTexture:mvf1Copy atIndex:1];
+  [encoderCopy setTexture:mvfCopy atIndex:3];
+  [encoderCopy setBuffer:v20 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v43 length:8 atIndex:1];
   v41 = v38;
   v42 = 1;
   v39 = vdupq_n_s64(0x20uLL);
   v40 = 1;
-  [v14 dispatchThreadgroups:&v41 threadsPerThreadgroup:&v39];
+  [encoderCopy dispatchThreadgroups:&v41 threadsPerThreadgroup:&v39];
   v33 = 0;
 LABEL_7:
 
   return v33;
 }
 
-- (int64_t)encodeCopyMvfToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf0:(id)a5 outMvf0:(id)a6 mvf1:(id)a7 outMvf1:(id)a8 meta:(id)a9
+- (int64_t)encodeCopyMvfToCommandEncoder:(id)encoder fullResTarget:(id)target mvf0:(id)mvf0 outMvf0:(id)outMvf0 mvf1:(id)mvf1 outMvf1:(id)outMvf1 meta:(id)meta
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mvf0Copy = mvf0;
+  outMvf0Copy = outMvf0;
+  mvf1Copy = mvf1;
+  outMvf1Copy = outMvf1;
+  metaCopy = meta;
+  v22 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeCopyMvfToCommandEncoder:fullResTarget:mvf0:outMvf0:mvf1:outMvf1:meta:];
 LABEL_15:
@@ -4148,78 +4148,78 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!mvf0Copy)
   {
     [GGMMetalToolBox encodeCopyMvfToCommandEncoder:fullResTarget:mvf0:outMvf0:mvf1:outMvf1:meta:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!outMvf0Copy)
   {
     [GGMMetalToolBox encodeCopyMvfToCommandEncoder:fullResTarget:mvf0:outMvf0:mvf1:outMvf1:meta:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!mvf1Copy)
   {
     [GGMMetalToolBox encodeCopyMvfToCommandEncoder:fullResTarget:mvf0:outMvf0:mvf1:outMvf1:meta:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!outMvf1Copy)
   {
     [GGMMetalToolBox encodeCopyMvfToCommandEncoder:fullResTarget:mvf0:outMvf0:mvf1:outMvf1:meta:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeCopyMvfToCommandEncoder:fullResTarget:mvf0:outMvf0:mvf1:outMvf1:meta:];
     goto LABEL_15;
   }
 
-  v23 = [v21 contents];
-  v34 = [v18 width];
-  v24 = [v18 height];
-  v25.f32[0] = v34;
-  v25.f32[1] = v24;
+  contents = [metaCopy contents];
+  width = [outMvf0Copy width];
+  height = [outMvf0Copy height];
+  v25.f32[0] = width;
+  v25.f32[1] = height;
   v35 = v25;
-  v33 = [v16 width];
-  v26 = [v16 height];
-  v27.f32[0] = v33;
-  v27.f32[1] = v26;
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v27.f32[0] = width2;
+  v27.f32[1] = height2;
   v39 = vdiv_f32(v35, v27);
-  v28 = *(v23 + 28);
-  v29 = (vcvtpd_u64_f64(((*(v23 + 24) + 64) + 128.0 + 4.0) * v39.f32[0]) + 31) >> 5;
+  v28 = *(contents + 28);
+  v29 = (vcvtpd_u64_f64(((*(contents + 24) + 64) + 128.0 + 4.0) * v39.f32[0]) + 31) >> 5;
   v30 = (vcvtpd_u64_f64(((v28 + 64) + 128.0 + 4.0) * v39.f32[1]) + 31) >> 5;
-  [v15 setComputePipelineState:self->_copyMvf];
-  [v15 setTexture:v17 atIndex:0];
-  [v15 setTexture:v18 atIndex:1];
-  [v15 setTexture:v19 atIndex:2];
-  [v15 setTexture:v20 atIndex:3];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setBytes:&v39 length:8 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_copyMvf];
+  [encoderCopy setTexture:mvf0Copy atIndex:0];
+  [encoderCopy setTexture:outMvf0Copy atIndex:1];
+  [encoderCopy setTexture:mvf1Copy atIndex:2];
+  [encoderCopy setTexture:outMvf1Copy atIndex:3];
+  [encoderCopy setBuffer:v22 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v39 length:8 atIndex:1];
   v38[0] = v29;
   v38[1] = v30;
   v38[2] = 1;
   v36 = vdupq_n_s64(0x20uLL);
   v37 = 1;
-  [v15 dispatchThreadgroups:v38 threadsPerThreadgroup:&v36];
+  [encoderCopy dispatchThreadgroups:v38 threadsPerThreadgroup:&v36];
   v31 = 0;
 LABEL_8:
 
   return v31;
 }
 
-- (int64_t)encodeVisualizeMvfToCommandEncoder:(id)a3 fullResTarget:(id)a4 mvf:(id)a5 outMvf:(id)a6 meta:(id)a7
+- (int64_t)encodeVisualizeMvfToCommandEncoder:(id)encoder fullResTarget:(id)target mvf:(id)mvf outMvf:(id)outMvf meta:(id)meta
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v13)
+  encoderCopy = encoder;
+  targetCopy = target;
+  mvfCopy = mvf;
+  outMvfCopy = outMvf;
+  metaCopy = meta;
+  v17 = metaCopy;
+  if (!targetCopy)
   {
     [GGMMetalToolBox encodeVisualizeMvfToCommandEncoder:fullResTarget:mvf:outMvf:meta:];
 LABEL_11:
@@ -4227,68 +4227,68 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v14)
+  if (!mvfCopy)
   {
     [GGMMetalToolBox encodeVisualizeMvfToCommandEncoder:fullResTarget:mvf:outMvf:meta:];
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!outMvfCopy)
   {
     [GGMMetalToolBox encodeVisualizeMvfToCommandEncoder:fullResTarget:mvf:outMvf:meta:];
     goto LABEL_11;
   }
 
-  if (!v16)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeVisualizeMvfToCommandEncoder:fullResTarget:mvf:outMvf:meta:];
     goto LABEL_11;
   }
 
-  v18 = [v16 contents];
-  v33 = [v15 width];
-  v19 = [v15 height];
-  v20.f32[0] = v33;
-  v20.f32[1] = v19;
+  contents = [metaCopy contents];
+  width = [outMvfCopy width];
+  height = [outMvfCopy height];
+  v20.f32[0] = width;
+  v20.f32[1] = height;
   v34 = v20;
-  v32 = [v13 width];
-  v21 = [v13 height];
-  v22.f32[0] = v32;
-  v22.f32[1] = v21;
+  width2 = [targetCopy width];
+  height2 = [targetCopy height];
+  v22.f32[0] = width2;
+  v22.f32[1] = height2;
   v40 = vdiv_f32(v34, v22);
-  v23 = *(v18 + 24);
+  v23 = *(contents + 24);
   v24.i64[0] = v23;
   v24.i64[1] = HIDWORD(v23);
   __asm { FMOV            V2.2D, #4.0 }
 
   v35 = vshrq_n_u64(vaddq_s64(vcvtq_u64_f64(vrndpq_f64(vmulq_f64(vaddq_f64(vaddq_f64(vcvtq_f64_u64(v24), vdupq_n_s64(0x4060000000000000uLL)), _Q2), vcvtq_f64_f32(v40)))), vdupq_n_s64(0x1FuLL)), 5uLL);
-  [v12 setComputePipelineState:self->_visualizeMvf];
-  [v12 setTexture:v14 atIndex:0];
-  [v12 setTexture:v15 atIndex:1];
-  [v12 setBuffer:v17 offset:0 atIndex:0];
-  [v12 setBytes:&v40 length:8 atIndex:1];
-  [v12 setImageblockWidth:32 height:32];
+  [encoderCopy setComputePipelineState:self->_visualizeMvf];
+  [encoderCopy setTexture:mvfCopy atIndex:0];
+  [encoderCopy setTexture:outMvfCopy atIndex:1];
+  [encoderCopy setBuffer:v17 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v40 length:8 atIndex:1];
+  [encoderCopy setImageblockWidth:32 height:32];
   v38 = v35;
   v39 = 1;
   v36 = vdupq_n_s64(0x20uLL);
   v37 = 1;
-  [v12 dispatchThreadgroups:&v38 threadsPerThreadgroup:&v36];
+  [encoderCopy dispatchThreadgroups:&v38 threadsPerThreadgroup:&v36];
   v30 = 0;
 LABEL_6:
 
   return v30;
 }
 
-- (int64_t)encodeGetRoiRepairMvFromMvfToCommandEncoder:(id)a3 fullResInput:(id)a4 probMap:(id)a5 mvf0:(id)a6 mvf1:(id)a7 meta:(id)a8
+- (int64_t)encodeGetRoiRepairMvFromMvfToCommandEncoder:(id)encoder fullResInput:(id)input probMap:(id)map mvf0:(id)mvf0 mvf1:(id)mvf1 meta:(id)meta
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v15)
+  encoderCopy = encoder;
+  inputCopy = input;
+  mapCopy = map;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  metaCopy = meta;
+  v20 = metaCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeGetRoiRepairMvFromMvfToCommandEncoder:fullResInput:probMap:mvf0:mvf1:meta:];
 LABEL_13:
@@ -4296,74 +4296,74 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  if (!v16)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetRoiRepairMvFromMvfToCommandEncoder:fullResInput:probMap:mvf0:mvf1:meta:];
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!mvf0Copy)
   {
     [GGMMetalToolBox encodeGetRoiRepairMvFromMvfToCommandEncoder:fullResInput:probMap:mvf0:mvf1:meta:];
     goto LABEL_13;
   }
 
-  if (!v18)
+  if (!mvf1Copy)
   {
     [GGMMetalToolBox encodeGetRoiRepairMvFromMvfToCommandEncoder:fullResInput:probMap:mvf0:mvf1:meta:];
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetRoiRepairMvFromMvfToCommandEncoder:fullResInput:probMap:mvf0:mvf1:meta:];
     goto LABEL_13;
   }
 
-  v33 = [v17 width];
-  v21 = [v17 height];
-  v22.f32[0] = v33;
-  v22.f32[1] = v21;
+  width = [mvf0Copy width];
+  height = [mvf0Copy height];
+  v22.f32[0] = width;
+  v22.f32[1] = height;
   v34 = v22;
-  v32 = [v15 width];
-  v23 = [v15 height];
-  v24.f32[0] = v32;
-  v24.f32[1] = v23;
+  width2 = [inputCopy width];
+  height2 = [inputCopy height];
+  v24.f32[0] = width2;
+  v24.f32[1] = height2;
   v38 = vdiv_f32(v34, v24);
-  v25 = [v20 contents];
-  LODWORD(v26) = *(v25 + 24);
-  LODWORD(v27) = *(v25 + 28);
+  contents = [v20 contents];
+  LODWORD(v26) = *(contents + 24);
+  LODWORD(v27) = *(contents + 28);
   v28 = (((v26 + 128.0 + 4.0) * v38.f32[0] + 32.0 + -1.0) * 0.03125);
   v29 = (((v27 + 128.0 + 4.0) * v38.f32[1] + 32.0 + -1.0) * 0.03125);
-  [v14 setComputePipelineState:self->_getRoiRepairMvFromMvf];
-  [v14 setTexture:v16 atIndex:0];
-  [v14 setTexture:v17 atIndex:1];
-  [v14 setTexture:v18 atIndex:2];
-  [v14 setBuffer:v20 offset:0 atIndex:0];
-  [v14 setBytes:&v38 length:8 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_getRoiRepairMvFromMvf];
+  [encoderCopy setTexture:mapCopy atIndex:0];
+  [encoderCopy setTexture:mvf0Copy atIndex:1];
+  [encoderCopy setTexture:mvf1Copy atIndex:2];
+  [encoderCopy setBuffer:v20 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v38 length:8 atIndex:1];
   v37[0] = v28;
   v37[1] = v29;
   v37[2] = 1;
   v35 = vdupq_n_s64(0x20uLL);
   v36 = 1;
-  [v14 dispatchThreadgroups:v37 threadsPerThreadgroup:&v35];
+  [encoderCopy dispatchThreadgroups:v37 threadsPerThreadgroup:&v35];
   v30 = 0;
 LABEL_7:
 
   return v30;
 }
 
-- (int64_t)encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:(id)a3 fullResInput:(id)a4 ref0:(id)a5 warpedRef0:(id)a6 ref1:(id)a7 warpedRef1:(id)a8 meta:(id)a9
+- (int64_t)encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:(id)encoder fullResInput:(id)input ref0:(id)ref0 warpedRef0:(id)warpedRef0 ref1:(id)ref1 warpedRef1:(id)warpedRef1 meta:(id)meta
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = v21;
-  if (!v16)
+  encoderCopy = encoder;
+  inputCopy = input;
+  ref0Copy = ref0;
+  warpedRef0Copy = warpedRef0;
+  ref1Copy = ref1;
+  warpedRef1Copy = warpedRef1;
+  metaCopy = meta;
+  v22 = metaCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:fullResInput:ref0:warpedRef0:ref1:warpedRef1:meta:];
 LABEL_15:
@@ -4371,80 +4371,80 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!v17)
+  if (!ref0Copy)
   {
     [GGMMetalToolBox encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:fullResInput:ref0:warpedRef0:ref1:warpedRef1:meta:];
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!warpedRef0Copy)
   {
     [GGMMetalToolBox encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:fullResInput:ref0:warpedRef0:ref1:warpedRef1:meta:];
     goto LABEL_15;
   }
 
-  if (!v19)
+  if (!ref1Copy)
   {
     [GGMMetalToolBox encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:fullResInput:ref0:warpedRef0:ref1:warpedRef1:meta:];
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!warpedRef1Copy)
   {
     [GGMMetalToolBox encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:fullResInput:ref0:warpedRef0:ref1:warpedRef1:meta:];
     goto LABEL_15;
   }
 
-  if (!v21)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeBmTransferWithRoiRepairMvYUVToCommandEncoder:fullResInput:ref0:warpedRef0:ref1:warpedRef1:meta:];
     goto LABEL_15;
   }
 
-  v23 = [v21 contents];
-  v35 = [v18 width];
-  v24 = [v18 height];
-  v25.f32[0] = v35;
-  v25.f32[1] = v24;
+  contents = [metaCopy contents];
+  width = [warpedRef0Copy width];
+  height = [warpedRef0Copy height];
+  v25.f32[0] = width;
+  v25.f32[1] = height;
   v36 = v25;
-  v34 = [v16 width];
-  v26 = [v16 height];
-  v27.f32[0] = v34;
-  v27.f32[1] = v26;
+  width2 = [inputCopy width];
+  height2 = [inputCopy height];
+  v27.f32[0] = width2;
+  v27.f32[1] = height2;
   v28 = vdiv_f32(v36, v27);
-  v27.i32[0] = *(v23 + 24);
-  LODWORD(v29) = *(v23 + 28);
+  v27.i32[0] = *(contents + 24);
+  LODWORD(v29) = *(contents + 28);
   v30 = (((v27 + 128.0 + 4.0) * v28.f32[0] + 32.0 + -1.0) * 0.03125);
   v40 = v28;
   v31 = (((v29 + 128.0 + 4.0) * v28.f32[1] + 32.0 + -1.0) * 0.03125);
-  [v15 setComputePipelineState:self->_bmTransferWithRoiRepairMvYUV];
-  [v15 setTexture:v17 atIndex:0];
-  [v15 setTexture:v18 atIndex:1];
-  [v15 setTexture:v19 atIndex:2];
-  [v15 setTexture:v20 atIndex:3];
-  [v15 setBuffer:v22 offset:0 atIndex:0];
-  [v15 setBytes:&v40 length:8 atIndex:1];
-  [v15 setImageblockWidth:32 height:32];
+  [encoderCopy setComputePipelineState:self->_bmTransferWithRoiRepairMvYUV];
+  [encoderCopy setTexture:ref0Copy atIndex:0];
+  [encoderCopy setTexture:warpedRef0Copy atIndex:1];
+  [encoderCopy setTexture:ref1Copy atIndex:2];
+  [encoderCopy setTexture:warpedRef1Copy atIndex:3];
+  [encoderCopy setBuffer:v22 offset:0 atIndex:0];
+  [encoderCopy setBytes:&v40 length:8 atIndex:1];
+  [encoderCopy setImageblockWidth:32 height:32];
   v39[0] = v30;
   v39[1] = v31;
   v39[2] = 1;
   v37 = vdupq_n_s64(0x20uLL);
   v38 = 1;
-  [v15 dispatchThreadgroups:v39 threadsPerThreadgroup:&v37];
+  [encoderCopy dispatchThreadgroups:v39 threadsPerThreadgroup:&v37];
   v32 = 0;
 LABEL_8:
 
   return v32;
 }
 
-- (int64_t)encodeGetMvToFutureFromMvf:(id)a3 fullResInput:(id)a4 meta:(id)a5 mvf:(id)a6
+- (int64_t)encodeGetMvToFutureFromMvf:(id)mvf fullResInput:(id)input meta:(id)meta mvf:(id)a6
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  mvfCopy = mvf;
+  inputCopy = input;
+  metaCopy = meta;
   v13 = a6;
   v14 = v13;
-  if (!v11)
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeGetMvToFutureFromMvf:fullResInput:meta:mvf:];
 LABEL_9:
@@ -4452,7 +4452,7 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v12)
+  if (!metaCopy)
   {
     [GGMMetalToolBox encodeGetMvToFutureFromMvf:fullResInput:meta:mvf:];
     goto LABEL_9;
@@ -4464,49 +4464,49 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v15 = [v12 contents];
-  v30 = [v14 width];
-  v16 = [v14 height];
-  v17.f32[0] = v30;
-  v17.f32[1] = v16;
+  contents = [metaCopy contents];
+  width = [v14 width];
+  height = [v14 height];
+  v17.f32[0] = width;
+  v17.f32[1] = height;
   v31 = v17;
-  v29 = [v11 width];
-  v18 = [v11 height];
-  v19.f32[0] = v29;
-  v19.f32[1] = v18;
+  width2 = [inputCopy width];
+  height2 = [inputCopy height];
+  v19.f32[0] = width2;
+  v19.f32[1] = height2;
   v37 = vdiv_f32(v31, v19);
-  v20 = vadd_s32(v15[3], 0x8000000080);
+  v20 = vadd_s32(contents[3], 0x8000000080);
   v21.i64[0] = v20.u32[0];
   v21.i64[1] = v20.u32[1];
   __asm { FMOV            V2.2D, #4.0 }
 
   v32 = vshrq_n_u64(vaddq_s64(vcvtq_u64_f64(vrndpq_f64(vmulq_f64(vaddq_f64(vaddq_f64(vcvtq_f64_u64(v21), vdupq_n_s64(0x4060000000000000uLL)), _Q2), vcvtq_f64_f32(v37)))), vdupq_n_s64(0x1FuLL)), 5uLL);
-  [v10 setComputePipelineState:self->_getMvToFutureFromMvf];
-  [v10 setTexture:v14 atIndex:0];
-  [v10 setBuffer:v12 offset:0 atIndex:0];
-  [v10 setBytes:&v37 length:8 atIndex:1];
+  [mvfCopy setComputePipelineState:self->_getMvToFutureFromMvf];
+  [mvfCopy setTexture:v14 atIndex:0];
+  [mvfCopy setBuffer:metaCopy offset:0 atIndex:0];
+  [mvfCopy setBytes:&v37 length:8 atIndex:1];
   v35 = v32;
   v36 = 1;
   v33 = vdupq_n_s64(0x20uLL);
   v34 = 1;
-  [v10 dispatchThreadgroups:&v35 threadsPerThreadgroup:&v33];
+  [mvfCopy dispatchThreadgroups:&v35 threadsPerThreadgroup:&v33];
   v27 = 0;
 LABEL_5:
 
   return v27;
 }
 
-- (int64_t)encodeGetMvForMotionCueFromMvf:(GGMMetalToolBox *)self fullResInput:(SEL)a2 meta:(id)a3 mvf:(id)a4 opticalCenter:(id)a5 refOpticalCenter:(id)a6
+- (int64_t)encodeGetMvForMotionCueFromMvf:(GGMMetalToolBox *)self fullResInput:(SEL)input meta:(id)meta mvf:(id)mvf opticalCenter:(id)center refOpticalCenter:(id)opticalCenter
 {
   v8 = v7;
   v9 = v6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  metaCopy = meta;
+  mvfCopy = mvf;
+  centerCopy = center;
+  opticalCenterCopy = opticalCenter;
   v41 = v8;
   v42 = v9;
-  if (!v15)
+  if (!mvfCopy)
   {
     [GGMMetalToolBox encodeGetMvForMotionCueFromMvf:fullResInput:meta:mvf:opticalCenter:refOpticalCenter:];
 LABEL_7:
@@ -4514,53 +4514,53 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v16)
+  if (!centerCopy)
   {
     [GGMMetalToolBox encodeGetMvForMotionCueFromMvf:fullResInput:meta:mvf:opticalCenter:refOpticalCenter:];
     goto LABEL_7;
   }
 
-  v18 = [v16 contents];
-  v33 = [v17 width];
-  v19 = [v17 height];
-  v20.f32[0] = v33;
-  v20.f32[1] = v19;
+  contents = [centerCopy contents];
+  width = [opticalCenterCopy width];
+  height = [opticalCenterCopy height];
+  v20.f32[0] = width;
+  v20.f32[1] = height;
   v34 = v20;
-  v32 = [v15 width];
-  v21 = [v15 height];
-  v22.f32[0] = v32;
-  v22.f32[1] = v21;
+  width2 = [mvfCopy width];
+  height2 = [mvfCopy height];
+  v22.f32[0] = width2;
+  v22.f32[1] = height2;
   v40 = vdiv_f32(v34, v22);
-  v23 = *(v18 + 24);
+  v23 = *(contents + 24);
   v24.i64[0] = v23;
   v24.i64[1] = HIDWORD(v23);
   __asm { FMOV            V2.2D, #4.0 }
 
   v35 = vshrq_n_u64(vaddq_s64(vcvtq_u64_f64(vrndpq_f64(vmulq_f64(vaddq_f64(vaddq_f64(vcvtq_f64_u64(v24), vdupq_n_s64(0x4060000000000000uLL)), _Q2), vcvtq_f64_f32(v40)))), vdupq_n_s64(0x1FuLL)), 5uLL);
-  [v14 setComputePipelineState:self->_getMvForMotionCueFromMvf];
-  [v14 setTexture:v17 atIndex:0];
-  [v14 setBuffer:v16 offset:0 atIndex:0];
-  [v14 setBytes:&v40 length:8 atIndex:1];
-  [v14 setBytes:&v42 length:8 atIndex:2];
-  [v14 setBytes:&v41 length:8 atIndex:3];
+  [metaCopy setComputePipelineState:self->_getMvForMotionCueFromMvf];
+  [metaCopy setTexture:opticalCenterCopy atIndex:0];
+  [metaCopy setBuffer:centerCopy offset:0 atIndex:0];
+  [metaCopy setBytes:&v40 length:8 atIndex:1];
+  [metaCopy setBytes:&v42 length:8 atIndex:2];
+  [metaCopy setBytes:&v41 length:8 atIndex:3];
   v38 = v35;
   v39 = 1;
   v36 = vdupq_n_s64(0x20uLL);
   v37 = 1;
-  [v14 dispatchThreadgroups:&v38 threadsPerThreadgroup:&v36];
+  [metaCopy dispatchThreadgroups:&v38 threadsPerThreadgroup:&v36];
   v30 = 0;
 LABEL_4:
 
   return v30;
 }
 
-- (int64_t)encodeCollectClusterMvForMotionCueToCommandEncoder:(id)a3 clusterMetaBuf:(id)a4 metaBuf:(id)a5
+- (int64_t)encodeCollectClusterMvForMotionCueToCommandEncoder:(id)encoder clusterMetaBuf:(id)buf metaBuf:(id)metaBuf
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  encoderCopy = encoder;
+  bufCopy = buf;
+  metaBufCopy = metaBuf;
+  v11 = metaBufCopy;
+  if (!bufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMvForMotionCueToCommandEncoder:clusterMetaBuf:metaBuf:];
 LABEL_7:
@@ -4568,34 +4568,34 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!metaBufCopy)
   {
     [GGMMetalToolBox encodeCollectClusterMvForMotionCueToCommandEncoder:clusterMetaBuf:metaBuf:];
     goto LABEL_7;
   }
 
-  v12 = [v9 contents];
-  [v8 setComputePipelineState:self->_collectClusterMvForMotionCue];
-  [v8 setBuffer:v9 offset:0 atIndex:0];
-  [v8 setBuffer:v11 offset:0 atIndex:1];
-  v17 = (*v12 + 31) >> 5;
+  contents = [bufCopy contents];
+  [encoderCopy setComputePipelineState:self->_collectClusterMvForMotionCue];
+  [encoderCopy setBuffer:bufCopy offset:0 atIndex:0];
+  [encoderCopy setBuffer:v11 offset:0 atIndex:1];
+  v17 = (*contents + 31) >> 5;
   v18 = vdupq_n_s64(1uLL);
   v15 = 32;
   v16 = xmmword_2487C3C20;
-  [v8 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+  [encoderCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
   v13 = 0;
 LABEL_4:
 
   return v13;
 }
 
-- (int64_t)encodeGetLsMapYUVToCommandEncoder:(id)a3 input:(id)a4 map:(id)a5
+- (int64_t)encodeGetLsMapYUVToCommandEncoder:(id)encoder input:(id)input map:(id)map
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  encoderCopy = encoder;
+  inputCopy = input;
+  mapCopy = map;
+  v11 = mapCopy;
+  if (!inputCopy)
   {
     [GGMMetalToolBox encodeGetLsMapYUVToCommandEncoder:input:map:];
 LABEL_7:
@@ -4603,41 +4603,41 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!mapCopy)
   {
     [GGMMetalToolBox encodeGetLsMapYUVToCommandEncoder:input:map:];
     goto LABEL_7;
   }
 
-  v12 = ([v10 width] + 15) >> 4;
+  v12 = ([mapCopy width] + 15) >> 4;
   v13 = ([v11 height] + 15) >> 4;
-  [v8 setComputePipelineState:self->_getLsMapYUV];
-  [v8 setTexture:v9 atIndex:0];
-  [v8 setTexture:v11 atIndex:1];
+  [encoderCopy setComputePipelineState:self->_getLsMapYUV];
+  [encoderCopy setTexture:inputCopy atIndex:0];
+  [encoderCopy setTexture:v11 atIndex:1];
   v18[0] = v12;
   v18[1] = v13;
   v18[2] = 1;
   v16 = vdupq_n_s64(0x10uLL);
   v17 = 1;
-  [v8 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [encoderCopy dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
   v14 = 0;
 LABEL_4:
 
   return v14;
 }
 
-- (GGMMetalToolBox)initWithMetalContext:(id)a3 commandQueue:(id)a4
+- (GGMMetalToolBox)initWithMetalContext:(id)context commandQueue:(id)queue
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  contextCopy = context;
+  queueCopy = queue;
+  v8 = queueCopy;
+  selfCopy = 0;
+  if (contextCopy && queueCopy)
   {
     v32.receiver = self;
     v32.super_class = GGMMetalToolBox;
-    v10 = [(VEMetalBase *)&v32 initWithDevice:v6 commmandQueue:v7];
+    v10 = [(VEMetalBase *)&v32 initWithDevice:contextCopy commmandQueue:queueCopy];
     if (v10)
     {
       self = v10;
@@ -4700,7 +4700,7 @@ LABEL_4:
               }
 
               self = self;
-              v9 = self;
+              selfCopy = self;
               goto LABEL_22;
             }
           }
@@ -4727,12 +4727,12 @@ LABEL_4:
       self = 0;
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
 LABEL_22:
 
-  return v9;
+  return selfCopy;
 }
 
 - (int)_compileShaders
@@ -4937,18 +4937,18 @@ LABEL_22:
   return 0;
 }
 
-- ($D341E8FA52B8DFDE89B90A050A6B59DC)generateMetaContainerArrayBufFromMetaContainerBuf:(id)a3 imageRect:(CGRect)a4
+- ($D341E8FA52B8DFDE89B90A050A6B59DC)generateMetaContainerArrayBufFromMetaContainerBuf:(id)buf imageRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v66 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
+  bufCopy = buf;
+  v10 = bufCopy;
   p_metaBufArray = &self->_metaBufArray;
   self->_metaBufArray.clusterCnt = 0;
-  if (!v9 || (v12 = [v9 contents]) == 0)
+  if (!bufCopy || (v12 = [bufCopy contents]) == 0)
   {
 
     goto LABEL_18;
@@ -4957,8 +4957,8 @@ LABEL_22:
   v14 = v12;
   v15 = v12 + 20;
   LODWORD(v13) = 1120403456;
-  v51 = [(GGMMetalToolBox *)self clusterIndicesOfRois:v12 + 20 withExtendedRadius:*v12 roiCnt:v13 imageRect:x, y, width, height];
-  v16 = [v51 count];
+  height = [(GGMMetalToolBox *)self clusterIndicesOfRois:v12 + 20 withExtendedRadius:*v12 roiCnt:v13 imageRect:x, y, width, height];
+  v16 = [height count];
   v17 = v16;
   if (v16 >= 257)
   {
@@ -4999,19 +4999,19 @@ LABEL_9:
     v50 = &self->_metaBufArray;
     do
     {
-      v22 = [v51 objectAtIndexedSubscript:v19];
+      v22 = [height objectAtIndexedSubscript:v19];
       v52 = v19;
-      v23 = [p_metaBufArray->var0[v19] contents];
-      bzero(v23, 0x11650uLL);
-      *(v23 + 8232) = *(v14 + 8232);
-      *(v23 + 1478) = *(v14 + 1478);
-      *(v23 + 17808) = *v48;
-      *v23 = [v22 count];
+      contents = [p_metaBufArray->var0[v19] contents];
+      bzero(contents, 0x11650uLL);
+      *(contents + 8232) = *(v14 + 8232);
+      *(contents + 1478) = *(v14 + 1478);
+      *(contents + 17808) = *v48;
+      *contents = [v22 count];
       if ([v22 count])
       {
         v25 = 0;
         v26 = 0;
-        v61 = v23 + 4118;
+        v61 = contents + 4118;
         *&v24 = 0x80000000800000;
         v63 = v24;
         v27 = 18720;
@@ -5024,37 +5024,37 @@ LABEL_9:
           v29 = v22;
           v30 = v20;
           v32 = v31 = v15;
-          v33 = [v32 intValue];
+          intValue = [v32 intValue];
 
           v15 = v31;
           v20 = v30;
           v22 = v29;
-          v34 = &v23[v25];
-          v35 = &v15[16 * v33];
+          v34 = &contents[v25];
+          v35 = &v15[16 * intValue];
           v36 = *v35;
           *(v34 + 28) = *(v35 + 1);
           *(v34 + 20) = v36;
           v37 = &v61[2 * v26];
-          *v37 = *&v20[2 * v33];
-          *&v36 = *&v23[v25 + 20];
-          v38 = *&v23[v25 + 24];
-          LODWORD(v34) = *&v60[2 * v33];
-          v37[640] = *&v59[2 * v33];
+          *v37 = *&v20[2 * intValue];
+          *&v36 = *&contents[v25 + 20];
+          v38 = *&contents[v25 + 24];
+          LODWORD(v34) = *&v60[2 * intValue];
+          v37[640] = *&v59[2 * intValue];
           v37[384] = v34;
-          *&v23[v27] = *&v58[4 * v33];
-          *&v61[8 * v26 + 1802] = *&v57[8 * v33];
+          *&contents[v27] = *&v58[4 * intValue];
+          *&v61[8 * v26 + 1802] = *&v57[8 * intValue];
           *(&v39 + 1) = *(&v62 + 1);
-          v40 = &v23[v28];
-          *v40 = *&v56[2 * v33];
+          v40 = &contents[v28];
+          *v40 = *&v56[2 * intValue];
           *(&v41 + 1) = *(&v63 + 1);
           *&v39 = vbsl_s8(vcgt_f32(*&v36, *&v62), *&v62, *&v36);
           v62 = v39;
-          v40[512] = *&v55[2 * v33];
-          v40[256] = *&v54[2 * v33];
+          v40[512] = *&v55[2 * intValue];
+          v40[256] = *&v54[2 * intValue];
           *&v41 = vbsl_s8(vcgt_f32(*&v63, v38), *&v63, v38);
           v63 = v41;
-          LODWORD(v34) = *&v53[2 * v33];
-          v61[v26++ + 512] = v33;
+          LODWORD(v34) = *&v53[2 * intValue];
+          v61[v26++ + 512] = intValue;
           v40[768] = v34;
           v25 += 16;
           v28 += 2;
@@ -5072,11 +5072,11 @@ LABEL_9:
 
       v42.i64[0] = v62;
       v42.i64[1] = v63;
-      *(v23 + 4) = vuzp1q_s32(v42, vrev64q_s32(v42));
+      *(contents + 4) = vuzp1q_s32(v42, vrev64q_s32(v42));
       v43 = vaddq_f64(vcvtq_f64_f32(*&v62), v46);
       *&v43.f64[0] = vmovn_s64(vcvtq_s64_f64(vbicq_s8(v43, vcltzq_f64(v43))));
-      *(v23 + 3) = vcvt_u32_f32(vsub_f32(*&v63, *&v62));
-      *(v23 + 4) = *&vsra_n_u32(*&v43.f64[0], vcltz_s32(*&v43.f64[0]), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
+      *(contents + 3) = vcvt_u32_f32(vsub_f32(*&v63, *&v62));
+      *(contents + 4) = *&vsra_n_u32(*&v43.f64[0], vcltz_s32(*&v43.f64[0]), 0x1EuLL) & 0xFFFFFFFCFFFFFFFCLL;
       p_metaBufArray = v50;
       ++v50->clusterCnt;
 
@@ -5092,37 +5092,37 @@ LABEL_18:
   return p_metaBufArray;
 }
 
-- (int64_t)encodeForwarpYUVToCommandEncoder:(id)a3 input0:(id)a4 input1:(id)a5 meta:(id)a6 mvf0:(id)a7 mvf1:(id)a8 intermediateOutput0:(id)a9 intermediateOutput1:(id)a10 output0:(id)a11 output1:(id)a12 outputMap0:(id)a13 outputMap1:(id)a14
+- (int64_t)encodeForwarpYUVToCommandEncoder:(id)encoder input0:(id)input0 input1:(id)input1 meta:(id)meta mvf0:(id)mvf0 mvf1:(id)mvf1 intermediateOutput0:(id)output0 intermediateOutput1:(id)self0 output0:(id)self1 output1:(id)self2 outputMap0:(id)self3 outputMap1:(id)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v39 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
+  encoderCopy = encoder;
+  input0Copy = input0;
+  input1Copy = input1;
+  metaCopy = meta;
+  mvf0Copy = mvf0;
+  mvf1Copy = mvf1;
+  output0Copy = output0;
+  output1Copy = output1;
   v36 = a11;
   v34 = a12;
-  v33 = a13;
-  v26 = a14;
-  v27 = [(GGMMetalToolBox *)self encodeResetOutputToCommandEncoder:v19 input:v20 meta:v21 output0:v24 output1:v25];
-  v37 = v22;
-  v38 = v20;
-  if (v27 || (v27 = [(GGMMetalToolBox *)self encodeUpdateOutputFloatToCommandEncoder:v19 input0:v20 flow0:v22 input1:v39 flow1:v23 meta:v21 output0:v24 output1:v25]) != 0)
+  map0Copy = map0;
+  map1Copy = map1;
+  v27 = [(GGMMetalToolBox *)self encodeResetOutputToCommandEncoder:encoderCopy input:input0Copy meta:metaCopy output0:output0Copy output1:output1Copy];
+  v37 = mvf0Copy;
+  v38 = input0Copy;
+  if (v27 || (v27 = [(GGMMetalToolBox *)self encodeUpdateOutputFloatToCommandEncoder:encoderCopy input0:input0Copy flow0:mvf0Copy input1:input1Copy flow1:mvf1Copy meta:metaCopy output0:output0Copy output1:output1Copy]) != 0)
   {
     v31 = v27;
     v29 = v36;
     v28 = v34;
-    v30 = v33;
+    v30 = map0Copy;
   }
 
   else
   {
     v28 = v34;
     v29 = v36;
-    v30 = v33;
-    v31 = [(GGMMetalToolBox *)self encodeConvertFloatBuffer2TextureToCommandEncoder:v19 inputBuffer0:v24 inputBuffer1:v25 meta:v21 output0:v36 outputMap0:v33 output1:v34 outputMap1:v26];
+    v30 = map0Copy;
+    v31 = [(GGMMetalToolBox *)self encodeConvertFloatBuffer2TextureToCommandEncoder:encoderCopy inputBuffer0:output0Copy inputBuffer1:output1Copy meta:metaCopy output0:v36 outputMap0:map0Copy output1:v34 outputMap1:map1Copy];
   }
 
   return v31;

@@ -1,28 +1,28 @@
 @interface PXDemoTilingControllerWidgetLayout
 + (PXTileIdentifier)backgroundTileIdentifier;
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGRect)contentBounds;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
-- (void)setReferenceSize:(CGSize)a3;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
+- (void)setReferenceSize:(CGSize)size;
 @end
 
 @implementation PXDemoTilingControllerWidgetLayout
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
   [(PXDemoTilingControllerWidgetLayout *)self contentBounds];
   [(PXTilingLayout *)self contentInset];
   PXEdgeInsetsInsetRect();
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  blockCopy = block;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
@@ -37,7 +37,7 @@
   v28 = y;
   v29 = width;
   v30 = height;
-  v13 = v12;
+  v13 = blockCopy;
   v25 = v13;
   v14 = _Block_copy(aBlock);
   v15 = objc_opt_class();
@@ -57,15 +57,15 @@
   }
 
   v14[2](v14, &v18);
-  v16 = [(PXAssetsTilingLayout *)self dataSource];
-  if ([v16 numberOfSections] >= 1 && objc_msgSend(v16, "numberOfItemsInSection:", 0) >= 1)
+  dataSource = [(PXAssetsTilingLayout *)self dataSource];
+  if ([dataSource numberOfSections] >= 1 && objc_msgSend(dataSource, "numberOfItemsInSection:", 0) >= 1)
   {
-    v17 = [v16 identifier];
+    identifier = [dataSource identifier];
     v23 = 0;
     v21 = 0u;
     v22 = 0u;
     v18 = xmmword_1A5380D20;
-    v19 = v17;
+    v19 = identifier;
     *&v20 = 0;
     *(&v20 + 1) = 0x7FFFFFFFFFFFFFFFLL;
     v14[2](v14, &v18);
@@ -157,10 +157,10 @@ void __82__PXDemoTilingControllerWidgetLayout_enumerateTilesInRect_withOptions_u
   return result;
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   if (width != v7 || height != v6)
   {

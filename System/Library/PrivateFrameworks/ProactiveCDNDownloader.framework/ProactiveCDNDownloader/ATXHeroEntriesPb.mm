@@ -1,22 +1,22 @@
 @interface ATXHeroEntriesPb
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isTouristAppAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isTouristAppAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)deltaLatitudeAtIndex:(unint64_t)a3;
-- (int)deltaLongitudeAtIndex:(unint64_t)a3;
+- (int)deltaLatitudeAtIndex:(unint64_t)index;
+- (int)deltaLongitudeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)muidAtIndex:(unint64_t)a3;
-- (unsigned)adamIdAtIndex:(unint64_t)a3;
-- (unsigned)radiusAtIndex:(unint64_t)a3;
-- (unsigned)rankAtIndex:(unint64_t)a3;
-- (void)addPoiCategory:(id)a3;
-- (void)addUrlHash:(id)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)muidAtIndex:(unint64_t)index;
+- (unsigned)adamIdAtIndex:(unint64_t)index;
+- (unsigned)radiusAtIndex:(unint64_t)index;
+- (unsigned)rankAtIndex:(unint64_t)index;
+- (void)addPoiCategory:(id)category;
+- (void)addUrlHash:(id)hash;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXHeroEntriesPb
@@ -35,152 +35,152 @@
   [(ATXHeroEntriesPb *)&v3 dealloc];
 }
 
-- (int)deltaLatitudeAtIndex:(unint64_t)a3
+- (int)deltaLatitudeAtIndex:(unint64_t)index
 {
   p_deltaLatitudes = &self->_deltaLatitudes;
   count = self->_deltaLatitudes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_deltaLatitudes->list[a3];
+  return p_deltaLatitudes->list[index];
 }
 
-- (int)deltaLongitudeAtIndex:(unint64_t)a3
+- (int)deltaLongitudeAtIndex:(unint64_t)index
 {
   p_deltaLongitudes = &self->_deltaLongitudes;
   count = self->_deltaLongitudes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_deltaLongitudes->list[a3];
+  return p_deltaLongitudes->list[index];
 }
 
-- (unsigned)adamIdAtIndex:(unint64_t)a3
+- (unsigned)adamIdAtIndex:(unint64_t)index
 {
   p_adamIds = &self->_adamIds;
   count = self->_adamIds.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_adamIds->list[a3];
+  return p_adamIds->list[index];
 }
 
-- (BOOL)isTouristAppAtIndex:(unint64_t)a3
+- (BOOL)isTouristAppAtIndex:(unint64_t)index
 {
   p_isTouristApps = &self->_isTouristApps;
   count = self->_isTouristApps.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_isTouristApps->list[a3];
+  return p_isTouristApps->list[index];
 }
 
-- (unsigned)rankAtIndex:(unint64_t)a3
+- (unsigned)rankAtIndex:(unint64_t)index
 {
   p_ranks = &self->_ranks;
   count = self->_ranks.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_ranks->list[a3];
+  return p_ranks->list[index];
 }
 
-- (unsigned)radiusAtIndex:(unint64_t)a3
+- (unsigned)radiusAtIndex:(unint64_t)index
 {
   p_radius = &self->_radius;
   count = self->_radius.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_radius->list[a3];
+  return p_radius->list[index];
 }
 
-- (void)addUrlHash:(id)a3
+- (void)addUrlHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   urlHashs = self->_urlHashs;
-  v8 = v4;
+  v8 = hashCopy;
   if (!urlHashs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_urlHashs;
     self->_urlHashs = v6;
 
-    v4 = v8;
+    hashCopy = v8;
     urlHashs = self->_urlHashs;
   }
 
-  [(NSMutableArray *)urlHashs addObject:v4];
+  [(NSMutableArray *)urlHashs addObject:hashCopy];
 }
 
-- (void)addPoiCategory:(id)a3
+- (void)addPoiCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   poiCategorys = self->_poiCategorys;
-  v8 = v4;
+  v8 = categoryCopy;
   if (!poiCategorys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_poiCategorys;
     self->_poiCategorys = v6;
 
-    v4 = v8;
+    categoryCopy = v8;
     poiCategorys = self->_poiCategorys;
   }
 
-  [(NSMutableArray *)poiCategorys addObject:v4];
+  [(NSMutableArray *)poiCategorys addObject:categoryCopy];
 }
 
-- (unint64_t)muidAtIndex:(unint64_t)a3
+- (unint64_t)muidAtIndex:(unint64_t)index
 {
   p_muids = &self->_muids;
   count = self->_muids.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_muids->list[a3];
+  return p_muids->list[index];
 }
 
 - (id)description
@@ -189,61 +189,61 @@
   v8.receiver = self;
   v8.super_class = ATXHeroEntriesPb;
   v4 = [(ATXHeroEntriesPb *)&v8 description];
-  v5 = [(ATXHeroEntriesPb *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXHeroEntriesPb *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_tileLatitudeE7];
-  [v3 setObject:v4 forKey:@"tileLatitudeE7"];
+  [dictionary setObject:v4 forKey:@"tileLatitudeE7"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_tileLongitudeE7];
-  [v3 setObject:v5 forKey:@"tileLongitudeE7"];
+  [dictionary setObject:v5 forKey:@"tileLongitudeE7"];
 
   v6 = PBRepeatedInt32NSArray();
-  [v3 setObject:v6 forKey:@"deltaLatitude"];
+  [dictionary setObject:v6 forKey:@"deltaLatitude"];
 
   v7 = PBRepeatedInt32NSArray();
-  [v3 setObject:v7 forKey:@"deltaLongitude"];
+  [dictionary setObject:v7 forKey:@"deltaLongitude"];
 
   v8 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v8 forKey:@"adamId"];
+  [dictionary setObject:v8 forKey:@"adamId"];
 
   v9 = PBRepeatedBOOLNSArray();
-  [v3 setObject:v9 forKey:@"isTouristApp"];
+  [dictionary setObject:v9 forKey:@"isTouristApp"];
 
   v10 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v10 forKey:@"rank"];
+  [dictionary setObject:v10 forKey:@"rank"];
 
   v11 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v11 forKey:@"radius"];
+  [dictionary setObject:v11 forKey:@"radius"];
 
   urlHashs = self->_urlHashs;
   if (urlHashs)
   {
-    [v3 setObject:urlHashs forKey:@"urlHash"];
+    [dictionary setObject:urlHashs forKey:@"urlHash"];
   }
 
   poiCategorys = self->_poiCategorys;
   if (poiCategorys)
   {
-    [v3 setObject:poiCategorys forKey:@"poiCategory"];
+    [dictionary setObject:poiCategorys forKey:@"poiCategory"];
   }
 
   v14 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v14 forKey:@"muid"];
+  [dictionary setObject:v14 forKey:@"muid"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   tileLatitudeE7 = self->_tileLatitudeE7;
   PBDataWriterWriteSfixed32Field();
   tileLongitudeE7 = self->_tileLongitudeE7;
@@ -450,19 +450,19 @@
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[46] = self->_tileLatitudeE7;
-  v34 = v4;
-  v4[47] = self->_tileLongitudeE7;
+  toCopy = to;
+  toCopy[46] = self->_tileLatitudeE7;
+  v34 = toCopy;
+  toCopy[47] = self->_tileLongitudeE7;
   if ([(ATXHeroEntriesPb *)self deltaLatitudesCount])
   {
     [v34 clearDeltaLatitudes];
-    v5 = [(ATXHeroEntriesPb *)self deltaLatitudesCount];
-    if (v5)
+    deltaLatitudesCount = [(ATXHeroEntriesPb *)self deltaLatitudesCount];
+    if (deltaLatitudesCount)
     {
-      v6 = v5;
+      v6 = deltaLatitudesCount;
       for (i = 0; i != v6; ++i)
       {
         [v34 addDeltaLatitude:{-[ATXHeroEntriesPb deltaLatitudeAtIndex:](self, "deltaLatitudeAtIndex:", i)}];
@@ -473,10 +473,10 @@
   if ([(ATXHeroEntriesPb *)self deltaLongitudesCount])
   {
     [v34 clearDeltaLongitudes];
-    v8 = [(ATXHeroEntriesPb *)self deltaLongitudesCount];
-    if (v8)
+    deltaLongitudesCount = [(ATXHeroEntriesPb *)self deltaLongitudesCount];
+    if (deltaLongitudesCount)
     {
-      v9 = v8;
+      v9 = deltaLongitudesCount;
       for (j = 0; j != v9; ++j)
       {
         [v34 addDeltaLongitude:{-[ATXHeroEntriesPb deltaLongitudeAtIndex:](self, "deltaLongitudeAtIndex:", j)}];
@@ -487,10 +487,10 @@
   if ([(ATXHeroEntriesPb *)self adamIdsCount])
   {
     [v34 clearAdamIds];
-    v11 = [(ATXHeroEntriesPb *)self adamIdsCount];
-    if (v11)
+    adamIdsCount = [(ATXHeroEntriesPb *)self adamIdsCount];
+    if (adamIdsCount)
     {
-      v12 = v11;
+      v12 = adamIdsCount;
       for (k = 0; k != v12; ++k)
       {
         [v34 addAdamId:{-[ATXHeroEntriesPb adamIdAtIndex:](self, "adamIdAtIndex:", k)}];
@@ -501,10 +501,10 @@
   if ([(ATXHeroEntriesPb *)self isTouristAppsCount])
   {
     [v34 clearIsTouristApps];
-    v14 = [(ATXHeroEntriesPb *)self isTouristAppsCount];
-    if (v14)
+    isTouristAppsCount = [(ATXHeroEntriesPb *)self isTouristAppsCount];
+    if (isTouristAppsCount)
     {
-      v15 = v14;
+      v15 = isTouristAppsCount;
       for (m = 0; m != v15; ++m)
       {
         [v34 addIsTouristApp:{-[ATXHeroEntriesPb isTouristAppAtIndex:](self, "isTouristAppAtIndex:", m)}];
@@ -515,10 +515,10 @@
   if ([(ATXHeroEntriesPb *)self ranksCount])
   {
     [v34 clearRanks];
-    v17 = [(ATXHeroEntriesPb *)self ranksCount];
-    if (v17)
+    ranksCount = [(ATXHeroEntriesPb *)self ranksCount];
+    if (ranksCount)
     {
-      v18 = v17;
+      v18 = ranksCount;
       for (n = 0; n != v18; ++n)
       {
         [v34 addRank:{-[ATXHeroEntriesPb rankAtIndex:](self, "rankAtIndex:", n)}];
@@ -529,10 +529,10 @@
   if ([(ATXHeroEntriesPb *)self radiusCount])
   {
     [v34 clearRadius];
-    v20 = [(ATXHeroEntriesPb *)self radiusCount];
-    if (v20)
+    radiusCount = [(ATXHeroEntriesPb *)self radiusCount];
+    if (radiusCount)
     {
-      v21 = v20;
+      v21 = radiusCount;
       for (ii = 0; ii != v21; ++ii)
       {
         [v34 addRadius:{-[ATXHeroEntriesPb radiusAtIndex:](self, "radiusAtIndex:", ii)}];
@@ -543,10 +543,10 @@
   if ([(ATXHeroEntriesPb *)self urlHashsCount])
   {
     [v34 clearUrlHashs];
-    v23 = [(ATXHeroEntriesPb *)self urlHashsCount];
-    if (v23)
+    urlHashsCount = [(ATXHeroEntriesPb *)self urlHashsCount];
+    if (urlHashsCount)
     {
-      v24 = v23;
+      v24 = urlHashsCount;
       for (jj = 0; jj != v24; ++jj)
       {
         v26 = [(ATXHeroEntriesPb *)self urlHashAtIndex:jj];
@@ -558,10 +558,10 @@
   if ([(ATXHeroEntriesPb *)self poiCategorysCount])
   {
     [v34 clearPoiCategorys];
-    v27 = [(ATXHeroEntriesPb *)self poiCategorysCount];
-    if (v27)
+    poiCategorysCount = [(ATXHeroEntriesPb *)self poiCategorysCount];
+    if (poiCategorysCount)
     {
-      v28 = v27;
+      v28 = poiCategorysCount;
       for (kk = 0; kk != v28; ++kk)
       {
         v30 = [(ATXHeroEntriesPb *)self poiCategoryAtIndex:kk];
@@ -573,10 +573,10 @@
   if ([(ATXHeroEntriesPb *)self muidsCount])
   {
     [v34 clearMuids];
-    v31 = [(ATXHeroEntriesPb *)self muidsCount];
-    if (v31)
+    muidsCount = [(ATXHeroEntriesPb *)self muidsCount];
+    if (muidsCount)
     {
-      v32 = v31;
+      v32 = muidsCount;
       for (mm = 0; mm != v32; ++mm)
       {
         [v34 addMuid:{-[ATXHeroEntriesPb muidAtIndex:](self, "muidAtIndex:", mm)}];
@@ -585,10 +585,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[46] = self->_tileLatitudeE7;
   v5[47] = self->_tileLongitudeE7;
   PBRepeatedInt32Copy();
@@ -617,7 +617,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addUrlHash:v11];
 
         ++v10;
@@ -650,7 +650,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addPoiCategory:v17];
 
         ++v16;
@@ -668,10 +668,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_tileLatitudeE7 == *(v4 + 46) && self->_tileLongitudeE7 == *(v4 + 47) && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedBOOLIsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && ((urlHashs = self->_urlHashs, !(urlHashs | *(v4 + 24))) || -[NSMutableArray isEqual:](urlHashs, "isEqual:")) && ((poiCategorys = self->_poiCategorys, !(poiCategorys | *(v4 + 22))) || -[NSMutableArray isEqual:](poiCategorys, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_tileLatitudeE7 == *(equalCopy + 46) && self->_tileLongitudeE7 == *(equalCopy + 47) && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedBOOLIsEqual() && PBRepeatedUInt32IsEqual() && PBRepeatedUInt32IsEqual() && ((urlHashs = self->_urlHashs, !(urlHashs | *(equalCopy + 24))) || -[NSMutableArray isEqual:](urlHashs, "isEqual:")) && ((poiCategorys = self->_poiCategorys, !(poiCategorys | *(equalCopy + 22))) || -[NSMutableArray isEqual:](poiCategorys, "isEqual:")))
   {
     IsEqual = PBRepeatedUInt64IsEqual();
   }
@@ -698,69 +698,69 @@
   return v3 ^ v11 ^ PBRepeatedUInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_tileLatitudeE7 = *(v4 + 46);
-  self->_tileLongitudeE7 = *(v4 + 47);
-  v5 = [v4 deltaLatitudesCount];
-  if (v5)
+  fromCopy = from;
+  self->_tileLatitudeE7 = *(fromCopy + 46);
+  self->_tileLongitudeE7 = *(fromCopy + 47);
+  deltaLatitudesCount = [fromCopy deltaLatitudesCount];
+  if (deltaLatitudesCount)
   {
-    v6 = v5;
+    v6 = deltaLatitudesCount;
     for (i = 0; i != v6; ++i)
     {
-      -[ATXHeroEntriesPb addDeltaLatitude:](self, "addDeltaLatitude:", [v4 deltaLatitudeAtIndex:i]);
+      -[ATXHeroEntriesPb addDeltaLatitude:](self, "addDeltaLatitude:", [fromCopy deltaLatitudeAtIndex:i]);
     }
   }
 
-  v8 = [v4 deltaLongitudesCount];
-  if (v8)
+  deltaLongitudesCount = [fromCopy deltaLongitudesCount];
+  if (deltaLongitudesCount)
   {
-    v9 = v8;
+    v9 = deltaLongitudesCount;
     for (j = 0; j != v9; ++j)
     {
-      -[ATXHeroEntriesPb addDeltaLongitude:](self, "addDeltaLongitude:", [v4 deltaLongitudeAtIndex:j]);
+      -[ATXHeroEntriesPb addDeltaLongitude:](self, "addDeltaLongitude:", [fromCopy deltaLongitudeAtIndex:j]);
     }
   }
 
-  v11 = [v4 adamIdsCount];
-  if (v11)
+  adamIdsCount = [fromCopy adamIdsCount];
+  if (adamIdsCount)
   {
-    v12 = v11;
+    v12 = adamIdsCount;
     for (k = 0; k != v12; ++k)
     {
-      -[ATXHeroEntriesPb addAdamId:](self, "addAdamId:", [v4 adamIdAtIndex:k]);
+      -[ATXHeroEntriesPb addAdamId:](self, "addAdamId:", [fromCopy adamIdAtIndex:k]);
     }
   }
 
-  v14 = [v4 isTouristAppsCount];
-  if (v14)
+  isTouristAppsCount = [fromCopy isTouristAppsCount];
+  if (isTouristAppsCount)
   {
-    v15 = v14;
+    v15 = isTouristAppsCount;
     for (m = 0; m != v15; ++m)
     {
-      -[ATXHeroEntriesPb addIsTouristApp:](self, "addIsTouristApp:", [v4 isTouristAppAtIndex:m]);
+      -[ATXHeroEntriesPb addIsTouristApp:](self, "addIsTouristApp:", [fromCopy isTouristAppAtIndex:m]);
     }
   }
 
-  v17 = [v4 ranksCount];
-  if (v17)
+  ranksCount = [fromCopy ranksCount];
+  if (ranksCount)
   {
-    v18 = v17;
+    v18 = ranksCount;
     for (n = 0; n != v18; ++n)
     {
-      -[ATXHeroEntriesPb addRank:](self, "addRank:", [v4 rankAtIndex:n]);
+      -[ATXHeroEntriesPb addRank:](self, "addRank:", [fromCopy rankAtIndex:n]);
     }
   }
 
-  v20 = [v4 radiusCount];
-  if (v20)
+  radiusCount = [fromCopy radiusCount];
+  if (radiusCount)
   {
-    v21 = v20;
+    v21 = radiusCount;
     for (ii = 0; ii != v21; ++ii)
     {
-      -[ATXHeroEntriesPb addRadius:](self, "addRadius:", [v4 radiusAtIndex:ii]);
+      -[ATXHeroEntriesPb addRadius:](self, "addRadius:", [fromCopy radiusAtIndex:ii]);
     }
   }
 
@@ -768,7 +768,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v23 = *(v4 + 24);
+  v23 = *(fromCopy + 24);
   v24 = [v23 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v24)
   {
@@ -798,7 +798,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v28 = *(v4 + 22);
+  v28 = *(fromCopy + 22);
   v29 = [v28 countByEnumeratingWithState:&v37 objects:v45 count:16];
   if (v29)
   {
@@ -824,13 +824,13 @@
     while (v30);
   }
 
-  v33 = [v4 muidsCount];
-  if (v33)
+  muidsCount = [fromCopy muidsCount];
+  if (muidsCount)
   {
-    v34 = v33;
+    v34 = muidsCount;
     for (jj = 0; jj != v34; ++jj)
     {
-      -[ATXHeroEntriesPb addMuid:](self, "addMuid:", [v4 muidAtIndex:{jj, v37}]);
+      -[ATXHeroEntriesPb addMuid:](self, "addMuid:", [fromCopy muidAtIndex:{jj, v37}]);
     }
   }
 

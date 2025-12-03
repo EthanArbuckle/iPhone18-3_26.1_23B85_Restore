@@ -1,14 +1,14 @@
 @interface SmartRepliesMLRuntimeTaskPerformer
-- (id)performTask:(id)a3 error:(id *)a4;
+- (id)performTask:(id)task error:(id *)error;
 @end
 
 @implementation SmartRepliesMLRuntimeTaskPerformer
 
-- (id)performTask:(id)a3 error:(id *)a4
+- (id)performTask:(id)task error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = SmartRepliesMLRuntimeTaskPerformer.perform(_:)(v5);
+  taskCopy = task;
+  selfCopy = self;
+  v7 = SmartRepliesMLRuntimeTaskPerformer.perform(_:)(taskCopy);
 
   return v7;
 }

@@ -1,25 +1,25 @@
 @interface MFWebViewDictionary
-- (BOOL)isEqualToDictionary:(id)a3;
-- (MFWebViewDictionary)initWithCapacity:(unint64_t)a3;
-- (id)allKeysForObject:(id)a3;
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4;
+- (BOOL)isEqualToDictionary:(id)dictionary;
+- (MFWebViewDictionary)initWithCapacity:(unint64_t)capacity;
+- (id)allKeysForObject:(id)object;
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker;
 - (void)_updateRemoteInstance;
-- (void)registerWithWebView:(id)a3 javascriptName:(id)a4;
+- (void)registerWithWebView:(id)view javascriptName:(id)name;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setDictionary:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)setValuesForKeysWithDictionary:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setDictionary:(id)dictionary;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)setValuesForKeysWithDictionary:(id)dictionary;
 @end
 
 @implementation MFWebViewDictionary
 
-- (MFWebViewDictionary)initWithCapacity:(unint64_t)a3
+- (MFWebViewDictionary)initWithCapacity:(unint64_t)capacity
 {
   v9.receiver = self;
   v9.super_class = MFWebViewDictionary;
@@ -40,34 +40,34 @@
   return v3;
 }
 
-- (id)descriptionWithLocale:(id)a3 indent:(unint64_t)a4
+- (id)descriptionWithLocale:(id)locale indent:(unint64_t)indent
 {
-  v5 = [(NSMutableDictionary *)self->_storage descriptionWithLocale:a3 indent:a4];
+  v5 = [(NSMutableDictionary *)self->_storage descriptionWithLocale:locale indent:indent];
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   javascriptName = self->_javascriptName;
-  v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v10 = [v5 stringByTrimmingCharactersInSet:v9];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v10 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v11 = [v6 stringWithFormat:@"<%@: %p> jsName='%@' => %@", v7, self, javascriptName, v10];
 
   return v11;
 }
 
-- (void)registerWithWebView:(id)a3 javascriptName:(id)a4
+- (void)registerWithWebView:(id)view javascriptName:(id)name
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v6 copy];
+  viewCopy = view;
+  nameCopy = name;
+  v7 = [nameCopy copy];
   javascriptName = self->_javascriptName;
   self->_javascriptName = v7;
 
   v9 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_282716C48];
-  v10 = [v13 _remoteObjectRegistry];
-  v11 = [v10 remoteObjectProxyWithInterface:v9];
+  _remoteObjectRegistry = [viewCopy _remoteObjectRegistry];
+  v11 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v9];
   webProcessProxy = self->_webProcessProxy;
   self->_webProcessProxy = v11;
 
-  [(MFMailWebProcessProxy *)self->_webProcessProxy registerDictionary:self->_storage name:v6];
+  [(MFMailWebProcessProxy *)self->_webProcessProxy registerDictionary:self->_storage name:nameCopy];
 }
 
 - (void)_updateRemoteInstance
@@ -81,69 +81,69 @@
   else
   {
     storage = self->_storage;
-    v4 = [(NSMutableSet *)self->_changedKeys allObjects];
-    v5 = [(NSMutableDictionary *)storage dictionaryWithValuesForKeys:v4];
+    allObjects = [(NSMutableSet *)self->_changedKeys allObjects];
+    v5 = [(NSMutableDictionary *)storage dictionaryWithValuesForKeys:allObjects];
 
     [(MFMailWebProcessProxy *)self->_webProcessProxy setValuesForKeysWithDictionary:v5 forWebViewDictionaryWithName:self->_javascriptName];
     [(NSMutableSet *)self->_changedKeys removeAllObjects];
   }
 }
 
-- (BOOL)isEqualToDictionary:(id)a3
+- (BOOL)isEqualToDictionary:(id)dictionary
 {
-  if (a3 == self)
+  if (dictionary == self)
   {
     return 1;
   }
 
   else
   {
-    return [(NSMutableDictionary *)self->_storage isEqualToDictionary:*(a3 + 1)];
+    return [(NSMutableDictionary *)self->_storage isEqualToDictionary:*(dictionary + 1)];
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:key];
 
   return v3;
 }
 
-- (id)allKeysForObject:(id)a3
+- (id)allKeysForObject:(id)object
 {
-  v3 = [(NSMutableDictionary *)self->_storage allKeysForObject:a3];
+  v3 = [(NSMutableDictionary *)self->_storage allKeysForObject:object];
 
   return v3;
 }
 
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker
 {
-  v4 = [(NSMutableDictionary *)self->_storage objectsForKeys:a3 notFoundMarker:a4];
+  v4 = [(NSMutableDictionary *)self->_storage objectsForKeys:keys notFoundMarker:marker];
 
   return v4;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:subscript];
 
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSMutableDictionary *)self->_storage removeObjectForKey:?];
-  [(NSMutableSet *)self->_changedKeys addObject:v4];
+  [(NSMutableSet *)self->_changedKeys addObject:keyCopy];
   [(MFWebViewDictionary *)self synchronize];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  [(NSMutableDictionary *)self->_storage setObject:v7 forKey:v6];
-  [(NSMutableSet *)self->_changedKeys addObject:v6];
+  objectCopy = object;
+  keyCopy = key;
+  [(NSMutableDictionary *)self->_storage setObject:objectCopy forKey:keyCopy];
+  [(NSMutableSet *)self->_changedKeys addObject:keyCopy];
   [(MFWebViewDictionary *)self synchronize];
 }
 
@@ -155,38 +155,38 @@
   [(MFWebViewDictionary *)self synchronize];
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   [(NSMutableDictionary *)self->_storage removeObjectsForKeys:?];
-  [(NSMutableSet *)self->_changedKeys addObjectsFromArray:v4];
+  [(NSMutableSet *)self->_changedKeys addObjectsFromArray:keysCopy];
   [(MFWebViewDictionary *)self synchronize];
 }
 
-- (void)setDictionary:(id)a3
+- (void)setDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [(NSMutableDictionary *)self->_storage setDictionary:?];
   [(MFWebViewDictionary *)self _setRequiresSynchronization];
   [(MFWebViewDictionary *)self synchronize];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v7 = a3;
-  v6 = a4;
-  [(NSMutableDictionary *)self->_storage setObject:v7 forKeyedSubscript:v6];
-  [(NSMutableSet *)self->_changedKeys addObject:v6];
+  objectCopy = object;
+  subscriptCopy = subscript;
+  [(NSMutableDictionary *)self->_storage setObject:objectCopy forKeyedSubscript:subscriptCopy];
+  [(NSMutableSet *)self->_changedKeys addObject:subscriptCopy];
   [(MFWebViewDictionary *)self synchronize];
 }
 
-- (void)setValuesForKeysWithDictionary:(id)a3
+- (void)setValuesForKeysWithDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   [(NSMutableDictionary *)self->_storage setValuesForKeysWithDictionary:?];
   changedKeys = self->_changedKeys;
-  v5 = [v6 allKeys];
-  [(NSMutableSet *)changedKeys addObjectsFromArray:v5];
+  allKeys = [dictionaryCopy allKeys];
+  [(NSMutableSet *)changedKeys addObjectsFromArray:allKeys];
 
   [(MFWebViewDictionary *)self synchronize];
 }

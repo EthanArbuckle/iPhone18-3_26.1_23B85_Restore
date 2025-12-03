@@ -1,14 +1,14 @@
 @interface DecisionDetails
-- (DecisionDetails)initWithReason:(const char *)a3 code:(unint64_t)a4 evaluations:(id)a5;
+- (DecisionDetails)initWithReason:(const char *)reason code:(unint64_t)code evaluations:(id)evaluations;
 - (void)dealloc;
 @end
 
 @implementation DecisionDetails
 
-- (DecisionDetails)initWithReason:(const char *)a3 code:(unint64_t)a4 evaluations:(id)a5
+- (DecisionDetails)initWithReason:(const char *)reason code:(unint64_t)code evaluations:(id)evaluations
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  evaluationsCopy = evaluations;
   v18.receiver = self;
   v18.super_class = DecisionDetails;
   v10 = [(DecisionDetails *)&v18 init];
@@ -17,32 +17,32 @@
     v11 = evaluationLogHandle;
     if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
     {
-      v12 = "??";
-      if (a3)
+      reasonCopy = "??";
+      if (reason)
       {
-        v12 = a3;
+        reasonCopy = reason;
       }
 
       *buf = 134218242;
-      v20 = a4;
+      codeCopy = code;
       v21 = 2080;
-      v22 = v12;
+      v22 = reasonCopy;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "allocate awd %lld for reason %s", buf, 0x16u);
     }
 
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     timestamp = v10->_timestamp;
-    v10->_timestamp = v13;
+    v10->_timestamp = date;
 
-    v10->_reasonCode = a4;
-    if (v9 && [v9 count])
+    v10->_reasonCode = code;
+    if (evaluationsCopy && [evaluationsCopy count])
     {
-      objc_storeStrong(&v10->_evaluations, a5);
+      objc_storeStrong(&v10->_evaluations, evaluations);
     }
 
-    if (a3)
+    if (reason)
     {
-      v15 = strdup(a3);
+      v15 = strdup(reason);
       if (!v15)
       {
         [DecisionDetails initWithReason:buf code:? evaluations:?];

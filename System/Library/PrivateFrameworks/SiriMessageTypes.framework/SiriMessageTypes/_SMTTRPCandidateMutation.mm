@@ -1,6 +1,6 @@
 @interface _SMTTRPCandidateMutation
 - (BOOL)getIsContinuous;
-- (_SMTTRPCandidateMutation)initWithBase:(id)a3;
+- (_SMTTRPCandidateMutation)initWithBase:(id)base;
 - (id)getRequestId;
 - (id)getTcuList;
 - (id)getTrpCandidateId;
@@ -26,72 +26,72 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_userId;
+    userId = self->_userId;
   }
 
   else
   {
-    v2 = [(SMTTRPCandidate *)self->_base userId];
+    userId = [(SMTTRPCandidate *)self->_base userId];
   }
 
-  return v2;
+  return userId;
 }
 
 - (id)getTcuList
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_tcuList;
+    tcuList = self->_tcuList;
   }
 
   else
   {
-    v2 = [(SMTTRPCandidate *)self->_base tcuList];
+    tcuList = [(SMTTRPCandidate *)self->_base tcuList];
   }
 
-  return v2;
+  return tcuList;
 }
 
 - (id)getRequestId
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_requestId;
+    requestId = self->_requestId;
   }
 
   else
   {
-    v2 = [(SMTTRPCandidate *)self->_base requestId];
+    requestId = [(SMTTRPCandidate *)self->_base requestId];
   }
 
-  return v2;
+  return requestId;
 }
 
 - (id)getTrpCandidateId
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_trpCandidateId;
+    trpCandidateId = self->_trpCandidateId;
   }
 
   else
   {
-    v2 = [(SMTTRPCandidate *)self->_base trpCandidateId];
+    trpCandidateId = [(SMTTRPCandidate *)self->_base trpCandidateId];
   }
 
-  return v2;
+  return trpCandidateId;
 }
 
-- (_SMTTRPCandidateMutation)initWithBase:(id)a3
+- (_SMTTRPCandidateMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SMTTRPCandidateMutation;
   v6 = [(_SMTTRPCandidateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

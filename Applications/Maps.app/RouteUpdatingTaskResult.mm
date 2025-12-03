@@ -1,17 +1,17 @@
 @interface RouteUpdatingTaskResult
-+ (id)resultWithRouteID:(id)a3 transitUpdate:(id)a4;
++ (id)resultWithRouteID:(id)d transitUpdate:(id)update;
 @end
 
 @implementation RouteUpdatingTaskResult
 
-+ (id)resultWithRouteID:(id)a3 transitUpdate:(id)a4
++ (id)resultWithRouteID:(id)d transitUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setRouteID:v7];
+  updateCopy = update;
+  dCopy = d;
+  v8 = objc_alloc_init(self);
+  [v8 setRouteID:dCopy];
 
-  [v8 setTransitUpdate:v6];
+  [v8 setTransitUpdate:updateCopy];
 
   return v8;
 }

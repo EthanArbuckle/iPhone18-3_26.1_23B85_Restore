@@ -1,40 +1,40 @@
 @interface TUIButtonStateBuilder
-- (id)finalizeButtonStateModelWithContext:(id)a3;
-- (void)addAttributedString:(id)a3 forRole:(id)a4;
-- (void)addImageModel:(id)a3 forRole:(id)a4;
+- (id)finalizeButtonStateModelWithContext:(id)context;
+- (void)addAttributedString:(id)string forRole:(id)role;
+- (void)addImageModel:(id)model forRole:(id)role;
 @end
 
 @implementation TUIButtonStateBuilder
 
-- (void)addAttributedString:(id)a3 forRole:(id)a4
+- (void)addAttributedString:(id)string forRole:(id)role
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 isEqualToString:@"title"])
+  stringCopy = string;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"title"])
   {
-    v8 = [v10 copy];
+    v8 = [stringCopy copy];
     title = self->_title;
     self->_title = v8;
   }
 }
 
-- (void)addImageModel:(id)a3 forRole:(id)a4
+- (void)addImageModel:(id)model forRole:(id)role
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 isEqualToString:@"image"])
+  modelCopy = model;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"image"])
   {
-    v8 = [v10 image];
+    image = [modelCopy image];
     image = self->_image;
-    self->_image = v8;
+    self->_image = image;
   }
 }
 
-- (id)finalizeButtonStateModelWithContext:(id)a3
+- (id)finalizeButtonStateModelWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (*&self->_title == 0 && !self->_contentModel)
   {
     v5 = 0;

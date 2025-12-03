@@ -1,23 +1,23 @@
 @interface BLSHXPCAssertionServiceHost
-- (BLSHXPCAssertionServiceHost)initWithLocalService:(id)a3 peer:(id)a4;
-- (id)acquireAssertionForDescriptor:(id)a3 error:(id *)a4;
-- (id)proxyForIdentifier:(uint64_t)a1;
+- (BLSHXPCAssertionServiceHost)initWithLocalService:(id)service peer:(id)peer;
+- (id)acquireAssertionForDescriptor:(id)descriptor error:(id *)error;
+- (id)proxyForIdentifier:(uint64_t)identifier;
 - (uint64_t)isValid;
-- (void)acquireAssertion:(id)a3;
-- (void)cancelAssertion:(id)a3 withError:(id)a4;
+- (void)acquireAssertion:(id)assertion;
+- (void)cancelAssertion:(id)assertion withError:(id)error;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeProxyForIdentifier:(uint64_t)a1;
-- (void)restartAssertionTimeoutTimer:(id)a3;
-- (void)setProxy:(void *)a3 forIdentifier:;
+- (void)removeProxyForIdentifier:(uint64_t)identifier;
+- (void)restartAssertionTimeoutTimer:(id)timer;
+- (void)setProxy:(void *)proxy forIdentifier:;
 @end
 
 @implementation BLSHXPCAssertionServiceHost
 
-- (BLSHXPCAssertionServiceHost)initWithLocalService:(id)a3 peer:(id)a4
+- (BLSHXPCAssertionServiceHost)initWithLocalService:(id)service peer:(id)peer
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  peerCopy = peer;
   v15.receiver = self;
   v15.super_class = BLSHXPCAssertionServiceHost;
   v9 = [(BLSHXPCAssertionServiceHost *)&v15 init];
@@ -25,13 +25,13 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v11 = [v8 remoteProcess];
-    objc_storeWeak(&v10->_remoteProcessHandle, v11);
+    remoteProcess = [peerCopy remoteProcess];
+    objc_storeWeak(&v10->_remoteProcessHandle, remoteProcess);
 
-    objc_storeStrong(&v10->_localService, a3);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v10->_localService, service);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     assertionProxies = v10->_assertionProxies;
-    v10->_assertionProxies = v12;
+    v10->_assertionProxies = dictionary;
 
     v10->_valid = 1;
   }
@@ -88,12 +88,12 @@ void __41__BLSHXPCAssertionServiceHost_invalidate__block_invoke(uint64_t a1, uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)acquireAssertionForDescriptor:(id)a3 error:(id *)a4
+- (id)acquireAssertionForDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = a3;
+  descriptorCopy = descriptor;
   WeakRetained = objc_loadWeakRetained(&self->_remoteProcessHandle);
   v19 = 0;
-  v9 = [v7 checkEntitlementSourceForRequiredEntitlements:WeakRetained error:&v19];
+  v9 = [descriptorCopy checkEntitlementSourceForRequiredEntitlements:WeakRetained error:&v19];
   v10 = v19;
   v11 = v10;
   if ((v9 & 1) != 0 || v10)
@@ -101,7 +101,7 @@ void __41__BLSHXPCAssertionServiceHost_invalidate__block_invoke(uint64_t a1, uin
     if (v10)
     {
       v12 = 0;
-      if (!a4)
+      if (!error)
       {
 LABEL_6:
 
@@ -111,30 +111,30 @@ LABEL_6:
 
     else
     {
-      [(BLSHXPCAssertionServiceHost *)v7 acquireAssertionForDescriptor:&v20 error:?];
+      [(BLSHXPCAssertionServiceHost *)descriptorCopy acquireAssertionForDescriptor:&v20 error:?];
       v12 = v20;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_6;
       }
     }
 
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
     goto LABEL_6;
   }
 
   v15 = MEMORY[0x277CCACA8];
   v16 = [WeakRetained pid];
-  v17 = [WeakRetained bundleIdentifier];
-  v18 = [v15 stringWithFormat:@"checkEntitlementSourceForRequiredEntitlements returned NO but did not provide an error for process:%ld:'%@' descriptor:%@", v16, v17, v7];
+  bundleIdentifier = [WeakRetained bundleIdentifier];
+  descriptorCopy = [v15 stringWithFormat:@"checkEntitlementSourceForRequiredEntitlements returned NO but did not provide an error for process:%ld:'%@' descriptor:%@", v16, bundleIdentifier, descriptorCopy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [(BLSHXPCAssertionServiceHost *)a2 acquireAssertionForDescriptor:v18 error:?];
+    [(BLSHXPCAssertionServiceHost *)a2 acquireAssertionForDescriptor:descriptorCopy error:?];
   }
 
-  [v18 UTF8String];
+  [descriptorCopy UTF8String];
   result = _bs_set_crash_log_message();
   __break(0);
   return result;
@@ -142,11 +142,11 @@ LABEL_6:
 
 - (uint64_t)isValid
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 36);
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 36);
+    os_unfair_lock_unlock((self + 32));
   }
 
   else
@@ -157,15 +157,15 @@ LABEL_6:
   return v2 & 1;
 }
 
-- (id)proxyForIdentifier:(uint64_t)a1
+- (id)proxyForIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 32));
-    v4 = [*(a1 + 24) objectForKey:v3];
+    os_unfair_lock_lock((identifier + 32));
+    v4 = [*(identifier + 24) objectForKey:v3];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((identifier + 32));
   }
 
   else
@@ -176,51 +176,51 @@ LABEL_6:
   return v4;
 }
 
-- (void)setProxy:(void *)a3 forIdentifier:
+- (void)setProxy:(void *)proxy forIdentifier:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    proxyCopy = proxy;
     v6 = a2;
-    os_unfair_lock_lock((a1 + 32));
-    [*(a1 + 24) setObject:v6 forKey:v5];
+    os_unfair_lock_lock((self + 32));
+    [*(self + 24) setObject:v6 forKey:proxyCopy];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 }
 
-- (void)removeProxyForIdentifier:(uint64_t)a1
+- (void)removeProxyForIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 32));
-    [*(a1 + 24) removeObjectForKey:v3];
+    os_unfair_lock_lock((identifier + 32));
+    [*(identifier + 24) removeObjectForKey:v3];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((identifier + 32));
   }
 }
 
-- (void)acquireAssertion:(id)a3
+- (void)acquireAssertion:(id)assertion
 {
   localService = self->_localService;
-  [(BLSHXPCAssertionServiceHost *)self proxyForIdentifier:a3];
+  [(BLSHXPCAssertionServiceHost *)self proxyForIdentifier:assertion];
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_1_8() acquireAssertion:?];
 }
 
-- (void)cancelAssertion:(id)a3 withError:(id)a4
+- (void)cancelAssertion:(id)assertion withError:(id)error
 {
   localService = self->_localService;
-  v7 = a4;
-  v8 = [(BLSHXPCAssertionServiceHost *)self proxyForIdentifier:a3];
-  [(BLSAssertionService *)localService cancelAssertion:v8 withError:v7];
+  errorCopy = error;
+  v8 = [(BLSHXPCAssertionServiceHost *)self proxyForIdentifier:assertion];
+  [(BLSAssertionService *)localService cancelAssertion:v8 withError:errorCopy];
 }
 
-- (void)restartAssertionTimeoutTimer:(id)a3
+- (void)restartAssertionTimeoutTimer:(id)timer
 {
   localService = self->_localService;
-  [(BLSHXPCAssertionServiceHost *)self proxyForIdentifier:a3];
+  [(BLSHXPCAssertionServiceHost *)self proxyForIdentifier:timer];
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_1_8() restartAssertionTimeoutTimer:?];
 }

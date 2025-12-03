@@ -1,9 +1,9 @@
 @interface E5RunnerImageTokenizerObjC
 + (id)log;
-- (E5RunnerImageTokenizerObjC)initWithModelConfiguration:(id)a3 error:(id *)a4;
+- (E5RunnerImageTokenizerObjC)initWithModelConfiguration:(id)configuration error:(id *)error;
 - (void)moveToDynamicState;
 - (void)moveToFullyLoadedState;
-- (void)tokenizeImageDataWithCallback:(id)a3 outputBlock:(id)a4;
+- (void)tokenizeImageDataWithCallback:(id)callback outputBlock:(id)block;
 @end
 
 @implementation E5RunnerImageTokenizerObjC
@@ -27,10 +27,10 @@ uint64_t __33__E5RunnerImageTokenizerObjC_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (E5RunnerImageTokenizerObjC)initWithModelConfiguration:(id)a3 error:(id *)a4
+- (E5RunnerImageTokenizerObjC)initWithModelConfiguration:(id)configuration error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = E5RunnerImageTokenizerObjC;
   if ([(E5RunnerImageTokenizerObjC *)&v12 init])
@@ -38,15 +38,15 @@ uint64_t __33__E5RunnerImageTokenizerObjC_log__block_invoke()
     v6 = +[E5RunnerImageTokenizerObjC log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 modelBundlePath];
+      modelBundlePath = [configurationCopy modelBundlePath];
       *buf = 138412290;
-      *&buf[4] = v7;
+      *&buf[4] = modelBundlePath;
       _os_log_impl(&dword_220940000, v6, OS_LOG_TYPE_DEFAULT, "Initializing E5RunnerImageTokenizerObjC with model url: %@", buf, 0xCu);
     }
 
-    v8 = [v5 modelBundlePath];
-    v9 = v8;
-    [v8 UTF8String];
+    modelBundlePath2 = [configurationCopy modelBundlePath];
+    v9 = modelBundlePath2;
+    [modelBundlePath2 UTF8String];
     std::make_unique[abi:ne200100]<cgm::token_generation_inference::ajax::ANEAJAXE5ImageTokenizer,char const*,char const(&)[5],0>();
   }
 
@@ -55,23 +55,23 @@ uint64_t __33__E5RunnerImageTokenizerObjC_log__block_invoke()
   return v10;
 }
 
-- (void)tokenizeImageDataWithCallback:(id)a3 outputBlock:(id)a4
+- (void)tokenizeImageDataWithCallback:(id)callback outputBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  blockCopy = block;
   ptr = self->_imageTokenizer.__ptr_;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__E5RunnerImageTokenizerObjC_tokenizeImageDataWithCallback_outputBlock___block_invoke;
   v13[3] = &unk_27844FBC8;
-  v9 = v6;
+  v9 = callbackCopy;
   v14 = v9;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__E5RunnerImageTokenizerObjC_tokenizeImageDataWithCallback_outputBlock___block_invoke_2;
   v11[3] = &unk_27844FBF0;
-  v10 = v7;
+  v10 = blockCopy;
   v12 = v10;
   cgm::token_generation_inference::ajax::ANEAJAXE5ImageTokenizer::encodeImage(ptr, v13, v11);
 }

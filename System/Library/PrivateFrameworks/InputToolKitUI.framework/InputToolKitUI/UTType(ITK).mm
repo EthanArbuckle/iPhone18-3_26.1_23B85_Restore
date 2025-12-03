@@ -7,7 +7,7 @@
 - (uint64_t)itk_isHEICS
 {
   v2 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"public.heics"];
-  v3 = [a1 conformsToType:v2];
+  v3 = [self conformsToType:v2];
 
   return v3;
 }

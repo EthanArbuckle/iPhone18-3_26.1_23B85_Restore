@@ -1,7 +1,7 @@
 @interface AMSCompanionAuthenticateTask
-- (id)_authenticateWithDelegateAuthToken:(id)a3;
-- (id)_encodedAuthenticationRequestWithToken:(id)a3;
-- (id)_performAuthenticationRequest:(id)a3;
+- (id)_authenticateWithDelegateAuthToken:(id)token;
+- (id)_encodedAuthenticationRequestWithToken:(id)token;
+- (id)_performAuthenticationRequest:(id)request;
 - (id)performCompanionAuthentication;
 @end
 
@@ -45,11 +45,11 @@ id __62__AMSCompanionAuthenticateTask_performCompanionAuthentication__block_invo
   return v4;
 }
 
-- (id)_authenticateWithDelegateAuthToken:(id)a3
+- (id)_authenticateWithDelegateAuthToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = AMSSetLogKeyIfNeeded();
-  v6 = [(AMSCompanionAuthenticateTask *)self _performAuthenticationRequest:v4];
+  v6 = [(AMSCompanionAuthenticateTask *)self _performAuthenticationRequest:tokenCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -169,10 +169,10 @@ id __67__AMSCompanionAuthenticateTask__authenticateWithDelegateAuthToken___block
   return v11;
 }
 
-- (id)_encodedAuthenticationRequestWithToken:(id)a3
+- (id)_encodedAuthenticationRequestWithToken:(id)token
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[AMSLogConfig sharedAccountsConfig];
   if (!v6)
@@ -180,19 +180,19 @@ id __67__AMSCompanionAuthenticateTask__authenticateWithDelegateAuthToken___block
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2114;
     v21 = v5;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Begin extracting URL endpoint from bag", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Begin extracting URL endpoint from bag", buf, 0x16u);
   }
 
   v8 = [(AMSDelegateAuthenticateTask *)self bag];
   v9 = [v8 URLForKey:@"companionAuthenticateUrl"];
-  v10 = [v9 valuePromise];
+  valuePromise = [v9 valuePromise];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -200,10 +200,10 @@ id __67__AMSCompanionAuthenticateTask__authenticateWithDelegateAuthToken___block
   v15[3] = &unk_1E73B5FB0;
   v15[4] = self;
   v16 = v5;
-  v17 = v4;
-  v11 = v4;
+  v17 = tokenCopy;
+  v11 = tokenCopy;
   v12 = v5;
-  v13 = [v10 continueWithBlock:v15];
+  v13 = [valuePromise continueWithBlock:v15];
 
   return v13;
 }
@@ -288,11 +288,11 @@ id __71__AMSCompanionAuthenticateTask__encodedAuthenticationRequestWithToken___b
   return v13;
 }
 
-- (id)_performAuthenticationRequest:(id)a3
+- (id)_performAuthenticationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = AMSSetLogKeyIfNeeded();
-  v6 = [(AMSCompanionAuthenticateTask *)self _encodedAuthenticationRequestWithToken:v4];
+  v6 = [(AMSCompanionAuthenticateTask *)self _encodedAuthenticationRequestWithToken:requestCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;

@@ -1,14 +1,14 @@
 @interface IASTextInputActionsEvent
-- (IASTextInputActionsEvent)initWithbundleId:(id)a3;
-- (void)dispatchEvent:(id)a3;
+- (IASTextInputActionsEvent)initWithbundleId:(id)id;
+- (void)dispatchEvent:(id)event;
 - (void)resetMeasures;
 @end
 
 @implementation IASTextInputActionsEvent
 
-- (IASTextInputActionsEvent)initWithbundleId:(id)a3
+- (IASTextInputActionsEvent)initWithbundleId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v16.receiver = self;
   v16.super_class = IASTextInputActionsEvent;
   v6 = [(IASTextInputActionsEvent *)&v16 init];
@@ -42,18 +42,18 @@
     inputModeIdentifier = v7->_inputModeIdentifier;
     v7->_inputModeIdentifier = @"None";
 
-    objc_storeStrong(&v7->_bundleId, a3);
+    objc_storeStrong(&v7->_bundleId, id);
   }
 
   return v7;
 }
 
-- (void)dispatchEvent:(id)a3
+- (void)dispatchEvent:(id)event
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   isDispatchable = objc_msgSend_isDispatchable(self, v5, v6);
-  if (v4 && isDispatchable)
+  if (eventCopy && isDispatchable)
   {
     v35[0] = @"src";
     v34 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v8, self->_source);
@@ -106,7 +106,7 @@
     v41 = bundleId;
     v31 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v30, v36, v35, 18);
 
-    v4[2](v4, v31);
+    eventCopy[2](eventCopy, v31);
   }
 
   v32 = *MEMORY[0x1E69E9840];

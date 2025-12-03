@@ -1,10 +1,10 @@
 @interface CPLPrequeliteTodoVar
-+ (id)todoVariableWithName:(id)a3 defaultExpirationInterval:(double)a4;
-- (CPLPrequeliteTodoVar)initWithName:(id)a3 defaultExpirationInterval:(double)a4;
++ (id)todoVariableWithName:(id)name defaultExpirationInterval:(double)interval;
+- (CPLPrequeliteTodoVar)initWithName:(id)name defaultExpirationInterval:(double)interval;
 - (PQLInjecting)hasSomethingTodo;
-- (id)hasSomethingTodoNow:(id)a3;
-- (id)setHasCompletedGeneration:(int64_t)a3;
-- (id)setHasCompletedGeneration:(int64_t)a3 now:(id)a4;
+- (id)hasSomethingTodoNow:(id)now;
+- (id)setHasCompletedGeneration:(int64_t)generation;
+- (id)setHasCompletedGeneration:(int64_t)generation now:(id)now;
 @end
 
 @implementation CPLPrequeliteTodoVar
@@ -17,24 +17,24 @@
   return v4;
 }
 
-+ (id)todoVariableWithName:(id)a3 defaultExpirationInterval:(double)a4
++ (id)todoVariableWithName:(id)name defaultExpirationInterval:(double)interval
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:v6 defaultExpirationInterval:a4];
+  nameCopy = name;
+  v7 = [[self alloc] initWithName:nameCopy defaultExpirationInterval:interval];
 
   return v7;
 }
 
-- (CPLPrequeliteTodoVar)initWithName:(id)a3 defaultExpirationInterval:(double)a4
+- (CPLPrequeliteTodoVar)initWithName:(id)name defaultExpirationInterval:(double)interval
 {
-  v7 = a3;
-  if (a4 != 0.0 && a4 < 60.0)
+  nameCopy = name;
+  if (interval != 0.0 && interval < 60.0)
   {
     sub_1001C5EE0(a2, self);
   }
 
-  v9 = v7;
-  v10 = [v7 stringByAppendingString:@"CurrentGeneration"];
+  v9 = nameCopy;
+  v10 = [nameCopy stringByAppendingString:@"CurrentGeneration"];
   v11 = +[CPLPrequeliteType integerType];
   v51 = v10;
   v12 = [CPLPrequeliteVariable variableWithName:v10 defaultValue:&off_10028F1A8 type:v11];
@@ -44,7 +44,7 @@
   v50 = v13;
   v15 = [CPLPrequeliteVariable variableWithName:v13 defaultValue:&off_10028F1A8 type:v14];
 
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
     v53[0] = v12;
     v53[1] = v15;
@@ -61,7 +61,7 @@
     v19 = [CPLPrequeliteVariable variableWithName:v16 defaultValue:0 type:v18];
 
     v20 = [v9 stringByAppendingString:@"ExpirationInterval"];
-    v21 = [NSNumber numberWithDouble:a4];
+    v21 = [NSNumber numberWithDouble:interval];
     v22 = +[CPLPrequeliteType integerType];
     v12 = v17;
     v23 = [CPLPrequeliteVariable variableWithName:v20 defaultValue:v21 type:v22];
@@ -162,20 +162,20 @@
   return v28;
 }
 
-- (id)setHasCompletedGeneration:(int64_t)a3
+- (id)setHasCompletedGeneration:(int64_t)generation
 {
   v5 = +[NSDate date];
-  v6 = [(CPLPrequeliteTodoVar *)self setHasCompletedGeneration:a3 now:v5];
+  v6 = [(CPLPrequeliteTodoVar *)self setHasCompletedGeneration:generation now:v5];
 
   return v6;
 }
 
-- (id)hasSomethingTodoNow:(id)a3
+- (id)hasSomethingTodoNow:(id)now
 {
   lastCompletionDateVar = self->_lastCompletionDateVar;
   if (lastCompletionDateVar)
   {
-    v5 = [(CPLPrequeliteVariable *)lastCompletionDateVar bindableValueForValue:a3];
+    v5 = [(CPLPrequeliteVariable *)lastCompletionDateVar bindableValueForValue:now];
     v6 = [[_CPLPrequeliteHasSomethingTodoNow alloc] initWithSQL:self->_hasSomethingTodoSQL now:v5];
   }
 
@@ -187,18 +187,18 @@
   return v6;
 }
 
-- (id)setHasCompletedGeneration:(int64_t)a3 now:(id)a4
+- (id)setHasCompletedGeneration:(int64_t)generation now:(id)now
 {
   lastCompletionDateVar = self->_lastCompletionDateVar;
   if (lastCompletionDateVar)
   {
-    v7 = [(CPLPrequeliteVariable *)lastCompletionDateVar bindableValueForValue:a4];
-    v8 = [[_CPLPrequeliteHasCompletedGeneration alloc] initWithSQL:self->_setHasCompletedGenerationSQL generation:a3 now:v7];
+    v7 = [(CPLPrequeliteVariable *)lastCompletionDateVar bindableValueForValue:now];
+    v8 = [[_CPLPrequeliteHasCompletedGeneration alloc] initWithSQL:self->_setHasCompletedGenerationSQL generation:generation now:v7];
   }
 
   else
   {
-    v8 = [[_CPLPrequeliteHasCompletedGeneration alloc] initWithSQL:self->_setHasCompletedGenerationSQL generation:a3 now:0];
+    v8 = [[_CPLPrequeliteHasCompletedGeneration alloc] initWithSQL:self->_setHasCompletedGenerationSQL generation:generation now:0];
   }
 
   return v8;

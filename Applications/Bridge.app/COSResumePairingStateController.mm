@@ -1,18 +1,18 @@
 @interface COSResumePairingStateController
 - (BOOL)_checkCurrentStateValidity;
-- (BOOL)didRestoreValueForPaneClass:(Class)a3;
+- (BOOL)didRestoreValueForPaneClass:(Class)class;
 - (BOOL)shouldPromptToResumePairing;
 - (COSSetupController)setupController;
 - (void)_saveCurrentState;
 - (void)_startNewPairingState;
 - (void)clearPairingState;
 - (void)dealloc;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
-- (void)didConnectToWatch:(id)a3;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
+- (void)didConnectToWatch:(id)watch;
 - (void)didFinishIPE;
 - (void)loadPairingState;
 - (void)resumePairing;
-- (void)saveBoolValue:(BOOL)a3 forPaneClass:(Class)a4;
+- (void)saveBoolValue:(BOOL)value forPaneClass:(Class)class;
 @end
 
 @implementation COSResumePairingStateController
@@ -56,9 +56,9 @@
         v10 = pbb_bridge_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(COSResumePairingState *)currentState localizedDescription];
+          localizedDescription = [(COSResumePairingState *)currentState localizedDescription];
           *buf = 138543362;
-          v16 = v13;
+          v16 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Error decoding resume pairing state: %{public}@", buf, 0xCu);
         }
       }
@@ -66,10 +66,10 @@
       else
       {
         objc_storeStrong(&self->_currentState, v6);
-        v9 = [(COSResumePairingStateController *)self _checkCurrentStateValidity];
+        _checkCurrentStateValidity = [(COSResumePairingStateController *)self _checkCurrentStateValidity];
         v10 = pbb_bridge_log();
         v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-        if (v9)
+        if (_checkCurrentStateValidity)
         {
           if (v11)
           {
@@ -139,27 +139,27 @@ LABEL_21:
   self->_isInResumeFlow = 0;
 }
 
-- (void)saveBoolValue:(BOOL)a3 forPaneClass:(Class)a4
+- (void)saveBoolValue:(BOOL)value forPaneClass:(Class)class
 {
-  v5 = a3;
+  valueCopy = value;
   v7 = pbb_bridge_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromClass(a4);
+    v8 = NSStringFromClass(class);
     v13 = 136315650;
     v14 = "[COSResumePairingStateController saveBoolValue:forPaneClass:]";
     v15 = 2112;
     v16 = v8;
     v17 = 1024;
-    v18 = v5;
+    v18 = valueCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: paneClass: %@, value: %{BOOL}d", &v13, 0x1Cu);
   }
 
   currentState = self->_currentState;
   if (currentState)
   {
-    v10 = [NSNumber numberWithBool:v5];
-    v11 = NSStringFromClass(a4);
+    v10 = [NSNumber numberWithBool:valueCopy];
+    v11 = NSStringFromClass(class);
     [(COSResumePairingState *)currentState saveValue:v10 forPaneClassName:v11];
 
     [(COSResumePairingStateController *)self _saveCurrentState];
@@ -189,24 +189,24 @@ LABEL_21:
   if (self->_currentState)
   {
     self->_isInResumeFlow = 1;
-    v4 = [UIApp bridgeController];
-    [v4 setTinkerPairing:[(COSResumePairingState *)self->_currentState isTinkerPairing]];
+    bridgeController = [UIApp bridgeController];
+    [bridgeController setTinkerPairing:[(COSResumePairingState *)self->_currentState isTinkerPairing]];
   }
 
   else
   {
-    v4 = pbb_bridge_log();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    bridgeController = pbb_bridge_log();
+    if (os_log_type_enabled(bridgeController, OS_LOG_TYPE_ERROR) && os_log_type_enabled(bridgeController, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v5) = 0;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Tried to resume pairing but there is no current state to resume!", &v5, 2u);
+      _os_log_impl(&_mh_execute_header, bridgeController, OS_LOG_TYPE_DEFAULT, "Tried to resume pairing but there is no current state to resume!", &v5, 2u);
     }
   }
 }
 
-- (void)didConnectToWatch:(id)a3
+- (void)didConnectToWatch:(id)watch
 {
-  v5 = a3;
+  watchCopy = watch;
   if (!self->_handledWatchConnection)
   {
     if (self->_currentState)
@@ -232,7 +232,7 @@ LABEL_21:
     if (isInResumeFlow)
     {
       [(COSResumePairingState *)self->_currentState enumerateSavedValuesUsingBlock:&stru_100268910];
-      objc_storeStrong(&self->_observedDevice, a3);
+      objc_storeStrong(&self->_observedDevice, watch);
       observedDevice = self->_observedDevice;
       v10 = NRDevicePropertyLocalPairingDataStorePath;
       v9 = [NSArray arrayWithObjects:&v10 count:1];
@@ -281,7 +281,7 @@ LABEL_21:
   }
 }
 
-- (BOOL)didRestoreValueForPaneClass:(Class)a3
+- (BOOL)didRestoreValueForPaneClass:(Class)class
 {
   currentState = self->_currentState;
   if (!currentState || !self->_isInResumeFlow)
@@ -289,7 +289,7 @@ LABEL_21:
     return 0;
   }
 
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [(COSResumePairingState *)currentState hasSavedValueForClassName:v4];
 
   return v5;
@@ -313,16 +313,16 @@ LABEL_21:
   v6 = +[NSDate date];
   [(COSResumePairingState *)self->_currentState setPairingStartedDate:v6];
 
-  v7 = [UIApp bridgeController];
-  -[COSResumePairingState setIsTinkerPairing:](self->_currentState, "setIsTinkerPairing:", [v7 isTinkerPairing]);
+  bridgeController = [UIApp bridgeController];
+  -[COSResumePairingState setIsTinkerPairing:](self->_currentState, "setIsTinkerPairing:", [bridgeController isTinkerPairing]);
 
   [(COSResumePairingStateController *)self _saveCurrentState];
 }
 
 - (BOOL)_checkCurrentStateValidity
 {
-  v2 = [(COSResumePairingState *)self->_currentState pairingStartedDate];
-  [v2 timeIntervalSinceNow];
+  pairingStartedDate = [(COSResumePairingState *)self->_currentState pairingStartedDate];
+  [pairingStartedDate timeIntervalSinceNow];
   v4 = fabs(v3) <= 86400.0;
 
   return v4;
@@ -340,28 +340,28 @@ LABEL_21:
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 localizedDescription];
+    localizedDescription = [v4 localizedDescription];
     *buf = 136315394;
     v10 = "[COSResumePairingStateController _saveCurrentState]";
     v11 = 2114;
-    v12 = v7;
+    v12 = localizedDescription;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: error: %{public}@", buf, 0x16u);
   }
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  changeCopy = change;
   v9 = NRDevicePropertyLocalPairingDataStorePath;
-  v10 = [v7 valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
-  if (v10 && [v8 isEqualToString:v9])
+  v10 = [deviceCopy valueForProperty:NRDevicePropertyLocalPairingDataStorePath];
+  if (v10 && [changeCopy isEqualToString:v9])
   {
     v11 = pbb_setupflow_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v7;
+      v15 = deviceCopy;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NRDevice propertyDidChange %@ %@", buf, 0x16u);
@@ -369,7 +369,7 @@ LABEL_21:
 
     v13 = v9;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
-    [v7 removePropertyObserver:self forPropertyChanges:v12];
+    [deviceCopy removePropertyObserver:self forPropertyChanges:v12];
 
     [(COSResumePairingStateController *)self didFinishIPE];
   }

@@ -20,9 +20,9 @@
 
 + (id)pk_strongPointerPersonalityToWeakObjectsMapTable
 {
-  v1 = [a1 pk_createStrongPointerPersonalityToWeakObjects];
+  pk_createStrongPointerPersonalityToWeakObjects = [self pk_createStrongPointerPersonalityToWeakObjects];
 
-  return v1;
+  return pk_createStrongPointerPersonalityToWeakObjects;
 }
 
 + (uint64_t)pk_createStrongPointerPersonalityToWeakObjects
@@ -55,9 +55,9 @@
 
 + (id)pk_weakPointerPersonalityToStrongObjectsMapTable
 {
-  v1 = [a1 pk_createWeakPointerPersonalityToStrongObjects];
+  pk_createWeakPointerPersonalityToStrongObjects = [self pk_createWeakPointerPersonalityToStrongObjects];
 
-  return v1;
+  return pk_createWeakPointerPersonalityToStrongObjects;
 }
 
 + (id)pk_strongToWeakObjectsMapTable

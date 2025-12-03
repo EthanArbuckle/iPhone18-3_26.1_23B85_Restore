@@ -1,25 +1,25 @@
 @interface TUIHoverController
-- (BOOL)hoverStateForIdentifier:(id)a3;
-- (void)_axChanged:(id)a3;
-- (void)hoverInteraction:(id)a3 didChangeStateForRegionWithKeys:(id)a4;
-- (void)notifyHoverChangesAffectingView:(id)a3 changed:(id)a4;
-- (void)registerHoverObserver:(id)a3;
+- (BOOL)hoverStateForIdentifier:(id)identifier;
+- (void)_axChanged:(id)changed;
+- (void)hoverInteraction:(id)interaction didChangeStateForRegionWithKeys:(id)keys;
+- (void)notifyHoverChangesAffectingView:(id)view changed:(id)changed;
+- (void)registerHoverObserver:(id)observer;
 - (void)reset;
-- (void)updateHoverInteractionWithView:(id)a3;
+- (void)updateHoverInteractionWithView:(id)view;
 @end
 
 @implementation TUIHoverController
 
-- (void)updateHoverInteractionWithView:(id)a3
+- (void)updateHoverInteractionWithView:(id)view
 {
-  v11 = a3;
+  viewCopy = view;
   hoverInteraction = self->_hoverInteraction;
   if (hoverInteraction || (+[NSNotificationCenter defaultCenter](NSNotificationCenter, "defaultCenter"), v5 = objc_claimAutoreleasedReturnValue(), [v5 addObserver:self selector:"_axChanged:" name:kAXSApplicationAccessibilityEnabledNotification object:0], v5, (hoverInteraction = self->_hoverInteraction) != 0))
   {
-    v6 = [(TUIHoverInteraction *)hoverInteraction view];
+    view = [(TUIHoverInteraction *)hoverInteraction view];
 
-    v7 = v11;
-    if (v6 == v11)
+    v7 = viewCopy;
+    if (view == viewCopy)
     {
       goto LABEL_6;
     }
@@ -27,15 +27,15 @@
     hoverInteraction = self->_hoverInteraction;
   }
 
-  v8 = [(TUIHoverInteraction *)hoverInteraction view];
-  [v8 removeInteraction:self->_hoverInteraction];
+  view2 = [(TUIHoverInteraction *)hoverInteraction view];
+  [view2 removeInteraction:self->_hoverInteraction];
 
-  v9 = [[TUIHoverInteraction alloc] initWithDelegate:self view:v11];
+  v9 = [[TUIHoverInteraction alloc] initWithDelegate:self view:viewCopy];
   v10 = self->_hoverInteraction;
   self->_hoverInteraction = v9;
 
-  [v11 addInteraction:self->_hoverInteraction];
-  v7 = v11;
+  [viewCopy addInteraction:self->_hoverInteraction];
+  v7 = viewCopy;
 LABEL_6:
 }
 
@@ -46,36 +46,36 @@ LABEL_6:
     v3 = +[NSNotificationCenter defaultCenter];
     [v3 removeObserver:self name:kAXSApplicationAccessibilityEnabledNotification object:0];
 
-    v4 = [(TUIHoverInteraction *)self->_hoverInteraction view];
-    [v4 removeInteraction:self->_hoverInteraction];
+    view = [(TUIHoverInteraction *)self->_hoverInteraction view];
+    [view removeInteraction:self->_hoverInteraction];
 
     hoverInteraction = self->_hoverInteraction;
     self->_hoverInteraction = 0;
   }
 }
 
-- (void)_axChanged:(id)a3
+- (void)_axChanged:(id)changed
 {
-  v4 = [(TUIHoverInteraction *)self->_hoverInteraction view];
+  view = [(TUIHoverInteraction *)self->_hoverInteraction view];
 
-  if (v4)
+  if (view)
   {
-    v5 = [(TUIHoverInteraction *)self->_hoverInteraction view];
-    [(TUIHoverController *)self notifyHoverChangesAffectingView:v5 changed:0];
+    view2 = [(TUIHoverInteraction *)self->_hoverInteraction view];
+    [(TUIHoverController *)self notifyHoverChangesAffectingView:view2 changed:0];
   }
 }
 
-- (void)hoverInteraction:(id)a3 didChangeStateForRegionWithKeys:(id)a4
+- (void)hoverInteraction:(id)interaction didChangeStateForRegionWithKeys:(id)keys
 {
   hoverInteraction = self->_hoverInteraction;
-  v6 = a4;
-  v7 = [(TUIHoverInteraction *)hoverInteraction view];
-  [(TUIHoverController *)self notifyHoverChangesAffectingView:v7 changed:v6];
+  keysCopy = keys;
+  view = [(TUIHoverInteraction *)hoverInteraction view];
+  [(TUIHoverController *)self notifyHoverChangesAffectingView:view changed:keysCopy];
 }
 
-- (BOOL)hoverStateForIdentifier:(id)a3
+- (BOOL)hoverStateForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning() || _AXSCommandAndControlEnabled())
   {
     v5 = 1;
@@ -83,34 +83,34 @@ LABEL_6:
 
   else
   {
-    v5 = [(TUIHoverInteraction *)self->_hoverInteraction stateForRegionWithKey:v4];
+    v5 = [(TUIHoverInteraction *)self->_hoverInteraction stateForRegionWithKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (void)registerHoverObserver:(id)a3
+- (void)registerHoverObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [NSHashTable hashTableWithOptions:512];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)notifyHoverChangesAffectingView:(id)a3 changed:(id)a4
+- (void)notifyHoverChangesAffectingView:(id)view changed:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  changedCopy = changed;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -131,9 +131,9 @@ LABEL_6:
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
-        if ([v13 isDescendantOfView:{v6, v14}])
+        if ([v13 isDescendantOfView:{viewCopy, v14}])
         {
-          [v13 hoverStateChanged:v7];
+          [v13 hoverStateChanged:changedCopy];
         }
       }
 

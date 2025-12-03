@@ -1,27 +1,27 @@
 @interface TTRUndoManager
-+ (void)withActionName:(id)a3 block:(id)a4;
++ (void)withActionName:(id)name block:(id)block;
 - (NSString)debug_redoStackDescription;
 - (NSString)debug_undoStackDescription;
-- (TTRUndoManager)initWithDebugIdentifier:(id)a3;
+- (TTRUndoManager)initWithDebugIdentifier:(id)identifier;
 - (id)description;
 - (void)_prepareToRegisterUndo;
-- (void)_registerLogUserAction:(id)a3;
-- (void)registerUndoWithTarget:(id)a3 handler:(id)a4;
-- (void)registerUndoWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
+- (void)_registerLogUserAction:(id)action;
+- (void)registerUndoWithTarget:(id)target handler:(id)handler;
+- (void)registerUndoWithTarget:(id)target selector:(SEL)selector object:(id)object;
 - (void)removeAllActions;
 @end
 
 @implementation TTRUndoManager
 
-- (TTRUndoManager)initWithDebugIdentifier:(id)a3
+- (TTRUndoManager)initWithDebugIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TTRUndoManager;
   v5 = [(TTRUndoManager *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     debugIdentifier = v5->_debugIdentifier;
     v5->_debugIdentifier = v6;
   }
@@ -29,52 +29,52 @@
   return v5;
 }
 
-+ (void)withActionName:(id)a3 block:(id)a4
++ (void)withActionName:(id)name block:(id)block
 {
-  v11 = a3;
-  v5 = a4;
+  nameCopy = name;
+  blockCopy = block;
   v6 = perThreadActionContext();
   v7 = *v6;
   v8 = objc_alloc_init(TTRUndoManagerActionContext);
   *v6 = v8;
-  if (v5)
+  if (blockCopy)
   {
-    v5[2](v5);
+    blockCopy[2](blockCopy);
   }
 
   *v6 = v7;
-  v9 = [(TTRUndoManagerActionContext *)v8 undoManagerOfLastRegisteredUndo];
-  v10 = v9;
-  if (v9)
+  undoManagerOfLastRegisteredUndo = [(TTRUndoManagerActionContext *)v8 undoManagerOfLastRegisteredUndo];
+  v10 = undoManagerOfLastRegisteredUndo;
+  if (undoManagerOfLastRegisteredUndo)
   {
-    [v9 _registerLogUserAction:v11];
-    [v10 setActionName:v11];
+    [undoManagerOfLastRegisteredUndo _registerLogUserAction:nameCopy];
+    [v10 setActionName:nameCopy];
   }
 }
 
-- (void)registerUndoWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
+- (void)registerUndoWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  objectCopy = object;
   if ([(TTRUndoManager *)self isUndoRegistrationEnabled])
   {
     [(TTRUndoManager *)self _prepareToRegisterUndo];
     v10.receiver = self;
     v10.super_class = TTRUndoManager;
-    [(TTRUndoManager *)&v10 registerUndoWithTarget:v8 selector:a4 object:v9];
+    [(TTRUndoManager *)&v10 registerUndoWithTarget:targetCopy selector:selector object:objectCopy];
   }
 }
 
-- (void)registerUndoWithTarget:(id)a3 handler:(id)a4
+- (void)registerUndoWithTarget:(id)target handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  handlerCopy = handler;
   if ([(TTRUndoManager *)self isUndoRegistrationEnabled])
   {
     [(TTRUndoManager *)self _prepareToRegisterUndo];
     v8.receiver = self;
     v8.super_class = TTRUndoManager;
-    [(TTRUndoManager *)&v8 registerUndoWithTarget:v6 handler:v7];
+    [(TTRUndoManager *)&v8 registerUndoWithTarget:targetCopy handler:handlerCopy];
   }
 }
 
@@ -85,8 +85,8 @@
     v4.receiver = self;
     v4.super_class = TTRUndoManager;
     [(TTRUndoManager *)&v4 removeAllActions];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"TTRUndoManagerDidRemoveAllActionsNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TTRUndoManagerDidRemoveAllActionsNotification" object:self];
   }
 }
 
@@ -101,16 +101,16 @@
   if (![(TTRUndoManager *)self shouldSuppressWillRegisterUndoNotifications])
   {
     [(TTRUndoManager *)self setShouldSuppressWillRegisterUndoNotifications:1];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"TTRUndoManagerWillRegisterUndoNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TTRUndoManagerWillRegisterUndoNotification" object:self];
 
     [(TTRUndoManager *)self setShouldSuppressWillRegisterUndoNotifications:0];
   }
 }
 
-- (void)_registerLogUserAction:(id)a3
+- (void)_registerLogUserAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (_registerLogUserAction__onceToken != -1)
   {
     [TTRUndoManager _registerLogUserAction:];
@@ -120,8 +120,8 @@
   v6[1] = 3221225472;
   v6[2] = __41__TTRUndoManager__registerLogUserAction___block_invoke_2;
   v6[3] = &unk_27832D628;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionCopy;
+  v5 = actionCopy;
   [(TTRUndoManager *)self registerUndoWithTarget:self handler:v6];
 }
 
@@ -170,8 +170,8 @@ LABEL_7:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TTRUndoManager *)self debugIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@ %p: debugIdentifier=%@>", v4, self, v5];
+  debugIdentifier = [(TTRUndoManager *)self debugIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@ %p: debugIdentifier=%@>", v4, self, debugIdentifier];
 
   return v6;
 }

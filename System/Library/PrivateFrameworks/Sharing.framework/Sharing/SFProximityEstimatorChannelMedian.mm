@@ -1,6 +1,6 @@
 @interface SFProximityEstimatorChannelMedian
 - (id)description;
-- (int)_estimateRSSIForSFBLEDevice:(id)a3;
+- (int)_estimateRSSIForSFBLEDevice:(id)device;
 @end
 
 @implementation SFProximityEstimatorChannelMedian
@@ -9,8 +9,8 @@
 {
   NSAppendPrintF();
   v3 = 0;
-  v4 = [(SFProximityEstimator *)self descriptionParams];
-  if (v4)
+  descriptionParams = [(SFProximityEstimator *)self descriptionParams];
+  if (descriptionParams)
   {
     NSAppendPrintF();
     v5 = v3;
@@ -21,18 +21,18 @@
   return v3;
 }
 
-- (int)_estimateRSSIForSFBLEDevice:(id)a3
+- (int)_estimateRSSIForSFBLEDevice:(id)device
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 rssi];
-  if ((v5 & 0x8000000000000000) == 0)
+  deviceCopy = device;
+  rssi = [deviceCopy rssi];
+  if ((rssi & 0x8000000000000000) == 0)
   {
     goto LABEL_27;
   }
 
-  v6 = v5;
-  v7 = [v4 advertisementFields];
+  v6 = rssi;
+  advertisementFields = [deviceCopy advertisementFields];
   Int64Ranged = CFDictionaryGetInt64Ranged();
 
   v9 = self->_channels + 8 * (Int64Ranged & 3) - (Int64Ranged & 3);
@@ -181,7 +181,7 @@
       v23 = v41;
       if (gLogCategory_SFProximityEstimator < 51 && (gLogCategory_SFProximityEstimator != -1 || _LogCategory_Initialize()))
       {
-        v32 = [v4 identifier];
+        identifier = [deviceCopy identifier];
         rssiFar = self->super._rssiFar;
         rssiImmediate = self->super._rssiImmediate;
         rssiNear = self->super._rssiNear;

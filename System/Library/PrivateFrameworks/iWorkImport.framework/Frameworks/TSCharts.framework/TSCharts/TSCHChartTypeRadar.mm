@@ -4,17 +4,17 @@
 - (NSString)name;
 - (NSString)userInterfaceName;
 - (_TtC8TSChartsP33_9974A0D4784435EAA6E46641D25D8C6B18TSCHChartTypeRadar)init;
-- (_TtC8TSChartsP33_9974A0D4784435EAA6E46641D25D8C6B18TSCHChartTypeRadar)initWithFeatureClass:(Class)a3;
-- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)a3 readerVersion:(unint64_t *)a4 featureID:(id *)a5;
-- (id)defaultSeriesType:(unint64_t)a3;
-- (id)seriesTypeForSeriesElementType:(int)a3 defaultSeriesIndex:(unint64_t)a4;
+- (_TtC8TSChartsP33_9974A0D4784435EAA6E46641D25D8C6B18TSCHChartTypeRadar)initWithFeatureClass:(Class)class;
+- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)version readerVersion:(unint64_t *)readerVersion featureID:(id *)d;
+- (id)defaultSeriesType:(unint64_t)type;
+- (id)seriesTypeForSeriesElementType:(int)type defaultSeriesIndex:(unint64_t)index;
 @end
 
 @implementation TSCHChartTypeRadar
 
 - (NSString)userInterfaceName
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   sub_2764B11E8();
 
   v3 = sub_2764B11F8();
@@ -24,7 +24,7 @@
 
 - (NSString)name
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   sub_2764B11E8();
 
   v3 = sub_2764B11F8();
@@ -55,35 +55,35 @@
   return [(TSCHChartType *)&v5 initWithFeatureClass:ObjCClassFromMetadata];
 }
 
-- (id)defaultSeriesType:(unint64_t)a3
+- (id)defaultSeriesType:(unint64_t)type
 {
-  v3 = [objc_opt_self() radarAreaSeries];
+  radarAreaSeries = [objc_opt_self() radarAreaSeries];
 
-  return v3;
+  return radarAreaSeries;
 }
 
-- (id)seriesTypeForSeriesElementType:(int)a3 defaultSeriesIndex:(unint64_t)a4
+- (id)seriesTypeForSeriesElementType:(int)type defaultSeriesIndex:(unint64_t)index
 {
-  v6 = self;
-  v7 = [(TSCHChartTypeRadar *)v6 defaultSeriesType:a4];
-  if (a3 == 1)
+  selfCopy = self;
+  v7 = [(TSCHChartTypeRadar *)selfCopy defaultSeriesType:index];
+  if (type == 1)
   {
-    v8 = [objc_opt_self() radarAreaSeries];
+    radarAreaSeries = [objc_opt_self() radarAreaSeries];
 
-    v7 = v8;
+    v7 = radarAreaSeries;
   }
 
   return v7;
 }
 
-- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)a3 readerVersion:(unint64_t *)a4 featureID:(id *)a5
+- (id)alternateArchiveChartTypeAndReturnWriterVersion:(unint64_t *)version readerVersion:(unint64_t *)readerVersion featureID:(id *)d
 {
-  v5 = sub_2764A6990(a3, a4, a5);
+  v5 = sub_2764A6990(version, readerVersion, d);
 
   return v5;
 }
 
-- (_TtC8TSChartsP33_9974A0D4784435EAA6E46641D25D8C6B18TSCHChartTypeRadar)initWithFeatureClass:(Class)a3
+- (_TtC8TSChartsP33_9974A0D4784435EAA6E46641D25D8C6B18TSCHChartTypeRadar)initWithFeatureClass:(Class)class
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

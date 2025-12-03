@@ -1,8 +1,8 @@
 @interface _UIActionWhenIdle
-+ (_UIActionWhenIdle)actionWhenIdleWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
++ (_UIActionWhenIdle)actionWhenIdleWithTarget:(id)target selector:(SEL)selector object:(id)object;
 - (BOOL)isValid;
-- (_UIActionWhenIdle)initWithInvocation:(id)a3;
-- (_UIActionWhenIdle)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
+- (_UIActionWhenIdle)initWithInvocation:(id)invocation;
+- (_UIActionWhenIdle)initWithTarget:(id)target selector:(SEL)selector object:(id)object;
 - (void)addObserverToRunLoop;
 - (void)invoke;
 @end
@@ -24,25 +24,25 @@
 
 - (void)invoke
 {
-  v3 = [(_UIActionWhenIdle *)self invocation];
+  invocation = [(_UIActionWhenIdle *)self invocation];
   [(_UIActionWhenIdle *)self setInvocation:0];
-  [v3 invoke];
+  [invocation invoke];
 }
 
-+ (_UIActionWhenIdle)actionWhenIdleWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
++ (_UIActionWhenIdle)actionWhenIdleWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTarget:v9 selector:a4 object:v8];
+  objectCopy = object;
+  targetCopy = target;
+  v10 = [[self alloc] initWithTarget:targetCopy selector:selector object:objectCopy];
 
   return v10;
 }
 
-- (_UIActionWhenIdle)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
+- (_UIActionWhenIdle)initWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v8 = a3;
-  v17 = a5;
-  v9 = [v8 methodSignatureForSelector:a4];
+  targetCopy = target;
+  objectCopy = object;
+  v9 = [targetCopy methodSignatureForSelector:selector];
   v10 = v9;
   if (!v9)
   {
@@ -52,13 +52,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [v9 numberOfArguments];
-  v12 = v11;
-  if ((v11 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  numberOfArguments = [v9 numberOfArguments];
+  v12 = numberOfArguments;
+  if ((numberOfArguments & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    if (v11 >= 4)
+    if (numberOfArguments >= 4)
     {
-      v15 = NSStringFromSelector(a4);
+      v15 = NSStringFromSelector(selector);
       NSLog(&cfstr_SMethodRequire.isa, "[_UIActionWhenIdle initWithTarget:selector:object:]", v15);
     }
 
@@ -66,11 +66,11 @@ LABEL_8:
   }
 
   v13 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v10];
-  [v13 setTarget:v8];
-  [v13 setSelector:a4];
+  [v13 setTarget:targetCopy];
+  [v13 setSelector:selector];
   if (v12 >= 3)
   {
-    [v13 setArgument:&v17 atIndex:2];
+    [v13 setArgument:&objectCopy atIndex:2];
   }
 
   v14 = [(_UIActionWhenIdle *)self initWithInvocation:v13];
@@ -79,16 +79,16 @@ LABEL_9:
   return v14;
 }
 
-- (_UIActionWhenIdle)initWithInvocation:(id)a3
+- (_UIActionWhenIdle)initWithInvocation:(id)invocation
 {
-  v5 = a3;
+  invocationCopy = invocation;
   v9.receiver = self;
   v9.super_class = _UIActionWhenIdle;
   v6 = [(_UIActionWhenIdle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_invocation, a3);
+    objc_storeStrong(&v6->_invocation, invocation);
     [(NSInvocation *)v7->_invocation retainArguments];
     [(_UIActionWhenIdle *)v7 addObserverToRunLoop];
   }
@@ -98,8 +98,8 @@ LABEL_9:
 
 - (BOOL)isValid
 {
-  v2 = [(_UIActionWhenIdle *)self invocation];
-  v3 = v2 != 0;
+  invocation = [(_UIActionWhenIdle *)self invocation];
+  v3 = invocation != 0;
 
   return v3;
 }

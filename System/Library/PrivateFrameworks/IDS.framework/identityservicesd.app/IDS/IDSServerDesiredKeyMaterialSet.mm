@@ -1,34 +1,34 @@
 @interface IDSServerDesiredKeyMaterialSet
-- (BOOL)isEqual:(id)a3;
-- (IDSServerDesiredKeyMaterialSet)initWithKMs:(id)a3 type:(int)a4 forPublicIdentity:(__SecKey *)a5 forParticipantID:(unint64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (IDSServerDesiredKeyMaterialSet)initWithKMs:(id)ms type:(int)type forPublicIdentity:(__SecKey *)identity forParticipantID:(unint64_t)d;
 - (id)materialDataByID;
-- (id)wrapMaterial:(id)a3 error:(id *)a4;
+- (id)wrapMaterial:(id)material error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation IDSServerDesiredKeyMaterialSet
 
-- (IDSServerDesiredKeyMaterialSet)initWithKMs:(id)a3 type:(int)a4 forPublicIdentity:(__SecKey *)a5 forParticipantID:(unint64_t)a6
+- (IDSServerDesiredKeyMaterialSet)initWithKMs:(id)ms type:(int)type forPublicIdentity:(__SecKey *)identity forParticipantID:(unint64_t)d
 {
-  v11 = a3;
+  msCopy = ms;
   v28.receiver = self;
   v28.super_class = IDSServerDesiredKeyMaterialSet;
   v12 = [(IDSServerDesiredKeyMaterialSet *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_kms, a3);
-    v13->_type = a4;
-    if (a5)
+    objc_storeStrong(&v12->_kms, ms);
+    v13->_type = type;
+    if (identity)
     {
-      CFRetain(a5);
+      CFRetain(identity);
     }
 
-    v13->_forPublicIdentity = a5;
-    v13->_forParticipantID = a6;
+    v13->_forPublicIdentity = identity;
+    v13->_forParticipantID = d;
     v13->_requireSignature = 1;
-    v14 = [(IDSServerDesiredKeyMaterialSet *)v13 forParticipantID];
-    v15 = v14 ^ [(IDSServerDesiredKeyMaterialSet *)v13 forPublicIdentity];
+    forParticipantID = [(IDSServerDesiredKeyMaterialSet *)v13 forParticipantID];
+    v15 = forParticipantID ^ [(IDSServerDesiredKeyMaterialSet *)v13 forPublicIdentity];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -49,8 +49,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v24 + 1) + 8 * v20) keyIndex];
-          v15 ^= [v21 hash];
+          keyIndex = [*(*(&v24 + 1) + 8 * v20) keyIndex];
+          v15 ^= [keyIndex hash];
 
           v20 = v20 + 1;
         }
@@ -83,12 +83,12 @@
   [(IDSServerDesiredKeyMaterialSet *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [v5 kms];
     v7 = [v6 isEqualToArray:self->_kms] && objc_msgSend(v5, "forPublicIdentity") == self->_forPublicIdentity && objc_msgSend(v5, "forParticipantID") == self->_forParticipantID;
   }
@@ -101,9 +101,9 @@
   return v7;
 }
 
-- (id)wrapMaterial:(id)a3 error:(id *)a4
+- (id)wrapMaterial:(id)material error:(id *)error
 {
-  v6 = a3;
+  materialCopy = material;
   v7 = +[IDSFoundationLog ServerMaterialExchange];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -111,9 +111,9 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "IDSServerDesiredKeyMaterialSet wrapMaterialOrError", v11, 2u);
   }
 
-  v8 = [v6 keyMaterial];
+  keyMaterial = [materialCopy keyMaterial];
 
-  v9 = [GFTKeyWrapping wrapSeed:v8 to:self->_forPublicIdentity legacy:0 error:a4];
+  v9 = [GFTKeyWrapping wrapSeed:keyMaterial to:self->_forPublicIdentity legacy:0 error:error];
 
   return v9;
 }
@@ -170,19 +170,19 @@
         {
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(IDSServerDesiredKeyMaterialSet *)self forParticipantID];
-            v16 = [(IDSServerDesiredKeyMaterialSet *)self forPublicIdentity];
-            v17 = [v5 keyIndex];
+            forParticipantID = [(IDSServerDesiredKeyMaterialSet *)self forParticipantID];
+            forPublicIdentity = [(IDSServerDesiredKeyMaterialSet *)self forPublicIdentity];
+            keyIndex = [v5 keyIndex];
             *buf = 134218498;
-            v51 = v15;
+            v51 = forParticipantID;
             v52 = 2112;
-            v53 = v16;
+            v53 = forPublicIdentity;
             v54 = 2112;
-            v55 = v17;
+            v55 = keyIndex;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "IDSServerDesiredKeyMaterialSet materialDataByID: encrypted the key material for participantID: %llu, remote pub key: %@, mki: %@", buf, 0x20u);
           }
 
-          v18 = [v5 keyIndex];
+          keyIndex2 = [v5 keyIndex];
           v9 = IDSGetUUIDDataFromNSUUID();
 
           v19 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -197,8 +197,8 @@
 LABEL_18:
             [(__CFDictionary *)v19 setObject:v9 forKeyedSubscript:v21];
             [(__CFDictionary *)v20 setObject:v6 forKeyedSubscript:v22];
-            v26 = [v5 keySalt];
-            [(__CFDictionary *)v20 setObject:v26 forKeyedSubscript:v25];
+            keySalt = [v5 keySalt];
+            [(__CFDictionary *)v20 setObject:keySalt forKeyedSubscript:v25];
 
             v27 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v5 generationCounter]);
             [(__CFDictionary *)v20 setObject:v27 forKeyedSubscript:v24];
@@ -226,15 +226,15 @@ LABEL_18:
 
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v11 = [(IDSServerDesiredKeyMaterialSet *)self forParticipantID];
-          v12 = [(IDSServerDesiredKeyMaterialSet *)self forPublicIdentity];
-          v13 = [v5 keyIndex];
+          forParticipantID2 = [(IDSServerDesiredKeyMaterialSet *)self forParticipantID];
+          forPublicIdentity2 = [(IDSServerDesiredKeyMaterialSet *)self forPublicIdentity];
+          keyIndex3 = [v5 keyIndex];
           *buf = 134218498;
-          v51 = v11;
+          v51 = forParticipantID2;
           v52 = 2112;
-          v53 = v12;
+          v53 = forPublicIdentity2;
           v54 = 2112;
-          v55 = v13;
+          v55 = keyIndex3;
           _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "IDSServerDesiredKeyMaterialSet materialDataByID: could not encrypt the key material for participantID: %llu, remote pub key: %@, mki: %@", buf, 0x20u);
         }
 

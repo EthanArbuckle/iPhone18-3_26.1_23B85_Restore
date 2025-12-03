@@ -1,10 +1,10 @@
 @interface SABinaryLocator
 + (id)sharedBinaryLocator;
 - (SABinaryLocator)init;
-- (_BYTE)addURLForSymbolOwner:(_BYTE *)a1;
+- (_BYTE)addURLForSymbolOwner:(_BYTE *)owner;
 - (id)mappings;
-- (id)urlForUUID:(_BYTE *)a1;
-- (uint64_t)addURL:(uint64_t)a3 ForUUID:;
+- (id)urlForUUID:(_BYTE *)d;
+- (uint64_t)addURL:(uint64_t)l ForUUID:;
 - (uint64_t)removeURLForUUID:(uint64_t)result;
 - (void)_saveMappings;
 - (void)done;
@@ -50,19 +50,19 @@
 - (void)_saveMappings
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (*(v1 + 24) != 1 || geteuid())
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (*(selfCopy + 24) != 1 || geteuid())
     {
       goto LABEL_27;
     }
 
-    if (v1[1])
+    if (selfCopy[1])
     {
-      v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v1[1], "count") + 1}];
-      v3 = v1[1];
+      v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(selfCopy[1], "count") + 1}];
+      v3 = selfCopy[1];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __32__SABinaryLocator__saveMappings__block_invoke;
@@ -70,7 +70,7 @@
       v4 = v2;
       v30 = v4;
       [v3 enumerateKeysAndObjectsUsingBlock:v29];
-      [v4 setObject:v1[2] forKeyedSubscript:@"build_number"];
+      [v4 setObject:selfCopy[2] forKeyedSubscript:@"build_number"];
       memset(&v28, 0, sizeof(v28));
       if (stat("/var/db/spindump", &v28))
       {
@@ -170,9 +170,9 @@ LABEL_20:
       }
     }
 
-    *(v1 + 24) = 0;
+    *(selfCopy + 24) = 0;
 LABEL_27:
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -241,17 +241,17 @@ void __38__SABinaryLocator_sharedBinaryLocator__block_invoke()
 - (id)mappings
 {
   v47 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = v1[1];
-  if (!v2 && (*(v1 + 25) & 1) != 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = selfCopy[1];
+  if (!v2 && (*(selfCopy + 25) & 1) != 0)
   {
     v3 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:@"/var/db/spindump/UUIDToBinaryLocations"];
     v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSObject count](v3, "count")}];
-    v5 = v1[1];
-    v1[1] = v4;
+    v5 = selfCopy[1];
+    selfCopy[1] = v4;
 
-    if (v1[2])
+    if (selfCopy[2])
     {
       goto LABEL_7;
     }
@@ -261,10 +261,10 @@ void __38__SABinaryLocator_sharedBinaryLocator__block_invoke()
     if (v6)
     {
       v8 = CFDictionaryGetValue(v6, *MEMORY[0x1E695E1E8]);
-      v9 = v1[2];
-      v1[2] = v8;
+      v9 = selfCopy[2];
+      selfCopy[2] = v8;
 
-      v10 = v1[2];
+      v10 = selfCopy[2];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -288,7 +288,7 @@ LABEL_8:
           break;
         }
 
-        v12 = v1[2];
+        v12 = selfCopy[2];
         if (!v12)
         {
           goto LABEL_12;
@@ -309,10 +309,10 @@ LABEL_14:
         }
 
 LABEL_15:
-        v15 = [@"/var/db/spindump/UUIDToBinaryLocations" UTF8String];
-        if (v15)
+        uTF8String = [@"/var/db/spindump/UUIDToBinaryLocations" UTF8String];
+        if (uTF8String)
         {
-          if (unlink(v15))
+          if (unlink(uTF8String))
           {
             v16 = *__error();
             v17 = _sa_logt();
@@ -348,7 +348,7 @@ LABEL_15:
 
           *v18 = v16;
 
-          v14 = v1[1];
+          v14 = selfCopy[1];
           goto LABEL_34;
         }
 
@@ -369,15 +369,15 @@ LABEL_42:
         v37 = _sa_logt();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_FAULT))
         {
-          ClassName = object_getClassName(v1[2]);
+          ClassName = object_getClassName(selfCopy[2]);
           *buf = 136315138;
           v44 = ClassName;
           _os_log_fault_impl(&dword_1E0E2F000, v37, OS_LOG_TYPE_FAULT, "Version dict provided invalid build number (class %s)", buf, 0xCu);
         }
 
         *__error() = v36;
-        v38 = v1[2];
-        v1[2] = 0;
+        v38 = selfCopy[2];
+        selfCopy[2] = 0;
       }
 
       v28 = *__error();
@@ -392,7 +392,7 @@ LABEL_42:
 
       *__error() = v28;
       v13 = 0;
-      if (!v1[2])
+      if (!selfCopy[2])
       {
         v11 = 0;
 LABEL_12:
@@ -400,9 +400,9 @@ LABEL_12:
         v42[1] = 3221225472;
         v42[2] = __27__SABinaryLocator_mappings__block_invoke;
         v42[3] = &unk_1E86F5AC0;
-        v42[4] = v1;
+        v42[4] = selfCopy;
         [v3 enumerateKeysAndObjectsUsingBlock:v42];
-        v14 = v1[1];
+        v14 = selfCopy[1];
 
         v13 = v11;
 LABEL_34:
@@ -437,12 +437,12 @@ LABEL_23:
     }
 
     *__error() = v21;
-    v2 = v1[1];
+    v2 = selfCopy[1];
   }
 
   v14 = v2;
 LABEL_27:
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   v23 = *MEMORY[0x1E69E9840];
 
@@ -487,43 +487,43 @@ LABEL_4:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)urlForUUID:(_BYTE *)a1
+- (id)urlForUUID:(_BYTE *)d
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  if (!a1 || a1[25] != 1)
+  if (!d || d[25] != 1)
   {
     v11 = 0;
     goto LABEL_24;
   }
 
-  v3 = a1;
-  objc_sync_enter(v3);
-  v4 = [(SABinaryLocator *)v3 mappings];
-  v5 = [v4 objectForKey:a2];
+  dCopy = d;
+  objc_sync_enter(dCopy);
+  mappings = [(SABinaryLocator *)dCopy mappings];
+  v5 = [mappings objectForKey:a2];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(dCopy);
   if (!v5)
   {
     goto LABEL_12;
   }
 
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
     v11 = 0;
     goto LABEL_23;
   }
 
-  v7 = [v5 path];
-  if (!v7)
+  path = [v5 path];
+  if (!path)
   {
     goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v5 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path2 = [v5 path];
+  v10 = [defaultManager fileExistsAtPath:path2];
 
   if (!v10)
   {
@@ -532,21 +532,21 @@ LABEL_9:
     v13 = _sa_logt();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [a2 UUIDString];
-      v15 = [v5 path];
+      uUIDString = [a2 UUIDString];
+      path3 = [v5 path];
       *buf = 138412546;
-      v30 = v14;
+      v30 = uUIDString;
       v31 = 2112;
-      v32[0] = v15;
+      v32[0] = path3;
       _os_log_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_INFO, "Found stale entry for UUID %@, mapping to non-existent path %@. This will be ignored and evicted from the cache.", buf, 0x16u);
     }
 
     *__error() = v12;
-    v3[24] = 1;
-    v16 = v3;
+    dCopy[24] = 1;
+    v16 = dCopy;
     objc_sync_enter(v16);
-    v17 = [(SABinaryLocator *)v16 mappings];
-    [v17 removeObjectForKey:a2];
+    mappings2 = [(SABinaryLocator *)v16 mappings];
+    [mappings2 removeObjectForKey:a2];
 
     objc_sync_exit(v16);
 LABEL_12:
@@ -571,14 +571,14 @@ LABEL_12:
       }
 
       *__error() = v19;
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
-      v22 = [v21 fileExistsAtPath:v18];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v22 = [defaultManager2 fileExistsAtPath:v18];
 
       if (v22)
       {
         v23 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v18 isDirectory:0];
 
-        [(SABinaryLocator *)v3 addURL:v23 ForUUID:a2];
+        [(SABinaryLocator *)dCopy addURL:v23 ForUUID:a2];
         v5 = v23;
         v11 = v5;
       }
@@ -589,9 +589,9 @@ LABEL_12:
         v25 = _sa_logt();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [a2 UUIDString];
+          uUIDString2 = [a2 UUIDString];
           *buf = 138412546;
-          v30 = v26;
+          v30 = uUIDString2;
           v31 = 2080;
           v32[0] = 0;
           _os_log_impl(&dword_1E0E2F000, v25, OS_LOG_TYPE_INFO, "OSLogLookupPathWithUUID returned stale entry for UUID %@; path %s doesn't exist. This will be ignored.", buf, 0x16u);
@@ -620,7 +620,7 @@ LABEL_24:
   return v11;
 }
 
-- (uint64_t)addURL:(uint64_t)a3 ForUUID:
+- (uint64_t)addURL:(uint64_t)l ForUUID:
 {
   v24 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -635,23 +635,23 @@ LABEL_24:
   }
 
   result = 0;
-  if (!a2 || !a3)
+  if (!a2 || !l)
   {
     goto LABEL_18;
   }
 
-  v6 = [a2 fileSystemRepresentation];
-  if (!v6)
+  fileSystemRepresentation = [a2 fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
 LABEL_15:
     v13 = v3;
     objc_sync_enter(v13);
-    v14 = [(SABinaryLocator *)v13 mappings];
-    v15 = [v14 objectForKey:a3];
+    mappings = [(SABinaryLocator *)v13 mappings];
+    v15 = [mappings objectForKey:l];
     if (!v15)
     {
       v13[24] = 1;
-      [v14 setObject:a2 forKey:a3];
+      [mappings setObject:a2 forKey:l];
 
       objc_sync_exit(v13);
       result = 1;
@@ -662,9 +662,9 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v7 = v6;
+  v7 = fileSystemRepresentation;
   memset(&v18, 0, sizeof(v18));
-  if (stat(v6, &v18))
+  if (stat(fileSystemRepresentation, &v18))
   {
 LABEL_17:
     result = 0;
@@ -712,12 +712,12 @@ LABEL_18:
   return result;
 }
 
-- (_BYTE)addURLForSymbolOwner:(_BYTE *)a1
+- (_BYTE)addURLForSymbolOwner:(_BYTE *)owner
 {
-  v1 = a1;
-  if (a1)
+  ownerCopy = owner;
+  if (owner)
   {
-    if (a1[25] == 1)
+    if (owner[25] == 1)
     {
       CFUUIDBytes = CSSymbolOwnerGetCFUUIDBytes();
       Path = CSSymbolOwnerGetPath();
@@ -726,23 +726,23 @@ LABEL_18:
       if (CFUUIDBytes && [v4 isAbsolutePath])
       {
         v6 = uuidForBytes(CFUUIDBytes);
-        v7 = [(SABinaryLocator *)v1 urlForUUID:v6];
+        v7 = [(SABinaryLocator *)ownerCopy urlForUUID:v6];
 
         if (v7)
         {
-          v1 = 0;
+          ownerCopy = 0;
         }
 
         else
         {
           v8 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v5 isDirectory:0];
-          v1 = [(SABinaryLocator *)v1 addURL:v8 ForUUID:v6];
+          ownerCopy = [(SABinaryLocator *)ownerCopy addURL:v8 ForUUID:v6];
         }
       }
 
       else
       {
-        v1 = 0;
+        ownerCopy = 0;
       }
     }
 
@@ -752,7 +752,7 @@ LABEL_18:
     }
   }
 
-  return v1;
+  return ownerCopy;
 }
 
 - (uint64_t)removeURLForUUID:(uint64_t)result
@@ -773,9 +773,9 @@ LABEL_18:
           v6 = _sa_logt();
           if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
           {
-            v10 = [a2 UUIDString];
+            uUIDString = [a2 UUIDString];
             *buf = 138412546;
-            *&buf[4] = v10;
+            *&buf[4] = uUIDString;
             *&buf[12] = 2080;
             *&buf[14] = [v4 fileSystemRepresentation];
             _os_log_debug_impl(&dword_1E0E2F000, v6, OS_LOG_TYPE_DEBUG, "Deleted %@ -> %s", buf, 0x16u);
@@ -789,8 +789,8 @@ LABEL_18:
           OSLogLookupPathWithUUID();
           v7 = v3;
           objc_sync_enter(v7);
-          v8 = [(SABinaryLocator *)v7 mappings];
-          [v8 removeObjectForKey:a2];
+          mappings = [(SABinaryLocator *)v7 mappings];
+          [mappings removeObjectForKey:a2];
 
           objc_sync_exit(v3);
           result = 1;

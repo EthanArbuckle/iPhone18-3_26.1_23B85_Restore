@@ -1,11 +1,11 @@
 @interface UIWebOptGroup
-- (UIWebOptGroup)initWithGroup:(id)a3 itemOffset:(int64_t)a4;
+- (UIWebOptGroup)initWithGroup:(id)group itemOffset:(int64_t)offset;
 - (void)dealloc;
 @end
 
 @implementation UIWebOptGroup
 
-- (UIWebOptGroup)initWithGroup:(id)a3 itemOffset:(int64_t)a4
+- (UIWebOptGroup)initWithGroup:(id)group itemOffset:(int64_t)offset
 {
   v9.receiver = self;
   v9.super_class = UIWebOptGroup;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    [(UIWebOptGroup *)v6 setGroup:a3];
-    v7->_offset = a4;
+    [(UIWebOptGroup *)v6 setGroup:group];
+    v7->_offset = offset;
   }
 
   return v7;

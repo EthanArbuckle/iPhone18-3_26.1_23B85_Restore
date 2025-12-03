@@ -1,46 +1,46 @@
 @interface ARPointCloud
-+ (id)concatPointClouds:(id)a3;
++ (id)concatPointClouds:(id)clouds;
 + (id)emptyPointCloud;
 + (void)emptyPointCloud;
-- (ARHitTestResult)_hitTestPointFromOrigin:(float32x4_t)a3 withDirection:(float)a4 maximumAngle:(float32x4_t)a5 cameraToWorldTransform:(float32x4_t)a6;
-- (ARPointCloud)initWithCV3DPointData:(id)a3 minVergenceAngleCosine:(double)a4;
-- (ARPointCloud)initWithCoder:(id)a3;
-- (ARPointCloud)initWithDepthPointCloud:(id)a3;
-- (ARPointCloud)initWithPointData:(id)a3;
-- (ARPointCloud)pointCloudByApplyingTransform:(float32x4_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARHitTestResult)_hitTestPointFromOrigin:(float32x4_t)origin withDirection:(float)direction maximumAngle:(float32x4_t)angle cameraToWorldTransform:(float32x4_t)transform;
+- (ARPointCloud)initWithCV3DPointData:(id)data minVergenceAngleCosine:(double)cosine;
+- (ARPointCloud)initWithCoder:(id)coder;
+- (ARPointCloud)initWithDepthPointCloud:(id)cloud;
+- (ARPointCloud)initWithPointData:(id)data;
+- (ARPointCloud)pointCloudByApplyingTransform:(float32x4_t)transform;
+- (BOOL)isEqual:(id)equal;
 - (NSUInteger)count;
 - (const)points;
 - (const)vergenceAngleCosines;
 - (double)computeBounds;
-- (float32x4_t)initWithPointsVector:(__n128 *)a3 identifiersVector:(__n128 *)a4 vergenceAngleCosinesVector:(__n128 *)a5;
+- (float32x4_t)initWithPointsVector:(__n128 *)vector identifiersVector:(__n128 *)identifiersVector vergenceAngleCosinesVector:(__n128 *)cosinesVector;
 - (id).cxx_construct;
 - (id)description;
-- (id)filterPointCloudFrom:(ARPointCloud *)self ellipsoid:(SEL)a2;
+- (id)filterPointCloudFrom:(ARPointCloud *)self ellipsoid:(SEL)ellipsoid;
 - (id)filterPointCloudWithIdentifiers:(set<unsigned long)long;
-- (id)initWithPointsVector:(__int128 *)a3 identifiersVector:(uint64_t)a4;
+- (id)initWithPointsVector:(__int128 *)vector identifiersVector:(uint64_t)identifiersVector;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPointCloud
 
-- (ARPointCloud)initWithPointData:(id)a3
+- (ARPointCloud)initWithPointData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v20 = 0uLL;
   v21 = 0;
   v18[0] = 0;
   v18[1] = 0;
   v19 = 0;
-  v5 = [v4 length];
-  v6 = [v4 bytes];
+  v5 = [dataCopy length];
+  bytes = [dataCopy bytes];
   v7 = v5 >> 5;
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE7reserveEm(&v20, v5 >> 5);
   _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(v18, v5 >> 5);
   if (v5 >= 0x20)
   {
-    v8 = (v6 + 24);
+    v8 = (bytes + 24);
     do
     {
       v9 = *(v8 - 3);
@@ -95,17 +95,17 @@
   return v11;
 }
 
-- (ARPointCloud)initWithCV3DPointData:(id)a3 minVergenceAngleCosine:(double)a4
+- (ARPointCloud)initWithCV3DPointData:(id)data minVergenceAngleCosine:(double)cosine
 {
-  v6 = a3;
+  dataCopy = data;
   v36 = 0uLL;
   v37 = 0;
   v34[0] = 0;
   v34[1] = 0;
   v35 = 0;
   memset(&v33, 0, sizeof(v33));
-  v7 = [v6 length];
-  v8 = [v6 bytes];
+  v7 = [dataCopy length];
+  bytes = [dataCopy bytes];
   v9 = v7 / 0x28;
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE7reserveEm(&v36, v7 / 0x28);
   _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(v34, v7 / 0x28);
@@ -113,11 +113,11 @@
   if (v7 >= 0x28)
   {
     v10 = 0;
-    v11 = (v8 + 32);
+    v11 = (bytes + 32);
     do
     {
       v12 = *v11;
-      if (*v11 <= a4)
+      if (*v11 <= cosine)
       {
         v13 = *(v11 - 4);
         *&v13.f64[0] = vcvt_f32_f64(v13);
@@ -250,22 +250,22 @@
   return v25;
 }
 
-- (id)initWithPointsVector:(__int128 *)a3 identifiersVector:(uint64_t)a4
+- (id)initWithPointsVector:(__int128 *)vector identifiersVector:(uint64_t)identifiersVector
 {
-  v11 = *a3;
-  v12 = *(a3 + 2);
-  *(a3 + 1) = 0;
-  *(a3 + 2) = 0;
-  *a3 = 0;
-  *v9 = *a4;
-  v10 = *(a4 + 16);
-  *(a4 + 8) = 0;
-  *(a4 + 16) = 0;
-  *a4 = 0;
+  v11 = *vector;
+  v12 = *(vector + 2);
+  *(vector + 1) = 0;
+  *(vector + 2) = 0;
+  *vector = 0;
+  *v9 = *identifiersVector;
+  v10 = *(identifiersVector + 16);
+  *(identifiersVector + 8) = 0;
+  *(identifiersVector + 16) = 0;
+  *identifiersVector = 0;
   v7 = 0;
   v8 = 0;
   __p = 0;
-  v4 = [a1 initWithPointsVector:&v11 identifiersVector:v9 vergenceAngleCosinesVector:&__p];
+  v4 = [self initWithPointsVector:&v11 identifiersVector:v9 vergenceAngleCosinesVector:&__p];
   if (__p)
   {
     v7 = __p;
@@ -287,17 +287,17 @@
   return v4;
 }
 
-- (float32x4_t)initWithPointsVector:(__n128 *)a3 identifiersVector:(__n128 *)a4 vergenceAngleCosinesVector:(__n128 *)a5
+- (float32x4_t)initWithPointsVector:(__n128 *)vector identifiersVector:(__n128 *)identifiersVector vergenceAngleCosinesVector:(__n128 *)cosinesVector
 {
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = ARPointCloud;
   v8 = [(ARPointCloud *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    std::vector<ARPatch>::__move_assign(v8->_anon_8, a3);
-    std::vector<ARPatch>::__move_assign(&v9[2], a4);
-    std::vector<ARPatch>::__move_assign(&v9[3].i64[1], a5);
+    std::vector<ARPatch>::__move_assign(v8->_anon_8, vector);
+    std::vector<ARPatch>::__move_assign(&v9[2], identifiersVector);
+    std::vector<ARPatch>::__move_assign(&v9[3].i64[1], cosinesVector);
     v10.i64[0] = 0x3F0000003FLL;
     v10.i64[1] = 0x3F0000003FLL;
     v11 = vnegq_f32(v10);
@@ -308,18 +308,18 @@
   return v9;
 }
 
-- (ARPointCloud)initWithDepthPointCloud:(id)a3
+- (ARPointCloud)initWithDepthPointCloud:(id)cloud
 {
-  v5 = a3;
+  cloudCopy = cloud;
   kdebug_trace();
-  v6 = [v5 length];
+  v6 = [cloudCopy length];
   v17.receiver = self;
   v17.super_class = ARPointCloud;
   v7 = [(ARPointCloud *)&v17 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_depthPointCloud, a3);
+    objc_storeStrong(&v7->_depthPointCloud, cloud);
     std::vector<unsigned long long>::vector[abi:ne200100](&v15, v6);
     begin = v8->_identifiersVector.__begin_;
     if (begin)
@@ -402,12 +402,12 @@
 
 - (double)computeBounds
 {
-  if (![a1 count])
+  if (![self count])
   {
     return 0.0;
   }
 
-  if ([a1 count])
+  if ([self count])
   {
     v2 = 0;
     v3.i64[0] = 0x80000000800000;
@@ -418,7 +418,7 @@
     v15 = vnegq_f32(v3);
     do
     {
-      v5 = *([a1 points] + 16 * v2);
+      v5 = *([self points] + 16 * v2);
       v5.i32[3] = 0;
       v6 = v16;
       v6.i32[3] = 0;
@@ -430,7 +430,7 @@
       ++v2;
     }
 
-    while (v2 < [a1 count]);
+    while (v2 < [self count]);
   }
 
   else
@@ -449,7 +449,7 @@
   return result;
 }
 
-- (id)filterPointCloudFrom:(ARPointCloud *)self ellipsoid:(SEL)a2
+- (id)filterPointCloudFrom:(ARPointCloud *)self ellipsoid:(SEL)ellipsoid
 {
   v14 = v2;
   v15 = v3;
@@ -596,11 +596,11 @@
   return v13;
 }
 
-+ (id)concatPointClouds:(id)a3
++ (id)concatPointClouds:(id)clouds
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  cloudsCopy = clouds;
+  if ([cloudsCopy count])
   {
     v49 = 0;
     __n = 0;
@@ -609,7 +609,7 @@
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v4 = v3;
+    v4 = cloudsCopy;
     v5 = [v4 countByEnumeratingWithState:&v44 objects:v51 count:16];
     if (v5)
     {
@@ -629,19 +629,19 @@
           v7 = ([v9 vergenceAngleCosines] != 0) & v7;
           while (v10 < [v9 count])
           {
-            v11 = [v9 identifiers];
-            v12 = [v9 points];
-            v13 = *(v12 + 16 * v10);
+            identifiers = [v9 identifiers];
+            points = [v9 points];
+            v13 = *(points + 16 * v10);
             v14 = 0;
             if (v7)
             {
-              v32 = *(v12 + 16 * v10);
+              v32 = *(points + 16 * v10);
               v14 = *([v9 vergenceAngleCosines] + 4 * v10);
               v13 = v32;
             }
 
             HIDWORD(v13) = v14;
-            v42[0] = *(v11 + 8 * v10);
+            v42[0] = *(identifiers + 8 * v10);
             v43 = v13;
             _ZNSt3__16__treeINS_12__value_typeIyDv4_fEENS_19__map_value_compareIyS3_NS_4lessIyEELb1EEENS_9allocatorIS3_EEE25__emplace_unique_key_argsIyJNS_4pairIyS2_EEEEENSC_INS_15__tree_iteratorIS3_PNS_11__tree_nodeIS3_PvEElEEbEERKT_DpOT0_(&v48, v42);
             ++v10;
@@ -838,7 +838,7 @@
   v7 = 0;
   __p = 0;
   v5 = 0;
-  v2 = [[a1 alloc] initWithPointsVector:&v7 identifiersVector:&__p];
+  v2 = [[self alloc] initWithPointsVector:&v7 identifiersVector:&__p];
   if (__p)
   {
     v5 = __p;
@@ -854,14 +854,14 @@
   return v2;
 }
 
-- (ARHitTestResult)_hitTestPointFromOrigin:(float32x4_t)a3 withDirection:(float)a4 maximumAngle:(float32x4_t)a5 cameraToWorldTransform:(float32x4_t)a6
+- (ARHitTestResult)_hitTestPointFromOrigin:(float32x4_t)origin withDirection:(float)direction maximumAngle:(float32x4_t)angle cameraToWorldTransform:(float32x4_t)transform
 {
-  if (![a1 count])
+  if (![self count])
   {
     goto LABEL_14;
   }
 
-  if ([a1 count])
+  if ([self count])
   {
     v11 = 0;
     v10.i32[0] = -8388609;
@@ -869,17 +869,17 @@
     v34 = a2;
     do
     {
-      v35 = *([a1 points] + 16 * v11);
-      v12 = a1[14];
-      if (!v12 || ![v12 confidences] || ARCheckConfidenceJasper(*(objc_msgSend(a1[14], "confidences") + 4 * v11)))
+      v35 = *([self points] + 16 * v11);
+      v12 = self[14];
+      if (!v12 || ![v12 confidences] || ARCheckConfidenceJasper(*(objc_msgSend(self[14], "confidences") + 4 * v11)))
       {
-        v13 = vaddq_f32(a8, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a5, v35.f32[0]), a6, *v35.f32, 1), a7, v35, 2));
+        v13 = vaddq_f32(a8, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(angle, v35.f32[0]), transform, *v35.f32, 1), a7, v35, 2));
         v14 = vsubq_f32(v13, a2);
         v15 = vmulq_f32(v14, v14);
         *&v16 = v15.f32[2] + vaddv_f32(*v15.f32);
         *v15.f32 = vrsqrte_f32(v16);
         *v15.f32 = vmul_f32(*v15.f32, vrsqrts_f32(v16, vmul_f32(*v15.f32, *v15.f32)));
-        v17 = vmulq_f32(vmulq_n_f32(v14, vmul_f32(*v15.f32, vrsqrts_f32(v16, vmul_f32(*v15.f32, *v15.f32))).f32[0]), a3);
+        v17 = vmulq_f32(vmulq_n_f32(v14, vmul_f32(*v15.f32, vrsqrts_f32(v16, vmul_f32(*v15.f32, *v15.f32))).f32[0]), origin);
         v17.f32[0] = v17.f32[2] + vaddv_f32(*v17.f32);
         v18 = v32;
         v19 = vbslq_s8(vdupq_lane_s32(*&vcgtq_f32(v17, v32), 0), v13, v34);
@@ -895,7 +895,7 @@
       ++v11;
     }
 
-    while (v11 < [a1 count]);
+    while (v11 < [self count]);
   }
 
   else
@@ -904,16 +904,16 @@
     v34 = a2;
   }
 
-  if (v32.f32[0] >= cosf(a4))
+  if (v32.f32[0] >= cosf(direction))
   {
-    v21 = vmulq_f32(vsubq_f32(v34, a2), a3);
+    v21 = vmulq_f32(vsubq_f32(v34, a2), origin);
     v36 = v21.f32[2] + vaddv_f32(*v21.f32);
     v33 = *MEMORY[0x1E69E9B18];
     v26 = *(MEMORY[0x1E69E9B18] + 32);
     v28 = *(MEMORY[0x1E69E9B18] + 16);
     v20 = [[ARHitTestResult alloc] initWithType:1];
     [(ARHitTestResult *)v20 setDistance:v36];
-    v31 = vmlaq_n_f32(a2, a3, v36);
+    v31 = vmlaq_n_f32(a2, origin, v36);
     [(ARHitTestResult *)v20 setWorldTransform:*&v33, *&v28, *&v26, *v31.i64];
     [(ARHitTestResult *)v20 setLocalTransform:*&v33, *&v28, *&v26, *vsubq_f32(v31, v34).i64];
   }
@@ -927,15 +927,15 @@ LABEL_14:
   return v20;
 }
 
-- (ARPointCloud)pointCloudByApplyingTransform:(float32x4_t)a3
+- (ARPointCloud)pointCloudByApplyingTransform:(float32x4_t)transform
 {
   v25 = 0uLL;
   v26 = 0;
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE7reserveEm(&v25, [a1 count]);
-  for (i = 0; i < [a1 count]; ++i)
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE7reserveEm(&v25, [self count]);
+  for (i = 0; i < [self count]; ++i)
   {
-    v7 = [a1 points];
-    v8 = vaddq_f32(a5, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(v7 + 16 * i))), a3, *(v7 + 16 * i), 1), a4, *(v7 + 16 * i), 2));
+    points = [self points];
+    v8 = vaddq_f32(a5, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(points + 16 * i))), transform, *(points + 16 * i), 1), a4, *(points + 16 * i), 2));
     v24 = vdivq_f32(v8, vdupq_laneq_s32(v8, 3));
     _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE9push_backB8ne200100EOS1_(&v25, &v24);
   }
@@ -948,11 +948,11 @@ LABEL_14:
   v20 = 0;
   v21 = 0;
   v19 = 0;
-  std::vector<unsigned long long>::__init_with_size[abi:ne200100]<unsigned long long *,unsigned long long *>(&v19, a1[4], a1[5], (a1[5] - a1[4]) >> 3);
+  std::vector<unsigned long long>::__init_with_size[abi:ne200100]<unsigned long long *,unsigned long long *>(&v19, self[4], self[5], (self[5] - self[4]) >> 3);
   __p = 0;
   v17 = 0;
   v18 = 0;
-  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, a1[7], a1[8], (a1[8] - a1[7]) >> 2);
+  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, self[7], self[8], (self[8] - self[7]) >> 2);
   v10 = [(ARPointCloud *)v9 initWithPointsVector:&v22 identifiersVector:&v19 vergenceAngleCosinesVector:&__p];
   if (__p)
   {
@@ -991,16 +991,16 @@ LABEL_14:
   return v6;
 }
 
-- (ARPointCloud)initWithCoder:(id)a3
+- (ARPointCloud)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ARPointCloud;
   v5 = [(ARPointCloud *)&v18 init];
   if (v5)
   {
     v17 = 0;
-    v6 = [v4 decodeBytesForKey:@"points" returnedLength:&v17];
+    v6 = [coderCopy decodeBytesForKey:@"points" returnedLength:&v17];
     if (v17)
     {
       v15 = 0uLL;
@@ -1021,7 +1021,7 @@ LABEL_14:
     }
 
     v14 = 0;
-    v8 = [v4 decodeBytesForKey:@"identifiers" returnedLength:&v14];
+    v8 = [coderCopy decodeBytesForKey:@"identifiers" returnedLength:&v14];
     if (v14)
     {
       v15 = 0uLL;
@@ -1042,7 +1042,7 @@ LABEL_14:
     }
 
     v13 = 0;
-    v10 = [v4 decodeBytesForKey:@"vergenceAngleCosines" returnedLength:&v13];
+    v10 = [coderCopy decodeBytesForKey:@"vergenceAngleCosines" returnedLength:&v13];
     if (v14)
     {
       v16 = 0;
@@ -1066,12 +1066,12 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBytes:-[ARPointCloud points](self length:"points") forKey:{16 * -[ARPointCloud count](self, "count"), @"points"}];
-  [v4 encodeBytes:self->_identifiersVector.__begin_ length:self->_identifiersVector.__end_ - self->_identifiersVector.__begin_ forKey:@"identifiers"];
-  [v4 encodeBytes:self->_vergenceAngleCosinesVector.__begin_ length:self->_vergenceAngleCosinesVector.__end_ - self->_vergenceAngleCosinesVector.__begin_ forKey:@"vergenceAngleCosines"];
+  coderCopy = coder;
+  [coderCopy encodeBytes:-[ARPointCloud points](self length:"points") forKey:{16 * -[ARPointCloud count](self, "count"), @"points"}];
+  [coderCopy encodeBytes:self->_identifiersVector.__begin_ length:self->_identifiersVector.__end_ - self->_identifiersVector.__begin_ forKey:@"identifiers"];
+  [coderCopy encodeBytes:self->_vergenceAngleCosinesVector.__begin_ length:self->_vergenceAngleCosinesVector.__end_ - self->_vergenceAngleCosinesVector.__begin_ forKey:@"vergenceAngleCosines"];
 }
 
 - (unint64_t)hash
@@ -1085,13 +1085,13 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(ARPointCloud *)self count];
     if (v6 != [v5 count])
     {
@@ -1111,15 +1111,15 @@ LABEL_14:
       goto LABEL_6;
     }
 
-    v12 = [(ARPointCloud *)self points];
-    v13 = [v5 points];
+    points = [(ARPointCloud *)self points];
+    points2 = [v5 points];
     v14 = [(ARPointCloud *)self count];
     if (!v14)
     {
       goto LABEL_16;
     }
 
-    v15 = vceqq_f32(*v12, *v13);
+    v15 = vceqq_f32(*points, *points2);
     v15.i32[3] = v15.i32[2];
     if ((vminvq_u32(v15) & 0x80000000) == 0)
     {
@@ -1135,7 +1135,7 @@ LABEL_14:
         break;
       }
 
-      v18 = vceqq_f32(v12[v16], v13[v16]);
+      v18 = vceqq_f32(points[v16], points2[v16]);
       v18.i32[3] = v18.i32[2];
       ++v16;
     }
@@ -1193,10 +1193,10 @@ LABEL_6:
 
 + (void)emptyPointCloud
 {
-  v2 = *a1;
+  v2 = *self;
   if (v2)
   {
-    *(a1 + 8) = v2;
+    *(self + 8) = v2;
     operator delete(v2);
   }
 }

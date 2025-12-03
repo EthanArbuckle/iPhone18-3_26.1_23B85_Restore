@@ -1,7 +1,7 @@
 @interface NMCLegacySuggestionsRelay
 + (id)sharedRelay;
 - (NMCLegacySuggestionsRelay)init;
-- (void)connection:(id)a3 didChangeDeviceNearby:(BOOL)a4;
+- (void)connection:(id)connection didChangeDeviceNearby:(BOOL)nearby;
 - (void)dealloc;
 @end
 
@@ -45,14 +45,14 @@
   return v2;
 }
 
-- (void)connection:(id)a3 didChangeDeviceNearby:(BOOL)a4
+- (void)connection:(id)connection didChangeDeviceNearby:(BOOL)nearby
 {
-  v4 = a4;
+  nearbyCopy = nearby;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = @"not ";
-    if (v4)
+    if (nearbyCopy)
     {
       v6 = &stru_100087EB8;
     }

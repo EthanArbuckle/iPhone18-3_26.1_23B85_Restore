@@ -62,7 +62,7 @@
     }
   }
 
-  v13 = [a1 SKUITrending_searchButtonWithElement:0];
+  v13 = [self SKUITrending_searchButtonWithElement:0];
   [v13 setTitle:v4 forState:0];
 
   return v13;
@@ -83,65 +83,65 @@
     }
   }
 
-  v13 = [v4 buttonImage];
+  buttonImage = [v4 buttonImage];
 
-  if (v13)
+  if (buttonImage)
   {
-    v14 = [v4 buttonImage];
-    v15 = [v14 resourceName];
-    v16 = SKUIImageWithResourceName(v15);
+    buttonImage2 = [v4 buttonImage];
+    resourceName = [buttonImage2 resourceName];
+    v16 = SKUIImageWithResourceName(resourceName);
 
-    [a1 setImage:v16 forState:0];
+    [self setImage:v16 forState:0];
   }
 
-  v17 = [v4 buttonText];
-  v18 = [v17 string];
+  buttonText = [v4 buttonText];
+  string = [buttonText string];
 
-  [a1 setTitle:v18 forState:0];
-  v19 = [v4 buttonTitleStyle];
-  v20 = v19;
-  if (v19)
+  [self setTitle:string forState:0];
+  buttonTitleStyle = [v4 buttonTitleStyle];
+  v20 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v21 = v19;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v21 = [v4 style];
+    style = [v4 style];
   }
 
-  v22 = v21;
+  v22 = style;
 
   v23 = SKUIViewElementPlainColorWithStyle(v22, 0);
-  [a1 setTintColor:v23];
+  [self setTintColor:v23];
 
-  v24 = [a1 titleLabel];
+  titleLabel = [self titleLabel];
   v25 = SKUIViewElementFontWithStyle(v22);
-  v26 = [v22 maxTextLines];
+  maxTextLines = [v22 maxTextLines];
   if (v25)
   {
-    [v24 setFont:v25];
+    [titleLabel setFont:v25];
   }
 
   else
   {
-    v27 = [objc_opt_class() SKUITrending_defaultButtonFont];
-    [v24 setFont:v27];
+    sKUITrending_defaultButtonFont = [objc_opt_class() SKUITrending_defaultButtonFont];
+    [titleLabel setFont:sKUITrending_defaultButtonFont];
   }
 
-  if (v26 == -1)
+  if (maxTextLines == -1)
   {
     v28 = 1;
   }
 
   else
   {
-    v28 = v26;
+    v28 = maxTextLines;
   }
 
-  [v24 setNumberOfLines:v28];
-  [v24 setTextAlignment:1];
-  [v24 setLineBreakMode:4];
+  [titleLabel setNumberOfLines:v28];
+  [titleLabel setTextAlignment:1];
+  [titleLabel setLineBreakMode:4];
 }
 
 @end

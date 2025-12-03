@@ -1,10 +1,10 @@
 @interface CLBMousePointerManager
 - (void)dealloc;
-- (void)mousePointerDevicesDidChange:(id)a3;
-- (void)pointerClientController:(id)a3 didAddScene:(id)a4;
-- (void)pointerClientController:(id)a3 sceneDidActivate:(id)a4;
-- (void)pointerClientController:(id)a3 sceneWillDeactivate:(id)a4;
-- (void)pointerClientController:(id)a3 willRemoveScene:(id)a4;
+- (void)mousePointerDevicesDidChange:(id)change;
+- (void)pointerClientController:(id)controller didAddScene:(id)scene;
+- (void)pointerClientController:(id)controller sceneDidActivate:(id)activate;
+- (void)pointerClientController:(id)controller sceneWillDeactivate:(id)deactivate;
+- (void)pointerClientController:(id)controller willRemoveScene:(id)scene;
 @end
 
 @implementation CLBMousePointerManager
@@ -12,7 +12,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR___CLBMousePointerManager_mousePointerDeviceObserverToken);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -24,45 +24,45 @@
   [(CLBMousePointerManager *)&v5 dealloc];
 }
 
-- (void)mousePointerDevicesDidChange:(id)a3
+- (void)mousePointerDevicesDidChange:(id)change
 {
   sub_10005CEDC();
   sub_10005D054(&qword_10032D648, sub_10005CEDC);
   v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_10005B8E0(v4);
 }
 
-- (void)pointerClientController:(id)a3 didAddScene:(id)a4
+- (void)pointerClientController:(id)controller didAddScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10005C8AC(v7, "Did add pointer scene: %@");
+  controllerCopy = controller;
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_10005C8AC(sceneCopy, "Did add pointer scene: %@");
 }
 
-- (void)pointerClientController:(id)a3 willRemoveScene:(id)a4
+- (void)pointerClientController:(id)controller willRemoveScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10005C8AC(v7, "Will remove pointer scene: %@");
+  controllerCopy = controller;
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_10005C8AC(sceneCopy, "Will remove pointer scene: %@");
 }
 
-- (void)pointerClientController:(id)a3 sceneDidActivate:(id)a4
+- (void)pointerClientController:(id)controller sceneDidActivate:(id)activate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10005CA68(v7, "Did activate pointer scene: %@", &unk_1002FF3D8, &unk_1002995E8);
+  controllerCopy = controller;
+  activateCopy = activate;
+  selfCopy = self;
+  sub_10005CA68(activateCopy, "Did activate pointer scene: %@", &unk_1002FF3D8, &unk_1002995E8);
 }
 
-- (void)pointerClientController:(id)a3 sceneWillDeactivate:(id)a4
+- (void)pointerClientController:(id)controller sceneWillDeactivate:(id)deactivate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10005CA68(v7, "Will deactivate pointer scene: %@", &unk_1002FF3B0, &unk_1002995D8);
+  controllerCopy = controller;
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_10005CA68(deactivateCopy, "Will deactivate pointer scene: %@", &unk_1002FF3B0, &unk_1002995D8);
 }
 
 @end

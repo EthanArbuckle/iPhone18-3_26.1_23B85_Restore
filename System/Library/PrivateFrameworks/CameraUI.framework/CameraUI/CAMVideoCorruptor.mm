@@ -1,23 +1,23 @@
 @interface CAMVideoCorruptor
-+ (BOOL)corruptVideoFileAtURLWhenEnabled:(id)a3;
-+ (int)_corruptMethodFytpForFile:(__sFILE *)a3 ofSize:(int64_t)a4;
-+ (int)_corruptMethodMdatForFile:(__sFILE *)a3 ofSize:(int64_t)a4;
-+ (int)_corruptMethodMoovForFile:(__sFILE *)a3 ofSize:(int64_t)a4;
-+ (int)_findBox:(unsigned int)a3 inFile:(__sFILE *)a4 ofSize:(int64_t)a5 boxSize:(int64_t *)a6;
-+ (int)_getBoxInfoFromFile:(__sFILE *)a3 ofSize:(int64_t)a4 boxType:(unsigned int *)a5 boxSize:(int64_t *)a6;
++ (BOOL)corruptVideoFileAtURLWhenEnabled:(id)enabled;
++ (int)_corruptMethodFytpForFile:(__sFILE *)file ofSize:(int64_t)size;
++ (int)_corruptMethodMdatForFile:(__sFILE *)file ofSize:(int64_t)size;
++ (int)_corruptMethodMoovForFile:(__sFILE *)file ofSize:(int64_t)size;
++ (int)_findBox:(unsigned int)box inFile:(__sFILE *)file ofSize:(int64_t)size boxSize:(int64_t *)boxSize;
++ (int)_getBoxInfoFromFile:(__sFILE *)file ofSize:(int64_t)size boxType:(unsigned int *)type boxSize:(int64_t *)boxSize;
 @end
 
 @implementation CAMVideoCorruptor
 
-+ (BOOL)corruptVideoFileAtURLWhenEnabled:(id)a3
++ (BOOL)corruptVideoFileAtURLWhenEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if (corruptVideoFileAtURLWhenEnabled__onceToken != -1)
   {
     +[CAMVideoCorruptor corruptVideoFileAtURLWhenEnabled:];
   }
 
-  if (corruptVideoFileAtURLWhenEnabled__enabled == 1 && (corruptVideoFileAtURLWhenEnabled__atRandom != 1 || (rand() & 1) != 0) && (v5 = fopen([v4 fileSystemRepresentation], "r+b")) != 0)
+  if (corruptVideoFileAtURLWhenEnabled__enabled == 1 && (corruptVideoFileAtURLWhenEnabled__atRandom != 1 || (rand() & 1) != 0) && (v5 = fopen([enabledCopy fileSystemRepresentation], "r+b")) != 0)
   {
     v6 = v5;
     if (fseeko(v5, 0, 2) || (v7 = ftello(v6), v7 < 1) || (v8 = v7, fseeko(v6, 0, 0)))
@@ -30,17 +30,17 @@
       v9 = corruptVideoFileAtURLWhenEnabled__corruptionMethod++;
       if (v9 % 3 == 2)
       {
-        v10 = [a1 _corruptMethodMoovForFile:v6 ofSize:v8];
+        v10 = [self _corruptMethodMoovForFile:v6 ofSize:v8];
       }
 
       else if (v9 % 3 == 1)
       {
-        v10 = [a1 _corruptMethodMdatForFile:v6 ofSize:v8];
+        v10 = [self _corruptMethodMdatForFile:v6 ofSize:v8];
       }
 
       else
       {
-        v10 = [a1 _corruptMethodFytpForFile:v6 ofSize:v8];
+        v10 = [self _corruptMethodFytpForFile:v6 ofSize:v8];
       }
 
       v11 = v10 == 0;
@@ -80,16 +80,16 @@ CFIndex __54__CAMVideoCorruptor_corruptVideoFileAtURLWhenEnabled___block_invoke(
   return result;
 }
 
-+ (int)_getBoxInfoFromFile:(__sFILE *)a3 ofSize:(int64_t)a4 boxType:(unsigned int *)a5 boxSize:(int64_t *)a6
++ (int)_getBoxInfoFromFile:(__sFILE *)file ofSize:(int64_t)size boxType:(unsigned int *)type boxSize:(int64_t *)boxSize
 {
-  v10 = ftello(a3);
-  if (ftello(a3) + 4 > a4)
+  v10 = ftello(file);
+  if (ftello(file) + 4 > size)
   {
     return -1;
   }
 
   __ptr = 0;
-  if (fread(&__ptr, 4uLL, 1uLL, a3) != 1)
+  if (fread(&__ptr, 4uLL, 1uLL, file) != 1)
   {
     return -1;
   }
@@ -98,22 +98,22 @@ CFIndex __54__CAMVideoCorruptor_corruptVideoFileAtURLWhenEnabled___block_invoke(
   v15 = v11;
   if (!__ptr)
   {
-    v11 = a4 - ftello(a3) - 4;
+    v11 = size - ftello(file) - 4;
     v15 = v11;
   }
 
-  if (v11 > a4 - v10)
+  if (v11 > size - v10)
   {
     return -1;
   }
 
-  if (ftello(a3) + 4 > a4)
+  if (ftello(file) + 4 > size)
   {
     return -1;
   }
 
   v14 = 0;
-  if (fread(&v14, 4uLL, 1uLL, a3) != 1)
+  if (fread(&v14, 4uLL, 1uLL, file) != 1)
   {
     return -1;
   }
@@ -121,7 +121,7 @@ CFIndex __54__CAMVideoCorruptor_corruptVideoFileAtURLWhenEnabled___block_invoke(
   v12 = v14;
   if (v11 == 1)
   {
-    if (ftello(a3) + 8 > a4 || fread(&v15, 8uLL, 1uLL, a3) != 1)
+    if (ftello(file) + 8 > size || fread(&v15, 8uLL, 1uLL, file) != 1)
     {
       return -1;
     }
@@ -129,48 +129,48 @@ CFIndex __54__CAMVideoCorruptor_corruptVideoFileAtURLWhenEnabled___block_invoke(
     v11 = bswap64(v15);
   }
 
-  result = fseeko(a3, v10, 0);
+  result = fseeko(file, v10, 0);
   if (result)
   {
     return -1;
   }
 
-  *a5 = bswap32(v12);
-  *a6 = v11;
+  *type = bswap32(v12);
+  *boxSize = v11;
   return result;
 }
 
-+ (int)_findBox:(unsigned int)a3 inFile:(__sFILE *)a4 ofSize:(int64_t)a5 boxSize:(int64_t *)a6
++ (int)_findBox:(unsigned int)box inFile:(__sFILE *)file ofSize:(int64_t)size boxSize:(int64_t *)boxSize
 {
   OUTLINED_FUNCTION_2_1();
-  for (i = v12; ; i = a4)
+  for (i = v12; ; i = file)
   {
-    result = [v11 _getBoxInfoFromFile:i ofSize:a5 boxType:? boxSize:?];
+    result = [selfCopy _getBoxInfoFromFile:i ofSize:size boxType:? boxSize:?];
     if (result)
     {
       break;
     }
 
-    if (v16 == a3)
+    if (v16 == box)
     {
       result = 0;
-      *a6 = __offseta;
+      *boxSize = __offseta;
       return result;
     }
 
-    if (fseeko(a4, __offseta, 1))
+    if (fseeko(file, __offseta, 1))
     {
       return -1;
     }
 
     OUTLINED_FUNCTION_2_1();
-    v11 = a1;
+    selfCopy = self;
   }
 
   return result;
 }
 
-+ (int)_corruptMethodFytpForFile:(__sFILE *)a3 ofSize:(int64_t)a4
++ (int)_corruptMethodFytpForFile:(__sFILE *)file ofSize:(int64_t)size
 {
   OUTLINED_FUNCTION_1_5();
   *v17 = 1701147238;
@@ -210,7 +210,7 @@ CFIndex __54__CAMVideoCorruptor_corruptVideoFileAtURLWhenEnabled___block_invoke(
   return result;
 }
 
-+ (int)_corruptMethodMdatForFile:(__sFILE *)a3 ofSize:(int64_t)a4
++ (int)_corruptMethodMdatForFile:(__sFILE *)file ofSize:(int64_t)size
 {
   OUTLINED_FUNCTION_1_5();
   result = [v5 _findBox:1835295092 inFile:v4 ofSize:? boxSize:?];
@@ -240,7 +240,7 @@ CFIndex __54__CAMVideoCorruptor_corruptVideoFileAtURLWhenEnabled___block_invoke(
   return result;
 }
 
-+ (int)_corruptMethodMoovForFile:(__sFILE *)a3 ofSize:(int64_t)a4
++ (int)_corruptMethodMoovForFile:(__sFILE *)file ofSize:(int64_t)size
 {
   OUTLINED_FUNCTION_1_5();
   result = [v5 _findBox:1836019574 inFile:v4 ofSize:? boxSize:?];

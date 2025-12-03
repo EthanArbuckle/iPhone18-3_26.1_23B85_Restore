@@ -46,13 +46,13 @@
   {
     v5 = v4;
     v6 = +[MagicSwitchEnabler sharedInstance];
-    v7 = [v6 workQueue];
+    workQueue = [v6 workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000094A4;
     block[3] = &unk_100018538;
     v13 = v5;
-    dispatch_async(v7, block);
+    dispatch_async(workQueue, block);
   }
 
   else
@@ -61,11 +61,11 @@
   }
 
   v8 = +[MagicSwitchEnabler sharedInstance];
-  v9 = [v8 workQueue];
-  v10 = v9;
-  if (v9)
+  workQueue2 = [v8 workQueue];
+  v10 = workQueue2;
+  if (workQueue2)
   {
-    v11 = v9;
+    v11 = workQueue2;
   }
 
   else

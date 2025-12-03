@@ -1,35 +1,35 @@
 @interface MRDPrepareGroupForPlaybackRequest
-+ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)a3 nowPlayingClient:(id)a4 timeout:(double)a5 details:(id)a6 completion:(id)a7;
-- (void)_anyOutputDeviceSupportsMusicRemoteSetQueue:(id)a3 details:(id)a4 completion:(id)a5;
-- (void)_supportsRemoteSetQueueForOutputDeviceUIDs:(id)a3 client:(id)a4 details:(id)a5 completion:(id)a6;
-- (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)a3 nowPlayingClient:(id)a4 timeout:(double)a5 details:(id)a6 completion:(id)a7;
++ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)ds nowPlayingClient:(id)client timeout:(double)timeout details:(id)details completion:(id)completion;
+- (void)_anyOutputDeviceSupportsMusicRemoteSetQueue:(id)queue details:(id)details completion:(id)completion;
+- (void)_supportsRemoteSetQueueForOutputDeviceUIDs:(id)ds client:(id)client details:(id)details completion:(id)completion;
+- (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)ds nowPlayingClient:(id)client timeout:(double)timeout details:(id)details completion:(id)completion;
 @end
 
 @implementation MRDPrepareGroupForPlaybackRequest
 
-+ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)a3 nowPlayingClient:(id)a4 timeout:(double)a5 details:(id)a6 completion:(id)a7
++ (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)ds nowPlayingClient:(id)client timeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dsCopy = ds;
+  clientCopy = client;
+  detailsCopy = details;
+  completionCopy = completion;
   v15 = +[NSDate now];
-  v16 = [NSString stringWithFormat:@"UIDs=(%@), bundleID=%@", v11, v12];
+  clientCopy = [NSString stringWithFormat:@"UIDs=(%@), bundleID=%@", dsCopy, clientCopy];
   v17 = [NSMutableString alloc];
-  v18 = [v13 requestID];
-  v19 = [v17 initWithFormat:@"%@<%@>", @"MRDPrepareGroupForPlaybackRequest.prepareGroupForPlaybackWithOutputDeviceUIDs", v18];
+  requestID = [detailsCopy requestID];
+  v19 = [v17 initWithFormat:@"%@<%@>", @"MRDPrepareGroupForPlaybackRequest.prepareGroupForPlaybackWithOutputDeviceUIDs", requestID];
 
-  if (v16)
+  if (clientCopy)
   {
-    [v19 appendFormat:@" for %@", v16];
+    [v19 appendFormat:@" for %@", clientCopy];
   }
 
-  v20 = [v13 reason];
+  reason = [detailsCopy reason];
 
-  if (v20)
+  if (reason)
   {
-    v21 = [v13 reason];
-    [v19 appendFormat:@" because %@", v21];
+    reason2 = [detailsCopy reason];
+    [v19 appendFormat:@" because %@", reason2];
   }
 
   v22 = _MRLogForCategory();
@@ -46,30 +46,30 @@
   v27[2] = sub_10013A19C;
   v27[3] = &unk_1004B8108;
   v28 = @"MRDPrepareGroupForPlaybackRequest.prepareGroupForPlaybackWithOutputDeviceUIDs";
-  v29 = v13;
+  v29 = detailsCopy;
   v30 = v15;
-  v31 = v14;
-  v24 = v14;
+  v31 = completionCopy;
+  v24 = completionCopy;
   v25 = v15;
-  v26 = v13;
-  [(MRDPrepareGroupForPlaybackRequest *)v23 prepareGroupForPlaybackWithOutputDeviceUIDs:v11 nowPlayingClient:v12 timeout:v26 details:v27 completion:a5];
+  v26 = detailsCopy;
+  [(MRDPrepareGroupForPlaybackRequest *)v23 prepareGroupForPlaybackWithOutputDeviceUIDs:dsCopy nowPlayingClient:clientCopy timeout:v26 details:v27 completion:timeout];
 }
 
-- (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)a3 nowPlayingClient:(id)a4 timeout:(double)a5 details:(id)a6 completion:(id)a7
+- (void)prepareGroupForPlaybackWithOutputDeviceUIDs:(id)ds nowPlayingClient:(id)client timeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dsCopy = ds;
+  clientCopy = client;
+  detailsCopy = details;
+  completionCopy = completion;
   v16 = [MRBlockGuard alloc];
-  v17 = [v14 requestReasonID];
+  requestReasonID = [detailsCopy requestReasonID];
   v50[0] = _NSConcreteStackBlock;
   v50[1] = 3221225472;
   v50[2] = sub_10013A748;
   v50[3] = &unk_1004B6FE8;
-  v18 = v15;
+  v18 = completionCopy;
   v51 = v18;
-  v19 = [v16 initWithTimeout:v17 reason:v50 handler:a5];
+  v19 = [v16 initWithTimeout:requestReasonID reason:v50 handler:timeout];
 
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
@@ -90,9 +90,9 @@
   v41[1] = 3221225472;
   v41[2] = sub_10013A7D8;
   v41[3] = &unk_1004BE5C0;
-  v23 = v14;
+  v23 = detailsCopy;
   v42 = v23;
-  v24 = v12;
+  v24 = dsCopy;
   v43 = v24;
   v44 = v45;
   v25 = objc_retainBlock(v41);
@@ -102,7 +102,7 @@
   v36[3] = &unk_1004BE638;
   v26 = v24;
   v37 = v26;
-  v40 = a5;
+  timeoutCopy = timeout;
   v27 = v23;
   v38 = v27;
   v39 = v45;
@@ -117,21 +117,21 @@
   v30 = v22;
   v34 = v30;
   v35 = v45;
-  [(MRDPrepareGroupForPlaybackRequest *)self _supportsRemoteSetQueueForOutputDeviceUIDs:v26 client:v13 details:v27 completion:v31];
+  [(MRDPrepareGroupForPlaybackRequest *)self _supportsRemoteSetQueueForOutputDeviceUIDs:v26 client:clientCopy details:v27 completion:v31];
 
   _Block_object_dispose(v45, 8);
 }
 
-- (void)_supportsRemoteSetQueueForOutputDeviceUIDs:(id)a3 client:(id)a4 details:(id)a5 completion:(id)a6
+- (void)_supportsRemoteSetQueueForOutputDeviceUIDs:(id)ds client:(id)client details:(id)details completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [v13 bundleIdentifier];
+  dsCopy = ds;
+  detailsCopy = details;
+  completionCopy = completion;
+  clientCopy = client;
+  bundleIdentifier = [clientCopy bundleIdentifier];
   IsSystemMediaApplication = MRMediaRemoteApplicationIsSystemMediaApplication();
 
-  v16 = [v13 bundleIdentifier];
+  bundleIdentifier2 = [clientCopy bundleIdentifier];
 
   IsSystemPodcastApplication = MRMediaRemoteApplicationIsSystemPodcastApplication();
   if ((IsSystemMediaApplication & 1) != 0 || IsSystemPodcastApplication)
@@ -139,11 +139,11 @@
     v18 = _MRLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v11 requestID];
+      requestID = [detailsCopy requestID];
       *buf = 138543874;
       v24 = @"MRDPrepareGroupForPlaybackRequest.prepareGroupForPlaybackWithOutputDeviceUIDs";
       v25 = 2114;
-      v26 = v19;
+      v26 = requestID;
       v27 = 2112;
       v28 = @"App supports RemoteSetQueue";
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -155,28 +155,28 @@
       v20[1] = 3221225472;
       v20[2] = sub_10013B070;
       v20[3] = &unk_1004BE6B0;
-      v21 = v11;
-      v22 = v12;
-      [(MRDPrepareGroupForPlaybackRequest *)self _anyOutputDeviceSupportsMusicRemoteSetQueue:v10 details:v21 completion:v20];
+      v21 = detailsCopy;
+      v22 = completionCopy;
+      [(MRDPrepareGroupForPlaybackRequest *)self _anyOutputDeviceSupportsMusicRemoteSetQueue:dsCopy details:v21 completion:v20];
     }
 
     else
     {
-      (*(v12 + 2))(v12, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    (*(v12 + 2))(v12, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_anyOutputDeviceSupportsMusicRemoteSetQueue:(id)a3 details:(id)a4 completion:(id)a5
+- (void)_anyOutputDeviceSupportsMusicRemoteSetQueue:(id)queue details:(id)details completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  detailsCopy = details;
+  queueCopy = queue;
   v10 = objc_alloc_init(MRAVLightweightReconnaissanceSession);
   [v10 setCachedDiscoveryEnabled:1];
   v11 = qos_class_self();
@@ -185,9 +185,9 @@
   v14[1] = 3221225472;
   v14[2] = sub_10013B2D8;
   v14[3] = &unk_1004BE6F8;
-  v15 = v7;
-  v13 = v7;
-  [v10 searchOutputDeviceUIDs:v9 matchingPredicate:&stru_1004BE6D0 timeout:v8 details:v12 queue:v14 completion:3.0];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [v10 searchOutputDeviceUIDs:queueCopy matchingPredicate:&stru_1004BE6D0 timeout:detailsCopy details:v12 queue:v14 completion:3.0];
 }
 
 @end

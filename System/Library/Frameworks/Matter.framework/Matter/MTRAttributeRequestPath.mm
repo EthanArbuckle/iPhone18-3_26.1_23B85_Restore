@@ -1,31 +1,31 @@
 @interface MTRAttributeRequestPath
 + (MTRAttributeRequestPath)requestPathWithEndpointID:(NSNumber *)endpointID clusterID:(NSNumber *)clusterID attributeID:(NSNumber *)attributeID;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAttributeRequestPath:(id)a3;
-- (MTRAttributeRequestPath)initWithCoder:(id)a3;
-- (MTRAttributeRequestPath)initWithEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAttributeRequestPath:(id)path;
+- (MTRAttributeRequestPath)initWithCoder:(id)coder;
+- (MTRAttributeRequestPath)initWithEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID;
 - (id)description;
 - (unint64_t)hash;
-- (void)convertToAttributePathParams:(AttributePathParams *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)convertToAttributePathParams:(AttributePathParams *)params;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTRAttributeRequestPath
 
-- (MTRAttributeRequestPath)initWithEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5
+- (MTRAttributeRequestPath)initWithEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 copy];
+  dCopy = d;
+  iDCopy = iD;
+  attributeIDCopy = attributeID;
+  v11 = [dCopy copy];
   endpoint = self->_endpoint;
   self->_endpoint = v11;
 
-  v13 = [v9 copy];
+  v13 = [iDCopy copy];
   cluster = self->_cluster;
   self->_cluster = v13;
 
-  v15 = [v10 copy];
+  v15 = [attributeIDCopy copy];
   attribute = self->_attribute;
   self->_attribute = v15;
 
@@ -52,20 +52,20 @@
   return v10;
 }
 
-- (BOOL)isEqualToAttributeRequestPath:(id)a3
+- (BOOL)isEqualToAttributeRequestPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   endpoint = self->_endpoint;
-  v6 = [v4 endpoint];
-  if (sub_238DB32F8(endpoint, v6))
+  endpoint = [pathCopy endpoint];
+  if (sub_238DB32F8(endpoint, endpoint))
   {
     cluster = self->_cluster;
-    v8 = [v4 cluster];
-    if (sub_238DB32F8(cluster, v8))
+    cluster = [pathCopy cluster];
+    if (sub_238DB32F8(cluster, cluster))
     {
       attribute = self->_attribute;
-      v10 = [v4 attribute];
-      v11 = sub_238DB32F8(attribute, v10);
+      attribute = [pathCopy attribute];
+      v11 = sub_238DB32F8(attribute, attribute);
     }
 
     else
@@ -82,74 +82,74 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && [(MTRAttributeRequestPath *)self isEqualToAttributeRequestPath:v4];
+  v6 = v5 == objc_opt_class() && [(MTRAttributeRequestPath *)self isEqualToAttributeRequestPath:equalCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NSNumber *)self->_endpoint unsignedShortValue];
-  v4 = [(NSNumber *)self->_cluster unsignedLongValue];
-  return v4 ^ [(NSNumber *)self->_attribute unsignedLongValue]^ v3;
+  unsignedShortValue = [(NSNumber *)self->_endpoint unsignedShortValue];
+  unsignedLongValue = [(NSNumber *)self->_cluster unsignedLongValue];
+  return unsignedLongValue ^ [(NSNumber *)self->_attribute unsignedLongValue]^ unsignedShortValue;
 }
 
-- (void)convertToAttributePathParams:(AttributePathParams *)a3
+- (void)convertToAttributePathParams:(AttributePathParams *)params
 {
   endpoint = self->_endpoint;
   if (endpoint)
   {
-    v6 = [(NSNumber *)endpoint unsignedShortValue];
+    unsignedShortValue = [(NSNumber *)endpoint unsignedShortValue];
   }
 
   else
   {
-    v6 = -1;
+    unsignedShortValue = -1;
   }
 
-  a3->var2 = v6;
+  params->var2 = unsignedShortValue;
   cluster = self->_cluster;
   if (cluster)
   {
-    v8 = [(NSNumber *)cluster unsignedLongValue];
+    unsignedLongValue = [(NSNumber *)cluster unsignedLongValue];
   }
 
   else
   {
-    v8 = -1;
+    unsignedLongValue = -1;
   }
 
-  a3->var0 = v8;
+  params->var0 = unsignedLongValue;
   attribute = self->_attribute;
   if (attribute)
   {
-    v10 = [(NSNumber *)attribute unsignedLongValue];
+    unsignedLongValue2 = [(NSNumber *)attribute unsignedLongValue];
   }
 
   else
   {
-    a3->var3 = -1;
-    v10 = -1;
+    params->var3 = -1;
+    unsignedLongValue2 = -1;
   }
 
-  a3->var1 = v10;
+  params->var1 = unsignedLongValue2;
 }
 
-- (MTRAttributeRequestPath)initWithCoder:(id)a3
+- (MTRAttributeRequestPath)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MTRAttributeRequestPath;
   v5 = [(MTRAttributeRequestPath *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpointIDKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpointIDKey"];
     endpoint = v5->_endpoint;
     v5->_endpoint = v7;
 
@@ -174,7 +174,7 @@
 
     else
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterIDKey"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterIDKey"];
       cluster = v5->_cluster;
       v5->_cluster = v9;
 
@@ -199,7 +199,7 @@
 
       else
       {
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributeIDKey"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributeIDKey"];
         p_attribute = &v5->_attribute;
         v12 = v5->_attribute;
         v5->_attribute = v11;
@@ -239,25 +239,25 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   endpoint = self->_endpoint;
   if (endpoint)
   {
-    [v7 encodeObject:endpoint forKey:@"endpointIDKey"];
+    [coderCopy encodeObject:endpoint forKey:@"endpointIDKey"];
   }
 
   cluster = self->_cluster;
   if (cluster)
   {
-    [v7 encodeObject:cluster forKey:@"clusterIDKey"];
+    [coderCopy encodeObject:cluster forKey:@"clusterIDKey"];
   }
 
   attribute = self->_attribute;
   if (attribute)
   {
-    [v7 encodeObject:attribute forKey:@"attributeIDKey"];
+    [coderCopy encodeObject:attribute forKey:@"attributeIDKey"];
   }
 }
 

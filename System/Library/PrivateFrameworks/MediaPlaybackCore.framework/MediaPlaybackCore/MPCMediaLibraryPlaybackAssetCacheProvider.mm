@@ -1,59 +1,59 @@
 @interface MPCMediaLibraryPlaybackAssetCacheProvider
-+ (id)_downloadedAssetDestinationDirectoryForMediaLibrary:(id)a3;
-+ (id)_highQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)a3;
-+ (id)_lowQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)a3;
-+ (id)deviceLibraryProviderWithUserIdentity:(id)a3;
-+ (uint64_t)_increaseDailyAssetDownloadKB:(uint64_t)a1;
-+ (void)_sendDailyTotalDownloadSizeEventWithDays:(uint64_t)a3 sizeInKB:;
++ (id)_downloadedAssetDestinationDirectoryForMediaLibrary:(id)library;
++ (id)_highQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)library;
++ (id)_lowQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)library;
++ (id)deviceLibraryProviderWithUserIdentity:(id)identity;
++ (uint64_t)_increaseDailyAssetDownloadKB:(uint64_t)b;
++ (void)_sendDailyTotalDownloadSizeEventWithDays:(uint64_t)days sizeInKB:;
 - (BOOL)isUnderDailyCacheAssetDownloadLimit;
-- (id)_initWithMediaLibrary:(id)a3;
-- (int64_t)_persistentIDForModelObject:(id)a3;
-- (void)clearPlaybackAssetCacheFileAssetForGenericObject:(id)a3 withCompletionHandler:(id)a4;
-- (void)didCacheNewAssetToDestinationURL:(id)a3;
-- (void)getPlaybackAssetDestinationURL:(id *)a3 sharedCacheURL:(id *)a4 purgeable:(BOOL)a5 purchaseBundleDestinationURL:(id *)a6 assetQualityType:(int64_t)a7 fileName:(id)a8 pathExtension:(id)a9;
-- (void)setPlaybackAssetCacheFileAsset:(id)a3 forGenericObject:(id)a4 withCompletionHandler:(id)a5;
+- (id)_initWithMediaLibrary:(id)library;
+- (int64_t)_persistentIDForModelObject:(id)object;
+- (void)clearPlaybackAssetCacheFileAssetForGenericObject:(id)object withCompletionHandler:(id)handler;
+- (void)didCacheNewAssetToDestinationURL:(id)l;
+- (void)getPlaybackAssetDestinationURL:(id *)l sharedCacheURL:(id *)rL purgeable:(BOOL)purgeable purchaseBundleDestinationURL:(id *)uRL assetQualityType:(int64_t)type fileName:(id)name pathExtension:(id)extension;
+- (void)setPlaybackAssetCacheFileAsset:(id)asset forGenericObject:(id)object withCompletionHandler:(id)handler;
 @end
 
 @implementation MPCMediaLibraryPlaybackAssetCacheProvider
 
-- (int64_t)_persistentIDForModelObject:(id)a3
+- (int64_t)_persistentIDForModelObject:(id)object
 {
-  v3 = [a3 flattenedGenericObject];
-  v4 = [v3 type];
-  switch(v4)
+  flattenedGenericObject = [object flattenedGenericObject];
+  type = [flattenedGenericObject type];
+  switch(type)
   {
     case 9:
-      v5 = [v3 movie];
+      movie = [flattenedGenericObject movie];
       break;
     case 6:
-      v5 = [v3 tvEpisode];
+      movie = [flattenedGenericObject tvEpisode];
       break;
     case 1:
-      v5 = [v3 song];
+      movie = [flattenedGenericObject song];
       break;
     default:
-      v9 = 0;
+      persistentID = 0;
       goto LABEL_9;
   }
 
-  v6 = v5;
-  v7 = [v5 identifiers];
-  v8 = [v7 library];
-  v9 = [v8 persistentID];
+  v6 = movie;
+  identifiers = [movie identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
 LABEL_9:
-  return v9;
+  return persistentID;
 }
 
-- (void)didCacheNewAssetToDestinationURL:(id)a3
+- (void)didCacheNewAssetToDestinationURL:(id)l
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  [v3 path];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [lCopy path];
   v22 = v29 = 0;
-  v23 = v4;
-  v5 = [v4 attributesOfItemAtPath:? error:?];
+  v23 = defaultManager;
+  v5 = [defaultManager attributesOfItemAtPath:? error:?];
   v6 = v29;
   if (v5)
   {
@@ -76,8 +76,8 @@ LABEL_15:
       v10 = v9;
       v19 = v7;
       v20 = v5;
-      v21 = v3;
-      v11 = 0;
+      v21 = lCopy;
+      longLongValue = 0;
       v12 = *v26;
       v13 = *MEMORY[0x1E696A3B8];
       do
@@ -97,7 +97,7 @@ LABEL_15:
           v6 = v24;
 
           v18 = [v17 objectForKey:v13];
-          v11 += [v18 longLongValue];
+          longLongValue += [v18 longLongValue];
 
           ++v14;
           v15 = v6;
@@ -109,17 +109,17 @@ LABEL_15:
 
       while (v10);
       v5 = v20;
-      v3 = v21;
+      lCopy = v21;
       v7 = v19;
     }
 
     else
     {
       v8 = [v5 objectForKey:*MEMORY[0x1E696A3B8]];
-      v11 = [v8 longLongValue];
+      longLongValue = [v8 longLongValue];
     }
 
-    if (v11)
+    if (longLongValue)
     {
       [MPCMediaLibraryPlaybackAssetCacheProvider _increaseDailyAssetDownloadKB:?];
     }
@@ -130,7 +130,7 @@ LABEL_15:
 LABEL_16:
 }
 
-+ (uint64_t)_increaseDailyAssetDownloadKB:(uint64_t)a1
++ (uint64_t)_increaseDailyAssetDownloadKB:(uint64_t)b
 {
   v25[2] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_self();
@@ -168,7 +168,7 @@ LABEL_16:
     v9 = a2 + atomic_fetch_add_explicit(__MPCDailyAssetDownloadSizeInKB, a2, memory_order_relaxed);
   }
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v24[0] = @"day";
   v11 = [MEMORY[0x1E696AD98] numberWithLongLong:v6];
   v25[0] = v11;
@@ -176,7 +176,7 @@ LABEL_16:
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
   v25[1] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-  [v10 setObject:v13 forKey:@"_MPCDailyAssetDownloadCurrentSize"];
+  [standardUserDefaults setObject:v13 forKey:@"_MPCDailyAssetDownloadCurrentSize"];
 
   v14 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -227,7 +227,7 @@ void __75__MPCMediaLibraryPlaybackAssetCacheProvider__increaseDailyAssetDownload
 LABEL_7:
 }
 
-+ (void)_sendDailyTotalDownloadSizeEventWithDays:(uint64_t)a3 sizeInKB:
++ (void)_sendDailyTotalDownloadSizeEventWithDays:(uint64_t)days sizeInKB:
 {
   objc_opt_self();
   v6[0] = MEMORY[0x1E69E9820];
@@ -235,7 +235,7 @@ LABEL_7:
   v6[2] = __95__MPCMediaLibraryPlaybackAssetCacheProvider__sendDailyTotalDownloadSizeEventWithDays_sizeInKB___block_invoke;
   v6[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
   v6[4] = a2;
-  v6[5] = a3;
+  v6[5] = days;
   v5 = _Block_copy(v6);
   AnalyticsSendEventLazy();
 }
@@ -264,8 +264,8 @@ id __95__MPCMediaLibraryPlaybackAssetCacheProvider__sendDailyTotalDownloadSizeEv
 - (BOOL)isUnderDailyCacheAssetDownloadLimit
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 valueForKey:@"_MPCDailyAssetDownloadLimitKB"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"_MPCDailyAssetDownloadLimitKB"];
 
   if ([v3 integerValue] < 1)
   {
@@ -275,13 +275,13 @@ id __95__MPCMediaLibraryPlaybackAssetCacheProvider__sendDailyTotalDownloadSizeEv
   else
   {
     v4 = [MPCMediaLibraryPlaybackAssetCacheProvider _increaseDailyAssetDownloadKB:?];
-    v5 = [v3 integerValue];
-    v6 = v4 < v5;
+    integerValue = [v3 integerValue];
+    v6 = v4 < integerValue;
     v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = v4 < v5;
-      v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v8 = v4 < integerValue;
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
       v11 = 134218754;
       v12 = v4;
       v13 = 2114;
@@ -289,7 +289,7 @@ id __95__MPCMediaLibraryPlaybackAssetCacheProvider__sendDailyTotalDownloadSizeEv
       v15 = 1024;
       v16 = v8;
       v17 = 2112;
-      v18 = v9;
+      v18 = standardUserDefaults2;
       _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "MPCMediaLibraryPlaybackAssetCacheProvider: Current daily asset download size: %ld KB, daily limit: %{public}@ KB, is under daily limit: %{BOOL}u %@", &v11, 0x26u);
     }
   }
@@ -297,49 +297,49 @@ id __95__MPCMediaLibraryPlaybackAssetCacheProvider__sendDailyTotalDownloadSizeEv
   return v6;
 }
 
-- (void)setPlaybackAssetCacheFileAsset:(id)a3 forGenericObject:(id)a4 withCompletionHandler:(id)a5
+- (void)setPlaybackAssetCacheFileAsset:(id)asset forGenericObject:(id)object withCompletionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 filePath];
-  if ([v11 length])
+  assetCopy = asset;
+  objectCopy = object;
+  handlerCopy = handler;
+  filePath = [assetCopy filePath];
+  if ([filePath length])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v34 = 0x2020000000;
-    v35 = [(MPCMediaLibraryPlaybackAssetCacheProvider *)self _persistentIDForModelObject:v9];
-    v12 = [v9 flattenedGenericObject];
-    v13 = [v12 type];
-    switch(v13)
+    v35 = [(MPCMediaLibraryPlaybackAssetCacheProvider *)self _persistentIDForModelObject:objectCopy];
+    flattenedGenericObject = [objectCopy flattenedGenericObject];
+    type = [flattenedGenericObject type];
+    switch(type)
     {
       case 1:
-        v14 = [v12 song];
+        song = [flattenedGenericObject song];
         break;
       case 6:
-        v14 = [v12 tvEpisode];
+        song = [flattenedGenericObject tvEpisode];
         break;
       case 9:
-        v14 = [v12 movie];
+        song = [flattenedGenericObject movie];
         break;
       default:
         v17 = 0;
         goto LABEL_13;
     }
 
-    v17 = v14;
+    v17 = song;
 LABEL_13:
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __115__MPCMediaLibraryPlaybackAssetCacheProvider_setPlaybackAssetCacheFileAsset_forGenericObject_withCompletionHandler___block_invoke;
     aBlock[3] = &unk_1E82366A8;
-    v28 = v8;
-    v29 = self;
+    v28 = assetCopy;
+    selfCopy = self;
     p_buf = &buf;
-    v18 = v10;
+    v18 = handlerCopy;
     v31 = v18;
-    v30 = v11;
+    v30 = filePath;
     v19 = _Block_copy(aBlock);
     if (*(*(&buf + 1) + 24))
     {
@@ -379,7 +379,7 @@ LABEL_13:
   }
 
   v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCMediaLibraryPlaybackAssetCacheProviderErrorDomain" code:-1005 userInfo:0];
-  (*(v10 + 2))(v10, v16);
+  (*(handlerCopy + 2))(handlerCopy, v16);
 
 LABEL_17:
 }
@@ -860,16 +860,16 @@ void __115__MPCMediaLibraryPlaybackAssetCacheProvider_setPlaybackAssetCacheFileA
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getPlaybackAssetDestinationURL:(id *)a3 sharedCacheURL:(id *)a4 purgeable:(BOOL)a5 purchaseBundleDestinationURL:(id *)a6 assetQualityType:(int64_t)a7 fileName:(id)a8 pathExtension:(id)a9
+- (void)getPlaybackAssetDestinationURL:(id *)l sharedCacheURL:(id *)rL purgeable:(BOOL)purgeable purchaseBundleDestinationURL:(id *)uRL assetQualityType:(int64_t)type fileName:(id)name pathExtension:(id)extension
 {
-  v11 = a5;
-  v30 = a8;
-  v15 = a9;
-  if (v11)
+  purgeableCopy = purgeable;
+  nameCopy = name;
+  extensionCopy = extension;
+  if (purgeableCopy)
   {
     v16 = objc_opt_class();
     mediaLibrary = self->_mediaLibrary;
-    if (a7 == 2)
+    if (type == 2)
     {
       [v16 _highQualityCachedAssetDestinationDirectoryForMediaLibrary:mediaLibrary];
     }
@@ -887,37 +887,37 @@ void __115__MPCMediaLibraryPlaybackAssetCacheProvider_setPlaybackAssetCacheFileA
   }
 
   v19 = v18;
-  v20 = [v18 stringByAppendingPathComponent:v30];
+  v20 = [v18 stringByAppendingPathComponent:nameCopy];
   v21 = v20;
-  if (a3)
+  if (l)
   {
     v22 = MEMORY[0x1E695DFF8];
-    v23 = [v20 stringByAppendingPathExtension:v15];
-    *a3 = [v22 fileURLWithPath:v23 isDirectory:0];
+    v23 = [v20 stringByAppendingPathExtension:extensionCopy];
+    *l = [v22 fileURLWithPath:v23 isDirectory:0];
   }
 
-  if (a6)
+  if (uRL)
   {
     v24 = MEMORY[0x1E695DFF8];
     v25 = [v21 stringByAppendingPathExtension:@"plist"];
-    *a6 = [v24 fileURLWithPath:v25 isDirectory:0];
+    *uRL = [v24 fileURLWithPath:v25 isDirectory:0];
   }
 
-  if (a4)
+  if (rL)
   {
-    v26 = [MEMORY[0x1E69B34E0] cloudAssetsSharedCacheFolderPath];
+    cloudAssetsSharedCacheFolderPath = [MEMORY[0x1E69B34E0] cloudAssetsSharedCacheFolderPath];
     v27 = MEMORY[0x1E695DFF8];
-    v28 = [v26 stringByAppendingPathComponent:v30];
-    v29 = [v28 stringByAppendingPathExtension:v15];
-    *a4 = [v27 fileURLWithPath:v29 isDirectory:0];
+    v28 = [cloudAssetsSharedCacheFolderPath stringByAppendingPathComponent:nameCopy];
+    v29 = [v28 stringByAppendingPathExtension:extensionCopy];
+    *rL = [v27 fileURLWithPath:v29 isDirectory:0];
   }
 }
 
-- (void)clearPlaybackAssetCacheFileAssetForGenericObject:(id)a3 withCompletionHandler:(id)a4
+- (void)clearPlaybackAssetCacheFileAssetForGenericObject:(id)object withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(MPCMediaLibraryPlaybackAssetCacheProvider *)self _persistentIDForModelObject:a3];
+  handlerCopy = handler;
+  v7 = [(MPCMediaLibraryPlaybackAssetCacheProvider *)self _persistentIDForModelObject:object];
   if (v7)
   {
     v8 = v7;
@@ -931,27 +931,27 @@ void __115__MPCMediaLibraryPlaybackAssetCacheProvider_setPlaybackAssetCacheFileA
     if ([v14 length])
     {
       v15 = [v13 objectForKey:v10];
-      v16 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
 
-      if ((v16 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v17 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v22 = self;
+          selfCopy = self;
           v23 = 2048;
           v24 = v8;
           _os_log_impl(&dword_1C5C61000, v17, OS_LOG_TYPE_DEFAULT, "[AL] - %{public}@: Item asset file path is not clear because the item has a downloaded asset persistentID=%lld", buf, 0x16u);
         }
 
-        if (!v6)
+        if (!handlerCopy)
         {
           goto LABEL_13;
         }
 
         v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCMediaLibraryPlaybackAssetCacheProviderErrorDomain" code:-1007 userInfo:0];
-        v6[2](v6, v18);
+        handlerCopy[2](handlerCopy, v18);
 LABEL_12:
 
 LABEL_13:
@@ -967,15 +967,15 @@ LABEL_13:
     v19[1] = 3221225472;
     v19[2] = __116__MPCMediaLibraryPlaybackAssetCacheProvider_clearPlaybackAssetCacheFileAssetForGenericObject_withCompletionHandler___block_invoke;
     v19[3] = &unk_1E8233290;
-    v20 = v6;
+    v20 = handlerCopy;
     [v9 populateLocationPropertiesWithPath:0 assetProtectionType:0 completionBlock:v19];
     v18 = v20;
     goto LABEL_12;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_14:
@@ -992,44 +992,44 @@ uint64_t __116__MPCMediaLibraryPlaybackAssetCacheProvider_clearPlaybackAssetCach
   return result;
 }
 
-- (id)_initWithMediaLibrary:(id)a3
+- (id)_initWithMediaLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = MPCMediaLibraryPlaybackAssetCacheProvider;
   v6 = [(MPCMediaLibraryPlaybackAssetCacheProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaLibrary, a3);
+    objc_storeStrong(&v6->_mediaLibrary, library);
   }
 
   return v7;
 }
 
-+ (id)_downloadedAssetDestinationDirectoryForMediaLibrary:(id)a3
++ (id)_downloadedAssetDestinationDirectoryForMediaLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 ml3Library];
-  v4 = v3;
-  if (v3)
+  ml3Library = [library ml3Library];
+  v4 = ml3Library;
+  if (ml3Library)
   {
-    v5 = v3;
+    autoupdatingSharedLibrary = ml3Library;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+    autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
   }
 
-  v6 = v5;
+  v6 = autoupdatingSharedLibrary;
 
   v7 = [v6 pathForResourceFileOrFolder:10];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v8 fileExistsAtPath:v7] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v7] & 1) == 0)
   {
     v13 = 0;
-    v9 = [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
+    v9 = [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
     v10 = v13;
     if ((v9 & 1) == 0)
     {
@@ -1048,29 +1048,29 @@ uint64_t __116__MPCMediaLibraryPlaybackAssetCacheProvider_clearPlaybackAssetCach
   return v7;
 }
 
-+ (id)_lowQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)a3
++ (id)_lowQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 ml3Library];
-  v4 = v3;
-  if (v3)
+  ml3Library = [library ml3Library];
+  v4 = ml3Library;
+  if (ml3Library)
   {
-    v5 = v3;
+    autoupdatingSharedLibrary = ml3Library;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+    autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
   }
 
-  v6 = v5;
+  v6 = autoupdatingSharedLibrary;
 
   v7 = [v6 pathForResourceFileOrFolder:9];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v8 fileExistsAtPath:v7] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v7] & 1) == 0)
   {
     v13 = 0;
-    v9 = [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
+    v9 = [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
     v10 = v13;
     if ((v9 & 1) == 0)
     {
@@ -1089,29 +1089,29 @@ uint64_t __116__MPCMediaLibraryPlaybackAssetCacheProvider_clearPlaybackAssetCach
   return v7;
 }
 
-+ (id)_highQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)a3
++ (id)_highQualityCachedAssetDestinationDirectoryForMediaLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 ml3Library];
-  v4 = v3;
-  if (v3)
+  ml3Library = [library ml3Library];
+  v4 = ml3Library;
+  if (ml3Library)
   {
-    v5 = v3;
+    autoupdatingSharedLibrary = ml3Library;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+    autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
   }
 
-  v6 = v5;
+  v6 = autoupdatingSharedLibrary;
 
   v7 = [v6 pathForResourceFileOrFolder:8];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v8 fileExistsAtPath:v7] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v7] & 1) == 0)
   {
     v13 = 0;
-    v9 = [v8 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
+    v9 = [defaultManager createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v13];
     v10 = v13;
     if ((v9 & 1) == 0)
     {
@@ -1130,9 +1130,9 @@ uint64_t __116__MPCMediaLibraryPlaybackAssetCacheProvider_clearPlaybackAssetCach
   return v7;
 }
 
-+ (id)deviceLibraryProviderWithUserIdentity:(id)a3
++ (id)deviceLibraryProviderWithUserIdentity:(id)identity
 {
-  v3 = [MEMORY[0x1E69705E8] deviceMediaLibraryWithUserIdentity:a3];
+  v3 = [MEMORY[0x1E69705E8] deviceMediaLibraryWithUserIdentity:identity];
   v4 = [[MPCMediaLibraryPlaybackAssetCacheProvider alloc] _initWithMediaLibrary:v3];
 
   return v4;

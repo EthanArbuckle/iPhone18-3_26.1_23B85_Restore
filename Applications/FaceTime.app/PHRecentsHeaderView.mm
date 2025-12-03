@@ -1,24 +1,24 @@
 @interface PHRecentsHeaderView
-+ (id)headerViewWithFrame:(CGRect)a3 recentCall:(id)a4;
++ (id)headerViewWithFrame:(CGRect)frame recentCall:(id)call;
 - (CGSize)intrinsicContentSize;
 - (PHRecentsHeaderView)init;
-- (PHRecentsHeaderView)initWithFrame:(CGRect)a3;
-- (id)_initWithFrame:(CGRect)a3 recentCall:(id)a4;
+- (PHRecentsHeaderView)initWithFrame:(CGRect)frame;
+- (id)_initWithFrame:(CGRect)frame recentCall:(id)call;
 - (id)calendar;
 - (id)dateFormatter;
-- (id)newSummaryViewForRecentCall:(id)a3 occurrenceDate:(id)a4 status:(unsigned int)a5 duration:(double)a6 type:(unsigned int)a7 dataUsage:(int64_t)a8;
+- (id)newSummaryViewForRecentCall:(id)call occurrenceDate:(id)date status:(unsigned int)status duration:(double)duration type:(unsigned int)type dataUsage:(int64_t)usage;
 - (id)timeFormatter;
 - (void)_buildView;
 - (void)addNotificationObservers;
 - (void)dealloc;
-- (void)formattersDidChange:(id)a3;
+- (void)formattersDidChange:(id)change;
 @end
 
 @implementation PHRecentsHeaderView
 
-- (PHRecentsHeaderView)initWithFrame:(CGRect)a3
+- (PHRecentsHeaderView)initWithFrame:(CGRect)frame
 {
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Please don't call [PHRecentsPersonHeaderView initWithFrame:] instead call +[PHRecentsPersonHeaderView headerViewWithFrame:recentCall:]", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);;
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Please don't call [PHRecentsPersonHeaderView initWithFrame:] instead call +[PHRecentsPersonHeaderView headerViewWithFrame:recentCall:]", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);;
   NSLog(@"** TUAssertion failure: %@", v5);
 
   if (_TUAssertShouldCrashApplication())
@@ -44,20 +44,20 @@
   return 0;
 }
 
-- (id)_initWithFrame:(CGRect)a3 recentCall:(id)a4
+- (id)_initWithFrame:(CGRect)frame recentCall:(id)call
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  callCopy = call;
   v14.receiver = self;
   v14.super_class = PHRecentsHeaderView;
-  v11 = [(PHRecentsHeaderView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(PHRecentsHeaderView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_recentCall, a4);
+    objc_storeStrong(&height->_recentCall, call);
     [(PHRecentsHeaderView *)v12 addNotificationObservers];
     [(PHRecentsHeaderView *)v12 _buildView];
   }
@@ -97,18 +97,18 @@
   [(PHRecentsHeaderView *)&v4 dealloc];
 }
 
-+ (id)headerViewWithFrame:(CGRect)a3 recentCall:(id)a4
++ (id)headerViewWithFrame:(CGRect)frame recentCall:(id)call
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = v10;
-  if (v10)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  callCopy = call;
+  v11 = callCopy;
+  if (callCopy)
   {
-    v12 = [v10 callType];
-    if ((kCHCallTypeTelephony & v12) != 0)
+    callType = [callCopy callType];
+    if ((kCHCallTypeTelephony & callType) != 0)
     {
       v13 = &off_1001095C0;
 LABEL_9:
@@ -116,8 +116,8 @@ LABEL_9:
       goto LABEL_11;
     }
 
-    v16 = [v11 callType];
-    if (v16 == kCHCallTypeFaceTimeVideo || (v17 = [v11 callType], v17 == kCHCallTypeFaceTimeAudio))
+    callType2 = [v11 callType];
+    if (callType2 == kCHCallTypeFaceTimeVideo || (v17 = [v11 callType], v17 == kCHCallTypeFaceTimeAudio))
     {
       v13 = off_1001095B0;
       goto LABEL_9;
@@ -132,7 +132,7 @@ LABEL_9:
     if (_TUAssertShouldCrashApplication())
     {
       v15 = +[NSAssertionHandler currentHandler];
-      [v15 handleFailureInMethod:a2 object:a1 file:@"PHRecentsHeaderView.m" lineNumber:107 description:@"Initializing PHRecentsPersonHeaderView with nil recentCall not allowed"];
+      [v15 handleFailureInMethod:a2 object:self file:@"PHRecentsHeaderView.m" lineNumber:107 description:@"Initializing PHRecentsPersonHeaderView with nil recentCall not allowed"];
     }
   }
 
@@ -161,12 +161,12 @@ LABEL_11:
   v127 = v126 = v3;
   v4 = kCHCallOccurrenceDateKey;
   v5 = [NSSortDescriptor sortDescriptorWithKey:kCHCallOccurrenceDateKey ascending:0];
-  v6 = [UIApp headerViewShowsAllRecentCalls];
-  v7 = [(PHRecentsHeaderView *)self recentCall];
-  v8 = [v7 callOccurrences];
-  v9 = v8;
+  headerViewShowsAllRecentCalls = [UIApp headerViewShowsAllRecentCalls];
+  recentCall = [(PHRecentsHeaderView *)self recentCall];
+  callOccurrences = [recentCall callOccurrences];
+  v9 = callOccurrences;
   v116 = v5;
-  if (v6)
+  if (headerViewShowsAllRecentCalls)
   {
     v147 = v5;
     v10 = [NSArray arrayWithObjects:&v147 count:1];
@@ -175,18 +175,18 @@ LABEL_11:
 
   else
   {
-    v12 = [v8 count];
+    v12 = [callOccurrences count];
 
-    v13 = [(PHRecentsHeaderView *)self recentCall];
-    v14 = [v13 callOccurrences];
+    recentCall2 = [(PHRecentsHeaderView *)self recentCall];
+    callOccurrences2 = [recentCall2 callOccurrences];
     v146 = v5;
     v15 = [NSArray arrayWithObjects:&v146 count:1];
-    v7 = [v14 sortedArrayUsingDescriptors:v15];
+    recentCall = [callOccurrences2 sortedArrayUsingDescriptors:v15];
 
-    v16 = [UIApp headerViewNumberOfCallsToShow];
-    if (v12 >= v16)
+    headerViewNumberOfCallsToShow = [UIApp headerViewNumberOfCallsToShow];
+    if (v12 >= headerViewNumberOfCallsToShow)
     {
-      v17 = v16;
+      v17 = headerViewNumberOfCallsToShow;
     }
 
     else
@@ -194,7 +194,7 @@ LABEL_11:
       v17 = v12;
     }
 
-    v11 = [v7 subarrayWithRange:{0, v17}];
+    v11 = [recentCall subarrayWithRange:{0, v17}];
   }
 
   v139 = 0u;
@@ -228,12 +228,12 @@ LABEL_11:
         v22 = *(*(&v137 + 1) + 8 * i);
         v23 = [v22 objectForKeyedSubscript:v4];
         v24 = [v22 objectForKeyedSubscript:v19];
-        v25 = [v24 intValue];
+        intValue = [v24 intValue];
 
-        v135 = v25;
+        v135 = intValue;
         if (v23)
         {
-          v26 = v25 == v131;
+          v26 = intValue == v131;
         }
 
         else
@@ -244,17 +244,17 @@ LABEL_11:
         if (!v26)
         {
           v27 = [v22 objectForKeyedSubscript:v120];
-          v129 = [v27 intValue];
+          intValue2 = [v27 intValue];
 
           v28 = [v22 objectForKeyedSubscript:v119];
           [v28 doubleValue];
           v30 = v29;
 
           v31 = [v22 objectForKeyedSubscript:v118];
-          v128 = [v31 integerValue];
+          integerValue = [v31 integerValue];
 
-          v32 = [(PHRecentsHeaderView *)self calendar];
-          v33 = [v32 components:28 fromDate:v23];
+          calendar = [(PHRecentsHeaderView *)self calendar];
+          v33 = [calendar components:28 fromDate:v23];
 
           v136 = v23;
           v130 = v33;
@@ -272,8 +272,8 @@ LABEL_11:
             v38 = objc_alloc_init(UILabel);
             [v38 setFont:v117];
             [v38 setTextColor:v127];
-            v39 = [(PHRecentsHeaderView *)self dateFormatter];
-            v40 = [v39 stringFromDate:v23];
+            dateFormatter = [(PHRecentsHeaderView *)self dateFormatter];
+            v40 = [dateFormatter stringFromDate:v23];
             [v38 setText:v40];
 
             [v38 setTextAlignment:4];
@@ -338,8 +338,8 @@ LABEL_11:
           v66 = objc_alloc_init(UILabel);
           [v66 setFont:v133];
           [v66 setTextColor:v127];
-          v67 = [(PHRecentsHeaderView *)self timeFormatter];
-          v68 = [v67 stringFromDate:v136];
+          timeFormatter = [(PHRecentsHeaderView *)self timeFormatter];
+          v68 = [timeFormatter stringFromDate:v136];
           [v66 setText:v68];
 
           [(PHRecentsHeaderView *)self addSubview:v66];
@@ -373,9 +373,9 @@ LABEL_11:
           [(PHRecentsHeaderView *)self addConstraint:v81];
 
           v82 = [v134 objectAtIndexedSubscript:{objc_msgSend(v134, "count") - 1}];
-          v83 = [v77[329] null];
+          null = [v77[329] null];
 
-          if (v82 == v83)
+          if (v82 == null)
           {
             [v133 _bodyLeading];
             v97 = v96;
@@ -388,25 +388,25 @@ LABEL_11:
           {
             v84 = v78[407];
             v85 = [v134 objectAtIndexedSubscript:{objc_msgSend(v134, "count") - 1}];
-            v86 = [v85 bottommostLabel];
+            bottommostLabel = [v85 bottommostLabel];
             [v133 _bodyLeading];
             LODWORD(v88) = 1148846080;
-            v89 = [v84 constraintWithItem:v66 attribute:3 relatedBy:0 toItem:v86 attribute:11 multiplier:1.0 constant:v87 * 0.75 priority:v88];
+            v89 = [v84 constraintWithItem:v66 attribute:3 relatedBy:0 toItem:bottommostLabel attribute:11 multiplier:1.0 constant:v87 * 0.75 priority:v88];
             [(PHRecentsHeaderView *)self addConstraint:v89];
 
             [v133 _bodyLeading];
             v91 = v90;
             v92 = [v134 objectAtIndexedSubscript:{objc_msgSend(v134, "count") - 1}];
-            v93 = [v92 bottommostLabel];
-            [v93 _baselineOffsetFromBottom];
+            bottommostLabel2 = [v92 bottommostLabel];
+            [bottommostLabel2 _baselineOffsetFromBottom];
             v95 = -(v94 - v91 * 0.75);
           }
 
           v4 = v123;
 
-          v99 = [(PHRecentsHeaderView *)self recentCall];
+          recentCall3 = [(PHRecentsHeaderView *)self recentCall];
           v23 = v136;
-          v100 = [(PHRecentsHeaderView *)self newSummaryViewForRecentCall:v99 occurrenceDate:v136 status:v129 duration:v135 type:v128 dataUsage:v30];
+          v100 = [(PHRecentsHeaderView *)self newSummaryViewForRecentCall:recentCall3 occurrenceDate:v136 status:intValue2 duration:v135 type:integerValue dataUsage:v30];
 
           [(PHRecentsHeaderView *)self addSubview:v100];
           [v100 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -428,9 +428,9 @@ LABEL_11:
           [(PHRecentsHeaderView *)self addConstraints:v107];
 
           v108 = v78[407];
-          v109 = [v100 topmostLabel];
+          topmostLabel = [v100 topmostLabel];
           LODWORD(v110) = 1148846080;
-          v111 = [v108 constraintWithItem:v109 attribute:11 relatedBy:0 toItem:v66 attribute:11 multiplier:1.0 constant:0.0 priority:v110];
+          v111 = [v108 constraintWithItem:topmostLabel attribute:11 relatedBy:0 toItem:v66 attribute:11 multiplier:1.0 constant:0.0 priority:v110];
           [(PHRecentsHeaderView *)self addConstraint:v111];
 
           [v100 intrinsicContentSize];
@@ -457,8 +457,8 @@ LABEL_11:
   if ([v134 count])
   {
     v113 = [v134 objectAtIndexedSubscript:{objc_msgSend(v134, "count") - 1}];
-    v114 = [v113 bottommostLabel];
-    [v114 _baselineOffsetFromBottom];
+    bottommostLabel3 = [v113 bottommostLabel];
+    [bottommostLabel3 _baselineOffsetFromBottom];
     v20 = v20 + 16.0 - v115;
   }
 
@@ -527,18 +527,18 @@ LABEL_11:
   return v2;
 }
 
-- (void)formattersDidChange:(id)a3
+- (void)formattersDidChange:(id)change
 {
-  v4 = [(PHRecentsHeaderView *)self subviews];
-  [v4 makeObjectsPerformSelector:"removeFromSuperview"];
+  subviews = [(PHRecentsHeaderView *)self subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
   [(PHRecentsHeaderView *)self _buildView];
 }
 
-- (id)newSummaryViewForRecentCall:(id)a3 occurrenceDate:(id)a4 status:(unsigned int)a5 duration:(double)a6 type:(unsigned int)a7 dataUsage:(int64_t)a8
+- (id)newSummaryViewForRecentCall:(id)call occurrenceDate:(id)date status:(unsigned int)status duration:(double)duration type:(unsigned int)type dataUsage:(int64_t)usage
 {
-  v10 = [NSString stringWithFormat:@"Subclasses of PHRecentsPersonHeaderView must implement _createSummaryViewAtIndex:size:", a4, *&a5, *&a7, a8, a6];
-  NSLog(@"** TUAssertion failure: %@", v10);
+  duration = [NSString stringWithFormat:@"Subclasses of PHRecentsPersonHeaderView must implement _createSummaryViewAtIndex:size:", date, *&status, *&type, usage, duration];
+  NSLog(@"** TUAssertion failure: %@", duration);
 
   if (_TUAssertShouldCrashApplication())
   {

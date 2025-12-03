@@ -1,5 +1,5 @@
 @interface NTKRichComplicationCircularOpenGaugeSwiftUIView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationCircularOpenGaugeSwiftUIView)init;
 @end
 
@@ -12,9 +12,9 @@
   return [(NTKRichComplicationCircularOpenGaugeContentView *)&v3 initWithFamily:10];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

@@ -1,15 +1,15 @@
 @interface CRLLinkView
 - (CGRect)frame;
-- (_TtC8Freeform11CRLLinkView)initWithCoder:(id)a3;
-- (_TtC8Freeform11CRLLinkView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC8Freeform11CRLLinkView)initWithCoder:(id)coder;
+- (_TtC8Freeform11CRLLinkView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CRLLinkView
 
-- (_TtC8Freeform11CRLLinkView)initWithCoder:(id)a3
+- (_TtC8Freeform11CRLLinkView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform11CRLLinkView_viewScale) = 0x3FF0000000000000;
@@ -39,25 +39,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   sub_100B51C0C(x, y, width, height);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for CRLLinkView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(CRLLinkView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(CRLLinkView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -80,7 +80,7 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC8Freeform11CRLLinkView)initWithFrame:(CGRect)a3
+- (_TtC8Freeform11CRLLinkView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

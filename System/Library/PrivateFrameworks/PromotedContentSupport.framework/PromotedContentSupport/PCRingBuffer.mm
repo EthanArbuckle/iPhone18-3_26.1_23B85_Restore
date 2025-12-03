@@ -1,7 +1,7 @@
 @interface PCRingBuffer
 + (id)sharedInstance;
 - (PCRingBuffer)init;
-- (void)cappedRingBufferTo:(unint64_t)a3;
+- (void)cappedRingBufferTo:(unint64_t)to;
 @end
 
 @implementation PCRingBuffer
@@ -29,24 +29,24 @@
     lock = v2->_lock;
     v2->_lock = v3;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     ringBuffer = v2->_ringBuffer;
-    v2->_ringBuffer = v5;
+    v2->_ringBuffer = array;
   }
 
   return v2;
 }
 
-- (void)cappedRingBufferTo:(unint64_t)a3
+- (void)cappedRingBufferTo:(unint64_t)to
 {
-  v5 = [(PCRingBuffer *)self ringBuffer];
-  v6 = [v5 count];
+  ringBuffer = [(PCRingBuffer *)self ringBuffer];
+  v6 = [ringBuffer count];
 
-  v7 = v6 - a3;
-  if (v6 > a3)
+  v7 = v6 - to;
+  if (v6 > to)
   {
-    v8 = [(PCRingBuffer *)self ringBuffer];
-    v10 = [v8 subarrayWithRange:{v7, a3}];
+    ringBuffer2 = [(PCRingBuffer *)self ringBuffer];
+    v10 = [ringBuffer2 subarrayWithRange:{v7, to}];
 
     v9 = [v10 mutableCopy];
     [(PCRingBuffer *)self setRingBuffer:v9];

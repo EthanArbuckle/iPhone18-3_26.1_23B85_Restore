@@ -4,10 +4,10 @@
 - (int64_t)passcodeType;
 - (void)_startObservingConnection;
 - (void)_stopObservingConnection;
-- (void)_synchronizedObservers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)_synchronizedObservers:(id)observers;
+- (void)addObserver:(id)observer;
+- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation LACManagedConfiguration
@@ -31,9 +31,9 @@
   v2 = [(LACManagedConfiguration *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_observersLock._os_unfair_lock_opaque = 0;
     MCProfileConnectionClass = getMCProfileConnectionClass();
@@ -94,16 +94,16 @@ uint64_t __41__LACManagedConfiguration_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__LACManagedConfiguration_addObserver___block_invoke;
   v8[3] = &unk_1E7A97720;
-  v5 = v4;
+  v5 = observerCopy;
   v9 = v5;
   objc_copyWeak(&v10, &location);
   [(LACManagedConfiguration *)self _synchronizedObservers:v8];
@@ -111,7 +111,7 @@ uint64_t __41__LACManagedConfiguration_sharedInstance__block_invoke()
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "%@ did register observer %@", buf, 0x16u);
@@ -136,16 +136,16 @@ void __39__LACManagedConfiguration_addObserver___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__LACManagedConfiguration_removeObserver___block_invoke;
   v8[3] = &unk_1E7A97720;
-  v5 = v4;
+  v5 = observerCopy;
   v9 = v5;
   objc_copyWeak(&v10, &location);
   [(LACManagedConfiguration *)self _synchronizedObservers:v8];
@@ -153,7 +153,7 @@ void __39__LACManagedConfiguration_addObserver___block_invoke(uint64_t a1, void 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "%@ did remove observer %@", buf, 0x16u);
@@ -179,16 +179,16 @@ void __42__LACManagedConfiguration_removeObserver___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)notification userInfo:(id)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   v8 = LACLogPasscode();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v8, OS_LOG_TYPE_DEFAULT, "%@ did receive passcode changed notification", buf, 0xCu);
   }
 
@@ -198,7 +198,7 @@ void __42__LACManagedConfiguration_removeObserver___block_invoke(uint64_t a1, vo
   v11[2] = __91__LACManagedConfiguration_profileConnectionDidReceivePasscodeChangedNotification_userInfo___block_invoke;
   v11[3] = &unk_1E7A97748;
   objc_copyWeak(&v13, buf);
-  v9 = v7;
+  v9 = infoCopy;
   v12 = v9;
   [(LACManagedConfiguration *)self _synchronizedObservers:v11];
 
@@ -255,11 +255,11 @@ void __91__LACManagedConfiguration_profileConnectionDidReceivePasscodeChangedNot
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_synchronizedObservers:(id)a3
+- (void)_synchronizedObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   os_unfair_lock_lock(&self->_observersLock);
-  v4[2](v4, self->_observers);
+  observersCopy[2](observersCopy, self->_observers);
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
@@ -271,7 +271,7 @@ void __91__LACManagedConfiguration_profileConnectionDidReceivePasscodeChangedNot
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v3, OS_LOG_TYPE_DEFAULT, "%@ did register for passcode observation", &v5, 0xCu);
   }
 
@@ -287,7 +287,7 @@ void __91__LACManagedConfiguration_profileConnectionDidReceivePasscodeChangedNot
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v3, OS_LOG_TYPE_DEFAULT, "%@ did unregister from passcode observation", &v5, 0xCu);
   }
 

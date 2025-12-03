@@ -1,28 +1,28 @@
 @interface HKPairedFeatureAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKFeatureAttributes)companionAttributes;
 - (HKFeatureAttributes)watchAttributes;
-- (HKPairedFeatureAttributes)initWithCoder:(id)a3;
-- (HKPairedFeatureAttributes)initWithLocalAttributes:(id)a3 pairedAttributes:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKPairedFeatureAttributes)initWithCoder:(id)coder;
+- (HKPairedFeatureAttributes)initWithLocalAttributes:(id)attributes pairedAttributes:(id)pairedAttributes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKPairedFeatureAttributes
 
-- (HKPairedFeatureAttributes)initWithLocalAttributes:(id)a3 pairedAttributes:(id)a4
+- (HKPairedFeatureAttributes)initWithLocalAttributes:(id)attributes pairedAttributes:(id)pairedAttributes
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  pairedAttributesCopy = pairedAttributes;
   v14.receiver = self;
   v14.super_class = HKPairedFeatureAttributes;
   v8 = [(HKPairedFeatureAttributes *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [attributesCopy copy];
     localAttributes = v8->_localAttributes;
     v8->_localAttributes = v9;
 
-    v11 = [v7 copy];
+    v11 = [pairedAttributesCopy copy];
     pairedAttributes = v8->_pairedAttributes;
     v8->_pairedAttributes = v11;
   }
@@ -33,9 +33,9 @@
 - (HKFeatureAttributes)companionAttributes
 {
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  isAppleWatch = [v3 isAppleWatch];
   v5 = 8;
-  if (v4)
+  if (isAppleWatch)
   {
     v5 = 16;
   }
@@ -49,9 +49,9 @@
 - (HKFeatureAttributes)watchAttributes
 {
   v3 = +[_HKBehavior sharedBehavior];
-  v4 = [v3 isAppleWatch];
+  isAppleWatch = [v3 isAppleWatch];
   v5 = 16;
-  if (v4)
+  if (isAppleWatch)
   {
     v5 = 8;
   }
@@ -62,12 +62,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = HKPairedFeatureAttributes;
-  if (![(HKPairedFeatureAttributes *)&v12 isEqual:v4])
+  if (![(HKPairedFeatureAttributes *)&v12 isEqual:equalCopy])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -76,7 +76,7 @@
       goto LABEL_14;
     }
 
-    v6 = v4;
+    v6 = equalCopy;
     localAttributes = self->_localAttributes;
     v8 = v6[1];
     if (localAttributes != v8 && (!v8 || ![(HKFeatureAttributes *)localAttributes isEqual:?]))
@@ -114,19 +114,19 @@ LABEL_14:
   return v5;
 }
 
-- (HKPairedFeatureAttributes)initWithCoder:(id)a3
+- (HKPairedFeatureAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKPairedFeatureAttributes;
   v5 = [(HKPairedFeatureAttributes *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localAttributes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localAttributes"];
     localAttributes = v5->_localAttributes;
     v5->_localAttributes = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedAttributes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedAttributes"];
     pairedAttributes = v5->_pairedAttributes;
     v5->_pairedAttributes = v8;
   }
@@ -134,12 +134,12 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   localAttributes = self->_localAttributes;
-  v5 = a3;
-  [v5 encodeObject:localAttributes forKey:@"localAttributes"];
-  [v5 encodeObject:self->_pairedAttributes forKey:@"pairedAttributes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:localAttributes forKey:@"localAttributes"];
+  [coderCopy encodeObject:self->_pairedAttributes forKey:@"pairedAttributes"];
 }
 
 @end

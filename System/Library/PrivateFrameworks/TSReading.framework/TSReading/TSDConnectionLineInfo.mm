@@ -2,13 +2,13 @@
 - (CGAffineTransform)computeLayoutFullTransform;
 - (Class)layoutClass;
 - (id)computeLayoutInfoGeometry;
-- (id)copyWithContext:(id)a3;
-- (void)computeLayoutInfoGeometry:(id *)a3 andPathSource:(id *)a4;
+- (id)copyWithContext:(id)context;
+- (void)computeLayoutInfoGeometry:(id *)geometry andPathSource:(id *)source;
 - (void)dealloc;
-- (void)performBlockWithTemporaryLayout:(id)a3;
-- (void)setConnectedFrom:(id)a3;
-- (void)setConnectedTo:(id)a3;
-- (void)willCopyWithOtherDrawables:(id)a3;
+- (void)performBlockWithTemporaryLayout:(id)layout;
+- (void)setConnectedFrom:(id)from;
+- (void)setConnectedTo:(id)to;
+- (void)willCopyWithOtherDrawables:(id)drawables;
 @end
 
 @implementation TSDConnectionLineInfo
@@ -20,11 +20,11 @@
   [(TSDShapeInfo *)&v3 dealloc];
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = TSDConnectionLineInfo;
-  v3 = [(TSDShapeInfo *)&v6 copyWithContext:a3];
+  v3 = [(TSDShapeInfo *)&v6 copyWithContext:context];
   v4 = v3;
   if (v3)
   {
@@ -41,47 +41,47 @@
   [(TSDShapeInfo *)self pathSource];
   if ([TSUDynamicCast() type] > 1)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineInfo layoutClass]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineInfo.m"), 77, @"Wrong connection line path source type."}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineInfo.m"), 77, @"Wrong connection line path source type."}];
   }
 
   return objc_opt_class();
 }
 
-- (void)setConnectedTo:(id)a3
+- (void)setConnectedTo:(id)to
 {
-  if (a3 == self)
+  if (to == self)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineInfo setConnectedTo:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineInfo.m"), 103, @"attempting to connect a line to itself!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineInfo.m"), 103, @"attempting to connect a line to itself!"}];
   }
 
-  if (self->mConnectedTo != a3)
+  if (self->mConnectedTo != to)
   {
     [(TSPObject *)self willModify];
     [(TSDDrawableInfo *)self willChangeProperty:539];
 
-    self->mConnectedTo = a3;
+    self->mConnectedTo = to;
   }
 }
 
-- (void)setConnectedFrom:(id)a3
+- (void)setConnectedFrom:(id)from
 {
-  if (a3 == self)
+  if (from == self)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDConnectionLineInfo setConnectedFrom:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineInfo.m"), 114, @"attempting to connect a line from itself!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDConnectionLineInfo.m"), 114, @"attempting to connect a line from itself!"}];
   }
 
-  if (self->mConnectedFrom != a3)
+  if (self->mConnectedFrom != from)
   {
     [(TSPObject *)self willModify];
     [(TSDDrawableInfo *)self willChangeProperty:540];
 
-    self->mConnectedFrom = a3;
+    self->mConnectedFrom = from;
   }
 }
 
@@ -92,7 +92,7 @@
   return v3;
 }
 
-- (void)computeLayoutInfoGeometry:(id *)a3 andPathSource:(id *)a4
+- (void)computeLayoutInfoGeometry:(id *)geometry andPathSource:(id *)source
 {
   v7 = [MEMORY[0x277CBEB18] arrayWithObject:self];
   v8 = v7;
@@ -111,8 +111,8 @@
   v9[2] = __65__TSDConnectionLineInfo_computeLayoutInfoGeometry_andPathSource___block_invoke;
   v9[3] = &unk_279D49190;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = geometry;
+  v9[6] = source;
   [TSDLayoutController temporaryLayoutControllerForInfos:v8 useInBlock:v9];
 }
 
@@ -154,9 +154,9 @@ uint64_t __65__TSDConnectionLineInfo_computeLayoutInfoGeometry_andPathSource___b
   return result;
 }
 
-- (void)willCopyWithOtherDrawables:(id)a3
+- (void)willCopyWithOtherDrawables:(id)drawables
 {
-  v6 = [a3 mutableCopy];
+  v6 = [drawables mutableCopy];
   if ([v6 count])
   {
     v4 = 0;
@@ -185,7 +185,7 @@ uint64_t __65__TSDConnectionLineInfo_computeLayoutInfoGeometry_andPathSource___b
   }
 }
 
-- (void)performBlockWithTemporaryLayout:(id)a3
+- (void)performBlockWithTemporaryLayout:(id)layout
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithObject:self];
   v6 = v5;
@@ -204,7 +204,7 @@ uint64_t __65__TSDConnectionLineInfo_computeLayoutInfoGeometry_andPathSource___b
   v7[2] = __57__TSDConnectionLineInfo_performBlockWithTemporaryLayout___block_invoke;
   v7[3] = &unk_279D48520;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = layout;
   [TSDLayoutController temporaryLayoutControllerForInfos:v6 useInBlock:v7];
 }
 

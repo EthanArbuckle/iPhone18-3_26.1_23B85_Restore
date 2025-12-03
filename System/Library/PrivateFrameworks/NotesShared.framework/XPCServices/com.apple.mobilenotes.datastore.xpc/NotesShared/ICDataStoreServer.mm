@@ -1,8 +1,8 @@
 @interface ICDataStoreServer
-+ (BOOL)storeNeedsMigrationAtURL:(id)a3;
-+ (void)migrateStoreAtURL:(id)a3;
++ (BOOL)storeNeedsMigrationAtURL:(id)l;
++ (void)migrateStoreAtURL:(id)l;
 - (ICDataStoreServer)init;
-- (id)dataStoreServiceShouldAbortNotification:(id)a3;
+- (id)dataStoreServiceShouldAbortNotification:(id)notification;
 - (void)dealloc;
 - (void)setupEnvironment;
 - (void)startListening;
@@ -84,20 +84,20 @@
   }
 }
 
-+ (BOOL)storeNeedsMigrationAtURL:(id)a3
++ (BOOL)storeNeedsMigrationAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[ICPersistentContainer standardStoreOptions];
   v12 = 0;
-  v5 = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType URL:v3 options:v4 error:&v12];
+  v5 = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType URL:lCopy options:v4 error:&v12];
 
   v6 = v12;
   if (v5)
   {
     v7 = +[ICPersistentContainer managedObjectModel];
-    v8 = [v7 entityVersionHashesByName];
+    entityVersionHashesByName = [v7 entityVersionHashesByName];
     v9 = [v5 objectForKey:NSStoreModelVersionHashesKey];
-    v10 = [v8 isEqual:v9] ^ 1;
+    v10 = [entityVersionHashesByName isEqual:v9] ^ 1;
   }
 
   else
@@ -114,9 +114,9 @@
   return v10;
 }
 
-+ (void)migrateStoreAtURL:(id)a3
++ (void)migrateStoreAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (!dlopen("/System/Library/Frameworks/CloudKit.framework/CloudKit", 2))
   {
     v4 = os_log_create("com.apple.notes", "DataStoreServer");
@@ -145,7 +145,7 @@
   }
 
   v7 = +[ICPersistentContainer standardStoreOptions];
-  v8 = [[ICPersistentContainer alloc] initWithStoreURL:v3 storeType:NSSQLiteStoreType options:v7 mergePolicy:0];
+  v8 = [[ICPersistentContainer alloc] initWithStoreURL:lCopy storeType:NSSQLiteStoreType options:v7 mergePolicy:0];
 
   v13 = 0;
   v9 = [v8 loadPersistentStore:&v13];
@@ -166,9 +166,9 @@
   }
 }
 
-- (id)dataStoreServiceShouldAbortNotification:(id)a3
+- (id)dataStoreServiceShouldAbortNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = os_log_create("com.apple.notes", "DataStoreServer");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {

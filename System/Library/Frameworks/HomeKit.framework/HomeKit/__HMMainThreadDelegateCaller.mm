@@ -1,15 +1,15 @@
 @interface __HMMainThreadDelegateCaller
-- (void)invokeBlock:(id)a3;
+- (void)invokeBlock:(id)block;
 @end
 
 @implementation __HMMainThreadDelegateCaller
 
-- (void)invokeBlock:(id)a3
+- (void)invokeBlock:(id)block
 {
-  v3 = a3;
-  if (v3)
+  blockCopy2 = block;
+  if (blockCopy2)
   {
-    block = v3;
+    block = blockCopy2;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
       block[2]();
@@ -20,7 +20,7 @@
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
-    v3 = block;
+    blockCopy2 = block;
   }
 }
 

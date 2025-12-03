@@ -1,9 +1,9 @@
 @interface SCNGeometryVDMCDeformer
 - (SCNGeometryVDMCDeformer)init;
-- (SCNGeometryVDMCDeformer)initWithCoder:(id)a3;
-- (id)newDeformerInstanceForNode:(id)a3 outputs:(unint64_t)a4 computeVertexCount:(unint64_t)a5 context:(id)a6;
+- (SCNGeometryVDMCDeformer)initWithCoder:(id)coder;
+- (id)newDeformerInstanceForNode:(id)node outputs:(unint64_t)outputs computeVertexCount:(unint64_t)count context:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNGeometryVDMCDeformer
@@ -22,25 +22,25 @@
   [(SCNGeometryVDMCDeformer *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SCNGeometryVDMCDeformer;
-  [(SCNGeometryDeformer *)&v3 encodeWithCoder:a3];
+  [(SCNGeometryDeformer *)&v3 encodeWithCoder:coder];
 }
 
-- (SCNGeometryVDMCDeformer)initWithCoder:(id)a3
+- (SCNGeometryVDMCDeformer)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNGeometryVDMCDeformer;
-  return [(SCNGeometryDeformer *)&v4 initWithCoder:a3];
+  return [(SCNGeometryDeformer *)&v4 initWithCoder:coder];
 }
 
-- (id)newDeformerInstanceForNode:(id)a3 outputs:(unint64_t)a4 computeVertexCount:(unint64_t)a5 context:(id)a6
+- (id)newDeformerInstanceForNode:(id)node outputs:(unint64_t)outputs computeVertexCount:(unint64_t)count context:(id)context
 {
   v8 = [SCNGeometryVDMCDeformerInstance alloc];
 
-  return [(SCNGeometryVDMCDeformerInstance *)v8 initWithNode:a3 deformer:v9 outputs:v10 computeVertexCount:v11 context:a6];
+  return [(SCNGeometryVDMCDeformerInstance *)v8 initWithNode:node deformer:v9 outputs:v10 computeVertexCount:v11 context:context];
 }
 
 @end

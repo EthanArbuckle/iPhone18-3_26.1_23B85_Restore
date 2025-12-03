@@ -10,41 +10,41 @@
 
 - (id)accentColor
 {
-  v2 = [a1 type];
-  if (v2 == 2)
+  type = [self type];
+  if (type == 2)
   {
-    v3 = [a1 _accentColorForPhoto];
+    _accentColorForPhoto = [self _accentColorForPhoto];
   }
 
-  else if (v2 == 1)
+  else if (type == 1)
   {
-    v3 = [a1 _accentColorForMonogram];
+    _accentColorForPhoto = [self _accentColorForMonogram];
   }
 
   else
   {
-    v3 = 0;
+    _accentColorForPhoto = 0;
   }
 
-  return v3;
+  return _accentColorForPhoto;
 }
 
 - (id)_accentColorForMonogram
 {
-  v1 = [a1 recipe];
-  v2 = [PRMonogram monogramWithData:v1];
+  recipe = [self recipe];
+  v2 = [PRMonogram monogramWithData:recipe];
 
-  v3 = [v2 color];
-  v4 = [v3 colorWithAlphaComponent:0.300000012];
+  color = [v2 color];
+  v4 = [color colorWithAlphaComponent:0.300000012];
 
   return v4;
 }
 
 - (id)_accentColorForPhoto
 {
-  v2 = [a1 staticRepresentation];
-  [a1 cropRect];
-  v7 = PRImageCreateWithImageInRect(v2, v3, v4, v5, v6);
+  staticRepresentation = [self staticRepresentation];
+  [self cropRect];
+  v7 = PRImageCreateWithImageInRect(staticRepresentation, v3, v4, v5, v6);
   if (v7)
   {
     v8 = v7;
@@ -76,12 +76,12 @@
         if (v17)
         {
           v18 = v17;
-          v19 = [a1 staticRepresentation];
+          staticRepresentation2 = [self staticRepresentation];
           v29.origin.x = 0.0;
           v29.origin.y = 0.0;
           v29.size.width = 1.0;
           v29.size.height = 1.0;
-          CGContextDrawImage(v18, v29, v19);
+          CGContextDrawImage(v18, v29, staticRepresentation2);
           LOBYTE(v20) = *v12;
           LOBYTE(v21) = v12[1];
           LOBYTE(v22) = v12[2];
@@ -124,16 +124,16 @@
 - (id)snapshotWithSize:()PersonaUI scale:options:
 {
   v10 = a6;
-  v11 = [a1 type];
-  if (v11 == 2)
+  type = [self type];
+  if (type == 2)
   {
-    v14 = [a1 _photoSnapshotWithSize:v10 scale:a2 options:{a3, a4}];
+    v14 = [self _photoSnapshotWithSize:v10 scale:a2 options:{a3, a4}];
   }
 
-  else if (v11 == 1)
+  else if (type == 1)
   {
-    v12 = [a1 recipe];
-    v13 = [PRMonogram monogramWithData:v12];
+    recipe = [self recipe];
+    v13 = [PRMonogram monogramWithData:recipe];
 
     v14 = [v13 snapshotWithSize:v10 scale:a2 options:{a3, a4}];
   }
@@ -150,18 +150,18 @@
 {
   v10 = a6;
   v11 = [v10 objectForKeyedSubscript:@"PRLikenessSnapshotOptionCircular"];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
-  v13 = [a1 staticRepresentation];
-  [a1 cropRect];
-  if (v12)
+  staticRepresentation = [self staticRepresentation];
+  [self cropRect];
+  if (bOOLValue)
   {
-    CircularImageInRect = PRImageCreateCircularImageInRect(v13, v14, v15, v16, v17);
+    CircularImageInRect = PRImageCreateCircularImageInRect(staticRepresentation, v14, v15, v16, v17);
   }
 
   else
   {
-    CircularImageInRect = PRImageCreateWithImageInRect(v13, v14, v15, v16, v17);
+    CircularImageInRect = PRImageCreateWithImageInRect(staticRepresentation, v14, v15, v16, v17);
   }
 
   v19 = CircularImageInRect;
@@ -185,9 +185,9 @@
     if (v24)
     {
       v25 = [v10 objectForKeyedSubscript:@"PRLikenessSnapshotOptionForceDecode"];
-      v26 = [v25 BOOLValue];
+      bOOLValue2 = [v25 BOOLValue];
 
-      if (v26)
+      if (bOOLValue2)
       {
         PRImageForceDecompress(v24);
       }

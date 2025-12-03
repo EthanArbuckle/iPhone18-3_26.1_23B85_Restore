@@ -1,13 +1,13 @@
 @interface RMIProgramDelegate
-- (BOOL)parseGlobalOptions:(id)a3;
+- (BOOL)parseGlobalOptions:(id)options;
 @end
 
 @implementation RMIProgramDelegate
 
-- (BOOL)parseGlobalOptions:(id)a3
+- (BOOL)parseGlobalOptions:(id)options
 {
-  v3 = [a3 dictionaryWithOptionsAndValues];
-  [CLIProgram handleFormatOptionInDictionary:v3];
+  dictionaryWithOptionsAndValues = [options dictionaryWithOptionsAndValues];
+  [CLIProgram handleFormatOptionInDictionary:dictionaryWithOptionsAndValues];
 
   return 1;
 }

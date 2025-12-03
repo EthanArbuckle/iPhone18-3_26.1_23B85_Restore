@@ -1,13 +1,13 @@
 @interface IMServiceReachabilityFinalUnreachableResultPrecondition
-+ (id)preconditionWithDictionary:(id)a3;
-- (unint64_t)evaluateWithLatestResults:(id)a3 requestedServices:(id)a4;
++ (id)preconditionWithDictionary:(id)dictionary;
+- (unint64_t)evaluateWithLatestResults:(id)results requestedServices:(id)services;
 @end
 
 @implementation IMServiceReachabilityFinalUnreachableResultPrecondition
 
-+ (id)preconditionWithDictionary:(id)a3
++ (id)preconditionWithDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"FinalUnreachableResult"];
+  v3 = [dictionary objectForKeyedSubscript:@"FinalUnreachableResult"];
   if (v3)
   {
     v4 = objc_alloc_init(IMServiceReachabilityFinalUnreachableResultPrecondition);
@@ -22,18 +22,18 @@
   return v4;
 }
 
-- (unint64_t)evaluateWithLatestResults:(id)a3 requestedServices:(id)a4
+- (unint64_t)evaluateWithLatestResults:(id)results requestedServices:(id)services
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMServiceReachabilityFinalUnreachableResultPrecondition *)self serviceName];
-  v9 = [v7 containsObject:v8];
+  resultsCopy = results;
+  servicesCopy = services;
+  serviceName = [(IMServiceReachabilityFinalUnreachableResultPrecondition *)self serviceName];
+  v9 = [servicesCopy containsObject:serviceName];
 
   if (v9)
   {
-    v10 = [(IMServiceReachabilityFinalUnreachableResultPrecondition *)self serviceName];
-    v11 = [(IMServiceReachabilityPrecondition *)self _latestResultsForServiceName:v10 fromLatestResults:v6];
+    serviceName2 = [(IMServiceReachabilityFinalUnreachableResultPrecondition *)self serviceName];
+    v11 = [(IMServiceReachabilityPrecondition *)self _latestResultsForServiceName:serviceName2 fromLatestResults:resultsCopy];
 
     if ([v11 count])
     {

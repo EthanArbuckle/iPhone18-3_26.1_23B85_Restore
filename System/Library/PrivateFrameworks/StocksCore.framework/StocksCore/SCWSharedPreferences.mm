@@ -28,8 +28,8 @@
   v2 = [(SCWSharedPreferences *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.stocks"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v4 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.stocks"];
 
     v5 = [objc_alloc(MEMORY[0x1E695E000]) _initWithSuiteName:@"group.com.apple.stocks" container:v4];
     sharedDefaults = v2->_sharedDefaults;

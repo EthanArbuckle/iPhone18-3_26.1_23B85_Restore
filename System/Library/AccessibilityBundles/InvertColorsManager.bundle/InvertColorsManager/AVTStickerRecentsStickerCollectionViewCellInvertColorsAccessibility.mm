@@ -9,9 +9,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 window];
-  v4 = [v3 rootViewController];
-  v5 = [v4 safeStringForKey:@"_hostBundleID"];
+  window = [v2 window];
+  rootViewController = [window rootViewController];
+  v5 = [rootViewController safeStringForKey:@"_hostBundleID"];
 
   if (v5)
   {

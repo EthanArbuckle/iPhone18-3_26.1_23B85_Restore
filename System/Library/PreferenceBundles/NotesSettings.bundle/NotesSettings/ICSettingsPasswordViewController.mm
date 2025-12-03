@@ -1,7 +1,7 @@
 @interface ICSettingsPasswordViewController
 - (BOOL)biometricsSwitchEnabled;
 - (BOOL)hasMultipleAccounts;
-- (ICSettingsPasswordViewController)initWithAccountID:(id)a3;
+- (ICSettingsPasswordViewController)initWithAccountID:(id)d;
 - (NSString)biometricsGroupFooter;
 - (NSString)biometricsSwitchTitle;
 - (NSString)lockedNotesModeGroupFooter;
@@ -15,35 +15,35 @@
 - (PSSpecifier)resetCustomPasswordGroupSpecifier;
 - (PSSpecifier)resetCustomPasswordSpecifier;
 - (PSSpecifier)setCustomPasswordSpecifier;
-- (id)biometricsSwitchValue:(id)a3;
+- (id)biometricsSwitchValue:(id)value;
 - (void)applicationDidResume;
-- (void)didTapChangeCustomPasswordButton:(id)a3;
-- (void)didTapLockedNotesModeLearnMoreLink:(id)a3;
-- (void)didTapResetCustomPasswordButton:(id)a3;
-- (void)didTapSetCustomPasswordButton:(id)a3;
+- (void)didTapChangeCustomPasswordButton:(id)button;
+- (void)didTapLockedNotesModeLearnMoreLink:(id)link;
+- (void)didTapResetCustomPasswordButton:(id)button;
+- (void)didTapSetCustomPasswordButton:(id)button;
 - (void)presentLockedNotesWelcomePrompt;
 - (void)reloadSpecifiers;
 - (void)reloadTitle;
-- (void)resetCustomPasswordForAccount:(id)a3;
-- (void)setBiometricsSwitchValue:(id)a3 specifier:(id)a4;
-- (void)setLockedNotesMode:(id)a3;
+- (void)resetCustomPasswordForAccount:(id)account;
+- (void)setBiometricsSwitchValue:(id)value specifier:(id)specifier;
+- (void)setLockedNotesMode:(id)mode;
 @end
 
 @implementation ICSettingsPasswordViewController
 
-- (ICSettingsPasswordViewController)initWithAccountID:(id)a3
+- (ICSettingsPasswordViewController)initWithAccountID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = ICSettingsPasswordViewController;
   v6 = [(ICSettingsPasswordViewController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountID, a3);
+    objc_storeStrong(&v6->_accountID, d);
     v8 = +[ICNoteContext sharedContext];
-    v9 = [v8 managedObjectContext];
-    v10 = [v9 objectWithID:v5];
+    managedObjectContext = [v8 managedObjectContext];
+    v10 = [managedObjectContext objectWithID:dCopy];
     account = v7->_account;
     v7->_account = v10;
   }
@@ -64,40 +64,40 @@
 
 - (void)reloadTitle
 {
-  v3 = [(ICSettingsPasswordViewController *)self account];
-  v4 = [v3 localizedName];
-  v16 = [v4 ic_trimmedString];
+  account = [(ICSettingsPasswordViewController *)self account];
+  localizedName = [account localizedName];
+  ic_trimmedString = [localizedName ic_trimmedString];
 
   v5 = +[ICAccountUtilities sharedInstance];
-  v6 = [(ICSettingsPasswordViewController *)self account];
-  v7 = [v6 identifier];
-  v8 = [v5 iCloudACAccountWithIdentifier:v7];
-  v9 = [v8 username];
-  v10 = [v9 ic_trimmedString];
+  account2 = [(ICSettingsPasswordViewController *)self account];
+  identifier = [account2 identifier];
+  v8 = [v5 iCloudACAccountWithIdentifier:identifier];
+  username = [v8 username];
+  ic_trimmedString2 = [username ic_trimmedString];
 
-  if ([v16 length] && objc_msgSend(v10, "length"))
+  if ([ic_trimmedString length] && objc_msgSend(ic_trimmedString2, "length"))
   {
-    v11 = objc_alloc_init(ICNavigationTitleView);
-    v12 = [(ICNavigationTitleView *)v11 titleLabel];
-    [v12 setText:v16];
+    bundle = objc_alloc_init(ICNavigationTitleView);
+    titleLabel = [(ICNavigationTitleView *)bundle titleLabel];
+    [titleLabel setText:ic_trimmedString];
 
-    v13 = [(ICNavigationTitleView *)v11 subtitleLabel];
-    [v13 setText:v10];
+    subtitleLabel = [(ICNavigationTitleView *)bundle subtitleLabel];
+    [subtitleLabel setText:ic_trimmedString2];
 
-    v14 = [(ICSettingsPasswordViewController *)self navigationItem];
-    [v14 setTitleView:v11];
+    navigationItem = [(ICSettingsPasswordViewController *)self navigationItem];
+    [navigationItem setTitleView:bundle];
   }
 
   else
   {
-    if ([v16 length])
+    if ([ic_trimmedString length])
     {
-      [(ICSettingsPasswordViewController *)self setTitle:v16];
+      [(ICSettingsPasswordViewController *)self setTitle:ic_trimmedString];
       goto LABEL_8;
     }
 
-    v11 = [(ICSettingsPasswordViewController *)self bundle];
-    v15 = [(ICNavigationTitleView *)v11 localizedStringForKey:@"NOTES_PW_NAVIGATION_TITLE" value:@"Password" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v15 = [(ICNavigationTitleView *)bundle localizedStringForKey:@"NOTES_PW_NAVIGATION_TITLE" value:@"Password" table:@"Settings"];
     [(ICSettingsPasswordViewController *)self setTitle:v15];
   }
 
@@ -106,9 +106,9 @@ LABEL_8:
 
 - (BOOL)hasMultipleAccounts
 {
-  v2 = [(ICSettingsPasswordViewController *)self account];
-  v3 = [v2 managedObjectContext];
-  v4 = [ICAccount allActiveAccountsInContext:v3];
+  account = [(ICSettingsPasswordViewController *)self account];
+  managedObjectContext = [account managedObjectContext];
+  v4 = [ICAccount allActiveAccountsInContext:managedObjectContext];
   v5 = [v4 count] > 1;
 
   return v5;
@@ -117,9 +117,9 @@ LABEL_8:
 - (void)reloadSpecifiers
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v5 = [(ICSettingsPasswordViewController *)self accountID];
-  v6 = [v4 objectWithID:v5];
+  managedObjectContext = [v3 managedObjectContext];
+  accountID = [(ICSettingsPasswordViewController *)self accountID];
+  v6 = [managedObjectContext objectWithID:accountID];
   [(ICSettingsPasswordViewController *)self setAccount:v6];
 
   lockedNotesModeGroupSpecifier = self->_lockedNotesModeGroupSpecifier;
@@ -151,46 +151,46 @@ LABEL_8:
 
   v30 = objc_alloc_init(NSMutableArray);
   v16 = +[ICLockedNotesModeMigrator sharedMigrator];
-  v17 = [(ICSettingsPasswordViewController *)self account];
-  LODWORD(v5) = [v16 account:v17 supportsMode:2];
+  account = [(ICSettingsPasswordViewController *)self account];
+  LODWORD(accountID) = [v16 account:account supportsMode:2];
 
-  if (v5)
+  if (accountID)
   {
-    v18 = [(ICSettingsPasswordViewController *)self lockedNotesModeGroupSpecifier];
-    [v30 addObject:v18];
+    lockedNotesModeGroupSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeGroupSpecifier];
+    [v30 addObject:lockedNotesModeGroupSpecifier];
 
-    v19 = [(ICSettingsPasswordViewController *)self lockedNotesModeDevicePasswordSpecifier];
-    [v30 addObject:v19];
+    lockedNotesModeDevicePasswordSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeDevicePasswordSpecifier];
+    [v30 addObject:lockedNotesModeDevicePasswordSpecifier];
 
-    v20 = [(ICSettingsPasswordViewController *)self lockedNotesModeCustomPasswordSpecifier];
-    [v30 addObject:v20];
+    lockedNotesModeCustomPasswordSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeCustomPasswordSpecifier];
+    [v30 addObject:lockedNotesModeCustomPasswordSpecifier];
   }
 
-  v21 = [(ICSettingsPasswordViewController *)self biometricsGroupSpecifier];
-  [v30 addObject:v21];
+  biometricsGroupSpecifier = [(ICSettingsPasswordViewController *)self biometricsGroupSpecifier];
+  [v30 addObject:biometricsGroupSpecifier];
 
-  v22 = [(ICSettingsPasswordViewController *)self biometricsSwitchSpecifier];
-  [v30 addObject:v22];
+  biometricsSwitchSpecifier = [(ICSettingsPasswordViewController *)self biometricsSwitchSpecifier];
+  [v30 addObject:biometricsSwitchSpecifier];
 
-  v23 = [(ICSettingsPasswordViewController *)self account];
-  v24 = [v23 resolvedLockedNotesMode];
+  account2 = [(ICSettingsPasswordViewController *)self account];
+  resolvedLockedNotesMode = [account2 resolvedLockedNotesMode];
 
-  if (v24 == 1)
+  if (resolvedLockedNotesMode == 1)
   {
     v25 = +[PSSpecifier emptyGroupSpecifier];
     [v30 addObject:v25];
 
-    v26 = [(ICSettingsPasswordViewController *)self changeCustomPasswordSpecifier];
-    [v30 addObject:v26];
+    changeCustomPasswordSpecifier = [(ICSettingsPasswordViewController *)self changeCustomPasswordSpecifier];
+    [v30 addObject:changeCustomPasswordSpecifier];
 
     v27 = +[PSSpecifier emptyGroupSpecifier];
     [v30 addObject:v27];
 
-    v28 = [(ICSettingsPasswordViewController *)self resetCustomPasswordGroupSpecifier];
-    [v30 addObject:v28];
+    resetCustomPasswordGroupSpecifier = [(ICSettingsPasswordViewController *)self resetCustomPasswordGroupSpecifier];
+    [v30 addObject:resetCustomPasswordGroupSpecifier];
 
-    v29 = [(ICSettingsPasswordViewController *)self resetCustomPasswordSpecifier];
-    [v30 addObject:v29];
+    resetCustomPasswordSpecifier = [(ICSettingsPasswordViewController *)self resetCustomPasswordSpecifier];
+    [v30 addObject:resetCustomPasswordSpecifier];
   }
 
   [(ICSettingsPasswordViewController *)self setSpecifiers:v30];
@@ -201,14 +201,14 @@ LABEL_8:
   lockedNotesModeGroupSpecifier = self->_lockedNotesModeGroupSpecifier;
   if (!lockedNotesModeGroupSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
-    v5 = [v4 localizedStringForKey:@"PW_LOCKED_NOTES_MODE_TITLE" value:@"Choose a Password Method" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v5 = [bundle localizedStringForKey:@"PW_LOCKED_NOTES_MODE_TITLE" value:@"Choose a Password Method" table:@"Settings"];
 
-    v6 = [(ICSettingsPasswordViewController *)self bundle];
-    v7 = [v6 localizedStringForKey:@"LEARN_MORE" value:@"Learn More…" table:@"Settings"];
+    bundle2 = [(ICSettingsPasswordViewController *)self bundle];
+    v7 = [bundle2 localizedStringForKey:@"LEARN_MORE" value:@"Learn More…" table:@"Settings"];
 
-    v8 = [(ICSettingsPasswordViewController *)self lockedNotesModeGroupFooter];
-    v9 = [NSString stringWithFormat:@"%@ %@", v8, v7];
+    lockedNotesModeGroupFooter = [(ICSettingsPasswordViewController *)self lockedNotesModeGroupFooter];
+    v9 = [NSString stringWithFormat:@"%@ %@", lockedNotesModeGroupFooter, v7];
 
     v10 = [v9 rangeOfString:v7];
     v12 = v11;
@@ -218,8 +218,8 @@ LABEL_8:
 
     [(PSSpecifier *)self->_lockedNotesModeGroupSpecifier setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     v15 = self->_lockedNotesModeGroupSpecifier;
-    v16 = [(ICSettingsPasswordViewController *)self checkedLockedNotesModeSpecifier];
-    [(PSSpecifier *)v15 setProperty:v16 forKey:PSRadioGroupCheckedSpecifierKey];
+    checkedLockedNotesModeSpecifier = [(ICSettingsPasswordViewController *)self checkedLockedNotesModeSpecifier];
+    [(PSSpecifier *)v15 setProperty:checkedLockedNotesModeSpecifier forKey:PSRadioGroupCheckedSpecifierKey];
 
     v17 = self->_lockedNotesModeGroupSpecifier;
     v18 = objc_opt_class();
@@ -247,34 +247,34 @@ LABEL_8:
   return lockedNotesModeGroupSpecifier;
 }
 
-- (void)didTapLockedNotesModeLearnMoreLink:(id)a3
+- (void)didTapLockedNotesModeLearnMoreLink:(id)link
 {
   v7 = +[ICLockedNotesModeMigrator sharedMigrator];
-  v4 = [(ICSettingsPasswordViewController *)self account];
-  v5 = [(ICSettingsPasswordViewController *)self view];
-  v6 = [v5 window];
-  [v7 presentLockedNotesLearnMoreViewForAccount:v4 window:v6];
+  account = [(ICSettingsPasswordViewController *)self account];
+  view = [(ICSettingsPasswordViewController *)self view];
+  window = [view window];
+  [v7 presentLockedNotesLearnMoreViewForAccount:account window:window];
 }
 
 - (NSString)lockedNotesModeGroupFooter
 {
-  v3 = [(ICSettingsPasswordViewController *)self hasMultipleAccounts];
-  v4 = [(ICSettingsPasswordViewController *)self bundle];
-  v5 = v4;
-  if (v3)
+  hasMultipleAccounts = [(ICSettingsPasswordViewController *)self hasMultipleAccounts];
+  bundle = [(ICSettingsPasswordViewController *)self bundle];
+  v5 = bundle;
+  if (hasMultipleAccounts)
   {
-    v6 = [v4 localizedStringForKey:@"PW_LOCKED_NOTES_MODE_FOOTER_MULTIPLE_ACCOUNTS" value:@"Choose the method to use to lock notes for your “%@” account." table:@"Settings"];
+    v6 = [bundle localizedStringForKey:@"PW_LOCKED_NOTES_MODE_FOOTER_MULTIPLE_ACCOUNTS" value:@"Choose the method to use to lock notes for your “%@” account." table:@"Settings"];
 
-    v7 = [(ICSettingsPasswordViewController *)self account];
-    v8 = [v7 localizedName];
-    v9 = [NSString localizedStringWithFormat:v6, v8];
+    account = [(ICSettingsPasswordViewController *)self account];
+    localizedName = [account localizedName];
+    v9 = [NSString localizedStringWithFormat:v6, localizedName];
 
     v5 = v6;
   }
 
   else
   {
-    v9 = [v4 localizedStringForKey:@"PW_LOCKED_NOTES_MODE_FOOTER" value:@"Choose the method to use to lock your notes." table:@"Settings"];
+    v9 = [bundle localizedStringForKey:@"PW_LOCKED_NOTES_MODE_FOOTER" value:@"Choose the method to use to lock your notes." table:@"Settings"];
   }
 
   return v9;
@@ -282,50 +282,50 @@ LABEL_8:
 
 - (PSSpecifier)checkedLockedNotesModeSpecifier
 {
-  v3 = [(ICSettingsPasswordViewController *)self account];
-  v4 = [v3 accountData];
-  if ([v4 lockedNotesMode] == 1)
+  account = [(ICSettingsPasswordViewController *)self account];
+  accountData = [account accountData];
+  if ([accountData lockedNotesMode] == 1)
   {
 
 LABEL_3:
-    v5 = [(ICSettingsPasswordViewController *)self lockedNotesModeCustomPasswordSpecifier];
+    lockedNotesModeCustomPasswordSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeCustomPasswordSpecifier];
     goto LABEL_10;
   }
 
-  v6 = [(ICSettingsPasswordViewController *)self account];
-  v7 = [v6 accountData];
-  if ([v7 lockedNotesMode])
+  account2 = [(ICSettingsPasswordViewController *)self account];
+  accountData2 = [account2 accountData];
+  if ([accountData2 lockedNotesMode])
   {
   }
 
   else
   {
-    v8 = [(ICSettingsPasswordViewController *)self account];
-    v9 = [v8 hasPassphraseSet];
+    account3 = [(ICSettingsPasswordViewController *)self account];
+    hasPassphraseSet = [account3 hasPassphraseSet];
 
-    if (v9)
+    if (hasPassphraseSet)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [(ICSettingsPasswordViewController *)self account];
-  v11 = [v10 accountData];
-  v12 = [v11 lockedNotesMode];
+  account4 = [(ICSettingsPasswordViewController *)self account];
+  accountData3 = [account4 accountData];
+  lockedNotesMode = [accountData3 lockedNotesMode];
 
-  if (v12 == 2)
+  if (lockedNotesMode == 2)
   {
-    v5 = [(ICSettingsPasswordViewController *)self lockedNotesModeDevicePasswordSpecifier];
+    lockedNotesModeCustomPasswordSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeDevicePasswordSpecifier];
   }
 
   else
   {
-    v5 = 0;
+    lockedNotesModeCustomPasswordSpecifier = 0;
   }
 
 LABEL_10:
 
-  return v5;
+  return lockedNotesModeCustomPasswordSpecifier;
 }
 
 - (PSSpecifier)lockedNotesModeDevicePasswordSpecifier
@@ -333,8 +333,8 @@ LABEL_10:
   lockedNotesModeDevicePasswordSpecifier = self->_lockedNotesModeDevicePasswordSpecifier;
   if (!lockedNotesModeDevicePasswordSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
-    v5 = [v4 localizedStringForKey:@"PW_LOCKED_NOTES_MODE_DEVICE" value:@"Use Device Passcode" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v5 = [bundle localizedStringForKey:@"PW_LOCKED_NOTES_MODE_DEVICE" value:@"Use Device Passcode" table:@"Settings"];
 
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
     v7 = self->_lockedNotesModeDevicePasswordSpecifier;
@@ -342,8 +342,8 @@ LABEL_10:
 
     [(PSSpecifier *)self->_lockedNotesModeDevicePasswordSpecifier setButtonAction:"setLockedNotesMode:"];
     v8 = self->_lockedNotesModeDevicePasswordSpecifier;
-    v9 = [(ICSettingsPasswordViewController *)self presentedViewController];
-    v10 = [NSNumber numberWithInt:v9 == 0];
+    presentedViewController = [(ICSettingsPasswordViewController *)self presentedViewController];
+    v10 = [NSNumber numberWithInt:presentedViewController == 0];
     [(PSSpecifier *)v8 setProperty:v10 forKey:PSEnabledKey];
 
     [(PSSpecifier *)self->_lockedNotesModeDevicePasswordSpecifier setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
@@ -358,8 +358,8 @@ LABEL_10:
   lockedNotesModeCustomPasswordSpecifier = self->_lockedNotesModeCustomPasswordSpecifier;
   if (!lockedNotesModeCustomPasswordSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
-    v5 = [v4 localizedStringForKey:@"PW_LOCKED_NOTES_MODE_CUSTOM" value:@"Use Custom Password" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v5 = [bundle localizedStringForKey:@"PW_LOCKED_NOTES_MODE_CUSTOM" value:@"Use Custom Password" table:@"Settings"];
 
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
     v7 = self->_lockedNotesModeCustomPasswordSpecifier;
@@ -367,8 +367,8 @@ LABEL_10:
 
     [(PSSpecifier *)self->_lockedNotesModeCustomPasswordSpecifier setButtonAction:"setLockedNotesMode:"];
     v8 = self->_lockedNotesModeCustomPasswordSpecifier;
-    v9 = [(ICSettingsPasswordViewController *)self presentedViewController];
-    v10 = [NSNumber numberWithInt:v9 == 0];
+    presentedViewController = [(ICSettingsPasswordViewController *)self presentedViewController];
+    v10 = [NSNumber numberWithInt:presentedViewController == 0];
     [(PSSpecifier *)v8 setProperty:v10 forKey:PSEnabledKey];
 
     [(PSSpecifier *)self->_lockedNotesModeCustomPasswordSpecifier setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
@@ -378,41 +378,41 @@ LABEL_10:
   return lockedNotesModeCustomPasswordSpecifier;
 }
 
-- (void)setLockedNotesMode:(id)a3
+- (void)setLockedNotesMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(ICSettingsPasswordViewController *)self account];
-  v6 = [v5 accountData];
-  v7 = [v6 lockedNotesMode];
+  modeCopy = mode;
+  account = [(ICSettingsPasswordViewController *)self account];
+  accountData = [account accountData];
+  lockedNotesMode = [accountData lockedNotesMode];
 
-  v8 = [(ICSettingsPasswordViewController *)self lockedNotesModeDevicePasswordSpecifier];
-  if (v8 == v4)
+  lockedNotesModeDevicePasswordSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeDevicePasswordSpecifier];
+  if (lockedNotesModeDevicePasswordSpecifier == modeCopy)
   {
     v10 = 2;
   }
 
   else
   {
-    v9 = [(ICSettingsPasswordViewController *)self lockedNotesModeCustomPasswordSpecifier];
-    v10 = v9 == v4;
+    lockedNotesModeCustomPasswordSpecifier = [(ICSettingsPasswordViewController *)self lockedNotesModeCustomPasswordSpecifier];
+    v10 = lockedNotesModeCustomPasswordSpecifier == modeCopy;
   }
 
-  if (v10 != v7 && v10)
+  if (v10 != lockedNotesMode && v10)
   {
     objc_initWeak(&location, self);
     v11 = +[ICLockedNotesModeMigrator sharedMigrator];
-    v12 = [(ICSettingsPasswordViewController *)self account];
+    account2 = [(ICSettingsPasswordViewController *)self account];
     v13 = objc_loadWeakRetained(&location);
-    v14 = [v13 view];
-    v15 = [v14 window];
+    view = [v13 view];
+    window = [view window];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_59DC;
     v16[3] = &unk_1C800;
     objc_copyWeak(&v17, &location);
     v18 = v10;
-    v19 = v7;
-    [v11 presentBackwardsCompatibilityAlertIfNeededForAccount:v12 mode:v10 window:v15 confirmHandler:v16 cancelHandler:0];
+    v19 = lockedNotesMode;
+    [v11 presentBackwardsCompatibilityAlertIfNeededForAccount:account2 mode:v10 window:window confirmHandler:v16 cancelHandler:0];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -423,16 +423,16 @@ LABEL_10:
 {
   objc_initWeak(&location, self);
   v3 = +[ICLockedNotesModeMigrator sharedMigrator];
-  v4 = [(ICSettingsPasswordViewController *)self account];
-  v5 = [(ICSettingsPasswordViewController *)self view];
-  v6 = [v5 window];
+  account = [(ICSettingsPasswordViewController *)self account];
+  view = [(ICSettingsPasswordViewController *)self view];
+  window = [view window];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_601C;
   v7[3] = &unk_1C878;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  [v3 presentLockedNotesWelcomeMigrationPromptIfSupportedForAccount:v4 window:v6 completionHandler:v7];
+  [v3 presentLockedNotesWelcomeMigrationPromptIfSupportedForAccount:account window:window completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -443,11 +443,11 @@ LABEL_10:
   biometricsGroupSpecifier = self->_biometricsGroupSpecifier;
   if (!biometricsGroupSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
-    v5 = [v4 localizedStringForKey:@"LEARN_MORE" value:@"Learn More…" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v5 = [bundle localizedStringForKey:@"LEARN_MORE" value:@"Learn More…" table:@"Settings"];
 
-    v6 = [(ICSettingsPasswordViewController *)self biometricsGroupFooter];
-    v7 = [NSString stringWithFormat:@"%@ %@", v6, v5];
+    biometricsGroupFooter = [(ICSettingsPasswordViewController *)self biometricsGroupFooter];
+    v7 = [NSString stringWithFormat:@"%@ %@", biometricsGroupFooter, v5];
 
     v8 = [v7 rangeOfString:v5];
     v10 = v9;
@@ -487,15 +487,15 @@ LABEL_10:
   {
     if (+[ICLocalAuthentication biometricsEnrolled]&& [(ICSettingsPasswordViewController *)self hasMultipleAccounts])
     {
-      v3 = [(ICSettingsPasswordViewController *)self bundle];
-      v4 = v3;
+      bundle = [(ICSettingsPasswordViewController *)self bundle];
+      bundle2 = bundle;
       v5 = @"PW_OPTIC_ID_ENROLLED_FOOTER_MULTIPLE_ACCOUNT";
       v6 = @"Use Optic ID to view and manage locked notes in this account.";
       goto LABEL_29;
     }
 
     v7 = +[ICLocalAuthentication biometricsEnrolled];
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
+    bundle2 = [(ICSettingsPasswordViewController *)self bundle];
     if (v7)
     {
       v5 = @"PW_OPTIC_ID_ENROLLED_FOOTER_SINGLE_ACCOUNT";
@@ -513,15 +513,15 @@ LABEL_10:
   {
     if (+[ICLocalAuthentication biometricsEnrolled]&& [(ICSettingsPasswordViewController *)self hasMultipleAccounts])
     {
-      v3 = [(ICSettingsPasswordViewController *)self bundle];
-      v4 = v3;
+      bundle = [(ICSettingsPasswordViewController *)self bundle];
+      bundle2 = bundle;
       v5 = @"PW_FACE_ID_ENROLLED_FOOTER_MULTIPLE_ACCOUNT";
       v6 = @"Use Face ID to view and manage locked notes in this account.";
       goto LABEL_29;
     }
 
     v10 = +[ICLocalAuthentication biometricsEnrolled];
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
+    bundle2 = [(ICSettingsPasswordViewController *)self bundle];
     if (v10)
     {
       v5 = @"PW_FACE_ID_ENROLLED_FOOTER_SINGLE_ACCOUNT";
@@ -543,15 +543,15 @@ LABEL_10:
     {
       if (v9 && [(ICSettingsPasswordViewController *)self hasMultipleAccounts])
       {
-        v3 = [(ICSettingsPasswordViewController *)self bundle];
-        v4 = v3;
+        bundle = [(ICSettingsPasswordViewController *)self bundle];
+        bundle2 = bundle;
         v5 = @"PW_TOUCH_ID_ENROLLED_FOOTER_MULTIPLE_ACCOUNT";
         v6 = @"Use your fingerprint to view locked notes in this account.";
         goto LABEL_29;
       }
 
       v11 = +[ICLocalAuthentication biometricsEnrolled];
-      v4 = [(ICSettingsPasswordViewController *)self bundle];
+      bundle2 = [(ICSettingsPasswordViewController *)self bundle];
       if (v11)
       {
         v5 = @"PW_TOUCH_ID_ENROLLED_FOOTER_SINGLE_ACCOUNT";
@@ -569,15 +569,15 @@ LABEL_10:
     {
       if (v9 && [(ICSettingsPasswordViewController *)self hasMultipleAccounts])
       {
-        v3 = [(ICSettingsPasswordViewController *)self bundle];
-        v4 = v3;
+        bundle = [(ICSettingsPasswordViewController *)self bundle];
+        bundle2 = bundle;
         v5 = @"PW_BIOMETRICS_ENROLLED_FOOTER_MULTIPLE_ACCOUNT";
         v6 = @"Use biometrics to view locked notes in this account.";
         goto LABEL_29;
       }
 
       v12 = +[ICLocalAuthentication biometricsEnrolled];
-      v4 = [(ICSettingsPasswordViewController *)self bundle];
+      bundle2 = [(ICSettingsPasswordViewController *)self bundle];
       if (v12)
       {
         v5 = @"PW_BIOMETRICS_ENROLLED_FOOTER_SINGLE_ACCOUNT";
@@ -592,9 +592,9 @@ LABEL_10:
     }
   }
 
-  v3 = v4;
+  bundle = bundle2;
 LABEL_29:
-  v13 = [v3 localizedStringForKey:v5 value:v6 table:@"Settings"];
+  v13 = [bundle localizedStringForKey:v5 value:v6 table:@"Settings"];
 
   return v13;
 }
@@ -604,8 +604,8 @@ LABEL_29:
   biometricsSwitchSpecifier = self->_biometricsSwitchSpecifier;
   if (!biometricsSwitchSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self biometricsSwitchTitle];
-    v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self set:"setBiometricsSwitchValue:specifier:" get:"biometricsSwitchValue:" detail:0 cell:6 edit:0];
+    biometricsSwitchTitle = [(ICSettingsPasswordViewController *)self biometricsSwitchTitle];
+    v5 = [PSSpecifier preferenceSpecifierNamed:biometricsSwitchTitle target:self set:"setBiometricsSwitchValue:specifier:" get:"biometricsSwitchValue:" detail:0 cell:6 edit:0];
     v6 = self->_biometricsSwitchSpecifier;
     self->_biometricsSwitchSpecifier = v5;
 
@@ -623,16 +623,16 @@ LABEL_29:
 {
   if (+[ICLocalAuthentication biometricsType]== &dword_4)
   {
-    v3 = [(ICSettingsPasswordViewController *)self bundle];
-    v4 = v3;
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v4 = bundle;
     v5 = @"USE_OPTIC_ID_CELL_TITLE";
     v6 = @"Use Optic ID";
   }
 
   else if (+[ICLocalAuthentication biometricsType]== &dword_0 + 2)
   {
-    v3 = [(ICSettingsPasswordViewController *)self bundle];
-    v4 = v3;
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v4 = bundle;
     v5 = @"USE_FACE_ID_CELL_TITLE";
     v6 = @"Use Face ID";
   }
@@ -640,8 +640,8 @@ LABEL_29:
   else
   {
     v7 = +[ICLocalAuthentication biometricsType];
-    v3 = [(ICSettingsPasswordViewController *)self bundle];
-    v4 = v3;
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v4 = bundle;
     if (v7 == &dword_0 + 1)
     {
       v5 = @"USE_TOUCH_ID_CELL_TITLE";
@@ -655,15 +655,15 @@ LABEL_29:
     }
   }
 
-  v8 = [v3 localizedStringForKey:v5 value:v6 table:@"Settings"];
+  v8 = [bundle localizedStringForKey:v5 value:v6 table:@"Settings"];
 
   return v8;
 }
 
 - (BOOL)biometricsSwitchEnabled
 {
-  v2 = [(ICSettingsPasswordViewController *)self presentedViewController];
-  if (v2)
+  presentedViewController = [(ICSettingsPasswordViewController *)self presentedViewController];
+  if (presentedViewController)
   {
     v3 = 0;
   }
@@ -676,16 +676,16 @@ LABEL_29:
   return v3;
 }
 
-- (id)biometricsSwitchValue:(id)a3
+- (id)biometricsSwitchValue:(id)value
 {
   if ([(ICSettingsPasswordViewController *)self biometricsSwitchEnabled])
   {
-    v4 = [(ICSettingsPasswordViewController *)self account];
-    if (v4)
+    account = [(ICSettingsPasswordViewController *)self account];
+    if (account)
     {
       v5 = +[ICAuthenticationState sharedState];
-      v6 = [(ICSettingsPasswordViewController *)self account];
-      v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 biometricsEnabledForAccount:v6]);
+      account2 = [(ICSettingsPasswordViewController *)self account];
+      v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 biometricsEnabledForAccount:account2]);
     }
 
     else
@@ -702,27 +702,27 @@ LABEL_29:
   return v7;
 }
 
-- (void)setBiometricsSwitchValue:(id)a3 specifier:(id)a4
+- (void)setBiometricsSwitchValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(ICSettingsPasswordViewController *)self account];
-  v9 = [ICAuthenticationPrompt promptForIntent:8 object:v8];
+  account = [(ICSettingsPasswordViewController *)self account];
+  v9 = [ICAuthenticationPrompt promptForIntent:8 object:account];
 
   v10 = +[ICAuthentication shared];
-  v11 = [(ICSettingsPasswordViewController *)self view];
-  v12 = [v11 window];
+  view = [(ICSettingsPasswordViewController *)self view];
+  window = [view window];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_6F3C;
   v15[3] = &unk_1C8A0;
   objc_copyWeak(&v18, &location);
-  v13 = v6;
+  v13 = valueCopy;
   v16 = v13;
-  v14 = v7;
+  v14 = specifierCopy;
   v17 = v14;
-  [v10 authenticateWithPrompt:v9 displayWindow:v12 completionHandler:v15];
+  [v10 authenticateWithPrompt:v9 displayWindow:window completionHandler:v15];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -733,8 +733,8 @@ LABEL_29:
   changeCustomPasswordSpecifier = self->_changeCustomPasswordSpecifier;
   if (!changeCustomPasswordSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
-    v5 = [v4 localizedStringForKey:@"CHANGE_PW_BUTTON_TITLE" value:@"Change Password…" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v5 = [bundle localizedStringForKey:@"CHANGE_PW_BUTTON_TITLE" value:@"Change Password…" table:@"Settings"];
 
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:13 edit:0];
     v7 = self->_changeCustomPasswordSpecifier;
@@ -742,8 +742,8 @@ LABEL_29:
 
     [(PSSpecifier *)self->_changeCustomPasswordSpecifier setButtonAction:"didTapChangeCustomPasswordButton:"];
     v8 = self->_changeCustomPasswordSpecifier;
-    v9 = [(ICSettingsPasswordViewController *)self presentedViewController];
-    v10 = [NSNumber numberWithInt:v9 == 0];
+    presentedViewController = [(ICSettingsPasswordViewController *)self presentedViewController];
+    v10 = [NSNumber numberWithInt:presentedViewController == 0];
     [(PSSpecifier *)v8 setProperty:v10 forKey:PSEnabledKey];
 
     changeCustomPasswordSpecifier = self->_changeCustomPasswordSpecifier;
@@ -752,9 +752,9 @@ LABEL_29:
   return changeCustomPasswordSpecifier;
 }
 
-- (void)didTapChangeCustomPasswordButton:(id)a3
+- (void)didTapChangeCustomPasswordButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   objc_initWeak(&location, self);
   v5 = [ICPasswordChangeViewController alloc];
   v22[0] = _NSConcreteStackBlock;
@@ -765,19 +765,19 @@ LABEL_29:
   v6 = [v5 initWithCompletionHandler:v22];
   [v6 setIsInSettings:1];
   v7 = [ICSettingsNavigationController alloc];
-  v8 = [(ICSettingsPasswordViewController *)self navigationController];
-  v9 = -[ICSettingsNavigationController initWithRootViewController:supportedInterfaceOrientations:](v7, "initWithRootViewController:supportedInterfaceOrientations:", v6, [v8 supportedInterfaceOrientations]);
+  navigationController = [(ICSettingsPasswordViewController *)self navigationController];
+  v9 = -[ICSettingsNavigationController initWithRootViewController:supportedInterfaceOrientations:](v7, "initWithRootViewController:supportedInterfaceOrientations:", v6, [navigationController supportedInterfaceOrientations]);
 
   [(ICSettingsNavigationController *)v9 setModalPresentationStyle:2];
-  v10 = [(ICSettingsNavigationController *)v9 presentationController];
-  [v10 setDelegate:self];
+  presentationController = [(ICSettingsNavigationController *)v9 presentationController];
+  [presentationController setDelegate:self];
 
-  v11 = [(ICSettingsPasswordViewController *)self account];
-  v12 = [ICAuthenticationPrompt promptForIntent:5 object:v11];
+  account = [(ICSettingsPasswordViewController *)self account];
+  v12 = [ICAuthenticationPrompt promptForIntent:5 object:account];
 
   v13 = +[ICAuthentication shared];
-  v14 = [(ICSettingsPasswordViewController *)self view];
-  v15 = [v14 window];
+  view = [(ICSettingsPasswordViewController *)self view];
+  window = [view window];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_7420;
@@ -787,7 +787,7 @@ LABEL_29:
   v19 = v16;
   v17 = v9;
   v20 = v17;
-  [v13 authenticateWithPrompt:v12 displayWindow:v15 completionHandler:v18];
+  [v13 authenticateWithPrompt:v12 displayWindow:window completionHandler:v18];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v23);
@@ -799,8 +799,8 @@ LABEL_29:
   setCustomPasswordSpecifier = self->_setCustomPasswordSpecifier;
   if (!setCustomPasswordSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self bundle];
-    v5 = [v4 localizedStringForKey:@"SET_PW_BUTTON_TITLE" value:@"Set Password…" table:@"Settings"];
+    bundle = [(ICSettingsPasswordViewController *)self bundle];
+    v5 = [bundle localizedStringForKey:@"SET_PW_BUTTON_TITLE" value:@"Set Password…" table:@"Settings"];
 
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:13 edit:0];
     v7 = self->_setCustomPasswordSpecifier;
@@ -808,8 +808,8 @@ LABEL_29:
 
     [(PSSpecifier *)self->_setCustomPasswordSpecifier setButtonAction:"didTapSetCustomPasswordButton:"];
     v8 = self->_setCustomPasswordSpecifier;
-    v9 = [(ICSettingsPasswordViewController *)self presentedViewController];
-    v10 = [NSNumber numberWithInt:v9 == 0];
+    presentedViewController = [(ICSettingsPasswordViewController *)self presentedViewController];
+    v10 = [NSNumber numberWithInt:presentedViewController == 0];
     [(PSSpecifier *)v8 setProperty:v10 forKey:PSEnabledKey];
 
     setCustomPasswordSpecifier = self->_setCustomPasswordSpecifier;
@@ -818,9 +818,9 @@ LABEL_29:
   return setCustomPasswordSpecifier;
 }
 
-- (void)didTapSetCustomPasswordButton:(id)a3
+- (void)didTapSetCustomPasswordButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   objc_initWeak(&location, self);
   v5 = [ICPasswordChangeViewController alloc];
   v13 = _NSConcreteStackBlock;
@@ -831,19 +831,19 @@ LABEL_29:
   v6 = [v5 initWithCompletionHandler:&v13];
   [v6 setIsInSettings:{1, v13, v14, v15, v16}];
   [v6 setIsSettingInitialPassword:1];
-  v7 = [(ICSettingsPasswordViewController *)self account];
-  [v6 setUpForAddingPasswordWithAccount:v7];
+  account = [(ICSettingsPasswordViewController *)self account];
+  [v6 setUpForAddingPasswordWithAccount:account];
 
   v8 = [ICSettingsNavigationController alloc];
-  v9 = [(ICSettingsPasswordViewController *)self navigationController];
-  v10 = -[ICSettingsNavigationController initWithRootViewController:supportedInterfaceOrientations:](v8, "initWithRootViewController:supportedInterfaceOrientations:", v6, [v9 supportedInterfaceOrientations]);
+  navigationController = [(ICSettingsPasswordViewController *)self navigationController];
+  v10 = -[ICSettingsNavigationController initWithRootViewController:supportedInterfaceOrientations:](v8, "initWithRootViewController:supportedInterfaceOrientations:", v6, [navigationController supportedInterfaceOrientations]);
 
   [(ICSettingsNavigationController *)v10 setModalPresentationStyle:2];
-  v11 = [(ICSettingsNavigationController *)v10 presentationController];
-  [v11 setDelegate:self];
+  presentationController = [(ICSettingsNavigationController *)v10 presentationController];
+  [presentationController setDelegate:self];
 
-  v12 = [(ICSettingsPasswordViewController *)self navigationController];
-  [v12 presentViewController:v10 animated:1 completion:0];
+  navigationController2 = [(ICSettingsPasswordViewController *)self navigationController];
+  [navigationController2 presentViewController:v10 animated:1 completion:0];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -854,16 +854,16 @@ LABEL_29:
   resetCustomPasswordGroupSpecifier = self->_resetCustomPasswordGroupSpecifier;
   if (!resetCustomPasswordGroupSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self account];
-    v5 = [ICAuthenticationAlert resetCustomPasswordInfoAlertWithAccount:v4];
+    account = [(ICSettingsPasswordViewController *)self account];
+    v5 = [ICAuthenticationAlert resetCustomPasswordInfoAlertWithAccount:account];
 
     v6 = +[PSSpecifier emptyGroupSpecifier];
     v7 = self->_resetCustomPasswordGroupSpecifier;
     self->_resetCustomPasswordGroupSpecifier = v6;
 
     v8 = self->_resetCustomPasswordGroupSpecifier;
-    v9 = [v5 message];
-    [(PSSpecifier *)v8 setProperty:v9 forKey:PSFooterTextGroupKey];
+    message = [v5 message];
+    [(PSSpecifier *)v8 setProperty:message forKey:PSFooterTextGroupKey];
 
     resetCustomPasswordGroupSpecifier = self->_resetCustomPasswordGroupSpecifier;
   }
@@ -876,19 +876,19 @@ LABEL_29:
   resetCustomPasswordSpecifier = self->_resetCustomPasswordSpecifier;
   if (!resetCustomPasswordSpecifier)
   {
-    v4 = [(ICSettingsPasswordViewController *)self account];
-    v5 = [ICAuthenticationAlert resetCustomPasswordConfirmationAlertWithAccount:v4];
+    account = [(ICSettingsPasswordViewController *)self account];
+    v5 = [ICAuthenticationAlert resetCustomPasswordConfirmationAlertWithAccount:account];
 
-    v6 = [v5 actionTitle];
-    v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
+    actionTitle = [v5 actionTitle];
+    v7 = [PSSpecifier preferenceSpecifierNamed:actionTitle target:self set:0 get:0 detail:0 cell:13 edit:0];
     v8 = self->_resetCustomPasswordSpecifier;
     self->_resetCustomPasswordSpecifier = v7;
 
     [(PSSpecifier *)self->_resetCustomPasswordSpecifier setButtonAction:"didTapResetCustomPasswordButton:"];
     [(PSSpecifier *)self->_resetCustomPasswordSpecifier setProperty:objc_opt_class() forKey:PSCellClassKey];
     v9 = self->_resetCustomPasswordSpecifier;
-    v10 = [(ICSettingsPasswordViewController *)self presentedViewController];
-    v11 = [NSNumber numberWithInt:v10 == 0];
+    presentedViewController = [(ICSettingsPasswordViewController *)self presentedViewController];
+    v11 = [NSNumber numberWithInt:presentedViewController == 0];
     [(PSSpecifier *)v9 setProperty:v11 forKey:PSEnabledKey];
 
     resetCustomPasswordSpecifier = self->_resetCustomPasswordSpecifier;
@@ -897,43 +897,43 @@ LABEL_29:
   return resetCustomPasswordSpecifier;
 }
 
-- (void)didTapResetCustomPasswordButton:(id)a3
+- (void)didTapResetCustomPasswordButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   objc_initWeak(&location, self);
-  v5 = [(ICSettingsPasswordViewController *)self account];
-  v6 = [ICAuthenticationPrompt promptForIntent:6 object:v5];
+  account = [(ICSettingsPasswordViewController *)self account];
+  v6 = [ICAuthenticationPrompt promptForIntent:6 object:account];
 
   v7 = +[ICAuthentication shared];
-  v8 = [(ICSettingsPasswordViewController *)self view];
-  v9 = [v8 window];
+  view = [(ICSettingsPasswordViewController *)self view];
+  window = [view window];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_7C10;
   v10[3] = &unk_1C828;
   objc_copyWeak(&v11, &location);
-  [v7 authenticateWithPrompt:v6 displayWindow:v9 completionHandler:v10];
+  [v7 authenticateWithPrompt:v6 displayWindow:window completionHandler:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)resetCustomPasswordForAccount:(id)a3
+- (void)resetCustomPasswordForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   objc_initWeak(&location, self);
   v5 = +[ICLockedNotesModeMigrator sharedMigrator];
-  v6 = [(ICSettingsPasswordViewController *)self view];
-  v7 = [v6 window];
+  view = [(ICSettingsPasswordViewController *)self view];
+  window = [view window];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_801C;
   v9[3] = &unk_1C8F0;
-  v8 = v4;
+  v8 = accountCopy;
   v10 = v8;
   objc_copyWeak(&v12, &location);
-  v11 = self;
-  [v5 presentLockedNotesSwitchMigrationPromptIfSupportedForAccount:v8 window:v7 completionHandler:v9];
+  selfCopy = self;
+  [v5 presentLockedNotesSwitchMigrationPromptIfSupportedForAccount:v8 window:window completionHandler:v9];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

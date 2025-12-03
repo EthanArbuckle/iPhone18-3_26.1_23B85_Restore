@@ -10,8 +10,8 @@
   v4[1] = 3221225472;
   v4[2] = __74__CATextLayer_MTCoreMaterialVisualStylingAdditions__mt_applyVisualStying___block_invoke;
   v4[3] = &unk_1E80BDBB8;
-  v4[4] = a1;
-  return [a3 _applyToLayer:a1 withColorBlock:v4];
+  v4[4] = self;
+  return [a3 _applyToLayer:self withColorBlock:v4];
 }
 
 @end

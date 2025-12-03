@@ -1,9 +1,9 @@
 @interface NSSelfExpression
 + (void)initialize;
-- (NSSelfExpression)initWithCoder:(id)a3;
+- (NSSelfExpression)initWithCoder:(id)coder;
 - (id)_initPrivate;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)expressionValueWithObject:(id)object context:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSelfExpression
@@ -12,7 +12,7 @@
 {
   if (!_NSSelfExpressionSingleton)
   {
-    v2 = NSAllocateObject(a1, 0, 0);
+    v2 = NSAllocateObject(self, 0, 0);
     _NSSelfExpressionSingleton = v2;
 
     [v2 _initPrivate];
@@ -27,22 +27,22 @@
   return [(NSExpression *)&v3 initWithExpressionType:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSSelfExpression;
-  [(NSExpression *)&v5 encodeWithCoder:a3];
+  [(NSExpression *)&v5 encodeWithCoder:coder];
 }
 
-- (NSSelfExpression)initWithCoder:(id)a3
+- (NSSelfExpression)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -51,16 +51,16 @@
   return _NSSelfExpressionSingleton;
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
-  if (_NSPredicateUtilities == a3)
+  if (_NSPredicateUtilities == object)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return object;
   }
 }
 

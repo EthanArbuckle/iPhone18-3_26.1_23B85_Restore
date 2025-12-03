@@ -1,44 +1,44 @@
 @interface AAUIDTOHelper
-+ (BOOL)_shouldAllowOpForRatchetState:(id)a3;
-- (AAUIDTOHelper)initWithDTOController:(id)a3;
-- (id)_makeOpNotAllowedAlertForAddCustodian:(BOOL)a3;
++ (BOOL)_shouldAllowOpForRatchetState:(id)state;
+- (AAUIDTOHelper)initWithDTOController:(id)controller;
+- (id)_makeOpNotAllowedAlertForAddCustodian:(BOOL)custodian;
 - (id)makeGenericRatchetFailedAlert;
-- (id)makeRatchetContextWithPresentationContext:(id)a3 DTOContextType:(int64_t)a4 fallbackToNoAuth:(BOOL)a5 notInteractive:(BOOL)a6;
-- (void)shouldAllowOpForContext:(id)a3 completion:(id)a4;
+- (id)makeRatchetContextWithPresentationContext:(id)context DTOContextType:(int64_t)type fallbackToNoAuth:(BOOL)auth notInteractive:(BOOL)interactive;
+- (void)shouldAllowOpForContext:(id)context completion:(id)completion;
 @end
 
 @implementation AAUIDTOHelper
 
-- (AAUIDTOHelper)initWithDTOController:(id)a3
+- (AAUIDTOHelper)initWithDTOController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AAUIDTOHelper;
   v6 = [(AAUIDTOHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
 }
 
-+ (BOOL)_shouldAllowOpForRatchetState:(id)a3
++ (BOOL)_shouldAllowOpForRatchetState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 rawState] == 3 || objc_msgSend(v3, "rawState") == 4;
+  stateCopy = state;
+  v4 = [stateCopy rawState] == 3 || objc_msgSend(stateCopy, "rawState") == 4;
 
   return v4;
 }
 
-- (id)makeRatchetContextWithPresentationContext:(id)a3 DTOContextType:(int64_t)a4 fallbackToNoAuth:(BOOL)a5 notInteractive:(BOOL)a6
+- (id)makeRatchetContextWithPresentationContext:(id)context DTOContextType:(int64_t)type fallbackToNoAuth:(BOOL)auth notInteractive:(BOOL)interactive
 {
-  v41 = a5;
-  v42 = a6;
+  authCopy = auth;
+  interactiveCopy = interactive;
   v45[11] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AAE8];
-  v43 = a3;
+  contextCopy = context;
   v8 = [v7 bundleForClass:objc_opt_class()];
   v40 = [v8 localizedStringForKey:@"BIOMETRIC_RATCHET_FALLBACK_TEXT" value:&stru_1F447F790 table:@"Localizable"];
 
@@ -50,14 +50,14 @@
   v13 = @"BIOMETRIC_RATCHET_CALLOUT_REASON";
   v14 = @"BIOMETRIC_RATCHET_COUNTDOWN_TEXT";
   v15 = @"BIOMETRIC_RATCHET_BEGIN_RATCHET_TITLE";
-  if (a4 == 2)
+  if (type == 2)
   {
     v15 = @"BIOMETRIC_RATCHET_BEGIN_RATCHET_TITLE_DELETE_RC";
     v14 = @"BIOMETRIC_RATCHET_COUNTDOWN_TEXT_DELETE_RC";
     v13 = @"BIOMETRIC_RATCHET_CALLOUT_REASON_DELETE";
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v16 = @"BIOMETRIC_RATCHET_BEGIN_RATCHET_TITLE_ADD_RC";
   }
@@ -67,7 +67,7 @@
     v16 = v15;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v17 = @"BIOMETRIC_RATCHET_COUNTDOWN_TEXT_ADD_RC";
   }
@@ -77,7 +77,7 @@
     v17 = v14;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v18 = @"BIOMETRIC_RATCHET_CALLOUT_REASON_ADD";
   }
@@ -104,7 +104,7 @@
   v25 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=APPLE_ACCOUNT&aaaction=accountRecovery"];
   v26 = v25;
   v27 = *MEMORY[0x1E698DE28];
-  if (v41)
+  if (authCopy)
   {
     v28 = @"YES";
   }
@@ -137,7 +137,7 @@
   v35 = *MEMORY[0x1E698DE38];
   v44[9] = v34;
   v44[10] = v35;
-  if (v42)
+  if (interactiveCopy)
   {
     v36 = @"YES";
   }
@@ -150,24 +150,24 @@
   v45[10] = v36;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:11];
 
-  v38 = [objc_alloc(MEMORY[0x1E698DEB0]) initWithAttributes:v37 presentationContext:v43];
+  v38 = [objc_alloc(MEMORY[0x1E698DEB0]) initWithAttributes:v37 presentationContext:contextCopy];
 
   return v38;
 }
 
-- (void)shouldAllowOpForContext:(id)a3 completion:(id)a4
+- (void)shouldAllowOpForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   controller = self->_controller;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__AAUIDTOHelper_shouldAllowOpForContext_completion___block_invoke;
   v11[3] = &unk_1E820D260;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v9 = contextCopy;
+  v10 = completionCopy;
   [(AKBiometricRatchetController *)controller armWithContext:v9 completion:v11];
 }
 
@@ -217,14 +217,14 @@ LABEL_13:
 LABEL_15:
 }
 
-- (id)_makeOpNotAllowedAlertForAddCustodian:(BOOL)a3
+- (id)_makeOpNotAllowedAlertForAddCustodian:(BOOL)custodian
 {
-  v3 = a3;
+  custodianCopy = custodian;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"RATCHET_RC_EDIT_NOT_ALLOWED_ALERT_BUTTON" value:&stru_1F447F790 table:@"Localizable"];
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  if (v3)
+  if (custodianCopy)
   {
     v7 = [MEMORY[0x1E69DC938] modelSpecificLocalizedStringKeyForKey:@"RATCHET_RC_ADD_NOT_ALLOWED_ALERT_TITLE"];
     v8 = [v6 localizedStringForKey:v7 value:&stru_1F447F790 table:@"Localizable"];

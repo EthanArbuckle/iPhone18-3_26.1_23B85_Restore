@@ -8,7 +8,7 @@
 
 - (char)_init
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_284626C88;
   result = objc_msgSendSuper2(&v2, sel_init);
   if (result)
@@ -23,7 +23,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -69,7 +69,7 @@ LABEL_9:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 stringWithFormat:@"%@, event type %d, value %d", v4, objc_msgSend(a1, "eventType"), objc_msgSend(a1, "value")];
+  v5 = [v2 stringWithFormat:@"%@, event type %d, value %d", v4, objc_msgSend(self, "eventType"), objc_msgSend(self, "value")];
 
   return v5;
 }

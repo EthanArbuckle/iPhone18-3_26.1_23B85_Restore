@@ -1,20 +1,20 @@
 @interface MemoryResourceException
-+ (id)resourceExceptionFromLogFileHandle:(id)a3 error:(id *)a4;
-+ (id)resourceExceptionFromTask:(unsigned int)a3 error:(id *)a4;
-+ (void)extractExecNameAndBundleIDMinimal:(unsigned int)a3 execNameOut:(id *)a4 bundleIDOut:(id *)a5;
++ (id)resourceExceptionFromLogFileHandle:(id)handle error:(id *)error;
++ (id)resourceExceptionFromTask:(unsigned int)task error:(id *)error;
++ (void)extractExecNameAndBundleIDMinimal:(unsigned int)minimal execNameOut:(id *)out bundleIDOut:(id *)dOut;
 - (BOOL)isFirstParty;
 - (id)_symbolOwners;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createLiteMetaDataDict;
 - (id)createMetaDataDict;
-- (id)prettyPrintBacktrace:(BOOL)a3;
+- (id)prettyPrintBacktrace:(BOOL)backtrace;
 - (id)prettyPrintBinaryImages;
 - (id)prettyPrintIOAccelMemoryInfo;
 - (id)prettyPrintIOSurfaceInfo;
-- (int64_t)_saveLogFileWithHandle:(id)a3 error:(id *)a4;
-- (void)_populateAddtionalMetadataWithOptions:(unint64_t)a3 timeoutSecs:(unint64_t)a4;
+- (int64_t)_saveLogFileWithHandle:(id)handle error:(id *)error;
+- (void)_populateAddtionalMetadataWithOptions:(unint64_t)options timeoutSecs:(unint64_t)secs;
 - (void)dealloc;
-- (void)populateAdditionalMetadataWithDiagnostics:(BOOL)a3;
+- (void)populateAdditionalMetadataWithDiagnostics:(BOOL)diagnostics;
 - (void)releaseAnalyzedTask;
 @end
 
@@ -221,30 +221,30 @@
   return v26;
 }
 
-- (id)prettyPrintBacktrace:(BOOL)a3
+- (id)prettyPrintBacktrace:(BOOL)backtrace
 {
-  v3 = a3;
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  backtraceCopy = backtrace;
+  array = [MEMORY[0x29EDB8DE8] array];
   v6 = [(NSDictionary *)self->_executionStack objectForKeyedSubscript:qword_2A13A5500];
   v42 = [(NSDictionary *)self->_executionStack objectForKeyedSubscript:qword_2A13A5508];
   v50 = [(NSDictionary *)self->_executionStack objectForKeyedSubscript:qword_2A13A5518];
   v7 = [(NSDictionary *)self->_executionStack objectForKeyedSubscript:qword_2A13A5510];
-  if (v3)
+  if (backtraceCopy)
   {
-    v46 = [(MemoryResourceException *)self _symbolOwners];
+    _symbolOwners = [(MemoryResourceException *)self _symbolOwners];
   }
 
   else
   {
-    v46 = 0;
+    _symbolOwners = 0;
   }
 
   if ([v6 count])
   {
     v8 = 0;
-    v48 = v5;
+    v48 = array;
     v49 = *MEMORY[0x29EDC0E58];
-    v51 = self;
+    selfCopy = self;
     v40 = v7;
     v41 = v6;
     while (1)
@@ -254,16 +254,16 @@
       if ([v9 length])
       {
         v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Thread %d name:  %@", v8, v9];
-        [v5 addObject:v10];
+        [array addObject:v10];
       }
 
       v11 = MEMORY[0x29EDBA0F8];
       v43 = v9;
       if (v7)
       {
-        v12 = [v7 integerValue];
+        integerValue = [v7 integerValue];
         v13 = &stru_2A1E8FC50;
-        if (v12 == v8)
+        if (integerValue == v8)
         {
           v13 = @" Attributed";
         }
@@ -275,7 +275,7 @@
       }
 
       v14 = [v11 stringWithFormat:@"Thread %d%@:", v8, v13];
-      [v5 addObject:v14];
+      [array addObject:v14];
 
       v45 = v8;
       v15 = [v6 objectAtIndex:v8];
@@ -285,7 +285,7 @@
       }
 
 LABEL_42:
-      [v5 addObject:&stru_2A1E8FC50];
+      [array addObject:&stru_2A1E8FC50];
 
       objc_autoreleasePoolPop(context);
       v8 = v45 + 1;
@@ -303,7 +303,7 @@ LABEL_42:
     {
       v17 = [v15 objectAtIndex:v16];
       v18 = [v17 objectForKey:qword_2A13A54D8];
-      v53 = [v18 unsignedLongLongValue];
+      unsignedLongLongValue = [v18 unsignedLongLongValue];
 
       v19 = [v17 objectForKeyedSubscript:qword_2A13A54F8];
       if (!v19)
@@ -340,59 +340,59 @@ LABEL_21:
       }
 
       v26 = [v21 objectForKey:@"StartAddress"];
-      v27 = [v26 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v26 unsignedLongLongValue];
 
       v28 = [v17 objectForKey:qword_2A13A54E8];
       v29 = [v17 objectForKey:qword_2A13A54E0];
-      v30 = [v29 unsignedLongLongValue];
+      unsignedLongLongValue3 = [v29 unsignedLongLongValue];
 
       if (!v28)
       {
         if (v19)
         {
-          v31 = [v46 objectForKeyedSubscript:v19];
-          v32 = [v31 bytes];
+          v31 = [_symbolOwners objectForKeyedSubscript:v19];
+          bytes = [v31 bytes];
 
-          if (v32)
+          if (bytes)
           {
-            v33 = *v32;
-            v34 = v32[1];
+            v33 = *bytes;
+            v34 = bytes[1];
           }
         }
 
-        if (CSIsNull() & 1) != 0 || (v47 = v27 - CSSymbolOwnerGetBaseAddress(), CSSymbolOwnerGetSymbolWithAddress(), (CSIsNull()) || (Name = CSSymbolGetName()) == 0 || ([MEMORY[0x29EDBA0F8] stringWithUTF8String:Name], v28 = objc_claimAutoreleasedReturnValue(), v30 = CSSymbolGetRange() + v47, !v28))
+        if (CSIsNull() & 1) != 0 || (v47 = unsignedLongLongValue2 - CSSymbolOwnerGetBaseAddress(), CSSymbolOwnerGetSymbolWithAddress(), (CSIsNull()) || (Name = CSSymbolGetName()) == 0 || ([MEMORY[0x29EDBA0F8] stringWithUTF8String:Name], v28 = objc_claimAutoreleasedReturnValue(), unsignedLongLongValue3 = CSSymbolGetRange() + v47, !v28))
         {
           v28 = @"???";
         }
 
-        v5 = v48;
+        array = v48;
       }
 
-      is64Bit = v51->_is64Bit;
-      if (v30)
+      is64Bit = selfCopy->_is64Bit;
+      if (unsignedLongLongValue3)
       {
-        if (v51->_is64Bit)
+        if (selfCopy->_is64Bit)
         {
-          [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#018qx %@ + %qd%@", v16, v25, v53, v28, v53 - v30, &stru_2A1E8FC50];
+          [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#018qx %@ + %qd%@", v16, v25, unsignedLongLongValue, v28, unsignedLongLongValue - unsignedLongLongValue3, &stru_2A1E8FC50];
         }
 
         else
         {
-          [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#010lx %@ + %ld%@", v16, v25, v53, v28, v53 - v30, &stru_2A1E8FC50];
+          [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#010lx %@ + %ld%@", v16, v25, unsignedLongLongValue, v28, unsignedLongLongValue - unsignedLongLongValue3, &stru_2A1E8FC50];
         }
       }
 
-      else if (v51->_is64Bit)
+      else if (selfCopy->_is64Bit)
       {
-        [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#018qx %#qx + %qd%@", v16, v25, v53, v27, v53 - v27, &stru_2A1E8FC50];
+        [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#018qx %#qx + %qd%@", v16, v25, unsignedLongLongValue, unsignedLongLongValue2, unsignedLongLongValue - unsignedLongLongValue2, &stru_2A1E8FC50];
       }
 
       else
       {
-        [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#010lx %#lx + %ld%@", v16, v25, v53, v27, v53 - v27, &stru_2A1E8FC50];
+        [MEMORY[0x29EDBA0F8] stringWithFormat:@"%-3d %@\t%#010lx %#lx + %ld%@", v16, v25, unsignedLongLongValue, unsignedLongLongValue2, unsignedLongLongValue - unsignedLongLongValue2, &stru_2A1E8FC50];
       }
       v37 = ;
-      [v5 addObject:v37];
+      [array addObject:v37];
 
       ++v16;
       v15 = v52;
@@ -408,9 +408,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  [v5 addObject:@"Backtrace not available"];
+  [array addObject:@"Backtrace not available"];
 LABEL_45:
-  v38 = [v5 componentsJoinedByString:@"\n"];
+  v38 = [array componentsJoinedByString:@"\n"];
 
   return v38;
 }
@@ -458,18 +458,18 @@ LABEL_45:
             v12 = [v9 objectForKey:v35];
             v13 = [v12 stringByReplacingOccurrencesOfString:@"-" withString:&stru_2A1E8FC50];
 
-            v14 = [v13 lowercaseString];
+            lowercaseString = [v13 lowercaseString];
 
-            if (v14)
+            if (lowercaseString)
             {
-              v15 = [v11 unsignedLongLongValue];
+              unsignedLongLongValue = [v11 unsignedLongLongValue];
               v16 = [v9 objectForKey:v31];
               v17 = [v9 objectForKey:@"Size"];
               v37 = v10;
-              v18 = [v17 unsignedLongLongValue];
+              unsignedLongLongValue2 = [v17 unsignedLongLongValue];
 
               v36 = MEMORY[0x29EDBA0F8];
-              v19 = v15 + v18 - 1;
+              v19 = unsignedLongLongValue + unsignedLongLongValue2 - 1;
               v20 = v6;
               if (v16)
               {
@@ -485,7 +485,7 @@ LABEL_45:
               v23 = [v9 objectForKey:v30];
               v28 = v21;
               v6 = v20;
-              v24 = [v36 stringWithFormat:@"%p - %p %@ %@  <%@> %@", v15, v19, v28, v22, v14, v23];
+              v24 = [v36 stringWithFormat:@"%p - %p %@ %@  <%@> %@", unsignedLongLongValue, v19, v28, v22, lowercaseString, v23];
               [v32 addObject:v24];
 
               v5 = v33;
@@ -524,10 +524,10 @@ LABEL_45:
   v37 = *MEMORY[0x29EDCA608];
   if (self->_ioSurfaceInfo)
   {
-    v3 = [MEMORY[0x29EDBA050] string];
+    string = [MEMORY[0x29EDBA050] string];
     v4 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"IOSurface info for %@ [%d] (Count: %lu):\n", self->_execName, self->_pid, -[NSArray count](self->_ioSurfaceInfo, "count")];
-    v26 = v3;
-    [v3 appendString:v4];
+    v26 = string;
+    [string appendString:v4];
 
     v34 = 0u;
     v35 = 0u;
@@ -558,12 +558,12 @@ LABEL_45:
         v11 = [v6 objectForKeyedSubscript:qword_2A13A5540];
         v12 = [v6 objectForKeyedSubscript:qword_2A13A5528];
         v30 = v10;
-        v13 = [v10 unsignedIntValue];
-        v14 = v13;
-        v15 = HIBYTE(v13);
-        if ((v13 & 0x80000000) != 0)
+        unsignedIntValue = [v10 unsignedIntValue];
+        v14 = unsignedIntValue;
+        v15 = HIBYTE(unsignedIntValue);
+        if ((unsignedIntValue & 0x80000000) != 0)
         {
-          if (__maskrune(HIBYTE(v13), 0x800uLL))
+          if (__maskrune(HIBYTE(unsignedIntValue), 0x800uLL))
           {
 LABEL_9:
             __str[0] = v15;
@@ -583,14 +583,14 @@ LABEL_9:
         snprintf(__str, 5uLL, "%4d", v14);
 LABEL_12:
         v16 = MEMORY[0x29EDBA0F8];
-        v17 = [v7 intValue];
+        intValue = [v7 intValue];
         v29 = v7;
-        v18 = [v8 intValue];
+        intValue2 = [v8 intValue];
         v28 = v8;
-        v19 = [v9 intValue];
+        intValue3 = [v9 intValue];
         [v11 unsignedLongLongValue];
         v20 = NSLocalizedFileSizeDescription();
-        v21 = [v16 stringWithFormat:@"  Surface ID: %08x, dims: %4d x %4d, fmt: %s, size: %7s, name: %-40.40s\n", v17, v18, v19, __str, objc_msgSend(v20, "UTF8String"), objc_msgSend(v12, "UTF8String")];
+        v21 = [v16 stringWithFormat:@"  Surface ID: %08x, dims: %4d x %4d, fmt: %s, size: %7s, name: %-40.40s\n", intValue, intValue2, intValue3, __str, objc_msgSend(v20, "UTF8String"), objc_msgSend(v12, "UTF8String")];
 
         [v26 appendString:v21];
       }
@@ -618,13 +618,13 @@ LABEL_16:
   ioAccelMemoryInfo = self->_ioAccelMemoryInfo;
   if (ioAccelMemoryInfo && [(NSArray *)ioAccelMemoryInfo count])
   {
-    v4 = [MEMORY[0x29EDBA050] string];
+    string = [MEMORY[0x29EDBA050] string];
     v5 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"IOAccel Memory info for %@ [%d] (Count: %lu):\n", self->_execName, self->_pid, -[NSArray count](self->_ioAccelMemoryInfo, "count")];
-    [v4 appendString:v5];
+    [string appendString:v5];
 
     v6 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%s %s %s %s %s %s\n", "Size      ", "Resident  ", "Dirty     ", "IOSurfaceID", "     State", "Description"];
-    v35 = v4;
-    [v4 appendString:v6];
+    v35 = string;
+    [string appendString:v6];
 
     v7 = [@"\n" stringByPaddingToLength:57 withString:@" " startingAtIndex:0];
     [(NSArray *)self->_ioAccelMemoryInfo sortedArrayUsingComparator:&unk_2A1E8F950];
@@ -665,13 +665,13 @@ LABEL_16:
             v43 = @"-";
           }
 
-          v16 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
           v17 = @"Wired";
-          if ((v16 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
-            v18 = [v14 BOOLValue];
+            bOOLValue2 = [v14 BOOLValue];
             v17 = @"Normal";
-            if (v18)
+            if (bOOLValue2)
             {
               v17 = @"Purgeable";
             }
@@ -681,7 +681,7 @@ LABEL_16:
           v44 = v14;
           v45 = v13;
           v46 = v12;
-          v19 = [MEMORY[0x29EDBA050] string];
+          string2 = [MEMORY[0x29EDBA050] string];
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
@@ -705,10 +705,10 @@ LABEL_16:
                 v26 = *(*(&v49 + 1) + 8 * i);
                 if ((v24 & 1) == 0)
                 {
-                  [v19 appendString:v7];
+                  [string2 appendString:v7];
                 }
 
-                [v19 appendString:v26];
+                [string2 appendString:v26];
                 v24 = 0;
               }
 
@@ -722,15 +722,15 @@ LABEL_16:
           v39 = MEMORY[0x29EDBA0F8];
           [v10 unsignedLongLongValue];
           v38 = NSLocalizedFileSizeDescription();
-          v37 = [v38 UTF8String];
+          uTF8String = [v38 UTF8String];
           [v11 unsignedLongLongValue];
           NSLocalizedFileSizeDescription();
           v27 = v41 = v10;
-          v28 = [v27 UTF8String];
+          uTF8String2 = [v27 UTF8String];
           [v48 unsignedLongLongValue];
           NSLocalizedFileSizeDescription();
           v29 = v40 = v11;
-          v30 = [v39 stringWithFormat:@"%-*s %-*s %-*s %*s %*s %s\n", 10, v37, 10, v28, 10, objc_msgSend(v29, "UTF8String"), 11, -[__CFString UTF8String](v43, "UTF8String"), 10, -[__CFString UTF8String](v42, "UTF8String"), objc_msgSend(v19, "UTF8String")];
+          v30 = [v39 stringWithFormat:@"%-*s %-*s %-*s %*s %*s %s\n", 10, uTF8String, 10, uTF8String2, 10, objc_msgSend(v29, "UTF8String"), 11, -[__CFString UTF8String](v43, "UTF8String"), 10, -[__CFString UTF8String](v42, "UTF8String"), objc_msgSend(string2, "UTF8String")];
 
           [v35 appendString:v30];
           v8 = v47 + 1;
@@ -774,11 +774,11 @@ LABEL_16:
   return v3;
 }
 
-- (int64_t)_saveLogFileWithHandle:(id)a3 error:(id *)a4
+- (int64_t)_saveLogFileWithHandle:(id)handle error:(id *)error
 {
   v19[1] = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  if (v6)
+  handleCopy = handle;
+  if (handleCopy)
   {
     memoryGraph = self->_memoryGraph;
     if (memoryGraph)
@@ -786,7 +786,7 @@ LABEL_16:
       v8 = [(VMUProcessObjectGraph *)memoryGraph plistRepresentationWithOptions:1];
       if (v8)
       {
-        v9 = [MEMORY[0x29EDBA0C0] propertyListWithData:v8 options:1 format:0 error:a4];
+        v9 = [MEMORY[0x29EDBA0C0] propertyListWithData:v8 options:1 format:0 error:error];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -794,13 +794,13 @@ LABEL_16:
           {
             v10 = 0;
 LABEL_17:
-            v13 = [(MemoryResourceException *)self createMetaDataDict];
-            [v9 setObject:v13 forKeyedSubscript:qword_2A13A53B8];
+            createMetaDataDict = [(MemoryResourceException *)self createMetaDataDict];
+            [v9 setObject:createMetaDataDict forKeyedSubscript:qword_2A13A53B8];
 
-            v14 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:v9 format:200 options:0 error:a4];
+            v14 = [MEMORY[0x29EDBA0C0] dataWithPropertyList:v9 format:200 options:0 error:error];
             if (v14)
             {
-              [v6 writeData:v14];
+              [handleCopy writeData:v14];
             }
 
             else
@@ -838,14 +838,14 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = MEMORY[0x29EDB9FA0];
     v12 = MREErrorDomain;
     v18 = *MEMORY[0x29EDB9ED8];
     v19[0] = @"File handle is nil";
     v9 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    *a4 = [v11 errorWithDomain:v12 code:2 userInfo:v9];
+    *error = [v11 errorWithDomain:v12 code:2 userInfo:v9];
     v10 = 2;
 LABEL_21:
 
@@ -867,12 +867,12 @@ LABEL_22:
   [(MemoryResourceException *)&v3 dealloc];
 }
 
-+ (id)resourceExceptionFromTask:(unsigned int)a3 error:(id *)a4
++ (id)resourceExceptionFromTask:(unsigned int)task error:(id *)error
 {
   v59 = *MEMORY[0x29EDCA608];
-  if (a3 - 1 >= 0xFFFFFFFE)
+  if (task - 1 >= 0xFFFFFFFE)
   {
-    if (a4)
+    if (error)
     {
       v7 = MEMORY[0x29EDB9FA0];
       v8 = MREErrorDomain;
@@ -884,16 +884,16 @@ LABEL_22:
   }
 
   v6 = MEMORY[0x29EDCA6B0];
-  if (mach_port_mod_refs(*MEMORY[0x29EDCA6B0], a3, 0, 1))
+  if (mach_port_mod_refs(*MEMORY[0x29EDCA6B0], task, 0, 1))
   {
-    if (a4)
+    if (error)
     {
       v7 = MEMORY[0x29EDB9FA0];
       v8 = MREErrorDomain;
       v9 = 3;
 LABEL_7:
       [v7 errorWithDomain:v8 code:v9 userInfo:0];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       goto LABEL_13;
     }
 
@@ -901,14 +901,14 @@ LABEL_7:
   }
 
   suspend_token = 0;
-  if (task_suspend2(a3, &suspend_token))
+  if (task_suspend2(task, &suspend_token))
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x29EDB9FA0] errorWithDomain:MREErrorDomain code:3 userInfo:0];
+      *error = [MEMORY[0x29EDB9FA0] errorWithDomain:MREErrorDomain code:3 userInfo:0];
     }
 
-    mach_port_mod_refs(*v6, a3, 0, -1);
+    mach_port_mod_refs(*v6, task, 0, -1);
     goto LABEL_12;
   }
 
@@ -926,7 +926,7 @@ LABEL_12:
   if (v15)
   {
     *(v15 + 136) = 1;
-    *(v15 + 20) = a3;
+    *(v15 + 20) = task;
     *(v15 + 24) = v14;
     if (qword_2A18A6018 != -1)
     {
@@ -1041,9 +1041,9 @@ LABEL_46:
       v25 = *(v10 + 72);
       *(v10 + 72) = v24;
 
-      v26 = [*(v10 + 72) lastPathComponent];
+      lastPathComponent = [*(v10 + 72) lastPathComponent];
       v27 = *(v10 + 64);
-      *(v10 + 64) = v26;
+      *(v10 + 64) = lastPathComponent;
 
       v28 = sub_297E27FE0(*(v10 + 28));
       if (v28)
@@ -1115,20 +1115,20 @@ LABEL_13:
   return v10;
 }
 
-- (void)populateAdditionalMetadataWithDiagnostics:(BOOL)a3
+- (void)populateAdditionalMetadataWithDiagnostics:(BOOL)diagnostics
 {
-  v3 = a3;
+  diagnosticsCopy = diagnostics;
   [(MemoryResourceException *)self _populateAddtionalMetadataWithOptions:0 timeoutSecs:60];
-  if (v3)
+  if (diagnosticsCopy)
   {
 
     MEMORY[0x2A1C70FE8](self, sel__generateMemgraphWithContentLevel_timeoutSecs_memgraphFailedReasonOut_);
   }
 }
 
-- (void)_populateAddtionalMetadataWithOptions:(unint64_t)a3 timeoutSecs:(unint64_t)a4
+- (void)_populateAddtionalMetadataWithOptions:(unint64_t)options timeoutSecs:(unint64_t)secs
 {
-  v80 = a3;
+  optionsCopy = options;
   v118 = *MEMORY[0x29EDCA608];
   v81 = sub_297E279C8(self);
   if (os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT))
@@ -1179,7 +1179,7 @@ LABEL_13:
   }
 
   dsema = dispatch_semaphore_create(0);
-  if ((v80 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT))
     {
@@ -1212,8 +1212,8 @@ LABEL_13:
   }
 
   v91 = [objc_alloc(MEMORY[0x29EDC6D98]) initWithPID:self->_pid task:self->_task processName:self->_execName is64Bit:self->_is64Bit options:64];
-  v88 = [v91 sampleAllThreadsOnce];
-  v87 = [v88 count];
+  sampleAllThreadsOnce = [v91 sampleAllThreadsOnce];
+  v87 = [sampleAllThreadsOnce count];
   if (!v87)
   {
     goto LABEL_71;
@@ -1243,14 +1243,14 @@ LABEL_25:
     while (1)
     {
       v92 = v16;
-      v96 = [v88 objectAtIndexedSubscript:?];
-      v17 = [v96 thread];
-      v18 = v17;
+      v96 = [sampleAllThreadsOnce objectAtIndexedSubscript:?];
+      thread = [v96 thread];
+      v18 = thread;
       if (self->_crashedThreadId && (v89 & 0x80000000) != 0)
       {
         memset(buf, 0, 24);
         thread_info_outCnt[0] = 6;
-        v19 = thread_info(v17, 4u, buf, thread_info_outCnt);
+        v19 = thread_info(thread, 4u, buf, thread_info_outCnt);
         v20 = *buf;
         if (v19)
         {
@@ -1292,18 +1292,18 @@ LABEL_38:
       }
 
       [v86 addObject:v95];
-      v24 = [v96 backtrace];
-      v25 = [v96 backtraceLength];
-      for (i = [MEMORY[0x29EDB8DE8] arrayWithCapacity:v25];
+      backtrace = [v96 backtrace];
+      backtraceLength = [v96 backtraceLength];
+      for (i = [MEMORY[0x29EDB8DE8] arrayWithCapacity:backtraceLength];
       {
-        v27 = *v24;
-        v28 = [MEMORY[0x29EDB8E00] dictionary];
+        v27 = *backtrace;
+        dictionary = [MEMORY[0x29EDB8E00] dictionary];
         v29 = [MEMORY[0x29EDBA070] numberWithUnsignedLong:v27];
-        [v28 setObject:v29 forKeyedSubscript:qword_2A13A54D8];
+        [dictionary setObject:v29 forKeyedSubscript:qword_2A13A54D8];
 
         CSSymbolicatorGetSymbolOwnerWithAddressAtTime();
         v30 = v98;
-        v31 = v28;
+        v31 = dictionary;
         if ((CSIsNull() & 1) == 0)
         {
           CFUUIDBytes = CSSymbolOwnerGetCFUUIDBytes();
@@ -1344,11 +1344,11 @@ LABEL_38:
                 if (Path)
                 {
                   v42 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:Path];
-                  v43 = [v42 stringByStandardizingPath];
+                  stringByStandardizingPath = [v42 stringByStandardizingPath];
 
-                  if (v43)
+                  if (stringByStandardizingPath)
                   {
-                    v44 = v43;
+                    v44 = stringByStandardizingPath;
                   }
 
                   else
@@ -1419,7 +1419,7 @@ LABEL_38:
         }
 
         [i addObject:v31];
-        ++v24;
+        ++backtrace;
       }
 
       [v85 addObject:i];
@@ -1459,9 +1459,9 @@ LABEL_72:
     _os_log_impl(&dword_297E24000, MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT, "Collecting IOSurface info for %@", buf, 0xCu);
   }
 
-  v99 = [MEMORY[0x29EDBB120] surfaceDescriptions];
+  surfaceDescriptions = [MEMORY[0x29EDBB120] surfaceDescriptions];
   v54 = [MEMORY[0x29EDBA070] numberWithInt:self->_pid];
-  v100 = [v99 objectForKeyedSubscript:v54];
+  v100 = [surfaceDescriptions objectForKeyedSubscript:v54];
 
   if (v100)
   {
@@ -1486,29 +1486,29 @@ LABEL_72:
 
           v60 = *(*(&v101 + 1) + 8 * j);
           objc_opt_self();
-          v61 = [MEMORY[0x29EDB8E00] dictionary];
+          dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
           v62 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{objc_msgSend(v60, "surfaceID")}];
-          [v61 setObject:v62 forKeyedSubscript:qword_2A13A5520];
+          [dictionary2 setObject:v62 forKeyedSubscript:qword_2A13A5520];
 
           v63 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:{objc_msgSend(v60, "pixelFormat")}];
-          [v61 setObject:v63 forKeyedSubscript:qword_2A13A5548];
+          [dictionary2 setObject:v63 forKeyedSubscript:qword_2A13A5548];
 
-          v64 = [v60 name];
-          [v61 setObject:v64 forKeyedSubscript:qword_2A13A5528];
+          name = [v60 name];
+          [dictionary2 setObject:name forKeyedSubscript:qword_2A13A5528];
 
           v65 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v60, "width")}];
-          [v61 setObject:v65 forKeyedSubscript:qword_2A13A5530];
+          [dictionary2 setObject:v65 forKeyedSubscript:qword_2A13A5530];
 
           v66 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:{objc_msgSend(v60, "height")}];
-          [v61 setObject:v66 forKeyedSubscript:qword_2A13A5538];
+          [dictionary2 setObject:v66 forKeyedSubscript:qword_2A13A5538];
 
           v67 = MEMORY[0x29EDBA070];
-          v68 = [v60 allocationSize];
+          allocationSize = [v60 allocationSize];
 
-          v69 = [v67 numberWithUnsignedLongLong:v68];
-          [v61 setObject:v69 forKeyedSubscript:qword_2A13A5540];
+          v69 = [v67 numberWithUnsignedLongLong:allocationSize];
+          [dictionary2 setObject:v69 forKeyedSubscript:qword_2A13A5540];
 
-          [(NSArray *)v55 addObject:v61];
+          [(NSArray *)v55 addObject:dictionary2];
         }
 
         v57 = [v56 countByEnumeratingWithState:&v101 objects:v107 count:16];
@@ -1521,7 +1521,7 @@ LABEL_72:
     self->_ioSurfaceInfo = v55;
   }
 
-  if ((v80 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     if (os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT))
     {
@@ -1529,7 +1529,7 @@ LABEL_72:
       _os_log_impl(&dword_297E24000, MEMORY[0x29EDCA988], OS_LOG_TYPE_DEFAULT, "Waiting for IOAccel memory info collection to finish...", buf, 2u);
     }
 
-    v71 = dispatch_time(0, 1000000000 * a4);
+    v71 = dispatch_time(0, 1000000000 * secs);
     dispatch_semaphore_wait(dsema, v71);
     v72 = MEMORY[0x29EDCA988];
     v73 = MEMORY[0x29EDCA988];
@@ -1595,21 +1595,21 @@ LABEL_72:
   return [(NSString *)bundleID hasPrefix:v6];
 }
 
-+ (id)resourceExceptionFromLogFileHandle:(id)a3 error:(id *)a4
++ (id)resourceExceptionFromLogFileHandle:(id)handle error:(id *)error
 {
   v39[1] = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  handleCopy = handle;
+  v6 = handleCopy;
+  if (handleCopy)
   {
-    v7 = [v5 readDataToEndOfFileAndReturnError:a4];
+    v7 = [handleCopy readDataToEndOfFileAndReturnError:error];
     if (v7)
     {
-      v8 = [MEMORY[0x29EDBA0C0] propertyListWithData:v7 options:0 format:0 error:a4];
+      v8 = [MEMORY[0x29EDBA0C0] propertyListWithData:v7 options:0 format:0 error:error];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
 LABEL_27:
@@ -1618,8 +1618,8 @@ LABEL_27:
         }
 
         v14 = MEMORY[0x29EDBA0F8];
-        v15 = [*a4 localizedDescription];
-        v9 = [v14 stringWithFormat:@"File is malformed - %@", v15];
+        localizedDescription = [*error localizedDescription];
+        v9 = [v14 stringWithFormat:@"File is malformed - %@", localizedDescription];
 
         v16 = MEMORY[0x29EDB9FA0];
         v17 = MREErrorDomain;
@@ -1627,7 +1627,7 @@ LABEL_27:
         v37 = v9;
         v10 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
         [v16 errorWithDomain:v17 code:1 userInfo:v10];
-        *a4 = v11 = 0;
+        *error = v11 = 0;
 LABEL_26:
 
         goto LABEL_27;
@@ -1640,7 +1640,7 @@ LABEL_26:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
 LABEL_25:
             v11 = 0;
@@ -1656,12 +1656,12 @@ LABEL_25:
           v27 = &v34;
 LABEL_24:
           v28 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:1];
-          *a4 = [v23 errorWithDomain:v24 code:1 userInfo:v28];
+          *error = [v23 errorWithDomain:v24 code:1 userInfo:v28];
 
           goto LABEL_25;
         }
 
-        v11 = sub_297E2BEF0([MemoryResourceException alloc], v10, v9, a4);
+        v11 = sub_297E2BEF0([MemoryResourceException alloc], v10, v9, error);
       }
 
       else
@@ -1675,14 +1675,14 @@ LABEL_24:
           v11 = objc_msgSendSuper2(&v31, sel_init);
           if (v11)
           {
-            v19 = [v18 processName];
+            processName = [v18 processName];
             execName = v11->_execName;
-            v11->_execName = v19;
+            v11->_execName = processName;
 
             v11->_pid = [v18 pid];
-            v21 = [v18 executablePath];
+            executablePath = [v18 executablePath];
             execPath = v11->_execPath;
-            v11->_execPath = v21;
+            v11->_execPath = executablePath;
 
             v11->_upTime = -1;
             *&v11->_exceptionType = xmmword_297E40720;
@@ -1694,12 +1694,12 @@ LABEL_24:
         }
       }
 
-      if (!a4 || v11)
+      if (!error || v11)
       {
         goto LABEL_26;
       }
 
-      if (*a4)
+      if (*error)
       {
         goto LABEL_25;
       }
@@ -1719,7 +1719,7 @@ LABEL_24:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v11 = 0;
       goto LABEL_29;
@@ -1731,7 +1731,7 @@ LABEL_24:
     v39[0] = @"File does not exist";
     v7 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     [v12 errorWithDomain:v13 code:11 userInfo:v7];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
 LABEL_28:
@@ -1742,24 +1742,24 @@ LABEL_29:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(MemoryResourceException *)self createMetaDataDict];
+  createMetaDataDict = [(MemoryResourceException *)self createMetaDataDict];
   v5 = self->_memoryGraph;
-  v6 = sub_297E2BEF0([MemoryResourceException alloc], v4, v5, 0);
+  v6 = sub_297E2BEF0([MemoryResourceException alloc], createMetaDataDict, v5, 0);
 
   return v6;
 }
 
-+ (void)extractExecNameAndBundleIDMinimal:(unsigned int)a3 execNameOut:(id *)a4 bundleIDOut:(id *)a5
++ (void)extractExecNameAndBundleIDMinimal:(unsigned int)minimal execNameOut:(id *)out bundleIDOut:(id *)dOut
 {
-  *a4 = 0;
-  *a5 = 0;
+  *out = 0;
+  *dOut = 0;
   x = 0;
-  if (!pid_for_task(a3, &x))
+  if (!pid_for_task(minimal, &x))
   {
     v7 = sub_297E27F50(x);
-    *a4 = [v7 lastPathComponent];
+    *out = [v7 lastPathComponent];
     v8 = sub_297E27FE0(x);
     if (v8)
     {
@@ -1777,7 +1777,7 @@ LABEL_29:
       }
 
       v11 = sub_297E28120(v10);
-      *a5 = sub_297E28198(v9, v7, v11);
+      *dOut = sub_297E28198(v9, v7, v11);
     }
   }
 }

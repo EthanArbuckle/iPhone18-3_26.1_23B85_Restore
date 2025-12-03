@@ -1,20 +1,20 @@
 @interface BWJasperDisparityProcessorRequest
-- (BWJasperDisparityProcessorRequest)initWithInput:(id)a3 delegate:(id)a4;
+- (BWJasperDisparityProcessorRequest)initWithInput:(id)input delegate:(id)delegate;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation BWJasperDisparityProcessorRequest
 
-- (BWJasperDisparityProcessorRequest)initWithInput:(id)a3 delegate:(id)a4
+- (BWJasperDisparityProcessorRequest)initWithInput:(id)input delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = BWJasperDisparityProcessorRequest;
   v6 = [(BWJasperDisparityProcessorRequest *)&v8 init];
   if (v6)
   {
-    v6->_input = a3;
-    v6->_delegate = a4;
+    v6->_input = input;
+    v6->_delegate = delegate;
   }
 
   return v6;

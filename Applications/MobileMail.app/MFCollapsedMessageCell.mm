@@ -1,46 +1,46 @@
 @interface MFCollapsedMessageCell
-+ (double)defaultHeightWithDisplayMetrics:(id)a3;
++ (double)defaultHeightWithDisplayMetrics:(id)metrics;
 - (BOOL)shouldHideAvatarView;
 - (ConversationSearchOverlayView)findOverlayView;
-- (MFCollapsedMessageCell)initWithFrame:(CGRect)a3;
+- (MFCollapsedMessageCell)initWithFrame:(CGRect)frame;
 - (double)_baselineToBaselineSpacingInConversation;
 - (double)_leadingMargin;
 - (double)_messageBottomPaddingInConversation;
 - (double)_messageTopPaddingInConversation;
 - (double)_topToSenderBaselineInConversation;
-- (id)_messageFromViewModel:(id)a3;
+- (id)_messageFromViewModel:(id)model;
 - (void)_createPrimaryViews;
-- (void)_fontMetricCacheDidInvalidate:(id)a3;
-- (void)_layoutLabelBetweenViews:(id)a3 leading:(id)a4 trailing:(id)a5 baseline:(double)a6 fillWidth:(BOOL)a7;
+- (void)_fontMetricCacheDidInvalidate:(id)invalidate;
+- (void)_layoutLabelBetweenViews:(id)views leading:(id)leading trailing:(id)trailing baseline:(double)baseline fillWidth:(BOOL)width;
 - (void)_layoutSubviews;
-- (void)_setAvatarViewFrame:(CGRect)a3;
+- (void)_setAvatarViewFrame:(CGRect)frame;
 - (void)_sizeToFitLabels;
 - (void)_updateAvatarView;
 - (void)_updateFonts;
 - (void)_updateForViewModelChange;
-- (void)_updateHorizontalStatusIndicatorsFromViewModel:(id)a3;
+- (void)_updateHorizontalStatusIndicatorsFromViewModel:(id)model;
 - (void)_updateLabelColor;
-- (void)_updateLabelFrameAfterHorizontalStatusIndicators:(CGRect)a3 label:(id)a4;
-- (void)_updateSummary:(id)a3 didComplete:(BOOL)a4;
+- (void)_updateLabelFrameAfterHorizontalStatusIndicators:(CGRect)indicators label:(id)label;
+- (void)_updateSummary:(id)summary didComplete:(BOOL)complete;
 - (void)_updateSummaryNumberOfLines;
-- (void)_updateVerticalStatusIndicatorsFromViewModel:(id)a3;
+- (void)_updateVerticalStatusIndicatorsFromViewModel:(id)model;
 - (void)addConversationSearchOverlay;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)removeConversationSearchOverlay;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShouldShowSubject:(BOOL)a3;
-- (void)setViewModel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShouldShowSubject:(BOOL)subject;
+- (void)setViewModel:(id)model;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MFCollapsedMessageCell
 
-- (MFCollapsedMessageCell)initWithFrame:(CGRect)a3
+- (MFCollapsedMessageCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MFCollapsedMessageCell;
-  v3 = [(MFMessageConversationViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFMessageConversationViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -65,8 +65,8 @@
     v6 = self->_findOverlayView;
     self->_findOverlayView = v5;
 
-    v7 = [(MFCollapsedMessageCell *)self contentView];
-    [v7 addSubview:self->_findOverlayView];
+    contentView = [(MFCollapsedMessageCell *)self contentView];
+    [contentView addSubview:self->_findOverlayView];
 
     findOverlayView = self->_findOverlayView;
   }
@@ -77,8 +77,8 @@
 - (void)_createPrimaryViews
 {
   v3 = +[UIColor mailConversationViewCollapsedCellBackgroundColor];
-  v4 = [(MFCollapsedMessageCell *)self contentView];
-  [v4 setBackgroundColor:v3];
+  contentView = [(MFCollapsedMessageCell *)self contentView];
+  [contentView setBackgroundColor:v3];
 
   v5 = [UILabel alloc];
   y = CGRectZero.origin.y;
@@ -87,23 +87,23 @@
   v9 = [v5 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(MFCollapsedMessageCell *)self setSenderOrSubjectLabel:v9];
 
-  v10 = [(MFCollapsedMessageCell *)self contentView];
-  v11 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-  [v10 addSubview:v11];
+  contentView2 = [(MFCollapsedMessageCell *)self contentView];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  [contentView2 addSubview:senderOrSubjectLabel];
 
   v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(MFCollapsedMessageCell *)self setSummaryLabel:v12];
 
-  v13 = [(MFCollapsedMessageCell *)self contentView];
-  v14 = [(MFCollapsedMessageCell *)self summaryLabel];
-  [v13 addSubview:v14];
+  contentView3 = [(MFCollapsedMessageCell *)self contentView];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  [contentView3 addSubview:summaryLabel];
 
   v15 = [[UIDateLabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(MFCollapsedMessageCell *)self setTimestampLabel:v15];
 
-  v16 = [(MFCollapsedMessageCell *)self contentView];
-  v17 = [(MFCollapsedMessageCell *)self timestampLabel];
-  [v16 addSubview:v17];
+  contentView4 = [(MFCollapsedMessageCell *)self contentView];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
+  [contentView4 addSubview:timestampLabel];
 
   [(MFCollapsedMessageCell *)self _updateLabelColor];
   +[MFMessageDisplayMetrics avatarDiameter];
@@ -113,12 +113,12 @@
     v20 = [[MUIAvatarViewController alloc] initWithContacts:&__NSArray0__struct];
     [(MFCollapsedMessageCell *)self setAvatarController:v20];
 
-    v21 = [(MFCollapsedMessageCell *)self avatarController];
-    v22 = [v21 view];
-    [(MFCollapsedMessageCell *)self setAvatarView:v22];
+    avatarController = [(MFCollapsedMessageCell *)self avatarController];
+    view = [avatarController view];
+    [(MFCollapsedMessageCell *)self setAvatarView:view];
 
-    v23 = [(MFCollapsedMessageCell *)self avatarView];
-    [v23 setFrame:{0.0, 0.0, v19, v19}];
+    avatarView = [(MFCollapsedMessageCell *)self avatarView];
+    [avatarView setFrame:{0.0, 0.0, v19, v19}];
   }
 
   else
@@ -126,22 +126,22 @@
     v24 = [[MFAvatarView alloc] initWithFrame:0.0, 0.0, v19, v19];
     [(MFCollapsedMessageCell *)self setMfAvatarView:v24];
 
-    v25 = [(MFCollapsedMessageCell *)self mfAvatarView];
-    [v25 setShowsContactOnTap:1];
+    mfAvatarView = [(MFCollapsedMessageCell *)self mfAvatarView];
+    [mfAvatarView setShowsContactOnTap:1];
 
-    v23 = [(MFCollapsedMessageCell *)self mfAvatarView];
-    [(MFCollapsedMessageCell *)self setAvatarView:v23];
+    avatarView = [(MFCollapsedMessageCell *)self mfAvatarView];
+    [(MFCollapsedMessageCell *)self setAvatarView:avatarView];
   }
 
-  v26 = [(MFCollapsedMessageCell *)self avatarView];
-  [v26 setAlpha:0.4];
+  avatarView2 = [(MFCollapsedMessageCell *)self avatarView];
+  [avatarView2 setAlpha:0.4];
 
   [(MFCollapsedMessageCell *)self _updateAvatarView];
   v27 = objc_alloc_init(MessageViewStatusIndicatorManager);
   [(MFCollapsedMessageCell *)self setVerticalStatusIndicatorManager:v27];
 
-  v28 = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
-  [v28 setHidesVIPIndicator:1];
+  verticalStatusIndicatorManager = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
+  [verticalStatusIndicatorManager setHidesVIPIndicator:1];
 
   v29 = objc_alloc_init(MessageViewStatusIndicatorManager);
   [(MFCollapsedMessageCell *)self setHorizontalStatusIndicatorManager:v29];
@@ -151,14 +151,14 @@
   [(MFCollapsedMessageCell *)self _updateFonts];
 }
 
-- (void)_setAvatarViewFrame:(CGRect)a3
+- (void)_setAvatarViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(MFCollapsedMessageCell *)self avatarView];
-  [v7 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  avatarView = [(MFCollapsedMessageCell *)self avatarView];
+  [avatarView setFrame:{x, y, width, height}];
 }
 
 - (void)layoutSubviews
@@ -171,19 +171,19 @@
 
 - (void)_layoutSubviews
 {
-  v67 = [(MFCollapsedMessageCell *)self contentView];
-  v3 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-  v68 = [(MFCollapsedMessageCell *)self summaryLabel];
-  v4 = [(MFCollapsedMessageCell *)self timestampLabel];
-  v69 = [(MFCollapsedMessageCell *)self avatarView];
-  v5 = [(MFCollapsedMessageCell *)self shouldHideAvatarView];
-  v6 = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
-  v7 = [(MFCollapsedMessageCell *)self shouldShowSubject];
-  v8 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  contentView = [(MFCollapsedMessageCell *)self contentView];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
+  avatarView = [(MFCollapsedMessageCell *)self avatarView];
+  shouldHideAvatarView = [(MFCollapsedMessageCell *)self shouldHideAvatarView];
+  mf_prefersRightToLeftInterfaceLayout = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
+  shouldShowSubject = [(MFCollapsedMessageCell *)self shouldShowSubject];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v10 = [(MFConversationViewCell *)self displayMetrics];
-  [v67 bounds];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [contentView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -194,10 +194,10 @@
   v71 = v20;
   [(MFCollapsedMessageCell *)self _leadingMargin];
   v22 = v21;
-  [v10 avatarDiameterForCurrentContentSize];
+  [displayMetrics avatarDiameterForCurrentContentSize];
   v24 = v23;
   v25 = v22;
-  if (v6)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v26 = v12;
     v78.origin.x = v12;
@@ -222,7 +222,7 @@
   v80.size.height = v24;
   Height = CGRectGetHeight(v80);
   v31 = v70 + v29;
-  if (!v5)
+  if (!shouldHideAvatarView)
   {
     v31 = v71 + v70 + v29;
   }
@@ -235,11 +235,11 @@
   [v34 frame];
   [v34 setFrame:?];
 
-  [v4 frame];
+  [timestampLabel frame];
   v37 = v36;
   v39 = v38;
   v41 = v40;
-  if (((v6 | IsAccessibilityCategory) & 1) == 0)
+  if (((mf_prefersRightToLeftInterfaceLayout | IsAccessibilityCategory) & 1) == 0)
   {
     v42 = v35;
     v81.size.height = v65;
@@ -254,20 +254,20 @@
     v22 = v43 - CGRectGetWidth(v82) - v22;
   }
 
-  [v4 setFrame:{v22, v37, v39, v41}];
+  [timestampLabel setFrame:{v22, v37, v39, v41}];
   v72[0] = _NSConcreteStackBlock;
   v72[1] = 3221225472;
   v72[2] = sub_1001B1C90;
   v72[3] = &unk_100653880;
   v77 = IsAccessibilityCategory;
-  v44 = v68;
+  v44 = summaryLabel;
   v76 = v71;
   v73 = v44;
-  v74 = self;
-  v45 = v4;
+  selfCopy = self;
+  v45 = timestampLabel;
   v75 = v45;
   v46 = objc_retainBlock(v72);
-  if (v7)
+  if (shouldShowSubject)
   {
     if (IsAccessibilityCategory)
     {
@@ -279,16 +279,16 @@
       v47 = v45;
     }
 
-    [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v3 leading:0 trailing:v47 baseline:1 fillWidth:v70];
-    [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v45 leading:v3 trailing:0 baseline:0 fillWidth:v70];
+    [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:senderOrSubjectLabel leading:0 trailing:v47 baseline:1 fillWidth:v70];
+    [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v45 leading:senderOrSubjectLabel trailing:0 baseline:0 fillWidth:v70];
     v48 = v70 + v71;
     [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v44 leading:0 trailing:0 baseline:1 fillWidth:v70 + v71];
     goto LABEL_14;
   }
 
-  if (v5)
+  if (shouldHideAvatarView)
   {
-    [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v3 leading:0 trailing:0 baseline:1 fillWidth:v70];
+    [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:senderOrSubjectLabel leading:0 trailing:0 baseline:1 fillWidth:v70];
     v48 = v70 + v71;
     [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v44 leading:0 trailing:0 baseline:1 fillWidth:v70 + v71];
 LABEL_14:
@@ -298,22 +298,22 @@ LABEL_14:
 
   if (MUISolariumFeatureEnabled())
   {
-    [v3 _firstBaselineOffsetFromTop];
+    [senderOrSubjectLabel _firstBaselineOffsetFromTop];
     UIRoundToViewScale();
     v50 = v49;
-    [v3 frame];
+    [senderOrSubjectLabel frame];
     v52 = v51;
     [v44 frame];
     v70 = v70 - (v70 - v50 + (v52 + v53) * 0.5 - (v24 * 0.5 + v64));
   }
 
-  [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v3 leading:v69 trailing:v45 baseline:1 fillWidth:v70];
-  [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v45 leading:v3 trailing:0 baseline:0 fillWidth:v70];
-  [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v44 leading:v69 trailing:0 baseline:1 fillWidth:v71 + v70];
+  [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:senderOrSubjectLabel leading:avatarView trailing:v45 baseline:1 fillWidth:v70];
+  [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v45 leading:senderOrSubjectLabel trailing:0 baseline:0 fillWidth:v70];
+  [(MFCollapsedMessageCell *)self _layoutLabelBetweenViews:v44 leading:avatarView trailing:0 baseline:1 fillWidth:v71 + v70];
 LABEL_18:
-  v54 = [(MFConversationViewCell *)self viewModel];
-  [(MFCollapsedMessageCell *)self _updateVerticalStatusIndicatorsFromViewModel:v54];
-  [(MFCollapsedMessageCell *)self _updateHorizontalStatusIndicatorsFromViewModel:v54];
+  viewModel = [(MFConversationViewCell *)self viewModel];
+  [(MFCollapsedMessageCell *)self _updateVerticalStatusIndicatorsFromViewModel:viewModel];
+  [(MFCollapsedMessageCell *)self _updateHorizontalStatusIndicatorsFromViewModel:viewModel];
   if (self->_findOverlayView)
   {
     [(MFCollapsedMessageCell *)self bounds];
@@ -321,56 +321,56 @@ LABEL_18:
     v58 = v57;
     v60 = v59;
     v62 = v61;
-    v63 = [(MFCollapsedMessageCell *)self findOverlayView];
-    [v63 setFrame:{v56, v58, v60, v62}];
+    findOverlayView = [(MFCollapsedMessageCell *)self findOverlayView];
+    [findOverlayView setFrame:{v56, v58, v60, v62}];
   }
 
   [(MFCollapsedMessageCell *)self mf_activateDebugModeIfEnabled];
 }
 
-- (void)_layoutLabelBetweenViews:(id)a3 leading:(id)a4 trailing:(id)a5 baseline:(double)a6 fillWidth:(BOOL)a7
+- (void)_layoutLabelBetweenViews:(id)views leading:(id)leading trailing:(id)trailing baseline:(double)baseline fillWidth:(BOOL)width
 {
-  v7 = a7;
-  v45 = a6;
-  v47 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
-  v14 = [(MFConversationViewCell *)self displayMetrics];
-  [v14 minHorizontalSpacing];
+  widthCopy = width;
+  baselineCopy = baseline;
+  viewsCopy = views;
+  leadingCopy = leading;
+  trailingCopy = trailing;
+  mf_prefersRightToLeftInterfaceLayout = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [displayMetrics minHorizontalSpacing];
   v16 = v15;
 
   [(MFCollapsedMessageCell *)self _leadingMargin];
   v18 = v17;
-  v19 = [(MFCollapsedMessageCell *)self contentView];
-  [v19 bounds];
+  contentView = [(MFCollapsedMessageCell *)self contentView];
+  [contentView bounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  [v19 layoutMargins];
+  [contentView layoutMargins];
   v29 = v28;
-  if (v13)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
-    v30 = v12;
+    v30 = trailingCopy;
   }
 
   else
   {
-    v30 = v11;
+    v30 = leadingCopy;
   }
 
-  if (v13)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
-    v31 = v11;
+    v31 = leadingCopy;
   }
 
   else
   {
-    v31 = v12;
+    v31 = trailingCopy;
   }
 
-  if (v13)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     v32 = v18;
   }
@@ -385,7 +385,7 @@ LABEL_18:
   v35 = v34;
   if (!v33)
   {
-    if (v13)
+    if (mf_prefersRightToLeftInterfaceLayout)
     {
       v18 = v29;
     }
@@ -415,39 +415,39 @@ LABEL_12:
   [v35 frame];
   v36 = CGRectGetMinX(v50) - v16;
 LABEL_17:
-  [v47 frame];
+  [viewsCopy frame];
   v41 = v39;
   v42 = v40;
   v43 = v18;
   if (!v33)
   {
     v43 = v18;
-    if (!v7)
+    if (!widthCopy)
     {
       v43 = v36 - CGRectGetWidth(*&v37);
     }
   }
 
-  if (v7)
+  if (widthCopy)
   {
     v41 = v36 - v18;
   }
 
-  [v47 _firstBaselineOffsetFromTop];
+  [viewsCopy _firstBaselineOffsetFromTop];
   UIRoundToViewScale();
-  [v47 setFrame:{v43, v46 - v44, v41, v42}];
+  [viewsCopy setFrame:{v43, v46 - v44, v41, v42}];
 }
 
 - (double)_leadingMargin
 {
-  v3 = [(MFCollapsedMessageCell *)self contentView];
-  [v3 directionalLayoutMargins];
+  contentView = [(MFCollapsedMessageCell *)self contentView];
+  [contentView directionalLayoutMargins];
   v5 = v4;
 
-  v6 = [(MFConversationViewCell *)self displayMetrics];
-  [v6 minHorizontalSpacing];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [displayMetrics minHorizontalSpacing];
   v8 = v7;
-  [v6 headerAvatarMaxOffset];
+  [displayMetrics headerAvatarMaxOffset];
   v10 = v5 - v9;
   if (v8 >= v10)
   {
@@ -462,67 +462,67 @@ LABEL_17:
   return v11;
 }
 
-+ (double)defaultHeightWithDisplayMetrics:(id)a3
++ (double)defaultHeightWithDisplayMetrics:(id)metrics
 {
-  v3 = a3;
-  [v3 messageTopPaddingInConversation];
+  metricsCopy = metrics;
+  [metricsCopy messageTopPaddingInConversation];
   v5 = v4;
-  [v3 topToSenderBaselineInConversationForCollapsedCell];
+  [metricsCopy topToSenderBaselineInConversationForCollapsedCell];
   v7 = v6;
-  [v3 baselineToBaselineSpacingInConversation];
+  [metricsCopy baselineToBaselineSpacingInConversation];
   v9 = v8;
-  [v3 messageBottomPaddingInConversationForCollapsedCell];
+  [metricsCopy messageBottomPaddingInConversationForCollapsedCell];
   v11 = v10;
-  v12 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v14 = v5 + v7 + v9 + v11;
 
   if (IsAccessibilityCategory)
   {
-    [v3 baselineToBaselineSpacingInConversation];
+    [metricsCopy baselineToBaselineSpacingInConversation];
     v16 = v15;
-    [v3 messageBottomPaddingInConversationForCollapsedCell];
+    [metricsCopy messageBottomPaddingInConversationForCollapsedCell];
     v18 = v17;
-    [v3 baselineToBaselineSpacingInConversation];
+    [metricsCopy baselineToBaselineSpacingInConversation];
     v14 = v14 + v16 * 2.0 - v18 + v19;
   }
 
   return v14;
 }
 
-- (void)_updateVerticalStatusIndicatorsFromViewModel:(id)a3
+- (void)_updateVerticalStatusIndicatorsFromViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
-  v6 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  modelCopy = model;
+  verticalStatusIndicatorManager = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
   if ([(MFCollapsedMessageCell *)self shouldHideAvatarView])
   {
-    v7 = v6;
+    avatarView = senderOrSubjectLabel;
   }
 
   else
   {
-    v7 = [(MFCollapsedMessageCell *)self avatarView];
+    avatarView = [(MFCollapsedMessageCell *)self avatarView];
   }
 
-  v8 = v7;
-  v9 = [v4 isVIP];
-  v10 = [v4 isRead];
-  v11 = [v4 isReplied];
-  v12 = [v4 isForwarded];
+  v8 = avatarView;
+  isVIP = [modelCopy isVIP];
+  isRead = [modelCopy isRead];
+  isReplied = [modelCopy isReplied];
+  isForwarded = [modelCopy isForwarded];
   v13 = 2;
-  if (!v9)
+  if (!isVIP)
   {
     v13 = 0;
   }
 
-  v14 = v13 | v10 ^ 1;
-  if (v11)
+  v14 = v13 | isRead ^ 1;
+  if (isReplied)
   {
     v14 |= 8uLL;
   }
 
-  if (v12)
+  if (isForwarded)
   {
     v15 = v14 | 0x10;
   }
@@ -532,12 +532,12 @@ LABEL_17:
     v15 = v14;
   }
 
-  [v5 setIndicatorOptions:v15];
-  [v5 pruneIndicatorOptions:2];
-  if ([v5 effectiveIndicatorOptions])
+  [verticalStatusIndicatorManager setIndicatorOptions:v15];
+  [verticalStatusIndicatorManager pruneIndicatorOptions:2];
+  if ([verticalStatusIndicatorManager effectiveIndicatorOptions])
   {
-    v16 = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
-    if (v16)
+    mf_prefersRightToLeftInterfaceLayout = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
+    if (mf_prefersRightToLeftInterfaceLayout)
     {
       [(MFCollapsedMessageCell *)self bounds];
       Width = CGRectGetWidth(v39);
@@ -545,8 +545,8 @@ LABEL_17:
       MaxX = CGRectGetMaxX(v40);
       [v8 frame];
       v19 = CGRectGetMaxX(v41);
-      v20 = [(MFCollapsedMessageCell *)self contentView];
-      [v20 bounds];
+      contentView = [(MFCollapsedMessageCell *)self contentView];
+      [contentView bounds];
       Height = CGRectGetHeight(v42);
       MinX = Width - MaxX;
     }
@@ -555,25 +555,25 @@ LABEL_17:
     {
       [v8 frame];
       MinX = CGRectGetMinX(v43);
-      v24 = [(MFCollapsedMessageCell *)self contentView];
-      [v24 bounds];
+      contentView2 = [(MFCollapsedMessageCell *)self contentView];
+      [contentView2 bounds];
       Height = CGRectGetHeight(v44);
 
       v19 = 0.0;
     }
 
-    [v5 updateImageViews];
+    [verticalStatusIndicatorManager updateImageViews];
     [(MFCollapsedMessageCell *)self _baselineToBaselineSpacingInConversation];
     v37 = v25;
-    [v6 frame];
+    [senderOrSubjectLabel frame];
     MaxY = CGRectGetMaxY(v45);
-    [v6 _baselineOffsetFromBottom];
+    [senderOrSubjectLabel _baselineOffsetFromBottom];
     v28 = v27;
-    v29 = [v6 font];
-    [v29 capHeight];
+    font = [senderOrSubjectLabel font];
+    [font capHeight];
     v31 = v30;
 
-    if (v16)
+    if (mf_prefersRightToLeftInterfaceLayout)
     {
       v46.origin.x = v19;
       v46.origin.y = 0.0;
@@ -614,7 +614,7 @@ LABEL_17:
     }
 
     v36 = v33 + v34;
-    v23 = [v5 statusIndicatorImageViews];
+    statusIndicatorImageViews = [verticalStatusIndicatorManager statusIndicatorImageViews];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_1001B24B0;
@@ -623,22 +623,22 @@ LABEL_17:
     *&v38[5] = v36;
     *&v38[6] = MaxY - v28 + v31 * -0.5;
     *&v38[7] = v37 + 1.0;
-    [v23 enumerateObjectsUsingBlock:v38];
+    [statusIndicatorImageViews enumerateObjectsUsingBlock:v38];
   }
 
   else
   {
-    v23 = [v5 statusIndicatorImageViews];
-    [v23 makeObjectsPerformSelector:"removeFromSuperview"];
+    statusIndicatorImageViews = [verticalStatusIndicatorManager statusIndicatorImageViews];
+    [statusIndicatorImageViews makeObjectsPerformSelector:"removeFromSuperview"];
   }
 }
 
-- (void)_updateHorizontalStatusIndicatorsFromViewModel:(id)a3
+- (void)_updateHorizontalStatusIndicatorsFromViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(MFCollapsedMessageCell *)self horizontalStatusIndicatorManager];
-  v6 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  modelCopy = model;
+  horizontalStatusIndicatorManager = [(MFCollapsedMessageCell *)self horizontalStatusIndicatorManager];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -650,33 +650,33 @@ LABEL_17:
     [(MFCollapsedMessageCell *)self summaryLabel];
   }
   v8 = ;
-  v9 = [v4 isFlagged];
-  v10 = [v4 hasAttachments];
-  v11 = [v4 isNotify];
-  v12 = [v4 isMute];
-  v13 = [v4 isBlockedSender];
+  isFlagged = [modelCopy isFlagged];
+  hasAttachments = [modelCopy hasAttachments];
+  isNotify = [modelCopy isNotify];
+  isMute = [modelCopy isMute];
+  isBlockedSender = [modelCopy isBlockedSender];
   v14 = 4;
-  if (!v9)
+  if (!isFlagged)
   {
     v14 = 0;
   }
 
-  if (v10)
+  if (hasAttachments)
   {
     v14 |= 0x20uLL;
   }
 
-  if (v11)
+  if (isNotify)
   {
     v14 |= 0x40uLL;
   }
 
-  if (v12)
+  if (isMute)
   {
     v14 |= 0x80uLL;
   }
 
-  if (v13)
+  if (isBlockedSender)
   {
     v15 = v14 | 0x100;
   }
@@ -686,19 +686,19 @@ LABEL_17:
     v15 = v14;
   }
 
-  [v5 setIndicatorOptions:v15];
-  v16 = [v4 flagColors];
-  [v5 setFlagColors:v16];
+  [horizontalStatusIndicatorManager setIndicatorOptions:v15];
+  flagColors = [modelCopy flagColors];
+  [horizontalStatusIndicatorManager setFlagColors:flagColors];
 
-  [v5 pruneIndicatorOptions:2];
-  if ([v5 effectiveIndicatorOptions])
+  [horizontalStatusIndicatorManager pruneIndicatorOptions:2];
+  if ([horizontalStatusIndicatorManager effectiveIndicatorOptions])
   {
-    v17 = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
+    mf_prefersRightToLeftInterfaceLayout = [(MFCollapsedMessageCell *)self mf_prefersRightToLeftInterfaceLayout];
     [(MFCollapsedMessageCell *)self bounds];
     Width = CGRectGetWidth(v53);
     [v8 frame];
     v19 = Width - CGRectGetMaxX(v54);
-    if (v17)
+    if (mf_prefersRightToLeftInterfaceLayout)
     {
       [v8 frame];
       MinX = CGRectGetMinX(v55);
@@ -729,28 +729,28 @@ LABEL_17:
       MinX = MaxX - v19;
     }
 
-    [v5 updateImageViews];
-    v26 = [v5 statusIndicatorImageViews];
+    [horizontalStatusIndicatorManager updateImageViews];
+    statusIndicatorImageViews = [horizontalStatusIndicatorManager statusIndicatorImageViews];
     [v8 frame];
     MaxY = CGRectGetMaxY(v61);
     [v8 _baselineOffsetFromBottom];
     v29 = v28;
-    v30 = [v8 font];
-    [v30 capHeight];
+    font = [v8 font];
+    [font capHeight];
     v32 = v31;
 
-    if (v17)
+    if (mf_prefersRightToLeftInterfaceLayout)
     {
       v62.origin.x = MinX;
       v62.origin.y = MinY;
       v62.size.width = v19;
       v62.size.height = Height;
       v33 = CGRectGetMinX(v62);
-      v34 = [v26 firstObject];
-      [v34 frame];
+      firstObject = [statusIndicatorImageViews firstObject];
+      [firstObject frame];
       v35 = CGRectGetWidth(v63);
 
-      [v5 midXToMidXSpacing];
+      [horizontalStatusIndicatorManager midXToMidXSpacing];
       v37 = v33 + v35 * 0.5;
     }
 
@@ -766,11 +766,11 @@ LABEL_17:
       v65.size.width = v19;
       v65.size.height = Height;
       v39 = CGRectGetMaxX(v65);
-      v40 = [v26 firstObject];
-      [v40 frame];
+      firstObject2 = [statusIndicatorImageViews firstObject];
+      [firstObject2 frame];
       v41 = CGRectGetWidth(v66);
 
-      [v5 midXToMidXSpacing];
+      [horizontalStatusIndicatorManager midXToMidXSpacing];
       v43 = v39 + v41 * -0.5;
       if (MidX >= v43)
       {
@@ -804,26 +804,26 @@ LABEL_17:
     v46[4] = self;
     v46[5] = &v47;
     *&v46[8] = MaxY - v29 + v32 * -0.5;
-    [v26 enumerateObjectsUsingBlock:v46];
+    [statusIndicatorImageViews enumerateObjectsUsingBlock:v46];
     [(MFCollapsedMessageCell *)self _updateLabelFrameAfterHorizontalStatusIndicators:v8 label:v48[4], v48[5], v48[6], v48[7]];
     _Block_object_dispose(&v47, 8);
   }
 
   else
   {
-    v23 = [v5 statusIndicatorImageViews];
-    [v23 makeObjectsPerformSelector:"removeFromSuperview"];
+    statusIndicatorImageViews2 = [horizontalStatusIndicatorManager statusIndicatorImageViews];
+    [statusIndicatorImageViews2 makeObjectsPerformSelector:"removeFromSuperview"];
   }
 }
 
-- (void)_updateLabelFrameAfterHorizontalStatusIndicators:(CGRect)a3 label:(id)a4
+- (void)_updateLabelFrameAfterHorizontalStatusIndicators:(CGRect)indicators label:(id)label
 {
-  rect = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v19 = a4;
-  [v19 frame];
+  rect = indicators.size.height;
+  width = indicators.size.width;
+  y = indicators.origin.y;
+  x = indicators.origin.x;
+  labelCopy = label;
+  [labelCopy frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -852,10 +852,10 @@ LABEL_17:
     v16 = MaxX - CGRectGetMinX(v23) + 16.0;
   }
 
-  [v19 setFrame:{v9, v11, v13 - v16, v15, *&rect}];
+  [labelCopy setFrame:{v9, v11, v13 - v16, v15, *&rect}];
 }
 
-- (void)_fontMetricCacheDidInvalidate:(id)a3
+- (void)_fontMetricCacheDidInvalidate:(id)invalidate
 {
   [(MFCollapsedMessageCell *)self _updateFonts];
   [(MFCollapsedMessageCell *)self _updateSummaryNumberOfLines];
@@ -866,35 +866,35 @@ LABEL_17:
 
 - (void)_sizeToFitLabels
 {
-  v3 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-  [v3 sizeToFit];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  [senderOrSubjectLabel sizeToFit];
 
-  v4 = [(MFCollapsedMessageCell *)self summaryLabel];
-  [v4 sizeToFit];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  [summaryLabel sizeToFit];
 
-  v5 = [(MFCollapsedMessageCell *)self timestampLabel];
-  [v5 sizeToFit];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
+  [timestampLabel sizeToFit];
 }
 
 - (void)_updateFonts
 {
-  v6 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
   v3 = +[UIFont mf_messageHeaderSenderLabelFont];
-  sub_1001B2FA0(v3, v6, v3);
+  sub_1001B2FA0(v3, senderOrSubjectLabel, v3);
 
-  v7 = [(MFCollapsedMessageCell *)self summaryLabel];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
   v4 = +[UIFont mf_messageHeaderSummaryLabelFont];
-  sub_1001B2FA0(v4, v7, v4);
+  sub_1001B2FA0(v4, summaryLabel, v4);
 
-  v8 = [(MFCollapsedMessageCell *)self timestampLabel];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
   v5 = +[UIFont mf_messageHeaderTimestampLabelFont];
-  sub_1001B2FA0(v5, v8, v5);
+  sub_1001B2FA0(v5, timestampLabel, v5);
 }
 
 - (void)_updateSummaryNumberOfLines
 {
-  v5 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -906,91 +906,91 @@ LABEL_17:
     v4 = 1;
   }
 
-  v6 = [(MFCollapsedMessageCell *)self summaryLabel];
-  [v6 setNumberOfLines:v4];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  [summaryLabel setNumberOfLines:v4];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(MFConversationViewCell *)self viewModel];
+  modelCopy = model;
+  viewModel = [(MFConversationViewCell *)self viewModel];
 
-  if (v5 != v4)
+  if (viewModel != modelCopy)
   {
     v6.receiver = self;
     v6.super_class = MFCollapsedMessageCell;
-    [(MFConversationViewCell *)&v6 setViewModel:v4];
+    [(MFConversationViewCell *)&v6 setViewModel:modelCopy];
     [(MFCollapsedMessageCell *)self _updateForViewModelChange];
   }
 }
 
 - (void)_updateForViewModelChange
 {
-  v20 = [(MFConversationViewCell *)self viewModel];
+  viewModel = [(MFConversationViewCell *)self viewModel];
   if ([(MFCollapsedMessageCell *)self shouldShowSubject])
   {
-    v3 = [v20 subject];
-    v4 = [v3 subjectString];
-    v5 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-    [v5 setText:v4];
+    subject = [viewModel subject];
+    subjectString = [subject subjectString];
+    senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+    [senderOrSubjectLabel setText:subjectString];
   }
 
   else
   {
-    v6 = [v20 senderList];
-    v3 = [v6 firstObject];
+    senderList = [viewModel senderList];
+    subject = [senderList firstObject];
 
     if (MUISolariumFeatureEnabled())
     {
-      v7 = [(MFCollapsedMessageCell *)self avatarController];
-      v8 = [v20 avatarContext];
-      v9 = [v20 avatarGenerator];
-      v10 = [v7 displayPersonForContext:v8 avatarGenerator:v9];
+      avatarController = [(MFCollapsedMessageCell *)self avatarController];
+      avatarContext = [viewModel avatarContext];
+      avatarGenerator = [viewModel avatarGenerator];
+      v10 = [avatarController displayPersonForContext:avatarContext avatarGenerator:avatarGenerator];
     }
 
     else if (EMBlackPearlIsFeatureEnabled())
     {
-      v7 = [(MFCollapsedMessageCell *)self mfAvatarView];
-      v8 = [v20 avatarContext];
-      v9 = [v20 avatarGenerator];
-      v11 = [v7 displayPersonForContext:v8 avatarGenerator:v9];
+      avatarController = [(MFCollapsedMessageCell *)self mfAvatarView];
+      avatarContext = [viewModel avatarContext];
+      avatarGenerator = [viewModel avatarGenerator];
+      v11 = [avatarController displayPersonForContext:avatarContext avatarGenerator:avatarGenerator];
     }
 
     else
     {
-      v7 = [(MFCollapsedMessageCell *)self mfAvatarView];
-      v8 = [(MFMessageConversationViewCell *)self contactStore];
-      v9 = [v8 cnStore];
-      v12 = [v7 displayPersonForEmailAddress:v3 usingContactStore:v9];
+      avatarController = [(MFCollapsedMessageCell *)self mfAvatarView];
+      avatarContext = [(MFMessageConversationViewCell *)self contactStore];
+      avatarGenerator = [avatarContext cnStore];
+      v12 = [avatarController displayPersonForEmailAddress:subject usingContactStore:avatarGenerator];
     }
 
-    v4 = [(MFMessageConversationViewCell *)self contactStore];
-    v5 = [v3 stringValue];
-    v13 = [v4 displayNameForEmailAddress:v5];
-    v14 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-    [v14 setText:v13];
+    subjectString = [(MFMessageConversationViewCell *)self contactStore];
+    senderOrSubjectLabel = [subject stringValue];
+    v13 = [subjectString displayNameForEmailAddress:senderOrSubjectLabel];
+    senderOrSubjectLabel2 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+    [senderOrSubjectLabel2 setText:v13];
   }
 
-  v15 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-  [v15 sizeToFit];
+  senderOrSubjectLabel3 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  [senderOrSubjectLabel3 sizeToFit];
 
-  v16 = [v20 summary];
-  [(MFCollapsedMessageCell *)self _updateSummary:v16 didComplete:v16 != 0];
-  v17 = [v20 date];
-  v18 = [(MFCollapsedMessageCell *)self timestampLabel];
-  [v18 setDate:v17];
+  summary = [viewModel summary];
+  [(MFCollapsedMessageCell *)self _updateSummary:summary didComplete:summary != 0];
+  date = [viewModel date];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
+  [timestampLabel setDate:date];
 
-  v19 = [(MFCollapsedMessageCell *)self timestampLabel];
-  [v19 sizeToFit];
+  timestampLabel2 = [(MFCollapsedMessageCell *)self timestampLabel];
+  [timestampLabel2 sizeToFit];
 
   [(MFCollapsedMessageCell *)self setNeedsLayout];
 }
 
-- (void)setShouldShowSubject:(BOOL)a3
+- (void)setShouldShowSubject:(BOOL)subject
 {
-  if (self->_shouldShowSubject != a3)
+  if (self->_shouldShowSubject != subject)
   {
-    self->_shouldShowSubject = a3;
+    self->_shouldShowSubject = subject;
     [(MFCollapsedMessageCell *)self _updateAvatarView];
     [(MFCollapsedMessageCell *)self _updateForViewModelChange];
 
@@ -998,15 +998,15 @@ LABEL_17:
   }
 }
 
-- (void)_updateSummary:(id)a3 didComplete:(BOOL)a4
+- (void)_updateSummary:(id)summary didComplete:(BOOL)complete
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  completeCopy = complete;
+  summaryCopy = summary;
+  v7 = summaryCopy;
+  if (!summaryCopy || ![summaryCopy length])
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
-    if (v4)
+    if (completeCopy)
     {
       [v8 localizedStringForKey:@"NO_BODY" value:&stru_100662A88 table:@"Main"];
     }
@@ -1022,35 +1022,35 @@ LABEL_17:
 
   if ([EMInternalPreferences preferenceEnabled:4])
   {
-    v10 = [(MFConversationViewCell *)self viewModel];
-    v11 = [(MFCollapsedMessageCell *)self _messageFromViewModel:v10];
+    viewModel = [(MFConversationViewCell *)self viewModel];
+    v11 = [(MFCollapsedMessageCell *)self _messageFromViewModel:viewModel];
 
-    v12 = [v11 itemID];
-    v13 = [NSString stringWithFormat:@"%@, %@", v12, v7];
+    itemID = [v11 itemID];
+    v13 = [NSString stringWithFormat:@"%@, %@", itemID, v7];
 
     v7 = v13;
   }
 
   if ([EMInternalPreferences preferenceEnabled:5])
   {
-    v14 = [(MFConversationViewCell *)self viewModel];
-    v15 = [(MFCollapsedMessageCell *)self _messageFromViewModel:v14];
+    viewModel2 = [(MFConversationViewCell *)self viewModel];
+    v15 = [(MFCollapsedMessageCell *)self _messageFromViewModel:viewModel2];
 
     if ([v15 searchResultType] == 3)
     {
-      v16 = [v15 searchRelevanceScore];
-      v17 = [NSString stringWithFormat:@"RelevanceScore:%@, %@", v16, v7];
+      searchRelevanceScore = [v15 searchRelevanceScore];
+      v17 = [NSString stringWithFormat:@"RelevanceScore:%@, %@", searchRelevanceScore, v7];
 
       v7 = v17;
     }
   }
 
-  v18 = [(MFCollapsedMessageCell *)self summaryLabel];
-  [v18 setText:v7];
-  v19 = [v18 text];
-  v20 = [v19 _isNaturallyRTL];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  [summaryLabel setText:v7];
+  text = [summaryLabel text];
+  _isNaturallyRTL = [text _isNaturallyRTL];
 
-  if (v20)
+  if (_isNaturallyRTL)
   {
     v21 = 2;
   }
@@ -1060,15 +1060,15 @@ LABEL_17:
     v21 = 0;
   }
 
-  [v18 setTextAlignment:v21];
+  [summaryLabel setTextAlignment:v21];
   v22 = +[MFFontMetricCache sharedFontMetricCache];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1001B3888;
   v25[3] = &unk_10064C780;
-  v23 = v18;
+  v23 = summaryLabel;
   v26 = v23;
-  v27 = self;
+  selfCopy = self;
   [v22 cachedFloat:v25 forKey:@"conversationView.collapsedMessageCell.summary.height"];
 
   [(MFCollapsedMessageCell *)self bounds];
@@ -1077,13 +1077,13 @@ LABEL_17:
   [v24 setFrame:?];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = MFCollapsedMessageCell;
   [(MFCollapsedMessageCell *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     +[UIColor mailConversationViewCollapsedCellHighlightedBackgroundColor];
   }
@@ -1093,34 +1093,34 @@ LABEL_17:
     +[UIColor mailConversationViewCollapsedCellBackgroundColor];
   }
   v5 = ;
-  v6 = [(MFCollapsedMessageCell *)self contentView];
-  [v6 setBackgroundColor:v5];
+  contentView = [(MFCollapsedMessageCell *)self contentView];
+  [contentView setBackgroundColor:v5];
 }
 
-- (id)_messageFromViewModel:(id)a3
+- (id)_messageFromViewModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 messageContentRequest];
+  modelCopy = model;
+  messageContentRequest = [modelCopy messageContentRequest];
 
-  if (v4)
+  if (messageContentRequest)
   {
-    [v3 messageContentRequest];
+    [modelCopy messageContentRequest];
   }
 
   else
   {
-    [v3 messageLoadingContext];
+    [modelCopy messageLoadingContext];
   }
   v5 = ;
-  v6 = [v5 message];
+  message = [v5 message];
 
-  return v6;
+  return message;
 }
 
 - (double)_topToSenderBaselineInConversation
 {
-  v2 = [(MFConversationViewCell *)self displayMetrics];
-  [v2 topToSenderBaselineInConversationForCollapsedCell];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [displayMetrics topToSenderBaselineInConversationForCollapsedCell];
   v4 = v3;
 
   return v4;
@@ -1128,8 +1128,8 @@ LABEL_17:
 
 - (double)_baselineToBaselineSpacingInConversation
 {
-  v2 = [(MFConversationViewCell *)self displayMetrics];
-  [v2 baselineToBaselineSpacingInConversation];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [displayMetrics baselineToBaselineSpacingInConversation];
   v4 = v3;
 
   return v4;
@@ -1137,8 +1137,8 @@ LABEL_17:
 
 - (double)_messageBottomPaddingInConversation
 {
-  v2 = [(MFConversationViewCell *)self displayMetrics];
-  [v2 messageBottomPaddingInConversationForCollapsedCell];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [displayMetrics messageBottomPaddingInConversationForCollapsedCell];
   v4 = v3;
 
   return v4;
@@ -1146,35 +1146,35 @@ LABEL_17:
 
 - (double)_messageTopPaddingInConversation
 {
-  v2 = [(MFConversationViewCell *)self displayMetrics];
-  [v2 messageTopPaddingInConversation];
+  displayMetrics = [(MFConversationViewCell *)self displayMetrics];
+  [displayMetrics messageTopPaddingInConversation];
   v4 = v3;
 
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MFCollapsedMessageCell;
-  [(MFCollapsedMessageCell *)&v5 traitCollectionDidChange:v4];
+  [(MFCollapsedMessageCell *)&v5 traitCollectionDidChange:changeCopy];
   [(MFCollapsedMessageCell *)self _updateAvatarView];
   [(MFCollapsedMessageCell *)self _updateLabelColor];
 }
 
 - (void)_updateAvatarView
 {
-  v4 = [(MFCollapsedMessageCell *)self avatarView];
+  avatarView = [(MFCollapsedMessageCell *)self avatarView];
   if ([(MFCollapsedMessageCell *)self shouldHideAvatarView])
   {
-    [v4 removeFromSuperview];
+    [avatarView removeFromSuperview];
   }
 
   else
   {
-    v3 = [(MFCollapsedMessageCell *)self contentView];
-    [v3 addSubview:v4];
+    contentView = [(MFCollapsedMessageCell *)self contentView];
+    [contentView addSubview:avatarView];
   }
 }
 
@@ -1185,8 +1185,8 @@ LABEL_17:
     return 1;
   }
 
-  v3 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -1205,14 +1205,14 @@ LABEL_17:
   }
 
   v4 = v3;
-  v5 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-  [v5 setTextColor:v4];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  [senderOrSubjectLabel setTextColor:v4];
 
-  v6 = [(MFCollapsedMessageCell *)self summaryLabel];
-  [v6 setTextColor:v8];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  [summaryLabel setTextColor:v8];
 
-  v7 = [(MFCollapsedMessageCell *)self timestampLabel];
-  [v7 setTextColor:v8];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
+  [timestampLabel setTextColor:v8];
 }
 
 - (void)prepareForReuse
@@ -1220,45 +1220,45 @@ LABEL_17:
   v10.receiver = self;
   v10.super_class = MFCollapsedMessageCell;
   [(MFMessageConversationViewCell *)&v10 prepareForReuse];
-  v3 = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
-  [v3 setText:0];
+  senderOrSubjectLabel = [(MFCollapsedMessageCell *)self senderOrSubjectLabel];
+  [senderOrSubjectLabel setText:0];
 
-  v4 = [(MFCollapsedMessageCell *)self summaryLabel];
-  [v4 setText:0];
+  summaryLabel = [(MFCollapsedMessageCell *)self summaryLabel];
+  [summaryLabel setText:0];
 
-  v5 = [(MFCollapsedMessageCell *)self timestampLabel];
-  [v5 setDate:0];
+  timestampLabel = [(MFCollapsedMessageCell *)self timestampLabel];
+  [timestampLabel setDate:0];
 
-  v6 = [(MFCollapsedMessageCell *)self horizontalStatusIndicatorManager];
-  [v6 setIndicatorOptions:0];
+  horizontalStatusIndicatorManager = [(MFCollapsedMessageCell *)self horizontalStatusIndicatorManager];
+  [horizontalStatusIndicatorManager setIndicatorOptions:0];
 
-  v7 = [(MFCollapsedMessageCell *)self horizontalStatusIndicatorManager];
-  [v7 updateImageViews];
+  horizontalStatusIndicatorManager2 = [(MFCollapsedMessageCell *)self horizontalStatusIndicatorManager];
+  [horizontalStatusIndicatorManager2 updateImageViews];
 
-  v8 = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
-  [v8 setIndicatorOptions:0];
+  verticalStatusIndicatorManager = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
+  [verticalStatusIndicatorManager setIndicatorOptions:0];
 
-  v9 = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
-  [v9 updateImageViews];
+  verticalStatusIndicatorManager2 = [(MFCollapsedMessageCell *)self verticalStatusIndicatorManager];
+  [verticalStatusIndicatorManager2 updateImageViews];
 
   [(MFCollapsedMessageCell *)self removeConversationSearchOverlay];
 }
 
 - (void)addConversationSearchOverlay
 {
-  v3 = [(MFCollapsedMessageCell *)self findOverlayView];
+  findOverlayView = [(MFCollapsedMessageCell *)self findOverlayView];
   [(MFCollapsedMessageCell *)self bringSubviewToFront:?];
 
-  v4 = [(MFCollapsedMessageCell *)self findOverlayView];
-  [v4 show];
+  findOverlayView2 = [(MFCollapsedMessageCell *)self findOverlayView];
+  [findOverlayView2 show];
 }
 
 - (void)removeConversationSearchOverlay
 {
-  v3 = [(MFCollapsedMessageCell *)self findOverlayView];
-  [v3 hide];
+  findOverlayView = [(MFCollapsedMessageCell *)self findOverlayView];
+  [findOverlayView hide];
 
-  v4 = [(MFCollapsedMessageCell *)self findOverlayView];
+  findOverlayView2 = [(MFCollapsedMessageCell *)self findOverlayView];
   [(MFCollapsedMessageCell *)self sendSubviewToBack:?];
 }
 

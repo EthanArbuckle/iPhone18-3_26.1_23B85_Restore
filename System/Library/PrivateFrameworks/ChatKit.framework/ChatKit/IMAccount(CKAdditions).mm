@@ -29,7 +29,7 @@
         }
 
         v11 = IMStripFormattingFromAddress();
-        v12 = [a1 imHandleWithID:{v11, v14}];
+        v12 = [self imHandleWithID:{v11, v14}];
 
         if (v12)
         {

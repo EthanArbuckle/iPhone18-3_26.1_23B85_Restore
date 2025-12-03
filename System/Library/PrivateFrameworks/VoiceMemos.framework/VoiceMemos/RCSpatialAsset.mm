@@ -1,29 +1,29 @@
 @interface RCSpatialAsset
-- (BOOL)_descriptionIsSpatial:(opaqueCMFormatDescription *)a3;
-- (BOOL)_isSpatialTrack:(id)a3;
-- (RCSpatialAsset)initWithAsset:(id)a3;
-- (id)_associatedTrackOfType:(id)a3 forTrack:(id)a4;
+- (BOOL)_descriptionIsSpatial:(opaqueCMFormatDescription *)spatial;
+- (BOOL)_isSpatialTrack:(id)track;
+- (RCSpatialAsset)initWithAsset:(id)asset;
+- (id)_associatedTrackOfType:(id)type forTrack:(id)track;
 - (id)_findOverdubTrack;
 - (id)_findSpatialMetadataGroup;
 - (id)_findSpatialTrack;
-- (id)_metadataGroupFor:(id)a3;
+- (id)_metadataGroupFor:(id)for;
 @end
 
 @implementation RCSpatialAsset
 
-- (RCSpatialAsset)initWithAsset:(id)a3
+- (RCSpatialAsset)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v18.receiver = self;
   v18.super_class = RCSpatialAsset;
   v6 = [(RCSpatialAsset *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
-    v8 = [(RCSpatialAsset *)v7 _findSpatialTrack];
+    objc_storeStrong(&v6->_asset, asset);
+    _findSpatialTrack = [(RCSpatialAsset *)v7 _findSpatialTrack];
     spatialTrack = v7->_spatialTrack;
-    v7->_spatialTrack = v8;
+    v7->_spatialTrack = _findSpatialTrack;
 
     if (!v7->_spatialTrack)
     {
@@ -41,9 +41,9 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v14 = [(RCSpatialAsset *)v7 _findOverdubTrack];
+    _findOverdubTrack = [(RCSpatialAsset *)v7 _findOverdubTrack];
     overdubTrack = v7->_overdubTrack;
-    v7->_overdubTrack = v14;
+    v7->_overdubTrack = _findOverdubTrack;
   }
 
   v16 = v7;
@@ -59,8 +59,8 @@ LABEL_8:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(AVAsset *)self->_asset tracks];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tracks = [(AVAsset *)self->_asset tracks];
+  v4 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -71,7 +71,7 @@ LABEL_8:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tracks);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -82,7 +82,7 @@ LABEL_8:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -107,8 +107,8 @@ LABEL_11:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(AVAsset *)self->_asset tracks];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  tracks = [(AVAsset *)self->_asset tracks];
+  v4 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -120,17 +120,17 @@ LABEL_11:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tracks);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 mediaType];
-        if ([v10 isEqualToString:v7] && objc_msgSend(v9, "isEnabled"))
+        mediaType = [v9 mediaType];
+        if ([mediaType isEqualToString:v7] && objc_msgSend(v9, "isEnabled"))
         {
-          v11 = [v9 trackID];
-          v12 = [(AVAssetTrack *)self->_fallbackTrack trackID];
+          trackID = [v9 trackID];
+          trackID2 = [(AVAssetTrack *)self->_fallbackTrack trackID];
 
-          if (v11 != v12)
+          if (trackID != trackID2)
           {
             v13 = v9;
             goto LABEL_14;
@@ -142,7 +142,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [tracks countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -163,8 +163,8 @@ LABEL_14:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(AVAsset *)self->_asset tracks];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tracks = [(AVAsset *)self->_asset tracks];
+  v4 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -175,7 +175,7 @@ LABEL_14:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tracks);
         }
 
         v8 = [(RCSpatialAsset *)self _metadataGroupFor:*(*(&v12 + 1) + 8 * i)];
@@ -186,7 +186,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [tracks countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -204,12 +204,12 @@ LABEL_11:
   return v9;
 }
 
-- (id)_metadataGroupFor:(id)a3
+- (id)_metadataGroupFor:(id)for
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mediaType];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CE5E70]];
+  forCopy = for;
+  mediaType = [forCopy mediaType];
+  v6 = [mediaType isEqualToString:*MEMORY[0x277CE5E70]];
 
   if (!v6)
   {
@@ -217,16 +217,16 @@ LABEL_11:
     goto LABEL_28;
   }
 
-  v7 = [(RCSpatialAsset *)self _associatedTrackOfType:*MEMORY[0x277CE6198] forTrack:v4];
+  v7 = [(RCSpatialAsset *)self _associatedTrackOfType:*MEMORY[0x277CE6198] forTrack:forCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 trackID];
-    if (v9 == [(AVAssetTrack *)self->_spatialTrack trackID])
+    trackID = [v7 trackID];
+    if (trackID == [(AVAssetTrack *)self->_spatialTrack trackID])
     {
       v35 = *MEMORY[0x277CC08F0];
       v36 = *(MEMORY[0x277CC08F0] + 16);
-      v10 = [v4 makeSampleCursorWithPresentationTimeStamp:&v35];
+      v10 = [forCopy makeSampleCursorWithPresentationTimeStamp:&v35];
       if (!v10)
       {
         v23 = 0;
@@ -253,8 +253,8 @@ LABEL_26:
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v16 = [v15 items];
-          v17 = [v16 countByEnumeratingWithState:&v30 objects:v37 count:16];
+          items = [v15 items];
+          v17 = [items countByEnumeratingWithState:&v30 objects:v37 count:16];
           if (v17)
           {
             v18 = v17;
@@ -269,11 +269,11 @@ LABEL_26:
               {
                 if (*v31 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(items);
                 }
 
-                v21 = [*(*(&v30 + 1) + 8 * i) identifier];
-                v22 = [v21 isEqualToString:@"mdta/com.apple.quicktime.cinematic-audio"];
+                identifier = [*(*(&v30 + 1) + 8 * i) identifier];
+                v22 = [identifier isEqualToString:@"mdta/com.apple.quicktime.cinematic-audio"];
 
                 if (v22)
                 {
@@ -286,7 +286,7 @@ LABEL_26:
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v30 objects:v37 count:16];
+              v18 = [items countByEnumeratingWithState:&v30 objects:v37 count:16];
               if (v18)
               {
                 continue;
@@ -338,21 +338,21 @@ LABEL_28:
   return v23;
 }
 
-- (BOOL)_isSpatialTrack:(id)a3
+- (BOOL)_isSpatialTrack:(id)track
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mediaType];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CE5E48]];
+  trackCopy = track;
+  mediaType = [trackCopy mediaType];
+  v6 = [mediaType isEqualToString:*MEMORY[0x277CE5E48]];
 
-  if (v6 && ([v4 isEnabled] & 1) == 0)
+  if (v6 && ([trackCopy isEnabled] & 1) == 0)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v4 formatDescriptions];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    formatDescriptions = [trackCopy formatDescriptions];
+    v9 = [formatDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -363,7 +363,7 @@ LABEL_28:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(formatDescriptions);
           }
 
           if ([(RCSpatialAsset *)self _descriptionIsSpatial:*(*(&v15 + 1) + 8 * i)])
@@ -373,7 +373,7 @@ LABEL_28:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [formatDescriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;
@@ -396,14 +396,14 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_descriptionIsSpatial:(opaqueCMFormatDescription *)a3
+- (BOOL)_descriptionIsSpatial:(opaqueCMFormatDescription *)spatial
 {
-  if (CMFormatDescriptionGetMediaSubType(a3) != 1634754915)
+  if (CMFormatDescriptionGetMediaSubType(spatial) != 1634754915)
   {
     goto LABEL_10;
   }
 
-  ChannelLayout = CMAudioFormatDescriptionGetChannelLayout(a3, 0);
+  ChannelLayout = CMAudioFormatDescriptionGetChannelLayout(spatial, 0);
   if (ChannelLayout)
   {
     if (ChannelLayout->mChannelLayoutTag)
@@ -438,9 +438,9 @@ LABEL_10:
   return ChannelLayout;
 }
 
-- (id)_associatedTrackOfType:(id)a3 forTrack:(id)a4
+- (id)_associatedTrackOfType:(id)type forTrack:(id)track
 {
-  v4 = [a4 associatedTracksOfType:a3];
+  v4 = [track associatedTracksOfType:type];
   if ([v4 count] == 1)
   {
     v5 = [v4 objectAtIndexedSubscript:0];

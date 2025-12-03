@@ -46,18 +46,18 @@
 
 - (BOOL)isPlayed
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isPlayed];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isPlayed = [iMChatItem isPlayed];
 
-  return v3;
+  return isPlayed;
 }
 
 - (BOOL)isSaved
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isSaved];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isSaved = [iMChatItem isSaved];
 
-  return v3;
+  return isSaved;
 }
 
 @end

@@ -8,29 +8,29 @@
 - (void)_wp_removeTrackingInformationFromURLs
 {
   v13 = *MEMORY[0x277D85DE8];
-  checkForURLUsingFastPath(a1, v8);
+  checkForURLUsingFastPath(self, v8);
   v2 = v9;
   if (v8[0] == 1)
   {
     if (v9)
     {
-      v3 = [(NSString *)a1 length];
-      v4 = [v2 _wp_urlByRemovingTrackingInformation];
-      v5 = [v4 absoluteString];
+      v3 = [(NSString *)self length];
+      _wp_urlByRemovingTrackingInformation = [v2 _wp_urlByRemovingTrackingInformation];
+      absoluteString = [_wp_urlByRemovingTrackingInformation absoluteString];
       v11[0] = 0;
       v11[1] = v3;
-      v12 = v5;
+      v12 = absoluteString;
       memset(v7, 0, sizeof(v7));
       std::vector<std::pair<_NSRange,NSString * {__strong}>>::__init_with_size[abi:nn200100]<std::pair<_NSRange,NSString * {__strong}>*,std::pair<_NSRange,NSString * {__strong}>*>(v7, v11, &v13, 1uLL);
-      WebPrivacy::applyOrderedReplacementsInPlace<NSMutableString>(a1, v7);
+      WebPrivacy::applyOrderedReplacementsInPlace<NSMutableString>(self, v7);
       v10 = v7;
       std::vector<std::pair<_NSRange,NSString * {__strong}>>::__destroy_vector::operator()[abi:nn200100](&v10);
     }
 
     else
     {
-      WebPrivacy::findOrderedReplacementRanges(a1, v7);
-      WebPrivacy::applyOrderedReplacementsInPlace<NSMutableString>(a1, v7);
+      WebPrivacy::findOrderedReplacementRanges(self, v7);
+      WebPrivacy::applyOrderedReplacementsInPlace<NSMutableString>(self, v7);
       v11[0] = v7;
       std::vector<std::pair<_NSRange,NSString * {__strong}>>::__destroy_vector::operator()[abi:nn200100](v11);
     }
@@ -42,13 +42,13 @@
 - (void)_wp_removeTrackingInformationFromURLsInPlace:()WebPrivacyExtras
 {
   v4 = a3;
-  checkForURLUsingFastPath(a1, v14);
+  checkForURLUsingFastPath(self, v14);
   if (v14[0])
   {
     v5 = v15;
     if (!v15)
     {
-      objc_initWeak(&from, a1);
+      objc_initWeak(&from, self);
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3321888768;
       v8[2] = __82__NSMutableString_WebPrivacyExtras___wp_removeTrackingInformationFromURLsInPlace___block_invoke_2;
@@ -57,10 +57,10 @@
       objc_copyWeak(&v7, &from);
       v8[4] = MEMORY[0x2743DC460](location);
       objc_copyWeak(&v9, &v7);
-      WebPrivacy::findOrderedReplacementRanges(a1, v8);
+      WebPrivacy::findOrderedReplacementRanges(self, v8);
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __82__NSMutableString_WebPrivacyExtras___wp_removeTrackingInformationFromURLsInPlace___block_invoke;

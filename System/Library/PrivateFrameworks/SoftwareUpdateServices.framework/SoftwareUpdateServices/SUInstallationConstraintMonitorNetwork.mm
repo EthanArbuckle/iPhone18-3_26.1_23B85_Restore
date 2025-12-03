@@ -1,37 +1,37 @@
 @interface SUInstallationConstraintMonitorNetwork
-- (id)initOnQueue:(id)a3 withDownload:(id)a4;
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 networkMonitor:(id)a5;
+- (id)initOnQueue:(id)queue withDownload:(id)download;
+- (id)initOnQueue:(id)queue withDownload:(id)download networkMonitor:(id)monitor;
 - (unint64_t)unsatisfiedConstraints;
 - (void)_queue_networkDidChange;
 - (void)dealloc;
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4;
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType;
 @end
 
 @implementation SUInstallationConstraintMonitorNetwork
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4
+- (id)initOnQueue:(id)queue withDownload:(id)download
 {
-  v6 = a4;
-  v7 = a3;
+  downloadCopy = download;
+  queueCopy = queue;
   v8 = +[SUNetworkMonitor sharedInstance];
-  v9 = [(SUInstallationConstraintMonitorNetwork *)self initOnQueue:v7 withDownload:v6 networkMonitor:v8];
+  v9 = [(SUInstallationConstraintMonitorNetwork *)self initOnQueue:queueCopy withDownload:downloadCopy networkMonitor:v8];
 
   return v9;
 }
 
-- (id)initOnQueue:(id)a3 withDownload:(id)a4 networkMonitor:(id)a5
+- (id)initOnQueue:(id)queue withDownload:(id)download networkMonitor:(id)monitor
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  monitorCopy = monitor;
+  downloadCopy = download;
+  queueCopy = queue;
   BSDispatchQueueAssert();
   v14.receiver = self;
   v14.super_class = SUInstallationConstraintMonitorNetwork;
-  v12 = [(SUInstallationConstraintMonitorBase *)&v14 initOnQueue:v11 withRepresentedInstallationConstraints:2 andDownload:v10];
+  v12 = [(SUInstallationConstraintMonitorBase *)&v14 initOnQueue:queueCopy withRepresentedInstallationConstraints:2 andDownload:downloadCopy];
 
   if (v12)
   {
-    objc_storeStrong(v12 + 6, a5);
+    objc_storeStrong(v12 + 6, monitor);
     [v12[6] addObserver:v12];
     [v12 _queue_networkDidChange];
   }
@@ -59,7 +59,7 @@
   return [(SUInstallationConstraintMonitorBase *)self representedConstraints];
 }
 
-- (void)networkChangedFromNetworkType:(int)a3 toNetworkType:(int)a4
+- (void)networkChangedFromNetworkType:(int)type toNetworkType:(int)networkType
 {
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -82,8 +82,8 @@
     self->_queue_hasNetwork;
     SULogInfoForSubsystem(v5, @"%@ - network constraint changed (satisfied? %@)", v6, v7, v8, v9, v10, v11, self);
 
-    v12 = [(SUInstallationConstraintMonitorBase *)self delegate];
-    [v12 installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
+    delegate = [(SUInstallationConstraintMonitorBase *)self delegate];
+    [delegate installationConstraintMonitor:self constraintsDidChange:{-[SUInstallationConstraintMonitorBase representedConstraints](self, "representedConstraints")}];
   }
 }
 

@@ -3,42 +3,42 @@
 + (id)contactStore;
 + (void)preloadContactStoreIfNecessary;
 - (BOOL)SOSContactsExist;
-- (BOOL)_isEmergencyNumber:(id)a3;
+- (BOOL)_isEmergencyNumber:(id)number;
 - (BOOL)hasValidContactsToMessage;
-- (BOOL)isPhoneNumberEqual:(id)a3 toNumber:(id)a4;
+- (BOOL)isPhoneNumberEqual:(id)equal toNumber:(id)number;
 - (NSArray)activeSafetyMonitorSessionPrimaryHandles;
 - (NSArray)medicalIDEmergencyContacts;
-- (SOSContactsManager)initWithHealthStore:(id)a3;
+- (SOSContactsManager)initWithHealthStore:(id)store;
 - (SOSLegacyContactsManager)legacyContactsManager;
 - (_opaque_pthread_mutex_t)medicalIDEmergencyContactsMutex;
 - (_opaque_pthread_mutex_t)safetyMonitorSessionHandleMutex;
 - (id)SOSContactDestinations;
 - (id)SOSContactRecipients;
-- (id)_sosRecipientContainingPhoneNumber:(id)a3 inRecipients:(id)a4;
+- (id)_sosRecipientContainingPhoneNumber:(id)number inRecipients:(id)recipients;
 - (id)_userDefaults;
-- (void)SOSContactsWithTimeout:(double)a3 andCompletion:(id)a4;
+- (void)SOSContactsWithTimeout:(double)timeout andCompletion:(id)completion;
 - (void)_fetchMedicalIDEmergencyContacts;
 - (void)_fetchSafetyMonitorSessionHandles;
 - (void)_medicalContactsDidChange;
-- (void)_medicalIDEmergencyContactsWithCompletion:(id)a3;
-- (void)_updateWithSafetyMonitorHandles:(id)a3;
-- (void)_updateWithSafetyMonitorSessionState:(id)a3 error:(id)a4;
+- (void)_medicalIDEmergencyContactsWithCompletion:(id)completion;
+- (void)_updateWithSafetyMonitorHandles:(id)handles;
+- (void)_updateWithSafetyMonitorSessionState:(id)state error:(id)error;
 - (void)_waitForMedicalIDInitialState;
 - (void)_waitForSafetyMonitorInitialState;
 - (void)dealloc;
 - (void)refreshCurrentEmergencyContacts;
-- (void)setActiveSafetyMonitorSessionPrimaryHandles:(id)a3;
-- (void)setMedicalIDEmergencyContacts:(id)a3;
-- (void)setMedicalIDEmergencyContactsMutex:(_opaque_pthread_mutex_t *)a3;
-- (void)setSafetyMonitorSessionHandleMutex:(_opaque_pthread_mutex_t *)a3;
+- (void)setActiveSafetyMonitorSessionPrimaryHandles:(id)handles;
+- (void)setMedicalIDEmergencyContacts:(id)contacts;
+- (void)setMedicalIDEmergencyContactsMutex:(_opaque_pthread_mutex_t *)mutex;
+- (void)setSafetyMonitorSessionHandleMutex:(_opaque_pthread_mutex_t *)mutex;
 @end
 
 @implementation SOSContactsManager
 
-- (SOSContactsManager)initWithHealthStore:(id)a3
+- (SOSContactsManager)initWithHealthStore:(id)store
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storeCopy = store;
   if ([SOSEntitlement currentProcessHasEntitlement:@"com.apple.sos.contacts"])
   {
     v33.receiver = self;
@@ -47,9 +47,9 @@
     v7 = v6;
     if (v6)
     {
-      if (v5)
+      if (storeCopy)
       {
-        objc_storeStrong(&v6->_healthStore, a3);
+        objc_storeStrong(&v6->_healthStore, store);
       }
 
       else
@@ -129,29 +129,29 @@
         _os_log_impl(&dword_264323000, v24, OS_LOG_TYPE_DEFAULT, "Registering SafetyMonitor startMonitoringSessionStateWithHandler", v30, 2u);
       }
 
-      v25 = [getSMSafetyMonitorManagerClass() defaultManager];
+      defaultManager = [getSMSafetyMonitorManagerClass() defaultManager];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __42__SOSContactsManager_initWithHealthStore___block_invoke_329;
       v28[3] = &unk_279B53090;
       objc_copyWeak(&v29, buf);
-      [v25 startMonitoringSessionStateWithHandler:v28];
+      [defaultManager startMonitoringSessionStateWithHandler:v28];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(buf);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 void __42__SOSContactsManager_initWithHealthStore___block_invoke_329(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -184,8 +184,8 @@ void __42__SOSContactsManager_initWithHealthStore___block_invoke_329(uint64_t a1
 
 - (void)dealloc
 {
-  v3 = [getSMSafetyMonitorManagerClass() defaultManager];
-  [v3 stopMonitoringSessionStateWithHandler:&__block_literal_global];
+  defaultManager = [getSMSafetyMonitorManagerClass() defaultManager];
+  [defaultManager stopMonitoringSessionStateWithHandler:&__block_literal_global];
 
   notify_cancel(self->_healthContactsNotificationToken);
   v4.receiver = self;
@@ -213,18 +213,18 @@ void __29__SOSContactsManager_dealloc__block_invoke(uint64_t a1, void *a2)
   [(SOSContactsManager *)self _fetchSafetyMonitorSessionHandles];
 }
 
-- (void)SOSContactsWithTimeout:(double)a3 andCompletion:(id)a4
+- (void)SOSContactsWithTimeout:(double)timeout andCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SOSContactsManager *)self medicalIDEmergencyContacts];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  medicalIDEmergencyContacts = [(SOSContactsManager *)self medicalIDEmergencyContacts];
+  (*(completion + 2))(completionCopy, medicalIDEmergencyContacts);
 }
 
 - (id)SOSContactDestinations
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(SOSContactsManager *)self SOSContactRecipients];
-  v3 = [SOSRecipient handlesFromRecipients:v2];
+  sOSContactRecipients = [(SOSContactsManager *)self SOSContactRecipients];
+  v3 = [SOSRecipient handlesFromRecipients:sOSContactRecipients];
 
   v4 = sos_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -460,16 +460,16 @@ void __42__SOSContactsManager_SOSContactRecipients__block_invoke(uint64_t a1, vo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sosRecipientContainingPhoneNumber:(id)a3 inRecipients:(id)a4
+- (id)_sosRecipientContainingPhoneNumber:(id)number inRecipients:(id)recipients
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  numberCopy = number;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = a4;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  recipientsCopy = recipients;
+  v8 = [recipientsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -480,12 +480,12 @@ void __42__SOSContactsManager_SOSContactRecipients__block_invoke(uint64_t a1, vo
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(recipientsCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 handle];
-        v14 = [(SOSContactsManager *)self isPhoneNumberEqual:v6 toNumber:v13];
+        handle = [v12 handle];
+        v14 = [(SOSContactsManager *)self isPhoneNumberEqual:numberCopy toNumber:handle];
 
         if (v14)
         {
@@ -494,7 +494,7 @@ void __42__SOSContactsManager_SOSContactRecipients__block_invoke(uint64_t a1, vo
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [recipientsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         continue;
@@ -512,11 +512,11 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)isPhoneNumberEqual:(id)a3 toNumber:(id)a4
+- (BOOL)isPhoneNumberEqual:(id)equal toNumber:(id)number
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  equalCopy = equal;
+  numberCopy = number;
   active = PNCopyBestGuessCountryCodeForNumber();
   if (!active)
   {
@@ -538,9 +538,9 @@ LABEL_11:
     v13 = 136315906;
     v14 = "[SOSContactsManager isPhoneNumberEqual:toNumber:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = equalCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = numberCopy;
     v19 = 1024;
     v20 = v9;
     _os_log_impl(&dword_264323000, v10, OS_LOG_TYPE_DEFAULT, "%s: numberA: %@, numberB: %@, equal: %d", &v13, 0x26u);
@@ -552,15 +552,15 @@ LABEL_11:
 
 - (BOOL)SOSContactsExist
 {
-  v2 = [(SOSContactsManager *)self SOSContactDestinations];
-  v3 = [v2 count] != 0;
+  sOSContactDestinations = [(SOSContactsManager *)self SOSContactDestinations];
+  v3 = [sOSContactDestinations count] != 0;
 
   return v3;
 }
 
-- (BOOL)_isEmergencyNumber:(id)a3
+- (BOOL)_isEmergencyNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   CTSUServerConnectionRef();
   IsEmergencyNumber = _CTServerConnectionIsEmergencyNumber();
 
@@ -609,8 +609,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v3 = [(SOSContactsManager *)self phoneNumbersToMessage];
-  v4 = [v3 count] != 0;
+  phoneNumbersToMessage = [(SOSContactsManager *)self phoneNumbersToMessage];
+  v4 = [phoneNumbersToMessage count] != 0;
 
   return v4;
 }
@@ -655,7 +655,7 @@ uint64_t __35__SOSContactsManager__userDefaults__block_invoke()
   block[1] = 3221225472;
   block[2] = __52__SOSContactsManager_preloadContactStoreIfNecessary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (preloadContactStoreIfNecessary_once != -1)
   {
     dispatch_once(&preloadContactStoreIfNecessary_once, block);
@@ -697,7 +697,7 @@ uint64_t __52__SOSContactsManager_preloadContactStoreIfNecessary__block_invoke_2
   v8 = __Block_byref_object_copy_;
   v9 = __Block_byref_object_dispose_;
   v10 = 0;
-  [a1 preloadContactStoreIfNecessary];
+  [self preloadContactStoreIfNecessary];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__SOSContactsManager_contactStore__block_invoke;
@@ -750,23 +750,23 @@ void __49__SOSContactsManager_authorizedToUseContactStore__block_invoke()
   return v3;
 }
 
-- (void)setMedicalIDEmergencyContacts:(id)a3
+- (void)setMedicalIDEmergencyContacts:(id)contacts
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contactsCopy = contacts;
   pthread_mutex_lock(&self->_medicalIDEmergencyContactsMutex);
-  objc_storeStrong(&self->_medicalIDEmergencyContacts, a3);
+  objc_storeStrong(&self->_medicalIDEmergencyContacts, contacts);
   pthread_mutex_unlock(&self->_medicalIDEmergencyContactsMutex);
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = contactsCopy;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "Set medicalIDEmergencyContacts: %@", &v9, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"SOSContactsChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SOSContactsChangedNotification" object:self];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -801,16 +801,16 @@ void __54__SOSContactsManager__fetchMedicalIDEmergencyContacts__block_invoke(uin
   dispatch_semaphore_signal(v6);
 }
 
-- (void)_medicalIDEmergencyContactsWithCompletion:(id)a3
+- (void)_medicalIDEmergencyContactsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   healthStore = self->_healthStore;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__SOSContactsManager__medicalIDEmergencyContactsWithCompletion___block_invoke;
   v7[3] = &unk_279B53190;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HKHealthStore *)healthStore fetchMedicalIDEmergencyContactsWithCompletion:v7];
 }
 
@@ -955,18 +955,18 @@ void __47__SOSContactsManager__medicalContactsDidChange__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)setActiveSafetyMonitorSessionPrimaryHandles:(id)a3
+- (void)setActiveSafetyMonitorSessionPrimaryHandles:(id)handles
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlesCopy = handles;
   pthread_mutex_lock(&self->_safetyMonitorSessionHandleMutex);
-  objc_storeStrong(&self->_activeSafetyMonitorSessionPrimaryHandles, a3);
+  objc_storeStrong(&self->_activeSafetyMonitorSessionPrimaryHandles, handles);
   pthread_mutex_unlock(&self->_safetyMonitorSessionHandleMutex);
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = handlesCopy;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "Set activeSafetyMonitorSessionPrimaryHandles: %@", &v8, 0xCu);
   }
 
@@ -976,7 +976,7 @@ void __47__SOSContactsManager__medicalContactsDidChange__block_invoke(uint64_t a
 - (void)_fetchSafetyMonitorSessionHandles
 {
   objc_initWeak(&location, self);
-  v2 = [getSMSafetyMonitorManagerClass() defaultManager];
+  defaultManager = [getSMSafetyMonitorManagerClass() defaultManager];
   if (objc_opt_respondsToSelector())
   {
     v6[0] = MEMORY[0x277D85DD0];
@@ -985,7 +985,7 @@ void __47__SOSContactsManager__medicalContactsDidChange__block_invoke(uint64_t a
     v6[3] = &unk_279B531B8;
     v3 = &v7;
     objc_copyWeak(&v7, &location);
-    [v2 fetchSOSReceiversWithCompletion:v6];
+    [defaultManager fetchSOSReceiversWithCompletion:v6];
   }
 
   else
@@ -996,7 +996,7 @@ void __47__SOSContactsManager__medicalContactsDidChange__block_invoke(uint64_t a
     v4[3] = &unk_279B53090;
     v3 = &v5;
     objc_copyWeak(&v5, &location);
-    [v2 fetchCurrentSessionStateWithHandler:v4];
+    [defaultManager fetchCurrentSessionStateWithHandler:v4];
   }
 
   objc_destroyWeak(v3);
@@ -1077,71 +1077,71 @@ void __55__SOSContactsManager__fetchSafetyMonitorSessionHandles__block_invoke_35
   }
 }
 
-- (void)_updateWithSafetyMonitorSessionState:(id)a3 error:(id)a4
+- (void)_updateWithSafetyMonitorSessionState:(id)state error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  stateCopy = state;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v8 = sos_default_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    handle = sos_default_log();
+    if (os_log_type_enabled(handle, OS_LOG_TYPE_ERROR))
     {
       [SOSContactsManager _updateWithSafetyMonitorSessionState:error:];
     }
 
 LABEL_4:
-    v9 = 0;
+    receiverHandles = 0;
     goto LABEL_5;
   }
 
-  if (([v6 isActiveState] & 1) == 0)
+  if (([stateCopy isActiveState] & 1) == 0)
   {
-    v8 = sos_default_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    handle = sos_default_log();
+    if (os_log_type_enabled(handle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_264323000, v8, OS_LOG_TYPE_DEFAULT, "_updateWithSafetyMonitorSessionState, Zelkova Session not in active state", buf, 2u);
+      _os_log_impl(&dword_264323000, handle, OS_LOG_TYPE_DEFAULT, "_updateWithSafetyMonitorSessionState, Zelkova Session not in active state", buf, 2u);
     }
 
     goto LABEL_4;
   }
 
-  v11 = [v6 configuration];
+  configuration = [stateCopy configuration];
   v12 = objc_opt_respondsToSelector();
 
-  v13 = [v6 configuration];
-  v14 = v13;
+  configuration2 = [stateCopy configuration];
+  v14 = configuration2;
   if (v12)
   {
-    v15 = [v13 sosReceivers];
-    v9 = [v15 receiverHandles];
+    sosReceivers = [configuration2 sosReceivers];
+    receiverHandles = [sosReceivers receiverHandles];
 
-    v8 = sos_default_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    handle = sos_default_log();
+    if (os_log_type_enabled(handle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v9;
-      _os_log_impl(&dword_264323000, v8, OS_LOG_TYPE_DEFAULT, "_updateWithSafetyMonitorSessionState, sosReceivers: %@", buf, 0xCu);
+      v21 = receiverHandles;
+      _os_log_impl(&dword_264323000, handle, OS_LOG_TYPE_DEFAULT, "_updateWithSafetyMonitorSessionState, sosReceivers: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v8 = [v13 handle];
+    handle = [configuration2 handle];
 
-    v16 = [v8 primaryHandle];
-    v17 = [v16 length];
+    primaryHandle = [handle primaryHandle];
+    v17 = [primaryHandle length];
 
     if (v17)
     {
-      v19 = v8;
-      v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
+      v19 = handle;
+      receiverHandles = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
       v18 = sos_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v21 = v8;
+        v21 = handle;
         _os_log_impl(&dword_264323000, v18, OS_LOG_TYPE_DEFAULT, "_updateWithSafetyMonitorSessionState, Active state with handle: %@", buf, 0xCu);
       }
     }
@@ -1154,26 +1154,26 @@ LABEL_4:
         [SOSContactsManager _updateWithSafetyMonitorSessionState:error:];
       }
 
-      v9 = 0;
+      receiverHandles = 0;
     }
   }
 
 LABEL_5:
 
-  [(SOSContactsManager *)self _updateWithSafetyMonitorHandles:v9];
+  [(SOSContactsManager *)self _updateWithSafetyMonitorHandles:receiverHandles];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithSafetyMonitorHandles:(id)a3
+- (void)_updateWithSafetyMonitorHandles:(id)handles
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlesCopy = handles;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = handlesCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
@@ -1189,8 +1189,8 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v19 + 1) + 8 * v9) primaryHandle];
-        v11 = [v10 length];
+        primaryHandle = [*(*(&v19 + 1) + 8 * v9) primaryHandle];
+        v11 = [primaryHandle length];
         v12 = sos_default_log();
         v13 = v12;
         if (v11)
@@ -1198,11 +1198,11 @@ LABEL_5:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v24 = v10;
+            v24 = primaryHandle;
             _os_log_impl(&dword_264323000, v13, OS_LOG_TYPE_DEFAULT, "_updateWithSafetyMonitorHandles, adding handle: %@", buf, 0xCu);
           }
 
-          [v4 addObject:v10];
+          [v4 addObject:primaryHandle];
         }
 
         else
@@ -1224,8 +1224,8 @@ LABEL_5:
   }
 
   [(SOSContactsManager *)self setActiveSafetyMonitorSessionPrimaryHandles:v4];
-  v14 = [(SOSContactsManager *)self safetyMonitorSessionInitialStateSemaphore];
-  dispatch_semaphore_signal(v14);
+  safetyMonitorSessionInitialStateSemaphore = [(SOSContactsManager *)self safetyMonitorSessionInitialStateSemaphore];
+  dispatch_semaphore_signal(safetyMonitorSessionInitialStateSemaphore);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1262,12 +1262,12 @@ LABEL_5:
   return self;
 }
 
-- (void)setMedicalIDEmergencyContactsMutex:(_opaque_pthread_mutex_t *)a3
+- (void)setMedicalIDEmergencyContactsMutex:(_opaque_pthread_mutex_t *)mutex
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_medicalIDEmergencyContactsMutex.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&mutex->__sig;
+  v4 = *&mutex->__opaque[8];
+  v5 = *&mutex->__opaque[40];
+  *&self->_medicalIDEmergencyContactsMutex.__opaque[24] = *&mutex->__opaque[24];
   *&self->_medicalIDEmergencyContactsMutex.__opaque[40] = v5;
   *&self->_medicalIDEmergencyContactsMutex.__sig = v3;
   *&self->_medicalIDEmergencyContactsMutex.__opaque[8] = v4;
@@ -1284,12 +1284,12 @@ LABEL_5:
   return self;
 }
 
-- (void)setSafetyMonitorSessionHandleMutex:(_opaque_pthread_mutex_t *)a3
+- (void)setSafetyMonitorSessionHandleMutex:(_opaque_pthread_mutex_t *)mutex
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[40];
-  *&self->_safetyMonitorSessionHandleMutex.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&mutex->__sig;
+  v4 = *&mutex->__opaque[8];
+  v5 = *&mutex->__opaque[40];
+  *&self->_safetyMonitorSessionHandleMutex.__opaque[24] = *&mutex->__opaque[24];
   *&self->_safetyMonitorSessionHandleMutex.__opaque[40] = v5;
   *&self->_safetyMonitorSessionHandleMutex.__sig = v3;
   *&self->_safetyMonitorSessionHandleMutex.__opaque[8] = v4;

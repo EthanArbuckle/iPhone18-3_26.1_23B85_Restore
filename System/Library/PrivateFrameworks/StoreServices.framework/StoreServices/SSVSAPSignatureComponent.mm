@@ -1,24 +1,24 @@
 @interface SSVSAPSignatureComponent
-- (SSVSAPSignatureComponent)initWithComponentType:(int64_t)a3 key:(id)a4;
-- (id)_dataToSignWithDataSource:(id)a3;
-- (id)dataToSignWithRequestProperties:(id)a3;
-- (id)dataToSignWithURLRequest:(id)a3;
-- (id)dataToSignWithURLResponse:(id)a3 responseData:(id)a4;
+- (SSVSAPSignatureComponent)initWithComponentType:(int64_t)type key:(id)key;
+- (id)_dataToSignWithDataSource:(id)source;
+- (id)dataToSignWithRequestProperties:(id)properties;
+- (id)dataToSignWithURLRequest:(id)request;
+- (id)dataToSignWithURLResponse:(id)response responseData:(id)data;
 @end
 
 @implementation SSVSAPSignatureComponent
 
-- (SSVSAPSignatureComponent)initWithComponentType:(int64_t)a3 key:(id)a4
+- (SSVSAPSignatureComponent)initWithComponentType:(int64_t)type key:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = SSVSAPSignatureComponent;
   v7 = [(SSVSAPSignatureComponent *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_componentType = a3;
-    v9 = [v6 copy];
+    v7->_componentType = type;
+    v9 = [keyCopy copy];
     key = v8->_key;
     v8->_key = v9;
   }
@@ -26,61 +26,61 @@
   return v8;
 }
 
-- (id)dataToSignWithRequestProperties:(id)a3
+- (id)dataToSignWithRequestProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequestProperties:v4];
+  propertiesCopy = properties;
+  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequestProperties:propertiesCopy];
 
   v6 = [(SSVSAPSignatureComponent *)self _dataToSignWithDataSource:v5];
 
   return v6;
 }
 
-- (id)dataToSignWithURLRequest:(id)a3
+- (id)dataToSignWithURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequest:v4];
+  requestCopy = request;
+  v5 = [[SSVSAPSignatureDataSource alloc] initWithURLRequest:requestCopy];
 
   v6 = [(SSVSAPSignatureComponent *)self _dataToSignWithDataSource:v5];
 
   return v6;
 }
 
-- (id)dataToSignWithURLResponse:(id)a3 responseData:(id)a4
+- (id)dataToSignWithURLResponse:(id)response responseData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SSVSAPSignatureDataSource alloc] initWithURLResponse:v7 bodyData:v6];
+  dataCopy = data;
+  responseCopy = response;
+  v8 = [[SSVSAPSignatureDataSource alloc] initWithURLResponse:responseCopy bodyData:dataCopy];
 
   v9 = [(SSVSAPSignatureComponent *)self _dataToSignWithDataSource:v8];
 
   return v9;
 }
 
-- (id)_dataToSignWithDataSource:(id)a3
+- (id)_dataToSignWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
+  sourceCopy = source;
+  v5 = sourceCopy;
   componentType = self->_componentType;
   if (componentType == 2)
   {
-    v8 = [v4 valueForQueryParameter:self->_key];
+    v8 = [sourceCopy valueForQueryParameter:self->_key];
     goto LABEL_7;
   }
 
   if (componentType == 1)
   {
-    v8 = [v4 valueForHTTPHeader:self->_key];
+    v8 = [sourceCopy valueForHTTPHeader:self->_key];
 LABEL_7:
     v9 = v8;
     if (v8)
     {
-      v7 = [v8 dataUsingEncoding:4];
+      hTTPBody = [v8 dataUsingEncoding:4];
     }
 
     else
     {
-      v7 = 0;
+      hTTPBody = 0;
     }
 
     goto LABEL_12;
@@ -88,17 +88,17 @@ LABEL_7:
 
   if (componentType)
   {
-    v7 = 0;
+    hTTPBody = 0;
   }
 
   else
   {
-    v7 = [v4 HTTPBody];
+    hTTPBody = [sourceCopy HTTPBody];
   }
 
 LABEL_12:
 
-  return v7;
+  return hTTPBody;
 }
 
 @end

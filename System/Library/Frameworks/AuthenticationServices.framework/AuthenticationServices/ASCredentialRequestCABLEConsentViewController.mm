@@ -1,6 +1,6 @@
 @interface ASCredentialRequestCABLEConsentViewController
-- (ASCredentialRequestCABLEConsentViewController)initWithPasskeyURLType:(int64_t)a3;
-- (ASCredentialRequestCABLEConsentViewController)initWithPresentationContext:(id)a3;
+- (ASCredentialRequestCABLEConsentViewController)initWithPasskeyURLType:(int64_t)type;
+- (ASCredentialRequestCABLEConsentViewController)initWithPresentationContext:(id)context;
 - (id)_subtitleText;
 - (id)_titleText;
 - (void)_continueButtonPressed;
@@ -11,14 +11,14 @@
 
 @implementation ASCredentialRequestCABLEConsentViewController
 
-- (ASCredentialRequestCABLEConsentViewController)initWithPresentationContext:(id)a3
+- (ASCredentialRequestCABLEConsentViewController)initWithPresentationContext:(id)context
 {
-  v4 = [a3 _passkeyURLType];
+  _passkeyURLType = [context _passkeyURLType];
 
-  return [(ASCredentialRequestCABLEConsentViewController *)self initWithPasskeyURLType:v4];
+  return [(ASCredentialRequestCABLEConsentViewController *)self initWithPasskeyURLType:_passkeyURLType];
 }
 
-- (ASCredentialRequestCABLEConsentViewController)initWithPasskeyURLType:(int64_t)a3
+- (ASCredentialRequestCABLEConsentViewController)initWithPasskeyURLType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = ASCredentialRequestCABLEConsentViewController;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_passkeyURLType = a3;
+    v4->_passkeyURLType = type;
     v6 = v4;
   }
 
@@ -38,11 +38,11 @@
   v5.receiver = self;
   v5.super_class = ASCredentialRequestCABLEConsentViewController;
   [(ASCredentialRequestPaneViewController *)&v5 viewDidLoad];
-  v3 = [(ASCredentialRequestPaneViewController *)self tableView];
-  [v3 setSeparatorStyle:0];
+  tableView = [(ASCredentialRequestPaneViewController *)self tableView];
+  [tableView setSeparatorStyle:0];
 
-  v4 = [(ASCredentialRequestPaneViewController *)self tableView];
-  [v4 setDataSource:self];
+  tableView2 = [(ASCredentialRequestPaneViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
   [(ASCredentialRequestCABLEConsentViewController *)self _setUpHeader];
   [(ASCredentialRequestCABLEConsentViewController *)self _setUpContinueButton];
@@ -51,12 +51,12 @@
 
 - (void)_setUpHeader
 {
-  v3 = [(ASCredentialRequestCABLEConsentViewController *)self _titleText];
-  v4 = [(ASCredentialRequestCABLEConsentViewController *)self _subtitleText];
-  v6 = [ASCredentialRequestPaneHeaderConfiguration passwordManagerHeaderWithTitle:v3 subtitle:v4];
+  _titleText = [(ASCredentialRequestCABLEConsentViewController *)self _titleText];
+  _subtitleText = [(ASCredentialRequestCABLEConsentViewController *)self _subtitleText];
+  v6 = [ASCredentialRequestPaneHeaderConfiguration passwordManagerHeaderWithTitle:_titleText subtitle:_subtitleText];
 
-  v5 = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
-  [v5 addHeaderWithConfiguration:v6];
+  headerPaneContext = [(ASCredentialRequestPaneViewController *)self headerPaneContext];
+  [headerPaneContext addHeaderWithConfiguration:v6];
 }
 
 - (void)_setUpContinueButton
@@ -66,19 +66,19 @@
   [(ASCredentialRequestButton *)v7 setButtonText:v3];
 
   [(ASCredentialRequestButton *)v7 addTarget:self action:sel__continueButtonPressed];
-  v4 = [(ASCredentialRequestPaneViewController *)self paneFooterStackView];
-  [v4 addArrangedSubview:v7];
+  paneFooterStackView = [(ASCredentialRequestPaneViewController *)self paneFooterStackView];
+  [paneFooterStackView addArrangedSubview:v7];
 
-  v5 = [(ASCredentialRequestButtonContinue *)v7 heightAnchor];
+  heightAnchor = [(ASCredentialRequestButtonContinue *)v7 heightAnchor];
   +[ASViewServiceInterfaceUtilities continueButtonHeight];
-  v6 = [v5 constraintEqualToConstant:?];
+  v6 = [heightAnchor constraintEqualToConstant:?];
   [v6 setActive:1];
 }
 
 - (void)_continueButtonPressed
 {
-  v3 = [(ASCredentialRequestPaneViewController *)self delegate];
-  [v3 requestPaneViewControllerStartCABLEAuthentication:self];
+  delegate = [(ASCredentialRequestPaneViewController *)self delegate];
+  [delegate requestPaneViewControllerStartCABLEAuthentication:self];
 }
 
 - (id)_titleText
@@ -97,8 +97,8 @@
   if (passkeyURLType == 3 || passkeyURLType == 2)
   {
 LABEL_6:
-    v3 = [MEMORY[0x1E69C8860] currentDevice];
-    [v3 deviceClass];
+    currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+    [currentDevice deviceClass];
 
     self = _WBSLocalizedString();
   }

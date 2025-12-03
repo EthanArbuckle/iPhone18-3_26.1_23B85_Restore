@@ -1,37 +1,37 @@
 @interface SBUIAppleLogoView
-- (SBUIAppleLogoView)initWithFrame:(CGRect)a3 appearance:(int64_t)a4 progressBarVisible:(BOOL)a5;
-- (SBUIAppleLogoView)initWithFrame:(CGRect)a3 progressBarVisible:(BOOL)a4;
-- (SBUIAppleLogoView)initWithFrame:(CGRect)a3 useWhiteLogo:(BOOL)a4 progressBarVisible:(BOOL)a5;
+- (SBUIAppleLogoView)initWithFrame:(CGRect)frame appearance:(int64_t)appearance progressBarVisible:(BOOL)visible;
+- (SBUIAppleLogoView)initWithFrame:(CGRect)frame progressBarVisible:(BOOL)visible;
+- (SBUIAppleLogoView)initWithFrame:(CGRect)frame useWhiteLogo:(BOOL)logo progressBarVisible:(BOOL)visible;
 - (void)layoutSubviews;
 @end
 
 @implementation SBUIAppleLogoView
 
-- (SBUIAppleLogoView)initWithFrame:(CGRect)a3 appearance:(int64_t)a4 progressBarVisible:(BOOL)a5
+- (SBUIAppleLogoView)initWithFrame:(CGRect)frame appearance:(int64_t)appearance progressBarVisible:(BOOL)visible
 {
-  v5 = a5;
+  visibleCopy = visible;
   v34.receiver = self;
   v34.super_class = SBUIAppleLogoView;
-  v7 = [(SBUIAppleLogoView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(SBUIAppleLogoView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69C5DF8]) initWithProgressBarVisibility:v5 createContext:0 contextLevel:a4 appearance:0.0];
+    v8 = [objc_alloc(MEMORY[0x1E69C5DF8]) initWithProgressBarVisibility:visibleCopy createContext:0 contextLevel:appearance appearance:0.0];
     progressWindow = v7->_progressWindow;
     v7->_progressWindow = v8;
 
     [(PUIProgressWindow *)v7->_progressWindow setVisible:1];
-    v10 = [(PUIProgressWindow *)v7->_progressWindow layer];
-    [v10 bounds];
+    layer = [(PUIProgressWindow *)v7->_progressWindow layer];
+    [layer bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(PUIProgressWindow *)v7->_progressWindow layer];
-    v20 = v19;
-    if (v19)
+    layer2 = [(PUIProgressWindow *)v7->_progressWindow layer];
+    v20 = layer2;
+    if (layer2)
     {
-      [v19 transform];
+      [layer2 transform];
     }
 
     else
@@ -43,7 +43,7 @@
 
     if (!v21)
     {
-      v22 = [(PUIProgressWindow *)v7->_progressWindow layer];
+      layer3 = [(PUIProgressWindow *)v7->_progressWindow layer];
       v23 = *(MEMORY[0x1E69792E8] + 80);
       *&v33.m31 = *(MEMORY[0x1E69792E8] + 64);
       *&v33.m33 = v23;
@@ -56,19 +56,19 @@
       v26 = *(MEMORY[0x1E69792E8] + 48);
       *&v33.m21 = *(MEMORY[0x1E69792E8] + 32);
       *&v33.m23 = v26;
-      [v22 setTransform:&v33];
+      [layer3 setTransform:&v33];
 
-      v27 = [(PUIProgressWindow *)v7->_progressWindow layer];
-      [v27 setPosition:{v16 * 0.5, v18 * 0.5}];
+      layer4 = [(PUIProgressWindow *)v7->_progressWindow layer];
+      [layer4 setPosition:{v16 * 0.5, v18 * 0.5}];
     }
 
     v28 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v14, v16, v18}];
     layerView = v7->_layerView;
     v7->_layerView = v28;
 
-    v30 = [(UIView *)v7->_layerView layer];
-    v31 = [(PUIProgressWindow *)v7->_progressWindow layer];
-    [v30 addSublayer:v31];
+    layer5 = [(UIView *)v7->_layerView layer];
+    layer6 = [(PUIProgressWindow *)v7->_progressWindow layer];
+    [layer5 addSublayer:layer6];
 
     [(SBUIAppleLogoView *)v7 addSubview:v7->_layerView];
   }
@@ -76,28 +76,28 @@
   return v7;
 }
 
-- (SBUIAppleLogoView)initWithFrame:(CGRect)a3 useWhiteLogo:(BOOL)a4 progressBarVisible:(BOOL)a5
+- (SBUIAppleLogoView)initWithFrame:(CGRect)frame useWhiteLogo:(BOOL)logo progressBarVisible:(BOOL)visible
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = (MGGetSInt32Answer() != 1) ^ a4;
+  visibleCopy = visible;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v11 = (MGGetSInt32Answer() != 1) ^ logo;
 
-  return [(SBUIAppleLogoView *)self initWithFrame:v11 inverted:v5 progressBarVisible:x, y, width, height];
+  return [(SBUIAppleLogoView *)self initWithFrame:v11 inverted:visibleCopy progressBarVisible:x, y, width, height];
 }
 
-- (SBUIAppleLogoView)initWithFrame:(CGRect)a3 progressBarVisible:(BOOL)a4
+- (SBUIAppleLogoView)initWithFrame:(CGRect)frame progressBarVisible:(BOOL)visible
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  visibleCopy = visible;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = MGGetSInt32Answer() != 1;
 
-  return [(SBUIAppleLogoView *)self initWithFrame:v10 useWhiteLogo:v4 progressBarVisible:x, y, width, height];
+  return [(SBUIAppleLogoView *)self initWithFrame:v10 useWhiteLogo:visibleCopy progressBarVisible:x, y, width, height];
 }
 
 - (void)layoutSubviews
@@ -105,8 +105,8 @@
   [(SBUIAppleLogoView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PUIProgressWindow *)self->_progressWindow layer];
-  [v7 bounds];
+  layer = [(PUIProgressWindow *)self->_progressWindow layer];
+  [layer bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;

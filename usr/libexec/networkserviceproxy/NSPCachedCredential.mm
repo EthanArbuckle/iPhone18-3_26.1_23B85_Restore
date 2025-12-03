@@ -1,8 +1,8 @@
 @interface NSPCachedCredential
-- (NSPCachedCredential)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPCachedCredential)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPCachedCredential
@@ -23,23 +23,23 @@
   return v3;
 }
 
-- (NSPCachedCredential)initWithCoder:(id)a3
+- (NSPCachedCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NSPCachedCredential;
   v5 = [(NSPCachedCredential *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenExpirationDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenExpirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialData"];
     credentialData = v5->_credentialData;
     v5->_credentialData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenKeyID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenKeyID"];
     keyID = v5->_keyID;
     v5->_keyID = v10;
   }
@@ -47,27 +47,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_expirationDate forKey:@"tokenExpirationDate"];
-    [v5 encodeObject:self->_credentialData forKey:@"credentialData"];
+    [coderCopy encodeObject:self->_expirationDate forKey:@"tokenExpirationDate"];
+    [coderCopy encodeObject:self->_credentialData forKey:@"credentialData"];
     keyID = self->_keyID;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"tokenExpirationDate"];
-    [v5 encodeObject:0 forKey:@"credentialData"];
+    [coderCopy encodeObject:0 forKey:@"tokenExpirationDate"];
+    [coderCopy encodeObject:0 forKey:@"credentialData"];
     keyID = 0;
   }
 
-  [v5 encodeObject:keyID forKey:@"tokenKeyID"];
+  [coderCopy encodeObject:keyID forKey:@"tokenKeyID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPCachedCredential allocWithZone:?]];
   v5 = v4;

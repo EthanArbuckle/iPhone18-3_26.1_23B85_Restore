@@ -1,50 +1,50 @@
 @interface IDSServerBagValidator
-- (IDSServerBagValidator)initWithConfig:(id)a3;
-- (id)trustedContentsFromRawContents:(id)a3 shouldReport:(BOOL)a4 withError:(id *)a5;
+- (IDSServerBagValidator)initWithConfig:(id)config;
+- (id)trustedContentsFromRawContents:(id)contents shouldReport:(BOOL)report withError:(id *)error;
 @end
 
 @implementation IDSServerBagValidator
 
-- (IDSServerBagValidator)initWithConfig:(id)a3
+- (IDSServerBagValidator)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = IDSServerBagValidator;
   v6 = [(IDSServerBagValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
   }
 
   return v7;
 }
 
-- (id)trustedContentsFromRawContents:(id)a3 shouldReport:(BOOL)a4 withError:(id *)a5
+- (id)trustedContentsFromRawContents:(id)contents shouldReport:(BOOL)report withError:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 serverCerts];
+  reportCopy = report;
+  contentsCopy = contents;
+  serverCerts = [contentsCopy serverCerts];
   v25 = 0;
-  v10 = sub_1A7E20BA8(self, v9, v6, &v25);
+  v10 = sub_1A7E20BA8(self, serverCerts, reportCopy, &v25);
   v11 = v25;
 
   if (v10)
   {
-    v14 = [v8 serverSignature];
-    v15 = [v8 signedBag];
-    v16 = [(IDSServerBagValidator *)self config];
+    serverSignature = [contentsCopy serverSignature];
+    signedBag = [contentsCopy signedBag];
+    config = [(IDSServerBagValidator *)self config];
     v24 = 0;
-    v17 = sub_1A7E21178(self, v14, v15, v10, [v16 hashAlgorithm], &v24);
+    v17 = sub_1A7E21178(self, serverSignature, signedBag, v10, [config hashAlgorithm], &v24);
     v18 = v24;
 
     CFRelease(v10);
     if (v17)
     {
       v19 = MEMORY[0x1E696AE40];
-      v20 = [v8 signedBag];
+      signedBag2 = [contentsCopy signedBag];
       v23 = 0;
-      v21 = [v19 propertyListWithData:v20 options:0 format:0 error:&v23];
+      v21 = [v19 propertyListWithData:signedBag2 options:0 format:0 error:&v23];
       v22 = v23;
 
       if (v21)
@@ -52,10 +52,10 @@
         v12 = [[IDSServerBagLoadedContents alloc] initWithDictionary:v21];
       }
 
-      else if (a5)
+      else if (error)
       {
         IDSServerBagContentErrorWithUnderlyingError(200, v22);
-        *a5 = v12 = 0;
+        *error = v12 = 0;
       }
 
       else
@@ -64,10 +64,10 @@
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       IDSServerBagContentErrorWithUnderlyingError(500, v18);
-      *a5 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -76,10 +76,10 @@
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     IDSServerBagContentErrorWithUnderlyingError(400, v11);
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else

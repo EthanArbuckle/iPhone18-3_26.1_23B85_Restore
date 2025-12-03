@@ -8,22 +8,22 @@
 {
   v95 = *MEMORY[0x1E69E9840];
   v80 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [(PUExitEditPerformanceEventBuilder *)self compositionController];
-  v4 = [v3 adjustmentConstants];
+  compositionController = [(PUExitEditPerformanceEventBuilder *)self compositionController];
+  adjustmentConstants = [compositionController adjustmentConstants];
 
-  v78 = v4;
-  v5 = [v4 allAdjustmentTypes];
-  v77 = self;
-  v6 = [(PUExitEditPerformanceEventBuilder *)self compositionController];
+  v78 = adjustmentConstants;
+  allAdjustmentTypes = [adjustmentConstants allAdjustmentTypes];
+  selfCopy = self;
+  compositionController2 = [(PUExitEditPerformanceEventBuilder *)self compositionController];
   v7 = MEMORY[0x1E695DFA8];
-  v8 = [v6 compositionKeys];
-  v9 = [v7 setWithArray:v8];
+  compositionKeys = [compositionController2 compositionKeys];
+  v9 = [v7 setWithArray:compositionKeys];
 
   v87 = 0u;
   v88 = 0u;
   memset(lhs, 0, sizeof(lhs));
-  v10 = [v6 compositionKeys];
-  v11 = [v10 countByEnumeratingWithState:lhs objects:&time count:16];
+  compositionKeys2 = [compositionController2 compositionKeys];
+  v11 = [compositionKeys2 countByEnumeratingWithState:lhs objects:&time count:16];
   if (v11)
   {
     v12 = v11;
@@ -34,18 +34,18 @@
       {
         if (**&lhs[16] != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(compositionKeys2);
         }
 
         v15 = *(*&lhs[8] + 8 * i);
-        v16 = [v6 adjustmentControllerForKey:v15];
+        v16 = [compositionController2 adjustmentControllerForKey:v15];
         if (![v16 canBeEnabled] || objc_msgSend(v16, "enabled"))
         {
           [v9 addObject:v15];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:lhs objects:&time count:16];
+      v12 = [compositionKeys2 countByEnumeratingWithState:lhs objects:&time count:16];
     }
 
     while (v12);
@@ -56,7 +56,7 @@
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = v5;
+  obj = allAdjustmentTypes;
   v18 = [obj countByEnumeratingWithState:&v82 objects:v93 count:16];
   if (v18)
   {
@@ -83,34 +83,34 @@
     while (v19);
   }
 
-  v25 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-  [v25 duration];
+  asset = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+  [asset duration];
   v27 = v26;
 
-  v28 = [(PUExitEditPerformanceEventBuilder *)v77 compositionController];
-  v29 = [v28 trimAdjustmentController];
+  compositionController3 = [(PUExitEditPerformanceEventBuilder *)selfCopy compositionController];
+  trimAdjustmentController = [compositionController3 trimAdjustmentController];
 
   Seconds = v27;
-  if (v29)
+  if (trimAdjustmentController)
   {
-    [v29 endTime];
-    [v29 startTime];
+    [trimAdjustmentController endTime];
+    [trimAdjustmentController startTime];
     CMTimeSubtract(&time, lhs, &rhs);
     Seconds = CMTimeGetSeconds(&time);
   }
 
-  v31 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-  v32 = [v31 pixelWidth];
-  v33 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-  v34 = [v33 pixelHeight] * v32;
+  asset2 = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+  pixelWidth = [asset2 pixelWidth];
+  asset3 = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+  v34 = [asset3 pixelHeight] * pixelWidth;
 
-  v35 = [(PUExitEditPerformanceEventBuilder *)v77 compositionController];
-  v36 = [v35 cropAdjustmentController];
+  compositionController4 = [(PUExitEditPerformanceEventBuilder *)selfCopy compositionController];
+  cropAdjustmentController = [compositionController4 cropAdjustmentController];
 
   v37 = v34;
-  if (v36)
+  if (cropAdjustmentController)
   {
-    [v36 cropRect];
+    [cropAdjustmentController cropRect];
     v98 = CGRectStandardize(v97);
     x = v98.origin.x;
     y = v98.origin.y;
@@ -137,14 +137,14 @@
   v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v37];
   v92[3] = v46;
   v91[4] = @"assetSubtypes";
-  v70 = [(PUExitEditPerformanceEventBuilder *)v77 isEditingWithRaw];
-  v75 = v36;
-  v76 = v29;
+  isEditingWithRaw = [(PUExitEditPerformanceEventBuilder *)selfCopy isEditingWithRaw];
+  v75 = cropAdjustmentController;
+  v76 = trimAdjustmentController;
   v73 = v44;
   v74 = v43;
   v71 = v46;
   v72 = v45;
-  if (v70)
+  if (isEditingWithRaw)
   {
     v47 = @"raw";
   }
@@ -152,48 +152,48 @@
   else
   {
     v48 = MEMORY[0x1E6978630];
-    v65 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-    v47 = [v48 descriptionForMediaSubtypes:{objc_msgSend(v65, "mediaSubtypes")}];
+    asset4 = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+    v47 = [v48 descriptionForMediaSubtypes:{objc_msgSend(asset4, "mediaSubtypes")}];
   }
 
   v66 = v47;
   v92[4] = v47;
   v91[5] = @"assetType";
   v49 = MEMORY[0x1E6978630];
-  v69 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-  v68 = [v49 descriptionForMediaType:{objc_msgSend(v69, "mediaType")}];
+  asset5 = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+  v68 = [v49 descriptionForMediaType:{objc_msgSend(asset5, "mediaType")}];
   v92[5] = v68;
   v91[6] = @"bundleIdentifier";
-  v67 = [MEMORY[0x1E696AAE8] mainBundle];
-  v50 = [v67 bundleIdentifier];
-  v92[6] = v50;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v92[6] = bundleIdentifier;
   v91[7] = @"iCPLEnabled";
   v51 = MEMORY[0x1E696AD98];
-  v52 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-  v53 = [v51 numberWithBool:{objc_msgSend(v52, "isCloudPhotoLibraryEnabled")}];
+  asset6 = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+  v53 = [v51 numberWithBool:{objc_msgSend(asset6, "isCloudPhotoLibraryEnabled")}];
   v92[7] = v53;
   v91[8] = @"isFirstSinceLaunch";
-  v54 = [MEMORY[0x1E696AD98] numberWithBool:{-[PUExitEditPerformanceEventBuilder isFirstSinceLaunch](v77, "isFirstSinceLaunch")}];
+  v54 = [MEMORY[0x1E696AD98] numberWithBool:{-[PUExitEditPerformanceEventBuilder isFirstSinceLaunch](selfCopy, "isFirstSinceLaunch")}];
   v92[8] = v54;
   v91[9] = @"reason";
-  [(PUExitEditPerformanceEventBuilder *)v77 sessionEndReason];
+  [(PUExitEditPerformanceEventBuilder *)selfCopy sessionEndReason];
   v55 = PEPhotoEditSessionEndString();
   v92[9] = v55;
   v91[10] = @"totalDuration";
   v56 = MEMORY[0x1E696AD98];
-  [(PUExitEditPerformanceEventBuilder *)v77 exitEditDuration];
+  [(PUExitEditPerformanceEventBuilder *)selfCopy exitEditDuration];
   v57 = [v56 numberWithDouble:?];
   v92[10] = v57;
   v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:11];
   [v80 addEntriesFromDictionary:v58];
 
-  if (!v70)
+  if (!isEditingWithRaw)
   {
   }
 
   v59 = MEMORY[0x1E69C4258];
-  v60 = [(PUExitEditPerformanceEventBuilder *)v77 asset];
-  v61 = [v59 semanticStylesIdentifierForItem:v60];
+  asset7 = [(PUExitEditPerformanceEventBuilder *)selfCopy asset];
+  v61 = [v59 semanticStylesIdentifierForItem:asset7];
 
   if (v61 && [v61 length])
   {

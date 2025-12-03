@@ -1,34 +1,34 @@
 @interface CPUTraceProviderConfiguration
 - (BOOL)fullSystem;
-- (CPUTraceProviderConfiguration)initWithOptions:(id)a3 error:(id *)a4;
+- (CPUTraceProviderConfiguration)initWithOptions:(id)options error:(id *)error;
 - (id)validate;
 @end
 
 @implementation CPUTraceProviderConfiguration
 
-- (CPUTraceProviderConfiguration)initWithOptions:(id)a3 error:(id *)a4
+- (CPUTraceProviderConfiguration)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v45.receiver = self;
   v45.super_class = CPUTraceProviderConfiguration;
   v7 = [(CPUTraceProviderConfiguration *)&v45 init];
   if (v7)
   {
-    if (!v6)
+    if (!optionsCopy)
     {
       sub_1408(@"No options specified");
-      *a4 = v24 = 0;
+      *error = v24 = 0;
       goto LABEL_17;
     }
 
     v8 = objc_alloc_init(NSNumberFormatter);
     [v8 setNumberStyle:1];
-    v9 = [v6 mutableCopy];
+    v9 = [optionsCopy mutableCopy];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_14DC;
     v42[3] = &unk_8530;
-    v43 = v6;
+    v43 = optionsCopy;
     v10 = v9;
     v44 = v10;
     v38[0] = _NSConcreteStackBlock;
@@ -39,7 +39,7 @@
     v40 = v11;
     v12 = v8;
     v39 = v12;
-    v41 = a4;
+    errorCopy = error;
     v36[0] = _NSConcreteStackBlock;
     v36[1] = 3221225472;
     v36[2] = sub_1630;
@@ -52,25 +52,25 @@
     processID = v7->_processID;
     v7->_processID = v15;
 
-    if (*a4)
+    if (*error)
     {
       goto LABEL_12;
     }
 
     v7->_stream = (v14[2])(v14, @"stream", 1);
-    if (*a4)
+    if (*error)
     {
       goto LABEL_12;
     }
 
     v7->_throttle = (v14[2])(v14, @"throttle", 0);
-    if (*a4)
+    if (*error)
     {
       goto LABEL_12;
     }
 
     v7->_addressCapture = (v14[2])(v14, @"address", 0);
-    if (*a4)
+    if (*error)
     {
       goto LABEL_12;
     }
@@ -79,7 +79,7 @@
     rateLimit = v7->_rateLimit;
     v7->_rateLimit = v17;
 
-    if (*a4)
+    if (*error)
     {
       goto LABEL_12;
     }
@@ -88,7 +88,7 @@
     wrap = v7->_wrap;
     v7->_wrap = v19;
 
-    if (*a4 || ((v13[2])(v13, @"wrap-size", 0), v21 = objc_claimAutoreleasedReturnValue(), wrapSize = v7->_wrapSize, v7->_wrapSize = v21, wrapSize, *a4) || (v7->_prod = (v14[2])(v14, @"prod", 0), *a4) || (v7->_driver = (v14[2])(v14, @"driver", 1), *a4))
+    if (*error || ((v13[2])(v13, @"wrap-size", 0), v21 = objc_claimAutoreleasedReturnValue(), wrapSize = v7->_wrapSize, v7->_wrapSize = v21, wrapSize, *error) || (v7->_prod = (v14[2])(v14, @"prod", 0), *error) || (v7->_driver = (v14[2])(v14, @"driver", 1), *error))
     {
 LABEL_12:
       v23 = 0;
@@ -122,18 +122,18 @@ LABEL_12:
     traceBufferSize = v7->_traceBufferSize;
     v7->_traceBufferSize = v31;
 
-    if (!*a4)
+    if (!*error)
     {
       if (![v10 count])
       {
-        v34 = [(CPUTraceProviderConfiguration *)v7 validate];
-        *a4 = v34;
-        v23 = v34 == 0;
+        validate = [(CPUTraceProviderConfiguration *)v7 validate];
+        *error = validate;
+        v23 = validate == 0;
         goto LABEL_25;
       }
 
       v33 = [NSString stringWithFormat:@"Unable to parse the following provider options: %@", v10];
-      *a4 = sub_1408(v33);
+      *error = sub_1408(v33);
     }
 
     v23 = 0;
@@ -167,16 +167,16 @@ LABEL_17:
 
   else
   {
-    v6 = [(CPUTraceProviderConfiguration *)self decodeCompression];
-    if (!v6 || (v7 = v6, v8 = [(CPUTraceProviderConfiguration *)self decode], v7, (v8 & 1) != 0))
+    decodeCompression = [(CPUTraceProviderConfiguration *)self decodeCompression];
+    if (!decodeCompression || (v7 = decodeCompression, v8 = [(CPUTraceProviderConfiguration *)self decode], v7, (v8 & 1) != 0))
     {
-      v9 = [(CPUTraceProviderConfiguration *)self decodeCompression];
+      decodeCompression2 = [(CPUTraceProviderConfiguration *)self decodeCompression];
 
-      if (v9 && (-[CPUTraceProviderConfiguration decodeCompression](self, "decodeCompression"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [&off_8DB0 containsObject:v10], v10, (v11 & 1) == 0))
+      if (decodeCompression2 && (-[CPUTraceProviderConfiguration decodeCompression](self, "decodeCompression"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [&off_8DB0 containsObject:v10], v10, (v11 & 1) == 0))
       {
-        v19 = [(CPUTraceProviderConfiguration *)self decodeCompression];
+        decodeCompression3 = [(CPUTraceProviderConfiguration *)self decodeCompression];
         v20 = [&off_8DB0 componentsJoinedByString:{@", "}];
-        v21 = [NSString stringWithFormat:@"Unsupported compression algorithm: %@. Supported algorithms: %@", v19, v20];
+        v21 = [NSString stringWithFormat:@"Unsupported compression algorithm: %@. Supported algorithms: %@", decodeCompression3, v20];
         v18 = sub_1408(v21);
       }
 
@@ -188,8 +188,8 @@ LABEL_17:
         hwtrace_live_topology_systems();
         if ([v13 count])
         {
-          v14 = [v13 allObjects];
-          v15 = [v14 componentsJoinedByString:{@", "}];
+          allObjects = [v13 allObjects];
+          v15 = [allObjects componentsJoinedByString:{@", "}];
 
           v16 = [v12 componentsJoinedByString:{@", "}];
           v17 = [NSString stringWithFormat:@"Missing system(s): [ %@ ], valid system(s): [ %@ ]", v15, v16];
@@ -216,11 +216,11 @@ LABEL_18:
 
 - (BOOL)fullSystem
 {
-  v3 = [(CPUTraceProviderConfiguration *)self processID];
-  if (v3)
+  processID = [(CPUTraceProviderConfiguration *)self processID];
+  if (processID)
   {
-    v4 = [(CPUTraceProviderConfiguration *)self processID];
-    v5 = [v4 intValue] == 0;
+    processID2 = [(CPUTraceProviderConfiguration *)self processID];
+    v5 = [processID2 intValue] == 0;
   }
 
   else

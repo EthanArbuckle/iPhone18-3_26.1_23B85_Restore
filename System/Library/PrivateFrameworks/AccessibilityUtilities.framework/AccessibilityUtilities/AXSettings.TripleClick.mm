@@ -1,13 +1,13 @@
 @interface AXSettings.TripleClick
 - (NSArray)accessibilityHelpBannerTemporaryTripleClickOptions;
-- (void)setAccessibilityHelpBannerTemporaryTripleClickOptions:(id)a3;
+- (void)setAccessibilityHelpBannerTemporaryTripleClickOptions:(id)options;
 @end
 
 @implementation AXSettings.TripleClick
 
 - (NSArray)accessibilityHelpBannerTemporaryTripleClickOptions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.TripleClick.accessibilityHelpBannerTemporaryTripleClickOptions.getter();
 
   if (v3)
@@ -23,9 +23,9 @@
   return v4;
 }
 
-- (void)setAccessibilityHelpBannerTemporaryTripleClickOptions:(id)a3
+- (void)setAccessibilityHelpBannerTemporaryTripleClickOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v4 = sub_18B2C99F4();
   }
@@ -35,7 +35,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   AXSettings.TripleClick.accessibilityHelpBannerTemporaryTripleClickOptions.setter(v4);
 }
 

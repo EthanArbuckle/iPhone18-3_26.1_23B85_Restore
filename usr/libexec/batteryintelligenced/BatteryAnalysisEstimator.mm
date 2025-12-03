@@ -1,12 +1,12 @@
 @interface BatteryAnalysisEstimator
 + (id)sharedPredictor;
-- (BOOL)isUnsupportedModelVersion:(id)a3;
+- (BOOL)isUnsupportedModelVersion:(id)version;
 - (BatteryAnalysisEstimator)init;
-- (double)estimateAndRecordForEndSOC:(int64_t)a3 withParams:(id)a4;
-- (id)estimateForTarget:(int64_t)a3 withFeatures:(id)a4 andModelDict:(id)a5;
-- (id)featureDictionaryForTarget:(int64_t)a3 withInitialFeatures:(id)a4 withError:(id *)a5;
-- (id)getPayloadForPPSWithParams:(id)a3 andPredictionValue:(id)a4;
-- (id)modelVersionForTarget:(int64_t)a3 fromTrial:(BOOL)a4;
+- (double)estimateAndRecordForEndSOC:(int64_t)c withParams:(id)params;
+- (id)estimateForTarget:(int64_t)target withFeatures:(id)features andModelDict:(id)dict;
+- (id)featureDictionaryForTarget:(int64_t)target withInitialFeatures:(id)features withError:(id *)error;
+- (id)getPayloadForPPSWithParams:(id)params andPredictionValue:(id)value;
+- (id)modelVersionForTarget:(int64_t)target fromTrial:(BOOL)trial;
 @end
 
 @implementation BatteryAnalysisEstimator
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100020398;
   block[3] = &unk_100048718;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100057A20 != -1)
   {
     dispatch_once(&qword_100057A20, block);
@@ -104,21 +104,21 @@ LABEL_12:
   return v12;
 }
 
-- (id)featureDictionaryForTarget:(int64_t)a3 withInitialFeatures:(id)a4 withError:(id *)a5
+- (id)featureDictionaryForTarget:(int64_t)target withInitialFeatures:(id)features withError:(id *)error
 {
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:@"timeSincePlugin"];
+  featuresCopy = features;
+  v9 = [featuresCopy objectForKeyedSubscript:@"timeSincePlugin"];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"socAtPlugin"];
+    v10 = [featuresCopy objectForKeyedSubscript:@"socAtPlugin"];
     if (!v10)
     {
-      if (a5)
+      if (error)
       {
         v242 = NSLocalizedDescriptionKey;
         v243 = @"socAtPlugin was not provided.";
         v17 = [NSDictionary dictionaryWithObjects:&v243 forKeys:&v242 count:1];
-        *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v17];
+        *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v17];
       }
 
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -129,19 +129,19 @@ LABEL_12:
       goto LABEL_28;
     }
 
-    v11 = [v8 objectForKeyedSubscript:@"endSOC"];
+    v11 = [featuresCopy objectForKeyedSubscript:@"endSOC"];
     if (v11)
     {
       v12 = v11;
       v13 = [v11 integerValue] >= 81 && 0xCCCCCCCCCCCCCCCDLL * objc_msgSend(v12, "integerValue") + 0x1999999999999999 < 0x3333333333333333;
-      if (a3 == 1 && !v13)
+      if (target == 1 && !v13)
       {
-        if (a5)
+        if (error)
         {
           v238 = NSLocalizedDescriptionKey;
           v239 = @"Unsupported endSOC for TTL featurization. Only [85, 90, 95, 100] are supported.";
           v19 = [NSDictionary dictionaryWithObjects:&v239 forKeys:&v238 count:1];
-          *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v19];
+          *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v19];
         }
 
         if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -160,14 +160,14 @@ LABEL_151:
 
     else
     {
-      if (a3 == 1)
+      if (target == 1)
       {
-        if (a5)
+        if (error)
         {
           v240 = NSLocalizedDescriptionKey;
           v241 = @"endSOC was not provided for TTL featurization.";
           v18 = [NSDictionary dictionaryWithObjects:&v241 forKeys:&v240 count:1];
-          *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v18];
+          *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v18];
         }
 
         if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -178,7 +178,7 @@ LABEL_151:
         goto LABEL_28;
       }
 
-      if (a3)
+      if (target)
       {
         v12 = 0;
       }
@@ -193,13 +193,13 @@ LABEL_151:
     v191 = v12;
     if (sub_10001F830(v20))
     {
-      if (a5)
+      if (error)
       {
         v236 = NSLocalizedDescriptionKey;
         v237 = @"Unable to load all battery/charging data.";
         [NSDictionary dictionaryWithObjects:&v237 forKeys:&v236 count:1];
         v22 = v21 = v20;
-        *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v22];
+        *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v22];
 
         v20 = v21;
       }
@@ -239,13 +239,13 @@ LABEL_151:
     v31 = [v20 objectForKeyedSubscript:@"AdapterDetails"];
     if (sub_10001F830(v31))
     {
-      if (a5)
+      if (error)
       {
         v234 = NSLocalizedDescriptionKey;
         v235 = @"Unable to load adapter details data.";
         [NSDictionary dictionaryWithObjects:&v235 forKeys:&v234 count:1];
         v33 = v32 = v31;
-        *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v33];
+        *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v33];
 
         v31 = v32;
       }
@@ -260,7 +260,7 @@ LABEL_151:
       goto LABEL_149;
     }
 
-    v175 = a3;
+    targetCopy = target;
     v34 = +[BIFeatures sharedInstance];
     v180 = [v34 nsNumberForKey:@"AdapterVoltage" fromDict:v31 withDefaults:-9999999];
 
@@ -287,14 +287,14 @@ LABEL_151:
       v40 = v180;
       if (([v180 isEqual:&off_10004D7B0] & 1) != 0 || objc_msgSend(v183, "isEqual:", &off_10004D7B0))
       {
-        if (a5)
+        if (error)
         {
           v232 = NSLocalizedDescriptionKey;
           v233 = @"Error loading adapter voltage or adapter current. Unable to compute estimated adapter watts.";
           [NSDictionary dictionaryWithObjects:&v233 forKeys:&v232 count:1];
-          v41 = a5;
+          errorCopy = error;
           v43 = v42 = v31;
-          *v41 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v43];
+          *errorCopy = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v43];
           v40 = v180;
 
           v31 = v42;
@@ -356,13 +356,13 @@ LABEL_151:
 
     if (!v49)
     {
-      if (a5)
+      if (error)
       {
         v224 = NSLocalizedDescriptionKey;
         v225 = @"Unable to load power telemetry table.";
         [NSDictionary dictionaryWithObjects:&v225 forKeys:&v224 count:1];
         v66 = v65 = v31;
-        *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v66];
+        *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v66];
 
         v31 = v65;
       }
@@ -380,13 +380,13 @@ LABEL_151:
       goto LABEL_147;
     }
 
-    v161 = a5;
+    errorCopy2 = error;
     v163 = v10;
     v166 = v31;
     v50 = off_1000577A8;
-    v51 = [(BatteryAnalysisEstimator *)self modelVersions];
-    v52 = [NSNumber numberWithInteger:v175];
-    v53 = [v51 objectForKeyedSubscript:v52];
+    modelVersions = [(BatteryAnalysisEstimator *)self modelVersions];
+    v52 = [NSNumber numberWithInteger:targetCopy];
+    v53 = [modelVersions objectForKeyedSubscript:v52];
     v54 = [v50 containsObject:v53];
 
     v55 = self->_logger;
@@ -398,10 +398,10 @@ LABEL_151:
       if (v56)
       {
         v57 = v55;
-        v58 = [(BatteryAnalysisEstimator *)self modelVersions];
-        v59 = [NSNumber numberWithInteger:v175];
-        v60 = v58;
-        v61 = [v58 objectForKeyedSubscript:v59];
+        modelVersions2 = [(BatteryAnalysisEstimator *)self modelVersions];
+        v59 = [NSNumber numberWithInteger:targetCopy];
+        v60 = modelVersions2;
+        v61 = [modelVersions2 objectForKeyedSubscript:v59];
         *buf = 138412802;
         v227 = &off_10004D5E8;
         v228 = 2112;
@@ -416,20 +416,20 @@ LABEL_70:
         v24 = v177;
 LABEL_74:
         v31 = v166;
-        a5 = v161;
+        error = errorCopy2;
 LABEL_75:
         v75 = [v190 objectForKeyedSubscript:@"BatteryData"];
         v168 = v75;
         if (sub_10001F830(v75))
         {
           v40 = v180;
-          if (a5)
+          if (error)
           {
             v222 = NSLocalizedDescriptionKey;
             v223 = @"Unable to load battery data table.";
             [NSDictionary dictionaryWithObjects:&v223 forKeys:&v222 count:1];
             v77 = v76 = v31;
-            *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v77];
+            *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v77];
 
             v31 = v76;
           }
@@ -462,10 +462,10 @@ LABEL_75:
           v24 = v178;
           if ([v82 count])
           {
-            v162 = a5;
+            errorCopy3 = error;
             v164 = v10;
             v167 = v31;
-            v83 = [v165 firstObject];
+            firstObject = [v165 firstObject];
             [v82 firstObject];
             v216[0] = @"familyCode";
             v216[1] = @"isWireless";
@@ -477,8 +477,8 @@ LABEL_75:
             v217[3] = v187;
             v216[4] = @"curr_qmax";
             v156 = v216[5] = @"curr_dod";
-            v157 = v83;
-            v217[4] = v83;
+            v157 = firstObject;
+            v217[4] = firstObject;
             v217[5] = v156;
             v216[6] = @"soc";
             v216[7] = @"cycleCount";
@@ -520,14 +520,14 @@ LABEL_75:
 
                   if (v92)
                   {
-                    if (v162)
+                    if (errorCopy3)
                     {
                       v213 = NSLocalizedDescriptionKey;
                       v99 = [NSString stringWithFormat:@"Error loading %@ from IOPMPS data.", v89];
                       v214 = v99;
                       [NSDictionary dictionaryWithObjects:&v214 forKeys:&v213 count:1];
                       v101 = v100 = self;
-                      *v162 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v101];
+                      *errorCopy3 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v101];
 
                       self = v100;
                     }
@@ -585,7 +585,7 @@ LABEL_75:
               v94 = v178;
             }
 
-            v170 = self;
+            selfCopy = self;
             v211[0] = @"curr_est_watts";
             v109 = [NSNumber numberWithDouble:v46];
             v212[0] = v109;
@@ -686,23 +686,23 @@ LABEL_75:
               while (v120);
             }
 
-            v124 = v170;
-            v125 = [(os_log_t *)v170 modelVersions];
-            v126 = [NSNumber numberWithInteger:v175];
-            v127 = [v125 objectForKeyedSubscript:v126];
+            v124 = selfCopy;
+            modelVersions3 = [(os_log_t *)selfCopy modelVersions];
+            v126 = [NSNumber numberWithInteger:targetCopy];
+            v127 = [modelVersions3 objectForKeyedSubscript:v126];
             v128 = [&off_10004D850 objectForKey:v127];
 
             v129 = v128;
             v130 = [v128 arrayByAddingObjectsFromArray:v118];
-            v131 = v170[5];
+            v131 = selfCopy[5];
             v155 = v130;
             if (os_log_type_enabled(v131, OS_LOG_TYPE_DEBUG))
             {
               v151 = v129;
               v146 = v131;
-              v147 = [(os_log_t *)v170 modelVersions];
-              v148 = [NSNumber numberWithInteger:v175];
-              v149 = [v147 objectForKeyedSubscript:v148];
+              modelVersions4 = [(os_log_t *)selfCopy modelVersions];
+              v148 = [NSNumber numberWithInteger:targetCopy];
+              v149 = [modelVersions4 objectForKeyedSubscript:v148];
               *buf = 138412546;
               v227 = v149;
               v228 = 2112;
@@ -710,7 +710,7 @@ LABEL_75:
               _os_log_debug_impl(&_mh_execute_header, v146, OS_LOG_TYPE_DEBUG, "Ordered list of all features for model version %@: %@", buf, 0x16u);
 
               v130 = v155;
-              v124 = v170;
+              v124 = selfCopy;
 
               v129 = v151;
             }
@@ -738,17 +738,17 @@ LABEL_75:
             v31 = v167;
             if (v15)
             {
-              if (os_log_type_enabled(v170[5], OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(selfCopy[5], OS_LOG_TYPE_ERROR))
               {
                 sub_1000327B4();
               }
 
               v9 = v159;
-              if (v162)
+              if (errorCopy3)
               {
                 v136 = v15;
                 v16 = 0;
-                *v162 = v15;
+                *errorCopy3 = v15;
               }
 
               else
@@ -800,7 +800,7 @@ LABEL_137:
                 }
               }
 
-              v144 = v170[5];
+              v144 = selfCopy[5];
               v129 = v150;
               if (os_log_type_enabled(v144, OS_LOG_TYPE_ERROR))
               {
@@ -826,14 +826,14 @@ LABEL_144:
           }
 
           v40 = v180;
-          if (a5)
+          if (error)
           {
             v218 = NSLocalizedDescriptionKey;
             v219 = @"PresentDOD array was empty.";
             [NSDictionary dictionaryWithObjects:&v219 forKeys:&v218 count:1];
             v105 = v104 = v31;
             v24 = v178;
-            *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v105];
+            *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v105];
 
             v31 = v104;
           }
@@ -851,14 +851,14 @@ LABEL_144:
         {
           v24 = v178;
           v40 = v180;
-          if (a5)
+          if (error)
           {
             v220 = NSLocalizedDescriptionKey;
             v221 = @"Qmax array was empty.";
             [NSDictionary dictionaryWithObjects:&v221 forKeys:&v220 count:1];
             v98 = v97 = v31;
             v24 = v178;
-            *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v98];
+            *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v98];
 
             v31 = v97;
           }
@@ -897,9 +897,9 @@ LABEL_150:
       if (v56)
       {
         v71 = v55;
-        v72 = [(BatteryAnalysisEstimator *)self modelVersions];
-        v73 = [NSNumber numberWithInteger:v175];
-        v74 = [v72 objectForKeyedSubscript:v73];
+        modelVersions5 = [(BatteryAnalysisEstimator *)self modelVersions];
+        v73 = [NSNumber numberWithInteger:targetCopy];
+        v74 = [modelVersions5 objectForKeyedSubscript:v73];
         *buf = 138412546;
         v227 = &off_10004D7C8;
         v228 = 2112;
@@ -919,12 +919,12 @@ LABEL_150:
     goto LABEL_74;
   }
 
-  if (a5)
+  if (error)
   {
     v244 = NSLocalizedDescriptionKey;
     v245 = @"timeSincePlugin was not provided.";
     v14 = [NSDictionary dictionaryWithObjects:&v245 forKeys:&v244 count:1];
-    *a5 = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v14];
+    *error = [NSError errorWithDomain:@"BatteryIntelligenceErrorDomain" code:1 userInfo:v14];
   }
 
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -939,16 +939,16 @@ LABEL_152:
   return v16;
 }
 
-- (double)estimateAndRecordForEndSOC:(int64_t)a3 withParams:(id)a4
+- (double)estimateAndRecordForEndSOC:(int64_t)c withParams:(id)params
 {
-  v6 = a3 != 80;
-  v7 = a4;
+  v6 = c != 80;
+  paramsCopy = params;
   v8 = +[BIBatteryAnalysisSharedResources sharedTargetDetails];
   v9 = [NSNumber numberWithInteger:v6];
   v10 = [v8 objectForKey:v9];
 
-  v11 = [v7 mutableCopy];
-  v12 = [NSNumber numberWithInteger:a3];
+  v11 = [paramsCopy mutableCopy];
+  v12 = [NSNumber numberWithInteger:c];
   [v11 setValue:v12 forKey:@"endSOC"];
 
   v13 = [(BatteryAnalysisEstimator *)self modelForTarget:v6 fromTrial:1];
@@ -998,24 +998,24 @@ LABEL_152:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v23 = v22;
-          v31 = [v10 friendlyName];
+          friendlyName = [v10 friendlyName];
           *buf = 138412546;
-          v38 = v31;
+          v38 = friendlyName;
           v39 = 2048;
           v40 = v16;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Model %@ estimate: %.01lf seconds.", buf, 0x16u);
         }
 
-        if (a3 != 80)
+        if (c != 80)
         {
           v16 = v16 + 300.0;
           v24 = self->_logger;
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
             v25 = v24;
-            v32 = [v10 friendlyName];
+            friendlyName2 = [v10 friendlyName];
             *buf = 138412546;
-            v38 = v32;
+            v38 = friendlyName2;
             v39 = 2048;
             v40 = v16;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Updated %@ estimate by offset, estimate is now: %.01lf seconds.", buf, 0x16u);
@@ -1026,7 +1026,7 @@ LABEL_152:
         v26 = [NSNumber numberWithInteger:v6];
         v36[0] = v26;
         v35[1] = @"end_soc";
-        v27 = [NSNumber numberWithInteger:a3];
+        v27 = [NSNumber numberWithInteger:c];
         v36[1] = v27;
         v28 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
         v29 = [(BatteryAnalysisEstimator *)self getPayloadForPPSWithParams:v28 andPredictionValue:v33];
@@ -1040,27 +1040,27 @@ LABEL_152:
   return v16;
 }
 
-- (BOOL)isUnsupportedModelVersion:(id)a3
+- (BOOL)isUnsupportedModelVersion:(id)version
 {
-  v3 = [&off_10004D850 objectForKey:a3];
+  v3 = [&off_10004D850 objectForKey:version];
   v4 = v3 == 0;
 
   return v4;
 }
 
-- (id)modelVersionForTarget:(int64_t)a3 fromTrial:(BOOL)a4
+- (id)modelVersionForTarget:(int64_t)target fromTrial:(BOOL)trial
 {
-  v4 = a4;
+  trialCopy = trial;
   v7 = @"k5wmzvi5mm";
-  if (!a3)
+  if (!target)
   {
     v7 = @"bkwqiw7f79";
   }
 
   v8 = v7;
-  v9 = [(BatteryAnalysisEstimator *)self modelNames];
-  v10 = [NSNumber numberWithInteger:a3];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  modelNames = [(BatteryAnalysisEstimator *)self modelNames];
+  v10 = [NSNumber numberWithInteger:target];
+  v11 = [modelNames objectForKeyedSubscript:v10];
   v12 = [v11 stringByAppendingString:v8];
 
   v42[0] = @"version";
@@ -1069,12 +1069,12 @@ LABEL_152:
   v43[1] = v12;
   v33 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
   trialManagers = self->_trialManagers;
-  v14 = [NSNumber numberWithInteger:a3];
+  v14 = [NSNumber numberWithInteger:target];
   v15 = [(NSDictionary *)trialManagers objectForKeyedSubscript:v14];
 
-  if (v4 && v15)
+  if (trialCopy && v15)
   {
-    if (a3)
+    if (target)
     {
       v16 = @"batteryAnalysisTTLModelID";
     }
@@ -1088,14 +1088,14 @@ LABEL_152:
     v18 = v17;
     if (v17)
     {
-      v32 = [v17 stringValue];
+      stringValue = [v17 stringValue];
       if ([(BatteryAnalysisEstimator *)self isUnsupportedModelVersion:?])
       {
         logger = self->_logger;
         if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v37 = v32;
+          v37 = stringValue;
           v38 = 2112;
           v39 = v8;
           v40 = 2112;
@@ -1106,11 +1106,11 @@ LABEL_152:
 
       else
       {
-        v21 = v32;
+        v21 = stringValue;
 
-        v29 = [(BatteryAnalysisEstimator *)self modelNames];
-        v22 = [NSNumber numberWithInteger:a3];
-        [v29 objectForKeyedSubscript:v22];
+        modelNames2 = [(BatteryAnalysisEstimator *)self modelNames];
+        v22 = [NSNumber numberWithInteger:target];
+        [modelNames2 objectForKeyedSubscript:v22];
         v23 = v31 = v18;
         v30 = [v23 stringByAppendingString:v21];
 
@@ -1122,9 +1122,9 @@ LABEL_152:
         v24 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:2];
 
         v25 = [v24 objectForKeyedSubscript:@"version"];
-        v26 = [(BatteryAnalysisEstimator *)self modelVersions];
-        v27 = [NSNumber numberWithInteger:a3];
-        [v26 setObject:v25 forKeyedSubscript:v27];
+        modelVersions = [(BatteryAnalysisEstimator *)self modelVersions];
+        v27 = [NSNumber numberWithInteger:target];
+        [modelVersions setObject:v25 forKeyedSubscript:v27];
 
         v33 = v24;
         v12 = v30;
@@ -1149,16 +1149,16 @@ LABEL_152:
   return v33;
 }
 
-- (id)estimateForTarget:(int64_t)a3 withFeatures:(id)a4 andModelDict:(id)a5
+- (id)estimateForTarget:(int64_t)target withFeatures:(id)features andModelDict:(id)dict
 {
-  v8 = a5;
-  v9 = a4;
+  dictCopy = dict;
+  featuresCopy = features;
   v10 = +[BIBatteryAnalysisSharedResources sharedTargetDetails];
-  v11 = [NSNumber numberWithInteger:a3];
+  v11 = [NSNumber numberWithInteger:target];
   v12 = [v10 objectForKey:v11];
 
   v36 = 0;
-  v13 = [[MLDictionaryFeatureProvider alloc] initWithDictionary:v9 error:&v36];
+  v13 = [[MLDictionaryFeatureProvider alloc] initWithDictionary:featuresCopy error:&v36];
 
   v14 = v36;
   if (v14)
@@ -1184,7 +1184,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (sub_10001F78C(v8))
+  if (sub_10001F78C(dictCopy))
   {
     if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
     {
@@ -1194,16 +1194,16 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v18 = [v8 objectForKey:@"mlModel"];
+  v18 = [dictCopy objectForKey:@"mlModel"];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v20 = logger;
-    v21 = [v12 friendlyName];
-    v22 = [v8 objectForKeyedSubscript:@"model_name"];
-    v23 = [v8 objectForKeyedSubscript:@"version"];
+    friendlyName = [v12 friendlyName];
+    v22 = [dictCopy objectForKeyedSubscript:@"model_name"];
+    v23 = [dictCopy objectForKeyedSubscript:@"version"];
     *buf = 138412802;
-    v40 = v21;
+    v40 = friendlyName;
     v41 = 2112;
     v42 = v22;
     v43 = 2112;
@@ -1227,21 +1227,21 @@ LABEL_11:
     if (!sub_10001F78C(v24))
     {
       v33 = v18;
-      v26 = [v8 objectForKeyedSubscript:@"predictedFeatureNames"];
-      v27 = [v26 firstObject];
+      v26 = [dictCopy objectForKeyedSubscript:@"predictedFeatureNames"];
+      firstObject = [v26 firstObject];
 
-      v28 = [v24 featureValueForName:v27];
-      v29 = [v28 multiArrayValue];
+      v28 = [v24 featureValueForName:firstObject];
+      multiArrayValue = [v28 multiArrayValue];
 
       v37 = &off_10004D7E0;
-      v38 = v27;
+      v38 = firstObject;
       v30 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      v34 = v29;
-      v31 = [BITensor getValuesFrom2DMultiArray:v29 withFeatureNamesForDimensions:v30];
+      v34 = multiArrayValue;
+      v31 = [BITensor getValuesFrom2DMultiArray:multiArrayValue withFeatureNamesForDimensions:v30];
 
       if (sub_10001F830(v31))
       {
-        v32 = v27;
+        v32 = firstObject;
         if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
         {
           sub_100032C74();
@@ -1252,8 +1252,8 @@ LABEL_11:
 
       else
       {
-        v32 = v27;
-        v16 = [v31 objectForKeyedSubscript:v27];
+        v32 = firstObject;
+        v16 = [v31 objectForKeyedSubscript:firstObject];
       }
 
       v18 = v33;
@@ -1275,25 +1275,25 @@ LABEL_12:
   return v16;
 }
 
-- (id)getPayloadForPPSWithParams:(id)a3 andPredictionValue:(id)a4
+- (id)getPayloadForPPSWithParams:(id)params andPredictionValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"target"];
+  valueCopy = value;
+  paramsCopy = params;
+  v8 = [paramsCopy objectForKey:@"target"];
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [(BatteryAnalysisEstimator *)self modelVersions];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  modelVersions = [(BatteryAnalysisEstimator *)self modelVersions];
+  v11 = [modelVersions objectForKeyedSubscript:v8];
   [v9 setObject:v11 forKeyedSubscript:@"model_id"];
 
-  v12 = [(BatteryAnalysisEstimator *)self modelNames];
-  v13 = [v12 objectForKeyedSubscript:v8];
+  modelNames = [(BatteryAnalysisEstimator *)self modelNames];
+  v13 = [modelNames objectForKeyedSubscript:v8];
   [v9 setObject:v13 forKeyedSubscript:@"model_name"];
 
-  [v9 setObject:v6 forKeyedSubscript:@"model_prediction"];
+  [v9 setObject:valueCopy forKeyedSubscript:@"model_prediction"];
   v14 = [NSNumber numberWithUnsignedInt:sub_10001E8F4()];
   [v9 setObject:v14 forKeyedSubscript:@"start_soc"];
 
-  v15 = [v7 objectForKey:@"end_soc"];
+  v15 = [paramsCopy objectForKey:@"end_soc"];
 
   [v9 setObject:v15 forKeyedSubscript:@"end_soc"];
 

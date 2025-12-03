@@ -1,8 +1,8 @@
 @interface ICTK2BulletTextAttachment
 + (NSMutableDictionary)imageCache;
-- (CGSize)attachmentSizeForTextContainer:(id)a3;
-- (ICTK2BulletTextAttachment)initWithMarker:(id)a3;
-- (id)imageForBounds:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6;
+- (CGSize)attachmentSizeForTextContainer:(id)container;
+- (ICTK2BulletTextAttachment)initWithMarker:(id)marker;
+- (id)imageForBounds:(CGRect)bounds attributes:(id)attributes location:(id)location textContainer:(id)container;
 @end
 
 @implementation ICTK2BulletTextAttachment
@@ -26,9 +26,9 @@ uint64_t __39__ICTK2BulletTextAttachment_imageCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (ICTK2BulletTextAttachment)initWithMarker:(id)a3
+- (ICTK2BulletTextAttachment)initWithMarker:(id)marker
 {
-  v5 = a3;
+  markerCopy = marker;
   v6 = *MEMORY[0x1E69B7428];
   v10.receiver = self;
   v10.super_class = ICTK2BulletTextAttachment;
@@ -36,22 +36,22 @@ uint64_t __39__ICTK2BulletTextAttachment_imageCache__block_invoke()
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_marker, a3);
+    objc_storeStrong(&v7->_marker, marker);
   }
 
   return v8;
 }
 
-- (CGSize)attachmentSizeForTextContainer:(id)a3
+- (CGSize)attachmentSizeForTextContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(ICTK2BulletTextAttachment *)self marker];
+  containerCopy = container;
+  marker = [(ICTK2BulletTextAttachment *)self marker];
 
-  if (v5)
+  if (marker)
   {
-    v6 = [(ICTK2BulletTextAttachment *)self marker];
-    [v4 size];
-    [v6 boundingRectWithSize:1 options:0 context:?];
+    marker2 = [(ICTK2BulletTextAttachment *)self marker];
+    [containerCopy size];
+    [marker2 boundingRectWithSize:1 options:0 context:?];
     v8 = v7;
     v10 = v9;
   }
@@ -69,13 +69,13 @@ uint64_t __39__ICTK2BulletTextAttachment_imageCache__block_invoke()
   return result;
 }
 
-- (id)imageForBounds:(CGRect)a3 attributes:(id)a4 location:(id)a5 textContainer:(id)a6
+- (id)imageForBounds:(CGRect)bounds attributes:(id)attributes location:(id)location textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = [objc_opt_class() imageCache];
-  v10 = [(ICTK2BulletTextAttachment *)self marker];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  imageCache = [objc_opt_class() imageCache];
+  marker = [(ICTK2BulletTextAttachment *)self marker];
+  v11 = [imageCache objectForKeyedSubscript:marker];
 
   if (v11)
   {
@@ -92,9 +92,9 @@ uint64_t __39__ICTK2BulletTextAttachment_imageCache__block_invoke()
     v19[4] = self;
     v14 = [v13 imageWithActions:v19];
 
-    v15 = [objc_opt_class() imageCache];
-    v16 = [(ICTK2BulletTextAttachment *)self marker];
-    [v15 setObject:v14 forKeyedSubscript:v16];
+    imageCache2 = [objc_opt_class() imageCache];
+    marker2 = [(ICTK2BulletTextAttachment *)self marker];
+    [imageCache2 setObject:v14 forKeyedSubscript:marker2];
 
     v12 = v14;
   }

@@ -1,10 +1,10 @@
 @interface DOCModifyFavoritesOperation
-- (DOCModifyFavoritesOperation)initWithItemsToFavorite:(id)a3 favoriteRanks:(id)a4 undoManager:(id)a5;
-- (DOCModifyFavoritesOperation)initWithItemsToUnfavorite:(id)a3 undoManager:(id)a4;
+- (DOCModifyFavoritesOperation)initWithItemsToFavorite:(id)favorite favoriteRanks:(id)ranks undoManager:(id)manager;
+- (DOCModifyFavoritesOperation)initWithItemsToUnfavorite:(id)unfavorite undoManager:(id)manager;
 - (NSString)actionNameForUndoing;
 - (id)currentFavoriteRanks;
 - (id)currentFavorites;
-- (id)favoriteRanksFromItems:(id)a3;
+- (id)favoriteRanksFromItems:(id)items;
 - (id)oldRanksForOperationItems;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
@@ -13,26 +13,26 @@
 
 @implementation DOCModifyFavoritesOperation
 
-- (DOCModifyFavoritesOperation)initWithItemsToFavorite:(id)a3 favoriteRanks:(id)a4 undoManager:(id)a5
+- (DOCModifyFavoritesOperation)initWithItemsToFavorite:(id)favorite favoriteRanks:(id)ranks undoManager:(id)manager
 {
-  v9 = a4;
-  v10 = a5;
+  ranksCopy = ranks;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = DOCModifyFavoritesOperation;
-  v11 = [(FPModifyFavoritesOperation *)&v18 initWithItemsToFavorite:a3 favoriteRanks:v9];
+  v11 = [(FPModifyFavoritesOperation *)&v18 initWithItemsToFavorite:favorite favoriteRanks:ranksCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [(DOCModifyFavoritesOperation *)v11 currentFavorites];
+    currentFavorites = [(DOCModifyFavoritesOperation *)v11 currentFavorites];
     oldFavorites = v12->_oldFavorites;
-    v12->_oldFavorites = v13;
+    v12->_oldFavorites = currentFavorites;
 
-    v15 = [(DOCModifyFavoritesOperation *)v12 currentFavoriteRanks];
+    currentFavoriteRanks = [(DOCModifyFavoritesOperation *)v12 currentFavoriteRanks];
     oldRanks = v12->_oldRanks;
-    v12->_oldRanks = v15;
+    v12->_oldRanks = currentFavoriteRanks;
 
-    objc_storeStrong(&v12->_updatedRanks, a4);
-    objc_storeStrong(&v12->_undoManager, a5);
+    objc_storeStrong(&v12->_updatedRanks, ranks);
+    objc_storeStrong(&v12->_undoManager, manager);
     v12->_isUnfavorite = 0;
     [(DOCModifyFavoritesOperation *)v12 registerUndo];
   }
@@ -40,28 +40,28 @@
   return v12;
 }
 
-- (DOCModifyFavoritesOperation)initWithItemsToUnfavorite:(id)a3 undoManager:(id)a4
+- (DOCModifyFavoritesOperation)initWithItemsToUnfavorite:(id)unfavorite undoManager:(id)manager
 {
-  v7 = a4;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = DOCModifyFavoritesOperation;
-  v8 = [(FPModifyFavoritesOperation *)&v17 initWithItemsToUnfavorite:a3];
+  v8 = [(FPModifyFavoritesOperation *)&v17 initWithItemsToUnfavorite:unfavorite];
   v9 = v8;
   if (v8)
   {
-    v10 = [(DOCModifyFavoritesOperation *)v8 currentFavorites];
+    currentFavorites = [(DOCModifyFavoritesOperation *)v8 currentFavorites];
     oldFavorites = v9->_oldFavorites;
-    v9->_oldFavorites = v10;
+    v9->_oldFavorites = currentFavorites;
 
-    v12 = [(DOCModifyFavoritesOperation *)v9 currentFavoriteRanks];
+    currentFavoriteRanks = [(DOCModifyFavoritesOperation *)v9 currentFavoriteRanks];
     oldRanks = v9->_oldRanks;
-    v9->_oldRanks = v12;
+    v9->_oldRanks = currentFavoriteRanks;
 
     v14 = objc_alloc_init(MEMORY[0x277CBEA60]);
     updatedRanks = v9->_updatedRanks;
     v9->_updatedRanks = v14;
 
-    objc_storeStrong(&v9->_undoManager, a4);
+    objc_storeStrong(&v9->_undoManager, manager);
     v9->_isUnfavorite = 1;
     [(DOCModifyFavoritesOperation *)v9 registerUndo];
   }
@@ -77,16 +77,16 @@
   v5 = _DocumentManagerBundle();
   v6 = [v5 localizedStringForKey:@"Modify Favorites of %lu Items [undo / redo command]" value:@"Modify Favorites of %lu Items [undo / redo command]" table:@"Localizable"];
 
-  v7 = [(FPTransformOperation *)self items];
-  v8 = [v7 count];
+  items = [(FPTransformOperation *)self items];
+  v8 = [items count];
 
-  v9 = [(FPTransformOperation *)self items];
-  v10 = [v9 firstObject];
-  v11 = [v10 displayName];
+  items2 = [(FPTransformOperation *)self items];
+  firstObject = [items2 firstObject];
+  displayName = [firstObject displayName];
 
   if (v8 == 1)
   {
-    [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, v11];
+    [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, displayName];
   }
 
   else
@@ -100,25 +100,25 @@
 
 - (id)operationForRedoing
 {
-  v3 = [(FPTransformOperation *)self items];
-  v4 = [v3 count];
+  items = [(FPTransformOperation *)self items];
+  v4 = [items count];
 
   if (v4)
   {
-    v5 = [(DOCModifyFavoritesOperation *)self isUnfavorite];
+    isUnfavorite = [(DOCModifyFavoritesOperation *)self isUnfavorite];
     v6 = [DOCModifyFavoritesOperation alloc];
-    v7 = [(FPTransformOperation *)self items];
-    if (v5)
+    items2 = [(FPTransformOperation *)self items];
+    if (isUnfavorite)
     {
-      v8 = [(DOCModifyFavoritesOperation *)self undoManager];
-      v9 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToUnfavorite:v7 undoManager:v8];
+      undoManager = [(DOCModifyFavoritesOperation *)self undoManager];
+      v9 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToUnfavorite:items2 undoManager:undoManager];
     }
 
     else
     {
-      v8 = [(DOCModifyFavoritesOperation *)self updatedRanks];
-      v10 = [(DOCModifyFavoritesOperation *)self undoManager];
-      v9 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToFavorite:v7 favoriteRanks:v8 undoManager:v10];
+      undoManager = [(DOCModifyFavoritesOperation *)self updatedRanks];
+      undoManager2 = [(DOCModifyFavoritesOperation *)self undoManager];
+      v9 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToFavorite:items2 favoriteRanks:undoManager undoManager:undoManager2];
     }
   }
 
@@ -132,8 +132,8 @@
 
 - (id)operationForUndoing
 {
-  v3 = [(FPTransformOperation *)self items];
-  v4 = [v3 count];
+  items = [(FPTransformOperation *)self items];
+  v4 = [items count];
 
   if (!v4)
   {
@@ -141,28 +141,28 @@
     goto LABEL_8;
   }
 
-  v5 = [(DOCModifyFavoritesOperation *)self oldRanksForOperationItems];
+  oldRanksForOperationItems = [(DOCModifyFavoritesOperation *)self oldRanksForOperationItems];
   if ([(DOCModifyFavoritesOperation *)self isUnfavorite])
   {
     v6 = [DOCModifyFavoritesOperation alloc];
-    v7 = [(FPTransformOperation *)self items];
-    v8 = [(DOCModifyFavoritesOperation *)self undoManager];
+    items2 = [(FPTransformOperation *)self items];
+    undoManager = [(DOCModifyFavoritesOperation *)self undoManager];
   }
 
   else
   {
-    v10 = [v5 count];
+    v10 = [oldRanksForOperationItems count];
     v6 = [DOCModifyFavoritesOperation alloc];
-    v7 = [(FPTransformOperation *)self items];
-    v8 = [(DOCModifyFavoritesOperation *)self undoManager];
+    items2 = [(FPTransformOperation *)self items];
+    undoManager = [(DOCModifyFavoritesOperation *)self undoManager];
     if (!v10)
     {
-      v11 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToUnfavorite:v7 undoManager:v8];
+      v11 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToUnfavorite:items2 undoManager:undoManager];
       goto LABEL_7;
     }
   }
 
-  v11 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToFavorite:v7 favoriteRanks:v5 undoManager:v8];
+  v11 = [(DOCModifyFavoritesOperation *)v6 initWithItemsToFavorite:items2 favoriteRanks:oldRanksForOperationItems undoManager:undoManager];
 LABEL_7:
   v9 = v11;
 
@@ -173,36 +173,36 @@ LABEL_8:
 
 - (void)registerUndo
 {
-  v3 = [(DOCModifyFavoritesOperation *)self undoManager];
-  [v3 registerUndoOperationForSender:self];
+  undoManager = [(DOCModifyFavoritesOperation *)self undoManager];
+  [undoManager registerUndoOperationForSender:self];
 }
 
 - (id)currentFavorites
 {
   v2 = +[DOCFavoritesManager sharedManager];
-  v3 = [v2 favoritedLocations];
+  favoritedLocations = [v2 favoritedLocations];
 
-  return v3;
+  return favoritedLocations;
 }
 
 - (id)currentFavoriteRanks
 {
-  v3 = [(DOCModifyFavoritesOperation *)self currentFavorites];
-  v4 = [(DOCModifyFavoritesOperation *)self favoriteRanksFromItems:v3];
+  currentFavorites = [(DOCModifyFavoritesOperation *)self currentFavorites];
+  v4 = [(DOCModifyFavoritesOperation *)self favoriteRanksFromItems:currentFavorites];
 
   return v4;
 }
 
-- (id)favoriteRanksFromItems:(id)a3
+- (id)favoriteRanksFromItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -217,8 +217,8 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) favoriteRank];
-        [v4 addObject:v10];
+        favoriteRank = [*(*(&v13 + 1) + 8 * i) favoriteRank];
+        [v4 addObject:favoriteRank];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -235,7 +235,7 @@ LABEL_8:
 - (id)oldRanksForOperationItems
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(FPTransformOperation *)self items];
+  items = [(FPTransformOperation *)self items];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__DOCModifyFavoritesOperation_oldRanksForOperationItems__block_invoke;
@@ -243,7 +243,7 @@ LABEL_8:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [items enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;

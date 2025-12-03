@@ -1,33 +1,33 @@
 @interface CPLResourceTransferTaskOptions
-+ (BOOL)isForegroundOperationForIntent:(unint64_t)a3 priority:(unint64_t)a4;
-+ (BOOL)isHighPriorityForIntent:(unint64_t)a3 priority:(unint64_t)a4;
++ (BOOL)isForegroundOperationForIntent:(unint64_t)intent priority:(unint64_t)priority;
++ (BOOL)isHighPriorityForIntent:(unint64_t)intent priority:(unint64_t)priority;
 + (id)defaultOptions;
-+ (id)descriptionForIntent:(unint64_t)a3;
-+ (id)descriptionForIntentPriority:(unint64_t)a3;
-+ (id)optionsForLegacyIntent:(unint64_t)a3;
++ (id)descriptionForIntent:(unint64_t)intent;
++ (id)descriptionForIntentPriority:(unint64_t)priority;
++ (id)optionsForLegacyIntent:(unint64_t)intent;
 - ($0E4A422D128941990FD19C13E5416F99)timeRange;
 - (BOOL)allowsUnsafeClientCache;
 - (BOOL)isForeground;
 - (BOOL)isHighPriority;
-- (CPLResourceTransferTaskOptions)initWithCoder:(id)a3;
-- (CPLResourceTransferTaskOptions)initWithHighPriority:(BOOL)a3;
-- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4;
-- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 bypassCaches:(BOOL)a5 timeRange:(id *)a6;
-- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 timeRange:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLResourceTransferTaskOptions)initWithCoder:(id)coder;
+- (CPLResourceTransferTaskOptions)initWithHighPriority:(BOOL)priority;
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)intent priority:(unint64_t)priority;
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)intent priority:(unint64_t)priority bypassCaches:(BOOL)caches timeRange:(id *)range;
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)intent priority:(unint64_t)priority timeRange:(id *)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)legacyIntent;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation CPLResourceTransferTaskOptions
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_timeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_timeRange.start.epoch = *&range->var0.var3;
   *&self->_timeRange.duration.timescale = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -51,7 +51,7 @@
   return [(CPLResourceTransferTaskOptions *)self isHighPriority];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 2) = self->_intent;
@@ -64,17 +64,17 @@
   return result;
 }
 
-- (CPLResourceTransferTaskOptions)initWithCoder:(id)a3
+- (CPLResourceTransferTaskOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPLResourceTransferTaskOptions *)self init];
   if (v5)
   {
-    v5->_intent = [v4 decodeInt64ForKey:@"intent"];
-    v5->_priority = [v4 decodeInt64ForKey:@"priority"];
-    if (v4)
+    v5->_intent = [coderCopy decodeInt64ForKey:@"intent"];
+    v5->_priority = [coderCopy decodeInt64ForKey:@"priority"];
+    if (coderCopy)
     {
-      [v4 decodeCMTimeRangeForKey:@"timeRange"];
+      [coderCopy decodeCMTimeRangeForKey:@"timeRange"];
     }
 
     else
@@ -92,17 +92,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   intent = self->_intent;
-  v5 = a3;
-  [v5 encodeInt64:intent forKey:@"intent"];
-  [v5 encodeInt64:self->_priority forKey:@"priority"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:intent forKey:@"intent"];
+  [coderCopy encodeInt64:self->_priority forKey:@"priority"];
   v6 = *&self->_timeRange.start.epoch;
   v7[0] = *&self->_timeRange.start.value;
   v7[1] = v6;
   v7[2] = *&self->_timeRange.duration.timescale;
-  [v5 encodeCMTimeRange:v7 forKey:@"timeRange"];
+  [coderCopy encodeCMTimeRange:v7 forKey:@"timeRange"];
 }
 
 - (unint64_t)legacyIntent
@@ -232,9 +232,9 @@
   return [v3 isHighPriorityForIntent:intent priority:priority];
 }
 
-- (CPLResourceTransferTaskOptions)initWithHighPriority:(BOOL)a3
+- (CPLResourceTransferTaskOptions)initWithHighPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 0;
   }
@@ -247,43 +247,43 @@
   return [(CPLResourceTransferTaskOptions *)self initWithIntent:0 priority:v3];
 }
 
-- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)intent priority:(unint64_t)priority
 {
   v4 = *(MEMORY[0x1E6960C98] + 16);
   v6[0] = *MEMORY[0x1E6960C98];
   v6[1] = v4;
   v6[2] = *(MEMORY[0x1E6960C98] + 32);
-  return [(CPLResourceTransferTaskOptions *)self initWithIntent:a3 priority:a4 bypassCaches:0 timeRange:v6];
+  return [(CPLResourceTransferTaskOptions *)self initWithIntent:intent priority:priority bypassCaches:0 timeRange:v6];
 }
 
-- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 timeRange:(id *)a5
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)intent priority:(unint64_t)priority timeRange:(id *)range
 {
-  v5 = *&a5->var0.var3;
-  v7[0] = *&a5->var0.var0;
+  v5 = *&range->var0.var3;
+  v7[0] = *&range->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a5->var1.var1;
-  return [(CPLResourceTransferTaskOptions *)self initWithIntent:a3 priority:a4 bypassCaches:0 timeRange:v7];
+  v7[2] = *&range->var1.var1;
+  return [(CPLResourceTransferTaskOptions *)self initWithIntent:intent priority:priority bypassCaches:0 timeRange:v7];
 }
 
-- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 bypassCaches:(BOOL)a5 timeRange:(id *)a6
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)intent priority:(unint64_t)priority bypassCaches:(BOOL)caches timeRange:(id *)range
 {
-  v7 = a5;
+  cachesCopy = caches;
   v13.receiver = self;
   v13.super_class = CPLResourceTransferTaskOptions;
   result = [(CPLResourceTransferTaskOptions *)&v13 init];
   if (result)
   {
-    result->_intent = a3;
-    result->_priority = a4;
-    result->_shouldBypassCaches = v7;
-    if (v7)
+    result->_intent = intent;
+    result->_priority = priority;
+    result->_shouldBypassCaches = cachesCopy;
+    if (cachesCopy)
     {
-      result->_priority = a4 != 0;
+      result->_priority = priority != 0;
     }
 
-    v11 = *&a6->var0.var0;
-    v12 = *&a6->var1.var1;
-    *&result->_timeRange.start.epoch = *&a6->var0.var3;
+    v11 = *&range->var0.var0;
+    v12 = *&range->var1.var1;
+    *&result->_timeRange.start.epoch = *&range->var0.var3;
     *&result->_timeRange.duration.timescale = v12;
     *&result->_timeRange.start.value = v11;
   }
@@ -291,10 +291,10 @@
   return result;
 }
 
-+ (id)optionsForLegacyIntent:(unint64_t)a3
++ (id)optionsForLegacyIntent:(unint64_t)intent
 {
-  v3 = a3 - 1;
-  if (a3 - 1 > 9)
+  v3 = intent - 1;
+  if (intent - 1 > 9)
   {
     v4 = 0;
     v5 = 0;
@@ -311,53 +311,53 @@
   return v6;
 }
 
-+ (BOOL)isForegroundOperationForIntent:(unint64_t)a3 priority:(unint64_t)a4
++ (BOOL)isForegroundOperationForIntent:(unint64_t)intent priority:(unint64_t)priority
 {
-  v4 = ((1 << a3) & 9) == 0 || a4 != 2;
-  v5 = ((1 << a3) & 0x3DC76) == 0 && v4;
-  return a3 > 0x11 || v5;
+  v4 = ((1 << intent) & 9) == 0 || priority != 2;
+  v5 = ((1 << intent) & 0x3DC76) == 0 && v4;
+  return intent > 0x11 || v5;
 }
 
-+ (BOOL)isHighPriorityForIntent:(unint64_t)a3 priority:(unint64_t)a4
++ (BOOL)isHighPriorityForIntent:(unint64_t)intent priority:(unint64_t)priority
 {
-  v4 = ((1 << a3) & 0x41) == 0 || a4 != 2;
-  v5 = ((1 << a3) & 0x36) == 0 && v4;
-  return a3 > 6 || v5;
+  v4 = ((1 << intent) & 0x41) == 0 || priority != 2;
+  v5 = ((1 << intent) & 0x36) == 0 && v4;
+  return intent > 6 || v5;
 }
 
-+ (id)descriptionForIntentPriority:(unint64_t)a3
++ (id)descriptionForIntentPriority:(unint64_t)priority
 {
-  if (a3 >= 3)
+  if (priority >= 3)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CPLResourceTransferTaskIntentPriority-%lu", a3];
+    priority = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CPLResourceTransferTaskIntentPriority-%lu", priority];
   }
 
   else
   {
-    v3 = off_1E861DC90[a3];
+    priority = off_1E861DC90[priority];
   }
 
-  return v3;
+  return priority;
 }
 
-+ (id)descriptionForIntent:(unint64_t)a3
++ (id)descriptionForIntent:(unint64_t)intent
 {
-  if (a3 >= 0x12)
+  if (intent >= 0x12)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CPLResourceTransferTaskIntent-%lu", a3];
+    intent = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CPLResourceTransferTaskIntent-%lu", intent];
   }
 
   else
   {
-    v3 = off_1E861DC00[a3];
+    intent = off_1E861DC00[intent];
   }
 
-  return v3;
+  return intent;
 }
 
 + (id)defaultOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

@@ -1,23 +1,23 @@
 @interface HMDLogEventCoreDataSignificantEvent
-- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)a3;
-- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)a3 author:(unint64_t)a4;
-- (void)updateDiagnosticReportSignature:(id)a3;
+- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)reason;
+- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)reason author:(unint64_t)author;
+- (void)updateDiagnosticReportSignature:(id)signature;
 @end
 
 @implementation HMDLogEventCoreDataSignificantEvent
 
-- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)a3 author:(unint64_t)a4
+- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)reason author:(unint64_t)author
 {
-  v5 = [(HMDLogEventCoreDataSignificantEvent *)self initWithReason:a3];
+  v5 = [(HMDLogEventCoreDataSignificantEvent *)self initWithReason:reason];
   v6 = v5;
-  if (a4 - 2 > 9)
+  if (author - 2 > 9)
   {
     v7 = @"HMD.Unknown";
   }
 
   else
   {
-    v7 = off_278681C50[a4 - 2];
+    v7 = off_278681C50[author - 2];
   }
 
   objc_storeStrong(&v5->_context, v7);
@@ -25,44 +25,44 @@
   return v6;
 }
 
-- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)a3
+- (HMDLogEventCoreDataSignificantEvent)initWithReason:(unint64_t)reason
 {
   v5.receiver = self;
   v5.super_class = HMDLogEventCoreDataSignificantEvent;
   result = [(HMMLogEvent *)&v5 init];
   if (result)
   {
-    result->_reason = a3;
+    result->_reason = reason;
   }
 
   return result;
 }
 
-- (void)updateDiagnosticReportSignature:(id)a3
+- (void)updateDiagnosticReportSignature:(id)signature
 {
-  v8 = a3;
-  v4 = [(HMDLogEventCoreDataSignificantEvent *)self reason];
-  if (v4 > 4)
+  signatureCopy = signature;
+  reason = [(HMDLogEventCoreDataSignificantEvent *)self reason];
+  if (reason > 4)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_278689F40[v4];
+    v5 = off_278689F40[reason];
   }
 
-  [v8 setObject:v5 forKeyedSubscript:*MEMORY[0x277D6B1E8]];
-  v6 = [(HMDLogEventCoreDataSignificantEvent *)self context];
-  if (v6)
+  [signatureCopy setObject:v5 forKeyedSubscript:*MEMORY[0x277D6B1E8]];
+  context = [(HMDLogEventCoreDataSignificantEvent *)self context];
+  if (context)
   {
-    [v8 setObject:v6 forKeyedSubscript:*MEMORY[0x277D6B1F0]];
+    [signatureCopy setObject:context forKeyedSubscript:*MEMORY[0x277D6B1F0]];
   }
 
-  v7 = [(HMDLogEventCoreDataSignificantEvent *)self extraContext];
-  if (v7)
+  extraContext = [(HMDLogEventCoreDataSignificantEvent *)self extraContext];
+  if (extraContext)
   {
-    [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x277D6B1B8]];
+    [signatureCopy setObject:extraContext forKeyedSubscript:*MEMORY[0x277D6B1B8]];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface UIToolbarAccessibility__PassKitUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axIsCheckmarkButton:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axIsCheckmarkButton:(id)button;
 - (id)accessibilityElements;
 @end
 
 @implementation UIToolbarAccessibility__PassKitUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasProperty:@"assetName" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasProperty:@"assetName" withType:"@"];
 }
 
 - (id)accessibilityElements
@@ -25,16 +25,16 @@
   return v2;
 }
 
-- (BOOL)_axIsCheckmarkButton:(id)a3
+- (BOOL)_axIsCheckmarkButton:(id)button
 {
-  v3 = a3;
-  if ([v3 isAccessibilityElement] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  buttonCopy = button;
+  if ([buttonCopy isAccessibilityElement] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 configuration];
-    v6 = [v5 image];
-    v7 = [v6 safeValueForKey:@"_imageAsset"];
+    configuration = [v4 configuration];
+    image = [configuration image];
+    v7 = [image safeValueForKey:@"_imageAsset"];
     v8 = [v7 safeStringForKey:@"assetName"];
 
     v9 = [v8 isEqualToString:@"checkmark"];

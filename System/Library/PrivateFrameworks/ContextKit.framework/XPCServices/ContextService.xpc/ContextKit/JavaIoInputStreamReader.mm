@@ -1,19 +1,19 @@
 @interface JavaIoInputStreamReader
 - (BOOL)ready;
-- (JavaIoInputStreamReader)initWithJavaIoInputStream:(id)a3;
+- (JavaIoInputStreamReader)initWithJavaIoInputStream:(id)stream;
 - (id)getEncoding;
 - (int)read;
-- (int)readWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (int)readWithCharArray:(id)array withInt:(int)int withInt:(int)withInt;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation JavaIoInputStreamReader
 
-- (JavaIoInputStreamReader)initWithJavaIoInputStream:(id)a3
+- (JavaIoInputStreamReader)initWithJavaIoInputStream:(id)stream
 {
   v5 = JavaNioCharsetCharset_defaultCharset();
-  JavaIoInputStreamReader_initWithJavaIoInputStream_withJavaNioCharsetCharset_(self, a3, v5);
+  JavaIoInputStreamReader_initWithJavaIoInputStream_withJavaNioCharsetCharset_(self, stream, v5);
   return self;
 }
 
@@ -85,7 +85,7 @@
   return v6;
 }
 
-- (int)readWithCharArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (int)readWithCharArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   obj = self->super.lock_;
   objc_sync_enter(obj);
@@ -95,19 +95,19 @@
     objc_exception_throw(v26);
   }
 
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  if (!a5)
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  if (!withInt)
   {
     v23 = 0;
     goto LABEL_43;
   }
 
-  v8 = JavaNioCharBuffer_wrapWithCharArray_withInt_withInt_(a3, a4, a5);
+  v8 = JavaNioCharBuffer_wrapWithCharArray_withInt_withInt_(array, int, withInt);
   if ((atomic_load_explicit(JavaNioCharsetCoderResult__initialized, memory_order_acquire) & 1) == 0)
   {
     objc_opt_class();
@@ -120,13 +120,13 @@
   }
 
   v10 = JavaNioCharsetCoderResult_UNDERFLOW__;
-  v11 = [(JavaNioBuffer *)bytes hasRemaining];
+  hasRemaining = [(JavaNioBuffer *)bytes hasRemaining];
   if (!v8)
   {
     goto LABEL_44;
   }
 
-  v12 = v11 ^ 1;
+  v12 = hasRemaining ^ 1;
   while ([(JavaNioBuffer *)v8 hasRemaining])
   {
     if (v12)
@@ -137,22 +137,22 @@
         JreThrowNullPointerException();
       }
 
-      if (![(JavaIoInputStream *)in available]&& [(JavaNioBuffer *)v8 position]> a4)
+      if (![(JavaIoInputStream *)in available]&& [(JavaNioBuffer *)v8 position]> int)
       {
         break;
       }
 
-      v14 = [(JavaNioBuffer *)self->bytes_ capacity];
-      v15 = [(JavaNioBuffer *)self->bytes_ limit];
-      v16 = [(JavaNioByteBuffer *)self->bytes_ arrayOffset];
-      v17 = [(JavaNioBuffer *)self->bytes_ limit];
+      capacity = [(JavaNioBuffer *)self->bytes_ capacity];
+      limit = [(JavaNioBuffer *)self->bytes_ limit];
+      arrayOffset = [(JavaNioByteBuffer *)self->bytes_ arrayOffset];
+      limit2 = [(JavaNioBuffer *)self->bytes_ limit];
       v18 = self->in_;
       if (!v18)
       {
         JreThrowNullPointerException();
       }
 
-      v19 = [(JavaIoInputStream *)v18 readWithByteArray:[(JavaNioByteBuffer *)self->bytes_ array] withInt:v17 + v16 withInt:v14 - v15];
+      v19 = [(JavaIoInputStream *)v18 readWithByteArray:[(JavaNioByteBuffer *)self->bytes_ array] withInt:limit2 + arrayOffset withInt:capacity - limit];
       if (!v19)
       {
         break;
@@ -185,9 +185,9 @@
       break;
     }
 
-    v22 = [(JavaNioBuffer *)self->bytes_ limit];
+    limit3 = [(JavaNioBuffer *)self->bytes_ limit];
     v12 = 1;
-    if (v22 == [(JavaNioBuffer *)self->bytes_ capacity])
+    if (limit3 == [(JavaNioBuffer *)self->bytes_ capacity])
     {
       [(JavaNioByteBuffer *)self->bytes_ compact];
       [(JavaNioBuffer *)self->bytes_ limitWithInt:[(JavaNioBuffer *)self->bytes_ position]];
@@ -233,14 +233,14 @@ LABEL_44:
     [v10 throwException];
   }
 
-  if ([(JavaNioBuffer *)v8 position]== a4)
+  if ([(JavaNioBuffer *)v8 position]== int)
   {
     v23 = -1;
   }
 
   else
   {
-    v23 = [(JavaNioBuffer *)v8 position]- a4;
+    v23 = [(JavaNioBuffer *)v8 position]- int;
   }
 
 LABEL_43:

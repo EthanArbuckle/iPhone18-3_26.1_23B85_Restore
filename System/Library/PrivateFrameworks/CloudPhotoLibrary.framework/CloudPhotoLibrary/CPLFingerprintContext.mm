@@ -1,39 +1,39 @@
 @interface CPLFingerprintContext
 + (CPLFingerprintContext)sharedContext;
-+ (int64_t)defaultAccountEPPCapabilityInUniverseName:(id)a3;
++ (int64_t)defaultAccountEPPCapabilityInUniverseName:(id)name;
 + (void)initialize;
-+ (void)setSharedContext:(id)a3;
++ (void)setSharedContext:(id)context;
 + (void)setupFingerprintContextForTests;
 - (BOOL)usesMMCSv2AsDefault;
-- (CPLFingerprintContext)initWithBoundaryKey:(id)a3;
-- (CPLFingerprintContext)initWithFingerprintSchemeV1:(id)a3 fingerprintSchemeV2:(id)a4;
+- (CPLFingerprintContext)initWithBoundaryKey:(id)key;
+- (CPLFingerprintContext)initWithFingerprintSchemeV1:(id)v1 fingerprintSchemeV2:(id)v2;
 - (CPLFingerprintScheme)fingerprintSchemeForNewMasterAsset;
 - (CPLFingerprintSchemeV2)mmcsv2FingerprintScheme;
 - (NSData)boundaryKey;
-- (id)_sourceDescriptionForSource:(void *)a1;
-- (id)fingerprintSchemeForFingerprint:(id)a3;
-- (id)fingerprintSchemeForSignature:(id)a3;
+- (id)_sourceDescriptionForSource:(void *)source;
+- (id)fingerprintSchemeForFingerprint:(id)fingerprint;
+- (id)fingerprintSchemeForSignature:(id)signature;
 - (uint64_t)_usesMMCSv2AsDefault;
-- (void)refreshBoundaryKeyWithSource:(id)a3 completionHandler:(id)a4;
-- (void)setBoundaryKey:(id)a3;
-- (void)updateWithAccountEPPCapability:(int64_t)a3 source:(id)a4;
-- (void)updateWithStatus:(id)a3 configuration:(id)a4;
+- (void)refreshBoundaryKeyWithSource:(id)source completionHandler:(id)handler;
+- (void)setBoundaryKey:(id)key;
+- (void)updateWithAccountEPPCapability:(int64_t)capability source:(id)source;
+- (void)updateWithStatus:(id)status configuration:(id)configuration;
 @end
 
 @implementation CPLFingerprintContext
 
-- (void)updateWithAccountEPPCapability:(int64_t)a3 source:(id)a4
+- (void)updateWithAccountEPPCapability:(int64_t)capability source:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   if (+[CPLFingerprintScheme supportsEPP])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v9 = __63__CPLFingerprintContext_updateWithAccountEPPCapability_source___block_invoke;
     v10 = &unk_1E861B128;
-    v13 = a3;
-    v11 = self;
-    v12 = v6;
+    capabilityCopy = capability;
+    selfCopy = self;
+    v12 = sourceCopy;
     v7 = v8;
     os_unfair_lock_lock(&self->_lock);
     v9(v7);
@@ -100,29 +100,29 @@ LABEL_14:
   [v11 setObject:v12 forKey:@"CPLEPPEnabledSource"];
 }
 
-- (void)updateWithStatus:(id)a3 configuration:(id)a4
+- (void)updateWithStatus:(id)status configuration:(id)configuration
 {
-  v14 = a3;
-  v6 = a4;
+  statusCopy = status;
+  configurationCopy = configuration;
   v7 = CPLCurrentUniverseName();
-  v8 = [CPLFingerprintContext defaultAccountEPPCapabilityInUniverseName:v7];
+  maximumAccountEPPCapability = [CPLFingerprintContext defaultAccountEPPCapabilityInUniverseName:v7];
 
-  if (v8)
+  if (maximumAccountEPPCapability)
   {
     v9 = @"defaults";
     goto LABEL_15;
   }
 
-  if ([v6 shouldDisableEPP])
+  if ([configurationCopy shouldDisableEPP])
   {
     v9 = @"configuration";
 LABEL_7:
-    v8 = 2;
+    maximumAccountEPPCapability = 2;
     goto LABEL_15;
   }
 
-  v10 = [v14 disabledFeatures];
-  v11 = [v10 containsObject:@"EPP"];
+  disabledFeatures = [statusCopy disabledFeatures];
+  v11 = [disabledFeatures containsObject:@"EPP"];
 
   if (v11)
   {
@@ -135,33 +135,33 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (![v12 BOOLForKey:@"CPLAlwaysAutoEnableEPP"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (![standardUserDefaults BOOLForKey:@"CPLAlwaysAutoEnableEPP"])
   {
-    v13 = [v14 isWalrusEnabled];
+    isWalrusEnabled = [statusCopy isWalrusEnabled];
 
-    if (v13)
+    if (isWalrusEnabled)
     {
       goto LABEL_12;
     }
 
 LABEL_13:
-    v8 = 0;
+    maximumAccountEPPCapability = 0;
     goto LABEL_14;
   }
 
 LABEL_12:
-  v8 = [v14 maximumAccountEPPCapability];
+  maximumAccountEPPCapability = [statusCopy maximumAccountEPPCapability];
 LABEL_14:
   v9 = @"status";
 LABEL_15:
-  [(CPLFingerprintContext *)self updateWithAccountEPPCapability:v8 source:v9];
+  [(CPLFingerprintContext *)self updateWithAccountEPPCapability:maximumAccountEPPCapability source:v9];
 }
 
-- (id)fingerprintSchemeForFingerprint:(id)a3
+- (id)fingerprintSchemeForFingerprint:(id)fingerprint
 {
-  v5 = a3;
-  if (!v5)
+  fingerprintCopy = fingerprint;
+  if (!fingerprintCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -173,23 +173,23 @@ LABEL_15:
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFingerprintContext.m"];
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:220 description:@"Trying to determine a fingerprint scheme without a fingerprint"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:220 description:@"Trying to determine a fingerprint scheme without a fingerprint"];
 
     abort();
   }
 
-  v6 = v5;
-  v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:0];
+  v6 = fingerprintCopy;
+  v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:fingerprintCopy options:0];
   v8 = [(CPLFingerprintContext *)self fingerprintSchemeForSignature:v7];
 
   return v8;
 }
 
-- (id)fingerprintSchemeForSignature:(id)a3
+- (id)fingerprintSchemeForSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -200,8 +200,8 @@ LABEL_15:
   v11[1] = 3221225472;
   v12 = __55__CPLFingerprintContext_fingerprintSchemeForSignature___block_invoke;
   v13 = &unk_1E861F868;
-  v14 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = signatureCopy;
   v15 = v5;
   v16 = &v17;
   v6 = v11;
@@ -264,7 +264,7 @@ void __55__CPLFingerprintContext_fingerprintSchemeForSignature___block_invoke(vo
   v6[1] = 3221225472;
   v7 = __59__CPLFingerprintContext_fingerprintSchemeForNewMasterAsset__block_invoke;
   v8 = &unk_1E861F818;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -294,7 +294,7 @@ void __59__CPLFingerprintContext_fingerprintSchemeForNewMasterAsset__block_invok
 
 - (uint64_t)_usesMMCSv2AsDefault
 {
-  if (!a1)
+  if (!self)
   {
     v3 = 0;
     return v3 & 1;
@@ -302,9 +302,9 @@ void __59__CPLFingerprintContext_fingerprintSchemeForNewMasterAsset__block_invok
 
   v2 = +[CPLFingerprintContext sharedContext];
 
-  if (v2 != a1)
+  if (v2 != self)
   {
-    v3 = a1[12];
+    v3 = self[12];
     return v3 & 1;
   }
 
@@ -313,11 +313,11 @@ void __59__CPLFingerprintContext_fingerprintSchemeForNewMasterAsset__block_invok
   return [v5 BOOLForKey:@"CPLEPPEnabled"];
 }
 
-- (void)refreshBoundaryKeyWithSource:(id)a3 completionHandler:(id)a4
+- (void)refreshBoundaryKeyWithSource:(id)source completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  handlerCopy = handler;
   if (_shouldUseRealBoundaryKey != 1)
   {
     goto LABEL_11;
@@ -330,14 +330,14 @@ void __59__CPLFingerprintContext_fingerprintSchemeForNewMasterAsset__block_invok
     goto LABEL_11;
   }
 
-  v9 = [(CPLFingerprintContext *)self mmcsv2FingerprintScheme];
+  mmcsv2FingerprintScheme = [(CPLFingerprintContext *)self mmcsv2FingerprintScheme];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
 LABEL_11:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_12;
   }
 
@@ -346,7 +346,7 @@ LABEL_11:
     v11 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CPLFingerprintContext *)self _sourceDescriptionForSource:v6];
+      v12 = [(CPLFingerprintContext *)self _sourceDescriptionForSource:sourceCopy];
       *buf = 138543362;
       v18 = v12;
       _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_DEFAULT, "Refreshing boundary key for %{public}@", buf, 0xCu);
@@ -358,23 +358,23 @@ LABEL_11:
   v14[2] = __72__CPLFingerprintContext_refreshBoundaryKeyWithSource_completionHandler___block_invoke;
   v14[3] = &unk_1E861BF48;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = sourceCopy;
+  v16 = handlerCopy;
   CPLGetAppBoundaryKey(v14);
 
 LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sourceDescriptionForSource:(void *)a1
+- (id)_sourceDescriptionForSource:(void *)source
 {
-  if (a1)
+  if (source)
   {
-    a1 = [a2 componentsJoinedByString:@"."];
+    source = [a2 componentsJoinedByString:@"."];
     v2 = vars8;
   }
 
-  return a1;
+  return source;
 }
 
 void __72__CPLFingerprintContext_refreshBoundaryKeyWithSource_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -430,7 +430,7 @@ void __72__CPLFingerprintContext_refreshBoundaryKeyWithSource_completionHandler_
   v6[1] = 3221225472;
   v7 = __48__CPLFingerprintContext_mmcsv2FingerprintScheme__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -443,15 +443,15 @@ void __72__CPLFingerprintContext_refreshBoundaryKeyWithSource_completionHandler_
   return v4;
 }
 
-- (void)setBoundaryKey:(id)a3
+- (void)setBoundaryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __40__CPLFingerprintContext_setBoundaryKey___block_invoke;
   v9 = &unk_1E861B290;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = keyCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_lock);
@@ -508,15 +508,15 @@ void __40__CPLFingerprintContext_setBoundaryKey___block_invoke(uint64_t a1)
 
 - (NSData)boundaryKey
 {
-  v2 = [(CPLFingerprintContext *)self mmcsv2FingerprintScheme];
-  v3 = [v2 boundaryKey];
+  mmcsv2FingerprintScheme = [(CPLFingerprintContext *)self mmcsv2FingerprintScheme];
+  boundaryKey = [mmcsv2FingerprintScheme boundaryKey];
 
-  return v3;
+  return boundaryKey;
 }
 
 - (BOOL)usesMMCSv2AsDefault
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -525,16 +525,16 @@ void __40__CPLFingerprintContext_setBoundaryKey___block_invoke(uint64_t a1)
   v5[1] = 3221225472;
   v6 = __44__CPLFingerprintContext_usesMMCSv2AsDefault__block_invoke;
   v7 = &unk_1E861A850;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __44__CPLFingerprintContext_usesMMCSv2AsDefault__block_invoke(uint64_t a1)
@@ -544,10 +544,10 @@ uint64_t __44__CPLFingerprintContext_usesMMCSv2AsDefault__block_invoke(uint64_t 
   return result;
 }
 
-- (CPLFingerprintContext)initWithBoundaryKey:(id)a3
+- (CPLFingerprintContext)initWithBoundaryKey:(id)key
 {
-  v4 = a3;
-  v5 = [[CPLFingerprintSchemeV2 alloc] initWithBoundaryKey:v4];
+  keyCopy = key;
+  v5 = [[CPLFingerprintSchemeV2 alloc] initWithBoundaryKey:keyCopy];
 
   v6 = +[CPLFingerprintScheme defaultMMCSv1FingerprintScheme];
   v7 = [(CPLFingerprintContext *)self initWithFingerprintSchemeV1:v6 fingerprintSchemeV2:v5];
@@ -555,10 +555,10 @@ uint64_t __44__CPLFingerprintContext_usesMMCSv2AsDefault__block_invoke(uint64_t 
   return v7;
 }
 
-- (CPLFingerprintContext)initWithFingerprintSchemeV1:(id)a3 fingerprintSchemeV2:(id)a4
+- (CPLFingerprintContext)initWithFingerprintSchemeV1:(id)v1 fingerprintSchemeV2:(id)v2
 {
-  v7 = a3;
-  v8 = a4;
+  v1Copy = v1;
+  v2Copy = v2;
   v12.receiver = self;
   v12.super_class = CPLFingerprintContext;
   v9 = [(CPLFingerprintContext *)&v12 init];
@@ -566,22 +566,22 @@ uint64_t __44__CPLFingerprintContext_usesMMCSv2AsDefault__block_invoke(uint64_t 
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_mmcsv1FingerprintScheme, a3);
-    objc_storeStrong(&v10->_mmcsv2FingerprintScheme, a4);
+    objc_storeStrong(&v9->_mmcsv1FingerprintScheme, v1);
+    objc_storeStrong(&v10->_mmcsv2FingerprintScheme, v2);
     v10->_usesMMCSv2AsDefault = 0;
   }
 
   return v10;
 }
 
-+ (int64_t)defaultAccountEPPCapabilityInUniverseName:(id)a3
++ (int64_t)defaultAccountEPPCapabilityInUniverseName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = v4;
-  if (!v3)
+  nameCopy = name;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = standardUserDefaults;
+  if (!nameCopy)
   {
-    v8 = [v4 objectForKey:@"CPLShouldUseMMCSv2Fingerprint"];
+    v8 = [standardUserDefaults objectForKey:@"CPLShouldUseMMCSv2Fingerprint"];
     if (!v8)
     {
       v8 = [v5 objectForKey:@"CPLShouldUseMMCSv2"];
@@ -613,7 +613,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v6 = [@"CPLShouldUseMMCSv2FingerprintIn" stringByAppendingString:v3];
+  v6 = [@"CPLShouldUseMMCSv2FingerprintIn" stringByAppendingString:nameCopy];
   v7 = [v5 objectForKey:v6];
   if (v7)
   {
@@ -641,17 +641,17 @@ LABEL_15:
   v4 = +[CPLFingerprintScheme defaultMMCSv1FingerprintScheme];
   v5 = [(CPLFingerprintContext *)v3 initWithFingerprintSchemeV1:v4 fingerprintSchemeV2:v6];
 
-  [a1 setSharedContext:v5];
+  [self setSharedContext:v5];
 }
 
-+ (void)setSharedContext:(id)a3
++ (void)setSharedContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v7 = __42__CPLFingerprintContext_setSharedContext___block_invoke;
   v8 = &unk_1E861A940;
-  v4 = v3;
+  v4 = contextCopy;
   v9 = v4;
   v5 = v6;
   os_unfair_lock_lock(&_sharedContextLock);
@@ -719,10 +719,10 @@ void __38__CPLFingerprintContext_sharedContext__block_invoke(uint64_t a1)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v3 = [v2 objectForKey:@"CPLUseRealBoundaryKey"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v3 = [standardUserDefaults objectForKey:@"CPLUseRealBoundaryKey"];
 
     if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
     {

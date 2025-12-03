@@ -1,26 +1,26 @@
 @interface RGSiriSchemaRGRequestEndedTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RGSiriSchemaRGRequestEndedTier1)initWithDictionary:(id)a3;
-- (RGSiriSchemaRGRequestEndedTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RGSiriSchemaRGRequestEndedTier1)initWithDictionary:(id)dictionary;
+- (RGSiriSchemaRGRequestEndedTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RGSiriSchemaRGRequestEndedTier1
 
-- (RGSiriSchemaRGRequestEndedTier1)initWithDictionary:(id)a3
+- (RGSiriSchemaRGRequestEndedTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = RGSiriSchemaRGRequestEndedTier1;
   v5 = [(RGSiriSchemaRGRequestEndedTier1 *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(RGSiriSchemaRGRequestEndedTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"displayString"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"displayString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(RGSiriSchemaRGRequestEndedTier1 *)v5 setDisplayString:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"spokenString"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"spokenString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(RGSiriSchemaRGRequestEndedTier1 *)v5 setSpokenString:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"catId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"catId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(RGSiriSchemaRGRequestEndedTier1 *)v5 setCatId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"staticDialogId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"staticDialogId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (RGSiriSchemaRGRequestEndedTier1)initWithJSON:(id)a3
+- (RGSiriSchemaRGRequestEndedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RGSiriSchemaRGRequestEndedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RGSiriSchemaRGRequestEndedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RGSiriSchemaRGRequestEndedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,54 +102,54 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_catId)
   {
-    v4 = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"catId"];
+    catId = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
+    v5 = [catId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"catId"];
   }
 
   if (self->_displayString)
   {
-    v6 = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"displayString"];
+    displayString = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
+    v7 = [displayString copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"displayString"];
   }
 
   if (self->_linkId)
   {
-    v8 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_spokenString)
   {
-    v11 = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"spokenString"];
+    spokenString = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
+    v12 = [spokenString copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"spokenString"];
   }
 
   if (self->_staticDialogId)
   {
-    v13 = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"staticDialogId"];
+    staticDialogId = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
+    v14 = [staticDialogId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"staticDialogId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -161,28 +161,28 @@
   return v6 ^ [(NSString *)self->_staticDialogId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -194,20 +194,20 @@
   {
   }
 
-  v5 = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
-  v6 = [v4 displayString];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
+  linkId2 = [equalCopy displayString];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
-  if (v12)
+  displayString = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
+  if (displayString)
   {
-    v13 = v12;
-    v14 = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
-    v15 = [v4 displayString];
-    v16 = [v14 isEqual:v15];
+    v13 = displayString;
+    displayString2 = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
+    displayString3 = [equalCopy displayString];
+    v16 = [displayString2 isEqual:displayString3];
 
     if (!v16)
     {
@@ -219,20 +219,20 @@
   {
   }
 
-  v5 = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
-  v6 = [v4 spokenString];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
+  linkId2 = [equalCopy spokenString];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
-  if (v17)
+  spokenString = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
+  if (spokenString)
   {
-    v18 = v17;
-    v19 = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
-    v20 = [v4 spokenString];
-    v21 = [v19 isEqual:v20];
+    v18 = spokenString;
+    spokenString2 = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
+    spokenString3 = [equalCopy spokenString];
+    v21 = [spokenString2 isEqual:spokenString3];
 
     if (!v21)
     {
@@ -244,20 +244,20 @@
   {
   }
 
-  v5 = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
-  v6 = [v4 catId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
+  linkId2 = [equalCopy catId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
-  if (v22)
+  catId = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
+  if (catId)
   {
-    v23 = v22;
-    v24 = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
-    v25 = [v4 catId];
-    v26 = [v24 isEqual:v25];
+    v23 = catId;
+    catId2 = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
+    catId3 = [equalCopy catId];
+    v26 = [catId2 isEqual:catId3];
 
     if (!v26)
     {
@@ -269,12 +269,12 @@
   {
   }
 
-  v5 = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
-  v6 = [v4 staticDialogId];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
+  linkId2 = [equalCopy staticDialogId];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v27 = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
-    if (!v27)
+    staticDialogId = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
+    if (!staticDialogId)
     {
 
 LABEL_30:
@@ -282,10 +282,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
-    v30 = [v4 staticDialogId];
-    v31 = [v29 isEqual:v30];
+    v28 = staticDialogId;
+    staticDialogId2 = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
+    staticDialogId3 = [equalCopy staticDialogId];
+    v31 = [staticDialogId2 isEqual:staticDialogId3];
 
     if (v31)
     {
@@ -305,55 +305,55 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+    linkId2 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
+  displayString = [(RGSiriSchemaRGRequestEndedTier1 *)self displayString];
 
-  if (v6)
+  if (displayString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
+  spokenString = [(RGSiriSchemaRGRequestEndedTier1 *)self spokenString];
 
-  if (v7)
+  if (spokenString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
+  catId = [(RGSiriSchemaRGRequestEndedTier1 *)self catId];
 
-  if (v8)
+  if (catId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
+  staticDialogId = [(RGSiriSchemaRGRequestEndedTier1 *)self staticDialogId];
 
-  v10 = v11;
-  if (v9)
+  v10 = toCopy;
+  if (staticDialogId)
   {
     PBDataWriterWriteStringField();
-    v10 = v11;
+    v10 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = RGSiriSchemaRGRequestEndedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteDisplayString];
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteSpokenString];
@@ -361,7 +361,7 @@ LABEL_28:
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteDisplayString];
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteSpokenString];
@@ -369,7 +369,7 @@ LABEL_28:
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteDisplayString];
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteSpokenString];
@@ -377,7 +377,7 @@ LABEL_28:
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteDisplayString];
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteSpokenString];
@@ -385,7 +385,7 @@ LABEL_28:
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteDisplayString];
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteSpokenString];
@@ -393,11 +393,11 @@ LABEL_28:
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteStaticDialogId];
   }
 
-  v6 = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(RGSiriSchemaRGRequestEndedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RGSiriSchemaRGRequestEndedTier1 *)self deleteLinkId];
   }

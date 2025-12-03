@@ -1,36 +1,36 @@
 @interface HMFBoolean
-+ (id)BOOLeanWithBool:(BOOL)a3;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)BOOLeanWithBool:(BOOL)bool;
++ (id)allocWithZone:(_NSZone *)zone;
 - (BOOL)BOOLValue;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getValue:(void *)a3 size:(unint64_t)a4;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
+- (void)getValue:(void *)value size:(unint64_t)size;
 @end
 
 @implementation HMFBoolean
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
 
-    return [__HMFBoolean allocWithZone:a3];
+    return [__HMFBoolean allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___HMFBoolean;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-+ (id)BOOLeanWithBool:(BOOL)a3
++ (id)BOOLeanWithBool:(BOOL)bool
 {
   v3 = off_2786E6500;
-  if (!a3)
+  if (!bool)
   {
     v3 = off_2786E64F8;
   }
@@ -56,18 +56,18 @@
   return v2;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (self == v4)
+  compareCopy = compare;
+  if (self == compareCopy)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [(HMFBoolean *)self BOOLValue];
-    if (v4)
+    bOOLValue = [(HMFBoolean *)self BOOLValue];
+    if (compareCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -75,21 +75,21 @@
         _HMFPreconditionFailure(@"[otherNumber isKindOfClass:NSNumber.class]");
       }
 
-      v6 = [(HMFBoolean *)v4 BOOLValue];
+      bOOLValue2 = [(HMFBoolean *)compareCopy BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue2 = 0;
     }
 
     v8 = 1;
-    if (!v5)
+    if (!bOOLValue)
     {
       v8 = -1;
     }
 
-    if (v6 == v5)
+    if (bOOLValue2 == bOOLValue)
     {
       v7 = 0;
     }
@@ -103,19 +103,19 @@
   return v7;
 }
 
-- (void)getValue:(void *)a3 size:(unint64_t)a4
+- (void)getValue:(void *)value size:(unint64_t)size
 {
-  if (!a3)
+  if (!value)
   {
     _HMFPreconditionFailure(@"value");
   }
 
-  if (a4 != 1)
+  if (size != 1)
   {
     _HMFPreconditionFailure(@"size == 1");
   }
 
-  *a3 = [(HMFBoolean *)self BOOLValue];
+  *value = [(HMFBoolean *)self BOOLValue];
 }
 
 - (BOOL)BOOLValue
@@ -131,10 +131,10 @@
   objc_exception_throw(v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[HMFBoolean BOOLValue](self forKey:{"BOOLValue"), @"HMF.value"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[HMFBoolean BOOLValue](self forKey:{"BOOLValue"), @"HMF.value"}];
 }
 
 @end

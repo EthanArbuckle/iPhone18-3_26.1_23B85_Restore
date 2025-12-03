@@ -1,13 +1,13 @@
 @interface MovingAverage
-- (MovingAverage)initWithSize:(unint64_t)a3 withScalingFactor:(float)a4;
-- (float)add:(float)a3 overflow:(BOOL)a4;
+- (MovingAverage)initWithSize:(unint64_t)size withScalingFactor:(float)factor;
+- (float)add:(float)add overflow:(BOOL)overflow;
 - (float)getStdDev;
 - (id)description;
 @end
 
 @implementation MovingAverage
 
-- (MovingAverage)initWithSize:(unint64_t)a3 withScalingFactor:(float)a4
+- (MovingAverage)initWithSize:(unint64_t)size withScalingFactor:(float)factor
 {
   v11.receiver = self;
   v11.super_class = MovingAverage;
@@ -15,37 +15,37 @@
   v7 = v6;
   if (v6)
   {
-    v6->_arraySize = a3;
+    v6->_arraySize = size;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     values = v7->_values;
     v7->_values = v8;
 
     v7->_currentAverage = 0.0;
-    v7->_scalingFactor = a4;
+    v7->_scalingFactor = factor;
   }
 
   return v7;
 }
 
-- (float)add:(float)a3 overflow:(BOOL)a4
+- (float)add:(float)add overflow:(BOOL)overflow
 {
   currentAverage = self->_currentAverage;
   v8 = currentAverage * [(NSMutableArray *)self->_values count];
-  if ([(NSMutableArray *)self->_values count]== self->_arraySize && !a4)
+  if ([(NSMutableArray *)self->_values count]== self->_arraySize && !overflow)
   {
-    v10 = [(NSMutableArray *)self->_values lastObject];
-    [v10 floatValue];
+    lastObject = [(NSMutableArray *)self->_values lastObject];
+    [lastObject floatValue];
     v8 = v8 - v11;
 
     [(NSMutableArray *)self->_values removeLastObject];
   }
 
   values = self->_values;
-  *&v9 = a3;
+  *&v9 = add;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
   [(NSMutableArray *)values insertObject:v13 atIndex:0];
 
-  result = (v8 + a3) / [(NSMutableArray *)self->_values count];
+  result = (v8 + add) / [(NSMutableArray *)self->_values count];
   self->_currentAverage = result;
   return result;
 }

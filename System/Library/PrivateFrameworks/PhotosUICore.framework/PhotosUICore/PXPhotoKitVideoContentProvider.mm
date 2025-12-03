@@ -1,60 +1,60 @@
 @interface PXPhotoKitVideoContentProvider
-- (PXPhotoKitVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7;
-- (PXPhotoKitVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7 resourceReclamationController:(id)a8;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
+- (PXPhotoKitVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only;
+- (PXPhotoKitVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only resourceReclamationController:(id)controller;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
 @end
 
 @implementation PXPhotoKitVideoContentProvider
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v9 = a3;
-  v4 = [(PXDisplayAssetVideoContentProvider *)self asset];
+  queueCopy = queue;
+  asset = [(PXDisplayAssetVideoContentProvider *)self asset];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(PXDisplayAssetVideoContentProvider *)self asset];
-    v7 = [v9 changeDetailsForObject:v6];
+    asset2 = [(PXDisplayAssetVideoContentProvider *)self asset];
+    v7 = [queueCopy changeDetailsForObject:asset2];
 
     if (v7)
     {
-      v8 = [v7 objectAfterChanges];
-      [(PXDisplayAssetVideoContentProvider *)self setAsset:v8];
+      objectAfterChanges = [v7 objectAfterChanges];
+      [(PXDisplayAssetVideoContentProvider *)self setAsset:objectAfterChanges];
     }
   }
 }
 
-- (PXPhotoKitVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7 resourceReclamationController:(id)a8
+- (PXPhotoKitVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only resourceReclamationController:(id)controller
 {
-  v9 = a7;
-  v14 = a3;
+  onlyCopy = only;
+  assetCopy = asset;
   v18.receiver = self;
   v18.super_class = PXPhotoKitVideoContentProvider;
-  v15 = [(PXDisplayAssetVideoContentProvider *)&v18 initWithAsset:v14 mediaProvider:a4 deliveryStrategies:a5 audioSessionKind:a6 requestURLOnly:v9 resourceReclamationController:a8];
+  v15 = [(PXDisplayAssetVideoContentProvider *)&v18 initWithAsset:assetCopy mediaProvider:provider deliveryStrategies:strategies audioSessionKind:kind requestURLOnly:onlyCopy resourceReclamationController:controller];
   if (v15)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v14 photoLibrary];
-      [v16 px_registerChangeObserver:v15];
+      photoLibrary = [assetCopy photoLibrary];
+      [photoLibrary px_registerChangeObserver:v15];
     }
   }
 
   return v15;
 }
 
-- (PXPhotoKitVideoContentProvider)initWithAsset:(id)a3 mediaProvider:(id)a4 deliveryStrategies:(id)a5 audioSessionKind:(int64_t)a6 requestURLOnly:(BOOL)a7
+- (PXPhotoKitVideoContentProvider)initWithAsset:(id)asset mediaProvider:(id)provider deliveryStrategies:(id)strategies audioSessionKind:(int64_t)kind requestURLOnly:(BOOL)only
 {
-  v7 = a7;
+  onlyCopy = only;
   v12 = MEMORY[0x1E69C1AC8];
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  strategiesCopy = strategies;
+  providerCopy = provider;
+  assetCopy = asset;
   v16 = objc_alloc_init(v12);
-  v17 = [(PXPhotoKitVideoContentProvider *)self initWithAsset:v15 mediaProvider:v14 deliveryStrategies:v13 audioSessionKind:a6 requestURLOnly:v7 resourceReclamationController:v16];
+  v17 = [(PXPhotoKitVideoContentProvider *)self initWithAsset:assetCopy mediaProvider:providerCopy deliveryStrategies:strategiesCopy audioSessionKind:kind requestURLOnly:onlyCopy resourceReclamationController:v16];
 
   return v17;
 }

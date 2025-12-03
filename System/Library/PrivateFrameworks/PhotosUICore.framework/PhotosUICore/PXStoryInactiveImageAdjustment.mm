@@ -1,27 +1,27 @@
 @interface PXStoryInactiveImageAdjustment
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3;
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4;
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment;
+- (id)applyToImage:(id)image targetSize:(CGSize)size;
 @end
 
 @implementation PXStoryInactiveImageAdjustment
 
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4
+- (id)applyToImage:(id)image targetSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1A42D5AB8(v5);
+  imageCopy = image;
+  selfCopy = self;
+  v7 = sub_1A42D5AB8(imageCopy);
 
   return v7;
 }
 
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment
 {
   type metadata accessor for StoryInactiveImageAdjustment();
   if (swift_dynamicCastClass())
   {
     sub_1A3C52C70(0, &qword_1EB12B160);
     swift_unknownObjectRetain();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_1A524DBF4();
     swift_unknownObjectRelease();
   }

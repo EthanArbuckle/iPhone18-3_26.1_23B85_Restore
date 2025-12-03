@@ -1,40 +1,40 @@
 @interface STConcreteIDSTransportPrimitives
-+ (id)_optionsDictionaryWithFromID:(id)a3;
++ (id)_optionsDictionaryWithFromID:(id)d;
 + (id)_resourceURLForSendingOversizedData;
-+ (void)_sortDestinationsToStatus:(id)a3 intoReachableDestinations:(id *)a4 unreachableDestinations:(id *)a5 unknownReachabilityDestinations:(id *)a6;
++ (void)_sortDestinationsToStatus:(id)status intoReachableDestinations:(id *)destinations unreachableDestinations:(id *)unreachableDestinations unknownReachabilityDestinations:(id *)reachabilityDestinations;
 - (BOOL)canSend;
 - (BOOL)signedInUserHasMultipleDevices;
-- (STConcreteIDSTransportPrimitives)initWithServiceName:(id)a3;
+- (STConcreteIDSTransportPrimitives)initWithServiceName:(id)name;
 - (STIDSTransportPrimitivesDelegate)delegate;
-- (id)_sendData:(id)a3 toDestinations:(id)a4 options:(id)a5;
-- (id)_sendOversizedData:(id)a3 toDestinations:(id)a4 sendOptions:(id)a5;
-- (id)addressDestinationFromPrimitiveDestination:(id)a3;
-- (id)primitiveDestinationFromRawAddress:(id)a3;
-- (id)rawAddressFromPrimitiveDestination:(id)a3;
-- (id)refreshedReachabilityOfPrimitiveDestination:(id)a3;
-- (id)sendAcknowledgementMessageForResponseIdentifier:(id)a3 toDestination:(id)a4 fromDestination:(id)a5;
-- (id)sendData:(id)a3 toDestinations:(id)a4 fromDestination:(id)a5;
-- (void)_sendData:(id)a3 sendDataBlock:(id)a4 sendOversizedDataBlock:(id)a5;
-- (void)addObserver:(id)a3 forReachabilityChangesOfPrimitiveDestinations:(id)a4;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
+- (id)_sendData:(id)data toDestinations:(id)destinations options:(id)options;
+- (id)_sendOversizedData:(id)data toDestinations:(id)destinations sendOptions:(id)options;
+- (id)addressDestinationFromPrimitiveDestination:(id)destination;
+- (id)primitiveDestinationFromRawAddress:(id)address;
+- (id)rawAddressFromPrimitiveDestination:(id)destination;
+- (id)refreshedReachabilityOfPrimitiveDestination:(id)destination;
+- (id)sendAcknowledgementMessageForResponseIdentifier:(id)identifier toDestination:(id)destination fromDestination:(id)fromDestination;
+- (id)sendData:(id)data toDestinations:(id)destinations fromDestination:(id)destination;
+- (void)_sendData:(id)data sendDataBlock:(id)block sendOversizedDataBlock:(id)dataBlock;
+- (void)addObserver:(id)observer forReachabilityChangesOfPrimitiveDestinations:(id)destinations;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
 - (void)dealloc;
-- (void)isCapabilityEnabledForDestination:(id)a3 capability:(id)a4 completionHandler:(id)a5;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)startOnQueue:(id)a3;
+- (void)isCapabilityEnabledForDestination:(id)destination capability:(id)capability completionHandler:(id)handler;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)startOnQueue:(id)queue;
 - (void)stop;
 @end
 
 @implementation STConcreteIDSTransportPrimitives
 
-- (STConcreteIDSTransportPrimitives)initWithServiceName:(id)a3
+- (STConcreteIDSTransportPrimitives)initWithServiceName:(id)name
 {
   v10.receiver = self;
   v10.super_class = STConcreteIDSTransportPrimitives;
-  v3 = a3;
+  nameCopy = name;
   v4 = [(STConcreteIDSTransportPrimitives *)&v10 init];
-  v5 = [v3 copy];
+  v5 = [nameCopy copy];
 
   serviceName = v4->_serviceName;
   v4->_serviceName = v5;
@@ -55,21 +55,21 @@
   [(STConcreteIDSTransportPrimitives *)&v3 dealloc];
 }
 
-- (void)startOnQueue:(id)a3
+- (void)startOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10 = objc_opt_new();
   [v10 setWantsCrossAccountMessaging:1];
-  v5 = [(STConcreteIDSTransportPrimitives *)self service];
-  [v5 addDelegate:self withDelegateProperties:v10 queue:v4];
+  service = [(STConcreteIDSTransportPrimitives *)self service];
+  [service addDelegate:self withDelegateProperties:v10 queue:queueCopy];
 
   v6 = [IDSBatchIDQueryController alloc];
-  v7 = [(STConcreteIDSTransportPrimitives *)self serviceName];
-  v8 = [v6 initWithService:v7 delegate:self queue:v4];
+  serviceName = [(STConcreteIDSTransportPrimitives *)self serviceName];
+  v8 = [v6 initWithService:serviceName delegate:self queue:queueCopy];
   [(STConcreteIDSTransportPrimitives *)self setPrimitiveDestinationStatusQueryController:v8];
 
   serviceQueue = self->_serviceQueue;
-  self->_serviceQueue = v4;
+  self->_serviceQueue = queueCopy;
 }
 
 - (void)stop
@@ -86,10 +86,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(STConcreteIDSTransportPrimitives *)self service];
-  v3 = [v2 accounts];
+  service = [(STConcreteIDSTransportPrimitives *)self service];
+  accounts = [service accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -101,7 +101,7 @@ LABEL_3:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(accounts);
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
@@ -112,7 +112,7 @@ LABEL_3:
 
       if (v5 == ++v8)
       {
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -134,34 +134,34 @@ LABEL_3:
 
 - (BOOL)signedInUserHasMultipleDevices
 {
-  v2 = [(STConcreteIDSTransportPrimitives *)self service];
-  v3 = [v2 devices];
-  v4 = [v3 count] != 0;
+  service = [(STConcreteIDSTransportPrimitives *)self service];
+  devices = [service devices];
+  v4 = [devices count] != 0;
 
   return v4;
 }
 
-- (id)sendData:(id)a3 toDestinations:(id)a4 fromDestination:(id)a5
+- (id)sendData:(id)data toDestinations:(id)destinations fromDestination:(id)destination
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [STConcreteIDSTransportPrimitives _optionsDictionaryWithFromID:a5];
+  destinationsCopy = destinations;
+  dataCopy = data;
+  v10 = [STConcreteIDSTransportPrimitives _optionsDictionaryWithFromID:destination];
   [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionExpectsPeerResponseKey];
   v11 = [v10 copy];
-  v12 = [(STConcreteIDSTransportPrimitives *)self _sendData:v9 toDestinations:v8 options:v11];
+  v12 = [(STConcreteIDSTransportPrimitives *)self _sendData:dataCopy toDestinations:destinationsCopy options:v11];
 
   return v12;
 }
 
-- (id)sendAcknowledgementMessageForResponseIdentifier:(id)a3 toDestination:(id)a4 fromDestination:(id)a5
+- (id)sendAcknowledgementMessageForResponseIdentifier:(id)identifier toDestination:(id)destination fromDestination:(id)fromDestination
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [STConcreteIDSTransportPrimitives _optionsDictionaryWithFromID:a5];
-  [v10 setObject:v9 forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
+  destinationCopy = destination;
+  identifierCopy = identifier;
+  v10 = [STConcreteIDSTransportPrimitives _optionsDictionaryWithFromID:fromDestination];
+  [v10 setObject:identifierCopy forKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
 
   v11 = [@"ACK" dataUsingEncoding:4];
-  v12 = [NSSet setWithObject:v8];
+  v12 = [NSSet setWithObject:destinationCopy];
 
   v13 = [v10 copy];
   v14 = [(STConcreteIDSTransportPrimitives *)self _sendData:v11 toDestinations:v12 options:v13];
@@ -169,13 +169,13 @@ LABEL_3:
   return v14;
 }
 
-+ (id)_optionsDictionaryWithFromID:(id)a3
++ (id)_optionsDictionaryWithFromID:(id)d
 {
   v7[0] = IDSSendMessageOptionFromIDKey;
   v7[1] = IDSSendMessageOptionTimeoutKey;
-  v8[0] = a3;
+  v8[0] = d;
   v8[1] = &off_1001B2110;
-  v3 = a3;
+  dCopy = d;
   v4 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:2];
 
   v5 = [v4 mutableCopy];
@@ -183,11 +183,11 @@ LABEL_3:
   return v5;
 }
 
-- (id)_sendData:(id)a3 toDestinations:(id)a4 options:(id)a5
+- (id)_sendData:(id)data toDestinations:(id)destinations options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -197,15 +197,15 @@ LABEL_3:
   v11 = +[STLog familyMessaging];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 length];
+    v12 = [dataCopy length];
     *buf = 136446978;
     v48 = "[STConcreteIDSTransportPrimitives _sendData:toDestinations:options:]";
     v49 = 2050;
     v50 = v12;
     v51 = 2112;
-    v52 = v9;
+    v52 = destinationsCopy;
     v53 = 2112;
-    v54 = v10;
+    v54 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \ndata: %{public}lu bytes, \ndestinations: %@, \noptions: %@", buf, 0x2Au);
   }
 
@@ -214,11 +214,11 @@ LABEL_3:
   v36[2] = sub_100017164;
   v36[3] = &unk_1001A3130;
   v36[4] = self;
-  v13 = v8;
+  v13 = dataCopy;
   v37 = v13;
-  v14 = v9;
+  v14 = destinationsCopy;
   v38 = v14;
-  v15 = v10;
+  v15 = optionsCopy;
   v39 = v15;
   v40 = &v41;
   v16 = objc_retainBlock(v36);
@@ -227,7 +227,7 @@ LABEL_3:
   v29 = sub_1000172F0;
   v30 = &unk_1001A3158;
   v35 = &v41;
-  v31 = self;
+  selfCopy = self;
   v17 = v13;
   v32 = v17;
   v18 = v14;
@@ -235,13 +235,13 @@ LABEL_3:
   v19 = v15;
   v34 = v19;
   v20 = objc_retainBlock(&v27);
-  [(STConcreteIDSTransportPrimitives *)self _sendData:v17 sendDataBlock:v16 sendOversizedDataBlock:v20, v27, v28, v29, v30, v31];
+  [(STConcreteIDSTransportPrimitives *)self _sendData:v17 sendDataBlock:v16 sendOversizedDataBlock:v20, v27, v28, v29, v30, selfCopy];
   v21 = +[STLog familyMessaging];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [v42[5] type];
+    type = [v42[5] type];
     v23 = "STResultTypeFailure";
-    if (!v22)
+    if (!type)
     {
       v23 = "STResultTypeSuccess";
     }
@@ -269,56 +269,56 @@ LABEL_3:
   return v25;
 }
 
-- (void)_sendData:(id)a3 sendDataBlock:(id)a4 sendOversizedDataBlock:(id)a5
+- (void)_sendData:(id)data sendDataBlock:(id)block sendOversizedDataBlock:(id)dataBlock
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  blockCopy = block;
+  dataBlockCopy = dataBlock;
   v10 = +[STLog familyMessaging];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136446466;
     v13 = "[STConcreteIDSTransportPrimitives _sendData:sendDataBlock:sendOversizedDataBlock:]";
     v14 = 2050;
-    v15 = [v7 length];
+    v15 = [dataCopy length];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \ndata: %{public}lu bytes", &v12, 0x16u);
   }
 
-  if ([v7 length] >= 0xF000)
+  if ([dataCopy length] >= 0xF000)
   {
-    v11 = v9;
+    v11 = dataBlockCopy;
   }
 
   else
   {
-    v11 = v8;
+    v11 = blockCopy;
   }
 
   v11[2]();
 }
 
-- (id)_sendOversizedData:(id)a3 toDestinations:(id)a4 sendOptions:(id)a5
+- (id)_sendOversizedData:(id)data toDestinations:(id)destinations sendOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  destinationsCopy = destinations;
+  optionsCopy = options;
   v11 = +[STLog familyMessaging];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
     v32 = "[STConcreteIDSTransportPrimitives _sendOversizedData:toDestinations:sendOptions:]";
     v33 = 2050;
-    v34 = [v8 length];
+    v34 = [dataCopy length];
     v35 = 2112;
-    v36 = v9;
+    v36 = destinationsCopy;
     v37 = 2112;
-    v38 = v10;
+    v38 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \ndata: %{public}lu bytes, \ndestinations: %@, \nsendOptions: %@", buf, 0x2Au);
   }
 
   v12 = +[STConcreteIDSTransportPrimitives _resourceURLForSendingOversizedData];
   v30 = 0;
-  v13 = [v8 writeToURL:v12 options:2 error:&v30];
+  v13 = [dataCopy writeToURL:v12 options:2 error:&v30];
   v14 = v30;
   if (v13)
   {
@@ -329,10 +329,10 @@ LABEL_3:
     v15 = v12;
     v29 = v15;
     v16 = objc_retainBlock(v28);
-    v17 = [(STConcreteIDSTransportPrimitives *)self service];
+    service = [(STConcreteIDSTransportPrimitives *)self service];
     v26 = 0;
     v27 = 0;
-    v18 = [v17 sendResourceAtURL:v15 metadata:0 toDestinations:v9 priority:300 options:v10 identifier:&v27 error:&v26];
+    v18 = [service sendResourceAtURL:v15 metadata:0 toDestinations:destinationsCopy priority:300 options:optionsCopy identifier:&v27 error:&v26];
     v19 = v27;
     v20 = v26;
 
@@ -373,19 +373,19 @@ LABEL_3:
 + (id)_resourceURLForSendingOversizedData
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 temporaryDirectory];
+  temporaryDirectory = [v2 temporaryDirectory];
   v4 = objc_opt_new();
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"IDS-SendFile-%@", v5];
-  v7 = [v3 URLByAppendingPathComponent:v6];
+  uUIDString = [v4 UUIDString];
+  v6 = [NSString stringWithFormat:@"IDS-SendFile-%@", uUIDString];
+  v7 = [temporaryDirectory URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (id)primitiveDestinationFromRawAddress:(id)a3
+- (id)primitiveDestinationFromRawAddress:(id)address
 {
-  v3 = a3;
-  if ([v3 _appearsToBeEmail])
+  addressCopy = address;
+  if ([addressCopy _appearsToBeEmail])
   {
     v4 = IDSCopyIDForEmailAddress();
 LABEL_5:
@@ -393,7 +393,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 _appearsToBePhoneNumber])
+  if ([addressCopy _appearsToBePhoneNumber])
   {
     v4 = IDSCopyIDForPhoneNumber();
     goto LABEL_5;
@@ -405,16 +405,16 @@ LABEL_7:
   return v5;
 }
 
-- (id)rawAddressFromPrimitiveDestination:(id)a3
+- (id)rawAddressFromPrimitiveDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   v4 = +[STLog familyMessaging];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
     v8 = "[STConcreteIDSTransportPrimitives rawAddressFromPrimitiveDestination:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = destinationCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nprimitiveDestination: %@", &v7, 0x16u);
   }
 
@@ -423,16 +423,16 @@ LABEL_7:
   return v5;
 }
 
-- (id)addressDestinationFromPrimitiveDestination:(id)a3
+- (id)addressDestinationFromPrimitiveDestination:(id)destination
 {
-  v3 = a3;
+  destinationCopy = destination;
   v4 = +[STLog familyMessaging];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
     v8 = "[STConcreteIDSTransportPrimitives addressDestinationFromPrimitiveDestination:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = destinationCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nprimitiveDestination: %@", &v7, 0x16u);
   }
 
@@ -441,63 +441,63 @@ LABEL_7:
   return v5;
 }
 
-- (void)addObserver:(id)a3 forReachabilityChangesOfPrimitiveDestinations:(id)a4
+- (void)addObserver:(id)observer forReachabilityChangesOfPrimitiveDestinations:(id)destinations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteIDSTransportPrimitives *)self delegate];
+  destinationsCopy = destinations;
+  observerCopy = observer;
+  delegate = [(STConcreteIDSTransportPrimitives *)self delegate];
 
   v9 = +[STLog idsTransportPrimitives];
-  v10 = v9;
-  if (v8 == v7)
+  primitiveDestinationStatusQueryController = v9;
+  if (delegate == observerCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 136446467;
       v13 = "[STConcreteIDSTransportPrimitives addObserver:forReachabilityChangesOfPrimitiveDestinations:]";
       v14 = 2113;
-      v15 = v6;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nAdded reachability observer for destinations: %{private}@", &v12, 0x16u);
+      v15 = destinationsCopy;
+      _os_log_impl(&_mh_execute_header, primitiveDestinationStatusQueryController, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nAdded reachability observer for destinations: %{private}@", &v12, 0x16u);
     }
 
-    v10 = [(STConcreteIDSTransportPrimitives *)self primitiveDestinationStatusQueryController];
-    v11 = [v6 allObjects];
-    [v10 setDestinations:v11];
+    primitiveDestinationStatusQueryController = [(STConcreteIDSTransportPrimitives *)self primitiveDestinationStatusQueryController];
+    allObjects = [destinationsCopy allObjects];
+    [primitiveDestinationStatusQueryController setDestinations:allObjects];
   }
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    sub_100112B1C(v10);
+    sub_100112B1C(primitiveDestinationStatusQueryController);
   }
 }
 
-- (id)refreshedReachabilityOfPrimitiveDestination:(id)a3
+- (id)refreshedReachabilityOfPrimitiveDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = +[STLog familyMessaging];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v20 = "[STConcreteIDSTransportPrimitives refreshedReachabilityOfPrimitiveDestination:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = destinationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nprimativeDestination: %@", buf, 0x16u);
   }
 
   v6 = +[STPromise pendingPromise];
   v7 = +[IDSIDQueryController sharedInstance];
-  v8 = [(STConcreteIDSTransportPrimitives *)self serviceName];
-  v9 = [(STConcreteIDSTransportPrimitives *)self serviceName];
-  v10 = [(STConcreteIDSTransportPrimitives *)self serviceQueue];
+  serviceName = [(STConcreteIDSTransportPrimitives *)self serviceName];
+  serviceName2 = [(STConcreteIDSTransportPrimitives *)self serviceName];
+  serviceQueue = [(STConcreteIDSTransportPrimitives *)self serviceQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100017EDC;
   v16[3] = &unk_1001A31A8;
-  v17 = v4;
+  v17 = destinationCopy;
   v11 = v6;
   v18 = v11;
-  v12 = v4;
-  [v7 refreshIDStatusForDestination:v12 service:v8 listenerID:v9 queue:v10 completionBlock:v16];
+  v12 = destinationCopy;
+  [v7 refreshIDStatusForDestination:v12 service:serviceName listenerID:serviceName2 queue:serviceQueue completionBlock:v16];
 
   v13 = v18;
   v14 = v11;
@@ -505,111 +505,111 @@ LABEL_7:
   return v11;
 }
 
-- (void)isCapabilityEnabledForDestination:(id)a3 capability:(id)a4 completionHandler:(id)a5
+- (void)isCapabilityEnabledForDestination:(id)destination capability:(id)capability completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  capabilityCopy = capability;
+  handlerCopy = handler;
   v11 = +[STLog familyMessaging];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v26 = "[STConcreteIDSTransportPrimitives isCapabilityEnabledForDestination:capability:completionHandler:]";
     v27 = 2112;
-    v28 = v8;
+    v28 = destinationCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = capabilityCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nprimativeDestination: %@, \ndeviceCapability: %@", buf, 0x20u);
   }
 
   v12 = +[IDSIDQueryController sharedInstance];
-  v24 = v8;
+  v24 = destinationCopy;
   v13 = [NSArray arrayWithObjects:&v24 count:1];
-  v14 = [(STConcreteIDSTransportPrimitives *)self serviceName];
-  v15 = [(STConcreteIDSTransportPrimitives *)self serviceName];
-  v16 = [(STConcreteIDSTransportPrimitives *)self serviceQueue];
+  serviceName = [(STConcreteIDSTransportPrimitives *)self serviceName];
+  serviceName2 = [(STConcreteIDSTransportPrimitives *)self serviceName];
+  serviceQueue = [(STConcreteIDSTransportPrimitives *)self serviceQueue];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000182C4;
   v20[3] = &unk_1001A31D0;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v17 = v10;
-  v18 = v9;
-  v19 = v8;
-  [v12 currentRemoteDevicesForDestinations:v13 service:v14 listenerID:v15 queue:v16 completionBlock:v20];
+  v21 = destinationCopy;
+  v22 = capabilityCopy;
+  v23 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = capabilityCopy;
+  v19 = destinationCopy;
+  [v12 currentRemoteDevicesForDestinations:v13 service:serviceName listenerID:serviceName2 queue:serviceQueue completionBlock:v20];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   v15 = +[STLog familyMessaging];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v12 length];
-    v17 = [v14 description];
+    v16 = [dataCopy length];
+    v17 = [contextCopy description];
     v26 = 136447235;
     v27 = "[STConcreteIDSTransportPrimitives service:account:incomingData:fromID:context:]";
     v28 = 2113;
-    v29 = v11;
+    v29 = accountCopy;
     v30 = 2050;
     v31 = v16;
     v32 = 2113;
-    v33 = v13;
+    v33 = dCopy;
     v34 = 2112;
     v35 = v17;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \naccount: %{private}@, \ndata: %{public}lu bytes, \nfromID: %{private}@, \ncontext: %@", &v26, 0x34u);
   }
 
-  v18 = [v14 incomingResponseIdentifier];
-  if (v18)
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  if (incomingResponseIdentifier)
   {
     v19 = +[STLog familyMessaging];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v14 incomingResponseIdentifier];
+      incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
       v26 = 136446466;
       v27 = "[STConcreteIDSTransportPrimitives service:account:incomingData:fromID:context:]";
       v28 = 2114;
-      v29 = v20;
+      v29 = incomingResponseIdentifier2;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid receive message with context.incomingResponseIdentifier: %{public}@", &v26, 0x16u);
     }
 
-    v21 = [(STConcreteIDSTransportPrimitives *)self delegate];
-    [v21 primitives:self didDeliverMessageWithPrimitiveIdentifier:v18 toPrimitiveDestination:v13];
+    delegate = [(STConcreteIDSTransportPrimitives *)self delegate];
+    [delegate primitives:self didDeliverMessageWithPrimitiveIdentifier:incomingResponseIdentifier toPrimitiveDestination:dCopy];
   }
 
   else
   {
-    v21 = [v14 outgoingResponseIdentifier];
+    delegate = [contextCopy outgoingResponseIdentifier];
     v22 = +[STLog idsTransportPrimitives];
-    v23 = v22;
-    if (v21)
+    delegate2 = v22;
+    if (delegate)
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v14 fromServerStorage];
+        fromServerStorage = [contextCopy fromServerStorage];
         v25 = "NO";
         v27 = "[STConcreteIDSTransportPrimitives service:account:incomingData:fromID:context:]";
         v26 = 136446722;
-        if (v24)
+        if (fromServerStorage)
         {
           v25 = "YES";
         }
 
         v28 = 2114;
-        v29 = v21;
+        v29 = delegate;
         v30 = 2082;
         v31 = v25;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid receive message with context.outgoingResponseIdentifier: %{public}@) - fromServerStorage: %{public}s", &v26, 0x20u);
+        _os_log_impl(&_mh_execute_header, delegate2, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \nDid receive message with context.outgoingResponseIdentifier: %{public}@) - fromServerStorage: %{public}s", &v26, 0x20u);
       }
 
-      v23 = [(STConcreteIDSTransportPrimitives *)self delegate];
-      [v23 primitives:self didReceiveData:v12 fromPrimitiveDestination:v13 primitiveResponseIdentifier:v21];
+      delegate2 = [(STConcreteIDSTransportPrimitives *)self delegate];
+      [delegate2 primitives:self didReceiveData:dataCopy fromPrimitiveDestination:dCopy primitiveResponseIdentifier:delegate];
     }
 
     else if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -619,32 +619,32 @@ LABEL_7:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  accountCopy = account;
+  lCopy = l;
+  dCopy = d;
+  contextCopy = context;
   v15 = +[STLog familyMessaging];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136447235;
     v28 = "[STConcreteIDSTransportPrimitives service:account:incomingResourceAtURL:fromID:context:]";
     v29 = 2113;
-    v30 = v11;
+    v30 = accountCopy;
     v31 = 2112;
-    v32 = v12;
+    v32 = lCopy;
     v33 = 2113;
-    v34 = v13;
+    v34 = dCopy;
     v35 = 2112;
-    v36 = v14;
+    v36 = contextCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \naccount: %{private}@, \nresourceURL: %@, \nfromID: %{private}@, \ncontext: %@", buf, 0x34u);
   }
 
   v16 = +[NSFileManager defaultManager];
-  v17 = [v12 path];
+  path = [lCopy path];
   v26 = 0;
-  v18 = [v16 attributesOfItemAtPath:v17 error:&v26];
+  v18 = [v16 attributesOfItemAtPath:path error:&v26];
   v19 = v26;
 
   if (!v18)
@@ -652,13 +652,13 @@ LABEL_7:
     v20 = +[STLog idsTransportPrimitives];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v12 path];
+      path2 = [lCopy path];
       *buf = 136446979;
       v28 = "[STConcreteIDSTransportPrimitives service:account:incomingResourceAtURL:fromID:context:]";
       v29 = 2113;
-      v30 = v24;
+      v30 = path2;
       v31 = 2113;
-      v32 = v13;
+      v32 = dCopy;
       v33 = 2114;
       v34 = v19;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[v2] %{public}s: \nFailed to get attributes for resourceURL.path: %{private}@, \nfrom: %{private}@, \nerror: %{public}@", buf, 0x2Au);
@@ -681,20 +681,20 @@ LABEL_9:
   }
 
   v25 = v19;
-  v20 = [NSData dataWithContentsOfURL:v12 options:0 error:&v25];
+  v20 = [NSData dataWithContentsOfURL:lCopy options:0 error:&v25];
   v21 = v25;
 
   if (v20)
   {
-    v22 = [(STConcreteIDSTransportPrimitives *)self delegate];
-    v23 = [v14 outgoingResponseIdentifier];
-    [v22 primitives:self didReceiveData:v20 fromPrimitiveDestination:v13 primitiveResponseIdentifier:v23];
+    delegate = [(STConcreteIDSTransportPrimitives *)self delegate];
+    outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+    [delegate primitives:self didReceiveData:v20 fromPrimitiveDestination:dCopy primitiveResponseIdentifier:outgoingResponseIdentifier];
   }
 
   else
   {
-    v22 = +[STLog idsTransportPrimitives];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    delegate = +[STLog idsTransportPrimitives];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       sub_100112C9C();
     }
@@ -703,16 +703,16 @@ LABEL_9:
 LABEL_15:
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   v5 = +[STLog idsTransportPrimitives];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446467;
     v8 = "[STConcreteIDSTransportPrimitives service:activeAccountsChanged:]";
     v9 = 2113;
-    v10 = v4;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \naccounts: %{private}@", &v7, 0x16u);
   }
 
@@ -720,9 +720,9 @@ LABEL_15:
   [v6 sendInitialSetup];
 }
 
-+ (void)_sortDestinationsToStatus:(id)a3 intoReachableDestinations:(id *)a4 unreachableDestinations:(id *)a5 unknownReachabilityDestinations:(id *)a6
++ (void)_sortDestinationsToStatus:(id)status intoReachableDestinations:(id *)destinations unreachableDestinations:(id *)unreachableDestinations unknownReachabilityDestinations:(id *)reachabilityDestinations
 {
-  v9 = a3;
+  statusCopy = status;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
   v12 = objc_opt_new();
@@ -736,21 +736,21 @@ LABEL_15:
   v19 = v14;
   v15 = v12;
   v20 = v15;
-  [v9 enumerateKeysAndObjectsUsingBlock:v17];
+  [statusCopy enumerateKeysAndObjectsUsingBlock:v17];
 
-  if (a4)
+  if (destinations)
   {
-    *a4 = [v14 copy];
+    *destinations = [v14 copy];
   }
 
-  if (a5)
+  if (unreachableDestinations)
   {
-    *a5 = [v15 copy];
+    *unreachableDestinations = [v15 copy];
   }
 
-  if (a6)
+  if (reachabilityDestinations)
   {
-    *a6 = [v13 copy];
+    *reachabilityDestinations = [v13 copy];
   }
 
   v16 = +[STLog familyMessaging];
@@ -768,13 +768,13 @@ LABEL_15:
   }
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
-  v8 = a4;
-  v9 = a6;
+  statusCopy = status;
+  errorCopy = error;
   v10 = +[STLog idsTransportPrimitives];
   v11 = v10;
-  if (v9)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -794,7 +794,7 @@ LABEL_15:
     v18 = 0;
     v19 = 0;
     v17 = 0;
-    [STConcreteIDSTransportPrimitives _sortDestinationsToStatus:v8 intoReachableDestinations:&v19 unreachableDestinations:&v18 unknownReachabilityDestinations:&v17];
+    [STConcreteIDSTransportPrimitives _sortDestinationsToStatus:statusCopy intoReachableDestinations:&v19 unreachableDestinations:&v18 unknownReachabilityDestinations:&v17];
     v11 = v19;
     v12 = v18;
     v13 = v17;
@@ -809,8 +809,8 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[v2] %{public}s: \ndidObserveUpdatedPrimitiveDestinationReachabilityMap: %{private}@", buf, 0x16u);
     }
 
-    v16 = [(STConcreteIDSTransportPrimitives *)self delegate];
-    [v16 primitives:self didObserveUpdatedPrimitiveDestinationReachabilityMap:v14];
+    delegate = [(STConcreteIDSTransportPrimitives *)self delegate];
+    [delegate primitives:self didObserveUpdatedPrimitiveDestinationReachabilityMap:v14];
   }
 }
 

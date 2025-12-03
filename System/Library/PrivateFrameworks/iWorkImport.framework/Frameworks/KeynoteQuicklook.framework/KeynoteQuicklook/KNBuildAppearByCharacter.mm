@@ -1,13 +1,13 @@
 @interface KNBuildAppearByCharacter
-+ (BOOL)shouldWarnOnUpgradeWithOldAnimationName:(id)a3 version:(unint64_t)a4;
++ (BOOL)shouldWarnOnUpgradeWithOldAnimationName:(id)name version:(unint64_t)version;
 + (NSArray)obsoleteAnimationNames;
 + (id)customAttributes;
 + (id)defaultAttributes;
-+ (id)localizedAnimationStringForUpgradeWarning:(int64_t)a3;
-+ (unint64_t)p_legacyDirectionWithDirection:(unint64_t)a3 type:(int64_t)a4;
-+ (unint64_t)p_textDeliveryOptionWithDirection:(unint64_t)a3 type:(int64_t)a4 isClassic:(BOOL)a5;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int64_t)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 oldAnimationName:(id)a5 warning:(id *)a6 type:(int64_t)a7 isFromClassic:(BOOL)a8 version:(unint64_t)a9;
++ (id)localizedAnimationStringForUpgradeWarning:(int64_t)warning;
++ (unint64_t)p_legacyDirectionWithDirection:(unint64_t)direction type:(int64_t)type;
++ (unint64_t)p_textDeliveryOptionWithDirection:(unint64_t)direction type:(int64_t)type isClassic:(BOOL)classic;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int64_t)type isToClassic:(BOOL)classic version:(unint64_t)version;
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name oldAnimationName:(id)animationName warning:(id *)warning type:(int64_t)type isFromClassic:(BOOL)classic version:(unint64_t)version;
 @end
 
 @implementation KNBuildAppearByCharacter
@@ -44,45 +44,45 @@
   return v2;
 }
 
-+ (unint64_t)p_legacyDirectionWithDirection:(unint64_t)a3 type:(int64_t)a4
++ (unint64_t)p_legacyDirectionWithDirection:(unint64_t)direction type:(int64_t)type
 {
   v4 = 99;
-  v5 = 19;
-  if (a3 != 99)
+  directionCopy = 19;
+  if (direction != 99)
   {
-    v5 = a3;
+    directionCopy = direction;
   }
 
-  if (a3 != 19)
+  if (direction != 19)
   {
-    v4 = v5;
+    v4 = directionCopy;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     return v4;
   }
 
   else
   {
-    return a3;
+    return direction;
   }
 }
 
-+ (unint64_t)p_textDeliveryOptionWithDirection:(unint64_t)a3 type:(int64_t)a4 isClassic:(BOOL)a5
++ (unint64_t)p_textDeliveryOptionWithDirection:(unint64_t)direction type:(int64_t)type isClassic:(BOOL)classic
 {
-  if (a5)
+  if (classic)
   {
-    a3 = objc_msgSend_p_legacyDirectionWithDirection_type_(a1, a2, a3, a4);
+    direction = objc_msgSend_p_legacyDirectionWithDirection_type_(self, a2, direction, type);
   }
 
-  if (a3 > 113)
+  if (direction > 113)
   {
-    if (a3 <= 143)
+    if (direction <= 143)
     {
-      if (a3 != 114)
+      if (direction != 114)
       {
-        if (a3 != 115)
+        if (direction != 115)
         {
           return 1;
         }
@@ -93,14 +93,14 @@
 
     else
     {
-      if (a3 == 144)
+      if (direction == 144)
       {
         return 5;
       }
 
-      if (a3 != 172)
+      if (direction != 172)
       {
-        if (a3 != 188)
+        if (direction != 188)
         {
           return 1;
         }
@@ -113,9 +113,9 @@
   }
 
   result = 2;
-  if (a3 <= 110)
+  if (direction <= 110)
   {
-    if (a3 == 99)
+    if (direction == 99)
     {
       return result;
     }
@@ -123,12 +123,12 @@
     return 1;
   }
 
-  if (a3 == 111)
+  if (direction == 111)
   {
     return 1;
   }
 
-  if (a3 != 112)
+  if (direction != 112)
   {
     return 5;
   }
@@ -136,24 +136,24 @@
   return result;
 }
 
-+ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 oldAnimationName:(id)a5 warning:(id *)a6 type:(int64_t)a7 isFromClassic:(BOOL)a8 version:(unint64_t)a9
++ (void)upgradeAttributes:(id *)attributes animationName:(id)name oldAnimationName:(id)animationName warning:(id *)warning type:(int64_t)type isFromClassic:(BOOL)classic version:(unint64_t)version
 {
-  v9 = a8;
-  v13 = a5;
-  v14 = v13;
-  if (a9 < 0xE94D0C4B44)
+  classicCopy = classic;
+  animationNameCopy = animationName;
+  v14 = animationNameCopy;
+  if (version < 0xE94D0C4B44)
   {
-    v41 = v13;
-    isEqualToString = objc_msgSend_isEqualToString_(v13, v13, *MEMORY[0x277D80138]);
+    v41 = animationNameCopy;
+    isEqualToString = objc_msgSend_isEqualToString_(animationNameCopy, animationNameCopy, *MEMORY[0x277D80138]);
     v14 = v41;
     if ((isEqualToString & 1) == 0)
     {
       v16 = objc_msgSend_isEqualToString_(v41, v41, *MEMORY[0x277D80168]);
-      v18 = objc_msgSend_objectForKeyedSubscript_(*a3, v17, @"KNBuildAttributesDirection");
+      v18 = objc_msgSend_objectForKeyedSubscript_(*attributes, v17, @"KNBuildAttributesDirection");
 
       if (v18)
       {
-        v20 = objc_msgSend_objectForKeyedSubscript_(*a3, v19, @"KNBuildAttributesDirection");
+        v20 = objc_msgSend_objectForKeyedSubscript_(*attributes, v19, @"KNBuildAttributesDirection");
         v23 = objc_msgSend_unsignedIntegerValue(v20, v21, v22);
       }
 
@@ -162,7 +162,7 @@
         v23 = 111;
       }
 
-      isClassic = objc_msgSend_p_textDeliveryOptionWithDirection_type_isClassic_(a1, v19, v23, a7, v9);
+      isClassic = objc_msgSend_p_textDeliveryOptionWithDirection_type_isClassic_(self, v19, v23, type, classicCopy);
       if (v16)
       {
         v27 = 3;
@@ -170,11 +170,11 @@
 
       else
       {
-        v28 = objc_msgSend_objectForKeyedSubscript_(*a3, v24, @"KNBuildCustomAttributesTextDelivery");
+        v28 = objc_msgSend_objectForKeyedSubscript_(*attributes, v24, @"KNBuildCustomAttributesTextDelivery");
 
         if (v28)
         {
-          v29 = objc_msgSend_objectForKeyedSubscript_(*a3, v24, @"KNBuildCustomAttributesTextDelivery");
+          v29 = objc_msgSend_objectForKeyedSubscript_(*attributes, v24, @"KNBuildCustomAttributesTextDelivery");
           v27 = objc_msgSend_unsignedIntegerValue(v29, v30, v31);
         }
 
@@ -184,7 +184,7 @@
         }
       }
 
-      v32 = objc_msgSend_mutableCopy(*a3, v24, v25);
+      v32 = objc_msgSend_mutableCopy(*attributes, v24, v25);
       v34 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v33, v23);
       objc_msgSend_setObject_forKey_(v32, v35, v34, @"KNBuildAttributesDirection");
 
@@ -192,60 +192,60 @@
       objc_msgSend_setObject_forKey_(v32, v38, v37, @"KNBuildCustomAttributesTextDelivery");
 
       v39 = v32;
-      *a3 = v32;
-      *a3 = objc_msgSend_updateDirectionAttributeValue_andCustomTextDirectionValue_turnOffBounce_turnOffMotionBlur_forAttributes_(a1, v40, v23, isClassic, 1, 1, v32);
+      *attributes = v32;
+      *attributes = objc_msgSend_updateDirectionAttributeValue_andCustomTextDirectionValue_turnOffBounce_turnOffMotionBlur_forAttributes_(self, v40, v23, isClassic, 1, 1, v32);
 
       v14 = v41;
     }
   }
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int64_t)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int64_t)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if ((a6 - 1) <= 1 && a8 <= 0x174876E7FFLL && a7)
+  if ((type - 1) <= 1 && version <= 0x174876E7FFLL && classic)
   {
-    v13 = objc_msgSend_objectForKeyedSubscript_(*a3, a2, @"KNBuildCustomAttributesDeliveryOption", a4, a5);
+    v13 = objc_msgSend_objectForKeyedSubscript_(*attributes, a2, @"KNBuildCustomAttributesDeliveryOption", name, warning);
 
     if (v13)
     {
-      v15 = objc_msgSend_objectForKeyedSubscript_(*a3, v14, @"KNBuildCustomAttributesDeliveryOption");
+      v15 = objc_msgSend_objectForKeyedSubscript_(*attributes, v14, @"KNBuildCustomAttributesDeliveryOption");
       v18 = objc_msgSend_unsignedIntegerValue(v15, v16, v17);
 
       if ((v18 - 2) > 3)
       {
-        v20 = objc_msgSend_p_legacyDirectionWithDirection_type_(a1, v19, 19, a6);
+        v20 = objc_msgSend_p_legacyDirectionWithDirection_type_(self, v19, 19, type);
       }
 
       else
       {
-        v20 = objc_msgSend_p_legacyDirectionWithDirection_type_(a1, v19, qword_275E79210[v18 - 2], a6);
+        v20 = objc_msgSend_p_legacyDirectionWithDirection_type_(self, v19, qword_275E79210[v18 - 2], type);
       }
 
       v23 = v20;
-      v28 = objc_msgSend_mutableCopy(*a3, v21, v22);
+      v28 = objc_msgSend_mutableCopy(*attributes, v21, v22);
       v25 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v24, v23);
       objc_msgSend_setObject_forKeyedSubscript_(v28, v26, v25, @"direction");
 
       v27 = v28;
-      *a3 = v28;
+      *attributes = v28;
     }
   }
 }
 
-+ (BOOL)shouldWarnOnUpgradeWithOldAnimationName:(id)a3 version:(unint64_t)a4
++ (BOOL)shouldWarnOnUpgradeWithOldAnimationName:(id)name version:(unint64_t)version
 {
-  v5 = a3;
-  v7 = v5;
-  v8 = a4 < 0xE94D0C4B44 && (objc_msgSend_isEqualToString_(v5, v6, *MEMORY[0x277D80168]) & 1) != 0;
+  nameCopy = name;
+  v7 = nameCopy;
+  v8 = version < 0xE94D0C4B44 && (objc_msgSend_isEqualToString_(nameCopy, v6, *MEMORY[0x277D80168]) & 1) != 0;
 
   return v8;
 }
 
-+ (id)localizedAnimationStringForUpgradeWarning:(int64_t)a3
++ (id)localizedAnimationStringForUpgradeWarning:(int64_t)warning
 {
   v4 = sub_275DC204C();
   v6 = v4;
-  if (a3 == 1)
+  if (warning == 1)
   {
     objc_msgSend_localizedStringForKey_value_table_(v4, v5, @"Appear by Character *AppearByCharacterBuild*", @"Appear by Character", @"Keynote");
   }

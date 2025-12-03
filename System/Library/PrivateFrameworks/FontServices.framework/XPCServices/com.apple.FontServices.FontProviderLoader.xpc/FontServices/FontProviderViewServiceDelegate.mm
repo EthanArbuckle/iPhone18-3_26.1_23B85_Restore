@@ -1,35 +1,35 @@
 @interface FontProviderViewServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FontProviderLoader)fontProviderLoader;
-- (FontProviderViewServiceDelegate)initWithFontProviderLoader:(id)a3;
+- (FontProviderViewServiceDelegate)initWithFontProviderLoader:(id)loader;
 @end
 
 @implementation FontProviderViewServiceDelegate
 
-- (FontProviderViewServiceDelegate)initWithFontProviderLoader:(id)a3
+- (FontProviderViewServiceDelegate)initWithFontProviderLoader:(id)loader
 {
-  v4 = a3;
+  loaderCopy = loader;
   v8.receiver = self;
   v8.super_class = FontProviderViewServiceDelegate;
   v5 = [(FontProviderViewServiceDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_fontProviderLoader, v4);
+    objc_storeWeak(&v5->_fontProviderLoader, loaderCopy);
   }
 
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FontInstallViewServiceProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
   WeakRetained = objc_loadWeakRetained(&self->_fontProviderLoader);
-  [v5 setExportedObject:WeakRetained];
+  [connectionCopy setExportedObject:WeakRetained];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 

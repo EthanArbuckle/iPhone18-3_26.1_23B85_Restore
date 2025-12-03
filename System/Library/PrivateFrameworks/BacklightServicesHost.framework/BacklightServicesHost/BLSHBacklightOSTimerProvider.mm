@@ -1,39 +1,39 @@
 @interface BLSHBacklightOSTimerProvider
-- (id)scheduledTimerWithIdentifier:(id)a3 interval:(double)a4 leewayInterval:(double)a5 handler:(id)a6;
-- (id)scheduledWakingTimerWithIdentifier:(id)a3 interval:(double)a4 leewayInterval:(double)a5 handler:(id)a6;
-- (void)dispatchToMainQueueAfterSecondsDelay:(double)a3 identifier:(id)a4 block:(id)a5;
+- (id)scheduledTimerWithIdentifier:(id)identifier interval:(double)interval leewayInterval:(double)leewayInterval handler:(id)handler;
+- (id)scheduledWakingTimerWithIdentifier:(id)identifier interval:(double)interval leewayInterval:(double)leewayInterval handler:(id)handler;
+- (void)dispatchToMainQueueAfterSecondsDelay:(double)delay identifier:(id)identifier block:(id)block;
 @end
 
 @implementation BLSHBacklightOSTimerProvider
 
-- (id)scheduledTimerWithIdentifier:(id)a3 interval:(double)a4 leewayInterval:(double)a5 handler:(id)a6
+- (id)scheduledTimerWithIdentifier:(id)identifier interval:(double)interval leewayInterval:(double)leewayInterval handler:(id)handler
 {
   v9 = MEMORY[0x277CF0BD8];
-  v10 = a6;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithIdentifier:v11];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v12 = [[v9 alloc] initWithIdentifier:identifierCopy];
 
-  [v12 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v10 queue:a4 handler:a5];
+  [v12 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:handlerCopy queue:interval handler:leewayInterval];
 
   return v12;
 }
 
-- (id)scheduledWakingTimerWithIdentifier:(id)a3 interval:(double)a4 leewayInterval:(double)a5 handler:(id)a6
+- (id)scheduledWakingTimerWithIdentifier:(id)identifier interval:(double)interval leewayInterval:(double)leewayInterval handler:(id)handler
 {
   v9 = MEMORY[0x277D6C0A8];
-  v10 = a6;
-  v11 = a3;
-  v12 = [[v9 alloc] initWithIdentifier:v11];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v12 = [[v9 alloc] initWithIdentifier:identifierCopy];
 
-  [v12 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:v10 queue:a4 handler:a5];
+  [v12 scheduleWithFireInterval:MEMORY[0x277D85CD0] leewayInterval:handlerCopy queue:interval handler:leewayInterval];
 
   return v12;
 }
 
-- (void)dispatchToMainQueueAfterSecondsDelay:(double)a3 identifier:(id)a4 block:(id)a5
+- (void)dispatchToMainQueueAfterSecondsDelay:(double)delay identifier:(id)identifier block:(id)block
 {
-  v5 = (a3 * 1000000000.0);
-  block = a5;
+  v5 = (delay * 1000000000.0);
+  block = block;
   v6 = dispatch_time(0, v5);
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
 }

@@ -1,25 +1,25 @@
 @interface PXPhotoKitInternalAlchemistActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4;
-+ (id)systemImageNameForActionManager:(id)a3;
-- (_TtC12PhotosUICore42PXPhotoKitInternalAlchemistActionPerformer)initWithActionType:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager;
++ (id)systemImageNameForActionManager:(id)manager;
+- (_TtC12PhotosUICore42PXPhotoKitInternalAlchemistActionPerformer)initWithActionType:(id)type;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitInternalAlchemistActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
   sub_1A3C52C70(0, &qword_1EB126BB0);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v8 = a3;
-  v9 = [ObjCClassFromMetadata sharedInstance];
-  v10 = [v9 canShowInternalUI];
+  assetCopy = asset;
+  objCClassFromMetadata = [ObjCClassFromMetadata sharedInstance];
+  canShowInternalUI = [objCClassFromMetadata canShowInternalUI];
 
-  if (v10)
+  if (canShowInternalUI)
   {
     type metadata accessor for OneUpAlchemistViewController();
-    v11 = sub_1A3F47EB8(v8);
+    v11 = sub_1A3F47EB8(assetCopy);
   }
 
   else
@@ -30,14 +30,14 @@
   return v11 & 1;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 actionManager:(id)a4
++ (id)localizedTitleForUseCase:(unint64_t)case actionManager:(id)manager
 {
   v4 = sub_1A524C634();
 
   return v4;
 }
 
-+ (id)systemImageNameForActionManager:(id)a3
++ (id)systemImageNameForActionManager:(id)manager
 {
   v3 = sub_1A524C634();
 
@@ -46,15 +46,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A404BB18();
 }
 
-- (_TtC12PhotosUICore42PXPhotoKitInternalAlchemistActionPerformer)initWithActionType:(id)a3
+- (_TtC12PhotosUICore42PXPhotoKitInternalAlchemistActionPerformer)initWithActionType:(id)type
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for PXPhotoKitInternalAlchemistActionPerformer();
-  return [(PXActionPerformer *)&v5 initWithActionType:a3];
+  return [(PXActionPerformer *)&v5 initWithActionType:type];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface WFTrelloAccount
-+ (id)accountWithToken:(id)a3;
++ (id)accountWithToken:(id)token;
 - (BOOL)isValid;
-- (void)refreshWithCompletionHandler:(id)a3;
+- (void)refreshWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFTrelloAccount
 
-+ (id)accountWithToken:(id)a3
++ (id)accountWithToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_opt_new();
-  [v4 setToken:v3];
+  [v4 setToken:tokenCopy];
 
   return v4;
 }
 
-- (void)refreshWithCompletionHandler:(id)a3
+- (void)refreshWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(WFTrelloSessionManager);
-  v6 = [(WFTrelloAccount *)self token];
-  [(WFTrelloSessionManager *)v5 setToken:v6];
+  token = [(WFTrelloAccount *)self token];
+  [(WFTrelloSessionManager *)v5 setToken:token];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__WFTrelloAccount_refreshWithCompletionHandler___block_invoke;
   v8[3] = &unk_278C197F0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(WFTrelloSessionManager *)v5 getUserWithCompletionHandler:v8];
 }
 
@@ -60,8 +60,8 @@ void __48__WFTrelloAccount_refreshWithCompletionHandler___block_invoke(uint64_t 
 
 - (BOOL)isValid
 {
-  v2 = [(WFTrelloAccount *)self token];
-  v3 = [v2 length] != 0;
+  token = [(WFTrelloAccount *)self token];
+  v3 = [token length] != 0;
 
   return v3;
 }

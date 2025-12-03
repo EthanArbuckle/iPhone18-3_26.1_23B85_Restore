@@ -1,7 +1,7 @@
 @interface ClimateAutomakerSettingButton
 - (_TtC7Climate29ClimateAutomakerSettingButton)init;
-- (void)automakerSettingService:(id)a3 didUpdateSymbolName:(id)a4;
-- (void)automakerSettingService:(void *)a1 didUpdateDisabled:;
+- (void)automakerSettingService:(id)service didUpdateSymbolName:(id)name;
+- (void)automakerSettingService:(void *)service didUpdateDisabled:;
 - (void)limitedUIDidChange;
 @end
 
@@ -19,20 +19,20 @@
 
 - (void)limitedUIDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BFAE0();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateSymbolName:(id)a4
+- (void)automakerSettingService:(id)service didUpdateSymbolName:(id)name
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000BF7B4();
   sub_1000BF8BC();
 }
 
-- (void)automakerSettingService:(void *)a1 didUpdateDisabled:
+- (void)automakerSettingService:(void *)service didUpdateDisabled:
 {
-  v1 = a1;
+  serviceCopy = service;
   sub_1000BF7B4();
 }
 

@@ -1,33 +1,33 @@
 @interface WebDownloadInternal
-- (BOOL)download:(id)a3 shouldDecodeSourceDataOfMIMEType:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)download:(id)a3 willSendRequest:(id)a4 redirectResponse:(id)a5;
-- (uint64_t)download:(WTF *)this decideDestinationWithSuggestedFilename:(void *)a2;
-- (uint64_t)download:(WTF *)this didCreateDestination:(void *)a2;
-- (uint64_t)download:(WTF *)this didFailWithError:(void *)a2;
-- (uint64_t)download:(WTF *)this didReceiveDataOfLength:(void *)a2;
-- (uint64_t)download:(WTF *)this didReceiveResponse:(void *)a2;
+- (BOOL)download:(id)download shouldDecodeSourceDataOfMIMEType:(id)type;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)download:(id)download willSendRequest:(id)request redirectResponse:(id)response;
+- (uint64_t)download:(WTF *)this decideDestinationWithSuggestedFilename:(void *)filename;
+- (uint64_t)download:(WTF *)this didCreateDestination:(void *)destination;
+- (uint64_t)download:(WTF *)this didFailWithError:(void *)error;
+- (uint64_t)download:(WTF *)this didReceiveDataOfLength:(void *)length;
+- (uint64_t)download:(WTF *)this didReceiveResponse:(void *)response;
 - (uint64_t)download:(id)&& shouldDecodeSourceDataOfMIMEType:;
-- (uint64_t)download:(uint64_t)a1 didReceiveResponse:;
+- (uint64_t)download:(uint64_t)download didReceiveResponse:;
 - (uint64_t)downloadDidBegin:(WTF *)this;
 - (uint64_t)downloadDidFinish:(WTF *)this;
 - (void)dealloc;
 - (void)download:(id)&& willSendRequest:redirectResponse:;
-- (void)download:(id)a3 decideDestinationWithSuggestedFilename:(id)a4;
-- (void)download:(id)a3 didCreateDestination:(id)a4;
-- (void)download:(id)a3 didFailWithError:(id)a4;
-- (void)download:(id)a3 didReceiveDataOfLength:(unint64_t)a4;
-- (void)download:(id)a3 didReceiveResponse:(id)a4;
-- (void)download:(void *)a1 decideDestinationWithSuggestedFilename:;
-- (void)download:(void *)a1 didCreateDestination:;
-- (void)download:(void *)a1 didFailWithError:;
-- (void)download:(void *)a1 didReceiveDataOfLength:;
-- (void)download:(void *)a1 didReceiveResponse:;
-- (void)downloadDidBegin:(id)a3;
-- (void)downloadDidBegin:(void *)a1;
-- (void)downloadDidFinish:(id)a3;
-- (void)downloadDidFinish:(void *)a1;
-- (void)setRealDelegate:(id)a3;
+- (void)download:(id)download decideDestinationWithSuggestedFilename:(id)filename;
+- (void)download:(id)download didCreateDestination:(id)destination;
+- (void)download:(id)download didFailWithError:(id)error;
+- (void)download:(id)download didReceiveDataOfLength:(unint64_t)length;
+- (void)download:(id)download didReceiveResponse:(id)response;
+- (void)download:(void *)download decideDestinationWithSuggestedFilename:;
+- (void)download:(void *)download didCreateDestination:;
+- (void)download:(void *)download didFailWithError:;
+- (void)download:(void *)download didReceiveDataOfLength:;
+- (void)download:(void *)download didReceiveResponse:;
+- (void)downloadDidBegin:(id)begin;
+- (void)downloadDidBegin:(void *)begin;
+- (void)downloadDidFinish:(id)finish;
+- (void)downloadDidFinish:(void *)finish;
+- (void)setRealDelegate:(id)delegate;
 @end
 
 @implementation WebDownloadInternal
@@ -39,23 +39,23 @@
   [(WebDownloadInternal *)&v2 dealloc];
 }
 
-- (void)setRealDelegate:(id)a3
+- (void)setRealDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v5 = a3;
+    delegateCopy = delegate;
   }
 
   m_ptr = self->realDelegate.m_ptr;
-  self->realDelegate.m_ptr = a3;
+  self->realDelegate.m_ptr = delegate;
   if (m_ptr)
   {
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_downloadDidBegin_ == a3 || sel_download_willSendRequest_redirectResponse_ == a3 || sel_download_didReceiveResponse_ == a3 || sel_download_didReceiveDataOfLength_ == a3 || sel_download_shouldDecodeSourceDataOfMIMEType_ == a3 || sel_download_decideDestinationWithSuggestedFilename_ == a3 || sel_download_didCreateDestination_ == a3 || sel_downloadDidFinish_ == a3 || sel_download_didFailWithError_ == a3)
+  if (sel_downloadDidBegin_ == selector || sel_download_willSendRequest_redirectResponse_ == selector || sel_download_didReceiveResponse_ == selector || sel_download_didReceiveDataOfLength_ == selector || sel_download_shouldDecodeSourceDataOfMIMEType_ == selector || sel_download_decideDestinationWithSuggestedFilename_ == selector || sel_download_didCreateDestination_ == selector || sel_downloadDidFinish_ == selector || sel_download_didFailWithError_ == selector)
   {
     return objc_opt_respondsToSelector() & 1;
   }
@@ -65,7 +65,7 @@
   return [(WebDownloadInternal *)&v12 respondsToSelector:?];
 }
 
-- (void)downloadDidBegin:(id)a3
+- (void)downloadDidBegin:(id)begin
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -73,15 +73,15 @@
     v5 = m_ptr;
   }
 
-  if (a3)
+  if (begin)
   {
-    v6 = a3;
+    beginCopy = begin;
   }
 
   v7 = WTF::fastMalloc(0x18);
   *v7 = &unk_1F472D7B0;
   v7[1] = m_ptr;
-  v7[2] = a3;
+  v7[2] = begin;
   v8 = v7;
   WTF::callOnMainThread();
   if (v8)
@@ -90,17 +90,17 @@
   }
 }
 
-- (id)download:(id)a3 willSendRequest:(id)a4 redirectResponse:(id)a5
+- (id)download:(id)download willSendRequest:(id)request redirectResponse:(id)response
 {
-  v22 = a3;
-  v23 = self;
-  v20 = a5;
-  v21 = a4;
+  downloadCopy = download;
+  selfCopy = self;
+  responseCopy = response;
+  requestCopy = request;
   v19 = 0;
   isMainThread = WTF::isMainThread(self);
   if (isMainThread)
   {
-    v10 = [self->realDelegate.m_ptr download:a3 willSendRequest:a4 redirectResponse:a5];
+    v10 = [self->realDelegate.m_ptr download:download willSendRequest:request redirectResponse:response];
     v11 = v10;
     if (!v10)
     {
@@ -116,10 +116,10 @@
   v14 = WTF::fastMalloc(0x30);
   *v14 = &unk_1F472D7D8;
   v14[1] = &v19;
-  v14[2] = &v23;
-  v14[3] = &v22;
-  v14[4] = &v21;
-  v14[5] = &v20;
+  v14[2] = &selfCopy;
+  v14[3] = &downloadCopy;
+  v14[4] = &requestCopy;
+  v14[5] = &responseCopy;
   v24 = v14;
   (*(*v13 + 24))(v13, &v24);
   v15 = v24;
@@ -145,7 +145,7 @@ LABEL_7:
   return v11;
 }
 
-- (void)download:(id)a3 didReceiveResponse:(id)a4
+- (void)download:(id)download didReceiveResponse:(id)response
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -153,21 +153,21 @@ LABEL_7:
     v7 = m_ptr;
   }
 
-  if (a3)
+  if (download)
   {
-    v8 = a3;
+    downloadCopy = download;
   }
 
-  if (a4)
+  if (response)
   {
-    v9 = a4;
+    responseCopy = response;
   }
 
   v10 = WTF::fastMalloc(0x20);
   *v10 = &unk_1F472D800;
   v10[1] = m_ptr;
-  v10[2] = a3;
-  v10[3] = a4;
+  v10[2] = download;
+  v10[3] = response;
   v11 = v10;
   WTF::callOnMainThread();
   if (v11)
@@ -176,30 +176,30 @@ LABEL_7:
   }
 }
 
-- (uint64_t)download:(uint64_t)a1 didReceiveResponse:
+- (uint64_t)download:(uint64_t)download didReceiveResponse:
 {
-  v2 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  v2 = *(download + 16);
+  *(download + 16) = 0;
   if (v2)
   {
   }
 
-  v3 = *(a1 + 8);
-  *(a1 + 8) = 0;
+  v3 = *(download + 8);
+  *(download + 8) = 0;
   if (v3)
   {
   }
 
-  v4 = *a1;
-  *a1 = 0;
+  v4 = *download;
+  *download = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return download;
 }
 
-- (void)download:(id)a3 didReceiveDataOfLength:(unint64_t)a4
+- (void)download:(id)download didReceiveDataOfLength:(unint64_t)length
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -207,16 +207,16 @@ LABEL_7:
     v7 = m_ptr;
   }
 
-  if (a3)
+  if (download)
   {
-    v8 = a3;
+    downloadCopy = download;
   }
 
   v9 = WTF::fastMalloc(0x20);
   *v9 = &unk_1F472D828;
   v9[1] = m_ptr;
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = download;
+  v9[3] = length;
   v10 = v9;
   WTF::callOnMainThread();
   if (v10)
@@ -225,18 +225,18 @@ LABEL_7:
   }
 }
 
-- (BOOL)download:(id)a3 shouldDecodeSourceDataOfMIMEType:(id)a4
+- (BOOL)download:(id)download shouldDecodeSourceDataOfMIMEType:(id)type
 {
-  v15 = a3;
-  v16 = self;
-  v14 = a4;
+  downloadCopy = download;
+  selfCopy = self;
+  typeCopy = type;
   v13 = 0;
   isMainThread = WTF::isMainThread(self);
   if (isMainThread)
   {
     m_ptr = self->realDelegate.m_ptr;
 
-    return [m_ptr download:a3 shouldDecodeSourceDataOfMIMEType:a4];
+    return [m_ptr download:download shouldDecodeSourceDataOfMIMEType:type];
   }
 
   else
@@ -245,9 +245,9 @@ LABEL_7:
     v11 = WTF::fastMalloc(0x28);
     *v11 = &unk_1F472D850;
     v11[1] = &v13;
-    v11[2] = &v16;
-    v11[3] = &v15;
-    v11[4] = &v14;
+    v11[2] = &selfCopy;
+    v11[3] = &downloadCopy;
+    v11[4] = &typeCopy;
     v17 = v11;
     (*(*v10 + 24))(v10, &v17);
     v12 = v17;
@@ -261,7 +261,7 @@ LABEL_7:
   }
 }
 
-- (void)download:(id)a3 decideDestinationWithSuggestedFilename:(id)a4
+- (void)download:(id)download decideDestinationWithSuggestedFilename:(id)filename
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -269,21 +269,21 @@ LABEL_7:
     v7 = m_ptr;
   }
 
-  if (a3)
+  if (download)
   {
-    v8 = a3;
+    downloadCopy = download;
   }
 
-  if (a4)
+  if (filename)
   {
-    v9 = a4;
+    filenameCopy = filename;
   }
 
   v10 = WTF::fastMalloc(0x20);
   *v10 = &unk_1F472D878;
   v10[1] = m_ptr;
-  v10[2] = a3;
-  v10[3] = a4;
+  v10[2] = download;
+  v10[3] = filename;
   v11 = v10;
   WTF::callOnMainThread();
   if (v11)
@@ -292,7 +292,7 @@ LABEL_7:
   }
 }
 
-- (void)download:(id)a3 didCreateDestination:(id)a4
+- (void)download:(id)download didCreateDestination:(id)destination
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -300,21 +300,21 @@ LABEL_7:
     v7 = m_ptr;
   }
 
-  if (a3)
+  if (download)
   {
-    v8 = a3;
+    downloadCopy = download;
   }
 
-  if (a4)
+  if (destination)
   {
-    v9 = a4;
+    destinationCopy = destination;
   }
 
   v10 = WTF::fastMalloc(0x20);
   *v10 = &unk_1F472D8A0;
   v10[1] = m_ptr;
-  v10[2] = a3;
-  v10[3] = a4;
+  v10[2] = download;
+  v10[3] = destination;
   v11 = v10;
   WTF::callOnMainThread();
   if (v11)
@@ -323,7 +323,7 @@ LABEL_7:
   }
 }
 
-- (void)downloadDidFinish:(id)a3
+- (void)downloadDidFinish:(id)finish
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -331,15 +331,15 @@ LABEL_7:
     v5 = m_ptr;
   }
 
-  if (a3)
+  if (finish)
   {
-    v6 = a3;
+    finishCopy = finish;
   }
 
   v7 = WTF::fastMalloc(0x18);
   *v7 = &unk_1F472D8C8;
   v7[1] = m_ptr;
-  v7[2] = a3;
+  v7[2] = finish;
   v8 = v7;
   WTF::callOnMainThread();
   if (v8)
@@ -348,7 +348,7 @@ LABEL_7:
   }
 }
 
-- (void)download:(id)a3 didFailWithError:(id)a4
+- (void)download:(id)download didFailWithError:(id)error
 {
   m_ptr = self->realDelegate.m_ptr;
   if (m_ptr)
@@ -356,21 +356,21 @@ LABEL_7:
     v7 = m_ptr;
   }
 
-  if (a3)
+  if (download)
   {
-    v8 = a3;
+    downloadCopy = download;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = a4;
+    errorCopy = error;
   }
 
   v10 = WTF::fastMalloc(0x20);
   *v10 = &unk_1F472D8F0;
   v10[1] = m_ptr;
-  v10[2] = a3;
-  v10[3] = a4;
+  v10[2] = download;
+  v10[3] = error;
   v11 = v10;
   WTF::callOnMainThread();
   if (v11)
@@ -379,22 +379,22 @@ LABEL_7:
   }
 }
 
-- (void)downloadDidBegin:(void *)a1
+- (void)downloadDidBegin:(void *)begin
 {
-  *a1 = &unk_1F472D7B0;
-  v2 = a1[2];
-  a1[2] = 0;
+  *begin = &unk_1F472D7B0;
+  v2 = begin[2];
+  begin[2] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = begin[1];
+  begin[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return begin;
 }
 
 - (uint64_t)downloadDidBegin:(WTF *)this
@@ -417,9 +417,9 @@ LABEL_7:
 
 - (void)download:(id)&& willSendRequest:redirectResponse:
 {
-  v2 = [*(**(a1 + 16) + 8) download:**(a1 + 24) willSendRequest:**(a1 + 32) redirectResponse:**(a1 + 40)];
+  v2 = [*(**(self + 16) + 8) download:**(self + 24) willSendRequest:**(self + 32) redirectResponse:**(self + 40)];
   v3 = v2;
-  v4 = *(a1 + 8);
+  v4 = *(self + 8);
   if (v2)
   {
     v5 = v2;
@@ -432,31 +432,31 @@ LABEL_7:
   }
 }
 
-- (void)download:(void *)a1 didReceiveResponse:
+- (void)download:(void *)download didReceiveResponse:
 {
-  *a1 = &unk_1F472D800;
-  v2 = a1[3];
-  a1[3] = 0;
+  *download = &unk_1F472D800;
+  v2 = download[3];
+  download[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[2];
-  a1[2] = 0;
+  v3 = download[2];
+  download[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = download[1];
+  download[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return download;
 }
 
-- (uint64_t)download:(WTF *)this didReceiveResponse:(void *)a2
+- (uint64_t)download:(WTF *)this didReceiveResponse:(void *)response
 {
   *this = &unk_1F472D800;
   v3 = *(this + 3);
@@ -477,28 +477,28 @@ LABEL_7:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, response);
 }
 
-- (void)download:(void *)a1 didReceiveDataOfLength:
+- (void)download:(void *)download didReceiveDataOfLength:
 {
-  *a1 = &unk_1F472D828;
-  v2 = a1[2];
-  a1[2] = 0;
+  *download = &unk_1F472D828;
+  v2 = download[2];
+  download[2] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = download[1];
+  download[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return download;
 }
 
-- (uint64_t)download:(WTF *)this didReceiveDataOfLength:(void *)a2
+- (uint64_t)download:(WTF *)this didReceiveDataOfLength:(void *)length
 {
   *this = &unk_1F472D828;
   v3 = *(this + 2);
@@ -513,41 +513,41 @@ LABEL_7:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, length);
 }
 
 - (uint64_t)download:(id)&& shouldDecodeSourceDataOfMIMEType:
 {
-  result = [*(**(a1 + 16) + 8) download:**(a1 + 24) shouldDecodeSourceDataOfMIMEType:**(a1 + 32)];
-  **(a1 + 8) = result;
+  result = [*(**(self + 16) + 8) download:**(self + 24) shouldDecodeSourceDataOfMIMEType:**(self + 32)];
+  **(self + 8) = result;
   return result;
 }
 
-- (void)download:(void *)a1 decideDestinationWithSuggestedFilename:
+- (void)download:(void *)download decideDestinationWithSuggestedFilename:
 {
-  *a1 = &unk_1F472D878;
-  v2 = a1[3];
-  a1[3] = 0;
+  *download = &unk_1F472D878;
+  v2 = download[3];
+  download[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[2];
-  a1[2] = 0;
+  v3 = download[2];
+  download[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = download[1];
+  download[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return download;
 }
 
-- (uint64_t)download:(WTF *)this decideDestinationWithSuggestedFilename:(void *)a2
+- (uint64_t)download:(WTF *)this decideDestinationWithSuggestedFilename:(void *)filename
 {
   *this = &unk_1F472D878;
   v3 = *(this + 3);
@@ -568,34 +568,34 @@ LABEL_7:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, filename);
 }
 
-- (void)download:(void *)a1 didCreateDestination:
+- (void)download:(void *)download didCreateDestination:
 {
-  *a1 = &unk_1F472D8A0;
-  v2 = a1[3];
-  a1[3] = 0;
+  *download = &unk_1F472D8A0;
+  v2 = download[3];
+  download[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[2];
-  a1[2] = 0;
+  v3 = download[2];
+  download[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = download[1];
+  download[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return download;
 }
 
-- (uint64_t)download:(WTF *)this didCreateDestination:(void *)a2
+- (uint64_t)download:(WTF *)this didCreateDestination:(void *)destination
 {
   *this = &unk_1F472D8A0;
   v3 = *(this + 3);
@@ -616,25 +616,25 @@ LABEL_7:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, destination);
 }
 
-- (void)downloadDidFinish:(void *)a1
+- (void)downloadDidFinish:(void *)finish
 {
-  *a1 = &unk_1F472D8C8;
-  v2 = a1[2];
-  a1[2] = 0;
+  *finish = &unk_1F472D8C8;
+  v2 = finish[2];
+  finish[2] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = finish[1];
+  finish[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return finish;
 }
 
 - (uint64_t)downloadDidFinish:(WTF *)this
@@ -655,31 +655,31 @@ LABEL_7:
   return WTF::fastFree(this, a2);
 }
 
-- (void)download:(void *)a1 didFailWithError:
+- (void)download:(void *)download didFailWithError:
 {
-  *a1 = &unk_1F472D8F0;
-  v2 = a1[3];
-  a1[3] = 0;
+  *download = &unk_1F472D8F0;
+  v2 = download[3];
+  download[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[2];
-  a1[2] = 0;
+  v3 = download[2];
+  download[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = download[1];
+  download[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return download;
 }
 
-- (uint64_t)download:(WTF *)this didFailWithError:(void *)a2
+- (uint64_t)download:(WTF *)this didFailWithError:(void *)error
 {
   *this = &unk_1F472D8F0;
   v3 = *(this + 3);
@@ -700,7 +700,7 @@ LABEL_7:
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, error);
 }
 
 @end

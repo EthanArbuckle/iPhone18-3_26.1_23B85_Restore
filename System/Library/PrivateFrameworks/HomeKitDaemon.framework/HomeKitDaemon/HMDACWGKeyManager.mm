@@ -1,10 +1,10 @@
 @interface HMDACWGKeyManager
 + (HMDACWGKeyManager)shared;
 - (HMDACWGKeyManager)init;
-- (void)getIssuerKeyPairExternalRepresentationFromKeychainForHomeUUID:(NSUUID *)a3 completionHandler:(id)a4;
-- (void)getOrCreateIssuerKeyAndSaveIfNeededWithHome:(NSUUID *)a3 user:(NSUUID *)a4 context:(HMCContext *)a5 shouldRoll:(BOOL)a6 completionHandler:(id)a7;
-- (void)getOrCreateIssuerKeyAndSaveToSharedUserReverseShareWithHomeUUID:(NSUUID *)a3 context:(HMCContext *)a4 shouldUpdateLocks:(BOOL)a5 shouldRoll:(BOOL)a6 flow:(HMFFlow *)a7 requireCloudFetch:(BOOL)a8 isOnSharedUserAcceptance:(BOOL)a9 completionHandler:(id)a10;
-- (void)getOrCreateIssuerKeyPairExternalRepresentationWithHomeUUID:(NSUUID *)a3 shouldRoll:(BOOL)a4 flow:(HMFFlow *)a5 requireCloudFetch:(BOOL)a6 shouldAwaitOnPush:(BOOL)a7 completionHandler:(id)a8;
+- (void)getIssuerKeyPairExternalRepresentationFromKeychainForHomeUUID:(NSUUID *)d completionHandler:(id)handler;
+- (void)getOrCreateIssuerKeyAndSaveIfNeededWithHome:(NSUUID *)home user:(NSUUID *)user context:(HMCContext *)context shouldRoll:(BOOL)roll completionHandler:(id)handler;
+- (void)getOrCreateIssuerKeyAndSaveToSharedUserReverseShareWithHomeUUID:(NSUUID *)d context:(HMCContext *)context shouldUpdateLocks:(BOOL)locks shouldRoll:(BOOL)roll flow:(HMFFlow *)flow requireCloudFetch:(BOOL)fetch isOnSharedUserAcceptance:(BOOL)acceptance completionHandler:(id)self0;
+- (void)getOrCreateIssuerKeyPairExternalRepresentationWithHomeUUID:(NSUUID *)d shouldRoll:(BOOL)roll flow:(HMFFlow *)flow requireCloudFetch:(BOOL)fetch shouldAwaitOnPush:(BOOL)push completionHandler:(id)handler;
 @end
 
 @implementation HMDACWGKeyManager
@@ -19,19 +19,19 @@
   return v2;
 }
 
-- (void)getOrCreateIssuerKeyPairExternalRepresentationWithHomeUUID:(NSUUID *)a3 shouldRoll:(BOOL)a4 flow:(HMFFlow *)a5 requireCloudFetch:(BOOL)a6 shouldAwaitOnPush:(BOOL)a7 completionHandler:(id)a8
+- (void)getOrCreateIssuerKeyPairExternalRepresentationWithHomeUUID:(NSUUID *)d shouldRoll:(BOOL)roll flow:(HMFFlow *)flow requireCloudFetch:(BOOL)fetch shouldAwaitOnPush:(BOOL)push completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v26 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 41) = a7;
+  *(v20 + 16) = d;
+  *(v20 + 24) = roll;
+  *(v20 + 32) = flow;
+  *(v20 + 40) = fetch;
+  *(v20 + 41) = push;
   *(v20 + 48) = v19;
   *(v20 + 56) = self;
   v21 = sub_22A4DD9DC();
@@ -46,29 +46,29 @@
   v23[3] = 0;
   v23[4] = &unk_22A57E5B8;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a5;
+  dCopy = d;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v18, &unk_22A57E5C0, v23);
 }
 
-- (void)getOrCreateIssuerKeyAndSaveToSharedUserReverseShareWithHomeUUID:(NSUUID *)a3 context:(HMCContext *)a4 shouldUpdateLocks:(BOOL)a5 shouldRoll:(BOOL)a6 flow:(HMFFlow *)a7 requireCloudFetch:(BOOL)a8 isOnSharedUserAcceptance:(BOOL)a9 completionHandler:(id)a10
+- (void)getOrCreateIssuerKeyAndSaveToSharedUserReverseShareWithHomeUUID:(NSUUID *)d context:(HMCContext *)context shouldUpdateLocks:(BOOL)locks shouldRoll:(BOOL)roll flow:(HMFFlow *)flow requireCloudFetch:(BOOL)fetch isOnSharedUserAcceptance:(BOOL)acceptance completionHandler:(id)self0
 {
-  HIDWORD(v28) = a8;
-  v29 = a3;
+  HIDWORD(v28) = fetch;
+  dCopy = d;
   v16 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v17 = *(*(v16 - 8) + 64);
   MEMORY[0x28223BE20](v16 - 8);
   v19 = &v28 - v18;
-  v20 = _Block_copy(a10);
+  v20 = _Block_copy(handler);
   v21 = swift_allocObject();
-  *(v21 + 16) = a3;
-  *(v21 + 24) = a4;
-  *(v21 + 32) = a5;
-  *(v21 + 33) = a6;
-  *(v21 + 40) = a7;
+  *(v21 + 16) = d;
+  *(v21 + 24) = context;
+  *(v21 + 32) = locks;
+  *(v21 + 33) = roll;
+  *(v21 + 40) = flow;
   *(v21 + 48) = BYTE4(v28);
-  *(v21 + 49) = a9;
+  *(v21 + 49) = acceptance;
   *(v21 + 56) = v20;
   *(v21 + 64) = self;
   v22 = sub_22A4DD9DC();
@@ -83,25 +83,25 @@
   v24[3] = 0;
   v24[4] = &unk_22A57E598;
   v24[5] = v23;
-  v25 = v29;
-  v26 = a4;
-  v27 = a7;
+  v25 = dCopy;
+  contextCopy = context;
+  flowCopy = flow;
 
   sub_229859F70(0, 0, v19, &unk_22A57E5A0, v24);
 }
 
-- (void)getOrCreateIssuerKeyAndSaveIfNeededWithHome:(NSUUID *)a3 user:(NSUUID *)a4 context:(HMCContext *)a5 shouldRoll:(BOOL)a6 completionHandler:(id)a7
+- (void)getOrCreateIssuerKeyAndSaveIfNeededWithHome:(NSUUID *)home user:(NSUUID *)user context:(HMCContext *)context shouldRoll:(BOOL)roll completionHandler:(id)handler
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v14 = *(*(v13 - 8) + 64);
   MEMORY[0x28223BE20](v13 - 8);
   v16 = &v25 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(handler);
   v18 = swift_allocObject();
-  *(v18 + 16) = a3;
-  *(v18 + 24) = a4;
-  *(v18 + 32) = a5;
-  *(v18 + 40) = a6;
+  *(v18 + 16) = home;
+  *(v18 + 24) = user;
+  *(v18 + 32) = context;
+  *(v18 + 40) = roll;
   *(v18 + 48) = v17;
   *(v18 + 56) = self;
   v19 = sub_22A4DD9DC();
@@ -116,22 +116,22 @@
   v21[3] = 0;
   v21[4] = &unk_22A57E578;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
+  homeCopy = home;
+  userCopy = user;
+  contextCopy = context;
 
   sub_229859F70(0, 0, v16, &unk_22A57E580, v21);
 }
 
-- (void)getIssuerKeyPairExternalRepresentationFromKeychainForHomeUUID:(NSUUID *)a3 completionHandler:(id)a4
+- (void)getIssuerKeyPairExternalRepresentationFromKeychainForHomeUUID:(NSUUID *)d completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = d;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -146,7 +146,7 @@
   v15[3] = 0;
   v15[4] = &unk_22A57B590;
   v15[5] = v14;
-  v16 = a3;
+  dCopy = d;
 
   sub_229859F70(0, 0, v10, &unk_22A581CC0, v15);
 }

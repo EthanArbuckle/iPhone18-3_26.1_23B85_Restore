@@ -1,14 +1,14 @@
 @interface HDCountryMonitorControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (void)remote_fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)a3;
+- (void)remote_fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)completion;
 @end
 
 @implementation HDCountryMonitorControlServer
 
-- (void)remote_fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)a3
+- (void)remote_fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   OTAFeatureAvailabilityManager = self->_OTAFeatureAvailabilityManager;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -19,13 +19,13 @@
   countryMonitor = self->_countryMonitor;
   if (countryMonitor)
   {
-    [(HDPeriodicCountryMonitor *)countryMonitor fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:v4];
+    [(HDPeriodicCountryMonitor *)countryMonitor fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:completionCopy];
   }
 
   else
   {
     v7 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Country monitoring not available"];
-    (*(v4 + 2))(v4, 0, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v7);
   }
 }
 
@@ -52,26 +52,26 @@ void __99__HDCountryMonitorControlServer_remote_fetchCurrentISOCountryCodeAndNot
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 profile];
-  v15 = [v14 periodicCountryMonitor];
+  delegateCopy = delegate;
+  clientCopy = client;
+  configurationCopy = configuration;
+  dCopy = d;
+  profile = [clientCopy profile];
+  periodicCountryMonitor = [profile periodicCountryMonitor];
 
-  v16 = [(HDStandardTaskServer *)[HDCountryMonitorControlServer alloc] initWithUUID:v13 configuration:v12 client:v11 delegate:v10];
+  v16 = [(HDStandardTaskServer *)[HDCountryMonitorControlServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
   countryMonitor = v16->_countryMonitor;
-  v16->_countryMonitor = v15;
-  v18 = v15;
+  v16->_countryMonitor = periodicCountryMonitor;
+  v18 = periodicCountryMonitor;
 
-  v19 = [v11 profile];
+  profile2 = [clientCopy profile];
 
-  v20 = [v19 daemon];
-  v21 = [v20 OTAFeatureAvailabilityManager];
+  daemon = [profile2 daemon];
+  oTAFeatureAvailabilityManager = [daemon OTAFeatureAvailabilityManager];
   OTAFeatureAvailabilityManager = v16->_OTAFeatureAvailabilityManager;
-  v16->_OTAFeatureAvailabilityManager = v21;
+  v16->_OTAFeatureAvailabilityManager = oTAFeatureAvailabilityManager;
 
   return v16;
 }

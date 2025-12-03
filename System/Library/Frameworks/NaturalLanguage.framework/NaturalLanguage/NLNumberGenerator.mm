@@ -1,6 +1,6 @@
 @interface NLNumberGenerator
 - (NLNumberGenerator)init;
-- (unint64_t)numberInRange:(_NSRange)a3;
+- (unint64_t)numberInRange:(_NSRange)range;
 @end
 
 @implementation NLNumberGenerator
@@ -19,24 +19,24 @@
   return v3;
 }
 
-- (unint64_t)numberInRange:(_NSRange)a3
+- (unint64_t)numberInRange:(_NSRange)range
 {
   v3 = self->state[1];
   v4 = self->state[0] ^ (self->state[0] << 23);
   v5 = (v3 >> 26) ^ (v4 >> 17) ^ v3 ^ v4;
   self->state[0] = v3;
   self->state[1] = v5;
-  if (a3.length < 2)
+  if (range.length < 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = (v5 + v3) % a3.length;
+    v6 = (v5 + v3) % range.length;
   }
 
-  return v6 + a3.location;
+  return v6 + range.location;
 }
 
 @end

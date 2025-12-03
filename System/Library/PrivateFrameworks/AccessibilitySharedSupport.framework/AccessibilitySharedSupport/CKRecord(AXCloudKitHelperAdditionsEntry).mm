@@ -13,8 +13,8 @@
 
 - (id)groupUUID
 {
-  v1 = [a1 encryptedValues];
-  v2 = [v1 objectForKey:@"groupUUID"];
+  encryptedValues = [self encryptedValues];
+  v2 = [encryptedValues objectForKey:@"groupUUID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -33,31 +33,31 @@
 - (void)setGroupUUID:()AXCloudKitHelperAdditionsEntry
 {
   v4 = a3;
-  v6 = [a1 encryptedValues];
-  v5 = [v4 UUIDString];
+  encryptedValues = [self encryptedValues];
+  uUIDString = [v4 UUIDString];
 
-  [v6 setObject:v5 forKey:@"groupUUID"];
+  [encryptedValues setObject:uUIDString forKey:@"groupUUID"];
 }
 
 - (void)setPunctuation:()AXCloudKitHelperAdditionsEntry
 {
   v4 = a3;
-  v5 = [a1 encryptedValues];
-  [v5 setObject:v4 forKey:@"punctuation"];
+  encryptedValues = [self encryptedValues];
+  [encryptedValues setObject:v4 forKey:@"punctuation"];
 }
 
 - (id)punctuation
 {
-  v1 = [a1 encryptedValues];
-  v2 = [v1 objectForKey:@"punctuation"];
+  encryptedValues = [self encryptedValues];
+  v2 = [encryptedValues objectForKey:@"punctuation"];
 
   return v2;
 }
 
 - (id)replacement
 {
-  v1 = [a1 encryptedValues];
-  v2 = [v1 objectForKey:@"replacement"];
+  encryptedValues = [self encryptedValues];
+  v2 = [encryptedValues objectForKey:@"replacement"];
 
   return v2;
 }
@@ -65,14 +65,14 @@
 - (void)setReplacement:()AXCloudKitHelperAdditionsEntry
 {
   v4 = a3;
-  v5 = [a1 encryptedValues];
-  [v5 setObject:v4 forKey:@"replacement"];
+  encryptedValues = [self encryptedValues];
+  [encryptedValues setObject:v4 forKey:@"replacement"];
 }
 
 - (id)rule
 {
-  v1 = [a1 encryptedValues];
-  v2 = [v1 objectForKey:@"rule"];
+  encryptedValues = [self encryptedValues];
+  v2 = [encryptedValues objectForKey:@"rule"];
 
   return v2;
 }
@@ -80,8 +80,8 @@
 - (void)setRule:()AXCloudKitHelperAdditionsEntry
 {
   v4 = a3;
-  v5 = [a1 encryptedValues];
-  [v5 setObject:v4 forKey:@"rule"];
+  encryptedValues = [self encryptedValues];
+  [encryptedValues setObject:v4 forKey:@"rule"];
 }
 
 @end

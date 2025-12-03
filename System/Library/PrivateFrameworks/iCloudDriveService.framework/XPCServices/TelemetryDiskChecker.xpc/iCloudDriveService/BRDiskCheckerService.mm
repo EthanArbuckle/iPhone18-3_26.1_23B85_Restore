@@ -1,12 +1,12 @@
 @interface BRDiskCheckerService
 + (void)initialize;
-- (BOOL)_isActiveJobsInDB:(id)a3 inZones:(id)a4;
+- (BOOL)_isActiveJobsInDB:(id)b inZones:(id)zones;
 - (BRDiskCheckerService)init;
-- (id)_setupDatabaseConnectionFromURL:(id)a3 error:(id *)a4;
+- (id)_setupDatabaseConnectionFromURL:(id)l error:(id *)error;
 - (void)cancelTreeConsistencyCheck;
-- (void)checkRecursiveChildItemCountFromURLWrapper:(id)a3 qualityOfService:(int64_t)a4 reply:(id)a5;
+- (void)checkRecursiveChildItemCountFromURLWrapper:(id)wrapper qualityOfService:(int64_t)service reply:(id)reply;
 - (void)pauseTreeConsistencyCheck;
-- (void)resumeTreeConsistencyCheckWithReply:(id)a3;
+- (void)resumeTreeConsistencyCheckWithReply:(id)reply;
 @end
 
 @implementation BRDiskCheckerService
@@ -40,20 +40,20 @@
   return v2;
 }
 
-- (void)checkRecursiveChildItemCountFromURLWrapper:(id)a3 qualityOfService:(int64_t)a4 reply:(id)a5
+- (void)checkRecursiveChildItemCountFromURLWrapper:(id)wrapper qualityOfService:(int64_t)service reply:(id)reply
 {
-  v8 = a5;
-  v9 = [a3 url];
+  replyCopy = reply;
+  v9 = [wrapper url];
   [v9 startAccessingSecurityScopedResource];
   v10 = [[BRDiskCheckerCountDocumentsOperation alloc] initWithFileURL:v9];
-  [(BRDiskCheckerCountDocumentsOperation *)v10 setQualityOfService:a4];
+  [(BRDiskCheckerCountDocumentsOperation *)v10 setQualityOfService:service];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1000051C0;
   v16 = &unk_100010480;
   v17 = v9;
-  v18 = v8;
-  v11 = v8;
+  v18 = replyCopy;
+  v11 = replyCopy;
   v12 = v9;
   [(BRDiskCheckerCountDocumentsOperation *)v10 setCountFolderShareItemsCompletionBlock:&v13];
   [(NSOperationQueue *)self->_childCountQueue addOperation:v10, v13, v14, v15, v16];
@@ -106,9 +106,9 @@
   objc_sync_exit(obj);
 }
 
-- (void)resumeTreeConsistencyCheckWithReply:(id)a3
+- (void)resumeTreeConsistencyCheckWithReply:(id)reply
 {
-  v12 = a3;
+  replyCopy = reply;
   obj = qword_100015698;
   objc_sync_enter(obj);
   v13 = 0u;
@@ -153,13 +153,13 @@
 
   if ([qword_100015698 count])
   {
-    v12[2](v12, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     v10 = [NSError brc_errorItemNotFound:@"operation"];
-    (v12)[2](v12, v10);
+    (replyCopy)[2](replyCopy, v10);
   }
 
   objc_sync_exit(obj);
@@ -202,11 +202,11 @@
   objc_sync_exit(v2);
 }
 
-- (id)_setupDatabaseConnectionFromURL:(id)a3 error:(id *)a4
+- (id)_setupDatabaseConnectionFromURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 URLByAppendingPathComponent:@"client.db"];
-  v7 = [v5 URLByAppendingPathComponent:@"server.db"];
+  lCopy = l;
+  v6 = [lCopy URLByAppendingPathComponent:@"client.db"];
+  v7 = [lCopy URLByAppendingPathComponent:@"server.db"];
 
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
@@ -221,9 +221,9 @@
   v12 = v25;
   if (v11)
   {
-    v13 = [v7 path];
+    path = [v7 path];
     v24 = v12;
-    v14 = [v10 attachDBAtPath:v13 as:@"server" error:&v24];
+    v14 = [v10 attachDBAtPath:path as:@"server" error:&v24];
     v15 = v24;
 
     if (v14)
@@ -249,11 +249,11 @@
       }
 
       [v10 brc_close];
-      if (a4)
+      if (error)
       {
         v22 = v15;
         v16 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -280,11 +280,11 @@
       _os_log_error_impl(&_mh_execute_header, v18, 0x90u, "[ERROR] error opening db at url %@: %@%@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v19 = v12;
       v16 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -296,13 +296,13 @@
   return v16;
 }
 
-- (BOOL)_isActiveJobsInDB:(id)a3 inZones:(id)a4
+- (BOOL)_isActiveJobsInDB:(id)b inZones:(id)zones
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  bCopy = b;
+  zonesCopy = zones;
+  if (bCopy)
   {
-    [v5 useSerialQueue];
+    [bCopy useSerialQueue];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v16 = 0x2020000000;
@@ -311,8 +311,8 @@
     v11[1] = 3221225472;
     v11[2] = sub_100006380;
     v11[3] = &unk_100010538;
-    v12 = v6;
-    v13 = v5;
+    v12 = zonesCopy;
+    v13 = bCopy;
     p_buf = &buf;
     [v13 performWithFlags:1 action:v11];
     v7 = *(*(&buf + 1) + 24);

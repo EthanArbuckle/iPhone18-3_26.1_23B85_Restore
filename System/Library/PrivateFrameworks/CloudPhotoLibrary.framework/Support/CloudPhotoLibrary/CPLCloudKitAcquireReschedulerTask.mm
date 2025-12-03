@@ -1,19 +1,19 @@
 @interface CPLCloudKitAcquireReschedulerTask
-- (CPLCloudKitAcquireReschedulerTask)initWithController:(id)a3 completionHandler:(id)a4;
+- (CPLCloudKitAcquireReschedulerTask)initWithController:(id)controller completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitAcquireReschedulerTask
 
-- (CPLCloudKitAcquireReschedulerTask)initWithController:(id)a3 completionHandler:(id)a4
+- (CPLCloudKitAcquireReschedulerTask)initWithController:(id)controller completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = CPLCloudKitAcquireReschedulerTask;
-  v7 = [(CPLCloudKitTransportTask *)&v11 initWithController:a3];
+  v7 = [(CPLCloudKitTransportTask *)&v11 initWithController:controller];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [handlerCopy copy];
     completionHandler = v7->_completionHandler;
     v7->_completionHandler = v8;
   }

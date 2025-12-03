@@ -1,26 +1,26 @@
 @interface STDynamicActivityAttributionXPCClientHandle
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (STDynamicActivityAttributionServerHandle)serverHandle;
-- (STDynamicActivityAttributionXPCClientHandle)initWithXPCConnection:(id)a3 serverHandle:(id)a4;
-- (void)currentAttributionsDidChange:(id)a3;
-- (void)setCurrentAttributionKey:(id)a3 application:(id)a4 reply:(id)a5;
-- (void)setCurrentAttributionLocalizableKey:(id)a3 maskingClientAuditToken:(id *)a4 reply:(id)a5;
-- (void)setCurrentAttributionStringWithFormat:(id)a3 maskingClientAuditToken:(id *)a4 reply:(id)a5;
-- (void)setCurrentAttributionWebsiteString:(id)a3 maskingClientAuditToken:(id *)a4 reply:(id)a5;
+- (STDynamicActivityAttributionXPCClientHandle)initWithXPCConnection:(id)connection serverHandle:(id)handle;
+- (void)currentAttributionsDidChange:(id)change;
+- (void)setCurrentAttributionKey:(id)key application:(id)application reply:(id)reply;
+- (void)setCurrentAttributionLocalizableKey:(id)key maskingClientAuditToken:(id *)token reply:(id)reply;
+- (void)setCurrentAttributionStringWithFormat:(id)format maskingClientAuditToken:(id *)token reply:(id)reply;
+- (void)setCurrentAttributionWebsiteString:(id)string maskingClientAuditToken:(id *)token reply:(id)reply;
 - (void)subscribeToUpdates;
 @end
 
 @implementation STDynamicActivityAttributionXPCClientHandle
 
-- (STDynamicActivityAttributionXPCClientHandle)initWithXPCConnection:(id)a3 serverHandle:(id)a4
+- (STDynamicActivityAttributionXPCClientHandle)initWithXPCConnection:(id)connection serverHandle:(id)handle
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 valueForEntitlement:@"com.apple.systemstatus.activityattribution"];
-  v10 = [v9 BOOLValue];
+  connectionCopy = connection;
+  handleCopy = handle;
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.systemstatus.activityattribution"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v27.receiver = self;
     v27.super_class = STDynamicActivityAttributionXPCClientHandle;
@@ -28,11 +28,11 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_connection, a3);
-      objc_storeWeak(&v12->_serverHandle, v8);
-      if (v7)
+      objc_storeStrong(&v11->_connection, connection);
+      objc_storeWeak(&v12->_serverHandle, handleCopy);
+      if (connectionCopy)
       {
-        [v7 auditToken];
+        [connectionCopy auditToken];
       }
 
       else
@@ -46,32 +46,32 @@
       *v12->_auditToken.val = v15;
       objc_initWeak(location, v12);
       v16 = STDynamicAttributionXPCClientInterface();
-      [v7 setRemoteObjectInterface:v16];
+      [connectionCopy setRemoteObjectInterface:v16];
 
       v17 = STDynamicAttributionXPCServerInterface();
-      [v7 setExportedInterface:v17];
+      [connectionCopy setExportedInterface:v17];
 
-      [v7 setExportedObject:v12];
+      [connectionCopy setExportedObject:v12];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __82__STDynamicActivityAttributionXPCClientHandle_initWithXPCConnection_serverHandle___block_invoke;
       v25[3] = &unk_1E85DDD78;
       objc_copyWeak(&v26, location);
-      [v7 setInterruptionHandler:v25];
+      [connectionCopy setInterruptionHandler:v25];
       v20 = MEMORY[0x1E69E9820];
       v21 = 3221225472;
       v22 = __82__STDynamicActivityAttributionXPCClientHandle_initWithXPCConnection_serverHandle___block_invoke_2;
       v23 = &unk_1E85DDD78;
       objc_copyWeak(&v24, location);
-      [v7 setInvalidationHandler:&v20];
-      [v7 resume];
+      [connectionCopy setInvalidationHandler:&v20];
+      [connectionCopy resume];
       objc_destroyWeak(&v24);
       objc_destroyWeak(&v26);
       objc_destroyWeak(location);
     }
 
     self = v12;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -80,15 +80,15 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v7;
+      *(location + 4) = connectionCopy;
       _os_log_error_impl(&dword_1DA9C2000, v13, OS_LOG_TYPE_ERROR, "Client (%@) attempting to access dynamic attribution without entitlement", location, 0xCu);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 void __82__STDynamicActivityAttributionXPCClientHandle_initWithXPCConnection_serverHandle___block_invoke(uint64_t a1)
@@ -133,62 +133,62 @@ void __82__STDynamicActivityAttributionXPCClientHandle_initWithXPCConnection_ser
   return self;
 }
 
-- (void)currentAttributionsDidChange:(id)a3
+- (void)currentAttributionsDidChange:(id)change
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 currentAttributionsDidChange:v4];
+  changeCopy = change;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy currentAttributionsDidChange:changeCopy];
 }
 
-- (void)setCurrentAttributionKey:(id)a3 application:(id)a4 reply:(id)a5
+- (void)setCurrentAttributionKey:(id)key application:(id)application reply:(id)reply
 {
-  v11 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  applicationCopy = application;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_serverHandle);
-  [WeakRetained setLocalizableAttributionKey:v9 andApplication:v8 forClient:self];
+  [WeakRetained setLocalizableAttributionKey:keyCopy andApplication:applicationCopy forClient:self];
 
-  v11[2](v11, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)setCurrentAttributionLocalizableKey:(id)a3 maskingClientAuditToken:(id *)a4 reply:(id)a5
+- (void)setCurrentAttributionLocalizableKey:(id)key maskingClientAuditToken:(id *)token reply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
+  replyCopy = reply;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_serverHandle);
-  v11 = *&a4->var0[4];
-  v12[0] = *a4->var0;
+  v11 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v11;
-  [WeakRetained setAttributionLocalizableKey:v9 maskingClientAuditToken:v12 forClient:self];
+  [WeakRetained setAttributionLocalizableKey:keyCopy maskingClientAuditToken:v12 forClient:self];
 
-  v8[2](v8, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)setCurrentAttributionStringWithFormat:(id)a3 maskingClientAuditToken:(id *)a4 reply:(id)a5
+- (void)setCurrentAttributionStringWithFormat:(id)format maskingClientAuditToken:(id *)token reply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
+  replyCopy = reply;
+  formatCopy = format;
   WeakRetained = objc_loadWeakRetained(&self->_serverHandle);
-  v11 = *&a4->var0[4];
-  v12[0] = *a4->var0;
+  v11 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v11;
-  [WeakRetained setAttributionStringWithFormat:v9 maskingClientAuditToken:v12 forClient:self];
+  [WeakRetained setAttributionStringWithFormat:formatCopy maskingClientAuditToken:v12 forClient:self];
 
-  v8[2](v8, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)setCurrentAttributionWebsiteString:(id)a3 maskingClientAuditToken:(id *)a4 reply:(id)a5
+- (void)setCurrentAttributionWebsiteString:(id)string maskingClientAuditToken:(id *)token reply:(id)reply
 {
-  v8 = a5;
-  v9 = a3;
+  replyCopy = reply;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_serverHandle);
-  v11 = *&a4->var0[4];
-  v12[0] = *a4->var0;
+  v11 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v11;
-  [WeakRetained setAttributionWebsiteString:v9 maskingClientAuditToken:v12 forClient:self];
+  [WeakRetained setAttributionWebsiteString:stringCopy maskingClientAuditToken:v12 forClient:self];
 
-  v8[2](v8, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
 - (void)subscribeToUpdates

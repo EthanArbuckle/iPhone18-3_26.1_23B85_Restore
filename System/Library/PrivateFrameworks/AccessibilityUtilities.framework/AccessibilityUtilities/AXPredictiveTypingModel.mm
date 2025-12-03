@@ -1,12 +1,12 @@
 @interface AXPredictiveTypingModel
 - (AXPredictiveTypingModel)init;
-- (id)_completionPredictionsForPrefix:(id)a3 entireText:(id)a4 desiredNumber:(unint64_t)a5;
-- (id)_lastPartialWordForText:(id)a3 orEndOfSentence:(BOOL *)a4;
-- (id)_nextWordPredictionsForText:(id)a3 desiredNumber:(unint64_t)a4;
-- (id)predictionsForText:(id)a3 desiredNumber:(unint64_t)a4;
-- (unsigned)_newContextForText:(id)a3 includeLastToken:(BOOL)a4 length:(int64_t *)a5;
+- (id)_completionPredictionsForPrefix:(id)prefix entireText:(id)text desiredNumber:(unint64_t)number;
+- (id)_lastPartialWordForText:(id)text orEndOfSentence:(BOOL *)sentence;
+- (id)_nextWordPredictionsForText:(id)text desiredNumber:(unint64_t)number;
+- (id)predictionsForText:(id)text desiredNumber:(unint64_t)number;
+- (unsigned)_newContextForText:(id)text includeLastToken:(BOOL)token length:(int64_t *)length;
 - (void)dealloc;
-- (void)enumerateTokensForText:(id)a3 usingBlock:(id)a4;
+- (void)enumerateTokensForText:(id)text usingBlock:(id)block;
 @end
 
 @implementation AXPredictiveTypingModel
@@ -37,14 +37,14 @@
   [(AXPredictiveTypingModel *)&v3 dealloc];
 }
 
-- (void)enumerateTokensForText:(id)a3 usingBlock:(id)a4
+- (void)enumerateTokensForText:(id)text usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  blockCopy = block;
   v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en"];
-  v13.length = [(__CFString *)v5 length];
+  v13.length = [(__CFString *)textCopy length];
   v13.location = 0;
-  v8 = CFStringTokenizerCreate(0, v5, v13, 4uLL, v7);
+  v8 = CFStringTokenizerCreate(0, textCopy, v13, 4uLL, v7);
   v12 = 0;
   do
   {
@@ -54,8 +54,8 @@
     }
 
     CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v8);
-    v10 = [(__CFString *)v5 substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
-    v6[2](v6, v10, CurrentTokenRange.location, CurrentTokenRange.length, &v12);
+    v10 = [(__CFString *)textCopy substringWithRange:CurrentTokenRange.location, CurrentTokenRange.length];
+    blockCopy[2](blockCopy, v10, CurrentTokenRange.location, CurrentTokenRange.length, &v12);
     v11 = v12;
   }
 
@@ -63,10 +63,10 @@
   CFRelease(v8);
 }
 
-- (unsigned)_newContextForText:(id)a3 includeLastToken:(BOOL)a4 length:(int64_t *)a5
+- (unsigned)_newContextForText:(id)text includeLastToken:(BOOL)token length:(int64_t *)length
 {
-  v6 = a4;
-  v8 = a3;
+  tokenCopy = token;
+  textCopy = text;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -74,9 +74,9 @@
   v19 = &unk_1E71E9EF0;
   v10 = v9;
   v20 = v10;
-  v21 = self;
-  [(AXPredictiveTypingModel *)self enumerateTokensForText:v8 usingBlock:&v16];
-  v11 = [v10 count] - !v6;
+  selfCopy = self;
+  [(AXPredictiveTypingModel *)self enumerateTokensForText:textCopy usingBlock:&v16];
+  v11 = [v10 count] - !tokenCopy;
   v12 = malloc_type_malloc(4 * v11, 0x100004052888210uLL);
   if (v11)
   {
@@ -87,9 +87,9 @@
     }
   }
 
-  if (a5)
+  if (length)
   {
-    *a5 = v11;
+    *length = v11;
   }
 
   return v12;
@@ -110,40 +110,40 @@ void __70__AXPredictiveTypingModel__newContextForText_includeLastToken_length___
   }
 }
 
-- (id)_completionPredictionsForPrefix:(id)a3 entireText:(id)a4 desiredNumber:(unint64_t)a5
+- (id)_completionPredictionsForPrefix:(id)prefix entireText:(id)text desiredNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
+  prefixCopy = prefix;
+  textCopy = text;
   v22 = 0;
-  v10 = [(AXPredictiveTypingModel *)self _newContextForText:v9 includeLastToken:0 length:&v22];
-  if (3 * a5 <= 0x32)
+  v10 = [(AXPredictiveTypingModel *)self _newContextForText:textCopy includeLastToken:0 length:&v22];
+  if (3 * number <= 0x32)
   {
     v11 = 50;
   }
 
   else
   {
-    v11 = 3 * a5;
+    v11 = 3 * number;
   }
 
   v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:v11];
   v19 = MEMORY[0x1E69E9820];
-  v20 = v8;
-  v21 = v9;
+  v20 = prefixCopy;
+  v21 = textCopy;
   v13 = v12;
-  v14 = v9;
-  v15 = v8;
+  v14 = textCopy;
+  v15 = prefixCopy;
   LMLanguageModelEnumerateCompletionsForPrefixWithBlock();
   free(v10);
   [v13 sortUsingComparator:{&__block_literal_global_3, v19, 3221225472, __84__AXPredictiveTypingModel__completionPredictionsForPrefix_entireText_desiredNumber___block_invoke, &unk_1E71E9F18, self}];
-  if ([v13 count] <= a5)
+  if ([v13 count] <= number)
   {
     v16 = v13;
   }
 
   else
   {
-    v16 = [v13 subarrayWithRange:{0, a5}];
+    v16 = [v13 subarrayWithRange:{0, number}];
   }
 
   v17 = v16;
@@ -198,9 +198,9 @@ uint64_t __84__AXPredictiveTypingModel__completionPredictionsForPrefix_entireTex
   return v9;
 }
 
-- (id)_lastPartialWordForText:(id)a3 orEndOfSentence:(BOOL *)a4
+- (id)_lastPartialWordForText:(id)text orEndOfSentence:(BOOL *)sentence
 {
-  v5 = a3;
+  textCopy = text;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -211,19 +211,19 @@ uint64_t __84__AXPredictiveTypingModel__completionPredictionsForPrefix_entireTex
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v6 = [v5 length];
+  v6 = [textCopy length];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__AXPredictiveTypingModel__lastPartialWordForText_orEndOfSentence___block_invoke;
   v10[3] = &unk_1E71E9F60;
   v12 = &v18;
-  v7 = v5;
+  v7 = textCopy;
   v11 = v7;
   v13 = &v14;
   [v7 enumerateSubstringsInRange:0 options:v6 usingBlock:{1283, v10}];
-  if (a4)
+  if (sentence)
   {
-    *a4 = *(v15 + 24);
+    *sentence = *(v15 + 24);
   }
 
   v8 = v19[5];
@@ -259,15 +259,15 @@ void __67__AXPredictiveTypingModel__lastPartialWordForText_orEndOfSentence___blo
   *a7 = 1;
 }
 
-- (id)_nextWordPredictionsForText:(id)a3 desiredNumber:(unint64_t)a4
+- (id)_nextWordPredictionsForText:(id)text desiredNumber:(unint64_t)number
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
+  textCopy = text;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:number];
   v14 = 0;
-  v8 = [(AXPredictiveTypingModel *)self _newContextForText:v6 includeLastToken:1 length:&v14];
-  v12 = v6;
+  v8 = [(AXPredictiveTypingModel *)self _newContextForText:textCopy includeLastToken:1 length:&v14];
+  v12 = textCopy;
   v13 = v7;
-  v9 = v6;
+  v9 = textCopy;
   LMLanguageModelEnumeratePredictionsWithBlock();
   free(v8);
   v10 = v13;
@@ -332,14 +332,14 @@ LABEL_11:
   return result;
 }
 
-- (id)predictionsForText:(id)a3 desiredNumber:(unint64_t)a4
+- (id)predictionsForText:(id)text desiredNumber:(unint64_t)number
 {
-  v6 = [a3 lowercaseString];
+  lowercaseString = [text lowercaseString];
   v11 = 0;
-  v7 = [(AXPredictiveTypingModel *)self _lastPartialWordForText:v6 orEndOfSentence:&v11];
+  v7 = [(AXPredictiveTypingModel *)self _lastPartialWordForText:lowercaseString orEndOfSentence:&v11];
   if ([v7 length])
   {
-    v8 = [(AXPredictiveTypingModel *)self _completionPredictionsForPrefix:v7 entireText:v6 desiredNumber:a4];
+    v8 = [(AXPredictiveTypingModel *)self _completionPredictionsForPrefix:v7 entireText:lowercaseString desiredNumber:number];
   }
 
   else
@@ -350,7 +350,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = [(AXPredictiveTypingModel *)self _nextWordPredictionsForText:v6 desiredNumber:a4];
+    v8 = [(AXPredictiveTypingModel *)self _nextWordPredictionsForText:lowercaseString desiredNumber:number];
   }
 
   v9 = v8;

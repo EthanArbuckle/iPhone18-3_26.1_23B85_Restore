@@ -1,23 +1,23 @@
 @interface CalMigrationToolReminderMigrationController
 - (BOOL)shouldPerformMigration;
-- (CalMigrationToolReminderMigrationController)initWithToolOptions:(id)a3 defaultProvider:(id)a4;
-- (void)migrationDidFinishWithResult:(unint64_t)a3;
+- (CalMigrationToolReminderMigrationController)initWithToolOptions:(id)options defaultProvider:(id)provider;
+- (void)migrationDidFinishWithResult:(unint64_t)result;
 @end
 
 @implementation CalMigrationToolReminderMigrationController
 
-- (CalMigrationToolReminderMigrationController)initWithToolOptions:(id)a3 defaultProvider:(id)a4
+- (CalMigrationToolReminderMigrationController)initWithToolOptions:(id)options defaultProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = CalMigrationToolReminderMigrationController;
   v9 = [(CalMigrationToolReminderMigrationController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_toolOptions, a3);
-    objc_storeStrong(&v10->_defaultProvider, a4);
+    objc_storeStrong(&v9->_toolOptions, options);
+    objc_storeStrong(&v10->_defaultProvider, provider);
   }
 
   return v10;
@@ -25,26 +25,26 @@
 
 - (BOOL)shouldPerformMigration
 {
-  v3 = [(CalMigrationToolReminderMigrationController *)self toolOptions];
-  v4 = [v3 performReminderMigration];
+  toolOptions = [(CalMigrationToolReminderMigrationController *)self toolOptions];
+  performReminderMigration = [toolOptions performReminderMigration];
 
-  if (v4 == 1)
+  if (performReminderMigration == 1)
   {
     return 1;
   }
 
-  if (v4 != -1)
+  if (performReminderMigration != -1)
   {
     return 0;
   }
 
-  v5 = [(CalMigrationToolReminderMigrationController *)self defaultProvider];
-  v6 = [v5 shouldPerformMigration];
+  defaultProvider = [(CalMigrationToolReminderMigrationController *)self defaultProvider];
+  shouldPerformMigration = [defaultProvider shouldPerformMigration];
 
-  return v6;
+  return shouldPerformMigration;
 }
 
-- (void)migrationDidFinishWithResult:(unint64_t)a3
+- (void)migrationDidFinishWithResult:(unint64_t)result
 {
   v3 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"This method should not be called in CalendarMigrationTool" userInfo:0];
   [v3 raise];

@@ -7,7 +7,7 @@
 
 - (void)capabilityLevelsDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   MapsService.CapabilityFetcherObserver.capabilityLevelsDidUpdate()();
 }
 

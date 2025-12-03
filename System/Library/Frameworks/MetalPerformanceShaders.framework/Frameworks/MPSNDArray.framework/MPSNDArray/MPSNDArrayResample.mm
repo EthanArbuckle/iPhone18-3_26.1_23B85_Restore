@@ -1,18 +1,18 @@
 @interface MPSNDArrayResample
-- (MPSNDArrayResample)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayResample)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setScaleTransform:(const MPSScaleTransform *)a3;
+- (MPSNDArrayResample)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayResample)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
+- (void)setScaleTransform:(const MPSScaleTransform *)transform;
 @end
 
 @implementation MPSNDArrayResample
 
-- (MPSNDArrayResample)initWithDevice:(id)a3
+- (MPSNDArrayResample)initWithDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayResample;
-  result = [(MPSNDArrayUnaryKernel *)&v5 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryKernel *)&v5 initWithDevice:device];
   if (result)
   {
     result->_scaleTransform = 0;
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (MPSNDArrayResample)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayResample)initWithCoder:(id)coder device:(id)device
 {
   v14.receiver = self;
   v14.super_class = MPSNDArrayResample;
-  v5 = [(MPSNDArrayUnaryKernel *)&v14 initWithCoder:a3 device:a4];
+  v5 = [(MPSNDArrayUnaryKernel *)&v14 initWithCoder:coder device:device];
   v6 = v5;
   if (v5)
   {
@@ -42,15 +42,15 @@
     v8 = vdupq_n_s64(0x7FF8000000000000uLL);
     *(v5 + 664) = v8;
     *(v5 + 680) = v8;
-    if ([a3 containsValueForKey:@"MPSNDArrayResampleScaleX"])
+    if ([coder containsValueForKey:@"MPSNDArrayResampleScaleX"])
     {
-      [a3 decodeDoubleForKey:@"MPSNDArrayResampleScaleX"];
+      [coder decodeDoubleForKey:@"MPSNDArrayResampleScaleX"];
       v7->scaleX = v10;
       v6->_scaleTransform = v7;
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleScaleY"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleScaleY"])
       {
 LABEL_4:
-        if (![a3 containsValueForKey:@"MPSNDArrayResampleTranslateX"])
+        if (![coder containsValueForKey:@"MPSNDArrayResampleTranslateX"])
         {
           goto LABEL_5;
         }
@@ -59,18 +59,18 @@ LABEL_4:
       }
     }
 
-    else if (![a3 containsValueForKey:@"MPSNDArrayResampleScaleY"])
+    else if (![coder containsValueForKey:@"MPSNDArrayResampleScaleY"])
     {
       goto LABEL_4;
     }
 
-    [a3 decodeDoubleForKey:@"MPSNDArrayResampleScaleY"];
+    [coder decodeDoubleForKey:@"MPSNDArrayResampleScaleY"];
     v6->_transformStorage.scaleY = v11;
     v6->_scaleTransform = v7;
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleTranslateX"])
+    if (![coder containsValueForKey:@"MPSNDArrayResampleTranslateX"])
     {
 LABEL_5:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleTranslateY"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleTranslateY"])
       {
         goto LABEL_6;
       }
@@ -79,13 +79,13 @@ LABEL_5:
     }
 
 LABEL_14:
-    [a3 decodeDoubleForKey:@"MPSNDArrayResampleTranslateX"];
+    [coder decodeDoubleForKey:@"MPSNDArrayResampleTranslateX"];
     v6->_transformStorage.translateX = v12;
     v6->_scaleTransform = v7;
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleTranslateY"])
+    if (![coder containsValueForKey:@"MPSNDArrayResampleTranslateY"])
     {
 LABEL_6:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleModeKey"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleModeKey"])
       {
         goto LABEL_7;
       }
@@ -94,13 +94,13 @@ LABEL_6:
     }
 
 LABEL_15:
-    [a3 decodeDoubleForKey:@"MPSNDArrayResampleTranslateY"];
+    [coder decodeDoubleForKey:@"MPSNDArrayResampleTranslateY"];
     v6->_transformStorage.translateY = v13;
     v6->_scaleTransform = v7;
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleModeKey"])
+    if (![coder containsValueForKey:@"MPSNDArrayResampleModeKey"])
     {
 LABEL_7:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleDataFormatKey"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleDataFormatKey"])
       {
         goto LABEL_8;
       }
@@ -109,11 +109,11 @@ LABEL_7:
     }
 
 LABEL_16:
-    v6->_resampleMode = [a3 decodeInt64ForKey:@"MPSNDArrayResampleModeKey"];
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleDataFormatKey"])
+    v6->_resampleMode = [coder decodeInt64ForKey:@"MPSNDArrayResampleModeKey"];
+    if (![coder containsValueForKey:@"MPSNDArrayResampleDataFormatKey"])
     {
 LABEL_8:
-      if (![a3 containsValueForKey:@"MPSNDArrayResampleNearestModeKey"])
+      if (![coder containsValueForKey:@"MPSNDArrayResampleNearestModeKey"])
       {
 LABEL_10:
         v6->super.super._encode = EncodeResample;
@@ -122,13 +122,13 @@ LABEL_10:
       }
 
 LABEL_9:
-      v6->_nearestMode = [a3 decodeInt64ForKey:@"MPSNDArrayResampleNearestModeKey"];
+      v6->_nearestMode = [coder decodeInt64ForKey:@"MPSNDArrayResampleNearestModeKey"];
       goto LABEL_10;
     }
 
 LABEL_17:
-    v6->_dataFormat = [a3 decodeInt64ForKey:@"MPSNDArrayResampleDataFormatKey"];
-    if (![a3 containsValueForKey:@"MPSNDArrayResampleNearestModeKey"])
+    v6->_dataFormat = [coder decodeInt64ForKey:@"MPSNDArrayResampleDataFormatKey"];
+    if (![coder containsValueForKey:@"MPSNDArrayResampleNearestModeKey"])
     {
       goto LABEL_10;
     }
@@ -139,7 +139,7 @@ LABEL_17:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayResample;
@@ -147,21 +147,21 @@ LABEL_17:
   scaleTransform = self->_scaleTransform;
   if (scaleTransform)
   {
-    [a3 encodeDouble:@"MPSNDArrayResampleScaleX" forKey:scaleTransform->scaleX];
-    [a3 encodeDouble:@"MPSNDArrayResampleScaleY" forKey:self->_scaleTransform->scaleY];
-    [a3 encodeDouble:@"MPSNDArrayResampleTranslateX" forKey:self->_scaleTransform->translateX];
-    [a3 encodeDouble:@"MPSNDArrayResampleTranslateY" forKey:self->_scaleTransform->translateY];
-    [a3 encodeInt64:self->_resampleMode forKey:@"MPSNDArrayResampleModeKey"];
-    [a3 encodeInt64:self->_dataFormat forKey:@"MPSNDArrayResampleDataFormatKey"];
-    [a3 encodeInt64:self->_nearestMode forKey:@"MPSNDArrayResampleNearestModeKey"];
+    [coder encodeDouble:@"MPSNDArrayResampleScaleX" forKey:scaleTransform->scaleX];
+    [coder encodeDouble:@"MPSNDArrayResampleScaleY" forKey:self->_scaleTransform->scaleY];
+    [coder encodeDouble:@"MPSNDArrayResampleTranslateX" forKey:self->_scaleTransform->translateX];
+    [coder encodeDouble:@"MPSNDArrayResampleTranslateY" forKey:self->_scaleTransform->translateY];
+    [coder encodeInt64:self->_resampleMode forKey:@"MPSNDArrayResampleModeKey"];
+    [coder encodeInt64:self->_dataFormat forKey:@"MPSNDArrayResampleDataFormatKey"];
+    [coder encodeInt64:self->_nearestMode forKey:@"MPSNDArrayResampleNearestModeKey"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayResample;
-  result = [(MPSNDArrayMultiaryKernel *)&v8 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v8 copyWithZone:zone device:device];
   if (result)
   {
     if (self->_scaleTransform)
@@ -186,12 +186,12 @@ LABEL_17:
   return result;
 }
 
-- (void)setScaleTransform:(const MPSScaleTransform *)a3
+- (void)setScaleTransform:(const MPSScaleTransform *)transform
 {
-  if (a3)
+  if (transform)
   {
-    v3 = *&a3->translateX;
-    *&self->_transformStorage.scaleX = *&a3->scaleX;
+    v3 = *&transform->translateX;
+    *&self->_transformStorage.scaleX = *&transform->scaleX;
     *&self->_transformStorage.translateX = v3;
     self->_scaleTransform = &self->_transformStorage;
   }

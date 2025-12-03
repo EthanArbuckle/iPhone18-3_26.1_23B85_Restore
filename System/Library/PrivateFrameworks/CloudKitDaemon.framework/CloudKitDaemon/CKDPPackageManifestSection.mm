@@ -1,21 +1,21 @@
 @interface CKDPPackageManifestSection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLastSection:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLastSection:(BOOL)section;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPPackageManifestSection
 
-- (void)setHasLastSection:(BOOL)a3
+- (void)setHasLastSection:(BOOL)section
 {
-  if (a3)
+  if (section)
   {
     v3 = 2;
   }
@@ -74,14 +74,14 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     while (1)
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
         goto LABEL_52;
       }
@@ -92,20 +92,20 @@
       while (1)
       {
         v83 = 0;
-        v13 = objc_msgSend_position(a3, v8, v9) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, &v83, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v83 & 0x7F) << v10;
@@ -123,9 +123,9 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
         goto LABEL_52;
       }
@@ -165,20 +165,20 @@ LABEL_35:
       while (1)
       {
         v84 = 0;
-        v36 = objc_msgSend_position(a3, v32, v9) + 1;
-        if (v36 >= objc_msgSend_position(a3, v37, v38) && (v41 = objc_msgSend_position(a3, v39, v40) + 1, v41 <= objc_msgSend_length(a3, v42, v43)))
+        v36 = objc_msgSend_position(from, v32, v9) + 1;
+        if (v36 >= objc_msgSend_position(from, v37, v38) && (v41 = objc_msgSend_position(from, v39, v40) + 1, v41 <= objc_msgSend_length(from, v42, v43)))
         {
-          v44 = objc_msgSend_data(a3, v39, v40);
-          v47 = objc_msgSend_position(a3, v45, v46);
+          v44 = objc_msgSend_data(from, v39, v40);
+          v47 = objc_msgSend_position(from, v45, v46);
           objc_msgSend_getBytes_range_(v44, v48, &v84, v47, 1);
 
-          v51 = objc_msgSend_position(a3, v49, v50);
-          objc_msgSend_setPosition_(a3, v52, v51 + 1);
+          v51 = objc_msgSend_position(from, v49, v50);
+          objc_msgSend_setPosition_(from, v52, v51 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v39, v40);
+          objc_msgSend__setError(from, v39, v40);
         }
 
         v35 |= (v84 & 0x7F) << v33;
@@ -196,7 +196,7 @@ LABEL_35:
         }
       }
 
-      if (objc_msgSend_hasError(a3, v32, v9))
+      if (objc_msgSend_hasError(from, v32, v9))
       {
         v53 = 0;
       }
@@ -209,8 +209,8 @@ LABEL_35:
 LABEL_48:
       self->_size = v53;
 LABEL_51:
-      v79 = objc_msgSend_position(a3, v32, v9);
-      if (v79 >= objc_msgSend_length(a3, v80, v81))
+      v79 = objc_msgSend_position(from, v32, v9);
+      if (v79 >= objc_msgSend_length(from, v80, v81))
       {
         goto LABEL_52;
       }
@@ -225,20 +225,20 @@ LABEL_51:
       while (1)
       {
         v85 = 0;
-        v61 = objc_msgSend_position(a3, v32, v9) + 1;
-        if (v61 >= objc_msgSend_position(a3, v62, v63) && (v66 = objc_msgSend_position(a3, v64, v65) + 1, v66 <= objc_msgSend_length(a3, v67, v68)))
+        v61 = objc_msgSend_position(from, v32, v9) + 1;
+        if (v61 >= objc_msgSend_position(from, v62, v63) && (v66 = objc_msgSend_position(from, v64, v65) + 1, v66 <= objc_msgSend_length(from, v67, v68)))
         {
-          v69 = objc_msgSend_data(a3, v64, v65);
-          v72 = objc_msgSend_position(a3, v70, v71);
+          v69 = objc_msgSend_data(from, v64, v65);
+          v72 = objc_msgSend_position(from, v70, v71);
           objc_msgSend_getBytes_range_(v69, v73, &v85, v72, 1);
 
-          v76 = objc_msgSend_position(a3, v74, v75);
-          objc_msgSend_setPosition_(a3, v77, v76 + 1);
+          v76 = objc_msgSend_position(from, v74, v75);
+          objc_msgSend_setPosition_(from, v77, v76 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v64, v65);
+          objc_msgSend__setError(from, v64, v65);
         }
 
         v60 |= (v85 & 0x7F) << v58;
@@ -256,7 +256,7 @@ LABEL_51:
         }
       }
 
-      v78 = (v60 != 0) & ~objc_msgSend_hasError(a3, v32, v9);
+      v78 = (v60 != 0) & ~objc_msgSend_hasError(from, v32, v9);
 LABEL_50:
       self->_lastSection = v78;
       goto LABEL_51;
@@ -280,18 +280,18 @@ LABEL_32:
   }
 
 LABEL_52:
-  LOBYTE(v56) = objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  LOBYTE(v56) = objc_msgSend_hasError(from, v8, v9) ^ 1;
   return v56;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_signature)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -299,7 +299,7 @@ LABEL_52:
   {
     size = self->_size;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -307,55 +307,55 @@ LABEL_52:
   {
     lastSection = self->_lastSection;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_verificationKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   signature = self->_signature;
-  v9 = v4;
+  v9 = toCopy;
   if (signature)
   {
-    objc_msgSend_setSignature_(v4, v5, signature);
-    v4 = v9;
+    objc_msgSend_setSignature_(toCopy, v5, signature);
+    toCopy = v9;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_size;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 1) = self->_size;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 32) = self->_lastSection;
-    *(v4 + 36) |= 2u;
+    *(toCopy + 32) = self->_lastSection;
+    *(toCopy + 36) |= 2u;
   }
 
   verificationKey = self->_verificationKey;
   if (verificationKey)
   {
     objc_msgSend_setVerificationKey_(v9, v5, verificationKey);
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_signature, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_signature, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -373,24 +373,24 @@ LABEL_52:
     *(v10 + 36) |= 2u;
   }
 
-  v16 = objc_msgSend_copyWithZone_(self->_verificationKey, v14, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_verificationKey, v14, zone);
   v17 = *(v10 + 24);
   *(v10 + 24) = v16;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
   signature = self->_signature;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (signature | v9)
   {
     if (!objc_msgSend_isEqual_(signature, v7, v9))
@@ -399,23 +399,23 @@ LABEL_52:
     }
   }
 
-  v10 = *(v4 + 36);
+  v10 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_size != v4[1])
+    if ((*(equalCopy + 36) & 1) == 0 || self->_size != equalCopy[1])
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_14;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_11;
     }
@@ -425,28 +425,28 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((*(v4 + 36) & 2) == 0)
+  if ((*(equalCopy + 36) & 2) == 0)
   {
     goto LABEL_14;
   }
 
-  v15 = *(v4 + 32);
+  v15 = *(equalCopy + 32);
   if (self->_lastSection)
   {
-    if ((v4[4] & 1) == 0)
+    if ((equalCopy[4] & 1) == 0)
     {
       goto LABEL_14;
     }
   }
 
-  else if (v4[4])
+  else if (equalCopy[4])
   {
     goto LABEL_14;
   }
 
 LABEL_11:
   verificationKey = self->_verificationKey;
-  v12 = v4[3];
+  v12 = equalCopy[3];
   if (verificationKey | v12)
   {
     isEqual = objc_msgSend_isEqual_(verificationKey, v7, v12);
@@ -489,36 +489,36 @@ LABEL_3:
   return v7 ^ v4 ^ v8 ^ objc_msgSend_hash(self->_verificationKey, v5, v6);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = *(v4 + 2);
-  v9 = v4;
+  fromCopy = from;
+  v6 = *(fromCopy + 2);
+  v9 = fromCopy;
   if (v6)
   {
     objc_msgSend_setSignature_(self, v5, v6);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v7 = *(v4 + 36);
+  v7 = *(fromCopy + 36);
   if (v7)
   {
-    self->_size = *(v4 + 1);
+    self->_size = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 36);
+    v7 = *(fromCopy + 36);
   }
 
   if ((v7 & 2) != 0)
   {
-    self->_lastSection = *(v4 + 32);
+    self->_lastSection = *(fromCopy + 32);
     *&self->_has |= 2u;
   }
 
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (v8)
   {
     objc_msgSend_setVerificationKey_(self, v5, v8);
-    v4 = v9;
+    fromCopy = v9;
   }
 }
 

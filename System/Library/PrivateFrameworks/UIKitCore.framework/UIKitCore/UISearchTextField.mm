@@ -1,7 +1,7 @@
 @interface UISearchTextField
 - (BOOL)_becomeFirstResponderWhenPossible;
 - (BOOL)_delegateShouldBeginEditing;
-- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)a3 replacementString:(id)a4 delegateCares:(BOOL *)a5;
+- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)ranges replacementString:(id)string delegateCares:(BOOL *)cares;
 - (BOOL)_delegateShouldClear;
 - (BOOL)_delegateShouldEndEditing;
 - (BOOL)_delegateShouldScrollToVisibleWhenBecomingFirstResponder;
@@ -9,7 +9,7 @@
 - (BOOL)_hasContent;
 - (BOOL)_ignoresDynamicType;
 - (BOOL)_isEditingOrHasContent;
-- (BOOL)_scalesMagnifyingGlassForDynamicTypeWithFont:(id)a3;
+- (BOOL)_scalesMagnifyingGlassForDynamicTypeWithFont:(id)font;
 - (BOOL)_shouldCenterPlaceholder;
 - (BOOL)_shouldHideMagnifyingGlassWhenEditingOrHasContent;
 - (BOOL)_shouldOverrideEditingFont;
@@ -22,22 +22,22 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canBecomeFocused;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canResignFirstResponder;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)resignFirstResponder;
-- (CGRect)_adjustedTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4;
-- (CGRect)_adjustmentsForSearchIconViewRectForBounds:(CGRect)a3;
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4;
-- (CGRect)_bookmarkViewRectForBounds:(CGRect)a3;
-- (CGRect)_searchIconViewRectForBounds:(CGRect)a3;
+- (CGRect)_adjustedTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds;
+- (CGRect)_adjustmentsForSearchIconViewRectForBounds:(CGRect)bounds;
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing;
+- (CGRect)_bookmarkViewRectForBounds:(CGRect)bounds;
+- (CGRect)_searchIconViewRectForBounds:(CGRect)bounds;
 - (CGRect)_suffixFrame;
-- (CGRect)clearButtonRectForBounds:(CGRect)a3;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (CGSize)_clearButtonSize;
 - (CGSize)intrinsicContentSize;
 - (Class)_preferredBackgroundProviderClass;
@@ -48,132 +48,132 @@
 - (UIColor)_tokenForegroundColor;
 - (UIColor)tokenBackgroundColor;
 - (UISearchBar)_searchBar;
-- (UISearchTextField)initWithCoder:(id)a3;
+- (UISearchTextField)initWithCoder:(id)coder;
 - (UITextPosition)positionOfTokenAtIndex:(NSInteger)tokenIndex;
 - (UITextRange)textualRange;
 - (_NSRange)_rangeForClearButton;
 - (_NSRange)_rangeForSetText;
-- (_NSRange)insertFilteredText:(id)a3;
+- (_NSRange)insertFilteredText:(id)text;
 - (_UIScrollPocketInteraction)scrollPocketInteraction;
 - (double)_clearButtonMarginX;
 - (double)_maximumAlphaForLeadingView;
-- (double)_placeholderLabelAlphaForForegroundViewsAlpha:(double)a3;
-- (id)_clearButtonImageForState:(unint64_t)a3;
-- (id)_createEffectsBackgroundViewWithStyle:(int64_t)a3 applyFilter:(id)a4;
-- (id)_customDraggableObjectsForRange:(id)a3;
+- (double)_placeholderLabelAlphaForForegroundViewsAlpha:(double)alpha;
+- (id)_clearButtonImageForState:(unint64_t)state;
+- (id)_createEffectsBackgroundViewWithStyle:(int64_t)style applyFilter:(id)filter;
+- (id)_customDraggableObjectsForRange:(id)range;
 - (id)_initWithDeferredSearchIconImageConfiguration;
-- (id)_initWithFrame:(CGRect)a3 textLayoutManagerEnabled:(BOOL)a4 defersSearchImageConfiguration:(BOOL)a5;
-- (id)_newAttributedStringWithToken:(id)a3;
-- (id)_offsetValueForIcon:(int64_t)a3;
+- (id)_initWithFrame:(CGRect)frame textLayoutManagerEnabled:(BOOL)enabled defersSearchImageConfiguration:(BOOL)configuration;
+- (id)_newAttributedStringWithToken:(id)token;
+- (id)_offsetValueForIcon:(int64_t)icon;
 - (id)_placeholderColor;
-- (id)_rangeOfCustomDraggableObjectsInRange:(id)a3;
-- (id)_textRangesForTextStorageRanges:(id)a3;
+- (id)_rangeOfCustomDraggableObjectsInRange:(id)range;
+- (id)_textRangesForTextStorageRanges:(id)ranges;
 - (id)attributedText;
-- (id)attributedTextInRange:(id)a3;
+- (id)attributedTextInRange:(id)range;
 - (id)selectedTokens;
 - (id)text;
-- (id)textInRange:(id)a3;
+- (id)textInRange:(id)range;
 - (id)textInputTraits;
 - (unint64_t)_characterIndexForTokenTapGestureRecognizer;
-- (void)__highlightedDidChangeAnimated:(BOOL)a3;
+- (void)__highlightedDidChangeAnimated:(BOOL)animated;
 - (void)_activateSelectionView;
-- (void)_applyHighlightedAnimated:(BOOL)a3;
+- (void)_applyHighlightedAnimated:(BOOL)animated;
 - (void)_becomeFirstResponder;
 - (void)_cleanUpDictationButton;
 - (void)_cleanUpKeyboardHideAndShowNotifications;
 - (void)_clearBackgroundViews;
-- (void)_clearButtonClicked:(id)a3;
+- (void)_clearButtonClicked:(id)clicked;
 - (void)_clearSearchSuggestionsIfNecessary;
-- (void)_copySelectionPopulatingActuallyCopiedTokenCharacterIndexes:(id)a3;
-- (void)_copyTextAndTokensFromOtherSearchField:(id)a3;
-- (void)_createDictationButtonForSearchBarVisualProvider:(id)a3;
-- (void)_defaultInsertTextSuggestion:(id)a3;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_didRemoveTokenLayoutView:(id)a3;
-- (void)_didSetFont:(id)a3;
-- (void)_highlightedDidChangeAnimated:(BOOL)a3;
+- (void)_copySelectionPopulatingActuallyCopiedTokenCharacterIndexes:(id)indexes;
+- (void)_copyTextAndTokensFromOtherSearchField:(id)field;
+- (void)_createDictationButtonForSearchBarVisualProvider:(id)provider;
+- (void)_defaultInsertTextSuggestion:(id)suggestion;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_didRemoveTokenLayoutView:(id)view;
+- (void)_didSetFont:(id)font;
+- (void)_highlightedDidChangeAnimated:(BOOL)animated;
 - (void)_notifyDidBeginEditing;
 - (void)_notifyDidEndEditing;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_pasteSessionDidFinish:(id)a3;
-- (void)_postNotificationFromOriginalIfNecessary:(id *)a1;
-- (void)_receivedKeyboardDidHideNotification:(id)a3;
-- (void)_receivedKeyboardDidShowNotification:(id)a3;
-- (void)_receivedKeyboardWillShowOrHideNotification:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_pasteSessionDidFinish:(id)finish;
+- (void)_postNotificationFromOriginalIfNecessary:(id *)necessary;
+- (void)_receivedKeyboardDidHideNotification:(id)notification;
+- (void)_receivedKeyboardDidShowNotification:(id)notification;
+- (void)_receivedKeyboardWillShowOrHideNotification:(id)notification;
 - (void)_redirectSelectionToAvoidClobberingTokens;
-- (void)_reevaluateGlassAppearancePreferenceForBackdropStyle:(int64_t)a3;
+- (void)_reevaluateGlassAppearancePreferenceForBackdropStyle:(int64_t)style;
 - (void)_removeEffectsBackgroundViews;
-- (void)_searchBarCancelButtonClicked:(id)a3;
-- (void)_setAlwaysHidesMagnifyingGlassForAccessibilityContentSizeCategory:(BOOL)a3;
-- (void)_setAnimatesBackgroundCornerRadius:(BOOL)a3;
-- (void)_setBackgroundMaterialShouldBeGlass:(BOOL)a3;
-- (void)_setBackgroundViewsAlpha:(double)a3;
-- (void)_setBottomEffectBackgroundVisible:(BOOL)a3;
-- (void)_setClearButtonImage:(id)a3 forState:(unint64_t)a4;
-- (void)_setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setIgnoresDynamicType:(BOOL)a3;
-- (void)_setMagnifyingGlassImage:(id)a3;
-- (void)_setNeedsUpdateForBackdropStyle:(int64_t)a3;
-- (void)_setOffsetValue:(id)a3 forIcon:(int64_t)a4;
-- (void)_setSearchBar:(id)a3;
-- (void)_setSearchTextOffetValue:(id)a3;
-- (void)_setTokenForegroundColor:(id)a3;
-- (void)_setWantsDynamicBackgroundMaterial:(BOOL)a3;
-- (void)_suggestionsMenuInteractionWillEndWithAnimator:(id)a3;
+- (void)_searchBarCancelButtonClicked:(id)clicked;
+- (void)_setAlwaysHidesMagnifyingGlassForAccessibilityContentSizeCategory:(BOOL)category;
+- (void)_setAnimatesBackgroundCornerRadius:(BOOL)radius;
+- (void)_setBackgroundMaterialShouldBeGlass:(BOOL)glass;
+- (void)_setBackgroundViewsAlpha:(double)alpha;
+- (void)_setBottomEffectBackgroundVisible:(BOOL)visible;
+- (void)_setClearButtonImage:(id)image forState:(unint64_t)state;
+- (void)_setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)_setIgnoresDynamicType:(BOOL)type;
+- (void)_setMagnifyingGlassImage:(id)image;
+- (void)_setNeedsUpdateForBackdropStyle:(int64_t)style;
+- (void)_setOffsetValue:(id)value forIcon:(int64_t)icon;
+- (void)_setSearchBar:(id)bar;
+- (void)_setSearchTextOffetValue:(id)value;
+- (void)_setTokenForegroundColor:(id)color;
+- (void)_setWantsDynamicBackgroundMaterial:(BOOL)material;
+- (void)_suggestionsMenuInteractionWillEndWithAnimator:(id)animator;
 - (void)_tokenTapGestureRecognized;
 - (void)_updateAlphaForMagnifyingGlass;
-- (void)_updateAtomViewSelection:(BOOL)a3;
+- (void)_updateAtomViewSelection:(BOOL)selection;
 - (void)_updateBackgroundMaterial;
-- (void)_updateBackgroundView:(id)a3 withStyle:(int64_t)a4 filter:(id)a5;
+- (void)_updateBackgroundView:(id)view withStyle:(int64_t)style filter:(id)filter;
 - (void)_updateColorForMagnifyingGlass;
-- (void)_updateDefaultLeftViewForFont:(id)a3;
+- (void)_updateDefaultLeftViewForFont:(id)font;
 - (void)_updateForBackdropStyle;
-- (void)_updateHelpMessageOverrideWithMessage:(id)a3;
+- (void)_updateHelpMessageOverrideWithMessage:(id)message;
 - (void)_updateLeftViewForMagnifyingGlassImage;
 - (void)_updateScrollPocketInteraction;
-- (void)_willAddTokenLayoutView:(id)a3;
-- (void)addAction:(id)a3 forControlEvents:(unint64_t)a4;
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
-- (void)cut:(id)a3;
+- (void)_willAddTokenLayoutView:(id)view;
+- (void)addAction:(id)action forControlEvents:(unint64_t)events;
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
+- (void)cut:(id)cut;
 - (void)deleteBackward;
-- (void)didAddTextAttachmentViews:(id)a3;
-- (void)didLayoutTextAttachmentView:(id)a3 inFragmentRect:(CGRect)a4;
-- (void)didRemoveTextAttachmentViews:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)fieldEditorDidChange:(id)a3;
-- (void)fieldEditorDidChangeSelection:(id)a3;
-- (void)insertAttributedText:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertTextSuggestion:(id)a3;
+- (void)didAddTextAttachmentViews:(id)views;
+- (void)didLayoutTextAttachmentView:(id)view inFragmentRect:(CGRect)rect;
+- (void)didRemoveTextAttachmentViews:(id)views;
+- (void)encodeWithCoder:(id)coder;
+- (void)fieldEditorDidChange:(id)change;
+- (void)fieldEditorDidChangeSelection:(id)selection;
+- (void)insertAttributedText:(id)text;
+- (void)insertText:(id)text;
+- (void)insertTextSuggestion:(id)suggestion;
 - (void)insertToken:(UISearchToken *)token atIndex:(NSInteger)tokenIndex;
 - (void)layoutSubviews;
-- (void)paste:(id)a3;
-- (void)removeAction:(id)a3 forControlEvents:(unint64_t)a4;
-- (void)removeActionForIdentifier:(id)a3 forControlEvents:(unint64_t)a4;
-- (void)removeTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
+- (void)paste:(id)paste;
+- (void)removeAction:(id)action forControlEvents:(unint64_t)events;
+- (void)removeActionForIdentifier:(id)identifier forControlEvents:(unint64_t)events;
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
 - (void)removeTokenAtIndex:(NSInteger)tokenIndex;
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)replaceRangeWithTextWithoutClosingTyping:(id)a3 replacementText:(id)a4;
+- (void)replaceRange:(id)range withAttributedText:(id)text;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)replaceRangeWithTextWithoutClosingTyping:(id)typing replacementText:(id)text;
 - (void)replaceTextualPortionOfRange:(UITextRange *)textRange withToken:(UISearchToken *)token atIndex:(NSUInteger)tokenIndex;
-- (void)searchSuggestionController:(id)a3 didSelectSuggestion:(id)a4 atIndexPath:(id)a5;
-- (void)setAccessibilityIdentifier:(id)a3;
+- (void)searchSuggestionController:(id)controller didSelectSuggestion:(id)suggestion atIndexPath:(id)path;
+- (void)setAccessibilityIdentifier:(id)identifier;
 - (void)setAllowsDeletingTokens:(BOOL)allowsDeletingTokens;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setBorderStyle:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setScrollPocketInteraction:(id)a3;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setBorderStyle:(int64_t)style;
+- (void)setDelegate:(id)delegate;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setScrollPocketInteraction:(id)interaction;
 - (void)setSearchSuggestions:(NSArray *)searchSuggestions;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 - (void)setTokenBackgroundColor:(UIColor *)tokenBackgroundColor;
 - (void)setTokens:(NSArray *)tokens;
 - (void)tintColorDidChange;
-- (void)updateForBackdropStyle:(int64_t)a3;
+- (void)updateForBackdropStyle:(int64_t)style;
 - (void)updateProperties;
-- (void)willDismissEditMenuWithAnimator:(id)a3;
-- (void)willMoveToWindow:(id)a3;
-- (void)willPresentEditMenuWithAnimator:(id)a3;
+- (void)willDismissEditMenuWithAnimator:(id)animator;
+- (void)willMoveToWindow:(id)window;
+- (void)willPresentEditMenuWithAnimator:(id)animator;
 @end
 
 @implementation UISearchTextField
@@ -184,17 +184,17 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = [WeakRetained textInputTraits];
+    textInputTraits = [WeakRetained textInputTraits];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UISearchTextField;
-    v5 = [(UITextField *)&v8 textInputTraits];
+    textInputTraits = [(UITextField *)&v8 textInputTraits];
   }
 
-  v6 = v5;
+  v6 = textInputTraits;
 
   return v6;
 }
@@ -208,20 +208,20 @@
     return 1;
   }
 
-  v4 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
-  v3 = [v4 count] != 0;
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  v3 = [tokenCharacterIndexes count] != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldHideMagnifyingGlassWhenEditingOrHasContent
 {
-  v3 = [(UITextField *)self font];
-  if ([(UISearchTextField *)self _scalesMagnifyingGlassForDynamicTypeWithFont:v3])
+  font = [(UITextField *)self font];
+  if ([(UISearchTextField *)self _scalesMagnifyingGlassForDynamicTypeWithFont:font])
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+    traitCollection = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   }
 
   else
@@ -235,11 +235,11 @@
 - (UITextRange)textualRange
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v4 = [WeakRetained _searchBarTextField];
+  _searchBarTextField = [WeakRetained _searchBarTextField];
 
-  if (v4)
+  if (_searchBarTextField)
   {
-    v5 = v4 == self;
+    v5 = _searchBarTextField == self;
   }
 
   else
@@ -249,13 +249,13 @@
 
   if (v5)
   {
-    v6 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfTextAfterLastToken];
-    [(UIResponder *)self _textRangeFromNSRange:v6, v7];
+    characterRangeOfTextAfterLastToken = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfTextAfterLastToken];
+    [(UIResponder *)self _textRangeFromNSRange:characterRangeOfTextAfterLastToken, v7];
   }
 
   else
   {
-    [(UISearchTextField *)v4 textualRange];
+    [(UISearchTextField *)_searchBarTextField textualRange];
   }
   v8 = ;
 
@@ -264,8 +264,8 @@
 
 - (id)text
 {
-  v3 = [(UISearchTextField *)self textualRange];
-  v4 = [(UISearchTextField *)self textInRange:v3];
+  textualRange = [(UISearchTextField *)self textualRange];
+  v4 = [(UISearchTextField *)self textInRange:textualRange];
 
   return v4;
 }
@@ -277,9 +277,9 @@
   {
     if ([(UISearchTextField *)self _alwaysHidesMagnifyingGlassForAccessibilityContentSizeCategory])
     {
-      v3 = [(UIView *)self traitCollection];
-      v4 = [v3 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+      traitCollection = [(UIView *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (IsAccessibilityCategory)
       {
@@ -297,34 +297,34 @@
 {
   if (_UISolariumEnabled() && (-[UIView traitCollection](self, "traitCollection"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 userInterfaceIdiom], v3, v4 == 5))
   {
-    v5 = [(UITextField *)self _defaultiOSBackgroundProviderClass];
+    _defaultiOSBackgroundProviderClass = [(UITextField *)self _defaultiOSBackgroundProviderClass];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UISearchTextField;
-    v5 = [(UITextField *)&v7 _preferredBackgroundProviderClass];
+    _defaultiOSBackgroundProviderClass = [(UITextField *)&v7 _preferredBackgroundProviderClass];
   }
 
-  return v5;
+  return _defaultiOSBackgroundProviderClass;
 }
 
 - (id)_initWithDeferredSearchIconImageConfiguration
 {
-  v3 = [objc_opt_class() _isTextLayoutManagerEnabled];
+  _isTextLayoutManagerEnabled = [objc_opt_class() _isTextLayoutManagerEnabled];
   v4 = *MEMORY[0x1E696AA80];
   v5 = *(MEMORY[0x1E696AA80] + 8);
   v6 = *(MEMORY[0x1E696AA80] + 16);
   v7 = *(MEMORY[0x1E696AA80] + 24);
 
-  return [(UISearchTextField *)self _initWithFrame:v3 textLayoutManagerEnabled:1 defersSearchImageConfiguration:v4, v5, v6, v7];
+  return [(UISearchTextField *)self _initWithFrame:_isTextLayoutManagerEnabled textLayoutManagerEnabled:1 defersSearchImageConfiguration:v4, v5, v6, v7];
 }
 
 - (BOOL)_ignoresDynamicType
 {
-  v2 = [(UIImageView *)self->_defaultLeftView _overridingSymbolConfiguration];
-  v3 = v2 != 0;
+  _overridingSymbolConfiguration = [(UIImageView *)self->_defaultLeftView _overridingSymbolConfiguration];
+  v3 = _overridingSymbolConfiguration != 0;
 
   return v3;
 }
@@ -352,21 +352,21 @@
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v4 = WeakRetained;
-  if (!WeakRetained || ([WeakRetained _colorForComponent:3 disabled:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!WeakRetained || ([WeakRetained _colorForComponent:3 disabled:0], (_placeholderColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7.receiver = self;
     v7.super_class = UISearchTextField;
-    v5 = [(UITextField *)&v7 _placeholderColor];
+    _placeholderColor = [(UITextField *)&v7 _placeholderColor];
   }
 
-  return v5;
+  return _placeholderColor;
 }
 
 - (_NSRange)_rangeForSetText
 {
-  v2 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfTextAfterLastToken];
+  characterRangeOfTextAfterLastToken = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfTextAfterLastToken];
   result.length = v3;
-  result.location = v2;
+  result.location = characterRangeOfTextAfterLastToken;
   return result;
 }
 
@@ -393,10 +393,10 @@
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-      v5 = [WeakRetained _searchController];
-      v6 = [v5 isActive];
+      _searchController = [WeakRetained _searchController];
+      isActive = [_searchController isActive];
 
-      return v6;
+      return isActive;
     }
   }
 
@@ -417,8 +417,8 @@
     v5 = -1.0;
     if ([(UISearchTextField *)self _supportsDynamicType])
     {
-      v6 = [(UITextField *)self font];
-      [v6 _scaledValueForValue:v4];
+      font = [(UITextField *)self font];
+      [font _scaledValueForValue:v4];
       UIRoundToViewScale(self);
       v4 = v7;
     }
@@ -442,16 +442,16 @@
 
 - (double)_clearButtonMarginX
 {
-  v3 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
-  if (v3)
+  clearButtonInnerInset = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
+  if (clearButtonInnerInset)
   {
   }
 
   else
   {
-    v4 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonOuterInset];
+    clearButtonOuterInset = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonOuterInset];
 
-    if (!v4)
+    if (!clearButtonOuterInset)
     {
       v13.receiver = self;
       v13.super_class = UISearchTextField;
@@ -460,12 +460,12 @@
     }
   }
 
-  v5 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
-  [v5 floatValue];
+  clearButtonInnerInset2 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
+  [clearButtonInnerInset2 floatValue];
   v7 = v6 + 0.0;
 
-  v8 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonOuterInset];
-  [v8 floatValue];
+  clearButtonOuterInset2 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonOuterInset];
+  [clearButtonOuterInset2 floatValue];
   v10 = v7 + v9;
 
   return v10;
@@ -489,8 +489,8 @@
 
 - (BOOL)_shouldSuppressSelectionHandles
 {
-  v3 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
-  if ([v3 count] == 1)
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  if ([tokenCharacterIndexes count] == 1)
   {
     [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfTextAfterLastToken];
     v5 = v4 == 0;
@@ -509,10 +509,10 @@
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   if (WeakRetained)
   {
-    v4 = [(UIView *)self superview];
-    if (v4)
+    superview = [(UIView *)self superview];
+    if (superview)
     {
-      v5 = v4;
+      v5 = superview;
       while (1)
       {
         objc_opt_class();
@@ -521,10 +521,10 @@
           break;
         }
 
-        v6 = [v5 superview];
+        superview2 = [v5 superview];
 
-        v5 = v6;
-        if (!v6)
+        v5 = superview2;
+        if (!superview2)
         {
           goto LABEL_6;
         }
@@ -545,17 +545,17 @@ LABEL_6:
 
 - (double)_maximumAlphaForLeadingView
 {
-  v3 = [(UITextField *)self leftView];
-  if (v3 != self->_defaultLeftView || ![(UISearchTextField *)self _shouldHideMagnifyingGlassWhenEditingOrHasContent])
+  leftView = [(UITextField *)self leftView];
+  if (leftView != self->_defaultLeftView || ![(UISearchTextField *)self _shouldHideMagnifyingGlassWhenEditingOrHasContent])
   {
 
     goto LABEL_6;
   }
 
-  v4 = [(UISearchTextField *)self _isEditingOrHasContent];
+  _isEditingOrHasContent = [(UISearchTextField *)self _isEditingOrHasContent];
 
   result = 0.0;
-  if (!v4)
+  if (!_isEditingOrHasContent)
   {
 LABEL_6:
     v6.receiver = self;
@@ -576,8 +576,8 @@ LABEL_6:
 
   else
   {
-    v4 = [(UIView *)self traitCollection];
-    v3 = [_UISearchAtomView defaultAtomBackgroundColorForTraitCollection:v4];
+    traitCollection = [(UIView *)self traitCollection];
+    v3 = [_UISearchAtomView defaultAtomBackgroundColorForTraitCollection:traitCollection];
   }
 
   return v3;
@@ -586,15 +586,15 @@ LABEL_6:
 - (NSArray)tokens
 {
   v3 = objc_opt_new();
-  v4 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __27__UISearchTextField_tokens__block_invoke;
   v11 = &unk_1E70F43F0;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
-  [v4 enumerateIndexesUsingBlock:&v8];
+  [tokenCharacterIndexes enumerateIndexesUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -603,10 +603,10 @@ LABEL_6:
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v13.receiver = self;
     v13.super_class = UISearchTextField;
@@ -616,62 +616,62 @@ LABEL_6:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-    v7 = [WeakRetained _searchController];
+    _searchController = [WeakRetained _searchController];
 
-    if (v7 && [v7 _allowsSuggestionsMenu])
+    if (_searchController && [_searchController _allowsSuggestionsMenu])
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel__receivedKeyboardWillShowOrHideNotification_ name:@"UIKeyboardWillShowNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__receivedKeyboardWillShowOrHideNotification_ name:@"UIKeyboardWillShowNotification" object:0];
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v9 addObserver:self selector:sel__receivedKeyboardWillShowOrHideNotification_ name:@"UIKeyboardWillHideNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel__receivedKeyboardWillShowOrHideNotification_ name:@"UIKeyboardWillHideNotification" object:0];
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 addObserver:self selector:sel__receivedKeyboardDidHideNotification_ name:@"UIKeyboardDidHideNotification" object:0];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel__receivedKeyboardDidHideNotification_ name:@"UIKeyboardDidHideNotification" object:0];
     }
 
     v12.receiver = self;
     v12.super_class = UISearchTextField;
-    v5 = [(UITextField *)&v12 becomeFirstResponder];
+    becomeFirstResponder = [(UITextField *)&v12 becomeFirstResponder];
   }
 
-  return v5;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canBecomeFirstResponder
 {
   v9.receiver = self;
   v9.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v9 canBecomeFirstResponder];
+  canBecomeFirstResponder = [(UITextField *)&v9 canBecomeFirstResponder];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v5 = WeakRetained;
-  if (v3)
+  if (canBecomeFirstResponder)
   {
-    v6 = [WeakRetained _searchController];
+    _searchController = [WeakRetained _searchController];
 
-    if (v6)
+    if (_searchController)
     {
-      v7 = [v5 _searchController];
-      LOBYTE(v3) = [v7 _searchBarShouldFinalizeBecomingFirstResponder];
+      _searchController2 = [v5 _searchController];
+      LOBYTE(canBecomeFirstResponder) = [_searchController2 _searchBarShouldFinalizeBecomingFirstResponder];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(canBecomeFirstResponder) = 1;
     }
   }
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)_delegateShouldBeginEditing
 {
   v8.receiver = self;
   v8.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v8 _delegateShouldBeginEditing];
+  _delegateShouldBeginEditing = [(UITextField *)&v8 _delegateShouldBeginEditing];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v5 = WeakRetained;
-  if (v3)
+  if (_delegateShouldBeginEditing)
   {
     v6 = WeakRetained == 0;
   }
@@ -683,10 +683,10 @@ LABEL_6:
 
   if (!v6)
   {
-    LOBYTE(v3) = [WeakRetained _searchBarTextFieldShouldBeginEditing];
+    LOBYTE(_delegateShouldBeginEditing) = [WeakRetained _searchBarTextFieldShouldBeginEditing];
   }
 
-  return v3;
+  return _delegateShouldBeginEditing;
 }
 
 - (void)_becomeFirstResponder
@@ -703,8 +703,8 @@ LABEL_6:
   v4 = WeakRetained;
   if (WeakRetained && [WeakRetained centerPlaceholder])
   {
-    v5 = [(UISearchTextField *)self textInputTraits];
-    if ([v5 deferBecomingResponder])
+    textInputTraits = [(UISearchTextField *)self textInputTraits];
+    if ([textInputTraits deferBecomingResponder])
     {
       deferringFirstResponder = self->_deferringFirstResponder;
 
@@ -718,18 +718,18 @@ LABEL_6:
         aBlock[3] = &unk_1E70F35B8;
         v7 = v4;
         v13 = v7;
-        v14 = self;
+        selfCopy = self;
         v8 = _Block_copy(aBlock);
-        v9 = [v7 controller];
-        if (v9)
+        controller = [v7 controller];
+        if (controller)
         {
         }
 
         else
         {
-          v10 = [v7 _searchController];
+          _searchController = [v7 _searchController];
 
-          if (!v10)
+          if (!_searchController)
           {
             v8[2](v8);
             goto LABEL_15;
@@ -776,12 +776,12 @@ LABEL_16:
   v5.receiver = self;
   v5.super_class = UISearchTextField;
   [(UITextField *)&v5 _notifyDidBeginEditing];
-  v3 = [(UISearchTextField *)self _deferredSearchSuggestions];
-  if (v3)
+  _deferredSearchSuggestions = [(UISearchTextField *)self _deferredSearchSuggestions];
+  if (_deferredSearchSuggestions)
   {
     *(&self->_searchBarTextFieldFlags + 6) &= 0xFFCFu;
-    v4 = [(UISearchTextField *)self _suggestionController];
-    [v4 updateSuggestions:v3 userInitiated:1];
+    _suggestionController = [(UISearchTextField *)self _suggestionController];
+    [_suggestionController updateSuggestions:_deferredSearchSuggestions userInitiated:1];
 
     [(UISearchTextField *)self _setDeferredSearchSuggestions:0];
   }
@@ -791,10 +791,10 @@ LABEL_16:
 {
   v9.receiver = self;
   v9.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v9 _delegateShouldScrollToVisibleWhenBecomingFirstResponder];
+  _delegateShouldScrollToVisibleWhenBecomingFirstResponder = [(UITextField *)&v9 _delegateShouldScrollToVisibleWhenBecomingFirstResponder];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v5 = WeakRetained;
-  if (v3)
+  if (_delegateShouldScrollToVisibleWhenBecomingFirstResponder)
   {
     v6 = WeakRetained == 0;
   }
@@ -807,64 +807,64 @@ LABEL_16:
   if (!v6)
   {
     v7 = objc_loadWeakRetained(&self->_searchBar);
-    LOBYTE(v3) = [v7 _searchBarTextFieldShouldScrollToVisibleWhenBecomingFirstResponder];
+    LOBYTE(_delegateShouldScrollToVisibleWhenBecomingFirstResponder) = [v7 _searchBarTextFieldShouldScrollToVisibleWhenBecomingFirstResponder];
   }
 
-  return v3;
+  return _delegateShouldScrollToVisibleWhenBecomingFirstResponder;
 }
 
 - (BOOL)_wantsDynamicBackgroundMaterial
 {
-  v2 = self;
-  v3 = [(UIView *)v2 _typedStorage];
+  selfCopy = self;
+  _typedStorage = [(UIView *)selfCopy _typedStorage];
   v4 = sub_18901F358();
 
   return v4 & 1;
 }
 
-- (void)_setWantsDynamicBackgroundMaterial:(BOOL)a3
+- (void)_setWantsDynamicBackgroundMaterial:(BOOL)material
 {
-  v4 = self;
-  sub_18906B4B0(a3);
+  selfCopy = self;
+  sub_18906B4B0(material);
 }
 
 - (void)_updateBackgroundMaterial
 {
-  v2 = self;
+  selfCopy = self;
   sub_18906B5BC();
 }
 
 - (void)_updateScrollPocketInteraction
 {
-  v2 = self;
+  selfCopy = self;
   sub_18906B724();
 }
 
 - (_UIScrollPocketInteraction)scrollPocketInteraction
 {
-  v2 = self;
-  v3 = [(UIView *)v2 _typedStorage];
+  selfCopy = self;
+  _typedStorage = [(UIView *)selfCopy _typedStorage];
   v4 = sub_18901F3EC();
 
   return v4;
 }
 
-- (void)setScrollPocketInteraction:(id)a3
+- (void)setScrollPocketInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = self;
-  v7 = [(UIView *)v6 _typedStorage];
+  interactionCopy = interaction;
+  selfCopy = self;
+  _typedStorage = [(UIView *)selfCopy _typedStorage];
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA937088);
   v8 = swift_allocObject();
-  *(v8 + 16) = a3;
+  *(v8 + 16) = interaction;
   v9 = OBJC_IVAR____UITypedStorage_storage;
   swift_beginAccess();
-  v10 = v5;
+  v10 = interactionCopy;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
-  v12 = *(&v7->super.isa + v9);
-  *(&v7->super.isa + v9) = 0x8000000000000000;
+  v12 = *(&_typedStorage->super.isa + v9);
+  *(&_typedStorage->super.isa + v9) = 0x8000000000000000;
   sub_188A40430(v8, &_s26ScrollPocketInteractionKeyVN_2, isUniquelyReferenced_nonNull_native);
-  *(&v7->super.isa + v9) = v12;
+  *(&_typedStorage->super.isa + v9) = v12;
   swift_endAccess();
 }
 
@@ -885,33 +885,33 @@ LABEL_16:
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_searchBar);
-    v7 = [v6 _originalSearchTextFieldForClones];
+    _originalSearchTextFieldForClones = [v6 _originalSearchTextFieldForClones];
 
     v8 = objc_loadWeakRetained(&self->_searchBar);
-    v9 = [v8 _activeSearchFieldInToolbar];
+    _activeSearchFieldInToolbar = [v8 _activeSearchFieldInToolbar];
 
-    if (!v7 || v7 == self)
+    if (!_originalSearchTextFieldForClones || _originalSearchTextFieldForClones == self)
     {
-      if (!v9 || v9 == self)
+      if (!_activeSearchFieldInToolbar || _activeSearchFieldInToolbar == self)
       {
         v10 = v3;
         goto LABEL_14;
       }
 
-      v11 = [v3 stringByAppendingFormat:@" active=%p", v9];
+      v11 = [v3 stringByAppendingFormat:@" active=%p", _activeSearchFieldInToolbar];
       v10 = v3;
     }
 
     else
     {
-      v10 = [v3 stringByAppendingFormat:@" original=%p", v7];
+      v10 = [v3 stringByAppendingFormat:@" original=%p", _originalSearchTextFieldForClones];
 
-      if (!v9 || v9 == self)
+      if (!_activeSearchFieldInToolbar || _activeSearchFieldInToolbar == self)
       {
         goto LABEL_14;
       }
 
-      v11 = [v10 stringByAppendingFormat:@" WARNING: active=%p", v9];
+      v11 = [v10 stringByAppendingFormat:@" WARNING: active=%p", _activeSearchFieldInToolbar];
     }
 
     v10 = v11;
@@ -923,45 +923,45 @@ LABEL_14:
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(UITextField *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(UITextField *)self delegate];
 
   v8.receiver = self;
   v8.super_class = UISearchTextField;
-  [(UITextField *)&v8 setDelegate:v4];
+  [(UITextField *)&v8 setDelegate:delegateCopy];
 
-  v6 = [(UITextField *)self delegate];
+  delegate2 = [(UITextField *)self delegate];
   self->_searchBarTextFieldFlags.delegateImplementsItemProviderForCopyingTokens = objc_opt_respondsToSelector() & 1;
   self->_searchBarTextFieldFlags.delegateImplementsUnderscoredItemProviderForCopyingTokens = objc_opt_respondsToSelector() & 1;
-  if (v5 != v4)
+  if (delegate != delegateCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
     [WeakRetained _delegateChangedForSearchField:self];
   }
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = UISearchTextField;
-  [&v9 setAccessibilityIdentifier:v4];
+  [&v9 setAccessibilityIdentifier:identifierCopy];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__UISearchTextField_setAccessibilityIdentifier___block_invoke;
   v7[3] = &unk_1E70F8130;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   [WeakRetained _updateOriginalAndSiblingClonesOfSearchField:self updates:v7];
 }
 
-- (void)_setSearchBar:(id)a3
+- (void)_setSearchBar:(id)bar
 {
-  v4 = a3;
-  objc_storeWeak(&self->_searchBar, v4);
+  barCopy = bar;
+  objc_storeWeak(&self->_searchBar, barCopy);
   v5 = objc_opt_respondsToSelector();
 
   *&self->_searchBarTextFieldFlags = *&self->_searchBarTextFieldFlags & 0xFE | v5 & 1;
@@ -970,79 +970,79 @@ LABEL_14:
   [(_UISearchSuggestionControllerIOSBase *)suggestionController searchTextFieldDidGainSearchBar:self];
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   v9.receiver = self;
   v9.super_class = UISearchTextField;
-  [(UITextField *)&v9 _didMoveFromWindow:a3 toWindow:?];
-  v6 = [(UISearchTextField *)self _suggestionController];
-  [(UIView *)self _removeGeometryChangeObserver:v6];
+  [(UITextField *)&v9 _didMoveFromWindow:window toWindow:?];
+  _suggestionController = [(UISearchTextField *)self _suggestionController];
+  [(UIView *)self _removeGeometryChangeObserver:_suggestionController];
 
-  if (a4)
+  if (toWindow)
   {
-    v7 = [(UISearchTextField *)self _suggestionController];
-    [(UIView *)self _addGeometryChangeObserver:v7];
+    _suggestionController2 = [(UISearchTextField *)self _suggestionController];
+    [(UIView *)self _addGeometryChangeObserver:_suggestionController2];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"_UISearchTextFieldMovedToWindowNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UISearchTextFieldMovedToWindowNotification" object:self];
   }
 
   [(UISearchTextField *)self _reevaluateGlassAppearancePreferenceForBackdropStyle:self->_backdropStyle];
   [(UISearchTextField *)self _setNeedsUpdateBackgroundMaterial];
 }
 
-- (void)searchSuggestionController:(id)a3 didSelectSuggestion:(id)a4 atIndexPath:(id)a5
+- (void)searchSuggestionController:(id)controller didSelectSuggestion:(id)suggestion atIndexPath:(id)path
 {
-  v7 = a4;
-  if (self->_suggestionController == a3)
+  suggestionCopy = suggestion;
+  if (self->_suggestionController == controller)
   {
-    v12 = v7;
+    v12 = suggestionCopy;
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-    v9 = [WeakRetained _searchController];
+    _searchController = [WeakRetained _searchController];
 
-    if (v9)
+    if (_searchController)
     {
-      v10 = objc_loadWeakRetained(&self->_searchBar);
-      v11 = [v10 _searchController];
-      [v11 _searchBarTextFieldDidSelectSearchSuggestion:v12];
+      delegate = objc_loadWeakRetained(&self->_searchBar);
+      _searchController2 = [delegate _searchController];
+      [_searchController2 _searchBarTextFieldDidSelectSearchSuggestion:v12];
     }
 
     else
     {
-      v10 = [(UITextField *)self delegate];
+      delegate = [(UITextField *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v10 searchTextField:self didSelectSuggestion:v12];
+        [delegate searchTextField:self didSelectSuggestion:v12];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        [v10 _dci_searchTextField:self didSelectSuggestion:v12];
+        [delegate _dci_searchTextField:self didSelectSuggestion:v12];
       }
 
       [(UISearchTextField *)self _dci_setSearchSuggestions:0];
       *(&self->_searchBarTextFieldFlags + 6) |= 0x10u;
     }
 
-    v7 = v12;
+    suggestionCopy = v12;
   }
 }
 
-- (void)_suggestionsMenuInteractionWillEndWithAnimator:(id)a3
+- (void)_suggestionsMenuInteractionWillEndWithAnimator:(id)animator
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v6 = [WeakRetained _searchController];
+  _searchController = [WeakRetained _searchController];
 
-  if (v6)
+  if (_searchController)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:244 description:@"Should only be called on standalone searchBar or searchTextField. This is an internal UIKit bug"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:244 description:@"Should only be called on standalone searchBar or searchTextField. This is an internal UIKit bug"];
   }
 
-  v9 = [(UITextField *)self delegate];
+  delegate = [(UITextField *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 _dci_searchTextField:self willDismissSearchSuggestionsMenuWasSuggestionSelected:(*(&self->_searchBarTextFieldFlags + 6) >> 4) & 1];
+    [delegate _dci_searchTextField:self willDismissSearchSuggestionsMenuWasSuggestionSelected:(*(&self->_searchBarTextFieldFlags + 6) >> 4) & 1];
   }
 
   v7 = *(&self->_searchBarTextFieldFlags + 6);
@@ -1056,15 +1056,15 @@ LABEL_14:
 {
   v11 = searchSuggestions;
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v5 = [WeakRetained _searchController];
+  _searchController = [WeakRetained _searchController];
 
-  if (v5)
+  if (_searchController)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695D940];
     v8 = objc_loadWeakRetained(&self->_searchBar);
-    v9 = [v8 _searchController];
-    [v6 raise:v7 format:{@"Please set suggestions on the associated searchController instead. self = %@, searchController = %@", self, v9}];
+    _searchController2 = [v8 _searchController];
+    [v6 raise:v7 format:{@"Please set suggestions on the associated searchController instead. self = %@, searchController = %@", self, _searchController2}];
   }
 
   *(&self->_searchBarTextFieldFlags + 6) &= 0xFFCFu;
@@ -1076,24 +1076,24 @@ LABEL_14:
   else
   {
     [(UISearchTextField *)self _setDeferredSearchSuggestions:0];
-    v10 = [(UISearchTextField *)self _suggestionController];
-    [v10 updateSuggestions:v11 userInitiated:1];
+    _suggestionController = [(UISearchTextField *)self _suggestionController];
+    [_suggestionController updateSuggestions:v11 userInitiated:1];
   }
 }
 
 - (NSArray)searchSuggestions
 {
-  v2 = [(UISearchTextField *)self _suggestionController];
-  v3 = [v2 suggestions];
+  _suggestionController = [(UISearchTextField *)self _suggestionController];
+  suggestions = [_suggestionController suggestions];
 
-  return v3;
+  return suggestions;
 }
 
-- (id)_initWithFrame:(CGRect)a3 textLayoutManagerEnabled:(BOOL)a4 defersSearchImageConfiguration:(BOOL)a5
+- (id)_initWithFrame:(CGRect)frame textLayoutManagerEnabled:(BOOL)enabled defersSearchImageConfiguration:(BOOL)configuration
 {
   v18.receiver = self;
   v18.super_class = UISearchTextField;
-  v6 = [(UITextField *)&v18 _initWithFrame:a4 textLayoutManagerEnabled:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(UITextField *)&v18 _initWithFrame:enabled textLayoutManagerEnabled:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
@@ -1109,16 +1109,16 @@ LABEL_14:
     v13 = *(v7 + 138);
     *(v7 + 138) = v12;
 
-    v14 = [v7 font];
-    [v7 _updateDefaultLeftViewForFont:v14];
+    font = [v7 font];
+    [v7 _updateDefaultLeftViewForFont:font];
 
-    v15 = [*(v7 + 145) defaultLeftViewTintColor];
-    [*(v7 + 138) setTintColor:v15];
+    defaultLeftViewTintColor = [*(v7 + 145) defaultLeftViewTintColor];
+    [*(v7 + 138) setTintColor:defaultLeftViewTintColor];
 
     v16 = _UINSLocalizedStringWithDefaultValue(@"Search", @"Search");
     [*(v7 + 138) setLargeContentTitle:v16];
 
-    if (!a5)
+    if (!configuration)
     {
       [v7 _setMagnifyingGlassImage:0];
     }
@@ -1140,27 +1140,27 @@ LABEL_14:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = UISearchTextField;
-  [(UITextField *)&v6 encodeWithCoder:v4];
-  [v4 encodeBool:*(&self->_searchBarTextFieldFlags + 6) & 1 forKey:@"UIAllowsCopyingTokens"];
-  [v4 encodeBool:(*(&self->_searchBarTextFieldFlags + 6) >> 1) & 1 forKey:@"UIAllowsDeletingTokens"];
+  [(UITextField *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:*(&self->_searchBarTextFieldFlags + 6) & 1 forKey:@"UIAllowsCopyingTokens"];
+  [coderCopy encodeBool:(*(&self->_searchBarTextFieldFlags + 6) >> 1) & 1 forKey:@"UIAllowsDeletingTokens"];
   tokenBackgroundColor = self->_tokenBackgroundColor;
   if (tokenBackgroundColor)
   {
-    [v4 encodeObject:tokenBackgroundColor forKey:@"UITokenBackgroundColor"];
+    [coderCopy encodeObject:tokenBackgroundColor forKey:@"UITokenBackgroundColor"];
   }
 }
 
-- (UISearchTextField)initWithCoder:(id)a3
+- (UISearchTextField)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = UISearchTextField;
-  v5 = [(UITextField *)&v15 initWithCoder:v4];
+  v5 = [(UITextField *)&v15 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -1173,14 +1173,14 @@ LABEL_14:
     v6->_visualStyle = v9;
 
     CommonInit(v6);
-    if ([v4 containsValueForKey:@"UIAllowsCopyingTokens"])
+    if ([coderCopy containsValueForKey:@"UIAllowsCopyingTokens"])
     {
-      *(&v6->_searchBarTextFieldFlags + 6) = *(&v6->_searchBarTextFieldFlags + 6) & 0xFFFE | [v4 decodeBoolForKey:@"UIAllowsCopyingTokens"];
+      *(&v6->_searchBarTextFieldFlags + 6) = *(&v6->_searchBarTextFieldFlags + 6) & 0xFFFE | [coderCopy decodeBoolForKey:@"UIAllowsCopyingTokens"];
     }
 
-    if ([v4 containsValueForKey:@"UIAllowsDeletingTokens"])
+    if ([coderCopy containsValueForKey:@"UIAllowsDeletingTokens"])
     {
-      if ([v4 decodeBoolForKey:@"UIAllowsDeletingTokens"])
+      if ([coderCopy decodeBoolForKey:@"UIAllowsDeletingTokens"])
       {
         v11 = 2;
       }
@@ -1193,9 +1193,9 @@ LABEL_14:
       *(&v6->_searchBarTextFieldFlags + 6) = *(&v6->_searchBarTextFieldFlags + 6) & 0xFFFD | v11;
     }
 
-    if ([v4 containsValueForKey:@"UITokenBackgroundColor"])
+    if ([coderCopy containsValueForKey:@"UITokenBackgroundColor"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UITokenBackgroundColor"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UITokenBackgroundColor"];
       tokenBackgroundColor = v6->_tokenBackgroundColor;
       v6->_tokenBackgroundColor = v12;
     }
@@ -1204,37 +1204,37 @@ LABEL_14:
   return v6;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = UISearchTextField;
-  v4 = a3;
-  [(UITextField *)&v6 willMoveToWindow:v4];
+  windowCopy = window;
+  [(UITextField *)&v6 willMoveToWindow:windowCopy];
   v5 = [(UISearchTextField *)self _suggestionController:v6.receiver];
-  [v5 searchTextFieldWillMoveToWindow:v4];
+  [v5 searchTextFieldWillMoveToWindow:windowCopy];
 }
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(UIView *)self _focusBehavior];
-  v3 = [v2 searchBarTextFieldCanBecomeFocused];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  searchBarTextFieldCanBecomeFocused = [_focusBehavior searchBarTextFieldCanBecomeFocused];
 
-  return v3;
+  return searchBarTextFieldCanBecomeFocused;
 }
 
-- (void)_createDictationButtonForSearchBarVisualProvider:(id)a3
+- (void)_createDictationButtonForSearchBarVisualProvider:(id)provider
 {
   if (!self->_dictationButton)
   {
-    v4 = a3;
+    providerCopy = provider;
     v5 = +[UIDictationSearchButton button];
     dictationButton = self->_dictationButton;
     self->_dictationButton = v5;
 
-    v7 = [v4 colorForComponent:0 disabled:0];
+    v7 = [providerCopy colorForComponent:0 disabled:0];
     [(UIButton *)self->_dictationButton setTintColor:v7];
 
-    [(UIControl *)self->_dictationButton addTarget:v4 action:sel_dictationButtonPressed_withEvent_ forControlEvents:64];
+    [(UIControl *)self->_dictationButton addTarget:providerCopy action:sel_dictationButtonPressed_withEvent_ forControlEvents:64];
     [(UIView *)self->_dictationButton _setDisableDictationTouchCancellation:1];
     v8 = _UINSLocalizedStringWithDefaultValue(@"Dictation", @"Dictation");
     [(UIView *)self->_dictationButton setLargeContentTitle:v8];
@@ -1254,10 +1254,10 @@ LABEL_14:
 {
   v10.receiver = self;
   v10.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v10 _showsRightView];
+  _showsRightView = [(UITextField *)&v10 _showsRightView];
   v4 = *(&self->super.super.super._viewFlags + 2);
-  v5 = ((v4 & 0x400000) != 0) & v3;
-  if (v4 & 0x400000) == 0 && (v3)
+  v5 = ((v4 & 0x400000) != 0) & _showsRightView;
+  if (v4 & 0x400000) == 0 && (_showsRightView)
   {
     if (-[UITextField rightViewMode](self, "rightViewMode") == UITextFieldViewModeUnlessEditing && -[UITextField _hasDictationButton](self, "_hasDictationButton") && (-[UITextField isEditing](self, "isEditing") || (WeakRetained = objc_loadWeakRetained(&self->_searchBar), [WeakRetained _searchController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isActive"), v7, WeakRetained, v8)))
     {
@@ -1277,10 +1277,10 @@ LABEL_14:
 {
   v10.receiver = self;
   v10.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v10 _showsLeftView];
+  _showsLeftView = [(UITextField *)&v10 _showsLeftView];
   v4 = *(&self->super.super.super._viewFlags + 2);
-  v5 = ((v4 & 0x400000) == 0) & v3;
-  if (v4 & 0x400000) != 0 && (v3)
+  v5 = ((v4 & 0x400000) == 0) & _showsLeftView;
+  if (v4 & 0x400000) != 0 && (_showsLeftView)
   {
     if (-[UITextField rightViewMode](self, "rightViewMode") == UITextFieldViewModeUnlessEditing && -[UITextField _hasDictationButton](self, "_hasDictationButton") && (-[UITextField isEditing](self, "isEditing") || (WeakRetained = objc_loadWeakRetained(&self->_searchBar), [WeakRetained _searchController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isActive"), v7, WeakRetained, v8)))
     {
@@ -1296,36 +1296,36 @@ LABEL_14:
   return v5;
 }
 
-- (void)_setMagnifyingGlassImage:(id)a3
+- (void)_setMagnifyingGlassImage:(id)image
 {
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
-    v4 = [UIImage systemImageNamed:@"magnifyingglass"];
+    imageCopy = [UIImage systemImageNamed:@"magnifyingglass"];
   }
 
   magnifyingGlassImage = self->_magnifyingGlassImage;
-  self->_magnifyingGlassImage = v4;
+  self->_magnifyingGlassImage = imageCopy;
 
   [(UISearchTextField *)self _updateLeftViewForMagnifyingGlassImage];
 }
 
-- (void)_setIgnoresDynamicType:(BOOL)a3
+- (void)_setIgnoresDynamicType:(BOOL)type
 {
-  v3 = a3;
+  typeCopy = type;
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (type)
   {
     v5 = +[UIImageSymbolConfiguration unspecifiedConfiguration];
-    v6 = [v5 _configurationIgnoringDynamicType];
+    _configurationIgnoringDynamicType = [v5 _configurationIgnoringDynamicType];
   }
 
   else
   {
-    v6 = 0;
+    _configurationIgnoringDynamicType = 0;
   }
 
-  [(UIImageView *)self->_defaultLeftView _setOverridingSymbolConfiguration:v6];
+  [(UIImageView *)self->_defaultLeftView _setOverridingSymbolConfiguration:_configurationIgnoringDynamicType];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -1345,12 +1345,12 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) delegateView];
-        v13 = [v12 leadingImage];
-        [v13 _setOverridingSymbolConfiguration:v6];
+        delegateView = [*(*(&v15 + 1) + 8 * i) delegateView];
+        leadingImage = [delegateView leadingImage];
+        [leadingImage _setOverridingSymbolConfiguration:_configurationIgnoringDynamicType];
 
-        v14 = [v12 textLabel];
-        [v14 setAdjustsFontForContentSizeCategory:!v3];
+        textLabel = [delegateView textLabel];
+        [textLabel setAdjustsFontForContentSizeCategory:!typeCopy];
       }
 
       v9 = [(NSHashTable *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1360,12 +1360,12 @@ LABEL_14:
   }
 }
 
-- (void)_setBackgroundMaterialShouldBeGlass:(BOOL)a3
+- (void)_setBackgroundMaterialShouldBeGlass:(BOOL)glass
 {
   v3 = *(&self->_searchBarTextFieldFlags + 6);
-  if (((((v3 & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x80) == 0) ^ glass) & 1) == 0)
   {
-    if (a3)
+    if (glass)
     {
       v4 = 128;
     }
@@ -1380,9 +1380,9 @@ LABEL_14:
   }
 }
 
-- (void)_setClearButtonImage:(id)a3 forState:(unint64_t)a4
+- (void)_setClearButtonImage:(id)image forState:(unint64_t)state
 {
-  v15 = a3;
+  imageCopy = image;
   customClearButtons = self->_customClearButtons;
   if (!customClearButtons)
   {
@@ -1393,36 +1393,36 @@ LABEL_14:
     customClearButtons = self->_customClearButtons;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
   v10 = [(NSMutableDictionary *)customClearButtons objectForKey:v9];
 
-  if (v15)
+  if (imageCopy)
   {
-    if (v10 == v15)
+    if (v10 == imageCopy)
     {
       goto LABEL_8;
     }
 
     v11 = self->_customClearButtons;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [(NSMutableDictionary *)v11 setObject:v15 forKey:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+    [(NSMutableDictionary *)v11 setObject:imageCopy forKey:v12];
   }
 
   else
   {
     v13 = self->_customClearButtons;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
     [(NSMutableDictionary *)v13 removeObjectForKey:v12];
   }
 
-  v14 = [(UITextField *)self _clearButton];
-  [v14 setImage:0 forState:0];
+  _clearButton = [(UITextField *)self _clearButton];
+  [_clearButton setImage:0 forState:0];
 
   [(UITextField *)self _updateButtons];
 LABEL_8:
 }
 
-- (id)_clearButtonImageForState:(unint64_t)a3
+- (id)_clearButtonImageForState:(unint64_t)state
 {
   customClearButtons = self->_customClearButtons;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -1430,7 +1430,7 @@ LABEL_8:
 
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v9 = WeakRetained;
-  if (!a3 && !v7 && WeakRetained != 0)
+  if (!state && !v7 && WeakRetained != 0)
   {
     v11 = 1;
     v12 = [WeakRetained _colorForComponent:1 disabled:0];
@@ -1447,34 +1447,34 @@ LABEL_8:
       }
     }
 
-    v13 = [(UIView *)self tintColor];
-    v14 = [(UIView *)self traitCollection];
-    v7 = _GetTextFieldClearButtonWithCustomColorContrastSettings(0, v11, v12, v13, v14, 1, 0);
+    tintColor = [(UIView *)self tintColor];
+    traitCollection = [(UIView *)self traitCollection];
+    v7 = _GetTextFieldClearButtonWithCustomColorContrastSettings(0, v11, v12, tintColor, traitCollection, 1, 0);
 
     if (!_TextFieldScalesClearButton())
     {
       goto LABEL_18;
     }
 
-    v15 = [(UIView *)self traitCollection];
-    v16 = [v15 userInterfaceIdiom];
+    traitCollection2 = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-    if (v16 == 6)
+    if (userInterfaceIdiom == 6)
     {
       goto LABEL_18;
     }
 
-    v17 = [(UITextField *)self font];
-    v18 = [(UIView *)self traitCollection];
-    v19 = [v18 preferredContentSizeCategory];
-    if (UIContentSizeCategoryIsAccessibilityCategory(v19))
+    font = [(UITextField *)self font];
+    traitCollection3 = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
-      if (UIContentSizeCategoryCompareToCategory(v19, &cfstr_Uictcontentsiz_11.isa) != NSOrderedAscending)
+      if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) != NSOrderedAscending)
       {
         v20 = 1;
 LABEL_17:
 
-        v21 = [UIImageSymbolConfiguration configurationWithFont:v17 scale:v20];
+        v21 = [UIImageSymbolConfiguration configurationWithFont:font scale:v20];
         v22 = [v7 imageWithConfiguration:v21];
 
         v7 = v22;
@@ -1483,7 +1483,7 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      UIContentSizeCategoryCompareToCategory(v19, &cfstr_Uictcontentsiz_9.isa);
+      UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa);
     }
 
     v20 = 2;
@@ -1500,7 +1500,7 @@ LABEL_19:
   {
     v26.receiver = self;
     v26.super_class = UISearchTextField;
-    v23 = [(UITextField *)&v26 _clearButtonImageForState:a3];
+    v23 = [(UITextField *)&v26 _clearButtonImageForState:state];
   }
 
   v24 = v23;
@@ -1508,21 +1508,21 @@ LABEL_19:
   return v24;
 }
 
-- (void)_setOffsetValue:(id)a3 forIcon:(int64_t)a4
+- (void)_setOffsetValue:(id)value forIcon:(int64_t)icon
 {
-  v12 = a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  valueCopy = value;
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:icon];
   v7 = [(NSMutableDictionary *)self->_iconOffsets objectForKey:v6];
   v8 = v7;
-  if (v12 && v7)
+  if (valueCopy && v7)
   {
-    if ([v12 isEqualToValue:v7])
+    if ([valueCopy isEqualToValue:v7])
     {
       goto LABEL_12;
     }
   }
 
-  else if ((v12 != 0) == (v7 != 0))
+  else if ((valueCopy != 0) == (v7 != 0))
   {
     goto LABEL_12;
   }
@@ -1537,9 +1537,9 @@ LABEL_19:
     iconOffsets = self->_iconOffsets;
   }
 
-  if (v12)
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)iconOffsets setObject:v12 forKey:v6];
+    [(NSMutableDictionary *)iconOffsets setObject:valueCopy forKey:v6];
   }
 
   else
@@ -1551,22 +1551,22 @@ LABEL_19:
 LABEL_12:
 }
 
-- (id)_offsetValueForIcon:(int64_t)a3
+- (id)_offsetValueForIcon:(int64_t)icon
 {
   iconOffsets = self->_iconOffsets;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:icon];
   v5 = [(NSMutableDictionary *)iconOffsets objectForKey:v4];
 
   return v5;
 }
 
-- (void)_setSearchTextOffetValue:(id)a3
+- (void)_setSearchTextOffetValue:(id)value
 {
-  v5 = a3;
-  v6 = v5;
+  valueCopy = value;
+  v6 = valueCopy;
   searchTextOffsetValue = self->_searchTextOffsetValue;
-  v9 = v5;
-  if (!v5)
+  v9 = valueCopy;
+  if (!valueCopy)
   {
     if (!searchTextOffsetValue)
     {
@@ -1576,10 +1576,10 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (!searchTextOffsetValue || (v8 = [v5 isEqualToValue:?], v6 = v9, !v8) || !self->_searchTextOffsetValue)
+  if (!searchTextOffsetValue || (v8 = [valueCopy isEqualToValue:?], v6 = v9, !v8) || !self->_searchTextOffsetValue)
   {
 LABEL_7:
-    objc_storeStrong(&self->_searchTextOffsetValue, a3);
+    objc_storeStrong(&self->_searchTextOffsetValue, value);
     [(UITextField *)self setNeedsLayout];
     v6 = v9;
   }
@@ -1587,23 +1587,23 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_updateHelpMessageOverrideWithMessage:(id)a3
+- (void)_updateHelpMessageOverrideWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(UISearchTextField *)self _searchBar];
-  [v5 _setHelperPlaceholderOverride:v4];
+  messageCopy = message;
+  _searchBar = [(UISearchTextField *)self _searchBar];
+  [_searchBar _setHelperPlaceholderOverride:messageCopy];
 }
 
-- (CGRect)_adjustedTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4
+- (CGRect)_adjustedTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   if (UISearchBarUsesModernAppearance())
   {
     v68 = height;
@@ -1629,15 +1629,15 @@ LABEL_8:
     {
       if ([(UISearchTextField *)self _isEditingOrHasContent])
       {
-        v28 = [(UITextField *)self leftView];
+        leftView = [(UITextField *)self leftView];
         defaultLeftView = self->_defaultLeftView;
 
-        if (v28 == defaultLeftView)
+        if (leftView == defaultLeftView)
         {
           v30 = v17;
           v31 = v18;
           v32 = v19;
-          v33 = rect;
+          rectCopy = rect;
           if ((*(&self->super.super.super._viewFlags + 18) & 0x40) != 0)
           {
             MaxX = CGRectGetMaxX(*&v30);
@@ -1750,8 +1750,8 @@ LABEL_8:
 
   if ([(UIControl *)self contentVerticalAlignment]== UIControlContentVerticalAlignmentTop)
   {
-    v54 = [(UITextField *)self font];
-    [v54 lineHeight];
+    font = [(UITextField *)self font];
+    [font lineHeight];
     v56 = round(v21 + height * 0.5 - v55 * 0.5);
 
     [(UIView *)self _currentScreenScale];
@@ -1792,7 +1792,7 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
   v8.receiver = self;
   v8.super_class = UISearchTextField;
@@ -1805,7 +1805,7 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
   v8.receiver = self;
   v8.super_class = UISearchTextField;
@@ -1820,9 +1820,9 @@ LABEL_8:
 
 - (void)_updateColorForMagnifyingGlass
 {
-  v3 = [(UISearchTextField *)self _hasContent];
+  _hasContent = [(UISearchTextField *)self _hasContent];
   visualStyle = self->_visualStyle;
-  if (v3)
+  if (_hasContent)
   {
     [(_UISearchTextFieldVisualStyle *)visualStyle filledLeftViewTintColor];
   }
@@ -1845,12 +1845,12 @@ LABEL_8:
   return [(UISearchTextField *)self _hasContent];
 }
 
-- (CGRect)_adjustmentsForSearchIconViewRectForBounds:(CGRect)a3
+- (CGRect)_adjustmentsForSearchIconViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_UISearchTextFieldVisualStyle *)self->_visualStyle leftViewInset];
   v9 = v8;
   v10 = *(&self->super.super.super._viewFlags + 2);
@@ -1863,13 +1863,13 @@ LABEL_8:
 
   else
   {
-    v31 = self;
+    selfCopy = self;
     v11 = &selRef_leftViewRectForBounds_;
-    v12 = &v31;
+    v12 = &selfCopy;
   }
 
   v12->super_class = UISearchTextField;
-  objc_msgSendSuper2(v12, *v11, x, y, width, height, v31);
+  objc_msgSendSuper2(v12, *v11, x, y, width, height, selfCopy);
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1901,16 +1901,16 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
   if ((*(&self->super.super.super._viewFlags + 18) & 0x40) != 0)
   {
-    [(UISearchTextField *)self _bookmarkViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UISearchTextField *)self _bookmarkViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   }
 
   else
   {
-    [(UISearchTextField *)self _searchIconViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UISearchTextField *)self _searchIconViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   }
 
   result.size.height = v6;
@@ -1920,16 +1920,16 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
   if ((*(&self->super.super.super._viewFlags + 18) & 0x40) != 0)
   {
-    [(UISearchTextField *)self _searchIconViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UISearchTextField *)self _searchIconViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   }
 
   else
   {
-    [(UISearchTextField *)self _bookmarkViewRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UISearchTextField *)self _bookmarkViewRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   }
 
   result.size.height = v6;
@@ -1939,12 +1939,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_searchIconViewRectForBounds:(CGRect)a3
+- (CGRect)_searchIconViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UISearchTextField *)self _adjustmentsForSearchIconViewRectForBounds:?];
   v9 = v8;
   v11 = v10;
@@ -1972,9 +1972,9 @@ LABEL_8:
       v53.size.width = v36;
       v53.size.height = v37;
       MaxX = CGRectGetMaxX(v53);
-      v39 = [(UITextField *)self _placeholderLabel];
-      v40 = [v39 text];
-      v41 = [v40 length];
+      _placeholderLabel = [(UITextField *)self _placeholderLabel];
+      text = [_placeholderLabel text];
+      v41 = [text length];
 
       v29 = -1.0;
       if (v41)
@@ -2034,12 +2034,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_bookmarkViewRectForBounds:(CGRect)a3
+- (CGRect)_bookmarkViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_UISearchTextFieldVisualStyle *)self->_visualStyle rightViewInset];
   v9 = v8;
   [(_UISearchTextFieldVisualStyle *)self->_visualStyle rightViewInset];
@@ -2054,13 +2054,13 @@ LABEL_8:
 
   else
   {
-    v41 = self;
+    selfCopy = self;
     v13 = &selRef_rightViewRectForBounds_;
-    v14 = &v41;
+    v14 = &selfCopy;
   }
 
   v14->super_class = UISearchTextField;
-  objc_msgSendSuper2(v14, *v13, x, y, width, height, v41);
+  objc_msgSendSuper2(v14, *v13, x, y, width, height, selfCopy);
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -2155,12 +2155,12 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)clearButtonRectForBounds:(CGRect)a3
+- (CGRect)clearButtonRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v54.receiver = self;
   v54.super_class = UISearchTextField;
   [(UITextField *)&v54 clearButtonRectForBounds:?];
@@ -2168,10 +2168,10 @@ LABEL_8:
   v11 = v10;
   v13 = v12;
   v48 = v14;
-  v15 = [(UIView *)self traitCollection];
-  v16 = [v15 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v16 != 6)
+  if (userInterfaceIdiom != 6)
   {
     [(UIView *)self _currentScreenScale];
     if (v17 > 1.0)
@@ -2189,10 +2189,10 @@ LABEL_8:
     }
   }
 
-  v21 = [(UIView *)self traitCollection];
-  v22 = [v21 userInterfaceIdiom];
+  traitCollection2 = [(UIView *)self traitCollection];
+  userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-  if (v22 == 5)
+  if (userInterfaceIdiom2 == 5)
   {
     if ((*(&self->super.super.super._viewFlags + 18) & 0x40) == 0)
     {
@@ -2220,9 +2220,9 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v29 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
+    clearButtonInnerInset = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
 
-    if (!v29)
+    if (!clearButtonInnerInset)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -2245,8 +2245,8 @@ LABEL_8:
       }
     }
 
-    v30 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
-    [v30 floatValue];
+    clearButtonInnerInset2 = [(_UISearchTextFieldVisualStyle *)self->_visualStyle clearButtonInnerInset];
+    [clearButtonInnerInset2 floatValue];
 
     v57.origin.x = x;
     v57.origin.y = y;
@@ -2303,16 +2303,16 @@ LABEL_12:
   }
 
   v5 = WeakRetained;
-  v6 = [v5 _searchController];
-  if (!v6)
+  _searchController = [v5 _searchController];
+  if (!_searchController)
   {
-    v9 = [v5 controller];
-    if (v9)
+    controller = [v5 controller];
+    if (controller)
     {
-      v10 = v9;
-      v11 = [v9 isActive];
+      v10 = controller;
+      isActive = [controller isActive];
 
-      if (!v11)
+      if (!isActive)
       {
         goto LABEL_7;
       }
@@ -2325,23 +2325,23 @@ LABEL_12:
 LABEL_9:
     v14.receiver = self;
     v14.super_class = UISearchTextField;
-    v12 = [(UIView *)&v14 _becomeFirstResponderWhenPossible];
+    _becomeFirstResponderWhenPossible = [(UIView *)&v14 _becomeFirstResponderWhenPossible];
     goto LABEL_10;
   }
 
-  v7 = v6;
-  v8 = [v6 isActive];
+  v7 = _searchController;
+  isActive2 = [_searchController isActive];
 
-  if (v8)
+  if (isActive2)
   {
     goto LABEL_9;
   }
 
 LABEL_7:
-  v12 = 0;
+  _becomeFirstResponderWhenPossible = 0;
 LABEL_10:
 
-  return v12;
+  return _becomeFirstResponderWhenPossible;
 }
 
 - (BOOL)_shouldSendContentChangedNotificationsIfOnlyMarkedTextChanged
@@ -2349,9 +2349,9 @@ LABEL_10:
   if (*&self->_searchBarTextFieldFlags)
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-    v6 = [WeakRetained _shouldSendContentChangedNotificationsIfOnlyMarkedTextChanged];
+    _shouldSendContentChangedNotificationsIfOnlyMarkedTextChanged = [WeakRetained _shouldSendContentChangedNotificationsIfOnlyMarkedTextChanged];
 
-    LOBYTE(v2) = v6;
+    LOBYTE(v2) = _shouldSendContentChangedNotificationsIfOnlyMarkedTextChanged;
   }
 
   else
@@ -2402,11 +2402,11 @@ LABEL_10:
   return v2;
 }
 
-- (CGRect)_availableTextRectForBounds:(CGRect)a3 forEditing:(BOOL)a4
+- (CGRect)_availableTextRectForBounds:(CGRect)bounds forEditing:(BOOL)editing
 {
   v22.receiver = self;
   v22.super_class = UISearchTextField;
-  [(UITextField *)&v22 _availableTextRectForBounds:a4 forEditing:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UITextField *)&v22 _availableTextRectForBounds:editing forEditing:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2459,12 +2459,12 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(UISearchTextField *)self _shouldCenterPlaceholder])
   {
     [(UITextField *)self _availableTextRectExcludingButtonsForBounds:x, y, width, height];
@@ -2483,9 +2483,9 @@ LABEL_10:
       v15 = v17 + v18 * 0.5;
     }
 
-    v19 = [(UITextField *)self _placeholderLabel];
+    _placeholderLabel = [(UITextField *)self _placeholderLabel];
     v20 = v12 - (v15 + v15);
-    [v19 sizeThatFits:{v20, v14}];
+    [_placeholderLabel sizeThatFits:{v20, v14}];
     if (v21 <= v20)
     {
       v20 = v21;
@@ -2511,8 +2511,8 @@ LABEL_10:
     v30 = v34;
     v36 = v35;
     v32 = v37;
-    v38 = [(UITextField *)self _placeholderLabel];
-    [v38 sizeThatFits:{v36, v32}];
+    _placeholderLabel2 = [(UITextField *)self _placeholderLabel];
+    [_placeholderLabel2 sizeThatFits:{v36, v32}];
     if (v39 <= v36)
     {
       v20 = v39;
@@ -2546,13 +2546,13 @@ LABEL_10:
   return result;
 }
 
-- (void)_reevaluateGlassAppearancePreferenceForBackdropStyle:(int64_t)a3
+- (void)_reevaluateGlassAppearancePreferenceForBackdropStyle:(int64_t)style
 {
   v5 = _UISolariumEnabled();
-  if (a3 == 2005 && v5 && [(UITextField *)self borderStyle]== UITextBorderStyleRoundedRect)
+  if (style == 2005 && v5 && [(UITextField *)self borderStyle]== UITextBorderStyleRoundedRect)
   {
-    v6 = [(UIView *)self traitCollection];
-    -[UISearchTextField _setWantsDynamicBackgroundMaterial:](self, "_setWantsDynamicBackgroundMaterial:", [v6 userInterfaceIdiom] != 6);
+    traitCollection = [(UIView *)self traitCollection];
+    -[UISearchTextField _setWantsDynamicBackgroundMaterial:](self, "_setWantsDynamicBackgroundMaterial:", [traitCollection userInterfaceIdiom] != 6);
   }
 
   else
@@ -2562,85 +2562,85 @@ LABEL_10:
   }
 }
 
-- (void)_updateBackgroundView:(id)a3 withStyle:(int64_t)a4 filter:(id)a5
+- (void)_updateBackgroundView:(id)view withStyle:(int64_t)style filter:(id)filter
 {
   v7 = MEMORY[0x1E6979378];
-  v10 = a3;
-  v8 = [v7 filterWithType:a5];
-  v9 = [v10 layer];
-  [v9 setCompositingFilter:v8];
+  viewCopy = view;
+  v8 = [v7 filterWithType:filter];
+  layer = [viewCopy layer];
+  [layer setCompositingFilter:v8];
 
-  [v10 setSearchBarStyle:a4];
+  [viewCopy setSearchBarStyle:style];
 }
 
-- (id)_createEffectsBackgroundViewWithStyle:(int64_t)a3 applyFilter:(id)a4
+- (id)_createEffectsBackgroundViewWithStyle:(int64_t)style applyFilter:(id)filter
 {
-  v6 = a4;
-  v7 = [(UITextField *)self _systemBackgroundView];
+  filterCopy = filter;
+  _systemBackgroundView = [(UITextField *)self _systemBackgroundView];
   v8 = [_UISearchBarSearchFieldBackgroundView alloc];
-  [v7 bounds];
+  [_systemBackgroundView bounds];
   v13 = [(_UISearchBarSearchFieldBackgroundView *)v8 initWithFrame:[(UIControl *)self isEnabled] active:0 updateView:v9, v10, v11, v12];
-  [v7 cornerRadius];
+  [_systemBackgroundView cornerRadius];
   [(_UISearchBarSearchFieldBackgroundView *)v13 setCornerRadius:?];
-  [(UISearchTextField *)self _updateBackgroundView:v13 withStyle:a3 filter:v6];
+  [(UISearchTextField *)self _updateBackgroundView:v13 withStyle:style filter:filterCopy];
 
-  -[_UISearchBarSearchFieldBackgroundView setBarStyle:](v13, "setBarStyle:", [v7 barStyle]);
-  [v7 addSubview:v13];
+  -[_UISearchBarSearchFieldBackgroundView setBarStyle:](v13, "setBarStyle:", [_systemBackgroundView barStyle]);
+  [_systemBackgroundView addSubview:v13];
 
   return v13;
 }
 
-- (void)_setAnimatesBackgroundCornerRadius:(BOOL)a3
+- (void)_setAnimatesBackgroundCornerRadius:(BOOL)radius
 {
-  v3 = a3;
+  radiusCopy = radius;
   [(_UITextFieldRoundedRectBackgroundViewNeue *)self->_effectBackgroundTop setHasFlexibleCornerRadius:?];
   effectBackgroundBottom = self->_effectBackgroundBottom;
 
-  [(_UITextFieldRoundedRectBackgroundViewNeue *)effectBackgroundBottom setHasFlexibleCornerRadius:v3];
+  [(_UITextFieldRoundedRectBackgroundViewNeue *)effectBackgroundBottom setHasFlexibleCornerRadius:radiusCopy];
 }
 
-- (void)_setBackgroundViewsAlpha:(double)a3
+- (void)_setBackgroundViewsAlpha:(double)alpha
 {
   [(UIView *)self->_effectBackgroundTop setAlpha:?];
   effectBackgroundBottom = self->_effectBackgroundBottom;
 
-  [(UIView *)effectBackgroundBottom setAlpha:a3];
+  [(UIView *)effectBackgroundBottom setAlpha:alpha];
 }
 
-- (void)_highlightedDidChangeAnimated:(BOOL)a3
+- (void)_highlightedDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = UISearchTextField;
   [(UITextField *)&v5 _highlightedDidChangeAnimated:?];
-  [(UISearchTextField *)self __highlightedDidChangeAnimated:v3];
+  [(UISearchTextField *)self __highlightedDidChangeAnimated:animatedCopy];
 }
 
-- (void)_applyHighlightedAnimated:(BOOL)a3
+- (void)_applyHighlightedAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = UISearchTextField;
   [(UITextField *)&v5 _applyHighlightedAnimated:?];
-  [(UISearchTextField *)self __highlightedDidChangeAnimated:v3];
+  [(UISearchTextField *)self __highlightedDidChangeAnimated:animatedCopy];
 }
 
-- (void)__highlightedDidChangeAnimated:(BOOL)a3
+- (void)__highlightedDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIControl *)self isHighlighted];
+  animatedCopy = animated;
+  isHighlighted = [(UIControl *)self isHighlighted];
   v6 = 0.3;
   v7[1] = 3221225472;
   v7[0] = MEMORY[0x1E69E9820];
   v7[2] = __52__UISearchTextField___highlightedDidChangeAnimated___block_invoke;
   v7[3] = &unk_1E70F35E0;
-  if (!v3)
+  if (!animatedCopy)
   {
     v6 = 0.0;
   }
 
   v7[4] = self;
-  v8 = v5;
+  v8 = isHighlighted;
   [UIView animateWithDuration:v7 animations:v6];
 }
 
@@ -2655,16 +2655,16 @@ uint64_t __52__UISearchTextField___highlightedDidChangeAnimated___block_invoke(u
   return [v3 setShowingCursor:v2];
 }
 
-- (void)_setNeedsUpdateForBackdropStyle:(int64_t)a3
+- (void)_setNeedsUpdateForBackdropStyle:(int64_t)style
 {
-  self->_backdropStyle = a3;
+  self->_backdropStyle = style;
   *(&self->_searchBarTextFieldFlags + 6) |= 0x200u;
   [(UIView *)self setNeedsUpdateProperties];
 }
 
-- (void)updateForBackdropStyle:(int64_t)a3
+- (void)updateForBackdropStyle:(int64_t)style
 {
-  self->_backdropStyle = a3;
+  self->_backdropStyle = style;
   *(&self->_searchBarTextFieldFlags + 6) &= ~0x200u;
   [(UISearchTextField *)self _updateForBackdropStyle];
 }
@@ -2672,10 +2672,10 @@ uint64_t __52__UISearchTextField___highlightedDidChangeAnimated___block_invoke(u
 - (void)_updateForBackdropStyle
 {
   backdropStyle = self->_backdropStyle;
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 != 3)
+  if (userInterfaceIdiom != 3)
   {
     switch(backdropStyle)
     {
@@ -2689,7 +2689,7 @@ uint64_t __52__UISearchTextField___highlightedDidChangeAnimated___block_invoke(u
         }
 
         v13 = *MEMORY[0x1E6979CE8];
-        v10 = self;
+        selfCopy4 = self;
         if (self->_effectBackgroundTop)
         {
           goto LABEL_12;
@@ -2708,15 +2708,15 @@ uint64_t __52__UISearchTextField___highlightedDidChangeAnimated___block_invoke(u
 
         if (self->_effectBackgroundTop)
         {
-          v10 = self;
+          selfCopy4 = self;
           goto LABEL_12;
         }
 
-        v10 = self;
+        selfCopy4 = self;
         v15 = 2005;
         v16 = 0;
 LABEL_21:
-        v17 = [(UISearchTextField *)v10 _createEffectsBackgroundViewWithStyle:v15 applyFilter:v16];
+        v17 = [(UISearchTextField *)selfCopy4 _createEffectsBackgroundViewWithStyle:v15 applyFilter:v16];
         effectBackgroundTop = self->_effectBackgroundTop;
         self->_effectBackgroundTop = v17;
         goto LABEL_22;
@@ -2735,11 +2735,11 @@ LABEL_21:
         }
 
         v13 = *MEMORY[0x1E6979CF8];
-        v10 = self;
+        selfCopy4 = self;
         if (self->_effectBackgroundTop)
         {
 LABEL_12:
-          [UISearchTextField _updateBackgroundView:v10 withStyle:"_updateBackgroundView:withStyle:filter:" filter:?];
+          [UISearchTextField _updateBackgroundView:selfCopy4 withStyle:"_updateBackgroundView:withStyle:filter:" filter:?];
           goto LABEL_23;
         }
 
@@ -2830,24 +2830,24 @@ LABEL_23:
   self->_effectBackgroundBottom = 0;
 }
 
-- (void)setBorderStyle:(int64_t)a3
+- (void)setBorderStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = UISearchTextField;
-  [(UITextField *)&v4 setBorderStyle:a3];
+  [(UITextField *)&v4 setBorderStyle:style];
   [(UISearchTextField *)self _reevaluateGlassAppearancePreferenceForBackdropStyle:self->_backdropStyle];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v6.receiver = self;
   v6.super_class = UISearchTextField;
-  [(UITextField *)&v6 setText:v4];
+  [(UITextField *)&v6 setText:textCopy];
   if (dyld_program_sdk_at_least() && (*(&self->_searchBarTextFieldFlags + 6) & 0x100) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-    [WeakRetained _updateForNewText:v4 inSearchField:self];
+    [WeakRetained _updateForNewText:textCopy inSearchField:self];
   }
 }
 
@@ -2907,18 +2907,18 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
 
 - (void)_cleanUpKeyboardHideAndShowNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardWillShowNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"UIKeyboardWillHideNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"UIKeyboardWillHideNotification" object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"UIKeyboardDidHideNotification" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"UIKeyboardDidHideNotification" object:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v6 = [WeakRetained _searchController];
-  [v6 _stopDeferringSearchSuggestionsWithReason:7 postDeferralAction:0];
+  _searchController = [WeakRetained _searchController];
+  [_searchController _stopDeferringSearchSuggestionsWithReason:7 postDeferralAction:0];
 }
 
 - (BOOL)_finishResignFirstResponder
@@ -2933,18 +2933,18 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
 {
   v12.receiver = self;
   v12.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v12 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(UITextField *)&v12 resignFirstResponder];
+  if (resignFirstResponder)
   {
     if (self->_animatePlaceholderOnResignFirstResponder)
     {
-      v4 = [(UISearchTextField *)self text];
-      v5 = [v4 length];
+      text = [(UISearchTextField *)self text];
+      v5 = [text length];
 
       if (v5)
       {
-        v6 = [(UISearchTextField *)self textInputTraits];
-        v7 = v6;
+        textInputTraits = [(UISearchTextField *)self textInputTraits];
+        v7 = textInputTraits;
         v8 = 0;
       }
 
@@ -2957,12 +2957,12 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
         v11[4] = self;
         [(UISearchTextField *)self _animateForFirstResponderChangeWithAnimations:v11];
         self->_animatePlaceholderOnResignFirstResponder = 0;
-        v6 = [(UISearchTextField *)self textInputTraits];
-        v7 = v6;
+        textInputTraits = [(UISearchTextField *)self textInputTraits];
+        v7 = textInputTraits;
         v8 = 1;
       }
 
-      [v6 setDeferBecomingResponder:v8];
+      [textInputTraits setDeferBecomingResponder:v8];
     }
 
     else if ([(UISearchTextField *)self _shouldHideMagnifyingGlassWhenEditingOrHasContent]&& ![(UISearchTextField *)self _hasContent])
@@ -2979,17 +2979,17 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
     *(&self->_searchBarTextFieldFlags + 6) &= ~8u;
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
   v8.receiver = self;
   v8.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v8 canResignFirstResponder];
+  canResignFirstResponder = [(UITextField *)&v8 canResignFirstResponder];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v5 = WeakRetained;
-  if (v3)
+  if (canResignFirstResponder)
   {
     v6 = WeakRetained == 0;
   }
@@ -3001,21 +3001,21 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
 
   if (!v6)
   {
-    v3 = [WeakRetained _transplanting] ^ 1;
+    canResignFirstResponder = [WeakRetained _transplanting] ^ 1;
   }
 
-  return v3;
+  return canResignFirstResponder;
 }
 
-- (void)_searchBarCancelButtonClicked:(id)a3
+- (void)_searchBarCancelButtonClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v6 = [WeakRetained _searchController];
+  _searchController = [WeakRetained _searchController];
 
-  if (v6)
+  if (_searchController)
   {
     v5 = objc_loadWeakRetained(&self->_searchBar);
-    [v6 _searchBarCancelButtonClicked:v5];
+    [_searchController _searchBarCancelButtonClicked:v5];
   }
 }
 
@@ -3023,10 +3023,10 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
 {
   v9.receiver = self;
   v9.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v9 _delegateShouldEndEditing];
+  _delegateShouldEndEditing = [(UITextField *)&v9 _delegateShouldEndEditing];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v5 = WeakRetained;
-  if (v3)
+  if (_delegateShouldEndEditing)
   {
     v6 = WeakRetained == 0;
   }
@@ -3039,20 +3039,20 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
   if (!v6)
   {
     v7 = objc_loadWeakRetained(&self->_searchBar);
-    LOBYTE(v3) = [v7 _searchBarTextFieldShouldEndEditing];
+    LOBYTE(_delegateShouldEndEditing) = [v7 _searchBarTextFieldShouldEndEditing];
   }
 
-  return v3;
+  return _delegateShouldEndEditing;
 }
 
 - (BOOL)_delegateShouldClear
 {
   v8.receiver = self;
   v8.super_class = UISearchTextField;
-  v3 = [(UITextField *)&v8 _delegateShouldClear];
+  _delegateShouldClear = [(UITextField *)&v8 _delegateShouldClear];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v5 = WeakRetained;
-  if (v3)
+  if (_delegateShouldClear)
   {
     v6 = WeakRetained == 0;
   }
@@ -3064,19 +3064,19 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
 
   if (!v6)
   {
-    LOBYTE(v3) = [WeakRetained _searchBarTextFieldShouldClear];
+    LOBYTE(_delegateShouldClear) = [WeakRetained _searchBarTextFieldShouldClear];
   }
 
-  return v3;
+  return _delegateShouldClear;
 }
 
-- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)a3 replacementString:(id)a4 delegateCares:(BOOL *)a5
+- (BOOL)_delegateShouldChangeCharactersInTextStorageRanges:(id)ranges replacementString:(id)string delegateCares:(BOOL *)cares
 {
-  v8 = a3;
-  v9 = a4;
+  rangesCopy = ranges;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = UISearchTextField;
-  v10 = [(UITextField *)&v15 _delegateShouldChangeCharactersInTextStorageRanges:v8 replacementString:v9 delegateCares:a5];
+  v10 = [(UITextField *)&v15 _delegateShouldChangeCharactersInTextStorageRanges:rangesCopy replacementString:stringCopy delegateCares:cares];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v12 = WeakRetained;
   if (v10)
@@ -3091,46 +3091,46 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
 
   if (!v13)
   {
-    LOBYTE(v10) = [WeakRetained _searchBarTextFieldShouldChangeCharactersInRanges:v8 replacementString:v9];
+    LOBYTE(v10) = [WeakRetained _searchBarTextFieldShouldChangeCharactersInRanges:rangesCopy replacementString:stringCopy];
   }
 
   return v10;
 }
 
-- (double)_placeholderLabelAlphaForForegroundViewsAlpha:(double)a3
+- (double)_placeholderLabelAlphaForForegroundViewsAlpha:(double)alpha
 {
-  v4 = [(UIControl *)self isEnabled];
-  result = a3 * 0.35;
-  if (v4)
+  isEnabled = [(UIControl *)self isEnabled];
+  result = alpha * 0.35;
+  if (isEnabled)
   {
-    return a3;
+    return alpha;
   }
 
   return result;
 }
 
-- (void)_setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v24.receiver = self;
   v24.super_class = UISearchTextField;
   [UITextField _setEnabled:sel__setEnabled_animated_ animated:?];
-  v7 = [(UITextField *)self _placeholderLabel];
-  v8 = [(UISearchTextField *)self _placeholderColor];
-  [v7 setTextColor:v8];
+  _placeholderLabel = [(UITextField *)self _placeholderLabel];
+  _placeholderColor = [(UISearchTextField *)self _placeholderColor];
+  [_placeholderLabel setTextColor:_placeholderColor];
 
   v9 = 0.35;
-  if (v5)
+  if (enabledCopy)
   {
     v9 = 1.0;
   }
 
-  [v7 setAlpha:v9];
+  [_placeholderLabel setAlpha:v9];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v11 = WeakRetained;
   if (WeakRetained)
   {
-    if (v5)
+    if (enabledCopy)
     {
       [WeakRetained _textColor];
     }
@@ -3143,31 +3143,31 @@ void __42__UISearchTextField__becomeFirstResponder__block_invoke(uint64_t a1)
     [(UITextField *)self setTextColor:v12];
   }
 
-  v13 = [(UITextField *)self rightView];
-  if (v13)
+  rightView = [(UITextField *)self rightView];
+  if (rightView)
   {
-    v14 = v13;
-    v15 = [(UITextField *)self rightView];
+    v14 = rightView;
+    rightView2 = [(UITextField *)self rightView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v17 = [(UITextField *)self rightView];
-      [v17 setEnabled:v5];
+      rightView3 = [(UITextField *)self rightView];
+      [rightView3 setEnabled:enabledCopy];
     }
   }
 
-  v18 = [(UITextField *)self textStorage];
+  textStorage = [(UITextField *)self textStorage];
   v19 = *off_1E70EC8C8;
-  v20 = [v18 length];
+  v20 = [textStorage length];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __42__UISearchTextField__setEnabled_animated___block_invoke;
   v21[3] = &__block_descriptor_34_e53_v40__0___UISearchTokenAttachment_8__NSRange_QQ_16_B32l;
-  v22 = v5;
-  v23 = a4;
-  [v18 enumerateAttribute:v19 inRange:0 options:v20 usingBlock:{0, v21}];
+  v22 = enabledCopy;
+  animatedCopy = animated;
+  [textStorage enumerateAttribute:v19 inRange:0 options:v20 usingBlock:{0, v21}];
   [(UISearchTextField *)self _setNeedsUpdateBackgroundMaterial];
 }
 
@@ -3184,39 +3184,39 @@ void __42__UISearchTextField__setEnabled_animated___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_setBottomEffectBackgroundVisible:(BOOL)a3
+- (void)_setBottomEffectBackgroundVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if ([(_UISearchBarSearchFieldBackgroundView *)self->_effectBackgroundBottom searchBarStyle]== 2)
   {
     effectBackgroundBottom = self->_effectBackgroundBottom;
 
-    [(UIView *)effectBackgroundBottom setHidden:!v3];
+    [(UIView *)effectBackgroundBottom setHidden:!visibleCopy];
   }
 }
 
-- (void)_defaultInsertTextSuggestion:(id)a3
+- (void)_defaultInsertTextSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v6 = [(UISearchTextField *)self textualRange];
-  v5 = [v4 inputText];
+  suggestionCopy = suggestion;
+  textualRange = [(UISearchTextField *)self textualRange];
+  inputText = [suggestionCopy inputText];
 
-  [(UISearchTextField *)self replaceRange:v6 withText:v5];
+  [(UISearchTextField *)self replaceRange:textualRange withText:inputText];
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained insertTextSuggestion:v4];
+    [WeakRetained insertTextSuggestion:suggestionCopy];
   }
 
   else
   {
-    [(UISearchTextField *)self _defaultInsertTextSuggestion:v4];
+    [(UISearchTextField *)self _defaultInsertTextSuggestion:suggestionCopy];
   }
 }
 
@@ -3227,18 +3227,18 @@ void __42__UISearchTextField__setEnabled_animated___block_invoke(uint64_t a1, vo
   return [(UITextField *)&v3 _shouldOverrideEditingFont];
 }
 
-- (BOOL)_scalesMagnifyingGlassForDynamicTypeWithFont:(id)a3
+- (BOOL)_scalesMagnifyingGlassForDynamicTypeWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   if ([(UISearchTextField *)self _supportsDynamicType])
   {
-    v5 = [v4 fontDescriptor];
-    v6 = [v5 objectForKey:*off_1E70ECCB8];
+    fontDescriptor = [fontCopy fontDescriptor];
+    v6 = [fontDescriptor objectForKey:*off_1E70ECCB8];
 
-    v7 = [v4 textStyleForScaling];
-    if (v7)
+    textStyleForScaling = [fontCopy textStyleForScaling];
+    if (textStyleForScaling)
     {
-      v8 = v7;
+      v8 = textStyleForScaling;
     }
 
     else
@@ -3257,26 +3257,26 @@ void __42__UISearchTextField__setEnabled_animated___block_invoke(uint64_t a1, vo
   return v9;
 }
 
-- (void)_updateDefaultLeftViewForFont:(id)a3
+- (void)_updateDefaultLeftViewForFont:(id)font
 {
-  v9 = a3;
+  fontCopy = font;
   v4 = [(UISearchTextField *)self _scalesMagnifyingGlassForDynamicTypeWithFont:?];
   if (!v4)
   {
-    v8 = [UIImageSymbolConfiguration configurationWithFont:v9];
+    v8 = [UIImageSymbolConfiguration configurationWithFont:fontCopy];
     goto LABEL_9;
   }
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  if (!UIContentSizeCategoryIsAccessibilityCategory(v6))
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (!UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     goto LABEL_7;
   }
 
-  if (UIContentSizeCategoryCompareToCategory(v6, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_11.isa) == NSOrderedAscending)
   {
-    UIContentSizeCategoryCompareToCategory(v6, &cfstr_Uictcontentsiz_9.isa);
+    UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, &cfstr_Uictcontentsiz_9.isa);
 LABEL_7:
     v7 = 2;
     goto LABEL_8;
@@ -3285,20 +3285,20 @@ LABEL_7:
   v7 = 1;
 LABEL_8:
 
-  v8 = [UIImageSymbolConfiguration configurationWithFont:v9 scale:v7];
+  v8 = [UIImageSymbolConfiguration configurationWithFont:fontCopy scale:v7];
 
 LABEL_9:
   [(UIImageView *)self->_defaultLeftView setPreferredSymbolConfiguration:v8];
   [(UIView *)self->_defaultLeftView setShowsLargeContentViewer:!v4];
 }
 
-- (void)_didSetFont:(id)a3
+- (void)_didSetFont:(id)font
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fontCopy = font;
   v17.receiver = self;
   v17.super_class = UISearchTextField;
-  [(UITextField *)&v17 _didSetFont:v4];
+  [(UITextField *)&v17 _didSetFont:fontCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -3319,8 +3319,8 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) delegateView];
-        [v10 setAtomFont:v4];
+        delegateView = [*(*(&v13 + 1) + 8 * v9) delegateView];
+        [delegateView setAtomFont:fontCopy];
 
         ++v9;
       }
@@ -3332,12 +3332,12 @@ LABEL_9:
     while (v7);
   }
 
-  [(UISearchTextField *)self _updateDefaultLeftViewForFont:v4];
+  [(UISearchTextField *)self _updateDefaultLeftViewForFont:fontCopy];
   if ([(UISearchTextField *)self _ignoresDynamicType])
   {
     v11 = +[UIImageSymbolConfiguration unspecifiedConfiguration];
-    v12 = [v11 _configurationIgnoringDynamicType];
-    [(UIImageView *)self->_defaultLeftView _setOverridingSymbolConfiguration:v12];
+    _configurationIgnoringDynamicType = [v11 _configurationIgnoringDynamicType];
+    [(UIImageView *)self->_defaultLeftView _setOverridingSymbolConfiguration:_configurationIgnoringDynamicType];
   }
 
   else
@@ -3352,12 +3352,12 @@ LABEL_9:
   }
 }
 
-- (void)_setAlwaysHidesMagnifyingGlassForAccessibilityContentSizeCategory:(BOOL)a3
+- (void)_setAlwaysHidesMagnifyingGlassForAccessibilityContentSizeCategory:(BOOL)category
 {
   v3 = *(&self->_searchBarTextFieldFlags + 6);
-  if (((((v3 & 4) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 4) == 0) ^ category) & 1) == 0)
   {
-    if (a3)
+    if (category)
     {
       v4 = 4;
     }
@@ -3372,15 +3372,15 @@ LABEL_9:
   }
 }
 
-- (void)didAddTextAttachmentViews:(id)a3
+- (void)didAddTextAttachmentViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [viewsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3392,7 +3392,7 @@ LABEL_9:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -3408,22 +3408,22 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [viewsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)didRemoveTextAttachmentViews:(id)a3
+- (void)didRemoveTextAttachmentViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [viewsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3435,7 +3435,7 @@ LABEL_9:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -3451,33 +3451,33 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [viewsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)didLayoutTextAttachmentView:(id)a3 inFragmentRect:(CGRect)a4
+- (void)didLayoutTextAttachmentView:(id)view inFragmentRect:(CGRect)rect
 {
-  v31 = a3;
+  viewCopy = view;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = v31;
+  v7 = viewCopy;
   if (isKindOfClass)
   {
-    v8 = v31;
+    v8 = viewCopy;
     if ([(UITextField *)self _fieldEditorAttached])
     {
-      v9 = [(UITextField *)self _fieldEditor];
-      [v9 bounds];
+      _fieldEditor = [(UITextField *)self _fieldEditor];
+      [_fieldEditor bounds];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(UITextField *)self _fieldEditor];
-      [v8 convertRect:v18 fromView:{v11, v13, v15, v17}];
+      _fieldEditor2 = [(UITextField *)self _fieldEditor];
+      [v8 convertRect:_fieldEditor2 fromView:{v11, v13, v15, v17}];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -3496,7 +3496,7 @@ LABEL_9:
 
     [v8 updateMaskLayerForVisibleRect:{v20, v22, v24, v26}];
 
-    v7 = v31;
+    v7 = viewCopy;
   }
 }
 
@@ -3507,11 +3507,11 @@ void __27__UISearchTextField_tokens__block_invoke(uint64_t a1, uint64_t a2)
   [v2 addObject:v3];
 }
 
-- (id)_newAttributedStringWithToken:(id)a3
+- (id)_newAttributedStringWithToken:(id)token
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[_UISearchTokenAttachment alloc] initWithToken:v4];
+  tokenCopy = token;
+  v5 = [[_UISearchTokenAttachment alloc] initWithToken:tokenCopy];
 
   if ([(UIView *)self effectiveUserInterfaceLayoutDirection]== UIUserInterfaceLayoutDirectionRightToLeft)
   {
@@ -3541,20 +3541,20 @@ void __27__UISearchTextField_tokens__block_invoke(uint64_t a1, uint64_t a2)
 - (void)setTokens:(NSArray *)tokens
 {
   v4 = tokens;
-  v5 = [(UIResponder *)self _selectedNSRange];
+  _selectedNSRange = [(UIResponder *)self _selectedNSRange];
   v7 = v6;
-  v8 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfAllTokens];
+  characterRangeOfAllTokens = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfAllTokens];
   v10 = v9;
-  v29.location = v5;
+  v29.location = _selectedNSRange;
   v29.length = v7;
-  v30.location = v8;
+  v30.location = characterRangeOfAllTokens;
   v30.length = v10;
   length = NSIntersectionRange(v29, v30).length;
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __31__UISearchTextField_setTokens___block_invoke;
   v26 = &unk_1E70F35B8;
-  v27 = self;
+  selfCopy = self;
   v12 = v4;
   v28 = v12;
   v13 = _Block_copy(&v23);
@@ -3563,33 +3563,33 @@ void __27__UISearchTextField_tokens__block_invoke(uint64_t a1, uint64_t a2)
   {
     (*(v13 + 2))(v13);
     v15 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfAllTokens:v23];
-    v16 = self;
+    selfCopy3 = self;
     v18 = v17;
   }
 
   else
   {
-    if (v5 >= v8 + v10)
+    if (_selectedNSRange >= characterRangeOfAllTokens + v10)
     {
       v22 = [(NSArray *)v12 count:v23];
-      v19 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
-      PreservingSelectionForTokenChange(self, 0, v22 - [v19 count], v14);
+      tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+      PreservingSelectionForTokenChange(self, 0, v22 - [tokenCharacterIndexes count], v14);
       goto LABEL_6;
     }
 
     (*(v13 + 2))(v13);
     v15 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfTextAfterLastToken:v23];
-    v16 = self;
+    selfCopy3 = self;
     v18 = 0;
   }
 
-  v19 = [(UIResponder *)v16 _textRangeFromNSRange:v15, v18];
-  [(UITextField *)self setSelectedTextRange:v19];
+  tokenCharacterIndexes = [(UIResponder *)selfCopy3 _textRangeFromNSRange:v15, v18];
+  [(UITextField *)self setSelectedTextRange:tokenCharacterIndexes];
 LABEL_6:
 
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v21 = [WeakRetained _searchController];
-  [(UISearchController *)v21 __searchTextFieldDidSetOrInsertTokens:?];
+  _searchController = [WeakRetained _searchController];
+  [(UISearchController *)_searchController __searchTextFieldDidSetOrInsertTokens:?];
 }
 
 void __31__UISearchTextField_setTokens___block_invoke(uint64_t a1)
@@ -3654,8 +3654,8 @@ void __31__UISearchTextField_setTokens___block_invoke_2(uint64_t a1, void *a2)
   v7 = token;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2130 description:{@"Invalid parameter not satisfying: %@", @"token != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2130 description:{@"Invalid parameter not satisfying: %@", @"token != nil"}];
   }
 
   v8 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterIndexForInsertingTokenAtIndex:tokenIndex];
@@ -3669,8 +3669,8 @@ void __31__UISearchTextField_setTokens___block_invoke_2(uint64_t a1, void *a2)
   v9 = v7;
   PreservingSelectionForTokenChange(self, v8, 1, v13);
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v11 = [WeakRetained _searchController];
-  [(UISearchController *)v11 __searchTextFieldDidSetOrInsertTokens:?];
+  _searchController = [WeakRetained _searchController];
+  [(UISearchController *)_searchController __searchTextFieldDidSetOrInsertTokens:?];
 }
 
 void __41__UISearchTextField_insertToken_atIndex___block_invoke(uint64_t a1)
@@ -3703,8 +3703,8 @@ void __41__UISearchTextField_insertToken_atIndex___block_invoke_2(uint64_t a1, v
 {
   if (tokenIndex < 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2145 description:{@"Invalid parameter not satisfying: %@", @"tokenIndex >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2145 description:{@"Invalid parameter not satisfying: %@", @"tokenIndex >= 0"}];
   }
 
   v5 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterIndexForSelectingOrRemovingTokenAtIndex:tokenIndex];
@@ -3741,12 +3741,12 @@ uint64_t __40__UISearchTextField_removeTokenAtIndex___block_invoke_2(uint64_t a1
 {
   if (tokenIndex < 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2158 description:{@"Invalid parameter not satisfying: %@", @"tokenIndex >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2158 description:{@"Invalid parameter not satisfying: %@", @"tokenIndex >= 0"}];
   }
 
-  v5 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
-  v6 = [v5 count];
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  v6 = [tokenCharacterIndexes count];
 
   if (tokenIndex < 0 || v6 <= tokenIndex)
   {
@@ -3759,18 +3759,18 @@ uint64_t __40__UISearchTextField_removeTokenAtIndex___block_invoke_2(uint64_t a1
     objc_exception_throw(v15);
   }
 
-  v7 = [(UITextField *)self beginningOfDocument];
-  v8 = [(UITextField *)self positionFromPosition:v7 offset:[(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterIndexForSelectingOrRemovingTokenAtIndex:tokenIndex]];
+  beginningOfDocument = [(UITextField *)self beginningOfDocument];
+  v8 = [(UITextField *)self positionFromPosition:beginningOfDocument offset:[(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterIndexForSelectingOrRemovingTokenAtIndex:tokenIndex]];
 
   return v8;
 }
 
-- (void)_copyTextAndTokensFromOtherSearchField:(id)a3
+- (void)_copyTextAndTokensFromOtherSearchField:(id)field
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fieldCopy = field;
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  if (!WeakRetained || (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->_searchBar), [v4 _searchBar], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
+  if (!WeakRetained || (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->_searchBar), [fieldCopy _searchBar], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -3780,9 +3780,9 @@ uint64_t __40__UISearchTextField_removeTokenAtIndex___block_invoke_2(uint64_t a1
         *buf = 136315650;
         v22 = "[UISearchTextField _copyTextAndTokensFromOtherSearchField:]";
         v23 = 2112;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2112;
-        v26 = v4;
+        v26 = fieldCopy;
         _os_log_fault_impl(&dword_188A29000, v17, OS_LOG_TYPE_FAULT, "Unexpected use of %s for reasons other than cloning. Nil or nonmatching search bars for search fields. Suppressing notifications anyway. self=%@, other=%@", buf, 0x20u);
       }
     }
@@ -3795,9 +3795,9 @@ uint64_t __40__UISearchTextField_removeTokenAtIndex___block_invoke_2(uint64_t a1
         *buf = 136315650;
         v22 = "[UISearchTextField _copyTextAndTokensFromOtherSearchField:]";
         v23 = 2112;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2112;
-        v26 = v4;
+        v26 = fieldCopy;
         _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "Unexpected use of %s for reasons other than cloning. Nil or nonmatching search bars for search fields. Suppressing notifications anyway. self=%@, other=%@", buf, 0x20u);
       }
     }
@@ -3805,23 +3805,23 @@ uint64_t __40__UISearchTextField_removeTokenAtIndex___block_invoke_2(uint64_t a1
 
   v10 = *(&self->_searchBarTextFieldFlags + 6);
   *(&self->_searchBarTextFieldFlags + 6) = v10 | 0x100;
-  v11 = [(UITextField *)self _suppressContentChangedNotification];
+  _suppressContentChangedNotification = [(UITextField *)self _suppressContentChangedNotification];
   [(UITextField *)self _setSuppressContentChangedNotification:1];
-  v12 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __60__UISearchTextField__copyTextAndTokensFromOtherSearchField___block_invoke;
   v20[3] = &unk_1E70F3B48;
   v20[4] = self;
-  [v12 enumerateIndexesWithOptions:2 usingBlock:v20];
+  [tokenCharacterIndexes enumerateIndexesWithOptions:2 usingBlock:v20];
 
-  v13 = [v4 text];
-  [(UISearchTextField *)self setText:v13];
+  text = [fieldCopy text];
+  [(UISearchTextField *)self setText:text];
 
-  if (v4)
+  if (fieldCopy)
   {
-    v14 = v4[143];
-    v15 = [v14 tokenCharacterIndexes];
+    v14 = fieldCopy[143];
+    tokenCharacterIndexes2 = [v14 tokenCharacterIndexes];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __60__UISearchTextField__copyTextAndTokensFromOtherSearchField___block_invoke_2;
@@ -3829,11 +3829,11 @@ uint64_t __40__UISearchTextField_removeTokenAtIndex___block_invoke_2(uint64_t a1
     v18[4] = self;
     v19 = v14;
     v16 = v14;
-    [v15 enumerateIndexesUsingBlock:v18];
+    [tokenCharacterIndexes2 enumerateIndexesUsingBlock:v18];
   }
 
   *(&self->_searchBarTextFieldFlags + 6) = *(&self->_searchBarTextFieldFlags + 6) & 0xFEFF | v10 & 0x100;
-  [(UITextField *)self _setSuppressContentChangedNotification:v11];
+  [(UITextField *)self _setSuppressContentChangedNotification:_suppressContentChangedNotification];
 }
 
 void __60__UISearchTextField__copyTextAndTokensFromOtherSearchField___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -3848,22 +3848,22 @@ void __60__UISearchTextField__copyTextAndTokensFromOtherSearchField___block_invo
   v5 = textRange;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2199 description:{@"Invalid parameter not satisfying: %@", @"textRange != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2199 description:{@"Invalid parameter not satisfying: %@", @"textRange != nil"}];
   }
 
   v6 = [(UIResponder *)self _nsrangeForTextRange:v5];
   v8 = v7;
   v9 = objc_opt_new();
-  v10 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __35__UISearchTextField_tokensInRange___block_invoke;
   v15[3] = &unk_1E70F43F0;
   v16 = v9;
-  v17 = self;
+  selfCopy = self;
   v11 = v9;
-  [v10 enumerateIndexesInRange:v6 options:v8 usingBlock:{0, v15}];
+  [tokenCharacterIndexes enumerateIndexesInRange:v6 options:v8 usingBlock:{0, v15}];
 
   v12 = [v11 copy];
 
@@ -3892,8 +3892,8 @@ void __35__UISearchTextField_tokensInRange___block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2222 description:{@"Invalid parameter not satisfying: %@", @"textRange != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2222 description:{@"Invalid parameter not satisfying: %@", @"textRange != nil"}];
 
     if (v11)
     {
@@ -3901,8 +3901,8 @@ void __35__UISearchTextField_tokensInRange___block_invoke(uint64_t a1, uint64_t 
     }
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2223 description:{@"Invalid parameter not satisfying: %@", @"token != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UISearchTextField.m" lineNumber:2223 description:{@"Invalid parameter not satisfying: %@", @"token != nil"}];
 
 LABEL_3:
   v12 = [(UIResponder *)self _nsrangeForTextRange:v9];
@@ -3929,8 +3929,8 @@ LABEL_3:
   {
     if ([(UITextField *)self hasMarkedText])
     {
-      v20 = [(UITextField *)self markedTextRange];
-      v37.location = [(UIResponder *)self _nsrangeForTextRange:v20];
+      markedTextRange = [(UITextField *)self markedTextRange];
+      v37.location = [(UIResponder *)self _nsrangeForTextRange:markedTextRange];
       v37.length = v21;
       length = NSIntersectionRange(v16, v37).length;
 
@@ -3999,8 +3999,8 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
         }
 
         v11 = self->_tokenBackgroundColor;
-        v12 = [*(*(&v13 + 1) + 8 * v10) delegateView];
-        [v12 setAtomBackgroundColor:v11];
+        delegateView = [*(*(&v13 + 1) + 8 * v10) delegateView];
+        [delegateView setAtomBackgroundColor:v11];
 
         ++v10;
       }
@@ -4013,11 +4013,11 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
   }
 }
 
-- (void)_setTokenForegroundColor:(id)a3
+- (void)_setTokenForegroundColor:(id)color
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_tokenForegroundColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_tokenForegroundColor, color);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -4039,8 +4039,8 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
         }
 
         tokenForegroundColor = self->_tokenForegroundColor;
-        v12 = [*(*(&v13 + 1) + 8 * v10) delegateView];
-        [v12 _setAtomForegroundColor:tokenForegroundColor];
+        delegateView = [*(*(&v13 + 1) + 8 * v10) delegateView];
+        [delegateView _setAtomForegroundColor:tokenForegroundColor];
 
         ++v10;
       }
@@ -4063,8 +4063,8 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
 
   else
   {
-    v4 = [(UIView *)self traitCollection];
-    v3 = [_UISearchAtomView _defaultAtomForegroundColorForTraitCollection:v4];
+    traitCollection = [(UIView *)self traitCollection];
+    v3 = [_UISearchAtomView _defaultAtomForegroundColorForTraitCollection:traitCollection];
   }
 
   return v3;
@@ -4072,8 +4072,8 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
 
 - (id)selectedTokens
 {
-  v3 = [(UITextField *)self selectedTextRange];
-  v4 = [(UISearchTextField *)self tokensInRange:v3];
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  v4 = [(UISearchTextField *)self tokensInRange:selectedTextRange];
 
   return v4;
 }
@@ -4093,47 +4093,47 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
   *(&self->_searchBarTextFieldFlags + 6) = *(&self->_searchBarTextFieldFlags + 6) & 0xFFFD | v3;
 }
 
-- (void)_willAddTokenLayoutView:(id)a3
+- (void)_willAddTokenLayoutView:(id)view
 {
   knownTokenLayoutViews = self->_knownTokenLayoutViews;
-  v5 = a3;
+  viewCopy = view;
   if (![(NSHashTable *)knownTokenLayoutViews count])
   {
-    v6 = [(UITextField *)self _fieldEditor];
-    [v6 _addScrollViewScrollObserver:self];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _addScrollViewScrollObserver:self];
   }
 
-  v10 = [v5 delegateView];
-  [v10 setAtomBackgroundColor:self->_tokenBackgroundColor];
-  [v10 _setAtomForegroundColor:self->_tokenForegroundColor];
-  v7 = [(UITextField *)self font];
-  [v10 setAtomFont:v7];
+  delegateView = [viewCopy delegateView];
+  [delegateView setAtomBackgroundColor:self->_tokenBackgroundColor];
+  [delegateView _setAtomForegroundColor:self->_tokenForegroundColor];
+  font = [(UITextField *)self font];
+  [delegateView setAtomFont:font];
 
-  v8 = [(UIImageView *)self->_defaultLeftView _overridingSymbolConfiguration];
-  v9 = [v10 leadingImage];
-  [v9 _setOverridingSymbolConfiguration:v8];
+  _overridingSymbolConfiguration = [(UIImageView *)self->_defaultLeftView _overridingSymbolConfiguration];
+  leadingImage = [delegateView leadingImage];
+  [leadingImage _setOverridingSymbolConfiguration:_overridingSymbolConfiguration];
 
-  [(NSHashTable *)self->_knownTokenLayoutViews addObject:v5];
-  [v5 setEnabled:{-[UIControl isEnabled](self, "isEnabled")}];
+  [(NSHashTable *)self->_knownTokenLayoutViews addObject:viewCopy];
+  [viewCopy setEnabled:{-[UIControl isEnabled](self, "isEnabled")}];
 }
 
-- (void)_didRemoveTokenLayoutView:(id)a3
+- (void)_didRemoveTokenLayoutView:(id)view
 {
-  [(NSHashTable *)self->_knownTokenLayoutViews removeObject:a3];
+  [(NSHashTable *)self->_knownTokenLayoutViews removeObject:view];
   if (![(NSHashTable *)self->_knownTokenLayoutViews count])
   {
-    v4 = [(UITextField *)self _fieldEditor];
-    [v4 _removeScrollViewScrollObserver:self];
+    _fieldEditor = [(UITextField *)self _fieldEditor];
+    [_fieldEditor _removeScrollViewScrollObserver:self];
   }
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITextField *)self _fieldEditor];
+  scrollCopy = scroll;
+  _fieldEditor = [(UITextField *)self _fieldEditor];
 
-  if (v5 == v4)
+  if (_fieldEditor == scrollCopy)
   {
     v14 = 0u;
     v15 = 0u;
@@ -4174,36 +4174,36 @@ void __68__UISearchTextField_replaceTextualPortionOfRange_withToken_atIndex___bl
 - (unint64_t)_characterIndexForTokenTapGestureRecognizer
 {
   tokenTapGestureRecognizer = self->_tokenTapGestureRecognizer;
-  v4 = [(UITextField *)self _textCanvasView];
-  [(UITapGestureRecognizer *)tokenTapGestureRecognizer locationInView:v4];
+  _textCanvasView = [(UITextField *)self _textCanvasView];
+  [(UITapGestureRecognizer *)tokenTapGestureRecognizer locationInView:_textCanvasView];
   v6 = v5;
   v8 = v7;
 
   [(UITextField *)self textContainerOrigin];
   v10 = v9;
   v12 = v11;
-  v13 = [(UITextField *)self textContainer];
-  v14 = [(UITextField *)self textLayoutController];
+  textContainer = [(UITextField *)self textContainer];
+  textLayoutController = [(UITextField *)self textLayoutController];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0x7FFFFFFFFFFFFFFFLL;
-  v15 = [(UITextField *)self textStorage];
-  v16 = [(UITextField *)self textStorage];
-  v17 = [v16 length];
+  textStorage = [(UITextField *)self textStorage];
+  textStorage2 = [(UITextField *)self textStorage];
+  v17 = [textStorage2 length];
   v18 = *off_1E70EC8C8;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_invoke;
   v22[3] = &unk_1E70F8240;
-  v19 = v14;
+  v19 = textLayoutController;
   v25 = v10;
   v26 = v12;
   v27 = v6 - v10;
   v28 = v8 - v12;
   v23 = v19;
   v24 = &v29;
-  [v15 enumerateAttribute:v18 inRange:0 options:v17 usingBlock:{0, v22}];
+  [textStorage enumerateAttribute:v18 inRange:0 options:v17 usingBlock:{0, v22}];
 
   v20 = v30[3];
   _Block_object_dispose(&v29, 8);
@@ -4236,21 +4236,21 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
 
 - (void)_tokenTapGestureRecognized
 {
-  v3 = [(UISearchTextField *)self _characterIndexForTokenTapGestureRecognizer];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  _characterIndexForTokenTapGestureRecognizer = [(UISearchTextField *)self _characterIndexForTokenTapGestureRecognizer];
+  if (_characterIndexForTokenTapGestureRecognizer != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = v3;
+    v4 = _characterIndexForTokenTapGestureRecognizer;
     if (![(UIView *)self isFirstResponder])
     {
       [(UISearchTextField *)self becomeFirstResponder];
     }
 
-    v5 = [(UITextField *)self selectedTextRange];
-    v10 = v5;
-    if (v5 && ([v5 isEmpty] & 1) == 0 && (-[UIResponder _textRangeFromNSRange:](self, "_textRangeFromNSRange:", v4, 1), v6 = objc_claimAutoreleasedReturnValue(), v7 = -[UIResponder _range:containsRange:](self, "_range:containsRange:", v10, v6), v6, v7))
+    selectedTextRange = [(UITextField *)self selectedTextRange];
+    v10 = selectedTextRange;
+    if (selectedTextRange && ([selectedTextRange isEmpty] & 1) == 0 && (-[UIResponder _textRangeFromNSRange:](self, "_textRangeFromNSRange:", v4, 1), v6 = objc_claimAutoreleasedReturnValue(), v7 = -[UIResponder _range:containsRange:](self, "_range:containsRange:", v10, v6), v6, v7))
     {
-      v8 = [(UITextField *)self interactionAssistant];
-      [v8 showSelectionCommands];
+      interactionAssistant = [(UITextField *)self interactionAssistant];
+      [interactionAssistant showSelectionCommands];
 
       [(UISearchTextField *)self _activateSelectionView];
     }
@@ -4263,9 +4263,9 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_tokenTapGestureRecognizer == a3)
+  if (self->_tokenTapGestureRecognizer == begin)
   {
     return [(UISearchTextField *)self _characterIndexForTokenTapGestureRecognizer]!= 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -4275,15 +4275,15 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
   return [(UITextField *)&v4 gestureRecognizerShouldBegin:?];
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v6 = [WeakRetained _searchBarTextField];
+  _searchBarTextField = [WeakRetained _searchBarTextField];
 
-  if (v6)
+  if (_searchBarTextField)
   {
-    v7 = v6 == self;
+    v7 = _searchBarTextField == self;
   }
 
   else
@@ -4293,10 +4293,10 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
 
   if (v7)
   {
-    if (v4)
+    if (rangeCopy)
     {
-      v8 = [(UISearchTextField *)self textualRange];
-      v9 = [(UIResponder *)self _intersectionOfRange:v8 andRange:v4];
+      textualRange = [(UISearchTextField *)self textualRange];
+      v9 = [(UIResponder *)self _intersectionOfRange:textualRange andRange:rangeCopy];
 
       v14.receiver = self;
       v14.super_class = UISearchTextField;
@@ -4331,7 +4331,7 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
 
   else
   {
-    v10 = [(UISearchTextField *)v6 textInRange:v4];
+    v10 = [(UISearchTextField *)_searchBarTextField textInRange:rangeCopy];
   }
 
   return v10;
@@ -4345,26 +4345,26 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
     v8 = v3;
     v6.receiver = self;
     v6.super_class = UISearchTextField;
-    v4 = [(UITextField *)&v6 _rangeForClearButton];
+    _rangeForClearButton = [(UITextField *)&v6 _rangeForClearButton];
   }
 
   else
   {
 
-    v4 = [(UISearchTextField *)self _rangeForSetText];
+    _rangeForClearButton = [(UISearchTextField *)self _rangeForSetText];
   }
 
   result.length = v5;
-  result.location = v4;
+  result.location = _rangeForClearButton;
   return result;
 }
 
-- (id)_textRangesForTextStorageRanges:(id)a3
+- (id)_textRangesForTextStorageRanges:(id)ranges
 {
   v11[1] = *MEMORY[0x1E69E9840];
   tokenCounter = self->_tokenCounter;
-  v4 = [a3 unionRange];
-  v6 = [(_UISearchBarTextFieldTokenCounter *)tokenCounter subrangeOfTextAfterLastTokenForCharacterRange:v4, v5];
+  unionRange = [ranges unionRange];
+  v6 = [(_UISearchBarTextFieldTokenCounter *)tokenCounter subrangeOfTextAfterLastTokenForCharacterRange:unionRange, v5];
   v8 = [MEMORY[0x1E696B098] valueWithRange:{v6, v7}];
   v11[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -4372,15 +4372,15 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
   return v9;
 }
 
-- (id)attributedTextInRange:(id)a3
+- (id)attributedTextInRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v6 = [WeakRetained _searchBarTextField];
+  _searchBarTextField = [WeakRetained _searchBarTextField];
 
-  if (v6)
+  if (_searchBarTextField)
   {
-    v7 = v6 == self;
+    v7 = _searchBarTextField == self;
   }
 
   else
@@ -4390,10 +4390,10 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
 
   if (v7)
   {
-    if (v4)
+    if (rangeCopy)
     {
-      v8 = [(UISearchTextField *)self textualRange];
-      v9 = [(UIResponder *)self _intersectionOfRange:v8 andRange:v4];
+      textualRange = [(UISearchTextField *)self textualRange];
+      v9 = [(UIResponder *)self _intersectionOfRange:textualRange andRange:rangeCopy];
 
       v15.receiver = self;
       v15.super_class = UISearchTextField;
@@ -4427,7 +4427,7 @@ void __64__UISearchTextField__characterIndexForTokenTapGestureRecognizer__block_
 
   else
   {
-    v11 = [(UISearchTextField *)v6 attributedTextInRange:v4];
+    v11 = [(UISearchTextField *)_searchBarTextField attributedTextInRange:rangeCopy];
   }
 
   v10 = v11;
@@ -4438,24 +4438,24 @@ LABEL_9:
 
 - (id)attributedText
 {
-  v3 = [(UISearchTextField *)self textualRange];
-  v4 = [(UISearchTextField *)self attributedTextInRange:v3];
+  textualRange = [(UISearchTextField *)self textualRange];
+  v4 = [(UISearchTextField *)self attributedTextInRange:textualRange];
 
   return v4;
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  rangeCopy = range;
+  textCopy = text;
+  if (rangeCopy)
   {
-    v8 = [(UISearchTextField *)self textualRange];
-    v9 = [(UIResponder *)self _intersectionOfRange:v8 andRange:v6];
+    textualRange = [(UISearchTextField *)self textualRange];
+    v9 = [(UIResponder *)self _intersectionOfRange:textualRange andRange:rangeCopy];
 
     v12.receiver = self;
     v12.super_class = UISearchTextField;
-    [(UITextField *)&v12 replaceRange:v9 withText:v7];
+    [(UITextField *)&v12 replaceRange:v9 withText:textCopy];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -4479,18 +4479,18 @@ LABEL_9:
   }
 }
 
-- (void)replaceRangeWithTextWithoutClosingTyping:(id)a3 replacementText:(id)a4
+- (void)replaceRangeWithTextWithoutClosingTyping:(id)typing replacementText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  typingCopy = typing;
+  textCopy = text;
+  if (typingCopy)
   {
-    v8 = [(UISearchTextField *)self textualRange];
-    v9 = [(UIResponder *)self _intersectionOfRange:v8 andRange:v6];
+    textualRange = [(UISearchTextField *)self textualRange];
+    v9 = [(UIResponder *)self _intersectionOfRange:textualRange andRange:typingCopy];
 
     v12.receiver = self;
     v12.super_class = UISearchTextField;
-    [(UITextField *)&v12 replaceRange:v9 withText:v7];
+    [(UITextField *)&v12 replaceRange:v9 withText:textCopy];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -4514,18 +4514,18 @@ LABEL_9:
   }
 }
 
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4
+- (void)replaceRange:(id)range withAttributedText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  rangeCopy = range;
+  textCopy = text;
+  if (rangeCopy)
   {
-    v8 = [(UISearchTextField *)self textualRange];
-    v9 = [(UIResponder *)self _intersectionOfRange:v8 andRange:v6];
+    textualRange = [(UISearchTextField *)self textualRange];
+    v9 = [(UIResponder *)self _intersectionOfRange:textualRange andRange:rangeCopy];
 
     v12.receiver = self;
     v12.super_class = UISearchTextField;
-    [(UITextField *)&v12 replaceRange:v9 withAttributedText:v7];
+    [(UITextField *)&v12 replaceRange:v9 withAttributedText:textCopy];
   }
 
   else if (os_variant_has_internal_diagnostics())
@@ -4551,57 +4551,57 @@ LABEL_9:
 
 - (void)_redirectSelectionToAvoidClobberingTokens
 {
-  v3 = [(UITextField *)self selectedTextRange];
-  if (v3)
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  if (selectedTextRange)
   {
-    v8 = v3;
-    v4 = [(UISearchTextField *)self textualRange];
-    if (![(UIResponder *)self _range:v4 containsRange:v8])
+    v8 = selectedTextRange;
+    textualRange = [(UISearchTextField *)self textualRange];
+    if (![(UIResponder *)self _range:textualRange containsRange:v8])
     {
-      v5 = [(UITextField *)self endOfDocument];
-      v6 = [(UITextField *)self endOfDocument];
-      v7 = [(UITextField *)self textRangeFromPosition:v5 toPosition:v6];
+      endOfDocument = [(UITextField *)self endOfDocument];
+      endOfDocument2 = [(UITextField *)self endOfDocument];
+      v7 = [(UITextField *)self textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
       [(UITextField *)self setSelectedTextRange:v7];
     }
 
-    v3 = v8;
+    selectedTextRange = v8;
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(UISearchTextField *)self _redirectSelectionToAvoidClobberingTokens];
   v5.receiver = self;
   v5.super_class = UISearchTextField;
-  [(UITextField *)&v5 insertText:v4];
+  [(UITextField *)&v5 insertText:textCopy];
 }
 
-- (_NSRange)insertFilteredText:(id)a3
+- (_NSRange)insertFilteredText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(UISearchTextField *)self _redirectSelectionToAvoidClobberingTokens];
-  if ([v4 isEqualToString:@"\n"])
+  if ([textCopy isEqualToString:@"\n"])
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-    v6 = [WeakRetained _searchController];
+    _searchController = [WeakRetained _searchController];
 
-    if (v6)
+    if (_searchController)
     {
-      v7 = v6;
+      selfCopy = _searchController;
     }
 
     else
     {
-      v7 = self;
+      selfCopy = self;
     }
 
-    [(UISearchTextField *)v7 setSearchSuggestions:0];
+    [(UISearchTextField *)selfCopy setSearchSuggestions:0];
   }
 
   v13.receiver = self;
   v13.super_class = UISearchTextField;
-  v8 = [(UITextField *)&v13 insertFilteredText:v4];
+  v8 = [(UITextField *)&v13 insertFilteredText:textCopy];
   v10 = v9;
 
   v11 = v8;
@@ -4611,48 +4611,48 @@ LABEL_9:
   return result;
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   [(UISearchTextField *)self _redirectSelectionToAvoidClobberingTokens];
   v5.receiver = self;
   v5.super_class = UISearchTextField;
-  [(UITextField *)&v5 insertAttributedText:v4];
+  [(UITextField *)&v5 insertAttributedText:textCopy];
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if (!-[UITextField hasMarkedText](self, "hasMarkedText") && [v7 length])
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  if (!-[UITextField hasMarkedText](self, "hasMarkedText") && [textCopy length])
   {
     [(UISearchTextField *)self _redirectSelectionToAvoidClobberingTokens];
   }
 
   v8.receiver = self;
   v8.super_class = UISearchTextField;
-  [(UITextField *)&v8 setMarkedText:v7 selectedRange:location, length];
+  [(UITextField *)&v8 setMarkedText:textCopy selectedRange:location, length];
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  if (!-[UITextField hasMarkedText](self, "hasMarkedText") && [v7 length])
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  if (!-[UITextField hasMarkedText](self, "hasMarkedText") && [textCopy length])
   {
     [(UISearchTextField *)self _redirectSelectionToAvoidClobberingTokens];
   }
 
   v8.receiver = self;
   v8.super_class = UISearchTextField;
-  [(UITextField *)&v8 setAttributedMarkedText:v7 selectedRange:location, length];
+  [(UITextField *)&v8 setAttributedMarkedText:textCopy selectedRange:location, length];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   p_searchBarTextFieldFlags = &self->_searchBarTextFieldFlags;
   if (self->_searchBarTextFieldFlags.delegateImplementsItemProviderForCopyingTokens)
   {
@@ -4664,12 +4664,12 @@ LABEL_9:
     v8 = self->_searchBarTextFieldFlags.delegateImplementsUnderscoredItemProviderForCopyingTokens == 0;
   }
 
-  if (sel_cut_ == a3 || sel_copy_ == a3)
+  if (sel_cut_ == action || sel_copy_ == action)
   {
-    v10 = [(UITextField *)self selectedTextRange];
-    v11 = [v10 start];
-    v12 = [v10 end];
-    v13 = [(UITextField *)self offsetFromPosition:v11 toPosition:v12];
+    selectedTextRange = [(UITextField *)self selectedTextRange];
+    start = [selectedTextRange start];
+    v12 = [selectedTextRange end];
+    v13 = [(UITextField *)self offsetFromPosition:start toPosition:v12];
 
     if (!v13)
     {
@@ -4679,10 +4679,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v14 = [(UISearchTextField *)self textualRange];
-    v15 = [v14 start];
-    v16 = [v14 end];
-    if ([(UITextField *)self offsetFromPosition:v15 toPosition:v16]< 1)
+    textualRange = [(UISearchTextField *)self textualRange];
+    start2 = [textualRange start];
+    v16 = [textualRange end];
+    if ([(UITextField *)self offsetFromPosition:start2 toPosition:v16]< 1)
     {
       LODWORD(self) = 0;
     }
@@ -4691,16 +4691,16 @@ LABEL_27:
     {
       [(UISearchTextField *)self textualRange];
       v21 = v8;
-      v18 = v17 = v6;
-      LODWORD(self) = [(UIResponder *)self _range:v10 intersectsRange:v18];
+      v18 = v17 = senderCopy;
+      LODWORD(self) = [(UIResponder *)self _range:selectedTextRange intersectsRange:v18];
 
-      v6 = v17;
+      senderCopy = v17;
       v8 = v21;
     }
 
     if (((self | v8) & 1) == 0)
     {
-      if (sel_cut_ == a3)
+      if (sel_cut_ == action)
       {
         LOBYTE(self) = (~*(p_searchBarTextFieldFlags + 6) & 3) == 0;
       }
@@ -4716,15 +4716,15 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (sel__define_ == a3 || sel__translate_ == a3)
+  if (sel__define_ == action || sel__translate_ == action)
   {
-    v10 = [(UITextField *)self selectedTextRange];
-    v14 = [(UISearchTextField *)self textualRange];
-    if ([(UIResponder *)self _range:v10 intersectsRange:v14])
+    selectedTextRange = [(UITextField *)self selectedTextRange];
+    textualRange = [(UISearchTextField *)self textualRange];
+    if ([(UIResponder *)self _range:selectedTextRange intersectsRange:textualRange])
     {
       v23.receiver = self;
       v23.super_class = UISearchTextField;
-      LOBYTE(self) = [(UITextField *)&v23 canPerformAction:a3 withSender:v6];
+      LOBYTE(self) = [(UITextField *)&v23 canPerformAction:action withSender:senderCopy];
     }
 
     else
@@ -4737,22 +4737,22 @@ LABEL_26:
 
   v22.receiver = self;
   v22.super_class = UISearchTextField;
-  LOBYTE(self) = [(UITextField *)&v22 canPerformAction:a3 withSender:v6];
+  LOBYTE(self) = [(UITextField *)&v22 canPerformAction:action withSender:senderCopy];
 LABEL_28:
 
   return self & 1;
 }
 
-- (void)_copySelectionPopulatingActuallyCopiedTokenCharacterIndexes:(id)a3
+- (void)_copySelectionPopulatingActuallyCopiedTokenCharacterIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(UISearchTextField *)self textualRange];
-  v6 = [(UITextField *)self selectedTextRange];
-  v7 = [(UIResponder *)self _intersectionOfRange:v5 andRange:v6];
+  indexesCopy = indexes;
+  textualRange = [(UISearchTextField *)self textualRange];
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  v7 = [(UIResponder *)self _intersectionOfRange:textualRange andRange:selectedTextRange];
 
-  v8 = [v7 start];
+  start = [v7 start];
   v9 = [v7 end];
-  v10 = [(UITextField *)self offsetFromPosition:v8 toPosition:v9];
+  v10 = [(UITextField *)self offsetFromPosition:start toPosition:v9];
 
   if (v10 < 1)
   {
@@ -4761,9 +4761,9 @@ LABEL_28:
 
   else
   {
-    v11 = [(UITextField *)self _inputController];
+    _inputController = [(UITextField *)self _inputController];
     v12 = [(UIResponder *)self _nsrangeForTextRange:v7];
-    v14 = [v11 _itemProviderForCopyingRange:{v12, v13}];
+    v14 = [_inputController _itemProviderForCopyingRange:{v12, v13}];
   }
 
   v15 = objc_opt_new();
@@ -4773,10 +4773,10 @@ LABEL_28:
     [(UITextField *)self delegate];
     v17 = v7;
     v18 = v14;
-    v20 = v19 = v4;
-    v21 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
-    v22 = [(UITextField *)self selectedTextRange];
-    v23 = [(UIResponder *)self _nsrangeForTextRange:v22];
+    v20 = v19 = indexesCopy;
+    tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+    selectedTextRange2 = [(UITextField *)self selectedTextRange];
+    v23 = [(UIResponder *)self _nsrangeForTextRange:selectedTextRange2];
     v25 = v24;
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -4787,9 +4787,9 @@ LABEL_28:
     v37 = v15;
     v38 = v19;
     v26 = v20;
-    [v21 enumerateIndexesInRange:v23 options:v25 usingBlock:{0, v35}];
+    [tokenCharacterIndexes enumerateIndexesInRange:v23 options:v25 usingBlock:{0, v35}];
 
-    v4 = v19;
+    indexesCopy = v19;
     v14 = v18;
     v7 = v17;
     v16 = "_UIMonochromaticTreatment";
@@ -4805,8 +4805,8 @@ LABEL_28:
     }
   }
 
-  v27 = [(UISearchTextField *)self _searchBar];
-  v28 = [v27 _dataOwnerForCopy];
+  _searchBar = [(UISearchTextField *)self _searchBar];
+  _dataOwnerForCopy = [_searchBar _dataOwnerForCopy];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = *(v16 + 235);
   v32[2] = __81__UISearchTextField__copySelectionPopulatingActuallyCopiedTokenCharacterIndexes___block_invoke_2;
@@ -4815,7 +4815,7 @@ LABEL_28:
   v34 = v14;
   v29 = v14;
   v30 = v15;
-  [UIPasteboard _performAsDataOwner:v28 block:v32];
+  [UIPasteboard _performAsDataOwner:_dataOwnerForCopy block:v32];
 }
 
 void __81__UISearchTextField__copySelectionPopulatingActuallyCopiedTokenCharacterIndexes___block_invoke(uint64_t a1, uint64_t a2)
@@ -4886,18 +4886,18 @@ void __81__UISearchTextField__copySelectionPopulatingActuallyCopiedTokenCharacte
   }
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v16 = [(UITextField *)self selectedTextRange];
-  v4 = [(UISearchTextField *)self textualRange];
-  if ([(UIResponder *)self _range:v16 intersectsRange:v4])
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  textualRange = [(UISearchTextField *)self textualRange];
+  if ([(UIResponder *)self _range:selectedTextRange intersectsRange:textualRange])
   {
-    v5 = [(UIResponder *)self _intersectionOfRange:v16 andRange:v4];
-    v6 = [(UITextField *)self textLayoutController];
-    v7 = [v6 characterRangesForTextRange:v5 clippedToDocument:0];
+    v5 = [(UIResponder *)self _intersectionOfRange:selectedTextRange andRange:textualRange];
+    textLayoutController = [(UITextField *)self textLayoutController];
+    v7 = [textLayoutController characterRangesForTextRange:v5 clippedToDocument:0];
 
-    LODWORD(v6) = [(UISearchTextField *)self _delegateShouldChangeCharactersInTextStorageRanges:v7 replacementString:&stru_1EFB14550 delegateCares:0];
-    if (!v6)
+    LODWORD(textLayoutController) = [(UISearchTextField *)self _delegateShouldChangeCharactersInTextStorageRanges:v7 replacementString:&stru_1EFB14550 delegateCares:0];
+    if (!textLayoutController)
     {
       goto LABEL_16;
     }
@@ -4912,29 +4912,29 @@ void __81__UISearchTextField__copySelectionPopulatingActuallyCopiedTokenCharacte
   [(UISearchTextField *)self _copySelectionPopulatingActuallyCopiedTokenCharacterIndexes:v8];
   if ((*(&self->_searchBarTextFieldFlags + 6) & 2) != 0 && (self->_searchBarTextFieldFlags.delegateImplementsItemProviderForCopyingTokens || self->_searchBarTextFieldFlags.delegateImplementsUnderscoredItemProviderForCopyingTokens))
   {
-    v9 = [(UITextField *)self _inputController];
-    v10 = v9;
-    v11 = v16;
+    _inputController = [(UITextField *)self _inputController];
+    v10 = _inputController;
+    v11 = selectedTextRange;
     goto LABEL_11;
   }
 
   if (v5)
   {
-    v9 = [(UITextField *)self _inputController];
-    v10 = v9;
+    _inputController = [(UITextField *)self _inputController];
+    v10 = _inputController;
     v11 = v5;
 LABEL_11:
-    [v9 replaceRange:v11 withText:&stru_1EFB14550];
+    [_inputController replaceRange:v11 withText:&stru_1EFB14550];
   }
 
-  v12 = [v8 firstIndex];
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [v8 firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v12; i != 0x7FFFFFFFFFFFFFFFLL; i = [v8 firstIndex])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [v8 firstIndex])
     {
-      v14 = [(UITextField *)self _inputController];
+      _inputController2 = [(UITextField *)self _inputController];
       v15 = [(UIResponder *)self _textRangeFromNSRange:i, 1];
-      [v14 replaceRange:v15 withText:&stru_1EFB14550];
+      [_inputController2 replaceRange:v15 withText:&stru_1EFB14550];
 
       [v8 shiftIndexesStartingAtIndex:i + 1 by:-1];
     }
@@ -4943,26 +4943,26 @@ LABEL_11:
 LABEL_16:
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v3.receiver = self;
   v3.super_class = UISearchTextField;
-  [(UITextField *)&v3 paste:a3];
+  [(UITextField *)&v3 paste:paste];
 }
 
-- (void)_pasteSessionDidFinish:(id)a3
+- (void)_pasteSessionDidFinish:(id)finish
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
-  v6 = [v5 count];
+  finishCopy = finish;
+  tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+  v6 = [tokenCharacterIndexes count];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v4 originalItems];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  originalItems = [finishCopy originalItems];
+  v8 = [originalItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4974,17 +4974,17 @@ LABEL_16:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(originalItems);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 _searchTokenResult];
-          if (v13)
+          _searchTokenResult = [v12 _searchTokenResult];
+          if (_searchTokenResult)
           {
-            [(UISearchTextField *)self insertToken:v13 atIndex:v6++];
+            [(UISearchTextField *)self insertToken:_searchTokenResult atIndex:v6++];
           }
         }
 
@@ -4992,7 +4992,7 @@ LABEL_16:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [originalItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -5000,18 +5000,18 @@ LABEL_16:
 
   v14.receiver = self;
   v14.super_class = UISearchTextField;
-  [(UITextField *)&v14 _pasteSessionDidFinish:v4];
+  [(UITextField *)&v14 _pasteSessionDidFinish:finishCopy];
 }
 
 - (void)deleteBackward
 {
-  v3 = [(UITextField *)self selectedTextRange];
-  if (v3)
+  selectedTextRange = [(UITextField *)self selectedTextRange];
+  if (selectedTextRange)
   {
-    v4 = [(UIResponder *)self _nsrangeForTextRange:v3];
+    v4 = [(UIResponder *)self _nsrangeForTextRange:selectedTextRange];
     v6 = v5;
-    v7 = [(UISearchTextField *)self textualRange];
-    v8 = [(UIResponder *)self _nsrangeForTextRange:v7];
+    textualRange = [(UISearchTextField *)self textualRange];
+    v8 = [(UIResponder *)self _nsrangeForTextRange:textualRange];
     v10 = v9;
 
     if (v6)
@@ -5055,13 +5055,13 @@ LABEL_16:
   }
 }
 
-- (void)_updateAtomViewSelection:(BOOL)a3
+- (void)_updateAtomViewSelection:(BOOL)selection
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (selection)
   {
-    v4 = [(UITextField *)self textStorage];
-    v5 = [(UITextField *)self selectionRange];
+    textStorage = [(UITextField *)self textStorage];
+    selectionRange = [(UITextField *)self selectionRange];
     v7 = v6;
     v28 = 0;
     v29 = &v28;
@@ -5069,27 +5069,27 @@ LABEL_16:
     v31 = __Block_byref_object_copy__18;
     v32 = __Block_byref_object_dispose__18;
     v33 = 0;
-    v8 = [(UITextField *)self textLayoutController];
-    v9 = [v8 documentRange];
+    textLayoutController = [(UITextField *)self textLayoutController];
+    documentRange = [textLayoutController documentRange];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __46__UISearchTextField__updateAtomViewSelection___block_invoke;
     v21 = &unk_1E70F82B8;
-    v10 = v8;
+    v10 = textLayoutController;
     v22 = v10;
-    v11 = v4;
-    v26 = v5;
+    v11 = textStorage;
+    v26 = selectionRange;
     v27 = v7;
     v23 = v11;
-    v24 = self;
+    selfCopy = self;
     v25 = &v28;
-    [v10 enumerateTextLineFragmentsInRange:v9 usingBlock:&v18];
+    [v10 enumerateTextLineFragmentsInRange:documentRange usingBlock:&v18];
 
     v12 = [(UISearchTextField *)self tokens:v18];
     if ([v12 count] == 1)
     {
-      v13 = [(UISearchTextField *)self text];
-      if (![v13 length])
+      text = [(UISearchTextField *)self text];
+      if (![text length])
       {
         v17 = v29[5] == 0;
 
@@ -5236,13 +5236,13 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
   }
 }
 
-- (void)fieldEditorDidChangeSelection:(id)a3
+- (void)fieldEditorDidChangeSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   [(UISearchTextField *)self _updateAtomViewSelection:[(UITextField *)self _fieldEditorAttached]];
   v7.receiver = self;
   v7.super_class = UISearchTextField;
-  [(UITextField *)&v7 fieldEditorDidChangeSelection:v4];
+  [(UITextField *)&v7 fieldEditorDidChangeSelection:selectionCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v6 = WeakRetained;
@@ -5255,14 +5255,14 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
 - (void)_clearSearchSuggestionsIfNecessary
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ((a1[564] & 0x20) != 0)
+    if ((self[564] & 0x20) != 0)
     {
-      v2 = [a1 _suggestionController];
-      v3 = [v2 hasVisibleMenu];
+      _suggestionController = [self _suggestionController];
+      hasVisibleMenu = [_suggestionController hasVisibleMenu];
 
-      if (v3)
+      if (hasVisibleMenu)
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -5270,7 +5270,7 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
           if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
           {
             v6 = 138412290;
-            v7 = a1;
+            selfCopy2 = self;
             _os_log_fault_impl(&dword_188A29000, v5, OS_LOG_TYPE_FAULT, "UIKit inconsistency: Menu became visible with clear-search-suggestions still pending. Search suggestions will not be cleared. %@", &v6, 0xCu);
           }
         }
@@ -5281,7 +5281,7 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
           if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
           {
             v6 = 138412290;
-            v7 = a1;
+            selfCopy2 = self;
             _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "UIKit inconsistency: Menu became visible with clear-search-suggestions still pending. Search suggestions will not be cleared. %@", &v6, 0xCu);
           }
         }
@@ -5289,11 +5289,11 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
 
       else
       {
-        [a1 setSearchSuggestions:0];
+        [self setSearchSuggestions:0];
       }
     }
 
-    a1[564] &= ~0x20u;
+    self[564] &= ~0x20u;
   }
 }
 
@@ -5308,10 +5308,10 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
   [(UITextField *)&v4 _notifyDidEndEditing];
 }
 
-- (void)_receivedKeyboardWillShowOrHideNotification:(id)a3
+- (void)_receivedKeyboardWillShowOrHideNotification:(id)notification
 {
-  v4 = [a3 name];
-  if ([v4 isEqualToString:@"UIKeyboardWillShowNotification"])
+  name = [notification name];
+  if ([name isEqualToString:@"UIKeyboardWillShowNotification"])
   {
     v5 = 2;
   }
@@ -5322,35 +5322,35 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v6 = [WeakRetained _searchController];
-  [v6 _startDeferringSettingSearchSuggestionsWithReason:v5];
+  _searchController = [WeakRetained _searchController];
+  [_searchController _startDeferringSettingSearchSuggestionsWithReason:v5];
 }
 
-- (void)_receivedKeyboardDidHideNotification:(id)a3
+- (void)_receivedKeyboardDidHideNotification:(id)notification
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v3 = [WeakRetained _searchController];
-  [v3 _stopDeferringSearchSuggestionsWithReason:4 postDeferralAction:1];
+  _searchController = [WeakRetained _searchController];
+  [_searchController _stopDeferringSearchSuggestionsWithReason:4 postDeferralAction:1];
 }
 
-- (void)_receivedKeyboardDidShowNotification:(id)a3
+- (void)_receivedKeyboardDidShowNotification:(id)notification
 {
   v6.receiver = self;
   v6.super_class = UISearchTextField;
-  [(UITextField *)&v6 _receivedKeyboardDidShowNotification:a3];
+  [(UITextField *)&v6 _receivedKeyboardDidShowNotification:notification];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  v5 = [WeakRetained _searchController];
-  [v5 _stopDeferringSearchSuggestionsWithReason:2 postDeferralAction:1];
+  _searchController = [WeakRetained _searchController];
+  [_searchController _stopDeferringSearchSuggestionsWithReason:2 postDeferralAction:1];
 }
 
-- (id)_rangeOfCustomDraggableObjectsInRange:(id)a3
+- (id)_rangeOfCustomDraggableObjectsInRange:(id)range
 {
-  v4 = a3;
-  v5 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfAllTokens];
+  rangeCopy = range;
+  characterRangeOfAllTokens = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter characterRangeOfAllTokens];
   if (v6)
   {
-    v7 = [(UIResponder *)self _textRangeFromNSRange:v5, v6];
-    v8 = [(UIResponder *)self _intersectionOfRange:v7 andRange:v4];
+    v7 = [(UIResponder *)self _textRangeFromNSRange:characterRangeOfAllTokens, v6];
+    v8 = [(UIResponder *)self _intersectionOfRange:v7 andRange:rangeCopy];
   }
 
   else
@@ -5361,26 +5361,26 @@ void __46__UISearchTextField__updateAtomViewSelection___block_invoke_2(void *a1,
   return v8;
 }
 
-- (id)_customDraggableObjectsForRange:(id)a3
+- (id)_customDraggableObjectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = [(UITextField *)self delegate];
+  rangeCopy = range;
+  delegate = [(UITextField *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UIResponder *)self _nsrangeForTextRange:v4];
+    v6 = [(UIResponder *)self _nsrangeForTextRange:rangeCopy];
     v8 = v7;
     v9 = objc_opt_new();
-    v10 = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
+    tokenCharacterIndexes = [(_UISearchBarTextFieldTokenCounter *)self->_tokenCounter tokenCharacterIndexes];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __53__UISearchTextField__customDraggableObjectsForRange___block_invoke;
     v15[3] = &unk_1E70F8268;
     v15[4] = self;
-    v16 = v5;
-    v17 = v4;
+    v16 = delegate;
+    v17 = rangeCopy;
     v11 = v9;
     v18 = v11;
-    [v10 enumerateIndexesInRange:v6 options:v8 usingBlock:{0, v15}];
+    [tokenCharacterIndexes enumerateIndexesInRange:v6 options:v8 usingBlock:{0, v15}];
 
     v12 = v18;
     v13 = v11;
@@ -5418,17 +5418,17 @@ void __53__UISearchTextField__customDraggableObjectsForRange___block_invoke(uint
   }
 }
 
-- (void)_postNotificationFromOriginalIfNecessary:(id *)a1
+- (void)_postNotificationFromOriginalIfNecessary:(id *)necessary
 {
   v7 = a2;
-  if (a1)
+  if (necessary)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 150);
-    v4 = [WeakRetained _originalSearchTextFieldForClones];
+    WeakRetained = objc_loadWeakRetained(necessary + 150);
+    _originalSearchTextFieldForClones = [WeakRetained _originalSearchTextFieldForClones];
 
-    if (v4)
+    if (_originalSearchTextFieldForClones)
     {
-      v5 = v4 == a1;
+      v5 = _originalSearchTextFieldForClones == necessary;
     }
 
     else
@@ -5438,19 +5438,19 @@ void __53__UISearchTextField__customDraggableObjectsForRange___block_invoke(uint
 
     if (!v5)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 postNotificationName:v7 object:v4];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:v7 object:_originalSearchTextFieldForClones];
     }
   }
 }
 
-- (void)fieldEditorDidChange:(id)a3
+- (void)fieldEditorDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(UISearchTextField *)self _clearSearchSuggestionsIfNecessary];
   v5.receiver = self;
   v5.super_class = UISearchTextField;
-  [(UITextField *)&v5 fieldEditorDidChange:v4];
+  [(UITextField *)&v5 fieldEditorDidChange:changeCopy];
 
   if (![(UITextField *)self _suppressContentChangedNotification])
   {
@@ -5458,118 +5458,118 @@ void __53__UISearchTextField__customDraggableObjectsForRange___block_invoke(uint
   }
 }
 
-- (void)_clearButtonClicked:(id)a3
+- (void)_clearButtonClicked:(id)clicked
 {
   v4.receiver = self;
   v4.super_class = UISearchTextField;
-  [(UITextField *)&v4 _clearButtonClicked:a3];
+  [(UITextField *)&v4 _clearButtonClicked:clicked];
   if (![(UITextField *)self _fieldEditorAttached]&& ![(UITextField *)self _suppressContentChangedNotification])
   {
     [(UISearchTextField *)&self->super.super.super.super.super.isa _postNotificationFromOriginalIfNecessary:?];
   }
 }
 
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  v8 = a3;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = UISearchTextField;
-  [(UIControl *)&v15 addTarget:v8 action:a4 forControlEvents:a5];
+  [(UIControl *)&v15 addTarget:targetCopy action:action forControlEvents:events];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__UISearchTextField_addTarget_action_forControlEvents___block_invoke;
   v11[3] = &unk_1E70F8308;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = targetCopy;
+  actionCopy = action;
+  eventsCopy = events;
+  v10 = targetCopy;
   [WeakRetained _updateOriginalAndSiblingClonesOfSearchField:self updates:v11];
 }
 
-- (void)addAction:(id)a3 forControlEvents:(unint64_t)a4
+- (void)addAction:(id)action forControlEvents:(unint64_t)events
 {
-  v6 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = UISearchTextField;
-  [(UIControl *)&v12 addAction:v6 forControlEvents:a4];
+  [(UIControl *)&v12 addAction:actionCopy forControlEvents:events];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__UISearchTextField_addAction_forControlEvents___block_invoke;
   v9[3] = &unk_1E70F8330;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = actionCopy;
+  eventsCopy = events;
+  v8 = actionCopy;
   [WeakRetained _updateOriginalAndSiblingClonesOfSearchField:self updates:v9];
 }
 
-- (void)removeTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)removeTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  v8 = a3;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = UISearchTextField;
-  [(UIControl *)&v15 removeTarget:v8 action:a4 forControlEvents:a5];
+  [(UIControl *)&v15 removeTarget:targetCopy action:action forControlEvents:events];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__UISearchTextField_removeTarget_action_forControlEvents___block_invoke;
   v11[3] = &unk_1E70F8308;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = targetCopy;
+  actionCopy = action;
+  eventsCopy = events;
+  v10 = targetCopy;
   [WeakRetained _updateOriginalAndSiblingClonesOfSearchField:self updates:v11];
 }
 
-- (void)removeAction:(id)a3 forControlEvents:(unint64_t)a4
+- (void)removeAction:(id)action forControlEvents:(unint64_t)events
 {
-  v6 = a3;
+  actionCopy = action;
   v12.receiver = self;
   v12.super_class = UISearchTextField;
-  [(UIControl *)&v12 removeAction:v6 forControlEvents:a4];
+  [(UIControl *)&v12 removeAction:actionCopy forControlEvents:events];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__UISearchTextField_removeAction_forControlEvents___block_invoke;
   v9[3] = &unk_1E70F8330;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = actionCopy;
+  eventsCopy = events;
+  v8 = actionCopy;
   [WeakRetained _updateOriginalAndSiblingClonesOfSearchField:self updates:v9];
 }
 
-- (void)removeActionForIdentifier:(id)a3 forControlEvents:(unint64_t)a4
+- (void)removeActionForIdentifier:(id)identifier forControlEvents:(unint64_t)events
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = UISearchTextField;
-  [(UIControl *)&v12 removeActionForIdentifier:v6 forControlEvents:a4];
+  [(UIControl *)&v12 removeActionForIdentifier:identifierCopy forControlEvents:events];
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__UISearchTextField_removeActionForIdentifier_forControlEvents___block_invoke;
   v9[3] = &unk_1E70F8330;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = identifierCopy;
+  eventsCopy = events;
+  v8 = identifierCopy;
   [WeakRetained _updateOriginalAndSiblingClonesOfSearchField:self updates:v9];
 }
 
-- (void)willPresentEditMenuWithAnimator:(id)a3
+- (void)willPresentEditMenuWithAnimator:(id)animator
 {
   *(&self->_searchBarTextFieldFlags + 6) |= 0x800u;
   v3.receiver = self;
   v3.super_class = UISearchTextField;
-  [(UITextField *)&v3 willPresentEditMenuWithAnimator:a3];
+  [(UITextField *)&v3 willPresentEditMenuWithAnimator:animator];
 }
 
-- (void)willDismissEditMenuWithAnimator:(id)a3
+- (void)willDismissEditMenuWithAnimator:(id)animator
 {
   *(&self->_searchBarTextFieldFlags + 6) &= ~0x800u;
   v3.receiver = self;
   v3.super_class = UISearchTextField;
-  [(UITextField *)&v3 willDismissEditMenuWithAnimator:a3];
+  [(UITextField *)&v3 willDismissEditMenuWithAnimator:animator];
 }
 
 @end

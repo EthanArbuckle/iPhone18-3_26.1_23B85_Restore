@@ -117,10 +117,10 @@ LABEL_3:
       v17 = v14;
       v18 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_roundedstroke];
       v19 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_rectstroke];
-      v20 = [CIVector vectorWithX:x Y:y Z:x + width W:y + height];
+      height = [CIVector vectorWithX:x Y:y Z:x + width W:y + height];
       if (v13 <= 0.5)
       {
-        v47[0] = v20;
+        v47[0] = height;
         *&v21 = v9;
         v39 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
         v40 = self->inputColor;
@@ -148,7 +148,7 @@ LABEL_3:
         *&v21 = *&v21 + *&v21;
         v33 = COERCE_DOUBLE(vminnm_f32(v24, vadd_f32(vdiv_f32(vcvt_f32_f64(vmlaq_n_f64(v25, _Q3, v42)), vdup_lane_s32(*&v21, 0)), _D4)));
         v43 = v33;
-        v46[0] = v20;
+        v46[0] = height;
         *&v33 = v13;
         v46[1] = [MEMORY[0x1E696AD98] numberWithFloat:v33];
         v46[2] = [CIVector vectorWithX:v41.f32[0] Y:v41.f32[1] Z:*&v43 W:*(&v43 + 1)];

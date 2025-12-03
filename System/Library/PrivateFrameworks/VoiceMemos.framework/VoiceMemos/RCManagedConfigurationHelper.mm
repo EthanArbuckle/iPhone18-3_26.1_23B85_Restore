@@ -6,7 +6,7 @@
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation RCManagedConfigurationHelper
@@ -16,15 +16,15 @@
   if (!self->_observing)
   {
     self->_observing = 1;
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 registerObserver:self];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:self];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  if (a3)
+  objc_storeWeak(&self->_delegate, delegate);
+  if (delegate)
   {
 
     [(RCManagedConfigurationHelper *)self _startObserving];
@@ -47,12 +47,12 @@
 
 - (void)_notifyDelegateOfChange
 {
-  v2 = [(RCManagedConfigurationHelper *)self delegate];
-  if (v2)
+  delegate = [(RCManagedConfigurationHelper *)self delegate];
+  if (delegate)
   {
-    v3 = v2;
-    [v2 managedConfigurationUpdated:{+[RCManagedConfigurationHelper cloudSyncIsAllowed](RCManagedConfigurationHelper, "cloudSyncIsAllowed")}];
-    v2 = v3;
+    v3 = delegate;
+    [delegate managedConfigurationUpdated:{+[RCManagedConfigurationHelper cloudSyncIsAllowed](RCManagedConfigurationHelper, "cloudSyncIsAllowed")}];
+    delegate = v3;
   }
 }
 
@@ -61,23 +61,23 @@
   if (self->_observing)
   {
     self->_observing = 0;
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    [v4 unregisterObserver:self];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] unregisterObserver:self];
   }
 }
 
 + (BOOL)cloudSyncIsAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isCloudSyncAllowed:@"com.apple.VoiceMemos"];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isCloudSyncAllowed:@"com.apple.VoiceMemos"];
 
   return v3;
 }
 
 + (BOOL)isProfanityFiltered
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25D38]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D38]] == 1;
 
   return v3;
 }

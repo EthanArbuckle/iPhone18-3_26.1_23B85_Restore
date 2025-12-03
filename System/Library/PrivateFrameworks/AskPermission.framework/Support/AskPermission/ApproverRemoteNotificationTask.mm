@@ -1,29 +1,29 @@
 @interface ApproverRemoteNotificationTask
-- (ApproverRemoteNotificationTask)initWithPayload:(id)a3;
+- (ApproverRemoteNotificationTask)initWithPayload:(id)payload;
 - (NSString)metricsID;
 - (NSString)requestIdentifier;
-- (id)_approvalRequestFromResult:(id)a3 withError:(id *)a4;
-- (id)_approvalRequestWithError:(id *)a3;
-- (id)_requestFromResult:(id)a3 withError:(id *)a4;
-- (id)_requestWithError:(id *)a3;
-- (id)_serverRequestWithError:(id *)a3;
+- (id)_approvalRequestFromResult:(id)result withError:(id *)error;
+- (id)_approvalRequestWithError:(id *)error;
+- (id)_requestFromResult:(id)result withError:(id *)error;
+- (id)_requestWithError:(id *)error;
+- (id)_serverRequestWithError:(id *)error;
 - (id)perform;
 - (int64_t)requestStatus;
-- (void)_presentRequest:(id)a3;
+- (void)_presentRequest:(id)request;
 @end
 
 @implementation ApproverRemoteNotificationTask
 
-- (ApproverRemoteNotificationTask)initWithPayload:(id)a3
+- (ApproverRemoteNotificationTask)initWithPayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   v11.receiver = self;
   v11.super_class = ApproverRemoteNotificationTask;
   v6 = [(ApproverRemoteNotificationTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_payload, a3);
+    objc_storeStrong(&v6->_payload, payload);
     v8 = [AMSBag bagForProfile:@"AskPermission" profileVersion:@"1"];
     bag = v7->_bag;
     v7->_bag = v8;
@@ -34,26 +34,26 @@
 
 - (int64_t)requestStatus
 {
-  v2 = [(ApproverRemoteNotificationTask *)self payload];
-  v3 = [v2 objectForKeyedSubscript:@"9"];
+  payload = [(ApproverRemoteNotificationTask *)self payload];
+  v3 = [payload objectForKeyedSubscript:@"9"];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = -2;
+    integerValue = -2;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)requestIdentifier
 {
-  v2 = [(ApproverRemoteNotificationTask *)self payload];
-  v3 = [v2 objectForKeyedSubscript:@"8"];
+  payload = [(ApproverRemoteNotificationTask *)self payload];
+  v3 = [payload objectForKeyedSubscript:@"8"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -71,8 +71,8 @@
 
 - (NSString)metricsID
 {
-  v2 = [(ApproverRemoteNotificationTask *)self payload];
-  v3 = [v2 objectForKeyedSubscript:@"purchaseAuthorizationId"];
+  payload = [(ApproverRemoteNotificationTask *)self payload];
+  v3 = [payload objectForKeyedSubscript:@"purchaseAuthorizationId"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -100,7 +100,7 @@
   return v2;
 }
 
-- (id)_approvalRequestWithError:(id *)a3
+- (id)_approvalRequestWithError:(id *)error
 {
   v21 = 0;
   v5 = [(ApproverRemoteNotificationTask *)self _serverRequestWithError:&v21];
@@ -114,8 +114,8 @@
       v8 = +[APLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       *buf = 138543618;
@@ -123,7 +123,7 @@
       v24 = 2114;
       v25 = v5;
       v11 = v10;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result: %{public}@", buf, 0x16u);
     }
 
     v20 = v7;
@@ -138,8 +138,8 @@
         v14 = +[APLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v16 = objc_opt_class();
         *buf = 138543618;
@@ -147,11 +147,11 @@
         v24 = 2114;
         v25 = v12;
         v17 = v16;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Decoded server result. Request: %{public}@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Decoded server result. Request: %{public}@", buf, 0x16u);
       }
     }
 
-    if (a3)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -161,18 +161,18 @@
   {
     v12 = 0;
     v13 = v6;
-    if (a3)
+    if (error)
     {
 LABEL_13:
       v18 = v13;
-      *a3 = v13;
+      *error = v13;
     }
   }
 
   return v12;
 }
 
-- (id)_requestWithError:(id *)a3
+- (id)_requestWithError:(id *)error
 {
   v21 = 0;
   v5 = [(ApproverRemoteNotificationTask *)self _serverRequestWithError:&v21];
@@ -186,8 +186,8 @@ LABEL_13:
       v8 = +[APLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 = objc_opt_class();
       *buf = 138543618;
@@ -195,7 +195,7 @@ LABEL_13:
       v24 = 2114;
       v25 = v5;
       v11 = v10;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result: %{public}@", buf, 0x16u);
     }
 
     v20 = v7;
@@ -210,8 +210,8 @@ LABEL_13:
         v14 = +[APLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v16 = objc_opt_class();
         *buf = 138543618;
@@ -219,11 +219,11 @@ LABEL_13:
         v24 = 2114;
         v25 = v12;
         v17 = v16;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Decoded server result. Request: %{public}@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Decoded server result. Request: %{public}@", buf, 0x16u);
       }
     }
 
-    if (a3)
+    if (error)
     {
       goto LABEL_13;
     }
@@ -233,49 +233,49 @@ LABEL_13:
   {
     v12 = 0;
     v13 = v6;
-    if (a3)
+    if (error)
     {
 LABEL_13:
       v18 = v13;
-      *a3 = v13;
+      *error = v13;
     }
   }
 
   return v12;
 }
 
-- (id)_serverRequestWithError:(id *)a3
+- (id)_serverRequestWithError:(id *)error
 {
   v5 = +[AMSBag sharedBag];
-  v6 = [v5 retrieveRequestURL];
+  retrieveRequestURL = [v5 retrieveRequestURL];
 
   v33 = @"requestId";
-  v7 = [(ApproverRemoteNotificationTask *)self requestIdentifier];
-  v34 = v7;
+  requestIdentifier = [(ApproverRemoteNotificationTask *)self requestIdentifier];
+  v34 = requestIdentifier;
   v8 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
 
   v9 = objc_alloc_init(URLRequestEncoder);
-  v10 = [(URLRequestEncoder *)v9 requestWithMethod:4 bagURL:v6 parameters:v8];
+  v10 = [(URLRequestEncoder *)v9 requestWithMethod:4 bagURL:retrieveRequestURL parameters:v8];
   v30 = 0;
   v11 = [v10 resultWithTimeout:&v30 error:60.0];
   v12 = v30;
   if (v11)
   {
-    v28 = v6;
+    v28 = retrieveRequestURL;
     v13 = +[APLogConfig sharedDaemonConfig];
     if (!v13)
     {
       v13 = +[APLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
       *buf = 138543362;
       v32 = v15;
       v16 = v15;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Encoded request successfully", buf, 0xCu);
     }
 
     v17 = +[URLSession sharedSession];
@@ -293,20 +293,20 @@ LABEL_13:
         v21 = +[APLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v23 = objc_opt_class();
         *buf = 138543362;
         v32 = v23;
         v24 = v23;
-        _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: Received server result", buf, 0xCu);
       }
     }
 
     v12 = v20;
-    a3 = v27;
-    v6 = v28;
+    error = v27;
+    retrieveRequestURL = v28;
     if (v27)
     {
       goto LABEL_13;
@@ -316,24 +316,24 @@ LABEL_13:
   else
   {
     v19 = 0;
-    if (a3)
+    if (error)
     {
 LABEL_13:
       v25 = v12;
-      *a3 = v12;
+      *error = v12;
     }
   }
 
   return v19;
 }
 
-- (id)_approvalRequestFromResult:(id)a3 withError:(id *)a4
+- (id)_approvalRequestFromResult:(id)result withError:(id *)error
 {
-  v6 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = object;
   }
 
   else
@@ -354,10 +354,10 @@ LABEL_13:
       v9 = APError();
     }
 
-    v10 = [(ApproverRemoteNotificationTask *)self metricsID];
-    [(ApprovalRequest *)v8 setMetricsID:v10];
+    metricsID = [(ApproverRemoteNotificationTask *)self metricsID];
+    [(ApprovalRequest *)v8 setMetricsID:metricsID];
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -367,11 +367,11 @@ LABEL_13:
 
   v9 = APError();
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_11:
     v11 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_12:
@@ -379,13 +379,13 @@ LABEL_12:
   return v8;
 }
 
-- (id)_requestFromResult:(id)a3 withError:(id *)a4
+- (id)_requestFromResult:(id)result withError:(id *)error
 {
-  v6 = [a3 object];
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = object;
   }
 
   else
@@ -395,7 +395,7 @@ LABEL_12:
 
   if (v7)
   {
-    v74 = a4;
+    errorCopy = error;
     v8 = [v7 objectForKeyedSubscript:@"requestInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -444,12 +444,12 @@ LABEL_12:
       v17 = 0;
     }
 
-    v18 = [v17 firstObject];
+    firstObject = [v17 firstObject];
     objc_opt_class();
     v71 = v17;
     if (objc_opt_isKindOfClass())
     {
-      v83 = v18;
+      v83 = firstObject;
     }
 
     else
@@ -587,7 +587,7 @@ LABEL_12:
       v80 = 0;
     }
 
-    v77 = self;
+    selfCopy = self;
 
     v34 = [v9 objectForKeyedSubscript:@"productType"];
     objc_opt_class();
@@ -642,8 +642,8 @@ LABEL_12:
     }
 
     v42 = +[NSDate date];
-    v66 = [(ApproverRemoteNotificationTask *)v77 requestIdentifier];
-    v43 = [v81 stringValue];
+    requestIdentifier = [(ApproverRemoteNotificationTask *)selfCopy requestIdentifier];
+    stringValue = [v81 stringValue];
     v65 = [NSURL URLWithString:v80];
     v78 = [NSURL URLWithString:v79];
     v44 = v38;
@@ -703,17 +703,17 @@ LABEL_72:
     v50 = [[RequestLocalizations alloc] initWithApprove:v45 body:v82 decline:v46 title:v49];
     v63 = v9;
     v61 = v35;
-    if (v82 && v43)
+    if (v82 && stringValue)
     {
       v60 = v9;
       v51 = v78;
       v53 = v65;
-      v52 = v66;
+      v52 = requestIdentifier;
       v59 = v35;
       v55 = v69;
       v54 = v70;
       LOBYTE(v58) = 0;
-      v64 = [[Request alloc] initWithDate:v42 requestIdentifier:v66 uniqueIdentifier:@"N/A" itemBundleIdentifier:v70 itemIdentifier:v43 localizations:v50 mocked:v58 offerName:v69 previewURL:v65 productType:v59 productTypeName:v44 productURL:v78 requestInfo:v60 status:-1, v61];
+      v64 = [[Request alloc] initWithDate:v42 requestIdentifier:requestIdentifier uniqueIdentifier:@"N/A" itemBundleIdentifier:v70 itemIdentifier:stringValue localizations:v50 mocked:v58 offerName:v69 previewURL:v65 productType:v59 productTypeName:v44 productURL:v78 requestInfo:v60 status:-1, v61];
       v10 = 0;
     }
 
@@ -724,14 +724,14 @@ LABEL_72:
       v55 = v69;
       v54 = v70;
       v53 = v65;
-      v52 = v66;
+      v52 = requestIdentifier;
       v51 = v78;
     }
 
     v7 = v73;
-    a4 = v74;
+    error = errorCopy;
     v11 = v64;
-    if (!v74)
+    if (!errorCopy)
     {
       goto LABEL_83;
     }
@@ -741,11 +741,11 @@ LABEL_72:
 
   v10 = APError();
   v11 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_82:
     v56 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_83:
@@ -753,11 +753,11 @@ LABEL_83:
   return v11;
 }
 
-- (void)_presentRequest:(id)a3
+- (void)_presentRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[LocalNotificationHandler sharedHandler];
-  [v4 presentNotificationWithRequest:v3 silently:0];
+  [v4 presentNotificationWithRequest:requestCopy silently:0];
 }
 
 @end

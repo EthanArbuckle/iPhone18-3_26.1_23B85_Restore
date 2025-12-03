@@ -1,32 +1,32 @@
 @interface PXPeopleDetailSettingsViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (PXPeopleDetailSettingsViewController)init;
-- (PXPeopleDetailSettingsViewController)initWithDataSourceReloadBlock:(id)a3;
-- (PXPeopleDetailSettingsViewController)initWithPersonDetectionType:(signed __int16)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)infoForPerson:(id)a3;
-- (id)stringFromFaceCropType:(signed __int16)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (PXPeopleDetailSettingsViewController)initWithDataSourceReloadBlock:(id)block;
+- (PXPeopleDetailSettingsViewController)initWithPersonDetectionType:(signed __int16)type;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)infoForPerson:(id)person;
+- (id)stringFromFaceCropType:(signed __int16)type;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)commonInit;
-- (void)commonInitWithDataSourceReloadBlock:(id)a3;
-- (void)fileVURadar:(id)a3;
-- (void)loadSuggestionsForPerson:(id)a3;
-- (void)toggle_selectDuplicatesMode:(id)a3;
+- (void)commonInitWithDataSourceReloadBlock:(id)block;
+- (void)fileVURadar:(id)radar;
+- (void)loadSuggestionsForPerson:(id)person;
+- (void)toggle_selectDuplicatesMode:(id)mode;
 - (void)viewDidLoad;
 @end
 
 @implementation PXPeopleDetailSettingsViewController
 
-- (void)loadSuggestionsForPerson:(id)a3
+- (void)loadSuggestionsForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(PXPeopleDetailSettingsViewController *)self dataSource];
-  v7 = [v6 personAtIndex:v5];
+  personCopy = person;
+  item = [personCopy item];
+  dataSource = [(PXPeopleDetailSettingsViewController *)self dataSource];
+  v7 = [dataSource personAtIndex:item];
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -34,9 +34,9 @@
   v22[4] = __Block_byref_object_dispose__203134;
   v23 = 0;
   v8 = dispatch_semaphore_create(0);
-  v9 = [(PXPeopleDetailSettingsViewController *)self collectionView];
-  v10 = [v9 traitCollection];
-  [v10 displayScale];
+  collectionView = [(PXPeopleDetailSettingsViewController *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  [traitCollection displayScale];
   v12 = v11;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -45,7 +45,7 @@
   v21 = v22;
   v13 = v8;
   v20 = v13;
-  [v6 imageAtIndex:v5 targetSize:v19 displayScale:110.0 resultHandler:{110.0, v12}];
+  [dataSource imageAtIndex:item targetSize:v19 displayScale:110.0 resultHandler:{110.0, v12}];
 
   v14 = dispatch_time(0, 20000000000);
   dispatch_semaphore_wait(v13, v14);
@@ -54,7 +54,7 @@
   v16[2] = __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block_invoke_2;
   v16[3] = &unk_1E774C620;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v15 = v7;
   dispatch_async(MEMORY[0x1E69E96A0], v16);
 
@@ -75,28 +75,28 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
   [v2 pushViewController:v3 animated:1];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_selectDuplicatesMode)
   {
-    v8 = [(NSMutableSet *)self->_selectedIndexPaths containsObject:v7];
+    v8 = [(NSMutableSet *)self->_selectedIndexPaths containsObject:pathCopy];
     selectedIndexPaths = self->_selectedIndexPaths;
     if (v8)
     {
-      [(NSMutableSet *)selectedIndexPaths removeObject:v7];
+      [(NSMutableSet *)selectedIndexPaths removeObject:pathCopy];
     }
 
     else
     {
-      [(NSMutableSet *)selectedIndexPaths addObject:v7];
+      [(NSMutableSet *)selectedIndexPaths addObject:pathCopy];
     }
 
-    v14[0] = v7;
+    v14[0] = pathCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    [v6 reloadItemsAtIndexPaths:v11];
+    [viewCopy reloadItemsAtIndexPaths:v11];
   }
 
   else
@@ -107,12 +107,12 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
     v12[2] = __80__PXPeopleDetailSettingsViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v12[3] = &unk_1E774C620;
     v12[4] = self;
-    v13 = v7;
+    v13 = pathCopy;
     dispatch_async(v10, v12);
   }
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 10.0;
   v6 = 0.0;
@@ -125,9 +125,9 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  [a3 bounds];
+  [view bounds];
   v6 = v5;
   v7 = 10.0;
   result.height = v7;
@@ -135,9 +135,9 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  [a3 bounds];
+  [view bounds];
   v6 = v5;
   v7 = 10.0;
   result.height = v7;
@@ -145,7 +145,7 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v5 = 110.0;
   v6 = 110.0;
@@ -154,18 +154,18 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"cellIdentifier" forIndexPath:pathCopy];
   v9 = [v8 tag] + 1;
   [v8 setTag:v9];
-  v10 = [(PXPeopleDetailSettingsViewController *)self dataSource];
-  v11 = [v6 item];
-  v12 = [v7 traitCollection];
+  dataSource = [(PXPeopleDetailSettingsViewController *)self dataSource];
+  item = [pathCopy item];
+  traitCollection = [viewCopy traitCollection];
 
-  [v12 displayScale];
+  [traitCollection displayScale];
   v14 = v13;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -174,39 +174,39 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
   v15 = v8;
   v36 = v15;
   v37 = v9;
-  [v10 imageAtIndex:v11 targetSize:v35 displayScale:110.0 resultHandler:{110.0, v14}];
+  [dataSource imageAtIndex:item targetSize:v35 displayScale:110.0 resultHandler:{110.0, v14}];
 
-  v16 = [(PXPeopleDetailSettingsViewController *)self dataSource];
-  v17 = [v16 personAtIndex:v11];
+  dataSource2 = [(PXPeopleDetailSettingsViewController *)self dataSource];
+  v17 = [dataSource2 personAtIndex:item];
 
-  v18 = [v10 titleAtIndex:v11];
+  v18 = [dataSource titleAtIndex:item];
   if (![v18 length])
   {
-    v19 = [v17 uuid];
+    uuid = [v17 uuid];
 
-    v18 = v19;
+    v18 = uuid;
   }
 
-  v20 = [v10 photoQuantityAtIndex:v11];
-  v21 = [v17 verifiedType];
-  if ((v21 + 2) > 4)
+  v20 = [dataSource photoQuantityAtIndex:item];
+  verifiedType = [v17 verifiedType];
+  if ((verifiedType + 2) > 4)
   {
     v22 = @"Unknown";
   }
 
   else
   {
-    v22 = off_1E7743D70[v21 + 2];
+    v22 = off_1E7743D70[verifiedType + 2];
   }
 
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld (%@)", v20, v22];
-  v24 = [v15 quantityLabel];
-  [v24 setText:v23];
+  quantityLabel = [v15 quantityLabel];
+  [quantityLabel setText:v23];
 
   v25 = 1.0;
   if (self->_selectDuplicatesMode)
   {
-    if ([(NSMutableSet *)self->_selectedIndexPaths containsObject:v6])
+    if ([(NSMutableSet *)self->_selectedIndexPaths containsObject:pathCopy])
     {
       v25 = 1.0;
     }
@@ -217,16 +217,16 @@ void __65__PXPeopleDetailSettingsViewController_loadSuggestionsForPerson___block
     }
   }
 
-  v26 = [v15 avatarView];
-  [v26 setAlpha:v25];
-  [v26 setHighlighted:0];
+  avatarView = [v15 avatarView];
+  [avatarView setAlpha:v25];
+  [avatarView setHighlighted:0];
   v30 = *(MEMORY[0x1E695EFD0] + 16);
   v32 = *MEMORY[0x1E695EFD0];
   v31 = v32;
   v33 = v30;
   v34 = *(MEMORY[0x1E695EFD0] + 32);
   v29 = v34;
-  [v26 setTransform:&v32];
+  [avatarView setTransform:&v32];
   v32 = v31;
   v33 = v30;
   v34 = v29;
@@ -260,21 +260,21 @@ uint64_t __78__PXPeopleDetailSettingsViewController_collectionView_cellForItemAt
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PXPeopleDetailSettingsViewController *)self dataSource:a3];
-  v5 = [v4 numberOfMembers];
+  v4 = [(PXPeopleDetailSettingsViewController *)self dataSource:view];
+  numberOfMembers = [v4 numberOfMembers];
 
-  return v5;
+  return numberOfMembers;
 }
 
-- (id)infoForPerson:(id)a3
+- (id)infoForPerson:(id)person
 {
-  v4 = a3;
-  v5 = [v4 mdID];
-  if (v5)
+  personCopy = person;
+  mdID = [personCopy mdID];
+  if (mdID)
   {
-    v6 = v5;
+    v6 = mdID;
   }
 
   else
@@ -282,19 +282,19 @@ uint64_t __78__PXPeopleDetailSettingsViewController_collectionView_cellForItemAt
     v6 = @"No mdID";
   }
 
-  v7 = [v4 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  photoLibrary = [personCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v8 setIncludedDetectionTypes:self->_personDetectionTypes];
-  v9 = [MEMORY[0x1E69787C8] fetchFacesForPerson:v4 options:v8];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:self->_personDetectionTypes];
+  v9 = [MEMORY[0x1E69787C8] fetchFacesForPerson:personCopy options:librarySpecificFetchOptions];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__203133;
   v28 = __Block_byref_object_dispose__203134;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v4 uuid];
-  v29 = [v10 stringWithFormat:@"-- Person uuid %@ (%lu faces) --\nVU entity ID: %@\n", v11, objc_msgSend(v9, "count"), v6];
+  uuid = [personCopy uuid];
+  v29 = [v10 stringWithFormat:@"-- Person uuid %@ (%lu faces) --\nVU entity ID: %@\n", uuid, objc_msgSend(v9, "count"), v6];
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22[0] = MEMORY[0x1E69E9820];
@@ -304,13 +304,13 @@ uint64_t __78__PXPeopleDetailSettingsViewController_collectionView_cellForItemAt
   v13 = v12;
   v23 = v13;
   [v9 enumerateObjectsUsingBlock:v22];
-  v14 = [MEMORY[0x1E69787F0] fetchFaceCropByFaceLocalIdentifierForFaces:v9 fetchOptions:v8];
+  v14 = [MEMORY[0x1E69787F0] fetchFaceCropByFaceLocalIdentifierForFaces:v9 fetchOptions:librarySpecificFetchOptions];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __54__PXPeopleDetailSettingsViewController_infoForPerson___block_invoke_2;
   v18[3] = &unk_1E7743C98;
   v15 = v13;
-  v20 = self;
+  selfCopy = self;
   v21 = &v24;
   v19 = v15;
   [v14 enumerateKeysAndObjectsUsingBlock:v18];
@@ -347,20 +347,20 @@ void __54__PXPeopleDetailSettingsViewController_infoForPerson___block_invoke_2(v
   *(v14 + 40) = v13;
 }
 
-- (id)stringFromFaceCropType:(signed __int16)a3
+- (id)stringFromFaceCropType:(signed __int16)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7743D48[(a3 - 1)];
+    return off_1E7743D48[(type - 1)];
   }
 }
 
-- (void)fileVURadar:(id)a3
+- (void)fileVURadar:(id)radar
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -370,7 +370,7 @@ void __54__PXPeopleDetailSettingsViewController_infoForPerson___block_invoke_2(v
   v14 = 3221225472;
   v15 = __52__PXPeopleDetailSettingsViewController_fileVURadar___block_invoke;
   v16 = &unk_1E7743C48;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
   v7 = v5;
   [(NSMutableSet *)selectedIndexPaths enumerateObjectsUsingBlock:&v13];
@@ -381,7 +381,7 @@ void __54__PXPeopleDetailSettingsViewController_infoForPerson___block_invoke_2(v
   v19[0] = @"com.apple.PhotoLibraryServices.PhotosDiagnostics";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   LOWORD(v12) = 257;
-  [PXFeedbackTapToRadarUtilities fileRadarWithTitle:@"[People][VU] Annotated duplicate persons in library" description:v10 classification:@"Other Bug" componentID:@"1540673" componentName:@"VisualUnderstanding" componentVersion:@"all" keyword:0 screenshotURLs:0 attachmentURLs:0 includeSysDiagnose:v12 includeInternalRelease:v11 additionalExtensionIdentifiers:0 completionHandler:v13, v14, v15, v16, v17];
+  [PXFeedbackTapToRadarUtilities fileRadarWithTitle:@"[People][VU] Annotated duplicate persons in library" description:v10 classification:@"Other Bug" componentID:@"1540673" componentName:@"VisualUnderstanding" componentVersion:@"all" keyword:0 screenshotURLs:0 attachmentURLs:0 includeSysDiagnose:v12 includeInternalRelease:v11 additionalExtensionIdentifiers:0 completionHandler:v13, v14, v15, v16, selfCopy];
 }
 
 void __52__PXPeopleDetailSettingsViewController_fileVURadar___block_invoke(uint64_t a1, void *a2)
@@ -395,20 +395,20 @@ void __52__PXPeopleDetailSettingsViewController_fileVURadar___block_invoke(uint6
   [v5 addObject:v6];
 }
 
-- (void)toggle_selectDuplicatesMode:(id)a3
+- (void)toggle_selectDuplicatesMode:(id)mode
 {
   selectDuplicatesMode = self->_selectDuplicatesMode;
   self->_selectDuplicatesMode = !selectDuplicatesMode;
-  v5 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  v7 = v6;
+  navigationItem = [(PXPeopleDetailSettingsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  v7 = rightBarButtonItem;
   if (selectDuplicatesMode)
   {
-    [v6 setStyle:0];
+    [rightBarButtonItem setStyle:0];
 
     previousLeftBarButtonItem = self->_previousLeftBarButtonItem;
-    v9 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
-    [v9 setLeftBarButtonItem:previousLeftBarButtonItem];
+    navigationItem2 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:previousLeftBarButtonItem];
 
     v10 = self->_previousLeftBarButtonItem;
     self->_previousLeftBarButtonItem = 0;
@@ -418,20 +418,20 @@ void __52__PXPeopleDetailSettingsViewController_fileVURadar___block_invoke(uint6
 
   else
   {
-    [v6 setStyle:2];
+    [rightBarButtonItem setStyle:2];
 
-    v11 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
-    v12 = [v11 leftBarButtonItem];
+    navigationItem3 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem3 leftBarButtonItem];
     v13 = self->_previousLeftBarButtonItem;
-    self->_previousLeftBarButtonItem = v12;
+    self->_previousLeftBarButtonItem = leftBarButtonItem;
 
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"File People Radar" style:0 target:self action:sel_fileVURadar_];
-    v15 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
-    [v15 setLeftBarButtonItem:v14];
+    navigationItem4 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
+    [navigationItem4 setLeftBarButtonItem:v14];
   }
 
-  v16 = [(PXPeopleDetailSettingsViewController *)self collectionView];
-  [v16 reloadData];
+  collectionView = [(PXPeopleDetailSettingsViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)viewDidLoad
@@ -442,31 +442,31 @@ void __52__PXPeopleDetailSettingsViewController_fileVURadar___block_invoke(uint6
   v3 = objc_alloc_init(MEMORY[0x1E69DC840]);
   [v3 setMinimumInteritemSpacing:15.0];
   [v3 setMinimumLineSpacing:15.0];
-  v4 = [(PXPeopleDetailSettingsViewController *)self view];
+  view = [(PXPeopleDetailSettingsViewController *)self view];
   v5 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  [v4 frame];
+  [view frame];
   v6 = [v5 initWithFrame:v3 collectionViewLayout:?];
   [(PXPeopleDetailSettingsViewController *)self setCollectionView:v6];
   [v6 setAutoresizingMask:18];
   [v6 setDataSource:self];
   [v6 setDelegate:self];
   [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"cellIdentifier"];
-  v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v6 setBackgroundColor:v7];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v6 setBackgroundColor:systemBackgroundColor];
 
-  [v4 addSubview:v6];
+  [view addSubview:v6];
   v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Select Dupes" style:0 target:self action:sel_toggle_selectDuplicatesMode_];
-  v9 = [(PXPeopleDetailSettingsViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem = [(PXPeopleDetailSettingsViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 
   objc_initWeak(&location, self);
-  v10 = [(PXPeopleDetailSettingsViewController *)self dataSource];
+  dataSource = [(PXPeopleDetailSettingsViewController *)self dataSource];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__PXPeopleDetailSettingsViewController_viewDidLoad__block_invoke;
   v11[3] = &unk_1E774C318;
   objc_copyWeak(&v12, &location);
-  [v10 loadObjectsAndUpdateMembersWithCompletion:v11];
+  [dataSource loadObjectsAndUpdateMembersWithCompletion:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -490,16 +490,16 @@ void __51__PXPeopleDetailSettingsViewController_viewDidLoad__block_invoke_2(uint
   [v1 reloadData];
 }
 
-- (PXPeopleDetailSettingsViewController)initWithPersonDetectionType:(signed __int16)a3
+- (PXPeopleDetailSettingsViewController)initWithPersonDetectionType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PXPeopleDetailSettingsViewController;
   v4 = [(PXPeopleDetailSettingsViewController *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithShort:v3];
+    v5 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
     v9[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     [(PXPeopleDetailSettingsViewController *)v4 setPersonDetectionTypes:v6];
@@ -510,16 +510,16 @@ void __51__PXPeopleDetailSettingsViewController_viewDidLoad__block_invoke_2(uint
   return v4;
 }
 
-- (PXPeopleDetailSettingsViewController)initWithDataSourceReloadBlock:(id)a3
+- (PXPeopleDetailSettingsViewController)initWithDataSourceReloadBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = PXPeopleDetailSettingsViewController;
   v5 = [(PXPeopleDetailSettingsViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PXPeopleDetailSettingsViewController *)v5 commonInitWithDataSourceReloadBlock:v4];
+    [(PXPeopleDetailSettingsViewController *)v5 commonInitWithDataSourceReloadBlock:blockCopy];
   }
 
   return v6;
@@ -532,8 +532,8 @@ void __51__PXPeopleDetailSettingsViewController_viewDidLoad__block_invoke_2(uint
   v2 = [(PXPeopleDetailSettingsViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6978830] defaultDetectionTypes];
-    [(PXPeopleDetailSettingsViewController *)v2 setPersonDetectionTypes:v3];
+    defaultDetectionTypes = [MEMORY[0x1E6978830] defaultDetectionTypes];
+    [(PXPeopleDetailSettingsViewController *)v2 setPersonDetectionTypes:defaultDetectionTypes];
 
     [(PXPeopleDetailSettingsViewController *)v2 commonInit];
   }
@@ -541,14 +541,14 @@ void __51__PXPeopleDetailSettingsViewController_viewDidLoad__block_invoke_2(uint
   return v2;
 }
 
-- (void)commonInitWithDataSourceReloadBlock:(id)a3
+- (void)commonInitWithDataSourceReloadBlock:(id)block
 {
-  v7 = a3;
-  v4 = [(PXPeopleDetailSettingsViewController *)self dataSource];
+  blockCopy = block;
+  dataSource = [(PXPeopleDetailSettingsViewController *)self dataSource];
 
-  if (!v4)
+  if (!dataSource)
   {
-    v5 = [(PXPeopleDataSource *)[PXPeoplePersonDataSource alloc] initWithName:@"PeopleAdditionalDataSource" objectsReloadBlock:v7 asynchronousLoad:1 callbackDelegate:self];
+    v5 = [(PXPeopleDataSource *)[PXPeoplePersonDataSource alloc] initWithName:@"PeopleAdditionalDataSource" objectsReloadBlock:blockCopy asynchronousLoad:1 callbackDelegate:self];
     [(PXPeopleDataSource *)v5 setSortComparator:&__block_literal_global_203335];
     [(PXPeopleDetailSettingsViewController *)self setDataSource:v5];
     v6 = [[PXPeopleSuggestionDataSource alloc] initWithFlowType:0];

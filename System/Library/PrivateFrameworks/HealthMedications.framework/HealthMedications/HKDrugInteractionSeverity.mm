@@ -1,10 +1,10 @@
 @interface HKDrugInteractionSeverity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDrugInteractionSeverity)init;
-- (HKDrugInteractionSeverity)initWithCoder:(id)a3;
-- (HKDrugInteractionSeverity)initWithSeverityLevel:(unint64_t)a3 validRegionCodes:(id)a4;
+- (HKDrugInteractionSeverity)initWithCoder:(id)coder;
+- (HKDrugInteractionSeverity)initWithSeverityLevel:(unint64_t)level validRegionCodes:(id)codes;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDrugInteractionSeverity
@@ -19,17 +19,17 @@
   return 0;
 }
 
-- (HKDrugInteractionSeverity)initWithSeverityLevel:(unint64_t)a3 validRegionCodes:(id)a4
+- (HKDrugInteractionSeverity)initWithSeverityLevel:(unint64_t)level validRegionCodes:(id)codes
 {
-  v6 = a4;
+  codesCopy = codes;
   v12.receiver = self;
   v12.super_class = HKDrugInteractionSeverity;
   v7 = [(HKDrugInteractionSeverity *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_severityLevel = a3;
-    v9 = [v6 copy];
+    v7->_severityLevel = level;
+    v9 = [codesCopy copy];
     validRegionCodes = v8->_validRegionCodes;
     v8->_validRegionCodes = v9;
   }
@@ -42,17 +42,17 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = HKStringFromDrugInteractionSeverityLevel(self->_severityLevel);
-  v6 = [(NSSet *)self->_validRegionCodes allObjects];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_validRegionCodes allObjects];
+  v7 = [allObjects componentsJoinedByString:{@", "}];
   v8 = [v3 stringWithFormat:@"<%@:%p severity level:%@, valid region codes:[%@]", v4, self, v5, v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_severityLevel != v5->_severityLevel)
       {
         goto LABEL_9;
@@ -100,25 +100,25 @@ LABEL_12:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   severityLevel = self->_severityLevel;
-  v5 = a3;
-  [v5 encodeInteger:severityLevel forKey:@"SeverityLevel"];
-  [v5 encodeObject:self->_validRegionCodes forKey:@"ValidRegionCodes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:severityLevel forKey:@"SeverityLevel"];
+  [coderCopy encodeObject:self->_validRegionCodes forKey:@"ValidRegionCodes"];
 }
 
-- (HKDrugInteractionSeverity)initWithCoder:(id)a3
+- (HKDrugInteractionSeverity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HKDrugInteractionSeverity;
   v5 = [(HKDrugInteractionSeverity *)&v10 init];
   if (v5)
   {
-    v5->_severityLevel = [v4 decodeIntegerForKey:@"SeverityLevel"];
+    v5->_severityLevel = [coderCopy decodeIntegerForKey:@"SeverityLevel"];
     v6 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"ValidRegionCodes"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"ValidRegionCodes"];
     validRegionCodes = v5->_validRegionCodes;
     v5->_validRegionCodes = v7;
   }

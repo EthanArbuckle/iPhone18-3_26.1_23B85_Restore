@@ -1,21 +1,21 @@
 @interface VSDeveloperIdentityProviderViewController_iOS
 - (VSDeveloperIdentityProviderViewController_iOS)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)deletePressed:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)deletePressed:(id)pressed;
 - (void)persistProviderAndDismiss;
 - (void)reevaluateActions;
 - (void)returnPressedAtEnd;
-- (void)setApiEnabled:(id)a3;
-- (void)setAuthenticationURL:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setRequireAuthenticationURLSystemTrustEnabled:(id)a3;
-- (void)setRequireXHRRequestSystemTrustEnabled:(id)a3;
-- (void)setSamlEnabled:(id)a3;
-- (void)setupViewForIdentityProvider:(id)a3;
-- (void)testSystemTrustPressed:(id)a3;
-- (void)textFieldDidChangeNotification:(id)a3;
+- (void)setApiEnabled:(id)enabled;
+- (void)setAuthenticationURL:(id)l;
+- (void)setDisplayName:(id)name;
+- (void)setIdentifier:(id)identifier;
+- (void)setRequireAuthenticationURLSystemTrustEnabled:(id)enabled;
+- (void)setRequireXHRRequestSystemTrustEnabled:(id)enabled;
+- (void)setSamlEnabled:(id)enabled;
+- (void)setupViewForIdentityProvider:(id)provider;
+- (void)testSystemTrustPressed:(id)pressed;
+- (void)textFieldDidChangeNotification:(id)notification;
 @end
 
 @implementation VSDeveloperIdentityProviderViewController_iOS
@@ -47,48 +47,48 @@
   return v2;
 }
 
-- (void)setupViewForIdentityProvider:(id)a3
+- (void)setupViewForIdentityProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 nameForSorting];
+  providerCopy = provider;
+  nameForSorting = [providerCopy nameForSorting];
   displayName = self->_displayName;
-  self->_displayName = v5;
+  self->_displayName = nameForSorting;
 
-  v7 = [v4 providerID];
-  v8 = [v7 forceUnwrapObject];
+  providerID = [providerCopy providerID];
+  forceUnwrapObject = [providerID forceUnwrapObject];
   identifier = self->_identifier;
-  self->_identifier = v8;
+  self->_identifier = forceUnwrapObject;
 
-  v10 = [v4 authenticationURL];
-  v11 = [v10 absoluteString];
+  authenticationURL = [providerCopy authenticationURL];
+  absoluteString = [authenticationURL absoluteString];
   authenticationURL = self->_authenticationURL;
-  self->_authenticationURL = v11;
+  self->_authenticationURL = absoluteString;
 
-  v13 = [v4 supportedAuthenticationSchemes];
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 containsObject:VSAccountProviderAuthenticationSchemeSAML]);
+  supportedAuthenticationSchemes = [providerCopy supportedAuthenticationSchemes];
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [supportedAuthenticationSchemes containsObject:VSAccountProviderAuthenticationSchemeSAML]);
   samlEnabled = self->_samlEnabled;
   self->_samlEnabled = v14;
 
-  v18 = [v4 supportedAuthenticationSchemes];
+  supportedAuthenticationSchemes2 = [providerCopy supportedAuthenticationSchemes];
 
-  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v18 containsObject:VSAccountProviderAuthenticationSchemeAPI]);
+  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [supportedAuthenticationSchemes2 containsObject:VSAccountProviderAuthenticationSchemeAPI]);
   apiEnabled = self->_apiEnabled;
   self->_apiEnabled = v16;
 }
 
 - (void)reevaluateActions
 {
-  v3 = [(VSDeveloperIdentityProviderViewController_iOS *)self navigationItem];
-  v12 = [v3 rightBarButtonItem];
+  navigationItem = [(VSDeveloperIdentityProviderViewController_iOS *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  v4 = [(VSDeveloperIdentityProviderViewController_iOS *)self displayName];
-  if ([v4 length])
+  displayName = [(VSDeveloperIdentityProviderViewController_iOS *)self displayName];
+  if ([displayName length])
   {
-    v5 = [(VSDeveloperIdentityProviderViewController_iOS *)self identifier];
-    if ([v5 length])
+    identifier = [(VSDeveloperIdentityProviderViewController_iOS *)self identifier];
+    if ([identifier length])
     {
-      v6 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
-      v7 = [v6 length] != 0;
+      authenticationURL = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
+      v7 = [authenticationURL length] != 0;
     }
 
     else
@@ -102,9 +102,9 @@
     v7 = 0;
   }
 
-  [v12 setEnabled:v7];
-  v8 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
-  if ([v8 length])
+  [rightBarButtonItem setEnabled:v7];
+  authenticationURL2 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
+  if ([authenticationURL2 length])
   {
     v9 = [(VSDeveloperIdentityProviderViewController_iOS *)self testingSystemTrust]^ 1;
   }
@@ -114,108 +114,108 @@
     v9 = 0;
   }
 
-  v10 = [(VSDeveloperIdentityProviderViewController_iOS *)self testSystemTrustSpecifier];
+  testSystemTrustSpecifier = [(VSDeveloperIdentityProviderViewController_iOS *)self testSystemTrustSpecifier];
   v11 = [NSNumber numberWithBool:v9];
-  [v10 setProperty:v11 forKey:PSEnabledKey];
+  [testSystemTrustSpecifier setProperty:v11 forKey:PSEnabledKey];
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  objc_storeStrong(&self->_displayName, a3);
+  objc_storeStrong(&self->_displayName, name);
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reevaluateActions];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_identifier, a3);
+  objc_storeStrong(&self->_identifier, identifier);
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reevaluateActions];
 }
 
-- (void)setAuthenticationURL:(id)a3
+- (void)setAuthenticationURL:(id)l
 {
-  objc_storeStrong(&self->_authenticationURL, a3);
+  objc_storeStrong(&self->_authenticationURL, l);
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reevaluateActions];
 }
 
-- (void)setSamlEnabled:(id)a3
+- (void)setSamlEnabled:(id)enabled
 {
-  v4 = a3;
-  if (![(NSNumber *)v4 BOOLValue])
+  enabledCopy = enabled;
+  if (![(NSNumber *)enabledCopy BOOLValue])
   {
-    v5 = [(VSDeveloperIdentityProviderViewController_iOS *)self apiEnabled];
-    v6 = [v5 BOOLValue];
+    apiEnabled = [(VSDeveloperIdentityProviderViewController_iOS *)self apiEnabled];
+    bOOLValue = [apiEnabled BOOLValue];
 
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v7 = [(VSDeveloperIdentityProviderViewController_iOS *)self apiEnabled];
-      v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 BOOLValue] ^ 1);
+      apiEnabled2 = [(VSDeveloperIdentityProviderViewController_iOS *)self apiEnabled];
+      v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [apiEnabled2 BOOLValue] ^ 1);
       [(VSDeveloperIdentityProviderViewController_iOS *)self setApiEnabled:v8];
     }
   }
 
   samlEnabled = self->_samlEnabled;
-  self->_samlEnabled = v4;
+  self->_samlEnabled = enabledCopy;
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reloadSpecifiers];
 }
 
-- (void)setApiEnabled:(id)a3
+- (void)setApiEnabled:(id)enabled
 {
-  v4 = a3;
-  if (![(NSNumber *)v4 BOOLValue])
+  enabledCopy = enabled;
+  if (![(NSNumber *)enabledCopy BOOLValue])
   {
-    v5 = [(VSDeveloperIdentityProviderViewController_iOS *)self samlEnabled];
-    v6 = [v5 BOOLValue];
+    samlEnabled = [(VSDeveloperIdentityProviderViewController_iOS *)self samlEnabled];
+    bOOLValue = [samlEnabled BOOLValue];
 
-    if ((v6 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v7 = [(VSDeveloperIdentityProviderViewController_iOS *)self samlEnabled];
-      v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 BOOLValue] ^ 1);
+      samlEnabled2 = [(VSDeveloperIdentityProviderViewController_iOS *)self samlEnabled];
+      v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [samlEnabled2 BOOLValue] ^ 1);
       [(VSDeveloperIdentityProviderViewController_iOS *)self setSamlEnabled:v8];
     }
   }
 
   apiEnabled = self->_apiEnabled;
-  self->_apiEnabled = v4;
+  self->_apiEnabled = enabledCopy;
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reloadSpecifiers];
 }
 
-- (void)setRequireAuthenticationURLSystemTrustEnabled:(id)a3
+- (void)setRequireAuthenticationURLSystemTrustEnabled:(id)enabled
 {
-  objc_storeStrong(&self->_requireAuthenticationURLSystemTrustEnabled, a3);
+  objc_storeStrong(&self->_requireAuthenticationURLSystemTrustEnabled, enabled);
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reloadSpecifiers];
 }
 
-- (void)setRequireXHRRequestSystemTrustEnabled:(id)a3
+- (void)setRequireXHRRequestSystemTrustEnabled:(id)enabled
 {
-  objc_storeStrong(&self->_requireXHRRequestSystemTrustEnabled, a3);
+  objc_storeStrong(&self->_requireXHRRequestSystemTrustEnabled, enabled);
 
   [(VSDeveloperIdentityProviderViewController_iOS *)self reloadSpecifiers];
 }
 
 - (void)persistProviderAndDismiss
 {
-  v3 = [(VSDeveloperIdentityProviderViewController_iOS *)self displayName];
-  if (![v3 length])
+  displayName = [(VSDeveloperIdentityProviderViewController_iOS *)self displayName];
+  if (![displayName length])
   {
     goto LABEL_12;
   }
 
-  v4 = [(VSDeveloperIdentityProviderViewController_iOS *)self identifier];
-  if (![v4 length])
+  identifier = [(VSDeveloperIdentityProviderViewController_iOS *)self identifier];
+  if (![identifier length])
   {
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
-  v6 = [v5 length];
+  authenticationURL = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
+  v6 = [authenticationURL length];
 
   if (!v6)
   {
@@ -242,95 +242,95 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [(VSDeveloperIdentityProviderViewController_iOS *)self identityProvider];
-  v8 = v7;
-  if (!v7)
+  identityProvider = [(VSDeveloperIdentityProviderViewController_iOS *)self identityProvider];
+  v8 = identityProvider;
+  if (!identityProvider)
   {
     v8 = objc_alloc_init(VSIdentityProvider);
     [v8 setDeveloper:1];
     v9 = +[NSUUID UUID];
-    v10 = [v9 UUIDString];
-    v11 = [VSOptional optionalWithObject:v10];
+    uUIDString = [v9 UUIDString];
+    v11 = [VSOptional optionalWithObject:uUIDString];
     [v8 setUniqueID:v11];
   }
 
   v12 = objc_alloc_init(NSMutableArray);
-  v13 = [(VSDeveloperIdentityProviderViewController_iOS *)self samlEnabled];
-  v14 = [v13 BOOLValue];
+  samlEnabled = [(VSDeveloperIdentityProviderViewController_iOS *)self samlEnabled];
+  bOOLValue = [samlEnabled BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
     [v12 addObject:VSAccountProviderAuthenticationSchemeSAML];
   }
 
-  v15 = [(VSDeveloperIdentityProviderViewController_iOS *)self apiEnabled];
-  v16 = [v15 BOOLValue];
+  apiEnabled = [(VSDeveloperIdentityProviderViewController_iOS *)self apiEnabled];
+  bOOLValue2 = [apiEnabled BOOLValue];
 
-  if (v16)
+  if (bOOLValue2)
   {
     [v12 addObject:VSAccountProviderAuthenticationSchemeAPI];
   }
 
   [v8 setSupportedAuthenticationSchemes:v12];
-  v17 = [(VSDeveloperIdentityProviderViewController_iOS *)self identifier];
-  v18 = [VSOptional optionalWithObject:v17];
+  identifier2 = [(VSDeveloperIdentityProviderViewController_iOS *)self identifier];
+  v18 = [VSOptional optionalWithObject:identifier2];
   [v8 setProviderID:v18];
 
-  v19 = [(VSDeveloperIdentityProviderViewController_iOS *)self displayName];
-  [v8 setNameForSorting:v19];
+  displayName2 = [(VSDeveloperIdentityProviderViewController_iOS *)self displayName];
+  [v8 setNameForSorting:displayName2];
 
-  v20 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
-  v21 = [NSURL URLWithString:v20];
+  authenticationURL2 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
+  v21 = [NSURL URLWithString:authenticationURL2];
   [v8 setAuthenticationURL:v21];
 
-  v22 = [(VSDeveloperIdentityProviderViewController_iOS *)self requireAuthenticationURLSystemTrustEnabled];
-  [v8 setRequireAuthenticationURLSystemTrust:{objc_msgSend(v22, "BOOLValue")}];
+  requireAuthenticationURLSystemTrustEnabled = [(VSDeveloperIdentityProviderViewController_iOS *)self requireAuthenticationURLSystemTrustEnabled];
+  [v8 setRequireAuthenticationURLSystemTrust:{objc_msgSend(requireAuthenticationURLSystemTrustEnabled, "BOOLValue")}];
 
-  v23 = [(VSDeveloperIdentityProviderViewController_iOS *)self requireXHRRequestSystemTrustEnabled];
-  [v8 setRequireXHRRequestSystemTrust:{objc_msgSend(v23, "BOOLValue")}];
+  requireXHRRequestSystemTrustEnabled = [(VSDeveloperIdentityProviderViewController_iOS *)self requireXHRRequestSystemTrustEnabled];
+  [v8 setRequireXHRRequestSystemTrust:{objc_msgSend(requireXHRRequestSystemTrustEnabled, "BOOLValue")}];
 
-  v24 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
+  settingsFacade = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_361C;
   v36[3] = &unk_C620;
   v36[4] = self;
-  [v24 enqueueChange:v7 != 0 withIdentityProvider:v8 completionHandler:v36];
+  [settingsFacade enqueueChange:identityProvider != 0 withIdentityProvider:v8 completionHandler:v36];
 
 LABEL_14:
 }
 
-- (void)deletePressed:(id)a3
+- (void)deletePressed:(id)pressed
 {
-  v4 = [(VSDeveloperIdentityProviderViewController_iOS *)self identityProvider];
-  v5 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
+  identityProvider = [(VSDeveloperIdentityProviderViewController_iOS *)self identityProvider];
+  settingsFacade = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_3910;
   v9[3] = &unk_C620;
-  v10 = v4;
-  v6 = v4;
-  [v5 enqueueChange:2 withIdentityProvider:v6 completionHandler:v9];
+  v10 = identityProvider;
+  v6 = identityProvider;
+  [settingsFacade enqueueChange:2 withIdentityProvider:v6 completionHandler:v9];
 
-  v7 = [(VSDeveloperIdentityProviderViewController_iOS *)self navigationController];
-  v8 = [v7 popViewControllerAnimated:1];
+  navigationController = [(VSDeveloperIdentityProviderViewController_iOS *)self navigationController];
+  v8 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)testSystemTrustPressed:(id)a3
+- (void)testSystemTrustPressed:(id)pressed
 {
   if (+[VSProxyDetector isProxyConfigured])
   {
-    v4 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
-    v19 = [v4 alertTitleForProxyDetection];
+    settingsFacade = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
+    alertTitleForProxyDetection = [settingsFacade alertTitleForProxyDetection];
 
-    v5 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
-    v6 = [v5 alertMessageForProxyDetection];
+    settingsFacade2 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
+    alertMessageForProxyDetection = [settingsFacade2 alertMessageForProxyDetection];
 
-    v7 = [UIAlertController alertControllerWithTitle:v19 message:v6 preferredStyle:1];
-    v8 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
-    v9 = [v8 dismissTitleForProxyDetection];
+    v7 = [UIAlertController alertControllerWithTitle:alertTitleForProxyDetection message:alertMessageForProxyDetection preferredStyle:1];
+    settingsFacade3 = [(VSDeveloperIdentityProviderViewController_iOS *)self settingsFacade];
+    dismissTitleForProxyDetection = [settingsFacade3 dismissTitleForProxyDetection];
 
-    v10 = [UIAlertAction actionWithTitle:v9 style:0 handler:0];
+    v10 = [UIAlertAction actionWithTitle:dismissTitleForProxyDetection style:0 handler:0];
     [v7 addAction:v10];
 
     [(VSDeveloperIdentityProviderViewController_iOS *)self presentViewController:v7 animated:1 completion:0];
@@ -338,14 +338,14 @@ LABEL_14:
 
   else
   {
-    v11 = [(VSDeveloperIdentityProviderViewController_iOS *)self testSystemTrustSpecifier];
-    [v11 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+    testSystemTrustSpecifier = [(VSDeveloperIdentityProviderViewController_iOS *)self testSystemTrustSpecifier];
+    [testSystemTrustSpecifier setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
 
-    v12 = [(VSDeveloperIdentityProviderViewController_iOS *)self testSystemTrustSpecifier];
-    [(VSDeveloperIdentityProviderViewController_iOS *)self reloadSpecifier:v12];
+    testSystemTrustSpecifier2 = [(VSDeveloperIdentityProviderViewController_iOS *)self testSystemTrustSpecifier];
+    [(VSDeveloperIdentityProviderViewController_iOS *)self reloadSpecifier:testSystemTrustSpecifier2];
 
-    v13 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
-    v14 = [NSURL URLWithString:v13];
+    authenticationURL = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURL];
+    v14 = [NSURL URLWithString:authenticationURL];
 
     v15 = [[VSApplicationBootURLOperation alloc] initWithBootURL:v14 isDeveloper:0];
     [v15 setTest:1];
@@ -353,8 +353,8 @@ LABEL_14:
     v16 = v15;
     v17 = VSMainThreadOperationWithBlock();
     [v17 addDependency:v16];
-    v18 = [(VSDeveloperIdentityProviderViewController_iOS *)self privateQueue];
-    [v18 addOperation:v16];
+    privateQueue = [(VSDeveloperIdentityProviderViewController_iOS *)self privateQueue];
+    [privateQueue addOperation:v16];
 
     VSEnqueueCompletionOperation();
   }
@@ -454,9 +454,9 @@ LABEL_14:
     [v36 setButtonAction:"testSystemTrustPressed:"];
     [v4 addObject:v36];
     [(VSDeveloperIdentityProviderViewController_iOS *)self setTestSystemTrustSpecifier:v36];
-    v37 = [(VSDeveloperIdentityProviderViewController_iOS *)self identityProvider];
+    identityProvider = [(VSDeveloperIdentityProviderViewController_iOS *)self identityProvider];
 
-    if (v37)
+    if (identityProvider)
     {
       v38 = +[PSSpecifier emptyGroupSpecifier];
       [v4 addObject:v38];
@@ -478,38 +478,38 @@ LABEL_14:
 
 - (void)returnPressedAtEnd
 {
-  v3 = [(VSDeveloperIdentityProviderViewController_iOS *)self table];
-  v2 = [v3 firstResponder];
-  [v2 resignFirstResponder];
+  table = [(VSDeveloperIdentityProviderViewController_iOS *)self table];
+  firstResponder = [table firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (void)textFieldDidChangeNotification:(id)a3
+- (void)textFieldDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [(VSDeveloperIdentityProviderViewController_iOS *)self displayNameTextField];
+  notificationCopy = notification;
+  text = [notificationCopy text];
+  displayNameTextField = [(VSDeveloperIdentityProviderViewController_iOS *)self displayNameTextField];
 
-  if (v6 == v4)
+  if (displayNameTextField == notificationCopy)
   {
-    [(VSDeveloperIdentityProviderViewController_iOS *)self setDisplayName:v5];
+    [(VSDeveloperIdentityProviderViewController_iOS *)self setDisplayName:text];
   }
 
   else
   {
-    v7 = [(VSDeveloperIdentityProviderViewController_iOS *)self identifierTextField];
+    identifierTextField = [(VSDeveloperIdentityProviderViewController_iOS *)self identifierTextField];
 
-    if (v7 == v4)
+    if (identifierTextField == notificationCopy)
     {
-      [(VSDeveloperIdentityProviderViewController_iOS *)self setIdentifier:v5];
+      [(VSDeveloperIdentityProviderViewController_iOS *)self setIdentifier:text];
     }
 
     else
     {
-      v8 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURLTextField];
+      authenticationURLTextField = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURLTextField];
 
-      if (v8 == v4)
+      if (authenticationURLTextField == notificationCopy)
       {
-        [(VSDeveloperIdentityProviderViewController_iOS *)self setAuthenticationURL:v5];
+        [(VSDeveloperIdentityProviderViewController_iOS *)self setAuthenticationURL:text];
       }
 
       else
@@ -517,55 +517,55 @@ LABEL_14:
         v9 = VSErrorLogObject();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          sub_6C50(v4, v9);
+          sub_6C50(notificationCopy, v9);
         }
       }
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = VSDeveloperIdentityProviderViewController_iOS;
-  v5 = [(VSDeveloperIdentityProviderViewController_iOS *)&v13 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v5 editableTextField];
-  v8 = [(VSDeveloperIdentityProviderViewController_iOS *)self displayNameSpecicier];
+  v5 = [(VSDeveloperIdentityProviderViewController_iOS *)&v13 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  editableTextField = [v5 editableTextField];
+  displayNameSpecicier = [(VSDeveloperIdentityProviderViewController_iOS *)self displayNameSpecicier];
 
-  if (v6 == v8)
+  if (specifier == displayNameSpecicier)
   {
-    [(VSDeveloperIdentityProviderViewController_iOS *)self setDisplayNameTextField:v7];
+    [(VSDeveloperIdentityProviderViewController_iOS *)self setDisplayNameTextField:editableTextField];
   }
 
   else
   {
-    v9 = [(VSDeveloperIdentityProviderViewController_iOS *)self identifierSpecicier];
+    identifierSpecicier = [(VSDeveloperIdentityProviderViewController_iOS *)self identifierSpecicier];
 
-    if (v6 == v9)
+    if (specifier == identifierSpecicier)
     {
-      [(VSDeveloperIdentityProviderViewController_iOS *)self setIdentifierTextField:v7];
+      [(VSDeveloperIdentityProviderViewController_iOS *)self setIdentifierTextField:editableTextField];
     }
 
     else
     {
-      v10 = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURLSpecicier];
+      authenticationURLSpecicier = [(VSDeveloperIdentityProviderViewController_iOS *)self authenticationURLSpecicier];
 
-      if (v6 != v10)
+      if (specifier != authenticationURLSpecicier)
       {
         goto LABEL_8;
       }
 
-      [(VSDeveloperIdentityProviderViewController_iOS *)self setAuthenticationURLTextField:v7];
+      [(VSDeveloperIdentityProviderViewController_iOS *)self setAuthenticationURLTextField:editableTextField];
     }
   }
 
-  [v7 addTarget:self action:"textFieldDidChangeNotification:" forControlEvents:0x20000];
+  [editableTextField addTarget:self action:"textFieldDidChangeNotification:" forControlEvents:0x20000];
 LABEL_8:
   if ([v5 tag] == &dword_8)
   {
-    v11 = [v5 editableTextField];
-    [v11 setClearButtonMode:1];
+    editableTextField2 = [v5 editableTextField];
+    [editableTextField2 setClearButtonMode:1];
   }
 
   return v5;

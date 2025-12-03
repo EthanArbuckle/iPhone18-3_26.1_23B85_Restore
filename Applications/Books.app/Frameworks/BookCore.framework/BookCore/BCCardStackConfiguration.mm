@@ -1,7 +1,7 @@
 @interface BCCardStackConfiguration
 + (id)createCardSetPresentationTimingParameters;
-+ (id)createCardSetPresentationTimingParametersWithInitialVelocity:(CGVector)a3;
-- (BCCardStackConfiguration)initWithEnvironment:(id)a3;
++ (id)createCardSetPresentationTimingParametersWithInitialVelocity:(CGVector)velocity;
+- (BCCardStackConfiguration)initWithEnvironment:(id)environment;
 - (BOOL)cardsCanExpand;
 - (double)auxiliaryNavigationBarHorizontalInset;
 - (double)auxiliaryNavigationBarVerticalInset;
@@ -11,23 +11,23 @@
 - (double)cardExpandedTopOffset;
 - (double)cardGap;
 - (double)cardUnexpandedTopOffset;
-- (double)contractedCardWidthForContainerWidth:(double)a3;
+- (double)contractedCardWidthForContainerWidth:(double)width;
 - (int64_t)_viewport;
 @end
 
 @implementation BCCardStackConfiguration
 
-- (BCCardStackConfiguration)initWithEnvironment:(id)a3
+- (BCCardStackConfiguration)initWithEnvironment:(id)environment
 {
   v4.receiver = self;
   v4.super_class = BCCardStackConfiguration;
-  return [(BCLayoutConfiguration *)&v4 initWithViewController:0 configurationEnvironment:a3];
+  return [(BCLayoutConfiguration *)&v4 initWithViewController:0 configurationEnvironment:environment];
 }
 
 - (int64_t)_viewport
 {
-  v2 = [(BCLayoutConfiguration *)self environment];
-  [v2 screenSize];
+  environment = [(BCLayoutConfiguration *)self environment];
+  [environment screenSize];
   v5 = BCViewportSize(v3, v4);
 
   return v5;
@@ -35,9 +35,9 @@
 
 - (double)cardExpandedTopOffset
 {
-  v2 = [(BCCardStackConfiguration *)self cardsCanExpand];
+  cardsCanExpand = [(BCCardStackConfiguration *)self cardsCanExpand];
   result = -100.0;
-  if (!v2)
+  if (!cardsCanExpand)
   {
     return 0.0;
   }
@@ -47,8 +47,8 @@
 
 - (double)cardUnexpandedTopOffset
 {
-  v3 = [(BCLayoutConfiguration *)self environment];
-  [v3 defaultStatusBarHeight];
+  environment = [(BCLayoutConfiguration *)self environment];
+  [environment defaultStatusBarHeight];
   v5 = v4;
 
   if (isPad())
@@ -61,9 +61,9 @@
     v6 = 0.0;
   }
 
-  v7 = [(BCCardStackConfiguration *)self cardsCanExpand];
+  cardsCanExpand = [(BCCardStackConfiguration *)self cardsCanExpand];
   v8 = 44.0;
-  if (v7)
+  if (cardsCanExpand)
   {
     v8 = 13.0;
   }
@@ -73,18 +73,18 @@
 
 - (double)cardGap
 {
-  v3 = [(BCCardStackConfiguration *)self cardsCanExpand];
+  cardsCanExpand = [(BCCardStackConfiguration *)self cardsCanExpand];
   result = 4.0;
-  if ((v3 & 1) == 0)
+  if ((cardsCanExpand & 1) == 0)
   {
-    v5 = [(BCCardStackConfiguration *)self _viewport];
+    _viewport = [(BCCardStackConfiguration *)self _viewport];
     result = 4.0;
-    if (v5 == 2)
+    if (_viewport == 2)
     {
       result = 8.0;
     }
 
-    if (v5 == 3)
+    if (_viewport == 3)
     {
       return 12.0;
     }
@@ -110,8 +110,8 @@
 
   else
   {
-    v4 = [(BCLayoutConfiguration *)self environment];
-    if ([v4 isCompactWidth])
+    environment = [(BCLayoutConfiguration *)self environment];
+    if ([environment isCompactWidth])
     {
       v3 = 12.0;
     }
@@ -127,8 +127,8 @@
 
 - (double)auxiliaryNavigationBarHorizontalInset
 {
-  v2 = [(BCLayoutConfiguration *)self environment];
-  if ([v2 isCompactWidth])
+  environment = [(BCLayoutConfiguration *)self environment];
+  if ([environment isCompactWidth])
   {
     v3 = 12.0;
   }
@@ -143,8 +143,8 @@
 
 - (double)auxiliaryNavigationBarVerticalInset
 {
-  v2 = [(BCLayoutConfiguration *)self environment];
-  if ([v2 isCompactWidth])
+  environment = [(BCLayoutConfiguration *)self environment];
+  if ([environment isCompactWidth])
   {
     v3 = 12.0;
   }
@@ -161,8 +161,8 @@
 {
   if ([(BCCardStackConfiguration *)self cardsCanExpand])
   {
-    v3 = [(BCLayoutConfiguration *)self environment];
-    [v3 defaultStatusBarHeight];
+    environment = [(BCLayoutConfiguration *)self environment];
+    [environment defaultStatusBarHeight];
     v5 = v4;
 
     return v5;
@@ -180,12 +180,12 @@
 - (BOOL)cardsCanExpand
 {
   v3 = _os_feature_enabled_impl();
-  v4 = [(BCLayoutConfiguration *)self environment];
-  v5 = [v4 isCompactWidth];
-  v6 = v3 ^ 1 | v5;
-  if ((v3 & 1) == 0 && (v5 & 1) == 0)
+  environment = [(BCLayoutConfiguration *)self environment];
+  isCompactWidth = [environment isCompactWidth];
+  v6 = v3 ^ 1 | isCompactWidth;
+  if ((v3 & 1) == 0 && (isCompactWidth & 1) == 0)
   {
-    [v4 size];
+    [environment size];
     v8 = v7;
     [(BCCardStackConfiguration *)self maxCardWidth];
     v6 = v8 <= v9;
@@ -196,12 +196,12 @@
 
 - (double)cardContractedScale
 {
-  v3 = [(BCCardStackConfiguration *)self cardsCanExpand];
+  cardsCanExpand = [(BCCardStackConfiguration *)self cardsCanExpand];
   result = 1.0;
-  if (v3)
+  if (cardsCanExpand)
   {
-    v5 = [(BCLayoutConfiguration *)self environment];
-    [v5 size];
+    environment = [(BCLayoutConfiguration *)self environment];
+    [environment size];
     v7 = v6;
 
     [(BCCardStackConfiguration *)self cardGap];
@@ -220,18 +220,18 @@
   return [v2 createCardSetPresentationTimingParametersWithInitialVelocity:{0.0, 0.0}];
 }
 
-+ (id)createCardSetPresentationTimingParametersWithInitialVelocity:(CGVector)a3
++ (id)createCardSetPresentationTimingParametersWithInitialVelocity:(CGVector)velocity
 {
-  v3 = [[UISpringTimingParameters alloc] initWithMass:1.0 stiffness:380.0 damping:32.0 initialVelocity:{a3.dx, a3.dy}];
+  v3 = [[UISpringTimingParameters alloc] initWithMass:1.0 stiffness:380.0 damping:32.0 initialVelocity:{velocity.dx, velocity.dy}];
 
   return v3;
 }
 
-- (double)contractedCardWidthForContainerWidth:(double)a3
+- (double)contractedCardWidthForContainerWidth:(double)width
 {
   [(BCCardStackConfiguration *)self cardPeekWidth];
-  v6 = a3 - v5 * 2.0;
-  [(BCCardStackConfiguration *)self cardGapForContainerWidth:a3];
+  v6 = width - v5 * 2.0;
+  [(BCCardStackConfiguration *)self cardGapForContainerWidth:width];
   v8 = v6 - v7 * 2.0;
   [(BCCardStackConfiguration *)self maxCardWidth];
   if (v8 < result)

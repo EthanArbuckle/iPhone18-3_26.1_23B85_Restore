@@ -1,40 +1,40 @@
 @interface CKDDiscoverUserIdentitiesURLRequest
-- (CKDDiscoverUserIdentitiesURLRequest)initWithOperation:(id)a3 lookupInfos:(id)a4 adopterProvidedLookupInfos:(BOOL)a5;
+- (CKDDiscoverUserIdentitiesURLRequest)initWithOperation:(id)operation lookupInfos:(id)infos adopterProvidedLookupInfos:(BOOL)lookupInfos;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDDiscoverUserIdentitiesURLRequest
 
-- (CKDDiscoverUserIdentitiesURLRequest)initWithOperation:(id)a3 lookupInfos:(id)a4 adopterProvidedLookupInfos:(BOOL)a5
+- (CKDDiscoverUserIdentitiesURLRequest)initWithOperation:(id)operation lookupInfos:(id)infos adopterProvidedLookupInfos:(BOOL)lookupInfos
 {
-  v9 = a4;
+  infosCopy = infos;
   v15.receiver = self;
   v15.super_class = CKDDiscoverUserIdentitiesURLRequest;
-  v10 = [(CKDURLRequest *)&v15 initWithOperation:a3];
+  v10 = [(CKDURLRequest *)&v15 initWithOperation:operation];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_infosToDiscover, a4);
+    objc_storeStrong(&v10->_infosToDiscover, infos);
     v12 = objc_opt_new();
     submittedInfos = v11->_submittedInfos;
     v11->_submittedInfos = v12;
 
-    v11->_adopterProvidedLookupInfos = a5;
+    v11->_adopterProvidedLookupInfos = lookupInfos;
   }
 
   return v11;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v17.receiver = self;
   v17.super_class = CKDDiscoverUserIdentitiesURLRequest;
-  [(CKDURLRequest *)&v17 fillOutEquivalencyPropertiesBuilder:v4];
+  [(CKDURLRequest *)&v17 fillOutEquivalencyPropertiesBuilder:builderCopy];
   if (objc_msgSend_adopterProvidedLookupInfos(self, v5, v6))
   {
     v9 = MEMORY[0x277CBEB98];
@@ -42,7 +42,7 @@
     v13 = objc_msgSend_ckEquivalencyProperties(v10, v11, v12);
     v15 = objc_msgSend_setWithArray_(v9, v14, v13);
 
-    objc_msgSend_setObject_forKeyedSubscript_(v4, v16, v15, @"lookupInfos");
+    objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v16, v15, @"lookupInfos");
   }
 }
 
@@ -69,11 +69,11 @@
   return v6;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v172 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_hasUserQueryResponse(v4, v5, v6) && (objc_msgSend_userQueryResponse(v4, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_user(v9, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v9, v12))
+  objectCopy = object;
+  if (objc_msgSend_hasUserQueryResponse(objectCopy, v5, v6) && (objc_msgSend_userQueryResponse(objectCopy, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_user(v9, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), v9, v12))
   {
     if (objc_msgSend_hasIdentifier(v12, v7, v8))
     {
@@ -138,7 +138,7 @@
   }
 
   submittedInfos = self->_submittedInfos;
-  v30 = objc_msgSend_response(v4, v7, v8);
+  v30 = objc_msgSend_response(objectCopy, v7, v8);
   v33 = objc_msgSend_operationUUID(v30, v31, v32);
   v35 = objc_msgSend_objectForKeyedSubscript_(submittedInfos, v34, v33);
 
@@ -169,7 +169,7 @@
         _os_log_error_impl(&dword_22506F000, v154, OS_LOG_TYPE_ERROR, "req: %{public}@, Inlining fake response operation result for item id %@", buf, 0x16u);
       }
 
-      objc_msgSend_setResult_(v4, v46, inited);
+      objc_msgSend_setResult_(objectCopy, v46, inited);
       v49 = objc_msgSend_progressBlock(self, v47, v48);
 
       if (!v49)
@@ -178,7 +178,7 @@
       }
 
       v52 = objc_msgSend_progressBlock(self, v50, v51);
-      v55 = objc_msgSend_result(v4, v53, v54);
+      v55 = objc_msgSend_result(objectCopy, v53, v54);
       (v52)[2](v52, v35, 0, v55);
       goto LABEL_55;
     }
@@ -264,7 +264,7 @@ LABEL_56:
     }
 
     v52 = objc_msgSend_progressBlock(self, v115, v116);
-    v55 = objc_msgSend_result(v4, v117, v118);
+    v55 = objc_msgSend_result(objectCopy, v117, v118);
     (v52)[2](v52, v35, inited, v55);
 LABEL_55:
 
@@ -341,7 +341,7 @@ LABEL_55:
     if (v138)
     {
       v141 = objc_msgSend_progressBlock(self, v139, v140);
-      v144 = objc_msgSend_result(v4, v142, v143);
+      v144 = objc_msgSend_result(objectCopy, v142, v143);
       (v141)[2](v141, v35, v126, v144);
     }
   }
@@ -356,7 +356,7 @@ LABEL_55:
       if (v147)
       {
         v150 = objc_msgSend_progressBlock(self, v148, v149);
-        v153 = objc_msgSend_result(v4, v151, v152);
+        v153 = objc_msgSend_result(objectCopy, v151, v152);
         (v150)[2](v150, v35, 0, v153);
       }
     }
@@ -368,12 +368,12 @@ LABEL_57:
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failureCopy = failure;
   submittedInfos = self->_submittedInfos;
-  v8 = objc_msgSend_response(v4, v6, v7);
+  v8 = objc_msgSend_response(failureCopy, v6, v7);
   v11 = objc_msgSend_operationUUID(v8, v9, v10);
   v13 = objc_msgSend_objectForKeyedSubscript_(submittedInfos, v12, v11);
 
@@ -387,7 +387,7 @@ LABEL_57:
   {
     v17 = v14;
     v20 = objc_msgSend_requestUUID(self, v18, v19);
-    v23 = objc_msgSend_result(v4, v21, v22);
+    v23 = objc_msgSend_result(failureCopy, v21, v22);
     v32 = 138543874;
     v33 = v20;
     v34 = 2112;
@@ -402,7 +402,7 @@ LABEL_57:
   if (v24)
   {
     v27 = objc_msgSend_progressBlock(self, v25, v26);
-    v30 = objc_msgSend_result(v4, v28, v29);
+    v30 = objc_msgSend_result(failureCopy, v28, v29);
     (v27)[2](v27, v13, 0, v30);
   }
 

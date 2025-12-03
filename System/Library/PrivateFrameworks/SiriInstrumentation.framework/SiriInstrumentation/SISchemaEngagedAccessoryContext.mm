@@ -1,28 +1,28 @@
 @interface SISchemaEngagedAccessoryContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaEngagedAccessoryContext)initWithDictionary:(id)a3;
-- (SISchemaEngagedAccessoryContext)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaEngagedAccessoryContext)initWithDictionary:(id)dictionary;
+- (SISchemaEngagedAccessoryContext)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsAudioPlaybackCapable:(BOOL)a3;
-- (void)setHasIsThirdPartyMusicEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsAudioPlaybackCapable:(BOOL)capable;
+- (void)setHasIsThirdPartyMusicEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaEngagedAccessoryContext
 
-- (SISchemaEngagedAccessoryContext)initWithDictionary:(id)a3
+- (SISchemaEngagedAccessoryContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = SISchemaEngagedAccessoryContext;
   v5 = [(SISchemaEngagedAccessoryContext *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"accessoryId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"accessoryId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(SISchemaEngagedAccessoryContext *)v5 setAccessoryId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"homeKitAccessoryType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"homeKitAccessoryType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEngagedAccessoryContext setHomeKitAccessoryType:](v5, "setHomeKitAccessoryType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"accessoryBrand"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"accessoryBrand"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(SISchemaEngagedAccessoryContext *)v5 setAccessoryBrand:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"accessoryModel"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"accessoryModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(SISchemaEngagedAccessoryContext *)v5 setAccessoryModel:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isAudioPlaybackCapable"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isAudioPlaybackCapable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaEngagedAccessoryContext setIsAudioPlaybackCapable:](v5, "setIsAudioPlaybackCapable:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isThirdPartyMusicEnabled"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isThirdPartyMusicEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (SISchemaEngagedAccessoryContext)initWithJSON:(id)a3
+- (SISchemaEngagedAccessoryContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaEngagedAccessoryContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaEngagedAccessoryContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaEngagedAccessoryContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,35 +109,35 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accessoryBrand)
   {
-    v4 = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"accessoryBrand"];
+    accessoryBrand = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
+    v5 = [accessoryBrand copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"accessoryBrand"];
   }
 
   if (self->_accessoryId)
   {
-    v6 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    accessoryId = [(SISchemaEngagedAccessoryContext *)self accessoryId];
+    dictionaryRepresentation = [accessoryId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"accessoryId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"accessoryId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"accessoryId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"accessoryId"];
     }
   }
 
   if (self->_accessoryModel)
   {
-    v9 = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"accessoryModel"];
+    accessoryModel = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
+    v10 = [accessoryModel copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"accessoryModel"];
   }
 
   v11 = *(&self->_isThirdPartyMusicEnabled + 1);
@@ -154,14 +154,14 @@
       v13 = off_1E78E4AA0[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"homeKitAccessoryType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"homeKitAccessoryType"];
     v11 = *(&self->_isThirdPartyMusicEnabled + 1);
   }
 
   if ((v11 & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEngagedAccessoryContext isAudioPlaybackCapable](self, "isAudioPlaybackCapable")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isAudioPlaybackCapable"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isAudioPlaybackCapable"];
 
     v11 = *(&self->_isThirdPartyMusicEnabled + 1);
   }
@@ -169,12 +169,12 @@
   if ((v11 & 4) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaEngagedAccessoryContext isThirdPartyMusicEnabled](self, "isThirdPartyMusicEnabled")}];
-    [v3 setObject:v15 forKeyedSubscript:@"isThirdPartyMusicEnabled"];
+    [dictionary setObject:v15 forKeyedSubscript:@"isThirdPartyMusicEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -216,28 +216,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
-  v6 = [v4 accessoryId];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryId = [(SISchemaEngagedAccessoryContext *)self accessoryId];
+  accessoryId2 = [equalCopy accessoryId];
+  if ((accessoryId != 0) == (accessoryId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
-  if (v7)
+  accessoryId3 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
+  if (accessoryId3)
   {
-    v8 = v7;
-    v9 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
-    v10 = [v4 accessoryId];
-    v11 = [v9 isEqual:v10];
+    v8 = accessoryId3;
+    accessoryId4 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
+    accessoryId5 = [equalCopy accessoryId];
+    v11 = [accessoryId4 isEqual:accessoryId5];
 
     if (!v11)
     {
@@ -249,7 +249,7 @@ LABEL_6:
   {
   }
 
-  if (*(&self->_isThirdPartyMusicEnabled + 1) != (v4[42] & 1))
+  if (*(&self->_isThirdPartyMusicEnabled + 1) != (equalCopy[42] & 1))
   {
     goto LABEL_20;
   }
@@ -257,26 +257,26 @@ LABEL_6:
   if (*(&self->_isThirdPartyMusicEnabled + 1))
   {
     homeKitAccessoryType = self->_homeKitAccessoryType;
-    if (homeKitAccessoryType != [v4 homeKitAccessoryType])
+    if (homeKitAccessoryType != [equalCopy homeKitAccessoryType])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
-  v6 = [v4 accessoryBrand];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryId = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
+  accessoryId2 = [equalCopy accessoryBrand];
+  if ((accessoryId != 0) == (accessoryId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
-  if (v13)
+  accessoryBrand = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
+  if (accessoryBrand)
   {
-    v14 = v13;
-    v15 = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
-    v16 = [v4 accessoryBrand];
-    v17 = [v15 isEqual:v16];
+    v14 = accessoryBrand;
+    accessoryBrand2 = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
+    accessoryBrand3 = [equalCopy accessoryBrand];
+    v17 = [accessoryBrand2 isEqual:accessoryBrand3];
 
     if (!v17)
     {
@@ -288,22 +288,22 @@ LABEL_6:
   {
   }
 
-  v5 = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
-  v6 = [v4 accessoryModel];
-  if ((v5 != 0) == (v6 == 0))
+  accessoryId = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
+  accessoryId2 = [equalCopy accessoryModel];
+  if ((accessoryId != 0) == (accessoryId2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v18 = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
-  if (v18)
+  accessoryModel = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
+  if (accessoryModel)
   {
-    v19 = v18;
-    v20 = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
-    v21 = [v4 accessoryModel];
-    v22 = [v20 isEqual:v21];
+    v19 = accessoryModel;
+    accessoryModel2 = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
+    accessoryModel3 = [equalCopy accessoryModel];
+    v22 = [accessoryModel2 isEqual:accessoryModel3];
 
     if (!v22)
     {
@@ -317,25 +317,25 @@ LABEL_19:
 
   v25 = *(&self->_isThirdPartyMusicEnabled + 1);
   v26 = (v25 >> 1) & 1;
-  v27 = v4[42];
+  v27 = equalCopy[42];
   if (v26 == ((v27 >> 1) & 1))
   {
     if (v26)
     {
       isAudioPlaybackCapable = self->_isAudioPlaybackCapable;
-      if (isAudioPlaybackCapable != [v4 isAudioPlaybackCapable])
+      if (isAudioPlaybackCapable != [equalCopy isAudioPlaybackCapable])
       {
         goto LABEL_20;
       }
 
       v25 = *(&self->_isThirdPartyMusicEnabled + 1);
-      v27 = v4[42];
+      v27 = equalCopy[42];
     }
 
     v29 = (v25 >> 2) & 1;
     if (v29 == ((v27 >> 2) & 1))
     {
-      if (!v29 || (isThirdPartyMusicEnabled = self->_isThirdPartyMusicEnabled, isThirdPartyMusicEnabled == [v4 isThirdPartyMusicEnabled]))
+      if (!v29 || (isThirdPartyMusicEnabled = self->_isThirdPartyMusicEnabled, isThirdPartyMusicEnabled == [equalCopy isThirdPartyMusicEnabled]))
       {
         v23 = 1;
         goto LABEL_21;
@@ -350,14 +350,14 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
+  toCopy = to;
+  accessoryId = [(SISchemaEngagedAccessoryContext *)self accessoryId];
 
-  if (v4)
+  if (accessoryId)
   {
-    v5 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
+    accessoryId2 = [(SISchemaEngagedAccessoryContext *)self accessoryId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -366,39 +366,39 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
+  accessoryBrand = [(SISchemaEngagedAccessoryContext *)self accessoryBrand];
 
-  if (v6)
+  if (accessoryBrand)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
+  accessoryModel = [(SISchemaEngagedAccessoryContext *)self accessoryModel];
 
-  if (v7)
+  if (accessoryModel)
   {
     PBDataWriterWriteStringField();
   }
 
   v8 = *(&self->_isThirdPartyMusicEnabled + 1);
-  v9 = v10;
+  v9 = toCopy;
   if ((v8 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v9 = v10;
+    v9 = toCopy;
     v8 = *(&self->_isThirdPartyMusicEnabled + 1);
   }
 
   if ((v8 & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasIsThirdPartyMusicEnabled:(BOOL)a3
+- (void)setHasIsThirdPartyMusicEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -411,9 +411,9 @@ LABEL_21:
   *(&self->_isThirdPartyMusicEnabled + 1) = *(&self->_isThirdPartyMusicEnabled + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsAudioPlaybackCapable:(BOOL)a3
+- (void)setHasIsAudioPlaybackCapable:(BOOL)capable
 {
-  if (a3)
+  if (capable)
   {
     v3 = 2;
   }
@@ -426,17 +426,17 @@ LABEL_21:
   *(&self->_isThirdPartyMusicEnabled + 1) = *(&self->_isThirdPartyMusicEnabled + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaEngagedAccessoryContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaEngagedAccessoryContext *)self accessoryId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaEngagedAccessoryContext *)self deleteAccessoryId];
   }

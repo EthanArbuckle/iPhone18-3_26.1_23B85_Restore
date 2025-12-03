@@ -1,8 +1,8 @@
 @interface TICorrectionCandidates
-- (TICorrectionCandidates)initWithAutocorrection:(id)a3 alternateCorrections:(id)a4 autocorrectionBlocked:(BOOL)a5;
-- (TICorrectionCandidates)initWithCoder:(id)a3;
+- (TICorrectionCandidates)initWithAutocorrection:(id)autocorrection alternateCorrections:(id)corrections autocorrectionBlocked:(BOOL)blocked;
+- (TICorrectionCandidates)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TICorrectionCandidates
@@ -15,41 +15,41 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   autocorrection = self->_autocorrection;
-  v7 = v4;
+  v7 = coderCopy;
   if (autocorrection)
   {
-    [v4 encodeObject:autocorrection forKey:@"autocorrection"];
-    v4 = v7;
+    [coderCopy encodeObject:autocorrection forKey:@"autocorrection"];
+    coderCopy = v7;
   }
 
   alternateCorrections = self->_alternateCorrections;
   if (alternateCorrections)
   {
     [v7 encodeObject:alternateCorrections forKey:@"alternateCorrections"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (TICorrectionCandidates)initWithCoder:(id)a3
+- (TICorrectionCandidates)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = TICorrectionCandidates;
   v5 = [(TICorrectionCandidates *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autocorrection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autocorrection"];
     autocorrection = v5->_autocorrection;
     v5->_autocorrection = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"alternateCorrections"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"alternateCorrections"];
     alternateCorrections = v5->_alternateCorrections;
     v5->_alternateCorrections = v11;
   }
@@ -57,22 +57,22 @@
   return v5;
 }
 
-- (TICorrectionCandidates)initWithAutocorrection:(id)a3 alternateCorrections:(id)a4 autocorrectionBlocked:(BOOL)a5
+- (TICorrectionCandidates)initWithAutocorrection:(id)autocorrection alternateCorrections:(id)corrections autocorrectionBlocked:(BOOL)blocked
 {
-  v9 = a3;
-  v10 = a4;
+  autocorrectionCopy = autocorrection;
+  correctionsCopy = corrections;
   v16.receiver = self;
   v16.super_class = TICorrectionCandidates;
   v11 = [(TICorrectionCandidates *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_autocorrection, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_autocorrection, autocorrection);
+    v13 = [correctionsCopy copy];
     alternateCorrections = v12->_alternateCorrections;
     v12->_alternateCorrections = v13;
 
-    v12->_autocorrectionBlocked = a5;
+    v12->_autocorrectionBlocked = blocked;
   }
 
   return v12;

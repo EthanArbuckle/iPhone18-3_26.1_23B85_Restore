@@ -1,24 +1,24 @@
 @interface AVMobileChromelessBackgroundGradientView
-- (AVMobileChromelessBackgroundGradientView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (AVMobileChromelessBackgroundGradientView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateGradientColors;
-- (void)setActive:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AVMobileChromelessBackgroundGradientView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = AVMobileChromelessBackgroundGradientView;
-  v4 = a3;
-  [(AVMobileChromelessBackgroundGradientView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(AVMobileChromelessBackgroundGradientView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(AVMobileChromelessBackgroundGradientView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(AVMobileChromelessBackgroundGradientView *)self _updateGradientColors];
   }
@@ -26,28 +26,28 @@
 
 - (void)_updateGradientColors
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    v3 = [v2 userInterfaceStyle];
+    traitCollection = [self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v4 = [a1 layer];
-    v6 = v4;
+    layer = [self layer];
+    v6 = layer;
     v5 = &OBJC_IVAR___AVMobileChromelessBackgroundGradientView__colorsDark;
-    if (v3 == 1)
+    if (userInterfaceStyle == 1)
     {
       v5 = &OBJC_IVAR___AVMobileChromelessBackgroundGradientView__colorsLight;
     }
 
-    [v4 setColors:*&a1[*v5]];
+    [layer setColors:*&self[*v5]];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = AVMobileChromelessBackgroundGradientView;
-  v5 = [(AVMobileChromelessBackgroundGradientView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(AVMobileChromelessBackgroundGradientView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -57,11 +57,11 @@
   return v5;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     if ([(AVMobileChromelessBackgroundGradientView *)self isActive])
     {
       v5 = 1.0;
@@ -72,18 +72,18 @@
       v5 = 0.0;
     }
 
-    v7 = [(AVMobileChromelessBackgroundGradientView *)self layer];
+    layer = [(AVMobileChromelessBackgroundGradientView *)self layer];
     *&v6 = v5;
-    [v7 setOpacity:v6];
+    [layer setOpacity:v6];
   }
 }
 
-- (AVMobileChromelessBackgroundGradientView)initWithFrame:(CGRect)a3
+- (AVMobileChromelessBackgroundGradientView)initWithFrame:(CGRect)frame
 {
   v22[5] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = AVMobileChromelessBackgroundGradientView;
-  v3 = [(AVMobileChromelessBackgroundGradientView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVMobileChromelessBackgroundGradientView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
@@ -114,8 +114,8 @@
     colorsLight = v3->_colorsLight;
     v3->_colorsLight = v16;
 
-    v18 = [(AVMobileChromelessBackgroundGradientView *)v3 layer];
-    [v18 setLocations:&unk_1EFF12F20];
+    layer = [(AVMobileChromelessBackgroundGradientView *)v3 layer];
+    [layer setLocations:&unk_1EFF12F20];
     [(AVMobileChromelessBackgroundGradientView *)v3 _updateGradientColors];
     v3->_active = 1;
   }

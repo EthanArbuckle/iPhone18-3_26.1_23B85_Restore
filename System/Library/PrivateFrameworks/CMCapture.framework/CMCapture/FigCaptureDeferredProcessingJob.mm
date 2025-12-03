@@ -1,9 +1,9 @@
 @interface FigCaptureDeferredProcessingJob
-+ (BOOL)isPotentiallyRecoverableError:(int)a3;
-- (FigCaptureDeferredProcessingJob)initWithProcessorRequest:(id)a3 delegate:(id)a4 error:(int *)a5;
-- (void)completedWithSampleBuffer:(opaqueCMSampleBuffer *)a3;
++ (BOOL)isPotentiallyRecoverableError:(int)error;
+- (FigCaptureDeferredProcessingJob)initWithProcessorRequest:(id)request delegate:(id)delegate error:(int *)error;
+- (void)completedWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
-- (void)failedWithError:(int)a3;
+- (void)failedWithError:(int)error;
 @end
 
 @implementation FigCaptureDeferredProcessingJob
@@ -17,19 +17,19 @@
   [(FigCaptureDeferredProcessingJob *)&v3 dealloc];
 }
 
-- (void)completedWithSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)completedWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   self->_durationNS = FigGetUpTimeNanoseconds() - self->_startNS;
-  v5 = [(FigWeakReference *)self->_weakDelegateReference referencedObject];
+  referencedObject = [(FigWeakReference *)self->_weakDelegateReference referencedObject];
 
-  [v5 job:self completedWithSampleBuffer:a3];
+  [referencedObject job:self completedWithSampleBuffer:buffer];
 }
 
-+ (BOOL)isPotentiallyRecoverableError:(int)a3
++ (BOOL)isPotentiallyRecoverableError:(int)error
 {
   result = 0;
-  v4 = (a3 + 16829) > 9 || ((1 << (a3 - 67)) & 0x2EF) == 0;
-  if (v4 && ((a3 + 16140) > 0xA || ((1 << (a3 + 12)) & 0x751) == 0))
+  v4 = (error + 16829) > 9 || ((1 << (error - 67)) & 0x2EF) == 0;
+  if (v4 && ((error + 16140) > 0xA || ((1 << (error + 12)) & 0x751) == 0))
   {
     return 1;
   }
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (void)failedWithError:(int)a3
+- (void)failedWithError:(int)error
 {
-  v3 = *&a3;
+  v3 = *&error;
   if (+[BWDeferredProcessingContainer maxProcessingCount](BWDeferredProcessingContainer, "maxProcessingCount") && (v5 = [(BWDeferredProcessingContainer *)self->_container processingCount], v5 == +[BWDeferredProcessingContainer maxProcessingCount]))
   {
     if (dword_1ED843F70)
@@ -68,7 +68,7 @@
   [-[FigWeakReference referencedObject](self->_weakDelegateReference "referencedObject")];
 }
 
-- (FigCaptureDeferredProcessingJob)initWithProcessorRequest:(id)a3 delegate:(id)a4 error:(int *)a5
+- (FigCaptureDeferredProcessingJob)initWithProcessorRequest:(id)request delegate:(id)delegate error:(int *)error
 {
   v13 = 0;
   v12.receiver = self;
@@ -76,13 +76,13 @@
   v8 = [(FigCaptureDeferredProcessingJob *)&v12 init];
   if (v8)
   {
-    v8->_weakDelegateReference = [FigWeakReference weakReferenceToObject:a4];
-    v8->_processorRequest = a3;
-    v9 = -[BWDeferredProcessingContainerManager createProcessingContainerWithApplicationID:captureRequestIdentifier:openForPeeking:err:](+[BWDeferredProcessingContainerManager sharedInstance](BWDeferredProcessingContainerManager, "sharedInstance"), "createProcessingContainerWithApplicationID:captureRequestIdentifier:openForPeeking:err:", [a3 applicationID], objc_msgSend(a3, "captureRequestIdentifier"), 0, &v13);
+    v8->_weakDelegateReference = [FigWeakReference weakReferenceToObject:delegate];
+    v8->_processorRequest = request;
+    v9 = -[BWDeferredProcessingContainerManager createProcessingContainerWithApplicationID:captureRequestIdentifier:openForPeeking:err:](+[BWDeferredProcessingContainerManager sharedInstance](BWDeferredProcessingContainerManager, "sharedInstance"), "createProcessingContainerWithApplicationID:captureRequestIdentifier:openForPeeking:err:", [request applicationID], objc_msgSend(request, "captureRequestIdentifier"), 0, &v13);
     v8->_container = v9;
     if (!v13)
     {
-      if (-[BWPhotoManifest descriptorForIdentifier:](-[BWDeferredProcessingContainer photoManifest](v9, "photoManifest"), "descriptorForIdentifier:", [a3 photoIdentifier]))
+      if (-[BWPhotoManifest descriptorForIdentifier:](-[BWDeferredProcessingContainer photoManifest](v9, "photoManifest"), "descriptorForIdentifier:", [request photoIdentifier]))
       {
         v8->_masterPortType = [(BWStillImageCaptureSettings *)[(BWDeferredContainer *)v8->_container captureSettings] masterPortType];
       }
@@ -95,9 +95,9 @@
   }
 
   v10 = v13;
-  if (a5)
+  if (error)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   if (v10)

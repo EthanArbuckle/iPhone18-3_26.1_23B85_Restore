@@ -1,36 +1,36 @@
 @interface PFPosterPath
 + (id)debugDescription;
-+ (id)temporaryDescriptorPathWithIdentifier:(id)a3 role:(id)a4;
-+ (id)temporaryPathForRole:(id)a3;
-+ (id)temporaryPathForTask:(id)a3 role:(id)a4;
-+ (id)temporaryPathForURL:(id)a3 role:(id)a4;
-+ (uint64_t)_reportSandboxExtensionError:(uint64_t)a3 withCode:(void *)a4 reason:(uint64_t)a5;
++ (id)temporaryDescriptorPathWithIdentifier:(id)identifier role:(id)role;
++ (id)temporaryPathForRole:(id)role;
++ (id)temporaryPathForTask:(id)task role:(id)role;
++ (id)temporaryPathForURL:(id)l role:(id)role;
++ (uint64_t)_reportSandboxExtensionError:(uint64_t)error withCode:(void *)code reason:(uint64_t)reason;
 - (BOOL)_isPersistable;
-- (BOOL)copyContentsOfPath:(id)a3 error:(id *)a4;
-- (BOOL)ensureContentsURLIsReachableAndReturnError:(id *)a3;
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4;
+- (BOOL)copyContentsOfPath:(id)path error:(id *)error;
+- (BOOL)ensureContentsURLIsReachableAndReturnError:(id *)error;
+- (BOOL)storeUserInfo:(id)info error:(id *)error;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)descriptorIdentifier;
 - (NSString)role;
 - (PFPosterPath)init;
-- (PFPosterPath)initWithBSXPCCoder:(id)a3;
-- (PFPosterPath)initWithCoder:(id)a3;
-- (id)_issueSandboxExtensionTokenWithContext:(xpc_object_t)a1;
-- (id)extendValidityForReason:(id)a3;
-- (id)loadUserInfoWithError:(id *)a3;
-- (int64_t)compareDescriptorIdentifiers:(id)a3;
-- (uint64_t)_initDecodedWithContentsURL:(void *)a3 role:(void *)a4 serverIdentity:(void *)a5 descriptorIdentifier:(uint64_t)a6 sandboxExtensionHandle:;
-- (uint64_t)_isEqualToPersistable:(uint64_t)a1;
+- (PFPosterPath)initWithBSXPCCoder:(id)coder;
+- (PFPosterPath)initWithCoder:(id)coder;
+- (id)_issueSandboxExtensionTokenWithContext:(xpc_object_t)context;
+- (id)extendValidityForReason:(id)reason;
+- (id)loadUserInfoWithError:(id *)error;
+- (int64_t)compareDescriptorIdentifiers:(id)identifiers;
+- (uint64_t)_initDecodedWithContentsURL:(void *)l role:(void *)role serverIdentity:(void *)identity descriptorIdentifier:(uint64_t)identifier sandboxExtensionHandle:;
+- (uint64_t)_isEqualToPersistable:(uint64_t)persistable;
 - (uint64_t)_sandboxExtensionLevel;
-- (unsigned)_lock_descriptionWithDebugInfo:(const os_unfair_lock *)a1;
-- (void)_extendReadAccessForURL:(void *)a3 toAuditToken:(void *)a4 error:;
-- (void)_initWithContentsURL:(void *)a3 role:(char)a4 options:(void *)a5 serverIdentity:(void *)a6 descriptorIdentifier:(uint64_t)a7 sandboxExtensionHandle:(void *)a8 sandboxExtensionURL:(void *)a9 sandboxExtensionAuditToken:;
+- (unsigned)_lock_descriptionWithDebugInfo:(const os_unfair_lock *)info;
+- (void)_extendReadAccessForURL:(void *)l toAuditToken:(void *)token error:;
+- (void)_initWithContentsURL:(void *)l role:(char)role options:(void *)options serverIdentity:(void *)identity descriptorIdentifier:(uint64_t)identifier sandboxExtensionHandle:(void *)handle sandboxExtensionURL:(void *)rL sandboxExtensionAuditToken:;
 - (void)_invalidate;
 - (void)_lock_purgeIfPossible;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 @end
 
@@ -38,9 +38,9 @@
 
 - (NSString)descriptorIdentifier
 {
-  v3 = [(PFServerPosterIdentity *)self->_serverIdentity descriptorIdentifier];
-  descriptorIdentifier = v3;
-  if (!v3)
+  descriptorIdentifier = [(PFServerPosterIdentity *)self->_serverIdentity descriptorIdentifier];
+  descriptorIdentifier = descriptorIdentifier;
+  if (!descriptorIdentifier)
   {
     descriptorIdentifier = self->_descriptorIdentifier;
   }
@@ -52,9 +52,9 @@
 
 - (NSString)role
 {
-  v3 = [(PFServerPosterIdentity *)self->_serverIdentity role];
-  role = v3;
-  if (!v3)
+  role = [(PFServerPosterIdentity *)self->_serverIdentity role];
+  role = role;
+  if (!role)
   {
     role = self->_role;
   }
@@ -82,7 +82,7 @@
     v15 = 2114;
     v16 = v11;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"PFPosterPath.m";
     v21 = 1024;
@@ -98,22 +98,22 @@
   return result;
 }
 
-- (void)_initWithContentsURL:(void *)a3 role:(char)a4 options:(void *)a5 serverIdentity:(void *)a6 descriptorIdentifier:(uint64_t)a7 sandboxExtensionHandle:(void *)a8 sandboxExtensionURL:(void *)a9 sandboxExtensionAuditToken:
+- (void)_initWithContentsURL:(void *)l role:(char)role options:(void *)options serverIdentity:(void *)identity descriptorIdentifier:(uint64_t)identifier sandboxExtensionHandle:(void *)handle sandboxExtensionURL:(void *)rL sandboxExtensionAuditToken:
 {
   v16 = a2;
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  if (!a1)
+  lCopy = l;
+  optionsCopy = options;
+  identityCopy = identity;
+  handleCopy = handle;
+  rLCopy = rL;
+  if (!self)
   {
 LABEL_11:
 
     return;
   }
 
-  v40.receiver = a1;
+  v40.receiver = self;
   v40.super_class = PFPosterPath;
   v22 = objc_msgSendSuper2(&v40, sel_init);
   if (v22)
@@ -123,26 +123,26 @@ LABEL_11:
     v25 = *(v23 + 8);
     *(v23 + 8) = v24;
 
-    *(v23 + 76) = a4;
-    v26 = [v17 copy];
+    *(v23 + 76) = role;
+    v26 = [lCopy copy];
     v27 = *(v23 + 32);
     *(v23 + 32) = v26;
 
-    v28 = [v18 copy];
+    v28 = [optionsCopy copy];
     v29 = *(v23 + 16);
     *(v23 + 16) = v28;
 
-    v30 = [v19 copy];
+    v30 = [identityCopy copy];
     v31 = *(v23 + 24);
     *(v23 + 24) = v30;
 
     *(v23 + 72) = 0;
-    *(v23 + 64) = a7;
-    v32 = [v20 copy];
+    *(v23 + 64) = identifier;
+    v32 = [handleCopy copy];
     v33 = *(v23 + 48);
     *(v23 + 48) = v32;
 
-    v34 = [v21 copy];
+    v34 = [rLCopy copy];
     v35 = *(v23 + 56);
     *(v23 + 56) = v34;
 
@@ -188,12 +188,12 @@ LABEL_11:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"outstanding validityExtensions must be released before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_3();
     v4 = NSStringFromClass(v3);
     v7 = 138544642;
-    v8 = a1;
+    selfCopy = self;
     OUTLINED_FUNCTION_1_3();
     v9 = @"PFPosterPath.m";
     v10 = 1024;
@@ -208,25 +208,25 @@ LABEL_11:
   __break(0);
 }
 
-+ (uint64_t)_reportSandboxExtensionError:(uint64_t)a3 withCode:(void *)a4 reason:(uint64_t)a5
++ (uint64_t)_reportSandboxExtensionError:(uint64_t)error withCode:(void *)code reason:(uint64_t)reason
 {
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  codeCopy = code;
   v12 = objc_opt_self();
-  if (![v11 length])
+  if (![codeCopy length])
   {
     [PFPosterPath _reportSandboxExtensionError:? withCode:? reason:?];
   }
 
   v13 = NSStringFromClass(v12);
-  v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v11 arguments:&a9];
+  v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:codeCopy arguments:&a9];
   v15 = PFLogPosterContents();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
     v23 = v13;
     v24 = 2048;
-    v25 = a3;
+    errorCopy = error;
     v26 = 2114;
     v27 = v14;
     _os_log_error_impl(&dword_1C269D000, v15, OS_LOG_TYPE_ERROR, "SandboxExtensionError: domain=%{publid}@ code=%lli reason=%{public}@", buf, 0x20u);
@@ -238,40 +238,40 @@ LABEL_11:
     v20 = *MEMORY[0x1E696A588];
     v21 = v14;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    *a2 = [v16 errorWithDomain:v13 code:a3 userInfo:v17];
+    *a2 = [v16 errorWithDomain:v13 code:error userInfo:v17];
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)_extendReadAccessForURL:(void *)a3 toAuditToken:(void *)a4 error:
+- (void)_extendReadAccessForURL:(void *)l toAuditToken:(void *)token error:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  lCopy = l;
+  v9 = lCopy;
+  if (self)
   {
     if (!v7)
     {
       [PFPosterPath _extendReadAccessForURL:? toAuditToken:? error:?];
     }
 
-    if (v8 && [v8 isInvalid])
+    if (lCopy && [lCopy isInvalid])
     {
-      v14 = [PFPosterPath _reportSandboxExtensionError:a4 withCode:1 reason:@"cannot extend access of %@ with invalid auditToken %@", v10, v11, v12, v13, a1];
+      v14 = [PFPosterPath _reportSandboxExtensionError:token withCode:1 reason:@"cannot extend access of %@ with invalid auditToken %@", v10, v11, v12, v13, self];
     }
 
     else
     {
       v15 = objc_alloc(objc_opt_class());
-      [(PFPosterPath *)v15 _initWithContentsURL:a1[4] role:2 options:a1[2] serverIdentity:a1[3] descriptorIdentifier:-1 sandboxExtensionHandle:v7 sandboxExtensionURL:v9 sandboxExtensionAuditToken:?];
+      [(PFPosterPath *)v15 _initWithContentsURL:self[4] role:2 options:self[2] serverIdentity:self[3] descriptorIdentifier:-1 sandboxExtensionHandle:v7 sandboxExtensionURL:v9 sandboxExtensionAuditToken:?];
     }
 
-    a1 = v14;
+    self = v14;
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -323,8 +323,8 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v4 = [qword_1ED8486E8 objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v57 objects:v65 count:16];
+  objectEnumerator = [qword_1ED8486E8 objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v57 objects:v65 count:16];
   if (v5)
   {
     v6 = v5;
@@ -335,7 +335,7 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
       {
         if (*v58 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v57 + 1) + 8 * i);
@@ -343,8 +343,8 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v10 = [v9 objectEnumerator];
-        v11 = [v10 countByEnumeratingWithState:&v53 objects:v64 count:16];
+        objectEnumerator2 = [v9 objectEnumerator];
+        v11 = [objectEnumerator2 countByEnumeratingWithState:&v53 objects:v64 count:16];
         if (v11)
         {
           v12 = v11;
@@ -355,29 +355,29 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
             {
               if (*v54 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(objectEnumerator2);
               }
 
               [v3 addObject:*(*(&v53 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v53 objects:v64 count:16];
+            v12 = [objectEnumerator2 countByEnumeratingWithState:&v53 objects:v64 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v57 objects:v65 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v57 objects:v65 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [v3 allObjects];
-  v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_83];
+  allObjects = [v3 allObjects];
+  v16 = [allObjects sortedArrayUsingComparator:&__block_literal_global_83];
 
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -401,7 +401,7 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 containsObject:v23] & 1) == 0)
         {
-          [v17 addObject:v23];
+          [array addObject:v23];
         }
       }
 
@@ -411,7 +411,7 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
     while (v20);
   }
 
-  [v17 sortUsingComparator:&__block_literal_global_88];
+  [array sortUsingComparator:&__block_literal_global_88];
   os_unfair_lock_unlock(&__allPathsLock);
   v24 = [MEMORY[0x1E696AD60] stringWithFormat:@"cachedServerPaths = %llu {", objc_msgSend(v16, "count")];
   v45 = 0u;
@@ -445,12 +445,12 @@ id __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke_2(uint64_t a
     while (v27);
   }
 
-  [v24 appendFormat:@"\n}\notherPaths = %llu {", objc_msgSend(v17, "count")];
+  [v24 appendFormat:@"\n}\notherPaths = %llu {", objc_msgSend(array, "count")];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v32 = v17;
+  v32 = array;
   v33 = [v32 countByEnumeratingWithState:&v41 objects:v61 count:16];
   if (v33)
   {
@@ -569,11 +569,11 @@ uint64_t __32__PFPosterPath_debugDescription__block_invoke_2(uint64_t a1, void *
   return v11;
 }
 
-+ (id)temporaryDescriptorPathWithIdentifier:(id)a3 role:(id)a4
++ (id)temporaryDescriptorPathWithIdentifier:(id)identifier role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  identifierCopy = identifier;
+  roleCopy = role;
+  v8 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v8)
   {
@@ -585,94 +585,94 @@ uint64_t __32__PFPosterPath_debugDescription__block_invoke_2(uint64_t a1, void *
     [PFPosterPath temporaryDescriptorPathWithIdentifier:a2 role:?];
   }
 
-  if ((PFPosterRoleIsValid(v7) & 1) == 0)
+  if ((PFPosterRoleIsValid(roleCopy) & 1) == 0)
   {
-    [PFPosterPath temporaryDescriptorPathWithIdentifier:v7 role:a2];
+    [PFPosterPath temporaryDescriptorPathWithIdentifier:roleCopy role:a2];
   }
 
   v9 = [PFPosterPath alloc];
   v10 = [MEMORY[0x1E695DFF8] pf_temporaryDirectoryURLWithBasenamePrefix:@"com.apple.posterkit.provider.path.descriptor"];
-  [(PFPosterPath *)v9 _initWithContentsURL:v10 role:v7 options:1 serverIdentity:0 descriptorIdentifier:v8 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
+  [(PFPosterPath *)v9 _initWithContentsURL:v10 role:roleCopy options:1 serverIdentity:0 descriptorIdentifier:v8 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
   v12 = v11;
 
   return v12;
 }
 
-+ (id)temporaryPathForRole:(id)a3
++ (id)temporaryPathForRole:(id)role
 {
-  v3 = a3;
+  roleCopy = role;
   v4 = [PFPosterPath alloc];
   v5 = [MEMORY[0x1E695DFF8] pf_temporaryDirectoryURLWithBasenamePrefix:@"com.apple.posterkit.provider.path.generic"];
-  [(PFPosterPath *)v4 _initWithContentsURL:v5 role:v3 options:1 serverIdentity:0 descriptorIdentifier:0 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
+  [(PFPosterPath *)v4 _initWithContentsURL:v5 role:roleCopy options:1 serverIdentity:0 descriptorIdentifier:0 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
   v7 = v6;
 
   return v7;
 }
 
-+ (id)temporaryPathForTask:(id)a3 role:(id)a4
++ (id)temporaryPathForTask:(id)task role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  if ((PFPosterRoleIsValid(v7) & 1) == 0)
+  taskCopy = task;
+  roleCopy = role;
+  if ((PFPosterRoleIsValid(roleCopy) & 1) == 0)
   {
-    [PFPosterPath temporaryPathForTask:v7 role:a2];
+    [PFPosterPath temporaryPathForTask:roleCopy role:a2];
   }
 
-  if (![(__CFString *)v6 length])
+  if (![(__CFString *)taskCopy length])
   {
 
-    v6 = @"com.apple.posterkit.provider.path.task";
+    taskCopy = @"com.apple.posterkit.provider.path.task";
   }
 
   v8 = [PFPosterPath alloc];
-  v9 = [MEMORY[0x1E695DFF8] pf_temporaryDirectoryURLWithBasenamePrefix:v6];
-  [(PFPosterPath *)v8 _initWithContentsURL:v9 role:v7 options:1 serverIdentity:0 descriptorIdentifier:0 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
+  v9 = [MEMORY[0x1E695DFF8] pf_temporaryDirectoryURLWithBasenamePrefix:taskCopy];
+  [(PFPosterPath *)v8 _initWithContentsURL:v9 role:roleCopy options:1 serverIdentity:0 descriptorIdentifier:0 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
   v11 = v10;
 
   return v11;
 }
 
-+ (id)temporaryPathForURL:(id)a3 role:(id)a4
++ (id)temporaryPathForURL:(id)l role:(id)role
 {
-  v5 = a4;
-  v6 = a3;
-  [[PFPosterPath alloc] _initWithContentsURL:v6 role:v5 options:0 serverIdentity:0 descriptorIdentifier:0 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
+  roleCopy = role;
+  lCopy = l;
+  [[PFPosterPath alloc] _initWithContentsURL:lCopy role:roleCopy options:0 serverIdentity:0 descriptorIdentifier:0 sandboxExtensionHandle:-1 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
   v8 = v7;
 
   return v8;
 }
 
-- (BOOL)copyContentsOfPath:(id)a3 error:(id *)a4
+- (BOOL)copyContentsOfPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 role];
-  v9 = [PFPosterPath temporaryPathForRole:v8];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  role = [pathCopy role];
+  v9 = [PFPosterPath temporaryPathForRole:role];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __41__PFPosterPath_copyContentsOfPath_error___block_invoke;
   v21[3] = &unk_1E818A328;
-  v10 = v7;
+  v10 = defaultManager;
   v22 = v10;
   v11 = MEMORY[0x1C691C400](v21);
   v12 = v11[2];
   v20 = 0;
-  v13 = v12(v11, v6, v9, &v20);
+  v13 = v12(v11, pathCopy, v9, &v20);
   v14 = v20;
   v15 = v14;
   if (v13 && !v14)
   {
     v19 = 0;
-    LOBYTE(v13) = (v11[2])(v11, v6, self, &v19);
+    LOBYTE(v13) = (v11[2])(v11, pathCopy, self, &v19);
     v15 = v19;
   }
 
   [v9 invalidate];
-  if (a4 && v15)
+  if (error && v15)
   {
     v16 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   if (v15)
@@ -797,7 +797,7 @@ LABEL_19:
   return v24;
 }
 
-- (BOOL)ensureContentsURLIsReachableAndReturnError:(id *)a3
+- (BOOL)ensureContentsURLIsReachableAndReturnError:(id *)error
 {
   v5 = objc_opt_new();
   contentsURL = self->_contentsURL;
@@ -817,7 +817,7 @@ LABEL_19:
     v9 = [v5 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:v11 error:&v15];
     v12 = v15;
 
-    if ((v9 & 1) == 0 && a3)
+    if ((v9 & 1) == 0 && error)
     {
       if (v12)
       {
@@ -829,20 +829,20 @@ LABEL_19:
         v13 = v8;
       }
 
-      *a3 = v13;
+      *error = v13;
     }
   }
 
   return v9;
 }
 
-- (int64_t)compareDescriptorIdentifiers:(id)a3
+- (int64_t)compareDescriptorIdentifiers:(id)identifiers
 {
-  v4 = [a3 descriptorIdentifier];
-  v5 = v4;
-  if (v4)
+  descriptorIdentifier = [identifiers descriptorIdentifier];
+  v5 = descriptorIdentifier;
+  if (descriptorIdentifier)
   {
-    v6 = v4;
+    v6 = descriptorIdentifier;
   }
 
   else
@@ -850,11 +850,11 @@ LABEL_19:
     v6 = &stru_1F425B6D8;
   }
 
-  v7 = [(PFPosterPath *)self descriptorIdentifier];
-  v8 = v7;
-  if (v7)
+  descriptorIdentifier2 = [(PFPosterPath *)self descriptorIdentifier];
+  v8 = descriptorIdentifier2;
+  if (descriptorIdentifier2)
   {
-    v9 = v7;
+    v9 = descriptorIdentifier2;
   }
 
   else
@@ -867,11 +867,11 @@ LABEL_19:
   return v10;
 }
 
-- (id)loadUserInfoWithError:(id *)a3
+- (id)loadUserInfoWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  userInfo = v4->_userInfo;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userInfo = selfCopy->_userInfo;
   if (userInfo)
   {
     v6 = userInfo;
@@ -879,8 +879,8 @@ LABEL_19:
 
   else
   {
-    v7 = [(NSURL *)v4->_contentsURL URLByAppendingPathComponent:@"com.apple.posterkit.provider.contents.userInfo" isDirectory:0];
-    v8 = [v7 pf_loadFromPlistWithError:a3];
+    v7 = [(NSURL *)selfCopy->_contentsURL URLByAppendingPathComponent:@"com.apple.posterkit.provider.contents.userInfo" isDirectory:0];
+    v8 = [v7 pf_loadFromPlistWithError:error];
     v9 = objc_opt_class();
     v10 = v8;
     if (v9)
@@ -903,22 +903,22 @@ LABEL_19:
 
     v12 = v11;
 
-    v13 = v4->_userInfo;
-    v4->_userInfo = v12;
+    v13 = selfCopy->_userInfo;
+    selfCopy->_userInfo = v12;
 
-    v6 = v4->_userInfo;
+    v6 = selfCopy->_userInfo;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4
+- (BOOL)storeUserInfo:(id)info error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  infoCopy = info;
+  if (infoCopy)
   {
     NSClassFromString(&cfstr_Nsdictionary.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -927,16 +927,16 @@ LABEL_19:
     }
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSURL *)v8->_contentsURL URLByAppendingPathComponent:@"com.apple.posterkit.provider.contents.userInfo" isDirectory:0];
-  if (v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSURL *)selfCopy->_contentsURL URLByAppendingPathComponent:@"com.apple.posterkit.provider.contents.userInfo" isDirectory:0];
+  if (infoCopy)
   {
-    if (-[PFPosterPath ensureContentsURLIsReachableAndReturnError:](v8, "ensureContentsURLIsReachableAndReturnError:", a4) && [v9 pf_storeToPlist:v7 error:a4])
+    if (-[PFPosterPath ensureContentsURLIsReachableAndReturnError:](selfCopy, "ensureContentsURLIsReachableAndReturnError:", error) && [v9 pf_storeToPlist:infoCopy error:error])
     {
-      v10 = [v7 copy];
-      userInfo = v8->_userInfo;
-      v8->_userInfo = v10;
+      v10 = [infoCopy copy];
+      userInfo = selfCopy->_userInfo;
+      selfCopy->_userInfo = v10;
 
       LOBYTE(v12) = 1;
     }
@@ -950,17 +950,17 @@ LABEL_19:
   else
   {
     v13 = objc_opt_new();
-    v12 = [v13 removeItemAtURL:v9 error:a4];
+    v12 = [v13 removeItemAtURL:v9 error:error];
 
-    v14 = v8->_userInfo;
-    v8->_userInfo = 0;
+    v14 = selfCopy->_userInfo;
+    selfCopy->_userInfo = 0;
 
     v15 = PFLogPosterContents();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4)
+      if (error)
       {
-        v16 = *a4;
+        v16 = *error;
       }
 
       else
@@ -973,19 +973,19 @@ LABEL_19:
       v20 = 2114;
       v21 = v16;
       v22 = 2112;
-      v23 = v8;
+      v23 = selfCopy;
       _os_log_impl(&dword_1C269D000, v15, OS_LOG_TYPE_DEFAULT, "erasing userInfo: %{public}i %{public}@ (path=%@)", v19, 0x1Cu);
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v17 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (id)extendValidityForReason:(id)a3
+- (id)extendValidityForReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   lock_validityExtensions = self->_lock_validityExtensions;
   if (self->_lock_invalidated && lock_validityExtensions == 0)
@@ -1014,7 +1014,7 @@ LABEL_19:
     v18[3] = &unk_1E818A350;
     v18[4] = self;
     v18[5] = a2;
-    v12 = [v9 initWithIdentifier:v11 forReason:v5 invalidationBlock:v18];
+    v12 = [v9 initWithIdentifier:v11 forReason:reasonCopy invalidationBlock:v18];
 
     v13 = self->_lock_validityExtensions + 1;
     self->_lock_validityExtensions = v13;
@@ -1026,9 +1026,9 @@ LABEL_19:
     lock_allExtensions = self->_lock_allExtensions;
     if (!lock_allExtensions)
     {
-      v15 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v16 = self->_lock_allExtensions;
-      self->_lock_allExtensions = v15;
+      self->_lock_allExtensions = weakObjectsHashTable;
 
       lock_allExtensions = self->_lock_allExtensions;
     }
@@ -1055,7 +1055,7 @@ void __40__PFPosterPath_extendValidityForReason___block_invoke(uint64_t a1, void
 
 - (uint64_t)_sandboxExtensionLevel
 {
-  if (a1)
+  if (self)
   {
     return *MEMORY[0x1E69E9BA8];
   }
@@ -1066,13 +1066,13 @@ void __40__PFPosterPath_extendValidityForReason___block_invoke(uint64_t a1, void
   }
 }
 
-- (PFPosterPath)initWithBSXPCCoder:(id)a3
+- (PFPosterPath)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class() || v5 == objc_opt_class())
   {
-    [(PFPosterPath *)v4 initWithBSXPCCoder:&v9, &v10];
+    [(PFPosterPath *)coderCopy initWithBSXPCCoder:&v9, &v10];
     v6 = v9;
     v7 = v10;
   }
@@ -1087,25 +1087,25 @@ void __40__PFPosterPath_extendValidityForReason___block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(PFPosterPath *)self encodeWithCoder:v5, a2];
+    [(PFPosterPath *)self encodeWithCoder:coderCopy, a2];
   }
 
-  [(PFPosterPath *)self encodeWithCoder:v5];
+  [(PFPosterPath *)self encodeWithCoder:coderCopy];
 }
 
-- (PFPosterPath)initWithCoder:(id)a3
+- (PFPosterPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class() || v5 == objc_opt_class())
   {
-    [(PFPosterPath *)v4 initWithCoder:&v9, &v10];
+    [(PFPosterPath *)coderCopy initWithCoder:&v9, &v10];
     v6 = v9;
     v7 = v10;
   }
@@ -1130,9 +1130,9 @@ void __40__PFPosterPath_extendValidityForReason___block_invoke(uint64_t a1, void
 
 - (void)_invalidate
 {
-  if (a1)
+  if (self)
   {
-    v2 = OUTLINED_FUNCTION_12_0(a1);
+    v2 = OUTLINED_FUNCTION_12_0(self);
     os_unfair_lock_lock(v2);
     if ((*(v1 + 79) & 1) == 0)
     {
@@ -1147,12 +1147,12 @@ void __40__PFPosterPath_extendValidityForReason___block_invoke(uint64_t a1, void
 - (void)_lock_purgeIfPossible
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_32;
   }
 
-  v2 = OUTLINED_FUNCTION_12_0(a1);
+  v2 = OUTLINED_FUNCTION_12_0(self);
   os_unfair_lock_assert_owner(v2);
   if ((*(v1 + 80) & 1) != 0 || *(v1 + 79) != 1 || *(v1 + 77))
   {
@@ -1281,18 +1281,18 @@ LABEL_32:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)_lock_descriptionWithDebugInfo:(const os_unfair_lock *)a1
+- (unsigned)_lock_descriptionWithDebugInfo:(const os_unfair_lock *)info
 {
-  v2 = a1;
+  infoCopy = info;
   v51 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!info)
   {
     goto LABEL_28;
   }
 
-  os_unfair_lock_assert_owner(a1 + 18);
+  os_unfair_lock_assert_owner(info + 18);
   v4 = &stru_1F425B6D8;
-  if (v2[80])
+  if (infoCopy[80])
   {
     v5 = @":purged";
   }
@@ -1306,22 +1306,22 @@ LABEL_32:
   v7 = &stru_1F425B6D8;
   if (a2)
   {
-    if (*(v2 + 8) == -1)
+    if (*(infoCopy + 8) == -1)
     {
-      if (!*(v2 + 6))
+      if (!*(infoCopy + 6))
       {
         v7 = &stru_1F425B6D8;
 LABEL_9:
-        if (v2[78])
+        if (infoCopy[78])
         {
           v40 = v7;
           v41 = v6;
-          v8 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v9 = *(v2 + 5);
+          v9 = *(infoCopy + 5);
           v10 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
           if (v10)
           {
@@ -1336,11 +1336,11 @@ LABEL_9:
                   objc_enumerationMutation(v9);
                 }
 
-                v14 = [*(*(&v46 + 1) + 8 * i) reason];
+                reason = [*(*(&v46 + 1) + 8 * i) reason];
                 v15 = MEMORY[0x1E696AD98];
-                v16 = [v8 objectForKey:v14];
+                v16 = [dictionary objectForKey:reason];
                 v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "unsignedIntegerValue") + 1}];
-                [v8 setObject:v17 forKey:v14];
+                [dictionary setObject:v17 forKey:reason];
               }
 
               v11 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
@@ -1349,14 +1349,14 @@ LABEL_9:
             while (v11);
           }
 
-          v18 = [v8 allKeys];
+          allKeys = [dictionary allKeys];
           v44[0] = MEMORY[0x1E69E9820];
           v44[1] = 3221225472;
           v44[2] = __47__PFPosterPath__lock_descriptionWithDebugInfo___block_invoke;
           v44[3] = &unk_1E818A270;
-          v19 = v8;
+          v19 = dictionary;
           v45 = v19;
-          v20 = [v18 sortedArrayUsingComparator:v44];
+          v20 = [allKeys sortedArrayUsingComparator:v44];
 
           v42[0] = MEMORY[0x1E69E9820];
           v42[1] = 3221225472;
@@ -1366,8 +1366,8 @@ LABEL_9:
           v21 = v19;
           v22 = [v20 bs_map:v42];
           v23 = MEMORY[0x1E696AD60];
-          v24 = v2[77];
-          v25 = v2[78];
+          v24 = infoCopy[77];
+          v25 = infoCopy[78];
           v26 = [v22 componentsJoinedByString:{@", "}];
           v4 = [v23 stringWithFormat:@" eCount=%u(%u) eReasons=%@", v24, v25, v26];
 
@@ -1378,154 +1378,154 @@ LABEL_9:
         goto LABEL_18;
       }
 
-      v35 = *(v2 + 7);
+      v35 = *(infoCopy + 7);
       if (v35)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@" sURL=%@ sDest=%@", *(v2 + 6), v35];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@" sURL=%@ sDest=%@", *(infoCopy + 6), v35];
       }
 
       else
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@" sURL=%@", *(v2 + 6), v38];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@" sURL=%@", *(infoCopy + 6), v38];
       }
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@" sHandle=%lli", *(v2 + 8), v38];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@" sHandle=%lli", *(infoCopy + 8), v38];
     }
     v7 = ;
     goto LABEL_9;
   }
 
 LABEL_18:
-  if (*(v2 + 2))
+  if (*(infoCopy + 2))
   {
     v27 = MEMORY[0x1E696AEC0];
     v28 = objc_opt_class();
-    v29 = NSStringFromClass(v28);
-    v2 = [v27 stringWithFormat:@"<%@:%p%@ %@%@%@>", v29, v2, v6, *(v2 + 2), v7, v4];
+    descriptorIdentifier = NSStringFromClass(v28);
+    infoCopy = [v27 stringWithFormat:@"<%@:%p%@ %@%@%@>", descriptorIdentifier, infoCopy, v6, *(infoCopy + 2), v7, v4];
   }
 
   else
   {
-    v29 = [v2 descriptorIdentifier];
+    descriptorIdentifier = [infoCopy descriptorIdentifier];
     v30 = MEMORY[0x1E696AEC0];
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    v33 = *(v2 + 4);
-    v34 = [*(v2 + 1) fileSystemRepresentation];
-    if (v29)
+    v33 = *(infoCopy + 4);
+    fileSystemRepresentation = [*(infoCopy + 1) fileSystemRepresentation];
+    if (descriptorIdentifier)
     {
-      [v30 stringWithFormat:@"<%@:%p%@ descriptor='%@' role='%@' contents='%s'%@%@>", v32, v2, v6, v29, v33, v34, v7, v4];
+      [v30 stringWithFormat:@"<%@:%p%@ descriptor='%@' role='%@' contents='%s'%@%@>", v32, infoCopy, v6, descriptorIdentifier, v33, fileSystemRepresentation, v7, v4];
     }
 
     else
     {
-      [v30 stringWithFormat:@"<%@:%p%@ role='%@' contents='%s'%@%@>", v32, v2, v6, v33, v34, v7, v4, v39];
+      [v30 stringWithFormat:@"<%@:%p%@ role='%@' contents='%s'%@%@>", v32, infoCopy, v6, v33, fileSystemRepresentation, v7, v4, v39];
     }
-    v2 = ;
+    infoCopy = ;
   }
 
 LABEL_28:
   v36 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return infoCopy;
 }
 
 - (BOOL)_isPersistable
 {
-  if (!a1 || !*(a1 + 8) || !*(a1 + 16) || *(a1 + 76) != 2 || *(a1 + 48) || *(a1 + 56))
+  if (!self || !*(self + 8) || !*(self + 16) || *(self + 76) != 2 || *(self + 48) || *(self + 56))
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 72));
-  v2 = (*(a1 + 79) & 1) == 0 && (*(a1 + 80) & 1) == 0 && *(a1 + 64) == -1;
-  os_unfair_lock_unlock((a1 + 72));
+  os_unfair_lock_lock((self + 72));
+  v2 = (*(self + 79) & 1) == 0 && (*(self + 80) & 1) == 0 && *(self + 64) == -1;
+  os_unfair_lock_unlock((self + 72));
   return v2;
 }
 
-- (uint64_t)_isEqualToPersistable:(uint64_t)a1
+- (uint64_t)_isEqualToPersistable:(uint64_t)persistable
 {
   v3 = a2;
-  if (a1)
+  if (persistable)
   {
-    if (![(PFPosterPath *)a1 _isPersistable])
+    if (![(PFPosterPath *)persistable _isPersistable])
     {
       goto LABEL_10;
     }
 
-    if (a1 == v3)
+    if (persistable == v3)
     {
-      a1 = 1;
+      persistable = 1;
       goto LABEL_11;
     }
 
     if (![(PFPosterPath *)v3 _isPersistable])
     {
 LABEL_10:
-      a1 = 0;
+      persistable = 0;
       goto LABEL_11;
     }
 
-    v4 = [a1 contentsURL];
-    v5 = [v3 contentsURL];
+    contentsURL = [persistable contentsURL];
+    contentsURL2 = [v3 contentsURL];
     if (BSEqualObjects())
     {
-      v6 = [a1 role];
-      v7 = [v3 role];
+      role = [persistable role];
+      role2 = [v3 role];
       if (BSEqualObjects())
       {
-        v8 = [a1 serverIdentity];
-        v9 = [v3 serverIdentity];
+        serverIdentity = [persistable serverIdentity];
+        serverIdentity2 = [v3 serverIdentity];
         if (BSEqualObjects())
         {
-          v10 = [a1 descriptorIdentifier];
-          v11 = [v3 descriptorIdentifier];
-          a1 = BSEqualObjects();
+          descriptorIdentifier = [persistable descriptorIdentifier];
+          descriptorIdentifier2 = [v3 descriptorIdentifier];
+          persistable = BSEqualObjects();
         }
 
         else
         {
-          a1 = 0;
+          persistable = 0;
         }
       }
 
       else
       {
-        a1 = 0;
+        persistable = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      persistable = 0;
     }
   }
 
 LABEL_11:
 
-  return a1;
+  return persistable;
 }
 
-- (uint64_t)_initDecodedWithContentsURL:(void *)a3 role:(void *)a4 serverIdentity:(void *)a5 descriptorIdentifier:(uint64_t)a6 sandboxExtensionHandle:
+- (uint64_t)_initDecodedWithContentsURL:(void *)l role:(void *)role serverIdentity:(void *)identity descriptorIdentifier:(uint64_t)identifier sandboxExtensionHandle:
 {
   v42 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!a1)
+  lCopy = l;
+  roleCopy = role;
+  identityCopy = identity;
+  if (!self)
   {
     goto LABEL_19;
   }
 
   v15 = objc_opt_class();
-  if ((PFPosterRoleIsValid(v12) & 1) == 0)
+  if ((PFPosterRoleIsValid(lCopy) & 1) == 0)
   {
     OUTLINED_FUNCTION_4_3();
-    [(PFPosterPath *)v28 _initWithContentsURL:v29 role:v30 options:v31 serverIdentity:v32 descriptorIdentifier:v33 sandboxExtensionHandle:a6 sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
+    [(PFPosterPath *)v28 _initWithContentsURL:v29 role:v30 options:v31 serverIdentity:v32 descriptorIdentifier:v33 sandboxExtensionHandle:identifier sandboxExtensionURL:0 sandboxExtensionAuditToken:0];
     v27 = v34;
     [(PFPosterPath *)v34 _invalidate];
     v35 = PFLogPosterContents();
@@ -1533,7 +1533,7 @@ LABEL_11:
     {
       v36 = PFPosterRolesSupportedForCurrentDeviceClass();
       *buf = 138543618;
-      v39 = v12;
+      v39 = lCopy;
       v40 = 2114;
       v41 = v36;
       _os_log_error_impl(&dword_1C269D000, v35, OS_LOG_TYPE_ERROR, "Failed to decode PFPosterPath with invalid role: %{public}@, supported roles for device class: %{public}@", buf, 0x16u);
@@ -1549,21 +1549,21 @@ LABEL_11:
 
   if (v15 != objc_opt_class())
   {
-    if (!v13)
+    if (!roleCopy)
     {
       v16 = OUTLINED_FUNCTION_10_1();
       v20 = 0;
-      v21 = v14;
+      v21 = identityCopy;
       goto LABEL_11;
     }
 
     goto LABEL_14;
   }
 
-  if (!v13 || v14)
+  if (!roleCopy || identityCopy)
   {
 LABEL_14:
-    [(PFPosterPath *)a1 _initWithContentsURL:v12 role:2 options:0 serverIdentity:0 descriptorIdentifier:a6 sandboxExtensionHandle:0 sandboxExtensionURL:0 sandboxExtensionAuditToken:?];
+    [(PFPosterPath *)self _initWithContentsURL:lCopy role:2 options:0 serverIdentity:0 descriptorIdentifier:identifier sandboxExtensionHandle:0 sandboxExtensionURL:0 sandboxExtensionAuditToken:?];
     v27 = v26;
     [(PFPosterPath *)v26 _invalidate];
 LABEL_18:
@@ -1573,18 +1573,18 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (a6 == -1)
+  if (identifier == -1)
   {
-    v23 = [PFServerPosterPath _cachedPathWithContentsURL:v11 identity:v13 allocedInstance:a1];
+    v23 = [PFServerPosterPath _cachedPathWithContentsURL:v11 identity:roleCopy allocedInstance:self];
 
     goto LABEL_12;
   }
 
   v16 = OUTLINED_FUNCTION_10_1();
-  v20 = v13;
+  v20 = roleCopy;
   v21 = 0;
 LABEL_11:
-  [(PFPosterPath *)v16 _initWithContentsURL:v17 role:v18 options:v19 serverIdentity:v20 descriptorIdentifier:v21 sandboxExtensionHandle:a6 sandboxExtensionURL:0 sandboxExtensionAuditToken:v37];
+  [(PFPosterPath *)v16 _initWithContentsURL:v17 role:v18 options:v19 serverIdentity:v20 descriptorIdentifier:v21 sandboxExtensionHandle:identifier sandboxExtensionURL:0 sandboxExtensionAuditToken:v37];
   v23 = v22;
 LABEL_12:
 
@@ -1592,22 +1592,22 @@ LABEL_12:
   return v23;
 }
 
-- (id)_issueSandboxExtensionTokenWithContext:(xpc_object_t)a1
+- (id)_issueSandboxExtensionTokenWithContext:(xpc_object_t)context
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    if (*(a1 + 6))
+    if (*(context + 6))
     {
       *__error() = 0;
       v4 = *MEMORY[0x1E69E9BA8];
-      v5 = *(a1 + 7);
-      [*(a1 + 6) fileSystemRepresentation];
+      v5 = *(context + 7);
+      [*(context + 6) fileSystemRepresentation];
       v6 = *MEMORY[0x1E69E9BE0];
       if (v5)
       {
-        v7 = *(a1 + 7);
+        v7 = *(context + 7);
         if (v7)
         {
           [v7 realToken];
@@ -1631,7 +1631,7 @@ LABEL_12:
       v10 = v9;
       if (v9)
       {
-        a1 = xpc_string_create(v9);
+        context = xpc_string_create(v9);
         free(v10);
         goto LABEL_13;
       }
@@ -1642,28 +1642,28 @@ LABEL_12:
       v16 = [PFPosterPath _reportSandboxExtensionError:2 withCode:@"%@: cannot extend access of %@ due to sandbox errno=%i (%s)" reason:v12, v13, v14, v15, v3];
     }
 
-    a1 = 0;
+    context = 0;
   }
 
 LABEL_13:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return context;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 encodeObject:self->_contentsURL forKey:@"c"];
-  [v4 encodeObject:self->_serverIdentity forKey:@"i"];
-  [v4 encodeObject:self->_descriptorIdentifier forKey:@"d"];
-  [v4 encodeObject:self->_role forKey:@"r"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_contentsURL forKey:@"c"];
+  [coderCopy encodeObject:self->_serverIdentity forKey:@"i"];
+  [coderCopy encodeObject:self->_descriptorIdentifier forKey:@"d"];
+  [coderCopy encodeObject:self->_role forKey:@"r"];
   v5 = [(PFPosterPath *)self _issueSandboxExtensionTokenWithContext:?];
   if (v5)
   {
-    [v4 encodeXPCObject:v5 forKey:@"t"];
+    [coderCopy encodeXPCObject:v5 forKey:@"t"];
     v6 = PFLogPosterContents();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {

@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __49__ATXCloudStorageSettingsListener_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -60,14 +60,14 @@ uint64_t __49__ATXCloudStorageSettingsListener_sharedInstance__block_invoke(uint
 
 - (void)registerForCloudStorageDeletedByUserNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleDeleteDataRequest name:@"com.apple.siri.cloud.storage.deleted" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleDeleteDataRequest name:@"com.apple.siri.cloud.storage.deleted" object:0];
 }
 
 - (void)registerForCloudSyncPreferenceDidChangeNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handleBackupPreferencesDidChange name:@"com.apple.siri.cloud.synch.changed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleBackupPreferencesDidChange name:@"com.apple.siri.cloud.synch.changed" object:0];
 }
 
 - (void)handleBackupPreferencesDidChange
@@ -82,8 +82,8 @@ uint64_t __49__ATXCloudStorageSettingsListener_sharedInstance__block_invoke(uint
 + (BOOL)isBackupForSiriEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 isEnabledForDataclass:*MEMORY[0x277CB8A48]];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = [aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x277CB8A48]];
 
   return v4;
 }
@@ -91,8 +91,8 @@ uint64_t __49__ATXCloudStorageSettingsListener_sharedInstance__block_invoke(uint
 + (BOOL)isBackupForContactsEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 isEnabledForDataclass:*MEMORY[0x277CB9108]];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  v4 = [aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x277CB9108]];
 
   return v4;
 }

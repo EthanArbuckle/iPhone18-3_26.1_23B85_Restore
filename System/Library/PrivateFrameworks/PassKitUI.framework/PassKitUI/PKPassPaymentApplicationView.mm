@@ -1,34 +1,34 @@
 @interface PKPassPaymentApplicationView
-- (PKPassPaymentApplicationView)initWithCoder:(id)a3;
-- (PKPassPaymentApplicationView)initWithPass:(id)a3;
+- (PKPassPaymentApplicationView)initWithCoder:(id)coder;
+- (PKPassPaymentApplicationView)initWithPass:(id)pass;
 - (PKPassPaymentApplicationViewDelegate)delegate;
-- (void)_selectedApplicationDidChange:(id)a3;
+- (void)_selectedApplicationDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setShowHeader:(BOOL)a3;
+- (void)setShowHeader:(BOOL)header;
 @end
 
 @implementation PKPassPaymentApplicationView
 
-- (PKPassPaymentApplicationView)initWithCoder:(id)a3
+- (PKPassPaymentApplicationView)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This class is not NSCoding compliant"];
 
   return [(PKPassPaymentApplicationView *)self init];
 }
 
-- (PKPassPaymentApplicationView)initWithPass:(id)a3
+- (PKPassPaymentApplicationView)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v46.receiver = self;
   v46.super_class = PKPassPaymentApplicationView;
   v6 = [(PKPassPaymentApplicationView *)&v46 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
-    v8 = [MEMORY[0x1E69B8DB8] paymentService];
+    objc_storeStrong(&v6->_pass, pass);
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v7->_paymentService;
-    v7->_paymentService = v8;
+    v7->_paymentService = paymentService;
 
     if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
     {
@@ -46,43 +46,43 @@
       v7->_horizontalSeparator = v14;
 
       v16 = v7->_horizontalSeparator;
-      v17 = [MEMORY[0x1E69DC888] separatorColor];
-      [(UIView *)v16 setBackgroundColor:v17];
+      separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+      [(UIView *)v16 setBackgroundColor:separatorColor];
 
       [(PKPassPaymentApplicationView *)v7 addSubview:v7->_horizontalSeparator];
       v7->_showHeader = 1;
     }
 
-    v18 = [(PKPaymentPass *)v7->_pass devicePaymentApplications];
-    v19 = [v18 allObjects];
+    devicePaymentApplications = [(PKPaymentPass *)v7->_pass devicePaymentApplications];
+    allObjects = [devicePaymentApplications allObjects];
 
-    v20 = [MEMORY[0x1E69DC668] sharedApplication];
-    v21 = [v20 userInterfaceLayoutDirection] == 0;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v21 = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection] == 0;
 
-    v22 = [v5 sortedPaymentApplications:v19 ascending:v21];
+    v22 = [passCopy sortedPaymentApplications:allObjects ascending:v21];
 
     v23 = v7->_paymentService;
-    v24 = [v5 uniqueID];
-    v25 = [(PKPaymentService *)v23 defaultPaymentApplicationForPassUniqueIdentifier:v24];
+    uniqueID = [passCopy uniqueID];
+    v25 = [(PKPaymentService *)v23 defaultPaymentApplicationForPassUniqueIdentifier:uniqueID];
     selectedApplication = v7->_selectedApplication;
     v7->_selectedApplication = v25;
 
     v27 = v7->_selectedApplication;
     if (!v27 || ([(PKPaymentApplication *)v27 supportsContactlessPayment]& 1) == 0)
     {
-      v28 = [(PKPaymentPass *)v7->_pass devicePrimaryContactlessPaymentApplication];
+      devicePrimaryContactlessPaymentApplication = [(PKPaymentPass *)v7->_pass devicePrimaryContactlessPaymentApplication];
       v29 = v7->_selectedApplication;
-      v7->_selectedApplication = v28;
+      v7->_selectedApplication = devicePrimaryContactlessPaymentApplication;
     }
 
     if ([v22 count])
     {
-      v45 = v5;
+      v45 = passCopy;
       v30 = [v22 copy];
       paymentApplications = v7->_paymentApplications;
       v7->_paymentApplications = v30;
 
-      v32 = [(PKPaymentApplication *)v7->_selectedApplication applicationIdentifier];
+      applicationIdentifier = [(PKPaymentApplication *)v7->_selectedApplication applicationIdentifier];
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if ([(NSArray *)v7->_paymentApplications count])
       {
@@ -91,19 +91,19 @@
         do
         {
           v36 = [(NSArray *)v7->_paymentApplications objectAtIndexedSubscript:v34];
-          v37 = [v36 applicationIdentifier];
-          v38 = [v37 isEqualToString:v32];
+          applicationIdentifier2 = [v36 applicationIdentifier];
+          v38 = [applicationIdentifier2 isEqualToString:applicationIdentifier];
 
           if (v38)
           {
             v35 = v34;
           }
 
-          v39 = [v36 displayName];
-          v40 = v39;
-          if (v39)
+          displayName = [v36 displayName];
+          v40 = displayName;
+          if (displayName)
           {
-            v41 = v39;
+            v41 = displayName;
           }
 
           else
@@ -133,17 +133,17 @@
       [(UISegmentedControl *)v7->_segmentedControl addTarget:v7 action:sel__selectedApplicationDidChange_ forControlEvents:4096];
       [(PKPassPaymentApplicationView *)v7 addSubview:v7->_segmentedControl];
 
-      v5 = v45;
+      passCopy = v45;
     }
   }
 
   return v7;
 }
 
-- (void)setShowHeader:(BOOL)a3
+- (void)setShowHeader:(BOOL)header
 {
-  self->_showHeader = a3;
-  if (a3)
+  self->_showHeader = header;
+  if (header)
   {
     [(PKPassPaymentApplicationView *)self addSubview:self->_headerView];
     [(PKPassPaymentApplicationView *)self addSubview:self->_horizontalSeparator];
@@ -158,10 +158,10 @@
   [(PKPassPaymentApplicationView *)self setNeedsLayout];
 }
 
-- (void)_selectedApplicationDidChange:(id)a3
+- (void)_selectedApplicationDidChange:(id)change
 {
   v5 = self->_selectedApplication;
-  v6 = -[NSArray objectAtIndexedSubscript:](self->_paymentApplications, "objectAtIndexedSubscript:", [a3 selectedSegmentIndex]);
+  v6 = -[NSArray objectAtIndexedSubscript:](self->_paymentApplications, "objectAtIndexedSubscript:", [change selectedSegmentIndex]);
   selectedApplication = self->_selectedApplication;
   self->_selectedApplication = v6;
 

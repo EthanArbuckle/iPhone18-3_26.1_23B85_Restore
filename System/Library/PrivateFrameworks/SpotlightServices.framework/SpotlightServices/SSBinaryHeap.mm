@@ -1,24 +1,24 @@
 @interface SSBinaryHeap
-- (SSBinaryHeap)initWithComparator:(id)a3 maxCount:(unint64_t)a4;
-- (void)addObject:(id)a3;
+- (SSBinaryHeap)initWithComparator:(id)comparator maxCount:(unint64_t)count;
+- (void)addObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation SSBinaryHeap
 
-- (SSBinaryHeap)initWithComparator:(id)a3 maxCount:(unint64_t)a4
+- (SSBinaryHeap)initWithComparator:(id)comparator maxCount:(unint64_t)count
 {
-  v6 = a3;
+  comparatorCopy = comparator;
   v11.receiver = self;
   v11.super_class = SSBinaryHeap;
   v7 = [(SSBinaryHeap *)&v11 init];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(comparatorCopy);
     comparator = v7->_comparator;
     v7->_comparator = v8;
 
-    v7->_maxCount = a4;
+    v7->_maxCount = count;
     compareContext.version = 0;
     memset(&compareContext.retain, 0, 24);
     compareContext.info = v7;
@@ -36,9 +36,9 @@
   [(SSBinaryHeap *)&v3 dealloc];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  CFBinaryHeapAddValue(self->_binaryHeap, a3);
+  CFBinaryHeapAddValue(self->_binaryHeap, object);
   if ([(SSBinaryHeap *)self count]> self->_maxCount)
   {
 

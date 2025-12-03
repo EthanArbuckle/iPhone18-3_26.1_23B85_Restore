@@ -1,18 +1,18 @@
 @interface BWJasperDisparityProcessorInput
-- (BWJasperDisparityProcessorInput)initWithSettings:(id)a3 portType:(id)a4;
+- (BWJasperDisparityProcessorInput)initWithSettings:(id)settings portType:(id)type;
 - (id)description;
 - (void)dealloc;
-- (void)setColorBuffer:(opaqueCMSampleBuffer *)a3 type:(unint64_t)a4;
-- (void)setColorBufferPTS:(id *)a3 exposureTime:(double)a4;
+- (void)setColorBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type;
+- (void)setColorBufferPTS:(id *)s exposureTime:(double)time;
 @end
 
 @implementation BWJasperDisparityProcessorInput
 
-- (BWJasperDisparityProcessorInput)initWithSettings:(id)a3 portType:(id)a4
+- (BWJasperDisparityProcessorInput)initWithSettings:(id)settings portType:(id)type
 {
   v5.receiver = self;
   v5.super_class = BWJasperDisparityProcessorInput;
-  return [(BWStillImageProcessorControllerInput *)&v5 initWithSettings:a3 portType:a4];
+  return [(BWStillImageProcessorControllerInput *)&v5 initWithSettings:settings portType:type];
 }
 
 - (void)dealloc
@@ -28,15 +28,15 @@
   [(BWStillImageProcessorControllerInput *)&v4 dealloc];
 }
 
-- (void)setColorBufferPTS:(id *)a3 exposureTime:(double)a4
+- (void)setColorBufferPTS:(id *)s exposureTime:(double)time
 {
-  var3 = a3->var3;
-  *&self->_colorBufferPTS.value = *&a3->var0;
+  var3 = s->var3;
+  *&self->_colorBufferPTS.value = *&s->var0;
   self->_colorBufferPTS.epoch = var3;
-  self->_colorBufferExposureTime = a4;
+  self->_colorBufferExposureTime = time;
 }
 
-- (void)setColorBuffer:(opaqueCMSampleBuffer *)a3 type:(unint64_t)a4
+- (void)setColorBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type
 {
   colorBuffer = self->_colorBuffer;
   if (colorBuffer)
@@ -44,9 +44,9 @@
     CFRelease(colorBuffer);
   }
 
-  if (a3)
+  if (buffer)
   {
-    v8 = CFRetain(a3);
+    v8 = CFRetain(buffer);
   }
 
   else
@@ -55,7 +55,7 @@
   }
 
   self->_colorBuffer = v8;
-  self->_colorBufferType = a4;
+  self->_colorBufferType = type;
   if ([(BWJasperDisparityProcessorInput *)self isReadyToExecute])
   {
     delegate = self->_delegate;

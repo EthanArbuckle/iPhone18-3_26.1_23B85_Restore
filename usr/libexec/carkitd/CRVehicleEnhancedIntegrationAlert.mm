@@ -8,9 +8,9 @@
 - (id)lockscreenMessage
 {
   v3 = CRLocalizedStringForKey();
-  v4 = [(CRMessagingVehicleAlert *)self messagingVehicle];
-  v5 = [v4 vehicleName];
-  v6 = [NSString stringWithFormat:v3, v5];
+  messagingVehicle = [(CRMessagingVehicleAlert *)self messagingVehicle];
+  vehicleName = [messagingVehicle vehicleName];
+  v6 = [NSString stringWithFormat:v3, vehicleName];
 
   return v6;
 }
@@ -18,9 +18,9 @@
 - (id)alertTitle
 {
   v3 = CRLocalizedStringForKey();
-  v4 = [(CRMessagingVehicleAlert *)self messagingVehicle];
-  v5 = [v4 vehicleName];
-  v6 = [NSString stringWithFormat:v3, v5];
+  messagingVehicle = [(CRMessagingVehicleAlert *)self messagingVehicle];
+  vehicleName = [messagingVehicle vehicleName];
+  v6 = [NSString stringWithFormat:v3, vehicleName];
 
   return v6;
 }

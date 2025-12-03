@@ -1,31 +1,31 @@
 @interface WATodayModel
-+ (id)autoupdatingLocationModelWithPreferences:(id)a3 effectiveBundleIdentifier:(id)a4;
++ (id)autoupdatingLocationModelWithPreferences:(id)preferences effectiveBundleIdentifier:(id)identifier;
 + (id)currentLocationModel;
-+ (id)modelWithLocation:(id)a3;
-- (BOOL)executeModelUpdateWithCompletion:(id)a3;
++ (id)modelWithLocation:(id)location;
+- (BOOL)executeModelUpdateWithCompletion:(id)completion;
 - (BOOL)hasCrossedHourlyBoundary;
 - (WATodayModel)init;
-- (WATodayModel)initWithLocation:(id)a3;
+- (WATodayModel)initWithLocation:(id)location;
 - (id)location;
-- (void)_executeForecastRetrievalForLocation:(id)a3 completion:(id)a4;
-- (void)_executeLocationUpdateWithCompletion:(id)a3;
-- (void)_fireTodayModelForecastWasUpdated:(id)a3;
+- (void)_executeForecastRetrievalForLocation:(id)location completion:(id)completion;
+- (void)_executeLocationUpdateWithCompletion:(id)completion;
+- (void)_fireTodayModelForecastWasUpdated:(id)updated;
 - (void)_fireTodayModelWantsUpdate;
-- (void)_forecastUpdateCompleted:(id)a3 forecastModel:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_locationUpdateCompleted:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
+- (void)_forecastUpdateCompleted:(id)completed forecastModel:(id)model error:(id)error completion:(id)completion;
+- (void)_locationUpdateCompleted:(id)completed error:(id)error completion:(id)completion;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)performDelayedUpdatesForObserver:(id)a3;
+- (void)performDelayedUpdatesForObserver:(id)observer;
 @end
 
 @implementation WATodayModel
 
-+ (id)autoupdatingLocationModelWithPreferences:(id)a3 effectiveBundleIdentifier:(id)a4
++ (id)autoupdatingLocationModelWithPreferences:(id)preferences effectiveBundleIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [[WATodayAutoupdatingLocationModel alloc] initWithPreferences:v6 effectiveBundleIdentifier:v5];
+  identifierCopy = identifier;
+  preferencesCopy = preferences;
+  v7 = [[WATodayAutoupdatingLocationModel alloc] initWithPreferences:preferencesCopy effectiveBundleIdentifier:identifierCopy];
 
   [(WATodayModel *)v7 setHasPendingUpdates:0];
   v8 = WALogForCategory(0);
@@ -64,10 +64,10 @@
   return v4;
 }
 
-+ (id)modelWithLocation:(id)a3
++ (id)modelWithLocation:(id)location
 {
-  v3 = a3;
-  v4 = [[WATodayModel alloc] initWithLocation:v3];
+  locationCopy = location;
+  v4 = [[WATodayModel alloc] initWithLocation:locationCopy];
 
   return v4;
 }
@@ -80,9 +80,9 @@
   v2 = [(WATodayModel *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = objc_opt_new();
     modelOperationQueue = v2->_modelOperationQueue;
@@ -210,11 +210,11 @@ LABEL_7:
   objc_destroyWeak(&to);
 }
 
-- (WATodayModel)initWithLocation:(id)a3
+- (WATodayModel)initWithLocation:(id)location
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  locationCopy = location;
+  if (!locationCopy)
   {
     [(WATodayModel *)a2 initWithLocation:?];
   }
@@ -226,7 +226,7 @@ LABEL_7:
     forecastModel = v6->_forecastModel;
     v6->_forecastModel = v7;
 
-    [(WAForecastModel *)v6->_forecastModel setLocation:v5];
+    [(WAForecastModel *)v6->_forecastModel setLocation:locationCopy];
     v6->_hasPendingUpdates = 0;
     v9 = WALogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -250,10 +250,10 @@ LABEL_7:
   [(WATodayModel *)&v3 dealloc];
 }
 
-- (BOOL)executeModelUpdateWithCompletion:(id)a3
+- (BOOL)executeModelUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
@@ -261,14 +261,14 @@ LABEL_7:
     v6[2] = __49__WATodayModel_executeModelUpdateWithCompletion___block_invoke;
     v6[3] = &unk_279E67BF8;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = completionCopy;
     [(WATodayModel *)self _executeLocationUpdateWithCompletion:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 
-  return v4 != 0;
+  return completionCopy != 0;
 }
 
 void __49__WATodayModel_executeModelUpdateWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -279,14 +279,14 @@ void __49__WATodayModel_executeModelUpdateWithCompletion___block_invoke(uint64_t
   [WeakRetained _locationUpdateCompleted:v6 error:v5 completion:*(a1 + 32)];
 }
 
-- (void)_locationUpdateCompleted:(id)a3 error:(id)a4 completion:(id)a5
+- (void)_locationUpdateCompleted:(id)completed error:(id)error completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4)
+  completedCopy = completed;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (error)
   {
-    (*(v9 + 2))(v9, 0, a4);
+    (*(completionCopy + 2))(completionCopy, 0, error);
   }
 
   else
@@ -296,28 +296,28 @@ void __49__WATodayModel_executeModelUpdateWithCompletion___block_invoke(uint64_t
     v11[2] = __58__WATodayModel__locationUpdateCompleted_error_completion___block_invoke;
     v11[3] = &unk_279E67C20;
     v11[4] = self;
-    v12 = v8;
+    v12 = completedCopy;
     v13 = v10;
     [(WATodayModel *)self _executeForecastRetrievalForLocation:v12 completion:v11];
   }
 }
 
-- (void)_forecastUpdateCompleted:(id)a3 forecastModel:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_forecastUpdateCompleted:(id)completed forecastModel:(id)model error:(id)error completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  modelCopy = model;
+  errorCopy = error;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__WATodayModel__forecastUpdateCompleted_forecastModel_error_completion___block_invoke;
   v15[3] = &unk_279E67C48;
-  v16 = v10;
-  v17 = self;
-  v18 = v9;
-  v19 = v11;
-  v12 = v9;
-  v13 = v11;
-  v14 = v10;
+  v16 = errorCopy;
+  selfCopy = self;
+  v18 = modelCopy;
+  v19 = completionCopy;
+  v12 = modelCopy;
+  v13 = completionCopy;
+  v14 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], v15);
 }
 
@@ -361,42 +361,42 @@ uint64_t __72__WATodayModel__forecastUpdateCompleted_forecastModel_error_complet
 
 - (id)location
 {
-  v2 = [(WATodayModel *)self forecastModel];
-  v3 = [v2 location];
+  forecastModel = [(WATodayModel *)self forecastModel];
+  location = [forecastModel location];
 
-  return v3;
+  return location;
 }
 
-- (void)_executeLocationUpdateWithCompletion:(id)a3
+- (void)_executeLocationUpdateWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     forecastModel = self->_forecastModel;
-    v5 = a3;
-    v6 = [(WAForecastModel *)forecastModel location];
-    (*(a3 + 2))(v5, v6, 0);
+    completionCopy = completion;
+    location = [(WAForecastModel *)forecastModel location];
+    (*(completion + 2))(completionCopy, location, 0);
   }
 }
 
-- (void)_executeForecastRetrievalForLocation:(id)a3 completion:(id)a4
+- (void)_executeForecastRetrievalForLocation:(id)location completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (locationCopy)
   {
     [(NSOperationQueue *)self->_modelOperationQueue cancelAllOperations];
     v8 = WALogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = locationCopy;
       _os_log_impl(&dword_272ACF000, v8, OS_LOG_TYPE_DEFAULT, "Creating WAForecastOperation for %@", buf, 0xCu);
     }
 
     v9 = [WAForecastOperation alloc];
-    v10 = [(WATodayModel *)self connection];
-    v11 = [(WAForecastOperation *)v9 initWithLocation:v6 onConnection:v10];
+    connection = [(WATodayModel *)self connection];
+    v11 = [(WAForecastOperation *)v9 initWithLocation:locationCopy onConnection:connection];
 
     objc_initWeak(buf, v11);
     v14[0] = MEMORY[0x277D85DD0];
@@ -404,8 +404,8 @@ uint64_t __72__WATodayModel__forecastUpdateCompleted_forecastModel_error_complet
     v14[2] = __64__WATodayModel__executeForecastRetrievalForLocation_completion___block_invoke;
     v14[3] = &unk_279E67C70;
     objc_copyWeak(&v17, buf);
-    v15 = v6;
-    v16 = v7;
+    v15 = locationCopy;
+    v16 = completionCopy;
     [(WAForecastOperation *)v11 setCompletionBlock:v14];
     [(NSOperationQueue *)self->_modelOperationQueue addOperation:v11];
 
@@ -422,7 +422,7 @@ uint64_t __72__WATodayModel__forecastUpdateCompleted_forecastModel_error_complet
     }
 
     v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.weather.errorDomain" code:4 userInfo:0];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -455,30 +455,30 @@ void __64__WATodayModel__executeForecastRetrievalForLocation_completion___block_
 
 - (BOOL)hasCrossedHourlyBoundary
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(WATodayModel *)self lastUpdateDate];
-  v5 = DatesAreNotWithinSameHour(v3, v4);
+  date = [MEMORY[0x277CBEAA8] date];
+  lastUpdateDate = [(WATodayModel *)self lastUpdateDate];
+  v5 = DatesAreNotWithinSameHour(date, lastUpdateDate);
 
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = WALogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315650;
     v11 = "[WATodayModel addObserver:]";
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = observerCopy;
     _os_log_impl(&dword_272ACF000, v5, OS_LOG_TYPE_DEFAULT, "%s self=%@, adding observer: %@", &v10, 0x20u);
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   if ([(WATodayModel *)self hasPendingUpdates])
   {
     v6 = WALogForCategory(0);
@@ -488,7 +488,7 @@ void __64__WATodayModel__executeForecastRetrievalForLocation_completion___block_
       _os_log_impl(&dword_272ACF000, v6, OS_LOG_TYPE_DEFAULT, "Has pending updates, start updating location", &v10, 2u);
     }
 
-    [(WATodayModel *)self performDelayedUpdatesForObserver:v4];
+    [(WATodayModel *)self performDelayedUpdatesForObserver:observerCopy];
     [(WATodayModel *)self setHasPendingUpdates:0];
     v7 = WALogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -517,7 +517,7 @@ void __64__WATodayModel__executeForecastRetrievalForLocation_completion___block_
   {
     observers = self->_observers;
     *buf = 136315394;
-    v15 = "[WATodayModel _fireTodayModelWantsUpdate]";
+    selfCopy = "[WATodayModel _fireTodayModelWantsUpdate]";
     v16 = 2112;
     v17 = observers;
     _os_log_impl(&dword_272ACF000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
@@ -526,16 +526,16 @@ void __64__WATodayModel__executeForecastRetrievalForLocation_completion___block_
   v5 = WALogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WATodayModel *)self hasPendingUpdates];
+    hasPendingUpdates = [(WATodayModel *)self hasPendingUpdates];
     *buf = 138412546;
-    v15 = self;
+    selfCopy = self;
     v16 = 1024;
-    LODWORD(v17) = v6;
+    LODWORD(v17) = hasPendingUpdates;
     _os_log_impl(&dword_272ACF000, v5, OS_LOG_TYPE_DEFAULT, "I am a WATodayModel: %@, current pending update status is %d", buf, 0x12u);
   }
 
-  v7 = [(NSHashTable *)self->_observers allObjects];
-  v8 = [v7 count];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v8 = [allObjects count];
 
   if (v8)
   {
@@ -544,7 +544,7 @@ void __64__WATodayModel__executeForecastRetrievalForLocation_completion___block_
     {
       v10 = self->_observers;
       *buf = 138412290;
-      v15 = v10;
+      selfCopy = v10;
       _os_log_impl(&dword_272ACF000, v9, OS_LOG_TYPE_DEFAULT, "Has observers:%@, update location now", buf, 0xCu);
     }
 
@@ -612,10 +612,10 @@ void __42__WATodayModel__fireTodayModelWantsUpdate__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fireTodayModelForecastWasUpdated:(id)a3
+- (void)_fireTodayModelForecastWasUpdated:(id)updated
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = WALogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -632,8 +632,8 @@ void __42__WATodayModel__fireTodayModelWantsUpdate__block_invoke(uint64_t a1)
   v9[2] = __50__WATodayModel__fireTodayModelForecastWasUpdated___block_invoke;
   v9[3] = &unk_279E67CC0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = updatedCopy;
+  v7 = updatedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -681,16 +681,16 @@ void __50__WATodayModel__fireTodayModelForecastWasUpdated___block_invoke(uint64_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDelayedUpdatesForObserver:(id)a3
+- (void)performDelayedUpdatesForObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__WATodayModel_performDelayedUpdatesForObserver___block_invoke;
   v6[3] = &unk_279E67CC0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observerCopy;
+  selfCopy = self;
+  v5 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

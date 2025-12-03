@@ -1,53 +1,53 @@
 @interface QLItemProviderFetcher
-- (QLItemProviderFetcher)initWithCoder:(id)a3;
-- (QLItemProviderFetcher)initWithContentType:(id)a3 fileSize:(id)a4;
+- (QLItemProviderFetcher)initWithCoder:(id)coder;
+- (QLItemProviderFetcher)initWithContentType:(id)type fileSize:(id)size;
 - (id)fetchedContent;
 - (id)newItemProvider;
-- (void)_updateCompletionBlockWithAllowedOutputClasses:(id)a3 URL:(id)a4;
+- (void)_updateCompletionBlockWithAllowedOutputClasses:(id)classes URL:(id)l;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6;
-- (void)getURLWithDownloadTracker:(id)a3 completionHandler:(id)a4;
-- (void)updatedURLWithProgress:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock;
+- (void)getURLWithDownloadTracker:(id)tracker completionHandler:(id)handler;
+- (void)updatedURLWithProgress:(double)progress;
 @end
 
 @implementation QLItemProviderFetcher
 
-- (QLItemProviderFetcher)initWithContentType:(id)a3 fileSize:(id)a4
+- (QLItemProviderFetcher)initWithContentType:(id)type fileSize:(id)size
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  sizeCopy = size;
   v13.receiver = self;
   v13.super_class = QLItemProviderFetcher;
   v9 = [(QLItemFetcher *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentType, a3);
-    objc_storeStrong(&v10->_fileSize, a4);
+    objc_storeStrong(&v9->_contentType, type);
+    objc_storeStrong(&v10->_fileSize, size);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)fetchContentWithAllowedOutputClasses:(id)a3 inQueue:(id)a4 updateBlock:(id)a5 completionBlock:(id)a6
+- (void)fetchContentWithAllowedOutputClasses:(id)classes inQueue:(id)queue updateBlock:(id)block completionBlock:(id)completionBlock
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  [(QLItemProviderFetcher *)self setUpdateBlock:a5];
-  [(QLItemProviderFetcher *)self setCompletionBlock:v11];
+  classesCopy = classes;
+  completionBlockCopy = completionBlock;
+  queueCopy = queue;
+  [(QLItemProviderFetcher *)self setUpdateBlock:block];
+  [(QLItemProviderFetcher *)self setCompletionBlock:completionBlockCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __98__QLItemProviderFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke;
   v15[3] = &unk_279AE0ED8;
-  v16 = v10;
-  v17 = v11;
+  v16 = classesCopy;
+  v17 = completionBlockCopy;
   v15[4] = self;
-  v13 = v10;
-  v14 = v11;
-  [v12 addOperationWithBlock:v15];
+  v13 = classesCopy;
+  v14 = completionBlockCopy;
+  [queueCopy addOperationWithBlock:v15];
 }
 
 void __98__QLItemProviderFetcher_fetchContentWithAllowedOutputClasses_inQueue_updateBlock_completionBlock___block_invoke(id *a1)
@@ -178,42 +178,19 @@ LABEL_21:
   v16 = *MEMORY[0x277D85DE8];
 }
 
+- (void)_updateCompletionBlockWithAllowedOutputClasses:(id)classes URL:(id)l
 {
-  v8 = a2;
-  v5 = a3;
-  WeakRetained = objc_loadWeakRetained((a1 + 56));
-  if (WeakRetained)
-  {
-    if (v8 && v5)
-    {
-      [v5 UTF8String];
-      *(*(a1 + 32) + 56) = sandbox_extension_consume();
-      [WeakRetained _updateCompletionBlockWithAllowedOutputClasses:*(a1 + 40) URL:v8];
-    }
-
-    else
-    {
-      (*(*(a1 + 48) + 16))();
-    }
-
-    v7 = +[QLNetworkStateObserver sharedInstance];
-    [v7 popOperation];
-  }
-}
-
-- (void)_updateCompletionBlockWithAllowedOutputClasses:(id)a3 URL:(id)a4
-{
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  lCopy = l;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__QLItemProviderFetcher__updateCompletionBlockWithAllowedOutputClasses_URL___block_invoke;
   v10[3] = &unk_279AE0E18;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = lCopy;
+  v12 = classesCopy;
+  v8 = classesCopy;
+  v9 = lCopy;
   QLRunInMainThread(v10);
 }
 
@@ -273,14 +250,14 @@ void __76__QLItemProviderFetcher__updateCompletionBlockWithAllowedOutputClasses_
   }
 }
 
-- (void)updatedURLWithProgress:(double)a3
+- (void)updatedURLWithProgress:(double)progress
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__QLItemProviderFetcher_updatedURLWithProgress___block_invoke;
   v3[3] = &unk_279AE0F00;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = progress;
   QLRunInMainThread(v3);
 }
 
@@ -296,24 +273,24 @@ void __48__QLItemProviderFetcher_updatedURLWithProgress___block_invoke(uint64_t 
   }
 }
 
-- (void)getURLWithDownloadTracker:(id)a3 completionHandler:(id)a4
+- (void)getURLWithDownloadTracker:(id)tracker completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  trackerCopy = tracker;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v9 = objc_opt_new();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__QLItemProviderFetcher_getURLWithDownloadTracker_completionHandler___block_invoke;
   v14[3] = &unk_279AE0F28;
-  v15 = v6;
+  v15 = trackerCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__QLItemProviderFetcher_getURLWithDownloadTracker_completionHandler___block_invoke_2;
   v12[3] = &unk_279AE0F50;
-  v13 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = trackerCopy;
   [(QLItemProviderFetcher *)self fetchContentWithAllowedOutputClasses:v8 inQueue:v9 updateBlock:v14 completionBlock:v12];
 }
 
@@ -389,13 +366,13 @@ void __69__QLItemProviderFetcher_getURLWithDownloadTracker_completionHandler___b
 
 - (id)fetchedContent
 {
-  v3 = [(QLItemFetcher *)self fetchingState];
-  if (v3)
+  fetchingState = [(QLItemFetcher *)self fetchingState];
+  if (fetchingState)
   {
-    v3 = self->_lastContent;
+    fetchingState = self->_lastContent;
   }
 
-  return v3;
+  return fetchingState;
 }
 
 - (id)newItemProvider
@@ -429,24 +406,24 @@ uint64_t __40__QLItemProviderFetcher_newItemProvider__block_invoke(uint64_t a1, 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = QLItemProviderFetcher;
-  v4 = a3;
-  [(QLItemFetcher *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fileSize forKey:{@"fileSize", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(QLItemFetcher *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fileSize forKey:{@"fileSize", v5.receiver, v5.super_class}];
 }
 
-- (QLItemProviderFetcher)initWithCoder:(id)a3
+- (QLItemProviderFetcher)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = QLItemProviderFetcher;
-  v5 = [(QLItemFetcher *)&v10 initWithCoder:v4];
+  v5 = [(QLItemFetcher *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileSize"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileSize"];
     fileSize = v5->_fileSize;
     v5->_fileSize = v6;
 

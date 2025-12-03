@@ -1,13 +1,13 @@
 @interface ICDCloudBadgeService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ICDCloudBadgeService)init;
 - (id)_supportedInterfaceForXPCConnection;
-- (id)badgeActionMetricsEventForIdentifier:(id)a3;
-- (id)badgeActionMetricsEventPathForIdentifier:(id)a3;
-- (void)clearBadgeActionMetricsEventForIdentifier:(id)a3;
-- (void)enqueueMetricsEvent:(id)a3;
+- (id)badgeActionMetricsEventForIdentifier:(id)identifier;
+- (id)badgeActionMetricsEventPathForIdentifier:(id)identifier;
+- (void)clearBadgeActionMetricsEventForIdentifier:(id)identifier;
+- (void)enqueueMetricsEvent:(id)event;
 - (void)reportAppIconBadgeActionMetrics;
-- (void)storeBadgeActionMetricsEvent:(id)a3 identifier:(id)a4;
+- (void)storeBadgeActionMetricsEvent:(id)event identifier:(id)identifier;
 @end
 
 @implementation ICDCloudBadgeService
@@ -26,25 +26,25 @@
 
 - (void)reportAppIconBadgeActionMetrics
 {
-  v3 = [(ICDCloudBadgeService *)self serialQueue];
+  serialQueue = [(ICDCloudBadgeService *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EE038;
   block[3] = &unk_1001DF578;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 icd_isConnectionAllowedForService:7];
+  connectionCopy = connection;
+  v6 = [connectionCopy icd_isConnectionAllowedForService:7];
   if (v6)
   {
-    v7 = [v5 processIdentifier];
-    if (v5)
+    processIdentifier = [connectionCopy processIdentifier];
+    if (connectionCopy)
     {
-      [v5 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -61,26 +61,26 @@
       WORD6(v12[0]) = 2114;
       *(v12 + 14) = v8;
       WORD3(v12[1]) = 1024;
-      DWORD2(v12[1]) = v7;
+      DWORD2(v12[1]) = processIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "ICCloudReportBadgeActionRequest %p - XPC connection from %{public}@[%d]", v12, 0x1Cu);
     }
 
-    v10 = [(ICDCloudBadgeService *)self _supportedInterfaceForXPCConnection];
-    [v5 setExportedInterface:v10];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    _supportedInterfaceForXPCConnection = [(ICDCloudBadgeService *)self _supportedInterfaceForXPCConnection];
+    [connectionCopy setExportedInterface:_supportedInterfaceForXPCConnection];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   return v6;
 }
 
-- (void)storeBadgeActionMetricsEvent:(id)a3 identifier:(id)a4
+- (void)storeBadgeActionMetricsEvent:(id)event identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  eventCopy = event;
+  identifierCopy = identifier;
+  if (eventCopy)
   {
-    v8 = [(ICDCloudBadgeService *)self badgeActionMetricsEventPathForIdentifier:v7];
+    v8 = [(ICDCloudBadgeService *)self badgeActionMetricsEventPathForIdentifier:identifierCopy];
     if (!v8)
     {
 LABEL_16:
@@ -89,25 +89,25 @@ LABEL_16:
     }
 
     v21 = 0;
-    v9 = [NSPropertyListSerialization dataWithPropertyList:v6 format:200 options:0 error:&v21];
+    v9 = [NSPropertyListSerialization dataWithPropertyList:eventCopy format:200 options:0 error:&v21];
     v10 = v21;
     if (v10)
     {
       v11 = v10;
-      v12 = os_log_create("com.apple.amp.itunescloudd", "Default");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      path = os_log_create("com.apple.amp.itunescloudd", "Default");
+      if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
         v23 = v11;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "CloudBadgeService: failed to serialize action metrics event - error=%{public}@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, path, OS_LOG_TYPE_ERROR, "CloudBadgeService: failed to serialize action metrics event - error=%{public}@", buf, 0xCu);
       }
 
       goto LABEL_15;
     }
 
-    v12 = [v8 path];
+    path = [v8 path];
     v20 = 0;
-    v13 = [v9 writeToFile:v12 options:1 error:&v20];
+    v13 = [v9 writeToFile:path options:1 error:&v20];
     v11 = v20;
     if (v13)
     {
@@ -115,7 +115,7 @@ LABEL_16:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v23 = v7;
+        v23 = identifierCopy;
         v15 = "CloudBadgeService: Stored %{public}@ badging action metrics event";
         v16 = v14;
         v17 = OS_LOG_TYPE_DEBUG;
@@ -165,16 +165,16 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)clearBadgeActionMetricsEventForIdentifier:(id)a3
+- (void)clearBadgeActionMetricsEventForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICDCloudBadgeService *)self badgeActionMetricsEventPathForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(ICDCloudBadgeService *)self badgeActionMetricsEventPathForIdentifier:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 path];
+    path = [v5 path];
     v8 = +[NSFileManager defaultManager];
-    v9 = [v8 fileExistsAtPath:v7];
+    v9 = [v8 fileExistsAtPath:path];
 
     if ((v9 & 1) == 0)
     {
@@ -190,7 +190,7 @@ LABEL_17:
 
     v10 = +[NSFileManager defaultManager];
     v19 = 0;
-    v11 = [v10 removeItemAtPath:v7 error:&v19];
+    v11 = [v10 removeItemAtPath:path error:&v19];
     v12 = v19;
 
     if (v11)
@@ -199,7 +199,7 @@ LABEL_17:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543362;
-        v21 = v4;
+        v21 = identifierCopy;
         v14 = "CloudBadgeService: Cleared %{public}@ badging action metrics event";
         v15 = v13;
         v16 = OS_LOG_TYPE_DEBUG;
@@ -218,7 +218,7 @@ LABEL_13:
         if (v17)
         {
           *buf = 138543618;
-          v21 = v4;
+          v21 = identifierCopy;
           v22 = 2114;
           v23 = v12;
           v14 = "CloudBadgeService: failed to clear stored %{public}@ action metrics event - error=%{public}@";
@@ -233,7 +233,7 @@ LABEL_14:
       else if (v17)
       {
         *buf = 138543362;
-        v21 = v4;
+        v21 = identifierCopy;
         v14 = "CloudBadgeService: failed to clear stored %{public}@ action metrics event without an error";
         v15 = v13;
         v16 = OS_LOG_TYPE_ERROR;
@@ -245,23 +245,23 @@ LABEL_16:
   }
 }
 
-- (void)enqueueMetricsEvent:(id)a3
+- (void)enqueueMetricsEvent:(id)event
 {
-  v7 = a3;
-  v4 = [(ICDCloudBadgeService *)self createBag];
-  v5 = [[AMSEngagement alloc] initWithBag:v4];
-  v6 = [v5 enqueueData:v7];
+  eventCopy = event;
+  createBag = [(ICDCloudBadgeService *)self createBag];
+  v5 = [[AMSEngagement alloc] initWithBag:createBag];
+  v6 = [v5 enqueueData:eventCopy];
 }
 
-- (id)badgeActionMetricsEventForIdentifier:(id)a3
+- (id)badgeActionMetricsEventForIdentifier:(id)identifier
 {
-  v3 = [(ICDCloudBadgeService *)self badgeActionMetricsEventPathForIdentifier:a3];
+  v3 = [(ICDCloudBadgeService *)self badgeActionMetricsEventPathForIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 path];
+    path = [v3 path];
     v14 = 0;
-    v6 = [[NSData alloc] initWithContentsOfFile:v5 options:0 error:&v14];
+    v6 = [[NSData alloc] initWithContentsOfFile:path options:0 error:&v14];
     v7 = v14;
     if (v6)
     {
@@ -306,11 +306,11 @@ LABEL_16:
 
   else
   {
-    v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    path = os_log_create("com.apple.amp.itunescloudd", "Default");
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "CloudBadgeService: Failed to generate badge action path", buf, 2u);
+      _os_log_impl(&_mh_execute_header, path, OS_LOG_TYPE_ERROR, "CloudBadgeService: Failed to generate badge action path", buf, 2u);
     }
 
     v11 = 0;
@@ -319,13 +319,13 @@ LABEL_16:
   return v11;
 }
 
-- (id)badgeActionMetricsEventPathForIdentifier:(id)a3
+- (id)badgeActionMetricsEventPathForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = MSVMobileHomeDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"Library/Caches/com.apple.iTunesCloud/"];
 
-  v6 = [v3 stringByAppendingString:@"_badging_action_metric_event.plist"];
+  v6 = [identifierCopy stringByAppendingString:@"_badging_action_metric_event.plist"];
 
   v7 = [v5 stringByAppendingPathComponent:v6];
   v8 = [NSURL fileURLWithPath:v7];

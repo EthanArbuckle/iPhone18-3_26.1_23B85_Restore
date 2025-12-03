@@ -1,13 +1,13 @@
 @interface WFSetOrientationLockAction
 - (NSArray)disabledOnPlatforms;
-- (WFSetOrientationLockAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5 schema:(id)a6 intent:(id)a7 resolvedIntentDescriptor:(id)a8 stringLocalizer:(id)a9;
+- (WFSetOrientationLockAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters schema:(id)schema intent:(id)intent resolvedIntentDescriptor:(id)descriptor stringLocalizer:(id)localizer;
 @end
 
 @implementation WFSetOrientationLockAction
 
 - (NSArray)disabledOnPlatforms
 {
-  v2 = self;
+  selfCopy = self;
   sub_23DEE18EC();
 
   type metadata accessor for WFExecutionPlatform(0);
@@ -16,22 +16,22 @@
   return v3;
 }
 
-- (WFSetOrientationLockAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5 schema:(id)a6 intent:(id)a7 resolvedIntentDescriptor:(id)a8 stringLocalizer:(id)a9
+- (WFSetOrientationLockAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters schema:(id)schema intent:(id)intent resolvedIntentDescriptor:(id)descriptor stringLocalizer:(id)localizer
 {
   v14 = sub_23E1FDC1C();
   v16 = v15;
-  if (a5)
+  if (parameters)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E32CB70, &qword_23E2236E0);
-    a5 = sub_23E1FDAAC();
+    parameters = sub_23E1FDAAC();
   }
 
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  return sub_23DEE19A8(v14, v16, a4, a5, a6, a7, v20, a9);
+  definitionCopy = definition;
+  schemaCopy = schema;
+  intentCopy = intent;
+  descriptorCopy = descriptor;
+  localizerCopy = localizer;
+  return sub_23DEE19A8(v14, v16, definition, parameters, schema, intent, descriptorCopy, localizer);
 }
 
 @end

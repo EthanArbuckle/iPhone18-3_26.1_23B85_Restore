@@ -1,112 +1,112 @@
 @interface FIUIWorkoutLapLengthIndexTranslator
-- (FIUIWorkoutLapLengthIndexTranslator)initWithDistanceUnit:(id)a3;
-- (double)valueForIndex:(int64_t)a3;
-- (double)valueTranslatedFromDistanceUnit:(double)a3;
-- (double)valueTranslatedIntoDistanceUnit:(double)a3;
-- (int64_t)indexForValue:(double)a3;
+- (FIUIWorkoutLapLengthIndexTranslator)initWithDistanceUnit:(id)unit;
+- (double)valueForIndex:(int64_t)index;
+- (double)valueTranslatedFromDistanceUnit:(double)unit;
+- (double)valueTranslatedIntoDistanceUnit:(double)unit;
+- (int64_t)indexForValue:(double)value;
 @end
 
 @implementation FIUIWorkoutLapLengthIndexTranslator
 
-- (FIUIWorkoutLapLengthIndexTranslator)initWithDistanceUnit:(id)a3
+- (FIUIWorkoutLapLengthIndexTranslator)initWithDistanceUnit:(id)unit
 {
-  v5 = a3;
+  unitCopy = unit;
   v9.receiver = self;
   v9.super_class = FIUIWorkoutLapLengthIndexTranslator;
   v6 = [(FIUIWorkoutLapLengthIndexTranslator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_distanceUnit, a3);
+    objc_storeStrong(&v6->_distanceUnit, unit);
   }
 
   return v7;
 }
 
-- (double)valueTranslatedIntoDistanceUnit:(double)a3
+- (double)valueTranslatedIntoDistanceUnit:(double)unit
 {
-  v5 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
-  v6 = [MEMORY[0x1E696C510] meterUnit];
-  v7 = [v5 isEqual:v6];
+  distanceUnit = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
+  meterUnit = [MEMORY[0x1E696C510] meterUnit];
+  v7 = [distanceUnit isEqual:meterUnit];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
-    v9 = [MEMORY[0x1E696C510] yardUnit];
-    v10 = [v8 isEqual:v9];
+    distanceUnit2 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
+    yardUnit = [MEMORY[0x1E696C510] yardUnit];
+    v10 = [distanceUnit2 isEqual:yardUnit];
 
     if (v10)
     {
-      return a3 * 0.9144;
+      return unit * 0.9144;
     }
 
     else
     {
       v11 = MEMORY[0x1E696C348];
-      v12 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
-      v13 = [v11 quantityWithUnit:v12 doubleValue:a3];
+      distanceUnit3 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
+      v13 = [v11 quantityWithUnit:distanceUnit3 doubleValue:unit];
 
-      v14 = [MEMORY[0x1E696C510] meterUnit];
-      [v13 doubleValueForUnit:v14];
-      a3 = v15;
+      meterUnit2 = [MEMORY[0x1E696C510] meterUnit];
+      [v13 doubleValueForUnit:meterUnit2];
+      unit = v15;
     }
   }
 
-  return a3;
+  return unit;
 }
 
-- (double)valueTranslatedFromDistanceUnit:(double)a3
+- (double)valueTranslatedFromDistanceUnit:(double)unit
 {
-  v5 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
-  v6 = [MEMORY[0x1E696C510] meterUnit];
-  v7 = [v5 isEqual:v6];
+  distanceUnit = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
+  meterUnit = [MEMORY[0x1E696C510] meterUnit];
+  v7 = [distanceUnit isEqual:meterUnit];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
-    v9 = [MEMORY[0x1E696C510] yardUnit];
-    v10 = [v8 isEqual:v9];
+    distanceUnit2 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
+    yardUnit = [MEMORY[0x1E696C510] yardUnit];
+    v10 = [distanceUnit2 isEqual:yardUnit];
 
     if (v10)
     {
-      return a3 / 0.9144;
+      return unit / 0.9144;
     }
 
     else
     {
       v11 = MEMORY[0x1E696C348];
-      v12 = [MEMORY[0x1E696C510] meterUnit];
-      v13 = [v11 quantityWithUnit:v12 doubleValue:a3];
+      meterUnit2 = [MEMORY[0x1E696C510] meterUnit];
+      v13 = [v11 quantityWithUnit:meterUnit2 doubleValue:unit];
 
-      v14 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
-      [v13 doubleValueForUnit:v14];
-      a3 = v15;
+      distanceUnit3 = [(FIUIWorkoutLapLengthIndexTranslator *)self distanceUnit];
+      [v13 doubleValueForUnit:distanceUnit3];
+      unit = v15;
     }
   }
 
-  return a3;
+  return unit;
 }
 
-- (double)valueForIndex:(int64_t)a3
+- (double)valueForIndex:(int64_t)index
 {
-  v3 = a3;
-  if (a3 > 34)
+  indexCopy = index;
+  if (index > 34)
   {
-    v3 = a3 + -1.0;
+    indexCopy = index + -1.0;
   }
 
-  if (a3 == 34)
+  if (index == 34)
   {
-    v3 = 33.3333333;
+    indexCopy = 33.3333333;
   }
 
-  [(FIUIWorkoutLapLengthIndexTranslator *)self valueTranslatedIntoDistanceUnit:v3];
+  [(FIUIWorkoutLapLengthIndexTranslator *)self valueTranslatedIntoDistanceUnit:indexCopy];
   return result;
 }
 
-- (int64_t)indexForValue:(double)a3
+- (int64_t)indexForValue:(double)value
 {
-  [(FIUIWorkoutLapLengthIndexTranslator *)self valueTranslatedFromDistanceUnit:a3];
+  [(FIUIWorkoutLapLengthIndexTranslator *)self valueTranslatedFromDistanceUnit:value];
   if (fabs(v3 + -33.3333333) < 0.01)
   {
     return 34;

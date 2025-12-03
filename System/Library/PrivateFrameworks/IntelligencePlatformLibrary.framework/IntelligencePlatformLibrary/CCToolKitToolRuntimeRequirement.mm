@@ -1,26 +1,26 @@
 @interface CCToolKitToolRuntimeRequirement
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimeRequirement)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimeRequirement)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRuntimeRequirement)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRuntimeRequirement)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)platform;
 - (CCToolKitToolRuntimeRequirementDeviceCapability)deviceCapability;
 - (CCToolKitToolRuntimeRequirementFeatureFlag)featureFlag;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRuntimeRequirement
 
-- (CCToolKitToolRuntimeRequirement)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRuntimeRequirement)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v26[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"platform"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     if (v9)
     {
       v26[0] = 0;
@@ -39,7 +39,7 @@ LABEL_30:
       v9 = v10;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"deviceCapability"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceCapability"];
     if (v12)
     {
       v25 = 0;
@@ -58,7 +58,7 @@ LABEL_29:
       v12 = v13;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"featureFlag"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"featureFlag"];
     if (v10)
     {
       v24 = 0;
@@ -77,7 +77,7 @@ LABEL_28:
       v10 = v15;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"deviceState"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"deviceState"];
     if (v9)
     {
       v17 = v9;
@@ -97,7 +97,7 @@ LABEL_28:
       v18 = 2;
     }
 
-    v23 = self;
+    selfCopy = self;
     if (v10)
     {
       v20 = v10;
@@ -114,8 +114,8 @@ LABEL_28:
       v15 = v21;
     }
 
-    self = v23;
-    v19 = [[CCToolKitToolRuntimeRequirement alloc] initWithKind:v15 kindType:v18 error:a4];
+    self = selfCopy;
+    v19 = [[CCToolKitToolRuntimeRequirement alloc] initWithKind:v15 kindType:v18 error:error];
     goto LABEL_28;
   }
 
@@ -137,9 +137,9 @@ LABEL_31:
       goto LABEL_12;
     }
 
-    v5 = [(CCToolKitToolRuntimeRequirement *)self platform];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"platform"];
+    platform = [(CCToolKitToolRuntimeRequirement *)self platform];
+    jsonDictionary = [platform jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"platform"];
 
     kindType = self->_kindType;
   }
@@ -151,9 +151,9 @@ LABEL_31:
       goto LABEL_12;
     }
 
-    v7 = [(CCToolKitToolRuntimeRequirement *)self deviceCapability];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"deviceCapability"];
+    deviceCapability = [(CCToolKitToolRuntimeRequirement *)self deviceCapability];
+    jsonDictionary2 = [deviceCapability jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"deviceCapability"];
 
     kindType = self->_kindType;
   }
@@ -165,9 +165,9 @@ LABEL_31:
       goto LABEL_12;
     }
 
-    v9 = [(CCToolKitToolRuntimeRequirement *)self featureFlag];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"featureFlag"];
+    featureFlag = [(CCToolKitToolRuntimeRequirement *)self featureFlag];
+    jsonDictionary3 = [featureFlag jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"featureFlag"];
 
     kindType = self->_kindType;
   }
@@ -184,11 +184,11 @@ LABEL_12:
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v13 = v5;
+  v13 = blockCopy;
   if (self->_platform)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_platform];
@@ -239,10 +239,10 @@ LABEL_12:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -512,11 +512,11 @@ LABEL_55:
   return v58;
 }
 
-- (CCToolKitToolRuntimeRequirement)initWithKind:(id)a3 kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolRuntimeRequirement)initWithKind:(id)kind kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  kindCopy = kind;
   v9 = objc_opt_new();
-  if (v8 && a4 == 1)
+  if (kindCopy && type == 1)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -528,11 +528,11 @@ LABEL_55:
 
 LABEL_14:
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  if (v8 && a4 == 2)
+  if (kindCopy && type == 2)
   {
     objc_opt_class();
     v12 = CCValidateIsInstanceOfExpectedClass();
@@ -545,10 +545,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v8 || a4 != 3)
+  if (!kindCopy || type != 3)
   {
     v11 = 0;
-    if (v8 && a4 == 4)
+    if (kindCopy && type == 4)
     {
       objc_opt_class();
       v18 = CCValidateIsInstanceOfExpectedClass();
@@ -556,12 +556,12 @@ LABEL_14:
       if (!v18)
       {
         CCSetError();
-        v16 = 0;
+        selfCopy = 0;
         v11 = v19;
         goto LABEL_15;
       }
 
-      [v8 unsignedIntegerValue];
+      [kindCopy unsignedIntegerValue];
       v20 = CCValidateEnumField();
       v11 = v19;
 
@@ -583,17 +583,17 @@ LABEL_14:
   }
 
 LABEL_12:
-  v14 = [v8 data];
+  data = [kindCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_13:
-  v15 = [v9 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v9 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

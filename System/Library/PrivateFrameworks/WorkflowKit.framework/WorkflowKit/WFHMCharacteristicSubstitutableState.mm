@@ -1,8 +1,8 @@
 @interface WFHMCharacteristicSubstitutableState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMCharacteristic)characteristic;
-- (WFHMCharacteristicSubstitutableState)initWithCharacteristic:(id)a3 homeIdentifier:(id)a4;
-- (WFHMCharacteristicSubstitutableState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
+- (WFHMCharacteristicSubstitutableState)initWithCharacteristic:(id)characteristic homeIdentifier:(id)identifier;
+- (WFHMCharacteristicSubstitutableState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (id)serializedRepresentation;
 - (unint64_t)hash;
 @end
@@ -12,20 +12,20 @@
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
-  v5 = [v3 combine:v4];
+  serializedCharacteristic = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
+  v5 = [v3 combine:serializedCharacteristic];
 
-  v6 = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
-  v7 = [v3 combine:v6];
+  homeIdentifier = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
+  v7 = [v3 combine:homeIdentifier];
 
   v8 = [v3 finalize];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -35,15 +35,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(WFHMCharacteristicSubstitutableState *)v6 serializedCharacteristic];
-      v8 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
-      if (v7 == v8 || (-[WFHMCharacteristicSubstitutableState serializedCharacteristic](v6, "serializedCharacteristic"), v3 = objc_claimAutoreleasedReturnValue(), -[WFHMCharacteristicSubstitutableState serializedCharacteristic](self, "serializedCharacteristic"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      serializedCharacteristic = [(WFHMCharacteristicSubstitutableState *)equalCopy serializedCharacteristic];
+      serializedCharacteristic2 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
+      if (serializedCharacteristic == serializedCharacteristic2 || (-[WFHMCharacteristicSubstitutableState serializedCharacteristic](equalCopy, "serializedCharacteristic"), v3 = objc_claimAutoreleasedReturnValue(), -[WFHMCharacteristicSubstitutableState serializedCharacteristic](self, "serializedCharacteristic"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v10 = [(WFHMCharacteristicSubstitutableState *)v6 homeIdentifier];
-        v11 = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
-        v9 = [v10 isEqualToString:v11];
+        homeIdentifier = [(WFHMCharacteristicSubstitutableState *)equalCopy homeIdentifier];
+        homeIdentifier2 = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
+        v9 = [homeIdentifier isEqualToString:homeIdentifier2];
 
-        if (v7 == v8)
+        if (serializedCharacteristic == serializedCharacteristic2)
         {
 LABEL_10:
 
@@ -76,14 +76,14 @@ LABEL_11:
   }
 
   v4 = +[WFHomeManager sharedManager];
-  v5 = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
-  v6 = [v4 homeWithIdentifier:v5];
+  homeIdentifier = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
+  v6 = [v4 homeWithIdentifier:homeIdentifier];
 
   if (v6)
   {
     HMCharacteristicClass = getHMCharacteristicClass();
-    v8 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
-    v9 = [(objc_class *)HMCharacteristicClass characteristicWithSerializedDictionaryRepresentation:v8 home:v6];
+    serializedCharacteristic = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
+    v9 = [(objc_class *)HMCharacteristicClass characteristicWithSerializedDictionaryRepresentation:serializedCharacteristic home:v6];
     v10 = self->_characteristic;
     self->_characteristic = v9;
 
@@ -102,29 +102,29 @@ LABEL_5:
 - (id)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
-  [v3 setObject:v4 forKeyedSubscript:@"HomeIdentifier"];
+  homeIdentifier = [(WFHMCharacteristicSubstitutableState *)self homeIdentifier];
+  [v3 setObject:homeIdentifier forKeyedSubscript:@"HomeIdentifier"];
 
-  v5 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
+  serializedCharacteristic = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
 
-  if (v5)
+  if (serializedCharacteristic)
   {
-    v6 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
-    [v3 setObject:v6 forKeyedSubscript:@"HomeCharacteristic"];
+    serializedCharacteristic2 = [(WFHMCharacteristicSubstitutableState *)self serializedCharacteristic];
+    [v3 setObject:serializedCharacteristic2 forKeyedSubscript:@"HomeCharacteristic"];
   }
 
   return v3;
 }
 
-- (WFHMCharacteristicSubstitutableState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFHMCharacteristicSubstitutableState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v6 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = WFHMCharacteristicSubstitutableState;
   v7 = [(WFHMCharacteristicSubstitutableState *)&v14 init];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = v6;
+    v8 = representationCopy;
     v9 = [v8 objectForKeyedSubscript:@"HomeIdentifier"];
     if (v9)
     {
@@ -150,14 +150,14 @@ LABEL_5:
   return v12;
 }
 
-- (WFHMCharacteristicSubstitutableState)initWithCharacteristic:(id)a3 homeIdentifier:(id)a4
+- (WFHMCharacteristicSubstitutableState)initWithCharacteristic:(id)characteristic homeIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  characteristicCopy = characteristic;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"WFHMCharacteristicSubstitutableState.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"homeIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHMCharacteristicSubstitutableState.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"homeIdentifier"}];
   }
 
   v17.receiver = self;
@@ -166,11 +166,11 @@ LABEL_5:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_homeIdentifier, a4);
-    objc_storeStrong(&v11->_characteristic, a3);
-    v12 = [v8 serializedDictionaryRepresentation];
+    objc_storeStrong(&v10->_homeIdentifier, identifier);
+    objc_storeStrong(&v11->_characteristic, characteristic);
+    serializedDictionaryRepresentation = [characteristicCopy serializedDictionaryRepresentation];
     serializedCharacteristic = v11->_serializedCharacteristic;
-    v11->_serializedCharacteristic = v12;
+    v11->_serializedCharacteristic = serializedDictionaryRepresentation;
 
     v14 = v11;
   }

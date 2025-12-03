@@ -1,33 +1,33 @@
 @interface EKDayOccurrenceView
-+ (CGRect)contentStretchRectForFrame:(CGRect)a3;
-+ (EKDayOccurrenceView)occurrenceViewWithFrame:(CGRect)a3;
++ (CGRect)contentStretchRectForFrame:(CGRect)frame;
++ (EKDayOccurrenceView)occurrenceViewWithFrame:(CGRect)frame;
 + (UIEdgeInsets)defaultMargin;
 + (UIEdgeInsets)defaultPadding;
 + (double)barToBarHorizontalDistanceIncludingBarWidth;
-+ (double)enoughHeightForOneLineForEvents:(id)a3 usingSmallText:(BOOL)a4 sizeClass:(int64_t)a5;
-+ (double)heightForAllDayOccurrenceForSizeClass:(int64_t)a3 usesSmallText:(BOOL)a4;
-+ (double)minNaturalTextHeightForEvent:(id)a3 usingSmallText:(BOOL)a4 sizeClass:(int64_t)a5;
-+ (double)minimumHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4;
-+ (double)minimumHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4 isAllDay:(BOOL)a5;
-+ (double)minimumHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4 isAllDay:(BOOL)a5 usesSmallText:(BOOL)a6;
++ (double)enoughHeightForOneLineForEvents:(id)events usingSmallText:(BOOL)text sizeClass:(int64_t)class;
++ (double)heightForAllDayOccurrenceForSizeClass:(int64_t)class usesSmallText:(BOOL)text;
++ (double)minNaturalTextHeightForEvent:(id)event usingSmallText:(BOOL)text sizeClass:(int64_t)class;
++ (double)minimumHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation;
++ (double)minimumHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation isAllDay:(BOOL)day;
++ (double)minimumHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation isAllDay:(BOOL)day usesSmallText:(BOOL)text;
 + (id)_viewCache;
-+ (id)viewForExternalDragOperationFromEvent:(id)a3 visiblePath:(id *)a4;
++ (id)viewForExternalDragOperationFromEvent:(id)event visiblePath:(id *)path;
 + (void)_clearViewCache;
 - (BOOL)_contentViewHasContent;
-- (BOOL)_isAboveAllDayOccurrenceView:(id)a3;
-- (BOOL)_isAboveOccurrenceView:(id)a3 overlapToIgnore:(double)a4;
-- (BOOL)_isBelowAllDayOccurrenceView:(id)a3;
-- (BOOL)_isBelowOccurrenceView:(id)a3 overlapToIgnore:(double)a4;
+- (BOOL)_isAboveAllDayOccurrenceView:(id)view;
+- (BOOL)_isAboveOccurrenceView:(id)view overlapToIgnore:(double)ignore;
+- (BOOL)_isBelowAllDayOccurrenceView:(id)view;
+- (BOOL)_isBelowOccurrenceView:(id)view overlapToIgnore:(double)ignore;
 - (BOOL)_shouldActuallyAnnotateAppEntities;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)pointInsideReminderCheckbox:(CGPoint)a3;
-- (BOOL)resetContentViewToOriginalState:(BOOL)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)pointInsideReminderCheckbox:(CGPoint)checkbox;
+- (BOOL)resetContentViewToOriginalState:(BOOL)state;
 - (CGRect)_frameForText;
-- (CGRect)_frameMutatedForProximityToHourLine:(CGRect)a3;
+- (CGRect)_frameMutatedForProximityToHourLine:(CGRect)line;
 - (CGRect)frameOfOpaqueContent;
 - (CGSize)_contentViewContentSize;
 - (EKCalendarDate)occurrenceDate;
-- (EKDayOccurrenceView)initWithFrame:(CGRect)a3;
+- (EKDayOccurrenceView)initWithFrame:(CGRect)frame;
 - (EKDayOccurrenceView)selectedCopy;
 - (EKDayOccurrenceViewDelegate)delegate;
 - (NSString)description;
@@ -38,16 +38,16 @@
 - (double)viewMaxNaturalTextHeight;
 - (id)_newResizeHandleView;
 - (id)arrayOfResizeHandles;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (int)dragTypeFromPoint:(CGPoint)a3;
-- (int64_t)_compareOccurrenceViewForSelectedCopyOrdering:(id)a3;
-- (int64_t)_compareOccurrenceViewLeftToRight:(id)a3;
-- (int64_t)_compareOccurrenceViewTopToBottom:(id)a3;
-- (int64_t)_compareOccurrenceViewTopToBottomLeftToRight:(id)a3;
-- (int64_t)compareOccurrenceViewForTabOrdering:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (int)dragTypeFromPoint:(CGPoint)point;
+- (int64_t)_compareOccurrenceViewForSelectedCopyOrdering:(id)ordering;
+- (int64_t)_compareOccurrenceViewLeftToRight:(id)right;
+- (int64_t)_compareOccurrenceViewTopToBottom:(id)bottom;
+- (int64_t)_compareOccurrenceViewTopToBottomLeftToRight:(id)right;
+- (int64_t)compareOccurrenceViewForTabOrdering:(id)ordering;
 - (int64_t)horizontalSizeClass;
 - (int64_t)userInterfaceStyle;
 - (void)_addEditMenuInteractionIfNeeded;
@@ -59,61 +59,61 @@
 - (void)_removeEditMenuInteractionIfNeeded;
 - (void)_removeTravelTimeSubviews;
 - (void)_resetContentViewPosition;
-- (void)_setEditingMenuEnabled:(BOOL)a3;
+- (void)_setEditingMenuEnabled:(BOOL)enabled;
 - (void)_setUpInteractions;
 - (void)_updateAppEntityAnnotationIfNeeded;
 - (void)_updateAppEntityAnnotationState;
 - (void)_updateColors;
 - (void)_updateContentImageViewIfNeeded;
-- (void)_updateContentWithPayload:(id)a3;
+- (void)_updateContentWithPayload:(id)payload;
 - (void)_updateCornerRadius;
 - (void)_updateResizeHandleLocations;
-- (void)animateToFrame:(CGRect)a3 isAllDay:(BOOL)a4 beginFromCurrentState:(BOOL)a5 whenFinished:(id)a6;
+- (void)animateToFrame:(CGRect)frame isAllDay:(BOOL)day beginFromCurrentState:(BOOL)state whenFinished:(id)finished;
 - (void)bringResizeHandlesToFront;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)dismissEditingMenu;
-- (void)displayLayer:(id)a3;
-- (void)fadeInContentViewAt:(double)a3 minWidth:(double)a4 animated:(BOOL)a5;
+- (void)displayLayer:(id)layer;
+- (void)fadeInContentViewAt:(double)at minWidth:(double)width animated:(BOOL)animated;
 - (void)forceUpdateColors;
-- (void)forceUpdateContentWithPayload:(id)a3;
+- (void)forceUpdateContentWithPayload:(id)payload;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)presentEditingMenuFromGestureController:(id)a3;
+- (void)presentEditingMenuFromGestureController:(id)controller;
 - (void)removeFromSuperview;
-- (void)requestContent:(unint64_t)a3 completion:(id)a4;
-- (void)requestContentIfNeeded:(unint64_t)a3 completion:(id)a4;
-- (void)setAllDay:(BOOL)a3;
-- (void)setAllDayDrawingStyle:(BOOL)a3 animated:(BOOL)a4;
-- (void)setBottomPinningProximity:(double)a3;
-- (void)setDeclined:(BOOL)a3;
-- (void)setDimmed:(BOOL)a3;
-- (void)setDrawsResizeHandles:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHideText:(BOOL)a3 animate:(BOOL)a4;
-- (void)setIsProposedTime:(BOOL)a3;
-- (void)setIsReminder:(BOOL)a3;
-- (void)setMargin:(UIEdgeInsets)a3;
-- (void)setNeedsReply:(BOOL)a3;
-- (void)setOccurrence:(id)a3;
-- (void)setOccurrences:(id)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setPointerInteractionDisabled:(BOOL)a3;
-- (void)setReduceLayoutProcessingForAnimation:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldAnnotateAppEntities:(BOOL)a3;
-- (void)setShowsTravelTime:(BOOL)a3;
-- (void)setTentative:(BOOL)a3;
-- (void)setTopPinningProximity:(double)a3;
-- (void)setTravelTime:(double)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setVisibleHeight:(double)a3;
-- (void)setupWithOccurrence:(id)a3;
+- (void)requestContent:(unint64_t)content completion:(id)completion;
+- (void)requestContentIfNeeded:(unint64_t)needed completion:(id)completion;
+- (void)setAllDay:(BOOL)day;
+- (void)setAllDayDrawingStyle:(BOOL)style animated:(BOOL)animated;
+- (void)setBottomPinningProximity:(double)proximity;
+- (void)setDeclined:(BOOL)declined;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setDrawsResizeHandles:(BOOL)handles;
+- (void)setFrame:(CGRect)frame;
+- (void)setHideText:(BOOL)text animate:(BOOL)animate;
+- (void)setIsProposedTime:(BOOL)time;
+- (void)setIsReminder:(BOOL)reminder;
+- (void)setMargin:(UIEdgeInsets)margin;
+- (void)setNeedsReply:(BOOL)reply;
+- (void)setOccurrence:(id)occurrence;
+- (void)setOccurrences:(id)occurrences;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setPointerInteractionDisabled:(BOOL)disabled;
+- (void)setReduceLayoutProcessingForAnimation:(BOOL)animation;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldAnnotateAppEntities:(BOOL)entities;
+- (void)setShowsTravelTime:(BOOL)time;
+- (void)setTentative:(BOOL)tentative;
+- (void)setTopPinningProximity:(double)proximity;
+- (void)setTravelTime:(double)time;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setVisibleHeight:(double)height;
+- (void)setupWithOccurrence:(id)occurrence;
 - (void)synchronouslyRenderContentOnNextDisplay;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateAlpha;
 @end
 
@@ -166,9 +166,9 @@
 {
   if (CalendarLinkLibraryCore() && (*(self + 480) & 0x10) != 0)
   {
-    v3 = [(EKDayOccurrenceView *)self isSelected];
+    isSelected = [(EKDayOccurrenceView *)self isSelected];
 
-    [(EKDayOccurrenceView *)self Cal_updateEntityAnnotationStateIsSelected:v3 isHighlighted:0 isFocused:0 isDisabled:0 isEditing:0 isPrimary:0];
+    [(EKDayOccurrenceView *)self Cal_updateEntityAnnotationStateIsSelected:isSelected isHighlighted:0 isFocused:0 isDisabled:0 isEditing:0 isPrimary:0];
   }
 }
 
@@ -250,10 +250,10 @@ LABEL_14:
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(EKDayOccurrenceView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(EKDayOccurrenceView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v3;
+  return userInterfaceStyle;
 }
 
 + (id)_viewCache
@@ -273,10 +273,10 @@ LABEL_14:
 
 - (int64_t)horizontalSizeClass
 {
-  v2 = [(EKDayOccurrenceView *)self traitCollection];
-  v3 = [v2 horizontalSizeClass];
+  traitCollection = [(EKDayOccurrenceView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v3;
+  return horizontalSizeClass;
 }
 
 - (EKDayOccurrenceView)selectedCopy
@@ -288,10 +288,10 @@ LABEL_14:
 
 - (void)_updateColors
 {
-  v3 = [(EKDayOccurrenceView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v3];
+  traitCollection = [(EKDayOccurrenceView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:traitCollection];
 
-  v44 = [(EKDayOccurrenceView *)self currentImageState];
+  currentImageState = [(EKDayOccurrenceView *)self currentImageState];
   if (![(EKDayOccurrenceView *)self _isTimedOccurrenceDrawingStyle])
   {
     if (_updateColors_onceToken != -1)
@@ -300,9 +300,9 @@ LABEL_14:
     }
 
     v11 = self->_selected && !self->_dimmed;
-    v12 = [v44 userInterfaceStyle];
+    userInterfaceStyle = [currentImageState userInterfaceStyle];
     v13 = @"dark";
-    if (v12 == 1)
+    if (userInterfaceStyle == 1)
     {
       v13 = @"light";
     }
@@ -344,40 +344,40 @@ LABEL_14:
       v7 = v19;
     }
 
-    v9 = [v44 displayColor];
+    displayColor = [currentImageState displayColor];
 
-    if (v9)
+    if (displayColor)
     {
       v20 = _updateColors___backgroundColorCache;
-      v21 = [v44 displayColor];
-      v9 = [v20 objectForKeyedSubscript:v21];
+      displayColor2 = [currentImageState displayColor];
+      displayColor = [v20 objectForKeyedSubscript:displayColor2];
 
-      if (!v9)
+      if (!displayColor)
       {
-        v9 = objc_opt_new();
+        displayColor = objc_opt_new();
         v22 = _updateColors___backgroundColorCache;
-        v23 = [v44 displayColor];
-        [v22 setObject:v9 forKeyedSubscript:v23];
+        displayColor3 = [currentImageState displayColor];
+        [v22 setObject:displayColor forKeyedSubscript:displayColor3];
       }
     }
 
-    v24 = [v9 objectForKeyedSubscript:v7];
+    v24 = [displayColor objectForKeyedSubscript:v7];
     if (v24)
     {
       goto LABEL_53;
     }
 
-    v25 = [v44 baseColor];
+    baseColor = [currentImageState baseColor];
     if (self->_isReminder)
     {
-      v26 = [MEMORY[0x1E6993440] reminderBackgroundColor:v11 style:v12 miniPreview:self->_isMiniPreviewInEventDetail completed:self->_isCompleted darkenForAllDayArea:1];
+      v26 = [MEMORY[0x1E6993440] reminderBackgroundColor:v11 style:userInterfaceStyle miniPreview:self->_isMiniPreviewInEventDetail completed:self->_isCompleted darkenForAllDayArea:1];
 LABEL_50:
       v34 = v26;
 LABEL_51:
       v34 = v34;
       v24 = v34;
 LABEL_52:
-      [v9 setObject:v24 forKeyedSubscript:v7];
+      [displayColor setObject:v24 forKeyedSubscript:v7];
 
 LABEL_53:
       if (([(UIColor *)self->_stagedBackgroundColor isEqual:v24]& 1) == 0)
@@ -408,11 +408,11 @@ LABEL_53:
 
         if (!self->_tentative)
         {
-          v26 = [v25 colorWithAlphaComponent:*MEMORY[0x1E6993350]];
+          v26 = [baseColor colorWithAlphaComponent:*MEMORY[0x1E6993350]];
           goto LABEL_50;
         }
 
-        v34 = [v25 colorWithAlphaComponent:1.0];
+        v34 = [baseColor colorWithAlphaComponent:1.0];
         v35 = MEMORY[0x1E6993350];
         v36 = CUIKSelectedTentativeStripeColor();
       }
@@ -435,7 +435,7 @@ LABEL_53:
         }
 
         v37 = CUIKLightStripeColorForColor();
-        if (v12 != 1)
+        if (userInterfaceStyle != 1)
         {
           v41 = CUIKColorDarkenedToPercentageWithFinalAlpha();
 
@@ -479,20 +479,20 @@ LABEL_64:
     goto LABEL_56;
   }
 
-  v4 = [(EKDayOccurrenceView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection2 = [(EKDayOccurrenceView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-  v6 = [v44 displayColor];
+  displayColor4 = [currentImageState displayColor];
   v7 = CUIKColorBarColor();
 
-  v8 = [v44 displayColor];
-  v43 = v5;
+  displayColor5 = [currentImageState displayColor];
+  v43 = userInterfaceStyle2;
   LOBYTE(v42) = self->_birthday;
-  v9 = CUIKOccurrenceSecondaryTextColor();
+  displayColor = CUIKOccurrenceSecondaryTextColor();
 
   if (self->_selected)
   {
-    v10 = v9;
+    v10 = displayColor;
   }
 
   else
@@ -501,16 +501,16 @@ LABEL_64:
   }
 
   v24 = v10;
-  v27 = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView colorBarColor];
-  v28 = [v27 isEqual:v7];
+  colorBarColor = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView colorBarColor];
+  v28 = [colorBarColor isEqual:v7];
 
   if ((v28 & 1) == 0)
   {
     [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView setColorBarColor:v7];
   }
 
-  v29 = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView lineColor];
-  v30 = [v29 isEqual:v24];
+  lineColor = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView lineColor];
+  v30 = [lineColor isEqual:v24];
 
   if (v30)
   {
@@ -523,8 +523,8 @@ LABEL_64:
     v31 = 1;
   }
 
-  v32 = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView elementColor];
-  v33 = [v32 isEqual:v9];
+  elementColor = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView elementColor];
+  v33 = [elementColor isEqual:displayColor];
 
   if (v33)
   {
@@ -536,7 +536,7 @@ LABEL_64:
 
   else
   {
-    [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView setElementColor:v9];
+    [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView setElementColor:displayColor];
   }
 
   [(EKDayOccurrenceView *)self _invalidateTravelTimeImage];
@@ -633,8 +633,8 @@ LABEL_56:
 
 - (void)_addEditMenuInteractionIfNeeded
 {
-  v3 = [(EKDayOccurrenceView *)self interactions];
-  v4 = [v3 containsObject:self->_editMenuInteraction];
+  interactions = [(EKDayOccurrenceView *)self interactions];
+  v4 = [interactions containsObject:self->_editMenuInteraction];
 
   if ((v4 & 1) == 0)
   {
@@ -668,8 +668,8 @@ LABEL_56:
   }
 
   [(EKDayOccurrenceView *)self setContentMode:0];
-  v4 = [(EKDayOccurrenceView *)self layer];
-  [v4 setShadowOpacity:0.0];
+  layer = [(EKDayOccurrenceView *)self layer];
+  [layer setShadowOpacity:0.0];
 
   [(EKDayOccurrenceView *)self setCappedColorBarHeight:-1.0];
   [objc_opt_class() defaultMargin];
@@ -694,11 +694,11 @@ LABEL_56:
   stagedBackgroundColor = self->_stagedBackgroundColor;
   self->_stagedBackgroundColor = 0;
 
-  v6 = [(UIImageView *)self->_eventBackgroundView layer];
-  [v6 setMasksToBounds:1];
+  layer2 = [(UIImageView *)self->_eventBackgroundView layer];
+  [layer2 setMasksToBounds:1];
 
-  v7 = [(EKDayOccurrenceView *)self layer];
-  [v7 setMasksToBounds:0];
+  layer3 = [(EKDayOccurrenceView *)self layer];
+  [layer3 setMasksToBounds:0];
 
   v8 = [objc_alloc(MEMORY[0x1E6993428]) initWithState:self];
   [(EKDayOccurrenceView *)self setCurrentImageState:v8];
@@ -772,8 +772,8 @@ LABEL_10:
 - (CGRect)_frameForText
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [(EKDayOccurrenceView *)self currentImageState];
-  [v3 estimatedTextFrame];
+  currentImageState = [(EKDayOccurrenceView *)self currentImageState];
+  [currentImageState estimatedTextFrame];
   x = v4;
   y = v6;
   v9 = v8;
@@ -806,8 +806,8 @@ LABEL_10:
       {
         [(EKDayOccurrenceView *)self _contentViewContentSize];
         v16 = v15;
-        v17 = [(EKDayOccurrenceView *)self occurrences];
-        v18 = [v17 count];
+        occurrences = [(EKDayOccurrenceView *)self occurrences];
+        v18 = [occurrences count];
 
         v19 = 3;
         if (v18 < 3)
@@ -821,7 +821,7 @@ LABEL_10:
           if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
           {
             v41 = 138412290;
-            v42 = self;
+            selfCopy = self;
             _os_log_impl(&dword_1D3400000, v20, OS_LOG_TYPE_ERROR, "Stack height is 0, implying that occurrence view is visible without associated occurrence. View = %@\n", &v41, 0xCu);
           }
 
@@ -829,9 +829,9 @@ LABEL_10:
           if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
           {
             v22 = v21;
-            v23 = [(EKDayOccurrenceView *)self occurrence];
+            occurrence = [(EKDayOccurrenceView *)self occurrence];
             v41 = 138412290;
-            v42 = v23;
+            selfCopy = occurrence;
             _os_log_impl(&dword_1D3400000, v22, OS_LOG_TYPE_ERROR, "    View->occurrence = %@\n", &v41, 0xCu);
           }
 
@@ -839,9 +839,9 @@ LABEL_10:
           if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
           {
             v25 = v24;
-            v26 = [(EKDayOccurrenceView *)self occurrences];
+            occurrences2 = [(EKDayOccurrenceView *)self occurrences];
             v41 = 138412290;
-            v42 = v26;
+            selfCopy = occurrences2;
             _os_log_impl(&dword_1D3400000, v25, OS_LOG_TYPE_ERROR, "    View->occurrenceArray = %@\n", &v41, 0xCu);
           }
 
@@ -849,11 +849,11 @@ LABEL_10:
           if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
           {
             v28 = v27;
-            v29 = [(EKDayOccurrenceView *)self occurrence];
-            v30 = [v29 recurrenceIdentifier];
-            v31 = [v30 identifierString];
+            occurrence2 = [(EKDayOccurrenceView *)self occurrence];
+            recurrenceIdentifier = [occurrence2 recurrenceIdentifier];
+            identifierString = [recurrenceIdentifier identifierString];
             v41 = 138543362;
-            v42 = v31;
+            selfCopy = identifierString;
             _os_log_impl(&dword_1D3400000, v28, OS_LOG_TYPE_ERROR, "    recurrence ID: %{public}@", &v41, 0xCu);
           }
 
@@ -873,13 +873,13 @@ LABEL_10:
           if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
           {
             v35 = v34;
-            v36 = [(EKDayOccurrenceView *)self occurrence];
+            occurrence3 = [(EKDayOccurrenceView *)self occurrence];
             v41 = 134218498;
-            v42 = *&y;
+            selfCopy = *&y;
             v43 = 2048;
             v44 = height;
             v45 = 2112;
-            v46 = v36;
+            v46 = occurrence3;
             _os_log_impl(&dword_1D3400000, v35, OS_LOG_TYPE_DEBUG, "Origin value is negative: %f, Background height: %f, Occurence: %@", &v41, 0x20u);
           }
         }
@@ -905,16 +905,16 @@ LABEL_10:
 
 - (BOOL)_contentViewHasContent
 {
-  v2 = [(UIImageView *)self->_contentView image];
-  v3 = v2 != 0;
+  image = [(UIImageView *)self->_contentView image];
+  v3 = image != 0;
 
   return v3;
 }
 
 - (CGSize)_contentViewContentSize
 {
-  v2 = [(UIImageView *)self->_contentView image];
-  [v2 size];
+  image = [(UIImageView *)self->_contentView image];
+  [image size];
   v4 = v3;
   v6 = v5;
 
@@ -927,20 +927,20 @@ LABEL_10:
 
 - (void)_updateCornerRadius
 {
-  v3 = [(EKDayOccurrenceView *)self isAllDay];
-  v4 = [(EKDayOccurrenceView *)self hasPrecedingDuration];
-  v5 = v4;
-  if (v3)
+  isAllDay = [(EKDayOccurrenceView *)self isAllDay];
+  hasPrecedingDuration = [(EKDayOccurrenceView *)self hasPrecedingDuration];
+  v5 = hasPrecedingDuration;
+  if (isAllDay)
   {
-    v6 = !v4 || [(EKDayOccurrenceView *)self multiAllDayRoundCorners];
+    v6 = !hasPrecedingDuration || [(EKDayOccurrenceView *)self multiAllDayRoundCorners];
     if ([(EKDayOccurrenceView *)self hasTrailingDuration])
     {
-      v16 = [(EKDayOccurrenceView *)self multiAllDayRoundCorners];
+      multiAllDayRoundCorners = [(EKDayOccurrenceView *)self multiAllDayRoundCorners];
     }
 
     else
     {
-      v16 = 1;
+      multiAllDayRoundCorners = 1;
     }
 
     IsLeftToRight = CalTimeDirectionIsLeftToRight();
@@ -970,7 +970,7 @@ LABEL_10:
       v20 = 0;
     }
 
-    if (v16)
+    if (multiAllDayRoundCorners)
     {
       v21 = v18;
     }
@@ -980,37 +980,37 @@ LABEL_10:
       v21 = 0;
     }
 
-    v22 = [(EKDayOccurrenceView *)self layer];
-    [v22 setMasksToBounds:1];
+    layer = [(EKDayOccurrenceView *)self layer];
+    [layer setMasksToBounds:1];
 
-    v23 = [(EKDayOccurrenceView *)self layer];
-    [v23 setMaskedCorners:v20 | v21];
+    layer2 = [(EKDayOccurrenceView *)self layer];
+    [layer2 setMaskedCorners:v20 | v21];
 
     [(EKDayOccurrenceView *)self bounds];
     v25 = v24 * 0.5;
-    v26 = [(EKDayOccurrenceView *)self layer];
-    [v26 setCornerRadius:v25];
+    layer3 = [(EKDayOccurrenceView *)self layer];
+    [layer3 setCornerRadius:v25];
 
-    v27 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v27 setMaskedCorners:v20 | v21];
+    layer4 = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer4 setMaskedCorners:v20 | v21];
 
     [(EKDayOccurrenceView *)self bounds];
     v29 = v28 * 0.5;
-    v15 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v15 setCornerRadius:v29];
+    layer5 = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer5 setCornerRadius:v29];
   }
 
   else
   {
-    v7 = [(EKDayOccurrenceView *)self hasTrailingDuration];
-    v8 = [(EKDayOccurrenceView *)self showsTravelTime];
+    hasTrailingDuration = [(EKDayOccurrenceView *)self hasTrailingDuration];
+    showsTravelTime = [(EKDayOccurrenceView *)self showsTravelTime];
     v9 = 3;
-    if (v8 || v5)
+    if (showsTravelTime || v5)
     {
       v9 = 0;
     }
 
-    if (v7)
+    if (hasTrailingDuration)
     {
       v10 = v9;
     }
@@ -1020,20 +1020,20 @@ LABEL_10:
       v10 = v9 | 0xC;
     }
 
-    v11 = [(EKDayOccurrenceView *)self layer];
-    [v11 setMaskedCorners:v10];
+    layer6 = [(EKDayOccurrenceView *)self layer];
+    [layer6 setMaskedCorners:v10];
 
-    v12 = [(EKDayOccurrenceView *)self layer];
-    [v12 setCornerRadius:4.0];
+    layer7 = [(EKDayOccurrenceView *)self layer];
+    [layer7 setCornerRadius:4.0];
 
-    v13 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v13 setMaskedCorners:v10];
+    layer8 = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer8 setMaskedCorners:v10];
 
-    v14 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v14 setCornerRadius:4.0];
+    layer9 = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer9 setCornerRadius:4.0];
 
-    v15 = [(EKDayOccurrenceView *)self layer];
-    [v15 setMasksToBounds:0];
+    layer5 = [(EKDayOccurrenceView *)self layer];
+    [layer5 setMasksToBounds:0];
   }
 
   [(EKDayOccurrenceView *)self setNeedsDisplay];
@@ -1043,8 +1043,8 @@ LABEL_10:
 {
   if ((self->_currentRequestId & 0x8000000000000000) == 0)
   {
-    v3 = [MEMORY[0x1E6993430] sharedProvider];
-    [v3 cancelRequest:self->_currentRequestId];
+    mEMORY[0x1E6993430] = [MEMORY[0x1E6993430] sharedProvider];
+    [mEMORY[0x1E6993430] cancelRequest:self->_currentRequestId];
 
     self->_currentRequestId = -1;
   }
@@ -1057,8 +1057,8 @@ LABEL_10:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(EKDayOccurrenceView *)self arrayOfResizeHandles];
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  arrayOfResizeHandles = [(EKDayOccurrenceView *)self arrayOfResizeHandles];
+  v4 = [arrayOfResizeHandles countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1070,29 +1070,29 @@ LABEL_10:
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayOfResizeHandles);
         }
 
         v8 = *(*(&v29 + 1) + 8 * v7);
-        v9 = [(EKDayOccurrenceView *)self superview];
+        superview = [(EKDayOccurrenceView *)self superview];
 
-        if (v9)
+        if (superview)
         {
-          v10 = [v8 superview];
+          superview2 = [v8 superview];
           [v8 frame];
           v12 = v11;
           v14 = v13;
           v16 = v15;
           v18 = v17;
-          v19 = [(EKDayOccurrenceView *)self superview];
-          [v10 convertRect:v19 toView:{v12, v14, v16, v18}];
+          superview3 = [(EKDayOccurrenceView *)self superview];
+          [superview2 convertRect:superview3 toView:{v12, v14, v16, v18}];
           v21 = v20;
           v23 = v22;
           v25 = v24;
           v27 = v26;
 
-          v28 = [(EKDayOccurrenceView *)self superview];
-          [v28 insertSubview:v8 aboveSubview:self];
+          superview4 = [(EKDayOccurrenceView *)self superview];
+          [superview4 insertSubview:v8 aboveSubview:self];
 
           [v8 setFrame:{v21, v23, v25, v27}];
         }
@@ -1106,7 +1106,7 @@ LABEL_10:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v5 = [arrayOfResizeHandles countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v5);
@@ -1159,21 +1159,21 @@ LABEL_10:
 
 + (void)_clearViewCache
 {
-  v2 = [a1 _viewCache];
-  [v2 removeAllObjects];
+  _viewCache = [self _viewCache];
+  [_viewCache removeAllObjects];
 }
 
-+ (EKDayOccurrenceView)occurrenceViewWithFrame:(CGRect)a3
++ (EKDayOccurrenceView)occurrenceViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [a1 _viewCache];
-  if ([v8 count])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _viewCache = [self _viewCache];
+  if ([_viewCache count])
   {
-    v9 = [v8 objectAtIndex:0];
-    [v8 removeObjectAtIndex:0];
+    v9 = [_viewCache objectAtIndex:0];
+    [_viewCache removeObjectAtIndex:0];
     v12.origin.x = x;
     v12.origin.y = y;
     v12.size.width = width;
@@ -1186,7 +1186,7 @@ LABEL_10:
 
   else
   {
-    v9 = [[a1 alloc] initWithFrame:{x, y, width, height}];
+    v9 = [[self alloc] initWithFrame:{x, y, width, height}];
   }
 
   [v9 prepareForReuse];
@@ -1194,16 +1194,16 @@ LABEL_10:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(EKDayOccurrenceView *)self frame];
   v5 = [v4 initWithFrame:?];
-  v6 = [(EKDayOccurrenceView *)self delegate];
-  [v5 setDelegate:v6];
+  delegate = [(EKDayOccurrenceView *)self delegate];
+  [v5 setDelegate:delegate];
 
-  v7 = [(EKDayOccurrenceView *)self occurrences];
-  [v5 setOccurrences:v7];
+  occurrences = [(EKDayOccurrenceView *)self occurrences];
+  [v5 setOccurrences:occurrences];
 
   [v5 setOccurrenceDateIndex:{-[EKDayOccurrenceView occurrenceDateIndex](self, "occurrenceDateIndex")}];
   [v5 setDimmed:{-[EKDayOccurrenceView dimmed](self, "dimmed")}];
@@ -1235,8 +1235,8 @@ LABEL_10:
   [v5 setTravelTimeSubviewHeightInPoints:?];
   [v5 setRoutingMode:{-[EKDayOccurrenceView routingMode](self, "routingMode")}];
   [v5 setIsSelectedCopyView:{-[EKDayOccurrenceView isSelectedCopyView](self, "isSelectedCopyView")}];
-  v8 = [(EKDayOccurrenceView *)self selectedCopy];
-  [v5 setSelectedCopy:v8];
+  selectedCopy = [(EKDayOccurrenceView *)self selectedCopy];
+  [v5 setSelectedCopy:selectedCopy];
 
   [v5 setHasPrecedingDuration:{-[EKDayOccurrenceView hasPrecedingDuration](self, "hasPrecedingDuration")}];
   [v5 setHasTrailingDuration:{-[EKDayOccurrenceView hasTrailingDuration](self, "hasTrailingDuration")}];
@@ -1244,26 +1244,26 @@ LABEL_10:
   return v5;
 }
 
-+ (double)minimumHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4
++ (double)minimumHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
   v6 = objc_opt_class();
 
-  [v6 minimumHeightForSizeClass:a3 orientation:a4 isAllDay:0];
+  [v6 minimumHeightForSizeClass:class orientation:orientation isAllDay:0];
   return result;
 }
 
-+ (double)minimumHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4 isAllDay:(BOOL)a5
++ (double)minimumHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation isAllDay:(BOOL)day
 {
-  v5 = a5;
+  dayCopy = day;
   v8 = objc_opt_class();
 
-  [v8 minimumHeightForSizeClass:a3 orientation:a4 isAllDay:v5 usesSmallText:0];
+  [v8 minimumHeightForSizeClass:class orientation:orientation isAllDay:dayCopy usesSmallText:0];
   return result;
 }
 
-+ (double)heightForAllDayOccurrenceForSizeClass:(int64_t)a3 usesSmallText:(BOOL)a4
++ (double)heightForAllDayOccurrenceForSizeClass:(int64_t)class usesSmallText:(BOOL)text
 {
-  if (a3 == 2)
+  if (class == 2)
   {
     v6 = 22.0;
   }
@@ -1273,20 +1273,20 @@ LABEL_10:
     v6 = 17.0;
   }
 
-  if (a3 != 2 && !a4)
+  if (class != 2 && !text)
   {
     CalRoundToScreenScale(23.5);
     v6 = v7;
   }
 
-  if (a4)
+  if (text)
   {
-    [MEMORY[0x1E6993418] defaultOccurrenceSmallPrimaryTextFontForSizeClass:a3];
+    [MEMORY[0x1E6993418] defaultOccurrenceSmallPrimaryTextFontForSizeClass:class];
   }
 
   else
   {
-    [MEMORY[0x1E6993418] defaultOccurrencePrimaryTextFontForSizeClass:a3];
+    [MEMORY[0x1E6993418] defaultOccurrencePrimaryTextFontForSizeClass:class];
   }
   v8 = ;
   [v8 lineHeight];
@@ -1301,17 +1301,17 @@ LABEL_10:
   return v6;
 }
 
-+ (double)minimumHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4 isAllDay:(BOOL)a5 usesSmallText:(BOOL)a6
++ (double)minimumHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation isAllDay:(BOOL)day usesSmallText:(BOOL)text
 {
-  if (a5)
+  if (day)
   {
 
-    [a1 heightForAllDayOccurrenceForSizeClass:a3 usesSmallText:a6];
+    [self heightForAllDayOccurrenceForSizeClass:class usesSmallText:text];
   }
 
   else
   {
-    [EKDayTimeView hourHeightForSizeClass:a3 orientation:a4, a5, a6];
+    [EKDayTimeView hourHeightForSizeClass:class orientation:orientation, day, text];
     v9 = round(v8 * 0.5);
     +[EKDayOccurrenceView bottomShadowMargin];
     return v9 + v10;
@@ -1320,10 +1320,10 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)contentStretchRectForFrame:(CGRect)a3
++ (CGRect)contentStretchRectForFrame:(CGRect)frame
 {
-  v3 = 2.0 / a3.size.height;
-  v4 = (a3.size.height + -4.0) / a3.size.height;
+  v3 = 2.0 / frame.size.height;
+  v4 = (frame.size.height + -4.0) / frame.size.height;
   v5 = 0.0;
   v6 = 1.0;
   result.size.height = v4;
@@ -1333,46 +1333,46 @@ LABEL_10:
   return result;
 }
 
-+ (id)viewForExternalDragOperationFromEvent:(id)a3 visiblePath:(id *)a4
++ (id)viewForExternalDragOperationFromEvent:(id)event visiblePath:(id *)path
 {
-  v5 = a3;
-  if ([v5 isReminderIntegrationEvent])
+  eventCopy = event;
+  if ([eventCopy isReminderIntegrationEvent])
   {
     v6 = EKUIListViewReminderCell;
 LABEL_5:
-    v7 = [[v6 alloc] initForDragPreview];
-    [v7 updateWithEvent:v5 dimmed:0];
+    initForDragPreview = [[v6 alloc] initForDragPreview];
+    [initForDragPreview updateWithEvent:eventCopy dimmed:0];
     goto LABEL_7;
   }
 
-  if ([v5 isAllDay])
+  if ([eventCopy isAllDay])
   {
     v6 = EKUIListViewAllDayEventCell;
     goto LABEL_5;
   }
 
-  v7 = [(EKUIListViewCell *)[EKUIListViewTimedEventCell alloc] initForDragPreview];
-  v10 = [v5 startDate];
-  [v7 updateWithEvent:v5 isMultiday:0 occurrenceStartDate:v10 dimmed:0];
+  initForDragPreview = [(EKUIListViewCell *)[EKUIListViewTimedEventCell alloc] initForDragPreview];
+  startDate = [eventCopy startDate];
+  [initForDragPreview updateWithEvent:eventCopy isMultiday:0 occurrenceStartDate:startDate dimmed:0];
 
 LABEL_7:
   LODWORD(v8) = 1148846080;
   LODWORD(v9) = 1.0;
-  [v7 systemLayoutSizeFittingSize:300.0 withHorizontalFittingPriority:200.0 verticalFittingPriority:{v8, v9}];
-  [v7 setBounds:{0.0, 0.0, v11, v12}];
+  [initForDragPreview systemLayoutSizeFittingSize:300.0 withHorizontalFittingPriority:200.0 verticalFittingPriority:{v8, v9}];
+  [initForDragPreview setBounds:{0.0, 0.0, v11, v12}];
   v13 = objc_opt_class();
-  [v7 bounds];
-  *a4 = [v13 pathForBackgroundForRect:objc_msgSend(v5 allDay:{"isAllDay"), v14, v15, v16, v17}];
+  [initForDragPreview bounds];
+  *path = [v13 pathForBackgroundForRect:objc_msgSend(eventCopy allDay:{"isAllDay"), v14, v15, v16, v17}];
 
-  return v7;
+  return initForDragPreview;
 }
 
-- (EKDayOccurrenceView)initWithFrame:(CGRect)a3
+- (EKDayOccurrenceView)initWithFrame:(CGRect)frame
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = EKDayOccurrenceView;
-  v3 = [(EKDayOccurrenceView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKDayOccurrenceView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1386,14 +1386,14 @@ LABEL_7:
 
     [(UIImageView *)v4->_eventBackgroundView setAccessibilityIdentifier:@"_eventBackgroundView"];
     [(EKDayOccurrenceView *)v4 addSubview:v4->_eventBackgroundView];
-    v7 = [(UIImageView *)v4->_eventBackgroundView layer];
-    [v7 setCornerRadius:4.0];
+    layer = [(UIImageView *)v4->_eventBackgroundView layer];
+    [layer setCornerRadius:4.0];
 
-    v8 = [(UIImageView *)v4->_eventBackgroundView layer];
-    [v8 setMasksToBounds:1];
+    layer2 = [(UIImageView *)v4->_eventBackgroundView layer];
+    [layer2 setMasksToBounds:1];
 
-    v9 = [(UIImageView *)v4->_eventBackgroundView layer];
-    [v9 setMinificationFilter:*MEMORY[0x1E6979C48]];
+    layer3 = [(UIImageView *)v4->_eventBackgroundView layer];
+    [layer3 setMinificationFilter:*MEMORY[0x1E6979C48]];
 
     v4->_needsBackgroundImageUpdate = 1;
     v10 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -1472,26 +1472,26 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   v4 = [(EKDayOccurrenceView *)&v21 description];
   [v3 appendString:v4];
 
-  v5 = [(EKDayOccurrenceView *)self occurrence];
-  v6 = [v5 title];
-  [v3 appendFormat:@"title:     %@\n", v6];
+  occurrence = [(EKDayOccurrenceView *)self occurrence];
+  title = [occurrence title];
+  [v3 appendFormat:@"title:     %@\n", title];
 
-  v7 = [(EKDayOccurrenceView *)self occurrence];
-  v8 = [v7 location];
-  [v3 appendFormat:@"location:  %@\n", v8];
+  occurrence2 = [(EKDayOccurrenceView *)self occurrence];
+  location = [occurrence2 location];
+  [v3 appendFormat:@"location:  %@\n", location];
 
-  v9 = [(EKDayOccurrenceView *)self occurrence];
-  v10 = [v9 calendar];
-  v11 = [v10 title];
-  [v3 appendFormat:@"calendar:  %@\n", v11];
+  occurrence3 = [(EKDayOccurrenceView *)self occurrence];
+  calendar = [occurrence3 calendar];
+  title2 = [calendar title];
+  [v3 appendFormat:@"calendar:  %@\n", title2];
 
-  v12 = [(EKDayOccurrenceView *)self occurrence];
-  v13 = [v12 startCalendarDate];
-  [v3 appendFormat:@"startDate: %@\n", v13];
+  occurrence4 = [(EKDayOccurrenceView *)self occurrence];
+  startCalendarDate = [occurrence4 startCalendarDate];
+  [v3 appendFormat:@"startDate: %@\n", startCalendarDate];
 
-  v14 = [(EKDayOccurrenceView *)self occurrence];
-  v15 = [v14 endCalendarDate];
-  [v3 appendFormat:@"endDate:   %@\n", v15];
+  occurrence5 = [(EKDayOccurrenceView *)self occurrence];
+  endCalendarDate = [occurrence5 endCalendarDate];
+  [v3 appendFormat:@"endDate:   %@\n", endCalendarDate];
 
   [(EKDayOccurrenceView *)self frame];
   v16 = NSStringFromRect(v23);
@@ -1500,22 +1500,22 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[EKDayOccurrenceView isSelectedCopyView](self, "isSelectedCopyView")}];
   [v3 appendFormat:@"isSelectedCopyView:     %@\n", v17];
 
-  v18 = [(EKDayOccurrenceView *)self selectedCopy];
-  [v3 appendFormat:@"selectedCopy:     %@\n", v18];
+  selectedCopy = [(EKDayOccurrenceView *)self selectedCopy];
+  [v3 appendFormat:@"selectedCopy:     %@\n", selectedCopy];
 
   v19 = [MEMORY[0x1E696AEC0] stringWithString:v3];
 
   return v19;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = EKDayOccurrenceView;
   [(EKDayOccurrenceView *)&v5 setUserInteractionEnabled:?];
-  [(UIView *)self->_startResizeHandle setUserInteractionEnabled:v3];
-  [(UIView *)self->_endResizeHandle setUserInteractionEnabled:v3];
+  [(UIView *)self->_startResizeHandle setUserInteractionEnabled:enabledCopy];
+  [(UIView *)self->_endResizeHandle setUserInteractionEnabled:enabledCopy];
 }
 
 - (void)forceUpdateColors
@@ -1536,11 +1536,11 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
 - (void)synchronouslyRenderContentOnNextDisplay
 {
   self->_needSynchronousRender = 1;
-  v2 = [(EKDayOccurrenceView *)self layer];
-  [v2 setNeedsDisplay];
+  layer = [(EKDayOccurrenceView *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)displayLayer:(id)a3
+- (void)displayLayer:(id)layer
 {
   if (self->_needSynchronousRender)
   {
@@ -1558,12 +1558,12 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldAnnotateAppEntities:(BOOL)a3
+- (void)setShouldAnnotateAppEntities:(BOOL)entities
 {
   v3 = *(self + 480);
-  if (((((v3 & 8) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 8) == 0) ^ entities) & 1) == 0)
   {
-    if (a3)
+    if (entities)
     {
       v4 = 8;
     }
@@ -1578,21 +1578,21 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(EKDayOccurrenceView *)self _updateColors];
     [(EKDayOccurrenceView *)self updateAlpha];
     self->_needsBackgroundImageUpdate = 1;
     [(EKDayOccurrenceView *)self _invalidateAllImages];
     [(EKDayOccurrenceView *)self setNeedsDisplay];
     [(EKDayOccurrenceView *)self setNeedsLayout];
-    if (!a3 && self->_occurrence)
+    if (!selected && self->_occurrence)
     {
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 postNotificationName:@"EKDayOccurrenceViewDidEndSelectionNotification" object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"EKDayOccurrenceViewDidEndSelectionNotification" object:self];
     }
 
     [(EKDayOccurrenceView *)self _updateAppEntityAnnotationState];
@@ -1616,29 +1616,29 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
     travelBackgroundView = self->_travelBackgroundView;
     self->_travelBackgroundView = v7;
 
-    v9 = [(UIImageView *)self->_travelBackgroundView layer];
-    [v9 setCornerRadius:4.0];
+    layer = [(UIImageView *)self->_travelBackgroundView layer];
+    [layer setCornerRadius:4.0];
 
-    v10 = [(UIImageView *)self->_travelBackgroundView layer];
+    layer2 = [(UIImageView *)self->_travelBackgroundView layer];
     v4 = 1;
-    [v10 setMasksToBounds:1];
+    [layer2 setMasksToBounds:1];
 
-    v11 = [(UIImageView *)self->_travelBackgroundView layer];
-    [v11 setMaskedCorners:3];
+    layer3 = [(UIImageView *)self->_travelBackgroundView layer];
+    [layer3 setMaskedCorners:3];
   }
 
-  v12 = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView superview];
+  superview = [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView superview];
 
-  if (!v12)
+  if (!superview)
   {
     [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView setAccessibilityIdentifier:@"_travelTimeContentView"];
     [(EKDayOccurrenceView *)self addSubview:self->_travelTimeContentView];
     v4 = 1;
   }
 
-  v13 = [(UIImageView *)self->_travelBackgroundView superview];
+  superview2 = [(UIImageView *)self->_travelBackgroundView superview];
 
-  if (v13)
+  if (superview2)
   {
     if (!v4)
     {
@@ -1666,22 +1666,22 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   self->_needsBackgroundImageUpdate = 1;
 }
 
-- (void)setTravelTime:(double)a3
+- (void)setTravelTime:(double)time
 {
-  if (self->_travelTime != a3)
+  if (self->_travelTime != time)
   {
-    self->_travelTime = a3;
-    [(EKDayOccurrenceView *)self setShowsTravelTime:a3 > 0.0];
+    self->_travelTime = time;
+    [(EKDayOccurrenceView *)self setShowsTravelTime:time > 0.0];
   }
 }
 
-- (void)setShowsTravelTime:(BOOL)a3
+- (void)setShowsTravelTime:(BOOL)time
 {
-  if (self->_showsTravelTime != a3)
+  if (self->_showsTravelTime != time)
   {
     v8 = v3;
-    self->_showsTravelTime = a3;
-    if (a3)
+    self->_showsTravelTime = time;
+    if (time)
     {
       [(EKDayOccurrenceView *)self _addTravelTimeSubviews];
     }
@@ -1698,12 +1698,12 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setMargin:(UIEdgeInsets)a3
+- (void)setMargin:(UIEdgeInsets)margin
 {
-  right = a3.right;
-  left = a3.left;
-  top = a3.top;
-  bottom = a3.bottom;
+  right = margin.right;
+  left = margin.left;
+  top = margin.top;
+  bottom = margin.bottom;
   IsLeftToRight = CalInterfaceIsLeftToRight();
   if (IsLeftToRight)
   {
@@ -1742,12 +1742,12 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  left = a3.left;
-  top = a3.top;
-  bottom = a3.bottom;
+  right = padding.right;
+  left = padding.left;
+  top = padding.top;
+  bottom = padding.bottom;
   IsLeftToRight = CalInterfaceIsLeftToRight();
   if (IsLeftToRight)
   {
@@ -1798,14 +1798,14 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setupWithOccurrence:(id)a3
+- (void)setupWithOccurrence:(id)occurrence
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4)
+  occurrenceCopy = occurrence;
+  v12 = occurrenceCopy;
+  if (occurrenceCopy)
   {
-    v5 = [v4 calendar];
-    v6 = [v12 travelRoutingMode];
+    calendar = [occurrenceCopy calendar];
+    travelRoutingMode = [v12 travelRoutingMode];
     -[EKDayOccurrenceView setAllDay:](self, "setAllDay:", [v12 isAllDay]);
     -[EKDayOccurrenceView setIsReminder:](self, "setIsReminder:", [v12 isIntegrationEvent]);
     -[EKDayOccurrenceView setIsCompleted:](self, "setIsCompleted:", [v12 completed]);
@@ -1813,13 +1813,13 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
     [(EKDayOccurrenceView *)self setTentative:CUIKEventDisplaysAsTentative()];
     [(EKDayOccurrenceView *)self setDeclined:CUIKEventDisplaysAsDeclined()];
     [(EKDayOccurrenceView *)self setNeedsReply:CUIKEventDisplaysAsNeedsReply()];
-    -[EKDayOccurrenceView setBirthday:](self, "setBirthday:", [v5 type] == 4);
+    -[EKDayOccurrenceView setBirthday:](self, "setBirthday:", [calendar type] == 4);
     [v12 travelTime];
     [(EKDayOccurrenceView *)self setTravelTime:?];
-    [(EKDayOccurrenceView *)self setRoutingMode:v6];
+    [(EKDayOccurrenceView *)self setRoutingMode:travelRoutingMode];
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v12 title];
-    v9 = [v7 stringWithFormat:@"event-shown:%@", v8];
+    title = [v12 title];
+    v9 = [v7 stringWithFormat:@"event-shown:%@", title];
     [(EKDayOccurrenceView *)self setAccessibilityIdentifier:v9];
 
     v10 = [objc_alloc(MEMORY[0x1E6993428]) initWithState:self];
@@ -1838,14 +1838,14 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   [(EKDayOccurrenceView *)self _updateAppEntityAnnotationIfNeeded];
 }
 
-- (void)setOccurrence:(id)a3
+- (void)setOccurrence:(id)occurrence
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  occurrenceCopy = occurrence;
+  v6 = occurrenceCopy;
+  if (occurrenceCopy)
   {
-    v9[0] = v5;
+    v9[0] = occurrenceCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     occurrences = self->_occurrences;
     self->_occurrences = v7;
@@ -1859,20 +1859,20 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
 
   if (self->_occurrence != v6)
   {
-    objc_storeStrong(&self->_occurrence, a3);
+    objc_storeStrong(&self->_occurrence, occurrence);
     [(EKDayOccurrenceView *)self setupWithOccurrence:v6];
   }
 }
 
-- (void)setOccurrences:(id)a3
+- (void)setOccurrences:(id)occurrences
 {
-  v4 = [(EKDayOccurrenceView *)self sortOccurrences:a3];
+  v4 = [(EKDayOccurrenceView *)self sortOccurrences:occurrences];
   occurrences = self->_occurrences;
   self->_occurrences = v4;
 
-  v6 = [(NSArray *)self->_occurrences firstObject];
+  firstObject = [(NSArray *)self->_occurrences firstObject];
   occurrence = self->_occurrence;
-  self->_occurrence = v6;
+  self->_occurrence = firstObject;
 
   v8 = self->_occurrence;
 
@@ -1881,9 +1881,9 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
 
 - (EKCalendarDate)occurrenceDate
 {
-  v3 = [(EKDayOccurrenceView *)self occurrence];
-  v4 = [v3 startCalendarDate];
-  v5 = [v4 calendarDateByAddingDays:{-[EKDayOccurrenceView occurrenceDateIndex](self, "occurrenceDateIndex")}];
+  occurrence = [(EKDayOccurrenceView *)self occurrence];
+  startCalendarDate = [occurrence startCalendarDate];
+  v5 = [startCalendarDate calendarDateByAddingDays:{-[EKDayOccurrenceView occurrenceDateIndex](self, "occurrenceDateIndex")}];
 
   return v5;
 }
@@ -1897,79 +1897,79 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
   [(EKDayOccurrenceView *)self setNeedsLayout];
 }
 
-- (void)setTentative:(BOOL)a3
+- (void)setTentative:(BOOL)tentative
 {
-  if (self->_tentative != a3)
+  if (self->_tentative != tentative)
   {
-    self->_tentative = a3;
+    self->_tentative = tentative;
     self->_needsBackgroundImageUpdate = 1;
     [(EKDayOccurrenceView *)self _invalidateContentBounds];
   }
 }
 
-- (void)setNeedsReply:(BOOL)a3
+- (void)setNeedsReply:(BOOL)reply
 {
-  if (self->_needsReply != a3)
+  if (self->_needsReply != reply)
   {
-    self->_needsReply = a3;
+    self->_needsReply = reply;
     self->_needsBackgroundImageUpdate = 1;
     [(EKDayOccurrenceView *)self _invalidateContentBounds];
   }
 }
 
-- (void)setDeclined:(BOOL)a3
+- (void)setDeclined:(BOOL)declined
 {
-  if (self->_declined != a3)
+  if (self->_declined != declined)
   {
-    self->_declined = a3;
+    self->_declined = declined;
     [(EKDayOccurrenceView *)self _invalidateContentBounds];
   }
 }
 
-- (void)setAllDay:(BOOL)a3
+- (void)setAllDay:(BOOL)day
 {
-  if (self->_allDay != a3)
+  if (self->_allDay != day)
   {
-    self->_allDay = a3;
+    self->_allDay = day;
     [(EKDayOccurrenceView *)self _invalidateContentBounds];
 
     [(EKDayOccurrenceView *)self _updateCornerRadius];
   }
 }
 
-- (void)setIsProposedTime:(BOOL)a3
+- (void)setIsProposedTime:(BOOL)time
 {
-  if (self->_isProposedTime != a3)
+  if (self->_isProposedTime != time)
   {
-    self->_isProposedTime = a3;
+    self->_isProposedTime = time;
     [(EKDayOccurrenceView *)self _invalidateAllImages];
   }
 }
 
-- (void)setIsReminder:(BOOL)a3
+- (void)setIsReminder:(BOOL)reminder
 {
-  if (self->_isReminder != a3)
+  if (self->_isReminder != reminder)
   {
-    self->_isReminder = a3;
+    self->_isReminder = reminder;
   }
 }
 
-- (void)setAllDayDrawingStyle:(BOOL)a3 animated:(BOOL)a4
+- (void)setAllDayDrawingStyle:(BOOL)style animated:(BOOL)animated
 {
-  if (self->_allDayDrawingStyle != a3)
+  if (self->_allDayDrawingStyle != style)
   {
-    self->_allDayDrawingStyle = a3;
-    if (a4)
+    self->_allDayDrawingStyle = style;
+    if (animated)
     {
-      if (a3)
+      if (style)
       {
         v17 = MEMORY[0x1E69E9820];
         v18 = 3221225472;
         v19 = __54__EKDayOccurrenceView_setAllDayDrawingStyle_animated___block_invoke;
         v20 = &unk_1E843EC60;
-        v21 = self;
+        selfCopy = self;
         v5 = &v17;
-        v6 = self;
+        selfCopy4 = self;
         v7 = 5242880;
       }
 
@@ -1979,13 +1979,13 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
         v13 = 3221225472;
         v14 = __54__EKDayOccurrenceView_setAllDayDrawingStyle_animated___block_invoke_2;
         v15 = &unk_1E843EC60;
-        v16 = self;
+        selfCopy3 = self;
         v5 = &v12;
-        v6 = self;
+        selfCopy4 = self;
         v7 = 5242881;
       }
 
-      [MEMORY[0x1E69DD250] transitionWithView:v6 duration:v7 options:v5 animations:0 completion:{0.2, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21}];
+      [MEMORY[0x1E69DD250] transitionWithView:selfCopy4 duration:v7 options:v5 animations:0 completion:{0.2, v12, v13, v14, v15, selfCopy3, v17, v18, v19, v20, selfCopy}];
     }
 
     else
@@ -2007,8 +2007,8 @@ void __37__EKDayOccurrenceView_initWithFrame___block_invoke(uint64_t a1)
         self->_eventBackgroundView = v9;
 
         [(UIImageView *)self->_eventBackgroundView setAutoresizingMask:16];
-        v11 = [(UIImageView *)self->_eventBackgroundView layer];
-        [v11 setMasksToBounds:1];
+        layer = [(UIImageView *)self->_eventBackgroundView layer];
+        [layer setMasksToBounds:1];
 
         [(EKDayOccurrenceView *)self insertSubview:self->_eventBackgroundView atIndex:0];
         if (self->_showsTravelTime)
@@ -2073,15 +2073,15 @@ void __36__EKDayOccurrenceView__updateColors__block_invoke()
 
 - (void)removeFromSuperview
 {
-  v3 = [objc_opt_class() _viewCache];
-  v4 = v3;
-  if (v3)
+  _viewCache = [objc_opt_class() _viewCache];
+  v4 = _viewCache;
+  if (_viewCache)
   {
-    if ([v3 count] <= 9)
+    if ([_viewCache count] <= 9)
     {
-      v5 = [(EKDayOccurrenceView *)self superview];
+      superview = [(EKDayOccurrenceView *)self superview];
 
-      if (v5)
+      if (superview)
       {
         [v4 addObject:self];
       }
@@ -2093,21 +2093,21 @@ void __36__EKDayOccurrenceView__updateColors__block_invoke()
   [(EKDayOccurrenceView *)&v6 removeFromSuperview];
 }
 
-- (void)setVisibleHeight:(double)a3
+- (void)setVisibleHeight:(double)height
 {
-  if (self->_visibleHeight != a3)
+  if (self->_visibleHeight != height)
   {
-    self->_visibleHeight = a3;
+    self->_visibleHeight = height;
     [(EKDayOccurrenceView *)self _invalidateContentBounds];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(EKDayOccurrenceView *)self frame];
   if (![(EKDayOccurrenceView *)self _sizesEffectivelyEqualWithSize:width andSize:height])
   {
@@ -2128,26 +2128,26 @@ void __36__EKDayOccurrenceView__updateColors__block_invoke()
   v11.receiver = self;
   v11.super_class = EKDayOccurrenceView;
   [(EKDayOccurrenceView *)&v11 setFrame:x, y, width, height];
-  v9 = [(EKDayOccurrenceView *)self selectedCopy];
+  selectedCopy = [(EKDayOccurrenceView *)self selectedCopy];
 
-  if (v9)
+  if (selectedCopy)
   {
-    v10 = [(EKDayOccurrenceView *)self selectedCopy];
-    [v10 setFrame:{x, y, width, height}];
+    selectedCopy2 = [(EKDayOccurrenceView *)self selectedCopy];
+    [selectedCopy2 setFrame:{x, y, width, height}];
   }
 
   [(EKDayOccurrenceView *)self _updateResizeHandleLocations];
 }
 
-- (void)animateToFrame:(CGRect)a3 isAllDay:(BOOL)a4 beginFromCurrentState:(BOOL)a5 whenFinished:(id)a6
+- (void)animateToFrame:(CGRect)frame isAllDay:(BOOL)day beginFromCurrentState:(BOOL)state whenFinished:(id)finished
 {
-  v6 = a5;
-  v7 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  stateCopy = state;
+  dayCopy = day;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  finishedCopy = finished;
   [(EKDayOccurrenceView *)self frame];
   v28.origin.x = v14;
   v28.origin.y = v15;
@@ -2159,8 +2159,8 @@ void __36__EKDayOccurrenceView__updateColors__block_invoke()
   v27.size.height = height;
   if (!CGRectEqualToRect(v27, v28))
   {
-    v18 = [(EKDayOccurrenceView *)self drawsResizeHandles];
-    if (v7)
+    drawsResizeHandles = [(EKDayOccurrenceView *)self drawsResizeHandles];
+    if (dayCopy)
     {
       [(EKDayOccurrenceView *)self setDrawsResizeHandles:0];
     }
@@ -2170,7 +2170,7 @@ void __36__EKDayOccurrenceView__updateColors__block_invoke()
     v25[1] = 3221225472;
     v25[2] = __82__EKDayOccurrenceView_animateToFrame_isAllDay_beginFromCurrentState_whenFinished___block_invoke;
     v25[3] = &unk_1E8442A08;
-    if (v6)
+    if (stateCopy)
     {
       v20 = 4;
     }
@@ -2185,15 +2185,15 @@ void __36__EKDayOccurrenceView__updateColors__block_invoke()
     *&v25[6] = y;
     *&v25[7] = width;
     *&v25[8] = height;
-    v26 = v7;
+    v26 = dayCopy;
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __82__EKDayOccurrenceView_animateToFrame_isAllDay_beginFromCurrentState_whenFinished___block_invoke_2;
     v21[3] = &unk_1E8442A30;
-    v23 = v7;
+    v23 = dayCopy;
     v21[4] = self;
-    v24 = v18;
-    v22 = v13;
+    v24 = drawsResizeHandles;
+    v22 = finishedCopy;
     [v19 animateWithDuration:v20 delay:v25 options:v21 animations:0.2 completion:0.0];
   }
 }
@@ -2236,12 +2236,12 @@ uint64_t __82__EKDayOccurrenceView_animateToFrame_isAllDay_beginFromCurrentState
   return v3;
 }
 
-- (void)setDrawsResizeHandles:(BOOL)a3
+- (void)setDrawsResizeHandles:(BOOL)handles
 {
-  if (self->_drawsResizeHandles != a3)
+  if (self->_drawsResizeHandles != handles)
   {
-    self->_drawsResizeHandles = a3;
-    if (a3)
+    self->_drawsResizeHandles = handles;
+    if (handles)
     {
       if ([(EKDayOccurrenceView *)self isAllDay]|| [(EKDayOccurrenceView *)self isReminder])
       {
@@ -2252,22 +2252,22 @@ uint64_t __82__EKDayOccurrenceView_animateToFrame_isAllDay_beginFromCurrentState
       {
         if (!self->_startResizeHandle)
         {
-          v26 = [(EKDayOccurrenceView *)self _newResizeHandleView];
+          _newResizeHandleView = [(EKDayOccurrenceView *)self _newResizeHandleView];
           startResizeHandle = self->_startResizeHandle;
-          self->_startResizeHandle = v26;
+          self->_startResizeHandle = _newResizeHandleView;
 
-          v28 = [(EKDayOccurrenceView *)self superview];
-          [v28 addSubview:self->_startResizeHandle];
+          superview = [(EKDayOccurrenceView *)self superview];
+          [superview addSubview:self->_startResizeHandle];
         }
 
         if (!self->_endResizeHandle)
         {
-          v29 = [(EKDayOccurrenceView *)self _newResizeHandleView];
+          _newResizeHandleView2 = [(EKDayOccurrenceView *)self _newResizeHandleView];
           endResizeHandle = self->_endResizeHandle;
-          self->_endResizeHandle = v29;
+          self->_endResizeHandle = _newResizeHandleView2;
 
-          v31 = [(EKDayOccurrenceView *)self superview];
-          [v31 addSubview:self->_endResizeHandle];
+          superview2 = [(EKDayOccurrenceView *)self superview];
+          [superview2 addSubview:self->_endResizeHandle];
         }
 
         [(EKDayOccurrenceView *)self _updateResizeHandleLocations];
@@ -2343,12 +2343,12 @@ uint64_t __45__EKDayOccurrenceView_setDrawsResizeHandles___block_invoke_2(uint64
   return [v7 setFrame:v6];
 }
 
-- (CGRect)_frameMutatedForProximityToHourLine:(CGRect)a3
+- (CGRect)_frameMutatedForProximityToHourLine:(CGRect)line
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = line.size.height;
+  width = line.size.width;
+  y = line.origin.y;
+  x = line.origin.x;
   CalRoundToScreenScale(0.5);
   v8 = y + v7;
   CalRoundToScreenScale(0.5);
@@ -2384,43 +2384,43 @@ uint64_t __45__EKDayOccurrenceView_setDrawsResizeHandles___block_invoke_2(uint64
   return result;
 }
 
-- (void)requestContentIfNeeded:(unint64_t)a3 completion:(id)a4
+- (void)requestContentIfNeeded:(unint64_t)needed completion:(id)completion
 {
   if (self->_invalidatedRequestOptions)
   {
-    v4 = a3;
+    neededCopy = needed;
     v6 = MEMORY[0x1E6993428];
-    v7 = a4;
+    completionCopy = completion;
     v8 = [[v6 alloc] initWithState:self];
     [(EKDayOccurrenceView *)self setCurrentImageState:v8];
-    [(EKDayOccurrenceView *)self requestContent:self->_invalidatedRequestOptions | v4 & 0x18 completion:v7];
+    [(EKDayOccurrenceView *)self requestContent:self->_invalidatedRequestOptions | neededCopy & 0x18 completion:completionCopy];
   }
 }
 
-- (void)requestContent:(unint64_t)a3 completion:(id)a4
+- (void)requestContent:(unint64_t)content completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self->_drawsResizeHandles)
   {
-    v7 = a3 | 0x20;
+    contentCopy = content | 0x20;
   }
 
   else
   {
-    v7 = a3;
+    contentCopy = content;
   }
 
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x1E6993430] sharedProvider];
-  v9 = [(EKDayOccurrenceView *)self currentImageState];
+  mEMORY[0x1E6993430] = [MEMORY[0x1E6993430] sharedProvider];
+  currentImageState = [(EKDayOccurrenceView *)self currentImageState];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__EKDayOccurrenceView_requestContent_completion___block_invoke;
   v12[3] = &unk_1E8442A58;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = completionCopy;
   v13 = v10;
-  v11 = [v8 requestPayloadForState:v9 requestOptions:v7 resultHandler:v12];
+  v11 = [mEMORY[0x1E6993430] requestPayloadForState:currentImageState requestOptions:contentCopy resultHandler:v12];
 
   if ((v11 & 0x8000000000000000) == 0)
   {
@@ -2449,29 +2449,29 @@ uint64_t __49__EKDayOccurrenceView_requestContent_completion___block_invoke(uint
   return result;
 }
 
-- (void)_updateContentWithPayload:(id)a3
+- (void)_updateContentWithPayload:(id)payload
 {
-  v7 = a3;
-  v4 = [v7 requestOptions];
+  payloadCopy = payload;
+  requestOptions = [payloadCopy requestOptions];
   currentRequestId = self->_currentRequestId;
-  v6 = [v7 requestId];
-  if ((v4 & 0x10) != 0 || currentRequestId == v6)
+  requestId = [payloadCopy requestId];
+  if ((requestOptions & 0x10) != 0 || currentRequestId == requestId)
   {
-    [(EKDayOccurrenceView *)self forceUpdateContentWithPayload:v7];
+    [(EKDayOccurrenceView *)self forceUpdateContentWithPayload:payloadCopy];
   }
 }
 
-- (void)forceUpdateContentWithPayload:(id)a3
+- (void)forceUpdateContentWithPayload:(id)payload
 {
-  v4 = a3;
-  [v4 requestOptions];
+  payloadCopy = payload;
+  [payloadCopy requestOptions];
   if (!_bitmaskContainsOption())
   {
     goto LABEL_5;
   }
 
-  v5 = [(UIImageView *)self->_eventBackgroundView image];
-  if (v5)
+  image = [(UIImageView *)self->_eventBackgroundView image];
+  if (image)
   {
 
 LABEL_5:
@@ -2489,8 +2489,8 @@ LABEL_5:
 LABEL_6:
   if (_bitmaskContainsOption())
   {
-    v7 = [v4 backgroundImage];
-    [(UIImageView *)self->_eventBackgroundView setImage:v7];
+    backgroundImage = [payloadCopy backgroundImage];
+    [(UIImageView *)self->_eventBackgroundView setImage:backgroundImage];
   }
 
   else
@@ -2507,8 +2507,8 @@ LABEL_6:
 
   if (_bitmaskContainsOption())
   {
-    v10 = [v4 textImage];
-    [(UIImageView *)self->_contentView setImage:v10];
+    textImage = [payloadCopy textImage];
+    [(UIImageView *)self->_contentView setImage:textImage];
   }
 
   else
@@ -2518,11 +2518,11 @@ LABEL_6:
 
   if (_bitmaskContainsOption())
   {
-    v11 = [v4 travelTimeImage];
-    [(UIImageView *)self->_travelBackgroundView setImage:v11];
+    travelTimeImage = [payloadCopy travelTimeImage];
+    [(UIImageView *)self->_travelBackgroundView setImage:travelTimeImage];
 
-    v12 = [v4 travelTimeString];
-    [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView setTravelTimeString:v12];
+    travelTimeString = [payloadCopy travelTimeString];
+    [(EKDayOccurrenceTravelTimeView *)self->_travelTimeContentView setTravelTimeString:travelTimeString];
   }
 
   stagedBackgroundColor = self->_stagedBackgroundColor;
@@ -2548,26 +2548,26 @@ LABEL_6:
   [(EKDayOccurrenceView *)self _updateContentImageViewIfNeeded];
 }
 
-- (void)setTopPinningProximity:(double)a3
+- (void)setTopPinningProximity:(double)proximity
 {
   topPinningProximity = self->_topPinningProximity;
-  if (a3 >= 1.0 && topPinningProximity < 1.0)
+  if (proximity >= 1.0 && topPinningProximity < 1.0)
   {
-    v9 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v9 setMasksToBounds:0];
+    layer = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer setMasksToBounds:0];
   }
 
-  else if (a3 < 1.0 && topPinningProximity >= 1.0)
+  else if (proximity < 1.0 && topPinningProximity >= 1.0)
   {
-    v8 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v8 setMasksToBounds:1];
+    layer2 = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer2 setMasksToBounds:1];
 
     [(EKDayOccurrenceView *)self _updateCornerRadius];
   }
 
-  if (a3 > 0.0 && a3 < 1.0)
+  if (proximity > 0.0 && proximity < 1.0)
   {
-    v11 = (1.0 - a3) * 4.0;
+    v11 = (1.0 - proximity) * 4.0;
   }
 
   else
@@ -2575,15 +2575,15 @@ LABEL_6:
     v11 = 4.0;
   }
 
-  v12 = [(UIImageView *)self->_eventBackgroundView layer];
-  [v12 setCornerRadius:v11];
+  layer3 = [(UIImageView *)self->_eventBackgroundView layer];
+  [layer3 setCornerRadius:v11];
 
-  self->_topPinningProximity = a3;
+  self->_topPinningProximity = proximity;
 }
 
-- (void)setBottomPinningProximity:(double)a3
+- (void)setBottomPinningProximity:(double)proximity
 {
-  v4 = fmin(fmax(a3, 0.0), 1.0);
+  v4 = fmin(fmax(proximity, 0.0), 1.0);
   bottomPinningState = self->_bottomPinningState;
   v6 = v4 > 0.0;
   if (v4 <= 0.0)
@@ -2617,8 +2617,8 @@ LABEL_6:
     v14 = self->_pinFadeView;
     self->_pinFadeView = v13;
 
-    v15 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)self->_pinFadeView setBackgroundColor:v15];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)self->_pinFadeView setBackgroundColor:systemBackgroundColor];
 
     if (bottomPinningState)
     {
@@ -2677,11 +2677,11 @@ LABEL_19:
 LABEL_21:
     [(UIView *)self->_pinFadeView setAlpha:v4];
     v10 = 1.0 - v4;
-    v33 = [(UIImageView *)self->_travelBackgroundView layer];
-    [v33 setCornerRadius:(1.0 - v4) * 4.0];
+    layer = [(UIImageView *)self->_travelBackgroundView layer];
+    [layer setCornerRadius:(1.0 - v4) * 4.0];
 
-    v34 = [(UIImageView *)self->_eventBackgroundView layer];
-    [v34 setCornerRadius:(1.0 - v4) * 4.0];
+    layer2 = [(UIImageView *)self->_eventBackgroundView layer];
+    [layer2 setCornerRadius:(1.0 - v4) * 4.0];
 
     v6 = 0;
     v57 = 1;
@@ -2705,20 +2705,20 @@ LABEL_7:
     v10 = 1.0 - v4;
 LABEL_22:
     [(UIImageView *)self->_contentView setAlpha:v10];
-    v35 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-    v36 = [(EKDayOccurrenceView *)self traitCollection];
-    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v36];
+    _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+    traitCollection = [(EKDayOccurrenceView *)self traitCollection];
+    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:traitCollection];
 
     if (![(EKDayOccurrenceView *)self isSelectedCopyView])
     {
-      v37 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
       v58 = 0.0;
-      [v37 getWhite:&v58 alpha:0];
+      [systemBackgroundColor2 getWhite:&v58 alpha:0];
       v38 = [MEMORY[0x1E69DC888] colorWithWhite:v58 alpha:v4 * 0.75];
       [(EKDayOccurrenceView *)self setBackgroundColor:v38];
     }
 
-    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v35];
+    [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:_currentTraitCollection];
 
     if (!v7)
     {
@@ -2751,20 +2751,20 @@ LABEL_22:
         }
 
         [(UIImageView *)*v50 setFrame:?];
-        v53 = [(UIImageView *)*p_eventBackgroundView layer];
-        [v53 setMasksToBounds:0];
+        layer3 = [(UIImageView *)*p_eventBackgroundView layer];
+        [layer3 setMasksToBounds:0];
 
-        v54 = [(UIImageView *)*p_travelBackgroundView layer];
-        [v54 setMasksToBounds:0];
+        layer4 = [(UIImageView *)*p_travelBackgroundView layer];
+        [layer4 setMasksToBounds:0];
       }
 
       else if (bottomPinningState == 2)
       {
-        v51 = [(UIImageView *)self->_eventBackgroundView layer];
-        [v51 setMasksToBounds:1];
+        layer5 = [(UIImageView *)self->_eventBackgroundView layer];
+        [layer5 setMasksToBounds:1];
 
-        v52 = [(UIImageView *)self->_travelBackgroundView layer];
-        [v52 setMasksToBounds:1];
+        layer6 = [(UIImageView *)self->_travelBackgroundView layer];
+        [layer6 setMasksToBounds:1];
 
         [(UIImageView *)self->_eventBackgroundView setFrame:self->_unpinnedEventBackgroundFrame.origin.x, self->_unpinnedEventBackgroundFrame.origin.y, self->_unpinnedEventBackgroundFrame.size.width, self->_unpinnedEventBackgroundFrame.size.height];
         [(UIImageView *)self->_travelBackgroundView setFrame:self->_unpinnedTravelBackgroundFrame.origin.x, self->_unpinnedTravelBackgroundFrame.origin.y, self->_unpinnedTravelBackgroundFrame.size.width, self->_unpinnedTravelBackgroundFrame.size.height];
@@ -2773,11 +2773,11 @@ LABEL_22:
 
       if ((v57 & 1) == 0)
       {
-        v55 = [(UIImageView *)self->_travelBackgroundView layer];
-        [v55 setCornerRadius:4.0];
+        layer7 = [(UIImageView *)self->_travelBackgroundView layer];
+        [layer7 setCornerRadius:4.0];
 
-        v56 = [(UIImageView *)self->_eventBackgroundView layer];
-        [v56 setCornerRadius:4.0];
+        layer8 = [(UIImageView *)self->_eventBackgroundView layer];
+        [layer8 setCornerRadius:4.0];
       }
     }
 
@@ -2798,18 +2798,18 @@ uint64_t __49__EKDayOccurrenceView_setBottomPinningProximity___block_invoke(uint
   return [v2 addSubview:v3];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = EKDayOccurrenceView;
   v9 = 1;
-  if (![(EKDayOccurrenceView *)&v11 pointInside:v7 withEvent:x, y])
+  if (![(EKDayOccurrenceView *)&v11 pointInside:eventCopy withEvent:x, y])
   {
     startResizeHandle = self->_startResizeHandle;
-    if (!startResizeHandle || ![(UIView *)startResizeHandle pointInside:v7 withEvent:x, y]&& ![(UIView *)self->_endResizeHandle pointInside:v7 withEvent:x, y])
+    if (!startResizeHandle || ![(UIView *)startResizeHandle pointInside:eventCopy withEvent:x, y]&& ![(UIView *)self->_endResizeHandle pointInside:eventCopy withEvent:x, y])
     {
       v9 = 0;
     }
@@ -2818,30 +2818,30 @@ uint64_t __49__EKDayOccurrenceView_setBottomPinningProximity___block_invoke(uint
   return v9;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   [(EKDayOccurrenceView *)self setTouchesAreBeingTracked:1];
-  if ([v6 count] == 1)
+  if ([beganCopy count] == 1)
   {
-    v8 = [v6 anyObject];
+    anyObject = [beganCopy anyObject];
   }
 
   else
   {
-    v8 = 0;
+    anyObject = 0;
   }
 
   v14.receiver = self;
   v14.super_class = EKDayOccurrenceView;
-  [(EKDayOccurrenceView *)&v14 touchesBegan:v6 withEvent:v7];
-  if (v8)
+  [(EKDayOccurrenceView *)&v14 touchesBegan:beganCopy withEvent:eventCopy];
+  if (anyObject)
   {
-    [v8 locationInView:self];
+    [anyObject locationInView:self];
     v10 = v9;
     v12 = v11;
-    if ([(EKDayOccurrenceView *)self pointInside:v7 withEvent:?])
+    if ([(EKDayOccurrenceView *)self pointInside:eventCopy withEvent:?])
     {
       if ([(EKDayOccurrenceView *)self isReminder])
       {
@@ -2867,63 +2867,63 @@ uint64_t __49__EKDayOccurrenceView_setBottomPinningProximity___block_invoke(uint
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] == 1)
+  movedCopy = moved;
+  eventCopy = event;
+  if ([movedCopy count] == 1)
   {
-    v8 = [v6 anyObject];
+    anyObject = [movedCopy anyObject];
   }
 
   else
   {
-    v8 = 0;
+    anyObject = 0;
   }
 
   v9.receiver = self;
   v9.super_class = EKDayOccurrenceView;
-  [(EKDayOccurrenceView *)&v9 touchesMoved:v6 withEvent:v7];
-  if (v8)
+  [(EKDayOccurrenceView *)&v9 touchesMoved:movedCopy withEvent:eventCopy];
+  if (anyObject)
   {
-    [v8 locationInView:self];
-    if (![(EKDayOccurrenceView *)self pointInside:v7 withEvent:?])
+    [anyObject locationInView:self];
+    if (![(EKDayOccurrenceView *)self pointInside:eventCopy withEvent:?])
     {
       *(self + 480) &= ~1u;
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] == 1)
+  endedCopy = ended;
+  eventCopy = event;
+  if ([endedCopy count] == 1)
   {
-    v8 = [v6 anyObject];
+    anyObject = [endedCopy anyObject];
   }
 
   else
   {
-    v8 = 0;
+    anyObject = 0;
   }
 
   v29.receiver = self;
   v29.super_class = EKDayOccurrenceView;
-  [(EKDayOccurrenceView *)&v29 touchesEnded:v6 withEvent:v7];
+  [(EKDayOccurrenceView *)&v29 touchesEnded:endedCopy withEvent:eventCopy];
   if ([(EKDayOccurrenceView *)self touchesAreBeingTracked])
   {
-    if (v8)
+    if (anyObject)
     {
-      [v8 locationInView:self];
+      [anyObject locationInView:self];
       v10 = v9;
       v12 = v11;
       if (![(EKDayOccurrenceView *)self isReminder]|| (*(self + 480) & 2) == 0 || [(EKDayOccurrenceView *)self isReminderStack])
       {
-        if ([(EKDayOccurrenceView *)self pointInside:v7 withEvent:v10, v12]&& (*(self + 480) & 1) != 0)
+        if ([(EKDayOccurrenceView *)self pointInside:eventCopy withEvent:v10, v12]&& (*(self + 480) & 1) != 0)
         {
-          v13 = [v8 type] == 1 || objc_msgSend(v8, "type") == 3;
+          v13 = [anyObject type] == 1 || objc_msgSend(anyObject, "type") == 3;
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           v25 = objc_opt_respondsToSelector();
 
@@ -2939,17 +2939,17 @@ uint64_t __49__EKDayOccurrenceView_setBottomPinningProximity___block_invoke(uint
 
       if ([(EKDayOccurrenceView *)self pointInsideReminderCheckbox:v10, v12])
       {
-        v14 = [(EKDayOccurrenceView *)self occurrence];
-        v15 = [v14 CUIK_reminderShouldBeEditable];
+        occurrence = [(EKDayOccurrenceView *)self occurrence];
+        cUIK_reminderShouldBeEditable = [occurrence CUIK_reminderShouldBeEditable];
 
-        if (v15)
+        if (cUIK_reminderShouldBeEditable)
         {
-          v16 = [(EKDayOccurrenceView *)self occurrence];
-          [v16 setCompleted:[v16 completed]^ 1];
-          v17 = [(UIResponder *)self EKUI_editor];
+          occurrence2 = [(EKDayOccurrenceView *)self occurrence];
+          [occurrence2 setCompleted:[occurrence2 completed]^ 1];
+          eKUI_editor = [(UIResponder *)self EKUI_editor];
           v28 = 0;
-          v18 = [v17 saveEvent:v16 span:0 error:&v28];
-          v19 = v28;
+          v18 = [eKUI_editor saveEvent:occurrence2 span:0 error:&v28];
+          occurrence3 = v28;
 
           if (v18)
           {
@@ -2963,7 +2963,7 @@ uint64_t __49__EKDayOccurrenceView_setBottomPinningProximity___block_invoke(uint
           }
 
           *buf = 138412290;
-          v31 = v19;
+          v31 = occurrence3;
           v21 = "Error saving completion state: %@";
           v22 = v20;
           v23 = OS_LOG_TYPE_ERROR;
@@ -2977,12 +2977,12 @@ LABEL_25:
         v27 = kEKUILogHandle;
         if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
         {
-          v16 = v27;
-          v19 = [(EKDayOccurrenceView *)self occurrence];
+          occurrence2 = v27;
+          occurrence3 = [(EKDayOccurrenceView *)self occurrence];
           *buf = 138412290;
-          v31 = v19;
+          v31 = occurrence3;
           v21 = "Tapped reminder isn't editable: %@";
-          v22 = v16;
+          v22 = occurrence2;
           v23 = OS_LOG_TYPE_DEBUG;
           goto LABEL_24;
         }
@@ -2994,24 +2994,24 @@ LABEL_26:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   *(self + 480) &= ~1u;
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  cancelledCopy = cancelled;
   [(EKDayOccurrenceView *)self setTouchesAreBeingTracked:0];
   v8.receiver = self;
   v8.super_class = EKDayOccurrenceView;
-  [(EKDayOccurrenceView *)&v8 touchesCancelled:v7 withEvent:v6];
+  [(EKDayOccurrenceView *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
-- (BOOL)pointInsideReminderCheckbox:(CGPoint)a3
+- (BOOL)pointInsideReminderCheckbox:(CGPoint)checkbox
 {
-  x = a3.x;
+  x = checkbox.x;
   v50 = *MEMORY[0x1E69E9840];
-  v5 = [(EKDayOccurrenceView *)self currentImageState:a3.x];
-  v6 = [v5 trailingIcons];
-  v7 = [v6 count];
+  v5 = [(EKDayOccurrenceView *)self currentImageState:checkbox.x];
+  trailingIcons = [v5 trailingIcons];
+  v7 = [trailingIcons count];
 
   if (v7)
   {
@@ -3019,8 +3019,8 @@ LABEL_26:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v8 = [v5 trailingIcons];
-    v9 = [v8 countByEnumeratingWithState:&v45 objects:v49 count:16];
+    trailingIcons2 = [v5 trailingIcons];
+    v9 = [trailingIcons2 countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v9)
     {
       v10 = v9;
@@ -3032,7 +3032,7 @@ LABEL_26:
         {
           if (*v46 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(trailingIcons2);
           }
 
           [*(*(&v45 + 1) + 8 * i) size];
@@ -3041,7 +3041,7 @@ LABEL_26:
           v12 = v15 + v16;
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v45 objects:v49 count:16];
+        v10 = [trailingIcons2 countByEnumeratingWithState:&v45 objects:v49 count:16];
       }
 
       while (v10);
@@ -3060,38 +3060,38 @@ LABEL_26:
 
   [v5 textSpace];
   v18 = v17;
-  v19 = [v5 leadingIcon];
-  [v19 size];
+  leadingIcon = [v5 leadingIcon];
+  [leadingIcon size];
   v21 = v18 - (v12 + v20);
   [MEMORY[0x1E6993420] hideIconBreakpoint];
   v23 = v22;
 
   if (v21 >= v23)
   {
-    v25 = [v5 leadingIcon];
+    leadingIcon2 = [v5 leadingIcon];
     [(UIImageView *)self->_contentView frame];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [MEMORY[0x1E69933F8] shared];
-    v35 = [v34 interfaceIsLeftToRight];
+    mEMORY[0x1E69933F8] = [MEMORY[0x1E69933F8] shared];
+    interfaceIsLeftToRight = [mEMORY[0x1E69933F8] interfaceIsLeftToRight];
 
     v36 = v27;
     v37 = v29;
     v38 = v31;
     v39 = v33;
-    if (v35)
+    if (interfaceIsLeftToRight)
     {
       MinX = CGRectGetMinX(*&v36);
-      [v25 size];
+      [leadingIcon2 size];
       v24 = x < MinX + v41 + 5.0;
     }
 
     else
     {
       MaxX = CGRectGetMaxX(*&v36);
-      [v25 size];
+      [leadingIcon2 size];
       v24 = x > MaxX - v43 + -5.0;
     }
   }
@@ -3104,11 +3104,11 @@ LABEL_26:
   return v24;
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
-    self->_dimmed = a3;
+    self->_dimmed = dimmed;
     [(EKDayOccurrenceView *)self updateAlpha];
   }
 }
@@ -3118,11 +3118,11 @@ LABEL_26:
   v3 = 1.0;
   if (self->_dimmed && !self->_selected)
   {
-    v4 = [(EKDayOccurrenceView *)self currentImageState];
-    v5 = [v4 userInterfaceStyle];
+    currentImageState = [(EKDayOccurrenceView *)self currentImageState];
+    userInterfaceStyle = [currentImageState userInterfaceStyle];
 
     v3 = 0.65;
-    if (v5 != 2)
+    if (userInterfaceStyle != 2)
     {
       v3 = 0.5;
     }
@@ -3131,10 +3131,10 @@ LABEL_26:
   [(EKDayOccurrenceView *)self setAlpha:v3];
 }
 
-- (int)dragTypeFromPoint:(CGPoint)a3
+- (int)dragTypeFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EKDayOccurrenceView *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -3202,25 +3202,25 @@ LABEL_26:
 {
   if ([(EKDayOccurrenceView *)self drawsResizeHandles])
   {
-    v3 = [(EKDayOccurrenceView *)self superview];
-    [v3 bringSubviewToFront:self->_startResizeHandle];
+    superview = [(EKDayOccurrenceView *)self superview];
+    [superview bringSubviewToFront:self->_startResizeHandle];
 
-    v4 = [(EKDayOccurrenceView *)self superview];
-    [v4 bringSubviewToFront:self->_endResizeHandle];
+    superview2 = [(EKDayOccurrenceView *)self superview];
+    [superview2 bringSubviewToFront:self->_endResizeHandle];
   }
 }
 
-+ (double)minNaturalTextHeightForEvent:(id)a3 usingSmallText:(BOOL)a4 sizeClass:(int64_t)a5
++ (double)minNaturalTextHeightForEvent:(id)event usingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  v6 = a4;
-  v7 = a3;
+  textCopy = text;
+  eventCopy = event;
   [objc_opt_class() defaultMargin];
   v9 = v8;
   v11 = v10;
   [objc_opt_class() defaultPadding];
   v13 = v12;
   v15 = v14;
-  [MEMORY[0x1E6993438] minNaturalTextHeightForEvent:v7 usingSmallText:v6 sizeClass:a5];
+  [MEMORY[0x1E6993438] minNaturalTextHeightForEvent:eventCopy usingSmallText:textCopy sizeClass:class];
   v17 = v16;
 
   return v17 + v15 + v9 + v11 + v13;
@@ -3228,8 +3228,8 @@ LABEL_26:
 
 - (double)viewMaxNaturalTextHeight
 {
-  v3 = [(EKDayOccurrenceView *)self currentImageState];
-  [v3 minimumNaturalHeightAllText];
+  currentImageState = [(EKDayOccurrenceView *)self currentImageState];
+  [currentImageState minimumNaturalHeightAllText];
   v5 = v4;
 
   [(EKDayOccurrenceView *)self margin];
@@ -3248,23 +3248,23 @@ LABEL_26:
 - (double)enoughHeightForOneLine
 {
   v3 = objc_opt_class();
-  v4 = [(EKDayOccurrenceView *)self occurrences];
-  [v3 enoughHeightForOneLineForEvents:v4 usingSmallText:-[EKDayOccurrenceView usesSmallText](self sizeClass:{"usesSmallText"), EKUIWidthSizeClassForViewHierarchy(self)}];
+  occurrences = [(EKDayOccurrenceView *)self occurrences];
+  [v3 enoughHeightForOneLineForEvents:occurrences usingSmallText:-[EKDayOccurrenceView usesSmallText](self sizeClass:{"usesSmallText"), EKUIWidthSizeClassForViewHierarchy(self)}];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)enoughHeightForOneLineForEvents:(id)a3 usingSmallText:(BOOL)a4 sizeClass:(int64_t)a5
++ (double)enoughHeightForOneLineForEvents:(id)events usingSmallText:(BOOL)text sizeClass:(int64_t)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 firstObject];
-  if ([v8 isIntegrationEvent])
+  textCopy = text;
+  eventsCopy = events;
+  firstObject = [eventsCopy firstObject];
+  if ([firstObject isIntegrationEvent])
   {
-    [MEMORY[0x1E6993438] naturalHeightForPrimaryTextUsingSmallText:v6 sizeClass:a5];
+    [MEMORY[0x1E6993438] naturalHeightForPrimaryTextUsingSmallText:textCopy sizeClass:class];
     v10 = v9 * 1.43;
-    v11 = [v7 count];
+    v11 = [eventsCopy count];
     v12 = 3;
     if (v11 < 3)
     {
@@ -3276,16 +3276,16 @@ LABEL_26:
 
   else
   {
-    [MEMORY[0x1E6993438] minimumNaturalHeightForPrimaryTextUsingSmallText:v6 sizeClass:a5];
+    [MEMORY[0x1E6993438] minimumNaturalHeightForPrimaryTextUsingSmallText:textCopy sizeClass:class];
     v13 = v14;
   }
 
-  if (([v8 isAllDay] & 1) == 0)
+  if (([firstObject isAllDay] & 1) == 0)
   {
-    v15 = [v8 startCalendarDate];
-    v16 = [v15 minute];
+    startCalendarDate = [firstObject startCalendarDate];
+    minute = [startCalendarDate minute];
 
-    if (v16)
+    if (minute)
     {
       CalRoundToScreenScale(0.5);
       v13 = v13 - v17;
@@ -3307,11 +3307,11 @@ LABEL_26:
   v3 = 0.0;
   if ([(EKDayOccurrenceView *)self _isTimedOccurrenceDrawingStyle])
   {
-    v4 = [(EKDayOccurrenceView *)self occurrence];
-    v5 = [v4 startCalendarDate];
-    v6 = [v5 minute];
+    occurrence = [(EKDayOccurrenceView *)self occurrence];
+    startCalendarDate = [occurrence startCalendarDate];
+    minute = [startCalendarDate minute];
 
-    if (v6)
+    if (minute)
     {
       CalRoundToScreenScale(0.5);
       return 0.0 - v7;
@@ -3323,19 +3323,19 @@ LABEL_26:
 
 + (double)barToBarHorizontalDistanceIncludingBarWidth
 {
-  [a1 barToBarGapWidth];
+  [self barToBarGapWidth];
   v4 = v3;
   [MEMORY[0x1E6993420] colorBarThickness];
   v6 = v4 + v5;
-  [a1 barToBarGapWidth];
+  [self barToBarGapWidth];
   return v6 + v7;
 }
 
-- (void)fadeInContentViewAt:(double)a3 minWidth:(double)a4 animated:(BOOL)a5
+- (void)fadeInContentViewAt:(double)at minWidth:(double)width animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   [(UIImageView *)self->_contentView frame];
-  if (v10 - (a3 - v9) >= a4 - (self->_margin.right + self->_padding.right))
+  if (v10 - (at - v9) >= width - (self->_margin.right + self->_padding.right))
   {
     if ((*(self + 480) & 4) == 0)
     {
@@ -3343,11 +3343,11 @@ LABEL_26:
       *(self + 480) |= 4u;
     }
 
-    [(UIImageView *)self->_contentView setFrame:self->_originalXBeforeOffset + a3];
+    [(UIImageView *)self->_contentView setFrame:self->_originalXBeforeOffset + at];
     [(UIImageView *)self->_contentView setHidden:0];
     [(UIImageView *)self->_contentView setNeedsDisplay];
     contentView = self->_contentView;
-    if (v5)
+    if (animatedCopy)
     {
       [(UIImageView *)contentView setAlpha:0.0];
       v12[0] = MEMORY[0x1E69E9820];
@@ -3366,7 +3366,7 @@ LABEL_26:
   }
 }
 
-- (BOOL)resetContentViewToOriginalState:(BOOL)a3
+- (BOOL)resetContentViewToOriginalState:(BOOL)state
 {
   if ((*(self + 480) & 4) == 0)
   {
@@ -3375,7 +3375,7 @@ LABEL_26:
 
   v7[5] = v3;
   v7[6] = v4;
-  if (a3)
+  if (state)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -3423,12 +3423,12 @@ uint64_t __55__EKDayOccurrenceView_resetContentViewToOriginalState___block_invok
   }
 }
 
-- (void)setHideText:(BOOL)a3 animate:(BOOL)a4
+- (void)setHideText:(BOOL)text animate:(BOOL)animate
 {
-  if (self->_hideText != a3)
+  if (self->_hideText != text)
   {
     v6 = 1.0;
-    if (a3)
+    if (text)
     {
       v7 = 0.0;
     }
@@ -3438,9 +3438,9 @@ uint64_t __55__EKDayOccurrenceView_resetContentViewToOriginalState___block_invok
       v7 = 1.0;
     }
 
-    if (a4)
+    if (animate)
     {
-      if (!a3)
+      if (!text)
       {
         v6 = 0.0;
       }
@@ -3458,33 +3458,33 @@ uint64_t __55__EKDayOccurrenceView_resetContentViewToOriginalState___block_invok
       v8[2] = __43__EKDayOccurrenceView_setHideText_animate___block_invoke_2;
       v8[3] = &unk_1E8442A80;
       v8[4] = self;
-      v9 = a3;
+      textCopy = text;
       [MEMORY[0x1E69DD250] animateWithDuration:v10 animations:v8 completion:0.3];
     }
 
     else
     {
       [(UIImageView *)self->_contentView setAlpha:v7];
-      self->_hideText = a3;
+      self->_hideText = text;
     }
   }
 }
 
-- (int64_t)compareOccurrenceViewForTabOrdering:(id)a3
+- (int64_t)compareOccurrenceViewForTabOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewTopToBottomLeftToRight:v4];
+  orderingCopy = ordering;
+  v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewTopToBottomLeftToRight:orderingCopy];
   if (!v5)
   {
-    v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewForSelectedCopyOrdering:v4];
+    v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewForSelectedCopyOrdering:orderingCopy];
   }
 
   return v5;
 }
 
-- (int64_t)_compareOccurrenceViewForSelectedCopyOrdering:(id)a3
+- (int64_t)_compareOccurrenceViewForSelectedCopyOrdering:(id)ordering
 {
-  v4 = a3;
+  orderingCopy = ordering;
   if ([(EKDayOccurrenceView *)self isSelectedCopyView])
   {
     v5 = 1;
@@ -3492,42 +3492,42 @@ uint64_t __55__EKDayOccurrenceView_resetContentViewToOriginalState___block_invok
 
   else
   {
-    v5 = [v4 isSelectedCopyView] << 63 >> 63;
+    v5 = [orderingCopy isSelectedCopyView] << 63 >> 63;
   }
 
   return v5;
 }
 
-- (int64_t)_compareOccurrenceViewTopToBottomLeftToRight:(id)a3
+- (int64_t)_compareOccurrenceViewTopToBottomLeftToRight:(id)right
 {
-  v4 = a3;
-  v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewTopToBottom:v4];
+  rightCopy = right;
+  v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewTopToBottom:rightCopy];
   if (!v5)
   {
-    v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewLeftToRight:v4];
+    v5 = [(EKDayOccurrenceView *)self _compareOccurrenceViewLeftToRight:rightCopy];
   }
 
   return v5;
 }
 
-- (int64_t)_compareOccurrenceViewTopToBottom:(id)a3
+- (int64_t)_compareOccurrenceViewTopToBottom:(id)bottom
 {
-  v4 = a3;
-  v5 = [(EKDayOccurrenceView *)self occurrence];
-  [v5 duration];
+  bottomCopy = bottom;
+  occurrence = [(EKDayOccurrenceView *)self occurrence];
+  [occurrence duration];
   if (v6 == 0.0)
   {
-    v7 = [v4 occurrence];
-    [v7 duration];
+    occurrence2 = [bottomCopy occurrence];
+    [occurrence2 duration];
     v9 = v8;
 
     if (v9 == 0.0)
     {
-      v10 = [(EKDayOccurrenceView *)self occurrence];
-      v11 = [v10 startDate];
-      v12 = [v4 occurrence];
-      v13 = [v12 startDate];
-      v14 = [v11 compare:v13];
+      occurrence3 = [(EKDayOccurrenceView *)self occurrence];
+      startDate = [occurrence3 startDate];
+      occurrence4 = [bottomCopy occurrence];
+      startDate2 = [occurrence4 startDate];
+      v14 = [startDate compare:startDate2];
 
       if (!v14)
       {
@@ -3541,12 +3541,12 @@ uint64_t __55__EKDayOccurrenceView_resetContentViewToOriginalState___block_invok
   {
   }
 
-  v16 = [(EKDayOccurrenceView *)self occurrence];
-  [v16 duration];
+  occurrence5 = [(EKDayOccurrenceView *)self occurrence];
+  [occurrence5 duration];
   v18 = v17 * 0.25;
 
-  v19 = [v4 occurrence];
-  [v19 duration];
+  occurrence6 = [bottomCopy occurrence];
+  [occurrence6 duration];
   v21 = v20 * 0.25;
 
   if (v18 >= v21)
@@ -3569,14 +3569,14 @@ uint64_t __55__EKDayOccurrenceView_resetContentViewToOriginalState___block_invok
     v23 = 300.0;
   }
 
-  if ([(EKDayOccurrenceView *)self _isBelowOccurrenceView:v4 overlapToIgnore:v23])
+  if ([(EKDayOccurrenceView *)self _isBelowOccurrenceView:bottomCopy overlapToIgnore:v23])
   {
     v15 = 1;
   }
 
   else
   {
-    v15 = [(EKDayOccurrenceView *)self _isAboveOccurrenceView:v4 overlapToIgnore:v23]<< 63 >> 63;
+    v15 = [(EKDayOccurrenceView *)self _isAboveOccurrenceView:bottomCopy overlapToIgnore:v23]<< 63 >> 63;
   }
 
 LABEL_15:
@@ -3584,42 +3584,42 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)_isAboveOccurrenceView:(id)a3 overlapToIgnore:(double)a4
+- (BOOL)_isAboveOccurrenceView:(id)view overlapToIgnore:(double)ignore
 {
-  v6 = a3;
-  v7 = [v6 occurrence];
-  v8 = [v7 isAllDay];
+  viewCopy = view;
+  occurrence = [viewCopy occurrence];
+  isAllDay = [occurrence isAllDay];
 
-  if (v8)
+  if (isAllDay)
   {
-    v9 = [(EKDayOccurrenceView *)self _isAboveAllDayOccurrenceView:v6];
+    v9 = [(EKDayOccurrenceView *)self _isAboveAllDayOccurrenceView:viewCopy];
   }
 
   else
   {
-    v10 = [v6 occurrence];
+    occurrence2 = [viewCopy occurrence];
 
-    v11 = [v10 startDate];
-    v12 = [(EKDayOccurrenceView *)self occurrence];
-    v13 = [v12 endDateUnadjustedForLegacyClients];
-    [v11 timeIntervalSinceDate:v13];
-    v9 = v14 >= -a4;
+    startDate = [occurrence2 startDate];
+    occurrence3 = [(EKDayOccurrenceView *)self occurrence];
+    endDateUnadjustedForLegacyClients = [occurrence3 endDateUnadjustedForLegacyClients];
+    [startDate timeIntervalSinceDate:endDateUnadjustedForLegacyClients];
+    v9 = v14 >= -ignore;
 
-    v6 = v10;
+    viewCopy = occurrence2;
   }
 
   return v9;
 }
 
-- (BOOL)_isAboveAllDayOccurrenceView:(id)a3
+- (BOOL)_isAboveAllDayOccurrenceView:(id)view
 {
-  v4 = a3;
-  v5 = [(EKDayOccurrenceView *)self occurrence];
-  v6 = [v5 startDate];
-  v7 = [v4 occurrence];
-  v8 = [v7 startDate];
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v6 compareDateIgnoringTimeComponents:v8 inCalendar:v9];
+  viewCopy = view;
+  occurrence = [(EKDayOccurrenceView *)self occurrence];
+  startDate = [occurrence startDate];
+  occurrence2 = [viewCopy occurrence];
+  startDate2 = [occurrence2 startDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [startDate compareDateIgnoringTimeComponents:startDate2 inCalendar:currentCalendar];
 
   if (v10 == -1)
   {
@@ -3635,46 +3635,46 @@ LABEL_15:
   {
     [(EKDayOccurrenceView *)self frame];
     v13 = v12;
-    [v4 frame];
+    [viewCopy frame];
     v11 = v13 < v14;
   }
 
   return v11;
 }
 
-- (BOOL)_isBelowOccurrenceView:(id)a3 overlapToIgnore:(double)a4
+- (BOOL)_isBelowOccurrenceView:(id)view overlapToIgnore:(double)ignore
 {
-  v6 = a3;
-  v7 = [v6 occurrence];
-  v8 = [v7 isAllDay];
+  viewCopy = view;
+  occurrence = [viewCopy occurrence];
+  isAllDay = [occurrence isAllDay];
 
-  if (v8)
+  if (isAllDay)
   {
-    v9 = [(EKDayOccurrenceView *)self _isBelowAllDayOccurrenceView:v6];
+    v9 = [(EKDayOccurrenceView *)self _isBelowAllDayOccurrenceView:viewCopy];
   }
 
   else
   {
-    v10 = [(EKDayOccurrenceView *)self occurrence];
-    v11 = [v10 startDate];
-    v12 = [v6 occurrence];
-    v13 = [v12 endDateUnadjustedForLegacyClients];
-    [v11 timeIntervalSinceDate:v13];
-    v9 = v14 >= -a4;
+    occurrence2 = [(EKDayOccurrenceView *)self occurrence];
+    startDate = [occurrence2 startDate];
+    occurrence3 = [viewCopy occurrence];
+    endDateUnadjustedForLegacyClients = [occurrence3 endDateUnadjustedForLegacyClients];
+    [startDate timeIntervalSinceDate:endDateUnadjustedForLegacyClients];
+    v9 = v14 >= -ignore;
   }
 
   return v9;
 }
 
-- (BOOL)_isBelowAllDayOccurrenceView:(id)a3
+- (BOOL)_isBelowAllDayOccurrenceView:(id)view
 {
-  v4 = a3;
-  v5 = [(EKDayOccurrenceView *)self occurrence];
-  v6 = [v5 startDate];
-  v7 = [v4 occurrence];
-  v8 = [v7 startDate];
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v6 compareDateIgnoringTimeComponents:v8 inCalendar:v9];
+  viewCopy = view;
+  occurrence = [(EKDayOccurrenceView *)self occurrence];
+  startDate = [occurrence startDate];
+  occurrence2 = [viewCopy occurrence];
+  startDate2 = [occurrence2 startDate];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [startDate compareDateIgnoringTimeComponents:startDate2 inCalendar:currentCalendar];
 
   if (v10 == -1)
   {
@@ -3690,24 +3690,24 @@ LABEL_15:
   {
     [(EKDayOccurrenceView *)self frame];
     v13 = v12;
-    [v4 frame];
+    [viewCopy frame];
     v11 = v13 > v14;
   }
 
   return v11;
 }
 
-- (int64_t)_compareOccurrenceViewLeftToRight:(id)a3
+- (int64_t)_compareOccurrenceViewLeftToRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   [(EKDayOccurrenceView *)self frame];
   v6 = v5;
-  [v4 frame];
+  [rightCopy frame];
   if (v6 >= v7)
   {
     [(EKDayOccurrenceView *)self frame];
     v10 = v9;
-    [v4 frame];
+    [rightCopy frame];
     v8 = v10 > v11;
   }
 
@@ -3719,18 +3719,18 @@ LABEL_15:
   return v8;
 }
 
-- (void)setReduceLayoutProcessingForAnimation:(BOOL)a3
+- (void)setReduceLayoutProcessingForAnimation:(BOOL)animation
 {
-  if (self->_reduceLayoutProcessingForAnimation != a3)
+  if (self->_reduceLayoutProcessingForAnimation != animation)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__EKDayOccurrenceView_setReduceLayoutProcessingForAnimation___block_invoke;
     v7[3] = &unk_1E84407B0;
     v7[4] = self;
-    v8 = a3;
+    animationCopy = animation;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v7];
-    self->_reduceLayoutProcessingForAnimation = a3;
+    self->_reduceLayoutProcessingForAnimation = animation;
     [(UIImageView *)self->_contentView frame];
     self->_contentLocationDuringReducedProcessing.x = v5;
     self->_contentLocationDuringReducedProcessing.y = v6;
@@ -3756,13 +3756,13 @@ uint64_t __61__EKDayOccurrenceView_setReduceLayoutProcessingForAnimation___block
   return [v4 invalidate];
 }
 
-- (void)setPointerInteractionDisabled:(BOOL)a3
+- (void)setPointerInteractionDisabled:(BOOL)disabled
 {
-  if (self->_pointerInteractionDisabled != a3)
+  if (self->_pointerInteractionDisabled != disabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_pointerInteractionDisabled = a3;
+    self->_pointerInteractionDisabled = disabled;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke;
@@ -3793,8 +3793,8 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
 
 - (void)_removeEditMenuInteractionIfNeeded
 {
-  v3 = [(EKDayOccurrenceView *)self interactions];
-  v4 = [v3 containsObject:self->_editMenuInteraction];
+  interactions = [(EKDayOccurrenceView *)self interactions];
+  v4 = [interactions containsObject:self->_editMenuInteraction];
 
   if (v4)
   {
@@ -3804,9 +3804,9 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
   }
 }
 
-- (void)_setEditingMenuEnabled:(BOOL)a3
+- (void)_setEditingMenuEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(EKDayOccurrenceView *)self _addEditMenuInteractionIfNeeded];
   }
@@ -3817,9 +3817,9 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   [(EKDayOccurrenceView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -3838,7 +3838,7 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
     v14 = v14 - (bottom + v19);
   }
 
-  [v6 location];
+  [requestCopy location];
   v25.x = v20;
   v25.y = v21;
   v26.origin.x = v8;
@@ -3858,20 +3858,20 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
   return v22;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = self;
-  v6 = a4;
-  v7 = [(EKDayOccurrenceView *)v5 delegate];
+  selfCopy = self;
+  regionCopy = region;
+  delegate = [(EKDayOccurrenceView *)selfCopy delegate];
   v8 = objc_opt_respondsToSelector();
 
-  v9 = v5;
+  v9 = selfCopy;
   if (v8)
   {
-    v10 = [(EKDayOccurrenceView *)v5 delegate];
-    v11 = [v10 selectedCopyViewForDayOccurrenceView:v5];
+    delegate2 = [(EKDayOccurrenceView *)selfCopy delegate];
+    v11 = [delegate2 selectedCopyViewForDayOccurrenceView:selfCopy];
 
-    v9 = v5;
+    v9 = selfCopy;
     if (v11)
     {
       v9 = v11;
@@ -3879,18 +3879,18 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  [v6 rect];
+  [regionCopy rect];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [(EKDayOccurrenceView *)v9 convertRect:v5 fromView:v14, v16, v18, v20];
+  [(EKDayOccurrenceView *)v9 convertRect:selfCopy fromView:v14, v16, v18, v20];
   v21 = [MEMORY[0x1E69DC728] bezierPathWithRect:?];
   [v12 setVisiblePath:v21];
 
-  v22 = [MEMORY[0x1E69DC888] clearColor];
-  [v12 setBackgroundColor:v22];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v12 setBackgroundColor:clearColor];
 
   v23 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v9 parameters:v12];
   v24 = [MEMORY[0x1E69DCDA8] effectWithPreview:v23];
@@ -3902,26 +3902,26 @@ uint64_t __53__EKDayOccurrenceView_setPointerInteractionDisabled___block_invoke(
   return v25;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v6 = a5;
+  actionsCopy = actions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dayOccurrenceViewSelected:self source:2];
 
   v8 = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v8 selectedEventsForEditMenu];
+  selectedEventsForEditMenu = [v8 selectedEventsForEditMenu];
   v10 = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v10 presentationControllerForEditMenu];
+  presentationControllerForEditMenu = [v10 presentationControllerForEditMenu];
   editMenuPresented = self->_editMenuPresented;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __81__EKDayOccurrenceView_editMenuInteraction_menuForConfiguration_suggestedActions___block_invoke;
   v17[3] = &unk_1E8442AA8;
   v17[4] = self;
-  v13 = [EKUIContextMenuActions menuForEvents:v9 presentationController:v11 isEditMenu:editMenuPresented overrideActionBlock:v17 completionBlock:0];
+  v13 = [EKUIContextMenuActions menuForEvents:selectedEventsForEditMenu presentationController:presentationControllerForEditMenu isEditMenu:editMenuPresented overrideActionBlock:v17 completionBlock:0];
 
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count") + 1}];
-  [v14 addObjectsFromArray:v6];
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(actionsCopy, "count") + 1}];
+  [v14 addObjectsFromArray:actionsCopy];
 
   [v14 addObject:v13];
   v15 = [MEMORY[0x1E69DCC60] menuWithChildren:v14];
@@ -3938,12 +3938,12 @@ uint64_t __81__EKDayOccurrenceView_editMenuInteraction_menuForConfiguration_sugg
   return 0;
 }
 
-- (void)presentEditingMenuFromGestureController:(id)a3
+- (void)presentEditingMenuFromGestureController:(id)controller
 {
-  obj = a3;
-  v4 = [(EKDayOccurrenceView *)self superview];
+  obj = controller;
+  superview = [(EKDayOccurrenceView *)self superview];
 
-  if (v4)
+  if (superview)
   {
     objc_storeWeak(&self->_gestureController, obj);
     self->_editMenuPresented = 1;

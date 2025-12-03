@@ -1,16 +1,16 @@
 @interface ICFPStreamContext
-- (BOOL)getPlayerDelegateInfoDataUsingPlayerDelegateInfoResponseData:(id)a3 returningData:(id *)a4 error:(id *)a5;
-- (BOOL)getStreamerInfoContextDataUsingPlayerInfoContextData:(id)a3 returningData:(id *)a4 error:(id *)a5;
-- (ICFPStreamContext)initWithVersion:(unsigned int)a3 contextID:(unsigned int)a4 contentInfo:(id)a5 returningError:(id *)a6;
+- (BOOL)getPlayerDelegateInfoDataUsingPlayerDelegateInfoResponseData:(id)data returningData:(id *)returningData error:(id *)error;
+- (BOOL)getStreamerInfoContextDataUsingPlayerInfoContextData:(id)data returningData:(id *)returningData error:(id *)error;
+- (ICFPStreamContext)initWithVersion:(unsigned int)version contextID:(unsigned int)d contentInfo:(id)info returningError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation ICFPStreamContext
 
-- (BOOL)getStreamerInfoContextDataUsingPlayerInfoContextData:(id)a3 returningData:(id *)a4 error:(id *)a5
+- (BOOL)getStreamerInfoContextDataUsingPlayerInfoContextData:(id)data returningData:(id *)returningData error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
+  dataCopy = data;
+  v9 = dataCopy;
   fpStreamRef = self->_fpStreamRef;
   if (!fpStreamRef)
   {
@@ -19,14 +19,14 @@
   }
 
   v17 = 0;
-  OflR7BMjGok3A7mYQFt9(fpStreamRef, [v8 bytes], objc_msgSend(v8, "length"), 0, 0, &v17);
+  OflR7BMjGok3A7mYQFt9(fpStreamRef, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, 0, &v17);
   LOBYTE(fpStreamRef) = v11 == 0;
   if (!v11)
   {
     v13 = [MEMORY[0x1E695DEF0] ic_dataWithFairPlayBytes:v17 length:0];
 LABEL_7:
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -36,27 +36,27 @@ LABEL_7:
 
   v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICFairPlayError" code:v11 userInfo:0];
   v13 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_8:
     v14 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_9:
-  if (a4)
+  if (returningData)
   {
     v15 = v13;
-    *a4 = v13;
+    *returningData = v13;
   }
 
   return fpStreamRef;
 }
 
-- (BOOL)getPlayerDelegateInfoDataUsingPlayerDelegateInfoResponseData:(id)a3 returningData:(id *)a4 error:(id *)a5
+- (BOOL)getPlayerDelegateInfoDataUsingPlayerDelegateInfoResponseData:(id)data returningData:(id *)returningData error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
+  dataCopy = data;
+  v9 = dataCopy;
   fpStreamRef = self->_fpStreamRef;
   if (!fpStreamRef)
   {
@@ -66,14 +66,14 @@ LABEL_9:
 
   v18 = 0;
   v17 = 0;
-  TBGzuU3p5n1n(fpStreamRef, [v8 bytes], objc_msgSend(v8, "length"), &v18, &v17);
+  TBGzuU3p5n1n(fpStreamRef, [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v18, &v17);
   LOBYTE(fpStreamRef) = v11 == 0;
   if (!v11)
   {
     v13 = [MEMORY[0x1E695DEF0] ic_dataWithFairPlayBytes:v18 length:v17];
 LABEL_7:
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -83,18 +83,18 @@ LABEL_7:
 
   v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICFairPlayError" code:v11 userInfo:0];
   v13 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_8:
     v14 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_9:
-  if (a4)
+  if (returningData)
   {
     v15 = v13;
-    *a4 = v13;
+    *returningData = v13;
   }
 
   return fpStreamRef;
@@ -112,16 +112,16 @@ LABEL_9:
   [(ICFPStreamContext *)&v3 dealloc];
 }
 
-- (ICFPStreamContext)initWithVersion:(unsigned int)a3 contextID:(unsigned int)a4 contentInfo:(id)a5 returningError:(id *)a6
+- (ICFPStreamContext)initWithVersion:(unsigned int)version contextID:(unsigned int)d contentInfo:(id)info returningError:(id *)error
 {
-  v7 = *&a4;
-  v8 = *&a3;
-  v10 = a5;
-  v11 = v10;
+  v7 = *&d;
+  v8 = *&version;
+  infoCopy = info;
+  v11 = infoCopy;
   memset(v22, 0, sizeof(v22));
-  if (v10)
+  if (infoCopy)
   {
-    [v10 fpContentInfo];
+    [infoCopy fpContentInfo];
   }
 
   v21 = 0;
@@ -130,9 +130,9 @@ LABEL_9:
   J3NocDTIn(v8, v7, v22);
   if (v12)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICFairPlayError" code:v12 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICFairPlayError" code:v12 userInfo:0];
     }
 
     v13 = 0;
@@ -145,9 +145,9 @@ LABEL_9:
     v13 = [(ICFPStreamContext *)&v18 init];
     if (v13)
     {
-      v14 = [v11 accountID];
+      accountID = [v11 accountID];
       v15 = 0;
-      v13->_accountID = v14;
+      v13->_accountID = accountID;
       if (v21 && v20)
       {
         v15 = [MEMORY[0x1E695DEF0] ic_dataWithFairPlayBytes:? length:?];
@@ -159,9 +159,9 @@ LABEL_9:
       v13->_fpStreamRef = v19;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
+      *error = 0;
     }
   }
 

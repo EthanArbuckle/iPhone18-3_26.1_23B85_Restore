@@ -1,7 +1,7 @@
 @interface ICSSiriCallAnnouncement
-- (ICSSiriCallAnnouncement)initWithCall:(id)a3;
+- (ICSSiriCallAnnouncement)initWithCall:(id)call;
 - (SiriTTSDaemonSession)speechSynthesizer;
-- (void)didFinishSpeakingWithError:(id)a3;
+- (void)didFinishSpeakingWithError:(id)error;
 - (void)didStartSpeaking;
 - (void)pause;
 - (void)start;
@@ -10,11 +10,11 @@
 
 @implementation ICSSiriCallAnnouncement
 
-- (ICSSiriCallAnnouncement)initWithCall:(id)a3
+- (ICSSiriCallAnnouncement)initWithCall:(id)call
 {
   v4.receiver = self;
   v4.super_class = ICSSiriCallAnnouncement;
-  result = [(ICSCallAnnouncement *)&v4 initWithCall:a3];
+  result = [(ICSCallAnnouncement *)&v4 initWithCall:call];
   if (result)
   {
     result->_audioSessionIdentifier = 0;
@@ -49,56 +49,56 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Start ICSSiriCallAnnouncement", buf, 2u);
   }
 
-  v4 = [(ICSCallAnnouncement *)self contacts];
-  v5 = [[AFSiriRingtone alloc] initWithContacts:v4];
-  v6 = [(ICSCallAnnouncement *)self callDestinationID];
-  [v5 setCallDestinationID:v6];
+  contacts = [(ICSCallAnnouncement *)self contacts];
+  v5 = [[AFSiriRingtone alloc] initWithContacts:contacts];
+  callDestinationID = [(ICSCallAnnouncement *)self callDestinationID];
+  [v5 setCallDestinationID:callDestinationID];
 
-  v7 = [(ICSCallAnnouncement *)self callDestinationID];
-  v8 = [v7 destinationIdIsEmailAddress];
+  callDestinationID2 = [(ICSCallAnnouncement *)self callDestinationID];
+  destinationIdIsEmailAddress = [callDestinationID2 destinationIdIsEmailAddress];
 
-  if (v8)
+  if (destinationIdIsEmailAddress)
   {
     v9 = 2;
   }
 
   else
   {
-    v10 = [(ICSCallAnnouncement *)self callDestinationID];
-    v11 = [v10 destinationIdIsPhoneNumber];
+    callDestinationID3 = [(ICSCallAnnouncement *)self callDestinationID];
+    destinationIdIsPhoneNumber = [callDestinationID3 destinationIdIsPhoneNumber];
 
-    v9 = v11;
+    v9 = destinationIdIsPhoneNumber;
   }
 
   [v5 setCallDestinationIDType:v9];
-  v12 = [(ICSCallAnnouncement *)self callServiceName];
-  [v5 setCallServiceSpeakableName:v12];
+  callServiceName = [(ICSCallAnnouncement *)self callServiceName];
+  [v5 setCallServiceSpeakableName:callServiceName];
 
-  v13 = [(ICSCallAnnouncement *)self callerName];
-  [v5 setDisplayedCallerID:v13];
+  callerName = [(ICSCallAnnouncement *)self callerName];
+  [v5 setDisplayedCallerID:callerName];
 
-  v14 = [(ICSCallAnnouncement *)self callerNameType];
-  if (v14 == 2)
+  callerNameType = [(ICSCallAnnouncement *)self callerNameType];
+  if (callerNameType == 2)
   {
     v15 = 3;
   }
 
   else
   {
-    v15 = 4 * (v14 == 1);
+    v15 = 4 * (callerNameType == 1);
   }
 
   [v5 setCallerIDType:v15];
-  v16 = [v5 voiceInfo];
+  voiceInfo = [v5 voiceInfo];
   v17 = [SiriTTSSynthesisVoice alloc];
-  v18 = [v16 languageCode];
-  v19 = [v16 name];
-  v20 = [v17 initWithLanguage:v18 name:v19];
+  languageCode = [voiceInfo languageCode];
+  name = [voiceInfo name];
+  v20 = [v17 initWithLanguage:languageCode name:name];
 
-  [v20 setGender:{objc_msgSend(v16, "gender")}];
+  [v20 setGender:{objc_msgSend(voiceInfo, "gender")}];
   v21 = [SiriTTSSpeechRequest alloc];
-  v22 = [v5 textToSpeak];
-  v23 = [v21 initWithText:v22 voice:v20];
+  textToSpeak = [v5 textToSpeak];
+  v23 = [v21 initWithText:textToSpeak voice:v20];
 
   [v23 setAudioSessionId:{-[ICSSiriCallAnnouncement audioSessionIdentifier](self, "audioSessionIdentifier")}];
   [(ICSSiriCallAnnouncement *)self setSpeechRequest:v23];
@@ -172,19 +172,19 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "", v7, 2u);
   }
 
-  v4 = [(ICSAnnouncement *)self delegate];
+  delegate = [(ICSAnnouncement *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICSAnnouncement *)self delegate];
-    [v6 announcementDidStart:self];
+    delegate2 = [(ICSAnnouncement *)self delegate];
+    [delegate2 announcementDidStart:self];
   }
 }
 
-- (void)didFinishSpeakingWithError:(id)a3
+- (void)didFinishSpeakingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,22 +192,22 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "", v10, 2u);
   }
 
-  if (v4)
+  if (errorCopy)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_100254444(v4, v6);
+      sub_100254444(errorCopy, v6);
     }
   }
 
-  v7 = [(ICSAnnouncement *)self delegate];
+  delegate = [(ICSAnnouncement *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(ICSAnnouncement *)self delegate];
-    [v9 announcementDidFinish:self];
+    delegate2 = [(ICSAnnouncement *)self delegate];
+    [delegate2 announcementDidFinish:self];
   }
 }
 

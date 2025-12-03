@@ -1,22 +1,22 @@
 @interface SBSnapshotSlotIdWrapper
 - (SBSnapshotSlotIdWrapper)init;
-- (SBSnapshotSlotIdWrapper)initWithContext:(id)a3 slotId:(unsigned int)a4;
+- (SBSnapshotSlotIdWrapper)initWithContext:(id)context slotId:(unsigned int)id;
 - (void)dealloc;
 @end
 
 @implementation SBSnapshotSlotIdWrapper
 
-- (SBSnapshotSlotIdWrapper)initWithContext:(id)a3 slotId:(unsigned int)a4
+- (SBSnapshotSlotIdWrapper)initWithContext:(id)context slotId:(unsigned int)id
 {
-  v7 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SBSnapshotSlotIdWrapper;
   v8 = [(SBSnapshotSlotIdWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
-    v9->_slotId = a4;
+    objc_storeStrong(&v8->_context, context);
+    v9->_slotId = id;
   }
 
   return v9;
@@ -24,8 +24,8 @@
 
 - (SBSnapshotSlotIdWrapper)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSnapshotUtilities.m" lineNumber:56 description:@"use initWithContext:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSnapshotUtilities.m" lineNumber:56 description:@"use initWithContext:"];
 
   return 0;
 }

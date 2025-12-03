@@ -1,6 +1,6 @@
 @interface MXUtilities
 + (BOOL)isAppAnalyticsEnabled;
-+ (BOOL)isAppInstalledForBundleID:(id)a3;
++ (BOOL)isAppInstalledForBundleID:(id)d;
 + (id)containerPath;
 + (id)getServicesAllowlist;
 + (id)getServicesDateFormatter;
@@ -50,7 +50,7 @@ void __28__MXUtilities_containerPath__block_invoke()
   block[1] = 3221225472;
   block[2] = __35__MXUtilities_getServicesAllowlist__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (getServicesAllowlist_once_token != -1)
   {
     dispatch_once(&getServicesAllowlist_once_token, block);
@@ -89,21 +89,21 @@ uint64_t __36__MXUtilities_isAppAnalyticsEnabled__block_invoke()
   return result;
 }
 
-+ (BOOL)isAppInstalledForBundleID:(id)a3
++ (BOOL)isAppInstalledForBundleID:(id)d
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  dCopy = d;
   v9 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v9];
+  v5 = [[v3 alloc] initWithBundleIdentifier:dCopy allowPlaceholder:0 error:&v9];
 
-  v6 = 0;
+  isInstalled = 0;
   if (!v9)
   {
-    v7 = [v5 applicationState];
-    v6 = [v7 isInstalled];
+    applicationState = [v5 applicationState];
+    isInstalled = [applicationState isInstalled];
   }
 
-  return v6;
+  return isInstalled;
 }
 
 + (id)osVersion
@@ -128,11 +128,11 @@ uint64_t __36__MXUtilities_isAppAnalyticsEnabled__block_invoke()
 
 + (id)regionFormat
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = v2;
-  if (v2)
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = currentLocale;
+  if (currentLocale)
   {
-    v4 = [v2 objectForKey:*MEMORY[0x277CBE690]];
+    v4 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
     v5 = v4;
     if (v4)
     {

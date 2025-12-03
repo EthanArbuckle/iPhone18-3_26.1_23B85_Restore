@@ -1,11 +1,11 @@
 @interface ProductEditorsChoiceCollectionViewCell
-- (_TtC18ASMessagesProvider38ProductEditorsChoiceCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider38ProductEditorsChoiceCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductEditorsChoiceCollectionViewCell
 
-- (_TtC18ASMessagesProvider38ProductEditorsChoiceCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider38ProductEditorsChoiceCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider38ProductEditorsChoiceCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -25,7 +25,7 @@
   v2 = v13.receiver;
   [(ProductEditorsChoiceCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC18ASMessagesProvider38ProductEditorsChoiceCollectionViewCell_editorsChoiceView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_2630C();
   sub_75D650();
   v6 = v5;

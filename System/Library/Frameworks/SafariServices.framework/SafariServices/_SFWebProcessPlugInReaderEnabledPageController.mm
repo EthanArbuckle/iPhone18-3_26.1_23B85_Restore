@@ -1,62 +1,62 @@
 @interface _SFWebProcessPlugInReaderEnabledPageController
 - (BOOL)readerHasBeenActivatedRecently;
 - (OpaqueJSValue)originalArticleFinder;
-- (_SFWebProcessPlugInReaderEnabledPageController)initWithPlugIn:(id)a3 contextController:(id)a4;
-- (id)_appBannerMetaElementInHeaderElement:(id)a3;
+- (_SFWebProcessPlugInReaderEnabledPageController)initWithPlugIn:(id)in contextController:(id)controller;
+- (id)_appBannerMetaElementInHeaderElement:(id)element;
 - (id)_appBannerMetaTagObserverProxy;
 - (id)_searchForSmartAppBannerMetaContent;
 - (void)_clearReaderControllerInterface;
-- (void)_detectAvailabilityAfterDelay:(double)a3 loadEvent:(int)a4;
+- (void)_detectAvailabilityAfterDelay:(double)delay loadEvent:(int)event;
 - (void)_detectReaderAvailabilityAfterSameDocumentNavigation;
 - (void)_setUpReaderActivityListenerProxy;
 - (void)_setUpReaderControllerInterface;
-- (void)activateFont:(id)a3;
+- (void)activateFont:(id)font;
 - (void)checkReaderAvailability;
 - (void)collectArticleContent;
 - (void)collectReaderContentForMail;
-- (void)collectReadingListItemInfoWithBookmarkID:(id)a3;
-- (void)didCreateReaderPageContextHandle:(id)a3;
-- (void)didDetermineAdditionalTextSamples:(id)a3;
-- (void)didDetermineReaderAvailability:(id)a3;
-- (void)getReaderArticleTitleWithReply:(id)a3;
+- (void)collectReadingListItemInfoWithBookmarkID:(id)d;
+- (void)didCreateReaderPageContextHandle:(id)handle;
+- (void)didDetermineAdditionalTextSamples:(id)samples;
+- (void)didDetermineReaderAvailability:(id)availability;
+- (void)getReaderArticleTitleWithReply:(id)reply;
 - (void)insertSummaryTextPlaceholder;
 - (void)loadNewReaderArticle;
 - (void)prepareReaderContentForPrinting;
 - (void)prepareToTransitionToReader;
-- (void)previewReaderImageURLWithReply:(id)a3;
-- (void)readerTextWasExtracted:(id)a3 withMetadata:(id)a4 wasDeterminingAvailability:(BOOL)a5;
-- (void)setArticleLocale:(id)a3;
-- (void)setArticleSummary:(id)a3 withSummaryHeader:(id)a4 tableOfContentsHeader:(id)a5 readerURLString:(id)a6 titles:(id)a7 paths:(id)a8 trailingText:(id)a9 tableOfContentsType:(int)a10 attribution:(id)a11;
-- (void)setConfiguration:(id)a3;
-- (void)setConfigurationForTesting:(id)a3;
-- (void)setOnDeviceSummaryButtonWithTitle:(id)a3;
-- (void)setReaderInitialTopScrollOffset:(int64_t)a3 configuration:(id)a4 isViewingArchive:(BOOL)a5;
-- (void)setReaderIsActive:(BOOL)a3;
-- (void)updateSummaryTextVisibility:(BOOL)a3;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didCommitLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didSameDocumentNavigation:(int64_t)a4 forFrame:(id)a5;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didStartProvisionalLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5;
-- (void)webProcessPlugInBrowserContextController:(id)a3 renderingProgressDidChange:(unint64_t)a4;
-- (void)willDestroyBrowserContextController:(id)a3;
+- (void)previewReaderImageURLWithReply:(id)reply;
+- (void)readerTextWasExtracted:(id)extracted withMetadata:(id)metadata wasDeterminingAvailability:(BOOL)availability;
+- (void)setArticleLocale:(id)locale;
+- (void)setArticleSummary:(id)summary withSummaryHeader:(id)header tableOfContentsHeader:(id)contentsHeader readerURLString:(id)string titles:(id)titles paths:(id)paths trailingText:(id)text tableOfContentsType:(int)self0 attribution:(id)self1;
+- (void)setConfiguration:(id)configuration;
+- (void)setConfigurationForTesting:(id)testing;
+- (void)setOnDeviceSummaryButtonWithTitle:(id)title;
+- (void)setReaderInitialTopScrollOffset:(int64_t)offset configuration:(id)configuration isViewingArchive:(BOOL)archive;
+- (void)setReaderIsActive:(BOOL)active;
+- (void)updateSummaryTextVisibility:(BOOL)visibility;
+- (void)webProcessPlugInBrowserContextController:(id)controller didCommitLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didSameDocumentNavigation:(int64_t)navigation forFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didStartProvisionalLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world;
+- (void)webProcessPlugInBrowserContextController:(id)controller renderingProgressDidChange:(unint64_t)change;
+- (void)willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation _SFWebProcessPlugInReaderEnabledPageController
 
-- (_SFWebProcessPlugInReaderEnabledPageController)initWithPlugIn:(id)a3 contextController:(id)a4
+- (_SFWebProcessPlugInReaderEnabledPageController)initWithPlugIn:(id)in contextController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = _SFWebProcessPlugInReaderEnabledPageController;
-  v8 = [(_SFWebProcessPlugInAutoFillPageController *)&v18 initWithPlugIn:v6 contextController:v7];
+  v8 = [(_SFWebProcessPlugInAutoFillPageController *)&v18 initWithPlugIn:inCopy contextController:controllerCopy];
   v9 = v8;
   if (v8)
   {
     [(_SFWebProcessPlugInReaderEnabledPageController *)v8 _setUpReaderControllerInterface];
-    v10 = [[SFWebProcessPlugInPageExtensionController alloc] initWithBrowserContextController:v7];
+    v10 = [[SFWebProcessPlugInPageExtensionController alloc] initWithBrowserContextController:controllerCopy];
     extensionController = v9->_extensionController;
     v9->_extensionController = v10;
 
@@ -74,9 +74,9 @@
   return v9;
 }
 
-- (void)willDestroyBrowserContextController:(id)a3
+- (void)willDestroyBrowserContextController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(_SFWebProcessPlugInReaderEnabledPageController *)self _clearReaderControllerInterface];
   ptr = self->_readerAvailabilityController.__ptr_;
   self->_readerAvailabilityController.__ptr_ = 0;
@@ -91,12 +91,12 @@
 
   v7.receiver = self;
   v7.super_class = _SFWebProcessPlugInReaderEnabledPageController;
-  [(_SFWebProcessPlugInAutoFillPageController *)&v7 willDestroyBrowserContextController:v4];
+  [(_SFWebProcessPlugInAutoFillPageController *)&v7 willDestroyBrowserContextController:controllerCopy];
 }
 
-- (void)didDetermineReaderAvailability:(id)a3
+- (void)didDetermineReaderAvailability:(id)availability
 {
-  v5 = a3;
+  availabilityCopy = availability;
   readerActivityListenerProxy = self->_readerActivityListenerProxy;
   if (!readerActivityListenerProxy)
   {
@@ -104,12 +104,12 @@
     readerActivityListenerProxy = self->_readerActivityListenerProxy;
   }
 
-  [(SFReaderEventsListener *)readerActivityListenerProxy didDetermineReaderAvailability:v5];
+  [(SFReaderEventsListener *)readerActivityListenerProxy didDetermineReaderAvailability:availabilityCopy];
 }
 
-- (void)didDetermineAdditionalTextSamples:(id)a3
+- (void)didDetermineAdditionalTextSamples:(id)samples
 {
-  v5 = a3;
+  samplesCopy = samples;
   readerActivityListenerProxy = self->_readerActivityListenerProxy;
   if (!readerActivityListenerProxy)
   {
@@ -117,14 +117,14 @@
     readerActivityListenerProxy = self->_readerActivityListenerProxy;
   }
 
-  [(SFReaderEventsListener *)readerActivityListenerProxy didDetermineAdditionalTextSamples:v5];
+  [(SFReaderEventsListener *)readerActivityListenerProxy didDetermineAdditionalTextSamples:samplesCopy];
 }
 
-- (void)readerTextWasExtracted:(id)a3 withMetadata:(id)a4 wasDeterminingAvailability:(BOOL)a5
+- (void)readerTextWasExtracted:(id)extracted withMetadata:(id)metadata wasDeterminingAvailability:(BOOL)availability
 {
-  v5 = a5;
-  v10 = a3;
-  v8 = a4;
+  availabilityCopy = availability;
+  extractedCopy = extracted;
+  metadataCopy = metadata;
   readerActivityListenerProxy = self->_readerActivityListenerProxy;
   if (!readerActivityListenerProxy)
   {
@@ -132,16 +132,16 @@
     readerActivityListenerProxy = self->_readerActivityListenerProxy;
   }
 
-  [(SFReaderEventsListener *)readerActivityListenerProxy readerTextWasExtracted:v10 withMetadata:v8 wasDeterminingAvailabilility:v5];
+  [(SFReaderEventsListener *)readerActivityListenerProxy readerTextWasExtracted:extractedCopy withMetadata:metadataCopy wasDeterminingAvailabilility:availabilityCopy];
 }
 
 - (void)_setUpReaderActivityListenerProxy
 {
-  v3 = [(WBSWebProcessPlugInPageController *)self browserContextController];
-  v7 = [v3 _remoteObjectRegistry];
+  browserContextController = [(WBSWebProcessPlugInPageController *)self browserContextController];
+  _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
 
   v4 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F506EB00];
-  v5 = [v7 remoteObjectProxyWithInterface:v4];
+  v5 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v4];
   readerActivityListenerProxy = self->_readerActivityListenerProxy;
   self->_readerActivityListenerProxy = v5;
 }
@@ -152,33 +152,33 @@
   availabilityControllerInterface = self->_availabilityControllerInterface;
   self->_availabilityControllerInterface = v3;
 
-  v6 = [(WBSWebProcessPlugInPageController *)self browserContextController];
-  v5 = [v6 _remoteObjectRegistry];
-  [v5 registerExportedObject:self interface:self->_availabilityControllerInterface];
+  browserContextController = [(WBSWebProcessPlugInPageController *)self browserContextController];
+  _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_availabilityControllerInterface];
 }
 
 - (void)_clearReaderControllerInterface
 {
   if (self->_readerAvailabilityController.__ptr_)
   {
-    v3 = [(WBSWebProcessPlugInPageController *)self browserContextController];
-    v5 = [v3 _remoteObjectRegistry];
+    browserContextController = [(WBSWebProcessPlugInPageController *)self browserContextController];
+    _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
 
-    [v5 unregisterExportedObject:self interface:self->_availabilityControllerInterface];
+    [_remoteObjectRegistry unregisterExportedObject:self interface:self->_availabilityControllerInterface];
     availabilityControllerInterface = self->_availabilityControllerInterface;
     self->_availabilityControllerInterface = 0;
   }
 }
 
-- (void)_detectAvailabilityAfterDelay:(double)a3 loadEvent:(int)a4
+- (void)_detectAvailabilityAfterDelay:(double)delay loadEvent:(int)event
 {
   ptr = self->_readerAvailabilityController.__ptr_;
   if ((*(ptr + 104) & 1) == 0)
   {
-    v6 = *&a4;
+    v6 = *&event;
     SafariShared::ReaderAvailabilityController::setCanRunAvailabilityDetection(ptr);
     v8 = self->_readerAvailabilityController.__ptr_;
-    v9.n128_f64[0] = a3;
+    v9.n128_f64[0] = delay;
 
     MEMORY[0x1EEE33458](v8, v6, v9);
   }
@@ -207,31 +207,31 @@
   return result;
 }
 
-- (void)setReaderInitialTopScrollOffset:(int64_t)a3 configuration:(id)a4 isViewingArchive:(BOOL)a5
+- (void)setReaderInitialTopScrollOffset:(int64_t)offset configuration:(id)configuration isViewingArchive:(BOOL)archive
 {
-  self->_cachedReaderTopScrollOffset = a3;
-  objc_storeStrong(&self->_initialReaderConfiguration, a4);
-  self->_viewingReadingListArchive = a5;
+  self->_cachedReaderTopScrollOffset = offset;
+  objc_storeStrong(&self->_initialReaderConfiguration, configuration);
+  self->_viewingReadingListArchive = archive;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   readerPageController = self->_readerPageController;
   if (readerPageController)
   {
-    [(_SFReaderWebProcessPlugInPageController *)readerPageController setConfiguration:v5];
+    [(_SFReaderWebProcessPlugInPageController *)readerPageController setConfiguration:configurationCopy];
   }
 }
 
-- (void)activateFont:(id)a3
+- (void)activateFont:(id)font
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fontCopy = font;
   v4 = *MEMORY[0x1E6965768];
   v7[0] = *MEMORY[0x1E6965790];
   v7[1] = v4;
-  v8[0] = v3;
+  v8[0] = fontCopy;
   v8[1] = MEMORY[0x1E695E118];
   v7[2] = *MEMORY[0x1E6965770];
   v8[2] = MEMORY[0x1E695E118];
@@ -242,48 +242,48 @@
   CTFontDescriptorMatchFontDescriptorsWithProgressHandler(v6, 0, &__block_literal_global_41);
 }
 
-- (void)setReaderIsActive:(BOOL)a3
+- (void)setReaderIsActive:(BOOL)active
 {
   readerPageController = self->_readerPageController;
   if (readerPageController)
   {
-    [(_SFReaderWebProcessPlugInPageController *)readerPageController setReaderIsActive:a3];
+    [(_SFReaderWebProcessPlugInPageController *)readerPageController setReaderIsActive:active];
   }
 }
 
-- (void)setArticleLocale:(id)a3
+- (void)setArticleLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   readerPageController = self->_readerPageController;
   if (readerPageController)
   {
-    [(_SFReaderWebProcessPlugInPageController *)readerPageController setArticleLocale:v5];
+    [(_SFReaderWebProcessPlugInPageController *)readerPageController setArticleLocale:localeCopy];
   }
 }
 
-- (void)setArticleSummary:(id)a3 withSummaryHeader:(id)a4 tableOfContentsHeader:(id)a5 readerURLString:(id)a6 titles:(id)a7 paths:(id)a8 trailingText:(id)a9 tableOfContentsType:(int)a10 attribution:(id)a11
+- (void)setArticleSummary:(id)summary withSummaryHeader:(id)header tableOfContentsHeader:(id)contentsHeader readerURLString:(id)string titles:(id)titles paths:(id)paths trailingText:(id)text tableOfContentsType:(int)self0 attribution:(id)self1
 {
-  v26 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a11;
+  summaryCopy = summary;
+  headerCopy = header;
+  contentsHeaderCopy = contentsHeader;
+  stringCopy = string;
+  titlesCopy = titles;
+  pathsCopy = paths;
+  textCopy = text;
+  attributionCopy = attribution;
   readerPageController = self->_readerPageController;
   if (readerPageController)
   {
-    LODWORD(v25) = a10;
-    [(_SFReaderWebProcessPlugInPageController *)readerPageController setArticleSummary:v26 withSummaryHeader:v17 tableOfContentsHeader:v18 readerURLString:v19 titles:v20 paths:v21 trailingText:v22 tableOfContentsType:v25 attribution:v23];
+    LODWORD(v25) = type;
+    [(_SFReaderWebProcessPlugInPageController *)readerPageController setArticleSummary:summaryCopy withSummaryHeader:headerCopy tableOfContentsHeader:contentsHeaderCopy readerURLString:stringCopy titles:titlesCopy paths:pathsCopy trailingText:textCopy tableOfContentsType:v25 attribution:attributionCopy];
   }
 }
 
-- (void)previewReaderImageURLWithReply:(id)a3
+- (void)previewReaderImageURLWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   ptr = self->_readerAvailabilityController.__ptr_;
-  v7 = v4;
+  v7 = replyCopy;
   if (ptr)
   {
     v6 = SafariShared::ReaderAvailabilityController::previewReaderImageURL(ptr);
@@ -292,25 +292,25 @@
 
   else
   {
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)setOnDeviceSummaryButtonWithTitle:(id)a3
+- (void)setOnDeviceSummaryButtonWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   readerPageController = self->_readerPageController;
   if (readerPageController)
   {
-    [(_SFReaderWebProcessPlugInPageController *)readerPageController setOnDeviceSummaryButtonWithTitle:v5];
+    [(_SFReaderWebProcessPlugInPageController *)readerPageController setOnDeviceSummaryButtonWithTitle:titleCopy];
   }
 }
 
-- (void)getReaderArticleTitleWithReply:(id)a3
+- (void)getReaderArticleTitleWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   ptr = self->_readerAvailabilityController.__ptr_;
-  v7 = v4;
+  v7 = replyCopy;
   if (ptr)
   {
     v6 = (*(*ptr + 16))(ptr);
@@ -319,16 +319,16 @@
 
   else
   {
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)updateSummaryTextVisibility:(BOOL)a3
+- (void)updateSummaryTextVisibility:(BOOL)visibility
 {
   readerPageController = self->_readerPageController;
   if (readerPageController)
   {
-    [(_SFReaderWebProcessPlugInPageController *)readerPageController updateSummaryTextVisibility:a3];
+    [(_SFReaderWebProcessPlugInPageController *)readerPageController updateSummaryTextVisibility:visibility];
   }
 }
 
@@ -362,9 +362,9 @@
   }
 }
 
-- (void)didCreateReaderPageContextHandle:(id)a3
+- (void)didCreateReaderPageContextHandle:(id)handle
 {
-  v4 = [_SFReaderWebProcessPlugInPageController readerPageControllerForContextHandle:a3];
+  v4 = [_SFReaderWebProcessPlugInPageController readerPageControllerForContextHandle:handle];
   if (v4)
   {
     [(_SFReaderWebProcessPlugInPageController *)self->_readerPageController setOriginalPageController:0];
@@ -384,29 +384,29 @@
   }
 }
 
-- (void)collectReadingListItemInfoWithBookmarkID:(id)a3
+- (void)collectReadingListItemInfoWithBookmarkID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v4 = SafariServices::ReaderAvailabilityController::collectReadingListItemInformation(self->_readerAvailabilityController.__ptr_);
   if (v4)
   {
-    [(SFReaderEventsListener *)self->_readerActivityListenerProxy didCollectReadingListItemInfo:v4 bookmarkID:v5];
+    [(SFReaderEventsListener *)self->_readerActivityListenerProxy didCollectReadingListItemInfo:v4 bookmarkID:dCopy];
   }
 }
 
 - (void)collectReaderContentForMail
 {
-  v3 = [(_SFReaderWebProcessPlugInPageController *)self->_readerPageController collectReaderContentFromPrintAndMailingFrame];
+  collectReaderContentFromPrintAndMailingFrame = [(_SFReaderWebProcessPlugInPageController *)self->_readerPageController collectReaderContentFromPrintAndMailingFrame];
   [(SFReaderEventsListener *)self->_readerActivityListenerProxy didCollectReaderContentForMail:?];
 }
 
 - (void)prepareReaderContentForPrinting
 {
-  v3 = [(_SFReaderWebProcessPlugInPageController *)self->_readerPageController printingMailingFrame];
+  printingMailingFrame = [(_SFReaderWebProcessPlugInPageController *)self->_readerPageController printingMailingFrame];
   readerActivityListenerProxy = self->_readerActivityListenerProxy;
-  v6 = v3;
-  v5 = [v3 handle];
-  [(SFReaderEventsListener *)readerActivityListenerProxy didPrepareReaderContentForPrinting:v5];
+  v6 = printingMailingFrame;
+  handle = [printingMailingFrame handle];
+  [(SFReaderEventsListener *)readerActivityListenerProxy didPrepareReaderContentForPrinting:handle];
 }
 
 - (void)collectArticleContent
@@ -422,26 +422,26 @@
   [(SFReaderEventsListener *)readerActivityListenerProxy didCollectArticleContent:v4];
 }
 
-- (void)setConfigurationForTesting:(id)a3
+- (void)setConfigurationForTesting:(id)testing
 {
-  v5 = a3;
+  testingCopy = testing;
   ptr = self->_readerAvailabilityController.__ptr_;
   if (ptr)
   {
-    SafariServices::ReaderAvailabilityController::setConfigurationForTesting(ptr, v5);
+    SafariServices::ReaderAvailabilityController::setConfigurationForTesting(ptr, testingCopy);
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didStartProvisionalLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didStartProvisionalLoadForFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
   v10.receiver = self;
   v10.super_class = _SFWebProcessPlugInReaderEnabledPageController;
-  [(_SFWebProcessPlugInAutoFillPageController *)&v10 webProcessPlugInBrowserContextController:v6 didStartProvisionalLoadForFrame:v7];
-  v8 = [v6 mainFrame];
+  [(_SFWebProcessPlugInAutoFillPageController *)&v10 webProcessPlugInBrowserContextController:controllerCopy didStartProvisionalLoadForFrame:frameCopy];
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v8 == v7)
+  if (mainFrame == frameCopy)
   {
     ptr = self->_readerAvailabilityController.__ptr_;
     if (!ptr)
@@ -453,29 +453,29 @@
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v11 mainFrame];
+  controllerCopy = controller;
+  frameCopy = frame;
+  worldCopy = world;
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v10 == v8)
+  if (mainFrame == frameCopy)
   {
-    [(SFWebProcessPlugInCertificateWarningController *)self->_certificateWarningController injectCertificateWarningBindingsForFrame:v8 inScriptWorld:v9];
+    [(SFWebProcessPlugInCertificateWarningController *)self->_certificateWarningController injectCertificateWarningBindingsForFrame:frameCopy inScriptWorld:worldCopy];
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didCommitLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didCommitLoadForFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
   v10.receiver = self;
   v10.super_class = _SFWebProcessPlugInReaderEnabledPageController;
-  [(_SFWebProcessPlugInAutoFillPageController *)&v10 webProcessPlugInBrowserContextController:v6 didCommitLoadForFrame:v7];
-  v8 = [v6 mainFrame];
+  [(_SFWebProcessPlugInAutoFillPageController *)&v10 webProcessPlugInBrowserContextController:controllerCopy didCommitLoadForFrame:frameCopy];
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v8 == v7)
+  if (mainFrame == frameCopy)
   {
     ptr = self->_readerAvailabilityController.__ptr_;
     if (ptr)
@@ -487,16 +487,16 @@
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didSameDocumentNavigation:(int64_t)a4 forFrame:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller didSameDocumentNavigation:(int64_t)navigation forFrame:(id)frame
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  frameCopy = frame;
   v12.receiver = self;
   v12.super_class = _SFWebProcessPlugInReaderEnabledPageController;
-  [(_SFWebProcessPlugInAutoFillPageController *)&v12 webProcessPlugInBrowserContextController:v8 didSameDocumentNavigation:a4 forFrame:v9];
-  v10 = [v8 mainFrame];
+  [(_SFWebProcessPlugInAutoFillPageController *)&v12 webProcessPlugInBrowserContextController:controllerCopy didSameDocumentNavigation:navigation forFrame:frameCopy];
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v10 == v9)
+  if (mainFrame == frameCopy)
   {
     ptr = self->_readerAvailabilityController.__ptr_;
     if (ptr)
@@ -507,13 +507,13 @@
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 mainFrame];
+  controllerCopy = controller;
+  frameCopy = frame;
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v7 == v6 && self->_readerAvailabilityController.__ptr_)
+  if (mainFrame == frameCopy && self->_readerAvailabilityController.__ptr_)
   {
     if ([(_SFWebProcessPlugInReaderEnabledPageController *)self readerHasBeenActivatedRecently])
     {
@@ -524,13 +524,13 @@
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishLoadForFrame:(id)frame
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 mainFrame];
+  controllerCopy = controller;
+  frameCopy = frame;
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v7 == v6)
+  if (mainFrame == frameCopy)
   {
     if (self->_readerAvailabilityController.__ptr_)
     {
@@ -538,11 +538,11 @@
       SafariShared::ReaderAvailabilityController::didFinishLoad(self->_readerAvailabilityController.__ptr_);
     }
 
-    v8 = [(_SFWebProcessPlugInReaderEnabledPageController *)self _searchForSmartAppBannerMetaContent];
-    if (v8)
+    _searchForSmartAppBannerMetaContent = [(_SFWebProcessPlugInReaderEnabledPageController *)self _searchForSmartAppBannerMetaContent];
+    if (_searchForSmartAppBannerMetaContent)
     {
-      v9 = [(_SFWebProcessPlugInReaderEnabledPageController *)self _appBannerMetaTagObserverProxy];
-      [v9 didFindAppBannerWithContent:v8];
+      _appBannerMetaTagObserverProxy = [(_SFWebProcessPlugInReaderEnabledPageController *)self _appBannerMetaTagObserverProxy];
+      [_appBannerMetaTagObserverProxy didFindAppBannerWithContent:_searchForSmartAppBannerMetaContent];
     }
   }
 }
@@ -554,20 +554,20 @@
     return 0;
   }
 
-  v2 = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
-  v3 = [v2 plugInController];
-  v4 = [v3 parameters];
-  v5 = [v4 valueForKey:*MEMORY[0x1E69C9570]];
+  webProcessPlugIn = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
+  plugInController = [webProcessPlugIn plugInController];
+  parameters = [plugInController parameters];
+  v5 = [parameters valueForKey:*MEMORY[0x1E69C9570]];
 
   HasBeenActivatedRecently = SafariShared::ReaderAvailabilityController::readerHasBeenActivatedRecently(v5, v6);
   return HasBeenActivatedRecently;
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 renderingProgressDidChange:(unint64_t)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller renderingProgressDidChange:(unint64_t)change
 {
-  v4 = a4;
-  v6 = a3;
-  if ((v4 & 0x100) != 0 && self->_readerAvailabilityController.__ptr_ && [(_SFWebProcessPlugInReaderEnabledPageController *)self readerHasBeenActivatedRecently])
+  changeCopy = change;
+  controllerCopy = controller;
+  if ((changeCopy & 0x100) != 0 && self->_readerAvailabilityController.__ptr_ && [(_SFWebProcessPlugInReaderEnabledPageController *)self readerHasBeenActivatedRecently])
   {
     [(_SFWebProcessPlugInReaderEnabledPageController *)self _detectAvailabilityAfterDelay:0 loadEvent:1.0];
   }
@@ -578,11 +578,11 @@
   appBannerObserverProxy = self->_appBannerObserverProxy;
   if (!appBannerObserverProxy)
   {
-    v4 = [(WBSWebProcessPlugInPageController *)self browserContextController];
-    v5 = [v4 _remoteObjectRegistry];
+    browserContextController = [(WBSWebProcessPlugInPageController *)self browserContextController];
+    _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
 
     v6 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F50A8848];
-    v7 = [v5 remoteObjectProxyWithInterface:v6];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
     v8 = self->_appBannerObserverProxy;
     self->_appBannerObserverProxy = v7;
 
@@ -592,16 +592,16 @@
   return appBannerObserverProxy;
 }
 
-- (id)_appBannerMetaElementInHeaderElement:(id)a3
+- (id)_appBannerMetaElementInHeaderElement:(id)element
 {
-  v3 = [a3 firstChild];
-  if (!v3)
+  firstChild = [element firstChild];
+  if (!firstChild)
   {
-    v5 = 0;
+    nextSibling = 0;
     goto LABEL_11;
   }
 
-  v4 = v3;
+  v4 = firstChild;
   while (1)
   {
     objc_opt_class();
@@ -611,20 +611,20 @@
     }
 
 LABEL_7:
-    v5 = [v4 nextSibling];
+    nextSibling = [v4 nextSibling];
 
-    v4 = v5;
-    if (!v5)
+    v4 = nextSibling;
+    if (!nextSibling)
     {
       goto LABEL_11;
     }
   }
 
-  v5 = v4;
-  v6 = [v5 tagName];
-  v7 = [v6 caseInsensitiveCompare:@"META"];
+  nextSibling = v4;
+  tagName = [nextSibling tagName];
+  v7 = [tagName caseInsensitiveCompare:@"META"];
 
-  if (v7 || ([v5 getAttribute:@"name"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "caseInsensitiveCompare:", @"apple-itunes-app"), v8, v9))
+  if (v7 || ([nextSibling getAttribute:@"name"], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "caseInsensitiveCompare:", @"apple-itunes-app"), v8, v9))
   {
 
     goto LABEL_7;
@@ -632,19 +632,19 @@ LABEL_7:
 
 LABEL_11:
 
-  return v5;
+  return nextSibling;
 }
 
 - (id)_searchForSmartAppBannerMetaContent
 {
-  v3 = [(WBSWebProcessPlugInPageController *)self browserContextController];
-  v4 = [v3 mainFrameDocument];
+  browserContextController = [(WBSWebProcessPlugInPageController *)self browserContextController];
+  mainFrameDocument = [browserContextController mainFrameDocument];
 
-  v5 = [v4 body];
-  v6 = [v5 parentNode];
-  v7 = [v6 firstChild];
+  body = [mainFrameDocument body];
+  parentNode = [body parentNode];
+  firstChild = [parentNode firstChild];
 
-  if (!v7)
+  if (!firstChild)
   {
 LABEL_6:
     v12 = 0;
@@ -660,18 +660,18 @@ LABEL_6:
     }
 
 LABEL_5:
-    v11 = [v7 nextSibling];
+    nextSibling = [firstChild nextSibling];
 
-    v7 = v11;
-    if (!v11)
+    firstChild = nextSibling;
+    if (!nextSibling)
     {
       goto LABEL_6;
     }
   }
 
-  v8 = v7;
-  v9 = [v8 tagName];
-  v10 = [v9 caseInsensitiveCompare:@"HEAD"];
+  v8 = firstChild;
+  tagName = [v8 tagName];
+  v10 = [tagName caseInsensitiveCompare:@"HEAD"];
 
   if (v10)
   {

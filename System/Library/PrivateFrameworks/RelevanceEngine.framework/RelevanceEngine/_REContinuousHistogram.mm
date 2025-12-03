@@ -1,31 +1,31 @@
 @interface _REContinuousHistogram
-- (BOOL)isEqual:(id)a3;
-- (_REContinuousHistogram)initWithFeature:(id)a3 binningSize:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)countForValue:(unint64_t)a3;
-- (unint64_t)countOfValuesBetweenMinValue:(unint64_t)a3 maxValue:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_REContinuousHistogram)initWithFeature:(id)feature binningSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)countForValue:(unint64_t)value;
+- (unint64_t)countOfValuesBetweenMinValue:(unint64_t)value maxValue:(unint64_t)maxValue;
 - (unint64_t)hash;
 - (unint64_t)mean;
 - (unint64_t)standardDeviation;
-- (void)_enumerateValuesBetweenMinValue:(unint64_t)a3 maxValue:(unint64_t)a4 block:(id)a5;
-- (void)addValue:(unint64_t)a3;
+- (void)_enumerateValuesBetweenMinValue:(unint64_t)value maxValue:(unint64_t)maxValue block:(id)block;
+- (void)addValue:(unint64_t)value;
 - (void)dealloc;
-- (void)enumerateValuesUsingBlock:(id)a3;
-- (void)removeValue:(unint64_t)a3;
+- (void)enumerateValuesUsingBlock:(id)block;
+- (void)removeValue:(unint64_t)value;
 @end
 
 @implementation _REContinuousHistogram
 
-- (_REContinuousHistogram)initWithFeature:(id)a3 binningSize:(unint64_t)a4
+- (_REContinuousHistogram)initWithFeature:(id)feature binningSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = _REContinuousHistogram;
-  v5 = [(REHistogram *)&v10 initWithFeature:a3 binningSize:?];
+  v5 = [(REHistogram *)&v10 initWithFeature:feature binningSize:?];
   v6 = v5;
   if (v5)
   {
-    v5->_binningValue = a4;
-    RERetainFeatureValueTaggedPointer(a4);
+    v5->_binningValue = size;
+    RERetainFeatureValueTaggedPointer(size);
     v7 = objc_alloc_init(RESortedDictionary);
     values = v6->_values;
     v6->_values = v7;
@@ -50,10 +50,10 @@
   return [(RESortedDictionary *)self->_values hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -61,10 +61,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = _REContinuousHistogram, [(REHistogram *)&v11 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = _REContinuousHistogram, [(REHistogram *)&v11 isEqual:equalCopy]))
     {
       values = self->_values;
-      v6 = v4->_values;
+      v6 = equalCopy->_values;
       v7 = values;
       v8 = v7;
       if (v7 == v6)
@@ -87,11 +87,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = _REContinuousHistogram;
-  v4 = [(REHistogram *)&v13 copyWithZone:a3];
+  v4 = [(REHistogram *)&v13 copyWithZone:zone];
   binningValue = self->_binningValue;
   v4[2] = binningValue;
   RERetainFeatureValueTaggedPointer(binningValue);
@@ -144,9 +144,9 @@
 {
   if ([(_REContinuousHistogram *)self count])
   {
-    v3 = [(_REContinuousHistogram *)self mean];
-    v5 = REDoubleValueForTaggedPointer(v3, v4);
-    REReleaseFeatureValueTaggedPointer(v3);
+    mean = [(_REContinuousHistogram *)self mean];
+    v5 = REDoubleValueForTaggedPointer(mean, v4);
+    REReleaseFeatureValueTaggedPointer(mean);
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
@@ -177,9 +177,9 @@
   }
 }
 
-- (void)addValue:(unint64_t)a3
+- (void)addValue:(unint64_t)value
 {
-  v6 = [[_REHistogramRange alloc] initWithValue:a3 binningSize:self->_binningValue];
+  v6 = [[_REHistogramRange alloc] initWithValue:value binningSize:self->_binningValue];
   v5 = [(RESortedDictionary *)self->_values objectForKey:?];
   if (!v5)
   {
@@ -187,30 +187,30 @@
     [(RESortedDictionary *)self->_values setObject:v5 forKey:v6];
   }
 
-  [(RETaggedFeatureValueCountedSet *)v5 addFeatureValue:a3];
+  [(RETaggedFeatureValueCountedSet *)v5 addFeatureValue:value];
 }
 
-- (void)removeValue:(unint64_t)a3
+- (void)removeValue:(unint64_t)value
 {
-  v6 = [[_REHistogramRange alloc] initWithValue:a3 binningSize:self->_binningValue];
+  v6 = [[_REHistogramRange alloc] initWithValue:value binningSize:self->_binningValue];
   v5 = [(RESortedDictionary *)self->_values objectForKey:?];
-  [v5 removeFeatureValue:a3];
+  [v5 removeFeatureValue:value];
   if (![v5 count])
   {
     [(RESortedDictionary *)self->_values removeObjectForKey:v6];
   }
 }
 
-- (unint64_t)countForValue:(unint64_t)a3
+- (unint64_t)countForValue:(unint64_t)value
 {
-  v5 = [[_REHistogramRange alloc] initWithValue:a3 binningSize:self->_binningValue];
+  v5 = [[_REHistogramRange alloc] initWithValue:value binningSize:self->_binningValue];
   v6 = [(RESortedDictionary *)self->_values objectForKey:v5];
-  v7 = [v6 countForFeatureValue:a3];
+  v7 = [v6 countForFeatureValue:value];
 
   return v7;
 }
 
-- (unint64_t)countOfValuesBetweenMinValue:(unint64_t)a3 maxValue:(unint64_t)a4
+- (unint64_t)countOfValuesBetweenMinValue:(unint64_t)value maxValue:(unint64_t)maxValue
 {
   v7 = 0;
   v8 = &v7;
@@ -221,20 +221,20 @@
   v6[2] = __64___REContinuousHistogram_countOfValuesBetweenMinValue_maxValue___block_invoke;
   v6[3] = &unk_2785FAC20;
   v6[4] = &v7;
-  [(_REContinuousHistogram *)self _enumerateValuesBetweenMinValue:a3 maxValue:a4 block:v6];
+  [(_REContinuousHistogram *)self _enumerateValuesBetweenMinValue:value maxValue:maxValue block:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (void)_enumerateValuesBetweenMinValue:(unint64_t)a3 maxValue:(unint64_t)a4 block:(id)a5
+- (void)_enumerateValuesBetweenMinValue:(unint64_t)value maxValue:(unint64_t)maxValue block:(id)block
 {
-  v8 = a5;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
-    if (RECompareFeatureValues(a3, a4) == 1)
+    if (RECompareFeatureValues(value, maxValue) == 1)
     {
-      [(_REContinuousHistogram *)self _enumerateValuesBetweenMinValue:a4 maxValue:a3 block:v8];
+      [(_REContinuousHistogram *)self _enumerateValuesBetweenMinValue:maxValue maxValue:value block:blockCopy];
     }
 
     else
@@ -243,24 +243,24 @@
       v20 = 3221225472;
       v21 = __73___REContinuousHistogram__enumerateValuesBetweenMinValue_maxValue_block___block_invoke;
       v22 = &unk_2785FAC70;
-      v23 = self;
-      v25 = a3;
-      v26 = a4;
-      v24 = v8;
+      selfCopy = self;
+      valueCopy = value;
+      maxValueCopy = maxValue;
+      v24 = blockCopy;
       v9 = MEMORY[0x22AABC5E0](&v19);
-      RERetainFeatureValueTaggedPointer(a3);
+      RERetainFeatureValueTaggedPointer(value);
       v10 = [_REHistogramRange alloc];
-      v11 = [(_REHistogramRange *)v10 initWithValue:a4 binningSize:self->_binningValue, v19, v20, v21, v22, v23];
+      selfCopy = [(_REHistogramRange *)v10 initWithValue:maxValue binningSize:self->_binningValue, v19, v20, v21, v22, selfCopy];
       while (1)
       {
-        v12 = [[_REHistogramRange alloc] initWithValue:a3 binningSize:self->_binningValue];
+        v12 = [[_REHistogramRange alloc] initWithValue:value binningSize:self->_binningValue];
         (v9)[2](v9, v12);
-        if (RECompareFeatureValues([(_REHistogramRange *)v11 min], a3) != 1 && RECompareFeatureValues(a3, [(_REHistogramRange *)v11 max]) != 1)
+        if (RECompareFeatureValues([(_REHistogramRange *)selfCopy min], value) != 1 && RECompareFeatureValues(value, [(_REHistogramRange *)selfCopy max]) != 1)
         {
           break;
         }
 
-        REReleaseFeatureValueTaggedPointer(a3);
+        REReleaseFeatureValueTaggedPointer(value);
         v13 = [(_REHistogramRange *)v12 mid];
         if (REFeatureValueTypeForTaggedPointer(self->_binningValue) == 1)
         {
@@ -276,26 +276,26 @@
           v17 = RECreateDoubleFeatureValueTaggedPointer();
         }
 
-        a3 = v17;
+        value = v17;
       }
 
-      REReleaseFeatureValueTaggedPointer(a3);
+      REReleaseFeatureValueTaggedPointer(value);
     }
   }
 }
 
-- (void)enumerateValuesUsingBlock:(id)a3
+- (void)enumerateValuesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     values = self->_values;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __52___REContinuousHistogram_enumerateValuesUsingBlock___block_invoke;
     v7[3] = &unk_2785FACC0;
-    v8 = v4;
+    v8 = blockCopy;
     [(RESortedDictionary *)values enumerateObjectsUsingBlock:v7];
   }
 }

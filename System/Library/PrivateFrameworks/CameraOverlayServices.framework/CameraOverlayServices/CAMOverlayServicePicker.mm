@@ -1,33 +1,33 @@
 @interface CAMOverlayServicePicker
-- (BOOL)isContentEqual:(id)a3;
+- (BOOL)isContentEqual:(id)equal;
 - (BOOL)isEnabled;
-- (CAMOverlayServicePicker)initWithCoder:(id)a3;
-- (CAMOverlayServicePicker)initWithIdentifier:(id)a3 pickerType:(int64_t)a4 captureUniqueID:(id)a5;
-- (CAMOverlayServicePicker)initWithIdentifier:(id)a3 title:(id)a4 imageName:(id)a5 valueTitles:(id)a6;
-- (id)updateWithIndexValue:(int64_t)a3;
-- (id)updateWithStyleDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CAMOverlayServicePicker)initWithCoder:(id)coder;
+- (CAMOverlayServicePicker)initWithIdentifier:(id)identifier pickerType:(int64_t)type captureUniqueID:(id)d;
+- (CAMOverlayServicePicker)initWithIdentifier:(id)identifier title:(id)title imageName:(id)name valueTitles:(id)titles;
+- (id)updateWithIndexValue:(int64_t)value;
+- (id)updateWithStyleDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAMOverlayServicePicker
 
-- (CAMOverlayServicePicker)initWithIdentifier:(id)a3 title:(id)a4 imageName:(id)a5 valueTitles:(id)a6
+- (CAMOverlayServicePicker)initWithIdentifier:(id)identifier title:(id)title imageName:(id)name valueTitles:(id)titles
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  titlesCopy = titles;
   v29.receiver = self;
   v29.super_class = CAMOverlayServicePicker;
-  v11 = [(CAMAbstractOverlayServiceControl *)&v29 _initWithIdentifier:a3 title:a4 imageName:a5];
+  v11 = [(CAMAbstractOverlayServiceControl *)&v29 _initWithIdentifier:identifier title:title imageName:name];
   v12 = v11;
   if (v11)
   {
     v11->_pickerType = 0;
-    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(titlesCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v10;
+    v14 = titlesCopy;
     v15 = [v14 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v15)
     {
@@ -44,8 +44,8 @@
           }
 
           v19 = *(*(&v25 + 1) + 8 * v18);
-          v20 = [objc_opt_class() _preferredLocale];
-          v21 = [v19 uppercaseStringWithLocale:v20];
+          _preferredLocale = [objc_opt_class() _preferredLocale];
+          v21 = [v19 uppercaseStringWithLocale:_preferredLocale];
           [(NSArray *)v13 addObject:v21];
 
           ++v18;
@@ -66,21 +66,21 @@
   return v12;
 }
 
-- (CAMOverlayServicePicker)initWithIdentifier:(id)a3 pickerType:(int64_t)a4 captureUniqueID:(id)a5
+- (CAMOverlayServicePicker)initWithIdentifier:(id)identifier pickerType:(int64_t)type captureUniqueID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  identifierCopy = identifier;
+  dCopy = d;
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:NSClassFromString(&cfstr_Camoverlayserv.isa)];
       v11 = [v10 localizedStringForKey:@"PICKER_STYLE" value:&stru_28432BD98 table:@"CameraOverlayServices"];
       v13.receiver = self;
       v13.super_class = CAMOverlayServicePicker;
-      self = [(CAMAbstractOverlayServiceControl *)&v13 _initWithIdentifier:v8 title:v11 imageName:@"dot.dot.grid.app"];
+      self = [(CAMAbstractOverlayServiceControl *)&v13 _initWithIdentifier:identifierCopy title:v11 imageName:@"dot.dot.grid.app"];
 
-      objc_storeStrong(&self->_captureSessionUniqueID, a5);
+      objc_storeStrong(&self->_captureSessionUniqueID, d);
       self->_pickerType = 1;
     }
   }
@@ -98,25 +98,25 @@
 {
   v5.receiver = self;
   v5.super_class = CAMOverlayServicePicker;
-  v3 = [(CAMAbstractOverlayServiceControl *)&v5 isEnabled];
-  if (v3)
+  isEnabled = [(CAMAbstractOverlayServiceControl *)&v5 isEnabled];
+  if (isEnabled)
   {
-    LOBYTE(v3) = [(NSArray *)self->_valueTitles count]> 1;
+    LOBYTE(isEnabled) = [(NSArray *)self->_valueTitles count]> 1;
   }
 
-  return v3;
+  return isEnabled;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = CAMOverlayServicePicker;
-  if (-[CAMAbstractOverlayServiceControl isContentEqual:](&v10, sel_isContentEqual_, v4) && (pickerType = self->_pickerType, pickerType == [v4 pickerType]))
+  if (-[CAMAbstractOverlayServiceControl isContentEqual:](&v10, sel_isContentEqual_, equalCopy) && (pickerType = self->_pickerType, pickerType == [equalCopy pickerType]))
   {
     valueTitles = self->_valueTitles;
-    v7 = [v4 valueTitles];
-    v8 = [(NSArray *)valueTitles isEqualToArray:v7];
+    valueTitles = [equalCopy valueTitles];
+    v8 = [(NSArray *)valueTitles isEqualToArray:valueTitles];
   }
 
   else
@@ -127,70 +127,70 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20.receiver = self;
   v20.super_class = CAMOverlayServicePicker;
-  v4 = a3;
-  [(CAMAbstractOverlayServiceControl *)&v20 encodeWithCoder:v4];
-  v5 = [(CAMOverlayServicePicker *)self valueTitles];
+  coderCopy = coder;
+  [(CAMAbstractOverlayServiceControl *)&v20 encodeWithCoder:coderCopy];
+  valueTitles = [(CAMOverlayServicePicker *)self valueTitles];
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v6 stringWithFormat:@"%@.%@", v8, @"valueTitles", v20.receiver, v20.super_class];
-  [v4 encodeObject:v5 forKey:v9];
+  [coderCopy encodeObject:valueTitles forKey:v9];
 
-  v10 = [(CAMOverlayServicePicker *)self captureSessionUniqueID];
+  captureSessionUniqueID = [(CAMOverlayServicePicker *)self captureSessionUniqueID];
   v11 = MEMORY[0x277CCACA8];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   v14 = [v11 stringWithFormat:@"%@.%@", v13, @"captureSessionUniqueID"];
-  [v4 encodeObject:v10 forKey:v14];
+  [coderCopy encodeObject:captureSessionUniqueID forKey:v14];
 
-  v15 = [(CAMOverlayServicePicker *)self pickerType];
+  pickerType = [(CAMOverlayServicePicker *)self pickerType];
   v16 = MEMORY[0x277CCACA8];
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
   v19 = [v16 stringWithFormat:@"%@.%@", v18, @"pickerType"];
-  [v4 encodeInteger:v15 forKey:v19];
+  [coderCopy encodeInteger:pickerType forKey:v19];
 }
 
-- (CAMOverlayServicePicker)initWithCoder:(id)a3
+- (CAMOverlayServicePicker)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v4 stringWithFormat:@"%@.%@", v7, @"pickerType"];
-  v45 = [v5 decodeIntegerForKey:v8];
+  v45 = [coderCopy decodeIntegerForKey:v8];
 
   v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   v13 = [v10 stringWithFormat:@"%@.%@", v12, @"identifier"];
-  v46 = [v5 decodeObjectOfClasses:v9 forKey:v13];
+  v46 = [coderCopy decodeObjectOfClasses:v9 forKey:v13];
 
   v14 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v15 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   v18 = [v15 stringWithFormat:@"%@.%@", v17, @"title"];
-  v44 = [v5 decodeObjectOfClasses:v14 forKey:v18];
+  v44 = [coderCopy decodeObjectOfClasses:v14 forKey:v18];
 
   v19 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v20 = MEMORY[0x277CCACA8];
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
   v23 = [v20 stringWithFormat:@"%@.%@", v22, @"imageName"];
-  v24 = [v5 decodeObjectOfClasses:v19 forKey:v23];
+  v24 = [coderCopy decodeObjectOfClasses:v19 forKey:v23];
 
   v25 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
   v26 = MEMORY[0x277CCACA8];
   v27 = objc_opt_class();
   v28 = NSStringFromClass(v27);
   v29 = [v26 stringWithFormat:@"%@.%@", v28, @"captureSessionUniqueID"];
-  v30 = [v5 decodeObjectOfClasses:v25 forKey:v29];
+  v30 = [coderCopy decodeObjectOfClasses:v25 forKey:v29];
 
   v31 = MEMORY[0x277CBEB98];
   v32 = objc_opt_class();
@@ -199,7 +199,7 @@
   v35 = objc_opt_class();
   v36 = NSStringFromClass(v35);
   v37 = [v34 stringWithFormat:@"%@.%@", v36, @"valueTitles"];
-  v38 = [v5 decodeObjectOfClasses:v33 forKey:v37];
+  v38 = [coderCopy decodeObjectOfClasses:v33 forKey:v37];
 
   if (v45 == 1)
   {
@@ -238,9 +238,9 @@ LABEL_12:
   }
 
 LABEL_15:
-  v42 = [(CAMAbstractOverlayServiceControl *)self identifier];
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
 
-  if (!v42)
+  if (!identifier)
   {
 
     self = 0;
@@ -249,14 +249,14 @@ LABEL_15:
   return self;
 }
 
-- (id)updateWithStyleDictionary:(id)a3
+- (id)updateWithStyleDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if ([(CAMOverlayServicePicker *)self pickerType]== 1)
   {
     v5 = [CAMOverlayServiceControlUpdate alloc];
-    v6 = [(CAMAbstractOverlayServiceControl *)self identifier];
-    v7 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:v6 styleDictionary:v4];
+    identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+    v7 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:identifier styleDictionary:dictionaryCopy];
   }
 
   else
@@ -267,11 +267,11 @@ LABEL_15:
   return v7;
 }
 
-- (id)updateWithIndexValue:(int64_t)a3
+- (id)updateWithIndexValue:(int64_t)value
 {
   v5 = [CAMOverlayServiceControlUpdate alloc];
-  v6 = [(CAMAbstractOverlayServiceControl *)self identifier];
-  v7 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:v6 indexValue:a3];
+  identifier = [(CAMAbstractOverlayServiceControl *)self identifier];
+  v7 = [(CAMOverlayServiceControlUpdate *)v5 _initWithControlIdentifier:identifier indexValue:value];
 
   return v7;
 }

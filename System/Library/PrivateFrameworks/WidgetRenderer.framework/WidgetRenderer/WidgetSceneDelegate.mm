@@ -1,116 +1,116 @@
 @interface WidgetSceneDelegate
 - (NSString)description;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 - (void)applicationDidReceiveMemoryWarning;
 - (void)dealloc;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
 @end
 
 @implementation WidgetSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1DAD675AC(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1DAD675AC(sceneCopy);
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
-  sub_1DAD6E338(a4, a5, a6, a7);
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1DAD6E338(sScene, diff, settings, context);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DAD8D6E8(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_1DAD8D6E8(foregroundCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DADA736C(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1DADA736C(activeCopy);
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   sub_1DAD674D4(0, &unk_1EE00A880, 0x1E698E5F0);
   sub_1DAD8D6A4(&qword_1EE00A870, &unk_1EE00A880, 0x1E698E5F0);
   v10 = sub_1DAED1F6C();
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_1DADA7954(v10, v12);
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1DADA7954(v10, iSceneCopy);
 
   v15 = sub_1DAED1F5C();
 
   return v15;
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DADC634C(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_1DADC634C(activeCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DADC63C0(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_1DADC63C0(backgroundCopy);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer19WidgetSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer19WidgetSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC14WidgetRenderer19WidgetSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DADE41FC();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for WidgetSceneDelegate();
   [(WidgetSceneDelegate *)&v3 dealloc];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DADE18A8(v4);
+  disconnectCopy = disconnect;
+  selfCopy = self;
+  sub_1DADE18A8(disconnectCopy);
 }
 
 - (void)applicationDidReceiveMemoryWarning
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DADE1F7C();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DADE23D8();
 
   v3 = sub_1DAED1CBC();

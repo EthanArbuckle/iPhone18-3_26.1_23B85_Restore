@@ -1,7 +1,7 @@
 @interface UISwipeActionVisualStyleProvider
 + (id)idiomToVisualStyleClassMap;
-+ (id)visualStyleForIdiom:(int64_t)a3;
-+ (void)registerVisualStyle:(Class)a3 forIdiom:(int64_t)a4;
++ (id)visualStyleForIdiom:(int64_t)idiom;
++ (void)registerVisualStyle:(Class)style forIdiom:(int64_t)idiom;
 @end
 
 @implementation UISwipeActionVisualStyleProvider
@@ -30,24 +30,24 @@ void __62__UISwipeActionVisualStyleProvider_idiomToVisualStyleClassMap__block_in
   qword_1ED49D978 = v1;
 }
 
-+ (void)registerVisualStyle:(Class)a3 forIdiom:(int64_t)a4
++ (void)registerVisualStyle:(Class)style forIdiom:(int64_t)idiom
 {
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1EFF74808]& 1) == 0)
+  if (([(objc_class *)style conformsToProtocol:&unk_1EFF74808]& 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = NSStringFromClass(a3);
-    [v9 handleFailureInMethod:a2 object:a1 file:@"UISwipeActionVisualStyle.m" lineNumber:134 description:{@"visualStyle of type %@ does not conform to UISwipeActionVisualStyle.", v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v10 = NSStringFromClass(style);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISwipeActionVisualStyle.m" lineNumber:134 description:{@"visualStyle of type %@ does not conform to UISwipeActionVisualStyle.", v10}];
   }
 
   v11 = +[UISwipeActionVisualStyleProvider idiomToVisualStyleClassMap];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v11 setObject:a3 forKey:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v11 setObject:style forKey:v8];
 }
 
-+ (id)visualStyleForIdiom:(int64_t)a3
++ (id)visualStyleForIdiom:(int64_t)idiom
 {
   v4 = +[UISwipeActionVisualStyleProvider idiomToVisualStyleClassMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v6 = [v4 objectForKey:v5];
 
   if (!v6)

@@ -1,13 +1,13 @@
 @interface TUIAnimationRenderModel
 - ($2940F3BBF0C500EC413214967FDB6F62)timing;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setTiming:(id *)a3;
+- (void)setTiming:(id *)timing;
 @end
 
 @implementation TUIAnimationRenderModel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIAnimationRenderModel allocWithZone:?]];
   v5 = v4;
@@ -110,11 +110,11 @@
   return self;
 }
 
-- (void)setTiming:(id *)a3
+- (void)setTiming:(id *)timing
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->_timing.initialVelocity.dy = a3->var3.dy;
+  v3 = *&timing->var0;
+  v4 = *&timing->var2;
+  self->_timing.initialVelocity.dy = timing->var3.dy;
   *&self->_timing.damping = v4;
   *&self->_timing.mass = v3;
 }

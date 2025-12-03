@@ -1,24 +1,24 @@
 @interface KTVerifyPendingSignaturesOperation
-- (BOOL)verifyHeadsWithPendingSignatures:(id)a3 error:(id *)a4;
-- (BOOL)verifySMTsWithPendingSignatures:(id)a3 error:(id *)a4;
-- (KTVerifyPendingSignaturesOperation)initWithDependencies:(id)a3 opId:(id)a4;
+- (BOOL)verifyHeadsWithPendingSignatures:(id)signatures error:(id *)error;
+- (BOOL)verifySMTsWithPendingSignatures:(id)signatures error:(id *)error;
+- (KTVerifyPendingSignaturesOperation)initWithDependencies:(id)dependencies opId:(id)id;
 - (void)groupStart;
 @end
 
 @implementation KTVerifyPendingSignaturesOperation
 
-- (KTVerifyPendingSignaturesOperation)initWithDependencies:(id)a3 opId:(id)a4
+- (KTVerifyPendingSignaturesOperation)initWithDependencies:(id)dependencies opId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  dependenciesCopy = dependencies;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = KTVerifyPendingSignaturesOperation;
   v9 = [(KTGroupOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deps, a3);
-    [(KTVerifyPendingSignaturesOperation *)v10 setBackgroundOpId:v8];
+    objc_storeStrong(&v9->_deps, dependencies);
+    [(KTVerifyPendingSignaturesOperation *)v10 setBackgroundOpId:idCopy];
     v11 = +[NSMutableDictionary dictionary];
     [(KTVerifyPendingSignaturesOperation *)v10 setErrors:v11];
 
@@ -65,8 +65,8 @@
     }
 
     v8 = [NSString stringWithFormat:@"%@-SMTs", v4];
-    v9 = [(KTVerifyPendingSignaturesOperation *)self errors];
-    [v9 setObject:v6 forKeyedSubscript:v8];
+    errors = [(KTVerifyPendingSignaturesOperation *)self errors];
+    [errors setObject:v6 forKeyedSubscript:v8];
 
     v6 = 0;
   }
@@ -91,8 +91,8 @@
     }
 
     v13 = [NSString stringWithFormat:@"%@-STHs", v4];
-    v14 = [(KTVerifyPendingSignaturesOperation *)self errors];
-    [v14 setObject:v11 forKeyedSubscript:v13];
+    errors2 = [(KTVerifyPendingSignaturesOperation *)self errors];
+    [errors2 setObject:v11 forKeyedSubscript:v13];
 
     v11 = 0;
   }
@@ -117,8 +117,8 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Verify pending IDS Head signatures failed: %@", buf, 0xCu);
     }
 
-    v19 = [(KTVerifyPendingSignaturesOperation *)self errors];
-    [v19 setObject:v17 forKeyedSubscript:v15];
+    errors3 = [(KTVerifyPendingSignaturesOperation *)self errors];
+    [errors3 setObject:v17 forKeyedSubscript:v15];
 
     v17 = 0;
   }
@@ -213,24 +213,24 @@
     v32 = 0;
   }
 
-  v34 = [(KTVerifyPendingSignaturesOperation *)self errors];
-  v35 = [v34 count];
+  errors4 = [(KTVerifyPendingSignaturesOperation *)self errors];
+  v35 = [errors4 count];
 
   if (v35)
   {
     v66 = v32;
-    v36 = [(KTVerifyPendingSignaturesOperation *)self errors];
-    v37 = [v36 allKeys];
+    errors5 = [(KTVerifyPendingSignaturesOperation *)self errors];
+    allKeys = [errors5 allKeys];
 
-    v65 = v37;
-    v38 = [v37 componentsJoinedByString:{@", "}];
+    v65 = allKeys;
+    v38 = [allKeys componentsJoinedByString:{@", "}];
     v39 = [NSString stringWithFormat:@"Pending signatures failed for applications: %@", v38];
 
     v86[0] = NSMultipleUnderlyingErrorsKey;
-    v40 = [(KTVerifyPendingSignaturesOperation *)self errors];
-    v41 = [v40 allValues];
+    errors6 = [(KTVerifyPendingSignaturesOperation *)self errors];
+    allValues = [errors6 allValues];
     v86[1] = NSLocalizedDescriptionKey;
-    v87[0] = v41;
+    v87[0] = allValues;
     v64 = v39;
     v87[1] = v39;
     v42 = [NSDictionary dictionaryWithObjects:v87 forKeys:v86 count:2];
@@ -244,7 +244,7 @@
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v68 = self;
+    selfCopy = self;
     obj = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
     v45 = [obj countByEnumeratingWithState:&v73 objects:v85 count:16];
     if (v45)
@@ -266,8 +266,8 @@
           v72 = 0u;
           v69 = 0u;
           v70 = 0u;
-          v50 = [(KTVerifyPendingSignaturesOperation *)v68 failedSigs];
-          v51 = [v50 objectForKeyedSubscript:v49];
+          failedSigs = [(KTVerifyPendingSignaturesOperation *)selfCopy failedSigs];
+          v51 = [failedSigs objectForKeyedSubscript:v49];
 
           v52 = [v51 countByEnumeratingWithState:&v69 objects:v84 count:16];
           if (v52)
@@ -300,12 +300,12 @@
       while (v46);
     }
 
-    v57 = [(KTVerifyPendingSignaturesOperation *)v68 backgroundOpId];
-    v58 = [(KTVerifyPendingSignaturesOperation *)v68 deps];
-    v59 = [v58 smDataStore];
-    v60 = [(KTVerifyPendingSignaturesOperation *)v68 name];
-    v61 = [(KTResultOperation *)v68 error];
-    [KTBackgroundSystemValidationOperation addErrorToBackgroundOp:v57 smDataStore:v59 failureDataString:v44 type:v60 serverHint:0 failure:v61];
+    backgroundOpId = [(KTVerifyPendingSignaturesOperation *)selfCopy backgroundOpId];
+    deps = [(KTVerifyPendingSignaturesOperation *)selfCopy deps];
+    smDataStore = [deps smDataStore];
+    name = [(KTVerifyPendingSignaturesOperation *)selfCopy name];
+    error = [(KTResultOperation *)selfCopy error];
+    [KTBackgroundSystemValidationOperation addErrorToBackgroundOp:backgroundOpId smDataStore:smDataStore failureDataString:v44 type:name serverHint:0 failure:error];
 
     v32 = v66;
   }
@@ -323,27 +323,27 @@
   }
 }
 
-- (BOOL)verifySMTsWithPendingSignatures:(id)a3 error:(id *)a4
+- (BOOL)verifySMTsWithPendingSignatures:(id)signatures error:(id *)error
 {
-  v6 = a3;
+  signaturesCopy = signatures;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = sub_100019738;
   v39 = sub_100019748;
   v40 = 0;
-  v7 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v8 = [v7 publicKeyStore];
-  v9 = [v8 applicationPublicKeyStore:v6];
+  deps = [(KTVerifyPendingSignaturesOperation *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  v9 = [publicKeyStore applicationPublicKeyStore:signaturesCopy];
 
   v10 = [KTContextVerifier alloc];
-  v11 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v12 = [v11 dataStore];
-  v13 = [(KTContextVerifier *)v10 initWithApplicationKeyStore:v9 dataStore:v12 applicationID:v6];
+  deps2 = [(KTVerifyPendingSignaturesOperation *)self deps];
+  dataStore = [deps2 dataStore];
+  v13 = [(KTContextVerifier *)v10 initWithApplicationKeyStore:v9 dataStore:dataStore applicationID:signaturesCopy];
 
   v14 = +[NSMutableArray array];
-  v15 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v16 = [v15 dataStore];
+  deps3 = [(KTVerifyPendingSignaturesOperation *)self deps];
+  dataStore2 = [deps3 dataStore];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100019750;
@@ -352,23 +352,23 @@
   v34 = 0;
   v17 = v13;
   v29 = v17;
-  v18 = v6;
+  v18 = signaturesCopy;
   v30 = v18;
   v19 = v14;
   v31 = v19;
-  v32 = self;
-  [v16 performForSMTsWithUnverifiedSignature:v18 error:&v34 block:v28];
+  selfCopy = self;
+  [dataStore2 performForSMTsWithUnverifiedSignature:v18 error:&v34 block:v28];
   v20 = v34;
 
   if (!v20)
   {
     v23 = v36;
-    if (a4)
+    if (error)
     {
       v24 = v36[5];
       if (v24)
       {
-        *a4 = v24;
+        *error = v24;
         v23 = v36;
       }
     }
@@ -380,13 +380,13 @@
     }
 
     v25 = [NSString stringWithFormat:@"%@-SMTs", v18];
-    v26 = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
-    [v26 setObject:v19 forKeyedSubscript:v25];
+    failedSigs = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
+    [failedSigs setObject:v19 forKeyedSubscript:v25];
 
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_9:
     v22 = 0;
@@ -395,43 +395,43 @@ LABEL_9:
 
   v21 = v20;
   v22 = 0;
-  *a4 = v20;
+  *error = v20;
 LABEL_11:
 
   _Block_object_dispose(&v35, 8);
   return v22;
 }
 
-- (BOOL)verifyHeadsWithPendingSignatures:(id)a3 error:(id *)a4
+- (BOOL)verifyHeadsWithPendingSignatures:(id)signatures error:(id *)error
 {
-  v5 = a3;
+  signaturesCopy = signatures;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
   v51 = sub_100019738;
   v52 = sub_100019748;
   v53 = 0;
-  v6 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v7 = [v6 publicKeyStore];
-  v8 = [v7 applicationPublicKeyStore:v5];
+  deps = [(KTVerifyPendingSignaturesOperation *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  v8 = [publicKeyStore applicationPublicKeyStore:signaturesCopy];
 
-  if ([v5 isEqual:kKTApplicationIdentifierTLT])
+  if ([signaturesCopy isEqual:kKTApplicationIdentifierTLT])
   {
-    v9 = [(KTVerifyPendingSignaturesOperation *)self deps];
-    v10 = [v9 publicKeyStore];
-    v11 = [v10 tltKeyStore];
+    deps2 = [(KTVerifyPendingSignaturesOperation *)self deps];
+    publicKeyStore2 = [deps2 publicKeyStore];
+    tltKeyStore = [publicKeyStore2 tltKeyStore];
 
-    v8 = v11;
+    v8 = tltKeyStore;
   }
 
   v12 = [KTContextVerifier alloc];
-  v13 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v14 = [v13 dataStore];
-  v15 = [(KTContextVerifier *)v12 initWithApplicationKeyStore:v8 dataStore:v14 applicationID:v5];
+  deps3 = [(KTVerifyPendingSignaturesOperation *)self deps];
+  dataStore = [deps3 dataStore];
+  v15 = [(KTContextVerifier *)v12 initWithApplicationKeyStore:v8 dataStore:dataStore applicationID:signaturesCopy];
 
   v16 = +[NSMutableArray array];
-  v17 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v18 = [v17 dataStore];
+  deps4 = [(KTVerifyPendingSignaturesOperation *)self deps];
+  dataStore2 = [deps4 dataStore];
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_100019FB0;
@@ -440,12 +440,12 @@ LABEL_11:
   v47 = 0;
   v19 = v15;
   v42 = v19;
-  v20 = v5;
+  v20 = signaturesCopy;
   v43 = v20;
   v21 = v16;
   v44 = v21;
-  v45 = self;
-  [v18 performForSTHsWithUnverifiedSignature:v20 error:&v47 block:v41];
+  selfCopy = self;
+  [dataStore2 performForSTHsWithUnverifiedSignature:v20 error:&v47 block:v41];
   v22 = v47;
 
   v23 = (v49 + 5);
@@ -456,11 +456,11 @@ LABEL_11:
   {
     if (v22)
     {
-      if (a4)
+      if (error)
       {
         v32 = v22;
         v31 = 0;
-        *a4 = v22;
+        *error = v22;
         goto LABEL_19;
       }
     }
@@ -468,12 +468,12 @@ LABEL_11:
     else
     {
       v33 = v49;
-      if (a4)
+      if (error)
       {
         v34 = v49[5];
         if (v34)
         {
-          *a4 = v34;
+          *error = v34;
           v33 = v49;
         }
       }
@@ -485,8 +485,8 @@ LABEL_11:
       }
 
       v35 = [NSString stringWithFormat:@"%@-STHs", v20];
-      v36 = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
-      [v36 setObject:v21 forKeyedSubscript:v35];
+      failedSigs = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
+      [failedSigs setObject:v21 forKeyedSubscript:v35];
     }
 
     v31 = 0;
@@ -495,18 +495,18 @@ LABEL_11:
 
   v38 = v8;
   v25 = [NSString stringWithFormat:@"%@-STHs", v20];
-  v26 = [(KTVerifyPendingSignaturesOperation *)self deps];
-  v27 = [v26 dataStore];
-  v28 = [v27 failedHeadSignaturesWithRevisions:v24 application:v20];
-  v29 = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
-  [v29 setObject:v28 forKeyedSubscript:v25];
+  deps5 = [(KTVerifyPendingSignaturesOperation *)self deps];
+  dataStore3 = [deps5 dataStore];
+  v28 = [dataStore3 failedHeadSignaturesWithRevisions:v24 application:v20];
+  failedSigs2 = [(KTVerifyPendingSignaturesOperation *)self failedSigs];
+  [failedSigs2 setObject:v28 forKeyedSubscript:v25];
 
-  if (a4)
+  if (error)
   {
     v30 = v49[5];
     if (v30)
     {
-      *a4 = v30;
+      *error = v30;
     }
   }
 

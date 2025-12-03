@@ -2,7 +2,7 @@
 - (UIImage)icon;
 - (UIImageSymbolConfiguration)iconConfiguration;
 - (id)diffableIdentifier;
-- (id)inboxItemsForTeam:(id)a3 withSortDescriptors:(id)a4;
+- (id)inboxItemsForTeam:(id)team withSortDescriptors:(id)descriptors;
 @end
 
 @implementation FBAInbox
@@ -21,34 +21,34 @@
 
 - (UIImage)icon
 {
-  v3 = [(FBAInbox *)self iconSystemImageName];
-  v4 = [UIImage systemImageNamed:v3];
-  v5 = [(FBAInbox *)self iconConfiguration];
-  v6 = [v4 imageWithConfiguration:v5];
+  iconSystemImageName = [(FBAInbox *)self iconSystemImageName];
+  v4 = [UIImage systemImageNamed:iconSystemImageName];
+  iconConfiguration = [(FBAInbox *)self iconConfiguration];
+  v6 = [v4 imageWithConfiguration:iconConfiguration];
 
   return v6;
 }
 
-- (id)inboxItemsForTeam:(id)a3 withSortDescriptors:(id)a4
+- (id)inboxItemsForTeam:(id)team withSortDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  teamCopy = team;
+  descriptorsCopy = descriptors;
   v8 = +[FBKData sharedInstance];
-  v9 = [v8 currentUser];
+  currentUser = [v8 currentUser];
 
-  if (v9)
+  if (currentUser)
   {
-    v10 = [(FBAInbox *)self predicateForTeam:v6];
-    v11 = [v9 contentItems];
+    v10 = [(FBAInbox *)self predicateForTeam:teamCopy];
+    contentItems = [currentUser contentItems];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001840C;
     v16[3] = &unk_1000DEDC0;
     v17 = v10;
     v12 = v10;
-    v13 = [v11 ded_selectItemsPassingTest:v16];
+    v13 = [contentItems ded_selectItemsPassingTest:v16];
 
-    v14 = [v13 sortedArrayUsingDescriptors:v7];
+    v14 = [v13 sortedArrayUsingDescriptors:descriptorsCopy];
   }
 
   else

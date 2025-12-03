@@ -6,9 +6,9 @@
 
 - (id)_placeholderColor
 {
-  v2 = [objc_opt_self() secondaryLabelColor];
+  secondaryLabelColor = [objc_opt_self() secondaryLabelColor];
 
-  return v2;
+  return secondaryLabelColor;
 }
 
 @end

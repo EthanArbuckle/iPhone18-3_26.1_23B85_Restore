@@ -10,16 +10,16 @@
   objc_opt_class();
   v2 = BUDynamicCast();
   v3 = [v2 URL];
-  v4 = [v3 pathExtension];
+  pathExtension = [v3 pathExtension];
 
-  if ([v4 isEqualToString:@"aa"])
+  if ([pathExtension isEqualToString:@"aa"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"aax"];
+    v5 = [pathExtension isEqualToString:@"aax"];
   }
 
   return v5;

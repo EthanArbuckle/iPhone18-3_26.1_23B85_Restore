@@ -1,25 +1,25 @@
 @interface TRIContentTracker
-+ (id)contentIdentifierForExperimentArtifactWithDeployment:(id)a3;
-+ (id)contentIdentifierForFactorPackSetWithId:(id)a3;
-+ (id)contentIdentifierForRolloutArtifactWithDeployment:(id)a3;
-+ (id)contentIdentifierForTreatmentArtifactWithTreatmentId:(id)a3 container:(id)a4;
-+ (id)decodeContentIdentifier:(id)a3;
-- (BOOL)_addOrDropRefWithContentIdentifier:(id)a3 changeType:(unint64_t)a4;
-- (BOOL)clearRefsWithContentIdentifier:(id)a3;
-- (BOOL)enumerateTrackedItemsWithBlock:(id)a3;
-- (BOOL)refCountForContentIdentifier:(id)a3 refCount:(int64_t *)a4;
-- (TRIContentTracker)initWithDatabase:(id)a3;
++ (id)contentIdentifierForExperimentArtifactWithDeployment:(id)deployment;
++ (id)contentIdentifierForFactorPackSetWithId:(id)id;
++ (id)contentIdentifierForRolloutArtifactWithDeployment:(id)deployment;
++ (id)contentIdentifierForTreatmentArtifactWithTreatmentId:(id)id container:(id)container;
++ (id)decodeContentIdentifier:(id)identifier;
+- (BOOL)_addOrDropRefWithContentIdentifier:(id)identifier changeType:(unint64_t)type;
+- (BOOL)clearRefsWithContentIdentifier:(id)identifier;
+- (BOOL)enumerateTrackedItemsWithBlock:(id)block;
+- (BOOL)refCountForContentIdentifier:(id)identifier refCount:(int64_t *)count;
+- (TRIContentTracker)initWithDatabase:(id)database;
 @end
 
 @implementation TRIContentTracker
 
-- (TRIContentTracker)initWithDatabase:(id)a3
+- (TRIContentTracker)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v11.receiver = self;
@@ -28,19 +28,19 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, database);
   }
 
   return v8;
 }
 
-- (BOOL)_addOrDropRefWithContentIdentifier:(id)a3 changeType:(unint64_t)a4
+- (BOOL)_addOrDropRefWithContentIdentifier:(id)identifier changeType:(unint64_t)type
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"contentIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"contentIdentifier"}];
   }
 
   v18 = 0;
@@ -52,11 +52,11 @@
   v13[1] = 3221225472;
   v13[2] = __67__TRIContentTracker__addOrDropRefWithContentIdentifier_changeType___block_invoke;
   v13[3] = &unk_279DE1560;
-  v9 = v7;
+  v9 = identifierCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = &v18;
-  v17 = a4;
+  typeCopy = type;
   [(TRIDatabase *)db writeTransactionWithFailableBlock:v13];
   v10 = *(v19 + 24);
 
@@ -215,27 +215,27 @@ __CFString *__67__TRIContentTracker__addOrDropRefWithContentIdentifier_changeTyp
   return v2;
 }
 
-- (BOOL)refCountForContentIdentifier:(id)a3 refCount:(int64_t *)a4
+- (BOOL)refCountForContentIdentifier:(id)identifier refCount:(int64_t *)count
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"contentIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"contentIdentifier"}];
 
-    if (a4)
+    if (count)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"refCount"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"refCount"}];
 
     goto LABEL_3;
   }
 
-  if (!a4)
+  if (!count)
   {
     goto LABEL_5;
   }
@@ -251,10 +251,10 @@ LABEL_3:
   v14[2] = __59__TRIContentTracker_refCountForContentIdentifier_refCount___block_invoke;
   v14[3] = &unk_279DE15A8;
   v17 = &v19;
-  v18 = a4;
-  v9 = v7;
+  countCopy = count;
+  v9 = identifierCopy;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   [(TRIDatabase *)db readTransactionWithFailableBlock:v14];
   v10 = *(v20 + 24);
 
@@ -300,13 +300,13 @@ void __59__TRIContentTracker_refCountForContentIdentifier_refCount___block_invok
   [v3 bindNamedParam:":content_id" toNSString:v4];
 }
 
-- (BOOL)clearRefsWithContentIdentifier:(id)a3
+- (BOOL)clearRefsWithContentIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"contentIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"contentIdentifier"}];
   }
 
   v15 = 0;
@@ -319,9 +319,9 @@ void __59__TRIContentTracker_refCountForContentIdentifier_refCount___block_invok
   v11[2] = __52__TRIContentTracker_clearRefsWithContentIdentifier___block_invoke;
   v11[3] = &unk_279DE15D0;
   v14 = &v15;
-  v7 = v5;
+  v7 = identifierCopy;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   [(TRIDatabase *)db writeTransactionWithFailableBlock:v11];
   v8 = *(v16 + 24);
 
@@ -365,13 +365,13 @@ void __52__TRIContentTracker_clearRefsWithContentIdentifier___block_invoke_2(uin
   [v3 bindNamedParam:":content_id" toNSString:v4];
 }
 
-- (BOOL)enumerateTrackedItemsWithBlock:(id)a3
+- (BOOL)enumerateTrackedItemsWithBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v15 = 0;
@@ -386,7 +386,7 @@ void __52__TRIContentTracker_clearRefsWithContentIdentifier___block_invoke_2(uin
   v13 = &v15;
   v14 = a2;
   v11[4] = self;
-  v7 = v5;
+  v7 = blockCopy;
   v12 = v7;
   [(TRIDatabase *)db readTransactionWithFailableBlock:v11];
   v8 = *(v16 + 24);
@@ -461,18 +461,18 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   return *v11;
 }
 
-+ (id)contentIdentifierForExperimentArtifactWithDeployment:(id)a3
++ (id)contentIdentifierForExperimentArtifactWithDeployment:(id)deployment
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deploymentCopy = deployment;
   v6 = objc_autoreleasePoolPush();
   v21[0] = @"exp-artifact";
   v20[0] = @"0_type";
   v20[1] = @"1_id";
-  v7 = [v5 experimentId];
-  v21[1] = v7;
+  experimentId = [deploymentCopy experimentId];
+  v21[1] = experimentId;
   v20[2] = @"2_dep";
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "deploymentId")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(deploymentCopy, "deploymentId")}];
   v21[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
 
@@ -481,16 +481,16 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   v11 = v19;
   if (!v10)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    v17 = [v5 shortDesc];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:229 description:{@"Failed to create content identifier for %@: %@", v17, v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    shortDesc = [deploymentCopy shortDesc];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:229 description:{@"Failed to create content identifier for %@: %@", shortDesc, v11}];
   }
 
   v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v10 encoding:4];
   if (!v12)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
   }
 
   v13 = [[TRIContentTrackingId alloc] initWithStr:v12];
@@ -501,20 +501,20 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   return v13;
 }
 
-+ (id)contentIdentifierForTreatmentArtifactWithTreatmentId:(id)a3 container:(id)a4
++ (id)contentIdentifierForTreatmentArtifactWithTreatmentId:(id)id container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  containerCopy = container;
   v9 = objc_autoreleasePoolPush();
   v10 = objc_opt_new();
   [v10 setObject:@"trt-artifact" forKeyedSubscript:@"0_type"];
-  [v10 setObject:v7 forKeyedSubscript:@"1_id"];
-  if (v8)
+  [v10 setObject:idCopy forKeyedSubscript:@"1_id"];
+  if (containerCopy)
   {
-    v11 = [v8 identifier];
-    [v10 setObject:v11 forKeyedSubscript:@"3_cntId"];
+    identifier = [containerCopy identifier];
+    [v10 setObject:identifier forKeyedSubscript:@"3_cntId"];
 
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "type")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(containerCopy, "type")}];
     [v10 setObject:v12 forKeyedSubscript:@"4_cntType"];
   }
 
@@ -529,15 +529,15 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   v14 = v20;
   if (!v13)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:249 description:{@"Failed to create content identifier for %@: %@", v7, v14}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:249 description:{@"Failed to create content identifier for %@: %@", idCopy, v14}];
   }
 
   v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v13 encoding:4];
   if (!v15)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:251 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
   }
 
   v16 = [[TRIContentTrackingId alloc] initWithStr:v15];
@@ -547,18 +547,18 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   return v16;
 }
 
-+ (id)contentIdentifierForRolloutArtifactWithDeployment:(id)a3
++ (id)contentIdentifierForRolloutArtifactWithDeployment:(id)deployment
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deploymentCopy = deployment;
   v6 = objc_autoreleasePoolPush();
   v21[0] = @"rlo-artifact";
   v20[0] = @"0_type";
   v20[1] = @"1_id";
-  v7 = [v5 rolloutId];
-  v21[1] = v7;
+  rolloutId = [deploymentCopy rolloutId];
+  v21[1] = rolloutId;
   v20[2] = @"2_dep";
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "deploymentId")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(deploymentCopy, "deploymentId")}];
   v21[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:3];
 
@@ -567,16 +567,16 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   v11 = v19;
   if (!v10)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    v17 = [v5 shortDesc];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:268 description:{@"Failed to create content identifier for %@: %@", v17, v11}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    shortDesc = [deploymentCopy shortDesc];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:268 description:{@"Failed to create content identifier for %@: %@", shortDesc, v11}];
   }
 
   v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v10 encoding:4];
   if (!v12)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
   }
 
   v13 = [[TRIContentTrackingId alloc] initWithStr:v12];
@@ -587,30 +587,30 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   return v13;
 }
 
-+ (id)contentIdentifierForFactorPackSetWithId:(id)a3
++ (id)contentIdentifierForFactorPackSetWithId:(id)id
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = objc_autoreleasePoolPush();
   v17[0] = @"0_type";
   v17[1] = @"1_id";
   v18[0] = @"fp-set";
-  v18[1] = v5;
+  v18[1] = idCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v16 = 0;
   v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:2 error:&v16];
   v9 = v16;
   if (!v8)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:286 description:{@"Failed to create content identifier for %@: %@", v5, v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:286 description:{@"Failed to create content identifier for %@: %@", idCopy, v9}];
   }
 
   v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
   if (!v10)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:288 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:288 description:{@"Invalid parameter not satisfying: %@", @"jsonStr"}];
   }
 
   v11 = [[TRIContentTrackingId alloc] initWithStr:v10];
@@ -621,18 +621,18 @@ uint64_t __52__TRIContentTracker_enumerateTrackedItemsWithBlock___block_invoke_2
   return v11;
 }
 
-+ (id)decodeContentIdentifier:(id)a3
++ (id)decodeContentIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 str];
+  v7 = [identifierCopy str];
   v8 = [v7 dataUsingEncoding:4];
 
   if (!v8)
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
-    [v43 handleFailureInMethod:a2 object:a1 file:@"TRIContentTracker.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"json"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIContentTracker.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"json"}];
   }
 
   v45 = 0;

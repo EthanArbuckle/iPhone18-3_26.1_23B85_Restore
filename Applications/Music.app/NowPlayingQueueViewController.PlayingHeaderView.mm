@@ -1,22 +1,22 @@
 @interface NowPlayingQueueViewController.PlayingHeaderView
-- (_TtCC5Music29NowPlayingQueueViewController17PlayingHeaderView)initWithCoder:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtCC5Music29NowPlayingQueueViewController17PlayingHeaderView)initWithCoder:(id)coder;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation NowPlayingQueueViewController.PlayingHeaderView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = _s17PlayingHeaderViewCMa();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v7.receiver;
-  [(NowPlayingQueueViewController.PlayingHeaderView *)&v7 applyLayoutAttributes:v4];
+  [(NowPlayingQueueViewController.PlayingHeaderView *)&v7 applyLayoutAttributes:attributesCopy];
   v6 = *&v5[OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController17PlayingHeaderView_didUpdateAttributes];
   if (v6)
   {
 
-    v6(v4);
+    v6(attributesCopy);
 
     sub_100020438(v6);
   }
@@ -26,7 +26,7 @@
   }
 }
 
-- (_TtCC5Music29NowPlayingQueueViewController17PlayingHeaderView)initWithCoder:(id)a3
+- (_TtCC5Music29NowPlayingQueueViewController17PlayingHeaderView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtCC5Music29NowPlayingQueueViewController17PlayingHeaderView_didUpdateAttributes);
   *v3 = 0;

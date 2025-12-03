@@ -1,14 +1,14 @@
 @interface ComAppleContextkitCategoriesConstellation_Request_$3
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_Request_$3
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
   v5 = self->val$categoryIdToRank_;
-  if (!v5 || (v7 = [(JavaUtilMap *)v5 getWithId:a3], v8 = [(JavaUtilMap *)self->val$categoryIdToRank_ getWithId:a4], !v7))
+  if (!v5 || (v7 = [(JavaUtilMap *)v5 getWithId:id], v8 = [(JavaUtilMap *)self->val$categoryIdToRank_ getWithId:withId], !v7))
   {
     JreThrowNullPointerException();
   }

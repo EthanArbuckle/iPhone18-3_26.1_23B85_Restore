@@ -1,31 +1,31 @@
 @interface AMSFinanceDialogResponse
-+ (BOOL)_credentialSource:(unint64_t)a3 satisfiesAuthenticationType:(unint64_t)a4;
-+ (id)_handleAskPermissionRequestWithURL:(id)a3 account:(id)a4;
-+ (id)_presentDialog:(id)a3 taskInfo:(id)a4;
-+ (id)_presentIDSDialog:(id)a3 taskInfo:(id)a4;
-+ (id)_serviceActionFromButton:(id)a3 taskInfo:(id)a4;
-+ (id)handleDialogResult:(id)a3 taskInfo:(id)a4;
-+ (id)performFinanceDialog:(id)a3 taskInfo:(id)a4;
-+ (int64_t)dialogKindForTaskInfo:(id)a3 withResponseDictionary:(id)a4;
++ (BOOL)_credentialSource:(unint64_t)source satisfiesAuthenticationType:(unint64_t)type;
++ (id)_handleAskPermissionRequestWithURL:(id)l account:(id)account;
++ (id)_presentDialog:(id)dialog taskInfo:(id)info;
++ (id)_presentIDSDialog:(id)dialog taskInfo:(id)info;
++ (id)_serviceActionFromButton:(id)button taskInfo:(id)info;
++ (id)handleDialogResult:(id)result taskInfo:(id)info;
++ (id)performFinanceDialog:(id)dialog taskInfo:(id)info;
++ (int64_t)dialogKindForTaskInfo:(id)info withResponseDictionary:(id)dictionary;
 - (AMSDialogRequest)dialogRequest;
-- (AMSFinanceDialogResponse)initWithResponseDictionary:(id)a3 kind:(int64_t)a4 taskInfo:(id)a5;
-- (BOOL)_isCommerceUIURL:(id)a3 actionType:(int64_t)a4 URLType:(int64_t)a5;
-- (id)_createActionFromButtonDictionary:(id)a3 title:(id)a4;
+- (AMSFinanceDialogResponse)initWithResponseDictionary:(id)dictionary kind:(int64_t)kind taskInfo:(id)info;
+- (BOOL)_isCommerceUIURL:(id)l actionType:(int64_t)type URLType:(int64_t)lType;
+- (id)_createActionFromButtonDictionary:(id)dictionary title:(id)title;
 - (id)_createDialogRequest;
-- (id)_createRequestButtonsFromDialogDictionary:(id)a3;
-- (id)_enrichedMetricsDictionaryWithFinanceDictionary:(id)a3;
-- (id)performWithTaskInfo:(id)a3;
-- (int64_t)_actionTypeFromButtonDictionary:(id)a3;
+- (id)_createRequestButtonsFromDialogDictionary:(id)dictionary;
+- (id)_enrichedMetricsDictionaryWithFinanceDictionary:(id)dictionary;
+- (id)performWithTaskInfo:(id)info;
+- (int64_t)_actionTypeFromButtonDictionary:(id)dictionary;
 @end
 
 @implementation AMSFinanceDialogResponse
 
-- (AMSFinanceDialogResponse)initWithResponseDictionary:(id)a3 kind:(int64_t)a4 taskInfo:(id)a5
+- (AMSFinanceDialogResponse)initWithResponseDictionary:(id)dictionary kind:(int64_t)kind taskInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [AMSFinanceResponse valueForProtocolKey:@"dialog" inResponse:v9];
+  dictionaryCopy = dictionary;
+  infoCopy = info;
+  v11 = [AMSFinanceResponse valueForProtocolKey:@"dialog" inResponse:dictionaryCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -39,14 +39,14 @@
       v14 = v13;
       if (v13)
       {
-        objc_storeStrong(&v13->_responseDictionary, a3);
+        objc_storeStrong(&v13->_responseDictionary, dictionary);
         objc_storeStrong(&v14->_dialogDictionary, v11);
-        v14->_kind = a4;
-        objc_storeStrong(&v14->_taskInfo, a5);
+        v14->_kind = kind;
+        objc_storeStrong(&v14->_taskInfo, info);
       }
 
       self = v14;
-      v15 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
   }
@@ -56,8 +56,8 @@
   }
 
   v16 = +[AMSLogConfig sharedConfig];
-  v17 = [v16 OSLogObject];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v16 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v18 = objc_opt_class();
     v19 = v18;
@@ -66,14 +66,14 @@
     v24 = v18;
     v25 = 2114;
     v26 = v20;
-    _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to initialize a finance dialog without a dictionary", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempting to initialize a finance dialog without a dictionary", buf, 0x16u);
   }
 
   v12 = 0;
-  v15 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
 - (AMSDialogRequest)dialogRequest
@@ -81,9 +81,9 @@ LABEL_10:
   dialogRequest = self->_dialogRequest;
   if (!dialogRequest)
   {
-    v4 = [(AMSFinanceDialogResponse *)self _createDialogRequest];
+    _createDialogRequest = [(AMSFinanceDialogResponse *)self _createDialogRequest];
     v5 = self->_dialogRequest;
-    self->_dialogRequest = v4;
+    self->_dialogRequest = _createDialogRequest;
 
     dialogRequest = self->_dialogRequest;
   }
@@ -91,12 +91,12 @@ LABEL_10:
   return dialogRequest;
 }
 
-+ (int64_t)dialogKindForTaskInfo:(id)a3 withResponseDictionary:(id)a4
++ (int64_t)dialogKindForTaskInfo:(id)info withResponseDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"dialog"];
+  infoCopy = info;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"dialog"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -134,13 +134,13 @@ LABEL_10:
 
   if (([v13 isEqualToString:@"authorization"] & 1) == 0)
   {
-    v15 = [v7 objectForKeyedSubscript:@"failureType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"failureType"];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v7 objectForKeyedSubscript:@"failureType"];
-      v17 = [v16 longLongValue];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"failureType"];
+      longLongValue = [v16 longLongValue];
 
-      if (v17 == 2002)
+      if (longLongValue == 2002)
       {
         goto LABEL_11;
       }
@@ -162,7 +162,7 @@ LABEL_17:
       }
     }
 
-    if ([AMSFinanceVerifyPurchaseResponse isVerifyPurchasePayload:v7])
+    if ([AMSFinanceVerifyPurchaseResponse isVerifyPurchasePayload:dictionaryCopy])
     {
       v14 = 5;
     }
@@ -178,12 +178,12 @@ LABEL_17:
 LABEL_11:
   if (v11)
   {
-    if ([AMSFinanceExpressCheckoutResponse isExpressCheckoutPayload:v7])
+    if ([AMSFinanceExpressCheckoutResponse isExpressCheckoutPayload:dictionaryCopy])
     {
       v14 = 7;
     }
 
-    else if ([AMSFinanceDelegateAuthenticateChallengeResponse isDelegateAuthChallengeForTaskInfo:v6])
+    else if ([AMSFinanceDelegateAuthenticateChallengeResponse isDelegateAuthChallengeForTaskInfo:infoCopy])
     {
       v14 = 6;
     }
@@ -196,11 +196,11 @@ LABEL_11:
 
   else
   {
-    v18 = [v6 previousAuthorizationCredentialSource];
-    v19 = [v6 response];
-    LODWORD(v18) = [a1 _credentialSource:v18 satisfiesAuthenticationType:{+[AMSFinanceAuthenticateResponse authenticationTypeForResponse:responseDictionary:](AMSFinanceAuthenticateResponse, "authenticationTypeForResponse:responseDictionary:", v19, v7)}];
+    previousAuthorizationCredentialSource = [infoCopy previousAuthorizationCredentialSource];
+    response = [infoCopy response];
+    LODWORD(previousAuthorizationCredentialSource) = [self _credentialSource:previousAuthorizationCredentialSource satisfiesAuthenticationType:{+[AMSFinanceAuthenticateResponse authenticationTypeForResponse:responseDictionary:](AMSFinanceAuthenticateResponse, "authenticationTypeForResponse:responseDictionary:", response, dictionaryCopy)}];
 
-    if (v18)
+    if (previousAuthorizationCredentialSource)
     {
       v20 = +[AMSLogConfig sharedAccountsConfig];
       if (!v20)
@@ -208,8 +208,8 @@ LABEL_11:
         v20 = +[AMSLogConfig sharedConfig];
       }
 
-      v21 = [v20 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v20 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v22 = objc_opt_class();
         v23 = AMSLogKey();
@@ -220,7 +220,7 @@ LABEL_11:
         v29 = v23;
         v30 = 2114;
         v31 = v24;
-        _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Encountered a redundant authorization dialog. dialogDictionary = %{public}@", &v26, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Encountered a redundant authorization dialog. dialogDictionary = %{public}@", &v26, 0x20u);
       }
 
       v14 = 1;
@@ -237,133 +237,133 @@ LABEL_32:
   return v14;
 }
 
-+ (id)handleDialogResult:(id)a3 taskInfo:(id)a4
++ (id)handleDialogResult:(id)result taskInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 originalRequest];
-  v9 = [v6 selectedActionIdentifier];
-  v10 = [v8 locateActionWithIdentifier:v9];
+  resultCopy = result;
+  infoCopy = info;
+  originalRequest = [resultCopy originalRequest];
+  selectedActionIdentifier = [resultCopy selectedActionIdentifier];
+  v10 = [originalRequest locateActionWithIdentifier:selectedActionIdentifier];
 
-  v11 = [v10 deepLink];
+  deepLink = [v10 deepLink];
   if ([v10 ams_actionType] == 11)
   {
-    v12 = [a1 _serviceActionFromButton:v10 taskInfo:v7];
+    action2 = [self _serviceActionFromButton:v10 taskInfo:infoCopy];
   }
 
   else
   {
-    if (!v11)
+    if (!deepLink)
     {
-      v12 = 0;
+      action2 = 0;
       goto LABEL_15;
     }
 
     if ([v10 ams_actionType] == 12)
     {
-      v13 = [v10 ams_metricsDictionary];
-      v14 = [v13 mutableCopy];
+      ams_metricsDictionary = [v10 ams_metricsDictionary];
+      v14 = [ams_metricsDictionary mutableCopy];
       v15 = v14;
       if (v14)
       {
-        v16 = v14;
+        dictionary = v14;
       }
 
       else
       {
-        v16 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
-      v21 = v16;
+      v21 = dictionary;
 
-      v22 = [MEMORY[0x1E696AFB0] UUID];
-      v23 = [v22 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      [v21 setObject:v23 forKeyedSubscript:@"purchaseAuthorizationId"];
+      [v21 setObject:uUIDString forKeyedSubscript:@"purchaseAuthorizationId"];
       v24 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v21];
       [v10 ams_setMetricsDictionary:v24];
 
-      v25 = [v11 ams_URLByAppendingQueryParameter:v23 name:@"purchaseAuthorizationId"];
+      v25 = [deepLink ams_URLByAppendingQueryParameter:uUIDString name:@"purchaseAuthorizationId"];
 
-      v26 = [v7 properties];
-      v27 = [v26 account];
-      v28 = [a1 _handleAskPermissionRequestWithURL:v25 account:v27];
+      properties = [infoCopy properties];
+      account = [properties account];
+      v28 = [self _handleAskPermissionRequestWithURL:v25 account:account];
 
-      v12 = [AMSURLAction actionWithError:v28];
+      action2 = [AMSURLAction actionWithError:v28];
 
-      v17 = 0;
-      v18 = 0;
-      v11 = v25;
+      interruptionResult = 0;
+      updatedBuyParams = 0;
+      deepLink = v25;
     }
 
     else if ([v10 ams_actionType] == 5)
     {
-      [AMSFinanceActionResponse handleExternalGotoURL:v11];
-      v17 = 0;
-      v18 = 0;
-      v12 = 0;
+      [AMSFinanceActionResponse handleExternalGotoURL:deepLink];
+      interruptionResult = 0;
+      updatedBuyParams = 0;
+      action2 = 0;
     }
 
     else
     {
-      v19 = +[AMSFinanceActionResponse handleGotoURL:taskInfo:gotoType:accountURL:tidContinue:retryOnSuccess:](AMSFinanceActionResponse, "handleGotoURL:taskInfo:gotoType:accountURL:tidContinue:retryOnSuccess:", v11, v7, [v10 ams_actionType], objc_msgSend(v10, "ams_commerceUIURL"), objc_msgSend(v10, "ams_tidContinue"), objc_msgSend(v10, "ams_shouldRetry"));
-      v17 = [v19 interruptionResult];
-      v20 = [v19 action];
-      v18 = [v20 updatedBuyParams];
+      v19 = +[AMSFinanceActionResponse handleGotoURL:taskInfo:gotoType:accountURL:tidContinue:retryOnSuccess:](AMSFinanceActionResponse, "handleGotoURL:taskInfo:gotoType:accountURL:tidContinue:retryOnSuccess:", deepLink, infoCopy, [v10 ams_actionType], objc_msgSend(v10, "ams_commerceUIURL"), objc_msgSend(v10, "ams_tidContinue"), objc_msgSend(v10, "ams_shouldRetry"));
+      interruptionResult = [v19 interruptionResult];
+      action = [v19 action];
+      updatedBuyParams = [action updatedBuyParams];
 
-      v12 = [v19 action];
+      action2 = [v19 action];
     }
 
     [v10 setDeepLink:0];
-    [v10 ams_setResolvedInterruption:v17];
-    [v10 ams_setBuyParams:v18];
-    v29 = [v6 originalRequest];
-    [v29 replaceAction:v10];
+    [v10 ams_setResolvedInterruption:interruptionResult];
+    [v10 ams_setBuyParams:updatedBuyParams];
+    originalRequest2 = [resultCopy originalRequest];
+    [originalRequest2 replaceAction:v10];
   }
 
 LABEL_15:
   v30 = [AMSHandleDialogResultTask alloc];
-  v31 = [v7 properties];
-  v32 = [v31 bag];
-  v33 = [(AMSHandleDialogResultTask *)v30 initWithResult:v6 bag:v32];
+  properties2 = [infoCopy properties];
+  v32 = [properties2 bag];
+  v33 = [(AMSHandleDialogResultTask *)v30 initWithResult:resultCopy bag:v32];
 
   [(AMSTask *)v33 setRunMode:1];
-  v34 = [v7 properties];
-  v35 = [v34 account];
-  [(AMSHandleDialogResultTask *)v33 setAccount:v35];
+  properties3 = [infoCopy properties];
+  account2 = [properties3 account];
+  [(AMSHandleDialogResultTask *)v33 setAccount:account2];
 
-  v36 = [v7 properties];
-  v37 = [v36 clientInfo];
-  v38 = [v37 proxyAppBundleID];
-  [(AMSHandleDialogResultTask *)v33 setProxyBundleId:v38];
+  properties4 = [infoCopy properties];
+  clientInfo = [properties4 clientInfo];
+  proxyAppBundleID = [clientInfo proxyAppBundleID];
+  [(AMSHandleDialogResultTask *)v33 setProxyBundleId:proxyAppBundleID];
 
-  v39 = [v7 properties];
-  v40 = [v39 clientInfo];
-  [(AMSHandleDialogResultTask *)v33 setClientInfo:v40];
+  properties5 = [infoCopy properties];
+  clientInfo2 = [properties5 clientInfo];
+  [(AMSHandleDialogResultTask *)v33 setClientInfo:clientInfo2];
 
-  v41 = [(AMSHandleDialogResultTask *)v33 perform];
+  perform = [(AMSHandleDialogResultTask *)v33 perform];
   v43 = 0;
-  [v41 resultWithError:&v43];
+  [perform resultWithError:&v43];
 
-  if (!v12)
+  if (!action2)
   {
-    v12 = +[AMSURLAction proceedAction];
+    action2 = +[AMSURLAction proceedAction];
   }
 
-  [v12 setDialogResult:v6];
+  [action2 setDialogResult:resultCopy];
 
-  return v12;
+  return action2;
 }
 
-+ (id)performFinanceDialog:(id)a3 taskInfo:(id)a4
++ (id)performFinanceDialog:(id)dialog taskInfo:(id)info
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 properties];
-  v9 = [v8 dialogOptions];
+  dialogCopy = dialog;
+  infoCopy = info;
+  properties = [infoCopy properties];
+  dialogOptions = [properties dialogOptions];
 
-  if (v9)
+  if (dialogOptions)
   {
     v11 = +[AMSLogConfig sharedConfig];
     if (!v11)
@@ -371,8 +371,8 @@ LABEL_15:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_9;
     }
@@ -384,16 +384,16 @@ LABEL_15:
     v42 = 2114;
     v43 = v14;
     v15 = "%{public}@: [%{public}@] Dialogs were suppressed by the caller";
-    v16 = v12;
+    v16 = oSLogObject;
     v17 = OS_LOG_TYPE_ERROR;
     goto LABEL_8;
   }
 
-  v10 = [v6 title];
-  if (![v10 length])
+  title = [dialogCopy title];
+  if (![title length])
   {
-    v19 = [v6 message];
-    v20 = [v19 length];
+    message = [dialogCopy message];
+    v20 = [message length];
 
     if (v20)
     {
@@ -406,8 +406,8 @@ LABEL_15:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_9:
 
@@ -423,7 +423,7 @@ LABEL_10:
     v42 = 2114;
     v43 = v14;
     v15 = "%{public}@: [%{public}@] Suppressing blank dialog (no title & no message)";
-    v16 = v12;
+    v16 = oSLogObject;
     v17 = OS_LOG_TYPE_DEFAULT;
 LABEL_8:
     _os_log_impl(&dword_192869000, v16, v17, v15, buf, 0x16u);
@@ -432,9 +432,9 @@ LABEL_8:
   }
 
 LABEL_12:
-  if ([a1 _shouldSendOverIDS:v6 taskInfo:v7])
+  if ([self _shouldSendOverIDS:dialogCopy taskInfo:infoCopy])
   {
-    v21 = [a1 _presentIDSDialog:v6 taskInfo:v7];
+    v21 = [self _presentIDSDialog:dialogCopy taskInfo:infoCopy];
     v22 = [v21 resultWithError:0];
 
     if (v22)
@@ -443,17 +443,17 @@ LABEL_12:
     }
   }
 
-  v23 = [v7 properties];
-  v24 = [v23 purchaseInfo];
-  v25 = [v24 activePurchaseTask];
-  v26 = [v25 performPreActionRequestForTaskInfo:v7 requiresAuthorization:0];
+  properties2 = [infoCopy properties];
+  purchaseInfo = [properties2 purchaseInfo];
+  activePurchaseTask = [purchaseInfo activePurchaseTask];
+  v26 = [activePurchaseTask performPreActionRequestForTaskInfo:infoCopy requiresAuthorization:0];
   v39 = 0;
   v27 = [v26 resultWithError:&v39];
   v28 = v39;
 
   if ((v27 & 1) != 0 || !v28)
   {
-    v29 = [a1 _presentDialog:v6 taskInfo:v7];
+    v29 = [self _presentDialog:dialogCopy taskInfo:infoCopy];
     v38 = 0;
     v30 = [v29 resultWithError:&v38];
     v31 = v38;
@@ -466,8 +466,8 @@ LABEL_12:
         v32 = +[AMSLogConfig sharedConfig];
       }
 
-      v33 = [v32 OSLogObject];
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v32 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v34 = objc_opt_class();
         v35 = AMSLogKey();
@@ -477,11 +477,11 @@ LABEL_12:
         v43 = v35;
         v44 = 2114;
         v45 = v31;
-        _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] An error occurred during dialog presentation %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] An error occurred during dialog presentation %{public}@", buf, 0x20u);
       }
     }
 
-    v18 = [a1 handleDialogResult:v30 taskInfo:v7];
+    v18 = [self handleDialogResult:v30 taskInfo:infoCopy];
   }
 
   else
@@ -494,22 +494,22 @@ LABEL_25:
   return v18;
 }
 
-- (id)performWithTaskInfo:(id)a3
+- (id)performWithTaskInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSFinanceDialogResponse *)self dialogRequest];
-  v6 = [AMSFinanceDialogResponse performFinanceDialog:v5 taskInfo:v4];
+  infoCopy = info;
+  dialogRequest = [(AMSFinanceDialogResponse *)self dialogRequest];
+  v6 = [AMSFinanceDialogResponse performFinanceDialog:dialogRequest taskInfo:infoCopy];
 
   return v6;
 }
 
-- (int64_t)_actionTypeFromButtonDictionary:(id)a3
+- (int64_t)_actionTypeFromButtonDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"kind"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"kind"];
   if (!v4)
   {
-    v4 = [v3 objectForKey:@"action"];
+    v4 = [dictionaryCopy objectForKey:@"action"];
   }
 
   objc_opt_class();
@@ -593,17 +593,17 @@ LABEL_25:
   return v6;
 }
 
-- (id)_createActionFromButtonDictionary:(id)a3 title:(id)a4
+- (id)_createActionFromButtonDictionary:(id)dictionary title:(id)title
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [AMSDialogAction actionWithTitle:a4];
-  [v7 ams_setButtonDictionary:v6];
-  [v7 ams_setActionType:{-[AMSFinanceDialogResponse _actionTypeFromButtonDictionary:](self, "_actionTypeFromButtonDictionary:", v6)}];
-  v8 = [v6 objectForKeyedSubscript:@"retry"];
+  dictionaryCopy = dictionary;
+  v7 = [AMSDialogAction actionWithTitle:title];
+  [v7 ams_setButtonDictionary:dictionaryCopy];
+  [v7 ams_setActionType:{-[AMSFinanceDialogResponse _actionTypeFromButtonDictionary:](self, "_actionTypeFromButtonDictionary:", dictionaryCopy)}];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"retry"];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 objectForKeyedSubscript:@"retry"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"retry"];
     [v7 ams_setShouldRetry:{objc_msgSend(v9, "BOOLValue")}];
   }
 
@@ -612,7 +612,7 @@ LABEL_25:
     [v7 ams_setShouldRetry:0];
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"subtarget"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"subtarget"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -625,10 +625,10 @@ LABEL_25:
   }
 
   [v7 ams_setSubtarget:v11];
-  v12 = [v6 objectForKeyedSubscript:@"tidContinue"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"tidContinue"];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v6 objectForKeyedSubscript:@"tidContinue"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"tidContinue"];
     [v7 ams_setTidContinue:{objc_msgSend(v13, "BOOLValue")}];
   }
 
@@ -644,13 +644,13 @@ LABEL_25:
 
   else
   {
-    v15 = [v7 ams_subtarget];
-    if ([v15 hasPrefix:@"account"])
+    ams_subtarget = [v7 ams_subtarget];
+    if ([ams_subtarget hasPrefix:@"account"])
     {
       v14 = 1;
     }
 
-    else if ([v15 hasPrefix:@"background"])
+    else if ([ams_subtarget hasPrefix:@"background"])
     {
       v14 = 2;
     }
@@ -661,7 +661,7 @@ LABEL_25:
     }
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"url"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -683,10 +683,10 @@ LABEL_25:
   v18 = 0;
 LABEL_23:
   [v7 ams_setURLType:v14];
-  v19 = [v7 ams_actionType];
-  if (v19 <= 4)
+  ams_actionType = [v7 ams_actionType];
+  if (ams_actionType <= 4)
   {
-    if ((v19 - 1) >= 3)
+    if ((ams_actionType - 1) >= 3)
     {
       goto LABEL_47;
     }
@@ -717,16 +717,16 @@ LABEL_34:
     goto LABEL_47;
   }
 
-  if (v19 == 5)
+  if (ams_actionType == 5)
   {
     [v7 setDeepLink:v18];
     [v7 setInferLinkDestination:0];
     goto LABEL_47;
   }
 
-  if (v19 != 7)
+  if (ams_actionType != 7)
   {
-    if (v19 != 12)
+    if (ams_actionType != 12)
     {
       goto LABEL_47;
     }
@@ -734,7 +734,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"message"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"message"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -746,7 +746,7 @@ LABEL_34:
     v22 = 0;
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"explanation"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"explanation"];
   objc_opt_class();
   v24 = v18;
   if (objc_opt_isKindOfClass())
@@ -764,8 +764,8 @@ LABEL_34:
   v28 = AMSLogKey();
   [(AMSDialogRequest *)v27 setLogKey:v28];
 
-  v29 = [(AMSDialogRequest *)v27 userInfo];
-  v30 = [v29 mutableCopy];
+  userInfo = [(AMSDialogRequest *)v27 userInfo];
+  v30 = [userInfo mutableCopy];
   v31 = v30;
   if (v30)
   {
@@ -779,15 +779,15 @@ LABEL_34:
 
   v33 = v32;
 
-  [v33 setObject:v6 forKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
+  [v33 setObject:dictionaryCopy forKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
   [(AMSDialogRequest *)v27 setUserInfo:v33];
   [v7 setDialogRequest:v27];
 
   v18 = v24;
 LABEL_47:
-  v34 = [v7 deepLink];
+  deepLink = [v7 deepLink];
 
-  if (v34)
+  if (deepLink)
   {
     v35 = +[AMSLogConfig sharedConfig];
     if (!v35)
@@ -795,26 +795,26 @@ LABEL_47:
       v35 = +[AMSLogConfig sharedConfig];
     }
 
-    v36 = [v35 OSLogObject];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v35 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = v6;
+      v37 = dictionaryCopy;
       v38 = v18;
       v39 = objc_opt_class();
       v52 = v39;
       v40 = AMSSetLogKeyIfNeeded();
-      v41 = [v7 deepLink];
-      AMSHashIfNeeded(v41);
+      deepLink2 = [v7 deepLink];
+      AMSHashIfNeeded(deepLink2);
       v42 = v53 = v17;
       *buf = 138543874;
       v57 = v39;
       v18 = v38;
-      v6 = v37;
+      dictionaryCopy = v37;
       v58 = 2114;
       v59 = v40;
       v60 = 2114;
       v61 = v42;
-      _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Button Deep-Link URL: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Button Deep-Link URL: %{public}@", buf, 0x20u);
 
       v17 = v53;
     }
@@ -826,14 +826,14 @@ LABEL_47:
     v43 = +[AMSLogConfig sharedConfig];
   }
 
-  v44 = [v43 OSLogObject];
-  if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v43 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v45 = v17;
     v46 = objc_opt_class();
     v54 = v46;
     v47 = AMSSetLogKeyIfNeeded();
-    v55 = v6;
+    v55 = dictionaryCopy;
     v48 = v18;
     v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "ams_commerceUIURL")}];
     v50 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "ams_resolvedInterruption")}];
@@ -846,10 +846,10 @@ LABEL_47:
     v61 = v49;
     v62 = 2114;
     v63 = v50;
-    _os_log_impl(&dword_192869000, v44, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Button CommerceUIURL: %{public}@, ResolvedInterruption: %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Button CommerceUIURL: %{public}@, ResolvedInterruption: %{public}@", buf, 0x2Au);
 
     v18 = v48;
-    v6 = v55;
+    dictionaryCopy = v55;
   }
 
   return v7;
@@ -857,12 +857,12 @@ LABEL_47:
 
 - (id)_createDialogRequest
 {
-  v3 = [(AMSFinanceDialogResponse *)self taskInfo];
-  v4 = [v3 properties];
-  v5 = [v4 account];
+  taskInfo = [(AMSFinanceDialogResponse *)self taskInfo];
+  properties = [taskInfo properties];
+  account = [properties account];
 
-  v6 = [(AMSFinanceDialogResponse *)self dialogDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"message"];
+  dialogDictionary = [(AMSFinanceDialogResponse *)self dialogDictionary];
+  v7 = [dialogDictionary objectForKeyedSubscript:@"message"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -875,11 +875,11 @@ LABEL_47:
     v8 = 0;
   }
 
-  v9 = [v5 username];
-  v10 = [v8 ams_replaceAccountPatternWithUsername:v9];
+  username = [account username];
+  v10 = [v8 ams_replaceAccountPatternWithUsername:username];
 
-  v11 = [(AMSFinanceDialogResponse *)self dialogDictionary];
-  v12 = [v11 objectForKeyedSubscript:@"explanation"];
+  dialogDictionary2 = [(AMSFinanceDialogResponse *)self dialogDictionary];
+  v12 = [dialogDictionary2 objectForKeyedSubscript:@"explanation"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -892,15 +892,15 @@ LABEL_47:
     v13 = 0;
   }
 
-  v14 = [v5 username];
-  v15 = [v13 ams_replaceAccountPatternWithUsername:v14];
+  username2 = [account username];
+  v15 = [v13 ams_replaceAccountPatternWithUsername:username2];
 
   v16 = [[AMSDialogRequest alloc] initWithTitle:v10 message:v15];
   v17 = AMSLogKey();
   [(AMSDialogRequest *)v16 setLogKey:v17];
 
-  v18 = [(AMSDialogRequest *)v16 userInfo];
-  v19 = [v18 mutableCopy];
+  userInfo = [(AMSDialogRequest *)v16 userInfo];
+  v19 = [userInfo mutableCopy];
   v20 = v19;
   if (v19)
   {
@@ -914,12 +914,12 @@ LABEL_47:
 
   v22 = v21;
 
-  v23 = [(AMSFinanceDialogResponse *)self dialogDictionary];
-  [v22 setObject:v23 forKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
+  dialogDictionary3 = [(AMSFinanceDialogResponse *)self dialogDictionary];
+  [v22 setObject:dialogDictionary3 forKeyedSubscript:@"AMSDialogRequestUserInfoKeyServerPayload"];
 
   [(AMSDialogRequest *)v16 setUserInfo:v22];
-  v24 = [(AMSFinanceDialogResponse *)self responseDictionary];
-  v25 = [v24 objectForKeyedSubscript:@"metrics"];
+  responseDictionary = [(AMSFinanceDialogResponse *)self responseDictionary];
+  v25 = [responseDictionary objectForKeyedSubscript:@"metrics"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -960,26 +960,26 @@ LABEL_15:
     v29 = 0;
   }
 
-  v30 = [(AMSFinanceDialogResponse *)self dialogDictionary];
-  v31 = [(AMSFinanceDialogResponse *)self _createRequestButtonsFromDialogDictionary:v30];
+  dialogDictionary4 = [(AMSFinanceDialogResponse *)self dialogDictionary];
+  v31 = [(AMSFinanceDialogResponse *)self _createRequestButtonsFromDialogDictionary:dialogDictionary4];
   [(AMSDialogRequest *)v16 setButtonActions:v31];
 
-  v32 = [(AMSFinanceDialogResponse *)self dialogDictionary];
-  v33 = [v32 objectForKeyedSubscript:@"preventsCancelButtonStyle"];
+  dialogDictionary5 = [(AMSFinanceDialogResponse *)self dialogDictionary];
+  v33 = [dialogDictionary5 objectForKeyedSubscript:@"preventsCancelButtonStyle"];
   if (objc_opt_respondsToSelector())
   {
-    v34 = [(AMSFinanceDialogResponse *)self dialogDictionary];
-    [v34 objectForKeyedSubscript:@"preventsCancelButtonStyle"];
+    dialogDictionary6 = [(AMSFinanceDialogResponse *)self dialogDictionary];
+    [dialogDictionary6 objectForKeyedSubscript:@"preventsCancelButtonStyle"];
     v42 = v29;
     v35 = v26;
     v36 = v22;
     v37 = v15;
-    v38 = v5;
+    v38 = account;
     v40 = v39 = v10;
     -[AMSDialogRequest setPreventsCancelButtonStyle:](v16, "setPreventsCancelButtonStyle:", [v40 BOOLValue]);
 
     v10 = v39;
-    v5 = v38;
+    account = v38;
     v15 = v37;
     v22 = v36;
     v26 = v35;
@@ -994,9 +994,9 @@ LABEL_15:
   return v16;
 }
 
-- (id)_enrichedMetricsDictionaryWithFinanceDictionary:(id)a3
+- (id)_enrichedMetricsDictionaryWithFinanceDictionary:(id)dictionary
 {
-  v3 = [a3 mutableCopy];
+  v3 = [dictionary mutableCopy];
   [v3 setObject:&unk_1F0779568 forKeyedSubscript:@"eventVersion"];
   v4 = +[AMSDevice screenScale];
   if (v4)
@@ -1021,12 +1021,12 @@ LABEL_15:
   return v7;
 }
 
-- (id)_createRequestButtonsFromDialogDictionary:(id)a3
+- (id)_createRequestButtonsFromDialogDictionary:(id)dictionary
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 objectForKeyedSubscript:@"okButtonString"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"okButtonString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1035,7 +1035,7 @@ LABEL_15:
     if (v7)
     {
 LABEL_7:
-      v8 = [v4 objectForKeyedSubscript:@"okButtonAction"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"okButtonAction"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1062,7 +1062,7 @@ LABEL_7:
   {
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"okButton"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"okButton"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1079,7 +1079,7 @@ LABEL_7:
 LABEL_11:
 
 LABEL_12:
-  v12 = [v4 objectForKeyedSubscript:@"cancelButtonString"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"cancelButtonString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1099,7 +1099,7 @@ LABEL_18:
   {
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"cancelButton"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"cancelButton"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1115,7 +1115,7 @@ LABEL_18:
   {
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"otherButtonString"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"otherButtonString"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1134,7 +1134,7 @@ LABEL_18:
   v17 = 0;
   v16 = @"otherButtonAction";
 LABEL_23:
-  v19 = [v4 objectForKeyedSubscript:v16];
+  v19 = [dictionaryCopy objectForKeyedSubscript:v16];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1160,7 +1160,7 @@ LABEL_23:
     goto LABEL_39;
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"otherButtonString"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"otherButtonString"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1175,7 +1175,7 @@ LABEL_37:
 
   if (v18)
   {
-    v24 = [v4 objectForKeyedSubscript:@"otherButtonAction"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"otherButtonAction"];
     objc_opt_class();
     v5 = v15;
     if (objc_opt_isKindOfClass())
@@ -1206,22 +1206,22 @@ LABEL_39:
   return v5;
 }
 
-+ (BOOL)_credentialSource:(unint64_t)a3 satisfiesAuthenticationType:(unint64_t)a4
++ (BOOL)_credentialSource:(unint64_t)source satisfiesAuthenticationType:(unint64_t)type
 {
-  v4 = a4 < 2;
-  if (a3 != 5)
+  v4 = type < 2;
+  if (source != 5)
   {
     v4 = 0;
   }
 
-  return a3 == 2 || v4;
+  return source == 2 || v4;
 }
 
-+ (id)_handleAskPermissionRequestWithURL:(id)a3 account:(id)a4
++ (id)_handleAskPermissionRequestWithURL:(id)l account:(id)account
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  accountCopy = account;
   v7 = objc_alloc_init(AMSMutableBinaryPromise);
   v8 = +[AMSLogConfig sharedConfig];
   if (!v8)
@@ -1229,20 +1229,20 @@ LABEL_39:
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
     v12 = AMSLogKey();
-    v13 = AMSLogableURL(v5);
+    v13 = AMSLogableURL(lCopy);
     *buf = 138543874;
     *&buf[4] = v10;
     *&buf[12] = 2114;
     *&buf[14] = v12;
     *&buf[22] = 2112;
     v27 = v13;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting ask permission request: %@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting ask permission request: %@", buf, 0x20u);
   }
 
   v22 = 0;
@@ -1269,7 +1269,7 @@ LABEL_39:
   v20[3] = &unk_1E73B34B8;
   v16 = v7;
   v21 = v16;
-  [v14 addRequestWithURL:v5 account:v6 completion:v20];
+  [v14 addRequestWithURL:lCopy account:accountCopy completion:v20];
   v19 = 0;
   [(AMSBinaryPromise *)v16 resultWithError:&v19];
   v17 = v19;
@@ -1299,41 +1299,41 @@ void __71__AMSFinanceDialogResponse__handleAskPermissionRequestWithURL_account__
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (BOOL)_isCommerceUIURL:(id)a3 actionType:(int64_t)a4 URLType:(int64_t)a5
+- (BOOL)_isCommerceUIURL:(id)l actionType:(int64_t)type URLType:(int64_t)lType
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  lCopy = l;
+  if (!lCopy)
   {
     goto LABEL_13;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
 LABEL_3:
     v9 = 1;
     goto LABEL_14;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
 LABEL_13:
     v9 = 0;
     goto LABEL_14;
   }
 
-  if (a5 == 1)
+  if (lType == 1)
   {
     goto LABEL_3;
   }
 
   v10 = [AMSURLParser alloc];
-  v11 = [(AMSFinanceDialogResponse *)self taskInfo];
-  v12 = [v11 properties];
-  v13 = [v12 bag];
+  taskInfo = [(AMSFinanceDialogResponse *)self taskInfo];
+  properties = [taskInfo properties];
+  v13 = [properties bag];
   v14 = [(AMSURLParser *)v10 initWithBag:v13];
 
-  v15 = [(AMSURLParser *)v14 isCommerceUIURL:v8];
+  v15 = [(AMSURLParser *)v14 isCommerceUIURL:lCopy];
   v22 = 0;
   v9 = [v15 resultWithError:&v22];
   v16 = v22;
@@ -1346,8 +1346,8 @@ LABEL_13:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_opt_class();
       v20 = AMSLogKey();
@@ -1357,7 +1357,7 @@ LABEL_13:
       v26 = v20;
       v27 = 2114;
       v28 = v16;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Provided URL is not identified as Commerce UI URL. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Provided URL is not identified as Commerce UI URL. %{public}@", buf, 0x20u);
     }
   }
 
@@ -1365,13 +1365,13 @@ LABEL_14:
   return v9;
 }
 
-+ (id)_presentDialog:(id)a3 taskInfo:(id)a4
++ (id)_presentDialog:(id)dialog taskInfo:(id)info
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 session];
-  v9 = [v8 delegate];
+  dialogCopy = dialog;
+  infoCopy = info;
+  session = [infoCopy session];
+  delegate = [session delegate];
 
   v10 = objc_opt_respondsToSelector();
   v11 = objc_opt_respondsToSelector();
@@ -1384,8 +1384,8 @@ LABEL_14:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
@@ -1400,7 +1400,7 @@ LABEL_14:
     v45 = v12;
     v17 = "%{public}@: [%{public}@] Failed to present dialog (no delegate). %{public}@";
 LABEL_16:
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, v17, buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, v17, buf, 0x20u);
 
 LABEL_17:
     v23 = [AMSPromise promiseWithError:v12];
@@ -1408,7 +1408,7 @@ LABEL_17:
     goto LABEL_27;
   }
 
-  if (!v6)
+  if (!dialogCopy)
   {
     v12 = AMSError(2, @"Finance Dialog Failed", @"No dialog request", 0);
     v13 = +[AMSLogConfig sharedConfig];
@@ -1417,8 +1417,8 @@ LABEL_17:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_17;
     }
@@ -1436,8 +1436,8 @@ LABEL_17:
   }
 
   v18 = +[AMSLogConfig sharedConfig];
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v18 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v20 = objc_opt_class();
     v21 = v20;
@@ -1447,28 +1447,28 @@ LABEL_17:
     v42 = 2114;
     v43 = v22;
     v44 = 2114;
-    v45 = v6;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting dialog: %{public}@", buf, 0x20u);
+    v45 = dialogCopy;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting dialog: %{public}@", buf, 0x20u);
   }
 
   v23 = [[AMSPromise alloc] initWithTimeout:300.0];
   if (v10)
   {
-    v24 = [v7 session];
-    v25 = [v7 task];
-    v26 = [(AMSPromise *)v23 completionHandlerAdapter];
-    [v9 AMSURLSession:v24 task:v25 handleDialogRequest:v6 completion:v26];
+    session2 = [infoCopy session];
+    task = [infoCopy task];
+    completionHandlerAdapter = [(AMSPromise *)v23 completionHandlerAdapter];
+    [delegate AMSURLSession:session2 task:task handleDialogRequest:dialogCopy completion:completionHandlerAdapter];
   }
 
   else
   {
     v28 = +[AMSUnitTests isRunningUnitTests];
-    v29 = +[AMSLogConfig sharedConfig];
-    v30 = [v29 OSLogObject];
-    v31 = v30;
+    defaultCenter = +[AMSLogConfig sharedConfig];
+    oSLogObject3 = [defaultCenter OSLogObject];
+    v31 = oSLogObject3;
     if (v28)
     {
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v32 = objc_opt_class();
         v33 = v32;
@@ -1480,13 +1480,13 @@ LABEL_17:
         _os_log_impl(&dword_192869000, v31, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Calling legacy delegate for dialog handling", buf, 0x16u);
       }
 
-      v29 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v29 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:0 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:0 userInfo:0];
     }
 
     else
     {
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_FAULT))
       {
         v35 = objc_opt_class();
         v36 = v35;
@@ -1499,16 +1499,16 @@ LABEL_17:
       }
     }
 
-    v24 = [v7 session];
-    v25 = [(AMSPromise *)v23 completionHandlerAdapter];
-    [v9 AMSURLSession:v24 handleDialogRequest:v6 completion:v25];
+    session2 = [infoCopy session];
+    task = [(AMSPromise *)v23 completionHandlerAdapter];
+    [delegate AMSURLSession:session2 handleDialogRequest:dialogCopy completion:task];
   }
 
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __52__AMSFinanceDialogResponse__presentDialog_taskInfo___block_invoke;
   v39[3] = &__block_descriptor_40_e37_v24__0__AMSDialogResult_8__NSError_16l;
-  v39[4] = a1;
+  v39[4] = self;
   [(AMSPromise *)v23 addFinishBlock:v39];
 LABEL_27:
 
@@ -1573,7 +1573,7 @@ LABEL_10:
   }
 }
 
-+ (id)_presentIDSDialog:(id)a3 taskInfo:(id)a4
++ (id)_presentIDSDialog:(id)dialog taskInfo:(id)info
 {
   v4 = AMSError(11, @"IDS Not Supported", @"Invalid platform", 0);
   v5 = [AMSBinaryPromise promiseWithError:v4];
@@ -1581,14 +1581,14 @@ LABEL_10:
   return v5;
 }
 
-+ (id)_serviceActionFromButton:(id)a3 taskInfo:(id)a4
++ (id)_serviceActionFromButton:(id)button taskInfo:(id)info
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [a3 ams_buttonDictionary];
-  v5 = v4;
-  if (v4)
+  ams_buttonDictionary = [button ams_buttonDictionary];
+  v5 = ams_buttonDictionary;
+  if (ams_buttonDictionary)
   {
-    v6 = [v4 objectForKeyedSubscript:@"url"];
+    v6 = [ams_buttonDictionary objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1599,7 +1599,7 @@ LABEL_10:
         v8 = [MEMORY[0x1E695DFF8] URLWithString:v7];
         if (v8)
         {
-          v9 = v8;
+          oSLogObject4 = v8;
           v10 = [v5 objectForKeyedSubscript:@"dialogData"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -1611,7 +1611,7 @@ LABEL_10:
               if ([MEMORY[0x1E696ACB0] isValidJSONObject:v11])
               {
                 v28 = 0;
-                v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v11 options:0 error:&v28];
+                oSLogObject3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v11 options:0 error:&v28];
                 v13 = v28;
                 if (!v13)
                 {
@@ -1620,14 +1620,14 @@ LABEL_37:
                   goto LABEL_38;
                 }
 
-                v14 = +[AMSLogConfig sharedConfig];
-                if (!v14)
+                oSLogObject2 = +[AMSLogConfig sharedConfig];
+                if (!oSLogObject2)
                 {
-                  v14 = +[AMSLogConfig sharedConfig];
+                  oSLogObject2 = +[AMSLogConfig sharedConfig];
                 }
 
-                v15 = [v14 OSLogObject];
-                if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+                oSLogObject = [oSLogObject2 OSLogObject];
+                if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
                 {
                   v16 = objc_opt_class();
                   v17 = AMSLogKey();
@@ -1638,7 +1638,7 @@ LABEL_37:
                   v18 = v17;
                   v35 = 2114;
                   v36 = v13;
-                  _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Service action dialog data encountered JSON error: %{public}@", buf, 0x20u);
+                  _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Service action dialog data encountered JSON error: %{public}@", buf, 0x20u);
                 }
               }
 
@@ -1650,8 +1650,8 @@ LABEL_37:
                   v13 = +[AMSLogConfig sharedConfig];
                 }
 
-                v14 = [v13 OSLogObject];
-                if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+                oSLogObject2 = [v13 OSLogObject];
+                if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
                 {
                   v25 = objc_opt_class();
                   v26 = AMSLogKey();
@@ -1659,10 +1659,10 @@ LABEL_37:
                   v32 = v25;
                   v33 = 2114;
                   v34 = v26;
-                  _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Service action dialog data not JSON compatible", buf, 0x16u);
+                  _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Service action dialog data not JSON compatible", buf, 0x16u);
                 }
 
-                v12 = 0;
+                oSLogObject3 = 0;
               }
 
               goto LABEL_37;
@@ -1675,11 +1675,11 @@ LABEL_37:
             v11 = 0;
           }
 
-          v12 = 0;
+          oSLogObject3 = 0;
 LABEL_38:
-          v21 = [AMSURLAction redirectActionWithURL:v9];
+          v21 = [AMSURLAction redirectActionWithURL:oSLogObject4];
           [v21 setUpdatedMethod:@"POST"];
-          [v21 setUpdatedBody:v12];
+          [v21 setUpdatedBody:oSLogObject3];
           v29 = @"Content-Type";
           v30 = @"application/json";
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
@@ -1697,14 +1697,14 @@ LABEL_25:
       v7 = 0;
     }
 
-    v9 = +[AMSLogConfig sharedConfig];
-    if (!v9)
+    oSLogObject4 = +[AMSLogConfig sharedConfig];
+    if (!oSLogObject4)
     {
-      v9 = +[AMSLogConfig sharedConfig];
+      oSLogObject4 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v9 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [oSLogObject4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       v23 = AMSLogKey();
@@ -1712,7 +1712,7 @@ LABEL_25:
       v32 = v22;
       v33 = 2114;
       v34 = v23;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to locate URL for service action", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to locate URL for service action", buf, 0x16u);
     }
 
     v21 = 0;
@@ -1725,8 +1725,8 @@ LABEL_25:
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v7 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
     v19 = objc_opt_class();
     v20 = AMSLogKey();
@@ -1734,7 +1734,7 @@ LABEL_25:
     v32 = v19;
     v33 = 2114;
     v34 = v20;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to locate button dictionary for service action", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to locate button dictionary for service action", buf, 0x16u);
   }
 
   v21 = 0;

@@ -1,24 +1,24 @@
 @interface SBUIEmergencyCallHostViewController
-+ (void)requestEmergencyCallControllerWithCompletion:(id)a3;
-- (id)tintColorForBackgroundStyle:(int64_t)a3 outBlurRadius:(double *)a4;
++ (void)requestEmergencyCallControllerWithCompletion:(id)completion;
+- (id)tintColorForBackgroundStyle:(int64_t)style outBlurRadius:(double *)radius;
 - (void)_createAndAddBlurViewIfNecessary;
-- (void)setBlursSelf:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setBlursSelf:(BOOL)self;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBUIEmergencyCallHostViewController
 
-+ (void)requestEmergencyCallControllerWithCompletion:(id)a3
++ (void)requestEmergencyCallControllerWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = objc_opt_class();
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __84__SBUIEmergencyCallHostViewController_requestEmergencyCallControllerWithCompletion___block_invoke;
     v6[3] = &unk_1E78A00F0;
-    v7 = v3;
+    v7 = completionCopy;
     v5 = [v4 requestViewController:@"PHEmergencyDialerViewController" fromServiceWithBundleIdentifier:@"com.apple.InCallService" connectionHandler:v6];
   }
 }
@@ -89,12 +89,12 @@ void __84__SBUIEmergencyCallHostViewController_requestEmergencyCallControllerWit
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setBlursSelf:(BOOL)a3
+- (void)setBlursSelf:(BOOL)self
 {
-  if (self->_blursSelf != a3)
+  if (self->_blursSelf != self)
   {
-    self->_blursSelf = a3;
-    if (a3)
+    self->_blursSelf = self;
+    if (self)
     {
 
       [(SBUIEmergencyCallHostViewController *)self _createAndAddBlurViewIfNecessary];
@@ -109,36 +109,36 @@ void __84__SBUIEmergencyCallHostViewController_requestEmergencyCallControllerWit
   }
 }
 
-- (id)tintColorForBackgroundStyle:(int64_t)a3 outBlurRadius:(double *)a4
+- (id)tintColorForBackgroundStyle:(int64_t)style outBlurRadius:(double *)radius
 {
-  if ((a3 - 3) > 2)
+  if ((style - 3) > 2)
   {
     v5 = 2010;
   }
 
   else
   {
-    v5 = qword_1A9B2AF68[a3 - 3];
+    v5 = qword_1A9B2AF68[style - 3];
   }
 
-  if (a4)
+  if (radius)
   {
     v6 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:v5 graphicsQuality:100];
     [v6 blurRadius];
-    *a4 = v7;
+    *radius = v7;
   }
 
   v8 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:v5];
-  v9 = [v8 combinedTintColor];
+  combinedTintColor = [v8 combinedTintColor];
 
-  return v9;
+  return combinedTintColor;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBUIEmergencyCallHostViewController;
-  [(_UIRemoteViewController *)&v4 viewWillAppear:a3];
+  [(_UIRemoteViewController *)&v4 viewWillAppear:appear];
   if (self->_blursSelf && !self->_blurView)
   {
     [(SBUIEmergencyCallHostViewController *)self _createAndAddBlurViewIfNecessary];
@@ -150,10 +150,10 @@ void __84__SBUIEmergencyCallHostViewController_requestEmergencyCallControllerWit
   if (!self->_blurView)
   {
     v3 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:-2];
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 _graphicsQuality];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    _graphicsQuality = [currentDevice _graphicsQuality];
 
-    if (v5 == 100)
+    if (_graphicsQuality == 100)
     {
       [v3 setBlurRadius:self->_blurRadius];
       [v3 setBackdropVisible:1];
@@ -164,8 +164,8 @@ void __84__SBUIEmergencyCallHostViewController_requestEmergencyCallControllerWit
     self->_blurView = v6;
 
     v8 = self->_blurView;
-    v9 = [(SBUIEmergencyCallHostViewController *)self view];
-    [v9 bounds];
+    view = [(SBUIEmergencyCallHostViewController *)self view];
+    [view bounds];
     [(_UIBackdropView *)v8 setFrame:?];
 
     [(_UIBackdropView *)self->_blurView setAutoresizingMask:18];
@@ -173,11 +173,11 @@ void __84__SBUIEmergencyCallHostViewController_requestEmergencyCallControllerWit
     [(_UIBackdropView *)self->_blurView setComputesColorSettings:1];
   }
 
-  v10 = [(SBUIEmergencyCallHostViewController *)self view];
-  [v10 addSubview:self->_blurView];
+  view2 = [(SBUIEmergencyCallHostViewController *)self view];
+  [view2 addSubview:self->_blurView];
 
-  v11 = [(SBUIEmergencyCallHostViewController *)self view];
-  [v11 sendSubviewToBack:self->_blurView];
+  view3 = [(SBUIEmergencyCallHostViewController *)self view];
+  [view3 sendSubviewToBack:self->_blurView];
 }
 
 @end

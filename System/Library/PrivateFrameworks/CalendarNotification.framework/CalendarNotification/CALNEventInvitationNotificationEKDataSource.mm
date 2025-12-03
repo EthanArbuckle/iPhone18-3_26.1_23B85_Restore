@@ -1,37 +1,37 @@
 @interface CALNEventInvitationNotificationEKDataSource
-+ (int64_t)_spanForNewStatusWithEvent:(id)a3;
-- (CALNEventInvitationNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5 remoteMutator:(id)a6 dataSourceEventRepresentationProvider:(id)a7 preferences:(id)a8;
-- (id)_notificationInfoFromNotification:(id)a3 inEventStore:(id)a4;
-- (id)fetchEventInvitationNotificationSourceClientIdentifiers:(id)a3;
-- (id)fetchEventInvitationNotificationWithSourceClientIdentifier:(id)a3;
++ (int64_t)_spanForNewStatusWithEvent:(id)event;
+- (CALNEventInvitationNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider remoteMutator:(id)mutator dataSourceEventRepresentationProvider:(id)representationProvider preferences:(id)preferences;
+- (id)_notificationInfoFromNotification:(id)notification inEventStore:(id)store;
+- (id)fetchEventInvitationNotificationSourceClientIdentifiers:(id)identifiers;
+- (id)fetchEventInvitationNotificationWithSourceClientIdentifier:(id)identifier;
 - (id)fetchEventInvitationNotifications;
-- (void)_setParticipantStatus:(int64_t)a3 withSourceClientIdentifier:(id)a4;
-- (void)clearEventInvitationWithSourceClientIdentifier:(id)a3;
-- (void)reportEventInvitationAsJunkWithSourceClientIdentifier:(id)a3;
+- (void)_setParticipantStatus:(int64_t)status withSourceClientIdentifier:(id)identifier;
+- (void)clearEventInvitationWithSourceClientIdentifier:(id)identifier;
+- (void)reportEventInvitationAsJunkWithSourceClientIdentifier:(id)identifier;
 @end
 
 @implementation CALNEventInvitationNotificationEKDataSource
 
-- (CALNEventInvitationNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5 remoteMutator:(id)a6 dataSourceEventRepresentationProvider:(id)a7 preferences:(id)a8
+- (CALNEventInvitationNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider remoteMutator:(id)mutator dataSourceEventRepresentationProvider:(id)representationProvider preferences:(id)preferences
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  providerCopy = provider;
+  notificationProviderCopy = notificationProvider;
+  referenceProviderCopy = referenceProvider;
+  mutatorCopy = mutator;
+  representationProviderCopy = representationProvider;
+  preferencesCopy = preferences;
   v24.receiver = self;
   v24.super_class = CALNEventInvitationNotificationEKDataSource;
   v18 = [(CALNEventInvitationNotificationEKDataSource *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventStoreProvider, a3);
-    objc_storeStrong(&v19->_inboxNotificationProvider, a4);
-    objc_storeStrong(&v19->_notificationReferenceProvider, a5);
-    objc_storeStrong(&v19->_remoteMutator, a6);
-    objc_storeStrong(&v19->_dataSourceEventRepresentationProvider, a7);
-    objc_storeStrong(&v19->_preferences, a8);
+    objc_storeStrong(&v18->_eventStoreProvider, provider);
+    objc_storeStrong(&v19->_inboxNotificationProvider, notificationProvider);
+    objc_storeStrong(&v19->_notificationReferenceProvider, referenceProvider);
+    objc_storeStrong(&v19->_remoteMutator, mutator);
+    objc_storeStrong(&v19->_dataSourceEventRepresentationProvider, representationProvider);
+    objc_storeStrong(&v19->_preferences, preferences);
   }
 
   return v19;
@@ -89,28 +89,28 @@
   return v13;
 }
 
-- (id)fetchEventInvitationNotificationSourceClientIdentifiers:(id)a3
+- (id)fetchEventInvitationNotificationSourceClientIdentifiers:(id)identifiers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNEventInvitationNotificationEKDataSource *)self preferences];
-  v6 = [v5 invitationNotificationsDisabled];
+  identifiersCopy = identifiers;
+  preferences = [(CALNEventInvitationNotificationEKDataSource *)self preferences];
+  invitationNotificationsDisabled = [preferences invitationNotificationsDisabled];
 
-  if (v6)
+  if (invitationNotificationsDisabled)
   {
     v7 = objc_opt_new();
     goto LABEL_23;
   }
 
-  v8 = [(CALNEventInvitationNotificationEKDataSource *)self inboxNotificationProvider];
-  v9 = [v8 eventNotificationReferences];
+  inboxNotificationProvider = [(CALNEventInvitationNotificationEKDataSource *)self inboxNotificationProvider];
+  eventNotificationReferences = [inboxNotificationProvider eventNotificationReferences];
 
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventNotificationReferences, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v9;
+  v10 = eventNotificationReferences;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v11)
   {
@@ -131,17 +131,17 @@
       v15 = *(*(&v24 + 1) + 8 * i);
       if (![v15 type])
       {
-        if (!v4 || ([v15 objectID], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringRepresentation"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v4, "containsObject:", v17), v17, v16, v18))
+        if (!identifiersCopy || ([v15 objectID], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringRepresentation"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(identifiersCopy, "containsObject:", v17), v17, v16, v18))
         {
-          v19 = [v15 notification];
-          v20 = [v19 URL];
-          if (v20 && ([v19 hiddenFromNotificationCenter] & 1) == 0)
+          notification = [v15 notification];
+          v20 = [notification URL];
+          if (v20 && ([notification hiddenFromNotificationCenter] & 1) == 0)
           {
-            if ([v19 type])
+            if ([notification type])
             {
-              v21 = [v19 type];
+              type = [notification type];
 
-              if (v21 != 1)
+              if (type != 1)
               {
                 goto LABEL_19;
               }
@@ -151,7 +151,7 @@
             {
             }
 
-            v20 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:v19];
+            v20 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:notification];
             [v7 addObject:v20];
           }
 
@@ -173,27 +173,27 @@ LABEL_23:
   return v7;
 }
 
-- (id)fetchEventInvitationNotificationWithSourceClientIdentifier:(id)a3
+- (id)fetchEventInvitationNotificationWithSourceClientIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
-  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:0 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+  notificationReferenceProvider = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
+  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v8)
   {
-    v9 = [v8 notification];
-    if (v9)
+    notification = [v8 notification];
+    if (notification)
     {
-      v10 = [(CALNEventInvitationNotificationEKDataSource *)self _notificationInfoFromNotification:v9 inEventStore:v6];
+      v10 = [(CALNEventInvitationNotificationEKDataSource *)self _notificationInfoFromNotification:notification inEventStore:eventStore];
       v11 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138543618;
-        v27 = v4;
+        v27 = identifierCopy;
         v28 = 2112;
         v29 = v10;
         _os_log_impl(&dword_242909000, v11, OS_LOG_TYPE_DEFAULT, "Fetched event invitation notification info with sourceClientIdentifier: %{public}@ info: %@", &v26, 0x16u);
@@ -205,7 +205,7 @@ LABEL_23:
       v11 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(CALNEventInvitationNotificationEKDataSource *)v4 fetchEventInvitationNotificationWithSourceClientIdentifier:v11, v18, v19, v20, v21, v22, v23];
+        [(CALNEventInvitationNotificationEKDataSource *)identifierCopy fetchEventInvitationNotificationWithSourceClientIdentifier:v11, v18, v19, v20, v21, v22, v23];
       }
 
       v10 = 0;
@@ -214,10 +214,10 @@ LABEL_23:
 
   else
   {
-    v9 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    notification = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(notification, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEventInvitationNotificationEKDataSource *)v4 fetchEventInvitationNotificationWithSourceClientIdentifier:v9, v12, v13, v14, v15, v16, v17];
+      [(CALNEventInvitationNotificationEKDataSource *)identifierCopy fetchEventInvitationNotificationWithSourceClientIdentifier:notification, v12, v13, v14, v15, v16, v17];
     }
 
     v10 = 0;
@@ -228,23 +228,23 @@ LABEL_23:
   return v10;
 }
 
-- (void)clearEventInvitationWithSourceClientIdentifier:(id)a3
+- (void)clearEventInvitationWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
-  v5 = [v7 eventStore];
-  v6 = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
-  [CALNEventInvitationNotificationDataSourceUtils clearEventInvitationOfType:0 withSourceClientIdentifier:v4 inEventStore:v5 withNotificationReferenceProvider:v6];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
+  notificationReferenceProvider = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
+  [CALNEventInvitationNotificationDataSourceUtils clearEventInvitationOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 }
 
-- (void)reportEventInvitationAsJunkWithSourceClientIdentifier:(id)a3
+- (void)reportEventInvitationAsJunkWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
-  v8 = [CALNEventInvitationNotificationDataSourceUtils eventForNotificationOfType:0 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+  notificationReferenceProvider = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
+  v8 = [CALNEventInvitationNotificationDataSourceUtils eventForNotificationOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v8)
   {
@@ -256,42 +256,42 @@ LABEL_23:
     v9 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEventInvitationNotificationEKDataSource *)v4 reportEventInvitationAsJunkWithSourceClientIdentifier:v9, v10, v11, v12, v13, v14, v15];
+      [(CALNEventInvitationNotificationEKDataSource *)identifierCopy reportEventInvitationAsJunkWithSourceClientIdentifier:v9, v10, v11, v12, v13, v14, v15];
     }
   }
 }
 
-- (id)_notificationInfoFromNotification:(id)a3 inEventStore:(id)a4
+- (id)_notificationInfoFromNotification:(id)notification inEventStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v29 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:v6];
-  v8 = [CALNEventInvitationNotificationDataSourceUtils expirationDateForEventInvitation:v6];
-  v28 = v7;
-  v9 = [CALNEventInvitationNotificationDataSourceUtils eventForEventInvitation:v6 inEventStore:v7];
+  notificationCopy = notification;
+  storeCopy = store;
+  v29 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:notificationCopy];
+  v8 = [CALNEventInvitationNotificationDataSourceUtils expirationDateForEventInvitation:notificationCopy];
+  v28 = storeCopy;
+  v9 = [CALNEventInvitationNotificationDataSourceUtils eventForEventInvitation:notificationCopy inEventStore:storeCopy];
   if (v9)
   {
-    [v6 URL];
+    [notificationCopy URL];
     v10 = v27 = v8;
-    v26 = [v10 absoluteString];
+    absoluteString = [v10 absoluteString];
 
     v25 = CUIKLaunchURLForEventInvitation();
-    v11 = [v9 calendar];
-    v24 = [v11 source];
+    calendar = [v9 calendar];
+    source = [calendar source];
 
-    v12 = [v24 isDelegate];
-    v23 = [v24 title];
-    v21 = [v24 uniqueIdentifier];
-    v22 = [v9 scanForConflicts];
-    v13 = [(CALNEventInvitationNotificationEKDataSource *)self dataSourceEventRepresentationProvider];
-    v14 = [v9 startDate];
-    v15 = [v9 endDate];
-    v16 = [v28 timeZone];
-    v17 = [v13 eventRepresentationDictionaryForInvitationNotification:v6 event:v9 date:v14 endDate:v15 timeZone:v16];
+    isDelegate = [source isDelegate];
+    title = [source title];
+    uniqueIdentifier = [source uniqueIdentifier];
+    scanForConflicts = [v9 scanForConflicts];
+    dataSourceEventRepresentationProvider = [(CALNEventInvitationNotificationEKDataSource *)self dataSourceEventRepresentationProvider];
+    startDate = [v9 startDate];
+    endDate = [v9 endDate];
+    timeZone = [v28 timeZone];
+    v17 = [dataSourceEventRepresentationProvider eventRepresentationDictionaryForInvitationNotification:notificationCopy event:v9 date:startDate endDate:endDate timeZone:timeZone];
 
     v8 = v27;
-    LOBYTE(v20) = v12;
-    v18 = [[CALNEventInvitationNotificationInfo alloc] initWithSourceClientIdentifier:v29 launchURL:v25 expirationDate:v27 conflictDetails:v22 eventInvitationNotification:v6 eventRepresentationDictionary:v17 eventURI:v26 isDelegate:v20 sourceTitle:v23 sourceIdentifier:v21];
+    LOBYTE(v20) = isDelegate;
+    v18 = [[CALNEventInvitationNotificationInfo alloc] initWithSourceClientIdentifier:v29 launchURL:v25 expirationDate:v27 conflictDetails:scanForConflicts eventInvitationNotification:notificationCopy eventRepresentationDictionary:v17 eventURI:absoluteString isDelegate:v20 sourceTitle:title sourceIdentifier:uniqueIdentifier];
   }
 
   else
@@ -302,36 +302,36 @@ LABEL_23:
   return v18;
 }
 
-- (void)_setParticipantStatus:(int64_t)a3 withSourceClientIdentifier:(id)a4
+- (void)_setParticipantStatus:(int64_t)status withSourceClientIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
-  v8 = [v7 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventInvitationNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v9 = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
-  v10 = [CALNEventInvitationNotificationDataSourceUtils eventForNotificationOfType:0 withSourceClientIdentifier:v6 inEventStore:v8 withNotificationReferenceProvider:v9];
+  notificationReferenceProvider = [(CALNEventInvitationNotificationEKDataSource *)self notificationReferenceProvider];
+  v10 = [CALNEventInvitationNotificationDataSourceUtils eventForNotificationOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v10)
   {
-    [v10 setParticipationStatus:a3];
+    [v10 setParticipationStatus:status];
     [v10 setInvitationStatus:0];
     v11 = [objc_opt_class() _spanForNewStatusWithEvent:v10];
-    v12 = [(CALNEventInvitationNotificationEKDataSource *)self remoteMutator];
-    [v12 setParticipantStatus:a3 span:v11 event:v10];
+    remoteMutator = [(CALNEventInvitationNotificationEKDataSource *)self remoteMutator];
+    [remoteMutator setParticipantStatus:status span:v11 event:v10];
 
     v18 = 0;
-    LOBYTE(v11) = [v8 saveEvent:v10 span:v11 error:&v18];
+    LOBYTE(v11) = [eventStore saveEvent:v10 span:v11 error:&v18];
     v13 = v18;
     if ((v11 & 1) == 0)
     {
       v14 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v10 externalURI];
-        v17 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+        externalURI = [v10 externalURI];
+        v17 = [MEMORY[0x277CCABB0] numberWithInteger:status];
         *buf = 138543874;
-        v20 = v16;
+        v20 = externalURI;
         v21 = 2114;
         v22 = v17;
         v23 = 2112;
@@ -346,22 +346,22 @@ LABEL_23:
     v13 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(CALNEventInvitationNotificationEKDataSource *)v6 _setParticipantStatus:a3 withSourceClientIdentifier:v13];
+      [(CALNEventInvitationNotificationEKDataSource *)identifierCopy _setParticipantStatus:status withSourceClientIdentifier:v13];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (int64_t)_spanForNewStatusWithEvent:(id)a3
++ (int64_t)_spanForNewStatusWithEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 responseMustApplyToAll])
+  eventCopy = event;
+  if ([eventCopy responseMustApplyToAll])
   {
     v4 = 4;
   }
 
-  else if ([v3 hasRecurrenceRules])
+  else if ([eventCopy hasRecurrenceRules])
   {
     v4 = 4;
   }

@@ -1,58 +1,58 @@
 @interface SubCalICSDataActor
-+ (id)_processedDigestForDocument:(id)a3;
-+ (id)_processedDigestForOriginalData:(id)a3;
-+ (id)externalIDForICSEvent:(id)a3;
-- (BOOL)_processedAddedEvents:(id)a3 fromCalendarData:(id)a4 intoCalendar:(id)a5 options:(unint64_t)a6 uidToMasterEvent:(id)a7 uidsOfEventsToRemove:(id)a8 error:(id *)a9;
-- (BOOL)_updateSubCalWithICSDocument:(id)a3 data:(id)a4 calendar:(id)a5 digestPair:(id)a6 error:(id *)a7;
-- (SubCalICSDataActor)initWithSourceId:(id)a3 calendarId:(id)a4 migrateCalendarExternalID:(id)a5 changeTrackingID:(id)a6 removeAlarms:(BOOL)a7 removeAttachments:(BOOL)a8 forcedRefresh:(BOOL)a9 clearChanges:(BOOL)a10 callbackTarget:(id)a11;
++ (id)_processedDigestForDocument:(id)document;
++ (id)_processedDigestForOriginalData:(id)data;
++ (id)externalIDForICSEvent:(id)event;
+- (BOOL)_processedAddedEvents:(id)events fromCalendarData:(id)data intoCalendar:(id)calendar options:(unint64_t)options uidToMasterEvent:(id)event uidsOfEventsToRemove:(id)remove error:(id *)error;
+- (BOOL)_updateSubCalWithICSDocument:(id)document data:(id)data calendar:(id)calendar digestPair:(id)pair error:(id *)error;
+- (SubCalICSDataActor)initWithSourceId:(id)id calendarId:(id)calendarId migrateCalendarExternalID:(id)d changeTrackingID:(id)iD removeAlarms:(BOOL)alarms removeAttachments:(BOOL)attachments forcedRefresh:(BOOL)refresh clearChanges:(BOOL)self0 callbackTarget:(id)self1;
 - (SubCalICSDataCallbackActor)callbackTarget;
-- (id)_gatherAddedEventsFromDocument:(id)a3 existingEventExternalIDs:(id)a4 existingEventUIDs:(id)a5 eventsToRemove:(id *)a6;
-- (id)_internalProcessICSData:(id)a3;
-- (id)_processICSDocument:(id)a3 icsData:(id)a4 calendar:(id)a5 digestPair:(id)a6;
-- (id)_reallyProcessICSData:(id)a3 withCalendar:(id)a4 existingDigestPair:(id)a5 newUnprocessedDigest:(id)a6;
-- (void)_gatherExistingEventsInCalendar:(id)a3 uidToEventMap:(id *)a4 uidToExternalIDs:(id *)a5;
-- (void)_sendResultToCallbackActor:(id)a3;
-- (void)processICSData:(id)a3;
-- (void)processICSDataAtPath:(id)a3 removeFileWhenDone:(BOOL)a4;
+- (id)_gatherAddedEventsFromDocument:(id)document existingEventExternalIDs:(id)ds existingEventUIDs:(id)iDs eventsToRemove:(id *)remove;
+- (id)_internalProcessICSData:(id)data;
+- (id)_processICSDocument:(id)document icsData:(id)data calendar:(id)calendar digestPair:(id)pair;
+- (id)_reallyProcessICSData:(id)data withCalendar:(id)calendar existingDigestPair:(id)pair newUnprocessedDigest:(id)digest;
+- (void)_gatherExistingEventsInCalendar:(id)calendar uidToEventMap:(id *)map uidToExternalIDs:(id *)ds;
+- (void)_sendResultToCallbackActor:(id)actor;
+- (void)processICSData:(id)data;
+- (void)processICSDataAtPath:(id)path removeFileWhenDone:(BOOL)done;
 - (void)synchronouslyCancel;
 @end
 
 @implementation SubCalICSDataActor
 
-- (SubCalICSDataActor)initWithSourceId:(id)a3 calendarId:(id)a4 migrateCalendarExternalID:(id)a5 changeTrackingID:(id)a6 removeAlarms:(BOOL)a7 removeAttachments:(BOOL)a8 forcedRefresh:(BOOL)a9 clearChanges:(BOOL)a10 callbackTarget:(id)a11
+- (SubCalICSDataActor)initWithSourceId:(id)id calendarId:(id)calendarId migrateCalendarExternalID:(id)d changeTrackingID:(id)iD removeAlarms:(BOOL)alarms removeAttachments:(BOOL)attachments forcedRefresh:(BOOL)refresh clearChanges:(BOOL)self0 callbackTarget:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a11;
+  idCopy = id;
+  calendarIdCopy = calendarId;
+  dCopy = d;
+  iDCopy = iD;
+  targetCopy = target;
   v34.receiver = self;
   v34.super_class = SubCalICSDataActor;
   v22 = [(SubCalICSDataActor *)&v34 init];
   if (v22)
   {
-    v23 = [v17 copy];
+    v23 = [idCopy copy];
     sourceExternalId = v22->_sourceExternalId;
     v22->_sourceExternalId = v23;
 
-    v25 = [v18 copy];
+    v25 = [calendarIdCopy copy];
     calendarExternalId = v22->_calendarExternalId;
     v22->_calendarExternalId = v25;
 
-    v27 = [v19 copy];
+    v27 = [dCopy copy];
     migrateCalendarExternalID = v22->_migrateCalendarExternalID;
     v22->_migrateCalendarExternalID = v27;
 
-    v22->_removeAlarms = a7;
-    v22->_removeAttachments = a8;
-    v22->_forcedRefresh = a9;
-    objc_storeWeak(&v22->_callbackTarget, v21);
-    v22->_clearChanges = a10;
+    v22->_removeAlarms = alarms;
+    v22->_removeAttachments = attachments;
+    v22->_forcedRefresh = refresh;
+    objc_storeWeak(&v22->_callbackTarget, targetCopy);
+    v22->_clearChanges = changes;
     v29 = dispatch_queue_create("com.apple.dataaccess.subcal.actor", 0);
     actorQueue = v22->_actorQueue;
     v22->_actorQueue = v29;
 
-    v31 = [SubCalLocalDBHelper eventStoreWithClientId:v20];
+    v31 = [SubCalLocalDBHelper eventStoreWithClientId:iDCopy];
     eventStore = v22->_eventStore;
     v22->_eventStore = v31;
   }
@@ -60,56 +60,56 @@
   return v22;
 }
 
-- (void)_sendResultToCallbackActor:(id)a3
+- (void)_sendResultToCallbackActor:(id)actor
 {
-  v4 = a3;
-  v5 = [(SubCalICSDataActor *)self callbackTarget];
+  actorCopy = actor;
+  callbackTarget = [(SubCalICSDataActor *)self callbackTarget];
 
-  if (v5)
+  if (callbackTarget)
   {
-    v6 = [(SubCalICSDataActor *)self callbackTarget];
+    callbackTarget2 = [(SubCalICSDataActor *)self callbackTarget];
     v7 = dataaccess_get_global_queue();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_61F0;
     block[3] = &unk_1C558;
-    v10 = v4;
-    v11 = self;
-    v12 = v6;
-    v8 = v6;
+    v10 = actorCopy;
+    selfCopy = self;
+    v12 = callbackTarget2;
+    v8 = callbackTarget2;
     dispatch_async(v7, block);
 
     [(SubCalICSDataActor *)self setCallbackTarget:0];
   }
 }
 
-- (BOOL)_processedAddedEvents:(id)a3 fromCalendarData:(id)a4 intoCalendar:(id)a5 options:(unint64_t)a6 uidToMasterEvent:(id)a7 uidsOfEventsToRemove:(id)a8 error:(id *)a9
+- (BOOL)_processedAddedEvents:(id)events fromCalendarData:(id)data intoCalendar:(id)calendar options:(unint64_t)options uidToMasterEvent:(id)event uidsOfEventsToRemove:(id)remove error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v59 = a8;
-  v61 = [(SubCalICSDataActor *)self eventStore];
+  eventsCopy = events;
+  dataCopy = data;
+  calendarCopy = calendar;
+  eventCopy = event;
+  removeCopy = remove;
+  eventStore = [(SubCalICSDataActor *)self eventStore];
   v19 = DALoggingwithCategory();
   v20 = _CPLog_to_os_log_type[6];
-  v58 = v17;
-  v60 = v18;
+  v58 = calendarCopy;
+  v60 = eventCopy;
   if (os_log_type_enabled(v19, v20))
   {
-    v21 = [v17 title];
-    v22 = [v58 subcalAccountID];
+    title = [calendarCopy title];
+    subcalAccountID = [v58 subcalAccountID];
     *buf = 138413058;
-    v76 = v21;
+    v76 = title;
     v77 = 2114;
-    v78 = v22;
+    v78 = subcalAccountID;
     v79 = 2048;
-    v80 = [v15 count];
+    v80 = [eventsCopy count];
     v81 = 2048;
-    v82 = [v59 count];
+    v82 = [removeCopy count];
     _os_log_impl(&dword_0, v19, v20, "Beginning import into calendar %@ (%{public}@). Will add/update %lu events and delete %lu events.", buf, 0x2Au);
 
-    v17 = v58;
+    calendarCopy = v58;
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -117,37 +117,37 @@
   v24 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v24 claimedOwnershipOfDataclasses:4];
 
-  v74 = v15;
+  v74 = eventsCopy;
   v25 = [NSArray arrayWithObjects:&v74 count:1];
-  v73 = v16;
+  v73 = dataCopy;
   v26 = [NSArray arrayWithObjects:&v73 count:1];
-  v72 = v17;
+  v72 = calendarCopy;
   v27 = [NSArray arrayWithObjects:&v72 count:1];
-  v28 = [v61 importEventsWithExternalIDs:v25 fromICSData:v26 intoCalendars:v27 options:a6 batchSize:25];
+  v28 = [eventStore importEventsWithExternalIDs:v25 fromICSData:v26 intoCalendars:v27 options:options batchSize:25];
 
   v57 = v28;
   if (v28)
   {
-    v56 = v16;
+    v56 = dataCopy;
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = v59;
+    obj = removeCopy;
     v29 = [obj countByEnumeratingWithState:&v67 objects:v71 count:16];
     if (!v29)
     {
       v48 = v58;
-      v34 = v61;
+      v34 = eventStore;
       goto LABEL_33;
     }
 
     v30 = v29;
-    v55 = v15;
+    v55 = eventsCopy;
     v31 = 0;
     v32 = *v68;
     v33 = _CPLog_to_os_log_type[3];
-    v34 = v61;
+    v34 = eventStore;
     type = v33;
     do
     {
@@ -159,7 +159,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v36 = [v18 objectForKeyedSubscript:*(*(&v67 + 1) + 8 * v35)];
+        v36 = [eventCopy objectForKeyedSubscript:*(*(&v67 + 1) + 8 * v35)];
         v66 = 0;
         v37 = [v34 removeEvent:v36 span:1 commit:0 error:&v66];
         v38 = v66;
@@ -168,21 +168,21 @@
           v39 = DALoggingwithCategory();
           if (os_log_type_enabled(v39, v33))
           {
-            v40 = [v36 title];
-            v41 = [v36 externalID];
-            v42 = [v36 uniqueID];
+            title2 = [v36 title];
+            externalID = [v36 externalID];
+            uniqueID = [v36 uniqueID];
             *buf = 138413058;
-            v76 = v40;
+            v76 = title2;
             v77 = 2114;
-            v78 = v41;
+            v78 = externalID;
             v79 = 2114;
-            v80 = v42;
+            v80 = uniqueID;
             v81 = 2112;
             v82 = v38;
             _os_log_impl(&dword_0, v39, type, "Error removing event (summary=%@, externalID=%{public}@ uniqueID=%{public}@): %@", buf, 0x2Au);
 
-            v18 = v60;
-            v34 = v61;
+            eventCopy = v60;
+            v34 = eventStore;
 
             v33 = type;
           }
@@ -232,8 +232,8 @@
     while (v46);
 
     v47 = v31 < 1;
-    v15 = v55;
-    v16 = v56;
+    eventsCopy = v55;
+    dataCopy = v56;
     v48 = v58;
     if (!v47)
     {
@@ -272,14 +272,14 @@ LABEL_31:
     }
 
     v48 = v58;
-    v34 = v61;
-    if (a9)
+    v34 = eventStore;
+    if (error)
     {
       v53 = kSubCalICSDataActorErrorDomain;
       obj = NSStringFromSubCalRefreshTaskError();
       v50 = [NSDictionary dictionaryWithObject:"dictionaryWithObject:forKey:" forKey:?];
-      v34 = v61;
-      *a9 = [NSError errorWithDomain:v53 code:0 userInfo:v50];
+      v34 = eventStore;
+      *error = [NSError errorWithDomain:v53 code:0 userInfo:v50];
       goto LABEL_31;
     }
   }
@@ -289,12 +289,12 @@ LABEL_34:
   return v57 != 0;
 }
 
-- (BOOL)_updateSubCalWithICSDocument:(id)a3 data:(id)a4 calendar:(id)a5 digestPair:(id)a6 error:(id *)a7
+- (BOOL)_updateSubCalWithICSDocument:(id)document data:(id)data calendar:(id)calendar digestPair:(id)pair error:(id *)error
 {
-  v52 = a3;
-  v54 = a4;
-  v11 = a5;
-  v53 = a6;
+  documentCopy = document;
+  dataCopy = data;
+  calendarCopy = calendar;
+  pairCopy = pair;
   if ([(SubCalICSDataActor *)self removeAlarms])
   {
     v12 = 1342177280;
@@ -317,7 +317,7 @@ LABEL_34:
 
   v56 = 0;
   v57 = 0;
-  [(SubCalICSDataActor *)self _gatherExistingEventsInCalendar:v11 uidToEventMap:&v57 uidToExternalIDs:&v56];
+  [(SubCalICSDataActor *)self _gatherExistingEventsInCalendar:calendarCopy uidToEventMap:&v57 uidToExternalIDs:&v56];
   v14 = v57;
   v15 = v56;
   v16 = DALoggingwithCategory();
@@ -329,9 +329,9 @@ LABEL_34:
   }
 
   v55 = 0;
-  v18 = v52;
+  v18 = documentCopy;
   v50 = v15;
-  v19 = [(SubCalICSDataActor *)self _gatherAddedEventsFromDocument:v52 existingEventExternalIDs:v15 existingEventUIDs:v14 eventsToRemove:&v55];
+  v19 = [(SubCalICSDataActor *)self _gatherAddedEventsFromDocument:documentCopy existingEventExternalIDs:v15 existingEventUIDs:v14 eventsToRemove:&v55];
   v20 = v55;
   v21 = DALoggingwithCategory();
   if (os_log_type_enabled(v21, v17))
@@ -347,7 +347,7 @@ LABEL_34:
 
   if ([v19 count] || objc_msgSend(v20, "count"))
   {
-    if (![(SubCalICSDataActor *)self _processedAddedEvents:v19 fromCalendarData:v54 intoCalendar:v11 options:v13 uidToMasterEvent:v14 uidsOfEventsToRemove:v20 error:a7])
+    if (![(SubCalICSDataActor *)self _processedAddedEvents:v19 fromCalendarData:dataCopy intoCalendar:calendarCopy options:v13 uidToMasterEvent:v14 uidsOfEventsToRemove:v20 error:error])
     {
       LOBYTE(v31) = 0;
       goto LABEL_36;
@@ -356,9 +356,9 @@ LABEL_34:
 
   else
   {
-    v32 = [v52 calendar];
-    v33 = [v32 componentKeys];
-    v34 = [v33 count];
+    calendar = [documentCopy calendar];
+    componentKeys = [calendar componentKeys];
+    v34 = [componentKeys count];
 
     if (v34)
     {
@@ -370,9 +370,9 @@ LABEL_34:
         _os_log_impl(&dword_0, v35, v36, "There are no changes after processing ICS data. Recording the processed digest.", buf, 2u);
       }
 
-      v37 = [v53 processedDigest];
+      processedDigest = [pairCopy processedDigest];
 
-      if (v37)
+      if (processedDigest)
       {
         v38 = DALoggingwithCategory();
         v39 = _CPLog_to_os_log_type[3];
@@ -383,35 +383,35 @@ LABEL_34:
         }
       }
 
-      v40 = [objc_opt_class() _processedDigestForOriginalData:v54];
-      [v53 setProcessedDigest:v40];
+      v40 = [objc_opt_class() _processedDigestForOriginalData:dataCopy];
+      [pairCopy setProcessedDigest:v40];
     }
   }
 
-  v24 = [v52 calendar];
-  v25 = [v24 x_apple_language];
-  if (v25)
+  calendar2 = [documentCopy calendar];
+  x_apple_language = [calendar2 x_apple_language];
+  if (x_apple_language)
   {
-    v26 = v25;
-    v27 = [v24 x_apple_region];
+    v26 = x_apple_language;
+    x_apple_region = [calendar2 x_apple_region];
 
-    if (v27)
+    if (x_apple_region)
     {
-      v28 = [v24 x_apple_language];
-      v29 = [v28 containsString:@"-"];
+      x_apple_language2 = [calendar2 x_apple_language];
+      v29 = [x_apple_language2 containsString:@"-"];
 
-      [v24 x_apple_language];
+      [calendar2 x_apple_language];
       if (v29)
         v30 = {;
       }
 
       else
         v41 = {;
-        v42 = [v24 x_apple_region];
-        v30 = [NSString stringWithFormat:@"%@-%@", v41, v42];
+        x_apple_region2 = [calendar2 x_apple_region];
+        v30 = [NSString stringWithFormat:@"%@-%@", v41, x_apple_region2];
       }
 
-      [v11 setLocale:v30];
+      [calendarCopy setLocale:v30];
     }
   }
 
@@ -425,36 +425,36 @@ LABEL_34:
     _os_log_impl(&dword_0, v44, v45, "Saving timestamp %@ as external tag", buf, 0xCu);
   }
 
-  [v11 setExternalModificationTag:v43];
+  [calendarCopy setExternalModificationTag:v43];
   [(SubCalICSDataActor *)self removeAlarms];
   subCalSetRefreshFlagsOnCalendar();
-  v46 = [v53 serializedData];
-  [v11 setDigest:v46];
-  v47 = [(SubCalICSDataActor *)self eventStore];
-  v31 = [v47 saveCalendar:v11 commit:0 error:a7];
+  serializedData = [pairCopy serializedData];
+  [calendarCopy setDigest:serializedData];
+  eventStore = [(SubCalICSDataActor *)self eventStore];
+  v31 = [eventStore saveCalendar:calendarCopy commit:0 error:error];
 
   if (v31 && ![(SubCalICSDataActor *)self shouldCancel]&& [(SubCalICSDataActor *)self clearChanges])
   {
-    v48 = [(SubCalICSDataActor *)self eventStore];
-    [v48 markChangedObjectIDsConsumedUpToToken:0x7FFFFFFFLL];
+    eventStore2 = [(SubCalICSDataActor *)self eventStore];
+    [eventStore2 markChangedObjectIDsConsumedUpToToken:0x7FFFFFFFLL];
   }
 
-  v18 = v52;
+  v18 = documentCopy;
 LABEL_36:
 
   return v31;
 }
 
-- (void)_gatherExistingEventsInCalendar:(id)a3 uidToEventMap:(id *)a4 uidToExternalIDs:(id *)a5
+- (void)_gatherExistingEventsInCalendar:(id)calendar uidToEventMap:(id *)map uidToExternalIDs:(id *)ds
 {
-  v6 = a3;
-  v7 = [(SubCalICSDataActor *)self eventStore];
-  v28 = v6;
-  v8 = [v7 predicateForEventsInSubscribedCalendar:v6];
+  calendarCopy = calendar;
+  eventStore = [(SubCalICSDataActor *)self eventStore];
+  v28 = calendarCopy;
+  v8 = [eventStore predicateForEventsInSubscribedCalendar:calendarCopy];
 
-  v9 = [(SubCalICSDataActor *)self eventStore];
+  eventStore2 = [(SubCalICSDataActor *)self eventStore];
   v25 = v8;
-  v10 = [v9 eventsMatchingPredicate:v8];
+  v10 = [eventStore2 eventsMatchingPredicate:v8];
 
   v29 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
   v11 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
@@ -478,32 +478,32 @@ LABEL_36:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v17 originalItem];
-        v19 = v18;
-        if (!v18)
+        originalItem = [v17 originalItem];
+        v19 = originalItem;
+        if (!originalItem)
         {
-          v18 = v17;
+          originalItem = v17;
         }
 
-        v20 = [v18 uniqueID];
-        if (v20)
+        uniqueID = [originalItem uniqueID];
+        if (uniqueID)
         {
-          v21 = [v17 externalID];
-          if (v21)
+          externalID = [v17 externalID];
+          if (externalID)
           {
-            v22 = [v11 objectForKeyedSubscript:v20];
+            v22 = [v11 objectForKeyedSubscript:uniqueID];
             if (!v22)
             {
               v22 = [[NSMutableSet alloc] initWithCapacity:1];
-              [v11 setObject:v22 forKeyedSubscript:v20];
+              [v11 setObject:v22 forKeyedSubscript:uniqueID];
             }
 
-            [v22 addObject:v21];
+            [v22 addObject:externalID];
           }
 
           if (!v19)
           {
-            [v29 setObject:v17 forKeyedSubscript:v20];
+            [v29 setObject:v17 forKeyedSubscript:uniqueID];
           }
         }
       }
@@ -515,39 +515,39 @@ LABEL_36:
   }
 
   v23 = v11;
-  *a5 = v11;
+  *ds = v11;
   v24 = v29;
-  *a4 = v29;
+  *map = v29;
 }
 
-- (id)_gatherAddedEventsFromDocument:(id)a3 existingEventExternalIDs:(id)a4 existingEventUIDs:(id)a5 eventsToRemove:(id *)a6
+- (id)_gatherAddedEventsFromDocument:(id)document existingEventExternalIDs:(id)ds existingEventUIDs:(id)iDs eventsToRemove:(id *)remove
 {
-  v8 = a3;
-  v59 = a4;
-  v9 = a5;
+  documentCopy = document;
+  dsCopy = ds;
+  iDsCopy = iDs;
   v10 = [NSMutableSet alloc];
-  v51 = v9;
-  v11 = [v9 allKeys];
-  v58 = [v10 initWithArray:v11];
+  v51 = iDsCopy;
+  allKeys = [iDsCopy allKeys];
+  v58 = [v10 initWithArray:allKeys];
 
   v66 = objc_alloc_init(NSMutableDictionary);
-  v53 = v8;
-  v12 = [v8 calendar];
+  v53 = documentCopy;
+  calendar = [documentCopy calendar];
   v50 = componentsWithPhantomMasterForICSCalendar();
-  [v12 setComponents:? options:?];
+  [calendar setComponents:? options:?];
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v13 = [v12 componentKeys];
-  v14 = [v13 countByEnumeratingWithState:&v79 objects:v87 count:16];
+  componentKeys = [calendar componentKeys];
+  v14 = [componentKeys countByEnumeratingWithState:&v79 objects:v87 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v80;
     v17 = &SBSSetStatusBarShowsActivityForApplication_ptr;
-    v55 = v13;
-    v56 = v12;
+    v55 = componentKeys;
+    v56 = calendar;
     v54 = *v80;
     type = _CPLog_to_os_log_type[4];
     do
@@ -558,11 +558,11 @@ LABEL_36:
       {
         if (*v80 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(componentKeys);
         }
 
         v67 = *(*(&v79 + 1) + 8 * v18);
-        v19 = [v12 componentForKey:?];
+        v19 = [calendar componentForKey:?];
         if (v19)
         {
           v20 = v17[142];
@@ -572,7 +572,7 @@ LABEL_36:
             v62 = v19;
             v63 = v18;
             v21 = v19;
-            v22 = [v12 componentOccurrencesForKey:v67];
+            v22 = [calendar componentOccurrencesForKey:v67];
             v23 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v22, "count") + 1}];
             v64 = v21;
             [SubCalICSDataActor externalIDForICSEvent:v21];
@@ -613,7 +613,7 @@ LABEL_36:
               while (v25);
             }
 
-            v31 = [v59 objectForKeyedSubscript:v67];
+            v31 = [dsCopy objectForKeyedSubscript:v67];
             v32 = v31;
             if (!v31 || ([v31 isEqualToSet:v69] & 1) == 0)
             {
@@ -646,13 +646,13 @@ LABEL_36:
                     if (objc_opt_isKindOfClass())
                     {
                       v40 = v38;
-                      v41 = [v40 recurrence_id];
-                      v42 = [v41 value];
-                      v43 = v42;
-                      if (v41)
+                      recurrence_id = [v40 recurrence_id];
+                      value = [recurrence_id value];
+                      v43 = value;
+                      if (recurrence_id)
                       {
-                        v44 = [v42 icsString];
-                        [NSString stringWithFormat:@"%@/%@", v67, v44];
+                        icsString = [value icsString];
+                        [NSString stringWithFormat:@"%@/%@", v67, icsString];
                         v46 = v45 = v17;
                         v47 = [SubCalICSDataActor externalIDForICSEvent:v40];
                         [v66 setObject:v47 forKeyedSubscript:v46];
@@ -662,12 +662,12 @@ LABEL_36:
 
                       else
                       {
-                        v44 = DALoggingwithCategory();
-                        if (os_log_type_enabled(v44, type))
+                        icsString = DALoggingwithCategory();
+                        if (os_log_type_enabled(icsString, type))
                         {
                           *buf = 138543362;
                           v84 = v67;
-                          _os_log_impl(&dword_0, v44, type, "Dropping detached occurrence of %{public}@ without recurrence id", buf, 0xCu);
+                          _os_log_impl(&dword_0, icsString, type, "Dropping detached occurrence of %{public}@ without recurrence id", buf, 0xCu);
                         }
                       }
                     }
@@ -679,8 +679,8 @@ LABEL_36:
                 while (v35);
               }
 
-              v13 = v55;
-              v12 = v56;
+              componentKeys = v55;
+              calendar = v56;
               v16 = v54;
               v15 = v57;
               v32 = v60;
@@ -697,22 +697,22 @@ LABEL_36:
       }
 
       while (v18 != v15);
-      v15 = [v13 countByEnumeratingWithState:&v79 objects:v87 count:16];
+      v15 = [componentKeys countByEnumeratingWithState:&v79 objects:v87 count:16];
     }
 
     while (v15);
   }
 
   v48 = v58;
-  *a6 = v58;
+  *remove = v58;
 
   return v66;
 }
 
-- (id)_processICSDocument:(id)a3 icsData:(id)a4 calendar:(id)a5 digestPair:(id)a6
+- (id)_processICSDocument:(id)document icsData:(id)data calendar:(id)calendar digestPair:(id)pair
 {
   v11 = 0;
-  v7 = [(SubCalICSDataActor *)self _updateSubCalWithICSDocument:a3 data:a4 calendar:a5 digestPair:a6 error:&v11];
+  v7 = [(SubCalICSDataActor *)self _updateSubCalWithICSDocument:document data:data calendar:calendar digestPair:pair error:&v11];
   v8 = v11;
   if ((v7 & 1) == 0 && [(SubCalICSDataActor *)self shouldCancel])
   {
@@ -724,12 +724,12 @@ LABEL_36:
   return v8;
 }
 
-- (id)_reallyProcessICSData:(id)a3 withCalendar:(id)a4 existingDigestPair:(id)a5 newUnprocessedDigest:(id)a6
+- (id)_reallyProcessICSData:(id)data withCalendar:(id)calendar existingDigestPair:(id)pair newUnprocessedDigest:(id)digest
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  calendarCopy = calendar;
+  pairCopy = pair;
+  digestCopy = digest;
   v14 = objc_autoreleasePoolPush();
   if ([(SubCalICSDataActor *)self shouldCancel])
   {
@@ -740,7 +740,7 @@ LABEL_36:
   else
   {
     v45 = 0;
-    v15 = [[ICSDocument alloc] initWithData:v10 options:0 error:&v45];
+    v15 = [[ICSDocument alloc] initWithData:dataCopy options:0 error:&v45];
     v16 = v45;
     if (!v15)
     {
@@ -760,15 +760,15 @@ LABEL_36:
     }
   }
 
-  v44 = v12;
+  v44 = pairCopy;
   if (![(SubCalICSDataActor *)self shouldCancel])
   {
-    v20 = [v15 calendar];
+    calendar = [v15 calendar];
 
-    if (!v20)
+    if (!calendar)
     {
       v33 = v14;
-      v17 = v13;
+      v17 = digestCopy;
       v34 = DALoggingwithCategory();
       v35 = _CPLog_to_os_log_type[3];
       if (os_log_type_enabled(v34, v35))
@@ -786,15 +786,15 @@ LABEL_36:
       goto LABEL_28;
     }
 
-    v42 = v11;
+    v42 = calendarCopy;
     v19 = objc_opt_new();
-    [v19 setUnprocessedDigest:v13];
-    v21 = [v12 processedDigest];
+    [v19 setUnprocessedDigest:digestCopy];
+    processedDigest = [pairCopy processedDigest];
 
-    if (v21)
+    if (processedDigest)
     {
       context = v14;
-      v22 = v13;
+      v22 = digestCopy;
       v23 = DALoggingwithCategory();
       v24 = _CPLog_to_os_log_type[6];
       if (os_log_type_enabled(v23, v24))
@@ -804,8 +804,8 @@ LABEL_36:
       }
 
       v25 = [objc_opt_class() _processedDigestForDocument:v15];
-      v26 = [v44 processedDigest];
-      v27 = [v26 isEqualToData:v25];
+      processedDigest2 = [v44 processedDigest];
+      v27 = [processedDigest2 isEqualToData:v25];
 
       v28 = DALoggingwithCategory();
       v29 = os_log_type_enabled(v28, v24);
@@ -818,9 +818,9 @@ LABEL_36:
         }
 
         v30 = 0;
-        v11 = v42;
-        v13 = v22;
-        v12 = v44;
+        calendarCopy = v42;
+        digestCopy = v22;
+        pairCopy = v44;
 LABEL_17:
         objc_autoreleasePoolPop(context);
         goto LABEL_31;
@@ -833,7 +833,7 @@ LABEL_17:
       }
 
       [v19 setProcessedDigest:v25];
-      v13 = v22;
+      digestCopy = v22;
       v14 = context;
     }
 
@@ -842,7 +842,7 @@ LABEL_17:
       v24 = _CPLog_to_os_log_type[6];
     }
 
-    v17 = v13;
+    v17 = digestCopy;
     v38 = DALoggingwithCategory();
     if (os_log_type_enabled(v38, v24))
     {
@@ -850,13 +850,13 @@ LABEL_17:
       _os_log_impl(&dword_0, v38, v24, "Processing ics calendar", buf, 2u);
     }
 
-    v11 = v42;
-    v18 = [(SubCalICSDataActor *)self _processICSDocument:v15 icsData:v10 calendar:v42 digestPair:v19];
+    calendarCopy = v42;
+    v18 = [(SubCalICSDataActor *)self _processICSDocument:v15 icsData:dataCopy calendar:v42 digestPair:v19];
 
     goto LABEL_28;
   }
 
-  v17 = v13;
+  v17 = digestCopy;
   v18 = [NSError errorWithDomain:DAErrorDomain code:-1 userInfo:0];
   v19 = v16;
 LABEL_28:
@@ -873,35 +873,35 @@ LABEL_28:
 
   v16 = v18;
   v30 = v16;
-  v13 = v17;
-  v12 = v44;
+  digestCopy = v17;
+  pairCopy = v44;
 LABEL_31:
 
   return v30;
 }
 
-+ (id)_processedDigestForOriginalData:(id)a3
++ (id)_processedDigestForOriginalData:(id)data
 {
-  v4 = a3;
-  v5 = [[ICSDocument alloc] initWithData:v4 options:0 error:0];
+  dataCopy = data;
+  v5 = [[ICSDocument alloc] initWithData:dataCopy options:0 error:0];
 
-  v6 = [a1 _processedDigestForDocument:v5];
+  v6 = [self _processedDigestForDocument:v5];
 
   return v6;
 }
 
-+ (id)_processedDigestForDocument:(id)a3
++ (id)_processedDigestForDocument:(id)document
 {
-  v3 = [a3 ICSStringWithOptions:8];
+  v3 = [document ICSStringWithOptions:8];
   v4 = [v3 dataUsingEncoding:4];
   v5 = [v4 ical_digestWithVersionNumber:2];
 
   return v5;
 }
 
-- (id)_internalProcessICSData:(id)a3
+- (id)_internalProcessICSData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
@@ -911,15 +911,15 @@ LABEL_31:
     *buf = 138412546;
     v68 = v7;
     v69 = 2048;
-    v70 = [v4 length];
+    v70 = [dataCopy length];
     _os_log_impl(&dword_0, v5, v6, "%@ processing data of length %lu", buf, 0x16u);
   }
 
   v66 = 0;
-  v9 = [v4 ical_digestWithVersionNumber:2];
-  v10 = [(SubCalICSDataActor *)self eventStore];
-  v11 = [(SubCalICSDataActor *)self sourceExternalId];
-  v12 = [v10 sourceWithExternalID:v11];
+  v9 = [dataCopy ical_digestWithVersionNumber:2];
+  eventStore = [(SubCalICSDataActor *)self eventStore];
+  sourceExternalId = [(SubCalICSDataActor *)self sourceExternalId];
+  v12 = [eventStore sourceWithExternalID:sourceExternalId];
 
   if (!v12)
   {
@@ -927,9 +927,9 @@ LABEL_31:
     v22 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v21, v22))
     {
-      v23 = [(SubCalICSDataActor *)self sourceExternalId];
+      sourceExternalId2 = [(SubCalICSDataActor *)self sourceExternalId];
       *buf = 138412290;
-      v68 = v23;
+      v68 = sourceExternalId2;
       _os_log_impl(&dword_0, v21, v22, "Can't find source with id %@", buf, 0xCu);
     }
 
@@ -947,9 +947,9 @@ LABEL_31:
     v28 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v27, v28))
     {
-      v29 = [(SubCalICSDataActor *)self sourceExternalId];
+      sourceExternalId3 = [(SubCalICSDataActor *)self sourceExternalId];
       *buf = 138412290;
-      v68 = v29;
+      v68 = sourceExternalId3;
       _os_log_impl(&dword_0, v27, v28, "Empty digest for calendar with id %@", buf, 0xCu);
     }
 
@@ -963,8 +963,8 @@ LABEL_18:
     goto LABEL_51;
   }
 
-  v13 = [(SubCalICSDataActor *)self calendarExternalId];
-  v14 = [v12 calendarWithExternalIdentifier:v13];
+  calendarExternalId = [(SubCalICSDataActor *)self calendarExternalId];
+  v14 = [v12 calendarWithExternalIdentifier:calendarExternalId];
 
   if (!v14)
   {
@@ -972,9 +972,9 @@ LABEL_18:
     v39 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v38, v39))
     {
-      v40 = [(SubCalICSDataActor *)self calendarExternalId];
+      calendarExternalId2 = [(SubCalICSDataActor *)self calendarExternalId];
       *buf = 138412290;
-      v68 = v40;
+      v68 = calendarExternalId2;
       _os_log_impl(&dword_0, v38, v39, "Can't find calendar with external id %@", buf, 0xCu);
     }
 
@@ -994,8 +994,8 @@ LABEL_18:
   {
     if (v9)
     {
-      v18 = [v16 unprocessedDigest];
-      v19 = [v18 isEqualToData:v9];
+      unprocessedDigest = [v16 unprocessedDigest];
+      v19 = [unprocessedDigest isEqualToData:v9];
 
       if (v19)
       {
@@ -1007,8 +1007,8 @@ LABEL_18:
         }
 
 LABEL_29:
-        v43 = [v17[101] date];
-        [v14 setRefreshDate:v43];
+        date = [v17[101] date];
+        [v14 setRefreshDate:date];
 
         if (self->_migrateCalendarExternalID)
         {
@@ -1016,10 +1016,10 @@ LABEL_29:
           v45 = _CPLog_to_os_log_type[5];
           if (os_log_type_enabled(v44, v45))
           {
-            v46 = [v14 externalID];
+            externalID = [v14 externalID];
             migrateCalendarExternalID = self->_migrateCalendarExternalID;
             *buf = 138412546;
-            v68 = v46;
+            v68 = externalID;
             v69 = 2112;
             v70 = migrateCalendarExternalID;
             _os_log_impl(&dword_0, v44, v45, "Migrating calendar externalID from %@ to %@", buf, 0x16u);
@@ -1028,24 +1028,24 @@ LABEL_29:
           [v14 setExternalID:self->_migrateCalendarExternalID];
         }
 
-        v48 = [v16 unprocessedDigest];
-        if ([v48 length])
+        unprocessedDigest2 = [v16 unprocessedDigest];
+        if ([unprocessedDigest2 length])
         {
         }
 
         else
         {
-          v49 = [v14 migrationVersion];
+          migrationVersion = [v14 migrationVersion];
 
-          if (v49 <= 1)
+          if (migrationVersion <= 1)
           {
             [v14 setMigrationVersion:2];
           }
         }
 
-        v50 = [(SubCalICSDataActor *)self eventStore];
+        eventStore2 = [(SubCalICSDataActor *)self eventStore];
         v65 = 0;
-        v51 = [v50 saveCalendar:v14 commit:0 error:&v65];
+        v51 = [eventStore2 saveCalendar:v14 commit:0 error:&v65];
         v31 = v65;
 
         if ((v51 & 1) == 0)
@@ -1071,9 +1071,9 @@ LABEL_39:
           _os_log_impl(&dword_0, v52, v6, "Initiating EKEvent Store commit", buf, 2u);
         }
 
-        v53 = [(SubCalICSDataActor *)self eventStore];
+        eventStore3 = [(SubCalICSDataActor *)self eventStore];
         v64 = 0;
-        v54 = [v53 commitWithRollback:&v64];
+        v54 = [eventStore3 commitWithRollback:&v64];
         v55 = v64;
 
         v56 = DALoggingwithCategory();
@@ -1115,21 +1115,21 @@ LABEL_50:
   v32 = DALoggingwithCategory();
   if (os_log_type_enabled(v32, v6))
   {
-    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 length]);
+    v33 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy length]);
     *buf = 138543362;
     v68 = v33;
     _os_log_impl(&dword_0, v32, v6, "==== SubCal: Starting processing ICS Data. Size of Data %{public}@ Bytes ====", buf, 0xCu);
   }
 
   v61 = v9;
-  v31 = [(SubCalICSDataActor *)self _reallyProcessICSData:v4 withCalendar:v14 existingDigestPair:v16 newUnprocessedDigest:v9];
+  v31 = [(SubCalICSDataActor *)self _reallyProcessICSData:dataCopy withCalendar:v14 existingDigestPair:v16 newUnprocessedDigest:v9];
   v34 = +[NSDate date];
   v35 = DALoggingwithCategory();
   if (os_log_type_enabled(v35, v6))
   {
     [v34 timeIntervalSinceDate:v62];
     v36 = [NSNumber numberWithDouble:?];
-    v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 length]);
+    v37 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy length]);
     *buf = 138543618;
     v68 = v36;
     v69 = 2114;
@@ -1156,19 +1156,19 @@ LABEL_51:
   return v31;
 }
 
-- (void)processICSData:(id)a3
+- (void)processICSData:(id)data
 {
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v5 = [(SubCalICSDataActor *)self actorQueue];
+    actorQueue = [(SubCalICSDataActor *)self actorQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_8814;
     v8[3] = &unk_1C4B8;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v5, v8);
+    v9 = dataCopy;
+    dispatch_async(actorQueue, v8);
   }
 
   else
@@ -1183,34 +1183,34 @@ LABEL_51:
   }
 }
 
-- (void)processICSDataAtPath:(id)a3 removeFileWhenDone:(BOOL)a4
+- (void)processICSDataAtPath:(id)path removeFileWhenDone:(BOOL)done
 {
-  v6 = a3;
-  v7 = [(SubCalICSDataActor *)self actorQueue];
+  pathCopy = path;
+  actorQueue = [(SubCalICSDataActor *)self actorQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_892C;
   block[3] = &unk_1C580;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = pathCopy;
+  selfCopy = self;
+  doneCopy = done;
+  v8 = pathCopy;
+  dispatch_async(actorQueue, block);
 }
 
 - (void)synchronouslyCancel
 {
   [(SubCalICSDataActor *)self setShouldCancel:1];
-  v3 = [(SubCalICSDataActor *)self actorQueue];
-  dispatch_sync(v3, &stru_1C5C0);
+  actorQueue = [(SubCalICSDataActor *)self actorQueue];
+  dispatch_sync(actorQueue, &stru_1C5C0);
 }
 
-+ (id)externalIDForICSEvent:(id)a3
++ (id)externalIDForICSEvent:(id)event
 {
-  v3 = [a3 ICSStringWithOptions:8];
-  v4 = [v3 modTagForSubCal];
+  v3 = [event ICSStringWithOptions:8];
+  modTagForSubCal = [v3 modTagForSubCal];
 
-  return v4;
+  return modTagForSubCal;
 }
 
 - (SubCalICSDataCallbackActor)callbackTarget

@@ -1,31 +1,31 @@
 @interface PLBatteryUIResponseTypeBatteryBreakdownBUIIOS
-- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)a3;
+- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)in;
 @end
 
 @implementation PLBatteryUIResponseTypeBatteryBreakdownBUIIOS
 
-- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)a3
+- (id)getDrainPerBucketIn:(_PLTimeIntervalRange)in
 {
-  v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets:a3.location];
-  v5 = [(PLBatteryUIResponseTypeBatteryBreakdownBUIIOS *)self isDynamicEnd];
-  v6 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
-  v7 = v6;
+  v4 = [(PLBatteryUIResponseTypeBatteryBreakdown *)self computeNumberOfBuckets:in.location];
+  isDynamicEnd = [(PLBatteryUIResponseTypeBatteryBreakdownBUIIOS *)self isDynamicEnd];
+  responderService = [(PLBatteryUIResponseTypeBatteryBreakdown *)self responderService];
+  v7 = responderService;
   v8 = (86400 * v4);
-  if (v5)
+  if (isDynamicEnd)
   {
-    [v6 getDynamicEndUISOCDrainByBuckets:v8 fromCachedLength:1296000 forBucketSize:86400];
+    [responderService getDynamicEndUISOCDrainByBuckets:v8 fromCachedLength:1296000 forBucketSize:86400];
   }
 
   else
   {
-    [v6 getUISOCDrainByBuckets:v8 fromCachedLength:1296000 forBucketSize:86400];
+    [responderService getUISOCDrainByBuckets:v8 fromCachedLength:1296000 forBucketSize:86400];
   }
   v9 = ;
 
-  v10 = [v9 reverseObjectEnumerator];
-  v11 = [v10 allObjects];
+  reverseObjectEnumerator = [v9 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 @end

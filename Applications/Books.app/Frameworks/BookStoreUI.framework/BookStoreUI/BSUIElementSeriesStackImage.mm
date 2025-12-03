@@ -1,57 +1,57 @@
 @interface BSUIElementSeriesStackImage
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation BSUIElementSeriesStackImage
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v28 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 stringForAttribute:174 node:a4.var0];
-  [v28 setLoad:TUIResourceLoadFromString()];
+  boxCopy = box;
+  attributesCopy = attributes;
+  contextCopy = context;
+  v11 = [attributesCopy stringForAttribute:174 node:node.var0];
+  [boxCopy setLoad:TUIResourceLoadFromString()];
 
-  v12 = [v9 stringForAttribute:87 node:a4.var0];
-  [v28 setFilter:v12];
+  v12 = [attributesCopy stringForAttribute:87 node:node.var0];
+  [boxCopy setFilter:v12];
 
-  v13 = [v9 stringForAttribute:86 node:a4.var0];
+  v13 = [attributesCopy stringForAttribute:86 node:node.var0];
   v14 = [TUIBox layerContentsGravityFromString:v13];
-  [v28 setContentsGravity:v14];
+  [boxCopy setContentsGravity:v14];
 
-  v15 = [v9 lengthForAttribute:225 node:a4.var0];
-  [v28 setWidth:{v15, v16}];
-  v17 = [v9 lengthForAttribute:115 node:a4.var0];
-  [v28 setIntrinsicWidth:{v17, v18}];
-  v19 = [v9 lengthForAttribute:114 node:a4.var0];
-  [v28 setIntrinsicHeight:{v19, v20}];
-  [v9 floatForAttribute:127 withDefault:a4.var0 node:1.56];
-  [v28 setMaxAspectRatio:?];
-  v21 = [v9 colorForAttribute:80 node:a4.var0];
-  [v28 setFallbackColor:v21];
+  v15 = [attributesCopy lengthForAttribute:225 node:node.var0];
+  [boxCopy setWidth:{v15, v16}];
+  v17 = [attributesCopy lengthForAttribute:115 node:node.var0];
+  [boxCopy setIntrinsicWidth:{v17, v18}];
+  v19 = [attributesCopy lengthForAttribute:114 node:node.var0];
+  [boxCopy setIntrinsicHeight:{v19, v20}];
+  [attributesCopy floatForAttribute:127 withDefault:node.var0 node:1.56];
+  [boxCopy setMaxAspectRatio:?];
+  v21 = [attributesCopy colorForAttribute:80 node:node.var0];
+  [boxCopy setFallbackColor:v21];
 
-  v22 = [v10 baseURLForNode:a4.var0];
+  v22 = [contextCopy baseURLForNode:node.var0];
 
-  [v28 setBaseURL:v22];
-  v23 = [v9 stringArrayForAttribute:61 node:a4.var0];
+  [boxCopy setBaseURL:v22];
+  v23 = [attributesCopy stringArrayForAttribute:61 node:node.var0];
   if ([v23 count])
   {
-    v24 = [v9 stringArrayForAttribute:62 node:a4.var0];
-    [v28 setCoverFilters:v24];
+    v24 = [attributesCopy stringArrayForAttribute:62 node:node.var0];
+    [boxCopy setCoverFilters:v24];
 
-    [v28 setCoverURLStrings:v23];
+    [boxCopy setCoverURLStrings:v23];
   }
 
   else
   {
-    v25 = [v9 stringForAttribute:173 node:a4.var0];
-    [v28 setResourceKind:v25];
+    v25 = [attributesCopy stringForAttribute:173 node:node.var0];
+    [boxCopy setResourceKind:v25];
 
-    v26 = [v9 objectForAttribute:172 node:a4.var0];
-    [v28 setResourceInstance:v26];
+    v26 = [attributesCopy objectForAttribute:172 node:node.var0];
+    [boxCopy setResourceInstance:v26];
 
-    v27 = [v9 objectForAttribute:175 node:a4.var0];
-    [v28 setResourceOptions:v27];
+    v27 = [attributesCopy objectForAttribute:175 node:node.var0];
+    [boxCopy setResourceOptions:v27];
   }
 }
 

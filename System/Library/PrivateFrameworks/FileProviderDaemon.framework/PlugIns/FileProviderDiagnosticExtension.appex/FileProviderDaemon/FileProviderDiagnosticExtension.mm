@@ -1,26 +1,26 @@
 @interface FileProviderDiagnosticExtension
-- (BOOL)_gatherPersistedDiagnostics:(id)a3 domainID:(id)a4 displayName:(id)a5 tempDirURL:(id)a6 attachments:(id)a7;
+- (BOOL)_gatherPersistedDiagnostics:(id)diagnostics domainID:(id)d displayName:(id)name tempDirURL:(id)l attachments:(id)attachments;
 - (double)logCollectionInterval;
-- (id)_displayStringForLogType:(unint64_t)a3;
-- (id)_fpDumpAttachmentItemWithTempURL:(id)a3 ProviderFilter:(id)a4 displayName:(id)a5;
-- (id)_getFeedbackParameterDict:(id)a3;
-- (id)_logAttachmentItemWithTempURL:(id)a3;
-- (id)annotatedAttachmentsForParameters:(id)a3;
-- (id)attachmentsForParameters:(id)a3;
+- (id)_displayStringForLogType:(unint64_t)type;
+- (id)_fpDumpAttachmentItemWithTempURL:(id)l ProviderFilter:(id)filter displayName:(id)name;
+- (id)_getFeedbackParameterDict:(id)dict;
+- (id)_logAttachmentItemWithTempURL:(id)l;
+- (id)annotatedAttachmentsForParameters:(id)parameters;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation FileProviderDiagnosticExtension
 
-- (id)_displayStringForLogType:(unint64_t)a3
+- (id)_displayStringForLogType:(unint64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       return @"Default";
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       return @"Info";
     }
@@ -28,7 +28,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         return @"Debug";
@@ -54,9 +54,9 @@
   return result;
 }
 
-- (id)_logAttachmentItemWithTempURL:(id)a3
+- (id)_logAttachmentItemWithTempURL:(id)l
 {
-  v60 = a3;
+  lCopy = l;
   v61 = +[OSLogEventStore localStore];
   v77 = 0;
   v78 = &v77;
@@ -83,13 +83,13 @@
   }
 
   v3 = [NSString stringWithFormat:@"FileProviderDiagnosticLogs-%llu.log", CFAbsoluteTimeGetCurrent()];
-  v59 = [v60 URLByAppendingPathComponent:v3 isDirectory:0];
+  v59 = [lCopy URLByAppendingPathComponent:v3 isDirectory:0];
 
-  v4 = [v59 path];
+  path = [v59 path];
   v56 = +[NSFileManager defaultManager];
   v5 = objc_alloc_init(NSData);
   v75 = 0;
-  v6 = [v5 writeToFile:v4 options:1 error:&v75];
+  v6 = [v5 writeToFile:path options:1 error:&v75];
   v57 = v75;
 
   if ((v6 & 1) == 0)
@@ -97,26 +97,26 @@
     v8 = fp_current_or_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v40 = [v57 fp_prettyDescription];
-      sub_100003300(v40, buf, v8);
+      fp_prettyDescription = [v57 fp_prettyDescription];
+      sub_100003300(fp_prettyDescription, buf, v8);
     }
 
     goto LABEL_35;
   }
 
-  v7 = [NSFileHandle fileHandleForWritingAtPath:v4];
+  v7 = [NSFileHandle fileHandleForWritingAtPath:path];
   v8 = v7;
   if (!v7)
   {
     v41 = fp_current_or_default_log();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      v42 = v4;
-      sub_1000034AC([v4 UTF8String], buf, v41);
+      v42 = path;
+      sub_1000034AC([path UTF8String], buf, v41);
     }
 
-    v43 = v4;
-    unlink([v4 UTF8String]);
+    v43 = path;
+    unlink([path UTF8String]);
 LABEL_35:
     v58 = 0;
     v38 = 0;
@@ -131,8 +131,8 @@ LABEL_35:
     v9 = fp_current_or_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = v4;
-      sub_1000033B4([v4 UTF8String], v86, v9);
+      v10 = path;
+      sub_1000033B4([path UTF8String], v86, v9);
     }
 
     v11 = dispatch_group_create();
@@ -181,10 +181,10 @@ LABEL_35:
     v65[3] = &unk_1000082D8;
     v51 = v18;
     v66 = v51;
-    v67 = self;
+    selfCopy = self;
     v20 = v8;
     v68 = v20;
-    v21 = v4;
+    v21 = path;
     v69 = v21;
     [v19 setEventHandler:v65];
     v22 = v78[5];
@@ -233,9 +233,9 @@ LABEL_35:
         v35 = fp_current_or_default_log();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
-          v36 = [v21 fp_prettyPath];
-          v37 = [v34 fp_prettyDescription];
-          sub_10000342C(v36, v37, buf, v35);
+          fp_prettyPath = [v21 fp_prettyPath];
+          fp_prettyDescription2 = [v34 fp_prettyDescription];
+          sub_10000342C(fp_prettyPath, fp_prettyDescription2, buf, v35);
         }
       }
     }
@@ -252,15 +252,15 @@ LABEL_35:
     v44 = fp_current_or_default_log();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v45 = v4;
-      v46 = [v4 UTF8String];
-      v47 = [v53 fp_prettyDescription];
-      sub_10000334C(v46, v47, buf, v44);
+      v45 = path;
+      uTF8String = [path UTF8String];
+      fp_prettyDescription3 = [v53 fp_prettyDescription];
+      sub_10000334C(uTF8String, fp_prettyDescription3, buf, v44);
     }
 
     [v8 closeFile];
-    v48 = v4;
-    unlink([v4 UTF8String]);
+    v48 = path;
+    unlink([path UTF8String]);
     v38 = 0;
   }
 
@@ -280,12 +280,12 @@ LABEL_43:
   return v49;
 }
 
-- (id)_fpDumpAttachmentItemWithTempURL:(id)a3 ProviderFilter:(id)a4 displayName:(id)a5
+- (id)_fpDumpAttachmentItemWithTempURL:(id)l ProviderFilter:(id)filter displayName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 URLByAppendingPathComponent:@"fp-dump.txt"];
+  lCopy = l;
+  filterCopy = filter;
+  nameCopy = name;
+  v10 = [lCopy URLByAppendingPathComponent:@"fp-dump.txt"];
   unlink([v10 fileSystemRepresentation]);
   v11 = open([v10 fileSystemRepresentation], 1541, 384);
   if ((v11 & 0x80000000) != 0)
@@ -301,7 +301,7 @@ LABEL_43:
   }
 
   v12 = [[NSFileHandle alloc] initWithFileDescriptor:v11 closeOnDealloc:1];
-  if ([v8 isEqualToString:@"test_provider"])
+  if ([filterCopy isEqualToString:@"test_provider"])
   {
     v13 = [[FPCTLTermDumper alloc] initWithFd:objc_msgSend(v12 forceColor:{"fileDescriptor"), 1}];
     [v13 write:@"TEST-CANARY\n"];
@@ -319,7 +319,7 @@ LABEL_43:
   v32 = &v33;
   v15 = v12;
   v31 = v15;
-  [v14 dumpStateTo:v15 providerFilter:v8 options:0 completionHandler:v30];
+  [v14 dumpStateTo:v15 providerFilter:filterCopy options:0 completionHandler:v30];
   v16 = 0;
   v29 = 0;
   while ((v34[3] & 1) == 0)
@@ -392,12 +392,12 @@ LABEL_21:
 
 LABEL_30:
 
-  v23 = [v10 path];
-  v21 = [DEAttachmentItem attachmentWithPath:v23];
+  path = [v10 path];
+  v21 = [DEAttachmentItem attachmentWithPath:path];
 
   [v21 setShouldCompress:&__kCFBooleanTrue];
   [v21 setDeleteOnAttach:&__kCFBooleanTrue];
-  [v21 setDisplayName:v9];
+  [v21 setDisplayName:nameCopy];
 
   _Block_object_dispose(&v33, 8);
 LABEL_31:
@@ -405,20 +405,20 @@ LABEL_31:
   return v21;
 }
 
-- (id)_getFeedbackParameterDict:(id)a3
+- (id)_getFeedbackParameterDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = fp_current_or_default_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100003814(v3);
+    sub_100003814(dictCopy);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@":de_parameter"];
+  v5 = [dictCopy objectForKeyedSubscript:@":de_parameter"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v7 = [v3 objectForKeyedSubscript:@":de_parameter"];
+  v7 = [dictCopy objectForKeyedSubscript:@":de_parameter"];
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -429,10 +429,10 @@ LABEL_31:
       goto LABEL_15;
     }
 
-    v9 = [v3 objectForKeyedSubscript:@":de_parameter"];
+    v9 = [dictCopy objectForKeyedSubscript:@":de_parameter"];
     if ([v9 count])
     {
-      v10 = [v3 objectForKeyedSubscript:@":de_parameter"];
+      v10 = [dictCopy objectForKeyedSubscript:@":de_parameter"];
       v7 = [v10 objectAtIndexedSubscript:0];
     }
 
@@ -498,15 +498,15 @@ LABEL_26:
   return v12;
 }
 
-- (BOOL)_gatherPersistedDiagnostics:(id)a3 domainID:(id)a4 displayName:(id)a5 tempDirURL:(id)a6 attachments:(id)a7
+- (BOOL)_gatherPersistedDiagnostics:(id)diagnostics domainID:(id)d displayName:(id)name tempDirURL:(id)l attachments:(id)attachments
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  diagnosticsCopy = diagnostics;
+  dCopy = d;
+  nameCopy = name;
+  lCopy = l;
+  attachmentsCopy = attachments;
   v16 = +[NSFileManager defaultManager];
-  if ([v11 isEqualToString:@"1"])
+  if ([diagnosticsCopy isEqualToString:@"1"])
   {
     v42 = 0;
     v43 = &v42;
@@ -530,11 +530,11 @@ LABEL_26:
     v29 = &v32;
     v30 = &v38;
     v25 = v16;
-    v26 = v14;
-    v27 = v13;
-    v28 = v15;
+    v26 = lCopy;
+    v27 = nameCopy;
+    v28 = attachmentsCopy;
     v31 = &v42;
-    [v17 getSavedDiagnosticsFor:v12 completionHandler:&v21];
+    [v17 getSavedDiagnosticsFor:dCopy completionHandler:&v21];
     if (*(v39 + 24) == 1)
     {
       v18 = v33[5];
@@ -559,15 +559,15 @@ LABEL_26:
   return v19 & 1;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[NSMutableArray array];
   v6 = +[NSURL fp_secureTempDirectory];
-  v7 = [v4 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
-  if ([v7 isEqualToString:@"Feedback Assistant"] && (objc_msgSend(v4, "objectForKeyedSubscript:", @":de_parameter"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  v7 = [parametersCopy objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  if ([v7 isEqualToString:@"Feedback Assistant"] && (objc_msgSend(parametersCopy, "objectForKeyedSubscript:", @":de_parameter"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(FileProviderDiagnosticExtension *)self _getFeedbackParameterDict:v4];
+    v9 = [(FileProviderDiagnosticExtension *)self _getFeedbackParameterDict:parametersCopy];
     v10 = v9;
     if (v9 && ([v9 objectForKeyedSubscript:@"domainID"], (v11 = objc_claimAutoreleasedReturnValue()) != 0) && (v12 = v11, objc_msgSend(v10, "objectForKeyedSubscript:", @"displayName"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
     {
@@ -606,7 +606,7 @@ LABEL_26:
 
   else
   {
-    if ([v7 isEqualToString:@"FileProvider Daemon"] && (objc_msgSend(v4, "objectForKeyedSubscript:", @"domainID"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+    if ([v7 isEqualToString:@"FileProvider Daemon"] && (objc_msgSend(parametersCopy, "objectForKeyedSubscript:", @"domainID"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
     {
       v21 = fp_current_or_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -614,7 +614,7 @@ LABEL_26:
         sub_100003D30();
       }
 
-      v14 = [v4 objectForKeyedSubscript:@"domainID"];
+      v14 = [parametersCopy objectForKeyedSubscript:@"domainID"];
     }
 
     else
@@ -684,9 +684,9 @@ LABEL_43:
   return v5;
 }
 
-- (id)annotatedAttachmentsForParameters:(id)a3
+- (id)annotatedAttachmentsForParameters:(id)parameters
 {
-  v3 = [(FileProviderDiagnosticExtension *)self attachmentsForParameters:a3];
+  v3 = [(FileProviderDiagnosticExtension *)self attachmentsForParameters:parameters];
   v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Diagnostics with %lu items", [v3 count]);
   v5 = [[DEAnnotatedGroup alloc] initWithDisplayName:@"File Sync Diagnostics" localizedDescription:v4 iconType:0 additionalInfo:0 attachmentItems:v3];
 

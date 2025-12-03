@@ -1,18 +1,18 @@
 @interface VisionCoreCamGazeNetworkDescriptor
-+ (id)_descriptorWithModelFileName:(void *)a3 version:(void *)a4 inputImageBlobName:pixelFormatType:probabilitiesOutputName:error:;
-+ (id)camGazeV1AndReturnError:(id *)a3;
-+ (id)camGazeV2AndReturnError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreCamGazeNetworkDescriptor)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)_descriptorWithModelFileName:(void *)name version:(void *)version inputImageBlobName:pixelFormatType:probabilitiesOutputName:error:;
++ (id)camGazeV1AndReturnError:(id *)error;
++ (id)camGazeV2AndReturnError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreCamGazeNetworkDescriptor)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreCamGazeNetworkDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -20,13 +20,13 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = VisionCoreCamGazeNetworkDescriptor, [(VisionCoreInferenceNetworkDescriptor *)&v10 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = VisionCoreCamGazeNetworkDescriptor, [(VisionCoreInferenceNetworkDescriptor *)&v10 isEqual:equalCopy]))
     {
-      v5 = v4;
-      v6 = [(VisionCoreCamGazeNetworkDescriptor *)self gazeProbabilitiesOutput];
-      v7 = [(VisionCoreCamGazeNetworkDescriptor *)v5 gazeProbabilitiesOutput];
+      v5 = equalCopy;
+      gazeProbabilitiesOutput = [(VisionCoreCamGazeNetworkDescriptor *)self gazeProbabilitiesOutput];
+      gazeProbabilitiesOutput2 = [(VisionCoreCamGazeNetworkDescriptor *)v5 gazeProbabilitiesOutput];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [gazeProbabilitiesOutput isEqual:gazeProbabilitiesOutput2];
     }
 
     else
@@ -38,18 +38,18 @@
   return v8;
 }
 
-- (VisionCoreCamGazeNetworkDescriptor)initWithCoder:(id)a3
+- (VisionCoreCamGazeNetworkDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VisionCoreCamGazeNetworkDescriptor;
-  v5 = [(VisionCoreInferenceNetworkDescriptor *)&v15 initWithCoder:v4];
+  v5 = [(VisionCoreInferenceNetworkDescriptor *)&v15 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gazeProbabilitiesOutput"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gazeProbabilitiesOutput"];
   gazeProbabilitiesOutput = v5->_gazeProbabilitiesOutput;
   v5->_gazeProbabilitiesOutput = v6;
 
@@ -69,7 +69,7 @@ LABEL_7:
 
   if (!v5->_gazeClassifier)
   {
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
     goto LABEL_7;
   }
@@ -81,32 +81,32 @@ LABEL_8:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VisionCoreCamGazeNetworkDescriptor;
-  v4 = a3;
-  [(VisionCoreInferenceNetworkDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_gazeProbabilitiesOutput forKey:{@"gazeProbabilitiesOutput", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(VisionCoreInferenceNetworkDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_gazeProbabilitiesOutput forKey:{@"gazeProbabilitiesOutput", v5.receiver, v5.super_class}];
 }
 
-+ (id)camGazeV2AndReturnError:(id *)a3
++ (id)camGazeV2AndReturnError:(id *)error
 {
   v5 = [[VisionCoreResourceVersion alloc] initWithMajor:2 minor:0 micro:0];
-  v6 = [VisionCoreCamGazeNetworkDescriptor _descriptorWithModelFileName:a1 version:@"camgazeflow-f334k5e5zi_91568-quant-fp16.espresso" inputImageBlobName:v5 pixelFormatType:a3 probabilitiesOutputName:? error:?];
+  v6 = [VisionCoreCamGazeNetworkDescriptor _descriptorWithModelFileName:self version:@"camgazeflow-f334k5e5zi_91568-quant-fp16.espresso" inputImageBlobName:v5 pixelFormatType:error probabilitiesOutputName:? error:?];
 
   return v6;
 }
 
-+ (id)_descriptorWithModelFileName:(void *)a3 version:(void *)a4 inputImageBlobName:pixelFormatType:probabilitiesOutputName:error:
++ (id)_descriptorWithModelFileName:(void *)name version:(void *)version inputImageBlobName:pixelFormatType:probabilitiesOutputName:error:
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v7 = @"image";
   v8 = @"camgaze_probs";
   v9 = a2;
   objc_opt_self();
-  v10 = [VisionCoreEspressoUtils URLForModelNamed:v9 error:a4];
+  v10 = [VisionCoreEspressoUtils URLForModelNamed:v9 error:version];
 
   if (v10)
   {
@@ -115,22 +115,22 @@ LABEL_8:
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     v25 = 0;
     v26 = 0;
-    v12 = [VisionCoreEspressoUtils getInputImageTensorDescriptor:&v26 outputTensorDescriptors:&v25 forNetworkModelFileURL:v10 inputBlobName:@"image" pixelFormatType:1111970369 outputBlobNamesWithTypes:v11 confidencesBlobNamesWithLabelsFiles:0 error:a4];
+    v12 = [VisionCoreEspressoUtils getInputImageTensorDescriptor:&v26 outputTensorDescriptors:&v25 forNetworkModelFileURL:v10 inputBlobName:@"image" pixelFormatType:1111970369 outputBlobNamesWithTypes:v11 confidencesBlobNamesWithLabelsFiles:0 error:version];
     v13 = v26;
     v14 = v25;
     v15 = 0;
     if (v12)
     {
-      v16 = [[VisionCoreProcessingDescriptorSpecifier alloc] initWithIdentifier:@"VisionCoreInferenceNetworkIdentifierCamGaze" version:v6];
+      v16 = [[VisionCoreProcessingDescriptorSpecifier alloc] initWithIdentifier:@"VisionCoreInferenceNetworkIdentifierCamGaze" version:nameCopy];
       v17 = [VisionCoreCamGazeNetworkDescriptor alloc];
-      v18 = [v14 allValues];
-      v19 = [(VisionCoreInferenceNetworkDescriptor *)v17 initWithURL:v10 specifier:v16 networkHeadVersions:0 inputImage:v13 outputs:v18 confidencesOutput:0];
+      allValues = [v14 allValues];
+      v19 = [(VisionCoreInferenceNetworkDescriptor *)v17 initWithURL:v10 specifier:v16 networkHeadVersions:0 inputImage:v13 outputs:allValues confidencesOutput:0];
 
       v20 = [v14 objectForKeyedSubscript:@"camgaze_probs"];
       v21 = *(v19 + 64);
       *(v19 + 64) = v20;
 
-      v22 = [_VisionCoreCamGazeClassifier classifierForGazeProbabilitiesOutputDescriptor:a4 error:?];
+      v22 = [_VisionCoreCamGazeClassifier classifierForGazeProbabilitiesOutputDescriptor:version error:?];
       v23 = *(v19 + 72);
       *(v19 + 72) = v22;
 
@@ -154,10 +154,10 @@ LABEL_8:
   return v15;
 }
 
-+ (id)camGazeV1AndReturnError:(id *)a3
++ (id)camGazeV1AndReturnError:(id *)error
 {
   v5 = [[VisionCoreResourceVersion alloc] initWithMajor:1 minor:0 micro:0];
-  v6 = [VisionCoreCamGazeNetworkDescriptor _descriptorWithModelFileName:a1 version:@"camgaze_classification_3class_light-nxbrsq87z6_23998_BGR_opt.espresso" inputImageBlobName:v5 pixelFormatType:a3 probabilitiesOutputName:? error:?];
+  v6 = [VisionCoreCamGazeNetworkDescriptor _descriptorWithModelFileName:self version:@"camgaze_classification_3class_light-nxbrsq87z6_23998_BGR_opt.espresso" inputImageBlobName:v5 pixelFormatType:error probabilitiesOutputName:? error:?];
 
   return v6;
 }

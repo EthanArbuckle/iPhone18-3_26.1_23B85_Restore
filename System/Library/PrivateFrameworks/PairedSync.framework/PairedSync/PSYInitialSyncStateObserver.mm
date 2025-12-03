@@ -1,19 +1,19 @@
 @interface PSYInitialSyncStateObserver
-- (PSYInitialSyncStateObserver)initWithDelegate:(id)a3;
+- (PSYInitialSyncStateObserver)initWithDelegate:(id)delegate;
 - (PSYInitialSyncStateObserverDelegate)delegate;
-- (id)syncProviderWithErrorHandler:(id)a3;
+- (id)syncProviderWithErrorHandler:(id)handler;
 - (void)_handleConnectionInvalidated;
 - (void)_queue_initializeIfNotInitialized;
 - (void)_queue_notifyCanRetryFailedRequests;
 - (void)_queue_querySyncState;
-- (void)_queue_updateSyncStates:(id)a3 notifyDelegateOfChanges:(BOOL)a4;
+- (void)_queue_updateSyncStates:(id)states notifyDelegateOfChanges:(BOOL)changes;
 - (void)dealloc;
-- (void)didUpdateSyncForPairingID:(id)a3;
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5;
-- (void)requestInitialNonMigrationSyncStateForPairingIdentifier:(id)a3 completion:(id)a4;
-- (void)requestInitialSyncStateForPairingIdentifier:(id)a3 completion:(id)a4;
-- (void)requestSyncStateForPairingIdentifier:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)didUpdateSyncForPairingID:(id)d;
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties;
+- (void)requestInitialNonMigrationSyncStateForPairingIdentifier:(id)identifier completion:(id)completion;
+- (void)requestInitialSyncStateForPairingIdentifier:(id)identifier completion:(id)completion;
+- (void)requestSyncStateForPairingIdentifier:(id)identifier completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PSYInitialSyncStateObserver
@@ -27,12 +27,12 @@
   if (!self->_init)
   {
     v4 = +[PSYRegistrySingleton registry];
-    v10 = [v4 getAllDevices];
+    getAllDevices = [v4 getAllDevices];
 
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
-    v22 = [v10 count];
+    v22 = [getAllDevices count];
     v17[0] = 0;
     v17[1] = v17;
     v17[2] = 0x2020000000;
@@ -43,7 +43,7 @@
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      obj = v10;
+      obj = getAllDevices;
       v5 = [obj countByEnumeratingWithState:&v13 objects:v23 count:16];
       if (v5)
       {
@@ -58,7 +58,7 @@
               objc_enumerationMutation(obj);
             }
 
-            v8 = [*(*(&v13 + 1) + 8 * v7) pairingID];
+            pairingID = [*(*(&v13 + 1) + 8 * v7) pairingID];
             v12[0] = MEMORY[0x277D85DD0];
             v12[1] = 3221225472;
             v12[2] = __64__PSYInitialSyncStateObserver__queue_initializeIfNotInitialized__block_invoke;
@@ -66,7 +66,7 @@
             v12[5] = v17;
             v12[6] = &v19;
             v12[4] = self;
-            [(PSYInitialSyncStateObserver *)self requestSyncStateForPairingIdentifier:v8 completion:v12];
+            [(PSYInitialSyncStateObserver *)self requestSyncStateForPairingIdentifier:pairingID completion:v12];
 
             ++v7;
           }
@@ -129,9 +129,9 @@ void __59__PSYInitialSyncStateObserver__handleConnectionInvalidated__block_invok
   dispatch_async(queue, block);
 }
 
-- (PSYInitialSyncStateObserver)initWithDelegate:(id)a3
+- (PSYInitialSyncStateObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v33.receiver = self;
   v33.super_class = PSYInitialSyncStateObserver;
   v5 = [(PSYInitialSyncStateObserver *)&v33 init];
@@ -171,24 +171,24 @@ void __59__PSYInitialSyncStateObserver__handleConnectionInvalidated__block_invok
     delegateQueue = v5->_delegateQueue;
     v5->_delegateQueue = v18;
 
-    [(PSYInitialSyncStateObserver *)v5 setDelegate:v4];
+    [(PSYInitialSyncStateObserver *)v5 setDelegate:delegateCopy];
     objc_initWeak(buf, v5);
-    v20 = [@"com.apple.pairedsyncd.launched" UTF8String];
+    uTF8String = [@"com.apple.pairedsyncd.launched" UTF8String];
     v21 = v5->_queue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __48__PSYInitialSyncStateObserver_initWithDelegate___block_invoke;
     handler[3] = &unk_2799FB538;
     objc_copyWeak(&v31, buf);
-    notify_register_dispatch(v20, &v5->_daemonStartedNotifyToken, v21, handler);
-    v22 = [@"com.apple.pairedsync.lastsyncswitchid" UTF8String];
+    notify_register_dispatch(uTF8String, &v5->_daemonStartedNotifyToken, v21, handler);
+    uTF8String2 = [@"com.apple.pairedsync.lastsyncswitchid" UTF8String];
     v23 = v5->_queue;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __48__PSYInitialSyncStateObserver_initWithDelegate___block_invoke_2;
     v28[3] = &unk_2799FB538;
     objc_copyWeak(&v29, buf);
-    notify_register_dispatch(v22, &v5->_syncSwitchNotifyToken, v23, v28);
+    notify_register_dispatch(uTF8String2, &v5->_syncSwitchNotifyToken, v23, v28);
     [PSYRegistrySingleton addDelegate:v5];
     v24 = v5->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -224,17 +224,17 @@ void __48__PSYInitialSyncStateObserver_initWithDelegate___block_invoke_2(uint64_
   [WeakRetained _queue_querySyncState];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PSYInitialSyncStateObserver_setDelegate___block_invoke;
   v7[3] = &unk_2799FB588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateQueue, v7);
 }
 
@@ -291,12 +291,12 @@ void __64__PSYInitialSyncStateObserver__queue_initializeIfNotInitialized__block_
   }
 }
 
-- (void)requestSyncStateForPairingIdentifier:(id)a3 completion:(id)a4
+- (void)requestSyncStateForPairingIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (identifierCopy)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -304,8 +304,8 @@ void __64__PSYInitialSyncStateObserver__queue_initializeIfNotInitialized__block_
     block[2] = __79__PSYInitialSyncStateObserver_requestSyncStateForPairingIdentifier_completion___block_invoke;
     block[3] = &unk_2799FB6A0;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = identifierCopy;
     dispatch_async(queue, block);
   }
 
@@ -443,20 +443,20 @@ LABEL_13:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestInitialSyncStateForPairingIdentifier:(id)a3 completion:(id)a4
+- (void)requestInitialSyncStateForPairingIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__PSYInitialSyncStateObserver_requestInitialSyncStateForPairingIdentifier_completion___block_invoke;
   block[3] = &unk_2799FB6A0;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -555,20 +555,20 @@ uint64_t __86__PSYInitialSyncStateObserver_requestInitialSyncStateForPairingIden
   return result;
 }
 
-- (void)requestInitialNonMigrationSyncStateForPairingIdentifier:(id)a3 completion:(id)a4
+- (void)requestInitialNonMigrationSyncStateForPairingIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __98__PSYInitialSyncStateObserver_requestInitialNonMigrationSyncStateForPairingIdentifier_completion___block_invoke;
   block[3] = &unk_2799FB6A0;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -667,9 +667,9 @@ uint64_t __98__PSYInitialSyncStateObserver_requestInitialNonMigrationSyncStateFo
   return result;
 }
 
-- (id)syncProviderWithErrorHandler:(id)a3
+- (id)syncProviderWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   if (!connection)
   {
@@ -703,7 +703,7 @@ uint64_t __98__PSYInitialSyncStateObserver_requestInitialNonMigrationSyncStateFo
     connection = self->_connection;
   }
 
-  v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v4];
+  v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v14;
 }
@@ -717,10 +717,10 @@ void __60__PSYInitialSyncStateObserver_syncProviderWithErrorHandler___block_invo
 - (void)_queue_querySyncState
 {
   [(PSYInitialSyncStateObserver *)self _queue_initializeIfNotInitialized];
-  v3 = [(NSMutableDictionary *)self->_syncStateCache keyEnumerator];
-  v4 = [v3 allObjects];
+  keyEnumerator = [(NSMutableDictionary *)self->_syncStateCache keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  if ([v4 count])
+  if ([allObjects count])
   {
     v5 = [(PSYInitialSyncStateObserver *)self syncProviderWithErrorHandler:0];
     v6[0] = MEMORY[0x277D85DD0];
@@ -728,7 +728,7 @@ void __60__PSYInitialSyncStateObserver_syncProviderWithErrorHandler___block_invo
     v6[2] = __52__PSYInitialSyncStateObserver__queue_querySyncState__block_invoke;
     v6[3] = &unk_2799FB6F0;
     v6[4] = self;
-    [v5 requestDeviceSyncStateEntriesForPairingIDs:v4 completion:v6];
+    [v5 requestDeviceSyncStateEntriesForPairingIDs:allObjects completion:v6];
   }
 }
 
@@ -749,23 +749,23 @@ void __52__PSYInitialSyncStateObserver__queue_querySyncState__block_invoke(uint6
 
 - (void)_queue_notifyCanRetryFailedRequests
 {
-  v3 = [(PSYInitialSyncStateObserver *)self delegate];
+  delegate = [(PSYInitialSyncStateObserver *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PSYInitialSyncStateObserver *)self delegate];
-    [v5 initialSyncStateObserverClientCanRetryFailedRequests:self];
+    delegate2 = [(PSYInitialSyncStateObserver *)self delegate];
+    [delegate2 initialSyncStateObserverClientCanRetryFailedRequests:self];
   }
 }
 
-- (void)_queue_updateSyncStates:(id)a3 notifyDelegateOfChanges:(BOOL)a4
+- (void)_queue_updateSyncStates:(id)states notifyDelegateOfChanges:(BOOL)changes
 {
-  v4 = a4;
+  changesCopy = changes;
   v89 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  statesCopy = states;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (changesCopy)
   {
     v63 = [MEMORY[0x277CBEB58] set];
     v60 = [MEMORY[0x277CBEB58] set];
@@ -783,9 +783,9 @@ void __52__PSYInitialSyncStateObserver__queue_querySyncState__block_invoke(uint6
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = [v6 keyEnumerator];
+  obj = [statesCopy keyEnumerator];
   v7 = [obj countByEnumeratingWithState:&v79 objects:v88 count:16];
-  v62 = v6;
+  v62 = statesCopy;
   if (v7)
   {
     v9 = v7;
@@ -802,7 +802,7 @@ void __52__PSYInitialSyncStateObserver__queue_querySyncState__block_invoke(uint6
         }
 
         v11 = *(*(&v79 + 1) + 8 * i);
-        v12 = [v6 objectForKeyedSubscript:{v11, v59}];
+        v12 = [statesCopy objectForKeyedSubscript:{v11, v59}];
         [(NSMutableDictionary *)self->_syncStateEntryCache setObject:v12 forKeyedSubscript:v11];
         v13 = [(NSMutableDictionary *)self->_syncStateCache objectForKeyedSubscript:v11];
         v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "hasCompletedSync")}];
@@ -821,7 +821,7 @@ void __52__PSYInitialSyncStateObserver__queue_querySyncState__block_invoke(uint6
           [v60 addObject:v11];
 LABEL_23:
           [(NSMutableDictionary *)self->_initialSyncStateCache setObject:v19 forKeyedSubscript:v11];
-          v6 = v62;
+          statesCopy = v62;
           goto LABEL_24;
         }
 
@@ -887,13 +887,13 @@ LABEL_24:
           }
         }
 
-        v31 = [(PSYInitialSyncStateObserver *)self delegate];
+        delegate = [(PSYInitialSyncStateObserver *)self delegate];
         v32 = objc_opt_respondsToSelector();
 
         if (v32)
         {
-          v33 = [(PSYInitialSyncStateObserver *)self delegate];
-          [v33 initialSyncStateObserver:self syncDidResetForPairingIdentifier:v27];
+          delegate2 = [(PSYInitialSyncStateObserver *)self delegate];
+          [delegate2 initialSyncStateObserver:self syncDidResetForPairingIdentifier:v27];
         }
       }
 
@@ -937,13 +937,13 @@ LABEL_24:
           }
         }
 
-        v43 = [(PSYInitialSyncStateObserver *)self delegate];
+        delegate3 = [(PSYInitialSyncStateObserver *)self delegate];
         v44 = objc_opt_respondsToSelector();
 
         if (v44)
         {
-          v45 = [(PSYInitialSyncStateObserver *)self delegate];
-          [v45 initialSyncStateObserver:self initialSyncDidCompleteForPairingIdentifier:v39];
+          delegate4 = [(PSYInitialSyncStateObserver *)self delegate];
+          [delegate4 initialSyncStateObserver:self initialSyncDidCompleteForPairingIdentifier:v39];
         }
       }
 
@@ -987,13 +987,13 @@ LABEL_24:
           }
         }
 
-        v55 = [(PSYInitialSyncStateObserver *)self delegate];
+        delegate5 = [(PSYInitialSyncStateObserver *)self delegate];
         v56 = objc_opt_respondsToSelector();
 
         if (v56)
         {
-          v57 = [(PSYInitialSyncStateObserver *)self delegate];
-          [v57 initialSyncStateObserver:self syncDidCompleteForPairingIdentifier:v51];
+          delegate6 = [(PSYInitialSyncStateObserver *)self delegate];
+          [delegate6 initialSyncStateObserver:self syncDidCompleteForPairingIdentifier:v51];
         }
       }
 
@@ -1006,10 +1006,10 @@ LABEL_24:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties
 {
-  v6 = a5;
-  if (([v6 containsObject:*MEMORY[0x277D37BD0]] & 1) != 0 || objc_msgSend(v6, "containsObject:", *MEMORY[0x277D37BB8]))
+  propertiesCopy = properties;
+  if (([propertiesCopy containsObject:*MEMORY[0x277D37BD0]] & 1) != 0 || objc_msgSend(propertiesCopy, "containsObject:", *MEMORY[0x277D37BB8]))
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -1021,17 +1021,17 @@ LABEL_24:
   }
 }
 
-- (void)didUpdateSyncForPairingID:(id)a3
+- (void)didUpdateSyncForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__PSYInitialSyncStateObserver_didUpdateSyncForPairingID___block_invoke;
   v7[3] = &unk_2799FB588;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 

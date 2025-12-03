@@ -2,12 +2,12 @@
 + (id)sharedManager;
 - (ADAVSystemControllerLifecycleManager)init;
 - (void)_flushPendingCompletions;
-- (void)_setAVSystemController:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)avSystemControllerDied:(id)a3;
+- (void)_setAVSystemController:(id)controller;
+- (void)addObserver:(id)observer;
+- (void)avSystemControllerDied:(id)died;
 - (void)fetchAVSystemControllerInBackground;
-- (void)getAVSystemControllerWithTimeout:(double)a3 completion:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)getAVSystemControllerWithTimeout:(double)timeout completion:(id)completion;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ADAVSystemControllerLifecycleManager
@@ -48,11 +48,11 @@
   [(NSMutableArray *)self->_pendingCompletions removeAllObjects];
 }
 
-- (void)_setAVSystemController:(id)a3
+- (void)_setAVSystemController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   avSystemController = self->_avSystemController;
-  if (avSystemController != v5)
+  if (avSystemController != controllerCopy)
   {
     if (avSystemController)
     {
@@ -60,7 +60,7 @@
       [v7 removeObserver:self name:AVSystemController_ServerConnectionDiedNotification object:self->_avSystemController];
     }
 
-    objc_storeStrong(&self->_avSystemController, a3);
+    objc_storeStrong(&self->_avSystemController, controller);
     if (self->_avSystemController)
     {
       v8 = +[NSNotificationCenter defaultCenter];
@@ -97,16 +97,16 @@
   }
 }
 
-- (void)avSystemControllerDied:(id)a3
+- (void)avSystemControllerDied:(id)died
 {
-  v4 = a3;
+  diedCopy = died;
   v5 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v9 = "[ADAVSystemControllerLifecycleManager avSystemControllerDied:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = diedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s notification = %@", buf, 0x16u);
   }
 
@@ -131,45 +131,45 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100163714;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001637B8;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getAVSystemControllerWithTimeout:(double)a3 completion:(id)a4
+- (void)getAVSystemControllerWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = [AFOneArgumentSafetyBlock alloc];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1001638EC;
     v14[3] = &unk_100513900;
-    v15 = v6;
+    v15 = completionCopy;
     v8 = [v7 initWithBlock:v14 defaultValue:0];
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
@@ -178,7 +178,7 @@
     v11[3] = &unk_10051E128;
     v11[4] = self;
     v12 = v8;
-    v13 = a3;
+    timeoutCopy = timeout;
     v10 = v8;
     dispatch_async(queue, v11);
   }

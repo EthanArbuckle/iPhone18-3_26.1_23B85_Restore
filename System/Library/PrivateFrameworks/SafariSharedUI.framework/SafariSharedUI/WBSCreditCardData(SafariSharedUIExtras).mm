@@ -9,7 +9,7 @@
 
 - (id)initWithCameraReaderOutput:()SafariSharedUIExtras
 {
-  v23 = a1;
+  selfCopy = self;
   v34 = *MEMORY[0x1E69E9840];
   v29 = 0u;
   v30 = 0u;
@@ -39,29 +39,29 @@
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [v12 type];
-        if ([v13 isEqualToString:v8])
+        type = [v12 type];
+        if ([type isEqualToString:v8])
         {
           [v12 stringValue];
-          v6 = v14 = v6;
+          v6 = monthValue = v6;
         }
 
-        else if ([v13 isEqualToString:v9])
+        else if ([type isEqualToString:v9])
         {
           [v12 stringValue];
-          v27 = v14 = v27;
+          v27 = monthValue = v27;
         }
 
         else
         {
-          if (![v13 isEqualToString:v10])
+          if (![type isEqualToString:v10])
           {
             goto LABEL_13;
           }
 
           v15 = v12;
-          v14 = [v15 monthValue];
-          [v14 integerValue];
+          monthValue = [v15 monthValue];
+          [monthValue integerValue];
           v16 = v9;
           v17 = v8;
           v18 = v4;
@@ -95,7 +95,7 @@ LABEL_13:
   v27 = 0;
   v6 = 0;
 LABEL_17:
-  v21 = [v23 initWithCardName:0 number:v6 cardholderName:v27 expirationDate:{v5, v23}];
+  v21 = [selfCopy initWithCardName:0 number:v6 cardholderName:v27 expirationDate:{v5, selfCopy}];
 
   return v21;
 }
@@ -120,18 +120,18 @@ LABEL_17:
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [a1 virtualCard];
-  v5 = [v4 cardIcon];
+  virtualCard = [self virtualCard];
+  cardIcon = [virtualCard cardIcon];
 
-  return v5;
+  return cardIcon;
 }
 
 - (void)virtualCardArtworkWithSize:()SafariSharedUIExtras completionHandler:
 {
   v8 = a5;
-  v9 = [MEMORY[0x1E69C8F10] creditCardDataController];
-  v10 = [a1 cardNumber];
-  v11 = [v9 cachedArtworkForCardNumber:v10 withSize:{a2, a3}];
+  creditCardDataController = [MEMORY[0x1E69C8F10] creditCardDataController];
+  cardNumber = [self cardNumber];
+  v11 = [creditCardDataController cachedArtworkForCardNumber:cardNumber withSize:{a2, a3}];
 
   if (v11)
   {
@@ -158,25 +158,25 @@ LABEL_17:
 
     v13 = v12;
     _Block_object_dispose(&v21, 8);
-    v14 = [a1 virtualCard];
+    virtualCard = [self virtualCard];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __88__WBSCreditCardData_SafariSharedUIExtras__virtualCardArtworkWithSize_completionHandler___block_invoke;
     v15[3] = &unk_1E8283CE0;
-    v15[4] = a1;
-    v16 = v9;
+    v15[4] = self;
+    v16 = creditCardDataController;
     v18 = a2;
     v19 = a3;
     v17 = v8;
-    [v14 cardArtworkWithSize:v15 completion:{a2, a3}];
+    [virtualCard cardArtworkWithSize:v15 completion:{a2, a3}];
   }
 }
 
 - (id)cardArtworkWithSize:()SafariSharedUIExtras
 {
-  v6 = [MEMORY[0x1E69C8F10] creditCardDataController];
-  v7 = [a1 cardNumber];
-  v8 = [v6 cachedArtworkForCardNumber:v7 withSize:{a2, a3}];
+  creditCardDataController = [MEMORY[0x1E69C8F10] creditCardDataController];
+  cardNumber = [self cardNumber];
+  v8 = [creditCardDataController cachedArtworkForCardNumber:cardNumber withSize:{a2, a3}];
 
   if (v8)
   {
@@ -185,30 +185,30 @@ LABEL_17:
 
   else
   {
-    v10 = [a1 cardDescriptor];
+    cardDescriptor = [self cardDescriptor];
     v11 = objc_opt_respondsToSelector();
 
-    v12 = [a1 cardDescriptor];
-    v13 = v12;
+    cardDescriptor2 = [self cardDescriptor];
+    v13 = cardDescriptor2;
     if (v11)
     {
-      v14 = [v12 artwork];
+      artwork = [cardDescriptor2 artwork];
     }
 
     else
     {
-      v14 = [v12 cardArt];
+      artwork = [cardDescriptor2 cardArt];
     }
 
-    v15 = v14;
+    v15 = artwork;
 
     v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v15];
     v9 = [WBSImageUtilities resizedImage:v16 withSize:a2, a3];
 
     if (v9)
     {
-      v17 = [a1 cardNumber];
-      [v6 addArtworkToCache:v9 forCardNumber:v17 withSize:{a2, a3}];
+      cardNumber2 = [self cardNumber];
+      [creditCardDataController addArtworkToCache:v9 forCardNumber:cardNumber2 withSize:{a2, a3}];
     }
   }
 

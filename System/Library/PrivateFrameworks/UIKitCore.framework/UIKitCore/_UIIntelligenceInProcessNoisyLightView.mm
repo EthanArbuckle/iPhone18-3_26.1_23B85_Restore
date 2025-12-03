@@ -1,11 +1,11 @@
 @interface _UIIntelligenceInProcessNoisyLightView
-- (_TtC5UIKit38_UIIntelligenceInProcessNoisyLightView)initWithCoder:(id)a3;
+- (_TtC5UIKit38_UIIntelligenceInProcessNoisyLightView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIIntelligenceInProcessNoisyLightView
 
-- (_TtC5UIKit38_UIIntelligenceInProcessNoisyLightView)initWithCoder:(id)a3
+- (_TtC5UIKit38_UIIntelligenceInProcessNoisyLightView)initWithCoder:(id)coder
 {
   swift_getObjectType();
   swift_deallocPartialClassInstance();

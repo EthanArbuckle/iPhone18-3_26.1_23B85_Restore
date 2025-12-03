@@ -1,44 +1,44 @@
 @interface AKSecurePakeEngineBase
-- (AKSecurePakeEngineBase)initWithContext:(id)a3;
+- (AKSecurePakeEngineBase)initWithContext:(id)context;
 - (AKSecurePakeEngineController)controller;
 - (void)dealloc;
-- (void)prepareWithController:(id)a3 queue:(id)a4;
-- (void)processMessage:(id)a3 completionHandler:(id)a4;
+- (void)prepareWithController:(id)controller queue:(id)queue;
+- (void)processMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation AKSecurePakeEngineBase
 
-- (AKSecurePakeEngineBase)initWithContext:(id)a3
+- (AKSecurePakeEngineBase)initWithContext:(id)context
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, context);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKSecurePakeEngineBase;
-  v11 = [(AKSecurePakeEngineBase *)&v9 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKSecurePakeEngineBase *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v11->_context, location[0]);
+    objc_storeStrong(&selfCopy->_context, location[0]);
     v4 = &_dispatch_main_q;
     v5 = &_dispatch_main_q;
-    queue = v11->_queue;
-    v11->_queue = v5;
+    queue = selfCopy->_queue;
+    selfCopy->_queue = v5;
     _objc_release(queue);
   }
 
-  v8 = _objc_retain(v11);
+  v8 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
@@ -49,33 +49,33 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v2.receiver = v5;
+  v2.receiver = selfCopy;
   v2.super_class = AKSecurePakeEngineBase;
   [(AKSecurePakeEngineBase *)&v2 dealloc];
 }
 
-- (void)prepareWithController:(id)a3 queue:(id)a4
+- (void)prepareWithController:(id)controller queue:(id)queue
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  objc_storeWeak(&v7->_controller, location[0]);
-  objc_storeStrong(&v7->_queue, v5);
+  objc_storeStrong(&v5, queue);
+  objc_storeWeak(&selfCopy->_controller, location[0]);
+  objc_storeStrong(&selfCopy->_queue, v5);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)processMessage:(id)a3 completionHandler:(id)a4
+- (void)processMessage:(id)message completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, handler);
   exception = [NSException exceptionWithName:@"-processMessage:completionHandler: not implemented" reason:0 userInfo:?];
   v4 = exception;
   objc_exception_throw(exception);

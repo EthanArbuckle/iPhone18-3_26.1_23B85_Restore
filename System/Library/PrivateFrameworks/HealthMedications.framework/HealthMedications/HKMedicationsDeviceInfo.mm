@@ -1,58 +1,58 @@
 @interface HKMedicationsDeviceInfo
-+ (uint64_t)scheduleCompatibilityVersionForDevice:(uint64_t)a1;
-- (BOOL)isCompatibleWithSchedule:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKMedicationsDeviceInfo)initWithCoder:(id)a3;
-- (HKMedicationsDeviceInfo)initWithHardwareIdentifier:(id)a3 name:(id)a4 model:(id)a5 operatingSystemVersion:(id *)a6 scheduleCompatibilityVersion:(int64_t)a7 localDevice:(BOOL)a8;
-- (HKMedicationsDeviceInfo)initWithLocalPairedDevice:(id)a3;
-- (HKMedicationsDeviceInfo)initWithPairedDevice:(id)a3;
++ (uint64_t)scheduleCompatibilityVersionForDevice:(uint64_t)device;
+- (BOOL)isCompatibleWithSchedule:(id)schedule;
+- (BOOL)isEqual:(id)equal;
+- (HKMedicationsDeviceInfo)initWithCoder:(id)coder;
+- (HKMedicationsDeviceInfo)initWithHardwareIdentifier:(id)identifier name:(id)name model:(id)model operatingSystemVersion:(id *)version scheduleCompatibilityVersion:(int64_t)compatibilityVersion localDevice:(BOOL)device;
+- (HKMedicationsDeviceInfo)initWithLocalPairedDevice:(id)device;
+- (HKMedicationsDeviceInfo)initWithPairedDevice:(id)device;
 - (id)description;
-- (id)filterOutCompatibleSchedules:(id)a3;
+- (id)filterOutCompatibleSchedules:(id)schedules;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationsDeviceInfo
 
-- (HKMedicationsDeviceInfo)initWithHardwareIdentifier:(id)a3 name:(id)a4 model:(id)a5 operatingSystemVersion:(id *)a6 scheduleCompatibilityVersion:(int64_t)a7 localDevice:(BOOL)a8
+- (HKMedicationsDeviceInfo)initWithHardwareIdentifier:(id)identifier name:(id)name model:(id)model operatingSystemVersion:(id *)version scheduleCompatibilityVersion:(int64_t)compatibilityVersion localDevice:(BOOL)device
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  modelCopy = model;
   v22.receiver = self;
   v22.super_class = HKMedicationsDeviceInfo;
   v18 = [(HKMedicationsDeviceInfo *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_hardwareIdentifier, a3);
-    objc_storeStrong(&v19->_name, a4);
-    objc_storeStrong(&v19->_model, a5);
-    v20 = *&a6->var0;
-    v19->_operatingSystemVersion.patchVersion = a6->var2;
+    objc_storeStrong(&v18->_hardwareIdentifier, identifier);
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_model, model);
+    v20 = *&version->var0;
+    v19->_operatingSystemVersion.patchVersion = version->var2;
     *&v19->_operatingSystemVersion.majorVersion = v20;
-    v19->_scheduleCompatibilityVersion = a7;
-    v19->_localDevice = a8;
+    v19->_scheduleCompatibilityVersion = compatibilityVersion;
+    v19->_localDevice = device;
   }
 
   return v19;
 }
 
-- (HKMedicationsDeviceInfo)initWithPairedDevice:(id)a3
+- (HKMedicationsDeviceInfo)initWithPairedDevice:(id)device
 {
   v4 = *MEMORY[0x277D2BAD0];
-  v5 = a3;
-  v6 = [v5 valueForProperty:v4];
-  v7 = [v5 valueForProperty:*MEMORY[0x277D2BBC0]];
-  v8 = [v5 valueForProperty:*MEMORY[0x277D2BC20]];
+  deviceCopy = device;
+  v6 = [deviceCopy valueForProperty:v4];
+  v7 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBC0]];
+  v8 = [deviceCopy valueForProperty:*MEMORY[0x277D2BC20]];
   HKNSOperatingSystemVersionFromString();
-  v9 = [HKMedicationsDeviceInfo scheduleCompatibilityVersionForDevice:v5];
+  v9 = [HKMedicationsDeviceInfo scheduleCompatibilityVersionForDevice:deviceCopy];
 
   v10 = [(HKMedicationsDeviceInfo *)self initWithHardwareIdentifier:0 name:v6 model:v7 operatingSystemVersion:v12 scheduleCompatibilityVersion:v9 localDevice:0];
   return v10;
 }
 
-+ (uint64_t)scheduleCompatibilityVersionForDevice:(uint64_t)a1
++ (uint64_t)scheduleCompatibilityVersionForDevice:(uint64_t)device
 {
   v2 = a2;
   objc_opt_self();
@@ -65,30 +65,30 @@
 
   if (v4)
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
     v8 = v10;
     v9 = v11;
-    v5 = HKMedicationScheduleCompatibilityVersionForOSVersion(&v8, 1);
+    integerValue = HKMedicationScheduleCompatibilityVersionForOSVersion(&v8, 1);
   }
 
-  v6 = v5;
+  v6 = integerValue;
 
   return v6;
 }
 
-- (HKMedicationsDeviceInfo)initWithLocalPairedDevice:(id)a3
+- (HKMedicationsDeviceInfo)initWithLocalPairedDevice:(id)device
 {
   v4 = *MEMORY[0x277D2BAD0];
-  v5 = a3;
-  v6 = [v5 valueForProperty:v4];
-  v7 = [v5 valueForProperty:*MEMORY[0x277D2BBC0]];
-  v8 = [v5 valueForProperty:*MEMORY[0x277D2BC20]];
+  deviceCopy = device;
+  v6 = [deviceCopy valueForProperty:v4];
+  v7 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBC0]];
+  v8 = [deviceCopy valueForProperty:*MEMORY[0x277D2BC20]];
   HKNSOperatingSystemVersionFromString();
-  v9 = [HKMedicationsDeviceInfo scheduleCompatibilityVersionForDevice:v5];
+  v9 = [HKMedicationsDeviceInfo scheduleCompatibilityVersionForDevice:deviceCopy];
 
   v10 = [(HKMedicationsDeviceInfo *)self initWithHardwareIdentifier:0 name:v6 model:v7 operatingSystemVersion:v12 scheduleCompatibilityVersion:v9 localDevice:1];
   return v10;
@@ -105,35 +105,35 @@
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_scheduleCompatibilityVersion];
   localDevice = self->_localDevice;
   v10 = HKStringFromBool();
-  v11 = [(NSUUID *)self->_hardwareIdentifier UUIDString];
-  v12 = [v3 stringWithFormat:@"<%@ name:%@, model:%@, operating system:%@, compatibility version: %@, localDevice: %@, hardware identifier: %@", v4, name, model, v7, v8, v10, v11];
+  uUIDString = [(NSUUID *)self->_hardwareIdentifier UUIDString];
+  v12 = [v3 stringWithFormat:@"<%@ name:%@, model:%@, operating system:%@, compatibility version: %@, localDevice: %@, hardware identifier: %@", v4, name, model, v7, v8, v10, uUIDString];
 
   return v12;
 }
 
-- (BOOL)isCompatibleWithSchedule:(id)a3
+- (BOOL)isCompatibleWithSchedule:(id)schedule
 {
-  v4 = [a3 compatibilityRange];
+  compatibilityRange = [schedule compatibilityRange];
 
-  return [(HKMedicationsDeviceInfo *)self isCompatibleWithScheduleCompatibilityVersion:v4];
+  return [(HKMedicationsDeviceInfo *)self isCompatibleWithScheduleCompatibilityVersion:compatibilityRange];
 }
 
-- (id)filterOutCompatibleSchedules:(id)a3
+- (id)filterOutCompatibleSchedules:(id)schedules
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__HKMedicationsDeviceInfo_filterOutCompatibleSchedules___block_invoke;
   v5[3] = &unk_2796CAC50;
   v5[4] = self;
-  v3 = [a3 hk_filter:v5];
+  v3 = [schedules hk_filter:v5];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -143,7 +143,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       hardwareIdentifier = self->_hardwareIdentifier;
       v7 = v5->_hardwareIdentifier;
       if (hardwareIdentifier != v7 && (!v7 || ![(NSUUID *)hardwareIdentifier isEqual:?]))
@@ -186,42 +186,42 @@ LABEL_17:
   return v4 ^ [(NSString *)self->_model hash]^ self->_operatingSystemVersion.majorVersion ^ self->_operatingSystemVersion.minorVersion ^ self->_operatingSystemVersion.patchVersion ^ (self->_scheduleCompatibilityVersion << 16) ^ self->_localDevice;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hardwareIdentifier = self->_hardwareIdentifier;
-  v5 = a3;
-  [v5 encodeObject:hardwareIdentifier forKey:@"HardwareIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"Name"];
-  [v5 encodeObject:self->_model forKey:@"Model"];
+  coderCopy = coder;
+  [coderCopy encodeObject:hardwareIdentifier forKey:@"HardwareIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"Name"];
+  [coderCopy encodeObject:self->_model forKey:@"Model"];
   operatingSystemVersion = self->_operatingSystemVersion;
   v6 = HKNSOperatingSystemVersionString();
-  [v5 encodeObject:v6 forKey:{@"OperatingSystemVersion", *&operatingSystemVersion.majorVersion, operatingSystemVersion.patchVersion}];
+  [coderCopy encodeObject:v6 forKey:{@"OperatingSystemVersion", *&operatingSystemVersion.majorVersion, operatingSystemVersion.patchVersion}];
 
-  [v5 encodeInteger:self->_scheduleCompatibilityVersion forKey:@"ScheduleCompatibilityVersion"];
-  [v5 encodeBool:self->_localDevice forKey:@"LocalDevice"];
+  [coderCopy encodeInteger:self->_scheduleCompatibilityVersion forKey:@"ScheduleCompatibilityVersion"];
+  [coderCopy encodeBool:self->_localDevice forKey:@"LocalDevice"];
 }
 
-- (HKMedicationsDeviceInfo)initWithCoder:(id)a3
+- (HKMedicationsDeviceInfo)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HKMedicationsDeviceInfo;
   v6 = [(HKMedicationsDeviceInfo *)&v17 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"HardwareIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HardwareIdentifier"];
     hardwareIdentifier = v6->_hardwareIdentifier;
     v6->_hardwareIdentifier = v7;
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     name = v6->_name;
     v6->_name = v9;
 
-    v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"Model"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Model"];
     model = v6->_model;
     v6->_model = v11;
 
-    v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"OperatingSystemVersion"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OperatingSystemVersion"];
     if (!v13)
     {
       [(HKMedicationsDeviceInfo *)a2 initWithCoder:v6];
@@ -230,8 +230,8 @@ LABEL_17:
     HKNSOperatingSystemVersionFromString();
     *&v6->_operatingSystemVersion.majorVersion = v15;
     v6->_operatingSystemVersion.patchVersion = v16;
-    v6->_scheduleCompatibilityVersion = [v5 decodeIntegerForKey:@"ScheduleCompatibilityVersion"];
-    v6->_localDevice = [v5 decodeBoolForKey:@"LocalDevice"];
+    v6->_scheduleCompatibilityVersion = [coderCopy decodeIntegerForKey:@"ScheduleCompatibilityVersion"];
+    v6->_localDevice = [coderCopy decodeBoolForKey:@"LocalDevice"];
   }
 
   return v6;

@@ -1,33 +1,33 @@
 @interface CKContextMenuGenerator
-+ (BOOL)_shouldShowPrivateMessageOptionForHandle:(id)a3 conversation:(id)a4;
-+ (id)_menuActionToInitiateFaceTimeAudioForConversation:(id)a3 andContactsManager:(id)a4;
-+ (id)_menuActionToInitiateFaceTimeVideoForConversation:(id)a3 andContactsManager:(id)a4;
-+ (id)_menuActionToInviteHandleToShareTheirScreen:(id)a3 conversation:(id)a4 andContactsManager:(id)a5;
-+ (id)_menuActionToSendEmailForConversation:(id)a3 andContactsManager:(id)a4;
-+ (id)_menuActionToShareMyScreenWithHandle:(id)a3 conversation:(id)a4 andContactsManager:(id)a5;
-+ (id)menuActionToCreateContactForID:(id)a3 handler:(id)a4;
-+ (id)menuActionToDisplayRecipientForHandle:(id)a3;
-+ (id)menuActionToInitiateFaceTimeAudioWithHandle:(id)a3 andContactsManager:(id)a4;
-+ (id)menuActionToInitiateFaceTimeVideoWithHandle:(id)a3 andContactsManager:(id)a4;
-+ (id)menuActionToOpenContactCardForContact:(id)a3;
-+ (id)menuActionToRemoveHandle:(id)a3 fromConversation:(id)a4;
-+ (id)menuActionToSendEmailToAddress:(id)a3;
-+ (id)menuActionToSendPrivateMessageToHandleID:(id)a3;
-+ (id)menuActionToShowIDAsLargeType:(id)a3 handler:(id)a4;
-+ (id)menuActionsToInitiateRelayPhoneCallWithHandle:(id)a3;
-+ (id)menuForNamedGroupConversation:(id)a3 andContactsManager:(id)a4;
-+ (id)recipientSubmenuForHandle:(id)a3;
-+ (id)relayPhoneCallActionTextForPhoneNumber:(id)a3;
-+ (id)subMenuForScreenSharingOptionsWithHandle:(id)a3 conversation:(id)a4 andContactsManager:(id)a5;
-+ (id)submenuForIndividualParticipantWithHandle:(id)a3 forConversation:(id)a4 includeAddToContactsAction:(BOOL)a5 includeRemoveAction:(BOOL)a6;
++ (BOOL)_shouldShowPrivateMessageOptionForHandle:(id)handle conversation:(id)conversation;
++ (id)_menuActionToInitiateFaceTimeAudioForConversation:(id)conversation andContactsManager:(id)manager;
++ (id)_menuActionToInitiateFaceTimeVideoForConversation:(id)conversation andContactsManager:(id)manager;
++ (id)_menuActionToInviteHandleToShareTheirScreen:(id)screen conversation:(id)conversation andContactsManager:(id)manager;
++ (id)_menuActionToSendEmailForConversation:(id)conversation andContactsManager:(id)manager;
++ (id)_menuActionToShareMyScreenWithHandle:(id)handle conversation:(id)conversation andContactsManager:(id)manager;
++ (id)menuActionToCreateContactForID:(id)d handler:(id)handler;
++ (id)menuActionToDisplayRecipientForHandle:(id)handle;
++ (id)menuActionToInitiateFaceTimeAudioWithHandle:(id)handle andContactsManager:(id)manager;
++ (id)menuActionToInitiateFaceTimeVideoWithHandle:(id)handle andContactsManager:(id)manager;
++ (id)menuActionToOpenContactCardForContact:(id)contact;
++ (id)menuActionToRemoveHandle:(id)handle fromConversation:(id)conversation;
++ (id)menuActionToSendEmailToAddress:(id)address;
++ (id)menuActionToSendPrivateMessageToHandleID:(id)d;
++ (id)menuActionToShowIDAsLargeType:(id)type handler:(id)handler;
++ (id)menuActionsToInitiateRelayPhoneCallWithHandle:(id)handle;
++ (id)menuForNamedGroupConversation:(id)conversation andContactsManager:(id)manager;
++ (id)recipientSubmenuForHandle:(id)handle;
++ (id)relayPhoneCallActionTextForPhoneNumber:(id)number;
++ (id)subMenuForScreenSharingOptionsWithHandle:(id)handle conversation:(id)conversation andContactsManager:(id)manager;
++ (id)submenuForIndividualParticipantWithHandle:(id)handle forConversation:(id)conversation includeAddToContactsAction:(BOOL)action includeRemoveAction:(BOOL)removeAction;
 @end
 
 @implementation CKContextMenuGenerator
 
-+ (id)recipientSubmenuForHandle:(id)a3
++ (id)recipientSubmenuForHandle:(id)handle
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [CKContextMenuGenerator menuActionToDisplayRecipientForHandle:a3];
+  v3 = [CKContextMenuGenerator menuActionToDisplayRecipientForHandle:handle];
   v4 = v3;
   if (v3)
   {
@@ -45,11 +45,11 @@
   return v7;
 }
 
-+ (id)menuActionToDisplayRecipientForHandle:(id)a3
++ (id)menuActionToDisplayRecipientForHandle:(id)handle
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 ID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (handleCopy && ([handleCopy ID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = [v4 ID];
     if (((MEMORY[0x193AF5D40]() & 1) != 0 || IMStringIsEmail()) && (IMFormattedDisplayStringForNumber(), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -74,24 +74,24 @@
   return v7;
 }
 
-+ (id)submenuForIndividualParticipantWithHandle:(id)a3 forConversation:(id)a4 includeAddToContactsAction:(BOOL)a5 includeRemoveAction:(BOOL)a6
++ (id)submenuForIndividualParticipantWithHandle:(id)handle forConversation:(id)conversation includeAddToContactsAction:(BOOL)action includeRemoveAction:(BOOL)removeAction
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  removeActionCopy = removeAction;
+  handleCopy = handle;
+  conversationCopy = conversation;
   v11 = [MEMORY[0x1E695DF70] arrayWithArray:MEMORY[0x1E695E0F0]];
-  if (v6)
+  if (removeActionCopy)
   {
-    v12 = [CKContextMenuGenerator menuActionToRemoveHandle:v9 fromConversation:v10];
+    v12 = [CKContextMenuGenerator menuActionToRemoveHandle:handleCopy fromConversation:conversationCopy];
     if (v12)
     {
       [v11 addObject:v12];
     }
   }
 
-  if ([a1 _shouldShowPrivateMessageOptionForHandle:v9 conversation:v10])
+  if ([self _shouldShowPrivateMessageOptionForHandle:handleCopy conversation:conversationCopy])
   {
-    v13 = [v9 ID];
+    v13 = [handleCopy ID];
     v14 = [CKContextMenuGenerator menuActionToSendPrivateMessageToHandleID:v13];
 
     if (v14)
@@ -100,12 +100,12 @@
     }
   }
 
-  v15 = [v9 email];
+  email = [handleCopy email];
 
-  if (v15)
+  if (email)
   {
-    v16 = [v9 email];
-    v17 = [CKContextMenuGenerator menuActionToSendEmailToAddress:v16];
+    email2 = [handleCopy email];
+    v17 = [CKContextMenuGenerator menuActionToSendEmailToAddress:email2];
 
     if (v17)
     {
@@ -113,7 +113,7 @@
     }
   }
 
-  v18 = [v9 cnContactWithKeys:MEMORY[0x1E695E0F0]];
+  v18 = [handleCopy cnContactWithKeys:MEMORY[0x1E695E0F0]];
   if (v18 && [MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v18])
   {
     v19 = [CKContextMenuGenerator menuActionToOpenContactCardForContact:v18];
@@ -136,13 +136,13 @@
   return v20;
 }
 
-+ (id)menuActionToRemoveHandle:(id)a3 fromConversation:(id)a4
++ (id)menuActionToRemoveHandle:(id)handle fromConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  handleCopy = handle;
+  conversationCopy = conversation;
+  v7 = conversationCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (handleCopy && conversationCopy)
   {
     v9 = MEMORY[0x1E69DC628];
     v10 = CKFrameworkBundle();
@@ -152,7 +152,7 @@
     v13[2] = __68__CKContextMenuGenerator_menuActionToRemoveHandle_fromConversation___block_invoke;
     v13[3] = &unk_1E72EFBD8;
     v14 = v7;
-    v15 = v5;
+    v15 = handleCopy;
     v8 = [v9 actionWithTitle:v11 image:0 identifier:0 handler:v13];
   }
 
@@ -168,11 +168,11 @@ void __68__CKContextMenuGenerator_menuActionToRemoveHandle_fromConversation___bl
   [v1 removeRecipientHandles:v2];
 }
 
-+ (id)menuActionToSendPrivateMessageToHandleID:(id)a3
++ (id)menuActionToSendPrivateMessageToHandleID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy && [dCopy length])
   {
     v5 = MEMORY[0x1E69DC628];
     v6 = CKFrameworkBundle();
@@ -247,11 +247,11 @@ void __67__CKContextMenuGenerator_menuActionToSendPrivateMessageToHandleID___blo
   }
 }
 
-+ (id)menuActionToSendEmailToAddress:(id)a3
++ (id)menuActionToSendEmailToAddress:(id)address
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  addressCopy = address;
+  v4 = addressCopy;
+  if (addressCopy && [addressCopy length])
   {
     v5 = MEMORY[0x1E69DC628];
     v6 = CKFrameworkBundle();
@@ -287,11 +287,11 @@ void __57__CKContextMenuGenerator_menuActionToSendEmailToAddress___block_invoke(
   }
 }
 
-+ (id)menuActionToOpenContactCardForContact:(id)a3
++ (id)menuActionToOpenContactCardForContact:(id)contact
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 identifier], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  contactCopy = contact;
+  v4 = contactCopy;
+  if (contactCopy && ([contactCopy identifier], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "identifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = MEMORY[0x1E69DC628];
     v10 = CKFrameworkBundle();
@@ -323,11 +323,11 @@ void __64__CKContextMenuGenerator_menuActionToOpenContactCardForContact___block_
   [v3 openURL:v4 withCompletionHandler:0];
 }
 
-+ (id)menuActionToCreateContactForID:(id)a3 handler:(id)a4
++ (id)menuActionToCreateContactForID:(id)d handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 _appearsToBeBusinessID])
+  dCopy = d;
+  handlerCopy = handler;
+  if ([dCopy _appearsToBeBusinessID])
   {
     v7 = 0;
   }
@@ -341,8 +341,8 @@ void __64__CKContextMenuGenerator_menuActionToOpenContactCardForContact___block_
     v12[1] = 3221225472;
     v12[2] = __65__CKContextMenuGenerator_menuActionToCreateContactForID_handler___block_invoke;
     v12[3] = &unk_1E72EFE00;
-    v14 = v6;
-    v13 = v5;
+    v14 = handlerCopy;
+    v13 = dCopy;
     v7 = [v8 actionWithTitle:v10 image:0 identifier:0 handler:v12];
   }
 
@@ -360,11 +360,11 @@ uint64_t __65__CKContextMenuGenerator_menuActionToCreateContactForID_handler___b
   return result;
 }
 
-+ (id)menuActionToShowIDAsLargeType:(id)a3 handler:(id)a4
++ (id)menuActionToShowIDAsLargeType:(id)type handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 _appearsToBeEmail] & 1) != 0 || (objc_msgSend(v5, "_appearsToBeBusinessID"))
+  typeCopy = type;
+  handlerCopy = handler;
+  if ([typeCopy _appearsToBeEmail] & 1) != 0 || (objc_msgSend(typeCopy, "_appearsToBeBusinessID"))
   {
     v7 = 0;
   }
@@ -378,8 +378,8 @@ uint64_t __65__CKContextMenuGenerator_menuActionToCreateContactForID_handler___b
     v12[1] = 3221225472;
     v12[2] = __64__CKContextMenuGenerator_menuActionToShowIDAsLargeType_handler___block_invoke;
     v12[3] = &unk_1E72EFE00;
-    v14 = v6;
-    v13 = v5;
+    v14 = handlerCopy;
+    v13 = typeCopy;
     v7 = [v8 actionWithTitle:v10 image:0 identifier:0 handler:v12];
   }
 
@@ -397,14 +397,14 @@ uint64_t __64__CKContextMenuGenerator_menuActionToShowIDAsLargeType_handler___bl
   return result;
 }
 
-+ (id)subMenuForScreenSharingOptionsWithHandle:(id)a3 conversation:(id)a4 andContactsManager:(id)a5
++ (id)subMenuForScreenSharingOptionsWithHandle:(id)handle conversation:(id)conversation andContactsManager:(id)manager
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [CKContextMenuGenerator _menuActionToShareMyScreenWithHandle:v9 conversation:v8 andContactsManager:v7];
-  v11 = [CKContextMenuGenerator _menuActionToInviteHandleToShareTheirScreen:v9 conversation:v8 andContactsManager:v7];
+  managerCopy = manager;
+  conversationCopy = conversation;
+  handleCopy = handle;
+  v10 = [CKContextMenuGenerator _menuActionToShareMyScreenWithHandle:handleCopy conversation:conversationCopy andContactsManager:managerCopy];
+  v11 = [CKContextMenuGenerator _menuActionToInviteHandleToShareTheirScreen:handleCopy conversation:conversationCopy andContactsManager:managerCopy];
 
   if (v10)
   {
@@ -433,12 +433,12 @@ uint64_t __64__CKContextMenuGenerator_menuActionToShowIDAsLargeType_handler___bl
   return v15;
 }
 
-+ (id)_menuActionToShareMyScreenWithHandle:(id)a3 conversation:(id)a4 andContactsManager:(id)a5
++ (id)_menuActionToShareMyScreenWithHandle:(id)handle conversation:(id)conversation andContactsManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && ([v7 ID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  handleCopy = handle;
+  conversationCopy = conversation;
+  managerCopy = manager;
+  if (handleCopy && ([handleCopy ID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = MEMORY[0x1E69DC628];
     v12 = CKFrameworkBundle();
@@ -447,8 +447,8 @@ uint64_t __64__CKContextMenuGenerator_menuActionToShowIDAsLargeType_handler___bl
     v16[1] = 3221225472;
     v16[2] = __95__CKContextMenuGenerator__menuActionToShareMyScreenWithHandle_conversation_andContactsManager___block_invoke;
     v16[3] = &unk_1E72EFBD8;
-    v17 = v9;
-    v18 = v8;
+    v17 = managerCopy;
+    v18 = conversationCopy;
     v14 = [v11 actionWithTitle:v13 image:0 identifier:0 handler:v16];
   }
 
@@ -467,12 +467,12 @@ void __95__CKContextMenuGenerator__menuActionToShareMyScreenWithHandle_conversat
   [v1 shareMyScreenWithEntity:v2];
 }
 
-+ (id)_menuActionToInviteHandleToShareTheirScreen:(id)a3 conversation:(id)a4 andContactsManager:(id)a5
++ (id)_menuActionToInviteHandleToShareTheirScreen:(id)screen conversation:(id)conversation andContactsManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && ([v7 ID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  screenCopy = screen;
+  conversationCopy = conversation;
+  managerCopy = manager;
+  if (screenCopy && ([screenCopy ID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
     v11 = MEMORY[0x1E69DC628];
     v12 = CKFrameworkBundle();
@@ -481,8 +481,8 @@ void __95__CKContextMenuGenerator__menuActionToShareMyScreenWithHandle_conversat
     v16[1] = 3221225472;
     v16[2] = __102__CKContextMenuGenerator__menuActionToInviteHandleToShareTheirScreen_conversation_andContactsManager___block_invoke;
     v16[3] = &unk_1E72EFBD8;
-    v17 = v9;
-    v18 = v8;
+    v17 = managerCopy;
+    v18 = conversationCopy;
     v14 = [v11 actionWithTitle:v13 image:0 identifier:0 handler:v16];
   }
 
@@ -501,13 +501,13 @@ void __102__CKContextMenuGenerator__menuActionToInviteHandleToShareTheirScreen_c
   [v1 inviteEntityToShareTheirScreen:v2];
 }
 
-+ (id)menuActionToInitiateFaceTimeAudioWithHandle:(id)a3 andContactsManager:(id)a4
++ (id)menuActionToInitiateFaceTimeAudioWithHandle:(id)handle andContactsManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  handleCopy = handle;
+  managerCopy = manager;
+  v7 = managerCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (handleCopy && managerCopy)
   {
     v9 = MEMORY[0x1E69DC628];
     v10 = CKFrameworkBundle();
@@ -516,7 +516,7 @@ void __102__CKContextMenuGenerator__menuActionToInviteHandleToShareTheirScreen_c
     v13[1] = 3221225472;
     v13[2] = __89__CKContextMenuGenerator_menuActionToInitiateFaceTimeAudioWithHandle_andContactsManager___block_invoke;
     v13[3] = &unk_1E72EFBD8;
-    v14 = v5;
+    v14 = handleCopy;
     v15 = v7;
     v8 = [v9 actionWithTitle:v11 image:0 identifier:0 handler:v13];
   }
@@ -530,13 +530,13 @@ void __89__CKContextMenuGenerator_menuActionToInitiateFaceTimeAudioWithHandle_an
   [*(a1 + 40) startCommunicationForEntity:v2 action:1 address:0];
 }
 
-+ (id)menuActionToInitiateFaceTimeVideoWithHandle:(id)a3 andContactsManager:(id)a4
++ (id)menuActionToInitiateFaceTimeVideoWithHandle:(id)handle andContactsManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  handleCopy = handle;
+  managerCopy = manager;
+  v7 = managerCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (handleCopy && managerCopy)
   {
     v9 = MEMORY[0x1E69DC628];
     v10 = CKFrameworkBundle();
@@ -545,7 +545,7 @@ void __89__CKContextMenuGenerator_menuActionToInitiateFaceTimeAudioWithHandle_an
     v13[1] = 3221225472;
     v13[2] = __89__CKContextMenuGenerator_menuActionToInitiateFaceTimeVideoWithHandle_andContactsManager___block_invoke;
     v13[3] = &unk_1E72EFBD8;
-    v14 = v5;
+    v14 = handleCopy;
     v15 = v7;
     v8 = [v9 actionWithTitle:v11 image:0 identifier:0 handler:v13];
   }
@@ -559,14 +559,14 @@ void __89__CKContextMenuGenerator_menuActionToInitiateFaceTimeVideoWithHandle_an
   [*(a1 + 40) startCommunicationForEntity:v2 action:0 address:0];
 }
 
-+ (id)menuActionsToInitiateRelayPhoneCallWithHandle:(id)a3
++ (id)menuActionsToInitiateRelayPhoneCallWithHandle:(id)handle
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handleCopy = handle;
   v4 = +[CKContextMenuGenerator supportsRelayPhoneCallsCalls];
   v5 = MEMORY[0x1E695E0F0];
   v21 = [MEMORY[0x1E695DF70] arrayWithArray:MEMORY[0x1E695E0F0]];
-  v6 = [v3 cnContactWithKeys:v5];
+  v6 = [handleCopy cnContactWithKeys:v5];
   v7 = v6;
   if (v4 && v6 != 0)
   {
@@ -708,26 +708,26 @@ LABEL_8:
 LABEL_9:
 }
 
-+ (id)relayPhoneCallActionTextForPhoneNumber:(id)a3
++ (id)relayPhoneCallActionTextForPhoneNumber:(id)number
 {
   v3 = MEMORY[0x1E69D8A40];
-  v4 = CKFormattedPhoneNumberFromNumber(a3);
+  v4 = CKFormattedPhoneNumberFromNumber(number);
   v5 = [v3 supplementalDialTelephonyCallStringForDestination:v4 isPhoneNumber:1];
 
   return v5;
 }
 
-+ (id)menuForNamedGroupConversation:(id)a3 andContactsManager:(id)a4
++ (id)menuForNamedGroupConversation:(id)conversation andContactsManager:(id)manager
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isGroupConversation] && (objc_msgSend(v5, "displayName"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  conversationCopy = conversation;
+  managerCopy = manager;
+  if ([conversationCopy isGroupConversation] && (objc_msgSend(conversationCopy, "displayName"), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = objc_opt_new();
     v9 = objc_opt_new();
-    v10 = [CKContextMenuGenerator _menuActionToInitiateFaceTimeVideoForConversation:v5 andContactsManager:v6];
-    v11 = [CKContextMenuGenerator _menuActionToInitiateFaceTimeAudioForConversation:v5 andContactsManager:v6];
+    v10 = [CKContextMenuGenerator _menuActionToInitiateFaceTimeVideoForConversation:conversationCopy andContactsManager:managerCopy];
+    v11 = [CKContextMenuGenerator _menuActionToInitiateFaceTimeAudioForConversation:conversationCopy andContactsManager:managerCopy];
     if (v10)
     {
       [v9 addObject:v10];
@@ -744,7 +744,7 @@ LABEL_9:
       [v8 addObject:v12];
     }
 
-    v13 = [CKContextMenuGenerator _menuActionToSendEmailForConversation:v5 andContactsManager:v6];
+    v13 = [CKContextMenuGenerator _menuActionToSendEmailForConversation:conversationCopy andContactsManager:managerCopy];
     v14 = v13;
     if (v13)
     {
@@ -774,12 +774,12 @@ LABEL_9:
   return v18;
 }
 
-+ (id)_menuActionToInitiateFaceTimeVideoForConversation:(id)a3 andContactsManager:(id)a4
++ (id)_menuActionToInitiateFaceTimeVideoForConversation:(id)conversation andContactsManager:(id)manager
 {
-  v5 = a4;
-  v6 = v5;
+  managerCopy = manager;
+  v6 = managerCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (conversation && managerCopy)
   {
     v8 = MEMORY[0x1E69DC628];
     v9 = CKFrameworkBundle();
@@ -795,12 +795,12 @@ LABEL_9:
   return v7;
 }
 
-+ (id)_menuActionToInitiateFaceTimeAudioForConversation:(id)a3 andContactsManager:(id)a4
++ (id)_menuActionToInitiateFaceTimeAudioForConversation:(id)conversation andContactsManager:(id)manager
 {
-  v5 = a4;
-  v6 = v5;
+  managerCopy = manager;
+  v6 = managerCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (conversation && managerCopy)
   {
     v8 = MEMORY[0x1E69DC628];
     v9 = CKFrameworkBundle();
@@ -816,12 +816,12 @@ LABEL_9:
   return v7;
 }
 
-+ (id)_menuActionToSendEmailForConversation:(id)a3 andContactsManager:(id)a4
++ (id)_menuActionToSendEmailForConversation:(id)conversation andContactsManager:(id)manager
 {
-  v5 = a4;
-  v6 = v5;
+  managerCopy = manager;
+  v6 = managerCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (conversation && managerCopy)
   {
     v8 = MEMORY[0x1E69DC628];
     v9 = CKFrameworkBundle();
@@ -837,16 +837,16 @@ LABEL_9:
   return v7;
 }
 
-+ (BOOL)_shouldShowPrivateMessageOptionForHandle:(id)a3 conversation:(id)a4
++ (BOOL)_shouldShowPrivateMessageOptionForHandle:(id)handle conversation:(id)conversation
 {
-  if (!a3)
+  if (!handle)
   {
     return 0;
   }
 
-  v4 = [a4 chat];
-  v5 = [v4 participants];
-  v6 = [v5 count] > 1;
+  chat = [conversation chat];
+  participants = [chat participants];
+  v6 = [participants count] > 1;
 
   return v6;
 }

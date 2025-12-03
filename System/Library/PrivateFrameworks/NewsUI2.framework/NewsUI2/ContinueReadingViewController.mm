@@ -1,20 +1,20 @@
 @interface ContinueReadingViewController
-- (_TtC7NewsUI229ContinueReadingViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI229ContinueReadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)a3;
-- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didLoadDialogRequest:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4;
-- (void)messageViewControllerDidDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC7NewsUI229ContinueReadingViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI229ContinueReadingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)request;
+- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)request bag:(id)bag account:(id)account;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didLoadDialogRequest:(id)request;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size;
+- (void)messageViewControllerDidDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation ContinueReadingViewController
 
-- (_TtC7NewsUI229ContinueReadingViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI229ContinueReadingViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7NewsUI229ContinueReadingViewController_relativeTabBarController) = 0;
   result = sub_219BF7514();
@@ -22,19 +22,19 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_218A56D00(a3);
+  selfCopy = self;
+  sub_218A56D00(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
   v4 = v11.receiver;
-  [(ContinueReadingViewController *)&v11 viewDidDisappear:v3];
+  [(ContinueReadingViewController *)&v11 viewDidDisappear:disappearCopy];
   v5 = __swift_project_boxed_opaque_existential_1(&v4[OBJC_IVAR____TtC7NewsUI229ContinueReadingViewController_eventHandler], *&v4[OBJC_IVAR____TtC7NewsUI229ContinueReadingViewController_eventHandler + 24]);
   v6 = *&v4[OBJC_IVAR____TtC7NewsUI229ContinueReadingViewController_content + 80];
   v9[4] = *&v4[OBJC_IVAR____TtC7NewsUI229ContinueReadingViewController_content + 64];
@@ -51,63 +51,63 @@
   sub_219A737F4(v9, 2);
 }
 
-- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)a3
+- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)request
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5
+- (_TtC7NewsUI229ContinueReadingViewController)initWithRequest:(id)request bag:(id)bag account:(id)account
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7NewsUI229ContinueReadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI229ContinueReadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_218A57380(v6, v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_218A57380(controllerCopy, resultCopy);
 }
 
-- (void)messageViewController:(id)a3 didLoadDialogRequest:(id)a4
+- (void)messageViewController:(id)controller didLoadDialogRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_218A579C8(v6, v7);
+  controllerCopy = controller;
+  requestCopy = request;
+  selfCopy = self;
+  sub_218A579C8(controllerCopy, requestCopy);
 }
 
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_218A57B64();
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_218A57D14(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_218A57D14(controllerCopy, error);
 }
 
-- (void)messageViewControllerDidDismiss:(id)a3
+- (void)messageViewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_218A5779C(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_218A5779C(dismissCopy);
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface FMTrack
-- (FMTrack)initWithClips:(id)a3 mixParameters:(id)a4;
+- (FMTrack)initWithClips:(id)clips mixParameters:(id)parameters;
 - (id)description;
 @end
 
 @implementation FMTrack
 
-- (FMTrack)initWithClips:(id)a3 mixParameters:(id)a4
+- (FMTrack)initWithClips:(id)clips mixParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  clipsCopy = clips;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = FMTrack;
   v9 = [(FMTrack *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clips, a3);
-    objc_storeStrong(&v10->_mixParameters, a4);
+    objc_storeStrong(&v9->_clips, clips);
+    objc_storeStrong(&v10->_mixParameters, parameters);
   }
 
   return v10;

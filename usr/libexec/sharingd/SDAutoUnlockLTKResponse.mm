@@ -1,22 +1,22 @@
 @interface SDAutoUnlockLTKResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCurrentlySyncing:(BOOL)a3;
-- (void)setHasNeedsUnlock:(BOOL)a3;
-- (void)setHasViewState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCurrentlySyncing:(BOOL)syncing;
+- (void)setHasNeedsUnlock:(BOOL)unlock;
+- (void)setHasViewState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAutoUnlockLTKResponse
 
-- (void)setHasViewState:(BOOL)a3
+- (void)setHasViewState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNeedsUnlock:(BOOL)a3
+- (void)setHasNeedsUnlock:(BOOL)unlock
 {
-  if (a3)
+  if (unlock)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCurrentlySyncing:(BOOL)a3
+- (void)setHasCurrentlySyncing:(BOOL)syncing
 {
-  if (a3)
+  if (syncing)
   {
     v3 = 2;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockLTKResponse;
   v3 = [(SDAutoUnlockLTKResponse *)&v7 description];
-  v4 = [(SDAutoUnlockLTKResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAutoUnlockLTKResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -124,9 +124,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -173,27 +173,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_version;
-    *(v4 + 24) |= 1u;
+    toCopy[4] = self->_version;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_ltkData)
   {
-    v6 = v4;
-    [v4 setLtkData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setLtkData:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 22) = self->_viewState;
-    *(v4 + 24) |= 8u;
+    *(toCopy + 22) = self->_viewState;
+    *(toCopy + 24) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -212,21 +212,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 21) = self->_needsUnlock;
-  *(v4 + 24) |= 4u;
+  *(toCopy + 21) = self->_needsUnlock;
+  *(toCopy + 24) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    *(v4 + 20) = self->_currentlySyncing;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 20) = self->_currentlySyncing;
+    *(toCopy + 24) |= 2u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -234,7 +234,7 @@ LABEL_9:
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSData *)self->_ltkData copyWithZone:a3];
+  v7 = [(NSData *)self->_ltkData copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -276,31 +276,31 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
   has = self->_has;
-  v6 = *(v4 + 24);
+  v6 = *(equalCopy + 24);
   if (has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_version != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_version != *(equalCopy + 4))
     {
       goto LABEL_32;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_32;
   }
 
   ltkData = self->_ltkData;
-  if (ltkData | *(v4 + 1))
+  if (ltkData | *(equalCopy + 1))
   {
     if (![(NSData *)ltkData isEqual:?])
     {
@@ -312,72 +312,72 @@ LABEL_6:
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0)
+    if ((*(equalCopy + 24) & 8) == 0)
     {
       goto LABEL_32;
     }
 
-    v9 = *(v4 + 22);
+    v9 = *(equalCopy + 22);
     if (self->_viewState)
     {
-      if ((*(v4 + 22) & 1) == 0)
+      if ((*(equalCopy + 22) & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (*(v4 + 22))
+    else if (*(equalCopy + 22))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 24) & 8) != 0)
+  else if ((*(equalCopy + 24) & 8) != 0)
   {
     goto LABEL_32;
   }
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0)
+    if ((*(equalCopy + 24) & 4) == 0)
     {
       goto LABEL_32;
     }
 
-    v10 = *(v4 + 21);
+    v10 = *(equalCopy + 21);
     if (self->_needsUnlock)
     {
-      if ((*(v4 + 21) & 1) == 0)
+      if ((*(equalCopy + 21) & 1) == 0)
       {
         goto LABEL_32;
       }
     }
 
-    else if (*(v4 + 21))
+    else if (*(equalCopy + 21))
     {
       goto LABEL_32;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
     goto LABEL_32;
   }
 
-  v8 = (*(v4 + 24) & 2) == 0;
+  v8 = (*(equalCopy + 24) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) != 0)
+    if ((*(equalCopy + 24) & 2) != 0)
     {
       if (self->_currentlySyncing)
       {
-        if (*(v4 + 20))
+        if (*(equalCopy + 20))
         {
           goto LABEL_34;
         }
       }
 
-      else if (!*(v4 + 20))
+      else if (!*(equalCopy + 20))
       {
 LABEL_34:
         v8 = 1;
@@ -445,28 +445,28 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 24))
+  fromCopy = from;
+  if (*(fromCopy + 24))
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(SDAutoUnlockLTKResponse *)self setLtkData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) != 0)
   {
-    self->_viewState = *(v4 + 22);
+    self->_viewState = *(fromCopy + 22);
     *&self->_has |= 8u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 4) == 0)
     {
 LABEL_7:
@@ -479,17 +479,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 24) & 4) == 0)
+  else if ((*(fromCopy + 24) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_needsUnlock = *(v4 + 21);
+  self->_needsUnlock = *(fromCopy + 21);
   *&self->_has |= 4u;
-  if ((*(v4 + 24) & 2) != 0)
+  if ((*(fromCopy + 24) & 2) != 0)
   {
 LABEL_8:
-    self->_currentlySyncing = *(v4 + 20);
+    self->_currentlySyncing = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 

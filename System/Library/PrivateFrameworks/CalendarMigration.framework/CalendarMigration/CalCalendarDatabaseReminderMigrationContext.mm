@@ -1,24 +1,24 @@
 @interface CalCalendarDatabaseReminderMigrationContext
-+ (id)reminderMigrationContextWithReminderKitProvider:(id)a3;
-- (BOOL)_isCalendarOwnedByExistingStoreToDelete:(void *)a3;
++ (id)reminderMigrationContextWithReminderKitProvider:(id)provider;
+- (BOOL)_isCalendarOwnedByExistingStoreToDelete:(void *)delete;
 - (NSArray)calendarsToClearSyncToken;
 - (NSArray)calendarsToDelete;
 - (NSArray)calendarsToDisableReminders;
 - (NSArray)storesToDelete;
 - (NSArray)storesToDisableReminders;
 - (NSArray)storesToSetWasMigrated;
-- (void)_removeCalendarsToDeleteInStore:(void *)a3;
-- (void)addCalendarToDelete:(void *)a3;
-- (void)addStoreToDelete:(void *)a3;
-- (void)addStoreToSetWasMigrated:(void *)a3;
+- (void)_removeCalendarsToDeleteInStore:(void *)store;
+- (void)addCalendarToDelete:(void *)delete;
+- (void)addStoreToDelete:(void *)delete;
+- (void)addStoreToSetWasMigrated:(void *)migrated;
 @end
 
 @implementation CalCalendarDatabaseReminderMigrationContext
 
-+ (id)reminderMigrationContextWithReminderKitProvider:(id)a3
++ (id)reminderMigrationContextWithReminderKitProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithReminderKitProvider:v4];
+  providerCopy = provider;
+  v5 = [[self alloc] _initWithReminderKitProvider:providerCopy];
 
   if (v5)
   {
@@ -70,13 +70,13 @@
   return v2;
 }
 
-- (void)addStoreToDelete:(void *)a3
+- (void)addStoreToDelete:(void *)delete
 {
   [(NSMutableArray *)self->_storesToDelete addObject:?];
-  [(CalCalendarDatabaseReminderMigrationContext *)self _removeCalendarsToDeleteInStore:a3];
+  [(CalCalendarDatabaseReminderMigrationContext *)self _removeCalendarsToDeleteInStore:delete];
   storesToSetWasMigrated = self->_storesToSetWasMigrated;
 
-  [(NSMutableArray *)storesToSetWasMigrated removeObject:a3];
+  [(NSMutableArray *)storesToSetWasMigrated removeObject:delete];
 }
 
 - (NSArray)storesToSetWasMigrated
@@ -86,13 +86,13 @@
   return v2;
 }
 
-- (void)addStoreToSetWasMigrated:(void *)a3
+- (void)addStoreToSetWasMigrated:(void *)migrated
 {
   if (([(NSMutableArray *)self->_storesToDelete containsObject:?]& 1) == 0)
   {
     storesToSetWasMigrated = self->_storesToSetWasMigrated;
 
-    [(NSMutableArray *)storesToSetWasMigrated addObject:a3];
+    [(NSMutableArray *)storesToSetWasMigrated addObject:migrated];
   }
 }
 
@@ -117,17 +117,17 @@
   return v2;
 }
 
-- (void)addCalendarToDelete:(void *)a3
+- (void)addCalendarToDelete:(void *)delete
 {
   if (![(CalCalendarDatabaseReminderMigrationContext *)self _isCalendarOwnedByExistingStoreToDelete:?])
   {
     calendarsToDelete = self->_calendarsToDelete;
 
-    [(NSMutableArray *)calendarsToDelete addObject:a3];
+    [(NSMutableArray *)calendarsToDelete addObject:delete];
   }
 }
 
-- (void)_removeCalendarsToDeleteInStore:(void *)a3
+- (void)_removeCalendarsToDeleteInStore:(void *)store
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_calendarsToDelete, "count")}];
   calendarsToDelete = self->_calendarsToDelete;
@@ -135,7 +135,7 @@
   v10[1] = 3221225472;
   v10[2] = __79__CalCalendarDatabaseReminderMigrationContext__removeCalendarsToDeleteInStore___block_invoke;
   v10[3] = &unk_278D6D558;
-  v12 = a3;
+  storeCopy = store;
   v7 = v5;
   v11 = v7;
   [(NSMutableArray *)calendarsToDelete enumerateCalCalendarRefsUsingBlock:v10];
@@ -159,7 +159,7 @@ void __79__CalCalendarDatabaseReminderMigrationContext__removeCalendarsToDeleteI
   }
 }
 
-- (BOOL)_isCalendarOwnedByExistingStoreToDelete:(void *)a3
+- (BOOL)_isCalendarOwnedByExistingStoreToDelete:(void *)delete
 {
   v4 = CalCalendarCopyStore();
   if (!v4)

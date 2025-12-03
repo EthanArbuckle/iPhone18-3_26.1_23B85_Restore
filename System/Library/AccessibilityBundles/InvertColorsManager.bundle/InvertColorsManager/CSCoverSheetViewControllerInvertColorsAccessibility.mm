@@ -20,19 +20,19 @@
   v4 = [(CSCoverSheetViewControllerInvertColorsAccessibility *)self safeValueForKey:@"_screenWakeAnimationController"];
   v5 = [v4 safeValueForKey:@"target"];
   v6 = [v5 safeUIViewForKey:@"wakeEffectView"];
-  v7 = [v6 layer];
+  layer = [v6 layer];
 
   v8 = +[AXSpringBoardServer server];
   LODWORD(v5) = [v8 isDarkModeActive];
 
   if (v5 && IsInvertColorsEnabled)
   {
-    [AXInvertColorsAppHelper applyInvertFilterToLayer:v7];
+    [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
   }
 
   else
   {
-    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v7];
+    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
   }
 
   v9 = [(CSCoverSheetViewControllerInvertColorsAccessibility *)self safeValueForKey:@"coverSheetView"];
@@ -49,15 +49,15 @@
 
     [v11 setAccessibilityIgnoresInvertColors:v12];
     v16 = v12 && IsInvertColorsEnabled;
-    v17 = [v11 window];
+    window = [v11 window];
     if (v16)
     {
-      [(CSCoverSheetViewControllerInvertColorsAccessibility *)self accessibilityApplyIgnoreInvertToWindow:v17];
+      [(CSCoverSheetViewControllerInvertColorsAccessibility *)self accessibilityApplyIgnoreInvertToWindow:window];
     }
 
     else
     {
-      [(CSCoverSheetViewControllerInvertColorsAccessibility *)self accessibilityDeapplyIgnoreInvertToWindow:v17];
+      [(CSCoverSheetViewControllerInvertColorsAccessibility *)self accessibilityDeapplyIgnoreInvertToWindow:window];
     }
   }
 }

@@ -1,8 +1,8 @@
 @interface PXMemoriesBlacklistAccessoryViewSpec
-+ (PXMemoriesBlacklistAccessoryViewSpec)specWithFrame:(CGRect)a3;
++ (PXMemoriesBlacklistAccessoryViewSpec)specWithFrame:(CGRect)frame;
 - (CGRect)accessoryViewFrame;
 - (CGRect)contentViewFrame;
-- (PXMemoriesBlacklistAccessoryViewSpec)initWithContentViewFrame:(CGRect)a3;
+- (PXMemoriesBlacklistAccessoryViewSpec)initWithContentViewFrame:(CGRect)frame;
 @end
 
 @implementation PXMemoriesBlacklistAccessoryViewSpec
@@ -33,12 +33,12 @@
   return result;
 }
 
-- (PXMemoriesBlacklistAccessoryViewSpec)initWithContentViewFrame:(CGRect)a3
+- (PXMemoriesBlacklistAccessoryViewSpec)initWithContentViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = PXMemoriesBlacklistAccessoryViewSpec;
   result = [(PXMemoriesBlacklistAccessoryViewSpec *)&v8 init];
@@ -56,9 +56,9 @@
   return result;
 }
 
-+ (PXMemoriesBlacklistAccessoryViewSpec)specWithFrame:(CGRect)a3
++ (PXMemoriesBlacklistAccessoryViewSpec)specWithFrame:(CGRect)frame
 {
-  v3 = [[PXMemoriesBlacklistAccessoryViewSpec alloc] initWithContentViewFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [[PXMemoriesBlacklistAccessoryViewSpec alloc] initWithContentViewFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return v3;
 }

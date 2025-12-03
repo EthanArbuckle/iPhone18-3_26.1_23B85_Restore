@@ -1,22 +1,22 @@
 @interface MRRemoteTextInputMessage
-- (MRRemoteTextInputMessage)initWithVersion:(unint64_t)a3 data:(id)a4;
+- (MRRemoteTextInputMessage)initWithVersion:(unint64_t)version data:(id)data;
 - (NSData)data;
 - (unint64_t)version;
 @end
 
 @implementation MRRemoteTextInputMessage
 
-- (MRRemoteTextInputMessage)initWithVersion:(unint64_t)a3 data:(id)a4
+- (MRRemoteTextInputMessage)initWithVersion:(unint64_t)version data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = MRRemoteTextInputMessage;
   v7 = [(MRProtocolMessage *)&v10 init];
   if (v7)
   {
     v8 = objc_alloc_init(_MRRemoteTextInputMessageProtobuf);
-    [(_MRRemoteTextInputMessageProtobuf *)v8 setVersion:a3];
-    [(_MRRemoteTextInputMessageProtobuf *)v8 setData:v6];
+    [(_MRRemoteTextInputMessageProtobuf *)v8 setVersion:version];
+    [(_MRRemoteTextInputMessageProtobuf *)v8 setData:dataCopy];
     [(MRProtocolMessage *)v7 setUnderlyingCodableMessage:v8];
   }
 
@@ -25,18 +25,18 @@
 
 - (unint64_t)version
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 version];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  version = [underlyingCodableMessage version];
 
-  return v3;
+  return version;
 }
 
 - (NSData)data
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 data];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  data = [underlyingCodableMessage data];
 
-  return v3;
+  return data;
 }
 
 @end

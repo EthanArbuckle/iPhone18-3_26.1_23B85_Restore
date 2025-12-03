@@ -1,13 +1,13 @@
 @interface ASTConnectionPrepareDevice
-- (ASTConnectionPrepareDevice)initWithIdentities:(id)a3;
+- (ASTConnectionPrepareDevice)initWithIdentities:(id)identities;
 @end
 
 @implementation ASTConnectionPrepareDevice
 
-- (ASTConnectionPrepareDevice)initWithIdentities:(id)a3
+- (ASTConnectionPrepareDevice)initWithIdentities:(id)identities
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identitiesCopy = identities;
   v27.receiver = self;
   v27.super_class = ASTConnectionPrepareDevice;
   v5 = [(ASTMaterializedConnection *)&v27 init];
@@ -18,8 +18,8 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = v4;
-    v7 = v4;
+    v21 = identitiesCopy;
+    v7 = identitiesCopy;
     v8 = [v7 countByEnumeratingWithState:&v23 objects:v30 count:16];
     if (v8)
     {
@@ -36,11 +36,11 @@
           }
 
           v12 = *(*(&v23 + 1) + 8 * v11);
-          v13 = [MEMORY[0x277CBEB38] dictionary];
-          v14 = [v12 json];
-          [v13 setObject:v14 forKeyedSubscript:@"deviceIdentifiers"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          json = [v12 json];
+          [dictionary setObject:json forKeyedSubscript:@"deviceIdentifiers"];
 
-          [v6 addObject:v13];
+          [v6 addObject:dictionary];
           ++v11;
         }
 
@@ -74,7 +74,7 @@
       }
     }
 
-    v4 = v21;
+    identitiesCopy = v21;
   }
 
   v19 = *MEMORY[0x277D85DE8];

@@ -1,38 +1,38 @@
 @interface STPromise
 + (OS_dispatch_group)dispatchGroup;
-+ (id)all:(id)a3;
++ (id)all:(id)all;
 + (id)createQueue;
-+ (id)do:(id)a3;
++ (id)do:(id)do;
 + (id)doOn;
 + (id)doWork;
-+ (id)onQueue:(id)a3 all:(id)a4;
-+ (id)onQueue:(id)a3 do:(id)a4;
++ (id)onQueue:(id)queue all:(id)all;
++ (id)onQueue:(id)queue do:(id)do;
 + (id)pendingPromise;
 + (id)resolved;
-+ (id)resolvedWith:(id)a3;
++ (id)resolvedWith:(id)with;
 - (BOOL)isCanceled;
 - (BOOL)isPending;
 - (BOOL)isResolved;
-- (STPromise)initWithResolution:(id)a3 onQueue:(id)a4;
+- (STPromise)initWithResolution:(id)resolution onQueue:(id)queue;
 - (id)catch;
-- (id)catch:(id)a3;
+- (id)catch:(id)catch;
 - (id)catchOn;
-- (id)chainOnQueue:(id)a3 chainedResolve:(id)a4 chainedError:(id)a5;
+- (id)chainOnQueue:(id)queue chainedResolve:(id)resolve chainedError:(id)error;
 - (id)description;
 - (id)given;
-- (id)given:(id)a3;
+- (id)given:(id)given;
 - (id)givenOn;
-- (id)initPendingOnQueue:(id)a3;
-- (id)onQueue:(id)a3 catch:(id)a4;
-- (id)onQueue:(id)a3 given:(id)a4;
-- (id)onQueue:(id)a3 then:(id)a4;
+- (id)initPendingOnQueue:(id)queue;
+- (id)onQueue:(id)queue catch:(id)catch;
+- (id)onQueue:(id)queue given:(id)given;
+- (id)onQueue:(id)queue then:(id)then;
 - (id)then;
-- (id)then:(id)a3;
+- (id)then:(id)then;
 - (id)thenOn;
 - (void)cancel;
 - (void)dealloc;
-- (void)observeOnQueue:(id)a3 resolve:(id)a4 cancel:(id)a5;
-- (void)resolve:(id)a3;
+- (void)observeOnQueue:(id)queue resolve:(id)resolve cancel:(id)cancel;
+- (void)resolve:(id)resolve;
 @end
 
 @implementation STPromise
@@ -50,15 +50,15 @@
   [(STPromise *)&v4 dealloc];
 }
 
-- (id)initPendingOnQueue:(id)a3
+- (id)initPendingOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = STPromise;
   v5 = [(STPromise *)&v12 init];
   queue = v5->_queue;
-  v5->_queue = v4;
-  v7 = v4;
+  v5->_queue = queueCopy;
+  v7 = queueCopy;
 
   v5->_state = 0;
   v8 = objc_opt_new();
@@ -71,18 +71,18 @@
   return v5;
 }
 
-- (STPromise)initWithResolution:(id)a3 onQueue:(id)a4
+- (STPromise)initWithResolution:(id)resolution onQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = STPromise;
-  v7 = a3;
+  resolutionCopy = resolution;
   v8 = [(STPromise *)&v16 init];
   queue = v8->_queue;
-  v8->_queue = v6;
-  v10 = v6;
+  v8->_queue = queueCopy;
+  v10 = queueCopy;
 
-  v11 = [v7 copy];
+  v11 = [resolutionCopy copy];
   v12 = v8->_result;
   v8->_result = v11;
 
@@ -96,19 +96,19 @@
 
 + (id)pendingPromise
 {
-  v3 = [a1 alloc];
-  v4 = [a1 createQueue];
-  v5 = [v3 initPendingOnQueue:v4];
+  v3 = [self alloc];
+  createQueue = [self createQueue];
+  v5 = [v3 initPendingOnQueue:createQueue];
 
   return v5;
 }
 
-+ (id)resolvedWith:(id)a3
++ (id)resolvedWith:(id)with
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [a1 createQueue];
-  v7 = [v5 initWithResolution:v4 onQueue:v6];
+  withCopy = with;
+  v5 = [self alloc];
+  createQueue = [self createQueue];
+  v7 = [v5 initWithResolution:withCopy onQueue:createQueue];
 
   return v7;
 }
@@ -116,12 +116,12 @@
 + (id)createQueue
 {
   v2 = objc_opt_new();
-  v3 = [v2 UUIDString];
-  v4 = [NSString stringWithFormat:@"com.apple.ScreenTimeAgent.promise.%@", v3];
+  uUIDString = [v2 UUIDString];
+  v4 = [NSString stringWithFormat:@"com.apple.ScreenTimeAgent.promise.%@", uUIDString];
 
-  v5 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v7 = dispatch_queue_create(v5, v6);
+  v7 = dispatch_queue_create(uTF8String, v6);
 
   return v7;
 }
@@ -167,35 +167,35 @@ LABEL_8:
 
 - (BOOL)isPending
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_stateLock;
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_state == 0;
+  LOBYTE(selfCopy) = selfCopy->_state == 0;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isResolved
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_stateLock;
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_state == 1;
+  LOBYTE(selfCopy) = selfCopy->_state == 1;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isCanceled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = self->_stateLock;
   objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_state == 2;
+  LOBYTE(selfCopy) = selfCopy->_state == 2;
   objc_sync_exit(v3);
 
-  return v2;
+  return selfCopy;
 }
 
 + (OS_dispatch_group)dispatchGroup
@@ -210,9 +210,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)resolve:(id)a3
+- (void)resolve:(id)resolve
 {
-  v5 = a3;
+  resolveCopy = resolve;
   v6 = self->_stateLock;
   objc_sync_enter(v6);
   state = self->_state;
@@ -236,7 +236,7 @@ LABEL_8:
       goto LABEL_16;
     case 0:
       self->_state = 1;
-      objc_storeStrong(&self->_result, a3);
+      objc_storeStrong(&self->_result, resolve);
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
@@ -355,11 +355,11 @@ LABEL_16:
   objc_sync_exit(v3);
 }
 
-- (void)observeOnQueue:(id)a3 resolve:(id)a4 cancel:(id)a5
+- (void)observeOnQueue:(id)queue resolve:(id)resolve cancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  resolveCopy = resolve;
+  cancelCopy = cancel;
   v11 = self->_stateLock;
   objc_sync_enter(v11);
   state = self->_state;
@@ -372,8 +372,8 @@ LABEL_16:
       v20[2] = sub_10005C77C;
       v20[3] = &unk_1001A4330;
       v17 = &v21;
-      v21 = v10;
-      dispatch_group_async(v19, v8, v20);
+      v21 = cancelCopy;
+      dispatch_group_async(v19, queueCopy, v20);
 
       goto LABEL_9;
     case 1:
@@ -384,8 +384,8 @@ LABEL_16:
       block[3] = &unk_1001A49C0;
       v17 = &v23;
       block[4] = self;
-      v23 = v9;
-      dispatch_group_async(v18, v8, block);
+      v23 = resolveCopy;
+      dispatch_group_async(v18, queueCopy, block);
 
 LABEL_9:
       break;
@@ -404,9 +404,9 @@ LABEL_9:
       v24[1] = 3221225472;
       v24[2] = sub_10005C638;
       v24[3] = &unk_1001A4A30;
-      v25 = v8;
-      v26 = v9;
-      v27 = v10;
+      v25 = queueCopy;
+      v26 = resolveCopy;
+      v27 = cancelCopy;
       v16 = objc_retainBlock(v24);
       [(NSMutableArray *)observers addObject:v16];
       v17 = &v25;
@@ -417,26 +417,26 @@ LABEL_9:
   objc_sync_exit(v11);
 }
 
-- (id)chainOnQueue:(id)a3 chainedResolve:(id)a4 chainedError:(id)a5
+- (id)chainOnQueue:(id)queue chainedResolve:(id)resolve chainedError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  resolveCopy = resolve;
+  errorCopy = error;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10005C988;
   v28[3] = &unk_1001A4A58;
-  v29 = v8;
-  v11 = [[STPromise alloc] initPendingOnQueue:v8];
+  v29 = queueCopy;
+  v11 = [[STPromise alloc] initPendingOnQueue:queueCopy];
   v30 = v11;
-  v12 = v8;
+  v12 = queueCopy;
   v13 = objc_retainBlock(v28);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10005CB00;
   v23[3] = &unk_1001A4A80;
-  v25 = v9;
-  v26 = v10;
+  v25 = resolveCopy;
+  v26 = errorCopy;
   v24 = v11;
   v27 = v13;
   v21[0] = _NSConcreteStackBlock;
@@ -446,8 +446,8 @@ LABEL_9:
   v14 = v24;
   v22 = v14;
   v15 = v13;
-  v16 = v10;
-  v17 = v9;
+  v16 = errorCopy;
+  v17 = resolveCopy;
   [(STPromise *)self observeOnQueue:v12 resolve:v23 cancel:v21];
   v18 = v22;
   v19 = v14;
@@ -461,39 +461,39 @@ LABEL_9:
   v4[1] = 3221225472;
   v4[2] = sub_10005CD1C;
   v4[3] = &unk_1001A4AA0;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = objc_retainBlock(v4);
 
   return v2;
 }
 
-+ (id)all:(id)a3
++ (id)all:(id)all
 {
-  v4 = a3;
-  v5 = [a1 createQueue];
-  v6 = [a1 onQueue:v5 all:v4];
+  allCopy = all;
+  createQueue = [self createQueue];
+  v6 = [self onQueue:createQueue all:allCopy];
 
   return v6;
 }
 
-+ (id)onQueue:(id)a3 all:(id)a4
++ (id)onQueue:(id)queue all:(id)all
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 count];
+  queueCopy = queue;
+  allCopy = all;
+  v8 = [allCopy count];
   v9 = [STPromise alloc];
   v10 = v9;
   if (v8)
   {
-    v11 = [(STPromise *)v9 initPendingOnQueue:v6];
+    v11 = [(STPromise *)v9 initPendingOnQueue:queueCopy];
     v12 = +[STPromise dispatchGroup];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10005CF18;
     v18[3] = &unk_1001A4AF0;
-    v19 = v7;
-    v22 = a1;
-    v20 = v6;
+    v19 = allCopy;
+    selfCopy = self;
+    v20 = queueCopy;
     v13 = v11;
     v21 = v13;
     dispatch_group_async(v12, v20, v18);
@@ -505,30 +505,30 @@ LABEL_9:
   else
   {
     v16 = [STResult success:&__NSArray0__struct];
-    v15 = [(STPromise *)v10 initWithResolution:v16 onQueue:v6];
+    v15 = [(STPromise *)v10 initWithResolution:v16 onQueue:queueCopy];
   }
 
   return v15;
 }
 
-- (id)catch:(id)a3
+- (id)catch:(id)catch
 {
-  v4 = a3;
-  v5 = [(STPromise *)self queue];
-  v6 = [(STPromise *)self onQueue:v5 catch:v4];
+  catchCopy = catch;
+  queue = [(STPromise *)self queue];
+  v6 = [(STPromise *)self onQueue:queue catch:catchCopy];
 
   return v6;
 }
 
-- (id)onQueue:(id)a3 catch:(id)a4
+- (id)onQueue:(id)queue catch:(id)catch
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005D820;
   v9[3] = &unk_1001A4B18;
-  v10 = a4;
-  v6 = v10;
-  v7 = [(STPromise *)self chainOnQueue:a3 chainedResolve:0 chainedError:v9];
+  catchCopy = catch;
+  v6 = catchCopy;
+  v7 = [(STPromise *)self chainOnQueue:queue chainedResolve:0 chainedError:v9];
 
   return v7;
 }
@@ -557,31 +557,31 @@ LABEL_9:
   return v2;
 }
 
-+ (id)do:(id)a3
++ (id)do:(id)do
 {
-  v4 = a3;
-  v5 = [a1 createQueue];
-  v6 = [a1 onQueue:v5 do:v4];
+  doCopy = do;
+  createQueue = [self createQueue];
+  v6 = [self onQueue:createQueue do:doCopy];
 
   return v6;
 }
 
-+ (id)onQueue:(id)a3 do:(id)a4
++ (id)onQueue:(id)queue do:(id)do
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[STPromise alloc] initPendingOnQueue:v5];
+  queueCopy = queue;
+  doCopy = do;
+  v7 = [[STPromise alloc] initPendingOnQueue:queueCopy];
   v8 = +[STPromise dispatchGroup];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005DB30;
   block[3] = &unk_1001A4B90;
-  v18 = v6;
-  v16 = v5;
+  v18 = doCopy;
+  v16 = queueCopy;
   v9 = v7;
   v17 = v9;
-  v10 = v5;
-  v11 = v6;
+  v10 = queueCopy;
+  v11 = doCopy;
   dispatch_group_async(v8, v10, block);
 
   v12 = v17;
@@ -596,7 +596,7 @@ LABEL_9:
   v4[1] = 3221225472;
   v4[2] = sub_10005DD4C;
   v4[3] = &unk_1001A4BB0;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = objc_retainBlock(v4);
 
   return v2;
@@ -608,30 +608,30 @@ LABEL_9:
   v4[1] = 3221225472;
   v4[2] = sub_10005DDD4;
   v4[3] = &unk_1001A4BD0;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = objc_retainBlock(v4);
 
   return v2;
 }
 
-- (id)given:(id)a3
+- (id)given:(id)given
 {
-  v4 = a3;
-  v5 = [(STPromise *)self queue];
-  v6 = [(STPromise *)self onQueue:v5 given:v4];
+  givenCopy = given;
+  queue = [(STPromise *)self queue];
+  v6 = [(STPromise *)self onQueue:queue given:givenCopy];
 
   return v6;
 }
 
-- (id)onQueue:(id)a3 given:(id)a4
+- (id)onQueue:(id)queue given:(id)given
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005DF1C;
   v9[3] = &unk_1001A4BF8;
-  v10 = a4;
-  v6 = v10;
-  v7 = [(STPromise *)self chainOnQueue:a3 chainedResolve:v9 chainedError:0];
+  givenCopy = given;
+  v6 = givenCopy;
+  v7 = [(STPromise *)self chainOnQueue:queue chainedResolve:v9 chainedError:0];
 
   return v7;
 }
@@ -660,24 +660,24 @@ LABEL_9:
   return v2;
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
-  v5 = [(STPromise *)self queue];
-  v6 = [(STPromise *)self onQueue:v5 then:v4];
+  thenCopy = then;
+  queue = [(STPromise *)self queue];
+  v6 = [(STPromise *)self onQueue:queue then:thenCopy];
 
   return v6;
 }
 
-- (id)onQueue:(id)a3 then:(id)a4
+- (id)onQueue:(id)queue then:(id)then
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005E6F8;
   v9[3] = &unk_1001A4BF8;
-  v10 = a4;
-  v6 = v10;
-  v7 = [(STPromise *)self chainOnQueue:a3 chainedResolve:v9 chainedError:0];
+  thenCopy = then;
+  v6 = thenCopy;
+  v7 = [(STPromise *)self chainOnQueue:queue chainedResolve:v9 chainedError:0];
 
   return v7;
 }

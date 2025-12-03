@@ -1,72 +1,72 @@
 @interface WKSyntheticTapGestureRecognizer
 - (void)reset;
-- (void)setGestureFailedTarget:(id)a3 action:(SEL)a4;
-- (void)setGestureIdentifiedTarget:(id)a3 action:(SEL)a4;
-- (void)setResetTarget:(id)a3 action:(SEL)a4;
-- (void)setState:(int64_t)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setGestureFailedTarget:(id)target action:(SEL)action;
+- (void)setGestureIdentifiedTarget:(id)target action:(SEL)action;
+- (void)setResetTarget:(id)target action:(SEL)action;
+- (void)setState:(int64_t)state;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation WKSyntheticTapGestureRecognizer
 
-- (void)setGestureIdentifiedTarget:(id)a3 action:(SEL)a4
+- (void)setGestureIdentifiedTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_gestureIdentifiedTarget, a3);
-  if (a4)
+  objc_storeWeak(&self->_gestureIdentifiedTarget, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_gestureIdentifiedAction = v6;
+  self->_gestureIdentifiedAction = actionCopy;
 }
 
-- (void)setGestureFailedTarget:(id)a3 action:(SEL)a4
+- (void)setGestureFailedTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_gestureFailedTarget, a3);
-  if (a4)
+  objc_storeWeak(&self->_gestureFailedTarget, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_gestureFailedAction = v6;
+  self->_gestureFailedAction = actionCopy;
 }
 
-- (void)setResetTarget:(id)a3 action:(SEL)a4
+- (void)setResetTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_resetTarget, a3);
-  if (a4)
+  objc_storeWeak(&self->_resetTarget, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_resetAction = v6;
+  self->_resetAction = actionCopy;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 5)
+  if (state == 5)
   {
     v5 = &OBJC_IVAR___WKSyntheticTapGestureRecognizer__gestureFailedTarget;
   }
 
   else
   {
-    if (a3 != 3)
+    if (state != 3)
     {
       goto LABEL_9;
     }
@@ -89,7 +89,7 @@
 LABEL_9:
   v8.receiver = self;
   v8.super_class = WKSyntheticTapGestureRecognizer;
-  [(WKSyntheticTapGestureRecognizer *)&v8 setState:a3];
+  [(WKSyntheticTapGestureRecognizer *)&v8 setState:state];
 }
 
 - (void)reset
@@ -116,20 +116,20 @@ LABEL_9:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = WKSyntheticTapGestureRecognizer;
-  [(WKSyntheticTapGestureRecognizer *)&v15 touchesEnded:a3 withEvent:a4];
+  [(WKSyntheticTapGestureRecognizer *)&v15 touchesEnded:ended withEvent:event];
   if (objc_loadWeak(&self->_supportingTouchEventsGestureRecognizer))
   {
-    v5 = [objc_loadWeak(&self->_supportingTouchEventsGestureRecognizer) activeTouchesByIdentifier];
+    activeTouchesByIdentifier = [objc_loadWeak(&self->_supportingTouchEventsGestureRecognizer) activeTouchesByIdentifier];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    v6 = [activeTouchesByIdentifier countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -140,18 +140,18 @@ LABEL_9:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(activeTouchesByIdentifier);
           }
 
           v10 = *(*(&v11 + 1) + 8 * i);
-          if ([objc_msgSend(objc_msgSend(v5 objectForKey:{v10), "gestureRecognizers"), "containsObject:", self}])
+          if ([objc_msgSend(objc_msgSend(activeTouchesByIdentifier objectForKey:{v10), "gestureRecognizers"), "containsObject:", self}])
           {
             WTF::RetainPtr<NSNumber>::operator=(&self->_lastActiveTouchIdentifier.m_ptr, v10);
             return;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [activeTouchesByIdentifier countByEnumeratingWithState:&v11 objects:v16 count:16];
         if (v7)
         {
           continue;

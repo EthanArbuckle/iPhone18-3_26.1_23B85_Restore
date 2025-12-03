@@ -1,16 +1,16 @@
 @interface VMFreqMap
-+ (id)adjustVMFreqMapVersion:(id)a3;
++ (id)adjustVMFreqMapVersion:(id)version;
 + (id)getVMFreqMapFilePath;
 + (id)loadVMFreqMap;
-- (VMFreqMap)initWithCoder:(id)a3;
-- (VMFreqMap)initWithVersion:(int)a3;
+- (VMFreqMap)initWithCoder:(id)coder;
+- (VMFreqMap)initWithVersion:(int)version;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VMFreqMap
 
-- (VMFreqMap)initWithVersion:(int)a3
+- (VMFreqMap)initWithVersion:(int)version
 {
   v11.receiver = self;
   v11.super_class = VMFreqMap;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_version = a3;
+    v4->_version = version;
     v6 = objc_alloc_init(NSMutableDictionary);
     modelMap = v5->_modelMap;
     v5->_modelMap = v6;
@@ -35,79 +35,79 @@
 
 - (id)description
 {
-  v3 = [(VMFreqMap *)self version];
+  version = [(VMFreqMap *)self version];
   [(VMFreqMap *)self createdTimeStamp];
   v4 = [NSDate dateWithTimeIntervalSince1970:?];
   [(VMFreqMap *)self modifiedTimeStamp];
   v5 = [NSDate dateWithTimeIntervalSince1970:?];
-  v6 = [(VMFreqMap *)self modelMap];
-  v7 = [NSString stringWithFormat:@" v%d created:%@, modified:%@, %@", v3, v4, v5, v6];
+  modelMap = [(VMFreqMap *)self modelMap];
+  v7 = [NSString stringWithFormat:@" v%d created:%@, modified:%@, %@", version, v4, v5, modelMap];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector("version");
-  [v5 encodeInt:version forKey:v6];
+  [coderCopy encodeInt:version forKey:v6];
 
   modelMap = self->_modelMap;
   v8 = NSStringFromSelector("modelMap");
-  [v5 encodeObject:modelMap forKey:v8];
+  [coderCopy encodeObject:modelMap forKey:v8];
 
   createdTimeStamp = self->_createdTimeStamp;
   v10 = NSStringFromSelector("createdTimeStamp");
-  [v5 encodeDouble:v10 forKey:createdTimeStamp];
+  [coderCopy encodeDouble:v10 forKey:createdTimeStamp];
 
   modifiedTimeStamp = self->_modifiedTimeStamp;
   v12 = NSStringFromSelector("modifiedTimeStamp");
-  [v5 encodeDouble:v12 forKey:modifiedTimeStamp];
+  [coderCopy encodeDouble:v12 forKey:modifiedTimeStamp];
 }
 
-- (VMFreqMap)initWithCoder:(id)a3
+- (VMFreqMap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = VMFreqMap;
   v5 = [(VMFreqMap *)&v18 init];
   if (v5)
   {
     v6 = NSStringFromSelector("version");
-    v5->_version = [v4 decodeIntForKey:v6];
+    v5->_version = [coderCopy decodeIntForKey:v6];
 
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v7, v8, objc_opt_class(), 0];
     v10 = NSStringFromSelector("modelMap");
-    v11 = [v4 decodeObjectOfClasses:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClasses:v9 forKey:v10];
     modelMap = v5->_modelMap;
     v5->_modelMap = v11;
 
     v13 = NSStringFromSelector("createdTimeStamp");
-    [v4 decodeDoubleForKey:v13];
+    [coderCopy decodeDoubleForKey:v13];
     v5->_createdTimeStamp = v14;
 
     v15 = NSStringFromSelector("modifiedTimeStamp");
-    [v4 decodeDoubleForKey:v15];
+    [coderCopy decodeDoubleForKey:v15];
     v5->_modifiedTimeStamp = v16;
   }
 
   return v5;
 }
 
-+ (id)adjustVMFreqMapVersion:(id)a3
++ (id)adjustVMFreqMapVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 version])
+  versionCopy = version;
+  if ([versionCopy version])
   {
     v4 = [[VMFreqMap alloc] initWithVersion:0];
   }
 
   else
   {
-    v4 = v3;
+    v4 = versionCopy;
   }
 
   v5 = v4;
@@ -119,9 +119,9 @@
 {
   v2 = sub_10008546C();
   v3 = [v2 URLByAppendingPathComponent:@"vmLanguageFrequencyMap"];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
 + (id)loadVMFreqMap

@@ -1,11 +1,11 @@
 @interface _UICellularSignalView
 - (CGSize)intrinsicContentSize;
-- (_UICellularSignalView)initWithCoder:(id)a3;
-- (_UICellularSignalView)initWithFrame:(CGRect)a3;
-- (_UICellularSignalView)initWithSizeCategory:(int64_t)a3;
+- (_UICellularSignalView)initWithCoder:(id)coder;
+- (_UICellularSignalView)initWithFrame:(CGRect)frame;
+- (_UICellularSignalView)initWithSizeCategory:(int64_t)category;
 - (void)_commonInit;
 - (void)layoutSubviews;
-- (void)setSizeCategory:(int64_t)a3;
+- (void)setSizeCategory:(int64_t)category;
 @end
 
 @implementation _UICellularSignalView
@@ -34,8 +34,8 @@
   signalView = self->_signalView;
   self->_signalView = v5;
 
-  v7 = [(UIView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   if (v8 <= 2.5)
   {
     v9 = 1;
@@ -52,30 +52,30 @@
   [(UIView *)self addSubview:self->_signalView];
 }
 
-- (_UICellularSignalView)initWithSizeCategory:(int64_t)a3
+- (_UICellularSignalView)initWithSizeCategory:(int64_t)category
 {
   v6.receiver = self;
   v6.super_class = _UICellularSignalView;
   v4 = [(UIView *)&v6 init];
   [(_UICellularSignalView *)v4 _commonInit];
-  [(_UICellularSignalView *)v4 setSizeCategory:a3];
+  [(_UICellularSignalView *)v4 setSizeCategory:category];
   return v4;
 }
 
-- (_UICellularSignalView)initWithFrame:(CGRect)a3
+- (_UICellularSignalView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UICellularSignalView;
-  v3 = [(UIView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UICellularSignalView *)v3 _commonInit];
   return v3;
 }
 
-- (_UICellularSignalView)initWithCoder:(id)a3
+- (_UICellularSignalView)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UICellularSignalView;
-  v3 = [(UIView *)&v5 initWithCoder:a3];
+  v3 = [(UIView *)&v5 initWithCoder:coder];
   [(_UICellularSignalView *)v3 _commonInit];
   return v3;
 }
@@ -97,13 +97,13 @@
   return result;
 }
 
-- (void)setSizeCategory:(int64_t)a3
+- (void)setSizeCategory:(int64_t)category
 {
-  v6 = [(UIView *)self traitCollection];
-  v7 = v6;
-  if (a3 == 1)
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = traitCollection;
+  if (category == 1)
   {
-    [v6 displayScale];
+    [traitCollection displayScale];
     if (v9 <= 2.5)
     {
       v3 = 9;
@@ -115,9 +115,9 @@
     }
   }
 
-  else if (!a3)
+  else if (!category)
   {
-    [v6 displayScale];
+    [traitCollection displayScale];
     if (v8 <= 2.5)
     {
       v3 = 1;

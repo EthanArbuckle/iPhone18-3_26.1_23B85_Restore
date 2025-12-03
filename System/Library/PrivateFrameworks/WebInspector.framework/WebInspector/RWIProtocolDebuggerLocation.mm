@@ -2,16 +2,16 @@
 - (NSString)scriptId;
 - (int)columnNumber;
 - (int)lineNumber;
-- (void)setScriptId:(id)a3;
+- (void)setScriptId:(id)id;
 @end
 
 @implementation RWIProtocolDebuggerLocation
 
-- (void)setScriptId:(id)a3
+- (void)setScriptId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerLocation;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"scriptId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"scriptId"];
 }
 
 - (NSString)scriptId

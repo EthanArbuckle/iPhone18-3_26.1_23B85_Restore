@@ -1,48 +1,48 @@
 @interface FKAccountPaymentInformationACH
-- (BOOL)isEqual:(id)a3;
-- (FKAccountPaymentInformationACH)initWithAccountNumber:(id)a3 routingNumber:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKAccountPaymentInformationACH)initWithAccountNumber:(id)number routingNumber:(id)routingNumber;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FKAccountPaymentInformationACH
 
-- (FKAccountPaymentInformationACH)initWithAccountNumber:(id)a3 routingNumber:(id)a4
+- (FKAccountPaymentInformationACH)initWithAccountNumber:(id)number routingNumber:(id)routingNumber
 {
-  v7 = a3;
-  v8 = a4;
+  numberCopy = number;
+  routingNumberCopy = routingNumber;
   v12.receiver = self;
   v12.super_class = FKAccountPaymentInformationACH;
   v9 = [(FKAccountPaymentInformationACH *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountNumber, a3);
-    objc_storeStrong(&v10->_routingNumber, a4);
+    objc_storeStrong(&v9->_accountNumber, number);
+    objc_storeStrong(&v10->_routingNumber, routingNumber);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [FKAccountPaymentInformationACH alloc];
-  v6 = [(NSString *)self->_accountNumber copyWithZone:a3];
-  v7 = [(NSString *)self->_routingNumber copyWithZone:a3];
+  v6 = [(NSString *)self->_accountNumber copyWithZone:zone];
+  v7 = [(NSString *)self->_routingNumber copyWithZone:zone];
   v8 = [(FKAccountPaymentInformationACH *)v5 initWithAccountNumber:v6 routingNumber:v7];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (FKEqualObjects(self->_accountNumber, v6[1]))

@@ -19,9 +19,9 @@
 + (NSMutableCharacterSet)whitespaceAndNewlineCharacterSet;
 + (NSMutableCharacterSet)whitespaceCharacterSet;
 - (NSMutableCharacterSet)init;
-- (NSMutableCharacterSet)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (NSMutableCharacterSet)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)addCharactersInRange:(NSRange)aRange;
 - (void)addCharactersInString:(NSString *)aString;
 - (void)formIntersectionWithCharacterSet:(NSCharacterSet *)otherSet;
@@ -98,14 +98,14 @@
   return Mutable;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(NSMutableCharacterSet *)self mutableCopyWithZone:a3];
+  v3 = [(NSMutableCharacterSet *)self mutableCopyWithZone:zone];
   [v3 makeImmutable];
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   Name = sel_getName(a2);
@@ -268,7 +268,7 @@
   return v3;
 }
 
-- (NSMutableCharacterSet)initWithCoder:(id)a3
+- (NSMutableCharacterSet)initWithCoder:(id)coder
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -285,7 +285,7 @@
 
     v9 = @"NSLocalizedDescription";
     v10[0] = v6;
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1))}];
   }
 
   return v5;

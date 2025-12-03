@@ -1,15 +1,15 @@
 @interface SnippetInteractionRunner.Delegate
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithError:(id)a4 cancelled:(BOOL)a5;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithError:(id)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation SnippetInteractionRunner.Delegate
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithError:(id)a4 cancelled:(BOOL)a5
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithError:(id)error cancelled:(BOOL)cancelled
 {
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_2748DBB38(v7, a4);
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2748DBB38(clientCopy, error);
 }
 
 @end

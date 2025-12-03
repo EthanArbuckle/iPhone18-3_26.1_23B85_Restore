@@ -1,34 +1,34 @@
 @interface MAHandleUISetMapsAnalytics
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleUISetMapsAnalytics
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
-  v11 = [(MAHandleUISetMapsAnalytics *)self extSessionGuid];
-  v6 = [(MAHandleUISetMapsAnalytics *)self extSessionGuidCreatedTimestamp];
-  if (v11 && v6)
+  completionCopy = completion;
+  extSessionGuid = [(MAHandleUISetMapsAnalytics *)self extSessionGuid];
+  extSessionGuidCreatedTimestamp = [(MAHandleUISetMapsAnalytics *)self extSessionGuidCreatedTimestamp];
+  if (extSessionGuid && extSessionGuidCreatedTimestamp)
   {
     v7 = +[GEOUserSession sharedInstance];
-    v8 = objc_alloc_init(GEOUserSessionEntity);
-    [v8 updateSessionIDFromUUIDString:v11];
-    [v6 timeIntervalSinceReferenceDate];
-    [v8 setSessionCreationTime:?];
-    [v7 setSharedMapsUserSessionEntity:v8 shareSessionIDWithMaps:1];
+    dictionary2 = objc_alloc_init(GEOUserSessionEntity);
+    [dictionary2 updateSessionIDFromUUIDString:extSessionGuid];
+    [extSessionGuidCreatedTimestamp timeIntervalSinceReferenceDate];
+    [dictionary2 setSessionCreationTime:?];
+    [v7 setSharedMapsUserSessionEntity:dictionary2 shareSessionIDWithMaps:1];
     v9 = objc_alloc_init(SACommandSucceeded);
-    v10 = [v9 dictionary];
-    v5[2](v5, v10);
+    dictionary = [v9 dictionary];
+    completionCopy[2](completionCopy, dictionary);
 
-    v5 = v9;
+    completionCopy = v9;
   }
 
   else
   {
     v7 = [[SACommandFailed alloc] initWithReason:@"Missing values for extSessionGuid or extSessionGuidCreatedTimestamp"];
-    v8 = [v7 dictionary];
-    v5[2](v5, v8);
+    dictionary2 = [v7 dictionary];
+    completionCopy[2](completionCopy, dictionary2);
   }
 }
 

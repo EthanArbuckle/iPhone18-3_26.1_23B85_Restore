@@ -1,31 +1,31 @@
 @interface NSFileProviderManager
-+ (BOOL)addDomain:(id)a3 forProviderIdentifier:(id)a4 byImportingDirectoryAtURL:(id)a5 knownFolders:(id)a6 error:(id *)a7;
-+ (BOOL)checkDomainsCanBeStored:(BOOL *)a3 onVolumeAtURL:(id)a4 unsupportedReason:(unint64_t *)a5 error:(id *)a6;
-+ (BOOL)fileProviderReadyForBackupOrMigrationForSourceURL:(id)a3 error:(id *)a4;
++ (BOOL)addDomain:(id)domain forProviderIdentifier:(id)identifier byImportingDirectoryAtURL:(id)l knownFolders:(id)folders error:(id *)error;
++ (BOOL)checkDomainsCanBeStored:(BOOL *)stored onVolumeAtURL:(id)l unsupportedReason:(unint64_t *)reason error:(id *)error;
++ (BOOL)fileProviderReadyForBackupOrMigrationForSourceURL:(id)l error:(id *)error;
 + (BOOL)writePlaceholderAtURL:(NSURL *)placeholderURL withMetadata:(NSFileProviderItem)metadata error:(NSError *)error;
-+ (BOOL)writePlaceholderAtURL:(id)a3 withDictionary:(id)a4 error:(id *)a5;
++ (BOOL)writePlaceholderAtURL:(id)l withDictionary:(id)dictionary error:(id *)error;
 + (NSFileProviderManager)legacyDefaultManager;
 + (NSFileProviderManager)managerForDomain:(NSFileProviderDomain *)domain;
-+ (NSFileProviderManager)managerWithProviderIdentifier:(id)a3 groupName:(id)a4 domain:(id)a5;
++ (NSFileProviderManager)managerWithProviderIdentifier:(id)identifier groupName:(id)name domain:(id)domain;
 + (NSURL)placeholderURLForURL:(NSURL *)url;
 + (id)resolvableErrorCodes;
-+ (void)_registerNotificationsForProviderIdentifier:(id)a3;
-+ (void)addDomain:(id)a3 forProviderIdentifier:(id)a4 byImportingDirectoryAtURL:(id)a5 userAllowedDBDrop:(BOOL)a6 knownFolders:(id)a7 synchronous:(BOOL)a8 completionHandler:(id)a9;
-+ (void)addDomain:(id)a3 forProviderIdentifier:(id)a4 persona:(id)a5 completionHandler:(id)a6;
-+ (void)getDomainsForProviderIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)_registerNotificationsForProviderIdentifier:(id)identifier;
++ (void)addDomain:(id)domain forProviderIdentifier:(id)identifier byImportingDirectoryAtURL:(id)l userAllowedDBDrop:(BOOL)drop knownFolders:(id)folders synchronous:(BOOL)synchronous completionHandler:(id)handler;
++ (void)addDomain:(id)domain forProviderIdentifier:(id)identifier persona:(id)persona completionHandler:(id)handler;
++ (void)getDomainsForProviderIdentifier:(id)identifier completionHandler:(id)handler;
 + (void)getDomainsWithCompletionHandler:(void *)completionHandler;
 + (void)getIdentifierForUserVisibleFileAtURL:(NSURL *)url completionHandler:(void *)completionHandler;
 + (void)importDomain:(NSFileProviderDomain *)domain fromDirectoryAtURL:(NSURL *)url completionHandler:(void *)completionHandler;
-+ (void)importDomain:(id)a3 forProviderIdentifier:(id)a4 fromDirectoryAtURL:(id)a5 completionHandler:(id)a6;
-+ (void)importDomain:(id)a3 forProviderIdentifier:(id)a4 fromDirectoryAtURL:(id)a5 knownFolders:(id)a6 completionHandler:(id)a7;
-+ (void)registerDomainServicer:(id)a3 forDomain:(id)a4;
-+ (void)registerRootURL:(id)a3 forDomain:(id)a4;
-+ (void)removeAllDomainsForProviderIdentifier:(id)a3 completionHandler:(id)a4;
++ (void)importDomain:(id)domain forProviderIdentifier:(id)identifier fromDirectoryAtURL:(id)l completionHandler:(id)handler;
++ (void)importDomain:(id)domain forProviderIdentifier:(id)identifier fromDirectoryAtURL:(id)l knownFolders:(id)folders completionHandler:(id)handler;
++ (void)registerDomainServicer:(id)servicer forDomain:(id)domain;
++ (void)registerRootURL:(id)l forDomain:(id)domain;
++ (void)removeAllDomainsForProviderIdentifier:(id)identifier completionHandler:(id)handler;
 + (void)removeDomain:(NSFileProviderDomain *)domain completionHandler:(void *)completionHandler;
 + (void)removeDomain:(NSFileProviderDomain *)domain mode:(NSFileProviderDomainRemovalMode)mode completionHandler:(void *)completionHandler;
-+ (void)removeDomain:(id)a3 forProviderIdentifier:(id)a4 completionHandler:(id)a5;
-- (BOOL)isErrorSupportedForSignalResolved:(id)a3;
-- (BOOL)removeDomain:(id)a3 options:(int64_t)a4 preservedLocation:(id *)a5 error:(id *)a6;
++ (void)removeDomain:(id)domain forProviderIdentifier:(id)identifier completionHandler:(id)handler;
+- (BOOL)isErrorSupportedForSignalResolved:(id)resolved;
+- (BOOL)removeDomain:(id)domain options:(int64_t)options preservedLocation:(id *)location error:(id *)error;
 - (NSArray)listAvailableTestingOperationsWithError:(NSError *)error;
 - (NSDictionary)runTestingOperations:(NSArray *)operations error:(NSError *)error;
 - (NSProgress)globalProgressForKind:(NSProgressFileOperationKind)kind;
@@ -33,73 +33,73 @@
 - (NSURL)documentStorageURL;
 - (NSURL)temporaryDirectoryURLWithError:(NSError *)error;
 - (id)_connection;
-- (id)_initWithProviderIdentifier:(id)a3 groupName:(id)a4 domain:(id)a5;
-- (id)_test_existingProgressForKind:(id)a3;
+- (id)_initWithProviderIdentifier:(id)identifier groupName:(id)name domain:(id)domain;
+- (id)_test_existingProgressForKind:(id)kind;
 - (id)description;
 - (id)enumeratorForMaterializedItems;
 - (id)enumeratorForPendingItems;
-- (id)itemIDForIdentifier:(id)a3;
+- (id)itemIDForIdentifier:(id)identifier;
 - (id)providerDomainID;
-- (id)startObservingGlobalProgressForKind:(id)a3;
-- (id)stateDirectoryURLWithError:(id *)a3;
+- (id)startObservingGlobalProgressForKind:(id)kind;
+- (id)stateDirectoryURLWithError:(id *)error;
 - (void)_cacheProviderInfo;
-- (void)_callCompletionHandlers:(id)a3 error:(id)a4;
-- (void)_failToSignalPendingChangesWithError:(id)a3 completionHandlersByItemID:(id)a4;
+- (void)_callCompletionHandlers:(id)handlers error:(id)error;
+- (void)_failToSignalPendingChangesWithError:(id)error completionHandlersByItemID:(id)d;
 - (void)_signalPendingEnumerators;
-- (void)claimKnownFolders:(id)a3 localizedReason:(id)a4 completionHandler:(id)a5;
+- (void)claimKnownFolders:(id)folders localizedReason:(id)reason completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)a3 indexReason:(int64_t)a4 completionHandler:(id)a5;
+- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)identifiers indexReason:(int64_t)reason completionHandler:(id)handler;
 - (void)disconnectWithReason:(NSString *)localizedReason options:(NSFileProviderManagerDisconnectionOptions)options completionHandler:(void *)completionHandler;
 - (void)evictItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler;
-- (void)fetchDomainServicerSynchronously:(BOOL)a3 useOutgoingConnection:(BOOL)a4 completionHandler:(id)a5;
-- (void)getDiagnosticAttributesForItems:(id)a3 completionHandler:(id)a4;
-- (void)getDomainsWithCompletionHandler:(id)a3;
+- (void)fetchDomainServicerSynchronously:(BOOL)synchronously useOutgoingConnection:(BOOL)connection completionHandler:(id)handler;
+- (void)getDiagnosticAttributesForItems:(id)items completionHandler:(id)handler;
+- (void)getDomainsWithCompletionHandler:(id)handler;
 - (void)getServiceWithName:(NSFileProviderServiceName)serviceName itemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler;
 - (void)getUserVisibleURLForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler;
-- (void)ingestFromCacheItemWithIdentifier:(id)a3 requestedFields:(unint64_t)a4 completionHandler:(id)a5;
-- (void)lookupRequestingApplicationIdentifier:(id)a3 reason:(id)a4 completionHandler:(id)a5;
+- (void)ingestFromCacheItemWithIdentifier:(id)identifier requestedFields:(unint64_t)fields completionHandler:(id)handler;
+- (void)lookupRequestingApplicationIdentifier:(id)identifier reason:(id)reason completionHandler:(id)handler;
 - (void)reconnectWithCompletionHandler:(void *)completionHandler;
 - (void)registerURLSessionTask:(NSURLSessionTask *)task forItemWithIdentifier:(NSFileProviderItemIdentifier)identifier completionHandler:(void *)completion;
 - (void)reimportItemsBelowItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler;
-- (void)releaseKnownFolders:(unint64_t)a3 localizedReason:(id)a4 completionHandler:(id)a5;
-- (void)removeAllDomainsWithCompletionHandler:(id)a3;
-- (void)removeDomain:(id)a3 completionHandler:(id)a4;
-- (void)removeDomain:(id)a3 options:(int64_t)a4 completionHandler:(id)a5;
-- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)a3 errorReason:(id)a4 completionHandler:(id)a5;
+- (void)releaseKnownFolders:(unint64_t)folders localizedReason:(id)reason completionHandler:(id)handler;
+- (void)removeAllDomainsWithCompletionHandler:(id)handler;
+- (void)removeDomain:(id)domain completionHandler:(id)handler;
+- (void)removeDomain:(id)domain options:(int64_t)options completionHandler:(id)handler;
+- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)identifier errorReason:(id)reason completionHandler:(id)handler;
 - (void)requestDownloadForItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier requestedRange:(NSRange)rangeToMaterialize completionHandler:(void *)completionHandler;
 - (void)requestModificationOfFields:(NSFileProviderItemFields)fields forItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier options:(NSFileProviderModifyItemOptions)options completionHandler:(void *)completionHandler;
-- (void)setEjectable:(BOOL)a3 completionHandler:(id)a4;
+- (void)setEjectable:(BOOL)ejectable completionHandler:(id)handler;
 - (void)signalEnumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier completionHandler:(void *)completion;
 - (void)signalErrorResolved:(NSError *)error completionHandler:(void *)completionHandler;
 - (void)startObservingDownloadProgress;
 - (void)startObservingUploadProgress;
 - (void)waitForChangesOnItemsBelowItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler;
-- (void)waitForSignalDeliveryWithCompletionHandler:(id)a3;
-- (void)waitForStabilizationWithMode:(unint64_t)a3 completionHandler:(id)a4;
+- (void)waitForSignalDeliveryWithCompletionHandler:(id)handler;
+- (void)waitForStabilizationWithMode:(unint64_t)mode completionHandler:(id)handler;
 @end
 
 @implementation NSFileProviderManager
 
 - (NSURL)documentStorageURL
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  documentStorageURL = v3->_documentStorageURL;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  documentStorageURL = selfCopy->_documentStorageURL;
   if (!documentStorageURL)
   {
-    [(NSFileProviderManager *)v3 _cacheProviderInfo];
-    documentStorageURL = v3->_documentStorageURL;
+    [(NSFileProviderManager *)selfCopy _cacheProviderInfo];
+    documentStorageURL = selfCopy->_documentStorageURL;
     if (!documentStorageURL)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:v3 file:@"NSFileProviderManager.m" lineNumber:925 description:{@"%@: documentStorageURL is not set. Extension may be missing %@ key, or current process may be missing necessary entitlements to access the specified container.", objc_opt_class(), @"NSExtensionFileProviderDocumentGroup"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"NSFileProviderManager.m" lineNumber:925 description:{@"%@: documentStorageURL is not set. Extension may be missing %@ key, or current process may be missing necessary entitlements to access the specified container.", objc_opt_class(), @"NSExtensionFileProviderDocumentGroup"}];
 
-      documentStorageURL = v3->_documentStorageURL;
+      documentStorageURL = selfCopy->_documentStorageURL;
     }
   }
 
   v5 = documentStorageURL;
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -110,7 +110,7 @@
   block[1] = 3221225472;
   block[2] = __45__NSFileProviderManager_legacyDefaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (legacyDefaultManager_onceToken != -1)
   {
     dispatch_once(&legacyDefaultManager_onceToken, block);
@@ -123,17 +123,17 @@
 
 - (NSString)providerIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  providerIdentifier = v2->_providerIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  providerIdentifier = selfCopy->_providerIdentifier;
   if (!providerIdentifier)
   {
-    [(NSFileProviderManager *)v2 _cacheProviderInfo];
-    providerIdentifier = v2->_providerIdentifier;
+    [(NSFileProviderManager *)selfCopy _cacheProviderInfo];
+    providerIdentifier = selfCopy->_providerIdentifier;
   }
 
   v4 = providerIdentifier;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -198,42 +198,42 @@ void __50__NSFileProviderManager__signalPendingEnumerators__block_invoke(uint64_
 - (void)_signalPendingEnumerators
 {
   v6 = *MEMORY[0x1E69E9840];
-  *(a1 + 72);
+  *(self + 72);
   OUTLINED_FUNCTION_11_2();
   _os_log_debug_impl(v1, v2, OS_LOG_TYPE_DEBUG, v3, v4, 0x16u);
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_initWithProviderIdentifier:(id)a3 groupName:(id)a4 domain:(id)a5
+- (id)_initWithProviderIdentifier:(id)identifier groupName:(id)name domain:(id)domain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  domainCopy = domain;
   if (_initWithProviderIdentifier_groupName_domain__onceToken != -1)
   {
     [NSFileProviderManager _initWithProviderIdentifier:groupName:domain:];
   }
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v11 identifier];
-  v14 = v13;
-  if (v9 | v10)
+  identifier = [domainCopy identifier];
+  v14 = identifier;
+  if (identifierCopy | nameCopy)
   {
-    [v12 stringWithFormat:@"%@;%@;%@", v9, v10, v13];
+    [v12 stringWithFormat:@"%@;%@;%@", identifierCopy, nameCopy, identifier];
   }
 
   else
   {
-    [v12 stringWithFormat:@"%@", v13, v41, v42];
+    [v12 stringWithFormat:@"%@", identifier, v41, v42];
   }
   v15 = ;
 
   v16 = fileProviderManagerByDomain;
   objc_sync_enter(v16);
-  v17 = [fileProviderManagerByDomain objectForKey:v15];
+  selfCopy = [fileProviderManagerByDomain objectForKey:v15];
   objc_sync_exit(v16);
 
-  if (!v17)
+  if (!selfCopy)
   {
     v46.receiver = self;
     v46.super_class = NSFileProviderManager;
@@ -241,9 +241,9 @@ void __50__NSFileProviderManager__signalPendingEnumerators__block_invoke(uint64_
     self = v18;
     if (v18)
     {
-      objc_storeStrong(&v18->_domain, a5);
-      objc_storeStrong(&self->_providerIdentifier, a3);
-      objc_storeStrong(&self->_groupName, a4);
+      objc_storeStrong(&v18->_domain, domain);
+      objc_storeStrong(&self->_providerIdentifier, identifier);
+      objc_storeStrong(&self->_groupName, name);
       v19 = objc_opt_new();
       presentedFileObserver = self->_presentedFileObserver;
       self->_presentedFileObserver = v19;
@@ -275,9 +275,9 @@ void __50__NSFileProviderManager__signalPendingEnumerators__block_invoke(uint64_
       dispatch_source_set_event_handler(v29, v30);
 
       dispatch_resume(self->_signalUpdateSource);
-      v31 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       completionHandlersByItemID = self->_completionHandlersByItemID;
-      self->_completionHandlersByItemID = v31;
+      self->_completionHandlersByItemID = dictionary;
 
       v33 = objc_alloc_init(FPProgressUpdater);
       uploadProxy = self->_uploadProxy;
@@ -296,7 +296,7 @@ void __50__NSFileProviderManager__signalPendingEnumerators__block_invoke(uint64_
     v37 = fileProviderManagerByDomain;
     objc_sync_enter(v37);
     v38 = [fileProviderManagerByDomain objectForKey:v15];
-    v17 = v38;
+    selfCopy = v38;
     if (v38)
     {
       v39 = v38;
@@ -308,14 +308,14 @@ void __50__NSFileProviderManager__signalPendingEnumerators__block_invoke(uint64_
     }
 
     objc_sync_exit(v37);
-    if (!v17)
+    if (!selfCopy)
     {
       self = self;
-      v17 = self;
+      selfCopy = self;
     }
   }
 
-  return v17;
+  return selfCopy;
 }
 
 uint64_t __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___block_invoke()
@@ -341,10 +341,10 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
   return [v3 stringWithFormat:@"<%@:%p %@:%@>", v4, self, providerIdentifier, self->_domain];
 }
 
-+ (void)registerDomainServicer:(id)a3 forDomain:(id)a4
++ (void)registerDomainServicer:(id)servicer forDomain:(id)domain
 {
-  v11 = a3;
-  v5 = a4;
+  servicerCopy = servicer;
+  domainCopy = domain;
   if (createCaches_onceToken != -1)
   {
     +[NSFileProviderManager registerDomainServicer:forDomain:];
@@ -353,11 +353,11 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
   v6 = domainServicerByDomain;
   objc_sync_enter(v6);
   v7 = domainServicerByDomain;
-  v8 = [v5 identifier];
-  v9 = v8;
-  if (v8)
+  identifier = [domainCopy identifier];
+  v9 = identifier;
+  if (identifier)
   {
-    v10 = v8;
+    v10 = identifier;
   }
 
   else
@@ -365,15 +365,15 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
     v10 = @"NSFileProviderDomainDefaultIdentifier";
   }
 
-  [v7 setObject:v11 forKey:v10];
+  [v7 setObject:servicerCopy forKey:v10];
 
   objc_sync_exit(v6);
 }
 
-+ (void)registerRootURL:(id)a3 forDomain:(id)a4
++ (void)registerRootURL:(id)l forDomain:(id)domain
 {
-  v11 = a3;
-  v5 = a4;
+  lCopy = l;
+  domainCopy = domain;
   if (createCaches_onceToken != -1)
   {
     +[NSFileProviderManager registerDomainServicer:forDomain:];
@@ -382,11 +382,11 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
   v6 = rootURLByDomain;
   objc_sync_enter(v6);
   v7 = rootURLByDomain;
-  v8 = [v5 identifier];
-  v9 = v8;
-  if (v8)
+  identifier = [domainCopy identifier];
+  v9 = identifier;
+  if (identifier)
   {
-    v10 = v8;
+    v10 = identifier;
   }
 
   else
@@ -394,34 +394,34 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
     v10 = @"NSFileProviderDomainDefaultIdentifier";
   }
 
-  [v7 setObject:v11 forKey:v10];
+  [v7 setObject:lCopy forKey:v10];
 
   objc_sync_exit(v6);
 }
 
-- (void)fetchDomainServicerSynchronously:(BOOL)a3 useOutgoingConnection:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchDomainServicerSynchronously:(BOOL)synchronously useOutgoingConnection:(BOOL)connection completionHandler:(id)handler
 {
-  v48 = a4;
-  v5 = a3;
+  connectionCopy = connection;
+  synchronouslyCopy = synchronously;
   v69 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (!v8->_providerIdentifier)
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_providerIdentifier)
   {
-    [(NSFileProviderManager *)v8 _cacheProviderInfo];
+    [(NSFileProviderManager *)selfCopy _cacheProviderInfo];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(NSFileProviderDomain *)v8->_domain identifier];
-  v11 = [v10 fp_obfuscatedFilename];
-  v12 = v11;
+  identifier = [(NSFileProviderDomain *)selfCopy->_domain identifier];
+  fp_obfuscatedFilename = [identifier fp_obfuscatedFilename];
+  v12 = fp_obfuscatedFilename;
   v13 = @"NSFileProviderDomainDefaultIdentifier";
-  if (v11)
+  if (fp_obfuscatedFilename)
   {
-    v13 = v11;
+    v13 = fp_obfuscatedFilename;
   }
 
   v14 = [v9 stringWithFormat:@"domain servicer for %@", v13];
@@ -430,29 +430,29 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
   aBlock[1] = 3221225472;
   aBlock[2] = __98__NSFileProviderManager_fetchDomainServicerSynchronously_useOutgoingConnection_completionHandler___block_invoke;
   aBlock[3] = &unk_1E79396E8;
-  aBlock[4] = v8;
-  v15 = v7;
+  aBlock[4] = selfCopy;
+  v15 = handlerCopy;
   v68 = v15;
   v16 = v14;
   v67 = v16;
   v52 = _Block_copy(aBlock);
-  if (v8->_providerIdentifier)
+  if (selfCopy->_providerIdentifier)
   {
-    v17 = [MEMORY[0x1E69DF068] sharedManager];
-    v49 = [v17 currentPersona];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
     v65 = 0;
-    v50 = [v49 userPersonaUniqueString];
-    v18 = [(NSFileProviderDomain *)v8->_domain personaIdentifier];
-    if (v50 == v18)
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    personaIdentifier = [(NSFileProviderDomain *)selfCopy->_domain personaIdentifier];
+    if (userPersonaUniqueString == personaIdentifier)
     {
       v51 = 0;
     }
 
     else
     {
-      v19 = [(NSFileProviderDomain *)v8->_domain personaIdentifier];
-      v20 = [v50 isEqualToString:v19];
+      personaIdentifier2 = [(NSFileProviderDomain *)selfCopy->_domain personaIdentifier];
+      v20 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
       if ((v20 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
       {
@@ -460,7 +460,7 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
       }
 
       v64 = 0;
-      v21 = [v49 copyCurrentPersonaContextWithError:&v64];
+      v21 = [currentPersona copyCurrentPersonaContextWithError:&v64];
       v22 = v64;
       v23 = v65;
       v65 = v21;
@@ -474,8 +474,8 @@ void __70__NSFileProviderManager__initWithProviderIdentifier_groupName_domain___
         }
       }
 
-      v25 = [(NSFileProviderDomain *)v8->_domain personaIdentifier];
-      v51 = [v49 generateAndRestorePersonaContextWithPersonaUniqueString:v25];
+      personaIdentifier3 = [(NSFileProviderDomain *)selfCopy->_domain personaIdentifier];
+      v51 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
       if (!v51)
       {
@@ -484,10 +484,10 @@ LABEL_17:
         goto LABEL_20;
       }
 
-      v18 = fp_current_or_default_log();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      personaIdentifier = fp_current_or_default_log();
+      if (os_log_type_enabled(personaIdentifier, OS_LOG_TYPE_ERROR))
       {
-        [(NSFileProviderDomain *)v8->_domain personaIdentifier];
+        [(NSFileProviderDomain *)selfCopy->_domain personaIdentifier];
         objc_claimAutoreleasedReturnValue();
         [NSFileProviderManager fetchDomainServicerSynchronously:useOutgoingConnection:completionHandler:];
       }
@@ -498,7 +498,7 @@ LABEL_20:
     v61 = &v60;
     v62 = 0x2020000000;
     v63 = 1;
-    v26 = v8;
+    v26 = selfCopy;
     objc_sync_enter(v26);
     v27 = v26->_remoteFileProvider;
     if (v27)
@@ -514,12 +514,12 @@ LABEL_20:
         [NSFileProviderManager fetchDomainServicerSynchronously:useOutgoingConnection:completionHandler:];
       }
 
-      v30 = [(NSFileProviderDomain *)v8->_domain identifier];
-      v31 = v30;
+      identifier2 = [(NSFileProviderDomain *)selfCopy->_domain identifier];
+      v31 = identifier2;
       v32 = @"NSFileProviderDomainDefaultIdentifier";
-      if (v30)
+      if (identifier2)
       {
-        v32 = v30;
+        v32 = identifier2;
       }
 
       v33 = v32;
@@ -536,7 +536,7 @@ LABEL_20:
 
     if (v28)
     {
-      if ((isIncomingConnection & v48 & 1) == 0)
+      if ((isIncomingConnection & connectionCopy & 1) == 0)
       {
         if (v15)
         {
@@ -556,26 +556,26 @@ LABEL_20:
       *(v61 + 24) = 0;
     }
 
-    v36 = [(NSFileProviderManager *)v26 _connection];
-    v37 = v36;
-    if (v5)
+    _connection = [(NSFileProviderManager *)v26 _connection];
+    v37 = _connection;
+    if (synchronouslyCopy)
     {
-      [v36 synchronousRemoteObjectProxyWithErrorHandler:v52];
+      [_connection synchronousRemoteObjectProxyWithErrorHandler:v52];
     }
 
     else
     {
-      [v36 remoteObjectProxyWithErrorHandler:v52];
+      [_connection remoteObjectProxyWithErrorHandler:v52];
     }
     v38 = ;
     v39 = v16;
     v40 = MEMORY[0x1E696AEC0];
-    providerIdentifier = v8->_providerIdentifier;
-    v42 = [(NSFileProviderDomain *)v8->_domain identifier];
-    v43 = v42;
-    if (v42)
+    providerIdentifier = selfCopy->_providerIdentifier;
+    identifier3 = [(NSFileProviderDomain *)selfCopy->_domain identifier];
+    v43 = identifier3;
+    if (identifier3)
     {
-      v44 = v42;
+      v44 = identifier3;
     }
 
     else
@@ -595,7 +595,7 @@ LABEL_20:
     v54 = v39;
     v46 = v37;
     v55 = v46;
-    v58 = v48;
+    v58 = connectionCopy;
     v56 = v15;
     [(NSFileProviderManager *)v26 _fetchDomainServicer:v38 forProviderDomainID:v45 handler:v53];
 
@@ -716,34 +716,34 @@ void __98__NSFileProviderManager_fetchDomainServicerSynchronously_useOutgoingCon
   }
 }
 
-+ (void)_registerNotificationsForProviderIdentifier:(id)a3
++ (void)_registerNotificationsForProviderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (_registerNotificationsForProviderIdentifier__onceToken != -1)
   {
     +[NSFileProviderManager _registerNotificationsForProviderIdentifier:];
   }
 
-  v5 = a1;
-  objc_sync_enter(v5);
-  if (([_registerNotificationsForProviderIdentifier__registeredNotificationDomains containsObject:v4] & 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([_registerNotificationsForProviderIdentifier__registeredNotificationDomains containsObject:identifierCopy] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.pendingSetChanged", v4];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.pendingSetChanged", identifierCopy];
     out_token = 0;
-    v7 = [v6 fp_libnotifyPerUserNotificationName];
-    v8 = [v7 UTF8String];
+    fp_libnotifyPerUserNotificationName = [identifierCopy fp_libnotifyPerUserNotificationName];
+    uTF8String = [fp_libnotifyPerUserNotificationName UTF8String];
     v9 = _registerNotificationsForProviderIdentifier__setNotificationQueue;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __69__NSFileProviderManager__registerNotificationsForProviderIdentifier___block_invoke_2;
     handler[3] = &unk_1E793E310;
-    v10 = v4;
+    v10 = identifierCopy;
     v19 = v10;
-    notify_register_dispatch(v8, &out_token, v9, handler);
+    notify_register_dispatch(uTF8String, &out_token, v9, handler);
 
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.materializedSetChanged", v10];
-    v12 = [v11 fp_libnotifyPerUserNotificationName];
-    v13 = [v12 UTF8String];
+    fp_libnotifyPerUserNotificationName2 = [v11 fp_libnotifyPerUserNotificationName];
+    uTF8String2 = [fp_libnotifyPerUserNotificationName2 UTF8String];
     v14 = _registerNotificationsForProviderIdentifier__setNotificationQueue;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -751,12 +751,12 @@ void __98__NSFileProviderManager_fetchDomainServicerSynchronously_useOutgoingCon
     v16[3] = &unk_1E793E310;
     v15 = v10;
     v17 = v15;
-    notify_register_dispatch(v13, &out_token, v14, v16);
+    notify_register_dispatch(uTF8String2, &out_token, v14, v16);
 
     [_registerNotificationsForProviderIdentifier__registeredNotificationDomains addObject:v15];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __69__NSFileProviderManager__registerNotificationsForProviderIdentifier___block_invoke()
@@ -787,9 +787,9 @@ void __69__NSFileProviderManager__registerNotificationsForProviderIdentifier___b
 
 - (id)_connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connection = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = selfCopy->_connection;
   if (connection)
   {
     v4 = connection;
@@ -798,35 +798,35 @@ void __69__NSFileProviderManager__registerNotificationsForProviderIdentifier___b
   else
   {
     v5 = objc_opt_new();
-    v6 = [v5 newXPCConnection];
+    newXPCConnection = [v5 newXPCConnection];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __36__NSFileProviderManager__connection__block_invoke;
     v16[3] = &unk_1E7939010;
     objc_copyWeak(&v17, &location);
-    [v6 setInvalidationHandler:v16];
-    objc_initWeak(&from, v6);
+    [newXPCConnection setInvalidationHandler:v16];
+    objc_initWeak(&from, newXPCConnection);
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __36__NSFileProviderManager__connection__block_invoke_161;
     v13 = &unk_1E7939010;
     objc_copyWeak(&v14, &from);
-    [v6 setInterruptionHandler:&v10];
-    [v6 resume];
-    v7 = v2->_connection;
-    v2->_connection = v6;
-    v8 = v6;
+    [newXPCConnection setInterruptionHandler:&v10];
+    [newXPCConnection resume];
+    v7 = selfCopy->_connection;
+    selfCopy->_connection = newXPCConnection;
+    v8 = newXPCConnection;
 
-    v4 = v2->_connection;
+    v4 = selfCopy->_connection;
     objc_destroyWeak(&v14);
     objc_destroyWeak(&from);
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -876,16 +876,16 @@ uint64_t __45__NSFileProviderManager_legacyDefaultManager__block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)itemIDForIdentifier:(id)a3
+- (id)itemIDForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [FPItemID alloc];
-  v6 = [(NSFileProviderManager *)self providerIdentifier];
-  v7 = [(NSFileProviderDomain *)self->_domain identifier];
-  v8 = v7;
-  if (v7)
+  providerIdentifier = [(NSFileProviderManager *)self providerIdentifier];
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  v8 = identifier;
+  if (identifier)
   {
-    v9 = v7;
+    v9 = identifier;
   }
 
   else
@@ -893,7 +893,7 @@ uint64_t __45__NSFileProviderManager_legacyDefaultManager__block_invoke(uint64_t
     v9 = @"NSFileProviderDomainDefaultIdentifier";
   }
 
-  v10 = [(FPItemID *)v5 initWithProviderID:v6 domainIdentifier:v9 itemIdentifier:v4];
+  v10 = [(FPItemID *)v5 initWithProviderID:providerIdentifier domainIdentifier:v9 itemIdentifier:identifierCopy];
 
   return v10;
 }
@@ -901,12 +901,12 @@ uint64_t __45__NSFileProviderManager_legacyDefaultManager__block_invoke(uint64_t
 - (id)providerDomainID
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSFileProviderManager *)self providerIdentifier];
-  v5 = [(NSFileProviderDomain *)self->_domain identifier];
-  v6 = v5;
-  if (v5)
+  providerIdentifier = [(NSFileProviderManager *)self providerIdentifier];
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  v6 = identifier;
+  if (identifier)
   {
-    v7 = v5;
+    v7 = identifier;
   }
 
   else
@@ -914,7 +914,7 @@ uint64_t __45__NSFileProviderManager_legacyDefaultManager__block_invoke(uint64_t
     v7 = @"NSFileProviderDomainDefaultIdentifier";
   }
 
-  v8 = [v3 fp_providerDomainIDFromProviderID:v4 domainIdentifier:v7];
+  v8 = [v3 fp_providerDomainIDFromProviderID:providerIdentifier domainIdentifier:v7];
 
   return v8;
 }
@@ -930,28 +930,28 @@ uint64_t __45__NSFileProviderManager_legacyDefaultManager__block_invoke(uint64_t
     [NSFileProviderManager signalEnumeratorForContainerItemIdentifier:completionHandler:];
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(NSMutableDictionary *)v10->_completionHandlersByItemID objectForKeyedSubscript:v8];
-  if (!v11)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(NSMutableDictionary *)selfCopy->_completionHandlersByItemID objectForKeyedSubscript:v8];
+  if (!array)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)v10->_completionHandlersByItemID setObject:v11 forKeyedSubscript:v8];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)selfCopy->_completionHandlersByItemID setObject:array forKeyedSubscript:v8];
   }
 
-  dispatch_group_enter(v10->_signalUpdateGroup);
+  dispatch_group_enter(selfCopy->_signalUpdateGroup);
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __86__NSFileProviderManager_signalEnumeratorForContainerItemIdentifier_completionHandler___block_invoke;
   v17 = &unk_1E7939170;
-  v18 = v10;
+  v18 = selfCopy;
   v12 = v7;
   v19 = v12;
   v13 = _Block_copy(&v14);
-  [v11 addObject:{v13, v14, v15, v16, v17, v18}];
+  [array addObject:{v13, v14, v15, v16, v17, v18}];
 
-  objc_sync_exit(v10);
-  dispatch_source_merge_data(v10->_signalUpdateSource, 1uLL);
+  objc_sync_exit(selfCopy);
+  dispatch_source_merge_data(selfCopy->_signalUpdateSource, 1uLL);
 }
 
 void __86__NSFileProviderManager_signalEnumeratorForContainerItemIdentifier_completionHandler___block_invoke(uint64_t a1)
@@ -967,31 +967,31 @@ void __86__NSFileProviderManager_signalEnumeratorForContainerItemIdentifier_comp
   dispatch_group_leave(v3);
 }
 
-- (void)waitForSignalDeliveryWithCompletionHandler:(id)a3
+- (void)waitForSignalDeliveryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   signalUpdateGroup = self->_signalUpdateGroup;
   signalUpdateQueue = self->_signalUpdateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__NSFileProviderManager_waitForSignalDeliveryWithCompletionHandler___block_invoke;
   block[3] = &unk_1E7939EA8;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_group_notify(signalUpdateGroup, signalUpdateQueue, block);
 }
 
-- (void)_callCompletionHandlers:(id)a3 error:(id)a4
+- (void)_callCompletionHandlers:(id)handlers error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  handlersCopy = handlers;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_signalUpdateQueue);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = handlersCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -1021,23 +1021,23 @@ void __86__NSFileProviderManager_signalEnumeratorForContainerItemIdentifier_comp
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_failToSignalPendingChangesWithError:(id)a3 completionHandlersByItemID:(id)a4
+- (void)_failToSignalPendingChangesWithError:(id)error completionHandlersByItemID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_signalUpdateQueue);
-  if (!v6)
+  if (!errorCopy)
   {
     [NSFileProviderManager _failToSignalPendingChangesWithError:completionHandlersByItemID:];
   }
 
-  v8 = [v7 allKeys];
+  allKeys = [dCopy allKeys];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1049,17 +1049,17 @@ void __86__NSFileProviderManager_signalEnumeratorForContainerItemIdentifier_comp
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
-        v13 = [v7 objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v12)];
-        [(NSFileProviderManager *)self _callCompletionHandlers:v13 error:v6];
+        v13 = [dCopy objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v12)];
+        [(NSFileProviderManager *)self _callCompletionHandlers:v13 error:errorCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -1093,8 +1093,8 @@ void __86__NSFileProviderManager_signalEnumeratorForContainerItemIdentifier_comp
 
   [NSFileProviderManager registerURLSessionTask:forItemWithIdentifier:completionHandler:];
 LABEL_3:
-  v12 = [(NSURLSessionTask *)v9 state];
-  if (v12 != 1)
+  state = [(NSURLSessionTask *)v9 state];
+  if (state != 1)
   {
     v13 = fp_current_or_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1107,7 +1107,7 @@ LABEL_3:
       v30 = 2112;
       v31 = v9;
       v32 = 2048;
-      v33 = [(NSURLSessionTask *)v9 state];
+      state2 = [(NSURLSessionTask *)v9 state];
       v34 = 2112;
       v35 = objc_opt_class();
       v15 = v35;
@@ -1121,7 +1121,7 @@ LABEL_3:
   v20[3] = &unk_1E793E388;
   v20[4] = self;
   v21 = v10;
-  v25 = v12 != 1;
+  v25 = state != 1;
   v23 = v11;
   v24 = a2;
   v22 = v9;
@@ -1225,20 +1225,20 @@ void __88__NSFileProviderManager_registerURLSessionTask_forItemWithIdentifier_co
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)a3 indexReason:(int64_t)a4 completionHandler:(id)a5
+- (void)deleteSearchableItemsWithSpotlightDomainIdentifiers:(id)identifiers indexReason:(int64_t)reason completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __107__NSFileProviderManager_deleteSearchableItemsWithSpotlightDomainIdentifiers_indexReason_completionHandler___block_invoke;
   v12[3] = &unk_1E793E3B0;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v16 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifiersCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  reasonCopy = reason;
+  v10 = handlerCopy;
+  v11 = identifiersCopy;
   [(NSFileProviderManager *)self domainServicerWithCompletionHandler:v12];
 }
 
@@ -1256,21 +1256,21 @@ void __107__NSFileProviderManager_deleteSearchableItemsWithSpotlightDomainIdenti
   [a2 deleteSearchableItemsWithSpotlightDomainIdentifiers:v3 indexReason:v5 completionHandler:v6];
 }
 
-+ (BOOL)writePlaceholderAtURL:(id)a3 withDictionary:(id)a4 error:(id *)a5
++ (BOOL)writePlaceholderAtURL:(id)l withDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v14 = 0;
-  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:a4 format:200 options:0 error:&v14];
+  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v14];
   v9 = v14;
   v10 = v9;
   if (v9)
   {
     NSLog(&cfstr_CouldNotSerial.isa, v9);
-    if (a5)
+    if (error)
     {
       v11 = v10;
       v12 = 0;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -1281,7 +1281,7 @@ void __107__NSFileProviderManager_deleteSearchableItemsWithSpotlightDomainIdenti
 
   else
   {
-    v12 = [v8 writeToURL:v7 options:1 error:a5];
+    v12 = [v8 writeToURL:lCopy options:1 error:error];
   }
 
   return v12;
@@ -1317,28 +1317,28 @@ LABEL_3:
   }
 
   v11 = objc_opt_new();
-  v12 = [v10 filename];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E695DC30]];
+  filename = [v10 filename];
+  [v11 setObject:filename forKeyedSubscript:*MEMORY[0x1E695DC30]];
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v10 contentType];
-    v14 = [v13 identifier];
-    [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x1E695DC68]];
+    contentType = [v10 contentType];
+    identifier = [contentType identifier];
+    [v11 setObject:identifier forKeyedSubscript:*MEMORY[0x1E695DC68]];
   }
 
   else
   {
     v15 = *MEMORY[0x1E695DC68];
-    v13 = [v10 typeIdentifier];
-    [v11 setObject:v13 forKeyedSubscript:v15];
+    contentType = [v10 typeIdentifier];
+    [v11 setObject:contentType forKeyedSubscript:v15];
   }
 
-  v16 = [v10 documentSize];
-  [v11 setObject:v16 forKeyedSubscript:*MEMORY[0x1E695DB50]];
+  documentSize = [v10 documentSize];
+  [v11 setObject:documentSize forKeyedSubscript:*MEMORY[0x1E695DB50]];
 
   [v11 setObject:*MEMORY[0x1E695DB30] forKeyedSubscript:*MEMORY[0x1E695DB20]];
-  v17 = [a1 writePlaceholderAtURL:v8 withDictionary:v11 error:error];
+  v17 = [self writePlaceholderAtURL:v8 withDictionary:v11 error:error];
 
   return v17;
 }
@@ -1361,17 +1361,17 @@ LABEL_3:
   return v5;
 }
 
-- (void)setEjectable:(BOOL)a3 completionHandler:(id)a4
+- (void)setEjectable:(BOOL)ejectable completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__NSFileProviderManager_setEjectable_completionHandler___block_invoke;
   v8[3] = &unk_1E793E3D8;
-  v10 = a3;
+  ejectableCopy = ejectable;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(NSFileProviderManager *)self domainServicerWithCompletionHandler:v8];
 }
 
@@ -1410,19 +1410,19 @@ uint64_t __43__NSFileProviderManager__cacheProviderInfo__block_invoke(uint64_t a
   return v7;
 }
 
-- (id)stateDirectoryURLWithError:(id *)a3
+- (id)stateDirectoryURLWithError:(id *)error
 {
   if (createCaches_onceToken != -1)
   {
     +[NSFileProviderManager registerDomainServicer:forDomain:];
   }
 
-  v5 = [(NSFileProviderDomain *)self->_domain identifier];
-  v6 = v5;
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  v6 = identifier;
   v7 = @"NSFileProviderDomainDefaultIdentifier";
-  if (v5)
+  if (identifier)
   {
-    v7 = v5;
+    v7 = identifier;
   }
 
   v8 = v7;
@@ -1486,9 +1486,9 @@ LABEL_7:
     }
 
 LABEL_10:
-    if (a3 && !v13)
+    if (error && !v13)
     {
-      *a3 = v22[5];
+      *error = v22[5];
       v13 = v28[5];
     }
 
@@ -1546,12 +1546,12 @@ void __52__NSFileProviderManager_stateDirectoryURLWithError___block_invoke_2(uin
     +[NSFileProviderManager registerDomainServicer:forDomain:];
   }
 
-  v5 = [(NSFileProviderDomain *)self->_domain identifier];
-  v6 = v5;
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  v6 = identifier;
   v7 = @"NSFileProviderDomainDefaultIdentifier";
-  if (v5)
+  if (identifier)
   {
-    v7 = v5;
+    v7 = identifier;
   }
 
   v8 = v7;
@@ -1569,10 +1569,10 @@ void __52__NSFileProviderManager_stateDirectoryURLWithError___block_invoke_2(uin
   {
     v14 = v10;
     getpid();
-    v15 = [(NSError *)v14 path];
-    v16 = [v15 fileSystemRepresentation];
+    path = [(NSError *)v14 path];
+    fileSystemRepresentation = [path fileSystemRepresentation];
     v17 = (*MEMORY[0x1E69E9BD0] | *MEMORY[0x1E69E9BC8]);
-    v50 = v16;
+    v50 = fileSystemRepresentation;
     v18 = sandbox_check();
 
     if (!v18)
@@ -1619,14 +1619,14 @@ LABEL_14:
     goto LABEL_52;
   }
 
-  v19 = [MEMORY[0x1E69DF068] sharedManager];
-  v52 = [v19 currentPersona];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v68 = 0;
-  v20 = [v52 userPersonaUniqueString];
-  v21 = [(NSFileProviderDomain *)self->_domain personaIdentifier];
-  v22 = v21;
-  if (v20 == v21)
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  personaIdentifier = [(NSFileProviderDomain *)self->_domain personaIdentifier];
+  v22 = personaIdentifier;
+  if (userPersonaUniqueString == personaIdentifier)
   {
 
 LABEL_27:
@@ -1634,8 +1634,8 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v23 = [(NSFileProviderDomain *)self->_domain personaIdentifier];
-  v24 = [v20 isEqualToString:v23];
+  personaIdentifier2 = [(NSFileProviderDomain *)self->_domain personaIdentifier];
+  v24 = [userPersonaUniqueString isEqualToString:personaIdentifier2];
 
   if ((v24 & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
@@ -1643,7 +1643,7 @@ LABEL_27:
   }
 
   v67 = 0;
-  v25 = [v52 copyCurrentPersonaContextWithError:&v67];
+  v25 = [currentPersona copyCurrentPersonaContextWithError:&v67];
   v26 = v67;
   v27 = v68;
   v68 = v25;
@@ -1657,8 +1657,8 @@ LABEL_27:
     }
   }
 
-  v29 = [(NSFileProviderDomain *)self->_domain personaIdentifier];
-  v51 = [v52 generateAndRestorePersonaContextWithPersonaUniqueString:v29];
+  personaIdentifier3 = [(NSFileProviderDomain *)self->_domain personaIdentifier];
+  v51 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier3];
 
   if (!v51)
   {
@@ -1674,12 +1674,12 @@ LABEL_27:
   }
 
 LABEL_28:
-  v31 = [MEMORY[0x1E696AC08] defaultManager];
-  v32 = [v31 temporaryDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
   v66 = 0;
   v33 = *MEMORY[0x1E695DD70];
-  [v32 getResourceValue:&v66 forKey:*MEMORY[0x1E695DD70] error:0];
+  [temporaryDirectory getResourceValue:&v66 forKey:*MEMORY[0x1E695DD70] error:0];
   v34 = v66;
   v35 = rootURLByDomain;
   objc_sync_enter(v35);
@@ -1706,7 +1706,7 @@ LABEL_35:
     v53[2] = __56__NSFileProviderManager_temporaryDirectoryURLWithError___block_invoke;
     v53[3] = &unk_1E793E498;
     v54 = v34;
-    v55 = v32;
+    v55 = temporaryDirectory;
     v40 = v8;
     v56 = v40;
     v57 = &v69;
@@ -1782,7 +1782,7 @@ LABEL_45:
   v38 = fp_current_or_default_log();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
   {
-    [v32 fp_shortDescription];
+    [temporaryDirectory fp_shortDescription];
     objc_claimAutoreleasedReturnValue();
     [(__CFString *)v8 fp_obfuscatedFilename];
     objc_claimAutoreleasedReturnValue();
@@ -1791,10 +1791,10 @@ LABEL_45:
 
   v39 = temporaryURLByDomain;
   objc_sync_enter(v39);
-  [temporaryURLByDomain setObject:v32 forKey:v8];
+  [temporaryURLByDomain setObject:temporaryDirectory forKey:v8];
   objc_sync_exit(v39);
 
-  v13 = v32;
+  v13 = temporaryDirectory;
 LABEL_51:
 
   _FPRestorePersona(&v68);
@@ -1910,11 +1910,11 @@ void __45__NSFileProviderManager_resolvableErrorCodes__block_invoke()
   resolvableErrorCodes__resolvableErrorCodes = v6;
 }
 
-- (BOOL)isErrorSupportedForSignalResolved:(id)a3
+- (BOOL)isErrorSupportedForSignalResolved:(id)resolved
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"FPResolveErrorItemIdentifierKey"];
+  resolvedCopy = resolved;
+  userInfo = [resolvedCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"FPResolveErrorItemIdentifierKey"];
 
   if (v5)
   {
@@ -1923,11 +1923,11 @@ void __45__NSFileProviderManager_resolvableErrorCodes__block_invoke()
 
   else
   {
-    v7 = [v3 domain];
-    if ([v7 isEqualToString:@"NSFileProviderErrorDomain"])
+    domain = [resolvedCopy domain];
+    if ([domain isEqualToString:@"NSFileProviderErrorDomain"])
     {
       v8 = +[NSFileProviderManager resolvableErrorCodes];
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "code")}];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(resolvedCopy, "code")}];
       v6 = [v8 containsObject:v9];
     }
 
@@ -1964,7 +1964,7 @@ void __45__NSFileProviderManager_resolvableErrorCodes__block_invoke()
     v12[3] = &unk_1E793E4E8;
     v16 = v17;
     v13 = v6;
-    v14 = self;
+    selfCopy = self;
     v15 = v7;
     [(NSFileProviderManager *)self fetchDomainServicerSynchronously:0 useOutgoingConnection:0 completionHandler:v12];
 
@@ -2025,11 +2025,11 @@ void __63__NSFileProviderManager_signalErrorResolved_completionHandler___block_i
   v7 = itemIdentifier;
   v8 = [FPItemID alloc];
   providerIdentifier = self->_providerIdentifier;
-  v10 = [(NSFileProviderDomain *)self->_domain identifier];
-  v11 = v10;
-  if (v10)
+  identifier = [(NSFileProviderDomain *)self->_domain identifier];
+  v11 = identifier;
+  if (identifier)
   {
-    v12 = v10;
+    v12 = identifier;
   }
 
   else
@@ -2092,9 +2092,9 @@ LABEL_3:
 LABEL_6:
 }
 
-+ (BOOL)checkDomainsCanBeStored:(BOOL *)a3 onVolumeAtURL:(id)a4 unsupportedReason:(unint64_t *)a5 error:(id *)a6
++ (BOOL)checkDomainsCanBeStored:(BOOL *)stored onVolumeAtURL:(id)l unsupportedReason:(unint64_t *)reason error:(id *)error
 {
-  v9 = a4;
+  lCopy = l;
   if (FPFeatureFlagEbihilIsEnabled())
   {
     v24 = 0;
@@ -2119,20 +2119,20 @@ LABEL_6:
     v13[4] = &v24;
     v13[5] = &v20;
     v13[6] = &v14;
-    [v10 checkLocationEligibilityForDomain:v9 completionHandler:v13];
-    if (a3)
+    [v10 checkLocationEligibilityForDomain:lCopy completionHandler:v13];
+    if (stored)
     {
-      *a3 = *(v25 + 24);
+      *stored = *(v25 + 24);
     }
 
-    if (a5)
+    if (reason)
     {
-      *a5 = v21[3];
+      *reason = v21[3];
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v15[5];
+      *error = v15[5];
     }
 
     v11 = v15[5] == 0;
@@ -2142,10 +2142,10 @@ LABEL_6:
     _Block_object_dispose(&v24, 8);
   }
 
-  else if (a6)
+  else if (error)
   {
     FPNotSupportedError();
-    *a6 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -2203,7 +2203,7 @@ void __61__NSFileProviderManager_removeDomain_mode_completionHandler___block_inv
   v8[3] = &unk_1E793A3D0;
   v9 = v6;
   v7 = v6;
-  [a1 removeDomain:domain mode:0 completionHandler:v8];
+  [self removeDomain:domain mode:0 completionHandler:v8];
 }
 
 uint64_t __56__NSFileProviderManager_removeDomain_completionHandler___block_invoke(uint64_t a1)
@@ -2211,62 +2211,58 @@ uint64_t __56__NSFileProviderManager_removeDomain_completionHandler___block_invo
   return (*(*(a1 + 32) + 16))();
 }
 
++ (void)removeDomain:(id)domain forProviderIdentifier:(id)identifier completionHandler:(id)handler
 {
-  return (*(*(a1 + 32) + 16))();
-}
-
-+ (void)removeDomain:(id)a3 forProviderIdentifier:(id)a4 completionHandler:(id)a5
-{
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  domainCopy = domain;
   v10 = +[FPDaemonConnection sharedConnectionProxy];
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v9 identifier];
+  identifier = [domainCopy identifier];
 
-  v13 = [v11 fp_providerDomainIDFromProviderID:v8 domainIdentifier:v12];
+  v13 = [v11 fp_providerDomainIDFromProviderID:identifierCopy domainIdentifier:identifier];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__NSFileProviderManager_removeDomain_forProviderIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E793C4D0;
-  v16 = v7;
-  v14 = v7;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   [v10 removeDomainAndPreserveDataWithID:v13 mode:0 completionHandler:v15];
 }
 
-+ (void)addDomain:(id)a3 forProviderIdentifier:(id)a4 byImportingDirectoryAtURL:(id)a5 userAllowedDBDrop:(BOOL)a6 knownFolders:(id)a7 synchronous:(BOOL)a8 completionHandler:(id)a9
++ (void)addDomain:(id)domain forProviderIdentifier:(id)identifier byImportingDirectoryAtURL:(id)l userAllowedDBDrop:(BOOL)drop knownFolders:(id)folders synchronous:(BOOL)synchronous completionHandler:(id)handler
 {
-  v11 = a6;
+  dropCopy = drop;
   v51 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a9;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  lCopy = l;
+  foldersCopy = folders;
+  handlerCopy = handler;
   if (dyld_program_sdk_at_least())
   {
-    v40 = a8;
-    v20 = a1;
-    v21 = v11;
-    v22 = [v15 identifier];
+    synchronousCopy = synchronous;
+    selfCopy = self;
+    v21 = dropCopy;
+    identifier = [domainCopy identifier];
     v48 = 0;
-    v23 = [v22 fp_isValidDomainIdentifierWithError:&v48];
+    v23 = [identifier fp_isValidDomainIdentifierWithError:&v48];
     v24 = v48;
 
     if ((v23 & 1) == 0)
     {
 LABEL_21:
-      v19[2](v19, v24);
+      handlerCopy[2](handlerCopy, v24);
       goto LABEL_22;
     }
 
-    v11 = v21;
-    a1 = v20;
-    a8 = v40;
+    dropCopy = v21;
+    self = selfCopy;
+    synchronous = synchronousCopy;
   }
 
-  if ([v18 count])
+  if ([foldersCopy count])
   {
     v25 = fp_current_or_default_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -2279,8 +2275,8 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  v27 = [v15 identifier];
-  v28 = [v27 length];
+  identifier2 = [domainCopy identifier];
+  v28 = [identifier2 length];
 
   if (!v28)
   {
@@ -2296,13 +2292,13 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  if (([v15 experimentIDIsValid] & 1) == 0)
+  if (([domainCopy experimentIDIsValid] & 1) == 0)
   {
     v32 = fp_current_or_default_log();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v15 userInfo];
-      v34 = [v33 objectForKeyedSubscript:@"NSFileProviderUserInfoExperimentID"];
+      userInfo = [domainCopy userInfo];
+      v34 = [userInfo objectForKeyedSubscript:@"NSFileProviderUserInfoExperimentID"];
       *buf = 138412290;
       v50 = v34;
       _os_log_impl(&dword_1AAAE1000, v32, OS_LOG_TYPE_DEFAULT, "[WARNING] Invalid experimentID: %@", buf, 0xCu);
@@ -2317,15 +2313,15 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v39 = v11;
-  if (v17)
+  v39 = dropCopy;
+  if (lCopy)
   {
     v47 = 0;
-    v24 = [FPSandboxingURLWrapper wrapperWithURL:v17 readonly:0 error:&v47];
+    v24 = [FPSandboxingURLWrapper wrapperWithURL:lCopy readonly:0 error:&v47];
     if (v24)
     {
 
-      v17 = 0;
+      lCopy = 0;
     }
   }
 
@@ -2334,10 +2330,10 @@ LABEL_20:
     v24 = 0;
   }
 
-  v36 = [MEMORY[0x1E69DF078] currentPersona];
-  v37 = [v36 userPersonaUniqueString];
+  currentPersona = [MEMORY[0x1E69DF078] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
-  if (a8)
+  if (synchronous)
   {
     +[FPDaemonConnection synchronousSharedConnectionProxy];
   }
@@ -2351,12 +2347,12 @@ LABEL_20:
   v42[1] = 3221225472;
   v42[2] = __144__NSFileProviderManager_addDomain_forProviderIdentifier_byImportingDirectoryAtURL_userAllowedDBDrop_knownFolders_synchronous_completionHandler___block_invoke;
   v42[3] = &unk_1E793E560;
-  v43 = v37;
-  v44 = v15;
-  v46 = a1;
-  v45 = v19;
-  v38 = v37;
-  [v41 addDomain:v44 forProviderIdentifier:v16 byImportingDirectoryAtURL:v24 nonWrappedURL:v17 userAllowedDBDrop:v39 knownFolders:v18 completionHandler:v42];
+  v43 = userPersonaUniqueString;
+  v44 = domainCopy;
+  selfCopy2 = self;
+  v45 = handlerCopy;
+  v38 = userPersonaUniqueString;
+  [v41 addDomain:v44 forProviderIdentifier:identifierCopy byImportingDirectoryAtURL:v24 nonWrappedURL:lCopy userAllowedDBDrop:v39 knownFolders:foldersCopy completionHandler:v42];
 
 LABEL_22:
   v35 = *MEMORY[0x1E69E9840];
@@ -2420,19 +2416,19 @@ void __144__NSFileProviderManager_addDomain_forProviderIdentifier_byImportingDir
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addDomain:(id)a3 forProviderIdentifier:(id)a4 persona:(id)a5 completionHandler:(id)a6
++ (void)addDomain:(id)domain forProviderIdentifier:(id)identifier persona:(id)persona completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E69DF068] sharedManager];
-  v15 = [v14 currentPersona];
+  domainCopy = domain;
+  identifierCopy = identifier;
+  personaCopy = persona;
+  handlerCopy = handler;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v25 = 0;
-  v16 = [v15 userPersonaUniqueString];
-  v17 = v16;
-  if (v16 == v12 || ([v16 isEqualToString:v12] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  v17 = userPersonaUniqueString;
+  if (userPersonaUniqueString == personaCopy || ([userPersonaUniqueString isEqualToString:personaCopy] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
   {
     v22 = 0;
   }
@@ -2440,7 +2436,7 @@ void __144__NSFileProviderManager_addDomain_forProviderIdentifier_byImportingDir
   else
   {
     v24 = 0;
-    v18 = [v15 copyCurrentPersonaContextWithError:&v24];
+    v18 = [currentPersona copyCurrentPersonaContextWithError:&v24];
     v19 = v24;
     v20 = v25;
     v25 = v18;
@@ -2454,7 +2450,7 @@ void __144__NSFileProviderManager_addDomain_forProviderIdentifier_byImportingDir
       }
     }
 
-    v22 = [v15 generateAndRestorePersonaContextWithPersonaUniqueString:v12];
+    v22 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:personaCopy];
 
     if (v22)
     {
@@ -2466,32 +2462,32 @@ void __144__NSFileProviderManager_addDomain_forProviderIdentifier_byImportingDir
     }
   }
 
-  [a1 addDomain:v10 forProviderIdentifier:v11 byImportingDirectoryAtURL:0 userAllowedDBDrop:0 knownFolders:MEMORY[0x1E695E0F0] completionHandler:v13];
+  [self addDomain:domainCopy forProviderIdentifier:identifierCopy byImportingDirectoryAtURL:0 userAllowedDBDrop:0 knownFolders:MEMORY[0x1E695E0F0] completionHandler:handlerCopy];
 
   _FPRestorePersona(&v25);
 }
 
-+ (void)removeAllDomainsForProviderIdentifier:(id)a3 completionHandler:(id)a4
++ (void)removeAllDomainsForProviderIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v7 = +[FPDaemonConnection sharedConnectionProxy];
-  [v7 removeAllDomainsForProviderIdentifier:v6 completionHandler:v5];
+  [v7 removeAllDomainsForProviderIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-+ (void)getDomainsForProviderIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getDomainsForProviderIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = +[FPDaemonConnection sharedConnectionProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__NSFileProviderManager_getDomainsForProviderIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E793E588;
-  v11 = v6;
-  v12 = a1;
-  v9 = v6;
-  [v8 getDomainsForProviderIdentifier:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  selfCopy = self;
+  v9 = handlerCopy;
+  [v8 getDomainsForProviderIdentifier:identifierCopy completionHandler:v10];
 }
 
 void __75__NSFileProviderManager_getDomainsForProviderIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -2555,7 +2551,7 @@ void __75__NSFileProviderManager_getDomainsForProviderIdentifier_completionHandl
     v6 = v7;
   }
 
-  [a1 getDomainsForProviderIdentifier:0 completionHandler:v6];
+  [self getDomainsForProviderIdentifier:0 completionHandler:v6];
 }
 
 void __57__NSFileProviderManager_getDomainsWithCompletionHandler___block_invoke()
@@ -2580,26 +2576,26 @@ void __57__NSFileProviderManager_getDomainsWithCompletionHandler___block_invoke_
 + (NSFileProviderManager)managerForDomain:(NSFileProviderDomain *)domain
 {
   v4 = domain;
-  v5 = [[a1 alloc] _initWithProviderIdentifier:0 domain:v4];
+  v5 = [[self alloc] _initWithProviderIdentifier:0 domain:v4];
 
   return v5;
 }
 
-+ (NSFileProviderManager)managerWithProviderIdentifier:(id)a3 groupName:(id)a4 domain:(id)a5
++ (NSFileProviderManager)managerWithProviderIdentifier:(id)identifier groupName:(id)name domain:(id)domain
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithProviderIdentifier:v10 groupName:v9 domain:v8];
+  domainCopy = domain;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v11 = [[self alloc] _initWithProviderIdentifier:identifierCopy groupName:nameCopy domain:domainCopy];
 
   return v11;
 }
 
-+ (BOOL)fileProviderReadyForBackupOrMigrationForSourceURL:(id)a3 error:(id *)a4
++ (BOOL)fileProviderReadyForBackupOrMigrationForSourceURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = FPNotSupportedError();
+    *error = FPNotSupportedError();
   }
 
   return 0;
@@ -2617,36 +2613,36 @@ void __57__NSFileProviderManager_getDomainsWithCompletionHandler___block_invoke_
   [(NSFileProviderManager *)&v5 dealloc];
 }
 
-- (void)removeDomain:(id)a3 options:(int64_t)a4 completionHandler:(id)a5
+- (void)removeDomain:(id)domain options:(int64_t)options completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a5;
-  if (a4 >= 3)
+  domainCopy = domain;
+  handlerCopy = handler;
+  if (options >= 3)
   {
-    v11 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:22 description:{@"Invalid options provided to removeDomain:options:%lu completionHandler:", a4}];
-    v8[2](v8, 0, v11);
+    providerIdentifier = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:22 description:{@"Invalid options provided to removeDomain:options:%lu completionHandler:", options}];
+    handlerCopy[2](handlerCopy, 0, providerIdentifier);
   }
 
   else
   {
-    v9 = qword_1AAC268B0[a4];
+    v9 = qword_1AAC268B0[options];
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(NSFileProviderManager *)self providerIdentifier];
-    v12 = [v14 identifier];
-    v13 = [v10 fp_providerDomainIDFromProviderID:v11 domainIdentifier:v12];
-    [FPProviderDomain removeDomainAndPreserveDataWithID:v13 mode:v9 completionHandler:v8];
+    providerIdentifier = [(NSFileProviderManager *)self providerIdentifier];
+    identifier = [domainCopy identifier];
+    v13 = [v10 fp_providerDomainIDFromProviderID:providerIdentifier domainIdentifier:identifier];
+    [FPProviderDomain removeDomainAndPreserveDataWithID:v13 mode:v9 completionHandler:handlerCopy];
   }
 }
 
-- (BOOL)removeDomain:(id)a3 options:(int64_t)a4 preservedLocation:(id *)a5 error:(id *)a6
+- (BOOL)removeDomain:(id)domain options:(int64_t)options preservedLocation:(id *)location error:(id *)error
 {
-  v10 = a3;
-  if (a4 >= 3)
+  domainCopy = domain;
+  if (options >= 3)
   {
-    if (a6)
+    if (error)
     {
-      [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:22 description:{@"Invalid options provided to removeDomain:options:%lu completionHandler:", a4}];
-      *a6 = v18 = 0;
+      [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:22 description:{@"Invalid options provided to removeDomain:options:%lu completionHandler:", options}];
+      *error = v18 = 0;
     }
 
     else
@@ -2657,7 +2653,7 @@ void __57__NSFileProviderManager_getDomainsWithCompletionHandler___block_invoke_
 
   else
   {
-    v11 = qword_1AAC268B0[a4];
+    v11 = qword_1AAC268B0[options];
     v27 = 0;
     v28 = &v27;
     v29 = 0x3032000000;
@@ -2672,9 +2668,9 @@ void __57__NSFileProviderManager_getDomainsWithCompletionHandler___block_invoke_
     v26 = 0;
     v12 = +[FPDaemonConnection synchronousSharedConnectionProxy];
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(NSFileProviderManager *)self providerIdentifier];
-    v15 = [v10 identifier];
-    v16 = [v13 fp_providerDomainIDFromProviderID:v14 domainIdentifier:v15];
+    providerIdentifier = [(NSFileProviderManager *)self providerIdentifier];
+    identifier = [domainCopy identifier];
+    v16 = [v13 fp_providerDomainIDFromProviderID:providerIdentifier domainIdentifier:identifier];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __70__NSFileProviderManager_removeDomain_options_preservedLocation_error___block_invoke;
@@ -2687,15 +2683,15 @@ void __57__NSFileProviderManager_getDomainsWithCompletionHandler___block_invoke_
     v18 = v17 == 0;
     if (v17)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = v17;
+        *error = v17;
       }
     }
 
-    else if (a5)
+    else if (location)
     {
-      *a5 = [v28[5] url];
+      *location = [v28[5] url];
     }
 
     _Block_object_dispose(&v21, 8);
@@ -2720,32 +2716,32 @@ void __70__NSFileProviderManager_removeDomain_options_preservedLocation_error___
   *(v9 + 40) = v6;
 }
 
-- (void)removeDomain:(id)a3 completionHandler:(id)a4
+- (void)removeDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__NSFileProviderManager_removeDomain_completionHandler___block_invoke;
   v8[3] = &unk_1E793A3D0;
-  v9 = v6;
-  v7 = v6;
-  [(NSFileProviderManager *)self removeDomain:a3 options:0 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(NSFileProviderManager *)self removeDomain:domain options:0 completionHandler:v8];
 }
 
-- (void)getDomainsWithCompletionHandler:(id)a3
+- (void)getDomainsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_class();
-  v6 = [(NSFileProviderManager *)self providerIdentifier];
-  [v5 getDomainsForProviderIdentifier:v6 completionHandler:v4];
+  providerIdentifier = [(NSFileProviderManager *)self providerIdentifier];
+  [v5 getDomainsForProviderIdentifier:providerIdentifier completionHandler:handlerCopy];
 }
 
-- (void)removeAllDomainsWithCompletionHandler:(id)a3
+- (void)removeAllDomainsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_class();
-  v6 = [(NSFileProviderManager *)self providerIdentifier];
-  [v5 removeAllDomainsForProviderIdentifier:v6 completionHandler:v4];
+  providerIdentifier = [(NSFileProviderManager *)self providerIdentifier];
+  [v5 removeAllDomainsForProviderIdentifier:providerIdentifier completionHandler:handlerCopy];
 }
 
 - (NSProgress)globalProgressForKind:(NSProgressFileOperationKind)kind
@@ -2770,9 +2766,9 @@ void __70__NSFileProviderManager_removeDomain_options_preservedLocation_error___
 
 - (void)startObservingUploadProgress
 {
-  v3 = [(FPProgressUpdater *)self->_uploadProxy progress];
+  progress = [(FPProgressUpdater *)self->_uploadProxy progress];
 
-  if (v3)
+  if (progress)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -2832,9 +2828,9 @@ LABEL_10:
 
 - (void)startObservingDownloadProgress
 {
-  v3 = [(FPProgressUpdater *)self->_downloadProxy progress];
+  progress = [(FPProgressUpdater *)self->_downloadProxy progress];
 
-  if (v3)
+  if (progress)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
@@ -2892,14 +2888,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)startObservingGlobalProgressForKind:(id)a3
+- (id)startObservingGlobalProgressForKind:(id)kind
 {
-  v4 = a3;
-  v5 = v4;
+  kindCopy = kind;
+  v5 = kindCopy;
   if (self->_domain)
   {
     v6 = *MEMORY[0x1E696A870];
-    v7 = [v4 isEqualToString:*MEMORY[0x1E696A870]];
+    v7 = [kindCopy isEqualToString:*MEMORY[0x1E696A870]];
     v8 = MEMORY[0x1E696A848];
     if (!v7 || (p_downloadProxy = &self->_uploadProxy, [(FPProgressUpdater *)self->_uploadProxy progress], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
     {
@@ -2909,35 +2905,35 @@ LABEL_10:
       }
 
       p_downloadProxy = &self->_downloadProxy;
-      v11 = [(FPProgressUpdater *)self->_downloadProxy progress];
+      progress = [(FPProgressUpdater *)self->_downloadProxy progress];
 
-      if (!v11)
+      if (!progress)
       {
         goto LABEL_7;
       }
     }
 
-    v12 = [(FPProgressUpdater *)*p_downloadProxy progress];
-    if (!v12)
+    progress2 = [(FPProgressUpdater *)*p_downloadProxy progress];
+    if (!progress2)
     {
 LABEL_7:
-      v12 = objc_alloc_init(FPProgressProxy);
-      [(FPProgressProxy *)v12 setUpdateFileCount:1];
-      [(FPProgressProxy *)v12 setCompletedUnitCount:1];
-      [(FPProgressProxy *)v12 setTotalUnitCount:1];
-      [(FPProgressProxy *)v12 setFileCompletedCount:&unk_1F1FC9AA0];
-      [(FPProgressProxy *)v12 setFileTotalCount:&unk_1F1FC9AA0];
-      [(FPProgressProxy *)v12 setKind:*MEMORY[0x1E696A888]];
-      [(FPProgressProxy *)v12 setFileOperationKind:v5];
+      progress2 = objc_alloc_init(FPProgressProxy);
+      [(FPProgressProxy *)progress2 setUpdateFileCount:1];
+      [(FPProgressProxy *)progress2 setCompletedUnitCount:1];
+      [(FPProgressProxy *)progress2 setTotalUnitCount:1];
+      [(FPProgressProxy *)progress2 setFileCompletedCount:&unk_1F1FC9AA0];
+      [(FPProgressProxy *)progress2 setFileTotalCount:&unk_1F1FC9AA0];
+      [(FPProgressProxy *)progress2 setKind:*MEMORY[0x1E696A888]];
+      [(FPProgressProxy *)progress2 setFileOperationKind:v5];
       if ([v5 isEqualToString:v6])
       {
-        [(FPProgressUpdater *)self->_uploadProxy setProgress:v12];
+        [(FPProgressUpdater *)self->_uploadProxy setProgress:progress2];
         [(NSFileProviderManager *)self startObservingUploadProgress];
       }
 
       if ([v5 isEqualToString:*v8])
       {
-        [(FPProgressUpdater *)self->_downloadProxy setProgress:v12];
+        [(FPProgressUpdater *)self->_downloadProxy setProgress:progress2];
         [(NSFileProviderManager *)self startObservingDownloadProgress];
       }
     }
@@ -2945,10 +2941,10 @@ LABEL_7:
 
   else
   {
-    v12 = 0;
+    progress2 = 0;
   }
 
-  return v12;
+  return progress2;
 }
 
 - (id)enumeratorForMaterializedItems
@@ -2975,7 +2971,7 @@ LABEL_7:
     +[NSFileProviderManager(Import) importDomain:fromDirectoryAtURL:completionHandler:];
   }
 
-  [a1 addDomain:v10 forProviderIdentifier:0 byImportingDirectoryAtURL:v8 userAllowedDBDrop:0 knownFolders:MEMORY[0x1E695E0F0] completionHandler:v9];
+  [self addDomain:v10 forProviderIdentifier:0 byImportingDirectoryAtURL:v8 userAllowedDBDrop:0 knownFolders:MEMORY[0x1E695E0F0] completionHandler:v9];
 }
 
 - (void)reimportItemsBelowItemWithIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler
@@ -2987,7 +2983,7 @@ LABEL_7:
   v10[2] = __88__NSFileProviderManager_Import__reimportItemsBelowItemWithIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E793E708;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = v7;
   v8 = v7;
   v9 = v6;
@@ -3016,7 +3012,7 @@ void __88__NSFileProviderManager_Import__reimportItemsBelowItemWithIdentifier_co
   v13[2] = __109__NSFileProviderManager_Import__requestModificationOfFields_forItemWithIdentifier_options_completionHandler___block_invoke;
   v13[3] = &unk_1E793E3B0;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = v10;
   v17 = fields;
   v11 = v10;
@@ -3038,41 +3034,41 @@ void __109__NSFileProviderManager_Import__requestModificationOfFields_forItemWit
   [a2 ingestFromCacheItemWithIdentifier:v3 requestedFields:v5 completionHandler:v6];
 }
 
-+ (void)importDomain:(id)a3 forProviderIdentifier:(id)a4 fromDirectoryAtURL:(id)a5 completionHandler:(id)a6
++ (void)importDomain:(id)domain forProviderIdentifier:(id)identifier fromDirectoryAtURL:(id)l completionHandler:(id)handler
 {
-  v13 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (([v13 isReplicated] & 1) == 0 && (objc_msgSend(v13, "isReplicated") & 1) == 0)
+  domainCopy = domain;
+  identifierCopy = identifier;
+  lCopy = l;
+  handlerCopy = handler;
+  if (([domainCopy isReplicated] & 1) == 0 && (objc_msgSend(domainCopy, "isReplicated") & 1) == 0)
   {
     +[NSFileProviderManager(ImportPrivate) importDomain:forProviderIdentifier:fromDirectoryAtURL:completionHandler:];
   }
 
-  [a1 addDomain:v13 forProviderIdentifier:v10 byImportingDirectoryAtURL:v11 userAllowedDBDrop:0 knownFolders:MEMORY[0x1E695E0F0] completionHandler:v12];
+  [self addDomain:domainCopy forProviderIdentifier:identifierCopy byImportingDirectoryAtURL:lCopy userAllowedDBDrop:0 knownFolders:MEMORY[0x1E695E0F0] completionHandler:handlerCopy];
 }
 
-+ (void)importDomain:(id)a3 forProviderIdentifier:(id)a4 fromDirectoryAtURL:(id)a5 knownFolders:(id)a6 completionHandler:(id)a7
++ (void)importDomain:(id)domain forProviderIdentifier:(id)identifier fromDirectoryAtURL:(id)l knownFolders:(id)folders completionHandler:(id)handler
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (([v16 isReplicated] & 1) == 0 && (objc_msgSend(v16, "isReplicated") & 1) == 0)
+  domainCopy = domain;
+  identifierCopy = identifier;
+  lCopy = l;
+  foldersCopy = folders;
+  handlerCopy = handler;
+  if (([domainCopy isReplicated] & 1) == 0 && (objc_msgSend(domainCopy, "isReplicated") & 1) == 0)
   {
     +[NSFileProviderManager(ImportPrivate) importDomain:forProviderIdentifier:fromDirectoryAtURL:knownFolders:completionHandler:];
   }
 
-  [a1 addDomain:v16 forProviderIdentifier:v12 byImportingDirectoryAtURL:v13 userAllowedDBDrop:0 knownFolders:v14 completionHandler:v15];
+  [self addDomain:domainCopy forProviderIdentifier:identifierCopy byImportingDirectoryAtURL:lCopy userAllowedDBDrop:0 knownFolders:foldersCopy completionHandler:handlerCopy];
 }
 
-+ (BOOL)addDomain:(id)a3 forProviderIdentifier:(id)a4 byImportingDirectoryAtURL:(id)a5 knownFolders:(id)a6 error:(id *)a7
++ (BOOL)addDomain:(id)domain forProviderIdentifier:(id)identifier byImportingDirectoryAtURL:(id)l knownFolders:(id)folders error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  lCopy = l;
+  foldersCopy = folders;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -3084,11 +3080,11 @@ void __109__NSFileProviderManager_Import__requestModificationOfFields_forItemWit
   v19[2] = __117__NSFileProviderManager_ImportPrivate__addDomain_forProviderIdentifier_byImportingDirectoryAtURL_knownFolders_error___block_invoke;
   v19[3] = &unk_1E793B278;
   v19[4] = &v20;
-  [a1 addDomain:v12 forProviderIdentifier:v13 byImportingDirectoryAtURL:v14 userAllowedDBDrop:0 knownFolders:v15 synchronous:1 completionHandler:v19];
+  [self addDomain:domainCopy forProviderIdentifier:identifierCopy byImportingDirectoryAtURL:lCopy userAllowedDBDrop:0 knownFolders:foldersCopy synchronous:1 completionHandler:v19];
   v16 = v21[5];
-  if (a7 && v16)
+  if (error && v16)
   {
-    *a7 = v16;
+    *error = v16;
     v16 = v21[5];
   }
 
@@ -3114,17 +3110,17 @@ void __109__NSFileProviderManager_Import__requestModificationOfFields_forItemWit
   [(NSFileProviderManager *)self domainServicerWithCompletionHandler:v10];
 }
 
-- (void)waitForStabilizationWithMode:(unint64_t)a3 completionHandler:(id)a4
+- (void)waitForStabilizationWithMode:(unint64_t)mode completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__NSFileProviderManager_Stabilization__waitForStabilizationWithMode_completionHandler___block_invoke;
   v8[3] = &unk_1E793E730;
-  v9 = v6;
-  v10 = a3;
+  v9 = handlerCopy;
+  modeCopy = mode;
   v8[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   [(NSFileProviderManager *)self domainServicerWithCompletionHandler:v8];
 }
 
@@ -3137,7 +3133,7 @@ void __109__NSFileProviderManager_Import__requestModificationOfFields_forItemWit
   v10[2] = __77__NSFileProviderManager_Eviction__evictItemWithIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E793E708;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = v7;
   v8 = v7;
   v9 = v6;
@@ -3174,27 +3170,27 @@ void __77__NSFileProviderManager_Eviction__evictItemWithIdentifier_completionHan
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)lookupRequestingApplicationIdentifier:(id)a3 reason:(id)a4 completionHandler:(id)a5
+- (void)lookupRequestingApplicationIdentifier:(id)identifier reason:(id)reason completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, v7);
 }
 
-- (void)ingestFromCacheItemWithIdentifier:(id)a3 requestedFields:(unint64_t)a4 completionHandler:(id)a5
+- (void)ingestFromCacheItemWithIdentifier:(id)identifier requestedFields:(unint64_t)fields completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __109__NSFileProviderManager_ForceIngestion__ingestFromCacheItemWithIdentifier_requestedFields_completionHandler___block_invoke;
   v12[3] = &unk_1E793E3B0;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v16 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  fieldsCopy = fields;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   [(NSFileProviderManager *)self domainServicerWithCompletionHandler:v12];
 }
 
@@ -3272,8 +3268,8 @@ void __109__NSFileProviderManager_ForceIngestion__ingestFromCacheItemWithIdentif
     v8 = v19[5];
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"NSFileProviderManager.m" lineNumber:2251 description:@"missing operations"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderManager.m" lineNumber:2251 description:@"missing operations"];
 
       v8 = v19[5];
     }
@@ -3404,8 +3400,8 @@ void __89__NSFileProviderManager_TestingModeInteractive__listAvailableTestingOpe
     v21 = v40[5];
     if (!v21)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"NSFileProviderManager.m" lineNumber:2284 description:@"missing operations"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderManager.m" lineNumber:2284 description:@"missing operations"];
 
       v21 = v40[5];
     }
@@ -3455,27 +3451,27 @@ void __76__NSFileProviderManager_TestingModeInteractive__runTestingOperations_er
   *(v9 + 40) = v6;
 }
 
-- (id)_test_existingProgressForKind:(id)a3
+- (id)_test_existingProgressForKind:(id)kind
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x1E696A870]])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:*MEMORY[0x1E696A870]])
   {
     v5 = 120;
 LABEL_5:
-    v6 = [*(&self->super.isa + v5) progress];
+    progress = [*(&self->super.isa + v5) progress];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E696A848]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E696A848]])
   {
     v5 = 112;
     goto LABEL_5;
   }
 
-  v6 = 0;
+  progress = 0;
 LABEL_7:
 
-  return v6;
+  return progress;
 }
 
 - (void)getServiceWithName:(NSFileProviderServiceName)serviceName itemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier completionHandler:(void *)completionHandler
@@ -3488,7 +3484,7 @@ LABEL_7:
   v14[2] = __100__NSFileProviderManager_NSFileProviderService__getServiceWithName_itemIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E793E7A8;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v17 = v9;
   v18 = v10;
   v11 = v10;
@@ -3599,19 +3595,19 @@ void __108__NSFileProviderManager_Materialize__requestDownloadForItemWithIdentif
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDiagnosticAttributesForItems:(id)a3 completionHandler:(id)a4
+- (void)getDiagnosticAttributesForItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__NSFileProviderManager_PrivateDiagnostics__getDiagnosticAttributesForItems_completionHandler___block_invoke;
   v10[3] = &unk_1E793E708;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = itemsCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = itemsCopy;
   [(NSFileProviderManager *)self domainServicerWithCompletionHandler:v10];
 }
 
@@ -3628,25 +3624,25 @@ void __95__NSFileProviderManager_PrivateDiagnostics__getDiagnosticAttributesForI
   [a2 getDiagnosticAttributesForItems:v3 completionHandler:v5];
 }
 
-- (void)claimKnownFolders:(id)a3 localizedReason:(id)a4 completionHandler:(id)a5
+- (void)claimKnownFolders:(id)folders localizedReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)releaseKnownFolders:(unint64_t)a3 localizedReason:(id)a4 completionHandler:(id)a5
+- (void)releaseKnownFolders:(unint64_t)folders localizedReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
-- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)a3 errorReason:(id)a4 completionHandler:(id)a5
+- (void)requestDiagnosticCollectionForItemWithIdentifier:(id)identifier errorReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = FPNotSupportedError();
-  (*(a5 + 2))(v6, v7);
+  (*(handler + 2))(handlerCopy, v7);
 }
 
 - (void)fetchDomainServicerSynchronously:useOutgoingConnection:completionHandler:.cold.2()

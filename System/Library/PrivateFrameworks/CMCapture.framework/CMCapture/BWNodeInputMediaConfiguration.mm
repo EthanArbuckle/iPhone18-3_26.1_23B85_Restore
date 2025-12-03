@@ -1,6 +1,6 @@
 @interface BWNodeInputMediaConfiguration
 - (BWNodeInputMediaConfiguration)init;
-- (void)_setAssociatedAttachedMediaKey:(id)a3;
+- (void)_setAssociatedAttachedMediaKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -26,9 +26,9 @@
   [(BWNodeInputMediaConfiguration *)&v3 dealloc];
 }
 
-- (void)_setAssociatedAttachedMediaKey:(id)a3
+- (void)_setAssociatedAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     v3 = MEMORY[0x1E695DF30];
     v4 = *MEMORY[0x1E695D940];
@@ -45,7 +45,7 @@ LABEL_6:
     objc_exception_throw([v3 exceptionWithName:v4 reason:v5 userInfo:0]);
   }
 
-  self->_associatedAttachedMediaKey = [a3 copy];
+  self->_associatedAttachedMediaKey = [key copy];
 }
 
 @end

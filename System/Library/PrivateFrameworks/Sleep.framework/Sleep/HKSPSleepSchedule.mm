@@ -1,35 +1,35 @@
 @interface HKSPSleepSchedule
-+ (id)emptyScheduleWithSyncAnchor:(id)a3;
++ (id)emptyScheduleWithSyncAnchor:(id)anchor;
 + (id)innerClasses;
 - (BOOL)hasOccurrences;
 - (BOOL)isDefaultSchedule;
 - (BOOL)isEnabledAndHasOccurrences;
 - (BOOL)meetsDefaultSleepGoal;
 - (HKSPSleepSchedule)init;
-- (HKSPSleepSchedule)initWithCoder:(id)a3;
+- (HKSPSleepSchedule)initWithCoder:(id)coder;
 - (HKSPSleepScheduleOccurrence)overrideOccurrence;
 - (NSArray)occurrences;
 - (double)maximumAllowableWindDown;
 - (id)_unsortedOccurrences;
-- (id)_wakeUpComponentsByAddingSleepDurationGoalToBedtimeComponents:(id)a3;
-- (id)allowableRangeForModifiedOccurrence:(id)a3 gregorianCalendar:(id)a4;
-- (id)allowableRangeForWeekdays:(unint64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_wakeUpComponentsByAddingSleepDurationGoalToBedtimeComponents:(id)components;
+- (id)allowableRangeForModifiedOccurrence:(id)occurrence gregorianCalendar:(id)calendar;
+- (id)allowableRangeForWeekdays:(unint64_t)weekdays;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)emptyCopy;
-- (id)initFromObject:(id)a3;
+- (id)initFromObject:(id)object;
 - (id)mutableCopy;
 - (id)mutableOccurrenceTemplate;
-- (id)objectWithSyncAnchor:(id)a3;
-- (id)occurrenceOnDay:(int64_t)a3;
-- (id)occurrencesAfterDate:(id)a3 gregorianCalendar:(id)a4;
-- (id)occurrencesOnDays:(unint64_t)a3;
-- (id)overridenOccurrenceForOverrideOccurrence:(id)a3;
+- (id)objectWithSyncAnchor:(id)anchor;
+- (id)occurrenceOnDay:(int64_t)day;
+- (id)occurrencesAfterDate:(id)date gregorianCalendar:(id)calendar;
+- (id)occurrencesOnDays:(unint64_t)days;
+- (id)overridenOccurrenceForOverrideOccurrence:(id)occurrence;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)weekdaysWithOccurrences;
-- (void)_enumerateDayOccurrencesWithBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_enumerateDayOccurrencesWithBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSPSleepSchedule
@@ -52,38 +52,38 @@
   return v3;
 }
 
-- (id)initFromObject:(id)a3
+- (id)initFromObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [(HKSPSleepSchedule *)self init];
     HKSPCopyFromObject(v5, v6);
-    v7 = [v5 syncAnchor];
+    syncAnchor = [v5 syncAnchor];
 
-    v8 = [v7 copyWithZone:0];
+    v8 = [syncAnchor copyWithZone:0];
     syncAnchor = v6->_syncAnchor;
     v6->_syncAnchor = v8;
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)objectWithSyncAnchor:(id)a3
+- (id)objectWithSyncAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [objc_alloc(objc_opt_class()) initFromObject:self];
-  v6 = [v4 copyWithZone:0];
+  v6 = [anchorCopy copyWithZone:0];
 
   v7 = v5[4];
   v5[4] = v6;
@@ -91,28 +91,28 @@
   return v5;
 }
 
-+ (id)emptyScheduleWithSyncAnchor:(id)a3
++ (id)emptyScheduleWithSyncAnchor:(id)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   v4 = objc_alloc_init(_HKSPEmptySleepSchedule);
-  v5 = [(HKSPSleepSchedule *)v4 objectWithSyncAnchor:v3];
+  v5 = [(HKSPSleepSchedule *)v4 objectWithSyncAnchor:anchorCopy];
 
   return v5;
 }
 
-- (HKSPSleepSchedule)initWithCoder:(id)a3
+- (HKSPSleepSchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKSPSleepSchedule;
   v5 = [(HKSPSleepSchedule *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    HKSPDecodeObjectWithCoder(v5, v4);
-    if (([v4 hksp_serializationOptions] & 1) == 0)
+    HKSPDecodeObjectWithCoder(v5, coderCopy);
+    if (([coderCopy hksp_serializationOptions] & 1) == 0)
     {
-      v7 = [v4 decodeObjectOfClass:HKSPSyncAnchorClass() forKey:@"HKSPScheduleSyncAnchor"];
+      v7 = [coderCopy decodeObjectOfClass:HKSPSyncAnchorClass() forKey:@"HKSPScheduleSyncAnchor"];
       syncAnchor = v6->_syncAnchor;
       v6->_syncAnchor = v7;
     }
@@ -123,84 +123,84 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  HKSPEncodeObjectWithCoder(self, v4);
-  if (([v4 hksp_serializationOptions] & 1) == 0)
+  coderCopy = coder;
+  HKSPEncodeObjectWithCoder(self, coderCopy);
+  if (([coderCopy hksp_serializationOptions] & 1) == 0)
   {
-    [v4 encodeObject:self->_syncAnchor forKey:@"HKSPScheduleSyncAnchor"];
+    [coderCopy encodeObject:self->_syncAnchor forKey:@"HKSPScheduleSyncAnchor"];
   }
 }
 
-- (void)_enumerateDayOccurrencesWithBlock:(id)a3
+- (void)_enumerateDayOccurrencesWithBlock:(id)block
 {
-  v21 = a3;
-  v4 = [(HKSPSleepSchedule *)self mondayOccurrence];
+  blockCopy = block;
+  mondayOccurrence = [(HKSPSleepSchedule *)self mondayOccurrence];
 
-  if (v4)
+  if (mondayOccurrence)
   {
-    v5 = [(HKSPSleepSchedule *)self mondayOccurrence];
-    v21[2](v21, 2, v5);
+    mondayOccurrence2 = [(HKSPSleepSchedule *)self mondayOccurrence];
+    blockCopy[2](blockCopy, 2, mondayOccurrence2);
   }
 
-  v6 = [(HKSPSleepSchedule *)self tuesdayOccurrence];
+  tuesdayOccurrence = [(HKSPSleepSchedule *)self tuesdayOccurrence];
 
-  if (v6)
+  if (tuesdayOccurrence)
   {
-    v7 = [(HKSPSleepSchedule *)self tuesdayOccurrence];
-    v21[2](v21, 3, v7);
+    tuesdayOccurrence2 = [(HKSPSleepSchedule *)self tuesdayOccurrence];
+    blockCopy[2](blockCopy, 3, tuesdayOccurrence2);
   }
 
-  v8 = [(HKSPSleepSchedule *)self wednesdayOccurrence];
+  wednesdayOccurrence = [(HKSPSleepSchedule *)self wednesdayOccurrence];
 
-  if (v8)
+  if (wednesdayOccurrence)
   {
-    v9 = [(HKSPSleepSchedule *)self wednesdayOccurrence];
-    v21[2](v21, 4, v9);
+    wednesdayOccurrence2 = [(HKSPSleepSchedule *)self wednesdayOccurrence];
+    blockCopy[2](blockCopy, 4, wednesdayOccurrence2);
   }
 
-  v10 = [(HKSPSleepSchedule *)self thursdayOccurrence];
+  thursdayOccurrence = [(HKSPSleepSchedule *)self thursdayOccurrence];
 
-  if (v10)
+  if (thursdayOccurrence)
   {
-    v11 = [(HKSPSleepSchedule *)self thursdayOccurrence];
-    v21[2](v21, 5, v11);
+    thursdayOccurrence2 = [(HKSPSleepSchedule *)self thursdayOccurrence];
+    blockCopy[2](blockCopy, 5, thursdayOccurrence2);
   }
 
-  v12 = [(HKSPSleepSchedule *)self fridayOccurrence];
+  fridayOccurrence = [(HKSPSleepSchedule *)self fridayOccurrence];
 
-  if (v12)
+  if (fridayOccurrence)
   {
-    v13 = [(HKSPSleepSchedule *)self fridayOccurrence];
-    v21[2](v21, 6, v13);
+    fridayOccurrence2 = [(HKSPSleepSchedule *)self fridayOccurrence];
+    blockCopy[2](blockCopy, 6, fridayOccurrence2);
   }
 
-  v14 = [(HKSPSleepSchedule *)self saturdayOccurrence];
+  saturdayOccurrence = [(HKSPSleepSchedule *)self saturdayOccurrence];
 
-  if (v14)
+  if (saturdayOccurrence)
   {
-    v15 = [(HKSPSleepSchedule *)self saturdayOccurrence];
-    v21[2](v21, 7, v15);
+    saturdayOccurrence2 = [(HKSPSleepSchedule *)self saturdayOccurrence];
+    blockCopy[2](blockCopy, 7, saturdayOccurrence2);
   }
 
-  v16 = [(HKSPSleepSchedule *)self sundayOccurrence];
+  sundayOccurrence = [(HKSPSleepSchedule *)self sundayOccurrence];
 
-  if (v16)
+  if (sundayOccurrence)
   {
-    v17 = [(HKSPSleepSchedule *)self sundayOccurrence];
-    v21[2](v21, 1, v17);
+    sundayOccurrence2 = [(HKSPSleepSchedule *)self sundayOccurrence];
+    blockCopy[2](blockCopy, 1, sundayOccurrence2);
   }
 
-  v18 = [(HKSPSleepSchedule *)self overrideDayOccurrence];
+  overrideDayOccurrence = [(HKSPSleepSchedule *)self overrideDayOccurrence];
 
-  v19 = v21;
-  if (v18)
+  v19 = blockCopy;
+  if (overrideDayOccurrence)
   {
-    v20 = [(HKSPSleepSchedule *)self overrideDayOccurrence];
-    v21[2](v21, 0, v20);
+    overrideDayOccurrence2 = [(HKSPSleepSchedule *)self overrideDayOccurrence];
+    blockCopy[2](blockCopy, 0, overrideDayOccurrence2);
 
-    v19 = v21;
+    v19 = blockCopy;
   }
 }
 
@@ -277,36 +277,36 @@ void __41__HKSPSleepSchedule__unsortedOccurrences__block_invoke_2(uint64_t a1, v
 
 - (BOOL)hasOccurrences
 {
-  v2 = [(HKSPSleepSchedule *)self _unsortedOccurrences];
-  v3 = [v2 count] != 0;
+  _unsortedOccurrences = [(HKSPSleepSchedule *)self _unsortedOccurrences];
+  v3 = [_unsortedOccurrences count] != 0;
 
   return v3;
 }
 
 - (BOOL)isEnabledAndHasOccurrences
 {
-  v3 = [(HKSPSleepSchedule *)self isEnabled];
-  if (v3)
+  isEnabled = [(HKSPSleepSchedule *)self isEnabled];
+  if (isEnabled)
   {
 
-    LOBYTE(v3) = [(HKSPSleepSchedule *)self hasOccurrences];
+    LOBYTE(isEnabled) = [(HKSPSleepSchedule *)self hasOccurrences];
   }
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)meetsDefaultSleepGoal
 {
-  v3 = [(HKSPSleepSchedule *)self hasOccurrences];
-  if (v3)
+  hasOccurrences = [(HKSPSleepSchedule *)self hasOccurrences];
+  if (hasOccurrences)
   {
-    v4 = [(HKSPSleepSchedule *)self occurrences];
-    v5 = [v4 na_all:&__block_literal_global_11];
+    occurrences = [(HKSPSleepSchedule *)self occurrences];
+    v5 = [occurrences na_all:&__block_literal_global_11];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(hasOccurrences) = v5;
   }
 
-  return v3;
+  return hasOccurrences;
 }
 
 - (BOOL)isDefaultSchedule
@@ -319,22 +319,22 @@ void __41__HKSPSleepSchedule__unsortedOccurrences__block_invoke_2(uint64_t a1, v
   v3 = [(HKSPSleepSchedule *)self occurrencesOnDays:127];
   if ([v3 count] == 1 && (objc_msgSend(v3, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "weekdays"), v4, v5 == 127))
   {
-    v6 = [v3 firstObject];
-    v7 = [v6 usesDefaultBedtimeAndWakeUpComponents];
+    firstObject = [v3 firstObject];
+    usesDefaultBedtimeAndWakeUpComponents = [firstObject usesDefaultBedtimeAndWakeUpComponents];
   }
 
   else
   {
-    v7 = 0;
+    usesDefaultBedtimeAndWakeUpComponents = 0;
   }
 
-  return v7;
+  return usesDefaultBedtimeAndWakeUpComponents;
 }
 
 - (NSArray)occurrences
 {
-  v2 = [(HKSPSleepSchedule *)self _unsortedOccurrences];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_301_0];
+  _unsortedOccurrences = [(HKSPSleepSchedule *)self _unsortedOccurrences];
+  v3 = [_unsortedOccurrences sortedArrayUsingComparator:&__block_literal_global_301_0];
 
   return v3;
 }
@@ -371,27 +371,27 @@ uint64_t __32__HKSPSleepSchedule_occurrences__block_invoke(uint64_t a1, void *a2
 
 - (HKSPSleepScheduleOccurrence)overrideOccurrence
 {
-  v2 = [(HKSPSleepSchedule *)self overrideDayOccurrence];
-  v3 = [v2 generateSleepScheduleOccurrenceWithWeekdays:0];
+  overrideDayOccurrence = [(HKSPSleepSchedule *)self overrideDayOccurrence];
+  v3 = [overrideDayOccurrence generateSleepScheduleOccurrenceWithWeekdays:0];
 
   return v3;
 }
 
-- (id)overridenOccurrenceForOverrideOccurrence:(id)a3
+- (id)overridenOccurrenceForOverrideOccurrence:(id)occurrence
 {
-  v4 = a3;
-  if ([v4 isSingleDayOverride])
+  occurrenceCopy = occurrence;
+  if ([occurrenceCopy isSingleDayOverride])
   {
-    v5 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v6 = [(HKSPSleepSchedule *)self occurrences];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    occurrences = [(HKSPSleepSchedule *)self occurrences];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __62__HKSPSleepSchedule_overridenOccurrenceForOverrideOccurrence___block_invoke;
     v10[3] = &unk_279C74C68;
-    v11 = v4;
-    v12 = v5;
-    v7 = v5;
-    v8 = [v6 na_firstObjectPassingTest:v10];
+    v11 = occurrenceCopy;
+    v12 = hk_gregorianCalendar;
+    v7 = hk_gregorianCalendar;
+    v8 = [occurrences na_firstObjectPassingTest:v10];
   }
 
   else
@@ -418,29 +418,29 @@ uint64_t __62__HKSPSleepSchedule_overridenOccurrenceForOverrideOccurrence___bloc
   return v4;
 }
 
-- (id)occurrencesAfterDate:(id)a3 gregorianCalendar:(id)a4
+- (id)occurrencesAfterDate:(id)date gregorianCalendar:(id)calendar
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 calendarIdentifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CBE5C0]];
+  dateCopy = date;
+  calendarCopy = calendar;
+  calendarIdentifier = [calendarCopy calendarIdentifier];
+  v10 = [calendarIdentifier isEqualToString:*MEMORY[0x277CBE5C0]];
 
   if ((v10 & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HKSPSleepSchedule.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"[[gregorianCalendar calendarIdentifier] isEqualToString:NSCalendarIdentifierGregorian]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPSleepSchedule.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"[[gregorianCalendar calendarIdentifier] isEqualToString:NSCalendarIdentifierGregorian]"}];
   }
 
-  v11 = [(HKSPSleepSchedule *)self occurrences];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __60__HKSPSleepSchedule_occurrencesAfterDate_gregorianCalendar___block_invoke;
   v17[3] = &unk_279C74C68;
-  v18 = v8;
-  v19 = v7;
-  v12 = v7;
-  v13 = v8;
-  v14 = [v11 na_filter:v17];
+  v18 = calendarCopy;
+  v19 = dateCopy;
+  v12 = dateCopy;
+  v13 = calendarCopy;
+  v14 = [occurrences na_filter:v17];
 
   return v14;
 }
@@ -467,8 +467,8 @@ uint64_t __60__HKSPSleepSchedule_occurrencesAfterDate_gregorianCalendar___block_
 
 - (id)mutableOccurrenceTemplate
 {
-  v3 = [(HKSPSleepSchedule *)self occurrences];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_314];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
+  v4 = [occurrences na_firstObjectPassingTest:&__block_literal_global_314];
   v5 = v4;
   if (v4)
   {
@@ -484,122 +484,122 @@ uint64_t __60__HKSPSleepSchedule_occurrencesAfterDate_gregorianCalendar___block_
 
   v8 = [[HKSPMutableSleepScheduleOccurrence alloc] initWithTemplateOccurrence:v7];
   [(HKSPMutableSleepScheduleOccurrence *)v8 setWeekdays:[(HKSPSleepSchedule *)self weekdaysWithoutOccurrences]];
-  v9 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
+  bedtimeComponents = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
 
-  if (!v9)
+  if (!bedtimeComponents)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [(HKSPMutableSleepScheduleOccurrence *)v8 setBedtimeComponents:v10];
   }
 
-  v11 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+  wakeUpComponents = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
 
-  if (!v11)
+  if (!wakeUpComponents)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [(HKSPMutableSleepScheduleOccurrence *)v8 setWakeUpComponents:v12];
   }
 
-  v13 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
-  if ([v13 hour] == 0x7FFFFFFFFFFFFFFFLL)
+  bedtimeComponents2 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
+  if ([bedtimeComponents2 hour] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
-    v14 = [v15 minute] == 0x7FFFFFFFFFFFFFFFLL;
+    bedtimeComponents3 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
+    v14 = [bedtimeComponents3 minute] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v16 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
-  if ([v16 hour] == 0x7FFFFFFFFFFFFFFFLL)
+  wakeUpComponents2 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+  if ([wakeUpComponents2 hour] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = 1;
   }
 
   else
   {
-    v18 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
-    v17 = [v18 minute] == 0x7FFFFFFFFFFFFFFFLL;
+    wakeUpComponents3 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+    v17 = [wakeUpComponents3 minute] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   [(HKSPSleepSchedule *)self sleepDurationGoal];
   v20 = v19;
   if (v14)
   {
-    v21 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
-    [v21 setHour:22];
+    bedtimeComponents4 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
+    [bedtimeComponents4 setHour:22];
 
-    v22 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
-    [v22 setMinute:30];
+    bedtimeComponents5 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
+    [bedtimeComponents5 setMinute:30];
   }
 
   if (v17)
   {
     if (v20 <= 0.0)
     {
-      v29 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
-      [v29 setHour:7];
+      wakeUpComponents4 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+      [wakeUpComponents4 setHour:7];
 
-      v24 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
-      [v24 setMinute:0];
+      wakeUpComponents5 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+      [wakeUpComponents5 setMinute:0];
     }
 
     else
     {
-      v23 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
-      v24 = [(HKSPSleepSchedule *)self _wakeUpComponentsByAddingSleepDurationGoalToBedtimeComponents:v23];
+      bedtimeComponents6 = [(HKSPSleepScheduleOccurrence *)v8 bedtimeComponents];
+      wakeUpComponents5 = [(HKSPSleepSchedule *)self _wakeUpComponentsByAddingSleepDurationGoalToBedtimeComponents:bedtimeComponents6];
 
-      v25 = [v24 hour];
-      v26 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
-      [v26 setHour:v25];
+      hour = [wakeUpComponents5 hour];
+      wakeUpComponents6 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+      [wakeUpComponents6 setHour:hour];
 
-      v27 = [v24 minute];
-      v28 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
-      [v28 setMinute:v27];
+      minute = [wakeUpComponents5 minute];
+      wakeUpComponents7 = [(HKSPSleepScheduleOccurrence *)v8 wakeUpComponents];
+      [wakeUpComponents7 setMinute:minute];
     }
   }
 
   return v8;
 }
 
-- (id)_wakeUpComponentsByAddingSleepDurationGoalToBedtimeComponents:(id)a3
+- (id)_wakeUpComponentsByAddingSleepDurationGoalToBedtimeComponents:(id)components
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 dateFromComponents:v5];
+  componentsCopy = components;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar dateFromComponents:componentsCopy];
 
   [(HKSPSleepSchedule *)self sleepDurationGoal];
   v8 = [v7 dateByAddingTimeInterval:?];
-  v9 = [v6 components:96 fromDate:v8];
+  v9 = [currentCalendar components:96 fromDate:v8];
 
   return v9;
 }
 
-- (id)occurrencesOnDays:(unint64_t)a3
+- (id)occurrencesOnDays:(unint64_t)days
 {
-  v4 = [(HKSPSleepSchedule *)self occurrences];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__HKSPSleepSchedule_occurrencesOnDays___block_invoke;
   v7[3] = &__block_descriptor_40_e37_B16__0__HKSPSleepScheduleOccurrence_8l;
-  v7[4] = a3;
-  v5 = [v4 na_filter:v7];
+  v7[4] = days;
+  v5 = [occurrences na_filter:v7];
 
   return v5;
 }
 
-- (id)occurrenceOnDay:(int64_t)a3
+- (id)occurrenceOnDay:(int64_t)day
 {
-  v4 = [(HKSPSleepSchedule *)self occurrences];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke;
   v7[3] = &__block_descriptor_40_e37_B16__0__HKSPSleepScheduleOccurrence_8l;
-  v7[4] = a3;
-  v5 = [v4 na_firstObjectPassingTest:v7];
+  v7[4] = day;
+  v5 = [occurrences na_firstObjectPassingTest:v7];
 
   return v5;
 }
@@ -621,8 +621,8 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(HKSPSleepSchedule *)self occurrences];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
+  v3 = [occurrences countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -634,7 +634,7 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(occurrences);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -644,7 +644,7 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [occurrences countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -659,9 +659,9 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
   return v5;
 }
 
-- (id)allowableRangeForWeekdays:(unint64_t)a3
+- (id)allowableRangeForWeekdays:(unint64_t)weekdays
 {
-  v5 = HKSPDaysForWeekdays(a3);
+  v5 = HKSPDaysForWeekdays(weekdays);
   v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v42[0] = MEMORY[0x277D85DD0];
@@ -674,7 +674,7 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
   v44 = v9;
   v10 = v7;
   v45 = v10;
-  HKSPWeekdaysEnumerateDays(a3, v42, 0);
+  HKSPWeekdaysEnumerateDays(weekdays, v42, 0);
   v11 = [(HKSPSleepSchedule *)self occurrencesOnDays:HKSPWeekdaysFromDays(v9)];
   v12 = [v11 na_filter:&__block_literal_global_321];
   v36 = 0;
@@ -689,12 +689,12 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
   v35[3] = &unk_279C74CD8;
   v35[4] = &v36;
   [v12 na_each:v35];
-  v13 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   v27 = v8;
   if (v37[5])
   {
     [(HKSPSleepSchedule *)self windDownTime];
-    v15 = [v13 hksp_componentsByAddingTimeInterval:v37[5] toComponents:-v14];
+    v15 = [hk_gregorianCalendar hksp_componentsByAddingTimeInterval:v37[5] toComponents:-v14];
   }
 
   else
@@ -704,7 +704,7 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
     [v15 setMinute:59];
   }
 
-  v16 = [v13 hksp_componentsByAddingTimeInterval:v15 toComponents:-60.0];
+  v16 = [hk_gregorianCalendar hksp_componentsByAddingTimeInterval:v15 toComponents:-60.0];
   v17 = [(HKSPSleepSchedule *)self occurrencesOnDays:HKSPWeekdaysFromDays(v10)];
   v26 = v12;
   v29 = 0;
@@ -723,9 +723,9 @@ BOOL __37__HKSPSleepSchedule_occurrenceOnDay___block_invoke(uint64_t a1, void *a
   if (v30[5])
   {
     [(HKSPSleepSchedule *)self windDownTime];
-    v19 = [v13 hksp_componentsByAddingTimeInterval:v30[5] toComponents:?];
+    v19 = [hk_gregorianCalendar hksp_componentsByAddingTimeInterval:v30[5] toComponents:?];
     v20 = [v30[5] hksp_compareHourAndMinuteComponents:v19];
-    v21 = [v13 hksp_componentsByAddingTimeInterval:v19 toComponents:60.0];
+    v21 = [hk_gregorianCalendar hksp_componentsByAddingTimeInterval:v19 toComponents:60.0];
     v22 = v20 != 1;
   }
 
@@ -873,28 +873,28 @@ LABEL_5:
   }
 }
 
-- (id)allowableRangeForModifiedOccurrence:(id)a3 gregorianCalendar:(id)a4
+- (id)allowableRangeForModifiedOccurrence:(id)occurrence gregorianCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  occurrenceCopy = occurrence;
+  calendarCopy = calendar;
   v8 = [(HKSPSleepSchedule *)self mutableCopy];
-  if ([v6 isSingleDayOverride])
+  if ([occurrenceCopy isSingleDayOverride])
   {
-    v9 = HKSPWeekdaysFromDay([v6 overrideDayInCalendar:v7]);
-    v10 = v9;
+    weekdays = HKSPWeekdaysFromDay([occurrenceCopy overrideDayInCalendar:calendarCopy]);
+    unsignedIntegerValue = weekdays;
   }
 
   else
   {
-    v11 = [v6 changeSet];
-    v12 = [v11 originalValueForPropertyIdentifier:@"HKSPOccurrenceWeekdays"];
-    v10 = [v12 unsignedIntegerValue];
+    changeSet = [occurrenceCopy changeSet];
+    v12 = [changeSet originalValueForPropertyIdentifier:@"HKSPOccurrenceWeekdays"];
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-    v9 = [v6 weekdays];
+    weekdays = [occurrenceCopy weekdays];
   }
 
-  [v8 _modifyDayOccurrencesForWeekdays:v10 block:&__block_literal_global_328];
-  v13 = [v8 allowableRangeForWeekdays:v9];
+  [v8 _modifyDayOccurrencesForWeekdays:unsignedIntegerValue block:&__block_literal_global_328];
+  v13 = [v8 allowableRangeForWeekdays:weekdays];
 
   return v13;
 }
@@ -909,13 +909,13 @@ LABEL_5:
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v12 = 1;
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__HKSPSleepSchedule_maximumAllowableWindDown__block_invoke;
   v7[3] = &unk_279C74D20;
   v7[4] = self;
-  v4 = v3;
+  v4 = hk_gregorianCalendar;
   v8 = v4;
   v9 = &v13;
   v10 = v11;
@@ -1026,14 +1026,14 @@ LABEL_26:
 - (id)emptyCopy
 {
   v2 = [(HKSPSleepSchedule *)self mutableCopy];
-  v3 = [v2 occurrences];
+  occurrences = [v2 occurrences];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__HKSPSleepSchedule_emptyCopy__block_invoke;
   v7[3] = &unk_279C74D48;
   v8 = v2;
   v4 = v2;
-  [v3 na_each:v7];
+  [occurrences na_each:v7];
 
   v5 = [v4 copy];
 
@@ -1060,10 +1060,10 @@ LABEL_26:
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPSleepSchedule *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPSleepSchedule *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -1071,8 +1071,8 @@ LABEL_26:
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendBool:-[HKSPSleepSchedule isEnabled](self withName:{"isEnabled"), @"enabled"}];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HKSPSleepSchedule *)self occurrences];
-  v7 = [v5 stringWithFormat:@"%lu occurrences", objc_msgSend(v6, "count")];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
+  v7 = [v5 stringWithFormat:@"%lu occurrences", objc_msgSend(occurrences, "count")];
   [v3 appendString:v7 withName:@"occurrences"];
 
   [(HKSPSleepSchedule *)self windDownTime];
@@ -1083,22 +1083,22 @@ LABEL_26:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPSleepSchedule *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPSleepSchedule *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v7 = [v6 appendBool:-[HKSPSleepSchedule isEnabled](self withName:{"isEnabled"), @"enabled"}];
-  v8 = [(HKSPSleepSchedule *)self occurrences];
-  [v6 appendArraySection:v8 withName:@"occurrences" multilinePrefix:v5 skipIfEmpty:0];
+  occurrences = [(HKSPSleepSchedule *)self occurrences];
+  [v6 appendArraySection:occurrences withName:@"occurrences" multilinePrefix:prefixCopy skipIfEmpty:0];
 
   [(HKSPSleepSchedule *)self windDownTime];
   v9 = [v6 appendDouble:@"windDownTime" withName:1 decimalPrecision:?];

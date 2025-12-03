@@ -55,12 +55,12 @@
   {
     v7 = [objc_alloc(MEMORY[0x1E69C0918]) initWithBundleAtURL:v5];
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [(_PXAssetResourceBag *)v7 imagePath];
-    v10 = [v8 fileURLWithPath:v9];
+    imagePath = [(_PXAssetResourceBag *)v7 imagePath];
+    v10 = [v8 fileURLWithPath:imagePath];
 
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [(_PXAssetResourceBag *)v7 videoPath];
-    v13 = [v11 fileURLWithPath:v12];
+    videoPath = [(_PXAssetResourceBag *)v7 videoPath];
+    v13 = [v11 fileURLWithPath:videoPath];
 
     v14 = [[_PXAssetResourceBag alloc] initWithResourceType:1 atURL:v10];
     v15 = [[_PXAssetResourceBag alloc] initWithResourceType:9 atURL:v13];
@@ -168,7 +168,7 @@ LABEL_9:
         if (v10)
         {
           v18 = PFCurrentPlatformLivePhotoBundleType();
-          v17 = [v18 identifier];
+          identifier = [v18 identifier];
 
           goto LABEL_21;
         }
@@ -204,15 +204,15 @@ LABEL_9:
         }
 
         v16 = *(*(&v20 + 1) + 8 * j);
-        if ([a1 _px_isSupportedUniformTypeIdentifier:{v16, v20}])
+        if ([self _px_isSupportedUniformTypeIdentifier:{v16, v20}])
         {
-          v17 = v16;
+          identifier = v16;
           goto LABEL_21;
         }
       }
 
       v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
-      v17 = 0;
+      identifier = 0;
       if (v13)
       {
         continue;
@@ -224,46 +224,46 @@ LABEL_9:
 
   else
   {
-    v17 = 0;
+    identifier = 0;
   }
 
 LABEL_21:
 
-  return v17;
+  return identifier;
 }
 
 - (void)px_createStreamShareSourceWithCompletionBlock:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 _px_bestTypeIdentifierForItemProvider:a1];
+  v5 = [self _px_bestTypeIdentifierForItemProvider:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__NSItemProvider_PhotosUICore__px_createStreamShareSourceWithCompletionBlock___block_invoke;
   v9[3] = &unk_1E77346A8;
   v10 = v5;
   v11 = v4;
-  v9[4] = a1;
+  v9[4] = self;
   v6 = v5;
   v7 = v4;
-  v8 = [a1 loadFileRepresentationForTypeIdentifier:v6 completionHandler:v9];
+  v8 = [self loadFileRepresentationForTypeIdentifier:v6 completionHandler:v9];
 }
 
 - (void)px_createAssetWithImportSessionID:()PhotosUICore completionBlock:
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _px_bestTypeIdentifierForItemProvider:a1];
+  v8 = [self _px_bestTypeIdentifierForItemProvider:self];
   v9 = +[PXDragAndDropSettings sharedInstance];
-  v10 = [v9 useData];
+  useData = [v9 useData];
 
-  if (v10)
+  if (useData)
   {
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __82__NSItemProvider_PhotosUICore__px_createAssetWithImportSessionID_completionBlock___block_invoke;
     v26[3] = &unk_1E772F218;
     v11 = &v27;
-    v26[4] = a1;
+    v26[4] = self;
     v27 = v8;
     v12 = &v28;
     v13 = &v29;
@@ -272,7 +272,7 @@ LABEL_21:
     v14 = v6;
     v15 = v8;
     v16 = v7;
-    v17 = [a1 loadDataRepresentationForTypeIdentifier:v15 completionHandler:v26];
+    v17 = [self loadDataRepresentationForTypeIdentifier:v15 completionHandler:v26];
   }
 
   else
@@ -283,7 +283,7 @@ LABEL_21:
     v22[3] = &unk_1E772F240;
     v11 = &v25;
     v12 = &v23;
-    v22[4] = a1;
+    v22[4] = self;
     v23 = v8;
     v13 = &v24;
     v24 = v6;
@@ -291,7 +291,7 @@ LABEL_21:
     v18 = v6;
     v19 = v8;
     v20 = v7;
-    v21 = [a1 loadFileRepresentationForTypeIdentifier:v19 completionHandler:v22];
+    v21 = [self loadFileRepresentationForTypeIdentifier:v19 completionHandler:v22];
   }
 }
 

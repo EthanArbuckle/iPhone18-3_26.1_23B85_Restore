@@ -1,8 +1,8 @@
 @interface UARPHeySiriModelCompact
 + (id)tag;
-- (BOOL)processDynamicAsset:(id *)a3;
+- (BOOL)processDynamicAsset:(id *)asset;
 - (UARPHeySiriModelCompact)init;
-- (void)currentHeySiriModel:(id)a3 fallbackModel:(id)a4 error:(id)a5;
+- (void)currentHeySiriModel:(id)model fallbackModel:(id)fallbackModel error:(id)error;
 @end
 
 @implementation UARPHeySiriModelCompact
@@ -14,11 +14,11 @@
   return 0;
 }
 
-- (BOOL)processDynamicAsset:(id *)a3
+- (BOOL)processDynamicAsset:(id *)asset
 {
   v11.receiver = self;
   v11.super_class = UARPHeySiriModelCompact;
-  v4 = [(UARPHeySiriModelBase *)&v11 processDynamicAsset:a3];
+  v4 = [(UARPHeySiriModelBase *)&v11 processDynamicAsset:asset];
   if (v4)
   {
     v10.receiver = self;
@@ -33,28 +33,28 @@
 
     else
     {
-      v8 = self;
+      selfCopy = self;
       v5 = &selRef_checkCurrentHeySiriModel;
-      v6 = &v8;
+      v6 = &selfCopy;
     }
 
     v6->super_class = UARPHeySiriModelCompact;
-    objc_msgSendSuper2(v6, *v5, v8);
+    objc_msgSendSuper2(v6, *v5, selfCopy);
   }
 
   return v4;
 }
 
-- (void)currentHeySiriModel:(id)a3 fallbackModel:(id)a4 error:(id)a5
+- (void)currentHeySiriModel:(id)model fallbackModel:(id)fallbackModel error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  errorCopy = error;
+  fallbackModelCopy = fallbackModel;
+  modelCopy = model;
   v11 = +[UARPHeySiriModelCompact tag];
   v12 = [[UARPAssetVersion alloc] initWithMajorVersion:0 minorVersion:0 releaseVersion:0 buildVersion:0];
   v13.receiver = self;
   v13.super_class = UARPHeySiriModelCompact;
-  [(UARPHeySiriModelBase *)&v13 offerDownloadModel:v10 fallbackModel:v9 tag:v11 assetVersion:v12 error:v8];
+  [(UARPHeySiriModelBase *)&v13 offerDownloadModel:modelCopy fallbackModel:fallbackModelCopy tag:v11 assetVersion:v12 error:errorCopy];
 }
 
 + (id)tag

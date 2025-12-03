@@ -1,23 +1,23 @@
 @interface AKTextFieldAnnotationEventHandler
-- (BOOL)handleDownEvent:(id)a3 orRecognizer:(id)a4;
+- (BOOL)handleDownEvent:(id)event orRecognizer:(id)recognizer;
 @end
 
 @implementation AKTextFieldAnnotationEventHandler
 
-- (BOOL)handleDownEvent:(id)a3 orRecognizer:(id)a4
+- (BOOL)handleDownEvent:(id)event orRecognizer:(id)recognizer
 {
-  v5 = a4;
-  v6 = [(AKAnnotationEventHandler *)self annotation];
-  v7 = [v6 editingDisabled];
+  recognizerCopy = recognizer;
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  editingDisabled = [annotation editingDisabled];
 
-  if ((v7 & 1) == 0)
+  if ((editingDisabled & 1) == 0)
   {
-    v8 = [(AKAnnotationEventHandler *)self pageController];
-    v9 = [v8 controller];
-    [v9 showSelectionMenu:v5];
+    pageController = [(AKAnnotationEventHandler *)self pageController];
+    controller = [pageController controller];
+    [controller showSelectionMenu:recognizerCopy];
   }
 
-  return v7 ^ 1;
+  return editingDisabled ^ 1;
 }
 
 @end

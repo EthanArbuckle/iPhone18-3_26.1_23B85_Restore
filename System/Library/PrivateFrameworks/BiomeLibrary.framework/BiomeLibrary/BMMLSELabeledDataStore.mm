@@ -1,39 +1,39 @@
 @interface BMMLSELabeledDataStore
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSELabeledDataStore)initWithItemIdentifier:(id)a3 featureVersion:(id)a4 featureVector:(id)a5 deviceIdentifier:(id)a6 isPositiveLabeled:(id)a7 labelingPolicyVersion:(id)a8 labelingEvidence:(int)a9 sharingEventUID:(id)a10 configurationInfo:(id)a11;
-- (BMMLSELabeledDataStore)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSELabeledDataStore)initWithItemIdentifier:(id)identifier featureVersion:(id)version featureVector:(id)vector deviceIdentifier:(id)deviceIdentifier isPositiveLabeled:(id)labeled labelingPolicyVersion:(id)policyVersion labelingEvidence:(int)evidence sharingEventUID:(id)self0 configurationInfo:(id)self1;
+- (BMMLSELabeledDataStore)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_featureVectorJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSELabeledDataStore
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMLSELabeledDataStore *)self itemIdentifier];
-    v7 = [v5 itemIdentifier];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    itemIdentifier = [(BMMLSELabeledDataStore *)self itemIdentifier];
+    itemIdentifier2 = [v5 itemIdentifier];
+    v8 = itemIdentifier2;
+    if (itemIdentifier == itemIdentifier2)
     {
     }
 
     else
     {
-      v9 = [(BMMLSELabeledDataStore *)self itemIdentifier];
-      v10 = [v5 itemIdentifier];
-      v11 = [v9 isEqual:v10];
+      itemIdentifier3 = [(BMMLSELabeledDataStore *)self itemIdentifier];
+      itemIdentifier4 = [v5 itemIdentifier];
+      v11 = [itemIdentifier3 isEqual:itemIdentifier4];
 
       if (!v11)
       {
@@ -53,25 +53,25 @@
         goto LABEL_33;
       }
 
-      v13 = [(BMMLSELabeledDataStore *)self featureVersion];
-      if (v13 != [v5 featureVersion])
+      featureVersion = [(BMMLSELabeledDataStore *)self featureVersion];
+      if (featureVersion != [v5 featureVersion])
       {
         goto LABEL_33;
       }
     }
 
-    v14 = [(BMMLSELabeledDataStore *)self featureVector];
-    v15 = [v5 featureVector];
-    v16 = v15;
-    if (v14 == v15)
+    featureVector = [(BMMLSELabeledDataStore *)self featureVector];
+    featureVector2 = [v5 featureVector];
+    v16 = featureVector2;
+    if (featureVector == featureVector2)
     {
     }
 
     else
     {
-      v17 = [(BMMLSELabeledDataStore *)self featureVector];
-      v18 = [v5 featureVector];
-      v19 = [v17 isEqual:v18];
+      featureVector3 = [(BMMLSELabeledDataStore *)self featureVector];
+      featureVector4 = [v5 featureVector];
+      v19 = [featureVector3 isEqual:featureVector4];
 
       if (!v19)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v20 = [(BMMLSELabeledDataStore *)self deviceIdentifier];
-    v21 = [v5 deviceIdentifier];
-    v22 = v21;
-    if (v20 == v21)
+    deviceIdentifier = [(BMMLSELabeledDataStore *)self deviceIdentifier];
+    deviceIdentifier2 = [v5 deviceIdentifier];
+    v22 = deviceIdentifier2;
+    if (deviceIdentifier == deviceIdentifier2)
     {
     }
 
     else
     {
-      v23 = [(BMMLSELabeledDataStore *)self deviceIdentifier];
-      v24 = [v5 deviceIdentifier];
-      v25 = [v23 isEqual:v24];
+      deviceIdentifier3 = [(BMMLSELabeledDataStore *)self deviceIdentifier];
+      deviceIdentifier4 = [v5 deviceIdentifier];
+      v25 = [deviceIdentifier3 isEqual:deviceIdentifier4];
 
       if (!v25)
       {
@@ -110,8 +110,8 @@
         goto LABEL_33;
       }
 
-      v26 = [(BMMLSELabeledDataStore *)self isPositiveLabeled];
-      if (v26 != [v5 isPositiveLabeled])
+      isPositiveLabeled = [(BMMLSELabeledDataStore *)self isPositiveLabeled];
+      if (isPositiveLabeled != [v5 isPositiveLabeled])
       {
         goto LABEL_33;
       }
@@ -129,31 +129,31 @@
         goto LABEL_33;
       }
 
-      v27 = [(BMMLSELabeledDataStore *)self labelingPolicyVersion];
-      if (v27 != [v5 labelingPolicyVersion])
+      labelingPolicyVersion = [(BMMLSELabeledDataStore *)self labelingPolicyVersion];
+      if (labelingPolicyVersion != [v5 labelingPolicyVersion])
       {
         goto LABEL_33;
       }
     }
 
-    v28 = [(BMMLSELabeledDataStore *)self labelingEvidence];
-    if (v28 != [v5 labelingEvidence])
+    labelingEvidence = [(BMMLSELabeledDataStore *)self labelingEvidence];
+    if (labelingEvidence != [v5 labelingEvidence])
     {
       goto LABEL_33;
     }
 
-    v29 = [(BMMLSELabeledDataStore *)self sharingEventUID];
-    v30 = [v5 sharingEventUID];
-    v31 = v30;
-    if (v29 == v30)
+    sharingEventUID = [(BMMLSELabeledDataStore *)self sharingEventUID];
+    sharingEventUID2 = [v5 sharingEventUID];
+    v31 = sharingEventUID2;
+    if (sharingEventUID == sharingEventUID2)
     {
     }
 
     else
     {
-      v32 = [(BMMLSELabeledDataStore *)self sharingEventUID];
-      v33 = [v5 sharingEventUID];
-      v34 = [v32 isEqual:v33];
+      sharingEventUID3 = [(BMMLSELabeledDataStore *)self sharingEventUID];
+      sharingEventUID4 = [v5 sharingEventUID];
+      v34 = [sharingEventUID3 isEqual:sharingEventUID4];
 
       if (!v34)
       {
@@ -165,18 +165,18 @@ LABEL_34:
       }
     }
 
-    v36 = [(BMMLSELabeledDataStore *)self configurationInfo];
-    v37 = [v5 configurationInfo];
-    if (v36 == v37)
+    configurationInfo = [(BMMLSELabeledDataStore *)self configurationInfo];
+    configurationInfo2 = [v5 configurationInfo];
+    if (configurationInfo == configurationInfo2)
     {
       v12 = 1;
     }
 
     else
     {
-      v38 = [(BMMLSELabeledDataStore *)self configurationInfo];
-      v39 = [v5 configurationInfo];
-      v12 = [v38 isEqual:v39];
+      configurationInfo3 = [(BMMLSELabeledDataStore *)self configurationInfo];
+      configurationInfo4 = [v5 configurationInfo];
+      v12 = [configurationInfo3 isEqual:configurationInfo4];
     }
 
     goto LABEL_34;
@@ -191,7 +191,7 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v34[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMLSELabeledDataStore *)self itemIdentifier];
+  itemIdentifier = [(BMMLSELabeledDataStore *)self itemIdentifier];
   if ([(BMMLSELabeledDataStore *)self hasFeatureVersion])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStore featureVersion](self, "featureVersion")}];
@@ -202,8 +202,8 @@ LABEL_35:
     v4 = 0;
   }
 
-  v5 = [(BMMLSELabeledDataStore *)self _featureVectorJSONArray];
-  v6 = [(BMMLSELabeledDataStore *)self deviceIdentifier];
+  _featureVectorJSONArray = [(BMMLSELabeledDataStore *)self _featureVectorJSONArray];
+  deviceIdentifier = [(BMMLSELabeledDataStore *)self deviceIdentifier];
   if ([(BMMLSELabeledDataStore *)self hasIsPositiveLabeled])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSELabeledDataStore isPositiveLabeled](self, "isPositiveLabeled")}];
@@ -225,93 +225,93 @@ LABEL_35:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSELabeledDataStore labelingEvidence](self, "labelingEvidence")}];
-  v10 = [(BMMLSELabeledDataStore *)self sharingEventUID];
-  v11 = [(BMMLSELabeledDataStore *)self configurationInfo];
+  sharingEventUID = [(BMMLSELabeledDataStore *)self sharingEventUID];
+  configurationInfo = [(BMMLSELabeledDataStore *)self configurationInfo];
   v33[0] = @"itemIdentifier";
-  v12 = v3;
-  if (!v3)
+  null = itemIdentifier;
+  if (!itemIdentifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v12;
-  v34[0] = v12;
+  v27 = null;
+  v34[0] = null;
   v33[1] = @"featureVersion";
-  v13 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v13;
-  v34[1] = v13;
+  v26 = null2;
+  v34[1] = null2;
   v33[2] = @"featureVector";
-  v14 = v5;
-  if (!v5)
+  null3 = _featureVectorJSONArray;
+  if (!_featureVectorJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v3;
-  v25 = v14;
-  v34[2] = v14;
+  v32 = itemIdentifier;
+  v25 = null3;
+  v34[2] = null3;
   v33[3] = @"deviceIdentifier";
-  v15 = v6;
-  if (!v6)
+  null4 = deviceIdentifier;
+  if (!deviceIdentifier)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v4;
-  v24 = v15;
-  v34[3] = v15;
+  v24 = null4;
+  v34[3] = null4;
   v33[4] = @"isPositiveLabeled";
-  v16 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v5;
-  v34[4] = v16;
+  v30 = _featureVectorJSONArray;
+  v34[4] = null5;
   v33[5] = @"labelingPolicyVersion";
-  v17 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v29 = v7;
-  v18 = v6;
-  v34[5] = v17;
+  v18 = deviceIdentifier;
+  v34[5] = null6;
   v33[6] = @"labelingEvidence";
-  v19 = v9;
+  null7 = v9;
   if (!v9)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34[6] = v19;
+  v34[6] = null7;
   v33[7] = @"sharingEventUID";
-  v20 = v10;
-  if (!v10)
+  null8 = sharingEventUID;
+  if (!sharingEventUID)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34[7] = v20;
+  v34[7] = null8;
   v33[8] = @"configurationInfo";
-  v21 = v11;
-  if (!v11)
+  null9 = configurationInfo;
+  if (!configurationInfo)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34[8] = v21;
+  v34[8] = null9;
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:9];
-  if (v11)
+  if (configurationInfo)
   {
-    if (v10)
+    if (sharingEventUID)
     {
       goto LABEL_30;
     }
@@ -320,7 +320,7 @@ LABEL_35:
   else
   {
 
-    if (v10)
+    if (sharingEventUID)
     {
       goto LABEL_30;
     }
@@ -387,8 +387,8 @@ LABEL_41:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMLSELabeledDataStore *)self featureVector];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  featureVector = [(BMMLSELabeledDataStore *)self featureVector];
+  v5 = [featureVector countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -399,14 +399,14 @@ LABEL_41:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(featureVector);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [featureVector countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -417,17 +417,17 @@ LABEL_41:
   return v3;
 }
 
-- (BMMLSELabeledDataStore)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMLSELabeledDataStore)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v129[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"itemIdentifier"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"itemIdentifier"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
@@ -439,13 +439,13 @@ LABEL_41:
         v8 = v28;
         v30 = [v29 initWithDomain:v26 code:2 userInfo:v28];
         v7 = 0;
-        v31 = 0;
-        *a4 = v30;
+        selfCopy3 = 0;
+        *error = v30;
         goto LABEL_94;
       }
 
       v7 = 0;
-      v31 = 0;
+      selfCopy3 = 0;
       goto LABEL_95;
     }
 
@@ -457,14 +457,14 @@ LABEL_41:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"featureVersion"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"featureVersion"];
   v98 = v6;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v32 = v8;
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -478,14 +478,14 @@ LABEL_41:
         v101 = v35;
         v37 = [v36 initWithDomain:v34 code:2 userInfo:?];
         v27 = 0;
-        v31 = 0;
-        *a4 = v37;
+        selfCopy3 = 0;
+        *error = v37;
 
         goto LABEL_93;
       }
 
       v27 = 0;
-      v31 = 0;
+      selfCopy3 = 0;
       goto LABEL_94;
     }
 
@@ -497,14 +497,14 @@ LABEL_41:
     v97 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"featureVector"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"featureVector"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   if (v11)
   {
     v90 = v8;
-    v91 = self;
+    selfCopy2 = self;
     v94 = v7;
 
     v9 = 0;
@@ -517,9 +517,9 @@ LABEL_41:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v31 = 0;
+          selfCopy3 = 0;
           v27 = v97;
           goto LABEL_93;
         }
@@ -531,8 +531,8 @@ LABEL_41:
         v125 = v100;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
         v48 = [v46 initWithDomain:v47 code:2 userInfo:v21];
-        v31 = 0;
-        *a4 = v48;
+        selfCopy3 = 0;
+        *error = v48;
 LABEL_48:
         v27 = v97;
         goto LABEL_91;
@@ -540,7 +540,7 @@ LABEL_48:
     }
 
     v90 = v8;
-    v91 = self;
+    selfCopy2 = self;
     v94 = v7;
   }
 
@@ -558,7 +558,7 @@ LABEL_48:
 
   v13 = v12;
   v14 = *v104;
-  v89 = v5;
+  v89 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v13; ++i)
@@ -572,8 +572,8 @@ LABEL_48:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v38 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v39 = objc_alloc(MEMORY[0x1E696ABC0]);
           v40 = *MEMORY[0x1E698F240];
@@ -586,13 +586,13 @@ LABEL_48:
 LABEL_40:
           v24 = [v41 dictionaryWithObjects:v42 forKeys:v43 count:1];
           v44 = [v39 initWithDomain:v40 code:2 userInfo:v24];
-          v31 = 0;
-          *v38 = v44;
+          selfCopy3 = 0;
+          *errorCopy2 = v44;
 LABEL_44:
           v21 = v9;
-          v5 = v89;
+          dictionaryCopy = v89;
           v8 = v90;
-          self = v91;
+          self = selfCopy2;
           v7 = v94;
           v27 = v97;
           goto LABEL_89;
@@ -604,8 +604,8 @@ LABEL_44:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v38 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v39 = objc_alloc(MEMORY[0x1E696ABC0]);
           v40 = *MEMORY[0x1E698F240];
@@ -619,11 +619,11 @@ LABEL_44:
         }
 
 LABEL_47:
-        v31 = 0;
+        selfCopy3 = 0;
         v21 = v9;
-        v5 = v89;
+        dictionaryCopy = v89;
         v8 = v90;
-        self = v91;
+        self = selfCopy2;
         v7 = v94;
         goto LABEL_48;
       }
@@ -636,13 +636,13 @@ LABEL_47:
       if (v20)
       {
         v24 = v20;
-        if (a4)
+        if (error)
         {
           v45 = v20;
-          *a4 = v24;
+          *error = v24;
         }
 
-        v31 = 0;
+        selfCopy3 = 0;
         goto LABEL_44;
       }
 
@@ -650,7 +650,7 @@ LABEL_47:
     }
 
     v13 = [v9 countByEnumeratingWithState:&v103 objects:v123 count:16];
-    v5 = v89;
+    dictionaryCopy = v89;
     if (v13)
     {
       continue;
@@ -661,22 +661,22 @@ LABEL_47:
 
 LABEL_22:
 
-  v17 = [v5 objectForKeyedSubscript:@"deviceIdentifier"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"deviceIdentifier"];
   if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v21 = 0;
-    self = v91;
+    self = selfCopy2;
     goto LABEL_25;
   }
 
   objc_opt_class();
-  self = v91;
+  self = selfCopy2;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       v21 = 0;
-      v31 = 0;
+      selfCopy3 = 0;
       v7 = v94;
       v27 = v97;
       v8 = v90;
@@ -691,15 +691,15 @@ LABEL_22:
     v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
     v56 = [v54 initWithDomain:v55 code:2 userInfo:?];
     v21 = 0;
-    v31 = 0;
-    *a4 = v56;
+    selfCopy3 = 0;
+    *error = v56;
     v7 = v94;
     goto LABEL_107;
   }
 
   v21 = v17;
 LABEL_25:
-  v22 = [v5 objectForKeyedSubscript:@"isPositiveLabeled"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"isPositiveLabeled"];
   v87 = v22;
   if (!v22)
   {
@@ -720,7 +720,7 @@ LABEL_25:
       goto LABEL_54;
     }
 
-    if (a4)
+    if (error)
     {
       v92 = objc_alloc(MEMORY[0x1E696ABC0]);
       v57 = *MEMORY[0x1E698F240];
@@ -735,8 +735,8 @@ LABEL_25:
       v84 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
       v61 = [v92 initWithDomain:v57 code:2 userInfo:?];
       v24 = 0;
-      v31 = 0;
-      *a4 = v61;
+      selfCopy3 = 0;
+      *error = v61;
 LABEL_111:
       v8 = v90;
       v27 = v97;
@@ -744,7 +744,7 @@ LABEL_111:
     }
 
     v24 = 0;
-    v31 = 0;
+    selfCopy3 = 0;
 LABEL_107:
     v8 = v90;
     v27 = v97;
@@ -753,7 +753,7 @@ LABEL_107:
 
   v24 = 0;
 LABEL_54:
-  v49 = [v5 objectForKeyedSubscript:@"labelingPolicyVersion"];
+  v49 = [dictionaryCopy objectForKeyedSubscript:@"labelingPolicyVersion"];
   v86 = v21;
   v84 = v49;
   if (v49)
@@ -769,7 +769,7 @@ LABEL_54:
         goto LABEL_57;
       }
 
-      if (a4)
+      if (error)
       {
         v62 = objc_alloc(MEMORY[0x1E696ABC0]);
         v63 = *MEMORY[0x1E698F240];
@@ -781,28 +781,28 @@ LABEL_54:
         v21 = v86;
         v81 = v64;
         v88 = 0;
-        v31 = 0;
-        *a4 = [v62 initWithDomain:v65 code:2 userInfo:?];
+        selfCopy3 = 0;
+        *error = [v62 initWithDomain:v65 code:2 userInfo:?];
         v8 = v90;
         v27 = v97;
         goto LABEL_86;
       }
 
       v88 = 0;
-      v31 = 0;
+      selfCopy3 = 0;
       goto LABEL_111;
     }
   }
 
   v88 = 0;
 LABEL_57:
-  v51 = [v5 objectForKeyedSubscript:@"labelingEvidence"];
+  v51 = [dictionaryCopy objectForKeyedSubscript:@"labelingEvidence"];
   v81 = v51;
   if (!v51 || (v52 = v51, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v85 = 0;
 LABEL_76:
-    v66 = [v5 objectForKeyedSubscript:@"sharingEventUID"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"sharingEventUID"];
     v93 = v66;
     if (v66 && (v67 = v66, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -813,7 +813,7 @@ LABEL_76:
         goto LABEL_79;
       }
 
-      if (a4)
+      if (error)
       {
         v83 = objc_alloc(MEMORY[0x1E696ABC0]);
         v73 = *MEMORY[0x1E698F240];
@@ -823,14 +823,14 @@ LABEL_76:
         v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v110 forKeys:&v109 count:1];
         v74 = [v83 initWithDomain:v73 code:2 userInfo:v68];
         v82 = 0;
-        v31 = 0;
-        *a4 = v74;
+        selfCopy3 = 0;
+        *error = v74;
         v27 = v97;
         goto LABEL_83;
       }
 
       v82 = 0;
-      v31 = 0;
+      selfCopy3 = 0;
       v27 = v97;
     }
 
@@ -838,7 +838,7 @@ LABEL_76:
     {
       v82 = 0;
 LABEL_79:
-      v68 = [v5 objectForKeyedSubscript:@"configurationInfo"];
+      v68 = [dictionaryCopy objectForKeyedSubscript:@"configurationInfo"];
       if (!v68 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v69 = 0;
@@ -853,12 +853,12 @@ LABEL_82:
         LODWORD(v78) = [v85 intValue];
         v27 = v97;
         self = [(BMMLSELabeledDataStore *)self initWithItemIdentifier:v7 featureVersion:v97 featureVector:v100 deviceIdentifier:v86 isPositiveLabeled:v24 labelingPolicyVersion:v88 labelingEvidence:v78 sharingEventUID:v82 configurationInfo:v69];
-        v31 = self;
+        selfCopy3 = self;
       }
 
       else
       {
-        if (a4)
+        if (error)
         {
           v95 = objc_alloc(MEMORY[0x1E696ABC0]);
           v80 = *MEMORY[0x1E698F240];
@@ -866,11 +866,11 @@ LABEL_82:
           v75 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"configurationInfo"];
           v108 = v75;
           v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
-          *a4 = [v95 initWithDomain:v80 code:2 userInfo:v76];
+          *error = [v95 initWithDomain:v80 code:2 userInfo:v76];
         }
 
         v69 = 0;
-        v31 = 0;
+        selfCopy3 = 0;
         v27 = v97;
       }
 
@@ -903,7 +903,7 @@ LABEL_75:
     goto LABEL_75;
   }
 
-  if (a4)
+  if (error)
   {
     v96 = objc_alloc(MEMORY[0x1E696ABC0]);
     v77 = *MEMORY[0x1E698F240];
@@ -912,8 +912,8 @@ LABEL_75:
     v112 = v82;
     v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
     v85 = 0;
-    v31 = 0;
-    *a4 = [v96 initWithDomain:v77 code:2 userInfo:v70];
+    selfCopy3 = 0;
+    *error = [v96 initWithDomain:v77 code:2 userInfo:v70];
     v7 = v53;
     v27 = v97;
     v21 = v86;
@@ -921,7 +921,7 @@ LABEL_75:
   }
 
   v85 = 0;
-  v31 = 0;
+  selfCopy3 = 0;
   v8 = v90;
   v27 = v97;
   v21 = v86;
@@ -941,22 +941,22 @@ LABEL_94:
 
 LABEL_95:
   v71 = *MEMORY[0x1E69E9840];
-  return v31;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMLSELabeledDataStore *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_itemIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -989,7 +989,7 @@ LABEL_95:
 
         v11 = *(*(&v16 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -1031,9 +1031,9 @@ LABEL_95:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v56.receiver = self;
   v56.super_class = BMMLSELabeledDataStore;
   v5 = [(BMEventBase *)&v56 init];
@@ -1043,12 +1043,12 @@ LABEL_95:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_92;
       }
@@ -1059,18 +1059,18 @@ LABEL_95:
       while (1)
       {
         LOBYTE(v57[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v57 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v57[0] & 0x7F) << v8;
@@ -1088,9 +1088,9 @@ LABEL_95:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_92;
       }
@@ -1119,18 +1119,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v57[0]) = 0;
-            v27 = [v4 position] + 1;
-            if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+            v27 = [fromCopy position] + 1;
+            if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
             {
-              v29 = [v4 data];
-              [v29 getBytes:v57 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v26 |= (v57[0] & 0x7F) << v24;
@@ -1148,7 +1148,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v30 = 0;
           }
@@ -1184,7 +1184,7 @@ LABEL_73:
 
       v57[0] = 0;
       v57[1] = 0;
-      if (!PBReaderPlaceMark() || (v39 = [[BMMLSELabeledDataStoreFeature alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v39 = [[BMMLSELabeledDataStoreFeature alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_96:
 
@@ -1196,8 +1196,8 @@ LABEL_96:
       PBReaderRecallMark();
 
 LABEL_91:
-      v50 = [v4 position];
-      if (v50 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_92;
       }
@@ -1214,18 +1214,18 @@ LABEL_91:
         while (1)
         {
           LOBYTE(v57[0]) = 0;
-          v44 = [v4 position] + 1;
-          if (v44 >= [v4 position] && (v45 = objc_msgSend(v4, "position") + 1, v45 <= objc_msgSend(v4, "length")))
+          v44 = [fromCopy position] + 1;
+          if (v44 >= [fromCopy position] && (v45 = objc_msgSend(fromCopy, "position") + 1, v45 <= objc_msgSend(fromCopy, "length")))
           {
-            v46 = [v4 data];
-            [v46 getBytes:v57 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v43 |= (v57[0] & 0x7F) << v41;
@@ -1243,7 +1243,7 @@ LABEL_91:
           }
         }
 
-        v47 = (v43 != 0) & ~[v4 hasError];
+        v47 = (v43 != 0) & ~[fromCopy hasError];
 LABEL_86:
         v5->_isPositiveLabeled = v47;
         goto LABEL_91;
@@ -1258,18 +1258,18 @@ LABEL_86:
         while (1)
         {
           LOBYTE(v57[0]) = 0;
-          v36 = [v4 position] + 1;
-          if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+          v36 = [fromCopy position] + 1;
+          if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
           {
-            v38 = [v4 data];
-            [v38 getBytes:v57 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v35 |= (v57[0] & 0x7F) << v33;
@@ -1287,7 +1287,7 @@ LABEL_86:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v30 = 0;
         }
@@ -1324,18 +1324,18 @@ LABEL_84:
           while (1)
           {
             LOBYTE(v57[0]) = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:v57 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:v57 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v57[0] & 0x7F) << v17;
@@ -1351,7 +1351,7 @@ LABEL_84:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v19 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v19 > 3)
           {
 LABEL_89:
             LODWORD(v19) = 0;
@@ -1376,8 +1376,8 @@ LABEL_92:
   featureVector = v5->_featureVector;
   v5->_featureVector = v51;
 
-  v53 = [v4 hasError];
-  if (v53)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_93:
     v54 = 0;
@@ -1395,56 +1395,56 @@ LABEL_94:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMLSELabeledDataStore *)self itemIdentifier];
+  itemIdentifier = [(BMMLSELabeledDataStore *)self itemIdentifier];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStore featureVersion](self, "featureVersion")}];
-  v6 = [(BMMLSELabeledDataStore *)self featureVector];
-  v7 = [(BMMLSELabeledDataStore *)self deviceIdentifier];
+  featureVector = [(BMMLSELabeledDataStore *)self featureVector];
+  deviceIdentifier = [(BMMLSELabeledDataStore *)self deviceIdentifier];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSELabeledDataStore isPositiveLabeled](self, "isPositiveLabeled")}];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStore labelingPolicyVersion](self, "labelingPolicyVersion")}];
   v10 = BMMLSELabeledDataStoreLabelingEvidenceTypeAsString([(BMMLSELabeledDataStore *)self labelingEvidence]);
-  v11 = [(BMMLSELabeledDataStore *)self sharingEventUID];
-  v12 = [(BMMLSELabeledDataStore *)self configurationInfo];
-  v13 = [v3 initWithFormat:@"BMMLSELabeledDataStore with itemIdentifier: %@, featureVersion: %@, featureVector: %@, deviceIdentifier: %@, isPositiveLabeled: %@, labelingPolicyVersion: %@, labelingEvidence: %@, sharingEventUID: %@, configurationInfo: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  sharingEventUID = [(BMMLSELabeledDataStore *)self sharingEventUID];
+  configurationInfo = [(BMMLSELabeledDataStore *)self configurationInfo];
+  v13 = [v3 initWithFormat:@"BMMLSELabeledDataStore with itemIdentifier: %@, featureVersion: %@, featureVector: %@, deviceIdentifier: %@, isPositiveLabeled: %@, labelingPolicyVersion: %@, labelingEvidence: %@, sharingEventUID: %@, configurationInfo: %@", itemIdentifier, v5, featureVector, deviceIdentifier, v8, v9, v10, sharingEventUID, configurationInfo];
 
   return v13;
 }
 
-- (BMMLSELabeledDataStore)initWithItemIdentifier:(id)a3 featureVersion:(id)a4 featureVector:(id)a5 deviceIdentifier:(id)a6 isPositiveLabeled:(id)a7 labelingPolicyVersion:(id)a8 labelingEvidence:(int)a9 sharingEventUID:(id)a10 configurationInfo:(id)a11
+- (BMMLSELabeledDataStore)initWithItemIdentifier:(id)identifier featureVersion:(id)version featureVector:(id)vector deviceIdentifier:(id)deviceIdentifier isPositiveLabeled:(id)labeled labelingPolicyVersion:(id)policyVersion labelingEvidence:(int)evidence sharingEventUID:(id)self0 configurationInfo:(id)self1
 {
-  v29 = a3;
-  v18 = a4;
-  v28 = a5;
-  v27 = a6;
-  v19 = a7;
-  v20 = a8;
-  v26 = a10;
-  v21 = a11;
+  identifierCopy = identifier;
+  versionCopy = version;
+  vectorCopy = vector;
+  deviceIdentifierCopy = deviceIdentifier;
+  labeledCopy = labeled;
+  policyVersionCopy = policyVersion;
+  dCopy = d;
+  infoCopy = info;
   v30.receiver = self;
   v30.super_class = BMMLSELabeledDataStore;
   v22 = [(BMEventBase *)&v30 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v22->_itemIdentifier, a3);
-    if (v18)
+    objc_storeStrong(&v22->_itemIdentifier, identifier);
+    if (versionCopy)
     {
       v22->_hasFeatureVersion = 1;
-      v23 = [v18 unsignedIntValue];
+      unsignedIntValue = [versionCopy unsignedIntValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedIntValue = 0;
       v22->_hasFeatureVersion = 0;
     }
 
-    v22->_featureVersion = v23;
-    objc_storeStrong(&v22->_featureVector, a5);
-    objc_storeStrong(&v22->_deviceIdentifier, a6);
-    if (v19)
+    v22->_featureVersion = unsignedIntValue;
+    objc_storeStrong(&v22->_featureVector, vector);
+    objc_storeStrong(&v22->_deviceIdentifier, deviceIdentifier);
+    if (labeledCopy)
     {
       v22->_hasIsPositiveLabeled = 1;
-      v22->_isPositiveLabeled = [v19 BOOLValue];
+      v22->_isPositiveLabeled = [labeledCopy BOOLValue];
     }
 
     else
@@ -1453,22 +1453,22 @@ LABEL_94:
       v22->_isPositiveLabeled = 0;
     }
 
-    if (v20)
+    if (policyVersionCopy)
     {
       v22->_hasLabelingPolicyVersion = 1;
-      v24 = [v20 unsignedIntValue];
+      unsignedIntValue2 = [policyVersionCopy unsignedIntValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedIntValue2 = 0;
       v22->_hasLabelingPolicyVersion = 0;
     }
 
-    v22->_labelingPolicyVersion = v24;
-    v22->_labelingEvidence = a9;
-    objc_storeStrong(&v22->_sharingEventUID, a10);
-    objc_storeStrong(&v22->_configurationInfo, a11);
+    v22->_labelingPolicyVersion = unsignedIntValue2;
+    v22->_labelingEvidence = evidence;
+    objc_storeStrong(&v22->_sharingEventUID, d);
+    objc_storeStrong(&v22->_configurationInfo, info);
   }
 
   return v22;
@@ -1538,9 +1538,9 @@ id __33__BMMLSELabeledDataStore_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1548,8 +1548,8 @@ id __33__BMMLSELabeledDataStore_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSELabeledDataStore alloc] initByReadFrom:v7];
     v4 = v8;

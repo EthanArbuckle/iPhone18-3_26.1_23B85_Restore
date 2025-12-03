@@ -1,17 +1,17 @@
 @interface GlyphButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation GlyphButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.GlyphButton" hasInstanceMethod:@"accessibilityGlyphView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImageView" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.GlyphButton" hasInstanceMethod:@"accessibilityGlyphView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImageView" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -19,8 +19,8 @@
   v3 = [(GlyphButtonAccessibility *)self safeValueForKey:@"accessibilityGlyphView"];
   v11.receiver = self;
   v11.super_class = GlyphButtonAccessibility;
-  v4 = [(GlyphButtonAccessibility *)&v11 accessibilityLabel];
-  if ([v4 length])
+  accessibilityLabel = [(GlyphButtonAccessibility *)&v11 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
     v5 = 1;
   }
@@ -38,10 +38,10 @@
 
     v9 = AXSSAccessibilityDescriptionForSymbolName();
 
-    v4 = v9;
+    accessibilityLabel = v9;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

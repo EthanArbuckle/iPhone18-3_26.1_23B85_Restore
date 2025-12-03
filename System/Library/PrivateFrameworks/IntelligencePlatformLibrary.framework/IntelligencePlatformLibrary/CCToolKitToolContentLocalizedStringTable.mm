@@ -1,27 +1,27 @@
 @interface CCToolKitToolContentLocalizedStringTable
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolContentLocalizedStringTable)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolContentLocalizedStringTable)initWithLocale:(id)a3 entries:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolContentLocalizedStringTable)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolContentLocalizedStringTable)initWithLocale:(id)locale entries:(id)entries error:(id *)error;
 - (NSArray)entries;
 - (NSString)locale;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolContentLocalizedStringTable
 
-- (CCToolKitToolContentLocalizedStringTable)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolContentLocalizedStringTable)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v36 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"locale"];
-    v10 = [v6 objectForKeyedSubscript:@"entries"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"entries"];
     if (v10)
     {
       v11 = v10;
@@ -38,7 +38,7 @@
       }
 
       v28 = v9;
-      v29 = self;
+      selfCopy = self;
       v14 = objc_opt_new();
       v31 = 0u;
       v32 = 0u;
@@ -81,7 +81,7 @@
 
               v25 = 0;
               v9 = v28;
-              self = v29;
+              self = selfCopy;
               goto LABEL_21;
             }
 
@@ -95,7 +95,7 @@
       }
 
       v9 = v28;
-      self = v29;
+      self = selfCopy;
     }
 
     else
@@ -104,7 +104,7 @@
       v13 = v8;
     }
 
-    v25 = [[CCToolKitToolContentLocalizedStringTable alloc] initWithLocale:v9 entries:v14 error:a4];
+    v25 = [[CCToolKitToolContentLocalizedStringTable alloc] initWithLocale:v9 entries:v14 error:error];
     v11 = v14;
 LABEL_21:
 
@@ -126,8 +126,8 @@ LABEL_22:
   v3 = objc_opt_new();
   if (self->_locale)
   {
-    v4 = [(CCToolKitToolContentLocalizedStringTable *)self locale];
-    [v3 setObject:v4 forKeyedSubscript:@"locale"];
+    locale = [(CCToolKitToolContentLocalizedStringTable *)self locale];
+    [v3 setObject:locale forKeyedSubscript:@"locale"];
   }
 
   if (self->_entries)
@@ -137,8 +137,8 @@ LABEL_22:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(CCToolKitToolContentLocalizedStringTable *)self entries];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    entries = [(CCToolKitToolContentLocalizedStringTable *)self entries];
+    v7 = [entries countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -149,14 +149,14 @@ LABEL_22:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(entries);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
-          [v5 addObject:v11];
+          jsonDictionary = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
+          [v5 addObject:jsonDictionary];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [entries countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -172,20 +172,20 @@ LABEL_22:
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v8 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_locale)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_locale];
-    v8[2](v8, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_entries)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 repeatedSubMessageValue:self->_entries];
-    v8[2](v8, v7);
+    blockCopy[2](blockCopy, v7);
   }
 }
 
@@ -203,10 +203,10 @@ LABEL_22:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v39 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v39];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -347,13 +347,13 @@ LABEL_38:
   {
     CCSetError();
     v31 = 0;
-    v32 = v39;
+    v32 = dataCopy;
   }
 
   else
   {
     v33 = MEMORY[0x1E6993AA8];
-    v32 = v39;
+    v32 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v34 = objc_opt_class();
@@ -374,16 +374,16 @@ LABEL_38:
   return v31;
 }
 
-- (CCToolKitToolContentLocalizedStringTable)initWithLocale:(id)a3 entries:(id)a4 error:(id *)a5
+- (CCToolKitToolContentLocalizedStringTable)initWithLocale:(id)locale entries:(id)entries error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  localeCopy = locale;
+  entriesCopy = entries;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!localeCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!entriesCopy)
     {
       goto LABEL_15;
     }
@@ -397,7 +397,7 @@ LABEL_6:
     if (!v13)
     {
       CCSetError();
-      v22 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_18;
     }
@@ -407,7 +407,7 @@ LABEL_6:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v9;
+    v15 = entriesCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v16)
     {
@@ -423,7 +423,7 @@ LABEL_6:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v26 + 1) + 8 * v19) data];
+          data = [*(*(&v26 + 1) + 8 * v19) data];
           CCPBDataWriterWriteDataField();
 
           ++v19;
@@ -447,25 +447,25 @@ LABEL_6:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (entriesCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v21 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v21 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
 @end

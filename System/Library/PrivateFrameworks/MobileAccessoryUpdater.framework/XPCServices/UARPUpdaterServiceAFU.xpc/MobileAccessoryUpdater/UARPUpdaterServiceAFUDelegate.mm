@@ -1,18 +1,18 @@
 @interface UARPUpdaterServiceAFUDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation UARPUpdaterServiceAFUDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPUpdaterService];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = objc_opt_new();
-  [v4 setExportedObject:v6];
-  [v4 resume];
+  [connectionCopy setExportedObject:v6];
+  [connectionCopy resume];
 
   return 1;
 }

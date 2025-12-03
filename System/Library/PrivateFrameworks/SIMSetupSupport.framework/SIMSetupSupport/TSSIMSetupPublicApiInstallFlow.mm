@@ -1,36 +1,36 @@
 @interface TSSIMSetupPublicApiInstallFlow
-- (TSSIMSetupPublicApiInstallFlow)initWithAppName:(id)a3 requireSetup:(BOOL)a4 skipGeneralInstallConsent:(BOOL)a5;
+- (TSSIMSetupPublicApiInstallFlow)initWithAppName:(id)name requireSetup:(BOOL)setup skipGeneralInstallConsent:(BOOL)consent;
 - (id)_firstViewController;
 - (id)_validCarrierName;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)_alertConsentWithCompletion:(id)a3;
-- (void)_displayUserConsentAlert:(id)a3;
-- (void)_maybeShowPreinstallConsentOnViewController:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (void)_alertConsentWithCompletion:(id)completion;
+- (void)_displayUserConsentAlert:(id)alert;
+- (void)_maybeShowPreinstallConsentOnViewController:(id)controller;
 - (void)dealloc;
-- (void)firstViewController:(id)a3;
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4;
-- (void)setCancelNavigationBarItems:(id)a3;
+- (void)firstViewController:(id)controller;
+- (void)planItemsUpdated:(id)updated planListError:(id)error;
+- (void)setCancelNavigationBarItems:(id)items;
 - (void)userDidTapCancel;
 @end
 
 @implementation TSSIMSetupPublicApiInstallFlow
 
-- (TSSIMSetupPublicApiInstallFlow)initWithAppName:(id)a3 requireSetup:(BOOL)a4 skipGeneralInstallConsent:(BOOL)a5
+- (TSSIMSetupPublicApiInstallFlow)initWithAppName:(id)name requireSetup:(BOOL)setup skipGeneralInstallConsent:(BOOL)consent
 {
-  v7 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = TSSIMSetupPublicApiInstallFlow;
   v8 = [(TSSIMSetupFlow *)&v13 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [nameCopy copy];
     installName = v8->_installName;
     v8->_installName = v9;
 
     v8->_userConsentType = 0;
     v8->_signupConsentResponse = 0;
-    v8->_skipGeneralInstallConsent = a5;
+    v8->_skipGeneralInstallConsent = consent;
     v11 = +[TSUserInPurchaseFlowAssertion sharedInstance];
     [v11 assertUserInPurchaseFlowStartOver:0 caller:v8];
   }
@@ -78,17 +78,17 @@
   return v4;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __54__TSSIMSetupPublicApiInstallFlow_firstViewController___block_invoke;
     v5[3] = &unk_279B44EE8;
-    v6 = v4;
+    v6 = controllerCopy;
     objc_copyWeak(&v7, &location);
     [(TSSIMSetupPublicApiInstallFlow *)self _displayUserConsentAlert:v5];
     objc_destroyWeak(&v7);
@@ -118,10 +118,10 @@ void __54__TSSIMSetupPublicApiInstallFlow_firstViewController___block_invoke(uin
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   if ([TSUtilities isRegulatoryRestrictionActive:self->_planInstallError])
   {
     self->_isPreinstallingViewControllerActive = 0;
@@ -131,8 +131,8 @@ void __54__TSSIMSetupPublicApiInstallFlow_firstViewController___block_invoke(uin
     v30[0] = &unk_287583B68;
     v30[1] = MEMORY[0x277CBEC38];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
-    v7 = [(TSSIMSetupFlow *)self navigationController];
-    v8 = [(TSSubFlowViewController *)v5 initWithOptions:v6 navigationController:v7 delegate:self];
+    navigationController = [(TSSIMSetupFlow *)self navigationController];
+    v8 = [(TSSubFlowViewController *)v5 initWithOptions:v6 navigationController:navigationController delegate:self];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -149,8 +149,8 @@ void __54__TSSIMSetupPublicApiInstallFlow_firstViewController___block_invoke(uin
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v4;
-      if ([v9 consentType] == 1 && self->_confirmationCodeRequired)
+      confirmationCode = fromCopy;
+      if ([confirmationCode consentType] == 1 && self->_confirmationCodeRequired)
       {
         v8 = [[SSConfirmationCodeViewController alloc] initAsMidOperationWithCarrierName:self->_carrierName requireGeneralConsent:1];
         self->_confirmationCodeRequired = 0;
@@ -159,7 +159,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      if ([v9 consentType] == 4 && (self->_userConsentType & 0xFFFFFFFFFFFFFFFELL) == 2)
+      if ([confirmationCode consentType] == 4 && (self->_userConsentType & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
         v16 = [[TSCellularPlanUserConsentViewController alloc] initWithName:self->_carrierName consentType:self->_userConsentType requireAdditionalConsent:0];
 LABEL_27:
@@ -168,12 +168,12 @@ LABEL_27:
       }
 
       self->_isPreinstallingViewControllerActive = 0;
-      v14 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       if (self->_skipGeneralInstallConsent && [(NSString *)self->_installName length])
       {
         v17 = self->_installName;
 
-        v14 = v17;
+        null = v17;
       }
 
       v18 = [TSSubFlowViewController alloc];
@@ -184,10 +184,10 @@ LABEL_27:
       v25[2] = @"PlanSetupTypeKey";
       v25[3] = @"CarrierNameKey";
       v26[2] = &unk_287583B80;
-      v26[3] = v14;
-      v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:4];
-      v19 = [(TSSIMSetupFlow *)self navigationController];
-      v8 = [(TSSubFlowViewController *)v18 initWithOptions:v15 navigationController:v19 delegate:self];
+      v26[3] = null;
+      navigationController3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:4];
+      navigationController2 = [(TSSIMSetupFlow *)self navigationController];
+      v8 = [(TSSubFlowViewController *)v18 initWithOptions:navigationController3 navigationController:navigationController2 delegate:self];
     }
 
     else
@@ -202,13 +202,13 @@ LABEL_27:
           goto LABEL_30;
         }
 
-        v9 = [v4 confirmationCode];
-        v16 = [[TSCellularPlanUserConsentViewController alloc] initWithConfirmationCode:self->_carrierName consentType:4 requireAdditionalConsent:self->_userConsentType != 0 confirmationCode:v9 acceptButtonTapped:0];
+        confirmationCode = [fromCopy confirmationCode];
+        v16 = [[TSCellularPlanUserConsentViewController alloc] initWithConfirmationCode:self->_carrierName consentType:4 requireAdditionalConsent:self->_userConsentType != 0 confirmationCode:confirmationCode acceptButtonTapped:0];
         goto LABEL_27;
       }
 
-      v9 = v4;
-      if (+[TSUtilities isPad](TSUtilities, "isPad") || [v9 subFlowType] != 16)
+      confirmationCode = fromCopy;
+      if (+[TSUtilities isPad](TSUtilities, "isPad") || [confirmationCode subFlowType] != 16)
       {
         v8 = 0;
         goto LABEL_29;
@@ -217,9 +217,9 @@ LABEL_27:
       v13 = [TSSubFlowViewController alloc];
       v23 = @"FlowTypeKey";
       v24 = &unk_287583B80;
-      v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-      v15 = [(TSSIMSetupFlow *)self navigationController];
-      v8 = [(TSSubFlowViewController *)v13 initWithOptions:v14 navigationController:v15 delegate:self];
+      null = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+      navigationController3 = [(TSSIMSetupFlow *)self navigationController];
+      v8 = [(TSSubFlowViewController *)v13 initWithOptions:null navigationController:navigationController3 delegate:self];
     }
 
     goto LABEL_29;
@@ -242,8 +242,8 @@ LABEL_27:
     v27[2] = @"PlanSetupTypeKey";
     v28[2] = &unk_287583B80;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
-    v12 = [(TSSIMSetupFlow *)self navigationController];
-    v8 = [(TSSubFlowViewController *)v10 initWithOptions:v11 navigationController:v12 delegate:self];
+    navigationController4 = [(TSSIMSetupFlow *)self navigationController];
+    v8 = [(TSSubFlowViewController *)v10 initWithOptions:v11 navigationController:navigationController4 delegate:self];
   }
 
   else
@@ -264,16 +264,16 @@ void __57__TSSIMSetupPublicApiInstallFlow_nextViewControllerFrom___block_invoke(
   [v2 postNotificationName:@"transfer.failed" object:*(*(a1 + 32) + 104)];
 }
 
-- (void)setCancelNavigationBarItems:(id)a3
+- (void)setCancelNavigationBarItems:(id)items
 {
-  v3 = [a3 navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [items navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
 - (void)userDidTapCancel
 {
-  v3 = [(TSSIMSetupFlow *)self topViewController];
-  if (!v3 || (v4 = v3, [(TSSIMSetupFlow *)self topViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) != 0))
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
+  if (!topViewController || (v4 = topViewController, [(TSSIMSetupFlow *)self topViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) != 0))
   {
     v7 = +[TSCellularPlanManagerCache sharedInstance];
     [v7 resumePlanProvisioning:0 userConsent:0];
@@ -284,12 +284,12 @@ void __57__TSSIMSetupPublicApiInstallFlow_nextViewControllerFrom___block_invoke(
   [(TSSIMSetupFlow *)&v8 userDidTapCancel];
 }
 
-- (void)planItemsUpdated:(id)a3 planListError:(id)a4
+- (void)planItemsUpdated:(id)updated planListError:(id)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  updatedCopy = updated;
+  errorCopy = error;
+  v8 = errorCopy;
   if (self->_planInstallError)
   {
     v9 = _TSLogDomain();
@@ -301,7 +301,7 @@ void __57__TSSIMSetupPublicApiInstallFlow_nextViewControllerFrom___block_invoke(
     goto LABEL_44;
   }
 
-  if (v7)
+  if (errorCopy)
   {
     v10 = _TSLogDomain();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -309,13 +309,13 @@ void __57__TSSIMSetupPublicApiInstallFlow_nextViewControllerFrom___block_invoke(
       [TSSIMSetupPublicApiInstallFlow planItemsUpdated:v8 planListError:v10];
     }
 
-    v11 = [v8 domain];
-    if ([v11 isEqualToString:*MEMORY[0x277CF9680]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CF9680]])
     {
       v12 = v8;
-      v13 = [v8 code];
+      code = [v8 code];
 
-      if (v13 == 19)
+      if (code == 19)
       {
         self->_confirmationCodeRequired = 1;
 LABEL_43:
@@ -330,19 +330,19 @@ LABEL_43:
     }
 
     v33 = [TSUtilities isRegulatoryRestrictionActive:v12];
-    objc_storeStrong(&self->_planInstallError, a4);
+    objc_storeStrong(&self->_planInstallError, error);
     if (v33)
     {
-      v34 = [(TSSIMSetupFlow *)self topViewController];
-      [(TSSIMSetupFlow *)self viewControllerDidComplete:v34];
+      topViewController = [(TSSIMSetupFlow *)self topViewController];
+      [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController];
     }
 
     else
     {
-      v34 = [TSUtilities getErrorTitleDetail:v12 forCarrier:self->_carrierName];
+      topViewController = [TSUtilities getErrorTitleDetail:v12 forCarrier:self->_carrierName];
       v35 = MEMORY[0x277D75110];
-      v36 = [v34 objectForKeyedSubscript:@"ErrorHeader"];
-      v37 = [v34 objectForKeyedSubscript:@"ErrorDetail"];
+      v36 = [topViewController objectForKeyedSubscript:@"ErrorHeader"];
+      v37 = [topViewController objectForKeyedSubscript:@"ErrorDetail"];
       v38 = [v35 alertControllerWithTitle:v36 message:v37 preferredStyle:1];
 
       v39 = MEMORY[0x277D750F8];
@@ -369,7 +369,7 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  if (v6)
+  if (updatedCopy)
   {
     if (self->_isPreinstallingViewControllerActive)
     {
@@ -377,7 +377,7 @@ LABEL_43:
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v14 = [v6 countByEnumeratingWithState:&v47 objects:v58 count:16];
+      v14 = [updatedCopy countByEnumeratingWithState:&v47 objects:v58 count:16];
       if (v14)
       {
         v15 = v14;
@@ -391,24 +391,24 @@ LABEL_43:
           {
             if (*v48 != v18)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(updatedCopy);
             }
 
             v20 = *(*(&v47 + 1) + 8 * i);
             if ([v20 isInstalling])
             {
-              v21 = [v20 plan];
-              v22 = [v21 status];
+              plan = [v20 plan];
+              status = [plan status];
 
-              if (v22 != 6)
+              if (status != 6)
               {
-                v23 = [v20 carrierName];
-                v24 = [v23 copy];
+                carrierName = [v20 carrierName];
+                v24 = [carrierName copy];
                 carrierName = self->_carrierName;
                 self->_carrierName = v24;
 
-                v26 = [v20 iccid];
-                v17 = [v26 length] != 0;
+                iccid = [v20 iccid];
+                v17 = [iccid length] != 0;
 
                 v27 = _TSLogDomain();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -429,7 +429,7 @@ LABEL_43:
             }
           }
 
-          v15 = [v6 countByEnumeratingWithState:&v47 objects:v58 count:16];
+          v15 = [updatedCopy countByEnumeratingWithState:&v47 objects:v58 count:16];
         }
 
         while (v15);
@@ -442,7 +442,7 @@ LABEL_43:
         if (v17)
         {
           v29 = +[TSCellularPlanManagerCache sharedInstance];
-          v30 = [v29 calculateInstallConsentTextTypeFor:v6];
+          v30 = [v29 calculateInstallConsentTextTypeFor:updatedCopy];
 
           if (v30 > 2)
           {
@@ -504,8 +504,8 @@ LABEL_50:
           if (self->_isPreinstallingViewControllerActive)
           {
             self->_isPreinstallingViewControllerActive = 0;
-            v45 = [(TSSIMSetupFlow *)self topViewController];
-            [(TSSIMSetupFlow *)self viewControllerDidComplete:v45];
+            topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+            [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController2];
           }
         }
       }
@@ -523,18 +523,18 @@ void __65__TSSIMSetupPublicApiInstallFlow_planItemsUpdated_planListError___block
   [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
 }
 
-- (void)_maybeShowPreinstallConsentOnViewController:(id)a3
+- (void)_maybeShowPreinstallConsentOnViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[TSCellularPlanManagerCache sharedInstance];
-  v6 = [v5 planItems];
+  planItems = [v5 planItems];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__TSSIMSetupPublicApiInstallFlow__maybeShowPreinstallConsentOnViewController___block_invoke;
   v12[3] = &unk_279B45338;
   v12[4] = self;
-  v7 = [TSUtilities preinstallPPRAlertControllerWithItems:v6 completion:v12];
+  v7 = [TSUtilities preinstallPPRAlertControllerWithItems:planItems completion:v12];
   if (v7)
   {
     v8 = dispatch_time(0, 250000000);
@@ -542,7 +542,7 @@ void __65__TSSIMSetupPublicApiInstallFlow_planItemsUpdated_planListError___block
     block[1] = 3221225472;
     block[2] = __78__TSSIMSetupPublicApiInstallFlow__maybeShowPreinstallConsentOnViewController___block_invoke_2;
     block[3] = &unk_279B44490;
-    v10 = v4;
+    v10 = controllerCopy;
     v11 = v7;
     dispatch_after(v8, MEMORY[0x277D85CD0], block);
   }
@@ -588,9 +588,9 @@ uint64_t __78__TSSIMSetupPublicApiInstallFlow__maybeShowPreinstallConsentOnViewC
   return result;
 }
 
-- (void)_alertConsentWithCompletion:(id)a3
+- (void)_alertConsentWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"ACTIVATE_NEW_ESIM_ALERT_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
@@ -612,8 +612,8 @@ uint64_t __78__TSSIMSetupPublicApiInstallFlow__maybeShowPreinstallConsentOnViewC
   v20 = v7;
   v21 = v11;
   v22 = v9;
-  v23 = v3;
-  v13 = v3;
+  v23 = completionCopy;
+  v13 = completionCopy;
   v14 = v9;
   v15 = v11;
   v16 = v7;
@@ -676,9 +676,9 @@ LABEL_9:
   return v9();
 }
 
-- (void)_displayUserConsentAlert:(id)a3
+- (void)_displayUserConsentAlert:(id)alert
 {
-  v7 = a3;
+  alertCopy = alert;
   installName = self->_installName;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CAMERA" value:&stru_28753DF48 table:@"Localizable"];
@@ -686,12 +686,12 @@ LABEL_9:
 
   if (installName && ![TSUtilities openPrefsURL:@"prefs:root=MOBILE_DATA_SETTINGS_ID&path=CELLULAR"])
   {
-    v7[2](v7, 0);
+    alertCopy[2](alertCopy, 0);
   }
 
   else
   {
-    [(TSSIMSetupPublicApiInstallFlow *)self _alertConsentWithCompletion:v7];
+    [(TSSIMSetupPublicApiInstallFlow *)self _alertConsentWithCompletion:alertCopy];
   }
 }
 
@@ -723,9 +723,9 @@ LABEL_9:
 
 - (id)_validCarrierName
 {
-  v3 = [(TSSIMSetupPublicApiInstallFlow *)self _isFollowUpInstall];
+  _isFollowUpInstall = [(TSSIMSetupPublicApiInstallFlow *)self _isFollowUpInstall];
   v4 = &OBJC_IVAR___TSSIMSetupPublicApiInstallFlow__carrierName;
-  if (v3)
+  if (_isFollowUpInstall)
   {
     v4 = &OBJC_IVAR___TSSIMSetupPublicApiInstallFlow__installName;
   }

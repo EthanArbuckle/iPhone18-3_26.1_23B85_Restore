@@ -2,25 +2,25 @@
 + (id)checkedImage;
 + (id)selectedCheckedImage;
 + (id)spacerImage;
-+ (id)textForBTPairedState:(int)a3;
-- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (id)textForBTPairedState:(int)state;
+- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_setUp;
 - (void)_updateCheckMarkIcon;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setDeviceState:(int)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setDeviceState:(int)state;
 @end
 
 @implementation AXUIVoiceOverBluetoothDeviceTableCell
 
-- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = AXUIVoiceOverBluetoothDeviceTableCell;
-  v5 = [(PSTableCell *)&v8 initWithStyle:1 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v8 initWithStyle:1 reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -30,11 +30,11 @@
   return v6;
 }
 
-- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXUIVoiceOverBluetoothDeviceTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXUIVoiceOverBluetoothDeviceTableCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -51,8 +51,8 @@
   self->_spinner = v3;
 
   [(UIActivityIndicatorView *)self->_spinner setHidesWhenStopped:1];
-  v5 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
-  [v5 addSubview:self->_spinner];
+  contentView = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
+  [contentView addSubview:self->_spinner];
 
   [(AXUIVoiceOverBluetoothDeviceTableCell *)self _updateCheckMarkIcon];
 }
@@ -65,34 +65,34 @@
   [(PSTableCell *)&v3 dealloc];
 }
 
-- (void)setDeviceState:(int)a3
+- (void)setDeviceState:(int)state
 {
-  self->_state = a3;
-  if ((a3 - 2) < 3)
+  self->_state = state;
+  if ((state - 2) < 3)
   {
     v4 = 4;
     goto LABEL_5;
   }
 
-  if (a3 < 2)
+  if (state < 2)
   {
     v4 = 0;
 LABEL_5:
     [(AXUIVoiceOverBluetoothDeviceTableCell *)self setAccessoryType:v4];
-    v6 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self detailTextLabel];
-    [v6 setText:0];
+    detailTextLabel = [(AXUIVoiceOverBluetoothDeviceTableCell *)self detailTextLabel];
+    [detailTextLabel setText:0];
     goto LABEL_6;
   }
 
-  if (a3 != 5)
+  if (state != 5)
   {
     return;
   }
 
   [(AXUIVoiceOverBluetoothDeviceTableCell *)self setAccessoryType:4];
-  v6 = AXUILocalizedStringForKey(@"PAIRED_AND_CONNECTED");
-  v5 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self detailTextLabel];
-  [v5 setText:v6];
+  detailTextLabel = AXUILocalizedStringForKey(@"PAIRED_AND_CONNECTED");
+  detailTextLabel2 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self detailTextLabel];
+  [detailTextLabel2 setText:detailTextLabel];
 
 LABEL_6:
 }
@@ -104,16 +104,16 @@ LABEL_6:
   [(PSTableCell *)&v39 layoutSubviews];
   v38.receiver = self;
   v38.super_class = AXUIVoiceOverBluetoothDeviceTableCell;
-  v3 = [(PSTableCell *)&v38 titleLabel];
-  [v3 frame];
+  titleLabel = [(PSTableCell *)&v38 titleLabel];
+  [titleLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [(PSTableCell *)self iconImageView];
-  v11 = v10;
-  if (v10)
+  iconImageView = [(PSTableCell *)self iconImageView];
+  v11 = iconImageView;
+  if (iconImageView)
   {
-    [v10 frame];
+    [iconImageView frame];
     v13 = v12;
   }
 
@@ -129,8 +129,8 @@ LABEL_6:
   if (v16 || v17 == 0)
   {
     [(UIActivityIndicatorView *)self->_spinner stopAnimating];
-    v30 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
-    [v30 frame];
+    contentView = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
+    [contentView frame];
     v32 = v33;
   }
 
@@ -141,8 +141,8 @@ LABEL_6:
     v22 = v21;
     if (v14)
     {
-      v23 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
-      [v23 frame];
+      contentView2 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
+      [contentView2 frame];
       v25 = v24 - v20 + -10.0;
     }
 
@@ -151,15 +151,15 @@ LABEL_6:
       v25 = 10.0;
     }
 
-    v26 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
-    [v26 frame];
+    contentView3 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
+    [contentView3 frame];
     v28 = (v27 - v22) * 0.5;
     v29 = floorf(v28);
 
     [(UIActivityIndicatorView *)self->_spinner setFrame:v25, v29, v20, v22];
     [(UIActivityIndicatorView *)self->_spinner startAnimating];
-    v30 = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
-    [v30 frame];
+    contentView = [(AXUIVoiceOverBluetoothDeviceTableCell *)self contentView];
+    [contentView frame];
     v32 = v31 - v20;
   }
 
@@ -171,8 +171,8 @@ LABEL_6:
     v5 = CGRectGetMinX(v40) + 10.0;
   }
 
-  [v3 setFrame:{v5, v7, v34, v9}];
-  [v3 setNeedsDisplay];
+  [titleLabel setFrame:{v5, v7, v34, v9}];
+  [titleLabel setNeedsDisplay];
   if ((self->_state & 0xFFFFFFFE) == 4)
   {
     [MEMORY[0x1E69DC888] tableCellValue1BlueColor];
@@ -185,19 +185,19 @@ LABEL_6:
   v35 = ;
   v37.receiver = self;
   v37.super_class = AXUIVoiceOverBluetoothDeviceTableCell;
-  v36 = [(PSTableCell *)&v37 titleLabel];
-  [v36 setTextColor:v35];
+  titleLabel2 = [(PSTableCell *)&v37 titleLabel];
+  [titleLabel2 setTextColor:v35];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = AXUIVoiceOverBluetoothDeviceTableCell;
-  v4 = a3;
-  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 userInfo];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  userInfo = [specifierCopy userInfo];
 
-  v6 = [v5 objectForKey:@"bt-state"];
+  v6 = [userInfo objectForKey:@"bt-state"];
   -[AXUIVoiceOverBluetoothDeviceTableCell setDeviceState:](self, "setDeviceState:", [v6 intValue]);
 
   [(AXUIVoiceOverBluetoothDeviceTableCell *)self layoutSubviews];
@@ -216,24 +216,24 @@ LABEL_6:
 - (void)_updateCheckMarkIcon
 {
   v3 = *(&self->super.super.super.super.super.isa + *MEMORY[0x1E69C57F0]);
-  v4 = [(PSTableCell *)self iconImageView];
+  iconImageView = [(PSTableCell *)self iconImageView];
   if (v3 == 1)
   {
     v5 = +[AXUIVoiceOverBluetoothDeviceTableCell checkedImage];
-    [v4 setImage:v5];
+    [iconImageView setImage:v5];
 
-    v8 = [(PSTableCell *)self iconImageView];
+    iconImageView2 = [(PSTableCell *)self iconImageView];
     v6 = +[AXUIVoiceOverBluetoothDeviceTableCell selectedCheckedImage];
-    [v8 setHighlightedImage:v6];
+    [iconImageView2 setHighlightedImage:v6];
   }
 
   else
   {
     v7 = +[AXUIVoiceOverBluetoothDeviceTableCell spacerImage];
-    [v4 setImage:v7];
+    [iconImageView setImage:v7];
 
-    v8 = [(PSTableCell *)self iconImageView];
-    [v8 setHighlightedImage:0];
+    iconImageView2 = [(PSTableCell *)self iconImageView];
+    [iconImageView2 setHighlightedImage:0];
   }
 }
 
@@ -258,8 +258,8 @@ LABEL_6:
   if (!checkedImage__checkedImage)
   {
     v3 = [MEMORY[0x1E69DCAB8] kitImageNamed:@"UIPreferencesBlueCheck.png"];
-    v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v5 = [v3 imageWithTintColor:v4 renderingMode:1];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v5 = [v3 imageWithTintColor:systemBlueColor renderingMode:1];
     v6 = checkedImage__checkedImage;
     checkedImage__checkedImage = v5;
 
@@ -284,25 +284,25 @@ LABEL_6:
   return v2;
 }
 
-+ (id)textForBTPairedState:(int)a3
++ (id)textForBTPairedState:(int)state
 {
-  v4 = [MEMORY[0x1E696AD60] string];
-  if (a3 > 5)
+  string = [MEMORY[0x1E696AD60] string];
+  if (state > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = AXUILocalizedStringForKey(off_1E812E478[a3]);
+    v5 = AXUILocalizedStringForKey(off_1E812E478[state]);
   }
 
   if ([v5 length])
   {
-    [v4 appendString:v5];
+    [string appendString:v5];
   }
 
-  return v4;
+  return string;
 }
 
 @end

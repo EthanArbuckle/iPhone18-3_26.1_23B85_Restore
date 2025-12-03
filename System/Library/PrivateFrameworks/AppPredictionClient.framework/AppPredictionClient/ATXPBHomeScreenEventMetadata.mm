@@ -2,20 +2,20 @@
 + (uint64_t)widgetIdentifiablesType;
 - (BOOL)hasEngagedUrl;
 - (BOOL)hasVisibleRect;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)suggestedPageTypeAsString:(__CFString *)a1;
-- (id)bundleIdsAtIndex:(void *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)suggestedPageTypeAsString:(__CFString *)string;
+- (id)bundleIdsAtIndex:(void *)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)stackIdsAtIndex:(void *)a1;
-- (id)widgetIdentifiablesAtIndex:(void *)a1;
-- (id)widgetInStackIdentifiablesAtIndex:(void *)a1;
-- (uint64_t)StringAsSuggestedPageType:(uint64_t)a1;
-- (uint64_t)addBundleIds:(uint64_t)a1;
-- (uint64_t)addStackIds:(uint64_t)a1;
-- (uint64_t)addWidgetIdentifiables:(uint64_t)a1;
-- (uint64_t)addWidgetInStackIdentifiables:(uint64_t)a1;
+- (id)stackIdsAtIndex:(void *)index;
+- (id)widgetIdentifiablesAtIndex:(void *)index;
+- (id)widgetInStackIdentifiablesAtIndex:(void *)index;
+- (uint64_t)StringAsSuggestedPageType:(uint64_t)type;
+- (uint64_t)addBundleIds:(uint64_t)ids;
+- (uint64_t)addStackIds:(uint64_t)ids;
+- (uint64_t)addWidgetIdentifiables:(uint64_t)identifiables;
+- (uint64_t)addWidgetInStackIdentifiables:(uint64_t)identifiables;
 - (uint64_t)bundleIds;
 - (uint64_t)bundleIdsCount;
 - (uint64_t)clearBundleIds;
@@ -51,15 +51,15 @@
 - (uint64_t)widgetInStackIdentifiables;
 - (uint64_t)widgetInStackIdentifiablesCount;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setBundleIds:(uint64_t)a1;
-- (void)setEngagedUrl:(uint64_t)a1;
-- (void)setStackIds:(uint64_t)a1;
-- (void)setVisibleRect:(uint64_t)a1;
-- (void)setWidgetIdentifiables:(uint64_t)a1;
-- (void)setWidgetInStackIdentifiables:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setBundleIds:(uint64_t)ids;
+- (void)setEngagedUrl:(uint64_t)url;
+- (void)setStackIds:(uint64_t)ids;
+- (void)setVisibleRect:(uint64_t)rect;
+- (void)setWidgetIdentifiables:(uint64_t)identifiables;
+- (void)setWidgetInStackIdentifiables:(uint64_t)identifiables;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBHomeScreenEventMetadata
@@ -77,8 +77,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBHomeScreenEventMetadata;
   v4 = [(ATXPBHomeScreenEventMetadata *)&v8 description];
-  v5 = [(ATXPBHomeScreenEventMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBHomeScreenEventMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -86,17 +86,17 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_pageIndex];
-    [v3 setObject:v4 forKey:@"pageIndex"];
+    [dictionary setObject:v4 forKey:@"pageIndex"];
   }
 
   stackIds = self->_stackIds;
   if (stackIds)
   {
-    [v3 setObject:stackIds forKey:@"stackIds"];
+    [dictionary setObject:stackIds forKey:@"stackIds"];
   }
 
   if ([(NSMutableArray *)self->_widgetIdentifiables count])
@@ -121,8 +121,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -131,7 +131,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"widgetIdentifiables"];
+    [dictionary setObject:v6 forKey:@"widgetIdentifiables"];
   }
 
   if ([(NSMutableArray *)self->_widgetInStackIdentifiables count])
@@ -156,8 +156,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -166,14 +166,14 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"widgetInStackIdentifiables"];
+    [dictionary setObject:v13 forKey:@"widgetInStackIdentifiables"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSuggestionInAddWidgetSheet];
-    [v3 setObject:v21 forKey:@"isSuggestionInAddWidgetSheet"];
+    [dictionary setObject:v21 forKey:@"isSuggestionInAddWidgetSheet"];
 
     has = self->_has;
   }
@@ -181,27 +181,27 @@
   if ((has & 0x10) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:self->_isWidgetInTodayView];
-    [v3 setObject:v22 forKey:@"isWidgetInTodayView"];
+    [dictionary setObject:v22 forKey:@"isWidgetInTodayView"];
   }
 
   visibleRect = self->_visibleRect;
   if (visibleRect)
   {
-    v24 = [(ATXPBCGRectWrapper *)visibleRect dictionaryRepresentation];
-    [v3 setObject:v24 forKey:@"visibleRect"];
+    dictionaryRepresentation3 = [(ATXPBCGRectWrapper *)visibleRect dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"visibleRect"];
   }
 
   engagedUrl = self->_engagedUrl;
   if (engagedUrl)
   {
-    [v3 setObject:engagedUrl forKey:@"engagedUrl"];
+    [dictionary setObject:engagedUrl forKey:@"engagedUrl"];
   }
 
   v26 = self->_has;
   if ((v26 & 4) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:self->_isStalenessRotation];
-    [v3 setObject:v27 forKey:@"isStalenessRotation"];
+    [dictionary setObject:v27 forKey:@"isStalenessRotation"];
 
     v26 = self->_has;
   }
@@ -219,22 +219,22 @@
       v29 = off_1E80C2148[suggestedPageType];
     }
 
-    [v3 setObject:v29 forKey:@"suggestedPageType"];
+    [dictionary setObject:v29 forKey:@"suggestedPageType"];
   }
 
   bundleIds = self->_bundleIds;
   if (bundleIds)
   {
-    [v3 setObject:bundleIds forKey:@"bundleIds"];
+    [dictionary setObject:bundleIds forKey:@"bundleIds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
@@ -387,10 +387,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -417,7 +417,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v50 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v50 + 1) + 8 * i) copyWithZone:zone];
         [(ATXPBHomeScreenEventMetadata *)v6 addStackIds:v12];
       }
 
@@ -446,7 +446,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v46 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v46 + 1) + 8 * j) copyWithZone:zone];
         [(ATXPBHomeScreenEventMetadata *)v6 addWidgetIdentifiables:v18];
       }
 
@@ -475,7 +475,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v42 + 1) + 8 * k) copyWithZone:a3];
+        v24 = [*(*(&v42 + 1) + 8 * k) copyWithZone:zone];
         [(ATXPBHomeScreenEventMetadata *)v6 addWidgetInStackIdentifiables:v24];
       }
 
@@ -499,11 +499,11 @@
     *(v6 + 76) |= 0x10u;
   }
 
-  v26 = [(ATXPBCGRectWrapper *)self->_visibleRect copyWithZone:a3];
+  v26 = [(ATXPBCGRectWrapper *)self->_visibleRect copyWithZone:zone];
   v27 = *(v6 + 48);
   *(v6 + 48) = v26;
 
-  v28 = [(NSString *)self->_engagedUrl copyWithZone:a3];
+  v28 = [(NSString *)self->_engagedUrl copyWithZone:zone];
   v29 = *(v6 + 24);
   *(v6 + 24) = v28;
 
@@ -540,7 +540,7 @@
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v38 + 1) + 8 * m) copyWithZone:{a3, v38}];
+        v36 = [*(*(&v38 + 1) + 8 * m) copyWithZone:{zone, v38}];
         [(ATXPBHomeScreenEventMetadata *)v6 addBundleIds:v36];
       }
 
@@ -553,35 +553,35 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_pageIndex != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_pageIndex != *(equalCopy + 1))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_47;
   }
 
   stackIds = self->_stackIds;
-  if (stackIds | *(v4 + 4) && ![(NSMutableArray *)stackIds isEqual:?])
+  if (stackIds | *(equalCopy + 4) && ![(NSMutableArray *)stackIds isEqual:?])
   {
     goto LABEL_47;
   }
 
   widgetIdentifiables = self->_widgetIdentifiables;
-  if (widgetIdentifiables | *(v4 + 7))
+  if (widgetIdentifiables | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)widgetIdentifiables isEqual:?])
     {
@@ -590,7 +590,7 @@
   }
 
   widgetInStackIdentifiables = self->_widgetInStackIdentifiables;
-  if (widgetInStackIdentifiables | *(v4 + 8))
+  if (widgetInStackIdentifiables | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)widgetInStackIdentifiables isEqual:?])
     {
@@ -600,64 +600,64 @@
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0)
+    if ((*(equalCopy + 76) & 8) == 0)
     {
       goto LABEL_47;
     }
 
     if (self->_isSuggestionInAddWidgetSheet)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 76) & 0x10) == 0)
+    if ((*(equalCopy + 76) & 0x10) == 0)
     {
       goto LABEL_47;
     }
 
     if (self->_isWidgetInTodayView)
     {
-      if ((*(v4 + 74) & 1) == 0)
+      if ((*(equalCopy + 74) & 1) == 0)
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(v4 + 74))
+    else if (*(equalCopy + 74))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 0x10) != 0)
+  else if ((*(equalCopy + 76) & 0x10) != 0)
   {
     goto LABEL_47;
   }
 
   visibleRect = self->_visibleRect;
-  if (visibleRect | *(v4 + 6) && ![(ATXPBCGRectWrapper *)visibleRect isEqual:?])
+  if (visibleRect | *(equalCopy + 6) && ![(ATXPBCGRectWrapper *)visibleRect isEqual:?])
   {
     goto LABEL_47;
   }
 
   engagedUrl = self->_engagedUrl;
-  if (engagedUrl | *(v4 + 3))
+  if (engagedUrl | *(equalCopy + 3))
   {
     if (![(NSString *)engagedUrl isEqual:?])
     {
@@ -667,7 +667,7 @@
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 76) & 4) == 0)
+    if ((*(equalCopy + 76) & 4) == 0)
     {
       goto LABEL_23;
     }
@@ -677,20 +677,20 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ((*(v4 + 76) & 4) == 0)
+  if ((*(equalCopy + 76) & 4) == 0)
   {
     goto LABEL_47;
   }
 
   if (self->_isStalenessRotation)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_47;
   }
@@ -698,19 +698,19 @@ LABEL_47:
 LABEL_23:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_suggestedPageType != *(v4 + 10))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_suggestedPageType != *(equalCopy + 10))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_47;
   }
 
   bundleIds = self->_bundleIds;
-  if (bundleIds | *(v4 + 2))
+  if (bundleIds | *(equalCopy + 2))
   {
     v11 = [(NSMutableArray *)bundleIds isEqual:?];
   }
@@ -829,17 +829,17 @@ LABEL_11:
   return result;
 }
 
-- (uint64_t)addStackIds:(uint64_t)a1
+- (uint64_t)addStackIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
     v5 = OUTLINED_FUNCTION_10(32);
     if (!v5)
     {
       OUTLINED_FUNCTION_16(objc_alloc_init(MEMORY[0x1E695DF70]), 32);
-      v5 = *(a1 + 32);
+      v5 = *(ids + 32);
     }
 
     v3 = [v5 addObject:v7];
@@ -859,15 +859,15 @@ LABEL_11:
   return result;
 }
 
-- (id)stackIdsAtIndex:(void *)a1
+- (id)stackIdsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_13(a1 32)];
+    index = [OUTLINED_FUNCTION_13(index 32)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearWidgetIdentifiables
@@ -880,17 +880,17 @@ LABEL_11:
   return result;
 }
 
-- (uint64_t)addWidgetIdentifiables:(uint64_t)a1
+- (uint64_t)addWidgetIdentifiables:(uint64_t)identifiables
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifiables)
   {
     v5 = OUTLINED_FUNCTION_10(56);
     if (!v5)
     {
       OUTLINED_FUNCTION_16(objc_alloc_init(MEMORY[0x1E695DF70]), 56);
-      v5 = *(a1 + 56);
+      v5 = *(identifiables + 56);
     }
 
     v3 = [v5 addObject:v7];
@@ -910,15 +910,15 @@ LABEL_11:
   return result;
 }
 
-- (id)widgetIdentifiablesAtIndex:(void *)a1
+- (id)widgetIdentifiablesAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_13(a1 56)];
+    index = [OUTLINED_FUNCTION_13(index 56)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)clearWidgetInStackIdentifiables
@@ -931,17 +931,17 @@ LABEL_11:
   return result;
 }
 
-- (uint64_t)addWidgetInStackIdentifiables:(uint64_t)a1
+- (uint64_t)addWidgetInStackIdentifiables:(uint64_t)identifiables
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifiables)
   {
     v5 = OUTLINED_FUNCTION_10(64);
     if (!v5)
     {
       OUTLINED_FUNCTION_16(objc_alloc_init(MEMORY[0x1E695DF70]), 64);
-      v5 = *(a1 + 64);
+      v5 = *(identifiables + 64);
     }
 
     v3 = [v5 addObject:v7];
@@ -961,15 +961,15 @@ LABEL_11:
   return result;
 }
 
-- (id)widgetInStackIdentifiablesAtIndex:(void *)a1
+- (id)widgetInStackIdentifiablesAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_13(a1 64)];
+    index = [OUTLINED_FUNCTION_13(index 64)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
 - (uint64_t)setIsSuggestionInAddWidgetSheet:(uint64_t)result
@@ -1174,31 +1174,31 @@ LABEL_11:
   return result;
 }
 
-- (__CFString)suggestedPageTypeAsString:(__CFString *)a1
+- (__CFString)suggestedPageTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0xC)
   {
-    a1 = off_1E80C2148[a2];
+    string = off_1E80C2148[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsSuggestedPageType:(uint64_t)a1
+- (uint64_t)StringAsSuggestedPageType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unspecified"])
@@ -1285,17 +1285,17 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addBundleIds:(uint64_t)a1
+- (uint64_t)addBundleIds:(uint64_t)ids
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ids)
   {
     v5 = OUTLINED_FUNCTION_10(16);
     if (!v5)
     {
       OUTLINED_FUNCTION_16(objc_alloc_init(MEMORY[0x1E695DF70]), 16);
-      v5 = *(a1 + 16);
+      v5 = *(ids + 16);
     }
 
     v3 = [v5 addObject:v7];
@@ -1315,36 +1315,36 @@ LABEL_4:
   return result;
 }
 
-- (id)bundleIdsAtIndex:(void *)a1
+- (id)bundleIdsAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [OUTLINED_FUNCTION_13(a1 16)];
+    index = [OUTLINED_FUNCTION_13(index 16)];
     v1 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v65 = a2;
-  if (a1)
+  if (to)
   {
-    if (*(a1 + 76))
+    if (*(to + 76))
     {
-      *(v65 + 1) = *(a1 + 8);
+      *(v65 + 1) = *(to + 8);
       *(v65 + 76) |= 1u;
     }
 
-    if ([*(a1 + 32) count])
+    if ([*(to + 32) count])
     {
       if (v65)
       {
         [*(v65 + 4) removeAllObjects];
       }
 
-      if ([*(a1 + 32) count])
+      if ([*(to + 32) count])
       {
         OUTLINED_FUNCTION_9();
         do
@@ -1361,14 +1361,14 @@ LABEL_4:
       }
     }
 
-    if ([*(a1 + 56) count])
+    if ([*(to + 56) count])
     {
       if (v65)
       {
         [*(v65 + 7) removeAllObjects];
       }
 
-      if ([*(a1 + 56) count])
+      if ([*(to + 56) count])
       {
         OUTLINED_FUNCTION_9();
         do
@@ -1385,14 +1385,14 @@ LABEL_4:
       }
     }
 
-    if ([*(a1 + 64) count])
+    if ([*(to + 64) count])
     {
       if (v65)
       {
         [*(v65 + 8) removeAllObjects];
       }
 
-      if ([*(a1 + 64) count])
+      if ([*(to + 64) count])
       {
         OUTLINED_FUNCTION_9();
         do
@@ -1424,13 +1424,13 @@ LABEL_4:
       *(v43 + v45) = v44 | 0x10;
     }
 
-    v46 = *(a1 + 48);
+    v46 = *(to + 48);
     if (v46)
     {
       [(ATXPBHomeScreenEventMetadata *)v65 setVisibleRect:v46];
     }
 
-    v47 = *(a1 + 24);
+    v47 = *(to + 24);
     if (v47)
     {
       [(ATXPBHomeScreenEventMetadata *)v65 setEngagedUrl:v47];
@@ -1446,18 +1446,18 @@ LABEL_4:
 
     if ((v49 & 2) != 0)
     {
-      *(v48 + 40) = *(a1 + 40);
+      *(v48 + 40) = *(to + 40);
       *(v48 + 76) |= 2u;
     }
 
-    if ([*(a1 + 16) count])
+    if ([*(to + 16) count])
     {
       if (v65)
       {
         [*(v65 + 2) removeAllObjects];
       }
 
-      if ([*(a1 + 16) count])
+      if ([*(to + 16) count])
       {
         OUTLINED_FUNCTION_9();
         do
@@ -1476,33 +1476,33 @@ LABEL_4:
   }
 }
 
-- (void)setVisibleRect:(uint64_t)a1
+- (void)setVisibleRect:(uint64_t)rect
 {
-  if (a1)
+  if (rect)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 48);
+    OUTLINED_FUNCTION_2(rect, a2, 48);
   }
 }
 
-- (void)setEngagedUrl:(uint64_t)a1
+- (void)setEngagedUrl:(uint64_t)url
 {
-  if (a1)
+  if (url)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(url, a2, 24);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v64 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
     if (*(v3 + 76))
     {
-      *(a1 + 8) = v3[1];
-      *(a1 + 76) |= 1u;
+      *(from + 8) = v3[1];
+      *(from + 76) |= 1u;
     }
 
     v58 = 0u;
@@ -1525,7 +1525,7 @@ LABEL_4:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [(ATXPBHomeScreenEventMetadata *)a1 addStackIds:?];
+          v10 = [(ATXPBHomeScreenEventMetadata *)from addStackIds:?];
         }
 
         while (v7 != v9);
@@ -1555,7 +1555,7 @@ LABEL_4:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [(ATXPBHomeScreenEventMetadata *)a1 addWidgetIdentifiables:?];
+          v17 = [(ATXPBHomeScreenEventMetadata *)from addWidgetIdentifiables:?];
         }
 
         while (v14 != v16);
@@ -1585,7 +1585,7 @@ LABEL_4:
             objc_enumerationMutation(v19);
           }
 
-          v24 = [(ATXPBHomeScreenEventMetadata *)a1 addWidgetInStackIdentifiables:?];
+          v24 = [(ATXPBHomeScreenEventMetadata *)from addWidgetInStackIdentifiables:?];
         }
 
         while (v21 != v23);
@@ -1599,17 +1599,17 @@ LABEL_4:
     if ((v26 & 8) != 0)
     {
       OUTLINED_FUNCTION_4_1(73);
-      *(a1 + v28) = v27 | 8;
+      *(from + v28) = v27 | 8;
       OUTLINED_FUNCTION_6_1();
     }
 
     if ((v26 & 0x10) != 0)
     {
       OUTLINED_FUNCTION_4_1(74);
-      *(a1 + v30) = v29 | 0x10;
+      *(from + v30) = v29 | 0x10;
     }
 
-    v31 = *(a1 + 48);
+    v31 = *(from + 48);
     v32 = v4[6];
     if (v31)
     {
@@ -1621,27 +1621,27 @@ LABEL_4:
 
     else if (v32)
     {
-      objc_storeStrong((a1 + 48), v32);
+      objc_storeStrong((from + 48), v32);
     }
 
     v33 = v4[3];
     if (v33)
     {
-      objc_storeStrong((a1 + 24), v33);
+      objc_storeStrong((from + 24), v33);
     }
 
     OUTLINED_FUNCTION_6_1();
     if ((v34 & 4) != 0)
     {
       OUTLINED_FUNCTION_4_1(72);
-      *(a1 + v36) = v35 | 4;
+      *(from + v36) = v35 | 4;
       OUTLINED_FUNCTION_6_1();
     }
 
     if ((v34 & 2) != 0)
     {
-      *(a1 + 40) = *(v4 + 10);
-      *(a1 + 76) |= 2u;
+      *(from + 40) = *(v4 + 10);
+      *(from + 76) |= 2u;
     }
 
     v46 = 0u;
@@ -1664,7 +1664,7 @@ LABEL_4:
             objc_enumerationMutation(v37);
           }
 
-          v42 = [(ATXPBHomeScreenEventMetadata *)a1 addBundleIds:?];
+          v42 = [(ATXPBHomeScreenEventMetadata *)from addBundleIds:?];
         }
 
         while (v39 != v41);
@@ -1696,11 +1696,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setStackIds:(uint64_t)a1
+- (void)setStackIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(ids, a2, 32);
   }
 }
 
@@ -1714,11 +1714,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setWidgetIdentifiables:(uint64_t)a1
+- (void)setWidgetIdentifiables:(uint64_t)identifiables
 {
-  if (a1)
+  if (identifiables)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 56);
+    OUTLINED_FUNCTION_2(identifiables, a2, 56);
   }
 }
 
@@ -1732,19 +1732,19 @@ LABEL_4:
   return result;
 }
 
-- (void)setWidgetInStackIdentifiables:(uint64_t)a1
+- (void)setWidgetInStackIdentifiables:(uint64_t)identifiables
 {
-  if (a1)
+  if (identifiables)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 64);
+    OUTLINED_FUNCTION_2(identifiables, a2, 64);
   }
 }
 
 - (uint64_t)isSuggestionInAddWidgetSheet
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_7_0(*(a1 + 73));
+    return OUTLINED_FUNCTION_7_0(*(self + 73));
   }
 
   else
@@ -1755,9 +1755,9 @@ LABEL_4:
 
 - (uint64_t)isWidgetInTodayView
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_7_0(*(a1 + 74));
+    return OUTLINED_FUNCTION_7_0(*(self + 74));
   }
 
   else
@@ -1788,9 +1788,9 @@ LABEL_4:
 
 - (uint64_t)isStalenessRotation
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_7_0(*(a1 + 72));
+    return OUTLINED_FUNCTION_7_0(*(self + 72));
   }
 
   else
@@ -1809,11 +1809,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setBundleIds:(uint64_t)a1
+- (void)setBundleIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 16);
+    OUTLINED_FUNCTION_2(ids, a2, 16);
   }
 }
 

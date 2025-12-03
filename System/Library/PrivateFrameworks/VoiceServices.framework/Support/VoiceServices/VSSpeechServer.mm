@@ -1,18 +1,18 @@
 @interface VSSpeechServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (VSSpeechServer)init;
 - (void)dealloc;
 - (void)scheduleBackgroundTasks;
-- (void)setConnectionCount:(unint64_t)a3;
+- (void)setConnectionCount:(unint64_t)count;
 @end
 
 @implementation VSSpeechServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VSSpeechServiceDelegate];
-  [v5 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___VSSpeechXPCServiceProtocol];
   v22[0] = objc_opt_class();
@@ -29,29 +29,29 @@
   v11 = [NSSet setWithArray:v10];
 
   [v7 setClasses:v11 forSelector:"startPresynthesizedAudioRequest:" argumentIndex:0 ofReply:0];
-  [v5 setExportedInterface:v7];
-  v12 = [[VSSpeechXPCHandler alloc] initWithConnection:v5];
-  [v5 setExportedObject:v12];
+  [connectionCopy setExportedInterface:v7];
+  v12 = [[VSSpeechXPCHandler alloc] initWithConnection:connectionCopy];
+  [connectionCopy setExportedObject:v12];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000EC628;
   v18 = &unk_1000FEBE8;
   v19 = v12;
-  v20 = self;
+  selfCopy = self;
   v13 = v12;
-  [v5 setInvalidationHandler:&v15];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:&v15];
+  [connectionCopy resume];
 
   [(VSSpeechServer *)self setConnectionCount:[(VSSpeechServer *)self connectionCount]+ 1];
   return 1;
 }
 
-- (void)setConnectionCount:(unint64_t)a3
+- (void)setConnectionCount:(unint64_t)count
 {
   pthread_mutex_lock(&stru_100101560);
-  self->_connectionCount = a3;
+  self->_connectionCount = count;
   runloopSourceRef = self->_runloopSourceRef;
-  if (a3)
+  if (count)
   {
     if (!runloopSourceRef)
     {

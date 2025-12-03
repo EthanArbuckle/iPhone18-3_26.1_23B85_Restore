@@ -1,28 +1,28 @@
 @interface RDCoreSpotlightDelegateManager
-- (RDCoreSpotlightDelegateManager)initWithIsolated:(BOOL)a3 coordinator:(id)a4;
-- (void)_startCoreSpotlightDelegate:(id)a3 forStore:(id)a4;
+- (RDCoreSpotlightDelegateManager)initWithIsolated:(BOOL)isolated coordinator:(id)coordinator;
+- (void)_startCoreSpotlightDelegate:(id)delegate forStore:(id)store;
 - (void)activateCoreSpotlightDelegates;
-- (void)createAndAttachCoreSpotlightDelegateForStoreWithDescription:(id)a3;
-- (void)deleteIndicesForStore:(id)a3;
+- (void)createAndAttachCoreSpotlightDelegateForStoreWithDescription:(id)description;
+- (void)deleteIndicesForStore:(id)store;
 - (void)reindexAllSearchableItems;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3;
-- (void)stopCoreSpotlightDelegatesForStores:(id)a3;
-- (void)validateIndexVersionWithCompletionHandler:(id)a3;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers;
+- (void)stopCoreSpotlightDelegatesForStores:(id)stores;
+- (void)validateIndexVersionWithCompletionHandler:(id)handler;
 @end
 
 @implementation RDCoreSpotlightDelegateManager
 
-- (RDCoreSpotlightDelegateManager)initWithIsolated:(BOOL)a3 coordinator:(id)a4
+- (RDCoreSpotlightDelegateManager)initWithIsolated:(BOOL)isolated coordinator:(id)coordinator
 {
-  v7 = a4;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = RDCoreSpotlightDelegateManager;
   v8 = [(RDCoreSpotlightDelegateManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_enableCoreSpotlightIndexing = !a3;
-    objc_storeStrong(&v8->_persistentStoreCoordinator, a4);
+    v8->_enableCoreSpotlightIndexing = !isolated;
+    objc_storeStrong(&v8->_persistentStoreCoordinator, coordinator);
     *&v9->_isActivated = 0;
     v10 = +[NSMutableSet set];
     pendingReindexIdentifiers = v9->_pendingReindexIdentifiers;
@@ -36,30 +36,30 @@
   return v9;
 }
 
-- (void)validateIndexVersionWithCompletionHandler:(id)a3
+- (void)validateIndexVersionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(RDCoreSpotlightDelegateManager *)self enableCoreSpotlightIndexing])
   {
-    [_TtC7remindd31RDCoreDataCoreSpotlightDelegate deleteAllIndicesIfVersionOutdatedWithCompletionHandler:v4];
+    [_TtC7remindd31RDCoreDataCoreSpotlightDelegate deleteAllIndicesIfVersionOutdatedWithCompletionHandler:handlerCopy];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)createAndAttachCoreSpotlightDelegateForStoreWithDescription:(id)a3
+- (void)createAndAttachCoreSpotlightDelegateForStoreWithDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
-  v6 = [v4 URL];
-  v7 = [v5 persistentStoreForURL:v6];
+  descriptionCopy = description;
+  persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
+  v6 = [descriptionCopy URL];
+  v7 = [persistentStoreCoordinator persistentStoreForURL:v6];
 
   if (v7)
   {
-    v8 = [[_TtC7remindd31RDCoreDataCoreSpotlightDelegate alloc] initForStoreWithDescription:v4 coordinator:v5];
+    v8 = [[_TtC7remindd31RDCoreDataCoreSpotlightDelegate alloc] initForStoreWithDescription:descriptionCopy coordinator:persistentStoreCoordinator];
     if ([(RDCoreSpotlightDelegateManager *)self isActivated])
     {
       [(RDCoreSpotlightDelegateManager *)self _startCoreSpotlightDelegate:v8 forStore:v7];
@@ -73,7 +73,7 @@
         v10 = 138412802;
         v11 = v7;
         v12 = 2112;
-        v13 = v5;
+        v13 = persistentStoreCoordinator;
         v14 = 2112;
         v15 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "CoreSpotlight delegates are not activated. Will delay starting delegates {store: %@, coordinator: %@, associatedDelegate: %@}", &v10, 0x20u);
@@ -89,26 +89,26 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = persistentStoreCoordinator;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Not going to create CoreSpotlight delegate for store description because it doesn't exist in the PSC {coordinator: %@}", &v10, 0xCu);
     }
   }
 }
 
-- (void)deleteIndicesForStore:(id)a3
+- (void)deleteIndicesForStore:(id)store
 {
-  v4 = a3;
-  v5 = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
+  storeCopy = store;
+  persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
   objc_opt_class();
-  v6 = [v4 coreSpotlightExporter];
-  if (v6)
+  coreSpotlightExporter = [storeCopy coreSpotlightExporter];
+  if (coreSpotlightExporter)
   {
     v7 = REMDynamicCast();
   }
 
   else
   {
-    v8 = [v4 rd_associatedCoreSpotlightDelegate];
+    rd_associatedCoreSpotlightDelegate = [storeCopy rd_associatedCoreSpotlightDelegate];
     v7 = REMDynamicCast();
   }
 
@@ -125,35 +125,35 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000C9BB0;
   v12[3] = &unk_1008DC428;
-  v13 = v4;
-  v14 = v5;
-  v10 = v5;
-  v11 = v4;
+  v13 = storeCopy;
+  v14 = persistentStoreCoordinator;
+  v10 = persistentStoreCoordinator;
+  v11 = storeCopy;
   [v7 deleteAllIndicesWithCompletionHandler:v12];
 }
 
 - (void)activateCoreSpotlightDelegates
 {
-  v2 = self;
+  selfCopy = self;
   if ([(RDCoreSpotlightDelegateManager *)self enableCoreSpotlightIndexing])
   {
-    if ([(RDCoreSpotlightDelegateManager *)v2 isActivated])
+    if ([(RDCoreSpotlightDelegateManager *)selfCopy isActivated])
     {
-      v3 = +[REMLogStore search];
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+      persistentStoreCoordinator = +[REMLogStore search];
+      if (os_log_type_enabled(persistentStoreCoordinator, OS_LOG_TYPE_FAULT))
       {
-        sub_10076C458(v3);
+        sub_10076C458(persistentStoreCoordinator);
       }
 
       goto LABEL_33;
     }
 
-    v3 = [(RDCoreSpotlightDelegateManager *)v2 persistentStoreCoordinator];
+    persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)selfCopy persistentStoreCoordinator];
     v4 = +[REMLogStore search];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = v3;
+      v34 = persistentStoreCoordinator;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Activating CoreSpotlight delegates {coordinator: %@}", buf, 0xCu);
     }
 
@@ -161,15 +161,15 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v5 = [v3 persistentStores];
-    v6 = [v5 countByEnumeratingWithState:&v29 objects:v41 count:16];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    v6 = [persistentStores countByEnumeratingWithState:&v29 objects:v41 count:16];
     if (v6)
     {
       v8 = v6;
       v9 = *v30;
       *&v7 = 138412546;
       v27 = v7;
-      v28 = v2;
+      v28 = selfCopy;
       do
       {
         v10 = 0;
@@ -177,12 +177,12 @@
         {
           if (*v30 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(persistentStores);
           }
 
           v11 = *(*(&v29 + 1) + 8 * v10);
           objc_opt_class();
-          v12 = [v11 rd_associatedCoreSpotlightDelegate];
+          rd_associatedCoreSpotlightDelegate = [v11 rd_associatedCoreSpotlightDelegate];
           v13 = REMDynamicCast();
 
           [v11 setRd_associatedCoreSpotlightDelegate:0];
@@ -194,22 +194,22 @@
               *buf = v27;
               v34 = v11;
               v35 = 2112;
-              v36 = v3;
+              v36 = persistentStoreCoordinator;
               _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "The store does not have an associated CoreSpotlight delegate. This is expected if (and only if) the store has been requested to be removed. {store: %@, coordinator: %@}", buf, 0x16u);
             }
 
             goto LABEL_20;
           }
 
-          v14 = [v11 coreSpotlightExporter];
+          coreSpotlightExporter = [v11 coreSpotlightExporter];
 
-          if (v14)
+          if (coreSpotlightExporter)
           {
             v15 = +[REMLogStore search];
             if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
             {
               [v11 coreSpotlightExporter];
-              v17 = v16 = v3;
+              v17 = v16 = persistentStoreCoordinator;
               *buf = 138413058;
               v34 = v11;
               v35 = 2112;
@@ -220,8 +220,8 @@
               v40 = v13;
               _os_log_fault_impl(&_mh_execute_header, v15, OS_LOG_TYPE_FAULT, "The store already has an active CoreSpotlight delegate {store: %@, coordinator: %@, activeDelegate: %@, associatedDelegate: %@}", buf, 0x2Au);
 
-              v3 = v16;
-              v2 = v28;
+              persistentStoreCoordinator = v16;
+              selfCopy = v28;
             }
 
 LABEL_20:
@@ -229,88 +229,88 @@ LABEL_20:
             goto LABEL_22;
           }
 
-          [(RDCoreSpotlightDelegateManager *)v2 _startCoreSpotlightDelegate:v13 forStore:v11];
+          [(RDCoreSpotlightDelegateManager *)selfCopy _startCoreSpotlightDelegate:v13 forStore:v11];
 LABEL_22:
 
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v5 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        v8 = [persistentStores countByEnumeratingWithState:&v29 objects:v41 count:16];
       }
 
       while (v8);
     }
 
-    [(RDCoreSpotlightDelegateManager *)v2 setIsActivated:1];
-    if ([(RDCoreSpotlightDelegateManager *)v2 pendingReindexAll])
+    [(RDCoreSpotlightDelegateManager *)selfCopy setIsActivated:1];
+    if ([(RDCoreSpotlightDelegateManager *)selfCopy pendingReindexAll])
     {
       v18 = +[REMLogStore search];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v34 = v3;
+        v34 = persistentStoreCoordinator;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Executing pending reindex all request {coordinator: %@}", buf, 0xCu);
       }
 
-      [(RDCoreSpotlightDelegateManager *)v2 reindexAllSearchableItems];
+      [(RDCoreSpotlightDelegateManager *)selfCopy reindexAllSearchableItems];
     }
 
     else
     {
-      v19 = [(RDCoreSpotlightDelegateManager *)v2 pendingReindexIdentifiers];
-      v20 = [v19 count];
+      pendingReindexIdentifiers = [(RDCoreSpotlightDelegateManager *)selfCopy pendingReindexIdentifiers];
+      v20 = [pendingReindexIdentifiers count];
 
       if (v20)
       {
         v21 = +[REMLogStore search];
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [(RDCoreSpotlightDelegateManager *)v2 pendingReindexIdentifiers];
+          pendingReindexIdentifiers2 = [(RDCoreSpotlightDelegateManager *)selfCopy pendingReindexIdentifiers];
           *buf = 138412546;
-          v34 = v3;
+          v34 = persistentStoreCoordinator;
           v35 = 2112;
-          v36 = v22;
+          v36 = pendingReindexIdentifiers2;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Executing pending reindex items request {coordinator: %@, identifiers: %@}", buf, 0x16u);
         }
 
-        v23 = [(RDCoreSpotlightDelegateManager *)v2 pendingReindexIdentifiers];
-        v24 = [v23 allObjects];
-        [(RDCoreSpotlightDelegateManager *)v2 reindexSearchableItemsWithIdentifiers:v24];
+        pendingReindexIdentifiers3 = [(RDCoreSpotlightDelegateManager *)selfCopy pendingReindexIdentifiers];
+        allObjects = [pendingReindexIdentifiers3 allObjects];
+        [(RDCoreSpotlightDelegateManager *)selfCopy reindexSearchableItemsWithIdentifiers:allObjects];
       }
     }
 
-    [(RDCoreSpotlightDelegateManager *)v2 setPendingReindexAll:0, v27];
-    v25 = [(RDCoreSpotlightDelegateManager *)v2 pendingReindexIdentifiers];
-    [v25 removeAllObjects];
+    [(RDCoreSpotlightDelegateManager *)selfCopy setPendingReindexAll:0, v27];
+    pendingReindexIdentifiers4 = [(RDCoreSpotlightDelegateManager *)selfCopy pendingReindexIdentifiers];
+    [pendingReindexIdentifiers4 removeAllObjects];
 
-    v26 = [(RDCoreSpotlightDelegateManager *)v2 earlyStoppedStoreIdentifiers];
-    [v26 removeAllObjects];
+    earlyStoppedStoreIdentifiers = [(RDCoreSpotlightDelegateManager *)selfCopy earlyStoppedStoreIdentifiers];
+    [earlyStoppedStoreIdentifiers removeAllObjects];
   }
 
   else
   {
-    v3 = +[REMLogStore search];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    persistentStoreCoordinator = +[REMLogStore search];
+    if (os_log_type_enabled(persistentStoreCoordinator, OS_LOG_TYPE_ERROR))
     {
-      sub_10076C414(v3);
+      sub_10076C414(persistentStoreCoordinator);
     }
   }
 
 LABEL_33:
 }
 
-- (void)stopCoreSpotlightDelegatesForStores:(id)a3
+- (void)stopCoreSpotlightDelegatesForStores:(id)stores
 {
-  v4 = a3;
-  v23 = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
+  storesCopy = stores;
+  persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
   v5 = +[REMLogStore search];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v23;
+    v30 = persistentStoreCoordinator;
     v31 = 2112;
-    v32 = v4;
+    v32 = storesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Stopping CoreSpotlight delegates {coordinator: %@, stores: %@}", buf, 0x16u);
   }
 
@@ -318,7 +318,7 @@ LABEL_33:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = storesCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -337,11 +337,11 @@ LABEL_33:
         }
 
         v12 = *(*(&v24 + 1) + 8 * v11);
-        v13 = [(RDCoreSpotlightDelegateManager *)self isActivated];
+        isActivated = [(RDCoreSpotlightDelegateManager *)self isActivated];
         objc_opt_class();
-        if (v13)
+        if (isActivated)
         {
-          v14 = [v12 coreSpotlightExporter];
+          coreSpotlightExporter = [v12 coreSpotlightExporter];
           v15 = REMDynamicCast();
 
           if (!v15)
@@ -352,7 +352,7 @@ LABEL_33:
               *buf = v22;
               v30 = v12;
               v31 = 2112;
-              v32 = v23;
+              v32 = persistentStoreCoordinator;
               _os_log_fault_impl(&_mh_execute_header, v16, OS_LOG_TYPE_FAULT, "The store does not have an active CoreSpotlight delegate {store: %@, coordinator: %@}", buf, 0x16u);
             }
           }
@@ -362,7 +362,7 @@ LABEL_33:
 
         else
         {
-          v17 = [v12 rd_associatedCoreSpotlightDelegate];
+          rd_associatedCoreSpotlightDelegate = [v12 rd_associatedCoreSpotlightDelegate];
           v15 = REMDynamicCast();
 
           if (!v15)
@@ -373,19 +373,19 @@ LABEL_33:
               *buf = v22;
               v30 = v12;
               v31 = 2112;
-              v32 = v23;
+              v32 = persistentStoreCoordinator;
               _os_log_fault_impl(&_mh_execute_header, v18, OS_LOG_TYPE_FAULT, "The store does not have an associated CoreSpotlight delegate {store: %@, coordinator: %@}", buf, 0x16u);
             }
           }
 
           [v15 setShouldStart:0];
-          v19 = [v12 identifier];
+          identifier = [v12 identifier];
 
-          if (v19)
+          if (identifier)
           {
-            v20 = [(RDCoreSpotlightDelegateManager *)self earlyStoppedStoreIdentifiers];
-            v21 = [v12 identifier];
-            [v20 addObject:v21];
+            earlyStoppedStoreIdentifiers = [(RDCoreSpotlightDelegateManager *)self earlyStoppedStoreIdentifiers];
+            identifier2 = [v12 identifier];
+            [earlyStoppedStoreIdentifiers addObject:identifier2];
           }
         }
 
@@ -402,12 +402,12 @@ LABEL_33:
 
 - (void)reindexAllSearchableItems
 {
-  v23 = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
+  persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
   v2 = +[REMLogStore search];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v23;
+    v31 = persistentStoreCoordinator;
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "Received request to -reindexAllSearchableItems {coordinator: %@}", buf, 0xCu);
   }
 
@@ -417,8 +417,8 @@ LABEL_33:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v3 = [v23 persistentStores];
-    v4 = [v3 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    v4 = [persistentStores countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v4)
     {
       v6 = v4;
@@ -433,12 +433,12 @@ LABEL_33:
         {
           if (*v27 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(persistentStores);
           }
 
           v10 = *(*(&v26 + 1) + 8 * v9);
           objc_opt_class();
-          v11 = [v10 coreSpotlightExporter];
+          coreSpotlightExporter = [v10 coreSpotlightExporter];
           v12 = REMDynamicCast();
 
           if (v12)
@@ -448,21 +448,21 @@ LABEL_33:
 
           else
           {
-            v13 = [v10 identifier];
-            if (!v13)
+            identifier = [v10 identifier];
+            if (!identifier)
             {
               goto LABEL_13;
             }
 
-            v14 = v13;
-            v15 = [(RDCoreSpotlightDelegateManager *)self earlyStoppedStoreIdentifiers];
+            v14 = identifier;
+            earlyStoppedStoreIdentifiers = [(RDCoreSpotlightDelegateManager *)self earlyStoppedStoreIdentifiers];
             [v10 identifier];
             v16 = v7;
             v17 = p_name;
-            v19 = v18 = v3;
-            v25 = [v15 containsObject:v19];
+            v19 = v18 = persistentStores;
+            v25 = [earlyStoppedStoreIdentifiers containsObject:v19];
 
-            v3 = v18;
+            persistentStores = v18;
             p_name = v17;
             v7 = v16;
 
@@ -475,7 +475,7 @@ LABEL_13:
                 *buf = v22;
                 v31 = v10;
                 v32 = 2112;
-                v33 = v23;
+                v33 = persistentStoreCoordinator;
                 _os_log_fault_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "The store does not have an active CoreSpotlight delegate {store: %@, coordinator: %@}", buf, 0x16u);
               }
             }
@@ -485,7 +485,7 @@ LABEL_13:
         }
 
         while (v6 != v9);
-        v6 = [v3 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v6 = [persistentStores countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v6);
@@ -498,7 +498,7 @@ LABEL_13:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v23;
+      v31 = persistentStoreCoordinator;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "The spotlight delegates are not activated yet. Going to defer reindexing all. {coordinator: %@}", buf, 0xCu);
     }
 
@@ -506,18 +506,18 @@ LABEL_13:
   }
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v28 = self;
-  v26 = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
   v5 = +[REMLogStore search];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v26;
+    v35 = persistentStoreCoordinator;
     v36 = 2112;
-    v37 = v4;
+    v37 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received request to -reindexSearchableItemsWithIdentifiers: {coordinator: %@, identifiers: %@}", buf, 0x16u);
   }
 
@@ -527,8 +527,8 @@ LABEL_13:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = [v26 persistentStores];
-    v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    v7 = [persistentStores countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v7)
     {
       v9 = v7;
@@ -542,38 +542,38 @@ LABEL_13:
         {
           if (*v30 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(persistentStores);
           }
 
           v12 = *(*(&v29 + 1) + 8 * i);
           objc_opt_class();
-          v13 = [v12 coreSpotlightExporter];
+          coreSpotlightExporter = [v12 coreSpotlightExporter];
           v14 = REMDynamicCast();
 
           if (v14)
           {
-            [v14 reindexSearchableItemsWithIdentifiers:v4 acknowledgementHandler:0];
+            [v14 reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:0];
           }
 
           else
           {
-            v15 = [v12 identifier];
-            if (!v15)
+            identifier = [v12 identifier];
+            if (!identifier)
             {
               goto LABEL_13;
             }
 
-            v16 = v15;
-            [(RDCoreSpotlightDelegateManager *)v28 earlyStoppedStoreIdentifiers];
-            v17 = v6;
-            v19 = v18 = v4;
+            v16 = identifier;
+            [(RDCoreSpotlightDelegateManager *)selfCopy earlyStoppedStoreIdentifiers];
+            v17 = persistentStores;
+            v19 = v18 = identifiersCopy;
             [v12 identifier];
             v21 = v20 = v9;
             v22 = [v19 containsObject:v21];
 
             v9 = v20;
-            v4 = v18;
-            v6 = v17;
+            identifiersCopy = v18;
+            persistentStores = v17;
             v10 = v27;
 
             if ((v22 & 1) == 0)
@@ -585,14 +585,14 @@ LABEL_13:
                 *buf = v25;
                 v35 = v12;
                 v36 = 2112;
-                v37 = v26;
+                v37 = persistentStoreCoordinator;
                 _os_log_fault_impl(&_mh_execute_header, v23, OS_LOG_TYPE_FAULT, "The store does not have an active CoreSpotlight delegate {store: %@, coordinator: %@}", buf, 0x16u);
               }
             }
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v9 = [persistentStores countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v9);
@@ -605,48 +605,48 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v26;
+      v35 = persistentStoreCoordinator;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "The spotlight delegates are not activated yet. Going to defer reindexing items. {coordinator: %@}", buf, 0xCu);
     }
 
-    v6 = [(RDCoreSpotlightDelegateManager *)self pendingReindexIdentifiers];
-    [v6 addObjectsFromArray:v4];
+    persistentStores = [(RDCoreSpotlightDelegateManager *)self pendingReindexIdentifiers];
+    [persistentStores addObjectsFromArray:identifiersCopy];
   }
 }
 
-- (void)_startCoreSpotlightDelegate:(id)a3 forStore:(id)a4
+- (void)_startCoreSpotlightDelegate:(id)delegate forStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 shouldStart])
+  delegateCopy = delegate;
+  storeCopy = store;
+  if ([delegateCopy shouldStart])
   {
-    v8 = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
+    persistentStoreCoordinator = [(RDCoreSpotlightDelegateManager *)self persistentStoreCoordinator];
     v9 = +[REMLogStore search];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v12 = 138412802;
-      v13 = v7;
+      v13 = storeCopy;
       v14 = 2112;
-      v15 = v8;
+      v15 = persistentStoreCoordinator;
       v16 = 2112;
-      v17 = v6;
+      v17 = delegateCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Starting CoreSpotlight delegate {store: %@, coordinator: %@, delegate: %@}", &v12, 0x20u);
     }
 
-    [v6 startSpotlightIndexing];
-    v10 = [v7 coreSpotlightExporter];
+    [delegateCopy startSpotlightIndexing];
+    coreSpotlightExporter = [storeCopy coreSpotlightExporter];
 
-    if (!v10)
+    if (!coreSpotlightExporter)
     {
       v11 = +[REMLogStore search];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         v12 = 138412802;
-        v13 = v7;
+        v13 = storeCopy;
         v14 = 2112;
-        v15 = v8;
+        v15 = persistentStoreCoordinator;
         v16 = 2112;
-        v17 = v6;
+        v17 = delegateCopy;
         _os_log_fault_impl(&_mh_execute_header, v11, OS_LOG_TYPE_FAULT, "The store still doesn't have active CoreSpotlight delegate after kicking start the associated delegate {store: %@, coordinator: %@, associatedDelegate: %@}", &v12, 0x20u);
       }
     }

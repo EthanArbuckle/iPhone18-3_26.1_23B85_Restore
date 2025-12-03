@@ -1,17 +1,17 @@
 @interface NTKFaceSupportNotificationActionEvent
 - (NSDictionary)ntkfs_analyticsJSONRepresentation;
-- (NTKFaceSupportNotificationActionEvent)initWithBundleIdentifier:(id)a3 action:(int64_t)a4 delayFromPresentation:(double)a5;
+- (NTKFaceSupportNotificationActionEvent)initWithBundleIdentifier:(id)identifier action:(int64_t)action delayFromPresentation:(double)presentation;
 @end
 
 @implementation NTKFaceSupportNotificationActionEvent
 
-- (NTKFaceSupportNotificationActionEvent)initWithBundleIdentifier:(id)a3 action:(int64_t)a4 delayFromPresentation:(double)a5
+- (NTKFaceSupportNotificationActionEvent)initWithBundleIdentifier:(id)identifier action:(int64_t)action delayFromPresentation:(double)presentation
 {
-  v8 = a3;
-  v9 = [v8 length];
-  if (a5 <= 0.0 || (a4 - 4) < 0xFFFFFFFFFFFFFFFDLL || v9 == 0)
+  identifierCopy = identifier;
+  v9 = [identifierCopy length];
+  if (presentation <= 0.0 || (action - 4) < 0xFFFFFFFFFFFFFFFDLL || v9 == 0)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -22,32 +22,32 @@
     v14 = v13;
     if (v13)
     {
-      v15 = [v8 copy];
+      v15 = [identifierCopy copy];
       bundleIdentifier = v14->_bundleIdentifier;
       v14->_bundleIdentifier = v15;
 
-      v14->_action = a4;
-      v14->_delayFromPresentation = a5;
+      v14->_action = action;
+      v14->_delayFromPresentation = presentation;
     }
 
     self = v14;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (NSDictionary)ntkfs_analyticsJSONRepresentation
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFaceSupportNotificationActionEvent *)self bundleIdentifier];
-  v4 = [(NTKFaceSupportNotificationActionEvent *)self action];
+  bundleIdentifier = [(NTKFaceSupportNotificationActionEvent *)self bundleIdentifier];
+  action = [(NTKFaceSupportNotificationActionEvent *)self action];
   [(NTKFaceSupportNotificationActionEvent *)self delayFromPresentation];
   v6 = v5;
-  v12[0] = v3;
+  v12[0] = bundleIdentifier;
   v11[0] = @"bundle_identifier";
   v11[1] = @"action_invoked";
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:action];
   v12[1] = v7;
   v11[2] = @"delay_from_presentation";
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v6];

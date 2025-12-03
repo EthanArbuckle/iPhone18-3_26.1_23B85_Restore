@@ -1,17 +1,17 @@
 @interface HUAirPlayIconView
 - (CGSize)intrinsicContentSize;
-- (HUAirPlayIconView)initWithFrame:(CGRect)a3;
-- (void)defineBorderWithRadius:(double)a3 borderWidth:(double)a4 borderColor:(id)a5;
+- (HUAirPlayIconView)initWithFrame:(CGRect)frame;
+- (void)defineBorderWithRadius:(double)radius borderWidth:(double)width borderColor:(id)color;
 - (void)layoutSubviews;
 @end
 
 @implementation HUAirPlayIconView
 
-- (HUAirPlayIconView)initWithFrame:(CGRect)a3
+- (HUAirPlayIconView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = HUAirPlayIconView;
-  v3 = [(HUAirPlayIconView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUAirPlayIconView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -47,21 +47,21 @@
   v6 = v5;
   [(HUAirPlayIconView *)self bounds];
   v8 = v7;
-  v9 = [(HUAirPlayIconView *)self airplayImageBackgroundView];
-  [v9 setBounds:{0.0, 0.0, v6, v8}];
+  airplayImageBackgroundView = [(HUAirPlayIconView *)self airplayImageBackgroundView];
+  [airplayImageBackgroundView setBounds:{0.0, 0.0, v6, v8}];
 
-  v10 = [(HUAirPlayIconView *)self airplayImageBackgroundView];
-  [v10 setCenter:{MidX, MidY}];
+  airplayImageBackgroundView2 = [(HUAirPlayIconView *)self airplayImageBackgroundView];
+  [airplayImageBackgroundView2 setCenter:{MidX, MidY}];
 
   [(HUAirPlayIconView *)self bounds];
   v12 = v11 * 0.55;
   [(HUAirPlayIconView *)self bounds];
   v14 = v13 * 0.55;
-  v15 = [(HUAirPlayIconView *)self airplayImageView];
-  [v15 setBounds:{0.0, 0.0, v12, v14}];
+  airplayImageView = [(HUAirPlayIconView *)self airplayImageView];
+  [airplayImageView setBounds:{0.0, 0.0, v12, v14}];
 
-  v16 = [(HUAirPlayIconView *)self airplayImageView];
-  [v16 setCenter:{MidX, MidY}];
+  airplayImageView2 = [(HUAirPlayIconView *)self airplayImageView];
+  [airplayImageView2 setCenter:{MidX, MidY}];
 
   v17 = +[UIColor systemWhiteColor];
   [(HUAirPlayIconView *)self defineBorderWithRadius:v17 borderWidth:17.0 borderColor:4.0];
@@ -76,7 +76,7 @@
   return result;
 }
 
-- (void)defineBorderWithRadius:(double)a3 borderWidth:(double)a4 borderColor:(id)a5
+- (void)defineBorderWithRadius:(double)radius borderWidth:(double)width borderColor:(id)color
 {
   [(HUAirPlayIconView *)self bounds];
   v9 = v8;
@@ -88,22 +88,22 @@
   [v16 setFrame:{v9, v11, v13, v15}];
   v17 = v24;
   [v16 setPath:{objc_msgSend(v24, "CGPath")}];
-  v18 = [(HUAirPlayIconView *)self layer];
-  [v18 setMask:v16];
+  layer = [(HUAirPlayIconView *)self layer];
+  [layer setMask:v16];
 
-  v19 = [UIBezierPath bezierPathWithRoundedRect:-1 byRoundingCorners:v9 cornerRadii:v11, v13, v15, a3, a3];
+  radius = [UIBezierPath bezierPathWithRoundedRect:-1 byRoundingCorners:v9 cornerRadii:v11, v13, v15, radius, radius];
   v20 = +[CAShapeLayer layer];
   [v20 setFrame:{v9, v11, v13, v15}];
-  [v20 setPath:{objc_msgSend(v19, "CGPath")}];
+  [v20 setPath:{objc_msgSend(radius, "CGPath")}];
   v21 = +[UIColor whiteColor];
   [v20 setStrokeColor:{objc_msgSend(v21, "CGColor")}];
 
   v22 = +[UIColor clearColor];
   [v20 setFillColor:{objc_msgSend(v22, "CGColor")}];
 
-  [v20 setLineWidth:a4];
-  v23 = [(HUAirPlayIconView *)self layer];
-  [v23 addSublayer:v20];
+  [v20 setLineWidth:width];
+  layer2 = [(HUAirPlayIconView *)self layer];
+  [layer2 addSublayer:v20];
 }
 
 @end

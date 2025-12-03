@@ -9,20 +9,20 @@
 
 - (void)setAside
 {
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v5 certificatePersistentID];
-  v4 = [v5 UUID];
-  [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v3 andUUID:v4];
+  payload = [(MCNewPayloadHandler *)self payload];
+  certificatePersistentID = [payload certificatePersistentID];
+  uUID = [payload UUID];
+  [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:certificatePersistentID andUUID:uUID];
 
   self->_isSetAside = 1;
 }
 
 - (void)unsetAside
 {
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v5 certificatePersistentID];
-  v4 = [v5 UUID];
-  [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:v3 andUUID:v4];
+  payload = [(MCNewPayloadHandler *)self payload];
+  certificatePersistentID = [payload certificatePersistentID];
+  uUID = [payload UUID];
+  [(MCNewPayloadHandler *)self _retainDependencyBetweenPersistentID:certificatePersistentID andUUID:uUID];
 
   self->_isSetAside = 0;
 }
@@ -31,17 +31,17 @@
 {
   if (!self->_isSetAside)
   {
-    v6 = [(MCNewPayloadHandler *)self payload];
-    v4 = [v6 certificatePersistentID];
-    v5 = [v6 UUID];
-    [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:v4 andUUID:v5];
+    payload = [(MCNewPayloadHandler *)self payload];
+    certificatePersistentID = [payload certificatePersistentID];
+    uUID = [payload UUID];
+    [(MCNewPayloadHandler *)self _releaseDependencyBetweenPersistentID:certificatePersistentID andUUID:uUID];
   }
 }
 
 - (void)accessibility
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  if ([v2 isIdentity] && !objc_msgSend(v2, "isMDMClientIdentity"))
+  payload = [(MCNewPayloadHandler *)self payload];
+  if ([payload isIdentity] && !objc_msgSend(payload, "isMDMClientIdentity"))
   {
     v3 = &kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly;
   }

@@ -1,11 +1,11 @@
 @interface LSExtensionPoint
-+ (id)extensionPointForIdentifier:(id)a3;
-+ (id)extensionPointForIdentifier:(id)a3 platform:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (LSExtensionPoint)initWithCoder:(id)a3;
++ (id)extensionPointForIdentifier:(id)identifier;
++ (id)extensionPointForIdentifier:(id)identifier platform:(id)platform;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (LSExtensionPoint)initWithCoder:(id)coder;
 - (NSDictionary)sdkEntry;
 - (NSNumber)platform;
-- (id)_initWithRecord:(id)a3 resolveAndDetach:(BOOL)a4;
+- (id)_initWithRecord:(id)record resolveAndDetach:(BOOL)detach;
 - (id)description;
 @end
 
@@ -13,12 +13,12 @@
 
 - (NSDictionary)sdkEntry
 {
-  v2 = [(LSExtensionPointRecord *)self->_record SDKDictionary];
-  v3 = [v2 _expensiveDictionaryRepresentation];
-  v4 = v3;
-  if (v3)
+  sDKDictionary = [(LSExtensionPointRecord *)self->_record SDKDictionary];
+  _expensiveDictionaryRepresentation = [sDKDictionary _expensiveDictionaryRepresentation];
+  v4 = _expensiveDictionaryRepresentation;
+  if (_expensiveDictionaryRepresentation)
   {
-    v5 = v3;
+    v5 = _expensiveDictionaryRepresentation;
   }
 
   else
@@ -31,40 +31,40 @@
   return v5;
 }
 
-+ (id)extensionPointForIdentifier:(id)a3
++ (id)extensionPointForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dyld_get_active_platform()];
-  v5 = [LSExtensionPoint extensionPointForIdentifier:v3 platform:v4];
+  v5 = [LSExtensionPoint extensionPointForIdentifier:identifierCopy platform:v4];
 
   return v5;
 }
 
-+ (id)extensionPointForIdentifier:(id)a3 platform:(id)a4
++ (id)extensionPointForIdentifier:(id)identifier platform:(id)platform
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  platformCopy = platform;
   v8 = [LSExtensionPointRecord alloc];
-  if (v7)
+  if (platformCopy)
   {
-    v9 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [platformCopy unsignedLongLongValue];
   }
 
   else
   {
-    v9 = 0;
+    unsignedLongLongValue = 0;
   }
 
   v16 = 0;
-  v10 = [(LSExtensionPointRecord *)v8 initWithIdentifier:v6 platform:v9 parentAppRecord:0 error:&v16];
+  v10 = [(LSExtensionPointRecord *)v8 initWithIdentifier:identifierCopy platform:unsignedLongLongValue parentAppRecord:0 error:&v16];
   v11 = v16;
   if (v10)
   {
-    v12 = [[a1 alloc] _initWithRecord:v10 resolveAndDetach:1];
+    v12 = [[self alloc] _initWithRecord:v10 resolveAndDetach:1];
     v13 = _LSDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(LSExtensionPoint *)v12 extensionPointForIdentifier:v6 platform:v13];
+      [(LSExtensionPoint *)v12 extensionPointForIdentifier:identifierCopy platform:v13];
     }
   }
 
@@ -73,7 +73,7 @@
     v13 = _LSDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(LSExtensionPoint *)v6 extensionPointForIdentifier:v11 platform:v13];
+      [(LSExtensionPoint *)identifierCopy extensionPointForIdentifier:v11 platform:v13];
     }
 
     v12 = 0;
@@ -83,23 +83,23 @@
   return v12;
 }
 
-- (id)_initWithRecord:(id)a3 resolveAndDetach:(BOOL)a4
+- (id)_initWithRecord:(id)record resolveAndDetach:(BOOL)detach
 {
-  v4 = a4;
-  v7 = a3;
+  detachCopy = detach;
+  recordCopy = record;
   v11.receiver = self;
   v11.super_class = LSExtensionPoint;
-  v8 = [(_LSQueryResult *)&v11 _init];
-  v9 = v8;
-  if (v8)
+  _init = [(_LSQueryResult *)&v11 _init];
+  v9 = _init;
+  if (_init)
   {
-    if (v4 && _LSDatabaseContextGetDetachProxyObjects(v8))
+    if (detachCopy && _LSDatabaseContextGetDetachProxyObjects(_init))
     {
-      [v7 _resolveAllProperties];
-      [v7 detach];
+      [recordCopy _resolveAllProperties];
+      [recordCopy detach];
     }
 
-    objc_storeStrong(v9 + 1, a3);
+    objc_storeStrong(v9 + 1, record);
   }
 
   return v9;
@@ -107,10 +107,10 @@
 
 - (NSNumber)platform
 {
-  v2 = [(LSExtensionPointRecord *)self->_record platform];
-  if (v2)
+  platform = [(LSExtensionPointRecord *)self->_record platform];
+  if (platform)
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v2];
+    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:platform];
   }
 
   else
@@ -121,7 +121,7 @@
   return v3;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = LSExtensionPoint;
@@ -132,19 +132,19 @@
 
   else
   {
-    return [LSExtensionPointRecord instancesRespondToSelector:a3];
+    return [LSExtensionPointRecord instancesRespondToSelector:selector];
   }
 }
 
-- (LSExtensionPoint)initWithCoder:(id)a3
+- (LSExtensionPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = LSExtensionPoint;
-  v5 = [(_LSQueryResult *)&v9 initWithCoder:v4];
+  v5 = [(_LSQueryResult *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"record"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"record"];
     record = v5->_record;
     v5->_record = v6;
   }
@@ -158,10 +158,10 @@
   v10.receiver = self;
   v10.super_class = LSExtensionPoint;
   v4 = [(LSExtensionPoint *)&v10 description];
-  v5 = [(LSExtensionPoint *)self identifier];
-  v6 = [(LSExtensionPoint *)self platform];
-  v7 = [(LSExtensionPoint *)self sdkEntry];
-  v8 = [v3 stringWithFormat:@"%@ %@ %@ <%@>", v4, v5, v6, v7];
+  identifier = [(LSExtensionPoint *)self identifier];
+  platform = [(LSExtensionPoint *)self platform];
+  sdkEntry = [(LSExtensionPoint *)self sdkEntry];
+  v8 = [v3 stringWithFormat:@"%@ %@ %@ <%@>", v4, identifier, platform, sdkEntry];
 
   return v8;
 }

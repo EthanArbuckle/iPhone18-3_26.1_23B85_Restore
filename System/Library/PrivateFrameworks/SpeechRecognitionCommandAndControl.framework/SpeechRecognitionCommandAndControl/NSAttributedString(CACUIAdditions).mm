@@ -6,11 +6,11 @@
 
 - (id)stringByReplacingNewLinesWithSymbols
 {
-  v1 = [a1 mutableCopy];
-  v2 = [v1 mutableString];
-  v3 = [v1 mutableString];
-  v4 = [v3 stringByReplacingNewLinesWithSymbols];
-  [v2 setString:v4];
+  v1 = [self mutableCopy];
+  mutableString = [v1 mutableString];
+  mutableString2 = [v1 mutableString];
+  stringByReplacingNewLinesWithSymbols = [mutableString2 stringByReplacingNewLinesWithSymbols];
+  [mutableString setString:stringByReplacingNewLinesWithSymbols];
 
   return v1;
 }

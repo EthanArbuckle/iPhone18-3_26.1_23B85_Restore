@@ -1,34 +1,34 @@
 @interface AMSAuthKitUpdateTask
-- (AMSAuthKitUpdateTask)initWithAccount:(id)a3 options:(id)a4;
+- (AMSAuthKitUpdateTask)initWithAccount:(id)account options:(id)options;
 - (BOOL)_canPresentBackgroundPrompt;
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6;
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context;
 - (id)_createAuthKitContext;
 - (id)_createAuthKitController;
 - (id)performAuthKitUpdate;
 - (unint64_t)_authenticationType;
-- (void)_configureAuthKitContext:(id)a3;
-- (void)_configureClientInfoForContext:(id)a3;
-- (void)_configureCompanionDeviceForContext:(id)a3;
-- (void)_configureIdentifiersForContext:(id)a3;
-- (void)_configureProxyIdentifiersForContext:(id)a3;
-- (void)_configureStringsForContext:(id)a3;
-- (void)_logPromptSummaryForResults:(id)a3 context:(id)a4;
+- (void)_configureAuthKitContext:(id)context;
+- (void)_configureClientInfoForContext:(id)context;
+- (void)_configureCompanionDeviceForContext:(id)context;
+- (void)_configureIdentifiersForContext:(id)context;
+- (void)_configureProxyIdentifiersForContext:(id)context;
+- (void)_configureStringsForContext:(id)context;
+- (void)_logPromptSummaryForResults:(id)results context:(id)context;
 @end
 
 @implementation AMSAuthKitUpdateTask
 
-- (AMSAuthKitUpdateTask)initWithAccount:(id)a3 options:(id)a4
+- (AMSAuthKitUpdateTask)initWithAccount:(id)account options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = AMSAuthKitUpdateTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
@@ -450,13 +450,13 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
   }
 }
 
-- (BOOL)authenticationController:(id)a3 shouldContinueWithAuthenticationResults:(id)a4 error:(id)a5 forContext:(id)a6
+- (BOOL)authenticationController:(id)controller shouldContinueWithAuthenticationResults:(id)results error:(id)error forContext:(id)context
 {
   v61 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v49 = a4;
-  v9 = a5;
-  v10 = a6;
+  controllerCopy = controller;
+  resultsCopy = results;
+  errorCopy = error;
+  contextCopy = context;
   v11 = 0x1E73B0000uLL;
   v12 = +[AMSLogConfig sharedAccountsConfig];
   if (!v12)
@@ -464,10 +464,10 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
+  oSLogObject = [v12 OSLogObject];
   v14 = 0x1E696A000uLL;
-  v48 = v10;
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  v48 = contextCopy;
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v15 = AMSLogKey();
     v16 = MEMORY[0x1E696AEC0];
@@ -487,8 +487,8 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v19 = ;
     *buf = 138543362;
     v52 = v19;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEBUG, "%{public}@began.", buf, 0xCu);
-    v10 = v48;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@began.", buf, 0xCu);
+    contextCopy = v48;
     if (v15)
     {
 
@@ -504,10 +504,10 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v20 = +[AMSLogConfig sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+  oSLogObject2 = [v20 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
   {
-    v22 = v9;
+    v22 = errorCopy;
     v23 = AMSLogKey();
     v24 = MEMORY[0x1E696AEC0];
     v25 = objc_opt_class();
@@ -523,11 +523,11 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
       [v24 stringWithFormat:@"%@: ", v25];
     }
     v27 = ;
-    v28 = AMSHashIfNeeded(v50);
-    v29 = [v49 ak_redactedCopy];
-    v30 = AMSHashIfNeeded(v29);
+    v28 = AMSHashIfNeeded(controllerCopy);
+    ak_redactedCopy = [resultsCopy ak_redactedCopy];
+    v30 = AMSHashIfNeeded(ak_redactedCopy);
     v31 = AMSLogableError(v22);
-    v32 = AMSHashIfNeeded(v10);
+    v32 = AMSHashIfNeeded(contextCopy);
     *buf = 138544386;
     v52 = v27;
     v53 = 2114;
@@ -538,7 +538,7 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v58 = v31;
     v59 = 2114;
     v60 = v32;
-    _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEBUG, "%{public}@controller = %{public}@ | results = %{public}@ | error = %{public}@ | context = %{public}@", buf, 0x34u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, "%{public}@controller = %{public}@ | results = %{public}@ | error = %{public}@ | context = %{public}@", buf, 0x34u);
 
     if (v23)
     {
@@ -546,26 +546,26 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
       v27 = v45;
     }
 
-    v9 = v22;
-    v10 = v48;
+    errorCopy = v22;
+    contextCopy = v48;
     v14 = 0x1E696A000uLL;
   }
 
-  v33 = [v10 clientInfo];
-  if (!v33)
+  clientInfo = [contextCopy clientInfo];
+  if (!clientInfo)
   {
-    v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v10 setClientInfo:v33];
+    clientInfo = objc_alloc_init(MEMORY[0x1E695DF90]);
+    [contextCopy setClientInfo:clientInfo];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v34 = [v33 objectForKeyedSubscript:@"metricsAuthenticationAttempts"];
+    v34 = [clientInfo objectForKeyedSubscript:@"metricsAuthenticationAttempts"];
     if (!v34)
     {
       v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [v33 setObject:v34 forKeyedSubscript:@"metricsAuthenticationAttempts"];
+      [clientInfo setObject:v34 forKeyedSubscript:@"metricsAuthenticationAttempts"];
     }
   }
 
@@ -574,7 +574,7 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v34 = 0;
   }
 
-  v35 = [AMSMetricsEvent metricsAuthenticationAttemptDictionaryForAuthKitError:v9];
+  v35 = [AMSMetricsEvent metricsAuthenticationAttemptDictionaryForAuthKitError:errorCopy];
   if (v35)
   {
     [v34 addObject:v35];
@@ -586,10 +586,10 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v36 = +[AMSLogConfig sharedConfig];
   }
 
-  v37 = [v36 OSLogObject];
-  if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+  oSLogObject3 = [v36 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
   {
-    v46 = v9;
+    v46 = errorCopy;
     v38 = AMSLogKey();
     v39 = MEMORY[0x1E696AEC0];
     v40 = objc_opt_class();
@@ -607,7 +607,7 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     }
     v42 = ;
     v43 = @"false";
-    v9 = v46;
+    errorCopy = v46;
     if (!v46)
     {
       v43 = @"true";
@@ -617,24 +617,24 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
     v52 = v42;
     v53 = 2114;
     v54 = v43;
-    _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_DEBUG, "%{public}@returning %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@returning %{public}@", buf, 0x16u);
     if (v38)
     {
 
       v42 = v14;
     }
 
-    v10 = v48;
+    contextCopy = v48;
   }
 
-  return v9 == 0;
+  return errorCopy == 0;
 }
 
 - (BOOL)_canPresentBackgroundPrompt
 {
-  v2 = [(AMSAuthKitUpdateTask *)self options];
-  v3 = [v2 debugReason];
-  v4 = [v3 length];
+  options = [(AMSAuthKitUpdateTask *)self options];
+  debugReason = [options debugReason];
+  v4 = [debugReason length];
 
   if (v4)
   {
@@ -648,8 +648,8 @@ void __44__AMSAuthKitUpdateTask_performAuthKitUpdate__block_invoke_39(uint64_t a
 
   v6 = qword_1ED6E1DA8;
   v7 = +[AMSProcessInfo currentProcess];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v6 containsObject:v8];
+  bundleIdentifier = [v7 bundleIdentifier];
+  v9 = [v6 containsObject:bundleIdentifier];
 
   return v9;
 }
@@ -675,13 +675,13 @@ void __51__AMSAuthKitUpdateTask__canPresentBackgroundPrompt__block_invoke()
 - (unint64_t)_authenticationType
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSAuthKitUpdateTask *)self options];
-  v4 = [v3 authenticationType];
+  options = [(AMSAuthKitUpdateTask *)self options];
+  authenticationType = [options authenticationType];
 
-  v5 = [(AMSAuthKitUpdateTask *)self options];
-  v6 = [v5 isRemoteProxyAuthentication];
+  options2 = [(AMSAuthKitUpdateTask *)self options];
+  isRemoteProxyAuthentication = [options2 isRemoteProxyAuthentication];
 
-  if (v6 && v4 == 2)
+  if (isRemoteProxyAuthentication && authenticationType == 2)
   {
     v7 = +[AMSLogConfig sharedAccountsConfig];
     if (!v7)
@@ -689,8 +689,8 @@ void __51__AMSAuthKitUpdateTask__canPresentBackgroundPrompt__block_invoke()
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -698,13 +698,13 @@ void __51__AMSAuthKitUpdateTask__canPresentBackgroundPrompt__block_invoke()
       v17 = v9;
       v18 = 2114;
       v19 = v10;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding authenticationType with AKAppleIDAuthenticationTypeSilentPreferred. Performing a remote proxy authentication.", &v16, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding authenticationType with AKAppleIDAuthenticationTypeSilentPreferred. Performing a remote proxy authentication.", &v16, 0x16u);
     }
 
-    v4 = 0;
+    authenticationType = 0;
   }
 
-  if (![(AMSAuthKitUpdateTask *)self _canPresentBackgroundPrompt]&& v4 != 1)
+  if (![(AMSAuthKitUpdateTask *)self _canPresentBackgroundPrompt]&& authenticationType != 1)
   {
     v11 = +[AMSLogConfig sharedAccountsConfig];
     if (!v11)
@@ -712,8 +712,8 @@ void __51__AMSAuthKitUpdateTask__canPresentBackgroundPrompt__block_invoke()
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -721,89 +721,89 @@ void __51__AMSAuthKitUpdateTask__canPresentBackgroundPrompt__block_invoke()
       v17 = v13;
       v18 = 2114;
       v19 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding authenticationType with AKAppleIDAuthenticationTypeSilent. The current process cannot perform a background prompt.", &v16, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding authenticationType with AKAppleIDAuthenticationTypeSilent. The current process cannot perform a background prompt.", &v16, 0x16u);
     }
 
     return 1;
   }
 
-  return v4;
+  return authenticationType;
 }
 
-- (void)_configureAuthKitContext:(id)a3
+- (void)_configureAuthKitContext:(id)context
 {
-  v12 = a3;
-  [v12 setAuthenticationType:{-[AMSAuthKitUpdateTask _authenticationType](self, "_authenticationType")}];
-  v4 = [(AMSAuthKitUpdateTask *)self account];
-  v5 = [v4 ams_rawPassword];
-  [v12 _setPassword:v5];
+  contextCopy = context;
+  [contextCopy setAuthenticationType:{-[AMSAuthKitUpdateTask _authenticationType](self, "_authenticationType")}];
+  account = [(AMSAuthKitUpdateTask *)self account];
+  ams_rawPassword = [account ams_rawPassword];
+  [contextCopy _setPassword:ams_rawPassword];
 
-  [v12 setServiceType:2];
-  v6 = [(AMSAuthKitUpdateTask *)self options];
-  [v12 setIsEphemeral:{objc_msgSend(v6, "ephemeral")}];
+  [contextCopy setServiceType:2];
+  options = [(AMSAuthKitUpdateTask *)self options];
+  [contextCopy setIsEphemeral:{objc_msgSend(options, "ephemeral")}];
 
-  v7 = [(AMSAuthKitUpdateTask *)self options];
-  [v12 setServiceType:{objc_msgSend(v7, "serviceType")}];
+  options2 = [(AMSAuthKitUpdateTask *)self options];
+  [contextCopy setServiceType:{objc_msgSend(options2, "serviceType")}];
 
-  v8 = [(AMSAuthKitUpdateTask *)self options];
-  v9 = [v8 serviceIdentifier];
+  options3 = [(AMSAuthKitUpdateTask *)self options];
+  serviceIdentifier = [options3 serviceIdentifier];
 
-  if (v9)
+  if (serviceIdentifier)
   {
-    v10 = [(AMSAuthKitUpdateTask *)self options];
-    v11 = [v10 serviceIdentifier];
-    [v12 setServiceIdentifier:v11];
+    options4 = [(AMSAuthKitUpdateTask *)self options];
+    serviceIdentifier2 = [options4 serviceIdentifier];
+    [contextCopy setServiceIdentifier:serviceIdentifier2];
   }
 
-  [(AMSAuthKitUpdateTask *)self _configureClientInfoForContext:v12];
-  [(AMSAuthKitUpdateTask *)self _configureCompanionDeviceForContext:v12];
-  [(AMSAuthKitUpdateTask *)self _configureIdentifiersForContext:v12];
-  [(AMSAuthKitUpdateTask *)self _configureProxyIdentifiersForContext:v12];
-  [(AMSAuthKitUpdateTask *)self _configureStringsForContext:v12];
+  [(AMSAuthKitUpdateTask *)self _configureClientInfoForContext:contextCopy];
+  [(AMSAuthKitUpdateTask *)self _configureCompanionDeviceForContext:contextCopy];
+  [(AMSAuthKitUpdateTask *)self _configureIdentifiersForContext:contextCopy];
+  [(AMSAuthKitUpdateTask *)self _configureProxyIdentifiersForContext:contextCopy];
+  [(AMSAuthKitUpdateTask *)self _configureStringsForContext:contextCopy];
 }
 
-- (void)_configureClientInfoForContext:(id)a3
+- (void)_configureClientInfoForContext:(id)context
 {
-  v13 = a3;
-  v4 = [(AMSAuthKitUpdateTask *)self options];
-  v5 = [v4 appProvidedContext];
-  [v13 setAppProvidedContext:v5];
+  contextCopy = context;
+  options = [(AMSAuthKitUpdateTask *)self options];
+  appProvidedContext = [options appProvidedContext];
+  [contextCopy setAppProvidedContext:appProvidedContext];
 
-  v6 = [(AMSAuthKitUpdateTask *)self options];
-  v7 = [v6 appProvidedData];
-  [v13 setAppProvidedData:v7];
+  options2 = [(AMSAuthKitUpdateTask *)self options];
+  appProvidedData = [options2 appProvidedData];
+  [contextCopy setAppProvidedData:appProvidedData];
 
-  v8 = [v13 clientInfo];
-  if (!v8)
+  clientInfo = [contextCopy clientInfo];
+  if (!clientInfo)
   {
-    v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v13 setClientInfo:v8];
+    clientInfo = objc_alloc_init(MEMORY[0x1E695DF90]);
+    [contextCopy setClientInfo:clientInfo];
   }
 
-  v9 = [(AMSAuthKitUpdateTask *)self options];
-  v10 = [v9 createAccountQueryParams];
-  [v8 ams_setNullableObject:v10 forKey:@"AMSAuthenticateOptionsCreateAccountQueryParamsKey"];
+  options3 = [(AMSAuthKitUpdateTask *)self options];
+  createAccountQueryParams = [options3 createAccountQueryParams];
+  [clientInfo ams_setNullableObject:createAccountQueryParams forKey:@"AMSAuthenticateOptionsCreateAccountQueryParamsKey"];
 
-  v11 = [(AMSAuthKitUpdateTask *)self options];
-  v12 = [v11 userAgent];
-  [v8 ams_setNullableObject:v12 forKey:@"AMSAuthenticateOptionsUserAgentKey"];
+  options4 = [(AMSAuthKitUpdateTask *)self options];
+  userAgent = [options4 userAgent];
+  [clientInfo ams_setNullableObject:userAgent forKey:@"AMSAuthenticateOptionsUserAgentKey"];
 }
 
-- (void)_configureCompanionDeviceForContext:(id)a3
+- (void)_configureCompanionDeviceForContext:(id)context
 {
-  v13 = a3;
-  v4 = [(AMSAuthKitUpdateTask *)self options];
-  v5 = [v4 companionDeviceClientInfo];
-  if (v5)
+  contextCopy = context;
+  options = [(AMSAuthKitUpdateTask *)self options];
+  companionDeviceClientInfo = [options companionDeviceClientInfo];
+  if (companionDeviceClientInfo)
   {
   }
 
   else
   {
-    v6 = [(AMSAuthKitUpdateTask *)self options];
-    v7 = [v6 companionDeviceUDID];
+    options2 = [(AMSAuthKitUpdateTask *)self options];
+    companionDeviceUDID = [options2 companionDeviceUDID];
 
-    if (!v7)
+    if (!companionDeviceUDID)
     {
       goto LABEL_5;
     }
@@ -811,141 +811,141 @@ void __51__AMSAuthKitUpdateTask__canPresentBackgroundPrompt__block_invoke()
 
   v8 = objc_alloc_init(MEMORY[0x1E698DD60]);
   [v8 setLinkType:2];
-  v9 = [(AMSAuthKitUpdateTask *)self options];
-  v10 = [v9 companionDeviceClientInfo];
-  [v8 setServerFriendlyDescription:v10];
+  options3 = [(AMSAuthKitUpdateTask *)self options];
+  companionDeviceClientInfo2 = [options3 companionDeviceClientInfo];
+  [v8 setServerFriendlyDescription:companionDeviceClientInfo2];
 
-  v11 = [(AMSAuthKitUpdateTask *)self options];
-  v12 = [v11 companionDeviceUDID];
-  [v8 setUniqueDeviceIdentifier:v12];
+  options4 = [(AMSAuthKitUpdateTask *)self options];
+  companionDeviceUDID2 = [options4 companionDeviceUDID];
+  [v8 setUniqueDeviceIdentifier:companionDeviceUDID2];
 
-  [v13 setCompanionDevice:v8];
+  [contextCopy setCompanionDevice:v8];
 LABEL_5:
 }
 
-- (void)_configureIdentifiersForContext:(id)a3
+- (void)_configureIdentifiersForContext:(id)context
 {
-  v22 = a3;
-  v4 = [(AMSAuthKitUpdateTask *)self account];
-  v5 = [v4 ams_altDSID];
-  v6 = [v5 length];
+  contextCopy = context;
+  account = [(AMSAuthKitUpdateTask *)self account];
+  ams_altDSID = [account ams_altDSID];
+  v6 = [ams_altDSID length];
 
   if (v6)
   {
-    v7 = [(AMSAuthKitUpdateTask *)self account];
-    v8 = [v7 ams_altDSID];
-    [v22 setAltDSID:v8];
+    account2 = [(AMSAuthKitUpdateTask *)self account];
+    ams_altDSID2 = [account2 ams_altDSID];
+    [contextCopy setAltDSID:ams_altDSID2];
   }
 
-  v9 = [(AMSAuthKitUpdateTask *)self account];
-  v10 = [v9 ams_DSID];
-  if (v10)
+  account3 = [(AMSAuthKitUpdateTask *)self account];
+  ams_DSID = [account3 ams_DSID];
+  if (ams_DSID)
   {
-    v11 = v10;
-    v12 = [(AMSAuthKitUpdateTask *)self account];
-    v13 = [v12 ams_DSID];
-    v14 = [v13 isEqualToNumber:&unk_1F0778FC8];
+    v11 = ams_DSID;
+    account4 = [(AMSAuthKitUpdateTask *)self account];
+    ams_DSID2 = [account4 ams_DSID];
+    v14 = [ams_DSID2 isEqualToNumber:&unk_1F0778FC8];
 
     if (v14)
     {
       goto LABEL_7;
     }
 
-    v9 = [(AMSAuthKitUpdateTask *)self account];
-    v15 = [v9 ams_DSID];
-    v16 = [v15 stringValue];
-    [v22 setDSID:v16];
+    account3 = [(AMSAuthKitUpdateTask *)self account];
+    ams_DSID3 = [account3 ams_DSID];
+    stringValue = [ams_DSID3 stringValue];
+    [contextCopy setDSID:stringValue];
   }
 
 LABEL_7:
-  v17 = [(AMSAuthKitUpdateTask *)self account];
-  v18 = [v17 username];
-  v19 = [v18 length];
+  account5 = [(AMSAuthKitUpdateTask *)self account];
+  username = [account5 username];
+  v19 = [username length];
 
   if (v19)
   {
-    v20 = [(AMSAuthKitUpdateTask *)self account];
-    v21 = [v20 username];
-    [v22 setUsername:v21];
+    account6 = [(AMSAuthKitUpdateTask *)self account];
+    username2 = [account6 username];
+    [contextCopy setUsername:username2];
   }
 
-  [v22 setIsUsernameEditable:v19 == 0];
-  if ([v22 authenticationType] == 1)
+  [contextCopy setIsUsernameEditable:v19 == 0];
+  if ([contextCopy authenticationType] == 1)
   {
-    [v22 setIsUsernameEditable:0];
+    [contextCopy setIsUsernameEditable:0];
   }
 
-  if ([v22 isUsernameEditable])
+  if ([contextCopy isUsernameEditable])
   {
-    [v22 setAltDSID:0];
-    [v22 setDSID:0];
+    [contextCopy setAltDSID:0];
+    [contextCopy setDSID:0];
   }
 }
 
-- (void)_configureProxyIdentifiersForContext:(id)a3
+- (void)_configureProxyIdentifiersForContext:(id)context
 {
-  v14 = a3;
-  v4 = [(AMSAuthKitUpdateTask *)self options];
-  v5 = [v4 proxyAppBundleID];
-  v6 = [v5 length];
+  contextCopy = context;
+  options = [(AMSAuthKitUpdateTask *)self options];
+  proxyAppBundleID = [options proxyAppBundleID];
+  v6 = [proxyAppBundleID length];
 
   if (v6)
   {
-    [v14 _setProxyingForApp:1];
-    v7 = [(AMSAuthKitUpdateTask *)self options];
-    v8 = [v7 proxyAppBundleID];
-    [v14 _setProxiedAppBundleID:v8];
+    [contextCopy _setProxyingForApp:1];
+    options2 = [(AMSAuthKitUpdateTask *)self options];
+    proxyAppBundleID2 = [options2 proxyAppBundleID];
+    [contextCopy _setProxiedAppBundleID:proxyAppBundleID2];
   }
 
-  v9 = [(AMSAuthKitUpdateTask *)self options];
-  v10 = [v9 proxyAppName];
-  v11 = [v10 length];
+  options3 = [(AMSAuthKitUpdateTask *)self options];
+  proxyAppName = [options3 proxyAppName];
+  v11 = [proxyAppName length];
 
   if (v11)
   {
-    [v14 _setProxyingForApp:1];
-    v12 = [(AMSAuthKitUpdateTask *)self options];
-    v13 = [v12 proxyAppName];
-    [v14 _setProxiedAppName:v13];
+    [contextCopy _setProxyingForApp:1];
+    options4 = [(AMSAuthKitUpdateTask *)self options];
+    proxyAppName2 = [options4 proxyAppName];
+    [contextCopy _setProxiedAppName:proxyAppName2];
   }
 }
 
-- (void)_configureStringsForContext:(id)a3
+- (void)_configureStringsForContext:(id)context
 {
-  v20 = a3;
-  v4 = [(AMSAuthKitUpdateTask *)self options];
-  v5 = [v4 cancelButtonString];
-  v6 = [v5 length];
+  contextCopy = context;
+  options = [(AMSAuthKitUpdateTask *)self options];
+  cancelButtonString = [options cancelButtonString];
+  v6 = [cancelButtonString length];
 
   if (v6)
   {
-    v7 = [(AMSAuthKitUpdateTask *)self options];
-    v8 = [v7 cancelButtonString];
-    [v20 setCancelButtonString:v8];
+    options2 = [(AMSAuthKitUpdateTask *)self options];
+    cancelButtonString2 = [options2 cancelButtonString];
+    [contextCopy setCancelButtonString:cancelButtonString2];
   }
 
-  v9 = [(AMSAuthKitUpdateTask *)self options];
-  v10 = [v9 defaultButtonString];
-  v11 = [v10 length];
+  options3 = [(AMSAuthKitUpdateTask *)self options];
+  defaultButtonString = [options3 defaultButtonString];
+  v11 = [defaultButtonString length];
 
   if (v11)
   {
-    v12 = [(AMSAuthKitUpdateTask *)self options];
-    v13 = [v12 defaultButtonString];
-    [v20 setDefaultButtonString:v13];
+    options4 = [(AMSAuthKitUpdateTask *)self options];
+    defaultButtonString2 = [options4 defaultButtonString];
+    [contextCopy setDefaultButtonString:defaultButtonString2];
   }
 
-  v14 = [(AMSAuthKitUpdateTask *)self options];
-  v15 = [v14 promptTitle];
-  [v20 set_passwordPromptTitle:v15];
+  options5 = [(AMSAuthKitUpdateTask *)self options];
+  promptTitle = [options5 promptTitle];
+  [contextCopy set_passwordPromptTitle:promptTitle];
 
-  v16 = [(AMSAuthKitUpdateTask *)self options];
-  v17 = [v16 reason];
-  [v20 setReason:v17];
+  options6 = [(AMSAuthKitUpdateTask *)self options];
+  reason = [options6 reason];
+  [contextCopy setReason:reason];
 
-  v18 = [(AMSAuthKitUpdateTask *)self options];
-  v19 = [v18 promptTitle];
-  [v20 setTitle:v19];
+  options7 = [(AMSAuthKitUpdateTask *)self options];
+  promptTitle2 = [options7 promptTitle];
+  [contextCopy setTitle:promptTitle2];
 }
 
 - (id)_createAuthKitContext
@@ -963,18 +963,18 @@ LABEL_7:
   return v3;
 }
 
-- (void)_logPromptSummaryForResults:(id)a3 context:(id)a4
+- (void)_logPromptSummaryForResults:(id)results context:(id)context
 {
   v45[5] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   v7 = *MEMORY[0x1E698DBD0];
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v7];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E698DB78]];
+  resultsCopy = results;
+  v9 = [resultsCopy objectForKeyedSubscript:v7];
+  v10 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB78]];
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v11 = 0;
+    bOOLValue = 0;
 LABEL_5:
     if (!v9)
     {
@@ -984,22 +984,22 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [v10 BOOLValue];
-  if ((v11 & 1) == 0)
+  bOOLValue = [v10 BOOLValue];
+  if ((bOOLValue & 1) == 0)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v30 = v11;
+  v30 = bOOLValue;
   v34 = v9;
-  v35 = v6;
+  v35 = contextCopy;
   v44[0] = @"authType";
-  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "authenticationType")}];
+  v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(contextCopy, "authenticationType")}];
   v45[0] = v33;
   v44[1] = @"account";
-  v31 = [(AMSAuthKitUpdateTask *)self account];
-  v12 = AMSHashIfNeeded(v31);
+  account = [(AMSAuthKitUpdateTask *)self account];
+  v12 = AMSHashIfNeeded(account);
   v13 = v12;
   if (v12)
   {
@@ -1013,12 +1013,12 @@ LABEL_6:
 
   v45[1] = v14;
   v44[2] = @"reason";
-  v15 = [(AMSAuthKitUpdateTask *)self options];
-  v16 = [v15 debugReason];
-  v17 = v16;
-  if (v16)
+  options = [(AMSAuthKitUpdateTask *)self options];
+  debugReason = [options debugReason];
+  v17 = debugReason;
+  if (debugReason)
   {
-    v18 = v16;
+    v18 = debugReason;
   }
 
   else
@@ -1028,29 +1028,29 @@ LABEL_6:
 
   v45[2] = v18;
   v44[3] = @"client";
-  v19 = [(AMSAuthKitUpdateTask *)self options];
-  v20 = [v19 clientInfo];
-  v21 = v20;
-  if (!v20)
+  options2 = [(AMSAuthKitUpdateTask *)self options];
+  clientInfo = [options2 clientInfo];
+  v21 = clientInfo;
+  if (!clientInfo)
   {
     v21 = +[AMSProcessInfo currentProcess];
   }
 
   v45[3] = v21;
   v44[4] = @"proxyApp";
-  v22 = [(AMSAuthKitUpdateTask *)self options];
-  v23 = [v22 proxyAppBundleID];
-  v24 = v23;
+  options3 = [(AMSAuthKitUpdateTask *)self options];
+  proxyAppBundleID = [options3 proxyAppBundleID];
+  v24 = proxyAppBundleID;
   v25 = &stru_1F071BA78;
-  if (v23)
+  if (proxyAppBundleID)
   {
-    v25 = v23;
+    v25 = proxyAppBundleID;
   }
 
   v45[4] = v25;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:5];
 
-  if (!v20)
+  if (!clientInfo)
   {
   }
 
@@ -1060,8 +1060,8 @@ LABEL_6:
     v26 = +[AMSLogConfig sharedConfig];
   }
 
-  v27 = [v26 OSLogObject];
-  if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v26 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v28 = objc_opt_class();
     v29 = AMSLogKey();
@@ -1073,11 +1073,11 @@ LABEL_6:
     v41 = v30;
     v42 = 2114;
     v43 = v32;
-    _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Prompted for credentials. (%d) %{public}@", buf, 0x26u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Prompted for credentials. (%d) %{public}@", buf, 0x26u);
   }
 
   v9 = v34;
-  v6 = v35;
+  contextCopy = v35;
 LABEL_23:
 }
 

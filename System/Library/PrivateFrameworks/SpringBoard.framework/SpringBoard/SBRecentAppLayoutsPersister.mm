@@ -1,10 +1,10 @@
 @interface SBRecentAppLayoutsPersister
-- (SBRecentAppLayoutsPersister)initWithPersistenceURL:(id)a3 layoutAttributesProvider:(id)a4;
+- (SBRecentAppLayoutsPersister)initWithPersistenceURL:(id)l layoutAttributesProvider:(id)provider;
 - (id)_scheduledPersistTimer;
 - (void)_enqueueDiskWrite;
 - (void)_loadRecents;
-- (void)_queue_writeCompressedProtobufRepresentationToDisk:(id)a3;
-- (void)setRecents:(id)a3;
+- (void)_queue_writeCompressedProtobufRepresentationToDisk:(id)disk;
+- (void)setRecents:(id)recents;
 - (void)syncToDiskSoonIfDirty;
 - (void)syncToDiskSynchronously;
 @end
@@ -19,10 +19,10 @@
   return v2;
 }
 
-- (SBRecentAppLayoutsPersister)initWithPersistenceURL:(id)a3 layoutAttributesProvider:(id)a4
+- (SBRecentAppLayoutsPersister)initWithPersistenceURL:(id)l layoutAttributesProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = SBRecentAppLayoutsPersister;
   v8 = [(SBRecentAppLayoutsPersister *)&v16 init];
@@ -33,36 +33,36 @@
     ioQueue = v8->_ioQueue;
     v8->_ioQueue = v9;
 
-    v11 = [v6 copy];
+    v11 = [lCopy copy];
     persistenceURL = v8->_persistenceURL;
     v8->_persistenceURL = v11;
 
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    v14 = [(NSURL *)v8->_persistenceURL path];
-    v8->_initializedNewStoreOnDisk = [v13 fileExistsAtPath:v14] ^ 1;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [(NSURL *)v8->_persistenceURL path];
+    v8->_initializedNewStoreOnDisk = [defaultManager fileExistsAtPath:path] ^ 1;
 
-    objc_storeWeak(&v8->_layoutAttributesProvider, v7);
+    objc_storeWeak(&v8->_layoutAttributesProvider, providerCopy);
     [(SBRecentAppLayoutsPersister *)v8 _loadRecents];
   }
 
   return v8;
 }
 
-- (void)setRecents:(id)a3
+- (void)setRecents:(id)recents
 {
-  v8 = a3;
+  recentsCopy = recents;
   BSDispatchQueueAssertMain();
-  if (![(NSArray *)self->_recents isEqualToArray:v8])
+  if (![(NSArray *)self->_recents isEqualToArray:recentsCopy])
   {
-    v4 = [v8 copy];
+    v4 = [recentsCopy copy];
     recents = self->_recents;
     self->_recents = v4;
 
     if (!self->_persistTimer)
     {
-      v6 = [(SBRecentAppLayoutsPersister *)self _scheduledPersistTimer];
+      _scheduledPersistTimer = [(SBRecentAppLayoutsPersister *)self _scheduledPersistTimer];
       persistTimer = self->_persistTimer;
-      self->_persistTimer = v6;
+      self->_persistTimer = _scheduledPersistTimer;
     }
   }
 }
@@ -121,7 +121,7 @@ id __54__SBRecentAppLayoutsPersister_syncToDiskSynchronously__block_invoke(uint6
   v41[4] = self;
   v41[5] = a2;
   v3 = MEMORY[0x223D6F7F0](v41);
-  v4 = self;
+  selfCopy = self;
   persistenceURL = self->_persistenceURL;
   v40 = 0;
   v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:persistenceURL options:0 error:&v40];
@@ -142,7 +142,7 @@ id __54__SBRecentAppLayoutsPersister_syncToDiskSynchronously__block_invoke(uint6
       v12 = objc_alloc_init(SBPBAppLayoutList);
       v29 = v11;
       [(SBPBAppLayoutList *)v12 readFrom:v11];
-      v13 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
@@ -165,12 +165,12 @@ id __54__SBRecentAppLayoutsPersister_syncToDiskSynchronously__block_invoke(uint6
             }
 
             v18 = *(*(&v35 + 1) + 8 * v17);
-            WeakRetained = objc_loadWeakRetained(&v4->_layoutAttributesProvider);
+            WeakRetained = objc_loadWeakRetained(&selfCopy->_layoutAttributesProvider);
             v20 = [SBAppLayout appLayoutWithProtobufRepresentation:v18 layoutAttributesProvider:WeakRetained];
 
             if (v20)
             {
-              [v13 addObject:v20];
+              [array addObject:v20];
             }
 
             else
@@ -197,7 +197,7 @@ id __54__SBRecentAppLayoutsPersister_syncToDiskSynchronously__block_invoke(uint6
         while (v15);
       }
 
-      [(SBRecentAppLayoutsPersister *)v4 setRecents:v13];
+      [(SBRecentAppLayoutsPersister *)selfCopy setRecents:array];
       v3 = v33;
       v8 = v31;
       v7 = v32;
@@ -227,7 +227,7 @@ id __54__SBRecentAppLayoutsPersister_syncToDiskSynchronously__block_invoke(uint6
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v25 = _SBFLoggingMethodProem();
-      v26 = v4->_persistenceURL;
+      v26 = selfCopy->_persistenceURL;
       *buf = 138543874;
       v44 = v25;
       v45 = 2114;
@@ -330,21 +330,21 @@ id __48__SBRecentAppLayoutsPersister__enqueueDiskWrite__block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)_queue_writeCompressedProtobufRepresentationToDisk:(id)a3
+- (void)_queue_writeCompressedProtobufRepresentationToDisk:(id)disk
 {
   v27 = *MEMORY[0x277D85DE8];
   ioQueue = self->_ioQueue;
-  v5 = a3;
+  diskCopy = disk;
   dispatch_assert_queue_V2(ioQueue);
   v6 = objc_alloc_init(SBPBAppLayoutList);
-  v7 = [v5 mutableCopy];
+  v7 = [diskCopy mutableCopy];
 
   [(SBPBAppLayoutList *)v6 setApplayouts:v7];
   v8 = objc_alloc_init(MEMORY[0x277D43178]);
   [(SBPBAppLayoutList *)v6 writeTo:v8];
-  v9 = [v8 immutableData];
+  immutableData = [v8 immutableData];
   v20 = 0;
-  v10 = [v9 compressedDataUsingAlgorithm:0 error:&v20];
+  v10 = [immutableData compressedDataUsingAlgorithm:0 error:&v20];
   v11 = v20;
   if (v10)
   {

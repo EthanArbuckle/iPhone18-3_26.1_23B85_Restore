@@ -4,33 +4,33 @@
 - (AVSystemVolumeController)init;
 - (void)_applyProposedVolumeIfNeeded;
 - (void)_applyProposedVolumeImmediately;
-- (void)_handleCurrentRouteHasVolumeControlDidChangeNotification:(id)a3;
+- (void)_handleCurrentRouteHasVolumeControlDidChangeNotification:(id)notification;
 - (void)_handleSystemControllerServerDiedNotification;
-- (void)_handleSystemVolumeDidChangeNotification:(id)a3;
+- (void)_handleSystemVolumeDidChangeNotification:(id)notification;
 - (void)_observeSystemControllerIfNeeded;
-- (void)_performOnMainThread:(id)a3;
-- (void)_postNotificationForNameIfFullyInitialized:(id)a3 userInfo:(id)a4;
-- (void)_removeVolumeHUDAssertionsForClientID:(id)a3;
+- (void)_performOnMainThread:(id)thread;
+- (void)_postNotificationForNameIfFullyInitialized:(id)initialized userInfo:(id)info;
+- (void)_removeVolumeHUDAssertionsForClientID:(id)d;
 - (void)_setupSystemController;
 - (void)_unobserveSystemControllerIfNeeded;
 - (void)beginChangingVolume;
 - (void)dealloc;
 - (void)endChangingVolume;
-- (void)setClientWithIdentifier:(id)a3 forWindowSceneSessionWithIdentifier:(id)a4;
-- (void)setPrefersSystemVolumeHUDHidden:(BOOL)a3;
-- (void)setSharedSystemController:(id)a3;
-- (void)setSystemVolumeHUDEnabled:(BOOL)a3 forSceneVolumeHudAssertion:(id)a4;
-- (void)setSystemVolumeHUDEnabled:(BOOL)a3 forWindowSceneSessionIdentifier:(id)a4;
-- (void)setTargetVolume:(float)a3;
-- (void)setVolume:(float)a3 shouldShowHUD:(BOOL)a4;
+- (void)setClientWithIdentifier:(id)identifier forWindowSceneSessionWithIdentifier:(id)withIdentifier;
+- (void)setPrefersSystemVolumeHUDHidden:(BOOL)hidden;
+- (void)setSharedSystemController:(id)controller;
+- (void)setSystemVolumeHUDEnabled:(BOOL)enabled forSceneVolumeHudAssertion:(id)assertion;
+- (void)setSystemVolumeHUDEnabled:(BOOL)enabled forWindowSceneSessionIdentifier:(id)identifier;
+- (void)setTargetVolume:(float)volume;
+- (void)setVolume:(float)volume shouldShowHUD:(BOOL)d;
 @end
 
 @implementation AVSystemVolumeController
 
-- (void)setPrefersSystemVolumeHUDHidden:(BOOL)a3
+- (void)setPrefersSystemVolumeHUDHidden:(BOOL)hidden
 {
   v34 = *MEMORY[0x1E69E9840];
-  self->_prefersSystemVolumeHUDHidden = a3;
+  self->_prefersSystemVolumeHUDHidden = hidden;
   if (!self->_uniqueIdentifier || !self->_windowSceneSessionIdentifier)
   {
     v4 = _AVLog();
@@ -42,8 +42,8 @@
     }
   }
 
-  v5 = [objc_opt_class() windowSceneVolumeHUDAssertions];
-  v6 = [v5 copy];
+  windowSceneVolumeHUDAssertions = [objc_opt_class() windowSceneVolumeHUDAssertions];
+  v6 = [windowSceneVolumeHUDAssertions copy];
 
   if (self->_prefersSystemVolumeHUDHidden)
   {
@@ -52,8 +52,8 @@
       v7 = [[AVVolumeHUDAssertion alloc] initWithSceneIdentifier:self->_windowSceneSessionIdentifier clientIdentifier:self->_uniqueIdentifier];
       [(AVVolumeHUDAssertion *)v7 setDelegate:self];
       [(AVVolumeHUDAssertion *)v7 setPrefersSystemVolumeHUDHidden:1];
-      v8 = [objc_opt_class() windowSceneVolumeHUDAssertions];
-      [v8 addObject:v7];
+      windowSceneVolumeHUDAssertions2 = [objc_opt_class() windowSceneVolumeHUDAssertions];
+      [windowSceneVolumeHUDAssertions2 addObject:v7];
     }
   }
 
@@ -62,11 +62,11 @@
     [(AVSystemVolumeController *)self _removeVolumeHUDAssertionsForClientID:self->_uniqueIdentifier];
   }
 
-  v9 = [objc_opt_class() windowSceneVolumeHUDAssertions];
-  v10 = [v9 mutableCopy];
+  windowSceneVolumeHUDAssertions3 = [objc_opt_class() windowSceneVolumeHUDAssertions];
+  v10 = [windowSceneVolumeHUDAssertions3 mutableCopy];
   [v10 minusSet:v6];
   v11 = [v6 mutableCopy];
-  [v11 minusSet:v9];
+  [v11 minusSet:windowSceneVolumeHUDAssertions3];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -128,12 +128,12 @@
   }
 }
 
-- (void)_performOnMainThread:(id)a3
+- (void)_performOnMainThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v4[2](v4, self);
+    threadCopy[2](threadCopy, self);
   }
 
   else
@@ -144,7 +144,7 @@
     block[2] = __49__AVSystemVolumeController__performOnMainThread___block_invoke;
     block[3] = &unk_1E7209978;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = threadCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v7);
@@ -172,39 +172,39 @@ uint64_t __49__AVSystemVolumeController__performOnMainThread___block_invoke(uint
   v3 = _AVLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(AVSystemVolumeController *)self targetVolumeInternal];
-    [v4 floatValue];
+    targetVolumeInternal = [(AVSystemVolumeController *)self targetVolumeInternal];
+    [targetVolumeInternal floatValue];
     v6 = v5;
-    v7 = [(AVSystemVolumeController *)self volumeCategory];
+    volumeCategory = [(AVSystemVolumeController *)self volumeCategory];
     v14 = 136315650;
     v15 = "[AVSystemVolumeController _applyProposedVolumeImmediately]";
     v16 = 2048;
     v17 = v6;
     v18 = 2112;
-    v19 = v7;
+    v19 = volumeCategory;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s Setting volume on AVSystemController to: %.2f for category: %@", &v14, 0x20u);
   }
 
-  v8 = [(AVSystemVolumeController *)self sharedSystemController];
-  v9 = [(AVSystemVolumeController *)self targetVolumeInternal];
-  [v9 floatValue];
+  sharedSystemController = [(AVSystemVolumeController *)self sharedSystemController];
+  targetVolumeInternal2 = [(AVSystemVolumeController *)self targetVolumeInternal];
+  [targetVolumeInternal2 floatValue];
   v11 = v10;
-  v12 = [(AVSystemVolumeController *)self volumeCategory];
+  volumeCategory2 = [(AVSystemVolumeController *)self volumeCategory];
   LODWORD(v13) = v11;
-  [v8 setVolumeTo:v12 forCategory:v13];
+  [sharedSystemController setVolumeTo:volumeCategory2 forCategory:v13];
 }
 
 - (void)_applyProposedVolumeIfNeeded
 {
-  v3 = [(AVSystemVolumeController *)self targetVolumeInternal];
-  if (!v3)
+  targetVolumeInternal = [(AVSystemVolumeController *)self targetVolumeInternal];
+  if (!targetVolumeInternal)
   {
     return;
   }
 
-  v20 = v3;
-  v4 = [(AVSystemVolumeController *)self targetVolumeInternal];
-  [v4 floatValue];
+  v20 = targetVolumeInternal;
+  targetVolumeInternal2 = [(AVSystemVolumeController *)self targetVolumeInternal];
+  [targetVolumeInternal2 floatValue];
   v6 = v5;
   [(AVSystemVolumeController *)self volume];
   if (v6 == v7)
@@ -213,8 +213,8 @@ uint64_t __49__AVSystemVolumeController__performOnMainThread___block_invoke(uint
 
   else
   {
-    v8 = [(AVSystemVolumeController *)self targetVolumeInternal];
-    [v8 floatValue];
+    targetVolumeInternal3 = [(AVSystemVolumeController *)self targetVolumeInternal];
+    [targetVolumeInternal3 floatValue];
     if (v9 == 0.0)
     {
 
@@ -241,8 +241,8 @@ LABEL_11:
         objc_copyWeak(&v22, &location);
         v18 = [v17 timerWithTimeInterval:0 repeats:v21 block:0.1];
         [v18 setTolerance:0.025];
-        v19 = [MEMORY[0x1E695DFD0] mainRunLoop];
-        [v19 addTimer:v18 forMode:*MEMORY[0x1E695DA28]];
+        mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+        [mainRunLoop addTimer:v18 forMode:*MEMORY[0x1E695DA28]];
 
         objc_destroyWeak(&v22);
         objc_destroyWeak(&location);
@@ -253,8 +253,8 @@ LABEL_11:
 
     [(AVSystemVolumeController *)self volume];
     v11 = v10;
-    v12 = [(AVSystemVolumeController *)self targetVolumeInternal];
-    [v12 floatValue];
+    targetVolumeInternal4 = [(AVSystemVolumeController *)self targetVolumeInternal];
+    [targetVolumeInternal4 floatValue];
     v14 = v11 - v13;
 
     v15 = -v14;
@@ -281,17 +281,17 @@ void __56__AVSystemVolumeController__applyProposedVolumeIfNeeded__block_invoke(u
   [v3 _applyProposedVolumeIfNeeded];
 }
 
-- (void)_handleCurrentRouteHasVolumeControlDidChangeNotification:(id)a3
+- (void)_handleCurrentRouteHasVolumeControlDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AEA80]];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AEA80]];
+  bOOLValue = [v5 BOOLValue];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__AVSystemVolumeController__handleCurrentRouteHasVolumeControlDidChangeNotification___block_invoke;
   v7[3] = &__block_descriptor_33_e34_v16__0__AVSystemVolumeController_8l;
-  v8 = v6;
+  v8 = bOOLValue;
   [(AVSystemVolumeController *)self _performOnMainThread:v7];
 }
 
@@ -303,31 +303,31 @@ void __85__AVSystemVolumeController__handleCurrentRouteHasVolumeControlDidChange
   [v3 _postNotificationForNameIfFullyInitialized:@"AVVolumeControllerCurrentRouteHasVolumeControlChangedNotification" userInfo:0];
 }
 
-- (void)_handleSystemVolumeDidChangeNotification:(id)a3
+- (void)_handleSystemVolumeDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AE9F8]];
-  v7 = [(AVSystemVolumeController *)self volumeCategory];
-  v8 = [v6 isEqualToString:v7];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AE9F8]];
+  volumeCategory = [(AVSystemVolumeController *)self volumeCategory];
+  v8 = [v6 isEqualToString:volumeCategory];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69AEA18]];
+    userInfo2 = [notificationCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69AEA18]];
     [v10 floatValue];
     v12 = v11;
 
-    v13 = [v4 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69AEA10]];
+    userInfo3 = [notificationCopy userInfo];
+    v14 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69AEA10]];
 
     v15 = [v14 isEqualToString:@"ExplicitVolumeChange"];
     v16 = [v14 isEqualToString:@"RouteChange"];
     v17 = [v14 isEqualToString:@"VolumeLimitChange"];
     if ((v15 & 1) != 0 || (v16 & 1) != 0 || v17)
     {
-      v18 = [v4 userInfo];
-      v19 = [v18 objectForKeyedSubscript:*MEMORY[0x1E69AEA08]];
+      userInfo4 = [notificationCopy userInfo];
+      v19 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x1E69AEA08]];
       v20 = [v19 BOOLValue] ^ 1;
 
       v21[0] = MEMORY[0x1E69E9820];
@@ -385,14 +385,14 @@ LABEL_8:
   if (self->_observingSystemController)
   {
     self->_observingSystemController = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E69AECB8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB8] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69AEA78] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69AEA78] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x1E69AECE8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69AECE8] object:0];
   }
 }
 
@@ -401,14 +401,14 @@ LABEL_8:
   if (!self->_observingSystemController)
   {
     self->_observingSystemController = 1;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__handleSystemControllerServerDiedNotification name:*MEMORY[0x1E69AECB8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleSystemControllerServerDiedNotification name:*MEMORY[0x1E69AECB8] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__handleCurrentRouteHasVolumeControlDidChangeNotification_ name:*MEMORY[0x1E69AEA78] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__handleCurrentRouteHasVolumeControlDidChangeNotification_ name:*MEMORY[0x1E69AEA78] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__handleSystemVolumeDidChangeNotification_ name:*MEMORY[0x1E69AECE8] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__handleSystemVolumeDidChangeNotification_ name:*MEMORY[0x1E69AECE8] object:0];
   }
 }
 
@@ -480,26 +480,26 @@ void __50__AVSystemVolumeController__setupSystemController__block_invoke_2(uint6
   }
 }
 
-- (void)_postNotificationForNameIfFullyInitialized:(id)a3 userInfo:(id)a4
+- (void)_postNotificationForNameIfFullyInitialized:(id)initialized userInfo:(id)info
 {
-  v8 = a3;
-  v6 = a4;
+  initializedCopy = initialized;
+  infoCopy = info;
   if ([(AVSystemVolumeController *)self isFullyInitialized])
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:v8 object:self userInfo:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:initializedCopy object:self userInfo:infoCopy];
   }
 }
 
-- (void)setSharedSystemController:(id)a3
+- (void)setSharedSystemController:(id)controller
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   sharedSystemController = self->_sharedSystemController;
   p_sharedSystemController = &self->_sharedSystemController;
-  if (sharedSystemController != v5)
+  if (sharedSystemController != controllerCopy)
   {
-    objc_storeStrong(p_sharedSystemController, a3);
+    objc_storeStrong(p_sharedSystemController, controller);
     if (*p_sharedSystemController)
     {
       v8 = *MEMORY[0x1E69AEA78];
@@ -512,15 +512,15 @@ void __50__AVSystemVolumeController__setupSystemController__block_invoke_2(uint6
   }
 }
 
-- (void)setVolume:(float)a3 shouldShowHUD:(BOOL)a4
+- (void)setVolume:(float)volume shouldShowHUD:(BOOL)d
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 0.0 || a3 == 1.0)
+  if (volume == 0.0 || volume == 1.0)
   {
     goto LABEL_8;
   }
 
-  v6 = self->_volume - a3;
+  v6 = self->_volume - volume;
   if (v6 < 0.0)
   {
     v6 = -v6;
@@ -529,29 +529,29 @@ void __50__AVSystemVolumeController__setupSystemController__block_invoke_2(uint6
   if (v6 > 0.001)
   {
 LABEL_8:
-    self->_volume = a3;
+    self->_volume = volume;
     v9 = @"AVVolumeControllerVolumeDidChangeNotificationShowHUDKey";
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:a4];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:d];
     v10[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     [(AVSystemVolumeController *)self _postNotificationForNameIfFullyInitialized:@"AVVolumeControllerVolumeChangedNotification" userInfo:v8];
   }
 }
 
-- (void)setSystemVolumeHUDEnabled:(BOOL)a3 forWindowSceneSessionIdentifier:(id)a4
+- (void)setSystemVolumeHUDEnabled:(BOOL)enabled forWindowSceneSessionIdentifier:(id)identifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E69DDA98];
-  v7 = [*MEMORY[0x1E69DDA98] avkit_windowSceneWithSessionIdentifier:v5];
+  v7 = [*MEMORY[0x1E69DDA98] avkit_windowSceneWithSessionIdentifier:identifierCopy];
   v8 = _AVLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"Disabling";
     *buf = 136315906;
     v25 = "[AVSystemVolumeController setSystemVolumeHUDEnabled:forWindowSceneSessionIdentifier:]";
-    if (v4)
+    if (enabledCopy)
     {
       v9 = @"Enabling";
     }
@@ -561,7 +561,7 @@ LABEL_8:
     v28 = 2112;
     v29 = v7;
     v30 = 2112;
-    v31 = v5;
+    v31 = identifierCopy;
     _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "%s %@ volume HUD for windowScene: %@ with ID: %@", buf, 0x2Au);
   }
 
@@ -572,8 +572,8 @@ LABEL_8:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [*v6 openSessions];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    openSessions = [*v6 openSessions];
+    v12 = [openSessions countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -585,17 +585,17 @@ LABEL_8:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(openSessions);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * v15) persistentIdentifier];
-          [v10 addObject:v16];
+          persistentIdentifier = [*(*(&v19 + 1) + 8 * v15) persistentIdentifier];
+          [v10 addObject:persistentIdentifier];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [openSessions countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
@@ -608,25 +608,25 @@ LABEL_8:
       *buf = 136315650;
       v25 = "[AVSystemVolumeController setSystemVolumeHUDEnabled:forWindowSceneSessionIdentifier:]";
       v26 = 2112;
-      v27 = v5;
+      v27 = identifierCopy;
       v28 = 2112;
       v29 = v18;
       _os_log_impl(&dword_18B49C000, v17, OS_LOG_TYPE_DEFAULT, "%s WindowScene with ID: %@ is nonexist. Existing session identifiers are %@", buf, 0x20u);
     }
   }
 
-  [v7 _setSystemVolumeHUDEnabled:v4];
+  [v7 _setSystemVolumeHUDEnabled:enabledCopy];
 }
 
-- (void)setSystemVolumeHUDEnabled:(BOOL)a3 forSceneVolumeHudAssertion:(id)a4
+- (void)setSystemVolumeHUDEnabled:(BOOL)enabled forSceneVolumeHudAssertion:(id)assertion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  assertionCopy = assertion;
   v7 = _AVLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (enabledCopy)
     {
       v8 = @"Enabling";
     }
@@ -636,50 +636,50 @@ LABEL_8:
       v8 = @"Disabling";
     }
 
-    v9 = [v6 sceneIdentifier];
-    v10 = [v6 clientIdentifier];
+    sceneIdentifier = [assertionCopy sceneIdentifier];
+    clientIdentifier = [assertionCopy clientIdentifier];
     v13 = 136315906;
     v14 = "[AVSystemVolumeController setSystemVolumeHUDEnabled:forSceneVolumeHudAssertion:]";
     v15 = 2112;
     v16 = v8;
     v17 = 2112;
-    v18 = v9;
+    v18 = sceneIdentifier;
     v19 = 2112;
-    v20 = v10;
+    v20 = clientIdentifier;
     _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s %@ volume HUD for windowScene with scene ID: %@, unique ID: %@", &v13, 0x2Au);
   }
 
   if ([*MEMORY[0x1E69DDA98] _appAdoptsUISceneLifecycle])
   {
-    v11 = [getMPVolumeHUDControllerClass() sharedInstance];
-    [v11 addVolumeDisplay:v6];
+    sharedInstance = [getMPVolumeHUDControllerClass() sharedInstance];
+    [sharedInstance addVolumeDisplay:assertionCopy];
 
-    [v6 setPrefersSystemVolumeHUDHidden:v4 ^ 1];
-    v12 = [getMPVolumeHUDControllerClass() sharedInstance];
-    [v12 setNeedsUpdate];
+    [assertionCopy setPrefersSystemVolumeHUDHidden:enabledCopy ^ 1];
+    sharedInstance2 = [getMPVolumeHUDControllerClass() sharedInstance];
+    [sharedInstance2 setNeedsUpdate];
   }
 
   else
   {
-    v12 = [v6 sceneIdentifier];
-    [(AVSystemVolumeController *)self setSystemVolumeHUDEnabled:v4 forWindowSceneSessionIdentifier:v12];
+    sharedInstance2 = [assertionCopy sceneIdentifier];
+    [(AVSystemVolumeController *)self setSystemVolumeHUDEnabled:enabledCopy forWindowSceneSessionIdentifier:sharedInstance2];
   }
 }
 
-- (void)_removeVolumeHUDAssertionsForClientID:(id)a3
+- (void)_removeVolumeHUDAssertionsForClientID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_opt_class() windowSceneVolumeHUDAssertions];
+  dCopy = d;
+  windowSceneVolumeHUDAssertions = [objc_opt_class() windowSceneVolumeHUDAssertions];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__AVSystemVolumeController__removeVolumeHUDAssertionsForClientID___block_invoke;
   v8[3] = &unk_1E72093E8;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 objectsPassingTest:v8];
+  v9 = dCopy;
+  v5 = dCopy;
+  v6 = [windowSceneVolumeHUDAssertions objectsPassingTest:v8];
 
-  v7 = [objc_opt_class() windowSceneVolumeHUDAssertions];
-  [v7 minusSet:v6];
+  windowSceneVolumeHUDAssertions2 = [objc_opt_class() windowSceneVolumeHUDAssertions];
+  [windowSceneVolumeHUDAssertions2 minusSet:v6];
 }
 
 BOOL __66__AVSystemVolumeController__removeVolumeHUDAssertionsForClientID___block_invoke(uint64_t a1, void *a2)
@@ -705,12 +705,12 @@ BOOL __66__AVSystemVolumeController__removeVolumeHUDAssertionsForClientID___bloc
   return v5;
 }
 
-- (void)setClientWithIdentifier:(id)a3 forWindowSceneSessionWithIdentifier:(id)a4
+- (void)setClientWithIdentifier:(id)identifier forWindowSceneSessionWithIdentifier:(id)withIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_uniqueIdentifier, a3);
-  objc_storeStrong(&self->_windowSceneSessionIdentifier, a4);
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  objc_storeStrong(&self->_uniqueIdentifier, identifier);
+  objc_storeStrong(&self->_windowSceneSessionIdentifier, withIdentifier);
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -718,8 +718,8 @@ BOOL __66__AVSystemVolumeController__removeVolumeHUDAssertionsForClientID___bloc
     block[2] = __88__AVSystemVolumeController_setClientWithIdentifier_forWindowSceneSessionWithIdentifier___block_invoke;
     block[3] = &unk_1E72093C0;
     block[4] = self;
-    v10 = v7;
-    v11 = v8;
+    v10 = identifierCopy;
+    v11 = withIdentifierCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -751,7 +751,7 @@ BOOL __66__AVSystemVolumeController__removeVolumeHUDAssertionsForClientID___bloc
   }
 }
 
-- (void)setTargetVolume:(float)a3
+- (void)setTargetVolume:(float)volume
 {
   v19 = *MEMORY[0x1E69E9840];
   if (![(AVSystemVolumeController *)self isChangingVolume])
@@ -766,34 +766,34 @@ BOOL __66__AVSystemVolumeController__removeVolumeHUDAssertionsForClientID___bloc
     }
   }
 
-  v6 = [(AVSystemVolumeController *)self maximumTargetVolumeSinceChangingVolumeBegan];
-  v8 = v6;
-  if (v6)
+  maximumTargetVolumeSinceChangingVolumeBegan = [(AVSystemVolumeController *)self maximumTargetVolumeSinceChangingVolumeBegan];
+  v8 = maximumTargetVolumeSinceChangingVolumeBegan;
+  if (maximumTargetVolumeSinceChangingVolumeBegan)
   {
-    v9 = v6;
+    v9 = maximumTargetVolumeSinceChangingVolumeBegan;
   }
 
   else
   {
-    *&v7 = a3;
+    *&v7 = volume;
     v9 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
   }
 
   v10 = v9;
 
-  *&v11 = a3;
+  *&v11 = volume;
   v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
   [(AVSystemVolumeController *)self setTargetVolumeInternal:v12];
 
   v13 = MEMORY[0x1E696AD98];
   [v10 floatValue];
-  if (*&v14 >= a3)
+  if (*&v14 >= volume)
   {
     [v10 floatValue];
-    a3 = *&v14;
+    volume = *&v14;
   }
 
-  *&v14 = a3;
+  *&v14 = volume;
   v15 = [v13 numberWithFloat:v14];
   [(AVSystemVolumeController *)self setMaximumTargetVolumeSinceChangingVolumeBegan:v15];
 
@@ -854,7 +854,7 @@ uint64_t __58__AVSystemVolumeController_windowSceneVolumeHUDAssertions__block_in
   block[1] = 3221225472;
   block[2] = __44__AVSystemVolumeController_volumeController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (volumeController_onceToken != -1)
   {
     dispatch_once(&volumeController_onceToken, block);

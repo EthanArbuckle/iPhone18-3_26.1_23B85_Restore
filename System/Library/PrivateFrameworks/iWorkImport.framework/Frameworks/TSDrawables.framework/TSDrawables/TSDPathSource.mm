@@ -1,33 +1,33 @@
 @interface TSDPathSource
-+ (id)pathSourceForShapeType:(int64_t)a3 naturalSize:(CGSize)a4;
-+ (id)pathSourceWithArchive:(const void *)a3;
++ (id)pathSourceForShapeType:(int64_t)type naturalSize:(CGSize)size;
++ (id)pathSourceWithArchive:(const void *)archive;
 - (BOOL)isCircular;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangular;
 - (CGAffineTransform)pathFlipTransform;
 - (CGSize)naturalSize;
 - (NSString)inferredAccessibilityDescription;
-- (TSDPathSource)initWithArchive:(const void *)a3;
+- (TSDPathSource)initWithArchive:(const void *)archive;
 - (TSUBezierPath)bezierPath;
 - (TSUBezierPath)bezierPathWithoutFlips;
 - (TSUBezierPath)interiorWrapPath;
-- (double)uniformScaleForScalingToNaturalSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)interiorWrapPathForInset:(double)a3 joinStyle:(unint64_t)a4;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
+- (double)uniformScaleForScalingToNaturalSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)interiorWrapPathForInset:(double)inset joinStyle:(unint64_t)style;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)loadSharedFromArchive:(const void *)a3;
-- (void)saveSharedToArchive:(void *)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setNaturalSize:(CGSize)a3;
+- (void)loadSharedFromArchive:(const void *)archive;
+- (void)saveSharedToArchive:(void *)archive;
+- (void)saveToArchive:(void *)archive;
+- (void)setNaturalSize:(CGSize)size;
 @end
 
 @implementation TSDPathSource
 
-+ (id)pathSourceWithArchive:(const void *)a3
++ (id)pathSourceWithArchive:(const void *)archive
 {
-  v4 = *(a3 + 4);
+  v4 = *(archive + 4);
   if ((v4 & 4) != 0 || (v4 & 8) != 0 || (v4 & 0x10) != 0 || (v4 & 0x20) != 0 || (v4 & 0x40) != 0 || (v4 & 0x80) != 0)
   {
     v5 = objc_opt_class();
@@ -39,40 +39,40 @@
   }
 
   v6 = [v5 alloc];
-  v8 = objc_msgSend_initWithArchive_(v6, v7, a3);
+  v8 = objc_msgSend_initWithArchive_(v6, v7, archive);
 
   return v8;
 }
 
-- (void)loadSharedFromArchive:(const void *)a3
+- (void)loadSharedFromArchive:(const void *)archive
 {
-  objc_msgSend_setHasHorizontalFlip_(self, a2, *(a3 + 88));
-  objc_msgSend_setHasVerticalFlip_(self, v5, *(a3 + 89));
-  v7 = *(a3 + 4);
+  objc_msgSend_setHasHorizontalFlip_(self, a2, *(archive + 88));
+  objc_msgSend_setHasVerticalFlip_(self, v5, *(archive + 89));
+  v7 = *(archive + 4);
   if (v7)
   {
-    v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setLocalizationKey_(self, v8, v10);
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 2) != 0)
   {
-    v11 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+    v11 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setUserDefinedName_(self, v9, v11);
   }
 }
 
-- (void)saveSharedToArchive:(void *)a3
+- (void)saveSharedToArchive:(void *)archive
 {
   v30 = *MEMORY[0x277D85DE8];
-  hasHorizontalFlip = objc_msgSend_hasHorizontalFlip(self, a2, a3);
-  *(a3 + 4) |= 0x100u;
-  *(a3 + 88) = hasHorizontalFlip;
+  hasHorizontalFlip = objc_msgSend_hasHorizontalFlip(self, a2, archive);
+  *(archive + 4) |= 0x100u;
+  *(archive + 88) = hasHorizontalFlip;
   hasVerticalFlip = objc_msgSend_hasVerticalFlip(self, v6, v7);
-  *(a3 + 4) |= 0x200u;
-  *(a3 + 89) = hasVerticalFlip;
+  *(archive + 4) |= 0x200u;
+  *(archive + 89) = hasVerticalFlip;
   v11 = objc_msgSend_localizationKey(self, v9, v10);
 
   if (v11)
@@ -81,7 +81,7 @@
     sub_27670EDD8(v27, v14);
 
     v15 = __s;
-    *(a3 + 4) |= 1u;
+    *(archive + 4) |= 1u;
     sub_276658080(__p, v15);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v26 < 0)
@@ -105,7 +105,7 @@
     sub_27670EDD8(v27, v23);
 
     v24 = __s;
-    *(a3 + 4) |= 2u;
+    *(archive + 4) |= 2u;
     sub_276658080(__p, v24);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v26 < 0)
@@ -120,7 +120,7 @@
   }
 }
 
-- (TSDPathSource)initWithArchive:(const void *)a3
+- (TSDPathSource)initWithArchive:(const void *)archive
 {
   v8.receiver = self;
   v8.super_class = TSDPathSource;
@@ -128,13 +128,13 @@
   v6 = v4;
   if (v4)
   {
-    objc_msgSend_loadSharedFromArchive_(v4, v5, a3);
+    objc_msgSend_loadSharedFromArchive_(v4, v5, archive);
   }
 
   return v6;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDPathSource(PersistenceAdditions) saveToArchive:]");
@@ -155,10 +155,10 @@
   objc_exception_throw(v19);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v12 = objc_msgSend_init(v7, v8, v9);
   if (v12)
   {
@@ -179,10 +179,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 0;
     LOBYTE(v6) = 1;
@@ -193,7 +193,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       hasHorizontalFlip = objc_msgSend_hasHorizontalFlip(self, v8, v9);
       if (hasHorizontalFlip == objc_msgSend_hasHorizontalFlip(v7, v11, v12))
       {
@@ -316,16 +316,16 @@
   return v4;
 }
 
-- (id)interiorWrapPathForInset:(double)a3 joinStyle:(unint64_t)a4
+- (id)interiorWrapPathForInset:(double)inset joinStyle:(unint64_t)style
 {
-  v6 = objc_msgSend_interiorWrapPath(self, a2, a4);
-  v9 = objc_msgSend_bezierPathByRemovingSmallSubpathsForInteriorWrapsForInset_(v6, v7, v8, a3);
+  v6 = objc_msgSend_interiorWrapPath(self, a2, style);
+  v9 = objc_msgSend_bezierPathByRemovingSmallSubpathsForInteriorWrapsForInset_(v6, v7, v8, inset);
 
   objc_msgSend_bounds(v9, v10, v11);
-  v15 = a3 + a3;
-  if (a3 > 0.0 && v13 > v15 && v14 > v15)
+  v15 = inset + inset;
+  if (inset > 0.0 && v13 > v15 && v14 > v15)
   {
-    v18 = objc_msgSend_bezierPathByOffsettingPath_joinStyle_attemptingUsingLivarotFirstWithThresholds_(v9, v12, a4, &unk_28859C7B8, -a3);
+    v18 = objc_msgSend_bezierPathByOffsettingPath_joinStyle_attemptingUsingLivarotFirstWithThresholds_(v9, v12, style, &unk_28859C7B8, -inset);
 
     v9 = v18;
   }
@@ -355,10 +355,10 @@
   objc_exception_throw(v19);
 }
 
-- (void)setNaturalSize:(CGSize)a3
+- (void)setNaturalSize:(CGSize)size
 {
   v3 = MEMORY[0x277D81150];
-  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDPathSource setNaturalSize:]", a3.width, a3.height);
+  v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDPathSource setNaturalSize:]", size.width, size.height);
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDPathSource.m");
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
@@ -377,10 +377,10 @@
   objc_exception_throw(v20);
 }
 
-- (double)uniformScaleForScalingToNaturalSize:(CGSize)a3
+- (double)uniformScaleForScalingToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   objc_msgSend_naturalSize(self, a2, v3);
   v8 = 1.0;
   if (v6 <= 1.0 || v7 <= 1.0)
@@ -481,16 +481,16 @@
   return result;
 }
 
-+ (id)pathSourceForShapeType:(int64_t)a3 naturalSize:(CGSize)a4
++ (id)pathSourceForShapeType:(int64_t)type naturalSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a4.height / 100.0;
-  switch(a3)
+  height = size.height;
+  width = size.width;
+  v8 = size.height / 100.0;
+  switch(type)
   {
     case 0:
     case 3:
-      v9 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], a2, a3, 0.0, 0.0, 100.0, 100.0);
+      v9 = objc_msgSend_bezierPathWithRect_(MEMORY[0x277D81160], a2, type, 0.0, 0.0, 100.0, 100.0);
       v4 = objc_msgSend_pathSourceWithBezierPath_(TSDBezierPathSource, v14, v9);
       objc_msgSend_setNaturalSize_(v4, v15, v16, width, height);
       goto LABEL_23;
@@ -498,36 +498,36 @@
     case 15:
     case 16:
     case 20:
-      v9 = objc_msgSend_bezierPathWithStart_end_(MEMORY[0x277D81160], a2, a3, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), sqrt(width * width + a4.height * a4.height), 0.0);
+      v9 = objc_msgSend_bezierPathWithStart_end_(MEMORY[0x277D81160], a2, type, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), sqrt(width * width + size.height * size.height), 0.0);
       objc_msgSend_pathSourceWithBezierPath_(TSDBezierPathSource, v10, v9);
       goto LABEL_22;
     case 2:
     case 18:
     case 19:
-      v11 = objc_msgSend_pathSourceAtAngleOfSize_forType_(TSDConnectionLinePathSource, a2, a3 == 18, width, a4.height);
+      v11 = objc_msgSend_pathSourceAtAngleOfSize_forType_(TSDConnectionLinePathSource, a2, type == 18, width, size.height);
       v4 = v11;
-      if (a3 == 2)
+      if (type == 2)
       {
         objc_msgSend_bend(v11, v12, v13);
       }
 
       break;
     case 4:
-      v27 = objc_msgSend_roundedRectangleWithScalar_naturalSize_continuousCurve_(TSDScalarPathSource, a2, 0, 15.0, width, a4.height);
+      v27 = objc_msgSend_roundedRectangleWithScalar_naturalSize_continuousCurve_(TSDScalarPathSource, a2, 0, 15.0, width, size.height);
       goto LABEL_16;
     case 5:
-      v9 = objc_msgSend_bezierPathWithOvalInRect_(MEMORY[0x277D81160], a2, a3, 0.0, 0.0, width, a4.height);
+      v9 = objc_msgSend_bezierPathWithOvalInRect_(MEMORY[0x277D81160], a2, type, 0.0, 0.0, width, size.height);
       objc_msgSend_closePath(v9, v44, v45);
       goto LABEL_21;
     case 6:
-      v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, a3, v8);
+      v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, type, v8);
       objc_msgSend_moveToPoint_(v9, v31, v32, width * 0.5, 0.0);
       objc_msgSend_lineToPoint_(v9, v33, v34, width, height);
       v37 = 0.0;
       v38 = v9;
       goto LABEL_18;
     case 7:
-      v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, a3, v8);
+      v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, type, v8);
       objc_msgSend_moveToPoint_(v9, v39, v40, 0.0, 0.0);
       objc_msgSend_lineToPoint_(v9, v41, v42, 0.0, width);
       v38 = v9;
@@ -536,13 +536,13 @@ LABEL_18:
       objc_msgSend_lineToPoint_(v38, v35, v36, v37, height);
       goto LABEL_19;
     case 8:
-      v27 = objc_msgSend_rightSingleArrowWithPoint_naturalSize_(TSDPointPathSource, a2, a3, v8 * 64.0, 0.34, width, a4.height);
+      v27 = objc_msgSend_rightSingleArrowWithPoint_naturalSize_(TSDPointPathSource, a2, type, v8 * 64.0, 0.34, width, size.height);
       goto LABEL_16;
     case 9:
-      v27 = objc_msgSend_doubleArrowWithPoint_naturalSize_(TSDPointPathSource, a2, a3, v8 * 44.0, 0.34, width, a4.height);
+      v27 = objc_msgSend_doubleArrowWithPoint_naturalSize_(TSDPointPathSource, a2, type, v8 * 44.0, 0.34, width, size.height);
       goto LABEL_16;
     case 10:
-      v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, a3, v8);
+      v9 = objc_msgSend_bezierPath(MEMORY[0x277D81160], a2, type, v8);
       objc_msgSend_moveToPoint_(v9, v17, v18, 0.0, height * 0.5);
       objc_msgSend_lineToPoint_(v9, v19, v20, width * 0.5, height);
       objc_msgSend_lineToPoint_(v9, v21, v22, width, height * 0.5);
@@ -554,16 +554,16 @@ LABEL_21:
       v4 = LABEL_22:;
       goto LABEL_23;
     case 11:
-      v27 = objc_msgSend_quoteBubbleWithTailPosition_tailSize_naturalSize_(TSDCalloutPathSource, a2, a3, v8, v8 * 96.0, v8 * 10.0, width, a4.height * 0.8);
+      v27 = objc_msgSend_quoteBubbleWithTailPosition_tailSize_naturalSize_(TSDCalloutPathSource, a2, type, v8, v8 * 96.0, v8 * 10.0, width, size.height * 0.8);
       goto LABEL_16;
     case 12:
-      v27 = objc_msgSend_calloutWithCornerRadius_tailPosition_tailSize_naturalSize_(TSDCalloutPathSource, a2, a3, 5.0, v8 * -20.0, v8 * 50.0, v8 * 10.0, width, a4.height);
+      v27 = objc_msgSend_calloutWithCornerRadius_tailPosition_tailSize_naturalSize_(TSDCalloutPathSource, a2, type, 5.0, v8 * -20.0, v8 * 50.0, v8 * 10.0, width, size.height);
       goto LABEL_16;
     case 13:
-      v27 = objc_msgSend_regularPolygonWithScalar_naturalSize_(TSDScalarPathSource, a2, a3, 5.0, width, a4.height);
+      v27 = objc_msgSend_regularPolygonWithScalar_naturalSize_(TSDScalarPathSource, a2, type, 5.0, width, size.height);
       goto LABEL_16;
     case 14:
-      v27 = objc_msgSend_starWithPoint_naturalSize_(TSDPointPathSource, a2, a3, 5.0, 0.382, width, a4.height);
+      v27 = objc_msgSend_starWithPoint_naturalSize_(TSDPointPathSource, a2, type, 5.0, 0.382, width, size.height);
 LABEL_16:
       v4 = v27;
       break;
@@ -583,10 +583,10 @@ LABEL_23:
   return v4;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v7 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDPathSource mixingTypeWithObject:context:]");
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDPathSource.m");
@@ -607,9 +607,9 @@ LABEL_23:
   objc_exception_throw(v25);
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = a4;
+  objectCopy = object;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDPathSource mixedObjectWithFraction:ofObject:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDPathSource.m");

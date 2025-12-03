@@ -1,25 +1,25 @@
 @interface TSWPItemNumbering
 + (id)allPageNumberFormats;
-+ (id)defaultPageNumberFormatForLocale:(id)a3;
-+ (id)displayNameForPageNumberFormat:(id)a3;
++ (id)defaultPageNumberFormatForLocale:(id)locale;
++ (id)displayNameForPageNumberFormat:(id)format;
 + (id)instance;
-+ (id)pageNumberFormatNameForType:(int)a3;
-+ (id)pageNumberFormatsForDocLocale:(id)a3;
-+ (id)stringFromNumber:(unint64_t)a3 forFormatName:(id)a4;
-+ (id)stringFromNumber:(unint64_t)a3 forPageNumberFormatType:(int)a4;
-+ (int)pageNumberFormatTypeForName:(id)a3;
++ (id)pageNumberFormatNameForType:(int)type;
++ (id)pageNumberFormatsForDocLocale:(id)locale;
++ (id)stringFromNumber:(unint64_t)number forFormatName:(id)name;
++ (id)stringFromNumber:(unint64_t)number forPageNumberFormatType:(int)type;
++ (int)pageNumberFormatTypeForName:(id)name;
 - (TSWPItemNumbering)init;
-- (id)p_additiveTypeFormatForNumber:(unint64_t)a3 limitsAndSymbols:(id)a4;
-- (id)p_defaultPageNumberFormatForLocale:(id)a3;
-- (id)p_displayNameForPageNumberFormat:(id)a3;
-- (id)p_formatInfoForFormatName:(id)a3;
-- (id)p_numericTypeFormatForNumber:(unint64_t)a3 digitChars:(id)a4;
-- (id)p_pageNumberFormatNameForType:(int)a3;
-- (id)p_pageNumberFormatsForDocLocale:(id)a3;
-- (id)p_stringFromNumber:(unint64_t)a3 forFormatName:(id)a4;
-- (id)p_stringFromNumber:(unint64_t)a3 forPageNumberFormatType:(int)a4;
-- (id)p_symbolicTypeFormatForNumber:(unint64_t)a3 symbols:(id)a4;
-- (int)p_pageNumberFormatTypeForName:(id)a3;
+- (id)p_additiveTypeFormatForNumber:(unint64_t)number limitsAndSymbols:(id)symbols;
+- (id)p_defaultPageNumberFormatForLocale:(id)locale;
+- (id)p_displayNameForPageNumberFormat:(id)format;
+- (id)p_formatInfoForFormatName:(id)name;
+- (id)p_numericTypeFormatForNumber:(unint64_t)number digitChars:(id)chars;
+- (id)p_pageNumberFormatNameForType:(int)type;
+- (id)p_pageNumberFormatsForDocLocale:(id)locale;
+- (id)p_stringFromNumber:(unint64_t)number forFormatName:(id)name;
+- (id)p_stringFromNumber:(unint64_t)number forPageNumberFormatType:(int)type;
+- (id)p_symbolicTypeFormatForNumber:(unint64_t)number symbols:(id)symbols;
+- (int)p_pageNumberFormatTypeForName:(id)name;
 @end
 
 @implementation TSWPItemNumbering
@@ -64,18 +64,18 @@
   return v2;
 }
 
-- (id)p_defaultPageNumberFormatForLocale:(id)a3
+- (id)p_defaultPageNumberFormatForLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   defaultPageNumberFormats = self->_defaultPageNumberFormats;
-  v8 = objc_msgSend_localeIdentifier(v4, v6, v7);
+  v8 = objc_msgSend_localeIdentifier(localeCopy, v6, v7);
   v10 = objc_msgSend_objectForKeyedSubscript_(defaultPageNumberFormats, v9, v8);
 
   if (!v10)
   {
     v13 = self->_defaultPageNumberFormats;
     v14 = MEMORY[0x277D81228];
-    v15 = objc_msgSend_localeIdentifier(v4, v11, v12);
+    v15 = objc_msgSend_localeIdentifier(localeCopy, v11, v12);
     v17 = objc_msgSend_canonicalizeLocaleIdentifierWithLanguageScriptAndRegionOnly_(v14, v16, v15);
     v10 = objc_msgSend_objectForKeyedSubscript_(v13, v18, v17);
 
@@ -83,7 +83,7 @@
     {
       v21 = self->_defaultPageNumberFormats;
       v22 = MEMORY[0x277D81228];
-      v23 = objc_msgSend_localeIdentifier(v4, v19, v20);
+      v23 = objc_msgSend_localeIdentifier(localeCopy, v19, v20);
       v25 = objc_msgSend_canonicalizeLocaleIdentifierWithLanguageAndScriptOnly_(v22, v24, v23);
       v10 = objc_msgSend_objectForKeyedSubscript_(v21, v26, v25);
 
@@ -91,7 +91,7 @@
       {
         v29 = self->_defaultPageNumberFormats;
         v30 = MEMORY[0x277D81228];
-        v31 = objc_msgSend_localeIdentifier(v4, v27, v28);
+        v31 = objc_msgSend_localeIdentifier(localeCopy, v27, v28);
         v33 = objc_msgSend_canonicalizeLocaleIdentifierWithLanguageOnly_(v30, v32, v31);
         v35 = objc_msgSend_objectForKeyedSubscript_(v29, v34, v33);
 
@@ -111,13 +111,13 @@
   return v10;
 }
 
-- (id)p_pageNumberFormatsForDocLocale:(id)a3
+- (id)p_pageNumberFormatsForDocLocale:(id)locale
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localeCopy = locale;
   v6 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v5, 3);
-  v53 = v4;
-  v9 = objc_msgSend_localeIdentifier(v4, v7, v8);
+  v53 = localeCopy;
+  v9 = objc_msgSend_localeIdentifier(localeCopy, v7, v8);
   objc_msgSend_addObject_(v6, v10, v9);
 
   v13 = objc_msgSend_currentLocale(MEMORY[0x277CBEAF8], v11, v12);
@@ -142,7 +142,7 @@
     v28 = v26;
     v29 = *v72;
     v54 = *v72;
-    v55 = self;
+    selfCopy = self;
     do
     {
       v30 = 0;
@@ -228,7 +228,7 @@
 
 LABEL_24:
             v29 = v54;
-            self = v55;
+            self = selfCopy;
             v28 = v56;
           }
 
@@ -255,9 +255,9 @@ LABEL_24:
   return v60;
 }
 
-- (id)p_displayNameForPageNumberFormat:(id)a3
+- (id)p_displayNameForPageNumberFormat:(id)format
 {
-  v3 = objc_msgSend_p_formatInfoForFormatName_(self, a2, a3);
+  v3 = objc_msgSend_p_formatInfoForFormatName_(self, a2, format);
   v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"displayName");
   v8 = v5;
   if (!v5 || !objc_msgSend_length(v5, v6, v7))
@@ -273,15 +273,15 @@ LABEL_24:
   return v8;
 }
 
-- (id)p_stringFromNumber:(unint64_t)a3 forFormatName:(id)a4
+- (id)p_stringFromNumber:(unint64_t)number forFormatName:(id)name
 {
-  v6 = a4;
-  v8 = objc_msgSend_p_formatInfoForFormatName_(self, v7, v6);
+  nameCopy = name;
+  v8 = objc_msgSend_p_formatInfoForFormatName_(self, v7, nameCopy);
   v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"lowerBound");
   v14 = objc_msgSend_objectForKeyedSubscript_(v8, v11, @"upperBound");
-  if (v10 && objc_msgSend_unsignedLongValue(v10, v12, v13) > a3 || v14 && objc_msgSend_unsignedLongValue(v14, v12, v13) < a3)
+  if (v10 && objc_msgSend_unsignedLongValue(v10, v12, v13) > number || v14 && objc_msgSend_unsignedLongValue(v14, v12, v13) < number)
   {
-    v15 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v12, a3, @"decimal");
+    v15 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v12, number, @"decimal");
     goto LABEL_15;
   }
 
@@ -298,21 +298,21 @@ LABEL_24:
         v50 = MEMORY[0x277D81150];
         v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "[TSWPItemNumbering p_stringFromNumber:forFormatName:]");
         v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v32, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPItemNumbering.m");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v50, v34, v31, v33, 134, 0, "Missing 'symbols' entry for %@", v6);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v50, v34, v31, v33, 134, 0, "Missing 'symbols' entry for %@", nameCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36);
         v23 = @"abcdefghijklmnopqrstuvwxyz";
       }
 
-      v25 = objc_msgSend_p_symbolicTypeFormatForNumber_symbols_(self, v29, a3, v23);
+      v25 = objc_msgSend_p_symbolicTypeFormatForNumber_symbols_(self, v29, number, v23);
     }
 
     else
     {
       if (!objc_msgSend_isEqualToString_(v19, v27, @"additive"))
       {
-        v41 = objc_msgSend_pageNumberFormatTypeForName_(TSWPItemNumbering, v37, v6);
-        v15 = objc_msgSend_stringFromNumber_forPageNumberFormatType_(TSWPItemNumbering, v42, a3, v41);
+        v41 = objc_msgSend_pageNumberFormatTypeForName_(TSWPItemNumbering, v37, nameCopy);
+        v15 = objc_msgSend_stringFromNumber_forPageNumberFormatType_(TSWPItemNumbering, v42, number, v41);
         goto LABEL_14;
       }
 
@@ -320,7 +320,7 @@ LABEL_24:
       v23 = v38;
       if (v38 && objc_msgSend_count(v38, v39, v40))
       {
-        v25 = objc_msgSend_p_additiveTypeFormatForNumber_limitsAndSymbols_(self, v39, a3, v23);
+        v25 = objc_msgSend_p_additiveTypeFormatForNumber_limitsAndSymbols_(self, v39, number, v23);
       }
 
       else
@@ -328,10 +328,10 @@ LABEL_24:
         v51 = MEMORY[0x277D81150];
         v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "[TSWPItemNumbering p_stringFromNumber:forFormatName:]");
         v45 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v44, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPItemNumbering.m");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v51, v46, v43, v45, 141, 0, "Missing 'limitsAndSymbols' entry for %@", v6);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v51, v46, v43, v45, 141, 0, "Missing 'limitsAndSymbols' entry for %@", nameCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v47, v48);
-        v25 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v49, a3, @"decimal");
+        v25 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v49, number, @"decimal");
       }
     }
   }
@@ -346,7 +346,7 @@ LABEL_24:
       v23 = @"0123456789";
     }
 
-    v25 = objc_msgSend_p_numericTypeFormatForNumber_digitChars_(self, v24, a3, v23);
+    v25 = objc_msgSend_p_numericTypeFormatForNumber_digitChars_(self, v24, number, v23);
   }
 
   v15 = v25;
@@ -357,17 +357,17 @@ LABEL_15:
   return v15;
 }
 
-- (id)p_stringFromNumber:(unint64_t)a3 forPageNumberFormatType:(int)a4
+- (id)p_stringFromNumber:(unint64_t)number forPageNumberFormatType:(int)type
 {
-  v6 = objc_msgSend_p_pageNumberFormatNameForType_(self, a2, *&a4);
-  v8 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v7, a3, v6);
+  v6 = objc_msgSend_p_pageNumberFormatNameForType_(self, a2, *&type);
+  v8 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v7, number, v6);
 
   return v8;
 }
 
-- (int)p_pageNumberFormatTypeForName:(id)a3
+- (int)p_pageNumberFormatTypeForName:(id)name
 {
-  v3 = objc_msgSend_p_formatInfoForFormatName_(self, a2, a3);
+  v3 = objc_msgSend_p_formatInfoForFormatName_(self, a2, name);
   v5 = objc_msgSend_objectForKeyedSubscript_(v3, v4, @"oldTypeID");
   v8 = v5;
   if (v5)
@@ -383,9 +383,9 @@ LABEL_15:
   return v9;
 }
 
-- (id)p_pageNumberFormatNameForType:(int)a3
+- (id)p_pageNumberFormatNameForType:(int)type
 {
-  if (a3 >= 6)
+  if (type >= 6)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPItemNumbering p_pageNumberFormatNameForType:]");
@@ -395,24 +395,24 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
   }
 
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    v12 = a3;
+    typeCopy = type;
   }
 
   else
   {
-    v12 = 0;
+    typeCopy = 0;
   }
 
   validFormatNames = self->_validFormatNames;
 
-  return objc_msgSend_objectAtIndexedSubscript_(validFormatNames, a2, v12);
+  return objc_msgSend_objectAtIndexedSubscript_(validFormatNames, a2, typeCopy);
 }
 
-- (id)p_formatInfoForFormatName:(id)a3
+- (id)p_formatInfoForFormatName:(id)name
 {
-  v4 = objc_msgSend_objectForKeyedSubscript_(self->_formatTypeInfo, a2, a3);
+  v4 = objc_msgSend_objectForKeyedSubscript_(self->_formatTypeInfo, a2, name);
   if (!v4)
   {
     v6 = MEMORY[0x277D81150];
@@ -427,20 +427,20 @@ LABEL_15:
   return v4;
 }
 
-- (id)p_numericTypeFormatForNumber:(unint64_t)a3 digitChars:(id)a4
+- (id)p_numericTypeFormatForNumber:(unint64_t)number digitChars:(id)chars
 {
-  v5 = a4;
+  charsCopy = chars;
   v8 = objc_msgSend_string(MEMORY[0x277CCAB68], v6, v7);
-  v11 = objc_msgSend_length(v5, v9, v10);
-  if (a3)
+  v11 = objc_msgSend_length(charsCopy, v9, v10);
+  if (number)
   {
     v13 = v11;
     do
     {
-      v14 = objc_msgSend_characterAtIndex_(v5, v12, a3 % v13);
+      v14 = objc_msgSend_characterAtIndex_(charsCopy, v12, number % v13);
       objc_msgSend_tsu_insertCharacter_atIndex_(v8, v15, v14, 0);
-      v16 = v13 > a3;
-      a3 /= v13;
+      v16 = v13 > number;
+      number /= v13;
     }
 
     while (!v16);
@@ -448,21 +448,21 @@ LABEL_15:
 
   else
   {
-    v17 = objc_msgSend_characterAtIndex_(v5, v12, 0);
+    v17 = objc_msgSend_characterAtIndex_(charsCopy, v12, 0);
     objc_msgSend_tsu_appendCharacter_(v8, v18, v17);
   }
 
   return v8;
 }
 
-- (id)p_symbolicTypeFormatForNumber:(unint64_t)a3 symbols:(id)a4
+- (id)p_symbolicTypeFormatForNumber:(unint64_t)number symbols:(id)symbols
 {
-  v5 = a4;
-  v8 = objc_msgSend_length(v5, v6, v7);
-  v9 = (a3 - 1) / v8;
-  v10 = (a3 - 1) % v8;
+  symbolsCopy = symbols;
+  v8 = objc_msgSend_length(symbolsCopy, v6, v7);
+  v9 = (number - 1) / v8;
+  v10 = (number - 1) % v8;
   v11 = MEMORY[0x277CCACA8];
-  v13 = objc_msgSend_characterAtIndex_(v5, v12, v10);
+  v13 = objc_msgSend_characterAtIndex_(symbolsCopy, v12, v10);
 
   v15 = objc_msgSend_stringWithFormat_(v11, v14, @"%C", v13);
   v17 = objc_msgSend_stringByPaddingToLength_withString_startingAtIndex_(v15, v16, v9 + 1, v15, 0);
@@ -470,35 +470,35 @@ LABEL_15:
   return v17;
 }
 
-- (id)p_additiveTypeFormatForNumber:(unint64_t)a3 limitsAndSymbols:(id)a4
+- (id)p_additiveTypeFormatForNumber:(unint64_t)number limitsAndSymbols:(id)symbols
 {
-  v6 = a4;
+  symbolsCopy = symbols;
   v9 = objc_msgSend_string(MEMORY[0x277CCAB68], v7, v8);
-  v13 = a3;
-  if (objc_msgSend_count(v6, v10, v11))
+  numberCopy2 = number;
+  if (objc_msgSend_count(symbolsCopy, v10, v11))
   {
     v14 = 0;
-    v13 = a3;
+    numberCopy2 = number;
     do
     {
-      v15 = objc_msgSend_objectAtIndexedSubscript_(v6, v12, v14);
-      for (i = objc_msgSend_unsignedIntegerValue(v15, v16, v17); v13 >= i; i = objc_msgSend_unsignedIntegerValue(v15, v24, v25))
+      v15 = objc_msgSend_objectAtIndexedSubscript_(symbolsCopy, v12, v14);
+      for (i = objc_msgSend_unsignedIntegerValue(v15, v16, v17); numberCopy2 >= i; i = objc_msgSend_unsignedIntegerValue(v15, v24, v25))
       {
-        v20 = objc_msgSend_objectAtIndexedSubscript_(v6, v19, v14 | 1);
+        v20 = objc_msgSend_objectAtIndexedSubscript_(symbolsCopy, v19, v14 | 1);
         objc_msgSend_appendString_(v9, v21, v20);
 
-        v13 -= objc_msgSend_unsignedIntegerValue(v15, v22, v23);
+        numberCopy2 -= objc_msgSend_unsignedIntegerValue(v15, v22, v23);
       }
 
       v14 += 2;
     }
 
-    while (v14 < objc_msgSend_count(v6, v26, v27));
+    while (v14 < objc_msgSend_count(symbolsCopy, v26, v27));
   }
 
-  if (v13)
+  if (numberCopy2)
   {
-    v28 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v12, a3, @"decimal");
+    v28 = objc_msgSend_p_stringFromNumber_forFormatName_(self, v12, number, @"decimal");
   }
 
   else
@@ -511,11 +511,11 @@ LABEL_15:
   return v29;
 }
 
-+ (id)defaultPageNumberFormatForLocale:(id)a3
++ (id)defaultPageNumberFormatForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v6 = objc_msgSend_instance(TSWPItemNumbering, v4, v5);
-  v8 = objc_msgSend_p_defaultPageNumberFormatForLocale_(v6, v7, v3);
+  v8 = objc_msgSend_p_defaultPageNumberFormatForLocale_(v6, v7, localeCopy);
 
   return v8;
 }
@@ -528,55 +528,55 @@ LABEL_15:
   return v6;
 }
 
-+ (id)pageNumberFormatsForDocLocale:(id)a3
++ (id)pageNumberFormatsForDocLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v6 = objc_msgSend_instance(TSWPItemNumbering, v4, v5);
-  v8 = objc_msgSend_p_pageNumberFormatsForDocLocale_(v6, v7, v3);
+  v8 = objc_msgSend_p_pageNumberFormatsForDocLocale_(v6, v7, localeCopy);
 
   return v8;
 }
 
-+ (id)displayNameForPageNumberFormat:(id)a3
++ (id)displayNameForPageNumberFormat:(id)format
 {
-  v3 = a3;
+  formatCopy = format;
   v6 = objc_msgSend_instance(TSWPItemNumbering, v4, v5);
-  v8 = objc_msgSend_p_displayNameForPageNumberFormat_(v6, v7, v3);
+  v8 = objc_msgSend_p_displayNameForPageNumberFormat_(v6, v7, formatCopy);
 
   return v8;
 }
 
-+ (id)stringFromNumber:(unint64_t)a3 forFormatName:(id)a4
++ (id)stringFromNumber:(unint64_t)number forFormatName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v8 = objc_msgSend_instance(TSWPItemNumbering, v6, v7);
-  v10 = objc_msgSend_p_stringFromNumber_forFormatName_(v8, v9, a3, v5);
+  v10 = objc_msgSend_p_stringFromNumber_forFormatName_(v8, v9, number, nameCopy);
 
   return v10;
 }
 
-+ (id)stringFromNumber:(unint64_t)a3 forPageNumberFormatType:(int)a4
++ (id)stringFromNumber:(unint64_t)number forPageNumberFormatType:(int)type
 {
-  v4 = *&a4;
-  v6 = objc_msgSend_instance(TSWPItemNumbering, a2, a3);
-  v8 = objc_msgSend_p_stringFromNumber_forPageNumberFormatType_(v6, v7, a3, v4);
+  v4 = *&type;
+  v6 = objc_msgSend_instance(TSWPItemNumbering, a2, number);
+  v8 = objc_msgSend_p_stringFromNumber_forPageNumberFormatType_(v6, v7, number, v4);
 
   return v8;
 }
 
-+ (int)pageNumberFormatTypeForName:(id)a3
++ (int)pageNumberFormatTypeForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v6 = objc_msgSend_instance(TSWPItemNumbering, v4, v5);
-  v8 = objc_msgSend_p_pageNumberFormatTypeForName_(v6, v7, v3);
+  v8 = objc_msgSend_p_pageNumberFormatTypeForName_(v6, v7, nameCopy);
 
   return v8;
 }
 
-+ (id)pageNumberFormatNameForType:(int)a3
++ (id)pageNumberFormatNameForType:(int)type
 {
-  v3 = *&a3;
-  v4 = objc_msgSend_instance(TSWPItemNumbering, a2, *&a3);
+  v3 = *&type;
+  v4 = objc_msgSend_instance(TSWPItemNumbering, a2, *&type);
   v6 = objc_msgSend_p_pageNumberFormatNameForType_(v4, v5, v3);
 
   return v6;

@@ -1,33 +1,33 @@
 @interface TSWPSelectionHighlightLayer
-- (void)renderInContext:(CGContext *)a3;
+- (void)renderInContext:(CGContext *)context;
 @end
 
 @implementation TSWPSelectionHighlightLayer
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
-  if (objc_msgSend_isHidden(self, a2, a3))
+  if (objc_msgSend_isHidden(self, a2, context))
   {
     return;
   }
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v9 = objc_msgSend_fillColor(self, v5, v6);
   if (v9)
   {
-    CGContextSetFillColorWithColor(a3, v9);
+    CGContextSetFillColorWithColor(context, v9);
   }
 
   v12 = objc_msgSend_strokeColor(self, v7, v8);
   if (v12)
   {
-    CGContextSetStrokeColorWithColor(a3, v12);
+    CGContextSetStrokeColorWithColor(context, v12);
   }
 
   objc_msgSend_lineWidth(self, v10, v11);
-  CGContextSetLineWidth(a3, v13);
+  CGContextSetLineWidth(context, v13);
   objc_msgSend_miterLimit(self, v14, v15);
-  CGContextSetMiterLimit(a3, v16);
+  CGContextSetMiterLimit(context, v16);
   v54 = objc_msgSend_lineCap(self, v17, v18);
   if (objc_msgSend_isEqualToString_(v54, v19, *MEMORY[0x277CDA778]))
   {
@@ -49,7 +49,7 @@
     v21 = kCGLineCapSquare;
   }
 
-  CGContextSetLineCap(a3, v21);
+  CGContextSetLineCap(context, v21);
 LABEL_13:
   v25 = objc_msgSend_lineJoin(self, v23, v24);
   if (objc_msgSend_isEqualToString_(v25, v26, *MEMORY[0x277CDA798]))
@@ -72,7 +72,7 @@ LABEL_13:
     v28 = kCGLineJoinBevel;
   }
 
-  CGContextSetLineJoin(a3, v28);
+  CGContextSetLineJoin(context, v28);
 LABEL_20:
   v32 = objc_msgSend_lineDashPattern(self, v30, v31);
   v35 = objc_msgSend_count(v32, v33, v34);
@@ -88,7 +88,7 @@ LABEL_20:
   }
 
   objc_msgSend_lineDashPhase(self, v36, v37);
-  CGContextSetLineDash(a3, v44, v38, v35);
+  CGContextSetLineDash(context, v44, v38, v35);
   free(v38);
   objc_msgSend_path(self, v45, v46);
   CGContextAddPathSafe();
@@ -96,7 +96,7 @@ LABEL_20:
   {
     if (v12)
     {
-      CGContextDrawPath(a3, kCGPathStroke);
+      CGContextDrawPath(context, kCGPathStroke);
     }
 
     goto LABEL_37;
@@ -110,7 +110,7 @@ LABEL_20:
     {
       v53 = kCGPathFillStroke;
 LABEL_35:
-      CGContextDrawPath(a3, v53);
+      CGContextDrawPath(context, v53);
       goto LABEL_36;
     }
 
@@ -139,7 +139,7 @@ LABEL_35:
 LABEL_36:
 
 LABEL_37:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

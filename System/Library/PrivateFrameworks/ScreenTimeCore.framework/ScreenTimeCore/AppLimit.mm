@@ -2,11 +2,11 @@
 - (NSSet)allowedTimes;
 - (NSSet)websites;
 - (_TtC14ScreenTimeCore8AppLimit)init;
-- (_TtC14ScreenTimeCore8AppLimit)initWithIdentifier:(id)a3 enabled:(BOOL)a4 apps:(id)a5 categories:(id)a6 websites:(id)a7 blockAtLimit:(BOOL)a8 allowedTimes:(id)a9;
-- (id)setWithBlockAtLimit:(BOOL)a3;
-- (id)setWithEnabled:(BOOL)a3;
+- (_TtC14ScreenTimeCore8AppLimit)initWithIdentifier:(id)identifier enabled:(BOOL)enabled apps:(id)apps categories:(id)categories websites:(id)websites blockAtLimit:(BOOL)limit allowedTimes:(id)times;
+- (id)setWithBlockAtLimit:(BOOL)limit;
+- (id)setWithEnabled:(BOOL)enabled;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AppLimit
@@ -33,10 +33,10 @@
   return v4;
 }
 
-- (_TtC14ScreenTimeCore8AppLimit)initWithIdentifier:(id)a3 enabled:(BOOL)a4 apps:(id)a5 categories:(id)a6 websites:(id)a7 blockAtLimit:(BOOL)a8 allowedTimes:(id)a9
+- (_TtC14ScreenTimeCore8AppLimit)initWithIdentifier:(id)identifier enabled:(BOOL)enabled apps:(id)apps categories:(id)categories websites:(id)websites blockAtLimit:(BOOL)limit allowedTimes:(id)times
 {
-  v25 = a4;
-  v26 = a8;
+  enabledCopy = enabled;
+  limitCopy = limit;
   v10 = sub_1B83DD98C();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
@@ -52,8 +52,8 @@
   sub_1B83ADA88(&qword_1EBA84A38, v18, type metadata accessor for AppLimitSchedule);
   v19 = sub_1B83DDE7C();
   (*(v11 + 16))(self + OBJC_IVAR____TtC14ScreenTimeCore8AppLimit_identifier, v14, v10);
-  v20 = v26;
-  *(self + OBJC_IVAR____TtC14ScreenTimeCore8AppLimit_enabled) = v25;
+  v20 = limitCopy;
+  *(self + OBJC_IVAR____TtC14ScreenTimeCore8AppLimit_enabled) = enabledCopy;
   *(self + OBJC_IVAR____TtC14ScreenTimeCore8AppLimit_apps) = v15;
   *(self + OBJC_IVAR____TtC14ScreenTimeCore8AppLimit_categories) = v16;
   *(self + OBJC_IVAR____TtC14ScreenTimeCore8AppLimit_websites) = v17;
@@ -67,34 +67,34 @@
   return v22;
 }
 
-- (id)setWithEnabled:(BOOL)a3
+- (id)setWithEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = self;
-  v5 = sub_1B83A994C(v3);
+  enabledCopy = enabled;
+  selfCopy = self;
+  v5 = sub_1B83A994C(enabledCopy);
 
   return v5;
 }
 
-- (id)setWithBlockAtLimit:(BOOL)a3
+- (id)setWithBlockAtLimit:(BOOL)limit
 {
-  v3 = a3;
-  v4 = self;
-  v5 = sub_1B83A9B9C(v3);
+  limitCopy = limit;
+  selfCopy = self;
+  v5 = sub_1B83A9B9C(limitCopy);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B83AB798(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B83AB798(coderCopy);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B83DD97C();
 
   return v3;

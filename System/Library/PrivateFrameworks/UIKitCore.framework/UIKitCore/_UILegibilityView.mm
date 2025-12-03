@@ -1,34 +1,34 @@
 @interface _UILegibilityView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UILegibilityView)initWithSettings:(id)a3 strength:(double)a4 image:(id)a5 shadowImage:(id)a6 options:(int64_t)a7;
-- (_UILegibilityView)initWithStyle:(int64_t)a3 image:(id)a4 shadowImage:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UILegibilityView)initWithSettings:(id)settings strength:(double)strength image:(id)image shadowImage:(id)shadowImage options:(int64_t)options;
+- (_UILegibilityView)initWithStyle:(int64_t)style image:(id)image shadowImage:(id)shadowImage;
 - (id)drawingColor;
 - (int64_t)style;
 - (void)_updateFilters;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHidesImage:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImage:(id)a3 shadowImage:(id)a4;
-- (void)setSettings:(id)a3 image:(id)a4 shadowImage:(id)a5;
-- (void)setStyle:(int64_t)a3 image:(id)a4 shadowImage:(id)a5;
-- (void)updateForChangedSettings:(id)a3;
+- (void)setHidesImage:(BOOL)image;
+- (void)setImage:(id)image;
+- (void)setImage:(id)image shadowImage:(id)shadowImage;
+- (void)setSettings:(id)settings image:(id)image shadowImage:(id)shadowImage;
+- (void)setStyle:(int64_t)style image:(id)image shadowImage:(id)shadowImage;
+- (void)updateForChangedSettings:(id)settings;
 @end
 
 @implementation _UILegibilityView
 
-- (_UILegibilityView)initWithStyle:(int64_t)a3 image:(id)a4 shadowImage:(id)a5
+- (_UILegibilityView)initWithStyle:(int64_t)style image:(id)image shadowImage:(id)shadowImage
 {
-  v7 = [_UILegibilitySettings sharedInstanceForStyle:a3, a4, a5];
+  shadowImage = [_UILegibilitySettings sharedInstanceForStyle:style, image, shadowImage];
 
-  return [(_UILegibilityView *)self initWithSettings:v7 strength:a4 image:0 shadowImage:0 options:1.5];
+  return [(_UILegibilityView *)self initWithSettings:shadowImage strength:image image:0 shadowImage:0 options:1.5];
 }
 
-- (_UILegibilityView)initWithSettings:(id)a3 strength:(double)a4 image:(id)a5 shadowImage:(id)a6 options:(int64_t)a7
+- (_UILegibilityView)initWithSettings:(id)settings strength:(double)strength image:(id)image shadowImage:(id)shadowImage options:(int64_t)options
 {
-  [a5 size];
+  [image size];
   v14 = v13;
-  [a5 size];
+  [image size];
   v19.receiver = self;
   v19.super_class = _UILegibilityView;
   v16 = [(UIView *)&v19 initWithFrame:0.0, 0.0, v14, v15];
@@ -36,9 +36,9 @@
   if (v16)
   {
     [(CALayer *)[(UIView *)v16 layer] setAllowsGroupBlending:0];
-    [(_UILegibilityView *)v17 setStrength:a4];
-    [(_UILegibilityView *)v17 setOptions:a7];
-    [(_UILegibilityView *)v17 setSettings:a3 image:a5 shadowImage:a6];
+    [(_UILegibilityView *)v17 setStrength:strength];
+    [(_UILegibilityView *)v17 setOptions:options];
+    [(_UILegibilityView *)v17 setSettings:settings image:image shadowImage:shadowImage];
   }
 
   return v17;
@@ -65,14 +65,14 @@
 
 - (int64_t)style
 {
-  v2 = [(_UILegibilityView *)self settings];
+  settings = [(_UILegibilityView *)self settings];
 
-  return [(_UILegibilitySettings *)v2 style];
+  return [(_UILegibilitySettings *)settings style];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(_UILegibilityView *)self image:a3.width];
+  v3 = [(_UILegibilityView *)self image:fits.width];
 
   [(UIImage *)v3 size];
   result.height = v5;
@@ -80,24 +80,24 @@
   return result;
 }
 
-- (void)setHidesImage:(BOOL)a3
+- (void)setHidesImage:(BOOL)image
 {
-  v3 = a3;
-  self->_hidesImage = a3;
-  v4 = [(_UILegibilityView *)self imageView];
+  imageCopy = image;
+  self->_hidesImage = image;
+  imageView = [(_UILegibilityView *)self imageView];
 
-  [(UIImageView *)v4 setHidden:v3];
+  [(UIImageView *)imageView setHidden:imageCopy];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   image = self->_image;
-  if (image != a3)
+  if (image != image)
   {
     _DecrementImageUsage(image);
 
-    self->_image = a3;
-    if (a3)
+    self->_image = image;
+    if (image)
     {
       if (qword_1EA963C18 != -1)
       {
@@ -106,48 +106,48 @@
 
       v6 = qword_1EA963C10;
 
-      [v6 addObject:a3];
+      [v6 addObject:image];
     }
   }
 }
 
-- (void)setImage:(id)a3 shadowImage:(id)a4
+- (void)setImage:(id)image shadowImage:(id)shadowImage
 {
-  v7 = [(_UILegibilityView *)self settings];
+  settings = [(_UILegibilityView *)self settings];
 
-  [(_UILegibilityView *)self setSettings:v7 image:a3 shadowImage:a4];
+  [(_UILegibilityView *)self setSettings:settings image:image shadowImage:shadowImage];
 }
 
-- (void)setStyle:(int64_t)a3 image:(id)a4 shadowImage:(id)a5
+- (void)setStyle:(int64_t)style image:(id)image shadowImage:(id)shadowImage
 {
-  v8 = [_UILegibilitySettings sharedInstanceForStyle:a3];
+  v8 = [_UILegibilitySettings sharedInstanceForStyle:style];
 
-  [(_UILegibilityView *)self setSettings:v8 image:a4 shadowImage:a5];
+  [(_UILegibilityView *)self setSettings:v8 image:image shadowImage:shadowImage];
 }
 
-- (void)setSettings:(id)a3 image:(id)a4 shadowImage:(id)a5
+- (void)setSettings:(id)settings image:(id)image shadowImage:(id)shadowImage
 {
   [(_UILegibilityView *)self setSettings:?];
-  [(_UILegibilityView *)self setImage:a4];
-  [(_UILegibilityView *)self setShadowImage:a5];
-  if (a4 && ([a4 size], v9 >= 1.0) && (objc_msgSend(a4, "size"), v10 >= 1.0))
+  [(_UILegibilityView *)self setImage:image];
+  [(_UILegibilityView *)self setShadowImage:shadowImage];
+  if (image && ([image size], v9 >= 1.0) && (objc_msgSend(image, "size"), v10 >= 1.0))
   {
-    if (__51___UILegibilityView_setSettings_image_shadowImage___block_invoke(a4))
+    if (__51___UILegibilityView_setSettings_image_shadowImage___block_invoke(image))
     {
-      a4 = [a4 imageWithTintColor:{-[_UILegibilityView drawingColor](self, "drawingColor")}];
+      image = [image imageWithTintColor:{-[_UILegibilityView drawingColor](self, "drawingColor")}];
     }
 
-    v12 = [(_UILegibilityView *)self imageView];
-    if (v12)
+    imageView = [(_UILegibilityView *)self imageView];
+    if (imageView)
     {
-      v13 = v12;
-      [(UIImageView *)v12 setImage:a4];
+      v13 = imageView;
+      [(UIImageView *)imageView setImage:image];
       [(UIView *)[(_UILegibilityView *)self imageView] sizeToFit];
     }
 
     else
     {
-      v13 = [(UIImageView *)[_UILegibilityImageView alloc] initWithImage:a4];
+      v13 = [(UIImageView *)[_UILegibilityImageView alloc] initWithImage:image];
       [(_UILegibilityView *)self setImageView:v13];
       [(UIView *)self addSubview:v13];
     }
@@ -155,28 +155,28 @@
     [(UIImageView *)v13 setHidden:self->_hidesImage];
     if (![(_UILegibilityView *)self shadowImage])
     {
-      v14 = a3;
+      settingsCopy = settings;
       if ([(_UILegibilityView *)self usesColorFilters])
       {
-        v14 = [[_UILegibilitySettings alloc] initWithStyle:[(_UILegibilitySettings *)self->_settings style] primaryColor:[(_UILegibilitySettings *)self->_settings primaryColor] secondaryColor:[(_UILegibilitySettings *)self->_settings secondaryColor] shadowColor:+[UIColor whiteColor]];
+        settingsCopy = [[_UILegibilitySettings alloc] initWithStyle:[(_UILegibilitySettings *)self->_settings style] primaryColor:[(_UILegibilitySettings *)self->_settings primaryColor] secondaryColor:[(_UILegibilitySettings *)self->_settings secondaryColor] shadowColor:+[UIColor whiteColor]];
         [(_UILegibilitySettings *)self->_settings minFillHeight];
-        [(_UILegibilitySettings *)v14 setMinFillHeight:?];
+        [(_UILegibilitySettings *)settingsCopy setMinFillHeight:?];
       }
 
       [(_UILegibilityView *)self strength];
       if (v15 != 0.0)
       {
-        v16 = [(_UILegibilityView *)self image];
+        image = [(_UILegibilityView *)self image];
         [(_UILegibilityView *)self strength];
-        [(_UILegibilityView *)self setShadowImage:[(UIImage *)v16 _imageForLegibilitySettings:v14 strength:1 alphaOnly:?]];
+        [(_UILegibilityView *)self setShadowImage:[(UIImage *)image _imageForLegibilitySettings:settingsCopy strength:1 alphaOnly:?]];
       }
     }
 
-    v17 = [(_UILegibilityView *)self shadowImageView];
-    if (v17)
+    shadowImageView = [(_UILegibilityView *)self shadowImageView];
+    if (shadowImageView)
     {
-      v18 = v17;
-      [(UIImageView *)v17 setImage:[(_UILegibilityView *)self shadowImage]];
+      v18 = shadowImageView;
+      [(UIImageView *)shadowImageView setImage:[(_UILegibilityView *)self shadowImage]];
       [(UIView *)v18 sizeToFit];
     }
 
@@ -191,7 +191,7 @@
     [(UIImageView *)v18 _applySettingsForLegibilityStyle:[(_UILegibilityView *)self style]];
     if (__51___UILegibilityView_setSettings_image_shadowImage___block_invoke([(UIImageView *)v18 image]))
     {
-      v19 = [objc_msgSend(a3 "shadowColor")];
+      v19 = [objc_msgSend(settings "shadowColor")];
     }
 
     else
@@ -208,16 +208,16 @@
   {
     [(_UILegibilityView *)self setImage:0];
     [(UIImageView *)[(_UILegibilityView *)self imageView] setImage:0];
-    v11 = [(_UILegibilityView *)self shadowImageView];
+    shadowImageView2 = [(_UILegibilityView *)self shadowImageView];
 
-    [(UIImageView *)v11 setImage:0];
+    [(UIImageView *)shadowImageView2 setImage:0];
   }
 }
 
-- (void)updateForChangedSettings:(id)a3
+- (void)updateForChangedSettings:(id)settings
 {
-  v15 = [(_UILegibilityView *)self settings];
-  [(_UILegibilityView *)self setSettings:a3];
+  settings = [(_UILegibilityView *)self settings];
+  [(_UILegibilityView *)self setSettings:settings];
   if ([(_UILegibilityView *)self usesColorFilters]&& [(_UILegibilityView *)self image]&& [(_UILegibilityView *)self imageView])
   {
     [(UIImageView *)[(_UILegibilityView *)self shadowImageView] _applySettingsForLegibilityStyle:[(_UILegibilityView *)self style]];
@@ -227,20 +227,20 @@
   else
   {
     [(_UILegibilityView *)self updateImage];
-    [a3 shadowRadius];
+    [settings shadowRadius];
     v6 = v5;
-    [(_UILegibilitySettings *)v15 shadowRadius];
-    if (vabdd_f64(v6, v7) <= 2.22044605e-16 && ([a3 shadowAlpha], v9 = v8, -[_UILegibilitySettings shadowAlpha](v15, "shadowAlpha"), vabdd_f64(v9, v10) <= 2.22044605e-16) && (objc_msgSend(a3, "minFillHeight"), v12 = v11, -[_UILegibilitySettings minFillHeight](v15, "minFillHeight"), vabdd_f64(v12, v13) <= 2.22044605e-16))
+    [(_UILegibilitySettings *)settings shadowRadius];
+    if (vabdd_f64(v6, v7) <= 2.22044605e-16 && ([settings shadowAlpha], v9 = v8, -[_UILegibilitySettings shadowAlpha](settings, "shadowAlpha"), vabdd_f64(v9, v10) <= 2.22044605e-16) && (objc_msgSend(settings, "minFillHeight"), v12 = v11, -[_UILegibilitySettings minFillHeight](settings, "minFillHeight"), vabdd_f64(v12, v13) <= 2.22044605e-16))
     {
-      v14 = [(_UILegibilityView *)self shadowImage];
+      shadowImage = [(_UILegibilityView *)self shadowImage];
     }
 
     else
     {
-      v14 = 0;
+      shadowImage = 0;
     }
 
-    [(_UILegibilityView *)self setSettings:a3 image:[(_UILegibilityView *)self image] shadowImage:v14];
+    [(_UILegibilityView *)self setSettings:settings image:[(_UILegibilityView *)self image] shadowImage:shadowImage];
   }
 }
 
@@ -266,25 +266,25 @@
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(_UILegibilityView *)self shadowImageView];
+  shadowImageView = [(_UILegibilityView *)self shadowImageView];
 
-  [(UIImageView *)v40 setFrame:v33, v35, v37, v39];
+  [(UIImageView *)shadowImageView setFrame:v33, v35, v37, v39];
 }
 
 - (id)drawingColor
 {
-  v3 = [(_UILegibilityView *)self usesSecondaryColor];
-  v4 = [(_UILegibilityView *)self settings];
-  if (v3)
+  usesSecondaryColor = [(_UILegibilityView *)self usesSecondaryColor];
+  settings = [(_UILegibilityView *)self settings];
+  if (usesSecondaryColor)
   {
 
-    return [(_UILegibilitySettings *)v4 secondaryColor];
+    return [(_UILegibilitySettings *)settings secondaryColor];
   }
 
   else
   {
 
-    return [(_UILegibilitySettings *)v4 primaryColor];
+    return [(_UILegibilitySettings *)settings primaryColor];
   }
 }
 
@@ -309,9 +309,9 @@
   else
   {
     [(CALayer *)[(UIView *)[(_UILegibilityView *)self imageView] layer] setFilters:0];
-    v6 = [(UIView *)[(_UILegibilityView *)self shadowImageView] layer];
+    layer = [(UIView *)[(_UILegibilityView *)self shadowImageView] layer];
 
-    [(CALayer *)v6 setFilters:0];
+    [(CALayer *)layer setFilters:0];
   }
 }
 

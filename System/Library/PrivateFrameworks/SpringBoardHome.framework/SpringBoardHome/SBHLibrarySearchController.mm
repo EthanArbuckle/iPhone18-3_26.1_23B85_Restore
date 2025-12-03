@@ -1,75 +1,75 @@
 @interface SBHLibrarySearchController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)needsToManageTopInset;
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (BOOL)searchBarShouldReturn:(id)a3;
-- (CGRect)_calculateSearchBarFrame:(BOOL)a3;
-- (CGRect)_calculateSearchBarFrame:(BOOL)a3 forExplicitVisualConfiguration:(id)a4;
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (BOOL)searchBarShouldReturn:(id)return;
+- (CGRect)_calculateSearchBarFrame:(BOOL)frame;
+- (CGRect)_calculateSearchBarFrame:(BOOL)frame forExplicitVisualConfiguration:(id)configuration;
 - (CGSize)preferredContentSize;
-- (SBHLibrarySearchController)initWithSearchResultsController:(id)a3 contentViewController:(id)a4 usingPlatterAppearance:(BOOL)a5;
+- (SBHLibrarySearchController)initWithSearchResultsController:(id)controller contentViewController:(id)viewController usingPlatterAppearance:(BOOL)appearance;
 - (SBHLibrarySearchControllerDelegate)delegate;
 - (SBHSearchResultsUpdating)searchResultsUpdater;
 - (SBIconListLayoutProvider)listLayoutProvider;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (UIEdgeInsets)_windowSafeAreaInsets;
-- (UIEdgeInsets)safeAreaInsetsForSearchBar:(id)a3;
+- (UIEdgeInsets)safeAreaInsetsForSearchBar:(id)bar;
 - (double)_bottomLayoutInsetForSearchResultsView;
-- (double)_rubberbandingOffsetForContentOffset:(CGPoint)a3;
+- (double)_rubberbandingOffsetForContentOffset:(CGPoint)offset;
 - (id)contentScrollView;
 - (id)keyCommands;
 - (void)_didDismissSearch;
 - (void)_didPresentSearch;
-- (void)_dismissPresentation:(BOOL)a3;
+- (void)_dismissPresentation:(BOOL)presentation;
 - (void)_layoutSearchViews;
-- (void)_layoutSearchViewsWithMode:(int64_t)a3 withCompletion:(id)a4;
-- (void)_performPresentation:(BOOL)a3;
-- (void)_searchBackgroundContentReplacedWithSnapshot:(BOOL)a3;
+- (void)_layoutSearchViewsWithMode:(int64_t)mode withCompletion:(id)completion;
+- (void)_performPresentation:(BOOL)presentation;
+- (void)_searchBackgroundContentReplacedWithSnapshot:(BOOL)snapshot;
 - (void)_setUpFeatherMaskLayerMatchMoveAnimations;
 - (void)_setupSearchAnimationSettings;
 - (void)_updateContentOverlayInsetsFromParentForChildren;
 - (void)_updateEffectiveSearchVisualConfiguration;
 - (void)_updateHeaderBlurVisibility;
-- (void)_willDismissSearchAnimated:(BOOL)a3;
-- (void)_willPresentSearchAnimated:(BOOL)a3;
-- (void)ppt_setDisablePullToSearch:(BOOL)a3;
-- (void)resetSearchController:(BOOL)a3 clearSearchResults:(BOOL)a4 resetSearchBarTransformAndAlpha:(BOOL)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarDidInvalidateIntrinsicContentSize:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setListLayoutProvider:(id)a3;
-- (void)setSearchBarAppearance:(unint64_t)a3;
-- (void)setSearchResultsUpdater:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_willDismissSearchAnimated:(BOOL)animated;
+- (void)_willPresentSearchAnimated:(BOOL)animated;
+- (void)ppt_setDisablePullToSearch:(BOOL)search;
+- (void)resetSearchController:(BOOL)controller clearSearchResults:(BOOL)results resetSearchBarTransformAndAlpha:(BOOL)alpha;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarDidInvalidateIntrinsicContentSize:(id)size;
+- (void)setActive:(BOOL)active;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setListLayoutProvider:(id)provider;
+- (void)setSearchBarAppearance:(unint64_t)appearance;
+- (void)setSearchResultsUpdater:(id)updater;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBHLibrarySearchController
 
 - (BOOL)needsToManageTopInset
 {
-  v2 = [(SBHLibrarySearchController *)self containingIconLocation];
-  v3 = [v2 isEqualToString:@"SBIconLocationAppLibraryOverlay"];
+  containingIconLocation = [(SBHLibrarySearchController *)self containingIconLocation];
+  v3 = [containingIconLocation isEqualToString:@"SBIconLocationAppLibraryOverlay"];
 
   return v3;
 }
 
-- (SBHLibrarySearchController)initWithSearchResultsController:(id)a3 contentViewController:(id)a4 usingPlatterAppearance:(BOOL)a5
+- (SBHLibrarySearchController)initWithSearchResultsController:(id)controller contentViewController:(id)viewController usingPlatterAppearance:(BOOL)appearance
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v20.receiver = self;
   v20.super_class = SBHLibrarySearchController;
   v11 = [(SBHLibrarySearchController *)&v20 initWithNibName:0 bundle:0];
@@ -77,27 +77,27 @@
   if (v11)
   {
     objc_storeStrong(&v11->_containingIconLocation, @"SBIconLocationAppLibrary");
-    objc_storeStrong(&v12->_searchResultsController, a3);
+    objc_storeStrong(&v12->_searchResultsController, controller);
     [(SBHIconLibraryTableViewController *)v12->_searchResultsController setLayoutDelegate:v12];
     [(SBHIconLibraryTableViewController *)v12->_searchResultsController setObserver:v12];
-    objc_storeStrong(&v12->_contentViewController, a4);
-    v13 = [v10 contentScrollView];
+    objc_storeStrong(&v12->_contentViewController, viewController);
+    contentScrollView = [viewControllerCopy contentScrollView];
     scrollView = v12->_scrollView;
-    v12->_scrollView = v13;
+    v12->_scrollView = contentScrollView;
 
     [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)v12->_contentViewController setLibrarySearchControllerScrollViewDelegate:v12];
-    v12->_usesPlatterAppearance = a5;
+    v12->_usesPlatterAppearance = appearance;
     v12->_searchBarAppearance = 0;
     v15 = +[SBHHomeScreenDomain rootSettings];
-    v16 = [v15 libraryPullToSearchSettings];
+    libraryPullToSearchSettings = [v15 libraryPullToSearchSettings];
     pullToSearchSettings = v12->_pullToSearchSettings;
-    v12->_pullToSearchSettings = v16;
+    v12->_pullToSearchSettings = libraryPullToSearchSettings;
 
     [(PTSettings *)v12->_pullToSearchSettings addKeyObserver:v12];
-    if (a5)
+    if (appearance)
     {
-      v18 = [MEMORY[0x1E69DC938] currentDevice];
-      v12->_needsLowQualityBackgroundEffects = [v18 sbf_animatedBlurRadiusGraphicsQuality] < 41;
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      v12->_needsLowQualityBackgroundEffects = [currentDevice sbf_animatedBlurRadiusGraphicsQuality] < 41;
     }
 
     else
@@ -113,23 +113,23 @@
 
 - (id)contentScrollView
 {
-  v3 = [(SBHLibrarySearchController *)self isActive];
+  isActive = [(SBHLibrarySearchController *)self isActive];
   v4 = &OBJC_IVAR___SBHLibrarySearchController__contentViewController;
-  if (v3)
+  if (isActive)
   {
     v4 = &OBJC_IVAR___SBHLibrarySearchController__searchResultsController;
   }
 
-  v5 = [*(&self->super.super.super.isa + *v4) contentScrollView];
+  contentScrollView = [*(&self->super.super.super.isa + *v4) contentScrollView];
 
-  return v5;
+  return contentScrollView;
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
-    self->_contentVisibility = a3;
+    self->_contentVisibility = visibility;
     [(SBHLibrarySearchController *)self _updateHeaderBlurVisibility];
   }
 }
@@ -140,8 +140,8 @@
   v84.receiver = self;
   v84.super_class = SBHLibrarySearchController;
   [(SBHLibrarySearchController *)&v84 viewDidLoad];
-  v3 = [(SBHLibrarySearchController *)self view];
-  [v3 bounds];
+  view = [(SBHLibrarySearchController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -150,7 +150,7 @@
   containerView = self->_containerView;
   self->_containerView = v12;
 
-  [v3 addSubview:self->_containerView];
+  [view addSubview:self->_containerView];
   v14 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v5, v7, v9, v11}];
   contentContainerView = self->_contentContainerView;
   self->_contentContainerView = v14;
@@ -165,7 +165,7 @@
   [(UIView *)self->_searchResultsContainerView _setIgnoreBackdropViewsWhenHiding:1];
   v18 = &OBJC_IVAR___SBHIconManager__previousWidgetDataSourceBeforeResize;
   v19 = &OBJC_IVAR___SBHIconManager__previousWidgetDataSourceBeforeResize;
-  v79 = v3;
+  v79 = view;
   if ([(SBHLibrarySearchController *)self usesPlatterAppearance])
   {
     v20 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -184,16 +184,16 @@
     v28 = [(SBHVisualStylingView *)[SBHLibraryCategoryPodBackgroundView alloc] initWithFrame:v21, v22, v23, v24];
     [(SBHLibraryCategoryPodBackgroundView *)v28 setAutoresizingMask:18];
     [(UIView *)self->_searchResultsPlatterView addSubview:v28];
-    v29 = [(SBHLibrarySearchController *)self containingIconLocation];
-    v30 = [(SBHLibrarySearchController *)self listLayoutProvider];
-    v31 = [v30 layoutForIconLocation:v29];
+    containingIconLocation = [(SBHLibrarySearchController *)self containingIconLocation];
+    listLayoutProvider = [(SBHLibrarySearchController *)self listLayoutProvider];
+    v31 = [listLayoutProvider layoutForIconLocation:containingIconLocation];
 
-    v32 = [v31 appLibraryVisualConfiguration];
-    [v32 searchContinuousCornerRadius];
+    appLibraryVisualConfiguration = [v31 appLibraryVisualConfiguration];
+    [appLibraryVisualConfiguration searchContinuousCornerRadius];
     v34 = v33;
     [(UIView *)self->_searchResultsPlatterView _setContinuousCornerRadius:?];
-    v35 = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
-    [v35 setVerticalScrollIndicatorInsets:{v34, 0.0, v34, 0.0}];
+    contentScrollView = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
+    [contentScrollView setVerticalScrollIndicatorInsets:{v34, 0.0, v34, 0.0}];
 
     v36 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_endEditingForSearchField];
     [v36 setDelegate:self];
@@ -202,7 +202,7 @@
     v18 = &OBJC_IVAR___SBHIconManager__previousWidgetDataSourceBeforeResize;
     v19 = &OBJC_IVAR___SBHIconManager__previousWidgetDataSourceBeforeResize;
 
-    v3 = v79;
+    view = v79;
   }
 
   [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0];
@@ -212,24 +212,24 @@
 
   [(SBHSearchBar *)self->_searchBar setDelegate:self];
   [(UIView *)self->_searchBar sbh_createGlassGroupInForeground:1];
-  v43 = [MEMORY[0x1E69DC938] currentDevice];
-  v44 = [v43 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v44 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SBHSearchBar *)self->_searchBar setBackgroundViewBottomInsetToTextField:24.0];
   }
 
   v45 = self->_searchBar;
   v46 = v19[588];
-  v47 = [*(&self->super.super.super.isa + v46) focusGroupIdentifier];
-  [(SBHSearchBar *)v45 setFocusGroupIdentifier:v47];
+  focusGroupIdentifier = [*(&self->super.super.super.isa + v46) focusGroupIdentifier];
+  [(SBHSearchBar *)v45 setFocusGroupIdentifier:focusGroupIdentifier];
 
-  [v3 addSubview:self->_searchBar];
+  [view addSubview:self->_searchBar];
   [(SBHLibrarySearchController *)self _updateEffectiveSearchVisualConfiguration];
-  v48 = [(SBHSearchBar *)self->_searchBar searchTextField];
+  searchTextField = [(SBHSearchBar *)self->_searchBar searchTextField];
   searchField = self->_searchField;
-  self->_searchField = v48;
+  self->_searchField = searchTextField;
 
   v50 = *(&self->super.super.super.isa + v18[599]);
   if (!v50)
@@ -241,8 +241,8 @@
   [(SBHLibrarySearchController *)self bs_addChildViewController:self->_contentViewController withSuperview:self->_contentContainerView];
   v78 = v51;
   [(SBHLibrarySearchController *)self bs_addChildViewController:*(&self->super.super.super.isa + v46) withSuperview:v51];
-  v52 = [(SBHLibrarySearchController *)self view];
-  [v52 bringSubviewToFront:self->_searchBar];
+  view2 = [(SBHLibrarySearchController *)self view];
+  [view2 bringSubviewToFront:self->_searchBar];
 
   v82 = 0u;
   v83 = 0u;
@@ -266,9 +266,9 @@
           objc_enumerationMutation(v54);
         }
 
-        v59 = [*(*(&v80 + 1) + 8 * i) view];
+        view3 = [*(*(&v80 + 1) + 8 * i) view];
         [(UIView *)self->_containerView bounds];
-        [v59 setFrame:?];
+        [view3 setFrame:?];
       }
 
       v56 = [v54 countByEnumeratingWithState:&v80 objects:v86 count:16];
@@ -285,10 +285,10 @@
 
   else
   {
-    v61 = [MEMORY[0x1E69DC938] currentDevice];
-    v62 = [v61 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v62 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v63 = @"homeScreenOverlayLibrarySearch-iPad";
     }
@@ -316,14 +316,14 @@
 
   [(UIView *)self->_searchResultsContainerView insertSubview:v69 atIndex:0];
   v70 = MEMORY[0x1E69D3FC0];
-  v71 = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController view];
-  v72 = [v70 configureGradientMaskForFeatherBlurRecipe:1 onContentView:v71];
+  view4 = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController view];
+  v72 = [v70 configureGradientMaskForFeatherBlurRecipe:1 onContentView:view4];
   contentViewGradientMaskLayers = self->_contentViewGradientMaskLayers;
   self->_contentViewGradientMaskLayers = v72;
 
   v74 = MEMORY[0x1E69D3FC0];
-  v75 = [*(&self->super.super.super.isa + v46) view];
-  v76 = [v74 configureGradientMaskForFeatherBlurRecipe:3 onContentView:v75];
+  view5 = [*(&self->super.super.super.isa + v46) view];
+  v76 = [v74 configureGradientMaskForFeatherBlurRecipe:3 onContentView:view5];
   searchResultsGradientMaskLayers = self->_searchResultsGradientMaskLayers;
   self->_searchResultsGradientMaskLayers = v76;
 }
@@ -333,13 +333,13 @@
   v11.receiver = self;
   v11.super_class = SBHLibrarySearchController;
   [(SBHLibrarySearchController *)&v11 viewWillLayoutSubviews];
-  v3 = [(SBHLibrarySearchController *)self view];
-  [v3 bounds];
+  view = [(SBHLibrarySearchController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(SBHLibrarySearchController *)self searchBar];
-  [v8 setPortraitOrientation:v5 < v7];
+  searchBar = [(SBHLibrarySearchController *)self searchBar];
+  [searchBar setPortraitOrientation:v5 < v7];
 
   if ([(SBHLibrarySearchController *)self _rotatingToInterfaceOrientation])
   {
@@ -364,22 +364,22 @@
   [(SBHLibrarySearchController *)self _layoutSearchViewsWithMode:v10 withCompletion:0];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = MEMORY[0x1E69DDCE0];
   [(SBHLibrarySearchController *)self _windowSafeAreaInsets];
   v9 = v8;
-  if (self->_contentViewController == v6)
+  if (self->_contentViewController == controllerCopy)
   {
-    v12 = [(SBHLibrarySearchController *)self _inactiveSearchConfiguration];
-    [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0 forExplicitVisualConfiguration:v12];
+    _inactiveSearchConfiguration = [(SBHLibrarySearchController *)self _inactiveSearchConfiguration];
+    [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0 forExplicitVisualConfiguration:_inactiveSearchConfiguration];
     MaxY = CGRectGetMaxY(v20);
 
     goto LABEL_6;
   }
 
-  if (self->_searchResultsController != v6 || (v10 = 0.0, MaxY = 0.0, ![(SBHLibrarySearchController *)self usesPlatterAppearance]))
+  if (self->_searchResultsController != controllerCopy || (v10 = 0.0, MaxY = 0.0, ![(SBHLibrarySearchController *)self usesPlatterAppearance]))
   {
     [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0];
     MaxY = CGRectGetMaxY(v19);
@@ -389,9 +389,9 @@ LABEL_6:
 
   v13 = *(v7 + 8);
   v14 = *(v7 + 24);
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   v15 = MaxY;
@@ -415,71 +415,71 @@ LABEL_6:
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SBHLibrarySearchController;
   [(SBHLibrarySearchController *)&v5 viewWillAppear:?];
-  [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController bs_beginAppearanceTransition:1 animated:v3];
+  [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController bs_beginAppearanceTransition:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHLibrarySearchController;
-  [(SBHLibrarySearchController *)&v4 viewDidAppear:a3];
+  [(SBHLibrarySearchController *)&v4 viewDidAppear:appear];
   [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController bs_endAppearanceTransition];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SBHLibrarySearchController;
   [(SBHLibrarySearchController *)&v5 viewWillDisappear:?];
   [MEMORY[0x1E6979518] setFrameStallSkipRequest:1];
-  [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController bs_beginAppearanceTransition:0 animated:v3];
+  [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController bs_beginAppearanceTransition:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBHLibrarySearchController;
-  [(SBHLibrarySearchController *)&v5 viewDidDisappear:a3];
+  [(SBHLibrarySearchController *)&v5 viewDidDisappear:disappear];
   if ([(SBHLibrarySearchController *)self isActive])
   {
     [(SBHLibrarySearchController *)self _dismissPresentation:0];
   }
 
   [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController bs_endAppearanceTransition];
-  v4 = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
-  [v4 _scrollToTopIfPossible:0];
+  contentScrollView = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
+  [contentScrollView _scrollToTopIfPossible:0];
 
   [(SBHLibrarySearchController *)self resetSearchController:0 clearSearchResults:1 resetSearchBarTransformAndAlpha:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v15.receiver = self;
   v15.super_class = SBHLibrarySearchController;
-  v7 = a4;
-  [(SBHLibrarySearchController *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(UIView *)self->_searchBackgroundView layer];
-  v9 = [v8 animationForKey:@"SBLibrarySearchMatchMoveAnimation"];
-  [v8 removeAnimationForKey:@"SBLibrarySearchMatchMoveAnimation"];
+  coordinatorCopy = coordinator;
+  [(SBHLibrarySearchController *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  layer = [(UIView *)self->_searchBackgroundView layer];
+  v9 = [layer animationForKey:@"SBLibrarySearchMatchMoveAnimation"];
+  [layer removeAnimationForKey:@"SBLibrarySearchMatchMoveAnimation"];
   [(SBHLibrarySearchController *)self _searchBackgroundContentReplacedWithSnapshot:0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__SBHLibrarySearchController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v12[3] = &unk_1E808E800;
-  v13 = v8;
+  v13 = layer;
   v14 = v9;
   v10 = v9;
-  v11 = v8;
-  [v7 animateAlongsideTransition:0 completion:v12];
+  v11 = layer;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v12];
 }
 
 - (id)keyCommands
@@ -487,7 +487,7 @@ LABEL_6:
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = SBHLibrarySearchController;
-  v3 = [(SBHLibrarySearchController *)&v11 keyCommands];
+  keyCommands = [(SBHLibrarySearchController *)&v11 keyCommands];
   if ([(SBHSearchBar *)self->_searchBar showsCancelButton])
   {
     v4 = *MEMORY[0x1E69DDEA0];
@@ -504,9 +504,9 @@ LABEL_6:
 
   v7 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:v4 modifierFlags:v6 action:v5];
   v8 = v7;
-  if (v3)
+  if (keyCommands)
   {
-    v9 = [v3 arrayByAddingObject:v7];
+    v9 = [keyCommands arrayByAddingObject:v7];
   }
 
   else
@@ -518,19 +518,19 @@ LABEL_6:
   return v9;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBHLibrarySearchController;
-  [(SBHLibrarySearchController *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(SBHLibrarySearchController *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(SBHLibrarySearchController *)self _updateContentOverlayInsetsFromParentForChildren];
-  v5 = [(SBHLibrarySearchController *)self view];
-  [v5 setNeedsLayout];
+  view = [(SBHLibrarySearchController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     searchField = self->_searchField;
 
@@ -539,15 +539,15 @@ LABEL_6:
 
   else
   {
-    v5 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+    areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
 
-    [(SBHLibrarySearchController *)self _dismissPresentation:v5];
+    [(SBHLibrarySearchController *)self _dismissPresentation:areAnimationsEnabled];
   }
 }
 
-- (double)_rubberbandingOffsetForContentOffset:(CGPoint)a3
+- (double)_rubberbandingOffsetForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
+  y = offset.y;
   [(UIScrollView *)self->_scrollView adjustedContentInset];
   v5 = -v4;
   result = -(y + v4);
@@ -559,9 +559,9 @@ LABEL_6:
   return result;
 }
 
-- (void)_layoutSearchViewsWithMode:(int64_t)a3 withCompletion:(id)a4
+- (void)_layoutSearchViewsWithMode:(int64_t)mode withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69DD250];
   searchAnimationSettings = self->_searchAnimationSettings;
   v12[0] = MEMORY[0x1E69E9820];
@@ -573,9 +573,9 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withCompletion___block_invoke_2;
   v10[3] = &unk_1E808A998;
-  v11 = v6;
-  v9 = v6;
-  [v7 sb_animateWithSettings:searchAnimationSettings mode:a3 animations:v12 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v7 sb_animateWithSettings:searchAnimationSettings mode:mode animations:v12 completion:v10];
 }
 
 uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withCompletion___block_invoke_2(uint64_t a1)
@@ -592,8 +592,8 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
 - (void)_layoutSearchViews
 {
   v111 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHLibrarySearchController *)self view];
-  [v3 bounds];
+  view = [(SBHLibrarySearchController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -601,10 +601,10 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
 
   v12 = self->_containerView;
   [(UIView *)v12 setFrame:v5, v7, v9, v11];
-  v13 = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  view2 = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
-  v14 = [(SBHIconLibraryTableViewController *)self->_searchResultsController view];
+  view3 = [(SBHIconLibraryTableViewController *)self->_searchResultsController view];
   v15 = self->_scrollView;
   [(UIView *)v12 bounds];
   v17 = v16;
@@ -643,52 +643,52 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   v32 = self->_searchResultsPlatterView;
   if (v32)
   {
-    v33 = [(SBHLibrarySearchController *)self _activeSearchConfiguration];
+    _activeSearchConfiguration = [(SBHLibrarySearchController *)self _activeSearchConfiguration];
     v97 = v17;
     if (self->_searchState == 2)
     {
-      [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0 forExplicitVisualConfiguration:v33];
+      [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0 forExplicitVisualConfiguration:_activeSearchConfiguration];
       v35 = v34;
     }
 
     else
     {
-      v36 = [(SBHLibrarySearchController *)self _inactiveSearchConfiguration];
-      [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0 forExplicitVisualConfiguration:v36];
+      _inactiveSearchConfiguration = [(SBHLibrarySearchController *)self _inactiveSearchConfiguration];
+      [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0 forExplicitVisualConfiguration:_inactiveSearchConfiguration];
       v35 = v37;
     }
 
     [(SBHLibrarySearchController *)self _bottomLayoutInsetForSearchResultsView];
     v38 = v19 + v35;
     v40 = v23 - (v39 + v35);
-    [v33 textFieldWidth];
+    [_activeSearchConfiguration textFieldWidth];
     v42 = v41;
     if (v41 <= 0.0)
     {
       if (v23 <= v21)
       {
-        [v33 textFieldLandscapeLayoutInsets];
+        [_activeSearchConfiguration textFieldLandscapeLayoutInsets];
       }
 
       else
       {
-        [v33 textFieldPortraitLayoutInsets];
+        [_activeSearchConfiguration textFieldPortraitLayoutInsets];
       }
 
       v42 = v21 - (v43 + v44);
     }
 
-    [v14 frame];
+    [view3 frame];
     [(UIView *)v32 setFrame:(v21 - v42) * 0.5, v30 + v38, v42, v40];
     [(UIView *)v32 bounds];
-    [v14 setFrame:?];
+    [view3 setFrame:?];
 
     v17 = v97;
   }
 
   else
   {
-    [v14 setCenter:{v25, v27 + v30}];
+    [view3 setCenter:{v25, v27 + v30}];
   }
 
   [(SBHLibrarySearchController *)self _calculateSearchBarFrame:1];
@@ -702,13 +702,13 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   v52 = self->_searchBar;
   UIRectGetCenter();
   [(SBHSearchBar *)v52 setCenter:?];
-  v53 = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController contentScrollView];
+  contentScrollView = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController contentScrollView];
   v54 = self->_searchBackgroundView;
   [(UIView *)v54 setFrame:v17, v19, v21, v23];
   v100 = v15;
   if (self->_needsLowQualityBackgroundEffects)
   {
-    [v53 setAlpha:1.0 - ((v98 + -0.15) / 0.4 + 0.0)];
+    [contentScrollView setAlpha:1.0 - ((v98 + -0.15) / 0.4 + 0.0)];
     [(UIView *)v54 setAlpha:v98];
   }
 
@@ -719,34 +719,34 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
 
   v55 = (v98 + -0.3) / 0.7 + 0.0;
   [(UIView *)v32 setAlpha:v55];
-  [v14 setAlpha:v55];
+  [view3 setAlpha:v55];
   [MEMORY[0x1E69D3FC0] gradientMaskLayerInsetsForFeatherBlurRecipe:1];
   v57 = v56;
   v59 = v58;
   v62 = v50 - (v60 + v61);
   [(SBHSearchBar *)self->_searchBar backgroundViewBottomInsetToTextField];
   v64 = v63;
-  v99 = v14;
+  v99 = view3;
   if (v63 == *MEMORY[0x1E69DE788])
   {
-    v68 = v53;
+    v68 = contentScrollView;
   }
 
   else
   {
-    v65 = [(SBHLibrarySearchController *)self _inactiveSearchConfiguration];
-    v66 = v65;
+    _inactiveSearchConfiguration2 = [(SBHLibrarySearchController *)self _inactiveSearchConfiguration];
+    v66 = _inactiveSearchConfiguration2;
     if (v23 <= v21)
     {
-      [v65 textFieldLandscapeLayoutInsets];
+      [_inactiveSearchConfiguration2 textFieldLandscapeLayoutInsets];
     }
 
     else
     {
-      [v65 textFieldPortraitLayoutInsets];
+      [_inactiveSearchConfiguration2 textFieldPortraitLayoutInsets];
     }
 
-    v68 = v53;
+    v68 = contentScrollView;
     v62 = v62 - (v67 - v64);
   }
 
@@ -784,9 +784,9 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   v77 = v76;
   v79 = v78;
   v81 = v80;
-  v82 = [(SBHIconLibraryTableViewController *)self->_searchResultsController headerBlurView];
-  [v82 bounds];
-  [v82 convertRect:v12 toView:?];
+  headerBlurView = [(SBHIconLibraryTableViewController *)self->_searchResultsController headerBlurView];
+  [headerBlurView bounds];
+  [headerBlurView convertRect:v12 toView:?];
   v84 = v83;
   v86 = v85;
   v88 = v87;
@@ -827,7 +827,7 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
 - (void)_updateHeaderBlurVisibility
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController contentScrollView];
+  contentScrollView = [(SBHLibrarySearchControllerContentViewControllerScrollViewProvider *)self->_contentViewController contentScrollView];
   if ([(SBHLibrarySearchController *)self contentVisibility]== 2)
   {
     v4 = 1;
@@ -835,14 +835,14 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
 
   else
   {
-    [v3 adjustedContentInset];
+    [contentScrollView adjustedContentInset];
     v6 = v5;
-    [v3 contentOffset];
+    [contentScrollView contentOffset];
     v4 = v6 + v7 <= 0.0;
   }
 
-  v8 = [(SBHSearchBar *)self->_searchBar backgroundView];
-  [v8 setHidden:v4];
+  backgroundView = [(SBHSearchBar *)self->_searchBar backgroundView];
+  [backgroundView setHidden:v4];
 
   v16 = 0u;
   v17 = 0u;
@@ -889,7 +889,7 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
     [v3 addObjectsFromArray:self->_searchResultsGradientMaskLayers];
   }
 
-  v4 = [(UIView *)self->_containerView window];
+  window = [(UIView *)self->_containerView window];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -912,7 +912,7 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = MEMORY[0x1E69D3FC0];
         [v10 frame];
-        v12 = [v11 matchMoveAnimationForFrame:v4 relativeToView:?];
+        v12 = [v11 matchMoveAnimationForFrame:window relativeToView:?];
         [v10 addAnimation:v12 forKey:@"SBLibrarySearchMatchMoveAnimation"];
       }
 
@@ -923,9 +923,9 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   }
 }
 
-- (CGRect)_calculateSearchBarFrame:(BOOL)a3
+- (CGRect)_calculateSearchBarFrame:(BOOL)frame
 {
-  [(SBHLibrarySearchController *)self _calculateSearchBarFrame:a3 forExplicitVisualConfiguration:0];
+  [(SBHLibrarySearchController *)self _calculateSearchBarFrame:frame forExplicitVisualConfiguration:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -933,26 +933,26 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   return result;
 }
 
-- (CGRect)_calculateSearchBarFrame:(BOOL)a3 forExplicitVisualConfiguration:(id)a4
+- (CGRect)_calculateSearchBarFrame:(BOOL)frame forExplicitVisualConfiguration:(id)configuration
 {
-  v4 = a3;
-  v6 = a4;
+  frameCopy = frame;
+  configurationCopy = configuration;
   v7 = self->_scrollView;
   [(SBHLibrarySearchController *)self _windowSafeAreaInsets];
   v9 = v8;
   v10 = v8;
   [(UIScrollView *)v7 contentOffset];
   [(SBHLibrarySearchController *)self _rubberbandingOffsetForContentOffset:?];
-  if (v4 && self->_searchState != 2)
+  if (frameCopy && self->_searchState != 2)
   {
     v10 = v9 + v11 / 3.0;
   }
 
   [(UIView *)self->_containerView bounds];
   searchBar = self->_searchBar;
-  if (v6)
+  if (configurationCopy)
   {
-    [(SBHSearchBar *)searchBar sizeThatFits:v6 forVisualConfiguration:v12, v13];
+    [(SBHSearchBar *)searchBar sizeThatFits:configurationCopy forVisualConfiguration:v12, v13];
   }
 
   else
@@ -984,8 +984,8 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SBHLibrarySearchController *)self childViewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  childViewControllers = [(SBHLibrarySearchController *)self childViewControllers];
+  v3 = [childViewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -997,14 +997,14 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(childViewControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) _updateContentOverlayInsetsFromParentIfNecessary];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [childViewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -1013,64 +1013,64 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
 
 - (void)_updateEffectiveSearchVisualConfiguration
 {
-  v3 = [(SBHLibrarySearchController *)self searchBarAppearance];
-  if (v3 == 2)
+  searchBarAppearance = [(SBHLibrarySearchController *)self searchBarAppearance];
+  if (searchBarAppearance == 2)
   {
-    v4 = [(SBHAppLibraryVisualConfiguration *)self->_libraryVisualConfiguration extendedSearchVisualConfiguration];
+    extendedSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self->_libraryVisualConfiguration extendedSearchVisualConfiguration];
   }
 
-  else if (v3 == 1)
+  else if (searchBarAppearance == 1)
   {
-    v4 = [(SBHAppLibraryVisualConfiguration *)self->_libraryVisualConfiguration compactSearchVisualConfiguration];
+    extendedSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self->_libraryVisualConfiguration compactSearchVisualConfiguration];
   }
 
-  else if (v3)
+  else if (searchBarAppearance)
   {
-    v4 = 0;
+    extendedSearchVisualConfiguration = 0;
   }
 
   else
   {
-    v4 = [(SBHAppLibraryVisualConfiguration *)self->_libraryVisualConfiguration standardSearchVisualConfiguration];
+    extendedSearchVisualConfiguration = [(SBHAppLibraryVisualConfiguration *)self->_libraryVisualConfiguration standardSearchVisualConfiguration];
   }
 
-  obj = v4;
-  v5 = [(SBHSearchBar *)self->_searchBar setInactiveSearchConfiguration:v4];
+  obj = extendedSearchVisualConfiguration;
+  _updateContentOverlayInsetsFromParentForChildren = [(SBHSearchBar *)self->_searchBar setInactiveSearchConfiguration:extendedSearchVisualConfiguration];
   v6 = obj;
   if (self->_searchVisualConfiguration != obj)
   {
     objc_storeStrong(&self->_searchVisualConfiguration, obj);
-    v5 = [(SBHLibrarySearchController *)self _updateContentOverlayInsetsFromParentForChildren];
+    _updateContentOverlayInsetsFromParentForChildren = [(SBHLibrarySearchController *)self _updateContentOverlayInsetsFromParentForChildren];
     v6 = obj;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_updateContentOverlayInsetsFromParentForChildren, v6);
 }
 
-- (void)setSearchBarAppearance:(unint64_t)a3
+- (void)setSearchBarAppearance:(unint64_t)appearance
 {
-  if (self->_searchBarAppearance != a3)
+  if (self->_searchBarAppearance != appearance)
   {
-    self->_searchBarAppearance = a3;
+    self->_searchBarAppearance = appearance;
     [(SBHLibrarySearchController *)self _updateEffectiveSearchVisualConfiguration];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    v6 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(SBHSearchTextField *)self->_searchField setLegibilitySettings:v6];
-    v5 = v6;
+    settingsCopy = v6;
   }
 }
 
-- (void)setListLayoutProvider:(id)a3
+- (void)setListLayoutProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_listLayoutProvider);
 
   v6 = obj;
@@ -1078,20 +1078,20 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   {
     objc_storeWeak(&self->_listLayoutProvider, obj);
     [(SBHSearchBar *)self->_searchBar setListLayoutProvider:obj];
-    v7 = [(SBHLibrarySearchController *)self containingIconLocation];
-    v8 = [obj layoutForIconLocation:v7];
-    v9 = [v8 appLibraryVisualConfiguration];
+    containingIconLocation = [(SBHLibrarySearchController *)self containingIconLocation];
+    v8 = [obj layoutForIconLocation:containingIconLocation];
+    appLibraryVisualConfiguration = [v8 appLibraryVisualConfiguration];
     if ([(SBHLibrarySearchController *)self usesPlatterAppearance])
     {
-      [(SBHAppLibraryVisualConfiguration *)v9 searchContinuousCornerRadius];
+      [(SBHAppLibraryVisualConfiguration *)appLibraryVisualConfiguration searchContinuousCornerRadius];
       v11 = v10;
       [(UIView *)self->_searchResultsPlatterView _setContinuousCornerRadius:?];
-      v12 = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
-      [v12 setVerticalScrollIndicatorInsets:{v11, 0.0, v11, 0.0}];
+      contentScrollView = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
+      [contentScrollView setVerticalScrollIndicatorInsets:{v11, 0.0, v11, 0.0}];
     }
 
     libraryVisualConfiguration = self->_libraryVisualConfiguration;
-    self->_libraryVisualConfiguration = v9;
+    self->_libraryVisualConfiguration = appLibraryVisualConfiguration;
 
     [(SBHLibrarySearchController *)self _updateEffectiveSearchVisualConfiguration];
     v6 = obj;
@@ -1100,38 +1100,38 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)setSearchResultsUpdater:(id)a3
+- (void)setSearchResultsUpdater:(id)updater
 {
-  v4 = a3;
-  objc_storeWeak(&self->_searchResultsUpdater, v4);
+  updaterCopy = updater;
+  objc_storeWeak(&self->_searchResultsUpdater, updaterCopy);
   if (objc_opt_respondsToSelector())
   {
-    [v4 setSearchController:self];
+    [updaterCopy setSearchController:self];
   }
 }
 
-- (void)ppt_setDisablePullToSearch:(BOOL)a3
+- (void)ppt_setDisablePullToSearch:(BOOL)search
 {
-  if (self->_disablePullToSearch != a3)
+  if (self->_disablePullToSearch != search)
   {
-    self->_disablePullToSearch = a3;
+    self->_disablePullToSearch = search;
     [(SBHLibrarySearchController *)self _dismissPresentation:0];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  [v4 contentOffset];
-  [v4 adjustedContentInset];
+  draggingCopy = dragging;
+  [draggingCopy contentOffset];
+  [draggingCopy adjustedContentInset];
 
   [(SBHHomePullToSearchSettings *)self->_pullToSearchSettings pullGestureBeganFromTopLeeway];
   self->_scrollViewBeganScrollingFromTop = BSFloatLessThanOrEqualToFloat();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   [(SBHLibrarySearchController *)self _rubberbandingOffsetForContentOffset:?];
   if (!self->_disablePullToSearch && self->_scrollViewBeganScrollingFromTop && BSFloatGreaterThanFloat() && !self->_searchState)
   {
@@ -1152,21 +1152,21 @@ uint64_t __72__SBHLibrarySearchController__layoutSearchViewsWithMode_withComplet
   [(SBHLibrarySearchController *)self _layoutSearchViewsWithMode:v4 withCompletion:0];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v6 = a3;
-  v7 = v6;
+  draggingCopy = dragging;
+  v7 = draggingCopy;
   if (!self->_disablePullToSearch)
   {
     self->_scrollViewBeganScrollingFromTop = 0;
     if (self->_searchState == 1 && !self->_disablePullToSearch)
     {
       v8 = *MEMORY[0x1E69DE3A0];
-      [v6 contentOffset];
+      [draggingCopy contentOffset];
       v10 = v9;
       v12 = v11;
-      v13 = [v7 panGestureRecognizer];
-      [v13 velocityInView:v7];
+      panGestureRecognizer = [v7 panGestureRecognizer];
+      [panGestureRecognizer velocityInView:v7];
       v15 = v14;
       v17 = v16;
 
@@ -1215,7 +1215,7 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   return result;
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   if (([(SBHLibrarySearchController *)self bs_isDisappearingOrDisappeared]& 1) != 0 || [(SBHLibrarySearchController *)self forcedSearchTextFieldNoneditable])
   {
@@ -1235,7 +1235,7 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   return v4;
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   if (![(SBHLibrarySearchController *)self isTransitionInProgress]&& [(SBHLibrarySearchController *)self isActive])
   {
@@ -1244,33 +1244,33 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   }
 }
 
-- (BOOL)searchBarShouldReturn:(id)a3
+- (BOOL)searchBarShouldReturn:(id)return
 {
-  v3 = self;
-  v4 = [(SBHLibrarySearchController *)self searchResultsUpdater];
-  LOBYTE(v3) = [v4 searchControllerShouldReturn:v3];
+  selfCopy = self;
+  searchResultsUpdater = [(SBHLibrarySearchController *)self searchResultsUpdater];
+  LOBYTE(selfCopy) = [searchResultsUpdater searchControllerShouldReturn:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = [(SBHLibrarySearchController *)self searchResultsUpdater:a3];
+  v5 = [(SBHLibrarySearchController *)self searchResultsUpdater:bar];
   [v5 updateSearchResultsForSearchController:self];
 }
 
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = v11;
+  length = range.length;
+  location = range.location;
+  barCopy = bar;
+  textCopy = text;
+  text = [barCopy text];
+  v12 = text;
   v13 = &stru_1F3D472A8;
-  if (v11)
+  if (text)
   {
-    v13 = v11;
+    v13 = text;
   }
 
   v14 = v13;
@@ -1285,27 +1285,27 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
     v15 = [(__CFString *)v14 length]- length;
   }
 
-  v16 = [v10 length] + v15;
+  v16 = [textCopy length] + v15;
   if (v16 >= 0x3E9 && v15 != 1000)
   {
     v17 = 1000 - v15;
-    if ([v10 length] > v17)
+    if ([textCopy length] > v17)
     {
-      v18 = [v10 rangeOfComposedCharacterSequenceAtIndex:v17];
-      v19 = [v9 searchTextField];
-      v20 = [v10 substringToIndex:v18];
+      v18 = [textCopy rangeOfComposedCharacterSequenceAtIndex:v17];
+      searchTextField = [barCopy searchTextField];
+      v20 = [textCopy substringToIndex:v18];
       v21 = [(__CFString *)v14 stringByReplacingCharactersInRange:location withString:length, v20];
-      [v19 setText:v21];
+      [searchTextField setText:v21];
 
-      v22 = [(SBHLibrarySearchController *)self searchResultsUpdater];
-      [v22 updateSearchResultsForSearchController:self];
+      searchResultsUpdater = [(SBHLibrarySearchController *)self searchResultsUpdater];
+      [searchResultsUpdater updateSearchResultsForSearchController:self];
     }
   }
 
   return v16 < 0x3E9;
 }
 
-- (void)searchBarDidInvalidateIntrinsicContentSize:(id)a3
+- (void)searchBarDidInvalidateIntrinsicContentSize:(id)size
 {
   [(SBHLibrarySearchController *)self _calculateSearchBarFrame:0];
   searchBar = self->_searchBar;
@@ -1317,7 +1317,7 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   [(SBHSearchBar *)v5 setCenter:?];
 }
 
-- (UIEdgeInsets)safeAreaInsetsForSearchBar:(id)a3
+- (UIEdgeInsets)safeAreaInsetsForSearchBar:(id)bar
 {
   if ([(SBHLibrarySearchController *)self needsToManageTopInset])
   {
@@ -1342,20 +1342,20 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
 
 - (double)_bottomLayoutInsetForSearchResultsView
 {
-  v3 = [(SBHLibrarySearchController *)self view];
-  [v3 bounds];
+  view = [(SBHLibrarySearchController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(SBHLibrarySearchController *)self _activeSearchConfiguration];
-  v9 = v8;
+  _activeSearchConfiguration = [(SBHLibrarySearchController *)self _activeSearchConfiguration];
+  v9 = _activeSearchConfiguration;
   if (v7 <= v5)
   {
-    [v8 textFieldLandscapeLayoutInsets];
+    [_activeSearchConfiguration textFieldLandscapeLayoutInsets];
   }
 
   else
   {
-    [v8 textFieldPortraitLayoutInsets];
+    [_activeSearchConfiguration textFieldPortraitLayoutInsets];
   }
 
   v11 = v10;
@@ -1369,17 +1369,17 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   return v12;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   searchResultsController = self->_searchResultsController;
-  v5 = a4;
-  v6 = [(SBHIconLibraryTableViewController *)searchResultsController view];
-  [v6 bounds];
+  touchCopy = touch;
+  view = [(SBHIconLibraryTableViewController *)searchResultsController view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v5 locationInView:v6];
+  [touchCopy locationInView:view];
   v16 = v15;
   v18 = v17;
 
@@ -1389,34 +1389,34 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   v21.size.height = v14;
   v20.x = v16;
   v20.y = v18;
-  LOBYTE(v5) = CGRectContainsPoint(v21, v20);
+  LOBYTE(touchCopy) = CGRectContainsPoint(v21, v20);
 
-  return v5 ^ 1;
+  return touchCopy ^ 1;
 }
 
 - (void)_setupSearchAnimationSettings
 {
-  v3 = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3FC8]) initWithDefaultValues];
   searchAnimationSettings = self->_searchAnimationSettings;
-  self->_searchAnimationSettings = v3;
+  self->_searchAnimationSettings = initWithDefaultValues;
 
-  v8 = [(SBHHomePullToSearchSettings *)self->_pullToSearchSettings pullTransitionAnimationSettings];
+  pullTransitionAnimationSettings = [(SBHHomePullToSearchSettings *)self->_pullToSearchSettings pullTransitionAnimationSettings];
   v5 = self->_searchAnimationSettings;
-  [v8 dampingRatio];
+  [pullTransitionAnimationSettings dampingRatio];
   [(SBFFluidBehaviorSettings *)v5 setDampingRatio:?];
   v6 = self->_searchAnimationSettings;
-  [v8 response];
+  [pullTransitionAnimationSettings response];
   [(SBFFluidBehaviorSettings *)v6 setResponse:?];
   v7 = self->_searchAnimationSettings;
   v10 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
   [(SBFFluidBehaviorSettings *)v7 setFrameRateRange:1114128 highFrameRateReason:*&v10.minimum, *&v10.maximum, *&v10.preferred];
 }
 
-- (void)_performPresentation:(BOOL)a3
+- (void)_performPresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   [(SBHLibrarySearchController *)self _willPresentSearchAnimated:?];
-  if (v3)
+  if (presentationCopy)
   {
     [(SBHLibrarySearchController *)self _layoutSearchViewsWithMode:2 withCompletion:0];
     v5 = 3;
@@ -1432,12 +1432,12 @@ uint64_t __89__SBHLibrarySearchController_scrollViewWillEndDragging_withVelocity
   [(SBHLibrarySearchController *)self _layoutSearchViewsWithMode:v5 withCompletion:0];
 }
 
-- (void)_dismissPresentation:(BOOL)a3
+- (void)_dismissPresentation:(BOOL)presentation
 {
-  if (a3)
+  if (presentation)
   {
-    v4 = [(SBHLibrarySearchController *)self searchField];
-    [v4 setText:0];
+    searchField = [(SBHLibrarySearchController *)self searchField];
+    [searchField setText:0];
 
     [(SBHLibrarySearchController *)self _layoutSearchViewsWithMode:2 withCompletion:0];
     [(SBHLibrarySearchController *)self _willDismissSearchAnimated:1];
@@ -1471,9 +1471,9 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
   return result;
 }
 
-- (void)_willPresentSearchAnimated:(BOOL)a3
+- (void)_willPresentSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v26 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:1];
   [v5 setAllowsGrouping:0];
@@ -1481,13 +1481,13 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
   [v5 setHighlightsDisplayAngle:SBHPerformanceFlagEnabled(1) ^ 1];
   [(SBHSearchTextField *)self->_searchField _setBackground:v5];
   [MEMORY[0x1E6979518] setFrameStallSkipRequest:1];
-  v6 = [(UIView *)self->_searchResultsContainerView superview];
+  superview = [(UIView *)self->_searchResultsContainerView superview];
 
-  if (v6)
+  if (superview)
   {
-    [(SBHLibrarySearchController *)self bs_beginAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:1 animated:v3];
-    v7 = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
-    [v7 _scrollToTopIfPossible:0];
+    [(SBHLibrarySearchController *)self bs_beginAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:1 animated:animatedCopy];
+    contentScrollView = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
+    [contentScrollView _scrollToTopIfPossible:0];
   }
 
   else
@@ -1495,21 +1495,21 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
     searchResultsContainerView = self->_searchResultsContainerView;
     [(UIView *)self->_containerView bounds];
     [(UIView *)searchResultsContainerView setFrame:?];
-    [(SBHLibrarySearchController *)self bs_beginAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:1 animated:v3];
+    [(SBHLibrarySearchController *)self bs_beginAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:1 animated:animatedCopy];
     [(UIView *)self->_containerView addSubview:self->_searchResultsContainerView];
     [(UIView *)self->_searchResultsContainerView layoutIfNeeded];
   }
 
   v9 = MEMORY[0x1E69D3FA0];
-  v10 = [(UIView *)self->_containerView window];
-  v11 = [v9 matchMoveAnimationForPinningToView:v10];
+  window = [(UIView *)self->_containerView window];
+  v11 = [v9 matchMoveAnimationForPinningToView:window];
 
   [v11 setAppliesX:1];
-  v12 = [(UIView *)self->_searchBackgroundView layer];
-  [v12 addAnimation:v11 forKey:@"SBLibrarySearchMatchMoveAnimation"];
+  layer = [(UIView *)self->_searchBackgroundView layer];
+  [layer addAnimation:v11 forKey:@"SBLibrarySearchMatchMoveAnimation"];
 
-  v13 = [(SBHLibrarySearchController *)self searchResultsUpdater];
-  [v13 updateSearchResultsForSearchController:self];
+  searchResultsUpdater = [(SBHLibrarySearchController *)self searchResultsUpdater];
+  [searchResultsUpdater updateSearchResultsForSearchController:self];
 
   [(UIView *)self->_searchResultsContainerView bs_setHitTestingDisabled:0];
   [(UIView *)self->_searchResultsContainerView setHidden:0];
@@ -1543,8 +1543,8 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
     while (v16);
   }
 
-  v19 = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
-  [v19 postNotificationName:@"SBHLibraryViewControllerWillPresentSearchPPTNotification" object:self];
+  sbh_defaultPPTNotificationCenter = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
+  [sbh_defaultPPTNotificationCenter postNotificationName:@"SBHLibraryViewControllerWillPresentSearchPPTNotification" object:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1560,8 +1560,8 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
   [(SBHSearchTextField *)self->_searchField setAlignmentBehavior:1 animated:1];
   v5 = [SBHLegibilitySettings sharedInstanceForStyle:1];
   [(SBHSearchTextField *)self->_searchField setLegibilitySettings:?];
-  v3 = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
-  [v3 postNotificationName:@"SBHLibraryViewControllerDidPresentSearchPPTNotification" object:self];
+  sbh_defaultPPTNotificationCenter = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
+  [sbh_defaultPPTNotificationCenter postNotificationName:@"SBHLibraryViewControllerDidPresentSearchPPTNotification" object:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1570,19 +1570,19 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
   }
 }
 
-- (void)_willDismissSearchAnimated:(BOOL)a3
+- (void)_willDismissSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [MEMORY[0x1E6979518] setFrameStallSkipRequest:1];
   [(SBHLibrarySearchController *)self _searchBackgroundContentReplacedWithSnapshot:0];
   self->_searchState = 0;
   [(UIView *)self->_searchResultsContainerView bs_setHitTestingDisabled:1];
   [(SBHSearchBar *)self->_searchBar endEditing:1];
-  [(SBHSearchBar *)self->_searchBar setShowsCancelButton:0 animated:v3];
-  [(SBHLibrarySearchController *)self bs_beginAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:0 animated:v3];
-  [(SBHLibrarySearchController *)self resetSearchController:v3 clearSearchResults:0 resetSearchBarTransformAndAlpha:0];
-  v5 = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
-  [v5 postNotificationName:@"SBHLibraryViewControllerWillDismissSearchPPTNotification" object:self];
+  [(SBHSearchBar *)self->_searchBar setShowsCancelButton:0 animated:animatedCopy];
+  [(SBHLibrarySearchController *)self bs_beginAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:0 animated:animatedCopy];
+  [(SBHLibrarySearchController *)self resetSearchController:animatedCopy clearSearchResults:0 resetSearchBarTransformAndAlpha:0];
+  sbh_defaultPPTNotificationCenter = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
+  [sbh_defaultPPTNotificationCenter postNotificationName:@"SBHLibraryViewControllerWillDismissSearchPPTNotification" object:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1629,13 +1629,13 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
     while (v6);
   }
 
-  v9 = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
-  [v9 _scrollToTopIfPossible:0];
+  contentScrollView = [(SBHIconLibraryTableViewController *)self->_searchResultsController contentScrollView];
+  [contentScrollView _scrollToTopIfPossible:0];
 
   [(SBHLibrarySearchController *)self resetSearchController:0 clearSearchResults:1 resetSearchBarTransformAndAlpha:0];
   [(SBHLibrarySearchController *)self bs_endAppearanceTransitionForChildViewController:self->_searchResultsController toVisible:0];
-  v10 = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
-  [v10 postNotificationName:@"SBHLibraryViewControllerDidDismissSearchPPTNotification" object:self];
+  sbh_defaultPPTNotificationCenter = [MEMORY[0x1E696AD88] sbh_defaultPPTNotificationCenter];
+  [sbh_defaultPPTNotificationCenter postNotificationName:@"SBHLibraryViewControllerDidDismissSearchPPTNotification" object:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1647,22 +1647,22 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
   [v12 _focusEnvironmentWillDisappear:self];
 }
 
-- (void)resetSearchController:(BOOL)a3 clearSearchResults:(BOOL)a4 resetSearchBarTransformAndAlpha:(BOOL)a5
+- (void)resetSearchController:(BOOL)controller clearSearchResults:(BOOL)results resetSearchBarTransformAndAlpha:(BOOL)alpha
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  [(SBHSearchTextField *)self->_searchField setAlignmentBehavior:0 animated:a3];
+  alphaCopy = alpha;
+  resultsCopy = results;
+  controllerCopy = controller;
+  [(SBHSearchTextField *)self->_searchField setAlignmentBehavior:0 animated:controller];
   [(UISearchTextField *)self->_searchField setText:0];
-  if (v6)
+  if (resultsCopy)
   {
-    v9 = [(SBHLibrarySearchController *)self searchResultsUpdater];
-    [v9 updateSearchResultsForSearchController:self];
+    searchResultsUpdater = [(SBHLibrarySearchController *)self searchResultsUpdater];
+    [searchResultsUpdater updateSearchResultsForSearchController:self];
   }
 
   [(SBHSearchBar *)self->_searchBar endEditing:1];
-  [(SBHSearchBar *)self->_searchBar setShowsCancelButton:0 animated:v7];
-  if (v5)
+  [(SBHSearchBar *)self->_searchBar setShowsCancelButton:0 animated:controllerCopy];
+  if (alphaCopy)
   {
     searchBar = self->_searchBar;
     v11 = *(MEMORY[0x1E695EFD0] + 16);
@@ -1674,15 +1674,15 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
   }
 
   searchField = self->_searchField;
-  v13 = [(SBHLibrarySearchController *)self legibilitySettings];
-  [(SBHSearchTextField *)searchField setLegibilitySettings:v13];
+  legibilitySettings = [(SBHLibrarySearchController *)self legibilitySettings];
+  [(SBHSearchTextField *)searchField setLegibilitySettings:legibilitySettings];
 }
 
-- (void)_searchBackgroundContentReplacedWithSnapshot:(BOOL)a3
+- (void)_searchBackgroundContentReplacedWithSnapshot:(BOOL)snapshot
 {
   if (self->_searchBackgroundView)
   {
-    v3 = a3;
+    snapshotCopy = snapshot;
     if (![(UIView *)self->_searchResultsContainerView isHidden])
     {
       objc_opt_class();
@@ -1690,7 +1690,7 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
       {
         searchBackgroundView = self->_searchBackgroundView;
 
-        [(UIView *)searchBackgroundView setContentReplacedWithSnapshot:v3];
+        [(UIView *)searchBackgroundView setContentReplacedWithSnapshot:snapshotCopy];
       }
     }
   }
@@ -1698,9 +1698,9 @@ uint64_t __51__SBHLibrarySearchController__dismissPresentation___block_invoke(ui
 
 - (UIEdgeInsets)_windowSafeAreaInsets
 {
-  v2 = [(SBHLibrarySearchController *)self view];
-  v3 = [v2 window];
-  [v3 safeAreaInsets];
+  view = [(SBHLibrarySearchController *)self view];
+  window = [view window];
+  [window safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;

@@ -35,7 +35,7 @@
 + (CARPrototypePref)liveActivities;
 + (CARPrototypePref)lodWidgets;
 + (CARPrototypePref)nowPlayingAlbumArt;
-+ (CARPrototypePref)prefWithDomain:(id)a3 key:(id)a4 title:(id)a5 defaultValue:(id)a6 valueChangedBlock:(id)a7;
++ (CARPrototypePref)prefWithDomain:(id)domain key:(id)key title:(id)title defaultValue:(id)value valueChangedBlock:(id)block;
 + (CARPrototypePref)statusBarEdgeOverride;
 + (CARPrototypePref)statusBarHorizontalThreshold;
 + (CARPrototypePref)wirelessConnectionDurationTTRThreshold;
@@ -44,9 +44,9 @@
 + (NSDictionary)prototypePrefCache;
 + (id)_confirmedSafe;
 + (id)_qaModeLockout;
-+ (void)setConfirmedSafe:(BOOL)a3;
-+ (void)setPrototypePrefCache:(id)a3;
-+ (void)setQaModeLockout:(BOOL)a3;
++ (void)setConfirmedSafe:(BOOL)safe;
++ (void)setPrototypePrefCache:(id)cache;
++ (void)setQaModeLockout:(BOOL)lockout;
 - (BOOL)cachedState;
 - (BOOL)internalSettingsState;
 - (BOOL)state;
@@ -56,12 +56,12 @@
 - (id)internalSettingsValue;
 - (id)value;
 - (id)valueOrDefault;
-- (void)setCachedState:(BOOL)a3;
-- (void)setCachedValue:(id)a3;
-- (void)setInternalSettingsState:(BOOL)a3;
-- (void)setInternalSettingsValue:(id)a3;
-- (void)setState:(BOOL)a3;
-- (void)setValue:(id)a3;
+- (void)setCachedState:(BOOL)state;
+- (void)setCachedValue:(id)value;
+- (void)setInternalSettingsState:(BOOL)state;
+- (void)setInternalSettingsValue:(id)value;
+- (void)setState:(BOOL)state;
+- (void)setValue:(id)value;
 @end
 
 @implementation CARPrototypePref
@@ -80,9 +80,9 @@
 
 - (id)valueOrDefault
 {
-  v3 = [(CARPrototypePref *)self value];
+  value = [(CARPrototypePref *)self value];
 
-  if (v3)
+  if (value)
   {
     [(CARPrototypePref *)self value];
   }
@@ -98,12 +98,12 @@
 
 - (id)value
 {
-  v3 = [(CARPrototypePref *)self domain];
-  CFPreferencesAppSynchronize(v3);
+  domain = [(CARPrototypePref *)self domain];
+  CFPreferencesAppSynchronize(domain);
 
   v4 = [(CARPrototypePref *)self key];
-  v5 = [(CARPrototypePref *)self domain];
-  v6 = CFPreferencesCopyAppValue(v4, v5);
+  domain2 = [(CARPrototypePref *)self domain];
+  v6 = CFPreferencesCopyAppValue(v4, domain2);
 
   return v6;
 }
@@ -126,7 +126,7 @@
   block[1] = 3221225472;
   block[2] = __34__CARPrototypePref_prototypePrefs__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (prototypePrefs_onceToken != -1)
   {
     dispatch_once(&prototypePrefs_onceToken, block);
@@ -202,17 +202,17 @@ uint64_t __34__CARPrototypePref__qaModeLockout__block_invoke_2(uint64_t a1, uint
 + (BOOL)qaModeLockout
 {
   v2 = +[CARPrototypePref _qaModeLockout];
-  v3 = [v2 valueOrDefault];
-  v4 = [v3 BOOLValue];
+  valueOrDefault = [v2 valueOrDefault];
+  bOOLValue = [valueOrDefault BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setQaModeLockout:(BOOL)a3
++ (void)setQaModeLockout:(BOOL)lockout
 {
-  v3 = a3;
+  lockoutCopy = lockout;
   v4 = +[CARPrototypePref _qaModeLockout];
-  [v4 setState:v3];
+  [v4 setState:lockoutCopy];
 }
 
 + (id)_confirmedSafe
@@ -322,15 +322,15 @@ void __34__CARPrototypePref__confirmedSafe__block_invoke_2(uint64_t a1, void *a2
 + (BOOL)confirmedSafe
 {
   v2 = +[CARPrototypePref _confirmedSafe];
-  v3 = [v2 valueOrDefault];
-  v4 = [v3 BOOLValue];
+  valueOrDefault = [v2 valueOrDefault];
+  bOOLValue = [valueOrDefault BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setConfirmedSafe:(BOOL)a3
++ (void)setConfirmedSafe:(BOOL)safe
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:safe];
   v3 = +[(CARPrototypePref *)CARPrototypeBoolPref];
   [v3 setValue:v4];
 }
@@ -1135,60 +1135,60 @@ uint64_t __46__CARPrototypePref_enableModelPolicyAssertion__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (CARPrototypePref)prefWithDomain:(id)a3 key:(id)a4 title:(id)a5 defaultValue:(id)a6 valueChangedBlock:(id)a7
++ (CARPrototypePref)prefWithDomain:(id)domain key:(id)key title:(id)title defaultValue:(id)value valueChangedBlock:(id)block
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = objc_alloc_init(a1);
-  [v17 setDomain:v16];
+  blockCopy = block;
+  valueCopy = value;
+  titleCopy = title;
+  keyCopy = key;
+  domainCopy = domain;
+  v17 = objc_alloc_init(self);
+  [v17 setDomain:domainCopy];
 
-  [v17 setKey:v15];
-  [v17 setTitle:v14];
+  [v17 setKey:keyCopy];
+  [v17 setTitle:titleCopy];
 
-  [v17 setDefaultValue:v13];
-  [v17 setValueChangedBlock:v12];
+  [v17 setDefaultValue:valueCopy];
+  [v17 setValueChangedBlock:blockCopy];
 
   return v17;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CARPrototypePref *)self value];
-  value = v4;
+  valueCopy = value;
+  value = [(CARPrototypePref *)self value];
+  value = valueCopy;
   v6 = [(CARPrototypePref *)self key];
-  v7 = [(CARPrototypePref *)self domain];
-  CFPreferencesSetAppValue(v6, value, v7);
+  domain = [(CARPrototypePref *)self domain];
+  CFPreferencesSetAppValue(v6, value, domain);
 
-  v8 = [(CARPrototypePref *)self domain];
-  CFPreferencesAppSynchronize(v8);
+  domain2 = [(CARPrototypePref *)self domain];
+  CFPreferencesAppSynchronize(domain2);
 
-  v9 = [(CARPrototypePref *)self valueChangedBlock];
+  valueChangedBlock = [(CARPrototypePref *)self valueChangedBlock];
 
-  if (v9)
+  if (valueChangedBlock)
   {
-    v10 = [(CARPrototypePref *)self valueChangedBlock];
-    (v10)[2](v10, v5, value);
+    valueChangedBlock2 = [(CARPrototypePref *)self valueChangedBlock];
+    (valueChangedBlock2)[2](valueChangedBlock2, value, value);
   }
 }
 
 - (BOOL)state
 {
-  v2 = [(CARPrototypePref *)self value];
-  v3 = v2 != 0;
+  value = [(CARPrototypePref *)self value];
+  v3 = value != 0;
 
   return v3;
 }
 
-- (void)setState:(BOOL)a3
+- (void)setState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = [(CARPrototypePref *)self defaultValue];
-    [(CARPrototypePref *)self setValue:v4];
+    defaultValue = [(CARPrototypePref *)self defaultValue];
+    [(CARPrototypePref *)self setValue:defaultValue];
   }
 
   else
@@ -1206,60 +1206,60 @@ uint64_t __46__CARPrototypePref_enableModelPolicyAssertion__block_invoke()
   {
     v4 = objc_opt_new();
 
-    [a1 setPrototypePrefCache:v4];
+    [self setPrototypePrefCache:v4];
     v3 = v4;
   }
 
   return v3;
 }
 
-+ (void)setPrototypePrefCache:(id)a3
++ (void)setPrototypePrefCache:(id)cache
 {
-  CFPreferencesSetAppValue(@"PrototypePrefCache", a3, @"com.apple.carplay.internal");
+  CFPreferencesSetAppValue(@"PrototypePrefCache", cache, @"com.apple.carplay.internal");
 
   CFPreferencesAppSynchronize(@"com.apple.carplay.internal");
 }
 
 - (id)cachedValue
 {
-  v3 = [objc_opt_class() prototypePrefCache];
-  v4 = [(CARPrototypePref *)self domain];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  prototypePrefCache = [objc_opt_class() prototypePrefCache];
+  domain = [(CARPrototypePref *)self domain];
+  v5 = [prototypePrefCache objectForKeyedSubscript:domain];
   v6 = [(CARPrototypePref *)self key];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (void)setCachedValue:(id)a3
+- (void)setCachedValue:(id)value
 {
-  v4 = a3;
-  v5 = [objc_opt_class() prototypePrefCache];
-  v13 = [v5 carMutableDeepCopy];
+  valueCopy = value;
+  prototypePrefCache = [objc_opt_class() prototypePrefCache];
+  carMutableDeepCopy = [prototypePrefCache carMutableDeepCopy];
 
-  v6 = [(CARPrototypePref *)self domain];
-  v7 = [v13 objectForKeyedSubscript:v6];
+  domain = [(CARPrototypePref *)self domain];
+  v7 = [carMutableDeepCopy objectForKeyedSubscript:domain];
 
   if (!v7)
   {
     v8 = objc_opt_new();
-    v9 = [(CARPrototypePref *)self domain];
-    [v13 setObject:v8 forKeyedSubscript:v9];
+    domain2 = [(CARPrototypePref *)self domain];
+    [carMutableDeepCopy setObject:v8 forKeyedSubscript:domain2];
   }
 
-  v10 = [(CARPrototypePref *)self domain];
-  v11 = [v13 objectForKeyedSubscript:v10];
+  domain3 = [(CARPrototypePref *)self domain];
+  v11 = [carMutableDeepCopy objectForKeyedSubscript:domain3];
   v12 = [(CARPrototypePref *)self key];
-  [v11 setObject:v4 forKeyedSubscript:v12];
+  [v11 setObject:valueCopy forKeyedSubscript:v12];
 
-  [objc_opt_class() setPrototypePrefCache:v13];
+  [objc_opt_class() setPrototypePrefCache:carMutableDeepCopy];
 }
 
 - (id)cachedValueOrDefault
 {
-  v3 = [(CARPrototypePref *)self cachedValue];
+  cachedValue = [(CARPrototypePref *)self cachedValue];
 
-  if (v3)
+  if (cachedValue)
   {
     [(CARPrototypePref *)self cachedValue];
   }
@@ -1275,18 +1275,18 @@ uint64_t __46__CARPrototypePref_enableModelPolicyAssertion__block_invoke()
 
 - (BOOL)cachedState
 {
-  v2 = [(CARPrototypePref *)self cachedValue];
-  v3 = v2 != 0;
+  cachedValue = [(CARPrototypePref *)self cachedValue];
+  v3 = cachedValue != 0;
 
   return v3;
 }
 
-- (void)setCachedState:(BOOL)a3
+- (void)setCachedState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
-    v4 = [(CARPrototypePref *)self defaultValue];
-    [(CARPrototypePref *)self setCachedValue:v4];
+    defaultValue = [(CARPrototypePref *)self defaultValue];
+    [(CARPrototypePref *)self setCachedValue:defaultValue];
   }
 
   else
@@ -1312,17 +1312,17 @@ uint64_t __46__CARPrototypePref_enableModelPolicyAssertion__block_invoke()
   return v3;
 }
 
-- (void)setInternalSettingsValue:(id)a3
+- (void)setInternalSettingsValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (+[CARPrototypePref confirmedSafe])
   {
-    [(CARPrototypePref *)self setValue:v4];
+    [(CARPrototypePref *)self setValue:valueCopy];
   }
 
   else
   {
-    [(CARPrototypePref *)self setCachedValue:v4];
+    [(CARPrototypePref *)self setCachedValue:valueCopy];
   }
 }
 
@@ -1341,19 +1341,19 @@ uint64_t __46__CARPrototypePref_enableModelPolicyAssertion__block_invoke()
   }
 }
 
-- (void)setInternalSettingsState:(BOOL)a3
+- (void)setInternalSettingsState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (+[CARPrototypePref confirmedSafe])
   {
 
-    [(CARPrototypePref *)self setState:v3];
+    [(CARPrototypePref *)self setState:stateCopy];
   }
 
   else
   {
 
-    [(CARPrototypePref *)self setCachedState:v3];
+    [(CARPrototypePref *)self setCachedState:stateCopy];
   }
 }
 
@@ -1361,10 +1361,10 @@ uint64_t __46__CARPrototypePref_enableModelPolicyAssertion__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CARPrototypePref *)self domain];
+  domain = [(CARPrototypePref *)self domain];
   v6 = [(CARPrototypePref *)self key];
-  v7 = [(CARPrototypePref *)self value];
-  v8 = [v3 stringWithFormat:@"<%@: %p %@-%@=%@>", v4, self, v5, v6, v7];
+  value = [(CARPrototypePref *)self value];
+  v8 = [v3 stringWithFormat:@"<%@: %p %@-%@=%@>", v4, self, domain, v6, value];
 
   return v8;
 }

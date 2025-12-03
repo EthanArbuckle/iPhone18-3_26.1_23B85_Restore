@@ -1,12 +1,12 @@
 @interface ICDatabaseVacuum
 + (NSDate)lastVacuumDate;
 + (id)activeVacuumQueue;
-+ (void)setLastVacuumDate:(id)a3;
-+ (void)startDatabaseVacuumPolicyWithPreVacuumHandler:(id)a3 postVacuumHandler:(id)a4;
++ (void)setLastVacuumDate:(id)date;
++ (void)startDatabaseVacuumPolicyWithPreVacuumHandler:(id)handler postVacuumHandler:(id)vacuumHandler;
 - (ICDatabaseVacuum)init;
 - (void)startDatabaseVacuumPolicy;
 - (void)stopDatabaseVacuumPolicy;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 - (void)vacuum;
 - (void)vacuumHTMLDatabase;
 @end
@@ -23,9 +23,9 @@
     v3 = dispatch_queue_create("com.apple.notes.vacuum", 0);
     [(ICDatabaseVacuum *)v2 setQueue:v3];
 
-    v4 = [(ICDatabaseVacuum *)v2 queue];
+    queue = [(ICDatabaseVacuum *)v2 queue];
     v5 = dispatch_get_global_queue(-32768, 0);
-    dispatch_set_target_queue(v4, v5);
+    dispatch_set_target_queue(queue, v5);
   }
 
   return v2;
@@ -43,21 +43,21 @@
   return v3;
 }
 
-+ (void)startDatabaseVacuumPolicyWithPreVacuumHandler:(id)a3 postVacuumHandler:(id)a4
++ (void)startDatabaseVacuumPolicyWithPreVacuumHandler:(id)handler postVacuumHandler:(id)vacuumHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 activeVacuumQueue];
+  handlerCopy = handler;
+  vacuumHandlerCopy = vacuumHandler;
+  activeVacuumQueue = [self activeVacuumQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009FCF4;
   block[3] = &unk_100647D08;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v13 = vacuumHandlerCopy;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v9 = vacuumHandlerCopy;
+  v10 = handlerCopy;
+  dispatch_async(activeVacuumQueue, block);
 }
 
 + (NSDate)lastVacuumDate
@@ -69,9 +69,9 @@
   return [NSDate dateWithTimeIntervalSinceReferenceDate:v4];
 }
 
-+ (void)setLastVacuumDate:(id)a3
++ (void)setLastVacuumDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = os_log_create("com.apple.notes", "Vacuum");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -79,19 +79,19 @@
   }
 
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v3 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   [v5 setDouble:@"LastVacuumDate" forKey:?];
 }
 
 - (void)startDatabaseVacuumPolicy
 {
-  v3 = [(ICDatabaseVacuum *)self queue];
+  queue = [(ICDatabaseVacuum *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009FF68;
   block[3] = &unk_100645E30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopDatabaseVacuumPolicy
@@ -104,7 +104,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   v4 = os_log_create("com.apple.notes", "Vacuum");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -112,13 +112,13 @@
     sub_1004DBF2C();
   }
 
-  v5 = [(ICDatabaseVacuum *)self queue];
+  queue = [(ICDatabaseVacuum *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A03B4;
   block[3] = &unk_100645E30;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)vacuum
@@ -130,25 +130,25 @@
   }
 
   v4 = +[NSUUID UUID];
-  v5 = [(ICDatabaseVacuum *)self preVacuumHandler];
+  preVacuumHandler = [(ICDatabaseVacuum *)self preVacuumHandler];
 
-  if (v5)
+  if (preVacuumHandler)
   {
-    v6 = [(ICDatabaseVacuum *)self preVacuumHandler];
-    (v6)[2](v6, v4);
+    preVacuumHandler2 = [(ICDatabaseVacuum *)self preVacuumHandler];
+    (preVacuumHandler2)[2](preVacuumHandler2, v4);
   }
 
   v7 = +[ICNoteContext sharedContext];
-  v8 = [v7 persistentContainer];
+  persistentContainer = [v7 persistentContainer];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000A0530;
   v14 = &unk_100645BA0;
-  v15 = self;
+  selfCopy = self;
   v16 = v4;
   v9 = v4;
-  [v8 vacuumStoreWithCompletionHandler:&v11];
+  [persistentContainer vacuumStoreWithCompletionHandler:&v11];
   [(ICDatabaseVacuum *)self vacuumHTMLDatabase:v11];
   v10 = +[NSDate date];
   [objc_opt_class() setLastVacuumDate:v10];
@@ -157,17 +157,17 @@
 - (void)vacuumHTMLDatabase
 {
   v3 = +[NSUUID UUID];
-  v4 = [(ICDatabaseVacuum *)self preVacuumHandler];
+  preVacuumHandler = [(ICDatabaseVacuum *)self preVacuumHandler];
 
-  if (v4)
+  if (preVacuumHandler)
   {
-    v5 = [(ICDatabaseVacuum *)self preVacuumHandler];
-    (v5)[2](v5, v3);
+    preVacuumHandler2 = [(ICDatabaseVacuum *)self preVacuumHandler];
+    (preVacuumHandler2)[2](preVacuumHandler2, v3);
   }
 
   v6 = +[NoteContext urlForPersistentStore];
   v7 = +[NoteContext sharedContext];
-  v8 = [v7 managedObjectContext];
+  managedObjectContext = [v7 managedObjectContext];
 
   v9 = os_log_create("com.apple.notes", "Vacuum");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -175,18 +175,18 @@
     sub_1004DBFA4();
   }
 
-  [v8 setShouldPerformSecureOperation:1];
+  [managedObjectContext setShouldPerformSecureOperation:1];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000A07CC;
   v13[3] = &unk_100645DB8;
-  v14 = v8;
+  v14 = managedObjectContext;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v17 = v3;
   v10 = v3;
   v11 = v6;
-  v12 = v8;
+  v12 = managedObjectContext;
   [v12 performBlock:v13];
 }
 

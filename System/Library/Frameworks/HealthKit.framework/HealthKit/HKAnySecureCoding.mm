@@ -1,15 +1,15 @@
 @interface HKAnySecureCoding
 - (HKAnySecureCoding)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAnySecureCoding
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AnySecureCoding.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AnySecureCoding.encode(with:)(coderCopy);
 }
 
 - (HKAnySecureCoding)init

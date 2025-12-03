@@ -1,41 +1,41 @@
 @interface VNRequest
-+ (BOOL)getDoubleValue:(double *)a3 forKey:(id)a4 inOptions:(id)a5 error:(id *)a6;
-+ (BOOL)getDoubleValue:(double *)a3 forKey:(id)a4 inOptions:(id)a5 withDefaultValue:(double)a6 error:(id *)a7;
-+ (BOOL)getFloatValue:(float *)a3 forKey:(id)a4 inOptions:(id)a5 error:(id *)a6;
-+ (BOOL)getFloatValue:(float *)a3 forKey:(id)a4 inOptions:(id)a5 withDefaultValue:(float)a6 error:(id *)a7;
-+ (BOOL)getOptionalArray:(id *)a3 forKey:(id)a4 inOptions:(id)a5 withElementsOfClass:(Class)a6 error:(id *)a7;
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (BOOL)supportsAnyRevision:(unint64_t)a3;
-+ (BOOL)supportsPrivateRevision:(unint64_t)a3;
-+ (BOOL)supportsRevision:(unint64_t)a3;
++ (BOOL)getDoubleValue:(double *)value forKey:(id)key inOptions:(id)options error:(id *)error;
++ (BOOL)getDoubleValue:(double *)value forKey:(id)key inOptions:(id)options withDefaultValue:(double)defaultValue error:(id *)error;
++ (BOOL)getFloatValue:(float *)value forKey:(id)key inOptions:(id)options error:(id *)error;
++ (BOOL)getFloatValue:(float *)value forKey:(id)key inOptions:(id)options withDefaultValue:(float)defaultValue error:(id *)error;
++ (BOOL)getOptionalArray:(id *)array forKey:(id)key inOptions:(id)options withElementsOfClass:(Class)class error:(id *)error;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (BOOL)supportsAnyRevision:(unint64_t)revision;
++ (BOOL)supportsPrivateRevision:(unint64_t)revision;
++ (BOOL)supportsRevision:(unint64_t)revision;
 + (NSIndexSet)allSupportedRevisions;
 + (NSIndexSet)supportedPrivateRevisions;
 + (NSIndexSet)supportedRevisions;
 + (NSUInteger)currentRevision;
 + (NSUInteger)defaultRevision;
-+ (id)_runtimeAvailableRevisionsOfRevisions:(id)a3;
-+ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)a3 fromDescriptorData:(const void *)a4 length:(unint64_t)a5 elementCount:(unint64_t)a6 error:(id *)a7;
++ (id)_runtimeAvailableRevisionsOfRevisions:(id)revisions;
++ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)revision fromDescriptorData:(const void *)data length:(unint64_t)length elementCount:(unint64_t)count error:(id *)error;
 + (id)newConfigurationInstance;
 + (id)publicRevisionsSet;
-+ (unint64_t)_defaultRevisionForBuildVersion:(int)a3;
-+ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)a3 beingPerformedByRevision:(unint64_t)a4;
-+ (unint64_t)firstSupportedRevisionInOrderedRevisionList:(unint64_t)a3;
-+ (unint64_t)resolvedRevisionForRevision:(unint64_t)a3;
++ (unint64_t)_defaultRevisionForBuildVersion:(int)version;
++ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)class beingPerformedByRevision:(unint64_t)revision;
++ (unint64_t)firstSupportedRevisionInOrderedRevisionList:(unint64_t)list;
++ (unint64_t)resolvedRevisionForRevision:(unint64_t)revision;
 + (unsigned)VNClassCode;
 + (void)initialize;
-- (BOOL)cancellationTriggeredAndReturnError:(id *)a3;
-- (BOOL)internalCancelInContext:(id)a3 error:(id *)a4;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)performInContext:(id)a3 error:(id *)a4;
-- (BOOL)setRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)cancellationTriggeredAndReturnError:(id *)error;
+- (BOOL)internalCancelInContext:(id)context error:(id *)error;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)performInContext:(id)context error:(id *)error;
+- (BOOL)setRevision:(unint64_t)revision error:(id *)error;
 - (BOOL)usesCPUOnly;
-- (BOOL)validateConfigurationAndReturnError:(id *)a3;
-- (BOOL)validateImageBuffer:(id)a3 ofNonZeroWidth:(unint64_t *)a4 andHeight:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)warmUpApplicableDetectorInSession:(id)a3 error:(id *)a4;
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)validateConfigurationAndReturnError:(id *)error;
+- (BOOL)validateImageBuffer:(id)buffer ofNonZeroWidth:(unint64_t *)width andHeight:(unint64_t *)height error:(id *)error;
+- (BOOL)warmUpApplicableDetectorInSession:(id)session error:(id *)error;
+- (BOOL)warmUpSession:(id)session error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (CGRect)VNImageProcessingSessionRegionOfInterest;
-- (Class)applicableDetectorClassAndOptions:(id *)a3 forRevision:(unint64_t)a4 error:(id *)a5;
+- (Class)applicableDetectorClassAndOptions:(id *)options forRevision:(unint64_t)revision error:(id *)error;
 - (Class)frameworkClass;
 - (MTLDevice)preferredMetalContext;
 - (NSDictionary)supportedComputeStageDevicesAndReturnError:(NSError *)error;
@@ -44,41 +44,41 @@
 - (VNControlledCapacityTasksQueue)requestTasksQueue;
 - (VNRequest)initWithCompletionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNRequestSpecifier)specifier;
-- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)a3;
-- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)a3;
-- (id)VNImageProcessingSessionPrintAndReturnError:(id *)a3;
-- (id)_alignFacesInContext:(id)a3 faces:(id)a4 qosClass:(unsigned int)a5 options:(id)a6 error:(id *)a7;
-- (id)applicableDetectorAndOptions:(id *)a3 forRevision:(unint64_t)a4 loadedInSession:(id)a5 error:(id *)a6;
-- (id)cancellerAndReturnError:(id *)a3;
+- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)error;
+- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)error;
+- (id)VNImageProcessingSessionPrintAndReturnError:(id *)error;
+- (id)_alignFacesInContext:(id)context faces:(id)faces qosClass:(unsigned int)class options:(id)options error:(id *)error;
+- (id)applicableDetectorAndOptions:(id *)options forRevision:(unint64_t)revision loadedInSession:(id)session error:(id *)error;
+- (id)cancellerAndReturnError:(id *)error;
 - (id)computeDeviceForComputeStage:(VNComputeStage)computeStage;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)detectFaceLandmarksInContext:(id)a3 faces:(id)a4 error:(id *)a5;
-- (id)detectFacesInContext:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)detectFaceLandmarksInContext:(id)context faces:(id)faces error:(id *)error;
+- (id)detectFacesInContext:(id)context error:(id *)error;
 - (id)detectorProgressHandler;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)newDefaultDetectorOptionsForSession:(id)a3;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)newDefaultDetectorOptionsForSession:(id)session;
 - (id)newDuplicateInstance;
-- (id)processFaceObservations:(id)a3 revision:(unint64_t)a4 regionOfInterest:(CGRect)a5 detectorType:(id)a6 detectorOptions:(id)a7 shouldAlignFaceBBox:(id)a8 shouldRunDetectorBlock:(id)a9 context:(id)a10 error:(id *)a11;
+- (id)processFaceObservations:(id)observations revision:(unint64_t)revision regionOfInterest:(CGRect)interest detectorType:(id)type detectorOptions:(id)options shouldAlignFaceBBox:(id)box shouldRunDetectorBlock:(id)block context:(id)self0 error:(id *)self1;
 - (id)sequencedRequestPreviousObservationsKey;
-- (id)utilizedResourcesWithError:(id *)a3;
-- (id)valueForWarning:(id)a3;
+- (id)utilizedResourcesWithError:(id *)error;
+- (id)valueForWarning:(id)warning;
 - (id)warnings;
-- (unint64_t)applicableRevisionForDependentRequest:(id)a3;
+- (unint64_t)applicableRevisionForDependentRequest:(id)request;
 - (unint64_t)resolvedRevision;
-- (void)_setResolvedRevision:(unint64_t)a3;
-- (void)applyCompatibleComputeStageDeviceAssignmentsOfRequest:(id)a3;
-- (void)applyConfigurationOfRequest:(id)a3;
+- (void)_setResolvedRevision:(unint64_t)revision;
+- (void)applyCompatibleComputeStageDeviceAssignmentsOfRequest:(id)request;
+- (void)applyConfigurationOfRequest:(id)request;
 - (void)cancel;
-- (void)categorizeFaceObservations:(id)a3 shouldRunDetectorBlock:(id)a4 facesThatNeedNoProcessing:(id)a5 facesThatNeedProcessing:(id)a6 facesThatNeed2DLandmarks:(id)a7;
-- (void)copyStateOfRequest:(id)a3;
-- (void)performInContextAsync:(id)a3 asyncDispatchQueue:(id)a4 asyncDispatchGroup:(id)a5;
-- (void)recordWarning:(id)a3 value:(id)a4;
-- (void)setAsyncStatus:(BOOL)a3 error:(id)a4;
-- (void)setPreferredMetalContext:(id)a3;
-- (void)setProcessedResults:(id)a3;
-- (void)setProcessingDevice:(id)a3;
-- (void)setResults:(id)a3;
-- (void)setResults:(id)a3 assignedWithOriginatingSpecifier:(BOOL)a4;
+- (void)categorizeFaceObservations:(id)observations shouldRunDetectorBlock:(id)block facesThatNeedNoProcessing:(id)processing facesThatNeedProcessing:(id)needProcessing facesThatNeed2DLandmarks:(id)landmarks;
+- (void)copyStateOfRequest:(id)request;
+- (void)performInContextAsync:(id)async asyncDispatchQueue:(id)queue asyncDispatchGroup:(id)group;
+- (void)recordWarning:(id)warning value:(id)value;
+- (void)setAsyncStatus:(BOOL)status error:(id)error;
+- (void)setPreferredMetalContext:(id)context;
+- (void)setProcessedResults:(id)results;
+- (void)setProcessingDevice:(id)device;
+- (void)setResults:(id)results;
+- (void)setResults:(id)results assignedWithOriginatingSpecifier:(BOOL)specifier;
 - (void)setRevision:(NSUInteger)revision;
 - (void)setUsesCPUOnly:(BOOL)usesCPUOnly;
 @end
@@ -87,29 +87,29 @@
 
 + (id)newConfigurationInstance
 {
-  v3 = objc_alloc([a1 configurationClass]);
-  v4 = [a1 frameworkClass];
+  v3 = objc_alloc([self configurationClass]);
+  frameworkClass = [self frameworkClass];
 
-  return [v3 initWithRequestClass:v4];
+  return [v3 initWithRequestClass:frameworkClass];
 }
 
 - (unint64_t)resolvedRevision
 {
-  v3 = [(VNRequestConfiguration *)self->_configuration resolvedRevision];
-  if (!v3)
+  resolvedRevision = [(VNRequestConfiguration *)self->_configuration resolvedRevision];
+  if (!resolvedRevision)
   {
-    v3 = [objc_opt_class() resolvedRevisionForRevision:{-[VNRequest revision](self, "revision")}];
-    [(VNRequestConfiguration *)self->_configuration setResolvedRevision:v3];
+    resolvedRevision = [objc_opt_class() resolvedRevisionForRevision:{-[VNRequest revision](self, "revision")}];
+    [(VNRequestConfiguration *)self->_configuration setResolvedRevision:resolvedRevision];
   }
 
-  return v3;
+  return resolvedRevision;
 }
 
 + (NSUInteger)defaultRevision
 {
-  v3 = [a1 _defaultRevisionForBuildVersion:ourVisionFrameworkLinkTimeVersion];
+  v3 = [self _defaultRevisionForBuildVersion:ourVisionFrameworkLinkTimeVersion];
 
-  return [a1 resolvedRevisionForRevision:v3];
+  return [self resolvedRevisionForRevision:v3];
 }
 
 - (Class)frameworkClass
@@ -121,15 +121,15 @@
 
 + (NSIndexSet)supportedPrivateRevisions
 {
-  v3 = [a1 privateRevisionsSet];
-  if ([a1 supportedRevisionsAreFilteredBasedOnAvailableComputeDevices])
+  privateRevisionsSet = [self privateRevisionsSet];
+  if ([self supportedRevisionsAreFilteredBasedOnAvailableComputeDevices])
   {
-    v4 = [a1 _runtimeAvailableRevisionsOfRevisions:v3];
+    v4 = [self _runtimeAvailableRevisionsOfRevisions:privateRevisionsSet];
 
-    v3 = v4;
+    privateRevisionsSet = v4;
   }
 
-  return v3;
+  return privateRevisionsSet;
 }
 
 - (id)computeDeviceForComputeStage:(VNComputeStage)computeStage
@@ -166,17 +166,17 @@
 {
   if ([objc_opt_class() conformsToProtocol:&unk_1F19E6F70])
   {
-    v3 = self;
-    v4 = [(VNRequest *)v3 progressHandler];
-    if (v4)
+    selfCopy = self;
+    progressHandler = [(VNRequest *)selfCopy progressHandler];
+    if (progressHandler)
     {
-      objc_initWeak(&location, v3);
+      objc_initWeak(&location, selfCopy);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __36__VNRequest_detectorProgressHandler__block_invoke;
       aBlock[3] = &unk_1E77B2DF0;
       objc_copyWeak(&v10, &location);
-      v9 = v4;
+      v9 = progressHandler;
       v5 = _Block_copy(aBlock);
 
       objc_destroyWeak(&v10);
@@ -209,19 +209,19 @@ void __36__VNRequest_detectorProgressHandler__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)categorizeFaceObservations:(id)a3 shouldRunDetectorBlock:(id)a4 facesThatNeedNoProcessing:(id)a5 facesThatNeedProcessing:(id)a6 facesThatNeed2DLandmarks:(id)a7
+- (void)categorizeFaceObservations:(id)observations shouldRunDetectorBlock:(id)block facesThatNeedNoProcessing:(id)processing facesThatNeedProcessing:(id)needProcessing facesThatNeed2DLandmarks:(id)landmarks
 {
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  observationsCopy = observations;
+  blockCopy = block;
+  processingCopy = processing;
+  needProcessingCopy = needProcessing;
+  landmarksCopy = landmarks;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v11;
+  obj = observationsCopy;
   v16 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v16)
   {
@@ -236,21 +236,21 @@ void __36__VNRequest_detectorProgressHandler__block_invoke(uint64_t a1, void *a2
         }
 
         v19 = *(*(&v25 + 1) + 8 * i);
-        v20 = v12[2](v12, v19);
-        v21 = v13;
+        v20 = blockCopy[2](blockCopy, v19);
+        v21 = processingCopy;
         if (v20)
         {
-          v22 = [v19 landmarkPoints];
-          v23 = v22 == 0;
+          landmarkPoints = [v19 landmarkPoints];
+          v23 = landmarkPoints == 0;
 
           if (v23)
           {
-            v21 = v15;
+            v21 = landmarksCopy;
           }
 
           else
           {
-            v21 = v14;
+            v21 = needProcessingCopy;
           }
         }
 
@@ -264,52 +264,52 @@ void __36__VNRequest_detectorProgressHandler__block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)detectFaceLandmarksInContext:(id)a3 faces:(id)a4 error:(id *)a5
+- (id)detectFaceLandmarksInContext:(id)context faces:(id)faces error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  contextCopy = context;
+  facesCopy = faces;
   v10 = objc_alloc_init(VNDetectFaceLandmarksRequest);
   [(VNDetectFaceLandmarksRequest *)v10 applyConfigurationOfRequest:self];
   [(VNDetectFaceLandmarksRequest *)v10 setConstellation:1];
-  v11 = [v8 requestPerformerAndReturnError:a5];
-  if (v11 && (-[VNImageBasedRequest setInputFaceObservations:](v10, "setInputFaceObservations:", v9), v16[0] = v10, [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "performDependentRequests:onBehalfOfRequest:inContext:error:", v12, self, v8, a5), v12, (v13 & 1) != 0))
+  v11 = [contextCopy requestPerformerAndReturnError:error];
+  if (v11 && (-[VNImageBasedRequest setInputFaceObservations:](v10, "setInputFaceObservations:", facesCopy), v16[0] = v10, [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "performDependentRequests:onBehalfOfRequest:inContext:error:", v12, self, contextCopy, error), v12, (v13 & 1) != 0))
   {
-    v14 = [(VNRequest *)v10 results];
+    results = [(VNRequest *)v10 results];
   }
 
   else
   {
-    v14 = 0;
+    results = 0;
   }
 
-  return v14;
+  return results;
 }
 
-- (id)_alignFacesInContext:(id)a3 faces:(id)a4 qosClass:(unsigned int)a5 options:(id)a6 error:(id *)a7
+- (id)_alignFacesInContext:(id)context faces:(id)faces qosClass:(unsigned int)class options:(id)options error:(id *)error
 {
-  v9 = *&a5;
+  v9 = *&class;
   v28[1] = *MEMORY[0x1E69E9840];
-  v26 = a4;
-  v25 = a6;
-  v12 = [a3 session];
-  v13 = v25;
-  v14 = [VNFaceBBoxAligner supportedComputeStageDevicesForOptions:v13 error:a7];
+  facesCopy = faces;
+  optionsCopy = options;
+  session = [context session];
+  v13 = optionsCopy;
+  v14 = [VNFaceBBoxAligner supportedComputeStageDevicesForOptions:v13 error:error];
   v15 = [v13 mutableCopy];
   v27 = @"VNComputeStageMain";
   v16 = [v14 objectForKeyedSubscript:?];
-  v17 = [v16 firstObject];
-  v28[0] = v17;
+  firstObject = [v16 firstObject];
+  v28[0] = firstObject;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
   [v15 setObject:v18 forKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
 
   v19 = [v15 copy];
-  v20 = [v12 detectorOfType:@"VNFaceBoxAlignerType" configuredWithOptions:v19 error:a7];
+  v20 = [session detectorOfType:@"VNFaceBoxAlignerType" configuredWithOptions:v19 error:error];
 
   if (v20)
   {
-    [v13 setObject:v26 forKeyedSubscript:@"VNDetectorProcessOption_InputFaceObservations"];
-    v21 = [v20 processUsingQualityOfServiceClass:v9 options:v13 regionOfInterest:self warningRecorder:a7 error:0 progressHandler:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+    [v13 setObject:facesCopy forKeyedSubscript:@"VNDetectorProcessOption_InputFaceObservations"];
+    v21 = [v20 processUsingQualityOfServiceClass:v9 options:v13 regionOfInterest:self warningRecorder:error error:0 progressHandler:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
     v22 = v21;
     if (v21)
     {
@@ -325,58 +325,58 @@ void __36__VNRequest_detectorProgressHandler__block_invoke(uint64_t a1, void *a2
   return v22;
 }
 
-- (id)detectFacesInContext:(id)a3 error:(id *)a4
+- (id)detectFacesInContext:(id)context error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc_init(VNDetectFaceRectanglesRequest);
   [(VNDetectFaceRectanglesRequest *)v7 applyConfigurationOfRequest:self];
-  v8 = [v6 requestPerformerAndReturnError:a4];
-  if (v8 && (v13[0] = v7, [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "performDependentRequests:onBehalfOfRequest:inContext:error:", v9, self, v6, a4), v9, (v10 & 1) != 0))
+  v8 = [contextCopy requestPerformerAndReturnError:error];
+  if (v8 && (v13[0] = v7, [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "performDependentRequests:onBehalfOfRequest:inContext:error:", v9, self, contextCopy, error), v9, (v10 & 1) != 0))
   {
-    v11 = [(VNRequest *)v7 results];
+    results = [(VNRequest *)v7 results];
   }
 
   else
   {
-    v11 = 0;
+    results = 0;
   }
 
-  return v11;
+  return results;
 }
 
-- (id)processFaceObservations:(id)a3 revision:(unint64_t)a4 regionOfInterest:(CGRect)a5 detectorType:(id)a6 detectorOptions:(id)a7 shouldAlignFaceBBox:(id)a8 shouldRunDetectorBlock:(id)a9 context:(id)a10 error:(id *)a11
+- (id)processFaceObservations:(id)observations revision:(unint64_t)revision regionOfInterest:(CGRect)interest detectorType:(id)type detectorOptions:(id)options shouldAlignFaceBBox:(id)box shouldRunDetectorBlock:(id)block context:(id)self0 error:(id *)self1
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v130[1] = *MEMORY[0x1E69E9840];
-  v63 = a3;
-  v61 = a6;
-  v62 = a7;
-  v76 = a8;
-  v75 = a9;
-  v77 = a10;
-  [v77 qosClass];
-  v60 = [v77 requestPerformerAndReturnError:a11];
+  observationsCopy = observations;
+  typeCopy = type;
+  optionsCopy = options;
+  boxCopy = box;
+  blockCopy = block;
+  contextCopy = context;
+  [contextCopy qosClass];
+  v60 = [contextCopy requestPerformerAndReturnError:error];
   if (!v60)
   {
     v52 = 0;
     goto LABEL_36;
   }
 
-  v59 = [v77 imageBufferAndReturnError:a11];
+  v59 = [contextCopy imageBufferAndReturnError:error];
   if (v59)
   {
-    v58 = [v77 session];
-    v73 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:a4 session:?];
-    [v73 addEntriesFromDictionary:v62];
+    session = [contextCopy session];
+    v73 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:?];
+    [v73 addEntriesFromDictionary:optionsCopy];
     v130[0] = v59;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:1];
     [v73 setObject:v20 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-    v72 = [v58 detectorOfType:v61 configuredWithOptions:v73 error:a11];
+    v72 = [session detectorOfType:typeCopy configuredWithOptions:v73 error:error];
     if (!v72)
     {
       v52 = 0;
@@ -385,8 +385,8 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v67 = [v77 qosClass];
-    v21 = [v63 count];
+    qosClass = [contextCopy qosClass];
+    v21 = [observationsCopy count];
     v54 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v21];
     v55 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v21];
     v126[0] = 0;
@@ -396,7 +396,7 @@ LABEL_34:
     v126[4] = __Block_byref_object_dispose__5732;
     v126[5] = "";
     v127 = 0;
-    v70 = [(VNRequest *)self requestTasksQueue];
+    requestTasksQueue = [(VNRequest *)self requestTasksQueue];
     v64 = dispatch_group_create();
     v68 = objc_opt_class();
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -409,12 +409,12 @@ LABEL_34:
     v57 = v55;
     v124 = v57;
     v71 = _Block_copy(aBlock);
-    v69 = [v63 count];
+    v69 = [observationsCopy count];
     v120 = 0u;
     v121 = 0u;
     v118 = 0u;
     v119 = 0u;
-    obj = v63;
+    obj = observationsCopy;
     v22 = [obj countByEnumeratingWithState:&v118 objects:v129 count:16];
     if (v22)
     {
@@ -442,31 +442,31 @@ LABEL_34:
           v109 = __Block_byref_object_copy__140;
           v110 = __Block_byref_object_dispose__141;
           v111 = 0;
-          v25 = v76[2](v76, v24);
+          v25 = boxCopy[2](boxCopy, v24);
           v26 = [v73 mutableCopy];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __149__VNRequest_processFaceObservations_revision_regionOfInterest_detectorType_detectorOptions_shouldAlignFaceBBox_shouldRunDetectorBlock_context_error___block_invoke_142;
           block[3] = &unk_1E77B2D78;
           v103 = v68;
-          v104 = v67;
+          v104 = qosClass;
           v101 = &v106;
           block[4] = self;
-          v97 = v77;
+          v97 = contextCopy;
           v98 = v24;
           v27 = v26;
           v99 = v27;
           v102 = &v112;
           v105 = v69 == 1;
-          v28 = v70;
+          v28 = requestTasksQueue;
           v100 = v28;
-          v29 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v67, 0, block);
+          v29 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qosClass, 0, block);
           v79[0] = MEMORY[0x1E69E9820];
           v79[1] = 3221225472;
           v79[2] = __149__VNRequest_processFaceObservations_revision_regionOfInterest_detectorType_detectorOptions_shouldAlignFaceBBox_shouldRunDetectorBlock_context_error___block_invoke_3;
           v79[3] = &unk_1E77B2DC8;
           v88 = v68;
-          v93 = v67;
+          v93 = qosClass;
           v94 = v25;
           v30 = v29;
           v84 = v30;
@@ -480,13 +480,13 @@ LABEL_34:
           v91 = width;
           v92 = height;
           v81 = v32;
-          v82 = self;
+          selfCopy = self;
           v33 = v71;
           v85 = v33;
           v95 = v69 == 1;
           v34 = v28;
           v83 = v34;
-          v35 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v67, 0, v79);
+          v35 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qosClass, 0, v79);
           if (v25)
           {
             if (v69 == 1)
@@ -512,8 +512,8 @@ LABEL_34:
             v113[5] = v38;
           }
 
-          v40 = [v107[5] firstObject];
-          v41 = v75[2](v75, v40);
+          firstObject = [v107[5] firstObject];
+          v41 = blockCopy[2](blockCopy, firstObject);
 
           if (v41)
           {
@@ -551,10 +551,10 @@ LABEL_34:
       while (v22);
     }
 
-    v45 = a11;
-    if (v69 == 1 || (v46 = [v70 dispatchGroupWait:v64 error:a11], v45 = a11, (v46 & 1) != 0))
+    errorCopy = error;
+    if (v69 == 1 || (v46 = [requestTasksQueue dispatchGroupWait:v64 error:error], errorCopy = error, (v46 & 1) != 0))
     {
-      if ([VNValidationUtilities validateAsyncStatusResults:v57 error:v45])
+      if ([VNValidationUtilities validateAsyncStatusResults:v57 error:errorCopy])
       {
         v52 = v56;
 LABEL_33:
@@ -566,7 +566,7 @@ LABEL_33:
 
     else
     {
-      VNValidatedLog(4, @"Timed out waiting for processing face observations: %@", v47, a11, v48, v49, v50, v51, obj);
+      VNValidatedLog(4, @"Timed out waiting for processing face observations: %@", v47, error, v48, v49, v50, v51, obj);
     }
 
     v52 = 0;
@@ -726,8 +726,8 @@ BOOL __149__VNRequest_processFaceObservations_revision_regionOfInterest_detector
   v18.receiver = self;
   v18.super_class = VNRequest;
   v4 = [(VNRequest *)&v18 description];
-  v5 = [(VNRequest *)self specifier];
-  v6 = [v3 initWithFormat:@"%@ %@", v4, v5];
+  specifier = [(VNRequest *)self specifier];
+  v6 = [v3 initWithFormat:@"%@ %@", v4, specifier];
 
   [(VNRequest *)self computeStageDeviceAssignments];
   v16 = 0u;
@@ -766,9 +766,9 @@ BOOL __149__VNRequest_processFaceObservations_revision_regionOfInterest_detector
   return v6;
 }
 
-- (unint64_t)applicableRevisionForDependentRequest:(id)a3
+- (unint64_t)applicableRevisionForDependentRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
   v6 = [v5 applicableRevisionForDependentRequestOfClass:objc_opt_class() beingPerformedByRevision:{-[VNRequest resolvedRevision](self, "resolvedRevision")}];
 
@@ -795,20 +795,20 @@ BOOL __149__VNRequest_processFaceObservations_revision_regionOfInterest_detector
   }
 }
 
-- (BOOL)setRevision:(unint64_t)a3 error:(id *)a4
+- (BOOL)setRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 < 0xDECAF000)
+  if (revision < 0xDECAF000)
   {
-    [(VNRequest *)self setRevision:a3];
-    if (([objc_opt_class() supportsRevision:a3] & 1) == 0)
+    [(VNRequest *)self setRevision:revision];
+    if (([objc_opt_class() supportsRevision:revision] & 1) == 0)
     {
 LABEL_4:
-      if (a4)
+      if (error)
       {
-        v7 = [VNError errorForUnsupportedRevision:a3 ofRequest:self];
+        v7 = [VNError errorForUnsupportedRevision:revision ofRequest:self];
         v8 = v7;
         result = 0;
-        *a4 = v7;
+        *error = v7;
         return result;
       }
 
@@ -820,8 +820,8 @@ LABEL_4:
 
   if (self)
   {
-    [(VNRequest *)self _setResolvedRevision:a3];
-    if (([objc_opt_class() supportsPrivateRevision:a3] & 1) == 0)
+    [(VNRequest *)self _setResolvedRevision:revision];
+    if (([objc_opt_class() supportsPrivateRevision:revision] & 1) == 0)
     {
       goto LABEL_4;
     }
@@ -832,11 +832,11 @@ LABEL_4:
   return 0;
 }
 
-- (void)_setResolvedRevision:(unint64_t)a3
+- (void)_setResolvedRevision:(unint64_t)revision
 {
   revision = self->_revision;
-  self->_revision = a3;
-  if (revision != a3)
+  self->_revision = revision;
+  if (revision != revision)
   {
     [(VNRequestConfiguration *)self->_configuration setResolvedRevision:?];
 
@@ -844,16 +844,16 @@ LABEL_4:
   }
 }
 
-- (BOOL)validateImageBuffer:(id)a3 ofNonZeroWidth:(unint64_t *)a4 andHeight:(unint64_t *)a5 error:(id *)a6
+- (BOOL)validateImageBuffer:(id)buffer ofNonZeroWidth:(unint64_t *)width andHeight:(unint64_t *)height error:(id *)error
 {
-  v10 = a3;
-  v11 = v10;
-  if (!v10)
+  bufferCopy = buffer;
+  v11 = bufferCopy;
+  if (!bufferCopy)
   {
-    if (a6)
+    if (error)
     {
       [VNError errorForInvalidArgument:0 named:@"imageBuffer"];
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_11;
     }
 
@@ -862,26 +862,26 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [v10 width];
-  v13 = [v11 height];
+  width = [bufferCopy width];
+  height = [v11 height];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__VNRequest_validateImageBuffer_ofNonZeroWidth_andHeight_error___block_invoke;
   v16[3] = &unk_1E77B6810;
   v16[4] = self;
-  if (![VNValidationUtilities validateNonZeroImageWidth:v12 height:v13 componentNameProvidingBlock:v16 error:a6])
+  if (![VNValidationUtilities validateNonZeroImageWidth:width height:height componentNameProvidingBlock:v16 error:error])
   {
     goto LABEL_10;
   }
 
-  if (a4)
+  if (width)
   {
-    *a4 = v12;
+    *width = width;
   }
 
-  if (a5)
+  if (height)
   {
-    *a5 = v13;
+    *height = height;
   }
 
   v14 = 1;
@@ -897,18 +897,18 @@ NSString *__64__VNRequest_validateImageBuffer_ofNonZeroWidth_andHeight_error___b
   return NSStringFromClass(v0);
 }
 
-- (void)setProcessingDevice:(id)a3
+- (void)setProcessingDevice:(id)device
 {
-  v9 = a3;
-  v4 = [[VNProcessingDeviceComputeDeviceBridge alloc] initWithProcessingDevice:v9];
+  deviceCopy = device;
+  v4 = [[VNProcessingDeviceComputeDeviceBridge alloc] initWithProcessingDevice:deviceCopy];
   v5 = [(VNRequest *)self supportedComputeStageDevicesAndReturnError:0];
   v6 = [v5 objectForKeyedSubscript:@"VNComputeStageMain"];
-  v7 = [(VNProcessingDeviceComputeDeviceBridge *)v4 computeDevice];
-  v8 = [v6 containsObject:v7];
+  computeDevice = [(VNProcessingDeviceComputeDeviceBridge *)v4 computeDevice];
+  v8 = [v6 containsObject:computeDevice];
 
   if (v8)
   {
-    [(VNRequestConfiguration *)self->_configuration setProcessingDevice:v9];
+    [(VNRequestConfiguration *)self->_configuration setProcessingDevice:deviceCopy];
   }
 }
 
@@ -931,25 +931,25 @@ NSString *__64__VNRequest_validateImageBuffer_ofNonZeroWidth_andHeight_error___b
 - (BOOL)usesCPUOnly
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(VNRequestConfiguration *)self->_configuration processingDevice];
-  v4 = v3;
-  if (v3)
+  processingDevice = [(VNRequestConfiguration *)self->_configuration processingDevice];
+  v4 = processingDevice;
+  if (processingDevice)
   {
-    v5 = [v3 targetsCPU];
+    targetsCPU = [processingDevice targetsCPU];
   }
 
   else
   {
-    v6 = [(VNRequestConfiguration *)self->_configuration computeStageDeviceAssignments];
-    v7 = [v6 allValues];
+    computeStageDeviceAssignments = [(VNRequestConfiguration *)self->_configuration computeStageDeviceAssignments];
+    allValues = [computeStageDeviceAssignments allValues];
 
-    if ([v7 count])
+    if ([allValues count])
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v8 = v7;
+      v8 = allValues;
       v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
@@ -965,7 +965,7 @@ NSString *__64__VNRequest_validateImageBuffer_ofNonZeroWidth_andHeight_error___b
 
             if (![VNComputeDeviceUtilities isCPUComputeDevice:*(*(&v13 + 1) + 8 * i), v13])
             {
-              v5 = 0;
+              targetsCPU = 0;
               goto LABEL_14;
             }
           }
@@ -980,33 +980,33 @@ NSString *__64__VNRequest_validateImageBuffer_ofNonZeroWidth_andHeight_error___b
         }
       }
 
-      v5 = 1;
+      targetsCPU = 1;
 LABEL_14:
     }
 
     else
     {
-      v5 = 0;
+      targetsCPU = 0;
     }
   }
 
-  return v5;
+  return targetsCPU;
 }
 
-- (void)setPreferredMetalContext:(id)a3
+- (void)setPreferredMetalContext:(id)context
 {
-  v8 = a3;
-  v4 = [(VNRequest *)self preferredMetalContext];
-  if (v4 != v8)
+  contextCopy = context;
+  preferredMetalContext = [(VNRequest *)self preferredMetalContext];
+  if (preferredMetalContext != contextCopy)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    v6 = [v5 isEqual:v8];
+    null = [MEMORY[0x1E695DFB0] null];
+    v6 = [null isEqual:contextCopy];
 
     if (v6)
     {
     }
 
-    else if (v8)
+    else if (contextCopy)
     {
       v7 = [VNProcessingDevice deviceForMetalDevice:?];
 LABEL_7:
@@ -1015,7 +1015,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v8 = 0;
+    contextCopy = 0;
     v7 = 0;
     goto LABEL_7;
   }
@@ -1025,11 +1025,11 @@ LABEL_8:
 
 - (MTLDevice)preferredMetalContext
 {
-  v3 = [(VNRequest *)self processingDevice];
-  v4 = v3;
-  if (v3)
+  processingDevice = [(VNRequest *)self processingDevice];
+  v4 = processingDevice;
+  if (processingDevice)
   {
-    v5 = [v3 metalDevice];
+    metalDevice = [processingDevice metalDevice];
   }
 
   else
@@ -1037,31 +1037,31 @@ LABEL_8:
     v6 = [(VNRequest *)self computeDeviceForComputeStage:@"VNComputeStageMain"];
     if (v6)
     {
-      v5 = [VNComputeDeviceUtilities metalDeviceForComputeDevice:v6];
+      metalDevice = [VNComputeDeviceUtilities metalDeviceForComputeDevice:v6];
     }
 
     else
     {
-      v5 = 0;
+      metalDevice = 0;
     }
   }
 
-  return v5;
+  return metalDevice;
 }
 
-- (BOOL)cancellationTriggeredAndReturnError:(id *)a3
+- (BOOL)cancellationTriggeredAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self cancellationTriggered];
-  v6 = v5;
-  if (a3 && v5)
+  cancellationTriggered = [(VNRequest *)self cancellationTriggered];
+  v6 = cancellationTriggered;
+  if (error && cancellationTriggered)
   {
-    *a3 = [VNError errorForCancellationOfRequest:self];
+    *error = [VNError errorForCancellationOfRequest:self];
   }
 
   return v6;
 }
 
-- (id)cancellerAndReturnError:(id *)a3
+- (id)cancellerAndReturnError:(id *)error
 {
   os_unfair_lock_lock(&self->_cancellationResourcesLock);
   v5 = self->_canceller;
@@ -1071,7 +1071,7 @@ LABEL_8:
     v6 = v5;
   }
 
-  else if (a3)
+  else if (error)
   {
     if ([(VNRequest *)self hasCancellationHook])
     {
@@ -1088,7 +1088,7 @@ LABEL_8:
       v7 = v11;
     }
 
-    *a3 = [VNError errorForInvalidOperationWithLocalizedDescription:v7];
+    *error = [VNError errorForInvalidOperationWithLocalizedDescription:v7];
   }
 
   return v5;
@@ -1113,28 +1113,28 @@ LABEL_8:
   warningRecorder = self->_warningRecorder;
   if (warningRecorder)
   {
-    v4 = [(VNWarningRecorder *)warningRecorder warnings];
+    warnings = [(VNWarningRecorder *)warningRecorder warnings];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F8];
+    warnings = MEMORY[0x1E695E0F8];
   }
 
-  return v4;
+  return warnings;
 }
 
-- (id)valueForWarning:(id)a3
+- (id)valueForWarning:(id)warning
 {
-  v3 = [(VNWarningRecorder *)self->_warningRecorder valueForWarning:a3];
+  v3 = [(VNWarningRecorder *)self->_warningRecorder valueForWarning:warning];
 
   return v3;
 }
 
-- (void)recordWarning:(id)a3 value:(id)a4
+- (void)recordWarning:(id)warning value:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  warningCopy = warning;
+  valueCopy = value;
   warningRecorder = self->_warningRecorder;
   if (!warningRecorder)
   {
@@ -1145,44 +1145,44 @@ LABEL_8:
     warningRecorder = self->_warningRecorder;
   }
 
-  [(VNWarningRecorder *)warningRecorder recordWarning:v10 value:v6];
+  [(VNWarningRecorder *)warningRecorder recordWarning:warningCopy value:valueCopy];
 }
 
-- (void)setProcessedResults:(id)a3
+- (void)setProcessedResults:(id)results
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  resultsCopy = results;
+  v4 = [resultsCopy copy];
   results = self->_results;
   self->_results = v4;
 }
 
-- (void)setResults:(id)a3 assignedWithOriginatingSpecifier:(BOOL)a4
+- (void)setResults:(id)results assignedWithOriginatingSpecifier:(BOOL)specifier
 {
-  v4 = a4;
-  v9 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  resultsCopy = results;
+  if (specifierCopy)
   {
-    v6 = [(VNRequest *)self specifier];
-    v7 = [v9 VNObservationsWithOriginatingRequestSpecifier:v6];
+    specifier = [(VNRequest *)self specifier];
+    v7 = [resultsCopy VNObservationsWithOriginatingRequestSpecifier:specifier];
 
     v8 = v7;
   }
 
   else
   {
-    v8 = v9;
+    v8 = resultsCopy;
   }
 
   v10 = v8;
   [(VNRequest *)self setProcessedResults:?];
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v5 = a3;
-  if (v5)
+  resultsCopy = results;
+  if (resultsCopy)
   {
-    [(VNRequest *)self setResults:v5 assignedWithOriginatingSpecifier:[(VNRequest *)self resultsAreAssignedWithOriginatingRequestSpecifier]];
+    [(VNRequest *)self setResults:resultsCopy assignedWithOriginatingSpecifier:[(VNRequest *)self resultsAreAssignedWithOriginatingRequestSpecifier]];
   }
 
   else
@@ -1192,9 +1192,9 @@ LABEL_8:
   }
 }
 
-- (BOOL)internalCancelInContext:(id)a3 error:(id *)a4
+- (BOOL)internalCancelInContext:(id)context error:(id *)error
 {
-  v4 = [(VNRequest *)self cancellerAndReturnError:a4];
+  v4 = [(VNRequest *)self cancellerAndReturnError:error];
   v5 = v4;
   if (v4)
   {
@@ -1204,17 +1204,17 @@ LABEL_8:
   return v5 != 0;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [VNError errorForUnimplementedMethod:a2 ofObject:self];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-- (BOOL)validateConfigurationAndReturnError:(id *)a3
+- (BOOL)validateConfigurationAndReturnError:(id *)error
 {
   warningRecorder = self->_warningRecorder;
   self->_warningRecorder = 0;
@@ -1236,9 +1236,9 @@ LABEL_8:
     cancellationSemaphore = self->_cancellationSemaphore;
     self->_cancellationSemaphore = v11;
 
-    v13 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x1E69E96A8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     cancellationQueue = self->_cancellationQueue;
     self->_cancellationQueue = v15;
 
@@ -1249,14 +1249,14 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)performInContext:(id)a3 error:(id *)a4
+- (BOOL)performInContext:(id)context error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 serialNumber];
-  v8 = [(VNRequest *)self resolvedRevision];
-  v9 = [(VNRequest *)self frameworkClass];
-  v10 = [(objc_class *)v9 VNClassCode];
+  contextCopy = context;
+  serialNumber = [contextCopy serialNumber];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  vNClassCode = [(objc_class *)frameworkClass VNClassCode];
   kdebug_trace();
   v38 = mach_absolute_time();
   v63 = 0;
@@ -1269,9 +1269,9 @@ LABEL_8:
 
   else
   {
-    if (([(objc_class *)v9 supportsAnyRevision:v8]& 1) != 0)
+    if (([(objc_class *)frameworkClass supportsAnyRevision:resolvedRevision]& 1) != 0)
     {
-      v14 = [v6 cachedObservationsAcceptedByRequest:self];
+      v14 = [contextCopy cachedObservationsAcceptedByRequest:self];
       if (v14)
       {
         kdebug_trace();
@@ -1285,8 +1285,8 @@ LABEL_8:
         v60 = &v59;
         v61 = 0x2020000000;
         v62 = 0;
-        v35 = [(VNRequest *)self hasCancellationHook];
-        if (v35)
+        hasCancellationHook = [(VNRequest *)self hasCancellationHook];
+        if (hasCancellationHook)
         {
           os_unfair_lock_lock(&self->_cancellationResourcesLock);
           v15 = self->_cancellationQueue;
@@ -1297,13 +1297,13 @@ LABEL_8:
           block[2] = __36__VNRequest_performInContext_error___block_invoke;
           block[3] = &unk_1E77B2D00;
           v55 = &v59;
-          v56 = v7;
+          v56 = serialNumber;
           dsema = v16;
           v52 = dsema;
-          v53 = self;
-          v57 = v8;
-          v58 = v10;
-          v54 = v6;
+          selfCopy = self;
+          v57 = resolvedRevision;
+          v58 = vNClassCode;
+          v54 = contextCopy;
           queue = v15;
           dispatch_async(v15, block);
         }
@@ -1316,7 +1316,7 @@ LABEL_8:
 
         *(v60 + 24) = 1;
         v50 = v12;
-        v13 = [(VNRequest *)self internalPerformRevision:v8 inContext:v6 error:&v50];
+        v13 = [(VNRequest *)self internalPerformRevision:resolvedRevision inContext:contextCopy error:&v50];
         v17 = v50;
 
         v12 = v17;
@@ -1324,7 +1324,7 @@ LABEL_8:
         {
           if (([objc_opt_class() setsTimeRangeOnResults] & 1) == 0)
           {
-            v18 = [v6 imageBufferAndReturnError:0];
+            v18 = [contextCopy imageBufferAndReturnError:0];
             v49 = 0;
             v48 = 0u;
             v46 = 0u;
@@ -1394,7 +1394,7 @@ LABEL_8:
             }
           }
 
-          [v6 recordSequencedObservationsOfRequest:self];
+          [contextCopy recordSequencedObservationsOfRequest:self];
         }
 
         else
@@ -1402,9 +1402,9 @@ LABEL_8:
           [(VNRequest *)self setResults:0];
         }
 
-        [v6 cacheObservationsOfRequest:self];
+        [contextCopy cacheObservationsOfRequest:self];
         *(v60 + 24) = 0;
-        if (v35)
+        if (hasCancellationHook)
         {
           dispatch_semaphore_signal(dsema);
           dispatch_sync(queue, &__block_literal_global_5791);
@@ -1417,16 +1417,16 @@ LABEL_8:
 
     else
     {
-      [VNError errorForUnsupportedRevision:v8 ofRequest:self];
+      [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
       v13 = 0;
       v12 = v14 = v12;
     }
   }
 
   self->_executionNanoseconds = mach_absolute_time() - v38;
-  v27 = [(VNRequest *)self completionHandler];
-  v28 = v27;
-  if (v27)
+  completionHandler = [(VNRequest *)self completionHandler];
+  v28 = completionHandler;
+  if (completionHandler)
   {
     if (v13)
     {
@@ -1438,10 +1438,10 @@ LABEL_8:
       v29 = v12;
     }
 
-    (*(v27 + 16))(v27, self, v29);
+    (*(completionHandler + 16))(completionHandler, self, v29);
   }
 
-  if (a4)
+  if (error)
   {
     v30 = v13;
   }
@@ -1454,7 +1454,7 @@ LABEL_8:
   if ((v30 & 1) == 0)
   {
     v31 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   kdebug_trace();
@@ -1481,26 +1481,26 @@ void __36__VNRequest_performInContext_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performInContextAsync:(id)a3 asyncDispatchQueue:(id)a4 asyncDispatchGroup:(id)a5
+- (void)performInContextAsync:(id)async asyncDispatchQueue:(id)queue asyncDispatchGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  asyncCopy = async;
+  queueCopy = queue;
+  groupCopy = group;
   [&stru_1F1976900 UTF8String];
-  [v8 qosClass];
+  [asyncCopy qosClass];
   objc_initWeak(&location, self);
-  v11 = [v8 qosClass];
+  qosClass = [asyncCopy qosClass];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __73__VNRequest_performInContextAsync_asyncDispatchQueue_asyncDispatchGroup___block_invoke;
   v18 = &unk_1E77B2CD8;
   objc_copyWeak(&v21, &location);
-  v12 = v8;
+  v12 = asyncCopy;
   v19 = v12;
-  v13 = v9;
+  v13 = queueCopy;
   v20 = v13;
-  v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v11, 0, &v15);
-  [v13 dispatchGroupAsyncByPreservingQueueCapacity:v10 block:{v14, v15, v16, v17, v18}];
+  v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, qosClass, 0, &v15);
+  [v13 dispatchGroupAsyncByPreservingQueueCapacity:groupCopy block:{v14, v15, v16, v17, v18}];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -1534,40 +1534,40 @@ void __73__VNRequest_performInContextAsync_asyncDispatchQueue_asyncDispatchGroup
   }
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (v4 != self)
+  requestCopy = request;
+  if (requestCopy != self)
   {
-    self->_revision = [(VNRequest *)v4 applicableRevisionForDependentRequest:self];
+    self->_revision = [(VNRequest *)requestCopy applicableRevisionForDependentRequest:self];
     [(VNRequestConfiguration *)self->_configuration setResolvedRevision:0];
-    [(VNRequest *)self applyCompatibleComputeStageDeviceAssignmentsOfRequest:v4];
-    [(VNRequestConfiguration *)self->_configuration setDetectionLevel:[(VNRequest *)v4 detectionLevel]];
-    [(VNRequestConfiguration *)self->_configuration setMetalContextPriority:[(VNRequest *)v4 metalContextPriority]];
-    [(VNRequestConfiguration *)self->_configuration setModelExecutionPriority:[(VNRequest *)v4 modelExecutionPriority]];
-    [(VNRequestConfiguration *)self->_configuration setPreferBackgroundProcessing:[(VNRequest *)v4 preferBackgroundProcessing]];
-    [(VNRequestConfiguration *)self->_configuration setModelFileBackingStore:[(VNRequest *)v4 modelFileBackingStore]];
-    [(VNRequestConfiguration *)self->_configuration setMaximumProcessingDimensionOnTheLongSide:[(VNRequest *)v4 maximumProcessingDimensionOnTheLongSide]];
-    [(VNRequestConfiguration *)self->_configuration setMemoryPoolId:[(VNRequest *)v4 ioSurfaceMemoryPoolId]];
+    [(VNRequest *)self applyCompatibleComputeStageDeviceAssignmentsOfRequest:requestCopy];
+    [(VNRequestConfiguration *)self->_configuration setDetectionLevel:[(VNRequest *)requestCopy detectionLevel]];
+    [(VNRequestConfiguration *)self->_configuration setMetalContextPriority:[(VNRequest *)requestCopy metalContextPriority]];
+    [(VNRequestConfiguration *)self->_configuration setModelExecutionPriority:[(VNRequest *)requestCopy modelExecutionPriority]];
+    [(VNRequestConfiguration *)self->_configuration setPreferBackgroundProcessing:[(VNRequest *)requestCopy preferBackgroundProcessing]];
+    [(VNRequestConfiguration *)self->_configuration setModelFileBackingStore:[(VNRequest *)requestCopy modelFileBackingStore]];
+    [(VNRequestConfiguration *)self->_configuration setMaximumProcessingDimensionOnTheLongSide:[(VNRequest *)requestCopy maximumProcessingDimensionOnTheLongSide]];
+    [(VNRequestConfiguration *)self->_configuration setMemoryPoolId:[(VNRequest *)requestCopy ioSurfaceMemoryPoolId]];
   }
 }
 
-- (void)applyCompatibleComputeStageDeviceAssignmentsOfRequest:(id)a3
+- (void)applyCompatibleComputeStageDeviceAssignmentsOfRequest:(id)request
 {
   v24 = *MEMORY[0x1E69E9840];
-  v17 = [a3 configuration];
-  v3 = [v17 processingDevice];
-  if (v3)
+  configuration = [request configuration];
+  processingDevice = [configuration processingDevice];
+  if (processingDevice)
   {
-    [(VNRequestConfiguration *)self->_configuration setProcessingDevice:v3];
+    [(VNRequestConfiguration *)self->_configuration setProcessingDevice:processingDevice];
   }
 
   else
   {
     v15 = 0;
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4 = [v17 computeStageDeviceAssignments];
-    if ([v4 count])
+    computeStageDeviceAssignments = [configuration computeStageDeviceAssignments];
+    if ([computeStageDeviceAssignments count])
     {
       [(VNRequest *)self supportedComputeStageDevicesAndReturnError:0];
       v21 = 0u;
@@ -1588,15 +1588,15 @@ void __73__VNRequest_performInContextAsync_asyncDispatchQueue_asyncDispatchGroup
             }
 
             v9 = *(*(&v19 + 1) + 8 * i);
-            v10 = [v4 objectForKeyedSubscript:{v9, v15}];
+            v10 = [computeStageDeviceAssignments objectForKeyedSubscript:{v9, v15}];
             if (v10)
             {
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 configuration = self->_configuration;
-                v14 = [v10 processingDevice];
-                [(VNRequestConfiguration *)configuration setProcessingDevice:v14];
+                processingDevice2 = [v10 processingDevice];
+                [(VNRequestConfiguration *)configuration setProcessingDevice:processingDevice2];
 
                 goto LABEL_19;
               }
@@ -1625,17 +1625,17 @@ void __73__VNRequest_performInContextAsync_asyncDispatchQueue_asyncDispatchGroup
     [(VNRequestConfiguration *)self->_configuration setComputeStageDeviceAssignments:v18, v15];
 LABEL_19:
 
-    v3 = v15;
+    processingDevice = v15;
   }
 }
 
-- (void)copyStateOfRequest:(id)a3
+- (void)copyStateOfRequest:(id)request
 {
-  v11 = a3;
+  requestCopy = request;
   [(VNRequest *)self applyConfigurationOfRequest:?];
-  -[VNRequest _setResolvedRevision:](self, "_setResolvedRevision:", [v11 revision]);
-  v4 = [v11 results];
-  v5 = [v4 copy];
+  -[VNRequest _setResolvedRevision:](self, "_setResolvedRevision:", [requestCopy revision]);
+  results = [requestCopy results];
+  v5 = [results copy];
   results = self->_results;
   self->_results = v5;
 
@@ -1649,16 +1649,16 @@ LABEL_19:
     warningRecorder = self->_warningRecorder;
   }
 
-  v10 = [v11 warnings];
-  [(VNWarningRecorder *)warningRecorder setWarnings:v10];
+  warnings = [requestCopy warnings];
+  [(VNWarningRecorder *)warningRecorder setWarnings:warnings];
 }
 
-- (void)setAsyncStatus:(BOOL)a3 error:(id)a4
+- (void)setAsyncStatus:(BOOL)status error:(id)error
 {
-  v4 = a3;
-  v8 = a4;
+  statusCopy = status;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_asyncStatusLock);
-  v6 = [[VNAsyncStatus alloc] initWithStatus:v4 error:v8];
+  v6 = [[VNAsyncStatus alloc] initWithStatus:statusCopy error:errorCopy];
   asyncStatus = self->_asyncStatus;
   self->_asyncStatus = v6;
 
@@ -1674,9 +1674,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
-  v6 = a4;
+  sessionCopy = session;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNRequest modelFileBackingStore](self, "modelFileBackingStore")}];
   [v7 setObject:v8 forKeyedSubscript:@"VNDetectorInitOption_ModelBackingStore"];
@@ -1684,10 +1684,10 @@ LABEL_19:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[VNRequest ioSurfaceMemoryPoolId](self, "ioSurfaceMemoryPoolId")}];
   [v7 setObject:v9 forKeyedSubscript:@"VNDetectorInitOption_MemoryPoolId"];
 
-  v10 = [VNRequestSpecifier specifierForRequestClass:[(VNRequest *)self frameworkClass] revision:a3 error:0];
+  v10 = [VNRequestSpecifier specifierForRequestClass:[(VNRequest *)self frameworkClass] revision:revision error:0];
   [v7 setObject:v10 forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
-  v11 = [(VNRequest *)self resolvedComputeStageDeviceAssignments];
-  [v7 setObject:v11 forKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
+  resolvedComputeStageDeviceAssignments = [(VNRequest *)self resolvedComputeStageDeviceAssignments];
+  [v7 setObject:resolvedComputeStageDeviceAssignments forKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[VNRequest preferBackgroundProcessing](self, "preferBackgroundProcessing")}];
   [v7 setObject:v12 forKeyedSubscript:@"VNDetectorOption_PreferBackgroundProcessing"];
@@ -1695,9 +1695,9 @@ LABEL_19:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[VNRequest modelExecutionPriority](self, "modelExecutionPriority")}];
   [v7 setObject:v13 forKeyedSubscript:@"VNDetectorOption_EspressoPlanPriority"];
 
-  if (v6)
+  if (sessionCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"VNDetectorProcessOption_Session"];
+    [v7 setObject:sessionCopy forKeyedSubscript:@"VNDetectorProcessOption_Session"];
   }
 
   v14 = [(VNRequest *)self cancellerAndReturnError:0];
@@ -1706,28 +1706,28 @@ LABEL_19:
   return v7;
 }
 
-- (id)newDefaultDetectorOptionsForSession:(id)a3
+- (id)newDefaultDetectorOptionsForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:[(VNRequest *)self resolvedRevision] session:v4];
+  sessionCopy = session;
+  v5 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:[(VNRequest *)self resolvedRevision] session:sessionCopy];
 
   return v5;
 }
 
-- (id)applicableDetectorAndOptions:(id *)a3 forRevision:(unint64_t)a4 loadedInSession:(id)a5 error:(id *)a6
+- (id)applicableDetectorAndOptions:(id *)options forRevision:(unint64_t)revision loadedInSession:(id)session error:(id *)error
 {
-  v10 = a5;
-  v11 = [(VNRequest *)self applicableDetectorTypeForRevision:a4 error:a6];
+  sessionCopy = session;
+  v11 = [(VNRequest *)self applicableDetectorTypeForRevision:revision error:error];
   if (v11)
   {
-    v12 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:a4 session:v10];
-    v13 = [v10 detectorOfType:v11 configuredWithOptions:v12 error:a6];
+    v12 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:sessionCopy];
+    v13 = [sessionCopy detectorOfType:v11 configuredWithOptions:v12 error:error];
     if (v13)
     {
-      if (a3)
+      if (options)
       {
         v14 = v12;
-        *a3 = v12;
+        *options = v12;
       }
 
       v15 = v13;
@@ -1742,22 +1742,22 @@ LABEL_19:
   return v13;
 }
 
-- (Class)applicableDetectorClassAndOptions:(id *)a3 forRevision:(unint64_t)a4 error:(id *)a5
+- (Class)applicableDetectorClassAndOptions:(id *)options forRevision:(unint64_t)revision error:(id *)error
 {
-  v9 = [(VNRequest *)self applicableDetectorTypeForRevision:a4 error:a5];
+  v9 = [(VNRequest *)self applicableDetectorTypeForRevision:revision error:error];
   if (v9)
   {
-    v10 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:a4 session:0];
+    v10 = [(VNRequest *)self newDefaultDetectorOptionsForRequestRevision:revision session:0];
     v16 = v10;
-    v11 = [VNDetector detectorClassAndConfigurationOptions:&v16 forDetectorType:v9 options:v10 error:a5];
+    v11 = [VNDetector detectorClassAndConfigurationOptions:&v16 forDetectorType:v9 options:v10 error:error];
     v12 = v16;
 
     if (v11)
     {
-      if (a3)
+      if (options)
       {
         v13 = v12;
-        *a3 = v12;
+        *options = v12;
       }
 
       v14 = v11;
@@ -1782,29 +1782,29 @@ LABEL_19:
 
 - (VNRequestSpecifier)specifier
 {
-  v3 = [(VNRequest *)self frameworkClass];
-  v4 = [(VNRequest *)self resolvedRevision];
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
 
-  return [VNRequestSpecifier specifierForRequestClass:v3 revision:v4 error:0];
+  return [VNRequestSpecifier specifierForRequestClass:frameworkClass revision:resolvedRevision error:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(VNRequest *)self newDuplicateInstance];
-  v5 = v4;
-  if (v4)
+  newDuplicateInstance = [(VNRequest *)self newDuplicateInstance];
+  v5 = newDuplicateInstance;
+  if (newDuplicateInstance)
   {
-    [v4 copyStateOfRequest:self];
+    [newDuplicateInstance copyStateOfRequest:self];
   }
 
   return v5;
 }
 
-- (BOOL)warmUpApplicableDetectorInSession:(id)a3 error:(id *)a4
+- (BOOL)warmUpApplicableDetectorInSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v21 = 0;
-  v7 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:[(VNRequest *)self resolvedRevision] loadedInSession:v6 error:a4];
+  v7 = [(VNRequest *)self applicableDetectorAndOptions:&v21 forRevision:[(VNRequest *)self resolvedRevision] loadedInSession:sessionCopy error:error];
   v8 = v21;
   if (v7)
   {
@@ -1814,11 +1814,11 @@ LABEL_19:
     v17 = &unk_1E77B4588;
     v9 = v7;
     v18 = v9;
-    v19 = v6;
+    v19 = sessionCopy;
     v20 = v8;
     v10 = _Block_copy(&v14);
     v11 = objc_opt_class();
-    v12 = [v11 runSuccessReportingBlockSynchronously:v10 detector:v9 qosClass:qos_class_self() error:{a4, v14, v15, v16, v17}];
+    v12 = [v11 runSuccessReportingBlockSynchronously:v10 detector:v9 qosClass:qos_class_self() error:{error, v14, v15, v16, v17}];
   }
 
   else
@@ -1829,9 +1829,9 @@ LABEL_19:
   return v12;
 }
 
-- (BOOL)warmUpSession:(id)a3 error:(id *)a4
+- (BOOL)warmUpSession:(id)session error:(id *)error
 {
-  v7 = a3;
+  sessionCopy = session;
   if ([(VisionCoreRuntimeUtilities *)VNRuntimeUtilities item:self overridesSelector:a2])
   {
     v8 = 1;
@@ -1839,18 +1839,18 @@ LABEL_19:
 
   else
   {
-    v9 = [(VNRequest *)self applicableDetectorTypeForRevision:[(VNRequest *)self resolvedRevision] error:a4];
+    v9 = [(VNRequest *)self applicableDetectorTypeForRevision:[(VNRequest *)self resolvedRevision] error:error];
     v10 = v9;
     if (v9)
     {
       if ([v9 isEqualToString:&stru_1F1976900])
       {
-        v11 = [objc_opt_class() warmUpSession:v7 error:a4];
+        v11 = [objc_opt_class() warmUpSession:sessionCopy error:error];
       }
 
       else
       {
-        v11 = [(VNRequest *)self warmUpApplicableDetectorInSession:v7 error:a4];
+        v11 = [(VNRequest *)self warmUpApplicableDetectorInSession:sessionCopy error:error];
       }
 
       v8 = v11;
@@ -1877,9 +1877,9 @@ LABEL_19:
     v5->_serialNumber = atomic_fetch_add_explicit(&[VNRequest initWithCompletionHandler:]::ourNextSerialNumber, 1uLL, memory_order_relaxed) + 1;
     v5->_cancellationResourcesLock._os_unfair_lock_opaque = 0;
     v7 = objc_opt_class();
-    v8 = [v7 newConfigurationInstance];
+    newConfigurationInstance = [v7 newConfigurationInstance];
     configuration = v6->_configuration;
-    v6->_configuration = v8;
+    v6->_configuration = newConfigurationInstance;
 
     v10 = _Block_copy(v4);
     v11 = v6->_completionHandler;
@@ -1902,30 +1902,30 @@ LABEL_19:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VNRequest *)self resolvedRevision];
-  v7 = [(VNRequest *)self preferredMetalContext];
-  v8 = [v7 name];
-  v9 = [v3 initWithFormat:@"%@-%lu:MTL=%@:Det=%lu:MDm=%lu", v5, v6, v8, -[VNRequest detectionLevel](self, "detectionLevel"), -[VNRequest maximumProcessingDimensionOnTheLongSide](self, "maximumProcessingDimensionOnTheLongSide")];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  preferredMetalContext = [(VNRequest *)self preferredMetalContext];
+  name = [preferredMetalContext name];
+  v9 = [v3 initWithFormat:@"%@-%lu:MTL=%@:Det=%lu:MDm=%lu", v5, resolvedRevision, name, -[VNRequest detectionLevel](self, "detectionLevel"), -[VNRequest maximumProcessingDimensionOnTheLongSide](self, "maximumProcessingDimensionOnTheLongSide")];
 
   return v9;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNRequest *)self frameworkClass];
-  if (v5 == [v4 requestClass])
+  configurationCopy = configuration;
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if (frameworkClass == [configurationCopy requestClass])
   {
-    v7 = [(VNRequest *)self resolvedRevision];
-    v8 = [v4 resolvedRevision];
-    if (v7 == v8)
+    resolvedRevision = [(VNRequest *)self resolvedRevision];
+    resolvedRevision2 = [configurationCopy resolvedRevision];
+    if (resolvedRevision == resolvedRevision2)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [(objc_class *)v5 revision:v7 mayAcceptResultsProducedByRevision:v8];
+      v6 = [(objc_class *)frameworkClass revision:resolvedRevision mayAcceptResultsProducedByRevision:resolvedRevision2];
     }
   }
 
@@ -1945,23 +1945,23 @@ LABEL_19:
   return v3;
 }
 
-+ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)a3 beingPerformedByRevision:(unint64_t)a4
++ (unint64_t)applicableRevisionForDependentRequestOfClass:(Class)class beingPerformedByRevision:(unint64_t)revision
 {
-  if (a1 == a3)
+  if (self == class)
   {
-    return a4;
+    return revision;
   }
 
-  v7 = [a1 dependentRequestMappingTable];
-  if (v7)
+  dependentRequestMappingTable = [self dependentRequestMappingTable];
+  if (dependentRequestMappingTable)
   {
-    v8 = *v7;
-    if (*v7)
+    v8 = *dependentRequestMappingTable;
+    if (*dependentRequestMappingTable)
     {
-      while (v8 != a4 || *(v7 + 8) != a3)
+      while (v8 != revision || *(dependentRequestMappingTable + 8) != class)
       {
-        v9 = *(v7 + 24);
-        v7 += 24;
+        v9 = *(dependentRequestMappingTable + 24);
+        dependentRequestMappingTable += 24;
         v8 = v9;
         if (!v9)
         {
@@ -1969,30 +1969,30 @@ LABEL_19:
         }
       }
 
-      return *(v7 + 16);
+      return *(dependentRequestMappingTable + 16);
     }
   }
 
 LABEL_7:
-  v10 = [(objc_class *)a3 defaultRevision];
-  v11 = [a1 dependentRequestCompatibility];
-  if (v11)
+  defaultRevision = [(objc_class *)class defaultRevision];
+  dependentRequestCompatibility = [self dependentRequestCompatibility];
+  if (dependentRequestCompatibility)
   {
-    v12 = *v11;
-    if (*v11)
+    v12 = *dependentRequestCompatibility;
+    if (*dependentRequestCompatibility)
     {
       v13 = 0;
-      v14 = v11 + 2;
+      v14 = dependentRequestCompatibility + 2;
       do
       {
-        if (v12 == a4 && *(v14 - 1) == a3)
+        if (v12 == revision && *(v14 - 1) == class)
         {
           v15 = *v14;
           if (*v14 < 0xDECAF000)
           {
-            if (v15 == v10)
+            if (v15 == defaultRevision)
             {
-              return v10;
+              return defaultRevision;
             }
 
             if (v15 > v13)
@@ -2004,8 +2004,8 @@ LABEL_7:
           else
           {
             v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-            v17 = VNMethodSignatureStringForObjectAndSelector(a1, sel_dependentRequestCompatibility);
-            v18 = VNRequestRevisionString(a1, *(v14 - 2));
+            v17 = VNMethodSignatureStringForObjectAndSelector(self, sel_dependentRequestCompatibility);
+            v18 = VNRequestRevisionString(self, *(v14 - 2));
             v19 = VNRequestRevisionString(*(v14 - 1), *v14);
             v20 = [v16 initWithFormat:@"%@ contains an entry for %@ that is dependent on a private revision %@", v17, v18, v19];
 
@@ -2025,58 +2025,58 @@ LABEL_7:
     }
   }
 
-  return [(objc_class *)a3 resolvedRevisionForRevision:0];
+  return [(objc_class *)class resolvedRevisionForRevision:0];
 }
 
-+ (unint64_t)resolvedRevisionForRevision:(unint64_t)a3
++ (unint64_t)resolvedRevisionForRevision:(unint64_t)revision
 {
-  if (!a3)
+  if (!revision)
   {
-    v3 = [a1 publicRevisionsSet];
-    v4 = [v3 lastIndex];
+    publicRevisionsSet = [self publicRevisionsSet];
+    lastIndex = [publicRevisionsSet lastIndex];
 
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
 
     else
     {
-      return v4;
+      return lastIndex;
     }
   }
 
-  return a3;
+  return revision;
 }
 
 + (NSIndexSet)allSupportedRevisions
 {
-  v3 = [a1 supportedRevisions];
-  v4 = [v3 mutableCopy];
+  supportedRevisions = [self supportedRevisions];
+  v4 = [supportedRevisions mutableCopy];
 
-  v5 = [a1 supportedPrivateRevisions];
-  [v4 addIndexes:v5];
+  supportedPrivateRevisions = [self supportedPrivateRevisions];
+  [v4 addIndexes:supportedPrivateRevisions];
 
   return v4;
 }
 
-+ (unint64_t)firstSupportedRevisionInOrderedRevisionList:(unint64_t)a3
++ (unint64_t)firstSupportedRevisionInOrderedRevisionList:(unint64_t)list
 {
-  v3 = a3;
-  if (a3)
+  listCopy = list;
+  if (list)
   {
     v9 = &v10;
     v5 = objc_autoreleasePoolPush();
-    v6 = [a1 allSupportedRevisions];
+    allSupportedRevisions = [self allSupportedRevisions];
     do
     {
-      if ([v6 containsIndex:v3])
+      if ([allSupportedRevisions containsIndex:listCopy])
       {
         break;
       }
 
       v7 = v9++;
-      v3 = *v7;
+      listCopy = *v7;
     }
 
     while (*v7);
@@ -2084,47 +2084,47 @@ LABEL_7:
     objc_autoreleasePoolPop(v5);
   }
 
-  return v3;
+  return listCopy;
 }
 
-+ (BOOL)supportsAnyRevision:(unint64_t)a3
++ (BOOL)supportsAnyRevision:(unint64_t)revision
 {
-  if ([a1 supportsRevision:?])
+  if ([self supportsRevision:?])
   {
     return 1;
   }
 
-  return [a1 supportsPrivateRevision:a3];
+  return [self supportsPrivateRevision:revision];
 }
 
-+ (BOOL)supportsPrivateRevision:(unint64_t)a3
++ (BOOL)supportsPrivateRevision:(unint64_t)revision
 {
-  v4 = [a1 supportedPrivateRevisions];
-  LOBYTE(a3) = [v4 containsIndex:a3];
+  supportedPrivateRevisions = [self supportedPrivateRevisions];
+  LOBYTE(revision) = [supportedPrivateRevisions containsIndex:revision];
 
-  return a3;
+  return revision;
 }
 
-+ (BOOL)supportsRevision:(unint64_t)a3
++ (BOOL)supportsRevision:(unint64_t)revision
 {
-  v4 = [a1 supportedRevisions];
-  LOBYTE(a3) = [v4 containsIndex:a3];
+  supportedRevisions = [self supportedRevisions];
+  LOBYTE(revision) = [supportedRevisions containsIndex:revision];
 
-  return a3;
+  return revision;
 }
 
 + (NSUInteger)currentRevision
 {
-  v3 = [a1 supportedRevisions];
-  v4 = [v3 lastIndex];
+  supportedRevisions = [self supportedRevisions];
+  lastIndex = [supportedRevisions lastIndex];
 
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || !v4)
+  if (lastIndex == 0x7FFFFFFFFFFFFFFFLL || !lastIndex)
   {
-    v4 = [a1 defaultRevision];
-    if (!v4)
+    lastIndex = [self defaultRevision];
+    if (!lastIndex)
     {
       v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v6 = NSStringFromClass([a1 frameworkClass]);
+      v6 = NSStringFromClass([self frameworkClass]);
       v7 = [v5 initWithFormat:@"%@ must provide at least one supported revision", v6];
 
       [VNError VNAssert:0 log:v7];
@@ -2132,48 +2132,48 @@ LABEL_7:
     }
   }
 
-  return v4;
+  return lastIndex;
 }
 
 + (NSIndexSet)supportedRevisions
 {
-  v3 = [a1 publicRevisionsSet];
-  if ([a1 supportedRevisionsAreFilteredBasedOnAvailableComputeDevices])
+  publicRevisionsSet = [self publicRevisionsSet];
+  if ([self supportedRevisionsAreFilteredBasedOnAvailableComputeDevices])
   {
-    v4 = [a1 _runtimeAvailableRevisionsOfRevisions:v3];
+    v4 = [self _runtimeAvailableRevisionsOfRevisions:publicRevisionsSet];
 
-    v3 = v4;
+    publicRevisionsSet = v4;
   }
 
-  return v3;
+  return publicRevisionsSet;
 }
 
 + (id)publicRevisionsSet
 {
-  v2 = [a1 frameworkClass];
+  frameworkClass = [self frameworkClass];
   os_unfair_lock_lock(&+[VNRequest publicRevisionsSet]::ourLock);
   v3 = +[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable;
   if (!+[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable)
   {
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v5 = +[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable;
-    +[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable = v4;
+    +[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable = strongToStrongObjectsMapTable;
 
     v3 = +[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable;
   }
 
-  v6 = [v3 objectForKey:v2];
+  v6 = [v3 objectForKey:frameworkClass];
   if (!v6)
   {
-    v7 = [objc_opt_self() revisionAvailability];
-    if (v7)
+    revisionAvailability = [objc_opt_self() revisionAvailability];
+    if (revisionAvailability)
     {
       v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
       v9 = +[VNRuntimeUtilities runTimeVersion];
-      if (*v7)
+      if (*revisionAvailability)
       {
         v10 = v9;
-        v11 = v7 + 20;
+        v11 = revisionAvailability + 20;
         do
         {
           if (*(v11 - 1) <= v10 && (!*v11 || *v11 >= v10))
@@ -2196,7 +2196,7 @@ LABEL_7:
 
     v6 = [v8 copy];
 
-    [+[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable setObject:v6 forKey:v2];
+    [+[VNRequest publicRevisionsSet]::ourRequestClassToSuportedRevisionsMapTable setObject:v6 forKey:frameworkClass];
   }
 
   os_unfair_lock_unlock(&+[VNRequest publicRevisionsSet]::ourLock);
@@ -2204,31 +2204,31 @@ LABEL_7:
   return v6;
 }
 
-+ (unint64_t)_defaultRevisionForBuildVersion:(int)a3
++ (unint64_t)_defaultRevisionForBuildVersion:(int)version
 {
-  if (a3 == -1)
+  if (version == -1)
   {
     return 0;
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v6 = [a1 revisionAvailability];
-  if (v6 && (v7 = *v6) != 0)
+  revisionAvailability = [self revisionAvailability];
+  if (revisionAvailability && (lastIndex = *revisionAvailability) != 0)
   {
-    v8 = v6 + 20;
+    v8 = revisionAvailability + 20;
     while (1)
     {
       v9 = *(v8 - 1);
-      if (v9 == a3)
+      if (v9 == version)
       {
         break;
       }
 
-      if (v9 <= a3)
+      if (v9 <= version)
       {
         if (*v8)
         {
-          v10 = *v8 < a3;
+          v10 = *v8 < version;
         }
 
         else
@@ -2238,13 +2238,13 @@ LABEL_7:
 
         if (!v10)
         {
-          [v5 addIndex:v7];
+          [v5 addIndex:lastIndex];
         }
       }
 
-      v7 = *(v8 + 20);
+      lastIndex = *(v8 + 20);
       v8 += 40;
-      if (!v7)
+      if (!lastIndex)
       {
         goto LABEL_13;
       }
@@ -2256,31 +2256,31 @@ LABEL_7:
 LABEL_13:
     if ([v5 count])
     {
-      v7 = [v5 lastIndex];
+      lastIndex = [v5 lastIndex];
     }
 
     else
     {
-      v7 = 0;
+      lastIndex = 0;
     }
   }
 
-  return v7;
+  return lastIndex;
 }
 
-+ (BOOL)getOptionalArray:(id *)a3 forKey:(id)a4 inOptions:(id)a5 withElementsOfClass:(Class)a6 error:(id *)a7
++ (BOOL)getOptionalArray:(id *)array forKey:(id)key inOptions:(id)options withElementsOfClass:(Class)class error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
+  keyCopy = key;
+  optionsCopy = options;
   v30 = 0;
   v13 = objc_opt_class();
-  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v30, v12, v11, 0, v13, a7);
+  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v30, optionsCopy, keyCopy, 0, v13, error);
   v15 = v30;
   v16 = v15;
   if (ObjectFromOptionsDictionary)
   {
-    if (a6)
+    if (class)
     {
       v28 = 0u;
       v29 = 0u;
@@ -2302,13 +2302,13 @@ LABEL_13:
 
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a7)
+              if (error)
               {
                 v22 = objc_alloc(MEMORY[0x1E696AEC0]);
-                v23 = NSStringFromClass(a6);
-                v24 = [v22 initWithFormat:@"All elements in the %@ array must be of class %@ (%@)", v11, v23, v17];
+                v23 = NSStringFromClass(class);
+                v24 = [v22 initWithFormat:@"All elements in the %@ array must be of class %@ (%@)", keyCopy, v23, v17];
 
-                *a7 = [VNError errorWithCode:5 message:v24];
+                *error = [VNError errorWithCode:5 message:v24];
               }
 
               goto LABEL_18;
@@ -2326,9 +2326,9 @@ LABEL_13:
       }
     }
 
-    if (a3)
+    if (array)
     {
-      *a3 = [v16 copy];
+      *array = [v16 copy];
     }
 
     v21 = 1;
@@ -2343,16 +2343,16 @@ LABEL_18:
   return v21;
 }
 
-+ (BOOL)getFloatValue:(float *)a3 forKey:(id)a4 inOptions:(id)a5 withDefaultValue:(float)a6 error:(id *)a7
++ (BOOL)getFloatValue:(float *)value forKey:(id)key inOptions:(id)options withDefaultValue:(float)defaultValue error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
+  keyCopy = key;
+  optionsCopy = options;
   v20 = 0;
   v13 = objc_opt_class();
-  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v20, v12, v11, 0, v13, a7);
+  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v20, optionsCopy, keyCopy, 0, v13, error);
   v15 = v20;
   v16 = v15;
-  if (a3)
+  if (value)
   {
     v17 = ObjectFromOptionsDictionary;
   }
@@ -2367,25 +2367,25 @@ LABEL_18:
     if (v15)
     {
       [v15 floatValue];
-      a6 = v18;
+      defaultValue = v18;
     }
 
-    *a3 = a6;
+    *value = defaultValue;
   }
 
   return ObjectFromOptionsDictionary;
 }
 
-+ (BOOL)getFloatValue:(float *)a3 forKey:(id)a4 inOptions:(id)a5 error:(id *)a6
++ (BOOL)getFloatValue:(float *)value forKey:(id)key inOptions:(id)options error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  optionsCopy = options;
   v18 = 0;
   v11 = objc_opt_class();
-  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v18, v10, v9, 1, v11, a6);
+  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v18, optionsCopy, keyCopy, 1, v11, error);
   v13 = v18;
   v14 = v13;
-  if (a3)
+  if (value)
   {
     v15 = ObjectFromOptionsDictionary;
   }
@@ -2398,22 +2398,22 @@ LABEL_18:
   if (v15)
   {
     [v13 floatValue];
-    *a3 = v16;
+    *value = v16;
   }
 
   return ObjectFromOptionsDictionary;
 }
 
-+ (BOOL)getDoubleValue:(double *)a3 forKey:(id)a4 inOptions:(id)a5 withDefaultValue:(double)a6 error:(id *)a7
++ (BOOL)getDoubleValue:(double *)value forKey:(id)key inOptions:(id)options withDefaultValue:(double)defaultValue error:(id *)error
 {
-  v11 = a4;
-  v12 = a5;
+  keyCopy = key;
+  optionsCopy = options;
   v20 = 0;
   v13 = objc_opt_class();
-  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v20, v12, v11, 0, v13, a7);
+  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v20, optionsCopy, keyCopy, 0, v13, error);
   v15 = v20;
   v16 = v15;
-  if (a3)
+  if (value)
   {
     v17 = ObjectFromOptionsDictionary;
   }
@@ -2428,25 +2428,25 @@ LABEL_18:
     if (v15)
     {
       [v15 doubleValue];
-      a6 = v18;
+      defaultValue = v18;
     }
 
-    *a3 = a6;
+    *value = defaultValue;
   }
 
   return ObjectFromOptionsDictionary;
 }
 
-+ (BOOL)getDoubleValue:(double *)a3 forKey:(id)a4 inOptions:(id)a5 error:(id *)a6
++ (BOOL)getDoubleValue:(double *)value forKey:(id)key inOptions:(id)options error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  optionsCopy = options;
   v18 = 0;
   v11 = objc_opt_class();
-  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v18, v10, v9, 1, v11, a6);
+  ObjectFromOptionsDictionary = _getObjectFromOptionsDictionary(&v18, optionsCopy, keyCopy, 1, v11, error);
   v13 = v18;
   v14 = v13;
-  if (a3)
+  if (value)
   {
     v15 = ObjectFromOptionsDictionary;
   }
@@ -2459,23 +2459,23 @@ LABEL_18:
   if (v15)
   {
     [v13 doubleValue];
-    *a3 = v16;
+    *value = v16;
   }
 
   return ObjectFromOptionsDictionary;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 == a4)
+  if (revision == byRevision)
   {
     return 1;
   }
 
-  v8 = [VNRequestSpecifier specifierForRequestClass:a1 revision:a3 error:0];
-  v9 = [VNRequestSpecifier specifierForRequestClass:a1 revision:a4 error:0];
+  v8 = [VNRequestSpecifier specifierForRequestClass:self revision:revision error:0];
+  v9 = [VNRequestSpecifier specifierForRequestClass:self revision:byRevision error:0];
   v10 = [v8 hasModelEquivalencyToRequestSpecifier:v9];
-  v12 = a3 < 0xDECAF000 && a4 < 0xDECAF000;
+  v12 = revision < 0xDECAF000 && byRevision < 0xDECAF000;
   v4 = (v10 & 1) != 0 || v12;
 
   return v4;
@@ -2484,19 +2484,19 @@ LABEL_18:
 + (unsigned)VNClassCode
 {
   v3 = 0;
-  [VNClassRegistrar getClassCode:&v3 forClass:a1 error:0];
+  [VNClassRegistrar getClassCode:&v3 forClass:self error:0];
   return v3;
 }
 
-+ (id)_runtimeAvailableRevisionsOfRevisions:(id)a3
++ (id)_runtimeAvailableRevisionsOfRevisions:(id)revisions
 {
-  v4 = a3;
-  if ([v4 count])
+  revisionsCopy = revisions;
+  if ([revisionsCopy count])
   {
     v5 = objc_alloc_init(_VNRequestRevisionsIntrospectionInstanceCreator);
-    v6 = [a1 frameworkClass];
+    frameworkClass = [self frameworkClass];
     v17 = 0;
-    v7 = [(VNRequestInstanceCreator *)v5 newRequestInstanceOfClass:v6 withCompletionHandler:0 revision:0 error:&v17];
+    v7 = [(VNRequestInstanceCreator *)v5 newRequestInstanceOfClass:frameworkClass withCompletionHandler:0 revision:0 error:&v17];
     v8 = v17;
     if (v7)
     {
@@ -2505,24 +2505,24 @@ LABEL_18:
       v15[2] = __51__VNRequest__runtimeAvailableRevisionsOfRevisions___block_invoke;
       v15[3] = &unk_1E77B2CB0;
       v16 = v7;
-      v9 = [v4 indexesPassingTest:v15];
+      v9 = [revisionsCopy indexesPassingTest:v15];
     }
 
     else
     {
       v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v11 = NSStringFromClass(v6);
-      v12 = [v8 localizedDescription];
-      v13 = [v10 initWithFormat:@"Failed to create instance of %@ - %@", v11, v12];
+      v11 = NSStringFromClass(frameworkClass);
+      localizedDescription = [v8 localizedDescription];
+      v13 = [v10 initWithFormat:@"Failed to create instance of %@ - %@", v11, localizedDescription];
       [VNError VNAssert:0 log:v13];
 
-      v9 = [v4 copy];
+      v9 = [revisionsCopy copy];
     }
   }
 
   else
   {
-    v9 = [v4 copy];
+    v9 = [revisionsCopy copy];
   }
 
   return v9;
@@ -2549,60 +2549,60 @@ BOOL __51__VNRequest__runtimeAvailableRevisionsOfRevisions___block_invoke(uint64
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     ourVisionFrameworkLinkTimeVersion = +[VNFrameworkManager linktimeVersion];
   }
 }
 
-- (id)utilizedResourcesWithError:(id *)a3
+- (id)utilizedResourcesWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    v4 = [(VNRequest *)self specifier];
-    *a3 = [VNError errorForInvalidOperationForRequestSpecifier:v4];
+    specifier = [(VNRequest *)self specifier];
+    *error = [VNError errorForInvalidOperationForRequestSpecifier:specifier];
   }
 
   return 0;
 }
 
-- (id)VNImageProcessingSessionPrintAndReturnError:(id *)a3
+- (id)VNImageProcessingSessionPrintAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self VNImageProcessingSessionPrintKeyPath];
-  if (v5)
+  vNImageProcessingSessionPrintKeyPath = [(VNRequest *)self VNImageProcessingSessionPrintKeyPath];
+  if (vNImageProcessingSessionPrintKeyPath)
   {
-    v6 = [(VNRequest *)self results];
-    if ([v6 count] == 1)
+    results = [(VNRequest *)self results];
+    if ([results count] == 1)
     {
-      v7 = [v6 firstObject];
-      v8 = [v7 valueForKeyPath:v5];
+      firstObject = [results firstObject];
+      v8 = [firstObject valueForKeyPath:vNImageProcessingSessionPrintKeyPath];
     }
 
     else
     {
-      if (!a3)
+      if (!error)
       {
         v8 = 0;
         goto LABEL_10;
       }
 
-      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ did not generate a single print", self];
-      [VNError errorForInvalidOptionWithLocalizedDescription:v7];
-      *a3 = v8 = 0;
+      firstObject = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ did not generate a single print", self];
+      [VNError errorForInvalidOptionWithLocalizedDescription:firstObject];
+      *error = v8 = 0;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       v8 = 0;
       goto LABEL_11;
     }
 
-    v6 = [(VNRequest *)self specifier];
-    [VNError errorForInvalidOperationForRequestSpecifier:v6];
-    *a3 = v8 = 0;
+    results = [(VNRequest *)self specifier];
+    [VNError errorForInvalidOperationForRequestSpecifier:results];
+    *error = v8 = 0;
   }
 
 LABEL_10:
@@ -2625,39 +2625,39 @@ LABEL_11:
   return result;
 }
 
-+ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)a3 fromDescriptorData:(const void *)a4 length:(unint64_t)a5 elementCount:(unint64_t)a6 error:(id *)a7
++ (id)createVNEntityIdentificationModelEntryPrintForRevision:(unint64_t)revision fromDescriptorData:(const void *)data length:(unint64_t)length elementCount:(unint64_t)count error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = [VNError errorForUnimplementedMethod:a2 ofObject:a1, a5, a6];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self, length, count];
   }
 
   return 0;
 }
 
-- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)a3
+- (id)VNCoreMLTransformerDetectionprintAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [(VNRequest *)self specifier];
-    v7 = [v5 initWithFormat:@"%@ does not produce detectionprint data", v6];
+    specifier = [(VNRequest *)self specifier];
+    v7 = [v5 initWithFormat:@"%@ does not produce detectionprint data", specifier];
 
-    *a3 = [VNError errorForDataUnavailableWithLocalizedDescription:v7];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:v7];
   }
 
   return 0;
 }
 
-- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)a3
+- (id)VNCoreMLTransformerSceneprintsAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v6 = [(VNRequest *)self specifier];
-    v7 = [v5 initWithFormat:@"%@ does not produce sceneprint data", v6];
+    specifier = [(VNRequest *)self specifier];
+    v7 = [v5 initWithFormat:@"%@ does not produce sceneprint data", specifier];
 
-    *a3 = [VNError errorForDataUnavailableWithLocalizedDescription:v7];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:v7];
   }
 
   return 0;

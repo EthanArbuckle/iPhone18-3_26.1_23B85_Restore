@@ -1,14 +1,14 @@
 @interface APLockedAppDisclosureViewController
-- (id)buttonTrayForAssistant:(id)a3;
+- (id)buttonTrayForAssistant:(id)assistant;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation APLockedAppDisclosureViewController
 
-- (id)buttonTrayForAssistant:(id)a3
+- (id)buttonTrayForAssistant:(id)assistant
 {
-  v3 = self;
-  result = [(APLockedAppDisclosureViewController *)v3 view];
+  selfCopy = self;
+  result = [(APLockedAppDisclosureViewController *)selfCopy view];
   if (result)
   {
     v5 = result;
@@ -35,7 +35,7 @@
   v2 = v5.receiver;
   [(APLockedAppDisclosureViewController *)&v5 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC15AppProtectionUI35APLockedAppDisclosureViewController_scrollViewAssistant];
-  v4 = [*&v2[OBJC_IVAR____TtC15AppProtectionUI35APLockedAppDisclosureViewController_tccController] scrollView];
+  scrollView = [*&v2[OBJC_IVAR____TtC15AppProtectionUI35APLockedAppDisclosureViewController_tccController] scrollView];
   [v3 performAdjustmentsForScrollView_];
 }
 

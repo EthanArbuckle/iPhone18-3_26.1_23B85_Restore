@@ -1,39 +1,39 @@
 @interface HIDService
 - (BOOL)allInputReportsReady;
 - (BOOL)isPowerManagementBasedOnDisplayState;
-- (HIDService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
+- (HIDService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (id)hidDeviceProperties;
-- (id)reportTypeToString:(int)a3;
-- (void)authDidSucceedNotification:(id)a3;
+- (id)reportTypeToString:(int)string;
+- (void)authDidSucceedNotification:(id)notification;
 - (void)createHIDDeviceIfEverythingReady;
-- (void)createReportInfo:(id)a3;
+- (void)createReportInfo:(id)info;
 - (void)dealloc;
 - (void)deregisterForPowerManagementEvents;
 - (void)destroyHIDDevice;
-- (void)enterSuspendModeIfNeeded:(int64_t)a3;
+- (void)enterSuspendModeIfNeeded:(int64_t)needed;
 - (void)exitSuspendModeIfNeeded;
 - (void)hidDeviceDesiredConnectionParametersDidChange;
 - (void)notifyDidStartIfEverythingReady;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)registerForPowerManagementEvents;
-- (void)signalCommandCondition:(id)a3 error:(id)a4;
+- (void)signalCommandCondition:(id)condition error:(id)error;
 - (void)start;
 - (void)stop;
-- (void)writeControlPointCommand:(unsigned __int8)a3;
+- (void)writeControlPointCommand:(unsigned __int8)command;
 @end
 
 @implementation HIDService
 
-- (HIDService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (HIDService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v10.receiver = self;
   v10.super_class = HIDService;
-  v5 = [(ClientService *)&v10 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v10 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -71,9 +71,9 @@
   v14[6] = v9;
   v10 = [NSArray arrayWithObjects:v14 count:7];
 
-  v11 = [(ClientService *)self peripheral];
-  v12 = [(ClientService *)self service];
-  [v11 discoverCharacteristics:v10 forService:v12];
+  peripheral = [(ClientService *)self peripheral];
+  service = [(ClientService *)self service];
+  [peripheral discoverCharacteristics:v10 forService:service];
 }
 
 - (void)stop
@@ -95,11 +95,11 @@
   [(HIDService *)&v4 dealloc];
 }
 
-- (void)createReportInfo:(id)a3
+- (void)createReportInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5];
+  infoCopy = info;
+  value = [infoCopy value];
+  v6 = [DataInputStream inputStreamWithData:value];
 
   v17 = 0;
   if ([v6 readUint8:&v17 + 1] && objc_msgSend(v6, "readUint8:", &v17))
@@ -121,14 +121,14 @@
     v8 = [HIDReportInfo alloc];
     v9 = [(HIDReportInfo *)v8 initWithID:HIBYTE(v17) type:v17];
     reportInfoMap = self->_reportInfoMap;
-    v11 = [v4 characteristic];
-    [(NSMapTable *)reportInfoMap setObject:v9 forKey:v11];
+    characteristic = [infoCopy characteristic];
+    [(NSMapTable *)reportInfoMap setObject:v9 forKey:characteristic];
 
     if (!v17)
     {
-      v12 = [(ClientService *)self peripheral];
-      v13 = [v4 characteristic];
-      [v12 setNotifyValue:1 forCharacteristic:v13];
+      peripheral = [(ClientService *)self peripheral];
+      characteristic2 = [infoCopy characteristic];
+      [peripheral setNotifyValue:1 forCharacteristic:characteristic2];
     }
 
     [(HIDService *)self createHIDDeviceIfEverythingReady];
@@ -138,9 +138,9 @@
 - (id)hidDeviceProperties
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(ClientService *)self manager];
+  manager = [(ClientService *)self manager];
   v5 = [CBUUID UUIDWithString:CBUUIDDeviceInformationServiceString];
-  v6 = [v4 clientServiceForUUID:v5];
+  v6 = [manager clientServiceForUUID:v5];
 
   if (v6)
   {
@@ -159,55 +159,55 @@
       [v3 setObject:v10 forKeyedSubscript:@"VersionNumber"];
     }
 
-    v11 = [v6 firmwareRevision];
+    firmwareRevision = [v6 firmwareRevision];
 
-    if (v11)
+    if (firmwareRevision)
     {
-      v12 = [v6 firmwareRevision];
-      v13 = [v12 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+      firmwareRevision2 = [v6 firmwareRevision];
+      v13 = [firmwareRevision2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
       [v3 setObject:v13 forKeyedSubscript:@"kBTFirmwareRevisionKey"];
     }
 
-    v14 = [v6 hardwareRevision];
+    hardwareRevision = [v6 hardwareRevision];
 
-    if (v14)
+    if (hardwareRevision)
     {
-      v15 = [v6 hardwareRevision];
-      v16 = [v15 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+      hardwareRevision2 = [v6 hardwareRevision];
+      v16 = [hardwareRevision2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
       [v3 setObject:v16 forKeyedSubscript:@"kBTHardwareRevisionKey"];
     }
 
-    v17 = [v6 serialNumber];
+    serialNumber = [v6 serialNumber];
 
-    if (v17)
+    if (serialNumber)
     {
-      v18 = [v6 serialNumber];
-      v19 = [v18 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+      serialNumber2 = [v6 serialNumber];
+      v19 = [serialNumber2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
       [v3 setObject:v19 forKeyedSubscript:@"SerialNumber"];
     }
 
-    v20 = [v6 modelNumber];
+    modelNumber = [v6 modelNumber];
 
-    if (v20)
+    if (modelNumber)
     {
-      v21 = [v6 modelNumber];
-      v22 = [v21 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+      modelNumber2 = [v6 modelNumber];
+      v22 = [modelNumber2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
       [v3 setObject:v22 forKeyedSubscript:@"ModelNumber"];
     }
 
-    v23 = [v6 manufacturerName];
+    manufacturerName = [v6 manufacturerName];
 
-    if (v23)
+    if (manufacturerName)
     {
-      v24 = [v6 manufacturerName];
-      v25 = [v24 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
+      manufacturerName2 = [v6 manufacturerName];
+      v25 = [manufacturerName2 stringByReplacingOccurrencesOfString:&stru_1000C15C0 withString:&stru_1000BEA00];
       [v3 setObject:v25 forKeyedSubscript:@"Manufacturer"];
     }
   }
 
-  v26 = [(HIDService *)self hidInformationCharacteristic];
-  v27 = [v26 value];
-  v28 = [DataInputStream inputStreamWithData:v27 byteOrder:1];
+  hidInformationCharacteristic = [(HIDService *)self hidInformationCharacteristic];
+  value = [hidInformationCharacteristic value];
+  v28 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   LOWORD(v56[0]) = 0;
   v55 = 0;
@@ -220,51 +220,51 @@
 
   v56[0] = 0;
   v56[1] = 0;
-  v30 = [(ClientService *)self peripheral];
-  v31 = [v30 identifier];
-  [v31 getUUIDBytes:v56];
+  peripheral = [(ClientService *)self peripheral];
+  identifier = [peripheral identifier];
+  [identifier getUUIDBytes:v56];
 
   v32 = [NSNumber numberWithUnsignedInt:LODWORD(v56[0])];
   [v3 setObject:v32 forKeyedSubscript:@"LocationID"];
 
-  v33 = [(ClientService *)self peripheral];
-  v34 = [v33 identifier];
-  v35 = [v34 UUIDString];
-  [v3 setObject:v35 forKeyedSubscript:@"PhysicalDeviceUniqueID"];
+  peripheral2 = [(ClientService *)self peripheral];
+  identifier2 = [peripheral2 identifier];
+  uUIDString = [identifier2 UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"PhysicalDeviceUniqueID"];
 
-  v36 = [(ClientService *)self peripheral];
-  v37 = [v36 name];
+  peripheral3 = [(ClientService *)self peripheral];
+  name = [peripheral3 name];
 
-  if (v37)
+  if (name)
   {
-    v38 = [(ClientService *)self peripheral];
-    v39 = [v38 name];
-    [v3 setObject:v39 forKeyedSubscript:@"Product"];
+    peripheral4 = [(ClientService *)self peripheral];
+    name2 = [peripheral4 name];
+    [v3 setObject:name2 forKeyedSubscript:@"Product"];
   }
 
-  v40 = [(HIDService *)self reportMapCharacteristic];
-  v41 = [v40 value];
-  [v3 setObject:v41 forKeyedSubscript:@"ReportDescriptor"];
+  reportMapCharacteristic = [(HIDService *)self reportMapCharacteristic];
+  value2 = [reportMapCharacteristic value];
+  [v3 setObject:value2 forKeyedSubscript:@"ReportDescriptor"];
 
   [v3 setObject:@"BluetoothLowEnergy" forKeyedSubscript:@"Transport"];
   [v3 setObject:&off_1000C42B0 forKeyedSubscript:@"RequestTimeout"];
   [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:@"HIDVirtualDevice"];
-  v42 = [(ClientService *)self manager];
+  manager2 = [(ClientService *)self manager];
   v43 = [CBUUID UUIDWithString:@"8341F2B4-C013-4F04-8197-C4CDB42E26DC"];
-  v44 = [v42 clientServiceForUUID:v43];
+  v44 = [manager2 clientServiceForUUID:v43];
 
   if (v44)
   {
     [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Authenticated"];
     v45 = +[NSNotificationCenter defaultCenter];
-    v46 = [(ClientService *)self peripheral];
-    [v45 addObserver:self selector:"authDidSucceedNotification:" name:@"AuthenticationServiceAuthDidSucceedNotification" object:v46];
+    peripheral5 = [(ClientService *)self peripheral];
+    [v45 addObserver:self selector:"authDidSucceedNotification:" name:@"AuthenticationServiceAuthDidSucceedNotification" object:peripheral5];
   }
 
   else
   {
-    v47 = [(ClientService *)self peripheral];
-    v48 = [v47 hasTag:@"needsMFiAuthentication4.0"];
+    peripheral6 = [(ClientService *)self peripheral];
+    v48 = [peripheral6 hasTag:@"needsMFiAuthentication4.0"];
 
     if (v48)
     {
@@ -272,13 +272,13 @@
     }
   }
 
-  v49 = [(HIDService *)self accessoryCategoryCharacteristic];
+  accessoryCategoryCharacteristic = [(HIDService *)self accessoryCategoryCharacteristic];
 
-  if (v49)
+  if (accessoryCategoryCharacteristic)
   {
-    v50 = [(HIDService *)self accessoryCategoryCharacteristic];
-    v51 = [v50 value];
-    v52 = [DataInputStream inputStreamWithData:v51];
+    accessoryCategoryCharacteristic2 = [(HIDService *)self accessoryCategoryCharacteristic];
+    value3 = [accessoryCategoryCharacteristic2 value];
+    v52 = [DataInputStream inputStreamWithData:value3];
 
     LOBYTE(v56[0]) = 0;
     if ([v52 readUint8:v56])
@@ -293,23 +293,23 @@
 
 - (void)createHIDDeviceIfEverythingReady
 {
-  v25 = [(HIDService *)self reportMapCharacteristic];
-  v3 = [v25 value];
-  if (v3)
+  reportMapCharacteristic = [(HIDService *)self reportMapCharacteristic];
+  value = [reportMapCharacteristic value];
+  if (value)
   {
-    v4 = v3;
-    v5 = [(HIDService *)self hidInformationCharacteristic];
-    v6 = [v5 value];
-    if (v6 && [(NSMapTable *)self->_reportInfoMap count]== self->_numReports)
+    v4 = value;
+    hidInformationCharacteristic = [(HIDService *)self hidInformationCharacteristic];
+    value2 = [hidInformationCharacteristic value];
+    if (value2 && [(NSMapTable *)self->_reportInfoMap count]== self->_numReports)
     {
-      v7 = [(HIDService *)self accessoryCategoryCharacteristic];
-      if (v7)
+      accessoryCategoryCharacteristic = [(HIDService *)self accessoryCategoryCharacteristic];
+      if (accessoryCategoryCharacteristic)
       {
-        v8 = v7;
-        v9 = [(HIDService *)self accessoryCategoryCharacteristic];
-        v10 = [v9 value];
+        v8 = accessoryCategoryCharacteristic;
+        accessoryCategoryCharacteristic2 = [(HIDService *)self accessoryCategoryCharacteristic];
+        value3 = [accessoryCategoryCharacteristic2 value];
 
-        if (!v10)
+        if (!value3)
         {
           return;
         }
@@ -319,48 +319,48 @@
       {
       }
 
-      v11 = [(HIDService *)self hidDeviceProperties];
-      v12 = [(ClientService *)self peripheral];
-      if ([v12 isLinkEncrypted])
+      hidDeviceProperties = [(HIDService *)self hidDeviceProperties];
+      peripheral = [(ClientService *)self peripheral];
+      if ([peripheral isLinkEncrypted])
       {
-        v13 = [(HIDService *)self hidDevice];
+        hidDevice = [(HIDService *)self hidDevice];
 
-        if (!v13)
+        if (!hidDevice)
         {
           if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
           {
             sub_10007655C();
           }
 
-          v14 = [(NSMapTable *)self->_reportInfoMap objectEnumerator];
-          v15 = [v14 allObjects];
-          v16 = [HIDBluetoothDevice hidDeviceWithProperties:v11 reports:v15];
+          objectEnumerator = [(NSMapTable *)self->_reportInfoMap objectEnumerator];
+          allObjects = [objectEnumerator allObjects];
+          v16 = [HIDBluetoothDevice hidDeviceWithProperties:hidDeviceProperties reports:allObjects];
           [(HIDService *)self setHidDevice:v16];
 
-          v17 = [(HIDService *)self hidDevice];
+          hidDevice2 = [(HIDService *)self hidDevice];
 
-          if (v17)
+          if (hidDevice2)
           {
-            v18 = [(HIDService *)self hidDevice];
-            [v18 setService:self];
+            hidDevice3 = [(HIDService *)self hidDevice];
+            [hidDevice3 setService:self];
 
-            v19 = [(ClientService *)self peripheral];
-            v20 = [(HIDService *)self hidDevice];
-            [v20 setPeripheral:v19];
+            peripheral2 = [(ClientService *)self peripheral];
+            hidDevice4 = [(HIDService *)self hidDevice];
+            [hidDevice4 setPeripheral:peripheral2];
 
-            v21 = [(HIDService *)self hidDevice];
-            v22 = [v21 desiredConnectionParameters];
+            hidDevice5 = [(HIDService *)self hidDevice];
+            desiredConnectionParameters = [hidDevice5 desiredConnectionParameters];
 
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
             {
               sub_1000765D0();
             }
 
-            v23 = [(ClientService *)self manager];
-            [v23 clientService:self desiresConnectionParameters:v22];
+            manager = [(ClientService *)self manager];
+            [manager clientService:self desiresConnectionParameters:desiredConnectionParameters];
 
-            v24 = [(HIDService *)self hidDevice];
-            [v24 start];
+            hidDevice6 = [(HIDService *)self hidDevice];
+            [hidDevice6 start];
           }
 
           else if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -390,9 +390,9 @@ LABEL_24:
 
 - (void)destroyHIDDevice
 {
-  v3 = [(HIDService *)self hidDevice];
+  hidDevice = [(HIDService *)self hidDevice];
 
-  if (v3)
+  if (hidDevice)
   {
     reportInfoMap = self->_reportInfoMap;
     v6[0] = _NSConcreteStackBlock;
@@ -401,33 +401,33 @@ LABEL_24:
     v6[3] = &unk_1000BDFE8;
     v6[4] = self;
     [(NSMapTable *)reportInfoMap enumerateKeysAndObjectsUsingBlock:v6];
-    v5 = [(HIDService *)self hidDevice];
-    [v5 stop];
+    hidDevice2 = [(HIDService *)self hidDevice];
+    [hidDevice2 stop];
   }
 }
 
-- (void)signalCommandCondition:(id)a3 error:(id)a4
+- (void)signalCommandCondition:(id)condition error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 commandCondition];
-  [v7 lock];
+  errorCopy = error;
+  conditionCopy = condition;
+  commandCondition = [conditionCopy commandCondition];
+  [commandCondition lock];
 
-  [v6 setCommandPending:0];
-  [v6 setCommandError:v5];
+  [conditionCopy setCommandPending:0];
+  [conditionCopy setCommandError:errorCopy];
 
-  v8 = [v6 commandCondition];
-  [v8 signal];
+  commandCondition2 = [conditionCopy commandCondition];
+  [commandCondition2 signal];
 
-  v9 = [v6 commandCondition];
+  commandCondition3 = [conditionCopy commandCondition];
 
-  [v9 unlock];
+  [commandCondition3 unlock];
 }
 
 - (BOOL)isPowerManagementBasedOnDisplayState
 {
-  v2 = [(ClientService *)self peripheral];
-  v3 = [v2 hasTag:@"A2538"];
+  peripheral = [(ClientService *)self peripheral];
+  v3 = [peripheral hasTag:@"A2538"];
 
   return v3;
 }
@@ -446,8 +446,8 @@ LABEL_24:
     v4 = objc_alloc_init(CUSystemMonitor);
     [(HIDService *)self setSystemMonitor:v4];
 
-    v5 = [(HIDService *)self systemMonitor];
-    [v5 setDispatchQueue:&_dispatch_main_q];
+    systemMonitor = [(HIDService *)self systemMonitor];
+    [systemMonitor setDispatchQueue:&_dispatch_main_q];
 
     objc_initWeak(buf, self);
     v9[0] = _NSConcreteStackBlock;
@@ -455,11 +455,11 @@ LABEL_24:
     v9[2] = sub_100040B58;
     v9[3] = &unk_1000BD3C0;
     objc_copyWeak(&v10, buf);
-    v6 = [(HIDService *)self systemMonitor];
-    [v6 setScreenOnChangedHandler:v9];
+    systemMonitor2 = [(HIDService *)self systemMonitor];
+    [systemMonitor2 setScreenOnChangedHandler:v9];
 
-    v7 = [(HIDService *)self systemMonitor];
-    [v7 activateWithCompletion:0];
+    systemMonitor3 = [(HIDService *)self systemMonitor];
+    [systemMonitor3 activateWithCompletion:0];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -468,9 +468,9 @@ LABEL_24:
   else
   {
     [(HIDService *)self setPmService:IORegisterForSystemPower(self, &self->_pmNotificationPort, j__objc_msgSend_handlePowerManagementNotification_notificationID_, &self->_pmNotifier)];
-    v8 = [(HIDService *)self pmNotificationPort];
+    pmNotificationPort = [(HIDService *)self pmNotificationPort];
 
-    IONotificationPortSetDispatchQueue(v8, &_dispatch_main_q);
+    IONotificationPortSetDispatchQueue(pmNotificationPort, &_dispatch_main_q);
   }
 }
 
@@ -478,8 +478,8 @@ LABEL_24:
 {
   if ([(HIDService *)self isPowerManagementBasedOnDisplayState])
   {
-    v3 = [(HIDService *)self systemMonitor];
-    [v3 invalidate];
+    systemMonitor = [(HIDService *)self systemMonitor];
+    [systemMonitor invalidate];
 
     [(HIDService *)self setSystemMonitor:0];
   }
@@ -488,24 +488,24 @@ LABEL_24:
   {
     IODeregisterForSystemPower(&self->_pmNotifier);
     IONotificationPortDestroy([(HIDService *)self pmNotificationPort]);
-    v4 = [(HIDService *)self pmService];
+    pmService = [(HIDService *)self pmService];
 
-    IOServiceClose(v4);
+    IOServiceClose(pmService);
   }
 }
 
 - (void)notifyDidStartIfEverythingReady
 {
-  v6 = [(HIDService *)self hidDevice];
-  if ([v6 state] == 2)
+  hidDevice = [(HIDService *)self hidDevice];
+  if ([hidDevice state] == 2)
   {
-    v3 = [(HIDService *)self allInputReportsReady];
+    allInputReportsReady = [(HIDService *)self allInputReportsReady];
 
-    if (v3)
+    if (allInputReportsReady)
     {
       v4 = +[NSNotificationCenter defaultCenter];
-      v5 = [(ClientService *)self peripheral];
-      [v4 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:v5];
+      peripheral = [(ClientService *)self peripheral];
+      [v4 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:peripheral];
 
       [(ClientService *)self notifyDidStart];
     }
@@ -516,16 +516,16 @@ LABEL_24:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v53 = a3;
-  if (!a5)
+  peripheralCopy = peripheral;
+  if (!error)
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v8 = [obj countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v8)
     {
@@ -548,28 +548,28 @@ LABEL_24:
           }
 
           v13 = *(*(&v55 + 1) + 8 * v12);
-          v14 = [(HIDService *)self reportMapCharacteristic];
-          if (v14)
+          reportMapCharacteristic = [(HIDService *)self reportMapCharacteristic];
+          if (reportMapCharacteristic)
           {
           }
 
           else
           {
-            v15 = [v13 UUID];
+            uUID = [v13 UUID];
             v16 = [CBUUID UUIDWithString:v51];
-            v17 = [v15 isEqual:v16];
+            v17 = [uUID isEqual:v16];
 
             if (v17)
             {
               [(HIDService *)self setReportMapCharacteristic:v13];
-              [v53 discoverDescriptorsForCharacteristic:v13];
+              [peripheralCopy discoverDescriptorsForCharacteristic:v13];
 LABEL_25:
-              v33 = [(ClientService *)self peripheral];
-              if ([v33 isLinkEncrypted])
+              peripheral = [(ClientService *)self peripheral];
+              if ([peripheral isLinkEncrypted])
               {
-                v34 = [v13 value];
+                value = [v13 value];
 
-                if (v34)
+                if (value)
                 {
                   goto LABEL_39;
                 }
@@ -579,32 +579,32 @@ LABEL_25:
               {
               }
 
-              [v53 readValueForCharacteristic:v13];
+              [peripheralCopy readValueForCharacteristic:v13];
               goto LABEL_39;
             }
           }
 
-          v18 = [v13 UUID];
+          uUID2 = [v13 UUID];
           v19 = [CBUUID UUIDWithString:v11];
-          v20 = [v18 isEqual:v19];
+          v20 = [uUID2 isEqual:v19];
 
           if (v20)
           {
             ++self->_numReports;
-            [v53 discoverDescriptorsForCharacteristic:v13];
+            [peripheralCopy discoverDescriptorsForCharacteristic:v13];
             goto LABEL_39;
           }
 
-          v21 = [(HIDService *)self hidControlPointCharacteristic];
-          if (v21)
+          hidControlPointCharacteristic = [(HIDService *)self hidControlPointCharacteristic];
+          if (hidControlPointCharacteristic)
           {
           }
 
           else
           {
-            v22 = [v13 UUID];
+            uUID3 = [v13 UUID];
             v23 = [CBUUID UUIDWithString:v49];
-            v24 = [v22 isEqual:v23];
+            v24 = [uUID3 isEqual:v23];
 
             if (v24)
             {
@@ -614,16 +614,16 @@ LABEL_25:
             }
           }
 
-          v25 = [(HIDService *)self hidInformationCharacteristic];
-          if (v25)
+          hidInformationCharacteristic = [(HIDService *)self hidInformationCharacteristic];
+          if (hidInformationCharacteristic)
           {
           }
 
           else
           {
-            v26 = [v13 UUID];
+            uUID4 = [v13 UUID];
             v27 = [CBUUID UUIDWithString:v48];
-            v28 = [v26 isEqual:v27];
+            v28 = [uUID4 isEqual:v27];
 
             if (v28)
             {
@@ -632,16 +632,16 @@ LABEL_25:
             }
           }
 
-          v29 = [(HIDService *)self accessoryCategoryCharacteristic];
-          if (v29)
+          accessoryCategoryCharacteristic = [(HIDService *)self accessoryCategoryCharacteristic];
+          if (accessoryCategoryCharacteristic)
           {
           }
 
           else
           {
-            v30 = [v13 UUID];
+            uUID5 = [v13 UUID];
             v31 = [CBUUID UUIDWithString:@"D31D8DEA-47DB-4796-A6B9-E38909CB34FF"];
-            v32 = [v30 isEqual:v31];
+            v32 = [uUID5 isEqual:v31];
 
             if (v32)
             {
@@ -650,9 +650,9 @@ LABEL_25:
             }
           }
 
-          v35 = [v13 UUID];
+          uUID6 = [v13 UUID];
           v36 = [CBUUID UUIDWithString:v50];
-          v37 = [v35 isEqual:v36];
+          v37 = [uUID6 isEqual:v36];
 
           if (v37)
           {
@@ -663,15 +663,15 @@ LABEL_25:
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Detected keyboard LE HID", buf, 2u);
             }
 
-            v39 = v53;
+            v39 = peripheralCopy;
             v40 = @"IsLEKeyboard";
           }
 
           else
           {
-            v41 = [v13 UUID];
+            uUID7 = [v13 UUID];
             v42 = [CBUUID UUIDWithString:v47];
-            v43 = [v41 isEqual:v42];
+            v43 = [uUID7 isEqual:v42];
 
             if (!v43)
             {
@@ -685,7 +685,7 @@ LABEL_25:
               _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Detected mouse LE HID", buf, 2u);
             }
 
-            v39 = v53;
+            v39 = peripheralCopy;
             v40 = @"IsLEMouse";
           }
 
@@ -701,9 +701,9 @@ LABEL_39:
       while (v9);
     }
 
-    v45 = [(HIDService *)self reportMapCharacteristic];
+    reportMapCharacteristic2 = [(HIDService *)self reportMapCharacteristic];
 
-    if (!v45 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+    if (!reportMapCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_100076678();
     }
@@ -713,44 +713,44 @@ LABEL_39:
       sub_1000766AC();
     }
 
-    v46 = [(HIDService *)self hidInformationCharacteristic];
+    hidInformationCharacteristic2 = [(HIDService *)self hidInformationCharacteristic];
 
-    if (!v46 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
+    if (!hidInformationCharacteristic2 && os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
       sub_1000766E0();
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSMapTable *)self->_reportInfoMap objectForKey:v7];
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  v9 = [(NSMapTable *)self->_reportInfoMap objectForKey:characteristicCopy];
   v10 = v9;
   if (v9)
   {
     if ([v9 commandPending] == 1)
     {
       v11 = qword_1000DDBC8;
-      if (v8)
+      if (errorCopy)
       {
         if (!os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
         {
 LABEL_17:
-          [(HIDService *)self signalCommandCondition:v10 error:v8];
+          [(HIDService *)self signalCommandCondition:v10 error:errorCopy];
           goto LABEL_30;
         }
 
-        v12 = v11;
+        value2 = v11;
         v13 = -[HIDService reportTypeToString:](self, "reportTypeToString:", [v10 type]);
         v33 = 138412802;
         v34 = v13;
         v35 = 1024;
         v36 = [v10 ID];
         v37 = 2112;
-        v38 = v8;
-        _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error getting %@ report for ID #%u: %@", &v33, 0x1Cu);
+        v38 = errorCopy;
+        _os_log_error_impl(&_mh_execute_header, value2, OS_LOG_TYPE_ERROR, "Error getting %@ report for ID #%u: %@", &v33, 0x1Cu);
       }
 
       else
@@ -760,24 +760,24 @@ LABEL_17:
           v25 = v11;
           v26 = -[HIDService reportTypeToString:](self, "reportTypeToString:", [v10 type]);
           v27 = [v10 ID];
-          v28 = [v7 value];
+          value = [characteristicCopy value];
           v33 = 138412802;
           v34 = v26;
           v35 = 1024;
           v36 = v27;
           v37 = 2112;
-          v38 = v28;
+          v38 = value;
           _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "Did get %@ report for ID #%u: %@", &v33, 0x1Cu);
         }
 
-        v12 = [v7 value];
-        [v10 setCommandValue:v12];
+        value2 = [characteristicCopy value];
+        [v10 setCommandValue:value2];
       }
 
       goto LABEL_17;
     }
 
-    if (v8)
+    if (errorCopy)
     {
       v18 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -789,17 +789,17 @@ LABEL_17:
         v35 = 1024;
         v36 = [v10 ID];
         v37 = 2112;
-        v38 = v8;
+        v38 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Error updating %@ report for ID #%u: %@", &v33, 0x1Cu);
       }
     }
 
     else
     {
-      v21 = [v7 valueTimestamp];
-      if (!v21)
+      valueTimestamp = [characteristicCopy valueTimestamp];
+      if (!valueTimestamp)
       {
-        v21 = mach_absolute_time();
+        valueTimestamp = mach_absolute_time();
       }
 
       v22 = qword_1000DDBC8;
@@ -808,13 +808,13 @@ LABEL_17:
         v29 = v22;
         v30 = -[HIDService reportTypeToString:](self, "reportTypeToString:", [v10 type]);
         v31 = [v10 ID];
-        v32 = [v7 value];
+        value3 = [characteristicCopy value];
         v33 = 138412802;
         v34 = v30;
         v35 = 1024;
         v36 = v31;
         v37 = 2112;
-        v38 = v32;
+        v38 = value3;
         _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Updated %@ report for ID #%u: %@", &v33, 0x1Cu);
       }
 
@@ -823,36 +823,36 @@ LABEL_17:
         kdebug_trace();
       }
 
-      v23 = [(HIDService *)self hidDevice];
-      v24 = [v7 value];
-      [v23 handleInputReportData:v24 reportID:objc_msgSend(v10 timestamp:{"ID"), v21}];
+      hidDevice = [(HIDService *)self hidDevice];
+      value4 = [characteristicCopy value];
+      [hidDevice handleInputReportData:value4 reportID:objc_msgSend(v10 timestamp:{"ID"), valueTimestamp}];
     }
   }
 
   else
   {
-    v14 = [(HIDService *)self reportMapCharacteristic];
-    if (v14 == v7)
+    reportMapCharacteristic = [(HIDService *)self reportMapCharacteristic];
+    if (reportMapCharacteristic == characteristicCopy)
     {
       v17 = 0;
     }
 
     else
     {
-      v15 = [(HIDService *)self hidInformationCharacteristic];
-      if (v15 == v7)
+      hidInformationCharacteristic = [(HIDService *)self hidInformationCharacteristic];
+      if (hidInformationCharacteristic == characteristicCopy)
       {
         v17 = 0;
       }
 
       else
       {
-        v16 = [(HIDService *)self accessoryCategoryCharacteristic];
-        v17 = v16 != v7;
+        accessoryCategoryCharacteristic = [(HIDService *)self accessoryCategoryCharacteristic];
+        v17 = accessoryCategoryCharacteristic != characteristicCopy;
       }
     }
 
-    if (!v8 && !v17)
+    if (!errorCopy && !v17)
     {
       [(HIDService *)self createHIDDeviceIfEverythingReady];
     }
@@ -861,15 +861,15 @@ LABEL_17:
 LABEL_30:
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a5;
-  v8 = [(NSMapTable *)self->_reportInfoMap objectForKey:a4];
+  errorCopy = error;
+  v8 = [(NSMapTable *)self->_reportInfoMap objectForKey:characteristic];
   v9 = v8;
   if (v8 && [v8 commandPending] == 2)
   {
     v10 = qword_1000DDBC8;
-    if (v7)
+    if (errorCopy)
     {
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
@@ -880,7 +880,7 @@ LABEL_30:
         v15 = 1024;
         v16 = [v9 ID];
         v17 = 2112;
-        v18 = v7;
+        v18 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error setting %@ report for ID #%u: %@", &v13, 0x1Cu);
       }
     }
@@ -890,18 +890,18 @@ LABEL_30:
       sub_100076714(v10, v9, self);
     }
 
-    [(HIDService *)self signalCommandCondition:v9 error:v7];
+    [(HIDService *)self signalCommandCondition:v9 error:errorCopy];
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a5;
-  v8 = [(NSMapTable *)self->_reportInfoMap objectForKey:a4];
+  errorCopy = error;
+  v8 = [(NSMapTable *)self->_reportInfoMap objectForKey:characteristic];
   if (v8)
   {
     v9 = qword_1000DDBC8;
-    if (v7)
+    if (errorCopy)
     {
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
@@ -912,7 +912,7 @@ LABEL_30:
         v15 = 1024;
         v16 = [v8 ID];
         v17 = 2112;
-        v18 = v7;
+        v18 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Error starting notifications on %@ report for ID #%u: %@", &v13, 0x1Cu);
       }
     }
@@ -924,9 +924,9 @@ LABEL_30:
         sub_1000767C8(v9, v8, self);
       }
 
-      v12 = [(HIDService *)self hidDevice];
+      hidDevice = [(HIDService *)self hidDevice];
 
-      if (!v12)
+      if (!hidDevice)
       {
         [(HIDService *)self createHIDDeviceIfEverythingReady];
       }
@@ -936,19 +936,19 @@ LABEL_30:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
-  v26 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (a5)
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  v8 = characteristicCopy;
+  if (error)
   {
     goto LABEL_22;
   }
 
-  v9 = [v7 UUID];
+  uUID = [characteristicCopy UUID];
   v10 = [CBUUID UUIDWithString:CBUUIDReportCharacteristicString];
-  v11 = [v9 isEqual:v10];
+  v11 = [uUID isEqual:v10];
 
   if (!v11)
   {
@@ -959,8 +959,8 @@ LABEL_30:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = [v8 descriptors];
-  v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  descriptors = [v8 descriptors];
+  v13 = [descriptors countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v13)
   {
 
@@ -978,22 +978,22 @@ LABEL_30:
     {
       if (*v29 != v16)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(descriptors);
       }
 
       v19 = *(*(&v28 + 1) + 8 * i);
-      v20 = [v19 UUID];
+      uUID2 = [v19 UUID];
       v21 = [CBUUID UUIDWithString:v17];
-      v22 = [v20 isEqual:v21];
+      v22 = [uUID2 isEqual:v21];
 
       if (v22)
       {
-        v23 = [(ClientService *)self peripheral];
-        if ([v23 isLinkEncrypted])
+        peripheral = [(ClientService *)self peripheral];
+        if ([peripheral isLinkEncrypted])
         {
-          v24 = [v19 value];
+          value = [v19 value];
 
-          if (v24)
+          if (value)
           {
             [(HIDService *)self createReportInfo:v19];
 LABEL_14:
@@ -1006,12 +1006,12 @@ LABEL_14:
         {
         }
 
-        [v26 readValueForDescriptor:v19];
+        [peripheralCopy readValueForDescriptor:v19];
         goto LABEL_14;
       }
     }
 
-    v14 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v14 = [descriptors countByEnumeratingWithState:&v28 objects:v32 count:16];
   }
 
   while (v14);
@@ -1031,46 +1031,46 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
-  v7 = a4;
-  if (!a5)
+  descriptorCopy = descriptor;
+  if (!error)
   {
-    v11 = v7;
-    v8 = [v7 UUID];
+    v11 = descriptorCopy;
+    uUID = [descriptorCopy UUID];
     v9 = [CBUUID UUIDWithString:CBUUIDReportReferenceDescriptorString];
-    v10 = [v8 isEqual:v9];
+    v10 = [uUID isEqual:v9];
 
-    v7 = v11;
+    descriptorCopy = v11;
     if (v10)
     {
       [(HIDService *)self createReportInfo:v11];
-      v7 = v11;
+      descriptorCopy = v11;
     }
   }
 }
 
 - (void)hidDeviceDesiredConnectionParametersDidChange
 {
-  v3 = [(HIDService *)self hidDevice];
-  v4 = [v3 desiredConnectionParameters];
+  hidDevice = [(HIDService *)self hidDevice];
+  desiredConnectionParameters = [hidDevice desiredConnectionParameters];
 
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_1000768B0();
   }
 
-  v5 = [(ClientService *)self manager];
-  [v5 clientService:self desiresConnectionParameters:v4];
+  manager = [(ClientService *)self manager];
+  [manager clientService:self desiresConnectionParameters:desiredConnectionParameters];
 }
 
-- (void)enterSuspendModeIfNeeded:(int64_t)a3
+- (void)enterSuspendModeIfNeeded:(int64_t)needed
 {
   if ([(HIDService *)self pmIsSuspended])
   {
-    v5 = [(HIDService *)self pmService];
+    pmService = [(HIDService *)self pmService];
 
-    IOAllowPowerChange(v5, a3);
+    IOAllowPowerChange(pmService, needed);
   }
 
   else
@@ -1088,7 +1088,7 @@ LABEL_22:
     v7[2] = sub_1000424E0;
     v7[3] = &unk_1000BE010;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = needed;
     dispatch_after(v6, &_dispatch_main_q, v7);
   }
 }
@@ -1107,30 +1107,30 @@ LABEL_22:
   }
 }
 
-- (void)writeControlPointCommand:(unsigned __int8)a3
+- (void)writeControlPointCommand:(unsigned __int8)command
 {
-  v7 = a3;
-  v4 = [NSData dataWithBytes:&v7 length:1];
-  v5 = [(ClientService *)self peripheral];
-  v6 = [(HIDService *)self hidControlPointCharacteristic];
-  [v5 writeValue:v4 forCharacteristic:v6 type:1];
+  commandCopy = command;
+  v4 = [NSData dataWithBytes:&commandCopy length:1];
+  peripheral = [(ClientService *)self peripheral];
+  hidControlPointCharacteristic = [(HIDService *)self hidControlPointCharacteristic];
+  [peripheral writeValue:v4 forCharacteristic:hidControlPointCharacteristic type:1];
 }
 
-- (void)authDidSucceedNotification:(id)a3
+- (void)authDidSucceedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v10 = [v5 objectForKeyedSubscript:@"AuthenticationServiceCertClassUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"AuthenticationServiceCertClassUserInfoKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"AuthenticationServiceAuthVersionKey"];
+  v7 = [userInfo2 objectForKeyedSubscript:@"AuthenticationServiceAuthVersionKey"];
 
   if ([v7 intValue] <= 2 && (!v10 || objc_msgSend(v10, "unsignedIntValue")))
   {
     v8 = +[NSNotificationCenter defaultCenter];
-    v9 = [(ClientService *)self peripheral];
-    [v8 postNotificationName:@"AuthenticationServiceAuthDidFailNotification" object:v9];
+    peripheral = [(ClientService *)self peripheral];
+    [v8 postNotificationName:@"AuthenticationServiceAuthDidFailNotification" object:peripheral];
   }
 }
 
@@ -1152,16 +1152,16 @@ LABEL_22:
   return v3;
 }
 
-- (id)reportTypeToString:(int)a3
+- (id)reportTypeToString:(int)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_1000BE080 + a3);
+    return *(&off_1000BE080 + string);
   }
 }
 

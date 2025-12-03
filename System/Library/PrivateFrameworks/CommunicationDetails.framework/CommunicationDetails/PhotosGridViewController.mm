@@ -1,22 +1,22 @@
 @interface PhotosGridViewController
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5;
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)photosContentController:(id)a3 presentViewController:(id)a4;
-- (BOOL)photosContentController:(id)a3 pushViewController:(id)a4;
-- (BOOL)photosViewController:(id)a3 didPickAssetReference:(id)a4;
+- (BOOL)photosContentController:(id)controller presentViewController:(id)viewController;
+- (BOOL)photosContentController:(id)controller pushViewController:(id)viewController;
+- (BOOL)photosViewController:(id)controller didPickAssetReference:(id)reference;
 - (NSArray)keyCommands;
-- (UIEdgeInsets)maskPaddingForContentController:(id)a3;
-- (_TtC20CommunicationDetails24PhotosGridViewController)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails24PhotosGridViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissPresentedViewControllerForContentController:(id)a3;
-- (void)previewControllerDidDismiss:(id)a3;
-- (void)scrollViewControllerDidLayoutSubviews:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (UIEdgeInsets)maskPaddingForContentController:(id)controller;
+- (_TtC20CommunicationDetails24PhotosGridViewController)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails24PhotosGridViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissPresentedViewControllerForContentController:(id)controller;
+- (void)previewControllerDidDismiss:(id)dismiss;
+- (void)scrollViewControllerDidLayoutSubviews:(id)subviews;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
 @end
 
@@ -34,7 +34,7 @@
   }
 
   MEMORY[0x1EEE9AC00](isCurrentExecutor);
-  v4 = self;
+  selfCopy = self;
   PhotosGridViewController.pxScrollLog<A>(function:_:)(0xD000000000000017, 0x80000001901FCA10, closure #1 in PhotosGridViewController.viewDidLayoutSubviews()partial apply);
 }
 
@@ -50,11 +50,11 @@
   }
 
   MEMORY[0x1EEE9AC00](isCurrentExecutor);
-  v4 = self;
+  selfCopy = self;
   PhotosGridViewController.pxScrollLog<A>(function:_:)(0xD00000000000001DLL, 0x80000001901FCA60, closure #1 in PhotosGridViewController.viewSafeAreaInsetsDidChange()partial apply);
 }
 
-- (void)scrollViewControllerDidLayoutSubviews:(id)a3
+- (void)scrollViewControllerDidLayoutSubviews:(id)subviews
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -65,8 +65,8 @@
   }
 
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x1F0);
-  v6 = a3;
-  v9 = self;
+  subviewsCopy = subviews;
+  selfCopy = self;
   v7 = v5();
   if (v7)
   {
@@ -79,7 +79,7 @@
   }
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -90,8 +90,8 @@
   }
 
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0x1F0);
-  v6 = a3;
-  v9 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   v7 = v5();
   if (v7)
   {
@@ -104,7 +104,7 @@
   }
 }
 
-- (void)scrollViewControllerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollViewControllerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -114,12 +114,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = self;
-  specialized PhotosGridViewController.scrollViewControllerWillEndScrolling(_:withVelocity:targetContentOffset:currentContentOffset:)(a5);
+  scrollingCopy = scrolling;
+  selfCopy = self;
+  specialized PhotosGridViewController.scrollViewControllerWillEndScrolling(_:withVelocity:targetContentOffset:currentContentOffset:)(offset);
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -129,12 +129,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   specialized PhotosGridViewController.previewControllerDidDismiss(_:)();
 }
 
-- (_TtC20CommunicationDetails24PhotosGridViewController)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails24PhotosGridViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -144,7 +144,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   specialized PhotosGridViewController.init(coder:)();
 }
 
@@ -184,7 +184,7 @@
   return 1;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -196,11 +196,11 @@
   }
 
   MEMORY[0x1EEE9AC00](isCurrentExecutor);
-  v5 = self;
+  selfCopy = self;
   PhotosGridViewController.pxScrollLog<A>(function:_:)(0xD000000000000011, 0x80000001902002D0, closure #1 in PhotosGridViewController.viewDidAppear(_:)partial apply);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -212,11 +212,11 @@
   }
 
   MEMORY[0x1EEE9AC00](isCurrentExecutor);
-  v5 = self;
+  selfCopy = self;
   PhotosGridViewController.pxScrollLog<A>(function:_:)(0xD000000000000014, 0x80000001902002F0, closure #1 in PhotosGridViewController.viewDidDisappear(_:)partial apply);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -228,11 +228,11 @@
   }
 
   MEMORY[0x1EEE9AC00](isCurrentExecutor);
-  v5 = self;
+  selfCopy = self;
   PhotosGridViewController.pxScrollLog<A>(function:_:)(0xD000000000000013, 0x8000000190200310, closure #1 in PhotosGridViewController.viewIsAppearing(_:)partial apply);
 }
 
-- (_TtC20CommunicationDetails24PhotosGridViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20CommunicationDetails24PhotosGridViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -247,7 +247,7 @@
   return result;
 }
 
-- (BOOL)photosViewController:(id)a3 didPickAssetReference:(id)a4
+- (BOOL)photosViewController:(id)controller didPickAssetReference:(id)reference
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -258,17 +258,17 @@
   }
 
   v7 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xE0);
-  v8 = a4;
-  v9 = self;
-  v10 = a3;
+  referenceCopy = reference;
+  selfCopy = self;
+  controllerCopy = controller;
   v11 = v7();
   if (v11)
   {
     v12 = v11;
-    v13 = [v11 viewModel];
+    viewModel = [v11 viewModel];
 
-    v14 = [v13 currentDataSource];
-    PhotosGridViewController.presentQuickLook(for:dataSource:from:)(v8, v14, v10);
+    currentDataSource = [viewModel currentDataSource];
+    PhotosGridViewController.presentQuickLook(for:dataSource:from:)(referenceCopy, currentDataSource, controllerCopy);
 
     LOBYTE(v11) = 1;
   }
@@ -281,7 +281,7 @@
   return v11;
 }
 
-- (BOOL)photosContentController:(id)a3 presentViewController:(id)a4
+- (BOOL)photosContentController:(id)controller presentViewController:(id)viewController
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -291,12 +291,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  [(PhotosGridViewController *)self presentViewController:a4 animated:1 completion:0];
+  [(PhotosGridViewController *)self presentViewController:viewController animated:1 completion:0];
 
   return 1;
 }
 
-- (BOOL)photosContentController:(id)a3 pushViewController:(id)a4
+- (BOOL)photosContentController:(id)controller pushViewController:(id)viewController
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -306,13 +306,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a4;
-  v7 = self;
-  v8 = [(PhotosGridViewController *)v7 navigationController];
-  v9 = v8;
-  if (v8)
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  navigationController = [(PhotosGridViewController *)selfCopy navigationController];
+  v9 = navigationController;
+  if (navigationController)
   {
-    [v8 pushViewController:v6 animated:1];
+    [navigationController pushViewController:viewControllerCopy animated:1];
   }
 
   else
@@ -322,7 +322,7 @@
   return v9 != 0;
 }
 
-- (void)dismissPresentedViewControllerForContentController:(id)a3
+- (void)dismissPresentedViewControllerForContentController:(id)controller
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -335,7 +335,7 @@
   [(PhotosGridViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (UIEdgeInsets)maskPaddingForContentController:(id)a3
+- (UIEdgeInsets)maskPaddingForContentController:(id)controller
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -361,7 +361,7 @@
   return result;
 }
 
-- (BOOL)actionPerformer:(id)a3 transitionToViewController:(id)a4 transitionType:(int64_t)a5
+- (BOOL)actionPerformer:(id)performer transitionToViewController:(id)controller transitionType:(int64_t)type
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -371,10 +371,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = specialized PhotosGridViewController.actionPerformer(_:transitionTo:transitionType:)(v10, a5);
+  performerCopy = performer;
+  controllerCopy = controller;
+  selfCopy = self;
+  v12 = specialized PhotosGridViewController.actionPerformer(_:transitionTo:transitionType:)(controllerCopy, type);
 
   return v12;
 }

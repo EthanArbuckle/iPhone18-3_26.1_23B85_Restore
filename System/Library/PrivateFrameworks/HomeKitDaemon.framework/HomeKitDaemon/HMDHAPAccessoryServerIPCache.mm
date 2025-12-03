@@ -1,36 +1,36 @@
 @interface HMDHAPAccessoryServerIPCache
 + (id)logCategory;
-- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)a3;
-- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)a3 store:(id)a4 timerProvider:(id)a5;
+- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)queue;
+- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)queue store:(id)store timerProvider:(id)provider;
 - (id)_readCache;
-- (void)_deleteDataForDevice:(id)a3;
+- (void)_deleteDataForDevice:(id)device;
 - (void)_flushDirtyCache;
-- (void)_retrieveCachedData:(id)a3;
-- (void)_saveData:(id)a3 forDevice:(id)a4;
+- (void)_retrieveCachedData:(id)data;
+- (void)_saveData:(id)data forDevice:(id)device;
 - (void)_startFlushTimer;
-- (void)_writeCache:(id)a3;
-- (void)deleteDataForDevice:(id)a3;
-- (void)retrieveCachedData:(id)a3;
-- (void)saveData:(id)a3 forDevice:(id)a4;
-- (void)timerDidFire:(id)a3;
+- (void)_writeCache:(id)cache;
+- (void)deleteDataForDevice:(id)device;
+- (void)retrieveCachedData:(id)data;
+- (void)saveData:(id)data forDevice:(id)device;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHAPAccessoryServerIPCache
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
+  fireCopy = fire;
+  flushTimer = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
 
-  if (v5 == v4)
+  if (flushTimer == fireCopy)
   {
-    v6 = [(HMDHAPAccessoryServerIPCache *)self workQueue];
+    workQueue = [(HMDHAPAccessoryServerIPCache *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__HMDHAPAccessoryServerIPCache_timerDidFire___block_invoke;
     block[3] = &unk_27868A728;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -45,8 +45,8 @@ uint64_t __45__HMDHAPAccessoryServerIPCache_timerDidFire___block_invoke(uint64_t
 - (void)_flushDirtyCache
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(HMDHAPAccessoryServerIPCache *)self dirtyCache];
-  [(HMDHAPAccessoryServerIPCache *)self _writeCache:v3];
+  dirtyCache = [(HMDHAPAccessoryServerIPCache *)self dirtyCache];
+  [(HMDHAPAccessoryServerIPCache *)self _writeCache:dirtyCache];
 
   [(HMDHAPAccessoryServerIPCache *)self setDirtyCache:0];
 }
@@ -54,32 +54,32 @@ uint64_t __45__HMDHAPAccessoryServerIPCache_timerDidFire___block_invoke(uint64_t
 - (void)_startFlushTimer
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
+  flushTimer = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
 
-  if (!v3)
+  if (!flushTimer)
   {
-    v4 = [(HMDHAPAccessoryServerIPCache *)self timerProvider];
-    v5 = [v4 timerWithTimeInterval:0 options:900.0];
+    timerProvider = [(HMDHAPAccessoryServerIPCache *)self timerProvider];
+    v5 = [timerProvider timerWithTimeInterval:0 options:900.0];
     [(HMDHAPAccessoryServerIPCache *)self setFlushTimer:v5];
 
-    v6 = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
-    [v6 setDelegate:self];
+    flushTimer2 = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
+    [flushTimer2 setDelegate:self];
 
-    v7 = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
-    [v7 resume];
+    flushTimer3 = [(HMDHAPAccessoryServerIPCache *)self flushTimer];
+    [flushTimer3 resume];
   }
 }
 
-- (void)_writeCache:(id)a3
+- (void)_writeCache:(id)cache
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (cacheCopy)
   {
     if (v8)
     {
@@ -87,25 +87,25 @@ uint64_t __45__HMDHAPAccessoryServerIPCache_timerDidFire___block_invoke(uint64_t
       *buf = 138543618;
       v22 = v9;
       v23 = 2048;
-      v24 = [v4 count];
+      v24 = [cacheCopy count];
       _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Write %lu cached ip addresses", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v5);
-    v10 = [(HMDHAPAccessoryServerIPCache *)v6 store];
+    store = [(HMDHAPAccessoryServerIPCache *)selfCopy store];
     v20 = 0;
-    v11 = [v10 writeDictionary:v4 error:&v20];
+    v11 = [store writeDictionary:cacheCopy error:&v20];
     v12 = v20;
 
     if ((v11 & 1) == 0)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = v6;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v16 = HMFGetLogIdentifier();
-        v17 = [v4 count];
+        v17 = [cacheCopy count];
         *buf = 138543874;
         v22 = v16;
         v23 = 2048;
@@ -139,15 +139,15 @@ uint64_t __45__HMDHAPAccessoryServerIPCache_timerDidFire___block_invoke(uint64_t
 {
   v27 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(HMDHAPAccessoryServerIPCache *)self store];
+  store = [(HMDHAPAccessoryServerIPCache *)self store];
   v22 = 0;
-  v4 = [v3 dictionaryFromStoreWithError:&v22];
+  v4 = [store dictionaryFromStoreWithError:&v22];
   v5 = v22;
 
   if (v4)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -167,21 +167,21 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = [v5 domain];
-  v13 = v12;
-  if (v12 != *MEMORY[0x277CCA050])
+  domain = [v5 domain];
+  v13 = domain;
+  if (domain != *MEMORY[0x277CCA050])
   {
 
     goto LABEL_10;
   }
 
-  v14 = [v5 code];
+  code = [v5 code];
 
-  if (v14 != 260)
+  if (code != 260)
   {
 LABEL_10:
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -201,7 +201,7 @@ LABEL_13:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy3 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -212,8 +212,8 @@ LABEL_13:
   }
 
   objc_autoreleasePoolPop(v15);
-  v19 = [MEMORY[0x277CBEAC0] dictionary];
-  [(HMDHAPAccessoryServerIPCache *)v16 _writeCache:v19];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  [(HMDHAPAccessoryServerIPCache *)selfCopy3 _writeCache:dictionary];
 
 LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
@@ -221,36 +221,36 @@ LABEL_14:
   return v4;
 }
 
-- (void)_retrieveCachedData:(id)a3
+- (void)_retrieveCachedData:(id)data
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(workQueue);
-  v6 = [(HMDHAPAccessoryServerIPCache *)self _readCache];
-  v5[2](v5, v6);
+  _readCache = [(HMDHAPAccessoryServerIPCache *)self _readCache];
+  dataCopy[2](dataCopy, _readCache);
 }
 
-- (void)retrieveCachedData:(id)a3
+- (void)retrieveCachedData:(id)data
 {
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryServerIPCache *)self workQueue];
+  dataCopy = data;
+  workQueue = [(HMDHAPAccessoryServerIPCache *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HMDHAPAccessoryServerIPCache_retrieveCachedData___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dataCopy;
+  v6 = dataCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_deleteDataForDevice:(id)a3
+- (void)_deleteDataForDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_workQueue);
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -258,19 +258,19 @@ LABEL_14:
     v15 = 138543618;
     v16 = v8;
     v17 = 2112;
-    v18 = v4;
+    v18 = deviceCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Delete data for device %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDHAPAccessoryServerIPCache *)v6 dirtyCache];
+  dirtyCache = [(HMDHAPAccessoryServerIPCache *)selfCopy dirtyCache];
 
-  if (!v9)
+  if (!dirtyCache)
   {
-    v10 = [(HMDHAPAccessoryServerIPCache *)v6 _readCache];
-    v11 = [v10 mutableCopy];
+    _readCache = [(HMDHAPAccessoryServerIPCache *)selfCopy _readCache];
+    v11 = [_readCache mutableCopy];
 
-    v12 = [v11 objectForKeyedSubscript:v4];
+    v12 = [v11 objectForKeyedSubscript:deviceCopy];
 
     if (!v12)
     {
@@ -278,40 +278,40 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    [(HMDHAPAccessoryServerIPCache *)v6 setDirtyCache:v11];
+    [(HMDHAPAccessoryServerIPCache *)selfCopy setDirtyCache:v11];
   }
 
-  v13 = [(HMDHAPAccessoryServerIPCache *)v6 dirtyCache];
-  [v13 removeObjectForKey:v4];
+  dirtyCache2 = [(HMDHAPAccessoryServerIPCache *)selfCopy dirtyCache];
+  [dirtyCache2 removeObjectForKey:deviceCopy];
 
-  [(HMDHAPAccessoryServerIPCache *)v6 _startFlushTimer];
+  [(HMDHAPAccessoryServerIPCache *)selfCopy _startFlushTimer];
 LABEL_7:
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteDataForDevice:(id)a3
+- (void)deleteDataForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HMDHAPAccessoryServerIPCache *)self workQueue];
+  deviceCopy = device;
+  workQueue = [(HMDHAPAccessoryServerIPCache *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HMDHAPAccessoryServerIPCache_deleteDataForDevice___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = deviceCopy;
+  v6 = deviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_saveData:(id)a3 forDevice:(id)a4
+- (void)_saveData:(id)data forDevice:(id)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_workQueue);
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -319,67 +319,67 @@ LABEL_7:
     v18 = 138543874;
     v19 = v11;
     v20 = 2112;
-    v21 = v6;
+    v21 = dataCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = deviceCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Save data %@ for device %@", &v18, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDHAPAccessoryServerIPCache *)v9 dirtyCache];
+  dirtyCache = [(HMDHAPAccessoryServerIPCache *)selfCopy dirtyCache];
 
-  if (!v12)
+  if (!dirtyCache)
   {
-    v13 = [(HMDHAPAccessoryServerIPCache *)v9 _readCache];
-    v14 = [v13 mutableCopy];
+    _readCache = [(HMDHAPAccessoryServerIPCache *)selfCopy _readCache];
+    v14 = [_readCache mutableCopy];
 
     if (v14)
     {
-      [(HMDHAPAccessoryServerIPCache *)v9 setDirtyCache:v14];
+      [(HMDHAPAccessoryServerIPCache *)selfCopy setDirtyCache:v14];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CBEB38] dictionary];
-      [(HMDHAPAccessoryServerIPCache *)v9 setDirtyCache:v15];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(HMDHAPAccessoryServerIPCache *)selfCopy setDirtyCache:dictionary];
     }
   }
 
-  v16 = [(HMDHAPAccessoryServerIPCache *)v9 dirtyCache];
-  [v16 setObject:v6 forKey:v7];
+  dirtyCache2 = [(HMDHAPAccessoryServerIPCache *)selfCopy dirtyCache];
+  [dirtyCache2 setObject:dataCopy forKey:deviceCopy];
 
-  [(HMDHAPAccessoryServerIPCache *)v9 _startFlushTimer];
+  [(HMDHAPAccessoryServerIPCache *)selfCopy _startFlushTimer];
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveData:(id)a3 forDevice:(id)a4
+- (void)saveData:(id)data forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHAPAccessoryServerIPCache *)self workQueue];
+  dataCopy = data;
+  deviceCopy = device;
+  workQueue = [(HMDHAPAccessoryServerIPCache *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HMDHAPAccessoryServerIPCache_saveData_forDevice___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = deviceCopy;
+  v9 = deviceCopy;
+  v10 = dataCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)a3
+- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)queue
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   v5 = [HMDHAPAccessoryServerIPStore alloc];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = v6;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = defaultManager;
   v45 = 0;
   if (storeDirectoryPath)
   {
-    if (ipAccessoryCachePath && ([v6 fileExistsAtPath:ipAccessoryCachePath isDirectory:&v45] & 1) != 0)
+    if (ipAccessoryCachePath && ([defaultManager fileExistsAtPath:ipAccessoryCachePath isDirectory:&v45] & 1) != 0)
     {
       goto LABEL_24;
     }
@@ -400,7 +400,7 @@ LABEL_7:
       v45 = v11;
       if (v11)
       {
-        v14 = self;
+        selfCopy = self;
         v43 = v12;
         v15 = [v7 setAttributes:v8 ofItemAtPath:ipAccessoryCachePath error:&v43];
         v16 = v43;
@@ -443,7 +443,7 @@ LABEL_22:
         }
 
         objc_autoreleasePoolPop(v17);
-        self = v14;
+        self = selfCopy;
 LABEL_24:
         v37 = ipAccessoryCachePath;
         goto LABEL_25;
@@ -515,29 +515,29 @@ LABEL_25:
 
   v38 = [(HMDHAPAccessoryServerIPStore *)v5 initWithPath:v37 andFilename:@"server_ip_cache"];
   v39 = objc_opt_new();
-  v40 = [(HMDHAPAccessoryServerIPCache *)self initWithQueue:v4 store:v38 timerProvider:v39];
+  v40 = [(HMDHAPAccessoryServerIPCache *)self initWithQueue:queueCopy store:v38 timerProvider:v39];
 
   v41 = *MEMORY[0x277D85DE8];
   return v40;
 }
 
-- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)a3 store:(id)a4 timerProvider:(id)a5
+- (HMDHAPAccessoryServerIPCache)initWithQueue:(id)queue store:(id)store timerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  storeCopy = store;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = HMDHAPAccessoryServerIPCache;
   v12 = [(HMDHAPAccessoryServerIPCache *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_store, a4);
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_store, store);
     dirtyCache = v13->_dirtyCache;
     v13->_dirtyCache = 0;
 
-    objc_storeStrong(&v13->_timerProvider, a5);
+    objc_storeStrong(&v13->_timerProvider, provider);
   }
 
   return v13;

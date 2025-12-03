@@ -7,12 +7,12 @@
 - (id)dateByAddingDays:()ThreeBars
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 components:28 fromDate:a1];
-  v8 = [v6 dateFromComponents:v7];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar components:28 fromDate:self];
+  v8 = [currentCalendar dateFromComponents:v7];
   v9 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v9 setDay:a3];
-  v10 = [v6 dateByAddingComponents:v9 toDate:v8 options:0];
+  v10 = [currentCalendar dateByAddingComponents:v9 toDate:v8 options:0];
 
   objc_autoreleasePoolPop(v5);
 

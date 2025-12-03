@@ -1,18 +1,18 @@
 @interface SSKeyValueStoreDatabase
-- (id)_initReadOnly:(BOOL)a3;
-- (void)_dispatchBlockAsync:(id)a3;
+- (id)_initReadOnly:(BOOL)only;
+- (void)_dispatchBlockAsync:(id)async;
 - (void)dealloc;
-- (void)modifyAsyncUsingTransactionBlock:(id)a3;
-- (void)modifyUsingTransactionBlock:(id)a3;
-- (void)readAsyncUsingSessionBlock:(id)a3;
-- (void)readUsingSessionBlock:(id)a3;
+- (void)modifyAsyncUsingTransactionBlock:(id)block;
+- (void)modifyUsingTransactionBlock:(id)block;
+- (void)readAsyncUsingSessionBlock:(id)block;
+- (void)readUsingSessionBlock:(id)block;
 @end
 
 @implementation SSKeyValueStoreDatabase
 
-- (id)_initReadOnly:(BOOL)a3
+- (id)_initReadOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v5 = +[SSKeyValueStoreSchema databasePath];
   v6 = v5;
   if (v5)
@@ -34,9 +34,9 @@
   if (v7)
   {
     v8 = [SSSQLiteDatabase alloc];
-    v9 = -[SSSQLiteDatabase initWithDatabaseURL:readOnly:](v8, "initWithDatabaseURL:readOnly:", [MEMORY[0x1E695DFF8] fileURLWithPath:v6], v3);
+    v9 = -[SSSQLiteDatabase initWithDatabaseURL:readOnly:](v8, "initWithDatabaseURL:readOnly:", [MEMORY[0x1E695DFF8] fileURLWithPath:v6], onlyCopy);
     v7->_database = v9;
-    if (!v3)
+    if (!onlyCopy)
     {
       [(SSSQLiteDatabase *)v9 setSetupBlock:&__block_literal_global_25];
     }
@@ -58,18 +58,18 @@ void __41__SSKeyValueStoreDatabase__initReadOnly___block_invoke(uint64_t a1)
   [(SSKeyValueStoreDatabase *)&v3 dealloc];
 }
 
-- (void)modifyAsyncUsingTransactionBlock:(id)a3
+- (void)modifyAsyncUsingTransactionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__SSKeyValueStoreDatabase_modifyAsyncUsingTransactionBlock___block_invoke;
   v3[3] = &unk_1E84AF318;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = block;
   [(SSKeyValueStoreDatabase *)self _dispatchBlockAsync:v3];
 }
 
-- (void)modifyUsingTransactionBlock:(id)a3
+- (void)modifyUsingTransactionBlock:(id)block
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
@@ -77,7 +77,7 @@ void __41__SSKeyValueStoreDatabase__initReadOnly___block_invoke(uint64_t a1)
   v4[2] = __55__SSKeyValueStoreDatabase_modifyUsingTransactionBlock___block_invoke;
   v4[3] = &unk_1E84B1D88;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v4];
 }
 
@@ -89,18 +89,18 @@ uint64_t __55__SSKeyValueStoreDatabase_modifyUsingTransactionBlock___block_invok
   return v3;
 }
 
-- (void)readAsyncUsingSessionBlock:(id)a3
+- (void)readAsyncUsingSessionBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __54__SSKeyValueStoreDatabase_readAsyncUsingSessionBlock___block_invoke;
   v3[3] = &unk_1E84AF318;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = block;
   [(SSKeyValueStoreDatabase *)self _dispatchBlockAsync:v3];
 }
 
-- (void)readUsingSessionBlock:(id)a3
+- (void)readUsingSessionBlock:(id)block
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
@@ -108,7 +108,7 @@ uint64_t __55__SSKeyValueStoreDatabase_modifyUsingTransactionBlock___block_invok
   v4[2] = __49__SSKeyValueStoreDatabase_readUsingSessionBlock___block_invoke;
   v4[3] = &unk_1E84B1D88;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   [(SSSQLiteDatabase *)database performTransactionWithBlock:v4];
 }
 
@@ -120,14 +120,14 @@ uint64_t __49__SSKeyValueStoreDatabase_readUsingSessionBlock___block_invoke(uint
   return 1;
 }
 
-- (void)_dispatchBlockAsync:(id)a3
+- (void)_dispatchBlockAsync:(id)async
 {
   database = self->_database;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__SSKeyValueStoreDatabase__dispatchBlockAsync___block_invoke;
   v4[3] = &unk_1E84AC710;
-  v4[4] = a3;
+  v4[4] = async;
   [(SSSQLiteDatabase *)database dispatchBlockAsync:v4];
 }
 

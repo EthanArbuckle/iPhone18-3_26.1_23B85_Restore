@@ -1,24 +1,24 @@
 @interface SCSchemaSCSetUndoArgs
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SCSchemaSCSetUndoArgs)initWithDictionary:(id)a3;
-- (SCSchemaSCSetUndoArgs)initWithJSON:(id)a3;
+- (SCSchemaSCSetUndoArgs)initWithDictionary:(id)dictionary;
+- (SCSchemaSCSetUndoArgs)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCSchemaSCSetUndoArgs
 
-- (SCSchemaSCSetUndoArgs)initWithDictionary:(id)a3
+- (SCSchemaSCSetUndoArgs)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SCSchemaSCSetUndoArgs;
   v5 = [(SCSchemaSCSetUndoArgs *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"directInvocationId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"directInvocationId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (SCSchemaSCSetUndoArgs)initWithJSON:(id)a3
+- (SCSchemaSCSetUndoArgs)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SCSchemaSCSetUndoArgs *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SCSchemaSCSetUndoArgs *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SCSchemaSCSetUndoArgs *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,31 +68,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_directInvocationId)
   {
-    v4 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"directInvocationId"];
+    directInvocationId = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
+    v5 = [directInvocationId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"directInvocationId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
-    v6 = [v4 directInvocationId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    directInvocationId = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
+    directInvocationId2 = [equalCopy directInvocationId];
+    v7 = directInvocationId2;
+    if ((directInvocationId != 0) != (directInvocationId2 == 0))
     {
-      v8 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
-      if (!v8)
+      directInvocationId3 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
+      if (!directInvocationId3)
       {
 
 LABEL_10:
@@ -100,10 +100,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
-      v11 = [v4 directInvocationId];
-      v12 = [v10 isEqual:v11];
+      v9 = directInvocationId3;
+      directInvocationId4 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
+      directInvocationId5 = [equalCopy directInvocationId];
+      v12 = [directInvocationId4 isEqual:directInvocationId5];
 
       if (v12)
       {
@@ -122,12 +122,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
+  toCopy = to;
+  directInvocationId = [(SCSchemaSCSetUndoArgs *)self directInvocationId];
 
-  if (v4)
+  if (directInvocationId)
   {
     PBDataWriterWriteStringField();
   }

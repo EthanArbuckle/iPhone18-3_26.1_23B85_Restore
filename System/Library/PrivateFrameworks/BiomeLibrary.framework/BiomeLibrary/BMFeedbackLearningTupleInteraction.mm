@@ -1,42 +1,42 @@
 @interface BMFeedbackLearningTupleInteraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFeedbackLearningTupleInteraction)initWithEventId:(id)a3 sessionId:(id)a4 absoluteTimestamp:(id)a5 tupleInteraction:(id)a6 candidateInteractions:(id)a7 statementId:(id)a8;
-- (BMFeedbackLearningTupleInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMFeedbackLearningTupleInteraction)initWithEventId:(id)id sessionId:(id)sessionId absoluteTimestamp:(id)timestamp tupleInteraction:(id)interaction candidateInteractions:(id)interactions statementId:(id)statementId;
+- (BMFeedbackLearningTupleInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
 - (NSUUID)eventId;
 - (NSUUID)sessionId;
 - (id)_candidateInteractionsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFeedbackLearningTupleInteraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFeedbackLearningTupleInteraction *)self eventId];
-    v7 = [v5 eventId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    eventId = [(BMFeedbackLearningTupleInteraction *)self eventId];
+    eventId2 = [v5 eventId];
+    v8 = eventId2;
+    if (eventId == eventId2)
     {
     }
 
     else
     {
-      v9 = [(BMFeedbackLearningTupleInteraction *)self eventId];
-      v10 = [v5 eventId];
-      v11 = [v9 isEqual:v10];
+      eventId3 = [(BMFeedbackLearningTupleInteraction *)self eventId];
+      eventId4 = [v5 eventId];
+      v11 = [eventId3 isEqual:eventId4];
 
       if (!v11)
       {
@@ -44,18 +44,18 @@
       }
     }
 
-    v13 = [(BMFeedbackLearningTupleInteraction *)self sessionId];
-    v14 = [v5 sessionId];
-    v15 = v14;
-    if (v13 == v14)
+    sessionId = [(BMFeedbackLearningTupleInteraction *)self sessionId];
+    sessionId2 = [v5 sessionId];
+    v15 = sessionId2;
+    if (sessionId == sessionId2)
     {
     }
 
     else
     {
-      v16 = [(BMFeedbackLearningTupleInteraction *)self sessionId];
-      v17 = [v5 sessionId];
-      v18 = [v16 isEqual:v17];
+      sessionId3 = [(BMFeedbackLearningTupleInteraction *)self sessionId];
+      sessionId4 = [v5 sessionId];
+      v18 = [sessionId3 isEqual:sessionId4];
 
       if (!v18)
       {
@@ -63,18 +63,18 @@
       }
     }
 
-    v19 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
-    v20 = [v5 absoluteTimestamp];
-    v21 = v20;
-    if (v19 == v20)
+    absoluteTimestamp = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v21 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v22 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
-      v23 = [v5 absoluteTimestamp];
-      v24 = [v22 isEqual:v23];
+      absoluteTimestamp3 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v24 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v24)
       {
@@ -82,18 +82,18 @@
       }
     }
 
-    v25 = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
-    v26 = [v5 tupleInteraction];
-    v27 = v26;
-    if (v25 == v26)
+    tupleInteraction = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
+    tupleInteraction2 = [v5 tupleInteraction];
+    v27 = tupleInteraction2;
+    if (tupleInteraction == tupleInteraction2)
     {
     }
 
     else
     {
-      v28 = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
-      v29 = [v5 tupleInteraction];
-      v30 = [v28 isEqual:v29];
+      tupleInteraction3 = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
+      tupleInteraction4 = [v5 tupleInteraction];
+      v30 = [tupleInteraction3 isEqual:tupleInteraction4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@
       }
     }
 
-    v31 = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
-    v32 = [v5 candidateInteractions];
-    v33 = v32;
-    if (v31 == v32)
+    candidateInteractions = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
+    candidateInteractions2 = [v5 candidateInteractions];
+    v33 = candidateInteractions2;
+    if (candidateInteractions == candidateInteractions2)
     {
     }
 
     else
     {
-      v34 = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
-      v35 = [v5 candidateInteractions];
-      v36 = [v34 isEqual:v35];
+      candidateInteractions3 = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
+      candidateInteractions4 = [v5 candidateInteractions];
+      v36 = [candidateInteractions3 isEqual:candidateInteractions4];
 
       if (!v36)
       {
@@ -128,8 +128,8 @@
 
     if (-[BMFeedbackLearningTupleInteraction hasStatementId](self, "hasStatementId") && [v5 hasStatementId])
     {
-      v37 = [(BMFeedbackLearningTupleInteraction *)self statementId];
-      v12 = v37 == [v5 statementId];
+      statementId = [(BMFeedbackLearningTupleInteraction *)self statementId];
+      v12 = statementId == [v5 statementId];
 LABEL_29:
 
       goto LABEL_30;
@@ -198,18 +198,18 @@ LABEL_30:
 - (id)jsonDictionary
 {
   v29[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMFeedbackLearningTupleInteraction *)self eventId];
-  v4 = [v3 UUIDString];
+  eventId = [(BMFeedbackLearningTupleInteraction *)self eventId];
+  uUIDString = [eventId UUIDString];
 
-  v5 = [(BMFeedbackLearningTupleInteraction *)self sessionId];
-  v6 = [v5 UUIDString];
+  sessionId = [(BMFeedbackLearningTupleInteraction *)self sessionId];
+  uUIDString2 = [sessionId UUIDString];
 
-  v7 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
-  if (v7)
+  absoluteTimestamp = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v8 = MEMORY[0x1E696AD98];
-    v9 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
-    [v9 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v10 = [v8 numberWithDouble:?];
   }
 
@@ -218,10 +218,10 @@ LABEL_30:
     v10 = 0;
   }
 
-  v11 = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
-  v12 = [v11 jsonDictionary];
+  tupleInteraction = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
+  jsonDictionary = [tupleInteraction jsonDictionary];
 
-  v13 = [(BMFeedbackLearningTupleInteraction *)self _candidateInteractionsJSONArray];
+  _candidateInteractionsJSONArray = [(BMFeedbackLearningTupleInteraction *)self _candidateInteractionsJSONArray];
   if ([(BMFeedbackLearningTupleInteraction *)self hasStatementId])
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMFeedbackLearningTupleInteraction statementId](self, "statementId")}];
@@ -232,61 +232,61 @@ LABEL_30:
     v14 = 0;
   }
 
-  v27 = v4;
+  v27 = uUIDString;
   v28[0] = @"eventId";
-  v15 = v4;
-  if (!v4)
+  null = uUIDString;
+  if (!uUIDString)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v15;
-  v26 = v6;
-  v29[0] = v15;
+  v24 = null;
+  v26 = uUIDString2;
+  v29[0] = null;
   v28[1] = @"sessionId";
-  v16 = v6;
-  if (!v6)
+  null2 = uUIDString2;
+  if (!uUIDString2)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[1] = v16;
+  v29[1] = null2;
   v28[2] = @"absoluteTimestamp";
-  v17 = v10;
+  null3 = v10;
   if (!v10)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[2] = v17;
+  v29[2] = null3;
   v28[3] = @"tupleInteraction";
-  v18 = v12;
-  if (!v12)
+  null4 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[3] = v18;
+  v29[3] = null4;
   v28[4] = @"candidateInteractions";
-  v19 = v13;
-  if (!v13)
+  null5 = _candidateInteractionsJSONArray;
+  if (!_candidateInteractionsJSONArray)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v19;
+  v29[4] = null5;
   v28[5] = @"statementId";
-  v20 = v14;
+  null6 = v14;
   if (!v14)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v20;
+  v29[5] = null6;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:{6, v24}];
   if (v14)
   {
-    if (v13)
+    if (_candidateInteractionsJSONArray)
     {
       goto LABEL_21;
     }
@@ -295,10 +295,10 @@ LABEL_30:
   else
   {
 
-    if (v13)
+    if (_candidateInteractionsJSONArray)
     {
 LABEL_21:
-      if (v12)
+      if (jsonDictionary)
       {
         goto LABEL_22;
       }
@@ -314,7 +314,7 @@ LABEL_32:
     }
   }
 
-  if (!v12)
+  if (!jsonDictionary)
   {
     goto LABEL_32;
   }
@@ -349,8 +349,8 @@ LABEL_23:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  candidateInteractions = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
+  v5 = [candidateInteractions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -361,14 +361,14 @@ LABEL_23:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(candidateInteractions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [candidateInteractions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -379,20 +379,20 @@ LABEL_23:
   return v3;
 }
 
-- (BMFeedbackLearningTupleInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFeedbackLearningTupleInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v147[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"eventId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"eventId"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v40 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v41 = a4;
+        errorCopy = error;
         v42 = *MEMORY[0x1E698F240];
         v144 = *MEMORY[0x1E696A578];
         v43 = v7;
@@ -405,12 +405,12 @@ LABEL_23:
         v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v145 forKeys:&v144 count:1];
         v47 = v42;
         v9 = v46;
-        v39 = 0;
-        *v41 = [v40 initWithDomain:v47 code:2 userInfo:v46];
+        selfCopy3 = 0;
+        *errorCopy = [v40 initWithDomain:v47 code:2 userInfo:v46];
         goto LABEL_83;
       }
 
-      v39 = 0;
+      selfCopy3 = 0;
       goto LABEL_85;
     }
 
@@ -418,14 +418,14 @@ LABEL_23:
     v17 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v8];
     if (!v17)
     {
-      if (!a4)
+      if (!error)
       {
-        v39 = 0;
+        selfCopy3 = 0;
         goto LABEL_84;
       }
 
       v75 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v76 = a4;
+      errorCopy2 = error;
       v77 = *MEMORY[0x1E698F240];
       v146 = *MEMORY[0x1E696A578];
       v78 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"eventId"];
@@ -433,24 +433,24 @@ LABEL_23:
       v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v147 forKeys:&v146 count:1];
       v80 = v77;
       v9 = v78;
-      *v76 = [v75 initWithDomain:v80 code:2 userInfo:v79];
+      *errorCopy2 = [v75 initWithDomain:v80 code:2 userInfo:v79];
 
       goto LABEL_66;
     }
 
     v18 = v17;
-    v114 = a4;
+    errorCopy4 = error;
 
     v8 = v18;
   }
 
   else
   {
-    v114 = a4;
+    errorCopy4 = error;
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"sessionId"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"sessionId"];
   if (v9)
   {
     objc_opt_class();
@@ -464,7 +464,7 @@ LABEL_23:
         if (!v20)
         {
           v81 = v19;
-          if (v114)
+          if (errorCopy4)
           {
             v120 = objc_alloc(MEMORY[0x1E696ABC0]);
             v82 = v9;
@@ -475,15 +475,15 @@ LABEL_23:
             v84 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v143 forKeys:&v142 count:1];
             v85 = v83;
             v9 = v82;
-            *v114 = [v120 initWithDomain:v85 code:2 userInfo:v84];
+            *errorCopy4 = [v120 initWithDomain:v85 code:2 userInfo:v84];
 
-            v39 = 0;
+            selfCopy3 = 0;
             v10 = v81;
           }
 
           else
           {
-            v39 = 0;
+            selfCopy3 = 0;
             v10 = v19;
           }
 
@@ -496,7 +496,7 @@ LABEL_23:
         goto LABEL_7;
       }
 
-      if (v114)
+      if (errorCopy4)
       {
         v48 = objc_alloc(MEMORY[0x1E696ABC0]);
         v49 = v9;
@@ -513,21 +513,21 @@ LABEL_23:
         v55 = v50;
         v9 = v49;
         v116 = v54;
-        v39 = 0;
-        *v114 = [v48 initWithDomain:v55 code:2 userInfo:?];
+        selfCopy3 = 0;
+        *errorCopy4 = [v48 initWithDomain:v55 code:2 userInfo:?];
 
         goto LABEL_82;
       }
 
 LABEL_66:
-      v39 = 0;
+      selfCopy3 = 0;
       goto LABEL_83;
     }
   }
 
   v10 = 0;
 LABEL_7:
-  v11 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   v110 = v11;
   if (v11 && (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -557,7 +557,7 @@ LABEL_7:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v114)
+          if (errorCopy4)
           {
             v106 = v9;
             v88 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -573,14 +573,14 @@ LABEL_7:
             v8 = v108;
             v113 = v90;
             v115 = 0;
-            v39 = 0;
-            *v114 = [v91 initWithDomain:v92 code:2 userInfo:?];
+            selfCopy3 = 0;
+            *errorCopy4 = [v91 initWithDomain:v92 code:2 userInfo:?];
 
             goto LABEL_80;
           }
 
           v115 = 0;
-          v39 = 0;
+          selfCopy3 = 0;
           goto LABEL_81;
         }
 
@@ -594,7 +594,7 @@ LABEL_7:
     v115 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"tupleInteraction"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"tupleInteraction"];
   v109 = v10;
   if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -602,7 +602,7 @@ LABEL_7:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v57 = v13;
-      if (v114)
+      if (errorCopy4)
       {
         v119 = objc_alloc(MEMORY[0x1E696ABC0]);
         v105 = v9;
@@ -618,15 +618,15 @@ LABEL_7:
         v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
         v63 = v58;
         v9 = v105;
-        *v114 = [v119 initWithDomain:v63 code:2 userInfo:v62];
+        *errorCopy4 = [v119 initWithDomain:v63 code:2 userInfo:v62];
 
-        v39 = 0;
+        selfCopy3 = 0;
         v37 = v57;
       }
 
       else
       {
-        v39 = 0;
+        selfCopy3 = 0;
         v37 = v13;
       }
 
@@ -639,13 +639,13 @@ LABEL_7:
     v38 = v126;
     if (v38)
     {
-      if (v114)
+      if (errorCopy4)
       {
         v38 = v38;
-        *v114 = v38;
+        *errorCopy4 = v38;
       }
 
-      v39 = 0;
+      selfCopy3 = 0;
       goto LABEL_79;
     }
 
@@ -660,15 +660,15 @@ LABEL_7:
     v111 = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"candidateInteractions"];
-  v15 = [MEMORY[0x1E695DFB0] null];
-  v16 = [v14 isEqual:v15];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"candidateInteractions"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v16 = [v14 isEqual:null];
 
   v104 = v9;
   if (v16)
   {
-    v101 = self;
-    v102 = v6;
+    selfCopy2 = self;
+    v102 = dictionaryCopy;
 
     v14 = 0;
   }
@@ -680,7 +680,7 @@ LABEL_7:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v114)
+        if (errorCopy4)
         {
           v72 = objc_alloc(MEMORY[0x1E696ABC0]);
           v73 = *MEMORY[0x1E698F240];
@@ -689,18 +689,18 @@ LABEL_7:
           v135 = v118;
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
           v74 = [v72 initWithDomain:v73 code:2 userInfo:v31];
-          v39 = 0;
-          *v114 = v74;
+          selfCopy3 = 0;
+          *errorCopy4 = v74;
           goto LABEL_77;
         }
 
-        v39 = 0;
+        selfCopy3 = 0;
         goto LABEL_78;
       }
     }
 
-    v101 = self;
-    v102 = v6;
+    selfCopy2 = self;
+    v102 = dictionaryCopy;
   }
 
   v118 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v14, "count")}];
@@ -731,7 +731,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v114)
+        if (errorCopy4)
         {
           v64 = objc_alloc(MEMORY[0x1E696ABC0]);
           v65 = *MEMORY[0x1E698F240];
@@ -739,13 +739,13 @@ LABEL_7:
           v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type null for element of %@, must not be null", @"candidateInteractions"];
           v132 = v27;
           v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v132 forKeys:&v131 count:1];
-          *v114 = [v64 initWithDomain:v65 code:2 userInfo:v66];
+          *errorCopy4 = [v64 initWithDomain:v65 code:2 userInfo:v66];
 
 LABEL_56:
-          v39 = 0;
+          selfCopy3 = 0;
           v31 = v14;
-          self = v101;
-          v6 = v102;
+          self = selfCopy2;
+          dictionaryCopy = v102;
           v7 = v100;
 LABEL_60:
           v10 = v109;
@@ -753,10 +753,10 @@ LABEL_60:
         }
 
 LABEL_63:
-        v39 = 0;
+        selfCopy3 = 0;
         v31 = v14;
-        self = v101;
-        v6 = v102;
+        self = selfCopy2;
+        dictionaryCopy = v102;
         v7 = v100;
         v10 = v109;
         goto LABEL_77;
@@ -765,7 +765,7 @@ LABEL_63:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v114)
+        if (errorCopy4)
         {
           v67 = objc_alloc(MEMORY[0x1E696ABC0]);
           v68 = *MEMORY[0x1E698F240];
@@ -773,7 +773,7 @@ LABEL_63:
           v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"candidateInteractions"];
           v130 = v27;
           v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
-          *v114 = [v67 initWithDomain:v68 code:2 userInfo:v69];
+          *errorCopy4 = [v67 initWithDomain:v68 code:2 userInfo:v69];
 
           goto LABEL_56;
         }
@@ -790,16 +790,16 @@ LABEL_63:
       {
         v70 = v30;
         v7 = v100;
-        if (v114)
+        if (errorCopy4)
         {
           v71 = v30;
-          *v114 = v70;
+          *errorCopy4 = v70;
         }
 
-        v39 = 0;
+        selfCopy3 = 0;
         v31 = v14;
-        self = v101;
-        v6 = v102;
+        self = selfCopy2;
+        dictionaryCopy = v102;
         goto LABEL_60;
       }
 
@@ -818,18 +818,18 @@ LABEL_63:
 
 LABEL_34:
 
-  v6 = v102;
+  dictionaryCopy = v102;
   v27 = [v102 objectForKeyedSubscript:@"statementId"];
   if (!v27)
   {
     v31 = 0;
-    self = v101;
+    self = selfCopy2;
     v10 = v109;
     goto LABEL_75;
   }
 
   objc_opt_class();
-  self = v101;
+  self = selfCopy2;
   v10 = v109;
   if (objc_opt_isKindOfClass())
   {
@@ -843,13 +843,13 @@ LABEL_34:
     v31 = v27;
 LABEL_75:
     self = [(BMFeedbackLearningTupleInteraction *)self initWithEventId:v107 sessionId:v10 absoluteTimestamp:v115 tupleInteraction:v111 candidateInteractions:v118 statementId:v31];
-    v39 = self;
+    selfCopy3 = self;
   }
 
   else
   {
-    v31 = v114;
-    if (v114)
+    v31 = errorCopy4;
+    if (errorCopy4)
     {
       v93 = objc_alloc(MEMORY[0x1E696ABC0]);
       v94 = *MEMORY[0x1E698F240];
@@ -857,12 +857,12 @@ LABEL_75:
       v95 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"statementId"];
       v128 = v95;
       v96 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v128 forKeys:&v127 count:1];
-      *v114 = [v93 initWithDomain:v94 code:2 userInfo:v96];
+      *errorCopy4 = [v93 initWithDomain:v94 code:2 userInfo:v96];
 
       v31 = 0;
     }
 
-    v39 = 0;
+    selfCopy3 = 0;
   }
 
 LABEL_76:
@@ -886,22 +886,22 @@ LABEL_84:
 LABEL_85:
 
   v86 = *MEMORY[0x1E69E9840];
-  return v39;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMFeedbackLearningTupleInteraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_raw_eventId)
   {
     PBDataWriterWriteDataField();
@@ -922,7 +922,7 @@ LABEL_85:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMFeedbackLearningTupleInteractionTupleInteraction *)self->_tupleInteraction writeTo:v4];
+    [(BMFeedbackLearningTupleInteractionTupleInteraction *)self->_tupleInteraction writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -949,7 +949,7 @@ LABEL_85:
         v11 = *(*(&v14 + 1) + 8 * v10);
         v18 = 0;
         PBDataWriterPlaceMark();
-        [v11 writeTo:{v4, v14}];
+        [v11 writeTo:{toCopy, v14}];
         PBDataWriterRecallMark();
         ++v10;
       }
@@ -970,9 +970,9 @@ LABEL_85:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v40.receiver = self;
   v40.super_class = BMFeedbackLearningTupleInteraction;
   v5 = [(BMEventBase *)&v40 init];
@@ -982,12 +982,12 @@ LABEL_85:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_57;
       }
@@ -998,18 +998,18 @@ LABEL_85:
       while (1)
       {
         LOBYTE(v41) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v41) & 0x7F) << v8;
@@ -1027,9 +1027,9 @@ LABEL_85:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_57;
       }
@@ -1050,7 +1050,7 @@ LABEL_16:
             goto LABEL_60;
           }
 
-          v28 = [[BMFeedbackLearningTupleInteractionTupleInteraction alloc] initByReadFrom:v4];
+          v28 = [[BMFeedbackLearningTupleInteractionTupleInteraction alloc] initByReadFrom:fromCopy];
           if (!v28)
           {
             goto LABEL_60;
@@ -1069,7 +1069,7 @@ LABEL_16:
             goto LABEL_60;
           }
 
-          v31 = [[BMFeedbackLearningTupleInteractionCandidateInteraction alloc] initByReadFrom:v4];
+          v31 = [[BMFeedbackLearningTupleInteractionCandidateInteraction alloc] initByReadFrom:fromCopy];
           if (!v31)
           {
             goto LABEL_60;
@@ -1088,18 +1088,18 @@ LABEL_16:
           while (1)
           {
             LOBYTE(v41) = 0;
-            v22 = [v4 position] + 1;
-            if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+            v22 = [fromCopy position] + 1;
+            if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
             {
-              v24 = [v4 data];
-              [v24 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v21 |= (LOBYTE(v41) & 0x7F) << v19;
@@ -1117,7 +1117,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v25 = 0;
           }
@@ -1141,8 +1141,8 @@ LABEL_42:
       }
 
 LABEL_56:
-      v34 = [v4 position];
-      if (v34 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_57;
       }
@@ -1178,18 +1178,18 @@ LABEL_60:
       case 3:
         v5->_hasRaw_absoluteTimestamp = 1;
         v41 = 0.0;
-        v17 = [v4 position] + 8;
-        if (v17 >= [v4 position] && (v18 = objc_msgSend(v4, "position") + 8, v18 <= objc_msgSend(v4, "length")))
+        v17 = [fromCopy position] + 8;
+        if (v17 >= [fromCopy position] && (v18 = objc_msgSend(fromCopy, "position") + 8, v18 <= objc_msgSend(fromCopy, "length")))
         {
-          v33 = [v4 data];
-          [v33 getBytes:&v41 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_absoluteTimestamp = v41;
@@ -1204,8 +1204,8 @@ LABEL_57:
   candidateInteractions = v5->_candidateInteractions;
   v5->_candidateInteractions = v35;
 
-  v37 = [v4 hasError];
-  if (v37)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_61:
     v38 = 0;
@@ -1223,37 +1223,37 @@ LABEL_58:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMFeedbackLearningTupleInteraction *)self eventId];
-  v5 = [(BMFeedbackLearningTupleInteraction *)self sessionId];
-  v6 = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
-  v7 = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
-  v8 = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
+  eventId = [(BMFeedbackLearningTupleInteraction *)self eventId];
+  sessionId = [(BMFeedbackLearningTupleInteraction *)self sessionId];
+  absoluteTimestamp = [(BMFeedbackLearningTupleInteraction *)self absoluteTimestamp];
+  tupleInteraction = [(BMFeedbackLearningTupleInteraction *)self tupleInteraction];
+  candidateInteractions = [(BMFeedbackLearningTupleInteraction *)self candidateInteractions];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMFeedbackLearningTupleInteraction statementId](self, "statementId")}];
-  v10 = [v3 initWithFormat:@"BMFeedbackLearningTupleInteraction with eventId: %@, sessionId: %@, absoluteTimestamp: %@, tupleInteraction: %@, candidateInteractions: %@, statementId: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMFeedbackLearningTupleInteraction with eventId: %@, sessionId: %@, absoluteTimestamp: %@, tupleInteraction: %@, candidateInteractions: %@, statementId: %@", eventId, sessionId, absoluteTimestamp, tupleInteraction, candidateInteractions, v9];
 
   return v10;
 }
 
-- (BMFeedbackLearningTupleInteraction)initWithEventId:(id)a3 sessionId:(id)a4 absoluteTimestamp:(id)a5 tupleInteraction:(id)a6 candidateInteractions:(id)a7 statementId:(id)a8
+- (BMFeedbackLearningTupleInteraction)initWithEventId:(id)id sessionId:(id)sessionId absoluteTimestamp:(id)timestamp tupleInteraction:(id)interaction candidateInteractions:(id)interactions statementId:(id)statementId
 {
   v32 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  idCopy = id;
+  sessionIdCopy = sessionId;
+  timestampCopy = timestamp;
+  interactionCopy = interaction;
+  interactionsCopy = interactions;
+  statementIdCopy = statementId;
   v29.receiver = self;
   v29.super_class = BMFeedbackLearningTupleInteraction;
   v20 = [(BMEventBase *)&v29 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (idCopy)
     {
       v30 = 0;
       v31 = 0;
-      [v14 getUUIDBytes:&v30];
+      [idCopy getUUIDBytes:&v30];
       v21 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v30 length:16];
       raw_eventId = v20->_raw_eventId;
       v20->_raw_eventId = v21;
@@ -1265,11 +1265,11 @@ LABEL_58:
       v20->_raw_eventId = 0;
     }
 
-    if (v15)
+    if (sessionIdCopy)
     {
       v30 = 0;
       v31 = 0;
-      [v15 getUUIDBytes:&v30];
+      [sessionIdCopy getUUIDBytes:&v30];
       v23 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:&v30 length:16];
       raw_sessionId = v20->_raw_sessionId;
       v20->_raw_sessionId = v23;
@@ -1281,10 +1281,10 @@ LABEL_58:
       v20->_raw_sessionId = 0;
     }
 
-    if (v16)
+    if (timestampCopy)
     {
       v20->_hasRaw_absoluteTimestamp = 1;
-      [v16 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1294,21 +1294,21 @@ LABEL_58:
     }
 
     v20->_raw_absoluteTimestamp = v25;
-    objc_storeStrong(&v20->_tupleInteraction, a6);
-    objc_storeStrong(&v20->_candidateInteractions, a7);
-    if (v19)
+    objc_storeStrong(&v20->_tupleInteraction, interaction);
+    objc_storeStrong(&v20->_candidateInteractions, interactions);
+    if (statementIdCopy)
     {
       v20->_hasStatementId = 1;
-      v26 = [v19 unsignedIntValue];
+      unsignedIntValue = [statementIdCopy unsignedIntValue];
     }
 
     else
     {
-      v26 = 0;
+      unsignedIntValue = 0;
       v20->_hasStatementId = 0;
     }
 
-    v20->_statementId = v26;
+    v20->_statementId = unsignedIntValue;
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -1378,9 +1378,9 @@ id __45__BMFeedbackLearningTupleInteraction_columns__block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1388,8 +1388,8 @@ id __45__BMFeedbackLearningTupleInteraction_columns__block_invoke(uint64_t a1, v
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMFeedbackLearningTupleInteraction alloc] initByReadFrom:v7];
     v4 = v8;

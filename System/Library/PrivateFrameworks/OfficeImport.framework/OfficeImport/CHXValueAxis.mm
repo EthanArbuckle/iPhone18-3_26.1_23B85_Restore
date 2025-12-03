@@ -1,21 +1,21 @@
 @interface CHXValueAxis
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)stringBuiltInUnitEnum:(int)a3;
-+ (int)chdAxisBuiltInUnitFromXmlBuildInUnitElement:(_xmlNode *)a3;
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (id)stringBuiltInUnitEnum:(int)enum;
++ (int)chdAxisBuiltInUnitFromXmlBuildInUnitElement:(_xmlNode *)element;
 @end
 
 @implementation CHXValueAxis
 
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = [CHDValueAxis alloc];
-  v8 = [v6 resources];
-  v9 = [(CHDValueAxis *)v7 initWithResources:v8];
+  resources = [stateCopy resources];
+  v9 = [(CHDValueAxis *)v7 initWithResources:resources];
 
-  v10 = [v6 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "majorUnit");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v12 = OCXFindChild(element, oAXChartNamespace, "majorUnit");
 
   if (v12)
   {
@@ -26,9 +26,9 @@
     }
   }
 
-  v13 = [v6 drawingState];
-  v14 = [v13 OAXChartNamespace];
-  v15 = OCXFindChild(a3, v14, "minorUnit");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v15 = OCXFindChild(element, oAXChartNamespace2, "minorUnit");
 
   if (v15)
   {
@@ -39,15 +39,15 @@
     }
   }
 
-  v16 = [v6 drawingState];
-  v17 = [v16 OAXChartNamespace];
-  v18 = OCXFindChild(a3, v17, "scaling");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v18 = OCXFindChild(element, oAXChartNamespace3, "scaling");
 
   if (v18)
   {
-    v19 = [v6 drawingState];
-    v20 = [v19 OAXChartNamespace];
-    v21 = OCXFindChild(v18, v20, "logBase");
+    drawingState4 = [stateCopy drawingState];
+    oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+    v21 = OCXFindChild(v18, oAXChartNamespace4, "logBase");
 
     if (v21)
     {
@@ -58,9 +58,9 @@
       }
     }
 
-    v22 = [v6 drawingState];
-    v23 = [v22 OAXChartNamespace];
-    v24 = OCXFindChild(v18, v23, "orientation");
+    drawingState5 = [stateCopy drawingState];
+    oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+    v24 = OCXFindChild(v18, oAXChartNamespace5, "orientation");
 
     if (v24)
     {
@@ -75,24 +75,24 @@
     }
   }
 
-  v28 = [v6 drawingState];
-  v29 = [v28 OAXChartNamespace];
-  v30 = OCXFindChild(a3, v29, "dispUnits");
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v30 = OCXFindChild(element, oAXChartNamespace6, "dispUnits");
 
   if (v30)
   {
-    v31 = [v6 drawingState];
-    v32 = [v31 OAXChartNamespace];
-    v33 = OCXFindChild(v30, v32, "builtInUnit");
+    drawingState7 = [stateCopy drawingState];
+    oAXChartNamespace7 = [drawingState7 OAXChartNamespace];
+    v33 = OCXFindChild(v30, oAXChartNamespace7, "builtInUnit");
 
     if (v33)
     {
-      -[CHDValueAxis setBuiltInUnit:](v9, "setBuiltInUnit:", [a1 chdAxisBuiltInUnitFromXmlBuildInUnitElement:v33]);
+      -[CHDValueAxis setBuiltInUnit:](v9, "setBuiltInUnit:", [self chdAxisBuiltInUnitFromXmlBuildInUnitElement:v33]);
     }
 
-    v34 = [v6 drawingState];
-    v35 = [v34 OAXChartNamespace];
-    v36 = OCXFindChild(v30, v35, "dispUnitsLbl");
+    drawingState8 = [stateCopy drawingState];
+    oAXChartNamespace8 = [drawingState8 OAXChartNamespace];
+    v36 = OCXFindChild(v30, oAXChartNamespace8, "dispUnitsLbl");
 
     if (v36)
     {
@@ -103,12 +103,12 @@
   return v9;
 }
 
-+ (int)chdAxisBuiltInUnitFromXmlBuildInUnitElement:(_xmlNode *)a3
++ (int)chdAxisBuiltInUnitFromXmlBuildInUnitElement:(_xmlNode *)element
 {
-  if (a3)
+  if (element)
   {
     v8 = 0;
-    v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v8);
+    v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v8);
     v4 = v8;
     v5 = v4;
     if (v3)
@@ -177,16 +177,16 @@ LABEL_23:
   return -1;
 }
 
-+ (id)stringBuiltInUnitEnum:(int)a3
++ (id)stringBuiltInUnitEnum:(int)enum
 {
-  if (a3 > 8)
+  if (enum > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_2799CD378[a3];
+    return off_2799CD378[enum];
   }
 }
 

@@ -1,27 +1,27 @@
 @interface ExtensionsStackViewController
-- (void)_updateScrollViewForLayout:(unint64_t)a3;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)_updateScrollViewForLayout:(unint64_t)layout;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)viewDidLoad;
 @end
 
 @implementation ExtensionsStackViewController
 
-- (void)_updateScrollViewForLayout:(unint64_t)a3
+- (void)_updateScrollViewForLayout:(unint64_t)layout
 {
-  if (a3 - 1 <= 1)
+  if (layout - 1 <= 1)
   {
     y = CGPointZero.y;
-    v5 = [(ExtensionsStackViewController *)self scrollView];
-    [v5 setContentOffset:{CGPointZero.x, y}];
+    scrollView = [(ExtensionsStackViewController *)self scrollView];
+    [scrollView setContentOffset:{CGPointZero.x, y}];
   }
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = ExtensionsStackViewController;
   [(ContaineeViewController *)&v5 didChangeLayout:?];
-  [(ExtensionsStackViewController *)self _updateScrollViewForLayout:a3];
+  [(ExtensionsStackViewController *)self _updateScrollViewForLayout:layout];
 }
 
 - (void)viewDidLoad
@@ -37,94 +37,94 @@
   v5 = +[UIColor clearColor];
   [(UIView *)self->_headerView setBackgroundColor:v5];
 
-  v6 = [(ExtensionsStackViewController *)self view];
-  [v6 addSubview:self->_headerView];
+  view = [(ExtensionsStackViewController *)self view];
+  [view addSubview:self->_headerView];
 
   v7 = objc_alloc_init(UIScrollView);
   [(ExtensionsStackViewController *)self setScrollView:v7];
 
-  v8 = [(ExtensionsStackViewController *)self scrollView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(ExtensionsStackViewController *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(ExtensionsStackViewController *)self scrollView];
-  [v9 setAlwaysBounceVertical:1];
+  scrollView2 = [(ExtensionsStackViewController *)self scrollView];
+  [scrollView2 setAlwaysBounceVertical:1];
 
-  v10 = [(ExtensionsStackViewController *)self scrollView];
-  [v10 setDelegate:self];
+  scrollView3 = [(ExtensionsStackViewController *)self scrollView];
+  [scrollView3 setDelegate:self];
 
-  v11 = [(ExtensionsStackViewController *)self view];
-  v12 = [(ExtensionsStackViewController *)self scrollView];
-  [v11 addSubview:v12];
+  view2 = [(ExtensionsStackViewController *)self view];
+  scrollView4 = [(ExtensionsStackViewController *)self scrollView];
+  [view2 addSubview:scrollView4];
 
   v13 = objc_alloc_init(UIStackView);
   stackView = self->_stackView;
   self->_stackView = v13;
 
-  v15 = [(ExtensionsStackViewController *)self stackView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView = [(ExtensionsStackViewController *)self stackView];
+  [stackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(ExtensionsStackViewController *)self stackView];
-  [v16 setAxis:1];
+  stackView2 = [(ExtensionsStackViewController *)self stackView];
+  [stackView2 setAxis:1];
 
-  v17 = [(ExtensionsStackViewController *)self stackView];
-  [v17 setAlignment:0];
+  stackView3 = [(ExtensionsStackViewController *)self stackView];
+  [stackView3 setAlignment:0];
 
-  v18 = [(ExtensionsStackViewController *)self stackView];
-  [v18 setDistribution:3];
+  stackView4 = [(ExtensionsStackViewController *)self stackView];
+  [stackView4 setDistribution:3];
 
-  v19 = [(ExtensionsStackViewController *)self stackView];
-  [v19 setSpacing:0.0];
+  stackView5 = [(ExtensionsStackViewController *)self stackView];
+  [stackView5 setSpacing:0.0];
 
-  v20 = [(ExtensionsStackViewController *)self scrollView];
-  v21 = [(ExtensionsStackViewController *)self stackView];
-  [v20 addSubview:v21];
+  scrollView5 = [(ExtensionsStackViewController *)self scrollView];
+  stackView6 = [(ExtensionsStackViewController *)self stackView];
+  [scrollView5 addSubview:stackView6];
 
   [(ExtensionsStackViewController *)self _updateScrollViewForLayout:2];
-  v22 = [(ExtensionsStackViewController *)self stackView];
-  v23 = [(ExtensionsStackViewController *)self scrollView];
-  v24 = [v22 _maps_constraintsForCenteringInView:v23];
+  stackView7 = [(ExtensionsStackViewController *)self stackView];
+  scrollView6 = [(ExtensionsStackViewController *)self scrollView];
+  v24 = [stackView7 _maps_constraintsForCenteringInView:scrollView6];
   v58 = [NSMutableArray arrayWithArray:v24];
 
-  v25 = [(ExtensionsStackViewController *)self stackView];
-  v26 = [v25 widthAnchor];
-  v27 = [(ExtensionsStackViewController *)self scrollView];
-  v28 = [v27 widthAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  stackView8 = [(ExtensionsStackViewController *)self stackView];
+  widthAnchor = [stackView8 widthAnchor];
+  scrollView7 = [(ExtensionsStackViewController *)self scrollView];
+  widthAnchor2 = [scrollView7 widthAnchor];
+  v29 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v58 addObject:v29];
 
-  v56 = [(UIView *)self->_headerView topAnchor];
-  v57 = [(ExtensionsStackViewController *)self view];
-  v55 = [v57 topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor = [(UIView *)self->_headerView topAnchor];
+  view3 = [(ExtensionsStackViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v60[0] = v54;
-  v52 = [(UIView *)self->_headerView leadingAnchor];
-  v53 = [(ExtensionsStackViewController *)self view];
-  v51 = [v53 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor = [(UIView *)self->_headerView leadingAnchor];
+  view4 = [(ExtensionsStackViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v60[1] = v50;
-  v48 = [(UIView *)self->_headerView trailingAnchor];
-  v49 = [(ExtensionsStackViewController *)self view];
-  v47 = [v49 trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  trailingAnchor = [(UIView *)self->_headerView trailingAnchor];
+  view5 = [(ExtensionsStackViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v60[2] = v46;
-  v45 = [(UIScrollView *)self->_scrollView topAnchor];
-  v44 = [(UIView *)self->_headerView bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  topAnchor3 = [(UIScrollView *)self->_scrollView topAnchor];
+  bottomAnchor = [(UIView *)self->_headerView bottomAnchor];
+  v43 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v60[3] = v43;
-  v41 = [(UIScrollView *)self->_scrollView leadingAnchor];
-  v42 = [(ExtensionsStackViewController *)self view];
-  v40 = [v42 leadingAnchor];
-  v30 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor3 = [(UIScrollView *)self->_scrollView leadingAnchor];
+  view6 = [(ExtensionsStackViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v60[4] = v30;
-  v31 = [(UIScrollView *)self->_scrollView trailingAnchor];
-  v32 = [(ExtensionsStackViewController *)self view];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  trailingAnchor3 = [(UIScrollView *)self->_scrollView trailingAnchor];
+  view7 = [(ExtensionsStackViewController *)self view];
+  trailingAnchor4 = [view7 trailingAnchor];
+  v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v60[5] = v34;
-  v35 = [(UIScrollView *)self->_scrollView bottomAnchor];
-  v36 = [(ExtensionsStackViewController *)self view];
-  v37 = [v36 bottomAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  bottomAnchor2 = [(UIScrollView *)self->_scrollView bottomAnchor];
+  view8 = [(ExtensionsStackViewController *)self view];
+  bottomAnchor3 = [view8 bottomAnchor];
+  v38 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v60[6] = v38;
   v39 = [NSArray arrayWithObjects:v60 count:7];
   [v58 addObjectsFromArray:v39];

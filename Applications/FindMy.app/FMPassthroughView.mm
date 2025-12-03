@@ -1,12 +1,12 @@
 @interface FMPassthroughView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC6FindMy17FMPassthroughView)initWithCoder:(id)a3;
-- (_TtC6FindMy17FMPassthroughView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC6FindMy17FMPassthroughView)initWithCoder:(id)coder;
+- (_TtC6FindMy17FMPassthroughView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMPassthroughView
 
-- (_TtC6FindMy17FMPassthroughView)initWithCoder:(id)a3
+- (_TtC6FindMy17FMPassthroughView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC6FindMy17FMPassthroughView_enabled) = 1;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -14,19 +14,19 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_100317040(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_100317040(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (_TtC6FindMy17FMPassthroughView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy17FMPassthroughView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

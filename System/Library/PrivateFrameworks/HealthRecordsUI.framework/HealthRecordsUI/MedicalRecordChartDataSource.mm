@@ -1,9 +1,9 @@
 @interface MedicalRecordChartDataSource
 - (NSString)displayName;
 - (_TtC15HealthRecordsUI28MedicalRecordChartDataSource)init;
-- (_TtC15HealthRecordsUI28MedicalRecordChartDataSource)initWithConcept:(id)a3 dataTransformer:(id)a4 unit:(id)a5 preferredColors:(id)a6 collapseIntoRangePoints:(BOOL)a7 type:(int64_t)a8;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
-- (id)chartDisplayTypeWithVerticalAxis:(id)a3;
+- (_TtC15HealthRecordsUI28MedicalRecordChartDataSource)initWithConcept:(id)concept dataTransformer:(id)transformer unit:(id)unit preferredColors:(id)colors collapseIntoRangePoints:(BOOL)points type:(int64_t)type;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
+- (id)chartDisplayTypeWithVerticalAxis:(id)axis;
 @end
 
 @implementation MedicalRecordChartDataSource
@@ -17,14 +17,14 @@
     v4 = v12;
     __swift_project_boxed_opaque_existential_1Tm(v10, v11);
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v5(v3, v4);
     __swift_destroy_boxed_opaque_existential_1Tm(v10);
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     sub_1D11F9EFC(v10, sub_1D1115B88);
   }
 
@@ -33,23 +33,23 @@
   return v8;
 }
 
-- (_TtC15HealthRecordsUI28MedicalRecordChartDataSource)initWithConcept:(id)a3 dataTransformer:(id)a4 unit:(id)a5 preferredColors:(id)a6 collapseIntoRangePoints:(BOOL)a7 type:(int64_t)a8
+- (_TtC15HealthRecordsUI28MedicalRecordChartDataSource)initWithConcept:(id)concept dataTransformer:(id)transformer unit:(id)unit preferredColors:(id)colors collapseIntoRangePoints:(BOOL)points type:(int64_t)type
 {
-  v14 = a3;
+  conceptCopy = concept;
   swift_unknownObjectRetain();
-  v15 = a5;
-  v16 = a6;
-  return MedicalRecordChartDataSource.init(concept:dataTransformer:unit:preferredColors:collapseIntoRangePoints:type:)(a3, a4, v15, a6, a7, a8);
+  unitCopy = unit;
+  colorsCopy = colors;
+  return MedicalRecordChartDataSource.init(concept:dataTransformer:unit:preferredColors:collapseIntoRangePoints:type:)(concept, transformer, unitCopy, colors, points, type);
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
-  index = a3->index;
-  zoom = a3->zoom;
-  resolution = a3->resolution;
-  if (a4)
+  index = path->index;
+  zoom = path->zoom;
+  resolution = path->resolution;
+  if (context)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D139101C();
     swift_unknownObjectRelease();
@@ -58,7 +58,7 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v10 = sub_1D11F6CF0(index, zoom, resolution);
@@ -68,11 +68,11 @@
   return v10;
 }
 
-- (id)chartDisplayTypeWithVerticalAxis:(id)a3
+- (id)chartDisplayTypeWithVerticalAxis:(id)axis
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1D11F76B0(v4);
+  axisCopy = axis;
+  selfCopy = self;
+  v6 = sub_1D11F76B0(axisCopy);
 
   return v6;
 }

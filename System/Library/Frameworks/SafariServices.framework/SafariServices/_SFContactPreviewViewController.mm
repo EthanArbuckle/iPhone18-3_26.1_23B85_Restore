@@ -1,30 +1,30 @@
 @interface _SFContactPreviewViewController
-- (_SFContactPreviewViewController)initWithFilePath:(id)a3 sourceURL:(id)a4 deleteFileWhenDone:(BOOL)a5 beforeDismissHandler:(id)a6;
-- (void)_presentActivityViewController:(id)a3;
+- (_SFContactPreviewViewController)initWithFilePath:(id)path sourceURL:(id)l deleteFileWhenDone:(BOOL)done beforeDismissHandler:(id)handler;
+- (void)_presentActivityViewController:(id)controller;
 - (void)dealloc;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _SFContactPreviewViewController
 
-- (_SFContactPreviewViewController)initWithFilePath:(id)a3 sourceURL:(id)a4 deleteFileWhenDone:(BOOL)a5 beforeDismissHandler:(id)a6
+- (_SFContactPreviewViewController)initWithFilePath:(id)path sourceURL:(id)l deleteFileWhenDone:(BOOL)done beforeDismissHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if ([v11 length])
+  pathCopy = path;
+  lCopy = l;
+  handlerCopy = handler;
+  if ([pathCopy length])
   {
-    v31 = a5;
+    doneCopy = done;
     v14 = MEMORY[0x1E695DEF0];
-    v15 = v11;
+    v15 = pathCopy;
     v16 = [[v14 alloc] initWithContentsOfFile:v15];
 
     v17 = [MEMORY[0x1E695CE30] contactsWithData:v16 error:0];
     if ([v17 count])
     {
       v18 = MEMORY[0x1E695D148];
-      v19 = [v17 firstObject];
-      v20 = [v18 viewControllerForUnknownContact:v19];
+      firstObject = [v17 firstObject];
+      v20 = [v18 viewControllerForUnknownContact:firstObject];
 
       [v20 setActions:32];
       [v20 setAllowsEditing:0];
@@ -41,46 +41,46 @@
 
     if (v20 && (v32.receiver = self, v32.super_class = _SFContactPreviewViewController, v23 = [(_SFContactPreviewViewController *)&v32 initWithRootViewController:v20], (self = v23) != 0))
     {
-      objc_storeStrong(&v23->_filePath, a3);
-      objc_storeStrong(&self->_sourceURL, a4);
+      objc_storeStrong(&v23->_filePath, path);
+      objc_storeStrong(&self->_sourceURL, l);
       objc_storeStrong(&self->_contactViewController, v20);
       v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:self action:sel__presentActivityViewController_];
-      v25 = [(CNContactViewController *)self->_contactViewController navigationItem];
-      [v25 setRightBarButtonItem:v24];
+      navigationItem = [(CNContactViewController *)self->_contactViewController navigationItem];
+      [navigationItem setRightBarButtonItem:v24];
 
       v26 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-      v27 = [(CNContactViewController *)self->_contactViewController navigationItem];
-      [v27 setLeftBarButtonItem:v26];
+      navigationItem2 = [(CNContactViewController *)self->_contactViewController navigationItem];
+      [navigationItem2 setLeftBarButtonItem:v26];
 
-      v28 = _Block_copy(v13);
+      v28 = _Block_copy(handlerCopy);
       beforeDismissHandler = self->_beforeDismissHandler;
       self->_beforeDismissHandler = v28;
 
-      self->_deleteFileWhenDone = v31;
+      self->_deleteFileWhenDone = doneCopy;
       self = self;
-      v22 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v22 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
   if (self->_deleteFileWhenDone)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
-    [v3 _web_removeFileOnlyAtPath:self->_filePath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager _web_removeFileOnlyAtPath:self->_filePath];
   }
 
   v4.receiver = self;
@@ -88,11 +88,11 @@
   [(_SFContactPreviewViewController *)&v4 dealloc];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = _SFContactPreviewViewController;
-  [(_SFContactPreviewViewController *)&v6 viewWillDisappear:a3];
+  [(_SFContactPreviewViewController *)&v6 viewWillDisappear:disappear];
   beforeDismissHandler = self->_beforeDismissHandler;
   if (beforeDismissHandler)
   {
@@ -102,9 +102,9 @@
   }
 }
 
-- (void)_presentActivityViewController:(id)a3
+- (void)_presentActivityViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v5 = [[_SFOpenInOtherAppActivityViewController alloc] initWithFilePath:self->_filePath UTI:@"public.vcard" sourceURL:self->_sourceURL];
   v7 = MEMORY[0x1E69E9820];
@@ -114,8 +114,8 @@
   objc_copyWeak(&v11, &location);
   [(_SFOpenInOtherAppActivityViewController *)v5 setCompletionWithItemsHandler:&v7];
   [(_SFOpenInOtherAppActivityViewController *)v5 setModalPresentationStyle:7, v7, v8, v9, v10];
-  v6 = [(_SFOpenInOtherAppActivityViewController *)v5 popoverPresentationController];
-  [v6 setBarButtonItem:v4];
+  popoverPresentationController = [(_SFOpenInOtherAppActivityViewController *)v5 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:controllerCopy];
 
   [(_SFContactPreviewViewController *)self presentViewController:v5 animated:1 completion:0];
   objc_destroyWeak(&v11);

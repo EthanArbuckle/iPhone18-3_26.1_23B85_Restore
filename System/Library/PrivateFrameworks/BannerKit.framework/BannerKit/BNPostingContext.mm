@@ -1,15 +1,15 @@
 @interface BNPostingContext
-- (BNPostingContext)initWithPresentable:(id)a3 presentationOptions:(unint64_t)a4 userInfo:(id)a5;
+- (BNPostingContext)initWithPresentable:(id)presentable presentationOptions:(unint64_t)options userInfo:(id)info;
 - (NSUUID)pendingIdentifier;
 @end
 
 @implementation BNPostingContext
 
-- (BNPostingContext)initWithPresentable:(id)a3 presentationOptions:(unint64_t)a4 userInfo:(id)a5
+- (BNPostingContext)initWithPresentable:(id)presentable presentationOptions:(unint64_t)options userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  presentableCopy = presentable;
+  infoCopy = info;
+  if (!presentableCopy)
   {
     [BNPostingContext initWithPresentable:a2 presentationOptions:self userInfo:?];
   }
@@ -20,9 +20,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_presentable, a3);
-    v13->_presentationOptions = a4;
-    objc_storeStrong(&v13->_userInfo, a5);
+    objc_storeStrong(&v12->_presentable, presentable);
+    v13->_presentationOptions = options;
+    objc_storeStrong(&v13->_userInfo, info);
   }
 
   return v13;

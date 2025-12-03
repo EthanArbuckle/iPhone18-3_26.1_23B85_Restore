@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$4
-- (int64_t)getWithLong:(int64_t)a3;
+- (int64_t)getWithLong:(int64_t)long;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$4
 
-- (int64_t)getWithLong:(int64_t)a3
+- (int64_t)getWithLong:(int64_t)long
 {
   v3 = self->val$table_;
   if (!v3 || (v4 = self->val$ords_) == 0)
@@ -13,7 +13,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(OrgApacheLuceneUtilLongValues *)v4 getWithLong:a3];
+  v5 = [(OrgApacheLuceneUtilLongValues *)v4 getWithLong:long];
   size = v3->super.size_;
   if ((v5 & 0x80000000) != 0 || size <= v5)
   {

@@ -81,7 +81,7 @@ id __93__SAUIIndicatorElementViewControllerAccessibility__accessibilityLoadAcces
 LABEL_16:
     v18.receiver = self;
     v18.super_class = SAUIIndicatorElementViewControllerAccessibility;
-    v14 = [(SAUIIndicatorElementViewControllerAccessibility *)&v18 accessibilityLabel];
+    accessibilityLabel = [(SAUIIndicatorElementViewControllerAccessibility *)&v18 accessibilityLabel];
     goto LABEL_22;
   }
 
@@ -146,9 +146,9 @@ LABEL_8:
 
   v13 = @"mic.in.use";
 LABEL_21:
-  v14 = accessibilityLocalizedString(v13);
+  accessibilityLabel = accessibilityLocalizedString(v13);
 LABEL_22:
-  v15 = v14;
+  v15 = accessibilityLabel;
 
   v16 = *MEMORY[0x29EDCA608];
 
@@ -157,11 +157,11 @@ LABEL_22:
 
 - (id)_axIndicatorPath
 {
-  v3 = [(SAUIIndicatorElementViewControllerAccessibility *)self _accessibilityContainerView];
-  v4 = v3;
-  if (v3)
+  _accessibilityContainerView = [(SAUIIndicatorElementViewControllerAccessibility *)self _accessibilityContainerView];
+  v4 = _accessibilityContainerView;
+  if (_accessibilityContainerView)
   {
-    [v3 accessibilityFrame];
+    [_accessibilityContainerView accessibilityFrame];
     x = v26.origin.x;
     y = v26.origin.y;
     width = v26.size.width;
@@ -188,43 +188,43 @@ LABEL_22:
     v30.size.width = width;
     v30.size.height = height;
     v14 = v13 / CGRectGetHeight(v30);
-    v15 = [v4 layer];
-    [v15 cornerRadius];
+    layer = [v4 layer];
+    [layer cornerRadius];
     v17 = fmax(v22, v14) * v16;
 
-    v18 = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
+    accessibilityPath = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = SAUIIndicatorElementViewControllerAccessibility;
-    v18 = [(SAUIIndicatorElementViewControllerAccessibility *)&v24 accessibilityPath];
+    accessibilityPath = [(SAUIIndicatorElementViewControllerAccessibility *)&v24 accessibilityPath];
   }
 
-  v19 = v18;
+  v19 = accessibilityPath;
 
   return v19;
 }
 
 - (id)_accessibilityContainerView
 {
-  v2 = [MEMORY[0x29EDC7938] sharedApplication];
-  v3 = [v2 safeValueForKey:@"systemApertureControllerForMainDisplay"];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  v3 = [mEMORY[0x29EDC7938] safeValueForKey:@"systemApertureControllerForMainDisplay"];
 
   v4 = [v3 safeValueForKey:@"_systemApertureViewController"];
   v5 = [v4 safeArrayForKey:@"_orderedContainerViews"];
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface HDCloudSyncDeleteEmptyZonesOperation
-- (HDCloudSyncDeleteEmptyZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncDeleteEmptyZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (void)main;
 @end
 
 @implementation HDCloudSyncDeleteEmptyZonesOperation
 
-- (HDCloudSyncDeleteEmptyZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncDeleteEmptyZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v9.receiver = self;
   v9.super_class = HDCloudSyncDeleteEmptyZonesOperation;
-  v4 = [(HDCloudSyncOperation *)&v9 initWithConfiguration:a3 cloudState:a4];
+  v4 = [(HDCloudSyncOperation *)&v9 initWithConfiguration:configuration cloudState:state];
   v5 = v4;
   if (v4)
   {
@@ -26,22 +26,22 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v102 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 allCKContainers];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
 
-  v6 = [v5 count];
-  v7 = [(HDCloudSyncOperation *)v2 progress];
-  [v7 setTotalUnitCount:v6];
+  v6 = [allCKContainers count];
+  progress = [(HDCloudSyncOperation *)selfCopy progress];
+  [progress setTotalUnitCount:v6];
 
-  [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
+  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v8 = v5;
+  v8 = allCKContainers;
   v68 = [v8 countByEnumeratingWithState:&v73 objects:v94 count:16];
   if (v68)
   {
@@ -49,7 +49,7 @@
     *&v9 = 138543874;
     v58 = v9;
     v59 = v8;
-    v60 = v2;
+    v60 = selfCopy;
     do
     {
       v10 = 0;
@@ -61,11 +61,11 @@
         }
 
         v11 = *(*(&v73 + 1) + 8 * v10);
-        v12 = [(HDCloudSyncOperation *)v2 configuration];
-        v13 = [v12 cachedCloudState];
-        v14 = [v11 containerIdentifier];
+        configuration2 = [(HDCloudSyncOperation *)selfCopy configuration];
+        cachedCloudState = [configuration2 cachedCloudState];
+        containerIdentifier = [v11 containerIdentifier];
         v82 = 0;
-        v15 = [v13 zonesForContainerID:v14 error:&v82];
+        v15 = [cachedCloudState zonesForContainerID:containerIdentifier error:&v82];
         v16 = v82;
 
         if (v15)
@@ -88,19 +88,19 @@
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v97 = v2;
+          v97 = selfCopy;
           v98 = 2114;
           v99 = v16;
           _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get cached zones, %{public}@", buf, 0x16u);
         }
 
-        v19 = [(HDCloudSyncOperation *)v2 configuration];
-        v20 = [v19 repository];
-        v21 = [v20 primaryCKContainer];
+        configuration3 = [(HDCloudSyncOperation *)selfCopy configuration];
+        repository2 = [configuration3 repository];
+        primaryCKContainer = [repository2 primaryCKContainer];
 
-        if (v21 == v11)
+        if (primaryCKContainer == v11)
         {
-          [(HDCloudSyncOperation *)v2 finishWithSuccess:0 error:v16];
+          [(HDCloudSyncOperation *)selfCopy finishWithSuccess:0 error:v16];
         }
 
         else
@@ -115,8 +115,8 @@ LABEL_13:
           v80 = 0u;
           v81 = 0u;
           v70 = v15;
-          v23 = v15;
-          v24 = [v23 countByEnumeratingWithState:&v78 objects:v95 count:16];
+          configuration4 = v15;
+          v24 = [configuration4 countByEnumeratingWithState:&v78 objects:v95 count:16];
           if (v24)
           {
             v25 = v24;
@@ -127,7 +127,7 @@ LABEL_13:
               {
                 if (*v79 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(configuration4);
                 }
 
                 v28 = *(*(&v78 + 1) + 8 * i);
@@ -135,11 +135,11 @@ LABEL_13:
                 {
                   v77 = 0;
                   v29 = [v28 containsRecordsWithError:&v77];
-                  v30 = v77;
+                  repository3 = v77;
                   if (v29 == 2)
                   {
-                    v31 = [v28 zoneIdentifier];
-                    [v22 addObject:v31];
+                    zoneIdentifier = [v28 zoneIdentifier];
+                    [v22 addObject:zoneIdentifier];
                   }
 
                   else if (!v29)
@@ -149,13 +149,13 @@ LABEL_13:
                     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
                     {
                       v54 = v52;
-                      v55 = [v28 zoneIdentifier];
+                      zoneIdentifier2 = [v28 zoneIdentifier];
                       *buf = v58;
-                      v97 = v2;
+                      v97 = selfCopy;
                       v98 = 2114;
-                      v99 = v55;
+                      v99 = zoneIdentifier2;
                       v100 = 2114;
-                      v101 = v30;
+                      v101 = repository3;
                       _os_log_error_impl(&dword_228986000, v54, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch status of containsRecords for %{public}@, %{public}@", buf, 0x20u);
                     }
 
@@ -164,7 +164,7 @@ LABEL_13:
                 }
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v78 objects:v95 count:16];
+              v25 = [configuration4 countByEnumeratingWithState:&v78 objects:v95 count:16];
               if (v25)
               {
                 continue;
@@ -177,14 +177,14 @@ LABEL_13:
           v11 = v72;
           if ([v22 count])
           {
-            v23 = [(HDCloudSyncOperation *)v2 configuration];
-            v30 = [v23 repository];
-            v66 = [v30 profileIdentifier];
-            v32 = HDDatabaseForContainer(v72, v66);
+            configuration4 = [(HDCloudSyncOperation *)selfCopy configuration];
+            repository3 = [configuration4 repository];
+            profileIdentifier = [repository3 profileIdentifier];
+            v32 = HDDatabaseForContainer(v72, profileIdentifier);
             v33 = v22;
             v62 = v72;
             v64 = v32;
-            [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
+            [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
             v34 = objc_alloc_init(MEMORY[0x277CBC3A0]);
             [v34 setDesiredKeys:MEMORY[0x277CBEBF8]];
             [v34 setResultsLimit:1];
@@ -209,8 +209,8 @@ LABEL_13:
                     objc_enumerationMutation(v36);
                   }
 
-                  v41 = [*(*(&v90 + 1) + 8 * j) zoneIdentifier];
-                  [v35 setObject:v34 forKeyedSubscript:v41];
+                  zoneIdentifier3 = [*(*(&v90 + 1) + 8 * j) zoneIdentifier];
+                  [v35 setObject:v34 forKeyedSubscript:zoneIdentifier3];
                 }
 
                 v38 = [v36 countByEnumeratingWithState:&v90 objects:buf count:16];
@@ -220,15 +220,15 @@ LABEL_13:
             }
 
             v42 = objc_alloc(MEMORY[0x277CBC3B8]);
-            v43 = [v35 allKeys];
-            v44 = [v42 initWithRecordZoneIDs:v43 configurationsByRecordZoneID:v35];
+            allKeys = [v35 allKeys];
+            v44 = [v42 initWithRecordZoneIDs:allKeys configurationsByRecordZoneID:v35];
 
             v45 = objc_alloc_init(MEMORY[0x277CBEB58]);
             v88[0] = MEMORY[0x277D85DD0];
             v88[1] = 3221225472;
             v88[2] = __104__HDCloudSyncDeleteEmptyZonesOperation__validateZonesAreEmptyWithDeletionCandidates_container_database___block_invoke;
             v88[3] = &unk_278627F38;
-            v2 = v60;
+            selfCopy = v60;
             v88[4] = v60;
             v46 = v45;
             v89 = v46;
@@ -248,13 +248,13 @@ LABEL_13:
             v87 = v65;
             v61 = v46;
             [v44 setFetchRecordZoneChangesCompletionBlock:v83];
-            v48 = [(HDCloudSyncOperation *)v60 configuration];
-            v49 = [v48 cachedCloudState];
-            [v49 setOperationCountForAnalytics:{objc_msgSend(v49, "operationCountForAnalytics") + 1}];
+            configuration5 = [(HDCloudSyncOperation *)v60 configuration];
+            cachedCloudState2 = [configuration5 cachedCloudState];
+            [cachedCloudState2 setOperationCountForAnalytics:{objc_msgSend(cachedCloudState2, "operationCountForAnalytics") + 1}];
 
-            v50 = [(HDCloudSyncOperation *)v60 configuration];
-            v51 = [v50 operationGroup];
-            [v44 setGroup:v51];
+            configuration6 = [(HDCloudSyncOperation *)v60 configuration];
+            operationGroup = [configuration6 operationGroup];
+            [v44 setGroup:operationGroup];
 
             [v47 addOperation:v44];
             v8 = v59;
@@ -278,7 +278,7 @@ LABEL_37:
     while (v56);
   }
 
-  [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup finishTask];
   v57 = *MEMORY[0x277D85DE8];
 }
 

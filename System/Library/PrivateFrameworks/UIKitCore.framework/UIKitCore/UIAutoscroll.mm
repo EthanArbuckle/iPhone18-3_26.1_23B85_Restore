@@ -1,10 +1,10 @@
 @interface UIAutoscroll
-- (BOOL)startAutoscroll:(id)a3 scrollContainer:(id)a4 point:(CGPoint)a5 directions:(int)a6 repeatInterval:(double)a7;
+- (BOOL)startAutoscroll:(id)autoscroll scrollContainer:(id)container point:(CGPoint)point directions:(int)directions repeatInterval:(double)interval;
 - (CGPoint)point;
 - (id)target;
 - (void)dealloc;
 - (void)invalidate;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation UIAutoscroll
@@ -17,20 +17,20 @@
   [(UIAutoscroll *)&v3 dealloc];
 }
 
-- (BOOL)startAutoscroll:(id)a3 scrollContainer:(id)a4 point:(CGPoint)a5 directions:(int)a6 repeatInterval:(double)a7
+- (BOOL)startAutoscroll:(id)autoscroll scrollContainer:(id)container point:(CGPoint)point directions:(int)directions repeatInterval:(double)interval
 {
-  v8 = *&a6;
-  y = a5.y;
-  x = a5.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = [(UIAutoscroll *)self scrollContainer];
+  v8 = *&directions;
+  y = point.y;
+  x = point.x;
+  autoscrollCopy = autoscroll;
+  containerCopy = container;
+  scrollContainer = [(UIAutoscroll *)self scrollContainer];
   [(UIAutoscroll *)self point];
-  [v15 convertPoint:0 toView:?];
+  [scrollContainer convertPoint:0 toView:?];
   v17 = v16;
   v19 = v18;
 
-  [v14 convertPoint:0 toView:{x, y}];
+  [containerCopy convertPoint:0 toView:{x, y}];
   if (!self->m_timer)
   {
     goto LABEL_10;
@@ -38,16 +38,16 @@
 
   v22 = v20;
   v23 = v21;
-  v24 = [(UIAutoscroll *)self target];
-  if (v24 != v13)
+  target = [(UIAutoscroll *)self target];
+  if (target != autoscrollCopy)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v25 = [(UIAutoscroll *)self scrollContainer];
-  if (v25 != v14 || sqrt((v22 - v17) * (v22 - v17) + (v23 - v19) * (v23 - v19)) >= 70.0 || [(UIAutoscroll *)self directions]!= v8)
+  scrollContainer2 = [(UIAutoscroll *)self scrollContainer];
+  if (scrollContainer2 != containerCopy || sqrt((v22 - v17) * (v22 - v17) + (v23 - v19) * (v23 - v19)) >= 70.0 || [(UIAutoscroll *)self directions]!= v8)
   {
 
     goto LABEL_9;
@@ -56,7 +56,7 @@ LABEL_9:
   [(UIAutoscroll *)self repeatInterval];
   v27 = v26;
 
-  if (v27 == a7)
+  if (v27 == interval)
   {
     [(UIAutoscroll *)self setPoint:x, y];
     v28 = 1;
@@ -71,14 +71,14 @@ LABEL_10:
 
   if (objc_opt_respondsToSelector())
   {
-    v30 = [v14 shouldAutoscroll];
-    if (!v14 || (v30 & 1) == 0)
+    shouldAutoscroll = [containerCopy shouldAutoscroll];
+    if (!containerCopy || (shouldAutoscroll & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!v14)
+  else if (!containerCopy)
   {
 LABEL_12:
     [(UIAutoscroll *)self invalidate];
@@ -86,7 +86,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v8 || a7 == 0.0)
+  if (!v8 || interval == 0.0)
   {
     goto LABEL_12;
   }
@@ -100,12 +100,12 @@ LABEL_12:
 
   else
   {
-    v33 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v31 interval:self target:sel_timerFired_ selector:0 userInfo:1 repeats:a7];
+    v33 = [objc_alloc(MEMORY[0x1E695DFF0]) initWithFireDate:v31 interval:self target:sel_timerFired_ selector:0 userInfo:1 repeats:interval];
     v34 = self->m_timer;
     self->m_timer = v33;
 
-    v35 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v35 addTimer:self->m_timer forMode:*MEMORY[0x1E695D918]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->m_timer forMode:*MEMORY[0x1E695D918]];
   }
 
   if ([(UIAutoscroll *)self directions]!= v8)
@@ -113,11 +113,11 @@ LABEL_12:
     [(UIAutoscroll *)self setCount:0];
   }
 
-  [(UIAutoscroll *)self setTarget:v13];
-  [(UIAutoscroll *)self setScrollContainer:v14];
+  [(UIAutoscroll *)self setTarget:autoscrollCopy];
+  [(UIAutoscroll *)self setScrollContainer:containerCopy];
   [(UIAutoscroll *)self setPoint:x, y];
   [(UIAutoscroll *)self setDirections:v8];
-  [(UIAutoscroll *)self setRepeatInterval:a7];
+  [(UIAutoscroll *)self setRepeatInterval:interval];
   v28 = 1;
   [(UIAutoscroll *)self setActive:1];
 
@@ -155,13 +155,13 @@ LABEL_13:
   }
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v4 = [(UIAutoscroll *)self target];
-  if (v4)
+  target = [(UIAutoscroll *)self target];
+  if (target)
   {
     [(UIAutoscroll *)self setCount:[(UIAutoscroll *)self count]+ 1];
-    [v4 updateAutoscroll:self];
+    [target updateAutoscroll:self];
   }
 
   else

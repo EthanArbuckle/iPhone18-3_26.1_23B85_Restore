@@ -6,7 +6,7 @@
 
 + (id)cut
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   CMTimeMakeWithSeconds(&v5, 0.0, 600);
   v3 = [v2 initWithIdentifier:0 kind:1 duration:&v5 event:0];
 

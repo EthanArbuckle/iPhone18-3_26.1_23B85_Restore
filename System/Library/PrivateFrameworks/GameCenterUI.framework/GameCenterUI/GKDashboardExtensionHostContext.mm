@@ -1,47 +1,47 @@
 @interface GKDashboardExtensionHostContext
-- (void)getMethodsImplementedByChallengeEventHandlerDelegate:(id)a3;
-- (void)requestDashboardLogoImageWithHandler:(id)a3;
-- (void)requestImagesForLeaderboardSetsWithHandler:(id)a3;
-- (void)requestImagesForLeaderboardsInSet:(id)a3 handler:(id)a4;
+- (void)getMethodsImplementedByChallengeEventHandlerDelegate:(id)delegate;
+- (void)requestDashboardLogoImageWithHandler:(id)handler;
+- (void)requestImagesForLeaderboardSetsWithHandler:(id)handler;
+- (void)requestImagesForLeaderboardsInSet:(id)set handler:(id)handler;
 @end
 
 @implementation GKDashboardExtensionHostContext
 
-- (void)requestDashboardLogoImageWithHandler:(id)a3
+- (void)requestDashboardLogoImageWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)requestImagesForLeaderboardSetsWithHandler:(id)a3
+- (void)requestImagesForLeaderboardSetsWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)requestImagesForLeaderboardsInSet:(id)a3 handler:(id)a4
+- (void)requestImagesForLeaderboardsInSet:(id)set handler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)getMethodsImplementedByChallengeEventHandlerDelegate:(id)a3
+- (void)getMethodsImplementedByChallengeEventHandlerDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  delegateCopy = delegate;
+  v4 = delegateCopy;
+  if (delegateCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__GKDashboardExtensionHostContext_getMethodsImplementedByChallengeEventHandlerDelegate___block_invoke;
     block[3] = &unk_27966A4A8;
-    v6 = v3;
+    v6 = delegateCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }

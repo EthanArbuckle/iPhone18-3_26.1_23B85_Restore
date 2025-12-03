@@ -1,6 +1,6 @@
 @interface OTCliqueStatusWrapper
-- (BOOL)isEqual:(id)a3;
-- (OTCliqueStatusWrapper)initWithStatus:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (OTCliqueStatusWrapper)initWithStatus:(int64_t)status;
 - (id)description;
 @end
 
@@ -15,14 +15,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 status];
-    v6 = v5 == [(OTCliqueStatusWrapper *)self status];
+    status = [equalCopy status];
+    v6 = status == [(OTCliqueStatusWrapper *)self status];
   }
 
   else
@@ -33,14 +33,14 @@
   return v6;
 }
 
-- (OTCliqueStatusWrapper)initWithStatus:(int64_t)a3
+- (OTCliqueStatusWrapper)initWithStatus:(int64_t)status
 {
   v5.receiver = self;
   v5.super_class = OTCliqueStatusWrapper;
   result = [(OTCliqueStatusWrapper *)&v5 init];
   if (result)
   {
-    result->_status = a3;
+    result->_status = status;
   }
 
   return result;

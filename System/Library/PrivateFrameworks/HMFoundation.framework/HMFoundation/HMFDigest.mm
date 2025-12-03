@@ -1,12 +1,12 @@
 @interface HMFDigest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFDigest)init;
-- (HMFDigest)initWithAlgorithm:(int64_t)a3 value:(id)a4;
-- (HMFDigest)initWithCoder:(id)a3;
+- (HMFDigest)initWithAlgorithm:(int64_t)algorithm value:(id)value;
+- (HMFDigest)initWithCoder:(id)coder;
 - (NSString)propertyDescription;
 - (int64_t)algorithm;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFDigest
@@ -24,17 +24,17 @@
   objc_exception_throw(v7);
 }
 
-- (HMFDigest)initWithAlgorithm:(int64_t)a3 value:(id)a4
+- (HMFDigest)initWithAlgorithm:(int64_t)algorithm value:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = HMFDigest;
   v7 = [(HMFDigest *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_algorithm = a3;
-    v9 = [v6 copy];
+    v7->_algorithm = algorithm;
+    v9 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v9;
   }
@@ -56,24 +56,24 @@
     v5 = off_2786E7EB0[v4];
   }
 
-  v6 = [(HMFDigest *)self value];
-  v7 = [v3 stringWithFormat:@", Algorithm = %@, Value = %@", v5, v6];
+  value = [(HMFDigest *)self value];
+  v7 = [v3 stringWithFormat:@", Algorithm = %@, Value = %@", v5, value];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMFDigest *)self value];
-  v3 = [v2 hash];
+  value = [(HMFDigest *)self value];
+  v3 = [value hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -95,9 +95,9 @@
     v7 = v6;
     if (v6 && self->_algorithm == v6->_algorithm)
     {
-      v8 = [(HMFDigest *)self value];
-      v9 = [(HMFDigest *)v7 value];
-      v10 = HMFEqualObjects(v8, v9);
+      value = [(HMFDigest *)self value];
+      value2 = [(HMFDigest *)v7 value];
+      v10 = HMFEqualObjects(value, value2);
     }
 
     else
@@ -123,23 +123,23 @@
   }
 }
 
-- (HMFDigest)initWithCoder:(id)a3
+- (HMFDigest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HM.algorithm"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.value"];;
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HM.algorithm"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.value"];;
 
   v7 = [(HMFDigest *)self initWithAlgorithm:v5 value:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   algorithm = self->_algorithm;
-  v5 = a3;
-  [v5 encodeInteger:algorithm forKey:@"HM.algorithm"];
-  v6 = [(HMFDigest *)self value];
-  [v5 encodeObject:v6 forKey:@"HM.value;"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:algorithm forKey:@"HM.algorithm"];
+  value = [(HMFDigest *)self value];
+  [coderCopy encodeObject:value forKey:@"HM.value;"];
 }
 
 @end

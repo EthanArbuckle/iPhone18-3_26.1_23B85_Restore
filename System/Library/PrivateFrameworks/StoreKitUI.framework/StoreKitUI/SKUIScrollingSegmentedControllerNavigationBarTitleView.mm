@@ -1,20 +1,20 @@
 @interface SKUIScrollingSegmentedControllerNavigationBarTitleView
 + (UIEdgeInsets)defaultLayoutMargins;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIScrollingSegmentedControllerNavigationBarTitleView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIScrollingSegmentedControllerNavigationBarTitleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setSegmentedControl:(id)a3;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setSegmentedControl:(id)control;
 @end
 
 @implementation SKUIScrollingSegmentedControllerNavigationBarTitleView
 
-- (SKUIScrollingSegmentedControllerNavigationBarTitleView)initWithFrame:(CGRect)a3
+- (SKUIScrollingSegmentedControllerNavigationBarTitleView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIScrollingSegmentedControllerNavigationBarTitleView initWithFrame:];
@@ -22,11 +22,11 @@
 
   v11.receiver = self;
   v11.super_class = SKUIScrollingSegmentedControllerNavigationBarTitleView;
-  v8 = [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)&v11 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)&v11 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v8->_segmentedControlMinimumHeight = 29.0;
+    height->_segmentedControlMinimumHeight = 29.0;
     [objc_opt_class() defaultLayoutMargins];
     [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)v9 setLayoutMargins:?];
   }
@@ -41,14 +41,14 @@
   [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)&v28 layoutSubviews];
   if (self->_segmentedControl)
   {
-    v3 = [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)self traitCollection];
-    [v3 displayScale];
+    traitCollection = [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)self traitCollection];
+    [traitCollection displayScale];
     v5 = v4;
 
     if (v5 <= 0.00000011920929)
     {
-      v6 = [MEMORY[0x277D759A0] mainScreen];
-      [v6 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v5 = v7;
     }
 
@@ -76,7 +76,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [(SKUIInteractiveSegmentedControl *)self->_segmentedControl sizeThatFits:1.79769313e308, self->_segmentedControlMinimumHeight];
   v5 = v4;
@@ -103,33 +103,33 @@
   return result;
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   segmentedControl = self->_segmentedControl;
-  if (segmentedControl != v5)
+  if (segmentedControl != controlCopy)
   {
-    v8 = v5;
-    v7 = [(SKUIInteractiveSegmentedControl *)segmentedControl superview];
+    v8 = controlCopy;
+    superview = [(SKUIInteractiveSegmentedControl *)segmentedControl superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(SKUIInteractiveSegmentedControl *)self->_segmentedControl removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_segmentedControl, a3);
+    objc_storeStrong(&self->_segmentedControl, control);
     segmentedControl = [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)self addSubview:self->_segmentedControl];
-    v5 = v8;
+    controlCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](segmentedControl, v5);
+  MEMORY[0x2821F96F8](segmentedControl, controlCopy);
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(SKUIScrollingSegmentedControllerNavigationBarTitleView *)self setNeedsLayout];
   }
 }

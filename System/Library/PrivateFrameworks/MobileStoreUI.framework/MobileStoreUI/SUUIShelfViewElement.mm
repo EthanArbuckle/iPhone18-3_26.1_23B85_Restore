@@ -1,25 +1,25 @@
 @interface SUUIShelfViewElement
-- (SUUIShelfViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (SUUIShelfViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIShelfViewElement
 
-- (SUUIShelfViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIShelfViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v14 = [v8 getAttribute:@"entityProviderID"];
+    v14 = [elementCopy getAttribute:@"entityProviderID"];
     v15 = [v14 length];
 
     if (v15)
     {
-      v12 = [(SUUIShelfViewElement *)[SUUIDynamicShelfViewElement alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v12 = [(SUUIShelfViewElement *)[SUUIDynamicShelfViewElement alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
 LABEL_12:
 
       goto LABEL_13;
@@ -28,10 +28,10 @@ LABEL_12:
 
   v20.receiver = self;
   v20.super_class = SUUIShelfViewElement;
-  v12 = [(SUUIViewElement *)&v20 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v12 = [(SUUIViewElement *)&v20 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v12)
   {
-    self = [v8 getAttribute:@"rowCount"];
+    self = [elementCopy getAttribute:@"rowCount"];
     if ([(SUUIShelfViewElement *)self length])
     {
       numberOfRows = [(SUUIShelfViewElement *)self integerValue];
@@ -54,7 +54,7 @@ LABEL_12:
     }
 
     v12->super._numberOfRows = v16;
-    v17 = [v8 getAttribute:@"slideshowTitle"];
+    v17 = [elementCopy getAttribute:@"slideshowTitle"];
     slideshowTitle = v12->super._slideshowTitle;
     v12->super._slideshowTitle = v17;
 
@@ -66,36 +66,36 @@ LABEL_13:
   return &v12->super;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIShelfViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_numberOfRows = [(SUUIShelfViewElement *)v4 numberOfRows];
-    v7 = [(SUUIShelfViewElement *)v4 slideshowTitle];
+    self->_numberOfRows = [(SUUIShelfViewElement *)elementCopy numberOfRows];
+    slideshowTitle = [(SUUIShelfViewElement *)elementCopy slideshowTitle];
     slideshowTitle = self->_slideshowTitle;
-    self->_slideshowTitle = v7;
+    self->_slideshowTitle = slideshowTitle;
   }
 
   return v6;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SUUIShelfViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798FD000;
   v7[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SUUIShelfViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SUUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 

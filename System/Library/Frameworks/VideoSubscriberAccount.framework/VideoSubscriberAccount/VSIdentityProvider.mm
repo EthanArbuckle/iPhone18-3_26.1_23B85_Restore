@@ -1,19 +1,19 @@
 @interface VSIdentityProvider
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFullySupportedForRequestsExpectingAuthenticationSchemes:(id)a3;
-- (BOOL)supportsRequestsExpectingAuthenticationSchemes:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFullySupportedForRequestsExpectingAuthenticationSchemes:(id)schemes;
+- (BOOL)supportsRequestsExpectingAuthenticationSchemes:(id)schemes;
 - (NSArray)supportedAuthenticationSchemes;
 - (NSArray)supportedTemplates;
 - (VSIdentityProvider)init;
-- (VSIdentityProvider)initWithApplicationProvider:(id)a3;
-- (VSIdentityProvider)initWithCoder:(id)a3;
+- (VSIdentityProvider)initWithApplicationProvider:(id)provider;
+- (VSIdentityProvider)initWithCoder:(id)coder;
 - (VSOptional)displayName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeveloper:(BOOL)a3;
-- (void)setNameForSorting:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeveloper:(BOOL)developer;
+- (void)setNameForSorting:(id)sorting;
 @end
 
 @implementation VSIdentityProvider
@@ -32,32 +32,32 @@
   return v2;
 }
 
-- (VSIdentityProvider)initWithCoder:(id)a3
+- (VSIdentityProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSIdentityProvider;
   v5 = [(VSIdentityProvider *)&v8 init];
   if (v5)
   {
     v6 = VSIdentityProviderValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSIdentityProviderValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSIdentityProviderValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -70,11 +70,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSIdentityProviderValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }
@@ -87,9 +87,9 @@
   return v4;
 }
 
-- (VSIdentityProvider)initWithApplicationProvider:(id)a3
+- (VSIdentityProvider)initWithApplicationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [(VSIdentityProvider *)self init];
   if (v5)
   {
@@ -97,14 +97,14 @@
     VSValueTypeInit(v6, v5);
 
     v5->_application = 1;
-    v7 = [v4 identifier];
-    v8 = [VSOptional optionalWithObject:v7];
+    identifier = [providerCopy identifier];
+    v8 = [VSOptional optionalWithObject:identifier];
     providerID = v5->_providerID;
     v5->_providerID = v8;
 
-    v10 = [v4 localizedDisplayName];
+    localizedDisplayName = [providerCopy localizedDisplayName];
     nameForSorting = v5->_nameForSorting;
-    v5->_nameForSorting = v10;
+    v5->_nameForSorting = localizedDisplayName;
 
     supportedAuthenticationSchemes = v5->_supportedAuthenticationSchemes;
     v5->_supportedAuthenticationSchemes = MEMORY[0x277CBEBF8];
@@ -113,13 +113,13 @@
   return v5;
 }
 
-- (void)setNameForSorting:(id)a3
+- (void)setNameForSorting:(id)sorting
 {
-  if (self->_nameForSorting != a3)
+  if (self->_nameForSorting != sorting)
   {
-    v5 = a3;
+    sortingCopy = sorting;
     [(VSIdentityProvider *)self willChangeValueForKey:@"displayName"];
-    v6 = [v5 copy];
+    v6 = [sortingCopy copy];
 
     nameForSorting = self->_nameForSorting;
     self->_nameForSorting = v6;
@@ -131,12 +131,12 @@
   }
 }
 
-- (void)setDeveloper:(BOOL)a3
+- (void)setDeveloper:(BOOL)developer
 {
-  if (self->_developer != a3)
+  if (self->_developer != developer)
   {
     [(VSIdentityProvider *)self willChangeValueForKey:@"displayName"];
-    self->_developer = a3;
+    self->_developer = developer;
     displayName = self->_displayName;
     self->_displayName = 0;
 
@@ -150,18 +150,18 @@
   v4 = self->_displayName;
   if (!v4)
   {
-    v5 = [(VSIdentityProvider *)self nameForSorting];
-    if (v5)
+    nameForSorting = [(VSIdentityProvider *)self nameForSorting];
+    if (nameForSorting)
     {
       if ([(VSIdentityProvider *)self isDeveloper])
       {
-        v6 = [@"🚧 " stringByAppendingString:v5];
+        v6 = [@"🚧 " stringByAppendingString:nameForSorting];
         v4 = [v6 copy];
       }
 
       else
       {
-        v4 = [v5 copy];
+        v4 = [nameForSorting copy];
       }
     }
 
@@ -181,17 +181,17 @@
 - (NSArray)supportedTemplates
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_supportedTemplates;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_supportedTemplates;
   if (!v3)
   {
     v5[0] = @"authenticationTemplate";
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
-    objc_storeStrong(&v2->_supportedTemplates, v3);
+    objc_storeStrong(&selfCopy->_supportedTemplates, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -204,17 +204,17 @@
 - (NSArray)supportedAuthenticationSchemes
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_supportedAuthenticationSchemes;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_supportedAuthenticationSchemes;
   if (!v3)
   {
     v5[0] = @"SAML";
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
-    objc_storeStrong(&v2->_supportedAuthenticationSchemes, v3);
+    objc_storeStrong(&selfCopy->_supportedAuthenticationSchemes, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -224,24 +224,24 @@
   return v3;
 }
 
-- (BOOL)supportsRequestsExpectingAuthenticationSchemes:(id)a3
+- (BOOL)supportsRequestsExpectingAuthenticationSchemes:(id)schemes
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  schemesCopy = schemes;
   v6 = [v4 alloc];
-  v7 = [(VSIdentityProvider *)self supportedAuthenticationSchemes];
-  v8 = [v6 initWithArray:v7];
+  supportedAuthenticationSchemes = [(VSIdentityProvider *)self supportedAuthenticationSchemes];
+  v8 = [v6 initWithArray:supportedAuthenticationSchemes];
 
-  v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v5];
-  LOBYTE(v5) = [v8 intersectsSet:v9];
+  v9 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:schemesCopy];
+  LOBYTE(schemesCopy) = [v8 intersectsSet:v9];
 
-  return v5;
+  return schemesCopy;
 }
 
-- (BOOL)isFullySupportedForRequestsExpectingAuthenticationSchemes:(id)a3
+- (BOOL)isFullySupportedForRequestsExpectingAuthenticationSchemes:(id)schemes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  schemesCopy = schemes;
   if ([(VSIdentityProvider *)self isProhibitedByStore])
   {
     v5 = VSDefaultLogObject();
@@ -258,7 +258,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4 && ![(VSIdentityProvider *)self supportsRequestsExpectingAuthenticationSchemes:v4])
+  if (schemesCopy && ![(VSIdentityProvider *)self supportsRequestsExpectingAuthenticationSchemes:schemesCopy])
   {
     v5 = VSDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

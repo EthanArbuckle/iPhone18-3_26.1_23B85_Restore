@@ -1,8 +1,8 @@
 @interface NTKSolarDialFaceBundle
 + (id)identifier;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroGraceDefaultFacesForDevice:(id)a3;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroGraceDefaultFacesForDevice:(id)device;
 - (id)siderealComplicationTypesBySlot;
 @end
 
@@ -10,15 +10,15 @@
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -33,13 +33,13 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
     v26 = +[NSMutableArray array];
-    v5 = [NTKSiderealTimeStyleEditOption numberOfOptionsForDevice:v4];
+    v5 = [NTKSiderealTimeStyleEditOption numberOfOptionsForDevice:deviceCopy];
     if (v5)
     {
       v6 = v5;
@@ -51,7 +51,7 @@
       v8 = &CLKAlterRect_ptr;
       while (1)
       {
-        v9 = [(NTKSolarDialFaceBundle *)self defaultFaceForDevice:v4, v22];
+        v9 = [(NTKSolarDialFaceBundle *)self defaultFaceForDevice:deviceCopy, v22];
         if (v9)
         {
           break;
@@ -65,11 +65,11 @@ LABEL_11:
         }
       }
 
-      v10 = [NTKSiderealTimeStyleEditOption optionWithStyle:v7 forDevice:v4];
+      v10 = [NTKSiderealTimeStyleEditOption optionWithStyle:v7 forDevice:deviceCopy];
       [v9 selectOption:v10 forCustomEditMode:15 slot:0];
 
-      v11 = [(NTKSolarDialFaceBundle *)self siderealComplicationTypesBySlot];
-      [v9 _setFaceGalleryComplicationTypesForSlots:v11];
+      siderealComplicationTypesBySlot = [(NTKSolarDialFaceBundle *)self siderealComplicationTypesBySlot];
+      [v9 _setFaceGalleryComplicationTypesForSlots:siderealComplicationTypesBySlot];
 
       v12 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:v25 appBundleIdentifier:v24 complicationDescriptor:0];
       [v9 setComplication:v12 forSlot:v23];
@@ -120,25 +120,25 @@ LABEL_12:
   {
     v27.receiver = self;
     v27.super_class = NTKSolarDialFaceBundle;
-    v20 = [(NTKSolarDialFaceBundle *)&v27 galleryFacesForDevice:v4];
+    v20 = [(NTKSolarDialFaceBundle *)&v27 galleryFacesForDevice:deviceCopy];
   }
 
   return v20;
 }
 
-- (id)heroGraceDefaultFacesForDevice:(id)a3
+- (id)heroGraceDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [NTKSiderealFace defaultFaceOfStyle:36 forDevice:v4];
-    v7 = [(NTKSolarDialFaceBundle *)self siderealComplicationTypesBySlot];
-    [v6 _setFaceGalleryComplicationTypesForSlots:v7];
+    v6 = [NTKSiderealFace defaultFaceOfStyle:36 forDevice:deviceCopy];
+    siderealComplicationTypesBySlot = [(NTKSolarDialFaceBundle *)self siderealComplicationTypesBySlot];
+    [v6 _setFaceGalleryComplicationTypesForSlots:siderealComplicationTypesBySlot];
 
     v8 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:NTKBundleComplicationNoiseBundleIdentifier appBundleIdentifier:NTKBundleComplicationNoiseAppBundleIdentifier complicationDescriptor:0];
     [v6 setComplication:v8 forSlot:NTKComplicationSlotTopLeft];

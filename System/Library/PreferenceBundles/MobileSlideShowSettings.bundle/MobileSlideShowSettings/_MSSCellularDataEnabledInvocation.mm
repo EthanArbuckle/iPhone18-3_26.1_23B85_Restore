@@ -1,8 +1,8 @@
 @interface _MSSCellularDataEnabledInvocation
 - (BOOL)enabled;
-- (_MSSCellularDataEnabledInvocation)initWithSpecifier:(id)a3 changeHandler:(id)a4;
-- (id)_cellularDataEnabledForSpecifier:(id)a3;
-- (void)_setCellularDataEnabled:(id)a3 forSpecifier:(id)a4;
+- (_MSSCellularDataEnabledInvocation)initWithSpecifier:(id)specifier changeHandler:(id)handler;
+- (id)_cellularDataEnabledForSpecifier:(id)specifier;
+- (void)_setCellularDataEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation _MSSCellularDataEnabledInvocation
@@ -10,14 +10,14 @@
 - (BOOL)enabled
 {
   v2 = [(_MSSCellularDataEnabledInvocation *)self _cellularDataEnabledForSpecifier:self->_specifier];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)_cellularDataEnabledForSpecifier:(id)a3
+- (id)_cellularDataEnabledForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   v6 = WeakRetained;
   getter = self->_getter;
@@ -35,10 +35,10 @@
   return v8;
 }
 
-- (void)_setCellularDataEnabled:(id)a3 forSpecifier:(id)a4
+- (void)_setCellularDataEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  enabledCopy = enabled;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   v9 = WeakRetained;
   setter = self->_setter;
@@ -58,14 +58,14 @@
   v12();
 }
 
-- (_MSSCellularDataEnabledInvocation)initWithSpecifier:(id)a3 changeHandler:(id)a4
+- (_MSSCellularDataEnabledInvocation)initWithSpecifier:(id)specifier changeHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  specifierCopy = specifier;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (specifierCopy)
   {
-    if (v9)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -92,19 +92,19 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_specifier, a3);
+    objc_storeStrong(&v11->_specifier, specifier);
     v13 = objc_retainBlock(v10);
     changeHandler = v12->_changeHandler;
     v12->_changeHandler = v13;
 
-    WeakRetained = objc_loadWeakRetained(&v8[OBJC_IVAR___PSSpecifier_target]);
+    WeakRetained = objc_loadWeakRetained(&specifierCopy[OBJC_IVAR___PSSpecifier_target]);
     objc_storeWeak(&v12->_target, WeakRetained);
 
-    v12->_getter = *&v8[OBJC_IVAR___PSSpecifier_getter];
-    v12->_setter = *&v8[OBJC_IVAR___PSSpecifier_setter];
-    objc_storeWeak(&v8[OBJC_IVAR___PSSpecifier_target], v12);
-    *&v8[OBJC_IVAR___PSSpecifier_getter] = "_cellularDataEnabledForSpecifier:";
-    *&v8[OBJC_IVAR___PSSpecifier_setter] = "_setCellularDataEnabled:forSpecifier:";
+    v12->_getter = *&specifierCopy[OBJC_IVAR___PSSpecifier_getter];
+    v12->_setter = *&specifierCopy[OBJC_IVAR___PSSpecifier_setter];
+    objc_storeWeak(&specifierCopy[OBJC_IVAR___PSSpecifier_target], v12);
+    *&specifierCopy[OBJC_IVAR___PSSpecifier_getter] = "_cellularDataEnabledForSpecifier:";
+    *&specifierCopy[OBJC_IVAR___PSSpecifier_setter] = "_setCellularDataEnabled:forSpecifier:";
   }
 
   return v12;

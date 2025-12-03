@@ -3,18 +3,18 @@
 - (BOOL)validateOperation;
 - (FCRecordChainFetchOperation)init;
 - (NSArray)networkEvents;
-- (id)_errorForMissingRecordNames:(uint64_t)a1;
-- (id)_partialFetchErrorForMissingRecordName:(uint64_t)a1;
-- (id)_recordSourceForRecordType:(id *)a1;
-- (id)_recordTypeForRecordID:(uint64_t)a1;
+- (id)_errorForMissingRecordNames:(uint64_t)names;
+- (id)_partialFetchErrorForMissingRecordName:(uint64_t)name;
+- (id)_recordSourceForRecordType:(id *)type;
+- (id)_recordTypeForRecordID:(uint64_t)d;
 - (uint64_t)_pbRecordTypeForRecordType:(uint64_t)result;
-- (void)_collectActualTopLevelRecordIDsFromRecordIDs:(void *)a3 visitedRecordIDs:;
+- (void)_collectActualTopLevelRecordIDsFromRecordIDs:(void *)ds visitedRecordIDs:;
 - (void)_finalizeResultFromCachedRecords;
-- (void)_walkRecordChainStartingWithRecordIDs:(void *)a3 visitedRecordIDs:(void *)a4 recordsLookupBlock:(void *)a5 visitorBlock:;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_walkRecordChainStartingWithRecordIDs:(void *)ds visitedRecordIDs:(void *)iDs recordsLookupBlock:(void *)block visitorBlock:;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
-- (void)setCachedRecords:(uint64_t)a1;
+- (void)setCachedRecords:(uint64_t)records;
 @end
 
 @implementation FCRecordChainFetchOperation
@@ -49,9 +49,9 @@
 - (BOOL)validateOperation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(FCRecordChainFetchOperation *)self context];
+  context = [(FCRecordChainFetchOperation *)self context];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!context && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"record chain fetch operation requires a context"];
     v13 = 136315906;
@@ -65,8 +65,8 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  v4 = [(FCRecordChainFetchOperation *)self linkKeysByRecordType];
-  v5 = [v4 count];
+  linkKeysByRecordType = [(FCRecordChainFetchOperation *)self linkKeysByRecordType];
+  v5 = [linkKeysByRecordType count];
 
   if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -82,11 +82,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  v6 = [(FCRecordChainFetchOperation *)self context];
-  if (v6)
+  context2 = [(FCRecordChainFetchOperation *)self context];
+  if (context2)
   {
-    v7 = [(FCRecordChainFetchOperation *)self linkKeysByRecordType];
-    v8 = [v7 count] != 0;
+    linkKeysByRecordType2 = [(FCRecordChainFetchOperation *)self linkKeysByRecordType];
+    v8 = [linkKeysByRecordType2 count] != 0;
   }
 
   else
@@ -101,11 +101,11 @@
 - (void)prepareOperation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(FCRecordChainFetchOperation *)self context];
-  v4 = [v3 internalContentContext];
-  v5 = [v4 recordSources];
-  v6 = [(FCRecordChainFetchOperation *)self additionalRecordSources];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  context = [(FCRecordChainFetchOperation *)self context];
+  internalContentContext = [context internalContentContext];
+  recordSources = [internalContentContext recordSources];
+  additionalRecordSources = [(FCRecordChainFetchOperation *)self additionalRecordSources];
+  v7 = [recordSources arrayByAddingObjectsFromArray:additionalRecordSources];
 
   v24 = v7;
   v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_60];
@@ -114,8 +114,8 @@
     objc_storeStrong(&self->_recordSources, v8);
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -146,12 +146,12 @@
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        v18 = [v17 recordType];
-        [v9 setObject:v17 forKey:v18];
+        recordType = [v17 recordType];
+        [dictionary setObject:v17 forKey:recordType];
 
         v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v17, "pbRecordType")}];
-        v20 = [v17 recordType];
-        [v10 setObject:v19 forKey:v20];
+        recordType2 = [v17 recordType];
+        [dictionary2 setObject:v19 forKey:recordType2];
       }
 
       v14 = [(NSArray *)v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -162,13 +162,13 @@
 
   if (self)
   {
-    objc_storeStrong(&self->_recordSourcesByRecordType, v9);
-    objc_storeStrong(&self->_pbRecordTypesByRecordType, v10);
+    objc_storeStrong(&self->_recordSourcesByRecordType, dictionary);
+    objc_storeStrong(&self->_pbRecordTypesByRecordType, dictionary2);
   }
 
-  v21 = [(FCRecordChainFetchOperation *)self cachePolicy];
+  cachePolicy = [(FCRecordChainFetchOperation *)self cachePolicy];
 
-  if (!v21)
+  if (!cachePolicy)
   {
     v22 = +[FCCachePolicy defaultCachePolicy];
     [(FCRecordChainFetchOperation *)self setCachePolicy:v22];
@@ -195,8 +195,8 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
 {
   v108 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
-  v5 = [v3 setWithArray:v4];
+  topLevelRecordIDs = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
+  v5 = [v3 setWithArray:topLevelRecordIDs];
   if (self)
   {
     if ([(FCRecordChainFetchOperation *)self _shouldIgnoreCache])
@@ -205,7 +205,7 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
       v104 = 3221225472;
       v105 = __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___block_invoke;
       v106 = &unk_1E7C36EA0;
-      v107 = self;
+      selfCopy2 = self;
       __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___block_invoke(&aBlock);
     }
 
@@ -215,10 +215,10 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
       v104 = 3221225472;
       v105 = __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___block_invoke_2;
       v106 = &unk_1E7C3F658;
-      v107 = self;
+      selfCopy2 = self;
       v6 = _Block_copy(&aBlock);
-      v7 = [(FCRecordChainFetchOperation *)self cachedRecordsLookupBlock];
-      v8 = v7 == 0;
+      cachedRecordsLookupBlock = [(FCRecordChainFetchOperation *)self cachedRecordsLookupBlock];
+      v8 = cachedRecordsLookupBlock == 0;
 
       v77 = MEMORY[0x1E69E9820];
       v78 = 3221225472;
@@ -234,19 +234,19 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
 
       v79 = v9;
       v80 = &unk_1E7C3F680;
-      v81 = self;
+      selfCopy5 = self;
       v10 = _Block_copy(&v77);
       v11 = MEMORY[0x1E695DFD8];
-      v12 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
-      v13 = [v11 setWithArray:v12];
+      topLevelRecordIDs2 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
+      v13 = [v11 setWithArray:topLevelRecordIDs2];
       v14 = [MEMORY[0x1E695DFA8] set];
       [(FCRecordChainFetchOperation *)self _walkRecordChainStartingWithRecordIDs:v13 visitedRecordIDs:v14 recordsLookupBlock:v10 visitorBlock:v6];
     }
   }
 
   v15 = MEMORY[0x1E695DFD8];
-  v16 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
-  v17 = [v15 setWithArray:v16];
+  topLevelRecordIDs3 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
+  v17 = [v15 setWithArray:topLevelRecordIDs3];
   v18 = [MEMORY[0x1E695DFA8] set];
   [(FCRecordChainFetchOperation *)&self->super.super.super.isa _collectActualTopLevelRecordIDsFromRecordIDs:v17 visitedRecordIDs:v18];
 
@@ -257,14 +257,14 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
 
   if ([(NSMutableSet *)self->_actualTopLevelRecordIDs count])
   {
-    v75 = [(NSMutableSet *)self->_actualTopLevelRecordIDs allObjects];
+    allObjects = [(NSMutableSet *)self->_actualTopLevelRecordIDs allObjects];
     v19 = objc_opt_new();
     v102[0] = MEMORY[0x1E69E9820];
     v102[1] = 3221225472;
     v102[2] = __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke;
     v102[3] = &unk_1E7C3F6A8;
     v102[4] = self;
-    v73 = [v75 fc_dictionaryOfSortedObjectsWithKeyBlock:v102];
+    v73 = [allObjects fc_dictionaryOfSortedObjectsWithKeyBlock:v102];
     v100[0] = MEMORY[0x1E69E9820];
     v100[1] = 3221225472;
     v100[2] = __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_2;
@@ -276,39 +276,39 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
     if ([v74 count])
     {
       v20 = objc_alloc_init(FCCKBatchedMultiFetchQueryOperation);
-      v21 = [(FCRecordChainFetchOperation *)self context];
-      v22 = [v21 internalContentContext];
-      v23 = [v22 contentDatabase];
-      [(FCCKBatchedMultiFetchQueryOperation *)v20 setDatabase:v23];
+      context = [(FCRecordChainFetchOperation *)self context];
+      internalContentContext = [context internalContentContext];
+      contentDatabase = [internalContentContext contentDatabase];
+      [(FCCKBatchedMultiFetchQueryOperation *)v20 setDatabase:contentDatabase];
 
-      v24 = [(FCRecordChainFetchOperation *)self edgeCacheHint];
-      v26 = v24;
+      edgeCacheHint = [(FCRecordChainFetchOperation *)self edgeCacheHint];
+      v26 = edgeCacheHint;
       if (v20)
       {
-        objc_setProperty_nonatomic_copy(v20, v25, v24, 424);
+        objc_setProperty_nonatomic_copy(v20, v25, edgeCacheHint, 424);
 
         v20->_networkEventType = [(FCRecordChainFetchOperation *)self networkEventType];
-        v27 = [(FCRecordChainFetchOperation *)self networkActivityBlock];
-        objc_setProperty_nonatomic_copy(v20, v28, v27, 440);
+        networkActivityBlock = [(FCRecordChainFetchOperation *)self networkActivityBlock];
+        objc_setProperty_nonatomic_copy(v20, v28, networkActivityBlock, 440);
       }
 
       else
       {
 
         [(FCRecordChainFetchOperation *)self networkEventType];
-        v27 = [(FCRecordChainFetchOperation *)self networkActivityBlock];
+        networkActivityBlock = [(FCRecordChainFetchOperation *)self networkActivityBlock];
       }
 
-      v29 = [(FCRecordChainFetchOperation *)self cachePolicy];
-      v30 = [v29 cachePolicy];
+      cachePolicy = [(FCRecordChainFetchOperation *)self cachePolicy];
+      v29CachePolicy = [cachePolicy cachePolicy];
       if (v20)
       {
-        v20->_ignoreCache = v30 == 1;
+        v20->_ignoreCache = v29CachePolicy == 1;
       }
 
       v31 = objc_opt_new();
-      v32 = [(FCRecordChainFetchOperation *)self edgeCacheHint];
-      v33 = v32 == 0;
+      edgeCacheHint2 = [(FCRecordChainFetchOperation *)self edgeCacheHint];
+      v33 = edgeCacheHint2 == 0;
 
       if (v33)
       {
@@ -324,14 +324,14 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
 
       else
       {
-        v34 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
-        [v31 addObjectsFromArray:v34];
+        topLevelRecordIDs4 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
+        [v31 addObjectsFromArray:topLevelRecordIDs4];
       }
 
       v48 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v31];
-      v49 = [(FCRecordChainFetchOperation *)self linkKeysByRecordType];
-      v50 = [v49 allKeys];
-      [v48 addObjectsFromArray:v50];
+      linkKeysByRecordType = [(FCRecordChainFetchOperation *)self linkKeysByRecordType];
+      allKeys = [linkKeysByRecordType allKeys];
+      [v48 addObjectsFromArray:allKeys];
 
       v51 = [MEMORY[0x1E695DFA8] set];
       v97 = 0u;
@@ -357,9 +357,9 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
 
             if ([v57 supportsDeletions])
             {
-              v58 = [v57 canaryRecordName];
-              [v31 addObject:v58];
-              [v51 addObject:v58];
+              canaryRecordName = [v57 canaryRecordName];
+              [v31 addObject:canaryRecordName];
+              [v51 addObject:canaryRecordName];
             }
           }
 
@@ -411,7 +411,7 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
       v78 = 3221225472;
       v79 = __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_2_43;
       v80 = &unk_1E7C3F7E8;
-      v81 = self;
+      selfCopy5 = self;
       objc_copyWeak(&v85, &location);
       v65 = v64;
       v82 = v65;
@@ -437,9 +437,9 @@ uint64_t __47__FCRecordChainFetchOperation_prepareOperation__block_invoke(uint64
     v45 = self->_cachedRecords;
     if ([(FCHeldRecords *)v45 count])
     {
-      v46 = [(FCRecordChainFetchOperation *)self shouldReturnErrorWhenSomeRecordsMissing];
+      shouldReturnErrorWhenSomeRecordsMissing = [(FCRecordChainFetchOperation *)self shouldReturnErrorWhenSomeRecordsMissing];
 
-      if (!v46)
+      if (!shouldReturnErrorWhenSomeRecordsMissing)
       {
         [(FCOperation *)self finishedPerformingOperationWithError:0];
 LABEL_43:
@@ -454,7 +454,7 @@ LABEL_44:
     {
     }
 
-    v68 = [(FCRecordChainFetchOperation *)self _errorForMissingRecordNames:v75];
+    v68 = [(FCRecordChainFetchOperation *)self _errorForMissingRecordNames:allObjects];
     [(FCOperation *)self finishedPerformingOperationWithError:v68];
 
     goto LABEL_43;
@@ -467,17 +467,17 @@ LABEL_44:
   v105 = __65__FCRecordChainFetchOperation__recordIDsMissingFromCachedRecords__block_invoke;
   v106 = &unk_1E7C3F658;
   v36 = v35;
-  v107 = v36;
+  selfCopy2 = v36;
   v37 = _Block_copy(&aBlock);
   v77 = MEMORY[0x1E69E9820];
   v78 = 3221225472;
   v79 = __65__FCRecordChainFetchOperation__recordIDsMissingFromCachedRecords__block_invoke_2;
   v80 = &unk_1E7C3F680;
-  v81 = self;
+  selfCopy5 = self;
   v38 = _Block_copy(&v77);
   v39 = MEMORY[0x1E695DFD8];
-  v40 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
-  v41 = [v39 setWithArray:v40];
+  topLevelRecordIDs5 = [(FCRecordChainFetchOperation *)self topLevelRecordIDs];
+  v41 = [v39 setWithArray:topLevelRecordIDs5];
   v42 = [MEMORY[0x1E695DFA8] set];
   [(FCRecordChainFetchOperation *)self _walkRecordChainStartingWithRecordIDs:v41 visitedRecordIDs:v42 recordsLookupBlock:v38 visitorBlock:v37];
 
@@ -494,13 +494,13 @@ LABEL_44:
     goto LABEL_46;
   }
 
-  v44 = [(FCRecordChainFetchOperation *)self shouldReturnErrorWhenSomeRecordsMissing];
+  shouldReturnErrorWhenSomeRecordsMissing2 = [(FCRecordChainFetchOperation *)self shouldReturnErrorWhenSomeRecordsMissing];
 
-  if (v44)
+  if (shouldReturnErrorWhenSomeRecordsMissing2)
   {
 LABEL_46:
-    v70 = [(FCRecordChainFetchOperation *)v76 allObjects];
-    v71 = [(FCRecordChainFetchOperation *)self _errorForMissingRecordNames:v70];
+    allObjects2 = [(FCRecordChainFetchOperation *)v76 allObjects];
+    v71 = [(FCRecordChainFetchOperation *)self _errorForMissingRecordNames:allObjects2];
 
     [(FCOperation *)self finishedPerformingOperationWithError:v71];
     goto LABEL_47;
@@ -514,49 +514,49 @@ LABEL_47:
 
 - (BOOL)_shouldIgnoreCache
 {
-  v2 = [a1 cachePolicy];
-  v3 = [v2 cachePolicy];
+  cachePolicy = [self cachePolicy];
+  v2CachePolicy = [cachePolicy cachePolicy];
 
-  if (v3 != 1)
+  if (v2CachePolicy != 1)
   {
     return 0;
   }
 
-  v4 = [a1 cachePoliciesByRecordID];
-  v5 = [v4 count];
+  cachePoliciesByRecordID = [self cachePoliciesByRecordID];
+  v5 = [cachePoliciesByRecordID count];
 
   if (v5)
   {
     return 0;
   }
 
-  v6 = [a1 cachePoliciesByRecordType];
-  v7 = [v6 count];
+  cachePoliciesByRecordType = [self cachePoliciesByRecordType];
+  v7 = [cachePoliciesByRecordType count];
 
   if (v7)
   {
     return 0;
   }
 
-  v10 = [a1 dynamicCachePolicyBlock];
-  v8 = v10 == 0;
+  dynamicCachePolicyBlock = [self dynamicCachePolicyBlock];
+  v8 = dynamicCachePolicyBlock == 0;
 
   return v8;
 }
 
 - (void)_finalizeResultFromCachedRecords
 {
-  if (a1)
+  if (self)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__FCRecordChainFetchOperation__finalizeResultFromCachedRecords__block_invoke;
     aBlock[3] = &unk_1E7C3A618;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v2 = _Block_copy(aBlock);
     v3 = v2[2]();
     v4 = (v2[2])(v2);
-    v5 = *(a1 + 496);
+    v5 = *(self + 496);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __63__FCRecordChainFetchOperation__finalizeResultFromCachedRecords__block_invoke_4;
@@ -576,8 +576,8 @@ LABEL_47:
     v9 = v7;
     v10 = v6;
     v11 = [v8 fc_dictionary:v13];
-    v12 = *(a1 + 528);
-    *(a1 + 528) = v11;
+    v12 = *(self + 528);
+    *(self + 528) = v11;
   }
 }
 
@@ -819,20 +819,20 @@ void __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_collectActualTopLevelRecordIDsFromRecordIDs:(void *)a3 visitedRecordIDs:
+- (void)_collectActualTopLevelRecordIDsFromRecordIDs:(void *)ds visitedRecordIDs:
 {
   v62 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dsCopy = ds;
+  if (self)
   {
-    if ([(FCRecordChainFetchOperation *)a1 _shouldIgnoreCache])
+    if ([(FCRecordChainFetchOperation *)self _shouldIgnoreCache])
     {
       v58[0] = MEMORY[0x1E69E9820];
       v58[1] = 3221225472;
       v58[2] = __93__FCRecordChainFetchOperation__collectActualTopLevelRecordIDsFromRecordIDs_visitedRecordIDs___block_invoke;
       v58[3] = &unk_1E7C36C58;
-      v58[4] = a1;
+      v58[4] = self;
       v59 = v5;
       __93__FCRecordChainFetchOperation__collectActualTopLevelRecordIDsFromRecordIDs_visitedRecordIDs___block_invoke(v58);
     }
@@ -840,8 +840,8 @@ void __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_
     else
     {
       v7 = [MEMORY[0x1E695DFA8] set];
-      v39 = v6;
-      [v6 unionSet:v5];
+      v39 = dsCopy;
+      [dsCopy unionSet:v5];
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
@@ -851,7 +851,7 @@ void __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_
       v47 = [obj countByEnumeratingWithState:&v54 objects:v61 count:16];
       if (v47)
       {
-        v45 = a1;
+        selfCopy = self;
         v46 = *v55;
         do
         {
@@ -864,56 +864,56 @@ void __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_
             }
 
             v8 = *(*(&v54 + 1) + 8 * v48);
-            v9 = [a1[62] recordWithID:v8];
-            v10 = [(FCRecordChainFetchOperation *)a1 _recordTypeForRecordID:v8];
-            v11 = [(FCRecordChainFetchOperation *)a1 _recordSourceForRecordType:v10];
-            v12 = [a1 dynamicCachePolicyBlock];
+            v9 = [self[62] recordWithID:v8];
+            v10 = [(FCRecordChainFetchOperation *)self _recordTypeForRecordID:v8];
+            v11 = [(FCRecordChainFetchOperation *)self _recordSourceForRecordType:v10];
+            dynamicCachePolicyBlock = [self dynamicCachePolicyBlock];
 
-            if (!v12)
+            if (!dynamicCachePolicyBlock)
             {
               goto LABEL_11;
             }
 
-            v13 = [a1 dynamicCachePolicyBlock];
+            dynamicCachePolicyBlock2 = [self dynamicCachePolicyBlock];
             [v9 base];
             v14 = v11;
             v15 = v10;
             v17 = v16 = v9;
-            (v13)[2](v13, [v17 recordType], v16);
+            (dynamicCachePolicyBlock2)[2](dynamicCachePolicyBlock2, [v17 recordType], v16);
             v19 = v18 = v8;
 
             v9 = v16;
             v10 = v15;
             v11 = v14;
-            a1 = v45;
+            self = selfCopy;
 
-            v20 = v19;
+            cachePolicy = v19;
             v8 = v18;
-            if (!v20)
+            if (!cachePolicy)
             {
 LABEL_11:
-              v21 = [a1 cachePoliciesByRecordID];
+              cachePoliciesByRecordID = [self cachePoliciesByRecordID];
               v22 = v8;
-              v23 = [v21 objectForKey:v8];
+              v23 = [cachePoliciesByRecordID objectForKey:v8];
 
-              if (v23 || ([a1 cachePoliciesByRecordType], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "objectForKey:", v10), v23 = objc_claimAutoreleasedReturnValue(), v24, v23))
+              if (v23 || ([self cachePoliciesByRecordType], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "objectForKey:", v10), v23 = objc_claimAutoreleasedReturnValue(), v24, v23))
               {
-                v20 = v23;
+                cachePolicy = v23;
               }
 
               else
               {
-                v20 = [a1 cachePolicy];
+                cachePolicy = [self cachePolicy];
               }
 
               v8 = v22;
             }
 
-            v49 = v20;
+            v49 = cachePolicy;
             if (v9)
             {
-              v25 = [v11 isRecordStale:v9 withCachePolicy:v20];
-              v20 = v49;
+              v25 = [v11 isRecordStale:v9 withCachePolicy:cachePolicy];
+              cachePolicy = v49;
               v26 = v25 ^ 1;
             }
 
@@ -922,17 +922,17 @@ LABEL_11:
               v26 = 0;
             }
 
-            v27 = [v20 cachePolicy];
-            if ((v26 & 1) != 0 || v27 == 3)
+            v20CachePolicy = [cachePolicy cachePolicy];
+            if ((v26 & 1) != 0 || v20CachePolicy == 3)
             {
-              if (!v9 && v27 == 3)
+              if (!v9 && v20CachePolicy == 3)
               {
-                [a1[65] addObject:v8];
+                [self[65] addObject:v8];
               }
 
-              [a1[64] addObject:v8];
-              v28 = [a1 linkKeysByRecordType];
-              v29 = [v28 objectForKey:v10];
+              [self[64] addObject:v8];
+              linkKeysByRecordType = [self linkKeysByRecordType];
+              v29 = [linkKeysByRecordType objectForKey:v10];
 
               if ([v29 count])
               {
@@ -983,7 +983,7 @@ LABEL_11:
                 }
 
                 v9 = v44;
-                a1 = v45;
+                self = selfCopy;
                 v11 = v42;
                 v10 = v43;
               }
@@ -991,7 +991,7 @@ LABEL_11:
 
             else
             {
-              [a1[63] addObject:v8];
+              [self[63] addObject:v8];
             }
 
             ++v48;
@@ -1005,11 +1005,11 @@ LABEL_11:
         while (v37);
       }
 
-      v6 = v39;
+      dsCopy = v39;
       [v7 minusSet:v39];
       if ([v7 count])
       {
-        [(FCRecordChainFetchOperation *)a1 _collectActualTopLevelRecordIDsFromRecordIDs:v7 visitedRecordIDs:v39];
+        [(FCRecordChainFetchOperation *)self _collectActualTopLevelRecordIDsFromRecordIDs:v7 visitedRecordIDs:v39];
       }
 
       v5 = v40;
@@ -1029,15 +1029,15 @@ LABEL_11:
   return self;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(FCRecordChainFetchOperation *)self recordChainCompletionHandler];
+  errorCopy = error;
+  recordChainCompletionHandler = [(FCRecordChainFetchOperation *)self recordChainCompletionHandler];
 
-  if (v4)
+  if (recordChainCompletionHandler)
   {
-    v5 = [(FCRecordChainFetchOperation *)self recordChainCompletionHandler];
-    v6 = v5;
+    recordChainCompletionHandler2 = [(FCRecordChainFetchOperation *)self recordChainCompletionHandler];
+    v6 = recordChainCompletionHandler2;
     if (self)
     {
       resultHeldRecordsByType = self->_resultHeldRecordsByType;
@@ -1048,7 +1048,7 @@ LABEL_11:
       resultHeldRecordsByType = 0;
     }
 
-    (*(v5 + 16))(v5, resultHeldRecordsByType, v8);
+    (*(recordChainCompletionHandler2 + 16))(recordChainCompletionHandler2, resultHeldRecordsByType, errorCopy);
   }
 }
 
@@ -1058,11 +1058,11 @@ void __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___bloc
   [(FCRecordChainFetchOperation *)*(a1 + 32) setCachedRecords:v2];
 }
 
-- (void)setCachedRecords:(uint64_t)a1
+- (void)setCachedRecords:(uint64_t)records
 {
-  if (a1)
+  if (records)
   {
-    objc_storeStrong((a1 + 496), a2);
+    objc_storeStrong((records + 496), a2);
   }
 }
 
@@ -1096,9 +1096,9 @@ id __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___block_
   if (result)
   {
     v2 = [*(result + 488) objectForKey:a2];
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
 
-    return v3;
+    return intValue;
   }
 
   return result;
@@ -1114,24 +1114,24 @@ id __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___block_
   return v7;
 }
 
-- (id)_recordSourceForRecordType:(id *)a1
+- (id)_recordSourceForRecordType:(id *)type
 {
-  if (a1)
+  if (type)
   {
-    a1 = [a1[60] objectForKey:a2];
+    type = [type[60] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return type;
 }
 
-- (void)_walkRecordChainStartingWithRecordIDs:(void *)a3 visitedRecordIDs:(void *)a4 recordsLookupBlock:(void *)a5 visitorBlock:
+- (void)_walkRecordChainStartingWithRecordIDs:(void *)ds visitedRecordIDs:(void *)iDs recordsLookupBlock:(void *)block visitorBlock:
 {
   v86 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v48 = a3;
-  v46 = a4;
-  v47 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  blockCopy = block;
   v10 = [v9 mutableCopy];
   v70 = 0u;
   v71 = 0u;
@@ -1155,11 +1155,11 @@ id __66__FCRecordChainFetchOperation__collectCachedRecordsFromRecordIDs___block_
         }
 
         v16 = *(*(&v70 + 1) + 8 * v15);
-        v17 = [(FCRecordChainFetchOperation *)a1 _recordTypeForRecordID:v16];
+        v17 = [(FCRecordChainFetchOperation *)self _recordTypeForRecordID:v16];
         if (v17)
         {
-          v18 = [a1 linkKeysByRecordType];
-          v19 = [v18 objectForKeyedSubscript:v17];
+          linkKeysByRecordType = [self linkKeysByRecordType];
+          v19 = [linkKeysByRecordType objectForKeyedSubscript:v17];
 
           if (v19)
           {
@@ -1216,21 +1216,21 @@ LABEL_12:
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v49 = [a1 linkKeysByRecordType];
-  v23 = [v49 countByEnumeratingWithState:&v66 objects:v76 count:16];
-  v24 = v46;
+  linkKeysByRecordType2 = [self linkKeysByRecordType];
+  v23 = [linkKeysByRecordType2 countByEnumeratingWithState:&v66 objects:v76 count:16];
+  v24 = iDsCopy;
   if (v23)
   {
     v25 = v23;
     v26 = *v67;
-    v50 = a1;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v25; ++i)
       {
         if (*v67 != v26)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(linkKeysByRecordType2);
         }
 
         v28 = *(*(&v66 + 1) + 8 * i);
@@ -1238,33 +1238,33 @@ LABEL_12:
         v65[1] = 3221225472;
         v65[2] = __118__FCRecordChainFetchOperation__walkRecordChainStartingWithRecordIDs_visitedRecordIDs_recordsLookupBlock_visitorBlock___block_invoke;
         v65[3] = &unk_1E7C3F810;
-        v65[4] = v50;
+        v65[4] = selfCopy;
         v65[5] = v28;
         v29 = [v10 fc_arrayOfObjectsPassingTest:v65];
         if ([v29 count])
         {
           [v10 fc_removeObjectsFromArray:v29];
-          [v48 addObjectsFromArray:v29];
+          [dsCopy addObjectsFromArray:v29];
           v30 = objc_autoreleasePoolPush();
-          v31 = (*(v46 + 2))(v46, v28, v29);
-          v47[2](v47, v29, v31);
-          a1 = v50;
-          v32 = [v50 linkKeysByRecordType];
-          v33 = [v32 objectForKey:v28];
+          v31 = (*(iDsCopy + 2))(iDsCopy, v28, v29);
+          blockCopy[2](blockCopy, v29, v31);
+          self = selfCopy;
+          linkKeysByRecordType3 = [selfCopy linkKeysByRecordType];
+          v33 = [linkKeysByRecordType3 objectForKey:v28];
 
           v54 = v33;
           if ([v33 count])
           {
             v44 = v30;
             v45 = v29;
-            v53 = [(FCRecordChainFetchOperation *)v50 _recordSourceForRecordType:v28];
+            v53 = [(FCRecordChainFetchOperation *)selfCopy _recordSourceForRecordType:v28];
             v61 = 0u;
             v62 = 0u;
             v63 = 0u;
             v64 = 0u;
             v43 = v31;
-            v51 = [v31 allRecords];
-            v55 = [v51 countByEnumeratingWithState:&v61 objects:v75 count:16];
+            allRecords = [v31 allRecords];
+            v55 = [allRecords countByEnumeratingWithState:&v61 objects:v75 count:16];
             if (v55)
             {
               v52 = *v62;
@@ -1274,7 +1274,7 @@ LABEL_12:
                 {
                   if (*v62 != v52)
                   {
-                    objc_enumerationMutation(v51);
+                    objc_enumerationMutation(allRecords);
                   }
 
                   v35 = [v53 keyValueRepresentationOfRecord:*(*(&v61 + 1) + 8 * j)];
@@ -1321,15 +1321,15 @@ LABEL_12:
                   }
                 }
 
-                v55 = [v51 countByEnumeratingWithState:&v61 objects:v75 count:16];
+                v55 = [allRecords countByEnumeratingWithState:&v61 objects:v75 count:16];
               }
 
               while (v55);
             }
 
             v29 = v45;
-            v24 = v46;
-            a1 = v50;
+            v24 = iDsCopy;
+            self = selfCopy;
             v31 = v43;
             v30 = v44;
           }
@@ -1339,8 +1339,8 @@ LABEL_12:
         }
       }
 
-      v25 = [v49 countByEnumeratingWithState:&v66 objects:v76 count:16];
-      a1 = v50;
+      v25 = [linkKeysByRecordType2 countByEnumeratingWithState:&v66 objects:v76 count:16];
+      self = selfCopy;
       if (v25)
       {
         continue;
@@ -1352,10 +1352,10 @@ LABEL_12:
 
 LABEL_47:
 
-  [v10 minusSet:v48];
+  [v10 minusSet:dsCopy];
   if ([v10 count])
   {
-    [(FCRecordChainFetchOperation *)a1 _walkRecordChainStartingWithRecordIDs:v10 visitedRecordIDs:v48 recordsLookupBlock:v24 visitorBlock:v47];
+    [(FCRecordChainFetchOperation *)self _walkRecordChainStartingWithRecordIDs:v10 visitedRecordIDs:dsCopy recordsLookupBlock:v24 visitorBlock:blockCopy];
   }
 
   v42 = *MEMORY[0x1E69E9840];
@@ -1376,13 +1376,13 @@ uint64_t __93__FCRecordChainFetchOperation__collectActualTopLevelRecordIDsFromRe
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (id)_recordTypeForRecordID:(uint64_t)a1
+- (id)_recordTypeForRecordID:(uint64_t)d
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = *(a1 + 472);
+    v4 = *(d + 472);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -1420,9 +1420,9 @@ LABEL_4:
         }
       }
 
-      v11 = [v10 recordType];
+      recordType = [v10 recordType];
 
-      if (v11)
+      if (recordType)
       {
         goto LABEL_15;
       }
@@ -1447,30 +1447,30 @@ LABEL_10:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v11 = 0;
+    recordType = 0;
 LABEL_15:
   }
 
   else
   {
-    v11 = 0;
+    recordType = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return recordType;
 }
 
-- (id)_errorForMissingRecordNames:(uint64_t)a1
+- (id)_errorForMissingRecordNames:(uint64_t)names
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (names)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__FCRecordChainFetchOperation__errorForMissingRecordNames___block_invoke_2;
     v9[3] = &unk_1E7C3F910;
-    v9[4] = a1;
+    v9[4] = names;
     v2 = [a2 fc_dictionaryWithKeyBlock:&__block_literal_global_78 valueBlock:v9];
     v3 = MEMORY[0x1E696ABC0];
     v4 = *MEMORY[0x1E695B740];
@@ -2009,10 +2009,10 @@ id __57__FCRecordChainFetchOperation__issueCloudRequestIfNeeded__block_invoke_7(
   return v3;
 }
 
-- (id)_partialFetchErrorForMissingRecordName:(uint64_t)a1
+- (id)_partialFetchErrorForMissingRecordName:(uint64_t)name
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (name)
   {
     v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Record %@ missing from MultiFetch query", a2];
     v3 = MEMORY[0x1E696ABC0];

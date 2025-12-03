@@ -1,10 +1,10 @@
 @interface TUVideoCallAttributes
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToVideoCallAttributes:(id)a3;
-- (TUVideoCallAttributes)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToVideoCallAttributes:(id)attributes;
+- (TUVideoCallAttributes)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUVideoCallAttributes
@@ -21,23 +21,23 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUVideoCallAttributes *)self isEqualToVideoCallAttributes:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUVideoCallAttributes *)self isEqualToVideoCallAttributes:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToVideoCallAttributes:(id)a3
+- (BOOL)isEqualToVideoCallAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(TUVideoCallAttributes *)self remoteCameraOrientation];
-  if (v5 == [v4 remoteCameraOrientation] && (v6 = -[TUVideoCallAttributes localVideoContextSlotIdentifier](self, "localVideoContextSlotIdentifier"), v6 == objc_msgSend(v4, "localVideoContextSlotIdentifier")))
+  attributesCopy = attributes;
+  remoteCameraOrientation = [(TUVideoCallAttributes *)self remoteCameraOrientation];
+  if (remoteCameraOrientation == [attributesCopy remoteCameraOrientation] && (v6 = -[TUVideoCallAttributes localVideoContextSlotIdentifier](self, "localVideoContextSlotIdentifier"), v6 == objc_msgSend(attributesCopy, "localVideoContextSlotIdentifier")))
   {
-    v7 = [(TUVideoCallAttributes *)self remoteVideoContextSlotIdentifier];
-    v8 = v7 == [v4 remoteVideoContextSlotIdentifier];
+    remoteVideoContextSlotIdentifier = [(TUVideoCallAttributes *)self remoteVideoContextSlotIdentifier];
+    v8 = remoteVideoContextSlotIdentifier == [attributesCopy remoteVideoContextSlotIdentifier];
   }
 
   else
@@ -50,44 +50,44 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TUVideoCallAttributes *)self remoteCameraOrientation];
-  v4 = [(TUVideoCallAttributes *)self localVideoContextSlotIdentifier]^ v3;
+  remoteCameraOrientation = [(TUVideoCallAttributes *)self remoteCameraOrientation];
+  v4 = [(TUVideoCallAttributes *)self localVideoContextSlotIdentifier]^ remoteCameraOrientation;
   return v4 ^ [(TUVideoCallAttributes *)self remoteVideoContextSlotIdentifier];
 }
 
-- (TUVideoCallAttributes)initWithCoder:(id)a3
+- (TUVideoCallAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUVideoCallAttributes *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_remoteCameraOrientation);
-    v5->_remoteCameraOrientation = [v4 decodeIntegerForKey:v6];
+    v5->_remoteCameraOrientation = [coderCopy decodeIntegerForKey:v6];
 
     v7 = NSStringFromSelector(sel_localVideoContextSlotIdentifier);
-    v5->_localVideoContextSlotIdentifier = [v4 decodeIntegerForKey:v7];
+    v5->_localVideoContextSlotIdentifier = [coderCopy decodeIntegerForKey:v7];
 
     v8 = NSStringFromSelector(sel_remoteVideoContextSlotIdentifier);
-    v5->_remoteVideoContextSlotIdentifier = [v4 decodeIntegerForKey:v8];
+    v5->_remoteVideoContextSlotIdentifier = [coderCopy decodeIntegerForKey:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   remoteCameraOrientation = self->_remoteCameraOrientation;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_remoteCameraOrientation);
-  [v5 encodeInteger:remoteCameraOrientation forKey:v6];
+  [coderCopy encodeInteger:remoteCameraOrientation forKey:v6];
 
   localVideoContextSlotIdentifier = self->_localVideoContextSlotIdentifier;
   v8 = NSStringFromSelector(sel_localVideoContextSlotIdentifier);
-  [v5 encodeInteger:localVideoContextSlotIdentifier forKey:v8];
+  [coderCopy encodeInteger:localVideoContextSlotIdentifier forKey:v8];
 
   remoteVideoContextSlotIdentifier = self->_remoteVideoContextSlotIdentifier;
   v10 = NSStringFromSelector(sel_remoteVideoContextSlotIdentifier);
-  [v5 encodeInteger:remoteVideoContextSlotIdentifier forKey:v10];
+  [coderCopy encodeInteger:remoteVideoContextSlotIdentifier forKey:v10];
 }
 
 @end

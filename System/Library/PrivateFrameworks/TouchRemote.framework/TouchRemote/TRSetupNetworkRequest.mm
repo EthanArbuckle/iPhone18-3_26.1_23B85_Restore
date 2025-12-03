@@ -1,43 +1,43 @@
 @interface TRSetupNetworkRequest
-- (TRSetupNetworkRequest)initWithCoder:(id)a3;
+- (TRSetupNetworkRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRSetupNetworkRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TRSetupNetworkRequest;
-  [(TRMessage *)&v7 encodeWithCoder:v4];
+  [(TRMessage *)&v7 encodeWithCoder:coderCopy];
   networkSSID = self->_networkSSID;
   if (networkSSID)
   {
-    [v4 encodeObject:networkSSID forKey:@"TRSetupNetworkMessages_nS"];
+    [coderCopy encodeObject:networkSSID forKey:@"TRSetupNetworkMessages_nS"];
   }
 
   networkPassword = self->_networkPassword;
   if (networkPassword)
   {
-    [v4 encodeObject:networkPassword forKey:@"TRSetupNetworkMessages_nP"];
+    [coderCopy encodeObject:networkPassword forKey:@"TRSetupNetworkMessages_nP"];
   }
 }
 
-- (TRSetupNetworkRequest)initWithCoder:(id)a3
+- (TRSetupNetworkRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TRSetupNetworkRequest;
-  v5 = [(TRMessage *)&v11 initWithCoder:v4];
+  v5 = [(TRMessage *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupNetworkMessages_nS"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupNetworkMessages_nS"];
     networkSSID = v5->_networkSSID;
     v5->_networkSSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupNetworkMessages_nP"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupNetworkMessages_nP"];
     networkPassword = v5->_networkPassword;
     v5->_networkPassword = v8;
   }

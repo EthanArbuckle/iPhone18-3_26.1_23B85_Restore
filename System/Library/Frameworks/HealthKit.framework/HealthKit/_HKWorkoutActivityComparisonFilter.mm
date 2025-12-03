@@ -1,26 +1,26 @@
 @interface _HKWorkoutActivityComparisonFilter
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (BOOL)isSupportedKeyPath:(id)a3;
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7;
-+ (id)_quantityTypeFromKeyPath:(id)a3 prefix:(id)a4;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
-+ (int64_t)enumRepresentationForKeyPath:(id)a3;
-- (BOOL)_acceptsActivityWithActivityType:(unint64_t)a3;
-- (BOOL)_acceptsActivityWithDate:(id)a3;
-- (BOOL)_acceptsActivityWithDuration:(double)a3;
-- (BOOL)_acceptsActivityWithQuantity:(id)a3;
-- (BOOL)acceptsWorkoutActivity:(id)a3;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (BOOL)isSupportedKeyPath:(id)path;
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error;
++ (id)_quantityTypeFromKeyPath:(id)path prefix:(id)prefix;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
++ (int64_t)enumRepresentationForKeyPath:(id)path;
+- (BOOL)_acceptsActivityWithActivityType:(unint64_t)type;
+- (BOOL)_acceptsActivityWithDate:(id)date;
+- (BOOL)_acceptsActivityWithDuration:(double)duration;
+- (BOOL)_acceptsActivityWithQuantity:(id)quantity;
+- (BOOL)acceptsWorkoutActivity:(id)activity;
 - (void)configureInMemoryFilter;
 @end
 
 @implementation _HKWorkoutActivityComparisonFilter
 
-+ (BOOL)isSupportedKeyPath:(id)a3
++ (BOOL)isSupportedKeyPath:(id)path
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"activityDuration"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"activityType") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"activityStartDate") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"activityEndDate"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"activityDuration"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"activityType") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"activityStartDate") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"activityEndDate"))
   {
     v5 = 1;
   }
@@ -51,9 +51,9 @@
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          if ([v4 hasPrefix:{v13, v15}])
+          if ([pathCopy hasPrefix:{v13, v15}])
           {
-            v14 = [a1 _quantityTypeFromKeyPath:v4 prefix:v13];
+            v14 = [self _quantityTypeFromKeyPath:pathCopy prefix:v13];
             v5 = v14 != 0;
 
             goto LABEL_17;
@@ -78,7 +78,7 @@ LABEL_17:
   return v5;
 }
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -86,10 +86,10 @@ LABEL_17:
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"activityDuration"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"activityType"))
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"activityDuration"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"activityType"))
   {
     v4 = 0x1E696AD98;
   }
@@ -97,7 +97,7 @@ LABEL_17:
   else
   {
     v4 = 0x1E695DF00;
-    if (([v3 isEqualToString:@"activityStartDate"] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", @"activityEndDate"))
+    if (([pathCopy isEqualToString:@"activityStartDate"] & 1) == 0 && !objc_msgSend(pathCopy, "isEqualToString:", @"activityEndDate"))
     {
       v4 = off_1E7375378;
     }
@@ -109,35 +109,35 @@ LABEL_17:
   return v6;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  v6 = a4;
-  if ([v6 isEqualToString:@"activityType"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"activityType"])
   {
-    v7 = a3 == 4;
+    v7 = type == 4;
   }
 
   else
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKWorkoutActivityComparisonFilter;
-    v7 = objc_msgSendSuper2(&v9, sel_isAllowedPredicateOperatorType_forKeyPath_, a3, v6);
+    v7 = objc_msgSendSuper2(&v9, sel_isAllowedPredicateOperatorType_forKeyPath_, type, pathCopy);
   }
 
   return v7;
 }
 
-+ (BOOL)isValidValue:(id)a3 forKeyPath:(id)a4 operatorType:(unint64_t)a5 dataTypes:(id)a6 error:(id *)a7
++ (BOOL)isValidValue:(id)value forKeyPath:(id)path operatorType:(unint64_t)type dataTypes:(id)types error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v16.receiver = a1;
+  valueCopy = value;
+  pathCopy = path;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS____HKWorkoutActivityComparisonFilter;
-  if (objc_msgSendSuper2(&v16, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, v12, v13, a5, a6, a7))
+  if (objc_msgSendSuper2(&v16, sel_isValidValue_forKeyPath_operatorType_dataTypes_error_, valueCopy, pathCopy, type, types, error))
   {
-    if ([v13 isEqualToString:@"activityType"])
+    if ([pathCopy isEqualToString:@"activityType"])
     {
-      IsValid = _HKWorkoutActivityTypeIsValid([v12 integerValue]);
+      IsValid = _HKWorkoutActivityTypeIsValid([valueCopy integerValue]);
     }
 
     else
@@ -154,57 +154,57 @@ LABEL_17:
   return IsValid;
 }
 
-+ (int64_t)enumRepresentationForKeyPath:(id)a3
++ (int64_t)enumRepresentationForKeyPath:(id)path
 {
-  v5 = a3;
-  if ([v5 isEqualToString:@"activityDuration"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"activityDuration"])
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"activityType"])
+  else if ([pathCopy isEqualToString:@"activityType"])
   {
     v6 = 1;
   }
 
-  else if ([v5 isEqualToString:@"activityStartDate"])
+  else if ([pathCopy isEqualToString:@"activityStartDate"])
   {
     v6 = 2;
   }
 
-  else if ([v5 isEqualToString:@"activityEndDate"])
+  else if ([pathCopy isEqualToString:@"activityEndDate"])
   {
     v6 = 3;
   }
 
-  else if ([v5 hasPrefix:@"activitySumQuantity."])
+  else if ([pathCopy hasPrefix:@"activitySumQuantity."])
   {
     v6 = 4;
   }
 
-  else if ([v5 hasPrefix:@"activityMinimumQuantity."])
+  else if ([pathCopy hasPrefix:@"activityMinimumQuantity."])
   {
     v6 = 5;
   }
 
-  else if ([v5 hasPrefix:@"activityMaximumQuantity."])
+  else if ([pathCopy hasPrefix:@"activityMaximumQuantity."])
   {
     v6 = 6;
   }
 
-  else if ([v5 hasPrefix:@"activityAverageQuantity."])
+  else if ([pathCopy hasPrefix:@"activityAverageQuantity."])
   {
     v6 = 7;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"_HKWorkoutActivityComparisonFilter.m" lineNumber:158 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKWorkoutActivityComparisonFilter.m" lineNumber:158 description:@"Unreachable code has been executed"];
 
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = &OBJC_METACLASS____HKWorkoutActivityComparisonFilter;
-    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, v5);
+    v6 = objc_msgSendSuper2(&v9, sel_enumRepresentationForKeyPath_, pathCopy);
   }
 
   return v6;
@@ -215,110 +215,110 @@ LABEL_17:
   v17.receiver = self;
   v17.super_class = _HKWorkoutActivityComparisonFilter;
   [(_HKComparisonFilter *)&v17 configureInMemoryFilter];
-  v3 = [(_HKComparisonFilter *)self keyPath];
+  keyPath = [(_HKComparisonFilter *)self keyPath];
   v4 = @"activitySumQuantity.";
-  v5 = [v3 hasPrefix:@"activitySumQuantity."];
+  v5 = [keyPath hasPrefix:@"activitySumQuantity."];
 
   if (v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [(_HKComparisonFilter *)self keyPath];
+  keyPath2 = [(_HKComparisonFilter *)self keyPath];
   v4 = @"activityMinimumQuantity.";
-  v7 = [v6 hasPrefix:@"activityMinimumQuantity."];
+  v7 = [keyPath2 hasPrefix:@"activityMinimumQuantity."];
 
   if (v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [(_HKComparisonFilter *)self keyPath];
+  keyPath3 = [(_HKComparisonFilter *)self keyPath];
   v4 = @"activityMaximumQuantity.";
-  v9 = [v8 hasPrefix:@"activityMaximumQuantity."];
+  v9 = [keyPath3 hasPrefix:@"activityMaximumQuantity."];
 
   if ((v9 & 1) != 0 || (-[_HKComparisonFilter keyPath](self, "keyPath"), v10 = objc_claimAutoreleasedReturnValue(), v4 = @"activityAverageQuantity.", v11 = [v10 hasPrefix:@"activityAverageQuantity."], v10, v11))
   {
 LABEL_5:
     v12 = objc_opt_class();
-    v13 = [(_HKComparisonFilter *)self keyPath];
-    v14 = [v12 _quantityTypeFromKeyPath:v13 prefix:v4];
+    keyPath4 = [(_HKComparisonFilter *)self keyPath];
+    v14 = [v12 _quantityTypeFromKeyPath:keyPath4 prefix:v4];
     v15 = [v14 copy];
     quantityType = self->_quantityType;
     self->_quantityType = v15;
   }
 }
 
-- (BOOL)acceptsWorkoutActivity:(id)a3
+- (BOOL)acceptsWorkoutActivity:(id)activity
 {
-  v5 = a3;
-  v6 = [(_HKComparisonFilter *)self keyPathIntegerValue];
-  if (v6 > 3)
+  activityCopy = activity;
+  keyPathIntegerValue = [(_HKComparisonFilter *)self keyPathIntegerValue];
+  if (keyPathIntegerValue > 3)
   {
-    if (v6 > 5)
+    if (keyPathIntegerValue > 5)
     {
-      if (v6 == 6)
+      if (keyPathIntegerValue == 6)
       {
-        v7 = [v5 statisticsForType:self->_quantityType];
-        v9 = [v7 maximumQuantity];
+        workoutConfiguration = [activityCopy statisticsForType:self->_quantityType];
+        maximumQuantity = [workoutConfiguration maximumQuantity];
       }
 
       else
       {
-        if (v6 != 7)
+        if (keyPathIntegerValue != 7)
         {
           goto LABEL_24;
         }
 
-        v7 = [v5 statisticsForType:self->_quantityType];
-        v9 = [v7 averageQuantity];
+        workoutConfiguration = [activityCopy statisticsForType:self->_quantityType];
+        maximumQuantity = [workoutConfiguration averageQuantity];
       }
     }
 
     else
     {
-      if (v6 == 4)
+      if (keyPathIntegerValue == 4)
       {
-        v7 = [v5 statisticsForType:self->_quantityType];
-        [v7 sumQuantity];
+        workoutConfiguration = [activityCopy statisticsForType:self->_quantityType];
+        [workoutConfiguration sumQuantity];
       }
 
       else
       {
-        v7 = [v5 statisticsForType:self->_quantityType];
-        [v7 minimumQuantity];
+        workoutConfiguration = [activityCopy statisticsForType:self->_quantityType];
+        [workoutConfiguration minimumQuantity];
       }
-      v9 = ;
+      maximumQuantity = ;
     }
 
-    v11 = v9;
-    v10 = [(_HKWorkoutActivityComparisonFilter *)self _acceptsActivityWithQuantity:v9];
+    v11 = maximumQuantity;
+    v10 = [(_HKWorkoutActivityComparisonFilter *)self _acceptsActivityWithQuantity:maximumQuantity];
 
     goto LABEL_22;
   }
 
-  if (v6 > 1)
+  if (keyPathIntegerValue > 1)
   {
-    if (v6 == 2)
+    if (keyPathIntegerValue == 2)
     {
-      [v5 startDate];
+      [activityCopy startDate];
     }
 
     else
     {
-      [v5 endDate];
+      [activityCopy endDate];
     }
-    v7 = ;
-    v8 = [(_HKWorkoutActivityComparisonFilter *)self _acceptsActivityWithDate:v7];
+    workoutConfiguration = ;
+    v8 = [(_HKWorkoutActivityComparisonFilter *)self _acceptsActivityWithDate:workoutConfiguration];
     goto LABEL_19;
   }
 
-  if (v6)
+  if (keyPathIntegerValue)
   {
-    if (v6 == 1)
+    if (keyPathIntegerValue == 1)
     {
-      v7 = [v5 workoutConfiguration];
-      v8 = -[_HKWorkoutActivityComparisonFilter _acceptsActivityWithActivityType:](self, "_acceptsActivityWithActivityType:", [v7 activityType]);
+      workoutConfiguration = [activityCopy workoutConfiguration];
+      v8 = -[_HKWorkoutActivityComparisonFilter _acceptsActivityWithActivityType:](self, "_acceptsActivityWithActivityType:", [workoutConfiguration activityType]);
 LABEL_19:
       v10 = v8;
 LABEL_22:
@@ -327,61 +327,61 @@ LABEL_22:
     }
 
 LABEL_24:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_HKWorkoutActivityComparisonFilter.m" lineNumber:210 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKWorkoutActivityComparisonFilter.m" lineNumber:210 description:@"Unreachable code has been executed"];
 
     v10 = 0;
     goto LABEL_23;
   }
 
-  [v5 duration];
+  [activityCopy duration];
   v10 = [(_HKWorkoutActivityComparisonFilter *)self _acceptsActivityWithDuration:?];
 LABEL_23:
 
   return v10;
 }
 
-- (BOOL)_acceptsActivityWithDuration:(double)a3
+- (BOOL)_acceptsActivityWithDuration:(double)duration
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  [v5 doubleValue];
-  v7 = HKCompareDoubles(a3, v6);
+  value = [(_HKComparisonFilter *)self value];
+  [value doubleValue];
+  v7 = HKCompareDoubles(duration, v6);
 
-  v8 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v7, v8);
+  return HKComparisonResultMatchesPredicateOperator(v7, operatorType);
 }
 
-- (BOOL)_acceptsActivityWithActivityType:(unint64_t)a3
+- (BOOL)_acceptsActivityWithActivityType:(unint64_t)type
 {
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = HKCompareIntegers(a3, [v5 integerValue]);
+  value = [(_HKComparisonFilter *)self value];
+  v6 = HKCompareIntegers(type, [value integerValue]);
 
-  v7 = [(_HKComparisonFilter *)self operatorType];
+  operatorType = [(_HKComparisonFilter *)self operatorType];
 
-  return HKComparisonResultMatchesPredicateOperator(v6, v7);
+  return HKComparisonResultMatchesPredicateOperator(v6, operatorType);
 }
 
-- (BOOL)_acceptsActivityWithDate:(id)a3
+- (BOOL)_acceptsActivityWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = [v4 compare:v5];
+  dateCopy = date;
+  value = [(_HKComparisonFilter *)self value];
+  v6 = [dateCopy compare:value];
 
   LOBYTE(self) = HKComparisonResultMatchesPredicateOperator(v6, [(_HKComparisonFilter *)self operatorType]);
   return self;
 }
 
-- (BOOL)_acceptsActivityWithQuantity:(id)a3
+- (BOOL)_acceptsActivityWithQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [(_HKComparisonFilter *)self value];
-  v6 = [v5 _unit];
-  v7 = [v4 isCompatibleWithUnit:v6];
+  quantityCopy = quantity;
+  value = [(_HKComparisonFilter *)self value];
+  _unit = [value _unit];
+  v7 = [quantityCopy isCompatibleWithUnit:_unit];
 
   if (v7)
   {
-    v8 = HKComparisonResultMatchesPredicateOperator([v4 compare:v5], -[_HKComparisonFilter operatorType](self, "operatorType"));
+    v8 = HKComparisonResultMatchesPredicateOperator([quantityCopy compare:value], -[_HKComparisonFilter operatorType](self, "operatorType"));
   }
 
   else
@@ -392,13 +392,13 @@ LABEL_23:
   return v8;
 }
 
-+ (id)_quantityTypeFromKeyPath:(id)a3 prefix:(id)a4
++ (id)_quantityTypeFromKeyPath:(id)path prefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPrefix:v6])
+  pathCopy = path;
+  prefixCopy = prefix;
+  if ([pathCopy hasPrefix:prefixCopy])
   {
-    v7 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
+    v7 = [pathCopy substringFromIndex:{objc_msgSend(prefixCopy, "length")}];
     v8 = v7;
     if (v7)
     {

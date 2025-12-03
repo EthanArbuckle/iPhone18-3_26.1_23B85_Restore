@@ -1,8 +1,8 @@
 @interface _DASBMHistogramBuilder
-+ (id)builderWithPublisher:(id)a3;
-- (_DASBMHistogramBuilder)initWithPublisher:(id)a3 saveSpans:(BOOL)a4;
++ (id)builderWithPublisher:(id)publisher;
+- (_DASBMHistogramBuilder)initWithPublisher:(id)publisher saveSpans:(BOOL)spans;
 - (id)histogram;
-- (void)histogramOnResponseQueue:(id)a3 withCompletion:(id)a4;
+- (void)histogramOnResponseQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation _DASBMHistogramBuilder
@@ -45,7 +45,7 @@
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
   v21 = 0;
-  v9 = [(BPSPublisher *)v3 collect];
+  collect = [(BPSPublisher *)v3 collect];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __35___DASBMHistogramBuilder_histogram__block_invoke_2;
@@ -56,7 +56,7 @@
   v14[2] = __35___DASBMHistogramBuilder_histogram__block_invoke_72;
   v14[3] = &unk_1E7C8F430;
   v14[4] = &v16;
-  v10 = [v9 sinkWithCompletion:v15 receiveInput:v14];
+  v10 = [collect sinkWithCompletion:v15 receiveInput:v14];
 
   v11 = [_DASHistogram alloc];
   v12 = [(_DASHistogram *)v11 initWithEvents:v17[5]];
@@ -65,25 +65,25 @@
   return v12;
 }
 
-+ (id)builderWithPublisher:(id)a3
++ (id)builderWithPublisher:(id)publisher
 {
-  v3 = a3;
-  v4 = [[_DASBMHistogramBuilder alloc] initWithPublisher:v3 saveSpans:0];
+  publisherCopy = publisher;
+  v4 = [[_DASBMHistogramBuilder alloc] initWithPublisher:publisherCopy saveSpans:0];
 
   return v4;
 }
 
-- (_DASBMHistogramBuilder)initWithPublisher:(id)a3 saveSpans:(BOOL)a4
+- (_DASBMHistogramBuilder)initWithPublisher:(id)publisher saveSpans:(BOOL)spans
 {
-  v7 = a3;
+  publisherCopy = publisher;
   v15.receiver = self;
   v15.super_class = _DASBMHistogramBuilder;
   v8 = [(_DASBMHistogramBuilder *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_publisher, a3);
-    v9->_saveSpans = a4;
+    objc_storeStrong(&v8->_publisher, publisher);
+    v9->_saveSpans = spans;
     filter = v9->_filter;
     v9->_filter = 0;
 
@@ -98,17 +98,17 @@
   return v9;
 }
 
-- (void)histogramOnResponseQueue:(id)a3 withCompletion:(id)a4
+- (void)histogramOnResponseQueue:(id)queue withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66___DASBMHistogramBuilder_histogramOnResponseQueue_withCompletion___block_invoke;
   v8[3] = &unk_1E7C8F508;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  dispatch_async(a3, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
 @end

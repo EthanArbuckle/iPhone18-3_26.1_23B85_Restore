@@ -1,20 +1,20 @@
 @interface AKSignatureDescription
-+ (id)stringValueForSignatureDescriptionTag:(int64_t)a3;
-+ (int64_t)signatureDescriptionTagFromStringValue:(id)a3;
++ (id)stringValueForSignatureDescriptionTag:(int64_t)tag;
++ (int64_t)signatureDescriptionTagFromStringValue:(id)value;
 @end
 
 @implementation AKSignatureDescription
 
-+ (id)stringValueForSignatureDescriptionTag:(int64_t)a3
++ (id)stringValueForSignatureDescriptionTag:(int64_t)tag
 {
-  if ((a3 - 1) > 4)
+  if ((tag - 1) > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_278C7B4A8[a3 - 1];
+    v3 = off_278C7B4A8[tag - 1];
     v4 = +[AKController akBundle];
     v5 = [v4 localizedStringForKey:v3 value:&stru_28519E870 table:@"AKSignatureDescription"];
   }
@@ -22,12 +22,12 @@
   return v5;
 }
 
-+ (int64_t)signatureDescriptionTagFromStringValue:(id)a3
++ (int64_t)signatureDescriptionTagFromStringValue:(id)value
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  valueCopy = value;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [valueCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if (v6 && [v6 length])
   {

@@ -1,6 +1,6 @@
 @interface SYOutgoingSyncAllObjectsSession
-- (BOOL)_handleBatchSyncEndResponse:(id)a3 error:(id *)a4;
-- (SYOutgoingSyncAllObjectsSession)initWithService:(id)a3;
+- (BOOL)_handleBatchSyncEndResponse:(id)response error:(id *)error;
+- (SYOutgoingSyncAllObjectsSession)initWithService:(id)service;
 - (double)remainingSessionTime;
 - (unsigned)state;
 - (void)_fetchChanges;
@@ -8,28 +8,28 @@
 - (void)_installTimers;
 - (void)_processNextState;
 - (void)_sendChanges;
-- (void)_sessionCompleteWithError:(id)a3;
+- (void)_sessionCompleteWithError:(id)error;
 - (void)_sessionFailed;
-- (void)_setStateQuietly:(unsigned int)a3;
-- (void)cancelWithError:(id)a3;
-- (void)setState:(unsigned int)a3;
-- (void)start:(id)a3;
+- (void)_setStateQuietly:(unsigned int)quietly;
+- (void)cancelWithError:(id)error;
+- (void)setState:(unsigned int)state;
+- (void)start:(id)start;
 @end
 
 @implementation SYOutgoingSyncAllObjectsSession
 
-- (SYOutgoingSyncAllObjectsSession)initWithService:(id)a3
+- (SYOutgoingSyncAllObjectsSession)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v16.receiver = self;
   v16.super_class = SYOutgoingSyncAllObjectsSession;
-  v5 = [(SYSession *)&v16 initWithService:v4];
+  v5 = [(SYSession *)&v16 initWithService:serviceCopy];
   v6 = v5;
   if (v5)
   {
     v5->_state = 0;
-    v7 = [v4 serviceActivity];
-    v8 = _os_activity_create(&dword_1DF835000, "SYSession (v1 Outgoing AllObjects)", v7, OS_ACTIVITY_FLAG_DEFAULT);
+    serviceActivity = [serviceCopy serviceActivity];
+    v8 = _os_activity_create(&dword_1DF835000, "SYSession (v1 Outgoing AllObjects)", serviceActivity, OS_ACTIVITY_FLAG_DEFAULT);
 
     sessionActivity = v6->_sessionActivity;
     v6->_sessionActivity = v8;
@@ -39,8 +39,8 @@
     v6->_changesToSend = v10;
 
     v12 = objc_opt_new();
-    v13 = [v12 UUIDString];
-    [(SYSession *)v6 setIdentifier:v13];
+    uUIDString = [v12 UUIDString];
+    [(SYSession *)v6 setIdentifier:uUIDString];
 
     v14 = v6;
   }
@@ -50,19 +50,19 @@
 
 - (unsigned)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  state = v2->_state;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  objc_sync_exit(selfCopy);
 
   return state;
 }
 
-- (void)setState:(unsigned int)a3
+- (void)setState:(unsigned int)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -76,22 +76,22 @@
     v9 = 138543618;
     v10 = v7;
     v11 = 1024;
-    v12 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting state to %{companionsync:SYSessionState}d", &v9, 0x12u);
   }
 
-  v4->_state = a3;
-  dispatch_source_merge_data(v4->_stateUpdateSource, 1uLL);
-  objc_sync_exit(v4);
+  selfCopy->_state = state;
+  dispatch_source_merge_data(selfCopy->_stateUpdateSource, 1uLL);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setStateQuietly:(unsigned int)a3
+- (void)_setStateQuietly:(unsigned int)quietly
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -105,12 +105,12 @@
     v9 = 138543618;
     v10 = v7;
     v11 = 1024;
-    v12 = a3;
+    quietlyCopy = quietly;
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting state (quietly) to %{companionsync:SYSessionState}d", &v9, 0x12u);
   }
 
-  v4->_state = a3;
-  objc_sync_exit(v4);
+  selfCopy->_state = quietly;
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -134,8 +134,8 @@
 
 - (void)_fetchChanges
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -153,7 +153,7 @@
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v5 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__SYOutgoingSyncAllObjectsSession__fetchChanges__block_invoke_67;
@@ -163,7 +163,7 @@
   v6 = v4;
   v9 = v6;
   v11 = &v16;
-  dispatch_sync(v5, block);
+  dispatch_sync(targetQueue, block);
 
   v7 = *(v13 + 6);
   if (v7 == 2)
@@ -291,31 +291,31 @@ void __48__SYOutgoingSyncAllObjectsSession__fetchChanges__block_invoke_67(uint64
 
 - (void)_sendChanges
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = objc_opt_new();
-  v5 = [(SYSession *)self service];
-  v6 = [v5 _newMessageHeader];
-  [v4 setHeader:v6];
+  service = [(SYSession *)self service];
+  _newMessageHeader = [service _newMessageHeader];
+  [v4 setHeader:_newMessageHeader];
 
-  v7 = [(SYSession *)self identifier];
-  [v4 setSyncID:v7];
+  identifier = [(SYSession *)self identifier];
+  [v4 setSyncID:identifier];
 
   v8 = [(NSMutableArray *)self->_changesToSend copy];
   [v4 setAllObjects:v8];
 
   [(SYOutgoingSyncAllObjectsSession *)self setState:8];
-  v9 = [v5 syncEngine];
-  v10 = [(SYSession *)self priority];
+  syncEngine = [service syncEngine];
+  priority = [(SYSession *)self priority];
   v11 = [(SYSession *)self combinedEngineOptions:0];
-  v12 = [(SYSession *)self wrappedUserContext];
+  wrappedUserContext = [(SYSession *)self wrappedUserContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__SYOutgoingSyncAllObjectsSession__sendChanges__block_invoke;
   v13[3] = &unk_1E86CA320;
   v13[4] = self;
-  [v9 enqueueSyncRequest:v4 withMessageID:2 priority:v10 options:v11 userContext:v12 callback:v13];
+  [syncEngine enqueueSyncRequest:v4 withMessageID:2 priority:priority options:v11 userContext:wrappedUserContext callback:v13];
 }
 
 void __47__SYOutgoingSyncAllObjectsSession__sendChanges__block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -346,11 +346,11 @@ LABEL_5:
 
 - (void)_sessionFailed
 {
-  v3 = [(SYSession *)self error];
-  v4 = v3;
+  error = [(SYSession *)self error];
+  v4 = error;
   if (self->_cancelled)
   {
-    v6 = v3;
+    v6 = error;
     v5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:-128 userInfo:0];
 
     v4 = v5;
@@ -360,11 +360,11 @@ LABEL_5:
   [(SYOutgoingSyncAllObjectsSession *)self _sessionCompleteWithError:v4];
 }
 
-- (void)_sessionCompleteWithError:(id)a3
+- (void)_sessionCompleteWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   sessionTimer = self->_sessionTimer;
   if (sessionTimer)
@@ -374,15 +374,15 @@ LABEL_5:
     self->_sessionTimer = 0;
   }
 
-  v8 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __61__SYOutgoingSyncAllObjectsSession__sessionCompleteWithError___block_invoke;
   v14 = &unk_1E86C9E90;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
-  dispatch_sync(v8, &v11);
+  selfCopy = self;
+  v16 = errorCopy;
+  v9 = errorCopy;
+  dispatch_sync(targetQueue, &v11);
 
   v10 = [(SYSession *)self service:v11];
   [v10 sessionDidEnd:self withError:v9];
@@ -411,16 +411,16 @@ void __61__SYOutgoingSyncAllObjectsSession__sessionCompleteWithError___block_inv
 - (void)_processNextState
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &v10);
-  v4 = [(SYOutgoingSyncAllObjectsSession *)self state];
-  if (v4 > 4)
+  state = [(SYOutgoingSyncAllObjectsSession *)self state];
+  if (state > 4)
   {
-    if (v4 == 5)
+    if (state == 5)
     {
       if (_sync_log_facilities_pred != -1)
       {
@@ -432,16 +432,16 @@ void __61__SYOutgoingSyncAllObjectsSession__sessionCompleteWithError___block_inv
       {
         v6 = objc_opt_class();
         v7 = NSStringFromClass(v6);
-        v8 = [(SYSession *)self error];
+        error = [(SYSession *)self error];
         *buf = 138543618;
         v12 = v7;
         v13 = 2112;
-        v14 = v8;
+        v14 = error;
         _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ entered error state. Error = %@", buf, 0x16u);
       }
     }
 
-    else if (v4 != 9)
+    else if (state != 9)
     {
       goto LABEL_15;
     }
@@ -449,12 +449,12 @@ void __61__SYOutgoingSyncAllObjectsSession__sessionCompleteWithError___block_inv
     [(SYOutgoingSyncAllObjectsSession *)self _sessionCompleteWithError:0];
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
     [(SYOutgoingSyncAllObjectsSession *)self _fetchChanges];
   }
 
-  else if (v4 == 3)
+  else if (state == 3)
   {
     self->_cancelled = 1;
     [(SYOutgoingSyncAllObjectsSession *)self _sessionFailed];
@@ -478,8 +478,8 @@ LABEL_15:
   [(SYSession *)self fullSessionTimeout:v11];
   if (v4 != 0.0)
   {
-    v5 = [(SYSession *)self queue];
-    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v5);
+    queue = [(SYSession *)self queue];
+    v6 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queue);
     sessionTimer = self->_sessionTimer;
     self->_sessionTimer = v6;
 
@@ -530,8 +530,8 @@ void __49__SYOutgoingSyncAllObjectsSession__installTimers__block_invoke(uint64_t
 
 - (void)_installStateListener
 {
-  v3 = [(SYSession *)self queue];
-  v4 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, v3);
+  queue = [(SYSession *)self queue];
+  v4 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, queue);
   stateUpdateSource = self->_stateUpdateSource;
   self->_stateUpdateSource = v4;
 
@@ -559,22 +559,22 @@ void __56__SYOutgoingSyncAllObjectsSession__installStateListener__block_invoke(u
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SYSession *)self delegate];
+  startCopy = start;
+  delegate = [(SYSession *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(SYSession *)self serializer];
+    serializer = [(SYSession *)self serializer];
     if (objc_opt_respondsToSelector())
     {
     }
 
     else
     {
-      v12 = [(SYSession *)self serializer];
+      serializer2 = [(SYSession *)self serializer];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0)
@@ -593,7 +593,7 @@ void __56__SYOutgoingSyncAllObjectsSession__installStateListener__block_invoke(u
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
         v25 = [v19 initWithSYError:2020 userInfo:v24];
 
-        v26 = [(SYSession *)self queue];
+        queue = [(SYSession *)self queue];
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __41__SYOutgoingSyncAllObjectsSession_start___block_invoke_2;
@@ -601,9 +601,9 @@ void __56__SYOutgoingSyncAllObjectsSession__installStateListener__block_invoke(u
         v31[4] = self;
         v32 = v25;
         v27 = v25;
-        dispatch_async(v26, v31);
+        dispatch_async(queue, v31);
 
-        v4[2](v4, 0, v27);
+        startCopy[2](startCopy, 0, v27);
         goto LABEL_12;
       }
     }
@@ -621,21 +621,21 @@ void __56__SYOutgoingSyncAllObjectsSession__installStateListener__block_invoke(u
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [(SYSession *)self identifier];
+      identifier = [(SYSession *)self identifier];
       *buf = 138543618;
       v36 = v16;
       v37 = 2114;
-      v38 = v17;
+      v38 = identifier;
       _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "Starting %{public}@ with identifier %{public}@", buf, 0x16u);
     }
 
-    v18 = [(SYSession *)self queue];
+    queue2 = [(SYSession *)self queue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __41__SYOutgoingSyncAllObjectsSession_start___block_invoke_74;
     v29[3] = &unk_1E86C9FB0;
     v29[4] = self;
-    dispatch_async(v18, v29);
+    dispatch_async(queue2, v29);
 
     os_activity_scope_leave(&state);
   }
@@ -648,7 +648,7 @@ void __56__SYOutgoingSyncAllObjectsSession__installStateListener__block_invoke(u
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
     v9 = [v7 initWithSYError:2001 userInfo:v8];
 
-    v10 = [(SYSession *)self queue];
+    queue3 = [(SYSession *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__SYOutgoingSyncAllObjectsSession_start___block_invoke;
@@ -656,9 +656,9 @@ void __56__SYOutgoingSyncAllObjectsSession__installStateListener__block_invoke(u
     block[4] = self;
     v34 = v9;
     v11 = v9;
-    dispatch_async(v10, block);
+    dispatch_async(queue3, block);
 
-    v4[2](v4, 0, v11);
+    startCopy[2](startCopy, 0, v11);
   }
 
 LABEL_12:
@@ -701,25 +701,25 @@ uint64_t __41__SYOutgoingSyncAllObjectsSession_start___block_invoke_74(uint64_t 
   return [v5 setState:1];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &v8);
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:@"SYErrorDomain"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"SYErrorDomain"])
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 != -128)
+  if (code != -128)
   {
 LABEL_5:
-    [(SYSession *)self setError:v4];
+    [(SYSession *)self setError:errorCopy];
     v7 = 5;
     goto LABEL_6;
   }
@@ -730,24 +730,24 @@ LABEL_6:
   os_activity_scope_leave(&v8);
 }
 
-- (BOOL)_handleBatchSyncEndResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleBatchSyncEndResponse:(id)response error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  responseCopy = response;
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &v16);
-  v7 = [v6 syncID];
-  v8 = [(SYSession *)self identifier];
-  v9 = [v7 isEqualToString:v8];
+  syncID = [responseCopy syncID];
+  identifier = [(SYSession *)self identifier];
+  v9 = [syncID isEqualToString:identifier];
 
   if (v9)
   {
-    if ([v6 hasError])
+    if ([responseCopy hasError])
     {
       v10 = MEMORY[0x1E696ABC0];
-      v11 = [v6 error];
-      v12 = [v10 errorFromSYErrorInfo:v11];
+      error = [responseCopy error];
+      v12 = [v10 errorFromSYErrorInfo:error];
 
       if (_sync_log_facilities_pred != -1)
       {
@@ -772,9 +772,9 @@ LABEL_6:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2006 userInfo:0];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:2006 userInfo:0];
   }
 
   os_activity_scope_leave(&v16);

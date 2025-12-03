@@ -1,6 +1,6 @@
 @interface PGGraphHolidayMetricEvent
-+ (id)celebratedHolidayMetricEventsWithGraphManager:(id)a3;
-- (PGGraphHolidayMetricEvent)initWithHolidayName:(id)a3 numberOfCelebrations:(unint64_t)a4;
++ (id)celebratedHolidayMetricEventsWithGraphManager:(id)manager;
+- (PGGraphHolidayMetricEvent)initWithHolidayName:(id)name numberOfCelebrations:(unint64_t)celebrations;
 - (id)payload;
 @end
 
@@ -22,17 +22,17 @@
   return v4;
 }
 
-- (PGGraphHolidayMetricEvent)initWithHolidayName:(id)a3 numberOfCelebrations:(unint64_t)a4
+- (PGGraphHolidayMetricEvent)initWithHolidayName:(id)name numberOfCelebrations:(unint64_t)celebrations
 {
-  v6 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = PGGraphHolidayMetricEvent;
   v7 = [(PGGraphHolidayMetricEvent *)&v10 init];
   if (v7)
   {
-    if ([(__CFString *)v6 length])
+    if ([(__CFString *)nameCopy length])
     {
-      v8 = v6;
+      v8 = nameCopy;
     }
 
     else
@@ -41,27 +41,27 @@
     }
 
     objc_storeStrong(&v7->_holidayName, v8);
-    v7->_numberOfCelebrations = a4;
+    v7->_numberOfCelebrations = celebrations;
   }
 
   return v7;
 }
 
-+ (id)celebratedHolidayMetricEventsWithGraphManager:(id)a3
++ (id)celebratedHolidayMetricEventsWithGraphManager:(id)manager
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if ([v3 isReady])
+  managerCopy = manager;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([managerCopy isReady])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __75__PGGraphHolidayMetricEvent_celebratedHolidayMetricEventsWithGraphManager___block_invoke;
     v6[3] = &unk_27888A3B8;
-    v7 = v4;
-    [v3 performSynchronousConcurrentGraphReadUsingBlock:v6];
+    v7 = array;
+    [managerCopy performSynchronousConcurrentGraphReadUsingBlock:v6];
   }
 
-  return v4;
+  return array;
 }
 
 void __75__PGGraphHolidayMetricEvent_celebratedHolidayMetricEventsWithGraphManager___block_invoke(uint64_t a1, void *a2)

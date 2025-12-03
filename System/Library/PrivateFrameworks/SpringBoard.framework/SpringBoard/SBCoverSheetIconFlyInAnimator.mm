@@ -1,29 +1,29 @@
 @interface SBCoverSheetIconFlyInAnimator
 - (CGPoint)_effectiveCenterPoint;
-- (CGPoint)_positionForSpreadMultiplier:(double)a3 point:(CGPoint)a4;
-- (CGPoint)_velocityForSpreadMultiplier:(double)a3 spreadMultiplierVelocity:(double)a4 point:(CGPoint)a5;
+- (CGPoint)_positionForSpreadMultiplier:(double)multiplier point:(CGPoint)point;
+- (CGPoint)_velocityForSpreadMultiplier:(double)multiplier spreadMultiplierVelocity:(double)velocity point:(CGPoint)point;
 - (CGRect)_referenceBounds;
-- (SBCoverSheetIconFlyInAnimator)initWithFolderController:(id)a3;
-- (double)_blurRadiusForSpreadValue:(double)a3;
-- (double)_functionWithProgress:(double)a3 distance:(double)a4;
-- (double)_labelAlphaForFraction:(double)a3;
-- (double)_responseForPoint:(CGPoint)a3 center:(CGPoint)a4;
-- (double)_zPositionForPoint:(CGPoint)a3 center:(CGPoint)a4 andFraction:(double)a5;
-- (double)_zPositionForView:(id)a3 center:(CGPoint)a4 andFraction:(double)a5;
+- (SBCoverSheetIconFlyInAnimator)initWithFolderController:(id)controller;
+- (double)_blurRadiusForSpreadValue:(double)value;
+- (double)_functionWithProgress:(double)progress distance:(double)distance;
+- (double)_labelAlphaForFraction:(double)fraction;
+- (double)_responseForPoint:(CGPoint)point center:(CGPoint)center;
+- (double)_zPositionForPoint:(CGPoint)point center:(CGPoint)center andFraction:(double)fraction;
+- (double)_zPositionForView:(id)view center:(CGPoint)center andFraction:(double)fraction;
 - (void)_cleanupAnimation;
 - (void)_createAnimatableProperties;
 - (void)_prepareAnimation;
 - (void)_prepareToAnimateZPositions;
-- (void)_setAnimationFraction:(double)a3 withCenter:(CGPoint)a4;
-- (void)_setZPositionForView:(id)a3 center:(CGPoint)a4 andFraction:(double)a5;
-- (void)_updateDockForFraction:(double)a3;
-- (void)_updateLabelAlphaForPresentationValue:(BOOL)a3;
-- (void)_updateSpreadMultiplierForPresentation:(BOOL)a3;
-- (void)_updateWithSettings:(id)a3;
-- (void)animateZPositionsToFraction:(double)a3 completionGroup:(id)a4 completion:(id)a5;
-- (void)prepareWithVelocity:(double)a3 forFlyIn:(BOOL)a4;
-- (void)setFractionForAlphaFadeOfViews:(id)a3;
-- (void)setIconSpreadFraction:(double)a3;
+- (void)_setAnimationFraction:(double)fraction withCenter:(CGPoint)center;
+- (void)_setZPositionForView:(id)view center:(CGPoint)center andFraction:(double)fraction;
+- (void)_updateDockForFraction:(double)fraction;
+- (void)_updateLabelAlphaForPresentationValue:(BOOL)value;
+- (void)_updateSpreadMultiplierForPresentation:(BOOL)presentation;
+- (void)_updateWithSettings:(id)settings;
+- (void)animateZPositionsToFraction:(double)fraction completionGroup:(id)group completion:(id)completion;
+- (void)prepareWithVelocity:(double)velocity forFlyIn:(BOOL)in;
+- (void)setFractionForAlphaFadeOfViews:(id)views;
+- (void)setIconSpreadFraction:(double)fraction;
 @end
 
 @implementation SBCoverSheetIconFlyInAnimator
@@ -113,13 +113,13 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "icon animator %p - prepare", buf, 0xCu);
   }
 
-  v4 = [(SBCenterIconZoomAnimator *)self folderController];
-  v5 = [v4 pageControl];
-  [(SBCoverSheetIconFlyInAnimator *)self setPageControl:v5];
+  folderController = [(SBCenterIconZoomAnimator *)self folderController];
+  pageControl = [folderController pageControl];
+  [(SBCoverSheetIconFlyInAnimator *)self setPageControl:pageControl];
 }
 
 void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invoke(uint64_t a1)
@@ -134,20 +134,20 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
   [WeakRetained _updateSpreadMultiplierForPresentation:0];
 }
 
-- (SBCoverSheetIconFlyInAnimator)initWithFolderController:(id)a3
+- (SBCoverSheetIconFlyInAnimator)initWithFolderController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = SBCoverSheetIconFlyInAnimator;
-  v3 = [(SBCenterIconZoomAnimator *)&v11 initWithFolderController:a3];
+  v3 = [(SBCenterIconZoomAnimator *)&v11 initWithFolderController:controller];
   if (v3)
   {
-    v4 = [MEMORY[0x277D02C20] rootSettings];
-    v5 = [v4 coverSheetTransitionsSettings];
-    v6 = [v5 flyInSettings];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    coverSheetTransitionsSettings = [rootSettings coverSheetTransitionsSettings];
+    flyInSettings = [coverSheetTransitionsSettings flyInSettings];
 
-    [v6 addKeyObserver:v3];
-    [(SBCoverSheetIconFlyInAnimator *)v3 _updateWithSettings:v6];
+    [flyInSettings addKeyObserver:v3];
+    [(SBCoverSheetIconFlyInAnimator *)v3 _updateWithSettings:flyInSettings];
     [(SBCoverSheetIconFlyInAnimator *)v3 _createAnimatableProperties];
     v7 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
     timingFunction = v3->_timingFunction;
@@ -167,11 +167,11 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
 
 - (CGRect)_referenceBounds
 {
-  v2 = [(SBCenterIconZoomAnimator *)self folderController];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 screen];
-  [v5 bounds];
+  folderController = [(SBCenterIconZoomAnimator *)self folderController];
+  view = [folderController view];
+  window = [view window];
+  screen = [window screen];
+  [screen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -188,9 +188,9 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
   return result;
 }
 
-- (void)prepareWithVelocity:(double)a3 forFlyIn:(BOOL)a4
+- (void)prepareWithVelocity:(double)velocity forFlyIn:(BOOL)in
 {
-  v4 = a4;
+  inCopy = in;
   v37[1] = *MEMORY[0x277D85DE8];
   v7 = SBLogDashBoardTelemetrySignposts();
   if (os_signpost_enabled(v7))
@@ -215,7 +215,7 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
 
   animationType = self->_animationType;
   v10 = 1;
-  if (!v4)
+  if (!inCopy)
   {
     v10 = 2;
   }
@@ -226,8 +226,8 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
   }
 
   self->_animationType = v10;
-  self->_velocity = a3;
-  if (v4)
+  self->_velocity = velocity;
+  if (inCopy)
   {
     v11 = 2.0;
   }
@@ -237,8 +237,8 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
     v11 = 4.0;
   }
 
-  v12 = [(SBCoverSheetIconFlyInAnimator *)self spreadMultiplierAnimatableProperty];
-  [v12 setVelocity:v11 * self->_velocity];
+  spreadMultiplierAnimatableProperty = [(SBCoverSheetIconFlyInAnimator *)self spreadMultiplierAnimatableProperty];
+  [spreadMultiplierAnimatableProperty setVelocity:v11 * self->_velocity];
 
   v13 = CSFeatureEnabled();
   if (!animationType && v13)
@@ -250,16 +250,16 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
     [v15 setValue:v16 forKey:*MEMORY[0x277CDA4F0]];
 
     [v15 setValue:@"low" forKey:*MEMORY[0x277CDA4E8]];
-    v17 = [(SBIconZoomAnimator *)self iconListView];
-    v18 = [v17 superview];
-    v19 = [v18 layer];
+    iconListView = [(SBIconZoomAnimator *)self iconListView];
+    superview = [iconListView superview];
+    layer = [superview layer];
 
     v37[0] = v15;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
-    [v19 setFilters:v20];
+    [layer setFilters:v20];
 
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [v19 setBackgroundColor:{objc_msgSend(v21, "CGColor")}];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [layer setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
     v22 = __sb__runningInSpringBoard();
     v23 = v22;
@@ -273,8 +273,8 @@ void __60__SBCoverSheetIconFlyInAnimator__createAnimatableProperties__block_invo
 
     else
     {
-      v21 = [MEMORY[0x277D75418] currentDevice];
-      if ([v21 userInterfaceIdiom] != 1)
+      clearColor = [MEMORY[0x277D75418] currentDevice];
+      if ([clearColor userInterfaceIdiom] != 1)
       {
 LABEL_28:
 
@@ -283,7 +283,7 @@ LABEL_29:
       }
     }
 
-    v24 = [(SBCenterIconZoomAnimator *)self folderController];
+    folderController = [(SBCenterIconZoomAnimator *)self folderController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -296,7 +296,7 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    if (v4)
+    if (inCopy)
     {
       v26 = 0.0;
     }
@@ -306,11 +306,11 @@ LABEL_29:
       v26 = 1.0;
     }
 
-    v27 = [(SBIconZoomAnimator *)self iconListView];
-    v28 = [v27 _sbWindowScene];
-    v21 = [v28 floatingDockController];
+    iconListView2 = [(SBIconZoomAnimator *)self iconListView];
+    _sbWindowScene = [iconListView2 _sbWindowScene];
+    clearColor = [_sbWindowScene floatingDockController];
 
-    v29 = [[SBFloatingDockBehaviorAssertion alloc] initWithFloatingDockController:v21 visibleProgress:0 animated:0 gesturePossible:11 atLevel:@"iconFlyInOutAnimator" reason:0 withCompletion:v26];
+    v29 = [[SBFloatingDockBehaviorAssertion alloc] initWithFloatingDockController:clearColor visibleProgress:0 animated:0 gesturePossible:11 atLevel:@"iconFlyInOutAnimator" reason:0 withCompletion:v26];
     floatingDockBehaviorHidingAssertion = self->_floatingDockBehaviorHidingAssertion;
     self->_floatingDockBehaviorHidingAssertion = v29;
 
@@ -323,11 +323,11 @@ LABEL_30:
     [(SBCoverSheetIconFlyInAnimator *)self _prepareToAnimateZPositions];
   }
 
-  v31 = [(SBCenterIconZoomAnimator *)self folderController];
-  v32 = [v31 view];
-  v33 = [v32 traitOverrides];
+  folderController2 = [(SBCenterIconZoomAnimator *)self folderController];
+  view = [folderController2 view];
+  traitOverrides = [view traitOverrides];
   v34 = objc_opt_self();
-  [v33 setObject:MEMORY[0x277CBEC38] forTrait:v34];
+  [traitOverrides setObject:MEMORY[0x277CBEC38] forTrait:v34];
 
   v35 = SBLogDashBoardTelemetrySignposts();
   if (os_signpost_enabled(v35))
@@ -339,22 +339,22 @@ LABEL_30:
   kdebug_trace();
 }
 
-- (void)setIconSpreadFraction:(double)a3
+- (void)setIconSpreadFraction:(double)fraction
 {
-  v4 = [(SBCoverSheetIconFlyInAnimator *)self spreadMultiplierAnimatableProperty];
-  [v4 setValue:a3];
+  spreadMultiplierAnimatableProperty = [(SBCoverSheetIconFlyInAnimator *)self spreadMultiplierAnimatableProperty];
+  [spreadMultiplierAnimatableProperty setValue:fraction];
 }
 
-- (void)setFractionForAlphaFadeOfViews:(id)a3
+- (void)setFractionForAlphaFadeOfViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   animationType = self->_animationType;
   v6 = MEMORY[0x277D75D18];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__SBCoverSheetIconFlyInAnimator_setFractionForAlphaFadeOfViews___block_invoke;
   v16[3] = &unk_2783A9F58;
-  v7 = v4;
+  v7 = viewsCopy;
   v17 = v7;
   v18 = animationType == 1;
   if (animationType == 1)
@@ -465,17 +465,17 @@ void __64__SBCoverSheetIconFlyInAnimator_setFractionForAlphaFadeOfViews___block_
   return result;
 }
 
-- (void)_setAnimationFraction:(double)a3 withCenter:(CGPoint)a4
+- (void)_setAnimationFraction:(double)fraction withCenter:(CGPoint)center
 {
   v13 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = SBCoverSheetIconFlyInAnimator;
-  [(SBCenterIconZoomAnimator *)&v10 _setAnimationFraction:a3 withCenter:a4.x, a4.y];
+  [(SBCenterIconZoomAnimator *)&v10 _setAnimationFraction:fraction withCenter:center.x, center.y];
   v6 = SBLogCoverSheet();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = a3;
+    fractionCopy = fraction;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "set icon animator fraction: %.2f", buf, 0xCu);
   }
 
@@ -484,7 +484,7 @@ void __64__SBCoverSheetIconFlyInAnimator_setFractionForAlphaFadeOfViews___block_
   v9[2] = __66__SBCoverSheetIconFlyInAnimator__setAnimationFraction_withCenter___block_invoke;
   v9[3] = &unk_2783A8BC8;
   v9[4] = self;
-  *&v9[5] = a3;
+  *&v9[5] = fraction;
   LODWORD(v7) = *(MEMORY[0x277CD9DD0] + 4);
   LODWORD(v8) = *(MEMORY[0x277CD9DD0] + 8);
   [MEMORY[0x277D75D18] sb_modifyAnimationsWithPreferredFrameRateRange:0 updateReason:v9 animations:{COERCE_DOUBLE(*MEMORY[0x277CD9DD0]), v7, v8}];
@@ -496,12 +496,12 @@ void __66__SBCoverSheetIconFlyInAnimator__setAnimationFraction_withCenter___bloc
   [v2 setValue:*(a1 + 40)];
 }
 
-- (void)_updateDockForFraction:(double)a3
+- (void)_updateDockForFraction:(double)fraction
 {
   if (!__sb__runningInSpringBoard())
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    if ([v5 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v6 = CSFeatureEnabled();
 
@@ -518,9 +518,9 @@ void __66__SBCoverSheetIconFlyInAnimator__setAnimationFraction_withCenter___bloc
 LABEL_9:
     v8.receiver = self;
     v8.super_class = SBCoverSheetIconFlyInAnimator;
-    [(SBCenterIconZoomAnimator *)&v8 _updateDockForFraction:a3 * 4.0];
-    v7 = [(SBCenterIconZoomAnimator *)self dockOffscreenFractionModifier];
-    [v7 layoutIfNeededForDockOffscreenFractionChanged];
+    [(SBCenterIconZoomAnimator *)&v8 _updateDockForFraction:fraction * 4.0];
+    dockOffscreenFractionModifier = [(SBCenterIconZoomAnimator *)self dockOffscreenFractionModifier];
+    [dockOffscreenFractionModifier layoutIfNeededForDockOffscreenFractionChanged];
 
     return;
   }
@@ -531,52 +531,52 @@ LABEL_9:
   }
 }
 
-- (void)_setZPositionForView:(id)a3 center:(CGPoint)a4 andFraction:(double)a5
+- (void)_setZPositionForView:(id)view center:(CGPoint)center andFraction:(double)fraction
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
   if ((CSFeatureEnabled() & 1) == 0)
   {
     v10.receiver = self;
     v10.super_class = SBCoverSheetIconFlyInAnimator;
-    [(SBCenterIconZoomAnimator *)&v10 _setZPositionForView:v9 center:x andFraction:y, a5];
+    [(SBCenterIconZoomAnimator *)&v10 _setZPositionForView:viewCopy center:x andFraction:y, fraction];
   }
 }
 
-- (double)_zPositionForView:(id)a3 center:(CGPoint)a4 andFraction:(double)a5
+- (double)_zPositionForView:(id)view center:(CGPoint)center andFraction:(double)fraction
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  viewCopy = view;
   if (CSFeatureEnabled())
   {
     v25.receiver = self;
     v25.super_class = SBCoverSheetIconFlyInAnimator;
-    [(SBCenterIconZoomAnimator *)&v25 _zPositionForView:v9 center:x andFraction:y, a5];
+    [(SBCenterIconZoomAnimator *)&v25 _zPositionForView:viewCopy center:x andFraction:y, fraction];
     v11 = v10;
   }
 
   else
   {
-    v12 = [(SBIconZoomAnimator *)self iconListView];
-    [v9 center];
+    iconListView = [(SBIconZoomAnimator *)self iconListView];
+    [viewCopy center];
     v14 = v13;
     v16 = v15;
-    v17 = [v9 superview];
-    [v12 convertPoint:v17 fromView:{v14, v16}];
-    [v12 fractionalCoordinateAtPoint:?];
+    superview = [viewCopy superview];
+    [iconListView convertPoint:superview fromView:{v14, v16}];
+    [iconListView fractionalCoordinateAtPoint:?];
     v19 = v18;
     v21 = v20;
 
-    [(SBCoverSheetIconFlyInAnimator *)self _zPositionForPoint:v19 center:v21 andFraction:x, y, a5];
+    [(SBCoverSheetIconFlyInAnimator *)self _zPositionForPoint:v19 center:v21 andFraction:x, y, fraction];
     v11 = v22;
     v23 = SBLogCoverSheet();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v27 = v9;
+      v27 = viewCopy;
       v28 = 2048;
       v29 = v19;
       v30 = 2048;
@@ -590,13 +590,13 @@ LABEL_9:
   return v11;
 }
 
-- (double)_zPositionForPoint:(CGPoint)a3 center:(CGPoint)a4 andFraction:(double)a5
+- (double)_zPositionForPoint:(CGPoint)point center:(CGPoint)center andFraction:(double)fraction
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = [(SBIconZoomAnimator *)self iconListView];
+  y = center.y;
+  x = center.x;
+  v8 = point.y;
+  v9 = point.x;
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
   if (x == *&SBCoverSheetIconFlyInDefaultCenter && y == unk_27CF03CB0)
   {
     [(SBCenterIconZoomAnimator *)self centerCol];
@@ -606,13 +606,13 @@ LABEL_9:
   }
 
   v15 = sqrt((v8 - y) * (v8 - y) + (v9 - x) * (v9 - x));
-  v16 = [v11 iconRowsForCurrentOrientation];
-  v17 = v16 * v16;
-  v18 = [v11 iconColumnsForCurrentOrientation];
-  [(SBCoverSheetIconFlyInAnimator *)self _functionWithProgress:1.0 distance:sqrt(v17 + v18 * v18)];
+  iconRowsForCurrentOrientation = [iconListView iconRowsForCurrentOrientation];
+  v17 = iconRowsForCurrentOrientation * iconRowsForCurrentOrientation;
+  iconColumnsForCurrentOrientation = [iconListView iconColumnsForCurrentOrientation];
+  [(SBCoverSheetIconFlyInAnimator *)self _functionWithProgress:1.0 distance:sqrt(v17 + iconColumnsForCurrentOrientation * iconColumnsForCurrentOrientation)];
   v20 = v19;
   effectMultiplier = self->_effectMultiplier;
-  [(SBCoverSheetIconFlyInAnimator *)self _functionWithProgress:a5 distance:v15];
+  [(SBCoverSheetIconFlyInAnimator *)self _functionWithProgress:fraction distance:v15];
   v23 = effectMultiplier * v22 / v20;
 
   return v23;
@@ -674,10 +674,10 @@ void __60__SBCoverSheetIconFlyInAnimator__prepareToAnimateZPositions__block_invo
   }
 }
 
-- (void)animateZPositionsToFraction:(double)a3 completionGroup:(id)a4 completion:(id)a5
+- (void)animateZPositionsToFraction:(double)fraction completionGroup:(id)group completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  groupCopy = group;
+  completionCopy = completion;
   if (self->_animationType == 1)
   {
     v9 = 0.0;
@@ -688,7 +688,7 @@ void __60__SBCoverSheetIconFlyInAnimator__prepareToAnimateZPositions__block_invo
     v9 = 10000.0;
   }
 
-  v10 = [(SBIconZoomAnimator *)self iconListView];
+  iconListView = [(SBIconZoomAnimator *)self iconListView];
   [(SBCoverSheetIconFlyInAnimator *)self _effectiveCenterPoint];
   v12 = v11;
   v14 = v13;
@@ -697,16 +697,16 @@ void __60__SBCoverSheetIconFlyInAnimator__prepareToAnimateZPositions__block_invo
   v26[2] = 0x3032000000;
   v26[3] = __Block_byref_object_copy__56;
   v26[4] = __Block_byref_object_dispose__56;
-  v15 = v7;
+  v15 = groupCopy;
   v27 = v15;
   v16 = fmin((self->_velocity + -3.0) * -0.22 / 7.0 + 0.82, 0.82);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__SBCoverSheetIconFlyInAnimator_animateZPositionsToFraction_completionGroup_completion___block_invoke;
   v18[3] = &unk_2783B5DE8;
-  v17 = v10;
+  v17 = iconListView;
   v19 = v17;
-  v20 = self;
+  selfCopy = self;
   v22 = v12;
   v23 = v14;
   v21 = v26;
@@ -761,7 +761,7 @@ void __88__SBCoverSheetIconFlyInAnimator_animateZPositionsToFraction_completionG
   [v2 setZPosition:*(a1 + 40)];
 }
 
-- (double)_responseForPoint:(CGPoint)a3 center:(CGPoint)a4
+- (double)_responseForPoint:(CGPoint)point center:(CGPoint)center
 {
   animationType = self->_animationType;
   flyZResponse = self->_flyZResponse;
@@ -775,8 +775,8 @@ void __88__SBCoverSheetIconFlyInAnimator_animateZPositionsToFraction_completionG
 
   else
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v9 = dbl_21F8A6B00[[v10 userInterfaceIdiom] == 1];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v9 = dbl_21F8A6B00[[currentDevice userInterfaceIdiom] == 1];
   }
 
   v11 = 0.0;
@@ -800,8 +800,8 @@ void __88__SBCoverSheetIconFlyInAnimator_animateZPositionsToFraction_completionG
 
 - (void)_cleanupAnimation
 {
-  v1 = [a1 icons];
-  [v1 count];
+  icons = [self icons];
+  [icons count];
   OUTLINED_FUNCTION_7(&dword_21ED4E000, v2, v3, "icon scroll view layer opacity is still == 0 after cleanup, iconCount: %lu", v4, v5, v6, v7, 0);
 }
 
@@ -813,15 +813,15 @@ void __50__SBCoverSheetIconFlyInAnimator__cleanupAnimation__block_invoke(uint64_
   [v3 setOpacity:v2];
 }
 
-- (void)_updateSpreadMultiplierForPresentation:(BOOL)a3
+- (void)_updateSpreadMultiplierForPresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   v42 = *MEMORY[0x277D85DE8];
   if ([(SBCenterIconZoomAnimator *)self animatingIcons])
   {
-    v5 = 320;
+    currentDevice = 320;
     spreadMultiplierAnimatableProperty = self->_spreadMultiplierAnimatableProperty;
-    if (v3)
+    if (presentationCopy)
     {
       [(UIViewFloatAnimatableProperty *)spreadMultiplierAnimatableProperty presentationValue];
       v8 = v7;
@@ -849,14 +849,14 @@ void __50__SBCoverSheetIconFlyInAnimator__cleanupAnimation__block_invoke(uint64_
 
     else
     {
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      if ([v5 userInterfaceIdiom] != 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] != 1)
       {
         goto LABEL_15;
       }
     }
 
-    if (v3 && !(animationType == 1 ? v8 <= 0.9 : v8 >= 0.95))
+    if (presentationCopy && !(animationType == 1 ? v8 <= 0.9 : v8 >= 0.95))
     {
       v32 = CSFeatureEnabled();
       v33 = v32;
@@ -892,22 +892,22 @@ void __50__SBCoverSheetIconFlyInAnimator__cleanupAnimation__block_invoke(uint64_
       dispatch_async(MEMORY[0x277D85CD0], block);
 LABEL_16:
       v16 = v8 * -0.7 + 1.7;
-      v17 = [(SBIconZoomAnimator *)self iconListView];
-      v18 = [v17 superview];
-      v19 = [v18 superview];
+      iconListView = [(SBIconZoomAnimator *)self iconListView];
+      superview = [iconListView superview];
+      v18Superview = [superview superview];
 
       [(SBCoverSheetIconFlyInAnimator *)self _blurRadiusForSpreadValue:v8];
       v21 = v20;
-      if (v3)
+      if (presentationCopy)
       {
         v22 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
-        [v19 _setPresentationValue:v22 forKey:@"filters.gaussianBlur.inputRadius"];
+        [v18Superview _setPresentationValue:v22 forKey:@"filters.gaussianBlur.inputRadius"];
 
         if (animationType == 1)
         {
           if (self->_isReversing)
           {
-            [v19 _setPresentationValue:&unk_28336F320 forKey:@"opacity"];
+            [v18Superview _setPresentationValue:&unk_28336F320 forKey:@"opacity"];
           }
 
           goto LABEL_31;
@@ -915,14 +915,14 @@ LABEL_16:
 
         [(SBCoverSheetIconFlyInAnimator *)self _iconViewAlphaForSpreadValue:v8];
         v27 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-        [v19 _setPresentationValue:v27 forKey:@"opacity"];
+        [v18Superview _setPresentationValue:v27 forKey:@"opacity"];
       }
 
       else
       {
-        v23 = [v19 layer];
+        layer = [v18Superview layer];
         v24 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
-        [v23 setValue:v24 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+        [layer setValue:v24 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
         if (animationType == 1)
         {
@@ -936,7 +936,7 @@ LABEL_31:
             v35[4] = self;
             *&v35[5] = v16;
             *&v35[6] = v10;
-            v36 = v3;
+            v36 = presentationCopy;
             [(SBIconZoomAnimator *)self enumerateIconsAndIconViewsWithHandler:v35];
 
             return;
@@ -946,12 +946,12 @@ LABEL_31:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134217984;
-            v39 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_21ED4E000, v25, OS_LOG_TYPE_DEFAULT, "icon animator %p setting icon scroll view alpha 1.0 (reversal)", buf, 0xCu);
           }
 
-          v26 = [v19 layer];
-          v27 = v26;
+          layer2 = [v18Superview layer];
+          v27 = layer2;
           LODWORD(v28) = 1.0;
         }
 
@@ -963,18 +963,18 @@ LABEL_31:
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218240;
-            v39 = self;
+            selfCopy2 = self;
             v40 = 2048;
             v41 = v30;
             _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_DEFAULT, "icon animator %p setting folder view alpha %f", buf, 0x16u);
           }
 
-          v26 = [v19 layer];
-          v27 = v26;
+          layer2 = [v18Superview layer];
+          v27 = layer2;
           *&v28 = v30;
         }
 
-        [v26 setOpacity:v28];
+        [layer2 setOpacity:v28];
       }
 
       goto LABEL_31;
@@ -1036,7 +1036,7 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
   }
 }
 
-- (double)_blurRadiusForSpreadValue:(double)a3
+- (double)_blurRadiusForSpreadValue:(double)value
 {
   v3 = 10.0;
   if (self->_animationType == 1)
@@ -1044,36 +1044,36 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
     v3 = 6.0;
   }
 
-  return v3 + (0.0 - v3) * a3;
+  return v3 + (0.0 - v3) * value;
 }
 
-- (CGPoint)_positionForSpreadMultiplier:(double)a3 point:(CGPoint)a4
+- (CGPoint)_positionForSpreadMultiplier:(double)multiplier point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   [(SBCoverSheetIconFlyInAnimator *)self _effectiveCenterPoint];
-  v8 = v7 + (x - v7) * a3;
-  v10 = v9 + (y - v9) * a3;
+  v8 = v7 + (x - v7) * multiplier;
+  v10 = v9 + (y - v9) * multiplier;
   result.y = v10;
   result.x = v8;
   return result;
 }
 
-- (CGPoint)_velocityForSpreadMultiplier:(double)a3 spreadMultiplierVelocity:(double)a4 point:(CGPoint)a5
+- (CGPoint)_velocityForSpreadMultiplier:(double)multiplier spreadMultiplierVelocity:(double)velocity point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   [(SBCoverSheetIconFlyInAnimator *)self _effectiveCenterPoint];
-  v10 = (x - v8) * a4;
-  v11 = (y - v9) * a4;
+  v10 = (x - v8) * velocity;
+  v11 = (y - v9) * velocity;
   result.y = v11;
   result.x = v10;
   return result;
 }
 
-- (void)_updateLabelAlphaForPresentationValue:(BOOL)a3
+- (void)_updateLabelAlphaForPresentationValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v33 = *MEMORY[0x277D85DE8];
   if ((CSFeatureEnabled() & 1) == 0)
   {
@@ -1091,11 +1091,11 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
       return;
     }
 
-    v6 = [(SBCoverSheetIconFlyInAnimator *)self labelAlphaDrivingProgressAnimatableProperty];
-    v7 = v6;
-    if (v3)
+    labelAlphaDrivingProgressAnimatableProperty = [(SBCoverSheetIconFlyInAnimator *)self labelAlphaDrivingProgressAnimatableProperty];
+    v7 = labelAlphaDrivingProgressAnimatableProperty;
+    if (valueCopy)
     {
-      [v6 presentationValue];
+      [labelAlphaDrivingProgressAnimatableProperty presentationValue];
       v9 = v8;
 
       [(SBCoverSheetIconFlyInAnimator *)self _labelAlphaForFraction:v9];
@@ -1104,7 +1104,7 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218496;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2048;
         v30 = v9;
         v31 = 2048;
@@ -1118,14 +1118,14 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
       v26[3] = &__block_descriptor_40_e34_v28__0__SBIcon_8__SBIconView_16B24l;
       *&v26[4] = v11;
       [(SBIconZoomAnimator *)self enumerateIconsAndIconViewsWithHandler:v26];
-      v13 = [(SBCoverSheetIconFlyInAnimator *)self pageControl];
-      v14 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-      [v13 _setPresentationValue:v14 forKey:@"opacity"];
+      pageControl = [(SBCoverSheetIconFlyInAnimator *)self pageControl];
+      pageControl2 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
+      [pageControl _setPresentationValue:pageControl2 forKey:@"opacity"];
     }
 
     else
     {
-      [v6 value];
+      [labelAlphaDrivingProgressAnimatableProperty value];
       v16 = v15;
 
       [(SBCoverSheetIconFlyInAnimator *)self _labelAlphaForFraction:v16];
@@ -1134,7 +1134,7 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 134218496;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2048;
         v30 = v16;
         v31 = 2048;
@@ -1148,14 +1148,14 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
       v25[3] = &__block_descriptor_40_e34_v28__0__SBIcon_8__SBIconView_16B24l;
       *&v25[4] = v18;
       [(SBIconZoomAnimator *)self enumerateIconsAndIconViewsWithHandler:v25];
-      v20 = [(SBCenterIconZoomAnimator *)self folderController];
+      folderController = [(SBCenterIconZoomAnimator *)self folderController];
       v21 = objc_opt_class();
-      v13 = v20;
+      pageControl = folderController;
       if (v21)
       {
         if (objc_opt_isKindOfClass())
         {
-          v22 = v13;
+          v22 = pageControl;
         }
 
         else
@@ -1171,14 +1171,14 @@ void __72__SBCoverSheetIconFlyInAnimator__updateSpreadMultiplierForPresentation_
 
       v23 = v22;
 
-      v24 = [v23 isPageManagementUIVisible];
-      if (v24)
+      isPageManagementUIVisible = [v23 isPageManagementUIVisible];
+      if (isPageManagementUIVisible)
       {
         goto LABEL_21;
       }
 
-      v14 = [(SBCoverSheetIconFlyInAnimator *)self pageControl];
-      [v14 setAlpha:v18];
+      pageControl2 = [(SBCoverSheetIconFlyInAnimator *)self pageControl];
+      [pageControl2 setAlpha:v18];
     }
 
 LABEL_21:
@@ -1215,7 +1215,7 @@ void __71__SBCoverSheetIconFlyInAnimator__updateLabelAlphaForPresentationValue__
   }
 }
 
-- (double)_labelAlphaForFraction:(double)a3
+- (double)_labelAlphaForFraction:(double)fraction
 {
   BSIntervalSubIntervalValueForValue();
   *&v4 = v4;
@@ -1223,28 +1223,28 @@ void __71__SBCoverSheetIconFlyInAnimator__updateLabelAlphaForPresentationValue__
   return 1.0 - v5;
 }
 
-- (void)_updateWithSettings:(id)a3
+- (void)_updateWithSettings:(id)settings
 {
-  v4 = a3;
-  [v4 baselineDistance];
+  settingsCopy = settings;
+  [settingsCopy baselineDistance];
   self->_baselineDistance = v5;
-  [v4 effectMultiplier];
+  [settingsCopy effectMultiplier];
   self->_effectMultiplier = v6;
-  [v4 distanceExponent];
+  [settingsCopy distanceExponent];
   self->_distanceExponent = v7;
-  [v4 iconFlyZResponse];
+  [settingsCopy iconFlyZResponse];
   self->_flyZResponse = v8;
-  [v4 iconFlyZCurveFactor];
+  [settingsCopy iconFlyZCurveFactor];
   v10 = v9;
 
   self->_flyZCurveFactor = v10;
 }
 
-- (double)_functionWithProgress:(double)a3 distance:(double)a4
+- (double)_functionWithProgress:(double)progress distance:(double)distance
 {
-  v6 = exp(a3) + -1.0;
+  v6 = exp(progress) + -1.0;
   baselineDistance = self->_baselineDistance;
-  return v6 * (baselineDistance + pow(a4, self->_distanceExponent));
+  return v6 * (baselineDistance + pow(distance, self->_distanceExponent));
 }
 
 @end

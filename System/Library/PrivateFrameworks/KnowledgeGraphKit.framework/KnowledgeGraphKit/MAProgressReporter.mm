@@ -1,15 +1,15 @@
 @interface MAProgressReporter
 + (MAProgressReporter)ignoreProgress;
-+ (MAProgressReporter)progressReporterWithProgressBlock:(id)a3 throughputReportBlock:(id)a4;
++ (MAProgressReporter)progressReporterWithProgressBlock:(id)block throughputReportBlock:(id)reportBlock;
 - (BOOL)isCancelled;
-- (BOOL)isCancelledWithProgress:(double)a3;
-- (BOOL)isCancelledWithProgress:(double)a3 currentTime:(double)a4;
-- (BOOL)isCancelledWithUnitsCompleted:(unint64_t)a3 outOf:(unint64_t)a4;
-- (id)childProgressReporterForStep:(unint64_t)a3 outOf:(unint64_t)a4;
-- (id)childProgressReporterFromStart:(double)a3 toEnd:(double)a4;
-- (id)childProgressWithOffset:(double)a3 scale:(double)a4;
+- (BOOL)isCancelledWithProgress:(double)progress;
+- (BOOL)isCancelledWithProgress:(double)progress currentTime:(double)time;
+- (BOOL)isCancelledWithUnitsCompleted:(unint64_t)completed outOf:(unint64_t)of;
+- (id)childProgressReporterForStep:(unint64_t)step outOf:(unint64_t)of;
+- (id)childProgressReporterFromStart:(double)start toEnd:(double)end;
+- (id)childProgressWithOffset:(double)offset scale:(double)scale;
 - (id)initForSubclasses;
-- (id)progressReportersForParallelOperationsWithCount:(unint64_t)a3;
+- (id)progressReportersForParallelOperationsWithCount:(unint64_t)count;
 @end
 
 @implementation MAProgressReporter
@@ -21,11 +21,11 @@
   return [(MAProgressReporter *)&v3 init];
 }
 
-- (id)progressReportersForParallelOperationsWithCount:(unint64_t)a3
+- (id)progressReportersForParallelOperationsWithCount:(unint64_t)count
 {
-  v4 = [[MAParallelProgress alloc] initWithProgressReporter:self parallelOperationCount:a3];
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
-  if (a3)
+  v4 = [[MAParallelProgress alloc] initWithProgressReporter:self parallelOperationCount:count];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+  if (count)
   {
     v6 = 0;
     do
@@ -36,19 +36,19 @@
       ++v6;
     }
 
-    while (a3 != v6);
+    while (count != v6);
   }
 
   return v5;
 }
 
-+ (MAProgressReporter)progressReporterWithProgressBlock:(id)a3 throughputReportBlock:(id)a4
++ (MAProgressReporter)progressReporterWithProgressBlock:(id)block throughputReportBlock:(id)reportBlock
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MALegacyProgressReporter alloc] initWithProgressBlock:v6];
+  reportBlockCopy = reportBlock;
+  blockCopy = block;
+  v7 = [[MALegacyProgressReporter alloc] initWithProgressBlock:blockCopy];
 
-  [(MAProgressReporter *)v7 setThroughputReportBlock:v5];
+  [(MAProgressReporter *)v7 setThroughputReportBlock:reportBlockCopy];
 
   return v7;
 }
@@ -60,82 +60,82 @@
   return v2;
 }
 
-- (id)childProgressReporterForStep:(unint64_t)a3 outOf:(unint64_t)a4
+- (id)childProgressReporterForStep:(unint64_t)step outOf:(unint64_t)of
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 >= a4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (step >= of && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10[0] = 67109376;
-    v10[1] = a3;
+    v10[1] = step;
     v11 = 1024;
-    v12 = a4;
+    ofCopy = of;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MAProgressReporter: step (%d) >= count (%d)", v10, 0xEu);
   }
 
-  v7 = [(MAProgressReporter *)self childProgressWithOffset:a3 / a4 scale:1.0 / a4];
+  v7 = [(MAProgressReporter *)self childProgressWithOffset:step / of scale:1.0 / of];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)childProgressReporterFromStart:(double)a3 toEnd:(double)a4
+- (id)childProgressReporterFromStart:(double)start toEnd:(double)end
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 < 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (start < 0.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10 = 134217984;
-    v11 = a3;
+    endCopy2 = start;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MAProgressReporter: start (%f) < 0.0", &v10, 0xCu);
   }
 
-  if (a3 > a4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (start > end && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10 = 134218240;
-    v11 = a3;
+    endCopy2 = start;
     v12 = 2048;
-    v13 = a4;
+    endCopy = end;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MAProgressReporter: start (%f) > end (%f)", &v10, 0x16u);
   }
 
-  if (a4 > 1.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (end > 1.0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10 = 134217984;
-    v11 = a4;
+    endCopy2 = end;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MAProgressReporter: end (%f) > 1.0", &v10, 0xCu);
   }
 
-  v7 = [(MAProgressReporter *)self childProgressWithOffset:a3 scale:a4 - a3];
+  start = [(MAProgressReporter *)self childProgressWithOffset:start scale:end - start];
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return start;
 }
 
-- (id)childProgressWithOffset:(double)a3 scale:(double)a4
+- (id)childProgressWithOffset:(double)offset scale:(double)scale
 {
   v4 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v4);
 }
 
-- (BOOL)isCancelledWithUnitsCompleted:(unint64_t)a3 outOf:(unint64_t)a4
+- (BOOL)isCancelledWithUnitsCompleted:(unint64_t)completed outOf:(unint64_t)of
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 > a4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (completed > of && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v10[0] = 67109376;
-    v10[1] = a3;
+    v10[1] = completed;
     v11 = 1024;
-    v12 = a4;
+    ofCopy = of;
     _os_log_error_impl(&dword_255870000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "MAProgressReporter: unitsCompleted (%d) > total (%d)", v10, 0xEu);
-    if (a4)
+    if (of)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a4)
+  else if (of)
   {
 LABEL_4:
-    v7 = a3 / a4;
+    v7 = completed / of;
     goto LABEL_8;
   }
 
@@ -152,17 +152,17 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isCancelledWithProgress:(double)a3 currentTime:(double)a4
+- (BOOL)isCancelledWithProgress:(double)progress currentTime:(double)time
 {
   v4 = KGAbstractMethodException(self, a2);
   objc_exception_throw(v4);
 }
 
-- (BOOL)isCancelledWithProgress:(double)a3
+- (BOOL)isCancelledWithProgress:(double)progress
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  return [(MAProgressReporter *)self isCancelledWithProgress:a3 currentTime:Current];
+  return [(MAProgressReporter *)self isCancelledWithProgress:progress currentTime:Current];
 }
 
 - (BOOL)isCancelled

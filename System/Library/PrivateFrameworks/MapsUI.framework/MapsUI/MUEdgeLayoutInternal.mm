@@ -1,28 +1,28 @@
 @interface MUEdgeLayoutInternal
-- (MUEdgeLayoutInternal)initWithItem:(id)a3 container:(id)a4 insets:(NSDirectionalEdgeInsets)a5 edges:(unint64_t)a6 priority:(float)a7;
+- (MUEdgeLayoutInternal)initWithItem:(id)item container:(id)container insets:(NSDirectionalEdgeInsets)insets edges:(unint64_t)edges priority:(float)priority;
 - (MULayoutItem)container;
 - (MULayoutItem)item;
 - (NSDirectionalEdgeInsets)insets;
 - (float)priority;
 - (unint64_t)edges;
-- (void)setContainer:(id)a3;
-- (void)setEdges:(unint64_t)a3;
-- (void)setInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setItem:(id)a3;
-- (void)setPriority:(float)a3;
+- (void)setContainer:(id)container;
+- (void)setEdges:(unint64_t)edges;
+- (void)setInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setItem:(id)item;
+- (void)setPriority:(float)priority;
 @end
 
 @implementation MUEdgeLayoutInternal
 
-- (MUEdgeLayoutInternal)initWithItem:(id)a3 container:(id)a4 insets:(NSDirectionalEdgeInsets)a5 edges:(unint64_t)a6 priority:(float)a7
+- (MUEdgeLayoutInternal)initWithItem:(id)item container:(id)container insets:(NSDirectionalEdgeInsets)insets edges:(unint64_t)edges priority:(float)priority
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v15 = sub_1C56233C8(a3, top, leading, bottom, trailing, a7, a4, a6);
+  v15 = sub_1C56233C8(item, top, leading, bottom, trailing, priority, container, edges);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
   return v15;
@@ -31,7 +31,7 @@
 - (MULayoutItem)item
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   Strong = swift_unknownObjectWeakLoadStrong();
 
@@ -40,15 +40,15 @@
   return Strong;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (item)
   {
     [swift_unknownObjectRetain() _mapsui_disableTranslatesAutoresizingMaskIntoConstraints];
   }
 
-  v5 = *(&v4->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
+  v5 = *(&selfCopy->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
   sub_1C5623A68(v8);
   swift_unknownObjectWeakAssign();
   sub_1C5623B08(v8, v7);
@@ -60,7 +60,7 @@
 - (MULayoutItem)container
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
   Strong = swift_unknownObjectWeakLoadStrong();
 
@@ -69,12 +69,12 @@
   return Strong;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   v4 = OBJC_IVAR___MUEdgeLayoutInternal_builder;
   v5 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1C5623A68(v10);
   swift_unknownObjectWeakAssign();
   v7 = *(&self->super.super.isa + v4);
@@ -87,7 +87,7 @@
 - (NSDirectionalEdgeInsets)insets
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v12);
 
   v4 = *&v12[2];
@@ -106,15 +106,15 @@
   return result;
 }
 
-- (void)setInsets:(NSDirectionalEdgeInsets)a3
+- (void)setInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   v8 = OBJC_IVAR___MUEdgeLayoutInternal_builder;
   v9 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v10 = self;
+  selfCopy = self;
   sub_1C5623A68(v14);
   v15 = top;
   v16 = leading;
@@ -129,7 +129,7 @@
 - (unint64_t)edges
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
 
   v4 = v6[6];
@@ -137,13 +137,13 @@
   return v4;
 }
 
-- (void)setEdges:(unint64_t)a3
+- (void)setEdges:(unint64_t)edges
 {
   v5 = OBJC_IVAR___MUEdgeLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  v12 = a3;
+  edgesCopy = edges;
   v8 = *(&self->super.super.isa + v5);
   sub_1C5623B08(v11, v10);
   sub_1C5623B40(v10, v9);
@@ -153,7 +153,7 @@
 - (float)priority
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v3 = self;
+  selfCopy = self;
   sub_1C5623A68(v6);
 
   v4 = *&v6[14];
@@ -161,13 +161,13 @@
   return v4;
 }
 
-- (void)setPriority:(float)a3
+- (void)setPriority:(float)priority
 {
   v5 = OBJC_IVAR___MUEdgeLayoutInternal_builder;
   v6 = *(&self->super.super.isa + OBJC_IVAR___MUEdgeLayoutInternal_builder);
-  v7 = self;
+  selfCopy = self;
   sub_1C5623A68(v11);
-  v12 = a3;
+  priorityCopy = priority;
   v8 = *(&self->super.super.isa + v5);
   sub_1C5623B08(v11, v10);
   sub_1C5623B40(v10, v9);

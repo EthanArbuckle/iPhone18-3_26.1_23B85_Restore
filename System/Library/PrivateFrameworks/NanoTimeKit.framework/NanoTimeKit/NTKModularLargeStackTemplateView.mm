@@ -1,22 +1,22 @@
 @interface NTKModularLargeStackTemplateView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-- (NTKModularLargeStackTemplateView)initWithFrame:(CGRect)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
+- (NTKModularLargeStackTemplateView)initWithFrame:(CGRect)frame;
 - (id)_newLabelSubview;
-- (id)_newLabelSubviewWithFont:(id)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
-- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)a3;
+- (id)_newLabelSubviewWithFont:(id)font;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
+- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)block;
 - (void)_layoutContentView;
 - (void)_update;
-- (void)_updateForStandardBodyTemplate:(id)a3;
-- (void)_updateForTallBodyTemplate:(id)a3;
+- (void)_updateForStandardBodyTemplate:(id)template;
+- (void)_updateForTallBodyTemplate:(id)template;
 - (void)_updateLabelsMaxWidths;
 @end
 
 @implementation NTKModularLargeStackTemplateView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -32,18 +32,18 @@
   return isKindOfClass & 1;
 }
 
-- (NTKModularLargeStackTemplateView)initWithFrame:(CGRect)a3
+- (NTKModularLargeStackTemplateView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = NTKModularLargeStackTemplateView;
-  v3 = [(NTKModuleView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKModuleView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v19 = 0;
     memset(v18, 0, sizeof(v18));
-    v5 = [(NTKModuleView *)v3 device];
-    ___LayoutConstants_block_invoke_32(v5, v18);
+    device = [(NTKModuleView *)v3 device];
+    ___LayoutConstants_block_invoke_32(device, v18);
 
     v6 = *v18;
     v7 = [MEMORY[0x277CBBB08] systemFontOfSize:*v18 weight:*MEMORY[0x277D74410]];
@@ -74,14 +74,14 @@
   v54 = 0u;
   v55 = 0u;
   v53 = 0u;
-  v3 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_32(v3, &v53);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_32(device, &v53);
 
-  v4 = [(NTKModuleView *)self device];
-  v5 = _LargeModularLayoutConstants(v4);
+  device2 = [(NTKModuleView *)self device];
+  v5 = _LargeModularLayoutConstants(device2);
   v51 = v6;
 
-  v7 = [(NTKModularTemplateView *)self complicationTemplate];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -92,9 +92,9 @@
 
   else
   {
-    v10 = [(NTKModularTemplateView *)self complicationTemplate];
-    v11 = [v10 body2TextProvider];
-    v9 = v11 != 0;
+    complicationTemplate2 = [(NTKModularTemplateView *)self complicationTemplate];
+    body2TextProvider = [complicationTemplate2 body2TextProvider];
+    v9 = body2TextProvider != 0;
   }
 
   [(NTKModularLargeStackTemplateView *)self _updateLabelsMaxWidths];
@@ -104,9 +104,9 @@
     [(CDComplicationImageView *)self->_headerGlyph sizeToFit];
     [(CDComplicationImageView *)self->_headerGlyph center];
     v14 = v13;
-    v15 = [(CLKUIColoringLabel *)self->_headerLeadingLabel font];
-    [v15 capHeight];
-    v16 = [(NTKModuleView *)self device];
+    font = [(CLKUIColoringLabel *)self->_headerLeadingLabel font];
+    [font capHeight];
+    device3 = [(NTKModuleView *)self device];
     CLKRoundForDevice();
     v18 = v5 - v17;
 
@@ -119,18 +119,18 @@
   [(CLKUIColoringLabel *)self->_headerTrailingLabel frame];
   [(CLKUIColoringLabel *)self->_headerLeadingLabel maxWidth];
   [(CLKUIColoringLabel *)self->_headerTrailingLabel maxWidth];
-  v19 = [(CLKUIColoringLabel *)self->_headerLeadingLabel font];
-  [v19 ascender];
-  v20 = [(NTKModuleView *)self device];
+  font2 = [(CLKUIColoringLabel *)self->_headerLeadingLabel font];
+  [font2 ascender];
+  device4 = [(NTKModuleView *)self device];
   CLKCeilForDevice();
 
   headerLeadingLabel = self->_headerLeadingLabel;
-  v22 = [(NTKModuleView *)self device];
+  device5 = [(NTKModuleView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)headerLeadingLabel setFrame:?];
 
   headerTrailingLabel = self->_headerTrailingLabel;
-  v24 = [(NTKModuleView *)self device];
+  device6 = [(NTKModuleView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)headerTrailingLabel setFrame:?];
 
@@ -170,9 +170,9 @@
     [(CDComplicationImageView *)body1Glyph sizeToFit];
     [(CDComplicationImageView *)self->_body1Glyph center];
     v35 = v34;
-    v36 = [(CLKUIColoringLabel *)self->_body1Label font];
-    [v36 capHeight];
-    v37 = [(NTKModuleView *)self device];
+    font3 = [(CLKUIColoringLabel *)self->_body1Label font];
+    [font3 capHeight];
+    device7 = [(NTKModuleView *)self device];
     CLKRoundForDevice();
     v39 = v32 - v38;
 
@@ -184,13 +184,13 @@
   [(CLKUIColoringLabel *)body1Label maxWidth];
   [(CLKUIColoringLabel *)body1Label sizeThatFits:?];
   [(CLKUIColoringLabel *)self->_body1Label maxWidth];
-  v41 = [(CLKUIColoringLabel *)self->_body1Label font];
-  [v41 ascender];
-  v42 = [(NTKModuleView *)self device];
+  font4 = [(CLKUIColoringLabel *)self->_body1Label font];
+  [font4 ascender];
+  device8 = [(NTKModuleView *)self device];
   CLKCeilForDevice();
 
   v43 = self->_body1Label;
-  v44 = [(NTKModuleView *)self device];
+  device9 = [(NTKModuleView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)v43 setFrame:?];
 
@@ -206,7 +206,7 @@
     [(CLKUIColoringLabel *)v47 sizeThatFits:?];
     [(CLKUIColoringLabel *)self->_body2Label maxWidth];
     v48 = self->_body2Label;
-    v49 = [(NTKModuleView *)self device];
+    device10 = [(NTKModuleView *)self device];
     CLKPixelAlignRectForDevice();
     [(CLKUIColoringLabel *)v48 setFrame:?];
 
@@ -220,24 +220,24 @@
   }
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_body1Glyph);
-  (*v4)(v6, self->_headerLeadingLabel);
-  (*v4)(v6, self->_headerTrailingLabel);
+  (*v4)(blockCopy, self->_body1Glyph);
+  (*v4)(blockCopy, self->_headerLeadingLabel);
+  (*v4)(blockCopy, self->_headerTrailingLabel);
 }
 
-- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateSecondaryForegroundColoringViewsWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, self->_body2Label);
+  (*v4)(blockCopy, self->_body2Label);
 }
 
 - (id)_newLabelSubview
@@ -246,8 +246,8 @@
   [(NTKModularLargeStackTemplateView *)self bounds];
   [v3 setMaxWidth:v4];
   [v3 setUppercase:0];
-  v5 = [(NTKModularTemplateView *)self timeTravelDate];
-  [v3 setInTimeTravel:v5 != 0];
+  timeTravelDate = [(NTKModularTemplateView *)self timeTravelDate];
+  [v3 setInTimeTravel:timeTravelDate != 0];
 
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
@@ -262,8 +262,8 @@
   v8[3] = &unk_27877DC58;
   objc_copyWeak(&v9, &location);
   [v3 setNeedsResizeHandler:v8];
-  v6 = [(NTKModuleView *)self contentView];
-  [v6 addSubview:v3];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView addSubview:v3];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -298,22 +298,22 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
   [v1 setNeedsLayout];
 }
 
-- (id)_newLabelSubviewWithFont:(id)a3
+- (id)_newLabelSubviewWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(NTKModularLargeStackTemplateView *)self _newLabelSubview];
-  [v5 setFont:v4];
+  fontCopy = font;
+  _newLabelSubview = [(NTKModularLargeStackTemplateView *)self _newLabelSubview];
+  [_newLabelSubview setFont:fontCopy];
 
-  return v5;
+  return _newLabelSubview;
 }
 
 - (void)_update
 {
-  v4 = [(NTKModularTemplateView *)self complicationTemplate];
+  complicationTemplate = [(NTKModularTemplateView *)self complicationTemplate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NTKModularLargeStackTemplateView *)self _updateForStandardBodyTemplate:v4];
+    [(NTKModularLargeStackTemplateView *)self _updateForStandardBodyTemplate:complicationTemplate];
   }
 
   else
@@ -321,35 +321,35 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NTKModularLargeStackTemplateView *)self _updateForTallBodyTemplate:v4];
+      [(NTKModularLargeStackTemplateView *)self _updateForTallBodyTemplate:complicationTemplate];
     }
   }
 
-  v3 = [(NTKModuleView *)self contentView];
-  [v3 setNeedsLayout];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView setNeedsLayout];
 }
 
-- (void)_updateForStandardBodyTemplate:(id)a3
+- (void)_updateForStandardBodyTemplate:(id)template
 {
-  v33 = a3;
-  v4 = [v33 headerImageProvider];
-  v5 = [off_27877BE78 existingImageView:self->_headerGlyph supportsImageProvider:v4];
+  templateCopy = template;
+  headerImageProvider = [templateCopy headerImageProvider];
+  v5 = [off_27877BE78 existingImageView:self->_headerGlyph supportsImageProvider:headerImageProvider];
   headerGlyph = self->_headerGlyph;
   if ((v5 & 1) == 0)
   {
     [(CDComplicationImageView *)headerGlyph removeFromSuperview];
-    v7 = [off_27877BE78 viewForImageProvider:v4];
+    v7 = [off_27877BE78 viewForImageProvider:headerImageProvider];
     v8 = self->_headerGlyph;
     self->_headerGlyph = v7;
 
     if (self->_headerGlyph)
     {
-      v9 = [(NTKModuleView *)self contentView];
-      [v9 addSubview:self->_headerGlyph];
+      contentView = [(NTKModuleView *)self contentView];
+      [contentView addSubview:self->_headerGlyph];
 
       v10 = self->_headerGlyph;
-      v11 = [(NTKModuleView *)self foregroundColor];
-      [(CDComplicationImageView *)v10 setColor:v11];
+      foregroundColor = [(NTKModuleView *)self foregroundColor];
+      [(CDComplicationImageView *)v10 setColor:foregroundColor];
 
       headerGlyph = self->_headerGlyph;
     }
@@ -360,25 +360,25 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
     }
   }
 
-  [(CDComplicationImageView *)headerGlyph setImageProvider:v4];
-  v12 = [v33 body1ImageProvider];
-  v13 = [off_27877BE78 existingImageView:self->_body1Glyph supportsImageProvider:v12];
+  [(CDComplicationImageView *)headerGlyph setImageProvider:headerImageProvider];
+  body1ImageProvider = [templateCopy body1ImageProvider];
+  v13 = [off_27877BE78 existingImageView:self->_body1Glyph supportsImageProvider:body1ImageProvider];
   body1Glyph = self->_body1Glyph;
   if ((v13 & 1) == 0)
   {
     [(CDComplicationImageView *)body1Glyph removeFromSuperview];
-    v15 = [off_27877BE78 viewForImageProvider:v12];
+    v15 = [off_27877BE78 viewForImageProvider:body1ImageProvider];
     v16 = self->_body1Glyph;
     self->_body1Glyph = v15;
 
     if (self->_body1Glyph)
     {
-      v17 = [(NTKModuleView *)self contentView];
-      [v17 addSubview:self->_body1Glyph];
+      contentView2 = [(NTKModuleView *)self contentView];
+      [contentView2 addSubview:self->_body1Glyph];
 
       v18 = self->_body1Glyph;
-      v19 = [(NTKModuleView *)self foregroundColor];
-      [(CDComplicationImageView *)v18 setColor:v19];
+      foregroundColor2 = [(NTKModuleView *)self foregroundColor];
+      [(CDComplicationImageView *)v18 setColor:foregroundColor2];
 
       body1Glyph = self->_body1Glyph;
     }
@@ -389,33 +389,33 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
     }
   }
 
-  [(CDComplicationImageView *)body1Glyph setImageProvider:v12];
+  [(CDComplicationImageView *)body1Glyph setImageProvider:body1ImageProvider];
   headerLeadingLabel = self->_headerLeadingLabel;
-  v21 = [v33 headerTextProvider];
-  [(CLKUIColoringLabel *)headerLeadingLabel setTextProvider:v21];
+  headerTextProvider = [templateCopy headerTextProvider];
+  [(CLKUIColoringLabel *)headerLeadingLabel setTextProvider:headerTextProvider];
 
-  v22 = [v33 headerTrailingTextProvider];
-  [(CLKUIColoringLabel *)self->_headerTrailingLabel setTextProvider:v22];
-  [(CLKUIColoringLabel *)self->_headerTrailingLabel setHidden:v22 == 0];
-  self->_shouldTruncateHeaderLeadingLabelFirst = [v33 shouldTruncateHeaderLeadingLabelFirst];
+  headerTrailingTextProvider = [templateCopy headerTrailingTextProvider];
+  [(CLKUIColoringLabel *)self->_headerTrailingLabel setTextProvider:headerTrailingTextProvider];
+  [(CLKUIColoringLabel *)self->_headerTrailingLabel setHidden:headerTrailingTextProvider == 0];
+  self->_shouldTruncateHeaderLeadingLabelFirst = [templateCopy shouldTruncateHeaderLeadingLabelFirst];
   body1Label = self->_body1Label;
-  v24 = [v33 body1TextProvider];
-  [(CLKUIColoringLabel *)body1Label setTextProvider:v24];
+  body1TextProvider = [templateCopy body1TextProvider];
+  [(CLKUIColoringLabel *)body1Label setTextProvider:body1TextProvider];
 
   v25 = self->_body1Label;
   v26 = MEMORY[0x277CBBB08];
-  v27 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_32(v27, v34);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_32(device, v34);
   v28 = [v26 systemFontOfSize:v34[0]];
   [(CLKUIColoringLabel *)v25 setFont:v28];
 
-  v29 = [v33 body2TextProvider];
+  body2TextProvider = [templateCopy body2TextProvider];
   v30 = self->_body1Label;
-  if (v29)
+  if (body2TextProvider)
   {
     [(CLKUIColoringLabel *)v30 setNumberOfLines:1];
     body2Label = self->_body2Label;
-    v32 = v29;
+    v32 = body2TextProvider;
   }
 
   else
@@ -428,27 +428,27 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
   [(CLKUIColoringLabel *)body2Label setTextProvider:v32];
 }
 
-- (void)_updateForTallBodyTemplate:(id)a3
+- (void)_updateForTallBodyTemplate:(id)template
 {
-  v4 = a3;
-  v21 = [v4 headerImageProvider];
+  templateCopy = template;
+  headerImageProvider = [templateCopy headerImageProvider];
   v5 = [off_27877BE78 existingImageView:self->_headerGlyph supportsImageProvider:?];
   headerGlyph = self->_headerGlyph;
   if ((v5 & 1) == 0)
   {
     [(CDComplicationImageView *)headerGlyph removeFromSuperview];
-    v7 = [off_27877BE78 viewForImageProvider:v21];
+    v7 = [off_27877BE78 viewForImageProvider:headerImageProvider];
     v8 = self->_headerGlyph;
     self->_headerGlyph = v7;
 
     if (self->_headerGlyph)
     {
-      v9 = [(NTKModuleView *)self contentView];
-      [v9 addSubview:self->_headerGlyph];
+      contentView = [(NTKModuleView *)self contentView];
+      [contentView addSubview:self->_headerGlyph];
 
       v10 = self->_headerGlyph;
-      v11 = [(NTKModuleView *)self foregroundColor];
-      [(CDComplicationImageView *)v10 setColor:v11];
+      foregroundColor = [(NTKModuleView *)self foregroundColor];
+      [(CDComplicationImageView *)v10 setColor:foregroundColor];
 
       headerGlyph = self->_headerGlyph;
     }
@@ -459,25 +459,25 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
     }
   }
 
-  [(CDComplicationImageView *)headerGlyph setImageProvider:v21];
+  [(CDComplicationImageView *)headerGlyph setImageProvider:headerImageProvider];
   [(CLKUIColoringLabel *)self->_body2Label setTextProvider:0];
   headerLeadingLabel = self->_headerLeadingLabel;
-  v13 = [v4 headerTextProvider];
-  [(CLKUIColoringLabel *)headerLeadingLabel setTextProvider:v13];
+  headerTextProvider = [templateCopy headerTextProvider];
+  [(CLKUIColoringLabel *)headerLeadingLabel setTextProvider:headerTextProvider];
 
-  v14 = [v4 headerTrailingTextProvider];
-  [(CLKUIColoringLabel *)self->_headerTrailingLabel setTextProvider:v14];
-  [(CLKUIColoringLabel *)self->_headerTrailingLabel setHidden:v14 == 0];
-  self->_shouldTruncateHeaderLeadingLabelFirst = [v4 shouldTruncateHeaderLeadingLabelFirst];
+  headerTrailingTextProvider = [templateCopy headerTrailingTextProvider];
+  [(CLKUIColoringLabel *)self->_headerTrailingLabel setTextProvider:headerTrailingTextProvider];
+  [(CLKUIColoringLabel *)self->_headerTrailingLabel setHidden:headerTrailingTextProvider == 0];
+  self->_shouldTruncateHeaderLeadingLabelFirst = [templateCopy shouldTruncateHeaderLeadingLabelFirst];
   body1Label = self->_body1Label;
-  v16 = [v4 bodyTextProvider];
+  bodyTextProvider = [templateCopy bodyTextProvider];
 
-  [(CLKUIColoringLabel *)body1Label setTextProvider:v16];
+  [(CLKUIColoringLabel *)body1Label setTextProvider:bodyTextProvider];
   [(CLKUIColoringLabel *)self->_body1Label setNumberOfLines:1];
   v17 = self->_body1Label;
   v18 = MEMORY[0x277CBBB08];
-  v19 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_32(v19, v22);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_32(device, v22);
   v20 = [v18 systemFontOfSize:v23 weight:*MEMORY[0x277D74408]];
   [(CLKUIColoringLabel *)v17 setFont:v20];
 }
@@ -488,8 +488,8 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v3 = [(NTKModuleView *)self device];
-  ___LayoutConstants_block_invoke_32(v3, &v23);
+  device = [(NTKModuleView *)self device];
+  ___LayoutConstants_block_invoke_32(device, &v23);
 
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -497,8 +497,8 @@ void __52__NTKModularLargeStackTemplateView__newLabelSubview__block_invoke_2(uin
   v7 = v6;
   [(CDComplicationImageView *)self->_body1Glyph sizeThatFits:v4, v5];
   v9 = v8;
-  v10 = [(NTKModuleView *)self contentView];
-  [v10 bounds];
+  contentView = [(NTKModuleView *)self contentView];
+  [contentView bounds];
   v12 = v11 - *&v24 - *(&v24 + 1);
 
   headerGlyph = self->_headerGlyph;

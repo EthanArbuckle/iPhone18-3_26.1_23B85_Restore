@@ -1,25 +1,25 @@
 @interface MFAttachmentLibraryManager
-- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)a3;
-- (id)_dataProviderForAttachmentURL:(id)a3 error:(id *)a4;
-- (id)attachmentsForMessage:(id)a3 withSchemes:(id)a4;
-- (void)removeProviderForBaseURL:(id)a3;
+- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)library;
+- (id)_dataProviderForAttachmentURL:(id)l error:(id *)error;
+- (id)attachmentsForMessage:(id)message withSchemes:(id)schemes;
+- (void)removeProviderForBaseURL:(id)l;
 @end
 
 @implementation MFAttachmentLibraryManager
 
-- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)a3
+- (MFAttachmentLibraryManager)initWithPrimaryLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [(MFAttachmentComposeManager *)self init];
   if (v5)
   {
-    v6 = [v4 dataProvider];
+    dataProvider = [libraryCopy dataProvider];
     v7 = [MEMORY[0x1E695DFF8] URLWithString:@"x-attach"];
-    v8 = [[MFMailDropAttachmentDataProvider alloc] initWithLibrary:v4];
+    v8 = [[MFMailDropAttachmentDataProvider alloc] initWithLibrary:libraryCopy];
     v9 = [MEMORY[0x1E695DFF8] URLWithString:@"x-attach-maildrop"];
-    v10 = [(MFAttachmentLibraryDataProvider *)[MFMailDropAttachmentPreviewDataProvider alloc] initWithLibrary:v4];
+    v10 = [(MFAttachmentLibraryDataProvider *)[MFMailDropAttachmentPreviewDataProvider alloc] initWithLibrary:libraryCopy];
     v11 = [MEMORY[0x1E695DFF8] URLWithString:@"x-attach-maildrop-image"];
-    [(MFAttachmentManager *)v5 addProvider:v6 forBaseURL:v7];
+    [(MFAttachmentManager *)v5 addProvider:dataProvider forBaseURL:v7];
     [(MFAttachmentManager *)v5 addProvider:v8 forBaseURL:v9];
     [(MFAttachmentManager *)v5 addProvider:v10 forBaseURL:v11];
   }
@@ -27,19 +27,19 @@
   return v5;
 }
 
-- (id)_dataProviderForAttachmentURL:(id)a3 error:(id *)a4
+- (id)_dataProviderForAttachmentURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v24.receiver = self;
   v24.super_class = MFAttachmentLibraryManager;
   v25 = 0;
-  v7 = [(MFAttachmentManager *)&v24 _dataProviderForAttachmentURL:v6 error:&v25];
+  v7 = [(MFAttachmentManager *)&v24 _dataProviderForAttachmentURL:lCopy error:&v25];
   v8 = v25;
   if (!v7)
   {
     providers = self->super.super._providers;
-    v10 = [v6 scheme];
-    v11 = [(NSMutableDictionary *)providers objectForKeyedSubscript:v10];
+    scheme = [lCopy scheme];
+    v11 = [(NSMutableDictionary *)providers objectForKeyedSubscript:scheme];
 
     if (v11)
     {
@@ -50,21 +50,21 @@
     {
       v12 = [(NSMutableDictionary *)self->super.super._providers objectForKeyedSubscript:@"x-attach"];
       v7 = v12;
-      if (a4 && !v12)
+      if (error && !v12)
       {
         if (v8)
         {
-          v13 = [v8 userInfo];
-          v14 = [v13 mutableCopy];
+          userInfo = [v8 userInfo];
+          v14 = [userInfo mutableCopy];
 
           v22 = v14;
           v15 = [v14 objectForKey:@"MFLocalizedDescriptionKey"];
           v16 = [v14 objectForKey:@"MFErrorTitleKey"];
-          v17 = [v8 domain];
+          domain = [v8 domain];
           [v22 removeObjectForKey:@"MFLocalizedDescriptionKey"];
           v18 = v15;
           v19 = v16;
-          v20 = v17;
+          v20 = domain;
           [v22 removeObjectForKey:@"MFErrorTitleKey"];
         }
 
@@ -76,7 +76,7 @@
           v18 = @"Could not find a provider for the given URL.";
         }
 
-        *a4 = [MFError errorWithDomain:v20 code:1030 localizedDescription:v18 title:v19 userInfo:v22, v22];
+        *error = [MFError errorWithDomain:v20 code:1030 localizedDescription:v18 title:v19 userInfo:v22, v22];
 
         v7 = 0;
       }
@@ -86,23 +86,23 @@
   return v7;
 }
 
-- (void)removeProviderForBaseURL:(id)a3
+- (void)removeProviderForBaseURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [v5 isEqualToString:@"x-attach://"];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  v6 = [absoluteString isEqualToString:@"x-attach://"];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = MFAttachmentLibraryManager;
-    [(MFAttachmentManager *)&v7 removeProviderForBaseURL:v4];
+    [(MFAttachmentManager *)&v7 removeProviderForBaseURL:lCopy];
   }
 }
 
-- (id)attachmentsForMessage:(id)a3 withSchemes:(id)a4
+- (id)attachmentsForMessage:(id)message withSchemes:(id)schemes
 {
-  v4 = [(MFAttachmentLibraryManager *)self attachmentsForMessage:a3 withSchemes:a4 updatingFlags:1];
+  v4 = [(MFAttachmentLibraryManager *)self attachmentsForMessage:message withSchemes:schemes updatingFlags:1];
 
   return v4;
 }

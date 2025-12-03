@@ -1,85 +1,85 @@
 @interface SharedTripSummary
-+ (id)summaryWithSharedTrips:(id)a3;
++ (id)summaryWithSharedTrips:(id)trips;
 - (NSString)_maps_diffableDataSourceIdentifier;
 - (NSString)subtitle;
 - (NSString)subtitleForCarPlay;
 - (NSString)title;
 - (NSString)titleForCarPlay;
 - (id)_transportTypeStringForAnalytics;
-- (void)updateModel:(id)a3;
+- (void)updateModel:(id)model;
 @end
 
 @implementation SharedTripSummary
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v4 = a3;
-  v5 = [(SharedTripSummary *)self title];
-  [v4 setFirstLine:v5];
+  modelCopy = model;
+  title = [(SharedTripSummary *)self title];
+  [modelCopy setFirstLine:title];
 
-  v6 = [(SharedTripSummary *)self subtitle];
-  [v4 setSecondLine:v6];
+  subtitle = [(SharedTripSummary *)self subtitle];
+  [modelCopy setSecondLine:subtitle];
 }
 
-+ (id)summaryWithSharedTrips:(id)a3
++ (id)summaryWithSharedTrips:(id)trips
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setSharedTrips:v4];
+  tripsCopy = trips;
+  v5 = objc_alloc_init(self);
+  [v5 setSharedTrips:tripsCopy];
 
   return v5;
 }
 
 - (NSString)subtitleForCarPlay
 {
-  v3 = [(SharedTripSummary *)self sharedTrips];
-  v4 = [v3 count];
+  sharedTrips = [(SharedTripSummary *)self sharedTrips];
+  v4 = [sharedTrips count];
 
   if (v4 == 1)
   {
-    v5 = [(SharedTripSummary *)self sharedTrips];
-    v6 = [v5 firstObject];
+    sharedTrips2 = [(SharedTripSummary *)self sharedTrips];
+    firstObject = [sharedTrips2 firstObject];
 
-    v7 = [v6 carPlayListCellSubtitle];
+    carPlayListCellSubtitle = [firstObject carPlayListCellSubtitle];
   }
 
   else
   {
-    v7 = [(SharedTripSummary *)self subtitle];
+    carPlayListCellSubtitle = [(SharedTripSummary *)self subtitle];
   }
 
-  return v7;
+  return carPlayListCellSubtitle;
 }
 
 - (NSString)subtitle
 {
-  v3 = [(SharedTripSummary *)self sharedTrips];
-  v4 = [v3 count];
+  sharedTrips = [(SharedTripSummary *)self sharedTrips];
+  v4 = [sharedTrips count];
 
   if (v4 == 1)
   {
-    v5 = [(SharedTripSummary *)self sharedTrips];
-    v6 = [v5 firstObject];
+    sharedTrips2 = [(SharedTripSummary *)self sharedTrips];
+    firstObject = [sharedTrips2 firstObject];
 
-    v7 = [v6 homeCellSubtitle];
+    homeCellSubtitle = [firstObject homeCellSubtitle];
   }
 
   else
   {
     v8 = [NSMutableArray alloc];
-    v9 = [(SharedTripSummary *)self sharedTrips];
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    sharedTrips3 = [(SharedTripSummary *)self sharedTrips];
+    v10 = [v8 initWithCapacity:{objc_msgSend(sharedTrips3, "count")}];
 
     v11 = [NSMutableSet alloc];
-    v12 = [(SharedTripSummary *)self sharedTrips];
-    v13 = [v11 initWithCapacity:{objc_msgSend(v12, "count")}];
+    sharedTrips4 = [(SharedTripSummary *)self sharedTrips];
+    v13 = [v11 initWithCapacity:{objc_msgSend(sharedTrips4, "count")}];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [(SharedTripSummary *)self sharedTrips];
-    v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    sharedTrips5 = [(SharedTripSummary *)self sharedTrips];
+    v15 = [sharedTrips5 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v15)
     {
       v16 = v15;
@@ -90,23 +90,23 @@
         {
           if (*v32 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sharedTrips5);
           }
 
           v19 = *(*(&v31 + 1) + 8 * i);
-          v20 = [v19 senderInfo];
-          v21 = [v20 fromIdentifier];
+          senderInfo = [v19 senderInfo];
+          fromIdentifier = [senderInfo fromIdentifier];
 
-          if (([v13 containsObject:v21] & 1) == 0)
+          if (([v13 containsObject:fromIdentifier] & 1) == 0)
           {
-            [v13 addObject:v21];
-            v22 = [v19 senderInfo];
-            v23 = [v22 localName];
-            [v10 addObject:v23];
+            [v13 addObject:fromIdentifier];
+            senderInfo2 = [v19 senderInfo];
+            localName = [senderInfo2 localName];
+            [v10 addObject:localName];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v16 = [sharedTrips5 countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v16);
@@ -119,8 +119,8 @@
     {
       v27 = [v25 localizedStringForKey:@"Shared Trips Cell Subtitle Format String (one sender value:multiple routes)" table:{@"localized string not found", 0}];
 
-      v28 = [v10 firstObject];
-      [NSString localizedStringWithFormat:v27, v4, v28];
+      firstObject2 = [v10 firstObject];
+      [NSString localizedStringWithFormat:v27, v4, firstObject2];
     }
 
     else
@@ -128,65 +128,65 @@
       v27 = [v25 localizedStringForKey:@"Shared Trips Cell Subtitle Format String (multiple sender value:multiple routes)" table:{@"localized string not found", 0}];
 
       v29 = [v10 count] - 1;
-      v28 = [v10 firstObject];
-      [NSString localizedStringWithFormat:v27, v29, v28];
+      firstObject2 = [v10 firstObject];
+      [NSString localizedStringWithFormat:v27, v29, firstObject2];
     }
-    v7 = ;
+    homeCellSubtitle = ;
   }
 
-  return v7;
+  return homeCellSubtitle;
 }
 
 - (NSString)titleForCarPlay
 {
-  v3 = [(SharedTripSummary *)self sharedTrips];
-  v4 = [v3 count];
+  sharedTrips = [(SharedTripSummary *)self sharedTrips];
+  v4 = [sharedTrips count];
 
   if (v4 == 1)
   {
-    v5 = [(SharedTripSummary *)self sharedTrips];
-    v6 = [v5 firstObject];
+    sharedTrips2 = [(SharedTripSummary *)self sharedTrips];
+    firstObject = [sharedTrips2 firstObject];
 
-    v7 = [v6 carPlayListCellTitle];
+    carPlayListCellTitle = [firstObject carPlayListCellTitle];
   }
 
   else
   {
-    v7 = [(SharedTripSummary *)self title];
+    carPlayListCellTitle = [(SharedTripSummary *)self title];
   }
 
-  return v7;
+  return carPlayListCellTitle;
 }
 
 - (NSString)title
 {
-  v3 = [(SharedTripSummary *)self sharedTrips];
-  v4 = [v3 count];
+  sharedTrips = [(SharedTripSummary *)self sharedTrips];
+  v4 = [sharedTrips count];
 
   if (v4 == 1)
   {
-    v5 = [(SharedTripSummary *)self sharedTrips];
-    v6 = [v5 firstObject];
+    sharedTrips2 = [(SharedTripSummary *)self sharedTrips];
+    firstObject = [sharedTrips2 firstObject];
 
-    v7 = [v6 homeCellTitle];
+    homeCellTitle = [firstObject homeCellTitle];
   }
 
   else
   {
     v8 = +[NSBundle mainBundle];
-    v6 = [v8 localizedStringForKey:@"Shared Trip Format [Cell value:Title]" table:{@"localized string not found", 0}];
+    firstObject = [v8 localizedStringForKey:@"Shared Trip Format [Cell value:Title]" table:{@"localized string not found", 0}];
 
-    v9 = [(SharedTripSummary *)self sharedTrips];
-    v7 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v9 count]);
+    sharedTrips3 = [(SharedTripSummary *)self sharedTrips];
+    homeCellTitle = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", firstObject, [sharedTrips3 count]);
   }
 
-  return v7;
+  return homeCellTitle;
 }
 
 - (id)_transportTypeStringForAnalytics
 {
-  v2 = [(SharedTripSummary *)self sharedTrips];
-  v3 = sub_100021DB0(v2, &stru_101630BE8);
+  sharedTrips = [(SharedTripSummary *)self sharedTrips];
+  v3 = sub_100021DB0(sharedTrips, &stru_101630BE8);
 
   v4 = [v3 componentsJoinedByString:{@", "}];
 
@@ -195,8 +195,8 @@
 
 - (NSString)_maps_diffableDataSourceIdentifier
 {
-  v2 = [(SharedTripSummary *)self sharedTrips];
-  v3 = [v2 valueForKey:@"groupIdentifier"];
+  sharedTrips = [(SharedTripSummary *)self sharedTrips];
+  v3 = [sharedTrips valueForKey:@"groupIdentifier"];
   v4 = [NSString stringWithFormat:@"SharedTripSummary-%@", v3];
 
   return v4;

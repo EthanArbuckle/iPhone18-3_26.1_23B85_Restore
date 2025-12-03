@@ -1,6 +1,6 @@
 @interface TSPObjectSerializationDirectoryEntry
 - (TSPObjectSerializationDirectoryEntry)init;
-- (TSPObjectSerializationDirectoryEntry)initWithOffset:(unint64_t)a3 size:(unint64_t)a4;
+- (TSPObjectSerializationDirectoryEntry)initWithOffset:(unint64_t)offset size:(unint64_t)size;
 @end
 
 @implementation TSPObjectSerializationDirectoryEntry
@@ -21,15 +21,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectSerializationDirectoryEntry)initWithOffset:(unint64_t)a3 size:(unint64_t)a4
+- (TSPObjectSerializationDirectoryEntry)initWithOffset:(unint64_t)offset size:(unint64_t)size
 {
   v7.receiver = self;
   v7.super_class = TSPObjectSerializationDirectoryEntry;
   result = [(TSPObjectSerializationDirectoryEntry *)&v7 init];
   if (result)
   {
-    result->_offset = a3;
-    result->_size = a4;
+    result->_offset = offset;
+    result->_size = size;
   }
 
   return result;

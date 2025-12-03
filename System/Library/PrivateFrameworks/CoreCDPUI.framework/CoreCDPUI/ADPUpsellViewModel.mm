@@ -1,6 +1,6 @@
 @interface ADPUpsellViewModel
 - (_TtC9CoreCDPUI18ADPUpsellViewModel)init;
-- (void)showErrorAlertTitled:(id)a3 message:(id)a4;
+- (void)showErrorAlertTitled:(id)titled message:(id)message;
 @end
 
 @implementation ADPUpsellViewModel
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)showErrorAlertTitled:(id)a3 message:(id)a4
+- (void)showErrorAlertTitled:(id)titled message:(id)message
 {
   sub_24525518C();
   sub_24525518C();
   swift_getKeyPath();
   sub_245234BF0(&unk_27EE0E990, type metadata accessor for ADPUpsellViewModel);
-  v5 = self;
+  selfCopy = self;
   sub_24525416C();
 }
 

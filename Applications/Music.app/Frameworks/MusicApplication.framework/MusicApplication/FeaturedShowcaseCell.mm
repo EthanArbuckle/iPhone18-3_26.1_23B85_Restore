@@ -6,16 +6,16 @@
 - (NSString)accessibilitySubtitle;
 - (NSString)accessibilityTitle;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FeaturedShowcaseCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E124C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1E124C(change);
 }
 
 - (CGRect)bounds
@@ -40,7 +40,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E16A4();
 }
 

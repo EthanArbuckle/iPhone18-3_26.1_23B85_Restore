@@ -1,10 +1,10 @@
 @interface ICFastSyncPresenceController
 + (uint64_t)setUp;
 - (ICFastSyncPresenceController)init;
-- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)a3;
-- (void)realtimeCollaborationControllerSessionDidBegin:(id)a3;
-- (void)realtimeCollaborationControllerSessionDidTerminate:(id)a3;
-- (void)realtimeCollaborationControllerSessionWillBegin:(id)a3;
+- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)state;
+- (void)realtimeCollaborationControllerSessionDidBegin:(id)begin;
+- (void)realtimeCollaborationControllerSessionDidTerminate:(id)terminate;
+- (void)realtimeCollaborationControllerSessionWillBegin:(id)begin;
 @end
 
 @implementation ICFastSyncPresenceController
@@ -20,10 +20,10 @@
   v7 = &v26 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v5);
   v9 = &v26 - v8;
-  v10 = [objc_opt_self() sharedContext];
-  if (v10)
+  sharedContext = [objc_opt_self() sharedContext];
+  if (sharedContext)
   {
-    v11 = v10;
+    v11 = sharedContext;
     static Logger.fastSyncPresence.getter();
     v12 = objc_allocWithZone(type metadata accessor for FastSyncPresenceController(0));
     v13 = v11;
@@ -74,32 +74,32 @@
   return result;
 }
 
-- (void)realtimeCollaborationControllerSessionWillBegin:(id)a3
+- (void)realtimeCollaborationControllerSessionWillBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  FastSyncPresenceController.realtimeCollaborationControllerSessionWillBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  FastSyncPresenceController.realtimeCollaborationControllerSessionWillBegin(_:)(beginCopy);
 }
 
-- (void)realtimeCollaborationControllerSessionDidBegin:(id)a3
+- (void)realtimeCollaborationControllerSessionDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  FastSyncPresenceController.realtimeCollaborationControllerSessionDidBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  FastSyncPresenceController.realtimeCollaborationControllerSessionDidBegin(_:)(beginCopy);
 }
 
-- (void)realtimeCollaborationControllerSessionDidTerminate:(id)a3
+- (void)realtimeCollaborationControllerSessionDidTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
-  FastSyncPresenceController.realtimeCollaborationControllerSessionDidTerminate(_:)(v4);
+  terminateCopy = terminate;
+  selfCopy = self;
+  FastSyncPresenceController.realtimeCollaborationControllerSessionDidTerminate(_:)(terminateCopy);
 }
 
-- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)a3
+- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  FastSyncPresenceController.realtimeCollaborationControllerDidChangeSelectionState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  FastSyncPresenceController.realtimeCollaborationControllerDidChangeSelectionState(_:)(stateCopy);
 }
 
 @end

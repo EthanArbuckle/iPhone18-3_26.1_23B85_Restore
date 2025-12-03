@@ -1,20 +1,20 @@
 @interface SKUILoadMoreDataConsumer
-- (id)_itemsWithDictionary:(id)a3;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)_itemsWithDictionary:(id)dictionary;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SKUILoadMoreDataConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadMoreDataConsumer objectForData:response:error:];
   }
 
   v13 = 0;
-  v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v7 options:0 error:&v13];
+  v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v13];
   v9 = v13;
   objc_opt_class();
   v10 = 0;
@@ -23,26 +23,26 @@
     v10 = [(SKUILoadMoreDataConsumer *)self _itemsWithDictionary:v8];
   }
 
-  if (a5 && !v10)
+  if (error && !v10)
   {
     v11 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return v10;
 }
 
-- (id)_itemsWithDictionary:(id)a3
+- (id)_itemsWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUILoadMoreDataConsumer _itemsWithDictionary:];
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v4 objectForKey:@"charts"];
+  v6 = [dictionaryCopy objectForKey:@"charts"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count])
   {
@@ -55,8 +55,8 @@
       if (objc_opt_isKindOfClass())
       {
         v21 = v7;
-        v22 = v4;
-        v9 = [v4 objectForKey:@"storePlatformData"];
+        v22 = dictionaryCopy;
+        v9 = [dictionaryCopy objectForKey:@"storePlatformData"];
         v10 = objc_opt_class();
         v11 = SKUIStorePageItemsWithStorePlatformDictionary(v9, 0, v10);
         v23 = 0u;
@@ -97,7 +97,7 @@
           while (v14);
         }
 
-        v4 = v22;
+        dictionaryCopy = v22;
         v8 = v20;
         v7 = v21;
       }

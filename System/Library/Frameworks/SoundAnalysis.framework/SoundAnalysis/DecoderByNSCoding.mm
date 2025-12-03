@@ -1,29 +1,29 @@
 @interface DecoderByNSCoding
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)decodeCMTimeForKey:(SEL)a3;
-- ($E36B78CDAC119E0352F6B513F3BB0FF8)decodeCMTimeRangeForKey:(SEL)a3;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(int64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)decodeObjectForKey:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)decodeCMTimeForKey:(SEL)key;
+- ($E36B78CDAC119E0352F6B513F3BB0FF8)decodeCMTimeRangeForKey:(SEL)key;
+- (const)decodeBytesForKey:(id)key returnedLength:(int64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)decodeObjectForKey:(id)key;
 @end
 
 @implementation DecoderByNSCoding
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(int64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(int64_t *)length
 {
   v6 = sub_1C9A924A8();
   v8 = v7;
-  v9 = self;
-  v10 = sub_1C9983774(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_1C9983774(v6, v8, length);
 
   return v10;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   sub_1C9A924A8();
   v5 = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1C9983A1C(v5, v14);
 
   v7 = v15;
@@ -47,30 +47,30 @@
   return v12;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   sub_1C9A924A8();
-  v4 = self;
+  selfCopy = self;
   sub_1C9983F10();
   v6 = v5;
 
   return v6;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
   sub_1C9A924A8();
-  v4 = self;
+  selfCopy = self;
   sub_1C9983FDC();
   v6 = v5;
 
   return v6;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)decodeCMTimeForKey:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)decodeCMTimeForKey:(SEL)key
 {
   sub_1C9A924A8();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1C99840A8();
   v9 = v8;
   v11 = v10;
@@ -81,11 +81,11 @@
   return result;
 }
 
-- ($E36B78CDAC119E0352F6B513F3BB0FF8)decodeCMTimeRangeForKey:(SEL)a3
+- ($E36B78CDAC119E0352F6B513F3BB0FF8)decodeCMTimeRangeForKey:(SEL)key
 {
   sub_1C9A924A8();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_1C99841B8(v7, v16);
   v9 = v16[0];
   v10 = v16[2];

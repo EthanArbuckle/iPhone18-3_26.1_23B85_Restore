@@ -1,15 +1,15 @@
 @interface HFAnalyticsRecommendationsEnabledEvent
-- (HFAnalyticsRecommendationsEnabledEvent)initWithData:(id)a3;
+- (HFAnalyticsRecommendationsEnabledEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsRecommendationsEnabledEvent
 
-- (HFAnalyticsRecommendationsEnabledEvent)initWithData:(id)a3
+- (HFAnalyticsRecommendationsEnabledEvent)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:@"enabled"];
+  v4 = [dataCopy objectForKeyedSubscript:@"enabled"];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v7 = [v3 objectForKeyedSubscript:@"success"];
+  v7 = [dataCopy objectForKeyedSubscript:@"success"];
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  v10 = [v3 objectForKeyedSubscript:@"rank"];
+  v10 = [dataCopy objectForKeyedSubscript:@"rank"];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -67,7 +67,7 @@
 
   v42 = v12;
   objc_opt_class();
-  v13 = [v3 objectForKeyedSubscript:@"rankInt"];
+  v13 = [dataCopy objectForKeyedSubscript:@"rankInt"];
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -86,7 +86,7 @@
   }
 
   objc_opt_class();
-  v16 = [v3 objectForKeyedSubscript:@"rankVersion"];
+  v16 = [dataCopy objectForKeyedSubscript:@"rankVersion"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -106,7 +106,7 @@
   }
 
   objc_opt_class();
-  v19 = [v3 objectForKeyedSubscript:@"serviceType"];
+  v19 = [dataCopy objectForKeyedSubscript:@"serviceType"];
   if (objc_opt_isKindOfClass())
   {
     v20 = v19;
@@ -121,7 +121,7 @@
   v39 = v20;
 
   objc_opt_class();
-  v21 = [v3 objectForKeyedSubscript:@"accessoryCategory"];
+  v21 = [dataCopy objectForKeyedSubscript:@"accessoryCategory"];
   if (objc_opt_isKindOfClass())
   {
     v22 = v21;
@@ -136,7 +136,7 @@
   v38 = v22;
 
   objc_opt_class();
-  v23 = [v3 objectForKeyedSubscript:@"source"];
+  v23 = [dataCopy objectForKeyedSubscript:@"source"];
   if (objc_opt_isKindOfClass())
   {
     v24 = v23;
@@ -151,7 +151,7 @@
   v37 = v24;
 
   objc_opt_class();
-  v25 = [v3 objectForKeyedSubscript:@"presentationContext"];
+  v25 = [dataCopy objectForKeyedSubscript:@"presentationContext"];
   if (objc_opt_isKindOfClass())
   {
     v26 = v25;
@@ -165,7 +165,7 @@
   v36 = v26;
 
   objc_opt_class();
-  v27 = [v3 objectForKeyedSubscript:@"configurationType"];
+  v27 = [dataCopy objectForKeyedSubscript:@"configurationType"];
   if (objc_opt_isKindOfClass())
   {
     v28 = v27;
@@ -203,8 +203,8 @@
 {
   v22.receiver = self;
   v22.super_class = HFAnalyticsRecommendationsEnabledEvent;
-  v3 = [(HFAnalyticsEvent *)&v22 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v22 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsRecommendationsEnabledEvent enabled](self, "enabled")}];
   [v4 setObject:v5 forKeyedSubscript:@"enabled"];
@@ -223,44 +223,44 @@
   v10 = [MEMORY[0x277CCABB0] numberWithInt:{-[HFAnalyticsRecommendationsEnabledEvent rankVersion](self, "rankVersion")}];
   [v4 setObject:v10 forKeyedSubscript:@"rankVersion"];
 
-  v11 = [(HFAnalyticsRecommendationsEnabledEvent *)self serviceType];
+  serviceType = [(HFAnalyticsRecommendationsEnabledEvent *)self serviceType];
 
-  if (v11)
+  if (serviceType)
   {
-    v12 = [(HFAnalyticsRecommendationsEnabledEvent *)self serviceType];
-    [v4 setObject:v12 forKeyedSubscript:@"serviceType"];
+    serviceType2 = [(HFAnalyticsRecommendationsEnabledEvent *)self serviceType];
+    [v4 setObject:serviceType2 forKeyedSubscript:@"serviceType"];
   }
 
-  v13 = [(HFAnalyticsRecommendationsEnabledEvent *)self accessoryCategory];
+  accessoryCategory = [(HFAnalyticsRecommendationsEnabledEvent *)self accessoryCategory];
 
-  if (v13)
+  if (accessoryCategory)
   {
-    v14 = [(HFAnalyticsRecommendationsEnabledEvent *)self accessoryCategory];
-    [v4 setObject:v14 forKeyedSubscript:@"accessoryCategory"];
+    accessoryCategory2 = [(HFAnalyticsRecommendationsEnabledEvent *)self accessoryCategory];
+    [v4 setObject:accessoryCategory2 forKeyedSubscript:@"accessoryCategory"];
   }
 
-  v15 = [(HFAnalyticsRecommendationsEnabledEvent *)self source];
+  source = [(HFAnalyticsRecommendationsEnabledEvent *)self source];
 
-  if (v15)
+  if (source)
   {
-    v16 = [(HFAnalyticsRecommendationsEnabledEvent *)self source];
-    [v4 setObject:v16 forKeyedSubscript:@"source"];
+    source2 = [(HFAnalyticsRecommendationsEnabledEvent *)self source];
+    [v4 setObject:source2 forKeyedSubscript:@"source"];
   }
 
-  v17 = [(HFAnalyticsRecommendationsEnabledEvent *)self presentationContext];
+  presentationContext = [(HFAnalyticsRecommendationsEnabledEvent *)self presentationContext];
 
-  if (v17)
+  if (presentationContext)
   {
-    v18 = [(HFAnalyticsRecommendationsEnabledEvent *)self presentationContext];
-    [v4 setObject:v18 forKeyedSubscript:@"presentationContext"];
+    presentationContext2 = [(HFAnalyticsRecommendationsEnabledEvent *)self presentationContext];
+    [v4 setObject:presentationContext2 forKeyedSubscript:@"presentationContext"];
   }
 
-  v19 = [(HFAnalyticsRecommendationsEnabledEvent *)self configurationType];
+  configurationType = [(HFAnalyticsRecommendationsEnabledEvent *)self configurationType];
 
-  if (v19)
+  if (configurationType)
   {
-    v20 = [(HFAnalyticsRecommendationsEnabledEvent *)self configurationType];
-    [v4 setObject:v20 forKeyedSubscript:@"configurationType"];
+    configurationType2 = [(HFAnalyticsRecommendationsEnabledEvent *)self configurationType];
+    [v4 setObject:configurationType2 forKeyedSubscript:@"configurationType"];
   }
 
   return v4;

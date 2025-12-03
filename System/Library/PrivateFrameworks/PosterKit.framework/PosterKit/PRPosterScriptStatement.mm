@@ -1,77 +1,77 @@
 @interface PRPosterScriptStatement
-+ (PRPosterScriptStatement)statementWithDeviceMotion:(uint64_t)a3 duration:(_OWORD *)a4;
++ (PRPosterScriptStatement)statementWithDeviceMotion:(uint64_t)motion duration:(_OWORD *)duration;
 + (id)renderingEnvironmentOverrideClasses;
-+ (id)statementWithDuration:(double)a3;
-+ (id)statementWithRenderingEnvironmentOverrides:(id)a3 duration:(double)a4;
-+ (id)statementWithRenderingEvent:(id)a3 duration:(double)a4;
-+ (id)statementWithSignificantEvent:(unint64_t)a3 significantEventsCounter:(unint64_t)a4 duration:(double)a5;
++ (id)statementWithDuration:(double)duration;
++ (id)statementWithRenderingEnvironmentOverrides:(id)overrides duration:(double)duration;
++ (id)statementWithRenderingEvent:(id)event duration:(double)duration;
++ (id)statementWithSignificantEvent:(unint64_t)event significantEventsCounter:(unint64_t)counter duration:(double)duration;
 - (NSString)description;
 - (PRPosterScriptStatement)init;
-- (PRPosterScriptStatement)initWithBSXPCCoder:(id)a3;
-- (PRPosterScriptStatement)initWithCoder:(id)a3;
-- (PRPosterScriptStatement)initWithRenderingEnvironmentOverrides:(id)a3 renderingEvent:(id)a4 significantEvent:(unint64_t)a5 duration:(double)a6;
+- (PRPosterScriptStatement)initWithBSXPCCoder:(id)coder;
+- (PRPosterScriptStatement)initWithCoder:(id)coder;
+- (PRPosterScriptStatement)initWithRenderingEnvironmentOverrides:(id)overrides renderingEvent:(id)event significantEvent:(unint64_t)significantEvent duration:(double)duration;
 - (PRPosterTransition)transition;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)renderingOverridesForEnvironment:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)renderingOverridesForEnvironment:(id)environment;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterScriptStatement
 
-+ (id)statementWithSignificantEvent:(unint64_t)a3 significantEventsCounter:(unint64_t)a4 duration:(double)a5
++ (id)statementWithSignificantEvent:(unint64_t)event significantEventsCounter:(unint64_t)counter duration:(double)duration
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v8 = [PRPosterScriptStatement alloc];
   v13 = @"significantEventsCounter";
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:counter];
   v14[0] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v11 = [(PRPosterScriptStatement *)v8 initWithRenderingEnvironmentOverrides:v10 renderingEvent:0 significantEvent:a3 duration:a5];
+  v11 = [(PRPosterScriptStatement *)v8 initWithRenderingEnvironmentOverrides:v10 renderingEvent:0 significantEvent:event duration:duration];
 
   return v11;
 }
 
-+ (PRPosterScriptStatement)statementWithDeviceMotion:(uint64_t)a3 duration:(_OWORD *)a4
++ (PRPosterScriptStatement)statementWithDeviceMotion:(uint64_t)motion duration:(_OWORD *)duration
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v6 = [PRPosterScriptStatement alloc];
   v13[0] = @"effectiveMotionEffectsMode";
   v13[1] = @"deviceMotionRotation";
   v14[0] = &unk_1F1C6BAD0;
-  v7 = a4[1];
-  v12[0] = *a4;
+  v7 = duration[1];
+  v12[0] = *duration;
   v12[1] = v7;
   v8 = [MEMORY[0x1E69C5110] serializedRepresentationFromRotation:v12];
   v14[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v10 = [(PRPosterScriptStatement *)v6 initWithRenderingEnvironmentOverrides:v9 renderingEvent:0 significantEvent:0 duration:a1];
+  v10 = [(PRPosterScriptStatement *)v6 initWithRenderingEnvironmentOverrides:v9 renderingEvent:0 significantEvent:0 duration:self];
 
   return v10;
 }
 
-+ (id)statementWithRenderingEvent:(id)a3 duration:(double)a4
++ (id)statementWithRenderingEvent:(id)event duration:(double)duration
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [PRPosterScriptStatement alloc];
-  v7 = [(PRPosterScriptStatement *)v6 initWithRenderingEnvironmentOverrides:MEMORY[0x1E695E0F8] renderingEvent:v5 significantEvent:0 duration:a4];
+  v7 = [(PRPosterScriptStatement *)v6 initWithRenderingEnvironmentOverrides:MEMORY[0x1E695E0F8] renderingEvent:eventCopy significantEvent:0 duration:duration];
 
   return v7;
 }
 
-+ (id)statementWithDuration:(double)a3
++ (id)statementWithDuration:(double)duration
 {
   v4 = [PRPosterScriptStatement alloc];
-  v5 = [(PRPosterScriptStatement *)v4 initWithRenderingEnvironmentOverrides:MEMORY[0x1E695E0F8] renderingEvent:0 significantEvent:0 duration:a3];
+  v5 = [(PRPosterScriptStatement *)v4 initWithRenderingEnvironmentOverrides:MEMORY[0x1E695E0F8] renderingEvent:0 significantEvent:0 duration:duration];
 
   return v5;
 }
 
-+ (id)statementWithRenderingEnvironmentOverrides:(id)a3 duration:(double)a4
++ (id)statementWithRenderingEnvironmentOverrides:(id)overrides duration:(double)duration
 {
-  v5 = a3;
-  v6 = [[PRPosterScriptStatement alloc] initWithRenderingEnvironmentOverrides:v5 renderingEvent:0 significantEvent:0 duration:a4];
+  overridesCopy = overrides;
+  v6 = [[PRPosterScriptStatement alloc] initWithRenderingEnvironmentOverrides:overridesCopy renderingEvent:0 significantEvent:0 duration:duration];
 
   return v6;
 }
@@ -83,11 +83,11 @@
   return 0;
 }
 
-- (PRPosterScriptStatement)initWithRenderingEnvironmentOverrides:(id)a3 renderingEvent:(id)a4 significantEvent:(unint64_t)a5 duration:(double)a6
+- (PRPosterScriptStatement)initWithRenderingEnvironmentOverrides:(id)overrides renderingEvent:(id)event significantEvent:(unint64_t)significantEvent duration:(double)duration
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v11)
+  overridesCopy = overrides;
+  eventCopy = event;
+  if (!overridesCopy)
   {
     [PRPosterScriptStatement initWithRenderingEnvironmentOverrides:a2 renderingEvent:self significantEvent:? duration:?];
   }
@@ -97,7 +97,7 @@
   v13 = [(PRPosterScriptStatement *)&v18 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [overridesCopy copy];
     v15 = v14;
     if (v14)
     {
@@ -111,9 +111,9 @@
 
     objc_storeStrong(&v13->_renderingEnvironmentOverrides, v16);
 
-    v13->_duration = a6;
-    v13->_significantEvent = a5;
-    objc_storeStrong(&v13->_renderingEvent, a4);
+    v13->_duration = duration;
+    v13->_significantEvent = significantEvent;
+    objc_storeStrong(&v13->_renderingEvent, event);
     if (v13->_duration < 0.0)
     {
       v13->_duration = 1.0;
@@ -130,7 +130,7 @@
   v8 = 3221225472;
   v9 = __38__PRPosterScriptStatement_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -139,16 +139,16 @@
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v9 = a3;
-  v4 = [v9 appendDouble:@"duration" withName:2 decimalPrecision:self->_duration];
-  v5 = [v9 appendObject:self->_renderingEnvironmentOverrides withName:@"renderingEnvironmentOverrides" skipIfNil:1];
-  v6 = [v9 appendObject:self->_renderingEvent withName:@"renderingEvent" skipIfNil:1];
+  streamCopy = stream;
+  v4 = [streamCopy appendDouble:@"duration" withName:2 decimalPrecision:self->_duration];
+  v5 = [streamCopy appendObject:self->_renderingEnvironmentOverrides withName:@"renderingEnvironmentOverrides" skipIfNil:1];
+  v6 = [streamCopy appendObject:self->_renderingEvent withName:@"renderingEvent" skipIfNil:1];
   significantEvent = self->_significantEvent;
   if (significantEvent)
   {
-    v8 = [v9 appendInteger:significantEvent withName:@"significantEvent"];
+    v8 = [streamCopy appendInteger:significantEvent withName:@"significantEvent"];
   }
 }
 
@@ -194,10 +194,10 @@ void __62__PRPosterScriptStatement_renderingEnvironmentOverrideClasses__block_in
   return v3;
 }
 
-- (id)renderingOverridesForEnvironment:(id)a3
+- (id)renderingOverridesForEnvironment:(id)environment
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [kDefaultOverridesForMovies mutableCopy];
   v6 = v5;
   if (v5)
@@ -215,9 +215,9 @@ void __62__PRPosterScriptStatement_renderingEnvironmentOverrideClasses__block_in
   [v8 addEntriesFromDictionary:self->_renderingEnvironmentOverrides];
   if (self->_significantEvent)
   {
-    v9 = [v4 significantEventsCounter];
+    significantEventsCounter = [environmentCopy significantEventsCounter];
     v13 = @"significantEventsCounter";
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v9 + 1];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:significantEventsCounter + 1];
     v14[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     [v8 addEntriesFromDictionary:v11];
@@ -226,9 +226,9 @@ void __62__PRPosterScriptStatement_renderingEnvironmentOverrideClasses__block_in
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PRPosterScriptStatement allocWithZone:a3];
+  v4 = [PRPosterScriptStatement allocWithZone:zone];
   renderingEnvironmentOverrides = self->_renderingEnvironmentOverrides;
   renderingEvent = self->_renderingEvent;
   significantEvent = self->_significantEvent;
@@ -237,37 +237,37 @@ void __62__PRPosterScriptStatement_renderingEnvironmentOverrideClasses__block_in
   return [(PRPosterScriptStatement *)v4 initWithRenderingEnvironmentOverrides:renderingEnvironmentOverrides renderingEvent:renderingEvent significantEvent:significantEvent duration:duration];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   duration = self->_duration;
-  v5 = a3;
-  [v5 encodeDouble:@"_duration" forKey:duration];
-  [v5 encodeInteger:self->_significantEvent forKey:@"_significantEvent"];
-  [v5 encodeObject:self->_renderingEvent forKey:@"_renderingEvent"];
-  [v5 encodeObject:self->_renderingEnvironmentOverrides forKey:@"_renderingEnvironmentOverrides"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_duration" forKey:duration];
+  [coderCopy encodeInteger:self->_significantEvent forKey:@"_significantEvent"];
+  [coderCopy encodeObject:self->_renderingEvent forKey:@"_renderingEvent"];
+  [coderCopy encodeObject:self->_renderingEnvironmentOverrides forKey:@"_renderingEnvironmentOverrides"];
 }
 
-- (PRPosterScriptStatement)initWithCoder:(id)a3
+- (PRPosterScriptStatement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"_duration"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"_duration"];
   v6 = v5;
-  v7 = [objc_opt_class() renderingEnvironmentOverrideClasses];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"_renderingEnvironmentOverrides"];
+  renderingEnvironmentOverrideClasses = [objc_opt_class() renderingEnvironmentOverrideClasses];
+  v8 = [coderCopy decodeObjectOfClasses:renderingEnvironmentOverrideClasses forKey:@"_renderingEnvironmentOverrides"];
 
-  v9 = [v4 decodeIntegerForKey:@"_significantEvent"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_renderingEvent"];
+  v9 = [coderCopy decodeIntegerForKey:@"_significantEvent"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_renderingEvent"];
 
   v11 = [(PRPosterScriptStatement *)self initWithRenderingEnvironmentOverrides:v8 renderingEvent:v10 significantEvent:v9 duration:v6];
   return v11;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeDouble:@"_duration" forKey:self->_duration];
-  [v6 encodeUInt64:self->_significantEvent forKey:@"_significantEvent"];
-  [v6 encodeObject:self->_renderingEvent forKey:@"_renderingEvent"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_duration" forKey:self->_duration];
+  [coderCopy encodeUInt64:self->_significantEvent forKey:@"_significantEvent"];
+  [coderCopy encodeObject:self->_renderingEvent forKey:@"_renderingEvent"];
   if ([(NSDictionary *)self->_renderingEnvironmentOverrides count])
   {
     v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_renderingEnvironmentOverrides requiringSecureCoding:1 error:0];
@@ -276,27 +276,27 @@ void __62__PRPosterScriptStatement_renderingEnvironmentOverrideClasses__block_in
       [(PRPosterScriptStatement *)a2 encodeWithBSXPCCoder:?];
     }
 
-    [v6 encodeObject:v5 forKey:@"_renderingEnvironmentOverrides"];
+    [coderCopy encodeObject:v5 forKey:@"_renderingEnvironmentOverrides"];
   }
 }
 
-- (PRPosterScriptStatement)initWithBSXPCCoder:(id)a3
+- (PRPosterScriptStatement)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"_duration"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"_duration"];
   v6 = v5;
-  v7 = [v4 decodeUInt64ForKey:@"_significantEvent"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_renderingEvent"];
+  v7 = [coderCopy decodeUInt64ForKey:@"_significantEvent"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_renderingEvent"];
   v9 = objc_opt_self();
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"_renderingEnvironmentOverrides"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"_renderingEnvironmentOverrides"];
 
   v11 = [v10 length];
   v12 = MEMORY[0x1E695E0F8];
   if (v11)
   {
     v13 = MEMORY[0x1E696ACD0];
-    v14 = [objc_opt_class() renderingEnvironmentOverrideClasses];
-    v15 = [v13 unarchivedObjectOfClasses:v14 fromData:v10 error:0];
+    renderingEnvironmentOverrideClasses = [objc_opt_class() renderingEnvironmentOverrideClasses];
+    v15 = [v13 unarchivedObjectOfClasses:renderingEnvironmentOverrideClasses fromData:v10 error:0];
     v16 = v15;
     if (v15)
     {

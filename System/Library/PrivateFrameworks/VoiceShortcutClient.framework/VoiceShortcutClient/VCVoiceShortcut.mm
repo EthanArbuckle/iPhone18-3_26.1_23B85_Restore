@@ -1,71 +1,71 @@
 @interface VCVoiceShortcut
 - (BOOL)hasBeenModified;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (VCVoiceShortcut)initWithCoder:(id)a3;
-- (VCVoiceShortcut)initWithIdentifier:(id)a3 phrase:(id)a4 shortcutName:(id)a5 shortcutDescription:(id)a6 associatedAppBundleIdentifier:(id)a7 dateCreated:(id)a8 dateLastModified:(id)a9 lastRunDate:(id)a10 runEventsCount:(id)a11 shortcut:(id)a12 keyImageData:(id)a13 error:(id *)a14;
+- (VCVoiceShortcut)initWithCoder:(id)coder;
+- (VCVoiceShortcut)initWithIdentifier:(id)identifier phrase:(id)phrase shortcutName:(id)name shortcutDescription:(id)description associatedAppBundleIdentifier:(id)bundleIdentifier dateCreated:(id)created dateLastModified:(id)modified lastRunDate:(id)self0 runEventsCount:(id)self1 shortcut:(id)self2 keyImageData:(id)self3 error:(id *)self4;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VCVoiceShortcut
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(VCVoiceShortcut *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(VCVoiceShortcut *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(VCVoiceShortcut *)self phrase];
-  [v4 encodeObject:v6 forKey:@"phrase"];
+  phrase = [(VCVoiceShortcut *)self phrase];
+  [coderCopy encodeObject:phrase forKey:@"phrase"];
 
-  v7 = [(VCVoiceShortcut *)self shortcutName];
-  [v4 encodeObject:v7 forKey:@"shortcutName"];
+  shortcutName = [(VCVoiceShortcut *)self shortcutName];
+  [coderCopy encodeObject:shortcutName forKey:@"shortcutName"];
 
-  v8 = [(VCVoiceShortcut *)self shortcutDescription];
-  [v4 encodeObject:v8 forKey:@"shortcutDescription"];
+  shortcutDescription = [(VCVoiceShortcut *)self shortcutDescription];
+  [coderCopy encodeObject:shortcutDescription forKey:@"shortcutDescription"];
 
-  v9 = [(VCVoiceShortcut *)self associatedAppBundleIdentifier];
-  [v4 encodeObject:v9 forKey:@"associatedAppBundleIdentifier"];
+  associatedAppBundleIdentifier = [(VCVoiceShortcut *)self associatedAppBundleIdentifier];
+  [coderCopy encodeObject:associatedAppBundleIdentifier forKey:@"associatedAppBundleIdentifier"];
 
-  v10 = [(VCVoiceShortcut *)self dateCreated];
-  [v4 encodeObject:v10 forKey:@"dateCreated"];
+  dateCreated = [(VCVoiceShortcut *)self dateCreated];
+  [coderCopy encodeObject:dateCreated forKey:@"dateCreated"];
 
-  v11 = [(VCVoiceShortcut *)self dateLastModified];
-  [v4 encodeObject:v11 forKey:@"dateLastModified"];
+  dateLastModified = [(VCVoiceShortcut *)self dateLastModified];
+  [coderCopy encodeObject:dateLastModified forKey:@"dateLastModified"];
 
-  v12 = [(VCVoiceShortcut *)self lastRunDate];
-  [v4 encodeObject:v12 forKey:@"lastRunDate"];
+  lastRunDate = [(VCVoiceShortcut *)self lastRunDate];
+  [coderCopy encodeObject:lastRunDate forKey:@"lastRunDate"];
 
-  v13 = [(VCVoiceShortcut *)self runEventsCount];
-  [v4 encodeObject:v13 forKey:@"runEventsCount"];
+  runEventsCount = [(VCVoiceShortcut *)self runEventsCount];
+  [coderCopy encodeObject:runEventsCount forKey:@"runEventsCount"];
 
-  v14 = [(VCVoiceShortcut *)self keyImage];
-  v15 = [v14 _imageData];
-  [v4 encodeObject:v15 forKey:@"keyImageData"];
+  keyImage = [(VCVoiceShortcut *)self keyImage];
+  _imageData = [keyImage _imageData];
+  [coderCopy encodeObject:_imageData forKey:@"keyImageData"];
 
-  v16 = [(VCVoiceShortcut *)self shortcut];
-  [v4 encodeObject:v16 forKey:@"shortcut"];
+  shortcut = [(VCVoiceShortcut *)self shortcut];
+  [coderCopy encodeObject:shortcut forKey:@"shortcut"];
 }
 
-- (VCVoiceShortcut)initWithCoder:(id)a3
+- (VCVoiceShortcut)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcutName"];
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcutDescription"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phrase"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcutName"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcutDescription"];
   v7 = v5;
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedAppBundleIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateLastModified"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastRunDate"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runEventsCount"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyImageData"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedAppBundleIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateLastModified"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastRunDate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runEventsCount"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyImageData"];
 
-  v14 = 0;
+  selfCopy = 0;
   if (v7 && v6 && v23 && v8 && v9)
   {
     v24 = 0;
@@ -89,11 +89,11 @@
 
     self = v15;
 
-    v14 = self;
+    selfCopy = self;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -101,24 +101,24 @@
   v16 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v15 = NSStringFromClass(v3);
-  v14 = [(VCVoiceShortcut *)self identifier];
-  v4 = [(VCVoiceShortcut *)self phrase];
-  v5 = [(VCVoiceShortcut *)self shortcutName];
-  v6 = [(VCVoiceShortcut *)self shortcutDescription];
-  v7 = [(VCVoiceShortcut *)self associatedAppBundleIdentifier];
-  v8 = [(VCVoiceShortcut *)self dateCreated];
-  v9 = [(VCVoiceShortcut *)self dateLastModified];
-  v10 = [(VCVoiceShortcut *)self lastRunDate];
-  v11 = [(VCVoiceShortcut *)self runEventsCount];
-  v12 = [v16 stringWithFormat:@"<%@ %p\nidentifier: %@\nphrase: %@\nshortcutName: %@\nshortcutDescription: %@\nassociatedAppBundleIdentifier: %@\ndateCreated: %@\ndateLastModified: %@\nlastRunDate: %@\nrunEventsCount: %@>", v15, self, v14, v4, v5, v6, v7, v8, v9, v10, v11];
+  identifier = [(VCVoiceShortcut *)self identifier];
+  phrase = [(VCVoiceShortcut *)self phrase];
+  shortcutName = [(VCVoiceShortcut *)self shortcutName];
+  shortcutDescription = [(VCVoiceShortcut *)self shortcutDescription];
+  associatedAppBundleIdentifier = [(VCVoiceShortcut *)self associatedAppBundleIdentifier];
+  dateCreated = [(VCVoiceShortcut *)self dateCreated];
+  dateLastModified = [(VCVoiceShortcut *)self dateLastModified];
+  lastRunDate = [(VCVoiceShortcut *)self lastRunDate];
+  runEventsCount = [(VCVoiceShortcut *)self runEventsCount];
+  v12 = [v16 stringWithFormat:@"<%@ %p\nidentifier: %@\nphrase: %@\nshortcutName: %@\nshortcutDescription: %@\nassociatedAppBundleIdentifier: %@\ndateCreated: %@\ndateLastModified: %@\nlastRunDate: %@\nrunEventsCount: %@>", v15, self, identifier, phrase, shortcutName, shortcutDescription, associatedAppBundleIdentifier, dateCreated, dateLastModified, lastRunDate, runEventsCount];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -128,10 +128,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VCVoiceShortcut *)self identifier];
-      v7 = [(VCVoiceShortcut *)v5 identifier];
-      if (![v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifier = [(VCVoiceShortcut *)self identifier];
+      identifier2 = [(VCVoiceShortcut *)v5 identifier];
+      if (![identifier isEqualToString:identifier2])
       {
         v14 = 0;
 LABEL_44:
@@ -139,9 +139,9 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v8 = [(VCVoiceShortcut *)self phrase];
-      v9 = [(VCVoiceShortcut *)v5 phrase];
-      if (![v8 isEqualToString:v9])
+      phrase = [(VCVoiceShortcut *)self phrase];
+      phrase2 = [(VCVoiceShortcut *)v5 phrase];
+      if (![phrase isEqualToString:phrase2])
       {
         v14 = 0;
 LABEL_43:
@@ -149,9 +149,9 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v10 = [(VCVoiceShortcut *)self shortcutName];
-      v11 = [(VCVoiceShortcut *)v5 shortcutName];
-      if (![v10 isEqual:v11])
+      shortcutName = [(VCVoiceShortcut *)self shortcutName];
+      shortcutName2 = [(VCVoiceShortcut *)v5 shortcutName];
+      if (![shortcutName isEqual:shortcutName2])
       {
         v14 = 0;
 LABEL_42:
@@ -159,52 +159,52 @@ LABEL_42:
         goto LABEL_43;
       }
 
-      v12 = [(VCVoiceShortcut *)self shortcutDescription];
-      v47 = [(VCVoiceShortcut *)v5 shortcutDescription];
-      v48 = v12;
-      if (v12 == v47)
+      shortcutDescription = [(VCVoiceShortcut *)self shortcutDescription];
+      shortcutDescription2 = [(VCVoiceShortcut *)v5 shortcutDescription];
+      v48 = shortcutDescription;
+      if (shortcutDescription == shortcutDescription2)
       {
-        v46 = v10;
+        v46 = shortcutName;
       }
 
       else
       {
-        v13 = [(VCVoiceShortcut *)self shortcutDescription];
-        v44 = [(VCVoiceShortcut *)v5 shortcutDescription];
-        v45 = v13;
-        if (![v13 isEqual:v44])
+        shortcutDescription3 = [(VCVoiceShortcut *)self shortcutDescription];
+        shortcutDescription4 = [(VCVoiceShortcut *)v5 shortcutDescription];
+        v45 = shortcutDescription3;
+        if (![shortcutDescription3 isEqual:shortcutDescription4])
         {
           v14 = 0;
           goto LABEL_40;
         }
 
-        v46 = v10;
+        v46 = shortcutName;
       }
 
-      v15 = [(VCVoiceShortcut *)self associatedAppBundleIdentifier];
-      v16 = [(VCVoiceShortcut *)v5 associatedAppBundleIdentifier];
-      if (![v15 isEqual:v16])
+      associatedAppBundleIdentifier = [(VCVoiceShortcut *)self associatedAppBundleIdentifier];
+      associatedAppBundleIdentifier2 = [(VCVoiceShortcut *)v5 associatedAppBundleIdentifier];
+      if (![associatedAppBundleIdentifier isEqual:associatedAppBundleIdentifier2])
       {
 
         v14 = 0;
         goto LABEL_39;
       }
 
-      v41 = v16;
-      v42 = v11;
-      v43 = v15;
-      v17 = [(VCVoiceShortcut *)self dateCreated];
+      v41 = associatedAppBundleIdentifier2;
+      v42 = shortcutName2;
+      v43 = associatedAppBundleIdentifier;
+      dateCreated = [(VCVoiceShortcut *)self dateCreated];
       [(VCVoiceShortcut *)v5 dateCreated];
-      v19 = v18 = v17;
-      if (![v17 isEqual:?])
+      v19 = v18 = dateCreated;
+      if (![dateCreated isEqual:?])
       {
         v14 = 0;
-        v11 = v42;
+        shortcutName2 = v42;
 LABEL_38:
 
 LABEL_39:
-        v10 = v46;
-        if (v48 == v47)
+        shortcutName = v46;
+        if (v48 == shortcutDescription2)
         {
 LABEL_41:
 
@@ -216,52 +216,52 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v20 = [(VCVoiceShortcut *)self dateLastModified];
-      v39 = [(VCVoiceShortcut *)v5 dateLastModified];
-      v40 = v20;
-      if (![v20 isEqual:?])
+      dateLastModified = [(VCVoiceShortcut *)self dateLastModified];
+      dateLastModified2 = [(VCVoiceShortcut *)v5 dateLastModified];
+      v40 = dateLastModified;
+      if (![dateLastModified isEqual:?])
       {
         v14 = 0;
-        v11 = v42;
+        shortcutName2 = v42;
 LABEL_37:
 
         goto LABEL_38;
       }
 
-      v21 = [(VCVoiceShortcut *)self lastRunDate];
-      v37 = [(VCVoiceShortcut *)v5 lastRunDate];
-      v38 = v21;
-      if (![v21 isEqual:?])
+      lastRunDate = [(VCVoiceShortcut *)self lastRunDate];
+      lastRunDate2 = [(VCVoiceShortcut *)v5 lastRunDate];
+      v38 = lastRunDate;
+      if (![lastRunDate isEqual:?])
       {
         v14 = 0;
-        v11 = v42;
+        shortcutName2 = v42;
 LABEL_36:
 
         goto LABEL_37;
       }
 
-      v22 = [(VCVoiceShortcut *)self runEventsCount];
-      v35 = [(VCVoiceShortcut *)v5 runEventsCount];
-      v36 = v22;
-      if (![v22 isEqual:?])
+      runEventsCount = [(VCVoiceShortcut *)self runEventsCount];
+      runEventsCount2 = [(VCVoiceShortcut *)v5 runEventsCount];
+      v36 = runEventsCount;
+      if (![runEventsCount isEqual:?])
       {
         v14 = 0;
-        v11 = v42;
+        shortcutName2 = v42;
 LABEL_35:
 
         goto LABEL_36;
       }
 
-      v23 = [(VCVoiceShortcut *)self shortcut];
-      v33 = [(VCVoiceShortcut *)v5 shortcut];
-      v34 = v23;
-      v24 = v23 == v33;
-      v11 = v42;
+      shortcut = [(VCVoiceShortcut *)self shortcut];
+      shortcut2 = [(VCVoiceShortcut *)v5 shortcut];
+      v34 = shortcut;
+      v24 = shortcut == shortcut2;
+      shortcutName2 = v42;
       if (v24 || (-[VCVoiceShortcut shortcut](self, "shortcut"), v31 = objc_claimAutoreleasedReturnValue(), -[VCVoiceShortcut shortcut](v5, "shortcut"), v30 = objc_claimAutoreleasedReturnValue(), [v31 isEqual:?]))
       {
-        v32 = [(VCVoiceShortcut *)self keyImage];
-        v25 = [(VCVoiceShortcut *)v5 keyImage];
-        if (v32 == v25)
+        keyImage = [(VCVoiceShortcut *)self keyImage];
+        keyImage2 = [(VCVoiceShortcut *)v5 keyImage];
+        if (keyImage == keyImage2)
         {
 
           v14 = 1;
@@ -269,13 +269,13 @@ LABEL_35:
 
         else
         {
-          v29 = v25;
-          v28 = [(VCVoiceShortcut *)self keyImage];
-          v27 = [(VCVoiceShortcut *)v5 keyImage];
-          v14 = [v28 isEqual:v27];
+          v29 = keyImage2;
+          keyImage3 = [(VCVoiceShortcut *)self keyImage];
+          keyImage4 = [(VCVoiceShortcut *)v5 keyImage];
+          v14 = [keyImage3 isEqual:keyImage4];
         }
 
-        if (v34 == v33)
+        if (v34 == shortcut2)
         {
           goto LABEL_34;
         }
@@ -300,81 +300,81 @@ LABEL_45:
 
 - (unint64_t)hash
 {
-  v3 = [(VCVoiceShortcut *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(VCVoiceShortcut *)self shortcut];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(VCVoiceShortcut *)self dateLastModified];
-  v8 = [v7 hash];
+  identifier = [(VCVoiceShortcut *)self identifier];
+  v4 = [identifier hash];
+  shortcut = [(VCVoiceShortcut *)self shortcut];
+  v6 = [shortcut hash] ^ v4;
+  dateLastModified = [(VCVoiceShortcut *)self dateLastModified];
+  v8 = [dateLastModified hash];
 
   return v6 ^ v8;
 }
 
 - (BOOL)hasBeenModified
 {
-  v3 = [(VCVoiceShortcut *)self dateCreated];
-  v4 = [(VCVoiceShortcut *)self dateLastModified];
-  v5 = [v3 compare:v4] == -1;
+  dateCreated = [(VCVoiceShortcut *)self dateCreated];
+  dateLastModified = [(VCVoiceShortcut *)self dateLastModified];
+  v5 = [dateCreated compare:dateLastModified] == -1;
 
   return v5;
 }
 
-- (VCVoiceShortcut)initWithIdentifier:(id)a3 phrase:(id)a4 shortcutName:(id)a5 shortcutDescription:(id)a6 associatedAppBundleIdentifier:(id)a7 dateCreated:(id)a8 dateLastModified:(id)a9 lastRunDate:(id)a10 runEventsCount:(id)a11 shortcut:(id)a12 keyImageData:(id)a13 error:(id *)a14
+- (VCVoiceShortcut)initWithIdentifier:(id)identifier phrase:(id)phrase shortcutName:(id)name shortcutDescription:(id)description associatedAppBundleIdentifier:(id)bundleIdentifier dateCreated:(id)created dateLastModified:(id)modified lastRunDate:(id)self0 runEventsCount:(id)self1 shortcut:(id)self2 keyImageData:(id)self3 error:(id *)self4
 {
   v76 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a4;
-  v68 = a5;
-  v66 = a6;
-  v22 = a7;
-  v23 = a8;
-  v67 = a9;
-  v24 = self;
-  v64 = a10;
-  v63 = a11;
-  v25 = a12;
-  v62 = a13;
-  if (![v20 length])
+  identifierCopy = identifier;
+  phraseCopy = phrase;
+  nameCopy = name;
+  descriptionCopy = description;
+  bundleIdentifierCopy = bundleIdentifier;
+  createdCopy = created;
+  modifiedCopy = modified;
+  selfCopy = self;
+  dateCopy = date;
+  countCopy = count;
+  shortcutCopy = shortcut;
+  dataCopy = data;
+  if (![identifierCopy length])
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v54 = v53 = v23;
+    v54 = v53 = createdCopy;
     [v54 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"identifier.length"}];
 
-    v23 = v53;
+    createdCopy = v53;
   }
 
-  if (![v21 length])
+  if (![phraseCopy length])
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v56 = v55 = v23;
+    v56 = v55 = createdCopy;
     [v56 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"phrase.length"}];
 
-    v23 = v55;
+    createdCopy = v55;
   }
 
-  if (![v68 length])
+  if (![nameCopy length])
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v58 = v57 = v23;
+    v58 = v57 = createdCopy;
     [v58 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"shortcutName.length"}];
 
-    v23 = v57;
+    createdCopy = v57;
   }
 
-  v65 = v23;
-  if (!v23)
+  v65 = createdCopy;
+  if (!createdCopy)
   {
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"dateCreated"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"dateCreated"}];
   }
 
-  if (!v67)
+  if (!modifiedCopy)
   {
-    v60 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v60 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"dateLastModified"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCVoiceShortcut.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"dateLastModified"}];
   }
 
-  v26 = v20;
+  v26 = identifierCopy;
   v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v26];
   if (v27)
   {
@@ -390,28 +390,28 @@ LABEL_45:
   v30 = v28;
   if (!v27)
   {
-    if (!a14)
+    if (!error)
     {
       goto LABEL_28;
     }
 
     v49 = v30;
     v48 = 0;
-    *a14 = v30;
+    *error = v30;
 LABEL_29:
-    v38 = v66;
-    v45 = v62;
+    v38 = descriptionCopy;
+    v45 = dataCopy;
     goto LABEL_30;
   }
 
-  if (![v22 length])
+  if (![bundleIdentifierCopy length])
   {
-    v31 = [v25 _associatedAppBundleIdentifier];
+    _associatedAppBundleIdentifier = [shortcutCopy _associatedAppBundleIdentifier];
 
-    v22 = v31;
+    bundleIdentifierCopy = _associatedAppBundleIdentifier;
   }
 
-  if (![v22 length])
+  if (![bundleIdentifierCopy length])
   {
     v50 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
@@ -419,26 +419,26 @@ LABEL_29:
       *buf = 136315650;
       v71 = "[VCVoiceShortcut initWithIdentifier:phrase:shortcutName:shortcutDescription:associatedAppBundleIdentifier:dateCreated:dateLastModified:lastRunDate:runEventsCount:shortcut:keyImageData:error:]";
       v72 = 2114;
-      v73 = v25;
+      v73 = shortcutCopy;
       v74 = 2114;
       v75 = @"an associatedAppBundleIdentifier is required on the shortcut";
       _os_log_impl(&dword_1B1DE3000, v50, OS_LOG_TYPE_ERROR, "%s Failed to init VCVoiceShortcut with shortcut=%{public}@ because %{public}@", buf, 0x20u);
     }
 
-    if (!a14)
+    if (!error)
     {
       goto LABEL_28;
     }
 
     [MEMORY[0x1E696ABC0] vc_voiceShortcutErrorWithCode:1009 reason:{@"%@", @"an associatedAppBundleIdentifier is required on the shortcut"}];
-    *a14 = v48 = 0;
+    *error = v48 = 0;
     goto LABEL_29;
   }
 
   v69.receiver = self;
   v69.super_class = VCVoiceShortcut;
-  v24 = [(VCVoiceShortcut *)&v69 init];
-  if (!v24)
+  selfCopy = [(VCVoiceShortcut *)&v69 init];
+  if (!selfCopy)
   {
 LABEL_28:
     v48 = 0;
@@ -446,46 +446,46 @@ LABEL_28:
   }
 
   v32 = [v26 copy];
-  identifier = v24->_identifier;
-  v24->_identifier = v32;
+  identifier = selfCopy->_identifier;
+  selfCopy->_identifier = v32;
 
-  v34 = [v21 copy];
-  phrase = v24->_phrase;
-  v24->_phrase = v34;
+  v34 = [phraseCopy copy];
+  phrase = selfCopy->_phrase;
+  selfCopy->_phrase = v34;
 
-  v36 = [v68 copy];
-  shortcutName = v24->_shortcutName;
-  v24->_shortcutName = v36;
+  v36 = [nameCopy copy];
+  shortcutName = selfCopy->_shortcutName;
+  selfCopy->_shortcutName = v36;
 
-  v38 = v66;
-  v39 = [v66 copy];
-  shortcutDescription = v24->_shortcutDescription;
-  v24->_shortcutDescription = v39;
+  v38 = descriptionCopy;
+  v39 = [descriptionCopy copy];
+  shortcutDescription = selfCopy->_shortcutDescription;
+  selfCopy->_shortcutDescription = v39;
 
-  v41 = [v22 copy];
-  associatedAppBundleIdentifier = v24->_associatedAppBundleIdentifier;
-  v24->_associatedAppBundleIdentifier = v41;
+  v41 = [bundleIdentifierCopy copy];
+  associatedAppBundleIdentifier = selfCopy->_associatedAppBundleIdentifier;
+  selfCopy->_associatedAppBundleIdentifier = v41;
 
-  objc_storeStrong(&v24->_dateCreated, a8);
-  objc_storeStrong(&v24->_dateLastModified, a9);
-  objc_storeStrong(&v24->_lastRunDate, a10);
-  objc_storeStrong(&v24->_runEventsCount, a11);
-  v43 = [v25 copy];
-  shortcut = v24->_shortcut;
-  v24->_shortcut = v43;
+  objc_storeStrong(&selfCopy->_dateCreated, created);
+  objc_storeStrong(&selfCopy->_dateLastModified, modified);
+  objc_storeStrong(&selfCopy->_lastRunDate, date);
+  objc_storeStrong(&selfCopy->_runEventsCount, count);
+  v43 = [shortcutCopy copy];
+  shortcut = selfCopy->_shortcut;
+  selfCopy->_shortcut = v43;
 
-  v45 = v62;
-  v46 = [v62 length];
+  v45 = dataCopy;
+  v46 = [dataCopy length];
   if (v46)
   {
-    v46 = [MEMORY[0x1E696E868] imageWithImageData:v62];
+    v46 = [MEMORY[0x1E696E868] imageWithImageData:dataCopy];
   }
 
-  keyImage = v24->_keyImage;
-  v24->_keyImage = v46;
+  keyImage = selfCopy->_keyImage;
+  selfCopy->_keyImage = v46;
 
-  v24 = v24;
-  v48 = v24;
+  selfCopy = selfCopy;
+  v48 = selfCopy;
 LABEL_30:
 
   v51 = *MEMORY[0x1E69E9840];

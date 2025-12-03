@@ -1,15 +1,15 @@
 @interface PSDispatchQueueCreator
-+ (id)createGCDQueueWithQOS:(unint64_t)a3 key:(id)a4;
-+ (id)createPthreadBackedGCDQueueWithQoS:(unint64_t)a3 key:(id)a4 width:(unsigned __int8)a5;
-+ (int)pthreadPriorityForQoSClass:(unint64_t)a3;
-+ (unsigned)dispatchQoSClass:(unint64_t)a3;
++ (id)createGCDQueueWithQOS:(unint64_t)s key:(id)key;
++ (id)createPthreadBackedGCDQueueWithQoS:(unint64_t)s key:(id)key width:(unsigned __int8)width;
++ (int)pthreadPriorityForQoSClass:(unint64_t)class;
++ (unsigned)dispatchQoSClass:(unint64_t)class;
 @end
 
 @implementation PSDispatchQueueCreator
 
-+ (unsigned)dispatchQoSClass:(unint64_t)a3
++ (unsigned)dispatchQoSClass:(unint64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v3 = 21;
   }
@@ -19,7 +19,7 @@
     v3 = 9;
   }
 
-  if (a3)
+  if (class)
   {
     return v3;
   }
@@ -30,9 +30,9 @@
   }
 }
 
-+ (int)pthreadPriorityForQoSClass:(unint64_t)a3
++ (int)pthreadPriorityForQoSClass:(unint64_t)class
 {
-  if (a3 == 1)
+  if (class == 1)
   {
     v3 = 50;
   }
@@ -42,7 +42,7 @@
     v3 = 45;
   }
 
-  if (a3)
+  if (class)
   {
     return v3;
   }
@@ -53,17 +53,17 @@
   }
 }
 
-+ (id)createPthreadBackedGCDQueueWithQoS:(unint64_t)a3 key:(id)a4 width:(unsigned __int8)a5
++ (id)createPthreadBackedGCDQueueWithQoS:(unint64_t)s key:(id)key width:(unsigned __int8)width
 {
   v14 = *MEMORY[0x277D85DE8];
   memset(&v13, 0, sizeof(v13));
   v12 = 0;
-  v8 = a4;
-  [a4 UTF8String];
+  keyCopy = key;
+  [key UTF8String];
   v9 = 0;
   if (!pthread_attr_init(&v13))
   {
-    if (pthread_attr_setschedpolicy(&v13, 4) || pthread_attr_getschedparam(&v13, &v12) || (v12.sched_priority = [a1 pthreadPriorityForQoSClass:a3], pthread_attr_setschedparam(&v13, &v12)) || pthread_attr_setdetachstate(&v13, 1))
+    if (pthread_attr_setschedpolicy(&v13, 4) || pthread_attr_getschedparam(&v13, &v12) || (v12.sched_priority = [self pthreadPriorityForQoSClass:s], pthread_attr_setschedparam(&v13, &v12)) || pthread_attr_setdetachstate(&v13, 1))
     {
       v9 = 0;
     }
@@ -100,24 +100,24 @@ void __71__PSDispatchQueueCreator_createPthreadBackedGCDQueueWithQoS_key_width__
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createGCDQueueWithQOS:(unint64_t)a3 key:(id)a4
++ (id)createGCDQueueWithQOS:(unint64_t)s key:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  keyCopy = key;
   v6 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = keyCopy;
     _os_log_impl(&dword_25EA3A000, v6, OS_LOG_TYPE_DEBUG, "Creating GCD queue for %@", &v10, 0xCu);
   }
 
-  if (!v5)
+  if (!keyCopy)
   {
     [PSDispatchQueueCreator createGCDQueueWithQOS:? key:?];
   }
 
-  v7 = [PSDispatchQueueCreator createPthreadBackedGCDQueueWithQoS:a3 key:v5 width:1];
+  v7 = [PSDispatchQueueCreator createPthreadBackedGCDQueueWithQoS:s key:keyCopy width:1];
 
   v8 = *MEMORY[0x277D85DE8];
 

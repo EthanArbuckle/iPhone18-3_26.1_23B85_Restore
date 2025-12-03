@@ -1,53 +1,53 @@
 @interface CRKPrimitiveBackedCertificateConduit
 + (id)fetchOperationTimerIdentifier;
-- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)a3 addressTranslator:(id)a4 operationQueue:(id)a5;
-- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)a3 addressTranslator:(id)a4 timerPrimitives:(id)a5 operationQueue:(id)a6;
-- (id)operationToFetchCertificateForDestinationAppleID:(id)a3 sourceAppleID:(id)a4 destinationDeviceIdentifier:(id)a5 controlGroupIdentifier:(id)a6 sourceRole:(int64_t)a7 destinationRole:(int64_t)a8 requesterCertificate:(id)a9 timeout:(double)a10;
+- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)primitives addressTranslator:(id)translator operationQueue:(id)queue;
+- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)primitives addressTranslator:(id)translator timerPrimitives:(id)timerPrimitives operationQueue:(id)queue;
+- (id)operationToFetchCertificateForDestinationAppleID:(id)d sourceAppleID:(id)iD destinationDeviceIdentifier:(id)identifier controlGroupIdentifier:(id)groupIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)destinationRole requesterCertificate:(id)certificate timeout:(double)self0;
 @end
 
 @implementation CRKPrimitiveBackedCertificateConduit
 
-- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)a3 addressTranslator:(id)a4 operationQueue:(id)a5
+- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)primitives addressTranslator:(id)translator operationQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  queueCopy = queue;
+  translatorCopy = translator;
+  primitivesCopy = primitives;
   v11 = objc_opt_new();
-  v12 = [v11 makePrimitives];
-  v13 = [(CRKPrimitiveBackedCertificateConduit *)self initWithIDSPrimitives:v10 addressTranslator:v9 timerPrimitives:v12 operationQueue:v8];
+  makePrimitives = [v11 makePrimitives];
+  v13 = [(CRKPrimitiveBackedCertificateConduit *)self initWithIDSPrimitives:primitivesCopy addressTranslator:translatorCopy timerPrimitives:makePrimitives operationQueue:queueCopy];
 
   return v13;
 }
 
-- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)a3 addressTranslator:(id)a4 timerPrimitives:(id)a5 operationQueue:(id)a6
+- (CRKPrimitiveBackedCertificateConduit)initWithIDSPrimitives:(id)primitives addressTranslator:(id)translator timerPrimitives:(id)timerPrimitives operationQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  primitivesCopy = primitives;
+  translatorCopy = translator;
+  timerPrimitivesCopy = timerPrimitives;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = CRKPrimitiveBackedCertificateConduit;
   v15 = [(CRKPrimitiveBackedCertificateConduit *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_IDSPrimitives, a3);
-    objc_storeStrong(&v16->_addressTranslator, a4);
-    objc_storeStrong(&v16->_timerPrimitives, a5);
-    objc_storeStrong(&v16->_operationQueue, a6);
+    objc_storeStrong(&v15->_IDSPrimitives, primitives);
+    objc_storeStrong(&v16->_addressTranslator, translator);
+    objc_storeStrong(&v16->_timerPrimitives, timerPrimitives);
+    objc_storeStrong(&v16->_operationQueue, queue);
   }
 
   return v16;
 }
 
-- (id)operationToFetchCertificateForDestinationAppleID:(id)a3 sourceAppleID:(id)a4 destinationDeviceIdentifier:(id)a5 controlGroupIdentifier:(id)a6 sourceRole:(int64_t)a7 destinationRole:(int64_t)a8 requesterCertificate:(id)a9 timeout:(double)a10
+- (id)operationToFetchCertificateForDestinationAppleID:(id)d sourceAppleID:(id)iD destinationDeviceIdentifier:(id)identifier controlGroupIdentifier:(id)groupIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)destinationRole requesterCertificate:(id)certificate timeout:(double)self0
 {
   v37 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  certificateCopy = certificate;
   if (_CRKLogASM_onceToken_26 != -1)
   {
     [CRKPrimitiveBackedCertificateConduit operationToFetchCertificateForDestinationAppleID:sourceAppleID:destinationDeviceIdentifier:controlGroupIdentifier:sourceRole:destinationRole:requesterCertificate:timeout:];
@@ -65,14 +65,14 @@
   }
 
   v25 = [CRKFetchASMCertificatesOperation alloc];
-  v26 = [(CRKPrimitiveBackedCertificateConduit *)self IDSPrimitives];
-  v27 = [(CRKPrimitiveBackedCertificateConduit *)self addressTranslator];
-  v28 = [(CRKFetchASMCertificatesOperation *)v25 initWithIDSPrimitives:v26 addressTranslator:v27 controlGroupIdentifier:v19 destinationAppleID:v16 sourceAppleID:v17 destinationDeviceIdentifier:v18 sourceRole:a7 destinationRole:a8 requesterCertificate:v20];
+  iDSPrimitives = [(CRKPrimitiveBackedCertificateConduit *)self IDSPrimitives];
+  addressTranslator = [(CRKPrimitiveBackedCertificateConduit *)self addressTranslator];
+  v28 = [(CRKFetchASMCertificatesOperation *)v25 initWithIDSPrimitives:iDSPrimitives addressTranslator:addressTranslator controlGroupIdentifier:groupIdentifierCopy destinationAppleID:dCopy sourceAppleID:iDCopy destinationDeviceIdentifier:identifierCopy sourceRole:role destinationRole:destinationRole requesterCertificate:certificateCopy];
 
-  v29 = [(CRKPrimitiveBackedCertificateConduit *)self timerPrimitives];
-  v30 = [(CRKPrimitiveBackedCertificateConduit *)self operationQueue];
-  v31 = [objc_opt_class() fetchOperationTimerIdentifier];
-  v32 = [(CATOperation *)v28 crk_timingOutOperationWithTimerPrimitives:v29 operationQueue:v30 timerIdentifier:v31 timeout:a10];
+  timerPrimitives = [(CRKPrimitiveBackedCertificateConduit *)self timerPrimitives];
+  operationQueue = [(CRKPrimitiveBackedCertificateConduit *)self operationQueue];
+  fetchOperationTimerIdentifier = [objc_opt_class() fetchOperationTimerIdentifier];
+  v32 = [(CATOperation *)v28 crk_timingOutOperationWithTimerPrimitives:timerPrimitives operationQueue:operationQueue timerIdentifier:fetchOperationTimerIdentifier timeout:timeout];
 
   return v32;
 }
@@ -80,7 +80,7 @@
 + (id)fetchOperationTimerIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 stringWithFormat:@"%@-certificateFetchTimer", v3];
 
   return v4;

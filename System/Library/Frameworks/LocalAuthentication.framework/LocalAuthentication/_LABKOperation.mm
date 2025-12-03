@@ -1,25 +1,25 @@
 @interface _LABKOperation
-+ (id)_wrapperForBKOperation:(id)a3 device:(id)a4;
++ (id)_wrapperForBKOperation:(id)operation device:(id)device;
 - (BKOperationDelegate)delegate;
-- (BOOL)startWithError:(id *)a3;
-- (id)_initWithBKOperation:(id)a3 device:(id)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (BOOL)startWithError:(id *)error;
+- (id)_initWithBKOperation:(id)operation device:(id)device;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)shim;
 - (void)dealloc;
-- (void)dispatchDelegateSelector:(SEL)a3 block:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)operation:(id)a3 stateChanged:(int64_t)a4;
-- (void)setQueue:(id)a3;
-- (void)startWithReply:(id)a3;
+- (void)dispatchDelegateSelector:(SEL)selector block:(id)block;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)operation:(id)operation stateChanged:(int64_t)changed;
+- (void)setQueue:(id)queue;
+- (void)startWithReply:(id)reply;
 @end
 
 @implementation _LABKOperation
 
-+ (id)_wrapperForBKOperation:(id)a3 device:(id)a4
++ (id)_wrapperForBKOperation:(id)operation device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  deviceCopy = device;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -149,37 +149,37 @@
     }
   }
 
-  v20 = [objc_alloc(*v10) _initWithBKOperation:v6 device:v7];
-  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"wrapping %@ with %@", v6, v20];
+  v20 = [objc_alloc(*v10) _initWithBKOperation:operationCopy device:deviceCopy];
+  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"wrapping %@ with %@", operationCopy, v20];
 
   return v20;
 }
 
-- (id)_initWithBKOperation:(id)a3 device:(id)a4
+- (id)_initWithBKOperation:(id)operation device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = _LABKOperation;
   v9 = [(_LABKOperation *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->__BKOperation, a3);
+    objc_storeStrong(&v9->__BKOperation, operation);
     [v10->__BKOperation setDelegate:v10];
-    objc_storeStrong(&v10->_device, a4);
+    objc_storeStrong(&v10->_device, device);
     v10->_state = 1;
-    v11 = [(_LABKOperation *)v10 shim];
-    v12 = [v11 biometricMethodState];
-    -[_LABKOperation setIsUserPresent:](v10, "setIsUserPresent:", [v12 isUserPresent]);
+    shim = [(_LABKOperation *)v10 shim];
+    biometricMethodState = [shim biometricMethodState];
+    -[_LABKOperation setIsUserPresent:](v10, "setIsUserPresent:", [biometricMethodState isUserPresent]);
 
-    v13 = [(_LABKOperation *)v10 shim];
+    shim2 = [(_LABKOperation *)v10 shim];
     v14 = NSStringFromSelector(sel_biometricMethodState);
-    [v13 addObserver:v10 forKeyPath:v14 options:1 context:0];
+    [shim2 addObserver:v10 forKeyPath:v14 options:1 context:0];
 
-    v15 = [(_LABKOperation *)v10 shim];
+    shim3 = [(_LABKOperation *)v10 shim];
     v16 = NSStringFromSelector(sel_biometricMethodResult);
-    [v15 addObserver:v10 forKeyPath:v16 options:1 context:0];
+    [shim3 addObserver:v10 forKeyPath:v16 options:1 context:0];
   }
 
   return v10;
@@ -187,83 +187,83 @@
 
 - (id)shim
 {
-  v2 = [(_LABKOperation *)self device];
-  v3 = [v2 shim];
+  device = [(_LABKOperation *)self device];
+  shim = [device shim];
 
-  return v3;
+  return shim;
 }
 
-- (void)setQueue:(id)a3
+- (void)setQueue:(id)queue
 {
-  objc_storeStrong(&self->_queue, a3);
-  v5 = a3;
-  v6 = [(_LABKOperation *)self _BKOperation];
-  [v6 setQueue:v5];
+  objc_storeStrong(&self->_queue, queue);
+  queueCopy = queue;
+  _BKOperation = [(_LABKOperation *)self _BKOperation];
+  [_BKOperation setQueue:queueCopy];
 }
 
-- (void)dispatchDelegateSelector:(SEL)a3 block:(id)a4
+- (void)dispatchDelegateSelector:(SEL)selector block:(id)block
 {
-  v5 = a4;
-  v6 = [(_LABKOperation *)self delegate];
+  blockCopy = block;
+  delegate = [(_LABKOperation *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_LABKOperation *)self queue];
+    queue = [(_LABKOperation *)self queue];
 
-    if (v8)
+    if (queue)
     {
-      v9 = [(_LABKOperation *)self queue];
+      queue2 = [(_LABKOperation *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __49___LABKOperation_dispatchDelegateSelector_block___block_invoke;
       block[3] = &unk_1E77CC468;
-      v11 = v5;
-      dispatch_async(v9, block);
+      v11 = blockCopy;
+      dispatch_async(queue2, block);
     }
 
     else
     {
-      v5[2](v5);
+      blockCopy[2](blockCopy);
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v8 = NSStringFromSelector(sel_biometricMethodState);
-  v9 = [v7 isEqualToString:v8];
+  v9 = [pathCopy isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(_LABKOperation *)self shim];
-    v11 = [v10 biometricMethodState];
-    v12 = [v11 isUserPresent];
-    v13 = [(_LABKOperation *)self isUserPresent];
+    shim = [(_LABKOperation *)self shim];
+    biometricMethodState = [shim biometricMethodState];
+    isUserPresent = [biometricMethodState isUserPresent];
+    isUserPresent2 = [(_LABKOperation *)self isUserPresent];
 
-    if (v12 != v13)
+    if (isUserPresent != isUserPresent2)
     {
-      v14 = [(_LABKOperation *)self shim];
-      v15 = [v14 biometricMethodState];
-      -[_LABKOperation setIsUserPresent:](self, "setIsUserPresent:", [v15 isUserPresent]);
+      shim2 = [(_LABKOperation *)self shim];
+      biometricMethodState2 = [shim2 biometricMethodState];
+      -[_LABKOperation setIsUserPresent:](self, "setIsUserPresent:", [biometricMethodState2 isUserPresent]);
 
       v16 = sel_operation_presenceStateChanged_;
       v25 = MEMORY[0x1E69E9820];
       v26 = 3221225472;
       v27 = __65___LABKOperation_observeValueForKeyPath_ofObject_change_context___block_invoke;
       v28 = &unk_1E77CC490;
-      v29 = self;
+      selfCopy = self;
       v17 = &v25;
 LABEL_6:
-      [(_LABKOperation *)self dispatchDelegateSelector:v16 block:v17, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29];
+      [(_LABKOperation *)self dispatchDelegateSelector:v16 block:v17, v20, v21, v22, v23, selfCopy2, v25, v26, v27, v28, selfCopy];
     }
   }
 
   else
   {
     v18 = NSStringFromSelector(sel_biometricMethodResult);
-    v19 = [v7 isEqualToString:v18];
+    v19 = [pathCopy isEqualToString:v18];
 
     if (v19)
     {
@@ -273,21 +273,21 @@ LABEL_6:
       v21 = 3221225472;
       v22 = __65___LABKOperation_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
       v23 = &unk_1E77CC490;
-      v24 = self;
+      selfCopy2 = self;
       v17 = &v20;
       goto LABEL_6;
     }
   }
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
   v6 = objc_opt_class();
-  v7 = [(_LABKOperation *)self _BKOperation];
-  [_LABKLog logClass:v6 selector:a2 message:@"sync-starting operation %@", v7];
+  _BKOperation = [(_LABKOperation *)self _BKOperation];
+  [_LABKLog logClass:v6 selector:a2 message:@"sync-starting operation %@", _BKOperation];
 
-  v8 = [(_LABKOperation *)self _BKOperation];
-  v9 = [v8 startWithError:a3];
+  _BKOperation2 = [(_LABKOperation *)self _BKOperation];
+  v9 = [_BKOperation2 startWithError:error];
 
   v10 = objc_opt_class();
   if (v9)
@@ -295,9 +295,9 @@ LABEL_6:
     v11 = @"YES";
   }
 
-  else if (a3)
+  else if (error)
   {
-    v11 = *a3;
+    v11 = *error;
   }
 
   else
@@ -309,71 +309,71 @@ LABEL_6:
   return v9;
 }
 
-- (void)startWithReply:(id)a3
+- (void)startWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v6 = objc_opt_class();
-  v7 = [(_LABKOperation *)self _BKOperation];
-  [_LABKLog logClass:v6 selector:a2 message:@"async-starting operation %@", v7];
+  _BKOperation = [(_LABKOperation *)self _BKOperation];
+  [_LABKLog logClass:v6 selector:a2 message:@"async-starting operation %@", _BKOperation];
 
-  v8 = [(_LABKOperation *)self _BKOperation];
+  _BKOperation2 = [(_LABKOperation *)self _BKOperation];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33___LABKOperation_startWithReply___block_invoke;
   v10[3] = &unk_1E77CC4B8;
-  v11 = v5;
+  v11 = replyCopy;
   v12 = a2;
   v10[4] = self;
-  v9 = v5;
-  [v8 startWithReply:v10];
+  v9 = replyCopy;
+  [_BKOperation2 startWithReply:v10];
 }
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
-  v7 = a3;
-  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", v7, a4];
+  operationCopy = operation;
+  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", operationCopy, reason];
 
-  v8 = [(_LABKOperation *)self delegate];
+  delegate = [(_LABKOperation *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_LABKOperation *)self delegate];
-    [v10 operation:self finishedWithReason:a4];
+    delegate2 = [(_LABKOperation *)self delegate];
+    [delegate2 operation:self finishedWithReason:reason];
   }
 }
 
-- (void)operation:(id)a3 stateChanged:(int64_t)a4
+- (void)operation:(id)operation stateChanged:(int64_t)changed
 {
-  v7 = a3;
-  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", v7, a4];
+  operationCopy = operation;
+  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", operationCopy, changed];
 
-  v8 = [(_LABKOperation *)self delegate];
+  delegate = [(_LABKOperation *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_LABKOperation *)self delegate];
-    [v10 operation:self stateChanged:a4];
+    delegate2 = [(_LABKOperation *)self delegate];
+    [delegate2 operation:self stateChanged:changed];
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  [_LABKLog logClass:objc_opt_class() selector:a3 message:@"forwarding to BK"];
+  [_LABKLog logClass:objc_opt_class() selector:selector message:@"forwarding to BK"];
 
   return [(_LABKOperation *)self _BKOperation];
 }
 
 - (void)dealloc
 {
-  v3 = [(_LABKOperation *)self shim];
+  shim = [(_LABKOperation *)self shim];
   v4 = NSStringFromSelector(sel_biometricMethodState);
-  [v3 removeObserver:self forKeyPath:v4];
+  [shim removeObserver:self forKeyPath:v4];
 
-  v5 = [(_LABKOperation *)self shim];
+  shim2 = [(_LABKOperation *)self shim];
   v6 = NSStringFromSelector(sel_biometricMethodResult);
-  [v5 removeObserver:self forKeyPath:v6];
+  [shim2 removeObserver:self forKeyPath:v6];
 
   v7.receiver = self;
   v7.super_class = _LABKOperation;

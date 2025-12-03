@@ -1,18 +1,18 @@
 @interface HUClipScrubberAccessoryToggleView
-- (HUClipScrubberAccessoryToggleView)initWithFrame:(CGRect)a3;
+- (HUClipScrubberAccessoryToggleView)initWithFrame:(CGRect)frame;
 - (UIButton)accessoryButton;
 - (UIButton)liveButton;
-- (void)displayForTimelineState:(unint64_t)a3;
+- (void)displayForTimelineState:(unint64_t)state;
 - (void)displayWithoutBackgroundVisualEffects;
 @end
 
 @implementation HUClipScrubberAccessoryToggleView
 
-- (HUClipScrubberAccessoryToggleView)initWithFrame:(CGRect)a3
+- (HUClipScrubberAccessoryToggleView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HUClipScrubberAccessoryToggleView;
-  v3 = [(HUClipScrubberAccessoryToggleView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUClipScrubberAccessoryToggleView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,14 +26,14 @@
     v7 = v5;
 
     [(HUClipScrubberAccessoryToggleView *)v4 addSubview:v7];
-    v8 = [(HUClipScrubberAccessoryToggleView *)v4 liveButton];
-    [(HUClipScrubberAccessoryToggleView *)v4 addSubview:v8];
+    liveButton = [(HUClipScrubberAccessoryToggleView *)v4 liveButton];
+    [(HUClipScrubberAccessoryToggleView *)v4 addSubview:liveButton];
 
-    v9 = [(HUClipScrubberAccessoryToggleView *)v4 accessoryButton];
-    [(HUClipScrubberAccessoryToggleView *)v4 addSubview:v9];
+    accessoryButton = [(HUClipScrubberAccessoryToggleView *)v4 accessoryButton];
+    [(HUClipScrubberAccessoryToggleView *)v4 addSubview:accessoryButton];
 
-    v10 = [(HUClipScrubberAccessoryToggleView *)v4 layer];
-    [v10 setCornerRadius:16.0];
+    layer = [(HUClipScrubberAccessoryToggleView *)v4 layer];
+    [layer setCornerRadius:16.0];
 
     [(HUClipScrubberAccessoryToggleView *)v4 setClipsToBounds:1];
   }
@@ -41,15 +41,15 @@
   return v4;
 }
 
-- (void)displayForTimelineState:(unint64_t)a3
+- (void)displayForTimelineState:(unint64_t)state
 {
-  v4 = a3 != 1;
-  v5 = a3 == 1;
-  v6 = [(HUClipScrubberAccessoryToggleView *)self liveButton];
-  [v6 setHidden:v5];
+  v4 = state != 1;
+  v5 = state == 1;
+  liveButton = [(HUClipScrubberAccessoryToggleView *)self liveButton];
+  [liveButton setHidden:v5];
 
-  v7 = [(HUClipScrubberAccessoryToggleView *)self accessoryButton];
-  [v7 setHidden:v4];
+  accessoryButton = [(HUClipScrubberAccessoryToggleView *)self accessoryButton];
+  [accessoryButton setHidden:v4];
 }
 
 - (UIButton)accessoryButton
@@ -57,15 +57,15 @@
   accessoryButton = self->_accessoryButton;
   if (!accessoryButton)
   {
-    v4 = [MEMORY[0x277D75220] hu_clipScrubberNearbyAccessoryButton];
+    hu_clipScrubberNearbyAccessoryButton = [MEMORY[0x277D75220] hu_clipScrubberNearbyAccessoryButton];
     [(HUClipScrubberAccessoryToggleView *)self bounds];
-    [(UIButton *)v4 setFrame:?];
-    v5 = [(UIButton *)v4 layer];
-    [v5 setCornerRadius:16.0];
+    [(UIButton *)hu_clipScrubberNearbyAccessoryButton setFrame:?];
+    layer = [(UIButton *)hu_clipScrubberNearbyAccessoryButton layer];
+    [layer setCornerRadius:16.0];
 
-    [(UIButton *)v4 setAutoresizingMask:18];
+    [(UIButton *)hu_clipScrubberNearbyAccessoryButton setAutoresizingMask:18];
     v6 = self->_accessoryButton;
-    self->_accessoryButton = v4;
+    self->_accessoryButton = hu_clipScrubberNearbyAccessoryButton;
 
     accessoryButton = self->_accessoryButton;
   }
@@ -78,13 +78,13 @@
   liveButton = self->_liveButton;
   if (!liveButton)
   {
-    v4 = [MEMORY[0x277D75220] hu_clipScrubberLiveButton];
+    hu_clipScrubberLiveButton = [MEMORY[0x277D75220] hu_clipScrubberLiveButton];
     [(HUClipScrubberAccessoryToggleView *)self bounds];
-    [(UIButton *)v4 setFrame:?];
-    [(UIButton *)v4 setAutoresizingMask:18];
-    [(UIButton *)v4 setHidden:1];
+    [(UIButton *)hu_clipScrubberLiveButton setFrame:?];
+    [(UIButton *)hu_clipScrubberLiveButton setAutoresizingMask:18];
+    [(UIButton *)hu_clipScrubberLiveButton setHidden:1];
     v5 = self->_liveButton;
-    self->_liveButton = v4;
+    self->_liveButton = hu_clipScrubberLiveButton;
 
     liveButton = self->_liveButton;
   }
@@ -94,8 +94,8 @@
 
 - (void)displayWithoutBackgroundVisualEffects
 {
-  v2 = [(HUClipScrubberAccessoryToggleView *)self backgroundView];
-  [v2 setHidden:1];
+  backgroundView = [(HUClipScrubberAccessoryToggleView *)self backgroundView];
+  [backgroundView setHidden:1];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PKPeerPaymentActionTransferToBankCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentActionTransferToBankCell)initWithReuseIdentifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentActionTransferToBankCell)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setFeeText:(id)a3;
-- (void)setShowCheckmark:(BOOL)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setFeeText:(id)text;
+- (void)setShowCheckmark:(BOOL)checkmark;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation PKPeerPaymentActionTransferToBankCell
 
-- (PKPeerPaymentActionTransferToBankCell)initWithReuseIdentifier:(id)a3
+- (PKPeerPaymentActionTransferToBankCell)initWithReuseIdentifier:(id)identifier
 {
   v36.receiver = self;
   v36.super_class = PKPeerPaymentActionTransferToBankCell;
-  v3 = [(PKPeerPaymentActionTransferToBankCell *)&v36 initWithStyle:3 reuseIdentifier:a3];
+  v3 = [(PKPeerPaymentActionTransferToBankCell *)&v36 initWithStyle:3 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -31,8 +31,8 @@
 
     [(UILabel *)v4->_textLabel setTextAlignment:4];
     v11 = v4->_textLabel;
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v11 setTextColor:v12];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v11 setTextColor:labelColor];
 
     [(UILabel *)v4->_textLabel setNumberOfLines:1];
     [(UILabel *)v4->_textLabel setLineBreakMode:4];
@@ -47,8 +47,8 @@
 
     [(UILabel *)v4->_detailTextLabel setTextAlignment:4];
     v17 = v4->_detailTextLabel;
-    v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v17 setTextColor:v18];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v17 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_detailTextLabel setNumberOfLines:3];
     [(UILabel *)v4->_detailTextLabel setLineBreakMode:4];
@@ -58,8 +58,8 @@
     v4->_feeLabel = v19;
 
     v21 = v4->_feeLabel;
-    v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v21 setTextColor:v22];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v21 setTextColor:secondaryLabelColor2];
 
     v23 = v4->_feeLabel;
     v24 = PKFontForDefaultDesign(v8, v9);
@@ -94,8 +94,8 @@
     v4->_checkmarkImageView = v31;
 
     v33 = v4->_checkmarkImageView;
-    v34 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIImageView *)v33 setTintColor:v34];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIImageView *)v33 setTintColor:systemBlueColor];
 
     [(PKPeerPaymentActionTransferToBankCell *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9D70]];
   }
@@ -195,10 +195,10 @@
   [(UIImageView *)self->_checkmarkImageView setFrame:v43, v42, v41, v40];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = a3.width - PKTableViewCellTextInset() * 2.0;
+  width = fits.width;
+  v5 = fits.width - PKTableViewCellTextInset() * 2.0;
   [(UILabel *)self->_feeLabel sizeThatFits:v5 * 0.3, 3.40282347e38];
   v8 = v7;
   if (v6 >= v5 * 0.3)
@@ -223,11 +223,11 @@
   return result;
 }
 
-- (void)setFeeText:(id)a3
+- (void)setFeeText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_feeText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -246,7 +246,7 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_feeText, a3);
+    objc_storeStrong(&self->_feeText, text);
     [(UILabel *)self->_feeLabel setText:self->_feeText];
     [(UILabel *)self->_feeLabel sizeToFit];
     [(PKPeerPaymentActionTransferToBankCell *)self setNeedsLayout];
@@ -255,11 +255,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_titleText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -278,7 +278,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(UILabel *)self->_textLabel setText:self->_titleText];
     [(UILabel *)self->_textLabel sizeToFit];
     [(PKPeerPaymentActionTransferToBankCell *)self setNeedsLayout];
@@ -287,11 +287,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   v6 = self->_subtitleText;
-  v7 = v5;
+  v7 = textCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -310,7 +310,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_subtitleText, a3);
+    objc_storeStrong(&self->_subtitleText, text);
     [(UILabel *)self->_detailTextLabel setText:self->_subtitleText];
     [(UILabel *)self->_detailTextLabel sizeToFit];
     [(PKPeerPaymentActionTransferToBankCell *)self setNeedsLayout];
@@ -319,12 +319,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setShowCheckmark:(BOOL)a3
+- (void)setShowCheckmark:(BOOL)checkmark
 {
-  if (self->_showCheckmark != a3)
+  if (self->_showCheckmark != checkmark)
   {
-    self->_showCheckmark = a3;
-    if (a3)
+    self->_showCheckmark = checkmark;
+    if (checkmark)
     {
       [(PKPeerPaymentActionTransferToBankCell *)self addSubview:self->_checkmarkImageView];
     }

@@ -3,17 +3,17 @@
 - (BOOL)_isContentViewControllerImplicitlyExpanded;
 - (BOOL)_isEffectivelyExpanded;
 - (BOOL)_isForceTouchAvailable;
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CCUIContentModuleContainerViewController)init;
-- (CCUIContentModuleContainerViewController)initWithCoder:(id)a3;
-- (CCUIContentModuleContainerViewController)initWithModuleIdentifier:(id)a3 uniqueIdentifier:(id)a4 contentModule:(id)a5 presentationContext:(id)a6 contentRenderingMode:(unint64_t)a7;
-- (CCUIContentModuleContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUIContentModuleContainerViewController)initWithCoder:(id)coder;
+- (CCUIContentModuleContainerViewController)initWithModuleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier contentModule:(id)module presentationContext:(id)context contentRenderingMode:(unint64_t)mode;
+- (CCUIContentModuleContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CCUIContentModuleContainerViewControllerDelegate)delegate;
 - (CGRect)_backgroundFrameForExpandedState;
 - (CGRect)_contentBoundsForExpandedState;
-- (CGRect)_contentBoundsForTransitionProgress:(double)a3;
+- (CGRect)_contentBoundsForTransitionProgress:(double)progress;
 - (CGRect)_contentFrameForExpandedState;
 - (CGRect)_contentFrameForRestState;
 - (CGRect)_presentationFrameForExpandedState;
@@ -23,67 +23,67 @@
 - (double)_continuousCornerRadiusForCompactState;
 - (double)_continuousCornerRadiusForExpandedState;
 - (id)_contentSourceView;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (id)contextMenuPreviewForControlHostViewController:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (id)contextMenuPreviewForControlHostViewController:(id)controller;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)rootPassThroughView;
-- (void)_addTopLevelGestureRecognizersFromViewAndSubviews:(id)a3 toBlockingGestureRecognizers:(id)a4;
+- (void)_addTopLevelGestureRecognizersFromViewAndSubviews:(id)subviews toBlockingGestureRecognizers:(id)recognizers;
 - (void)_applyTreatmentToContainerViewPlatters;
-- (void)_closeExpandedModule:(BOOL)a3;
-- (void)_configureContentViewControllerEditingAnimated:(BOOL)a3;
-- (void)_configureEditingAnimated:(BOOL)a3;
+- (void)_closeExpandedModule:(BOOL)module;
+- (void)_configureContentViewControllerEditingAnimated:(BOOL)animated;
+- (void)_configureEditingAnimated:(BOOL)animated;
 - (void)_configureForContentModuleGroupRenderingIfNecessary;
 - (void)_configureJittering;
 - (void)_configureMaskViewIfNecessary;
 - (void)_configureTouchBlockingIfNecessary;
 - (void)_configureTouchPassThrough;
-- (void)_didEndTransitionWithContentModuleContainerTransition:(id)a3 completed:(BOOL)a4;
+- (void)_didEndTransitionWithContentModuleContainerTransition:(id)transition completed:(BOOL)completed;
 - (void)_ensureAndConfigureEditingBorderView;
-- (void)_findTopLevelGestureRecognizersForView:(id)a3 installOnView:(id)a4;
-- (void)_handleExpandModuleForTapGestureRecognizer:(id)a3;
-- (void)_handleTapGestureRecognizer:(id)a3;
-- (void)_loadBackgroundViewController:(id)a3;
-- (void)_loadContentViewController:(id)a3;
+- (void)_findTopLevelGestureRecognizersForView:(id)view installOnView:(id)onView;
+- (void)_handleExpandModuleForTapGestureRecognizer:(id)recognizer;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
+- (void)_loadBackgroundViewController:(id)controller;
+- (void)_loadContentViewController:(id)controller;
 - (void)_removeEditingBorderView;
 - (void)_setDidExpandModulePreference;
 - (void)_updateContainerViewPlatters;
 - (void)_updateDisplayedCompactContinuousCornerRadius;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
-- (void)dismissExpandedModuleAnimated:(BOOL)a3;
-- (void)dismissModulePresentedContentAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissPresentedContentAnimated:(BOOL)a3;
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
+- (void)dismissExpandedModuleAnimated:(BOOL)animated;
+- (void)dismissModulePresentedContentAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissPresentedContentAnimated:(BOOL)animated;
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion;
 - (void)displayWillTurnOff;
 - (void)expandModule;
 - (void)invalidateContainerViewsForPlatterTreatment;
 - (void)loadView;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)redirectTapsWithAction:(id)a3;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setGridSizeClass:(int64_t)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setJittering:(BOOL)a3;
-- (void)setResizing:(BOOL)a3;
-- (void)setSuppressesCompactContinuousCornerRadiusUpdates:(BOOL)a3;
-- (void)setSuppressesContentTransitions:(BOOL)a3;
-- (void)setUserVisibilityStatus:(unint64_t)a3;
-- (void)setWantsSubduedBackground:(BOOL)a3;
-- (void)transitionToExpandedMode:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)redirectTapsWithAction:(id)action;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setGridSizeClass:(int64_t)class;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setJittering:(BOOL)jittering;
+- (void)setResizing:(BOOL)resizing;
+- (void)setSuppressesCompactContinuousCornerRadiusUpdates:(BOOL)updates;
+- (void)setSuppressesContentTransitions:(BOOL)transitions;
+- (void)setUserVisibilityStatus:(unint64_t)status;
+- (void)setWantsSubduedBackground:(BOOL)background;
+- (void)transitionToExpandedMode:(BOOL)mode;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 - (void)willBecomeActive;
-- (void)willDismissViewController:(id)a3;
-- (void)willPresentViewController:(id)a3;
+- (void)willDismissViewController:(id)controller;
+- (void)willPresentViewController:(id)controller;
 - (void)willResignActive;
 @end
 
@@ -109,8 +109,8 @@
 
   else
   {
-    v6 = [(CCUIContentModuleContainerViewController *)self view];
-    [v6 bounds];
+    view = [(CCUIContentModuleContainerViewController *)self view];
+    [view bounds];
     v43 = v8;
     v44 = v7;
     v10 = v9;
@@ -155,7 +155,7 @@
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    [v6 center];
+    [view center];
     v28 = v27;
     v30 = v29;
     [(UIView *)self->_highlightWrapperView setBounds:v20, v22, v24, v26];
@@ -196,17 +196,17 @@
     [(CCUIContentModuleContentContainerView *)self->_contentContainerView setFrame:v20, v22, v24, v26];
     [(UIControl *)self->_touchBlockingView setFrame:v20, v22, v24, v26];
     [(UIView *)self->_maskView setFrame:v44, v43, v41, v42];
-    v35 = [objc_opt_class() editingSettings];
-    [v35 pulsingBorderWidth];
+    editingSettings = [objc_opt_class() editingSettings];
+    [editingSettings pulsingBorderWidth];
 
-    [v6 _shouldReverseLayoutDirection];
+    [view _shouldReverseLayoutDirection];
     UIRectInset();
     [(UIView *)self->_editingBorderContainerView setFrame:?];
     editingBorderView = self->_editingBorderView;
     [(UIView *)self->_editingBorderContainerView bounds];
     [(UIView *)editingBorderView setFrame:?];
     v37 = self->_editingBorderMaskView;
-    [(UIView *)self->_editingBorderView convertPoint:v6 fromView:v28, v30];
+    [(UIView *)self->_editingBorderView convertPoint:view fromView:v28, v30];
     [(UIView *)v37 setCenter:?];
   }
 }
@@ -232,9 +232,9 @@
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(CCUIContentModuleContainerViewController *)self moduleIdentifier];
+      moduleIdentifier = [(CCUIContentModuleContainerViewController *)self moduleIdentifier];
       v6 = 138543362;
-      v7 = v5;
+      v7 = moduleIdentifier;
       _os_log_impl(&dword_21E9F5000, v4, OS_LOG_TYPE_DEFAULT, "Content module requested to invalidate container views for platter treatment (%{public}@)", &v6, 0xCu);
     }
 
@@ -245,12 +245,12 @@
 - (void)_applyTreatmentToContainerViewPlatters
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(CCUIContentModuleContainerViewController *)self containerViewPlatters];
+  containerViewPlatters = [(CCUIContentModuleContainerViewController *)self containerViewPlatters];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [containerViewPlatters countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -262,7 +262,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(containerViewPlatters);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -281,39 +281,39 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [containerViewPlatters countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (CCUIContentModuleContainerViewController)initWithModuleIdentifier:(id)a3 uniqueIdentifier:(id)a4 contentModule:(id)a5 presentationContext:(id)a6 contentRenderingMode:(unint64_t)a7
+- (CCUIContentModuleContainerViewController)initWithModuleIdentifier:(id)identifier uniqueIdentifier:(id)uniqueIdentifier contentModule:(id)module presentationContext:(id)context contentRenderingMode:(unint64_t)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  moduleCopy = module;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = CCUIContentModuleContainerViewController;
   v16 = [(CCUIContentModuleContainerViewController *)&v23 initWithNibName:0 bundle:0];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     moduleIdentifier = v16->_moduleIdentifier;
     v16->_moduleIdentifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [uniqueIdentifierCopy copy];
     uniqueIdentifier = v16->_uniqueIdentifier;
     v16->_uniqueIdentifier = v19;
 
-    objc_storeStrong(&v16->_contentModule, a5);
+    objc_storeStrong(&v16->_contentModule, module);
     v16->_allowsGlassGrouping = 1;
     [(CCUIContentModuleContainerViewController *)v16 setOverrideUserInterfaceStyle:1];
-    [(CCUIContentModuleContainerViewController *)v16 _loadContentViewController:v15];
+    [(CCUIContentModuleContainerViewController *)v16 _loadContentViewController:contextCopy];
     if (objc_opt_respondsToSelector())
     {
-      [(CCUIContentModuleContentViewController *)v16->_contentViewController setContentRenderingMode:a7];
+      [(CCUIContentModuleContentViewController *)v16->_contentViewController setContentRenderingMode:mode];
     }
 
     if (objc_opt_respondsToSelector())
@@ -336,27 +336,27 @@
     }
 
     [(CCUIContentModuleContainerViewController *)v16 _configureContentViewControllerEditingAnimated:0];
-    [(CCUIContentModuleContainerViewController *)v16 _loadBackgroundViewController:v15];
+    [(CCUIContentModuleContainerViewController *)v16 _loadBackgroundViewController:contextCopy];
   }
 
   return v16;
 }
 
-- (void)_loadContentViewController:(id)a3
+- (void)_loadContentViewController:(id)controller
 {
-  v9 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CCUIContentModule *)self->_contentModule contentViewController];
+    contentViewController = [(CCUIContentModule *)self->_contentModule contentViewController];
     contentViewController = self->_contentViewController;
-    self->_contentViewController = v5;
+    self->_contentViewController = contentViewController;
   }
 
   if (!self->_contentViewController)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CCUIContentModule *)self->_contentModule contentViewControllerForContext:v9];
+      v7 = [(CCUIContentModule *)self->_contentModule contentViewControllerForContext:controllerCopy];
       v8 = self->_contentViewController;
       self->_contentViewController = v7;
     }
@@ -368,38 +368,38 @@
   }
 }
 
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = CCUIContentModuleContainerViewController;
-  [(CCUIContentModuleContainerViewController *)&v6 dismissViewControllerWithTransition:*&a3 completion:a4];
-  if (!a3)
+  [(CCUIContentModuleContainerViewController *)&v6 dismissViewControllerWithTransition:*&transition completion:completion];
+  if (!transition)
   {
     [(CCUIContentModuleContentContainerView *)self->_contentContainerView setAlpha:1.0];
   }
 }
 
-- (void)_loadBackgroundViewController:(id)a3
+- (void)_loadBackgroundViewController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CCUIContentModule *)self->_contentModule backgroundViewController];
+    backgroundViewController = [(CCUIContentModule *)self->_contentModule backgroundViewController];
     backgroundViewController = self->_backgroundViewController;
-    self->_backgroundViewController = v4;
+    self->_backgroundViewController = backgroundViewController;
   }
 
   if (!self->_backgroundViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [(CCUIContentModule *)self->_contentModule backgroundViewControllerForContext:v8];
+    v6 = [(CCUIContentModule *)self->_contentModule backgroundViewControllerForContext:controllerCopy];
     v7 = self->_backgroundViewController;
     self->_backgroundViewController = v6;
   }
 }
 
-- (void)transitionToExpandedMode:(BOOL)a3
+- (void)transitionToExpandedMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -455,15 +455,15 @@ void __69__CCUIContentModuleContainerViewController_transitionToExpandedMode___b
   }
 }
 
-- (void)redirectTapsWithAction:(id)a3
+- (void)redirectTapsWithAction:(id)action
 {
-  v5 = a3;
-  if (self->_redirectedTapAction != v5)
+  actionCopy = action;
+  if (self->_redirectedTapAction != actionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_redirectedTapAction, a3);
+    v6 = actionCopy;
+    objc_storeStrong(&self->_redirectedTapAction, action);
     [(CCUIContentModuleContainerViewController *)self _configureTouchBlockingIfNecessary];
-    v5 = v6;
+    actionCopy = v6;
   }
 }
 
@@ -474,59 +474,59 @@ void __69__CCUIContentModuleContainerViewController_transitionToExpandedMode___b
   return 0;
 }
 
-- (CCUIContentModuleContainerViewController)initWithCoder:(id)a3
+- (CCUIContentModuleContainerViewController)initWithCoder:(id)coder
 {
   [(CCUIContentModuleContainerViewController *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (CCUIContentModuleContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIContentModuleContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(CCUIContentModuleContainerViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(CCUIContentModuleContainerViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
   if (objc_opt_respondsToSelector())
   {
     contentViewController = self->_contentViewController;
 
-    [(CCUIContentModuleContentViewController *)contentViewController setContentRenderingMode:a3];
+    [(CCUIContentModuleContentViewController *)contentViewController setContentRenderingMode:mode];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v5 = a3;
-  objc_storeStrong(&self->_contentMetrics, a3);
+  metricsCopy = metrics;
+  objc_storeStrong(&self->_contentMetrics, metrics);
   if (objc_opt_respondsToSelector())
   {
-    [(CCUIContentModuleContentViewController *)self->_contentViewController setContentMetrics:v5];
+    [(CCUIContentModuleContentViewController *)self->_contentViewController setContentMetrics:metricsCopy];
   }
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
   if (objc_opt_respondsToSelector())
   {
-    [(CCUIContentModuleContentViewController *)self->_contentViewController setGridSizeClass:a3];
+    [(CCUIContentModuleContentViewController *)self->_contentViewController setGridSizeClass:class];
 
     [(CCUIContentModuleContainerViewController *)self _configureTouchPassThrough];
   }
 }
 
-- (void)setResizing:(BOOL)a3
+- (void)setResizing:(BOOL)resizing
 {
-  v3 = a3;
-  if (self->_resizing != a3)
+  resizingCopy = resizing;
+  if (self->_resizing != resizing)
   {
-    self->_resizing = a3;
+    self->_resizing = resizing;
     if (objc_opt_respondsToSelector())
     {
-      [(CCUIContentModuleContentViewController *)self->_contentViewController setResizing:v3];
+      [(CCUIContentModuleContentViewController *)self->_contentViewController setResizing:resizingCopy];
     }
 
     [(CCUIContentModuleContainerViewController *)self _ensureAndConfigureEditingBorderView];
@@ -534,14 +534,14 @@ void __69__CCUIContentModuleContainerViewController_transitionToExpandedMode___b
 
   contentContainerView = self->_contentContainerView;
 
-  [(CCUIContentModuleContentContainerView *)contentContainerView setClipsToBounds:v3];
+  [(CCUIContentModuleContentContainerView *)contentContainerView setClipsToBounds:resizingCopy];
 }
 
-- (void)setWantsSubduedBackground:(BOOL)a3
+- (void)setWantsSubduedBackground:(BOOL)background
 {
-  if (self->_wantsSubduedBackground != a3)
+  if (self->_wantsSubduedBackground != background)
   {
-    self->_wantsSubduedBackground = a3;
+    self->_wantsSubduedBackground = background;
     [(CCUIContentModuleContentContainerView *)self->_contentContainerView setWantsSubduedBackground:?];
     if (self->_contentModuleProvidesOwnPlatter)
     {
@@ -553,16 +553,16 @@ void __69__CCUIContentModuleContainerViewController_transitionToExpandedMode___b
 
 - (void)expandModule
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = [a1 moduleIdentifier];
-  [v5 handleFailureInMethod:a2 object:a1 file:@"CCUIContentModuleContainerViewController.m" lineNumber:317 description:{@"View must be in a window to expand (identifier: %@)", v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  moduleIdentifier = [self moduleIdentifier];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CCUIContentModuleContainerViewController.m" lineNumber:317 description:{@"View must be in a window to expand (identifier: %@)", moduleIdentifier}];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = CCUIContentModuleContainerViewController;
-  [(CCUIContentModuleContainerViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(CCUIContentModuleContainerViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:container];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __98__CCUIContentModuleContainerViewController_preferredContentSizeDidChangeForChildContentContainer___block_invoke;
@@ -582,26 +582,26 @@ uint64_t __98__CCUIContentModuleContainerViewController_preferredContentSizeDidC
   return [v4 layoutIfNeeded];
 }
 
-- (void)dismissExpandedModuleAnimated:(BOOL)a3
+- (void)dismissExpandedModuleAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __74__CCUIContentModuleContainerViewController_dismissExpandedModuleAnimated___block_invoke;
   v3[3] = &unk_278382CE0;
   v3[4] = self;
-  v4 = a3;
-  [(CCUIContentModuleContainerViewController *)self dismissModulePresentedContentAnimated:a3 completion:v3];
+  animatedCopy = animated;
+  [(CCUIContentModuleContainerViewController *)self dismissModulePresentedContentAnimated:animated completion:v3];
 }
 
-- (void)dismissPresentedContentAnimated:(BOOL)a3
+- (void)dismissPresentedContentAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __76__CCUIContentModuleContainerViewController_dismissPresentedContentAnimated___block_invoke;
   v3[3] = &unk_278382CE0;
   v3[4] = self;
-  v4 = a3;
-  [(CCUIContentModuleContainerViewController *)self dismissModulePresentedContentAnimated:a3 completion:v3];
+  animatedCopy = animated;
+  [(CCUIContentModuleContainerViewController *)self dismissModulePresentedContentAnimated:animated completion:v3];
 }
 
 uint64_t __76__CCUIContentModuleContainerViewController_dismissPresentedContentAnimated___block_invoke(uint64_t result, char a2)
@@ -614,10 +614,10 @@ uint64_t __76__CCUIContentModuleContainerViewController_dismissPresentedContentA
   return result;
 }
 
-- (void)dismissModulePresentedContentAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissModulePresentedContentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector() & 1) != 0 && [(CCUIContentModuleContentViewController *)self->_contentViewController canDismissPresentedContent]&& (objc_opt_respondsToSelector())
   {
     contentViewController = self->_contentViewController;
@@ -625,13 +625,13 @@ uint64_t __76__CCUIContentModuleContainerViewController_dismissPresentedContentA
     v8[1] = 3221225472;
     v8[2] = __93__CCUIContentModuleContainerViewController_dismissModulePresentedContentAnimated_completion___block_invoke;
     v8[3] = &unk_2783821E0;
-    v9 = v6;
-    [(CCUIContentModuleContentViewController *)contentViewController dismissPresentedContentAnimated:v4 completion:v8];
+    v9 = completionCopy;
+    [(CCUIContentModuleContentViewController *)contentViewController dismissPresentedContentAnimated:animatedCopy completion:v8];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -646,9 +646,9 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   return result;
 }
 
-- (void)_closeExpandedModule:(BOOL)a3
+- (void)_closeExpandedModule:(BOOL)module
 {
-  v3 = a3;
+  moduleCopy = module;
   if ([(CCUIContentModuleContainerViewController *)self isExpanded])
   {
     v5[0] = MEMORY[0x277D85DD0];
@@ -656,8 +656,8 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
     v5[2] = __65__CCUIContentModuleContainerViewController__closeExpandedModule___block_invoke;
     v5[3] = &unk_278382CE0;
     v5[4] = self;
-    v6 = v3;
-    [(CCUIContentModuleContainerViewController *)self dismissModulePresentedContentAnimated:v3 completion:v5];
+    v6 = moduleCopy;
+    [(CCUIContentModuleContainerViewController *)self dismissModulePresentedContentAnimated:moduleCopy completion:v5];
   }
 }
 
@@ -707,37 +707,37 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIContentModuleContainerViewController;
-  [(CCUIContentModuleContainerViewController *)&v4 viewWillAppear:a3];
+  [(CCUIContentModuleContainerViewController *)&v4 viewWillAppear:appear];
   [(CCUIContentModuleContainerViewController *)self _configureForContentModuleGroupRenderingIfNecessary];
   [(CCUIContentModuleContainerViewController *)self _configureContentViewControllerEditingAnimated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CCUIContentModuleContainerViewController;
-  [(CCUIContentModuleContainerViewController *)&v3 viewDidAppear:a3];
+  [(CCUIContentModuleContainerViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = CCUIContentModuleContainerViewController;
   [(CCUIContentModuleContainerViewController *)&v7 viewWillDisappear:?];
   if ([(CCUIContentModuleContainerViewController *)self isExpanded])
   {
-    [(CCUIContentModuleContainerViewController *)self _closeExpandedModule:v3];
+    [(CCUIContentModuleContainerViewController *)self _closeExpandedModule:disappearCopy];
   }
 
   else
   {
-    v5 = [(CCUIContentModuleContainerViewController *)self clickPresentationInteraction];
-    [v5 cancelInteraction];
+    clickPresentationInteraction = [(CCUIContentModuleContainerViewController *)self clickPresentationInteraction];
+    [clickPresentationInteraction cancelInteraction];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained contentModuleContainerViewController:self didFinishInteractionWithModule:self->_contentModule];
@@ -748,10 +748,10 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
 {
   v30 = objc_alloc_init(MEMORY[0x277CFC9D0]);
   [(CCUIContentModuleContainerViewController *)self setView:?];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:self];
     [v30 addInteraction:v5];
@@ -766,8 +766,8 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   [(UIView *)self->_highlightWrapperView _setLayoutDebuggingIdentifier:@"HighlightWrapperView"];
   [(UIView *)self->_highlightWrapperView setAutoresizingMask:18];
   v9 = self->_highlightWrapperView;
-  v10 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v9 setBackgroundColor:v10];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v9 setBackgroundColor:clearColor];
 
   [v30 addSubview:self->_highlightWrapperView];
   v11 = objc_alloc_init(CCUIContentModuleBackgroundView);
@@ -795,9 +795,9 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   [v30 bounds];
   [(CCUIContentModuleContentContainerView *)v18 setFrame:?];
   [(UIView *)self->_highlightWrapperView addSubview:self->_contentContainerView];
-  v19 = [(CCUIContentModuleContentViewController *)self->_contentViewController view];
+  view = [(CCUIContentModuleContentViewController *)self->_contentViewController view];
   contentView = self->_contentView;
-  self->_contentView = v19;
+  self->_contentView = view;
 
   [(UIView *)self->_contentView setAutoresizingMask:18];
   v21 = self->_contentView;
@@ -810,21 +810,21 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   self->_clickPresentationInteraction = v22;
 
   [(_UIClickPresentationInteraction *)self->_clickPresentationInteraction setAllowSimultaneousRecognition:1];
-  v24 = [(CCUIContentModuleContainerViewController *)self view];
-  [v24 addInteraction:self->_clickPresentationInteraction];
+  view2 = [(CCUIContentModuleContainerViewController *)self view];
+  [view2 addInteraction:self->_clickPresentationInteraction];
 
   v25 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapGestureRecognizer_];
   [(CCUIContentModuleBackgroundView *)self->_backgroundView addGestureRecognizer:v25];
   [(CCUIContentModuleContainerViewController *)self setTapRecognizer:v25];
-  v26 = [(CCUIContentModuleContainerViewController *)self contentViewController];
+  contentViewController = [(CCUIContentModuleContainerViewController *)self contentViewController];
   if (objc_opt_respondsToSelector())
   {
     v27 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleExpandModuleForTapGestureRecognizer_];
     expandModuleOnTouchTapRecognizer = self->_expandModuleOnTouchTapRecognizer;
     self->_expandModuleOnTouchTapRecognizer = v27;
 
-    v29 = [(CCUIContentModuleContainerViewController *)self view];
-    [v29 addGestureRecognizer:self->_expandModuleOnTouchTapRecognizer];
+    view3 = [(CCUIContentModuleContainerViewController *)self view];
+    [view3 addGestureRecognizer:self->_expandModuleOnTouchTapRecognizer];
 
     [(UITapGestureRecognizer *)self->_expandModuleOnTouchTapRecognizer setDelegate:self];
   }
@@ -844,35 +844,35 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   }
 }
 
-- (void)_findTopLevelGestureRecognizersForView:(id)a3 installOnView:(id)a4
+- (void)_findTopLevelGestureRecognizersForView:(id)view installOnView:(id)onView
 {
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
+  viewCopy = view;
   v9 = objc_alloc_init(v5);
-  [(CCUIContentModuleContainerViewController *)self _addTopLevelGestureRecognizersFromViewAndSubviews:v6 toBlockingGestureRecognizers:v9];
+  [(CCUIContentModuleContainerViewController *)self _addTopLevelGestureRecognizersFromViewAndSubviews:viewCopy toBlockingGestureRecognizers:v9];
 
   v7 = [v9 copy];
   topLevelBlockingGestureRecognizers = self->_topLevelBlockingGestureRecognizers;
   self->_topLevelBlockingGestureRecognizers = v7;
 }
 
-- (void)_addTopLevelGestureRecognizersFromViewAndSubviews:(id)a3 toBlockingGestureRecognizers:(id)a4
+- (void)_addTopLevelGestureRecognizersFromViewAndSubviews:(id)subviews toBlockingGestureRecognizers:(id)recognizers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  subviewsCopy = subviews;
+  recognizersCopy = recognizers;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 topLevelBlockingGestureRecognizers];
-    [v7 addObjectsFromArray:v8];
+    topLevelBlockingGestureRecognizers = [subviewsCopy topLevelBlockingGestureRecognizers];
+    [recognizersCopy addObjectsFromArray:topLevelBlockingGestureRecognizers];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [v6 subviews];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subviews = [subviewsCopy subviews];
+  v10 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -884,21 +884,21 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(subviews);
         }
 
-        [(CCUIContentModuleContainerViewController *)self _addTopLevelGestureRecognizersFromViewAndSubviews:*(*(&v14 + 1) + 8 * v13++) toBlockingGestureRecognizers:v7];
+        [(CCUIContentModuleContainerViewController *)self _addTopLevelGestureRecognizersFromViewAndSubviews:*(*(&v14 + 1) + 8 * v13++) toBlockingGestureRecognizers:recognizersCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
   }
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
   if ((objc_opt_respondsToSelector() & 1) == 0 || (v4 = [(CCUIContentModuleContentViewController *)self->_contentViewController shouldPerformClickInteraction]) != 0)
   {
@@ -919,9 +919,9 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
   return v4;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = a3;
+  presentCopy = present;
   if ((objc_opt_respondsToSelector() & 1) != 0 && ![(CCUIContentModuleContentViewController *)self->_contentViewController shouldBeginTransitionToExpandedContentModule])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -937,7 +937,7 @@ uint64_t __93__CCUIContentModuleContainerViewController_dismissModulePresentedCo
     block[2] = __86__CCUIContentModuleContainerViewController_clickPresentationInteractionShouldPresent___block_invoke;
     block[3] = &unk_278381DC8;
     block[4] = self;
-    v12 = v4;
+    v12 = presentCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
 LABEL_10:
@@ -1001,7 +1001,7 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
   [v1 cancelInteraction];
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained contentModuleContainerViewController:self didFinishInteractionWithModule:self->_contentModule];
@@ -1012,13 +1012,13 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
   self->_authenticatedForExpandedModulePresentation = 0;
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [(CCUIContentModuleContainerViewController *)self view:a3];
+  v4 = [(CCUIContentModuleContainerViewController *)self view:interaction];
   if ([v4 _isInAWindow])
   {
-    v5 = [v4 window];
+    window = [v4 window];
     v6 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
     {
@@ -1030,7 +1030,7 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
       v14 = 2114;
       v15 = v4;
       v16 = 2114;
-      v17 = v5;
+      v17 = window;
       _os_log_impl(&dword_21E9F5000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Control Center is about to call [UITargetedPreview initWithView:], view = %{public}@, window = %{public}@", &v12, 0x20u);
     }
 
@@ -1045,7 +1045,7 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
   return v10;
 }
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && ![(CCUIContentModuleContentViewController *)self->_contentViewController shouldFinishTransitionToExpandedContentModule])
   {
@@ -1061,28 +1061,28 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
     v7 = [objc_alloc(MEMORY[0x277D75E38]) initWithPresentedViewController:self presentationController:self->_presentationController];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(CCUIContentModuleContentViewController *)self->_contentViewController viewForTouchContinuation];
+      viewForTouchContinuation = [(CCUIContentModuleContentViewController *)self->_contentViewController viewForTouchContinuation];
     }
 
     else
     {
-      v8 = 0;
+      viewForTouchContinuation = 0;
     }
 
-    [v7 setCustomViewForTouchContinuation:v8];
+    [v7 setCustomViewForTouchContinuation:viewForTouchContinuation];
     if (UIAccessibilityIsReduceMotionEnabled())
     {
       v9 = objc_alloc_init(CCUIContentModuleContainerReducedMotionTransition);
       v10 = objc_alloc_init(CCUIContentModuleContainerReducedMotionTransition);
-      v11 = [(CCUIContentModuleContainerViewController *)self view];
-      v12 = [v11 window];
+      view = [(CCUIContentModuleContainerViewController *)self view];
+      window = [view window];
 
-      [(CCUIContentModuleContainerReducedMotionTransition *)v9 setSnapshotHostWindow:v12];
-      [(CCUIContentModuleContainerReducedMotionTransition *)v10 setSnapshotHostWindow:v12];
-      v13 = [(CCUIContentModuleContainerViewController *)self bs_presentationContextDefiningViewController];
-      v14 = [v13 view];
-      v15 = [v14 window];
-      [v15 interfaceOrientation];
+      [(CCUIContentModuleContainerReducedMotionTransition *)v9 setSnapshotHostWindow:window];
+      [(CCUIContentModuleContainerReducedMotionTransition *)v10 setSnapshotHostWindow:window];
+      bs_presentationContextDefiningViewController = [(CCUIContentModuleContainerViewController *)self bs_presentationContextDefiningViewController];
+      view2 = [bs_presentationContextDefiningViewController view];
+      window2 = [view2 window];
+      [window2 interfaceOrientation];
 
       v24 = 0u;
       v25 = 0u;
@@ -1101,7 +1101,7 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
 
     else
     {
-      v16 = [(CCUIContentModuleContainerViewController *)self contentViewController];
+      contentViewController = [(CCUIContentModuleContainerViewController *)self contentViewController];
       v17 = objc_opt_respondsToSelector();
 
       if (v17)
@@ -1132,40 +1132,40 @@ void __86__CCUIContentModuleContainerViewController_clickPresentationInteraction
   return v7;
 }
 
-- (void)willPresentViewController:(id)a3
+- (void)willPresentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CCUIContentModuleContainerViewController *)self delegate];
-  [v5 contentModuleContainerViewController:self willPresentViewController:v4];
+  controllerCopy = controller;
+  delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+  [delegate contentModuleContainerViewController:self willPresentViewController:controllerCopy];
 }
 
-- (void)willDismissViewController:(id)a3
+- (void)willDismissViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CCUIContentModuleContainerViewController *)self delegate];
-  [v5 contentModuleContainerViewController:self willDismissViewController:v4];
+  controllerCopy = controller;
+  delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+  [delegate contentModuleContainerViewController:self willDismissViewController:controllerCopy];
 }
 
-- (id)contextMenuPreviewForControlHostViewController:(id)a3
+- (id)contextMenuPreviewForControlHostViewController:(id)controller
 {
-  v3 = [(CCUIContentModuleContainerViewController *)self contentContainerView];
-  v4 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v3];
+  contentContainerView = [(CCUIContentModuleContainerViewController *)self contentContainerView];
+  v4 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:contentContainerView];
 
   return v4;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
-  v7 = [(CCUIContentModuleContainerViewController *)self contentViewController];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  if ([v8 userInterfaceIdiom] == 1)
+  regionCopy = region;
+  contentViewController = [(CCUIContentModuleContainerViewController *)self contentViewController];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v7 shouldPerformHoverInteraction];
+      shouldPerformHoverInteraction = [contentViewController shouldPerformHoverInteraction];
 
-      if ((v9 & 1) == 0)
+      if ((shouldPerformHoverInteraction & 1) == 0)
       {
         goto LABEL_8;
       }
@@ -1184,15 +1184,15 @@ LABEL_8:
 
     [(CCUIModuleContentMetrics *)self->_contentMetrics gridGeometryInfo];
     v12 = v11;
-    [v6 rect];
+    [regionCopy rect];
     v21 = CGRectInset(v20, -v12, -v12);
     x = v21.origin.x;
     y = v21.origin.y;
     width = v21.size.width;
     height = v21.size.height;
     v17 = MEMORY[0x277D75880];
-    v8 = [(CCUIContentModuleContainerViewController *)self moduleIdentifier];
-    v10 = [v17 regionWithRect:v8 identifier:{x, y, width, height}];
+    currentDevice = [(CCUIContentModuleContainerViewController *)self moduleIdentifier];
+    v10 = [v17 regionWithRect:currentDevice identifier:{x, y, width, height}];
   }
 
   else
@@ -1205,16 +1205,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [(CCUIContentModuleContainerViewController *)self view:a3];
-  v6 = [v5 _isInAWindow];
+  v5 = [(CCUIContentModuleContainerViewController *)self view:interaction];
+  _isInAWindow = [v5 _isInAWindow];
 
-  if (v6)
+  if (_isInAWindow)
   {
-    v7 = [(CCUIContentModuleContainerViewController *)self view];
-    v8 = [v7 window];
+    view = [(CCUIContentModuleContainerViewController *)self view];
+    window = [view window];
     v9 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
     {
@@ -1224,17 +1224,17 @@ LABEL_11:
       v30 = 138543874;
       v31 = v12;
       v32 = 2114;
-      v33 = v7;
+      v33 = view;
       v34 = 2114;
-      v35 = v8;
+      v35 = window;
       _os_log_impl(&dword_21E9F5000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Control Center is about to call [UITargetedPreview initWithView:], view = %{public}@, window = %{public}@", &v30, 0x20u);
     }
 
-    v13 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v7];
+    v13 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:view];
     v14 = [MEMORY[0x277D75878] effectWithPreview:v13];
     v15 = MEMORY[0x277D75888];
-    v16 = [(CCUIContentModuleContainerViewController *)self view];
-    [v16 frame];
+    view2 = [(CCUIContentModuleContainerViewController *)self view];
+    [view2 frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -1259,11 +1259,11 @@ LABEL_11:
   return v27;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
   if (!self->_activePointerRegions)
   {
     v10 = objc_alloc_init(MEMORY[0x277CCA940]);
@@ -1271,37 +1271,37 @@ LABEL_11:
     self->_activePointerRegions = v10;
   }
 
-  v12 = [(CCUIContentModuleContainerViewController *)self isPointerActive];
-  [(NSCountedSet *)self->_activePointerRegions addObject:v8];
-  if (!v12)
+  isPointerActive = [(CCUIContentModuleContainerViewController *)self isPointerActive];
+  [(NSCountedSet *)self->_activePointerRegions addObject:regionCopy];
+  if (!isPointerActive)
   {
-    v13 = [(CCUIContentModuleContainerViewController *)self delegate];
-    [v13 pointerWillEnterContentModuleContainerViewController:self];
+    delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+    [delegate pointerWillEnterContentModuleContainerViewController:self];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v7 = a4;
-  v8 = v7;
-  if (a5)
+  regionCopy = region;
+  v8 = regionCopy;
+  if (animator)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __87__CCUIContentModuleContainerViewController_pointerInteraction_willExitRegion_animator___block_invoke;
     v10[3] = &unk_278382D08;
     v10[4] = self;
-    v11 = v7;
-    [a5 addCompletion:v10];
+    v11 = regionCopy;
+    [animator addCompletion:v10];
   }
 
   else
   {
-    [(NSCountedSet *)self->_activePointerRegions removeObject:v7];
+    [(NSCountedSet *)self->_activePointerRegions removeObject:regionCopy];
     if (![(CCUIContentModuleContainerViewController *)self isPointerActive])
     {
-      v9 = [(CCUIContentModuleContainerViewController *)self delegate];
-      [v9 pointerDidExitContentModuleContainerViewController:self];
+      delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+      [delegate pointerDidExitContentModuleContainerViewController:self];
     }
   }
 }
@@ -1319,10 +1319,10 @@ void __87__CCUIContentModuleContainerViewController_pointerInteraction_willExitR
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(CCUIContentModuleContainerViewController *)self contentViewController];
+  touchCopy = touch;
+  contentViewController = [(CCUIContentModuleContainerViewController *)self contentViewController];
   if ([(CCUIContentModuleContainerViewController *)self _isEffectivelyExpanded]|| (objc_opt_respondsToSelector() & 1) == 0)
   {
     v7 = 0;
@@ -1330,7 +1330,7 @@ void __87__CCUIContentModuleContainerViewController_pointerInteraction_willExitR
 
   else
   {
-    v7 = [v6 shouldExpandModuleOnTouch:v5];
+    v7 = [contentViewController shouldExpandModuleOnTouch:touchCopy];
   }
 
   return v7;
@@ -1348,7 +1348,7 @@ void __87__CCUIContentModuleContainerViewController_pointerInteraction_willExitR
   return result;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -1366,46 +1366,46 @@ void __87__CCUIContentModuleContainerViewController_pointerInteraction_willExitR
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = CCUIContentModuleContainerViewController;
   [CCUIContentModuleContainerViewController setEditing:sel_setEditing_animated_ animated:?];
-  if (self->_editing != v5)
+  if (self->_editing != editingCopy)
   {
-    self->_editing = v5;
+    self->_editing = editingCopy;
     [(CCUIContentModuleContainerViewController *)self _configureTouchBlockingIfNecessary];
-    [(CCUIContentModuleContainerViewController *)self _configureEditingAnimated:v4];
+    [(CCUIContentModuleContainerViewController *)self _configureEditingAnimated:animatedCopy];
   }
 }
 
-- (void)setJittering:(BOOL)a3
+- (void)setJittering:(BOOL)jittering
 {
-  if (self->_jittering != a3)
+  if (self->_jittering != jittering)
   {
-    self->_jittering = a3;
+    self->_jittering = jittering;
     [(CCUIContentModuleContainerViewController *)self _configureJittering];
   }
 }
 
-- (void)setUserVisibilityStatus:(unint64_t)a3
+- (void)setUserVisibilityStatus:(unint64_t)status
 {
-  if (self->_userVisibilityStatus != a3)
+  if (self->_userVisibilityStatus != status)
   {
-    self->_userVisibilityStatus = a3;
+    self->_userVisibilityStatus = status;
     if (objc_opt_respondsToSelector())
     {
       contentViewController = self->_contentViewController;
-      if (a3 == 2)
+      if (status == 2)
       {
         v6 = 1;
       }
 
       else
       {
-        v6 = 2 * (a3 == 3);
+        v6 = 2 * (status == 3);
       }
 
       [(CCUIContentModuleContentViewController *)contentViewController setUserVisibilityStatus:v6];
@@ -1413,11 +1413,11 @@ void __87__CCUIContentModuleContainerViewController_pointerInteraction_willExitR
   }
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  if (self->_allowsGlassGrouping != a3)
+  if (self->_allowsGlassGrouping != grouping)
   {
-    self->_allowsGlassGrouping = a3;
+    self->_allowsGlassGrouping = grouping;
     [(CCUIContentModuleContentContainerView *)self->_contentContainerView setAllowsGlassGrouping:?];
     if (self->_contentModuleProvidesOwnPlatter)
     {
@@ -1437,21 +1437,21 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
 
 - (BOOL)_isForceTouchAvailable
 {
-  v2 = [(CCUIContentModuleContainerViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 screen];
+  view = [(CCUIContentModuleContainerViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
 
-  v6 = [v5 traitCollection];
-  LOBYTE(v3) = [v6 forceTouchCapability] == 2;
+  traitCollection = [screen traitCollection];
+  LOBYTE(window) = [traitCollection forceTouchCapability] == 2;
 
-  return v3;
+  return window;
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  if (-[CCUIContentModuleContainerViewController isExpanded](self, "isExpanded") && (!v7 || [v7 state] == 3))
+  recognizerCopy = recognizer;
+  if (-[CCUIContentModuleContainerViewController isExpanded](self, "isExpanded") && (!recognizerCopy || [recognizerCopy state] == 3))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -1464,10 +1464,10 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
   }
 }
 
-- (void)_handleExpandModuleForTapGestureRecognizer:(id)a3
+- (void)_handleExpandModuleForTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (!-[CCUIContentModuleContainerViewController _isEffectivelyExpanded](self, "_isEffectivelyExpanded") && [v4 state] == 3)
+  recognizerCopy = recognizer;
+  if (!-[CCUIContentModuleContainerViewController _isEffectivelyExpanded](self, "_isEffectivelyExpanded") && [recognizerCopy state] == 3)
   {
     [(CCUIContentModuleContainerViewController *)self expandModule];
   }
@@ -1482,8 +1482,8 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
       if (!self->_touchBlockingView)
       {
         v3 = objc_alloc(MEMORY[0x277CFC930]);
-        v4 = [(CCUIContentModuleContainerViewController *)self view];
-        [v4 bounds];
+        view = [(CCUIContentModuleContainerViewController *)self view];
+        [view bounds];
         v5 = [v3 initWithFrame:?];
         touchBlockingView = self->_touchBlockingView;
         self->_touchBlockingView = v5;
@@ -1492,8 +1492,8 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
         v7 = self->_touchBlockingView;
         [(CCUIContentModuleContainerViewController *)self _continuousCornerRadiusForCompactState];
         [(UIControl *)v7 _setContinuousCornerRadius:?];
-        v8 = [(UIControl *)self->_touchBlockingView layer];
-        [v8 setHitTestsAsOpaque:1];
+        layer = [(UIControl *)self->_touchBlockingView layer];
+        [layer setHitTestsAsOpaque:1];
 
         [(UIView *)self->_highlightWrapperView addSubview:self->_touchBlockingView];
       }
@@ -1524,9 +1524,9 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
 {
   if (self->_editingBorderContainerView)
   {
-    v3 = [(CCUIContentModuleContainerViewController *)self view];
-    v4 = [objc_opt_class() editingSettings];
-    [v4 pulsingBorderWidth];
+    view = [(CCUIContentModuleContainerViewController *)self view];
+    editingSettings = [objc_opt_class() editingSettings];
+    [editingSettings pulsingBorderWidth];
     v6 = v5;
     [(CCUIContentModuleContainerViewController *)self _continuousCornerRadiusForCompactState];
     v8 = v7;
@@ -1547,15 +1547,15 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
       v23 = v8;
       v24 = v6;
       v21[4] = self;
-      v22 = v4;
+      v22 = editingSettings;
       [v13 performWithoutAnimation:v21];
       [(CCUIContentModuleContainerViewController *)self _configureJittering];
 
       editingBorderView = self->_editingBorderView;
     }
 
-    v14 = [(UIView *)editingBorderView layer];
-    v15 = v14;
+    layer = [(UIView *)editingBorderView layer];
+    v15 = layer;
     v16 = MEMORY[0x277D75D18];
     if (self->_resizing)
     {
@@ -1564,9 +1564,9 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
       v20[1] = 3221225472;
       v20[2] = __80__CCUIContentModuleContainerViewController__ensureAndConfigureEditingBorderView__block_invoke_2;
       v20[3] = &unk_278381F00;
-      v20[4] = v14;
+      v20[4] = layer;
       v20[5] = self;
-      v20[6] = v3;
+      v20[6] = view;
       v20[7] = v6;
       v20[8] = v8;
     }
@@ -1578,13 +1578,13 @@ void __59__CCUIContentModuleContainerViewController_editingSettings__block_invok
       v19[1] = 3221225472;
       v19[2] = __80__CCUIContentModuleContainerViewController__ensureAndConfigureEditingBorderView__block_invoke_3;
       v19[3] = &unk_278382D58;
-      v19[4] = v14;
+      v19[4] = layer;
       v19[5] = self;
       v19[7] = v6;
-      v19[6] = v3;
+      v19[6] = view;
     }
 
-    v18 = v3;
+    v18 = view;
     [v16 performWithoutAnimation:v17];
   }
 }
@@ -1655,27 +1655,27 @@ void __80__CCUIContentModuleContainerViewController__ensureAndConfigureEditingBo
   [v8 setBorderColor:{objc_msgSend(v10, "CGColor")}];
 }
 
-- (void)_configureEditingAnimated:(BOOL)a3
+- (void)_configureEditingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   editing = self->_editing;
-  v6 = [objc_opt_class() editingSettings];
-  [v6 pulsingBorderFadeDuration];
+  editingSettings = [objc_opt_class() editingSettings];
+  [editingSettings pulsingBorderFadeDuration];
   v8 = v7;
   if (editing)
   {
     if (!self->_editingBorderContainerView)
     {
-      v9 = [(CCUIContentModuleContainerViewController *)self view];
-      [v9 bounds];
-      [v6 pulsingBorderWidth];
+      view = [(CCUIContentModuleContainerViewController *)self view];
+      [view bounds];
+      [editingSettings pulsingBorderWidth];
       UIRectInset();
       v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v10, v11, v12, v13}];
       editingBorderContainerView = self->_editingBorderContainerView;
       self->_editingBorderContainerView = v14;
 
-      v16 = [(UIView *)self->_editingBorderContainerView layer];
-      [v16 setAllowsGroupBlending:0];
+      layer = [(UIView *)self->_editingBorderContainerView layer];
+      [layer setAllowsGroupBlending:0];
 
       [(CCUIContentModuleContainerViewController *)self _ensureAndConfigureEditingBorderView];
       v17 = MEMORY[0x277D75D18];
@@ -1684,13 +1684,13 @@ void __80__CCUIContentModuleContainerViewController__ensureAndConfigureEditingBo
       v28[2] = __70__CCUIContentModuleContainerViewController__configureEditingAnimated___block_invoke;
       v28[3] = &unk_278382258;
       v28[4] = self;
-      v29 = v9;
-      v30 = v3;
-      v18 = v9;
+      v29 = view;
+      v30 = animatedCopy;
+      v18 = view;
       [v17 performWithoutAnimation:v28];
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
@@ -1711,7 +1711,7 @@ void __80__CCUIContentModuleContainerViewController__ensureAndConfigureEditingBo
     }
   }
 
-  else if (v3)
+  else if (animatedCopy)
   {
     v19 = self->_editingBorderViewRemovalAnimationGeneration + 1;
     self->_editingBorderViewRemovalAnimationGeneration = v19;
@@ -1739,10 +1739,10 @@ void __80__CCUIContentModuleContainerViewController__ensureAndConfigureEditingBo
   v22[2] = __70__CCUIContentModuleContainerViewController__configureEditingAnimated___block_invoke_6;
   v22[3] = &unk_278381EB8;
   v22[4] = self;
-  v23 = v3;
+  v23 = animatedCopy;
   v20 = _Block_copy(v22);
   v21 = v20;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v20 animations:v8];
   }
@@ -1789,12 +1789,12 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
   {
     if (self->_jittering)
     {
-      v17 = [objc_opt_class() editingSettings];
+      editingSettings = [objc_opt_class() editingSettings];
       [objc_opt_class() editingBorderPulseAnimationStartTime];
       v5 = v4;
       v6 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
       [v6 setBeginTime:v5];
-      [v17 pulsingBorderPulseDuration];
+      [editingSettings pulsingBorderPulseDuration];
       [v6 setDuration:?];
       [v6 setAutoreverses:1];
       LODWORD(v7) = 2139095039;
@@ -1803,9 +1803,9 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
       [v6 setFromValue:v8];
 
       v9 = MEMORY[0x277CCABB0];
-      [v17 pulsingBorderMaxAlpha];
+      [editingSettings pulsingBorderMaxAlpha];
       v11 = v10;
-      [v17 pulsingBorderMinAlpha];
+      [editingSettings pulsingBorderMinAlpha];
       v13 = v11 - v12;
       *&v13 = v13;
       v14 = [v9 numberWithFloat:v13];
@@ -1815,26 +1815,26 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
       v15 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
       [v6 setTimingFunction:v15];
 
-      v16 = [(UIView *)self->_editingBorderView layer];
-      [v16 addAnimation:v6 forKey:@"CCUIContentModuleContainerEditingBorderPulseAnimationKey"];
+      layer = [(UIView *)self->_editingBorderView layer];
+      [layer addAnimation:v6 forKey:@"CCUIContentModuleContainerEditingBorderPulseAnimationKey"];
     }
 
     else
     {
-      v17 = [(UIView *)editingBorderView layer];
-      [v17 removeAnimationForKey:@"CCUIContentModuleContainerEditingBorderPulseAnimationKey"];
+      editingSettings = [(UIView *)editingBorderView layer];
+      [editingSettings removeAnimationForKey:@"CCUIContentModuleContainerEditingBorderPulseAnimationKey"];
     }
   }
 }
 
-- (void)_configureContentViewControllerEditingAnimated:(BOOL)a3
+- (void)_configureContentViewControllerEditingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   editing = self->_editing;
   v5 = self->_contentViewController;
   if (objc_opt_respondsToSelector())
   {
-    [(CCUIContentModuleContentViewController *)v5 setEditing:editing animated:v3];
+    [(CCUIContentModuleContentViewController *)v5 setEditing:editing animated:animatedCopy];
   }
 
   else if (objc_opt_respondsToSelector())
@@ -1855,10 +1855,10 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 
 - (void)_setDidExpandModulePreference
 {
-  v2 = [(CCUIContentModuleContainerViewController *)self _isForceTouchAvailable];
+  _isForceTouchAvailable = [(CCUIContentModuleContainerViewController *)self _isForceTouchAvailable];
   v3 = +[CCUIControlCenterDefaults standardDefaults];
   v4 = v3;
-  if (v2)
+  if (_isForceTouchAvailable)
   {
     [v3 setHasForceTouchedToExpandModule:1];
   }
@@ -1879,9 +1879,9 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 
 - (id)rootPassThroughView
 {
-  v2 = [(CCUIContentModuleContainerViewController *)self view];
+  view = [(CCUIContentModuleContainerViewController *)self view];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = view;
   if (v3)
   {
     if (objc_opt_isKindOfClass())
@@ -1924,8 +1924,8 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(CCUIContentModuleContentViewController *)self->_contentViewController prefersExpandedContentSizeMatchesGridSize])
   {
-    v3 = [(CCUIContentModuleContainerViewController *)self delegate];
-    [v3 controlCenterGridSizeForContentModuleContainerViewController:self];
+    delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+    [delegate controlCenterGridSizeForContentModuleContainerViewController:self];
     v5 = v4;
     v7 = v6;
 
@@ -1941,8 +1941,8 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
     {
       [(CCUIContentModuleContentViewController *)self->_contentViewController preferredExpandedContentWidth];
       v5 = v11;
-      v12 = [(CCUIContentModuleContainerViewController *)self view];
-      [v12 bounds];
+      view = [(CCUIContentModuleContainerViewController *)self view];
+      [view bounds];
       Width = CGRectGetWidth(v19);
 
       if (v5 >= Width)
@@ -1953,8 +1953,8 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 
     [(CCUIContentModuleContentViewController *)self->_contentViewController preferredExpandedContentHeight];
     v7 = v14;
-    v15 = [(CCUIContentModuleContainerViewController *)self view];
-    [v15 bounds];
+    view2 = [(CCUIContentModuleContainerViewController *)self view];
+    [view2 bounds];
     Height = CGRectGetHeight(v20);
 
     if (v7 >= Height)
@@ -1989,8 +1989,8 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
     [(CCUIContentModuleContentContainerView *)self->_contentContainerView setCompactContinuousCornerRadius:v5];
     [(CCUIContentModuleContentContainerView *)self->_contentContainerView updateContinuousCornerRadius];
     [(UIControl *)self->_touchBlockingView _setContinuousCornerRadius:v5];
-    v6 = [objc_opt_class() editingSettings];
-    [v6 pulsingBorderWidth];
+    editingSettings = [objc_opt_class() editingSettings];
+    [editingSettings pulsingBorderWidth];
     v8 = v7;
 
     [(UIView *)self->_editingBorderView _setContinuousCornerRadius:v5 + v8];
@@ -2000,29 +2000,29 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
   }
 }
 
-- (void)setSuppressesCompactContinuousCornerRadiusUpdates:(BOOL)a3
+- (void)setSuppressesCompactContinuousCornerRadiusUpdates:(BOOL)updates
 {
-  if (self->_suppressesCompactContinuousCornerRadiusUpdates != a3)
+  if (self->_suppressesCompactContinuousCornerRadiusUpdates != updates)
   {
-    self->_suppressesCompactContinuousCornerRadiusUpdates = a3;
-    if (!a3)
+    self->_suppressesCompactContinuousCornerRadiusUpdates = updates;
+    if (!updates)
     {
       [(CCUIContentModuleContainerViewController *)self _updateDisplayedCompactContinuousCornerRadius];
     }
   }
 }
 
-- (void)setSuppressesContentTransitions:(BOOL)a3
+- (void)setSuppressesContentTransitions:(BOOL)transitions
 {
-  if (self->_suppressesContentTransitions != a3)
+  if (self->_suppressesContentTransitions != transitions)
   {
-    v3 = a3;
-    self->_suppressesContentTransitions = a3;
+    transitionsCopy = transitions;
+    self->_suppressesContentTransitions = transitions;
     if (objc_opt_respondsToSelector())
     {
       contentViewController = self->_contentViewController;
 
-      [(CCUIContentModuleContentViewController *)contentViewController setSuppressesContentTransitions:v3];
+      [(CCUIContentModuleContentViewController *)contentViewController setSuppressesContentTransitions:transitionsCopy];
     }
   }
 }
@@ -2039,9 +2039,9 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 
 - (void)_configureTouchPassThrough
 {
-  v3 = [(CCUIContentModuleContainerViewController *)self _isEffectivelyExpanded];
-  v4 = [(CCUIContentModuleContainerViewController *)self rootPassThroughView];
-  [v4 setTouchPassThroughDisabled:!v3];
+  _isEffectivelyExpanded = [(CCUIContentModuleContainerViewController *)self _isEffectivelyExpanded];
+  rootPassThroughView = [(CCUIContentModuleContainerViewController *)self rootPassThroughView];
+  [rootPassThroughView setTouchPassThroughDisabled:!_isEffectivelyExpanded];
 }
 
 - (BOOL)_isContentViewControllerImplicitlyExpanded
@@ -2051,8 +2051,8 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
     return 0;
   }
 
-  v3 = [(CCUIContentModuleContentViewController *)self->_contentViewController gridSizeClass];
-  return ([(CCUIContentModuleContentViewController *)self->_contentViewController implicitlyExpandedGridSizeClasses]& (1 << v3)) != 0;
+  gridSizeClass = [(CCUIContentModuleContentViewController *)self->_contentViewController gridSizeClass];
+  return ([(CCUIContentModuleContentViewController *)self->_contentViewController implicitlyExpandedGridSizeClasses]& (1 << gridSizeClass)) != 0;
 }
 
 - (double)_continuousCornerRadiusForCompactState
@@ -2107,10 +2107,10 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
     v6 = v12;
     v8 = v13;
     v10 = v14;
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v16 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v22.origin.x = v4;
       v22.origin.y = v6;
@@ -2142,9 +2142,9 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 
 - (CGRect)_backgroundFrameForExpandedState
 {
-  v2 = [(CCUIContentModuleContainerViewController *)self bs_presentationContextDefiningViewController];
-  v3 = [v2 view];
-  [v3 bounds];
+  bs_presentationContextDefiningViewController = [(CCUIContentModuleContainerViewController *)self bs_presentationContextDefiningViewController];
+  view = [bs_presentationContextDefiningViewController view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2163,13 +2163,13 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
 
 - (CGRect)_presentationFrameForExpandedState
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
-    v5 = [(CCUIContentModuleContainerViewController *)self delegate];
-    [v5 expandedModeFrameForContentModuleContainerViewController:self];
+    delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+    [delegate expandedModeFrameForContentModuleContainerViewController:self];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -2196,11 +2196,11 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
   return result;
 }
 
-- (CGRect)_contentBoundsForTransitionProgress:(double)a3
+- (CGRect)_contentBoundsForTransitionProgress:(double)progress
 {
-  v4 = [(CCUIContentModuleContainerViewController *)self view];
-  v5 = [v4 traitCollection];
-  [v5 displayScale];
+  view = [(CCUIContentModuleContainerViewController *)self view];
+  traitCollection = [view traitCollection];
+  [traitCollection displayScale];
 
   [(CCUIContentModuleContainerViewController *)self _contentFrameForRestState];
   UIRoundToScale();
@@ -2226,11 +2226,11 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
     self->_maskView = v3;
 
     [(UIView *)self->_maskView setUserInteractionEnabled:0];
-    v5 = [(CCUIContentModuleContainerViewController *)self view];
-    [v5 addSubview:self->_maskView];
+    view = [(CCUIContentModuleContainerViewController *)self view];
+    [view addSubview:self->_maskView];
 
-    v6 = [(UIView *)self->_maskView layer];
-    [v6 setCompositingFilter:*MEMORY[0x277CDA310]];
+    layer = [(UIView *)self->_maskView layer];
+    [layer setCompositingFilter:*MEMORY[0x277CDA310]];
   }
 }
 
@@ -2243,15 +2243,15 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
   }
 }
 
-- (void)_didEndTransitionWithContentModuleContainerTransition:(id)a3 completed:(BOOL)a4
+- (void)_didEndTransitionWithContentModuleContainerTransition:(id)transition completed:(BOOL)completed
 {
   self->_transitioning = 0;
-  if (a4)
+  if (completed)
   {
     contentContainerView = self->_contentContainerView;
-    v5 = [a3 isAppearanceTransition];
+    isAppearanceTransition = [transition isAppearanceTransition];
 
-    [(CCUIContentModuleContentContainerView *)contentContainerView didEndTransitionToExpandedMode:v5];
+    [(CCUIContentModuleContentContainerView *)contentContainerView didEndTransitionToExpandedMode:isAppearanceTransition];
   }
 }
 
@@ -2260,16 +2260,16 @@ uint64_t __70__CCUIContentModuleContainerViewController__configureEditingAnimate
   if (objc_opt_respondsToSelector())
   {
     v7 = self->_containerViewPlatters;
-    v3 = [(CCUIContentModuleContentViewController *)self->_contentViewController containerViewsForPlatterTreatment];
-    v4 = [v3 copy];
+    containerViewsForPlatterTreatment = [(CCUIContentModuleContentViewController *)self->_contentViewController containerViewsForPlatterTreatment];
+    v4 = [containerViewsForPlatterTreatment copy];
     containerViewPlatters = self->_containerViewPlatters;
     self->_containerViewPlatters = v4;
 
     if ((BSEqualArrays() & 1) == 0)
     {
       [(CCUIContentModuleContainerViewController *)self _applyTreatmentToContainerViewPlatters];
-      v6 = [(CCUIContentModuleContainerViewController *)self delegate];
-      [v6 contentModuleContainerViewController:self didUpdateContainerViewPlatters:v7];
+      delegate = [(CCUIContentModuleContainerViewController *)self delegate];
+      [delegate contentModuleContainerViewController:self didUpdateContainerViewPlatters:v7];
     }
   }
 }

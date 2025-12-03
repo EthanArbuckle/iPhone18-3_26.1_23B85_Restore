@@ -6,10 +6,10 @@
 
 - (id)shortFormForUUID
 {
-  v1 = [a1 componentsSeparatedByString:@"-"];
-  v2 = [v1 firstObject];
+  v1 = [self componentsSeparatedByString:@"-"];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 @end

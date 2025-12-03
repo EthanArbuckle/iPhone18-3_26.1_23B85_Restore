@@ -2,22 +2,22 @@
 + (BOOL)networkingIsDisabled;
 + (id)navigationTitle;
 + (void)disableAirplaneMode;
-- (VPNBundleController)initWithParentListController:(id)a3 properties:(id)a4;
-- (id)contentFilterStatusForSpecifier:(id)a3;
-- (id)getContentFilterSummary:(id)a3;
-- (id)getDNSSummary:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
-- (id)statusForSpecifier:(id)a3;
-- (id)urlFilterStatusForSpecifier:(id)a3;
-- (id)vpnActiveForSpecifier:(id)a3;
-- (void)cancelAirplaneModeDisable:(id)a3;
-- (void)confirmAirplaneModeDisable:(id)a3;
+- (VPNBundleController)initWithParentListController:(id)controller properties:(id)properties;
+- (id)contentFilterStatusForSpecifier:(id)specifier;
+- (id)getContentFilterSummary:(id)summary;
+- (id)getDNSSummary:(id)summary;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (id)statusForSpecifier:(id)specifier;
+- (id)urlFilterStatusForSpecifier:(id)specifier;
+- (id)vpnActiveForSpecifier:(id)specifier;
+- (void)cancelAirplaneModeDisable:(id)disable;
+- (void)confirmAirplaneModeDisable:(id)disable;
 - (void)dealloc;
-- (void)setVPNActive:(BOOL)a3;
-- (void)setVPNActive:(id)a3 forSpecifier:(id)a4;
+- (void)setVPNActive:(BOOL)active;
+- (void)setVPNActive:(id)active forSpecifier:(id)specifier;
 - (void)updateVPNSwitchStatus;
-- (void)vpnConfigurationChanged:(id)a3;
-- (void)vpnStatusChanged:(id)a3;
+- (void)vpnConfigurationChanged:(id)changed;
+- (void)vpnStatusChanged:(id)changed;
 @end
 
 @implementation VPNBundleController
@@ -47,9 +47,9 @@
   SCPreferencesSynchronize(v5);
   v6 = [SCPreferencesGetValue(qword_4A0A8 @"AllowEnable")];
   NSLog(@"%s: Airplane mode: %d, WiFi Enabled: %d", "+[VPNBundleController networkingIsDisabled]", [qword_4A098 airplaneMode], v6);
-  v7 = [qword_4A098 airplaneMode];
+  airplaneMode = [qword_4A098 airplaneMode];
   os_unfair_lock_unlock(&unk_4A0A0);
-  return v7 & (v6 ^ 1);
+  return airplaneMode & (v6 ^ 1);
 }
 
 + (void)disableAirplaneMode
@@ -110,18 +110,18 @@
   [(VPNBundleController *)&v6 dealloc];
 }
 
-- (id)vpnActiveForSpecifier:(id)a3
+- (id)vpnActiveForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = +[VPNConnectionStore sharedInstance];
-  v5 = [v4 aggregateStatus];
+  aggregateStatus = [v4 aggregateStatus];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((aggregateStatus & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v6 = [NSNumber numberWithInt:1];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = v7;
-    if (v5 == 2)
+    if (aggregateStatus == 2)
     {
       v9 = @"VPN_CONNECTING";
     }
@@ -142,42 +142,42 @@
 
   v10 = [v7 localizedStringForKey:v9 value:&stru_411E8 table:@"MobileVPN"];
 
-  [v3 setName:v10];
-  [v3 setProperty:v6 forKey:PSValueKey];
+  [specifierCopy setName:v10];
+  [specifierCopy setProperty:v6 forKey:PSValueKey];
 
   return v6;
 }
 
-- (id)statusForSpecifier:(id)a3
+- (id)statusForSpecifier:(id)specifier
 {
   v3 = +[VPNConnectionStore sharedInstance];
-  v4 = [v3 aggregateStatusText];
+  aggregateStatusText = [v3 aggregateStatusText];
 
-  return v4;
+  return aggregateStatusText;
 }
 
-- (void)setVPNActive:(BOOL)a3
+- (void)setVPNActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5 = +[VPNConnectionStore sharedInstance];
   v6 = +[VPNConnectionStore sharedInstance];
   v7 = [v5 currentConnectionWithGrade:{objc_msgSend(v6, "currentOnlyConnectionGrade")}];
 
-  v8 = [v7 serviceID];
-  v9 = [v7 displayName];
-  v10 = [v7 vpnConnectionType];
+  serviceID = [v7 serviceID];
+  displayName = [v7 displayName];
+  vpnConnectionType = [v7 vpnConnectionType];
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!activeCopy)
   {
     [v7 disconnect];
     goto LABEL_15;
   }
 
-  if (v10 != &dword_0 + 3)
+  if (vpnConnectionType != &dword_0 + 3)
   {
     goto LABEL_6;
   }
@@ -185,7 +185,7 @@
   v34 = 0;
   v11 = +[VPNConnectionStore sharedInstance];
   v12 = +[VPNConnectionStore sharedInstance];
-  v13 = [v11 isTypeEnabledWithServiceID:v8 withGrade:objc_msgSend(v12 outProviderAvailable:{"currentOnlyConnectionGrade"), &v34}];
+  v13 = [v11 isTypeEnabledWithServiceID:serviceID withGrade:objc_msgSend(v12 outProviderAvailable:{"currentOnlyConnectionGrade"), &v34}];
 
   if (v13)
   {
@@ -202,7 +202,7 @@ LABEL_7:
   NSLog(@"%s: Trying to start an SSL VPN service that is not eligible", "[VPNBundleController setVPNActive:]");
   v14 = +[VPNConnectionStore sharedInstance];
   v15 = +[VPNConnectionStore sharedInstance];
-  v16 = [v14 appNameForServiceID:v8 withGrade:{objc_msgSend(v15, "currentOnlyConnectionGrade")}];
+  v16 = [v14 appNameForServiceID:serviceID withGrade:{objc_msgSend(v15, "currentOnlyConnectionGrade")}];
 
   v17 = v34;
   v18 = [NSBundle bundleForClass:objc_opt_class()];
@@ -211,13 +211,13 @@ LABEL_7:
   if (v17 == 1)
   {
     v20 = [v18 localizedStringForKey:@"SSL_MESSAGE" value:&stru_411E8 table:@"MobileVPN"];
-    [NSString stringWithFormat:v20, v9, v16];
+    [NSString stringWithFormat:v20, displayName, v16];
   }
 
   else
   {
     v20 = [v18 localizedStringForKey:@"MISSING_PROVIDER_MESSAGE" value:&stru_411E8 table:@"MobileVPN"];
-    [NSString stringWithFormat:v20, v16, v9];
+    [NSString stringWithFormat:v20, v16, displayName];
   }
   v33 = ;
 
@@ -231,14 +231,14 @@ LABEL_7:
   [v23 addAction:v26];
 
   WeakRetained = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-  v28 = [WeakRetained rootController];
-  v29 = [v28 topViewController];
-  [v29 presentViewController:v23 animated:1 completion:0];
+  rootController = [WeakRetained rootController];
+  topViewController = [rootController topViewController];
+  [topViewController presentViewController:v23 animated:1 completion:0];
 
-  v30 = [(VPNBundleController *)self vpnSpecifier];
-  v31 = [(VPNBundleController *)self toggleVPNSpecifier];
+  vpnSpecifier = [(VPNBundleController *)self vpnSpecifier];
+  toggleVPNSpecifier = [(VPNBundleController *)self toggleVPNSpecifier];
 
-  if (v30 == v31)
+  if (vpnSpecifier == toggleVPNSpecifier)
   {
     [(VPNBundleController *)self vpnStatusChanged:0];
   }
@@ -246,35 +246,35 @@ LABEL_7:
 LABEL_15:
 }
 
-- (void)setVPNActive:(id)a3 forSpecifier:(id)a4
+- (void)setVPNActive:(id)active forSpecifier:(id)specifier
 {
-  v13 = a3;
-  v6 = a4;
+  activeCopy = active;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-  v8 = [WeakRetained rootController];
+  rootController = [WeakRetained rootController];
 
-  v9 = [v6 propertyForKey:PSValueKey];
-  v10 = [v9 intValue];
-  v11 = [v13 intValue];
+  v9 = [specifierCopy propertyForKey:PSValueKey];
+  intValue = [v9 intValue];
+  intValue2 = [activeCopy intValue];
 
-  if (v10 != v11)
+  if (intValue != intValue2)
   {
-    if ([v13 BOOLValue] && +[VPNBundleController networkingIsDisabled](VPNBundleController, "networkingIsDisabled"))
+    if ([activeCopy BOOLValue] && +[VPNBundleController networkingIsDisabled](VPNBundleController, "networkingIsDisabled"))
     {
-      v12 = [v8 topViewController];
-      [v12 showConfirmationViewForSpecifier:v6];
+      topViewController = [rootController topViewController];
+      [topViewController showConfirmationViewForSpecifier:specifierCopy];
     }
 
     else
     {
-      -[VPNBundleController setVPNActive:](self, "setVPNActive:", [v13 BOOLValue]);
+      -[VPNBundleController setVPNActive:](self, "setVPNActive:", [activeCopy BOOLValue]);
     }
   }
 }
 
-- (id)contentFilterStatusForSpecifier:(id)a3
+- (id)contentFilterStatusForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -305,9 +305,9 @@ LABEL_15:
   return v6;
 }
 
-- (id)urlFilterStatusForSpecifier:(id)a3
+- (id)urlFilterStatusForSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -338,14 +338,14 @@ LABEL_15:
   return v6;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = &MGGetBoolAnswer_ptr;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = +[NSMutableArray array];
-  v7 = [(VPNBundleController *)self toggleVPNSpecifier];
+  toggleVPNSpecifier = [(VPNBundleController *)self toggleVPNSpecifier];
 
-  if (!v7)
+  if (!toggleVPNSpecifier)
   {
     [NSBundle bundleForClass:objc_opt_class()];
     v9 = v8 = v5;
@@ -353,131 +353,131 @@ LABEL_15:
     v11 = [PSConfirmationSpecifier preferenceSpecifierNamed:v10 target:self set:"setVPNActive:forSpecifier:" get:"vpnActiveForSpecifier:" detail:0 cell:6 edit:0];
     [(VPNBundleController *)self setToggleVPNSpecifier:v11];
 
-    v12 = [(VPNBundleController *)self toggleVPNSpecifier];
+    toggleVPNSpecifier2 = [(VPNBundleController *)self toggleVPNSpecifier];
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"AIRPLANE_SHEET_CANCEL" value:&stru_411E8 table:@"MobileVPN"];
-    [v12 setCancelButton:v14];
+    [toggleVPNSpecifier2 setCancelButton:v14];
 
-    v15 = [(VPNBundleController *)self toggleVPNSpecifier];
+    toggleVPNSpecifier3 = [(VPNBundleController *)self toggleVPNSpecifier];
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"AIRPLANE_SHEET_OK_ABBREVIATED" value:&stru_411E8 table:@"MobileVPN"];
-    [v15 setOkButton:v17];
+    [toggleVPNSpecifier3 setOkButton:v17];
 
-    v18 = [(VPNBundleController *)self toggleVPNSpecifier];
+    toggleVPNSpecifier4 = [(VPNBundleController *)self toggleVPNSpecifier];
     v19 = [NSBundle bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"AIRPLANE_SHEET_OK" value:&stru_411E8 table:@"MobileVPN"];
-    [v18 setTitle:v20];
+    [toggleVPNSpecifier4 setTitle:v20];
 
-    v21 = [(VPNBundleController *)self toggleVPNSpecifier];
+    toggleVPNSpecifier5 = [(VPNBundleController *)self toggleVPNSpecifier];
     v22 = [NSBundle bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"AIRPLANE_SHEET_TITLE" value:&stru_411E8 table:@"MobileVPN"];
-    [v21 setPrompt:v23];
+    [toggleVPNSpecifier5 setPrompt:v23];
 
     v5 = v8;
-    v24 = [(VPNBundleController *)self toggleVPNSpecifier];
+    toggleVPNSpecifier6 = [(VPNBundleController *)self toggleVPNSpecifier];
     v25 = [NSNumber numberWithBool:1];
-    [v24 setProperty:v25 forKey:PSConfirmationDestructiveKey];
+    [toggleVPNSpecifier6 setProperty:v25 forKey:PSConfirmationDestructiveKey];
 
-    v26 = [(VPNBundleController *)self toggleVPNSpecifier];
-    [v26 setConfirmationAction:"confirmAirplaneModeDisable:"];
+    toggleVPNSpecifier7 = [(VPNBundleController *)self toggleVPNSpecifier];
+    [toggleVPNSpecifier7 setConfirmationAction:"confirmAirplaneModeDisable:"];
 
-    v27 = [(VPNBundleController *)self toggleVPNSpecifier];
-    [v27 setConfirmationCancelAction:"cancelAirplaneModeDisable:"];
+    toggleVPNSpecifier8 = [(VPNBundleController *)self toggleVPNSpecifier];
+    [toggleVPNSpecifier8 setConfirmationCancelAction:"cancelAirplaneModeDisable:"];
 
-    v28 = [(VPNBundleController *)self toggleVPNSpecifier];
-    [v28 setProperty:kCFBooleanTrue forKey:@"restoreState"];
+    toggleVPNSpecifier9 = [(VPNBundleController *)self toggleVPNSpecifier];
+    [toggleVPNSpecifier9 setProperty:kCFBooleanTrue forKey:@"restoreState"];
 
-    v29 = [(VPNBundleController *)self toggleVPNSpecifier];
-    [v29 setProperty:@"VPN" forKey:PSIDKey];
+    toggleVPNSpecifier10 = [(VPNBundleController *)self toggleVPNSpecifier];
+    [toggleVPNSpecifier10 setProperty:@"VPN" forKey:PSIDKey];
 
-    v30 = [(VPNBundleController *)self toggleVPNSpecifier];
-    [v30 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
+    toggleVPNSpecifier11 = [(VPNBundleController *)self toggleVPNSpecifier];
+    [toggleVPNSpecifier11 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
 
-    v31 = [(VPNBundleController *)self toggleVPNSpecifier];
-    [v31 setProperty:@"com.apple.graphic-icon.vpn" forKey:PSIconUTTypeIdentifierKey];
+    toggleVPNSpecifier12 = [(VPNBundleController *)self toggleVPNSpecifier];
+    [toggleVPNSpecifier12 setProperty:@"com.apple.graphic-icon.vpn" forKey:PSIconUTTypeIdentifierKey];
   }
 
-  v32 = [(VPNBundleController *)self linkVPNSpecifier];
+  linkVPNSpecifier = [(VPNBundleController *)self linkVPNSpecifier];
 
-  if (!v32)
+  if (!linkVPNSpecifier)
   {
     v70 = [NSBundle bundleForClass:objc_opt_class()];
     v71 = [v70 localizedStringForKey:@"VPN" value:&stru_411E8 table:@"MobileVPN"];
     v72 = [PSSpecifier preferenceSpecifierNamed:v71 target:self set:0 get:"statusForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
     [(VPNBundleController *)self setLinkVPNSpecifier:v72];
 
-    v73 = [(VPNBundleController *)self linkVPNSpecifier];
-    [v73 setProperty:@"VPN" forKey:PSIDKey];
+    linkVPNSpecifier2 = [(VPNBundleController *)self linkVPNSpecifier];
+    [linkVPNSpecifier2 setProperty:@"VPN" forKey:PSIDKey];
 
     if (![(VPNBundleController *)self isRootMenuItem]&& ![(VPNBundleController *)self isDeviceManagement])
     {
-      v74 = [(VPNBundleController *)self linkVPNSpecifier];
+      linkVPNSpecifier3 = [(VPNBundleController *)self linkVPNSpecifier];
       v118 = @"vpn-show-dns";
       v119 = &off_43620;
       v75 = [NSDictionary dictionaryWithObjects:&v119 forKeys:&v118 count:1];
-      [v74 setUserInfo:v75];
+      [linkVPNSpecifier3 setUserInfo:v75];
     }
 
     if ([(VPNBundleController *)self isRootMenuItem]|| [(VPNBundleController *)self isDeviceManagement])
     {
-      v76 = [(VPNBundleController *)self linkVPNSpecifier];
-      [v76 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
+      linkVPNSpecifier4 = [(VPNBundleController *)self linkVPNSpecifier];
+      [linkVPNSpecifier4 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
 
-      v77 = [(VPNBundleController *)self linkVPNSpecifier];
-      [v77 setProperty:@"com.apple.graphic-icon.vpn" forKey:PSIconUTTypeIdentifierKey];
+      linkVPNSpecifier5 = [(VPNBundleController *)self linkVPNSpecifier];
+      [linkVPNSpecifier5 setProperty:@"com.apple.graphic-icon.vpn" forKey:PSIconUTTypeIdentifierKey];
 
       v78 = +[UIDevice currentDevice];
-      v79 = [v78 userInterfaceIdiom];
+      userInterfaceIdiom = [v78 userInterfaceIdiom];
 
-      if ((v79 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v80 = [(VPNBundleController *)self toggleVPNSpecifier];
+        toggleVPNSpecifier13 = [(VPNBundleController *)self toggleVPNSpecifier];
         v81 = [NSNumber numberWithBool:1];
         v82 = PSHidesDisclosureIndicatorKey;
-        [v80 setProperty:v81 forKey:PSHidesDisclosureIndicatorKey];
+        [toggleVPNSpecifier13 setProperty:v81 forKey:PSHidesDisclosureIndicatorKey];
 
-        v83 = [(VPNBundleController *)self linkVPNSpecifier];
+        linkVPNSpecifier6 = [(VPNBundleController *)self linkVPNSpecifier];
         v84 = [NSNumber numberWithBool:1];
-        [v83 setProperty:v84 forKey:v82];
+        [linkVPNSpecifier6 setProperty:v84 forKey:v82];
       }
     }
   }
 
   if ([(VPNBundleController *)self isDeviceManagement])
   {
-    v33 = [(VPNBundleController *)self dnsSpecifier];
+    dnsSpecifier = [(VPNBundleController *)self dnsSpecifier];
 
-    if (!v33)
+    if (!dnsSpecifier)
     {
       v34 = [NSBundle bundleForClass:objc_opt_class()];
       v35 = [v34 localizedStringForKey:@"DNS_SETTINGS" value:&stru_411E8 table:@"MobileVPN"];
       v36 = [PSSpecifier preferenceSpecifierNamed:v35 target:self set:0 get:"getDNSSummary:" detail:objc_opt_class() cell:2 edit:0];
       [(VPNBundleController *)self setDnsSpecifier:v36];
 
-      v37 = [(VPNBundleController *)self dnsSpecifier];
-      [v37 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
+      dnsSpecifier2 = [(VPNBundleController *)self dnsSpecifier];
+      [dnsSpecifier2 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
 
-      v38 = [(VPNBundleController *)self dnsSpecifier];
-      [v38 setupIconImageWithBundle:v5];
+      dnsSpecifier3 = [(VPNBundleController *)self dnsSpecifier];
+      [dnsSpecifier3 setupIconImageWithBundle:v5];
     }
   }
 
   if ([(VPNBundleController *)self isDeviceManagement])
   {
-    v39 = [(VPNBundleController *)self contentFilterSpecifier];
+    contentFilterSpecifier = [(VPNBundleController *)self contentFilterSpecifier];
 
-    if (!v39)
+    if (!contentFilterSpecifier)
     {
       v40 = [NSBundle bundleForClass:objc_opt_class()];
       v41 = [v40 localizedStringForKey:@"CONTENT_FILTER" value:&stru_411E8 table:@"MobileVPN"];
       v42 = [PSSpecifier preferenceSpecifierNamed:v41 target:self set:0 get:"contentFilterStatusForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
       [(VPNBundleController *)self setContentFilterSpecifier:v42];
 
-      v43 = [(VPNBundleController *)self contentFilterSpecifier];
-      [v43 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
+      contentFilterSpecifier2 = [(VPNBundleController *)self contentFilterSpecifier];
+      [contentFilterSpecifier2 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
 
-      v44 = [(VPNBundleController *)self contentFilterSpecifier];
-      [v44 setupIconImageWithBundle:v5];
+      contentFilterSpecifier3 = [(VPNBundleController *)self contentFilterSpecifier];
+      [contentFilterSpecifier3 setupIconImageWithBundle:v5];
     }
   }
 
@@ -506,33 +506,33 @@ LABEL_15:
 
   v49 = [NSBundle bundleForClass:objc_opt_class()];
   v50 = [v49 localizedStringForKey:v46 value:&stru_411E8 table:@"MobileVPN"];
-  v51 = [(VPNBundleController *)self linkVPNSpecifier];
-  [v51 setName:v50];
+  linkVPNSpecifier7 = [(VPNBundleController *)self linkVPNSpecifier];
+  [linkVPNSpecifier7 setName:v50];
 
   if ([(VPNBundleController *)self isDeviceManagement])
   {
-    v52 = [(VPNBundleController *)self urlFilterSpecifier];
+    urlFilterSpecifier = [(VPNBundleController *)self urlFilterSpecifier];
 
-    if (!v52)
+    if (!urlFilterSpecifier)
     {
       v53 = [NSBundle bundleForClass:objc_opt_class()];
       v54 = [v53 localizedStringForKey:@"URL_FILTER" value:&stru_411E8 table:@"MobileVPN"];
       v55 = [PSSpecifier preferenceSpecifierNamed:v54 target:self set:0 get:"urlFilterStatusForSpecifier:" detail:objc_opt_class() cell:2 edit:0];
       [(VPNBundleController *)self setUrlFilterSpecifier:v55];
 
-      v56 = [(VPNBundleController *)self urlFilterSpecifier];
-      [v56 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
+      urlFilterSpecifier2 = [(VPNBundleController *)self urlFilterSpecifier];
+      [urlFilterSpecifier2 setProperty:@"Ethernet" forKey:PSBundleIconPathKey];
 
-      v57 = [(VPNBundleController *)self urlFilterSpecifier];
-      [v57 setupIconImageWithBundle:v5];
+      urlFilterSpecifier3 = [(VPNBundleController *)self urlFilterSpecifier];
+      [urlFilterSpecifier3 setupIconImageWithBundle:v5];
     }
   }
 
   if ([(VPNBundleController *)self isRootMenuItem])
   {
     v58 = +[VPNConnectionStore sharedInstance];
-    v59 = [v58 vpnServiceTotalCount];
-    [(VPNBundleController *)self setLastServiceCount:v59];
+    vpnServiceTotalCount = [v58 vpnServiceTotalCount];
+    [(VPNBundleController *)self setLastServiceCount:vpnServiceTotalCount];
 
     v60 = +[VPNConnectionStore sharedInstance];
     if (([v60 gradePresent:3] & 1) == 0)
@@ -551,10 +551,10 @@ LABEL_15:
             v65 = +[VPNConnectionStore sharedInstance];
             if (([v65 disableToggle] & 1) == 0)
             {
-              v110 = [(VPNBundleController *)self lastServiceCount];
-              v115 = [v110 intValue];
+              lastServiceCount = [(VPNBundleController *)self lastServiceCount];
+              intValue = [lastServiceCount intValue];
 
-              if (v115 == 1)
+              if (intValue == 1)
               {
                 v111 = [(VPNBundleController *)self statusForSpecifier:0];
                 v112 = [NSBundle bundleForClass:objc_opt_class()];
@@ -598,34 +598,34 @@ LABEL_29:
 LABEL_30:
   if ([(VPNBundleController *)self isRootMenuItem]&& [(VPNBundleController *)self isToggleSwitchInRootMenu])
   {
-    v67 = [(VPNBundleController *)self toggleVPNSpecifier];
+    toggleVPNSpecifier14 = [(VPNBundleController *)self toggleVPNSpecifier];
   }
 
   else
   {
-    v67 = [(VPNBundleController *)self linkVPNSpecifier];
+    toggleVPNSpecifier14 = [(VPNBundleController *)self linkVPNSpecifier];
   }
 
-  v68 = v67;
-  [(VPNBundleController *)self setVpnSpecifier:v67];
+  v68 = toggleVPNSpecifier14;
+  [(VPNBundleController *)self setVpnSpecifier:toggleVPNSpecifier14];
 
-  v69 = [(VPNBundleController *)self lastServiceCount];
-  if ([v69 intValue])
+  lastServiceCount2 = [(VPNBundleController *)self lastServiceCount];
+  if ([lastServiceCount2 intValue])
   {
   }
 
   else
   {
-    v85 = [(VPNBundleController *)self isRootMenuItem];
+    isRootMenuItem = [(VPNBundleController *)self isRootMenuItem];
 
-    if (v85)
+    if (isRootMenuItem)
     {
       goto LABEL_45;
     }
   }
 
-  v86 = [(VPNBundleController *)self vpnSpecifier];
-  [v6 addObject:v86];
+  vpnSpecifier = [(VPNBundleController *)self vpnSpecifier];
+  [v6 addObject:vpnSpecifier];
 
 LABEL_45:
   if (![(VPNBundleController *)self isDeviceManagement])
@@ -633,16 +633,16 @@ LABEL_45:
     goto LABEL_60;
   }
 
-  v87 = [(VPNBundleController *)self dnsSpecifier];
-  if (v87 || ([(VPNBundleController *)self contentFilterSpecifier], (v87 = objc_claimAutoreleasedReturnValue()) != 0))
+  dnsSpecifier4 = [(VPNBundleController *)self dnsSpecifier];
+  if (dnsSpecifier4 || ([(VPNBundleController *)self contentFilterSpecifier], (dnsSpecifier4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v109 = [(VPNBundleController *)self urlFilterSpecifier];
+    urlFilterSpecifier4 = [(VPNBundleController *)self urlFilterSpecifier];
 
-    if (!v109)
+    if (!urlFilterSpecifier4)
     {
       goto LABEL_60;
     }
@@ -670,34 +670,34 @@ LABEL_45:
     [v6 addObject:v99];
   }
 
-  v100 = [(VPNBundleController *)self dnsSpecifier];
-  if (v100)
+  dnsSpecifier5 = [(VPNBundleController *)self dnsSpecifier];
+  if (dnsSpecifier5)
   {
 
     if (v96)
     {
-      v101 = [(VPNBundleController *)self dnsSpecifier];
-      [v6 addObject:v101];
+      dnsSpecifier6 = [(VPNBundleController *)self dnsSpecifier];
+      [v6 addObject:dnsSpecifier6];
     }
   }
 
-  v102 = [(VPNBundleController *)self contentFilterSpecifier];
-  v103 = (v102 != 0) & v93;
+  contentFilterSpecifier4 = [(VPNBundleController *)self contentFilterSpecifier];
+  v103 = (contentFilterSpecifier4 != 0) & v93;
 
   v5 = v117;
   if (v103 == 1)
   {
-    v104 = [(VPNBundleController *)self contentFilterSpecifier];
-    [v6 addObject:v104];
+    contentFilterSpecifier5 = [(VPNBundleController *)self contentFilterSpecifier];
+    [v6 addObject:contentFilterSpecifier5];
   }
 
-  v105 = [(VPNBundleController *)self urlFilterSpecifier];
-  v106 = (v105 != 0) & v95;
+  urlFilterSpecifier5 = [(VPNBundleController *)self urlFilterSpecifier];
+  v106 = (urlFilterSpecifier5 != 0) & v95;
 
   if (v106 == 1)
   {
-    v107 = [(VPNBundleController *)self urlFilterSpecifier];
-    [v6 addObject:v107];
+    urlFilterSpecifier6 = [(VPNBundleController *)self urlFilterSpecifier];
+    [v6 addObject:urlFilterSpecifier6];
   }
 
 LABEL_60:
@@ -705,12 +705,12 @@ LABEL_60:
   return v6;
 }
 
-- (VPNBundleController)initWithParentListController:(id)a3 properties:(id)a4
+- (VPNBundleController)initWithParentListController:(id)controller properties:(id)properties
 {
   v15.receiver = self;
   v15.super_class = VPNBundleController;
-  v5 = a4;
-  v6 = [(VPNBundleController *)&v15 initWithParentListController:a3];
+  propertiesCopy = properties;
+  v6 = [(VPNBundleController *)&v15 initWithParentListController:controller];
   if (v6)
   {
     v7 = [VPNConnectionStore sharedInstance:v15.receiver];
@@ -736,10 +736,10 @@ LABEL_60:
     [(VPNBundleController *)v6 setRegistered:1];
   }
 
-  v12 = [v5 objectForKeyedSubscript:{@"isTopLevel", v15.receiver, v15.super_class}];
+  v12 = [propertiesCopy objectForKeyedSubscript:{@"isTopLevel", v15.receiver, v15.super_class}];
   -[VPNBundleController setRootMenuItem:](v6, "setRootMenuItem:", [v12 BOOLValue]);
 
-  v13 = [v5 objectForKeyedSubscript:@"isDeviceManagement"];
+  v13 = [propertiesCopy objectForKeyedSubscript:@"isDeviceManagement"];
 
   -[VPNBundleController setDeviceManagement:](v6, "setDeviceManagement:", [v13 BOOLValue]);
   return v6;
@@ -765,11 +765,11 @@ LABEL_60:
   }
 }
 
-- (void)vpnStatusChanged:(id)a3
+- (void)vpnStatusChanged:(id)changed
 {
   if ([(VPNBundleController *)self isRootMenuItem]&& [(VPNBundleController *)self isToggleSwitchInRootMenu])
   {
-    if (a3)
+    if (changed)
     {
       [(VPNBundleController *)self updateVPNSwitchStatus];
     }
@@ -787,12 +787,12 @@ LABEL_60:
 
   if (v20)
   {
-    v8 = [v20 password];
-    if ([v8 length])
+    password = [v20 password];
+    if ([password length])
     {
-      v9 = [v20 disconnected];
+      disconnected = [v20 disconnected];
 
-      if (v9)
+      if (disconnected)
       {
         [v20 setPassword:0];
       }
@@ -807,8 +807,8 @@ LABEL_60:
   {
     v10 = OBJC_IVAR___PSBundleController__parent;
     v11 = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-    v12 = [(VPNBundleController *)self contentFilterSpecifier];
-    v13 = [v11 indexOfSpecifier:v12];
+    contentFilterSpecifier = [(VPNBundleController *)self contentFilterSpecifier];
+    v13 = [v11 indexOfSpecifier:contentFilterSpecifier];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -821,8 +821,8 @@ LABEL_60:
   {
     v15 = OBJC_IVAR___PSBundleController__parent;
     v16 = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-    v17 = [(VPNBundleController *)self urlFilterSpecifier];
-    v18 = [v16 indexOfSpecifier:v17];
+    urlFilterSpecifier = [(VPNBundleController *)self urlFilterSpecifier];
+    v18 = [v16 indexOfSpecifier:urlFilterSpecifier];
 
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -832,21 +832,21 @@ LABEL_60:
   }
 }
 
-- (void)vpnConfigurationChanged:(id)a3
+- (void)vpnConfigurationChanged:(id)changed
 {
   if ([(VPNBundleController *)self isDeviceManagement])
   {
     v4 = +[VPNBundleController navigationTitle];
-    v5 = [(VPNBundleController *)self linkVPNSpecifier];
-    [v5 setName:v4];
+    linkVPNSpecifier = [(VPNBundleController *)self linkVPNSpecifier];
+    [linkVPNSpecifier setName:v4];
   }
 
   if ([(VPNBundleController *)self isDeviceManagement])
   {
     v6 = OBJC_IVAR___PSBundleController__parent;
     WeakRetained = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-    v8 = [(VPNBundleController *)self dnsSpecifier];
-    v9 = [WeakRetained indexOfSpecifier:v8];
+    dnsSpecifier = [(VPNBundleController *)self dnsSpecifier];
+    v9 = [WeakRetained indexOfSpecifier:dnsSpecifier];
 
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -859,8 +859,8 @@ LABEL_60:
   {
     v11 = OBJC_IVAR___PSBundleController__parent;
     v12 = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-    v13 = [(VPNBundleController *)self contentFilterSpecifier];
-    v14 = [v12 indexOfSpecifier:v13];
+    contentFilterSpecifier = [(VPNBundleController *)self contentFilterSpecifier];
+    v14 = [v12 indexOfSpecifier:contentFilterSpecifier];
 
     if (v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -873,8 +873,8 @@ LABEL_60:
   {
     v16 = OBJC_IVAR___PSBundleController__parent;
     v17 = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-    v18 = [(VPNBundleController *)self urlFilterSpecifier];
-    v19 = [v17 indexOfSpecifier:v18];
+    urlFilterSpecifier = [(VPNBundleController *)self urlFilterSpecifier];
+    v19 = [v17 indexOfSpecifier:urlFilterSpecifier];
 
     if (v19 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -886,19 +886,19 @@ LABEL_60:
   if ([(VPNBundleController *)self isRootMenuItem])
   {
     v21 = +[VPNConnectionStore sharedInstance];
-    v54 = [v21 vpnServiceTotalCount];
+    vpnServiceTotalCount = [v21 vpnServiceTotalCount];
 
     v53 = OBJC_IVAR___PSBundleController__parent;
     v22 = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
     v23 = [v22 specifierForID:@"VPN"];
 
-    v24 = [(VPNBundleController *)self lastServiceCount];
-    v25 = [v24 intValue];
+    lastServiceCount = [(VPNBundleController *)self lastServiceCount];
+    intValue = [lastServiceCount intValue];
 
-    v26 = [v54 intValue];
+    intValue2 = [vpnServiceTotalCount intValue];
     if (v23)
     {
-      v27 = v25;
+      v27 = intValue;
     }
 
     else
@@ -906,7 +906,7 @@ LABEL_60:
       v27 = 0;
     }
 
-    v28 = [(VPNBundleController *)self isToggleSwitchInRootMenu];
+    isToggleSwitchInRootMenu = [(VPNBundleController *)self isToggleSwitchInRootMenu];
     v29 = +[VPNConnectionStore sharedInstance];
     v30 = 0;
     if (([v29 gradePresent:3] & 1) == 0)
@@ -936,7 +936,7 @@ LABEL_60:
           else
           {
             v33 = +[VPNConnectionStore sharedInstance];
-            v30 = ([v33 disableToggle] & 1) == 0 && objc_msgSend(v54, "intValue") == 1;
+            v30 = ([v33 disableToggle] & 1) == 0 && objc_msgSend(vpnServiceTotalCount, "intValue") == 1;
           }
         }
       }
@@ -944,15 +944,15 @@ LABEL_60:
 
     v34 = [NSBundle bundleForClass:objc_opt_class()];
     v35 = [v34 localizedStringForKey:@"VPN" value:&stru_411E8 table:@"MobileVPN"];
-    v36 = [(VPNBundleController *)self linkVPNSpecifier];
-    [v36 setName:v35];
+    linkVPNSpecifier2 = [(VPNBundleController *)self linkVPNSpecifier];
+    [linkVPNSpecifier2 setName:v35];
 
-    if (v27 == v26 && v28 == v30)
+    if (v27 == intValue2 && isToggleSwitchInRootMenu == v30)
     {
       goto LABEL_54;
     }
 
-    [(VPNBundleController *)self setLastServiceCount:v54];
+    [(VPNBundleController *)self setLastServiceCount:vpnServiceTotalCount];
     [(VPNBundleController *)self setToggleSwitchInRootMenu:v30];
     if ([(VPNBundleController *)self isToggleSwitchInRootMenu])
     {
@@ -966,23 +966,23 @@ LABEL_60:
     v37 = ;
     [(VPNBundleController *)self setVpnSpecifier:v37];
 
-    if (v23 || v26 < 1)
+    if (v23 || intValue2 < 1)
     {
       if (v23)
       {
-        if (v26 && ([(VPNBundleController *)self vpnSpecifier], v47 = objc_claimAutoreleasedReturnValue(), v47, v47))
+        if (intValue2 && ([(VPNBundleController *)self vpnSpecifier], v47 = objc_claimAutoreleasedReturnValue(), v47, v47))
         {
-          v48 = [(VPNBundleController *)self vpnSpecifier];
+          vpnSpecifier = [(VPNBundleController *)self vpnSpecifier];
 
-          if (v23 == v48)
+          if (v23 == vpnSpecifier)
           {
             goto LABEL_54;
           }
 
           v45 = objc_loadWeakRetained(&self->PSBundleController_opaque[v53]);
           v49 = [NSArray arrayWithObject:v23];
-          v50 = [(VPNBundleController *)self vpnSpecifier];
-          v51 = [NSArray arrayWithObject:v50];
+          vpnSpecifier2 = [(VPNBundleController *)self vpnSpecifier];
+          v51 = [NSArray arrayWithObject:vpnSpecifier2];
           [v45 replaceContiguousSpecifiers:v49 withSpecifiers:v51 animated:1];
         }
 
@@ -998,9 +998,9 @@ LABEL_53:
 
     else
     {
-      v38 = [(VPNBundleController *)self vpnSpecifier];
+      vpnSpecifier3 = [(VPNBundleController *)self vpnSpecifier];
 
-      if (v38)
+      if (vpnSpecifier3)
       {
         v39 = objc_loadWeakRetained(&self->PSBundleController_opaque[v53]);
         v40 = [v39 indexOfSpecifierID:@"INTERNET_TETHERING"];
@@ -1034,8 +1034,8 @@ LABEL_53:
         }
 
         v45 = objc_loadWeakRetained(&self->PSBundleController_opaque[v53]);
-        v46 = [(VPNBundleController *)self vpnSpecifier];
-        [v45 insertSpecifier:v46 atIndex:v44 animated:1];
+        vpnSpecifier4 = [(VPNBundleController *)self vpnSpecifier];
+        [v45 insertSpecifier:vpnSpecifier4 atIndex:v44 animated:1];
 
         goto LABEL_53;
       }
@@ -1045,9 +1045,9 @@ LABEL_54:
   }
 }
 
-- (id)getDNSSummary:(id)a3
+- (id)getDNSSummary:(id)summary
 {
-  v22 = a3;
+  summaryCopy = summary;
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"AUTOMATIC_DNS" value:&stru_411E8 table:@"MobileVPN"];
 
@@ -1118,7 +1118,7 @@ LABEL_15:
   return v4;
 }
 
-- (id)getContentFilterSummary:(id)a3
+- (id)getContentFilterSummary:(id)summary
 {
   v3 = +[VPNConnectionStore sharedInstance];
   v4 = [v3 aggregateStatusText:6];
@@ -1126,19 +1126,19 @@ LABEL_15:
   return v4;
 }
 
-- (void)confirmAirplaneModeDisable:(id)a3
+- (void)confirmAirplaneModeDisable:(id)disable
 {
   +[VPNBundleController disableAirplaneMode];
 
   [(VPNBundleController *)self setVPNActive:1];
 }
 
-- (void)cancelAirplaneModeDisable:(id)a3
+- (void)cancelAirplaneModeDisable:(id)disable
 {
   v4 = OBJC_IVAR___PSBundleController__parent;
-  v5 = a3;
+  disableCopy = disable;
   WeakRetained = objc_loadWeakRetained(&self->PSBundleController_opaque[v4]);
-  [WeakRetained reloadSpecifier:v5];
+  [WeakRetained reloadSpecifier:disableCopy];
 }
 
 @end

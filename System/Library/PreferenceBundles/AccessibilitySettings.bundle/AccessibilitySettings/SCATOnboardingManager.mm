@@ -1,16 +1,16 @@
 @interface SCATOnboardingManager
 + (id)sharedInstance;
 - (SCATOnboardingManager)init;
-- (SCATOnboardingManager)initWithController:(id)a3;
-- (void)addOnboardingSwitch:(id)a3;
-- (void)addOnboardingSwitch:(id)a3 navigationController:(id)a4;
+- (SCATOnboardingManager)initWithController:(id)controller;
+- (void)addOnboardingSwitch:(id)switch;
+- (void)addOnboardingSwitch:(id)switch navigationController:(id)controller;
 - (void)didPopStartSetUpSwitchController;
 - (void)removeAllOnboardingSwitches;
-- (void)removeOnboardingSwitchForAction:(int64_t)a3;
+- (void)removeOnboardingSwitchForAction:(int64_t)action;
 - (void)resetManager;
 - (void)resumeAutoScanningForSelectItemSwitch;
-- (void)setLastSwitchSourceController:(id)a3;
-- (void)setSwitchControlEnabled:(BOOL)a3;
+- (void)setLastSwitchSourceController:(id)controller;
+- (void)setSwitchControlEnabled:(BOOL)enabled;
 @end
 
 @implementation SCATOnboardingManager
@@ -41,9 +41,9 @@ void __39__SCATOnboardingManager_sharedInstance__block_invoke(id a1)
   return [(SCATOnboardingManager *)&v3 init];
 }
 
-- (SCATOnboardingManager)initWithController:(id)a3
+- (SCATOnboardingManager)initWithController:(id)controller
 {
-  [(SCATOnboardingManager *)self setOnboardController:a3];
+  [(SCATOnboardingManager *)self setOnboardController:controller];
   [(SCATOnboardingManager *)self setInSCATOnboarding:1];
   [(SCATOnboardingManager *)self setOnboardAction:0];
   [(SCATOnboardingManager *)self setSelectItemSwitch:0];
@@ -63,99 +63,99 @@ void __39__SCATOnboardingManager_sharedInstance__block_invoke(id a1)
   [(SCATOnboardingManager *)self setLastMoveToNextItemController:0];
 }
 
-- (void)addOnboardingSwitch:(id)a3 navigationController:(id)a4
+- (void)addOnboardingSwitch:(id)switch navigationController:(id)controller
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(SCATOnboardingManager *)self onboardController];
-  [v7 setOnboardNavigationController:v6];
+  controllerCopy = controller;
+  switchCopy = switch;
+  onboardController = [(SCATOnboardingManager *)self onboardController];
+  [onboardController setOnboardNavigationController:controllerCopy];
 
-  [(SCATOnboardingManager *)self addOnboardingSwitch:v8];
+  [(SCATOnboardingManager *)self addOnboardingSwitch:switchCopy];
 }
 
-- (void)addOnboardingSwitch:(id)a3
+- (void)addOnboardingSwitch:(id)switch
 {
-  v8 = a3;
+  switchCopy = switch;
   if ([(SCATOnboardingManager *)self onboardAction]== &stru_20.flags + 3)
   {
-    [(SCATOnboardingManager *)self setSelectItemSwitch:v8];
+    [(SCATOnboardingManager *)self setSelectItemSwitch:switchCopy];
   }
 
   else if ([(SCATOnboardingManager *)self onboardAction]== &stru_68)
   {
-    [(SCATOnboardingManager *)self setMoveToNextItemSwitch:v8];
+    [(SCATOnboardingManager *)self setMoveToNextItemSwitch:switchCopy];
   }
 
-  [v8 setAction:{-[SCATOnboardingManager onboardAction](self, "onboardAction")}];
+  [switchCopy setAction:{-[SCATOnboardingManager onboardAction](self, "onboardAction")}];
   SCATAddOrUpdateSwitchToSettings();
-  v4 = [(SCATOnboardingManager *)self selectItemSwitch];
-  if (v4 && (v5 = v4, [(SCATOnboardingManager *)self moveToNextItemSwitch], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  selectItemSwitch = [(SCATOnboardingManager *)self selectItemSwitch];
+  if (selectItemSwitch && (v5 = selectItemSwitch, [(SCATOnboardingManager *)self moveToNextItemSwitch], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    v7 = [(SCATOnboardingManager *)self onboardController];
-    [v7 startAfterSetUpSelectItemSwitchFlow];
+    onboardController = [(SCATOnboardingManager *)self onboardController];
+    [onboardController startAfterSetUpSelectItemSwitchFlow];
   }
 
   else
   {
-    v7 = [(SCATOnboardingManager *)self onboardController];
-    [v7 startAfterSetUpMoveToNextItemSwitchFlow];
+    onboardController = [(SCATOnboardingManager *)self onboardController];
+    [onboardController startAfterSetUpMoveToNextItemSwitchFlow];
   }
 }
 
 - (void)resumeAutoScanningForSelectItemSwitch
 {
-  v3 = [(SCATOnboardingManager *)self selectItemSwitch];
-  [v3 setAction:109];
+  selectItemSwitch = [(SCATOnboardingManager *)self selectItemSwitch];
+  [selectItemSwitch setAction:109];
 
-  v4 = [(SCATOnboardingManager *)self selectItemSwitch];
+  selectItemSwitch2 = [(SCATOnboardingManager *)self selectItemSwitch];
   SCATAddOrUpdateSwitchToSettings();
 }
 
 - (void)removeAllOnboardingSwitches
 {
-  v3 = [(SCATOnboardingManager *)self selectItemSwitch];
+  selectItemSwitch = [(SCATOnboardingManager *)self selectItemSwitch];
 
-  if (v3)
+  if (selectItemSwitch)
   {
-    v4 = [(SCATOnboardingManager *)self selectItemSwitch];
+    selectItemSwitch2 = [(SCATOnboardingManager *)self selectItemSwitch];
     SCATRemoveSwitchFromSettings();
 
     [(SCATOnboardingManager *)self setSelectItemSwitch:0];
   }
 
-  v5 = [(SCATOnboardingManager *)self moveToNextItemSwitch];
+  moveToNextItemSwitch = [(SCATOnboardingManager *)self moveToNextItemSwitch];
 
-  if (v5)
+  if (moveToNextItemSwitch)
   {
-    v6 = [(SCATOnboardingManager *)self moveToNextItemSwitch];
+    moveToNextItemSwitch2 = [(SCATOnboardingManager *)self moveToNextItemSwitch];
     SCATRemoveSwitchFromSettings();
 
     [(SCATOnboardingManager *)self setMoveToNextItemSwitch:0];
   }
 }
 
-- (void)removeOnboardingSwitchForAction:(int64_t)a3
+- (void)removeOnboardingSwitchForAction:(int64_t)action
 {
-  if (a3 == 104)
+  if (action == 104)
   {
-    v6 = [(SCATOnboardingManager *)self moveToNextItemSwitch];
+    moveToNextItemSwitch = [(SCATOnboardingManager *)self moveToNextItemSwitch];
 
-    if (v6)
+    if (moveToNextItemSwitch)
     {
-      v7 = [(SCATOnboardingManager *)self moveToNextItemSwitch];
+      moveToNextItemSwitch2 = [(SCATOnboardingManager *)self moveToNextItemSwitch];
       SCATRemoveSwitchFromSettings();
 
       [(SCATOnboardingManager *)self setMoveToNextItemSwitch:0];
     }
   }
 
-  else if (a3 == 103)
+  else if (action == 103)
   {
-    v4 = [(SCATOnboardingManager *)self selectItemSwitch];
+    selectItemSwitch = [(SCATOnboardingManager *)self selectItemSwitch];
 
-    if (v4)
+    if (selectItemSwitch)
     {
-      v5 = [(SCATOnboardingManager *)self selectItemSwitch];
+      selectItemSwitch2 = [(SCATOnboardingManager *)self selectItemSwitch];
       SCATRemoveSwitchFromSettings();
 
       [(SCATOnboardingManager *)self setSelectItemSwitch:0];
@@ -177,26 +177,26 @@ void __39__SCATOnboardingManager_sharedInstance__block_invoke(id a1)
   }
 }
 
-- (void)setLastSwitchSourceController:(id)a3
+- (void)setLastSwitchSourceController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(SCATOnboardingManager *)self onboardAction]== &stru_20.flags + 3)
   {
-    [(SCATOnboardingManager *)self setLastSelectItemController:v4];
+    [(SCATOnboardingManager *)self setLastSelectItemController:controllerCopy];
   }
 
   else if ([(SCATOnboardingManager *)self onboardAction]== &stru_68)
   {
-    [(SCATOnboardingManager *)self setLastMoveToNextItemController:v4];
+    [(SCATOnboardingManager *)self setLastMoveToNextItemController:controllerCopy];
   }
 }
 
-- (void)setSwitchControlEnabled:(BOOL)a3
+- (void)setSwitchControlEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v8 = _AXSTripleClickCopyOptions();
   _AXSAssistiveTouchScannerSetEnabled();
-  if (v3)
+  if (enabledCopy)
   {
     if ([v8 containsObject:&off_2799A8])
     {
@@ -209,9 +209,9 @@ void __39__SCATOnboardingManager_sharedInstance__block_invoke(id a1)
   else
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchScannerAddedTripleClickAutomatically];
+    assistiveTouchScannerAddedTripleClickAutomatically = [v4 assistiveTouchScannerAddedTripleClickAutomatically];
 
-    if (!v5)
+    if (!assistiveTouchScannerAddedTripleClickAutomatically)
     {
       goto LABEL_8;
     }
@@ -225,7 +225,7 @@ void __39__SCATOnboardingManager_sharedInstance__block_invoke(id a1)
   }
 
   v7 = +[AXSettings sharedInstance];
-  [v7 setAssistiveTouchScannerAddedTripleClickAutomatically:v3];
+  [v7 setAssistiveTouchScannerAddedTripleClickAutomatically:enabledCopy];
 
 LABEL_8:
 }

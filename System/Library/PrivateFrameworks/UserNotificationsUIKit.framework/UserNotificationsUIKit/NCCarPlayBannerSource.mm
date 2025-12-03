@@ -1,38 +1,38 @@
 @interface NCCarPlayBannerSource
 + (void)initialize;
-- (BOOL)_isPresentableSticky:(id)a3;
-- (BOOL)_setSuspended:(BOOL)a3 forReason:(id)a4 revokingCurrent:(BOOL)a5;
-- (BOOL)_shouldPresentableBorrowCarPlayScreen:(id)a3;
+- (BOOL)_isPresentableSticky:(id)sticky;
+- (BOOL)_setSuspended:(BOOL)suspended forReason:(id)reason revokingCurrent:(BOOL)current;
+- (BOOL)_shouldPresentableBorrowCarPlayScreen:(id)screen;
 - (BOOL)isValid;
-- (BOOL)postPresentable:(id)a3 options:(unint64_t)a4 userInfo:(id)a5 error:(id *)a6;
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4 revokingCurrent:(BOOL)a5 error:(id *)a6;
+- (BOOL)postPresentable:(id)presentable options:(unint64_t)options userInfo:(id)info error:(id *)error;
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason revokingCurrent:(BOOL)current error:(id *)error;
 - (id)_bannerSource;
 - (id)_peekPostedPresentable;
-- (id)_postedPresentablesWithIdentification:(id)a3;
-- (id)_pullPostedPresentableAtIndex:(unint64_t)a3;
+- (id)_postedPresentablesWithIdentification:(id)identification;
+- (id)_pullPostedPresentableAtIndex:(unint64_t)index;
 - (id)delegate;
-- (id)keyWindowForScreen:(id)a3;
-- (id)layoutDescriptionWithError:(id *)a3;
+- (id)keyWindowForScreen:(id)screen;
+- (id)layoutDescriptionWithError:(id *)error;
 - (id)requesterIdentifier;
-- (id)revokeAllPresentablesWithReason:(id)a3 userInfo:(id)a4 error:(id *)a5;
-- (id)revokePresentableWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7;
-- (id)revokePresentableWithRequestIdentifier:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7;
+- (id)revokeAllPresentablesWithReason:(id)reason userInfo:(id)info error:(id *)error;
+- (id)revokePresentableWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error;
+- (id)revokePresentableWithRequestIdentifier:(id)identifier reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error;
 - (int64_t)destination;
-- (unint64_t)_indexOfPostedPresentable:(id)a3;
+- (unint64_t)_indexOfPostedPresentable:(id)presentable;
 - (unint64_t)_postedPresentableCount;
 - (void)_allPresentablesDidDisappear;
 - (void)_cancelDismissTimer;
 - (void)_cancelReplaceTimer;
-- (void)_enqueuePostedPresentable:(id)a3;
-- (void)_presentableDidDisappear:(id)a3;
-- (void)_presentableWithIdentificationDidDisappear:(id)a3;
+- (void)_enqueuePostedPresentable:(id)presentable;
+- (void)_presentableDidDisappear:(id)disappear;
+- (void)_presentableWithIdentificationDidDisappear:(id)disappear;
 - (void)_revokePreviouslyPostedPresentableIfPossible;
-- (void)_startDismissTimerWithTimeInterval:(double)a3;
+- (void)_startDismissTimerWithTimeInterval:(double)interval;
 - (void)_startReplaceTimer;
-- (void)didBeginAnnounceForNotificationRequest:(id)a3;
-- (void)didFinishAnnounceForNotificationRequest:(id)a3;
+- (void)didBeginAnnounceForNotificationRequest:(id)request;
+- (void)didFinishAnnounceForNotificationRequest:(id)request;
 - (void)invalidate;
-- (void)presentableDidAppearAsBanner:(id)a3;
+- (void)presentableDidAppearAsBanner:(id)banner;
 @end
 
 @implementation NCCarPlayBannerSource
@@ -55,15 +55,15 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
   v10[1] = *MEMORY[0x277D85DE8];
   if (!self->_replaceTimer && [(NCCarPlayBannerSource *)self _postedPresentableCount]>= 2)
   {
-    v3 = [(NCCarPlayBannerSource *)self _peekPostedPresentable];
-    if ([(NCCarPlayBannerSource *)self _isPresentableSticky:v3])
+    _peekPostedPresentable = [(NCCarPlayBannerSource *)self _peekPostedPresentable];
+    if ([(NCCarPlayBannerSource *)self _isPresentableSticky:_peekPostedPresentable])
     {
       v4 = 0;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:v3];
+      v5 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:_peekPostedPresentable];
       v9 = @"CPUIBannerTransitionAnimationStyle";
       v10[0] = &unk_2830156F8;
       v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
@@ -81,11 +81,11 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
 
 - (unint64_t)_postedPresentableCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSPointerArray *)v2->_postedPresentables unui_compact];
-  v3 = [(NSPointerArray *)v2->_postedPresentables count];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPointerArray *)selfCopy->_postedPresentables unui_compact];
+  v3 = [(NSPointerArray *)selfCopy->_postedPresentables count];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -96,8 +96,8 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
   if (!bannerSource)
   {
     v4 = MEMORY[0x277CF0A80];
-    v5 = [MEMORY[0x277D77E48] requesterIdentifier];
-    v6 = [v4 bannerSourceForDestination:1 forRequesterIdentifier:v5];
+    requesterIdentifier = [MEMORY[0x277D77E48] requesterIdentifier];
+    v6 = [v4 bannerSourceForDestination:1 forRequesterIdentifier:requesterIdentifier];
     v7 = self->_bannerSource;
     self->_bannerSource = v6;
 
@@ -110,12 +110,12 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
 
 - (id)_peekPostedPresentable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSPointerArray *)v2->_postedPresentables unui_compact];
-  if ([(NSPointerArray *)v2->_postedPresentables count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPointerArray *)selfCopy->_postedPresentables unui_compact];
+  if ([(NSPointerArray *)selfCopy->_postedPresentables count])
   {
-    v3 = [(NSPointerArray *)v2->_postedPresentables pointerAtIndex:0];
+    v3 = [(NSPointerArray *)selfCopy->_postedPresentables pointerAtIndex:0];
   }
 
   else
@@ -123,7 +123,7 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -132,7 +132,7 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     NCRegisterUserNotificationsUILogging();
@@ -141,47 +141,47 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
 
 - (int64_t)destination
 {
-  v2 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v3 = [v2 destination];
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  destination = [_bannerSource destination];
 
-  return v3;
+  return destination;
 }
 
 - (id)requesterIdentifier
 {
-  v2 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v3 = [v2 requesterIdentifier];
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  requesterIdentifier = [_bannerSource requesterIdentifier];
 
-  return v3;
+  return requesterIdentifier;
 }
 
 - (BOOL)isValid
 {
-  v2 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v3 = [v2 isValid];
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  isValid = [_bannerSource isValid];
 
-  return v3;
+  return isValid;
 }
 
-- (id)layoutDescriptionWithError:(id *)a3
+- (id)layoutDescriptionWithError:(id *)error
 {
-  v4 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v5 = [v4 layoutDescriptionWithError:a3];
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  v5 = [_bannerSource layoutDescriptionWithError:error];
 
   return v5;
 }
 
-- (BOOL)postPresentable:(id)a3 options:(unint64_t)a4 userInfo:(id)a5 error:(id *)a6
+- (BOOL)postPresentable:(id)presentable options:(unint64_t)options userInfo:(id)info error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  presentableCopy = presentable;
+  infoCopy = info;
   if (![(NCCarPlayBannerSource *)self _postedPresentableCount])
   {
     [(NCCarPlayBannerSource *)self _setSuspended:0 forReason:@"NCCarPlayBannerSourceSuspensionReasonBannerPresented" revokingCurrent:0];
   }
 
   v12 = *MEMORY[0x277CF0A60];
-  v13 = [v11 mutableCopy];
+  v13 = [infoCopy mutableCopy];
   v14 = v13;
   if (v13)
   {
@@ -196,13 +196,13 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
   v16 = v15;
 
   [v16 setObject:@"NCCarPlayBannerSourceSuspensionReasonBannerPresented" forKey:*MEMORY[0x277CF0AD8]];
-  v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[NCCarPlayBannerSource _shouldPresentableBorrowCarPlayScreen:](self, "_shouldPresentableBorrowCarPlayScreen:", v10)}];
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[NCCarPlayBannerSource _shouldPresentableBorrowCarPlayScreen:](self, "_shouldPresentableBorrowCarPlayScreen:", presentableCopy)}];
   [v16 setObject:v17 forKey:*MEMORY[0x277CF91D8]];
 
   v18 = v16;
-  v19 = [(NCCarPlayBannerSource *)self _bannerSource];
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
   v24 = 0;
-  v20 = [v19 postPresentable:v10 options:v12 | a4 userInfo:v18 error:&v24];
+  v20 = [_bannerSource postPresentable:presentableCopy options:v12 | options userInfo:v18 error:&v24];
   v21 = v24;
 
   if (!v20)
@@ -210,43 +210,43 @@ void __43__NCCarPlayBannerSource__startReplaceTimer__block_invoke(uint64_t a1, v
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
     {
       [NCCarPlayBannerSource postPresentable:options:userInfo:error:];
-      if (!a6)
+      if (!error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!a6)
+    else if (!error)
     {
       goto LABEL_13;
     }
 
     v22 = v21;
-    *a6 = v21;
+    *error = v21;
     goto LABEL_13;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v10 addPresentableObserver:self];
+    [presentableCopy addPresentableObserver:self];
   }
 
-  [(NCCarPlayBannerSource *)self _enqueuePostedPresentable:v10];
+  [(NCCarPlayBannerSource *)self _enqueuePostedPresentable:presentableCopy];
   [(NCCarPlayBannerSource *)self _revokePreviouslyPostedPresentableIfPossible];
 LABEL_13:
 
   return v20;
 }
 
-- (id)revokePresentableWithRequestIdentifier:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7
+- (id)revokePresentableWithRequestIdentifier:(id)identifier reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error
 {
-  v9 = a5;
+  animatedCopy = animated;
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v16 = [v15 revokePresentableWithRequestIdentifier:v12 reason:v13 animated:v9 userInfo:v14 error:a7];
+  identifierCopy = identifier;
+  reasonCopy = reason;
+  infoCopy = info;
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  v16 = [_bannerSource revokePresentableWithRequestIdentifier:identifierCopy reason:reasonCopy animated:animatedCopy userInfo:infoCopy error:error];
 
   if (v16)
   {
@@ -282,12 +282,12 @@ LABEL_13:
   return v16;
 }
 
-- (id)revokeAllPresentablesWithReason:(id)a3 userInfo:(id)a4 error:(id *)a5
+- (id)revokeAllPresentablesWithReason:(id)reason userInfo:(id)info error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v11 = [v10 revokeAllPresentablesWithReason:v9 userInfo:v8 error:a5];
+  infoCopy = info;
+  reasonCopy = reason;
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  v11 = [_bannerSource revokeAllPresentablesWithReason:reasonCopy userInfo:infoCopy error:error];
 
   if (v11)
   {
@@ -305,22 +305,22 @@ LABEL_13:
   self->_bannerSource = 0;
 }
 
-- (id)revokePresentableWithIdentification:(id)a3 reason:(id)a4 animated:(BOOL)a5 userInfo:(id)a6 error:(id *)a7
+- (id)revokePresentableWithIdentification:(id)identification reason:(id)reason animated:(BOOL)animated userInfo:(id)info error:(id *)error
 {
-  v9 = a5;
+  animatedCopy = animated;
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v16 = [v15 revokePresentableWithIdentification:v12 reason:v13 animated:v9 userInfo:v14 error:a7];
+  identificationCopy = identification;
+  reasonCopy = reason;
+  infoCopy = info;
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  v16 = [_bannerSource revokePresentableWithIdentification:identificationCopy reason:reasonCopy animated:animatedCopy userInfo:infoCopy error:error];
 
   if (v16)
   {
-    v25 = v14;
+    v25 = infoCopy;
     v26 = v16;
-    v27 = v13;
-    v28 = v12;
+    v27 = reasonCopy;
+    v28 = identificationCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
@@ -357,9 +357,9 @@ LABEL_13:
       while (v19);
     }
 
-    v13 = v27;
-    v12 = v28;
-    v14 = v25;
+    reasonCopy = v27;
+    identificationCopy = v28;
+    infoCopy = v25;
     v16 = v26;
   }
 
@@ -375,12 +375,12 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
   }
 }
 
-- (id)keyWindowForScreen:(id)a3
+- (id)keyWindowForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(BNBannerSource *)self->_bannerSource keyWindowForScreen:v4];
+    v5 = [(BNBannerSource *)self->_bannerSource keyWindowForScreen:screenCopy];
   }
 
   else
@@ -391,14 +391,14 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
   return v5;
 }
 
-- (BOOL)setSuspended:(BOOL)a3 forReason:(id)a4 revokingCurrent:(BOOL)a5 error:(id *)a6
+- (BOOL)setSuspended:(BOOL)suspended forReason:(id)reason revokingCurrent:(BOOL)current error:(id *)error
 {
-  v7 = a5;
-  v8 = a3;
-  v10 = a4;
-  if ([v10 isEqualToString:@"PresentingAlertController"])
+  currentCopy = current;
+  suspendedCopy = suspended;
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"PresentingAlertController"])
   {
-    if (v8)
+    if (suspendedCopy)
     {
       [(NCCarPlayBannerSource *)self _cancelDismissTimer];
     }
@@ -409,17 +409,17 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
     }
   }
 
-  v11 = [(NCCarPlayBannerSource *)self _bannerSource];
-  v12 = [v11 setSuspended:v8 forReason:v10 revokingCurrent:v7 error:a6];
+  _bannerSource = [(NCCarPlayBannerSource *)self _bannerSource];
+  v12 = [_bannerSource setSuspended:suspendedCopy forReason:reasonCopy revokingCurrent:currentCopy error:error];
 
   return v12;
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   [(NCCarPlayBannerSource *)self _cancelDismissTimer];
-  v5 = [(NCCarPlayBannerSource *)self _isPresentableSticky:v4];
+  v5 = [(NCCarPlayBannerSource *)self _isPresentableSticky:bannerCopy];
 
   if (v5)
   {
@@ -435,17 +435,17 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
   }
 }
 
-- (BOOL)_isPresentableSticky:(id)a3
+- (BOOL)_isPresentableSticky:(id)sticky
 {
-  v3 = a3;
+  stickyCopy = sticky;
   objc_opt_class();
   v4 = UNSafeCast();
 
   if (v4)
   {
-    v5 = [v4 notificationRequest];
-    v6 = [v5 options];
-    v7 = [v6 dismissAutomaticallyForCarPlay] ^ 1;
+    notificationRequest = [v4 notificationRequest];
+    options = [notificationRequest options];
+    v7 = [options dismissAutomaticallyForCarPlay] ^ 1;
   }
 
   else
@@ -456,30 +456,30 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
   return v7;
 }
 
-- (BOOL)_shouldPresentableBorrowCarPlayScreen:(id)a3
+- (BOOL)_shouldPresentableBorrowCarPlayScreen:(id)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   objc_opt_class();
   v4 = UNSafeCast();
 
   if (v4)
   {
-    v5 = [v4 notificationRequest];
-    v6 = [v5 isCriticalAlert];
+    notificationRequest = [v4 notificationRequest];
+    isCriticalAlert = [notificationRequest isCriticalAlert];
   }
 
   else
   {
-    v6 = 0;
+    isCriticalAlert = 0;
   }
 
-  return v6;
+  return isCriticalAlert;
 }
 
-- (BOOL)_setSuspended:(BOOL)a3 forReason:(id)a4 revokingCurrent:(BOOL)a5
+- (BOOL)_setSuspended:(BOOL)suspended forReason:(id)reason revokingCurrent:(BOOL)current
 {
   v9 = 0;
-  v5 = [(NCCarPlayBannerSource *)self setSuspended:a3 forReason:a4 revokingCurrent:a5 error:&v9];
+  v5 = [(NCCarPlayBannerSource *)self setSuspended:suspended forReason:reason revokingCurrent:current error:&v9];
   v6 = v9;
   if (!v5)
   {
@@ -493,63 +493,63 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
   return v5;
 }
 
-- (void)_enqueuePostedPresentable:(id)a3
+- (void)_enqueuePostedPresentable:(id)presentable
 {
-  v4 = a3;
-  if (v4)
+  presentableCopy = presentable;
+  if (presentableCopy)
   {
-    v9 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    postedPresentables = v5->_postedPresentables;
+    v9 = presentableCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    postedPresentables = selfCopy->_postedPresentables;
     if (!postedPresentables)
     {
-      v7 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
-      v8 = v5->_postedPresentables;
-      v5->_postedPresentables = v7;
+      weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+      v8 = selfCopy->_postedPresentables;
+      selfCopy->_postedPresentables = weakObjectsPointerArray;
 
-      postedPresentables = v5->_postedPresentables;
+      postedPresentables = selfCopy->_postedPresentables;
     }
 
     [(NSPointerArray *)postedPresentables addPointer:v9];
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
-    v4 = v9;
+    presentableCopy = v9;
   }
 }
 
-- (id)_postedPresentablesWithIdentification:(id)a3
+- (id)_postedPresentablesWithIdentification:(id)identification
 {
-  v4 = a3;
+  identificationCopy = identification;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSPointerArray *)v6->_postedPresentables unui_compact];
-  for (i = 0; i < [(NSPointerArray *)v6->_postedPresentables count]; ++i)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPointerArray *)selfCopy->_postedPresentables unui_compact];
+  for (i = 0; i < [(NSPointerArray *)selfCopy->_postedPresentables count]; ++i)
   {
-    v8 = [(NSPointerArray *)v6->_postedPresentables pointerAtIndex:i];
+    v8 = [(NSPointerArray *)selfCopy->_postedPresentables pointerAtIndex:i];
     if (BNIsPresentableIdentifiedByIdentification())
     {
       [v5 addObject:v8];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (unint64_t)_indexOfPostedPresentable:(id)a3
+- (unint64_t)_indexOfPostedPresentable:(id)presentable
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSPointerArray *)v5->_postedPresentables unui_compact];
-  for (i = 0; i < [(NSPointerArray *)v5->_postedPresentables count]; ++i)
+  presentableCopy = presentable;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPointerArray *)selfCopy->_postedPresentables unui_compact];
+  for (i = 0; i < [(NSPointerArray *)selfCopy->_postedPresentables count]; ++i)
   {
-    v7 = [(NSPointerArray *)v5->_postedPresentables pointerAtIndex:i];
+    v7 = [(NSPointerArray *)selfCopy->_postedPresentables pointerAtIndex:i];
 
-    if (v7 == v4)
+    if (v7 == presentableCopy)
     {
       goto LABEL_6;
     }
@@ -557,56 +557,56 @@ void __92__NCCarPlayBannerSource_revokePresentableWithIdentification_reason_anim
 
   i = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_6:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return i;
 }
 
-- (id)_pullPostedPresentableAtIndex:(unint64_t)a3
+- (id)_pullPostedPresentableAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSPointerArray *)v5->_postedPresentables unui_compact];
-    v3 = [(NSPointerArray *)v5->_postedPresentables pointerAtIndex:a3];
-    [(NSPointerArray *)v5->_postedPresentables removePointerAtIndex:a3];
-    if (![(NSPointerArray *)v5->_postedPresentables count])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSPointerArray *)selfCopy->_postedPresentables unui_compact];
+    v3 = [(NSPointerArray *)selfCopy->_postedPresentables pointerAtIndex:index];
+    [(NSPointerArray *)selfCopy->_postedPresentables removePointerAtIndex:index];
+    if (![(NSPointerArray *)selfCopy->_postedPresentables count])
     {
-      postedPresentables = v5->_postedPresentables;
-      v5->_postedPresentables = 0;
+      postedPresentables = selfCopy->_postedPresentables;
+      selfCopy->_postedPresentables = 0;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   return v3;
 }
 
-- (void)_presentableDidDisappear:(id)a3
+- (void)_presentableDidDisappear:(id)disappear
 {
-  v8 = a3;
-  v4 = [(NCCarPlayBannerSource *)self _indexOfPostedPresentable:v8];
+  disappearCopy = disappear;
+  v4 = [(NCCarPlayBannerSource *)self _indexOfPostedPresentable:disappearCopy];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
     if (objc_opt_respondsToSelector())
     {
-      [v8 removePresentableObserver:self];
+      [disappearCopy removePresentableObserver:self];
     }
 
-    v6 = [(NCCarPlayBannerSource *)self _peekPostedPresentable];
+    _peekPostedPresentable = [(NCCarPlayBannerSource *)self _peekPostedPresentable];
 
     v7 = [(NCCarPlayBannerSource *)self _pullPostedPresentableAtIndex:v5];
-    if (v6 == v8)
+    if (_peekPostedPresentable == disappearCopy)
     {
       [(NCCarPlayBannerSource *)self _setSuspended:0 forReason:@"NCCarPlayBannerSourceSuspensionReasonBannerPresented" revokingCurrent:0];
-      if ([(NCCarPlayBannerSource *)self _isPresentableSticky:v8])
+      if ([(NCCarPlayBannerSource *)self _isPresentableSticky:disappearCopy])
       {
         [(NCCarPlayBannerSource *)self _setSuspended:0 forReason:@"NCCarPlayBannerSourceSuspensionReasonSticky" revokingCurrent:0];
       }
@@ -616,9 +616,9 @@ LABEL_6:
   MEMORY[0x2821F9730]();
 }
 
-- (void)_presentableWithIdentificationDidDisappear:(id)a3
+- (void)_presentableWithIdentificationDidDisappear:(id)disappear
 {
-  v4 = [(NCCarPlayBannerSource *)self _postedPresentablesWithIdentification:a3];
+  v4 = [(NCCarPlayBannerSource *)self _postedPresentablesWithIdentification:disappear];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __68__NCCarPlayBannerSource__presentableWithIdentificationDidDisappear___block_invoke;
@@ -629,20 +629,20 @@ LABEL_6:
 
 - (void)_allPresentablesDidDisappear
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSPointerArray *)v2->_postedPresentables allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSPointerArray *)selfCopy->_postedPresentables allObjects];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__NCCarPlayBannerSource__allPresentablesDidDisappear__block_invoke;
   v4[3] = &unk_278372FA0;
-  v4[4] = v2;
-  [v3 enumerateObjectsWithOptions:2 usingBlock:v4];
+  v4[4] = selfCopy;
+  [allObjects enumerateObjectsWithOptions:2 usingBlock:v4];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_startDismissTimerWithTimeInterval:(double)a3
+- (void)_startDismissTimerWithTimeInterval:(double)interval
 {
   if (!self->_dismissTimer)
   {
@@ -653,7 +653,7 @@ LABEL_6:
     v8[2] = __60__NCCarPlayBannerSource__startDismissTimerWithTimeInterval___block_invoke;
     v8[3] = &unk_2783713F8;
     objc_copyWeak(&v9, &location);
-    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v8 block:a3];
+    v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v8 block:interval];
     dismissTimer = self->_dismissTimer;
     self->_dismissTimer = v6;
 
@@ -729,28 +729,28 @@ void __60__NCCarPlayBannerSource__startDismissTimerWithTimeInterval___block_invo
   return WeakRetained;
 }
 
-- (void)didBeginAnnounceForNotificationRequest:(id)a3
+- (void)didBeginAnnounceForNotificationRequest:(id)request
 {
   [(NCCarPlayBannerSource *)self _cancelReplaceTimer];
 
   [(NCCarPlayBannerSource *)self _cancelDismissTimer];
 }
 
-- (void)didFinishAnnounceForNotificationRequest:(id)a3
+- (void)didFinishAnnounceForNotificationRequest:(id)request
 {
-  v4 = [(NCCarPlayBannerSource *)self _peekPostedPresentable];
-  if (v4)
+  _peekPostedPresentable = [(NCCarPlayBannerSource *)self _peekPostedPresentable];
+  if (_peekPostedPresentable)
   {
-    v4 = [(NCCarPlayBannerSource *)self _isPresentableSticky:v4];
-    if ((v4 & 1) == 0)
+    _peekPostedPresentable = [(NCCarPlayBannerSource *)self _isPresentableSticky:_peekPostedPresentable];
+    if ((_peekPostedPresentable & 1) == 0)
     {
       [(NCCarPlayBannerSource *)self _startReplaceTimer];
       [(NCCarPlayBannerSource *)self _cancelDismissTimer];
-      v4 = [(NCCarPlayBannerSource *)self _startAnnounceDismissalTimer];
+      _peekPostedPresentable = [(NCCarPlayBannerSource *)self _startAnnounceDismissalTimer];
     }
   }
 
-  MEMORY[0x2821F96F8](v4);
+  MEMORY[0x2821F96F8](_peekPostedPresentable);
 }
 
 - (void)_setSuspended:(uint64_t)a1 forReason:(NSObject *)a2 revokingCurrent:.cold.1(uint64_t a1, NSObject *a2)

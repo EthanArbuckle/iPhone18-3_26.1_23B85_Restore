@@ -1,21 +1,21 @@
 @interface PXTTRRadarObject
-- (id)copyWithZone:(void *)a3;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 @end
 
 @implementation PXTTRRadarObject
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1A49D9978(a3);
+  selfCopy = self;
+  sub_1A49D9978(container);
   swift_unknownObjectRelease();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   TTRRadarObject.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);

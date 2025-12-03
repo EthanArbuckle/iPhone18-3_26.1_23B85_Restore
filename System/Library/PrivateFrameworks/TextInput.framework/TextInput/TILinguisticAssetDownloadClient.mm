@@ -1,15 +1,15 @@
 @interface TILinguisticAssetDownloadClient
 + (id)_dispatchQueue;
-+ (id)_internalAssertionRequestHandlerForHandler:(id)a3 connection:(id)a4;
-+ (id)_internalFetchAssetUpdateStatusRequestHandler:(id)a3 connection:(id)a4;
-+ (id)_internalHandlerForHandler:(id)a3 connection:(id)a4;
-+ (id)_internalUpdateAssetRequestHandler:(id)a3 connection:(id)a4;
++ (id)_internalAssertionRequestHandlerForHandler:(id)handler connection:(id)connection;
++ (id)_internalFetchAssetUpdateStatusRequestHandler:(id)handler connection:(id)connection;
++ (id)_internalHandlerForHandler:(id)handler connection:(id)connection;
++ (id)_internalUpdateAssetRequestHandler:(id)handler connection:(id)connection;
 - (id)_newXPCConnection;
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7;
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4;
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5;
-- (void)requestLinguisticAssetsForLanguage:(id)a3 completion:(id)a4;
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4;
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler;
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback;
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler;
+- (void)requestLinguisticAssetsForLanguage:(id)language completion:(id)completion;
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback;
 @end
 
 @implementation TILinguisticAssetDownloadClient
@@ -39,20 +39,20 @@
   return v3;
 }
 
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = +[TILinguisticAssetDownloadClient _dispatchQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__TILinguisticAssetDownloadClient_updateAssetForInputModeIdentifier_callback___block_invoke;
   v11[3] = &unk_1E6F4CC80;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = callbackCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = callbackCopy;
   TIDispatchAsync(v8, v11);
 }
 
@@ -74,20 +74,20 @@ void __78__TILinguisticAssetDownloadClient_updateAssetForInputModeIdentifier_cal
   }
 }
 
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v8 = +[TILinguisticAssetDownloadClient _dispatchQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __89__TILinguisticAssetDownloadClient_fetchAssetUpdateStatusForInputModeIdentifier_callback___block_invoke;
   v11[3] = &unk_1E6F4CC80;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = callbackCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = callbackCopy;
   TIDispatchAsync(v8, v11);
 }
 
@@ -109,23 +109,23 @@ void __89__TILinguisticAssetDownloadClient_fetchAssetUpdateStatusForInputModeIde
   }
 }
 
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = +[TILinguisticAssetDownloadClient _dispatchQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __105__TILinguisticAssetDownloadClient_removeLinguisticAssetsAssertionWithIdentifier_forClientID_withHandler___block_invoke;
   v15[3] = &unk_1E6F4CA20;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = identifierCopy;
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v12 = dCopy;
+  v13 = identifierCopy;
+  v14 = handlerCopy;
   TIDispatchAsync(v11, v15);
 }
 
@@ -152,29 +152,29 @@ void __105__TILinguisticAssetDownloadClient_removeLinguisticAssetsAssertionWithI
   }
 }
 
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  languageCopy = language;
+  dCopy = d;
+  regionCopy = region;
+  iDCopy = iD;
+  handlerCopy = handler;
   v17 = +[TILinguisticAssetDownloadClient _dispatchQueue];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __115__TILinguisticAssetDownloadClient_addLinguisticAssetsAssertionForLanguage_assertionID_region_clientID_withHandler___block_invoke;
   v23[3] = &unk_1E6F4C9F8;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = v16;
+  v24 = languageCopy;
+  v25 = dCopy;
+  v26 = regionCopy;
+  v27 = iDCopy;
+  v28 = handlerCopy;
+  v18 = iDCopy;
+  v19 = regionCopy;
+  v20 = dCopy;
+  v21 = languageCopy;
+  v22 = handlerCopy;
   TIDispatchAsync(v17, v23);
 }
 
@@ -201,11 +201,11 @@ void __115__TILinguisticAssetDownloadClient_addLinguisticAssetsAssertionForLangu
   }
 }
 
-- (void)requestLinguisticAssetsForLanguage:(id)a3 completion:(id)a4
+- (void)requestLinguisticAssetsForLanguage:(id)language completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  languageCopy = language;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = +[TILinguisticAssetDownloadClient _dispatchQueue];
     v9[0] = MEMORY[0x1E69E9820];
@@ -213,8 +213,8 @@ void __115__TILinguisticAssetDownloadClient_addLinguisticAssetsAssertionForLangu
     v9[2] = __81__TILinguisticAssetDownloadClient_requestLinguisticAssetsForLanguage_completion___block_invoke;
     v9[3] = &unk_1E6F4CC80;
     v9[4] = self;
-    v11 = v7;
-    v10 = v6;
+    v11 = completionCopy;
+    v10 = languageCopy;
     TIDispatchAsync(v8, v9);
   }
 }
@@ -247,16 +247,16 @@ void __81__TILinguisticAssetDownloadClient_requestLinguisticAssetsForLanguage_co
   }
 }
 
-+ (id)_internalUpdateAssetRequestHandler:(id)a3 connection:(id)a4
++ (id)_internalUpdateAssetRequestHandler:(id)handler connection:(id)connection
 {
-  v5 = a3;
-  objc_initWeak(&location, a4);
+  handlerCopy = handler;
+  objc_initWeak(&location, connection);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__TILinguisticAssetDownloadClient__internalUpdateAssetRequestHandler_connection___block_invoke;
   v10[3] = &unk_1E6F4C9A8;
-  v11 = v5;
-  v6 = v5;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   objc_copyWeak(&v12, &location);
   v7 = MEMORY[0x1866068F0](v10);
   v8 = [v7 copy];
@@ -274,16 +274,16 @@ void __81__TILinguisticAssetDownloadClient__internalUpdateAssetRequestHandler_co
   [WeakRetained invalidate];
 }
 
-+ (id)_internalFetchAssetUpdateStatusRequestHandler:(id)a3 connection:(id)a4
++ (id)_internalFetchAssetUpdateStatusRequestHandler:(id)handler connection:(id)connection
 {
-  v5 = a3;
-  objc_initWeak(&location, a4);
+  handlerCopy = handler;
+  objc_initWeak(&location, connection);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__TILinguisticAssetDownloadClient__internalFetchAssetUpdateStatusRequestHandler_connection___block_invoke;
   v10[3] = &unk_1E6F4C980;
-  v11 = v5;
-  v6 = v5;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   objc_copyWeak(&v12, &location);
   v7 = MEMORY[0x1866068F0](v10);
   v8 = [v7 copy];
@@ -301,16 +301,16 @@ void __92__TILinguisticAssetDownloadClient__internalFetchAssetUpdateStatusReques
   [WeakRetained invalidate];
 }
 
-+ (id)_internalAssertionRequestHandlerForHandler:(id)a3 connection:(id)a4
++ (id)_internalAssertionRequestHandlerForHandler:(id)handler connection:(id)connection
 {
-  v5 = a3;
-  objc_initWeak(&location, a4);
+  handlerCopy = handler;
+  objc_initWeak(&location, connection);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__TILinguisticAssetDownloadClient__internalAssertionRequestHandlerForHandler_connection___block_invoke;
   v10[3] = &unk_1E6F4D3D0;
-  v11 = v5;
-  v6 = v5;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   objc_copyWeak(&v12, &location);
   v7 = MEMORY[0x1866068F0](v10);
   v8 = [v7 copy];
@@ -328,16 +328,16 @@ void __89__TILinguisticAssetDownloadClient__internalAssertionRequestHandlerForHa
   [WeakRetained invalidate];
 }
 
-+ (id)_internalHandlerForHandler:(id)a3 connection:(id)a4
++ (id)_internalHandlerForHandler:(id)handler connection:(id)connection
 {
-  v5 = a3;
-  objc_initWeak(&location, a4);
+  handlerCopy = handler;
+  objc_initWeak(&location, connection);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__TILinguisticAssetDownloadClient__internalHandlerForHandler_connection___block_invoke;
   v10[3] = &unk_1E6F4C980;
-  v11 = v5;
-  v6 = v5;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   objc_copyWeak(&v12, &location);
   v7 = MEMORY[0x1866068F0](v10);
   v8 = [v7 copy];

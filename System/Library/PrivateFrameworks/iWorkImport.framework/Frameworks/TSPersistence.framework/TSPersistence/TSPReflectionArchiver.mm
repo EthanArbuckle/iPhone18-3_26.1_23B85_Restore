@@ -1,14 +1,14 @@
 @interface TSPReflectionArchiver
-- (TSPReflectionArchiver)initWithObject:(id)a3;
+- (TSPReflectionArchiver)initWithObject:(id)object;
 @end
 
 @implementation TSPReflectionArchiver
 
-- (TSPReflectionArchiver)initWithObject:(id)a3
+- (TSPReflectionArchiver)initWithObject:(id)object
 {
   v4.receiver = self;
   v4.super_class = TSPReflectionArchiver;
-  return [(TSPArchiver *)&v4 initWithObject:a3];
+  return [(TSPArchiver *)&v4 initWithObject:object];
 }
 
 @end

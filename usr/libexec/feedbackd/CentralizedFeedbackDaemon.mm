@@ -1,10 +1,10 @@
 @interface CentralizedFeedbackDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC9feedbackd25CentralizedFeedbackDaemon)init;
-- (void)fetchDonationsWithCount:(unsigned int)a3 fromLatest:(BOOL)a4 completion:(id)a5;
-- (void)invalidateDonationWithDonationJSON:(id)a3 completion:(id)a4;
-- (void)presentedInteractionWithAnalyticsPayload:(id)a3 featureDomainEventName:(id)a4 completion:(id)a5;
-- (void)remoteEvaluateWithRequest:(id)a3 sceneID:(id)a4 bundleID:(id)a5 completion:(id)a6;
+- (void)fetchDonationsWithCount:(unsigned int)count fromLatest:(BOOL)latest completion:(id)completion;
+- (void)invalidateDonationWithDonationJSON:(id)n completion:(id)completion;
+- (void)presentedInteractionWithAnalyticsPayload:(id)payload featureDomainEventName:(id)name completion:(id)completion;
+- (void)remoteEvaluateWithRequest:(id)request sceneID:(id)d bundleID:(id)iD completion:(id)completion;
 @end
 
 @implementation CentralizedFeedbackDaemon
@@ -26,21 +26,21 @@
   return [(CentralizedFeedbackDaemon *)&v7 init];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100056CD8(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100056CD8(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)invalidateDonationWithDonationJSON:(id)a3 completion:(id)a4
+- (void)invalidateDonationWithDonationJSON:(id)n completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
-  v12 = self;
+  v6 = _Block_copy(completion);
+  nCopy = n;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -51,43 +51,43 @@
   sub_100013C98(v8, v10);
 }
 
-- (void)presentedInteractionWithAnalyticsPayload:(id)a3 featureDomainEventName:(id)a4 completion:(id)a5
+- (void)presentedInteractionWithAnalyticsPayload:(id)payload featureDomainEventName:(id)name completion:(id)completion
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(completion);
   sub_100008714(0, &qword_100083C08, NSObject_ptr);
   v7 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v6;
-  v12 = self;
+  selfCopy = self;
   sub_1000576F8(v7, v8, v10, sub_100058A3C, v11);
 }
 
-- (void)fetchDonationsWithCount:(unsigned int)a3 fromLatest:(BOOL)a4 completion:(id)a5
+- (void)fetchDonationsWithCount:(unsigned int)count fromLatest:(BOOL)latest completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = self;
-  sub_10004EF58(a3, a4, sub_100058C58, v9);
+  selfCopy = self;
+  sub_10004EF58(count, latest, sub_100058C58, v9);
 }
 
-- (void)remoteEvaluateWithRequest:(id)a3 sceneID:(id)a4 bundleID:(id)a5 completion:(id)a6
+- (void)remoteEvaluateWithRequest:(id)request sceneID:(id)d bundleID:(id)iD completion:(id)completion
 {
-  v10 = _Block_copy(a6);
-  v11 = a3;
-  v19 = self;
-  v12 = a4;
-  v13 = a5;
+  v10 = _Block_copy(completion);
+  requestCopy = request;
+  selfCopy = self;
+  dCopy = d;
+  iDCopy = iD;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
-  if (v12)
+  if (dCopy)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
-    if (v13)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
@@ -101,7 +101,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v13)
+  if (!iDCopy)
   {
     goto LABEL_6;
   }

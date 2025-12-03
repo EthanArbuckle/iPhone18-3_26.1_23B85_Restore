@@ -1,14 +1,14 @@
 @interface _UIBackgroundExtensionEffectsView
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 @end
 
 @implementation _UIBackgroundExtensionEffectsView
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_151E5C(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_151E5C(layerCopy);
 }
 
 @end

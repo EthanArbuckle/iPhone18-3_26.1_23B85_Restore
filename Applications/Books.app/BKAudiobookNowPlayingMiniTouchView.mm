@@ -1,7 +1,7 @@
 @interface BKAudiobookNowPlayingMiniTouchView
-- (BKAudiobookNowPlayingMiniTouchView)initWithFrame:(CGRect)a3;
+- (BKAudiobookNowPlayingMiniTouchView)initWithFrame:(CGRect)frame;
 - (CGRect)transitionCoverFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityElements;
 - (NSString)accessibilityLabel;
 - (double)coverCornerRadius;
@@ -9,44 +9,44 @@
 - (id)transitionCoverViews;
 - (id)transitionToolbarViews;
 - (int64_t)coverContentMode;
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation BKAudiobookNowPlayingMiniTouchView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v11.receiver = self;
   v11.super_class = type metadata accessor for AudiobookNowPlayingMiniTouchView();
   v4 = v11.receiver;
-  v5 = a3;
-  [(BKAudiobookNowPlayingMiniTouchView *)&v11 willMoveToWindow:v5];
+  windowCopy = window;
+  [(BKAudiobookNowPlayingMiniTouchView *)&v11 willMoveToWindow:windowCopy];
   v6 = sub_1005B7B44();
-  v7 = [v6 layer];
+  layer = [v6 layer];
 
   v8 = 1.0;
-  if (v5)
+  if (windowCopy)
   {
-    v9 = [v5 screen];
-    [v9 scale];
+    screen = [windowCopy screen];
+    [screen scale];
     v8 = v10;
   }
 
-  [v7 setBorderWidth:1.0 / v8];
+  [layer setBorderWidth:1.0 / v8];
 }
 
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1007A3504();
   swift_unknownObjectRelease();
-  [*(&v7->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingMiniTouchView_titleLabel) invalidateIntrinsicContentSize];
-  [*(&v7->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingMiniTouchView_subtitleLabel) invalidateIntrinsicContentSize];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingMiniTouchView_titleLabel) invalidateIntrinsicContentSize];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingMiniTouchView_subtitleLabel) invalidateIntrinsicContentSize];
   Strong = swift_unknownObjectWeakLoadStrong();
   [Strong invalidateIntrinsicContentSize];
 
@@ -54,13 +54,13 @@
   sub_1000074E0(&v9);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  v6 = [(BKAudiobookNowPlayingMiniTouchView *)v5 traitCollection];
-  v7 = [v6 horizontalSizeClass];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(BKAudiobookNowPlayingMiniTouchView *)selfCopy traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   v8 = 500.0;
   if (width <= 500.0)
@@ -68,7 +68,7 @@
     v8 = width;
   }
 
-  if (v7 == 1)
+  if (horizontalSizeClass == 1)
   {
     v8 = width;
   }
@@ -81,7 +81,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005BB808();
 }
 
@@ -90,10 +90,10 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for AudiobookNowPlayingMiniTouchView();
   v2 = v7.receiver;
-  v3 = [(BKAudiobookNowPlayingMiniTouchView *)&v7 accessibilityLabel];
-  if (v3)
+  accessibilityLabel = [(BKAudiobookNowPlayingMiniTouchView *)&v7 accessibilityLabel];
+  if (accessibilityLabel)
   {
-    v4 = v3;
+    v4 = accessibilityLabel;
     sub_1007A2254();
   }
 
@@ -110,18 +110,18 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_1007A2254();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_1007A2214();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -132,7 +132,7 @@
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005BBE54();
   v4 = v3;
 
@@ -149,7 +149,7 @@
   return v5.super.isa;
 }
 
-- (BKAudiobookNowPlayingMiniTouchView)initWithFrame:(CGRect)a3
+- (BKAudiobookNowPlayingMiniTouchView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -158,7 +158,7 @@
 
 - (CGRect)transitionCoverFrame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005B7B44();
   [v3 frame];
   v5 = v4;
@@ -166,8 +166,8 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [*(&v2->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingMiniTouchView____lazy_storage___artworkImageView) superview];
-  [(BKAudiobookNowPlayingMiniTouchView *)v2 convertRect:v12 fromView:v5, v7, v9, v11];
+  superview = [*(&selfCopy->super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingMiniTouchView____lazy_storage___artworkImageView) superview];
+  [(BKAudiobookNowPlayingMiniTouchView *)selfCopy convertRect:superview fromView:v5, v7, v9, v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -219,7 +219,7 @@
   sub_1001F1160(&qword_100AD7FB0);
   v3 = swift_allocObject();
   *(v3 + 16) = xmmword_10080B690;
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1005B7B44();
   *(v3 + 56) = sub_10000A7C4(0, &qword_100AD7FD0);
   *(v3 + 32) = v5;
@@ -231,11 +231,11 @@
 
 - (double)coverCornerRadius
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005B7B44();
-  v4 = [v3 layer];
+  layer = [v3 layer];
 
-  [v4 cornerRadius];
+  [layer cornerRadius];
   v6 = v5;
 
   return v6;
@@ -243,11 +243,11 @@
 
 - (int64_t)coverContentMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005B7B44();
-  v4 = [v3 contentMode];
+  contentMode = [v3 contentMode];
 
-  return v4;
+  return contentMode;
 }
 
 @end

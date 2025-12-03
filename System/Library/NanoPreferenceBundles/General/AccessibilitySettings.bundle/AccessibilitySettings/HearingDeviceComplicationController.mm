@@ -1,7 +1,7 @@
 @interface HearingDeviceComplicationController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation HearingDeviceComplicationController
@@ -44,34 +44,34 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v12 = [v6 specifier];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
   v7 = [objc_opt_class() domainAccessorForDomain:*MEMORY[0x277D81CF0]];
   v8 = [(AccessibilityBridgeBaseController *)self gizmoValueForKey:@"HearingAidComplicationPreferredDisplayMode" domainAccessor:v7];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  v10 = [v12 propertyForKey:*MEMORY[0x277D401A8]];
-  v11 = [v10 integerValue];
+  v10 = [specifier propertyForKey:*MEMORY[0x277D401A8]];
+  integerValue2 = [v10 integerValue];
 
-  [v6 setChecked:v11 == v9];
+  [cellCopy setChecked:integerValue2 == integerValue];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = HearingDeviceComplicationController;
-  v6 = a4;
-  v7 = a3;
-  [(HearingDeviceComplicationController *)&v14 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:{v6, v14.receiver, v14.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(HearingDeviceComplicationController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:{pathCopy, v14.receiver, v14.super_class}];
 
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
-  v11 = [v10 integerValue];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:*MEMORY[0x277D401A8]];
+  integerValue = [v10 integerValue];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
   v13 = [objc_opt_class() domainAccessorForDomain:*MEMORY[0x277D81CF0]];
   [(AccessibilityBridgeBaseController *)self setGizmoPref:v12 forKey:@"HearingAidComplicationPreferredDisplayMode" domainAccessor:v13];
 

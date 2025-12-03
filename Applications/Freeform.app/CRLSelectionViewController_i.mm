@@ -7,13 +7,13 @@
 
 - (void)willBeginZoomingOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BC0BAC();
 }
 
 - (void)didEndZoomingOperation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100BC0690();
 }
 

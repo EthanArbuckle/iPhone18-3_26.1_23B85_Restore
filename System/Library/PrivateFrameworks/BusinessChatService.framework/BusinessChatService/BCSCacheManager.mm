@@ -1,43 +1,43 @@
 @interface BCSCacheManager
-- (BCSCacheManager)initWithBloomFilterShardCache:(id)a3 domainItemCache:(id)a4 itemCache:(id)a5;
-- (BOOL)shouldSkipCacheForConfigItemOfType:(int64_t)a3;
-- (BOOL)shouldSkipCacheForItemOfType:(int64_t)a3;
-- (BOOL)shouldSkipCacheForShardItemOfType:(int64_t)a3;
-- (id)configItemForType:(int64_t)a3;
-- (id)domainItemMatching:(id)a3;
-- (id)itemMatching:(id)a3;
-- (id)shardItemMatching:(id)a3;
-- (int64_t)countOfExpiredShardsOfType:(int64_t)a3;
-- (int64_t)countOfShardsOfType:(int64_t)a3;
-- (void)_clearExpiredCacheItemsForType:(void *)a3 completion:;
+- (BCSCacheManager)initWithBloomFilterShardCache:(id)cache domainItemCache:(id)itemCache itemCache:(id)a5;
+- (BOOL)shouldSkipCacheForConfigItemOfType:(int64_t)type;
+- (BOOL)shouldSkipCacheForItemOfType:(int64_t)type;
+- (BOOL)shouldSkipCacheForShardItemOfType:(int64_t)type;
+- (id)configItemForType:(int64_t)type;
+- (id)domainItemMatching:(id)matching;
+- (id)itemMatching:(id)matching;
+- (id)shardItemMatching:(id)matching;
+- (int64_t)countOfExpiredShardsOfType:(int64_t)type;
+- (int64_t)countOfShardsOfType:(int64_t)type;
+- (void)_clearExpiredCacheItemsForType:(void *)type completion:;
 - (void)beginBatch;
-- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)a3 completion:(id)a4;
-- (void)clearCachesForType:(int64_t)a3 completion:(id)a4;
-- (void)clearExpiredCachesForType:(int64_t)a3 completion:(id)a4;
+- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)d completion:(id)completion;
+- (void)clearCachesForType:(int64_t)type completion:(id)completion;
+- (void)clearExpiredCachesForType:(int64_t)type completion:(id)completion;
 - (void)deleteAllDomainItems;
 - (void)deleteAllExpiredDomainItems;
-- (void)deleteConfigItemForType:(int64_t)a3;
-- (void)deleteDomainItemMatching:(id)a3;
-- (void)deleteExpiredItemsOfType:(int64_t)a3;
-- (void)deleteExpiredShardItemsOfType:(int64_t)a3;
-- (void)deleteItemMatching:(id)a3;
-- (void)deleteItemsOfType:(int64_t)a3;
-- (void)deleteShardItemMatching:(id)a3;
-- (void)deleteShardItemsOfType:(int64_t)a3;
+- (void)deleteConfigItemForType:(int64_t)type;
+- (void)deleteDomainItemMatching:(id)matching;
+- (void)deleteExpiredItemsOfType:(int64_t)type;
+- (void)deleteExpiredShardItemsOfType:(int64_t)type;
+- (void)deleteItemMatching:(id)matching;
+- (void)deleteItemsOfType:(int64_t)type;
+- (void)deleteShardItemMatching:(id)matching;
+- (void)deleteShardItemsOfType:(int64_t)type;
 - (void)endBatch;
-- (void)updateConfigItem:(id)a3 withType:(int64_t)a4;
-- (void)updateDomainItem:(id)a3 withDomainItemIdentifier:(id)a4;
-- (void)updateDomainItemsForDomainShard:(id)a3;
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4;
-- (void)updateShardItem:(id)a3 withShardIdentifier:(id)a4;
+- (void)updateConfigItem:(id)item withType:(int64_t)type;
+- (void)updateDomainItem:(id)item withDomainItemIdentifier:(id)identifier;
+- (void)updateDomainItemsForDomainShard:(id)shard;
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier;
+- (void)updateShardItem:(id)item withShardIdentifier:(id)identifier;
 @end
 
 @implementation BCSCacheManager
 
-- (BCSCacheManager)initWithBloomFilterShardCache:(id)a3 domainItemCache:(id)a4 itemCache:(id)a5
+- (BCSCacheManager)initWithBloomFilterShardCache:(id)cache domainItemCache:(id)itemCache itemCache:(id)a5
 {
-  v9 = a3;
-  v10 = a4;
+  cacheCopy = cache;
+  itemCacheCopy = itemCache;
   v11 = a5;
   v18.receiver = self;
   v18.super_class = BCSCacheManager;
@@ -45,8 +45,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_filterShardCache, a3);
-    objc_storeStrong(&v13->_domainItemCache, a4);
+    objc_storeStrong(&v12->_filterShardCache, cache);
+    objc_storeStrong(&v13->_domainItemCache, itemCache);
     objc_storeStrong(&v13->_itemCache, a5);
     v14 = dispatch_get_global_queue(9, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -109,13 +109,13 @@ void __75__BCSCacheManager_initWithBloomFilterShardCache_domainItemCache_itemCac
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clearExpiredCacheItemsForType:(void *)a3 completion:
+- (void)_clearExpiredCacheItemsForType:(void *)type completion:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    [a1 deleteExpiredItemsOfType:a2];
-    v5[2](v5, 1, 0);
+    typeCopy = type;
+    [self deleteExpiredItemsOfType:a2];
+    typeCopy[2](typeCopy, 1, 0);
   }
 }
 
@@ -176,25 +176,25 @@ void __75__BCSCacheManager_initWithBloomFilterShardCache_domainItemCache_itemCac
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearCachesForType:(int64_t)a3 completion:(id)a4
+- (void)clearCachesForType:(int64_t)type completion:(id)completion
 {
-  v8 = a4;
-  [(BCSCacheManager *)self deleteConfigItemForType:a3];
-  [(BCSCacheManager *)self deleteItemsOfType:a3];
-  if (a3 > 2)
+  completionCopy = completion;
+  [(BCSCacheManager *)self deleteConfigItemForType:type];
+  [(BCSCacheManager *)self deleteItemsOfType:type];
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
-        v6 = self;
+        selfCopy4 = self;
         v7 = 4;
         break;
       case 4:
-        v6 = self;
+        selfCopy4 = self;
         v7 = 5;
         break;
       case 5:
-        v6 = self;
+        selfCopy4 = self;
         v7 = 6;
         break;
       default:
@@ -204,16 +204,16 @@ void __75__BCSCacheManager_initWithBloomFilterShardCache_domainItemCache_itemCac
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v6 = self;
+    selfCopy4 = self;
     v7 = 1;
 LABEL_12:
-    [(BCSCacheManager *)v6 deleteShardItemsOfType:v7];
+    [(BCSCacheManager *)selfCopy4 deleteShardItemsOfType:v7];
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     [(BCSCacheManager *)self deleteShardItemsOfType:2];
     [(BCSCacheManager *)self deleteShardItemsOfType:3];
@@ -221,37 +221,37 @@ LABEL_12:
   }
 
 LABEL_13:
-  v8[2](v8, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)clearExpiredCachesForType:(int64_t)a3 completion:(id)a4
+- (void)clearExpiredCachesForType:(int64_t)type completion:(id)completion
 {
-  v10 = a4;
+  completionCopy = completion;
   if (self)
   {
-    v6 = [(BCSCacheManager *)self configItemForType:a3];
+    v6 = [(BCSCacheManager *)self configItemForType:type];
     v7 = v6;
     if (v6 && [v6 isExpired])
     {
-      [(BCSCacheManager *)self deleteConfigItemForType:a3];
+      [(BCSCacheManager *)self deleteConfigItemForType:type];
     }
   }
 
-  [(BCSCacheManager *)self deleteExpiredItemsOfType:a3];
-  if (a3 > 2)
+  [(BCSCacheManager *)self deleteExpiredItemsOfType:type];
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
-        v8 = self;
+        selfCopy4 = self;
         v9 = 4;
         break;
       case 4:
-        v8 = self;
+        selfCopy4 = self;
         v9 = 5;
         break;
       case 5:
-        v8 = self;
+        selfCopy4 = self;
         v9 = 6;
         break;
       default:
@@ -261,16 +261,16 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v8 = self;
+    selfCopy4 = self;
     v9 = 1;
 LABEL_17:
-    [(BCSCacheManager *)v8 deleteExpiredShardItemsOfType:v9];
+    [(BCSCacheManager *)selfCopy4 deleteExpiredShardItemsOfType:v9];
     goto LABEL_18;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     [(BCSCacheManager *)self deleteExpiredShardItemsOfType:2];
     [(BCSCacheManager *)self deleteExpiredShardItemsOfType:3];
@@ -278,10 +278,10 @@ LABEL_17:
   }
 
 LABEL_18:
-  v10[2](v10, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)a3 completion:(id)a4
+- (void)clearCachesForLinkItemsAssociatedWithBundleID:(id)d completion:(id)completion
 {
   if (self)
   {
@@ -293,99 +293,99 @@ LABEL_18:
     itemCache = 0;
   }
 
-  v6 = a4;
-  [(BCSItemCaching *)itemCache deleteLinkItemsWithBundleID:a3];
-  v6[2](v6, 1, 0);
+  completionCopy = completion;
+  [(BCSItemCaching *)itemCache deleteLinkItemsWithBundleID:d];
+  completionCopy[2](completionCopy, 1, 0);
 }
 
-- (BOOL)shouldSkipCacheForItemOfType:(int64_t)a3
+- (BOOL)shouldSkipCacheForItemOfType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return 0;
   }
 
-  v3 = off_278D3A3B8[a3 - 1];
+  v3 = off_278D3A3B8[type - 1];
   v4 = +[BCSUserDefaults sharedDefaults];
   LOBYTE(v3) = [v4 BOOLForKey:*v3];
 
   return v3;
 }
 
-- (id)itemMatching:(id)a3
+- (id)itemMatching:(id)matching
 {
   if (self)
   {
     self = self->_itemCache;
   }
 
-  return [(BCSCacheManager *)self itemMatching:a3];
+  return [(BCSCacheManager *)self itemMatching:matching];
 }
 
-- (void)updateItem:(id)a3 withItemIdentifier:(id)a4
+- (void)updateItem:(id)item withItemIdentifier:(id)identifier
 {
   if (self)
   {
     self = self->_itemCache;
   }
 
-  [(BCSCacheManager *)self updateItem:a3 withItemIdentifier:a4];
+  [(BCSCacheManager *)self updateItem:item withItemIdentifier:identifier];
 }
 
-- (void)deleteItemsOfType:(int64_t)a3
+- (void)deleteItemsOfType:(int64_t)type
 {
   if (self)
   {
     self = self->_itemCache;
   }
 
-  [(BCSCacheManager *)self deleteItemsOfType:a3];
+  [(BCSCacheManager *)self deleteItemsOfType:type];
 }
 
-- (void)deleteExpiredItemsOfType:(int64_t)a3
+- (void)deleteExpiredItemsOfType:(int64_t)type
 {
   if (self)
   {
     self = self->_itemCache;
   }
 
-  [(BCSCacheManager *)self deleteExpiredItemsOfType:a3];
+  [(BCSCacheManager *)self deleteExpiredItemsOfType:type];
 }
 
-- (void)deleteItemMatching:(id)a3
+- (void)deleteItemMatching:(id)matching
 {
   if (self)
   {
     self = self->_itemCache;
   }
 
-  [(BCSCacheManager *)self deleteItemMatching:a3];
+  [(BCSCacheManager *)self deleteItemMatching:matching];
 }
 
-- (BOOL)shouldSkipCacheForConfigItemOfType:(int64_t)a3
+- (BOOL)shouldSkipCacheForConfigItemOfType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return 0;
   }
 
-  v3 = off_278D3A408[a3 - 1];
+  v3 = off_278D3A408[type - 1];
   v4 = +[BCSUserDefaults sharedDefaults];
   LOBYTE(v3) = [v4 BOOLForKey:*v3];
 
   return v3;
 }
 
-- (id)configItemForType:(int64_t)a3
+- (id)configItemForType:(int64_t)type
 {
   v35 = *MEMORY[0x277D85DE8];
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v6 = 0;
     goto LABEL_8;
   }
 
-  v4 = off_278D3A3E0[a3 - 1];
+  v4 = off_278D3A3E0[type - 1];
   v5 = +[BCSUserDefaults sharedDefaults];
   v6 = [v5 dataForKey:v4];
 
@@ -398,9 +398,9 @@ LABEL_8:
 
   v7 = MEMORY[0x277CCAAC8];
   v8 = MEMORY[0x277CBEB98];
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v14 = NSClassFromString(&cfstr_Bcsconfigitem.isa);
       v10 = [v8 setWithObjects:{v14, objc_opt_class(), 0}];
@@ -419,7 +419,7 @@ LABEL_8:
     }
   }
 
-  else if (a3 == 3)
+  else if (type == 3)
   {
     v15 = NSClassFromString(&cfstr_Bcsconfigitem.isa);
     v10 = [v8 setWithObjects:{v15, objc_opt_class(), 0}];
@@ -432,7 +432,7 @@ LABEL_8:
   {
     v9 = NSClassFromString(&cfstr_Bcsconfigitem.isa);
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    if (a3 == 4)
+    if (type == 4)
     {
       v25 = 0;
       v11 = &v25;
@@ -456,7 +456,7 @@ LABEL_8:
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v23 = NSStringFromBCSType(a3);
+      v23 = NSStringFromBCSType(type);
       *buf = 136315650;
       v30 = "[BCSCacheManager configItemForType:]";
       v31 = 2112;
@@ -472,7 +472,7 @@ LABEL_8:
 
   else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = NSStringFromBCSType(a3);
+    v20 = NSStringFromBCSType(type);
     *buf = 136315394;
     v30 = "[BCSCacheManager configItemForType:]";
     v31 = 2112;
@@ -486,20 +486,20 @@ LABEL_21:
   return v13;
 }
 
-- (void)updateConfigItem:(id)a3 withType:(int64_t)a4
+- (void)updateConfigItem:(id)item withType:(int64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (item)
   {
     v12 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v12];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:item requiringSecureCoding:1 error:&v12];
     v6 = v12;
     if (v6)
     {
       v7 = ABSLogCommon();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = NSStringFromBCSType(a4);
+        v8 = NSStringFromBCSType(type);
         *buf = 136315394;
         v14 = "[BCSCacheManager updateConfigItem:withType:]";
         v15 = 2112;
@@ -510,9 +510,9 @@ LABEL_21:
       goto LABEL_17;
     }
 
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
         v9 = +[BCSUserDefaults sharedDefaults];
         v7 = v9;
@@ -520,7 +520,7 @@ LABEL_21:
         goto LABEL_16;
       }
 
-      if (a4 == 2)
+      if (type == 2)
       {
         v9 = +[BCSUserDefaults sharedDefaults];
         v7 = v9;
@@ -531,7 +531,7 @@ LABEL_21:
 
     else
     {
-      switch(a4)
+      switch(type)
       {
         case 3:
           v9 = +[BCSUserDefaults sharedDefaults];
@@ -559,34 +559,34 @@ LABEL_17:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteConfigItemForType:(int64_t)a3
+- (void)deleteConfigItemForType:(int64_t)type
 {
-  if ((a3 - 1) <= 4)
+  if ((type - 1) <= 4)
   {
-    v4 = off_278D3A3E0[a3 - 1];
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v5 removeObjectForKey:v4];
+    v4 = off_278D3A3E0[type - 1];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults removeObjectForKey:v4];
   }
 }
 
-- (BOOL)shouldSkipCacheForShardItemOfType:(int64_t)a3
+- (BOOL)shouldSkipCacheForShardItemOfType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return 0;
   }
 
-  v3 = off_278D3A408[a3 - 1];
+  v3 = off_278D3A408[type - 1];
   v4 = +[BCSUserDefaults sharedDefaults];
   LOBYTE(v3) = [v4 BOOLForKey:*v3];
 
   return v3;
 }
 
-- (id)shardItemMatching:(id)a3
+- (id)shardItemMatching:(id)matching
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchingCopy = matching;
   if (self)
   {
     filterShardCache = self->_filterShardCache;
@@ -597,7 +597,7 @@ LABEL_17:
     filterShardCache = 0;
   }
 
-  v6 = [(BCSShardCacheQueryable *)filterShardCache shardItemMatching:v4];
+  v6 = [(BCSShardCacheQueryable *)filterShardCache shardItemMatching:matchingCopy];
   v7 = ABSLogCommon();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
   if (v6)
@@ -607,7 +607,7 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    v9 = NSStringFromBCSShardType([v4 type]);
+    v9 = NSStringFromBCSShardType([matchingCopy type]);
     v13 = 136315394;
     v14 = "[BCSCacheManager shardItemMatching:]";
     v15 = 2112;
@@ -622,7 +622,7 @@ LABEL_17:
       goto LABEL_9;
     }
 
-    v9 = NSStringFromBCSShardType([v4 type]);
+    v9 = NSStringFromBCSShardType([matchingCopy type]);
     v13 = 136315394;
     v14 = "[BCSCacheManager shardItemMatching:]";
     v15 = 2112;
@@ -638,9 +638,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)updateShardItem:(id)a3 withShardIdentifier:(id)a4
+- (void)updateShardItem:(id)item withShardIdentifier:(id)identifier
 {
-  v10 = a3;
+  itemCopy = item;
   if (self)
   {
     filterShardCache = self->_filterShardCache;
@@ -651,11 +651,11 @@ LABEL_9:
     filterShardCache = 0;
   }
 
-  v7 = a4;
-  [(BCSShardCacheQueryable *)filterShardCache updateShardItem:v10 withShardIdentifier:v7];
-  v8 = [v7 type];
+  identifierCopy = identifier;
+  [(BCSShardCacheQueryable *)filterShardCache updateShardItem:itemCopy withShardIdentifier:identifierCopy];
+  type = [identifierCopy type];
 
-  if (v8 == 3 && [v10 conformsToProtocol:&unk_28546B170])
+  if (type == 3 && [itemCopy conformsToProtocol:&unk_28546B170])
   {
     if (self)
     {
@@ -667,23 +667,23 @@ LABEL_9:
       domainItemCache = 0;
     }
 
-    [(BCSDomainItemCaching *)domainItemCache updateDomainItemsForDomainShard:v10];
+    [(BCSDomainItemCaching *)domainItemCache updateDomainItemsForDomainShard:itemCopy];
   }
 }
 
-- (void)deleteShardItemMatching:(id)a3
+- (void)deleteShardItemMatching:(id)matching
 {
   if (self)
   {
     self = self->_filterShardCache;
   }
 
-  [(BCSCacheManager *)self deleteShardItemMatching:a3];
+  [(BCSCacheManager *)self deleteShardItemMatching:matching];
 }
 
-- (void)deleteExpiredShardItemsOfType:(int64_t)a3
+- (void)deleteExpiredShardItemsOfType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     if (self)
     {
@@ -708,12 +708,12 @@ LABEL_9:
     filterShardCache = 0;
   }
 
-  [(BCSShardCacheQueryable *)filterShardCache deleteExpiredShardItemsOfType:a3];
+  [(BCSShardCacheQueryable *)filterShardCache deleteExpiredShardItemsOfType:type];
 }
 
-- (void)deleteShardItemsOfType:(int64_t)a3
+- (void)deleteShardItemsOfType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     if (self)
     {
@@ -738,27 +738,27 @@ LABEL_9:
     filterShardCache = 0;
   }
 
-  [(BCSShardCacheQueryable *)filterShardCache deleteShardItemsOfType:a3];
+  [(BCSShardCacheQueryable *)filterShardCache deleteShardItemsOfType:type];
 }
 
-- (int64_t)countOfShardsOfType:(int64_t)a3
+- (int64_t)countOfShardsOfType:(int64_t)type
 {
   if (self)
   {
     self = self->_filterShardCache;
   }
 
-  return [(BCSCacheManager *)self countOfShardsOfType:a3];
+  return [(BCSCacheManager *)self countOfShardsOfType:type];
 }
 
-- (int64_t)countOfExpiredShardsOfType:(int64_t)a3
+- (int64_t)countOfExpiredShardsOfType:(int64_t)type
 {
   if (self)
   {
     self = self->_filterShardCache;
   }
 
-  return [(BCSCacheManager *)self countOfExpiredShardsOfType:a3];
+  return [(BCSCacheManager *)self countOfExpiredShardsOfType:type];
 }
 
 - (void)beginBatch
@@ -795,34 +795,34 @@ LABEL_9:
   [(BCSDomainItemCaching *)domainItemCache endBatch];
 }
 
-- (void)updateDomainItem:(id)a3 withDomainItemIdentifier:(id)a4
+- (void)updateDomainItem:(id)item withDomainItemIdentifier:(id)identifier
 {
   if (self)
   {
     self = self->_domainItemCache;
   }
 
-  [(BCSCacheManager *)self updateDomainItem:a3 withDomainItemIdentifier:a4];
+  [(BCSCacheManager *)self updateDomainItem:item withDomainItemIdentifier:identifier];
 }
 
-- (id)domainItemMatching:(id)a3
+- (id)domainItemMatching:(id)matching
 {
   if (self)
   {
     self = self->_domainItemCache;
   }
 
-  return [(BCSCacheManager *)self domainItemMatching:a3];
+  return [(BCSCacheManager *)self domainItemMatching:matching];
 }
 
-- (void)deleteDomainItemMatching:(id)a3
+- (void)deleteDomainItemMatching:(id)matching
 {
   if (self)
   {
     self = self->_domainItemCache;
   }
 
-  [(BCSCacheManager *)self deleteDomainItemMatching:a3];
+  [(BCSCacheManager *)self deleteDomainItemMatching:matching];
 }
 
 - (void)deleteAllDomainItems
@@ -845,14 +845,14 @@ LABEL_9:
   [(BCSCacheManager *)self deleteAllExpiredDomainItems];
 }
 
-- (void)updateDomainItemsForDomainShard:(id)a3
+- (void)updateDomainItemsForDomainShard:(id)shard
 {
   if (self)
   {
     self = self->_domainItemCache;
   }
 
-  [(BCSCacheManager *)self updateDomainItemsForDomainShard:a3];
+  [(BCSCacheManager *)self updateDomainItemsForDomainShard:shard];
 }
 
 @end

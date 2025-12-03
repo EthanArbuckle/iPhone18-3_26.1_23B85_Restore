@@ -2,20 +2,20 @@
 - (BOOL)_airplaneModeEnabled;
 - (BOOL)_isCellularOutrankingWiFi;
 - (void)_airplaneModeEnabled;
-- (void)_performAction:(int64_t)a3;
+- (void)_performAction:(int64_t)action;
 - (void)_promptCarPlayDisable;
 - (void)_promptCellularOutankDisable;
 - (void)_promptMISDisable;
-- (void)performAction:(id)a3;
-- (void)performActionFrom:(id)a3 withCompletion:(id)a4;
+- (void)performAction:(id)action;
+- (void)performActionFrom:(id)from withCompletion:(id)completion;
 @end
 
 @implementation WFControlCenterStateMonitor
 
-- (void)performActionFrom:(id)a3 withCompletion:(id)a4
+- (void)performActionFrom:(id)from withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  fromCopy = from;
   v8 = WFLogForCategory(7uLL);
   v9 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v8 && os_log_type_enabled(v8, v9))
@@ -24,22 +24,22 @@
     _os_log_impl(&dword_273ECD000, v8, v9, "initializing WFControlCenterStateMonitor with presenter for alerts", v10, 2u);
   }
 
-  [(WFControlCenterStateMonitor *)self setPresenter:v7];
-  [(WFControlCenterStateMonitor *)self performAction:v6];
+  [(WFControlCenterStateMonitor *)self setPresenter:fromCopy];
+  [(WFControlCenterStateMonitor *)self performAction:completionCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFWiFiStateMonitor *)self client];
-  v6 = [v5 isPowerModificationDisabled];
+  actionCopy = action;
+  client = [(WFWiFiStateMonitor *)self client];
+  isPowerModificationDisabled = [client isPowerModificationDisabled];
 
-  if (!v6)
+  if (!isPowerModificationDisabled)
   {
-    v9 = [(WFControlCenterStateMonitor *)self _airplaneModeEnabled];
-    v10 = [(WFWiFiStateMonitor *)self state];
-    v11 = v10 - 2;
+    _airplaneModeEnabled = [(WFControlCenterStateMonitor *)self _airplaneModeEnabled];
+    state = [(WFWiFiStateMonitor *)self state];
+    v11 = state - 2;
     v12 = WFLogForCategory(7uLL);
     v13 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v12)
@@ -47,18 +47,18 @@
       v14 = v12;
       if (os_log_type_enabled(v14, v13))
       {
-        v15 = WFWiFiStateMonitorStringForState(v10);
+        v15 = WFWiFiStateMonitorStringForState(state);
         v46 = 138543874;
         v47 = v15;
         v48 = 1024;
         v49 = v11 < 3;
         v50 = 1024;
-        v51 = v9;
+        v51 = _airplaneModeEnabled;
         _os_log_impl(&dword_273ECD000, v14, v13, "{ACTION+} current state='%{public}@' poweredOn=%d airplaneMode=%d", &v46, 0x18u);
       }
     }
 
-    if (v10 == 1)
+    if (state == 1)
     {
       v16 = WFLogForCategory(7uLL);
       v17 = OSLogForWFLogLevel(1uLL);
@@ -68,18 +68,18 @@
         _os_log_impl(&dword_273ECD000, v16, v17, "{ACTION*} set powered to ON", &v46, 2u);
       }
 
-      if (v4)
+      if (actionCopy)
       {
-        v4[2](v4, 3);
+        actionCopy[2](actionCopy, 3);
       }
 
-      v18 = self;
+      selfCopy6 = self;
       v19 = 3;
     }
 
     else
     {
-      v20 = !v9;
+      v20 = !_airplaneModeEnabled;
       if (v11 > 2)
       {
         v20 = 1;
@@ -87,15 +87,15 @@
 
       if (v20)
       {
-        if (v10 == 2)
+        if (state == 2)
         {
           if (![(WFWiFiStateMonitor *)self associatedToCarPlayOnly])
           {
             if ([(WFControlCenterStateMonitor *)self _isCellularOutrankingWiFi])
             {
-              v33 = [(WFWiFiStateMonitor *)self client];
-              v34 = [v33 interface];
-              v35 = [v34 currentNetwork];
+              client2 = [(WFWiFiStateMonitor *)self client];
+              interface = [client2 interface];
+              currentNetwork = [interface currentNetwork];
 
               v36 = WFLogForCategory(7uLL);
               v37 = OSLogForWFLogLevel(1uLL);
@@ -110,7 +110,7 @@
               }
 
               v39 = !v38;
-              if (v35)
+              if (currentNetwork)
               {
                 if (v39 && os_log_type_enabled(v36, v37))
                 {
@@ -118,7 +118,7 @@
                   _os_log_impl(&dword_273ECD000, v36, v37, "{ACTION*} cellular is outranking WiFi, promping user", &v46, 2u);
                 }
 
-                v18 = self;
+                selfCopy6 = self;
                 v19 = 8;
                 goto LABEL_38;
               }
@@ -138,9 +138,9 @@
               _os_log_impl(&dword_273ECD000, v44, v45, "{ACTION*} setting userAutoJoin=1", &v46, 2u);
             }
 
-            if (v4)
+            if (actionCopy)
             {
-              v4[2](v4, 3);
+              actionCopy[2](actionCopy, 3);
             }
 
             [(WFControlCenterStateMonitor *)self _performAction:1];
@@ -156,15 +156,15 @@
             _os_log_impl(&dword_273ECD000, v29, v30, "{ACTION*} associated to CarPlay Only network, prompting user", &v46, 2u);
           }
 
-          v18 = self;
+          selfCopy6 = self;
           v19 = 6;
         }
 
-        else if (v10 - 3 > 1)
+        else if (state - 3 > 1)
         {
-          if (v10 != 5)
+          if (state != 5)
           {
-            if (!v4)
+            if (!actionCopy)
             {
               goto LABEL_39;
             }
@@ -188,12 +188,12 @@
             _os_log_impl(&dword_273ECD000, v40, v41, "{ACTION*} MIS active, prompting user", &v46, 2u);
           }
 
-          if (v4)
+          if (actionCopy)
           {
-            v4[2](v4, 5);
+            actionCopy[2](actionCopy, 5);
           }
 
-          v18 = self;
+          selfCopy6 = self;
           v19 = 4;
         }
 
@@ -207,20 +207,20 @@
             _os_log_impl(&dword_273ECD000, v31, v32, "{ACTION*} diassociate and set userAutoJoin=0", &v46, 2u);
           }
 
-          if (v4)
+          if (actionCopy)
           {
-            v4[2](v4, 2);
+            actionCopy[2](actionCopy, 2);
           }
 
-          v18 = self;
+          selfCopy6 = self;
           v19 = 0;
         }
       }
 
       else
       {
-        v21 = v10 == 2;
-        if (v10 == 2)
+        v21 = state == 2;
+        if (state == 2)
         {
           v22 = 1;
         }
@@ -254,18 +254,18 @@
           }
         }
 
-        if (v4)
+        if (actionCopy)
         {
-          v4[2](v4, v23);
+          actionCopy[2](actionCopy, v23);
         }
 
-        v18 = self;
+        selfCopy6 = self;
         v19 = v22;
       }
     }
 
 LABEL_38:
-    [(WFControlCenterStateMonitor *)v18 _performAction:v19];
+    [(WFControlCenterStateMonitor *)selfCopy6 _performAction:v19];
     goto LABEL_39;
   }
 
@@ -277,10 +277,10 @@ LABEL_38:
     _os_log_impl(&dword_273ECD000, v7, v8, "{ACTION*} power modification is disabled", &v46, 2u);
   }
 
-  if (v4)
+  if (actionCopy)
   {
 LABEL_7:
-    v4[2](v4, [(WFWiFiStateMonitor *)self state]);
+    actionCopy[2](actionCopy, [(WFWiFiStateMonitor *)self state]);
   }
 
 LABEL_39:
@@ -288,7 +288,7 @@ LABEL_39:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performAction:(int64_t)a3
+- (void)_performAction:(int64_t)action
 {
   v50 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(7uLL);
@@ -298,18 +298,18 @@ LABEL_39:
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = _WFControlCenterActionStringForAction(a3);
+      v8 = _WFControlCenterActionStringForAction(action);
       *buf = 138543362;
       v49 = v8;
       _os_log_impl(&dword_273ECD000, v7, v6, "{ACTION-} performing action='%{public}@'", buf, 0xCu);
     }
   }
 
-  if (a3 > 4)
+  if (action > 4)
   {
-    if (a3 <= 6)
+    if (action <= 6)
     {
-      if (a3 == 5)
+      if (action == 5)
       {
         v25 = WFLogForCategory(7uLL);
         v26 = OSLogForWFLogLevel(1uLL);
@@ -320,11 +320,11 @@ LABEL_39:
           _os_log_impl(&dword_273ECD000, v25, v26, "%s: disable MIS", buf, 0xCu);
         }
 
-        v27 = [(WFWiFiStateMonitor *)self client];
-        [v27 setMISDiscoveryState:0 immediateDisable:1];
+        client = [(WFWiFiStateMonitor *)self client];
+        [client setMISDiscoveryState:0 immediateDisable:1];
 
-        v28 = [(WFWiFiStateMonitor *)self client];
-        [v28 setMISState:0];
+        client2 = [(WFWiFiStateMonitor *)self client];
+        [client2 setMISState:0];
 
         [(WFWiFiStateMonitor *)self _updateState];
       }
@@ -346,7 +346,7 @@ LABEL_39:
 
     else
     {
-      switch(a3)
+      switch(action)
       {
         case 7:
           v29 = WFLogForCategory(7uLL);
@@ -358,17 +358,17 @@ LABEL_39:
             _os_log_impl(&dword_273ECD000, v29, v30, "%s: disable CarPlay", buf, 0xCu);
           }
 
-          v31 = [(WFWiFiStateMonitor *)self client];
-          v32 = [v31 interface];
+          client3 = [(WFWiFiStateMonitor *)self client];
+          interface = [client3 interface];
 
-          if (v32)
+          if (interface)
           {
             v41[0] = MEMORY[0x277D85DD0];
             v41[1] = 3221225472;
             v41[2] = __46__WFControlCenterStateMonitor__performAction___block_invoke_5;
             v41[3] = &unk_279EBCFE0;
             v41[4] = self;
-            [v32 disassociateFromCurrentNetworkWithCompletion:v41];
+            [interface disassociateFromCurrentNetworkWithCompletion:v41];
           }
 
           else
@@ -406,18 +406,18 @@ LABEL_39:
             _os_log_impl(&dword_273ECD000, v10, v11, "%s: disabling cellular outrank", buf, 0xCu);
           }
 
-          v12 = [(WFWiFiStateMonitor *)self client];
-          v13 = [v12 interface];
+          client4 = [(WFWiFiStateMonitor *)self client];
+          interface2 = [client4 interface];
 
-          if (v13)
+          if (interface2)
           {
-            v14 = [v13 currentNetwork];
+            currentNetwork = [interface2 currentNetwork];
             v40[0] = MEMORY[0x277D85DD0];
             v40[1] = 3221225472;
             v40[2] = __46__WFControlCenterStateMonitor__performAction___block_invoke_6;
             v40[3] = &unk_279EBDC90;
             v40[4] = self;
-            [v13 asyncAssociateToNetwork:v14 profile:0 reply:v40];
+            [interface2 asyncAssociateToNetwork:currentNetwork profile:0 reply:v40];
           }
 
           else
@@ -437,11 +437,11 @@ LABEL_39:
     }
   }
 
-  else if (a3 <= 1)
+  else if (action <= 1)
   {
-    if (a3)
+    if (action)
     {
-      if (a3 == 1)
+      if (action == 1)
       {
         v15 = WFLogForCategory(7uLL);
         v16 = OSLogForWFLogLevel(1uLL);
@@ -453,13 +453,13 @@ LABEL_39:
         }
 
         objc_initWeak(buf, self);
-        v17 = [(WFWiFiStateMonitor *)self client];
+        client5 = [(WFWiFiStateMonitor *)self client];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = __46__WFControlCenterStateMonitor__performAction___block_invoke_1;
         v44[3] = &unk_279EBCEA0;
         objc_copyWeak(&v45, buf);
-        [v17 setUserAutoJoinState:1 completion:v44];
+        [client5 setUserAutoJoinState:1 completion:v44];
 
         objc_destroyWeak(&v45);
         objc_destroyWeak(buf);
@@ -478,22 +478,22 @@ LABEL_39:
       }
 
       objc_initWeak(buf, self);
-      v24 = [(WFWiFiStateMonitor *)self client];
+      client6 = [(WFWiFiStateMonitor *)self client];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __46__WFControlCenterStateMonitor__performAction___block_invoke_3;
       v42[3] = &unk_279EBCEA0;
       objc_copyWeak(&v43, buf);
-      [v24 setUserAutoJoinState:0 completion:v42];
+      [client6 setUserAutoJoinState:0 completion:v42];
 
       objc_destroyWeak(&v43);
       objc_destroyWeak(buf);
     }
   }
 
-  else if ((a3 - 2) >= 2)
+  else if ((action - 2) >= 2)
   {
-    if (a3 == 4)
+    if (action == 4)
     {
       v20 = WFLogForCategory(7uLL);
       v21 = OSLogForWFLogLevel(1uLL);
@@ -511,13 +511,13 @@ LABEL_39:
   else
   {
     objc_initWeak(buf, self);
-    v9 = [(WFWiFiStateMonitor *)self client];
+    client7 = [(WFWiFiStateMonitor *)self client];
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __46__WFControlCenterStateMonitor__performAction___block_invoke;
     v46[3] = &unk_279EBD698;
     objc_copyWeak(&v47, buf);
-    [v9 setPoweredToggle:a3 == 3 handler:v46];
+    [client7 setPoweredToggle:action == 3 handler:v46];
 
     objc_destroyWeak(&v47);
     objc_destroyWeak(buf);
@@ -621,17 +621,17 @@ void __46__WFControlCenterStateMonitor__performAction___block_invoke_6(uint64_t 
 
 - (BOOL)_isCellularOutrankingWiFi
 {
-  v2 = [(WFWiFiStateMonitor *)self client];
-  v3 = [v2 isCellularOutrankingWiFi];
+  client = [(WFWiFiStateMonitor *)self client];
+  isCellularOutrankingWiFi = [client isCellularOutrankingWiFi];
 
-  return v3;
+  return isCellularOutrankingWiFi;
 }
 
 - (void)_promptMISDisable
 {
   v3 = +[WFMISDisablePromptOperation misDisablePromptOperation];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
-  [v4 addOperation:v3];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  [mainQueue addOperation:v3];
 
   objc_initWeak(&location, v3);
   objc_initWeak(&from, self);
@@ -705,8 +705,8 @@ void __48__WFControlCenterStateMonitor__promptMISDisable__block_invoke_2(uint64_
 - (void)_promptCarPlayDisable
 {
   v3 = +[WFCarPlayDisablePromptOperation carPlayDisablePromptOperation];
-  v4 = [MEMORY[0x277CCABD8] mainQueue];
-  [v4 addOperation:v3];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+  [mainQueue addOperation:v3];
 
   objc_initWeak(&location, v3);
   objc_initWeak(&from, self);
@@ -779,18 +779,18 @@ void __52__WFControlCenterStateMonitor__promptCarPlayDisable__block_invoke_2(uin
 
 - (void)_promptCellularOutankDisable
 {
-  v3 = [(WFWiFiStateMonitor *)self client];
-  v4 = [v3 interface];
-  v5 = [v4 currentNetwork];
-  v6 = [v5 ssid];
+  client = [(WFWiFiStateMonitor *)self client];
+  interface = [client interface];
+  currentNetwork = [interface currentNetwork];
+  ssid = [currentNetwork ssid];
 
-  if (v6)
+  if (ssid)
   {
-    v7 = [(WFWiFiStateMonitor *)self client];
-    v8 = +[WFCellularOutrankPromptOperation cellularOutrankPromptOperationWithNetworkName:privateCellular:](WFCellularOutrankPromptOperation, "cellularOutrankPromptOperationWithNetworkName:privateCellular:", v6, [v7 cellularOutrankState] == 5);
+    client2 = [(WFWiFiStateMonitor *)self client];
+    v8 = +[WFCellularOutrankPromptOperation cellularOutrankPromptOperationWithNetworkName:privateCellular:](WFCellularOutrankPromptOperation, "cellularOutrankPromptOperationWithNetworkName:privateCellular:", ssid, [client2 cellularOutrankState] == 5);
 
-    v9 = [MEMORY[0x277CCABD8] mainQueue];
-    [v9 addOperation:v8];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    [mainQueue addOperation:v8];
 
     objc_initWeak(location, v8);
     objc_initWeak(&from, self);

@@ -14,10 +14,10 @@
 
 - (uint64_t)npkExclusivelyTransactsOverBluetooth
 {
-  result = [a1 npkSupportsBluetooth];
+  result = [self npkSupportsBluetooth];
   if (result)
   {
-    return [a1 npkSupportsMultipleRadioTypes] ^ 1;
+    return [self npkSupportsMultipleRadioTypes] ^ 1;
   }
 
   return result;
@@ -25,10 +25,10 @@
 
 - (uint64_t)npkExclusivelyTransactsOverNFC
 {
-  result = [a1 npkSupportsNFC];
+  result = [self npkSupportsNFC];
   if (result)
   {
-    return [a1 npkSupportsMultipleRadioTypes] ^ 1;
+    return [self npkSupportsMultipleRadioTypes] ^ 1;
   }
 
   return result;
@@ -42,8 +42,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 devicePaymentApplications];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  devicePaymentApplications = [self devicePaymentApplications];
+  v4 = [devicePaymentApplications countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -54,14 +54,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) subcredentials];
-        [v2 unionSet:v8];
+        subcredentials = [*(*(&v11 + 1) + 8 * i) subcredentials];
+        [v2 unionSet:subcredentials];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [devicePaymentApplications countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -79,8 +79,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 npkSubcredentials];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  npkSubcredentials = [self npkSubcredentials];
+  v2 = [npkSubcredentials countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = *v9;
@@ -90,7 +90,7 @@
       {
         if (*v9 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(npkSubcredentials);
         }
 
         v5 = *(*(&v8 + 1) + 8 * i);
@@ -101,7 +101,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v2 = [npkSubcredentials countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v2)
       {
         continue;
@@ -120,10 +120,10 @@ LABEL_11:
 
 - (BOOL)npkSupportUWBSecureRanging
 {
-  v2 = [a1 devicePrimaryContactlessPaymentApplication];
-  if (v2 && [a1 npkSupportsBluetooth])
+  devicePrimaryContactlessPaymentApplication = [self devicePrimaryContactlessPaymentApplication];
+  if (devicePrimaryContactlessPaymentApplication && [self npkSupportsBluetooth])
   {
-    [v2 state];
+    [devicePrimaryContactlessPaymentApplication state];
     v3 = PKPaymentApplicationStateIsPersonalized() != 0;
   }
 
@@ -142,8 +142,8 @@ LABEL_11:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v2 = [a1 devicePaymentApplications];
-  v3 = [v2 countByEnumeratingWithState:&v31 objects:v40 count:16];
+  devicePaymentApplications = [self devicePaymentApplications];
+  v3 = [devicePaymentApplications countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v3)
   {
     v4 = v3;
@@ -155,7 +155,7 @@ LABEL_11:
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
@@ -163,8 +163,8 @@ LABEL_11:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = [v8 subcredentials];
-        v10 = [v9 countByEnumeratingWithState:&v27 objects:v39 count:16];
+        subcredentials = [v8 subcredentials];
+        v10 = [subcredentials countByEnumeratingWithState:&v27 objects:v39 count:16];
         if (v10)
         {
           v11 = v10;
@@ -175,20 +175,20 @@ LABEL_11:
             {
               if (*v28 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(subcredentials);
               }
 
               v5 |= [*(*(&v27 + 1) + 8 * j) supportedRadioTechnologies];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v27 objects:v39 count:16];
+            v11 = [subcredentials countByEnumeratingWithState:&v27 objects:v39 count:16];
           }
 
           while (v11);
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v31 objects:v40 count:16];
+      v4 = [devicePaymentApplications countByEnumeratingWithState:&v31 objects:v40 count:16];
     }
 
     while (v4);
@@ -210,8 +210,8 @@ LABEL_11:
     v14 = oneTimeIdentifiers;
   }
 
-  v17 = [a1 uniqueID];
-  v18 = [v14 objectForKeyedSubscript:v17];
+  uniqueID = [self uniqueID];
+  v18 = [v14 objectForKeyedSubscript:uniqueID];
   if (v18)
   {
 
@@ -219,9 +219,9 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v19 = [a1 uniqueID];
+  uniqueID2 = [self uniqueID];
 
-  if (v19)
+  if (uniqueID2)
   {
     v20 = pk_General_log();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -231,9 +231,9 @@ LABEL_27:
       v22 = pk_General_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [a1 uniqueID];
+        uniqueID3 = [self uniqueID];
         *buf = 138412546;
-        v36 = v23;
+        v36 = uniqueID3;
         v37 = 2048;
         v38 = v5;
         _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: pass %@ has allSupportedTechnologies %lu", buf, 0x16u);
@@ -241,8 +241,8 @@ LABEL_27:
     }
 
     v24 = oneTimeIdentifiers;
-    v17 = [a1 uniqueID];
-    [v24 setObject:&unk_286CE7600 forKeyedSubscript:v17];
+    uniqueID = [self uniqueID];
+    [v24 setObject:&unk_286CE7600 forKeyedSubscript:uniqueID];
     goto LABEL_27;
   }
 
@@ -254,11 +254,11 @@ LABEL_28:
 
 - (BOOL)npkIsBankConnectEligible
 {
-  v2 = [a1 paymentPass];
+  paymentPass = [self paymentPass];
   if (PKBankConnectAvailableForPass())
   {
-    v3 = [a1 primaryAccountIdentifier];
-    v4 = [v3 length] != 0;
+    primaryAccountIdentifier = [self primaryAccountIdentifier];
+    v4 = [primaryAccountIdentifier length] != 0;
   }
 
   else
@@ -271,10 +271,10 @@ LABEL_28:
 
 - (uint64_t)npkLinkedAccountFeatureIdentifier
 {
-  v1 = [a1 secureElementPass];
-  v2 = [v1 isAppleCardPass];
+  secureElementPass = [self secureElementPass];
+  isAppleCardPass = [secureElementPass isAppleCardPass];
 
-  if (v2)
+  if (isAppleCardPass)
   {
     return 5;
   }
@@ -287,8 +287,8 @@ LABEL_28:
 
 - (uint64_t)npkIsPrecursorPass
 {
-  v2 = [MEMORY[0x277D38248] secureElementIdentifiers];
-  v3 = [a1 isPrecursorPass:v2];
+  secureElementIdentifiers = [MEMORY[0x277D38248] secureElementIdentifiers];
+  v3 = [self isPrecursorPass:secureElementIdentifiers];
 
   return v3;
 }

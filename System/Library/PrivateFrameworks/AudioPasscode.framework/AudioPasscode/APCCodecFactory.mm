@@ -1,17 +1,17 @@
 @interface APCCodecFactory
-+ (float)evaluateCarrierWithConfig:(id)a3 carrier:(id)a4 embeddingResult:(id *)a5;
-+ (id)createBestConfigForCapability:(id)a3;
-+ (unique_ptr<APCDecoderBase,)createDecoderWithConfig:(id)a3 apcConfig:(void *)a4 error:(id *)a5;
-+ (unique_ptr<APCEncoderBase,)createEncoderWithConfig:(id)a3 apcConfig:(void *)a4 payloadData:(id)a5;
++ (float)evaluateCarrierWithConfig:(id)config carrier:(id)carrier embeddingResult:(id *)result;
++ (id)createBestConfigForCapability:(id)capability;
++ (unique_ptr<APCDecoderBase,)createDecoderWithConfig:(id)config apcConfig:(void *)apcConfig error:(id *)error;
++ (unique_ptr<APCEncoderBase,)createEncoderWithConfig:(id)config apcConfig:(void *)apcConfig payloadData:(id)data;
 @end
 
 @implementation APCCodecFactory
 
-+ (unique_ptr<APCDecoderBase,)createDecoderWithConfig:(id)a3 apcConfig:(void *)a4 error:(id *)a5
++ (unique_ptr<APCDecoderBase,)createDecoderWithConfig:(id)config apcConfig:(void *)apcConfig error:(id *)error
 {
   v6 = v5;
   v10 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  configCopy = config;
   *v6 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -33,17 +33,17 @@
   return v8;
 }
 
-+ (unique_ptr<APCEncoderBase,)createEncoderWithConfig:(id)a3 apcConfig:(void *)a4 payloadData:(id)a5
++ (unique_ptr<APCEncoderBase,)createEncoderWithConfig:(id)config apcConfig:(void *)apcConfig payloadData:(id)data
 {
   v7 = v5;
   v13 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  configCopy = config;
+  dataCopy = data;
   *v7 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = configCopy;
     operator new();
   }
 
@@ -61,15 +61,15 @@
   return v11;
 }
 
-+ (float)evaluateCarrierWithConfig:(id)a3 carrier:(id)a4 embeddingResult:(id *)a5
++ (float)evaluateCarrierWithConfig:(id)config carrier:(id)carrier embeddingResult:(id *)result
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  carrierCopy = carrier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = configCopy;
     operator new();
   }
 
@@ -77,10 +77,10 @@
   return 1.0;
 }
 
-+ (id)createBestConfigForCapability:(id)a3
++ (id)createBestConfigForCapability:(id)capability
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  capabilityCopy = capability;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,13 +91,13 @@
       _os_log_impl(&dword_24158E000, v4, OS_LOG_TYPE_INFO, "Find an EchoCodec Capabiltity data", &v10, 2u);
     }
 
-    v5 = [[EchoCodecConfiguration alloc] initWithCapabilityData:v3];
+    v5 = [[EchoCodecConfiguration alloc] initWithCapabilityData:capabilityCopy];
     v6 = APCLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [(EchoCodecConfiguration *)v5 algorithmVersionNumber];
+      algorithmVersionNumber = [(EchoCodecConfiguration *)v5 algorithmVersionNumber];
       v10 = 134217984;
-      v11 = (v7 / 100.0);
+      v11 = (algorithmVersionNumber / 100.0);
       _os_log_impl(&dword_24158E000, v6, OS_LOG_TYPE_INFO, "EchoCodec algorithm version: %3.2f", &v10, 0xCu);
     }
   }

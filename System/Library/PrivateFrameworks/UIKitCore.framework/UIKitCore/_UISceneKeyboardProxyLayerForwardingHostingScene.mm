@@ -1,12 +1,12 @@
 @interface _UISceneKeyboardProxyLayerForwardingHostingScene
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initWithScene:(id *)a1;
-- (void)addLayers:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeLayers:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)sceneWillInvalidate:(id)a3;
+- (id)initWithScene:(id *)scene;
+- (void)addLayers:(id)layers;
+- (void)addObserver:(id)observer;
+- (void)removeLayers:(id)layers;
+- (void)removeObserver:(id)observer;
+- (void)sceneWillInvalidate:(id)invalidate;
 @end
 
 @implementation _UISceneKeyboardProxyLayerForwardingHostingScene
@@ -14,39 +14,39 @@
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(FBSScene *)self->_scene identifier];
-  v4 = [v2 stringWithFormat:@"FBSScene:%@", v3];
+  identifier = [(FBSScene *)self->_scene identifier];
+  v4 = [v2 stringWithFormat:@"FBSScene:%@", identifier];
 
   return v4;
 }
 
-- (id)initWithScene:(id *)a1
+- (id)initWithScene:(id *)scene
 {
   v4 = a2;
-  if (a1)
+  if (scene)
   {
-    v7.receiver = a1;
+    v7.receiver = scene;
     v7.super_class = _UISceneKeyboardProxyLayerForwardingHostingScene;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    scene = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 2, a2);
-      [a1[2] addObserver:a1];
+      [scene[2] addObserver:scene];
     }
   }
 
-  return a1;
+  return scene;
 }
 
-- (void)addLayers:(id)a3
+- (void)addLayers:(id)layers
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 copy];
+  v4 = [layers copy];
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -84,14 +84,14 @@
   }
 }
 
-- (void)removeLayers:(id)a3
+- (void)removeLayers:(id)layers
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 copy];
+  v4 = [layers copy];
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -129,53 +129,53 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v9 = a3;
-  if (!v9)
+  observerCopy = observer;
+  if (!observerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingHostingScene.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneKeyboardProxyLayerForwardingHostingScene.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"observer"}];
   }
 
   BSDispatchQueueAssertMain();
   observers = self->_observers;
   if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v9];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   BSDispatchQueueAssertMain();
-  v4 = v7;
-  if (v7)
+  v4 = observerCopy;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v7];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    v4 = observerCopy;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      v4 = observerCopy;
     }
   }
 }
 
-- (void)sceneWillInvalidate:(id)a3
+- (void)sceneWillInvalidate:(id)invalidate
 {
   v15 = *MEMORY[0x1E69E9840];
-  [a3 removeObserver:self];
+  [invalidate removeObserver:self];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -213,13 +213,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       scene = self->_scene;

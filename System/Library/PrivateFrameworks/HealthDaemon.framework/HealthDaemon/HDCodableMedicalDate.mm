@@ -1,20 +1,20 @@
 @interface HDCodableMedicalDate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUnderlyingDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUnderlyingDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableMedicalDate
 
-- (void)setHasUnderlyingDate:(BOOL)a3
+- (void)setHasUnderlyingDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableMedicalDate;
   v4 = [(HDCodableMedicalDate *)&v8 description];
-  v5 = [(HDCodableMedicalDate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableMedicalDate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_form];
-    [v3 setObject:v5 forKey:@"form"];
+    [dictionary setObject:v5 forKey:@"form"];
 
     has = self->_has;
   }
@@ -54,28 +54,28 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_underlyingDate];
-    [v3 setObject:v6 forKey:@"underlyingDate"];
+    [dictionary setObject:v6 forKey:@"underlyingDate"];
   }
 
   originalTimeZoneString = self->_originalTimeZoneString;
   if (originalTimeZoneString)
   {
-    [v3 setObject:originalTimeZoneString forKey:@"originalTimeZoneString"];
+    [dictionary setObject:originalTimeZoneString forKey:@"originalTimeZoneString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     form = self->_form;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -83,44 +83,44 @@
   {
     underlyingDate = self->_underlyingDate;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_originalTimeZoneString)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_form;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_form;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_underlyingDate;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = *&self->_underlyingDate;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_originalTimeZoneString)
   {
-    v6 = v4;
-    [v4 setOriginalTimeZoneString:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setOriginalTimeZoneString:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -136,31 +136,31 @@
     *(v5 + 32) |= 2u;
   }
 
-  v8 = [(NSString *)self->_originalTimeZoneString copyWithZone:a3];
+  v8 = [(NSString *)self->_originalTimeZoneString copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_form != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_form != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_14:
     v7 = 0;
@@ -169,19 +169,19 @@ LABEL_14:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_underlyingDate != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_underlyingDate != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   originalTimeZoneString = self->_originalTimeZoneString;
-  if (originalTimeZoneString | *(v4 + 3))
+  if (originalTimeZoneString | *(equalCopy + 3))
   {
     v7 = [(NSString *)originalTimeZoneString isEqual:?];
   }
@@ -246,28 +246,28 @@ LABEL_3:
   return v12 ^ v8 ^ [(NSString *)self->_originalTimeZoneString hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_form = *(v4 + 1);
+    self->_form = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_underlyingDate = *(v4 + 2);
+    self->_underlyingDate = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(HDCodableMedicalDate *)self setOriginalTimeZoneString:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

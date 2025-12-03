@@ -1,27 +1,27 @@
 @interface STDataAccessStatusDomainData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)dataAccessAttributions;
 - (NSSet)attributedEntities;
 - (NSSet)executableIdentities;
-- (STDataAccessStatusDomainData)_dataWithAttributionFilter:(void *)a1;
-- (STDataAccessStatusDomainData)dataWithAccessType:(unint64_t)a3;
-- (STDataAccessStatusDomainData)dataWithAttributedEntity:(id)a3;
-- (STDataAccessStatusDomainData)dataWithEntitiesThatAreSystemServices:(BOOL)a3;
-- (STDataAccessStatusDomainData)dataWithExecutableIdentity:(id)a3;
+- (STDataAccessStatusDomainData)_dataWithAttributionFilter:(void *)filter;
+- (STDataAccessStatusDomainData)dataWithAccessType:(unint64_t)type;
+- (STDataAccessStatusDomainData)dataWithAttributedEntity:(id)entity;
+- (STDataAccessStatusDomainData)dataWithEntitiesThatAreSystemServices:(BOOL)services;
+- (STDataAccessStatusDomainData)dataWithExecutableIdentity:(id)identity;
 - (STDataAccessStatusDomainData)init;
-- (STDataAccessStatusDomainData)initWithAttributionListData:(id)a3;
-- (STDataAccessStatusDomainData)initWithCoder:(id)a3;
-- (STDataAccessStatusDomainData)initWithData:(id)a3;
+- (STDataAccessStatusDomainData)initWithAttributionListData:(id)data;
+- (STDataAccessStatusDomainData)initWithCoder:(id)coder;
+- (STDataAccessStatusDomainData)initWithData:(id)data;
 - (id)_allEntities;
-- (id)_initWithAttributionListData:(id)a3;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithAttributionListData:(id)data;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STDataAccessStatusDomainData
@@ -36,38 +36,38 @@
 
 - (NSArray)dataAccessAttributions
 {
-  v2 = [(STDataAccessStatusDomainData *)self attributionListData];
-  v3 = [v2 objects];
+  attributionListData = [(STDataAccessStatusDomainData *)self attributionListData];
+  objects = [attributionListData objects];
 
-  return v3;
+  return objects;
 }
 
-- (STDataAccessStatusDomainData)initWithData:(id)a3
+- (STDataAccessStatusDomainData)initWithData:(id)data
 {
-  v4 = [a3 attributionListData];
-  v5 = [(STDataAccessStatusDomainData *)self initWithAttributionListData:v4];
+  attributionListData = [data attributionListData];
+  v5 = [(STDataAccessStatusDomainData *)self initWithAttributionListData:attributionListData];
 
   return v5;
 }
 
-- (STDataAccessStatusDomainData)initWithAttributionListData:(id)a3
+- (STDataAccessStatusDomainData)initWithAttributionListData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   v5 = [(STDataAccessStatusDomainData *)self _initWithAttributionListData:v4];
 
   return v5;
 }
 
-- (id)_initWithAttributionListData:(id)a3
+- (id)_initWithAttributionListData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = STDataAccessStatusDomainData;
   v6 = [(STDataAccessStatusDomainData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_attributionListData, a3);
+    objc_storeStrong(&v6->_attributionListData, data);
   }
 
   return v7;
@@ -75,18 +75,18 @@
 
 - (NSSet)attributedEntities
 {
-  v2 = [(STDataAccessStatusDomainData *)self _allEntities];
-  v3 = [MEMORY[0x1E695DFD8] setWithArray:v2];
+  _allEntities = [(STDataAccessStatusDomainData *)self _allEntities];
+  v3 = [MEMORY[0x1E695DFD8] setWithArray:_allEntities];
 
   return v3;
 }
 
 - (id)_allEntities
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 dataAccessAttributions];
-    v2 = [v1 bs_map:&__block_literal_global_29];
+    dataAccessAttributions = [self dataAccessAttributions];
+    v2 = [dataAccessAttributions bs_map:&__block_literal_global_29];
   }
 
   else
@@ -99,21 +99,21 @@
 
 - (NSSet)executableIdentities
 {
-  v2 = [(STDataAccessStatusDomainData *)self _allEntities];
-  v3 = [v2 bs_map:&__block_literal_global_21];
+  _allEntities = [(STDataAccessStatusDomainData *)self _allEntities];
+  v3 = [_allEntities bs_map:&__block_literal_global_21];
 
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
 
   return v4;
 }
 
-- (STDataAccessStatusDomainData)_dataWithAttributionFilter:(void *)a1
+- (STDataAccessStatusDomainData)_dataWithAttributionFilter:(void *)filter
 {
-  if (a1)
+  if (filter)
   {
     v3 = a2;
-    v4 = [a1 dataAccessAttributions];
-    v5 = [v4 bs_filter:v3];
+    dataAccessAttributions = [filter dataAccessAttributions];
+    v5 = [dataAccessAttributions bs_filter:v3];
 
     v6 = [STDataAccessStatusDomainData alloc];
     if (v6)
@@ -135,13 +135,13 @@
   return v6;
 }
 
-- (STDataAccessStatusDomainData)dataWithEntitiesThatAreSystemServices:(BOOL)a3
+- (STDataAccessStatusDomainData)dataWithEntitiesThatAreSystemServices:(BOOL)services
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__STDataAccessStatusDomainData_dataWithEntitiesThatAreSystemServices___block_invoke;
   v5[3] = &__block_descriptor_33_e33_B16__0__STDataAccessAttribution_8l;
-  v6 = a3;
+  servicesCopy = services;
   v3 = [(STDataAccessStatusDomainData *)self _dataWithAttributionFilter:v5];
 
   return v3;
@@ -155,15 +155,15 @@ BOOL __70__STDataAccessStatusDomainData_dataWithEntitiesThatAreSystemServices___
   return v4;
 }
 
-- (STDataAccessStatusDomainData)dataWithAttributedEntity:(id)a3
+- (STDataAccessStatusDomainData)dataWithAttributedEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__STDataAccessStatusDomainData_dataWithAttributedEntity___block_invoke;
   v8[3] = &unk_1E85DF300;
-  v9 = v4;
-  v5 = v4;
+  v9 = entityCopy;
+  v5 = entityCopy;
   v6 = [(STDataAccessStatusDomainData *)self _dataWithAttributionFilter:v8];
 
   return v6;
@@ -177,15 +177,15 @@ uint64_t __57__STDataAccessStatusDomainData_dataWithAttributedEntity___block_inv
   return v4;
 }
 
-- (STDataAccessStatusDomainData)dataWithExecutableIdentity:(id)a3
+- (STDataAccessStatusDomainData)dataWithExecutableIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_invoke;
   v8[3] = &unk_1E85DF300;
-  v9 = v4;
-  v5 = v4;
+  v9 = identityCopy;
+  v5 = identityCopy;
   v6 = [(STDataAccessStatusDomainData *)self _dataWithAttributionFilter:v8];
 
   return v6;
@@ -200,84 +200,84 @@ uint64_t __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_i
   return v5;
 }
 
-- (STDataAccessStatusDomainData)dataWithAccessType:(unint64_t)a3
+- (STDataAccessStatusDomainData)dataWithAccessType:(unint64_t)type
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__STDataAccessStatusDomainData_dataWithAccessType___block_invoke;
   v5[3] = &__block_descriptor_40_e33_B16__0__STDataAccessAttribution_8l;
-  v5[4] = a3;
+  v5[4] = type;
   v3 = [(STDataAccessStatusDomainData *)self _dataWithAttributionFilter:v5];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STDataAccessStatusDomainData *)self attributionListData];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  attributionListData = [(STDataAccessStatusDomainData *)self attributionListData];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__STDataAccessStatusDomainData_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 appendObject:v6 counterpart:v10];
+  v11 = equalCopy;
+  v7 = equalCopy;
+  v8 = [v5 appendObject:attributionListData counterpart:v10];
 
-  LOBYTE(v6) = [v5 isEqual];
-  return v6;
+  LOBYTE(attributionListData) = [v5 isEqual];
+  return attributionListData;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STDataAccessStatusDomainData *)self attributionListData];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  attributionListData = [(STDataAccessStatusDomainData *)self attributionListData];
+  v5 = [builder appendObject:attributionListData];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableDataAccessStatusDomainData allocWithZone:a3];
+  v4 = [STMutableDataAccessStatusDomainData allocWithZone:zone];
 
   return [(STDataAccessStatusDomainData *)v4 initWithData:self];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STDataAccessStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STDataAccessStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STDataAccessStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STDataAccessStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(STDataAccessStatusDomainData *)self succinctDescriptionBuilder];
-  v5 = [(STDataAccessStatusDomainData *)self attributionListData];
-  v6 = [v4 appendObject:v5 withName:@"attributions"];
+  succinctDescriptionBuilder = [(STDataAccessStatusDomainData *)self succinctDescriptionBuilder];
+  attributionListData = [(STDataAccessStatusDomainData *)self attributionListData];
+  v6 = [succinctDescriptionBuilder appendObject:attributionListData withName:@"attributions"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STDataAccessStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STDataAccessStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -288,13 +288,13 @@ uint64_t __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_i
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STDataAccessStatusDomainData *)self copy];
     }
@@ -302,7 +302,7 @@ uint64_t __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_i
     else
     {
       v5 = [(STDataAccessStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -314,17 +314,17 @@ uint64_t __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_i
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STDataAccessStatusDomainData *)self attributionListData];
-  [v4 encodeObject:v5 forKey:@"attributionListData"];
+  coderCopy = coder;
+  attributionListData = [(STDataAccessStatusDomainData *)self attributionListData];
+  [coderCopy encodeObject:attributionListData forKey:@"attributionListData"];
 }
 
-- (STDataAccessStatusDomainData)initWithCoder:(id)a3
+- (STDataAccessStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributionListData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionListData"];
 
   v6 = v5;
   v12 = 0;
@@ -352,7 +352,7 @@ uint64_t __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_i
   if (v7)
   {
     self = [(STDataAccessStatusDomainData *)self initWithAttributionListData:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -364,10 +364,10 @@ uint64_t __59__STDataAccessStatusDomainData_dataWithExecutableIdentity___block_i
       _os_log_error_impl(&dword_1DA9C2000, v9, OS_LOG_TYPE_ERROR, "decoded invalid data access domain data", v11, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 void __46__STDataAccessStatusDomainData_initWithCoder___block_invoke_2(uint64_t a1, void *a2, _BYTE *a3)

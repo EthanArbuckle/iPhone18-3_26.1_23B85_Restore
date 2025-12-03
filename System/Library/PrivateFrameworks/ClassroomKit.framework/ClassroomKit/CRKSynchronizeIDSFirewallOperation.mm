@@ -1,37 +1,37 @@
 @interface CRKSynchronizeIDSFirewallOperation
-- (CRKSynchronizeIDSFirewallOperation)initWithIDSPrimitives:(id)a3 localStorage:(id)a4 trustedRosterAppleIDs:(id)a5;
-- (id)operationToAddAllowedAppleIDs:(id)a3;
+- (CRKSynchronizeIDSFirewallOperation)initWithIDSPrimitives:(id)primitives localStorage:(id)storage trustedRosterAppleIDs:(id)ds;
+- (id)operationToAddAllowedAppleIDs:(id)ds;
 - (id)operationToFetchAllowedAppleIDs;
-- (id)operationToRemoveAllowedAppleIDs:(id)a3;
+- (id)operationToRemoveAllowedAppleIDs:(id)ds;
 - (void)addAllowedAppleIDs;
 - (void)cancel;
 - (void)computeChanges;
 - (void)fetchAllowedAppleIDs;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)main;
-- (void)operationToAddAllowedAppleIDsDidFinish:(id)a3;
-- (void)operationToFetchAppleIDsDidFinish:(id)a3;
-- (void)operationToRemoveAllowedAppleIDsDidFinish:(id)a3;
+- (void)operationToAddAllowedAppleIDsDidFinish:(id)finish;
+- (void)operationToFetchAppleIDsDidFinish:(id)finish;
+- (void)operationToRemoveAllowedAppleIDsDidFinish:(id)finish;
 - (void)removeAllowedAppleIDs;
 - (void)run;
 @end
 
 @implementation CRKSynchronizeIDSFirewallOperation
 
-- (CRKSynchronizeIDSFirewallOperation)initWithIDSPrimitives:(id)a3 localStorage:(id)a4 trustedRosterAppleIDs:(id)a5
+- (CRKSynchronizeIDSFirewallOperation)initWithIDSPrimitives:(id)primitives localStorage:(id)storage trustedRosterAppleIDs:(id)ds
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  primitivesCopy = primitives;
+  storageCopy = storage;
+  dsCopy = ds;
   v17.receiver = self;
   v17.super_class = CRKSynchronizeIDSFirewallOperation;
   v12 = [(CRKSynchronizeIDSFirewallOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_IDSPrimitives, a3);
-    objc_storeStrong(&v13->_localStorage, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_IDSPrimitives, primitives);
+    objc_storeStrong(&v13->_localStorage, storage);
+    v14 = [dsCopy copy];
     trustedRosterAppleIDs = v13->_trustedRosterAppleIDs;
     v13->_trustedRosterAppleIDs = v14;
   }
@@ -84,7 +84,7 @@ void __44__CRKSynchronizeIDSFirewallOperation_cancel__block_invoke(uint64_t a1)
 - (void)run
 {
   OUTLINED_FUNCTION_1_0();
-  v3 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = NSStringFromSelector(v0);
   OUTLINED_FUNCTION_0_1();
   [v2 handleFailureInMethod:v1 object:? file:? lineNumber:? description:?];
@@ -92,37 +92,37 @@ void __44__CRKSynchronizeIDSFirewallOperation_cancel__block_invoke(uint64_t a1)
 
 - (void)fetchAllowedAppleIDs
 {
-  v4 = [(CRKSynchronizeIDSFirewallOperation *)self operationToFetchAllowedAppleIDs];
-  [(CRKSynchronizeIDSFirewallOperation *)self setFetchAllowedAppleIDsOperation:v4];
-  [v4 addTarget:self selector:sel_operationToFetchAppleIDsDidFinish_ forOperationEvents:6];
-  v3 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  [v3 addOperation:v4];
+  operationToFetchAllowedAppleIDs = [(CRKSynchronizeIDSFirewallOperation *)self operationToFetchAllowedAppleIDs];
+  [(CRKSynchronizeIDSFirewallOperation *)self setFetchAllowedAppleIDsOperation:operationToFetchAllowedAppleIDs];
+  [operationToFetchAllowedAppleIDs addTarget:self selector:sel_operationToFetchAppleIDsDidFinish_ forOperationEvents:6];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  [crk_backgroundQueue addOperation:operationToFetchAllowedAppleIDs];
 }
 
-- (void)operationToFetchAppleIDsDidFinish:(id)a3
+- (void)operationToFetchAppleIDsDidFinish:(id)finish
 {
-  v7 = a3;
+  finishCopy = finish;
   if ([(CRKSynchronizeIDSFirewallOperation *)self isExecuting])
   {
-    v4 = [v7 error];
+    error = [finishCopy error];
 
-    if (v4)
+    if (error)
     {
-      v5 = [v7 error];
-      [(CRKSynchronizeIDSFirewallOperation *)self finishWithError:v5];
+      error2 = [finishCopy error];
+      [(CRKSynchronizeIDSFirewallOperation *)self finishWithError:error2];
     }
 
     else
     {
-      v5 = [v7 resultObject];
+      error2 = [finishCopy resultObject];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         [CRKSynchronizeIDSFirewallOperation operationToFetchAppleIDsDidFinish:];
       }
 
-      v6 = [(CRKSynchronizeIDSFirewallOperation *)self localStorage];
-      [v6 setAllowedAppleIDs:v5];
+      localStorage = [(CRKSynchronizeIDSFirewallOperation *)self localStorage];
+      [localStorage setAllowedAppleIDs:error2];
 
       [(CRKSynchronizeIDSFirewallOperation *)self computeChanges];
     }
@@ -134,7 +134,7 @@ void __44__CRKSynchronizeIDSFirewallOperation_cancel__block_invoke(uint64_t a1)
 - (void)computeChanges
 {
   OUTLINED_FUNCTION_1_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -142,22 +142,22 @@ void __44__CRKSynchronizeIDSFirewallOperation_cancel__block_invoke(uint64_t a1)
 - (void)addAllowedAppleIDs
 {
   OUTLINED_FUNCTION_1_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)operationToAddAllowedAppleIDsDidFinish:(id)a3
+- (void)operationToAddAllowedAppleIDsDidFinish:(id)finish
 {
-  v6 = a3;
+  finishCopy = finish;
   if ([(CRKSynchronizeIDSFirewallOperation *)self isExecuting])
   {
-    v4 = [v6 error];
+    error = [finishCopy error];
 
-    if (v4)
+    if (error)
     {
-      v5 = [v6 error];
-      [(CRKSynchronizeIDSFirewallOperation *)self finishWithError:v5];
+      error2 = [finishCopy error];
+      [(CRKSynchronizeIDSFirewallOperation *)self finishWithError:error2];
     }
 
     else
@@ -170,42 +170,42 @@ void __44__CRKSynchronizeIDSFirewallOperation_cancel__block_invoke(uint64_t a1)
 - (void)removeAllowedAppleIDs
 {
   OUTLINED_FUNCTION_1_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (void)operationToRemoveAllowedAppleIDsDidFinish:(id)a3
+- (void)operationToRemoveAllowedAppleIDsDidFinish:(id)finish
 {
-  v5 = a3;
+  finishCopy = finish;
   if ([(CRKSynchronizeIDSFirewallOperation *)self isExecuting])
   {
-    v4 = [v5 error];
-    [(CRKSynchronizeIDSFirewallOperation *)self finishWithError:v4];
+    error = [finishCopy error];
+    [(CRKSynchronizeIDSFirewallOperation *)self finishWithError:error];
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKSynchronizeIDSFirewallOperation finishWithError:];
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v4 = [(CRKSynchronizeIDSFirewallOperation *)self localStorage];
-    [v4 setAllowedAppleIDs:0];
+    localStorage = [(CRKSynchronizeIDSFirewallOperation *)self localStorage];
+    [localStorage setAllowedAppleIDs:0];
 
-    [(CRKSynchronizeIDSFirewallOperation *)self endOperationWithError:v7];
+    [(CRKSynchronizeIDSFirewallOperation *)self endOperationWithError:errorCopy];
   }
 
   else
   {
-    v5 = [(CRKSynchronizeIDSFirewallOperation *)self trustedRosterAppleIDs];
-    v6 = [(CRKSynchronizeIDSFirewallOperation *)self localStorage];
-    [v6 setAllowedAppleIDs:v5];
+    trustedRosterAppleIDs = [(CRKSynchronizeIDSFirewallOperation *)self trustedRosterAppleIDs];
+    localStorage2 = [(CRKSynchronizeIDSFirewallOperation *)self localStorage];
+    [localStorage2 setAllowedAppleIDs:trustedRosterAppleIDs];
 
     [(CRKSynchronizeIDSFirewallOperation *)self endOperationWithResultObject:0];
   }
@@ -213,13 +213,13 @@ void __44__CRKSynchronizeIDSFirewallOperation_cancel__block_invoke(uint64_t a1)
 
 - (id)operationToFetchAllowedAppleIDs
 {
-  v2 = [(CRKSynchronizeIDSFirewallOperation *)self IDSPrimitives];
+  iDSPrimitives = [(CRKSynchronizeIDSFirewallOperation *)self IDSPrimitives];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__CRKSynchronizeIDSFirewallOperation_operationToFetchAllowedAppleIDs__block_invoke;
   v6[3] = &unk_278DC1140;
-  v7 = v2;
-  v3 = v2;
+  v7 = iDSPrimitives;
+  v3 = iDSPrimitives;
   v4 = [CRKBlockOperation blockOperationWithBlock:v6];
 
   return v4;
@@ -254,18 +254,18 @@ uint64_t __69__CRKSynchronizeIDSFirewallOperation_operationToFetchAllowedAppleID
   }
 }
 
-- (id)operationToAddAllowedAppleIDs:(id)a3
+- (id)operationToAddAllowedAppleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKSynchronizeIDSFirewallOperation *)self IDSPrimitives];
+  dsCopy = ds;
+  iDSPrimitives = [(CRKSynchronizeIDSFirewallOperation *)self IDSPrimitives];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__CRKSynchronizeIDSFirewallOperation_operationToAddAllowedAppleIDs___block_invoke;
   v10[3] = &unk_278DC1190;
-  v11 = v4;
-  v12 = v5;
-  v6 = v5;
-  v7 = v4;
+  v11 = dsCopy;
+  v12 = iDSPrimitives;
+  v6 = iDSPrimitives;
+  v7 = dsCopy;
   v8 = [CRKBlockOperation blockOperationWithBlock:v10];
 
   return v8;
@@ -320,18 +320,18 @@ uint64_t __68__CRKSynchronizeIDSFirewallOperation_operationToAddAllowedAppleIDs_
   return (*(v2 + 16))();
 }
 
-- (id)operationToRemoveAllowedAppleIDs:(id)a3
+- (id)operationToRemoveAllowedAppleIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CRKSynchronizeIDSFirewallOperation *)self IDSPrimitives];
+  dsCopy = ds;
+  iDSPrimitives = [(CRKSynchronizeIDSFirewallOperation *)self IDSPrimitives];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__CRKSynchronizeIDSFirewallOperation_operationToRemoveAllowedAppleIDs___block_invoke;
   v10[3] = &unk_278DC1190;
-  v11 = v4;
-  v12 = v5;
-  v6 = v5;
-  v7 = v4;
+  v11 = dsCopy;
+  v12 = iDSPrimitives;
+  v6 = iDSPrimitives;
+  v7 = dsCopy;
   v8 = [CRKBlockOperation blockOperationWithBlock:v10];
 
   return v8;

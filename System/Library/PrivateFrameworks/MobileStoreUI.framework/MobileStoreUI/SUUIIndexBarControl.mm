@@ -1,15 +1,15 @@
 @interface SUUIIndexBarControl
 - (BOOL)_reloadLineSpacing;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_visibleBounds;
-- (CGSize)_sizeForEntries:(id)a3;
-- (CGSize)_sizeForEntryAtIndexPath:(id)a3;
+- (CGSize)_sizeForEntries:(id)entries;
+- (CGSize)_sizeForEntryAtIndexPath:(id)path;
 - (CGSize)_totalSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIIndexBarControl)initWithCoder:(id)a3;
-- (SUUIIndexBarControl)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIIndexBarControl)initWithCoder:(id)coder;
+- (SUUIIndexBarControl)initWithFrame:(CGRect)frame;
 - (SUUIIndexBarControlDataSource)dataSource;
 - (SUUIIndexBarControlDelegate)delegate;
 - (UIEdgeInsets)contentEdgeInsets;
@@ -19,40 +19,40 @@
 - (id)_combinedEntry;
 - (id)_displayEntries;
 - (id)_displayEntriesThatFitInViewForGroupedEntries;
-- (id)_entryAtIndexPath:(id)a3;
-- (int64_t)_numberOfEntriesInSection:(int64_t)a3;
+- (id)_entryAtIndexPath:(id)path;
+- (int64_t)_numberOfEntriesInSection:(int64_t)section;
 - (int64_t)_numberOfSections;
 - (int64_t)_totalEntryCount;
-- (void)_configureNewEntry:(id)a3;
-- (void)_enumerateEntryIndexPathsUsingBlock:(id)a3;
+- (void)_configureNewEntry:(id)entry;
+- (void)_enumerateEntryIndexPathsUsingBlock:(id)block;
 - (void)_invalidateDisplayEntries;
 - (void)_invalidateForChangedLayoutProperties;
-- (void)_sendSelectionForTouch:(id)a3 withEvent:(id)a4;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)_sendSelectionForTouch:(id)touch withEvent:(id)event;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)reloadCombinedEntry;
 - (void)reloadData;
-- (void)reloadEntryAtIndexPath:(id)a3;
-- (void)reloadSections:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDefaultTextAttributes:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)reloadEntryAtIndexPath:(id)path;
+- (void)reloadSections:(id)sections;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setDataSource:(id)source;
+- (void)setDefaultTextAttributes:(id)attributes;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setTransform:(CGAffineTransform *)transform;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SUUIIndexBarControl
 
-- (SUUIIndexBarControl)initWithCoder:(id)a3
+- (SUUIIndexBarControl)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SUUIIndexBarControl;
-  v3 = [(SUUIIndexBarControl *)&v6 initWithCoder:a3];
+  v3 = [(SUUIIndexBarControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -62,11 +62,11 @@
   return v4;
 }
 
-- (SUUIIndexBarControl)initWithFrame:(CGRect)a3
+- (SUUIIndexBarControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SUUIIndexBarControl;
-  v3 = [(SUUIIndexBarControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIIndexBarControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,10 +76,10 @@
   return v4;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIIndexBarControl *)self _displayEntries:a3.origin.x];
+  v4 = [(SUUIIndexBarControl *)self _displayEntries:rect.origin.x];
   [(SUUIIndexBarControl *)self _visibleBounds];
   width = v35.size.width;
   height = v35.size.height;
@@ -113,8 +113,8 @@
         v36.size.width = width;
         v36.size.height = height;
         CGRectGetMinX(v36);
-        v16 = [(SUUIIndexBarControl *)self traitCollection];
-        [v16 displayScale];
+        traitCollection = [(SUUIIndexBarControl *)self traitCollection];
+        [traitCollection displayScale];
         v26 = v17;
         UIRectCenteredXInRectScale();
         v19 = v18;
@@ -133,10 +133,10 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SUUIIndexBarControl *)self bounds];
   top = self->_hitTestEdgeInsets.top;
   left = self->_hitTestEdgeInsets.left;
@@ -150,12 +150,12 @@
   return CGRectContainsPoint(*&v10, *&v17);
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SUUIIndexBarControl *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -169,12 +169,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SUUIIndexBarControl *)self frame];
   v9 = v8;
   v11 = v10;
@@ -188,16 +188,16 @@
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   memset(&v9, 0, sizeof(v9));
   [(SUUIIndexBarControl *)self transform];
   v8.receiver = self;
   v8.super_class = SUUIIndexBarControl;
-  v5 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v5;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   [(SUUIIndexBarControl *)&v8 setTransform:&t2];
   [(SUUIIndexBarControl *)self transform];
   v6 = v9;
@@ -207,10 +207,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SUUIIndexBarControl *)self _totalSize];
   if (width < v5)
   {
@@ -235,15 +235,15 @@
   v13.receiver = self;
   v13.super_class = SUUIIndexBarControl;
   [(SUUIIndexBarControl *)&v13 tintColorDidChange];
-  v3 = [(SUUIIndexBarControl *)self tintColor];
+  tintColor = [(SUUIIndexBarControl *)self tintColor];
   if ([(NSMapTable *)self->_indexPathToEntryMapTable count])
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(NSMapTable *)self->_indexPathToEntryMapTable objectEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+    objectEnumerator = [(NSMapTable *)self->_indexPathToEntryMapTable objectEnumerator];
+    v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -255,14 +255,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setTintColor:v3];
+          [*(*(&v9 + 1) + 8 * v8++) setTintColor:tintColor];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+        v6 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v14 count:16];
       }
 
       while (v6);
@@ -272,16 +272,16 @@
   [(SUUIIndexBarControl *)self setNeedsDisplay];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = SUUIIndexBarControl;
-  v4 = a3;
-  [(SUUIIndexBarControl *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SUUIIndexBarControl *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(SUUIIndexBarControl *)self traitCollection:v10.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (vabdd_f64(v7, v9) > 0.00000011920929)
@@ -290,38 +290,38 @@
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SUUIIndexBarControl;
-  v6 = a4;
-  v7 = a3;
-  [(SUUIIndexBarControl *)&v9 beginTrackingWithTouch:v7 withEvent:v6];
-  [(SUUIIndexBarControl *)self _sendSelectionForTouch:v7 withEvent:v6, v9.receiver, v9.super_class];
+  eventCopy = event;
+  touchCopy = touch;
+  [(SUUIIndexBarControl *)&v9 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
+  [(SUUIIndexBarControl *)self _sendSelectionForTouch:touchCopy withEvent:eventCopy, v9.receiver, v9.super_class];
 
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SUUIIndexBarControl;
-  v6 = a4;
-  v7 = a3;
-  [(SUUIIndexBarControl *)&v9 continueTrackingWithTouch:v7 withEvent:v6];
-  [(SUUIIndexBarControl *)self _sendSelectionForTouch:v7 withEvent:v6, v9.receiver, v9.super_class];
+  eventCopy = event;
+  touchCopy = touch;
+  [(SUUIIndexBarControl *)&v9 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
+  [(SUUIIndexBarControl *)self _sendSelectionForTouch:touchCopy withEvent:eventCopy, v9.receiver, v9.super_class];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SUUIIndexBarControl;
-  v6 = a4;
-  v7 = a3;
-  [(SUUIIndexBarControl *)&v9 endTrackingWithTouch:v7 withEvent:v6];
-  [(SUUIIndexBarControl *)self _sendSelectionForTouch:v7 withEvent:v6, v9.receiver, v9.super_class];
+  eventCopy = event;
+  touchCopy = touch;
+  [(SUUIIndexBarControl *)&v9 endTrackingWithTouch:touchCopy withEvent:eventCopy];
+  [(SUUIIndexBarControl *)self _sendSelectionForTouch:touchCopy withEvent:eventCopy, v9.receiver, v9.super_class];
 
   lastSelectedIndexPath = self->_lastSelectedIndexPath;
   self->_lastSelectedIndexPath = 0;
@@ -330,11 +330,11 @@
   self->_didSendPastTop = 0;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = SUUIIndexBarControl;
-  [(SUUIIndexBarControl *)&v5 cancelTrackingWithEvent:a3];
+  [(SUUIIndexBarControl *)&v5 cancelTrackingWithEvent:event];
   lastSelectedIndexPath = self->_lastSelectedIndexPath;
   self->_lastSelectedIndexPath = 0;
 
@@ -342,23 +342,23 @@
   self->_didSendPastTop = 0;
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
+    self->_contentEdgeInsets = insets;
     self->_hasValidTotalSize = 0;
     [(SUUIIndexBarControl *)self _invalidateDisplayEntries];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
@@ -383,22 +383,22 @@
   }
 }
 
-- (void)setDefaultTextAttributes:(id)a3
+- (void)setDefaultTextAttributes:(id)attributes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  attributesCopy = attributes;
   defaultTextAttributes = self->_defaultTextAttributes;
-  if (defaultTextAttributes != v5 && ![(NSDictionary *)defaultTextAttributes isEqualToDictionary:v5])
+  if (defaultTextAttributes != attributesCopy && ![(NSDictionary *)defaultTextAttributes isEqualToDictionary:attributesCopy])
   {
-    objc_storeStrong(&self->_defaultTextAttributes, a3);
+    objc_storeStrong(&self->_defaultTextAttributes, attributes);
     if ([(NSMapTable *)self->_indexPathToEntryMapTable count])
     {
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = [(NSMapTable *)self->_indexPathToEntryMapTable objectEnumerator];
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      objectEnumerator = [(NSMapTable *)self->_indexPathToEntryMapTable objectEnumerator];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         v9 = v8;
@@ -410,7 +410,7 @@
           {
             if (*v15 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v13 = *(*(&v14 + 1) + 8 * i);
@@ -422,7 +422,7 @@
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v9 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
         }
 
         while (v9);
@@ -440,9 +440,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -521,28 +521,28 @@
   [(SUUIIndexBarControl *)self _invalidateDisplayEntries];
 }
 
-- (void)reloadEntryAtIndexPath:(id)a3
+- (void)reloadEntryAtIndexPath:(id)path
 {
-  v6 = a3;
-  if (v6)
+  pathCopy = path;
+  if (pathCopy)
   {
     sectionIndexToNumberOfEntriesMapTable = self->_sectionIndexToNumberOfEntriesMapTable;
     self->_sectionIndexToNumberOfEntriesMapTable = 0;
 
-    v5 = [(NSMapTable *)self->_sectionIndexToNumberOfEntriesMapTable objectForKey:v6];
+    v5 = [(NSMapTable *)self->_sectionIndexToNumberOfEntriesMapTable objectForKey:pathCopy];
 
     if (v5)
     {
-      [(NSMapTable *)self->_sectionIndexToNumberOfEntriesMapTable removeObjectForKey:v6];
+      [(NSMapTable *)self->_sectionIndexToNumberOfEntriesMapTable removeObjectForKey:pathCopy];
       self->_hasValidTotalSize = 0;
       [(SUUIIndexBarControl *)self _invalidateDisplayEntries];
     }
   }
 }
 
-- (void)reloadSections:(id)a3
+- (void)reloadSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -553,7 +553,7 @@
   v5[3] = &unk_2798F6758;
   v5[4] = self;
   v5[5] = &v6;
-  [v4 enumerateIndexesUsingBlock:v5];
+  [sectionsCopy enumerateIndexesUsingBlock:v5];
   if (*(v7 + 24) == 1)
   {
     self->_hasValidTotalEntryCount = 0;
@@ -736,16 +736,16 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_enumerateEntryIndexPathsUsingBlock:(id)a3
+- (void)_enumerateEntryIndexPathsUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(SUUIIndexBarControl *)self _numberOfSections];
+    _numberOfSections = [(SUUIIndexBarControl *)self _numberOfSections];
     v13 = 0;
-    if (v5 >= 1)
+    if (_numberOfSections >= 1)
     {
-      v6 = v5;
+      v6 = _numberOfSections;
       v7 = 0;
       do
       {
@@ -758,7 +758,7 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
           do
           {
             v12 = [MEMORY[0x277CCAA70] indexPathForItem:v11 - 1 inSection:v7];
-            v4[2](v4, v12, &v13);
+            blockCopy[2](blockCopy, v12, &v13);
 
             v9 = v13;
             if (v11 >= v10)
@@ -780,13 +780,13 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
   }
 }
 
-- (int64_t)_numberOfEntriesInSection:(int64_t)a3
+- (int64_t)_numberOfEntriesInSection:(int64_t)section
 {
   sectionIndexToNumberOfEntriesMapTable = self->_sectionIndexToNumberOfEntriesMapTable;
-  if (!sectionIndexToNumberOfEntriesMapTable || (v6 = NSMapGet(sectionIndexToNumberOfEntriesMapTable, (a3 + 1))) == 0)
+  if (!sectionIndexToNumberOfEntriesMapTable || (v6 = NSMapGet(sectionIndexToNumberOfEntriesMapTable, (section + 1))) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [WeakRetained indexBarControl:self numberOfEntriesInSection:a3];
+    v8 = [WeakRetained indexBarControl:self numberOfEntriesInSection:section];
 
     if (!self->_sectionIndexToNumberOfEntriesMapTable)
     {
@@ -796,12 +796,12 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
     }
 
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
-    NSMapInsert(self->_sectionIndexToNumberOfEntriesMapTable, (a3 + 1), v6);
+    NSMapInsert(self->_sectionIndexToNumberOfEntriesMapTable, (section + 1), v6);
   }
 
-  v11 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
-  return v11;
+  return integerValue;
 }
 
 - (id)_combinedEntry
@@ -836,17 +836,17 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
   return v7;
 }
 
-- (void)_configureNewEntry:(id)a3
+- (void)_configureNewEntry:(id)entry
 {
-  v6 = a3;
-  v4 = [(SUUIIndexBarControl *)self tintColor];
-  [v6 setTintColor:v4];
+  entryCopy = entry;
+  tintColor = [(SUUIIndexBarControl *)self tintColor];
+  [entryCopy setTintColor:tintColor];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SUUIIndexBarControl *)self defaultTextAttributes];
-    [v6 setDefaultTextAttributes:v5];
+    defaultTextAttributes = [(SUUIIndexBarControl *)self defaultTextAttributes];
+    [entryCopy setDefaultTextAttributes:defaultTextAttributes];
   }
 }
 
@@ -873,16 +873,16 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
     left = self->_contentEdgeInsets.left;
     bottom = self->_contentEdgeInsets.bottom;
     right = self->_contentEdgeInsets.right;
-    v51 = self;
-    v45 = [(SUUIIndexBarControl *)self _allEntries];
-    v17 = v45;
-    if ([v45 count])
+    selfCopy = self;
+    _allEntries = [(SUUIIndexBarControl *)self _allEntries];
+    v17 = _allEntries;
+    if ([_allEntries count])
     {
       v18 = v6 + left;
       v19 = v8 + top;
       v20 = v10 - (left + right);
       v21 = v12 - (top + bottom);
-      [(SUUIIndexBarControl *)v51 _sizeForEntries:v45];
+      [(SUUIIndexBarControl *)selfCopy _sizeForEntries:_allEntries];
       v23 = v22;
       v68.origin.x = v18;
       v68.origin.y = v19;
@@ -890,7 +890,7 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
       v68.size.height = v21;
       if (v23 <= CGRectGetHeight(v68))
       {
-        objc_storeStrong(&v51->_displayEntries, v45);
+        objc_storeStrong(&selfCopy->_displayEntries, _allEntries);
       }
 
       else
@@ -912,7 +912,7 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
         v59 = v60;
         v44 = v24;
         v57 = v44;
-        [v45 enumerateObjectsUsingBlock:v56];
+        [_allEntries enumerateObjectsUsingBlock:v56];
         v25 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:0];
         if (v62[3])
         {
@@ -940,8 +940,8 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
                   }
 
                   v29 = *(*(&v52 + 1) + 8 * i);
-                  v50 = [v29 firstObject];
-                  if ([v50 visibilityPriority] == 1000)
+                  firstObject = [v29 firstObject];
+                  if ([firstObject visibilityPriority] == 1000)
                   {
                     [v25 addObjectsFromArray:v29];
                   }
@@ -960,10 +960,10 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
                     v34 = v26;
                     do
                     {
-                      v35 = [(SUUIIndexBarControl *)v51 _combinedEntry];
-                      if (v35)
+                      _combinedEntry = [(SUUIIndexBarControl *)selfCopy _combinedEntry];
+                      if (_combinedEntry)
                       {
-                        [v25 addObject:v35];
+                        [v25 addObject:_combinedEntry];
                       }
 
                       v36 = [v29 objectAtIndex:v34];
@@ -978,10 +978,10 @@ void __42__SUUIIndexBarControl__allRequiredEntries__block_invoke(uint64_t a1, vo
                     if ((v32 & 1) == 0)
                     {
 LABEL_20:
-                      v37 = [(SUUIIndexBarControl *)v51 _combinedEntry];
-                      if (v37)
+                      _combinedEntry2 = [(SUUIIndexBarControl *)selfCopy _combinedEntry];
+                      if (_combinedEntry2)
                       {
-                        [v25 addObject:v37];
+                        [v25 addObject:_combinedEntry2];
                       }
                     }
                   }
@@ -993,7 +993,7 @@ LABEL_20:
               while (v27);
             }
 
-            [(SUUIIndexBarControl *)v51 _sizeForEntries:v25];
+            [(SUUIIndexBarControl *)selfCopy _sizeForEntries:v25];
             v39 = v38;
             v69.origin.x = v18;
             v69.origin.y = v19;
@@ -1013,25 +1013,25 @@ LABEL_20:
 
         if ([v25 count])
         {
-          v41 = v25;
+          _displayEntriesThatFitInViewForGroupedEntries = v25;
         }
 
         else
         {
-          v41 = [(SUUIIndexBarControl *)v51 _displayEntriesThatFitInViewForGroupedEntries];
+          _displayEntriesThatFitInViewForGroupedEntries = [(SUUIIndexBarControl *)selfCopy _displayEntriesThatFitInViewForGroupedEntries];
         }
 
-        v42 = v51->_displayEntries;
-        v51->_displayEntries = v41;
+        v42 = selfCopy->_displayEntries;
+        selfCopy->_displayEntries = _displayEntriesThatFitInViewForGroupedEntries;
 
         _Block_object_dispose(v60, 8);
         _Block_object_dispose(&v61, 8);
       }
 
-      v17 = v45;
+      v17 = _allEntries;
     }
 
-    v3 = v51->_displayEntries;
+    v3 = selfCopy->_displayEntries;
   }
 
   return v3;
@@ -1076,8 +1076,8 @@ LABEL_8:
 
 - (id)_displayEntriesThatFitInViewForGroupedEntries
 {
-  v3 = [(SUUIIndexBarControl *)self _allRequiredEntries];
-  v4 = [v3 count];
+  _allRequiredEntries = [(SUUIIndexBarControl *)self _allRequiredEntries];
+  v4 = [_allRequiredEntries count];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(SUUIIndexBarControl *)self bounds];
   if (v4 >= 2)
@@ -1096,13 +1096,13 @@ LABEL_8:
       v19 = v4 + ~v16++;
       do
       {
-        v20 = [v3 objectAtIndex:v18];
+        v20 = [_allRequiredEntries objectAtIndex:v18];
         [v5 addObject:v20];
 
-        v21 = [(SUUIIndexBarControl *)self _combinedEntry];
-        if (v21 && v18 < v19)
+        _combinedEntry = [(SUUIIndexBarControl *)self _combinedEntry];
+        if (_combinedEntry && v18 < v19)
         {
-          [v5 addObject:v21];
+          [v5 addObject:_combinedEntry];
         }
 
         v18 += v17;
@@ -1142,18 +1142,18 @@ LABEL_8:
   return v24;
 }
 
-- (id)_entryAtIndexPath:(id)a3
+- (id)_entryAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(NSMapTable *)self->_indexPathToEntryMapTable objectForKey:v5];
+  pathCopy = path;
+  v6 = [(NSMapTable *)self->_indexPathToEntryMapTable objectForKey:pathCopy];
   if (!v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v6 = [WeakRetained indexBarControl:self entryAtIndexPath:v5];
+    v6 = [WeakRetained indexBarControl:self entryAtIndexPath:pathCopy];
 
     if (!v6)
     {
-      [(SUUIIndexBarControl *)&self->_dataSource _entryAtIndexPath:a2, self, v5];
+      [(SUUIIndexBarControl *)&self->_dataSource _entryAtIndexPath:a2, self, pathCopy];
     }
 
     [(SUUIIndexBarControl *)self _configureNewEntry:v6];
@@ -1167,7 +1167,7 @@ LABEL_8:
       indexPathToEntryMapTable = self->_indexPathToEntryMapTable;
     }
 
-    [(NSMapTable *)indexPathToEntryMapTable setObject:v6 forKey:v5];
+    [(NSMapTable *)indexPathToEntryMapTable setObject:v6 forKey:pathCopy];
   }
 
   return v6;
@@ -1230,18 +1230,18 @@ LABEL_8:
   return v5 > 0.00000011920929;
 }
 
-- (void)_sendSelectionForTouch:(id)a3 withEvent:(id)a4
+- (void)_sendSelectionForTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 locationInView:self];
+  touchCopy = touch;
+  eventCopy = event;
+  [touchCopy locationInView:self];
   v9 = v8;
   [(SUUIIndexBarControl *)self _visibleBounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(SUUIIndexBarControl *)self _totalEntryCount];
+  _totalEntryCount = [(SUUIIndexBarControl *)self _totalEntryCount];
   v40.origin.x = v11;
   v40.origin.y = v13;
   v40.size.width = v15;
@@ -1297,9 +1297,9 @@ LABEL_11:
   v43.size.width = v15;
   v43.size.height = v17;
   Height = CGRectGetHeight(v43);
-  v25 = v18 - 1;
-  v26 = llround(v23 / Height * (v18 - 1));
-  if (v18 - 1 >= v26)
+  v25 = _totalEntryCount - 1;
+  v26 = llround(v23 / Height * (_totalEntryCount - 1));
+  if (_totalEntryCount - 1 >= v26)
   {
     v25 = v26;
   }
@@ -1311,7 +1311,7 @@ LABEL_11:
   v37 = __Block_byref_object_copy__104;
   v38 = __Block_byref_object_dispose__104;
   v39 = 0;
-  if (v27 < v18 && (v33[0] = 0, v33[1] = v33, v33[2] = 0x2020000000, v33[3] = 0, v32[0] = MEMORY[0x277D85DD0], v32[1] = 3221225472, v32[2] = __56__SUUIIndexBarControl__sendSelectionForTouch_withEvent___block_invoke, v32[3] = &unk_2798FE760, v32[5] = &v34, v32[6] = v27, v32[4] = v33, [(SUUIIndexBarControl *)self _enumerateEntryIndexPathsUsingBlock:v32], _Block_object_dispose(v33, 8), (v28 = v35[5]) != 0))
+  if (v27 < _totalEntryCount && (v33[0] = 0, v33[1] = v33, v33[2] = 0x2020000000, v33[3] = 0, v32[0] = MEMORY[0x277D85DD0], v32[1] = 3221225472, v32[2] = __56__SUUIIndexBarControl__sendSelectionForTouch_withEvent___block_invoke, v32[3] = &unk_2798FE760, v32[5] = &v34, v32[6] = v27, v32[4] = v33, [(SUUIIndexBarControl *)self _enumerateEntryIndexPathsUsingBlock:v32], _Block_object_dispose(v33, 8), (v28 = v35[5]) != 0))
   {
     v29 = v28;
   }
@@ -1361,15 +1361,15 @@ void __56__SUUIIndexBarControl__sendSelectionForTouch_withEvent___block_invoke(v
   *(v7 + 24) = v8 + 1;
 }
 
-- (CGSize)_sizeForEntries:(id)a3
+- (CGSize)_sizeForEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3010000000;
   v14 = "";
   v15 = *MEMORY[0x277CBF3A8];
-  v5 = [v4 count];
+  v5 = [entriesCopy count];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__SUUIIndexBarControl__sizeForEntries___block_invoke;
@@ -1377,7 +1377,7 @@ void __56__SUUIIndexBarControl__sendSelectionForTouch_withEvent___block_invoke(v
   v10[5] = &v11;
   v10[6] = v5;
   v10[4] = self;
-  [v4 enumerateObjectsUsingBlock:v10];
+  [entriesCopy enumerateObjectsUsingBlock:v10];
   v6 = v12[4];
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -1413,9 +1413,9 @@ double __39__SUUIIndexBarControl__sizeForEntries___block_invoke(void *a1, void *
   return result;
 }
 
-- (CGSize)_sizeForEntryAtIndexPath:(id)a3
+- (CGSize)_sizeForEntryAtIndexPath:(id)path
 {
-  v3 = [(SUUIIndexBarControl *)self _entryAtIndexPath:a3];
+  v3 = [(SUUIIndexBarControl *)self _entryAtIndexPath:path];
   [v3 size];
   v5 = v4;
   v7 = v6;
@@ -1517,13 +1517,13 @@ double __33__SUUIIndexBarControl__totalSize__block_invoke(uint64_t a1, uint64_t 
 
 - (CGRect)_visibleBounds
 {
-  v3 = [(SUUIIndexBarControl *)self _displayEntries];
+  _displayEntries = [(SUUIIndexBarControl *)self _displayEntries];
   [(SUUIIndexBarControl *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 count];
+  v12 = [_displayEntries count];
   v30 = 0;
   v31 = &v30;
   v32 = 0x4010000000;
@@ -1550,9 +1550,9 @@ double __33__SUUIIndexBarControl__totalSize__block_invoke(uint64_t a1, uint64_t 
   v29[5] = &v30;
   v29[6] = v12;
   v29[4] = self;
-  [v3 enumerateObjectsUsingBlock:v29];
-  v15 = [(SUUIIndexBarControl *)self traitCollection];
-  [v15 displayScale];
+  [_displayEntries enumerateObjectsUsingBlock:v29];
+  traitCollection = [(SUUIIndexBarControl *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredIntegralRectScale();
   v16 = v31;
   v31[4] = v17;

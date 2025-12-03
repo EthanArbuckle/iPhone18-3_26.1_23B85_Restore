@@ -1,23 +1,23 @@
 @interface HDMHomeManagerDataSyncProxy
 - (HDMHomeManagerDataSyncProxy)init;
-- (void)homeManagerDidUpdateDataSyncState:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateDataSyncState:(id)state;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HDMHomeManagerDataSyncProxy
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
+  homesCopy = homes;
+  selfCopy = self;
   sub_1D1DA1964();
 }
 
-- (void)homeManagerDidUpdateDataSyncState:(id)a3
+- (void)homeManagerDidUpdateDataSyncState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D1DA11D4(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1D1DA11D4(stateCopy);
 }
 
 - (HDMHomeManagerDataSyncProxy)init

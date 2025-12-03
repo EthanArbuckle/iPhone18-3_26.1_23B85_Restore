@@ -1,18 +1,18 @@
 @interface THFlowTOCChapterUIState
-- (THFlowTOCChapterUIState)initWithSection:(id)a3;
+- (THFlowTOCChapterUIState)initWithSection:(id)section;
 - (void)dealloc;
 @end
 
 @implementation THFlowTOCChapterUIState
 
-- (THFlowTOCChapterUIState)initWithSection:(id)a3
+- (THFlowTOCChapterUIState)initWithSection:(id)section
 {
   v6.receiver = self;
   v6.super_class = THFlowTOCChapterUIState;
   v4 = [(THFlowTOCChapterUIState *)&v6 init];
   if (v4)
   {
-    v4->mSection = a3;
+    v4->mSection = section;
     v4->mOpened = 0;
   }
 

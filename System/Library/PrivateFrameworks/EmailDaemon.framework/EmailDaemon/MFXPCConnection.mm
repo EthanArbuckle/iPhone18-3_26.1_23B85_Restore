@@ -1,9 +1,9 @@
 @interface MFXPCConnection
-- (MFXPCConnection)initWithConnection:(id)a3;
+- (MFXPCConnection)initWithConnection:(id)connection;
 - (id)errorHandler;
 - (void)dealloc;
-- (void)handleError:(id)a3;
-- (void)setErrorHandler:(id)a3;
+- (void)handleError:(id)error;
+- (void)setErrorHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
@@ -74,9 +74,9 @@
   [(MFXPCConnection *)&v3 dealloc];
 }
 
-- (MFXPCConnection)initWithConnection:(id)a3
+- (MFXPCConnection)initWithConnection:(id)connection
 {
-  v6 = a3;
+  connectionCopy = connection;
   v23.receiver = self;
   v23.super_class = MFXPCConnection;
   v7 = [(MFXPCConnection *)&v23 init];
@@ -98,7 +98,7 @@
     v16 = *(v7 + 3);
     *(v7 + 3) = v15;
 
-    xpc_connection_set_target_queue(v6, *(v7 + 2));
+    xpc_connection_set_target_queue(connectionCopy, *(v7 + 2));
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100035D4C;
@@ -106,38 +106,38 @@
     v17 = v7;
     v21 = v17;
     v22 = a2;
-    xpc_connection_set_event_handler(v6, handler);
-    objc_storeStrong(v17 + 1, a3);
+    xpc_connection_set_event_handler(connectionCopy, handler);
+    objc_storeStrong(v17 + 1, connection);
     v18 = v17;
   }
 
   else
   {
-    xpc_connection_cancel(v6);
+    xpc_connection_cancel(connectionCopy);
   }
 
   return v7;
 }
 
-- (void)setErrorHandler:(id)a3
+- (void)setErrorHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   [(NSLock *)self->_errorHandlerLock lock];
-  v4 = objc_retainBlock(v6);
+  v4 = objc_retainBlock(handlerCopy);
   errorHandler = self->_errorHandler;
   self->_errorHandler = v4;
 
   [(NSLock *)self->_errorHandlerLock unlock];
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
-  v6 = a3;
-  v4 = [(MFXPCConnection *)self errorHandler];
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  errorHandler = [(MFXPCConnection *)self errorHandler];
+  v5 = errorHandler;
+  if (errorHandler)
   {
-    (*(v4 + 16))(v4, v6);
+    (*(errorHandler + 16))(errorHandler, errorCopy);
   }
 }
 

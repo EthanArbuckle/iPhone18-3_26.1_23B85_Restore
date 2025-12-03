@@ -38,9 +38,9 @@
       }
 
       v5 = objc_opt_new();
-      v6 = [v5 isSupportedIPad];
+      isSupportedIPad = [v5 isSupportedIPad];
 
-      if (v6)
+      if (isSupportedIPad)
       {
         goto LABEL_10;
       }
@@ -69,7 +69,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_100001B8C;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EA78 != -1)
   {
     dispatch_once(&qword_10001EA78, block);

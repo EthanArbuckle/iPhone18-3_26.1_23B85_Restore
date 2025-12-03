@@ -1,52 +1,52 @@
 @interface MBCKEnableCameraRollGraceRequest
-+ (id)requestWithDevice:(id)a3 domainHMAC:(id)a4;
-+ (id)requestWithDevice:(id)a3 manifest:(id)a4;
-- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)a3 domainHMAC:(id)a4;
-- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)a3 manifest:(id)a4;
++ (id)requestWithDevice:(id)device domainHMAC:(id)c;
++ (id)requestWithDevice:(id)device manifest:(id)manifest;
+- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)device domainHMAC:(id)c;
+- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)device manifest:(id)manifest;
 - (id)recordRepresentation;
 @end
 
 @implementation MBCKEnableCameraRollGraceRequest
 
-+ (id)requestWithDevice:(id)a3 manifest:(id)a4
++ (id)requestWithDevice:(id)device manifest:(id)manifest
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MBCKEnableCameraRollGraceRequest alloc] initWithDevice:v6 manifest:v5];
+  manifestCopy = manifest;
+  deviceCopy = device;
+  v7 = [[MBCKEnableCameraRollGraceRequest alloc] initWithDevice:deviceCopy manifest:manifestCopy];
 
   return v7;
 }
 
-+ (id)requestWithDevice:(id)a3 domainHMAC:(id)a4
++ (id)requestWithDevice:(id)device domainHMAC:(id)c
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MBCKEnableCameraRollGraceRequest alloc] initWithDevice:v6 domainHMAC:v5];
+  cCopy = c;
+  deviceCopy = device;
+  v7 = [[MBCKEnableCameraRollGraceRequest alloc] initWithDevice:deviceCopy domainHMAC:cCopy];
 
   return v7;
 }
 
-- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)a3 manifest:(id)a4
+- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)device manifest:(id)manifest
 {
-  v6 = a3;
-  v7 = [a4 domainHmac];
-  v8 = [(MBCKEnableCameraRollGraceRequest *)self initWithDevice:v6 domainHMAC:v7];
+  deviceCopy = device;
+  domainHmac = [manifest domainHmac];
+  v8 = [(MBCKEnableCameraRollGraceRequest *)self initWithDevice:deviceCopy domainHMAC:domainHmac];
 
   return v8;
 }
 
-- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)a3 domainHMAC:(id)a4
+- (MBCKEnableCameraRollGraceRequest)initWithDevice:(id)device domainHMAC:(id)c
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  cCopy = c;
   v13.receiver = self;
   v13.super_class = MBCKEnableCameraRollGraceRequest;
   v8 = [(MBCKModel *)&v13 initWithRecord:0 cache:0];
   v9 = v8;
   if (v8)
   {
-    [(MBCKEnableCameraRollGraceRequest *)v8 setDevice:v6];
-    [(MBCKEnableCameraRollGraceRequest *)v9 setDomainHMAC:v7];
+    [(MBCKEnableCameraRollGraceRequest *)v8 setDevice:deviceCopy];
+    [(MBCKEnableCameraRollGraceRequest *)v9 setDomainHMAC:cCopy];
     v10 = MBRandomUUID();
     uuid = v9->_uuid;
     v9->_uuid = v10;
@@ -59,27 +59,27 @@
 {
   v12.receiver = self;
   v12.super_class = MBCKEnableCameraRollGraceRequest;
-  v3 = [(MBCKModel *)&v12 recordRepresentation];
-  v4 = [v3 objectForKeyedSubscript:@"device"];
+  recordRepresentation = [(MBCKModel *)&v12 recordRepresentation];
+  v4 = [recordRepresentation objectForKeyedSubscript:@"device"];
 
   if (!v4)
   {
     v5 = [CKReference alloc];
-    v6 = [(MBCKEnableCameraRollGraceRequest *)self device];
-    v7 = [v6 recordID];
-    v8 = [v5 initWithRecordID:v7 action:0];
-    [v3 setObject:v8 forKeyedSubscript:@"device"];
+    device = [(MBCKEnableCameraRollGraceRequest *)self device];
+    recordID = [device recordID];
+    v8 = [v5 initWithRecordID:recordID action:0];
+    [recordRepresentation setObject:v8 forKeyedSubscript:@"device"];
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"domainHMAC"];
+  v9 = [recordRepresentation objectForKeyedSubscript:@"domainHMAC"];
 
   if (!v9)
   {
-    v10 = [(MBCKEnableCameraRollGraceRequest *)self domainHMAC];
-    [v3 setObject:v10 forKeyedSubscript:@"domainHMAC"];
+    domainHMAC = [(MBCKEnableCameraRollGraceRequest *)self domainHMAC];
+    [recordRepresentation setObject:domainHMAC forKeyedSubscript:@"domainHMAC"];
   }
 
-  return v3;
+  return recordRepresentation;
 }
 
 @end

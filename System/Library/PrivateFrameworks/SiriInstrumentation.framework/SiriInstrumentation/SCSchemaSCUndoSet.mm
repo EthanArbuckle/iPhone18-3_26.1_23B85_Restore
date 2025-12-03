@@ -1,25 +1,25 @@
 @interface SCSchemaSCUndoSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SCSchemaSCUndoSet)initWithDictionary:(id)a3;
-- (SCSchemaSCUndoSet)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SCSchemaSCUndoSet)initWithDictionary:(id)dictionary;
+- (SCSchemaSCUndoSet)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCSchemaSCUndoSet
 
-- (SCSchemaSCUndoSet)initWithDictionary:(id)a3
+- (SCSchemaSCUndoSet)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SCSchemaSCUndoSet;
   v5 = [(SCSchemaSCUndoSet *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"setUndoArgs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"setUndoArgs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (SCSchemaSCUndoSet)initWithJSON:(id)a3
+- (SCSchemaSCUndoSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SCSchemaSCUndoSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SCSchemaSCUndoSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SCSchemaSCUndoSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_setUndoArgs)
   {
-    v4 = [(SCSchemaSCUndoSet *)self setUndoArgs];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    setUndoArgs = [(SCSchemaSCUndoSet *)self setUndoArgs];
+    dictionaryRepresentation = [setUndoArgs dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"setUndoArgs"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"setUndoArgs"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"setUndoArgs"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"setUndoArgs"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SCSchemaSCUndoSet *)self setUndoArgs];
-    v6 = [v4 setUndoArgs];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    setUndoArgs = [(SCSchemaSCUndoSet *)self setUndoArgs];
+    setUndoArgs2 = [equalCopy setUndoArgs];
+    v7 = setUndoArgs2;
+    if ((setUndoArgs != 0) != (setUndoArgs2 == 0))
     {
-      v8 = [(SCSchemaSCUndoSet *)self setUndoArgs];
-      if (!v8)
+      setUndoArgs3 = [(SCSchemaSCUndoSet *)self setUndoArgs];
+      if (!setUndoArgs3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SCSchemaSCUndoSet *)self setUndoArgs];
-      v11 = [v4 setUndoArgs];
-      v12 = [v10 isEqual:v11];
+      v9 = setUndoArgs3;
+      setUndoArgs4 = [(SCSchemaSCUndoSet *)self setUndoArgs];
+      setUndoArgs5 = [equalCopy setUndoArgs];
+      v12 = [setUndoArgs4 isEqual:setUndoArgs5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SCSchemaSCUndoSet *)self setUndoArgs];
+  toCopy = to;
+  setUndoArgs = [(SCSchemaSCUndoSet *)self setUndoArgs];
 
-  if (v4)
+  if (setUndoArgs)
   {
-    v5 = [(SCSchemaSCUndoSet *)self setUndoArgs];
+    setUndoArgs2 = [(SCSchemaSCUndoSet *)self setUndoArgs];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SCSchemaSCUndoSet;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SCSchemaSCUndoSet *)self setUndoArgs:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SCSchemaSCUndoSet *)self deleteSetUndoArgs];
   }

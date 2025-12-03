@@ -1,17 +1,17 @@
 @interface CKSettingsiMessageApp
 - (BOOL)isHiddenInSendMenuByUserPreference;
-- (CKSettingsiMessageApp)initWithExtension:(id)a3;
+- (CKSettingsiMessageApp)initWithExtension:(id)extension;
 - (id)_hiddenExtensionBundleIdentifiers;
-- (id)_stringArrayFromUserDefaults:(id)a3 key:(id)a4;
-- (void)_setHiddenExtensionBundleIdentifiers:(id)a3;
-- (void)setHiddenInSendMenuByUserPreference:(BOOL)a3;
+- (id)_stringArrayFromUserDefaults:(id)defaults key:(id)key;
+- (void)_setHiddenExtensionBundleIdentifiers:(id)identifiers;
+- (void)setHiddenInSendMenuByUserPreference:(BOOL)preference;
 @end
 
 @implementation CKSettingsiMessageApp
 
-- (CKSettingsiMessageApp)initWithExtension:(id)a3
+- (CKSettingsiMessageApp)initWithExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v26.receiver = self;
   v26.super_class = CKSettingsiMessageApp;
   v5 = [(CKSettingsiMessageApp *)&v26 init];
@@ -20,13 +20,13 @@
     goto LABEL_17;
   }
 
-  v6 = [v4 identifier];
+  identifier = [extensionCopy identifier];
   v25 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:v6 error:&v25];
+  v7 = [objc_alloc(MEMORY[0x277CC1E50]) initWithBundleIdentifier:identifier error:&v25];
   v8 = v25;
   if (!v8)
   {
-    v10 = [v7 containingBundleRecord];
+    containingBundleRecord = [v7 containingBundleRecord];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -34,54 +34,54 @@
       goto LABEL_8;
     }
 
-    v11 = v10;
+    v11 = containingBundleRecord;
     v5->_isiMessageAppOnly = [v11 isLaunchProhibited];
-    objc_storeStrong(&v5->_extensionBundleID, v6);
-    v12 = [v11 bundleIdentifier];
+    objc_storeStrong(&v5->_extensionBundleID, identifier);
+    bundleIdentifier = [v11 bundleIdentifier];
     appBundleID = v5->_appBundleID;
-    v5->_appBundleID = v12;
+    v5->_appBundleID = bundleIdentifier;
 
-    v14 = [v7 localizedName];
-    v15 = v14;
-    if (v14)
+    localizedName = [v7 localizedName];
+    v15 = localizedName;
+    if (localizedName)
     {
-      v16 = v14;
+      localizedShortName = localizedName;
     }
 
     else
     {
-      v16 = [v7 localizedShortName];
+      localizedShortName = [v7 localizedShortName];
     }
 
     extensionDisplayName = v5->_extensionDisplayName;
-    v5->_extensionDisplayName = v16;
+    v5->_extensionDisplayName = localizedShortName;
 
-    v19 = [v11 localizedName];
-    v20 = v19;
-    if (v19)
+    localizedName2 = [v11 localizedName];
+    v20 = localizedName2;
+    if (localizedName2)
     {
-      v21 = v19;
+      localizedShortName2 = localizedName2;
     }
 
     else
     {
-      v21 = [v11 localizedShortName];
+      localizedShortName2 = [v11 localizedShortName];
     }
 
     appDisplayName = v5->_appDisplayName;
-    v5->_appDisplayName = v21;
+    v5->_appDisplayName = localizedShortName2;
 
     if ([v11 isDeletable])
     {
-      v23 = 1;
+      isDeletableSystemApplication = 1;
     }
 
     else
     {
-      v23 = [v11 isDeletableSystemApplication];
+      isDeletableSystemApplication = [v11 isDeletableSystemApplication];
     }
 
-    v5->_deletable = v23;
+    v5->_deletable = isDeletableSystemApplication;
 
 LABEL_17:
     v17 = v5;
@@ -105,18 +105,18 @@ LABEL_18:
   return v4;
 }
 
-- (void)_setHiddenExtensionBundleIdentifiers:(id)a3
+- (void)_setHiddenExtensionBundleIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [[v3 alloc] initWithSuiteName:@"com.apple.MobileSMS"];
-  [v5 setObject:v4 forKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
+  [v5 setObject:identifiersCopy forKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
 }
 
-- (id)_stringArrayFromUserDefaults:(id)a3 key:(id)a4
+- (id)_stringArrayFromUserDefaults:(id)defaults key:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectForKey:a4];
+  v4 = [defaults objectForKey:key];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -173,16 +173,16 @@ LABEL_18:
     return 0;
   }
 
-  v3 = self;
-  v4 = [(CKSettingsiMessageApp *)self _hiddenExtensionBundleIdentifiers];
-  LOBYTE(v3) = [v4 containsObject:v3->_extensionBundleID];
+  selfCopy = self;
+  _hiddenExtensionBundleIdentifiers = [(CKSettingsiMessageApp *)self _hiddenExtensionBundleIdentifiers];
+  LOBYTE(selfCopy) = [_hiddenExtensionBundleIdentifiers containsObject:selfCopy->_extensionBundleID];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setHiddenInSendMenuByUserPreference:(BOOL)a3
+- (void)setHiddenInSendMenuByUserPreference:(BOOL)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v16 = *MEMORY[0x277D85DE8];
   v5 = self->_extensionBundleID;
   v6 = csui_log();
@@ -191,26 +191,26 @@ LABEL_18:
     v12 = 138412546;
     v13 = v5;
     v14 = 1024;
-    v15 = v3;
+    v15 = preferenceCopy;
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_INFO, "Setting extension %@ to hidden=%{BOOL}d", &v12, 0x12u);
   }
 
-  v7 = [(CKSettingsiMessageApp *)self _hiddenExtensionBundleIdentifiers];
-  v8 = [v7 containsObject:v5];
-  if (!v3 || (v8 & 1) != 0)
+  _hiddenExtensionBundleIdentifiers = [(CKSettingsiMessageApp *)self _hiddenExtensionBundleIdentifiers];
+  v8 = [_hiddenExtensionBundleIdentifiers containsObject:v5];
+  if (!preferenceCopy || (v8 & 1) != 0)
   {
-    if (v3 || ((v8 ^ 1) & 1) != 0)
+    if (preferenceCopy || ((v8 ^ 1) & 1) != 0)
     {
       v9 = csui_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(CKSettingsiMessageApp *)v5 setHiddenInSendMenuByUserPreference:v3, v9];
+        [(CKSettingsiMessageApp *)v5 setHiddenInSendMenuByUserPreference:preferenceCopy, v9];
       }
     }
 
     else
     {
-      v9 = [v7 mutableCopy];
+      v9 = [_hiddenExtensionBundleIdentifiers mutableCopy];
       [v9 removeObject:v5];
       v10 = [v9 copy];
       [(CKSettingsiMessageApp *)self _setHiddenExtensionBundleIdentifiers:v10];
@@ -219,7 +219,7 @@ LABEL_18:
 
   else
   {
-    v9 = [v7 arrayByAddingObject:v5];
+    v9 = [_hiddenExtensionBundleIdentifiers arrayByAddingObject:v5];
     [(CKSettingsiMessageApp *)self _setHiddenExtensionBundleIdentifiers:v9];
   }
 

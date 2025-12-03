@@ -1,14 +1,14 @@
 @interface SBContinuitySessionManager
 + (BOOL)areContinuitySessionsAllowed;
 + (id)sharedInstance;
-- (id)_initWithService:(id)a3 userInterfaceStyleProvider:(id)a4 displayLayoutCoordinator:(id)a5 sessionFactory:(id)a6 externalDependencyProvider:(id)a7;
-- (id)_registerSystemApertureScene:(id)a3 sessionConnectionCallout:(id)a4 sessionDisconnectionCallout:(id)a5;
+- (id)_initWithService:(id)service userInterfaceStyleProvider:(id)provider displayLayoutCoordinator:(id)coordinator sessionFactory:(id)factory externalDependencyProvider:(id)dependencyProvider;
+- (id)_registerSystemApertureScene:(id)scene sessionConnectionCallout:(id)callout sessionDisconnectionCallout:(id)disconnectionCallout;
 - (id)newContinuitySession;
-- (id)registerWindowScene:(id)a3;
+- (id)registerWindowScene:(id)scene;
 - (void)_noteSceneOrSessionIsWaiting;
 - (void)activate;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)continuitySessionDidUpdateState:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)continuitySessionDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)newContinuitySession;
 @end
@@ -62,10 +62,10 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     goto LABEL_7;
   }
@@ -87,13 +87,13 @@ LABEL_11:
   return 0;
 }
 
-- (id)_initWithService:(id)a3 userInterfaceStyleProvider:(id)a4 displayLayoutCoordinator:(id)a5 sessionFactory:(id)a6 externalDependencyProvider:(id)a7
+- (id)_initWithService:(id)service userInterfaceStyleProvider:(id)provider displayLayoutCoordinator:(id)coordinator sessionFactory:(id)factory externalDependencyProvider:(id)dependencyProvider
 {
-  v13 = a3;
-  v24 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  providerCopy = provider;
+  coordinatorCopy = coordinator;
+  factoryCopy = factory;
+  dependencyProviderCopy = dependencyProvider;
   v27.receiver = self;
   v27.super_class = SBContinuitySessionManager;
   v17 = [(SBContinuitySessionManager *)&v27 init];
@@ -103,12 +103,12 @@ LABEL_11:
     waitingWindowScenes = v17->_waitingWindowScenes;
     v17->_waitingWindowScenes = v18;
 
-    objc_storeStrong(&v17->_sessionFactory, a6);
-    objc_storeStrong(&v17->_service, a3);
-    objc_storeStrong(&v17->_userInterfaceStyleProvider, a4);
-    [v13 setSessionFactory:v17];
-    objc_storeStrong(&v17->_displayLayoutCoordinator, a5);
-    objc_storeStrong(&v17->_externalDependencyProvider, a7);
+    objc_storeStrong(&v17->_sessionFactory, factory);
+    objc_storeStrong(&v17->_service, service);
+    objc_storeStrong(&v17->_userInterfaceStyleProvider, provider);
+    [serviceCopy setSessionFactory:v17];
+    objc_storeStrong(&v17->_displayLayoutCoordinator, coordinator);
+    objc_storeStrong(&v17->_externalDependencyProvider, dependencyProvider);
     objc_initWeak(&location, v17);
     v20 = MEMORY[0x277D85CD0];
     objc_copyWeak(&v25, &location);
@@ -155,38 +155,38 @@ id __141__SBContinuitySessionManager__initWithService_userInterfaceStyleProvider
 - (void)activate
 {
   [(SBContinuityDisplayLayoutCoordinator *)self->_displayLayoutCoordinator start];
-  v3 = [(SBContinuityDisplayLayoutCoordinator *)self->_displayLayoutCoordinator rootPublisher];
-  [v3 activate];
+  rootPublisher = [(SBContinuityDisplayLayoutCoordinator *)self->_displayLayoutCoordinator rootPublisher];
+  [rootPublisher activate];
 
   service = self->_service;
 
   [(SBContinuitySessionService *)service activate];
 }
 
-- (id)registerWindowScene:(id)a3
+- (id)registerWindowScene:(id)scene
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sceneCopy = scene;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [v4 delegate];
+  delegate = [sceneCopy delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 delegate];
+    delegate2 = [sceneCopy delegate];
   }
 
   else
   {
-    v7 = 0;
+    delegate2 = 0;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"ContinuityScene<%p>-Delegate<%p>", v4, v7];
-  v9 = [v4 _FBSScene];
-  v10 = [v9 hostHandle];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"ContinuityScene<%p>-Delegate<%p>", sceneCopy, delegate2];
+  _FBSScene = [sceneCopy _FBSScene];
+  hostHandle = [_FBSScene hostHandle];
 
-  v11 = [v10 auditToken];
-  v12 = [v11 hasEntitlement:*MEMORY[0x277D67F48]];
+  auditToken = [hostHandle auditToken];
+  v12 = [auditToken hasEntitlement:*MEMORY[0x277D67F48]];
 
   if ((v12 & 1) == 0)
   {
@@ -199,12 +199,12 @@ id __141__SBContinuitySessionManager__initWithService_userInterfaceStyleProvider
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!delegate2)
   {
     v18 = SBLogContinuitySession();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [(SBContinuitySessionManager *)v8 registerWindowScene:v4];
+      [(SBContinuitySessionManager *)v8 registerWindowScene:sceneCopy];
     }
 
 LABEL_14:
@@ -220,9 +220,9 @@ LABEL_14:
   v20[2] = __50__SBContinuitySessionManager_registerWindowScene___block_invoke;
   v20[3] = &unk_2783BA4E0;
   objc_copyWeak(&v24, &location);
-  v14 = v4;
+  v14 = sceneCopy;
   v21 = v14;
-  v22 = v7;
+  v22 = delegate2;
   v15 = v8;
   v23 = v15;
   v16 = [v13 initWithIdentifier:v15 forReason:@"SBContinuitySessionManager registerWindowScene:" invalidationBlock:v20];
@@ -290,32 +290,32 @@ void __71__SBContinuitySessionManager_registerSystemApertureCurtainWindowScene__
   [v6 didConnectToSession:v7];
 }
 
-- (id)_registerSystemApertureScene:(id)a3 sessionConnectionCallout:(id)a4 sessionDisconnectionCallout:(id)a5
+- (id)_registerSystemApertureScene:(id)scene sessionConnectionCallout:(id)callout sessionDisconnectionCallout:(id)disconnectionCallout
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  calloutCopy = callout;
+  disconnectionCalloutCopy = disconnectionCallout;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [v8 delegate];
+  delegate = [sceneCopy delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [v8 delegate];
+    delegate2 = [sceneCopy delegate];
   }
 
   else
   {
-    v13 = 0;
+    delegate2 = 0;
   }
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"SystemApertureScene<%p>-Delegate<%p>", v8, v13];
-  v15 = [v8 _FBSScene];
-  v16 = [v15 hostHandle];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"SystemApertureScene<%p>-Delegate<%p>", sceneCopy, delegate2];
+  _FBSScene = [sceneCopy _FBSScene];
+  hostHandle = [_FBSScene hostHandle];
 
-  v17 = [v16 auditToken];
-  v18 = [v17 hasEntitlement:*MEMORY[0x277D67F48]];
+  auditToken = [hostHandle auditToken];
+  v18 = [auditToken hasEntitlement:*MEMORY[0x277D67F48]];
 
   if ((v18 & 1) == 0)
   {
@@ -328,12 +328,12 @@ void __71__SBContinuitySessionManager_registerSystemApertureCurtainWindowScene__
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!delegate2)
   {
     v25 = SBLogContinuitySession();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [SBContinuitySessionManager _registerSystemApertureScene:v14 sessionConnectionCallout:v8 sessionDisconnectionCallout:?];
+      [SBContinuitySessionManager _registerSystemApertureScene:v14 sessionConnectionCallout:sceneCopy sessionDisconnectionCallout:?];
     }
 
 LABEL_11:
@@ -344,9 +344,9 @@ LABEL_11:
   currentSession = self->_currentSession;
   if (currentSession)
   {
-    v20 = [(SBContinuitySession *)currentSession mainWindowScene];
+    mainWindowScene = [(SBContinuitySession *)currentSession mainWindowScene];
 
-    if (v20)
+    if (mainWindowScene)
     {
       objc_initWeak(location, self);
       v21 = objc_alloc(MEMORY[0x277CF0CE8]);
@@ -355,14 +355,14 @@ LABEL_11:
       v28[2] = __112__SBContinuitySessionManager__registerSystemApertureScene_sessionConnectionCallout_sessionDisconnectionCallout___block_invoke;
       v28[3] = &unk_2783BA528;
       objc_copyWeak(&v33, location);
-      v22 = v13;
+      v22 = delegate2;
       v29 = v22;
-      v32 = v10;
-      v23 = v8;
+      v32 = disconnectionCalloutCopy;
+      v23 = sceneCopy;
       v30 = v23;
       v31 = v14;
       v24 = [v21 initWithIdentifier:v31 forReason:@"SBContinuitySessionManager registerSystemApertureWindowScene:" invalidationBlock:v28];
-      v9[2](v9, self->_currentSession, v23, v22);
+      calloutCopy[2](calloutCopy, self->_currentSession, v23, v22);
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(location);
@@ -426,20 +426,20 @@ void __112__SBContinuitySessionManager__registerSystemApertureScene_sessionConne
 
 - (void)_noteSceneOrSessionIsWaiting
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBContinuitySessionManager.m" lineNumber:278 description:@"the waiting scene does not have a SBContinuitySessionSceneDelegate"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBContinuitySessionManager.m" lineNumber:278 description:@"the waiting scene does not have a SBContinuitySessionSceneDelegate"];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SBContinuitySessionManager_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 
@@ -469,15 +469,15 @@ id __56__SBContinuitySessionManager_appendDescriptionToStream___block_invoke(uin
   sessionFactory = self->_sessionFactory;
   if (sessionFactory)
   {
-    v5 = [(SBContinuitySessionFactory *)sessionFactory newContinuitySession];
+    newContinuitySession = [(SBContinuitySessionFactory *)sessionFactory newContinuitySession];
   }
 
   else
   {
-    v5 = objc_alloc_init(SBContinuitySession);
+    newContinuitySession = objc_alloc_init(SBContinuitySession);
   }
 
-  v6 = v5;
+  v6 = newContinuitySession;
   currentSession = self->_currentSession;
   if (currentSession)
   {
@@ -501,9 +501,9 @@ id __56__SBContinuitySessionManager_appendDescriptionToStream___block_invoke(uin
   v13 = SBLogContinuitySession();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(SBContinuitySession *)v6 succinctDescription];
+    succinctDescription = [(SBContinuitySession *)v6 succinctDescription];
     v16 = 138543362;
-    v17 = v14;
+    v17 = succinctDescription;
     _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[SessionManager] Created new session: %{public}@", &v16, 0xCu);
   }
 
@@ -519,22 +519,22 @@ id __56__SBContinuitySessionManager_appendDescriptionToStream___block_invoke(uin
   return v6;
 }
 
-- (void)continuitySessionDidUpdateState:(id)a3
+- (void)continuitySessionDidUpdateState:(id)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_currentSession == v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_currentSession == stateCopy)
   {
-    v6 = [(SBContinuitySession *)v4 state];
-    if (v6 == 12)
+    state = [(SBContinuitySession *)stateCopy state];
+    if (state == 12)
     {
       v7 = SBLogContinuitySession();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(SBContinuitySession *)v5 succinctDescription];
+        succinctDescription = [(SBContinuitySession *)v5 succinctDescription];
         v10 = 138543362;
-        v11 = v8;
+        v11 = succinctDescription;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[SessionManager] current session %{public}@ is invalid - cleaning up", &v10, 0xCu);
       }
 
@@ -545,7 +545,7 @@ id __56__SBContinuitySessionManager_appendDescriptionToStream___block_invoke(uin
       [(SBContinuitySessionManagerExternalDependencyProviding *)self->_externalDependencyProvider noteContinuitySessionEnded];
     }
 
-    else if (v6 == 11)
+    else if (state == 11)
     {
       [(SBContinuitySessionManagerExternalDependencyProviding *)self->_externalDependencyProvider noteContinuitySessionIsActive];
     }
@@ -581,7 +581,7 @@ id __56__SBContinuitySessionManager_appendDescriptionToStream___block_invoke(uin
 - (void)newContinuitySession
 {
   LODWORD(v3) = 138543618;
-  *(&v3 + 4) = *a1;
+  *(&v3 + 4) = *self;
   OUTLINED_FUNCTION_1_18();
   OUTLINED_FUNCTION_4(&dword_21ED4E000, v1, v2, "[SessionManager] Current session %{public}@ is being replaced by session %{public}@", v3, DWORD2(v3));
 }

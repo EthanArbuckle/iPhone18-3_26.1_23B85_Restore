@@ -1,30 +1,30 @@
 @interface UIHoverEvent
-- (BOOL)_sendEventToGestureRecognizer:(id)a3;
+- (BOOL)_sendEventToGestureRecognizer:(id)recognizer;
 - (id)_allWindows;
-- (id)_deliveryTableByTouchCreateIfNeeded:(id)a3;
-- (id)_gestureRecognizersForWindow:(id)a3;
+- (id)_deliveryTableByTouchCreateIfNeeded:(id)needed;
+- (id)_gestureRecognizersForWindow:(id)window;
 - (id)_init;
-- (id)_touchesByContextId:(unsigned int)a3 createIfNeeded:(BOOL)a4;
+- (id)_touchesByContextId:(unsigned int)id createIfNeeded:(BOOL)needed;
 - (id)allTouches;
-- (id)hoverTouchForContextId:(unsigned int)a3 pathIndex:(int64_t)a4;
-- (id)touchesForWindow:(id)a3;
+- (id)hoverTouchForContextId:(unsigned int)id pathIndex:(int64_t)index;
+- (id)touchesForWindow:(id)window;
 - (void)_cancelAllGestureRecognizers;
 - (void)_cancelAllGestureRecognizersAndRemoveAllHoverTouches;
-- (void)_completelyRemoveHoverTouchesForWindow:(id)a3 contextIdNumber:(id)a4 withCancellation:(BOOL)a5;
-- (void)_gestureRecognizerNoLongerNeedsSendEvent:(id)a3;
-- (void)_pointerStateDidChange:(id)a3;
-- (void)_removeAllHoverTouchesForContextId:(unsigned int)a3;
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4;
-- (void)_removeGestureRecognizersSendingCancelledEvent:(id)a3;
-- (void)_setHIDEvent:(__IOHIDEvent *)a3;
-- (void)_setNeedsUpdateForWindow:(id)a3 forcingHitTest:(BOOL)a4;
-- (void)_setPointerLocked:(BOOL)a3;
-- (void)_windowDidBecomeHidden:(id)a3;
-- (void)_windowDidDetachContext:(id)a3;
+- (void)_completelyRemoveHoverTouchesForWindow:(id)window contextIdNumber:(id)number withCancellation:(BOOL)cancellation;
+- (void)_gestureRecognizerNoLongerNeedsSendEvent:(id)event;
+- (void)_pointerStateDidChange:(id)change;
+- (void)_removeAllHoverTouchesForContextId:(unsigned int)id;
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components;
+- (void)_removeGestureRecognizersSendingCancelledEvent:(id)event;
+- (void)_setHIDEvent:(__IOHIDEvent *)event;
+- (void)_setNeedsUpdateForWindow:(id)window forcingHitTest:(BOOL)test;
+- (void)_setPointerLocked:(BOOL)locked;
+- (void)_windowDidBecomeHidden:(id)hidden;
+- (void)_windowDidDetachContext:(id)context;
 - (void)dealloc;
-- (void)removeHoverTouchForContextId:(unsigned int)a3 pathIndex:(int64_t)a4;
-- (void)removeTouch:(id)a3 fromGestureRecognizer:(id)a4;
-- (void)setHoverTouch:(id)a3 forContextId:(unsigned int)a4 pathIndex:(int64_t)a5;
+- (void)removeHoverTouchForContextId:(unsigned int)id pathIndex:(int64_t)index;
+- (void)removeTouch:(id)touch fromGestureRecognizer:(id)recognizer;
+- (void)setHoverTouch:(id)touch forContextId:(unsigned int)id pathIndex:(int64_t)index;
 @end
 
 @implementation UIHoverEvent
@@ -33,32 +33,32 @@
 {
   v13.receiver = self;
   v13.super_class = UIHoverEvent;
-  v2 = [(UIEvent *)&v13 _init];
-  if (v2)
+  _init = [(UIEvent *)&v13 _init];
+  if (_init)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v4 = v2[16];
-    v2[16] = v3;
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v4 = _init[16];
+    _init[16] = strongToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    v6 = v2[17];
-    v2[17] = v5;
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    v6 = _init[17];
+    _init[17] = strongToStrongObjectsMapTable2;
 
     v7 = [MEMORY[0x1E695DFA8] set];
-    v8 = v2[18];
-    v2[18] = v7;
+    v8 = _init[18];
+    _init[18] = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__windowDidDetachContext_ name:_UIWindowDidDetachContextNotification object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:_init selector:sel__windowDidDetachContext_ name:_UIWindowDidDetachContextNotification object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v2 selector:sel__windowDidBecomeHidden_ name:@"UIWindowDidBecomeHiddenNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:_init selector:sel__windowDidBecomeHidden_ name:@"UIWindowDidBecomeHiddenNotification" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel__pointerStateDidChange_ name:0x1EFB7E670 object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:_init selector:sel__pointerStateDidChange_ name:0x1EFB7E670 object:0];
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)_cancelAllGestureRecognizersAndRemoveAllHoverTouches
@@ -98,31 +98,31 @@
 - (void)dealloc
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = _UIWindowDidDetachContextNotification;
   v6[1] = @"UIWindowDidBecomeHiddenNotification";
   v6[2] = 0x1EFB7E670;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:3];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIHoverEvent;
   [(UIEvent *)&v5 dealloc];
 }
 
-- (void)_setHIDEvent:(__IOHIDEvent *)a3
+- (void)_setHIDEvent:(__IOHIDEvent *)event
 {
   v14.receiver = self;
   v14.super_class = UIHoverEvent;
   [(UIEvent *)&v14 _setHIDEvent:?];
-  if (a3)
+  if (event)
   {
     v5 = 0.0;
     if (_os_feature_enabled_impl())
     {
-      _UIEventHIDPencilMaximumPositionZForEvent(a3);
+      _UIEventHIDPencilMaximumPositionZForEvent(event);
       v7 = v6;
-      if (_UIEventHIDGetChildStylusEvent(a3))
+      if (_UIEventHIDGetChildStylusEvent(event))
       {
         IOHIDEventGetFloatValue();
         v5 = v8;
@@ -192,10 +192,10 @@
   return v3;
 }
 
-- (id)touchesForWindow:(id)a3
+- (id)touchesForWindow:(id)window
 {
   touchesByContextId = self->_touchesByContextId;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "_contextId")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(window, "_contextId")}];
   v5 = [(NSMapTable *)touchesByContextId objectForKey:v4];
 
   return v5;
@@ -274,13 +274,13 @@
   return v3;
 }
 
-- (id)_gestureRecognizersForWindow:(id)a3
+- (id)_gestureRecognizersForWindow:(id)window
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  windowCopy = window;
   v5 = objc_opt_new();
   touchesByContextId = self->_touchesByContextId;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v4, "_contextId")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(windowCopy, "_contextId")}];
   v8 = [(NSMapTable *)touchesByContextId objectForKey:v7];
 
   v19 = 0u;
@@ -303,8 +303,8 @@
         }
 
         v14 = [(UIHoverEvent *)self _deliveryTableByTouchCreateIfNeeded:*(*(&v17 + 1) + 8 * i), v17];
-        v15 = [v14 gestureRecognizers];
-        [v5 unionSet:v15];
+        gestureRecognizers = [v14 gestureRecognizers];
+        [v5 unionSet:gestureRecognizers];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -316,10 +316,10 @@
   return v5;
 }
 
-- (BOOL)_sendEventToGestureRecognizer:(id)a3
+- (BOOL)_sendEventToGestureRecognizer:(id)recognizer
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recognizerCopy = recognizer;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -334,7 +334,7 @@
   }
 
   v7 = v6;
-  v20 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -349,7 +349,7 @@
       }
 
       v13 = *(*(&v21 + 1) + 8 * i);
-      v14 = [v13 updateGestureRecognizerForDelivery:v4];
+      v14 = [v13 updateGestureRecognizerForDelivery:recognizerCopy];
       switch(v14)
       {
         case 7:
@@ -395,8 +395,8 @@
           continue;
       }
 
-      v16 = [v13 touch];
-      [v15 addObject:v16];
+      touch = [v13 touch];
+      [v15 addObject:touch];
     }
 
     v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -406,22 +406,22 @@
 
   if (v10)
   {
-    [v4 _componentsBegan:v10 withEvent:v20];
+    [recognizerCopy _componentsBegan:v10 withEvent:selfCopy];
   }
 
   if (v9)
   {
-    v17 = v20->_touchesWithOutstandingUpdates;
-    v18 = [v4 _allActiveTouches];
-    if ((-[NSMutableSet intersectsSet:](v17, "intersectsSet:", v18) & 1) != 0 || ![v18 count] && -[NSMutableSet count](v17, "count"))
+    v17 = selfCopy->_touchesWithOutstandingUpdates;
+    _allActiveTouches = [recognizerCopy _allActiveTouches];
+    if ((-[NSMutableSet intersectsSet:](v17, "intersectsSet:", _allActiveTouches) & 1) != 0 || ![_allActiveTouches count] && -[NSMutableSet count](v17, "count"))
     {
-      [v4 _componentsChanged:v9 withEvent:v20];
+      [recognizerCopy _componentsChanged:v9 withEvent:selfCopy];
     }
   }
 
   if (v8)
   {
-    [v4 _componentsEnded:v8 withEvent:v20];
+    [recognizerCopy _componentsEnded:v8 withEvent:selfCopy];
     v5 = v8;
 LABEL_31:
   }
@@ -429,11 +429,11 @@ LABEL_31:
   return 1;
 }
 
-- (void)_gestureRecognizerNoLongerNeedsSendEvent:(id)a3
+- (void)_gestureRecognizerNoLongerNeedsSendEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIHoverEvent *)self touchesForGestureRecognizer:v4];
+  eventCopy = event;
+  v5 = [(UIHoverEvent *)self touchesForGestureRecognizer:eventCopy];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -453,7 +453,7 @@ LABEL_31:
           objc_enumerationMutation(v5);
         }
 
-        [(UIHoverEvent *)self removeTouch:*(*(&v10 + 1) + 8 * v9++) fromGestureRecognizer:v4];
+        [(UIHoverEvent *)self removeTouch:*(*(&v10 + 1) + 8 * v9++) fromGestureRecognizer:eventCopy];
       }
 
       while (v7 != v9);
@@ -464,16 +464,16 @@ LABEL_31:
   }
 }
 
-- (void)_removeGestureRecognizer:(id)a3 fromComponents:(id)a4
+- (void)_removeGestureRecognizer:(id)recognizer fromComponents:(id)components
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  recognizerCopy = recognizer;
+  componentsCopy = components;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [componentsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -484,35 +484,35 @@ LABEL_31:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
         if ([v13 _eventComponentType])
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"UIHoverEvent.m" lineNumber:499 description:{@"Wrong component type for event: %@; component: %@", self, v13}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"UIHoverEvent.m" lineNumber:499 description:{@"Wrong component type for event: %@; component: %@", self, v13}];
         }
 
-        [(UIHoverEvent *)self removeTouch:v13 fromGestureRecognizer:v7];
+        [(UIHoverEvent *)self removeTouch:v13 fromGestureRecognizer:recognizerCopy];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [componentsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_removeGestureRecognizersSendingCancelledEvent:(id)a3
+- (void)_removeGestureRecognizersSendingCancelledEvent:(id)event
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [eventCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -523,7 +523,7 @@ LABEL_31:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -532,18 +532,18 @@ LABEL_31:
         [(UIHoverEvent *)self _removeGestureRecognizer:v9 fromComponents:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [eventCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_setNeedsUpdateForWindow:(id)a3 forcingHitTest:(BOOL)a4
+- (void)_setNeedsUpdateForWindow:(id)window forcingHitTest:(BOOL)test
 {
-  v4 = a4;
+  testCopy = test;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = [(UIHoverEvent *)self touchesForWindow:a3];
+  v6 = [(UIHoverEvent *)self touchesForWindow:window];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -564,7 +564,7 @@ LABEL_31:
         }
 
         v11 = [(UIHoverEvent *)self _deliveryTableByTouchCreateIfNeeded:*(*(&v12 + 1) + 8 * v10)];
-        [v11 updateForEvent:self forcingHitTest:v4];
+        [v11 updateForEvent:self forcingHitTest:testCopy];
 
         ++v10;
       }
@@ -577,19 +577,19 @@ LABEL_31:
   }
 }
 
-- (void)removeTouch:(id)a3 fromGestureRecognizer:(id)a4
+- (void)removeTouch:(id)touch fromGestureRecognizer:(id)recognizer
 {
   deliveryTableByTouch = self->_deliveryTableByTouch;
-  v6 = a4;
-  v7 = [(NSMapTable *)deliveryTableByTouch objectForKey:a3];
-  [v7 removeGestureRecognizer:v6];
+  recognizerCopy = recognizer;
+  v7 = [(NSMapTable *)deliveryTableByTouch objectForKey:touch];
+  [v7 removeGestureRecognizer:recognizerCopy];
 }
 
-- (id)hoverTouchForContextId:(unsigned int)a3 pathIndex:(int64_t)a4
+- (id)hoverTouchForContextId:(unsigned int)id pathIndex:(int64_t)index
 {
   v21 = *MEMORY[0x1E69E9840];
   touchesByContextId = self->_touchesByContextId;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&id];
   v7 = [(NSMapTable *)touchesByContextId objectForKey:v6];
 
   v18 = 0u;
@@ -612,7 +612,7 @@ LABEL_31:
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 _pathIndex] == a4)
+        if ([v13 _pathIndex] == index)
         {
           v14 = v13;
           goto LABEL_11;
@@ -635,27 +635,27 @@ LABEL_11:
   return v14;
 }
 
-- (void)setHoverTouch:(id)a3 forContextId:(unsigned int)a4 pathIndex:(int64_t)a5
+- (void)setHoverTouch:(id)touch forContextId:(unsigned int)id pathIndex:(int64_t)index
 {
-  if (a3)
+  if (touch)
   {
-    v5 = *&a4;
-    v7 = a3;
+    v5 = *&id;
+    touchCopy = touch;
     v8 = [(UIHoverEvent *)self _touchesByContextId:v5 createIfNeeded:1];
-    [v8 addObject:v7];
+    [v8 addObject:touchCopy];
   }
 }
 
-- (void)removeHoverTouchForContextId:(unsigned int)a3 pathIndex:(int64_t)a4
+- (void)removeHoverTouchForContextId:(unsigned int)id pathIndex:(int64_t)index
 {
-  v5 = *&a3;
+  v5 = *&id;
   touchesByContextId = self->_touchesByContextId;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   v13 = [(NSMapTable *)touchesByContextId objectForKey:v8];
 
   if (v13)
   {
-    v9 = [(UIHoverEvent *)self hoverTouchForContextId:v5 pathIndex:a4];
+    v9 = [(UIHoverEvent *)self hoverTouchForContextId:v5 pathIndex:index];
     v10 = v9;
     if (v9)
     {
@@ -673,55 +673,55 @@ LABEL_11:
   }
 }
 
-- (void)_windowDidDetachContext:(id)a3
+- (void)_windowDidDetachContext:(id)context
 {
-  v9 = a3;
-  v4 = [v9 object];
+  contextCopy = context;
+  object = [contextCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v9 object];
-    v7 = [v9 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"contextId"];
+    object2 = [contextCopy object];
+    userInfo = [contextCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"contextId"];
 
-    [(UIHoverEvent *)self _completelyRemoveHoverTouchesForWindow:v6 contextIdNumber:v8 withCancellation:1];
+    [(UIHoverEvent *)self _completelyRemoveHoverTouchesForWindow:object2 contextIdNumber:v8 withCancellation:1];
   }
 }
 
-- (void)_windowDidBecomeHidden:(id)a3
+- (void)_windowDidBecomeHidden:(id)hidden
 {
-  v8 = a3;
-  v4 = [v8 object];
+  hiddenCopy = hidden;
+  object = [hiddenCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v8 object];
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v6, "_contextId")}];
-    [(UIHoverEvent *)self _completelyRemoveHoverTouchesForWindow:v6 contextIdNumber:v7 withCancellation:1];
+    object2 = [hiddenCopy object];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(object2, "_contextId")}];
+    [(UIHoverEvent *)self _completelyRemoveHoverTouchesForWindow:object2 contextIdNumber:v7 withCancellation:1];
   }
 }
 
-- (void)_removeAllHoverTouchesForContextId:(unsigned int)a3
+- (void)_removeAllHoverTouchesForContextId:(unsigned int)id
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&id];
   [(UIHoverEvent *)self _completelyRemoveHoverTouchesForWindow:0 contextIdNumber:v4 withCancellation:0];
 }
 
-- (void)_completelyRemoveHoverTouchesForWindow:(id)a3 contextIdNumber:(id)a4 withCancellation:(BOOL)a5
+- (void)_completelyRemoveHoverTouchesForWindow:(id)window contextIdNumber:(id)number withCancellation:(BOOL)cancellation
 {
-  v5 = a5;
+  cancellationCopy = cancellation;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  windowCopy = window;
+  numberCopy = number;
+  v10 = numberCopy;
+  if (numberCopy)
   {
-    v20 = v9;
-    v11 = [(NSMapTable *)self->_touchesByContextId objectForKey:v9];
+    v20 = numberCopy;
+    v11 = [(NSMapTable *)self->_touchesByContextId objectForKey:numberCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -741,7 +741,7 @@ LABEL_11:
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          if (v5)
+          if (cancellationCopy)
           {
             v17 = [(NSMapTable *)self->_deliveryTableByTouch objectForKey:*(*(&v21 + 1) + 8 * i)];
             [v17 _cancelAllGestureRecognizers];
@@ -751,8 +751,8 @@ LABEL_11:
           {
             if ((*(v16 + 16) - 5) <= 2)
             {
-              v18 = v8;
-              if (v8 || (+[UIWindow _windowWithContextId:](UIWindow, "_windowWithContextId:", [v20 unsignedIntValue]), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+              v18 = windowCopy;
+              if (windowCopy || (+[UIWindow _windowWithContextId:](UIWindow, "_windowWithContextId:", [v20 unsignedIntValue]), (v18 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v19 = v18;
                 [(UITouch *)v16 _clearForWindowIfNeeded:v18];
@@ -808,10 +808,10 @@ LABEL_11:
   }
 }
 
-- (id)_touchesByContextId:(unsigned int)a3 createIfNeeded:(BOOL)a4
+- (id)_touchesByContextId:(unsigned int)id createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = *&a3;
+  neededCopy = needed;
+  v5 = *&id;
   touchesByContextId = self->_touchesByContextId;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   v9 = [(NSMapTable *)touchesByContextId objectForKey:v8];
@@ -823,7 +823,7 @@ LABEL_11:
 
   else
   {
-    v10 = !v4;
+    v10 = !neededCopy;
   }
 
   if (!v10)
@@ -837,31 +837,31 @@ LABEL_11:
   return v9;
 }
 
-- (id)_deliveryTableByTouchCreateIfNeeded:(id)a3
+- (id)_deliveryTableByTouchCreateIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_deliveryTableByTouch objectForKey:v4];
+  neededCopy = needed;
+  v5 = [(NSMapTable *)self->_deliveryTableByTouch objectForKey:neededCopy];
   if (!v5)
   {
-    v5 = [[_UIHoverTouchDeliveryTable alloc] initWithTouch:v4];
-    [(NSMapTable *)self->_deliveryTableByTouch setObject:v5 forKey:v4];
+    v5 = [[_UIHoverTouchDeliveryTable alloc] initWithTouch:neededCopy];
+    [(NSMapTable *)self->_deliveryTableByTouch setObject:v5 forKey:neededCopy];
   }
 
   return v5;
 }
 
-- (void)_pointerStateDidChange:(id)a3
+- (void)_pointerStateDidChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    if (![v7 pointerState])
+    object2 = [changeCopy object];
+    if (![object2 pointerState])
     {
       if ([UIApp _isSpringBoard])
       {
@@ -941,12 +941,12 @@ LABEL_18:
   }
 }
 
-- (void)_setPointerLocked:(BOOL)a3
+- (void)_setPointerLocked:(BOOL)locked
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_pointerLocked != a3)
+  if (self->_pointerLocked != locked)
   {
-    v3 = a3;
+    lockedCopy = locked;
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("PointerLockState", &_setPointerLocked____s_category);
     if (*CategoryCachedImpl)
     {
@@ -954,20 +954,20 @@ LABEL_18:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v7 = @"NO";
-        if (v3)
+        if (lockedCopy)
         {
           v7 = @"YES";
         }
 
         v8 = 138412546;
-        v9 = self;
+        selfCopy = self;
         v10 = 2112;
         v11 = v7;
         _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Updating UIHoverEvent pointerLocked: hoverEvent: %@; pointerLocked: %@", &v8, 0x16u);
       }
     }
 
-    self->_pointerLocked = v3;
+    self->_pointerLocked = lockedCopy;
     [(UIHoverEvent *)self _cancelAllGestureRecognizers];
   }
 }

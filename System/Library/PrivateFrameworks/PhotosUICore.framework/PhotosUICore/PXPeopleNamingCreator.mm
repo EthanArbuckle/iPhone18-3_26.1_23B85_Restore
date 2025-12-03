@@ -1,15 +1,15 @@
 @interface PXPeopleNamingCreator
-+ (id)namingViewControllerFor:(id)a3 presentationEnvironment:(id)a4;
++ (id)namingViewControllerFor:(id)for presentationEnvironment:(id)environment;
 - (PXPeopleNamingCreator)init;
 @end
 
 @implementation PXPeopleNamingCreator
 
-+ (id)namingViewControllerFor:(id)a3 presentationEnvironment:(id)a4
++ (id)namingViewControllerFor:(id)for presentationEnvironment:(id)environment
 {
-  v4 = a3;
+  forCopy = for;
   swift_unknownObjectRetain();
-  v5 = sub_1A48690E8(v4);
+  v5 = sub_1A48690E8(forCopy);
 
   swift_unknownObjectRelease();
 

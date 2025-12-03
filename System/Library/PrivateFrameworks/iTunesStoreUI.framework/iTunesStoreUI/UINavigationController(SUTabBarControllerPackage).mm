@@ -13,46 +13,46 @@
     return result;
   }
 
-  v8 = [a1 navigationBar];
+  navigationBar = [self navigationBar];
   if (a3 == 1)
   {
-    v9 = [a4 lightKeyColor];
+    lightKeyColor = [a4 lightKeyColor];
     v10 = 0;
     goto LABEL_6;
   }
 
   if (a3 == 2)
   {
-    v9 = [a4 darkKeyColor];
+    lightKeyColor = [a4 darkKeyColor];
     v10 = 1;
 LABEL_6:
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    [v8 setBarStyle:v10];
-    if (v9)
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [navigationBar setBarStyle:v10];
+    if (lightKeyColor)
     {
-      [objc_msgSend(a1 "view")];
+      [objc_msgSend(self "view")];
     }
 
-    if (v11)
+    if (labelColor)
     {
       v12 = objc_alloc(MEMORY[0x1E695DF20]);
-      v13 = [v12 initWithObjectsAndKeys:{v11, *MEMORY[0x1E69DB650], 0}];
-      [v8 setTitleTextAttributes:v13];
+      v13 = [v12 initWithObjectsAndKeys:{labelColor, *MEMORY[0x1E69DB650], 0}];
+      [navigationBar setTitleTextAttributes:v13];
     }
   }
 
   v28 = a3;
-  v14 = [objc_msgSend(a1 "navigationBar")];
+  v14 = [objc_msgSend(self "navigationBar")];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = [v14 rightBarButtonItems];
-  v16 = [v15 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  rightBarButtonItems = [v14 rightBarButtonItems];
+  v16 = [rightBarButtonItems countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v16)
   {
     v17 = v16;
-    v18 = 0;
+    customView = 0;
     v19 = *v34;
     do
     {
@@ -60,7 +60,7 @@ LABEL_6:
       {
         if (*v34 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(rightBarButtonItems);
         }
 
         v21 = *(*(&v33 + 1) + 8 * i);
@@ -71,12 +71,12 @@ LABEL_6:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v21 customView];
+            customView = [v21 customView];
           }
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v17 = [rightBarButtonItems countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v17);
@@ -84,15 +84,15 @@ LABEL_6:
 
   else
   {
-    v18 = 0;
+    customView = 0;
   }
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v22 = [v14 leftBarButtonItems];
-  v23 = [v22 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  leftBarButtonItems = [v14 leftBarButtonItems];
+  v23 = [leftBarButtonItems countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v23)
   {
     v24 = v23;
@@ -103,7 +103,7 @@ LABEL_6:
       {
         if (*v30 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(leftBarButtonItems);
         }
 
         v27 = *(*(&v29 + 1) + 8 * j);
@@ -114,12 +114,12 @@ LABEL_6:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v27 customView];
+            customView = [v27 customView];
           }
         }
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v24 = [leftBarButtonItems countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v24);
@@ -129,10 +129,10 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v14 titleView];
+    customView = [v14 titleView];
   }
 
-  return [v18 setBarStyle:v28 == 2];
+  return [customView setBarStyle:v28 == 2];
 }
 
 @end

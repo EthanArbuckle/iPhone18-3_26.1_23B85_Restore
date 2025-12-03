@@ -1,8 +1,8 @@
 @interface _DKNotificationScreenLockMonitor
-+ (id)_BMEventWithState:(id)a3;
-+ (id)_eventWithState:(id)a3;
++ (id)_BMEventWithState:(id)state;
++ (id)_eventWithState:(id)state;
 - (void)dealloc;
-- (void)receiveNotificationEvent:(id)a3;
+- (void)receiveNotificationEvent:(id)event;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
@@ -12,14 +12,14 @@
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v3 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v3)
+  if (!currentEvent)
   {
     out_token = 0;
-    v4 = [@"com.apple.springboard.lockstate" UTF8String];
-    v5 = [(_DKMonitor *)self queue];
-    notify_register_dispatch(v4, &out_token, v5, &__block_literal_global_4);
+    uTF8String = [@"com.apple.springboard.lockstate" UTF8String];
+    queue = [(_DKMonitor *)self queue];
+    notify_register_dispatch(uTF8String, &out_token, queue, &__block_literal_global_4);
 
     v6 = 0;
     if (!notify_get_state(out_token, &v6))
@@ -39,10 +39,10 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (id)_eventWithState:(id)a3
++ (id)_eventWithState:(id)state
 {
-  v3 = a3;
-  if ([v3 BOOLValue])
+  stateCopy = state;
+  if ([stateCopy BOOLValue])
   {
     [MEMORY[0x277CFE1A0] yes];
   }
@@ -52,23 +52,23 @@
     [MEMORY[0x277CFE1A0] no];
   }
   v4 = ;
-  v5 = [v3 BOOLValue];
+  bOOLValue = [stateCopy BOOLValue];
 
-  [_DKNotificationScreenLockMonitor setIsLocked:v5];
+  [_DKNotificationScreenLockMonitor setIsLocked:bOOLValue];
   v6 = MEMORY[0x277CFE1D8];
-  v7 = [MEMORY[0x277CFE298] deviceIsLockedStream];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [MEMORY[0x277CBEAA8] distantFuture];
-  v10 = [v6 eventWithStream:v7 startDate:v8 endDate:v9 value:v4];
+  deviceIsLockedStream = [MEMORY[0x277CFE298] deviceIsLockedStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v10 = [v6 eventWithStream:deviceIsLockedStream startDate:date endDate:distantFuture value:v4];
 
   return v10;
 }
 
-+ (id)_BMEventWithState:(id)a3
++ (id)_BMEventWithState:(id)state
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [state BOOLValue];
   v4 = objc_alloc(MEMORY[0x277CF1118]);
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   v6 = [v4 initWithStarting:v5];
 
   return v6;
@@ -81,11 +81,11 @@
   if ([(_DKMonitor *)&v8 instantMonitorNeedsActivation])
   {
     v3 = BiomeLibrary();
-    v4 = [v3 Device];
-    v5 = [v4 ScreenLocked];
-    v6 = [v5 source];
+    device = [v3 Device];
+    screenLocked = [device ScreenLocked];
+    source = [screenLocked source];
     source = self->_source;
-    self->_source = v6;
+    self->_source = source;
 
     self->_enabled = 1;
   }
@@ -101,18 +101,18 @@
   }
 }
 
-- (void)receiveNotificationEvent:(id)a3
+- (void)receiveNotificationEvent:(id)event
 {
-  v11 = a3;
+  eventCopy = event;
   v4 = objc_autoreleasePoolPush();
   if (self->_enabled)
   {
-    v5 = [v11 objectForKeyedSubscript:@"Notification"];
+    v5 = [eventCopy objectForKeyedSubscript:@"Notification"];
     v6 = [v5 isEqual:@"com.apple.springboard.lockstate"];
 
     if (v6)
     {
-      v7 = [v11 objectForKeyedSubscript:@"_State"];
+      v7 = [eventCopy objectForKeyedSubscript:@"_State"];
       if (v7)
       {
         v8 = v7;

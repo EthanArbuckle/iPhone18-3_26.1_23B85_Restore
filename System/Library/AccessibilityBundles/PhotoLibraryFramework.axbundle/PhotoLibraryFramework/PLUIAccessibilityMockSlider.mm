@@ -1,26 +1,26 @@
 @interface PLUIAccessibilityMockSlider
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (CGRect)accessibilityFrame;
 - (id)mockSliderDelegate;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation PLUIAccessibilityMockSlider
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v4 = a3;
-  [(UIView *)v4 setAccessibilityContainer:0];
+  viewCopy = view;
+  [(UIView *)viewCopy setAccessibilityContainer:0];
   view = self->_view;
-  self->_view = v4;
-  v6 = v4;
+  self->_view = viewCopy;
+  v6 = viewCopy;
 
   v7 = self->_view;
-  v8 = [(PLUIAccessibilityMockSlider *)self accessibilityContainer];
-  [(UIView *)v7 setAccessibilityContainer:v8];
+  accessibilityContainer = [(PLUIAccessibilityMockSlider *)self accessibilityContainer];
+  [(UIView *)v7 setAccessibilityContainer:accessibilityContainer];
 }
 
 - (CGRect)accessibilityFrame
@@ -32,8 +32,8 @@
   height = v16.size.height;
   if (CGRectIsEmpty(v16))
   {
-    v7 = [(PLUIAccessibilityMockSlider *)self accessibilityContainer];
-    [v7 accessibilityFrame];
+    accessibilityContainer = [(PLUIAccessibilityMockSlider *)self accessibilityContainer];
+    [accessibilityContainer accessibilityFrame];
     x = v8;
     y = v9;
     width = v10;
@@ -72,10 +72,10 @@
 - (unint64_t)accessibilityTraits
 {
   v3 = *MEMORY[0x29EDC7FA0];
-  v4 = [(UIView *)self->_view accessibilityTraits];
+  accessibilityTraits = [(UIView *)self->_view accessibilityTraits];
   v9.receiver = self;
   v9.super_class = PLUIAccessibilityMockSlider;
-  v5 = [(PLUIAccessibilityMockSlider *)&v9 accessibilityTraits]| v4;
+  v5 = [(PLUIAccessibilityMockSlider *)&v9 accessibilityTraits]| accessibilityTraits;
   v6 = *MEMORY[0x29EDC7FA8];
   if ((*MEMORY[0x29EDC7FA8] & ~v5) != 0)
   {
@@ -95,9 +95,9 @@
   return *MEMORY[0x29EDC7F60] | v3 | v6 | v7;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 4)
+  if (scroll == 4)
   {
     WeakRetained = objc_loadWeakRetained(&self->_mockSliderDelegate);
     v8 = objc_opt_respondsToSelector();
@@ -112,7 +112,7 @@
     return 1;
   }
 
-  if (a3 == 3)
+  if (scroll == 3)
   {
     v4 = objc_loadWeakRetained(&self->_mockSliderDelegate);
     v5 = objc_opt_respondsToSelector();

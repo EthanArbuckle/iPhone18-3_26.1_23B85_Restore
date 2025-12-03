@@ -1,12 +1,12 @@
 @interface _UITextFieldViewBackgroundProvider
-- (BOOL)hitTestView:(id)a3;
+- (BOOL)hitTestView:(id)view;
 - (UIView)backgroundView;
-- (id)overridingSetBackgroundColor:(id)a3;
-- (void)_buildDescription:(id)a3;
-- (void)addToTextField:(id)a3;
+- (id)overridingSetBackgroundColor:(id)color;
+- (void)_buildDescription:(id)description;
+- (void)addToTextField:(id)field;
 - (void)didChangeFirstResponder;
 - (void)layoutIfNeeded;
-- (void)populateArchivedSubviews:(id)a3;
+- (void)populateArchivedSubviews:(id)subviews;
 - (void)removeFromTextField;
 - (void)setNeedsDisplay;
 @end
@@ -18,8 +18,8 @@
   v4.receiver = self;
   v4.super_class = _UITextFieldViewBackgroundProvider;
   [(_UITextFieldBackgroundProvider *)&v4 setNeedsDisplay];
-  v3 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
-  [v3 setNeedsDisplay];
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  [backgroundView setNeedsDisplay];
 }
 
 - (void)layoutIfNeeded
@@ -27,20 +27,20 @@
   v8.receiver = self;
   v8.super_class = _UITextFieldViewBackgroundProvider;
   [(_UITextFieldBackgroundProvider *)&v8 layoutIfNeeded];
-  v3 = [(_UITextFieldBackgroundProvider *)self textField];
-  v4 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
-  [v3 _backgroundBounds];
-  [v4 setFrame:?];
-  [v4 _continuousCornerRadius];
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  [textField _backgroundBounds];
+  [backgroundView setFrame:?];
+  [backgroundView _continuousCornerRadius];
   v6 = v5;
-  v7 = [v3 _backgroundCoverView];
-  [v7 _setContinuousCornerRadius:v6];
+  _backgroundCoverView = [textField _backgroundCoverView];
+  [_backgroundCoverView _setContinuousCornerRadius:v6];
 }
 
 - (void)removeFromTextField
 {
-  v3 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
-  [v3 removeFromSuperview];
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  [backgroundView removeFromSuperview];
 
   v4.receiver = self;
   v4.super_class = _UITextFieldViewBackgroundProvider;
@@ -57,29 +57,29 @@
 
 - (UIView)backgroundView
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UITextFieldViewBackgroundProvider.m" lineNumber:36 description:{@"%@ (subclass of _UITextFieldViewBackgroundProvider) needs to override -backgroundView.", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UITextFieldViewBackgroundProvider.m" lineNumber:36 description:{@"%@ (subclass of _UITextFieldViewBackgroundProvider) needs to override -backgroundView.", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)overridingSetBackgroundColor:(id)a3
+- (id)overridingSetBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  [backgroundView setBackgroundColor:colorCopy];
 
-  return v4;
+  return colorCopy;
 }
 
-- (BOOL)hitTestView:(id)a3
+- (BOOL)hitTestView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  viewCopy = view;
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
 
-  if (v5)
+  if (backgroundView)
   {
-    v6 = v5 == v4;
+    v6 = backgroundView == viewCopy;
   }
 
   else
@@ -92,43 +92,43 @@
   return v7;
 }
 
-- (void)addToTextField:(id)a3
+- (void)addToTextField:(id)field
 {
   v7.receiver = self;
   v7.super_class = _UITextFieldViewBackgroundProvider;
-  v4 = a3;
-  [(_UITextFieldBackgroundProvider *)&v7 addToTextField:v4];
+  fieldCopy = field;
+  [(_UITextFieldBackgroundProvider *)&v7 addToTextField:fieldCopy];
   v5 = [(_UITextFieldViewBackgroundProvider *)self backgroundView:v7.receiver];
-  v6 = [v4 _contentView];
+  _contentView = [fieldCopy _contentView];
 
-  if (v5 && v5 != v6)
+  if (v5 && v5 != _contentView)
   {
-    [v6 insertSubview:v5 atIndex:0];
+    [_contentView insertSubview:v5 atIndex:0];
     [(_UITextFieldViewBackgroundProvider *)self layoutIfNeeded];
   }
 }
 
-- (void)populateArchivedSubviews:(id)a3
+- (void)populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v6.receiver = self;
   v6.super_class = _UITextFieldViewBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v6 populateArchivedSubviews:v4];
-  v5 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
-  if (v5)
+  [(_UITextFieldBackgroundProvider *)&v6 populateArchivedSubviews:subviewsCopy];
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  if (backgroundView)
   {
-    [v4 removeObject:v5];
+    [subviewsCopy removeObject:backgroundView];
   }
 }
 
-- (void)_buildDescription:(id)a3
+- (void)_buildDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v7.receiver = self;
   v7.super_class = _UITextFieldViewBackgroundProvider;
-  [(_UITextFieldBackgroundProvider *)&v7 _buildDescription:v4];
-  v5 = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
-  v6 = [v4 appendName:@"backgroundView" object:v5];
+  [(_UITextFieldBackgroundProvider *)&v7 _buildDescription:descriptionCopy];
+  backgroundView = [(_UITextFieldViewBackgroundProvider *)self backgroundView];
+  v6 = [descriptionCopy appendName:@"backgroundView" object:backgroundView];
 }
 
 @end

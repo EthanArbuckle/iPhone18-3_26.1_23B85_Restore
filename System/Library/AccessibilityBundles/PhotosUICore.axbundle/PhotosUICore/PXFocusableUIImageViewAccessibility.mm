@@ -8,16 +8,16 @@
 - (id)accessibilityURL;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_axSetIndexPath:(PXSimpleIndexPath *)a3;
+- (void)_axSetIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXFocusableUIImageViewAccessibility
 
-- (void)_axSetIndexPath:(PXSimpleIndexPath *)a3
+- (void)_axSetIndexPath:(PXSimpleIndexPath *)path
 {
   v5 = [AXPXSimpleIndexPathHolder alloc];
-  v6 = *&a3->item;
-  v8[0] = *&a3->dataSourceIdentifier;
+  v6 = *&path->item;
+  v8[0] = *&path->dataSourceIdentifier;
   v8[1] = v6;
   v7 = [(AXPXSimpleIndexPathHolder *)v5 initWithIndexPath:v8];
   [(PXFocusableUIImageViewAccessibility *)self _setAXIndexPathHolder:v7];
@@ -26,56 +26,56 @@
 - (id)accessibilityCustomContent
 {
   v2 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v3 = [v2 accessibilityCustomContent];
+  accessibilityCustomContent = [v2 accessibilityCustomContent];
 
-  return v3;
+  return accessibilityCustomContent;
 }
 
 - (id)accessibilityURL
 {
   v2 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v3 = [v2 accessibilityURL];
+  accessibilityURL = [v2 accessibilityURL];
 
-  return v3;
+  return accessibilityURL;
 }
 
 - (id)_accessibilityPHAssetLocalIdentifier
 {
   v2 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v3 = [v2 _accessibilityPHAssetLocalIdentifier];
+  _accessibilityPHAssetLocalIdentifier = [v2 _accessibilityPHAssetLocalIdentifier];
 
-  return v3;
+  return _accessibilityPHAssetLocalIdentifier;
 }
 
 - (id)_accessibilityPhotoLibraryURL
 {
   v2 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v3 = [v2 _accessibilityPhotoLibraryURL];
+  _accessibilityPhotoLibraryURL = [v2 _accessibilityPhotoLibraryURL];
 
-  return v3;
+  return _accessibilityPhotoLibraryURL;
 }
 
 - (BOOL)_accessibilityIsPHAssetLocallyAvailable
 {
   v2 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v3 = [v2 _accessibilityIsPHAssetLocallyAvailable];
+  _accessibilityIsPHAssetLocallyAvailable = [v2 _accessibilityIsPHAssetLocallyAvailable];
 
-  return v3;
+  return _accessibilityIsPHAssetLocallyAvailable;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"AXMemoryTileImageView"])
+  accessibilityIdentification = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"AXMemoryTileImageView"])
   {
 
 LABEL_4:
-    v6 = [(PXFocusableUIImageViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel = [(PXFocusableUIImageViewAccessibility *)self accessibilityUserDefinedLabel];
     goto LABEL_6;
   }
 
-  v4 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
-  v5 = [v4 isEqualToString:@"AXMemoryTileSlideshowView"];
+  accessibilityIdentification2 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
+  v5 = [accessibilityIdentification2 isEqualToString:@"AXMemoryTileSlideshowView"];
 
   if (v5)
   {
@@ -83,55 +83,55 @@ LABEL_4:
   }
 
   v7 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v6 = [v7 accessibilityLabel];
+  accessibilityUserDefinedLabel = [v7 accessibilityLabel];
 
 LABEL_6:
 
-  return v6;
+  return accessibilityUserDefinedLabel;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(PXFocusableUIImageViewAccessibility *)self _accessibilityValueForKey:@"AXPhotoAsset"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"AXMemoryTileSlideshowView"];
+  accessibilityIdentification = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"AXMemoryTileSlideshowView"];
 
   if (v4)
   {
-    v5 = accessibilityPhotosUICoreLocalizedString(@"memory.slideshow.hint");
+    accessibilityHint = accessibilityPhotosUICoreLocalizedString(@"memory.slideshow.hint");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = PXFocusableUIImageViewAccessibility;
-    v5 = [(PXFocusableUIImageViewAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(PXFocusableUIImageViewAccessibility *)&v7 accessibilityHint];
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v17.receiver = self;
   v17.super_class = PXFocusableUIImageViewAccessibility;
-  v3 = [(PXFocusableUIImageViewAccessibility *)&v17 accessibilityTraits];
-  v4 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
-  if ([v4 isEqualToString:@"AXMemoryTileImageView"])
+  accessibilityTraits = [(PXFocusableUIImageViewAccessibility *)&v17 accessibilityTraits];
+  accessibilityIdentification = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"AXMemoryTileImageView"])
   {
   }
 
   else
   {
-    v5 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
-    v6 = [v5 isEqualToString:@"AXMemoryTileSlideshowView"];
+    accessibilityIdentification2 = [(PXFocusableUIImageViewAccessibility *)self accessibilityIdentification];
+    v6 = [accessibilityIdentification2 isEqualToString:@"AXMemoryTileSlideshowView"];
 
     if (!v6)
     {
@@ -139,24 +139,24 @@ LABEL_6:
     }
   }
 
-  v3 = *MEMORY[0x29EDC7F70];
+  accessibilityTraits = *MEMORY[0x29EDC7F70];
 LABEL_5:
-  v7 = [(PXFocusableUIImageViewAccessibility *)self _axSelectionManager];
-  if (v7)
+  _axSelectionManager = [(PXFocusableUIImageViewAccessibility *)self _axSelectionManager];
+  if (_axSelectionManager)
   {
-    v8 = [(PXFocusableUIImageViewAccessibility *)self _axIndexPathHolder];
-    v9 = v8;
+    _axIndexPathHolder = [(PXFocusableUIImageViewAccessibility *)self _axIndexPathHolder];
+    v9 = _axIndexPathHolder;
     v15 = 0u;
     v16 = 0u;
-    if (v8)
+    if (_axIndexPathHolder)
     {
-      [v8 indexPath];
+      [_axIndexPathHolder indexPath];
     }
 
-    v10 = [v7 selectionSnapshot];
+    selectionSnapshot = [_axSelectionManager selectionSnapshot];
     v14[0] = v15;
     v14[1] = v16;
-    v11 = [v10 isIndexPathSelected:v14];
+    v11 = [selectionSnapshot isIndexPathSelected:v14];
 
     v12 = *MEMORY[0x29EDC7FC0];
     if (!v11)
@@ -164,10 +164,10 @@ LABEL_5:
       v12 = 0;
     }
 
-    v3 |= v12;
+    accessibilityTraits |= v12;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface CKGradientReferenceView
 - (CGRect)gradientFrame;
-- (CKGradientReferenceView)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGradientFrame:(CGRect)a3;
+- (CKGradientReferenceView)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setGradientFrame:(CGRect)frame;
 @end
 
 @implementation CKGradientReferenceView
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (CKGradientReferenceView)initWithFrame:(CGRect)a3
+- (CKGradientReferenceView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CKGradientReferenceView;
-  v3 = [(CKGradientReferenceView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKGradientReferenceView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,12 +40,12 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKGradientReferenceView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -58,12 +58,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CKGradientReferenceView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)setGradientFrame:(CGRect)a3
+- (void)setGradientFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_gradientFrame = &self->_gradientFrame;
-  if (!CGRectEqualToRect(self->_gradientFrame, a3))
+  if (!CGRectEqualToRect(self->_gradientFrame, frame))
   {
     p_gradientFrame->origin.x = x;
     p_gradientFrame->origin.y = y;

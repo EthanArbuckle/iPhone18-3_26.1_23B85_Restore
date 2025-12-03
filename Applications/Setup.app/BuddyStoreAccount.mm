@@ -1,63 +1,63 @@
 @interface BuddyStoreAccount
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRestoreStoreAccount:(id)a3;
-- (BuddyStoreAccount)initWithUsername:(id)a3 dsid:(id)a4 altDSID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRestoreStoreAccount:(id)account;
+- (BuddyStoreAccount)initWithUsername:(id)username dsid:(id)dsid altDSID:(id)d;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BuddyStoreAccount
 
-- (BuddyStoreAccount)initWithUsername:(id)a3 dsid:(id)a4 altDSID:(id)a5
+- (BuddyStoreAccount)initWithUsername:(id)username dsid:(id)dsid altDSID:(id)d
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, dsid);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v7 = v15;
-  v15 = 0;
+  objc_storeStrong(&v12, d);
+  v7 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v7;
   v11.super_class = BuddyStoreAccount;
   v8 = [(BuddyStoreAccount *)&v11 init];
-  v15 = v8;
-  objc_storeStrong(&v15, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    [v15 setUsername:location[0]];
-    [v15 setDsid:v13];
-    [v15 setAltDSID:v12];
+    [selfCopy setUsername:location[0]];
+    [selfCopy setDsid:v13];
+    [selfCopy setAltDSID:v12];
   }
 
-  v9 = v15;
+  v9 = selfCopy;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (id)description
 {
   v2 = objc_opt_class();
-  v3 = [(BuddyStoreAccount *)self username];
-  v4 = [(BuddyStoreAccount *)self dsid];
-  v5 = [(BuddyStoreAccount *)self altDSID];
-  v6 = [NSString stringWithFormat:@"<%@: %p> Username: %@, DSID: %@, altDSID: %@", v2, self, v3, v4, v5];
+  username = [(BuddyStoreAccount *)self username];
+  dsid = [(BuddyStoreAccount *)self dsid];
+  altDSID = [(BuddyStoreAccount *)self altDSID];
+  v6 = [NSString stringWithFormat:@"<%@: %p> Username: %@, DSID: %@, altDSID: %@", v2, self, username, dsid, altDSID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v5 == location[0])
+  objc_storeStrong(location, equal);
+  if (selfCopy == location[0])
   {
     v6 = 1;
   }
@@ -67,7 +67,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(BuddyStoreAccount *)v5 isEqualToRestoreStoreAccount:location[0]];
+      v6 = [(BuddyStoreAccount *)selfCopy isEqualToRestoreStoreAccount:location[0]];
     }
 
     else
@@ -80,20 +80,20 @@
   return v6 & 1;
 }
 
-- (BOOL)isEqualToRestoreStoreAccount:(id)a3
+- (BOOL)isEqualToRestoreStoreAccount:(id)account
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyStoreAccount *)v17 dsid];
+  objc_storeStrong(location, account);
+  dsid = [(BuddyStoreAccount *)selfCopy dsid];
   v14 = 0;
   v4 = 0;
-  if (v3)
+  if (dsid)
   {
-    v15 = [location[0] dsid];
+    dsid2 = [location[0] dsid];
     v14 = 1;
-    v4 = v15 != 0;
+    v4 = dsid2 != 0;
   }
 
   if (v14)
@@ -102,21 +102,21 @@
 
   if (v4)
   {
-    v5 = [(BuddyStoreAccount *)v17 dsid];
-    v6 = [location[0] dsid];
-    v18 = [(NSString *)v5 isEqualToString:v6];
+    dsid3 = [(BuddyStoreAccount *)selfCopy dsid];
+    dsid4 = [location[0] dsid];
+    v18 = [(NSString *)dsid3 isEqualToString:dsid4];
   }
 
   else
   {
-    v7 = [(BuddyStoreAccount *)v17 altDSID];
+    altDSID = [(BuddyStoreAccount *)selfCopy altDSID];
     v12 = 0;
     v8 = 0;
-    if (v7)
+    if (altDSID)
     {
-      v13 = [location[0] altDSID];
+      altDSID2 = [location[0] altDSID];
       v12 = 1;
-      v8 = v13 != 0;
+      v8 = altDSID2 != 0;
     }
 
     if (v12)
@@ -125,17 +125,17 @@
 
     if (v8)
     {
-      v9 = [(BuddyStoreAccount *)v17 altDSID];
-      v10 = [location[0] altDSID];
+      altDSID3 = [(BuddyStoreAccount *)selfCopy altDSID];
+      altDSID4 = [location[0] altDSID];
     }
 
     else
     {
-      v9 = [(BuddyStoreAccount *)v17 username];
-      v10 = [location[0] username];
+      altDSID3 = [(BuddyStoreAccount *)selfCopy username];
+      altDSID4 = [location[0] username];
     }
 
-    v18 = [(NSString *)v9 isEqualToString:v10];
+    v18 = [(NSString *)altDSID3 isEqualToString:altDSID4];
   }
 
   objc_storeStrong(location, 0);
@@ -144,12 +144,12 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BuddyStoreAccount *)self username];
-  v3 = [(NSString *)v2 hash];
-  v4 = [(BuddyStoreAccount *)self dsid];
-  v5 = v3 ^ [(NSString *)v4 hash];
-  v6 = [(BuddyStoreAccount *)self altDSID];
-  v7 = v5 ^ [(NSString *)v6 hash];
+  username = [(BuddyStoreAccount *)self username];
+  v3 = [(NSString *)username hash];
+  dsid = [(BuddyStoreAccount *)self dsid];
+  v5 = v3 ^ [(NSString *)dsid hash];
+  altDSID = [(BuddyStoreAccount *)self altDSID];
+  v7 = v5 ^ [(NSString *)altDSID hash];
 
   return v7;
 }

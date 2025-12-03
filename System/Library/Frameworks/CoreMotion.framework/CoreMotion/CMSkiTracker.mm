@@ -2,9 +2,9 @@
 + (BOOL)isAvailable;
 - (CMSkiTracker)init;
 - (void)dealloc;
-- (void)querySkiUpdatesFromRecord:(id)a3 handler:(id)a4;
-- (void)startLiveUpdatesWithHandler:(id)a3;
-- (void)startUpdatesFromRecord:(id)a3 handler:(id)a4;
+- (void)querySkiUpdatesFromRecord:(id)record handler:(id)handler;
+- (void)startLiveUpdatesWithHandler:(id)handler;
+- (void)startUpdatesFromRecord:(id)record handler:(id)handler;
 - (void)stopLiveUpdates;
 - (void)stopUpdates;
 @end
@@ -50,11 +50,11 @@
   return 0;
 }
 
-- (void)startUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)startUpdatesFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMSkiTracker.mm", 377, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -63,8 +63,8 @@
   v10[2] = sub_19B734368;
   v10[3] = &unk_1E7532C08;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = record;
+  v10[6] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v10);
 }
 
@@ -78,11 +78,11 @@
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)querySkiUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)querySkiUpdatesFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMSkiTracker.mm", 394, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -93,15 +93,15 @@
 
   if (qword_1ED71D620 == 3)
   {
-    v6 = objc_msgSend__internal(self, a2, a3);
+    v6 = objc_msgSend__internal(self, a2, record);
 
-    MEMORY[0x1EEE66B58](v6, sel__queryUpdatesFromRecord_handler_, a3);
+    MEMORY[0x1EEE66B58](v6, sel__queryUpdatesFromRecord_handler_, record);
   }
 }
 
-- (void)startLiveUpdatesWithHandler:(id)a3
+- (void)startLiveUpdatesWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CMSkiTracker.mm", 408, @"Invalid parameter not satisfying: %@", @"handler");
@@ -112,7 +112,7 @@
   v8[2] = sub_19B734630;
   v8[3] = &unk_1E7532B68;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v8);
 }
 

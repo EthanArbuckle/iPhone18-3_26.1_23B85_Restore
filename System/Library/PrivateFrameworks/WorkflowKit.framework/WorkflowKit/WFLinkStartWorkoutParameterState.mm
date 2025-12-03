@@ -1,24 +1,24 @@
 @interface WFLinkStartWorkoutParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (NSString)localizedTitle;
-- (WFLinkStartWorkoutParameterState)initWithLinkAction:(id)a3;
+- (WFLinkStartWorkoutParameterState)initWithLinkAction:(id)action;
 @end
 
 @implementation WFLinkStartWorkoutParameterState
 
 - (NSString)localizedTitle
 {
-  v2 = [(WFVariableSubstitutableParameterState *)self value];
-  v3 = [v2 parameters];
-  v4 = [v3 if_firstObjectPassingTest:&__block_literal_global_698];
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  parameters = [value parameters];
+  v4 = [parameters if_firstObjectPassingTest:&__block_literal_global_698];
 
-  v5 = [v4 value];
-  v6 = [v5 displayRepresentation];
-  v7 = [v6 title];
-  v8 = [v7 wf_localizedString];
+  value2 = [v4 value];
+  displayRepresentation = [value2 displayRepresentation];
+  title = [displayRepresentation title];
+  wf_localizedString = [title wf_localizedString];
 
-  return v8;
+  return wf_localizedString;
 }
 
 uint64_t __50__WFLinkStartWorkoutParameterState_localizedTitle__block_invoke(uint64_t a1, void *a2)
@@ -29,35 +29,35 @@ uint64_t __50__WFLinkStartWorkoutParameterState_localizedTitle__block_invoke(uin
   return v3;
 }
 
-- (WFLinkStartWorkoutParameterState)initWithLinkAction:(id)a3
+- (WFLinkStartWorkoutParameterState)initWithLinkAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = WFLinkStartWorkoutParameterState;
-  return [(WFVariableSubstitutableParameterState *)&v4 initWithValue:a3];
+  return [(WFVariableSubstitutableParameterState *)&v4 initWithValue:action];
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"WFLinkStartWorkoutParameterState.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[LNAction class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkStartWorkoutParameterState.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[LNAction class]]"}];
   }
 
-  v6 = v5;
+  v6 = valueCopy;
   v7 = objc_opt_new();
-  v8 = [v6 identifier];
-  [v7 setObject:v8 forKey:@"Identifier"];
+  identifier = [v6 identifier];
+  [v7 setObject:identifier forKey:@"Identifier"];
 
-  v9 = [v6 mangledTypeName];
+  mangledTypeName = [v6 mangledTypeName];
 
-  if (v9)
+  if (mangledTypeName)
   {
-    v10 = [v6 mangledTypeName];
-    [v7 setObject:v10 forKey:@"MangledTypeName"];
+    mangledTypeName2 = [v6 mangledTypeName];
+    [v7 setObject:mangledTypeName2 forKey:@"MangledTypeName"];
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "presentationStyle")}];
@@ -70,8 +70,8 @@ uint64_t __50__WFLinkStartWorkoutParameterState_localizedTitle__block_invoke(uin
   v32 = 0u;
   v33 = 0u;
   v27 = v6;
-  v13 = [v6 parameters];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  parameters = [v6 parameters];
+  v14 = [parameters countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v14)
   {
     v15 = v14;
@@ -82,37 +82,37 @@ uint64_t __50__WFLinkStartWorkoutParameterState_localizedTitle__block_invoke(uin
       {
         if (*v31 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(parameters);
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
         v19 = MEMORY[0x1E696ACC8];
-        v20 = [v18 value];
+        value = [v18 value];
         v29 = 0;
-        v21 = [v19 archivedDataWithRootObject:v20 requiringSecureCoding:1 error:&v29];
+        v21 = [v19 archivedDataWithRootObject:value requiringSecureCoding:1 error:&v29];
         v22 = v29;
 
         if (v22)
         {
-          v23 = getWFAppIntentsLogObject();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
+          identifier2 = getWFAppIntentsLogObject();
+          if (os_log_type_enabled(identifier2, OS_LOG_TYPE_FAULT))
           {
             *buf = 136315394;
             v35 = "WFSerializedRepresentationFromLinkAction";
             v36 = 2112;
             v37 = v22;
-            _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_FAULT, "%s Could not archive LNValue into data: %@", buf, 0x16u);
+            _os_log_impl(&dword_1CA256000, identifier2, OS_LOG_TYPE_FAULT, "%s Could not archive LNValue into data: %@", buf, 0x16u);
           }
         }
 
         else
         {
-          v23 = [v18 identifier];
-          [v12 setObject:v21 forKeyedSubscript:v23];
+          identifier2 = [v18 identifier];
+          [v12 setObject:v21 forKeyedSubscript:identifier2];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v15 = [parameters countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v15);
@@ -124,11 +124,11 @@ uint64_t __50__WFLinkStartWorkoutParameterState_localizedTitle__block_invoke(uin
   return v28;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v5 = a3;
+  representationCopy = representation;
   v6 = objc_opt_class();
-  v7 = WFEnforceClass_732(v5, v6);
+  v7 = WFEnforceClass_732(representationCopy, v6);
 
   v8 = [v7 objectForKeyedSubscript:@"Identifier"];
   v9 = objc_opt_class();

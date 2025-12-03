@@ -1,5 +1,5 @@
 @interface MIBUChallengeResponse
-- (BOOL)_deserialize:(id)a3;
+- (BOOL)_deserialize:(id)_deserialize;
 - (MIBUChallengeResponse)init;
 - (id)serialize;
 @end
@@ -24,39 +24,39 @@
 - (id)serialize
 {
   v3 = objc_opt_new();
-  v4 = [(MIBUChallengeResponse *)self signatureBlob];
-  v5 = v4;
-  if (!v4)
+  signatureBlob = [(MIBUChallengeResponse *)self signatureBlob];
+  v5 = signatureBlob;
+  if (!signatureBlob)
   {
     v5 = objc_opt_new();
   }
 
   v14[0] = v5;
-  v6 = [(MIBUChallengeResponse *)self certChainBlob];
-  v7 = v6;
-  if (!v6)
+  certChainBlob = [(MIBUChallengeResponse *)self certChainBlob];
+  v7 = certChainBlob;
+  if (!certChainBlob)
   {
     v7 = objc_opt_new();
   }
 
   v14[1] = v7;
   v8 = [NSArray arrayWithObjects:v14 count:2];
-  if (!v6)
+  if (!certChainBlob)
   {
   }
 
-  if (!v4)
+  if (!signatureBlob)
   {
   }
 
   if ([v3 serialize:&off_1000A9EA8 withValue:v8])
   {
-    v9 = [(MIBUNFCResponse *)self error];
-    v10 = [v3 serializeResponseError:v9];
+    error = [(MIBUNFCResponse *)self error];
+    v10 = [v3 serializeResponseError:error];
 
     if (v10)
     {
-      v11 = [v3 serializedData];
+      serializedData = [v3 serializedData];
       goto LABEL_12;
     }
 
@@ -68,19 +68,19 @@
     sub_100064C94(&v13);
   }
 
-  v11 = v13;
+  serializedData = v13;
 LABEL_12:
 
-  return v11;
+  return serializedData;
 }
 
-- (BOOL)_deserialize:(id)a3
+- (BOOL)_deserialize:(id)_deserialize
 {
-  v4 = a3;
-  v5 = [[MIBUDeserializer alloc] initWithData:v4];
+  _deserializeCopy = _deserialize;
+  v5 = [[MIBUDeserializer alloc] initWithData:_deserializeCopy];
 
-  v6 = [(MIBUDeserializer *)v5 deserialize];
-  if (!v6)
+  deserialize = [(MIBUDeserializer *)v5 deserialize];
+  if (!deserialize)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -128,7 +128,7 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v10 = [v6 objectForKey:&off_1000A90C0];
+  v10 = [deserialize objectForKey:&off_1000A90C0];
   if (!v10)
   {
     if (qword_1000B84A8[0] != -1)
@@ -158,7 +158,7 @@ LABEL_29:
 
   v11 = v10;
   [(MIBUChallengeResponse *)self setSignatureBlob:v10];
-  v12 = [v6 objectForKey:&off_1000A90D8];
+  v12 = [deserialize objectForKey:&off_1000A90D8];
   if (!v12)
   {
     if (qword_1000B84A8[0] != -1)

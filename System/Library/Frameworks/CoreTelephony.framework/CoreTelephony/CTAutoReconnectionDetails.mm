@@ -1,23 +1,23 @@
 @interface CTAutoReconnectionDetails
-- (BOOL)isEqual:(id)a3;
-- (CTAutoReconnectionDetails)initWithCoder:(id)a3;
-- (CTAutoReconnectionDetails)initWithSuccess:(BOOL)a3 skipped:(BOOL)a4 duration:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (CTAutoReconnectionDetails)initWithCoder:(id)coder;
+- (CTAutoReconnectionDetails)initWithSuccess:(BOOL)success skipped:(BOOL)skipped duration:(unint64_t)duration;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTAutoReconnectionDetails
 
-- (CTAutoReconnectionDetails)initWithSuccess:(BOOL)a3 skipped:(BOOL)a4 duration:(unint64_t)a5
+- (CTAutoReconnectionDetails)initWithSuccess:(BOOL)success skipped:(BOOL)skipped duration:(unint64_t)duration
 {
   v9.receiver = self;
   v9.super_class = CTAutoReconnectionDetails;
   result = [(CTAutoReconnectionDetails *)&v9 init];
   if (result)
   {
-    result->_success = a3;
-    result->_skipped = a4;
-    result->_duration = a5;
+    result->_success = success;
+    result->_skipped = skipped;
+    result->_duration = duration;
   }
 
   return result;
@@ -54,10 +54,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -65,10 +65,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTAutoReconnectionDetails *)self success], v5 == [(CTAutoReconnectionDetails *)v4 success]) && (v6 = [(CTAutoReconnectionDetails *)self skipped], v6 == [(CTAutoReconnectionDetails *)v4 skipped]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(CTAutoReconnectionDetails *)self success], v5 == [(CTAutoReconnectionDetails *)equalCopy success]) && (v6 = [(CTAutoReconnectionDetails *)self skipped], v6 == [(CTAutoReconnectionDetails *)equalCopy skipped]))
     {
-      v9 = [(CTAutoReconnectionDetails *)self duration];
-      v7 = v9 == [(CTAutoReconnectionDetails *)v4 duration];
+      duration = [(CTAutoReconnectionDetails *)self duration];
+      v7 = duration == [(CTAutoReconnectionDetails *)equalCopy duration];
     }
 
     else
@@ -80,28 +80,28 @@
   return v7;
 }
 
-- (CTAutoReconnectionDetails)initWithCoder:(id)a3
+- (CTAutoReconnectionDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CTAutoReconnectionDetails;
   v5 = [(CTAutoReconnectionDetails *)&v7 init];
   if (v5)
   {
-    v5->_success = [v4 decodeBoolForKey:@"success"];
-    v5->_skipped = [v4 decodeBoolForKey:@"skipped"];
-    v5->_duration = [v4 decodeIntegerForKey:@"duration"];
+    v5->_success = [coderCopy decodeBoolForKey:@"success"];
+    v5->_skipped = [coderCopy decodeBoolForKey:@"skipped"];
+    v5->_duration = [coderCopy decodeIntegerForKey:@"duration"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[CTAutoReconnectionDetails success](self forKey:{"success"), @"success"}];
-  [v4 encodeBool:-[CTAutoReconnectionDetails skipped](self forKey:{"skipped"), @"skipped"}];
-  [v4 encodeInteger:-[CTAutoReconnectionDetails duration](self forKey:{"duration"), @"duration"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[CTAutoReconnectionDetails success](self forKey:{"success"), @"success"}];
+  [coderCopy encodeBool:-[CTAutoReconnectionDetails skipped](self forKey:{"skipped"), @"skipped"}];
+  [coderCopy encodeInteger:-[CTAutoReconnectionDetails duration](self forKey:{"duration"), @"duration"}];
 }
 
 @end

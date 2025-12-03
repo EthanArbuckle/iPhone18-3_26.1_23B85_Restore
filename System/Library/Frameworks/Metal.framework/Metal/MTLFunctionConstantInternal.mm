@@ -1,6 +1,6 @@
 @interface MTLFunctionConstantInternal
-- (MTLFunctionConstantInternal)initWithName:(id)a3 type:(unint64_t)a4 index:(unint64_t)a5 required:(BOOL)a6;
-- (id)formattedDescription:(unint64_t)a3;
+- (MTLFunctionConstantInternal)initWithName:(id)name type:(unint64_t)type index:(unint64_t)index required:(BOOL)required;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
@@ -13,22 +13,22 @@
   [(MTLFunctionConstantInternal *)&v3 dealloc];
 }
 
-- (MTLFunctionConstantInternal)initWithName:(id)a3 type:(unint64_t)a4 index:(unint64_t)a5 required:(BOOL)a6
+- (MTLFunctionConstantInternal)initWithName:(id)name type:(unint64_t)type index:(unint64_t)index required:(BOOL)required
 {
   v12.receiver = self;
   v12.super_class = MTLFunctionConstantInternal;
   v10 = [(MTLFunctionConstantInternal *)&v12 init];
-  v10->_name = [a3 copy];
-  v10->_type = a4;
-  v10->_index = a5;
-  v10->_required = a6;
+  v10->_name = [name copy];
+  v10->_type = type;
+  v10->_index = index;
+  v10->_required = required;
   return v10;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v12[12] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = MTLFunctionConstantInternal;

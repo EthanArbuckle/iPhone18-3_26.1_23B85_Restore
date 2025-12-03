@@ -1,16 +1,16 @@
 @interface CNiOSABSocialProfileContactPredicate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror;
 @end
 
 @implementation CNiOSABSocialProfileContactPredicate
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v15 = 0;
-  v8 = [(CNiOSABSocialProfileContactPredicate *)self cn_copyPeopleInAddressBook:a3 fetchRequest:a4 matchInfos:a5 environment:a6 nserror:&v15];
+  v8 = [(CNiOSABSocialProfileContactPredicate *)self cn_copyPeopleInAddressBook:book fetchRequest:request matchInfos:infos environment:environment nserror:&v15];
   v9 = v15;
   v10 = v9;
   if (v8)
@@ -18,37 +18,37 @@
     v11 = v8;
   }
 
-  else if (a7)
+  else if (error)
   {
-    v12 = [v9 code];
-    v13 = [v10 userInfo];
-    *a7 = [CNErrorFactory errorWithCode:v12 userInfo:v13];
+    code = [v9 code];
+    userInfo = [v10 userInfo];
+    *error = [CNErrorFactory errorWithCode:code userInfo:userInfo];
   }
 
   return v8;
 }
 
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  if (a5)
+  requestCopy = request;
+  environmentCopy = environment;
+  if (infos)
   {
-    *a5 = 0;
+    *infos = 0;
   }
 
   v13 = +[CN socialProfilesDescription];
-  v14 = [(CNSocialProfileContactPredicate *)self socialProfile];
-  v15 = [objc_msgSend(v13 ABMultiValueValueFromCNLabeledValueValue:{v14), "mutableCopy"}];
+  socialProfile = [(CNSocialProfileContactPredicate *)self socialProfile];
+  v15 = [objc_msgSend(v13 ABMultiValueValueFromCNLabeledValueValue:{socialProfile), "mutableCopy"}];
 
   v16 = *MEMORY[0x1E698A328];
   v17 = [v15 objectForKey:*MEMORY[0x1E698A328]];
   if ([v17 count])
   {
     v18 = MEMORY[0x1E696AEC0];
-    v19 = [v17 firstObject];
-    v20 = [v18 stringWithFormat:@"%%%@%%", v19];
+    firstObject = [v17 firstObject];
+    v20 = [v18 stringWithFormat:@"%%%@%%", firstObject];
 
     [v15 setObject:v20 forKey:v16];
   }
@@ -64,20 +64,20 @@
   {
     v33[0] = v21;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-    v24 = a5;
+    infosCopy = infos;
     v25 = v13;
-    v26 = v12;
-    v27 = [v11 sortOrder];
-    v28 = [v11 options];
-    v29 = v27;
-    v12 = v26;
+    v26 = environmentCopy;
+    sortOrder = [requestCopy sortOrder];
+    options = [requestCopy options];
+    v29 = sortOrder;
+    environmentCopy = v26;
     v13 = v25;
-    v30 = [CNiOSFetchExecution contactsMatchingPredicates:v23 sortOrdering:v29 matchInfos:v24 options:v28 addressBook:a3 environment:v12 error:a7];
+    v30 = [CNiOSFetchExecution contactsMatchingPredicates:v23 sortOrdering:v29 matchInfos:infosCopy options:options addressBook:book environment:environmentCopy error:nserror];
   }
 
   else
   {
-    CNSetError(a7, 400, 0);
+    CNSetError(nserror, 400, 0);
     v30 = MEMORY[0x1E695E0F0];
   }
 
@@ -88,25 +88,25 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsMatchingSocialProfile:]"];
-  v5 = [(CNSocialProfileContactPredicate *)self socialProfile];
-  v6 = [v3 appendName:@"socialProfile" object:v5];
+  socialProfile = [(CNSocialProfileContactPredicate *)self socialProfile];
+  v6 = [v3 appendName:@"socialProfile" object:socialProfile];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__CNiOSABSocialProfileContactPredicate_isEqual___block_invoke;
   v8[3] = &unk_1E7412228;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = equalCopy;
+  v6 = equalCopy;
   LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v8, 0}];
 
   return self;

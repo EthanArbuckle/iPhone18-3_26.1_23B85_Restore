@@ -6,7 +6,7 @@
 - (uint64_t)setSimulatedAperture:(uint64_t)result;
 - (uint64_t)setSmartStyleRenderingMethod:(uint64_t)result;
 - (uint64_t)setSourceDeviceType:(uint64_t)result;
-- (uint64_t)setSourceVideoTransform:(uint64_t)a3;
+- (uint64_t)setSourceVideoTransform:(uint64_t)transform;
 - (uint64_t)setVideoSTFEnabled:(uint64_t)result;
 - (uint64_t)setVisGeneratedTransformsOutputDimensionsOverride:(uint64_t)result;
 - (uint64_t)setVisOutputDimensions:(uint64_t)result;
@@ -23,12 +23,12 @@
   [(FigCaptureVideoDataSinkPipelineConfiguration *)&v3 dealloc];
 }
 
-- (uint64_t)setSourceVideoTransform:(uint64_t)a3
+- (uint64_t)setSourceVideoTransform:(uint64_t)transform
 {
   if (result)
   {
     *(result + 8) = a2;
-    *(result + 16) = a3;
+    *(result + 16) = transform;
   }
 
   return result;

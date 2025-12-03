@@ -1,13 +1,13 @@
 @interface InternalSettingsFeatureStateModel
 - (_TtC18HealthExperienceUI33InternalSettingsFeatureStateModel)init;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(void *)a1;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(void *)completion;
 @end
 
 @implementation InternalSettingsFeatureStateModel
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(void *)a1
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(void *)completion
 {
-  v1 = a1;
+  completionCopy = completion;
   sub_1BA382848();
 }
 

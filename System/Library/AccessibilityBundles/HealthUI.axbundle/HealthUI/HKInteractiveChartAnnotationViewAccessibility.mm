@@ -1,5 +1,5 @@
 @interface HKInteractiveChartAnnotationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,29 +7,29 @@
 
 @implementation HKInteractiveChartAnnotationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HKInteractiveChartAnnotationView" hasInstanceMethod:@"bodyMarginsLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKInteractiveChartAnnotationView" hasInstanceMethod:@"infoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKBodyMarginsLayout" hasInstanceMethod:@"bodyView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKDateContentLayout" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_HKAnnotationColumnLayout" hasInstanceMethod:@"columnViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HKInteractiveChartAnnotationViewKeyValueLabel" hasInstanceMethod:@"tapOutBlock" withFullSignature:{"@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HKInteractiveChartAnnotationView" hasInstanceMethod:@"bodyMarginsLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartAnnotationView" hasInstanceMethod:@"infoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKBodyMarginsLayout" hasInstanceMethod:@"bodyView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKDateContentLayout" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_HKAnnotationColumnLayout" hasInstanceMethod:@"columnViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HKInteractiveChartAnnotationViewKeyValueLabel" hasInstanceMethod:@"tapOutBlock" withFullSignature:{"@?", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(HKInteractiveChartAnnotationViewAccessibility *)self safeUIViewForKey:@"infoButton"];
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __67__HKInteractiveChartAnnotationViewAccessibility_accessibilityLabel__block_invoke;
   v10[3] = &unk_29F2C4478;
   v10[4] = self;
   v11 = v3;
-  v12 = v4;
-  v5 = v4;
+  v12 = array;
+  v5 = array;
   v6 = v3;
   v7 = [(HKInteractiveChartAnnotationViewAccessibility *)self _accessibilityFindDescendant:v10];
   v8 = MEMORY[0x29C2D9140](v5);
@@ -90,7 +90,7 @@ uint64_t __67__HKInteractiveChartAnnotationViewAccessibility_accessibilityLabel_
 
   v15.receiver = self;
   v15.super_class = HKInteractiveChartAnnotationViewAccessibility;
-  v11 = [(HKInteractiveChartAnnotationViewAccessibility *)&v15 accessibilityTraits];
+  accessibilityTraits = [(HKInteractiveChartAnnotationViewAccessibility *)&v15 accessibilityTraits];
   if (v7)
   {
     v12 = *MEMORY[0x29EDC7F70];
@@ -102,7 +102,7 @@ uint64_t __67__HKInteractiveChartAnnotationViewAccessibility_accessibilityLabel_
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v12 | v11;
+  return v12 | accessibilityTraits;
 }
 
 - (id)_accessibilitySupplementaryFooterViews

@@ -1,41 +1,41 @@
 @interface EAAccessory
 - (BOOL)accessoryHasNMEASentencesAvailable;
-- (BOOL)containsSameProtocolsAsiAPAccessoryProtocols:(id)a3;
-- (BOOL)getEphemerisExpirationInterval:(double *)a3;
-- (BOOL)getEphemerisRecommendRefreshInterval:(double *)a3;
-- (BOOL)getEphemerisURL:(id *)a3;
-- (BOOL)getNMEASentence:(id *)a3;
-- (BOOL)sendDestinationInformation:(id)a3 identifier:(id)a4;
-- (BOOL)sendEphemeris:(id)a3;
-- (BOOL)sendEphemerisPointDataGpsWeek:(unint64_t)a3 gpsTOW:(double)a4 latitude:(double)a5 longitude:(double)a6 accuracy:(unsigned __int16)a7;
-- (BOOL)sendGpsWeek:(unint64_t)a3 gpsTOW:(double)a4;
-- (BOOL)setNMEASentencesToFilter:(id)a3;
+- (BOOL)containsSameProtocolsAsiAPAccessoryProtocols:(id)protocols;
+- (BOOL)getEphemerisExpirationInterval:(double *)interval;
+- (BOOL)getEphemerisRecommendRefreshInterval:(double *)interval;
+- (BOOL)getEphemerisURL:(id *)l;
+- (BOOL)getNMEASentence:(id *)sentence;
+- (BOOL)sendDestinationInformation:(id)information identifier:(id)identifier;
+- (BOOL)sendEphemeris:(id)ephemeris;
+- (BOOL)sendEphemerisPointDataGpsWeek:(unint64_t)week gpsTOW:(double)w latitude:(double)latitude longitude:(double)longitude accuracy:(unsigned __int16)accuracy;
+- (BOOL)sendGpsWeek:(unint64_t)week gpsTOW:(double)w;
+- (BOOL)setNMEASentencesToFilter:(id)filter;
 - (BOOL)supportsPublicIap;
 - (NSArray)protocolStrings;
 - (double)getNMEATimestampAverageSamples;
 - (id)_createWakeToken;
-- (id)_initWithAccessory:(id)a3;
-- (id)_protocolIDForProtocolString:(id)a3;
+- (id)_initWithAccessory:(id)accessory;
+- (id)_protocolIDForProtocolString:(id)string;
 - (id)_shortDescription;
 - (id)allPublicProtocolStrings;
 - (id)coreAccessoriesPrimaryUUID;
 - (id)description;
-- (id)dictionaryWithLowercaseKeys:(id)a3;
+- (id)dictionaryWithLowercaseKeys:(id)keys;
 - (id)getVehicleInfoData;
 - (unsigned)accessoryCapabilities;
-- (void)_endSession:(unsigned int)a3;
-- (void)_openCompleteForSession:(unsigned int)a3;
-- (void)_updateAccessoryInfo:(id)a3;
-- (void)addNMEASentence:(id)a3 withTimestamps:(id)a4;
-- (void)beginOOBBTPairingWithCompletionBlock:(id)a3;
+- (void)_endSession:(unsigned int)session;
+- (void)_openCompleteForSession:(unsigned int)session;
+- (void)_updateAccessoryInfo:(id)info;
+- (void)addNMEASentence:(id)sentence withTimestamps:(id)timestamps;
+- (void)beginOOBBTPairingWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)getIAPTimeSyncInfo:(id)a3 completionHandler:(id)a4;
-- (void)logNMEATimestampDelays:(id)a3 timestamps:(id)a4;
+- (void)getIAPTimeSyncInfo:(id)info completionHandler:(id)handler;
+- (void)logNMEATimestampDelays:(id)delays timestamps:(id)timestamps;
 - (void)requestIAPAccessoryWiFiCredentials;
 - (void)resetIAPTimeSyncKalmanFilter;
-- (void)sendDeviceIdentifierNotification:(id)a3 usbIdentifier:(id)a4;
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessCarPlayAvailable:(id)a5 bluetoothIdentifier:(id)a6;
-- (void)setIAPTimeSyncParams:(id)a3;
+- (void)sendDeviceIdentifierNotification:(id)notification usbIdentifier:(id)identifier;
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessCarPlayAvailable:(id)playAvailable bluetoothIdentifier:(id)bluetoothIdentifier;
+- (void)setIAPTimeSyncParams:(id)params;
 @end
 
 @implementation EAAccessory
@@ -46,9 +46,9 @@
   v8.receiver = self;
   v8.super_class = EAAccessory;
   [v3 appendFormat:@"%@ { \n", -[EAAccessory description](&v8, sel_description)];
-  v4 = [(EAAccessory *)self isConnected];
+  isConnected = [(EAAccessory *)self isConnected];
   v5 = @"NO";
-  if (v4)
+  if (isConnected)
   {
     v5 = @"YES";
   }
@@ -77,15 +77,15 @@
 - (NSArray)protocolStrings
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(NSDictionary *)[(EAAccessoryInternal *)self->_internal protocols] allKeys];
+  allKeys = [(NSDictionary *)[(EAAccessoryInternal *)self->_internal protocols] allKeys];
   if (![+[EAAccessoryManager shouldAllowInternalProtocols] sharedAccessoryManager]
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [(NSArray *)allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -96,27 +96,27 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allKeys);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
           if ([v8 caseInsensitiveCompare:@"com.apple.update"])
           {
-            [v3 addObject:v8];
+            [array addObject:v8];
           }
         }
 
-        v5 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [(NSArray *)allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
     }
 
-    v2 = [v3 copy];
+    allKeys = [array copy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v2;
+  return allKeys;
 }
 
 - (void)dealloc
@@ -157,22 +157,22 @@
   return [(EAAccessoryInternal *)internal capabilities];
 }
 
-- (id)_initWithAccessory:(id)a3
+- (id)_initWithAccessory:(id)accessory
 {
   v6.receiver = self;
   v6.super_class = EAAccessory;
   v4 = [(EAAccessory *)&v6 init];
   if (v4)
   {
-    v4->_internal = a3;
+    v4->_internal = accessory;
   }
 
   return v4;
 }
 
-- (void)_updateAccessoryInfo:(id)a3
+- (void)_updateAccessoryInfo:(id)info
 {
-  v5 = [a3 objectForKey:*MEMORY[0x277D183F0]];
+  v5 = [info objectForKey:*MEMORY[0x277D183F0]];
   if (v5)
   {
     v6 = v5;
@@ -190,7 +190,7 @@
     [(EAAccessoryInternal *)self->_internal setName:v7];
   }
 
-  v8 = [a3 objectForKey:*MEMORY[0x277D183E0]];
+  v8 = [info objectForKey:*MEMORY[0x277D183E0]];
   if (v8)
   {
     v9 = v8;
@@ -208,7 +208,7 @@
     [(EAAccessoryInternal *)self->_internal setManufacturer:v10];
   }
 
-  v11 = [a3 objectForKey:*MEMORY[0x277D183E8]];
+  v11 = [info objectForKey:*MEMORY[0x277D183E8]];
   if (v11)
   {
     v12 = v11;
@@ -226,7 +226,7 @@
     [(EAAccessoryInternal *)self->_internal setModelNumber:v13];
   }
 
-  v14 = [a3 objectForKey:*MEMORY[0x277D18458]];
+  v14 = [info objectForKey:*MEMORY[0x277D18458]];
   if (v14)
   {
     v15 = v14;
@@ -244,7 +244,7 @@
     [(EAAccessoryInternal *)self->_internal setSerialNumber:v16];
   }
 
-  v17 = [a3 objectForKey:*MEMORY[0x277D183B8]];
+  v17 = [info objectForKey:*MEMORY[0x277D183B8]];
   if (v17)
   {
     v18 = v17;
@@ -262,7 +262,7 @@
     [(EAAccessoryInternal *)self->_internal setFirmwareRevisionActive:v19];
   }
 
-  v20 = [a3 objectForKey:*MEMORY[0x277D183C0]];
+  v20 = [info objectForKey:*MEMORY[0x277D183C0]];
   if (v20)
   {
     v21 = v20;
@@ -280,7 +280,7 @@
     [(EAAccessoryInternal *)self->_internal setFirmwareRevisionPending:v22];
   }
 
-  v23 = [a3 objectForKey:*MEMORY[0x277D183C8]];
+  v23 = [info objectForKey:*MEMORY[0x277D183C8]];
   if (v23)
   {
     v24 = v23;
@@ -298,7 +298,7 @@
     [(EAAccessoryInternal *)self->_internal setHardwareRevision:v25];
   }
 
-  v26 = [a3 objectForKey:*MEMORY[0x277D183B0]];
+  v26 = [info objectForKey:*MEMORY[0x277D183B0]];
   if (v26)
   {
     v27 = v26;
@@ -316,7 +316,7 @@
     [(EAAccessoryInternal *)self->_internal setDockType:v28];
   }
 
-  v29 = [a3 objectForKey:*MEMORY[0x277D183D8]];
+  v29 = [info objectForKey:*MEMORY[0x277D183D8]];
   if (v29)
   {
     v30 = v29;
@@ -335,10 +335,10 @@
   }
 
   v32 = *MEMORY[0x277D18418];
-  if ([a3 objectForKey:*MEMORY[0x277D18418]])
+  if ([info objectForKey:*MEMORY[0x277D18418]])
   {
     internal = self->_internal;
-    v34 = [objc_msgSend(a3 objectForKey:{v32), "BOOLValue"}];
+    v34 = [objc_msgSend(info objectForKey:{v32), "BOOLValue"}];
 
     [(EAAccessoryInternal *)internal setPointOfInterestHandoffEnabled:v34];
   }
@@ -351,7 +351,7 @@
   return [(EAAccessory *)&v3 description];
 }
 
-- (id)_protocolIDForProtocolString:(id)a3
+- (id)_protocolIDForProtocolString:(id)string
 {
   v8 = 0;
   v9 = &v8;
@@ -359,14 +359,14 @@
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v4 = [(EAAccessoryInternal *)self->_internal protocols];
+  protocols = [(EAAccessoryInternal *)self->_internal protocols];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__EAAccessory__protocolIDForProtocolString___block_invoke;
   v7[3] = &unk_278A4E838;
-  v7[4] = a3;
+  v7[4] = string;
   v7[5] = &v8;
-  [(NSDictionary *)v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [(NSDictionary *)protocols enumerateKeysAndObjectsUsingBlock:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
   return v5;
@@ -384,15 +384,15 @@ uint64_t __44__EAAccessory__protocolIDForProtocolString___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_openCompleteForSession:(unsigned int)a3
+- (void)_openCompleteForSession:(unsigned int)session
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(EAAccessoryInternal *)self->_internal sessionsList];
+  sessionsList = [(EAAccessoryInternal *)self->_internal sessionsList];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [(NSArray *)sessionsList countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -403,18 +403,18 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(sessionsList);
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
-      if ([v9 _sessionID] == a3)
+      if ([v9 _sessionID] == session)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [(NSArray *)sessionsList countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -435,15 +435,15 @@ LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endSession:(unsigned int)a3
+- (void)_endSession:(unsigned int)session
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(EAAccessoryInternal *)self->_internal sessionsList];
+  sessionsList = [(EAAccessoryInternal *)self->_internal sessionsList];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [(NSArray *)sessionsList countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -458,12 +458,12 @@ LABEL_9:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sessionsList);
         }
 
-        if ([*(*(&v12 + 1) + 8 * v9) _sessionID] == a3)
+        if ([*(*(&v12 + 1) + 8 * v9) _sessionID] == session)
         {
-          [-[NSArray objectAtIndex:](v4 objectAtIndex:{v10), "_endStreams"}];
+          [-[NSArray objectAtIndex:](sessionsList objectAtIndex:{v10), "_endStreams"}];
           goto LABEL_11;
         }
 
@@ -472,7 +472,7 @@ LABEL_9:
       }
 
       while (v6 != v9);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(NSArray *)sessionsList countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -494,15 +494,15 @@ LABEL_11:
   return [v3 dataWithPropertyList:v2 format:200 options:0 error:0];
 }
 
-- (void)logNMEATimestampDelays:(id)a3 timestamps:(id)a4
+- (void)logNMEATimestampDelays:(id)delays timestamps:(id)timestamps
 {
   [(EAAccessory *)self getNMEATimestampAverageSamples];
-  if (a4)
+  if (timestamps)
   {
     v8 = v7;
-    [objc_msgSend(a4 objectAtIndex:{0), "doubleValue"}];
+    [objc_msgSend(timestamps objectAtIndex:{0), "doubleValue"}];
     v10 = v9;
-    [objc_msgSend(a4 objectAtIndex:{1), "doubleValue"}];
+    [objc_msgSend(timestamps objectAtIndex:{1), "doubleValue"}];
     v12 = v11;
     [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
     v13 = v12 - v10;
@@ -558,7 +558,7 @@ LABEL_11:
       -[EAAccessoryInternal setAverageFrameworkDelay:](self->_internal, "setAverageFrameworkDelay:", [v32 numberWithDouble:v15 / v8 + v33]);
     }
 
-    NSLog(&cfstr_LocationCurren.isa, *&v13, *&v15, [(EAAccessoryInternal *)self->_internal highestXPCDelay], [(EAAccessoryInternal *)self->_internal highestFrameworkDelay], [(EAAccessoryInternal *)self->_internal averageXPCDelay], [(EAAccessoryInternal *)self->_internal averageFrameworkDelay], a3);
+    NSLog(&cfstr_LocationCurren.isa, *&v13, *&v15, [(EAAccessoryInternal *)self->_internal highestXPCDelay], [(EAAccessoryInternal *)self->_internal highestFrameworkDelay], [(EAAccessoryInternal *)self->_internal averageXPCDelay], [(EAAccessoryInternal *)self->_internal averageFrameworkDelay], delays);
   }
 
   else
@@ -593,8 +593,8 @@ LABEL_11:
 - (id)allPublicProtocolStrings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(EAAccessory *)self protocolStrings];
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](v2, "count")}];
+  protocolStrings = [(EAAccessory *)self protocolStrings];
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](protocolStrings, "count")}];
   v18 = 0;
   v3 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:*MEMORY[0x277D184B8] options:1 error:&v18];
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"com.apple.accessory.cli.*" options:1 error:&v18];
@@ -602,7 +602,7 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSArray *)v2 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v5 = [(NSArray *)protocolStrings countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -614,7 +614,7 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(protocolStrings);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -656,7 +656,7 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v2 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [(NSArray *)protocolStrings countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v6);
@@ -667,15 +667,15 @@ LABEL_12:
   return result;
 }
 
-- (id)dictionaryWithLowercaseKeys:(id)a3
+- (id)dictionaryWithLowercaseKeys:(id)keys
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(keys, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [keys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -687,15 +687,15 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(keys);
         }
 
-        [v4 setObject:objc_msgSend(a3 forKey:{"objectForKey:", *(*(&v11 + 1) + 8 * v8)), objc_msgSend(*(*(&v11 + 1) + 8 * v8), "lowercaseString")}];
+        [v4 setObject:objc_msgSend(keys forKey:{"objectForKey:", *(*(&v11 + 1) + 8 * v8)), objc_msgSend(*(*(&v11 + 1) + 8 * v8), "lowercaseString")}];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [keys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -705,9 +705,9 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)containsSameProtocolsAsiAPAccessoryProtocols:(id)a3
+- (BOOL)containsSameProtocolsAsiAPAccessoryProtocols:(id)protocols
 {
-  v4 = [(EAAccessory *)self dictionaryWithLowercaseKeys:a3];
+  v4 = [(EAAccessory *)self dictionaryWithLowercaseKeys:protocols];
   v5 = [(EAAccessory *)self dictionaryWithLowercaseKeys:[(EAAccessoryInternal *)self->_internal protocols]];
 
   return [v4 isEqualToDictionary:v5];
@@ -732,11 +732,11 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)getNMEASentence:(id *)a3
+- (BOOL)getNMEASentence:(id *)sentence
 {
   v13 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(EAAccessoryInternal *)self->_internal nmeaSentenceAddCounter];
+  nmeaSentenceAddCounter = [(EAAccessoryInternal *)self->_internal nmeaSentenceAddCounter];
   if ([(EAAccessory *)self createdByCoreAccessories])
   {
     [__gLocationLock lock];
@@ -751,7 +751,7 @@ LABEL_12:
       [(EAAccessoryInternal *)self->_internal setNmeaSentenceGetCounter:[(EAAccessoryInternal *)self->_internal nmeaSentenceGetCounter]+ 1];
       if (v7)
       {
-        v10 = v6 % 0xF;
+        v10 = nmeaSentenceAddCounter % 0xF;
         if (+[EAAccessoryManager isLoggingEnabled]|| !v10)
         {
           [(EAAccessory *)self logNMEATimestampDelays:v7 timestamps:v8];
@@ -759,7 +759,7 @@ LABEL_12:
 
         if (+[EAAccessoryManager isLoggingEnabled]|| !v10)
         {
-          NSLog(&cfstr_LocationDLluLl.isa, +[EAAccessoryManager isLoggingEnabled], v6, [(EAAccessoryInternal *)self->_internal nmeaSentenceGetCounter], 15, v7, [(NSMutableArray *)[(EAAccessoryInternal *)self->_internal enqueuedNMEASentences] count]);
+          NSLog(&cfstr_LocationDLluLl.isa, +[EAAccessoryManager isLoggingEnabled], nmeaSentenceAddCounter, [(EAAccessoryInternal *)self->_internal nmeaSentenceGetCounter], 15, v7, [(NSMutableArray *)[(EAAccessoryInternal *)self->_internal enqueuedNMEASentences] count]);
         }
       }
 
@@ -780,25 +780,25 @@ LABEL_12:
   objc_autoreleasePoolPop(v5);
   if (v13)
   {
-    *a3 = v13;
+    *sentence = v13;
     v11 = v13;
   }
 
   return 1;
 }
 
-- (void)addNMEASentence:(id)a3 withTimestamps:(id)a4
+- (void)addNMEASentence:(id)sentence withTimestamps:(id)timestamps
 {
   [__gLocationLock lock];
-  v7 = [a3 copy];
-  v8 = [a4 copy];
+  v7 = [sentence copy];
+  v8 = [timestamps copy];
   [(NSMutableArray *)[(EAAccessoryInternal *)self->_internal enqueuedNMEASentences] addObject:v7];
   [(NSMutableArray *)[(EAAccessoryInternal *)self->_internal enqueuedNMEATimestamps] addObject:v8];
   [(EAAccessoryInternal *)self->_internal setNmeaSentenceAddCounter:[(EAAccessoryInternal *)self->_internal nmeaSentenceAddCounter]+ 1];
-  v9 = [(EAAccessoryInternal *)self->_internal nmeaSentenceAddCounter];
-  if (+[EAAccessoryManager isLoggingEnabled](EAAccessoryManager, "isLoggingEnabled") || +[EAAccessoryManager isLoggingEnabled]|| !(v9 % 0xF))
+  nmeaSentenceAddCounter = [(EAAccessoryInternal *)self->_internal nmeaSentenceAddCounter];
+  if (+[EAAccessoryManager isLoggingEnabled](EAAccessoryManager, "isLoggingEnabled") || +[EAAccessoryManager isLoggingEnabled]|| !(nmeaSentenceAddCounter % 0xF))
   {
-    NSLog(&cfstr_LocationDLluLl_0.isa, +[EAAccessoryManager isLoggingEnabled], v9, [(EAAccessoryInternal *)self->_internal nmeaSentenceGetCounter], 15, a3, [(NSMutableArray *)[(EAAccessoryInternal *)self->_internal enqueuedNMEASentences] count]);
+    NSLog(&cfstr_LocationDLluLl_0.isa, +[EAAccessoryManager isLoggingEnabled], nmeaSentenceAddCounter, [(EAAccessoryInternal *)self->_internal nmeaSentenceGetCounter], 15, sentence, [(NSMutableArray *)[(EAAccessoryInternal *)self->_internal enqueuedNMEASentences] count]);
   }
 
   v10 = __gLocationLock;
@@ -806,12 +806,12 @@ LABEL_12:
   [v10 unlock];
 }
 
-- (BOOL)setNMEASentencesToFilter:(id)a3
+- (BOOL)setNMEASentencesToFilter:(id)filter
 {
   if ([(EAAccessory *)self createdByCoreAccessories])
   {
     NSLog(&cfstr_LocationSetnme.isa);
-    [+[EAAccessoryManager sharedAccessoryManager](EAAccessoryManager sendNMEAFilterList:"sendNMEAFilterList:forUUID:" forUUID:a3, [(EAAccessory *)self coreAccessoriesPrimaryUUID]];
+    [+[EAAccessoryManager sharedAccessoryManager](EAAccessoryManager sendNMEAFilterList:"sendNMEAFilterList:forUUID:" forUUID:filter, [(EAAccessory *)self coreAccessoriesPrimaryUUID]];
     return 1;
   }
 
@@ -834,32 +834,32 @@ LABEL_12:
   return result;
 }
 
-- (void)setIAPTimeSyncParams:(id)a3
+- (void)setIAPTimeSyncParams:(id)params
 {
-  v5 = [a3 objectForKey:@"EATimeSyncOffsetUncertaintyThreshold"];
-  v6 = [a3 objectForKey:@"EATimeSyncOffsetMeasurementInterval"];
-  v7 = [(EAAccessoryInternal *)self->_internal connectionID];
-  v8 = [v5 unsignedLongLongValue];
-  v9 = [v6 unsignedIntValue];
+  v5 = [params objectForKey:@"EATimeSyncOffsetUncertaintyThreshold"];
+  v6 = [params objectForKey:@"EATimeSyncOffsetMeasurementInterval"];
+  connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
+  unsignedIntValue = [v6 unsignedIntValue];
 
-  MEMORY[0x2821729B0](v7, v8, v9);
+  MEMORY[0x2821729B0](connectionID, unsignedLongLongValue, unsignedIntValue);
 }
 
-- (void)getIAPTimeSyncInfo:(id)a3 completionHandler:(id)a4
+- (void)getIAPTimeSyncInfo:(id)info completionHandler:(id)handler
 {
-  v6 = [(EAAccessoryInternal *)self->_internal connectionID];
+  connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
 
-  MEMORY[0x2821729A0](v6, a3, a4);
+  MEMORY[0x2821729A0](connectionID, info, handler);
 }
 
 - (void)resetIAPTimeSyncKalmanFilter
 {
-  v2 = [(EAAccessoryInternal *)self->_internal connectionID];
+  connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
 
-  MEMORY[0x2821729A8](v2);
+  MEMORY[0x2821729A8](connectionID);
 }
 
-- (BOOL)getEphemerisURL:(id *)a3
+- (BOOL)getEphemerisURL:(id *)l
 {
   if (![(EAAccessory *)self createdByCoreAccessories])
   {
@@ -870,7 +870,7 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)getEphemerisRecommendRefreshInterval:(double *)a3
+- (BOOL)getEphemerisRecommendRefreshInterval:(double *)interval
 {
   v5 = 0.0;
   if ([(EAAccessory *)self createdByCoreAccessories])
@@ -889,11 +889,11 @@ LABEL_12:
     }
   }
 
-  *a3 = v5;
+  *interval = v5;
   return EphemerisRecommendedRefreshInterval;
 }
 
-- (BOOL)getEphemerisExpirationInterval:(double *)a3
+- (BOOL)getEphemerisExpirationInterval:(double *)interval
 {
   v5 = 0.0;
   if ([(EAAccessory *)self createdByCoreAccessories])
@@ -912,11 +912,11 @@ LABEL_12:
     }
   }
 
-  *a3 = v5;
+  *interval = v5;
   return EphemerisMaxInterval;
 }
 
-- (BOOL)sendGpsWeek:(unint64_t)a3 gpsTOW:(double)a4
+- (BOOL)sendGpsWeek:(unint64_t)week gpsTOW:(double)w
 {
   if ([(EAAccessory *)self createdByCoreAccessories])
   {
@@ -927,7 +927,7 @@ LABEL_12:
   return IAPLocationSendGPSTime() != 0;
 }
 
-- (BOOL)sendEphemerisPointDataGpsWeek:(unint64_t)a3 gpsTOW:(double)a4 latitude:(double)a5 longitude:(double)a6 accuracy:(unsigned __int16)a7
+- (BOOL)sendEphemerisPointDataGpsWeek:(unint64_t)week gpsTOW:(double)w latitude:(double)latitude longitude:(double)longitude accuracy:(unsigned __int16)accuracy
 {
   if ([(EAAccessory *)self createdByCoreAccessories])
   {
@@ -938,7 +938,7 @@ LABEL_12:
   return IAPLocationSendEphemerisPointData() != 0;
 }
 
-- (BOOL)sendEphemeris:(id)a3
+- (BOOL)sendEphemeris:(id)ephemeris
 {
   if ([(EAAccessory *)self createdByCoreAccessories])
   {
@@ -949,31 +949,31 @@ LABEL_12:
   return IAPLocationSendEphemeris() != 0;
 }
 
-- (BOOL)sendDestinationInformation:(id)a3 identifier:(id)a4
+- (BOOL)sendDestinationInformation:(id)information identifier:(id)identifier
 {
   if ([(EAAccessory *)self createdByCoreAccessories])
   {
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
-    [v7 setObject:a4 forKey:*MEMORY[0x277D18428]];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:information];
+    [v7 setObject:identifier forKey:*MEMORY[0x277D18428]];
     [+[EAAccessoryManager sharedAccessoryManager](EAAccessoryManager destinationInformation:"destinationInformation:forAccessoryUUID:" forAccessoryUUID:v7, [(EAAccessory *)self coreAccessoriesPrimaryUUID]];
     return 1;
   }
 
   else
   {
-    v9 = [(EAAccessoryInternal *)self->_internal connectionID];
-    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3];
+    connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
+    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:information];
 
-    return MEMORY[0x282172900](v9, v10, a4);
+    return MEMORY[0x282172900](connectionID, v10, identifier);
   }
 }
 
-- (void)beginOOBBTPairingWithCompletionBlock:(id)a3
+- (void)beginOOBBTPairingWithCompletionBlock:(id)block
 {
-  [(EAAccessoryInternal *)self->_internal setPairingCompletionBlock:a3];
-  v4 = [(EAAccessoryInternal *)self->_internal connectionID];
+  [(EAAccessoryInternal *)self->_internal setPairingCompletionBlock:block];
+  connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
 
-  MEMORY[0x2821728B0](v4);
+  MEMORY[0x2821728B0](connectionID);
 }
 
 - (void)requestIAPAccessoryWiFiCredentials
@@ -981,53 +981,53 @@ LABEL_12:
   if ([(EAAccessoryInternal *)self->_internal createdByCoreAccessories])
   {
     v3 = +[EAAccessoryManager sharedAccessoryManager];
-    v4 = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
+    coreAccessoriesPrimaryUUID = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
 
-    [(EAAccessoryManager *)v3 requestIAPAccessoryWiFiCredentials:v4];
+    [(EAAccessoryManager *)v3 requestIAPAccessoryWiFiCredentials:coreAccessoriesPrimaryUUID];
   }
 
   else
   {
-    v5 = [(EAAccessoryInternal *)self->_internal connectionID];
+    connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
 
-    MEMORY[0x2821728E8](v5);
+    MEMORY[0x2821728E8](connectionID);
   }
 }
 
-- (void)sendDeviceIdentifierNotification:(id)a3 usbIdentifier:(id)a4
+- (void)sendDeviceIdentifierNotification:(id)notification usbIdentifier:(id)identifier
 {
   if ([(EAAccessoryInternal *)self->_internal createdByCoreAccessories])
   {
     v7 = +[EAAccessoryManager sharedAccessoryManager];
-    v8 = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
+    coreAccessoriesPrimaryUUID = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
 
-    [(EAAccessoryManager *)v7 sendDeviceIdentifierNotification:a3 usbIdentifier:a4 forUUID:v8];
+    [(EAAccessoryManager *)v7 sendDeviceIdentifierNotification:notification usbIdentifier:identifier forUUID:coreAccessoriesPrimaryUUID];
   }
 
   else
   {
-    v9 = [(EAAccessoryInternal *)self->_internal connectionID];
-    v10 = [a3 UTF8String];
-    v11 = [a4 UTF8String];
+    connectionID = [(EAAccessoryInternal *)self->_internal connectionID];
+    uTF8String = [notification UTF8String];
+    uTF8String2 = [identifier UTF8String];
 
-    MEMORY[0x2821728F8](v9, v10, v11);
+    MEMORY[0x2821728F8](connectionID, uTF8String, uTF8String2);
   }
 }
 
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessCarPlayAvailable:(id)a5 bluetoothIdentifier:(id)a6
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessCarPlayAvailable:(id)playAvailable bluetoothIdentifier:(id)bluetoothIdentifier
 {
   v11 = +[EAAccessoryManager sharedAccessoryManager];
-  v12 = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
+  coreAccessoriesPrimaryUUID = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
 
-  [(EAAccessoryManager *)v11 sendWiredCarPlayAvailable:a3 usbIdentifier:a4 wirelessCarPlayAvailable:a5 bluetoothIdentifier:a6 forUUID:v12];
+  [(EAAccessoryManager *)v11 sendWiredCarPlayAvailable:available usbIdentifier:identifier wirelessCarPlayAvailable:playAvailable bluetoothIdentifier:bluetoothIdentifier forUUID:coreAccessoriesPrimaryUUID];
 }
 
 - (id)getVehicleInfoData
 {
   v3 = +[EAAccessoryManager sharedAccessoryManager];
-  v4 = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
+  coreAccessoriesPrimaryUUID = [(EAAccessory *)self coreAccessoriesPrimaryUUID];
 
-  return [(EAAccessoryManager *)v3 currentVehicleInformation:v4];
+  return [(EAAccessoryManager *)v3 currentVehicleInformation:coreAccessoriesPrimaryUUID];
 }
 
 @end

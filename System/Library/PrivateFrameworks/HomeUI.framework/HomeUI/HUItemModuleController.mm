@@ -1,10 +1,10 @@
 @interface HUItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (Class)collectionCellClassForItem:(id)a3;
-- (HUItemModuleController)initWithModule:(id)a3;
+- (Class)cellClassForItem:(id)item;
+- (Class)collectionCellClassForItem:(id)item;
+- (HUItemModuleController)initWithModule:(id)module;
 - (HUItemModuleControllerHosting)host;
 - (id)asGeneric;
-- (id)textFieldForVisibleItem:(id)a3;
+- (id)textFieldForVisibleItem:(id)item;
 @end
 
 @implementation HUItemModuleController
@@ -17,13 +17,13 @@
   return v2;
 }
 
-- (HUItemModuleController)initWithModule:(id)a3
+- (HUItemModuleController)initWithModule:(id)module
 {
-  v6 = a3;
-  if (!v6)
+  moduleCopy = module;
+  if (!moduleCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUItemModuleController.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"module"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUItemModuleController.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"module"}];
   }
 
   v13.receiver = self;
@@ -32,36 +32,36 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_module, a3);
-    v9 = [v6 moduleIdentifier];
+    objc_storeStrong(&v7->_module, module);
+    moduleIdentifier = [moduleCopy moduleIdentifier];
     moduleIdentifier = v8->_moduleIdentifier;
-    v8->_moduleIdentifier = v9;
+    v8->_moduleIdentifier = moduleIdentifier;
   }
 
   return v8;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUItemModuleController.m" lineNumber:29 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUItemModuleController cellClassForItem:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUItemModuleController.m" lineNumber:29 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUItemModuleController cellClassForItem:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HUItemModuleController.m" lineNumber:35 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUItemModuleController collectionCellClassForItem:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUItemModuleController.m" lineNumber:35 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUItemModuleController collectionCellClassForItem:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)textFieldForVisibleItem:(id)a3
+- (id)textFieldForVisibleItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self host];
-  v6 = [v5 moduleController:self textFieldForVisibleItem:v4];
+  itemCopy = item;
+  host = [(HUItemModuleController *)self host];
+  v6 = [host moduleController:self textFieldForVisibleItem:itemCopy];
 
   return v6;
 }

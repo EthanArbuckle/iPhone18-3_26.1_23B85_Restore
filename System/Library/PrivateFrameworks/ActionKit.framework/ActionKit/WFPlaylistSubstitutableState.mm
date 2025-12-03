@@ -1,28 +1,28 @@
 @interface WFPlaylistSubstitutableState
-+ (id)serializedRepresentationFromValue:(id)a3;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFPlaylistSubstitutableState)initWithPlaylist:(id)a3;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
++ (id)serializedRepresentationFromValue:(id)value;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFPlaylistSubstitutableState)initWithPlaylist:(id)playlist;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFPlaylistSubstitutableState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  valueHandlerCopy = valueHandler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__WFPlaylistSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
   v13[3] = &unk_278C199A8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
+  v14 = contextCopy;
+  v15 = valueHandlerCopy;
   v12.receiver = self;
   v12.super_class = WFPlaylistSubstitutableState;
-  v10 = v9;
-  v11 = v8;
-  [(WFVariableSubstitutableParameterState *)&v12 processWithContext:v11 userInputRequiredHandler:a4 valueHandler:v13];
+  v10 = valueHandlerCopy;
+  v11 = contextCopy;
+  [(WFVariableSubstitutableParameterState *)&v12 processWithContext:v11 userInputRequiredHandler:handler valueHandler:v13];
 }
 
 void __89__WFPlaylistSubstitutableState_processWithContext_userInputRequiredHandler_valueHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -68,13 +68,13 @@ void __89__WFPlaylistSubstitutableState_processWithContext_userInputRequiredHand
   }
 }
 
-- (WFPlaylistSubstitutableState)initWithPlaylist:(id)a3
+- (WFPlaylistSubstitutableState)initWithPlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v5 = [WFPlaylistDescriptor alloc];
-  v6 = [v4 name];
+  name = [playlistCopy name];
 
-  v7 = [(WFPlaylistDescriptor *)v5 initWithPlaylistName:v6 persistentIdentifier:0];
+  v7 = [(WFPlaylistDescriptor *)v5 initWithPlaylistName:name persistentIdentifier:0];
   v10.receiver = self;
   v10.super_class = WFPlaylistSubstitutableState;
   v8 = [(WFVariableSubstitutableParameterState *)&v10 initWithValue:v7];
@@ -82,50 +82,50 @@ void __89__WFPlaylistSubstitutableState_processWithContext_userInputRequiredHand
   return v8;
 }
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"WFPlaylistSubstitutableState.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFPlaylistDescriptor class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPlaylistSubstitutableState.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[WFPlaylistDescriptor class]]"}];
   }
 
-  if ([v5 entireMusicLibrary])
+  if ([valueCopy entireMusicLibrary])
   {
     v11 = @"EntireMusicLibrary";
     v12[0] = MEMORY[0x277CBEC38];
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
+    playlistName = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   }
 
   else
   {
-    v6 = [v5 playlistName];
+    playlistName = [valueCopy playlistName];
   }
 
-  v7 = v6;
+  v7 = playlistName;
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v5 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 objectForKeyedSubscript:@"EntireMusicLibrary"];
+    v6 = [representationCopy objectForKeyedSubscript:@"EntireMusicLibrary"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass(v6, v7);
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
-      v10 = [[WFPlaylistDescriptor alloc] initWithEntireMusicLibrary];
+      initWithEntireMusicLibrary = [[WFPlaylistDescriptor alloc] initWithEntireMusicLibrary];
       goto LABEL_8;
     }
   }
@@ -133,19 +133,19 @@ void __89__WFPlaylistSubstitutableState_processWithContext_userInputRequiredHand
   else
   {
     v11 = objc_opt_class();
-    v12 = WFEnforceClass(v5, v11);
+    v12 = WFEnforceClass(representationCopy, v11);
     if ([v12 length])
     {
-      v10 = [[WFPlaylistDescriptor alloc] initWithPlaylistName:v12 persistentIdentifier:0];
+      initWithEntireMusicLibrary = [[WFPlaylistDescriptor alloc] initWithPlaylistName:v12 persistentIdentifier:0];
 
       goto LABEL_8;
     }
   }
 
-  v10 = 0;
+  initWithEntireMusicLibrary = 0;
 LABEL_8:
 
-  return v10;
+  return initWithEntireMusicLibrary;
 }
 
 @end

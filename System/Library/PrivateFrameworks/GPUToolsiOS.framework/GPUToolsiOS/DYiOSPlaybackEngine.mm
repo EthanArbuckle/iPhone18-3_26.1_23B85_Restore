@@ -1,26 +1,26 @@
 @interface DYiOSPlaybackEngine
-+ (CATransform3D)_convertToCATransform3D:(SEL)a3;
-+ (CGPoint)_convertToCGPoint:(const Argument *)a3;
-- (CATransform3D)_applyInterfaceOrientationToTransform:(SEL)a3;
++ (CATransform3D)_convertToCATransform3D:(SEL)d;
++ (CGPoint)_convertToCGPoint:(const Argument *)point;
+- (CATransform3D)_applyInterfaceOrientationToTransform:(SEL)transform;
 - (CGRect)boundsForCurrentInterfaceOrientation;
-- (DYiOSPlaybackEngine)initWithCaptureStore:(id)a3 shouldCreateViewController:(BOOL)a4;
+- (DYiOSPlaybackEngine)initWithCaptureStore:(id)store shouldCreateViewController:(BOOL)controller;
 - (id).cxx_construct;
 - (id)currentTopLayer;
-- (id)layerForID:(unint64_t)a3;
-- (void)_setupLayer:(id)a3 contentRect:(CGRect)a4 contentsScale:(double)a5 properties:(id)a6 isCoreAnimationSurface:(BOOL)a7;
+- (id)layerForID:(unint64_t)d;
+- (void)_setupLayer:(id)layer contentRect:(CGRect)rect contentsScale:(double)scale properties:(id)properties isCoreAnimationSurface:(BOOL)surface;
 - (void)applyLayersVisibility;
-- (void)deleteLayer:(unint64_t)a3;
-- (void)prepareLayerForPresent:(id)a3;
+- (void)deleteLayer:(unint64_t)layer;
+- (void)prepareLayerForPresent:(id)present;
 - (void)resetLayersVisibility;
-- (void)setAnchorPoint:(const Argument *)a3 forLayerID:(unint64_t)a4;
-- (void)setPosition:(const Argument *)a3 forLayerID:(unint64_t)a4;
-- (void)setTransform:(const Argument *)a3 forLayerID:(unint64_t)a4 withScreenToLayerScale:(const void *)a5;
-- (void)updateLayer:(id)a3 contentRect:(CGRect)a4 contentsScale:(double)a5 properties:(id)a6;
+- (void)setAnchorPoint:(const Argument *)point forLayerID:(unint64_t)d;
+- (void)setPosition:(const Argument *)position forLayerID:(unint64_t)d;
+- (void)setTransform:(const Argument *)transform forLayerID:(unint64_t)d withScreenToLayerScale:(const void *)scale;
+- (void)updateLayer:(id)layer contentRect:(CGRect)rect contentsScale:(double)scale properties:(id)properties;
 @end
 
 @implementation DYiOSPlaybackEngine
 
-+ (CATransform3D)_convertToCATransform3D:(SEL)a3
++ (CATransform3D)_convertToCATransform3D:(SEL)d
 {
   for (i = 0; i != 16; ++i)
   {
@@ -30,21 +30,21 @@
   return result;
 }
 
-+ (CGPoint)_convertToCGPoint:(const Argument *)a3
++ (CGPoint)_convertToCGPoint:(const Argument *)point
 {
-  v4 = GPUTools::FD::Argument::ViewAsScalarArray<double>(a3, 0).n64_u64[0];
-  v5.n64_u64[0] = GPUTools::FD::Argument::ViewAsScalarArray<double>(a3, 1uLL).n64_u64[0];
+  v4 = GPUTools::FD::Argument::ViewAsScalarArray<double>(point, 0).n64_u64[0];
+  v5.n64_u64[0] = GPUTools::FD::Argument::ViewAsScalarArray<double>(point, 1uLL).n64_u64[0];
   v6 = *&v4;
   result.y = v5.n64_f64[0];
   result.x = v6;
   return result;
 }
 
-- (DYiOSPlaybackEngine)initWithCaptureStore:(id)a3 shouldCreateViewController:(BOOL)a4
+- (DYiOSPlaybackEngine)initWithCaptureStore:(id)store shouldCreateViewController:(BOOL)controller
 {
-  v4 = a4;
+  controllerCopy = controller;
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  storeCopy = store;
   if (!pthread_main_np())
   {
     __assert_rtn("[DYiOSPlaybackEngine initWithCaptureStore:shouldCreateViewController:]", &unk_24DC2B171, 0, "pthread_main_np()");
@@ -52,10 +52,10 @@
 
   v34.receiver = self;
   v34.super_class = DYiOSPlaybackEngine;
-  v7 = [(DYPlaybackEngine *)&v34 initWithCaptureStore:v6];
+  v7 = [(DYPlaybackEngine *)&v34 initWithCaptureStore:storeCopy];
   if (v7)
   {
-    if (v4)
+    if (controllerCopy)
     {
       v8 = [[DYPlaybackViewController alloc] initWithNibName:0 bundle:0];
       viewController = v7->_viewController;
@@ -65,9 +65,9 @@
       v36 = unk_24DC2AD40;
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
       v11 = CGColorCreate(DeviceRGB, components);
-      v12 = [(UIViewController *)v7->_viewController view];
-      v13 = [v12 layer];
-      [v13 setBackgroundColor:v11];
+      view = [(UIViewController *)v7->_viewController view];
+      layer = [view layer];
+      [layer setBackgroundColor:v11];
 
       CGColorRelease(v11);
       CGColorSpaceRelease(DeviceRGB);
@@ -76,20 +76,20 @@
       v7->_hostLayer = v14;
 
       [(CALayer *)v7->_hostLayer setOpaque:1];
-      v16 = [MEMORY[0x277D75998] mainScreen];
-      [v16 bounds];
+      mainScreen = [MEMORY[0x277D75998] mainScreen];
+      [mainScreen bounds];
       [(CALayer *)v7->_hostLayer setFrame:?];
 
-      v17 = [MEMORY[0x277D75998] mainScreen];
-      [v17 scale];
+      mainScreen2 = [MEMORY[0x277D75998] mainScreen];
+      [mainScreen2 scale];
       [(CALayer *)v7->_hostLayer setContentsScale:?];
 
-      v18 = [(UIViewController *)v7->_viewController view];
-      v19 = [v18 layer];
-      [v19 addSublayer:v7->_hostLayer];
+      view2 = [(UIViewController *)v7->_viewController view];
+      layer2 = [view2 layer];
+      [layer2 addSublayer:v7->_hostLayer];
 
-      v20 = [MEMORY[0x277D75998] mainScreen];
-      [v20 bounds];
+      mainScreen3 = [MEMORY[0x277D75998] mainScreen];
+      [mainScreen3 bounds];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -124,28 +124,28 @@
   return v7;
 }
 
-- (void)_setupLayer:(id)a3 contentRect:(CGRect)a4 contentsScale:(double)a5 properties:(id)a6 isCoreAnimationSurface:(BOOL)a7
+- (void)_setupLayer:(id)layer contentRect:(CGRect)rect contentsScale:(double)scale properties:(id)properties isCoreAnimationSurface:(BOOL)surface
 {
-  v7 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v15 = a6;
-  if (v7)
+  surfaceCopy = surface;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
+  propertiesCopy = properties;
+  if (surfaceCopy)
   {
-    [v16 setFrame:{x, y, width, height}];
+    [layerCopy setFrame:{x, y, width, height}];
   }
 
   else
   {
-    [v16 setPosition:{0.0, 0.0}];
+    [layerCopy setPosition:{0.0, 0.0}];
   }
 
-  [v16 setBounds:{x, y, width, height}];
-  [v16 setContentsScale:a5];
-  [(DYiOSPlaybackEngine *)self setProperties:v15 forLayer:v16];
+  [layerCopy setBounds:{x, y, width, height}];
+  [layerCopy setContentsScale:scale];
+  [(DYiOSPlaybackEngine *)self setProperties:propertiesCopy forLayer:layerCopy];
 }
 
 - (void)resetLayersVisibility
@@ -155,8 +155,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CALayer *)self->_hostLayer sublayers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  sublayers = [(CALayer *)self->_hostLayer sublayers];
+  v4 = [sublayers countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -167,7 +167,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sublayers);
         }
 
         v12[0] = *(*(&v8 + 1) + 8 * v6);
@@ -177,7 +177,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v4 = [sublayers countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v4);
@@ -186,9 +186,9 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareLayerForPresent:(id)a3
+- (void)prepareLayerForPresent:(id)present
 {
-  obj[0] = a3;
+  obj[0] = present;
   if (!obj[0])
   {
     __assert_rtn("[DYiOSPlaybackEngine prepareLayerForPresent:]", &unk_24DC2B171, 0, "layer");
@@ -210,8 +210,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CALayer *)self->_hostLayer sublayers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  sublayers = [(CALayer *)self->_hostLayer sublayers];
+  v4 = [sublayers countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -222,7 +222,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sublayers);
         }
 
         v13[0] = *(*(&v9 + 1) + 8 * v6);
@@ -233,7 +233,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v4 = [sublayers countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v4);
@@ -243,44 +243,44 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLayer:(id)a3 contentRect:(CGRect)a4 contentsScale:(double)a5 properties:(id)a6
+- (void)updateLayer:(id)layer contentRect:(CGRect)rect contentsScale:(double)scale properties:(id)properties
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v20 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v18[0] = v13;
-  v14 = a6;
-  if (!v13)
+  layerCopy = layer;
+  v18[0] = layerCopy;
+  propertiesCopy = properties;
+  if (!layerCopy)
   {
     __assert_rtn("[DYiOSPlaybackEngine updateLayer:contentRect:contentsScale:properties:]", &unk_24DC2B171, 0, "layer");
   }
 
-  [v13 bounds];
+  [layerCopy bounds];
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
-  if (!CGRectEqualToRect(v21, v22) || ([v13 contentsScale], v15 != a5) || !-[DYiOSPlaybackEngine layerHasSameProperties:layer:](self, "layerHasSameProperties:layer:", v14, v13))
+  if (!CGRectEqualToRect(v21, v22) || ([layerCopy contentsScale], v15 != scale) || !-[DYiOSPlaybackEngine layerHasSameProperties:layer:](self, "layerHasSameProperties:layer:", propertiesCopy, layerCopy))
   {
     GPUTools::AutoCATransaction::AutoCATransaction(v19, 1, 1);
-    if (a5 == 0.0)
+    if (scale == 0.0)
     {
       __assert_rtn("[DYiOSPlaybackEngine updateLayer:contentRect:contentsScale:properties:]", &unk_24DC2B171, 0, "contentsScale != 0.0");
     }
 
     v18[2] = v18;
     v16 = std::__tree<std::__value_type<CALayer * {__strong},BOOL>,std::__map_value_compare<CALayer * {__strong},std::__value_type<CALayer * {__strong},BOOL>,std::less<CALayer * {__strong}>,true>,std::allocator<std::__value_type<CALayer * {__strong},BOOL>>>::__emplace_unique_key_args<CALayer * {__strong},std::piecewise_construct_t const&,std::tuple<CALayer * const {__strong}&>,std::tuple<>>(&self->_coreAnimationLayerMap, v18);
-    [(DYiOSPlaybackEngine *)self _setupLayer:v18[0] contentRect:v14 contentsScale:*(v16 + 40) properties:x isCoreAnimationSurface:y, width, height, a5];
+    [(DYiOSPlaybackEngine *)self _setupLayer:v18[0] contentRect:propertiesCopy contentsScale:*(v16 + 40) properties:x isCoreAnimationSurface:y, width, height, scale];
     GPUTools::AutoCATransaction::~AutoCATransaction(v19);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)layerForID:(unint64_t)a3
+- (id)layerForID:(unint64_t)d
 {
   left = self->_layerMap.__tree_.__end_node_.__left_;
   if (!left)
@@ -292,8 +292,8 @@
   do
   {
     v5 = *(left + 4);
-    v6 = v5 >= a3;
-    v7 = v5 < a3;
+    v6 = v5 >= d;
+    v7 = v5 < d;
     if (v6)
     {
       p_end_node = left;
@@ -303,7 +303,7 @@
   }
 
   while (left);
-  if (p_end_node != &self->_layerMap.__tree_.__end_node_ && p_end_node[4].__left_ <= a3)
+  if (p_end_node != &self->_layerMap.__tree_.__end_node_ && p_end_node[4].__left_ <= d)
   {
     return p_end_node[5].__left_;
   }
@@ -321,7 +321,7 @@
   return WeakRetained;
 }
 
-- (void)deleteLayer:(unint64_t)a3
+- (void)deleteLayer:(unint64_t)layer
 {
   p_layerMap = &self->_layerMap;
   left = self->_layerMap.__tree_.__end_node_.__left_;
@@ -331,8 +331,8 @@
     do
     {
       v7 = *(left + 4);
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= layer;
+      v9 = v7 < layer;
       if (v8)
       {
         p_end_node = left;
@@ -342,7 +342,7 @@
     }
 
     while (left);
-    if (p_end_node != &self->_layerMap.__tree_.__end_node_ && p_end_node[4].__left_ <= a3)
+    if (p_end_node != &self->_layerMap.__tree_.__end_node_ && p_end_node[4].__left_ <= layer)
     {
       [p_end_node[5].__left_ removeFromSuperlayer];
       std::__tree<std::__value_type<CALayer * {__strong},BOOL>,std::__map_value_compare<CALayer * {__strong},std::__value_type<CALayer * {__strong},BOOL>,std::less<CALayer * {__strong}>,true>,std::allocator<std::__value_type<CALayer * {__strong},BOOL>>>::__erase_unique<CALayer * {__strong}>(&self->_coreAnimationLayerMap, &p_end_node[5]);
@@ -352,10 +352,10 @@
   }
 }
 
-- (void)setTransform:(const Argument *)a3 forLayerID:(unint64_t)a4 withScreenToLayerScale:(const void *)a5
+- (void)setTransform:(const Argument *)transform forLayerID:(unint64_t)d withScreenToLayerScale:(const void *)scale
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = [(DYiOSPlaybackEngine *)self layerForID:a4];
+  v7 = [(DYiOSPlaybackEngine *)self layerForID:d];
   if (v7)
   {
     GPUTools::AutoCATransaction::AutoCATransaction(v34, 1, 1);
@@ -370,7 +370,7 @@
     v8 = objc_opt_class();
     if (v8)
     {
-      [v8 _convertToCATransform3D:a3];
+      [v8 _convertToCATransform3D:transform];
     }
 
     else
@@ -409,14 +409,14 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPosition:(const Argument *)a3 forLayerID:(unint64_t)a4
+- (void)setPosition:(const Argument *)position forLayerID:(unint64_t)d
 {
   v7[5] = *MEMORY[0x277D85DE8];
-  v5 = [(DYiOSPlaybackEngine *)self layerForID:a4];
+  v5 = [(DYiOSPlaybackEngine *)self layerForID:d];
   if (v5)
   {
     GPUTools::AutoCATransaction::AutoCATransaction(v7, 1, 1);
-    [objc_opt_class() _convertToCGPoint:a3];
+    [objc_opt_class() _convertToCGPoint:position];
     [v5 setPosition:?];
     GPUTools::AutoCATransaction::~AutoCATransaction(v7);
   }
@@ -424,14 +424,14 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAnchorPoint:(const Argument *)a3 forLayerID:(unint64_t)a4
+- (void)setAnchorPoint:(const Argument *)point forLayerID:(unint64_t)d
 {
   v7[5] = *MEMORY[0x277D85DE8];
-  v5 = [(DYiOSPlaybackEngine *)self layerForID:a4];
+  v5 = [(DYiOSPlaybackEngine *)self layerForID:d];
   if (v5)
   {
     GPUTools::AutoCATransaction::AutoCATransaction(v7, 1, 1);
-    [objc_opt_class() _convertToCGPoint:a3];
+    [objc_opt_class() _convertToCGPoint:point];
     [v5 setAnchorPoint:?];
     GPUTools::AutoCATransaction::~AutoCATransaction(v7);
   }
@@ -466,7 +466,7 @@
   return result;
 }
 
-- (CATransform3D)_applyInterfaceOrientationToTransform:(SEL)a3
+- (CATransform3D)_applyInterfaceOrientationToTransform:(SEL)transform
 {
   m32 = self[1].m32;
   switch(*&m32)

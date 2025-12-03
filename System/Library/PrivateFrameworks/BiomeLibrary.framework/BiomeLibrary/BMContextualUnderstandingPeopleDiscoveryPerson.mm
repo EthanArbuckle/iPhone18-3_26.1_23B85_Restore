@@ -1,38 +1,38 @@
 @interface BMContextualUnderstandingPeopleDiscoveryPerson
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithContactID:(id)a3 identifier:(id)a4 name:(id)a5 flags:(id)a6 activityLevel:(id)a7 proximity:(id)a8;
-- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithContactID:(id)d identifier:(id)identifier name:(id)name flags:(id)flags activityLevel:(id)level proximity:(id)proximity;
+- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingPeopleDiscoveryPerson
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
-    v7 = [v5 contactID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    contactID = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
+    contactID2 = [v5 contactID];
+    v8 = contactID2;
+    if (contactID == contactID2)
     {
     }
 
     else
     {
-      v9 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
-      v10 = [v5 contactID];
-      v11 = [v9 isEqual:v10];
+      contactID3 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
+      contactID4 = [v5 contactID];
+      v11 = [contactID3 isEqual:contactID4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
-    v14 = [v5 identifier];
-    v15 = v14;
-    if (v13 == v14)
+    identifier = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
+    identifier2 = [v5 identifier];
+    v15 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v16 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
-      v17 = [v5 identifier];
-      v18 = [v16 isEqual:v17];
+      identifier3 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
+      identifier4 = [v5 identifier];
+      v18 = [identifier3 isEqual:identifier4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
-    v20 = [v5 name];
-    v21 = v20;
-    if (v19 == v20)
+    name = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
+    name2 = [v5 name];
+    v21 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v22 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
-      v23 = [v5 name];
-      v24 = [v22 isEqual:v23];
+      name3 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
+      name4 = [v5 name];
+      v24 = [name3 isEqual:name4];
 
       if (!v24)
       {
@@ -90,8 +90,8 @@
 
         if (-[BMContextualUnderstandingPeopleDiscoveryPerson hasProximity](self, "hasProximity") && [v5 hasProximity])
         {
-          v27 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self proximity];
-          v12 = v27 == [v5 proximity];
+          proximity = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self proximity];
+          v12 = proximity == [v5 proximity];
 LABEL_31:
 
           goto LABEL_32;
@@ -113,9 +113,9 @@ LABEL_32:
 - (id)jsonDictionary
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
-  v4 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
-  v5 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
+  contactID = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
+  identifier = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
+  name = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
   if ([(BMContextualUnderstandingPeopleDiscoveryPerson *)self hasFlags])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMContextualUnderstandingPeopleDiscoveryPerson flags](self, "flags")}];
@@ -147,56 +147,56 @@ LABEL_32:
   }
 
   v22[0] = @"contactID";
-  v9 = v3;
-  if (!v3)
+  null = contactID;
+  if (!contactID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v9;
-  v20 = v4;
-  v23[0] = v9;
+  v18 = null;
+  v20 = identifier;
+  v23[0] = null;
   v22[1] = @"identifier";
-  v10 = v4;
-  if (!v4)
+  null2 = identifier;
+  if (!identifier)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v10;
+  v23[1] = null2;
   v22[2] = @"name";
-  v11 = v5;
-  if (!v5)
+  null3 = name;
+  if (!name)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v3;
-  v23[2] = v11;
+  v21 = contactID;
+  v23[2] = null3;
   v22[3] = @"flags";
-  v12 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"activityLevel";
-  v13 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"proximity";
-  v14 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
   if (v8)
   {
@@ -229,7 +229,7 @@ LABEL_24:
 LABEL_34:
 
 LABEL_25:
-  if (!v5)
+  if (!name)
   {
   }
 
@@ -256,22 +256,22 @@ LABEL_29:
   return v15;
 }
 
-- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"contactID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"contactID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"identifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v21 = 0;
           v17 = 0;
@@ -281,7 +281,7 @@ LABEL_4:
         v23 = v7;
         v24 = v8;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v49 = a4;
+        errorCopy = error;
         v26 = *MEMORY[0x1E698F240];
         v67 = *MEMORY[0x1E696A578];
         v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"identifier"];
@@ -291,10 +291,10 @@ LABEL_4:
         v8 = v24;
         v7 = v23;
         v29 = v26;
-        a4 = v27;
+        error = v27;
         v21 = 0;
         v17 = 0;
-        *v49 = [v28 initWithDomain:v29 code:2 userInfo:v10];
+        *errorCopy = [v28 initWithDomain:v29 code:2 userInfo:v10];
         goto LABEL_49;
       }
 
@@ -306,14 +306,14 @@ LABEL_4:
       v57 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"name"];
-    v58 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v17 = 0;
           v21 = v57;
@@ -323,7 +323,7 @@ LABEL_4:
         v30 = v7;
         v31 = v8;
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v50 = a4;
+        errorCopy2 = error;
         v33 = *MEMORY[0x1E698F240];
         v65 = *MEMORY[0x1E696A578];
         v56 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"name"];
@@ -333,13 +333,13 @@ LABEL_4:
         v8 = v31;
         v7 = v30;
         v35 = [v34 initWithDomain:v33 code:2 userInfo:v11];
-        a4 = 0;
+        error = 0;
         v17 = 0;
-        *v50 = v35;
+        *errorCopy2 = v35;
         v21 = v57;
 LABEL_48:
 
-        self = v58;
+        self = selfCopy;
 LABEL_49:
 
         goto LABEL_50;
@@ -353,7 +353,7 @@ LABEL_49:
       v55 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"flags"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"flags"];
     v53 = v7;
     v54 = v9;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -361,12 +361,12 @@ LABEL_49:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v56 = 0;
           v17 = 0;
           v21 = v57;
-          a4 = v55;
+          error = v55;
           goto LABEL_48;
         }
 
@@ -383,7 +383,7 @@ LABEL_49:
         v40 = [v39 initWithDomain:v38 code:2 userInfo:v12];
         v56 = 0;
         v17 = 0;
-        *a4 = v40;
+        *error = v40;
         goto LABEL_57;
       }
 
@@ -395,7 +395,7 @@ LABEL_49:
       v56 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"activityLevel"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"activityLevel"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = v8;
@@ -409,14 +409,14 @@ LABEL_49:
       v13 = v8;
       v14 = v12;
 LABEL_16:
-      v15 = [v6 objectForKeyedSubscript:@"proximity"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"proximity"];
       if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v16 = 0;
 LABEL_19:
-        a4 = v55;
-        v17 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)v58 initWithContactID:v13 identifier:v57 name:v55 flags:v56 activityLevel:v14 proximity:v16];
-        v58 = v17;
+        error = v55;
+        v17 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)selfCopy initWithContactID:v13 identifier:v57 name:v55 flags:v56 activityLevel:v14 proximity:v16];
+        selfCopy = v17;
 LABEL_46:
 
         v8 = v13;
@@ -435,7 +435,7 @@ LABEL_47:
         goto LABEL_19;
       }
 
-      if (a4)
+      if (error)
       {
         v52 = objc_alloc(MEMORY[0x1E696ABC0]);
         v48 = *MEMORY[0x1E698F240];
@@ -443,20 +443,20 @@ LABEL_47:
         v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"proximity"];
         v60 = v44;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-        *a4 = [v52 initWithDomain:v48 code:2 userInfo:v45];
+        *error = [v52 initWithDomain:v48 code:2 userInfo:v45];
       }
 
       v16 = 0;
       v17 = 0;
 LABEL_45:
-      a4 = v55;
+      error = v55;
       goto LABEL_46;
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v8;
-      v51 = a4;
+      errorCopy3 = error;
       v41 = objc_alloc(MEMORY[0x1E696ABC0]);
       v42 = *MEMORY[0x1E698F240];
       v61 = *MEMORY[0x1E696A578];
@@ -466,14 +466,14 @@ LABEL_45:
       v43 = [v41 initWithDomain:v42 code:2 userInfo:v15];
       v14 = 0;
       v17 = 0;
-      *v51 = v43;
+      *errorCopy3 = v43;
       goto LABEL_45;
     }
 
     v14 = 0;
     v17 = 0;
 LABEL_57:
-    a4 = v55;
+    error = v55;
     goto LABEL_47;
   }
 
@@ -484,7 +484,7 @@ LABEL_57:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v17 = 0;
@@ -492,7 +492,7 @@ LABEL_57:
   }
 
   v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v19 = a4;
+  errorCopy4 = error;
   v20 = *MEMORY[0x1E698F240];
   v69 = *MEMORY[0x1E696A578];
   v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"contactID"];
@@ -501,7 +501,7 @@ LABEL_57:
   v22 = [v18 initWithDomain:v20 code:2 userInfo:v9];
   v8 = 0;
   v17 = 0;
-  *v19 = v22;
+  *errorCopy4 = v22;
 LABEL_50:
 
 LABEL_51:
@@ -513,58 +513,58 @@ LABEL_51:
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingPeopleDiscoveryPerson *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_contactID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasFlags)
   {
     flags = self->_flags;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasActivityLevel)
   {
     activityLevel = self->_activityLevel;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasProximity)
   {
     proximity = self->_proximity;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v42.receiver = self;
   v42.super_class = BMContextualUnderstandingPeopleDiscoveryPerson;
   v5 = [(BMEventBase *)&v42 init];
@@ -573,12 +573,12 @@ LABEL_51:
     goto LABEL_74;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -589,18 +589,18 @@ LABEL_51:
       while (1)
       {
         v43 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v43 & 0x7F) << v7;
@@ -618,9 +618,9 @@ LABEL_51:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -638,18 +638,18 @@ LABEL_16:
             while (1)
             {
               v43 = 0;
-              v28 = [v4 position] + 1;
-              if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+              v28 = [fromCopy position] + 1;
+              if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
               {
-                v30 = [v4 data];
-                [v30 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v27 |= (v43 & 0x7F) << v25;
@@ -667,7 +667,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -688,18 +688,18 @@ LABEL_61:
             while (1)
             {
               v43 = 0;
-              v35 = [v4 position] + 1;
-              if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+              v35 = [fromCopy position] + 1;
+              if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
               {
-                v37 = [v4 data];
-                [v37 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v34 |= (v43 & 0x7F) << v32;
@@ -717,7 +717,7 @@ LABEL_61:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -738,18 +738,18 @@ LABEL_69:
             while (1)
             {
               v43 = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v43 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v43 & 0x7F) << v18;
@@ -767,7 +767,7 @@ LABEL_69:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -818,13 +818,13 @@ LABEL_45:
       }
 
 LABEL_71:
-      v39 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v39 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_73:
     v40 = 0;
@@ -842,73 +842,73 @@ LABEL_74:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
-  v5 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
-  v6 = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
+  contactID = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self contactID];
+  identifier = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self identifier];
+  name = [(BMContextualUnderstandingPeopleDiscoveryPerson *)self name];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMContextualUnderstandingPeopleDiscoveryPerson flags](self, "flags")}];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMContextualUnderstandingPeopleDiscoveryPerson activityLevel](self, "activityLevel")}];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMContextualUnderstandingPeopleDiscoveryPerson proximity](self, "proximity")}];
-  v10 = [v3 initWithFormat:@"BMContextualUnderstandingPeopleDiscoveryPerson with contactID: %@, identifier: %@, name: %@, flags: %@, activityLevel: %@, proximity: %@", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"BMContextualUnderstandingPeopleDiscoveryPerson with contactID: %@, identifier: %@, name: %@, flags: %@, activityLevel: %@, proximity: %@", contactID, identifier, name, v7, v8, v9];
 
   return v10;
 }
 
-- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithContactID:(id)a3 identifier:(id)a4 name:(id)a5 flags:(id)a6 activityLevel:(id)a7 proximity:(id)a8
+- (BMContextualUnderstandingPeopleDiscoveryPerson)initWithContactID:(id)d identifier:(id)identifier name:(id)name flags:(id)flags activityLevel:(id)level proximity:(id)proximity
 {
-  v25 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  flagsCopy = flags;
+  levelCopy = level;
+  proximityCopy = proximity;
   v26.receiver = self;
   v26.super_class = BMContextualUnderstandingPeopleDiscoveryPerson;
   v20 = [(BMEventBase *)&v26 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_contactID, a3);
-    objc_storeStrong(&v20->_identifier, a4);
-    objc_storeStrong(&v20->_name, a5);
-    if (v17)
+    objc_storeStrong(&v20->_contactID, d);
+    objc_storeStrong(&v20->_identifier, identifier);
+    objc_storeStrong(&v20->_name, name);
+    if (flagsCopy)
     {
       v20->_hasFlags = 1;
-      v21 = [v17 unsignedIntValue];
+      unsignedIntValue = [flagsCopy unsignedIntValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntValue = 0;
       v20->_hasFlags = 0;
     }
 
-    v20->_flags = v21;
-    if (v18)
+    v20->_flags = unsignedIntValue;
+    if (levelCopy)
     {
       v20->_hasActivityLevel = 1;
-      v22 = [v18 unsignedIntValue];
+      unsignedIntValue2 = [levelCopy unsignedIntValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedIntValue2 = 0;
       v20->_hasActivityLevel = 0;
     }
 
-    v20->_activityLevel = v22;
-    if (v19)
+    v20->_activityLevel = unsignedIntValue2;
+    if (proximityCopy)
     {
       v20->_hasProximity = 1;
-      v23 = [v19 unsignedIntValue];
+      unsignedIntValue3 = [proximityCopy unsignedIntValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedIntValue3 = 0;
       v20->_hasProximity = 0;
     }
 
-    v20->_proximity = v23;
+    v20->_proximity = unsignedIntValue3;
   }
 
   return v20;
@@ -958,9 +958,9 @@ LABEL_74:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -968,8 +968,8 @@ LABEL_74:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingPeopleDiscoveryPerson alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,5 +1,5 @@
 @interface NearbyPeerPaymentErrorView
-- (_TtC9PassKitUI26NearbyPeerPaymentErrorView)initWithFrame:(CGRect)a3;
+- (_TtC9PassKitUI26NearbyPeerPaymentErrorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD97AFA0();
 }
 
-- (_TtC9PassKitUI26NearbyPeerPaymentErrorView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI26NearbyPeerPaymentErrorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,35 +1,35 @@
 @interface BUCoalescingCallBlock
-- (BUCoalescingCallBlock)initWithNotifyBlock:(id)a3 notifyTimeout:(unsigned __int16)a4 blockDescription:(id)a5 notifyTimeoutBlock:(id)a6;
+- (BUCoalescingCallBlock)initWithNotifyBlock:(id)block notifyTimeout:(unsigned __int16)timeout blockDescription:(id)description notifyTimeoutBlock:(id)timeoutBlock;
 - (id)description;
-- (void)_coalescingTimeExpired:(unint64_t)a3;
+- (void)_coalescingTimeExpired:(unint64_t)expired;
 - (void)_invoke;
 - (void)_invokeIfNotInProgress;
-- (void)_maxTimeExpired:(unint64_t)a3;
-- (void)signalWithCompletion:(id)a3;
+- (void)_maxTimeExpired:(unint64_t)expired;
+- (void)signalWithCompletion:(id)completion;
 @end
 
 @implementation BUCoalescingCallBlock
 
-- (BUCoalescingCallBlock)initWithNotifyBlock:(id)a3 notifyTimeout:(unsigned __int16)a4 blockDescription:(id)a5 notifyTimeoutBlock:(id)a6
+- (BUCoalescingCallBlock)initWithNotifyBlock:(id)block notifyTimeout:(unsigned __int16)timeout blockDescription:(id)description notifyTimeoutBlock:(id)timeoutBlock
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  descriptionCopy = description;
+  timeoutBlockCopy = timeoutBlock;
   v31.receiver = self;
   v31.super_class = BUCoalescingCallBlock;
   v15 = [(BUCoalescingCallBlock *)&v31 init];
   if (v15)
   {
-    v16 = objc_msgSend_copy(v10, v13, v14);
+    v16 = objc_msgSend_copy(blockCopy, v13, v14);
     notifyBlock = v15->_notifyBlock;
     v15->_notifyBlock = v16;
 
-    v20 = objc_msgSend_copy(v12, v18, v19);
+    v20 = objc_msgSend_copy(timeoutBlockCopy, v18, v19);
     notifyTimeoutBlock = v15->_notifyTimeoutBlock;
     v15->_notifyTimeoutBlock = v20;
 
-    v15->_notifyTimeoutDurationSeconds = a4;
-    v24 = objc_msgSend_copy(v11, v22, v23);
+    v15->_notifyTimeoutDurationSeconds = timeout;
+    v24 = objc_msgSend_copy(descriptionCopy, v22, v23);
     notifyBlockDescription = v15->_notifyBlockDescription;
     v15->_notifyBlockDescription = v24;
 
@@ -115,18 +115,18 @@
   dispatch_group_notify(v15, v18, v20);
 }
 
-- (void)_maxTimeExpired:(unint64_t)a3
+- (void)_maxTimeExpired:(unint64_t)expired
 {
-  if (objc_msgSend_nextMaxTime(self, a2, a3) == a3)
+  if (objc_msgSend_nextMaxTime(self, a2, expired) == expired)
   {
 
     objc_msgSend__invokeIfNotInProgress(self, v4, v5);
   }
 }
 
-- (void)_coalescingTimeExpired:(unint64_t)a3
+- (void)_coalescingTimeExpired:(unint64_t)expired
 {
-  if (objc_msgSend_nextCoalescingTime(self, a2, a3) == a3)
+  if (objc_msgSend_nextCoalescingTime(self, a2, expired) == expired)
   {
 
     objc_msgSend__invokeIfNotInProgress(self, v4, v5);
@@ -147,17 +147,17 @@
   }
 }
 
-- (void)signalWithCompletion:(id)a3
+- (void)signalWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_sync(self, v5, v6);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_241DB6EEC;
   v9[3] = &unk_278D1D058;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_sync(v7, v9);
 }
 

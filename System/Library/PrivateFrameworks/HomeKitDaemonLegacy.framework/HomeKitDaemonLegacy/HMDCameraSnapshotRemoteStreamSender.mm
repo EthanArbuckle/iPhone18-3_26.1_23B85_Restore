@@ -1,16 +1,16 @@
 @interface HMDCameraSnapshotRemoteStreamSender
 + (id)logCategory;
-- (HMDCameraSnapshotRemoteStreamSender)initWithSessionID:(id)a3 workQueue:(id)a4 device:(id)a5 accessory:(id)a6 delegate:(id)a7 uniqueIdentifier:(id)a8 snapshotRequestHandler:(id)a9;
+- (HMDCameraSnapshotRemoteStreamSender)initWithSessionID:(id)d workQueue:(id)queue device:(id)device accessory:(id)accessory delegate:(id)delegate uniqueIdentifier:(id)identifier snapshotRequestHandler:(id)handler;
 - (HMDCameraSnapshotRemoteStreamSenderDelegate)delegate;
 - (id)logIdentifier;
-- (void)_callDidCompleteSendImageDelegate:(id)a3;
+- (void)_callDidCompleteSendImageDelegate:(id)delegate;
 - (void)_callDidStartCaptureImageDelegate;
 - (void)dealloc;
-- (void)getSnapshot:(unint64_t)a3;
-- (void)sendSnapshotAtPath:(id)a3;
-- (void)snapshotLocal:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6;
+- (void)getSnapshot:(unint64_t)snapshot;
+- (void)sendSnapshotAtPath:(id)path;
+- (void)snapshotLocal:(id)local didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d;
 - (void)snapshotTransferComplete;
-- (void)streamInitiator:(id)a3 didFailToSendFileWithError:(id)a4;
+- (void)streamInitiator:(id)initiator didFailToSendFileWithError:(id)error;
 @end
 
 @implementation HMDCameraSnapshotRemoteStreamSender
@@ -22,31 +22,31 @@
   return WeakRetained;
 }
 
-- (void)streamInitiator:(id)a3 didFailToSendFileWithError:(id)a4
+- (void)streamInitiator:(id)initiator didFailToSendFileWithError:(id)error
 {
-  v6 = a4;
-  v5 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDCameraSnapshotSender *)self _sendImageSendFailure:v6];
-  [(HMDCameraSnapshotRemoteStreamSender *)self _callDidCompleteSendImageDelegate:v6];
+  [(HMDCameraSnapshotSender *)self _sendImageSendFailure:errorCopy];
+  [(HMDCameraSnapshotRemoteStreamSender *)self _callDidCompleteSendImageDelegate:errorCopy];
 }
 
-- (void)snapshotLocal:(id)a3 didSaveSnapshotFile:(id)a4 error:(id)a5 sessionID:(id)a6
+- (void)snapshotLocal:(id)local didSaveSnapshotFile:(id)file error:(id)error sessionID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  localCopy = local;
+  fileCopy = file;
+  errorCopy = error;
+  dCopy = d;
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-  if (v12)
+  if (errorCopy)
   {
     if (v18)
     {
@@ -54,13 +54,13 @@
       v23 = 138543618;
       v24 = v19;
       v25 = 2112;
-      v26 = v12;
+      v26 = errorCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Snapshot local capture has ended in %@", &v23, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
-    [(HMDCameraSnapshotSender *)v16 _sendImageSendFailure:v12];
-    [(HMDCameraSnapshotRemoteStreamSender *)v16 _callDidCompleteSendImageDelegate:v12];
+    [(HMDCameraSnapshotSender *)selfCopy _sendImageSendFailure:errorCopy];
+    [(HMDCameraSnapshotRemoteStreamSender *)selfCopy _callDidCompleteSendImageDelegate:errorCopy];
   }
 
   else
@@ -71,27 +71,27 @@
       v23 = 138543618;
       v24 = v20;
       v25 = 2112;
-      v26 = v11;
+      v26 = fileCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_INFO, "%{public}@Scheduling the transfer of file %@ through IDS", &v23, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v21 = [(HMDCameraSnapshotRemoteStreamSender *)v16 streamInitiator];
-    [v21 sendFile:v11];
+    streamInitiator = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy streamInitiator];
+    [streamInitiator sendFile:fileCopy];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_callDidCompleteSendImageDelegate:(id)a3
+- (void)_callDidCompleteSendImageDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -99,17 +99,17 @@
     v14 = 138543618;
     v15 = v9;
     v16 = 2112;
-    v17 = v4;
+    v17 = delegateCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Calling delegate that transfer of image has completed with error %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraSnapshotRemoteStreamSender *)v7 delegate];
+  delegate = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(HMDCameraSnapshotRemoteStreamSender *)v7 snapshotLocal];
-    v12 = [v11 sessionID];
-    [v10 snapshotStreamSender:v7 didCompleteSendImage:v4 sessionID:v12];
+    snapshotLocal = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy snapshotLocal];
+    sessionID = [snapshotLocal sessionID];
+    [delegate snapshotStreamSender:selfCopy didCompleteSendImage:delegateCopy sessionID:sessionID];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -118,11 +118,11 @@
 - (void)_callDidStartCaptureImageDelegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -133,12 +133,12 @@
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDCameraSnapshotRemoteStreamSender *)v5 delegate];
+  delegate = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(HMDCameraSnapshotRemoteStreamSender *)v5 snapshotLocal];
-    v10 = [v9 sessionID];
-    [v8 snapshotStreamSender:v5 didStartImageCaptureForSessionID:v10];
+    snapshotLocal = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy snapshotLocal];
+    sessionID = [snapshotLocal sessionID];
+    [delegate snapshotStreamSender:selfCopy didStartImageCaptureForSessionID:sessionID];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -147,11 +147,11 @@
 - (void)snapshotTransferComplete
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -162,19 +162,19 @@
   }
 
   objc_autoreleasePoolPop(v4);
-  [(HMDCameraSnapshotRemoteStreamSender *)v5 _callDidCompleteSendImageDelegate:0];
+  [(HMDCameraSnapshotRemoteStreamSender *)selfCopy _callDidCompleteSendImageDelegate:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendSnapshotAtPath:(id)a3
+- (void)sendSnapshotAtPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  pathCopy = path;
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -182,25 +182,25 @@
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v4;
+    v15 = pathCopy;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Sending the snapshot %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraSnapshotRemoteStreamSender *)v7 streamInitiator];
-  [v10 sendFile:v4];
+  streamInitiator = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy streamInitiator];
+  [streamInitiator sendFile:pathCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getSnapshot:(unint64_t)a3
+- (void)getSnapshot:(unint64_t)snapshot
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -211,17 +211,17 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraSnapshotRemoteStreamSender *)v7 snapshotLocal];
-  [v10 getSnapshot:a3];
+  snapshotLocal = [(HMDCameraSnapshotRemoteStreamSender *)selfCopy snapshotLocal];
+  [snapshotLocal getSnapshot:snapshot];
 
-  [(HMDCameraSnapshotRemoteStreamSender *)v7 _callDidStartCaptureImageDelegate];
+  [(HMDCameraSnapshotRemoteStreamSender *)selfCopy _callDidStartCaptureImageDelegate];
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraSnapshotSender *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraSnapshotSender *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
@@ -230,7 +230,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -241,40 +241,40 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMDCameraSnapshotRemoteStreamSender;
   [(HMDCameraSnapshotRemoteStreamSender *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotRemoteStreamSender)initWithSessionID:(id)a3 workQueue:(id)a4 device:(id)a5 accessory:(id)a6 delegate:(id)a7 uniqueIdentifier:(id)a8 snapshotRequestHandler:(id)a9
+- (HMDCameraSnapshotRemoteStreamSender)initWithSessionID:(id)d workQueue:(id)queue device:(id)device accessory:(id)accessory delegate:(id)delegate uniqueIdentifier:(id)identifier snapshotRequestHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = a8;
-  v20 = a5;
-  v21 = [v20 localHandles];
-  v22 = [v21 firstObject];
-  v23 = [v22 destination];
+  dCopy = d;
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  localHandles = [deviceCopy localHandles];
+  firstObject = [localHandles firstObject];
+  destination = [firstObject destination];
 
-  v24 = v17;
-  v25 = v16;
+  v24 = delegateCopy;
+  v25 = accessoryCopy;
 
   v33.receiver = self;
   v33.super_class = HMDCameraSnapshotRemoteStreamSender;
-  v26 = [(HMDCameraSnapshotSender *)&v33 initWithSessionID:v14 workQueue:v15 device:v20 accessory:v16 uniqueIdentifier:v19];
+  v26 = [(HMDCameraSnapshotSender *)&v33 initWithSessionID:dCopy workQueue:queueCopy device:deviceCopy accessory:accessoryCopy uniqueIdentifier:identifierCopy];
 
   if (v26)
   {
     objc_storeWeak(&v26->_delegate, v24);
-    v27 = [[HMDCameraSnapshotLocal alloc] initWithSessionID:v14 workQueue:v15 accessory:v25 delegate:v26 snapshotRequestHandler:v18];
+    v27 = [[HMDCameraSnapshotLocal alloc] initWithSessionID:dCopy workQueue:queueCopy accessory:v25 delegate:v26 snapshotRequestHandler:handlerCopy];
     snapshotLocal = v26->_snapshotLocal;
     v26->_snapshotLocal = v27;
 
-    v29 = [[HMDCameraSnapshotIDSStreamInitiator alloc] initWithSessionID:v14 workQueue:v15 destinationID:v23 delegate:v26];
+    v29 = [[HMDCameraSnapshotIDSStreamInitiator alloc] initWithSessionID:dCopy workQueue:queueCopy destinationID:destination delegate:v26];
     streamInitiator = v26->_streamInitiator;
     v26->_streamInitiator = v29;
   }

@@ -12,11 +12,11 @@
 
 - (__CFString)localizedTitle
 {
-  v1 = [a1 titleForTableViewCell];
-  v2 = v1;
-  if (v1)
+  titleForTableViewCell = [self titleForTableViewCell];
+  v2 = titleForTableViewCell;
+  if (titleForTableViewCell)
   {
-    v3 = v1;
+    v3 = titleForTableViewCell;
   }
 
   else
@@ -31,19 +31,19 @@
 
 - (uint64_t)depth
 {
-  v2 = [a1 account];
-  v3 = [v2 isExchangeAccount];
+  account = [self account];
+  isExchangeAccount = [account isExchangeAccount];
 
-  if (v3)
+  if (isExchangeAccount)
   {
     return 0;
   }
 
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [a1 externalIdentifier];
-  v7 = [v5 URLWithString:v6];
-  v8 = [v7 pathComponents];
-  v9 = [v8 count] - 3;
+  externalIdentifier = [self externalIdentifier];
+  v7 = [v5 URLWithString:externalIdentifier];
+  pathComponents = [v7 pathComponents];
+  v9 = [pathComponents count] - 3;
 
   return v9 & ~(v9 >> 63);
 }
@@ -54,10 +54,10 @@
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
 
-  v6 = [v5 newlyAddedNote];
+  newlyAddedNote = [v5 newlyAddedNote];
 
-  [v6 setStore:a1];
-  return v6;
+  [newlyAddedNote setStore:self];
+  return newlyAddedNote;
 }
 
 - (void)addNotesObject:()ICLegacyFolder
@@ -66,28 +66,28 @@
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
 
-  [v5 setStore:a1];
+  [v5 setStore:self];
 }
 
 - (uint64_t)isDefaultFolder
 {
-  v2 = [a1 account];
-  v3 = [v2 defaultStore];
-  v4 = [a1 isEqual:v3];
+  account = [self account];
+  defaultStore = [account defaultStore];
+  v4 = [self isEqual:defaultStore];
 
   return v4;
 }
 
 - (uint64_t)isCustomFolder
 {
-  if ([a1 isDefaultFolder])
+  if ([self isDefaultFolder])
   {
     return 0;
   }
 
   else
   {
-    return [a1 isTrashFolder] ^ 1;
+    return [self isTrashFolder] ^ 1;
   }
 }
 
@@ -105,7 +105,7 @@
     v7 = ICProtocolCast();
     if (v7)
     {
-      if ([a1 isDefaultFolder])
+      if ([self isDefaultFolder])
       {
         v6 = -1;
       }
@@ -117,40 +117,40 @@
 
       else
       {
-        v9 = [a1 parentFolder];
-        v10 = [v7 parentFolder];
+        parentFolder = [self parentFolder];
+        parentFolder2 = [v7 parentFolder];
 
-        if (v9 == v10)
+        if (parentFolder == parentFolder2)
         {
-          v19 = [a1 localizedTitle];
-          v20 = [v7 localizedTitle];
-          v6 = [v19 localizedStandardCompare:v20];
+          localizedTitle = [self localizedTitle];
+          localizedTitle2 = [v7 localizedTitle];
+          v6 = [localizedTitle localizedStandardCompare:localizedTitle2];
         }
 
         else
         {
-          v11 = a1;
+          selfCopy = self;
           v12 = v7;
-          v13 = [v11 depth];
-          v14 = [v12 depth];
-          v15 = v14;
-          v16 = v11;
-          if (v13 <= v14)
+          depth = [selfCopy depth];
+          depth2 = [v12 depth];
+          v15 = depth2;
+          parentFolder4 = selfCopy;
+          if (depth <= depth2)
           {
-            v18 = v12;
-            if (v14 > v13)
+            parentFolder3 = v12;
+            if (depth2 > depth)
             {
-              v18 = v12;
+              parentFolder3 = v12;
               do
               {
-                v21 = v18;
-                v18 = [v18 parentFolder];
+                v21 = parentFolder3;
+                parentFolder3 = [parentFolder3 parentFolder];
 
                 --v15;
               }
 
-              while (v15 > v13);
-              v16 = v11;
+              while (v15 > depth);
+              parentFolder4 = selfCopy;
             }
           }
 
@@ -158,48 +158,48 @@
           {
             do
             {
-              v17 = v16;
-              v16 = [v16 parentFolder];
+              v17 = parentFolder4;
+              parentFolder4 = [parentFolder4 parentFolder];
 
-              --v13;
+              --depth;
             }
 
-            while (v13 > v15);
-            v18 = v12;
+            while (depth > v15);
+            parentFolder3 = v12;
           }
 
-          v30 = v11;
-          v22 = [v16 parentFolder];
-          v23 = [v18 parentFolder];
+          v30 = selfCopy;
+          v16ParentFolder = [parentFolder4 parentFolder];
+          v18ParentFolder = [parentFolder3 parentFolder];
 
-          if (v22 == v23)
+          if (v16ParentFolder == v18ParentFolder)
           {
-            v25 = v18;
-            v24 = v16;
+            v18ParentFolder2 = parentFolder3;
+            v16ParentFolder2 = parentFolder4;
           }
 
           else
           {
             do
             {
-              v24 = [v16 parentFolder];
+              v16ParentFolder2 = [parentFolder4 parentFolder];
 
-              v25 = [v18 parentFolder];
+              v18ParentFolder2 = [parentFolder3 parentFolder];
 
-              v26 = [v24 parentFolder];
-              v27 = [v25 parentFolder];
+              v24ParentFolder = [v16ParentFolder2 parentFolder];
+              v25ParentFolder = [v18ParentFolder2 parentFolder];
 
-              v16 = v24;
-              v18 = v25;
+              parentFolder4 = v16ParentFolder2;
+              parentFolder3 = v18ParentFolder2;
             }
 
-            while (v26 != v27);
+            while (v24ParentFolder != v25ParentFolder);
           }
 
-          if ([v24 isEqual:v25])
+          if ([v16ParentFolder2 isEqual:v18ParentFolder2])
           {
-            v28 = [v30 depth];
-            if (v28 < [v12 depth])
+            depth3 = [v30 depth];
+            if (depth3 < [v12 depth])
             {
               v6 = -1;
             }
@@ -212,7 +212,7 @@
 
           else
           {
-            v6 = [v24 compare:v25];
+            v6 = [v16ParentFolder2 compare:v18ParentFolder2];
           }
         }
       }
@@ -223,7 +223,7 @@
       v8 = os_log_create("com.apple.notes", "HTML");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(NoteAccountObject(ICLegacyAccount) *)a1 compare:v4, v8];
+        [(NoteAccountObject(ICLegacyAccount) *)self compare:v4, v8];
       }
 
       v6 = 0;

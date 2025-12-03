@@ -1,22 +1,22 @@
 @interface UARPBundleIdentityManifestEntry
-- (UARPBundleIdentityManifestEntry)initWithName:(id)a3 digest:(id)a4 trusted:(BOOL)a5;
-- (id)descriptionWithTabDepth:(unint64_t)a3;
-- (id)getTabs:(unint64_t)a3;
+- (UARPBundleIdentityManifestEntry)initWithName:(id)name digest:(id)digest trusted:(BOOL)trusted;
+- (id)descriptionWithTabDepth:(unint64_t)depth;
+- (id)getTabs:(unint64_t)tabs;
 - (void)dealloc;
 @end
 
 @implementation UARPBundleIdentityManifestEntry
 
-- (UARPBundleIdentityManifestEntry)initWithName:(id)a3 digest:(id)a4 trusted:(BOOL)a5
+- (UARPBundleIdentityManifestEntry)initWithName:(id)name digest:(id)digest trusted:(BOOL)trusted
 {
   v10.receiver = self;
   v10.super_class = UARPBundleIdentityManifestEntry;
   v8 = [(UARPBundleIdentityManifestEntry *)&v10 init];
   if (v8)
   {
-    v8->_name = [a3 copy];
-    v8->_digest = [a4 copy];
-    v8->_trusted = a5;
+    v8->_name = [name copy];
+    v8->_digest = [digest copy];
+    v8->_trusted = trusted;
   }
 
   return v8;
@@ -31,9 +31,9 @@
   [(UARPBundleIdentityManifestEntry *)&v3 dealloc];
 }
 
-- (id)getTabs:(unint64_t)a3
+- (id)getTabs:(unint64_t)tabs
 {
-  for (i = +[NSMutableString string]; a3; --a3)
+  for (i = +[NSMutableString string]; tabs; --tabs)
   {
     [i appendString:@"\t"];
   }
@@ -41,10 +41,10 @@
   return i;
 }
 
-- (id)descriptionWithTabDepth:(unint64_t)a3
+- (id)descriptionWithTabDepth:(unint64_t)depth
 {
-  v5 = sub_10002D978(a3);
-  v6 = sub_10002D978(a3 + 1);
+  v5 = sub_10002D978(depth);
+  v6 = sub_10002D978(depth + 1);
   v7 = +[NSMutableString string];
   v8 = objc_opt_class();
   [v7 appendFormat:@"%@%@\n", v5, NSStringFromClass(v8)];

@@ -16,16 +16,16 @@
 
 - (id)vui_rentalAdamIDString
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"rentalAdamID"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"rentalAdamID"];
 
   return v2;
 }
 
 - (id)vui_launchPlaybackURL
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"playURL"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"playURL"];
 
   if ([v2 length])
   {
@@ -42,8 +42,8 @@
 
 - (id)vui_hlsPlaylistURL
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"hlsPlaylistUrl"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"hlsPlaylistUrl"];
 
   if ([v2 length])
   {
@@ -60,8 +60,8 @@
 
 - (id)vui_contentRatingRank
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"contentRating"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"contentRating"];
 
   if ([v2 length])
   {
@@ -78,8 +78,8 @@
 
 - (id)vui_resumeTime
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"resumeTime"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"resumeTime"];
 
   if ([v2 length])
   {
@@ -98,17 +98,17 @@
 
 - (uint64_t)vui_disableLocalAsset
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"disableLocalAsset"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"disableLocalAsset"];
 
-  v3 = [v2 BOOLValue];
-  return v3;
+  bOOLValue = [v2 BOOLValue];
+  return bOOLValue;
 }
 
 - (id)vui_persistentID
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"persistentID"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"persistentID"];
 
   if ([v2 length])
   {
@@ -125,26 +125,26 @@
 
 - (uint64_t)vui_disableResumeMenu
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"disableResumeMenu"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"disableResumeMenu"];
 
   if ([v2 length])
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)vui_scrubVideoURL
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"scrubVideoURL"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"scrubVideoURL"];
 
   if ([v2 length])
   {
@@ -161,8 +161,8 @@
 
 - (id)vui_fpsCertificateURL
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"fpsCertificateURL"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"fpsCertificateURL"];
 
   if ([v2 length])
   {
@@ -179,8 +179,8 @@
 
 - (id)vui_fpsKeyServerURL
 {
-  v1 = [a1 attributes];
-  v2 = [v1 objectForKey:@"fpsKeyServerURL"];
+  attributes = [self attributes];
+  v2 = [attributes objectForKey:@"fpsKeyServerURL"];
 
   if ([v2 length])
   {

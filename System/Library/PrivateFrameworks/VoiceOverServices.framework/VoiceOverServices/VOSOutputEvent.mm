@@ -74,7 +74,7 @@
 + (VOSOutputEvent)TutorialMagicTapStop;
 + (VOSOutputEvent)TutorialSuccess;
 + (VOSOutputEvent)UnknownCommand;
-+ (VOSOutputEvent)eventWithStringValue:(id)a3;
++ (VOSOutputEvent)eventWithStringValue:(id)value;
 - (NSString)localizedName;
 - (id)description;
 @end
@@ -1581,16 +1581,16 @@ void __33__VOSOutputEvent_allOutputEvents__block_invoke()
   allOutputEvents__AllOutputEvents = v7;
 }
 
-+ (VOSOutputEvent)eventWithStringValue:(id)a3
++ (VOSOutputEvent)eventWithStringValue:(id)value
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 allOutputEvents];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allOutputEvents = [self allOutputEvents];
+  v6 = [allOutputEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -1600,18 +1600,18 @@ void __33__VOSOutputEvent_allOutputEvents__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allOutputEvents);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9[1] isEqualToString:v4])
+        if ([v9[1] isEqualToString:valueCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allOutputEvents countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1639,9 +1639,9 @@ LABEL_11:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(VOSOutputEvent *)self rawValue];
-  v5 = [(VOSOutputEvent *)self localizedName];
-  v6 = [v3 stringWithFormat:@"VOSOutputEvent<%p> %@ (%@)", self, v4, v5];
+  rawValue = [(VOSOutputEvent *)self rawValue];
+  localizedName = [(VOSOutputEvent *)self localizedName];
+  v6 = [v3 stringWithFormat:@"VOSOutputEvent<%p> %@ (%@)", self, rawValue, localizedName];
 
   return v6;
 }

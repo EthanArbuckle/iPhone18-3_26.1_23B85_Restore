@@ -1,15 +1,15 @@
 @interface LocalSearchView
-- (LocalSearchView)initWithFrame:(CGRect)a3;
+- (LocalSearchView)initWithFrame:(CGRect)frame;
 - (LocalSearchViewDelegate)delegate;
 - (double)_localSearchViewHeight;
-- (id)textForState:(unint64_t)a3;
+- (id)textForState:(unint64_t)state;
 - (void)_updateFontsAndAppearance;
-- (void)configureStateAnimated:(BOOL)a3;
+- (void)configureStateAnimated:(BOOL)animated;
 - (void)customInit;
 - (void)executeAction;
-- (void)setBottomInset:(double)a3;
-- (void)setState:(unint64_t)a3;
-- (void)setText:(id)a3 forState:(unint64_t)a4;
+- (void)setBottomInset:(double)inset;
+- (void)setState:(unint64_t)state;
+- (void)setText:(id)text forState:(unint64_t)state;
 - (void)updateTheme;
 @end
 
@@ -34,9 +34,9 @@
   return result;
 }
 
-- (void)configureStateAnimated:(BOOL)a3
+- (void)configureStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(LocalSearchView *)self _localSearchViewHeight];
   v6 = v5;
   [(UIActivityIndicatorView *)self->_loadingIndicatorView stopAnimating];
@@ -168,9 +168,9 @@ LABEL_10:
     (v10[2])(v10);
     if (self->_buttonMode && v33 != 0 && v9 != 0)
     {
-      v30 = [(UIButton *)v33 leadingAnchor];
-      v29 = [(LocalSearchView *)self leadingAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29 constant:16.0];
+      leadingAnchor = [(UIButton *)v33 leadingAnchor];
+      leadingAnchor2 = [(LocalSearchView *)self leadingAnchor];
+      v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
       v52[0] = v28;
       [(UIButton *)v9 trailingAnchor];
       v20 = v31 = v11;
@@ -189,7 +189,7 @@ LABEL_10:
   }
 
   (v17[2])(v17);
-  if (v3)
+  if (animatedCopy)
   {
     [(LocalSearchView *)self updateConstraintsIfNeeded];
     v37[0] = _NSConcreteStackBlock;
@@ -242,28 +242,28 @@ LABEL_22:
 LABEL_31:
 }
 
-- (void)setBottomInset:(double)a3
+- (void)setBottomInset:(double)inset
 {
-  if (self->_bottomInset != a3)
+  if (self->_bottomInset != inset)
   {
     [(NSLayoutConstraint *)self->_heightConstraint constant];
     bottomInset = self->_bottomInset;
-    self->_bottomInset = a3;
-    v7 = v6 + a3 - bottomInset;
+    self->_bottomInset = inset;
+    v7 = v6 + inset - bottomInset;
     heightConstraint = self->_heightConstraint;
 
     [(NSLayoutConstraint *)heightConstraint setConstant:v7];
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     return;
   }
 
-  self->_state = a3;
+  self->_state = state;
   if (!MapsFeature_IsEnabled_SearchAndDiscovery())
   {
     goto LABEL_6;
@@ -273,9 +273,9 @@ LABEL_31:
   if (objc_opt_respondsToSelector())
   {
     v4 = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v4 shouldShowRefreshFooter];
+    shouldShowRefreshFooter = [v4 shouldShowRefreshFooter];
 
-    if (!v5)
+    if (!shouldShowRefreshFooter)
     {
       return;
     }
@@ -293,9 +293,9 @@ LABEL_6:
   [WeakRetained localSearchViewSelected:self];
 }
 
-- (id)textForState:(unint64_t)a3
+- (id)textForState:(unint64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 4uLL:
       v4 = 32;
@@ -303,46 +303,46 @@ LABEL_6:
     case 3uLL:
       v4 = 40;
 LABEL_7:
-      v3 = [*(&self->super.super.super.super.isa + v4) text];
+      text = [*(&self->super.super.super.super.isa + v4) text];
       break;
     case 1uLL:
-      v3 = [(UIButton *)self->_actionButton titleForState:0];
+      text = [(UIButton *)self->_actionButton titleForState:0];
       break;
     default:
-      v3 = 0;
+      text = 0;
       break;
   }
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3 forState:(unint64_t)a4
+- (void)setText:(id)text forState:(unint64_t)state
 {
-  v6 = a3;
-  if (a4 == 4)
+  textCopy = text;
+  if (state == 4)
   {
     v7 = 32;
     goto LABEL_7;
   }
 
-  if (a4 == 3)
+  if (state == 3)
   {
     v7 = 40;
 LABEL_7:
-    v8 = v6;
-    [*(&self->super.super.super.super.isa + v7) setText:v6];
+    v8 = textCopy;
+    [*(&self->super.super.super.super.isa + v7) setText:textCopy];
     goto LABEL_8;
   }
 
-  if (a4 != 1)
+  if (state != 1)
   {
     goto LABEL_9;
   }
 
-  v8 = v6;
-  [(UIButton *)self->_actionButton setTitle:v6 forState:0];
+  v8 = textCopy;
+  [(UIButton *)self->_actionButton setTitle:textCopy forState:0];
 LABEL_8:
-  v6 = v8;
+  textCopy = v8;
 LABEL_9:
 }
 
@@ -352,19 +352,19 @@ LABEL_9:
   {
     v13 = [UIColor colorWithDynamicProvider:&stru_101623EE8];
     v3 = [UIFont systemFontOfSize:16.0 weight:UIFontWeightLight];
-    v4 = [v3 fontDescriptor];
-    v5 = [v4 fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
+    fontDescriptor = [v3 fontDescriptor];
+    v5 = [fontDescriptor fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
 
     v6 = [UIFont fontWithDescriptor:v5 size:0.0];
-    v7 = [(UIButton *)self->_actionButton titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(UIButton *)self->_actionButton titleLabel];
+    [titleLabel setFont:v6];
 
     IsEnabled_SearchAndDiscovery = MapsFeature_IsEnabled_SearchAndDiscovery();
     actionButton = self->_actionButton;
     if (IsEnabled_SearchAndDiscovery)
     {
-      v10 = [(LocalSearchView *)self tintColor];
-      [(UIButton *)actionButton setTitleColor:v10 forState:0];
+      tintColor = [(LocalSearchView *)self tintColor];
+      [(UIButton *)actionButton setTitleColor:tintColor forState:0];
     }
 
     else
@@ -372,9 +372,9 @@ LABEL_9:
       [(UIButton *)self->_actionButton setTitleColor:v13 forState:0];
       [(UIButton *)self->_actionButton setTintColor:v13];
       v12 = [UIImageSymbolConfiguration configurationWithFont:v6 scale:2];
-      v10 = [UIImage systemImageNamed:@"arrow.clockwise" withConfiguration:v12];
+      tintColor = [UIImage systemImageNamed:@"arrow.clockwise" withConfiguration:v12];
 
-      [(UIButton *)self->_actionButton setImage:v10 forState:0];
+      [(UIButton *)self->_actionButton setImage:tintColor forState:0];
     }
 
     [(UILabel *)self->_loadingLabel setTextColor:v13];
@@ -408,28 +408,28 @@ LABEL_9:
 
   [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(LocalSearchView *)self addSubview:self->_contentView];
-  v33 = [(UIView *)self->_contentView leadingAnchor];
-  v32 = [(LocalSearchView *)self leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+  leadingAnchor2 = [(LocalSearchView *)self leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[0] = v31;
-  v30 = [(UIView *)self->_contentView trailingAnchor];
-  v29 = [(LocalSearchView *)self trailingAnchor];
-  v9 = [v30 constraintEqualToAnchor:v29];
+  trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+  trailingAnchor2 = [(LocalSearchView *)self trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[1] = v9;
-  v10 = [(UIView *)self->_contentView topAnchor];
-  v11 = [(LocalSearchView *)self topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  topAnchor = [(UIView *)self->_contentView topAnchor];
+  topAnchor2 = [(LocalSearchView *)self topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[2] = v12;
-  v13 = [(UIView *)self->_contentView bottomAnchor];
-  v14 = [(LocalSearchView *)self safeAreaLayoutGuide];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+  safeAreaLayoutGuide = [(LocalSearchView *)self safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[3] = v16;
   v17 = [NSArray arrayWithObjects:v34 count:4];
   [NSLayoutConstraint activateConstraints:v17];
 
-  v18 = [(LocalSearchView *)self heightAnchor];
-  v19 = [v18 constraintEqualToConstant:0.0];
+  heightAnchor = [(LocalSearchView *)self heightAnchor];
+  v19 = [heightAnchor constraintEqualToConstant:0.0];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v19;
 
@@ -462,11 +462,11 @@ LABEL_9:
   [(LocalSearchView *)self _updateFontsAndAppearance];
 }
 
-- (LocalSearchView)initWithFrame:(CGRect)a3
+- (LocalSearchView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = LocalSearchView;
-  v3 = [(LocalSearchView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LocalSearchView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -482,13 +482,13 @@ LABEL_9:
   if (sub_10000FA08(self) != 5)
   {
     actionButton = self->_actionButton;
-    v4 = [(LocalSearchView *)self theme];
-    v5 = [v4 controlTintColor];
-    [(UIButton *)actionButton setTitleColor:v5 forState:0];
+    theme = [(LocalSearchView *)self theme];
+    controlTintColor = [theme controlTintColor];
+    [(UIButton *)actionButton setTitleColor:controlTintColor forState:0];
   }
 
-  v6 = [(LocalSearchView *)self theme];
-  -[UIActivityIndicatorView setActivityIndicatorViewStyle:](self->_loadingIndicatorView, "setActivityIndicatorViewStyle:", [v6 activityIndicatorStyle]);
+  theme2 = [(LocalSearchView *)self theme];
+  -[UIActivityIndicatorView setActivityIndicatorViewStyle:](self->_loadingIndicatorView, "setActivityIndicatorViewStyle:", [theme2 activityIndicatorStyle]);
 }
 
 @end

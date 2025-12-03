@@ -13,7 +13,7 @@
     return 0;
   }
 
-  v2 = [a1 objectForKeyedSubscript:*MEMORY[0x1E69B0618]];
+  v2 = [self objectForKeyedSubscript:*MEMORY[0x1E69B0618]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -49,7 +49,7 @@
     return 0;
   }
 
-  v5 = [a1 objectForKeyedSubscript:*MEMORY[0x1E69B05F0]];
+  v5 = [self objectForKeyedSubscript:*MEMORY[0x1E69B05F0]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

@@ -1,16 +1,16 @@
 @interface WFSwitchParameterSummaryEditor
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
 @end
 
 @implementation WFSwitchParameterSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
   v5 = objc_alloc(MEMORY[0x277D7C198]);
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(WFModuleSummaryEditor *)self initialState];
-  v8 = [v7 number];
-  v9 = [v6 numberWithInt:{objc_msgSend(v8, "BOOLValue") ^ 1}];
+  initialState = [(WFModuleSummaryEditor *)self initialState];
+  number = [initialState number];
+  v9 = [v6 numberWithInt:{objc_msgSend(number, "BOOLValue") ^ 1}];
   v10 = [v5 initWithNumber:v9];
 
   [(WFModuleSummaryEditor *)self stageState:v10];

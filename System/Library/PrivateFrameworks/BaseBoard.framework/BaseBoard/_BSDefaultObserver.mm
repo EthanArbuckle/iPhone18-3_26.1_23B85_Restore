@@ -1,8 +1,8 @@
 @interface _BSDefaultObserver
-- (id)initWithAbstractDefaultDomain:(void *)a3 defaultsToObserve:(void *)a4 onQueue:(void *)a5 withBlock:;
+- (id)initWithAbstractDefaultDomain:(void *)domain defaultsToObserve:(void *)observe onQueue:(void *)queue withBlock:;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _BSDefaultObserver
@@ -32,8 +32,8 @@
           }
 
           v7 = [(BSAbstractDefaultDomain *)self->_defaults _defaultKeyFromPropertyName:?];
-          v8 = [(BSAbstractDefaultDomain *)self->_defaults _store];
-          [v8 removeObserver:self forKeyPath:v7];
+          _store = [(BSAbstractDefaultDomain *)self->_defaults _store];
+          [_store removeObserver:self forKeyPath:v7];
 
           ++v6;
         }
@@ -54,8 +54,8 @@
 {
   if (!self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"_BSDefaultObserver.m" lineNumber:56 description:@"We must be explicitly invalidated in order to be deallocated."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_BSDefaultObserver.m" lineNumber:56 description:@"We must be explicitly invalidated in order to be deallocated."];
   }
 
   v5.receiver = self;
@@ -63,15 +63,15 @@
   [(_BSDefaultObserver *)&v5 dealloc];
 }
 
-- (id)initWithAbstractDefaultDomain:(void *)a3 defaultsToObserve:(void *)a4 onQueue:(void *)a5 withBlock:
+- (id)initWithAbstractDefaultDomain:(void *)domain defaultsToObserve:(void *)observe onQueue:(void *)queue withBlock:
 {
   v36 = *MEMORY[0x1E69E9840];
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  domainCopy = domain;
+  observeCopy = observe;
+  queueCopy = queue;
   v29 = v10;
-  if (!a1)
+  if (!self)
   {
     v15 = 0;
     goto LABEL_16;
@@ -79,61 +79,61 @@
 
   if (v10)
   {
-    if (v12)
+    if (observeCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_18:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:a1 file:@"_BSDefaultObserver.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:self file:@"_BSDefaultObserver.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v13)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_19:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:a1 file:@"_BSDefaultObserver.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:self file:@"_BSDefaultObserver.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
     goto LABEL_5;
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:a1 file:@"_BSDefaultObserver.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"defaultDomain", 0}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:self file:@"_BSDefaultObserver.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"defaultDomain", 0}];
 
-  if (!v12)
+  if (!observeCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_4:
-  if (!v13)
+  if (!queueCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_5:
-  if (![v11 count])
+  if (![domainCopy count])
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:a1 file:@"_BSDefaultObserver.m" lineNumber:36 description:@"Must have at least one default to observe."];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:sel_initWithAbstractDefaultDomain_defaultsToObserve_onQueue_withBlock_ object:self file:@"_BSDefaultObserver.m" lineNumber:36 description:@"Must have at least one default to observe."];
   }
 
-  v34.receiver = a1;
+  v34.receiver = self;
   v34.super_class = _BSDefaultObserver;
   v14 = objc_msgSendSuper2(&v34, sel_init);
   v15 = v14;
   if (v14)
   {
     objc_storeStrong(v14 + 1, a2);
-    objc_storeStrong(v15 + 2, a4);
-    v16 = [v13 copy];
+    objc_storeStrong(v15 + 2, observe);
+    v16 = [queueCopy copy];
     v17 = v15[4];
     v15[4] = v16;
 
-    objc_storeStrong(v15 + 3, a3);
+    objc_storeStrong(v15 + 3, domain);
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
@@ -153,8 +153,8 @@ LABEL_5:
           }
 
           v22 = [(BSAbstractDefaultDomain *)v15[1] _defaultKeyFromPropertyName:?];
-          v23 = [v15[1] _store];
-          [v23 addObserver:v15 forKeyPath:v22 options:1 context:0];
+          _store = [v15[1] _store];
+          [_store addObserver:v15 forKeyPath:v22 options:1 context:0];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -171,7 +171,7 @@ LABEL_16:
   return v15;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = atomic_fetch_add_explicit(&self->_debounceCounter, 1u, memory_order_relaxed) + 1;
   v8 = dispatch_time(0, 100000000);

@@ -1,26 +1,26 @@
 @interface PSSegmentableSlider
-- (CGRect)_thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (PSSegmentableSlider)initWithFrame:(CGRect)a3;
-- (float)offsetBetweenTicksForNumberOfTicks:(unint64_t)a3;
+- (CGRect)_thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (PSSegmentableSlider)initWithFrame:(CGRect)frame;
+- (float)offsetBetweenTicksForNumberOfTicks:(unint64_t)ticks;
 - (unint64_t)numberOfTicks;
-- (void)_drawRect:(CGRect)a3;
-- (void)_setValue:(float)a3 animated:(BOOL)a4;
+- (void)_drawRect:(CGRect)rect;
+- (void)_setValue:(float)value animated:(BOOL)animated;
 - (void)_updateSliderConfiguration;
-- (void)controlInteractionBegan:(id)a3;
-- (void)controlInteractionEnded:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
-- (void)sliderTapped:(id)a3;
+- (void)controlInteractionBegan:(id)began;
+- (void)controlInteractionEnded:(id)ended;
+- (void)drawRect:(CGRect)rect;
+- (void)setValue:(float)value animated:(BOOL)animated;
+- (void)sliderTapped:(id)tapped;
 @end
 
 @implementation PSSegmentableSlider
 
-- (PSSegmentableSlider)initWithFrame:(CGRect)a3
+- (PSSegmentableSlider)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = PSSegmentableSlider;
-  v3 = [(PSSegmentableSlider *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PSSegmentableSlider *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (!__psSegmentableSliderClass)
@@ -43,10 +43,10 @@
     }
 
     v9 = +[PSListController appearance];
-    v10 = [v9 segmentedSliderTrackColor];
+    segmentedSliderTrackColor = [v9 segmentedSliderTrackColor];
 
-    v11 = v10;
-    if (!v10)
+    v11 = segmentedSliderTrackColor;
+    if (!segmentedSliderTrackColor)
     {
       v11 = [MEMORY[0x1E69DC888] colorWithWhite:0.596078431 alpha:1.0];
     }
@@ -55,21 +55,21 @@
     trackMarkersColor = v3->_trackMarkersColor;
     v3->_trackMarkersColor = v12;
 
-    if (!v10)
+    if (!segmentedSliderTrackColor)
     {
     }
 
     v3->_locksToSegment = 1;
-    v14 = [(PSSegmentableSlider *)v3 layer];
-    [v14 setNeedsDisplayOnBoundsChange:1];
+    layer = [(PSSegmentableSlider *)v3 layer];
+    [layer setNeedsDisplayOnBoundsChange:1];
   }
 
   return v3;
 }
 
-- (void)sliderTapped:(id)a3
+- (void)sliderTapped:(id)tapped
 {
-  [a3 locationInView:self];
+  [tapped locationInView:self];
   v5 = v4;
   [(PSSegmentableSlider *)self bounds];
   [(PSSegmentableSlider *)self trackRectForBounds:?];
@@ -77,12 +77,12 @@
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(PSSegmentableSlider *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PSSegmentableSlider *)self _shouldReverseLayoutDirection];
   v15 = v7;
   v16 = v9;
   v17 = v11;
   v18 = v13;
-  if (v14)
+  if (_shouldReverseLayoutDirection)
   {
     v19 = CGRectGetMaxX(*&v15) - v5;
   }
@@ -166,26 +166,26 @@
   }
 }
 
-- (float)offsetBetweenTicksForNumberOfTicks:(unint64_t)a3
+- (float)offsetBetweenTicksForNumberOfTicks:(unint64_t)ticks
 {
   [(PSSegmentableSlider *)self maximumValue];
   v6 = v5;
   [(PSSegmentableSlider *)self minimumValue];
-  return (v6 - v7) / (a3 - 1);
+  return (v6 - v7) / (ticks - 1);
 }
 
-- (void)_setValue:(float)a3 animated:(BOOL)a4
+- (void)_setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if (self->_segmented)
   {
     [(PSSegmentableSlider *)self offsetBetweenTicksForNumberOfTicks:[(PSSegmentableSlider *)self numberOfTicks]];
     v8 = v7;
     [(PSSegmentableSlider *)self minimumValue];
-    v10 = roundf((a3 - v9) / v8);
+    v10 = roundf((value - v9) / v8);
     [(PSSegmentableSlider *)self minimumValue];
     v12 = v11 + (v8 * v10);
-    if (self->_locksToSegment || self->_snapsToSegment && vabds_f32(v12, a3) < 0.015)
+    if (self->_locksToSegment || self->_snapsToSegment && vabds_f32(v12, value) < 0.015)
     {
       if ([(PSSegmentableSlider *)self isTracking])
       {
@@ -196,50 +196,50 @@
         }
       }
 
-      a3 = v12;
+      value = v12;
     }
   }
 
   [(PSSegmentableSlider *)self value];
-  if (a3 != *&v14)
+  if (value != *&v14)
   {
     v15.receiver = self;
     v15.super_class = PSSegmentableSlider;
-    *&v14 = a3;
-    [(PSSegmentableSlider *)&v15 setValue:v4 animated:v14];
+    *&v14 = value;
+    [(PSSegmentableSlider *)&v15 setValue:animatedCopy animated:v14];
   }
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(PSSegmentableSlider *)self shouldUseConfigurationBasedSliderImpl])
   {
     v8.receiver = self;
     v8.super_class = PSSegmentableSlider;
-    *&v7 = a3;
-    [(PSSegmentableSlider *)&v8 setValue:v4 animated:v7];
+    *&v7 = value;
+    [(PSSegmentableSlider *)&v8 setValue:animatedCopy animated:v7];
   }
 
   else
   {
-    *&v7 = a3;
+    *&v7 = value;
 
-    [(PSSegmentableSlider *)self _setValue:v4 animated:v7];
+    [(PSSegmentableSlider *)self _setValue:animatedCopy animated:v7];
   }
 }
 
-- (void)_drawRect:(CGRect)a3
+- (void)_drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PSSegmentableSlider *)self _minTrackView];
-  [v8 setHidden:self->_segmented];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _minTrackView = [(PSSegmentableSlider *)self _minTrackView];
+  [_minTrackView setHidden:self->_segmented];
 
-  v9 = [(PSSegmentableSlider *)self _maxTrackView];
-  [v9 setHidden:self->_segmented];
+  _maxTrackView = [(PSSegmentableSlider *)self _maxTrackView];
+  [_maxTrackView setHidden:self->_segmented];
 
   if (self->_segmented)
   {
@@ -252,9 +252,9 @@
     v35 = objc_alloc_init(MEMORY[0x1E69DC728]);
     [(UIColor *)self->_trackMarkersColor set];
     [v35 setLineWidth:v16];
-    v17 = [(PSSegmentableSlider *)self numberOfTicks];
-    [(PSSegmentableSlider *)self offsetBetweenTicksForNumberOfTicks:v17];
-    if (v17)
+    numberOfTicks = [(PSSegmentableSlider *)self numberOfTicks];
+    [(PSSegmentableSlider *)self offsetBetweenTicksForNumberOfTicks:numberOfTicks];
+    if (numberOfTicks)
     {
       v19 = v18;
       v20 = 0;
@@ -276,7 +276,7 @@
         ++v20;
       }
 
-      while (v17 != v20);
+      while (numberOfTicks != v20);
     }
 
     [v35 stroke];
@@ -292,12 +292,12 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(PSSegmentableSlider *)self shouldUseConfigurationBasedSliderImpl])
   {
     v8.receiver = self;
@@ -312,22 +312,22 @@
   }
 }
 
-- (CGRect)_thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)_thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v13 = [(PSSegmentableSlider *)self _shouldReverseLayoutDirection];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(PSSegmentableSlider *)self _shouldReverseLayoutDirection];
   v41.receiver = self;
   v41.super_class = PSSegmentableSlider;
   v38 = x;
   v39 = width;
-  [(PSSegmentableSlider *)&v41 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(a5)];
+  [(PSSegmentableSlider *)&v41 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(value)];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -335,12 +335,12 @@
   if (self->_segmented)
   {
     [(PSSegmentableSlider *)self minimumValue];
-    if (v22 == a5 || ([(PSSegmentableSlider *)self maximumValue], v23 == a5))
+    if (v22 == value || ([(PSSegmentableSlider *)self maximumValue], v23 == value))
     {
       [(PSSegmentableSlider *)self trackRectForBounds:v11, v10, v9, v8];
       v25 = v24;
       [(PSSegmentableSlider *)self minimumValue];
-      if (v26 == a5)
+      if (v26 == value)
       {
         v27 = -v25;
       }
@@ -356,12 +356,12 @@
     else
     {
       [(PSSegmentableSlider *)self minimumValue];
-      v33 = a5 - v32;
+      v33 = value - v32;
       [(PSSegmentableSlider *)self maximumValue];
       v35 = v34;
       [(PSSegmentableSlider *)self minimumValue];
       v37 = v33 / (v35 - v36);
-      if (v13)
+      if (_shouldReverseLayoutDirection)
       {
         v37 = 1.0 - v37;
       }
@@ -381,26 +381,26 @@
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = bounds.size.height;
+  v9 = bounds.size.width;
+  v10 = bounds.origin.y;
+  v11 = bounds.origin.x;
   if ([(PSSegmentableSlider *)self shouldUseConfigurationBasedSliderImpl])
   {
     v20.receiver = self;
     v20.super_class = PSSegmentableSlider;
-    [(PSSegmentableSlider *)&v20 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(a5)];
+    [(PSSegmentableSlider *)&v20 thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, LODWORD(value)];
   }
 
   else
   {
-    *&v17 = a5;
+    *&v17 = value;
     [(PSSegmentableSlider *)self _thumbRectForBounds:v11 trackRect:v10 value:v9, v8, x, y, width, height, v17];
   }
 
@@ -411,7 +411,7 @@
   return result;
 }
 
-- (void)controlInteractionBegan:(id)a3
+- (void)controlInteractionBegan:(id)began
 {
   v4 = objc_opt_new();
   feedbackGenerator = self->_feedbackGenerator;
@@ -422,7 +422,7 @@
   [(UISelectionFeedbackGenerator *)v6 prepare];
 }
 
-- (void)controlInteractionEnded:(id)a3
+- (void)controlInteractionEnded:(id)ended
 {
   feedbackGenerator = self->_feedbackGenerator;
   self->_feedbackGenerator = 0;

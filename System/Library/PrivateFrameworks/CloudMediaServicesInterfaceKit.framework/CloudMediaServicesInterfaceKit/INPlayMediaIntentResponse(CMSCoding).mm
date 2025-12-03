@@ -30,21 +30,21 @@
 
 - (id)cmsCoded
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &off_2856B9F48;
   v2 = objc_msgSendSuper2(&v9, sel_cmsCoded);
   [v2 setObject:@"PlayMediaIntentResponse" forKey:@"class"];
-  v3 = [a1 nowPlayingInfo];
-  if (v3)
+  nowPlayingInfo = [self nowPlayingInfo];
+  if (nowPlayingInfo)
   {
-    [v2 setObject:v3 forKey:@"nowPlayingInfo"];
+    [v2 setObject:nowPlayingInfo forKey:@"nowPlayingInfo"];
   }
 
-  v4 = [a1 userActivity];
-  v5 = v4;
-  if (v4)
+  userActivity = [self userActivity];
+  v5 = userActivity;
+  if (userActivity)
   {
-    [v4 cmsCoded];
+    [userActivity cmsCoded];
   }
 
   else
@@ -54,7 +54,7 @@
   v6 = ;
   [v2 setObject:v6 forKey:@"userActivity"];
 
-  v7 = INPlayMediaIntentResponseCodeToString([a1 code]);
+  v7 = INPlayMediaIntentResponseCodeToString([self code]);
   [v2 setObject:v7 forKey:@"code"];
 
   return v2;

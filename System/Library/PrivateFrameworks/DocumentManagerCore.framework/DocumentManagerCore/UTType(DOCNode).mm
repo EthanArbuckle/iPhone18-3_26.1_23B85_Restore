@@ -8,13 +8,13 @@
 - (uint64_t)_doc_fileTypeCompare:()DOCNode
 {
   v4 = a3;
-  v5 = [a1 doc_conformsToFolder];
-  v6 = [v4 doc_conformsToFolder];
-  if ((v5 & 1) != 0 || v6)
+  doc_conformsToFolder = [self doc_conformsToFolder];
+  doc_conformsToFolder2 = [v4 doc_conformsToFolder];
+  if ((doc_conformsToFolder & 1) != 0 || doc_conformsToFolder2)
   {
-    if ((v5 ^ 1 | v6))
+    if ((doc_conformsToFolder ^ 1 | doc_conformsToFolder2))
     {
-      v9 = (v5 ^ 1) & v6;
+      v9 = (doc_conformsToFolder ^ 1) & doc_conformsToFolder2;
     }
 
     else
@@ -23,16 +23,16 @@
     }
   }
 
-  else if (a1 == v4)
+  else if (self == v4)
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [a1 identifier];
-    v8 = [v4 identifier];
-    v9 = [v7 compare:v8];
+    identifier = [self identifier];
+    identifier2 = [v4 identifier];
+    v9 = [identifier compare:identifier2];
   }
 
   return v9;
@@ -46,33 +46,33 @@
   }
 
   v2 = doc_conformsToFolder__folderUTICache;
-  v3 = [a1 identifier];
-  v4 = [v2 objectForKey:v3];
+  identifier = [self identifier];
+  v4 = [v2 objectForKey:identifier];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    if ([a1 conformsToType:*MEMORY[0x277CE1D80]])
+    if ([self conformsToType:*MEMORY[0x277CE1D80]])
     {
-      v5 = [a1 conformsToType:*MEMORY[0x277CE1E18]] ^ 1;
+      bOOLValue = [self conformsToType:*MEMORY[0x277CE1E18]] ^ 1;
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
 
     v6 = doc_conformsToFolder__folderUTICache;
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v5];
-    v8 = [a1 identifier];
-    [v6 setObject:v7 forKey:v8];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+    identifier2 = [self identifier];
+    [v6 setObject:v7 forKey:identifier2];
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

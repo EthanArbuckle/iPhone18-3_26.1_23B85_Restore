@@ -1,5 +1,5 @@
 @interface _ICLexiconView
-- (_ICLexiconView)initWithName:(id)a3 typeFlags:(unsigned __int8)a4;
+- (_ICLexiconView)initWithName:(id)name typeFlags:(unsigned __int8)flags;
 - (void)dealloc;
 @end
 
@@ -13,19 +13,19 @@
   [(_ICLexiconView *)&v3 dealloc];
 }
 
-- (_ICLexiconView)initWithName:(id)a3 typeFlags:(unsigned __int8)a4
+- (_ICLexiconView)initWithName:(id)name typeFlags:(unsigned __int8)flags
 {
-  v7 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = _ICLexiconView;
   v8 = [(_ICLexiconView *)&v14 init];
   v9 = v8;
-  if (v8 && (objc_storeStrong(&v8->_name, a3), v9->_typeFlags = a4, View = LXLexiconRepositoryCreateView(), (v9->_lexicon = View) == 0))
+  if (v8 && (objc_storeStrong(&v8->_name, name), v9->_typeFlags = flags, View = LXLexiconRepositoryCreateView(), (v9->_lexicon = View) == 0))
   {
     v12 = _ICPersNamedEntityOSLogFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [_ICLexiconView initWithName:v7 typeFlags:v12];
+      [_ICLexiconView initWithName:nameCopy typeFlags:v12];
     }
 
     v11 = 0;

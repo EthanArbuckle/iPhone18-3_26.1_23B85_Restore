@@ -1,19 +1,19 @@
 @interface VKDebugTreeDataNode
 - (BOOL)isExpandable;
-- (VKDebugTreeDataNode)initWithDebugTreeNode:(const void *)a3 withParent:(id)a4;
+- (VKDebugTreeDataNode)initWithDebugTreeNode:(const void *)node withParent:(id)parent;
 - (id)name;
 - (id)propertyColumn;
 - (void)buildChildren;
-- (void)searchNodes:(id)a3 withParameter:(id)a4;
+- (void)searchNodes:(id)nodes withParameter:(id)parameter;
 @end
 
 @implementation VKDebugTreeDataNode
 
-- (void)searchNodes:(id)a3 withParameter:(id)a4
+- (void)searchNodes:(id)nodes withParameter:(id)parameter
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  parameterCopy = parameter;
   node = self->_node;
   if (*(node + 23) < 0)
   {
@@ -21,19 +21,19 @@
   }
 
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:node];
-  v10 = [v9 rangeOfString:v7 options:1];
+  v10 = [v9 rangeOfString:parameterCopy options:1];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v6 addObject:self];
+    [nodesCopy addObject:self];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v11 = [(VKDebugTreeNode *)self children];
-  v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [(VKDebugTreeNode *)self children];
+  v12 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v12)
   {
     v13 = *v16;
@@ -43,13 +43,13 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v15 + 1) + 8 * i) searchNodes:v6 withParameter:v7];
+        [*(*(&v15 + 1) + 8 * i) searchNodes:nodesCopy withParameter:parameterCopy];
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
@@ -80,8 +80,8 @@
 
 - (BOOL)isExpandable
 {
-  v2 = [(VKDebugTreeNode *)self children];
-  v3 = [v2 count] != 0;
+  children = [(VKDebugTreeNode *)self children];
+  v3 = [children count] != 0;
 
   return v3;
 }
@@ -117,14 +117,14 @@
   [(VKDebugTreeNode *)self setChildren:v10];
 }
 
-- (VKDebugTreeDataNode)initWithDebugTreeNode:(const void *)a3 withParent:(id)a4
+- (VKDebugTreeDataNode)initWithDebugTreeNode:(const void *)node withParent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = VKDebugTreeDataNode;
-  result = [(VKDebugTreeNode *)&v6 initWithParent:a4];
+  result = [(VKDebugTreeNode *)&v6 initWithParent:parent];
   if (result)
   {
-    result->_node = a3;
+    result->_node = node;
   }
 
   return result;

@@ -1,5 +1,5 @@
 @interface UIBuddyApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCanRequestSetupControllerSafely;
 - (BOOL)_accessibilityFinishSetupIfAppropriate;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,16 +7,16 @@
 
 @implementation UIBuddyApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SetupController" hasInstanceMethod:@"navigationFlowController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"buddyControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyFinishedController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BuddyFinishedController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"BFFFlowItemDelegate" hasMethod:@"flowItemDone:" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"BuddyApplicationAndSceneSharedStorage"];
-  [v3 validateClass:@"BuddyApplicationAndSceneSharedStorage" hasClassMethod:@"setupController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SetupController" hasInstanceMethod:@"navigationFlowController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyNavigationFlowController" hasInstanceMethod:@"buddyControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyFinishedController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BuddyFinishedController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"BFFFlowItemDelegate" hasMethod:@"flowItemDone:" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"BuddyApplicationAndSceneSharedStorage"];
+  [validationsCopy validateClass:@"BuddyApplicationAndSceneSharedStorage" hasClassMethod:@"setupController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -44,7 +44,7 @@
 
     v4 = [v3 safeValueForKey:@"navigationFlowController"];
     v5 = [v4 safeArrayForKey:@"buddyControllers"];
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
 
     NSClassFromString(&cfstr_Buddyfinishedc_0.isa);
     if (objc_opt_isKindOfClass())
@@ -53,7 +53,7 @@
       v11 = &v10;
       v12 = 0x2020000000;
       v13 = 0;
-      v9 = v6;
+      v9 = lastObject;
       AXPerformSafeBlock();
       v7 = *(v11 + 24);
 
@@ -95,8 +95,8 @@ void __73__UIBuddyApplicationAccessibility__accessibilityFinishSetupIfAppropriat
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [*MEMORY[0x29EDC8008] connectedScenes];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  connectedScenes = [*MEMORY[0x29EDC8008] connectedScenes];
+  v3 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -107,14 +107,14 @@ void __73__UIBuddyApplicationAccessibility__accessibilityFinishSetupIfAppropriat
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 delegate];
+          delegate = [v7 delegate];
           NSClassFromString(&cfstr_Buddyscenedele_0.isa);
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -126,7 +126,7 @@ void __73__UIBuddyApplicationAccessibility__accessibilityFinishSetupIfAppropriat
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;

@@ -1,21 +1,21 @@
 @interface RTHistoryEntryRoute
-- (RTHistoryEntryRoute)initWithIdentifier:(id)a3 usageDate:(id)a4 originLocation:(id)a5 originMapItem:(id)a6 destinationLocation:(id)a7 destinationMapItem:(id)a8 navigationWasInterrupted:(BOOL)a9;
+- (RTHistoryEntryRoute)initWithIdentifier:(id)identifier usageDate:(id)date originLocation:(id)location originMapItem:(id)item destinationLocation:(id)destinationLocation destinationMapItem:(id)mapItem navigationWasInterrupted:(BOOL)interrupted;
 - (id)description;
 @end
 
 @implementation RTHistoryEntryRoute
 
-- (RTHistoryEntryRoute)initWithIdentifier:(id)a3 usageDate:(id)a4 originLocation:(id)a5 originMapItem:(id)a6 destinationLocation:(id)a7 destinationMapItem:(id)a8 navigationWasInterrupted:(BOOL)a9
+- (RTHistoryEntryRoute)initWithIdentifier:(id)identifier usageDate:(id)date originLocation:(id)location originMapItem:(id)item destinationLocation:(id)destinationLocation destinationMapItem:(id)mapItem navigationWasInterrupted:(BOOL)interrupted
 {
   v36 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v30 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v18)
+  identifierCopy = identifier;
+  dateCopy = date;
+  locationCopy = location;
+  itemCopy = item;
+  destinationLocationCopy = destinationLocation;
+  mapItemCopy = mapItem;
+  v20 = mapItemCopy;
+  if (!destinationLocationCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@
     goto LABEL_9;
   }
 
-  if (!v19)
+  if (!mapItemCopy)
   {
 LABEL_9:
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -49,7 +49,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -58,34 +58,34 @@ LABEL_12:
   v21 = [(RTHistoryEntryRoute *)&v31 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [dateCopy copy];
     usageDate = v21->_usageDate;
     v21->_usageDate = v24;
 
-    objc_storeStrong(&v21->_originLocation, a5);
-    objc_storeStrong(&v21->_originMapItem, a6);
-    objc_storeStrong(&v21->_destinationLocation, a7);
-    objc_storeStrong(&v21->_destinationMapItem, a8);
-    v21->_navigationWasInterrupted = a9;
+    objc_storeStrong(&v21->_originLocation, location);
+    objc_storeStrong(&v21->_originMapItem, item);
+    objc_storeStrong(&v21->_destinationLocation, destinationLocation);
+    objc_storeStrong(&v21->_destinationMapItem, mapItem);
+    v21->_navigationWasInterrupted = interrupted;
   }
 
   self = v21;
-  v26 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v26;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   identifier = self->_identifier;
-  v5 = [(NSDate *)self->_usageDate stringFromDate];
-  v6 = v5;
+  stringFromDate = [(NSDate *)self->_usageDate stringFromDate];
+  v6 = stringFromDate;
   if (self->_navigationWasInterrupted)
   {
     v7 = @"YES";
@@ -96,7 +96,7 @@ LABEL_13:
     v7 = @"NO";
   }
 
-  v8 = [v3 stringWithFormat:@"identifier, %@, usageDate, %@, originLocation, %@, originMapItem, %@, destinationLocation, %@, destinationMapItem, %@, navigationWasInterrupted, %@", identifier, v5, *&self->_originLocation, self->_destinationLocation, self->_destinationMapItem, v7];
+  v8 = [v3 stringWithFormat:@"identifier, %@, usageDate, %@, originLocation, %@, originMapItem, %@, destinationLocation, %@, destinationMapItem, %@, navigationWasInterrupted, %@", identifier, stringFromDate, *&self->_originLocation, self->_destinationLocation, self->_destinationMapItem, v7];
 
   return v8;
 }

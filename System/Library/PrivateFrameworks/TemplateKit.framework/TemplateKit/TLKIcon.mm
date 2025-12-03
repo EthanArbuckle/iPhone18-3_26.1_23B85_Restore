@@ -1,26 +1,26 @@
 @interface TLKIcon
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation TLKIcon
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v10 = a3;
-  if (self->_image != v10)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
-    v5 = [(TLKObject *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_image, image);
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKObject *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKObject *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }

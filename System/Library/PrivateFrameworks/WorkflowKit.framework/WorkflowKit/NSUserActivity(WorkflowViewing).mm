@@ -7,13 +7,13 @@
 - (id)wf_referenceInDatabase:()WorkflowViewing
 {
   v4 = a3;
-  v5 = [a1 activityType];
-  v6 = [v5 isEqualToString:@"is.workflow.my.app.viewworkflow"];
+  activityType = [self activityType];
+  v6 = [activityType isEqualToString:@"is.workflow.my.app.viewworkflow"];
 
   if (v6)
   {
-    v7 = [a1 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"workflowID"];
+    userInfo = [self userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"workflowID"];
     if (v8)
     {
       objc_opt_class();
@@ -35,7 +35,7 @@
 
     v11 = v9;
 
-    v12 = [v7 objectForKeyedSubscript:@"workflowName"];
+    v12 = [userInfo objectForKeyedSubscript:@"workflowName"];
     if (v12)
     {
       objc_opt_class();

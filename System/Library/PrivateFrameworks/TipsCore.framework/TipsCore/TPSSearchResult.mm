@@ -1,15 +1,15 @@
 @interface TPSSearchResult
-+ (id)makeResultWith:(id)a3 items:(id)a4 suggestions:(id)a5;
++ (id)makeResultWith:(id)with items:(id)items suggestions:(id)suggestions;
 - (NSArray)items;
 - (NSArray)suggestions;
 - (TPSSearchQuery)query;
 - (TPSSearchResult)init;
-- (void)append:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)replaceItemsWith:(id)a3;
-- (void)setItems:(id)a3;
-- (void)setQuery:(id)a3;
-- (void)setSuggestions:(id)a3;
+- (void)append:(id)append;
+- (void)encodeWithCoder:(id)coder;
+- (void)replaceItemsWith:(id)with;
+- (void)setItems:(id)items;
+- (void)setQuery:(id)query;
+- (void)setSuggestions:(id)suggestions;
 @end
 
 @implementation TPSSearchResult
@@ -26,7 +26,7 @@
   return v5;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   type metadata accessor for SearchResult.Item();
   v4 = sub_1C014C3C0();
@@ -47,7 +47,7 @@
   return v5;
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
   v4 = sub_1C014C3C0();
   v5 = OBJC_IVAR___TPSSearchResult_suggestions;
@@ -63,35 +63,35 @@
   return *(self + v3);
 }
 
-- (void)setQuery:(id)a3
+- (void)setQuery:(id)query
 {
   v5 = OBJC_IVAR___TPSSearchResult_query;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = query;
+  queryCopy = query;
 }
 
-- (void)replaceItemsWith:(id)a3
+- (void)replaceItemsWith:(id)with
 {
-  if (a3)
+  if (with)
   {
     v4 = OBJC_IVAR___TPSSearchResult_items;
     swift_beginAccess();
-    v6 = *(a3 + v4);
+    v6 = *(with + v4);
     v7 = OBJC_IVAR___TPSSearchResult_items;
     swift_beginAccess();
     v8 = *(self + v7);
     *(self + v7) = v6;
-    v9 = self;
+    selfCopy = self;
   }
 }
 
-- (void)append:(id)a3
+- (void)append:(id)append
 {
   type metadata accessor for SearchResult.Item();
   v4 = sub_1C014C3C0();
-  v5 = self;
+  selfCopy = self;
   SearchResult.append(_:)(v4);
 }
 
@@ -102,20 +102,20 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SearchResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SearchResult.encode(with:)(coderCopy);
 }
 
-+ (id)makeResultWith:(id)a3 items:(id)a4 suggestions:(id)a5
++ (id)makeResultWith:(id)with items:(id)items suggestions:(id)suggestions
 {
   sub_1C0139480();
   v6 = sub_1C014C3C0();
   v7 = sub_1C014C3C0();
-  v8 = a3;
-  v9 = sub_1C0138D7C(v8, v6, v7);
+  withCopy = with;
+  v9 = sub_1C0138D7C(withCopy, v6, v7);
 
   return v9;
 }

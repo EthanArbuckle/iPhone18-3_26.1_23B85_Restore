@@ -1,65 +1,65 @@
 @interface MADAutoAssetHistoryTracker
 + (id)currentTime;
-+ (id)nameForHistoryType:(int64_t)a3;
-+ (id)newBucketFilename:(int64_t)a3 forBucketIndex:(int64_t)a4;
-+ (id)operationName:(int64_t)a3;
-+ (id)paddedNameForClient:(id)a3;
-+ (id)paddedNameForErrorCode:(id)a3;
-+ (id)paddedNameForErrorDomain:(id)a3;
-+ (id)paddedNameForHistoryLayer:(int64_t)a3;
-+ (id)selectorNameForSelector:(id)a3;
-+ (id)summaryOfAssetSelectors:(id)a3;
++ (id)nameForHistoryType:(int64_t)type;
++ (id)newBucketFilename:(int64_t)filename forBucketIndex:(int64_t)index;
++ (id)operationName:(int64_t)name;
++ (id)paddedNameForClient:(id)client;
++ (id)paddedNameForErrorCode:(id)code;
++ (id)paddedNameForErrorDomain:(id)domain;
++ (id)paddedNameForHistoryLayer:(int64_t)layer;
++ (id)selectorNameForSelector:(id)selector;
++ (id)summaryOfAssetSelectors:(id)selectors;
 - (BOOL)makeSureHistoryDirectoryExists;
-- (MADAutoAssetHistoryTracker)initWithCoder:(id)a3;
+- (MADAutoAssetHistoryTracker)initWithCoder:(id)coder;
 - (id)historyTypeName;
-- (id)initForHistoryType:(int64_t)a3 withMaximumFilesystemBytes:(int64_t)a4 usingProtectionQueue:(id)a5;
+- (id)initForHistoryType:(int64_t)type withMaximumFilesystemBytes:(int64_t)bytes usingProtectionQueue:(id)queue;
 - (id)newBucketIndexFilename;
 - (id)summary;
-- (int64_t)recordFormattedHistoryEntry:(id)a3 toBucketFilename:(id)a4 settingCurrentBucketBytes:(BOOL)a5;
+- (int64_t)recordFormattedHistoryEntry:(id)entry toBucketFilename:(id)filename settingCurrentBucketBytes:(BOOL)bytes;
 - (void)createBucketIndexFile;
-- (void)createEmptyBucketFileForIndex:(int64_t)a3 settingCurrentBucketBytes:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)createEmptyBucketFileForIndex:(int64_t)index settingCurrentBucketBytes:(BOOL)bytes;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadBucketIndex;
 - (void)loadPersistedState;
-- (void)recordHistoryEntry:(int64_t)a3 toHistoryType:(int64_t)a4 fromClient:(id)a5 fromLayer:(int64_t)a6 forAssetID:(id)a7 withSelector:(id)a8 withSelectors:(id)a9 usageCount:(int64_t)a10 configuredCount:(int64_t)a11 requestedCount:(int64_t)a12 fromPallasCount:(int64_t)a13 vendingCount:(int64_t)a14 forClientDomainName:(id)a15 forAssetSetIdentifier:(id)a16 forAtomicInstance:(id)a17 withAddendumMessage:(id)a18 forPushChannelID:(id)a19 forPopulationType:(id)a20 forTargetOSVersion:(id)a21 forTargetBuildVersion:(id)a22 withOptionalCount:(unint64_t)a23 withRequiredCount:(unint64_t)a24 isRequired:(id)a25 failingWithError:(id)a26;
+- (void)recordHistoryEntry:(int64_t)entry toHistoryType:(int64_t)type fromClient:(id)client fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector withSelectors:(id)selectors usageCount:(int64_t)self0 configuredCount:(int64_t)self1 requestedCount:(int64_t)self2 fromPallasCount:(int64_t)self3 vendingCount:(int64_t)self4 forClientDomainName:(id)self5 forAssetSetIdentifier:(id)self6 forAtomicInstance:(id)self7 withAddendumMessage:(id)self8 forPushChannelID:(id)self9 forPopulationType:(id)populationType forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)optionalCount withRequiredCount:(unint64_t)requiredCount isRequired:(id)required failingWithError:(id)error;
 - (void)verifyAllOtherBucketFilesExist;
 @end
 
 @implementation MADAutoAssetHistoryTracker
 
-- (id)initForHistoryType:(int64_t)a3 withMaximumFilesystemBytes:(int64_t)a4 usingProtectionQueue:(id)a5
+- (id)initForHistoryType:(int64_t)type withMaximumFilesystemBytes:(int64_t)bytes usingProtectionQueue:(id)queue
 {
-  v9 = a5;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = MADAutoAssetHistoryTracker;
   v10 = [(MADAutoAssetHistoryTracker *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_protectionQueue, a5);
+    objc_storeStrong(&v10->_protectionQueue, queue);
     v11->_loadedFromPersistedState = 0;
-    v11->_historyType = a3;
+    v11->_historyType = type;
     v11->_currentBucketFileIndex = 0;
     v11->_currentBucketFilesystemBytes = 0;
-    v11->_maximumBucketFilesystemBytes = a4 / 10;
+    v11->_maximumBucketFilesystemBytes = bytes / 10;
   }
 
   return v11;
 }
 
-- (MADAutoAssetHistoryTracker)initWithCoder:(id)a3
+- (MADAutoAssetHistoryTracker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MADAutoAssetHistoryTracker;
   v5 = [(MADAutoAssetHistoryTracker *)&v8 init];
   if (v5)
   {
-    v5->_historyType = [v4 decodeInt64ForKey:@"historyType"];
-    v5->_loadedFromPersistedState = [v4 decodeBoolForKey:@"loadedFromPersistedState"];
-    v5->_currentBucketFileIndex = [v4 decodeInt64ForKey:@"currentBucketFileIndex"];
-    v5->_currentBucketFilesystemBytes = [v4 decodeInt64ForKey:@"currentBucketFilesystemBytes"];
-    v5->_maximumBucketFilesystemBytes = [v4 decodeInt64ForKey:@"maximumBucketFilesystemBytes"];
+    v5->_historyType = [coderCopy decodeInt64ForKey:@"historyType"];
+    v5->_loadedFromPersistedState = [coderCopy decodeBoolForKey:@"loadedFromPersistedState"];
+    v5->_currentBucketFileIndex = [coderCopy decodeInt64ForKey:@"currentBucketFileIndex"];
+    v5->_currentBucketFilesystemBytes = [coderCopy decodeInt64ForKey:@"currentBucketFilesystemBytes"];
+    v5->_maximumBucketFilesystemBytes = [coderCopy decodeInt64ForKey:@"maximumBucketFilesystemBytes"];
     protectionQueue = v5->_protectionQueue;
     v5->_protectionQueue = 0;
   }
@@ -67,20 +67,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[MADAutoAssetHistoryTracker historyType](self forKey:{"historyType"), @"historyType"}];
-  [v4 encodeBool:-[MADAutoAssetHistoryTracker loadedFromPersistedState](self forKey:{"loadedFromPersistedState"), @"loadedFromPersistedState"}];
-  [v4 encodeInt64:-[MADAutoAssetHistoryTracker currentBucketFileIndex](self forKey:{"currentBucketFileIndex"), @"currentBucketFileIndex"}];
-  [v4 encodeInt64:-[MADAutoAssetHistoryTracker currentBucketFilesystemBytes](self forKey:{"currentBucketFilesystemBytes"), @"currentBucketFilesystemBytes"}];
-  [v4 encodeInt64:-[MADAutoAssetHistoryTracker maximumBucketFilesystemBytes](self forKey:{"maximumBucketFilesystemBytes"), @"maximumBucketFilesystemBytes"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[MADAutoAssetHistoryTracker historyType](self forKey:{"historyType"), @"historyType"}];
+  [coderCopy encodeBool:-[MADAutoAssetHistoryTracker loadedFromPersistedState](self forKey:{"loadedFromPersistedState"), @"loadedFromPersistedState"}];
+  [coderCopy encodeInt64:-[MADAutoAssetHistoryTracker currentBucketFileIndex](self forKey:{"currentBucketFileIndex"), @"currentBucketFileIndex"}];
+  [coderCopy encodeInt64:-[MADAutoAssetHistoryTracker currentBucketFilesystemBytes](self forKey:{"currentBucketFilesystemBytes"), @"currentBucketFilesystemBytes"}];
+  [coderCopy encodeInt64:-[MADAutoAssetHistoryTracker maximumBucketFilesystemBytes](self forKey:{"maximumBucketFilesystemBytes"), @"maximumBucketFilesystemBytes"}];
 }
 
 - (void)loadPersistedState
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   if (![(MADAutoAssetHistoryTracker *)self loadedFromPersistedState])
   {
@@ -89,68 +89,68 @@
     v4 = [MADAutoAssetHistoryTracker newBucketFilename:[(MADAutoAssetHistoryTracker *)self historyType] forBucketIndex:[(MADAutoAssetHistoryTracker *)self currentBucketFileIndex]];
     if (!v4)
     {
-      v5 = _MADLog(@"AutoHistory");
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      historyTypeName6 = _MADLog(@"AutoHistory");
+      if (os_log_type_enabled(historyTypeName6, OS_LOG_TYPE_ERROR))
       {
-        v12 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+        historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
         *buf = 138544130;
-        v21 = v12;
+        v21 = historyTypeName;
         v22 = 2048;
-        v23 = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
+        currentBucketFileIndex = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
         v24 = 2048;
-        v25 = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
+        currentBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
         v26 = 2048;
-        v27 = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
-        _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | unable to determine current bucket filename | currentBucketFileIndex:%ld | currentBucketFilesystemBytes:%ld | maximumBucketFilesystemBytes:%ld", buf, 0x2Au);
+        maximumBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
+        _os_log_impl(&dword_0, historyTypeName6, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | unable to determine current bucket filename | currentBucketFileIndex:%ld | currentBucketFilesystemBytes:%ld | maximumBucketFilesystemBytes:%ld", buf, 0x2Au);
       }
 
       goto LABEL_21;
     }
 
-    v5 = +[NSFileManager defaultManager];
-    if ([v5 fileExistsAtPath:v4])
+    historyTypeName6 = +[NSFileManager defaultManager];
+    if ([historyTypeName6 fileExistsAtPath:v4])
     {
       v19 = 0;
-      v6 = [v5 attributesOfItemAtPath:v4 error:&v19];
+      historyTypeName5 = [historyTypeName6 attributesOfItemAtPath:v4 error:&v19];
       v7 = v19;
       v8 = v7;
-      if (!v6 || v7)
+      if (!historyTypeName5 || v7)
       {
         v10 = _MADLog(@"AutoHistory");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v13 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+          historyTypeName2 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
           v14 = [NSError buildCheckedError:v8];
           *buf = 138543874;
-          v21 = v13;
+          v21 = historyTypeName2;
           v22 = 2114;
-          v23 = v4;
+          currentBucketFileIndex = v4;
           v24 = 2114;
-          v25 = v14;
+          currentBucketFilesystemBytes = v14;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | unable to determine size of bucket file:%{public}@ | error:%{public}@", buf, 0x20u);
         }
       }
 
       else
       {
-        v9 = [v6 fileSize];
-        if ((v9 & 0x8000000000000000) == 0 && v9 <= [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes])
+        fileSize = [historyTypeName5 fileSize];
+        if ((fileSize & 0x8000000000000000) == 0 && fileSize <= [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes])
         {
-          [(MADAutoAssetHistoryTracker *)self setCurrentBucketFilesystemBytes:v9];
+          [(MADAutoAssetHistoryTracker *)self setCurrentBucketFilesystemBytes:fileSize];
           v15 = _MADLog(@"AutoHistory");
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
-            v17 = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
-            v18 = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
+            historyTypeName3 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+            currentBucketFilesystemBytes2 = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
+            maximumBucketFilesystemBytes2 = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
             *buf = 138544130;
-            v21 = v16;
+            v21 = historyTypeName3;
             v22 = 2114;
-            v23 = v4;
+            currentBucketFileIndex = v4;
             v24 = 2048;
-            v25 = v17;
+            currentBucketFilesystemBytes = currentBucketFilesystemBytes2;
             v26 = 2048;
-            v27 = v18;
+            maximumBucketFilesystemBytes = maximumBucketFilesystemBytes2;
             _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | validated currentBucketFilename:%{public}@ | currentBucketFilesystemBytes:%ld | maximumBucketFilesystemBytes:%ld", buf, 0x2Au);
           }
 
@@ -160,13 +160,13 @@
         v10 = _MADLog(@"AutoHistory");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v11 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+          historyTypeName4 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
           *buf = 138543874;
-          v21 = v11;
+          v21 = historyTypeName4;
           v22 = 2114;
-          v23 = v4;
+          currentBucketFileIndex = v4;
           v24 = 2048;
-          v25 = v9;
+          currentBucketFilesystemBytes = fileSize;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | invalid currentBucketFilename:%{public}@ | out-of-range size(%ld bytes)", buf, 0x20u);
         }
       }
@@ -186,15 +186,15 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v6 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+      historyTypeName5 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
       *buf = 138544130;
-      v21 = v6;
+      v21 = historyTypeName5;
       v22 = 2114;
-      v23 = v4;
+      currentBucketFileIndex = v4;
       v24 = 2048;
-      v25 = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
+      currentBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
       v26 = 2048;
-      v27 = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
+      maximumBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | created currentBucketFilename:%{public}@ | currentBucketFilesystemBytes:%ld | maximumBucketFilesystemBytes:%ld", buf, 0x2Au);
     }
 
@@ -206,85 +206,85 @@ LABEL_19:
   v4 = _MADLog(@"AutoHistory");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+    historyTypeName6 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
     *buf = 138544130;
-    v21 = v5;
+    v21 = historyTypeName6;
     v22 = 2048;
-    v23 = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
+    currentBucketFileIndex = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
     v24 = 2048;
-    v25 = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
+    currentBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
     v26 = 2048;
-    v27 = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
+    maximumBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes];
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | additional trigger to load from persisted-state when already loaded | currentBucketFileIndex:%ld | currentBucketFilesystemBytes:%ld | maximumBucketFilesystemBytes:%ld", buf, 0x2Au);
 LABEL_21:
   }
 }
 
-- (void)recordHistoryEntry:(int64_t)a3 toHistoryType:(int64_t)a4 fromClient:(id)a5 fromLayer:(int64_t)a6 forAssetID:(id)a7 withSelector:(id)a8 withSelectors:(id)a9 usageCount:(int64_t)a10 configuredCount:(int64_t)a11 requestedCount:(int64_t)a12 fromPallasCount:(int64_t)a13 vendingCount:(int64_t)a14 forClientDomainName:(id)a15 forAssetSetIdentifier:(id)a16 forAtomicInstance:(id)a17 withAddendumMessage:(id)a18 forPushChannelID:(id)a19 forPopulationType:(id)a20 forTargetOSVersion:(id)a21 forTargetBuildVersion:(id)a22 withOptionalCount:(unint64_t)a23 withRequiredCount:(unint64_t)a24 isRequired:(id)a25 failingWithError:(id)a26
+- (void)recordHistoryEntry:(int64_t)entry toHistoryType:(int64_t)type fromClient:(id)client fromLayer:(int64_t)layer forAssetID:(id)d withSelector:(id)selector withSelectors:(id)selectors usageCount:(int64_t)self0 configuredCount:(int64_t)self1 requestedCount:(int64_t)self2 fromPallasCount:(int64_t)self3 vendingCount:(int64_t)self4 forClientDomainName:(id)self5 forAssetSetIdentifier:(id)self6 forAtomicInstance:(id)self7 withAddendumMessage:(id)self8 forPushChannelID:(id)self9 forPopulationType:(id)populationType forTargetOSVersion:(id)version forTargetBuildVersion:(id)buildVersion withOptionalCount:(unint64_t)optionalCount withRequiredCount:(unint64_t)requiredCount isRequired:(id)required failingWithError:(id)error
 {
-  v140 = a5;
-  v28 = a7;
-  v29 = a8;
-  v30 = a9;
-  v31 = a15;
-  *(&v132 + 1) = a16;
-  *&v132 = a17;
-  v32 = a18;
-  *(&v131 + 1) = a19;
-  *&v131 = a20;
-  v139 = a21;
-  v138 = a22;
-  v33 = a25;
-  v130 = a26;
+  clientCopy = client;
+  dCopy = d;
+  selectorCopy = selector;
+  selectorsCopy = selectors;
+  nameCopy = name;
+  *(&v132 + 1) = identifier;
+  *&v132 = instance;
+  messageCopy = message;
+  *(&v131 + 1) = iD;
+  *&v131 = populationType;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
+  requiredCopy = required;
+  errorCopy = error;
   context = objc_autoreleasePoolPush();
   v137 = +[MADAutoAssetHistoryTracker currentTime];
-  v136 = [MADAutoAssetHistoryTracker operationName:a3];
-  v123 = v33;
-  if (v33)
+  v136 = [MADAutoAssetHistoryTracker operationName:entry];
+  v123 = requiredCopy;
+  if (requiredCopy)
   {
-    v34 = [v33 BOOLValue];
+    bOOLValue = [requiredCopy BOOLValue];
     v35 = @"OPTIONAL|";
-    if (v34)
+    if (bOOLValue)
     {
       v35 = @"REQUIRED|";
     }
 
     v129 = v35;
-    if (![v33 BOOLValue])
+    if (![requiredCopy BOOLValue])
     {
-      a24 = a23;
+      requiredCount = optionalCount;
     }
 
-    v128 = [NSString stringWithFormat:@"Count:%llu|", a24];
+    requiredCount = [NSString stringWithFormat:@"Count:%llu|", requiredCount];
   }
 
   else
   {
-    v128 = &stru_4BD3F0;
+    requiredCount = &stru_4BD3F0;
     v129 = &stru_4BD3F0;
   }
 
-  v124 = v32;
-  if (v32)
+  v124 = messageCopy;
+  if (messageCopy)
   {
-    v135 = [[NSString alloc] initWithFormat:@" | %@\n", v32];
+    messageCopy = [[NSString alloc] initWithFormat:@" | %@\n", messageCopy];
   }
 
   else
   {
-    v135 = @"\n";
+    messageCopy = @"\n";
   }
 
   v37 = objc_opt_new();
-  if (v140)
+  if (clientCopy)
   {
-    v38 = [MADAutoAssetHistoryTracker paddedNameForClient:v140];
+    v38 = [MADAutoAssetHistoryTracker paddedNameForClient:clientCopy];
     v39 = @"client";
   }
 
   else
   {
-    v38 = [MADAutoAssetHistoryTracker paddedNameForHistoryLayer:a6];
+    v38 = [MADAutoAssetHistoryTracker paddedNameForHistoryLayer:layer];
     v39 = @"layer";
   }
 
@@ -301,16 +301,16 @@ LABEL_21:
   }
 
   v42 = v41;
-  if (v28)
+  if (dCopy)
   {
-    if ([v28 hasSuffix:@".asset"] && (v43 = objc_msgSend(v28, "length"), v43 > objc_msgSend(@".asset", "length")))
+    if ([dCopy hasSuffix:@".asset"] && (v43 = objc_msgSend(dCopy, "length"), v43 > objc_msgSend(@".asset", "length")))
     {
-      v44 = [v28 substringWithRange:{0, objc_msgSend(v28, "length") - objc_msgSend(@".asset", "length")}];
+      v44 = [dCopy substringWithRange:{0, objc_msgSend(dCopy, "length") - objc_msgSend(@".asset", "length")}];
     }
 
     else
     {
-      v44 = v28;
+      v44 = dCopy;
     }
 
     v134 = v44;
@@ -321,12 +321,12 @@ LABEL_21:
     v134 = 0;
   }
 
-  v125 = v30;
-  v126 = v29;
-  if (v29)
+  v125 = selectorsCopy;
+  v126 = selectorCopy;
+  if (selectorCopy)
   {
     v45 = [NSString alloc];
-    v46 = [MADAutoAssetHistoryTracker selectorNameForSelector:v29];
+    v46 = [MADAutoAssetHistoryTracker selectorNameForSelector:selectorCopy];
     v47 = [v45 initWithFormat:@"selector=%@", v46];
 LABEL_29:
     v142 = v47;
@@ -334,21 +334,21 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (v30)
+  if (selectorsCopy)
   {
     v48 = [NSString alloc];
-    v46 = [MADAutoAssetHistoryTracker summaryOfAssetSelectors:v30];
+    v46 = [MADAutoAssetHistoryTracker summaryOfAssetSelectors:selectorsCopy];
     v47 = [v48 initWithFormat:@"selectors=%@", v46];
     goto LABEL_29;
   }
 
   v142 = 0;
 LABEL_30:
-  v49 = v31;
-  if (v31)
+  v49 = nameCopy;
+  if (nameCopy)
   {
-    v127 = [NSString stringWithFormat:@"domain:%@", v31];
-    if (!v139)
+    nameCopy = [NSString stringWithFormat:@"domain:%@", nameCopy];
+    if (!versionCopy)
     {
       goto LABEL_33;
     }
@@ -356,15 +356,15 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  v127 = &stru_4BD3F0;
-  if (v139)
+  nameCopy = &stru_4BD3F0;
+  if (versionCopy)
   {
 LABEL_32:
-    [v37 appendFormat:@"targetOS:%@", v139];
+    [v37 appendFormat:@"targetOS:%@", versionCopy];
   }
 
 LABEL_33:
-  if (v138)
+  if (buildVersionCopy)
   {
     v50 = [v37 length];
     v51 = @"|";
@@ -373,21 +373,21 @@ LABEL_33:
       v51 = &stru_4BD3F0;
     }
 
-    [v37 appendFormat:@"%@targetBuild:%@", v51, v138];
+    [v37 appendFormat:@"%@targetBuild:%@", v51, buildVersionCopy];
   }
 
   v52 = @"BLANK_ENTRY";
-  if (a4 > 3)
+  if (type > 3)
   {
-    if (a4 <= 5)
+    if (type <= 5)
     {
-      if (a4 == 4)
+      if (type == 4)
       {
         if (v142)
         {
           if (*(&v132 + 1))
           {
-            v54 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ set=%@ %@ %@%@%@ %@", v137, v136, v42, v127, *(&v132 + 1), v142, v129, v128, v37, v135];
+            v135 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ set=%@ %@ %@%@%@ %@", v137, v136, v42, nameCopy, *(&v132 + 1), v142, v129, requiredCount, v37, messageCopy];
           }
 
           else
@@ -395,19 +395,19 @@ LABEL_33:
             v79 = [NSString alloc];
             if (v134)
             {
-              v54 = [v79 initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@ %@%@%@ %@", v137, v136, v42, v127, v134, v142, v129, v128, v37, v135];
+              v135 = [v79 initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@ %@%@%@ %@", v137, v136, v42, nameCopy, v134, v142, v129, requiredCount, v37, messageCopy];
             }
 
             else
             {
-              v54 = [v79 initWithFormat:@"time=%@ op=%@ %@ %@ %@ %@%@%@ %@", v137, v136, v42, v127, v142, v129, v128, v37, v135, v111];
+              v135 = [v79 initWithFormat:@"time=%@ op=%@ %@ %@ %@ %@%@%@ %@", v137, v136, v42, nameCopy, v142, v129, requiredCount, v37, messageCopy, v111];
             }
           }
         }
 
         else if (*(&v132 + 1))
         {
-          v54 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ set=%@ %@%@%@ %@", v137, v136, v42, v127, *(&v132 + 1), v129, v128, v37, v135, v111];
+          v135 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ set=%@ %@%@%@ %@", v137, v136, v42, nameCopy, *(&v132 + 1), v129, requiredCount, v37, messageCopy, v111];
         }
 
         else
@@ -415,12 +415,12 @@ LABEL_33:
           v82 = [NSString alloc];
           if (v134)
           {
-            v54 = [v82 initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@%@%@ %@", v137, v136, v42, v127, v134, v129, v128, v37, v135, v111];
+            v135 = [v82 initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@%@%@ %@", v137, v136, v42, nameCopy, v134, v129, requiredCount, v37, messageCopy, v111];
           }
 
           else
           {
-            v54 = [v82 initWithFormat:@"time=%@ op=%@ %@ %@ %@%@%@ %@", v137, v136, v42, v127, v129, v128, v37, v135, v108, v111];
+            v135 = [v82 initWithFormat:@"time=%@ op=%@ %@ %@ %@%@%@ %@", v137, v136, v42, nameCopy, v129, requiredCount, v37, messageCopy, v108, v111];
           }
         }
 
@@ -431,39 +431,39 @@ LABEL_33:
       if (v142)
       {
         v96 = v142;
-        v99 = v135;
+        v99 = messageCopy;
         v93 = v134;
 LABEL_64:
-        v54 = [v55 initWithFormat:@"time=%@ op=%@ %@ asset=%@ %@%@", v137, v136, v42, v93, v96, v99, v102, v105, v108, v111];
+        v135 = [v55 initWithFormat:@"time=%@ op=%@ %@ asset=%@ %@%@", v137, v136, v42, v93, v96, v99, v102, v105, v108, v111];
 LABEL_137:
-        v52 = v54;
+        v52 = v135;
         goto LABEL_138;
       }
 
-      v97 = v135;
+      v97 = messageCopy;
       v94 = v134;
 LABEL_91:
-      v54 = [v55 initWithFormat:@"time=%@ op=%@ %@ asset=%@%@", v137, v136, v42, v94, v97, v98, v102, v105, v108, v111];
+      v135 = [v55 initWithFormat:@"time=%@ op=%@ %@ asset=%@%@", v137, v136, v42, v94, v97, v98, v102, v105, v108, v111];
       goto LABEL_137;
     }
 
-    if (a4 != 6)
+    if (type != 6)
     {
-      if (a4 == 7)
+      if (type == 7)
       {
         v64 = [NSString alloc];
         if (v131 == 0)
         {
-          v65 = [v64 initWithFormat:@"time=%@ op=%@ selector=%@\n", v137, v136, v142, v92, v95];
+          v131 = [v64 initWithFormat:@"time=%@ op=%@ selector=%@\n", v137, v136, v142, v92, v95];
         }
 
         else
         {
-          v65 = [v64 initWithFormat:@"time=%@ op=%@ selector=%@ pushChannelID:%@ populationType:%@\n", v137, v136, v142, *(&v131 + 1), v131];
+          v131 = [v64 initWithFormat:@"time=%@ op=%@ selector=%@ pushChannelID:%@ populationType:%@\n", v137, v136, v142, *(&v131 + 1), v131];
         }
 
-        v52 = v65;
-        v49 = v31;
+        v52 = v131;
+        v49 = nameCopy;
       }
 
       goto LABEL_138;
@@ -475,7 +475,7 @@ LABEL_91:
     {
       if (v134)
       {
-        v54 = [v55 initWithFormat:@"time=%@ op=%@ %@ name=%@ %@%@", v137, v136, v42, v134, v142, v135, v102, v105, v108, v111];
+        v135 = [v55 initWithFormat:@"time=%@ op=%@ %@ name=%@ %@%@", v137, v136, v42, v134, v142, messageCopy, v102, v105, v108, v111];
         goto LABEL_137;
       }
 
@@ -484,145 +484,145 @@ LABEL_91:
 
     if (v134)
     {
-      v54 = [v55 initWithFormat:@"time=%@ op=%@ %@ name=%@%@", v137, v136, v42, v134, v135, v98, v102, v105, v108, v111];
+      v135 = [v55 initWithFormat:@"time=%@ op=%@ %@ name=%@%@", v137, v136, v42, v134, messageCopy, v98, v102, v105, v108, v111];
       goto LABEL_137;
     }
 
 LABEL_95:
-    v54 = [v55 initWithFormat:@"time=%@ op=%@ %@%@", v137, v136, v42, v135, v95, v98, v102, v105, v108, v111];
+    v135 = [v55 initWithFormat:@"time=%@ op=%@ %@%@", v137, v136, v42, messageCopy, v95, v98, v102, v105, v108, v111];
     goto LABEL_137;
   }
 
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v67 = [NSString alloc];
-      if ((a12 & a11 & a13 & a14) < 0 != v68)
+      if ((requestedCount & configuredCount & pallasCount & vendingCount) < 0 != v68)
       {
-        v69 = [v67 initWithFormat:@"count=%004ld", a10, v90, v91, v92];
+        vendingCount = [v67 initWithFormat:@"count=%004ld", count, v90, v91, v92];
       }
 
       else
       {
-        v69 = [v67 initWithFormat:@"configured=%004ld requested:%004ld fromPallas:%004ld vending:%004ld", a11, a12, a13, a14];
+        vendingCount = [v67 initWithFormat:@"configured=%004ld requested:%004ld fromPallas:%004ld vending:%004ld", configuredCount, requestedCount, pallasCount, vendingCount];
       }
 
-      v70 = v69;
-      v49 = v31;
+      v70 = vendingCount;
+      v49 = nameCopy;
       v71 = [NSString alloc];
       if (v142)
       {
-        if (v31 | *(&v132 + 1) | v132)
+        if (nameCopy | *(&v132 + 1) | v132)
         {
           if (v132 == 0)
           {
-            v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ domain=%@ %@%@", v137, v136, v42, v70, v31, v142, v135, v105, v108];
+            v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ domain=%@ %@%@", v137, v136, v42, v70, nameCopy, v142, messageCopy, v105, v108];
           }
 
           else if (v132)
           {
             if (*(&v132 + 1))
             {
-              v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@ %@%@", v137, v136, v42, v70, v132, v31, v142, v135];
+              v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@ %@%@", v137, v136, v42, v70, v132, nameCopy, v142, messageCopy];
             }
 
             else
             {
-              v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@ %@%@", v137, v136, v42, v70, v132, v31, v142, v135, v108];
+              v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@ %@%@", v137, v136, v42, v70, v132, nameCopy, v142, messageCopy, v108];
             }
           }
 
           else
           {
-            v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id-%@ set=%@ domain=%@ %@%@", v137, v136, v42, v70, @"UNKNOWN                                 ", *(&v132 + 1), v31, v142, v135];
+            v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id-%@ set=%@ domain=%@ %@%@", v137, v136, v42, v70, @"UNKNOWN                                 ", *(&v132 + 1), nameCopy, v142, messageCopy];
           }
         }
 
         else
         {
-          v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ %@%@", v137, v136, v42, v70, v142, v135, v102, v105, v108];
+          v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ %@%@", v137, v136, v42, v70, v142, messageCopy, v102, v105, v108];
         }
       }
 
-      else if (v31 | *(&v132 + 1) | v132)
+      else if (nameCopy | *(&v132 + 1) | v132)
       {
         if (v132 == 0)
         {
-          v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ domain=%@%@", v137, v136, v42, v70, v31, v135, v102, v105, v108];
+          v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ domain=%@%@", v137, v136, v42, v70, nameCopy, messageCopy, v102, v105, v108];
         }
 
         else if (v132)
         {
           if (*(&v132 + 1))
           {
-            v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@%@", v137, v136, v42, v70, v132, v31, v135, v108];
+            v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@%@", v137, v136, v42, v70, v132, nameCopy, messageCopy, v108];
           }
 
           else
           {
-            v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@%@", v137, v136, v42, v70, v132, v31, v135, v105, v108];
+            v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@%@", v137, v136, v42, v70, v132, nameCopy, messageCopy, v105, v108];
           }
         }
 
         else
         {
-          v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id-%@ set=%@ domain=%@%@", v137, v136, v42, v70, @"UNKNOWN                                 ", *(&v132 + 1), v31, v135, v108];
+          v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@ id-%@ set=%@ domain=%@%@", v137, v136, v42, v70, @"UNKNOWN                                 ", *(&v132 + 1), nameCopy, messageCopy, v108];
         }
       }
 
       else
       {
-        v72 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@%@", v137, v136, v42, v70, v135, v98, v102, v105, v108];
+        v108 = [v71 initWithFormat:@"time=%@ op=%@ %@ %@%@", v137, v136, v42, v70, messageCopy, v98, v102, v105, v108];
       }
 
-      v52 = v72;
+      v52 = v108;
 
       goto LABEL_138;
     }
 
-    if (v130)
+    if (errorCopy)
     {
-      v56 = [NSError buildCheckedError:v130];
+      v56 = [NSError buildCheckedError:errorCopy];
       if (v56)
       {
-        v57 = v56;
-        v58 = [v56 checkedDepthCount];
-        v59 = [MADAutoAssetHistoryTracker paddedNameForErrorDomain:v57];
-        v60 = [MADAutoAssetHistoryTracker paddedNameForErrorCode:v57];
-        if (v58 >= 1 && ([v57 checkedForDepthIndex:v58], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
+        domain = v56;
+        checkedDepthCount = [v56 checkedDepthCount];
+        v59 = [MADAutoAssetHistoryTracker paddedNameForErrorDomain:domain];
+        v60 = [MADAutoAssetHistoryTracker paddedNameForErrorCode:domain];
+        if (checkedDepthCount >= 1 && ([domain checkedForDepthIndex:checkedDepthCount], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v62 = v61;
           v113 = [MADAutoAssetHistoryTracker paddedNameForErrorDomain:v61];
           v114 = [MADAutoAssetHistoryTracker paddedNameForErrorCode:v62];
           v119 = [[NSString alloc] initWithFormat:@"error_domain=%@ error_code=%@ top_domain=%@ top_code=%@", v113, v114, v59, v60];
-          v115 = v62;
+          localizedDescription2 = v62;
           v116 = [NSString alloc];
-          v63 = [v62 localizedDescription];
-          v117 = [v116 initWithFormat:@" error_desc=%@", v63];
+          localizedDescription = [v62 localizedDescription];
+          v115 = [v116 initWithFormat:@" error_desc=%@", localizedDescription];
         }
 
         else
         {
           v119 = [[NSString alloc] initWithFormat:@"error_domain=%@ error_code=%@            %@          %@", v59, v60, @"                                    ", @"            "];
           v77 = [NSString alloc];
-          v115 = [v57 localizedDescription];
-          v117 = [v77 initWithFormat:@" error_desc=%@", v115];
+          localizedDescription2 = [domain localizedDescription];
+          v115 = [v77 initWithFormat:@" error_desc=%@", localizedDescription2];
         }
 
         v78 = v60;
         v75 = *(&v132 + 1);
         v76 = v134;
 
-        v73 = v117;
+        v73 = v115;
         v74 = v119;
       }
 
       else
       {
         v80 = [NSString alloc];
-        v57 = [v130 domain];
-        v74 = [v80 initWithFormat:@"bad_error_domain=%@ bad_error_code=%ld", v57, objc_msgSend(v130, "code")];
+        domain = [errorCopy domain];
+        v74 = [v80 initWithFormat:@"bad_error_domain=%@ bad_error_code=%ld", domain, objc_msgSend(errorCopy, "code")];
         v73 = &stru_4BD3F0;
         v75 = *(&v132 + 1);
         v76 = v134;
@@ -641,7 +641,7 @@ LABEL_95:
     {
       if (!(v75 | v132 | v76))
       {
-        v81 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ %@%@%@", v137, v136, v42, v74, v142, v73, v135, v105, v108, v111];
+        v111 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ %@%@%@", v137, v136, v42, v74, v142, v73, messageCopy, v105, v108, v111];
         goto LABEL_151;
       }
 
@@ -649,7 +649,7 @@ LABEL_95:
       {
         if (!(v75 | v132))
         {
-          v81 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@ %@%@", v137, v136, v42, v74, v76, v142, v73, v135, v108, v111];
+          v111 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@ %@%@", v137, v136, v42, v74, v76, v142, v73, messageCopy, v108, v111];
           goto LABEL_151;
         }
 
@@ -667,12 +667,12 @@ LABEL_152:
         {
           if (!v75)
           {
-            v81 = [v83 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@ %@%@%@", v137, v136, v42, v74, v132, v49, v142, v73, v135, v111];
+            v111 = [v83 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@ %@%@%@", v137, v136, v42, v74, v132, v49, v142, v73, messageCopy, v111];
             goto LABEL_151;
           }
 
           v109 = v73;
-          v112 = v135;
+          v112 = messageCopy;
           v103 = v49;
           v106 = v142;
           v100 = v75;
@@ -682,19 +682,19 @@ LABEL_152:
         else
         {
           v109 = v73;
-          v112 = v135;
+          v112 = messageCopy;
           v103 = v49;
           v106 = v142;
           v84 = @"UNKNOWN                                 ";
           v100 = v75;
         }
 
-        v81 = [v83 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@ %@%@%@", v137, v136, v42, v74, v84, v100, v103, v106, v109, v112];
+        v111 = [v83 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@ %@%@%@", v137, v136, v42, v74, v84, v100, v103, v106, v109, v112];
       }
 
       else
       {
-        v81 = [v83 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ %@%@%@", v137, v136, v42, v74, @"UNKNOWN                                 ", v75, v142, v73, v135, v111];
+        v111 = [v83 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ %@%@%@", v137, v136, v42, v74, @"UNKNOWN                                 ", v75, v142, v73, messageCopy, v111];
       }
     }
 
@@ -702,7 +702,7 @@ LABEL_152:
     {
       if (!(v75 | v132 | v76))
       {
-        v81 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@%@%@", v137, v136, v42, v74, v73, v135, v102, v105, v108, v111];
+        v111 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@%@%@", v137, v136, v42, v74, v73, messageCopy, v102, v105, v108, v111];
         goto LABEL_151;
       }
 
@@ -710,7 +710,7 @@ LABEL_152:
       {
         if (!(v75 | v132))
         {
-          v81 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@%@", v137, v136, v42, v74, v76, v73, v135, v105, v108, v111];
+          v111 = [[NSString alloc] initWithFormat:@"time=%@ op=%@ %@ %@ asset=%@ %@%@", v137, v136, v42, v74, v76, v73, messageCopy, v105, v108, v111];
           goto LABEL_151;
         }
 
@@ -724,12 +724,12 @@ LABEL_152:
         {
           if (!v75)
           {
-            v81 = [v85 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@%@%@", v137, v136, v42, v74, v132, v49, v73, v135, v108, v111];
+            v111 = [v85 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ domain=%@%@%@", v137, v136, v42, v74, v132, v49, v73, messageCopy, v108, v111];
             goto LABEL_151;
           }
 
           v107 = v73;
-          v110 = v135;
+          v110 = messageCopy;
           v101 = v75;
           v104 = v49;
           v86 = v132;
@@ -738,27 +738,27 @@ LABEL_152:
         else
         {
           v107 = v73;
-          v110 = v135;
+          v110 = messageCopy;
           v101 = v75;
           v104 = v49;
           v86 = @"UNKNOWN                                 ";
         }
 
-        v81 = [v85 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@%@%@", v137, v136, v42, v74, v86, v101, v104, v107, v110, v111];
+        v111 = [v85 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@ domain=%@%@%@", v137, v136, v42, v74, v86, v101, v104, v107, v110, v111];
       }
 
       else
       {
-        v81 = [v85 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@%@%@", v137, v136, v42, v74, @"UNKNOWN                                 ", v75, v73, v135, v108, v111];
+        v111 = [v85 initWithFormat:@"time=%@ op=%@ %@ %@ id=%@ set=%@%@%@", v137, v136, v42, v74, @"UNKNOWN                                 ", v75, v73, messageCopy, v108, v111];
       }
     }
 
 LABEL_151:
-    v52 = v81;
+    v52 = v111;
     goto LABEL_152;
   }
 
-  if (!a4)
+  if (!type)
   {
     v55 = [NSString alloc];
     v66 = v142;
@@ -767,65 +767,65 @@ LABEL_151:
       if (v134)
       {
         v96 = v142;
-        v99 = v135;
+        v99 = messageCopy;
         v93 = v134;
         goto LABEL_64;
       }
 
 LABEL_75:
-      v54 = [v55 initWithFormat:@"time=%@ op=%@ %@ %@%@", v137, v136, v42, v66, v135, v98, v102, v105, v108, v111];
+      v135 = [v55 initWithFormat:@"time=%@ op=%@ %@ %@%@", v137, v136, v42, v66, messageCopy, v98, v102, v105, v108, v111];
       goto LABEL_137;
     }
 
     if (v134)
     {
       v94 = v134;
-      v97 = v135;
+      v97 = messageCopy;
       goto LABEL_91;
     }
 
     goto LABEL_95;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v53 = [NSString alloc];
     if (v142)
     {
       if (v134)
       {
-        v54 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld asset=%@ %@%@", v137, v136, v42, a10, v134, v142, v135, v105, v108, v111];
+        v135 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld asset=%@ %@%@", v137, v136, v42, count, v134, v142, messageCopy, v105, v108, v111];
       }
 
       else
       {
-        v54 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld %@%@", v137, v136, v42, a10, v142, v135, v102, v105, v108, v111];
+        v135 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld %@%@", v137, v136, v42, count, v142, messageCopy, v102, v105, v108, v111];
       }
     }
 
     else if (v134)
     {
-      v54 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld asset=%@%@", v137, v136, v42, a10, v134, v135, v102, v105, v108, v111];
+      v135 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld asset=%@%@", v137, v136, v42, count, v134, messageCopy, v102, v105, v108, v111];
     }
 
     else
     {
-      v54 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld%@", v137, v136, v42, a10, v135, v98, v102, v105, v108, v111];
+      v135 = [v53 initWithFormat:@"time=%@ op=%@ %@ count=%004ld%@", v137, v136, v42, count, messageCopy, v98, v102, v105, v108, v111];
     }
 
     goto LABEL_137;
   }
 
 LABEL_138:
-  v87 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __413__MADAutoAssetHistoryTracker_recordHistoryEntry_toHistoryType_fromClient_fromLayer_forAssetID_withSelector_withSelectors_usageCount_configuredCount_requestedCount_fromPallasCount_vendingCount_forClientDomainName_forAssetSetIdentifier_forAtomicInstance_withAddendumMessage_forPushChannelID_forPopulationType_forTargetOSVersion_forTargetBuildVersion_withOptionalCount_withRequiredCount_isRequired_failingWithError___block_invoke;
   block[3] = &unk_4B2B18;
   v144 = v52;
-  v145 = self;
+  selfCopy = self;
   v88 = v52;
-  dispatch_async(v87, block);
+  dispatch_async(protectionQueue, block);
 
   objc_autoreleasePoolPop(context);
 }
@@ -882,8 +882,8 @@ void __413__MADAutoAssetHistoryTracker_recordHistoryEntry_toHistoryType_fromClie
 
 - (BOOL)makeSureHistoryDirectoryExists
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v4 = +[NSFileManager defaultManager];
   v5 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/history");
@@ -908,10 +908,10 @@ void __413__MADAutoAssetHistoryTracker_recordHistoryEntry_toHistoryType_fromClie
       v11 = _MADLog(@"AutoHistory");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+        historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
         v13 = [NSError buildCheckedError:v7];
         *buf = 138543618;
-        v17 = v12;
+        v17 = historyTypeName;
         v18 = 2114;
         v19 = v13;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:makeSureHistoryDirectoryExists} | unable to create base history directory | error:%{public}@", buf, 0x16u);
@@ -926,51 +926,51 @@ void __413__MADAutoAssetHistoryTracker_recordHistoryEntry_toHistoryType_fromClie
 
 - (void)loadBucketIndex
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
-  v4 = [(MADAutoAssetHistoryTracker *)self newBucketIndexFilename];
+  newBucketIndexFilename = [(MADAutoAssetHistoryTracker *)self newBucketIndexFilename];
   v5 = +[NSFileManager defaultManager];
-  if ([v5 fileExistsAtPath:v4])
+  if ([v5 fileExistsAtPath:newBucketIndexFilename])
   {
     v17 = 0;
-    v6 = [NSString stringWithContentsOfFile:v4 encoding:4 error:&v17];
+    historyTypeName4 = [NSString stringWithContentsOfFile:newBucketIndexFilename encoding:4 error:&v17];
     v7 = v17;
     if (v7)
     {
       v8 = _MADLog(@"AutoHistory");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+        historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
         v10 = [NSError buildCheckedError:v7];
         *buf = 138543874;
-        v19 = v9;
+        v19 = historyTypeName;
         v20 = 2114;
-        v21 = v4;
+        v21 = newBucketIndexFilename;
         v22 = 2114;
-        v23 = v10;
+        currentBucketFileIndex2 = v10;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadBucketIndex} | unable to read bucket index from bucket file:%{public}@ | error:%{public}@", buf, 0x20u);
       }
     }
 
     else
     {
-      v11 = [v6 intValue];
-      v12 = v11;
-      if (v11 < 0xB)
+      intValue = [historyTypeName4 intValue];
+      v12 = intValue;
+      if (intValue < 0xB)
       {
-        [(MADAutoAssetHistoryTracker *)self setCurrentBucketFileIndex:v11];
+        [(MADAutoAssetHistoryTracker *)self setCurrentBucketFileIndex:intValue];
         v14 = _MADLog(@"AutoHistory");
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
-          v16 = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
+          historyTypeName2 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+          currentBucketFileIndex = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
           *buf = 138543874;
-          v19 = v15;
+          v19 = historyTypeName2;
           v20 = 2114;
-          v21 = v4;
+          v21 = newBucketIndexFilename;
           v22 = 2048;
-          v23 = v16;
+          currentBucketFileIndex2 = currentBucketFileIndex;
           _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:loadBucketIndex} | valid bucket index file:%{public}@ | currentBucketFileIndex:%ld", buf, 0x20u);
         }
 
@@ -980,13 +980,13 @@ void __413__MADAutoAssetHistoryTracker_recordHistoryEntry_toHistoryType_fromClie
       v8 = _MADLog(@"AutoHistory");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+        historyTypeName3 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
         *buf = 138543874;
-        v19 = v13;
+        v19 = historyTypeName3;
         v20 = 2048;
         v21 = v12;
         v22 = 2114;
-        v23 = v4;
+        currentBucketFileIndex2 = newBucketIndexFilename;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadBucketIndex} | invalid bucket index(%ld) in bucket file:%{public}@", buf, 0x20u);
       }
     }
@@ -1003,13 +1003,13 @@ LABEL_11:
   v7 = _MADLog(@"AutoHistory");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+    historyTypeName4 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
     *buf = 138543874;
-    v19 = v6;
+    v19 = historyTypeName4;
     v20 = 2114;
-    v21 = v4;
+    v21 = newBucketIndexFilename;
     v22 = 2048;
-    v23 = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
+    currentBucketFileIndex2 = [(MADAutoAssetHistoryTracker *)self currentBucketFileIndex];
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:loadBucketIndex} | created bucket index file:%{public}@ | currentBucketFileIndex:%ld", buf, 0x20u);
     goto LABEL_11;
   }
@@ -1019,13 +1019,13 @@ LABEL_12:
 
 - (void)createBucketIndexFile
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
-  v4 = [(MADAutoAssetHistoryTracker *)self newBucketIndexFilename];
+  newBucketIndexFilename = [(MADAutoAssetHistoryTracker *)self newBucketIndexFilename];
   v5 = [[NSString alloc] initWithFormat:@"%d", -[MADAutoAssetHistoryTracker currentBucketFileIndex](self, "currentBucketFileIndex")];
   v11 = 0;
-  [v5 writeToFile:v4 atomically:1 encoding:4 error:&v11];
+  [v5 writeToFile:newBucketIndexFilename atomically:1 encoding:4 error:&v11];
   v6 = v11;
   v7 = _MADLog(@"AutoHistory");
   v8 = v7;
@@ -1033,12 +1033,12 @@ LABEL_12:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+      historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
       v10 = [NSError buildCheckedError:v6];
       *buf = 138543874;
-      v13 = v9;
+      v13 = historyTypeName;
       v14 = 2114;
-      v15 = v4;
+      v15 = newBucketIndexFilename;
       v16 = 2114;
       v17 = v10;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:createBucketIndexFile} | unable to write bucket index to bucket file:%{public}@ | error:%{public}@", buf, 0x20u);
@@ -1049,11 +1049,11 @@ LABEL_6:
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+    historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
     *buf = 138543874;
-    v13 = v9;
+    v13 = historyTypeName;
     v14 = 2114;
-    v15 = v4;
+    v15 = newBucketIndexFilename;
     v16 = 2114;
     v17 = v5;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:createBucketIndexFile} | set bucket file:%{public}@ | currentBucketFileIndex:%{public}@", buf, 0x20u);
@@ -1061,27 +1061,27 @@ LABEL_6:
   }
 }
 
-- (void)createEmptyBucketFileForIndex:(int64_t)a3 settingCurrentBucketBytes:(BOOL)a4
+- (void)createEmptyBucketFileForIndex:(int64_t)index settingCurrentBucketBytes:(BOOL)bytes
 {
-  v4 = a4;
-  v7 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v7);
+  bytesCopy = bytes;
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v13 = +[NSFileManager defaultManager];
-  v8 = [MADAutoAssetHistoryTracker newBucketFilename:[(MADAutoAssetHistoryTracker *)self historyType] forBucketIndex:a3];
+  v8 = [MADAutoAssetHistoryTracker newBucketFilename:[(MADAutoAssetHistoryTracker *)self historyType] forBucketIndex:index];
   v9 = [NSString alloc];
   v10 = +[MADAutoAssetHistoryTracker currentTime];
   v11 = [MADAutoAssetHistoryTracker operationName:0];
   v12 = [v9 initWithFormat:@"time=%@ op=%@\n", v10, v11];
 
   [v13 createFileAtPath:v8 contents:0 attributes:0];
-  [(MADAutoAssetHistoryTracker *)self recordFormattedHistoryEntry:v12 toBucketFilename:v8 settingCurrentBucketBytes:v4];
+  [(MADAutoAssetHistoryTracker *)self recordFormattedHistoryEntry:v12 toBucketFilename:v8 settingCurrentBucketBytes:bytesCopy];
 }
 
 - (void)verifyAllOtherBucketFilesExist
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
   v4 = +[NSFileManager defaultManager];
   v5 = 0;
@@ -1105,10 +1105,10 @@ LABEL_6:
             v14 = _MADLog(@"AutoHistory");
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
-              v15 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+              historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
               v16 = [NSError buildCheckedError:v10];
               *buf = v19;
-              v22 = v15;
+              v22 = historyTypeName;
               v23 = 2114;
               v24 = v7;
               v25 = 2114;
@@ -1121,17 +1121,17 @@ LABEL_6:
 
           else
           {
-            v11 = [v8 fileSize];
-            if (v11 < 0 || v11 > [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes])
+            fileSize = [v8 fileSize];
+            if (fileSize < 0 || fileSize > [(MADAutoAssetHistoryTracker *)self maximumBucketFilesystemBytes])
             {
               v12 = _MADLog(@"AutoHistory");
               if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
               {
-                v13 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+                historyTypeName2 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
                 *buf = v19;
-                v22 = v13;
+                v22 = historyTypeName2;
                 v23 = 2048;
-                v24 = v11;
+                v24 = fileSize;
                 v25 = 2114;
                 v26 = v7;
                 _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | out-of-range size(%ld bytes) of bucket file:%{public}@", buf, 0x20u);
@@ -1145,13 +1145,13 @@ LABEL_6:
               v17 = _MADLog(@"AutoHistory");
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
-                v18 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+                historyTypeName3 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
                 *buf = v19;
-                v22 = v18;
+                v22 = historyTypeName3;
                 v23 = 2114;
                 v24 = v7;
                 v25 = 2048;
-                v26 = v11;
+                v26 = fileSize;
                 _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "{AUTO-HISTORY-TRACKER[%{public}@]:loadPersistedState} | verified other bucket file:%{public}@ | currentBucketFilesystemBytes:%ld", buf, 0x20u);
               }
             }
@@ -1171,25 +1171,25 @@ LABEL_6:
   while (v5 != &dword_8 + 2);
 }
 
-- (int64_t)recordFormattedHistoryEntry:(id)a3 toBucketFilename:(id)a4 settingCurrentBucketBytes:(BOOL)a5
+- (int64_t)recordFormattedHistoryEntry:(id)entry toBucketFilename:(id)filename settingCurrentBucketBytes:(BOOL)bytes
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v10);
+  bytesCopy = bytes;
+  entryCopy = entry;
+  filenameCopy = filename;
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
-  v11 = [NSFileHandle fileHandleForWritingAtPath:v9];
+  v11 = [NSFileHandle fileHandleForWritingAtPath:filenameCopy];
   if (v11)
   {
-    v12 = [v8 length];
+    v12 = [entryCopy length];
     v42 = 0;
     v43 = 0;
     v13 = [v11 seekToEndReturningOffset:&v43 error:&v42];
     v14 = v42;
     if (v13)
     {
-      v15 = [v8 dataUsingEncoding:4];
+      v15 = [entryCopy dataUsingEncoding:4];
       v41 = 0;
       v16 = [v11 writeData:v15 error:&v41];
       v17 = v41;
@@ -1200,17 +1200,17 @@ LABEL_6:
         v34 = _MADLog(@"AutoHistory");
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
-          v35 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+          historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
           v36 = @"NO_ERROR";
           *buf = 138543874;
-          v45 = v35;
+          v45 = historyTypeName;
           if (v24)
           {
             v36 = v24;
           }
 
           v46 = 2114;
-          v47 = v9;
+          v47 = filenameCopy;
           v48 = 2114;
           v49 = v36;
           _os_log_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:recordFormattedHistoryEntry} | unable to write latest entry to bucket file:%{public}@ | error:%{public}@", buf, 0x20u);
@@ -1229,19 +1229,19 @@ LABEL_6:
         v19 = v43;
         if (v43 < v12)
         {
-          v20 = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
+          currentBucketFilesystemBytes = [(MADAutoAssetHistoryTracker *)self currentBucketFilesystemBytes];
           v21 = _MADLog(@"AutoHistory");
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v22 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+            historyTypeName2 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
             *buf = 138543618;
-            v45 = v22;
+            v45 = historyTypeName2;
             v46 = 2114;
-            v47 = v9;
+            v47 = filenameCopy;
             _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:recordFormattedHistoryEntry} | unable to get accurate filesystem size after writing entry to bucket file:%{public}@", buf, 0x16u);
           }
 
-          v19 = v12 + v20;
+          v19 = v12 + currentBucketFilesystemBytes;
         }
 
         v39 = 0;
@@ -1255,24 +1255,24 @@ LABEL_6:
           v25 = _MADLog(@"AutoHistory");
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v26 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+            historyTypeName3 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
             v27 = @"NO_ERROR";
             *buf = 138543874;
-            v45 = v26;
+            v45 = historyTypeName3;
             if (v24)
             {
               v27 = v24;
             }
 
             v46 = 2114;
-            v47 = v9;
+            v47 = filenameCopy;
             v48 = 2114;
             v49 = v27;
             _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:recordFormattedHistoryEntry} | unable to seek to end of bucket file:%{public}@ (after writing) | error:%{public}@", buf, 0x20u);
           }
         }
 
-        if (v5)
+        if (bytesCopy)
         {
           [(MADAutoAssetHistoryTracker *)self setCurrentBucketFilesystemBytes:v19];
         }
@@ -1286,17 +1286,17 @@ LABEL_31:
       v30 = _MADLog(@"AutoHistory");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+        historyTypeName4 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
         v38 = @"NO_ERROR";
         *buf = 138543874;
-        v45 = v31;
+        v45 = historyTypeName4;
         if (v24)
         {
           v38 = v24;
         }
 
         v46 = 2114;
-        v47 = v9;
+        v47 = filenameCopy;
         v48 = 2114;
         v49 = v38;
         v33 = "{AUTO-HISTORY-TRACKER[%{public}@]:recordFormattedHistoryEntry} | unable to write latest entry to bucket file:%{public}@ | error:%{public}@";
@@ -1311,17 +1311,17 @@ LABEL_24:
       v30 = _MADLog(@"AutoHistory");
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+        historyTypeName4 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
         v32 = @"NO_ERROR";
         *buf = 138543874;
-        v45 = v31;
+        v45 = historyTypeName4;
         if (v24)
         {
           v32 = v24;
         }
 
         v46 = 2114;
-        v47 = v9;
+        v47 = filenameCopy;
         v48 = 2114;
         v49 = v32;
         v33 = "{AUTO-HISTORY-TRACKER[%{public}@]:recordFormattedHistoryEntry} | unable to seek to end of bucket file:%{public}@ | error:%{public}@";
@@ -1338,11 +1338,11 @@ LABEL_32:
   v28 = _MADLog(@"AutoHistory");
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
-    v29 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+    historyTypeName5 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
     *buf = 138543618;
-    v45 = v29;
+    v45 = historyTypeName5;
     v46 = 2114;
-    v47 = v9;
+    v47 = filenameCopy;
     _os_log_impl(&dword_0, v28, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER[%{public}@]:recordFormattedHistoryEntry} | unable to get handle to bucket file:%{public}@", buf, 0x16u);
   }
 
@@ -1362,31 +1362,31 @@ LABEL_33:
   return v4;
 }
 
-+ (id)operationName:(int64_t)a3
++ (id)operationName:(int64_t)name
 {
   result = @"UNKNOWN";
-  if (a3 > 599)
+  if (name > 599)
   {
-    if (a3 <= 1000)
+    if (name <= 1000)
     {
-      if (a3 <= 799)
+      if (name <= 799)
       {
-        if (a3 > 699)
+        if (name > 699)
         {
           v4 = @"STARTING_DOWNLOAD_GROUPS   ";
           v38 = @"DETERMINE_DONE             ";
           v39 = @"DETERMINE_DROPPED          ";
-          if (a3 != 705)
+          if (name != 705)
           {
             v39 = @"UNKNOWN";
           }
 
-          if (a3 != 704)
+          if (name != 704)
           {
             v38 = v39;
           }
 
-          if (a3 != 703)
+          if (name != 703)
           {
             v4 = v38;
           }
@@ -1394,22 +1394,22 @@ LABEL_33:
           v8 = @"DETERMINE_CONTENT_AVAILABLE";
           v40 = @"STARTING_DOWNLOAD_ALL      ";
           v41 = @"DETERMINE_GROUPS_AVAILABLE ";
-          if (a3 != 702)
+          if (name != 702)
           {
             v41 = @"UNKNOWN";
           }
 
-          if (a3 != 701)
+          if (name != 701)
           {
             v40 = v41;
           }
 
-          if (a3 != 700)
+          if (name != 700)
           {
             v8 = v40;
           }
 
-          v11 = a3 <= 702;
+          v11 = name <= 702;
         }
 
         else
@@ -1417,17 +1417,17 @@ LABEL_33:
           v4 = @"STA_STARTUP_COOKIE_SUCCESS ";
           v22 = @"STA_STARTUP_COOKIE_FAILURE ";
           v23 = @"STA_STARTUP_COOKIE_EXISTS  ";
-          if (a3 != 624)
+          if (name != 624)
           {
             v23 = @"UNKNOWN";
           }
 
-          if (a3 != 623)
+          if (name != 623)
           {
             v22 = v23;
           }
 
-          if (a3 != 622)
+          if (name != 622)
           {
             v4 = v22;
           }
@@ -1435,41 +1435,41 @@ LABEL_33:
           v8 = @"PRG_ENTRY_DOWNLOADED       ";
           v24 = @"STA_STARTUP_ACTIVATED      ";
           v25 = @"STA_STARTUP_BEGINNING      ";
-          if (a3 != 621)
+          if (name != 621)
           {
             v25 = @"UNKNOWN";
           }
 
-          if (a3 != 620)
+          if (name != 620)
           {
             v24 = v25;
           }
 
-          if (a3 != 600)
+          if (name != 600)
           {
             v8 = v24;
           }
 
-          v11 = a3 <= 621;
+          v11 = name <= 621;
         }
       }
 
-      else if (a3 <= 805)
+      else if (name <= 805)
       {
         v4 = @"PURGED_STAGED_CONTENT      ";
         v34 = @"CANCEL_ACTIVE_JOB          ";
         v35 = @"ERASE_STAGING_CLIENT_REQ   ";
-        if (a3 != 805)
+        if (name != 805)
         {
           v35 = @"UNKNOWN";
         }
 
-        if (a3 != 804)
+        if (name != 804)
         {
           v34 = v35;
         }
 
-        if (a3 != 803)
+        if (name != 803)
         {
           v4 = v34;
         }
@@ -1477,51 +1477,51 @@ LABEL_33:
         v8 = @"STORE_STAGE_REQUEST        ";
         v36 = @"INVALID_STAGE_REQUEST      ";
         v37 = @"PURGE_STAGING_CLIENT_REQ   ";
-        if (a3 != 802)
+        if (name != 802)
         {
           v37 = @"UNKNOWN";
         }
 
-        if (a3 != 801)
+        if (name != 801)
         {
           v36 = v37;
         }
 
-        if (a3 != 800)
+        if (name != 800)
         {
           v8 = v36;
         }
 
-        v11 = a3 <= 802;
+        v11 = name <= 802;
       }
 
       else
       {
         v4 = @"STAGED_DONE_DOWNLOADED     ";
         v12 = @"SUCESS_DECIDE_MORE_CONTENT ";
-        if (a3 != 1000)
+        if (name != 1000)
         {
           v12 = @"UNKNOWN";
         }
 
-        if (a3 != 904)
+        if (name != 904)
         {
           v4 = v12;
         }
 
         v13 = @"STAGED_NO_DOWNLOADED       ";
         v14 = @"STAGED_REQUIRED_DOWNLOADED ";
-        if (a3 != 903)
+        if (name != 903)
         {
           v14 = @"UNKNOWN";
         }
 
-        if (a3 != 902)
+        if (name != 902)
         {
           v13 = v14;
         }
 
-        if (a3 <= 903)
+        if (name <= 903)
         {
           v4 = v13;
         }
@@ -1529,43 +1529,43 @@ LABEL_33:
         v8 = @"ERASED_STAGED_CONTENT      ";
         v15 = @"STAGED_NO_CANDIDATES       ";
         v16 = @"STAGED_HAVE_CANDIDATES     ";
-        if (a3 != 901)
+        if (name != 901)
         {
           v16 = @"UNKNOWN";
         }
 
-        if (a3 != 900)
+        if (name != 900)
         {
           v15 = v16;
         }
 
-        if (a3 != 806)
+        if (name != 806)
         {
           v8 = v15;
         }
 
-        v11 = a3 <= 901;
+        v11 = name <= 901;
       }
     }
 
-    else if (a3 > 1302)
+    else if (name > 1302)
     {
-      if (a3 <= 1501)
+      if (name <= 1501)
       {
         v4 = @"SCHEDULED_SET_JOBS         ";
         v30 = @"DEL_AI_DROP_ELIMINATE      ";
         v31 = @"DEL_AI_DROP_MATCHES_LATEST ";
-        if (a3 != 1501)
+        if (name != 1501)
         {
           v31 = @"UNKNOWN";
         }
 
-        if (a3 != 1500)
+        if (name != 1500)
         {
           v30 = v31;
         }
 
-        if (a3 != 1401)
+        if (name != 1401)
         {
           v4 = v30;
         }
@@ -1573,51 +1573,51 @@ LABEL_33:
         v8 = @"CLIENT_RECIEVE_NOTIFICATION";
         v32 = @"DAEMON_RECIEVE_NOTIFICATION";
         v33 = @"SCHEDULED_SINGLETON_JOBS   ";
-        if (a3 != 1400)
+        if (name != 1400)
         {
           v33 = @"UNKNOWN";
         }
 
-        if (a3 != 1304)
+        if (name != 1304)
         {
           v32 = v33;
         }
 
-        if (a3 != 1303)
+        if (name != 1303)
         {
           v8 = v32;
         }
 
-        v11 = a3 <= 1400;
+        v11 = name <= 1400;
       }
 
       else
       {
         v4 = @"SET_JOB_ASSET_DOWNLOAD_END  ";
         v17 = @"QUIET_OPERATION            ";
-        if (a3 != 9999)
+        if (name != 9999)
         {
           v17 = @"UNKNOWN";
         }
 
-        if (a3 != 1701)
+        if (name != 1701)
         {
           v4 = v17;
         }
 
         v18 = @"RECLAIMED_ASSET";
         v19 = @"SET_JOB_ASSET_DOWNLOAD_START";
-        if (a3 != 1700)
+        if (name != 1700)
         {
           v19 = @"UNKNOWN";
         }
 
-        if (a3 != 1600)
+        if (name != 1600)
         {
           v18 = v19;
         }
 
-        if (a3 <= 1700)
+        if (name <= 1700)
         {
           v4 = v18;
         }
@@ -1625,41 +1625,41 @@ LABEL_33:
         v8 = @"DEL_AI_DROP_CORRUPTED_ASSET";
         v20 = @"DEL_AI_DROP_FORCE_UNLCK_DEV";
         v21 = @"DEL_AI_ELIMINATED          ";
-        if (a3 != 1504)
+        if (name != 1504)
         {
           v21 = @"UNKNOWN";
         }
 
-        if (a3 != 1503)
+        if (name != 1503)
         {
           v20 = v21;
         }
 
-        if (a3 != 1502)
+        if (name != 1502)
         {
           v8 = v20;
         }
 
-        v11 = a3 <= 1599;
+        v11 = name <= 1599;
       }
     }
 
-    else if (a3 <= 1202)
+    else if (name <= 1202)
     {
       v4 = @"PERSONALIZE                ";
       v26 = @"DEPERSONALIZE              ";
       v27 = @"BEGIN_ACCESS               ";
-      if (a3 != 1202)
+      if (name != 1202)
       {
         v27 = @"UNKNOWN";
       }
 
-      if (a3 != 1201)
+      if (name != 1201)
       {
         v26 = v27;
       }
 
-      if (a3 != 1200)
+      if (name != 1200)
       {
         v4 = v26;
       }
@@ -1667,51 +1667,51 @@ LABEL_33:
       v8 = @"FAILED_DECIDE_MORE_CONTENT ";
       v28 = @"DETERMINE_ASSET_TYPE_START ";
       v29 = @"DETERMINE_ASSET_TYPE_DONE  ";
-      if (a3 != 1101)
+      if (name != 1101)
       {
         v29 = @"UNKNOWN";
       }
 
-      if (a3 != 1100)
+      if (name != 1100)
       {
         v28 = v29;
       }
 
-      if (a3 != 1001)
+      if (name != 1001)
       {
         v8 = v28;
       }
 
-      v11 = a3 <= 1199;
+      v11 = name <= 1199;
     }
 
     else
     {
       v4 = @"SUBSCRIBE_CHANNEL          ";
       v5 = @"UNSUBSCRIBE_CHANNEL        ";
-      if (a3 != 1301)
+      if (name != 1301)
       {
         v5 = @"UNKNOWN";
       }
 
-      if (a3 != 1300)
+      if (name != 1300)
       {
         v4 = v5;
       }
 
       v6 = @"PRE-PERSONALIZE            ";
       v7 = @"COMMIT_PRE_PERSONALIZED    ";
-      if (a3 != 1207)
+      if (name != 1207)
       {
         v7 = @"UNKNOWN";
       }
 
-      if (a3 != 1206)
+      if (name != 1206)
       {
         v6 = v7;
       }
 
-      if (a3 <= 1299)
+      if (name <= 1299)
       {
         v4 = v6;
       }
@@ -1719,22 +1719,22 @@ LABEL_33:
       v8 = @"END_ACCESS                 ";
       v9 = @"BEGIN_MAP_TO_EXCLAVES      ";
       v10 = @"END_MAP_TO_EXCLAVES        ";
-      if (a3 != 1205)
+      if (name != 1205)
       {
         v10 = @"UNKNOWN";
       }
 
-      if (a3 != 1204)
+      if (name != 1204)
       {
         v9 = v10;
       }
 
-      if (a3 != 1203)
+      if (name != 1203)
       {
         v8 = v9;
       }
 
-      v11 = a3 <= 1205;
+      v11 = name <= 1205;
     }
 
     if (v11)
@@ -1748,21 +1748,21 @@ LABEL_33:
     }
   }
 
-  else if (a3 <= 101)
+  else if (name <= 101)
   {
     v42 = @"ADD_CLIENT_DOWNLOAD        ";
     v43 = @"ADD_CLIENT_LOCK            ";
-    if (a3 != 101)
+    if (name != 101)
     {
       v43 = @"UNKNOWN";
     }
 
-    if (a3 != 100)
+    if (name != 100)
     {
       v42 = v43;
     }
 
-    if (a3)
+    if (name)
     {
       return v42;
     }
@@ -1775,7 +1775,7 @@ LABEL_33:
 
   else
   {
-    switch(a3)
+    switch(name)
     {
       case 200:
         result = @"ADD_PRE_INSTALL_DISCOVERED ";
@@ -2342,7 +2342,7 @@ LABEL_33:
         result = @"JOB_FAILED_REVOKED         ";
         break;
       default:
-        if (a3 == 102)
+        if (name == 102)
         {
           result = @"ADD_CLIENT_INHIBITED       ";
         }
@@ -2354,16 +2354,16 @@ LABEL_33:
   return result;
 }
 
-+ (id)paddedNameForHistoryLayer:(int64_t)a3
++ (id)paddedNameForHistoryLayer:(int64_t)layer
 {
-  if (a3 > 7)
+  if (layer > 7)
   {
     v3 = @"UNKNOWN";
   }
 
   else
   {
-    v3 = off_4B3AD8[a3];
+    v3 = off_4B3AD8[layer];
   }
 
   v4 = [(__CFString *)v3 length];
@@ -2384,13 +2384,13 @@ LABEL_33:
   return v3;
 }
 
-+ (id)paddedNameForClient:(id)a3
++ (id)paddedNameForClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 length];
+  clientCopy = client;
+  v4 = [clientCopy length];
   if (v4 >= 25)
   {
-    v5 = [v3 substringWithRange:{0, 24}];
+    v5 = [clientCopy substringWithRange:{0, 24}];
 LABEL_5:
     v6 = v5;
     goto LABEL_7;
@@ -2398,27 +2398,27 @@ LABEL_5:
 
   if (v4 == &dword_18)
   {
-    v5 = v3;
+    v5 = clientCopy;
     goto LABEL_5;
   }
 
   v7 = [@"                        " substringWithRange:{0, 24 - v4}];
-  v6 = [NSString stringWithFormat:@"%@%@", v3, v7];
+  v6 = [NSString stringWithFormat:@"%@%@", clientCopy, v7];
 
 LABEL_7:
 
   return v6;
 }
 
-+ (id)paddedNameForErrorDomain:(id)a3
++ (id)paddedNameForErrorDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 length];
+  domainCopy = domain;
+  domain = [domainCopy domain];
+  v5 = [domain length];
 
   if (v5 < 37)
   {
-    [v3 domain];
+    [domainCopy domain];
     if (v5 == &stru_20.cmdsize)
       v7 = {;
     }
@@ -2432,16 +2432,16 @@ LABEL_7:
 
   else
   {
-    v6 = [v3 domain];
-    v7 = [v6 substringWithRange:{0, 36}];
+    domain2 = [domainCopy domain];
+    v7 = [domain2 substringWithRange:{0, 36}];
   }
 
   return v7;
 }
 
-+ (id)paddedNameForErrorCode:(id)a3
++ (id)paddedNameForErrorCode:(id)code
 {
-  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [a3 code]);
+  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%ld", [code code]);
   v4 = [v3 length];
   if (v4 >= 13)
   {
@@ -2465,24 +2465,24 @@ LABEL_7:
   return v6;
 }
 
-+ (id)selectorNameForSelector:(id)a3
++ (id)selectorNameForSelector:(id)selector
 {
-  v3 = a3;
-  if (__isPlatformVersionAtLeast(2, 18, 4, 0) && (objc_opt_respondsToSelector() & 1) != 0 && ([v3 setAtomicInstanceUUID], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  selectorCopy = selector;
+  if (__isPlatformVersionAtLeast(2, 18, 4, 0) && (objc_opt_respondsToSelector() & 1) != 0 && ([selectorCopy setAtomicInstanceUUID], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [v3 setAtomicInstanceUUID];
-    v6 = [NSString stringWithFormat:@"setAtomicInstance:%@", v5];
+    setAtomicInstanceUUID = [selectorCopy setAtomicInstanceUUID];
+    v6 = [NSString stringWithFormat:@"setAtomicInstance:%@", setAtomicInstanceUUID];
   }
 
   else
   {
-    v7 = [v3 assetType];
-    v8 = [v7 length];
+    assetType = [selectorCopy assetType];
+    v8 = [assetType length];
 
-    v5 = [v3 assetType];
+    setAtomicInstanceUUID = [selectorCopy assetType];
     v9 = [@"com.apple.MobileAsset." length];
-    v10 = [v3 assetType];
-    v11 = [v10 hasPrefix:@"com.apple.MobileAsset."];
+    assetType2 = [selectorCopy assetType];
+    v11 = [assetType2 hasPrefix:@"com.apple.MobileAsset."];
 
     if (v11)
     {
@@ -2490,42 +2490,42 @@ LABEL_7:
       v13 = v8 - v9;
       if (!v12)
       {
-        v14 = [v3 assetType];
-        v15 = [v14 substringWithRange:{v9, v13}];
+        assetType3 = [selectorCopy assetType];
+        v15 = [assetType3 substringWithRange:{v9, v13}];
 
-        v5 = v15;
+        setAtomicInstanceUUID = v15;
       }
     }
 
-    v16 = [v3 assetSpecifier];
-    v17 = [v3 assetVersion];
-    if (v17)
+    assetSpecifier = [selectorCopy assetSpecifier];
+    assetVersion = [selectorCopy assetVersion];
+    if (assetVersion)
     {
-      v18 = [v3 assetVersion];
-      v6 = [NSString stringWithFormat:@"%@|%@|%@", v5, v16, v18];
+      assetVersion2 = [selectorCopy assetVersion];
+      v6 = [NSString stringWithFormat:@"%@|%@|%@", setAtomicInstanceUUID, assetSpecifier, assetVersion2];
     }
 
     else
     {
-      v6 = [NSString stringWithFormat:@"%@|%@|%@", v5, v16, @"ALL"];
+      v6 = [NSString stringWithFormat:@"%@|%@|%@", setAtomicInstanceUUID, assetSpecifier, @"ALL"];
     }
   }
 
   return v6;
 }
 
-+ (id)nameForHistoryType:(int64_t)a3
++ (id)nameForHistoryType:(int64_t)type
 {
-  if (a3 < 8)
+  if (type < 8)
   {
-    return off_4B3B18[a3];
+    return off_4B3B18[type];
   }
 
   v5 = _MADLog(@"AutoHistory");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 134217984;
-    v7 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "{AUTO-HISTORY-TRACKER:nameForHistoryType} | invalid history-type:%ld", &v6, 0xCu);
   }
 
@@ -2534,15 +2534,15 @@ LABEL_7:
 
 - (id)newBucketIndexFilename
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
-  v4 = [(MADAutoAssetHistoryTracker *)self historyTypeName];
-  if (v4)
+  historyTypeName = [(MADAutoAssetHistoryTracker *)self historyTypeName];
+  if (historyTypeName)
   {
     v5 = [NSString alloc];
     v6 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/history");
-    v7 = [v5 initWithFormat:@"%@/%@_%@_%@.txt", v6, @"MAAutoAsset", v4, @"History"];
+    v7 = [v5 initWithFormat:@"%@/%@_%@_%@.txt", v6, @"MAAutoAsset", historyTypeName, @"History"];
   }
 
   else
@@ -2555,37 +2555,37 @@ LABEL_7:
 
 - (id)historyTypeName
 {
-  v3 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  dispatch_assert_queue_V2(v3);
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  dispatch_assert_queue_V2(protectionQueue);
 
-  v4 = [(MADAutoAssetHistoryTracker *)self historyType];
+  historyType = [(MADAutoAssetHistoryTracker *)self historyType];
 
-  return [MADAutoAssetHistoryTracker nameForHistoryType:v4];
+  return [MADAutoAssetHistoryTracker nameForHistoryType:historyType];
 }
 
-+ (id)newBucketFilename:(int64_t)a3 forBucketIndex:(int64_t)a4
++ (id)newBucketFilename:(int64_t)filename forBucketIndex:(int64_t)index
 {
-  v5 = [MADAutoAssetHistoryTracker nameForHistoryType:a3];
+  v5 = [MADAutoAssetHistoryTracker nameForHistoryType:filename];
   if (v5)
   {
     v6 = [NSString alloc];
     v7 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2/history");
-    v8 = [v6 initWithFormat:@"%@/%@_%@_%@_%02ld.log", v7, @"MAAutoAsset", v5, @"History", a4];
+    index = [v6 initWithFormat:@"%@/%@_%@_%@_%02ld.log", v7, @"MAAutoAsset", v5, @"History", index];
   }
 
   else
   {
-    v8 = 0;
+    index = 0;
   }
 
-  return v8;
+  return index;
 }
 
-+ (id)summaryOfAssetSelectors:(id)a3
++ (id)summaryOfAssetSelectors:(id)selectors
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  selectorsCopy = selectors;
+  v4 = selectorsCopy;
+  if (!selectorsCopy || ![selectorsCopy count])
   {
     v14 = @"N";
     goto LABEL_34;
@@ -2610,7 +2610,7 @@ LABEL_18:
   }
 
   v7 = v6;
-  v8 = 0;
+  assetType2 = 0;
   v9 = *v35;
   do
   {
@@ -2622,10 +2622,10 @@ LABEL_18:
       }
 
       v11 = *(*(&v34 + 1) + 8 * i);
-      if (v8)
+      if (assetType2)
       {
-        v12 = [v11 assetType];
-        v13 = [SUCore stringIsEqual:v12 to:v8];
+        assetType = [v11 assetType];
+        v13 = [SUCore stringIsEqual:assetType to:assetType2];
 
         if ((v13 & 1) == 0)
         {
@@ -2636,7 +2636,7 @@ LABEL_18:
 
       else
       {
-        v8 = [v11 assetType];
+        assetType2 = [v11 assetType];
       }
     }
 
@@ -2645,13 +2645,13 @@ LABEL_18:
 
   while (v7);
 
-  if (!v8)
+  if (!assetType2)
   {
     goto LABEL_18;
   }
 
-  v28 = v8;
-  v14 = objc_msgSend([NSMutableString alloc], "initWithFormat:", @"[asset-type:%@]("), v8;
+  v28 = assetType2;
+  v14 = objc_msgSend([NSMutableString alloc], "initWithFormat:", @"[asset-type:%@]("), assetType2;
   v15 = 0;
 LABEL_19:
   v32 = 0u;
@@ -2682,22 +2682,22 @@ LABEL_19:
 
         if (v15)
         {
-          v23 = [v22 assetType];
-          [(__CFString *)v14 appendFormat:@"[type:%@]", v23];
+          assetType3 = [v22 assetType];
+          [(__CFString *)v14 appendFormat:@"[type:%@]", assetType3];
         }
 
-        v24 = [v22 assetVersion];
+        assetVersion = [v22 assetVersion];
 
-        v25 = [v22 assetSpecifier];
-        if (v24)
+        assetSpecifier = [v22 assetSpecifier];
+        if (assetVersion)
         {
-          v26 = [v22 assetVersion];
-          [(__CFString *)v14 appendFormat:@"%@(%@)", v25, v26];
+          assetVersion2 = [v22 assetVersion];
+          [(__CFString *)v14 appendFormat:@"%@(%@)", assetSpecifier, assetVersion2];
         }
 
         else
         {
-          [(__CFString *)v14 appendString:v25];
+          [(__CFString *)v14 appendString:assetSpecifier];
         }
 
         v20 = 0;
@@ -2720,8 +2720,8 @@ LABEL_34:
 - (id)summary
 {
   v3 = [MADAutoAssetHistoryTracker nameForHistoryType:[(MADAutoAssetHistoryTracker *)self historyType]];
-  v4 = [(MADAutoAssetHistoryTracker *)self protectionQueue];
-  if (v4)
+  protectionQueue = [(MADAutoAssetHistoryTracker *)self protectionQueue];
+  if (protectionQueue)
   {
     v5 = @"Y";
   }

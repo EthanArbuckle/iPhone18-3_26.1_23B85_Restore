@@ -1,13 +1,13 @@
 @interface TIKeyboardBehaviors_WaitingForCandidates
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_WaitingForCandidates
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasInput] && (objc_msgSend(v3, "hasCandidates") & 1) == 0)
+  stateCopy = state;
+  if ([stateCopy hasInput] && (objc_msgSend(stateCopy, "hasCandidates") & 1) == 0)
   {
     v4 = [TIKeyboardKeyBehaviors behaviorForSpaceKey:8 forReturnKey:2];
   }

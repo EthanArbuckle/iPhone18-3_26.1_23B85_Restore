@@ -7,15 +7,15 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKVictoryDigitalStyleEditOption *)self style];
-  if (v2 - 3 > 2)
+  style = [(NTKVictoryDigitalStyleEditOption *)self style];
+  if (style - 3 > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_104F8[v2 - 3];
+    v3 = off_104F8[style - 3];
   }
 
   return [NTKVictoryDigitalFaceBundle localizedStringForKey:v3 comment:@"style"];

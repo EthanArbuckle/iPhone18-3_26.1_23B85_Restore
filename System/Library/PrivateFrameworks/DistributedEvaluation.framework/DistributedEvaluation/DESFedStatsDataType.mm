@@ -1,19 +1,19 @@
 @interface DESFedStatsDataType
-+ (id)extractFedStatsDataTypeFrom:(id)a3 forKey:(id *)a4;
++ (id)extractFedStatsDataTypeFrom:(id)from forKey:(id *)key;
 + (void)initialize;
 @end
 
 @implementation DESFedStatsDataType
 
-+ (id)extractFedStatsDataTypeFrom:(id)a3 forKey:(id *)a4
++ (id)extractFedStatsDataTypeFrom:(id)from forKey:(id *)key
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 recipeUserInfo];
-  v7 = [v6 objectForKeyedSubscript:@"MetadataEncoding"];
+  fromCopy = from;
+  recipeUserInfo = [fromCopy recipeUserInfo];
+  v7 = [recipeUserInfo objectForKeyedSubscript:@"MetadataEncoding"];
 
-  v8 = [v7 allKeys];
-  v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v7 allKeys];
+  v9 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v31 = 0u;
   v32 = 0u;
@@ -24,7 +24,7 @@
   if (v10)
   {
     v11 = v10;
-    v27 = a4;
+    keyCopy = key;
     v12 = *v30;
     while (2)
     {
@@ -46,9 +46,9 @@
           if (os_log_type_enabled(sLog, OS_LOG_TYPE_INFO))
           {
             v20 = v19;
-            v21 = [v5 recipeID];
+            recipeID = [fromCopy recipeID];
             *buf = 138412546;
-            v34 = v21;
+            v34 = recipeID;
             v35 = 2112;
             v36 = v14;
             _os_log_impl(&dword_248FF7000, v20, OS_LOG_TYPE_INFO, "Recipe %@ has schema for key %@ to use FedStats encoding.", buf, 0x16u);
@@ -59,7 +59,7 @@
           if (v22)
           {
             v23 = v14;
-            *v27 = v14;
+            *keyCopy = v14;
             v18 = [v15 objectForKeyedSubscript:@"dataContentTypes"];
           }
 
@@ -68,7 +68,7 @@
             v24 = sLog;
             if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
             {
-              [(DESFedStatsDataType *)v24 extractFedStatsDataTypeFrom:v5 forKey:v14];
+              [(DESFedStatsDataType *)v24 extractFedStatsDataTypeFrom:fromCopy forKey:v14];
             }
 
             v18 = 0;
@@ -104,7 +104,7 @@ LABEL_19:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.DistributedEvaluation", "DESFedStatsDataType");
 

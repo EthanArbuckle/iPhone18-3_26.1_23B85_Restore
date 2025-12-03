@@ -1,26 +1,26 @@
 @interface SISchemaUEIDictationVoiceCommandUndoTapAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationVoiceCommandUndoTapAction
 
-- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithDictionary:(id)a3
+- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = SISchemaUEIDictationVoiceCommandUndoTapAction;
   v5 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceCommandId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(SISchemaUEIDictationVoiceCommandUndoTapAction *)v5 setVoiceCommandId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isUndoTapAlternativeSelection"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isUndoTapAlternativeSelection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithJSON:(id)a3
+- (SISchemaUEIDictationVoiceCommandUndoTapAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_isUndoTapAlternativeSelection + 1))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaUEIDictationVoiceCommandUndoTapAction isUndoTapAlternativeSelection](self, "isUndoTapAlternativeSelection")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isUndoTapAlternativeSelection"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isUndoTapAlternativeSelection"];
   }
 
   if (self->_voiceCommandId)
   {
-    v5 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    voiceCommandId = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
+    dictionaryRepresentation = [voiceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"voiceCommandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceCommandId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"voiceCommandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceCommandId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
-  v6 = [v4 voiceCommandId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
+  voiceCommandId2 = [equalCopy voiceCommandId];
+  v7 = voiceCommandId2;
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
-  if (v8)
+  voiceCommandId3 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
+  if (voiceCommandId3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
-    v11 = [v4 voiceCommandId];
-    v12 = [v10 isEqual:v11];
+    v9 = voiceCommandId3;
+    voiceCommandId4 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
+    voiceCommandId5 = [equalCopy voiceCommandId];
+    v12 = [voiceCommandId4 isEqual:voiceCommandId5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if (*(&self->_isUndoTapAlternativeSelection + 1) != (v4[17] & 1))
+  if (*(&self->_isUndoTapAlternativeSelection + 1) != (equalCopy[17] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*(&self->_isUndoTapAlternativeSelection + 1))
   {
     isUndoTapAlternativeSelection = self->_isUndoTapAlternativeSelection;
-    if (isUndoTapAlternativeSelection != [v4 isUndoTapAlternativeSelection])
+    if (isUndoTapAlternativeSelection != [equalCopy isUndoTapAlternativeSelection])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
+  toCopy = to;
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
 
-  if (v4)
+  if (voiceCommandId)
   {
-    v5 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
+    voiceCommandId2 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaUEIDictationVoiceCommandUndoTapAction;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self voiceCommandId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaUEIDictationVoiceCommandUndoTapAction *)self deleteVoiceCommandId];
   }

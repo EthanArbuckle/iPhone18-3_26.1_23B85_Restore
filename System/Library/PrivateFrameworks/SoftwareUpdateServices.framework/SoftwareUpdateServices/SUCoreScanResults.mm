@@ -1,22 +1,22 @@
 @interface SUCoreScanResults
-- (SUCoreScanResults)initWithPreferredDescriptor:(id)a3 alternateDescriptor:(id)a4;
+- (SUCoreScanResults)initWithPreferredDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor;
 - (id)latestUpdate;
 @end
 
 @implementation SUCoreScanResults
 
-- (SUCoreScanResults)initWithPreferredDescriptor:(id)a3 alternateDescriptor:(id)a4
+- (SUCoreScanResults)initWithPreferredDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  alternateDescriptorCopy = alternateDescriptor;
   v12.receiver = self;
   v12.super_class = SUCoreScanResults;
   v9 = [(SUCoreScanResults *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_preferredDescriptor, a3);
-    objc_storeStrong(&v10->_alternateDescriptor, a4);
+    objc_storeStrong(&v9->_preferredDescriptor, descriptor);
+    objc_storeStrong(&v10->_alternateDescriptor, alternateDescriptor);
   }
 
   return v10;
@@ -24,24 +24,24 @@
 
 - (id)latestUpdate
 {
-  v3 = [(SUCoreScanResults *)self preferredDescriptor];
-  if (v3 || ([(SUCoreScanResults *)self alternateDescriptor], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  preferredDescriptor = [(SUCoreScanResults *)self preferredDescriptor];
+  if (preferredDescriptor || ([(SUCoreScanResults *)self alternateDescriptor], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
-    v4 = [(SUCoreScanResults *)self preferredDescriptor];
-    if (v4)
+    preferredDescriptor2 = [(SUCoreScanResults *)self preferredDescriptor];
+    if (preferredDescriptor2)
     {
-      v5 = v4;
-      v6 = [(SUCoreScanResults *)self alternateDescriptor];
+      v5 = preferredDescriptor2;
+      alternateDescriptor = [(SUCoreScanResults *)self alternateDescriptor];
 
-      if (v6)
+      if (alternateDescriptor)
       {
-        v7 = [(SUCoreScanResults *)self preferredDescriptor];
-        v8 = [v7 productBuildVersion];
+        preferredDescriptor3 = [(SUCoreScanResults *)self preferredDescriptor];
+        productBuildVersion = [preferredDescriptor3 productBuildVersion];
 
-        v9 = [(SUCoreScanResults *)self alternateDescriptor];
-        v10 = [v9 productBuildVersion];
+        alternateDescriptor2 = [(SUCoreScanResults *)self alternateDescriptor];
+        productBuildVersion2 = [alternateDescriptor2 productBuildVersion];
 
-        if ([v8 compare:v10 options:64] == -1)
+        if ([productBuildVersion compare:productBuildVersion2 options:64] == -1)
         {
           [(SUCoreScanResults *)self alternateDescriptor];
         }
@@ -52,17 +52,17 @@
         }
         v12 = ;
 
-        v3 = v12;
+        preferredDescriptor = v12;
       }
     }
   }
 
   else
   {
-    v3 = [(SUCoreScanResults *)self alternateDescriptor];
+    preferredDescriptor = [(SUCoreScanResults *)self alternateDescriptor];
   }
 
-  return v3;
+  return preferredDescriptor;
 }
 
 @end

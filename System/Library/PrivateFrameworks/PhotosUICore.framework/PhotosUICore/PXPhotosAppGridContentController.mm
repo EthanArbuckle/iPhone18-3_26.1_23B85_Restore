@@ -1,37 +1,37 @@
 @interface PXPhotosAppGridContentController
-- (BOOL)canPlay:(id)a3;
-- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)a3;
-- (BOOL)isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)a3;
-- (BOOL)shouldEnablePlaybackFor:(id)a3;
-- (CGRect)frameFor:(id)a3 outMinPlayableSize:(CGSize *)a4;
-- (CGRect)visibleRectFor:(id)a3;
+- (BOOL)canPlay:(id)play;
+- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)playback;
+- (BOOL)isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)effect;
+- (BOOL)shouldEnablePlaybackFor:(id)for;
+- (CGRect)frameFor:(id)for outMinPlayableSize:(CGSize *)size;
+- (CGRect)visibleRectFor:(id)for;
 - (PXPhotosAppGridContentController)init;
-- (PXPhotosAppGridContentController)initWithConfiguration:(id)a3 contentController:(id)a4;
+- (PXPhotosAppGridContentController)initWithConfiguration:(id)configuration contentController:(id)controller;
 - (PXPhotosContentController)contentController;
 - (PXPhotosGridFooterPresentation)footerPresentation;
 - (PXPhotosGridFooterStatusController)footerStatusController;
-- (UIEdgeInsets)maskPaddingForFooterPresentation:(id)a3;
-- (UIEdgeInsets)safeAreaInsetsFor:(id)a3;
-- (id)makeBodyLayoutProviderForContentController:(id)a3 style:(int64_t)a4 headerStyle:(int64_t)a5;
-- (id)makeHeaderLayoutProviderForContentController:(id)a3 style:(int64_t)a4 viewProvider:(id)a5 bannerProvider:(id)a6;
-- (id)presentingViewControllerForFooterStatusController:(id)a3;
+- (UIEdgeInsets)maskPaddingForFooterPresentation:(id)presentation;
+- (UIEdgeInsets)safeAreaInsetsFor:(id)for;
+- (id)makeBodyLayoutProviderForContentController:(id)controller style:(int64_t)style headerStyle:(int64_t)headerStyle;
+- (id)makeHeaderLayoutProviderForContentController:(id)controller style:(int64_t)style viewProvider:(id)provider bannerProvider:(id)bannerProvider;
+- (id)presentingViewControllerForFooterStatusController:(id)controller;
 - (unint64_t)filterSortedRecordsStrategy;
-- (void)_updateBarsController:(id)a3;
-- (void)appIntentsEnumerateAssetCollections:(id)a3;
-- (void)appIntentsEnumerateAssets:(id)a3;
-- (void)appIntentsEnumeratePersons:(id)a3;
-- (void)contentController:(id)a3 didChangeCurrentLens:(id)a4;
-- (void)contentViewDidAppearForContentController:(id)a3 animated:(BOOL)a4;
-- (void)contentViewDidDisappearForContentController:(id)a3 animated:(BOOL)a4;
-- (void)contentViewDidScrollToInitialPositionForContentController:(id)a3;
-- (void)contentViewWillAppearForContentController:(id)a3 animated:(BOOL)a4;
-- (void)dismissPresentedViewControllerForFooterPresentation:(id)a3;
-- (void)footerPresentation:(id)a3 presentViewController:(id)a4;
-- (void)gridView:(id)a3 didBecomeAvailableForContentController:(id)a4;
-- (void)initializationWillFinishForContentController:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3;
-- (void)setShouldEnablePlaybackDuringAnimatedScroll:(BOOL)a3;
+- (void)_updateBarsController:(id)controller;
+- (void)appIntentsEnumerateAssetCollections:(id)collections;
+- (void)appIntentsEnumerateAssets:(id)assets;
+- (void)appIntentsEnumeratePersons:(id)persons;
+- (void)contentController:(id)controller didChangeCurrentLens:(id)lens;
+- (void)contentViewDidAppearForContentController:(id)controller animated:(BOOL)animated;
+- (void)contentViewDidDisappearForContentController:(id)controller animated:(BOOL)animated;
+- (void)contentViewDidScrollToInitialPositionForContentController:(id)controller;
+- (void)contentViewWillAppearForContentController:(id)controller animated:(BOOL)animated;
+- (void)dismissPresentedViewControllerForFooterPresentation:(id)presentation;
+- (void)footerPresentation:(id)presentation presentViewController:(id)controller;
+- (void)gridView:(id)view didBecomeAvailableForContentController:(id)controller;
+- (void)initializationWillFinishForContentController:(id)controller;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)scrollViewControllerContentBoundsDidChange:(id)change;
+- (void)setShouldEnablePlaybackDuringAnimatedScroll:(BOOL)scroll;
 - (void)swift_init;
 @end
 
@@ -39,7 +39,7 @@
 
 - (void)swift_init
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A3FDBA64();
 }
 
@@ -50,29 +50,29 @@
   return WeakRetained;
 }
 
-- (void)appIntentsEnumeratePersons:(id)a3
+- (void)appIntentsEnumeratePersons:(id)persons
 {
-  v5 = a3;
+  personsCopy = persons;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!v5)
+  if (!personsCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:537 description:{@"Invalid parameter not satisfying: %@", @"personHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:537 description:{@"Invalid parameter not satisfying: %@", @"personHandler"}];
   }
 
-  v6 = [(PXPhotosAppGridContentController *)self contentController];
-  v7 = [v6 viewModel];
-  v8 = [v7 privacyController];
-  v9 = [v8 isLocked];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  viewModel = [contentController viewModel];
+  privacyController = [viewModel privacyController];
+  isLocked = [privacyController isLocked];
 
-  if (!v9)
+  if (!isLocked)
   {
-    v11 = [v7 currentDataSource];
-    v12 = [v11 container];
+    currentDataSource = [viewModel currentDataSource];
+    container = [currentDataSource container];
 
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v13 = v12;
+      v13 = container;
 
       if (!v13)
       {
@@ -81,9 +81,9 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v12 = [v6 gridView];
-      [v12 bounds];
-      v5[2](v5, v13, 1);
+      container = [contentController gridView];
+      [container bounds];
+      personsCopy[2](personsCopy, v13, 1);
     }
 
     else
@@ -104,34 +104,34 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)appIntentsEnumerateAssets:(id)a3
+- (void)appIntentsEnumerateAssets:(id)assets
 {
-  v5 = a3;
+  assetsCopy = assets;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!v5)
+  if (!assetsCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:494 description:{@"Invalid parameter not satisfying: %@", @"assetHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:494 description:{@"Invalid parameter not satisfying: %@", @"assetHandler"}];
   }
 
-  v6 = [(PXPhotosAppGridContentController *)self contentController];
-  v7 = [v6 viewModel];
-  v8 = [v7 privacyController];
-  v9 = [v8 isLocked];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  viewModel = [contentController viewModel];
+  privacyController = [viewModel privacyController];
+  isLocked = [privacyController isLocked];
 
-  if (!v9)
+  if (!isLocked)
   {
-    v11 = [v6 viewModel];
-    v12 = [v11 selectionSnapshot];
+    viewModel2 = [contentController viewModel];
+    selectionSnapshot = [viewModel2 selectionSnapshot];
 
-    v13 = [v12 fetchSelectedObjects];
-    [v13 mutableCopy];
+    fetchSelectedObjects = [selectionSnapshot fetchSelectedObjects];
+    [fetchSelectedObjects mutableCopy];
 
-    v14 = [v6 layout];
-    [v6 gridView];
+    layout = [contentController layout];
+    [contentController gridView];
     objc_claimAutoreleasedReturnValue();
-    [v14 visibleRect];
-    [v14 safeAreaInsets];
+    [layout visibleRect];
+    [layout safeAreaInsets];
     PXEdgeInsetsInsetRect();
   }
 
@@ -208,34 +208,34 @@ void __62__PXPhotosAppGridContentController_appIntentsEnumerateAssets___block_in
   }
 }
 
-- (void)appIntentsEnumerateAssetCollections:(id)a3
+- (void)appIntentsEnumerateAssetCollections:(id)collections
 {
-  v5 = a3;
+  collectionsCopy = collections;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (!v5)
+  if (!collectionsCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:451 description:{@"Invalid parameter not satisfying: %@", @"assetCollectionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:451 description:{@"Invalid parameter not satisfying: %@", @"assetCollectionHandler"}];
   }
 
-  v6 = [(PXPhotosAppGridContentController *)self contentController];
-  v7 = [v6 viewModel];
-  v8 = [v7 privacyController];
-  v9 = [v8 isLocked];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  viewModel = [contentController viewModel];
+  privacyController = [viewModel privacyController];
+  isLocked = [privacyController isLocked];
 
-  if (!v9)
+  if (!isLocked)
   {
-    v11 = [v6 viewModel];
-    v12 = [v11 selectionSnapshot];
+    viewModel2 = [contentController viewModel];
+    selectionSnapshot = [viewModel2 selectionSnapshot];
 
-    v13 = [v12 fetchSelectedObjects];
-    [v13 mutableCopy];
+    fetchSelectedObjects = [selectionSnapshot fetchSelectedObjects];
+    [fetchSelectedObjects mutableCopy];
 
-    v14 = [v6 layout];
-    [v6 gridView];
+    layout = [contentController layout];
+    [contentController gridView];
     objc_claimAutoreleasedReturnValue();
-    [v14 visibleRect];
-    [v14 safeAreaInsets];
+    [layout visibleRect];
+    [layout safeAreaInsets];
     PXEdgeInsetsInsetRect();
   }
 
@@ -314,11 +314,11 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
 
 - (unint64_t)filterSortedRecordsStrategy
 {
-  v2 = [(PXPhotosAppGridContentController *)self contentController];
-  v3 = [v2 delegate];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 photosContentControllerFilterSortedRecordsStrategy:v2];
+    v4 = [delegate photosContentControllerFilterSortedRecordsStrategy:contentController];
   }
 
   else
@@ -329,34 +329,34 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
   return v4;
 }
 
-- (BOOL)isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)a3
+- (BOOL)isDisplayAssetEligibleForPlaybackWithSettlingEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [(PXPhotosAppGridContentController *)self contentController];
-  v6 = [v5 delegate];
-  v7 = [v6 photosContentController:v5 isDisplayAssetEligibleForPlaybackWithSettlingEffect:v4];
+  effectCopy = effect;
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
+  v7 = [delegate photosContentController:contentController isDisplayAssetEligibleForPlaybackWithSettlingEffect:effectCopy];
 
   return v7;
 }
 
-- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)a3
+- (BOOL)isDisplayAssetEligibleForAutoPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = [(PXPhotosAppGridContentController *)self contentController];
-  v6 = [v5 delegate];
-  v7 = [v6 photosContentController:v5 isDisplayAssetEligibleForAutoPlayback:v4];
+  playbackCopy = playback;
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
+  v7 = [delegate photosContentController:contentController isDisplayAssetEligibleForAutoPlayback:playbackCopy];
 
   return v7;
 }
 
-- (BOOL)canPlay:(id)a3
+- (BOOL)canPlay:(id)play
 {
-  v4 = a3;
-  v5 = [(PXPhotosAppGridContentController *)self contentController];
-  v6 = [v5 delegate];
+  playCopy = play;
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 photosContentController:v5 canPlayAssetInline:v4];
+    v7 = [delegate photosContentController:contentController canPlayAssetInline:playCopy];
   }
 
   else
@@ -367,18 +367,18 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
   return v7;
 }
 
-- (CGRect)frameFor:(id)a3 outMinPlayableSize:(CGSize *)a4
+- (CGRect)frameFor:(id)for outMinPlayableSize:(CGSize *)size
 {
   v33 = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E695F050];
   v7 = *(MEMORY[0x1E695F050] + 8);
   v8 = *(MEMORY[0x1E695F050] + 16);
   v9 = *(MEMORY[0x1E695F050] + 24);
-  v10 = a3;
-  v11 = [(PXPhotosAppGridContentController *)self contentController];
-  v12 = [v11 layout];
+  forCopy = for;
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  layout = [contentController layout];
 
-  v13 = [v12 spriteIndexForSpriteReference:v10];
+  v13 = [layout spriteIndexForSpriteReference:forCopy];
   if (v13 != -1)
   {
     v31 = *off_1E7722008;
@@ -405,10 +405,10 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
     v29 = *(off_1E7722040 + 4);
     v28[0] = v20;
     v28[1] = v21;
-    [v12 copyLayoutForSpritesInRange:v13 | 0x100000000 entities:&v31 geometries:v30 styles:v32 infos:v28];
-    [v12 minPlayableSizeForSpriteAtIndex:v13];
-    a4->width = v22;
-    a4->height = v23;
+    [layout copyLayoutForSpritesInRange:v13 | 0x100000000 entities:&v31 geometries:v30 styles:v32 infos:v28];
+    [layout minPlayableSizeForSpriteAtIndex:v13];
+    size->width = v22;
+    size->height = v23;
     PXRectWithCenterAndSize();
   }
 
@@ -423,11 +423,11 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
   return result;
 }
 
-- (UIEdgeInsets)safeAreaInsetsFor:(id)a3
+- (UIEdgeInsets)safeAreaInsetsFor:(id)for
 {
-  v3 = [(PXPhotosAppGridContentController *)self contentController];
-  v4 = [v3 layout];
-  [v4 safeAreaInsets];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  layout = [contentController layout];
+  [layout safeAreaInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -444,11 +444,11 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
   return result;
 }
 
-- (CGRect)visibleRectFor:(id)a3
+- (CGRect)visibleRectFor:(id)for
 {
-  v3 = [(PXPhotosAppGridContentController *)self contentController];
-  v4 = [v3 layout];
-  [v4 visibleRect];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  layout = [contentController layout];
+  [layout visibleRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -465,21 +465,21 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
   return result;
 }
 
-- (BOOL)shouldEnablePlaybackFor:(id)a3
+- (BOOL)shouldEnablePlaybackFor:(id)for
 {
-  v4 = [(PXPhotosAppGridContentController *)self contentController];
-  v5 = [v4 gridView];
-  v6 = [v5 scrollingSpeedometer];
-  v7 = [v6 regime] < 2 || -[PXPhotosAppGridContentController shouldEnablePlaybackDuringAnimatedScroll](self, "shouldEnablePlaybackDuringAnimatedScroll");
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  gridView = [contentController gridView];
+  scrollingSpeedometer = [gridView scrollingSpeedometer];
+  v7 = [scrollingSpeedometer regime] < 2 || -[PXPhotosAppGridContentController shouldEnablePlaybackDuringAnimatedScroll](self, "shouldEnablePlaybackDuringAnimatedScroll");
 
   return v7;
 }
 
-- (UIEdgeInsets)maskPaddingForFooterPresentation:(id)a3
+- (UIEdgeInsets)maskPaddingForFooterPresentation:(id)presentation
 {
-  v3 = [(PXPhotosAppGridContentController *)self contentController];
-  v4 = [v3 delegate];
-  [v4 maskPaddingForContentController:v3];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
+  [delegate maskPaddingForContentController:contentController];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -496,73 +496,73 @@ void __72__PXPhotosAppGridContentController_appIntentsEnumerateAssetCollections_
   return result;
 }
 
-- (void)dismissPresentedViewControllerForFooterPresentation:(id)a3
+- (void)dismissPresentedViewControllerForFooterPresentation:(id)presentation
 {
-  v4 = [(PXPhotosAppGridContentController *)self contentController];
-  v3 = [v4 delegate];
-  [v3 dismissPresentedViewControllerForContentController:v4];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
+  [delegate dismissPresentedViewControllerForContentController:contentController];
 }
 
-- (void)footerPresentation:(id)a3 presentViewController:(id)a4
+- (void)footerPresentation:(id)presentation presentViewController:(id)controller
 {
-  v5 = a4;
-  v7 = [(PXPhotosAppGridContentController *)self contentController];
-  v6 = [v7 delegate];
-  [v6 photosContentController:v7 presentViewController:v5];
+  controllerCopy = controller;
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
+  [delegate photosContentController:contentController presentViewController:controllerCopy];
 }
 
-- (id)presentingViewControllerForFooterStatusController:(id)a3
+- (id)presentingViewControllerForFooterStatusController:(id)controller
 {
-  v3 = [(PXPhotosAppGridContentController *)self contentController];
-  v4 = [v3 delegate];
-  v5 = [v4 presentingViewControllerForContentController:v3];
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  delegate = [contentController delegate];
+  v5 = [delegate presentingViewControllerForContentController:contentController];
 
   return v5;
 }
 
-- (void)scrollViewControllerContentBoundsDidChange:(id)a3
+- (void)scrollViewControllerContentBoundsDidChange:(id)change
 {
-  v3 = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
-  [v3 visibleRectDidChange];
+  inlinePlaybackController = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
+  [inlinePlaybackController visibleRectDidChange];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXPhotosViewOptionsModelObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXPhotosViewOptionsModelObservationContext != context)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:324 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:324 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 4) != 0)
+  if ((changeCopy & 4) != 0)
   {
-    v15 = v9;
-    v10 = [(PXPhotosAppGridContentController *)self viewOptionsModel];
-    v11 = [v10 selectedLensControlItem];
-    v12 = [(PXPhotosAppGridContentController *)self contentController];
-    v13 = [v12 overlayController];
-    [v13 setCurrentLens:v11];
+    v15 = observableCopy;
+    viewOptionsModel = [(PXPhotosAppGridContentController *)self viewOptionsModel];
+    selectedLensControlItem = [viewOptionsModel selectedLensControlItem];
+    contentController = [(PXPhotosAppGridContentController *)self contentController];
+    overlayController = [contentController overlayController];
+    [overlayController setCurrentLens:selectedLensControlItem];
 
-    v9 = v15;
+    observableCopy = v15;
   }
 }
 
-- (void)contentController:(id)a3 didChangeCurrentLens:(id)a4
+- (void)contentController:(id)controller didChangeCurrentLens:(id)lens
 {
-  v5 = a4;
-  v6 = [(PXPhotosAppGridContentController *)self viewOptionsModel];
+  lensCopy = lens;
+  viewOptionsModel = [(PXPhotosAppGridContentController *)self viewOptionsModel];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__PXPhotosAppGridContentController_contentController_didChangeCurrentLens___block_invoke;
   v9[3] = &unk_1E77454F0;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = lensCopy;
+  v11 = viewOptionsModel;
+  v7 = viewOptionsModel;
+  v8 = lensCopy;
   [v7 performChanges:v9];
 }
 
@@ -585,87 +585,87 @@ void __75__PXPhotosAppGridContentController_contentController_didChangeCurrentLe
   }
 }
 
-- (void)contentViewDidScrollToInitialPositionForContentController:(id)a3
+- (void)contentViewDidScrollToInitialPositionForContentController:(id)controller
 {
-  v4 = [(PXPhotosAppGridContentController *)self footerPresentation];
-  [v4 viewDidScrollToInitialPosition];
+  footerPresentation = [(PXPhotosAppGridContentController *)self footerPresentation];
+  [footerPresentation viewDidScrollToInitialPosition];
 
   [(PXPhotosAppGridContentController *)self swift_contentViewDidScrollToInitialPosition];
 }
 
-- (void)contentViewDidDisappearForContentController:(id)a3 animated:(BOOL)a4
+- (void)contentViewDidDisappearForContentController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
-  [v7 setIsContentViewVisible:0];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  inlinePlaybackController = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
+  [inlinePlaybackController setIsContentViewVisible:0];
 
-  [(PXPhotosAppGridContentController *)self swift_contentViewDidDisappear:v4];
-  v8 = [v6 gridView];
+  [(PXPhotosAppGridContentController *)self swift_contentViewDidDisappear:animatedCopy];
+  gridView = [controllerCopy gridView];
 
-  [_TtC12PhotosUICore33PXAppIntentsViewAnnotationsBridge clearViewAnnotationDelegateFor:v8];
+  [_TtC12PhotosUICore33PXAppIntentsViewAnnotationsBridge clearViewAnnotationDelegateFor:gridView];
 }
 
-- (void)contentViewDidAppearForContentController:(id)a3 animated:(BOOL)a4
+- (void)contentViewDidAppearForContentController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
-  [v7 setIsContentViewVisible:1];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  inlinePlaybackController = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
+  [inlinePlaybackController setIsContentViewVisible:1];
 
-  v8 = [(PXPhotosAppGridContentController *)self footerStatusController];
-  [v8 viewDidAppear];
+  footerStatusController = [(PXPhotosAppGridContentController *)self footerStatusController];
+  [footerStatusController viewDidAppear];
 
-  v9 = [(PXPhotosAppGridContentController *)self footerPresentation];
-  [v9 viewDidAppear];
+  footerPresentation = [(PXPhotosAppGridContentController *)self footerPresentation];
+  [footerPresentation viewDidAppear];
 
-  [(PXPhotosAppGridContentController *)self swift_contentViewDidAppear:v4];
-  v11 = [v6 gridView];
+  [(PXPhotosAppGridContentController *)self swift_contentViewDidAppear:animatedCopy];
+  gridView = [controllerCopy gridView];
 
-  v10 = v11;
-  if (v11)
+  v10 = gridView;
+  if (gridView)
   {
-    PXAppIntentsSetViewAnnotationDelegate(v11, self);
-    v10 = v11;
+    PXAppIntentsSetViewAnnotationDelegate(gridView, self);
+    v10 = gridView;
   }
 }
 
-- (void)contentViewWillAppearForContentController:(id)a3 animated:(BOOL)a4
+- (void)contentViewWillAppearForContentController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(PXPhotosAppGridContentController *)self needsCountsInitially])
   {
-    v6 = [v11 countsController];
-    [v6 prepareCountsIfNeeded];
+    countsController = [controllerCopy countsController];
+    [countsController prepareCountsIfNeeded];
   }
 
-  v7 = [v11 viewModel];
-  v8 = [v7 wantsFooterVisibleImmediately];
+  viewModel = [controllerCopy viewModel];
+  wantsFooterVisibleImmediately = [viewModel wantsFooterVisibleImmediately];
 
-  if (v8)
+  if (wantsFooterVisibleImmediately)
   {
-    v9 = [(PXPhotosAppGridContentController *)self footerStatusController];
-    [v9 viewWillAppear];
+    footerStatusController = [(PXPhotosAppGridContentController *)self footerStatusController];
+    [footerStatusController viewWillAppear];
 
-    v10 = [(PXPhotosAppGridContentController *)self footerPresentation];
-    [v10 viewWillAppear];
+    footerPresentation = [(PXPhotosAppGridContentController *)self footerPresentation];
+    [footerPresentation viewWillAppear];
   }
 
-  [(PXPhotosAppGridContentController *)self swift_contentViewWillAppear:v4];
+  [(PXPhotosAppGridContentController *)self swift_contentViewWillAppear:animatedCopy];
 }
 
-- (void)initializationWillFinishForContentController:(id)a3
+- (void)initializationWillFinishForContentController:(id)controller
 {
-  v4 = a3;
-  v5 = PXPhotosViewEventTrackerCreate(v4);
+  controllerCopy = controller;
+  v5 = PXPhotosViewEventTrackerCreate(controllerCopy);
   eventTracker = self->_eventTracker;
   self->_eventTracker = v5;
 
-  v7 = [v4 viewModel];
-  v8 = [v7 viewOptionsModel];
+  viewModel = [controllerCopy viewModel];
+  viewOptionsModel = [viewModel viewOptionsModel];
   viewOptionsModel = self->_viewOptionsModel;
-  self->_viewOptionsModel = v8;
+  self->_viewOptionsModel = viewOptionsModel;
 
   [(PXPhotosViewOptionsModel *)self->_viewOptionsModel registerChangeObserver:self context:PXPhotosViewOptionsModelObservationContext];
   v10 = self->_viewOptionsModel;
@@ -673,8 +673,8 @@ void __75__PXPhotosAppGridContentController_contentController_didChangeCurrentLe
   v12[1] = 3221225472;
   v12[2] = __81__PXPhotosAppGridContentController_initializationWillFinishForContentController___block_invoke;
   v12[3] = &unk_1E7749528;
-  v13 = v4;
-  v11 = v4;
+  v13 = controllerCopy;
+  v11 = controllerCopy;
   [(PXPhotosViewOptionsModel *)v10 performChanges:v12];
   [(PXPhotosAppGridContentController *)self swift_init];
 }
@@ -688,38 +688,38 @@ void __81__PXPhotosAppGridContentController_initializationWillFinishForContentCo
   [v3 setAdditionalLensControlItems:v4];
 }
 
-- (void)gridView:(id)a3 didBecomeAvailableForContentController:(id)a4
+- (void)gridView:(id)view didBecomeAvailableForContentController:(id)controller
 {
-  v5 = a3;
-  v6 = [v5 scrollingSpeedometer];
-  [(PXPhotosContentInlinePlaybackController *)self->_photosInlinePlaybackController setScrollViewSpeedometer:v6];
+  viewCopy = view;
+  scrollingSpeedometer = [viewCopy scrollingSpeedometer];
+  [(PXPhotosContentInlinePlaybackController *)self->_photosInlinePlaybackController setScrollViewSpeedometer:scrollingSpeedometer];
 
-  v7 = [v5 scrollViewController];
+  scrollViewController = [viewCopy scrollViewController];
 
-  [v7 registerObserver:self];
+  [scrollViewController registerObserver:self];
 }
 
-- (id)makeBodyLayoutProviderForContentController:(id)a3 style:(int64_t)a4 headerStyle:(int64_t)a5
+- (id)makeBodyLayoutProviderForContentController:(id)controller style:(int64_t)style headerStyle:(int64_t)headerStyle
 {
-  v7 = [a3 viewModel];
-  if (a4 == 3)
+  viewModel = [controller viewModel];
+  if (style == 3)
   {
-    v9 = [[PXEditorialBodyLayoutProvider alloc] initWithViewModel:v7];
+    v9 = [[PXEditorialBodyLayoutProvider alloc] initWithViewModel:viewModel];
     v8 = v9;
-    if (a5 == 7)
+    if (headerStyle == 7)
     {
       [(PXEditorialBodyLayoutProvider *)v9 setAvoidsFullWidthHeroes:1];
     }
 
-    if ([v7 gridStyle] == 3 || objc_msgSend(v7, "gridStyle") == 4)
+    if ([viewModel gridStyle] == 3 || objc_msgSend(viewModel, "gridStyle") == 4)
     {
       [(PXPhotosGridMessagesBodyLayoutProvider *)v8 setAvoidsFullWidthHeroes:1];
     }
   }
 
-  else if (a4 == 2)
+  else if (style == 2)
   {
-    v8 = [[PXPhotosGridMessagesBodyLayoutProvider alloc] initWithViewModel:v7];
+    v8 = [[PXPhotosGridMessagesBodyLayoutProvider alloc] initWithViewModel:viewModel];
   }
 
   else
@@ -730,18 +730,18 @@ void __81__PXPhotosAppGridContentController_initializationWillFinishForContentCo
   return v8;
 }
 
-- (id)makeHeaderLayoutProviderForContentController:(id)a3 style:(int64_t)a4 viewProvider:(id)a5 bannerProvider:(id)a6
+- (id)makeHeaderLayoutProviderForContentController:(id)controller style:(int64_t)style viewProvider:(id)provider bannerProvider:(id)bannerProvider
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = [a3 viewModel];
-  v12 = v11;
+  providerCopy = provider;
+  bannerProviderCopy = bannerProvider;
+  viewModel = [controller viewModel];
+  v12 = viewModel;
   v13 = 0;
-  if (a4 <= 4)
+  if (style <= 4)
   {
-    if (a4 > 2)
+    if (style > 2)
     {
-      if (a4 == 3)
+      if (style == 3)
       {
         v15 = PXContentSyndicationSectionHeaderLayoutProvider;
       }
@@ -752,14 +752,14 @@ void __81__PXPhotosAppGridContentController_initializationWillFinishForContentCo
       }
     }
 
-    else if (a4 == 1)
+    else if (style == 1)
     {
       v15 = PXAlbumSectionHeaderLayoutProvider;
     }
 
     else
     {
-      if (a4 != 2)
+      if (style != 2)
       {
         goto LABEL_21;
       }
@@ -770,11 +770,11 @@ void __81__PXPhotosAppGridContentController_initializationWillFinishForContentCo
     goto LABEL_19;
   }
 
-  if (a4 <= 6)
+  if (style <= 6)
   {
-    if (a4 != 5)
+    if (style != 5)
     {
-      v13 = [[PXAlbumSectionHeaderLayoutProvider alloc] initWithViewModel:v11 viewProvider:v9];
+      v13 = [[PXAlbumSectionHeaderLayoutProvider alloc] initWithViewModel:viewModel viewProvider:providerCopy];
       [(PXAlbumSectionHeaderLayoutProvider *)v13 setEditorialStyle:1];
       goto LABEL_21;
     }
@@ -783,31 +783,31 @@ void __81__PXPhotosAppGridContentController_initializationWillFinishForContentCo
     goto LABEL_19;
   }
 
-  if (a4 == 7)
+  if (style == 7)
   {
-    v16 = [[PXPhotosKeyAssetSectionHeaderLayoutProvider alloc] initWithViewModel:v11 viewProvider:v9 bannerProvider:v10];
+    v16 = [[PXPhotosKeyAssetSectionHeaderLayoutProvider alloc] initWithViewModel:viewModel viewProvider:providerCopy bannerProvider:bannerProviderCopy];
 LABEL_20:
     v13 = v16;
     goto LABEL_21;
   }
 
-  if (a4 != 8)
+  if (style != 8)
   {
-    if (a4 != 9)
+    if (style != 9)
     {
       goto LABEL_21;
     }
 
-    v14 = [v11 contentFilterState];
-    [v14 setIsSearchResultsFilterButton:1];
+    contentFilterState = [viewModel contentFilterState];
+    [contentFilterState setIsSearchResultsFilterButton:1];
 
     v15 = PXPhotosSearchSectionHeaderLayoutProvider;
 LABEL_19:
-    v16 = [[v15 alloc] initWithViewModel:v12 viewProvider:v9];
+    v16 = [[v15 alloc] initWithViewModel:v12 viewProvider:providerCopy];
     goto LABEL_20;
   }
 
-  v13 = [[PXAlbumSectionHeaderLayoutProvider alloc] initWithViewModel:v11 viewProvider:v9];
+  v13 = [[PXAlbumSectionHeaderLayoutProvider alloc] initWithViewModel:viewModel viewProvider:providerCopy];
   [(PXAlbumSectionHeaderLayoutProvider *)v13 setAllowsFloatingBackground:0];
 LABEL_21:
 
@@ -816,9 +816,9 @@ LABEL_21:
 
 - (PXPhotosGridFooterPresentation)footerPresentation
 {
-  v3 = [(PXPhotosAppGridContentController *)self contentController];
-  v4 = [v3 gridView];
-  v5 = v4;
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  gridView = [contentController gridView];
+  v5 = gridView;
   footerPresentation = self->_footerPresentation;
   if (footerPresentation)
   {
@@ -827,15 +827,15 @@ LABEL_21:
 
   else
   {
-    v7 = v4 == 0;
+    v7 = gridView == 0;
   }
 
   if (!v7)
   {
-    v8 = [v3 layout];
+    layout = [contentController layout];
     v9 = [PXPhotosGridFooterPresentation alloc];
-    v10 = [v3 viewModel];
-    v11 = [(PXPhotosGridFooterPresentation *)v9 initWithViewModel:v10 gridView:v5 layout:v8];
+    viewModel = [contentController viewModel];
+    v11 = [(PXPhotosGridFooterPresentation *)v9 initWithViewModel:viewModel gridView:v5 layout:layout];
     v12 = self->_footerPresentation;
     self->_footerPresentation = v11;
 
@@ -850,13 +850,13 @@ LABEL_21:
 
 - (PXPhotosGridFooterStatusController)footerStatusController
 {
-  v3 = [(PXPhotosAppGridContentController *)self contentController];
-  if (!self->_footerStatusController && [(PXPhotosAppGridContentController *)self needsFooterStatusController]&& v3)
+  contentController = [(PXPhotosAppGridContentController *)self contentController];
+  if (!self->_footerStatusController && [(PXPhotosAppGridContentController *)self needsFooterStatusController]&& contentController)
   {
-    v4 = [v3 countsController];
+    countsController = [contentController countsController];
     v5 = [PXPhotosGridFooterStatusController alloc];
-    v6 = [v3 viewModel];
-    v7 = [(PXPhotosGridFooterStatusController *)v5 initWithViewModel:v6 itemsCountsController:v4];
+    viewModel = [contentController viewModel];
+    v7 = [(PXPhotosGridFooterStatusController *)v5 initWithViewModel:viewModel itemsCountsController:countsController];
     footerStatusController = self->_footerStatusController;
     self->_footerStatusController = v7;
 
@@ -869,16 +869,16 @@ LABEL_21:
   return v9;
 }
 
-- (void)_updateBarsController:(id)a3
+- (void)_updateBarsController:(id)controller
 {
-  v9 = a3;
-  v4 = [v9 viewModel];
-  v5 = [v9 delegate];
-  v6 = [v5 presentingViewControllerForContentController:v9];
+  controllerCopy = controller;
+  viewModel = [controllerCopy viewModel];
+  delegate = [controllerCopy delegate];
+  v6 = [delegate presentingViewControllerForContentController:controllerCopy];
 
-  if ([v4 isEmbedded] && objc_msgSend(v4, "allowsChromeManagementBehavior") && v6)
+  if ([viewModel isEmbedded] && objc_msgSend(viewModel, "allowsChromeManagementBehavior") && v6)
   {
-    v7 = [[PXPhotosBarsController alloc] initWithPhotosContentController:v9];
+    v7 = [[PXPhotosBarsController alloc] initWithPhotosContentController:controllerCopy];
     barsController = self->_barsController;
     self->_barsController = v7;
 
@@ -886,49 +886,49 @@ LABEL_21:
   }
 }
 
-- (void)setShouldEnablePlaybackDuringAnimatedScroll:(BOOL)a3
+- (void)setShouldEnablePlaybackDuringAnimatedScroll:(BOOL)scroll
 {
-  if (self->_shouldEnablePlaybackDuringAnimatedScroll != a3)
+  if (self->_shouldEnablePlaybackDuringAnimatedScroll != scroll)
   {
-    self->_shouldEnablePlaybackDuringAnimatedScroll = a3;
-    v4 = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
-    [v4 invalidatePlaybackEnabled];
+    self->_shouldEnablePlaybackDuringAnimatedScroll = scroll;
+    inlinePlaybackController = [(PXPhotosAppGridContentController *)self inlinePlaybackController];
+    [inlinePlaybackController invalidatePlaybackEnabled];
   }
 }
 
 - (PXPhotosAppGridContentController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:94 description:{@"%s is not available as initializer", "-[PXPhotosAppGridContentController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosAppGridContentController.m" lineNumber:94 description:{@"%s is not available as initializer", "-[PXPhotosAppGridContentController init]"}];
 
   abort();
 }
 
-- (PXPhotosAppGridContentController)initWithConfiguration:(id)a3 contentController:(id)a4
+- (PXPhotosAppGridContentController)initWithConfiguration:(id)configuration contentController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = PXPhotosAppGridContentController;
   v8 = [(PXPhotosAppGridContentController *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_contentController, v7);
+    objc_storeWeak(&v8->_contentController, controllerCopy);
     v10 = objc_alloc_init(PXPhotosContentInlinePlaybackController);
     photosInlinePlaybackController = v9->_photosInlinePlaybackController;
     v9->_photosInlinePlaybackController = v10;
 
     [(PXPhotosContentInlinePlaybackController *)v9->_photosInlinePlaybackController setDelegate:v9];
-    v12 = [v6 footerViewModel];
-    if (v12)
+    footerViewModel = [configurationCopy footerViewModel];
+    if (footerViewModel)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v6 footerVisibilityStyle] != 0;
+      v13 = [configurationCopy footerVisibilityStyle] != 0;
     }
 
     v9->_needsFooterStatusController = v13;

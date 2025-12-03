@@ -1,23 +1,23 @@
 @interface PKPassGroupViewCollectionViewCell
 - (void)layoutSubviews;
-- (void)setGroupView:(id)a3;
+- (void)setGroupView:(id)view;
 @end
 
 @implementation PKPassGroupViewCollectionViewCell
 
-- (void)setGroupView:(id)a3
+- (void)setGroupView:(id)view
 {
-  v8 = a3;
-  objc_storeStrong(&self->_groupView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_groupView, view);
   groupView = self->_groupView;
   if (groupView)
   {
-    v6 = [(PKPassGroupView *)groupView superview];
+    superview = [(PKPassGroupView *)groupView superview];
 
-    if (!v6)
+    if (!superview)
     {
-      v7 = [(PKPassGroupViewCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_groupView];
+      contentView = [(PKPassGroupViewCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_groupView];
 
       [(PKPassGroupViewCollectionViewCell *)self setNeedsLayout];
     }
@@ -31,10 +31,10 @@
   [(PKDashboardCollectionViewCell *)&v21 layoutSubviews];
   if (self->_groupView)
   {
-    v3 = [(PKPassGroupViewCollectionViewCell *)self contentView];
-    v4 = [(PKPassGroupView *)self->_groupView superview];
-    v5 = v4;
-    if (v4 == v3)
+    contentView = [(PKPassGroupViewCollectionViewCell *)self contentView];
+    superview = [(PKPassGroupView *)self->_groupView superview];
+    v5 = superview;
+    if (superview == contentView)
     {
       [(PKPassGroupView *)self->_groupView center];
       v7 = v6;
@@ -48,7 +48,7 @@
         [(PKPassGroupView *)self->_groupView anchorPoint];
         v14 = v13;
         v16 = v15;
-        [v3 bounds];
+        [contentView bounds];
         PKSizeAlignedInRect();
         [(PKPassGroupView *)self->_groupView setCenter:v17 + v14 * v18, v19 + v16 * v20];
       }

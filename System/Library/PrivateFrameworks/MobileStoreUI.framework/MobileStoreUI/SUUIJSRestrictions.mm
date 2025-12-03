@@ -1,41 +1,41 @@
 @interface SUUIJSRestrictions
-- (BOOL)isRestrictedApp:(id)a3;
-- (SUUIJSRestrictions)initWithAppContext:(id)a3 clientContext:(id)a4;
-- (int64_t)_explicitRestrictionAlertTypeForTypeString:(id)a3;
-- (void)didDisplayExplicitRestrictionAlertOfType:(id)a3;
-- (void)isExplicitContentDisallowedInCurrentStoreFront:(id)a3;
-- (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)a3;
-- (void)isRestrictionsPasscodeSet:(id)a3;
-- (void)presentExplicitRestrictionAlertIfNeededOfType:(id)a3 :(id)a4;
-- (void)shouldDisplayExplicitRestrictionAlertOfType:(id)a3 :(id)a4;
+- (BOOL)isRestrictedApp:(id)app;
+- (SUUIJSRestrictions)initWithAppContext:(id)context clientContext:(id)clientContext;
+- (int64_t)_explicitRestrictionAlertTypeForTypeString:(id)string;
+- (void)didDisplayExplicitRestrictionAlertOfType:(id)type;
+- (void)isExplicitContentDisallowedInCurrentStoreFront:(id)front;
+- (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)front;
+- (void)isRestrictionsPasscodeSet:(id)set;
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(id)type :(id)a4;
+- (void)shouldDisplayExplicitRestrictionAlertOfType:(id)type :(id)a4;
 @end
 
 @implementation SUUIJSRestrictions
 
-- (SUUIJSRestrictions)initWithAppContext:(id)a3 clientContext:(id)a4
+- (SUUIJSRestrictions)initWithAppContext:(id)context clientContext:(id)clientContext
 {
-  v7 = a4;
+  clientContextCopy = clientContext;
   v11.receiver = self;
   v11.super_class = SUUIJSRestrictions;
-  v8 = [(IKJSObject *)&v11 initWithAppContext:a3];
+  v8 = [(IKJSObject *)&v11 initWithAppContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientContext, a4);
+    objc_storeStrong(&v8->_clientContext, clientContext);
   }
 
   return v9;
 }
 
-- (BOOL)isRestrictedApp:(id)a3
+- (BOOL)isRestrictedApp:(id)app
 {
-  v3 = a3;
-  if ([MEMORY[0x277D7FD68] isRestrictedAppBundleIdentifier:v3])
+  appCopy = app;
+  if ([MEMORY[0x277D7FD68] isRestrictedAppBundleIdentifier:appCopy])
   {
     LOBYTE(v4) = 1;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.facetime"])
+  else if ([appCopy isEqualToString:@"com.apple.facetime"])
   {
     v5 = MGGetBoolAnswer();
     v4 = v5 & MGGetBoolAnswer() ^ 1;
@@ -49,29 +49,29 @@
   return v4;
 }
 
-- (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)a3
+- (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)front
 {
   v4 = MEMORY[0x277CD4650];
-  v5 = a3;
-  v6 = [v4 managedValueWithValue:v5];
-  v7 = [v5 context];
+  frontCopy = front;
+  v6 = [v4 managedValueWithValue:frontCopy];
+  context = [frontCopy context];
 
-  v8 = [v7 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v8 addManagedReference:v6 withOwner:self];
-  v9 = [(IKJSObject *)self appContext];
+  [virtualMachine addManagedReference:v6 withOwner:self];
+  appContext = [(IKJSObject *)self appContext];
   v10 = MEMORY[0x277D69C38];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__SUUIJSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStoreFront___block_invoke;
   v14[3] = &unk_2798F86A0;
-  v15 = v9;
+  v15 = appContext;
   v16 = v6;
-  v17 = v8;
-  v18 = self;
-  v11 = v8;
+  v17 = virtualMachine;
+  selfCopy = self;
+  v11 = virtualMachine;
   v12 = v6;
-  v13 = v9;
+  v13 = appContext;
   [v10 isExplicitContentRestrictedByDefaultInCurrentStoreFront:v14];
 }
 
@@ -103,29 +103,29 @@ void __78__SUUIJSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStore
   [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
 }
 
-- (void)isExplicitContentDisallowedInCurrentStoreFront:(id)a3
+- (void)isExplicitContentDisallowedInCurrentStoreFront:(id)front
 {
   v4 = MEMORY[0x277CD4650];
-  v5 = a3;
-  v6 = [v4 managedValueWithValue:v5];
-  v7 = [v5 context];
+  frontCopy = front;
+  v6 = [v4 managedValueWithValue:frontCopy];
+  context = [frontCopy context];
 
-  v8 = [v7 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v8 addManagedReference:v6 withOwner:self];
-  v9 = [(IKJSObject *)self appContext];
+  [virtualMachine addManagedReference:v6 withOwner:self];
+  appContext = [(IKJSObject *)self appContext];
   v10 = MEMORY[0x277D69C38];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__SUUIJSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___block_invoke;
   v14[3] = &unk_2798F86A0;
-  v15 = v9;
+  v15 = appContext;
   v16 = v6;
-  v17 = v8;
-  v18 = self;
-  v11 = v8;
+  v17 = virtualMachine;
+  selfCopy = self;
+  v11 = virtualMachine;
   v12 = v6;
-  v13 = v9;
+  v13 = appContext;
   [v10 isExplicitContentDisallowedInCurrentStoreFront:v14];
 }
 
@@ -157,29 +157,29 @@ void __69__SUUIJSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___b
   [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
 }
 
-- (void)isRestrictionsPasscodeSet:(id)a3
+- (void)isRestrictionsPasscodeSet:(id)set
 {
   v4 = MEMORY[0x277CD4650];
-  v5 = a3;
-  v6 = [v4 managedValueWithValue:v5];
-  v7 = [v5 context];
+  setCopy = set;
+  v6 = [v4 managedValueWithValue:setCopy];
+  context = [setCopy context];
 
-  v8 = [v7 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v8 addManagedReference:v6 withOwner:self];
-  v9 = [(IKJSObject *)self appContext];
+  [virtualMachine addManagedReference:v6 withOwner:self];
+  appContext = [(IKJSObject *)self appContext];
   v10 = MEMORY[0x277D69C38];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke;
   v14[3] = &unk_2798F86A0;
-  v15 = v9;
+  v15 = appContext;
   v16 = v6;
-  v17 = v8;
-  v18 = self;
-  v11 = v8;
+  v17 = virtualMachine;
+  selfCopy = self;
+  v11 = virtualMachine;
   v12 = v6;
-  v13 = v9;
+  v13 = appContext;
   [v10 isRestrictionsPasscodeSet:v14];
 }
 
@@ -211,19 +211,19 @@ void __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke_2(uint64_
   [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
 }
 
-- (void)shouldDisplayExplicitRestrictionAlertOfType:(id)a3 :(id)a4
+- (void)shouldDisplayExplicitRestrictionAlertOfType:(id)type :(id)a4
 {
   v6 = MEMORY[0x277CD4650];
   v7 = a4;
-  v8 = a3;
+  typeCopy = type;
   v9 = [v6 managedValueWithValue:v7];
-  v10 = [v7 context];
+  context = [v7 context];
 
-  v11 = [v10 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v11 addManagedReference:v9 withOwner:self];
-  v12 = [(IKJSObject *)self appContext];
-  v13 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:v8];
+  [virtualMachine addManagedReference:v9 withOwner:self];
+  appContext = [(IKJSObject *)self appContext];
+  v13 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:typeCopy];
 
   if (v13 < 0)
   {
@@ -234,11 +234,11 @@ void __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke_2(uint64_
     v15 = &v22;
     v16 = v23;
     v22 = v9;
-    v23[0] = v11;
+    v23[0] = virtualMachine;
     v23[1] = self;
-    v19 = v11;
+    v19 = virtualMachine;
     v20 = v9;
-    [v12 evaluate:v21 completionBlock:0];
+    [appContext evaluate:v21 completionBlock:0];
   }
 
   else
@@ -250,11 +250,11 @@ void __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke_2(uint64_
     v24[3] = &unk_2798F86A0;
     v15 = &v25;
     v16 = &v26;
-    v25 = v12;
+    v25 = appContext;
     v26 = v9;
-    v27 = v11;
-    v28 = self;
-    v17 = v11;
+    v27 = virtualMachine;
+    selfCopy = self;
+    v17 = virtualMachine;
     v18 = v9;
     [v14 shouldDisplayExplicitRestrictionAlertOfType:v13 completionBlock:v24];
   }
@@ -295,9 +295,9 @@ void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__blo
   [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
 }
 
-- (void)didDisplayExplicitRestrictionAlertOfType:(id)a3
+- (void)didDisplayExplicitRestrictionAlertOfType:(id)type
 {
-  v3 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:a3];
+  v3 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:type];
   if ((v3 & 0x8000000000000000) == 0)
   {
     v4 = v3;
@@ -307,19 +307,19 @@ void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__blo
   }
 }
 
-- (void)presentExplicitRestrictionAlertIfNeededOfType:(id)a3 :(id)a4
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(id)type :(id)a4
 {
   v6 = MEMORY[0x277CD4650];
   v7 = a4;
-  v8 = a3;
+  typeCopy = type;
   v9 = [v6 managedValueWithValue:v7];
-  v10 = [v7 context];
+  context = [v7 context];
 
-  v11 = [v10 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v11 addManagedReference:v9 withOwner:self];
-  v12 = [(IKJSObject *)self appContext];
-  v13 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:v8];
+  [virtualMachine addManagedReference:v9 withOwner:self];
+  appContext = [(IKJSObject *)self appContext];
+  v13 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:typeCopy];
 
   if (v13 < 0)
   {
@@ -328,11 +328,11 @@ void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__blo
     v17[2] = __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke_3;
     v17[3] = &unk_2798F86C8;
     v18 = v9;
-    v19 = v11;
-    v20 = self;
-    v16 = v11;
+    v19 = virtualMachine;
+    selfCopy = self;
+    v16 = virtualMachine;
     v14 = v9;
-    [v12 evaluate:v17 completionBlock:0];
+    [appContext evaluate:v17 completionBlock:0];
 
     v15 = v18;
   }
@@ -344,11 +344,11 @@ void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__blo
     v21[1] = 3221225472;
     v21[2] = __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke;
     v21[3] = &unk_2798F86A0;
-    v22 = v12;
+    v22 = appContext;
     v23 = v9;
-    v24 = v11;
-    v25 = self;
-    v15 = v11;
+    v24 = virtualMachine;
+    selfCopy2 = self;
+    v15 = virtualMachine;
     v16 = v9;
     [(SUUIExplicitRestrictionAlertController *)v14 presentExplicitRestrictionAlertIfNeededOfType:v13 completionBlock:v21];
   }
@@ -389,35 +389,35 @@ void __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__b
   [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
 }
 
-- (int64_t)_explicitRestrictionAlertTypeForTypeString:(id)a3
+- (int64_t)_explicitRestrictionAlertTypeForTypeString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"onLaunch"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"onLaunch"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"onContainerLoad"])
+  else if ([stringCopy isEqualToString:@"onContainerLoad"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"onPlay"])
+  else if ([stringCopy isEqualToString:@"onPlay"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"onPurchase"])
+  else if ([stringCopy isEqualToString:@"onPurchase"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"onAddToLibrary"])
+  else if ([stringCopy isEqualToString:@"onAddToLibrary"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"onOpen"])
+  else if ([stringCopy isEqualToString:@"onOpen"])
   {
     v4 = 5;
   }

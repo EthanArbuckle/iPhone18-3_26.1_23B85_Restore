@@ -1,27 +1,27 @@
 @interface HDCurrentActivityCacheQueryServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDCurrentActivityCacheQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDCurrentActivityCacheQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)activityCacheManager:(id)a3 changedTodayActivityCache:(id)a4;
+- (void)activityCacheManager:(id)manager changedTodayActivityCache:(id)cache;
 @end
 
 @implementation HDCurrentActivityCacheQueryServer
 
-- (HDCurrentActivityCacheQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDCurrentActivityCacheQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = HDCurrentActivityCacheQueryServer;
-  v14 = [(HDCurrentActivityCacheQueryServer *)&v20 initWithUUID:v10 configuration:v11 client:v12 delegate:v13];
+  v14 = [(HDCurrentActivityCacheQueryServer *)&v20 initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
   if (v14)
   {
-    v15 = [v11 statisticsIntervalComponents];
+    statisticsIntervalComponents = [configurationCopy statisticsIntervalComponents];
     statisticsIntervalComponents = v14->_statisticsIntervalComponents;
-    v14->_statisticsIntervalComponents = v15;
+    v14->_statisticsIntervalComponents = statisticsIntervalComponents;
 
     v17 = +[NSCalendar currentCalendar];
     calendar = v14->_calendar;
@@ -57,16 +57,16 @@
   [(HDCurrentActivityCacheQueryServer *)&v4 _queue_stop];
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 activityCacheInterface];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  activityCacheInterface = [profile activityCacheInterface];
 
-  if (v16)
+  if (activityCacheInterface)
   {
     v17 = +[HDActivityDemoDataStore shouldShowActivityDemoData];
     v18 = off_34370;
@@ -75,47 +75,47 @@
       v18 = off_34378;
     }
 
-    v19 = [objc_alloc(*v18) initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
+    v19 = [objc_alloc(*v18) initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
     v20 = v19;
     if (v19)
     {
-      objc_storeWeak(v19 + 4, v16);
+      objc_storeWeak(v19 + 4, activityCacheInterface);
     }
   }
 
   else
   {
-    [NSError hk_assignError:a7 code:100 description:@"Activity cache manager is unavailable"];
+    [NSError hk_assignError:error code:100 description:@"Activity cache manager is unavailable"];
     v20 = 0;
   }
 
   return v20;
 }
 
-- (void)activityCacheManager:(id)a3 changedTodayActivityCache:(id)a4
+- (void)activityCacheManager:(id)manager changedTodayActivityCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDCurrentActivityCacheQueryServer *)self clientProxy];
-  v9 = [v8 remoteObjectProxy];
+  managerCopy = manager;
+  cacheCopy = cache;
+  clientProxy = [(HDCurrentActivityCacheQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
-  if (v9 && ([(HKActivityCache *)self->_lastActivityCache _isEqualToActivityCache:v7]& 1) == 0)
+  if (remoteObjectProxy && ([(HKActivityCache *)self->_lastActivityCache _isEqualToActivityCache:cacheCopy]& 1) == 0)
   {
     v10 = objc_alloc_init(HKCurrentActivityCacheQueryResult);
-    [v10 setCurrentActivityCache:v7];
-    v11 = [v7 cacheIndex];
+    [v10 setCurrentActivityCache:cacheCopy];
+    cacheIndex = [cacheCopy cacheIndex];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_D184;
     v19 = &unk_34B38;
     v12 = v10;
     v20 = v12;
-    v21 = self;
-    [v6 accessStatisticsBuilderWithCacheIndex:v11 handler:&v16];
+    selfCopy = self;
+    [managerCopy accessStatisticsBuilderWithCacheIndex:cacheIndex handler:&v16];
     v13 = [(HDCurrentActivityCacheQueryServer *)self queryUUID:v16];
-    [v9 client_deliverQueryResult:v12 queryUUID:v13];
+    [remoteObjectProxy client_deliverQueryResult:v12 queryUUID:v13];
 
-    v14 = [v7 copy];
+    v14 = [cacheCopy copy];
     lastActivityCache = self->_lastActivityCache;
     self->_lastActivityCache = v14;
   }

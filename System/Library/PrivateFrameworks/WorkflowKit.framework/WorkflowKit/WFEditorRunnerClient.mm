@@ -1,22 +1,22 @@
 @interface WFEditorRunnerClient
-- (WFEditorRunnerClient)initWithWorkflow:(id)a3 runSource:(id)a4;
-- (WFEditorRunnerClient)initWithWorkflowData:(id)a3 runSource:(id)a4;
+- (WFEditorRunnerClient)initWithWorkflow:(id)workflow runSource:(id)source;
+- (WFEditorRunnerClient)initWithWorkflowData:(id)data runSource:(id)source;
 @end
 
 @implementation WFEditorRunnerClient
 
-- (WFEditorRunnerClient)initWithWorkflowData:(id)a3 runSource:(id)a4
+- (WFEditorRunnerClient)initWithWorkflowData:(id)data runSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  sourceCopy = source;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     __assert_rtn("[WFEditorRunnerClient initWithWorkflowData:runSource:]", "WFEditorRunnerClient.m", 33, "os_feature_enabled(Shortcuts, intermediate_outputs)");
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69E0DE0]) initWithWorkflowData:v6];
+  v8 = [objc_alloc(MEMORY[0x1E69E0DE0]) initWithWorkflowData:dataCopy];
   v9 = [objc_alloc(MEMORY[0x1E69E0E20]) initWithInput:0 presentationMode:3];
-  [v9 setRunSource:v7];
+  [v9 setRunSource:sourceCopy];
   [v9 setOutputBehavior:3];
   [v9 setAllowsDialogNotifications:0];
   v12.receiver = self;
@@ -26,10 +26,10 @@
   return v10;
 }
 
-- (WFEditorRunnerClient)initWithWorkflow:(id)a3 runSource:(id)a4
+- (WFEditorRunnerClient)initWithWorkflow:(id)workflow runSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  workflowCopy = workflow;
+  sourceCopy = source;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     __assert_rtn("[WFEditorRunnerClient initWithWorkflow:runSource:]", "WFEditorRunnerClient.m", 20, "os_feature_enabled(Shortcuts, intermediate_outputs)");
@@ -37,11 +37,11 @@
 
   v8 = [objc_alloc(MEMORY[0x1E69E0E20]) initWithInput:0 presentationMode:0];
   v9 = objc_alloc(MEMORY[0x1E69E0DE8]);
-  v10 = [v6 identifier];
-  v11 = [v6 name];
-  v12 = [v9 initWithIdentifier:v10 name:v11];
+  identifier = [workflowCopy identifier];
+  name = [workflowCopy name];
+  v12 = [v9 initWithIdentifier:identifier name:name];
 
-  [v8 setRunSource:v7];
+  [v8 setRunSource:sourceCopy];
   [v8 setOutputBehavior:3];
   [v8 setAllowsDialogNotifications:0];
   v15.receiver = self;

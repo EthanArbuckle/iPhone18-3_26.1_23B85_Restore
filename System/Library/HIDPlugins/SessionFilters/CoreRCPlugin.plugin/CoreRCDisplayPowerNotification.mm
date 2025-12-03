@@ -1,15 +1,15 @@
 @interface CoreRCDisplayPowerNotification
-- (BOOL)registerPowerNotifications:(id)a3 sleepCallback:(id)a4 wakeCallback:(id)a5;
+- (BOOL)registerPowerNotifications:(id)notifications sleepCallback:(id)callback wakeCallback:(id)wakeCallback;
 - (void)dealloc;
 @end
 
 @implementation CoreRCDisplayPowerNotification
 
-- (BOOL)registerPowerNotifications:(id)a3 sleepCallback:(id)a4 wakeCallback:(id)a5
+- (BOOL)registerPowerNotifications:(id)notifications sleepCallback:(id)callback wakeCallback:(id)wakeCallback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationsCopy = notifications;
+  callbackCopy = callback;
+  wakeCallbackCopy = wakeCallback;
   v11 = CoreRCPluginLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,13 +19,13 @@
 
   v12 = +[CADisplay displays];
   v13 = +[CAWindowServer serverIfRunning];
-  v14 = [v13 displays];
+  displays = [v13 displays];
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = v14;
+  v15 = displays;
   v16 = [v15 countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v16)
   {
@@ -58,7 +58,7 @@
               _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "Found external display with brightnessControl %@", buf, 0xCu);
             }
 
-            v26 = [(CABrightnessControl *)self->_brightnessControl uuid];
+            uuid = [(CABrightnessControl *)self->_brightnessControl uuid];
             v27 = self->_brightnessControl;
             v39[0] = kCABrightnessSyncNotificationWillChangePowerState;
             v39[1] = kCABrightnessSyncNotificationDidChangePowerState;
@@ -68,11 +68,11 @@
             v30[2] = sub_36C0;
             v30[3] = &unk_8398;
             v30[4] = v20;
-            v31 = v26;
-            v32 = v8;
-            v33 = v9;
-            v34 = v10;
-            v24 = v26;
+            v31 = uuid;
+            v32 = notificationsCopy;
+            v33 = callbackCopy;
+            v34 = wakeCallbackCopy;
+            v24 = uuid;
             [(CABrightnessControl *)v27 registerForSyncNotifications:v28 withBlock:v30];
           }
 

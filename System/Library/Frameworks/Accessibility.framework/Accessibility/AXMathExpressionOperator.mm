@@ -1,16 +1,16 @@
 @interface AXMathExpressionOperator
-- (AXMathExpressionOperator)initWithContent:(id)a3;
+- (AXMathExpressionOperator)initWithContent:(id)content;
 @end
 
 @implementation AXMathExpressionOperator
 
-- (AXMathExpressionOperator)initWithContent:(id)a3
+- (AXMathExpressionOperator)initWithContent:(id)content
 {
   v6.receiver = self;
   v6.super_class = AXMathExpressionOperator;
-  v3 = a3;
+  contentCopy = content;
   v4 = [(AXMathExpressionOperator *)&v6 init];
-  [(AXMathExpressionOperator *)v4 setContent:v3, v6.receiver, v6.super_class];
+  [(AXMathExpressionOperator *)v4 setContent:contentCopy, v6.receiver, v6.super_class];
 
   return v4;
 }

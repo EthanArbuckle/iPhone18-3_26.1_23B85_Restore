@@ -61,7 +61,7 @@
     v6 = CAGetColorSpace(36);
   }
 
-  return CA::Render::copy_render_value(a1, v6, a3);
+  return CA::Render::copy_render_value(self, v6, a3);
 }
 
 - (uint64_t)CA_copyNumericValue:()CARenderValue

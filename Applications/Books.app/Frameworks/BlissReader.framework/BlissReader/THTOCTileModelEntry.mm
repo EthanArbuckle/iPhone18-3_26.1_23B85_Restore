@@ -2,7 +2,7 @@
 - (NSString)displayPageNumber;
 - (THTOCTileModelEntry)init;
 - (id)description;
-- (id)displayPageNumberForPageIndex:(unint64_t)a3;
+- (id)displayPageNumberForPageIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -34,9 +34,9 @@
   [(THTOCTileModelEntry *)&v3 dealloc];
 }
 
-- (id)displayPageNumberForPageIndex:(unint64_t)a3
+- (id)displayPageNumberForPageIndex:(unint64_t)index
 {
-  if (self->mDisplayPageNumberValue == 0x7FFFFFFFFFFFFFFFLL || (self->mDisplayPageNumberValue + a3 - [(THTOCTileModelEntry *)self pageIndex]) < 1)
+  if (self->mDisplayPageNumberValue == 0x7FFFFFFFFFFFFFFFLL || (self->mDisplayPageNumberValue + index - [(THTOCTileModelEntry *)self pageIndex]) < 1)
   {
     return 0;
   }
@@ -46,21 +46,21 @@
 
 - (NSString)displayPageNumber
 {
-  v3 = [(THTOCTileModelEntry *)self pageIndex];
+  pageIndex = [(THTOCTileModelEntry *)self pageIndex];
 
-  return [(THTOCTileModelEntry *)self displayPageNumberForPageIndex:v3];
+  return [(THTOCTileModelEntry *)self displayPageNumberForPageIndex:pageIndex];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(THTOCTileModelEntry *)self title];
-  v6 = [(THTOCTileModelEntry *)self sectionIdentifier];
+  title = [(THTOCTileModelEntry *)self title];
+  sectionIdentifier = [(THTOCTileModelEntry *)self sectionIdentifier];
   v7 = [NSNumber numberWithUnsignedInteger:[(THTOCTileModelEntry *)self pageIndex]];
   v8 = [NSNumber numberWithUnsignedInteger:[(THTOCTileModelEntry *)self pageCount]];
-  v9 = [(THTOCTileModelEntry *)self displayPageNumber];
-  v10 = [(THTOCTileModelEntry *)self displayPageNumberFormat];
+  displayPageNumber = [(THTOCTileModelEntry *)self displayPageNumber];
+  displayPageNumberFormat = [(THTOCTileModelEntry *)self displayPageNumberFormat];
   if ([(THTOCTileModelEntry *)self includeInTOC])
   {
     v11 = @"YES";
@@ -71,7 +71,7 @@
     v11 = @"NO";
   }
 
-  return [NSString stringWithFormat:@"<%@(%p) title=%@ section=%@ pageIndex=%@ pageCount=%@ displayPageNumber=%@ displayPageNumberFormat=%lu includeInToc=%@ modelLink=%@", v4, self, v5, v6, v7, v8, v9, v10, v11, [(THTOCTileModelEntry *)self modelLink]];
+  return [NSString stringWithFormat:@"<%@(%p) title=%@ section=%@ pageIndex=%@ pageCount=%@ displayPageNumber=%@ displayPageNumberFormat=%lu includeInToc=%@ modelLink=%@", v4, self, title, sectionIdentifier, v7, v8, displayPageNumber, displayPageNumberFormat, v11, [(THTOCTileModelEntry *)self modelLink]];
 }
 
 @end

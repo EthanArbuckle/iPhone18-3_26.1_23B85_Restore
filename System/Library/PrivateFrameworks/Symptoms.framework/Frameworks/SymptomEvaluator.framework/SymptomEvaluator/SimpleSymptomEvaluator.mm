@@ -1,12 +1,12 @@
 @interface SimpleSymptomEvaluator
 + (id)_defaultEvaluator;
-+ (id)configureClass:(id)a3;
-+ (id)objectWithName:(id)a3;
++ (id)configureClass:(id)class;
++ (id)objectWithName:(id)name;
 + (void)initialize;
-+ (void)postIncomingEvent:(id)a3;
-- (SimpleSymptomEvaluator)initWithName:(id)a3;
-- (int)configureInstance:(id)a3;
-- (void)evaluateIncomingEvent:(id)a3;
++ (void)postIncomingEvent:(id)event;
+- (SimpleSymptomEvaluator)initWithName:(id)name;
+- (int)configureInstance:(id)instance;
+- (void)evaluateIncomingEvent:(id)event;
 @end
 
 @implementation SimpleSymptomEvaluator
@@ -20,17 +20,17 @@
   MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (SimpleSymptomEvaluator)initWithName:(id)a3
+- (SimpleSymptomEvaluator)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = SimpleSymptomEvaluator;
   v6 = [(SimpleSymptomEvaluator *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->symptomName, a3);
-    v8 = [SymptomStore keyFromSymptomName:v5];
+    objc_storeStrong(&v6->symptomName, name);
+    v8 = [SymptomStore keyFromSymptomName:nameCopy];
     symptomKey = v7->symptomKey;
     v7->symptomKey = v8;
 
@@ -41,20 +41,20 @@
     v7->symptomRules = v10;
 
     [evaluatorDictionary setObject:v7 forKey:v7->symptomKey];
-    [ConfigurationHandler setConfigurationObject:v7 forName:v5];
+    [ConfigurationHandler setConfigurationObject:v7 forName:nameCopy];
   }
 
   return v7;
 }
 
-+ (id)objectWithName:(id)a3
++ (id)objectWithName:(id)name
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [ConfigurationHandler objectForName:v3];
+  nameCopy = name;
+  v4 = [ConfigurationHandler objectForName:nameCopy];
   if (!v4)
   {
-    v4 = [[SimpleSymptomEvaluator alloc] initWithName:v3];
+    v4 = [[SimpleSymptomEvaluator alloc] initWithName:nameCopy];
     goto LABEL_7;
   }
 
@@ -70,10 +70,10 @@ LABEL_7:
   v5 = configurationLogHandle;
   if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
   {
-    v6 = v3;
+    v6 = nameCopy;
     v7 = v5;
     v11 = 136315138;
-    v12 = [v3 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "Attempted reuse of name %s", &v11, 0xCu);
   }
 
@@ -85,16 +85,16 @@ LABEL_8:
   return v8;
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"TRIGGER_EVENT"];
+  classCopy = class;
+  v5 = [classCopy objectForKey:@"TRIGGER_EVENT"];
   if (v5)
   {
-    v6 = [a1 objectWithName:v5];
+    v6 = [self objectWithName:v5];
     v7 = v6;
-    if (v6 && ![v6 configureInstance:v4])
+    if (v6 && ![v6 configureInstance:classCopy])
     {
       v8 = v7;
     }
@@ -111,9 +111,9 @@ LABEL_8:
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
       v10 = v9;
-      v11 = [v4 description];
+      v11 = [classCopy description];
       v14 = 136315138;
-      v15 = [v11 UTF8String];
+      uTF8String = [v11 UTF8String];
       _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_ERROR, "Can't find name in configuration directory %s", &v14, 0xCu);
     }
 
@@ -125,11 +125,11 @@ LABEL_8:
   return v8;
 }
 
-- (int)configureInstance:(id)a3
+- (int)configureInstance:(id)instance
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"TRIGGERED_SIGNATURES"];
+  instanceCopy = instance;
+  v5 = [instanceCopy objectForKey:@"TRIGGERED_SIGNATURES"];
   if (!v5)
   {
     goto LABEL_25;
@@ -162,9 +162,9 @@ LABEL_60:
   }
 
   v50 = *v60;
-  v44 = v4;
+  v44 = instanceCopy;
   v45 = v5;
-  v47 = self;
+  selfCopy = self;
   while (2)
   {
     for (i = 0; i != v49; ++i)
@@ -179,7 +179,7 @@ LABEL_60:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v39 = configurationLogHandle;
-        v4 = v44;
+        instanceCopy = v44;
         v5 = v45;
         if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
         {
@@ -204,7 +204,7 @@ LABEL_57:
 
 LABEL_58:
 
-        v4 = v44;
+        instanceCopy = v44;
         v5 = v45;
 LABEL_59:
 
@@ -249,13 +249,13 @@ LABEL_59:
 
             v12 = *(*(&v55 + 1) + 8 * v14);
 
-            v16 = [v12 signatureName];
-            v17 = [v16 isEqualToString:v8];
+            signatureName = [v12 signatureName];
+            v17 = [signatureName isEqualToString:v8];
 
             if (v17)
             {
 
-              self = v47;
+              self = selfCopy;
               goto LABEL_22;
             }
 
@@ -273,7 +273,7 @@ LABEL_59:
           break;
         }
 
-        self = v47;
+        self = selfCopy;
       }
 
       v12 = [SimpleRuleEvaluator objectWithName:v8];
@@ -282,7 +282,7 @@ LABEL_22:
       [v12 configureInstance:v7];
     }
 
-    v4 = v44;
+    instanceCopy = v44;
     v5 = v45;
     v49 = [obj countByEnumeratingWithState:&v59 objects:v67 count:16];
     if (v49)
@@ -296,11 +296,11 @@ LABEL_22:
 LABEL_24:
 
 LABEL_25:
-  v18 = [v4 objectForKey:@"HANDLER_PREFLIGHT"];
+  v18 = [instanceCopy objectForKey:@"HANDLER_PREFLIGHT"];
   v19 = v18;
   if (v18)
   {
-    v20 = self;
+    selfCopy2 = self;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
@@ -311,9 +311,9 @@ LABEL_25:
     {
       v23 = v22;
       v46 = v5;
-      v24 = v4;
+      v24 = instanceCopy;
       v25 = *v52;
-      symptomAdditionalHandlers = v20->symptomAdditionalHandlers;
+      symptomAdditionalHandlers = selfCopy2->symptomAdditionalHandlers;
       while (2)
       {
         for (j = 0; j != v23; ++j)
@@ -332,9 +332,9 @@ LABEL_25:
             {
               v36 = v28;
               v37 = v35;
-              v38 = [v28 UTF8String];
+              uTF8String = [v28 UTF8String];
               *buf = 136315138;
-              v64 = v38;
+              v64 = uTF8String;
               _os_log_impl(&dword_23255B000, v37, OS_LOG_TYPE_ERROR, "Cant find preconfigured instance for %s", buf, 0xCu);
             }
 
@@ -372,7 +372,7 @@ LABEL_25:
 
       v33 = 0;
 LABEL_46:
-      v4 = v24;
+      instanceCopy = v24;
       v5 = v46;
     }
 
@@ -398,7 +398,7 @@ LABEL_61:
   block[1] = 3221225472;
   block[2] = __43__SimpleSymptomEvaluator__defaultEvaluator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_defaultEvaluator_pred != -1)
   {
     dispatch_once(&_defaultEvaluator_pred, block);
@@ -418,26 +418,26 @@ uint64_t __43__SimpleSymptomEvaluator__defaultEvaluator__block_invoke(uint64_t a
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (void)postIncomingEvent:(id)a3
++ (void)postIncomingEvent:(id)event
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 eventKey];
+  eventCopy = event;
+  eventKey = [eventCopy eventKey];
   v5 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    v6 = v4;
+    v6 = eventKey;
     v7 = v5;
     v18 = 136315138;
-    v19 = [v4 UTF8String];
+    uTF8String = [eventKey UTF8String];
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Simple Processing, postIncomingEvent key %s", &v18, 0xCu);
   }
 
-  v8 = [evaluatorDictionary objectForKey:v4];
+  v8 = [evaluatorDictionary objectForKey:eventKey];
   if (v8)
   {
     v9 = v8;
-    [v8 evaluateIncomingEvent:v3];
+    [v8 evaluateIncomingEvent:eventCopy];
     v10 = evaluationLogHandle;
     if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -451,34 +451,34 @@ uint64_t __43__SimpleSymptomEvaluator__defaultEvaluator__block_invoke(uint64_t a
     v11 = configurationLogHandle;
     if (os_log_type_enabled(configurationLogHandle, OS_LOG_TYPE_ERROR))
     {
-      v12 = v4;
+      v12 = eventKey;
       v13 = v11;
-      v14 = [v4 UTF8String];
-      v15 = [v3 processId];
-      v16 = [v3 processName];
+      uTF8String2 = [eventKey UTF8String];
+      processId = [eventCopy processId];
+      processName = [eventCopy processName];
       v18 = 136315650;
-      v19 = v14;
+      uTF8String = uTF8String2;
       v20 = 2048;
-      v21 = v15;
+      v21 = processId;
       v22 = 2080;
-      v23 = v16;
+      v23 = processName;
       _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_ERROR, "No Evaluator for incoming symptom %s from pid %lld %s", &v18, 0x20u);
     }
 
     v9 = +[SimpleSymptomEvaluator _defaultEvaluator];
-    [evaluatorDictionary setObject:v9 forKey:v4];
+    [evaluatorDictionary setObject:v9 forKey:eventKey];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evaluateIncomingEvent:(id)a3
+- (void)evaluateIncomingEvent:(id)event
 {
   *&v24[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if (self->symptomSaveFlags)
   {
-    [SymptomStore noteReceivedSymptom:v4];
+    [SymptomStore noteReceivedSymptom:eventCopy];
   }
 
   v6 = 0;
@@ -499,24 +499,24 @@ uint64_t __43__SimpleSymptomEvaluator__defaultEvaluator__block_invoke(uint64_t a
       v10 = symptomAdditionalHandlers[v6];
       v11 = v9;
       v12 = [(SymptomAdditionalProtocol *)v10 description];
-      v13 = [v12 UTF8String];
+      uTF8String = [v12 UTF8String];
       *buf = 67109378;
       v24[0] = v6;
       LOWORD(v24[1]) = 2080;
-      *(&v24[1] + 2) = v13;
+      *(&v24[1] + 2) = uTF8String;
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEBUG, "Call handler %d, %s", buf, 0x12u);
     }
 
-    if (([(SymptomAdditionalProtocol *)symptomAdditionalHandlers[v6] noteSymptom:v4, v22]& 1) == 0)
+    if (([(SymptomAdditionalProtocol *)symptomAdditionalHandlers[v6] noteSymptom:eventCopy, v22]& 1) == 0)
     {
       v14 = evaluationLogHandle;
       if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v15 = v14;
-        v16 = [v4 description];
-        v17 = [v16 UTF8String];
+        v16 = [eventCopy description];
+        uTF8String2 = [v16 UTF8String];
         *buf = v22;
-        *v24 = v17;
+        *v24 = uTF8String2;
         _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEBUG, "note symptom stage requests skip of evaluate for event %s", buf, 0xCu);
       }
 
@@ -536,7 +536,7 @@ uint64_t __43__SimpleSymptomEvaluator__defaultEvaluator__block_invoke(uint64_t a
       v20 = v19;
       v19 = [(NSMutableArray *)self->symptomRules objectAtIndex:v18, v22];
 
-      [v19 evaluateSignatureForEvent:v4];
+      [v19 evaluateSignatureForEvent:eventCopy];
       ++v18;
     }
 

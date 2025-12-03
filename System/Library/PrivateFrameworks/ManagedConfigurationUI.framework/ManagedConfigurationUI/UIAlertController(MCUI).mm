@@ -28,13 +28,13 @@
   }
 
   v12 = [MEMORY[0x277D750F8] actionWithTitle:v8 style:a4 handler:v11];
-  [a1 addAction:v12];
+  [self addAction:v12];
 }
 
 - (void)MCUIAddCancelActionWithTitle:()MCUI
 {
   v4 = [MEMORY[0x277D750F8] actionWithTitle:a3 style:1 handler:0];
-  [a1 addAction:v4];
+  [self addAction:v4];
 }
 
 + (void)MCUIShowRebootAlertFromViewController:()MCUI
@@ -88,20 +88,20 @@
     goto LABEL_6;
   }
 
-  v15 = [v23 domain];
-  v16 = [v15 isEqualToString:@"NSSErrorDomain"];
+  domain = [v23 domain];
+  v16 = [domain isEqualToString:@"NSSErrorDomain"];
 
   if (v16)
   {
-    v17 = [v23 userInfo];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    userInfo = [v23 userInfo];
+    v18 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-    v19 = [v18 localizedDescription];
+    localizedDescription = [v18 localizedDescription];
 
-    v20 = [v18 localizedRecoverySuggestion];
+    localizedRecoverySuggestion = [v18 localizedRecoverySuggestion];
 
-    v13 = v20;
-    v12 = v19;
+    v13 = localizedRecoverySuggestion;
+    v12 = localizedDescription;
   }
 
   if (v12 | v13)

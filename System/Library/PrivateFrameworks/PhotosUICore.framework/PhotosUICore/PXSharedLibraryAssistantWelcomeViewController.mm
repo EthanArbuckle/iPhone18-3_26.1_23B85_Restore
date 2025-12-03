@@ -1,14 +1,14 @@
 @interface PXSharedLibraryAssistantWelcomeViewController
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryAssistantWelcomeViewController)initWithLegacyDevicesFallbackMonitor:(id)a3 legacyDevicesRemoteController:(id)a4;
+- (PXSharedLibraryAssistantWelcomeViewController)initWithLegacyDevicesFallbackMonitor:(id)monitor legacyDevicesRemoteController:(id)controller;
 - (void)_checkLegacyDeviceMonitorAndAttemptStepForward;
 - (void)_forceStepForward;
 - (void)_legacyDevicesFallbackMonitorChangedState;
 - (void)_legacyDevicesRemoteControllerChangedState;
-- (void)cancelButtonTapped:(id)a3;
-- (void)learnMoreButtonTapped:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)startButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)learnMoreButtonTapped:(id)tapped;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)startButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -21,36 +21,36 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSharedLibraryLegacyDevicesFallbackMonitorObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryLegacyDevicesFallbackMonitorObservationContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v11 = v9;
+    v11 = observableCopy;
     [(PXSharedLibraryAssistantWelcomeViewController *)self _legacyDevicesFallbackMonitorChangedState];
     goto LABEL_7;
   }
 
-  if (PXSharedLibraryLegacyDevicesRemoteControllerObservationContext != a5)
+  if (PXSharedLibraryLegacyDevicesRemoteControllerObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantWelcomeViewController.m" lineNumber:204 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantWelcomeViewController.m" lineNumber:204 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXSharedLibraryAssistantWelcomeViewController *)self _legacyDevicesRemoteControllerChangedState];
 LABEL_7:
-    v9 = v11;
+    observableCopy = v11;
   }
 
 LABEL_8:
@@ -58,10 +58,10 @@ LABEL_8:
 
 - (void)_legacyDevicesRemoteControllerChangedState
 {
-  v3 = [(PXSharedLibraryLegacyDevicesRemoteController *)self->_legacyDevicesRemoteController state];
-  if (v3 <= 1)
+  state = [(PXSharedLibraryLegacyDevicesRemoteController *)self->_legacyDevicesRemoteController state];
+  if (state <= 1)
   {
-    if (!v3)
+    if (!state)
     {
 LABEL_11:
       startButton = self->_startButton;
@@ -70,7 +70,7 @@ LABEL_11:
       return;
     }
 
-    if (v3 == 1)
+    if (state == 1)
     {
       v4 = self->_startButton;
 
@@ -80,7 +80,7 @@ LABEL_11:
 
   else
   {
-    switch(v3)
+    switch(state)
     {
       case 4:
         [(OBBoldTrayButton *)self->_startButton hidesBusyIndicator];
@@ -119,13 +119,13 @@ LABEL_11:
 - (void)_forceStepForward
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryAssistantWelcomeViewController *)self assistantViewControllerDelegate];
-  if (!v3)
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantWelcomeViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v3 stepForwardInAssistantForAssistantViewControllerAsCurrentViewController:self];
+  [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewControllerAsCurrentViewController:self];
 }
 
 - (void)_checkLegacyDeviceMonitorAndAttemptStepForward
@@ -150,19 +150,19 @@ LABEL_11:
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v5 = *MEMORY[0x1E69E9840];
-  v4 = [(PXSharedLibraryAssistantWelcomeViewController *)self assistantViewControllerDelegate];
-  if (!v4)
+  assistantViewControllerDelegate = [(PXSharedLibraryAssistantWelcomeViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v4 cancelAssistantForAssistantViewController:self];
+  [assistantViewControllerDelegate cancelAssistantForAssistantViewController:self];
 }
 
-- (void)startButtonTapped:(id)a3
+- (void)startButtonTapped:(id)tapped
 {
   legacyDevicesRemoteController = self->_legacyDevicesRemoteController;
   if (legacyDevicesRemoteController)
@@ -176,7 +176,7 @@ LABEL_11:
   }
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
   v3 = MEMORY[0x1E695DFF8];
   IsIPad = PLPhysicalDeviceIsIPad();
@@ -189,8 +189,8 @@ LABEL_11:
   v6 = v5;
   v8 = [v3 URLWithString:v6];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v7 openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
 - (void)viewDidLoad
@@ -199,90 +199,90 @@ LABEL_11:
   v40.receiver = self;
   v40.super_class = PXSharedLibraryAssistantWelcomeViewController;
   [(OBBaseWelcomeController *)&v40 viewDidLoad];
-  v3 = [(PXSharedLibraryAssistantWelcomeViewController *)self headerView];
+  headerView = [(PXSharedLibraryAssistantWelcomeViewController *)self headerView];
   v4 = PXLocalizedSharedLibraryString(@"PXSharedLibrarySetupAssistant_Welcome_Title");
-  v39 = v3;
-  [v3 setTitle:v4];
+  v39 = headerView;
+  [headerView setTitle:v4];
 
   v5 = PXLocalizedSharedLibraryString(@"PXSharedLibrarySetupAssistant_Welcome_Body");
-  [v3 setDetailText:v5];
+  [headerView setDetailText:v5];
 
   v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v7 = MEMORY[0x1E69DCAB8];
-  v8 = [MEMORY[0x1E696AAE8] px_sharedLibraryBundle];
-  v9 = [v7 px_imageNamed:@"SharedLibrarySetup" bundle:v8];
+  px_sharedLibraryBundle = [MEMORY[0x1E696AAE8] px_sharedLibraryBundle];
+  v9 = [v7 px_imageNamed:@"SharedLibrarySetup" bundle:px_sharedLibraryBundle];
   v10 = [v6 initWithImage:v9];
 
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(PXSharedLibraryAssistantWelcomeViewController *)self contentView];
-  v12 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v11 setBackgroundColor:v12];
+  contentView = [(PXSharedLibraryAssistantWelcomeViewController *)self contentView];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [contentView setBackgroundColor:systemBackgroundColor];
 
   v13 = v10;
-  [v11 addSubview:v10];
+  [contentView addSubview:v10];
   v36 = MEMORY[0x1E696ACD8];
-  v14 = [v10 centerXAnchor];
-  v38 = v11;
-  v15 = [v11 centerXAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  centerXAnchor = [v10 centerXAnchor];
+  v38 = contentView;
+  centerXAnchor2 = [contentView centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v41[0] = v16;
   v37 = v10;
-  v17 = [v10 bottomAnchor];
-  v18 = [v11 bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  bottomAnchor = [v10 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[1] = v19;
-  v20 = [v11 heightAnchor];
+  heightAnchor = [contentView heightAnchor];
   [v13 bounds];
-  v22 = [v20 constraintEqualToConstant:v21];
+  v22 = [heightAnchor constraintEqualToConstant:v21];
   v41[2] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
   [v36 activateConstraints:v23];
 
-  v24 = [MEMORY[0x1E69B7D20] accessoryButton];
+  accessoryButton = [MEMORY[0x1E69B7D20] accessoryButton];
   v25 = PXLocalizedSharedLibraryString(@"PXSharedLibraryPreferences_Description_LearnMore_ButtonTitle");
-  [v24 setTitle:v25 forState:0];
+  [accessoryButton setTitle:v25 forState:0];
 
-  [v24 addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:0x2000];
-  v26 = [(PXSharedLibraryAssistantWelcomeViewController *)self headerView];
-  [v26 addAccessoryButton:v24];
+  [accessoryButton addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:0x2000];
+  headerView2 = [(PXSharedLibraryAssistantWelcomeViewController *)self headerView];
+  [headerView2 addAccessoryButton:accessoryButton];
 
-  v27 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   startButton = self->_startButton;
-  self->_startButton = v27;
+  self->_startButton = boldButton;
 
   v29 = self->_startButton;
   v30 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_Start");
   [(OBBoldTrayButton *)v29 setTitle:v30 forState:0];
 
   [(OBBoldTrayButton *)self->_startButton addTarget:self action:sel_startButtonTapped_ forControlEvents:0x2000];
-  v31 = [(PXSharedLibraryAssistantWelcomeViewController *)self buttonTray];
-  [v31 addButton:self->_startButton];
+  buttonTray = [(PXSharedLibraryAssistantWelcomeViewController *)self buttonTray];
+  [buttonTray addButton:self->_startButton];
 
   v32 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_startButtonTapped_];
   [(PXSharedLibraryAssistantWelcomeViewController *)self addKeyCommand:v32];
 
-  v33 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v34 = PXLocalizedSharedLibraryString(@"PXSharedLibraryAssistant_ButtonTitle_NotNow");
-  [v33 setTitle:v34 forState:0];
+  [linkButton setTitle:v34 forState:0];
 
-  [v33 addTarget:self action:sel_cancelButtonTapped_ forControlEvents:0x2000];
-  v35 = [(PXSharedLibraryAssistantWelcomeViewController *)self buttonTray];
-  [v35 addButton:v33];
+  [linkButton addTarget:self action:sel_cancelButtonTapped_ forControlEvents:0x2000];
+  buttonTray2 = [(PXSharedLibraryAssistantWelcomeViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
-- (PXSharedLibraryAssistantWelcomeViewController)initWithLegacyDevicesFallbackMonitor:(id)a3 legacyDevicesRemoteController:(id)a4
+- (PXSharedLibraryAssistantWelcomeViewController)initWithLegacyDevicesFallbackMonitor:(id)monitor legacyDevicesRemoteController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  monitorCopy = monitor;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = PXSharedLibraryAssistantWelcomeViewController;
   v9 = [(PXSharedLibraryAssistantWelcomeViewController *)&v12 initWithTitle:&stru_1F1741150 detailText:0 icon:0 contentLayout:1];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_legacyDevicesFallbackMonitor, a3);
+    objc_storeStrong(&v9->_legacyDevicesFallbackMonitor, monitor);
     [(PXSharedLibraryLegacyDevicesFallbackMonitor *)v10->_legacyDevicesFallbackMonitor registerChangeObserver:v10 context:PXSharedLibraryLegacyDevicesFallbackMonitorObservationContext];
-    objc_storeStrong(&v10->_legacyDevicesRemoteController, a4);
+    objc_storeStrong(&v10->_legacyDevicesRemoteController, controller);
     [(PXSharedLibraryLegacyDevicesRemoteController *)v10->_legacyDevicesRemoteController registerChangeObserver:v10 context:PXSharedLibraryLegacyDevicesRemoteControllerObservationContext];
   }
 

@@ -1,16 +1,16 @@
 @interface PGFeatureExtractorCircularDatetime
 - (NSArray)featureNames;
 - (PGFeatureExtractorCircularDatetime)init;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorCircularDatetime
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_22F13B388(v5);
+  entityCopy = entity;
+  selfCopy = self;
+  sub_22F13B388(entityCopy);
   v8 = v7;
 
   return v8;

@@ -1,22 +1,22 @@
 @interface SymbolButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIImageView)accessibilityImageView;
 - (UILabel)accessibilityTitleLabel;
-- (_TtC11MusicCoreUI12SymbolButton)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (_TtC11MusicCoreUI12SymbolButton)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int64_t)_monochromaticTreatment;
-- (void)_setMonochromaticTreatment:(int64_t)a3;
+- (void)_setMonochromaticTreatment:(int64_t)treatment;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SymbolButton
@@ -28,12 +28,12 @@
   return [(SymbolButton *)&v3 _monochromaticTreatment];
 }
 
-- (void)_setMonochromaticTreatment:(int64_t)a3
+- (void)_setMonochromaticTreatment:(int64_t)treatment
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SymbolButton(0);
   v4 = v7.receiver;
-  [(SymbolButton *)&v7 _setMonochromaticTreatment:a3];
+  [(SymbolButton *)&v7 _setMonochromaticTreatment:treatment];
   v5 = sub_1003B1EB4();
   [v5 _setMonochromaticTreatment:{objc_msgSend(v4, "_monochromaticTreatment", v7.receiver, v7.super_class)}];
 
@@ -43,23 +43,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SymbolButton.layoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   SymbolButton.traitCollectionDidChange(_:)(v9);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SymbolButton.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -78,19 +78,19 @@
   v6 = type metadata accessor for SymbolButton(0);
   v10.receiver = self;
   v10.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(SymbolButton *)&v10 tintColorDidChange];
   v8 = OBJC_IVAR____TtC11MusicCoreUI12SymbolButton__configuration;
   swift_beginAccess();
-  sub_1003BDC54(v7 + v8, v5, type metadata accessor for SymbolButton.Configuration);
+  sub_1003BDC54(selfCopy + v8, v5, type metadata accessor for SymbolButton.Configuration);
   sub_1003B3290(v5);
 
   sub_1003BBA80(v5, type metadata accessor for SymbolButton.Configuration);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SymbolButton *)self intrinsicContentSize:a3.width];
+  [(SymbolButton *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -98,7 +98,7 @@
 
 - (CGRect)hitRect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SymbolButton.hitRect()();
   v5 = v4;
   v7 = v6;
@@ -115,21 +115,21 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
   if (UIViewIgnoresTouchEvents())
   {
 
-    v8 = v7;
+    selfCopy = eventCopy;
   }
 
   else
   {
-    v9 = [(SymbolButton *)v8 pointInside:v7 withEvent:x, y];
+    v9 = [(SymbolButton *)selfCopy pointInside:eventCopy withEvent:x, y];
 
     if (v9)
     {
@@ -137,18 +137,18 @@
     }
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_5:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(SymbolButton *)v6 hitRect];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(SymbolButton *)selfCopy hitRect];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -156,36 +156,36 @@ LABEL_5:
   return v7;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for SymbolButton(0);
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(SymbolButton *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(SymbolButton *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(SymbolButton *)&v8 setHighlighted:v3];
-  sub_1003B116C(v7);
+  [(SymbolButton *)&v8 setHighlighted:highlightedCopy];
+  sub_1003B116C(isHighlighted);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  SymbolButton.isSelected.setter(a3);
+  selfCopy = self;
+  SymbolButton.isSelected.setter(selected);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  SymbolButton.isEnabled.setter(a3);
+  selfCopy = self;
+  SymbolButton.isEnabled.setter(enabled);
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = _s11MusicCoreUI12SymbolButtonC22contextMenuInteraction_016configurationForG10AtLocationSo09UIContextG13ConfigurationCSgSo0mgH0C_So7CGPointVtF_0();
 
   return v7;
@@ -193,7 +193,7 @@ LABEL_5:
 
 - (UIImageView)accessibilityImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003B1D3C();
 
   return v3;
@@ -201,25 +201,25 @@ LABEL_5:
 
 - (UILabel)accessibilityTitleLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003B1EB4();
 
   return v3;
 }
 
-- (_TtC11MusicCoreUI12SymbolButton)initWithFrame:(CGRect)a3
+- (_TtC11MusicCoreUI12SymbolButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = _s11MusicCoreUI12SymbolButtonC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0jG0C_So0J6RegionCtF_0(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = _s11MusicCoreUI12SymbolButtonC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0jG0C_So0J6RegionCtF_0(interactionCopy);
 
   return v9;
 }

@@ -1,16 +1,16 @@
 @interface NUMLModelRegistry
 - (NUMLModelRegistry)init;
-- (id)loadModelAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)modelForKey:(id)a3;
-- (void)registerModel:(id)a3 forKey:(id)a4;
-- (void)unregisterModelForKey:(id)a3;
+- (id)loadModelAtURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)modelForKey:(id)key;
+- (void)registerModel:(id)model forKey:(id)key;
+- (void)unregisterModelForKey:(id)key;
 @end
 
 @implementation NUMLModelRegistry
 
-- (id)modelForKey:(id)a3
+- (id)modelForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -22,10 +22,10 @@
   block[1] = 3221225472;
   block[2] = __33__NUMLModelRegistry_modelForKey___block_invoke;
   block[3] = &unk_1E810B500;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -41,17 +41,17 @@ uint64_t __33__NUMLModelRegistry_modelForKey___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)unregisterModelForKey:(id)a3
+- (void)unregisterModelForKey:(id)key
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43__NUMLModelRegistry_unregisterModelForKey___block_invoke;
   v8[3] = &unk_1E810B958;
   v8[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v9 = v6;
   dispatch_sync(queue, v8);
   if (_NULogOnceToken != -1)
@@ -68,20 +68,20 @@ uint64_t __33__NUMLModelRegistry_modelForKey___block_invoke(void *a1)
   }
 }
 
-- (void)registerModel:(id)a3 forKey:(id)a4
+- (void)registerModel:(id)model forKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__NUMLModelRegistry_registerModel_forKey___block_invoke;
   block[3] = &unk_1E810B3A0;
   block[4] = self;
-  v9 = v7;
+  v9 = keyCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = modelCopy;
   v14 = v10;
   dispatch_sync(queue, block);
   if (_NULogOnceToken != -1)
@@ -98,10 +98,10 @@ uint64_t __33__NUMLModelRegistry_modelForKey___block_invoke(void *a1)
   }
 }
 
-- (id)loadModelAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)loadModelAtURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  lCopy = l;
   v9 = self->_log;
   v10 = v9;
   signpost = self->_signpost;
@@ -113,12 +113,12 @@ uint64_t __33__NUMLModelRegistry_modelForKey___block_invoke(void *a1)
 
   v12 = objc_alloc_init(MEMORY[0x1E695FEB0]);
   v13 = v12;
-  if (v6)
+  if (optionsCopy)
   {
     [v12 setUsePrecompiledE5Bundle:1];
   }
 
-  v14 = v6 & 0xE;
+  v14 = optionsCopy & 0xE;
   switch(v14)
   {
     case 2:
@@ -134,7 +134,7 @@ LABEL_12:
       break;
   }
 
-  v16 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:v8 configuration:v13 error:a5];
+  v16 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:lCopy configuration:v13 error:error];
   v17 = self->_log;
   v18 = v17;
   v19 = self->_signpost;
@@ -152,9 +152,9 @@ LABEL_12:
   v11.receiver = self;
   v11.super_class = NUMLModelRegistry;
   v2 = [(NUMLModelRegistry *)&v11 init];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(v2 + 1);
-  *(v2 + 1) = v3;
+  *(v2 + 1) = dictionary;
 
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("NUMLModelRegistery", v5);

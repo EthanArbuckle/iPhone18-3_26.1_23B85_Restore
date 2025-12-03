@@ -1,41 +1,41 @@
 @interface TSUDateParser
 + (id)parserForDefaultLocale;
-- (TSUDateParser)initWithLocale:(__CFLocale *)a3;
-- (__CFDate)newDateFromString:(__CFString *)a3 preferredFormatString:(__CFString *)a4 successfulFormatString:(const __CFString *)a5 tryAggressiveFormats:(BOOL)a6;
-- (__CFDate)newDateFromStringTryingFormats:(__CFString *)a3 locale:(__CFLocale *)a4 formats:(id)a5 outSuccessfulFormatString:(const __CFString *)a6;
-- (__CFDateFormatter)specialCaseDateFormatterForLocale:(__CFLocale *)a3;
-- (void)addFormat:(id)a3 locale:(__CFLocale *)a4 formatCategoryMap:(id)a5;
-- (void)datePreferencesChanged:(id)a3;
+- (TSUDateParser)initWithLocale:(__CFLocale *)locale;
+- (__CFDate)newDateFromString:(__CFString *)string preferredFormatString:(__CFString *)formatString successfulFormatString:(const __CFString *)successfulFormatString tryAggressiveFormats:(BOOL)formats;
+- (__CFDate)newDateFromStringTryingFormats:(__CFString *)formats locale:(__CFLocale *)locale formats:(id)a5 outSuccessfulFormatString:(const __CFString *)string;
+- (__CFDateFormatter)specialCaseDateFormatterForLocale:(__CFLocale *)locale;
+- (void)addFormat:(id)format locale:(__CFLocale *)locale formatCategoryMap:(id)map;
+- (void)datePreferencesChanged:(id)changed;
 - (void)dealloc;
-- (void)parseFormat:(id)a3 initialPattern:(id *)a4 separator:(unsigned __int16 *)a5;
+- (void)parseFormat:(id)format initialPattern:(id *)pattern separator:(unsigned __int16 *)separator;
 @end
 
 @implementation TSUDateParser
 
 + (id)parserForDefaultLocale
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"TSUDateParserThreadDictionaryKey"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v4 = [threadDictionary objectForKey:@"TSUDateParserThreadDictionaryKey"];
   if (!v4)
   {
     v4 = [+[TSUDateParserLibrary sharedDateParserLibrary](TSUDateParserLibrary "sharedDateParserLibrary")];
-    [v3 setObject:v4 forKey:@"TSUDateParserThreadDictionaryKey"];
+    [threadDictionary setObject:v4 forKey:@"TSUDateParserThreadDictionaryKey"];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __39__TSUDateParser_parserForDefaultLocale__block_invoke;
     v9[3] = &unk_279D65DF0;
-    v9[4] = v2;
+    v9[4] = currentThread;
     v9[5] = v4;
-    [v3 setObject:TSURegisterLocaleChangeObserver(v9) forKey:@"TSUDateParserThreadDictionaryLocaleObserverKey"];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [threadDictionary setObject:TSURegisterLocaleChangeObserver(v9) forKey:@"TSUDateParserThreadDictionaryLocaleObserverKey"];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277CCA6F8];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __39__TSUDateParser_parserForDefaultLocale__block_invoke_2;
     v8[3] = &unk_279D65E18;
     v8[4] = v4;
-    [v3 setObject:objc_msgSend(v5 forKey:{"addObserverForName:object:queue:usingBlock:", v6, v2, 0, v8), @"TSUDateParserThreadDictionaryExitObserverKey"}];
+    [threadDictionary setObject:objc_msgSend(defaultCenter forKey:{"addObserverForName:object:queue:usingBlock:", v6, currentThread, 0, v8), @"TSUDateParserThreadDictionaryExitObserverKey"}];
   }
 
   return v4;
@@ -67,7 +67,7 @@ uint64_t __39__TSUDateParser_parserForDefaultLocale__block_invoke(uint64_t a1, u
   return result;
 }
 
-- (TSUDateParser)initWithLocale:(__CFLocale *)a3
+- (TSUDateParser)initWithLocale:(__CFLocale *)locale
 {
   v27.receiver = self;
   v27.super_class = TSUDateParser;
@@ -75,9 +75,9 @@ uint64_t __39__TSUDateParser_parserForDefaultLocale__block_invoke(uint64_t a1, u
   if (v4)
   {
     v4->mFormatCategories = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (a3)
+    if (locale)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(locale);
     }
 
     else
@@ -171,13 +171,13 @@ uint64_t __39__TSUDateParser_parserForDefaultLocale__block_invoke(uint64_t a1, u
   [(TSUDateParser *)&v4 dealloc];
 }
 
-- (__CFDateFormatter)specialCaseDateFormatterForLocale:(__CFLocale *)a3
+- (__CFDateFormatter)specialCaseDateFormatterForLocale:(__CFLocale *)locale
 {
   mSpecialCaseFormatter = self->mSpecialCaseFormatter;
   if (!mSpecialCaseFormatter)
   {
 LABEL_5:
-    v7 = CFDateFormatterCreate(0, a3, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
+    v7 = CFDateFormatterCreate(0, locale, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
     self->mSpecialCaseFormatter = v7;
     CFDateFormatterSetProperty(v7, *MEMORY[0x277CBED88], *MEMORY[0x277CBED10]);
     v8 = self->mSpecialCaseFormatter;
@@ -187,7 +187,7 @@ LABEL_5:
     return self->mSpecialCaseFormatter;
   }
 
-  if (CFDateFormatterGetLocale(mSpecialCaseFormatter) != a3)
+  if (CFDateFormatterGetLocale(mSpecialCaseFormatter) != locale)
   {
     v6 = self->mSpecialCaseFormatter;
     if (v6)
@@ -201,12 +201,12 @@ LABEL_5:
   return self->mSpecialCaseFormatter;
 }
 
-- (__CFDate)newDateFromStringTryingFormats:(__CFString *)a3 locale:(__CFLocale *)a4 formats:(id)a5 outSuccessfulFormatString:(const __CFString *)a6
+- (__CFDate)newDateFromStringTryingFormats:(__CFString *)formats locale:(__CFLocale *)locale formats:(id)a5 outSuccessfulFormatString:(const __CFString *)string
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (locale)
   {
-    v10 = [(TSUDateParser *)self specialCaseDateFormatterForLocale:a4];
+    v10 = [(TSUDateParser *)self specialCaseDateFormatterForLocale:locale];
   }
 
   else
@@ -216,7 +216,7 @@ LABEL_5:
     CFRelease(v11);
   }
 
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(formats);
   rangep.location = 0;
   rangep.length = Length;
   v23 = 0u;
@@ -227,7 +227,7 @@ LABEL_5:
   if (v13)
   {
     v14 = v13;
-    v22 = a6;
+    stringCopy = string;
     v15 = *v24;
     do
     {
@@ -240,7 +240,7 @@ LABEL_5:
 
         v17 = *(*(&v23 + 1) + 8 * i);
         CFDateFormatterSetFormat(v10, v17);
-        v18 = CFDateFormatterCreateDateFromString(0, v10, a3, &rangep);
+        v18 = CFDateFormatterCreateDateFromString(0, v10, formats, &rangep);
         if (v18)
         {
           v19 = v18;
@@ -253,9 +253,9 @@ LABEL_5:
           {
             v20 = TSUCreateDateWithGregorianUnitsSetToDefaultValue(v18, v17);
             CFRelease(v19);
-            if (v22)
+            if (stringCopy)
             {
-              *v22 = CFStringCreateCopy(0, v17);
+              *stringCopy = CFStringCreateCopy(0, v17);
             }
 
             if (v20)
@@ -275,34 +275,34 @@ LABEL_5:
   return 0;
 }
 
-- (__CFDate)newDateFromString:(__CFString *)a3 preferredFormatString:(__CFString *)a4 successfulFormatString:(const __CFString *)a5 tryAggressiveFormats:(BOOL)a6
+- (__CFDate)newDateFromString:(__CFString *)string preferredFormatString:(__CFString *)formatString successfulFormatString:(const __CFString *)successfulFormatString tryAggressiveFormats:(BOOL)formats
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  v6 = a6;
-  if (!CFStringGetLength(a3))
+  formatsCopy = formats;
+  if (!CFStringGetLength(string))
   {
     return 0;
   }
 
-  MutableCopy = CFStringCreateMutableCopy(0, 0, a3);
+  MutableCopy = CFStringCreateMutableCopy(0, 0, string);
   CFStringTransform(MutableCopy, 0, *MEMORY[0x277CBF0A8], 0);
-  if (a4)
+  if (formatString)
   {
-    if ([&stru_287DDF830 isEqualToString:a4])
+    if ([&stru_287DDF830 isEqualToString:formatString])
     {
-      a4 = 0;
+      formatString = 0;
     }
 
     else
     {
-      v12 = [TSUDateFormatter datePortionOfDateTimeFormatString:a4];
-      v13 = [TSUDateFormatter timePortionOfDateTimeFormatString:a4];
+      v12 = [TSUDateFormatter datePortionOfDateTimeFormatString:formatString];
+      v13 = [TSUDateFormatter timePortionOfDateTimeFormatString:formatString];
       v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-      [v14 addObject:a4];
+      [v14 addObject:formatString];
       if (v12 && ([&stru_287DDF830 isEqualToString:v12] & 1) == 0)
       {
         [v14 addObject:v12];
@@ -313,80 +313,80 @@ LABEL_5:
         [v14 addObject:v13];
       }
 
-      a4 = [(TSUDateParser *)self newDateFromStringTryingFormats:MutableCopy locale:self->mLocale formats:v14 outSuccessfulFormatString:a5];
+      formatString = [(TSUDateParser *)self newDateFromStringTryingFormats:MutableCopy locale:self->mLocale formats:v14 outSuccessfulFormatString:successfulFormatString];
     }
   }
 
-  v15 = [(NSMutableArray *)self->mFormatCategories objectEnumerator];
+  objectEnumerator = [(NSMutableArray *)self->mFormatCategories objectEnumerator];
   v23 = 0;
-  if (a4)
+  if (formatString)
   {
     goto LABEL_15;
   }
 
-  v17 = v15;
-  v18 = [v15 nextObject];
-  if (v18)
+  v17 = objectEnumerator;
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    a4 = 0;
+    formatString = 0;
     v19 = 0;
     while (1)
     {
-      v20 = [v18 newDateFromString:MutableCopy forceAllowAMPM:self->mIsJapaneseLocale successfulFormatString:a5 perfect:&v23];
+      v20 = [nextObject newDateFromString:MutableCopy forceAllowAMPM:self->mIsJapaneseLocale successfulFormatString:successfulFormatString perfect:&v23];
       if (v20)
       {
-        v21 = v20;
+        formatStringCopy = v20;
         if (v23)
         {
-          if (a4)
+          if (formatString)
           {
-            CFRelease(a4);
+            CFRelease(formatString);
           }
 
-          a4 = v21;
+          formatString = formatStringCopy;
           goto LABEL_39;
         }
 
-        if (!a4)
+        if (!formatString)
         {
-          if (a5)
+          if (successfulFormatString)
           {
-            v19 = *a5;
+            v19 = *successfulFormatString;
             goto LABEL_28;
           }
 
 LABEL_29:
-          a4 = v21;
+          formatString = formatStringCopy;
           goto LABEL_30;
         }
 
         CFRelease(v20);
-        if (a5)
+        if (successfulFormatString)
         {
-          if (*a5)
+          if (*successfulFormatString)
           {
-            CFRelease(*a5);
+            CFRelease(*successfulFormatString);
           }
 
-          v21 = a4;
+          formatStringCopy = formatString;
 LABEL_28:
-          *a5 = 0;
+          *successfulFormatString = 0;
           goto LABEL_29;
         }
       }
 
 LABEL_30:
-      v18 = [v17 nextObject];
-      if (!v18)
+      nextObject = [v17 nextObject];
+      if (!nextObject)
       {
-        if (!a4)
+        if (!formatString)
         {
           goto LABEL_39;
         }
 
-        if (a5)
+        if (successfulFormatString)
         {
-          *a5 = v19;
+          *successfulFormatString = v19;
         }
 
         goto LABEL_15;
@@ -395,46 +395,46 @@ LABEL_30:
   }
 
   v19 = 0;
-  a4 = 0;
+  formatString = 0;
 LABEL_39:
   if (v19)
   {
     CFRelease(v19);
   }
 
-  if (!a4 && v6)
+  if (!formatString && formatsCopy)
   {
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:{@"yy", 0}];
-    a4 = 0;
+    formatString = 0;
     if (-[__CFString rangeOfCharacterFromSet:](MutableCopy, "rangeOfCharacterFromSet:", [MEMORY[0x277CCA900] decimalDigitCharacterSet]) != 0x7FFFFFFFFFFFFFFFLL)
     {
-      a4 = [(TSUDateParser *)self newDateFromStringTryingFormats:MutableCopy locale:self->mLocale formats:v22 outSuccessfulFormatString:a5];
+      formatString = [(TSUDateParser *)self newDateFromStringTryingFormats:MutableCopy locale:self->mLocale formats:v22 outSuccessfulFormatString:successfulFormatString];
     }
   }
 
 LABEL_15:
   CFRelease(MutableCopy);
-  return a4;
+  return formatString;
 }
 
-- (void)addFormat:(id)a3 locale:(__CFLocale *)a4 formatCategoryMap:(id)a5
+- (void)addFormat:(id)format locale:(__CFLocale *)locale formatCategoryMap:(id)map
 {
   v12 = 0;
   v11 = 0;
-  [(TSUDateParser *)self parseFormat:a3 initialPattern:&v12 separator:&v11];
-  v9 = [a5 objectForKey:v12];
+  [(TSUDateParser *)self parseFormat:format initialPattern:&v12 separator:&v11];
+  v9 = [map objectForKey:v12];
   if (!v9)
   {
     v10 = [TSUDateFormatCategory alloc];
-    v9 = [(TSUDateFormatCategory *)v10 initWithInitialPattern:v12 locale:a4];
+    v9 = [(TSUDateFormatCategory *)v10 initWithInitialPattern:v12 locale:locale];
     [(NSMutableArray *)self->mFormatCategories addObject:v9];
-    [a5 setObject:v9 forKey:v12];
+    [map setObject:v9 forKey:v12];
   }
 
-  [(TSUDateFormatCategory *)v9 addSeparator:v11 format:a3 locale:a4];
+  [(TSUDateFormatCategory *)v9 addSeparator:v11 format:format locale:locale];
 }
 
-- (void)parseFormat:(id)a3 initialPattern:(id *)a4 separator:(unsigned __int16 *)a5
+- (void)parseFormat:(id)format initialPattern:(id *)pattern separator:(unsigned __int16 *)separator
 {
   if (!parseFormat_initialPattern_separator__formatCharacterSet)
   {
@@ -451,7 +451,7 @@ LABEL_15:
     objc_sync_exit(v8);
   }
 
-  v10 = [a3 length];
+  v10 = [format length];
   if (!v10)
   {
     v11 = +[TSUAssertionHandler currentHandler];
@@ -459,16 +459,16 @@ LABEL_15:
     [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUDateParser.m"), 425, @"Zero length date format"}];
   }
 
-  v13 = [a3 rangeOfCharacterFromSet:parseFormat_initialPattern_separator__formatCharacterSet];
+  v13 = [format rangeOfCharacterFromSet:parseFormat_initialPattern_separator__formatCharacterSet];
   v14 = v10;
-  if (v13 == 0x7FFFFFFFFFFFFFFFLL || ((v15 = [a3 rangeOfCharacterFromSet:parseFormat_initialPattern_separator__inverseFormatCharacterSet options:0 range:{v13, v10 - v13}], v15 != 0x7FFFFFFFFFFFFFFFLL) ? (v14 = v15) : (v14 = v10), v14 >= v10))
+  if (v13 == 0x7FFFFFFFFFFFFFFFLL || ((v15 = [format rangeOfCharacterFromSet:parseFormat_initialPattern_separator__inverseFormatCharacterSet options:0 range:{v13, v10 - v13}], v15 != 0x7FFFFFFFFFFFFFFFLL) ? (v14 = v15) : (v14 = v10), v14 >= v10))
   {
-    *a5 = 0;
+    *separator = 0;
   }
 
   else
   {
-    v16 = [a3 characterAtIndex:v14];
+    v16 = [format characterAtIndex:v14];
     if (v16 == 34)
     {
       v17 = 39;
@@ -479,7 +479,7 @@ LABEL_15:
       v17 = v16;
     }
 
-    *a5 = v17;
+    *separator = v17;
     if (v17 == 39)
     {
       if (v14 + 1 >= v10)
@@ -489,8 +489,8 @@ LABEL_15:
         [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUDateParser.m"), 458, @"No character following single quote"}];
       }
 
-      v20 = [a3 characterAtIndex:v14 + 1];
-      *a5 = v20;
+      v20 = [format characterAtIndex:v14 + 1];
+      *separator = v20;
       if (v20 == 39)
       {
         v21 = +[TSUAssertionHandler currentHandler];
@@ -500,26 +500,26 @@ LABEL_15:
     }
   }
 
-  *a4 = [a3 substringToIndex:v14];
+  *pattern = [format substringToIndex:v14];
 }
 
-- (void)datePreferencesChanged:(id)a3
+- (void)datePreferencesChanged:(id)changed
 {
-  v3 = [objc_msgSend(MEMORY[0x277CCACC8] currentThread];
-  if ([v3 objectForKey:@"TSUDateParserThreadDictionaryKey"] != self)
+  currentThread = [objc_msgSend(MEMORY[0x277CCACC8] currentThread];
+  if ([currentThread objectForKey:@"TSUDateParserThreadDictionaryKey"] != self)
   {
     v4 = +[TSUAssertionHandler currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUDateParser(Private) datePreferencesChanged:]"];
     [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUDateParser.m"), 476, @"Registered wrong date parser for date preference change notification"}];
   }
 
-  v6 = self;
-  [v3 removeObjectForKey:@"TSUDateParserThreadDictionaryKey"];
-  TSURemoveLocaleChangeObserver([v3 objectForKey:@"TSUDateParserThreadDictionaryLocaleObserverKey"]);
-  [v3 removeObjectForKey:@"TSUDateParserThreadDictionaryLocaleObserverKey"];
-  v7 = [v3 objectForKey:@"TSUDateParserThreadDictionaryExitObserverKey"];
+  selfCopy = self;
+  [currentThread removeObjectForKey:@"TSUDateParserThreadDictionaryKey"];
+  TSURemoveLocaleChangeObserver([currentThread objectForKey:@"TSUDateParserThreadDictionaryLocaleObserverKey"]);
+  [currentThread removeObjectForKey:@"TSUDateParserThreadDictionaryLocaleObserverKey"];
+  v7 = [currentThread objectForKey:@"TSUDateParserThreadDictionaryExitObserverKey"];
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
-  [v3 removeObjectForKey:@"TSUDateParserThreadDictionaryExitObserverKey"];
+  [currentThread removeObjectForKey:@"TSUDateParserThreadDictionaryExitObserverKey"];
   [+[TSUDateParserLibrary sharedDateParserLibrary](TSUDateParserLibrary "sharedDateParserLibrary")];
 }
 

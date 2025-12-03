@@ -6,7 +6,7 @@
 
 - (BOOL)isOrganizerUpdate
 {
-  v3 = [(ASAction *)self changedItem];
+  changedItem = [(ASAction *)self changedItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -15,10 +15,10 @@
     return 0;
   }
 
-  v5 = [(ASAction *)self changedItem];
-  v6 = [v5 isOrganizerUpdate];
+  changedItem2 = [(ASAction *)self changedItem];
+  isOrganizerUpdate = [changedItem2 isOrganizerUpdate];
 
-  return v6;
+  return isOrganizerUpdate;
 }
 
 @end

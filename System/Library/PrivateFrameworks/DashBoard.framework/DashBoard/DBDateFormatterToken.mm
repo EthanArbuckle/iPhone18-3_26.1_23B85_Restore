@@ -1,7 +1,7 @@
 @interface DBDateFormatterToken
-+ (id)tokenWithDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4;
-+ (id)tokenWithFormatString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)tokenWithDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle;
++ (id)tokenWithFormatString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -20,38 +20,38 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DBDateFormatterToken *)self formatString];
-  v6 = [v3 stringWithFormat:@"<%@: %p formatString=%@ dateStyle=%lu timeStyle=%lu>", v4, self, v5, -[DBDateFormatterToken dateStyle](self, "dateStyle"), -[DBDateFormatterToken timeStyle](self, "timeStyle")];
+  formatString = [(DBDateFormatterToken *)self formatString];
+  v6 = [v3 stringWithFormat:@"<%@: %p formatString=%@ dateStyle=%lu timeStyle=%lu>", v4, self, formatString, -[DBDateFormatterToken dateStyle](self, "dateStyle"), -[DBDateFormatterToken timeStyle](self, "timeStyle")];
 
   return v6;
 }
 
-+ (id)tokenWithFormatString:(id)a3
++ (id)tokenWithFormatString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  [v4 setFormatString:v3];
+  [v4 setFormatString:stringCopy];
 
   return v4;
 }
 
-+ (id)tokenWithDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4
++ (id)tokenWithDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle
 {
   v6 = objc_opt_new();
-  [v6 setDateStyle:a3];
-  [v6 setTimeStyle:a4];
+  [v6 setDateStyle:style];
+  [v6 setTimeStyle:timeStyle];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v5;
@@ -62,12 +62,12 @@
       v6 = 0;
     }
 
-    v8 = [(DBDateFormatterToken *)self dateStyle];
-    if (v8 == [v6 dateStyle] && (v9 = -[DBDateFormatterToken timeStyle](self, "timeStyle"), v9 == objc_msgSend(v6, "timeStyle")))
+    dateStyle = [(DBDateFormatterToken *)self dateStyle];
+    if (dateStyle == [v6 dateStyle] && (v9 = -[DBDateFormatterToken timeStyle](self, "timeStyle"), v9 == objc_msgSend(v6, "timeStyle")))
     {
-      v10 = [(DBDateFormatterToken *)self formatString];
-      v11 = [v6 formatString];
-      v7 = [v10 isEqualToString:v11];
+      formatString = [(DBDateFormatterToken *)self formatString];
+      formatString2 = [v6 formatString];
+      v7 = [formatString isEqualToString:formatString2];
     }
 
     else

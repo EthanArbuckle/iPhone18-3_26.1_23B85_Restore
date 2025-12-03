@@ -1,36 +1,36 @@
 @interface PXGDataSourceChange
 - (PXGDataSourceChange)init;
-- (PXGDataSourceChange)initWithChangeDetails:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5;
+- (PXGDataSourceChange)initWithChangeDetails:(id)details dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges;
 @end
 
 @implementation PXGDataSourceChange
 
-- (PXGDataSourceChange)initWithChangeDetails:(id)a3 dataSourceBeforeChanges:(id)a4 dataSourceAfterChanges:(id)a5
+- (PXGDataSourceChange)initWithChangeDetails:(id)details dataSourceBeforeChanges:(id)changes dataSourceAfterChanges:(id)afterChanges
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  detailsCopy = details;
+  changesCopy = changes;
+  afterChangesCopy = afterChanges;
   v22.receiver = self;
   v22.super_class = PXGDataSourceChange;
   v12 = [(PXGDataSourceChange *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_changeDetails, a3);
-    objc_storeStrong(&v13->_dataSourceBeforeChanges, a4);
-    objc_storeStrong(&v13->_dataSourceAfterChanges, a5);
-    if ([v9 count])
+    objc_storeStrong(&v12->_changeDetails, details);
+    objc_storeStrong(&v13->_dataSourceBeforeChanges, changes);
+    objc_storeStrong(&v13->_dataSourceAfterChanges, afterChanges);
+    if ([detailsCopy count])
     {
-      v14 = [v9 lastObject];
-      v15 = [v14 toDataSourceIdentifier];
-      if (v15 == [v11 identifier])
+      lastObject = [detailsCopy lastObject];
+      toDataSourceIdentifier = [lastObject toDataSourceIdentifier];
+      if (toDataSourceIdentifier == [afterChangesCopy identifier])
       {
-        v16 = [v9 firstObject];
-        v17 = [v16 fromDataSourceIdentifier];
-        v18 = [v10 identifier];
+        firstObject = [detailsCopy firstObject];
+        fromDataSourceIdentifier = [firstObject fromDataSourceIdentifier];
+        identifier = [changesCopy identifier];
 
-        if (v17 == v18)
+        if (fromDataSourceIdentifier == identifier)
         {
           goto LABEL_10;
         }
@@ -44,11 +44,11 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v24 = v9;
+        v24 = detailsCopy;
         v25 = 2112;
-        v26 = v10;
+        v26 = changesCopy;
         v27 = 2112;
-        v28 = v11;
+        v28 = afterChangesCopy;
         _os_log_error_impl(&dword_21AD38000, v19, OS_LOG_TYPE_ERROR, "PXGDataSourceChange version mismatch, changeDetails:%@ before:%@ after:%@", buf, 0x20u);
       }
 
@@ -64,8 +64,8 @@ LABEL_10:
 
 - (PXGDataSourceChange)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGDataSourceDrivenLayout.m" lineNumber:265 description:{@"%s is not available as initializer", "-[PXGDataSourceChange init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGDataSourceDrivenLayout.m" lineNumber:265 description:{@"%s is not available as initializer", "-[PXGDataSourceChange init]"}];
 
   abort();
 }

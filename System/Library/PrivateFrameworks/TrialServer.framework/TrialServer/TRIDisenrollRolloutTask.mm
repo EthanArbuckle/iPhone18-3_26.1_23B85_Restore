@@ -1,32 +1,32 @@
 @interface TRIDisenrollRolloutTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithRolloutId:(id)a3;
-+ (id)taskWithRolloutId:(id)a3 triggerEvent:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithRolloutId:(id)id;
++ (id)taskWithRolloutId:(id)id triggerEvent:(unint64_t)event;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)tags;
-- (TRIDisenrollRolloutTask)initWithCoder:(id)a3;
-- (TRIDisenrollRolloutTask)initWithRolloutId:(id)a3 triggerEvent:(unint64_t)a4;
+- (TRIDisenrollRolloutTask)initWithCoder:(id)coder;
+- (TRIDisenrollRolloutTask)initWithRolloutId:(id)id triggerEvent:(unint64_t)event;
 - (id)_asPersistedTask;
 - (id)metrics;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (id)trialSystemTelemetry;
 - (unint64_t)hash;
-- (void)addMetric:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeTelemetry:(id)a3;
+- (void)addMetric:(id)metric;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeTelemetry:(id)telemetry;
 @end
 
 @implementation TRIDisenrollRolloutTask
 
-- (TRIDisenrollRolloutTask)initWithRolloutId:(id)a3 triggerEvent:(unint64_t)a4
+- (TRIDisenrollRolloutTask)initWithRolloutId:(id)id triggerEvent:(unint64_t)event
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  idCopy = id;
+  if (!idCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIDisenrollRolloutTask.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDisenrollRolloutTask.m" lineNumber:73 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
   }
 
   v21.receiver = self;
@@ -35,18 +35,18 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rolloutId, a3);
+    objc_storeStrong(&v9->_rolloutId, id);
     v11 = TRILogCategory_Server();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      if (a4 - 1 > 2)
+      if (event - 1 > 2)
       {
         v19 = @"unknown";
       }
 
       else
       {
-        v19 = off_279DE3DF8[a4 - 1];
+        v19 = off_279DE3DF8[event - 1];
       }
 
       *buf = 138412290;
@@ -54,7 +54,7 @@
       _os_log_debug_impl(&dword_26F567000, v11, OS_LOG_TYPE_DEBUG, "Initiating TRIDisenrollRolloutTask with trigger event: %@", buf, 0xCu);
     }
 
-    v10->_triggerEvent = a4;
+    v10->_triggerEvent = event;
     v12 = objc_opt_new();
     v13 = v12[1];
     v12[1] = 0;
@@ -71,18 +71,18 @@
   return v10;
 }
 
-+ (id)taskWithRolloutId:(id)a3
++ (id)taskWithRolloutId:(id)id
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRolloutId:v4 triggerEvent:0];
+  idCopy = id;
+  v5 = [[self alloc] initWithRolloutId:idCopy triggerEvent:0];
 
   return v5;
 }
 
-+ (id)taskWithRolloutId:(id)a3 triggerEvent:(unint64_t)a4
++ (id)taskWithRolloutId:(id)id triggerEvent:(unint64_t)event
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithRolloutId:v6 triggerEvent:a4];
+  idCopy = id;
+  v7 = [[self alloc] initWithRolloutId:idCopy triggerEvent:event];
 
   return v7;
 }
@@ -97,11 +97,11 @@
   return v2;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v87 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v80 = 0;
   v81 = &v80;
   v82 = 0x3032000000;
@@ -147,9 +147,9 @@
   v36[2] = __57__TRIDisenrollRolloutTask_runUsingContext_withTaskQueue___block_invoke;
   v36[3] = &unk_279DE3D38;
   v39 = &v76;
-  v8 = v6;
+  v8 = contextCopy;
   v37 = v8;
-  v38 = self;
+  selfCopy = self;
   v40 = &v52;
   v41 = &v58;
   v42 = &v70;
@@ -157,8 +157,8 @@
   v44 = &v64;
   v45 = &v80;
   v9 = MEMORY[0x2743948D0](v36);
-  v10 = [v8 rolloutDatabase];
-  [v10 writeTransactionWithFailableBlock:v9];
+  rolloutDatabase = [v8 rolloutDatabase];
+  [rolloutDatabase writeTransactionWithFailableBlock:v9];
 
   if (*(v77 + 24) == 1)
   {
@@ -230,7 +230,7 @@
     v31 = &v64;
     v30 = v8;
     [v20 enumerateKeysAndObjectsUsingBlock:v29];
-    v21 = v30;
+    rolloutId = v30;
   }
 
   else
@@ -240,11 +240,11 @@
       goto LABEL_22;
     }
 
-    v21 = [v53[5] rolloutId];
+    rolloutId = [v53[5] rolloutId];
     v22 = v71[5];
-    v23 = [v53[5] deploymentId];
+    deploymentId = [v53[5] deploymentId];
     LOBYTE(v28) = 0;
-    [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:8 forRollout:v21 ramp:v22 deployment:v23 fps:v59[5] namespaces:0 telemetryMetric:0 rolloutRecord:v65[5] isBecomingObsolete:v28 context:v8];
+    [TRITaskUtils updateRolloutHistoryDatabaseWithAllocationStatus:8 forRollout:rolloutId ramp:v22 deployment:deploymentId fps:v59[5] namespaces:0 telemetryMetric:0 rolloutRecord:v65[5] isBecomingObsolete:v28 context:v8];
   }
 
 LABEL_22:
@@ -433,10 +433,10 @@ void __57__TRIDisenrollRolloutTask_runUsingContext_withTaskQueue___block_invoke_
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -445,7 +445,7 @@ void __57__TRIDisenrollRolloutTask_runUsingContext_withTaskQueue___block_invoke_
   {
     v7.receiver = self;
     v7.super_class = TRIDisenrollRolloutTask;
-    v5 = [(TRIBaseTask *)&v7 isEqual:v4]&& [(TRIDisenrollRolloutTask *)v4 isMemberOfClass:objc_opt_class()]&& [(NSString *)self->_rolloutId isEqualToString:v4->_rolloutId];
+    v5 = [(TRIBaseTask *)&v7 isEqual:equalCopy]&& [(TRIDisenrollRolloutTask *)equalCopy isMemberOfClass:objc_opt_class()]&& [(NSString *)self->_rolloutId isEqualToString:equalCopy->_rolloutId];
   }
 
   return v5;
@@ -459,16 +459,16 @@ void __57__TRIDisenrollRolloutTask_runUsingContext_withTaskQueue___block_invoke_
   return [(NSString *)self->_rolloutId hash]+ 37 * v3;
 }
 
-- (void)addMetric:(id)a3
+- (void)addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__TRIDisenrollRolloutTask_addMetric___block_invoke;
   v7[3] = &unk_279DE3D88;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricCopy;
+  v6 = metricCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -490,16 +490,16 @@ uint64_t __37__TRIDisenrollRolloutTask_addMetric___block_invoke(uint64_t a1, voi
   return [v3 addObject:v8];
 }
 
-- (void)mergeTelemetry:(id)a3
+- (void)mergeTelemetry:(id)telemetry
 {
-  v4 = a3;
+  telemetryCopy = telemetry;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__TRIDisenrollRolloutTask_mergeTelemetry___block_invoke;
   v7[3] = &unk_279DE3D88;
-  v8 = v4;
-  v6 = v4;
+  v8 = telemetryCopy;
+  v6 = telemetryCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -623,34 +623,34 @@ void __47__TRIDisenrollRolloutTask_trialSystemTelemetry__block_invoke(uint64_t a
 
 - (id)serialize
 {
-  v4 = [(TRIDisenrollRolloutTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIDisenrollRolloutTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIDisenrollRolloutTask.m" lineNumber:303 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDisenrollRolloutTask.m" lineNumber:303 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v24 = *MEMORY[0x277D85DE8];
   v21 = 0;
-  v4 = [(TRIPBMessage *)TRIDisenrollRolloutPersistedTask parseFromData:a3 error:&v21];
+  v4 = [(TRIPBMessage *)TRIDisenrollRolloutPersistedTask parseFromData:data error:&v21];
   v5 = v21;
   if (!v4)
   {
-    v10 = TRILogCategory_Server();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    rolloutId2 = TRILogCategory_Server();
+    if (os_log_type_enabled(rolloutId2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v23 = v5;
-      _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, "Unable to parse buffer as TRIDisenrollRolloutPersistedTask: %{public}@", buf, 0xCu);
+      _os_log_error_impl(&dword_26F567000, rolloutId2, OS_LOG_TYPE_ERROR, "Unable to parse buffer as TRIDisenrollRolloutPersistedTask: %{public}@", buf, 0xCu);
     }
 
     goto LABEL_15;
@@ -668,8 +668,8 @@ void __47__TRIDisenrollRolloutTask_trialSystemTelemetry__block_invoke(uint64_t a
       _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, "Cannot decode message of type %@ with missing field: rolloutId", buf, 0xCu);
     }
 
-    v10 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    rolloutId2 = TRILogCategory_Server();
+    if (!os_log_type_enabled(rolloutId2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -682,8 +682,8 @@ void __47__TRIDisenrollRolloutTask_trialSystemTelemetry__block_invoke(uint64_t a
     goto LABEL_20;
   }
 
-  v6 = [v4 rolloutId];
-  v7 = [v6 length];
+  rolloutId = [v4 rolloutId];
+  v7 = [rolloutId length];
 
   if (v7)
   {
@@ -698,13 +698,13 @@ void __47__TRIDisenrollRolloutTask_trialSystemTelemetry__block_invoke(uint64_t a
       v9 = 0;
     }
 
-    v10 = [v4 rolloutId];
-    v11 = [a1 taskWithRolloutId:v10 triggerEvent:v9];
+    rolloutId2 = [v4 rolloutId];
+    v11 = [self taskWithRolloutId:rolloutId2 triggerEvent:v9];
     goto LABEL_16;
   }
 
-  v10 = TRILogCategory_Server();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  rolloutId2 = TRILogCategory_Server();
+  if (os_log_type_enabled(rolloutId2, OS_LOG_TYPE_ERROR))
   {
     v20 = objc_opt_class();
     v14 = NSStringFromClass(v20);
@@ -712,7 +712,7 @@ void __47__TRIDisenrollRolloutTask_trialSystemTelemetry__block_invoke(uint64_t a
     v23 = v14;
     v15 = "Cannot decode message of type %@ with field of length 0: rolloutId";
 LABEL_20:
-    _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
+    _os_log_error_impl(&dword_26F567000, rolloutId2, OS_LOG_TYPE_ERROR, v15, buf, 0xCu);
   }
 
 LABEL_15:
@@ -724,15 +724,15 @@ LABEL_16:
   return v11;
 }
 
-- (TRIDisenrollRolloutTask)initWithCoder:(id)a3
+- (TRIDisenrollRolloutTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIDisenrollRolloutTask;
   v5 = [(TRIDisenrollRolloutTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -752,18 +752,18 @@ LABEL_16:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIDisenrollRolloutTask.m" lineNumber:346 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIDisenrollRolloutTask.m" lineNumber:346 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIDisenrollRolloutTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIDisenrollRolloutTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface PKPeerPaymentHeroBubbleView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPeerPaymentHeroBubbleView)initWithCurrencyAmount:(id)a3 regitrationFlowState:(unint64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPeerPaymentHeroBubbleView)initWithCurrencyAmount:(id)amount regitrationFlowState:(unint64_t)state;
 - (id)_bubbleAmountLabelTextAttributes;
-- (id)_bubbleAmountLabelTextWithAmount:(id)a3;
-- (unint64_t)_bubbleStateForRegistrationState:(unint64_t)a3;
+- (id)_bubbleAmountLabelTextWithAmount:(id)amount;
+- (unint64_t)_bubbleStateForRegistrationState:(unint64_t)state;
 - (void)layoutSubviews;
 @end
 
 @implementation PKPeerPaymentHeroBubbleView
 
-- (PKPeerPaymentHeroBubbleView)initWithCurrencyAmount:(id)a3 regitrationFlowState:(unint64_t)a4
+- (PKPeerPaymentHeroBubbleView)initWithCurrencyAmount:(id)amount regitrationFlowState:(unint64_t)state
 {
-  v6 = a3;
+  amountCopy = amount;
   v39.receiver = self;
   v39.super_class = PKPeerPaymentHeroBubbleView;
   v7 = [(PKPeerPaymentHeroBubbleView *)&v39 init];
   v8 = v7;
   if (v7)
   {
-    v7->_bubbleState = [(PKPeerPaymentHeroBubbleView *)v7 _bubbleStateForRegistrationState:a4];
+    v7->_bubbleState = [(PKPeerPaymentHeroBubbleView *)v7 _bubbleStateForRegistrationState:state];
     v9 = [PKPeerPaymentBubbleView alloc];
     bubbleState = v8->_bubbleState;
-    if (a4 == 2)
+    if (state == 2)
     {
       v11 = [(PKPeerPaymentBubbleView *)v9 initWithCurrencyAmount:0 state:bubbleState];
       peerPaymentBubbleView = v8->_peerPaymentBubbleView;
@@ -36,18 +36,18 @@
       [(UILabel *)v15 setFont:v16];
 
       v17 = v8->_bubbleAmountLabel;
-      v18 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UILabel *)v17 setTextColor:v18];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      [(UILabel *)v17 setTextColor:whiteColor];
 
       [(UILabel *)v8->_bubbleAmountLabel setTextAlignment:1];
       [(UILabel *)v8->_bubbleAmountLabel setNumberOfLines:2];
       [(UILabel *)v8->_bubbleAmountLabel setAdjustsFontSizeToFitWidth:1];
       [(UILabel *)v8->_bubbleAmountLabel setMinimumScaleFactor:0.5];
       [(UILabel *)v8->_bubbleAmountLabel setBaselineAdjustment:1];
-      v19 = [(PKPeerPaymentHeroBubbleView *)v8 _bubbleAmountLabelTextWithAmount:v6];
+      v19 = [(PKPeerPaymentHeroBubbleView *)v8 _bubbleAmountLabelTextWithAmount:amountCopy];
       v20 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v21 = [(PKPeerPaymentHeroBubbleView *)v8 _bubbleAmountLabelTextAttributes];
-      v22 = [v20 initWithString:v19 attributes:v21];
+      _bubbleAmountLabelTextAttributes = [(PKPeerPaymentHeroBubbleView *)v8 _bubbleAmountLabelTextAttributes];
+      v22 = [v20 initWithString:v19 attributes:_bubbleAmountLabelTextAttributes];
 
       [(UILabel *)v8->_bubbleAmountLabel setAttributedText:v22];
       [(UILabel *)v8->_bubbleAmountLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9448]];
@@ -56,7 +56,7 @@
 
     else
     {
-      v23 = [(PKPeerPaymentBubbleView *)v9 initWithCurrencyAmount:v6 state:bubbleState];
+      v23 = [(PKPeerPaymentBubbleView *)v9 initWithCurrencyAmount:amountCopy state:bubbleState];
       v19 = v8->_peerPaymentBubbleView;
       v8->_peerPaymentBubbleView = v23;
     }
@@ -68,8 +68,8 @@
     [v24 setCanUseOpaqueMask:0];
     [v24 setOrientation:1];
     [v24 setHasTail:1];
-    v25 = a4 - 3;
-    [v24 setOrientation:a4 - 3 < 0xFFFFFFFFFFFFFFFELL];
+    v25 = state - 3;
+    [v24 setOrientation:state - 3 < 0xFFFFFFFFFFFFFFFELL];
     v26 = *MEMORY[0x1E69DDCE0];
     v27 = *(MEMORY[0x1E69DDCE0] + 8);
     v28 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -77,20 +77,20 @@
     [v24 setTextAlignmentInsets:{*MEMORY[0x1E69DDCE0], v27, v28, v29}];
     [v24 setPluginView:v8->_peerPaymentBubbleView];
     [v24 setBalloonCorners:-1];
-    v30 = [MEMORY[0x1E6993C90] sharedBehaviors];
-    [v30 balloonCornerRadius];
+    mEMORY[0x1E6993C90] = [MEMORY[0x1E6993C90] sharedBehaviors];
+    [mEMORY[0x1E6993C90] balloonCornerRadius];
     [v24 setCornerRadius:?];
 
     [v24 sizeToFit];
     [v24 prepareForDisplay];
     objc_storeStrong(&v8->_pluginBalloonView, v24);
     [(PKPeerPaymentHeroBubbleView *)v8 addSubview:v8->_pluginBalloonView];
-    v31 = [off_1EE9A1D10[0]() sharedBehaviors];
-    v32 = v31;
+    sharedBehaviors = [off_1EE9A1D10[0]() sharedBehaviors];
+    v32 = sharedBehaviors;
     v33 = v8->_peerPaymentBubbleView;
-    if (v31)
+    if (sharedBehaviors)
     {
-      [v31 pluginBalloonInsetsForMessageFromMe:v25 < 0xFFFFFFFFFFFFFFFELL];
+      [sharedBehaviors pluginBalloonInsetsForMessageFromMe:v25 < 0xFFFFFFFFFFFFFFFELL];
       v26 = v34;
       v27 = v35;
       v28 = v36;
@@ -176,7 +176,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 160.0;
   v4 = 115.0;
@@ -185,14 +185,14 @@
   return result;
 }
 
-- (id)_bubbleAmountLabelTextWithAmount:(id)a3
+- (id)_bubbleAmountLabelTextWithAmount:(id)amount
 {
-  if (a3)
+  if (amount)
   {
     v3 = MEMORY[0x1E695DF58];
-    v4 = a3;
+    amountCopy = amount;
     v5 = [[v3 alloc] initWithLocaleIdentifier:@"en_US"];
-    v6 = [v4 minimalFormattedStringValueInLocale:v5];
+    v6 = [amountCopy minimalFormattedStringValueInLocale:v5];
   }
 
   else
@@ -205,21 +205,21 @@
 
 - (id)_bubbleAmountLabelTextAttributes
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
-  [v2 setObject:v3 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [dictionary setObject:v3 forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
   v4 = [MEMORY[0x1E69DB878] pk_peerPaymentChiseledCashFontOfSize:69.0];
-  [v2 setObject:v4 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+  [dictionary setObject:v4 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  v5 = [v2 copy];
+  v5 = [dictionary copy];
 
   return v5;
 }
 
-- (unint64_t)_bubbleStateForRegistrationState:(unint64_t)a3
+- (unint64_t)_bubbleStateForRegistrationState:(unint64_t)state
 {
-  if (a3 == 5)
+  if (state == 5)
   {
     return 1;
   }

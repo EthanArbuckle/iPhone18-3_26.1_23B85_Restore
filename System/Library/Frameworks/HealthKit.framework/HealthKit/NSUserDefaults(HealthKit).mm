@@ -13,9 +13,9 @@
 - (uint64_t)hk_keyExists:()HealthKit
 {
   v4 = a3;
-  v5 = [a1 dictionaryRepresentation];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:v4];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v7 = [allKeys containsObject:v4];
 
   return v7;
 }
@@ -24,8 +24,8 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 dictionaryRepresentation];
-  v6 = [v5 copy];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  v6 = [dictionaryRepresentation copy];
 
   v16 = 0u;
   v17 = 0u;
@@ -51,7 +51,7 @@
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 hasPrefix:{v4, v14}])
         {
-          [a1 removeObjectForKey:v12];
+          [self removeObjectForKey:v12];
         }
 
         ++v11;
@@ -69,7 +69,7 @@
 
 - (uint64_t)hk_BOOLForKey:()HealthKit defaultValue:
 {
-  v5 = [a1 objectForKey:?];
+  v5 = [self objectForKey:?];
   v6 = v5;
   if (v5)
   {
@@ -82,7 +82,7 @@
 - (id)hk_dateForKey:()HealthKit
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   if (v5)
   {
     v6 = objc_opt_class();
@@ -143,14 +143,14 @@
 
 - (void)hk_setHasCompletedThirdPartyAuthSyncWithBooleanValue:()HealthKit
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:a3 forKey:@"CompletedThirdPartyAuthSync"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:a3 forKey:@"CompletedThirdPartyAuthSync"];
 }
 
 - (uint64_t)hk_hasCompletedThirdPartyAuthSyncWithBooleanValue
 {
-  v0 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v1 = [v0 BOOLForKey:@"CompletedThirdPartyAuthSync"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v1 = [standardUserDefaults BOOLForKey:@"CompletedThirdPartyAuthSync"];
 
   return v1;
 }

@@ -1,45 +1,45 @@
 @interface ICLiveLinkIdentity
-+ (ICLiveLinkIdentity)identityWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICLiveLinkIdentity)initWithCoder:(id)a3;
-- (id)_initWithBlock:(id)a3;
++ (ICLiveLinkIdentity)identityWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (ICLiveLinkIdentity)initWithCoder:(id)coder;
+- (id)_initWithBlock:(id)block;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLiveLinkIdentity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serverID = self->_serverID;
-  v5 = a3;
-  [v5 encodeInteger:serverID forKey:@"sid"];
-  [v5 encodeObject:self->_identifier forKey:@"iid"];
-  [v5 encodeObject:self->_externalIdentifier forKey:@"eid"];
-  [v5 encodeObject:self->_nameComponents forKey:@"nc"];
-  [v5 encodeObject:self->_imageURL forKey:@"iurl"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:serverID forKey:@"sid"];
+  [coderCopy encodeObject:self->_identifier forKey:@"iid"];
+  [coderCopy encodeObject:self->_externalIdentifier forKey:@"eid"];
+  [coderCopy encodeObject:self->_nameComponents forKey:@"nc"];
+  [coderCopy encodeObject:self->_imageURL forKey:@"iurl"];
 }
 
-- (ICLiveLinkIdentity)initWithCoder:(id)a3
+- (ICLiveLinkIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICLiveLinkIdentity *)self init];
   if (v5)
   {
-    v5->_serverID = [v4 decodeIntegerForKey:@"sid"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iid"];
+    v5->_serverID = [coderCopy decodeIntegerForKey:@"sid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iid"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eid"];
     externalIdentifier = v5->_externalIdentifier;
     v5->_externalIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nc"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nc"];
     nameComponents = v5->_nameComponents;
     v5->_nameComponents = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iurl"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iurl"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v12;
   }
@@ -140,10 +140,10 @@
   return (v70 + v71) ^ __ROR8__(v70, 47) ^ v73 ^ __ROR8__(v70 + v71, 32) ^ v73 ^ __ROR8__(v71 ^ v72, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -153,7 +153,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_serverID == v5->_serverID)
       {
@@ -240,21 +240,21 @@ LABEL_18:
   return v11;
 }
 
-- (id)_initWithBlock:(id)a3
+- (id)_initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7.receiver = self;
   v7.super_class = ICLiveLinkIdentity;
   v5 = [(ICLiveLinkIdentity *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   return v5;
 }
 
-+ (ICLiveLinkIdentity)identityWithIdentifier:(id)a3
++ (ICLiveLinkIdentity)identityWithIdentifier:(id)identifier
 {
   v3 = objc_alloc_init(ICLiveLinkIdentity);
 

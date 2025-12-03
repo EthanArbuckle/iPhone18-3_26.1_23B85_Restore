@@ -1,10 +1,10 @@
 @interface PLAnalysisCoordinatorStepMediaAnalysis
-- (PLAnalysisCoordinatorStepMediaAnalysis)initWithLibraryServicesManager:(id)a3 parentTaskID:(id)a4 processingType:(unint64_t)a5;
-- (void)_callProcessingCompletionHandler:(id)a3 progress:(id)a4 assetsCount:(unint64_t)a5 error:(id)a6;
-- (void)_performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5;
-- (void)_requestProcessingForUUIDS:(id)a3 progress:(id)a4 assetsCount:(unint64_t)a5 withCompletionHandler:(id)a6;
+- (PLAnalysisCoordinatorStepMediaAnalysis)initWithLibraryServicesManager:(id)manager parentTaskID:(id)d processingType:(unint64_t)type;
+- (void)_callProcessingCompletionHandler:(id)handler progress:(id)progress assetsCount:(unint64_t)count error:(id)error;
+- (void)_performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler;
+- (void)_requestProcessingForUUIDS:(id)s progress:(id)progress assetsCount:(unint64_t)count withCompletionHandler:(id)handler;
 - (void)cancel;
-- (void)performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5;
+- (void)performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler;
 @end
 
 @implementation PLAnalysisCoordinatorStepMediaAnalysis
@@ -21,9 +21,9 @@
   {
     if (v6)
     {
-      v7 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+      parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
       v10 = 138543362;
-      v11 = v7;
+      v11 = parentTaskID;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cancelling Media Analysis step but no active media request ID", &v10, 0xCu);
     }
   }
@@ -32,10 +32,10 @@
   {
     if (v6)
     {
-      v8 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+      parentTaskID2 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
       v9 = self->_currentMediaAnalysisRequestID;
       v10 = 138543618;
-      v11 = v8;
+      v11 = parentTaskID2;
       v12 = 2048;
       v13 = v9;
       _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cancelling Media Analysis step with media request ID: %lu", &v10, 0x16u);
@@ -48,28 +48,28 @@
   os_unfair_lock_unlock(&self->_lock_currentMediaAnalysisRequestID);
 }
 
-- (void)_performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5
+- (void)_performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAnalysisCoordinatorStepMediaAnalysis _performStepForAssets:withProgress:withCompletionHandler:]"];
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
+  libraryServicesManager = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAnalysisCoordinatorStepMediaAnalysis _performStepForAssets:withProgress:withCompletionHandler:]"];
 
   if (v13)
   {
-    v14 = [v8 count];
+    v14 = [assetsCopy count];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __99__PLAnalysisCoordinatorStepMediaAnalysis__performStepForAssets_withProgress_withCompletionHandler___block_invoke;
     v18[3] = &unk_1E75714B8;
-    v19 = v8;
+    v19 = assetsCopy;
     v20 = v13;
-    v21 = self;
-    v22 = v9;
+    selfCopy = self;
+    v22 = progressCopy;
     v24 = v14;
-    v23 = v10;
+    v23 = handlerCopy;
     [v20 performBlockAndWait:v18];
   }
 
@@ -78,7 +78,7 @@
     v15 = MEMORY[0x1E69BF2D0];
     v16 = PLErrorCreate();
     v17 = [v15 failureWithError:v16];
-    (*(v10 + 2))(v10, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 }
 
@@ -129,19 +129,19 @@ void __99__PLAnalysisCoordinatorStepMediaAnalysis__performStepForAssets_withProg
   }
 }
 
-- (void)performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5
+- (void)performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
   v11 = PLAnalysisCoordinatorGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     processingType = self->_processingType;
     *buf = 138543618;
-    v28 = v12;
+    v28 = parentTaskID;
     v29 = 2048;
     v30 = processingType;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting Media Analysis Step. Type: %lu", buf, 0x16u);
@@ -154,15 +154,15 @@ void __99__PLAnalysisCoordinatorStepMediaAnalysis__performStepForAssets_withProg
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    v18 = [v8 count];
+    v18 = [assetsCopy count];
     v19 = self->_processingType;
-    v20 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    parentTaskID2 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     *buf = 134349570;
     v28 = v18;
     v29 = 2050;
     v30 = v19;
     v31 = 2114;
-    v32 = v20;
+    v32 = parentTaskID2;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "AnalysisCoordinatorStepMediaAnalysis", "asset count: %{public}lu, type: %{public}lu, parent task: %{public}@", buf, 0x20u);
   }
 
@@ -173,10 +173,10 @@ void __99__PLAnalysisCoordinatorStepMediaAnalysis__performStepForAssets_withProg
   v23[4] = self;
   v25 = v17;
   v26 = v15;
-  v21 = v10;
+  v21 = handlerCopy;
   v24 = v21;
   v22 = v17;
-  [(PLAnalysisCoordinatorStepMediaAnalysis *)self _performStepForAssets:v8 withProgress:v9 withCompletionHandler:v23];
+  [(PLAnalysisCoordinatorStepMediaAnalysis *)self _performStepForAssets:assetsCopy withProgress:progressCopy withCompletionHandler:v23];
 }
 
 void __98__PLAnalysisCoordinatorStepMediaAnalysis_performStepForAssets_withProgress_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -209,18 +209,18 @@ void __98__PLAnalysisCoordinatorStepMediaAnalysis_performStepForAssets_withProgr
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_requestProcessingForUUIDS:(id)a3 progress:(id)a4 assetsCount:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)_requestProcessingForUUIDS:(id)s progress:(id)progress assetsCount:(unint64_t)count withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sCopy = s;
+  progressCopy = progress;
+  handlerCopy = handler;
   processingType = self->_processingType;
   if (processingType <= 0x20)
   {
     if (((1 << processingType) & 0x10116) != 0)
     {
-      v14 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
-      v15 = [v14 libraryURL];
+      libraryServicesManager = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
+      libraryURL = [libraryServicesManager libraryURL];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __112__PLAnalysisCoordinatorStepMediaAnalysis__requestProcessingForUUIDS_progress_assetsCount_withCompletionHandler___block_invoke;
@@ -231,10 +231,10 @@ void __98__PLAnalysisCoordinatorStepMediaAnalysis_performStepForAssets_withProgr
       v24[2] = __112__PLAnalysisCoordinatorStepMediaAnalysis__requestProcessingForUUIDS_progress_assetsCount_withCompletionHandler___block_invoke_27;
       v24[3] = &unk_1E7571468;
       v24[4] = self;
-      v26 = v12;
-      v25 = v11;
-      v27 = a5;
-      self->_currentMediaAnalysisRequestID = [PLMediaAnalysisServiceRequestAdapter requestProcessingTypes:processingType forAssetsWithLocalIdentifiers:v10 fromPhotoLibraryWithURL:v15 progressHandler:v28 completionHandler:v24];
+      v26 = handlerCopy;
+      v25 = progressCopy;
+      countCopy = count;
+      self->_currentMediaAnalysisRequestID = [PLMediaAnalysisServiceRequestAdapter requestProcessingTypes:processingType forAssetsWithLocalIdentifiers:sCopy fromPhotoLibraryWithURL:libraryURL progressHandler:v28 completionHandler:v24];
 
       v16 = v26;
     }
@@ -246,18 +246,18 @@ void __98__PLAnalysisCoordinatorStepMediaAnalysis_performStepForAssets_withProgr
         goto LABEL_5;
       }
 
-      v17 = [v10 firstObject];
-      v18 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
-      v19 = [v18 libraryURL];
+      firstObject = [sCopy firstObject];
+      libraryServicesManager2 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
+      libraryURL2 = [libraryServicesManager2 libraryURL];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __112__PLAnalysisCoordinatorStepMediaAnalysis__requestProcessingForUUIDS_progress_assetsCount_withCompletionHandler___block_invoke_2;
       v20[3] = &unk_1E7571490;
       v20[4] = self;
-      v22 = v12;
-      v21 = v11;
-      v23 = a5;
-      self->_currentMediaAnalysisRequestID = [PLMediaAnalysisServiceRequestAdapter requestVideoSafetyAnalysisForAssetWithLocalIdentifier:v17 photoLibraryURL:v19 progressHandler:0 completionHandler:v20];
+      v22 = handlerCopy;
+      v21 = progressCopy;
+      countCopy2 = count;
+      self->_currentMediaAnalysisRequestID = [PLMediaAnalysisServiceRequestAdapter requestVideoSafetyAnalysisForAssetWithLocalIdentifier:firstObject photoLibraryURL:libraryURL2 progressHandler:0 completionHandler:v20];
 
       v16 = v22;
     }
@@ -281,36 +281,36 @@ void __112__PLAnalysisCoordinatorStepMediaAnalysis__requestProcessingForUUIDS_pr
   }
 }
 
-- (void)_callProcessingCompletionHandler:(id)a3 progress:(id)a4 assetsCount:(unint64_t)a5 error:(id)a6
+- (void)_callProcessingCompletionHandler:(id)handler progress:(id)progress assetsCount:(unint64_t)count error:(id)error
 {
-  v14 = a6;
-  v9 = a4;
-  v10 = a3;
-  [v9 setCompletedUnitCount:{objc_msgSend(v9, "completedUnitCount") + a5}];
+  errorCopy = error;
+  progressCopy = progress;
+  handlerCopy = handler;
+  [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + count}];
 
   v11 = MEMORY[0x1E69BF2D0];
-  if (v14)
+  if (errorCopy)
   {
-    v12 = [MEMORY[0x1E69BF2D0] failureWithError:v14];
+    v12 = [MEMORY[0x1E69BF2D0] failureWithError:errorCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
-    v12 = [v11 successWithResult:v13];
+    null = [MEMORY[0x1E695DFB0] null];
+    v12 = [v11 successWithResult:null];
   }
 
-  v10[2](v10, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (PLAnalysisCoordinatorStepMediaAnalysis)initWithLibraryServicesManager:(id)a3 parentTaskID:(id)a4 processingType:(unint64_t)a5
+- (PLAnalysisCoordinatorStepMediaAnalysis)initWithLibraryServicesManager:(id)manager parentTaskID:(id)d processingType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PLAnalysisCoordinatorStepMediaAnalysis;
-  result = [(PLAnalysisCoordinatorStep *)&v7 initWithLibraryServicesManager:a3 parentTaskID:a4];
+  result = [(PLAnalysisCoordinatorStep *)&v7 initWithLibraryServicesManager:manager parentTaskID:d];
   if (result)
   {
-    result->_processingType = a5;
+    result->_processingType = type;
   }
 
   return result;

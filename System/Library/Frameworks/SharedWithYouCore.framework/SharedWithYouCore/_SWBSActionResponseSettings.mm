@@ -1,8 +1,8 @@
 @interface _SWBSActionResponseSettings
 - (_SWBSActionResponseSettings)init;
 - (id)bsSettings;
-- (void)setFlag:(BOOL)a3 forSetting:(unint64_t)a4;
-- (void)setObject:(id)a3 forSetting:(unint64_t)a4;
+- (void)setFlag:(BOOL)flag forSetting:(unint64_t)setting;
+- (void)setObject:(id)object forSetting:(unint64_t)setting;
 @end
 
 @implementation _SWBSActionResponseSettings
@@ -24,23 +24,23 @@
 
 - (id)bsSettings
 {
-  v2 = [(_SWBSActionResponseSettings *)self mutableSettings];
-  v3 = [v2 copy];
+  mutableSettings = [(_SWBSActionResponseSettings *)self mutableSettings];
+  v3 = [mutableSettings copy];
 
   return v3;
 }
 
-- (void)setObject:(id)a3 forSetting:(unint64_t)a4
+- (void)setObject:(id)object forSetting:(unint64_t)setting
 {
-  v6 = a3;
-  v7 = [(_SWBSActionResponseSettings *)self mutableSettings];
-  [v7 setObject:v6 forSetting:a4];
+  objectCopy = object;
+  mutableSettings = [(_SWBSActionResponseSettings *)self mutableSettings];
+  [mutableSettings setObject:objectCopy forSetting:setting];
 }
 
-- (void)setFlag:(BOOL)a3 forSetting:(unint64_t)a4
+- (void)setFlag:(BOOL)flag forSetting:(unint64_t)setting
 {
-  v5 = [(_SWBSActionResponseSettings *)self mutableSettings];
-  [v5 setFlag:BSSettingFlagForBool() forSetting:a4];
+  mutableSettings = [(_SWBSActionResponseSettings *)self mutableSettings];
+  [mutableSettings setFlag:BSSettingFlagForBool() forSetting:setting];
 }
 
 @end

@@ -38,15 +38,15 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_188CC();
   v8 = sub_188EC();
   (*(*(v8 - 8) + 56))(v6, 0, 1, v8);
   v9 = swift_allocObject();
   v9[2] = 0;
   v9[3] = 0;
-  v9[4] = v7;
-  v10 = v7;
+  v9[4] = selfCopy;
+  v10 = selfCopy;
   sub_11944(0, 0, v6, 0, 0, &unk_1AE50, v9);
 
   sub_13304(v6, &qword_25930, &qword_1AC60);
@@ -55,7 +55,7 @@
 - (AMSBagProtocol)amsBag
 {
   v2 = (self + OBJC_IVAR___BagService_lastRecentBagMutex);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   sub_12D3C(&v2[2], v8, &qword_25970, &qword_1ACF0);
   os_unfair_lock_unlock(v2);
@@ -79,7 +79,7 @@
 
 - (AMSBagProtocol)autoupdatingAMSBag
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_753C();
 
   return v3;

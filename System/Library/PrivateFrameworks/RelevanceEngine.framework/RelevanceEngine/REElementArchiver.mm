@@ -1,22 +1,22 @@
 @interface REElementArchiver
-- (REElementArchiver)initWithEngine:(id)a3;
+- (REElementArchiver)initWithEngine:(id)engine;
 - (id)_supportedClasses;
-- (id)dataWithElement:(id)a3;
-- (id)elementWithData:(id)a3;
+- (id)dataWithElement:(id)element;
+- (id)elementWithData:(id)data;
 @end
 
 @implementation REElementArchiver
 
-- (REElementArchiver)initWithEngine:(id)a3
+- (REElementArchiver)initWithEngine:(id)engine
 {
-  v5 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = REElementArchiver;
   v6 = [(REElementArchiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_engine, a3);
+    objc_storeStrong(&v6->_engine, engine);
   }
 
   return v7;
@@ -51,13 +51,13 @@ void __38__REElementArchiver__supportedClasses__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)elementWithData:(id)a3
+- (id)elementWithData:(id)data
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
-  v6 = [(REElementArchiver *)self _supportedClasses];
+  dataCopy = data;
+  _supportedClasses = [(REElementArchiver *)self _supportedClasses];
   v12 = 0;
-  v7 = [v4 unarchivedObjectOfClasses:v6 fromData:v5 error:&v12];
+  v7 = [v4 unarchivedObjectOfClasses:_supportedClasses fromData:dataCopy error:&v12];
 
   v8 = v12;
   if (v7)
@@ -79,9 +79,9 @@ void __38__REElementArchiver__supportedClasses__block_invoke()
   return v9;
 }
 
-- (id)dataWithElement:(id)a3
+- (id)dataWithElement:(id)element
 {
-  v3 = [(RERelevanceEngine *)self->_engine dictionaryFromElement:a3];
+  v3 = [(RERelevanceEngine *)self->_engine dictionaryFromElement:element];
   if (v3)
   {
     v9 = 0;

@@ -1,11 +1,11 @@
 @interface PrivacyDisclosureManager
-+ (BOOL)appRequiresPreflightWithAppBundleId:(id)a3;
++ (BOOL)appRequiresPreflightWithAppBundleId:(id)id;
 - (_TtC4Siri24PrivacyDisclosureManager)init;
 @end
 
 @implementation PrivacyDisclosureManager
 
-+ (BOOL)appRequiresPreflightWithAppBundleId:(id)a3
++ (BOOL)appRequiresPreflightWithAppBundleId:(id)id
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

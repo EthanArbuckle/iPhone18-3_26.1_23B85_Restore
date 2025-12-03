@@ -2,14 +2,14 @@
 - (EPPeripheralManagerManager)init;
 - (void)createResource;
 - (void)destroyResource;
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5;
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5;
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4;
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3;
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic;
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error;
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request;
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers;
 @end
 
 @implementation EPPeripheralManagerManager
@@ -30,8 +30,8 @@
   v7.super_class = EPPeripheralManagerManager;
   [(EPResourceManager *)&v7 createResource];
   v3 = [CBPeripheralManager alloc];
-  v4 = [(EPResourceManager *)self queue];
-  v5 = [v3 initWithDelegate:self queue:v4];
+  queue = [(EPResourceManager *)self queue];
+  v5 = [v3 initWithDelegate:self queue:queue];
   manager = self->_manager;
   self->_manager = v5;
 }
@@ -45,14 +45,14 @@
   self->_manager = 0;
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 state];
+  stateCopy = state;
+  state = [stateCopy state];
   v6 = 0;
-  if (v5 <= 3)
+  if (state <= 3)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
       v16 = NSLocalizedDescriptionKey;
       v17 = @"Bluetooth is not supported";
@@ -63,7 +63,7 @@
     else
     {
       v7 = 0;
-      if (v5 != 3)
+      if (state != 3)
       {
         goto LABEL_12;
       }
@@ -80,7 +80,7 @@
     goto LABEL_12;
   }
 
-  if (v5 == 4)
+  if (state == 4)
   {
     v18 = NSLocalizedDescriptionKey;
     v19 = @"Bluetooth is powered off";
@@ -89,7 +89,7 @@
     v7 = [NSError errorWithDomain:@"com.apple.extensiblepair.corebluetooth.peripheralmanager" code:2 userInfo:v10];
   }
 
-  else if (v5 == 10 || (v7 = 0, v5 == 5))
+  else if (state == 10 || (v7 = 0, state == 5))
   {
     v7 = 0;
     v6 = 1;
@@ -101,103 +101,103 @@ LABEL_12:
   v12[1] = 3221225472;
   v12[2] = sub_100096658;
   v12[3] = &unk_1001785C0;
-  v13 = v4;
-  v11 = v4;
+  v13 = stateCopy;
+  v11 = stateCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v12];
 }
 
-- (void)peripheralManager:(id)a3 didAddService:(id)a4 error:(id)a5
+- (void)peripheralManager:(id)manager didAddService:(id)service error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100096744;
   v11[3] = &unk_1001759C0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  managerCopy = manager;
+  serviceCopy = service;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = serviceCopy;
+  v10 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v11];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveReadRequest:(id)a4
+- (void)peripheralManager:(id)manager didReceiveReadRequest:(id)request
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100096810;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  managerCopy = manager;
+  requestCopy = request;
+  v6 = requestCopy;
+  v7 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)peripheralManager:(id)a3 didReceiveWriteRequests:(id)a4
+- (void)peripheralManager:(id)manager didReceiveWriteRequests:(id)requests
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000968D8;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  managerCopy = manager;
+  requestsCopy = requests;
+  v6 = requestsCopy;
+  v7 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000969A0;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  advertisingCopy = advertising;
+  errorCopy = error;
+  v6 = errorCopy;
+  v7 = advertisingCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)a3
+- (void)peripheralManagerIsReadyToUpdateSubscribers:(id)subscribers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100096A40;
   v5[3] = &unk_1001785C0;
-  v6 = a3;
-  v4 = v6;
+  subscribersCopy = subscribers;
+  v4 = subscribersCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v5];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didSubscribeToCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didSubscribeToCharacteristic:(id)characteristic
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100096B2C;
   v11[3] = &unk_1001759C0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  v8 = characteristicCopy;
+  v9 = centralCopy;
+  v10 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v11];
 }
 
-- (void)peripheralManager:(id)a3 central:(id)a4 didUnsubscribeFromCharacteristic:(id)a5
+- (void)peripheralManager:(id)manager central:(id)central didUnsubscribeFromCharacteristic:(id)characteristic
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100096C1C;
   v11[3] = &unk_1001759C0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  managerCopy = manager;
+  centralCopy = central;
+  characteristicCopy = characteristic;
+  v8 = characteristicCopy;
+  v9 = centralCopy;
+  v10 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v11];
 }
 

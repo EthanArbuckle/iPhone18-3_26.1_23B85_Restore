@@ -1,7 +1,7 @@
 @interface ICStartupQuickNoteFirstLaunchPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (ICStartupQuickNoteFirstLaunchPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)animateTransition:(id)a3;
+- (ICStartupQuickNoteFirstLaunchPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)animateTransition:(id)transition;
 - (void)containerViewWillLayoutSubviews;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
@@ -9,11 +9,11 @@
 
 @implementation ICStartupQuickNoteFirstLaunchPresentationController
 
-- (ICStartupQuickNoteFirstLaunchPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (ICStartupQuickNoteFirstLaunchPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v10.receiver = self;
   v10.super_class = ICStartupQuickNoteFirstLaunchPresentationController;
-  v4 = [(ICStartupQuickNoteFirstLaunchPresentationController *)&v10 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(ICStartupQuickNoteFirstLaunchPresentationController *)&v10 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = objc_alloc_init(UIView);
@@ -21,8 +21,8 @@
 
     v6 = +[UIColor blackColor];
     v7 = [v6 colorWithAlphaComponent:0.4];
-    v8 = [(ICStartupQuickNoteFirstLaunchPresentationController *)v4 dimmingView];
-    [v8 setBackgroundColor:v7];
+    dimmingView = [(ICStartupQuickNoteFirstLaunchPresentationController *)v4 dimmingView];
+    [dimmingView setBackgroundColor:v7];
   }
 
   return v4;
@@ -30,17 +30,17 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self containerView];
-  [v3 frame];
+  containerView = [(ICStartupQuickNoteFirstLaunchPresentationController *)self containerView];
+  [containerView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self presentedView];
+  presentedView = [(ICStartupQuickNoteFirstLaunchPresentationController *)self presentedView];
   LODWORD(v13) = 1148846080;
   LODWORD(v14) = 1112014848;
-  [v12 systemLayoutSizeFittingSize:270.0 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:{v13, v14}];
+  [presentedView systemLayoutSizeFittingSize:270.0 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:{v13, v14}];
   v16 = v15;
   v18 = v17;
 
@@ -69,33 +69,33 @@
   v9.receiver = self;
   v9.super_class = ICStartupQuickNoteFirstLaunchPresentationController;
   [(ICStartupQuickNoteFirstLaunchPresentationController *)&v9 presentationTransitionWillBegin];
-  v3 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self containerView];
-  v4 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self dimmingView];
-  [v3 addSubview:v4];
+  containerView = [(ICStartupQuickNoteFirstLaunchPresentationController *)self containerView];
+  dimmingView = [(ICStartupQuickNoteFirstLaunchPresentationController *)self dimmingView];
+  [containerView addSubview:dimmingView];
 
-  v5 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self dimmingView];
-  [v5 setAlpha:0.0];
+  dimmingView2 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self dimmingView];
+  [dimmingView2 setAlpha:0.0];
 
-  v6 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self presentedViewController];
-  v7 = [v6 transitionCoordinator];
+  presentedViewController = [(ICStartupQuickNoteFirstLaunchPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010B0F0;
   v8[3] = &unk_100645E08;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v3 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self containerView];
-  [v3 bounds];
+  containerView = [(ICStartupQuickNoteFirstLaunchPresentationController *)self containerView];
+  [containerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self dimmingView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  dimmingView = [(ICStartupQuickNoteFirstLaunchPresentationController *)self dimmingView];
+  [dimmingView setFrame:{v5, v7, v9, v11}];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -110,60 +110,60 @@
   v6.receiver = self;
   v6.super_class = ICStartupQuickNoteFirstLaunchPresentationController;
   [(ICStartupQuickNoteFirstLaunchPresentationController *)&v6 dismissalTransitionWillBegin];
-  v3 = [(ICStartupQuickNoteFirstLaunchPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
+  presentedViewController = [(ICStartupQuickNoteFirstLaunchPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10010B36C;
   v5[3] = &unk_100645E08;
   v5[4] = self;
-  [v4 animateAlongsideTransition:v5 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v5 completion:0];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v6 view];
-  v8 = [v4 containerView];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view = [v6 view];
+  containerView = [transitionCopy containerView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v10 = v5;
   if (isKindOfClass)
   {
-    [v8 addSubview:v7];
+    [containerView addSubview:view];
     v10 = v6;
   }
 
   v11 = v10;
-  v12 = [v11 view];
-  [v4 finalFrameForViewController:v11];
+  view2 = [v11 view];
+  [transitionCopy finalFrameForViewController:v11];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v12 setFrame:{v14, v16, v18, v20}];
+  [view2 setFrame:{v14, v16, v18, v20}];
   if (isKindOfClass)
   {
-    [v12 setAlpha:0.0];
-    [(ICStartupQuickNoteFirstLaunchPresentationController *)self transitionDuration:v4];
+    [view2 setAlpha:0.0];
+    [(ICStartupQuickNoteFirstLaunchPresentationController *)self transitionDuration:transitionCopy];
     v22 = v21;
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_10010B6C0;
     v44[3] = &unk_100645E30;
     v23 = &v45;
-    v45 = v12;
+    v45 = view2;
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_10010B6CC;
     v42[3] = &unk_1006469F0;
     v24 = &v43;
-    v43 = v4;
-    v25 = v4;
-    v26 = v12;
+    v43 = transitionCopy;
+    v25 = transitionCopy;
+    v26 = view2;
     v27 = v44;
     v28 = v42;
     v29 = v22;
@@ -172,22 +172,22 @@
 
   else
   {
-    [(ICStartupQuickNoteFirstLaunchPresentationController *)self transitionDuration:v4];
+    [(ICStartupQuickNoteFirstLaunchPresentationController *)self transitionDuration:transitionCopy];
     v32 = v31;
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_10010B6D8;
     v40[3] = &unk_100645E30;
     v23 = &v41;
-    v41 = v12;
+    v41 = view2;
     v35 = _NSConcreteStackBlock;
     v36 = 3221225472;
     v37 = sub_10010B718;
     v38 = &unk_1006469F0;
     v24 = &v39;
-    v39 = v4;
-    v33 = v4;
-    v34 = v12;
+    v39 = transitionCopy;
+    v33 = transitionCopy;
+    v34 = view2;
     v27 = v40;
     v28 = &v35;
     v29 = v32;

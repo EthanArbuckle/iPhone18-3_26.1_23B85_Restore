@@ -1,24 +1,24 @@
 @interface ActivityAuthorizationClient
-- (void)activityAuthorizationDidChangeWithOptions:(id)a3;
-- (void)activityAuthorizationLevelDidChangeForBundleIdentifier:(id)a3 authorizationCount:(id)a4;
-- (void)frequentUpdatesAuthorizationDidChangeWithOptions:(id)a3;
+- (void)activityAuthorizationDidChangeWithOptions:(id)options;
+- (void)activityAuthorizationLevelDidChangeForBundleIdentifier:(id)identifier authorizationCount:(id)count;
+- (void)frequentUpdatesAuthorizationDidChangeWithOptions:(id)options;
 @end
 
 @implementation ActivityAuthorizationClient
 
-- (void)activityAuthorizationLevelDidChangeForBundleIdentifier:(id)a3 authorizationCount:(id)a4
+- (void)activityAuthorizationLevelDidChangeForBundleIdentifier:(id)identifier authorizationCount:(id)count
 {
   v6 = sub_1A2D08444();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  sub_1A2CBA2E8(v6, v8, v9);
+  countCopy = count;
+  selfCopy = self;
+  sub_1A2CBA2E8(v6, v8, countCopy);
 }
 
-- (void)activityAuthorizationDidChangeWithOptions:(id)a3
+- (void)activityAuthorizationDidChangeWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
+  optionsCopy = options;
+  selfCopy = self;
   v6 = sub_1A2D07F44();
   v8 = v7;
 
@@ -32,10 +32,10 @@
   sub_1A2C55840(v6, v8);
 }
 
-- (void)frequentUpdatesAuthorizationDidChangeWithOptions:(id)a3
+- (void)frequentUpdatesAuthorizationDidChangeWithOptions:(id)options
 {
-  v4 = a3;
-  v8 = self;
+  optionsCopy = options;
+  selfCopy = self;
   v5 = sub_1A2D07F44();
   v7 = v6;
 

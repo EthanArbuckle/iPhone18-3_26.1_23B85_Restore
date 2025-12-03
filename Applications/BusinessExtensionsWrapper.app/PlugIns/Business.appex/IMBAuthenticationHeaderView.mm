@@ -1,7 +1,7 @@
 @interface IMBAuthenticationHeaderView
 - (_TtC8Business27IMBAuthenticationHeaderView)init;
-- (_TtC8Business27IMBAuthenticationHeaderView)initWithCoder:(id)a3;
-- (_TtC8Business27IMBAuthenticationHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC8Business27IMBAuthenticationHeaderView)initWithCoder:(id)coder;
+- (_TtC8Business27IMBAuthenticationHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation IMBAuthenticationHeaderView
@@ -19,7 +19,7 @@
   return v4;
 }
 
-- (_TtC8Business27IMBAuthenticationHeaderView)initWithCoder:(id)a3
+- (_TtC8Business27IMBAuthenticationHeaderView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8Business27IMBAuthenticationHeaderView_messageLabel;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UILabel) init];
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC8Business27IMBAuthenticationHeaderView)initWithFrame:(CGRect)a3
+- (_TtC8Business27IMBAuthenticationHeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,14 +1,14 @@
 @interface SVDBooleanCapabilityPrimitive
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVDBooleanCapabilityPrimitive
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2698DC11C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2698DC11C(coderCopy);
 }
 
 @end

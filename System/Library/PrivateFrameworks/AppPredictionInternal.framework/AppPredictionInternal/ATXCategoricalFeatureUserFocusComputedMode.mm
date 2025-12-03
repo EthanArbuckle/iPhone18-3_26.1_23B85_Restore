@@ -1,15 +1,15 @@
 @interface ATXCategoricalFeatureUserFocusComputedMode
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
-- (id)featureNameForBMUserFocusComputedModeSemanticType:(int)a3;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
+- (id)featureNameForBMUserFocusComputedModeSemanticType:(int)type;
 @end
 
 @implementation ATXCategoricalFeatureUserFocusComputedMode
 
-- (id)featureNameForBMUserFocusComputedModeSemanticType:(int)a3
+- (id)featureNameForBMUserFocusComputedModeSemanticType:(int)type
 {
-  if ((a3 - 1) < 0xB)
+  if ((type - 1) < 0xB)
   {
-    return off_2785A1FE0[a3 - 1];
+    return off_2785A1FE0[type - 1];
   }
 
   v4 = __atxlog_handle_relevance_model();
@@ -21,17 +21,17 @@
   return @"<Unexpected Category Value>";
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = [v5 userFocusComputedModeEvent];
+  contextCopy = context;
+  userFocusComputedModeEvent = [contextCopy userFocusComputedModeEvent];
 
-  if (v6)
+  if (userFocusComputedModeEvent)
   {
-    v7 = [v5 userFocusComputedModeEvent];
-    v8 = [v7 semanticType];
+    userFocusComputedModeEvent2 = [contextCopy userFocusComputedModeEvent];
+    semanticType = [userFocusComputedModeEvent2 semanticType];
 
-    v9 = [(ATXCategoricalFeatureUserFocusComputedMode *)self featureNameForBMUserFocusComputedModeSemanticType:v8];
+    v9 = [(ATXCategoricalFeatureUserFocusComputedMode *)self featureNameForBMUserFocusComputedModeSemanticType:semanticType];
   }
 
   else

@@ -1,61 +1,61 @@
 @interface NSSUsageDataAppBundle
-- (NSSUsageDataAppBundle)initWithName:(id)a3 bundleIdentifier:(id)a4 bundleVersion:(id)a5 vendor:(id)a6 size:(id)a7 supportsPurge:(BOOL)a8;
-- (id)mergeWith:(id)a3;
+- (NSSUsageDataAppBundle)initWithName:(id)name bundleIdentifier:(id)identifier bundleVersion:(id)version vendor:(id)vendor size:(id)size supportsPurge:(BOOL)purge;
+- (id)mergeWith:(id)with;
 @end
 
 @implementation NSSUsageDataAppBundle
 
-- (NSSUsageDataAppBundle)initWithName:(id)a3 bundleIdentifier:(id)a4 bundleVersion:(id)a5 vendor:(id)a6 size:(id)a7 supportsPurge:(BOOL)a8
+- (NSSUsageDataAppBundle)initWithName:(id)name bundleIdentifier:(id)identifier bundleVersion:(id)version vendor:(id)vendor size:(id)size supportsPurge:(BOOL)purge
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  versionCopy = version;
+  vendorCopy = vendor;
+  sizeCopy = size;
   v23.receiver = self;
   v23.super_class = NSSUsageDataAppBundle;
   v18 = [(NSSUsageDataAppBundle *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_name, a3);
-    objc_storeStrong(&v19->_bundleIdentifier, a4);
-    objc_storeStrong(&v19->_bundleVersion, a5);
-    objc_storeStrong(&v19->_vendor, a6);
-    objc_storeStrong(&v19->_size, a7);
-    v19->_supportsManualPurge = a8;
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v19->_bundleIdentifier, identifier);
+    objc_storeStrong(&v19->_bundleVersion, version);
+    objc_storeStrong(&v19->_vendor, vendor);
+    objc_storeStrong(&v19->_size, size);
+    v19->_supportsManualPurge = purge;
   }
 
   return v19;
 }
 
-- (id)mergeWith:(id)a3
+- (id)mergeWith:(id)with
 {
-  v4 = a3;
-  if (v4)
+  withCopy = with;
+  if (withCopy)
   {
     v5 = [(NSSUsageDataAppBundle *)self size];
-    v6 = [v4 size];
+    v6 = [withCopy size];
     v7 = [v5 plus:v6];
     if ([(NSSUsageDataAppBundle *)self supportsManualPurge])
     {
-      v8 = 1;
+      supportsManualPurge = 1;
     }
 
     else
     {
-      v8 = [v4 supportsManualPurge];
+      supportsManualPurge = [withCopy supportsManualPurge];
     }
 
-    v9 = [(NSSUsageDataAppBundle *)self withSize:v7 purge:v8];
+    selfCopy = [(NSSUsageDataAppBundle *)self withSize:v7 purge:supportsManualPurge];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

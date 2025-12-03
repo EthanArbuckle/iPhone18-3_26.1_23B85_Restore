@@ -1,26 +1,26 @@
 @interface ContinuityCaptureShieldUIPauseSceneComponent
-- (ContinuityCaptureShieldUIPauseSceneComponent)initWithScene:(id)a3;
+- (ContinuityCaptureShieldUIPauseSceneComponent)initWithScene:(id)scene;
 - (UIScene)_scene;
 - (void)_recalculateState;
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5;
-- (void)_sceneWillInvalidate:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)sceneDidEnterBackground:(id)a3;
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask;
+- (void)_sceneWillInvalidate:(id)invalidate;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)sceneDidEnterBackground:(id)background;
 @end
 
 @implementation ContinuityCaptureShieldUIPauseSceneComponent
 
-- (ContinuityCaptureShieldUIPauseSceneComponent)initWithScene:(id)a3
+- (ContinuityCaptureShieldUIPauseSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v20.receiver = self;
   v20.super_class = ContinuityCaptureShieldUIPauseSceneComponent;
   v5 = [(ContinuityCaptureShieldUIPauseSceneComponent *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
-    v6->_previousState = [v4 activationState];
+    objc_storeWeak(&v5->_scene, sceneCopy);
+    v6->_previousState = [sceneCopy activationState];
     v7 = +[ContinuityCaptureRemoteUIPowerButtonStatus sharedInstance];
     [v7 addObserver:v6 forKeyPath:CMContinuityCaptureSystemStatusPowerButtonPressedKVOKey options:3 context:0];
 
@@ -48,15 +48,15 @@
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
+  pathCopy = path;
+  objectCopy = object;
   v12 = CMContinuityCaptureSystemStatusPowerButtonPressedKVOKey;
-  v13 = a5;
-  if ([v10 isEqualToString:v12])
+  changeCopy = change;
+  if ([pathCopy isEqualToString:v12])
   {
-    v14 = [v13 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v14 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
     if ([v14 BOOLValue])
     {
@@ -66,7 +66,7 @@
         *buf = 136315394;
         v18 = "[ContinuityCaptureShieldUIPauseSceneComponent observeValueForKeyPath:ofObject:change:context:]";
         v19 = 2048;
-        v20 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: <%p> power button pressed, cancelling background timer", buf, 0x16u);
       }
 
@@ -78,12 +78,12 @@
   {
     v16.receiver = self;
     v16.super_class = ContinuityCaptureShieldUIPauseSceneComponent;
-    [(ContinuityCaptureShieldUIPauseSceneComponent *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v13 context:a6];
-    v14 = v13;
+    [(ContinuityCaptureShieldUIPauseSceneComponent *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
+    v14 = changeCopy;
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v4 = sub_100005368();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -91,7 +91,7 @@
     v5 = 136315394;
     v6 = "[ContinuityCaptureShieldUIPauseSceneComponent sceneDidEnterBackground:]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s: <%p> scene entered background, recalculate pause state", &v5, 0x16u);
   }
 
@@ -99,7 +99,7 @@
   [(ContinuityCaptureShieldUIPauseSceneComponent *)self _cancelCurrentDebounceTimer];
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
   v4 = +[ContinuityCaptureRemoteUIPowerButtonStatus sharedInstance];
   [v4 removeObserver:self forKeyPath:CMContinuityCaptureSystemStatusPowerButtonPressedKVOKey context:0];
@@ -108,16 +108,16 @@
   [v5 removeObserver:self];
 }
 
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask
 {
   v8 = sub_100005368();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_10000C144(self, a4, v8);
+    sub_10000C144(self, state, v8);
   }
 
-  self->_reasonsMask = a5;
-  if (a4)
+  self->_reasonsMask = mask;
+  if (state)
   {
     v9 = 500000000;
   }
@@ -135,9 +135,9 @@
 {
   previousState = self->_previousState;
   WeakRetained = objc_loadWeakRetained(&self->_scene);
-  v5 = [WeakRetained activationState];
+  activationState = [WeakRetained activationState];
 
-  self->_previousState = v5;
+  self->_previousState = activationState;
   v6 = sub_100005368();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -146,23 +146,23 @@
     v13 = 136316162;
     v14 = "[ContinuityCaptureShieldUIPauseSceneComponent _recalculateState]";
     v15 = 2048;
-    v16 = self;
+    selfCopy4 = self;
     v17 = 2048;
     v18 = previousState;
     v19 = 2048;
-    v20 = v5;
+    v20 = activationState;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: <%p> previousState:%zu currentState:%zu deactivationReasons:%@", &v13, 0x34u);
   }
 
-  if (v5 != previousState)
+  if (activationState != previousState)
   {
-    if (v5 <= 0)
+    if (activationState <= 0)
     {
-      if (v5 != -1)
+      if (activationState != -1)
       {
-        if (v5)
+        if (activationState)
         {
           return;
         }
@@ -173,7 +173,7 @@
           v13 = 136315394;
           v14 = "[ContinuityCaptureShieldUIPauseSceneComponent _recalculateState]";
           v15 = 2048;
-          v16 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: <%p> send resume event", &v13, 0x16u);
         }
 
@@ -185,9 +185,9 @@
       goto LABEL_12;
     }
 
-    if (v5 != 1)
+    if (activationState != 1)
     {
-      if (v5 != 2)
+      if (activationState != 2)
       {
         return;
       }
@@ -208,7 +208,7 @@ LABEL_16:
       v13 = 136315394;
       v14 = "[ContinuityCaptureShieldUIPauseSceneComponent _recalculateState]";
       v15 = 2048;
-      v16 = self;
+      selfCopy4 = self;
       v12 = "%s: <%p> send pause event - backgrounded";
 LABEL_14:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v13, 0x16u);
@@ -226,7 +226,7 @@ LABEL_14:
       v13 = 136315394;
       v14 = "[ContinuityCaptureShieldUIPauseSceneComponent _recalculateState]";
       v15 = 2048;
-      v16 = self;
+      selfCopy4 = self;
       v12 = "%s: <%p> send pause event - foregroundInactive";
       goto LABEL_14;
     }

@@ -1,24 +1,24 @@
 @interface PPNamedEntitySupport
-+ (id)fullAddressForStreetAddress:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7;
-+ (id)streetAddressFromThoroughfare:(id)a3 subThoroughfare:(id)a4;
++ (id)fullAddressForStreetAddress:(id)address city:(id)city state:(id)state postalCode:(id)code country:(id)country;
++ (id)streetAddressFromThoroughfare:(id)thoroughfare subThoroughfare:(id)subThoroughfare;
 @end
 
 @implementation PPNamedEntitySupport
 
-+ (id)streetAddressFromThoroughfare:(id)a3 subThoroughfare:(id)a4
++ (id)streetAddressFromThoroughfare:(id)thoroughfare subThoroughfare:(id)subThoroughfare
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  thoroughfareCopy = thoroughfare;
+  subThoroughfareCopy = subThoroughfare;
+  if (thoroughfareCopy)
   {
     v7 = objc_opt_new();
-    if (v6 && ([v5 hasPrefix:v6] & 1) == 0)
+    if (subThoroughfareCopy && ([thoroughfareCopy hasPrefix:subThoroughfareCopy] & 1) == 0)
     {
-      [v7 appendString:v6];
+      [v7 appendString:subThoroughfareCopy];
       [v7 appendString:@" "];
     }
 
-    [v7 appendString:v5];
+    [v7 appendString:thoroughfareCopy];
   }
 
   else
@@ -29,14 +29,14 @@
   return v7;
 }
 
-+ (id)fullAddressForStreetAddress:(id)a3 city:(id)a4 state:(id)a5 postalCode:(id)a6 country:(id)a7
++ (id)fullAddressForStreetAddress:(id)address city:(id)city state:(id)state postalCode:(id)code country:(id)country
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (![v11 length] || !objc_msgSend(v12, "length") && !objc_msgSend(v14, "length"))
+  addressCopy = address;
+  cityCopy = city;
+  stateCopy = state;
+  codeCopy = code;
+  countryCopy = country;
+  if (![addressCopy length] || !objc_msgSend(cityCopy, "length") && !objc_msgSend(codeCopy, "length"))
   {
     v28 = 0;
     goto LABEL_30;
@@ -44,56 +44,56 @@
 
   v16 = objc_opt_new();
   v17 = v16;
-  if (v11)
+  if (addressCopy)
   {
-    [v16 setObject:v11 forKeyedSubscript:*MEMORY[0x277CBD980]];
+    [v16 setObject:addressCopy forKeyedSubscript:*MEMORY[0x277CBD980]];
   }
 
-  if (v12)
+  if (cityCopy)
   {
-    [v17 setObject:v12 forKeyedSubscript:*MEMORY[0x277CBD948]];
+    [v17 setObject:cityCopy forKeyedSubscript:*MEMORY[0x277CBD948]];
   }
 
-  if (v13)
+  if (stateCopy)
   {
-    [v17 setObject:v13 forKeyedSubscript:*MEMORY[0x277CBD978]];
+    [v17 setObject:stateCopy forKeyedSubscript:*MEMORY[0x277CBD978]];
   }
 
-  if (v14)
+  if (codeCopy)
   {
-    [v17 setObject:v14 forKeyedSubscript:*MEMORY[0x277CBD968]];
+    [v17 setObject:codeCopy forKeyedSubscript:*MEMORY[0x277CBD968]];
   }
 
-  v32 = v14;
-  if (v15)
+  v32 = codeCopy;
+  if (countryCopy)
   {
-    [v17 setObject:v15 forKeyedSubscript:*MEMORY[0x277CBD950]];
+    [v17 setObject:countryCopy forKeyedSubscript:*MEMORY[0x277CBD950]];
   }
 
-  v18 = v13;
-  v19 = [MEMORY[0x277CBEAF8] currentLocale];
+  v18 = stateCopy;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v20 = objc_alloc(MEMORY[0x277D0EAA8]);
-  v21 = [v19 languageCode];
-  v22 = v21;
-  if (!v21)
+  languageCode = [currentLocale languageCode];
+  currentLocaleLanguageCode = languageCode;
+  if (!languageCode)
   {
-    v22 = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
+    currentLocaleLanguageCode = [MEMORY[0x277D3A578] currentLocaleLanguageCode];
   }
 
-  v23 = [v19 countryCode];
-  v24 = [v19 localeIdentifier];
-  v25 = [v20 initWithContactAddressDictionary:v17 language:v22 country:v23 phoneticLocale:v24];
+  countryCode = [currentLocale countryCode];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v25 = [v20 initWithContactAddressDictionary:v17 language:currentLocaleLanguageCode country:countryCode phoneticLocale:localeIdentifier];
 
-  if (!v21)
+  if (!languageCode)
   {
   }
 
-  v13 = v18;
+  stateCopy = v18;
   if (!v25)
   {
     v27 = pp_entities_log_handle();
-    v15 = v31;
-    v14 = v32;
+    countryCopy = v31;
+    codeCopy = v32;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *v34 = 0;
@@ -105,8 +105,8 @@
 
   v26 = [v25 fullAddressNoCurrentCountryWithMultiline:0];
   v27 = v26;
-  v15 = v31;
-  v14 = v32;
+  countryCopy = v31;
+  codeCopy = v32;
   if (!v26 || ![v26 length])
   {
     v29 = pp_entities_log_handle();

@@ -1,8 +1,8 @@
 @interface PLDateRangeTitleGenerator
 - (PLDateRangeTitleGenerator)init;
-- (PLDateRangeTitleGenerator)initWithLocale:(id)a3;
-- (id)dateRangeFormatterForCategory:(unsigned __int16)a3 kind:(unsigned __int16)a4 type:(unsigned __int16)a5 options:(unint64_t)a6;
-- (id)dateRangeTitleWithStartDate:(id)a3 endDate:(id)a4 category:(unsigned __int16)a5 kind:(unsigned __int16)a6 type:(unsigned __int16)a7 options:(unint64_t)a8;
+- (PLDateRangeTitleGenerator)initWithLocale:(id)locale;
+- (id)dateRangeFormatterForCategory:(unsigned __int16)category kind:(unsigned __int16)kind type:(unsigned __int16)type options:(unint64_t)options;
+- (id)dateRangeTitleWithStartDate:(id)date endDate:(id)endDate category:(unsigned __int16)category kind:(unsigned __int16)kind type:(unsigned __int16)type options:(unint64_t)options;
 - (id)newDateRangeFormatter;
 - (id)newMonthYearWithDelimiterDateRangeFormatter;
 - (id)newRecentDateRangeFormatter;
@@ -112,38 +112,38 @@
   return v4;
 }
 
-- (id)dateRangeFormatterForCategory:(unsigned __int16)a3 kind:(unsigned __int16)a4 type:(unsigned __int16)a5 options:(unint64_t)a6
+- (id)dateRangeFormatterForCategory:(unsigned __int16)category kind:(unsigned __int16)kind type:(unsigned __int16)type options:(unint64_t)options
 {
   v6 = 0;
-  if (a4 > 1)
+  if (kind > 1)
   {
-    if (a4 == 2)
+    if (kind == 2)
     {
-      v7 = [(PLDateRangeTitleGenerator *)self yearDateRangeFormatter:a3];
+      shortMonthYearDateRangeFormatter = [(PLDateRangeTitleGenerator *)self yearDateRangeFormatter:category];
       goto LABEL_20;
     }
 
-    if (a4 != 3)
+    if (kind != 3)
     {
       goto LABEL_21;
     }
 
 LABEL_7:
-    if ((a6 & 0x10) != 0)
+    if ((options & 0x10) != 0)
     {
-      v7 = [(PLDateRangeTitleGenerator *)self shortMonthYearDateRangeFormatter];
+      shortMonthYearDateRangeFormatter = [(PLDateRangeTitleGenerator *)self shortMonthYearDateRangeFormatter];
       goto LABEL_20;
     }
 
-    if (a3 == 1)
+    if (category == 1)
     {
-      v7 = [(PLDateRangeTitleGenerator *)self recentDateRangeFormatter];
+      shortMonthYearDateRangeFormatter = [(PLDateRangeTitleGenerator *)self recentDateRangeFormatter];
       goto LABEL_20;
     }
 
-    if (!a3)
+    if (!category)
     {
-      if ((a6 & 2) != 0)
+      if ((options & 2) != 0)
       {
         [(PLDateRangeTitleGenerator *)self yearlessDateRangeFormatter];
       }
@@ -157,7 +157,7 @@ LABEL_7:
     }
 
 LABEL_13:
-    if ((a6 & 4) != 0)
+    if ((options & 4) != 0)
     {
       [(PLDateRangeTitleGenerator *)self shortMonthYearWithDelimiterDateRangeFormatter];
     }
@@ -167,18 +167,18 @@ LABEL_13:
       [(PLDateRangeTitleGenerator *)self monthYearWithDelimiterDateRangeFormatter];
     }
 
-    v7 = LABEL_12:;
+    shortMonthYearDateRangeFormatter = LABEL_12:;
 LABEL_20:
-    v6 = v7;
+    v6 = shortMonthYearDateRangeFormatter;
     goto LABEL_21;
   }
 
-  if (!a4)
+  if (!kind)
   {
     goto LABEL_7;
   }
 
-  if (a4 == 1)
+  if (kind == 1)
   {
     goto LABEL_13;
   }
@@ -188,41 +188,41 @@ LABEL_21:
   return v6;
 }
 
-- (id)dateRangeTitleWithStartDate:(id)a3 endDate:(id)a4 category:(unsigned __int16)a5 kind:(unsigned __int16)a6 type:(unsigned __int16)a7 options:(unint64_t)a8
+- (id)dateRangeTitleWithStartDate:(id)date endDate:(id)endDate category:(unsigned __int16)category kind:(unsigned __int16)kind type:(unsigned __int16)type options:(unint64_t)options
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = v15;
+  typeCopy = type;
+  kindCopy = kind;
+  categoryCopy = category;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v16 = endDateCopy;
   v17 = 0;
-  if (v14 && v15)
+  if (dateCopy && endDateCopy)
   {
-    v18 = [(PLDateRangeTitleGenerator *)self dateRangeFormatterForCategory:v11 kind:v10 type:v9 options:a8];
+    v18 = [(PLDateRangeTitleGenerator *)self dateRangeFormatterForCategory:categoryCopy kind:kindCopy type:typeCopy options:options];
     v19 = v18;
     if (v18)
     {
-      [v18 setAllowUseTime:(a8 & 8) == 0];
-      v20 = (v9 > 4 || ((1 << v9) & 0x16) == 0) && (a8 & 0x20) == 0;
+      [v18 setAllowUseTime:(options & 8) == 0];
+      v20 = (typeCopy > 4 || ((1 << typeCopy) & 0x16) == 0) && (options & 0x20) == 0;
       [v19 setAllowUseRelativeDayFormatting:v20];
-      if (a8)
+      if (options)
       {
-        v21 = [MEMORY[0x1E695DF58] currentLocale];
-        [v19 setLocale:v21];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        [v19 setLocale:currentLocale];
       }
 
-      if (v10 >= 2)
+      if (kindCopy >= 2)
       {
         v22 = v16;
       }
 
       else
       {
-        v22 = v14;
+        v22 = dateCopy;
       }
 
-      v17 = [v19 stringFromDate:v14 toDate:v22];
+      v17 = [v19 stringFromDate:dateCopy toDate:v22];
     }
 
     else
@@ -234,14 +234,14 @@ LABEL_21:
   return v17;
 }
 
-- (PLDateRangeTitleGenerator)initWithLocale:(id)a3
+- (PLDateRangeTitleGenerator)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v6 = [(PLDateRangeTitleGenerator *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
   }
 
   return v7;

@@ -1,11 +1,11 @@
 @interface HMDDataStreamTCPSetupOperation
 - (BOOL)_isComplete;
-- (HMDDataStreamTCPSetupOperation)initWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6;
+- (HMDDataStreamTCPSetupOperation)initWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service;
 - (id)_createTCPTransport;
 - (id)_fullKeySalt;
 - (void)_finishStreamTransport;
 - (void)_generateStreamKeys;
-- (void)processTransportSetupResponse:(id)a3;
+- (void)processTransportSetupResponse:(id)response;
 - (void)startSetup;
 @end
 
@@ -14,12 +14,12 @@
 - (void)_finishStreamTransport
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDataStreamTCPSetupOperation *)self _isComplete];
+  _isComplete = [(HMDDataStreamTCPSetupOperation *)self _isComplete];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (_isComplete)
   {
     if (v7)
     {
@@ -30,9 +30,9 @@
     }
 
     objc_autoreleasePoolPop(v4);
-    v9 = [(HMDDataStreamTCPSetupOperation *)v5 _createTCPTransport];
-    v10 = [(HMDDataStreamTCPSetupOperation *)v5 sessionEncryption];
-    [(HMDDataStreamSetupOperation *)v5 postDidSucceedWithTransport:v9 sessionEncryption:v10];
+    _createTCPTransport = [(HMDDataStreamTCPSetupOperation *)selfCopy _createTCPTransport];
+    sessionEncryption = [(HMDDataStreamTCPSetupOperation *)selfCopy sessionEncryption];
+    [(HMDDataStreamSetupOperation *)selfCopy postDidSucceedWithTransport:_createTCPTransport sessionEncryption:sessionEncryption];
   }
 
   else
@@ -40,17 +40,17 @@
     if (v7)
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDDataStreamTCPSetupOperation *)v5 remoteTcpPort]!= 0;
-      v13 = [(HMDDataStreamTCPSetupOperation *)v5 remoteNetAddress];
-      v14 = [(HMDDataStreamTCPSetupOperation *)v5 sessionEncryption];
+      v12 = [(HMDDataStreamTCPSetupOperation *)selfCopy remoteTcpPort]!= 0;
+      remoteNetAddress = [(HMDDataStreamTCPSetupOperation *)selfCopy remoteNetAddress];
+      sessionEncryption2 = [(HMDDataStreamTCPSetupOperation *)selfCopy sessionEncryption];
       v16 = 138544130;
       v17 = v11;
       v18 = 1024;
       v19 = v12;
       v20 = 1024;
-      v21 = v13 != 0;
+      v21 = remoteNetAddress != 0;
       v22 = 1024;
-      v23 = v14 != 0;
+      v23 = sessionEncryption2 != 0;
       _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@[Start Stream] Setup still in progress (hasPort=%d, hasHostname=%d, hasEnc=%d)", &v16, 0x1Eu);
     }
 
@@ -63,13 +63,13 @@
 - (id)_createTCPTransport
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDataStreamSetupOperation *)self accessory];
-  v4 = [v3 siriEndpointProfile];
+  accessory = [(HMDDataStreamSetupOperation *)self accessory];
+  siriEndpointProfile = [accessory siriEndpointProfile];
 
-  if (v4)
+  if (siriEndpointProfile)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -81,21 +81,21 @@
 
     objc_autoreleasePoolPop(v5);
     v9 = [HMDDataStreamTCPTransport alloc];
-    v10 = [(HMDDataStreamTCPSetupOperation *)v6 remoteNetAddress];
-    v11 = [(HMDDataStreamTCPSetupOperation *)v6 remoteTcpPort];
-    v12 = [(HMDDataStreamSetupOperation *)v6 queue];
-    v13 = [(HMDDataStreamSetupOperation *)v6 logIdentifier];
-    v14 = [(HMDDataStreamTCPTransport *)v9 initWithAddress:v10 port:v11 targetQueue:v12 logIdentifier:v13];
+    remoteNetAddress = [(HMDDataStreamTCPSetupOperation *)selfCopy remoteNetAddress];
+    remoteTcpPort = [(HMDDataStreamTCPSetupOperation *)selfCopy remoteTcpPort];
+    queue = [(HMDDataStreamSetupOperation *)selfCopy queue];
+    logIdentifier = [(HMDDataStreamSetupOperation *)selfCopy logIdentifier];
+    v14 = [(HMDDataStreamTCPTransport *)v9 initWithAddress:remoteNetAddress port:remoteTcpPort targetQueue:queue logIdentifier:logIdentifier];
   }
 
   else
   {
     v15 = [HMDDataStreamTCPTransport alloc];
-    v10 = [(HMDDataStreamTCPSetupOperation *)self remoteNetAddress];
-    v16 = [(HMDDataStreamTCPSetupOperation *)self remoteTcpPort];
-    v12 = [(HMDDataStreamSetupOperation *)self queue];
-    v13 = [(HMDDataStreamSetupOperation *)self logIdentifier];
-    v14 = [(HMDDataStreamTCPTransport *)v15 initWithAddress:v10 port:v16 workQueue:v12 logIdentifier:v13];
+    remoteNetAddress = [(HMDDataStreamTCPSetupOperation *)self remoteNetAddress];
+    remoteTcpPort2 = [(HMDDataStreamTCPSetupOperation *)self remoteTcpPort];
+    queue = [(HMDDataStreamSetupOperation *)self queue];
+    logIdentifier = [(HMDDataStreamSetupOperation *)self logIdentifier];
+    v14 = [(HMDDataStreamTCPTransport *)v15 initWithAddress:remoteNetAddress port:remoteTcpPort2 workQueue:queue logIdentifier:logIdentifier];
   }
 
   v17 = v14;
@@ -108,19 +108,19 @@
 - (void)_generateStreamKeys
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDataStreamSetupOperation *)self accessory];
-  v4 = [v3 anyIPServer];
+  accessory = [(HMDDataStreamSetupOperation *)self accessory];
+  anyIPServer = [accessory anyIPServer];
 
-  if (v4)
+  if (anyIPServer)
   {
     objc_initWeak(location, self);
-    v5 = [(HMDDataStreamTCPSetupOperation *)self _fullKeySalt];
+    _fullKeySalt = [(HMDDataStreamTCPSetupOperation *)self _fullKeySalt];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__HMDDataStreamTCPSetupOperation__generateStreamKeys__block_invoke;
     v12[3] = &unk_2797239B8;
     objc_copyWeak(&v13, location);
-    [v4 createKeysForDataStreamWithKeySalt:v5 completionHandler:v12];
+    [anyIPServer createKeysForDataStreamWithKeySalt:_fullKeySalt completionHandler:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -129,7 +129,7 @@
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -141,7 +141,7 @@
 
     objc_autoreleasePoolPop(v6);
     v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [(HMDDataStreamSetupOperation *)v7 postDidFailWithError:v10];
+    [(HMDDataStreamSetupOperation *)selfCopy postDidFailWithError:v10];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -202,16 +202,16 @@ void __53__HMDDataStreamTCPSetupOperation__generateStreamKeys__block_invoke(uint
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processTransportSetupResponse:(id)a3
+- (void)processTransportSetupResponse:(id)response
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessoryKeySalt];
+  responseCopy = response;
+  accessoryKeySalt = [responseCopy accessoryKeySalt];
 
-  if (!v5)
+  if (!accessoryKeySalt)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -227,19 +227,19 @@ LABEL_11:
 
     objc_autoreleasePoolPop(v8);
     v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:50];
-    [(HMDDataStreamSetupOperation *)v9 postDidFailWithError:v21];
+    [(HMDDataStreamSetupOperation *)selfCopy2 postDidFailWithError:v21];
 
     goto LABEL_12;
   }
 
-  v6 = [v4 parameters];
-  v7 = [v6 tcpListeningPort];
+  parameters = [responseCopy parameters];
+  tcpListeningPort = [parameters tcpListeningPort];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
-  if (!v7)
+  if (!tcpListeningPort)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -256,25 +256,25 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v4 parameters];
-    v14 = [v13 tcpListeningPort];
+    parameters2 = [responseCopy parameters];
+    tcpListeningPort2 = [parameters2 tcpListeningPort];
     v23 = 138543618;
     v24 = v12;
     v25 = 2112;
-    v26 = v14;
+    v26 = tcpListeningPort2;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEBUG, "%{public}@[Start Stream] The setup transfer succeeded; will use port %@", &v23, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v15 = [v4 parameters];
-  v16 = [v15 tcpListeningPort];
-  v17 = [v16 value];
-  -[HMDDataStreamTCPSetupOperation setRemoteTcpPort:](v9, "setRemoteTcpPort:", [v17 integerValue]);
+  parameters3 = [responseCopy parameters];
+  tcpListeningPort3 = [parameters3 tcpListeningPort];
+  value = [tcpListeningPort3 value];
+  -[HMDDataStreamTCPSetupOperation setRemoteTcpPort:](selfCopy2, "setRemoteTcpPort:", [value integerValue]);
 
-  v18 = [v4 accessoryKeySalt];
-  [(HMDDataStreamTCPSetupOperation *)v9 setAccessoryKeySalt:v18];
+  accessoryKeySalt2 = [responseCopy accessoryKeySalt];
+  [(HMDDataStreamTCPSetupOperation *)selfCopy2 setAccessoryKeySalt:accessoryKeySalt2];
 
-  [(HMDDataStreamTCPSetupOperation *)v9 _generateStreamKeys];
+  [(HMDDataStreamTCPSetupOperation *)selfCopy2 _generateStreamKeys];
 LABEL_12:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -283,14 +283,14 @@ LABEL_12:
 - (void)startSetup
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDataStreamSetupOperation *)self accessory];
-  v4 = [v3 anyIPServer];
+  accessory = [(HMDDataStreamSetupOperation *)self accessory];
+  anyIPServer = [accessory anyIPServer];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = v7;
-  if (v4)
+  if (anyIPServer)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -301,34 +301,34 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v5);
-    v10 = [(HMDDataStreamTCPSetupOperation *)v6 controllerKeySalt];
+    controllerKeySalt = [(HMDDataStreamTCPSetupOperation *)selfCopy controllerKeySalt];
     v11 = [objc_alloc(MEMORY[0x277CFEB08]) initWithValue:0];
     v12 = [objc_alloc(MEMORY[0x277CFEB18]) initWithValue:0];
-    v27 = [objc_alloc(MEMORY[0x277CFEB20]) initWithCommand:v11 transportType:v12 controllerKeySalt:v10];
+    v27 = [objc_alloc(MEMORY[0x277CFEB20]) initWithCommand:v11 transportType:v12 controllerKeySalt:controllerKeySalt];
 
     v31 = 0;
     v13 = [v27 serializeWithError:&v31];
     v14 = v31;
     if (v13)
     {
-      v15 = [(HMDDataStreamSetupOperation *)v6 transferManagementService];
-      v16 = [v15 findCharacteristicWithType:@"00000131-0000-1000-8000-0026BB765291"];
+      transferManagementService = [(HMDDataStreamSetupOperation *)selfCopy transferManagementService];
+      v16 = [transferManagementService findCharacteristicWithType:@"00000131-0000-1000-8000-0026BB765291"];
 
       v17 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v16 value:v13 authorizationData:0 type:0];
-      objc_initWeak(buf, v6);
-      v18 = [(HMDDataStreamSetupOperation *)v6 accessory];
+      objc_initWeak(buf, selfCopy);
+      accessory2 = [(HMDDataStreamSetupOperation *)selfCopy accessory];
       v32 = v17;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-      v20 = [(HMDDataStreamSetupOperation *)v6 queue];
+      queue = [(HMDDataStreamSetupOperation *)selfCopy queue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __44__HMDDataStreamTCPSetupOperation_startSetup__block_invoke;
       v28[3] = &unk_2797353F8;
       objc_copyWeak(&v30, buf);
-      v29 = v4;
-      [v18 writeCharacteristicValues:v19 source:1090 queue:v20 completionHandler:v28];
+      v29 = anyIPServer;
+      [accessory2 writeCharacteristicValues:v19 source:1090 queue:queue completionHandler:v28];
 
-      [(HMDDataStreamTCPSetupOperation *)v6 _finishStreamTransport];
+      [(HMDDataStreamTCPSetupOperation *)selfCopy _finishStreamTransport];
       objc_destroyWeak(&v30);
       objc_destroyWeak(buf);
     }
@@ -336,7 +336,7 @@ LABEL_12:
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = v6;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -365,7 +365,7 @@ LABEL_12:
 
     objc_autoreleasePoolPop(v5);
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [(HMDDataStreamSetupOperation *)v6 postDidFailWithError:v14];
+    [(HMDDataStreamSetupOperation *)selfCopy postDidFailWithError:v14];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -413,11 +413,11 @@ void __44__HMDDataStreamTCPSetupOperation_startSetup__block_invoke(uint64_t a1, 
 
 - (id)_fullKeySalt
 {
-  v3 = [(HMDDataStreamTCPSetupOperation *)self controllerKeySalt];
-  v4 = [v3 mutableCopy];
+  controllerKeySalt = [(HMDDataStreamTCPSetupOperation *)self controllerKeySalt];
+  v4 = [controllerKeySalt mutableCopy];
 
-  v5 = [(HMDDataStreamTCPSetupOperation *)self accessoryKeySalt];
-  [v4 appendData:v5];
+  accessoryKeySalt = [(HMDDataStreamTCPSetupOperation *)self accessoryKeySalt];
+  [v4 appendData:accessoryKeySalt];
 
   v6 = [v4 copy];
 
@@ -426,11 +426,11 @@ void __44__HMDDataStreamTCPSetupOperation_startSetup__block_invoke(uint64_t a1, 
 
 - (BOOL)_isComplete
 {
-  v3 = [(HMDDataStreamTCPSetupOperation *)self remoteNetAddress];
-  if (v3 && [(HMDDataStreamTCPSetupOperation *)self remoteTcpPort])
+  remoteNetAddress = [(HMDDataStreamTCPSetupOperation *)self remoteNetAddress];
+  if (remoteNetAddress && [(HMDDataStreamTCPSetupOperation *)self remoteTcpPort])
   {
-    v4 = [(HMDDataStreamTCPSetupOperation *)self sessionEncryption];
-    v5 = v4 != 0;
+    sessionEncryption = [(HMDDataStreamTCPSetupOperation *)self sessionEncryption];
+    v5 = sessionEncryption != 0;
   }
 
   else
@@ -441,11 +441,11 @@ void __44__HMDDataStreamTCPSetupOperation_startSetup__block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (HMDDataStreamTCPSetupOperation)initWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6
+- (HMDDataStreamTCPSetupOperation)initWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service
 {
   v10.receiver = self;
   v10.super_class = HMDDataStreamTCPSetupOperation;
-  v6 = [(HMDDataStreamSetupOperation *)&v10 initWithAccessory:a3 queue:a4 logIdentifier:a5 transferManagementService:a6];
+  v6 = [(HMDDataStreamSetupOperation *)&v10 initWithAccessory:accessory queue:queue logIdentifier:identifier transferManagementService:service];
   if (v6)
   {
     v7 = HMFRandomDataWithLength();

@@ -1,5 +1,5 @@
 @interface ADSessionAssertion
-- (ADSessionAssertion)initWithTimestamp:(unint64_t)a3 reason:(id)a4;
+- (ADSessionAssertion)initWithTimestamp:(unint64_t)timestamp reason:(id)reason;
 - (NSString)description;
 @end
 
@@ -20,17 +20,17 @@
   return v8;
 }
 
-- (ADSessionAssertion)initWithTimestamp:(unint64_t)a3 reason:(id)a4
+- (ADSessionAssertion)initWithTimestamp:(unint64_t)timestamp reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = ADSessionAssertion;
   v7 = [(ADSessionAssertion *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_timestamp = a3;
-    v9 = [v6 copy];
+    v7->_timestamp = timestamp;
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
   }

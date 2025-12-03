@@ -1,7 +1,7 @@
 @interface PXStoryCropQualityComposabilityScorer
-- (_PXStoryAutoEditCropScoreInfo)_computeCropScoreForDisplayAsset:(id)a3 diptychAspectRatio:(double)a4 triptychAspectRatio:(double)a5;
+- (_PXStoryAutoEditCropScoreInfo)_computeCropScoreForDisplayAsset:(id)asset diptychAspectRatio:(double)ratio triptychAspectRatio:(double)aspectRatio;
 - (id).cxx_construct;
-- (id)computeComposabilityScoresForDisplayAssets:(id)a3 error:(id *)a4;
+- (id)computeComposabilityScoresForDisplayAssets:(id)assets error:(id *)error;
 - (id)diagnosticDescription;
 @end
 
@@ -15,23 +15,23 @@
   return self;
 }
 
-- (_PXStoryAutoEditCropScoreInfo)_computeCropScoreForDisplayAsset:(id)a3 diptychAspectRatio:(double)a4 triptychAspectRatio:(double)a5
+- (_PXStoryAutoEditCropScoreInfo)_computeCropScoreForDisplayAsset:(id)asset diptychAspectRatio:(double)ratio triptychAspectRatio:(double)aspectRatio
 {
   v110 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [v5 acceptableCropRect];
+  assetCopy = asset;
+  [assetCopy acceptableCropRect];
   v92 = v7;
   v93 = v6;
   v9 = v8;
   v11 = v10;
-  [v5 preferredCropRect];
+  [assetCopy preferredCropRect];
   v88 = v13;
   v89 = v12;
   v90 = v15;
   v91 = v14;
   v80 = v11;
   v81 = v9;
-  [v5 faceAreaRect];
+  [assetCopy faceAreaRect];
   x = v112.origin.x;
   y = v112.origin.y;
   width = v112.size.width;
@@ -83,13 +83,13 @@
   v86 = v29;
   v87 = v28;
   v97 = 0.0;
-  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(v5 withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(v5 sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v97 sourceAcceptableCropRectNormalized:a4 sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v28, *&v29}];
+  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(assetCopy withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(assetCopy sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v97 sourceAcceptableCropRectNormalized:ratio sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v28, *&v29}];
   v78 = v31;
   v79 = v30;
   v33 = v32;
   v35 = v34;
   v96 = 0.0;
-  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(v5 withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(v5 sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v96 sourceAcceptableCropRectNormalized:1.0 / a4 sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v87, *&v86}];
+  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(assetCopy withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(assetCopy sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v96 sourceAcceptableCropRectNormalized:1.0 / ratio sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v87, *&v86}];
   v37 = v36;
   v39 = v38;
   v41 = v40;
@@ -97,14 +97,14 @@
   v44 = PLStoryGetLog();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
   {
-    v45 = [v5 uuid];
+    uuid = [assetCopy uuid];
     v46 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"{{%.2f, %.2f}, {%.2f, %.2f}}", v33, v79, v78, v35];
     v47 = v97;
     v48 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"{{%.2f, %.2f}, {%.2f, %.2f}}", v37, v39, v41, v43];
     *buf = 138544642;
-    v99 = v45;
+    v99 = uuid;
     v100 = 2048;
-    v101 = a4;
+    aspectRatioCopy = ratio;
     v102 = 2114;
     v103 = v46;
     v104 = 2048;
@@ -117,13 +117,13 @@
   }
 
   v95 = 0.0;
-  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(v5 withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(v5 sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v95 sourceAcceptableCropRectNormalized:a5 sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v87, *&v86}];
+  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(assetCopy withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(assetCopy sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v95 sourceAcceptableCropRectNormalized:aspectRatio sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v87, *&v86}];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
   v94 = 0.0;
-  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(v5 withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(v5 sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v94 sourceAcceptableCropRectNormalized:1.0 / a5 sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v87, *&v86}];
+  [MEMORY[0x1E69C06A0] bestCropRectV2ForAspectRatio:objc_msgSend(assetCopy withFocusRegion:"pixelWidth") sourcePixelWidth:objc_msgSend(assetCopy sourcePixelHeight:"pixelHeight") sourcePreferredCropRectNormalized:&v94 sourceAcceptableCropRectNormalized:1.0 / aspectRatio sourceFaceAreaRectNormalized:*v20 outputCropScore:{v20[1], v20[2], v20[3], v89, v88, v91, v90, v93, v92, v81, v80, *&v85, *&v84, *&v87, *&v86}];
   v58 = v57;
   v60 = v59;
   v62 = v61;
@@ -131,14 +131,14 @@
   v65 = PLStoryGetLog();
   if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
   {
-    v66 = [v5 uuid];
+    uuid2 = [assetCopy uuid];
     v67 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"{{%.2f, %.2f}, {%.2f, %.2f}}", v50, v52, v54, v56];
     v68 = v95;
     v69 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"{{%.2f, %.2f}, {%.2f, %.2f}}", v58, v60, v62, v64];
     *buf = 138544642;
-    v99 = v66;
+    v99 = uuid2;
     v100 = 2048;
-    v101 = a5;
+    aspectRatioCopy = aspectRatio;
     v102 = 2114;
     v103 = v67;
     v104 = 2048;
@@ -166,10 +166,10 @@
   return result;
 }
 
-- (id)computeComposabilityScoresForDisplayAssets:(id)a3 error:(id *)a4
+- (id)computeComposabilityScoresForDisplayAssets:(id)assets error:(id *)error
 {
-  v5 = a3;
-  v6 = -[PXStoryComposabilityScoresArray initWithCapacity:]([PXStoryComposabilityScoresMutableArray alloc], "initWithCapacity:", [v5 count]);
+  assetsCopy = assets;
+  v6 = -[PXStoryComposabilityScoresArray initWithCapacity:]([PXStoryComposabilityScoresMutableArray alloc], "initWithCapacity:", [assetsCopy count]);
   v7 = +[PXStorySettings sharedInstance];
   [v7 autoEditDiptychCropAspectMax];
   v9 = v8;
@@ -177,7 +177,7 @@
   v11 = v10;
   p_scores = &self->_scores;
   self->_scores.__end_ = self->_scores.__begin_;
-  v13 = [v5 count];
+  v13 = [assetsCopy count];
   begin = self->_scores.__begin_;
   if (v13 > self->_scores.__cap_ - begin)
   {
@@ -204,9 +204,9 @@
     }
   }
 
-  for (i = 0; i < [v5 count]; ++i)
+  for (i = 0; i < [assetsCopy count]; ++i)
   {
-    v21 = [v5 objectAtIndexedSubscript:i];
+    v21 = [assetsCopy objectAtIndexedSubscript:i];
     [(PXStoryCropQualityComposabilityScorer *)self _computeCropScoreForDisplayAsset:v21 diptychAspectRatio:v9 triptychAspectRatio:v11];
     v26 = v22;
     v27 = v23;
@@ -289,7 +289,7 @@
   {
     v50 = v47;
     v51 = v46;
-    if (v45 >= [v5 count])
+    if (v45 >= [assetsCopy count])
     {
       break;
     }
@@ -325,7 +325,7 @@
     v48 = v51;
   }
 
-  if ([v5 count] >= 2)
+  if ([assetsCopy count] >= 2)
   {
     *&v57 = sqrtf(v50 * j);
     [(PXStoryComposabilityScoresMutableArray *)v6 addComposabilityScores:v57, 0.0];

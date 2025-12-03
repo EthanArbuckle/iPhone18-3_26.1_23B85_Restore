@@ -1,5 +1,5 @@
 @interface CPLQuarantineFeedbackMessage
-- (CPLQuarantineFeedbackMessage)initWithClass:(Class)a3 reason:(id)a4 libraryIdentifier:(id)a5;
+- (CPLQuarantineFeedbackMessage)initWithClass:(Class)class reason:(id)reason libraryIdentifier:(id)identifier;
 - (id)serverMessage;
 @end
 
@@ -9,7 +9,7 @@
 {
   v9.receiver = self;
   v9.super_class = CPLQuarantineFeedbackMessage;
-  v3 = [(CPLFeedbackMessage *)&v9 serverMessage];
+  serverMessage = [(CPLFeedbackMessage *)&v9 serverMessage];
   v4 = objc_alloc_init(CPLServerFeedbackKeyAndValue);
   [(CPLServerFeedbackKeyAndValue *)v4 setKey:@"recordType"];
   recordClass = self->_recordClass;
@@ -35,27 +35,27 @@
   _Block_object_dispose(&v11, 8);
 
   [(CPLServerFeedbackKeyAndValue *)v4 setValue:v6];
-  [v3 addKeysAndValues:v4];
+  [serverMessage addKeysAndValues:v4];
   v7 = objc_alloc_init(CPLServerFeedbackKeyAndValue);
 
   [(CPLServerFeedbackKeyAndValue *)v7 setKey:@"reason"];
   [(CPLServerFeedbackKeyAndValue *)v7 setValue:self->_reason];
-  [v3 addKeysAndValues:v7];
+  [serverMessage addKeysAndValues:v7];
 
-  return v3;
+  return serverMessage;
 }
 
-- (CPLQuarantineFeedbackMessage)initWithClass:(Class)a3 reason:(id)a4 libraryIdentifier:(id)a5
+- (CPLQuarantineFeedbackMessage)initWithClass:(Class)class reason:(id)reason libraryIdentifier:(id)identifier
 {
-  v8 = a4;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = CPLQuarantineFeedbackMessage;
-  v9 = [(CPLFeedbackMessage *)&v14 initWithLibraryIdentifier:a5];
+  v9 = [(CPLFeedbackMessage *)&v14 initWithLibraryIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordClass, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_recordClass, class);
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
   }

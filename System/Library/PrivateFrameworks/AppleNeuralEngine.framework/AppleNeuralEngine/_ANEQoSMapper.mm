@@ -1,24 +1,24 @@
 @interface _ANEQoSMapper
-+ (id)dispatchQueueArrayByMappingPrioritiesWithTag:(id)a3;
-+ (int)programPriorityForQoS:(unsigned int)a3;
-+ (unint64_t)queueIndexForQoS:(unsigned int)a3;
-+ (unsigned)qosForProgramPriority:(int)a3;
++ (id)dispatchQueueArrayByMappingPrioritiesWithTag:(id)tag;
++ (int)programPriorityForQoS:(unsigned int)s;
++ (unint64_t)queueIndexForQoS:(unsigned int)s;
++ (unsigned)qosForProgramPriority:(int)priority;
 @end
 
 @implementation _ANEQoSMapper
 
-+ (unint64_t)queueIndexForQoS:(unsigned int)a3
++ (unint64_t)queueIndexForQoS:(unsigned int)s
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([a1 aneRealTimeTaskQoS] == a3)
+  if ([self aneRealTimeTaskQoS] == s)
   {
     result = 2;
   }
 
   else
   {
-    HIDWORD(v7) = a3 - 9;
-    LODWORD(v7) = a3 - 9;
+    HIDWORD(v7) = s - 9;
+    LODWORD(v7) = s - 9;
     v6 = v7 >> 2;
     if (v6 < 7 && ((0x5Du >> v6) & 1) != 0)
     {
@@ -34,7 +34,7 @@
         v11 = 138412546;
         v12 = v9;
         v13 = 1024;
-        v14 = a3;
+        sCopy = s;
         _os_log_impl(&dword_1AD246000, v8, OS_LOG_TYPE_INFO, "%@: %d => Invalid qos requested", &v11, 0x12u);
       }
 
@@ -46,18 +46,18 @@
   return result;
 }
 
-+ (int)programPriorityForQoS:(unsigned int)a3
++ (int)programPriorityForQoS:(unsigned int)s
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([a1 aneRealTimeTaskQoS] == a3)
+  if ([self aneRealTimeTaskQoS] == s)
   {
     result = 2;
   }
 
   else
   {
-    HIDWORD(v7) = a3 - 9;
-    LODWORD(v7) = a3 - 9;
+    HIDWORD(v7) = s - 9;
+    LODWORD(v7) = s - 9;
     v6 = v7 >> 2;
     if (v6 < 7 && ((0x5Du >> v6) & 1) != 0)
     {
@@ -73,7 +73,7 @@
         v11 = 138412546;
         v12 = v9;
         v13 = 1024;
-        v14 = a3;
+        sCopy = s;
         _os_log_impl(&dword_1AD246000, v8, OS_LOG_TYPE_INFO, "%@: %d => Invalid qos requested", &v11, 0x12u);
       }
 
@@ -85,10 +85,10 @@
   return result;
 }
 
-+ (unsigned)qosForProgramPriority:(int)a3
++ (unsigned)qosForProgramPriority:(int)priority
 {
-  v3 = a3 - 4;
-  if (a3 < 4)
+  v3 = priority - 4;
+  if (priority < 4)
   {
     return 33;
   }
@@ -101,14 +101,14 @@
   return dword_1AD28F174[v3];
 }
 
-+ (id)dispatchQueueArrayByMappingPrioritiesWithTag:(id)a3
++ (id)dispatchQueueArrayByMappingPrioritiesWithTag:(id)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E695E0F0] mutableCopy];
   for (i = 0; i != 8; ++i)
   {
-    v7 = [v3 stringByAppendingFormat:@".p%d", i];
+    v7 = [tagCopy stringByAppendingFormat:@".p%d", i];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, [_ANEQoSMapper qosForProgramPriority:i], 0);
 

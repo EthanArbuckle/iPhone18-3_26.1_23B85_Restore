@@ -1,15 +1,15 @@
 @interface HDFHIRCredentialedRequestTask
 - (HDFHIRCredentialResult)credentialResult;
-- (HDFHIRCredentialedRequestTask)initWithCredentialedSession:(id)a3;
-- (HDFHIRCredentialedRequestTask)initWithSession:(id)a3;
-- (void)_handleError:(id)a3 endState:(id)a4;
-- (void)setCredentialResult:(id)a3;
-- (void)startTaskWithRequest:(id)a3 completion:(id)a4;
+- (HDFHIRCredentialedRequestTask)initWithCredentialedSession:(id)session;
+- (HDFHIRCredentialedRequestTask)initWithSession:(id)session;
+- (void)_handleError:(id)error endState:(id)state;
+- (void)setCredentialResult:(id)result;
+- (void)startTaskWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation HDFHIRCredentialedRequestTask
 
-- (HDFHIRCredentialedRequestTask)initWithSession:(id)a3
+- (HDFHIRCredentialedRequestTask)initWithSession:(id)session
 {
   v4 = NSStringFromSelector(a2);
   [NSException raise:NSInvalidArgumentException format:@"The -%@ method is not available on %@", v4, objc_opt_class()];
@@ -17,11 +17,11 @@
   return 0;
 }
 
-- (HDFHIRCredentialedRequestTask)initWithCredentialedSession:(id)a3
+- (HDFHIRCredentialedRequestTask)initWithCredentialedSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = HDFHIRCredentialedRequestTask;
-  v3 = [(HDFHIRRequestTask *)&v7 initWithSession:a3];
+  v3 = [(HDFHIRRequestTask *)&v7 initWithSession:session];
   if (v3)
   {
     v4 = HKCreateSerialDispatchQueue();
@@ -32,39 +32,39 @@
   return v3;
 }
 
-- (void)startTaskWithRequest:(id)a3 completion:(id)a4
+- (void)startTaskWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDFHIRCredentialedRequestTask *)self credentialResult];
+  requestCopy = request;
+  completionCopy = completion;
+  credentialResult = [(HDFHIRCredentialedRequestTask *)self credentialResult];
 
-  if (!v8)
+  if (!credentialResult)
   {
     sub_10000C4C4();
   }
 
   v9.receiver = self;
   v9.super_class = HDFHIRCredentialedRequestTask;
-  [(HDFHIRRequestTask *)&v9 startTaskWithRequest:v6 completion:v7];
+  [(HDFHIRRequestTask *)&v9 startTaskWithRequest:requestCopy completion:completionCopy];
 }
 
-- (void)_handleError:(id)a3 endState:(id)a4
+- (void)_handleError:(id)error endState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDFHIRRequestTask *)self session];
-  v9 = [v8 specification];
-  v10 = [v9 shouldRefreshTokenForCredentialedTaskError:v6];
+  errorCopy = error;
+  stateCopy = state;
+  session = [(HDFHIRRequestTask *)self session];
+  specification = [session specification];
+  v10 = [specification shouldRefreshTokenForCredentialedTaskError:errorCopy];
 
   if (v10)
   {
-    v11 = [(HDFHIRCredentialedRequestTask *)self credentialResult];
-    [v11 invalidate];
+    credentialResult = [(HDFHIRCredentialedRequestTask *)self credentialResult];
+    [credentialResult invalidate];
   }
 
   v12.receiver = self;
   v12.super_class = HDFHIRCredentialedRequestTask;
-  [(HDFHIRRequestTask *)&v12 _handleError:v6 endState:v7];
+  [(HDFHIRRequestTask *)&v12 _handleError:errorCopy endState:stateCopy];
 }
 
 - (HDFHIRCredentialResult)credentialResult
@@ -90,10 +90,10 @@
   return v4;
 }
 
-- (void)setCredentialResult:(id)a3
+- (void)setCredentialResult:(id)result
 {
-  v5 = a3;
-  if (!v5)
+  resultCopy = result;
+  if (!resultCopy)
   {
     sub_10000C534();
   }
@@ -103,10 +103,10 @@
   block[1] = 3221225472;
   block[2] = sub_10000A4C0;
   block[3] = &unk_1000187B0;
-  v9 = v5;
+  v9 = resultCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = resultCopy;
   dispatch_async(resourceQueue, block);
 }
 

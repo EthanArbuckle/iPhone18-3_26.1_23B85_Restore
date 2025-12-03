@@ -30,9 +30,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ACCAccessoryAuthorizationEntry *)self displayName];
-  v6 = [(ACCAccessoryAuthorizationEntry *)self certSerialString];
-  v7 = [NSString stringWithFormat:@"<%@: %p, displayName: %@, certSerialString: %@>", v4, self, v5, v6];
+  displayName = [(ACCAccessoryAuthorizationEntry *)self displayName];
+  certSerialString = [(ACCAccessoryAuthorizationEntry *)self certSerialString];
+  v7 = [NSString stringWithFormat:@"<%@: %p, displayName: %@, certSerialString: %@>", v4, self, displayName, certSerialString];
 
   return v7;
 }

@@ -1,12 +1,12 @@
 @interface TSCEArrayFormulaNode
-- (TSCEArrayFormulaNode)initWithNumColumns:(unsigned __int16)a3 numRows:(unsigned __int16)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (TSCEArrayFormulaNode)initWithNumColumns:(unsigned __int16)columns numRows:(unsigned __int16)rows;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCEArrayFormulaNode
 
-- (TSCEArrayFormulaNode)initWithNumColumns:(unsigned __int16)a3 numRows:(unsigned __int16)a4
+- (TSCEArrayFormulaNode)initWithNumColumns:(unsigned __int16)columns numRows:(unsigned __int16)rows
 {
   v11.receiver = self;
   v11.super_class = TSCEArrayFormulaNode;
@@ -14,8 +14,8 @@
   v7 = v6;
   if (v6)
   {
-    *(&v6->super._nodeType + 1) = a3;
-    *(&v6->super._nodeType + 2) = a4;
+    *(&v6->super._nodeType + 1) = columns;
+    *(&v6->super._nodeType + 2) = rows;
     v8 = objc_opt_new();
     children = v7->super._children;
     v7->super._children = v8;
@@ -24,7 +24,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TSCEArrayFormulaNode;
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  engineCopy = engine;
   objc_msgSend_children(self, v11, v12, v13, v14);
   v35 = 0u;
   v36 = 0u;
@@ -57,7 +57,7 @@
           objc_enumerationMutation(v15);
         }
 
-        objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(*(*(&v33 + 1) + 8 * v20++), v17, a3, a4, a5, v10, v33);
+        objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(*(*(&v33 + 1) + 8 * v20++), v17, array, ref, table, engineCopy, v33);
       }
 
       while (v18 != v20);
@@ -67,12 +67,12 @@
     while (v18);
   }
 
-  TSCEASTArrayElement::appendArrayNode(a3, *(&self->super._nodeType + 1), *(&self->super._nodeType + 2), v21, v22);
+  TSCEASTArrayElement::appendArrayNode(array, *(&self->super._nodeType + 1), *(&self->super._nodeType + 2), v21, v22);
   v27 = objc_msgSend_whitespaceBefore(self, v23, v24, v25, v26);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v27);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v27);
 
   v32 = objc_msgSend_whitespaceAfter(self, v28, v29, v30, v31);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v32);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v32);
 }
 
 @end

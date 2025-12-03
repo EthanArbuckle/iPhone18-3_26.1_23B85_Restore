@@ -1,25 +1,25 @@
 @interface PRXTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation PRXTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRXTextView" isKindOfClass:@"UITextView"];
-  [v3 validateClass:@"PRXTextView" hasInstanceVariable:@"_style" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRXTextView" isKindOfClass:@"UITextView"];
+  [validationsCopy validateClass:@"PRXTextView" hasInstanceVariable:@"_style" withType:"q"];
 }
 
 - (id)accessibilityLabel
 {
   v4.receiver = self;
   v4.super_class = PRXTextViewAccessibility;
-  v2 = [(PRXTextViewAccessibility *)&v4 accessibilityValue];
+  accessibilityValue = [(PRXTextViewAccessibility *)&v4 accessibilityValue];
 
-  return v2;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits

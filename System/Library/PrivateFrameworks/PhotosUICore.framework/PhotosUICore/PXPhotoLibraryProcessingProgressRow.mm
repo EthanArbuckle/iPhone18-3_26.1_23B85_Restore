@@ -1,7 +1,7 @@
 @interface PXPhotoLibraryProcessingProgressRow
 - (PXPhotoLibraryProcessingProgressRow)init;
-- (PXPhotoLibraryProcessingProgressRow)initWithPhotoLibrary:(id)a3 titleKeyPath:(id)a4 imageKeyPath:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXPhotoLibraryProcessingProgressRow)initWithPhotoLibrary:(id)library titleKeyPath:(id)path imageKeyPath:(id)keyPath;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultUIAction;
 @end
 
@@ -94,31 +94,31 @@ LABEL_5:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXPhotoLibraryProcessingProgressRow alloc];
   photoLibrary = self->_photoLibrary;
-  v6 = [(PXPhotoLibraryProcessingProgressRow *)self titleKeyPath];
-  v7 = [(PXPhotoLibraryProcessingProgressRow *)self imageKeyPath];
-  v8 = [(PXPhotoLibraryProcessingProgressRow *)v4 initWithPhotoLibrary:photoLibrary titleKeyPath:v6 imageKeyPath:v7];
+  titleKeyPath = [(PXPhotoLibraryProcessingProgressRow *)self titleKeyPath];
+  imageKeyPath = [(PXPhotoLibraryProcessingProgressRow *)self imageKeyPath];
+  v8 = [(PXPhotoLibraryProcessingProgressRow *)v4 initWithPhotoLibrary:photoLibrary titleKeyPath:titleKeyPath imageKeyPath:imageKeyPath];
 
   return v8;
 }
 
-- (PXPhotoLibraryProcessingProgressRow)initWithPhotoLibrary:(id)a3 titleKeyPath:(id)a4 imageKeyPath:(id)a5
+- (PXPhotoLibraryProcessingProgressRow)initWithPhotoLibrary:(id)library titleKeyPath:(id)path imageKeyPath:(id)keyPath
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  pathCopy = path;
+  keyPathCopy = keyPath;
   v15.receiver = self;
   v15.super_class = PXPhotoLibraryProcessingProgressRow;
   v12 = [(PXPhotoLibraryProcessingProgressRow *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibrary, a3);
-    [(PXPhotoLibraryProcessingProgressRow *)v13 setTitleKeyPath:v10];
-    [(PXPhotoLibraryProcessingProgressRow *)v13 setImageKeyPath:v11];
+    objc_storeStrong(&v12->_photoLibrary, library);
+    [(PXPhotoLibraryProcessingProgressRow *)v13 setTitleKeyPath:pathCopy];
+    [(PXPhotoLibraryProcessingProgressRow *)v13 setImageKeyPath:keyPathCopy];
   }
 
   return v13;
@@ -126,8 +126,8 @@ LABEL_5:
 
 - (PXPhotoLibraryProcessingProgressRow)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotoLibraryProcessingProgressRow.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXPhotoLibraryProcessingProgressRow init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoLibraryProcessingProgressRow.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXPhotoLibraryProcessingProgressRow init]"}];
 
   abort();
 }

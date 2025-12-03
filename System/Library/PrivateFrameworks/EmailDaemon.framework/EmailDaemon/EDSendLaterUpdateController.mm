@@ -1,12 +1,12 @@
 @interface EDSendLaterUpdateController
 + (OS_os_log)log;
-- (EDSendLaterUpdateController)initWithHookRegistry:(id)a3 messagePersistence:(id)a4 outgoingRepository:(id)a5 alarmScheduler:(id)a6;
+- (EDSendLaterUpdateController)initWithHookRegistry:(id)registry messagePersistence:(id)persistence outgoingRepository:(id)repository alarmScheduler:(id)scheduler;
 - (NSDate)nextAlarmDate;
 - (void)_alarmFired;
-- (void)_updateAlarmUpdatedMessages:(id)a3 sendLaterDate:(id)a4;
-- (void)persistenceDidUpdateSendLaterDate:(id)a3 messages:(id)a4 generationWindow:(id)a5;
+- (void)_updateAlarmUpdatedMessages:(id)messages sendLaterDate:(id)date;
+- (void)persistenceDidUpdateSendLaterDate:(id)date messages:(id)messages generationWindow:(id)window;
 - (void)resetSendLaterAlarmIfNeeded;
-- (void)setNextAlarmDate:(id)a3;
+- (void)setNextAlarmDate:(id)date;
 @end
 
 @implementation EDSendLaterUpdateController
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __34__EDSendLaterUpdateController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_95 != -1)
   {
     dispatch_once(&log_onceToken_95, block);
@@ -36,21 +36,21 @@ void __34__EDSendLaterUpdateController_log__block_invoke(uint64_t a1)
   log_log_95 = v1;
 }
 
-- (EDSendLaterUpdateController)initWithHookRegistry:(id)a3 messagePersistence:(id)a4 outgoingRepository:(id)a5 alarmScheduler:(id)a6
+- (EDSendLaterUpdateController)initWithHookRegistry:(id)registry messagePersistence:(id)persistence outgoingRepository:(id)repository alarmScheduler:(id)scheduler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  registryCopy = registry;
+  persistenceCopy = persistence;
+  repositoryCopy = repository;
+  schedulerCopy = scheduler;
   v35.receiver = self;
   v35.super_class = EDSendLaterUpdateController;
   v15 = [(EDSendLaterUpdateController *)&v35 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_messagePersistence, a4);
-    objc_storeStrong(&v16->_hookResponder, a3);
-    objc_storeStrong(&v16->_outgoingRepository, a5);
+    objc_storeStrong(&v15->_messagePersistence, persistence);
+    objc_storeStrong(&v16->_hookResponder, registry);
+    objc_storeStrong(&v16->_outgoingRepository, repository);
     v17 = objc_alloc_init(EDDefaultSendLaterUpdateControllerAlarmDateProvider);
     alarmDateProvider = v16->_alarmDateProvider;
     v16->_alarmDateProvider = v17;
@@ -60,7 +60,7 @@ void __34__EDSendLaterUpdateController_log__block_invoke(uint64_t a1)
     alarmQueue = v16->_alarmQueue;
     v16->_alarmQueue = v20;
 
-    v22 = [objc_alloc(MEMORY[0x1E699B998]) initWithScheduler:v14 eventName:@"EDSendLaterUpdateController.alarm" eventHandlerQueue:v16->_alarmQueue];
+    v22 = [objc_alloc(MEMORY[0x1E699B998]) initWithScheduler:schedulerCopy eventName:@"EDSendLaterUpdateController.alarm" eventHandlerQueue:v16->_alarmQueue];
     xpcAlarm = v16->_xpcAlarm;
     v16->_xpcAlarm = v22;
 
@@ -77,7 +77,7 @@ void __34__EDSendLaterUpdateController_log__block_invoke(uint64_t a1)
     sendLaterQueryCreator = v16->_sendLaterQueryCreator;
     v16->_sendLaterQueryCreator = v26;
 
-    [v11 registerMessageChangeHookResponder:v16];
+    [registryCopy registerMessageChangeHookResponder:v16];
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
   }
@@ -93,47 +93,47 @@ void __105__EDSendLaterUpdateController_initWithHookRegistry_messagePersistence_
 
 - (NSDate)nextAlarmDate
 {
-  v2 = [(EDSendLaterUpdateController *)self alarmDateProvider];
-  v3 = [v2 nextDate];
+  alarmDateProvider = [(EDSendLaterUpdateController *)self alarmDateProvider];
+  nextDate = [alarmDateProvider nextDate];
 
-  return v3;
+  return nextDate;
 }
 
-- (void)setNextAlarmDate:(id)a3
+- (void)setNextAlarmDate:(id)date
 {
-  v5 = a3;
-  v4 = [(EDSendLaterUpdateController *)self alarmDateProvider];
-  [v4 setNextDate:v5];
+  dateCopy = date;
+  alarmDateProvider = [(EDSendLaterUpdateController *)self alarmDateProvider];
+  [alarmDateProvider setNextDate:dateCopy];
 }
 
 - (void)_alarmFired
 {
   v50 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_alarmQueue);
-  v34 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v3 = [MEMORY[0x1E695DF00] now];
-  v35 = [v3 ef_dateWithTruncatedSeconds];
+  ef_dateWithTruncatedSeconds = [v3 ef_dateWithTruncatedSeconds];
 
   v30 = [MEMORY[0x1E695DF00] ef_dateHoursAgo:12];
-  v4 = [(EDSendLaterUpdateController *)self nextAlarmDate];
-  if ([v4 ef_isLaterThanDate:v30])
+  nextAlarmDate = [(EDSendLaterUpdateController *)self nextAlarmDate];
+  if ([nextAlarmDate ef_isLaterThanDate:v30])
   {
-    v5 = [(EDSendLaterUpdateController *)self nextAlarmDate];
-    v6 = [v5 ef_isEarlierThanDate:v35];
+    nextAlarmDate2 = [(EDSendLaterUpdateController *)self nextAlarmDate];
+    v6 = [nextAlarmDate2 ef_isEarlierThanDate:ef_dateWithTruncatedSeconds];
 
     if (v6)
     {
-      v7 = [(EDSendLaterUpdateController *)self nextAlarmDate];
+      nextAlarmDate3 = [(EDSendLaterUpdateController *)self nextAlarmDate];
 
       v8 = +[EDSendLaterUpdateController log];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v47 = v7;
+        v47 = nextAlarmDate3;
         _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Send later alarm time has passed already, but is within the allowed delivery window. Send Later original date : %{public}@", buf, 0xCu);
       }
 
-      v35 = v7;
+      ef_dateWithTruncatedSeconds = nextAlarmDate3;
     }
   }
 
@@ -142,24 +142,24 @@ void __105__EDSendLaterUpdateController_initWithHookRegistry_messagePersistence_
   }
 
   v9 = [MEMORY[0x1E695DF00] now];
-  v31 = [v9 ef_dateWithTruncatedSeconds];
+  ef_dateWithTruncatedSeconds2 = [v9 ef_dateWithTruncatedSeconds];
 
-  v33 = [v34 dateByAddingUnit:64 value:1 toDate:v31 options:0];
+  v33 = [currentCalendar dateByAddingUnit:64 value:1 toDate:ef_dateWithTruncatedSeconds2 options:0];
   v10 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v47 = v35;
+    v47 = ef_dateWithTruncatedSeconds;
     v48 = 2114;
     v49 = v33;
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "Send later alarm fired. Send Later messages query start date: %{public}@ and end date:%{public}@", buf, 0x16u);
   }
 
-  v11 = [(EDSendLaterUpdateController *)self sendLaterQueryCreator];
-  v32 = [v11 queryWithStartDate:v35 endDate:v33];
+  sendLaterQueryCreator = [(EDSendLaterUpdateController *)self sendLaterQueryCreator];
+  v32 = [sendLaterQueryCreator queryWithStartDate:ef_dateWithTruncatedSeconds endDate:v33];
 
-  v12 = [(EDSendLaterUpdateController *)self messagePersistence];
-  v29 = [v12 persistedMessagesMatchingQuery:v32 limit:0x7FFFFFFFFFFFFFFFLL];
+  messagePersistence = [(EDSendLaterUpdateController *)self messagePersistence];
+  v29 = [messagePersistence persistedMessagesMatchingQuery:v32 limit:0x7FFFFFFFFFFFFFFFLL];
 
   v13 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -191,17 +191,17 @@ void __105__EDSendLaterUpdateController_initWithHookRegistry_messagePersistence_
         }
 
         v18 = *(*(&v41 + 1) + 8 * v17);
-        v19 = [(EDSendLaterUpdateController *)self outgoingRepository];
-        v20 = [v19 outgoingMessageFromPersistedMessage:v18];
+        outgoingRepository = [(EDSendLaterUpdateController *)self outgoingRepository];
+        v20 = [outgoingRepository outgoingMessageFromPersistedMessage:v18];
 
-        v21 = [(EDSendLaterUpdateController *)self outgoingRepository];
+        outgoingRepository2 = [(EDSendLaterUpdateController *)self outgoingRepository];
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __42__EDSendLaterUpdateController__alarmFired__block_invoke;
         v38[3] = &unk_1E8257988;
         v39 = v37;
         v40 = v18;
-        [v21 deliverMessage:v20 usingMailDrop:0 isCancelable:0 completion:v38];
+        [outgoingRepository2 deliverMessage:v20 usingMailDrop:0 isCancelable:0 completion:v38];
 
         ++v17;
       }
@@ -213,22 +213,22 @@ void __105__EDSendLaterUpdateController_initWithHookRegistry_messagePersistence_
     while (v15);
   }
 
-  v22 = [(EDSendLaterUpdateController *)self outgoingRepository];
-  v23 = [v22 messageChangeManager];
-  [v23 deleteMessages:obj];
+  outgoingRepository3 = [(EDSendLaterUpdateController *)self outgoingRepository];
+  messageChangeManager = [outgoingRepository3 messageChangeManager];
+  [messageChangeManager deleteMessages:obj];
 
-  v24 = [v34 dateByAddingUnit:64 value:1 toDate:v35 options:0];
+  v24 = [currentCalendar dateByAddingUnit:64 value:1 toDate:ef_dateWithTruncatedSeconds options:0];
   [(EDSendLaterUpdateController *)self setNextAlarmDate:v24];
 
   v25 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v26 = [v37 count];
-    v27 = [(EDSendLaterUpdateController *)self nextAlarmDate];
+    nextAlarmDate4 = [(EDSendLaterUpdateController *)self nextAlarmDate];
     *buf = 134218242;
     v47 = v26;
     v48 = 2114;
-    v49 = v27;
+    v49 = nextAlarmDate4;
     _os_log_impl(&dword_1C61EF000, v25, OS_LOG_TYPE_DEFAULT, "Finished sending send later messages. %lu failed. Next alarm date: %{public}@", buf, 0x16u);
   }
 
@@ -270,26 +270,26 @@ void __42__EDSendLaterUpdateController__alarmFired__block_invoke(uint64_t a1, vo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateAlarmUpdatedMessages:(id)a3 sendLaterDate:(id)a4
+- (void)_updateAlarmUpdatedMessages:(id)messages sendLaterDate:(id)date
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  dateCopy = date;
   v8 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 134218242;
-    v31 = [v6 count];
+    v31 = [messagesCopy count];
     v32 = 2114;
-    v33 = v7;
+    v33 = dateCopy;
     _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Schedule %lu messages for %{public}@", &v30, 0x16u);
   }
 
-  v9 = [(EDSendLaterUpdateController *)self nextAlarmDate];
-  v10 = v9;
-  if (v9)
+  nextAlarmDate = [(EDSendLaterUpdateController *)self nextAlarmDate];
+  v10 = nextAlarmDate;
+  if (nextAlarmDate)
   {
-    v11 = v9;
+    v11 = nextAlarmDate;
   }
 
   else
@@ -307,11 +307,11 @@ void __42__EDSendLaterUpdateController__alarmFired__block_invoke(uint64_t a1, vo
     _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Updated start date: %{public}@", &v30, 0xCu);
   }
 
-  v14 = [(EDSendLaterUpdateController *)self sendLaterQueryCreator];
-  v15 = [v14 queryWithStartDate:v12 endDate:0];
+  sendLaterQueryCreator = [(EDSendLaterUpdateController *)self sendLaterQueryCreator];
+  v15 = [sendLaterQueryCreator queryWithStartDate:v12 endDate:0];
 
-  v16 = [(EDSendLaterUpdateController *)self messagePersistence];
-  v17 = [v16 persistedMessagesMatchingQuery:v15 limit:1];
+  messagePersistence = [(EDSendLaterUpdateController *)self messagePersistence];
+  v17 = [messagePersistence persistedMessagesMatchingQuery:v15 limit:1];
 
   v18 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -324,106 +324,106 @@ void __42__EDSendLaterUpdateController__alarmFired__block_invoke(uint64_t a1, vo
 
   if ([v17 count])
   {
-    v20 = [v17 firstObject];
-    v21 = [v20 sendLaterDate];
+    firstObject = [v17 firstObject];
+    sendLaterDate = [firstObject sendLaterDate];
   }
 
   else
   {
-    v21 = 0;
+    sendLaterDate = 0;
   }
 
   v22 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 138543362;
-    v31 = v21;
+    v31 = sendLaterDate;
     _os_log_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEFAULT, "Earliest message send later date: %{public}@", &v30, 0xCu);
   }
 
-  v23 = [v6 count];
-  if (v7 && v23)
+  v23 = [messagesCopy count];
+  if (dateCopy && v23)
   {
     v24 = +[EDSendLaterUpdateController log];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 138543618;
-      v31 = v21;
+      v31 = sendLaterDate;
       v32 = 2114;
-      v33 = v7;
+      v33 = dateCopy;
       _os_log_impl(&dword_1C61EF000, v24, OS_LOG_TYPE_DEFAULT, "Current earliest message send later date:%{public}@ and send later date:%{public}@", &v30, 0x16u);
     }
 
-    if (!v21 || [v7 ef_isEarlierThanDate:v21])
+    if (!sendLaterDate || [dateCopy ef_isEarlierThanDate:sendLaterDate])
     {
-      v25 = v6;
+      v25 = messagesCopy;
 
-      v26 = v7;
-      v21 = v26;
+      v26 = dateCopy;
+      sendLaterDate = v26;
       v17 = v25;
     }
   }
 
-  v27 = [(EDSendLaterUpdateController *)self xpcAlarm];
-  [v27 setNextFireDate:v21 isUserVisible:1];
+  xpcAlarm = [(EDSendLaterUpdateController *)self xpcAlarm];
+  [xpcAlarm setNextFireDate:sendLaterDate isUserVisible:1];
 
   v28 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 138543362;
-    v31 = v21;
+    v31 = sendLaterDate;
     _os_log_impl(&dword_1C61EF000, v28, OS_LOG_TYPE_DEFAULT, "After scheduling xpc alarm at: %{public}@", &v30, 0xCu);
   }
 
-  [(EDSendLaterUpdateController *)self setNextAlarmDate:v21];
+  [(EDSendLaterUpdateController *)self setNextAlarmDate:sendLaterDate];
   v29 = *MEMORY[0x1E69E9840];
 }
 
 - (void)resetSendLaterAlarmIfNeeded
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(EDSendLaterUpdateController *)self alarmDateProvider];
-  v4 = [v3 nextDate];
+  alarmDateProvider = [(EDSendLaterUpdateController *)self alarmDateProvider];
+  nextDate = [alarmDateProvider nextDate];
 
   v5 = +[EDSendLaterUpdateController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = nextDate;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Next alarm date from EDDefaultSendLaterUpdateControllerAlarmDateProvider: %{public}@.", &v9, 0xCu);
   }
 
-  if (v4)
+  if (nextDate)
   {
     v6 = +[EDSendLaterUpdateController log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = nextDate;
       _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "Reset send later next alarm to %{public}@.", &v9, 0xCu);
     }
 
-    v7 = [(EDSendLaterUpdateController *)self xpcAlarm];
-    [v7 setNextFireDate:v4 isUserVisible:1];
+    xpcAlarm = [(EDSendLaterUpdateController *)self xpcAlarm];
+    [xpcAlarm setNextFireDate:nextDate isUserVisible:1];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidUpdateSendLaterDate:(id)a3 messages:(id)a4 generationWindow:(id)a5
+- (void)persistenceDidUpdateSendLaterDate:(id)date messages:(id)messages generationWindow:(id)window
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  messagesCopy = messages;
   alarmQueue = self->_alarmQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__EDSendLaterUpdateController_persistenceDidUpdateSendLaterDate_messages_generationWindow___block_invoke;
   block[3] = &unk_1E8250720;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = dateCopy;
+  v14 = messagesCopy;
+  v10 = messagesCopy;
+  v11 = dateCopy;
   dispatch_async(alarmQueue, block);
 }
 

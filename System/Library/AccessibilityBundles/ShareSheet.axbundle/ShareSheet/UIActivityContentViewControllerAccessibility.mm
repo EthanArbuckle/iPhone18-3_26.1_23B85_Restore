@@ -1,5 +1,5 @@
 @interface UIActivityContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureHeaderViewIfNeeded;
 - (void)viewDidLoad;
@@ -7,14 +7,14 @@
 
 @implementation UIActivityContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIActivityContentViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIActivityContentViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIActivityContentViewController" hasInstanceMethod:@"headerLinkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIActivityContentViewController" hasInstanceMethod:@"_configureHeaderViewIfNeeded" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIActivityContentViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIActivityContentViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIActivityContentViewController" hasInstanceMethod:@"headerLinkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIActivityContentViewController" hasInstanceMethod:@"_configureHeaderViewIfNeeded" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -26,9 +26,9 @@
   v3 = [(UIActivityContentViewControllerAccessibility *)self safeValueForKey:@"navigationItem"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 rightBarButtonItem];
+  rightBarButtonItem = [v4 rightBarButtonItem];
   v6 = accessibilityLocalizedString(@"sharing.close");
-  [v5 setAccessibilityLabel:v6];
+  [rightBarButtonItem setAccessibilityLabel:v6];
 
   v7 = [(UIActivityContentViewControllerAccessibility *)self safeValueForKey:@"headerLinkView"];
   [v7 setAccessibilityTraits:*MEMORY[0x29EDC7F80]];

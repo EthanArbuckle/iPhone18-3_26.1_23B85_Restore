@@ -1,41 +1,41 @@
 @interface VMAccountStore
-- (VMAccountStore)initWithLabel:(id)a3 accountDir:(id)a4;
-- (__CFArray)copyOfAllRecordsWithFlags:(unsigned int)a3 flagsToNotHave:(unsigned int)a4;
-- (__CFArray)copyOfAllRecordsWithFlagsInRemoteUIDRange:(unsigned int)a3 flagsToNotHave:(unsigned int)a4 lowUid:(unsigned int)a5 highUid:(unsigned int)a6;
-- (__CFArray)copyOfAllRemoteUIDsWithTrashState:(BOOL)a3 includeTemp:(BOOL)a4;
-- (__CFArray)copyRecordsWithToken:(__CFString *)a3;
-- (__CFArray)copyRecordsWithTokenInMailbox:(__CFString *)a3 mailboxType:(int64_t)a4;
+- (VMAccountStore)initWithLabel:(id)label accountDir:(id)dir;
+- (__CFArray)copyOfAllRecordsWithFlags:(unsigned int)flags flagsToNotHave:(unsigned int)have;
+- (__CFArray)copyOfAllRecordsWithFlagsInRemoteUIDRange:(unsigned int)range flagsToNotHave:(unsigned int)have lowUid:(unsigned int)uid highUid:(unsigned int)highUid;
+- (__CFArray)copyOfAllRemoteUIDsWithTrashState:(BOOL)state includeTemp:(BOOL)temp;
+- (__CFArray)copyRecordsWithToken:(__CFString *)token;
+- (__CFArray)copyRecordsWithTokenInMailbox:(__CFString *)mailbox mailboxType:(int64_t)type;
 - (id)description;
 - (id)getDataFiles;
-- (int)copyOfAllRecordsWithFlagsInRemoteUIDRangeByStatement:(unsigned int)a3 flagsToNotHave:(unsigned int)a4 lowUid:(unsigned int)a5 highUid:(unsigned int)a6;
-- (int)countOfRecordsWithFlags:(unsigned int)a3 flagsToNotHave:(unsigned int)a4;
+- (int)copyOfAllRecordsWithFlagsInRemoteUIDRangeByStatement:(unsigned int)statement flagsToNotHave:(unsigned int)have lowUid:(unsigned int)uid highUid:(unsigned int)highUid;
+- (int)countOfRecordsWithFlags:(unsigned int)flags flagsToNotHave:(unsigned int)have;
 - (unsigned)getMailboxUsage;
-- (unsigned)getRecordIdentifier:(void *)a3;
-- (unsigned)getUIDValidity:(__CFString *)a3;
-- (void)copyFirstRecordWithToken:(__CFString *)a3;
-- (void)copyFirstRecordWithTokenInMailbox:(__CFString *)a3 mailboxType:(int64_t)a4;
-- (void)copyRecordWithIdentifier:(unsigned int)a3;
-- (void)copyRecordWithRemoteUID:(unsigned int)a3 flagsToHave:(unsigned int)a4 flagsToNotHave:(unsigned int)a5;
-- (void)createAndAddRecord:(unsigned int)a3 date:(int)a4 token:(id)a5 sender:(id)a6 callbackNumber:(id)a7 duration:(int)a8 expirationDate:(int)a9 flags:(int)a10 receiver:(id)a11;
+- (unsigned)getRecordIdentifier:(void *)identifier;
+- (unsigned)getUIDValidity:(__CFString *)validity;
+- (void)copyFirstRecordWithToken:(__CFString *)token;
+- (void)copyFirstRecordWithTokenInMailbox:(__CFString *)mailbox mailboxType:(int64_t)type;
+- (void)copyRecordWithIdentifier:(unsigned int)identifier;
+- (void)copyRecordWithRemoteUID:(unsigned int)d flagsToHave:(unsigned int)have flagsToNotHave:(unsigned int)notHave;
+- (void)createAndAddRecord:(unsigned int)record date:(int)date token:(id)token sender:(id)sender callbackNumber:(id)number duration:(int)duration expirationDate:(int)expirationDate flags:(int)self0 receiver:(id)self1;
 - (void)dealloc;
-- (void)getRecordProperty:(void *)a3 property:(int)a4;
-- (void)getRecordProperty_sync:(void *)a3 property:(int)a4;
+- (void)getRecordProperty:(void *)property property:(int)a4;
+- (void)getRecordProperty_sync:(void *)property_sync property:(int)property;
 - (void)removeAllRecords;
-- (void)removeRecord:(void *)a3;
-- (void)resetLocalFlag:(void *)a3 flag:(unsigned int)a4;
+- (void)removeRecord:(void *)record;
+- (void)resetLocalFlag:(void *)flag flag:(unsigned int)a4;
 - (void)save;
-- (void)setLocalFlag:(void *)a3 flag:(unsigned int)a4;
-- (void)setMailboxUsage:(unsigned int)a3;
-- (void)setRecordProperty:(void *)a3 property:(int)a4 value:(void *)a5;
-- (void)setUIDValidity:(__CFString *)a3 uidValidity:(unsigned int)a4;
+- (void)setLocalFlag:(void *)flag flag:(unsigned int)a4;
+- (void)setMailboxUsage:(unsigned int)usage;
+- (void)setRecordProperty:(void *)property property:(int)a4 value:(void *)value;
+- (void)setUIDValidity:(__CFString *)validity uidValidity:(unsigned int)uidValidity;
 @end
 
 @implementation VMAccountStore
 
-- (VMAccountStore)initWithLabel:(id)a3 accountDir:(id)a4
+- (VMAccountStore)initWithLabel:(id)label accountDir:(id)dir
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  dirCopy = dir;
   v39.receiver = self;
   v39.super_class = VMAccountStore;
   v8 = [(VMAccountStore *)&v39 init];
@@ -45,23 +45,23 @@
     queue = v8->_queue;
     v8->_queue = v9;
 
-    [(VMAccountStore *)v8 setLabel:v6];
-    [(VMAccountStore *)v8 setAccountDir:v7];
-    v12 = sub_1000856B8(v7, v11);
+    [(VMAccountStore *)v8 setLabel:labelCopy];
+    [(VMAccountStore *)v8 setAccountDir:dirCopy];
+    v12 = sub_1000856B8(dirCopy, v11);
     [(VMAccountStore *)v8 setDbfile:v12];
 
     v13 = +[NSFileManager defaultManager];
-    v14 = [(VMAccountStore *)v8 dbfile];
-    v15 = [v14 path];
-    v16 = [v13 fileExistsAtPath:v15];
+    dbfile = [(VMAccountStore *)v8 dbfile];
+    path = [dbfile path];
+    v16 = [v13 fileExistsAtPath:path];
 
     if ((v16 & 1) == 0)
     {
       v17 = +[NSFileManager defaultManager];
-      v18 = [(VMAccountStore *)v8 accountDir];
-      v19 = [v18 path];
+      accountDir = [(VMAccountStore *)v8 accountDir];
+      path2 = [accountDir path];
       v38 = 0;
-      v20 = [v17 createDirectoryAtPath:v19 withIntermediateDirectories:1 attributes:0 error:&v38];
+      v20 = [v17 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v38];
       v21 = v38;
 
       if ((v20 & 1) == 0)
@@ -74,8 +74,8 @@
       }
     }
 
-    v23 = [(VMAccountStore *)v8 dbfile];
-    [v23 path];
+    dbfile2 = [(VMAccountStore *)v8 dbfile];
+    [dbfile2 path];
     v8->store = CSDBRecordStoreCreateWithPath();
 
     if (v8->store)
@@ -158,161 +158,161 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(VMAccountStore *)self label];
-  v5 = [NSString stringWithFormat:@"<%@ %p label=%@>", v3, self, v4];
+  label = [(VMAccountStore *)self label];
+  v5 = [NSString stringWithFormat:@"<%@ %p label=%@>", v3, self, label];
 
   return v5;
 }
 
-- (void)getRecordProperty_sync:(void *)a3 property:(int)a4
+- (void)getRecordProperty_sync:(void *)property_sync property:(int)property
 {
-  if (!a3)
+  if (!property_sync)
   {
     return 0;
   }
 
-  v4 = dword_10010DA64[a4];
+  v4 = dword_10010DA64[property];
   return CSDBRecordGetProperty();
 }
 
-- (void)getRecordProperty:(void *)a3 property:(int)a4
+- (void)getRecordProperty:(void *)property property:(int)a4
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000900D8;
   v10[3] = &unk_1000EFD18;
   v10[4] = self;
   v10[5] = &v12;
-  v10[6] = a3;
+  v10[6] = property;
   v11 = a4;
-  dispatch_sync(v7, v10);
+  dispatch_sync(queue, v10);
 
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v8;
 }
 
-- (void)setRecordProperty:(void *)a3 property:(int)a4 value:(void *)a5
+- (void)setRecordProperty:(void *)property property:(int)a4 value:(void *)value
 {
-  v9 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000901D8;
   v10[3] = &unk_1000EFD40;
   v10[4] = self;
-  v10[5] = a3;
+  v10[5] = property;
   v11 = a4;
-  v10[6] = a5;
-  dispatch_sync(v9, v10);
+  v10[6] = value;
+  dispatch_sync(queue, v10);
 }
 
-- (unsigned)getRecordIdentifier:(void *)a3
+- (unsigned)getRecordIdentifier:(void *)identifier
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000902D0;
   v6[3] = &unk_1000EFD68;
   v6[4] = &v7;
-  v6[5] = a3;
-  dispatch_sync(v4, v6);
+  v6[5] = identifier;
+  dispatch_sync(queue, v6);
 
-  LODWORD(a3) = *(v8 + 6);
+  LODWORD(identifier) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
-  return a3;
+  return identifier;
 }
 
-- (void)setLocalFlag:(void *)a3 flag:(unsigned int)a4
+- (void)setLocalFlag:(void *)flag flag:(unsigned int)a4
 {
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000903A0;
   block[3] = &unk_1000EFD90;
   block[4] = self;
-  block[5] = a3;
+  block[5] = flag;
   v9 = a4;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)resetLocalFlag:(void *)a3 flag:(unsigned int)a4
+- (void)resetLocalFlag:(void *)flag flag:(unsigned int)a4
 {
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000904A0;
   block[3] = &unk_1000EFD90;
   block[4] = self;
-  block[5] = a3;
+  block[5] = flag;
   v9 = a4;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)createAndAddRecord:(unsigned int)a3 date:(int)a4 token:(id)a5 sender:(id)a6 callbackNumber:(id)a7 duration:(int)a8 expirationDate:(int)a9 flags:(int)a10 receiver:(id)a11
+- (void)createAndAddRecord:(unsigned int)record date:(int)date token:(id)token sender:(id)sender callbackNumber:(id)number duration:(int)duration expirationDate:(int)expirationDate flags:(int)self0 receiver:(id)self1
 {
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
+  tokenCopy = token;
+  senderCopy = sender;
+  numberCopy = number;
+  receiverCopy = receiver;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v21 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009069C;
   block[3] = &unk_1000EFDB8;
-  v34 = a3;
-  v35 = a4;
+  recordCopy = record;
+  dateCopy = date;
   block[4] = self;
-  v29 = v17;
-  v30 = v18;
-  v31 = v19;
-  v36 = a8;
-  v37 = a9;
-  v38 = a10;
-  v32 = v20;
+  v29 = tokenCopy;
+  v30 = senderCopy;
+  v31 = numberCopy;
+  durationCopy = duration;
+  expirationDateCopy = expirationDate;
+  flagsCopy = flags;
+  v32 = receiverCopy;
   v33 = &v39;
-  v22 = v20;
-  v23 = v19;
-  v24 = v18;
-  v25 = v17;
-  dispatch_sync(v21, block);
+  v22 = receiverCopy;
+  v23 = numberCopy;
+  v24 = senderCopy;
+  v25 = tokenCopy;
+  dispatch_sync(queue, block);
 
   v26 = v40[3];
   _Block_object_dispose(&v39, 8);
   return v26;
 }
 
-- (void)removeRecord:(void *)a3
+- (void)removeRecord:(void *)record
 {
-  v5 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000909D0;
   v6[3] = &unk_1000EEF10;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = record;
+  dispatch_sync(queue, v6);
 }
 
 - (id)getDataFiles
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(VMAccountStore *)self accountDir];
-  v5 = [v4 path];
+  accountDir = [(VMAccountStore *)self accountDir];
+  path = [accountDir path];
   v14 = 0;
-  v6 = [v3 contentsOfDirectoryAtPath:v5 error:&v14];
+  v6 = [v3 contentsOfDirectoryAtPath:path error:&v14];
   v7 = v14;
 
   if (v7)
@@ -320,10 +320,10 @@
     v8 = vm_vmd_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(VMAccountStore *)self accountDir];
-      v10 = [v9 path];
+      accountDir2 = [(VMAccountStore *)self accountDir];
+      path2 = [accountDir2 path];
       *buf = 138412546;
-      v16 = v10;
+      v16 = path2;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Can't retrieve the contents of directory %@, error %@", buf, 0x16u);
@@ -338,65 +338,65 @@
 
 - (void)removeAllRecords
 {
-  v3 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100090DB4;
   block[3] = &unk_1000EE5B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (void)copyRecordWithIdentifier:(unsigned int)a3
+- (void)copyRecordWithIdentifier:(unsigned int)identifier
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000912DC;
   block[3] = &unk_1000EFE00;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  identifierCopy = identifier;
+  dispatch_sync(queue, block);
 
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
   return v6;
 }
 
-- (void)copyRecordWithRemoteUID:(unsigned int)a3 flagsToHave:(unsigned int)a4 flagsToNotHave:(unsigned int)a5
+- (void)copyRecordWithRemoteUID:(unsigned int)d flagsToHave:(unsigned int)have flagsToNotHave:(unsigned int)notHave
 {
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v9 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100091420;
   v12[3] = &unk_1000EFD18;
   v12[4] = self;
   v12[5] = &v16;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  dispatch_sync(v9, v12);
+  dCopy = d;
+  haveCopy = have;
+  notHaveCopy = notHave;
+  dispatch_sync(queue, v12);
 
   v10 = v17[3];
   _Block_object_dispose(&v16, 8);
   return v10;
 }
 
-- (int)copyOfAllRecordsWithFlagsInRemoteUIDRangeByStatement:(unsigned int)a3 flagsToNotHave:(unsigned int)a4 lowUid:(unsigned int)a5 highUid:(unsigned int)a6
+- (int)copyOfAllRecordsWithFlagsInRemoteUIDRangeByStatement:(unsigned int)statement flagsToNotHave:(unsigned int)have lowUid:(unsigned int)uid highUid:(unsigned int)highUid
 {
   ppDb = 0;
-  v10 = [(VMAccountStore *)self dbfile];
-  v11 = [v10 path];
-  v12 = sqlite3_open([v11 UTF8String], &ppDb);
+  dbfile = [(VMAccountStore *)self dbfile];
+  path = [dbfile path];
+  v12 = sqlite3_open([path UTF8String], &ppDb);
 
   if (v12)
   {
@@ -412,10 +412,10 @@
 
   else
   {
-    sqlite3_bind_int(ppStmt, 1, a4 | a3);
-    sqlite3_bind_int(ppStmt, 2, a3);
-    sqlite3_bind_int(ppStmt, 3, a5);
-    sqlite3_bind_int(ppStmt, 4, a6);
+    sqlite3_bind_int(ppStmt, 1, have | statement);
+    sqlite3_bind_int(ppStmt, 2, statement);
+    sqlite3_bind_int(ppStmt, 3, uid);
+    sqlite3_bind_int(ppStmt, 4, highUid);
     for (i = 0; ; ++i)
     {
       v15 = sqlite3_step(ppStmt);
@@ -468,258 +468,258 @@
   return i;
 }
 
-- (__CFArray)copyOfAllRecordsWithFlagsInRemoteUIDRange:(unsigned int)a3 flagsToNotHave:(unsigned int)a4 lowUid:(unsigned int)a5 highUid:(unsigned int)a6
+- (__CFArray)copyOfAllRecordsWithFlagsInRemoteUIDRange:(unsigned int)range flagsToNotHave:(unsigned int)have lowUid:(unsigned int)uid highUid:(unsigned int)highUid
 {
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v11 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100091858;
   v14[3] = &unk_1000EFE28;
   v14[4] = self;
   v14[5] = &v19;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  dispatch_sync(v11, v14);
+  rangeCopy = range;
+  haveCopy = have;
+  uidCopy = uid;
+  highUidCopy = highUid;
+  dispatch_sync(queue, v14);
 
   v12 = v20[3];
   _Block_object_dispose(&v19, 8);
   return v12;
 }
 
-- (__CFArray)copyOfAllRecordsWithFlags:(unsigned int)a3 flagsToNotHave:(unsigned int)a4
+- (__CFArray)copyOfAllRecordsWithFlags:(unsigned int)flags flagsToNotHave:(unsigned int)have
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100091AD8;
   block[3] = &unk_1000EFE50;
   block[4] = self;
   block[5] = &v13;
-  v11 = a3;
-  v12 = a4;
-  dispatch_sync(v7, block);
+  flagsCopy = flags;
+  haveCopy = have;
+  dispatch_sync(queue, block);
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
   return v8;
 }
 
-- (int)countOfRecordsWithFlags:(unsigned int)a3 flagsToNotHave:(unsigned int)a4
+- (int)countOfRecordsWithFlags:(unsigned int)flags flagsToNotHave:(unsigned int)have
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100091C18;
   block[3] = &unk_1000EFE50;
   block[4] = self;
   block[5] = &v13;
-  v11 = a3;
-  v12 = a4;
-  dispatch_sync(v7, block);
+  flagsCopy = flags;
+  haveCopy = have;
+  dispatch_sync(queue, block);
 
   v8 = *(v14 + 6);
   _Block_object_dispose(&v13, 8);
   return v8;
 }
 
-- (__CFArray)copyOfAllRemoteUIDsWithTrashState:(BOOL)a3 includeTemp:(BOOL)a4
+- (__CFArray)copyOfAllRemoteUIDsWithTrashState:(BOOL)state includeTemp:(BOOL)temp
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100091D44;
   block[3] = &unk_1000EFE78;
   block[4] = self;
   block[5] = &v13;
-  v11 = a3;
-  v12 = a4;
-  dispatch_sync(v7, block);
+  stateCopy = state;
+  tempCopy = temp;
+  dispatch_sync(queue, block);
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
   return v8;
 }
 
-- (void)copyFirstRecordWithTokenInMailbox:(__CFString *)a3 mailboxType:(int64_t)a4
+- (void)copyFirstRecordWithTokenInMailbox:(__CFString *)mailbox mailboxType:(int64_t)type
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100091E74;
   v10[3] = &unk_1000EFE28;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a3;
-  v10[7] = a4;
-  dispatch_sync(v7, v10);
+  v10[6] = mailbox;
+  v10[7] = type;
+  dispatch_sync(queue, v10);
 
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
   return v8;
 }
 
-- (__CFArray)copyRecordsWithTokenInMailbox:(__CFString *)a3 mailboxType:(int64_t)a4
+- (__CFArray)copyRecordsWithTokenInMailbox:(__CFString *)mailbox mailboxType:(int64_t)type
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100091FB0;
   v10[3] = &unk_1000EFE28;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a3;
-  v10[7] = a4;
-  dispatch_sync(v7, v10);
+  v10[6] = mailbox;
+  v10[7] = type;
+  dispatch_sync(queue, v10);
 
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
   return v8;
 }
 
-- (void)copyFirstRecordWithToken:(__CFString *)a3
+- (void)copyFirstRecordWithToken:(__CFString *)token
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000920E0;
   block[3] = &unk_1000EFE50;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = token;
+  dispatch_sync(queue, block);
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (__CFArray)copyRecordsWithToken:(__CFString *)a3
+- (__CFArray)copyRecordsWithToken:(__CFString *)token
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100092214;
   block[3] = &unk_1000EFE50;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = token;
+  dispatch_sync(queue, block);
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
   return v6;
 }
 
-- (unsigned)getUIDValidity:(__CFString *)a3
+- (unsigned)getUIDValidity:(__CFString *)validity
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100092348;
   block[3] = &unk_1000EFE50;
   block[4] = self;
   block[5] = &v8;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = validity;
+  dispatch_sync(queue, block);
 
-  LODWORD(a3) = *(v9 + 6);
+  LODWORD(validity) = *(v9 + 6);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return validity;
 }
 
-- (void)setUIDValidity:(__CFString *)a3 uidValidity:(unsigned int)a4
+- (void)setUIDValidity:(__CFString *)validity uidValidity:(unsigned int)uidValidity
 {
-  v7 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100092420;
   block[3] = &unk_1000EFD90;
   block[4] = self;
-  block[5] = a3;
-  v9 = a4;
-  dispatch_sync(v7, block);
+  block[5] = validity;
+  uidValidityCopy = uidValidity;
+  dispatch_sync(queue, block);
 }
 
 - (unsigned)getMailboxUsage
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100092538;
   v5[3] = &unk_1000ED428;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setMailboxUsage:(unsigned int)a3
+- (void)setMailboxUsage:(unsigned int)usage
 {
-  v5 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100092608;
   v6[3] = &unk_1000EFEA0;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  usageCopy = usage;
+  dispatch_sync(queue, v6);
 }
 
 - (void)save
 {
-  v3 = [(VMAccountStore *)self queue];
+  queue = [(VMAccountStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000926CC;
   block[3] = &unk_1000EE5B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 @end

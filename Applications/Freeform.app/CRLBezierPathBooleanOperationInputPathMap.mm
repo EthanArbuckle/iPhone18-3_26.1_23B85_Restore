@@ -1,16 +1,16 @@
 @interface CRLBezierPathBooleanOperationInputPathMap
 - (id).cxx_construct;
-- (id)copyWithElementsInRange:(_NSRange)a3;
+- (id)copyWithElementsInRange:(_NSRange)range;
 - (id)description;
-- (int64_t)inputPathIndexForOutputElementIndex:(int64_t)a3 outInputT:(double *)a4;
+- (int64_t)inputPathIndexForOutputElementIndex:(int64_t)index outInputT:(double *)t;
 @end
 
 @implementation CRLBezierPathBooleanOperationInputPathMap
 
-- (id)copyWithElementsInRange:(_NSRange)a3
+- (id)copyWithElementsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_alloc_init(CRLBezierPathBooleanOperationInputPathMap);
   v7 = v6;
   if (v6 != self)
@@ -147,23 +147,23 @@
   return v7;
 }
 
-- (int64_t)inputPathIndexForOutputElementIndex:(int64_t)a3 outInputT:(double *)a4
+- (int64_t)inputPathIndexForOutputElementIndex:(int64_t)index outInputT:(double *)t
 {
   begin = self->_points.__begin_;
-  if (a3 >= ((self->_points.__end_ - begin) >> 4))
+  if (index >= ((self->_points.__end_ - begin) >> 4))
   {
     sub_1002637C8();
   }
 
-  v5 = &begin[16 * a3];
+  v5 = &begin[16 * index];
   v6 = *v5;
-  if (a4)
+  if (t)
   {
-    *a4 = v5[1];
+    *t = v5[1];
     v9 = v6;
     if (v6 == -1)
     {
-      *a4 = 0.0;
+      *t = 0.0;
       return 0x7FFFFFFFFFFFFFFFLL;
     }
   }
@@ -190,11 +190,11 @@
 {
   v3 = +[NSMutableString string];
   [v3 appendFormat:@"CRLBezierPathBooleanOperationInputPathMap <%p>", self];
-  v4 = [(CRLBezierPathBooleanOperationInputPathMap *)self elementCount];
-  v5 = v4;
-  if (v4)
+  elementCount = [(CRLBezierPathBooleanOperationInputPathMap *)self elementCount];
+  v5 = elementCount;
+  if (elementCount)
   {
-    if (v4 >= 1)
+    if (elementCount >= 1)
     {
       v6 = 0;
       do

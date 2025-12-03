@@ -1,12 +1,12 @@
 @interface SBDosidoSwitcherModifier
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3;
-- (SBDosidoSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 direction:(unint64_t)a6;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay;
+- (SBDosidoSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout direction:(unint64_t)direction;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
 - (id)_layoutSettings;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSwipeToKillEvent:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSwipeToKillEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (id)visibleAppLayouts;
@@ -14,23 +14,23 @@
 
 @implementation SBDosidoSwitcherModifier
 
-- (SBDosidoSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 direction:(unint64_t)a6
+- (SBDosidoSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout direction:(unint64_t)direction
 {
-  v12 = a4;
-  v13 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v16.receiver = self;
   v16.super_class = SBDosidoSwitcherModifier;
-  v14 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v14 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   if (v14)
   {
-    if (v12)
+    if (layoutCopy)
     {
-      if (v13)
+      if (appLayoutCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v14->_fromAppLayout, a4);
-        objc_storeStrong(&v14->_toAppLayout, a5);
-        v14->_direction = a6;
+        objc_storeStrong(&v14->_fromAppLayout, layout);
+        objc_storeStrong(&v14->_toAppLayout, appLayout);
+        v14->_direction = direction;
         goto LABEL_5;
       }
     }
@@ -38,7 +38,7 @@ LABEL_4:
     else
     {
       [SBDosidoSwitcherModifier initWithTransitionID:a2 fromAppLayout:v14 toAppLayout:? direction:?];
-      if (v13)
+      if (appLayoutCopy)
       {
         goto LABEL_4;
       }
@@ -53,18 +53,18 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)shouldAsyncRenderUntilDelay:(double *)a3
+- (BOOL)shouldAsyncRenderUntilDelay:(double *)delay
 {
-  v5 = [(SBDosidoSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
-  [v6 disableAsyncRenderingTransitionPercentage];
+  switcherSettings = [(SBDosidoSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings disableAsyncRenderingTransitionPercentage];
   v8 = v7;
 
-  v9 = [(SBDosidoSwitcherModifier *)self _layoutSettings];
-  [v9 settlingDuration];
+  _layoutSettings = [(SBDosidoSwitcherModifier *)self _layoutSettings];
+  [_layoutSettings settlingDuration];
   v11 = v8 * v10;
   UIAnimationDragCoefficient();
-  *a3 = v11 * v12;
+  *delay = v11 * v12;
 
   return 1;
 }
@@ -73,9 +73,9 @@ LABEL_5:
 {
   v8.receiver = self;
   v8.super_class = SBDosidoSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v8 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v8 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:2];
-  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v2];
+  v4 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:transitionWillBegin];
 
   v5 = objc_alloc_init(SBInvalidateAdjustedAppLayoutsSwitcherEventResponse);
   v6 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v4];
@@ -87,32 +87,32 @@ LABEL_5:
 {
   v7.receiver = self;
   v7.super_class = SBDosidoSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
   if (([(SBDosidoSwitcherModifier *)self isReduceMotionEnabled]& 1) == 0 && ![(SBDosidoSwitcherModifier *)self shouldSuppressScaleAnimation])
   {
     v4 = [[SBDosidoScaleAnimationSwitcherEventResponse alloc] initWithAppLayout:self->_fromAppLayout];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillUpdate];
 
-    v3 = v5;
+    transitionWillUpdate = v5;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
-- (id)handleSwipeToKillEvent:(id)a3
+- (id)handleSwipeToKillEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBDosidoSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v10 handleSwipeToKillEvent:v4];
-  v6 = [v4 appLayout];
-  if ([(SBAppLayout *)self->_fromAppLayout isOrContainsAppLayout:v6]|| [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:v6])
+  v5 = [(SBSwitcherModifier *)&v10 handleSwipeToKillEvent:eventCopy];
+  appLayout = [eventCopy appLayout];
+  if ([(SBAppLayout *)self->_fromAppLayout isOrContainsAppLayout:appLayout]|| [(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:appLayout])
   {
-    [v4 progress];
+    [eventCopy progress];
     if ((BSFloatIsZero() & 1) == 0)
     {
-      v7 = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
-      v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v7 toResponse:v5];
+      interruptAndEndTransition = [(SBTransitionSwitcherModifier *)self interruptAndEndTransition];
+      v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:interruptAndEndTransition toResponse:v5];
 
       v5 = v8;
     }
@@ -121,11 +121,11 @@ LABEL_5:
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v13.receiver = self;
   v13.super_class = SBDosidoSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v13 adjustedAppLayoutsForAppLayouts:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v13 adjustedAppLayoutsForAppLayouts:layouts];
   v5 = [v4 indexOfObject:self->_fromAppLayout];
   v6 = [v4 indexOfObject:self->_toAppLayout];
   v7 = v6;
@@ -154,9 +154,9 @@ LABEL_5:
 
 - (id)visibleAppLayouts
 {
-  v3 = [(SBDosidoSwitcherModifier *)self appLayouts];
-  v4 = [v3 indexOfObject:self->_fromAppLayout];
-  v5 = [v3 indexOfObject:self->_toAppLayout];
+  appLayouts = [(SBDosidoSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts indexOfObject:self->_fromAppLayout];
+  v5 = [appLayouts indexOfObject:self->_toAppLayout];
   if (v4 >= v5)
   {
     v6 = v5;
@@ -178,52 +178,52 @@ LABEL_5:
   }
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(SBDosidoSwitcherModifier *)self appLayouts];
-  v10 = [v9 subarrayWithRange:{v6, v7 - v6 + 1}];
+  appLayouts2 = [(SBDosidoSwitcherModifier *)self appLayouts];
+  v10 = [appLayouts2 subarrayWithRange:{v6, v7 - v6 + 1}];
   v11 = [v8 setWithArray:v10];
 
   return v11;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBDosidoSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBDosidoSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBDosidoSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v2 = [(SBDosidoSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 dosidoSettings];
+  switcherSettings = [(SBDosidoSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  dosidoSettings = [animationSettings dosidoSettings];
 
-  return v4;
+  return dosidoSettings;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [(SBDosidoSwitcherModifier *)self visibleAppLayouts];
+  layoutCopy = layout;
+  visibleAppLayouts = [(SBDosidoSwitcherModifier *)self visibleAppLayouts];
   v10 = 1.0;
-  if (([v9 containsObject:v8] & 1) == 0)
+  if (([visibleAppLayouts containsObject:layoutCopy] & 1) == 0)
   {
     v13.receiver = self;
     v13.super_class = SBDosidoSwitcherModifier;
-    [(SBDosidoSwitcherModifier *)&v13 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBDosidoSwitcherModifier *)&v13 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v10 = v11;
   }
 
   return v10;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBDosidoSwitcherModifier *)self displayCornerRadius];
 

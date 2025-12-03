@@ -1,21 +1,21 @@
 @interface HDCoalescedTaskPoolQuota
-- (HDCoalescedTaskPoolQuota)initWithAvailableQuota:(int64_t)a3 maximumQuota:(int64_t)a4 refillInterval:(double)a5 minimumInterval:(double)a6 lastTrigger:(double)a7;
+- (HDCoalescedTaskPoolQuota)initWithAvailableQuota:(int64_t)quota maximumQuota:(int64_t)maximumQuota refillInterval:(double)interval minimumInterval:(double)minimumInterval lastTrigger:(double)trigger;
 - (double)timeUntilNextAvailableTrigger;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)availableQuota;
 - (void)consumeQuota;
 @end
 
 @implementation HDCoalescedTaskPoolQuota
 
-- (HDCoalescedTaskPoolQuota)initWithAvailableQuota:(int64_t)a3 maximumQuota:(int64_t)a4 refillInterval:(double)a5 minimumInterval:(double)a6 lastTrigger:(double)a7
+- (HDCoalescedTaskPoolQuota)initWithAvailableQuota:(int64_t)quota maximumQuota:(int64_t)maximumQuota refillInterval:(double)interval minimumInterval:(double)minimumInterval lastTrigger:(double)trigger
 {
-  if (a5 <= 0.0)
+  if (interval <= 0.0)
   {
     [HDCoalescedTaskPoolQuota initWithAvailableQuota:a2 maximumQuota:self refillInterval:? minimumInterval:? lastTrigger:?];
   }
 
-  if (a4 <= 0)
+  if (maximumQuota <= 0)
   {
     [HDCoalescedTaskPoolQuota initWithAvailableQuota:a2 maximumQuota:self refillInterval:? minimumInterval:? lastTrigger:?];
   }
@@ -26,17 +26,17 @@
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
-    result->_availableQuotaAfterLastTrigger = a3;
-    result->_maximumQuota = a4;
-    result->_quotaRefillInterval = a5;
-    result->_minimumInterval = a6;
-    result->_lastTrigger = a7;
+    result->_availableQuotaAfterLastTrigger = quota;
+    result->_maximumQuota = maximumQuota;
+    result->_quotaRefillInterval = interval;
+    result->_minimumInterval = minimumInterval;
+    result->_lastTrigger = trigger;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HDCoalescedTaskPoolQuota alloc];
   availableQuotaAfterLastTrigger = self->_availableQuotaAfterLastTrigger;

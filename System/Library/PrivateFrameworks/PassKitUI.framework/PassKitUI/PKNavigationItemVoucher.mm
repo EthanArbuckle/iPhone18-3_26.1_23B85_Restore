@@ -1,19 +1,19 @@
 @interface PKNavigationItemVoucher
-- (id)_initForController:(id *)a1;
-- (id)redeemForProvider:(void *)a3 usingHandle:;
-- (void)_invalidateFromDisconnect:(uint64_t)a1;
+- (id)_initForController:(id *)controller;
+- (id)redeemForProvider:(void *)provider usingHandle:;
+- (void)_invalidateFromDisconnect:(uint64_t)disconnect;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PKNavigationItemVoucher
 
-- (id)redeemForProvider:(void *)a3 usingHandle:
+- (id)redeemForProvider:(void *)provider usingHandle:
 {
   v5 = a2;
-  result = a3;
+  result = provider;
   v7 = result;
-  if (!a1)
+  if (!self)
   {
     v10 = 0;
 LABEL_11:
@@ -23,16 +23,16 @@ LABEL_11:
 
   if (!result || *(result + 24) != 1)
   {
-    v8 = a1;
-    v9 = v8;
-    if (v8[2])
+    selfCopy = self;
+    v9 = selfCopy;
+    if (selfCopy[2])
     {
       v10 = 0;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained(v8 + 1);
+      WeakRetained = objc_loadWeakRetained(selfCopy + 1);
       v12 = WeakRetained;
       if (WeakRetained)
       {
@@ -55,28 +55,28 @@ LABEL_11:
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    [(PKNavigationItemVoucher *)a1 _invalidateFromDisconnect:?];
+    [(PKNavigationItemVoucher *)self _invalidateFromDisconnect:?];
   }
 }
 
-- (id)_initForController:(id *)a1
+- (id)_initForController:(id *)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
-    v6.receiver = a1;
+    v6.receiver = controller;
     v6.super_class = PKNavigationItemVoucher;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    controller = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
     }
   }
 
-  return a1;
+  return controller;
 }
 
 - (void)dealloc
@@ -101,16 +101,16 @@ LABEL_11:
   [(PKNavigationItemVoucher *)&v5 dealloc];
 }
 
-- (void)_invalidateFromDisconnect:(uint64_t)a1
+- (void)_invalidateFromDisconnect:(uint64_t)disconnect
 {
-  if (a1 && (*(a1 + 16) & 1) == 0)
+  if (disconnect && (*(disconnect + 16) & 1) == 0)
   {
-    *(a1 + 16) = 1;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    objc_storeWeak((a1 + 8), 0);
+    *(disconnect + 16) = 1;
+    WeakRetained = objc_loadWeakRetained((disconnect + 8));
+    objc_storeWeak((disconnect + 8), 0);
     if ((a2 & 1) == 0)
     {
-      [(PKNavigationItemController *)WeakRetained _disconnectVoucher:a1];
+      [(PKNavigationItemController *)WeakRetained _disconnectVoucher:disconnect];
     }
   }
 }

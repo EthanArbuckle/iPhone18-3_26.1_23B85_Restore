@@ -3,34 +3,34 @@
 + (id)purpleTrustAirAliroAppletType;
 + (id)purpleTrustAirHomeAppletType;
 - (_PKProvisioningSEStorageSnapshot)init;
-- (id)appletTypesForAppletIDs:(id)a3;
-- (int64_t)requiredStorageForAppletTypes:(id)a3;
+- (id)appletTypesForAppletIDs:(id)ds;
+- (int64_t)requiredStorageForAppletTypes:(id)types;
 - (int64_t)totalStorage;
 - (int64_t)totalUsage;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeFromSnapshotWithAppletTypes:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeFromSnapshotWithAppletTypes:(id)types;
 - (void)reset;
 @end
 
 @implementation _PKProvisioningSEStorageSnapshot
 
-- (void)removeFromSnapshotWithAppletTypes:(id)a3
+- (void)removeFromSnapshotWithAppletTypes:(id)types
 {
   v4 = sub_1ADB06610();
-  v5 = self;
+  selfCopy = self;
   sub_1AD4ED788(v4);
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1ADB060F0();
 }
 
-- (id)appletTypesForAppletIDs:(id)a3
+- (id)appletTypesForAppletIDs:(id)ds
 {
   v4 = sub_1ADB06610();
-  v5 = self;
+  selfCopy = self;
   sub_1AD4ED9FC(v4);
 
   v6 = sub_1ADB06600();
@@ -40,7 +40,7 @@
 
 - (int64_t)totalStorage
 {
-  v2 = self;
+  selfCopy = self;
   sub_1ADB060B0();
   v4 = v3;
 
@@ -49,16 +49,16 @@
 
 - (int64_t)totalUsage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1ADB060B0();
 
   return v3;
 }
 
-- (int64_t)requiredStorageForAppletTypes:(id)a3
+- (int64_t)requiredStorageForAppletTypes:(id)types
 {
   v4 = sub_1ADB06610();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1AD4EE468(v4);
 
   return v6;
@@ -85,13 +85,13 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____PKProvisioningSEStorageSnapshot_snapshot);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_1ADB06370();
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
 - (_PKProvisioningSEStorageSnapshot)init

@@ -2,9 +2,9 @@
 + (id)sharedManager;
 - (AFAnalyticsTurnBasedInstrumentationContext)currentInstrumentationTurnContext;
 - (SiriUIInstrumentationManager)init;
-- (id)associatedDialogIdentifiersForAceObjectIdentifier:(id)a3;
-- (void)emitUUFRPresentedEventWith:(id)a3 snippetClass:(id)a4 dialogIdentifier:(id)a5 dialogPhase:(id)a6;
-- (void)storeCurrentInstrumentationTurnContext:(id)a3;
+- (id)associatedDialogIdentifiersForAceObjectIdentifier:(id)identifier;
+- (void)emitUUFRPresentedEventWith:(id)with snippetClass:(id)class dialogIdentifier:(id)identifier dialogPhase:(id)phase;
+- (void)storeCurrentInstrumentationTurnContext:(id)context;
 @end
 
 @implementation SiriUIInstrumentationManager
@@ -39,37 +39,37 @@ uint64_t __45__SiriUIInstrumentationManager_sharedManager__block_invoke()
 
 - (AFAnalyticsTurnBasedInstrumentationContext)currentInstrumentationTurnContext
 {
-  v2 = [MEMORY[0x277D61AD8] sharedManager];
-  v3 = [v2 currentInstrumentationTurnContext];
+  mEMORY[0x277D61AD8] = [MEMORY[0x277D61AD8] sharedManager];
+  currentInstrumentationTurnContext = [mEMORY[0x277D61AD8] currentInstrumentationTurnContext];
 
-  return v3;
+  return currentInstrumentationTurnContext;
 }
 
-- (void)storeCurrentInstrumentationTurnContext:(id)a3
+- (void)storeCurrentInstrumentationTurnContext:(id)context
 {
   v3 = MEMORY[0x277D61AD8];
-  v4 = a3;
-  v5 = [v3 sharedManager];
-  [v5 storeCurrentInstrumentationTurnContext:v4];
+  contextCopy = context;
+  sharedManager = [v3 sharedManager];
+  [sharedManager storeCurrentInstrumentationTurnContext:contextCopy];
 }
 
-- (void)emitUUFRPresentedEventWith:(id)a3 snippetClass:(id)a4 dialogIdentifier:(id)a5 dialogPhase:(id)a6
+- (void)emitUUFRPresentedEventWith:(id)with snippetClass:(id)class dialogIdentifier:(id)identifier dialogPhase:(id)phase
 {
   v9 = MEMORY[0x277D61AD8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v9 sharedManager];
-  [v14 emitUUFRPresentedEventWith:v13 snippetClass:v12 dialogIdentifier:v11 dialogPhase:v10];
+  phaseCopy = phase;
+  identifierCopy = identifier;
+  classCopy = class;
+  withCopy = with;
+  sharedManager = [v9 sharedManager];
+  [sharedManager emitUUFRPresentedEventWith:withCopy snippetClass:classCopy dialogIdentifier:identifierCopy dialogPhase:phaseCopy];
 }
 
-- (id)associatedDialogIdentifiersForAceObjectIdentifier:(id)a3
+- (id)associatedDialogIdentifiersForAceObjectIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D61AD8];
-  v4 = a3;
-  v5 = [v3 sharedManager];
-  v6 = [v5 associatedDialogIdentifiersForAceObjectIdentifier:v4];
+  identifierCopy = identifier;
+  sharedManager = [v3 sharedManager];
+  v6 = [sharedManager associatedDialogIdentifiersForAceObjectIdentifier:identifierCopy];
 
   return v6;
 }

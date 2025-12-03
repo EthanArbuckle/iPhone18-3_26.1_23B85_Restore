@@ -1,7 +1,7 @@
 @interface DefaultHeaderCollectionReusableViewAccessibility
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAddHeaderAnnotations;
-- (void)setContentConfiguration:(id)a3;
+- (void)setContentConfiguration:(id)configuration;
 @end
 
 @implementation DefaultHeaderCollectionReusableViewAccessibility
@@ -14,11 +14,11 @@
   [(DefaultHeaderCollectionReusableViewAccessibility *)self _axAddHeaderAnnotations];
 }
 
-- (void)setContentConfiguration:(id)a3
+- (void)setContentConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = DefaultHeaderCollectionReusableViewAccessibility;
-  [(DefaultHeaderCollectionReusableViewAccessibility *)&v4 setContentConfiguration:a3];
+  [(DefaultHeaderCollectionReusableViewAccessibility *)&v4 setContentConfiguration:configuration];
   [(DefaultHeaderCollectionReusableViewAccessibility *)self _axAddHeaderAnnotations];
 }
 

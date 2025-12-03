@@ -1,13 +1,13 @@
 @interface SpatialPhoto.MetalUIView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
 - (void)didMoveToWindow;
-- (void)drawInMTKView:(id)a3;
+- (void)drawInMTKView:(id)view;
 - (void)layoutSubviews;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SpatialPhoto.MetalUIView
@@ -22,9 +22,9 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   sub_25E6BD94C();
 }
 
@@ -38,44 +38,44 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  v3 = self;
+  selfCopy = self;
   sub_25E6BD94C();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_25E6BD9C0();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_25E6BDA80();
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_25E6BDD90();
 }
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
+  height = change.height;
+  width = change.width;
+  viewCopy = view;
+  selfCopy = self;
   sub_25E6BFFA4(width, height);
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_25E6C0280();
 }
 

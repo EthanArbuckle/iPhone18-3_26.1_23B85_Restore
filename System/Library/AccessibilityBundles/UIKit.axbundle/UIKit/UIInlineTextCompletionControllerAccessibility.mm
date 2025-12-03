@@ -1,48 +1,48 @@
 @interface UIInlineTextCompletionControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)acceptTextCompletionWithInteraction:(int64_t)a3 wordTerminator:(id)a4 outputHandledByCaller:(BOOL)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)acceptTextCompletionWithInteraction:(int64_t)interaction wordTerminator:(id)terminator outputHandledByCaller:(BOOL)caller;
 @end
 
 @implementation UIInlineTextCompletionControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIInlineTextCompletionController" hasInstanceMethod:@"acceptTextCompletionWithInteraction:wordTerminator:outputHandledByCaller:" withFullSignature:{"q", "@", "B", 0}];
   objc_storeStrong(v4, obj);
 }
 
-- (id)acceptTextCompletionWithInteraction:(int64_t)a3 wordTerminator:(id)a4 outputHandledByCaller:(BOOL)a5
+- (id)acceptTextCompletionWithInteraction:(int64_t)interaction wordTerminator:(id)terminator outputHandledByCaller:(BOOL)caller
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  interactionCopy = interaction;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v16 = a5;
-  v14.receiver = v20;
+  objc_storeStrong(&location, terminator);
+  callerCopy = caller;
+  v14.receiver = selfCopy;
   v14.super_class = UIInlineTextCompletionControllerAccessibility;
-  v15 = [(UIInlineTextCompletionControllerAccessibility *)&v14 acceptTextCompletionWithInteraction:v18 wordTerminator:location outputHandledByCaller:a5];
-  v9 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v10 = [v9 voiceOverInlineTextCompletionInsertionFeedback];
-  *&v5 = MEMORY[0x29EDC9740](v9).n128_u64[0];
+  v15 = [(UIInlineTextCompletionControllerAccessibility *)&v14 acceptTextCompletionWithInteraction:interactionCopy wordTerminator:location outputHandledByCaller:caller];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  voiceOverInlineTextCompletionInsertionFeedback = [mEMORY[0x29EDBDFA0] voiceOverInlineTextCompletionInsertionFeedback];
+  *&v5 = MEMORY[0x29EDC9740](mEMORY[0x29EDBDFA0]).n128_u64[0];
   v12 = 0;
   v11 = 0;
-  if ((v10 & 4) != 0)
+  if ((voiceOverInlineTextCompletionInsertionFeedback & 4) != 0)
   {
-    v13 = [v15 candidate];
+    candidate = [v15 candidate];
     v12 = 1;
-    v11 = [v13 length] != 0;
+    v11 = [candidate length] != 0;
   }
 
   if (v12)
   {
-    MEMORY[0x29EDC9740](v13);
+    MEMORY[0x29EDC9740](candidate);
   }
 
   if (v11)

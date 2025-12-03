@@ -1,33 +1,33 @@
 @interface ColorCubeCorrectionStage
-- (id)init:(id)a3;
-- (int)runOnLuma:(id)a3 andChroma:(id)a4 withMask:(id)a5 outChroma:(id)a6 colorCubeFixType:(int)a7;
-- (int)setMaskedSkyCubeVersion:(int)a3;
+- (id)init:(id)init;
+- (int)runOnLuma:(id)luma andChroma:(id)chroma withMask:(id)mask outChroma:(id)outChroma colorCubeFixType:(int)type;
+- (int)setMaskedSkyCubeVersion:(int)version;
 @end
 
 @implementation ColorCubeCorrectionStage
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v23.receiver = self;
   v23.super_class = ColorCubeCorrectionStage;
   v6 = [(ColorCubeCorrectionStage *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metal, a3);
+    objc_storeStrong(&v6->_metal, init);
     v8 = [SingleColorCubeCorrectionStage alloc];
-    inited = objc_msgSend_init_cubeSize_data_(v8, v9, v5, 32, &unk_2958D5C48);
+    inited = objc_msgSend_init_cubeSize_data_(v8, v9, initCopy, 32, &unk_2958D5C48);
     v11 = v7->fixes[0];
     v7->fixes[0] = inited;
 
     v12 = [SingleColorCubeCorrectionStage alloc];
-    v14 = objc_msgSend_init_cubeSize_data_(v12, v13, v5, 32, &unk_2958F5C48);
+    v14 = objc_msgSend_init_cubeSize_data_(v12, v13, initCopy, 32, &unk_2958F5C48);
     v15 = v7->fixes[1];
     v7->fixes[1] = v14;
 
     v16 = [SingleColorCubeCorrectionStage alloc];
-    v18 = objc_msgSend_init_cubeSize_data_(v16, v17, v5, 32, &unk_295915C48);
+    v18 = objc_msgSend_init_cubeSize_data_(v16, v17, initCopy, 32, &unk_295915C48);
     v19 = v7->fixes[2];
     v7->fixes[2] = v18;
 
@@ -40,9 +40,9 @@
   return v7;
 }
 
-- (int)setMaskedSkyCubeVersion:(int)a3
+- (int)setMaskedSkyCubeVersion:(int)version
 {
-  switch(a3)
+  switch(version)
   {
     case 1:
       v9 = [SingleColorCubeCorrectionStage alloc];
@@ -65,20 +65,20 @@ LABEL_8:
   return -1;
 }
 
-- (int)runOnLuma:(id)a3 andChroma:(id)a4 withMask:(id)a5 outChroma:(id)a6 colorCubeFixType:(int)a7
+- (int)runOnLuma:(id)luma andChroma:(id)chroma withMask:(id)mask outChroma:(id)outChroma colorCubeFixType:(int)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v16 = a6;
-  if (a7 == -1)
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  maskCopy = mask;
+  outChromaCopy = outChroma;
+  if (type == -1)
   {
     v17 = FigSignalErrorAtGM();
   }
 
-  else if ((a7 - 4) >= 0xFFFFFFFB)
+  else if ((type - 4) >= 0xFFFFFFFB)
   {
-    v17 = objc_msgSend_runOnLuma_andChroma_withMask_outChroma_(self->fixes[a7], v15, v12, v13, v14, v16);
+    v17 = objc_msgSend_runOnLuma_andChroma_withMask_outChroma_(self->fixes[type], v15, lumaCopy, chromaCopy, maskCopy, outChromaCopy);
     if (v17)
     {
       sub_29588B4F0();

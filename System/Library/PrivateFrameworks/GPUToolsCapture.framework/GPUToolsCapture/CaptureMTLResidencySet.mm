@@ -1,23 +1,23 @@
 @interface CaptureMTLResidencySet
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)containsAllocation:(id)a3;
-- (CaptureMTLResidencySet)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)containsAllocation:(id)allocation;
+- (CaptureMTLResidencySet)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSArray)allAllocations;
 - (NSArray)allCommittedAllocations;
 - (NSString)description;
-- (unint64_t)generationForAllocation:(id)a3;
+- (unint64_t)generationForAllocation:(id)allocation;
 - (unint64_t)streamReference;
-- (void)addAllocation:(id)a3;
-- (void)addAllocations:(const void *)a3 count:(unint64_t)a4;
+- (void)addAllocation:(id)allocation;
+- (void)addAllocations:(const void *)allocations count:(unint64_t)count;
 - (void)commit;
 - (void)dealloc;
 - (void)endResidency;
 - (void)removeAllAllocations;
-- (void)removeAllocation:(id)a3;
-- (void)removeAllocations:(const void *)a3 count:(unint64_t)a4;
+- (void)removeAllocation:(id)allocation;
+- (void)removeAllocations:(const void *)allocations count:(unint64_t)count;
 - (void)requestResidency;
-- (void)setCurrentGeneration:(unint64_t)a3;
-- (void)setExpiredGeneration:(unint64_t)a3;
+- (void)setCurrentGeneration:(unint64_t)generation;
+- (void)setExpiredGeneration:(unint64_t)generation;
 - (void)touch;
 @end
 
@@ -50,10 +50,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLResidencySet *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLResidencySet *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -68,11 +68,11 @@
   *(v14 + 15) |= 8u;
 }
 
-- (unint64_t)generationForAllocation:(id)a3
+- (unint64_t)generationForAllocation:(id)allocation
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  v5 = [(MTLResidencySetSPI *)baseObject generationForAllocation:v4];
+  baseObject = [allocation baseObject];
+  v5 = [(MTLResidencySetSPI *)baseObject generationForAllocation:baseObject];
 
   return v5;
 }
@@ -104,10 +104,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLResidencySet *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLResidencySet *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -148,10 +148,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLResidencySet *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLResidencySet *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -170,38 +170,38 @@
   [(CaptureMTLResidencySet *)&v13 dealloc];
 }
 
-- (BOOL)containsAllocation:(id)a3
+- (BOOL)containsAllocation:(id)allocation
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLResidencySetSPI *)baseObject containsAllocation:v4];
+  baseObject = [allocation baseObject];
+  LOBYTE(baseObject) = [(MTLResidencySetSPI *)baseObject containsAllocation:baseObject];
 
   return baseObject;
 }
 
-- (void)setExpiredGeneration:(unint64_t)a3
+- (void)setExpiredGeneration:(unint64_t)generation
 {
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLResidencySet_setExpiredGeneration", "Residency Set API", 0, 0);
   baseObject = self->_baseObject;
 
-  [(MTLResidencySetSPI *)baseObject setExpiredGeneration:a3];
+  [(MTLResidencySetSPI *)baseObject setExpiredGeneration:generation];
 }
 
-- (void)setCurrentGeneration:(unint64_t)a3
+- (void)setCurrentGeneration:(unint64_t)generation
 {
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLResidencySet_setCurrentGeneration", "Residency Set API", 0, 0);
   baseObject = self->_baseObject;
 
-  [(MTLResidencySetSPI *)baseObject setCurrentGeneration:a3];
+  [(MTLResidencySetSPI *)baseObject setCurrentGeneration:generation];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLResidencySetSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLResidencySetSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -259,22 +259,22 @@
 - (void)commit
 {
   ResidencySetTakeSnapshotInternal(self, 0);
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NSMutableSet *)v3->_tempAllocations allObjects];
-  v5 = [v4 copy];
-  committedAllocations = v3->_committedAllocations;
-  v3->_committedAllocations = v5;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allObjects = [(NSMutableSet *)selfCopy->_tempAllocations allObjects];
+  v5 = [allObjects copy];
+  committedAllocations = selfCopy->_committedAllocations;
+  selfCopy->_committedAllocations = v5;
 
-  objc_sync_exit(v3);
-  [(MTLResidencySetSPI *)v3->_baseObject commit];
+  objc_sync_exit(selfCopy);
+  [(MTLResidencySetSPI *)selfCopy->_baseObject commit];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v18 = 0u;
     v19 = 0u;
     v17 = 0u;
-    traceStream = v3->_traceStream;
-    GTTraceContext_pushEncoderWithStream(v3->_traceContext, &v17);
+    traceStream = selfCopy->_traceStream;
+    GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, &v17);
     v8 = v18;
     *(v18 + 8) = -15220;
     v9 = BYTE9(v19);
@@ -294,10 +294,10 @@
     }
 
     *(v8 + 13) = v9;
-    v13 = [(CaptureMTLResidencySet *)v3 traceStream];
-    if (v13)
+    traceStream = [(CaptureMTLResidencySet *)selfCopy traceStream];
+    if (traceStream)
     {
-      var0 = v13->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -322,8 +322,8 @@
 
 - (NSArray)allAllocations
 {
-  v2 = [(NSMutableSet *)self->_tempAllocations allObjects];
-  v3 = [v2 copy];
+  allObjects = [(NSMutableSet *)self->_tempAllocations allObjects];
+  v3 = [allObjects copy];
 
   return v3;
 }
@@ -331,19 +331,19 @@
 - (void)removeAllAllocations
 {
   ResidencySetTakeSnapshotInternal(self, 0);
-  v3 = self;
-  objc_sync_enter(v3);
-  [(NSMutableSet *)v3->_tempAllocations removeAllObjects];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_tempAllocations removeAllObjects];
+  objc_sync_exit(selfCopy);
 
-  [(MTLResidencySetSPI *)v3->_baseObject removeAllAllocations];
+  [(MTLResidencySetSPI *)selfCopy->_baseObject removeAllAllocations];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v15 = 0u;
     v16 = 0u;
     v14 = 0u;
-    traceStream = v3->_traceStream;
-    GTTraceContext_pushEncoderWithStream(v3->_traceContext, &v14);
+    traceStream = selfCopy->_traceStream;
+    GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, &v14);
     v5 = v15;
     *(v15 + 8) = -15208;
     v6 = BYTE9(v16);
@@ -363,10 +363,10 @@
     }
 
     *(v5 + 13) = v6;
-    v10 = [(CaptureMTLResidencySet *)v3 traceStream];
-    if (v10)
+    traceStream = [(CaptureMTLResidencySet *)selfCopy traceStream];
+    if (traceStream)
     {
-      var0 = v10->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -382,52 +382,52 @@
   }
 }
 
-- (void)removeAllocations:(const void *)a3 count:(unint64_t)a4
+- (void)removeAllocations:(const void *)allocations count:(unint64_t)count
 {
   ResidencySetTakeSnapshotInternal(self, 0);
-  v7 = self;
-  objc_sync_enter(v7);
-  if (a4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (count)
   {
-    v8 = a3;
-    v9 = a4;
+    allocationsCopy = allocations;
+    countCopy = count;
     do
     {
-      [(NSMutableSet *)v7->_tempAllocations removeObject:*v8++];
-      --v9;
+      [(NSMutableSet *)selfCopy->_tempAllocations removeObject:*allocationsCopy++];
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  baseObject = v7->_baseObject;
-  v11 = 8 * a4;
+  baseObject = selfCopy->_baseObject;
+  v11 = 8 * count;
   __chkstk_darwin(v12, v13);
-  bzero(&v29 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v29 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v14 = a3;
+    allocationsCopy2 = allocations;
     v15 = (&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v16 = a4;
+    countCopy2 = count;
     do
     {
-      *v15++ = [*v14++ baseObject];
-      --v16;
+      *v15++ = [*allocationsCopy2++ baseObject];
+      --countCopy2;
     }
 
-    while (v16);
+    while (countCopy2);
   }
 
-  [(MTLResidencySetSPI *)baseObject removeAllocations:&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLResidencySetSPI *)baseObject removeAllocations:&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v30 = 0u;
     v31 = 0u;
     v29 = 0u;
-    traceStream = v7->_traceStream;
-    GTTraceContext_pushEncoderWithStream(v7->_traceContext, &v29);
+    traceStream = selfCopy->_traceStream;
+    GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, &v29);
     v18 = v30;
     *(v30 + 8) = -15206;
     v19 = BYTE9(v31);
@@ -447,10 +447,10 @@
     }
 
     *(v18 + 13) = v19;
-    v23 = [(CaptureMTLResidencySet *)v7 traceStream];
-    if (v23)
+    traceStream = [(CaptureMTLResidencySet *)selfCopy traceStream];
+    if (traceStream)
     {
-      var0 = v23->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -458,11 +458,11 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v23, v24);
-    bzero(&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-    v26 = StreamArray(&v29, (&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+    __chkstk_darwin(traceStream, v24);
+    bzero(&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+    v26 = StreamArray(&v29, (&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), allocations, count);
     *v20 = var0;
-    *(v20 + 1) = a4;
+    *(v20 + 1) = count;
     v20[16] = v26;
     *(v20 + 17) = 0;
     *(v20 + 5) = 0;
@@ -473,26 +473,26 @@
   }
 }
 
-- (void)removeAllocation:(id)a3
+- (void)removeAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   ResidencySetTakeSnapshotInternal(self, 0);
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableSet *)v5->_tempAllocations removeObject:v4];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_tempAllocations removeObject:allocationCopy];
+  objc_sync_exit(selfCopy);
 
-  baseObject = v5->_baseObject;
-  v7 = [v4 baseObject];
-  [(MTLResidencySetSPI *)baseObject removeAllocation:v7];
+  baseObject = selfCopy->_baseObject;
+  baseObject = [allocationCopy baseObject];
+  [(MTLResidencySetSPI *)baseObject removeAllocation:baseObject];
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v21 = 0u;
     v22 = 0u;
     v20 = 0u;
-    traceStream = v5->_traceStream;
-    GTTraceContext_pushEncoderWithStream(v5->_traceContext, &v20);
+    traceStream = selfCopy->_traceStream;
+    GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, &v20);
     v9 = v21;
     *(v21 + 8) = -15207;
     v10 = BYTE9(v22);
@@ -512,10 +512,10 @@
     }
 
     *(v9 + 13) = v10;
-    v14 = [(CaptureMTLResidencySet *)v5 traceStream];
-    if (v14)
+    traceStream = [(CaptureMTLResidencySet *)selfCopy traceStream];
+    if (traceStream)
     {
-      var0 = v14->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -523,10 +523,10 @@
       var0 = 0;
     }
 
-    v16 = [v4 traceStream];
-    if (v16)
+    traceStream2 = [allocationCopy traceStream];
+    if (traceStream2)
     {
-      v17 = *v16;
+      v17 = *traceStream2;
     }
 
     else
@@ -543,52 +543,52 @@
   }
 }
 
-- (void)addAllocations:(const void *)a3 count:(unint64_t)a4
+- (void)addAllocations:(const void *)allocations count:(unint64_t)count
 {
   ResidencySetTakeSnapshotInternal(self, 0);
-  v7 = self;
-  objc_sync_enter(v7);
-  if (a4)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (count)
   {
-    v8 = a3;
-    v9 = a4;
+    allocationsCopy = allocations;
+    countCopy = count;
     do
     {
-      [(NSMutableSet *)v7->_tempAllocations addObject:*v8++];
-      --v9;
+      [(NSMutableSet *)selfCopy->_tempAllocations addObject:*allocationsCopy++];
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  baseObject = v7->_baseObject;
-  v11 = 8 * a4;
+  baseObject = selfCopy->_baseObject;
+  v11 = 8 * count;
   __chkstk_darwin(v12, v13);
-  bzero(&v29 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-  if (a4)
+  bzero(&v29 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+  if (count)
   {
-    v14 = a3;
+    allocationsCopy2 = allocations;
     v15 = (&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
-    v16 = a4;
+    countCopy2 = count;
     do
     {
-      *v15++ = [*v14++ baseObject];
-      --v16;
+      *v15++ = [*allocationsCopy2++ baseObject];
+      --countCopy2;
     }
 
-    while (v16);
+    while (countCopy2);
   }
 
-  [(MTLResidencySetSPI *)baseObject addAllocations:&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0) count:a4];
+  [(MTLResidencySetSPI *)baseObject addAllocations:&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0) count:count];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v30 = 0u;
     v31 = 0u;
     v29 = 0u;
-    traceStream = v7->_traceStream;
-    GTTraceContext_pushEncoderWithStream(v7->_traceContext, &v29);
+    traceStream = selfCopy->_traceStream;
+    GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, &v29);
     v18 = v30;
     *(v30 + 8) = -15211;
     v19 = BYTE9(v31);
@@ -608,10 +608,10 @@
     }
 
     *(v18 + 13) = v19;
-    v23 = [(CaptureMTLResidencySet *)v7 traceStream];
-    if (v23)
+    traceStream = [(CaptureMTLResidencySet *)selfCopy traceStream];
+    if (traceStream)
     {
-      var0 = v23->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -619,11 +619,11 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v23, v24);
-    bzero(&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * a4);
-    v26 = StreamArray(&v29, (&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, a4);
+    __chkstk_darwin(traceStream, v24);
+    bzero(&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * count);
+    v26 = StreamArray(&v29, (&v29 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), allocations, count);
     *v20 = var0;
-    *(v20 + 1) = a4;
+    *(v20 + 1) = count;
     v20[16] = v26;
     *(v20 + 17) = 0;
     *(v20 + 5) = 0;
@@ -634,26 +634,26 @@
   }
 }
 
-- (void)addAllocation:(id)a3
+- (void)addAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   ResidencySetTakeSnapshotInternal(self, 0);
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableSet *)v5->_tempAllocations addObject:v4];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_tempAllocations addObject:allocationCopy];
+  objc_sync_exit(selfCopy);
 
-  baseObject = v5->_baseObject;
-  v7 = [v4 baseObject];
-  [(MTLResidencySetSPI *)baseObject addAllocation:v7];
+  baseObject = selfCopy->_baseObject;
+  baseObject = [allocationCopy baseObject];
+  [(MTLResidencySetSPI *)baseObject addAllocation:baseObject];
 
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v21 = 0u;
     v22 = 0u;
     v20 = 0u;
-    traceStream = v5->_traceStream;
-    GTTraceContext_pushEncoderWithStream(v5->_traceContext, &v20);
+    traceStream = selfCopy->_traceStream;
+    GTTraceContext_pushEncoderWithStream(selfCopy->_traceContext, &v20);
     v9 = v21;
     *(v21 + 8) = -15212;
     v10 = BYTE9(v22);
@@ -673,10 +673,10 @@
     }
 
     *(v9 + 13) = v10;
-    v14 = [(CaptureMTLResidencySet *)v5 traceStream];
-    if (v14)
+    traceStream = [(CaptureMTLResidencySet *)selfCopy traceStream];
+    if (traceStream)
     {
-      var0 = v14->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -684,10 +684,10 @@
       var0 = 0;
     }
 
-    v16 = [v4 traceStream];
-    if (v16)
+    traceStream2 = [allocationCopy traceStream];
+    if (traceStream2)
     {
-      v17 = *v16;
+      v17 = *traceStream2;
     }
 
     else
@@ -704,22 +704,22 @@
   }
 }
 
-- (CaptureMTLResidencySet)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLResidencySet)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = CaptureMTLResidencySet;
   v9 = [(CaptureMTLResidencySet *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
 
     v13 = +[NSMutableSet set];
     tempAllocations = v10->_tempAllocations;

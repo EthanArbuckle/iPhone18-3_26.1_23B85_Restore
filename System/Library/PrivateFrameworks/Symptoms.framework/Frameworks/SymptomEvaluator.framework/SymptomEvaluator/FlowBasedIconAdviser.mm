@@ -1,13 +1,13 @@
 @interface FlowBasedIconAdviser
-- (FlowBasedIconAdviser)initWithQueue:(id)a3;
-- (id)getState:(BOOL)a3;
+- (FlowBasedIconAdviser)initWithQueue:(id)queue;
+- (id)getState:(BOOL)state;
 - (void)_initializeOutrankFlowMonitor;
 - (void)didSampleFlows;
 - (void)restoreDefaults;
-- (void)setActive:(BOOL)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setInternalState:(unsigned int)a3;
-- (void)setNePolicyCount:(int)a3;
+- (void)setActive:(BOOL)active;
+- (void)setConfiguration:(id)configuration;
+- (void)setInternalState:(unsigned int)state;
+- (void)setNePolicyCount:(int)count;
 @end
 
 @implementation FlowBasedIconAdviser
@@ -178,23 +178,23 @@ LABEL_41:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInternalState:(unsigned int)a3
+- (void)setInternalState:(unsigned int)state
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (self->_internalState != a3)
+  if (self->_internalState != state)
   {
-    v5 = a3 < 7;
-    v6 = v5 & (0x78u >> a3);
-    v7 = v5 & (0x10u >> a3);
-    v8 = v5 & (0x1Eu >> a3);
+    v5 = state < 7;
+    v6 = v5 & (0x78u >> state);
+    v7 = v5 & (0x10u >> state);
+    v8 = v5 & (0x1Eu >> state);
     v9 = outrankLogHandle;
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       internalState = self->_internalState;
       v11 = v9;
       v12 = flowBasedStateToString(internalState);
-      v13 = flowBasedStateToString(a3);
-      v14 = [(TrafficMonitor *)self->_outrankFlowMonitor activePolling];
+      v13 = flowBasedStateToString(state);
+      activePolling = [(TrafficMonitor *)self->_outrankFlowMonitor activePolling];
       flowBasedIconRecommendation = self->_flowBasedIconRecommendation;
       flowBasedIconRecommendationValid = self->_flowBasedIconRecommendationValid;
       v18 = 138414082;
@@ -202,7 +202,7 @@ LABEL_41:
       v20 = 2112;
       v21 = v13;
       v22 = 1024;
-      v23 = v14;
+      v23 = activePolling;
       v24 = 1024;
       v25 = v8;
       v26 = 1024;
@@ -216,7 +216,7 @@ LABEL_41:
       _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "COSMIcon change internalState %@ -> %@    polling %d -> %d  icon-state %d -> %d  valid %d -> %d", &v18, 0x3Au);
     }
 
-    self->_internalState = a3;
+    self->_internalState = state;
     self->_flowBasedIconRecommendation = v7;
     self->_flowBasedIconRecommendationValid = v6;
     [(TrafficMonitor *)self->_outrankFlowMonitor setActivePolling:v8];
@@ -225,9 +225,9 @@ LABEL_41:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNePolicyCount:(int)a3
+- (void)setNePolicyCount:(int)count
 {
-  if (a3 || self->_nePolicyCount < 1)
+  if (count || self->_nePolicyCount < 1)
   {
     self->_noPoliciesStartTime = 0.0;
   }
@@ -248,7 +248,7 @@ LABEL_41:
     dispatch_after(v7, queue, v9);
   }
 
-  self->_nePolicyCount = a3;
+  self->_nePolicyCount = count;
 }
 
 void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
@@ -277,12 +277,12 @@ void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = outrankLogHandle;
     if (os_log_type_enabled(outrankLogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -293,13 +293,13 @@ void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
       v13[0] = 67109634;
       v13[1] = active;
       v14 = 1024;
-      v15 = v3;
+      v15 = activeCopy;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEFAULT, "COSMIcon setActive %d -> %d when in %@", v13, 0x18u);
     }
 
-    if (v3)
+    if (activeCopy)
     {
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
       v11 = 1;
@@ -314,13 +314,13 @@ void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
     self->_flowBasedIconAdvicePeriodStart = v10;
     [(FlowBasedIconAdviser *)self setInternalState:v11];
     *&self->_numPollsThisAdvicePeriod = 0;
-    self->_active = v3;
+    self->_active = activeCopy;
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getState:(BOOL)a3
+- (id)getState:(BOOL)state
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -363,8 +363,8 @@ void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
   outrankFlowMonitor = self->_outrankFlowMonitor;
   if (outrankFlowMonitor)
   {
-    v15 = [(TrafficMonitor *)outrankFlowMonitor getState];
-    [v4 addObjectsFromArray:v15];
+    getState = [(TrafficMonitor *)outrankFlowMonitor getState];
+    [v4 addObjectsFromArray:getState];
   }
 
   return v4;
@@ -378,16 +378,16 @@ void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
   *&self->_outrankFlowMonitorMinSamplePeriod = xmmword_232817050;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v6 = a3;
-  [v6 extractKey:@"minNoFgAppDelay" toDouble:&self->_minNoForegroundAppDelay defaultTo:1.0];
-  [v6 extractKey:@"minIdleObserveTime" toDouble:&self->_minIdleObservationTime defaultTo:4.0];
-  [v6 extractKey:@"maxInitialIdlePeriod" toDouble:&self->_maxInitialIdleDuration defaultTo:6.0];
-  [v6 extractKey:@"maxInterstitialIdles" toUint32:&self->_maxInterstitialIdles defaultTo:0];
-  [v6 extractKey:@"maxNoPolicyIconOnPeriod" toDouble:&self->_maxNoPolicyIconOnDuration defaultTo:10.0];
-  [v6 extractKey:@"outrankFlowSamplePeriod" toDouble:&self->_outrankFlowMonitorMinSamplePeriod defaultTo:2.0];
-  [v6 extractKey:@"outrankFlowSampleThreshold" toDouble:&self->_outrankFlowMonitorSamplePeriodThroughputThreshold defaultTo:0.000001];
+  configurationCopy = configuration;
+  [configurationCopy extractKey:@"minNoFgAppDelay" toDouble:&self->_minNoForegroundAppDelay defaultTo:1.0];
+  [configurationCopy extractKey:@"minIdleObserveTime" toDouble:&self->_minIdleObservationTime defaultTo:4.0];
+  [configurationCopy extractKey:@"maxInitialIdlePeriod" toDouble:&self->_maxInitialIdleDuration defaultTo:6.0];
+  [configurationCopy extractKey:@"maxInterstitialIdles" toUint32:&self->_maxInterstitialIdles defaultTo:0];
+  [configurationCopy extractKey:@"maxNoPolicyIconOnPeriod" toDouble:&self->_maxNoPolicyIconOnDuration defaultTo:10.0];
+  [configurationCopy extractKey:@"outrankFlowSamplePeriod" toDouble:&self->_outrankFlowMonitorMinSamplePeriod defaultTo:2.0];
+  [configurationCopy extractKey:@"outrankFlowSampleThreshold" toDouble:&self->_outrankFlowMonitorSamplePeriodThroughputThreshold defaultTo:0.000001];
   outrankFlowMonitor = self->_outrankFlowMonitor;
   if (outrankFlowMonitor)
   {
@@ -395,7 +395,7 @@ void __41__FlowBasedIconAdviser_setNePolicyCount___block_invoke(uint64_t a1)
     [(TrafficMonitor *)self->_outrankFlowMonitor setMinSamplePeriodThroughputThreshold:self->_outrankFlowMonitorSamplePeriodThroughputThreshold];
   }
 
-  v5 = [v6 objectForKey:@"restoreDefaults"];
+  v5 = [configurationCopy objectForKey:@"restoreDefaults"];
   if (v5)
   {
     [(FlowBasedIconAdviser *)self restoreDefaults];
@@ -433,16 +433,16 @@ unint64_t __53__FlowBasedIconAdviser__initializeOutrankFlowMonitor__block_invoke
   return v0;
 }
 
-- (FlowBasedIconAdviser)initWithQueue:(id)a3
+- (FlowBasedIconAdviser)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = FlowBasedIconAdviser;
   v6 = [(FlowBasedIconAdviser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     [(FlowBasedIconAdviser *)v7 restoreDefaults];
     [(FlowBasedIconAdviser *)v7 _initializeOutrankFlowMonitor];
   }

@@ -1,6 +1,6 @@
 @interface CSLockScreenChargingSettings
 + (id)settingsControllerModule;
-- (int64_t)accessoryTypeForAnimationType:(int64_t)a3;
+- (int64_t)accessoryTypeForAnimationType:(int64_t)type;
 - (void)setDefaultValues;
 @end
 
@@ -109,16 +109,16 @@
   return v28;
 }
 
-- (int64_t)accessoryTypeForAnimationType:(int64_t)a3
+- (int64_t)accessoryTypeForAnimationType:(int64_t)type
 {
-  if ((a3 - 2) > 3)
+  if ((type - 2) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_21EC94DC8[a3 - 2];
+    return qword_21EC94DC8[type - 2];
   }
 }
 

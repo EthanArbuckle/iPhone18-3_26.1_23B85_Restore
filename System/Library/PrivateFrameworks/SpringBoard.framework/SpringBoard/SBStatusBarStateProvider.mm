@@ -1,29 +1,29 @@
 @interface SBStatusBarStateProvider
 - (SBStatusBarStateAggregator)stateAggregator;
 - (SBStatusBarStateProvider)init;
-- (void)_didChangeDoubleHeightStatusStringForStyle:(int64_t)a3;
+- (void)_didChangeDoubleHeightStatusStringForStyle:(int64_t)style;
 - (void)beginCoalescentBlock;
 - (void)dealloc;
 - (void)endCoalescentBlock;
-- (void)getStatusBarData:(id *)a3;
-- (void)statusBarStateAggregator:(id)a3 didUpdateNonItemData:(id *)a4;
-- (void)statusBarStateAggregator:(id)a3 didVisitItem:(int)a4 withUpdates:(BOOL)a5 toData:(id *)a6;
-- (void)statusBarStateAggregatorDidFinishPost:(id)a3 withData:(id *)a4 actions:(int)a5;
-- (void)updateStatusBarItem:(int)a3;
+- (void)getStatusBarData:(id *)data;
+- (void)statusBarStateAggregator:(id)aggregator didUpdateNonItemData:(id *)data;
+- (void)statusBarStateAggregator:(id)aggregator didVisitItem:(int)item withUpdates:(BOOL)updates toData:(id *)data;
+- (void)statusBarStateAggregatorDidFinishPost:(id)post withData:(id *)data actions:(int)actions;
+- (void)updateStatusBarItem:(int)item;
 @end
 
 @implementation SBStatusBarStateProvider
 
 - (void)beginCoalescentBlock
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBStatusBarStateProvider.m" lineNumber:75 description:{@"calls to %s are not allowed from within a post", "-[SBStatusBarStateProvider beginCoalescentBlock]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBStatusBarStateProvider.m" lineNumber:75 description:{@"calls to %s are not allowed from within a post", "-[SBStatusBarStateProvider beginCoalescentBlock]"}];
 }
 
 - (void)endCoalescentBlock
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a1 object:a2 file:@"SBStatusBarStateProvider.m" lineNumber:81 description:{@"unbalanced call to %s", "-[SBStatusBarStateProvider endCoalescentBlock]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBStatusBarStateProvider.m" lineNumber:81 description:{@"unbalanced call to %s", "-[SBStatusBarStateProvider endCoalescentBlock]"}];
 
   *a4 = *a3;
 }
@@ -35,12 +35,12 @@
   v2 = [(SBStatusBarStateProvider *)&v7 init];
   if (v2)
   {
-    v3 = [SBApp statusBarStateAggregator];
-    [v3 addPostingObserver:v2];
-    objc_storeWeak(&v2->_stateAggregator, v3);
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    statusBarStateAggregator = [SBApp statusBarStateAggregator];
+    [statusBarStateAggregator addPostingObserver:v2];
+    objc_storeWeak(&v2->_stateAggregator, statusBarStateAggregator);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     stateObservers = v2->_stateObservers;
-    v2->_stateObservers = v4;
+    v2->_stateObservers = weakObjectsHashTable;
   }
 
   return v2;
@@ -56,19 +56,19 @@
   [(SBStatusBarStateProvider *)&v4 dealloc];
 }
 
-- (void)getStatusBarData:(id *)a3
+- (void)getStatusBarData:(id *)data
 {
-  if (a3)
+  if (data)
   {
-    memcpy(a3, &self->_aggregatorData, sizeof($6C45178016D353444451090973A2A97F));
+    memcpy(data, &self->_aggregatorData, sizeof($6C45178016D353444451090973A2A97F));
 
-    [(SBStatusBarStateProvider *)self _composePostDataFromAggregatorData:a3];
+    [(SBStatusBarStateProvider *)self _composePostDataFromAggregatorData:data];
   }
 }
 
-- (void)updateStatusBarItem:(int)a3
+- (void)updateStatusBarItem:(int)item
 {
-  v3 = *&a3;
+  v3 = *&item;
   [(SBStatusBarStateProvider *)self beginCoalescentBlock];
   if ([(SBStatusBarStateProvider *)self _shouldPostForVisitedItem:v3 withUpdates:0 toAggregatorData:&self->_aggregatorData lastPost:&self->_lastPost])
   {
@@ -79,7 +79,7 @@
   [(SBStatusBarStateProvider *)self endCoalescentBlock];
 }
 
-- (void)_didChangeDoubleHeightStatusStringForStyle:(int64_t)a3
+- (void)_didChangeDoubleHeightStatusStringForStyle:(int64_t)style
 {
   [(SBStatusBarStateProvider *)self beginCoalescentBlock];
   stylesWithDetailUpdates = self->_stylesWithDetailUpdates;
@@ -92,33 +92,33 @@
     stylesWithDetailUpdates = self->_stylesWithDetailUpdates;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   [(NSMutableArray *)stylesWithDetailUpdates addObject:v8];
 
   [(SBStatusBarStateProvider *)self endCoalescentBlock];
 }
 
-- (void)statusBarStateAggregator:(id)a3 didVisitItem:(int)a4 withUpdates:(BOOL)a5 toData:(id *)a6
+- (void)statusBarStateAggregator:(id)aggregator didVisitItem:(int)item withUpdates:(BOOL)updates toData:(id *)data
 {
-  if ([(SBStatusBarStateProvider *)self _shouldPostForVisitedItem:*&a4 withUpdates:a5 toAggregatorData:a6 lastPost:&self->_lastPost])
+  if ([(SBStatusBarStateProvider *)self _shouldPostForVisitedItem:*&item withUpdates:updates toAggregatorData:data lastPost:&self->_lastPost])
   {
-    self->_itemNeedsPost[a4] = 1;
+    self->_itemNeedsPost[item] = 1;
     self->_anyItemNeedsPost = 1;
   }
 }
 
-- (void)statusBarStateAggregator:(id)a3 didUpdateNonItemData:(id *)a4
+- (void)statusBarStateAggregator:(id)aggregator didUpdateNonItemData:(id *)data
 {
-  if ([(SBStatusBarStateProvider *)self _shouldPostForUpdatesToNonItemData:a4])
+  if ([(SBStatusBarStateProvider *)self _shouldPostForUpdatesToNonItemData:data])
   {
     self->_nonItemDataNeedsPost = 1;
   }
 }
 
-- (void)statusBarStateAggregatorDidFinishPost:(id)a3 withData:(id *)a4 actions:(int)a5
+- (void)statusBarStateAggregatorDidFinishPost:(id)post withData:(id *)data actions:(int)actions
 {
-  memcpy(&self->_aggregatorData, a4, sizeof(self->_aggregatorData));
-  self->_aggregatorActions = a5;
+  memcpy(&self->_aggregatorData, data, sizeof(self->_aggregatorData));
+  self->_aggregatorActions = actions;
 
   [(SBStatusBarStateProvider *)self endCoalescentBlock];
 }

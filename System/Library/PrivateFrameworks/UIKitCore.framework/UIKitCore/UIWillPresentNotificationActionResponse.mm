@@ -1,23 +1,23 @@
 @interface UIWillPresentNotificationActionResponse
-+ (id)responseWithOptions:(unint64_t)a3;
-- (UIWillPresentNotificationActionResponse)initWithOptions:(unint64_t)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
++ (id)responseWithOptions:(unint64_t)options;
+- (UIWillPresentNotificationActionResponse)initWithOptions:(unint64_t)options;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (unint64_t)options;
 @end
 
 @implementation UIWillPresentNotificationActionResponse
 
-+ (id)responseWithOptions:(unint64_t)a3
++ (id)responseWithOptions:(unint64_t)options
 {
-  v3 = [[a1 alloc] initWithOptions:a3];
+  v3 = [[self alloc] initWithOptions:options];
 
   return v3;
 }
 
-- (UIWillPresentNotificationActionResponse)initWithOptions:(unint64_t)a3
+- (UIWillPresentNotificationActionResponse)initWithOptions:(unint64_t)options
 {
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   [v5 setObject:v6 forSetting:1];
 
   v9.receiver = self;
@@ -29,16 +29,16 @@
 
 - (unint64_t)options
 {
-  v2 = [(UIWillPresentNotificationActionResponse *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(UIWillPresentNotificationActionResponse *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"options";
   }

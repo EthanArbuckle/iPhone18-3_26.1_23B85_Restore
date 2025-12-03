@@ -7,7 +7,7 @@
 - (UIEdgeInsets)variantSymbolFrameInsets;
 - (UIEdgeInsets)wideShadowPaddleInsets;
 - (UIEdgeInsets)wideShadowPopupMenuInsets;
-- (UIKBRenderFactory_Composite)initWithRenderingContext:(id)a3 skipLayoutSegments:(BOOL)a4;
+- (UIKBRenderFactory_Composite)initWithRenderingContext:(id)context skipLayoutSegments:(BOOL)segments;
 - (double)popupFontSize;
 - (id)shortClassNameForCaching;
 @end
@@ -18,19 +18,19 @@
 {
   v5.receiver = self;
   v5.super_class = UIKBRenderFactory_Composite;
-  v2 = [(UIKBRenderFactory *)&v5 shortClassNameForCaching];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"eachable" withString:&stru_1EFB14550];
+  shortClassNameForCaching = [(UIKBRenderFactory *)&v5 shortClassNameForCaching];
+  v3 = [shortClassNameForCaching stringByReplacingOccurrencesOfString:@"eachable" withString:&stru_1EFB14550];
 
   return v3;
 }
 
-- (UIKBRenderFactory_Composite)initWithRenderingContext:(id)a3 skipLayoutSegments:(BOOL)a4
+- (UIKBRenderFactory_Composite)initWithRenderingContext:(id)context skipLayoutSegments:(BOOL)segments
 {
-  v4 = a4;
-  v6 = a3;
+  segmentsCopy = segments;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = UIKBRenderFactory_Composite;
-  v7 = [(UIKBRenderFactory *)&v12 initWithRenderingContext:v6 skipLayoutSegments:v4];
+  v7 = [(UIKBRenderFactory *)&v12 initWithRenderingContext:contextCopy skipLayoutSegments:segmentsCopy];
   v8 = v7;
   if (v7)
   {

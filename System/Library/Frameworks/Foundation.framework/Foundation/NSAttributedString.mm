@@ -1,17 +1,17 @@
 @interface NSAttributedString
-+ (NSAttributedString)allocWithZone:(_NSZone *)a3;
++ (NSAttributedString)allocWithZone:(_NSZone *)zone;
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format;
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format context:(NSDictionary *)context;
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format options:(NSAttributedStringFormattingOptions)options;
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format options:(NSAttributedStringFormattingOptions)options context:(NSDictionary *)context;
-+ (id)_attributedStringWithFormat:(id)a3 attributeOptions:(unint64_t)a4 formattingOptions:(id)a5 locale:(id)a6 arguments:(char *)a7;
-+ (id)_attributedStringWithFormat:(id)a3 options:(unint64_t)a4 locale:(id)a5 arguments:(char *)a6;
-- (BOOL)_willRequireIntentResolutionWhenContainingAttribute:(id)a3 value:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_attributedStringWithFormat:(id)format attributeOptions:(unint64_t)options formattingOptions:(id)formattingOptions locale:(id)locale arguments:(char *)arguments;
++ (id)_attributedStringWithFormat:(id)format options:(unint64_t)options locale:(id)locale arguments:(char *)arguments;
+- (BOOL)_willRequireIntentResolutionWhenContainingAttribute:(id)attribute value:(id)value;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToAttributedString:(NSAttributedString *)other;
 - (NSAttributedString)attributedStringByInflectingString;
 - (NSAttributedString)attributedSubstringFromRange:(NSRange)range;
-- (NSAttributedString)initWithCoder:(id)a3;
+- (NSAttributedString)initWithCoder:(id)coder;
 - (NSAttributedString)initWithContentsOfMarkdownFileAtURL:(NSURL *)markdownFile options:(NSAttributedStringMarkdownParsingOptions *)options baseURL:(NSURL *)baseURL error:(NSError *)error;
 - (NSAttributedString)initWithFormat:(NSAttributedString *)format options:(NSAttributedStringFormattingOptions)options locale:(NSLocale *)locale;
 - (NSAttributedString)initWithFormat:(NSAttributedString *)format options:(NSAttributedStringFormattingOptions)options locale:(NSLocale *)locale context:(NSDictionary *)context;
@@ -19,21 +19,21 @@
 - (NSAttributedString)initWithMarkdownString:(NSString *)markdownString options:(NSAttributedStringMarkdownParsingOptions *)options baseURL:(NSURL *)baseURL error:(NSError *)error;
 - (NSDictionary)attributesAtIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit;
 - (NSUInteger)length;
-- (id)__initWithFormat:(id)a3 attributeOptions:(unint64_t)a4 formattingOptions:(id)a5 locale:(id)a6 context:(id)a7 arguments:(char *)a8;
-- (id)_createAttributedSubstringWithRange:(_NSRange)a3;
-- (id)_firstValueOfAttributeWithKey:(id)a3 inRange:(_NSRange)a4;
-- (id)_identicalAttributesInRange:(_NSRange)a3;
+- (id)__initWithFormat:(id)format attributeOptions:(unint64_t)options formattingOptions:(id)formattingOptions locale:(id)locale context:(id)context arguments:(char *)arguments;
+- (id)_createAttributedSubstringWithRange:(_NSRange)range;
+- (id)_firstValueOfAttributeWithKey:(id)key inRange:(_NSRange)range;
+- (id)_identicalAttributesInRange:(_NSRange)range;
 - (id)_inflectedAttributedString;
-- (id)_initWithFormat:(id)a3 options:(unint64_t)a4 locale:(id)a5;
+- (id)_initWithFormat:(id)format options:(unint64_t)options locale:(id)locale;
 - (id)attribute:(NSAttributedStringKey)attrName atIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range;
 - (id)attribute:(NSAttributedStringKey)attrName atIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit;
-- (id)attributedStringByWeaklyAddingAttributes:(id)a3;
-- (id)attributedSubstringFromRange:(_NSRange)a3 replacingCharactersInRanges:(const _NSRange *)a4 numberOfRanges:(int64_t)a5 withString:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)attributedStringByWeaklyAddingAttributes:(id)attributes;
+- (id)attributedSubstringFromRange:(_NSRange)range replacingCharactersInRanges:(const _NSRange *)ranges numberOfRanges:(int64_t)ofRanges withString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)enumerateAttribute:(NSAttributedStringKey)attrName inRange:(NSRange)enumerationRange options:(NSAttributedStringEnumerationOptions)opts usingBlock:(void *)block;
 - (void)enumerateAttributesInRange:(NSRange)enumerationRange options:(NSAttributedStringEnumerationOptions)opts usingBlock:(void *)block;
 @end
@@ -42,20 +42,20 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSAttributedString *)self string];
+  string = [(NSAttributedString *)self string];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)string hash];
 }
 
-+ (NSAttributedString)allocWithZone:(_NSZone *)a3
++ (NSAttributedString)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_self() == a1)
+  selfCopy = self;
+  if (objc_opt_self() == self)
   {
-    v4 = objc_opt_self();
+    selfCopy = objc_opt_self();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
 - (id)attribute:(NSAttributedStringKey)attrName atIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range
@@ -71,8 +71,8 @@
   location = range.location;
   v22 = *MEMORY[0x1E69E9840];
   v7 = range.location + range.length;
-  v8 = [(NSAttributedString *)self string];
-  v9 = [(NSString *)v8 length];
+  string = [(NSAttributedString *)self string];
+  v9 = [(NSString *)string length];
   if (v7 > v9)
   {
     v17 = objc_opt_class();
@@ -90,7 +90,7 @@
 
   else
   {
-    v12 = [objc_allocWithZone(NSConcreteMutableAttributedString) initWithString:{-[NSString substringWithRange:](v8, "substringWithRange:", location, length)}];
+    v12 = [objc_allocWithZone(NSConcreteMutableAttributedString) initWithString:{-[NSString substringWithRange:](string, "substringWithRange:", location, length)}];
     if (location < v7)
     {
       v13 = location;
@@ -125,27 +125,27 @@
   }
 }
 
-- (id)attributedSubstringFromRange:(_NSRange)a3 replacingCharactersInRanges:(const _NSRange *)a4 numberOfRanges:(int64_t)a5 withString:(id)a6
+- (id)attributedSubstringFromRange:(_NSRange)range replacingCharactersInRanges:(const _NSRange *)ranges numberOfRanges:(int64_t)ofRanges withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v12 = objc_alloc_init(NSMutableAttributedString);
   _CFAutoreleasePoolPush();
   v13 = location;
-  if (a5 >= 1)
+  if (ofRanges >= 1)
   {
     do
     {
       [(NSMutableAttributedString *)v12 appendAttributedString:[(NSAttributedString *)self attributedSubstringFromRange:?]];
-      [(NSMutableAttributedString *)v12 replaceCharactersInRange:[(NSAttributedString *)v12 length]- 1 withString:1, a6];
-      v14 = a4->location;
-      v15 = a4->length;
-      ++a4;
+      [(NSMutableAttributedString *)v12 replaceCharactersInRange:[(NSAttributedString *)v12 length]- 1 withString:1, string];
+      v14 = ranges->location;
+      v15 = ranges->length;
+      ++ranges;
       v13 = v15 + v14;
-      --a5;
+      --ofRanges;
     }
 
-    while (a5);
+    while (ofRanges);
   }
 
   if (location + length > v13)
@@ -157,10 +157,10 @@
   return v12;
 }
 
-- (id)attributedStringByWeaklyAddingAttributes:(id)a3
+- (id)attributedStringByWeaklyAddingAttributes:(id)attributes
 {
   v5 = [(NSAttributedString *)self mutableCopyWithZone:0];
-  [v5 addAttributesWeakly:a3 range:{0, -[NSAttributedString length](self, "length")}];
+  [v5 addAttributesWeakly:attributes range:{0, -[NSAttributedString length](self, "length")}];
   v6 = [v5 copyWithZone:0];
 
   return v6;
@@ -168,12 +168,12 @@
 
 - (NSUInteger)length
 {
-  v2 = [(NSAttributedString *)self string];
+  string = [(NSAttributedString *)self string];
 
-  return [(NSString *)v2 length];
+  return [(NSString *)string length];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_self();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -181,7 +181,7 @@
     return 0;
   }
 
-  return [(NSAttributedString *)self isEqualToAttributedString:a3];
+  return [(NSAttributedString *)self isEqualToAttributedString:equal];
 }
 
 - (BOOL)isEqualToAttributedString:(NSAttributedString *)other
@@ -246,16 +246,16 @@ LABEL_15:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(NSMutableAttributedString *)NSConcreteMutableAttributedString allocWithZone:a3];
+  v4 = [(NSMutableAttributedString *)NSConcreteMutableAttributedString allocWithZone:zone];
 
   return [(NSConcreteMutableAttributedString *)v4 initWithAttributedString:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(NSAttributedString *)NSConcreteAttributedString allocWithZone:a3];
+  v4 = [(NSAttributedString *)NSConcreteAttributedString allocWithZone:zone];
 
   return [(NSConcreteAttributedString *)v4 initWithAttributedString:self];
 }
@@ -273,8 +273,8 @@ LABEL_15:
     {
       v6 = [(NSAttributedString *)self attributesAtIndex:i effectiveRange:&v10];
       v7 = [(NSString *)v4 length];
-      v8 = [(NSAttributedString *)self string];
-      [(NSMutableString *)v4 replaceCharactersInRange:v7 withString:0, [(NSString *)v8 substringWithRange:v10, v11]];
+      string = [(NSAttributedString *)self string];
+      [(NSMutableString *)v4 replaceCharactersInRange:v7 withString:0, [(NSString *)string substringWithRange:v10, v11]];
       [(NSMutableString *)v4 replaceCharactersInRange:[(NSString *)v4 length] withString:0, [(NSDictionary *)v6 description]];
       i = v10 + v11;
     }
@@ -668,7 +668,7 @@ LABEL_15:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
   v5 = [(NSAttributedString *)self length];
@@ -677,12 +677,12 @@ LABEL_15:
   *&keyCallBacks.release = v6;
   keyCallBacks.equal = 0;
   keyCallBacks.hash = 0;
-  v7 = [a3 allowsKeyedCoding];
-  v32 = self;
-  v8 = [(NSAttributedString *)self string];
-  if ((v7 & 1) == 0)
+  allowsKeyedCoding = [coder allowsKeyedCoding];
+  selfCopy = self;
+  string = [(NSAttributedString *)self string];
+  if ((allowsKeyedCoding & 1) == 0)
   {
-    [a3 encodeObject:v8];
+    [coder encodeObject:string];
     if (!v5)
     {
       return;
@@ -696,20 +696,20 @@ LABEL_15:
       v16 = objc_autoreleasePoolPush();
       v37 = 0;
       v38 = 0;
-      v17 = [(NSAttributedString *)v32 attributesAtIndex:v14 longestEffectiveRange:&v37 inRange:v14, v5 - v14];
+      v17 = [(NSAttributedString *)selfCopy attributesAtIndex:v14 longestEffectiveRange:&v37 inRange:v14, v5 - v14];
       LODWORD(v34) = CFDictionaryGetValue(v13, v17);
       LODWORD(value) = v38;
       if (v34)
       {
-        [a3 encodeValuesOfObjCTypes:{"iI", &v34, &value}];
+        [coder encodeValuesOfObjCTypes:{"iI", &v34, &value}];
       }
 
       else
       {
         LODWORD(v34) = v15;
         CFDictionaryAddValue(v13, v17, v15);
-        [a3 encodeValuesOfObjCTypes:{"iI", &v34, &value}];
-        [a3 encodeObject:v17];
+        [coder encodeValuesOfObjCTypes:{"iI", &v34, &value}];
+        [coder encodeObject:v17];
         ++v15;
       }
 
@@ -728,7 +728,7 @@ LABEL_15:
     return;
   }
 
-  [a3 encodeObject:v8 forKey:@"NSString"];
+  [coder encodeObject:string forKey:@"NSString"];
   if (v5)
   {
     v34 = 0;
@@ -739,7 +739,7 @@ LABEL_15:
     v12 = v11;
     if (v35 == v5)
     {
-      [a3 encodeObject:v12 forKey:@"NSAttributes"];
+      [coder encodeObject:v12 forKey:@"NSAttributes"];
       v13 = 0;
     }
 
@@ -806,7 +806,7 @@ LABEL_15:
           break;
         }
 
-        v30 = [(NSAttributedString *)v32 attributesAtIndex:v20 longestEffectiveRange:&v34 inRange:v20, v5 - v20];
+        v30 = [(NSAttributedString *)selfCopy attributesAtIndex:v20 longestEffectiveRange:&v34 inRange:v20, v5 - v20];
         if (v30)
         {
           v31 = v30;
@@ -822,8 +822,8 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v21);
-      [a3 encodeObject:v18 forKey:@"NSAttributes"];
-      [a3 encodeObject:v19 forKey:@"NSAttributeInfo"];
+      [coder encodeObject:v18 forKey:@"NSAttributes"];
+      [coder encodeObject:v19 forKey:@"NSAttributeInfo"];
     }
 
     if (v13)
@@ -833,10 +833,10 @@ LABEL_15:
   }
 }
 
-- (NSAttributedString)initWithCoder:(id)a3
+- (NSAttributedString)initWithCoder:(id)coder
 {
   v5 = [objc_allocWithZone(NSMutableAttributedString) init];
-  if (_NSReadMutableAttributedStringWithCoder(a3, v5))
+  if (_NSReadMutableAttributedStringWithCoder(coder, v5))
   {
     v6 = [(NSAttributedString *)self initWithAttributedString:v5];
   }
@@ -850,16 +850,16 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)_willRequireIntentResolutionWhenContainingAttribute:(id)a3 value:(id)a4
+- (BOOL)_willRequireIntentResolutionWhenContainingAttribute:(id)attribute value:(id)value
 {
-  v6 = [a3 isEqual:@"NSInlinePresentationIntent"];
-  if (a4 && v6 && ![a4 isEqual:&off_1EEF56C48])
+  v6 = [attribute isEqual:@"NSInlinePresentationIntent"];
+  if (value && v6 && ![value isEqual:&off_1EEF56C48])
   {
     return 1;
   }
 
-  result = [a3 isEqual:@"NSPresentationIntent"];
-  if (!a4)
+  result = [attribute isEqual:@"NSPresentationIntent"];
+  if (!value)
   {
     return 0;
   }
@@ -867,14 +867,14 @@ LABEL_15:
   return result;
 }
 
-- (id)_createAttributedSubstringWithRange:(_NSRange)a3
+- (id)_createAttributedSubstringWithRange:(_NSRange)range
 {
-  v3 = [(NSAttributedString *)self attributedSubstringFromRange:a3.location, a3.length];
+  v3 = [(NSAttributedString *)self attributedSubstringFromRange:range.location, range.length];
 
   return v3;
 }
 
-- (id)_firstValueOfAttributeWithKey:(id)a3 inRange:(_NSRange)a4
+- (id)_firstValueOfAttributeWithKey:(id)key inRange:(_NSRange)range
 {
   v13 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -888,7 +888,7 @@ LABEL_15:
   v6[2] = __74__NSAttributedString_NSInflection___firstValueOfAttributeWithKey_inRange___block_invoke;
   v6[3] = &unk_1E69F4070;
   v6[4] = &v7;
-  [(NSAttributedString *)self enumerateAttribute:a3 inRange:a4.location options:a4.length usingBlock:0x100000, v6];
+  [(NSAttributedString *)self enumerateAttribute:key inRange:range.location options:range.length usingBlock:0x100000, v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
   return v4;
@@ -910,13 +910,13 @@ void *__74__NSAttributedString_NSInflection___firstValueOfAttributeWithKey_inRan
 - (id)_inflectedAttributedString
 {
   v2 = [(NSAttributedString *)self mutableCopy];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  [v2 _inflectWithLocale:v3 replacements:MEMORY[0x1E695E0F0] concepts:MEMORY[0x1E695E0F0] preflight:1];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [v2 _inflectWithLocale:currentLocale replacements:MEMORY[0x1E695E0F0] concepts:MEMORY[0x1E695E0F0] preflight:1];
 
   return v2;
 }
 
-- (id)_identicalAttributesInRange:(_NSRange)a3
+- (id)_identicalAttributesInRange:(_NSRange)range
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -930,7 +930,7 @@ void *__74__NSAttributedString_NSInflection___firstValueOfAttributeWithKey_inRan
   v7[2] = __64__NSAttributedString_NSInflection___identicalAttributesInRange___block_invoke;
   v7[3] = &unk_1E69F4098;
   v7[4] = &v8;
-  [(NSAttributedString *)self enumerateAttributesInRange:a3.location options:a3.length usingBlock:0x100000, v7];
+  [(NSAttributedString *)self enumerateAttributesInRange:range.location options:range.length usingBlock:0x100000, v7];
   v3 = v9[5];
   if (v3)
   {
@@ -1001,44 +1001,44 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
 - (NSAttributedString)attributedStringByInflectingString
 {
   v2 = [(NSAttributedString *)self mutableCopy];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  [v2 _inflectWithLocale:v3 replacements:MEMORY[0x1E695E0F0] concepts:MEMORY[0x1E695E0F0] preflight:1];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [v2 _inflectWithLocale:currentLocale replacements:MEMORY[0x1E695E0F0] concepts:MEMORY[0x1E695E0F0] preflight:1];
 
   return v2;
 }
 
-- (id)_initWithFormat:(id)a3 options:(unint64_t)a4 locale:(id)a5
+- (id)_initWithFormat:(id)format options:(unint64_t)options locale:(id)locale
 {
   if (_os_feature_enabled_impl())
   {
-    v9 = a5;
+    localeCopy = locale;
   }
 
   else
   {
-    v9 = 0;
+    localeCopy = 0;
   }
 
-  return [(NSAttributedString *)self _initWithFormat:a3 options:a4 locale:v9 arguments:&v11, &v11];
+  return [(NSAttributedString *)self _initWithFormat:format options:options locale:localeCopy arguments:&v11, &v11];
 }
 
-- (id)__initWithFormat:(id)a3 attributeOptions:(unint64_t)a4 formattingOptions:(id)a5 locale:(id)a6 context:(id)a7 arguments:(char *)a8
+- (id)__initWithFormat:(id)format attributeOptions:(unint64_t)options formattingOptions:(id)formattingOptions locale:(id)locale context:(id)context arguments:(char *)arguments
 {
-  obj = a4;
+  obj = options;
   v86 = *MEMORY[0x1E69E9840];
   v77[1] = 0;
   v78 = 0;
   v77[0] = 0;
-  [a3 attribute:@"NSFormatSpecifierConfiguration" atIndex:0 longestEffectiveRange:v77 inRange:{0, objc_msgSend(a3, "length")}];
-  [a3 length];
-  if (_os_feature_enabled_impl() && ![objc_msgSend(a6 "localeIdentifier")])
+  [format attribute:@"NSFormatSpecifierConfiguration" atIndex:0 longestEffectiveRange:v77 inRange:{0, objc_msgSend(format, "length")}];
+  [format length];
+  if (_os_feature_enabled_impl() && ![objc_msgSend(locale "localeIdentifier")])
   {
-    a6 = [MEMORY[0x1E695DF58] currentLocale];
+    locale = [MEMORY[0x1E695DF58] currentLocale];
   }
 
-  [a5 pluralizationNumber];
-  [a3 string];
-  v53 = a8;
+  [formattingOptions pluralizationNumber];
+  [format string];
+  argumentsCopy = arguments;
   v11 = _CFStringCreateWithFormatAndArgumentsReturningMetadata();
   v73 = 0;
   v74 = &v73;
@@ -1046,9 +1046,9 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
   v76 = 0;
   if (v11)
   {
-    v68 = [[NSMutableAttributedString alloc] initWithString:v11, v53];
-    v64 = [a3 length];
-    v54 = self;
+    argumentsCopy = [[NSMutableAttributedString alloc] initWithString:v11, argumentsCopy];
+    v64 = [format length];
+    selfCopy = self;
     v55 = v11;
     v65 = [v78 count];
     if ((v65 & 0x8000000000000000) == 0)
@@ -1100,14 +1100,14 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
 
         if (v18)
         {
-          v19 = 0x7FFFFFFFFFFFFFFFLL;
-          v20 = 0x7FFFFFFFFFFFFFFFLL;
+          integerValue = 0x7FFFFFFFFFFFFFFFLL;
+          integerValue2 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
         {
-          v19 = [v16 integerValue];
-          v20 = [v17 integerValue];
+          integerValue = [v16 integerValue];
+          integerValue2 = [v17 integerValue];
         }
 
         v72[8] = MEMORY[0x1E69E9820];
@@ -1115,7 +1115,7 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
         v21 = v64;
         if (v15)
         {
-          v21 = v19;
+          v21 = integerValue;
         }
 
         v72[10] = __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFormat_attributeOptions_formattingOptions_locale_context_arguments___block_invoke;
@@ -1124,8 +1124,8 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
         v72[15] = v12;
         v72[16] = v21 - v12;
         v72[13] = &v73;
-        v72[12] = v68;
-        [a3 enumerateAttributesInRange:v12 options:? usingBlock:?];
+        v72[12] = argumentsCopy;
+        [format enumerateAttributesInRange:v12 options:? usingBlock:?];
         if (!v15)
         {
           break;
@@ -1150,22 +1150,22 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
           v24 = 0;
         }
 
-        v25 = 0x7FFFFFFFFFFFFFFFLL;
-        v26 = 0x7FFFFFFFFFFFFFFFLL;
+        integerValue3 = 0x7FFFFFFFFFFFFFFFLL;
+        integerValue4 = 0x7FFFFFFFFFFFFFFFLL;
         if (v22 && v24)
         {
-          v25 = [v22 integerValue];
-          v26 = [v24 integerValue];
+          integerValue3 = [v22 integerValue];
+          integerValue4 = [v24 integerValue];
         }
 
-        v27 = [v15 objectForKeyedSubscript:v59];
+        __baseAttributedString = [v15 objectForKeyedSubscript:v59];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & (v27 != 0)) == 0)
+        if ((objc_opt_isKindOfClass() & (__baseAttributedString != 0)) == 0)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v28 = v27;
+            v28 = __baseAttributedString;
           }
 
           else
@@ -1173,7 +1173,7 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
             v28 = 0;
           }
 
-          v27 = [v28 __baseAttributedString];
+          __baseAttributedString = [v28 __baseAttributedString];
         }
 
         v29 = [v15 objectForKeyedSubscript:v58];
@@ -1188,9 +1188,9 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
           v30 = 0;
         }
 
-        v31 = [v30 BOOLValue];
-        v32 = [a3 attributesAtIndex:v19 effectiveRange:0];
-        v33 = obj & (v27 != 0);
+        bOOLValue = [v30 BOOLValue];
+        v32 = [format attributesAtIndex:integerValue effectiveRange:0];
+        v33 = obj & (__baseAttributedString != 0);
         if (!v32)
         {
           v33 = 1;
@@ -1198,33 +1198,33 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
 
         if ((v33 & 1) == 0)
         {
-          [(NSMutableAttributedString *)v68 addAttributes:v32 range:v25, v26];
+          [(NSMutableAttributedString *)argumentsCopy addAttributes:v32 range:integerValue3, integerValue4];
         }
 
-        if (v31)
+        if (bOOLValue)
         {
-          [(NSMutableAttributedString *)v68 addAttributes:v32 range:v25 - 1, 1];
-          [(NSMutableAttributedString *)v68 addAttributes:v32 range:v25 + v26, 1];
+          [(NSMutableAttributedString *)argumentsCopy addAttributes:v32 range:integerValue3 - 1, 1];
+          [(NSMutableAttributedString *)argumentsCopy addAttributes:v32 range:integerValue3 + integerValue4, 1];
         }
 
-        if (v27)
+        if (__baseAttributedString)
         {
-          v34 = [v27 length];
+          v34 = [__baseAttributedString length];
           v72[0] = MEMORY[0x1E69E9820];
           v72[1] = 3221225472;
           v72[2] = __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFormat_attributeOptions_formattingOptions_locale_context_arguments___block_invoke_2;
           v72[3] = &unk_1E69F45E8;
-          v72[6] = v25;
-          v72[7] = v26;
+          v72[6] = integerValue3;
+          v72[7] = integerValue4;
           v72[5] = &v73;
-          v72[4] = v68;
-          [v27 enumerateAttributesInRange:0 options:v34 usingBlock:{0x100000, v72}];
+          v72[4] = argumentsCopy;
+          [__baseAttributedString enumerateAttributesInRange:0 options:v34 usingBlock:{0x100000, v72}];
         }
 
-        v35 = v25 + v26;
-        v12 = v19 + v20;
+        v35 = integerValue3 + integerValue4;
+        v12 = integerValue + integerValue2;
         ++v14;
-        v13 = v35 + v31;
+        v13 = v35 + bOOLValue;
       }
 
       while (v65 + 1 != v14);
@@ -1297,8 +1297,8 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
 
             if (v47)
             {
-              v49 = 0x7FFFFFFFFFFFFFFFLL;
-              v48 = 0x7FFFFFFFFFFFFFFFLL;
+              integerValue5 = 0x7FFFFFFFFFFFFFFFLL;
+              integerValue6 = 0x7FFFFFFFFFFFFFFFLL;
               if (!v43)
               {
                 continue;
@@ -1307,19 +1307,19 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
 
             else
             {
-              v49 = [v44 integerValue];
-              v48 = [v46 integerValue];
+              integerValue5 = [v44 integerValue];
+              integerValue6 = [v46 integerValue];
               if (!v43)
               {
                 continue;
               }
             }
 
-            if (v49 != 0x7FFFFFFFFFFFFFFFLL && v48 != 0x7FFFFFFFFFFFFFFFLL)
+            if (integerValue5 != 0x7FFFFFFFFFFFFFFFLL && integerValue6 != 0x7FFFFFFFFFFFFFFFLL)
             {
               v79 = @"NSReplacementIndex";
               v80 = v43;
-              -[NSMutableAttributedString addAttributes:range:](v68, "addAttributes:range:", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1], v49, v48);
+              -[NSMutableAttributedString addAttributes:range:](argumentsCopy, "addAttributes:range:", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v80 forKeys:&v79 count:1], integerValue5, integerValue6);
             }
           }
 
@@ -1330,23 +1330,23 @@ uint64_t __64__NSAttributedString_NSInflection___identicalAttributesInRange___bl
       }
     }
 
-    if (v74[3] & 1) != 0 || (v50 = [(NSAttributedString *)v68 length], v71[0] = MEMORY[0x1E69E9820], v71[1] = 3221225472, v71[2] = __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFormat_attributeOptions_formattingOptions_locale_context_arguments___block_invoke_3, v71[3] = &unk_1E69F4098, v71[4] = &v73, [(NSAttributedString *)v68 enumerateAttributesInRange:0 options:v50 usingBlock:0x100000, v71], (v74[3]))
+    if (v74[3] & 1) != 0 || (v50 = [(NSAttributedString *)argumentsCopy length], v71[0] = MEMORY[0x1E69E9820], v71[1] = 3221225472, v71[2] = __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFormat_attributeOptions_formattingOptions_locale_context_arguments___block_invoke_3, v71[3] = &unk_1E69F4098, v71[4] = &v73, [(NSAttributedString *)argumentsCopy enumerateAttributesInRange:0 options:v50 usingBlock:0x100000, v71], (v74[3]))
     {
-      -[NSMutableAttributedString _inflectWithLocale:replacements:concepts:preflight:](v68, "_inflectWithLocale:replacements:concepts:preflight:", a6, +[_NSAttributedStringReplacement _replacementsFromMetadataArray:](_NSAttributedStringReplacement, "_replacementsFromMetadataArray:", v78), [a7 objectForKeyedSubscript:@"NSContextInflectionConcepts"], 0);
+      -[NSMutableAttributedString _inflectWithLocale:replacements:concepts:preflight:](argumentsCopy, "_inflectWithLocale:replacements:concepts:preflight:", locale, +[_NSAttributedStringReplacement _replacementsFromMetadataArray:](_NSAttributedStringReplacement, "_replacementsFromMetadataArray:", v78), [context objectForKeyedSubscript:@"NSContextInflectionConcepts"], 0);
     }
 
-    [(NSMutableAttributedString *)v68 removeAttribute:@"NSFormatSpecifierConfiguration" range:0, [(NSAttributedString *)v68 length]];
-    v51 = [(NSAttributedString *)v54 initWithAttributedString:v68];
+    [(NSMutableAttributedString *)argumentsCopy removeAttribute:@"NSFormatSpecifierConfiguration" range:0, [(NSAttributedString *)argumentsCopy length]];
+    argumentsCopy2 = [(NSAttributedString *)selfCopy initWithAttributedString:argumentsCopy];
   }
 
   else
   {
 
-    v51 = [(NSAttributedString *)self initWithString:&stru_1EEEFDF90, v53];
+    argumentsCopy2 = [(NSAttributedString *)self initWithString:&stru_1EEEFDF90, argumentsCopy];
   }
 
   _Block_object_dispose(&v73, 8);
-  return v51;
+  return argumentsCopy2;
 }
 
 uint64_t __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFormat_attributeOptions_formattingOptions_locale_context_arguments___block_invoke(void *a1, void *a2, uint64_t a3, uint64_t a4)
@@ -1387,16 +1387,16 @@ uint64_t __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFo
   return result;
 }
 
-+ (id)_attributedStringWithFormat:(id)a3 options:(unint64_t)a4 locale:(id)a5 arguments:(char *)a6
++ (id)_attributedStringWithFormat:(id)format options:(unint64_t)options locale:(id)locale arguments:(char *)arguments
 {
-  v6 = [[a1 alloc] _initWithFormat:a3 options:a4 locale:a5 arguments:a6];
+  v6 = [[self alloc] _initWithFormat:format options:options locale:locale arguments:arguments];
 
   return v6;
 }
 
-+ (id)_attributedStringWithFormat:(id)a3 attributeOptions:(unint64_t)a4 formattingOptions:(id)a5 locale:(id)a6 arguments:(char *)a7
++ (id)_attributedStringWithFormat:(id)format attributeOptions:(unint64_t)options formattingOptions:(id)formattingOptions locale:(id)locale arguments:(char *)arguments
 {
-  v7 = [[a1 alloc] _initWithFormat:a3 attributeOptions:a4 formattingOptions:a5 locale:a6 arguments:a7];
+  v7 = [[self alloc] _initWithFormat:format attributeOptions:options formattingOptions:formattingOptions locale:locale arguments:arguments];
 
   return v7;
 }
@@ -1431,28 +1431,28 @@ uint64_t __132__NSAttributedString_NSAttributedStringFormattingSPI____initWithFo
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format
 {
   va_start(va, format);
-  v4 = [a1 alloc];
+  v4 = [self alloc];
   return [v4 _initWithFormat:format options:0 locale:objc_msgSend(MEMORY[0x1E695DF58] arguments:"currentLocale"), va];
 }
 
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format context:(NSDictionary *)context
 {
   va_start(va, context);
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   return [v6 __initWithFormat:format attributeOptions:0 formattingOptions:0 locale:objc_msgSend(MEMORY[0x1E695DF58] context:"currentLocale") arguments:context, va];
 }
 
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format options:(NSAttributedStringFormattingOptions)options
 {
   va_start(va, options);
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   return [v6 _initWithFormat:format options:options locale:objc_msgSend(MEMORY[0x1E695DF58] arguments:"currentLocale"), va];
 }
 
 + (NSAttributedString)localizedAttributedStringWithFormat:(NSAttributedString *)format options:(NSAttributedStringFormattingOptions)options context:(NSDictionary *)context
 {
   va_start(va, context);
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   return [v8 __initWithFormat:format attributeOptions:options formattingOptions:0 locale:objc_msgSend(MEMORY[0x1E695DF58] context:"currentLocale") arguments:context, va];
 }
 
@@ -1535,10 +1535,10 @@ LABEL_11:
 
 - (NSAttributedString)initWithMarkdown:(NSData *)markdown options:(NSAttributedStringMarkdownParsingOptions *)options baseURL:(NSURL *)baseURL error:(NSError *)error
 {
-  v10 = [(NSData *)markdown bytes];
+  bytes = [(NSData *)markdown bytes];
   v11 = [(NSData *)markdown length];
 
-  return newAttributedStringFromMarkdown(v10, v11, options, baseURL, error);
+  return newAttributedStringFromMarkdown(bytes, v11, options, baseURL, error);
 }
 
 @end

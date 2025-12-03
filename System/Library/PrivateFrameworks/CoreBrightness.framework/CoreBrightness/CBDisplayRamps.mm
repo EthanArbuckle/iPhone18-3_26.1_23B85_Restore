@@ -1,8 +1,8 @@
 @interface CBDisplayRamps
 - (BOOL)isDisplayRampRunning;
 - (CBDisplayRamps)init;
-- (void)handleRampEnd:(id)a3;
-- (void)handleRampStart:(id)a3;
+- (void)handleRampEnd:(id)end;
+- (void)handleRampStart:(id)start;
 @end
 
 @implementation CBDisplayRamps
@@ -24,64 +24,64 @@
 
 - (CBDisplayRamps)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CBDisplayRamps;
-  v5 = [(CBDisplayRamps *)&v3 init];
-  if (!v5)
+  selfCopy = [(CBDisplayRamps *)&v3 init];
+  if (!selfCopy)
   {
     return 0;
   }
 
-  v5->_ammoliteRamp = 0;
-  v5->_twilightRamp = 0;
-  v5->_minimumIndicatorRamp = 0;
-  v5->_clockAdapterRamp = 0;
-  return v5;
+  selfCopy->_ammoliteRamp = 0;
+  selfCopy->_twilightRamp = 0;
+  selfCopy->_minimumIndicatorRamp = 0;
+  selfCopy->_clockAdapterRamp = 0;
+  return selfCopy;
 }
 
-- (void)handleRampStart:(id)a3
+- (void)handleRampStart:(id)start
 {
-  if ([a3 isEqualToString:@"Ammolite"])
+  if ([start isEqualToString:@"Ammolite"])
   {
     self->_ammoliteRamp = 1;
   }
 
-  else if ([a3 isEqualToString:@"Twilight"])
+  else if ([start isEqualToString:@"Twilight"])
   {
     self->_twilightRamp = 1;
   }
 
-  else if ([a3 isEqualToString:@"IndicatorBrightness"])
+  else if ([start isEqualToString:@"IndicatorBrightness"])
   {
     self->_minimumIndicatorRamp = 1;
   }
 
-  else if ([a3 isEqualToString:@"CBDisplayClockAdapterRamp"])
+  else if ([start isEqualToString:@"CBDisplayClockAdapterRamp"])
   {
     self->_clockAdapterRamp = 1;
   }
 }
 
-- (void)handleRampEnd:(id)a3
+- (void)handleRampEnd:(id)end
 {
-  if ([a3 isEqualToString:@"Ammolite"])
+  if ([end isEqualToString:@"Ammolite"])
   {
     self->_ammoliteRamp = 2;
   }
 
-  else if ([a3 isEqualToString:@"Twilight"])
+  else if ([end isEqualToString:@"Twilight"])
   {
     self->_twilightRamp = 2;
   }
 
-  else if ([a3 isEqualToString:@"IndicatorBrightness"])
+  else if ([end isEqualToString:@"IndicatorBrightness"])
   {
     self->_minimumIndicatorRamp = 2;
   }
 
-  else if ([a3 isEqualToString:@"CBDisplayClockAdapterRamp"])
+  else if ([end isEqualToString:@"CBDisplayClockAdapterRamp"])
   {
     self->_clockAdapterRamp = 2;
   }

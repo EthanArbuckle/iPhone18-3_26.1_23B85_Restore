@@ -1,49 +1,49 @@
 @interface APOdmlFeatureValidator
-- (id)imputeFeature:(id)a3;
-- (id)imputeMissingFeatures:(id)a3;
-- (id)missingFeatures:(id)a3 inputDescriptions:(id)a4;
-- (id)validateFeatureProvider:(id)a3 inputDescriptions:(id)a4;
-- (id)validateFeatures:(id)a3 predictionModel:(id)a4;
-- (void)reportMissingFeatureError:(id)a3;
+- (id)imputeFeature:(id)feature;
+- (id)imputeMissingFeatures:(id)features;
+- (id)missingFeatures:(id)features inputDescriptions:(id)descriptions;
+- (id)validateFeatureProvider:(id)provider inputDescriptions:(id)descriptions;
+- (id)validateFeatures:(id)features predictionModel:(id)model;
+- (void)reportMissingFeatureError:(id)error;
 @end
 
 @implementation APOdmlFeatureValidator
 
-- (id)validateFeatures:(id)a3 predictionModel:(id)a4
+- (id)validateFeatures:(id)features predictionModel:(id)model
 {
-  v6 = a3;
-  v9 = objc_msgSend_modelDescription(a4, v7, v8);
+  featuresCopy = features;
+  v9 = objc_msgSend_modelDescription(model, v7, v8);
   v12 = objc_msgSend_inputDescriptionsByName(v9, v10, v11);
   v15 = objc_msgSend_allValues(v12, v13, v14);
 
-  if (objc_msgSend_count(v6, v16, v17))
+  if (objc_msgSend_count(featuresCopy, v16, v17))
   {
     v20 = 0;
     do
     {
-      v21 = objc_msgSend_objectAtIndexedSubscript_(v6, v18, v20);
+      v21 = objc_msgSend_objectAtIndexedSubscript_(featuresCopy, v18, v20);
       v23 = objc_msgSend_validateFeatureProvider_inputDescriptions_(self, v22, v21, v15);
-      objc_msgSend_setObject_atIndexedSubscript_(v6, v24, v23, v20);
+      objc_msgSend_setObject_atIndexedSubscript_(featuresCopy, v24, v23, v20);
 
       ++v20;
     }
 
-    while (v20 < objc_msgSend_count(v6, v25, v26));
+    while (v20 < objc_msgSend_count(featuresCopy, v25, v26));
   }
 
-  v27 = objc_msgSend_copy(v6, v18, v19);
+  v27 = objc_msgSend_copy(featuresCopy, v18, v19);
 
   return v27;
 }
 
-- (id)validateFeatureProvider:(id)a3 inputDescriptions:(id)a4
+- (id)validateFeatureProvider:(id)provider inputDescriptions:(id)descriptions
 {
-  v6 = a3;
-  v8 = objc_msgSend_missingFeatures_inputDescriptions_(self, v7, v6, a4);
+  providerCopy = provider;
+  v8 = objc_msgSend_missingFeatures_inputDescriptions_(self, v7, providerCopy, descriptions);
   objc_msgSend_reportMissingFeatureError_(self, v9, v8);
   v11 = objc_msgSend_imputeMissingFeatures_(self, v10, v8);
   v14 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v12, v13);
-  v17 = objc_msgSend_dictionary(v6, v15, v16);
+  v17 = objc_msgSend_dictionary(providerCopy, v15, v16);
 
   objc_msgSend_addEntriesFromDictionary_(v14, v18, v17);
   objc_msgSend_addEntriesFromDictionary_(v14, v19, v11);
@@ -54,17 +54,17 @@
   return v25;
 }
 
-- (id)missingFeatures:(id)a3 inputDescriptions:(id)a4
+- (id)missingFeatures:(id)features inputDescriptions:(id)descriptions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  featuresCopy = features;
+  descriptionsCopy = descriptions;
   v9 = objc_msgSend_array(MEMORY[0x277CBEB18], v7, v8);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = v6;
+  v10 = descriptionsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v31, v35, 16);
   if (v12)
   {
@@ -80,7 +80,7 @@
         }
 
         v18 = *(*(&v31 + 1) + 8 * i);
-        v19 = objc_msgSend_dictionary(v5, v13, v14, v31);
+        v19 = objc_msgSend_dictionary(featuresCopy, v13, v14, v31);
         v22 = objc_msgSend_name(v18, v20, v21);
         v24 = objc_msgSend_objectForKey_(v19, v23, v22);
 
@@ -102,16 +102,16 @@
   return v28;
 }
 
-- (id)imputeMissingFeatures:(id)a3
+- (id)imputeMissingFeatures:(id)features
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  featuresCopy = features;
   v7 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v4;
+  v8 = featuresCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v23, v27, 16);
   if (v10)
   {
@@ -143,21 +143,21 @@
   return v7;
 }
 
-- (id)imputeFeature:(id)a3
+- (id)imputeFeature:(id)feature
 {
   v68 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v6 = objc_msgSend_multiArrayConstraint(v3, v4, v5);
+  featureCopy = feature;
+  v6 = objc_msgSend_multiArrayConstraint(featureCopy, v4, v5);
   v9 = objc_msgSend_shape(v6, v7, v8);
   v12 = objc_msgSend_count(v9, v10, v11);
 
   if (v12 < 3)
   {
-    v27 = objc_msgSend_multiArrayConstraint(v3, v13, v14);
+    v27 = objc_msgSend_multiArrayConstraint(featureCopy, v13, v14);
     v30 = objc_msgSend_shape(v27, v28, v29);
     v33 = objc_msgSend_count(v30, v31, v32) - 1;
 
-    v36 = objc_msgSend_multiArrayConstraint(v3, v34, v35);
+    v36 = objc_msgSend_multiArrayConstraint(featureCopy, v34, v35);
     v39 = objc_msgSend_shape(v36, v37, v38);
     v41 = objc_msgSend_objectAtIndexedSubscript_(v39, v40, v33);
 
@@ -176,7 +176,7 @@
       while (v49 < objc_msgSend_intValue(v41, v52, v53));
     }
 
-    v54 = objc_msgSend_multiArrayConstraint(v3, v47, v48);
+    v54 = objc_msgSend_multiArrayConstraint(featureCopy, v47, v48);
     v57 = objc_msgSend_shape(v54, v55, v56);
     v60 = objc_msgSend_count(v57, v58, v59);
 
@@ -199,7 +199,7 @@
     {
       v16 = objc_opt_class();
       v17 = v16;
-      v20 = objc_msgSend_multiArrayConstraint(v3, v18, v19);
+      v20 = objc_msgSend_multiArrayConstraint(featureCopy, v18, v19);
       v23 = objc_msgSend_shape(v20, v21, v22);
       v64 = 138412546;
       v65 = v16;
@@ -216,14 +216,14 @@
   return v26;
 }
 
-- (void)reportMissingFeatureError:(id)a3
+- (void)reportMissingFeatureError:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a3;
+  obj = error;
   v4 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v3, &v24, v28, 16);
   if (v4)
   {

@@ -1,18 +1,18 @@
 @interface PLAssetResourceUploadJobConfiguration
-+ (PLAssetResourceUploadJobConfiguration)configurationWithBundleIdentifier:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-+ (PLAssetResourceUploadJobConfiguration)configurationWithObjectID:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-+ (PLAssetResourceUploadJobConfiguration)configurationWithUUID:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-+ (id)_configurationWithPredicate:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-+ (id)fetchAllConfigurationsInContext:(id)a3 error:(id *)a4;
-+ (id)insertIntoManagedObjectContext:(id)a3 uuid:(id)a4 bundleID:(id)a5;
-+ (unint64_t)countOfConfigurationsInContext:(id)a3 error:(id *)a4;
-+ (void)rebuildWithLibrary:(id)a3;
-+ (void)signalPendingBackgroundProcessingForLibrary:(id)a3;
-+ (void)signalPendingBackgroundUploadWorkItemForLibrary:(id)a3;
++ (PLAssetResourceUploadJobConfiguration)configurationWithBundleIdentifier:(id)identifier managedObjectContext:(id)context error:(id *)error;
++ (PLAssetResourceUploadJobConfiguration)configurationWithObjectID:(id)d managedObjectContext:(id)context error:(id *)error;
++ (PLAssetResourceUploadJobConfiguration)configurationWithUUID:(id)d managedObjectContext:(id)context error:(id *)error;
++ (id)_configurationWithPredicate:(id)predicate managedObjectContext:(id)context error:(id *)error;
++ (id)fetchAllConfigurationsInContext:(id)context error:(id *)error;
++ (id)insertIntoManagedObjectContext:(id)context uuid:(id)uuid bundleID:(id)d;
++ (unint64_t)countOfConfigurationsInContext:(id)context error:(id *)error;
++ (void)rebuildWithLibrary:(id)library;
++ (void)signalPendingBackgroundProcessingForLibrary:(id)library;
++ (void)signalPendingBackgroundUploadWorkItemForLibrary:(id)library;
 - (BOOL)_isValidForJournalPersistenceOnDCIM;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 - (void)didSave;
 - (void)prepareForDeletion;
 - (void)willSave;
@@ -22,19 +22,19 @@
 
 - (BOOL)_isValidForJournalPersistenceOnDCIM
 {
-  v2 = [(PLManagedObject *)self pathManager];
-  v3 = v2;
-  if (v2)
+  pathManager = [(PLManagedObject *)self pathManager];
+  v3 = pathManager;
+  if (pathManager)
   {
-    v4 = [v2 isDCIM];
+    isDCIM = [pathManager isDCIM];
   }
 
   else
   {
-    v4 = 0;
+    isDCIM = 0;
   }
 
-  return v4;
+  return isDCIM;
 }
 
 - (void)prepareForDeletion
@@ -45,13 +45,13 @@
   if ([(PLAssetResourceUploadJobConfiguration *)self _isValidForJournalPersistenceOnDCIM])
   {
     v3 = [PLDirectoryJournal alloc];
-    v4 = [(PLManagedObject *)self pathManager];
-    v5 = [(PLDirectoryJournal *)v3 initWithPathManager:v4 payloadClass:objc_opt_class()];
+    pathManager = [(PLManagedObject *)self pathManager];
+    v5 = [(PLDirectoryJournal *)v3 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
     [(PLDirectoryJournal *)v5 removePersistenceForManagedObject:self error:0];
   }
 
-  v6 = [(PLAssetResourceUploadJobConfiguration *)self managedObjectContext];
+  managedObjectContext = [(PLAssetResourceUploadJobConfiguration *)self managedObjectContext];
   objc_opt_class();
   objc_opt_isKindOfClass();
 }
@@ -63,14 +63,14 @@
   [(PLManagedObject *)&v8 didSave];
   if ([(PLAssetResourceUploadJobConfiguration *)self needsPersistenceUpdate]&& ([(PLAssetResourceUploadJobConfiguration *)self isDeleted]& 1) == 0)
   {
-    v3 = [(PLAssetResourceUploadJobConfiguration *)self managedObjectContext];
-    v4 = [PLManagedObjectContext isDatabaseCreationContext:v3];
+    managedObjectContext = [(PLAssetResourceUploadJobConfiguration *)self managedObjectContext];
+    v4 = [PLManagedObjectContext isDatabaseCreationContext:managedObjectContext];
 
     if (!v4)
     {
       v5 = [PLDirectoryJournal alloc];
-      v6 = [(PLManagedObject *)self pathManager];
-      v7 = [(PLDirectoryJournal *)v5 initWithPathManager:v6 payloadClass:objc_opt_class()];
+      pathManager = [(PLManagedObject *)self pathManager];
+      v7 = [(PLDirectoryJournal *)v5 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
       [(PLDirectoryJournal *)v7 persistManagedObject:self error:0];
     }
@@ -87,17 +87,17 @@
   if ([(PLAssetResourceUploadJobConfiguration *)self _isValidForJournalPersistenceOnDCIM])
   {
     v3 = [PLDirectoryJournal alloc];
-    v4 = [(PLManagedObject *)self pathManager];
-    v5 = [(PLDirectoryJournal *)v3 initWithPathManager:v4 payloadClass:objc_opt_class()];
+    pathManager = [(PLManagedObject *)self pathManager];
+    v5 = [(PLDirectoryJournal *)v3 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
     [(PLAssetResourceUploadJobConfiguration *)self setNeedsPersistenceUpdate:[(PLDirectoryJournal *)v5 shouldPersistManagedObject:self]];
   }
 
   objc_opt_class();
-  v6 = [(PLAssetResourceUploadJobConfiguration *)self managedObjectContext];
+  managedObjectContext = [(PLAssetResourceUploadJobConfiguration *)self managedObjectContext];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = managedObjectContext;
   }
 
   else
@@ -110,25 +110,25 @@
     if ([(PLAssetResourceUploadJobConfiguration *)self isInserted])
     {
       v8 = objc_opt_class();
-      v9 = [(PLManagedObject *)self photoLibrary];
-      [v8 signalPendingBackgroundProcessingForLibrary:v9];
+      photoLibrary = [(PLManagedObject *)self photoLibrary];
+      [v8 signalPendingBackgroundProcessingForLibrary:photoLibrary];
     }
 
-    v10 = [(PLAssetResourceUploadJobConfiguration *)self changedValues];
-    v11 = [v10 objectForKeyedSubscript:@"state"];
+    changedValues = [(PLAssetResourceUploadJobConfiguration *)self changedValues];
+    v11 = [changedValues objectForKeyedSubscript:@"state"];
 
     if (v11)
     {
-      v12 = [(PLAssetResourceUploadJobConfiguration *)self state];
-      if ((v12 - 2) >= 2)
+      state = [(PLAssetResourceUploadJobConfiguration *)self state];
+      if ((state - 2) >= 2)
       {
-        if (v12 == 1)
+        if (state == 1)
         {
-          v15 = [(PLManagedObject *)self photoLibrary];
-          [PLAssetResourceUploadJob deleteUploadJobsWithConfiguration:self inPhotoLibrary:v15];
+          photoLibrary2 = [(PLManagedObject *)self photoLibrary];
+          [PLAssetResourceUploadJob deleteUploadJobsWithConfiguration:self inPhotoLibrary:photoLibrary2];
 
-          v16 = [v10 objectForKeyedSubscript:@"attemptCount"];
-          if (!v16 || (v17 = v16, [v10 objectForKeyedSubscript:@"attemptCount"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "shortValue"), v18, v17, v19))
+          v16 = [changedValues objectForKeyedSubscript:@"attemptCount"];
+          if (!v16 || (v17 = v16, [changedValues objectForKeyedSubscript:@"attemptCount"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "shortValue"), v18, v17, v19))
           {
             if ([(PLAssetResourceUploadJobConfiguration *)self attemptCount])
             {
@@ -141,21 +141,21 @@
       else
       {
         v13 = objc_opt_class();
-        v14 = [(PLManagedObject *)self photoLibrary];
-        [v13 signalPendingBackgroundProcessingForLibrary:v14];
+        photoLibrary3 = [(PLManagedObject *)self photoLibrary];
+        [v13 signalPendingBackgroundProcessingForLibrary:photoLibrary3];
       }
     }
   }
 }
 
-+ (void)rebuildWithLibrary:(id)a3
++ (void)rebuildWithLibrary:(id)library
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 libraryBundle];
-  v5 = [v4 indicatorFileCoordinator];
+  libraryCopy = library;
+  libraryBundle = [libraryCopy libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if ([v5 isRebuildingAssetResourceUploadJobConfiguration])
+  if ([indicatorFileCoordinator isRebuildingAssetResourceUploadJobConfiguration])
   {
     v6 = PLMigrationGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -171,9 +171,9 @@
   v8 = +[PLAssetResourceUploadJobConfiguration entityName];
   v6 = [v7 fetchRequestWithEntityName:v8];
 
-  v9 = [v3 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v21 = 0;
-  v10 = [v9 countForFetchRequest:v6 error:&v21];
+  v10 = [managedObjectContext countForFetchRequest:v6 error:&v21];
   v11 = v21;
 
   if (!v10)
@@ -181,16 +181,16 @@
 LABEL_9:
 
 LABEL_10:
-    [v5 setIsRebuildingAssetResourceUploadJobConfiguration:1];
+    [indicatorFileCoordinator setIsRebuildingAssetResourceUploadJobConfiguration:1];
     v13 = [PLDirectoryJournal alloc];
-    v14 = [v3 pathManager];
-    v6 = [(PLDirectoryJournal *)v13 initWithPathManager:v14 payloadClass:objc_opt_class()];
+    pathManager = [libraryCopy pathManager];
+    v6 = [(PLDirectoryJournal *)v13 initWithPathManager:pathManager payloadClass:objc_opt_class()];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __60__PLAssetResourceUploadJobConfiguration_rebuildWithLibrary___block_invoke;
     v19[3] = &unk_1E756A490;
-    v20 = v3;
+    v20 = libraryCopy;
     v18 = 0;
     v15 = [v6 enumeratePayloadsUsingBlock:v19 error:&v18];
     v11 = v18;
@@ -205,7 +205,7 @@ LABEL_10:
       }
     }
 
-    [v5 setIsRebuildingAssetResourceUploadJobConfiguration:0];
+    [indicatorFileCoordinator setIsRebuildingAssetResourceUploadJobConfiguration:0];
     v17 = v20;
     goto LABEL_15;
   }
@@ -260,17 +260,17 @@ void __60__PLAssetResourceUploadJobConfiguration_rebuildWithLibrary___block_invo
   }
 }
 
-+ (id)fetchAllConfigurationsInContext:(id)a3 error:(id *)a4
++ (id)fetchAllConfigurationsInContext:(id)context error:(id *)error
 {
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLAssetResourceUploadJobConfiguration entityName];
   v8 = [v5 fetchRequestWithEntityName:v7];
 
   [v8 setIncludesPropertyValues:1];
   [v8 setReturnsObjectsAsFaults:0];
   v15 = 0;
-  v9 = [v6 executeFetchRequest:v8 error:&v15];
+  v9 = [contextCopy executeFetchRequest:v8 error:&v15];
 
   v10 = v15;
   v11 = v10;
@@ -281,44 +281,44 @@ void __60__PLAssetResourceUploadJobConfiguration_rebuildWithLibrary___block_invo
 
   else
   {
-    v12 = a4 == 0;
+    v12 = error == 0;
   }
 
   if (!v12)
   {
     v13 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9;
 }
 
-+ (unint64_t)countOfConfigurationsInContext:(id)a3 error:(id *)a4
++ (unint64_t)countOfConfigurationsInContext:(id)context error:(id *)error
 {
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a3;
+  contextCopy = context;
   v7 = +[PLAssetResourceUploadJobConfiguration entityName];
   v8 = [v5 fetchRequestWithEntityName:v7];
 
   v15 = 0;
-  v9 = [v6 countForFetchRequest:v8 error:&v15];
+  v9 = [contextCopy countForFetchRequest:v8 error:&v15];
 
   v10 = v15;
   v11 = v10;
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL && a4 != 0)
+  if (v9 == 0x7FFFFFFFFFFFFFFFLL && error != 0)
   {
     v13 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9;
 }
 
-+ (id)_configurationWithPredicate:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
++ (id)_configurationWithPredicate:(id)predicate managedObjectContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  predicateCopy = predicate;
+  contextCopy = context;
+  if (predicateCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -336,17 +336,17 @@ void __60__PLAssetResourceUploadJobConfiguration_rebuildWithLibrary___block_invo
     v13[1] = 3221225472;
     v13[2] = __96__PLAssetResourceUploadJobConfiguration__configurationWithPredicate_managedObjectContext_error___block_invoke;
     v13[3] = &unk_1E7578898;
-    v14 = v7;
-    v15 = v8;
+    v14 = predicateCopy;
+    v15 = contextCopy;
     v16 = &v18;
     v17 = &v24;
     [v15 performBlockAndWait:v13];
     v9 = v25[5];
     v10 = v19[5];
-    if (!v9 && a5)
+    if (!v9 && error)
     {
       v10 = v10;
-      *a5 = v10;
+      *error = v10;
     }
 
     v11 = v25[5];
@@ -398,14 +398,14 @@ void __96__PLAssetResourceUploadJobConfiguration__configurationWithPredicate_man
   }
 }
 
-+ (PLAssetResourceUploadJobConfiguration)configurationWithBundleIdentifier:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
++ (PLAssetResourceUploadJobConfiguration)configurationWithBundleIdentifier:(id)identifier managedObjectContext:(id)context error:(id *)error
 {
-  if (a3)
+  if (identifier)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = a4;
-    v10 = [v8 predicateWithFormat:@"%K == %@", @"bundleIdentifier", a3];
-    v11 = [a1 _configurationWithPredicate:v10 managedObjectContext:v9 error:a5];
+    contextCopy = context;
+    identifier = [v8 predicateWithFormat:@"%K == %@", @"bundleIdentifier", identifier];
+    v11 = [self _configurationWithPredicate:identifier managedObjectContext:contextCopy error:error];
   }
 
   else
@@ -416,14 +416,14 @@ void __96__PLAssetResourceUploadJobConfiguration__configurationWithPredicate_man
   return v11;
 }
 
-+ (PLAssetResourceUploadJobConfiguration)configurationWithUUID:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
++ (PLAssetResourceUploadJobConfiguration)configurationWithUUID:(id)d managedObjectContext:(id)context error:(id *)error
 {
-  if (a3)
+  if (d)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = a4;
-    v10 = [v8 predicateWithFormat:@"%K == %@", @"uuid", a3];
-    v11 = [a1 _configurationWithPredicate:v10 managedObjectContext:v9 error:a5];
+    contextCopy = context;
+    v10 = [v8 predicateWithFormat:@"%K == %@", @"uuid", d];
+    v11 = [self _configurationWithPredicate:v10 managedObjectContext:contextCopy error:error];
   }
 
   else
@@ -434,14 +434,14 @@ void __96__PLAssetResourceUploadJobConfiguration__configurationWithPredicate_man
   return v11;
 }
 
-+ (PLAssetResourceUploadJobConfiguration)configurationWithObjectID:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
++ (PLAssetResourceUploadJobConfiguration)configurationWithObjectID:(id)d managedObjectContext:(id)context error:(id *)error
 {
-  if (a3)
+  if (d)
   {
     v8 = MEMORY[0x1E696AE18];
-    v9 = a4;
-    v10 = [v8 predicateWithFormat:@"self == %@", a3];
-    v11 = [a1 _configurationWithPredicate:v10 managedObjectContext:v9 error:a5];
+    contextCopy = context;
+    v10 = [v8 predicateWithFormat:@"self == %@", d];
+    v11 = [self _configurationWithPredicate:v10 managedObjectContext:contextCopy error:error];
   }
 
   else
@@ -452,15 +452,15 @@ void __96__PLAssetResourceUploadJobConfiguration__configurationWithPredicate_man
   return v11;
 }
 
-+ (void)signalPendingBackgroundProcessingForLibrary:(id)a3
++ (void)signalPendingBackgroundProcessingForLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __85__PLAssetResourceUploadJobConfiguration_signalPendingBackgroundProcessingForLibrary___block_invoke;
   v5[3] = &unk_1E75781E8;
-  v6 = v3;
-  v4 = v3;
+  v6 = libraryCopy;
+  v4 = libraryCopy;
   [v4 performBlock:v5];
 }
 
@@ -471,13 +471,13 @@ void __85__PLAssetResourceUploadJobConfiguration_signalPendingBackgroundProcessi
   [v1 signalBackgroundProcessingNeededForWorkerTypes:v2];
 }
 
-+ (void)signalPendingBackgroundUploadWorkItemForLibrary:(id)a3
++ (void)signalPendingBackgroundUploadWorkItemForLibrary:(id)library
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v5 = MEMORY[0x1E695D5E0];
-  v6 = [a1 entityName];
-  v7 = [v5 fetchRequestWithEntityName:v6];
+  entityName = [self entityName];
+  v7 = [v5 fetchRequestWithEntityName:entityName];
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"state", 2];
   [v7 setPredicate:v8];
@@ -487,9 +487,9 @@ void __85__PLAssetResourceUploadJobConfiguration_signalPendingBackgroundProcessi
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   [v7 setPropertiesToFetch:v9];
 
-  v10 = [v4 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v27 = 0;
-  v11 = [v10 executeFetchRequest:v7 error:&v27];
+  v11 = [managedObjectContext executeFetchRequest:v7 error:&v27];
   v12 = v27;
   if (!v11)
   {
@@ -545,7 +545,7 @@ LABEL_15:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [v4 addBackgroundJobWorkItemIfNeededWithIdentifier:*(*(&v23 + 1) + 8 * i) jobType:7 jobFlags:0];
+        v18 = [libraryCopy addBackgroundJobWorkItemIfNeededWithIdentifier:*(*(&v23 + 1) + 8 * i) jobType:7 jobFlags:0];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v23 objects:v30 count:16];
@@ -554,21 +554,21 @@ LABEL_15:
     while (v15);
   }
 
-  [a1 signalPendingBackgroundProcessingForLibrary:v4];
+  [self signalPendingBackgroundProcessingForLibrary:libraryCopy];
 LABEL_16:
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3 uuid:(id)a4 bundleID:(id)a5
++ (id)insertIntoManagedObjectContext:(id)context uuid:(id)uuid bundleID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [a1 entityName];
-  v12 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v11, v10, 0);
+  uuidCopy = uuid;
+  dCopy = d;
+  contextCopy = context;
+  entityName = [self entityName];
+  v12 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, contextCopy, 0);
 
-  if (v8)
+  if (uuidCopy)
   {
-    v13 = v8;
+    uUIDString = uuidCopy;
     if (!v12)
     {
       goto LABEL_4;
@@ -577,32 +577,32 @@ LABEL_16:
     goto LABEL_3;
   }
 
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v15 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   if (v12)
   {
 LABEL_3:
-    [v12 setUuid:v13];
+    [v12 setUuid:uUIDString];
   }
 
 LABEL_4:
-  [v12 setBundleIdentifier:v9];
+  [v12 setBundleIdentifier:dCopy];
 
   return v12;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)[PLAssetResourceUploadJobConfigurationEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+  keysCopy = keys;
+  v5 = [(PLManagedObjectJournalEntryPayload *)[PLAssetResourceUploadJobConfigurationEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
 
   return v5;
 }
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
@@ -610,8 +610,8 @@ LABEL_4:
 
 - (id)payloadID
 {
-  v2 = [(PLAssetResourceUploadJobConfiguration *)self uuid];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v2];
+  uuid = [(PLAssetResourceUploadJobConfiguration *)self uuid];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v3;
 }

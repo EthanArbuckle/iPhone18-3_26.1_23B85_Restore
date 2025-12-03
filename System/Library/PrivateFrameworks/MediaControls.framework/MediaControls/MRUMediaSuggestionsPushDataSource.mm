@@ -1,8 +1,8 @@
 @interface MRUMediaSuggestionsPushDataSource
 - (MRUMediaSuggestionsDataSourceDelegate)delegate;
 - (MRUMediaSuggestionsPushDataSource)init;
-- (void)controller:(id)a3 didFailWithError:(id)a4;
-- (void)controller:(id)a3 didUpdateSuggestions:(id)a4;
+- (void)controller:(id)controller didFailWithError:(id)error;
+- (void)controller:(id)controller didUpdateSuggestions:(id)suggestions;
 @end
 
 @implementation MRUMediaSuggestionsPushDataSource
@@ -15,8 +15,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x1E69B0A60]);
-    v4 = [MEMORY[0x1E69B0A70] defaultRequestWithArtwork];
-    v5 = [v3 initWithRequest:v4];
+    defaultRequestWithArtwork = [MEMORY[0x1E69B0A70] defaultRequestWithArtwork];
+    v5 = [v3 initWithRequest:defaultRequestWithArtwork];
     mediaSuggestionsController = v2->_mediaSuggestionsController;
     v2->_mediaSuggestionsController = v5;
 
@@ -26,28 +26,28 @@
   return v2;
 }
 
-- (void)controller:(id)a3 didUpdateSuggestions:(id)a4
+- (void)controller:(id)controller didUpdateSuggestions:(id)suggestions
 {
-  v5 = a4;
+  suggestionsCopy = suggestions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained mediaSuggestionsDataSource:self didChangeMediaSuggestions:v5];
+  [WeakRetained mediaSuggestionsDataSource:self didChangeMediaSuggestions:suggestionsCopy];
 }
 
-- (void)controller:(id)a3 didFailWithError:(id)a4
+- (void)controller:(id)controller didFailWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = MCLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v8 = [(MRMediaSuggestionController *)self->_mediaSuggestionsController request];
+    request = [(MRMediaSuggestionController *)self->_mediaSuggestionsController request];
     v9 = 138412802;
     v10 = v7;
     v11 = 2112;
-    v12 = v8;
+    v12 = request;
     v13 = 2112;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%@ error retrieving media suggestions: %@, error: %@", &v9, 0x20u);
   }
 }

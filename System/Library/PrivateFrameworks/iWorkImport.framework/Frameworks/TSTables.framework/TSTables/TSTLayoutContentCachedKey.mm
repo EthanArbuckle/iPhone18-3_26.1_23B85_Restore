@@ -1,53 +1,53 @@
 @interface TSTLayoutContentCachedKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutContentCachedKey:(id)a3;
-- (TSTLayoutContentCachedKey)initWithString:(id)a3 width:(double)a4 height:(double)a5 paragraphStyle:(id)a6 cellWraps:(BOOL)a7 valueType:(unsigned __int8)a8 paddingInsets:(UIEdgeInsets)a9 verticalAlignment:(int)a10 writingDirection:(int)a11 naturalAlignment:(int)a12 styleProvidingSource:(id)a13;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutContentCachedKey:(id)key;
+- (TSTLayoutContentCachedKey)initWithString:(id)string width:(double)width height:(double)height paragraphStyle:(id)style cellWraps:(BOOL)wraps valueType:(unsigned __int8)type paddingInsets:(UIEdgeInsets)insets verticalAlignment:(int)self0 writingDirection:(int)self1 naturalAlignment:(int)self2 styleProvidingSource:(id)self3;
 - (TSWPStyleProviding)styleProvidingSource;
 - (UIEdgeInsets)paddingInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSTLayoutContentCachedKey
 
-- (TSTLayoutContentCachedKey)initWithString:(id)a3 width:(double)a4 height:(double)a5 paragraphStyle:(id)a6 cellWraps:(BOOL)a7 valueType:(unsigned __int8)a8 paddingInsets:(UIEdgeInsets)a9 verticalAlignment:(int)a10 writingDirection:(int)a11 naturalAlignment:(int)a12 styleProvidingSource:(id)a13
+- (TSTLayoutContentCachedKey)initWithString:(id)string width:(double)width height:(double)height paragraphStyle:(id)style cellWraps:(BOOL)wraps valueType:(unsigned __int8)type paddingInsets:(UIEdgeInsets)insets verticalAlignment:(int)self0 writingDirection:(int)self1 naturalAlignment:(int)self2 styleProvidingSource:(id)self3
 {
-  right = a9.right;
-  bottom = a9.bottom;
-  left = a9.left;
-  top = a9.top;
-  v25 = a3;
-  v26 = a6;
-  v27 = a13;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  stringCopy = string;
+  styleCopy = style;
+  sourceCopy = source;
   v36.receiver = self;
   v36.super_class = TSTLayoutContentCachedKey;
   v32 = [(TSTLayoutContentCachedKey *)&v36 init];
   if (v32)
   {
-    v33 = objc_msgSend_copy(v25, v28, v29, v30, v31);
+    v33 = objc_msgSend_copy(stringCopy, v28, v29, v30, v31);
     string = v32->_string;
     v32->_string = v33;
 
-    v32->_width = a4;
-    v32->_height = a5;
-    objc_storeStrong(&v32->_paragraphStyle, a6);
-    v32->_cellWraps = a7;
-    v32->_valueType = a8;
+    v32->_width = width;
+    v32->_height = height;
+    objc_storeStrong(&v32->_paragraphStyle, style);
+    v32->_cellWraps = wraps;
+    v32->_valueType = type;
     v32->_paddingInsets.top = top;
     v32->_paddingInsets.left = left;
     v32->_paddingInsets.bottom = bottom;
     v32->_paddingInsets.right = right;
-    v32->_verticalAlignment = a10;
-    v32->_writingDirection = a11;
-    v32->_naturalAlignment = a12;
-    objc_storeWeak(&v32->_styleProvidingSource, v27);
+    v32->_verticalAlignment = alignment;
+    v32->_writingDirection = direction;
+    v32->_naturalAlignment = naturalAlignment;
+    objc_storeWeak(&v32->_styleProvidingSource, sourceCopy);
   }
 
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v6 = objc_msgSend_allocWithZone_(TSTLayoutContentCachedKey, a2, a3, v3, v4);
+  v6 = objc_msgSend_allocWithZone_(TSTLayoutContentCachedKey, a2, zone, v3, v4);
   v11 = objc_msgSend_string(self, v7, v8, v9, v10);
   objc_msgSend_width(self, v12, v13, v14, v15);
   v17 = v16;
@@ -71,16 +71,16 @@
   return v72;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToLayoutContentCachedKey = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToLayoutContentCachedKey = objc_msgSend_isEqualToLayoutContentCachedKey_(self, v6, v5, v7, v8);
   }
@@ -93,11 +93,11 @@
   return isEqualToLayoutContentCachedKey;
 }
 
-- (BOOL)isEqualToLayoutContentCachedKey:(id)a3
+- (BOOL)isEqualToLayoutContentCachedKey:(id)key
 {
-  v4 = a3;
-  v9 = v4;
-  if (self == v4)
+  keyCopy = key;
+  v9 = keyCopy;
+  if (self == keyCopy)
   {
     isEqualToString = 1;
   }
@@ -105,7 +105,7 @@
   else
   {
     width = self->_width;
-    objc_msgSend_width(v4, v5, v6, v7, v8);
+    objc_msgSend_width(keyCopy, v5, v6, v7, v8);
     if (width == v15 || vabdd_f64(width, v15) < 0.00999999978) && ((height = self->_height, objc_msgSend_height(v9, v11, v12, v13, v14), height == v21) || vabdd_f64(height, v21) < 0.00999999978) && (cellWraps = self->_cellWraps, cellWraps == objc_msgSend_cellWraps(v9, v17, v18, v19, v20)) && (verticalAlignment = self->_verticalAlignment, verticalAlignment == objc_msgSend_verticalAlignment(v9, v23, v24, v25, v26)) && (writingDirection = self->_writingDirection, writingDirection == objc_msgSend_writingDirection(v9, v28, v29, v30, v31)) && (naturalAlignment = self->_naturalAlignment, naturalAlignment == objc_msgSend_naturalAlignment(v9, v33, v34, v35, v36)) && (valueType = self->_valueType, valueType == objc_msgSend_valueType(v9, v38, v39, v40, v41)) && (objc_msgSend_paddingInsets(v9, v43, v44, v45, v46), v48.f64[1] = v47, v50.f64[1] = v49, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_paddingInsets.top, v48), vceqq_f64(*&self->_paddingInsets.bottom, v50))))))
     {
       WeakRetained = objc_loadWeakRetained(&self->_styleProvidingSource);

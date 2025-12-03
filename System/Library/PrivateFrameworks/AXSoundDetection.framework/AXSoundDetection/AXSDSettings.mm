@@ -1,8 +1,8 @@
 @interface AXSDSettings
 + (id)sharedInstance;
-+ (id)stringForSoundDetectionState:(int64_t)a3;
-- (BOOL)hasCustomHapticForDetector:(id)a3;
-- (BOOL)hasCustomToneForDetector:(id)a3;
++ (id)stringForSoundDetectionState:(int64_t)state;
+- (BOOL)hasCustomHapticForDetector:(id)detector;
+- (BOOL)hasCustomToneForDetector:(id)detector;
 - (BOOL)hasValidCustomDetector;
 - (NSArray)enabledKShotDetectorIdentifiers;
 - (NSArray)enabledSoundDetectionTypes;
@@ -15,23 +15,23 @@
 - (NSString)pipedInFile;
 - (NSString)retrainModelIdentifier;
 - (id)keysMonitoredForUpdates;
-- (id)preferenceKeyForSelector:(SEL)a3;
+- (id)preferenceKeyForSelector:(SEL)selector;
 - (id)sortedSupportedSoundDetectionTypes;
-- (id)soundAlertTopicForSoundDetectionType:(id)a3;
+- (id)soundAlertTopicForSoundDetectionType:(id)type;
 - (int64_t)soundDetectionState;
-- (void)_setSoundDetectionState:(int64_t)a3;
-- (void)addSnoozeDateToSnoozeDictionary:(id)a3 forKey:(id)a4;
-- (void)addSoundDetectionType:(id)a3;
-- (void)logMessage:(id)a3;
-- (void)pipeFile:(id)a3;
-- (void)registerSettingsEvent:(id)a3;
+- (void)_setSoundDetectionState:(int64_t)state;
+- (void)addSnoozeDateToSnoozeDictionary:(id)dictionary forKey:(id)key;
+- (void)addSoundDetectionType:(id)type;
+- (void)logMessage:(id)message;
+- (void)pipeFile:(id)file;
+- (void)registerSettingsEvent:(id)event;
 - (void)removeAllSoundDetectionTypes;
-- (void)removeSoundDetectionType:(id)a3;
-- (void)retrainModelWithIdentifier:(id)a3;
-- (void)setLatestSettingsEvents:(id)a3;
-- (void)setSoundDetectionKShotListeningState:(int64_t)a3;
-- (void)setSoundDetectionState:(int64_t)a3;
-- (void)setSoundDetectionState:(int64_t)a3 source:(id)a4;
+- (void)removeSoundDetectionType:(id)type;
+- (void)retrainModelWithIdentifier:(id)identifier;
+- (void)setLatestSettingsEvents:(id)events;
+- (void)setSoundDetectionKShotListeningState:(int64_t)state;
+- (void)setSoundDetectionState:(int64_t)state;
+- (void)setSoundDetectionState:(int64_t)state source:(id)source;
 @end
 
 @implementation AXSDSettings
@@ -55,7 +55,7 @@ uint64_t __30__AXSDSettings_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)preferenceKeyForSelector:(SEL)a3
+- (id)preferenceKeyForSelector:(SEL)selector
 {
   if (preferenceKeyForSelector__onceToken != -1)
   {
@@ -63,7 +63,7 @@ uint64_t __30__AXSDSettings_sharedInstance__block_invoke()
   }
 
   v5 = preferenceKeyForSelector__SelectorMap;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = [v5 objectForKey:v6];
 
   if (v7)
@@ -75,7 +75,7 @@ uint64_t __30__AXSDSettings_sharedInstance__block_invoke()
   {
     v11.receiver = self;
     v11.super_class = AXSDSettings;
-    v8 = [(HCSettings *)&v11 preferenceKeyForSelector:a3];
+    v8 = [(HCSettings *)&v11 preferenceKeyForSelector:selector];
   }
 
   v9 = v8;
@@ -108,17 +108,17 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
   preferenceKeyForSelector__SelectorMap = v8;
 }
 
-- (void)_setSoundDetectionState:(int64_t)a3
+- (void)_setSoundDetectionState:(int64_t)state
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   [(HCSettings *)self setValue:v4 forPreferenceKey:@"AXSEnabledSoundDetectionState"];
 }
 
 - (NSArray)enabledSoundDetectionTypes
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEA60] array];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSEnabledSoundDetectionTypes" withClass:v3 andDefaultValue:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSEnabledSoundDetectionTypes" withClass:v3 andDefaultValue:array];
 
   return v5;
 }
@@ -126,8 +126,8 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSMutableDictionary)soundDetectionSnoozeDictionary
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEAC0] dictionary];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionSnoozeDictionary" withClass:v3 andDefaultValue:v4];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionSnoozeDictionary" withClass:v3 andDefaultValue:dictionary];
 
   return v5;
 }
@@ -135,8 +135,8 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSArray)supportedSoundDetectionTypes
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEA60] array];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionSupportedTypes" withClass:v3 andDefaultValue:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionSupportedTypes" withClass:v3 andDefaultValue:array];
 
   return v5;
 }
@@ -144,8 +144,8 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSData)kShotDetectors
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEA90] data];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionKShotDetectors" withClass:v3 andDefaultValue:v4];
+  data = [MEMORY[0x277CBEA90] data];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionKShotDetectors" withClass:v3 andDefaultValue:data];
 
   return v5;
 }
@@ -153,8 +153,8 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSMutableDictionary)kShotSoundRecordings
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEAC0] dictionary];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionKShotRecordings" withClass:v3 andDefaultValue:v4];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionKShotRecordings" withClass:v3 andDefaultValue:dictionary];
 
   return v5;
 }
@@ -162,23 +162,23 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSArray)enabledKShotDetectorIdentifiers
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEA60] array];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionKShotEnabledDetectorIdentifiers" withClass:v3 andDefaultValue:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionKShotEnabledDetectorIdentifiers" withClass:v3 andDefaultValue:array];
 
   return v5;
 }
 
-- (void)setSoundDetectionKShotListeningState:(int64_t)a3
+- (void)setSoundDetectionKShotListeningState:(int64_t)state
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   [(HCSettings *)self setValue:v4 forPreferenceKey:@"AXSSoundDetectionKShotListeningStateIdentifier"];
 }
 
 - (NSString)pipedInFile
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CCACA8] string];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionPipedInFile" withClass:v3 andDefaultValue:v4];
+  string = [MEMORY[0x277CCACA8] string];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionPipedInFile" withClass:v3 andDefaultValue:string];
 
   return v5;
 }
@@ -186,8 +186,8 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSString)retrainModelIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CCACA8] string];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionRetrainModelIdentifier" withClass:v3 andDefaultValue:v4];
+  string = [MEMORY[0x277CCACA8] string];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionRetrainModelIdentifier" withClass:v3 andDefaultValue:string];
 
   return v5;
 }
@@ -195,8 +195,8 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
 - (NSArray)latestSettingsEventsDictionaries
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277CBEA60] array];
-  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionLatestSettingsEvents" withClass:v3 andDefaultValue:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  v5 = [(HCSettings *)self objectValueForKey:@"AXSSoundDetectionLatestSettingsEvents" withClass:v3 andDefaultValue:array];
 
   return v5;
 }
@@ -211,7 +211,7 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
   return [(AXSDSettings *)self _soundDetectionState];
 }
 
-- (void)setSoundDetectionState:(int64_t)a3
+- (void)setSoundDetectionState:(int64_t)state
 {
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -219,79 +219,79 @@ void __41__AXSDSettings_preferenceKeyForSelector___block_invoke()
     [AXSDSettings setSoundDetectionState:v5];
   }
 
-  [(AXSDSettings *)self setSoundDetectionState:a3 source:@"Unknown"];
+  [(AXSDSettings *)self setSoundDetectionState:state source:@"Unknown"];
 }
 
-- (void)setSoundDetectionState:(int64_t)a3 source:(id)a4
+- (void)setSoundDetectionState:(int64_t)state source:(id)source
 {
-  v6 = a4;
-  [(AXSDSettings *)self _setSoundDetectionState:a3];
-  v7 = [[AXSDSettingsEvent alloc] initWithState:a3 source:v6];
+  sourceCopy = source;
+  [(AXSDSettings *)self _setSoundDetectionState:state];
+  v7 = [[AXSDSettingsEvent alloc] initWithState:state source:sourceCopy];
 
   [(AXSDSettings *)self registerSettingsEvent:v7];
 }
 
-- (void)addSoundDetectionType:(id)a3
+- (void)addSoundDetectionType:(id)type
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [(AXSDSettings *)self enabledSoundDetectionTypes];
-  v7 = [v6 mutableCopy];
+  typeCopy = type;
+  enabledSoundDetectionTypes = [(AXSDSettings *)self enabledSoundDetectionTypes];
+  v7 = [enabledSoundDetectionTypes mutableCopy];
   v9 = [v4 setWithArray:v7];
 
-  [v9 addObject:v5];
-  v8 = [v9 allObjects];
-  [(AXSDSettings *)self setEnabledSoundDetectionTypes:v8];
+  [v9 addObject:typeCopy];
+  allObjects = [v9 allObjects];
+  [(AXSDSettings *)self setEnabledSoundDetectionTypes:allObjects];
 }
 
-- (void)removeSoundDetectionType:(id)a3
+- (void)removeSoundDetectionType:(id)type
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [(AXSDSettings *)self enabledSoundDetectionTypes];
-  v7 = [v6 mutableCopy];
+  typeCopy = type;
+  enabledSoundDetectionTypes = [(AXSDSettings *)self enabledSoundDetectionTypes];
+  v7 = [enabledSoundDetectionTypes mutableCopy];
   v9 = [v4 setWithArray:v7];
 
-  [v9 removeObject:v5];
-  v8 = [v9 allObjects];
-  [(AXSDSettings *)self setEnabledSoundDetectionTypes:v8];
+  [v9 removeObject:typeCopy];
+  allObjects = [v9 allObjects];
+  [(AXSDSettings *)self setEnabledSoundDetectionTypes:allObjects];
 }
 
 - (void)removeAllSoundDetectionTypes
 {
-  v3 = [MEMORY[0x277CBEA60] array];
-  [(AXSDSettings *)self setEnabledSoundDetectionTypes:v3];
+  array = [MEMORY[0x277CBEA60] array];
+  [(AXSDSettings *)self setEnabledSoundDetectionTypes:array];
 }
 
-- (void)addSnoozeDateToSnoozeDictionary:(id)a3 forKey:(id)a4
+- (void)addSnoozeDateToSnoozeDictionary:(id)dictionary forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(AXSDSettings *)self soundDetectionSnoozeDictionary];
-  v8 = [v7 mutableCopy];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  soundDetectionSnoozeDictionary = [(AXSDSettings *)self soundDetectionSnoozeDictionary];
+  v8 = [soundDetectionSnoozeDictionary mutableCopy];
 
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:keyCopy];
   if (v9)
   {
-    v10 = [v12 laterDate:v9];
+    v10 = [dictionaryCopy laterDate:v9];
 
     v11 = v10;
   }
 
   else
   {
-    v11 = v12;
+    v11 = dictionaryCopy;
   }
 
   v13 = v11;
-  [v8 setObject:v11 forKey:v6];
+  [v8 setObject:v11 forKey:keyCopy];
   [(AXSDSettings *)self setSoundDetectionSnoozeDictionary:v8];
 }
 
-- (id)soundAlertTopicForSoundDetectionType:(id)a3
+- (id)soundAlertTopicForSoundDetectionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeApplianceBeeps] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", AXSDSoundDetectionTypeApplianceBuzzes) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", AXSDSoundDetectionTypeApplianceBellDings))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeApplianceBeeps] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", AXSDSoundDetectionTypeApplianceBuzzes) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", AXSDSoundDetectionTypeApplianceBellDings))
   {
     v4 = MEMORY[0x277D71FF0];
 LABEL_5:
@@ -299,84 +299,84 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeDistressedBaby])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeDistressedBaby])
   {
     v4 = MEMORY[0x277D71FF8];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeCarHorns])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeCarHorns])
   {
     v4 = MEMORY[0x277D72000];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeCatMeows])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeCatMeows])
   {
     v4 = MEMORY[0x277D72008];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeCough])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeCough])
   {
     v4 = MEMORY[0x277D72010];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeDogBarks])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeDogBarks])
   {
     v4 = MEMORY[0x277D72018];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeDoorbells])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeDoorbells])
   {
     v4 = MEMORY[0x277D72020];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeDoorKnocks])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeDoorKnocks])
   {
     v4 = MEMORY[0x277D72028];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeFireAlarms])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeFireAlarms])
   {
     v4 = MEMORY[0x277D72030];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypePersonShouting])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypePersonShouting])
   {
     v4 = MEMORY[0x277D72038];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeSirenAlarms])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeSirenAlarms])
   {
     v4 = MEMORY[0x277D72040];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeSmokeAlarms])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeSmokeAlarms])
   {
     v4 = MEMORY[0x277D72048];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeWaterRunning])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeWaterRunning])
   {
     v4 = MEMORY[0x277D72050];
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:AXSDSoundDetectionTypeGlassBreaking])
+  if ([typeCopy isEqualToString:AXSDSoundDetectionTypeGlassBreaking])
   {
     v5 = @"TLAlertTopicSoundRecognitionGlassBreaking";
   }
 
-  else if ([v3 isEqualToString:AXSDSoundDetectionTypeKettle])
+  else if ([typeCopy isEqualToString:AXSDSoundDetectionTypeKettle])
   {
     v5 = @"TLAlertTopicSoundRecognitionKettle";
   }
@@ -393,21 +393,21 @@ LABEL_6:
 
 - (BOOL)hasValidCustomDetector
 {
-  v2 = [(AXSDSettings *)self enabledKShotDetectorIdentifiers];
-  v3 = [v2 count] != 0;
+  enabledKShotDetectorIdentifiers = [(AXSDSettings *)self enabledKShotDetectorIdentifiers];
+  v3 = [enabledKShotDetectorIdentifiers count] != 0;
 
   return v3;
 }
 
-+ (id)stringForSoundDetectionState:(int64_t)a3
++ (id)stringForSoundDetectionState:(int64_t)state
 {
   v3 = @"Off";
-  if (a3 == 2)
+  if (state == 2)
   {
     v3 = @"Running";
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     return @"Available";
   }
@@ -420,13 +420,13 @@ LABEL_6:
 
 - (id)sortedSupportedSoundDetectionTypes
 {
-  v3 = [(AXSDSettings *)self supportedSoundDetectionTypes];
+  supportedSoundDetectionTypes = [(AXSDSettings *)self supportedSoundDetectionTypes];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__AXSDSettings_sortedSupportedSoundDetectionTypes__block_invoke;
   v6[3] = &unk_278BDC400;
   v6[4] = self;
-  v4 = [v3 sortedArrayUsingComparator:v6];
+  v4 = [supportedSoundDetectionTypes sortedArrayUsingComparator:v6];
 
   return v4;
 }
@@ -442,20 +442,20 @@ uint64_t __50__AXSDSettings_sortedSupportedSoundDetectionTypes__block_invoke(uin
   return v9;
 }
 
-- (BOOL)hasCustomToneForDetector:(id)a3
+- (BOOL)hasCustomToneForDetector:(id)detector
 {
-  v3 = [(AXSDSettings *)self soundAlertTopicForSoundDetectionType:a3];
+  v3 = [(AXSDSettings *)self soundAlertTopicForSoundDetectionType:detector];
   if (v3)
   {
-    v4 = [MEMORY[0x277D71F78] sharedToneManager];
-    v5 = [v4 defaultToneIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+    v5 = [mEMORY[0x277D71F78] defaultToneIdentifierForAlertType:29 topic:v3];
 
-    v6 = [MEMORY[0x277D71F78] sharedToneManager];
-    v7 = [v6 currentToneIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F78]2 = [MEMORY[0x277D71F78] sharedToneManager];
+    v7 = [mEMORY[0x277D71F78]2 currentToneIdentifierForAlertType:29 topic:v3];
 
-    v8 = [v7 lowercaseString];
-    v9 = [v5 lowercaseString];
-    v10 = [v8 isEqualToString:v9] ^ 1;
+    lowercaseString = [v7 lowercaseString];
+    lowercaseString2 = [v5 lowercaseString];
+    v10 = [lowercaseString isEqualToString:lowercaseString2] ^ 1;
   }
 
   else
@@ -472,20 +472,20 @@ uint64_t __50__AXSDSettings_sortedSupportedSoundDetectionTypes__block_invoke(uin
   return v10;
 }
 
-- (BOOL)hasCustomHapticForDetector:(id)a3
+- (BOOL)hasCustomHapticForDetector:(id)detector
 {
-  v3 = [(AXSDSettings *)self soundAlertTopicForSoundDetectionType:a3];
+  v3 = [(AXSDSettings *)self soundAlertTopicForSoundDetectionType:detector];
   if (v3)
   {
-    v4 = [MEMORY[0x277D71F88] sharedVibrationManager];
-    v5 = [v4 defaultVibrationIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+    v5 = [mEMORY[0x277D71F88] defaultVibrationIdentifierForAlertType:29 topic:v3];
 
-    v6 = [MEMORY[0x277D71F88] sharedVibrationManager];
-    v7 = [v6 currentVibrationIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F88]2 = [MEMORY[0x277D71F88] sharedVibrationManager];
+    v7 = [mEMORY[0x277D71F88]2 currentVibrationIdentifierForAlertType:29 topic:v3];
 
-    v8 = [v7 lowercaseString];
-    v9 = [v5 lowercaseString];
-    v10 = [v8 isEqualToString:v9] ^ 1;
+    lowercaseString = [v7 lowercaseString];
+    lowercaseString2 = [v5 lowercaseString];
+    v10 = [lowercaseString isEqualToString:lowercaseString2] ^ 1;
   }
 
   else
@@ -502,40 +502,40 @@ uint64_t __50__AXSDSettings_sortedSupportedSoundDetectionTypes__block_invoke(uin
   return v10;
 }
 
-- (void)pipeFile:(id)a3
+- (void)pipeFile:(id)file
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  [(AXSDSettings *)self setPipedInFile:v5];
+  fileCopy = file;
+  absoluteString = [fileCopy absoluteString];
+  [(AXSDSettings *)self setPipedInFile:absoluteString];
 
   v6 = AXLogUltron();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(AXSDSettings *)self pipedInFile];
+    pipedInFile = [(AXSDSettings *)self pipedInFile];
     v9 = 138412546;
-    v10 = v4;
+    v10 = fileCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = pipedInFile;
     _os_log_impl(&dword_23D624000, v6, OS_LOG_TYPE_INFO, "Setting pipe file to %@ -> %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrainModelWithIdentifier:(id)a3
+- (void)retrainModelWithIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(AXSDSettings *)self setRetrainModelIdentifier:v4];
+  identifierCopy = identifier;
+  [(AXSDSettings *)self setRetrainModelIdentifier:identifierCopy];
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(AXSDSettings *)self retrainModelIdentifier];
+    retrainModelIdentifier = [(AXSDSettings *)self retrainModelIdentifier];
     v8 = 138412546;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = retrainModelIdentifier;
     _os_log_impl(&dword_23D624000, v5, OS_LOG_TYPE_INFO, "Setting model to retrain to %@ -> %@", &v8, 0x16u);
   }
 
@@ -544,8 +544,8 @@ uint64_t __50__AXSDSettings_sortedSupportedSoundDetectionTypes__block_invoke(uin
 
 - (NSArray)latestSettingsEvents
 {
-  v2 = [(AXSDSettings *)self latestSettingsEventsDictionaries];
-  v3 = [v2 ax_mappedArrayUsingBlock:&__block_literal_global_119];
+  latestSettingsEventsDictionaries = [(AXSDSettings *)self latestSettingsEventsDictionaries];
+  v3 = [latestSettingsEventsDictionaries ax_mappedArrayUsingBlock:&__block_literal_global_119];
 
   return v3;
 }
@@ -558,19 +558,19 @@ AXSDSettingsEvent *__36__AXSDSettings_latestSettingsEvents__block_invoke(uint64_
   return v3;
 }
 
-- (void)setLatestSettingsEvents:(id)a3
+- (void)setLatestSettingsEvents:(id)events
 {
-  v4 = [a3 ax_mappedArrayUsingBlock:&__block_literal_global_122];
+  v4 = [events ax_mappedArrayUsingBlock:&__block_literal_global_122];
   [(AXSDSettings *)self setLatestSettingsEventsDictionaries:v4];
 }
 
-- (void)registerSettingsEvent:(id)a3
+- (void)registerSettingsEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AXSDSettings *)self latestSettingsEvents];
-  v7 = [v5 mutableCopy];
+  eventCopy = event;
+  latestSettingsEvents = [(AXSDSettings *)self latestSettingsEvents];
+  v7 = [latestSettingsEvents mutableCopy];
 
-  [v7 addObject:v4];
+  [v7 addObject:eventCopy];
   v6 = [v7 count];
   if (v6 >= 0x15)
   {
@@ -599,13 +599,13 @@ uint64_t __39__AXSDSettings_keysMonitoredForUpdates__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = AXLogUltron();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(AXSDSettings *)v3 logMessage:v4];
+    [(AXSDSettings *)messageCopy logMessage:v4];
   }
 }
 

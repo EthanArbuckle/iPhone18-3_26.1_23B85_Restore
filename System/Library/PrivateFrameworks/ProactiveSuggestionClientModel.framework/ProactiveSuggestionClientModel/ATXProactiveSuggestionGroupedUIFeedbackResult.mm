@@ -1,13 +1,13 @@
 @interface ATXProactiveSuggestionGroupedUIFeedbackResult
 - (ATXProactiveSuggestionGroupedUIFeedbackResult)init;
-- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithCoder:(id)a3;
-- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProto:(id)a3;
-- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithCoder:(id)coder;
+- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProto:(id)proto;
+- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)endDateOfLastSession;
 - (NSDate)startDateOfFirstSession;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithIntermediateSessionResults:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithIntermediateSessionResults:(id)results;
 @end
 
 @implementation ATXProactiveSuggestionGroupedUIFeedbackResult
@@ -27,34 +27,34 @@
   return v2;
 }
 
-- (void)updateWithIntermediateSessionResults:(id)a3
+- (void)updateWithIntermediateSessionResults:(id)results
 {
-  v25 = a3;
+  resultsCopy = results;
   proto = self->_proto;
-  v5 = [v25 engagedSuggestions];
-  -[ATXPBProactiveSuggestionGroupedUIFeedbackResult setNumEngagedSuggestions:](proto, "setNumEngagedSuggestions:", -[ATXPBProactiveSuggestionGroupedUIFeedbackResult numEngagedSuggestions](proto, "numEngagedSuggestions") + [v5 count]);
+  engagedSuggestions = [resultsCopy engagedSuggestions];
+  -[ATXPBProactiveSuggestionGroupedUIFeedbackResult setNumEngagedSuggestions:](proto, "setNumEngagedSuggestions:", -[ATXPBProactiveSuggestionGroupedUIFeedbackResult numEngagedSuggestions](proto, "numEngagedSuggestions") + [engagedSuggestions count]);
 
   v6 = self->_proto;
-  v7 = [v25 rejectedSuggestions];
-  -[ATXPBProactiveSuggestionGroupedUIFeedbackResult setNumRejectedSuggestions:](v6, "setNumRejectedSuggestions:", -[ATXPBProactiveSuggestionGroupedUIFeedbackResult numRejectedSuggestions](v6, "numRejectedSuggestions") + [v7 count]);
+  rejectedSuggestions = [resultsCopy rejectedSuggestions];
+  -[ATXPBProactiveSuggestionGroupedUIFeedbackResult setNumRejectedSuggestions:](v6, "setNumRejectedSuggestions:", -[ATXPBProactiveSuggestionGroupedUIFeedbackResult numRejectedSuggestions](v6, "numRejectedSuggestions") + [rejectedSuggestions count]);
 
   v8 = self->_proto;
-  v9 = [v25 shownSuggestions];
-  v10 = [v9 count];
-  v11 = [v25 engagedSuggestions];
-  v12 = [v11 count];
-  v13 = [v25 rejectedSuggestions];
-  -[ATXPBProactiveSuggestionGroupedUIFeedbackResult setNumAbandonedSuggestions:](v8, "setNumAbandonedSuggestions:", v10 - (v12 + [v13 count]) + -[ATXPBProactiveSuggestionGroupedUIFeedbackResult numAbandonedSuggestions](v8, "numAbandonedSuggestions"));
+  shownSuggestions = [resultsCopy shownSuggestions];
+  v10 = [shownSuggestions count];
+  engagedSuggestions2 = [resultsCopy engagedSuggestions];
+  v12 = [engagedSuggestions2 count];
+  rejectedSuggestions2 = [resultsCopy rejectedSuggestions];
+  -[ATXPBProactiveSuggestionGroupedUIFeedbackResult setNumAbandonedSuggestions:](v8, "setNumAbandonedSuggestions:", v10 - (v12 + [rejectedSuggestions2 count]) + -[ATXPBProactiveSuggestionGroupedUIFeedbackResult numAbandonedSuggestions](v8, "numAbandonedSuggestions"));
 
-  v14 = [v25 engagementType];
-  if (v14)
+  engagementType = [resultsCopy engagementType];
+  if (engagementType)
   {
-    if (v14 == 1)
+    if (engagementType == 1)
     {
       [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto setNumSessionsWithRejectedSuggestions:[(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto numSessionsWithRejectedSuggestions]+ 1];
     }
 
-    else if (v14 == 2)
+    else if (engagementType == 2)
     {
       [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto setNumSessionsWithEngagedSuggestions:[(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto numSessionsWithEngagedSuggestions]+ 1];
     }
@@ -67,9 +67,9 @@
 
   if (![(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto hasStartDateOfFirstSessionInSeconds])
   {
-    v15 = [v25 session];
-    v16 = [v15 sessionStartDate];
-    [v16 timeIntervalSinceReferenceDate];
+    session = [resultsCopy session];
+    sessionStartDate = [session sessionStartDate];
+    [sessionStartDate timeIntervalSinceReferenceDate];
     [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto setStartDateOfFirstSessionInSeconds:?];
   }
 
@@ -80,17 +80,17 @@
 
   [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto endDateOfLastSessionInSeconds];
   v18 = v17;
-  v19 = [v25 session];
-  v20 = [v19 sessionEndDate];
-  [v20 timeIntervalSinceReferenceDate];
+  session2 = [resultsCopy session];
+  sessionEndDate = [session2 sessionEndDate];
+  [sessionEndDate timeIntervalSinceReferenceDate];
   v22 = v21;
 
   if (v18 < v22)
   {
 LABEL_11:
-    v23 = [v25 session];
-    v24 = [v23 sessionEndDate];
-    [v24 timeIntervalSinceReferenceDate];
+    session3 = [resultsCopy session];
+    sessionEndDate2 = [session3 sessionEndDate];
+    [sessionEndDate2 timeIntervalSinceReferenceDate];
     [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self->_proto setEndDateOfLastSessionInSeconds:?];
   }
 }
@@ -129,13 +129,13 @@ LABEL_11:
   return v4;
 }
 
-- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProto:(id)a3
+- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProto:(id)proto
 {
-  v5 = a3;
-  if (!v5)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_9:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -145,7 +145,7 @@ LABEL_9:
     v9 = __atxlog_handle_blending();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self initWithProto:v5, v9];
+      [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self initWithProto:protoCopy, v9];
     }
 
     goto LABEL_9;
@@ -157,63 +157,63 @@ LABEL_9:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_proto, a3);
+    objc_storeStrong(&v6->_proto, proto);
   }
 
   self = v7;
-  v8 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProtoData:(id)a3
+- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBProactiveSuggestionGroupedUIFeedbackResult alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBProactiveSuggestionGroupedUIFeedbackResult alloc] initWithData:dataCopy];
 
     self = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithCoder:(id)a3
+- (ATXProactiveSuggestionGroupedUIFeedbackResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self initWithProtoData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self isEqualToATXProactiveSuggestionGroupedUIFeedbackResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXProactiveSuggestionGroupedUIFeedbackResult *)self isEqualToATXProactiveSuggestionGroupedUIFeedbackResult:v5];
   }
 
   return v6;

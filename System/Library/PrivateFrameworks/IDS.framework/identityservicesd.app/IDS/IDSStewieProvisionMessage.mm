@@ -8,25 +8,25 @@
 - (BOOL)wantsPhoneInfo;
 - (IDSStewieProvisionMessage)init;
 - (id)URLOverride;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)failuresOfType:(unint64_t)a3;
-- (id)failuresOfType:(unint64_t)a3 withDifferingResponseCode:(int64_t)a4;
+- (id)failuresOfType:(unint64_t)type;
+- (id)failuresOfType:(unint64_t)type withDifferingResponseCode:(int64_t)code;
 - (id)messageBody;
 - (id)requiredKeys;
-- (id)successfulResponsesOfType:(unint64_t)a3;
-- (void)addClearInfo:(id)a3;
-- (void)addCompanionDeviceUDIDs:(id)a3;
-- (void)addCompanionPhoneNumbers:(id)a3;
-- (void)addMessage:(id)a3;
-- (void)addPhoneNumberInfos:(id)a3;
-- (void)addPhoneSigsForPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4;
-- (void)addSMSConfig:(id)a3;
-- (void)addSessionKeyInfos:(id)a3;
-- (void)addToCorrectResponseDictionaryForRequest:(id)a3 overallResponseCode:(int64_t)a4 overallFailureMessage:(id)a5 requestSpecificError:(id)a6 forceIntoFailures:(BOOL)a7;
-- (void)handleResponseDictionary:(id)a3;
-- (void)removePhoneNumberInfos:(id)a3;
-- (void)removeSessionKeyInfos:(id)a3;
+- (id)successfulResponsesOfType:(unint64_t)type;
+- (void)addClearInfo:(id)info;
+- (void)addCompanionDeviceUDIDs:(id)ds;
+- (void)addCompanionPhoneNumbers:(id)numbers;
+- (void)addMessage:(id)message;
+- (void)addPhoneNumberInfos:(id)infos;
+- (void)addPhoneSigsForPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey;
+- (void)addSMSConfig:(id)config;
+- (void)addSessionKeyInfos:(id)infos;
+- (void)addToCorrectResponseDictionaryForRequest:(id)request overallResponseCode:(int64_t)code overallFailureMessage:(id)message requestSpecificError:(id)error forceIntoFailures:(BOOL)failures;
+- (void)handleResponseDictionary:(id)dictionary;
+- (void)removePhoneNumberInfos:(id)infos;
+- (void)removeSessionKeyInfos:(id)infos;
 @end
 
 @implementation IDSStewieProvisionMessage
@@ -48,44 +48,44 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17.receiver = self;
   v17.super_class = IDSStewieProvisionMessage;
-  v4 = [(IDSStewieProvisionMessage *)&v17 copyWithZone:a3];
-  v5 = [(IDSStewieProvisionMessage *)self loggingGUID];
-  [v4 setLoggingGUID:v5];
+  v4 = [(IDSStewieProvisionMessage *)&v17 copyWithZone:zone];
+  loggingGUID = [(IDSStewieProvisionMessage *)self loggingGUID];
+  [v4 setLoggingGUID:loggingGUID];
 
-  v6 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  [v4 setDeviceInfo:v6];
+  deviceInfo = [(IDSStewieProvisionMessage *)self deviceInfo];
+  [v4 setDeviceInfo:deviceInfo];
 
   [v4 setPhoneNumberInfosAdded:{-[IDSStewieProvisionMessage phoneNumberInfosAdded](self, "phoneNumberInfosAdded")}];
-  v7 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
-  [v4 setPhoneNumberInfos:v7];
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  [v4 setPhoneNumberInfos:phoneNumberInfos];
 
-  v8 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
-  [v4 setSessionKeyInfos:v8];
+  sessionKeyInfos = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+  [v4 setSessionKeyInfos:sessionKeyInfos];
 
-  v9 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
-  [v4 setRetiredSessionKeys:v9];
+  retiredSessionKeys = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
+  [v4 setRetiredSessionKeys:retiredSessionKeys];
 
-  v10 = [(IDSStewieProvisionMessage *)self clearInfo];
-  [v4 setClearInfo:v10];
+  clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
+  [v4 setClearInfo:clearInfo];
 
-  v11 = [(IDSStewieProvisionMessage *)self successes];
-  [v4 setSuccesses:v11];
+  successes = [(IDSStewieProvisionMessage *)self successes];
+  [v4 setSuccesses:successes];
 
-  v12 = [(IDSStewieProvisionMessage *)self failures];
-  [v4 setFailures:v12];
+  failures = [(IDSStewieProvisionMessage *)self failures];
+  [v4 setFailures:failures];
 
-  v13 = [(IDSStewieProvisionMessage *)self smsConfig];
-  [v4 setSmsConfig:v13];
+  smsConfig = [(IDSStewieProvisionMessage *)self smsConfig];
+  [v4 setSmsConfig:smsConfig];
 
-  v14 = [(IDSStewieProvisionMessage *)self companionPhoneNumbers];
-  [v4 setCompanionPhoneNumbers:v14];
+  companionPhoneNumbers = [(IDSStewieProvisionMessage *)self companionPhoneNumbers];
+  [v4 setCompanionPhoneNumbers:companionPhoneNumbers];
 
-  v15 = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
-  [v4 setCompanionDeviceUDIDs:v15];
+  companionDeviceUDIDs = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
+  [v4 setCompanionDeviceUDIDs:companionDeviceUDIDs];
 
   [v4 setCompanionPhoneNumbersAdded:{-[IDSStewieProvisionMessage companionPhoneNumbersAdded](self, "companionPhoneNumbersAdded")}];
   [v4 setCompanionDeviceUDIDsAdded:{-[IDSStewieProvisionMessage companionDeviceUDIDsAdded](self, "companionDeviceUDIDsAdded")}];
@@ -94,35 +94,35 @@
 
 - (BOOL)needsPushIdentity
 {
-  v2 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  v3 = v2 != 0;
+  deviceInfo = [(IDSStewieProvisionMessage *)self deviceInfo];
+  v3 = deviceInfo != 0;
 
   return v3;
 }
 
 - (BOOL)needsPhoneSigs
 {
-  v2 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
-  v3 = [v2 count] != 0;
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  v3 = [phoneNumberInfos count] != 0;
 
   return v3;
 }
 
 - (BOOL)needsDeviceInfo
 {
-  v3 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  if (v3)
+  deviceInfo = [(IDSStewieProvisionMessage *)self deviceInfo];
+  if (deviceInfo)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(IDSStewieProvisionMessage *)self clearInfo];
-    if (v5)
+    clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
+    if (clearInfo)
     {
-      v6 = [(IDSStewieProvisionMessage *)self clearInfo];
-      v4 = [v6 clearType] != 0;
+      clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+      v4 = [clearInfo2 clearType] != 0;
     }
 
     else
@@ -141,19 +141,19 @@
     return 0;
   }
 
-  v4 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
-  if ([v4 count])
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  if ([phoneNumberInfos count])
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(IDSStewieProvisionMessage *)self clearInfo];
-    if (v5)
+    clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
+    if (clearInfo)
     {
-      v6 = [(IDSStewieProvisionMessage *)self clearInfo];
-      v3 = [v6 clearType] != 0;
+      clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+      v3 = [clearInfo2 clearType] != 0;
     }
 
     else
@@ -172,19 +172,19 @@
     return 0;
   }
 
-  v4 = [(IDSStewieProvisionMessage *)self companionPhoneNumbers];
-  if (v4)
+  companionPhoneNumbers = [(IDSStewieProvisionMessage *)self companionPhoneNumbers];
+  if (companionPhoneNumbers)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(IDSStewieProvisionMessage *)self clearInfo];
-    if (v5)
+    clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
+    if (clearInfo)
     {
-      v6 = [(IDSStewieProvisionMessage *)self clearInfo];
-      v3 = [v6 clearType] != 0;
+      clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+      v3 = [clearInfo2 clearType] != 0;
     }
 
     else
@@ -203,19 +203,19 @@
     return 0;
   }
 
-  v4 = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
-  if (v4)
+  companionDeviceUDIDs = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
+  if (companionDeviceUDIDs)
   {
     v3 = 0;
   }
 
   else
   {
-    v5 = [(IDSStewieProvisionMessage *)self clearInfo];
-    if (v5)
+    clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
+    if (clearInfo)
     {
-      v6 = [(IDSStewieProvisionMessage *)self clearInfo];
-      v3 = [v6 clearType] != 0;
+      clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+      v3 = [clearInfo2 clearType] != 0;
     }
 
     else
@@ -227,14 +227,14 @@
   return v3;
 }
 
-- (void)addPhoneSigsForPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4
+- (void)addPhoneSigsForPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey
 {
   obj = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
   v6 = [obj count];
-  if (a3 && v6)
+  if (key && v6)
   {
 
-    if (a4)
+    if (privateKey)
     {
       v7 = objc_alloc_init(NSMutableDictionary);
       [(IDSStewieProvisionMessage *)self setPhoneSigs:v7];
@@ -261,31 +261,31 @@
             }
 
             v13 = *(*(&v28 + 1) + 8 * i);
-            v14 = [(IDSStewieProvisionMessage *)self serverTimestamp];
+            serverTimestamp = [(IDSStewieProvisionMessage *)self serverTimestamp];
             _FTGenerateNonceAndSignatureFromPayload();
             v15 = 0;
             v16 = 0;
 
             v17 = [IDSAuthenticationCertificateSignature alloc];
-            v18 = [v13 authenticationCertificate];
-            v19 = [v17 initWithSubscriptionIdentifier:&stru_100C06028 authenticationCertificate:v18 signature:v16 nonce:v15];
+            authenticationCertificate = [v13 authenticationCertificate];
+            v19 = [v17 initWithSubscriptionIdentifier:&stru_100C06028 authenticationCertificate:authenticationCertificate signature:v16 nonce:v15];
 
-            v20 = [v19 serverVerifiableEncoding];
+            serverVerifiableEncoding = [v19 serverVerifiableEncoding];
             v21 = +[IDSFoundationLog stewieProvisioning];
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v24;
               v33 = v13;
               v34 = 2112;
-              v35 = v20;
+              v35 = serverVerifiableEncoding;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Created sig for info { info: %@, certSig: %@ }", buf, 0x16u);
             }
 
-            if (v20)
+            if (serverVerifiableEncoding)
             {
-              v22 = [(IDSStewieProvisionMessage *)self phoneSigs];
-              v23 = [v13 index];
-              [v22 setObject:v20 forKeyedSubscript:v23];
+              phoneSigs = [(IDSStewieProvisionMessage *)self phoneSigs];
+              index = [v13 index];
+              [phoneSigs setObject:serverVerifiableEncoding forKeyedSubscript:index];
             }
           }
 
@@ -302,78 +302,78 @@
   }
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v19 = a3;
-  if (v19)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v4 = [v19 clearInfo];
+    clearInfo = [messageCopy clearInfo];
 
-    if (v4)
+    if (clearInfo)
     {
-      v5 = [v19 clearInfo];
-      [(IDSStewieProvisionMessage *)self addClearInfo:v5];
+      clearInfo2 = [messageCopy clearInfo];
+      [(IDSStewieProvisionMessage *)self addClearInfo:clearInfo2];
     }
 
-    v6 = [v19 deviceInfo];
+    deviceInfo = [messageCopy deviceInfo];
 
-    if (v6)
+    if (deviceInfo)
     {
-      v7 = [v19 deviceInfo];
-      [(IDSStewieProvisionMessage *)self addDeviceInfo:v7];
+      deviceInfo2 = [messageCopy deviceInfo];
+      [(IDSStewieProvisionMessage *)self addDeviceInfo:deviceInfo2];
     }
 
-    if (([v19 wantsPhoneInfo] & 1) == 0)
+    if (([messageCopy wantsPhoneInfo] & 1) == 0)
     {
-      v8 = [v19 phoneNumberInfos];
-      [(IDSStewieProvisionMessage *)self addPhoneNumberInfos:v8];
+      phoneNumberInfos = [messageCopy phoneNumberInfos];
+      [(IDSStewieProvisionMessage *)self addPhoneNumberInfos:phoneNumberInfos];
     }
 
-    v9 = [v19 sessionKeyInfos];
+    sessionKeyInfos = [messageCopy sessionKeyInfos];
 
-    if (v9)
+    if (sessionKeyInfos)
     {
-      v10 = [v19 sessionKeyInfos];
-      v11 = [v10 allObjects];
-      [(IDSStewieProvisionMessage *)self addSessionKeyInfos:v11];
+      sessionKeyInfos2 = [messageCopy sessionKeyInfos];
+      allObjects = [sessionKeyInfos2 allObjects];
+      [(IDSStewieProvisionMessage *)self addSessionKeyInfos:allObjects];
     }
 
-    v12 = [v19 loggingGUID];
+    loggingGUID = [messageCopy loggingGUID];
 
-    if (v12)
+    if (loggingGUID)
     {
-      v13 = [v19 loggingGUID];
-      [(IDSStewieProvisionMessage *)self addLoggingGUID:v13];
+      loggingGUID2 = [messageCopy loggingGUID];
+      [(IDSStewieProvisionMessage *)self addLoggingGUID:loggingGUID2];
     }
 
-    v14 = [v19 smsConfig];
-    [(IDSStewieProvisionMessage *)self addSMSConfig:v14];
+    smsConfig = [messageCopy smsConfig];
+    [(IDSStewieProvisionMessage *)self addSMSConfig:smsConfig];
 
-    v15 = [v19 companionPhoneNumbers];
+    companionPhoneNumbers = [messageCopy companionPhoneNumbers];
 
-    if (v15)
+    if (companionPhoneNumbers)
     {
-      v16 = [v19 companionPhoneNumbers];
-      [(IDSStewieProvisionMessage *)self addCompanionPhoneNumbers:v16];
+      companionPhoneNumbers2 = [messageCopy companionPhoneNumbers];
+      [(IDSStewieProvisionMessage *)self addCompanionPhoneNumbers:companionPhoneNumbers2];
     }
 
-    v17 = [v19 companionDeviceUDIDs];
+    companionDeviceUDIDs = [messageCopy companionDeviceUDIDs];
 
-    if (v17)
+    if (companionDeviceUDIDs)
     {
-      v18 = [v19 companionDeviceUDIDs];
-      [(IDSStewieProvisionMessage *)self addCompanionDeviceUDIDs:v18];
+      companionDeviceUDIDs2 = [messageCopy companionDeviceUDIDs];
+      [(IDSStewieProvisionMessage *)self addCompanionDeviceUDIDs:companionDeviceUDIDs2];
     }
   }
 }
 
-- (void)addPhoneNumberInfos:(id)a3
+- (void)addPhoneNumberInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   [(IDSStewieProvisionMessage *)self setPhoneNumberInfosAdded:1];
-  [(IDSStewieProvisionMessage *)self setPhoneNumberInfos:v4];
-  v5 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
-  v6 = [v5 sortedArrayUsingComparator:&stru_100BDC438];
+  [(IDSStewieProvisionMessage *)self setPhoneNumberInfos:infosCopy];
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  v6 = [phoneNumberInfos sortedArrayUsingComparator:&stru_100BDC438];
 
   v17 = 0u;
   v18 = 0u;
@@ -412,24 +412,24 @@
   }
 }
 
-- (void)addCompanionPhoneNumbers:(id)a3
+- (void)addCompanionPhoneNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   [(IDSStewieProvisionMessage *)self setCompanionPhoneNumbersAdded:1];
-  [(IDSStewieProvisionMessage *)self setCompanionPhoneNumbers:v4];
+  [(IDSStewieProvisionMessage *)self setCompanionPhoneNumbers:numbersCopy];
 }
 
-- (void)addCompanionDeviceUDIDs:(id)a3
+- (void)addCompanionDeviceUDIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   [(IDSStewieProvisionMessage *)self setCompanionDeviceUDIDsAdded:1];
-  [(IDSStewieProvisionMessage *)self setCompanionDeviceUDIDs:v4];
+  [(IDSStewieProvisionMessage *)self setCompanionDeviceUDIDs:dsCopy];
 }
 
-- (void)addSessionKeyInfos:(id)a3
+- (void)addSessionKeyInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [NSMutableSet setWithArray:v4];
+  infosCopy = infos;
+  v5 = [NSMutableSet setWithArray:infosCopy];
   if ([v5 count] == 30)
   {
     v6 = [[IDSStewieClearInfo alloc] initWithClearType:1];
@@ -437,9 +437,9 @@
   }
 
   [(IDSStewieProvisionMessage *)self setSessionKeyInfos:v5];
-  v7 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
+  retiredSessionKeys = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
 
-  if (!v7)
+  if (!retiredSessionKeys)
   {
     v8 = objc_alloc_init(NSMutableSet);
     [(IDSStewieProvisionMessage *)self setRetiredSessionKeys:v8];
@@ -449,7 +449,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v4;
+  v9 = infosCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -465,16 +465,16 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 retiredEPKI];
+        retiredEPKI = [v14 retiredEPKI];
 
-        if (v15)
+        if (retiredEPKI)
         {
-          v16 = [v14 retiredEPKI];
-          v17 = [v16 __imHexString];
-          v18 = [v17 lowercaseString];
+          retiredEPKI2 = [v14 retiredEPKI];
+          __imHexString = [retiredEPKI2 __imHexString];
+          lowercaseString = [__imHexString lowercaseString];
 
-          v19 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
-          [v19 addObject:v18];
+          retiredSessionKeys2 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
+          [retiredSessionKeys2 addObject:lowercaseString];
         }
       }
 
@@ -485,28 +485,28 @@
   }
 }
 
-- (void)addClearInfo:(id)a3
+- (void)addClearInfo:(id)info
 {
-  v8 = a3;
-  v4 = [(IDSStewieProvisionMessage *)self clearInfo];
+  infoCopy = info;
+  clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
 
-  if (v4)
+  if (clearInfo)
   {
-    v5 = [(IDSStewieProvisionMessage *)self clearInfo];
-    [v5 unionWithClearInfo:v8];
+    clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+    [clearInfo2 unionWithClearInfo:infoCopy];
   }
 
   else
   {
-    [(IDSStewieProvisionMessage *)self setClearInfo:v8];
+    [(IDSStewieProvisionMessage *)self setClearInfo:infoCopy];
   }
 
-  v6 = [(IDSStewieProvisionMessage *)self clearInfo];
-  v7 = [v6 clearType];
+  clearInfo3 = [(IDSStewieProvisionMessage *)self clearInfo];
+  clearType = [clearInfo3 clearType];
 
-  if (v7 != 1)
+  if (clearType != 1)
   {
-    if (v7)
+    if (clearType)
     {
       goto LABEL_8;
     }
@@ -519,55 +519,55 @@
 LABEL_8:
 }
 
-- (void)addSMSConfig:(id)a3
+- (void)addSMSConfig:(id)config
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configCopy = config;
+  v5 = configCopy;
+  if (configCopy)
   {
-    v8 = v4;
-    v4 = [v4 config];
+    v8 = configCopy;
+    configCopy = [configCopy config];
     v5 = v8;
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
-      v7 = [v8 configID];
+      v6 = configCopy;
+      configID = [v8 configID];
 
       v5 = v8;
-      if (v7)
+      if (configID)
       {
-        v4 = [(IDSStewieProvisionMessage *)self setSmsConfig:v8];
+        configCopy = [(IDSStewieProvisionMessage *)self setSmsConfig:v8];
         v5 = v8;
       }
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(configCopy, v5);
 }
 
-- (void)removePhoneNumberInfos:(id)a3
+- (void)removePhoneNumberInfos:(id)infos
 {
-  v6 = a3;
-  v4 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
-  v5 = [v4 mutableCopy];
+  infosCopy = infos;
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  v5 = [phoneNumberInfos mutableCopy];
 
-  if ([v6 count])
+  if ([infosCopy count])
   {
-    [v5 removeObjectsInArray:v6];
+    [v5 removeObjectsInArray:infosCopy];
   }
 
   [(IDSStewieProvisionMessage *)self setPhoneNumberInfos:v5];
 }
 
-- (void)removeSessionKeyInfos:(id)a3
+- (void)removeSessionKeyInfos:(id)infos
 {
-  v7 = a3;
-  v4 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
-  v5 = [v4 mutableCopy];
+  infosCopy = infos;
+  sessionKeyInfos = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+  v5 = [sessionKeyInfos mutableCopy];
 
-  if ([v7 count])
+  if ([infosCopy count])
   {
-    v6 = [NSSet setWithArray:v7];
+    v6 = [NSSet setWithArray:infosCopy];
     [v5 minusSet:v6];
   }
 
@@ -646,30 +646,30 @@ LABEL_13:
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSStewieProvisionMessage *)self deviceInfo];
+  deviceInfo = [(IDSStewieProvisionMessage *)self deviceInfo];
 
-  if (!v4)
+  if (!deviceInfo)
   {
     goto LABEL_29;
   }
 
-  v5 = [(IDSStewieProvisionMessage *)self pushCertificate];
-  if (v5)
+  pushCertificate = [(IDSStewieProvisionMessage *)self pushCertificate];
+  if (pushCertificate)
   {
   }
 
   else
   {
-    v6 = [(IDSStewieProvisionMessage *)self pushCerts];
+    pushCerts = [(IDSStewieProvisionMessage *)self pushCerts];
 
-    if (!v6)
+    if (!pushCerts)
     {
       goto LABEL_13;
     }
   }
 
-  v7 = [(IDSStewieProvisionMessage *)self pushNonce];
-  if (!v7 || (v8 = v7, [(IDSStewieProvisionMessage *)self pushSig], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+  pushNonce = [(IDSStewieProvisionMessage *)self pushNonce];
+  if (!pushNonce || (v8 = pushNonce, [(IDSStewieProvisionMessage *)self pushSig], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
   {
 LABEL_13:
     v10 = +[IDSFoundationLog stewieProvisioning];
@@ -682,26 +682,26 @@ LABEL_13:
   }
 
   v10 = objc_alloc_init(NSMutableDictionary);
-  v11 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  v12 = [v11 locale];
+  deviceInfo2 = [(IDSStewieProvisionMessage *)self deviceInfo];
+  locale = [deviceInfo2 locale];
 
-  if (v12)
+  if (locale)
   {
-    CFDictionarySetValue(v10, @"deviceLocale", v12);
+    CFDictionarySetValue(v10, @"deviceLocale", locale);
   }
 
-  v13 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  v14 = [v13 pushToken];
-  v15 = [v14 __imHexString];
+  deviceInfo3 = [(IDSStewieProvisionMessage *)self deviceInfo];
+  pushToken = [deviceInfo3 pushToken];
+  __imHexString = [pushToken __imHexString];
 
-  if (v15)
+  if (__imHexString)
   {
-    CFDictionarySetValue(v10, @"pushToken", v15);
+    CFDictionarySetValue(v10, @"pushToken", __imHexString);
   }
 
-  v16 = [(IDSStewieProvisionMessage *)self pushCerts];
+  pushCerts2 = [(IDSStewieProvisionMessage *)self pushCerts];
 
-  if (v16)
+  if (pushCerts2)
   {
     [(IDSStewieProvisionMessage *)self pushCerts];
   }
@@ -716,60 +716,60 @@ LABEL_13:
     CFDictionarySetValue(v10, @"pushCert", v17);
   }
 
-  v18 = [(IDSStewieProvisionMessage *)self pushNonce];
-  if (v18)
+  pushNonce2 = [(IDSStewieProvisionMessage *)self pushNonce];
+  if (pushNonce2)
   {
-    CFDictionarySetValue(v10, @"pushNonce", v18);
+    CFDictionarySetValue(v10, @"pushNonce", pushNonce2);
   }
 
-  v19 = [(IDSStewieProvisionMessage *)self pushSig];
-  if (v19)
+  pushSig = [(IDSStewieProvisionMessage *)self pushSig];
+  if (pushSig)
   {
-    CFDictionarySetValue(v10, @"pushSignature", v19);
+    CFDictionarySetValue(v10, @"pushSignature", pushSig);
   }
 
-  v20 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  v21 = [v20 dsid];
+  deviceInfo4 = [(IDSStewieProvisionMessage *)self deviceInfo];
+  dsid = [deviceInfo4 dsid];
 
-  if (v21)
+  if (dsid)
   {
-    CFDictionarySetValue(v10, @"dsid", v21);
+    CFDictionarySetValue(v10, @"dsid", dsid);
   }
 
-  v22 = [(IDSStewieProvisionMessage *)self loggingGUID];
-  if (v22)
+  loggingGUID = [(IDSStewieProvisionMessage *)self loggingGUID];
+  if (loggingGUID)
   {
-    CFDictionarySetValue(v10, @"sdid", v22);
+    CFDictionarySetValue(v10, @"sdid", loggingGUID);
   }
 
   [v3 setObject:v10 forKeyedSubscript:@"deviceInfo"];
 LABEL_27:
 
-  v23 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  v24 = [v23 accessTokens];
-  v25 = [v24 count];
+  deviceInfo5 = [(IDSStewieProvisionMessage *)self deviceInfo];
+  accessTokens = [deviceInfo5 accessTokens];
+  v25 = [accessTokens count];
 
   if (v25)
   {
-    v26 = [(IDSStewieProvisionMessage *)self deviceInfo];
-    v27 = [v26 accessTokens];
-    [v3 setObject:v27 forKeyedSubscript:@"featureAccessTokens"];
+    deviceInfo6 = [(IDSStewieProvisionMessage *)self deviceInfo];
+    accessTokens2 = [deviceInfo6 accessTokens];
+    [v3 setObject:accessTokens2 forKeyedSubscript:@"featureAccessTokens"];
   }
 
 LABEL_29:
-  v28 = [(IDSStewieProvisionMessage *)self phoneSigs];
-  v29 = [v28 count];
+  phoneSigs = [(IDSStewieProvisionMessage *)self phoneSigs];
+  v29 = [phoneSigs count];
 
   if (v29)
   {
-    v30 = [(IDSStewieProvisionMessage *)self phoneSigs];
-    v31 = [v30 copy];
+    phoneSigs2 = [(IDSStewieProvisionMessage *)self phoneSigs];
+    v31 = [phoneSigs2 copy];
     [v3 setObject:v31 forKeyedSubscript:@"phoneNumbers"];
   }
 
-  v32 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+  sessionKeyInfos = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
 
-  if (v32)
+  if (sessionKeyInfos)
   {
     v59 = v3;
     v33 = objc_alloc_init(NSMutableArray);
@@ -777,8 +777,8 @@ LABEL_29:
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v34 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
-    v35 = [v34 countByEnumeratingWithState:&v60 objects:v66 count:16];
+    sessionKeyInfos2 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+    v35 = [sessionKeyInfos2 countByEnumeratingWithState:&v60 objects:v66 count:16];
     if (v35)
     {
       v36 = v35;
@@ -789,18 +789,18 @@ LABEL_29:
         {
           if (*v61 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(sessionKeyInfos2);
           }
 
           v39 = *(*(&v60 + 1) + 8 * i);
-          v40 = [v39 sessionKey];
+          sessionKey = [v39 sessionKey];
 
-          if (v40)
+          if (sessionKey)
           {
             v64[0] = @"key";
-            v41 = [v39 sessionKey];
+            sessionKey2 = [v39 sessionKey];
             v64[1] = @"lastResort";
-            v65[0] = v41;
+            v65[0] = sessionKey2;
             v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v39 lastResort]);
             v65[1] = v42;
             v43 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2];
@@ -808,7 +808,7 @@ LABEL_29:
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v60 objects:v66 count:16];
+        v36 = [sessionKeyInfos2 countByEnumeratingWithState:&v60 objects:v66 count:16];
       }
 
       while (v36);
@@ -816,27 +816,27 @@ LABEL_29:
 
     v3 = v59;
     [v59 setObject:v33 forKeyedSubscript:@"addSessionKeys"];
-    v44 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
-    v45 = [v44 count];
+    retiredSessionKeys = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
+    v45 = [retiredSessionKeys count];
 
     if (v45)
     {
-      v46 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
-      v47 = [v46 allObjects];
-      [v59 setObject:v47 forKeyedSubscript:@"removeSessionKeys"];
+      retiredSessionKeys2 = [(IDSStewieProvisionMessage *)self retiredSessionKeys];
+      allObjects = [retiredSessionKeys2 allObjects];
+      [v59 setObject:allObjects forKeyedSubscript:@"removeSessionKeys"];
     }
   }
 
-  v48 = [(IDSStewieProvisionMessage *)self clearInfo];
+  clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
 
-  if (v48)
+  if (clearInfo)
   {
-    v49 = [(IDSStewieProvisionMessage *)self clearInfo];
-    v50 = [v49 clearType];
+    clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+    clearType = [clearInfo2 clearType];
 
-    if (v50)
+    if (clearType)
     {
-      if (v50 != 1)
+      if (clearType != 1)
       {
         goto LABEL_50;
       }
@@ -853,74 +853,74 @@ LABEL_29:
   }
 
 LABEL_50:
-  v52 = [(IDSStewieProvisionMessage *)self smsConfig];
+  smsConfig = [(IDSStewieProvisionMessage *)self smsConfig];
 
-  if (v52)
+  if (smsConfig)
   {
-    v53 = [(IDSStewieProvisionMessage *)self smsConfig];
-    v54 = [v53 config];
-    [v3 setObject:v54 forKeyedSubscript:@"smsConfigBlob"];
+    smsConfig2 = [(IDSStewieProvisionMessage *)self smsConfig];
+    config = [smsConfig2 config];
+    [v3 setObject:config forKeyedSubscript:@"smsConfigBlob"];
   }
 
-  v55 = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
+  companionDeviceUDIDs = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
 
-  if (v55 && _os_feature_enabled_impl())
+  if (companionDeviceUDIDs && _os_feature_enabled_impl())
   {
-    v56 = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
-    v57 = [v56 allValues];
-    [v3 setObject:v57 forKeyedSubscript:@"linkedDeviceUDIDs"];
+    companionDeviceUDIDs2 = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
+    allValues = [companionDeviceUDIDs2 allValues];
+    [v3 setObject:allValues forKeyedSubscript:@"linkedDeviceUDIDs"];
   }
 
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[IDSFoundationLog stewieProvisioning];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v57 = v4;
+    v57 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Stewie provision response %@", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"status"];
-  v45 = [v6 integerValue];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"status"];
+  integerValue = [v6 integerValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"message"];
-  v8 = [(IDSStewieProvisionMessage *)self successes];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"message"];
+  successes = [(IDSStewieProvisionMessage *)self successes];
 
-  if (!v8)
+  if (!successes)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
     [(IDSStewieProvisionMessage *)self setSuccesses:v9];
   }
 
-  v10 = [(IDSStewieProvisionMessage *)self failures];
+  failures = [(IDSStewieProvisionMessage *)self failures];
 
-  if (!v10)
+  if (!failures)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [(IDSStewieProvisionMessage *)self setFailures:v11];
   }
 
-  v12 = [(IDSStewieProvisionMessage *)self deviceInfo];
+  deviceInfo = [(IDSStewieProvisionMessage *)self deviceInfo];
 
-  if (v12)
+  if (deviceInfo)
   {
-    v13 = [(IDSStewieProvisionMessage *)self deviceInfo];
-    [(IDSStewieProvisionMessage *)self addToCorrectResponseDictionaryForRequest:v13 overallResponseCode:v45 overallFailureMessage:v7 requestSpecificError:0];
+    deviceInfo2 = [(IDSStewieProvisionMessage *)self deviceInfo];
+    [(IDSStewieProvisionMessage *)self addToCorrectResponseDictionaryForRequest:deviceInfo2 overallResponseCode:integerValue overallFailureMessage:v7 requestSpecificError:0];
   }
 
-  v14 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
 
-  v15 = self;
-  v40 = v4;
-  if (v14)
+  selfCopy = self;
+  v40 = dictionaryCopy;
+  if (phoneNumberInfos)
   {
     v16 = v7;
-    v17 = [v4 objectForKeyedSubscript:@"phoneNumbers"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumbers"];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -941,10 +941,10 @@ LABEL_50:
           }
 
           v22 = *(*(&v50 + 1) + 8 * i);
-          v23 = [v22 index];
-          v24 = [v17 objectForKeyedSubscript:v23];
+          index = [v22 index];
+          v24 = [v17 objectForKeyedSubscript:index];
 
-          [(IDSStewieProvisionMessage *)v15 addToCorrectResponseDictionaryForRequest:v22 overallResponseCode:v45 overallFailureMessage:v16 requestSpecificError:v24 forceIntoFailures:v17 != 0];
+          [(IDSStewieProvisionMessage *)selfCopy addToCorrectResponseDictionaryForRequest:v22 overallResponseCode:integerValue overallFailureMessage:v16 requestSpecificError:v24 forceIntoFailures:v17 != 0];
         }
 
         v19 = [obj countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -953,22 +953,22 @@ LABEL_50:
       while (v19);
     }
 
-    v4 = v40;
-    self = v15;
+    dictionaryCopy = v40;
+    self = selfCopy;
     v7 = v16;
   }
 
-  v25 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+  sessionKeyInfos = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
 
-  if (v25)
+  if (sessionKeyInfos)
   {
-    obja = [v4 objectForKeyedSubscript:@"addSessionKeys"];
+    obja = [dictionaryCopy objectForKeyedSubscript:@"addSessionKeys"];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v42 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
-    v26 = [v42 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    sessionKeyInfos2 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+    v26 = [sessionKeyInfos2 countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v26)
     {
       v27 = v26;
@@ -979,18 +979,18 @@ LABEL_50:
         {
           if (*v47 != v28)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(sessionKeyInfos2);
           }
 
           v30 = *(*(&v46 + 1) + 8 * j);
-          v31 = [v30 keyEPKI];
-          if (v31)
+          keyEPKI = [v30 keyEPKI];
+          if (keyEPKI)
           {
-            v32 = [v30 keyEPKI];
-            v33 = [v32 __imHexString];
-            v34 = [obja objectForKeyedSubscript:v33];
+            keyEPKI2 = [v30 keyEPKI];
+            __imHexString = [keyEPKI2 __imHexString];
+            v34 = [obja objectForKeyedSubscript:__imHexString];
 
-            self = v15;
+            self = selfCopy;
           }
 
           else
@@ -1007,76 +1007,76 @@ LABEL_50:
             v35 = v37;
           }
 
-          [(IDSStewieProvisionMessage *)self addToCorrectResponseDictionaryForRequest:v35 overallResponseCode:v45 overallFailureMessage:v7 requestSpecificError:v34 forceIntoFailures:v36 == 0];
+          [(IDSStewieProvisionMessage *)self addToCorrectResponseDictionaryForRequest:v35 overallResponseCode:integerValue overallFailureMessage:v7 requestSpecificError:v34 forceIntoFailures:v36 == 0];
         }
 
-        v27 = [v42 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        v27 = [sessionKeyInfos2 countByEnumeratingWithState:&v46 objects:v54 count:16];
       }
 
       while (v27);
     }
 
-    v4 = v41;
+    dictionaryCopy = v41;
   }
 
-  v38 = [(IDSStewieProvisionMessage *)self clearInfo];
+  clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
 
-  if (v38)
+  if (clearInfo)
   {
-    v39 = [(IDSStewieProvisionMessage *)self clearInfo];
-    [(IDSStewieProvisionMessage *)self addToCorrectResponseDictionaryForRequest:v39 overallResponseCode:v45 overallFailureMessage:v7 requestSpecificError:0];
+    clearInfo2 = [(IDSStewieProvisionMessage *)self clearInfo];
+    [(IDSStewieProvisionMessage *)self addToCorrectResponseDictionaryForRequest:clearInfo2 overallResponseCode:integerValue overallFailureMessage:v7 requestSpecificError:0];
   }
 }
 
-- (id)successfulResponsesOfType:(unint64_t)a3
+- (id)successfulResponsesOfType:(unint64_t)type
 {
-  v4 = [(IDSStewieProvisionMessage *)self successes];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  successes = [(IDSStewieProvisionMessage *)self successes];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
+  v6 = [successes objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)failuresOfType:(unint64_t)a3
+- (id)failuresOfType:(unint64_t)type
 {
-  v4 = [(IDSStewieProvisionMessage *)self failures];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  failures = [(IDSStewieProvisionMessage *)self failures];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
+  v6 = [failures objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)failuresOfType:(unint64_t)a3 withDifferingResponseCode:(int64_t)a4
+- (id)failuresOfType:(unint64_t)type withDifferingResponseCode:(int64_t)code
 {
-  v6 = [(IDSStewieProvisionMessage *)self failures];
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  failures = [(IDSStewieProvisionMessage *)self failures];
+  v7 = [NSNumber numberWithUnsignedInteger:type];
+  v8 = [failures objectForKeyedSubscript:v7];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10043E7C4;
   v11[3] = &unk_100BDC458;
-  v11[4] = a4;
+  v11[4] = code;
   v9 = [v8 __imArrayByFilteringWithBlock:v11];
 
   return v9;
 }
 
-- (void)addToCorrectResponseDictionaryForRequest:(id)a3 overallResponseCode:(int64_t)a4 overallFailureMessage:(id)a5 requestSpecificError:(id)a6 forceIntoFailures:(BOOL)a7
+- (void)addToCorrectResponseDictionaryForRequest:(id)request overallResponseCode:(int64_t)code overallFailureMessage:(id)message requestSpecificError:(id)error forceIntoFailures:(BOOL)failures
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = v13;
-  v16 = [v14 objectForKeyedSubscript:@"status"];
+  failuresCopy = failures;
+  requestCopy = request;
+  messageCopy = message;
+  errorCopy = error;
+  v15 = messageCopy;
+  v16 = [errorCopy objectForKeyedSubscript:@"status"];
 
   v17 = v15;
   if (v16)
   {
-    v18 = [v14 objectForKeyedSubscript:@"status"];
-    a4 = [v18 integerValue];
+    v18 = [errorCopy objectForKeyedSubscript:@"status"];
+    code = [v18 integerValue];
 
-    v17 = [v14 objectForKeyedSubscript:@"message"];
+    v17 = [errorCopy objectForKeyedSubscript:@"message"];
 
     if (v17)
     {
@@ -1086,37 +1086,37 @@ LABEL_50:
         v29 = 138543874;
         v30 = v17;
         v31 = 2048;
-        v32 = a4;
+        codeCopy = code;
         v33 = 2112;
-        v34 = v12;
+        v34 = requestCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Provisioning sub error found { serverErrorDetail: %{public}@, code: %ld, request: %@ }", &v29, 0x20u);
       }
     }
   }
 
-  if (a4 || v7)
+  if (code || failuresCopy)
   {
-    v20 = [(IDSStewieProvisionMessage *)self failures];
+    failures = [(IDSStewieProvisionMessage *)self failures];
   }
 
   else
   {
-    v20 = [(IDSStewieProvisionMessage *)self successes];
+    failures = [(IDSStewieProvisionMessage *)self successes];
   }
 
-  v21 = v20;
-  v22 = [[IDSStewieProvisionInfoResponse alloc] initWithRequest:v12 responseCode:a4 failureMessage:v17 additionalInfo:v14];
-  v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 type]);
+  v21 = failures;
+  v22 = [[IDSStewieProvisionInfoResponse alloc] initWithRequest:requestCopy responseCode:code failureMessage:v17 additionalInfo:errorCopy];
+  v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestCopy type]);
   v24 = [v21 objectForKeyedSubscript:v23];
 
   if (!v24)
   {
     v25 = objc_alloc_init(NSMutableArray);
-    v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 type]);
+    v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestCopy type]);
     [v21 setObject:v25 forKeyedSubscript:v26];
   }
 
-  v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 type]);
+  v27 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestCopy type]);
   v28 = [v21 objectForKeyedSubscript:v27];
   [v28 addObject:v22];
 }
@@ -1124,16 +1124,16 @@ LABEL_50:
 - (id)description
 {
   v14 = objc_opt_class();
-  v3 = [(IDSStewieProvisionMessage *)self loggingGUID];
-  v4 = [(IDSStewieProvisionMessage *)self deviceInfo];
-  v5 = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
-  v6 = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
-  v7 = [v6 count];
-  v8 = [(IDSStewieProvisionMessage *)self smsConfig];
-  v9 = [(IDSStewieProvisionMessage *)self companionPhoneNumbers];
-  v10 = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
-  v11 = [(IDSStewieProvisionMessage *)self clearInfo];
-  v12 = [NSString stringWithFormat:@"<%@: %p { GUID: %@, deviceInfo: %@, phoneInfos: %@, sessionKeyCount: %ld, smsConfig: %@, companionPhoneNumbers: %@, companionDeviceUDIDs: %@, clear: %@ }>", v14, self, v3, v4, v5, v7, v8, v9, v10, v11];
+  loggingGUID = [(IDSStewieProvisionMessage *)self loggingGUID];
+  deviceInfo = [(IDSStewieProvisionMessage *)self deviceInfo];
+  phoneNumberInfos = [(IDSStewieProvisionMessage *)self phoneNumberInfos];
+  sessionKeyInfos = [(IDSStewieProvisionMessage *)self sessionKeyInfos];
+  v7 = [sessionKeyInfos count];
+  smsConfig = [(IDSStewieProvisionMessage *)self smsConfig];
+  companionPhoneNumbers = [(IDSStewieProvisionMessage *)self companionPhoneNumbers];
+  companionDeviceUDIDs = [(IDSStewieProvisionMessage *)self companionDeviceUDIDs];
+  clearInfo = [(IDSStewieProvisionMessage *)self clearInfo];
+  v12 = [NSString stringWithFormat:@"<%@: %p { GUID: %@, deviceInfo: %@, phoneInfos: %@, sessionKeyCount: %ld, smsConfig: %@, companionPhoneNumbers: %@, companionDeviceUDIDs: %@, clear: %@ }>", v14, self, loggingGUID, deviceInfo, phoneNumberInfos, v7, smsConfig, companionPhoneNumbers, companionDeviceUDIDs, clearInfo];
 
   return v12;
 }

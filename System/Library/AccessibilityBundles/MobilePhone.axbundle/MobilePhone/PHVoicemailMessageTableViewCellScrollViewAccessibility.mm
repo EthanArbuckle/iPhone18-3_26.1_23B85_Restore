@@ -6,8 +6,8 @@
 
 - (id)accessibilityElements
 {
-  v2 = [(PHVoicemailMessageTableViewCellScrollViewAccessibility *)self subviews];
-  v3 = [v2 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+  subviews = [(PHVoicemailMessageTableViewCellScrollViewAccessibility *)self subviews];
+  v3 = [subviews sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
 
   return v3;
 }

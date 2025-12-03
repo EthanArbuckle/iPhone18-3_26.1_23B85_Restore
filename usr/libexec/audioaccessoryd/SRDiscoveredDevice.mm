@@ -1,54 +1,54 @@
 @interface SRDiscoveredDevice
 - (SRDiscoveredDevice)init;
 - (id)description;
-- (void)_setAADevice:(id)a3;
-- (void)_setAANearbyDevice:(id)a3;
-- (void)_setBtAddress:(id)a3;
-- (void)_setConnectionState:(unsigned __int8)a3;
-- (void)_setInUseBannerBackoffReason:(id)a3;
-- (void)_setInUseBannerBackoffTick:(unint64_t)a3;
-- (void)_setInUseBannerShown:(BOOL)a3;
-- (void)_setIsNearby:(BOOL)a3;
-- (void)_setMutedSpeakerForRemotePhoneCall:(BOOL)a3;
-- (void)_setNearbyConnectedSourceCount:(unsigned __int8)a3;
-- (void)_setNearbyForceDisconnect:(BOOL)a3;
-- (void)_setNearbyLastRouteHost:(id)a3;
-- (void)_setNearbyName:(id)a3;
-- (void)_setNearbyOutOfCaseTime:(unsigned __int8)a3;
-- (void)_setNearbyPaired:(BOOL)a3;
-- (void)_setNearbyPrevInEar:(int)a3;
-- (void)_setNearbyProductID:(unsigned int)a3;
-- (void)_setNearbyStreamState:(int64_t)a3;
-- (void)_setNearbyWxDevice:(id)a3;
-- (void)_setNearbyiCloudSignIn:(BOOL)a3;
-- (void)_setRouteToWxAfterUnhide:(BOOL)a3;
-- (void)_setRouted:(BOOL)a3;
-- (void)_setUserConnectedState:(BOOL)a3;
+- (void)_setAADevice:(id)device;
+- (void)_setAANearbyDevice:(id)device;
+- (void)_setBtAddress:(id)address;
+- (void)_setConnectionState:(unsigned __int8)state;
+- (void)_setInUseBannerBackoffReason:(id)reason;
+- (void)_setInUseBannerBackoffTick:(unint64_t)tick;
+- (void)_setInUseBannerShown:(BOOL)shown;
+- (void)_setIsNearby:(BOOL)nearby;
+- (void)_setMutedSpeakerForRemotePhoneCall:(BOOL)call;
+- (void)_setNearbyConnectedSourceCount:(unsigned __int8)count;
+- (void)_setNearbyForceDisconnect:(BOOL)disconnect;
+- (void)_setNearbyLastRouteHost:(id)host;
+- (void)_setNearbyName:(id)name;
+- (void)_setNearbyOutOfCaseTime:(unsigned __int8)time;
+- (void)_setNearbyPaired:(BOOL)paired;
+- (void)_setNearbyPrevInEar:(int)ear;
+- (void)_setNearbyProductID:(unsigned int)d;
+- (void)_setNearbyStreamState:(int64_t)state;
+- (void)_setNearbyWxDevice:(id)device;
+- (void)_setNearbyiCloudSignIn:(BOOL)in;
+- (void)_setRouteToWxAfterUnhide:(BOOL)unhide;
+- (void)_setRouted:(BOOL)routed;
+- (void)_setUserConnectedState:(BOOL)state;
 - (void)_updateUnifiedInEarState;
-- (void)setAacpInEarState:(int)a3;
-- (void)setAirplaneMode:(BOOL)a3;
-- (void)setDisconnectionBackoffTick:(unint64_t)a3;
-- (void)setFwVersion:(id)a3;
-- (void)setInEar:(BOOL)a3;
-- (void)setIsManualDisconnectLastTime:(BOOL)a3;
-- (void)setIsPaired:(BOOL)a3;
-- (void)setIsPairingInProgress:(BOOL)a3;
-- (void)setIsSRCapable:(BOOL)a3;
-- (void)setIsUSBPlugIn:(BOOL)a3;
-- (void)setLastDRHostIDSIdentifier:(id)a3;
-- (void)setLowBatteryBannerShownInWorkoutContext:(BOOL)a3;
-- (void)setNearbyInEar:(int)a3;
-- (void)setNearbyIsMeLastRoute:(BOOL)a3;
-- (void)setNearbyUSBPluggedIn:(char)a3;
-- (void)setNearbyUSBPluggedInTick:(unint64_t)a3;
-- (void)setNearbyUpdateTick:(unint64_t)a3;
-- (void)setPairingBannerClickTick:(unint64_t)a3;
-- (void)setPrevFailedTipiConnectType:(int)a3;
-- (void)setShouldExtendTimeOnSpeaker:(BOOL)a3;
-- (void)setTipiConnectType:(int)a3;
-- (void)setUsbColorCode:(unsigned int)a3;
-- (void)setUsbName:(id)a3;
-- (void)setUsbProductID:(unsigned int)a3;
+- (void)setAacpInEarState:(int)state;
+- (void)setAirplaneMode:(BOOL)mode;
+- (void)setDisconnectionBackoffTick:(unint64_t)tick;
+- (void)setFwVersion:(id)version;
+- (void)setInEar:(BOOL)ear;
+- (void)setIsManualDisconnectLastTime:(BOOL)time;
+- (void)setIsPaired:(BOOL)paired;
+- (void)setIsPairingInProgress:(BOOL)progress;
+- (void)setIsSRCapable:(BOOL)capable;
+- (void)setIsUSBPlugIn:(BOOL)in;
+- (void)setLastDRHostIDSIdentifier:(id)identifier;
+- (void)setLowBatteryBannerShownInWorkoutContext:(BOOL)context;
+- (void)setNearbyInEar:(int)ear;
+- (void)setNearbyIsMeLastRoute:(BOOL)route;
+- (void)setNearbyUSBPluggedIn:(char)in;
+- (void)setNearbyUSBPluggedInTick:(unint64_t)tick;
+- (void)setNearbyUpdateTick:(unint64_t)tick;
+- (void)setPairingBannerClickTick:(unint64_t)tick;
+- (void)setPrevFailedTipiConnectType:(int)type;
+- (void)setShouldExtendTimeOnSpeaker:(BOOL)speaker;
+- (void)setTipiConnectType:(int)type;
+- (void)setUsbColorCode:(unsigned int)code;
+- (void)setUsbName:(id)name;
+- (void)setUsbProductID:(unsigned int)d;
 @end
 
 @implementation SRDiscoveredDevice
@@ -112,13 +112,13 @@
   return 0;
 }
 
-- (void)_setAADevice:(id)a3
+- (void)_setAADevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   aaDevice = self->_aaDevice;
   p_aaDevice = &self->_aaDevice;
   v7 = aaDevice;
-  v8 = v4;
+  v8 = deviceCopy;
   v11 = v8;
   if (v7 == v8)
   {
@@ -152,13 +152,13 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)_setAANearbyDevice:(id)a3
+- (void)_setAANearbyDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   aaNearbyDevice = self->_aaNearbyDevice;
   p_aaNearbyDevice = &self->_aaNearbyDevice;
   v7 = aaNearbyDevice;
-  v8 = v4;
+  v8 = deviceCopy;
   v11 = v8;
   if (v7 == v8)
   {
@@ -192,10 +192,10 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)setAacpInEarState:(int)a3
+- (void)setAacpInEarState:(int)state
 {
   aacpInEarState = self->_aacpInEarState;
-  if (aacpInEarState == a3)
+  if (aacpInEarState == state)
   {
     return;
   }
@@ -210,9 +210,9 @@ LABEL_4:
         v7 = off_1002BB5C8[aacpInEarState];
       }
 
-      if (a3 <= 7)
+      if (state <= 7)
       {
-        v8 = off_1002BB5C8[a3];
+        v8 = off_1002BB5C8[state];
       }
 
       btAddress = self->_btAddress;
@@ -228,14 +228,14 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_aacpInEarState = a3;
+  self->_aacpInEarState = state;
 
   [(SRDiscoveredDevice *)self _updateUnifiedInEarState];
 }
 
-- (void)setAirplaneMode:(BOOL)a3
+- (void)setAirplaneMode:(BOOL)mode
 {
-  if (self->_airplaneMode != a3)
+  if (self->_airplaneMode != mode)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -254,16 +254,16 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_airplaneMode = a3;
+    self->_airplaneMode = mode;
   }
 }
 
-- (void)_setBtAddress:(id)a3
+- (void)_setBtAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   btAddress = self->_btAddress;
   p_btAddress = &self->_btAddress;
-  v9 = v5;
+  v9 = addressCopy;
   if (![(NSString *)btAddress isEqualToString:?])
   {
     if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
@@ -272,16 +272,16 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(p_btAddress, a3);
+    objc_storeStrong(p_btAddress, address);
   }
 }
 
-- (void)_setConnectionState:(unsigned __int8)a3
+- (void)_setConnectionState:(unsigned __int8)state
 {
   connectionState = self->_connectionState;
-  if (connectionState != a3)
+  if (connectionState != state)
   {
-    v4 = a3;
+    stateCopy = state;
     if (dword_1002F7530 <= 30)
     {
       if (dword_1002F7530 != -1)
@@ -292,9 +292,9 @@ LABEL_4:
           v6 = off_1002BB518[connectionState];
         }
 
-        if (v4 <= 3)
+        if (stateCopy <= 3)
         {
-          v7 = off_1002BB518[v4];
+          v7 = off_1002BB518[stateCopy];
         }
 
         LogPrintF();
@@ -309,13 +309,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_connectionState = v4;
+    self->_connectionState = stateCopy;
   }
 }
 
-- (void)setDisconnectionBackoffTick:(unint64_t)a3
+- (void)setDisconnectionBackoffTick:(unint64_t)tick
 {
-  if (self->_disconnectionBackoffTick != a3)
+  if (self->_disconnectionBackoffTick != tick)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -334,13 +334,13 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_disconnectionBackoffTick = a3;
+    self->_disconnectionBackoffTick = tick;
   }
 }
 
-- (void)setFwVersion:(id)a3
+- (void)setFwVersion:(id)version
 {
-  v7 = a3;
+  versionCopy = version;
   if (![(NSString *)self->_fwVersion isEqualToString:?])
   {
     if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
@@ -350,13 +350,13 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_fwVersion, a3);
+    objc_storeStrong(&self->_fwVersion, version);
   }
 }
 
-- (void)setIsSRCapable:(BOOL)a3
+- (void)setIsSRCapable:(BOOL)capable
 {
-  if (self->_isSRCapable != a3)
+  if (self->_isSRCapable != capable)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -375,13 +375,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isSRCapable = a3;
+    self->_isSRCapable = capable;
   }
 }
 
-- (void)setIsManualDisconnectLastTime:(BOOL)a3
+- (void)setIsManualDisconnectLastTime:(BOOL)time
 {
-  if (self->_isManualDisconnectLastTime != a3)
+  if (self->_isManualDisconnectLastTime != time)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -400,13 +400,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isManualDisconnectLastTime = a3;
+    self->_isManualDisconnectLastTime = time;
   }
 }
 
-- (void)_setIsNearby:(BOOL)a3
+- (void)_setIsNearby:(BOOL)nearby
 {
-  if (self->_isNearby != a3)
+  if (self->_isNearby != nearby)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -425,13 +425,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isNearby = a3;
+    self->_isNearby = nearby;
   }
 }
 
-- (void)setIsPaired:(BOOL)a3
+- (void)setIsPaired:(BOOL)paired
 {
-  if (self->_isPaired != a3)
+  if (self->_isPaired != paired)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -450,13 +450,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isPaired = a3;
+    self->_isPaired = paired;
   }
 }
 
-- (void)setIsPairingInProgress:(BOOL)a3
+- (void)setIsPairingInProgress:(BOOL)progress
 {
-  if (self->_isPairingInProgress != a3)
+  if (self->_isPairingInProgress != progress)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -475,13 +475,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isPairingInProgress = a3;
+    self->_isPairingInProgress = progress;
   }
 }
 
-- (void)setIsUSBPlugIn:(BOOL)a3
+- (void)setIsUSBPlugIn:(BOOL)in
 {
-  if (self->_isUSBPlugIn != a3)
+  if (self->_isUSBPlugIn != in)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -500,19 +500,19 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isUSBPlugIn = a3;
+    self->_isUSBPlugIn = in;
   }
 }
 
-- (void)setInEar:(BOOL)a3
+- (void)setInEar:(BOOL)ear
 {
   inEar = self->_inEar;
-  if (inEar == a3)
+  if (inEar == ear)
   {
     return;
   }
 
-  v5 = a3;
+  earCopy = ear;
   if (dword_1002F7530 <= 30)
   {
     if (dword_1002F7530 != -1)
@@ -529,7 +529,7 @@ LABEL_4:
         v8 = "no";
       }
 
-      if (v5)
+      if (earCopy)
       {
         v7 = "yes";
       }
@@ -549,14 +549,14 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_inEar = v5;
+  self->_inEar = earCopy;
   v12 = [BTSmartRoutingDaemon sharedBTSmartRoutingDaemon:btAddress];
   [v12 activeHRMDeviceUpdate];
 }
 
-- (void)_setInUseBannerBackoffTick:(unint64_t)a3
+- (void)_setInUseBannerBackoffTick:(unint64_t)tick
 {
-  if (self->_inUseBannerBackoffTick != a3)
+  if (self->_inUseBannerBackoffTick != tick)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -575,13 +575,13 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_inUseBannerBackoffTick = a3;
+    self->_inUseBannerBackoffTick = tick;
   }
 }
 
-- (void)_setInUseBannerBackoffReason:(id)a3
+- (void)_setInUseBannerBackoffReason:(id)reason
 {
-  v7 = a3;
+  reasonCopy = reason;
   if (![(NSString *)self->_inUseBannerBackoffReason isEqualToString:?])
   {
     if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
@@ -591,13 +591,13 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_inUseBannerBackoffReason, a3);
+    objc_storeStrong(&self->_inUseBannerBackoffReason, reason);
   }
 }
 
-- (void)_setInUseBannerShown:(BOOL)a3
+- (void)_setInUseBannerShown:(BOOL)shown
 {
-  if (self->_inUseBannerShown != a3)
+  if (self->_inUseBannerShown != shown)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -616,13 +616,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_inUseBannerShown = a3;
+    self->_inUseBannerShown = shown;
   }
 }
 
-- (void)setLowBatteryBannerShownInWorkoutContext:(BOOL)a3
+- (void)setLowBatteryBannerShownInWorkoutContext:(BOOL)context
 {
-  if (self->_lowBatteryBannerShownInWorkoutContext != a3)
+  if (self->_lowBatteryBannerShownInWorkoutContext != context)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -641,13 +641,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_lowBatteryBannerShownInWorkoutContext = a3;
+    self->_lowBatteryBannerShownInWorkoutContext = context;
   }
 }
 
-- (void)_setMutedSpeakerForRemotePhoneCall:(BOOL)a3
+- (void)_setMutedSpeakerForRemotePhoneCall:(BOOL)call
 {
-  if (self->_mutedSpeakerForRemotePhoneCall != a3)
+  if (self->_mutedSpeakerForRemotePhoneCall != call)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -665,13 +665,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_mutedSpeakerForRemotePhoneCall = a3;
+    self->_mutedSpeakerForRemotePhoneCall = call;
   }
 }
 
-- (void)_setNearbyiCloudSignIn:(BOOL)a3
+- (void)_setNearbyiCloudSignIn:(BOOL)in
 {
-  if (self->_nearbyiCloudSignIn != a3)
+  if (self->_nearbyiCloudSignIn != in)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -690,16 +690,16 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_nearbyiCloudSignIn = a3;
+    self->_nearbyiCloudSignIn = in;
   }
 }
 
-- (void)setLastDRHostIDSIdentifier:(id)a3
+- (void)setLastDRHostIDSIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   lastDRHostIDSIdentifier = self->_lastDRHostIDSIdentifier;
   p_lastDRHostIDSIdentifier = &self->_lastDRHostIDSIdentifier;
-  v10 = v5;
+  v10 = identifierCopy;
   if (![(NSString *)lastDRHostIDSIdentifier isEqualToString:?])
   {
     if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
@@ -708,16 +708,16 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(p_lastDRHostIDSIdentifier, a3);
+    objc_storeStrong(p_lastDRHostIDSIdentifier, identifier);
     v8 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
     [v8 activeHRMDeviceUpdate];
   }
 }
 
-- (void)setNearbyInEar:(int)a3
+- (void)setNearbyInEar:(int)ear
 {
   nearbyInEar = self->_nearbyInEar;
-  if (nearbyInEar == a3)
+  if (nearbyInEar == ear)
   {
     return;
   }
@@ -732,9 +732,9 @@ LABEL_4:
         v7 = off_1002BB5C8[nearbyInEar];
       }
 
-      if (a3 <= 7)
+      if (ear <= 7)
       {
-        v8 = off_1002BB5C8[a3];
+        v8 = off_1002BB5C8[ear];
       }
 
       btAddress = self->_btAddress;
@@ -750,14 +750,14 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_nearbyInEar = a3;
+  self->_nearbyInEar = ear;
 
   [(SRDiscoveredDevice *)self _updateUnifiedInEarState];
 }
 
-- (void)setNearbyIsMeLastRoute:(BOOL)a3
+- (void)setNearbyIsMeLastRoute:(BOOL)route
 {
-  if (self->_nearbyIsMeLastRoute != a3)
+  if (self->_nearbyIsMeLastRoute != route)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -776,20 +776,20 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_nearbyIsMeLastRoute = a3;
+    self->_nearbyIsMeLastRoute = route;
   }
 }
 
-- (void)_setNearbyLastRouteHost:(id)a3
+- (void)_setNearbyLastRouteHost:(id)host
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  hostCopy = host;
+  v6 = hostCopy;
+  if (hostCopy)
   {
-    v9 = v5;
-    v5 = [(NSData *)self->_nearbyLastRouteHost isEqualToData:v5];
+    v9 = hostCopy;
+    hostCopy = [(NSData *)self->_nearbyLastRouteHost isEqualToData:hostCopy];
     v6 = v9;
-    if ((v5 & 1) == 0)
+    if ((hostCopy & 1) == 0)
     {
       if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
       {
@@ -798,17 +798,17 @@ LABEL_6:
         LogPrintF();
       }
 
-      objc_storeStrong(&self->_nearbyLastRouteHost, a3);
+      objc_storeStrong(&self->_nearbyLastRouteHost, host);
       v6 = v9;
     }
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(hostCopy, v6);
 }
 
-- (void)_setNearbyName:(id)a3
+- (void)_setNearbyName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_nearbyName isEqualToString:?])
   {
     if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
@@ -818,15 +818,15 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_nearbyName, a3);
+    objc_storeStrong(&self->_nearbyName, name);
   }
 }
 
-- (void)_setNearbyOutOfCaseTime:(unsigned __int8)a3
+- (void)_setNearbyOutOfCaseTime:(unsigned __int8)time
 {
-  if (self->_nearbyOutOfCaseTime != a3)
+  if (self->_nearbyOutOfCaseTime != time)
   {
-    v3 = a3;
+    timeCopy = time;
     if (dword_1002F7530 <= 30)
     {
       if (dword_1002F7530 == -1)
@@ -844,13 +844,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_nearbyOutOfCaseTime = v3;
+    self->_nearbyOutOfCaseTime = timeCopy;
   }
 }
 
-- (void)_setNearbyPaired:(BOOL)a3
+- (void)_setNearbyPaired:(BOOL)paired
 {
-  if (self->_nearbyPaired != a3)
+  if (self->_nearbyPaired != paired)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -869,13 +869,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_nearbyPaired = a3;
+    self->_nearbyPaired = paired;
   }
 }
 
-- (void)_setNearbyProductID:(unsigned int)a3
+- (void)_setNearbyProductID:(unsigned int)d
 {
-  if (self->_nearbyProductID != a3)
+  if (self->_nearbyProductID != d)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -894,23 +894,23 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_nearbyProductID = a3;
+    self->_nearbyProductID = d;
   }
 }
 
-- (void)_setNearbyPrevInEar:(int)a3
+- (void)_setNearbyPrevInEar:(int)ear
 {
   if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001FAEBC(self, a3);
+    sub_1001FAEBC(self, ear);
   }
 
-  self->_nearbyPrevInEar = a3;
+  self->_nearbyPrevInEar = ear;
 }
 
-- (void)_setNearbyConnectedSourceCount:(unsigned __int8)a3
+- (void)_setNearbyConnectedSourceCount:(unsigned __int8)count
 {
-  if (self->_nearbyConnectedSourceCount != a3)
+  if (self->_nearbyConnectedSourceCount != count)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -929,13 +929,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_nearbyConnectedSourceCount = a3;
+    self->_nearbyConnectedSourceCount = count;
   }
 }
 
-- (void)_setNearbyForceDisconnect:(BOOL)a3
+- (void)_setNearbyForceDisconnect:(BOOL)disconnect
 {
-  if (self->_nearbyForceDisconnectBit != a3)
+  if (self->_nearbyForceDisconnectBit != disconnect)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -953,14 +953,14 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_nearbyForceDisconnectBit = a3;
+    self->_nearbyForceDisconnectBit = disconnect;
   }
 }
 
-- (void)_setNearbyStreamState:(int64_t)a3
+- (void)_setNearbyStreamState:(int64_t)state
 {
   nearbyStreamState = self->_nearbyStreamState;
-  if (nearbyStreamState != a3)
+  if (nearbyStreamState != state)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -972,9 +972,9 @@ LABEL_4:
           v6 = off_1002BB538[nearbyStreamState];
         }
 
-        if (a3 <= 3)
+        if (state <= 3)
         {
-          v7 = off_1002BB538[a3];
+          v7 = off_1002BB538[state];
         }
 
         btAddress = self->_btAddress;
@@ -990,13 +990,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_nearbyStreamState = a3;
+    self->_nearbyStreamState = state;
   }
 }
 
-- (void)setNearbyUpdateTick:(unint64_t)a3
+- (void)setNearbyUpdateTick:(unint64_t)tick
 {
-  if (self->_nearbyUpdateTick != a3)
+  if (self->_nearbyUpdateTick != tick)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1015,16 +1015,16 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_nearbyUpdateTick = a3;
+    self->_nearbyUpdateTick = tick;
   }
 }
 
-- (void)setNearbyUSBPluggedIn:(char)a3
+- (void)setNearbyUSBPluggedIn:(char)in
 {
   nearbyUSBPluggedIn = self->_nearbyUSBPluggedIn;
-  if (nearbyUSBPluggedIn != a3)
+  if (nearbyUSBPluggedIn != in)
   {
-    v5 = a3;
+    inCopy = in;
     if (dword_1002F7530 <= 30)
     {
       if (dword_1002F7530 != -1)
@@ -1035,9 +1035,9 @@ LABEL_4:
           v6 = off_1002BB558[nearbyUSBPluggedIn];
         }
 
-        if (v5 <= 2)
+        if (inCopy <= 2)
         {
-          v7 = off_1002BB558[v5];
+          v7 = off_1002BB558[inCopy];
         }
 
         btAddress = self->_btAddress;
@@ -1053,13 +1053,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_nearbyUSBPluggedIn = v5;
+    self->_nearbyUSBPluggedIn = inCopy;
   }
 }
 
-- (void)setNearbyUSBPluggedInTick:(unint64_t)a3
+- (void)setNearbyUSBPluggedInTick:(unint64_t)tick
 {
-  if (self->_nearbyUSBPluggedInTick != a3)
+  if (self->_nearbyUSBPluggedInTick != tick)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1078,26 +1078,26 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_nearbyUSBPluggedInTick = a3;
+    self->_nearbyUSBPluggedInTick = tick;
   }
 }
 
-- (void)_setNearbyWxDevice:(id)a3
+- (void)_setNearbyWxDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   nearbyWxDevice = self->_nearbyWxDevice;
   p_nearbyWxDevice = &self->_nearbyWxDevice;
-  if (nearbyWxDevice != v5)
+  if (nearbyWxDevice != deviceCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_nearbyWxDevice, a3);
-    v5 = v8;
+    v8 = deviceCopy;
+    objc_storeStrong(p_nearbyWxDevice, device);
+    deviceCopy = v8;
   }
 }
 
-- (void)setPairingBannerClickTick:(unint64_t)a3
+- (void)setPairingBannerClickTick:(unint64_t)tick
 {
-  if (self->_pairingBannerClickTick != a3)
+  if (self->_pairingBannerClickTick != tick)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1116,14 +1116,14 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_pairingBannerClickTick = a3;
+    self->_pairingBannerClickTick = tick;
   }
 }
 
-- (void)setPrevFailedTipiConnectType:(int)a3
+- (void)setPrevFailedTipiConnectType:(int)type
 {
   prevFailedTipiConnectType = self->_prevFailedTipiConnectType;
-  if (prevFailedTipiConnectType != a3)
+  if (prevFailedTipiConnectType != type)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1135,9 +1135,9 @@ LABEL_4:
           v6 = off_1002BB570[prevFailedTipiConnectType];
         }
 
-        if (a3 <= 0xA)
+        if (type <= 0xA)
         {
-          v7 = off_1002BB570[a3];
+          v7 = off_1002BB570[type];
         }
 
         btAddress = self->_btAddress;
@@ -1153,13 +1153,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_prevFailedTipiConnectType = a3;
+    self->_prevFailedTipiConnectType = type;
   }
 }
 
-- (void)_setRouted:(BOOL)a3
+- (void)_setRouted:(BOOL)routed
 {
-  if (self->_routed != a3)
+  if (self->_routed != routed)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1178,13 +1178,13 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_routed = a3;
+    self->_routed = routed;
   }
 }
 
-- (void)_setRouteToWxAfterUnhide:(BOOL)a3
+- (void)_setRouteToWxAfterUnhide:(BOOL)unhide
 {
-  if (self->_routeToWxAfterUnhide != a3)
+  if (self->_routeToWxAfterUnhide != unhide)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1203,13 +1203,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_routeToWxAfterUnhide = a3;
+    self->_routeToWxAfterUnhide = unhide;
   }
 }
 
-- (void)setShouldExtendTimeOnSpeaker:(BOOL)a3
+- (void)setShouldExtendTimeOnSpeaker:(BOOL)speaker
 {
-  if (self->_shouldExtendTimeOnSpeaker != a3)
+  if (self->_shouldExtendTimeOnSpeaker != speaker)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1228,14 +1228,14 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_shouldExtendTimeOnSpeaker = a3;
+    self->_shouldExtendTimeOnSpeaker = speaker;
   }
 }
 
-- (void)setTipiConnectType:(int)a3
+- (void)setTipiConnectType:(int)type
 {
   tipiConnectType = self->_tipiConnectType;
-  if (tipiConnectType != a3)
+  if (tipiConnectType != type)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1247,9 +1247,9 @@ LABEL_4:
           v6 = off_1002BB570[tipiConnectType];
         }
 
-        if (a3 <= 0xA)
+        if (type <= 0xA)
         {
-          v7 = off_1002BB570[a3];
+          v7 = off_1002BB570[type];
         }
 
         btAddress = self->_btAddress;
@@ -1265,13 +1265,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_tipiConnectType = a3;
+    self->_tipiConnectType = type;
   }
 }
 
-- (void)setUsbColorCode:(unsigned int)a3
+- (void)setUsbColorCode:(unsigned int)code
 {
-  if (self->_usbcColorCode != a3)
+  if (self->_usbcColorCode != code)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1290,13 +1290,13 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_usbcColorCode = a3;
+    self->_usbcColorCode = code;
   }
 }
 
-- (void)setUsbName:(id)a3
+- (void)setUsbName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_usbName isEqualToString:?])
   {
     if (dword_1002F7530 <= 30 && (dword_1002F7530 != -1 || _LogCategory_Initialize()))
@@ -1306,13 +1306,13 @@ LABEL_6:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_usbName, a3);
+    objc_storeStrong(&self->_usbName, name);
   }
 }
 
-- (void)setUsbProductID:(unsigned int)a3
+- (void)setUsbProductID:(unsigned int)d
 {
-  if (self->_usbProductID != a3)
+  if (self->_usbProductID != d)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1331,13 +1331,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_usbProductID = a3;
+    self->_usbProductID = d;
   }
 }
 
-- (void)_setUserConnectedState:(BOOL)a3
+- (void)_setUserConnectedState:(BOOL)state
 {
-  if (self->_userConnectedState != a3)
+  if (self->_userConnectedState != state)
   {
     if (dword_1002F7530 <= 30)
     {
@@ -1355,7 +1355,7 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_userConnectedState = a3;
+    self->_userConnectedState = state;
   }
 }
 

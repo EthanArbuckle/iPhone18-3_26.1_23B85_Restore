@@ -1,13 +1,13 @@
 @interface CloseAppIntent
-- (CloseAppIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (CloseAppIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (CloseAppIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (CloseAppIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation CloseAppIntent
 
-- (CloseAppIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (CloseAppIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_26618C8B0();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return CloseAppIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return CloseAppIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (CloseAppIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (CloseAppIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_26618C8B0();
   sub_26618C8B0();
-  if (a5)
+  if (name)
   {
     sub_26618C840();
   }

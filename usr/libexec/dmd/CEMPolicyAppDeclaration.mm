@@ -1,31 +1,31 @@
 @interface CEMPolicyAppDeclaration
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4;
-- (id)dmf_removeRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error;
+- (id)dmf_removeRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMPolicyAppDeclaration
 
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CEMPolicyAppDeclaration *)self payloadMode];
-  if (DMDDeclarationModeIsValid(v7))
+  contextCopy = context;
+  payloadMode = [(CEMPolicyAppDeclaration *)self payloadMode];
+  if (DMDDeclarationModeIsValid(payloadMode))
   {
     v8 = objc_opt_new();
-    v9 = [v6 organizationIdentifier];
-    [v8 setOrganizationIdentifier:v9];
+    organizationIdentifier = [contextCopy organizationIdentifier];
+    [v8 setOrganizationIdentifier:organizationIdentifier];
 
-    v10 = [(CEMPolicyAppDeclaration *)self declarationIdentifier];
-    [v8 setDeclarationIdentifier:v10];
+    declarationIdentifier = [(CEMPolicyAppDeclaration *)self declarationIdentifier];
+    [v8 setDeclarationIdentifier:declarationIdentifier];
 
     [v8 setType:DMFEffectivePolicyTypeApplication];
-    [v8 setPolicy:DMDPolicyFromDeclarationMode(v7)];
-    v11 = [(CEMPolicyAppDeclaration *)self payloadApps];
-    [v8 setIdentifiers:v11];
+    [v8 setPolicy:DMDPolicyFromDeclarationMode(payloadMode)];
+    payloadApps = [(CEMPolicyAppDeclaration *)self payloadApps];
+    [v8 setIdentifiers:payloadApps];
 
-    if (v7)
+    if (payloadMode)
     {
-      if ([v7 caseInsensitiveCompare:DMFDeclarationPayloadModeOverride])
+      if ([payloadMode caseInsensitiveCompare:DMFDeclarationPayloadModeOverride])
       {
         v12 = 100;
       }
@@ -58,11 +58,11 @@
         sub_10007BCE0(v15);
       }
 
-      if (a4)
+      if (error)
       {
         v17 = v15;
         v13 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -74,7 +74,7 @@
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v13 = 0;
       goto LABEL_19;
@@ -84,7 +84,7 @@
     v21 = DMFDeclarationPayloadModeKey;
     v8 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     DMFErrorWithCodeAndUserInfo();
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
 LABEL_19:
@@ -92,20 +92,20 @@ LABEL_19:
   return v13;
 }
 
-- (id)dmf_removeRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_removeRequestWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_opt_new();
-  v8 = [v6 organizationIdentifier];
+  organizationIdentifier = [contextCopy organizationIdentifier];
 
-  [v7 setOrganizationIdentifier:v8];
-  v9 = [(CEMPolicyAppDeclaration *)self declarationIdentifier];
-  [v7 setDeclarationIdentifier:v9];
+  [v7 setOrganizationIdentifier:organizationIdentifier];
+  declarationIdentifier = [(CEMPolicyAppDeclaration *)self declarationIdentifier];
+  [v7 setDeclarationIdentifier:declarationIdentifier];
 
   v15 = 0;
-  LODWORD(v6) = [DMDRemoveEffectivePolicyOperation validateRequest:v7 error:&v15];
+  LODWORD(contextCopy) = [DMDRemoveEffectivePolicyOperation validateRequest:v7 error:&v15];
   v10 = v15;
-  if (v6)
+  if (contextCopy)
   {
     v11 = v7;
   }
@@ -118,11 +118,11 @@ LABEL_19:
       sub_10007BD68(v10);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v10;
       v11 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else

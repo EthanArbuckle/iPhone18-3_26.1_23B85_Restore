@@ -2,15 +2,15 @@
 + (id)_fdIsolationQueue;
 + (id)_fdResourceSemaphore;
 - (OS_dispatch_semaphore)fdResourceSemaphore;
-- (_PLClientTransaction)initWithPathManager:(id)a3;
-- (_PLClientTransaction)initWithPathManager:(id)a3 identifier:(const char *)a4;
+- (_PLClientTransaction)initWithPathManager:(id)manager;
+- (_PLClientTransaction)initWithPathManager:(id)manager identifier:(const char *)identifier;
 - (id)description;
 - (id)generateChangeScopesDescription;
 - (void)abortTransaction;
-- (void)addChangeScopes:(id)a3;
+- (void)addChangeScopes:(id)scopes;
 - (void)completeTransaction;
 - (void)dealloc;
-- (void)persistTransactionScopes:(id)a3;
+- (void)persistTransactionScopes:(id)scopes;
 - (void)popChangeScopesBatch;
 - (void)pushChangeScopesBatch;
 @end
@@ -35,7 +35,7 @@
     *buf = 138412546;
     v8 = v5;
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEBUG, "%@ : %@", buf, 0x16u);
   }
 
@@ -53,7 +53,7 @@
     *buf = 138412546;
     v14 = v5;
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEBUG, "%@ : %@", buf, 0x16u);
   }
 
@@ -62,7 +62,7 @@
   v9 = 3221225472;
   v10 = __31___PLClientTransaction_dealloc__block_invoke;
   v11 = &unk_1E75781E8;
-  v12 = self;
+  selfCopy2 = self;
   pl_dispatch_sync();
 
   v7.receiver = self;
@@ -91,19 +91,19 @@
   v11.receiver = self;
   v11.super_class = _PLClientTransaction;
   v4 = [(_PLClientTransaction *)&v11 description];
-  v5 = [(PLClientServerTransaction *)self transactionToken];
-  v6 = [(_PLClientTransaction *)self fileDescriptor];
+  transactionToken = [(PLClientServerTransaction *)self transactionToken];
+  fileDescriptor = [(_PLClientTransaction *)self fileDescriptor];
   processAssertion = self->_processAssertion;
-  v8 = [(_PLClientTransaction *)self changeScopesDescriptionSnapshot];
-  v9 = [v3 stringWithFormat:@"%@ %@, fd %d, %@ %@", v4, v5, v6, processAssertion, v8];
+  changeScopesDescriptionSnapshot = [(_PLClientTransaction *)self changeScopesDescriptionSnapshot];
+  v9 = [v3 stringWithFormat:@"%@ %@, fd %d, %@ %@", v4, transactionToken, fileDescriptor, processAssertion, changeScopesDescriptionSnapshot];
 
   return v9;
 }
 
 - (id)generateChangeScopesDescription
 {
-  v2 = [(_PLClientTransaction *)self changeScopes];
-  v3 = [v2 description];
+  changeScopes = [(_PLClientTransaction *)self changeScopes];
+  v3 = [changeScopes description];
 
   return v3;
 }
@@ -118,14 +118,14 @@
     v7 = 138412546;
     v8 = v5;
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "%@ : %@", &v7, 0x16u);
   }
 
   if (([(_PLClientTransaction *)self fileDescriptor]& 0x80000000) == 0)
   {
-    v6 = [(_PLClientTransaction *)self path];
-    unlink([v6 fileSystemRepresentation]);
+    path = [(_PLClientTransaction *)self path];
+    unlink([path fileSystemRepresentation]);
   }
 }
 
@@ -166,17 +166,17 @@
   }
 }
 
-- (void)addChangeScopes:(id)a3
+- (void)addChangeScopes:(id)scopes
 {
-  v10 = a3;
-  if ([v10 count])
+  scopesCopy = scopes;
+  if ([scopesCopy count])
   {
-    v4 = [(_PLClientTransaction *)self changeScopes];
-    if (![v4 count] || (objc_msgSend(v10, "isSubsetOfSet:", v4) & 1) == 0)
+    changeScopes = [(_PLClientTransaction *)self changeScopes];
+    if (![changeScopes count] || (objc_msgSend(scopesCopy, "isSubsetOfSet:", changeScopes) & 1) == 0)
     {
-      if (v4)
+      if (changeScopes)
       {
-        v5 = [v4 setByAddingObjectsFromSet:v10];
+        v5 = [changeScopes setByAddingObjectsFromSet:scopesCopy];
         v6 = [v5 copy];
         changeScopes = self->_changeScopes;
         self->_changeScopes = v6;
@@ -186,7 +186,7 @@
 
       else
       {
-        v8 = [v10 copy];
+        v8 = [scopesCopy copy];
         v9 = self->_changeScopes;
         self->_changeScopes = v8;
 
@@ -201,25 +201,25 @@
   }
 }
 
-- (void)persistTransactionScopes:(id)a3
+- (void)persistTransactionScopes:(id)scopes
 {
-  [PLClientServerTransaction scopeValuesFromScopes:a3];
+  [PLClientServerTransaction scopeValuesFromScopes:scopes];
   v3 = +[_PLClientTransaction _fdIsolationQueue];
   pl_dispatch_sync();
 }
 
-- (_PLClientTransaction)initWithPathManager:(id)a3 identifier:(const char *)a4
+- (_PLClientTransaction)initWithPathManager:(id)manager identifier:(const char *)identifier
 {
   v10.receiver = self;
   v10.super_class = _PLClientTransaction;
-  v5 = [(PLClientServerTransaction *)&v10 initWithPathManager:a3];
+  v5 = [(PLClientServerTransaction *)&v10 initWithPathManager:manager];
   v6 = v5;
   if (v5)
   {
     v5->_fileDescriptor = -1;
     if (PLIsAssetsd())
     {
-      v7 = [MEMORY[0x1E69BF360] transaction:a4];
+      v7 = [MEMORY[0x1E69BF360] transaction:identifier];
     }
 
     else
@@ -236,9 +236,9 @@
   return v6;
 }
 
-- (_PLClientTransaction)initWithPathManager:(id)a3
+- (_PLClientTransaction)initWithPathManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = _PFThrowMethodNotImplemented();
   return [(PLMigrationHistoryJournalEntryPayload *)v4 insertMigrationHistoryFromDataInManagedObjectContext:v5, v6];
 }

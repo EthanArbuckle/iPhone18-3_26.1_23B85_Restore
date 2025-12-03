@@ -1,5 +1,5 @@
 @interface BCPlistProducer
-- (BCPlistProducer)initWithPath:(id)a3;
+- (BCPlistProducer)initWithPath:(id)path;
 - (BOOL)shouldRetry;
 - (BOOL)write;
 - (void)dealloc;
@@ -7,17 +7,17 @@
 
 @implementation BCPlistProducer
 
-- (BCPlistProducer)initWithPath:(id)a3
+- (BCPlistProducer)initWithPath:(id)path
 {
-  if (![a3 length])
+  if (![path length])
   {
-    sub_1325C(a2, self, a3);
+    sub_1325C(a2, self, path);
   }
 
   v6 = [(BCPlistProducer *)self init];
   if (v6)
   {
-    v6->_path = [a3 copy];
+    v6->_path = [path copy];
     v6->_attemptCount = 0;
     v6->_dataUnchanged = 0;
     v6->_lockout = objc_alloc_init(BCLockout);
@@ -26,7 +26,7 @@
     v8[0] = @"com.apple.sync.books.finished";
     v8[1] = @"com.apple.books.plist.changed";
     [(BCLockout *)v6->_lockout setEndNotifications:[NSArray arrayWithObjects:v8 count:2]];
-    -[BCLockout setPath:](v6->_lockout, "setPath:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@/.%@.lock", [a3 stringByDeletingLastPathComponent], objc_msgSend(a3, "lastPathComponent")));
+    -[BCLockout setPath:](v6->_lockout, "setPath:", +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@/.%@.lock", [path stringByDeletingLastPathComponent], objc_msgSend(path, "lastPathComponent")));
   }
 
   return v6;
@@ -54,7 +54,7 @@
     v6 = objc_autoreleasePoolPush();
     [(BCLockout *)self->_lockout lock:1];
     v7 = [+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:self->_path, 0];
-    v8 = [(BCPlistProducer *)self produceData];
+    produceData = [(BCPlistProducer *)self produceData];
     if (self->_dataUnchanged)
     {
       v9 = BCDefaultLog();
@@ -64,14 +64,14 @@
         *buf = 138412546;
         v27 = path;
         v28 = 2112;
-        v29 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Plist modification resulted in no changes -- skipping rewrite %@ -- %@", buf, 0x16u);
       }
     }
 
     else
     {
-      v11 = v8;
+      v11 = produceData;
       v12 = [+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:self->_path, 0];
       v13 = v12;
       if (v7 | v12)
@@ -85,7 +85,7 @@
             *buf = v25;
             v27 = v22;
             v28 = 2112;
-            v29 = self;
+            selfCopy5 = self;
             v30 = 1024;
             v31 = v5;
             _os_log_error_impl(&dword_0, v18, OS_LOG_TYPE_ERROR, "--- --- ---modification time changed during processing--- --- ---%@ -- %@ -- Attempt # %d", buf, 0x1Cu);
@@ -108,7 +108,7 @@
             *buf = v25;
             v27 = v16;
             v28 = 2112;
-            v29 = self;
+            selfCopy5 = self;
             v30 = 1024;
             v31 = v5;
             _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Successfully rewrote plist %@ -- %@ -- Attempt # %d", buf, 0x1Cu);
@@ -127,7 +127,7 @@
             *buf = v25;
             v27 = v23;
             v28 = 2112;
-            v29 = self;
+            selfCopy5 = self;
             v30 = 1024;
             v31 = v5;
             _os_log_error_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Failed to write plist %@ -- %@ -- Attempt # %d", buf, 0x1Cu);
@@ -148,7 +148,7 @@
         *buf = v25;
         v27 = v20;
         v28 = 2112;
-        v29 = self;
+        selfCopy5 = self;
         v30 = 1024;
         v31 = v5;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Deleting plist %@ -- %@ -- Attempt # %d", buf, 0x1Cu);

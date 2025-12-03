@@ -1,24 +1,24 @@
 @interface PUInteractiveSwipeDismissalController
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (PUInteractiveSwipeDismissalController)init;
-- (void)_handlePanGestureRecognizer:(id)a3;
+- (void)_handlePanGestureRecognizer:(id)recognizer;
 - (void)dealloc;
-- (void)updateGestureRecognizersWithHostingView:(id)a3;
+- (void)updateGestureRecognizersWithHostingView:(id)view;
 @end
 
 @implementation PUInteractiveSwipeDismissalController
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUInteractiveSwipeDismissalController *)self _panGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  _panGestureRecognizer = [(PUInteractiveSwipeDismissalController *)self _panGestureRecognizer];
 
-  if (v8 == v6)
+  if (_panGestureRecognizer == recognizerCopy)
   {
-    v10 = [(PUInteractiveSwipeDismissalController *)self verticalSwipeGestureRecognizerHelper];
-    v9 = [v10 verticalSwipeGestureRecognizer:v6 shouldBeRequiredToFailByGestureRecognizer:v7];
+    verticalSwipeGestureRecognizerHelper = [(PUInteractiveSwipeDismissalController *)self verticalSwipeGestureRecognizerHelper];
+    v9 = [verticalSwipeGestureRecognizerHelper verticalSwipeGestureRecognizer:recognizerCopy shouldBeRequiredToFailByGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -29,15 +29,15 @@
   return v9;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PUInteractiveSwipeDismissalController *)self _panGestureRecognizer];
+  beginCopy = begin;
+  _panGestureRecognizer = [(PUInteractiveSwipeDismissalController *)self _panGestureRecognizer];
 
-  if (v5 == v4)
+  if (_panGestureRecognizer == beginCopy)
   {
-    v7 = [(PUInteractiveSwipeDismissalController *)self verticalSwipeGestureRecognizerHelper];
-    v6 = [v7 verticalSwipeGestureRecognizerShouldBegin:v4];
+    verticalSwipeGestureRecognizerHelper = [(PUInteractiveSwipeDismissalController *)self verticalSwipeGestureRecognizerHelper];
+    v6 = [verticalSwipeGestureRecognizerHelper verticalSwipeGestureRecognizerShouldBegin:beginCopy];
   }
 
   else
@@ -48,24 +48,24 @@
   return v6;
 }
 
-- (void)_handlePanGestureRecognizer:(id)a3
+- (void)_handlePanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 state];
-  v6 = [(PUInteractiveSwipeDismissalController *)self _swipedDownTileTracker];
-  v7 = [(PUInteractiveSwipeDismissalController *)self _dismissGestureDirectionValueFilter];
+  recognizerCopy = recognizer;
+  state = [recognizerCopy state];
+  _swipedDownTileTracker = [(PUInteractiveSwipeDismissalController *)self _swipedDownTileTracker];
+  _dismissGestureDirectionValueFilter = [(PUInteractiveSwipeDismissalController *)self _dismissGestureDirectionValueFilter];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PUInteractiveSwipeDismissalController__handlePanGestureRecognizer___block_invoke;
   aBlock[3] = &unk_1E7B78178;
-  v8 = v6;
+  v8 = _swipedDownTileTracker;
   v41 = v8;
-  v9 = v7;
+  v9 = _dismissGestureDirectionValueFilter;
   v42 = v9;
   v10 = _Block_copy(aBlock);
-  if ((v5 - 3) >= 3)
+  if ((state - 3) >= 3)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
       if ([(PUInteractiveSwipeDismissalController *)self _isHandlingPanGestureRecognizer])
       {
@@ -78,8 +78,8 @@
 
         else
         {
-          v29 = [v4 view];
-          [v4 translationInView:v29];
+          view = [recognizerCopy view];
+          [recognizerCopy translationInView:view];
           v31 = v30;
 
           [(PUValueFilter *)v9 setInputValue:v31];
@@ -90,40 +90,40 @@
       }
     }
 
-    else if (v5 == 1 && ![(PUInteractiveSwipeDismissalController *)self _isHandlingPanGestureRecognizer])
+    else if (state == 1 && ![(PUInteractiveSwipeDismissalController *)self _isHandlingPanGestureRecognizer])
     {
       [(PUInteractiveSwipeDismissalController *)self _setHandlingPanGestureRecognizer:1];
       v11 = +[PUWorkaroundSettings sharedInstance];
-      v12 = [v11 shouldWorkAround54502886];
+      shouldWorkAround54502886 = [v11 shouldWorkAround54502886];
 
-      if (v12)
+      if (shouldWorkAround54502886)
       {
-        v13 = [(PUInteractiveDismissalController *)self delegate];
-        v14 = [v13 interactiveDismissalControllerViewController:self];
+        delegate = [(PUInteractiveDismissalController *)self delegate];
+        v14 = [delegate interactiveDismissalControllerViewController:self];
 
-        v15 = [v14 viewIfLoaded];
-        [v15 safeAreaInsets];
+        viewIfLoaded = [v14 viewIfLoaded];
+        [viewIfLoaded safeAreaInsets];
         v17 = v16;
         v19 = v18;
 
-        v20 = [v14 presentingViewController];
+        presentingViewController = [v14 presentingViewController];
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
         v23 = [v22 hasPrefix:@"CAM"];
 
-        v24 = [v14 traitCollection];
-        if ([v24 userInterfaceIdiom])
+        traitCollection = [v14 traitCollection];
+        if ([traitCollection userInterfaceIdiom])
         {
           v25 = 0;
         }
 
         else
         {
-          v38 = [v14 viewIfLoaded];
-          [v38 window];
+          viewIfLoaded2 = [v14 viewIfLoaded];
+          [viewIfLoaded2 window];
           v32 = v39 = v23;
-          v33 = [v32 windowScene];
-          v25 = ([v33 interfaceOrientation] - 3) < 2;
+          windowScene = [v32 windowScene];
+          v25 = ([windowScene interfaceOrientation] - 3) < 2;
 
           v23 = v39;
         }
@@ -144,14 +144,14 @@
         v28 = 0;
       }
 
-      v34 = [(PUInteractiveDismissalController *)self tilingView];
-      if (v34)
+      tilingView = [(PUInteractiveDismissalController *)self tilingView];
+      if (tilingView)
       {
-        v35 = [[PUSwipedDownTileTracker alloc] initWithPanGestureRecognizer:v4 tilingView:v34];
+        v35 = [[PUSwipedDownTileTracker alloc] initWithPanGestureRecognizer:recognizerCopy tilingView:tilingView];
 
         [(PUInteractiveSwipeDismissalController *)self _setSwipedDownTileTracker:v35];
-        v36 = [(PUInteractiveDismissalController *)self designatedTileController];
-        [(PUSwipedDownTileTracker *)v35 setDesignatedTileController:v36];
+        designatedTileController = [(PUInteractiveDismissalController *)self designatedTileController];
+        [(PUSwipedDownTileTracker *)v35 setDesignatedTileController:designatedTileController];
         [(PUInteractiveTileTracker *)v35 update];
 
         v8 = v35;
@@ -169,7 +169,7 @@
       [(PUInteractiveDismissalController *)self beginDismissal];
       if (v28)
       {
-        [v4 px_cancel];
+        [recognizerCopy px_cancel];
       }
     }
   }
@@ -208,19 +208,19 @@ uint64_t __69__PUInteractiveSwipeDismissalController__handlePanGestureRecognizer
   }
 }
 
-- (void)updateGestureRecognizersWithHostingView:(id)a3
+- (void)updateGestureRecognizersWithHostingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = PUInteractiveSwipeDismissalController;
-  [(PUInteractiveDismissalController *)&v10 updateGestureRecognizersWithHostingView:v4];
+  [(PUInteractiveDismissalController *)&v10 updateGestureRecognizersWithHostingView:viewCopy];
   if (![(PUInteractiveSwipeDismissalController *)self _isHandlingPanGestureRecognizer])
   {
-    v5 = [(PUInteractiveSwipeDismissalController *)self _panGestureRecognizer];
-    v6 = v5;
-    if (v4)
+    _panGestureRecognizer = [(PUInteractiveSwipeDismissalController *)self _panGestureRecognizer];
+    v6 = _panGestureRecognizer;
+    if (viewCopy)
     {
-      if (!v5)
+      if (!_panGestureRecognizer)
       {
         v6 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel__handlePanGestureRecognizer_];
         [v6 setDelegate:self];
@@ -228,21 +228,21 @@ uint64_t __69__PUInteractiveSwipeDismissalController__handlePanGestureRecognizer
         [(PUInteractiveSwipeDismissalController *)self _setPanGestureRecognizer:v6];
       }
 
-      v7 = [v6 view];
+      view = [v6 view];
 
-      if (v7 != v4)
+      if (view != viewCopy)
       {
-        v8 = [v6 view];
-        [v8 removeGestureRecognizer:v6];
+        view2 = [v6 view];
+        [view2 removeGestureRecognizer:v6];
 
-        [v4 addGestureRecognizer:v6];
+        [viewCopy addGestureRecognizer:v6];
       }
     }
 
-    else if (v5)
+    else if (_panGestureRecognizer)
     {
-      v9 = [v5 view];
-      [v9 removeGestureRecognizer:v6];
+      view3 = [_panGestureRecognizer view];
+      [view3 removeGestureRecognizer:v6];
 
       [(PUInteractiveSwipeDismissalController *)self _setPanGestureRecognizer:0];
     }

@@ -2,7 +2,7 @@
 - (BOOL)confirmSubmission;
 - (BOOL)isSubmitted;
 - (HMMLogEvent)init;
-- (HMMLogEvent)initWithStartTime:(double)a3;
+- (HMMLogEvent)initWithStartTime:(double)time;
 - (double)duration;
 - (double)endTime;
 - (void)markEndTime;
@@ -71,7 +71,7 @@
   return submitted;
 }
 
-- (HMMLogEvent)initWithStartTime:(double)a3
+- (HMMLogEvent)initWithStartTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = HMMLogEvent;
@@ -79,7 +79,7 @@
   if (result)
   {
     result->_submitted = 0;
-    result->_startTime = a3;
+    result->_startTime = time;
   }
 
   return result;

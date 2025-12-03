@@ -13,32 +13,32 @@
 
 - (id)itemTitle
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"itemTitle"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"itemTitle"];
 
   return v2;
 }
 
 - (id)itemIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"itemIdentifier"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"itemIdentifier"];
 
   return v2;
 }
 
 - (id)containerTitle
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"containerTitle"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"containerTitle"];
 
   return v2;
 }
 
 - (id)containerIdentifier
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"containerIdentifier"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"containerIdentifier"];
 
   return v2;
 }
@@ -46,13 +46,13 @@
 - (void)setCurrentTime:()IMAVPlayer
 {
   v2 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [a1 setValue:v2 forKey:@"currentTime"];
+  [self setValue:v2 forKey:@"currentTime"];
 }
 
 - (double)currentTime
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"currentTime"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"currentTime"];
   [v2 doubleValue];
   v4 = v3;
 
@@ -61,8 +61,8 @@
 
 - (id)storeTrackID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"storeTrackID"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"storeTrackID"];
 
   return v2;
 }

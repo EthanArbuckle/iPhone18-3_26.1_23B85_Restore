@@ -1,44 +1,44 @@
 @interface GEOURLRouteHandle
-- (GEOURLRouteHandle)initWithRoute:(id)a3 fidelity:(unint64_t)a4;
+- (GEOURLRouteHandle)initWithRoute:(id)route fidelity:(unint64_t)fidelity;
 @end
 
 @implementation GEOURLRouteHandle
 
-- (GEOURLRouteHandle)initWithRoute:(id)a3 fidelity:(unint64_t)a4
+- (GEOURLRouteHandle)initWithRoute:(id)route fidelity:(unint64_t)fidelity
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = 0;
-  if (v6 && (v4 & 8) != 0)
+  fidelityCopy = fidelity;
+  routeCopy = route;
+  selfCopy = 0;
+  if (routeCopy && (fidelityCopy & 8) != 0)
   {
     v16.receiver = self;
     v16.super_class = GEOURLRouteHandle;
     v8 = [(GEOURLRouteHandle *)&v16 init];
     if (v8)
     {
-      v9 = [v6 directionsResponseID];
-      [(GEOURLRouteHandle *)v8 setDirectionsResponseID:v9];
+      directionsResponseID = [routeCopy directionsResponseID];
+      [(GEOURLRouteHandle *)v8 setDirectionsResponseID:directionsResponseID];
 
-      v10 = [v6 serverRouteID];
-      [(GEOURLRouteHandle *)v8 setRouteID:v10];
+      serverRouteID = [routeCopy serverRouteID];
+      [(GEOURLRouteHandle *)v8 setRouteID:serverRouteID];
 
-      v11 = [v6 suggestedRoute];
-      v12 = [v11 routeHandle];
-      [(GEOURLRouteHandle *)v8 setTransitData:v12];
+      suggestedRoute = [routeCopy suggestedRoute];
+      routeHandle = [suggestedRoute routeHandle];
+      [(GEOURLRouteHandle *)v8 setTransitData:routeHandle];
 
-      if ((v4 & 0x20) != 0)
+      if ((fidelityCopy & 0x20) != 0)
       {
-        v13 = [v6 zilchDataArrayToEndOfRouteFromStepIndex:0];
-        v14 = [v13 firstObject];
-        [(GEOURLRouteHandle *)v8 setZilchPoints:v14];
+        v13 = [routeCopy zilchDataArrayToEndOfRouteFromStepIndex:0];
+        firstObject = [v13 firstObject];
+        [(GEOURLRouteHandle *)v8 setZilchPoints:firstObject];
       }
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

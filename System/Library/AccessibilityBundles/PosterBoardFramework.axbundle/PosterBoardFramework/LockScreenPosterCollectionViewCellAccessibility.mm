@@ -1,5 +1,5 @@
 @interface LockScreenPosterCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axCollectionView;
@@ -14,30 +14,30 @@
 
 @implementation LockScreenPosterCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" isKindOfClass:@"PosterCollectionViewCell"];
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" isKindOfClass:@"PosterPairCollectionViewCell"];
-  [v3 validateClass:@"PosterBoard.PosterSectionHeaderView"];
-  [v3 validateClass:@"PosterBoard.PosterSectionHeaderView" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"UIWindow" hasInstanceVariable:@"_delegateViewController" withType:"UIViewController"];
-  [v3 validateClass:@"UICollectionViewController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"PosterBoard.PosterRackCollectionViewController" hasInstanceMethod:@"posterSectionRemovalView:didRequestRemovalOfPosterWithID:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"PosterBoard.PosterPairCollectionViewCell" hasSwiftFieldOfAnyClass:@"posterPair"];
-  [v3 validateClass:@"PosterBoard.PosterPair" hasSwiftField:@"id" withSwiftType:"String"];
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftFieldOfAnyClass:@"focusButton"];
-  [v3 validateClass:@"CHSWidgetDescriptor" hasProperty:@"displayName" withType:"@"];
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftFieldOfAnyClass:@"prominentController"];
-  [v3 validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftFieldOfAnyClass:@"floatingProminentController"];
-  [v3 validateClass:@"CSProminentDisplayViewController" hasInstanceMethod:@"subtitleComplicationViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRInlineComplicationSnapshotViewController" hasInstanceMethod:@"complicationDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSProminentDisplayViewController" hasInstanceMethod:@"complicationContainerViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSProminentDisplayViewController" hasInstanceMethod:@"complicationSidebarViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRWidgetGridViewController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRWidgetGridModel" hasInstanceMethod:@"complicationDescriptors" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"widgetDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PosterBoard.PosterSectionRemovalView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" isKindOfClass:@"PosterCollectionViewCell"];
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" isKindOfClass:@"PosterPairCollectionViewCell"];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionHeaderView"];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionHeaderView" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"UIWindow" hasInstanceVariable:@"_delegateViewController" withType:"UIViewController"];
+  [validationsCopy validateClass:@"UICollectionViewController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"PosterBoard.PosterRackCollectionViewController" hasInstanceMethod:@"posterSectionRemovalView:didRequestRemovalOfPosterWithID:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"PosterBoard.PosterPairCollectionViewCell" hasSwiftFieldOfAnyClass:@"posterPair"];
+  [validationsCopy validateClass:@"PosterBoard.PosterPair" hasSwiftField:@"id" withSwiftType:"String"];
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftFieldOfAnyClass:@"focusButton"];
+  [validationsCopy validateClass:@"CHSWidgetDescriptor" hasProperty:@"displayName" withType:"@"];
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftFieldOfAnyClass:@"prominentController"];
+  [validationsCopy validateClass:@"PosterBoard.LockScreenPosterCollectionViewCell" hasSwiftFieldOfAnyClass:@"floatingProminentController"];
+  [validationsCopy validateClass:@"CSProminentDisplayViewController" hasInstanceMethod:@"subtitleComplicationViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRInlineComplicationSnapshotViewController" hasInstanceMethod:@"complicationDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSProminentDisplayViewController" hasInstanceMethod:@"complicationContainerViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSProminentDisplayViewController" hasInstanceMethod:@"complicationSidebarViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRWidgetGridViewController" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRWidgetGridModel" hasInstanceMethod:@"complicationDescriptors" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRComplicationDescriptor" hasInstanceMethod:@"widgetDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PosterBoard.PosterSectionRemovalView"];
 }
 
 - (id)accessibilityLabel
@@ -71,15 +71,15 @@
   {
     v7.receiver = self;
     v7.super_class = LockScreenPosterCollectionViewCellAccessibility;
-    v5 = [(LockScreenPosterCollectionViewCellAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(LockScreenPosterCollectionViewCellAccessibility *)&v7 accessibilityHint];
   }
 
   else
   {
-    v5 = accessibilityLocalizedString(@"lock.screen.poster.collection.view.cell.hint");
+    accessibilityHint = accessibilityLocalizedString(@"lock.screen.poster.collection.view.cell.hint");
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (BOOL)isAccessibilityElement
@@ -107,17 +107,17 @@
   if (v3)
   {
     v10[0] = v3;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = LockScreenPosterCollectionViewCellAccessibility;
-    v5 = [(LockScreenPosterCollectionViewCellAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(LockScreenPosterCollectionViewCellAccessibility *)&v9 _accessibilitySupplementaryFooterViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySupplementaryFooterViews;
 
   v7 = *MEMORY[0x29EDCA608];
 
@@ -142,7 +142,7 @@
   v3 = __UIAccessibilityCastAsClass();
   v4 = AXCollectionViewController(v3);
 
-  v5 = [(LockScreenPosterCollectionViewCellAccessibility *)self _axCollectionView];
+  _axCollectionView = [(LockScreenPosterCollectionViewCellAccessibility *)self _axCollectionView];
   LOBYTE(location) = 0;
   objc_opt_class();
   v6 = __UIAccessibilityCastAsClass();
@@ -155,7 +155,7 @@
 
   else
   {
-    if (AXLockScreenPostersCount(v5) >= 2 && AXLayoutMode(v6) == 1)
+    if (AXLockScreenPostersCount(_axCollectionView) >= 2 && AXLayoutMode(v6) == 1)
     {
       if (AXDeviceIsPad())
       {
@@ -164,7 +164,7 @@
         v22[2] = __77__LockScreenPosterCollectionViewCellAccessibility_accessibilityCustomActions__block_invoke;
         v22[3] = &unk_29F2EB4D8;
         v23 = v6;
-        v7 = [v5 _accessibilityFindSubviewDescendant:v22];
+        v7 = [_axCollectionView _accessibilityFindSubviewDescendant:v22];
       }
 
       else
@@ -247,13 +247,13 @@ void __77__LockScreenPosterCollectionViewCellAccessibility_accessibilityCustomAc
 - (id)_axHeaderLabel
 {
   v26 = *MEMORY[0x29EDCA608];
-  v3 = [(LockScreenPosterCollectionViewCellAccessibility *)self _axCollectionView];
+  _axCollectionView = [(LockScreenPosterCollectionViewCellAccessibility *)self _axCollectionView];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 _accessibilitySubviews];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  _accessibilitySubviews = [_axCollectionView _accessibilitySubviews];
+  v5 = [_accessibilitySubviews countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -264,7 +264,7 @@ void __77__LockScreenPosterCollectionViewCellAccessibility_accessibilityCustomAc
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_accessibilitySubviews);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -287,7 +287,7 @@ void __77__LockScreenPosterCollectionViewCellAccessibility_accessibilityCustomAc
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [_accessibilitySubviews countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
@@ -307,20 +307,20 @@ LABEL_16:
   v3 = [(LockScreenPosterCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"focusButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityValue];
-  if (v5)
+  accessibilityValue = [v4 accessibilityValue];
+  if (accessibilityValue)
   {
-    v6 = [v4 accessibilityLabel];
-    v9 = [(LockScreenPosterCollectionViewCellAccessibility *)self _axWallpaperWidgetsNames];
-    v7 = __AXStringForVariables();
+    accessibilityLabel = [v4 accessibilityLabel];
+    _axWallpaperWidgetsNames = [(LockScreenPosterCollectionViewCellAccessibility *)self _axWallpaperWidgetsNames];
+    _axWallpaperWidgetsNames2 = __AXStringForVariables();
   }
 
   else
   {
-    v7 = [(LockScreenPosterCollectionViewCellAccessibility *)self _axWallpaperWidgetsNames];
+    _axWallpaperWidgetsNames2 = [(LockScreenPosterCollectionViewCellAccessibility *)self _axWallpaperWidgetsNames];
   }
 
-  return v7;
+  return _axWallpaperWidgetsNames2;
 }
 
 - (id)_axWallpaperWidgetsNames
@@ -340,12 +340,12 @@ LABEL_16:
 
   v32 = v10;
   [v8 axSafelyAddObjectsFromArray:v10];
-  v11 = [MEMORY[0x29EDB8DE8] array];
-  v12 = [MEMORY[0x29EDB8E00] dictionary];
+  array = [MEMORY[0x29EDB8DE8] array];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (v5)
   {
     v13 = AXTopWidgetAndAppName(v5);
-    [v11 axSafelyAddObject:v13];
+    [array axSafelyAddObject:v13];
   }
 
   v33 = v5;
@@ -369,7 +369,7 @@ LABEL_16:
         }
 
         v19 = [*(*(&v40 + 1) + 8 * i) safeValueForKey:@"widgetDescriptor"];
-        AXMapAppNameToWidgets(v19, v12);
+        AXMapAppNameToWidgets(v19, dictionary);
       }
 
       v16 = [v14 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -384,8 +384,8 @@ LABEL_16:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v20 = [v12 allKeys];
-  v21 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  allKeys = [dictionary allKeys];
+  v21 = [allKeys countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v21)
   {
     v22 = v21;
@@ -396,16 +396,16 @@ LABEL_16:
       {
         if (*v37 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allKeys);
         }
 
-        v25 = [v12 objectForKey:*(*(&v36 + 1) + 8 * j)];
+        v25 = [dictionary objectForKey:*(*(&v36 + 1) + 8 * j)];
         v26 = AXFormatAndListWithElements();
         v27 = __UIAXStringForVariables();
-        [v11 axSafelyAddObject:{v27, v26, @"__AXStringForVariablesSentinel"}];
+        [array axSafelyAddObject:{v27, v26, @"__AXStringForVariablesSentinel"}];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      v22 = [allKeys countByEnumeratingWithState:&v36 objects:v44 count:16];
     }
 
     while (v22);

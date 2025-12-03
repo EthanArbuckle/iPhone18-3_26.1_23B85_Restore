@@ -1,6 +1,6 @@
 @interface DeviceFileReviewCell
-- (_TtC11Diagnostics20DeviceFileReviewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)handleFileTapped:(id)a3;
+- (_TtC11Diagnostics20DeviceFileReviewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)handleFileTapped:(id)tapped;
 - (void)prepareForReuse;
 @end
 
@@ -8,22 +8,22 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100111D0C();
 }
 
-- (void)handleFileTapped:(id)a3
+- (void)handleFileTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_100111F3C(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_100111F3C(tappedCopy);
 }
 
-- (_TtC11Diagnostics20DeviceFileReviewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11Diagnostics20DeviceFileReviewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -32,7 +32,7 @@
     v6 = 0;
   }
 
-  sub_1001120B4(a3, a4, v6);
+  sub_1001120B4(style, identifier, v6);
   return result;
 }
 

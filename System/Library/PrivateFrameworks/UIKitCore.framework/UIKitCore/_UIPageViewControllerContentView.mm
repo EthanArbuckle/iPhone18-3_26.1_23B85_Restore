@@ -1,42 +1,42 @@
 @interface _UIPageViewControllerContentView
 - (CGRect)_scrollViewFrame;
 - (UIPageViewController)pageViewController;
-- (_UIPageViewControllerContentView)initWithFrame:(CGRect)a3 andPageViewController:(id)a4;
+- (_UIPageViewControllerContentView)initWithFrame:(CGRect)frame andPageViewController:(id)controller;
 - (double)_pageSpacing;
-- (void)_setupPageControl:(id)a3;
+- (void)_setupPageControl:(id)control;
 - (void)invalidatePageViewController;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _UIPageViewControllerContentView
 
-- (_UIPageViewControllerContentView)initWithFrame:(CGRect)a3 andPageViewController:(id)a4
+- (_UIPageViewControllerContentView)initWithFrame:(CGRect)frame andPageViewController:(id)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
   v36.receiver = self;
   v36.super_class = _UIPageViewControllerContentView;
-  v10 = [(UIView *)&v36 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v36 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_pageViewController, v9);
+    objc_storeWeak(&height->_pageViewController, controllerCopy);
     [(UIView *)v11 setAutoresizingMask:18];
     WeakRetained = objc_loadWeakRetained(&v11->_pageViewController);
-    v13 = [WeakRetained _transitionStyle];
+    _transitionStyle = [WeakRetained _transitionStyle];
 
-    if (v13 == 1)
+    if (_transitionStyle == 1)
     {
       [(UIView *)v11 setClipsToBounds:1];
       v14 = objc_loadWeakRetained(&v11->_pageViewController);
-      v15 = [v14 _isPageControlVisible];
+      _isPageControlVisible = [v14 _isPageControlVisible];
 
-      if (v15)
+      if (_isPageControlVisible)
       {
         v16 = [UIPageControl alloc];
         v17 = [(UIPageControl *)v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -82,12 +82,12 @@
   objc_storeWeak(&self->_pageViewController, 0);
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -119,12 +119,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -195,15 +195,15 @@
   return result;
 }
 
-- (void)_setupPageControl:(id)a3
+- (void)_setupPageControl:(id)control
 {
-  v5 = a3;
-  [v5 _setFlickToEndGestureEnabled:0];
-  [v5 setAutoresizingMask:10];
+  controlCopy = control;
+  [controlCopy _setFlickToEndGestureEnabled:0];
+  [controlCopy setAutoresizingMask:10];
   WeakRetained = objc_loadWeakRetained(&self->_pageViewController);
-  [v5 addTarget:WeakRetained action:sel__pageControlValueChanged_ forControlEvents:4096];
+  [controlCopy addTarget:WeakRetained action:sel__pageControlValueChanged_ forControlEvents:4096];
 
-  [(UIView *)self addSubview:v5];
+  [(UIView *)self addSubview:controlCopy];
 }
 
 - (void)layoutSubviews
@@ -212,10 +212,10 @@
   v33.super_class = _UIPageViewControllerContentView;
   [(UIView *)&v33 layoutSubviews];
   WeakRetained = objc_loadWeakRetained(&self->_pageViewController);
-  v4 = [WeakRetained _isPageControlVisible];
+  _isPageControlVisible = [WeakRetained _isPageControlVisible];
 
   pageControl = self->_pageControl;
-  if (v4)
+  if (_isPageControlVisible)
   {
     if (!pageControl)
     {
@@ -256,8 +256,8 @@
     [(UIView *)self center];
     v22 = v21;
     v24 = v23;
-    v25 = [(UIView *)self superview];
-    [(UIView *)self convertPoint:v25 fromView:v22, v24];
+    superview = [(UIView *)self superview];
+    [(UIView *)self convertPoint:superview fromView:v22, v24];
     v27 = v26;
     v36.origin.x = v11;
     v36.origin.y = v20;

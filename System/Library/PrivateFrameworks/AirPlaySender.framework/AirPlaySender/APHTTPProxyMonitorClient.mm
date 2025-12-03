@@ -1,9 +1,9 @@
 @interface APHTTPProxyMonitorClient
-- (APHTTPProxyMonitorClient)initWithCallback:(id)a3 forLink:(unsigned __int8)a4 forIP:(__CFString *)a5;
+- (APHTTPProxyMonitorClient)initWithCallback:(id)callback forLink:(unsigned __int8)link forIP:(__CFString *)p;
 - (int)registerToDeviceManager;
 - (void)dealloc;
-- (void)deviceInfoDidChange:(id)a3 deviceInfo:(id)a4;
-- (void)deviceIsRegisteredDidChange:(id)a3 isRegistered:(BOOL)a4;
+- (void)deviceInfoDidChange:(id)change deviceInfo:(id)info;
+- (void)deviceIsRegisteredDidChange:(id)change isRegistered:(BOOL)registered;
 @end
 
 @implementation APHTTPProxyMonitorClient
@@ -47,9 +47,9 @@ LABEL_14:
   v10[0] = [MEMORY[0x277CCABB0] numberWithInt:v5];
   [v4 setAllowedLinkTypes:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v10, 1)}];
   [v4 setProxyCapability:1];
-  v6 = [MEMORY[0x277D2C9C8] newEphemeralDeviceIdentifier];
-  self->_nrDeviceID = v6;
-  if (!v6)
+  newEphemeralDeviceIdentifier = [MEMORY[0x277D2C9C8] newEphemeralDeviceIdentifier];
+  self->_nrDeviceID = newEphemeralDeviceIdentifier;
+  if (!newEphemeralDeviceIdentifier)
   {
     [APHTTPProxyMonitorClient registerToDeviceManager];
     goto LABEL_14;
@@ -103,17 +103,17 @@ uint64_t __51__APHTTPProxyMonitorClient_registerToDeviceManager__block_invoke(ui
   [(APHTTPProxyMonitorClient *)&v5 dealloc];
 }
 
-- (void)deviceInfoDidChange:(id)a3 deviceInfo:(id)a4
+- (void)deviceInfoDidChange:(id)change deviceInfo:(id)info
 {
   v22 = *MEMORY[0x277D85DE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  v7 = [a4 proxyInfo];
-  if (a4)
+  proxyInfo = [info proxyInfo];
+  if (info)
   {
-    v8 = v7;
-    if (v7)
+    v8 = proxyInfo;
+    if (proxyInfo)
     {
-      if ([objc_msgSend(v7 "httpConnectURLs")])
+      if ([objc_msgSend(proxyInfo "httpConnectURLs")])
       {
         if (!Mutable)
         {
@@ -125,8 +125,8 @@ uint64_t __51__APHTTPProxyMonitorClient_registerToDeviceManager__block_invoke(ui
         v20 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v9 = [v8 httpConnectURLs];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        httpConnectURLs = [v8 httpConnectURLs];
+        v10 = [httpConnectURLs countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           v11 = v10;
@@ -137,7 +137,7 @@ uint64_t __51__APHTTPProxyMonitorClient_registerToDeviceManager__block_invoke(ui
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(httpConnectURLs);
               }
 
               v14 = [MEMORY[0x277CCACE0] componentsWithString:*(*(&v17 + 1) + 8 * i)];
@@ -163,7 +163,7 @@ uint64_t __51__APHTTPProxyMonitorClient_registerToDeviceManager__block_invoke(ui
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+            v11 = [httpConnectURLs countByEnumeratingWithState:&v17 objects:v21 count:16];
             if (v11)
             {
               continue;
@@ -203,11 +203,11 @@ LABEL_23:
   }
 }
 
-- (APHTTPProxyMonitorClient)initWithCallback:(id)a3 forLink:(unsigned __int8)a4 forIP:(__CFString *)a5
+- (APHTTPProxyMonitorClient)initWithCallback:(id)callback forLink:(unsigned __int8)link forIP:(__CFString *)p
 {
-  v5 = self;
+  selfCopy = self;
   v11 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!callback)
   {
     APSLogErrorAt();
 LABEL_4:
@@ -217,26 +217,26 @@ LABEL_4:
 
   v9.receiver = self;
   v9.super_class = APHTTPProxyMonitorClient;
-  v5 = [(APHTTPProxyMonitorClient *)&v9 init];
-  if (v5)
+  selfCopy = [(APHTTPProxyMonitorClient *)&v9 init];
+  if (selfCopy)
   {
-    v5->_handleProxyParametersChanged = _Block_copy(a3);
-    v5->_hasDesiredSockAddr = APSCFStringToSockAddr() == 0;
-    v5->_isWireless = a4;
+    selfCopy->_handleProxyParametersChanged = _Block_copy(callback);
+    selfCopy->_hasDesiredSockAddr = APSCFStringToSockAddr() == 0;
+    selfCopy->_isWireless = link;
     SNPrintF();
-    v5->_dispatchQueue = dispatch_queue_create(label, 0);
-    if ([(APHTTPProxyMonitorClient *)v5 registerToDeviceManager])
+    selfCopy->_dispatchQueue = dispatch_queue_create(label, 0);
+    if ([(APHTTPProxyMonitorClient *)selfCopy registerToDeviceManager])
     {
       goto LABEL_4;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)deviceIsRegisteredDidChange:(id)a3 isRegistered:(BOOL)a4
+- (void)deviceIsRegisteredDidChange:(id)change isRegistered:(BOOL)registered
 {
-  if (!a4)
+  if (!registered)
   {
     if ([(APHTTPProxyMonitorClient *)self registerToDeviceManager])
     {

@@ -4,11 +4,11 @@
 - (id)_queue_ensureConnection;
 - (void)_invalidate;
 - (void)_queue_invalidatedConnection;
-- (void)addObserver:(id)a3;
-- (void)consumeCode:(id)a3;
-- (void)detectedOneTimeCodes:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)consumeCode:(id)code;
+- (void)detectedOneTimeCodes:(id)codes;
 - (void)registerForUpdates;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation UNOneTimeCodeServiceConnection
@@ -60,31 +60,31 @@ uint64_t __48__UNOneTimeCodeServiceConnection_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__UNOneTimeCodeServiceConnection_addObserver___block_invoke;
   v7[3] = &unk_1E7CFF910;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__UNOneTimeCodeServiceConnection_removeObserver___block_invoke;
   v7[3] = &unk_1E7CFF910;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -122,15 +122,15 @@ void __52__UNOneTimeCodeServiceConnection_registerForUpdates__block_invoke_2()
   }
 }
 
-- (void)consumeCode:(id)a3
+- (void)consumeCode:(id)code
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  codeCopy = code;
   v5 = UNLogConnections;
   if (os_log_type_enabled(UNLogConnections, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = codeCopy;
     _os_log_impl(&dword_1B85E3000, v5, OS_LOG_TYPE_DEFAULT, "Consume OTC code: %@", buf, 0xCu);
   }
 
@@ -140,8 +140,8 @@ void __52__UNOneTimeCodeServiceConnection_registerForUpdates__block_invoke_2()
   v9[2] = __46__UNOneTimeCodeServiceConnection_consumeCode___block_invoke;
   v9[3] = &unk_1E7CFF910;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = codeCopy;
+  v7 = codeCopy;
   dispatch_sync(queue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -280,10 +280,10 @@ void __57__UNOneTimeCodeServiceConnection__queue_ensureConnection__block_invoke_
   [(UNOneTimeCodeServiceConnection *)self _invalidate];
 }
 
-- (void)detectedOneTimeCodes:(id)a3
+- (void)detectedOneTimeCodes:(id)codes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  codesCopy = codes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -304,7 +304,7 @@ void __57__UNOneTimeCodeServiceConnection__queue_ensureConnection__block_invoke_
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) oneTimeCodeServiceConnection:self detectedOneTimeCodes:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) oneTimeCodeServiceConnection:self detectedOneTimeCodes:{codesCopy, v11}];
       }
 
       while (v7 != v9);

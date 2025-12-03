@@ -10,16 +10,16 @@
 - (float)splEndUnnormalized;
 - (float)splThreshold;
 - (float)splUnnormalized;
-- (void)setSnr:(float)a3;
-- (void)setSnrEnd:(float)a3;
-- (void)setSnrEndUnnormalized:(float)a3;
-- (void)setSnrThreshold:(float)a3;
-- (void)setSnrUnnormalized:(float)a3;
-- (void)setSpl:(float)a3;
-- (void)setSplEnd:(float)a3;
-- (void)setSplEndUnnormalized:(float)a3;
-- (void)setSplThreshold:(float)a3;
-- (void)setSplUnnormalized:(float)a3;
+- (void)setSnr:(float)snr;
+- (void)setSnrEnd:(float)end;
+- (void)setSnrEndUnnormalized:(float)unnormalized;
+- (void)setSnrThreshold:(float)threshold;
+- (void)setSnrUnnormalized:(float)unnormalized;
+- (void)setSpl:(float)spl;
+- (void)setSplEnd:(float)end;
+- (void)setSplEndUnnormalized:(float)unnormalized;
+- (void)setSplThreshold:(float)threshold;
+- (void)setSplUnnormalized:(float)unnormalized;
 @end
 
 @implementation TTSVBAudioQualityMeasurement
@@ -31,11 +31,11 @@
   return *v2;
 }
 
-- (void)setSpl:(float)a3
+- (void)setSpl:(float)spl
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_spl);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = spl;
 }
 
 - (float)splEnd
@@ -45,11 +45,11 @@
   return *v2;
 }
 
-- (void)setSplEnd:(float)a3
+- (void)setSplEnd:(float)end
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_splEnd);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = end;
 }
 
 - (float)splUnnormalized
@@ -59,11 +59,11 @@
   return *v2;
 }
 
-- (void)setSplUnnormalized:(float)a3
+- (void)setSplUnnormalized:(float)unnormalized
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_splUnnormalized);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = unnormalized;
 }
 
 - (float)splEndUnnormalized
@@ -73,11 +73,11 @@
   return *v2;
 }
 
-- (void)setSplEndUnnormalized:(float)a3
+- (void)setSplEndUnnormalized:(float)unnormalized
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_splEndUnnormalized);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = unnormalized;
 }
 
 - (float)splThreshold
@@ -87,11 +87,11 @@
   return *v2;
 }
 
-- (void)setSplThreshold:(float)a3
+- (void)setSplThreshold:(float)threshold
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_splThreshold);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = threshold;
 }
 
 - (float)snr
@@ -101,11 +101,11 @@
   return *v2;
 }
 
-- (void)setSnr:(float)a3
+- (void)setSnr:(float)snr
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_snr);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = snr;
 }
 
 - (float)snrEnd
@@ -115,11 +115,11 @@
   return *v2;
 }
 
-- (void)setSnrEnd:(float)a3
+- (void)setSnrEnd:(float)end
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_snrEnd);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = end;
 }
 
 - (float)snrUnnormalized
@@ -129,11 +129,11 @@
   return *v2;
 }
 
-- (void)setSnrUnnormalized:(float)a3
+- (void)setSnrUnnormalized:(float)unnormalized
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_snrUnnormalized);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = unnormalized;
 }
 
 - (float)snrEndUnnormalized
@@ -143,11 +143,11 @@
   return *v2;
 }
 
-- (void)setSnrEndUnnormalized:(float)a3
+- (void)setSnrEndUnnormalized:(float)unnormalized
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_snrEndUnnormalized);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = unnormalized;
 }
 
 - (float)snrThreshold
@@ -157,16 +157,16 @@
   return *v2;
 }
 
-- (void)setSnrThreshold:(float)a3
+- (void)setSnrThreshold:(float)threshold
 {
   v4 = (self + OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport28TTSVBAudioQualityMeasurement_snrThreshold);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = threshold;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23315F1E4();
 
   v3 = sub_23328D95C();

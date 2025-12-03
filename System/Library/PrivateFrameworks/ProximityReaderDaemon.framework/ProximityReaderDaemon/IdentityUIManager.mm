@@ -1,14 +1,14 @@
 @interface IdentityUIManager
-- (void)notifyUIButtonTapWithButton:(int64_t)a3;
-- (void)qrCodeScanErrorWithError:(id)a3;
-- (void)readDocumentFromScannedQRCodeWithPayload:(id)a3;
+- (void)notifyUIButtonTapWithButton:(int64_t)button;
+- (void)qrCodeScanErrorWithError:(id)error;
+- (void)readDocumentFromScannedQRCodeWithPayload:(id)payload;
 @end
 
 @implementation IdentityUIManager
 
-- (void)readDocumentFromScannedQRCodeWithPayload:(id)a3
+- (void)readDocumentFromScannedQRCodeWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
 
   v5 = sub_26139F01C();
   v7 = v6;
@@ -29,7 +29,7 @@
   }
 }
 
-- (void)qrCodeScanErrorWithError:(id)a3
+- (void)qrCodeScanErrorWithError:(id)error
 {
   v4 = sub_2613A18CC();
   v6 = v5;
@@ -43,7 +43,7 @@
   }
 }
 
-- (void)notifyUIButtonTapWithButton:(int64_t)a3
+- (void)notifyUIButtonTapWithButton:(int64_t)button
 {
   v4 = *(*self + 312);
 
@@ -51,7 +51,7 @@
   if (v5)
   {
     v6 = v5;
-    sub_261358A54(a3);
+    sub_261358A54(button);
   }
 }
 

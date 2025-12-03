@@ -1,44 +1,44 @@
 @interface SCArchivingService
-- (void)getBoolAtKey:(int64_t)a3 completion:(id)a4;
-- (void)getIntAtKey:(int64_t)a3 completion:(id)a4;
-- (void)getObjectOfClass:(Class)a3 atKey:(id)a4 completion:(id)a5;
-- (void)getValueAtKey:(int64_t)a3 completion:(id)a4;
-- (void)setObject:(id)a3 atKey:(id)a4 completion:(id)a5;
-- (void)setValue:(id)a3 atKey:(int64_t)a4 completion:(id)a5;
+- (void)getBoolAtKey:(int64_t)key completion:(id)completion;
+- (void)getIntAtKey:(int64_t)key completion:(id)completion;
+- (void)getObjectOfClass:(Class)class atKey:(id)key completion:(id)completion;
+- (void)getValueAtKey:(int64_t)key completion:(id)completion;
+- (void)setObject:(id)object atKey:(id)key completion:(id)completion;
+- (void)setValue:(id)value atKey:(int64_t)key completion:(id)completion;
 @end
 
 @implementation SCArchivingService
 
-- (void)setObject:(id)a3 atKey:(id)a4 completion:(id)a5
+- (void)setObject:(id)object atKey:(id)key completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  keyCopy = key;
+  objectCopy = object;
   v10 = +[SCSharingReminderArchiver sharedInstance];
-  [v10 setObject:v9 atKey:v8 withCompletion:v7];
+  [v10 setObject:objectCopy atKey:keyCopy withCompletion:completionCopy];
 }
 
-- (void)getObjectOfClass:(Class)a3 atKey:(id)a4 completion:(id)a5
+- (void)getObjectOfClass:(Class)class atKey:(id)key completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  keyCopy = key;
   v9 = +[SCSharingReminderArchiver sharedInstance];
-  [v9 getObjectOfClass:a3 atKey:v8 completion:v7];
+  [v9 getObjectOfClass:class atKey:keyCopy completion:completionCopy];
 }
 
-- (void)setValue:(id)a3 atKey:(int64_t)a4 completion:(id)a5
+- (void)setValue:(id)value atKey:(int64_t)key completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = storeKeyToString(a4);
-  [(SCArchivingService *)self setObject:v9 atKey:v10 completion:v8];
+  completionCopy = completion;
+  valueCopy = value;
+  v10 = storeKeyToString(key);
+  [(SCArchivingService *)self setObject:valueCopy atKey:v10 completion:completionCopy];
 }
 
-- (void)getValueAtKey:(int64_t)a3 completion:(id)a4
+- (void)getValueAtKey:(int64_t)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = storeKeyToString(a3);
+  v7 = storeKeyToString(key);
   v8 = objc_opt_class();
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -47,8 +47,8 @@
   objc_copyWeak(v14, &location);
   v9 = v7;
   v12 = v9;
-  v14[1] = a3;
-  v10 = v6;
+  v14[1] = key;
+  v10 = completionCopy;
   v13 = v10;
   [(SCArchivingService *)self getObjectOfClass:v8 atKey:v9 completion:v11];
 
@@ -128,16 +128,16 @@ void __47__SCArchivingService_getValueAtKey_completion___block_invoke_2(void *a1
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getIntAtKey:(int64_t)a3 completion:(id)a4
+- (void)getIntAtKey:(int64_t)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SCArchivingService_getIntAtKey_completion___block_invoke;
   v8[3] = &unk_279B39918;
-  v9 = v6;
-  v7 = v6;
-  [(SCArchivingService *)self getValueAtKey:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SCArchivingService *)self getValueAtKey:key completion:v8];
 }
 
 void __45__SCArchivingService_getIntAtKey_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -147,16 +147,16 @@ void __45__SCArchivingService_getIntAtKey_completion___block_invoke(uint64_t a1,
   (*(v4 + 16))(v4, [a2 integerValue], v5);
 }
 
-- (void)getBoolAtKey:(int64_t)a3 completion:(id)a4
+- (void)getBoolAtKey:(int64_t)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__SCArchivingService_getBoolAtKey_completion___block_invoke;
   v8[3] = &unk_279B39918;
-  v9 = v6;
-  v7 = v6;
-  [(SCArchivingService *)self getValueAtKey:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SCArchivingService *)self getValueAtKey:key completion:v8];
 }
 
 void __46__SCArchivingService_getBoolAtKey_completion___block_invoke(uint64_t a1, void *a2, void *a3)

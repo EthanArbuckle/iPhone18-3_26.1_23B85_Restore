@@ -1,111 +1,111 @@
 @interface STBackgroundActivitiesStatusDomainBackgroundActivityAttribution
-- (BOOL)isEqual:(id)a3;
-- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithBackgroundActivityIdentifier:(id)a3 activityAttribution:(id)a4 showsWhenForeground:(BOOL)a5;
-- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithCoder:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithBackgroundActivityIdentifier:(id)identifier activityAttribution:(id)attribution showsWhenForeground:(BOOL)foreground;
+- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithCoder:(id)coder;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STBackgroundActivitiesStatusDomainBackgroundActivityAttribution
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self backgroundActivityIdentifier];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  backgroundActivityIdentifier = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self backgroundActivityIdentifier];
+  v5 = [builder appendString:backgroundActivityIdentifier];
 
-  v6 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self activityAttribution];
-  v7 = [v3 appendObject:v6];
+  activityAttribution = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self activityAttribution];
+  v7 = [builder appendObject:activityAttribution];
 
-  v8 = [v3 appendBool:{-[STBackgroundActivitiesStatusDomainBackgroundActivityAttribution showsWhenForeground](self, "showsWhenForeground")}];
-  v9 = [v3 hash];
+  v8 = [builder appendBool:{-[STBackgroundActivitiesStatusDomainBackgroundActivityAttribution showsWhenForeground](self, "showsWhenForeground")}];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithBackgroundActivityIdentifier:(id)a3 activityAttribution:(id)a4 showsWhenForeground:(BOOL)a5
+- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithBackgroundActivityIdentifier:(id)identifier activityAttribution:(id)attribution showsWhenForeground:(BOOL)foreground
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  attributionCopy = attribution;
   v16.receiver = self;
   v16.super_class = STBackgroundActivitiesStatusDomainBackgroundActivityAttribution;
   v10 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     backgroundActivityIdentifier = v10->_backgroundActivityIdentifier;
     v10->_backgroundActivityIdentifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [attributionCopy copy];
     activityAttribution = v10->_activityAttribution;
     v10->_activityAttribution = v13;
 
-    v10->_showsWhenForeground = a5;
+    v10->_showsWhenForeground = foreground;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self backgroundActivityIdentifier];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  backgroundActivityIdentifier = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self backgroundActivityIdentifier];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __75__STBackgroundActivitiesStatusDomainBackgroundActivityAttribution_isEqual___block_invoke;
   v20[3] = &unk_1E85DDD28;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
-  v8 = [v5 appendString:v6 counterpart:v20];
+  v8 = [v5 appendString:backgroundActivityIdentifier counterpart:v20];
 
-  v9 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self activityAttribution];
+  activityAttribution = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self activityAttribution];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__STBackgroundActivitiesStatusDomainBackgroundActivityAttribution_isEqual___block_invoke_2;
   v18[3] = &unk_1E85DDCD8;
   v10 = v7;
   v19 = v10;
-  v11 = [v5 appendObject:v9 counterpart:v18];
+  v11 = [v5 appendObject:activityAttribution counterpart:v18];
 
-  v12 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self showsWhenForeground];
+  showsWhenForeground = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self showsWhenForeground];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__STBackgroundActivitiesStatusDomainBackgroundActivityAttribution_isEqual___block_invoke_3;
   v16[3] = &unk_1E85DDD50;
   v17 = v10;
   v13 = v10;
-  v14 = [v5 appendBool:v12 counterpart:v16];
-  LOBYTE(v12) = [v5 isEqual];
+  v14 = [v5 appendBool:showsWhenForeground counterpart:v16];
+  LOBYTE(showsWhenForeground) = [v5 isEqual];
 
-  return v12;
+  return showsWhenForeground;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 id __115__STBackgroundActivitiesStatusDomainBackgroundActivityAttribution__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -122,24 +122,24 @@ id __115__STBackgroundActivitiesStatusDomainBackgroundActivityAttribution__descr
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:"showsWhenForeground") ifEqualTo:{@"showsWhenForeground", 1}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self backgroundActivityIdentifier];
-  [v6 encodeObject:v4 forKey:@"backgroundActivityIdentifier"];
+  coderCopy = coder;
+  backgroundActivityIdentifier = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self backgroundActivityIdentifier];
+  [coderCopy encodeObject:backgroundActivityIdentifier forKey:@"backgroundActivityIdentifier"];
 
-  v5 = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self activityAttribution];
-  [v6 encodeObject:v5 forKey:@"activityAttribution"];
+  activityAttribution = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self activityAttribution];
+  [coderCopy encodeObject:activityAttribution forKey:@"activityAttribution"];
 
-  [v6 encodeBool:-[STBackgroundActivitiesStatusDomainBackgroundActivityAttribution showsWhenForeground](self forKey:{"showsWhenForeground"), @"showsWhenForeground"}];
+  [coderCopy encodeBool:-[STBackgroundActivitiesStatusDomainBackgroundActivityAttribution showsWhenForeground](self forKey:{"showsWhenForeground"), @"showsWhenForeground"}];
 }
 
-- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithCoder:(id)a3
+- (STBackgroundActivitiesStatusDomainBackgroundActivityAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundActivityIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityAttribution"];
-  v7 = [v4 decodeBoolForKey:@"showsWhenForeground"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundActivityIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityAttribution"];
+  v7 = [coderCopy decodeBoolForKey:@"showsWhenForeground"];
 
   if (v5)
   {
@@ -153,16 +153,16 @@ id __115__STBackgroundActivitiesStatusDomainBackgroundActivityAttribution__descr
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STBackgroundActivitiesStatusDomainBackgroundActivityAttribution *)self initWithBackgroundActivityIdentifier:v5 activityAttribution:v6 showsWhenForeground:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

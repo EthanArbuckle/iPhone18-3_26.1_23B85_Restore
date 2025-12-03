@@ -1,34 +1,34 @@
 @interface CDPDRecoveryFlowController
-- (CDPDRecoveryFlowController)initWithContext:(id)a3 uiProvider:(id)a4 secureBackupController:(id)a5 circleController:(id)a6;
-- (CDPDRecoveryFlowController)initWithContext:(id)a3 uiProvider:(id)a4 secureBackupController:(id)a5 circleProxy:(id)a6 octagonProxy:(id)a7;
-- (unint64_t)_escapeOfferForDevices:(id)a3;
-- (void)_updateEventWithDevices:(id)a3 withDevices:(id)a4;
-- (void)_updateInteractiveRecoverStartEvent:(id)a3 withDevices:(id)a4;
-- (void)beginInteractiveRecoveryForDevices:(id)a3 isUsingMultipleICSC:(BOOL)a4 usingValidator:(id)a5;
-- (void)beginRecovery:(id)a3;
+- (CDPDRecoveryFlowController)initWithContext:(id)context uiProvider:(id)provider secureBackupController:(id)controller circleController:(id)circleController;
+- (CDPDRecoveryFlowController)initWithContext:(id)context uiProvider:(id)provider secureBackupController:(id)controller circleProxy:(id)proxy octagonProxy:(id)octagonProxy;
+- (unint64_t)_escapeOfferForDevices:(id)devices;
+- (void)_updateEventWithDevices:(id)devices withDevices:(id)withDevices;
+- (void)_updateInteractiveRecoverStartEvent:(id)event withDevices:(id)devices;
+- (void)beginInteractiveRecoveryForDevices:(id)devices isUsingMultipleICSC:(BOOL)c usingValidator:(id)validator;
+- (void)beginRecovery:(id)recovery;
 - (void)dealloc;
-- (void)retrieveInflatedDevices:(id)a3;
+- (void)retrieveInflatedDevices:(id)devices;
 @end
 
 @implementation CDPDRecoveryFlowController
 
-- (CDPDRecoveryFlowController)initWithContext:(id)a3 uiProvider:(id)a4 secureBackupController:(id)a5 circleProxy:(id)a6 octagonProxy:(id)a7
+- (CDPDRecoveryFlowController)initWithContext:(id)context uiProvider:(id)provider secureBackupController:(id)controller circleProxy:(id)proxy octagonProxy:(id)octagonProxy
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  contextCopy = context;
+  providerCopy = provider;
+  controllerCopy = controller;
+  proxyCopy = proxy;
+  octagonProxyCopy = octagonProxy;
   v23.receiver = self;
   v23.super_class = CDPDRecoveryFlowController;
   v18 = [(CDPDRecoveryFlowController *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_recoveryContext, a3);
-    objc_storeStrong(&v19->_uiProvider, a4);
-    objc_storeStrong(&v19->_secureBackupController, a5);
-    v20 = [[CDPDCircleController alloc] initWithUiProvider:v14 delegate:0 circleProxy:v16 octagonTrustProxy:v17];
+    objc_storeStrong(&v18->_recoveryContext, context);
+    objc_storeStrong(&v19->_uiProvider, provider);
+    objc_storeStrong(&v19->_secureBackupController, controller);
+    v20 = [[CDPDCircleController alloc] initWithUiProvider:providerCopy delegate:0 circleProxy:proxyCopy octagonTrustProxy:octagonProxyCopy];
     circleController = v19->_circleController;
     v19->_circleController = v20;
   }
@@ -36,22 +36,22 @@
   return v19;
 }
 
-- (CDPDRecoveryFlowController)initWithContext:(id)a3 uiProvider:(id)a4 secureBackupController:(id)a5 circleController:(id)a6
+- (CDPDRecoveryFlowController)initWithContext:(id)context uiProvider:(id)provider secureBackupController:(id)controller circleController:(id)circleController
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  providerCopy = provider;
+  controllerCopy = controller;
+  circleControllerCopy = circleController;
   v18.receiver = self;
   v18.super_class = CDPDRecoveryFlowController;
   v15 = [(CDPDRecoveryFlowController *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_recoveryContext, a3);
-    objc_storeStrong(&v16->_uiProvider, a4);
-    objc_storeStrong(&v16->_secureBackupController, a5);
-    objc_storeStrong(&v16->_circleController, a6);
+    objc_storeStrong(&v15->_recoveryContext, context);
+    objc_storeStrong(&v16->_uiProvider, provider);
+    objc_storeStrong(&v16->_secureBackupController, controller);
+    objc_storeStrong(&v16->_circleController, circleController);
   }
 
   return v16;
@@ -70,16 +70,16 @@
   [(CDPDRecoveryFlowController *)&v4 dealloc];
 }
 
-- (void)_updateEventWithDevices:(id)a3 withDevices:(id)a4
+- (void)_updateEventWithDevices:(id)devices withDevices:(id)withDevices
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  withDevicesCopy = withDevices;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [withDevicesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -91,13 +91,13 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(withDevicesCopy);
         }
 
         v10 += [*(*(&v20 + 1) + 8 * i) remainingAttempts];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [withDevicesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -108,33 +108,33 @@
     v10 = 0;
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-  [v6 setObject:v13 forKeyedSubscript:*MEMORY[0x277CFD8B0]];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(withDevicesCopy, "count")}];
+  [devicesCopy setObject:v13 forKeyedSubscript:*MEMORY[0x277CFD8B0]];
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(CDPDRecoveryFlowController *)self recoveryContext];
-  v16 = [v15 context];
-  v17 = [v14 numberWithInteger:{objc_msgSend(v16, "totalEscrowDeviceCount")}];
-  [v6 setObject:v17 forKeyedSubscript:*MEMORY[0x277CFD8A8]];
+  recoveryContext = [(CDPDRecoveryFlowController *)self recoveryContext];
+  context = [recoveryContext context];
+  v17 = [v14 numberWithInteger:{objc_msgSend(context, "totalEscrowDeviceCount")}];
+  [devicesCopy setObject:v17 forKeyedSubscript:*MEMORY[0x277CFD8A8]];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
-  [v6 setObject:v18 forKeyedSubscript:*MEMORY[0x277CFD778]];
+  [devicesCopy setObject:v18 forKeyedSubscript:*MEMORY[0x277CFD778]];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateInteractiveRecoverStartEvent:(id)a3 withDevices:(id)a4
+- (void)_updateInteractiveRecoverStartEvent:(id)event withDevices:(id)devices
 {
-  v6 = a3;
-  [(CDPDRecoveryFlowController *)self _updateEventWithDevices:v6 withDevices:a4];
-  v7 = [(CDPDRecoveryFlowController *)self secureBackupController];
+  eventCopy = event;
+  [(CDPDRecoveryFlowController *)self _updateEventWithDevices:eventCopy withDevices:devices];
+  secureBackupController = [(CDPDRecoveryFlowController *)self secureBackupController];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CDPDRecoveryFlowController *)self secureBackupController];
+    secureBackupController2 = [(CDPDRecoveryFlowController *)self secureBackupController];
     v28 = 0;
-    v10 = [v9 supportsRecoveryKeyWithError:&v28];
+    v10 = [secureBackupController2 supportsRecoveryKeyWithError:&v28];
     v11 = v28;
   }
 
@@ -145,42 +145,42 @@
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:v10];
-  [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFD7F8]];
+  [eventCopy setObject:v12 forKeyedSubscript:*MEMORY[0x277CFD7F8]];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v15 = [v13 numberWithBool:{objc_msgSend(v14, "supportsSecureBackupRecovery")}];
-  [v6 setObject:v15 forKeyedSubscript:*MEMORY[0x277CFD8A0]];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  v15 = [v13 numberWithBool:{objc_msgSend(mEMORY[0x277CFD4F8], "supportsSecureBackupRecovery")}];
+  [eventCopy setObject:v15 forKeyedSubscript:*MEMORY[0x277CFD8A0]];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CDPDCircleControl cliqueStatus](self->_circleController, "cliqueStatus")}];
-  [v6 setObject:v16 forKeyedSubscript:*MEMORY[0x277CFD6A0]];
+  [eventCopy setObject:v16 forKeyedSubscript:*MEMORY[0x277CFD6A0]];
 
   v17 = [MEMORY[0x277CCABB0] numberWithInt:{-[CDPDCircleControl circleSyncingStatus](self->_circleController, "circleSyncingStatus")}];
-  [v6 setObject:v17 forKeyedSubscript:*MEMORY[0x277CFD688]];
+  [eventCopy setObject:v17 forKeyedSubscript:*MEMORY[0x277CFD688]];
 
   v18 = objc_alloc_init(CDPDAccount);
-  v19 = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
-  v20 = [v19 dsid];
-  v21 = [v20 stringValue];
-  v22 = [(CDPDAccount *)v18 isICDPEnabledForDSID:v21 checkWithServer:0];
+  context = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
+  dsid = [context dsid];
+  stringValue = [dsid stringValue];
+  v22 = [(CDPDAccount *)v18 isICDPEnabledForDSID:stringValue checkWithServer:0];
 
   v23 = MEMORY[0x277CCABB0];
-  v24 = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
-  v25 = [v24 altDSID];
-  v26 = [v23 numberWithUnsignedInteger:{-[CDPDAccount recoveryContactCountForAltDSID:](v18, "recoveryContactCountForAltDSID:", v25)}];
+  context2 = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
+  altDSID = [context2 altDSID];
+  v26 = [v23 numberWithUnsignedInteger:{-[CDPDAccount recoveryContactCountForAltDSID:](v18, "recoveryContactCountForAltDSID:", altDSID)}];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:v22];
-  [v6 setObject:v27 forKeyedSubscript:*MEMORY[0x277CFD670]];
+  [eventCopy setObject:v27 forKeyedSubscript:*MEMORY[0x277CFD670]];
 
-  [v6 setObject:v26 forKeyedSubscript:*MEMORY[0x277CFD780]];
+  [eventCopy setObject:v26 forKeyedSubscript:*MEMORY[0x277CFD780]];
 }
 
-- (void)beginRecovery:(id)a3
+- (void)beginRecovery:(id)recovery
 {
-  v4 = a3;
+  recoveryCopy = recovery;
   v5 = MEMORY[0x277CE44D8];
-  v6 = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
-  v7 = [v5 analyticsEventWithContext:v6 eventName:*MEMORY[0x277CFD750] category:*MEMORY[0x277CFD930]];
+  context = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
+  v7 = [v5 analyticsEventWithContext:context eventName:*MEMORY[0x277CFD750] category:*MEMORY[0x277CFD930]];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -188,8 +188,8 @@
   v10[3] = &unk_278E24520;
   v10[4] = self;
   v11 = v7;
-  v12 = v4;
-  v8 = v4;
+  v12 = recoveryCopy;
+  v8 = recoveryCopy;
   v9 = v7;
   [(CDPDRecoveryFlowController *)self retrieveInflatedDevices:v10];
 }
@@ -302,17 +302,17 @@ void __44__CDPDRecoveryFlowController_beginRecovery___block_invoke_2(uint64_t a1
   [*(a1 + 32) beginInteractiveRecoveryForDevices:*(a1 + 48) isUsingMultipleICSC:*(a1 + 56) usingValidator:*(*(a1 + 32) + 8)];
 }
 
-- (unint64_t)_escapeOfferForDevices:(id)a3
+- (unint64_t)_escapeOfferForDevices:(id)devices
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(CDPDRecoveryFlowController *)self _escapeOfferForDevices:v5];
   }
 
-  v6 = [v4 count];
+  v6 = [devicesCopy count];
   if (v6 < 2)
   {
     result = 16;
@@ -335,17 +335,17 @@ void __44__CDPDRecoveryFlowController_beginRecovery___block_invoke_2(uint64_t a1
   return result;
 }
 
-- (void)beginInteractiveRecoveryForDevices:(id)a3 isUsingMultipleICSC:(BOOL)a4 usingValidator:(id)a5
+- (void)beginInteractiveRecoveryForDevices:(id)devices isUsingMultipleICSC:(BOOL)c usingValidator:(id)validator
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  cCopy = c;
+  devicesCopy = devices;
+  validatorCopy = validator;
+  if (cCopy)
   {
     v10 = _CDPLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [CDPDRecoveryFlowController beginInteractiveRecoveryForDevices:v8 isUsingMultipleICSC:self usingValidator:?];
+      [CDPDRecoveryFlowController beginInteractiveRecoveryForDevices:devicesCopy isUsingMultipleICSC:self usingValidator:?];
     }
 
     v11 = _CDPLogSystem();
@@ -361,12 +361,12 @@ void __44__CDPDRecoveryFlowController_beginRecovery___block_invoke_2(uint64_t a1
       _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, "Invoking cdpRecoveryFlowContext:promptForRemoteSecretWithDevices in CDPDRecoveryFlowController", v19, 2u);
     }
 
-    [(CDPStateUIProviderInternal *)self->_uiProvider cdpRecoveryFlowContext:self->_recoveryContext promptForRemoteSecretWithDevices:v8 validator:v9];
+    [(CDPStateUIProviderInternal *)self->_uiProvider cdpRecoveryFlowContext:self->_recoveryContext promptForRemoteSecretWithDevices:devicesCopy validator:validatorCopy];
   }
 
   else
   {
-    v13 = [v8 objectAtIndexedSubscript:0];
+    v13 = [devicesCopy objectAtIndexedSubscript:0];
     v14 = _CDPLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
@@ -374,18 +374,18 @@ void __44__CDPDRecoveryFlowController_beginRecovery___block_invoke_2(uint64_t a1
     }
 
     uiProvider = self->_uiProvider;
-    v16 = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
-    v17 = [v13 hasNumericSecret];
-    v18 = [v13 numericSecretLength];
-    -[CDPStateUIProviderInternal cdpContext:promptForICSCWithIsNumeric:numericLength:isRandom:validator:](uiProvider, "cdpContext:promptForICSCWithIsNumeric:numericLength:isRandom:validator:", v16, v17, v18, [v13 hasRandomSecret], v9);
+    context = [(CDPRecoveryFlowContext *)self->_recoveryContext context];
+    hasNumericSecret = [v13 hasNumericSecret];
+    numericSecretLength = [v13 numericSecretLength];
+    -[CDPStateUIProviderInternal cdpContext:promptForICSCWithIsNumeric:numericLength:isRandom:validator:](uiProvider, "cdpContext:promptForICSCWithIsNumeric:numericLength:isRandom:validator:", context, hasNumericSecret, numericSecretLength, [v13 hasRandomSecret], validatorCopy);
 
-    v9 = v13;
+    validatorCopy = v13;
   }
 }
 
-- (void)retrieveInflatedDevices:(id)a3
+- (void)retrieveInflatedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -399,8 +399,8 @@ void __44__CDPDRecoveryFlowController_beginRecovery___block_invoke_2(uint64_t a1
   v8[2] = __54__CDPDRecoveryFlowController_retrieveInflatedDevices___block_invoke;
   v8[3] = &unk_278E24548;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = devicesCopy;
+  v7 = devicesCopy;
   [(CDPDSecureBackupController *)secureBackupController getBackupRecordDevicesWithOptionForceFetch:0 completion:v8];
 }
 

@@ -1,37 +1,37 @@
 @interface SBUILegibilityMetalEngine
-- (CGSize)calculateShadowImageViewSizeForOriginalImage:(id)a3 shadowImage:(id)a4 settings:(id)a5;
+- (CGSize)calculateShadowImageViewSizeForOriginalImage:(id)image shadowImage:(id)shadowImage settings:(id)settings;
 - (NSString)description;
-- (SBUILegibilityMetalEngine)initWithEngineIdentifier:(id)a3 algorithm:(int64_t)a4;
-- (id)_findEngineConfigurationMatchingScreen:(id)a3 settings:(id)a4;
-- (id)applyStrength:(double)a3 toImage:(id)a4 settings:(id)a5;
-- (id)executeAsyncLegibilityUpdateForContainer:(id)a3 image:(id)a4 settings:(id)a5 strength:(double *)a6 completion:(id)a7;
-- (void)_teardownCaches:(id)a3;
-- (void)executeLegibilityUpdateForContainer:(id)a3 forImage:(id)a4 settings:(id)a5 strength:(double *)a6 engineResult:(id *)a7;
-- (void)prewarmForSettings:(id)a3 maxSize:(CGSize)a4 minSize:(CGSize)a5 scale:(double)a6;
+- (SBUILegibilityMetalEngine)initWithEngineIdentifier:(id)identifier algorithm:(int64_t)algorithm;
+- (id)_findEngineConfigurationMatchingScreen:(id)screen settings:(id)settings;
+- (id)applyStrength:(double)strength toImage:(id)image settings:(id)settings;
+- (id)executeAsyncLegibilityUpdateForContainer:(id)container image:(id)image settings:(id)settings strength:(double *)strength completion:(id)completion;
+- (void)_teardownCaches:(id)caches;
+- (void)executeLegibilityUpdateForContainer:(id)container forImage:(id)image settings:(id)settings strength:(double *)strength engineResult:(id *)result;
+- (void)prewarmForSettings:(id)settings maxSize:(CGSize)size minSize:(CGSize)minSize scale:(double)scale;
 @end
 
 @implementation SBUILegibilityMetalEngine
 
-- (SBUILegibilityMetalEngine)initWithEngineIdentifier:(id)a3 algorithm:(int64_t)a4
+- (SBUILegibilityMetalEngine)initWithEngineIdentifier:(id)identifier algorithm:(int64_t)algorithm
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = SBUILegibilityMetalEngine;
   v7 = [(SBUILegibilityMetalEngine *)&v18 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     engineIdentifier = v7->_engineIdentifier;
     v7->_engineIdentifier = v8;
 
-    v7->_algorithm = a4;
+    v7->_algorithm = algorithm;
     v10 = [[SBUILegibilityCache alloc] initWithEngine:v7];
     legibilityCache = v7->_legibilityCache;
     v7->_legibilityCache = v10;
 
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
     screen = v7->_screen;
-    v7->_screen = v12;
+    v7->_screen = mainScreen;
 
     v14 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     asyncOperationQueue = v7->_asyncOperationQueue;
@@ -39,23 +39,23 @@
 
     [(NSOperationQueue *)v7->_asyncOperationQueue setMaxConcurrentOperationCount:10];
     [(NSOperationQueue *)v7->_asyncOperationQueue setQualityOfService:17];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v7 selector:sel__teardownCaches_ name:@"SBUILegibilityEngineShouldClearCachesNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__teardownCaches_ name:@"SBUILegibilityEngineShouldClearCachesNotification" object:0];
   }
 
   return v7;
 }
 
-- (void)executeLegibilityUpdateForContainer:(id)a3 forImage:(id)a4 settings:(id)a5 strength:(double *)a6 engineResult:(id *)a7
+- (void)executeLegibilityUpdateForContainer:(id)container forImage:(id)image settings:(id)settings strength:(double *)strength engineResult:(id *)result
 {
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  [v13 size];
+  containerCopy = container;
+  imageCopy = image;
+  settingsCopy = settings;
+  [imageCopy size];
   if (self->_useMinFillHeightForTemplateGeneration)
   {
-    v15 = [(SBUILegibilityCache *)self->_legibilityCache templateImageForSettings:v14 matchingSize:?];
+    v15 = [(SBUILegibilityCache *)self->_legibilityCache templateImageForSettings:settingsCopy matchingSize:?];
   }
 
   else
@@ -69,7 +69,7 @@
     goto LABEL_9;
   }
 
-  v17 = [v12 shadowImage];
+  shadowImage = [containerCopy shadowImage];
   if (!BSEqualObjects())
   {
 LABEL_8:
@@ -77,15 +77,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [v12 legibilityEngine];
-  v19 = v18;
-  if (v18 != self)
+  legibilityEngine = [containerCopy legibilityEngine];
+  v19 = legibilityEngine;
+  if (legibilityEngine != self)
   {
 
     goto LABEL_8;
   }
 
-  v28 = [v12 legibilitySettings];
+  legibilitySettings = [containerCopy legibilitySettings];
   v29 = BSEqualObjects();
 
   if (!v29)
@@ -97,61 +97,61 @@ LABEL_9:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413058;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
-        v33 = v12;
+        v33 = containerCopy;
         v34 = 2112;
-        v35 = v13;
+        v35 = imageCopy;
         v36 = 2048;
-        v37 = v14;
+        v37 = settingsCopy;
         _os_log_debug_impl(&dword_1A9A79000, v20, OS_LOG_TYPE_DEBUG, "(%@) Legibility background image already prepared for view '%@' / image '%@', settings '%p'", buf, 0x2Au);
       }
 
       v21 = v16;
-      if (a7)
+      if (result)
       {
-        a7->var0 = 1;
+        result->var0 = 1;
         v21 = v16;
       }
 
-      if (a6)
+      if (strength)
       {
 LABEL_15:
-        v22 = [(SBUILegibilityMetalEngine *)self applyStrength:v21 toImage:v14 settings:*a6];
+        v22 = [(SBUILegibilityMetalEngine *)self applyStrength:v21 toImage:settingsCopy settings:*strength];
 LABEL_22:
-        [v12 updateOrigImage:v13 shadowImage:v21 strengthenedShadowImage:v22 settings:v14 engine:self isTemplate:v16 != 0 withStrength:a6 context:0];
+        [containerCopy updateOrigImage:imageCopy shadowImage:v21 strengthenedShadowImage:v22 settings:settingsCopy engine:self isTemplate:v16 != 0 withStrength:strength context:0];
         goto LABEL_23;
       }
     }
 
     else
     {
-      v23 = [v12 _screen];
-      screen = v23;
-      if (!v23)
+      _screen = [containerCopy _screen];
+      screen = _screen;
+      if (!_screen)
       {
         screen = self->_screen;
       }
 
       v25 = screen;
 
-      v26 = [(SBUILegibilityMetalEngine *)self _findEngineConfigurationMatchingScreen:v25 settings:v14];
-      v21 = [v26 executeBlurForImage:v13 settings:v14];
+      v26 = [(SBUILegibilityMetalEngine *)self _findEngineConfigurationMatchingScreen:v25 settings:settingsCopy];
+      v21 = [v26 executeBlurForImage:imageCopy settings:settingsCopy];
       v27 = SBLogLegibility();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        v31 = self;
+        selfCopy3 = self;
         v32 = 2112;
-        v33 = v12;
+        v33 = containerCopy;
         v34 = 2112;
-        v35 = v13;
+        v35 = imageCopy;
         v36 = 2048;
-        v37 = v14;
+        v37 = settingsCopy;
         _os_log_impl(&dword_1A9A79000, v27, OS_LOG_TYPE_DEFAULT, "(%@) Drew legibility background image for view '%@' / image '%@', settings '%p'", buf, 0x2Au);
       }
 
-      if (a6)
+      if (strength)
       {
         goto LABEL_15;
       }
@@ -165,13 +165,13 @@ LABEL_22:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2112;
-    v33 = v12;
+    v33 = containerCopy;
     v34 = 2112;
-    v35 = v13;
+    v35 = imageCopy;
     v36 = 2048;
-    v37 = v14;
+    v37 = settingsCopy;
     _os_log_debug_impl(&dword_1A9A79000, v22, OS_LOG_TYPE_DEBUG, "(%@) Skipping legibility background image generation for view '%@' / image '%@', settings '%p'; this is redundent", buf, 0x2Au);
   }
 
@@ -179,22 +179,22 @@ LABEL_22:
 LABEL_23:
 }
 
-- (id)executeAsyncLegibilityUpdateForContainer:(id)a3 image:(id)a4 settings:(id)a5 strength:(double *)a6 completion:(id)a7
+- (id)executeAsyncLegibilityUpdateForContainer:(id)container image:(id)image settings:(id)settings strength:(double *)strength completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v31 = a7;
-  v14 = [v11 _screen];
-  screen = v14;
-  if (!v14)
+  containerCopy = container;
+  imageCopy = image;
+  settingsCopy = settings;
+  completionCopy = completion;
+  _screen = [containerCopy _screen];
+  screen = _screen;
+  if (!_screen)
   {
     screen = self->_screen;
   }
 
   v16 = screen;
 
-  v17 = [(SBUILegibilityMetalEngine *)self _findEngineConfigurationMatchingScreen:v16 settings:v13];
+  v17 = [(SBUILegibilityMetalEngine *)self _findEngineConfigurationMatchingScreen:v16 settings:settingsCopy];
   v67[0] = 0;
   v67[1] = v67;
   v67[2] = 0x3032000000;
@@ -234,13 +234,13 @@ LABEL_23:
   v52 = v67;
   v30 = v17;
   v46 = v30;
-  v19 = v12;
+  v19 = imageCopy;
   v47 = v19;
-  v20 = v13;
+  v20 = settingsCopy;
   v53 = v65;
-  v54 = a6;
+  strengthCopy = strength;
   v48 = v20;
-  v49 = self;
+  selfCopy = self;
   v21 = [v18 blockOperationWithBlock:v45];
   v22 = v56[5];
   v56[5] = v21;
@@ -253,7 +253,7 @@ LABEL_23:
   v33[3] = &unk_1E789F6C0;
   v38 = &v55;
   v39 = v63;
-  v24 = v11;
+  v24 = containerCopy;
   v34 = v24;
   v25 = v19;
   v35 = v25;
@@ -262,8 +262,8 @@ LABEL_23:
   v26 = v20;
   v36 = v26;
   objc_copyWeak(v43, &location);
-  v43[1] = a6;
-  v27 = v31;
+  v43[1] = strength;
+  v27 = completionCopy;
   v37 = v27;
   v42 = v61;
   [v23 setCompletionBlock:v33];
@@ -371,20 +371,20 @@ void __105__SBUILegibilityMetalEngine_executeAsyncLegibilityUpdateForContainer_i
   *(v12 + 40) = 0;
 }
 
-- (void)prewarmForSettings:(id)a3 maxSize:(CGSize)a4 minSize:(CGSize)a5 scale:(double)a6
+- (void)prewarmForSettings:(id)settings maxSize:(CGSize)size minSize:(CGSize)minSize scale:(double)scale
 {
-  size = a4.height;
-  width = a4.width;
+  size = size.height;
+  width = size.width;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (!v10)
+  settingsCopy = settings;
+  if (!settingsCopy)
   {
     [SBUILegibilityMetalEngine prewarmForSettings:a2 maxSize:self minSize:? scale:?];
   }
 
   if (width > 0.0 && size > 0.0 && self->_useMinFillHeightForTemplateGeneration)
   {
-    if ([(SBUILegibilityCache *)self->_legibilityCache containsTemplateForSettings:v10, size])
+    if ([(SBUILegibilityCache *)self->_legibilityCache containsTemplateForSettings:settingsCopy, size])
     {
       v11 = SBLogLegibility();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -393,9 +393,9 @@ void __105__SBUILegibilityMetalEngine_executeAsyncLegibilityUpdateForContainer_i
         v31.height = size;
         v21 = NSStringFromCGSize(v31);
         *buf = 138412802;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2048;
-        v27 = v10;
+        v27 = settingsCopy;
         v28 = 2112;
         v29 = v21;
         _os_log_debug_impl(&dword_1A9A79000, v11, OS_LOG_TYPE_DEBUG, "(%@) Bailing; templateImageForSettings already exists for settings %p, maxSize %@", buf, 0x20u);
@@ -405,12 +405,12 @@ void __105__SBUILegibilityMetalEngine_executeAsyncLegibilityUpdateForContainer_i
     else
     {
       [(UIScreen *)self->_screen scale];
-      if (v12 != a6)
+      if (v12 != scale)
       {
         [SBUILegibilityMetalEngine prewarmForSettings:a2 maxSize:self minSize:? scale:?];
       }
 
-      v11 = [(SBUILegibilityCache *)self->_legibilityCache memoryPoolForGraphicsContextType:4 matchingSize:SBUILegibilityImageSizeForContentSizeAndSettings(v10 scale:width)];
+      v11 = [(SBUILegibilityCache *)self->_legibilityCache memoryPoolForGraphicsContextType:4 matchingSize:SBUILegibilityImageSizeForContentSizeAndSettings(settingsCopy scale:width)];
       for (i = 0; i != 10; ++i)
       {
         UIRoundToScale();
@@ -422,19 +422,19 @@ void __105__SBUILegibilityMetalEngine_executeAsyncLegibilityUpdateForContainer_i
         v23[3] = &__block_descriptor_48_e5_v8__0l;
         *&v23[4] = v15;
         *&v23[5] = v16;
-        v17 = [MEMORY[0x1E69DCAB8] sbf_imageFromContextWithSize:4 scale:v11 type:v23 pool:v15 drawing:{v16, a6}];
-        v18 = [(SBUILegibilityMetalEngine *)self _findEngineConfigurationMatchingScreen:self->_screen settings:v10];
-        v19 = [v18 executeBlurForImage:v17 settings:v10];
+        v17 = [MEMORY[0x1E69DCAB8] sbf_imageFromContextWithSize:4 scale:v11 type:v23 pool:v15 drawing:{v16, scale}];
+        v18 = [(SBUILegibilityMetalEngine *)self _findEngineConfigurationMatchingScreen:self->_screen settings:settingsCopy];
+        v19 = [v18 executeBlurForImage:v17 settings:settingsCopy];
         if (v19)
         {
-          [(SBUILegibilityCache *)self->_legibilityCache cacheTemplateShadowImage:v19 settings:v10 maxSize:width, size];
+          [(SBUILegibilityCache *)self->_legibilityCache cacheTemplateShadowImage:v19 settings:settingsCopy maxSize:width, size];
           v20 = SBLogLegibility();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v25 = self;
+            selfCopy3 = self;
             v26 = 2048;
-            v27 = v10;
+            v27 = settingsCopy;
             _os_log_impl(&dword_1A9A79000, v20, OS_LOG_TYPE_DEFAULT, "(%@) Prewarmed legibility background for settings %p", buf, 0x16u);
           }
         }
@@ -445,9 +445,9 @@ void __105__SBUILegibilityMetalEngine_executeAsyncLegibilityUpdateForContainer_i
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v25 = self;
+            selfCopy3 = self;
             v26 = 2048;
-            v27 = v10;
+            v27 = settingsCopy;
             _os_log_error_impl(&dword_1A9A79000, v20, OS_LOG_TYPE_ERROR, "(%@) FAILED to Prewarm legibility background for settings %p", buf, 0x16u);
           }
         }
@@ -469,17 +469,17 @@ void __70__SBUILegibilityMetalEngine_prewarmForSettings_maxSize_minSize_scale___
   UIRectFill(*&v5);
 }
 
-- (id)applyStrength:(double)a3 toImage:(id)a4 settings:(id)a5
+- (id)applyStrength:(double)strength toImage:(id)image settings:(id)settings
 {
-  v8 = a5;
+  settingsCopy = settings;
   legibilityCache = self->_legibilityCache;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__SBUILegibilityMetalEngine_applyStrength_toImage_settings___block_invoke;
   v13[3] = &unk_1E789F708;
-  v14 = v8;
-  v10 = v8;
-  v11 = [(SBUILegibilityCache *)legibilityCache cachedStrengthForImage:a4 strength:v13 generator:a3];
+  v14 = settingsCopy;
+  v10 = settingsCopy;
+  v11 = [(SBUILegibilityCache *)legibilityCache cachedStrengthForImage:image strength:v13 generator:strength];
 
   return v11;
 }
@@ -496,11 +496,11 @@ id __60__SBUILegibilityMetalEngine_applyStrength_toImage_settings___block_invoke
   return v8;
 }
 
-- (CGSize)calculateShadowImageViewSizeForOriginalImage:(id)a3 shadowImage:(id)a4 settings:(id)a5
+- (CGSize)calculateShadowImageViewSizeForOriginalImage:(id)image shadowImage:(id)shadowImage settings:(id)settings
 {
-  v6 = a5;
-  [a3 size];
-  v8 = SBUILegibilityImageSizeForContentSizeAndSettings(v6, v7);
+  settingsCopy = settings;
+  [image size];
+  v8 = SBUILegibilityImageSizeForContentSizeAndSettings(settingsCopy, v7);
   v10 = v9;
 
   v11 = v8;
@@ -510,22 +510,22 @@ id __60__SBUILegibilityMetalEngine_applyStrength_toImage_settings___block_invoke
   return result;
 }
 
-- (id)_findEngineConfigurationMatchingScreen:(id)a3 settings:(id)a4
+- (id)_findEngineConfigurationMatchingScreen:(id)screen settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  screenCopy = screen;
+  settingsCopy = settings;
   enginesForSettingsForScreen = self->_enginesForSettingsForScreen;
   if (!enginesForSettingsForScreen)
   {
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v10 = self->_enginesForSettingsForScreen;
-    self->_enginesForSettingsForScreen = v9;
+    self->_enginesForSettingsForScreen = weakToStrongObjectsMapTable;
 
     enginesForSettingsForScreen = self->_enginesForSettingsForScreen;
   }
 
-  v11 = [(NSMapTable *)enginesForSettingsForScreen objectForKey:v7];
-  v12 = [v11 objectForKey:v6];
+  weakToStrongObjectsMapTable2 = [(NSMapTable *)enginesForSettingsForScreen objectForKey:settingsCopy];
+  v12 = [weakToStrongObjectsMapTable2 objectForKey:screenCopy];
   if (v12)
   {
     v13 = v12;
@@ -533,14 +533,14 @@ id __60__SBUILegibilityMetalEngine_applyStrength_toImage_settings___block_invoke
 
   else
   {
-    if (!v11)
+    if (!weakToStrongObjectsMapTable2)
     {
-      v11 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-      [(NSMapTable *)self->_enginesForSettingsForScreen setObject:v11 forKey:v7];
+      weakToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      [(NSMapTable *)self->_enginesForSettingsForScreen setObject:weakToStrongObjectsMapTable2 forKey:settingsCopy];
     }
 
-    v13 = [[_SBUILegibilityMetalEngineConfiguration alloc] initWithScreen:v6 settings:v7 algo:self->_algorithm];
-    [v11 setObject:v13 forKey:v6];
+    v13 = [[_SBUILegibilityMetalEngineConfiguration alloc] initWithScreen:screenCopy settings:settingsCopy algo:self->_algorithm];
+    [weakToStrongObjectsMapTable2 setObject:v13 forKey:screenCopy];
   }
 
   v14 = v13;
@@ -563,24 +563,24 @@ id __60__SBUILegibilityMetalEngine_applyStrength_toImage_settings___block_invoke
   }
 
   [v3 appendString:v4 withName:@"algorithm"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)_teardownCaches:(id)a3
+- (void)_teardownCaches:(id)caches
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cachesCopy = caches;
   [(NSOperationQueue *)self->_asyncOperationQueue cancelAllOperations];
   [(SBUILegibilityCache *)self->_legibilityCache removeAllObjects];
   v5 = SBLogLegibility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = cachesCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "(%@) Cache teardown complete; requested by %@", &v6, 0x16u);
   }
 }

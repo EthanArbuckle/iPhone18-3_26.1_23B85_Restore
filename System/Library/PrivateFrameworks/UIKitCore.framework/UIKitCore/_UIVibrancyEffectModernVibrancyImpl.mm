@@ -1,40 +1,40 @@
 @interface _UIVibrancyEffectModernVibrancyImpl
-- (BOOL)isEqual:(id)a3;
-- (_UIVibrancyEffectModernVibrancyImpl)initWithFilter:(id)a3 inputColor1:(id)a4 inputColor2:(id)a5 compositingColor:(id)a6 inputReversed:(BOOL)a7;
-- (id)implementationReplacingTintColor:(id)a3;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
-- (void)appendDescriptionTo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIVibrancyEffectModernVibrancyImpl)initWithFilter:(id)filter inputColor1:(id)color1 inputColor2:(id)color2 compositingColor:(id)color inputReversed:(BOOL)reversed;
+- (id)implementationReplacingTintColor:(id)color;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
+- (void)appendDescriptionTo:(id)to;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIVibrancyEffectModernVibrancyImpl
 
-- (_UIVibrancyEffectModernVibrancyImpl)initWithFilter:(id)a3 inputColor1:(id)a4 inputColor2:(id)a5 compositingColor:(id)a6 inputReversed:(BOOL)a7
+- (_UIVibrancyEffectModernVibrancyImpl)initWithFilter:(id)filter inputColor1:(id)color1 inputColor2:(id)color2 compositingColor:(id)color inputReversed:(BOOL)reversed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  filterCopy = filter;
+  color1Copy = color1;
+  color2Copy = color2;
+  colorCopy = color;
   v26.receiver = self;
   v26.super_class = _UIVibrancyEffectModernVibrancyImpl;
   v16 = [(_UIVibrancyEffectModernVibrancyImpl *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [filterCopy copy];
     filterType = v16->_filterType;
     v16->_filterType = v17;
 
-    v19 = [v13 copy];
+    v19 = [color1Copy copy];
     inputColor1 = v16->_inputColor1;
     v16->_inputColor1 = v19;
 
-    v21 = [v14 copy];
+    v21 = [color2Copy copy];
     inputColor2 = v16->_inputColor2;
     v16->_inputColor2 = v21;
 
-    if (v15)
+    if (colorCopy)
     {
-      v23 = [v15 copy];
+      v23 = [colorCopy copy];
     }
 
     else
@@ -45,17 +45,17 @@
     v24 = v23;
     objc_storeStrong(&v16->_compositingColor, v23);
 
-    v16->_inputReversed = a7;
+    v16->_inputReversed = reversed;
   }
 
   return v16;
 }
 
-- (id)implementationReplacingTintColor:(id)a3
+- (id)implementationReplacingTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   compositingColor = self->_compositingColor;
-  v6 = v4;
+  v6 = colorCopy;
   v7 = compositingColor;
   v8 = v7;
   if (v7 == v6)
@@ -74,36 +74,36 @@
     }
 
 LABEL_7:
-    v10 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
 LABEL_9:
-  v10 = [[_UIVibrancyEffectModernVibrancyImpl alloc] initWithFilter:self->_filterType inputColor1:self->_inputColor1 inputColor2:self->_inputColor2 compositingColor:v6 inputReversed:self->_inputReversed];
+  selfCopy = [[_UIVibrancyEffectModernVibrancyImpl alloc] initWithFilter:self->_filterType inputColor1:self->_inputColor1 inputColor2:self->_inputColor2 compositingColor:v6 inputReversed:self->_inputReversed];
 LABEL_10:
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *MEMORY[0x1E6979D90];
   filterType = self->_filterType;
-  v6 = a3;
-  [v6 encodeInteger:objc_msgSend(v4 forKey:{"isEqualToString:", filterType), @"UIVibrancyEffectFilterType"}];
-  [v6 encodeObject:self->_inputColor1 forKey:@"UIVibrancyEffectColor1"];
-  [v6 encodeObject:self->_inputColor2 forKey:@"UIVibrancyEffectColor2"];
-  [v6 encodeObject:self->_compositingColor forKey:@"UIVibrancyEffectCompositingColor"];
-  [v6 encodeBool:self->_inputReversed forKey:@"UIVibrancyEffectInputReversed"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:objc_msgSend(v4 forKey:{"isEqualToString:", filterType), @"UIVibrancyEffectFilterType"}];
+  [coderCopy encodeObject:self->_inputColor1 forKey:@"UIVibrancyEffectColor1"];
+  [coderCopy encodeObject:self->_inputColor2 forKey:@"UIVibrancyEffectColor2"];
+  [coderCopy encodeObject:self->_compositingColor forKey:@"UIVibrancyEffectCompositingColor"];
+  [coderCopy encodeBool:self->_inputReversed forKey:@"UIVibrancyEffectInputReversed"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (![v5[1] isEqualToString:self->_filterType])
     {
       goto LABEL_24;
@@ -204,25 +204,25 @@ LABEL_26:
   return v12;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
   filterType = self->_filterType;
   inputColor1 = self->_inputColor1;
   inputColor2 = self->_inputColor2;
   inputReversed = self->_inputReversed;
-  v10 = a3;
+  descriptorCopy = descriptor;
   v11 = [UIVibrancyEffect _vibrancyEntryWithType:filterType inputColor1:inputColor1 inputColor2:inputColor2 inputReversed:inputReversed];
-  [v10 addFilterEntry:v11];
+  [descriptorCopy addFilterEntry:v11];
 
   v12 = objc_alloc_init(_UITintColorViewEntry);
   [(_UITintColorViewEntry *)v12 setTintColor:self->_compositingColor];
-  [v10 addViewEffect:v12];
-  [v10 setTextShouldRenderWithTintColor:1];
+  [descriptorCopy addViewEffect:v12];
+  [descriptorCopy setTextShouldRenderWithTintColor:1];
 }
 
-- (void)appendDescriptionTo:(id)a3
+- (void)appendDescriptionTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(NSString *)self->_filterType isEqualToString:*MEMORY[0x1E6979D90]])
   {
     v4 = @" lightVibrancy";
@@ -233,11 +233,11 @@ LABEL_26:
     v4 = @" darkVibrancy";
   }
 
-  [v5 appendString:v4];
-  [v5 appendFormat:@" inputColor1=%@ inputColor2=%@ compositingColor=%@", self->_inputColor1, self->_inputColor2, self->_compositingColor];
+  [toCopy appendString:v4];
+  [toCopy appendFormat:@" inputColor1=%@ inputColor2=%@ compositingColor=%@", self->_inputColor1, self->_inputColor2, self->_compositingColor];
   if (self->_inputReversed)
   {
-    [v5 appendString:@" inputReversed"];
+    [toCopy appendString:@" inputReversed"];
   }
 }
 

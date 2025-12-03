@@ -1,17 +1,17 @@
 @interface DTSSceneView
-- (DTSSceneView)initWithFrame:(CGRect)a3;
+- (DTSSceneView)initWithFrame:(CGRect)frame;
 - (void)_updateLayout;
 - (void)layoutSubviews;
 @end
 
 @implementation DTSSceneView
 
-- (DTSSceneView)initWithFrame:(CGRect)a3
+- (DTSSceneView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v15.receiver = self;
   v15.super_class = DTSSceneView;
   v7 = [(DTSSceneView *)&v15 initWithFrame:?];
@@ -41,10 +41,10 @@
 
     [(DTSSceneView *)v7 addSubview:v7->_sceneView];
     [(SKView *)v7->_sceneView setAutoresizingMask:18];
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v7 selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
-    [v12 addObserver:v7 selector:sel__applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
-    [v12 addObserver:v7 selector:sel__applicationWillEnterForeground name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v7 selector:sel__applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
+    [defaultCenter addObserver:v7 selector:sel__applicationWillEnterForeground name:*MEMORY[0x277D76648] object:0];
     v13 = v7;
   }
 

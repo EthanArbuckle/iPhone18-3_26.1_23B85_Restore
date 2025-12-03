@@ -1,49 +1,49 @@
 @interface MLCPhiLayer
-+ (id)layerWithControlTreeNode:(id)a3 sources:(id)a4 resultTensor:(id)a5;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCPhiLayer)initWithControlTreeNode:(id)a3 sources:(id)a4 resultTensor:(id)a5;
++ (id)layerWithControlTreeNode:(id)node sources:(id)sources resultTensor:(id)tensor;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCPhiLayer)initWithControlTreeNode:(id)node sources:(id)sources resultTensor:(id)tensor;
 - (id)description;
-- (unint64_t)resultSizeFromSourceSize:(unint64_t)a3 dimension:(unint64_t)a4;
+- (unint64_t)resultSizeFromSourceSize:(unint64_t)size dimension:(unint64_t)dimension;
 @end
 
 @implementation MLCPhiLayer
 
-+ (id)layerWithControlTreeNode:(id)a3 sources:(id)a4 resultTensor:(id)a5
++ (id)layerWithControlTreeNode:(id)node sources:(id)sources resultTensor:(id)tensor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithControlTreeNode:v10 sources:v9 resultTensor:v8];
+  tensorCopy = tensor;
+  sourcesCopy = sources;
+  nodeCopy = node;
+  v11 = [[self alloc] initWithControlTreeNode:nodeCopy sources:sourcesCopy resultTensor:tensorCopy];
 
   return v11;
 }
 
-- (MLCPhiLayer)initWithControlTreeNode:(id)a3 sources:(id)a4 resultTensor:(id)a5
+- (MLCPhiLayer)initWithControlTreeNode:(id)node sources:(id)sources resultTensor:(id)tensor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 count] == 2)
+  nodeCopy = node;
+  sourcesCopy = sources;
+  tensorCopy = tensor;
+  if ([sourcesCopy count] == 2)
   {
     v39 = a2;
-    v40 = self;
-    v41 = v9;
-    v12 = [v11 descriptor];
-    v13 = [v12 shape];
-    v14 = [v13 count];
+    selfCopy = self;
+    v41 = nodeCopy;
+    descriptor = [tensorCopy descriptor];
+    shape = [descriptor shape];
+    v14 = [shape count];
 
-    v42 = [v10 count];
+    v42 = [sourcesCopy count];
     if (v42)
     {
       v15 = 0;
-      v43 = v10;
-      v44 = v11;
+      v43 = sourcesCopy;
+      v44 = tensorCopy;
       while (1)
       {
-        v16 = [v10 objectAtIndexedSubscript:v15];
-        v17 = [v16 descriptor];
-        v18 = [v17 shape];
-        v19 = [v18 count];
+        v16 = [sourcesCopy objectAtIndexedSubscript:v15];
+        descriptor2 = [v16 descriptor];
+        shape2 = [descriptor2 shape];
+        v19 = [shape2 count];
 
         if (v14 != v19)
         {
@@ -53,9 +53,9 @@
             [MLCPhiLayer initWithControlTreeNode:v39 sources:? resultTensor:?];
           }
 
-          v34 = 0;
-          self = v40;
-          v9 = v41;
+          selfCopy2 = 0;
+          self = selfCopy;
+          nodeCopy = v41;
           goto LABEL_19;
         }
 
@@ -75,14 +75,14 @@ LABEL_9:
       while (1)
       {
         v21 = v14;
-        v22 = [v11 descriptor];
-        v23 = [v22 shape];
-        v24 = [v23 objectAtIndexedSubscript:v20];
+        descriptor3 = [tensorCopy descriptor];
+        shape3 = [descriptor3 shape];
+        v24 = [shape3 objectAtIndexedSubscript:v20];
         v25 = v15;
-        v26 = [v10 objectAtIndexedSubscript:v15];
-        v27 = [v26 descriptor];
-        v28 = [v27 shape];
-        v29 = [v28 objectAtIndexedSubscript:v20];
+        v26 = [sourcesCopy objectAtIndexedSubscript:v15];
+        descriptor4 = [v26 descriptor];
+        shape4 = [descriptor4 shape];
+        v29 = [shape4 objectAtIndexedSubscript:v20];
 
         if (v24 != v29)
         {
@@ -91,8 +91,8 @@ LABEL_9:
 
         ++v20;
         v14 = v21;
-        v10 = v43;
-        v11 = v44;
+        sourcesCopy = v43;
+        tensorCopy = v44;
         v15 = v25;
         if (v21 == v20)
         {
@@ -106,32 +106,32 @@ LABEL_9:
         [MLCPhiLayer initWithControlTreeNode:v39 sources:? resultTensor:?];
       }
 
-      v34 = 0;
-      self = v40;
-      v9 = v41;
-      v10 = v43;
-      v11 = v44;
+      selfCopy2 = 0;
+      self = selfCopy;
+      nodeCopy = v41;
+      sourcesCopy = v43;
+      tensorCopy = v44;
     }
 
     else
     {
 LABEL_10:
-      v48.receiver = v40;
+      v48.receiver = selfCopy;
       v48.super_class = MLCPhiLayer;
       v30 = [(MLCLayer *)&v48 initWithLabel:@"Phi"];
       v31 = v30;
-      v9 = v41;
+      nodeCopy = v41;
       if (v30)
       {
         v47.receiver = v30;
         v47.super_class = MLCPhiLayer;
-        v32 = [(MLCLayer *)&v47 sourceTensors];
-        [v32 addObjectsFromArray:v10];
+        sourceTensors = [(MLCLayer *)&v47 sourceTensors];
+        [sourceTensors addObjectsFromArray:sourcesCopy];
 
         v46.receiver = v31;
         v46.super_class = MLCPhiLayer;
-        v33 = [(MLCLayer *)&v46 resultTensors];
-        [v33 addObject:v11];
+        resultTensors = [(MLCLayer *)&v46 resultTensors];
+        [resultTensors addObject:tensorCopy];
 
         v45.receiver = v31;
         v45.super_class = MLCPhiLayer;
@@ -139,7 +139,7 @@ LABEL_10:
       }
 
       self = v31;
-      v34 = self;
+      selfCopy2 = self;
     }
   }
 
@@ -151,25 +151,25 @@ LABEL_10:
       [MLCPhiLayer initWithControlTreeNode:a2 sources:? resultTensor:?];
     }
 
-    v34 = 0;
+    selfCopy2 = 0;
   }
 
 LABEL_19:
 
-  return v34;
+  return selfCopy2;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v6.receiver = self;
   v6.super_class = MLCPhiLayer;
-  [(MLCLayer *)&v6 bindDevice:a3 deviceOps:0, a5];
+  [(MLCLayer *)&v6 bindDevice:device deviceOps:0, tensor];
   return 1;
 }
 
-- (unint64_t)resultSizeFromSourceSize:(unint64_t)a3 dimension:(unint64_t)a4
+- (unint64_t)resultSizeFromSourceSize:(unint64_t)size dimension:(unint64_t)dimension
 {
-  v5 = [MLCLog framework:a3];
+  v5 = [MLCLog framework:size];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [MLCPhiLayer resultSizeFromSourceSize:a2 dimension:?];
@@ -183,16 +183,16 @@ LABEL_19:
   v15 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v16 = [(MLCLayer *)self sourceTensors];
-  v5 = [v16 objectAtIndexedSubscript:0];
-  v6 = [v5 label];
-  v7 = [(MLCLayer *)self sourceTensors];
-  v8 = [v7 objectAtIndexedSubscript:1];
-  v9 = [v8 label];
-  v10 = [(MLCLayer *)self conditionalTreeNode];
-  v11 = [(MLCLayer *)self resultTensors];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  v13 = [v15 stringWithFormat:@"%@: { sources = [%@, %@] : predicate = %@ : result = %@ }", v4, v6, v9, v10, v12];
+  sourceTensors = [(MLCLayer *)self sourceTensors];
+  v5 = [sourceTensors objectAtIndexedSubscript:0];
+  label = [v5 label];
+  sourceTensors2 = [(MLCLayer *)self sourceTensors];
+  v8 = [sourceTensors2 objectAtIndexedSubscript:1];
+  label2 = [v8 label];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v12 = [resultTensors objectAtIndexedSubscript:0];
+  v13 = [v15 stringWithFormat:@"%@: { sources = [%@, %@] : predicate = %@ : result = %@ }", v4, label, label2, conditionalTreeNode, v12];
 
   return v13;
 }

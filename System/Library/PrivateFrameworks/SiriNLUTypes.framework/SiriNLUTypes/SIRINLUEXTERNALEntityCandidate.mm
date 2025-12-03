@@ -1,23 +1,23 @@
 @interface SIRINLUEXTERNALEntityCandidate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAnnotations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnnotations:(id)annotations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALEntityCandidate
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   entity = self->_entity;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (entity)
   {
     if (v6)
@@ -32,7 +32,7 @@
   }
 
   score = self->_score;
-  v8 = *(v4 + 7);
+  v8 = *(fromCopy + 7);
   if (score)
   {
     if (v8)
@@ -47,7 +47,7 @@
   }
 
   entityId = self->_entityId;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   if (entityId)
   {
     if (v10)
@@ -62,7 +62,7 @@
   }
 
   appBundleId = self->_appBundleId;
-  v12 = *(v4 + 2);
+  v12 = *(fromCopy + 2);
   if (appBundleId)
   {
     if (v12)
@@ -77,7 +77,7 @@
   }
 
   groupId = self->_groupId;
-  v14 = *(v4 + 5);
+  v14 = *(fromCopy + 5);
   if (groupId)
   {
     if (v14)
@@ -95,7 +95,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = *(v4 + 1);
+  v15 = *(fromCopy + 1);
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v16)
   {
@@ -120,7 +120,7 @@
   }
 
   metadata = self->_metadata;
-  v21 = *(v4 + 6);
+  v21 = *(fromCopy + 6);
   if (metadata)
   {
     if (v21)
@@ -148,13 +148,13 @@
   return v6 ^ v8 ^ [(SIRINLUEXTERNALRRMetadata *)self->_metadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((entity = self->_entity, !(entity | v4[3])) || -[SIRINLUEXTERNALUsoGraph isEqual:](entity, "isEqual:")) && ((score = self->_score, !(score | v4[7])) || -[SIRICOMMONDoubleValue isEqual:](score, "isEqual:")) && ((entityId = self->_entityId, !(entityId | v4[4])) || -[SIRICOMMONStringValue isEqual:](entityId, "isEqual:")) && ((appBundleId = self->_appBundleId, !(appBundleId | v4[2])) || -[SIRICOMMONStringValue isEqual:](appBundleId, "isEqual:")) && ((groupId = self->_groupId, !(groupId | v4[5])) || -[SIRINLUEXTERNALRRGroupIdentifier isEqual:](groupId, "isEqual:")) && ((annotations = self->_annotations, !(annotations | v4[1])) || -[NSMutableArray isEqual:](annotations, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((entity = self->_entity, !(entity | equalCopy[3])) || -[SIRINLUEXTERNALUsoGraph isEqual:](entity, "isEqual:")) && ((score = self->_score, !(score | equalCopy[7])) || -[SIRICOMMONDoubleValue isEqual:](score, "isEqual:")) && ((entityId = self->_entityId, !(entityId | equalCopy[4])) || -[SIRICOMMONStringValue isEqual:](entityId, "isEqual:")) && ((appBundleId = self->_appBundleId, !(appBundleId | equalCopy[2])) || -[SIRICOMMONStringValue isEqual:](appBundleId, "isEqual:")) && ((groupId = self->_groupId, !(groupId | equalCopy[5])) || -[SIRINLUEXTERNALRRGroupIdentifier isEqual:](groupId, "isEqual:")) && ((annotations = self->_annotations, !(annotations | equalCopy[1])) || -[NSMutableArray isEqual:](annotations, "isEqual:")))
   {
     metadata = self->_metadata;
-    if (metadata | v4[6])
+    if (metadata | equalCopy[6])
     {
       v12 = [(SIRINLUEXTERNALRRMetadata *)metadata isEqual:?];
     }
@@ -173,27 +173,27 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALUsoGraph *)self->_entity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALUsoGraph *)self->_entity copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(SIRICOMMONDoubleValue *)self->_score copyWithZone:a3];
+  v8 = [(SIRICOMMONDoubleValue *)self->_score copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(SIRICOMMONStringValue *)self->_entityId copyWithZone:a3];
+  v10 = [(SIRICOMMONStringValue *)self->_entityId copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(SIRICOMMONStringValue *)self->_appBundleId copyWithZone:a3];
+  v12 = [(SIRICOMMONStringValue *)self->_appBundleId copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(SIRINLUEXTERNALRRGroupIdentifier *)self->_groupId copyWithZone:a3];
+  v14 = [(SIRINLUEXTERNALRRGroupIdentifier *)self->_groupId copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
@@ -217,7 +217,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v26 + 1) + 8 * v20) copyWithZone:{a3, v26}];
+        v21 = [*(*(&v26 + 1) + 8 * v20) copyWithZone:{zone, v26}];
         [v5 addAnnotations:v21];
 
         ++v20;
@@ -230,7 +230,7 @@
     while (v18);
   }
 
-  v22 = [(SIRINLUEXTERNALRRMetadata *)self->_metadata copyWithZone:a3];
+  v22 = [(SIRINLUEXTERNALRRMetadata *)self->_metadata copyWithZone:zone];
   v23 = v5[6];
   v5[6] = v22;
 
@@ -238,59 +238,59 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_entity)
   {
-    [v8 setEntity:?];
+    [toCopy setEntity:?];
   }
 
   if (self->_score)
   {
-    [v8 setScore:?];
+    [toCopy setScore:?];
   }
 
   if (self->_entityId)
   {
-    [v8 setEntityId:?];
+    [toCopy setEntityId:?];
   }
 
   if (self->_appBundleId)
   {
-    [v8 setAppBundleId:?];
+    [toCopy setAppBundleId:?];
   }
 
   if (self->_groupId)
   {
-    [v8 setGroupId:?];
+    [toCopy setGroupId:?];
   }
 
   if ([(SIRINLUEXTERNALEntityCandidate *)self annotationsCount])
   {
-    [v8 clearAnnotations];
-    v4 = [(SIRINLUEXTERNALEntityCandidate *)self annotationsCount];
-    if (v4)
+    [toCopy clearAnnotations];
+    annotationsCount = [(SIRINLUEXTERNALEntityCandidate *)self annotationsCount];
+    if (annotationsCount)
     {
-      v5 = v4;
+      v5 = annotationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALEntityCandidate *)self annotationsAtIndex:i];
-        [v8 addAnnotations:v7];
+        [toCopy addAnnotations:v7];
       }
     }
   }
 
   if (self->_metadata)
   {
-    [v8 setMetadata:?];
+    [toCopy setMetadata:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_entity)
   {
     PBDataWriterWriteSubmessage();
@@ -359,40 +359,40 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   entity = self->_entity;
   if (entity)
   {
-    v5 = [(SIRINLUEXTERNALUsoGraph *)entity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"entity"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUsoGraph *)entity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"entity"];
   }
 
   score = self->_score;
   if (score)
   {
-    v7 = [(SIRICOMMONDoubleValue *)score dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"score"];
+    dictionaryRepresentation2 = [(SIRICOMMONDoubleValue *)score dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"score"];
   }
 
   entityId = self->_entityId;
   if (entityId)
   {
-    v9 = [(SIRICOMMONStringValue *)entityId dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"entity_id"];
+    dictionaryRepresentation3 = [(SIRICOMMONStringValue *)entityId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"entity_id"];
   }
 
   appBundleId = self->_appBundleId;
   if (appBundleId)
   {
-    v11 = [(SIRICOMMONStringValue *)appBundleId dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"app_bundle_id"];
+    dictionaryRepresentation4 = [(SIRICOMMONStringValue *)appBundleId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"app_bundle_id"];
   }
 
   groupId = self->_groupId;
   if (groupId)
   {
-    v13 = [(SIRINLUEXTERNALRRGroupIdentifier *)groupId dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"group_id"];
+    dictionaryRepresentation5 = [(SIRINLUEXTERNALRRGroupIdentifier *)groupId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"group_id"];
   }
 
   if ([(NSMutableArray *)self->_annotations count])
@@ -417,8 +417,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation6 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation6];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -427,19 +427,19 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"annotations"];
+    [dictionary setObject:v14 forKey:@"annotations"];
   }
 
   metadata = self->_metadata;
   if (metadata)
   {
-    v22 = [(SIRINLUEXTERNALRRMetadata *)metadata dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"metadata"];
+    dictionaryRepresentation7 = [(SIRINLUEXTERNALRRMetadata *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"metadata"];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -448,28 +448,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALEntityCandidate;
   v4 = [(SIRINLUEXTERNALEntityCandidate *)&v8 description];
-  v5 = [(SIRINLUEXTERNALEntityCandidate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALEntityCandidate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addAnnotations:(id)a3
+- (void)addAnnotations:(id)annotations
 {
-  v4 = a3;
+  annotationsCopy = annotations;
   annotations = self->_annotations;
-  v8 = v4;
+  v8 = annotationsCopy;
   if (!annotations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_annotations;
     self->_annotations = v6;
 
-    v4 = v8;
+    annotationsCopy = v8;
     annotations = self->_annotations;
   }
 
-  [(NSMutableArray *)annotations addObject:v4];
+  [(NSMutableArray *)annotations addObject:annotationsCopy];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface MCNewAPNPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)_remove;
 - (void)_sendNotifications;
 - (void)remove;
@@ -8,7 +8,7 @@
 
 @implementation MCNewAPNPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
   v6 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -22,19 +22,19 @@
 
 - (void)_remove
 {
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v2 = [v5 apnDefaults];
-  v3 = [v2 allKeys];
+  payload = [(MCNewPayloadHandler *)self payload];
+  apnDefaults = [payload apnDefaults];
+  allKeys = [apnDefaults allKeys];
   v4 = +[MCAPNPayload apnDomainName];
-  [MCManagedPreferencesManager removeManagedPreferences:v3 fromDomain:v4];
+  [MCManagedPreferencesManager removeManagedPreferences:allKeys fromDomain:v4];
 }
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if ((v4 & 1) == 0)
+  if ((isSetAside & 1) == 0)
   {
 
     [(MCNewAPNPayloadHandler *)self _remove];
@@ -66,14 +66,14 @@
   [MCManagedPreferencesManager sendManagedPreferencesChangedNotificationForDomains:v4];
 
   v5 = [[CoreTelephonyClient alloc] initWithQueue:0];
-  v6 = [v5 resetAPNSettings];
-  if (v6)
+  resetAPNSettings = [v5 resetAPNSettings];
+  if (resetAPNSettings)
   {
     v7 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v6;
+      v9 = resetAPNSettings;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "MCNewAPNPayloadHandler reset APN settings error: %{public}@", &v8, 0xCu);
     }
   }

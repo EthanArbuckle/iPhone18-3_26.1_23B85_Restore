@@ -1,53 +1,53 @@
 @interface IRCandicateClassificationEligibilityStateMachine
-+ (int64_t)_classificationFromEligibility:(int64_t)a3;
-- (void)_downRankDismissAndRejectRankCounterIncrementAndTransitionToState:(int64_t)a3 ifThresholdCrossed:(unint64_t)a4;
-- (void)_downrankCounterIncrementAndTransitionToState:(int64_t)a3 ifThresholdCrossed:(unint64_t)a4;
-- (void)_transitionToState:(int64_t)a3;
-- (void)_uprankCounterIncrementAndTransitionToState:(int64_t)a3 ifThresholdCrossed:(unint64_t)a4;
-- (void)runWithEventType:(int64_t)a3 smSettings:(id)a4;
++ (int64_t)_classificationFromEligibility:(int64_t)eligibility;
+- (void)_downRankDismissAndRejectRankCounterIncrementAndTransitionToState:(int64_t)state ifThresholdCrossed:(unint64_t)crossed;
+- (void)_downrankCounterIncrementAndTransitionToState:(int64_t)state ifThresholdCrossed:(unint64_t)crossed;
+- (void)_transitionToState:(int64_t)state;
+- (void)_uprankCounterIncrementAndTransitionToState:(int64_t)state ifThresholdCrossed:(unint64_t)crossed;
+- (void)runWithEventType:(int64_t)type smSettings:(id)settings;
 @end
 
 @implementation IRCandicateClassificationEligibilityStateMachine
 
-- (void)runWithEventType:(int64_t)a3 smSettings:(id)a4
+- (void)runWithEventType:(int64_t)type smSettings:(id)settings
 {
-  v12 = a4;
-  v6 = [(IRCandicateClassificationEligibilityStateMachine *)self eligibilityState];
-  if (v6 == 2)
+  settingsCopy = settings;
+  eligibilityState = [(IRCandicateClassificationEligibilityStateMachine *)self eligibilityState];
+  if (eligibilityState == 2)
   {
-    if ((a3 - 2) >= 2)
+    if ((type - 2) >= 2)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         [(IRCandicateClassificationEligibilityStateMachine *)self _downrankCounterReset];
         goto LABEL_29;
       }
 
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_29;
       }
     }
 
-    v8 = [v12 downrankToOneTapThr];
-    -[IRCandicateClassificationEligibilityStateMachine _downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:](self, "_downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:", 1, [v8 unsignedIntValue]);
+    downrankToOneTapThr = [settingsCopy downrankToOneTapThr];
+    -[IRCandicateClassificationEligibilityStateMachine _downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:](self, "_downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:", 1, [downrankToOneTapThr unsignedIntValue]);
     goto LABEL_28;
   }
 
-  if (v6 == 1)
+  if (eligibilityState == 1)
   {
-    if (a3 > 3)
+    if (type > 3)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
-        v8 = [v12 uprankToAutorouteThr];
-        v9 = [v8 unsignedIntValue];
-        v10 = self;
+        downrankToOneTapThr = [settingsCopy uprankToAutorouteThr];
+        unsignedIntValue = [downrankToOneTapThr unsignedIntValue];
+        selfCopy2 = self;
         v11 = 2;
         goto LABEL_27;
       }
 
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_29;
       }
@@ -55,45 +55,45 @@
 
     else
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         [(IRCandicateClassificationEligibilityStateMachine *)self _downrankCounterReset];
         [(IRCandicateClassificationEligibilityStateMachine *)self _downRankDismissAndRejectRankCounterReset];
         goto LABEL_29;
       }
 
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_29;
       }
 
-      v7 = [v12 downrankToNoneThr];
-      -[IRCandicateClassificationEligibilityStateMachine _downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:](self, "_downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:", 0, [v7 unsignedIntValue]);
+      downrankToNoneThr = [settingsCopy downrankToNoneThr];
+      -[IRCandicateClassificationEligibilityStateMachine _downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:](self, "_downrankCounterIncrementAndTransitionToState:ifThresholdCrossed:", 0, [downrankToNoneThr unsignedIntValue]);
     }
 
-    v8 = [v12 downrankToNoneWithIgnoringThr];
-    -[IRCandicateClassificationEligibilityStateMachine _downRankDismissAndRejectRankCounterIncrementAndTransitionToState:ifThresholdCrossed:](self, "_downRankDismissAndRejectRankCounterIncrementAndTransitionToState:ifThresholdCrossed:", 0, [v8 unsignedIntValue]);
+    downrankToOneTapThr = [settingsCopy downrankToNoneWithIgnoringThr];
+    -[IRCandicateClassificationEligibilityStateMachine _downRankDismissAndRejectRankCounterIncrementAndTransitionToState:ifThresholdCrossed:](self, "_downRankDismissAndRejectRankCounterIncrementAndTransitionToState:ifThresholdCrossed:", 0, [downrankToOneTapThr unsignedIntValue]);
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  if (v6)
+  if (eligibilityState)
   {
     goto LABEL_29;
   }
 
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 == 6)
+    if (type == 6)
     {
-      if (![v12 useBrokeredScanForMain])
+      if (![settingsCopy useBrokeredScanForMain])
       {
         goto LABEL_29;
       }
     }
 
-    else if (a3 != 7 || ![v12 useBrokeredScanForSecondary])
+    else if (type != 7 || ![settingsCopy useBrokeredScanForSecondary])
     {
       goto LABEL_29;
     }
@@ -102,74 +102,74 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((a3 - 2) < 2)
+  if ((type - 2) < 2)
   {
     [(IRCandicateClassificationEligibilityStateMachine *)self _uprankCounterReset];
     goto LABEL_29;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    v8 = [v12 upRankToOneTapThr];
-    v9 = [v8 unsignedIntValue];
-    v10 = self;
+    downrankToOneTapThr = [settingsCopy upRankToOneTapThr];
+    unsignedIntValue = [downrankToOneTapThr unsignedIntValue];
+    selfCopy2 = self;
     v11 = 1;
 LABEL_27:
-    [(IRCandicateClassificationEligibilityStateMachine *)v10 _uprankCounterIncrementAndTransitionToState:v11 ifThresholdCrossed:v9];
+    [(IRCandicateClassificationEligibilityStateMachine *)selfCopy2 _uprankCounterIncrementAndTransitionToState:v11 ifThresholdCrossed:unsignedIntValue];
     goto LABEL_28;
   }
 
 LABEL_29:
 }
 
-- (void)_transitionToState:(int64_t)a3
+- (void)_transitionToState:(int64_t)state
 {
   [(IRCandicateClassificationEligibilityStateMachine *)self _downrankCounterReset];
   [(IRCandicateClassificationEligibilityStateMachine *)self _uprankCounterReset];
   [(IRCandicateClassificationEligibilityStateMachine *)self _downRankDismissAndRejectRankCounterReset];
 
-  [(IRCandicateClassificationEligibilityStateMachine *)self setEligibilityState:a3];
+  [(IRCandicateClassificationEligibilityStateMachine *)self setEligibilityState:state];
 }
 
-- (void)_uprankCounterIncrementAndTransitionToState:(int64_t)a3 ifThresholdCrossed:(unint64_t)a4
+- (void)_uprankCounterIncrementAndTransitionToState:(int64_t)state ifThresholdCrossed:(unint64_t)crossed
 {
   [(IRCandicateClassificationEligibilityStateMachine *)self setUpRankCounter:[(IRCandicateClassificationEligibilityStateMachine *)self upRankCounter]+ 1];
   [(IRCandicateClassificationEligibilityStateMachine *)self _downrankCounterReset];
   [(IRCandicateClassificationEligibilityStateMachine *)self _downRankDismissAndRejectRankCounterReset];
-  if ([(IRCandicateClassificationEligibilityStateMachine *)self upRankCounter]>= a4)
+  if ([(IRCandicateClassificationEligibilityStateMachine *)self upRankCounter]>= crossed)
   {
 
-    [(IRCandicateClassificationEligibilityStateMachine *)self _transitionToState:a3];
+    [(IRCandicateClassificationEligibilityStateMachine *)self _transitionToState:state];
   }
 }
 
-- (void)_downrankCounterIncrementAndTransitionToState:(int64_t)a3 ifThresholdCrossed:(unint64_t)a4
+- (void)_downrankCounterIncrementAndTransitionToState:(int64_t)state ifThresholdCrossed:(unint64_t)crossed
 {
   [(IRCandicateClassificationEligibilityStateMachine *)self setDownRankCounter:[(IRCandicateClassificationEligibilityStateMachine *)self downRankCounter]+ 1];
   [(IRCandicateClassificationEligibilityStateMachine *)self _uprankCounterReset];
-  if ([(IRCandicateClassificationEligibilityStateMachine *)self downRankCounter]>= a4)
+  if ([(IRCandicateClassificationEligibilityStateMachine *)self downRankCounter]>= crossed)
   {
 
-    [(IRCandicateClassificationEligibilityStateMachine *)self _transitionToState:a3];
+    [(IRCandicateClassificationEligibilityStateMachine *)self _transitionToState:state];
   }
 }
 
-- (void)_downRankDismissAndRejectRankCounterIncrementAndTransitionToState:(int64_t)a3 ifThresholdCrossed:(unint64_t)a4
+- (void)_downRankDismissAndRejectRankCounterIncrementAndTransitionToState:(int64_t)state ifThresholdCrossed:(unint64_t)crossed
 {
   [(IRCandicateClassificationEligibilityStateMachine *)self setDownRankDismissAndRejectRankCounter:[(IRCandicateClassificationEligibilityStateMachine *)self downRankDismissAndRejectRankCounter]+ 1];
   [(IRCandicateClassificationEligibilityStateMachine *)self _uprankCounterReset];
-  if ([(IRCandicateClassificationEligibilityStateMachine *)self downRankDismissAndRejectRankCounter]>= a4)
+  if ([(IRCandicateClassificationEligibilityStateMachine *)self downRankDismissAndRejectRankCounter]>= crossed)
   {
 
-    [(IRCandicateClassificationEligibilityStateMachine *)self _transitionToState:a3];
+    [(IRCandicateClassificationEligibilityStateMachine *)self _transitionToState:state];
   }
 }
 
-+ (int64_t)_classificationFromEligibility:(int64_t)a3
++ (int64_t)_classificationFromEligibility:(int64_t)eligibility
 {
-  if (a3 <= 2)
+  if (eligibility <= 2)
   {
-    return a3 + 2;
+    return eligibility + 2;
   }
 
   else

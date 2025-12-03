@@ -1,98 +1,98 @@
 @interface AXMultiplexConnectionHandler
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (int)pid;
 @end
 
 @implementation AXMultiplexConnectionHandler
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v5 = [(AXMultiplexConnectionHandler *)self connection];
-  if (v5)
+  connection = [(AXMultiplexConnectionHandler *)self connection];
+  if (connection)
   {
-    v6 = v5;
-    v7 = [v4 connection];
+    v6 = connection;
+    connection2 = [equalCopy connection];
 
-    if (v7)
+    if (connection2)
     {
-      v8 = [(AXMultiplexConnectionHandler *)self connection];
-      v9 = [v4 connection];
-      v10 = xpc_equal(v8, v9);
+      connection3 = [(AXMultiplexConnectionHandler *)self connection];
+      connection4 = [equalCopy connection];
+      v10 = xpc_equal(connection3, connection4);
 LABEL_8:
-      LOBYTE(v14) = v10;
+      LOBYTE(processHandle2) = v10;
       goto LABEL_9;
     }
   }
 
-  v11 = [(AXMultiplexConnectionHandler *)self serviceConnection];
-  if (v11)
+  serviceConnection = [(AXMultiplexConnectionHandler *)self serviceConnection];
+  if (serviceConnection)
   {
-    v12 = v11;
-    v13 = [v4 serviceConnection];
+    v12 = serviceConnection;
+    serviceConnection2 = [equalCopy serviceConnection];
 
-    if (v13)
+    if (serviceConnection2)
     {
-      v8 = [(AXMultiplexConnectionHandler *)self serviceConnection];
-      v9 = [v4 serviceConnection];
-      v10 = [v8 isEqual:v9];
+      connection3 = [(AXMultiplexConnectionHandler *)self serviceConnection];
+      connection4 = [equalCopy serviceConnection];
+      v10 = [connection3 isEqual:connection4];
       goto LABEL_8;
     }
   }
 
-  v15 = [(AXMultiplexConnectionHandler *)self processHandle];
-  if (!v15)
+  processHandle = [(AXMultiplexConnectionHandler *)self processHandle];
+  if (!processHandle)
   {
 LABEL_13:
-    LOBYTE(v14) = 0;
+    LOBYTE(processHandle2) = 0;
     goto LABEL_14;
   }
 
-  v16 = v15;
-  v14 = [v4 processHandle];
+  v16 = processHandle;
+  processHandle2 = [equalCopy processHandle];
 
-  if (!v14)
+  if (!processHandle2)
   {
     goto LABEL_14;
   }
 
-  v8 = [(AXMultiplexConnectionHandler *)self processHandle];
-  LODWORD(v14) = [v8 pid];
-  v9 = [v4 processHandle];
-  LOBYTE(v14) = v14 == [v9 pid];
+  connection3 = [(AXMultiplexConnectionHandler *)self processHandle];
+  LODWORD(processHandle2) = [connection3 pid];
+  connection4 = [equalCopy processHandle];
+  LOBYTE(processHandle2) = processHandle2 == [connection4 pid];
 LABEL_9:
 
 LABEL_14:
-  return v14;
+  return processHandle2;
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v5 = [(AXMultiplexConnectionHandler *)self connection];
+  connection = [(AXMultiplexConnectionHandler *)self connection];
 
-  if (v5)
+  if (connection)
   {
     *retstr->var0 = 0u;
     *&retstr->var0[4] = 0u;
-    v9 = [(AXMultiplexConnectionHandler *)self connection];
+    connection2 = [(AXMultiplexConnectionHandler *)self connection];
     xpc_connection_get_audit_token();
   }
 
   else
   {
-    v9 = [(AXMultiplexConnectionHandler *)self processHandle];
-    v6 = [v9 auditToken];
-    v7 = v6;
-    if (v6)
+    connection2 = [(AXMultiplexConnectionHandler *)self processHandle];
+    auditToken = [connection2 auditToken];
+    v7 = auditToken;
+    if (auditToken)
     {
-      [v6 realToken];
+      [auditToken realToken];
     }
 
     else
@@ -107,18 +107,18 @@ LABEL_14:
 
 - (int)pid
 {
-  v3 = [(AXMultiplexConnectionHandler *)self connection];
+  connection = [(AXMultiplexConnectionHandler *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(AXMultiplexConnectionHandler *)self connection];
-    pid = xpc_connection_get_pid(v4);
+    connection2 = [(AXMultiplexConnectionHandler *)self connection];
+    pid = xpc_connection_get_pid(connection2);
   }
 
   else
   {
-    v4 = [(AXMultiplexConnectionHandler *)self processHandle];
-    pid = [(_xpc_connection_s *)v4 pid];
+    connection2 = [(AXMultiplexConnectionHandler *)self processHandle];
+    pid = [(_xpc_connection_s *)connection2 pid];
   }
 
   v6 = pid;

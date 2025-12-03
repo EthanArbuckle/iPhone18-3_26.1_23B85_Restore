@@ -1,12 +1,12 @@
 @interface ADConfidenceLevelRanges
-+ (id)rangesForUnits:(unint64_t)a3 lowLevel:(ADFloatRange)a4 mediumLevel:(ADFloatRange)a5 highLevel:(ADFloatRange)a6;
++ (id)rangesForUnits:(unint64_t)units lowLevel:(ADFloatRange)level mediumLevel:(ADFloatRange)mediumLevel highLevel:(ADFloatRange)highLevel;
 - (ADFloatRange)highLevel;
 - (ADFloatRange)lowLevel;
 - (ADFloatRange)mediumLevel;
-- (id)createConvertedRangesWithUnits:(unint64_t)a3 operation:(void *)a4;
+- (id)createConvertedRangesWithUnits:(unint64_t)units operation:(void *)operation;
 - (id)description;
-- (id)initForUnits:(unint64_t)a3 lowLevel:(ADFloatRange)a4 mediumLevel:(ADFloatRange)a5 highLevel:(ADFloatRange)a6;
-- (id)rangesForUnits:(unint64_t)a3;
+- (id)initForUnits:(unint64_t)units lowLevel:(ADFloatRange)level mediumLevel:(ADFloatRange)mediumLevel highLevel:(ADFloatRange)highLevel;
+- (id)rangesForUnits:(unint64_t)units;
 @end
 
 @implementation ADConfidenceLevelRanges
@@ -38,10 +38,10 @@
   return result;
 }
 
-- (id)rangesForUnits:(unint64_t)a3
+- (id)rangesForUnits:(unint64_t)units
 {
   confidenceUnits = self->_confidenceUnits;
-  if (confidenceUnits == a3)
+  if (confidenceUnits == units)
   {
     *&v3 = self->_lowLevel.start;
     *&v4 = self->_lowLevel.end;
@@ -53,7 +53,7 @@
     goto LABEL_25;
   }
 
-  switch(a3)
+  switch(units)
   {
     case 3uLL:
       if (confidenceUnits == 2)
@@ -143,37 +143,37 @@ LABEL_25:
   return [v3 stringWithFormat:@"ADConfidenceLevelRanges: L(%.3f, %.3f), M(%.3f, %.3f), H(%.3f, %.3f)", *&v5, *&v7, *&v9, *&v11, *&v13, v14];
 }
 
-- (id)createConvertedRangesWithUnits:(unint64_t)a3 operation:(void *)a4
+- (id)createConvertedRangesWithUnits:(unint64_t)units operation:(void *)operation
 {
   v7 = [ADConfidenceLevelRanges alloc];
-  v8 = (a4)([(ADConfidenceLevelRanges *)self lowLevel]);
-  v9 = [(ADConfidenceLevelRanges *)self lowLevel];
-  v11 = (a4)(v9, v10);
-  v12 = (a4)([(ADConfidenceLevelRanges *)self mediumLevel]);
-  v13 = [(ADConfidenceLevelRanges *)self mediumLevel];
-  v15 = (a4)(v13, v14);
-  v16 = (a4)([(ADConfidenceLevelRanges *)self highLevel]);
-  v17 = [(ADConfidenceLevelRanges *)self highLevel];
-  v19 = (a4)(v17, v18);
+  v8 = (operation)([(ADConfidenceLevelRanges *)self lowLevel]);
+  lowLevel = [(ADConfidenceLevelRanges *)self lowLevel];
+  v11 = (operation)(lowLevel, v10);
+  v12 = (operation)([(ADConfidenceLevelRanges *)self mediumLevel]);
+  mediumLevel = [(ADConfidenceLevelRanges *)self mediumLevel];
+  v15 = (operation)(mediumLevel, v14);
+  v16 = (operation)([(ADConfidenceLevelRanges *)self highLevel]);
+  highLevel = [(ADConfidenceLevelRanges *)self highLevel];
+  v19 = (operation)(highLevel, v18);
   LODWORD(v20) = LODWORD(v19);
   *&v19 = v8;
   *&v21 = v11;
   *&v22 = v12;
   *&v23 = v15;
   *&v24 = v16;
-  v25 = [(ADConfidenceLevelRanges *)v7 initForUnits:a3 lowLevel:v19 mediumLevel:v21 highLevel:v22, v23, v24, v20];
+  v25 = [(ADConfidenceLevelRanges *)v7 initForUnits:units lowLevel:v19 mediumLevel:v21 highLevel:v22, v23, v24, v20];
 
   return v25;
 }
 
-- (id)initForUnits:(unint64_t)a3 lowLevel:(ADFloatRange)a4 mediumLevel:(ADFloatRange)a5 highLevel:(ADFloatRange)a6
+- (id)initForUnits:(unint64_t)units lowLevel:(ADFloatRange)level mediumLevel:(ADFloatRange)mediumLevel highLevel:(ADFloatRange)highLevel
 {
-  end = a6.end;
-  start = a6.start;
-  v8 = a5.end;
-  v9 = a5.start;
-  v10 = a4.end;
-  v11 = a4.start;
+  end = highLevel.end;
+  start = highLevel.start;
+  v8 = mediumLevel.end;
+  v9 = mediumLevel.start;
+  v10 = level.end;
+  v11 = level.start;
   v18.receiver = self;
   v18.super_class = ADConfidenceLevelRanges;
   v13 = [(ADConfidenceLevelRanges *)&v18 init];
@@ -183,7 +183,7 @@ LABEL_25:
     goto LABEL_7;
   }
 
-  if (a3 != 1)
+  if (units != 1)
   {
     v13->_lowLevel.start = v11;
     v13->_lowLevel.end = v10;
@@ -191,7 +191,7 @@ LABEL_25:
     v13->_mediumLevel.end = v8;
     v13->_highLevel.start = start;
     v13->_highLevel.end = end;
-    v13->_confidenceUnits = a3;
+    v13->_confidenceUnits = units;
 LABEL_7:
     v15 = v13;
     goto LABEL_8;
@@ -209,14 +209,14 @@ LABEL_8:
   return v15;
 }
 
-+ (id)rangesForUnits:(unint64_t)a3 lowLevel:(ADFloatRange)a4 mediumLevel:(ADFloatRange)a5 highLevel:(ADFloatRange)a6
++ (id)rangesForUnits:(unint64_t)units lowLevel:(ADFloatRange)level mediumLevel:(ADFloatRange)mediumLevel highLevel:(ADFloatRange)highLevel
 {
-  end = a6.end;
-  start = a6.start;
-  v8 = a5.end;
-  v9 = a5.start;
-  v10 = a4.end;
-  v11 = a4.start;
+  end = highLevel.end;
+  start = highLevel.start;
+  v8 = mediumLevel.end;
+  v9 = mediumLevel.start;
+  v10 = level.end;
+  v11 = level.start;
   v13 = [ADConfidenceLevelRanges alloc];
   *&v14 = v11;
   *&v15 = v10;
@@ -224,7 +224,7 @@ LABEL_8:
   *&v17 = v8;
   *&v18 = start;
   *&v19 = end;
-  v20 = [(ADConfidenceLevelRanges *)v13 initForUnits:a3 lowLevel:v14 mediumLevel:v15 highLevel:v16, v17, v18, v19];
+  v20 = [(ADConfidenceLevelRanges *)v13 initForUnits:units lowLevel:v14 mediumLevel:v15 highLevel:v16, v17, v18, v19];
 
   return v20;
 }

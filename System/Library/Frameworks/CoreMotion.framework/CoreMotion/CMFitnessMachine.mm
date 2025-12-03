@@ -2,7 +2,7 @@
 + (BOOL)isAvailable;
 - (CMFitnessMachine)init;
 - (void)dealloc;
-- (void)feedFitnessMachineData:(id)a3;
+- (void)feedFitnessMachineData:(id)data;
 @end
 
 @implementation CMFitnessMachine
@@ -46,7 +46,7 @@
   return 0;
 }
 
-- (void)feedFitnessMachineData:(id)a3
+- (void)feedFitnessMachineData:(id)data
 {
   if (qword_1ED71D578 != -1)
   {
@@ -55,9 +55,9 @@
 
   if (qword_1ED71D570 == 3)
   {
-    v5 = objc_msgSend__internal(self, a2, a3);
+    v5 = objc_msgSend__internal(self, a2, data);
 
-    MEMORY[0x1EEE66B58](v5, sel__feedFitnessMachineData_, a3);
+    MEMORY[0x1EEE66B58](v5, sel__feedFitnessMachineData_, data);
   }
 }
 

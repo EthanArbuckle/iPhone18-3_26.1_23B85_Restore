@@ -1,13 +1,13 @@
 @interface OpenLookAroundActionHandler
-+ (void)_showErrorMessageinContext:(id)a3;
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)_showErrorMessageinContext:(id)context;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation OpenLookAroundActionHandler
 
-+ (void)_showErrorMessageinContext:(id)a3
++ (void)_showErrorMessageinContext:(id)context
 {
-  v9 = [a3 chrome];
+  chrome = [context chrome];
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"LookAround PIP [Not Available]" value:@"localized string not found" table:0];
   v5 = [UIAlertController alertControllerWithTitle:0 message:v4 preferredStyle:1];
@@ -17,49 +17,49 @@
   v8 = [UIAlertAction actionWithTitle:v7 style:1 handler:0];
   [v5 addAction:v8];
 
-  [v9 _maps_topMostPresentViewController:v5 animated:1 completion:0];
+  [chrome _maps_topMostPresentViewController:v5 animated:1 completion:0];
 }
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v8 muninViewState];
+    v8 = actionCopy;
+    muninViewState = [v8 muninViewState];
 
-    if (v9)
+    if (muninViewState)
     {
-      v10 = [v7 appCoordinator];
-      v11 = [v8 muninViewState];
-      v12 = [MKLookAroundEntryPoint entryPointWithMuninViewState:v11];
-      [v10 enterLookAroundWithEntryPoint:v12 lookAroundView:0 showsFullScreen:1 originFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+      appCoordinator = [contextCopy appCoordinator];
+      muninViewState2 = [v8 muninViewState];
+      v12 = [MKLookAroundEntryPoint entryPointWithMuninViewState:muninViewState2];
+      [appCoordinator enterLookAroundWithEntryPoint:v12 lookAroundView:0 showsFullScreen:1 originFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     }
 
     else
     {
-      v13 = [v8 originalMapItem];
+      originalMapItem = [v8 originalMapItem];
 
-      if (!v13)
+      if (!originalMapItem)
       {
-        v15 = [v8 locationQueryItem];
+        locationQueryItem = [v8 locationQueryItem];
 
-        if (v15)
+        if (locationQueryItem)
         {
-          v16 = [v7 chrome];
-          v17 = [v16 currentTraits];
+          chrome = [contextCopy chrome];
+          currentTraits = [chrome currentTraits];
 
-          [v17 setSource:1];
-          objc_initWeak(&location, a1);
+          [currentTraits setSource:1];
+          objc_initWeak(&location, self);
           v18[0] = _NSConcreteStackBlock;
           v18[1] = 3221225472;
           v18[2] = sub_1006F2F24;
           v18[3] = &unk_101627808;
           objc_copyWeak(&v20, &location);
-          v19 = v7;
-          [v8 resolveMapItemWithTraits:v17 completion:v18];
+          v19 = contextCopy;
+          [v8 resolveMapItemWithTraits:currentTraits completion:v18];
 
           objc_destroyWeak(&v20);
           objc_destroyWeak(&location);
@@ -68,17 +68,17 @@
         goto LABEL_7;
       }
 
-      v14 = [v7 chrome];
-      v10 = [v14 currentTraits];
+      chrome2 = [contextCopy chrome];
+      appCoordinator = [chrome2 currentTraits];
 
-      [v10 setSource:1];
+      [appCoordinator setSource:1];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1006F2DF4;
       v22[3] = &unk_10162E490;
-      v23 = v7;
+      v23 = contextCopy;
       v24 = v8;
-      [v24 resolveMapItemWithTraits:v10 completion:v22];
+      [v24 resolveMapItemWithTraits:appCoordinator completion:v22];
     }
 
 LABEL_7:

@@ -1,22 +1,22 @@
 @interface BMPBIntentEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsIntentHandlingStatus:(id)a3;
-- (int)StringAsIntentType:(id)a3;
-- (int)StringAsInteractionDirection:(id)a3;
+- (int)StringAsIntentHandlingStatus:(id)status;
+- (int)StringAsIntentType:(id)type;
+- (int)StringAsInteractionDirection:(id)direction;
 - (int)intentHandlingStatus;
 - (int)intentType;
 - (int)interactionDirection;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDonatedBySiri:(BOOL)a3;
-- (void)setHasIntentHandlingStatus:(BOOL)a3;
-- (void)setHasIntentType:(BOOL)a3;
-- (void)setHasInteractionDirection:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDonatedBySiri:(BOOL)siri;
+- (void)setHasIntentHandlingStatus:(BOOL)status;
+- (void)setHasIntentType:(BOOL)type;
+- (void)setHasInteractionDirection:(BOOL)direction;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBIntentEvent
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)setHasIntentType:(BOOL)a3
+- (void)setHasIntentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -75,25 +75,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsIntentType:(id)a3
+- (int)StringAsIntentType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"System"])
+  else if ([typeCopy isEqualToString:@"System"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Custom"])
+  else if ([typeCopy isEqualToString:@"Custom"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Generic"])
+  else if ([typeCopy isEqualToString:@"Generic"])
   {
     v4 = 3;
   }
@@ -106,9 +106,9 @@
   return v4;
 }
 
-- (void)setHasIntentHandlingStatus:(BOOL)a3
+- (void)setHasIntentHandlingStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -121,40 +121,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsIntentHandlingStatus:(id)a3
+- (int)StringAsIntentHandlingStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unspecified"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unspecified"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Ready"])
+  else if ([statusCopy isEqualToString:@"Ready"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"InProgress"])
+  else if ([statusCopy isEqualToString:@"InProgress"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Success"])
+  else if ([statusCopy isEqualToString:@"Success"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Failure"])
+  else if ([statusCopy isEqualToString:@"Failure"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"DeferredToApplication"])
+  else if ([statusCopy isEqualToString:@"DeferredToApplication"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UserConfirmationRequired"])
+  else if ([statusCopy isEqualToString:@"UserConfirmationRequired"])
   {
     v4 = 6;
   }
@@ -167,9 +167,9 @@
   return v4;
 }
 
-- (void)setHasDonatedBySiri:(BOOL)a3
+- (void)setHasDonatedBySiri:(BOOL)siri
 {
-  if (a3)
+  if (siri)
   {
     v3 = 16;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasInteractionDirection:(BOOL)a3
+- (void)setHasInteractionDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v3 = 8;
   }
@@ -197,25 +197,25 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsInteractionDirection:(id)a3
+- (int)StringAsInteractionDirection:(id)direction
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  directionCopy = direction;
+  if ([directionCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Incoming"])
+  else if ([directionCopy isEqualToString:@"Incoming"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Outgoing"])
+  else if ([directionCopy isEqualToString:@"Outgoing"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Bidirectional"])
+  else if ([directionCopy isEqualToString:@"Bidirectional"])
   {
     v4 = 3;
   }
@@ -234,43 +234,43 @@
   v8.receiver = self;
   v8.super_class = BMPBIntentEvent;
   v4 = [(BMPBIntentEvent *)&v8 description];
-  v5 = [(BMPBIntentEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBIntentEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   sourceId = self->_sourceId;
   if (sourceId)
   {
-    [v3 setObject:sourceId forKey:@"sourceId"];
+    [dictionary setObject:sourceId forKey:@"sourceId"];
   }
 
   intentClass = self->_intentClass;
   if (intentClass)
   {
-    [v3 setObject:intentClass forKey:@"intentClass"];
+    [dictionary setObject:intentClass forKey:@"intentClass"];
   }
 
   intentVerb = self->_intentVerb;
   if (intentVerb)
   {
-    [v3 setObject:intentVerb forKey:@"intentVerb"];
+    [dictionary setObject:intentVerb forKey:@"intentVerb"];
   }
 
   has = self->_has;
@@ -287,7 +287,7 @@
       v11 = *(&off_1E6E536D8 + intentType);
     }
 
-    [v3 setObject:v11 forKey:@"intentType"];
+    [dictionary setObject:v11 forKey:@"intentType"];
 
     has = self->_has;
   }
@@ -305,26 +305,26 @@
       v13 = *(&off_1E6E536F8 + intentHandlingStatus);
     }
 
-    [v3 setObject:v13 forKey:@"intentHandlingStatus"];
+    [dictionary setObject:v13 forKey:@"intentHandlingStatus"];
   }
 
   interaction = self->_interaction;
   if (interaction)
   {
-    [v3 setObject:interaction forKey:@"interaction"];
+    [dictionary setObject:interaction forKey:@"interaction"];
   }
 
   itemID = self->_itemID;
   if (itemID)
   {
-    [v3 setObject:itemID forKey:@"itemID"];
+    [dictionary setObject:itemID forKey:@"itemID"];
   }
 
   v16 = self->_has;
   if ((v16 & 0x10) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:self->_donatedBySiri];
-    [v3 setObject:v17 forKey:@"donatedBySiri"];
+    [dictionary setObject:v17 forKey:@"donatedBySiri"];
 
     v16 = self->_has;
   }
@@ -342,51 +342,51 @@
       v19 = *(&off_1E6E53730 + interactionDirection);
     }
 
-    [v3 setObject:v19 forKey:@"interactionDirection"];
+    [dictionary setObject:v19 forKey:@"interactionDirection"];
   }
 
   groupIdentifier = self->_groupIdentifier;
   if (groupIdentifier)
   {
-    [v3 setObject:groupIdentifier forKey:@"groupIdentifier"];
+    [dictionary setObject:groupIdentifier forKey:@"groupIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_sourceId)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_intentClass)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_intentVerb)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -394,7 +394,7 @@
   {
     intentType = self->_intentType;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
   }
 
@@ -402,19 +402,19 @@
   {
     intentHandlingStatus = self->_intentHandlingStatus;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_interaction)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_itemID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   v9 = self->_has;
@@ -422,7 +422,7 @@
   {
     donatedBySiri = self->_donatedBySiri;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
     v9 = self->_has;
   }
 
@@ -430,100 +430,100 @@
   {
     interactionDirection = self->_interactionDirection;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_groupIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 92) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 92) |= 1u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_bundleID)
   {
-    [v4 setBundleID:?];
-    v4 = v7;
+    [toCopy setBundleID:?];
+    toCopy = v7;
   }
 
   if (self->_sourceId)
   {
     [v7 setSourceId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_intentClass)
   {
     [v7 setIntentClass:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_intentVerb)
   {
     [v7 setIntentVerb:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 11) = self->_intentType;
-    *(v4 + 92) |= 4u;
+    *(toCopy + 11) = self->_intentType;
+    *(toCopy + 92) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 10) = self->_intentHandlingStatus;
-    *(v4 + 92) |= 2u;
+    *(toCopy + 10) = self->_intentHandlingStatus;
+    *(toCopy + 92) |= 2u;
   }
 
   if (self->_interaction)
   {
     [v7 setInteraction:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_itemID)
   {
     [v7 setItemID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 88) = self->_donatedBySiri;
-    *(v4 + 92) |= 0x10u;
+    *(toCopy + 88) = self->_donatedBySiri;
+    *(toCopy + 92) |= 0x10u;
     v6 = self->_has;
   }
 
   if ((v6 & 8) != 0)
   {
-    *(v4 + 16) = self->_interactionDirection;
-    *(v4 + 92) |= 8u;
+    *(toCopy + 16) = self->_interactionDirection;
+    *(toCopy + 92) |= 8u;
   }
 
   if (self->_groupIdentifier)
   {
     [v7 setGroupIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -531,19 +531,19 @@
     *(v5 + 92) |= 1u;
   }
 
-  v7 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v7 = [(NSString *)self->_bundleID copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_sourceId copyWithZone:a3];
+  v9 = [(NSString *)self->_sourceId copyWithZone:zone];
   v10 = *(v6 + 80);
   *(v6 + 80) = v9;
 
-  v11 = [(NSString *)self->_intentClass copyWithZone:a3];
+  v11 = [(NSString *)self->_intentClass copyWithZone:zone];
   v12 = *(v6 + 32);
   *(v6 + 32) = v11;
 
-  v13 = [(NSString *)self->_intentVerb copyWithZone:a3];
+  v13 = [(NSString *)self->_intentVerb copyWithZone:zone];
   v14 = *(v6 + 48);
   *(v6 + 48) = v13;
 
@@ -561,11 +561,11 @@
     *(v6 + 92) |= 2u;
   }
 
-  v16 = [(NSData *)self->_interaction copyWithZone:a3];
+  v16 = [(NSData *)self->_interaction copyWithZone:zone];
   v17 = *(v6 + 56);
   *(v6 + 56) = v16;
 
-  v18 = [(NSString *)self->_itemID copyWithZone:a3];
+  v18 = [(NSString *)self->_itemID copyWithZone:zone];
   v19 = *(v6 + 72);
   *(v6 + 72) = v18;
 
@@ -583,43 +583,43 @@
     *(v6 + 92) |= 8u;
   }
 
-  v21 = [(NSString *)self->_groupIdentifier copyWithZone:a3];
+  v21 = [(NSString *)self->_groupIdentifier copyWithZone:zone];
   v22 = *(v6 + 24);
   *(v6 + 24) = v21;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
-  v5 = *(v4 + 92);
+  v5 = *(equalCopy + 92);
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_43;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 2) && ![(NSString *)bundleID isEqual:?])
+  if (bundleID | *(equalCopy + 2) && ![(NSString *)bundleID isEqual:?])
   {
     goto LABEL_43;
   }
 
   sourceId = self->_sourceId;
-  if (sourceId | *(v4 + 10))
+  if (sourceId | *(equalCopy + 10))
   {
     if (![(NSString *)sourceId isEqual:?])
     {
@@ -628,7 +628,7 @@
   }
 
   intentClass = self->_intentClass;
-  if (intentClass | *(v4 + 4))
+  if (intentClass | *(equalCopy + 4))
   {
     if (![(NSString *)intentClass isEqual:?])
     {
@@ -637,7 +637,7 @@
   }
 
   intentVerb = self->_intentVerb;
-  if (intentVerb | *(v4 + 6))
+  if (intentVerb | *(equalCopy + 6))
   {
     if (![(NSString *)intentVerb isEqual:?])
     {
@@ -645,41 +645,41 @@
     }
   }
 
-  v10 = *(v4 + 92);
+  v10 = *(equalCopy + 92);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_intentType != *(v4 + 11))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_intentType != *(equalCopy + 11))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_intentHandlingStatus != *(v4 + 10))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_intentHandlingStatus != *(equalCopy + 10))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_43;
   }
 
   interaction = self->_interaction;
-  if (interaction | *(v4 + 7) && ![(NSData *)interaction isEqual:?])
+  if (interaction | *(equalCopy + 7) && ![(NSData *)interaction isEqual:?])
   {
     goto LABEL_43;
   }
 
   itemID = self->_itemID;
-  if (itemID | *(v4 + 9))
+  if (itemID | *(equalCopy + 9))
   {
     if (![(NSString *)itemID isEqual:?])
     {
@@ -687,10 +687,10 @@
     }
   }
 
-  v13 = *(v4 + 92);
+  v13 = *(equalCopy + 92);
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 92) & 0x10) == 0)
+    if ((*(equalCopy + 92) & 0x10) == 0)
     {
       goto LABEL_31;
     }
@@ -700,21 +700,21 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if ((*(v4 + 92) & 0x10) == 0)
+  if ((*(equalCopy + 92) & 0x10) == 0)
   {
     goto LABEL_43;
   }
 
-  v14 = *(v4 + 88);
+  v14 = *(equalCopy + 88);
   if (self->_donatedBySiri)
   {
-    if ((*(v4 + 88) & 1) == 0)
+    if ((*(equalCopy + 88) & 1) == 0)
     {
       goto LABEL_43;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_43;
   }
@@ -722,19 +722,19 @@ LABEL_43:
 LABEL_31:
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 92) & 8) == 0 || self->_interactionDirection != *(v4 + 16))
+    if ((*(equalCopy + 92) & 8) == 0 || self->_interactionDirection != *(equalCopy + 16))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(v4 + 92) & 8) != 0)
+  else if ((*(equalCopy + 92) & 8) != 0)
   {
     goto LABEL_43;
   }
 
   groupIdentifier = self->_groupIdentifier;
-  if (groupIdentifier | *(v4 + 3))
+  if (groupIdentifier | *(equalCopy + 3))
   {
     v16 = [(NSString *)groupIdentifier isEqual:?];
   }
@@ -836,84 +836,84 @@ LABEL_16:
   return v19 ^ v5 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ [(NSString *)self->_groupIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 92))
+  fromCopy = from;
+  if (*(fromCopy + 92))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  v7 = v4;
-  if (*(v4 + 2))
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(BMPBIntentEvent *)self setBundleID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BMPBIntentEvent *)self setSourceId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBIntentEvent *)self setIntentClass:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBIntentEvent *)self setIntentVerb:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 92);
+  v5 = *(fromCopy + 92);
   if ((v5 & 4) != 0)
   {
-    self->_intentType = *(v4 + 11);
+    self->_intentType = *(fromCopy + 11);
     *&self->_has |= 4u;
-    v5 = *(v4 + 92);
+    v5 = *(fromCopy + 92);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_intentHandlingStatus = *(v4 + 10);
+    self->_intentHandlingStatus = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBIntentEvent *)self setInteraction:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBIntentEvent *)self setItemID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 92);
+  v6 = *(fromCopy + 92);
   if ((v6 & 0x10) != 0)
   {
-    self->_donatedBySiri = *(v4 + 88);
+    self->_donatedBySiri = *(fromCopy + 88);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 92);
+    v6 = *(fromCopy + 92);
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_interactionDirection = *(v4 + 16);
+    self->_interactionDirection = *(fromCopy + 16);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBIntentEvent *)self setGroupIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

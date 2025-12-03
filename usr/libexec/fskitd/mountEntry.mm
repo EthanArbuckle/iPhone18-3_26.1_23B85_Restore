@@ -1,49 +1,49 @@
 @interface mountEntry
-+ (id)newWithName:(id)a3 fileSystem:(id)a4 displayName:(id)a5 storageName:(id)a6 provider:(id)a7 path:(id)a8 mountID:(unsigned int)a9 auditToken:(id)a10 mntTable:(id)a11;
-+ (id)newWithObject:(id)a3 path:(id)a4 mntTable:(id)a5;
-- (BOOL)ensureConnected:(int)a3 status:(id *)a4;
-- (BOOL)unmountPreflight:(int)a3;
++ (id)newWithName:(id)name fileSystem:(id)system displayName:(id)displayName storageName:(id)storageName provider:(id)provider path:(id)path mountID:(unsigned int)d auditToken:(id)self0 mntTable:(id)self1;
++ (id)newWithObject:(id)object path:(id)path mntTable:(id)table;
+- (BOOL)ensureConnected:(int)connected status:(id *)status;
+- (BOOL)unmountPreflight:(int)preflight;
 - (NSString)stateAsString;
 - (id)connect;
 - (id)doConnect;
-- (id)fsObjWithErrorHandler:(id)a3;
-- (id)fsSynchObjWithErrorHandler:(id)a3;
-- (id)mount:(int)a3 options:(id)a4;
-- (id)unmount:(int)a3;
-- (id)unmountPostflight:(int)a3;
-- (int)isMountAtPath:(id)a3 err:(id *)a4;
-- (mountEntry)initWithName:(id)a3 fileSystem:(id)a4 displayName:(id)a5 storageName:(id)a6 provider:(id)a7 path:(id)a8 mountID:(unsigned int)a9 auditToken:(id)a10 mntTable:(id)a11;
-- (mountEntry)initWithObject:(id)a3 path:(id)a4 mntTable:(id)a5;
+- (id)fsObjWithErrorHandler:(id)handler;
+- (id)fsSynchObjWithErrorHandler:(id)handler;
+- (id)mount:(int)mount options:(id)options;
+- (id)unmount:(int)unmount;
+- (id)unmountPostflight:(int)postflight;
+- (int)isMountAtPath:(id)path err:(id *)err;
+- (mountEntry)initWithName:(id)name fileSystem:(id)system displayName:(id)displayName storageName:(id)storageName provider:(id)provider path:(id)path mountID:(unsigned int)d auditToken:(id)self0 mntTable:(id)self1;
+- (mountEntry)initWithObject:(id)object path:(id)path mntTable:(id)table;
 - (mountTable)mntTable;
 - (unint64_t)currentState;
-- (void)copyDisconnectedRootAttrs:(_LIFileAttributes *)a3;
-- (void)createMountTaskForBSDName:(id)a3;
+- (void)copyDisconnectedRootAttrs:(_LIFileAttributes *)attrs;
+- (void)createMountTaskForBSDName:(id)name;
 - (void)dealloc;
 - (void)doWakeAndUnlock;
-- (void)forgetModuleVolumeWithFlags:(unsigned int)a3 reply:(id)a4;
-- (void)getLiveFilesConnectionForPath:(id)a3 withCompletionHandler:(id)a4;
+- (void)forgetModuleVolumeWithFlags:(unsigned int)flags reply:(id)reply;
+- (void)getLiveFilesConnectionForPath:(id)path withCompletionHandler:(id)handler;
 - (void)handleConnectionInterrupted;
 - (void)handleConnectionInvalidated;
-- (void)refreshPath:(id)a3 displayName:(id)a4 storageName:(id)a5;
+- (void)refreshPath:(id)path displayName:(id)name storageName:(id)storageName;
 - (void)removeMountTask;
-- (void)renameToName:(id)a3 reply:(id)a4;
+- (void)renameToName:(id)name reply:(id)reply;
 - (void)resetConnectError;
-- (void)setCurrentState:(unint64_t)a3;
+- (void)setCurrentState:(unint64_t)state;
 @end
 
 @implementation mountEntry
 
-- (mountEntry)initWithName:(id)a3 fileSystem:(id)a4 displayName:(id)a5 storageName:(id)a6 provider:(id)a7 path:(id)a8 mountID:(unsigned int)a9 auditToken:(id)a10 mntTable:(id)a11
+- (mountEntry)initWithName:(id)name fileSystem:(id)system displayName:(id)displayName storageName:(id)storageName provider:(id)provider path:(id)path mountID:(unsigned int)d auditToken:(id)self0 mntTable:(id)self1
 {
-  v43 = a3;
-  v44 = a4;
-  v42 = a5;
-  v41 = a6;
-  v40 = a7;
-  v39 = a8;
-  v38 = a10;
-  v18 = a11;
-  if (v18)
+  nameCopy = name;
+  systemCopy = system;
+  displayNameCopy = displayName;
+  storageNameCopy = storageName;
+  providerCopy = provider;
+  pathCopy = path;
+  tokenCopy = token;
+  tableCopy = table;
+  if (tableCopy)
   {
     v45.receiver = self;
     v45.super_class = mountEntry;
@@ -55,8 +55,8 @@
       v19->_connecting = 0;
       v19->_is_inet = loopback;
       *&v19->_is_killing_io = 0;
-      objc_storeWeak(&v19->_mntTable, v18);
-      if (a9 == -1)
+      objc_storeWeak(&v19->_mntTable, tableCopy);
+      if (d == -1)
       {
         WeakRetained = objc_loadWeakRetained((v20 + 112));
         *(v20 + 48) = [WeakRetained nextIndex];
@@ -64,20 +64,20 @@
 
       else
       {
-        *(v20 + 48) = a9;
+        *(v20 + 48) = d;
       }
 
-      objc_storeStrong((v20 + 64), a3);
-      objc_storeStrong((v20 + 72), a5);
-      objc_storeStrong((v20 + 80), a4);
-      objc_storeStrong((v20 + 88), a6);
-      objc_storeStrong((v20 + 96), a7);
+      objc_storeStrong((v20 + 64), name);
+      objc_storeStrong((v20 + 72), displayName);
+      objc_storeStrong((v20 + 80), system);
+      objc_storeStrong((v20 + 88), storageName);
+      objc_storeStrong((v20 + 96), provider);
       v24 = objc_opt_new();
       v25 = *(v20 + 160);
       *(v20 + 160) = v24;
 
-      objc_storeStrong((v20 + 104), a8);
-      objc_storeStrong((v20 + 136), a10);
+      objc_storeStrong((v20 + 104), path);
+      objc_storeStrong((v20 + 136), token);
       v26 = objc_loadWeakRetained((v20 + 112));
       [v26 add:v20];
 
@@ -89,12 +89,12 @@
       v28 = *(v20 + 184);
       *(v20 + 184) = 0;
 
-      if (!v44 || ([v44 isEqualToString:@"exfat"] & 1) != 0 || (objc_msgSend(v44, "isEqualToString:", @"ntfs") & 1) != 0 || (objc_msgSend(v44, "isEqualToString:", @"apfs") & 1) != 0 || objc_msgSend(v44, "isEqualToString:", @"hfs"))
+      if (!systemCopy || ([systemCopy isEqualToString:@"exfat"] & 1) != 0 || (objc_msgSend(systemCopy, "isEqualToString:", @"ntfs") & 1) != 0 || (objc_msgSend(systemCopy, "isEqualToString:", @"apfs") & 1) != 0 || objc_msgSend(systemCopy, "isEqualToString:", @"hfs"))
       {
         *(v20 + 45) = 0;
       }
 
-      else if ([v44 containsString:@"msdos"])
+      else if ([systemCopy containsString:@"msdos"])
       {
         *(v20 + 45) = _os_feature_enabled_impl();
       }
@@ -119,14 +119,14 @@
       v32 = *(v20 + 64);
       if (v32)
       {
-        v33 = [NSString stringWithFormat:@"mountEntryTransaction:%@:%@:%@", v32, *(v20 + 72), *(v20 + 80), v38, v39, v40, v41, v42, v43];
+        nameCopy = [NSString stringWithFormat:@"mountEntryTransaction:%@:%@:%@", v32, *(v20 + 72), *(v20 + 80), tokenCopy, pathCopy, providerCopy, storageNameCopy, displayNameCopy, nameCopy];
         v34 = fskit_std_log();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
           sub_100041410();
         }
 
-        [v33 UTF8String];
+        [nameCopy UTF8String];
         v35 = os_transaction_create();
         v36 = *(v20 + 32);
         *(v20 + 32) = v35;
@@ -134,7 +134,7 @@
     }
 
     self = v20;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
@@ -145,10 +145,10 @@
       sub_100041494();
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -167,12 +167,12 @@
   [(mountEntry *)&v5 dealloc];
 }
 
-- (mountEntry)initWithObject:(id)a3 path:(id)a4 mntTable:(id)a5
+- (mountEntry)initWithObject:(id)object path:(id)path mntTable:(id)table
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  objectCopy = object;
+  pathCopy = path;
+  tableCopy = table;
+  if (!tableCopy)
   {
     v16 = fskit_std_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -183,7 +183,7 @@
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!objectCopy)
   {
     v16 = fskit_std_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -198,7 +198,7 @@ LABEL_10:
 
   v12 = +[FSAuditToken token];
   LODWORD(v19) = -1;
-  self = [(mountEntry *)self initWithName:0 fileSystem:0 displayName:0 storageName:0 provider:0 path:v10 mountID:v19 auditToken:v12 mntTable:v11];
+  self = [(mountEntry *)self initWithName:0 fileSystem:0 displayName:0 storageName:0 provider:0 path:pathCopy mountID:v19 auditToken:v12 mntTable:tableCopy];
 
   if (!self)
   {
@@ -219,14 +219,14 @@ LABEL_10:
   v23 = 0;
   self->_is_connected = 1;
   self->_midx = 0;
-  objc_storeStrong(&self->_fsObj, a3);
+  objc_storeStrong(&self->_fsObj, object);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10003B1DC;
   v20[3] = &unk_100061EE0;
   v20[4] = &v21;
   v20[5] = &v24;
-  [v9 getRootFileHandleWithError:v20];
+  [objectCopy getRootFileHandleWithError:v20];
   v13 = v25[5];
   if (v13)
   {
@@ -251,71 +251,71 @@ LABEL_10:
   {
 LABEL_15:
     self = self;
-    v17 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
 LABEL_11:
-  v17 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v17;
+  return selfCopy;
 }
 
-+ (id)newWithName:(id)a3 fileSystem:(id)a4 displayName:(id)a5 storageName:(id)a6 provider:(id)a7 path:(id)a8 mountID:(unsigned int)a9 auditToken:(id)a10 mntTable:(id)a11
++ (id)newWithName:(id)name fileSystem:(id)system displayName:(id)displayName storageName:(id)storageName provider:(id)provider path:(id)path mountID:(unsigned int)d auditToken:(id)self0 mntTable:(id)self1
 {
-  v18 = a11;
-  v19 = a10;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  LODWORD(v28) = a9;
-  v26 = [[a1 alloc] initWithName:v25 fileSystem:v24 displayName:v23 storageName:v22 provider:v21 path:v20 mountID:v28 auditToken:v19 mntTable:v18];
+  tableCopy = table;
+  tokenCopy = token;
+  pathCopy = path;
+  providerCopy = provider;
+  storageNameCopy = storageName;
+  displayNameCopy = displayName;
+  systemCopy = system;
+  nameCopy = name;
+  LODWORD(v28) = d;
+  v26 = [[self alloc] initWithName:nameCopy fileSystem:systemCopy displayName:displayNameCopy storageName:storageNameCopy provider:providerCopy path:pathCopy mountID:v28 auditToken:tokenCopy mntTable:tableCopy];
 
   return v26;
 }
 
-+ (id)newWithObject:(id)a3 path:(id)a4 mntTable:(id)a5
++ (id)newWithObject:(id)object path:(id)path mntTable:(id)table
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithObject:v10 path:v9 mntTable:v8];
+  tableCopy = table;
+  pathCopy = path;
+  objectCopy = object;
+  v11 = [[self alloc] initWithObject:objectCopy path:pathCopy mntTable:tableCopy];
 
   return v11;
 }
 
-- (void)refreshPath:(id)a3 displayName:(id)a4 storageName:(id)a5
+- (void)refreshPath:(id)path displayName:(id)name storageName:(id)storageName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  nameCopy = name;
+  storageNameCopy = storageName;
   mntOn = self->_mntOn;
-  self->_mntOn = v8;
-  v15 = v8;
+  self->_mntOn = pathCopy;
+  v15 = pathCopy;
 
   displayName = self->_displayName;
-  self->_displayName = v9;
-  v13 = v9;
+  self->_displayName = nameCopy;
+  v13 = nameCopy;
 
   storageName = self->_storageName;
-  self->_storageName = v10;
+  self->_storageName = storageNameCopy;
 }
 
-- (id)fsObjWithErrorHandler:(id)a3
+- (id)fsObjWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_midx)
   {
     if (!self->_isFSKitModule)
     {
-      v7 = self;
-      objc_sync_enter(v7);
-      v8 = [(NSXPCConnection *)v7->_theConn remoteObjectProxyWithErrorHandler:v4];
-      objc_sync_exit(v7);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v8 = [(NSXPCConnection *)selfCopy->_theConn remoteObjectProxyWithErrorHandler:handlerCopy];
+      objc_sync_exit(selfCopy);
 
       if (v8)
       {
@@ -330,7 +330,7 @@ LABEL_16:
       goto LABEL_10;
     }
 
-    v5 = [FSVolumeConnectorBridge newWithConnection:self->_theConn errorHandler:v4];
+    v5 = [FSVolumeConnectorBridge newWithConnection:self->_theConn errorHandler:handlerCopy];
   }
 
   else
@@ -344,17 +344,17 @@ LABEL_10:
   return v6;
 }
 
-- (id)fsSynchObjWithErrorHandler:(id)a3
+- (id)fsSynchObjWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_midx)
   {
     if (!self->_isFSKitModule)
     {
-      v7 = self;
-      objc_sync_enter(v7);
-      v8 = [(NSXPCConnection *)v7->_theConn synchronousRemoteObjectProxyWithErrorHandler:v4];
-      objc_sync_exit(v7);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v8 = [(NSXPCConnection *)selfCopy->_theConn synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+      objc_sync_exit(selfCopy);
 
       if (v8)
       {
@@ -369,7 +369,7 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v5 = [FSVolumeConnectorBridge newWithSyncConnection:self->_theConn errorHandler:v4];
+    v5 = [FSVolumeConnectorBridge newWithSyncConnection:self->_theConn errorHandler:handlerCopy];
   }
 
   else
@@ -406,23 +406,23 @@ LABEL_10:
 
 - (NSString)stateAsString
 {
-  v2 = [(mountEntry *)self currentState];
-  if (v2 > 2)
+  currentState = [(mountEntry *)self currentState];
+  if (currentState > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_100062350 + v2);
+    return *(&off_100062350 + currentState);
   }
 }
 
-- (void)setCurrentState:(unint64_t)a3
+- (void)setCurrentState:(unint64_t)state
 {
   [(NSCondition *)self->_theLock lock];
-  self->_currentState = a3;
-  if (a3 == 2)
+  self->_currentState = state;
+  if (state == 2)
   {
     v5 = fskit_std_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -437,21 +437,21 @@ LABEL_10:
   [(mountEntry *)self doWakeAndUnlock];
 }
 
-- (void)getLiveFilesConnectionForPath:(id)a3 withCompletionHandler:(id)a4
+- (void)getLiveFilesConnectionForPath:(id)path withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  handlerCopy = handler;
   if (self->_isFSKitModule)
   {
     if ([(NSString *)self->_fileSystem localizedCaseInsensitiveContainsString:@"MSDOS"])
     {
-      v8 = @"com.apple.fskit.msdos";
+      bundleIdentifier = @"com.apple.fskit.msdos";
 LABEL_15:
       v16 = [[NSUUID alloc] initWithUUIDString:self->_volumeName];
-      v17 = [v16 fs_volumeIdentifier];
+      fs_volumeIdentifier = [v16 fs_volumeIdentifier];
       p_volumeID = &self->_volumeID;
       volumeID = self->_volumeID;
-      self->_volumeID = v17;
+      self->_volumeID = fs_volumeIdentifier;
 
       v51 = 0;
       v52 = &v51;
@@ -477,7 +477,7 @@ LABEL_15:
         *v57 = 136315650;
         v58 = "[mountEntry getLiveFilesConnectionForPath:withCompletionHandler:]";
         v59 = 2112;
-        *v60 = v8;
+        *v60 = bundleIdentifier;
         *&v60[8] = 2112;
         *&v60[10] = v16;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: Trying to find a FSVolumeConnector using bundleID (%@) and volumeID (%@)", v57, 0x20u);
@@ -491,7 +491,7 @@ LABEL_15:
       v43[3] = &unk_100061478;
       v43[4] = &v51;
       v43[5] = &v45;
-      [gExtensionManager existingExtensionForBundle:v8 user:auditToken volume:v22 replyHandler:v43];
+      [gExtensionManager existingExtensionForBundle:bundleIdentifier user:auditToken volume:v22 replyHandler:v43];
       if (v52[5])
       {
         v23 = fskit_std_log();
@@ -502,13 +502,13 @@ LABEL_15:
           v59 = 1024;
           *v60 = 590;
           *&v60[4] = 2112;
-          *&v60[6] = v8;
+          *&v60[6] = bundleIdentifier;
           *&v60[14] = 2112;
           *&v60[16] = v16;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s:%d: No extension instance found for bundleID (%@) volumeID (%@)", v57, 0x26u);
         }
 
-        v7[2](v7, 0, v52[5]);
+        handlerCopy[2](handlerCopy, 0, v52[5]);
       }
 
       else
@@ -522,7 +522,7 @@ LABEL_15:
           v59 = 1024;
           *v60 = 595;
           *&v60[4] = 2112;
-          *&v60[6] = v8;
+          *&v60[6] = bundleIdentifier;
           *&v60[14] = 2112;
           *&v60[16] = v16;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s:%d: Found extension instance for bundleID (%@) volumeID (%@)", v57, 0x26u);
@@ -546,7 +546,7 @@ LABEL_15:
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s: Connecting to extension instance reported error %@", v57, 0x16u);
           }
 
-          v7[2](v7, 0, v52[5]);
+          handlerCopy[2](handlerCopy, 0, v52[5]);
         }
 
         else
@@ -593,7 +593,7 @@ LABEL_15:
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s:%d: No FSVolumeConnector endpoint found", v57, 0x12u);
             }
 
-            v7[2](v7, 0, v52[5]);
+            handlerCopy[2](handlerCopy, 0, v52[5]);
           }
 
           else
@@ -610,7 +610,7 @@ LABEL_15:
 
             v36 = [NSXPCConnection alloc];
             v37 = [v36 initWithListenerEndpoint:*(*&buf[8] + 40)];
-            (v7)[2](v7, v37, v52[5]);
+            (handlerCopy)[2](handlerCopy, v37, v52[5]);
           }
         }
       }
@@ -625,7 +625,7 @@ LABEL_15:
 
     if ([(NSString *)self->_fileSystem localizedCaseInsensitiveContainsString:@"passthroughfs"])
     {
-      v8 = @"com.apple.fskit.passthroughfs";
+      bundleIdentifier = @"com.apple.fskit.passthroughfs";
       goto LABEL_15;
     }
 
@@ -663,13 +663,13 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: No extension instance found for bundleID (%@)", buf, 0x16u);
       }
 
-      v7[2](v7, 0, v46[5]);
-      v8 = 0;
+      handlerCopy[2](handlerCopy, 0, v46[5]);
+      bundleIdentifier = 0;
     }
 
     else
     {
-      v8 = [v52[5] bundleIdentifier];
+      bundleIdentifier = [v52[5] bundleIdentifier];
     }
 
     _Block_object_dispose(&v45, 8);
@@ -695,20 +695,20 @@ LABEL_15:
     v38[1] = 3221225472;
     v38[2] = sub_10003C334;
     v38[3] = &unk_100061F30;
-    v39 = v7;
+    v39 = handlerCopy;
     [LIFSClientConnector getLiveFilesConnectionForProvider:providerName volume:volumeName withHandler:v38];
-    v8 = v39;
+    bundleIdentifier = v39;
   }
 
 LABEL_41:
 }
 
-- (void)createMountTaskForBSDName:(id)a3
+- (void)createMountTaskForBSDName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [FSBlockDeviceResource proxyResourceForBSDName:v4];
+    v5 = [FSBlockDeviceResource proxyResourceForBSDName:nameCopy];
     resource = self->_resource;
     self->_resource = v5;
 
@@ -718,22 +718,22 @@ LABEL_41:
     self->_mountTaskUUID = v7;
 
     v9 = [FSTaskDescription taskDescriptionWithID:self->_mountTaskUUID state:1 purpose:FSTaskPurposeActivate error:0 bundleID:@"Unknown" extensionID:0 resource:self->_resource];
-    v10 = [gSettings tasks];
-    objc_sync_enter(v10);
-    v11 = [gSettings tasks];
-    [v11 setObject:v9 forKey:self->_mountTaskUUID];
+    tasks = [gSettings tasks];
+    objc_sync_enter(tasks);
+    tasks2 = [gSettings tasks];
+    [tasks2 setObject:v9 forKey:self->_mountTaskUUID];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(tasks);
     [gSettings updateWorkTransaction];
-    v12 = [gSettings resourceManager];
-    objc_sync_enter(v12);
-    v13 = [gSettings resourceManager];
-    [v13 addResource:self->_resource];
+    resourceManager = [gSettings resourceManager];
+    objc_sync_enter(resourceManager);
+    resourceManager2 = [gSettings resourceManager];
+    [resourceManager2 addResource:self->_resource];
 
-    v14 = [gSettings resourceManager];
-    [v14 addTaskUUID:self->_mountTaskUUID resource:self->_resource];
+    resourceManager3 = [gSettings resourceManager];
+    [resourceManager3 addTaskUUID:self->_mountTaskUUID resource:self->_resource];
 
-    objc_sync_exit(v12);
+    objc_sync_exit(resourceManager);
   }
 
   else
@@ -796,7 +796,7 @@ LABEL_41:
     v16 = v3;
     v68 = isFSKitModule;
     v65 = v16;
-    v66 = self;
+    selfCopy = self;
     [(mountEntry *)self getLiveFilesConnectionForPath:v13 withCompletionHandler:v64];
     dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
     if (!self->_theConn)
@@ -1225,10 +1225,10 @@ LABEL_18:
 - (void)handleConnectionInvalidated
 {
   self->_is_connected = 0;
-  v4 = [(NSXPCConnection *)self->_theConn exportedObject];
-  if (v4)
+  exportedObject = [(NSXPCConnection *)self->_theConn exportedObject];
+  if (exportedObject)
   {
-    [v4 connectionWasInterupted];
+    [exportedObject connectionWasInterupted];
   }
 
   theConn = self->_theConn;
@@ -1246,10 +1246,10 @@ LABEL_18:
   dispatch_async(v3, block);
 }
 
-- (BOOL)ensureConnected:(int)a3 status:(id *)a4
+- (BOOL)ensureConnected:(int)connected status:(id *)status
 {
   [(NSCondition *)self->_theLock lock];
-  *a4 = 0;
+  *status = 0;
   if (self->_is_connected)
   {
     [(NSCondition *)self->_theLock unlock];
@@ -1259,25 +1259,25 @@ LABEL_18:
   else
   {
     [(NSCondition *)self->_theLock unlock];
-    if (a3)
+    if (connected)
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v8 = [(mountEntry *)self connect];
-      v7 = v8 == 0;
-      if (v8)
+      connect = [(mountEntry *)self connect];
+      v7 = connect == 0;
+      if (connect)
       {
         v9 = livefs_std_log();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          sub_100041BE4(v8, self);
+          sub_100041BE4(connect, self);
         }
 
-        v10 = v8;
-        *a4 = v8;
+        v10 = connect;
+        *status = connect;
       }
     }
   }
@@ -1285,35 +1285,35 @@ LABEL_18:
   return v7;
 }
 
-- (void)copyDisconnectedRootAttrs:(_LIFileAttributes *)a3
+- (void)copyDisconnectedRootAttrs:(_LIFileAttributes *)attrs
 {
-  *&a3->var0 = 0u;
-  *&a3->var2 = 0u;
-  *&a3->var19 = 0;
-  a3->var17 = 0u;
-  a3->var18 = 0u;
-  a3->var15 = 0u;
-  a3->var16 = 0u;
-  a3->var13 = 0u;
-  a3->var14 = 0u;
-  *&a3->var9 = 0u;
-  *&a3->var11 = 0u;
-  *&a3->var5 = 0u;
-  a3->var1 = 7647;
-  *&a3->var3 = 0x16D00000002;
-  a3->var11 = self->_fileno;
-  a3->var13.tv_sec = 1546329600;
-  a3->var15.tv_sec = 1546329600;
-  a3->var14.tv_sec = 1546329600;
-  a3->var5 = 2;
-  a3->var6 = getuid();
-  a3->var7 = getgid();
-  *&a3->var9 = vdupq_n_s64(1uLL);
+  *&attrs->var0 = 0u;
+  *&attrs->var2 = 0u;
+  *&attrs->var19 = 0;
+  attrs->var17 = 0u;
+  attrs->var18 = 0u;
+  attrs->var15 = 0u;
+  attrs->var16 = 0u;
+  attrs->var13 = 0u;
+  attrs->var14 = 0u;
+  *&attrs->var9 = 0u;
+  *&attrs->var11 = 0u;
+  *&attrs->var5 = 0u;
+  attrs->var1 = 7647;
+  *&attrs->var3 = 0x16D00000002;
+  attrs->var11 = self->_fileno;
+  attrs->var13.tv_sec = 1546329600;
+  attrs->var15.tv_sec = 1546329600;
+  attrs->var14.tv_sec = 1546329600;
+  attrs->var5 = 2;
+  attrs->var6 = getuid();
+  attrs->var7 = getgid();
+  *&attrs->var9 = vdupq_n_s64(1uLL);
 }
 
-- (id)mount:(int)a3 options:(id)a4
+- (id)mount:(int)mount options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   memset(v78, 0, sizeof(v78));
   v7 = objc_alloc_init(fskitdMounter);
   v8 = livefs_std_log();
@@ -1324,11 +1324,11 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: will mount over LIFSv2", buf, 0xCu);
   }
 
-  v9 = [(mountEntry *)self mntOn];
-  v10 = [v9 stringByStandardizingPath];
+  mntOn = [(mountEntry *)self mntOn];
+  stringByStandardizingPath = [mntOn stringByStandardizingPath];
   p_realMountPath = &self->realMountPath;
   realMountPath = self->realMountPath;
-  self->realMountPath = v10;
+  self->realMountPath = stringByStandardizingPath;
 
   if (verbose >= 2)
   {
@@ -1336,17 +1336,17 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = self->realMountPath;
-      v15 = [(mountEntry *)self mntOn];
+      mntOn2 = [(mountEntry *)self mntOn];
       *buf = 138412546;
       *&buf[4] = v14;
       v76 = 2112;
-      v77 = v15;
+      v77 = mntOn2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "realMountPath = %@, mntOn = %@", buf, 0x16u);
     }
   }
 
-  v16 = [(mountEntry *)self mntOn];
-  if (![v16 hasPrefix:@"/private/"])
+  mntOn3 = [(mountEntry *)self mntOn];
+  if (![mntOn3 hasPrefix:@"/private/"])
   {
     goto LABEL_10;
   }
@@ -1356,7 +1356,7 @@ LABEL_18:
   if ((v17 & 1) == 0)
   {
     v18 = [[NSString alloc] initWithFormat:@"%@%@", @"/private", *p_realMountPath];
-    v16 = *p_realMountPath;
+    mntOn3 = *p_realMountPath;
     *p_realMountPath = v18;
 LABEL_10:
   }
@@ -1364,7 +1364,7 @@ LABEL_10:
   if (self->_midx)
   {
     v19 = 0;
-    self->_mnt_flags = a3;
+    self->_mnt_flags = mount;
     goto LABEL_100;
   }
 
@@ -1417,7 +1417,7 @@ LABEL_10:
   v7->args.wsize = 0x10000;
   v7->args.readahead = 4;
   v7->args.dsize = 0x10000;
-  if ((a3 & 8) != 0)
+  if ((mount & 8) != 0)
   {
     v26 = 0;
   }
@@ -1428,12 +1428,12 @@ LABEL_10:
   }
 
   v7->args.actimeo = v26;
-  if (!v6)
+  if (!optionsCopy)
   {
-    v6 = &stru_100062B08;
+    optionsCopy = &stru_100062B08;
   }
 
-  v27 = strdup([(__CFString *)v6 UTF8String]);
+  v27 = strdup([(__CFString *)optionsCopy UTF8String]);
   bzero(&buf[8], 0x318uLL);
   *buf = "-v";
   v28 = livefs_std_log();
@@ -1450,7 +1450,7 @@ LABEL_10:
 
   v30 = 271581188;
 
-  if (![(__CFString *)v6 length])
+  if (![(__CFString *)optionsCopy length])
   {
     v31 = 0;
     LODWORD(v32) = 1;
@@ -1516,15 +1516,15 @@ LABEL_58:
     [(fskitdMounter *)v7 setOptions:v49];
 
     __strlcpy_chk();
-    v54 = [(mountEntry *)self mntOn];
-    [v54 UTF8String];
+    mntOn4 = [(mountEntry *)self mntOn];
+    [mntOn4 UTF8String];
     __strlcpy_chk();
 
     [(fskitdMounter *)v7 setMntFlags:v69];
-    v55 = [(fskitdMounter *)v7 mount];
-    if (v55)
+    mount = [(fskitdMounter *)v7 mount];
+    if (mount)
     {
-      v56 = v55;
+      v56 = mount;
       v57 = livefs_std_log();
       v27 = v70;
       if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -1539,8 +1539,8 @@ LABEL_58:
     else
     {
       v71 = 0;
-      v58 = [(mountEntry *)self mntOn];
-      v59 = sub_10003E80C([v58 UTF8String], &v71 + 4, &v71);
+      mntOn5 = [(mountEntry *)self mntOn];
+      v59 = sub_10003E80C([mntOn5 UTF8String], &v71 + 4, &v71);
 
       v27 = v70;
       if (!v59)
@@ -1548,10 +1548,10 @@ LABEL_58:
         v60 = livefs_std_log();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
-          v61 = [(mountEntry *)self mntOn];
-          v62 = [v61 UTF8String];
+          mntOn6 = [(mountEntry *)self mntOn];
+          uTF8String = [mntOn6 UTF8String];
           *__stringp = 136315394;
-          *&__stringp[4] = v62;
+          *&__stringp[4] = uTF8String;
           v73 = 1024;
           v74 = HIDWORD(v71);
           _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "%s: FMT CAPS: 0x%08x", __stringp, 0x12u);
@@ -1560,10 +1560,10 @@ LABEL_58:
         v63 = livefs_std_log();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
         {
-          v64 = [(mountEntry *)self mntOn];
-          v65 = [v64 UTF8String];
+          mntOn7 = [(mountEntry *)self mntOn];
+          uTF8String2 = [mntOn7 UTF8String];
           *__stringp = 136315394;
-          *&__stringp[4] = v65;
+          *&__stringp[4] = uTF8String2;
           v73 = 1024;
           v74 = v71;
           _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "%s: INT CAPS: 0x%08x", __stringp, 0x12u);
@@ -1571,7 +1571,7 @@ LABEL_58:
       }
 
       v19 = 0;
-      self->_mnt_flags = a3;
+      self->_mnt_flags = mount;
     }
 
     goto LABEL_97;
@@ -1723,10 +1723,10 @@ LABEL_100:
   return v19;
 }
 
-- (void)renameToName:(id)a3 reply:(id)a4
+- (void)renameToName:(id)name reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  replyCopy = reply;
   v9 = gSettings;
   volumeName = self->_volumeName;
   providerName = self->_providerName;
@@ -1735,38 +1735,38 @@ LABEL_100:
   v16 = 3221225472;
   v17 = sub_10003EA50;
   v18 = &unk_100061338;
-  v12 = v7;
+  v12 = nameCopy;
   v19 = v12;
   v13 = [v9 updateMountEntry:volumeName provider:providerName settingsDictionary:&v20 updateBlock:&v15];
   v14 = v20;
   if (v13)
   {
-    v8[2](v8, v13);
+    replyCopy[2](replyCopy, v13);
   }
 
   else
   {
-    objc_storeStrong(&self->_displayName, a3);
-    [LivefsDomainManager updateDomain:v14 reply:v8, v15, v16, v17, v18];
+    objc_storeStrong(&self->_displayName, name);
+    [LivefsDomainManager updateDomain:v14 reply:replyCopy, v15, v16, v17, v18];
   }
 }
 
-- (int)isMountAtPath:(id)a3 err:(id *)a4
+- (int)isMountAtPath:(id)path err:(id *)err
 {
-  v5 = a3;
+  pathCopy = path;
   v14 = 0;
-  if (v5)
+  if (pathCopy)
   {
     v6 = getmntinfo_r_np(&v14, 2);
     if (v6)
     {
       LODWORD(v7) = v6;
-      v8 = [v5 UTF8String];
+      uTF8String = [pathCopy UTF8String];
       v9 = 0;
       v10 = v14;
-      if (v8 && v7 >= 1)
+      if (uTF8String && v7 >= 1)
       {
-        v11 = v8;
+        v11 = uTF8String;
         v7 = v7;
         f_mntonname = v14->f_mntonname;
         while (strcmp(v11, f_mntonname))
@@ -1788,9 +1788,9 @@ LABEL_14:
 
     else
     {
-      if (a4)
+      if (err)
       {
-        *a4 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+        *err = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
       }
 
       v9 = -1;
@@ -1805,16 +1805,16 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)unmountPreflight:(int)a3
+- (BOOL)unmountPreflight:(int)preflight
 {
   if (!self->realMountPath)
   {
     return 0;
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_is_in_unmount_syscall || v3->_is_in_unmount_method)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_is_in_unmount_syscall || selfCopy->_is_in_unmount_method)
   {
     v4 = 0;
   }
@@ -1822,10 +1822,10 @@ LABEL_14:
   else
   {
     v4 = 1;
-    v3->_is_in_unmount_method = 1;
+    selfCopy->_is_in_unmount_method = 1;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -1857,16 +1857,16 @@ LABEL_14:
     v8 = livefs_std_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [(FSResource *)self->_resource getResourceID];
-      sub_100042318(v9, v13, v8);
+      getResourceID = [(FSResource *)self->_resource getResourceID];
+      sub_100042318(getResourceID, v13, v8);
     }
 
-    v10 = [gSettings resourceManager];
-    objc_sync_enter(v10);
-    v11 = [gSettings resourceManager];
-    [v11 removeResource:self->_resource];
+    resourceManager = [gSettings resourceManager];
+    objc_sync_enter(resourceManager);
+    resourceManager2 = [gSettings resourceManager];
+    [resourceManager2 removeResource:self->_resource];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(resourceManager);
     resource = self->_resource;
     self->_resource = 0;
   }
@@ -1874,11 +1874,11 @@ LABEL_14:
   objc_sync_exit(v7);
 }
 
-- (id)unmountPostflight:(int)a3
+- (id)unmountPostflight:(int)postflight
 {
-  v3 = a3;
+  postflightCopy = postflight;
   v5 = self->realMountPath;
-  if ((v3 & 2) != 0)
+  if ((postflightCopy & 2) != 0)
   {
     self->_is_connected = 0;
     theConn = self->_theConn;
@@ -1896,24 +1896,24 @@ LABEL_14:
     }
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  *&v9->_is_killing_io = 0;
-  [(mountEntry *)v9 removeMountTask];
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *&selfCopy->_is_killing_io = 0;
+  [(mountEntry *)selfCopy removeMountTask];
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
 
-- (id)unmount:(int)a3
+- (id)unmount:(int)unmount
 {
-  v3 = a3;
+  unmountCopy = unmount;
   v5 = self->realMountPath;
   v6 = v5;
-  if ((v3 & 2) == 0 || ([(NSString *)v5 isEqual:@"/private/var/mobile/Library/LiveFiles"]& 1) != 0 || ![(NSString *)v6 hasPrefix:@"/private/var/mobile/Library/LiveFiles"]|| !fsctl([(NSString *)v6 fileSystemRepresentation], 0x20006E04uLL, 0, 0))
+  if ((unmountCopy & 2) == 0 || ([(NSString *)v5 isEqual:@"/private/var/mobile/Library/LiveFiles"]& 1) != 0 || ![(NSString *)v6 hasPrefix:@"/private/var/mobile/Library/LiveFiles"]|| !fsctl([(NSString *)v6 fileSystemRepresentation], 0x20006E04uLL, 0, 0))
   {
     v8 = 0;
-    if ((v3 & 4) == 0)
+    if ((unmountCopy & 4) == 0)
     {
       goto LABEL_11;
     }
@@ -1929,13 +1929,13 @@ LABEL_14:
     sub_10004241C();
   }
 
-  if ((v3 & 4) != 0)
+  if ((unmountCopy & 4) != 0)
   {
 LABEL_10:
-    v10 = self;
-    objc_sync_enter(v10);
-    v10->_is_killing_io = 1;
-    objc_sync_exit(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    selfCopy->_is_killing_io = 1;
+    objc_sync_exit(selfCopy);
   }
 
 LABEL_11:
@@ -1962,7 +1962,7 @@ LABEL_34:
   }
 
   v34 = v12;
-  v13 = (v3 & 1) << 19;
+  v13 = (unmountCopy & 1) << 19;
   if (!unmount([(NSString *)v6 fileSystemRepresentation], v13))
   {
     goto LABEL_29;
@@ -1972,7 +1972,7 @@ LABEL_34:
   while (1)
   {
     v15 = *__error();
-    v16 = v15 == 35 && v3 & 1;
+    v16 = v15 == 35 && unmountCopy & 1;
     if (!v16 || v14 > 3)
     {
       break;
@@ -2008,13 +2008,13 @@ LABEL_27:
 
     v14 += v16;
 
-    if (!unmount([(NSString *)v6 fileSystemRepresentation], (v3 & 1) << 19))
+    if (!unmount([(NSString *)v6 fileSystemRepresentation], (unmountCopy & 1) << 19))
     {
       goto LABEL_29;
     }
   }
 
-  if ((v3 & 5) != 0 || !v15)
+  if ((unmountCopy & 5) != 0 || !v15)
   {
     if (v15)
     {
@@ -2063,10 +2063,10 @@ LABEL_43:
 
   v30 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v15 userInfo:0];
 
-  v31 = self;
-  objc_sync_enter(v31);
-  v31->_is_in_unmount_method = 0;
-  objc_sync_exit(v31);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  selfCopy2->_is_in_unmount_method = 0;
+  objc_sync_exit(selfCopy2);
 
   v12 = v30;
   v28 = v12;
@@ -2075,9 +2075,9 @@ LABEL_44:
   return v28;
 }
 
-- (void)forgetModuleVolumeWithFlags:(unsigned int)a3 reply:(id)a4
+- (void)forgetModuleVolumeWithFlags:(unsigned int)flags reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   if (![(mountEntry *)self isFSKitModule])
   {
     v10 = fskit_std_log();
@@ -2101,7 +2101,7 @@ LABEL_44:
 LABEL_9:
 
     v11 = fs_errorForPOSIXError();
-    v6[2](v6, v11);
+    replyCopy[2](replyCopy, v11);
 
     goto LABEL_17;
   }
@@ -2123,7 +2123,7 @@ LABEL_9:
       sub_100042608(v24);
     }
 
-    v6[2](v6, *(v24[0] + 40));
+    replyCopy[2](replyCopy, *(v24[0] + 40));
   }
 
   else
@@ -2149,21 +2149,21 @@ LABEL_9:
     v20[2] = sub_10003F744;
     v20[3] = &unk_1000614C8;
     v20[4] = &v23;
-    [v13 deactivateVolume:volumeID numericOptions:a3 replyHandler:v20];
-    v15 = [gSettings resourceManager];
-    objc_sync_enter(v15);
-    v16 = [gSettings resourceManager];
-    v17 = [(FSResource *)self->_resource getResourceID];
-    v18 = [v16 getResource:v17];
+    [v13 deactivateVolume:volumeID numericOptions:flags replyHandler:v20];
+    resourceManager = [gSettings resourceManager];
+    objc_sync_enter(resourceManager);
+    resourceManager2 = [gSettings resourceManager];
+    getResourceID = [(FSResource *)self->_resource getResourceID];
+    v18 = [resourceManager2 getResource:getResourceID];
 
     [v18 setState:0];
-    v19 = [gSettings resourceManager];
-    [v19 updateResource:v18];
+    resourceManager3 = [gSettings resourceManager];
+    [resourceManager3 updateResource:v18];
 
-    objc_sync_exit(v15);
+    objc_sync_exit(resourceManager);
     [(FSResource *)self->_resource revoke];
     [(fskitdExtensionInstance *)self->_instance terminate];
-    v6[2](v6, *(v24[0] + 40));
+    replyCopy[2](replyCopy, *(v24[0] + 40));
   }
 
   _Block_object_dispose(&v23, 8);

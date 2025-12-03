@@ -1,30 +1,30 @@
 @interface HKHRCardioFitnessFeatureStatusManager
 + (id)taskIdentifier;
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3;
-- (HKHRCardioFitnessFeatureStatusManager)initWithHealthStore:(id)a3;
-- (HKHRCardioFitnessFeatureStatusManager)initWithProxyProvider:(id)a3;
-- (id)notificationStatusWithError:(id *)a3;
-- (id)onboardingStatusWithError:(id *)a3;
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error;
+- (HKHRCardioFitnessFeatureStatusManager)initWithHealthStore:(id)store;
+- (HKHRCardioFitnessFeatureStatusManager)initWithProxyProvider:(id)provider;
+- (id)notificationStatusWithError:(id *)error;
+- (id)onboardingStatusWithError:(id *)error;
 - (void)_handleAutomaticProxyReconnection;
-- (void)addObserver:(id)a3 queue:(id)a4;
-- (void)client_didUpdateNotificationStatus:(id)a3;
-- (void)client_didUpdateOnboardingStatus:(id)a3;
+- (void)addObserver:(id)observer queue:(id)queue;
+- (void)client_didUpdateNotificationStatus:(id)status;
+- (void)client_didUpdateOnboardingStatus:(id)status;
 - (void)connectionInvalidated;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resetOnboarding;
-- (void)setNotificationsEnabled:(BOOL)a3;
+- (void)setNotificationsEnabled:(BOOL)enabled;
 @end
 
 @implementation HKHRCardioFitnessFeatureStatusManager
 
-- (HKHRCardioFitnessFeatureStatusManager)initWithHealthStore:(id)a3
+- (HKHRCardioFitnessFeatureStatusManager)initWithHealthStore:(id)store
 {
   v4 = MEMORY[0x277CCDAA0];
-  v5 = a3;
+  storeCopy = store;
   v6 = [v4 alloc];
   v7 = +[HKHRCardioFitnessFeatureStatusManager taskIdentifier];
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v6 initWithHealthStore:v5 taskIdentifier:v7 exportedObject:self taskUUID:v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v9 = [v6 initWithHealthStore:storeCopy taskIdentifier:v7 exportedObject:self taskUUID:uUID];
 
   [v9 setShouldRetryOnInterruption:0];
   v10 = objc_alloc_init(MEMORY[0x277CCDA98]);
@@ -34,9 +34,9 @@
   return v11;
 }
 
-- (HKHRCardioFitnessFeatureStatusManager)initWithProxyProvider:(id)a3
+- (HKHRCardioFitnessFeatureStatusManager)initWithProxyProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = HKHRCardioFitnessFeatureStatusManager;
   v6 = [(HKHRCardioFitnessFeatureStatusManager *)&v11 init];
@@ -47,13 +47,13 @@
     observers = v6->_observers;
     v6->_observers = v8;
 
-    objc_storeStrong(&v6->_proxyProvider, a3);
+    objc_storeStrong(&v6->_proxyProvider, provider);
   }
 
   return v6;
 }
 
-- (id)onboardingStatusWithError:(id *)a3
+- (id)onboardingStatusWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -84,10 +84,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -147,7 +147,7 @@ uint64_t __56__HKHRCardioFitnessFeatureStatusManager_resetOnboarding__block_invo
   return [a2 remote_resetOnboardingWithCompletion:v3];
 }
 
-- (id)notificationStatusWithError:(id *)a3
+- (id)notificationStatusWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -178,10 +178,10 @@ uint64_t __56__HKHRCardioFitnessFeatureStatusManager_resetOnboarding__block_invo
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -222,7 +222,7 @@ void __69__HKHRCardioFitnessFeatureStatusManager_notificationStatusWithError___b
   *(v9 + 40) = v6;
 }
 
-- (void)setNotificationsEnabled:(BOOL)a3
+- (void)setNotificationsEnabled:(BOOL)enabled
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -239,7 +239,7 @@ void __69__HKHRCardioFitnessFeatureStatusManager_notificationStatusWithError___b
   v7[1] = 3221225472;
   v7[2] = __65__HKHRCardioFitnessFeatureStatusManager_setNotificationsEnabled___block_invoke;
   v7[3] = &unk_27860ADC0;
-  v8 = a3;
+  enabledCopy = enabled;
   v7[4] = v12;
   v7[5] = &v9;
   v6[0] = MEMORY[0x277D85DD0];
@@ -274,7 +274,7 @@ uint64_t __65__HKHRCardioFitnessFeatureStatusManager_setNotificationsEnabled___b
   return [a2 remote_setNotificationsEnabled:v2 withCompletion:v4];
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -282,7 +282,7 @@ uint64_t __65__HKHRCardioFitnessFeatureStatusManager_setNotificationsEnabled___b
   v5[2] = __59__HKHRCardioFitnessFeatureStatusManager_addObserver_queue___block_invoke;
   v5[3] = &unk_27860AE60;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 void __59__HKHRCardioFitnessFeatureStatusManager_addObserver_queue___block_invoke(uint64_t a1)
@@ -331,7 +331,7 @@ void __59__HKHRCardioFitnessFeatureStatusManager_addObserver_queue___block_invok
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -339,7 +339,7 @@ void __59__HKHRCardioFitnessFeatureStatusManager_addObserver_queue___block_invok
   v4[2] = __56__HKHRCardioFitnessFeatureStatusManager_removeObserver___block_invoke;
   v4[3] = &unk_27860AE60;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __56__HKHRCardioFitnessFeatureStatusManager_removeObserver___block_invoke(uint64_t a1)
@@ -366,7 +366,7 @@ void __56__HKHRCardioFitnessFeatureStatusManager_removeObserver___block_invoke_3
   }
 }
 
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -396,10 +396,10 @@ void __56__HKHRCardioFitnessFeatureStatusManager_removeObserver___block_invoke_3
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -448,17 +448,17 @@ void __79__HKHRCardioFitnessFeatureStatusManager__synchronouslyStartObservingWit
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)client_didUpdateNotificationStatus:(id)a3
+- (void)client_didUpdateNotificationStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__HKHRCardioFitnessFeatureStatusManager_client_didUpdateNotificationStatus___block_invoke;
   v7[3] = &unk_27860AED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
@@ -471,17 +471,17 @@ void __76__HKHRCardioFitnessFeatureStatusManager_client_didUpdateNotificationSta
   }
 }
 
-- (void)client_didUpdateOnboardingStatus:(id)a3
+- (void)client_didUpdateOnboardingStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__HKHRCardioFitnessFeatureStatusManager_client_didUpdateOnboardingStatus___block_invoke;
   v7[3] = &unk_27860AED0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 

@@ -28,9 +28,9 @@
   [objc_msgSend(-[ACMSignInDialogSimple_iPad_Modern widget](self "widget")];
   [-[ACMSignInDialogSimple_iPad_Modern view](self "view")];
   v6 = [MEMORY[0x29EDBA008] constraintWithItem:objc_msgSend(-[ACMSignInDialogSimple_iPad_Modern widget](self attribute:"widget") relatedBy:"view") toItem:9 attribute:0 multiplier:-[ACMSignInDialogSimple_iPad_Modern view](self constant:{"view"), 9, 1.0, 0.0}];
-  v7 = [(ACMSignInDialogSimple_iPad_Modern *)self view];
+  view = [(ACMSignInDialogSimple_iPad_Modern *)self view];
 
-  [v7 addConstraint:v6];
+  [view addConstraint:v6];
 }
 
 - (id)widget

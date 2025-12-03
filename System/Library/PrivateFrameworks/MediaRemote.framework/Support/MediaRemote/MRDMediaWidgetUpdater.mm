@@ -1,6 +1,6 @@
 @interface MRDMediaWidgetUpdater
 + (MRDMediaWidgetUpdater)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (MRDMediaWidgetUpdater)init;
 @end
 
@@ -17,10 +17,10 @@
   return qword_1005385C8;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1005376A0;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -28,7 +28,7 @@
 
   swift_beginAccess();
   v5 = qword_1005385C8;
-  qword_1005385C8 = v4;
+  qword_1005385C8 = sharedCopy;
 }
 
 - (MRDMediaWidgetUpdater)init

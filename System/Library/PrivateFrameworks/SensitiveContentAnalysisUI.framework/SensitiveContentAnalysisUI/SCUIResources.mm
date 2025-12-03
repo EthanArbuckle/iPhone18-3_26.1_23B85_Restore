@@ -1,5 +1,5 @@
 @interface SCUIResources
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 + (id)mainBundle;
 @end
 
@@ -13,11 +13,11 @@
   return [v2 bundleForClass:v3];
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() mainBundle];
-  v5 = [v4 localizedStringForKey:v3 value:&stru_1F3B30210 table:@"SensitiveContentAnalysisLocalizable"];
+  keyCopy = key;
+  mainBundle = [objc_opt_class() mainBundle];
+  v5 = [mainBundle localizedStringForKey:keyCopy value:&stru_1F3B30210 table:@"SensitiveContentAnalysisLocalizable"];
 
   return v5;
 }

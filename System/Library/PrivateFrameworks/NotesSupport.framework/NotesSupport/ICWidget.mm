@@ -1,7 +1,7 @@
 @interface ICWidget
 + (ICWidget)sharedWidget;
-- (void)reloadTimelineForKind:(id)a3 reason:(id)a4;
-- (void)reloadTimelinesWithReason:(id)a3;
+- (void)reloadTimelineForKind:(id)kind reason:(id)reason;
+- (void)reloadTimelinesWithReason:(id)reason;
 @end
 
 @implementation ICWidget
@@ -25,19 +25,19 @@ uint64_t __24__ICWidget_sharedWidget__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)reloadTimelinesWithReason:(id)a3
+- (void)reloadTimelinesWithReason:(id)reason
 {
-  v4 = a3;
-  [(ICWidget *)self reloadTimelineForKind:@"com.apple.mobilenotes.FolderWidget" reason:v4];
-  [(ICWidget *)self reloadTimelineForKind:@"com.apple.mobilenotes.NoteWidget" reason:v4];
-  [(ICWidget *)self reloadTimelineForKind:@"com.apple.mobilenotes.QuickNoteWidget" reason:v4];
+  reasonCopy = reason;
+  [(ICWidget *)self reloadTimelineForKind:@"com.apple.mobilenotes.FolderWidget" reason:reasonCopy];
+  [(ICWidget *)self reloadTimelineForKind:@"com.apple.mobilenotes.NoteWidget" reason:reasonCopy];
+  [(ICWidget *)self reloadTimelineForKind:@"com.apple.mobilenotes.QuickNoteWidget" reason:reasonCopy];
 }
 
-- (void)reloadTimelineForKind:(id)a3 reason:(id)a4
+- (void)reloadTimelineForKind:(id)kind reason:(id)reason
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  reasonCopy = reason;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -57,22 +57,22 @@ uint64_t __24__ICWidget_sharedWidget__block_invoke()
   v8 = v7;
   _Block_object_dispose(&v14, 8);
   v9 = [v7 alloc];
-  v10 = [v9 initWithExtensionBundleIdentifier:@"com.apple.mobilenotes.WidgetExtension" kind:{v5, v14}];
-  v11 = [v10 reloadTimelineWithReason:v6];
+  v10 = [v9 initWithExtensionBundleIdentifier:@"com.apple.mobilenotes.WidgetExtension" kind:{kindCopy, v14}];
+  v11 = [v10 reloadTimelineWithReason:reasonCopy];
   v12 = os_log_create("com.apple.notes", "Widget");
   v13 = v12;
   if (v11)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(ICWidget *)v5 reloadTimelineForKind:v11 reason:v13];
+      [(ICWidget *)kindCopy reloadTimelineForKind:v11 reason:v13];
     }
   }
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = kindCopy;
     _os_log_impl(&dword_1D4576000, v13, OS_LOG_TYPE_DEFAULT, "Finished reloading Widget Extension timeline {kind: %@}", &buf, 0xCu);
   }
 }

@@ -1,17 +1,17 @@
 @interface PadRotateWeekViewFromPortraitTest
-- (void)_setupViewToDate:(id)a3;
+- (void)_setupViewToDate:(id)date;
 @end
 
 @implementation PadRotateWeekViewFromPortraitTest
 
-- (void)_setupViewToDate:(id)a3
+- (void)_setupViewToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(ApplicationTest *)self application];
-  v6 = [v5 rootNavigationController];
-  v7 = [v6 resetToWeekView];
+  dateCopy = date;
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToWeekView = [rootNavigationController resetToWeekView];
 
-  [v7 setDisplayedDate:v4 animated:0];
+  [resetToWeekView setDisplayedDate:dateCopy animated:0];
 }
 
 @end

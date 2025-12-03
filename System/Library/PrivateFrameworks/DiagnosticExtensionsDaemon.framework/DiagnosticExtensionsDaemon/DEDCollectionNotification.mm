@@ -1,10 +1,10 @@
 @interface DEDCollectionNotification
-+ (BOOL)shouldFireNotificationForTransport:(int64_t)a3;
++ (BOOL)shouldFireNotificationForTransport:(int64_t)transport;
 + (id)log;
 + (void)configureEventStream;
-+ (void)fireNotificationWithFinishingMove:(int64_t)a3;
-+ (void)handleDistributedNotification:(id)a3;
-+ (void)postNotificationToNotificationCenterForFinishingMove:(int64_t)a3;
++ (void)fireNotificationWithFinishingMove:(int64_t)move;
++ (void)handleDistributedNotification:(id)notification;
++ (void)postNotificationToNotificationCenterForFinishingMove:(int64_t)move;
 @end
 
 @implementation DEDCollectionNotification
@@ -29,7 +29,7 @@ void __32__DEDCollectionNotification_log__block_invoke()
   log_log_4 = v0;
 }
 
-+ (BOOL)shouldFireNotificationForTransport:(int64_t)a3
++ (BOOL)shouldFireNotificationForTransport:(int64_t)transport
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = +[DEDUtils platform];
@@ -37,13 +37,13 @@ void __32__DEDCollectionNotification_log__block_invoke()
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v7 environment];
-    v9 = [v8 objectForKey:@"DED_FORCE_COLLECT_NOTIFY"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    environment = [processInfo environment];
+    v9 = [environment objectForKey:@"DED_FORCE_COLLECT_NOTIFY"];
 
     if (v9)
     {
-      v10 = [a1 log];
+      v10 = [self log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 136315138;
@@ -56,7 +56,7 @@ void __32__DEDCollectionNotification_log__block_invoke()
 
     else
     {
-      result = a3 > 2;
+      result = transport > 2;
     }
   }
 
@@ -69,32 +69,32 @@ void __32__DEDCollectionNotification_log__block_invoke()
   return result;
 }
 
-+ (void)fireNotificationWithFinishingMove:(int64_t)a3
++ (void)fireNotificationWithFinishingMove:(int64_t)move
 {
-  v3 = [a1 log];
+  v3 = [self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     [DEDCollectionNotification fireNotificationWithFinishingMove:v3];
   }
 }
 
-+ (void)handleDistributedNotification:(id)a3
++ (void)handleDistributedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"com.apple.diagnosticextensionsd.collection-started"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"com.apple.diagnosticextensionsd.collection-started"];
 
   if (v6)
   {
-    v7 = [a1 log];
+    v7 = [self log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       [DEDCollectionNotification handleDistributedNotification:v7];
     }
 
-    v8 = [v4 object];
-    v9 = [v8 UTF8String];
-    v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
+    object = [notificationCopy object];
+    uTF8String = [object UTF8String];
+    v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:uTF8String];
     if ([v10 isEqualToString:@"FBA"])
     {
       v11 = 1;
@@ -120,13 +120,13 @@ void __32__DEDCollectionNotification_log__block_invoke()
       v11 = 0;
     }
 
-    [a1 postNotificationToNotificationCenterForFinishingMove:v11];
+    [self postNotificationToNotificationCenterForFinishingMove:v11];
   }
 }
 
-+ (void)postNotificationToNotificationCenterForFinishingMove:(int64_t)a3
++ (void)postNotificationToNotificationCenterForFinishingMove:(int64_t)move
 {
-  v3 = [a1 log];
+  v3 = [self log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     [DEDCollectionNotification fireNotificationWithFinishingMove:v3];
@@ -139,7 +139,7 @@ void __32__DEDCollectionNotification_log__block_invoke()
   handler[1] = 3221225472;
   handler[2] = __49__DEDCollectionNotification_configureEventStream__block_invoke;
   handler[3] = &__block_descriptor_40_e33_v16__0__NSObject_OS_xpc_object__8l;
-  handler[4] = a1;
+  handler[4] = self;
   xpc_set_event_stream_handler("com.apple.distnoted.matching", MEMORY[0x277D85CD0], handler);
 }
 

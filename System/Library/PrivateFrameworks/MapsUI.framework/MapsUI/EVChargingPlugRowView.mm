@@ -1,11 +1,11 @@
 @interface EVChargingPlugRowView
-- (_TtC6MapsUI21EVChargingPlugRowView)initWithCoder:(id)a3;
-- (_TtC6MapsUI21EVChargingPlugRowView)initWithFrame:(CGRect)a3;
+- (_TtC6MapsUI21EVChargingPlugRowView)initWithCoder:(id)coder;
+- (_TtC6MapsUI21EVChargingPlugRowView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation EVChargingPlugRowView
 
-- (_TtC6MapsUI21EVChargingPlugRowView)initWithCoder:(id)a3
+- (_TtC6MapsUI21EVChargingPlugRowView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6MapsUI21EVChargingPlugRowView_areLabelsArrangedVertically) = 0;
   v3 = MEMORY[0x1E69E7CC0];
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC6MapsUI21EVChargingPlugRowView)initWithFrame:(CGRect)a3
+- (_TtC6MapsUI21EVChargingPlugRowView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

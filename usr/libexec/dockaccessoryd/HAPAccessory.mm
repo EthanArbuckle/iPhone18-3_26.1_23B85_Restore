@@ -1,48 +1,48 @@
 @interface HAPAccessory
-+ (BOOL)isAccessoryPrimaryWithUniqueIdentifier:(id)a3;
-+ (id)instanceIDForUniqueIdentifier:(id)a3;
++ (BOOL)isAccessoryPrimaryWithUniqueIdentifier:(id)identifier;
++ (id)instanceIDForUniqueIdentifier:(id)identifier;
 + (id)logCategory;
-+ (id)productDataStringFromData:(id)a3;
-+ (id)serverIdentifierWithUniqueIdentifier:(id)a3;
++ (id)productDataStringFromData:(id)data;
++ (id)serverIdentifierWithUniqueIdentifier:(id)identifier;
 - (BOOL)_updateAndValidateServices;
-- (BOOL)_updateService:(id)a3;
+- (BOOL)_updateService:(id)service;
 - (BOOL)_validateCharacteristicValues;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPaired;
 - (BOOL)isReachable;
-- (BOOL)mergeObject:(id)a3;
-- (BOOL)shouldMergeObject:(id)a3;
+- (BOOL)mergeObject:(id)object;
+- (BOOL)shouldMergeObject:(id)object;
 - (BOOL)updateForAccessoryInformationService;
 - (HAPAccessory)init;
-- (HAPAccessory)initWithServer:(id)a3 instanceID:(id)a4 parsedServices:(id)a5;
+- (HAPAccessory)initWithServer:(id)server instanceID:(id)d parsedServices:(id)services;
 - (HAPAccessoryDelegate)delegate;
 - (HAPAccessoryServer)server;
 - (NSNumber)category;
 - (NSString)description;
 - (NSString)uniqueIdentifier;
-- (id)characteristicOfType:(id)a3 serviceType:(id)a4;
-- (id)characteristicsOfType:(id)a3;
-- (id)servicesOfType:(id)a3;
+- (id)characteristicOfType:(id)type serviceType:(id)serviceType;
+- (id)characteristicsOfType:(id)type;
+- (id)servicesOfType:(id)type;
 - (id)shortDescription;
 - (int)consecutiveFailedPingCount;
 - (unint64_t)hash;
 - (void)invalidate;
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6;
-- (void)readValueForCharacteristic:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6;
-- (void)setConsecutiveFailedPingCount:(int)a3;
-- (void)writeCharacteristicValue:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6;
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6;
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler;
+- (void)readValueForCharacteristic:(id)characteristic timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler;
+- (void)setConsecutiveFailedPingCount:(int)count;
+- (void)writeCharacteristicValue:(id)value timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler;
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation HAPAccessory
 
-+ (id)productDataStringFromData:(id)a3
++ (id)productDataStringFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataCopy;
   }
 
   else
@@ -56,9 +56,9 @@
   return v6;
 }
 
-+ (id)serverIdentifierWithUniqueIdentifier:(id)a3
++ (id)serverIdentifierWithUniqueIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"+"];
+  v3 = [identifier componentsSeparatedByString:@"+"];
   if ([v3 count] == 2)
   {
     v4 = [v3 objectAtIndexedSubscript:0];
@@ -72,9 +72,9 @@
   return v4;
 }
 
-+ (id)instanceIDForUniqueIdentifier:(id)a3
++ (id)instanceIDForUniqueIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"+"];
+  v3 = [identifier componentsSeparatedByString:@"+"];
   if ([v3 count] == 2)
   {
     v4 = objc_alloc_init(NSNumberFormatter);
@@ -91,9 +91,9 @@
   return v6;
 }
 
-+ (BOOL)isAccessoryPrimaryWithUniqueIdentifier:(id)a3
++ (BOOL)isAccessoryPrimaryWithUniqueIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"+"];
+  v3 = [identifier componentsSeparatedByString:@"+"];
   if ([v3 count] == 2)
   {
     v4 = [v3 objectAtIndexedSubscript:1];
@@ -118,12 +118,12 @@
   objc_exception_throw(v4);
 }
 
-- (HAPAccessory)initWithServer:(id)a3 instanceID:(id)a4 parsedServices:(id)a5
+- (HAPAccessory)initWithServer:(id)server instanceID:(id)d parsedServices:(id)services
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (sub_10007EA14(v9))
+  serverCopy = server;
+  dCopy = d;
+  servicesCopy = services;
+  if (sub_10007EA14(dCopy))
   {
     v20.receiver = self;
     v20.super_class = HAPAccessory;
@@ -131,18 +131,18 @@
     self = v11;
     if (v11)
     {
-      objc_storeWeak(&v11->_server, v8);
-      self->_linkType = [v8 linkType];
-      self->_communicationProtocol = [v8 communicationProtocol];
-      objc_storeStrong(&self->_instanceID, a4);
+      objc_storeWeak(&v11->_server, serverCopy);
+      self->_linkType = [serverCopy linkType];
+      self->_communicationProtocol = [serverCopy communicationProtocol];
+      objc_storeStrong(&self->_instanceID, d);
       v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v13 = dispatch_queue_create("com.apple.HAPAccessory", v12);
       workQueue = self->_workQueue;
       self->_workQueue = v13;
 
-      if (v10)
+      if (servicesCopy)
       {
-        if ([v10 count] >= 0x65)
+        if ([servicesCopy count] >= 0x65)
         {
           v15 = sub_10007FAA0();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -160,7 +160,7 @@ LABEL_9:
           goto LABEL_10;
         }
 
-        objc_storeStrong(&self->_services, a5);
+        objc_storeStrong(&self->_services, services);
         if (![(HAPAccessory *)self _validateCharacteristicValues])
         {
           v15 = sub_10007FAA0();
@@ -199,7 +199,7 @@ LABEL_9:
     }
 
     self = self;
-    v18 = self;
+    selfCopy = self;
     goto LABEL_15;
   }
 
@@ -215,26 +215,26 @@ LABEL_9:
 
 LABEL_10:
 
-  v18 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v18;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HAPAccessory *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(HAPAccessory *)self instanceID];
-  v6 = [v5 hash];
+  identifier = [(HAPAccessory *)self identifier];
+  v4 = [identifier hash];
+  instanceID = [(HAPAccessory *)self instanceID];
+  v6 = [instanceID hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -244,7 +244,7 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -258,29 +258,29 @@ LABEL_15:
       goto LABEL_10;
     }
 
-    v7 = [(HAPAccessory *)self instanceID];
-    v8 = [(HAPAccessory *)v6 instanceID];
-    v9 = [v7 isEqualToNumber:v8];
+    instanceID = [(HAPAccessory *)self instanceID];
+    instanceID2 = [(HAPAccessory *)v6 instanceID];
+    v9 = [instanceID isEqualToNumber:instanceID2];
 
     if (!v9)
     {
       goto LABEL_10;
     }
 
-    v10 = [(HAPAccessory *)self identifier];
-    v11 = [(HAPAccessory *)v6 identifier];
-    v12 = [v10 isEqualToString:v11];
+    identifier = [(HAPAccessory *)self identifier];
+    identifier2 = [(HAPAccessory *)v6 identifier];
+    v12 = [identifier isEqualToString:identifier2];
 
     if (!v12)
     {
       goto LABEL_10;
     }
 
-    v13 = [(HAPAccessory *)self linkType];
-    if (v13 == [(HAPAccessory *)v6 linkType])
+    linkType = [(HAPAccessory *)self linkType];
+    if (linkType == [(HAPAccessory *)v6 linkType])
     {
-      v14 = [(HAPAccessory *)self communicationProtocol];
-      v15 = v14 == [(HAPAccessory *)v6 communicationProtocol];
+      communicationProtocol = [(HAPAccessory *)self communicationProtocol];
+      v15 = communicationProtocol == [(HAPAccessory *)v6 communicationProtocol];
     }
 
     else
@@ -296,66 +296,66 @@ LABEL_10:
 - (NSString)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(HAPAccessory *)self instanceID];
-  [v3 appendFormat:@"Instance ID: %@    ", v4];
+  instanceID = [(HAPAccessory *)self instanceID];
+  [v3 appendFormat:@"Instance ID: %@    ", instanceID];
 
-  v5 = [(HAPAccessory *)self server];
-  v6 = [v5 name];
-  v7 = [(HAPAccessory *)self server];
-  v8 = [v7 identifier];
-  [v3 appendFormat:@"Server: '%@' (%@)    ", v6, v8];
+  server = [(HAPAccessory *)self server];
+  name = [server name];
+  server2 = [(HAPAccessory *)self server];
+  identifier = [server2 identifier];
+  [v3 appendFormat:@"Server: '%@' (%@)    ", name, identifier];
 
   if ([(HAPAccessory *)self isPrimary])
   {
-    v9 = [(HAPAccessory *)self category];
-    [v3 appendFormat:@"Category: %@    ", v9];
+    category = [(HAPAccessory *)self category];
+    [v3 appendFormat:@"Category: %@    ", category];
   }
 
-  v10 = [(HAPAccessory *)self name];
+  name2 = [(HAPAccessory *)self name];
 
-  if (v10)
+  if (name2)
   {
-    v11 = [(HAPAccessory *)self name];
-    [v3 appendFormat:@"Name: %@    ", v11];
+    name3 = [(HAPAccessory *)self name];
+    [v3 appendFormat:@"Name: %@    ", name3];
   }
 
-  v12 = [(HAPAccessory *)self model];
-  if (v12 || ([(HAPAccessory *)self manufacturer], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  model = [(HAPAccessory *)self model];
+  if (model || ([(HAPAccessory *)self manufacturer], (model = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v20 = [(HAPAccessory *)self serialNumber];
+    serialNumber = [(HAPAccessory *)self serialNumber];
 
-    if (!v20)
+    if (!serialNumber)
     {
       goto LABEL_15;
     }
   }
 
-  v13 = [(HAPAccessory *)self model];
+  model2 = [(HAPAccessory *)self model];
 
-  if (v13)
+  if (model2)
   {
-    v14 = [(HAPAccessory *)self model];
-    [v3 appendFormat:@"Model: %@    ", v14];
+    model3 = [(HAPAccessory *)self model];
+    [v3 appendFormat:@"Model: %@    ", model3];
   }
 
-  v15 = [(HAPAccessory *)self manufacturer];
+  manufacturer = [(HAPAccessory *)self manufacturer];
 
-  if (v15)
+  if (manufacturer)
   {
-    v16 = [(HAPAccessory *)self manufacturer];
-    [v3 appendFormat:@"Manufacturer: %@    ", v16];
+    manufacturer2 = [(HAPAccessory *)self manufacturer];
+    [v3 appendFormat:@"Manufacturer: %@    ", manufacturer2];
   }
 
-  v17 = [(HAPAccessory *)self serialNumber];
+  serialNumber2 = [(HAPAccessory *)self serialNumber];
 
-  if (v17)
+  if (serialNumber2)
   {
-    v18 = [(HAPAccessory *)self serialNumber];
-    [v3 appendFormat:@"Serial Number: %@    ", v18];
+    serialNumber3 = [(HAPAccessory *)self serialNumber];
+    [v3 appendFormat:@"Serial Number: %@    ", serialNumber3];
   }
 
   [v3 appendFormat:@"\n"];
@@ -366,10 +366,10 @@ LABEL_15:
 
 - (BOOL)isPaired
 {
-  v2 = [(HAPAccessory *)self server];
-  v3 = [v2 isPaired];
+  server = [(HAPAccessory *)self server];
+  isPaired = [server isPaired];
 
-  return v3;
+  return isPaired;
 }
 
 - (BOOL)isReachable
@@ -388,10 +388,10 @@ LABEL_15:
   return consecutiveFailedPingCount;
 }
 
-- (void)setConsecutiveFailedPingCount:(int)a3
+- (void)setConsecutiveFailedPingCount:(int)count
 {
   os_unfair_lock_lock_with_options();
-  self->_consecutiveFailedPingCount = a3;
+  self->_consecutiveFailedPingCount = count;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -406,9 +406,9 @@ LABEL_15:
     if (WeakRetained)
     {
       v4 = objc_loadWeakRetained(&self->_server);
-      v5 = [v4 identifier];
-      v6 = [(NSNumber *)self->_instanceID stringValue];
-      v7 = [NSString stringWithFormat:@"%@%@%@", v5, @"+", v6];
+      identifier = [v4 identifier];
+      stringValue = [(NSNumber *)self->_instanceID stringValue];
+      v7 = [NSString stringWithFormat:@"%@%@%@", identifier, @"+", stringValue];
       uniqueIdentifier = self->_uniqueIdentifier;
       self->_uniqueIdentifier = v7;
     }
@@ -437,81 +437,81 @@ LABEL_15:
 
 - (NSNumber)category
 {
-  v3 = [(HAPAccessory *)self server];
-  if (v3 && (v4 = v3, v5 = [(HAPAccessory *)self isPrimary], v4, v5))
+  server = [(HAPAccessory *)self server];
+  if (server && (v4 = server, v5 = [(HAPAccessory *)self isPrimary], v4, v5))
   {
-    v6 = [(HAPAccessory *)self server];
-    v7 = [v6 category];
+    server2 = [(HAPAccessory *)self server];
+    category = [server2 category];
   }
 
   else
   {
-    v7 = 0;
+    category = 0;
   }
 
-  return v7;
+  return category;
 }
 
 - (id)shortDescription
 {
   if (sub_100014954())
   {
-    v3 = [(HAPAccessory *)self name];
-    v4 = [(HAPAccessory *)self identifier];
-    v5 = [(HAPAccessory *)self instanceID];
-    v6 = [NSString stringWithFormat:@"%@/%@+%@", v3, v4, v5];
+    name = [(HAPAccessory *)self name];
+    identifier = [(HAPAccessory *)self identifier];
+    instanceID = [(HAPAccessory *)self instanceID];
+    v6 = [NSString stringWithFormat:@"%@/%@+%@", name, identifier, instanceID];
   }
 
   else
   {
-    v3 = [(HAPAccessory *)self identifier];
-    v4 = [(HAPAccessory *)self instanceID];
-    v6 = [NSString stringWithFormat:@"%@+%@", v3, v4];
+    name = [(HAPAccessory *)self identifier];
+    identifier = [(HAPAccessory *)self instanceID];
+    v6 = [NSString stringWithFormat:@"%@+%@", name, identifier];
   }
 
   return v6;
 }
 
-- (void)readValueForCharacteristic:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)readValueForCharacteristic:(id)characteristic timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  characteristicCopy = characteristic;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (characteristicCopy)
   {
-    if (a4 >= 0.0)
+    if (timeout >= 0.0)
     {
-      v16 = [(HAPAccessory *)self server];
-      if (v16)
+      server = [(HAPAccessory *)self server];
+      if (server)
       {
-        v38 = v10;
+        v38 = characteristicCopy;
         v20 = [NSArray arrayWithObjects:&v38 count:1];
         v26[0] = _NSConcreteStackBlock;
         v26[1] = 3221225472;
         v26[2] = sub_100078B64;
         v26[3] = &unk_1002745F8;
         v21 = &v28;
-        v28 = v12;
+        v28 = handlerCopy;
         v22 = &v27;
-        v27 = v10;
-        [v16 readCharacteristicValues:v20 timeout:v11 completionQueue:v26 completionHandler:a4];
+        v27 = characteristicCopy;
+        [server readCharacteristicValues:v20 timeout:queueCopy completionQueue:v26 completionHandler:timeout];
       }
 
       else
       {
-        v23 = self;
+        selfCopy = self;
         v24 = sub_10007FAA0();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v25 = sub_10007FAFC(v23);
+          v25 = sub_10007FAFC(selfCopy);
           *buf = 138543618;
           v40 = v25;
           v41 = 2112;
-          v42 = v10;
+          v42 = characteristicCopy;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%{public}@Unable to read value for characteristic %@ because there is no server.", buf, 0x16u);
         }
 
-        if (!v11 || !v12)
+        if (!queueCopy || !handlerCopy)
         {
           goto LABEL_21;
         }
@@ -521,64 +521,64 @@ LABEL_15:
         v29[2] = sub_100078AE4;
         v29[3] = &unk_100273720;
         v21 = &v31;
-        v31 = v12;
+        v31 = handlerCopy;
         v22 = &v30;
-        v30 = v10;
-        dispatch_async(v11, v29);
+        v30 = characteristicCopy;
+        dispatch_async(queueCopy, v29);
       }
 
 LABEL_21:
       goto LABEL_22;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = sub_10007FAA0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = sub_10007FAFC(v13);
+      v15 = sub_10007FAFC(selfCopy2);
       *buf = 138543362;
       v40 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@The timeout must not be negative.", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100078A64;
       block[3] = &unk_100273720;
-      v34 = v12;
-      v33 = v10;
-      dispatch_async(v11, block);
+      v34 = handlerCopy;
+      v33 = characteristicCopy;
+      dispatch_async(queueCopy, block);
 
-      v16 = v34;
+      server = v34;
       goto LABEL_21;
     }
   }
 
   else
   {
-    v17 = self;
+    selfCopy3 = self;
     v18 = sub_10007FAA0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = sub_10007FAFC(v17);
+      v19 = sub_10007FAFC(selfCopy3);
       *buf = 138543362;
       v40 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@The target characteristic is a requried parameter", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = sub_1000789E4;
       v35[3] = &unk_100273720;
       v36 = 0;
-      v37 = v12;
-      dispatch_async(v11, v35);
+      v37 = handlerCopy;
+      dispatch_async(queueCopy, v35);
 
-      v16 = v37;
+      server = v37;
       goto LABEL_21;
     }
   }
@@ -586,68 +586,68 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)readCharacteristicValues:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)readCharacteristicValues:(id)values timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count])
+  valuesCopy = values;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([valuesCopy count])
   {
-    if (a4 >= 0.0)
+    if (timeout >= 0.0)
     {
-      v20 = [(HAPAccessory *)self server];
-      v16 = v20;
-      if (v20)
+      server = [(HAPAccessory *)self server];
+      v16 = server;
+      if (server)
       {
-        [v20 readCharacteristicValues:v10 timeout:v11 completionQueue:v12 completionHandler:a4];
+        [server readCharacteristicValues:valuesCopy timeout:queueCopy completionQueue:handlerCopy completionHandler:timeout];
       }
 
       else
       {
-        v21 = self;
+        selfCopy = self;
         v22 = sub_10007FAA0();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = sub_10007FAFC(v21);
+          v23 = sub_10007FAFC(selfCopy);
           *buf = 138543618;
           v31 = v23;
           v32 = 2112;
-          v33 = v10;
+          v33 = valuesCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to read characteristics %@ because there is no server.", buf, 0x16u);
         }
 
-        if (v11 && v12)
+        if (queueCopy && handlerCopy)
         {
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_100079254;
           v24[3] = &unk_100273660;
-          v25 = v12;
-          dispatch_async(v11, v24);
+          v25 = handlerCopy;
+          dispatch_async(queueCopy, v24);
         }
       }
 
       goto LABEL_20;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = sub_10007FAA0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = sub_10007FAFC(v13);
+      v15 = sub_10007FAFC(selfCopy2);
       *buf = 138543362;
       v31 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@The timeout must not be negative.", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100079108;
       block[3] = &unk_100273660;
-      v27 = v12;
-      dispatch_async(v11, block);
+      v27 = handlerCopy;
+      dispatch_async(queueCopy, block);
       v16 = v27;
 LABEL_20:
     }
@@ -655,71 +655,71 @@ LABEL_20:
 
   else
   {
-    v17 = self;
+    selfCopy3 = self;
     v18 = sub_10007FAA0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = sub_10007FAFC(v17);
+      v19 = sub_10007FAFC(selfCopy3);
       *buf = 138543362;
       v31 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@One or more target characteristics are required.", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100078FBC;
       v28[3] = &unk_100273660;
-      v29 = v12;
-      dispatch_async(v11, v28);
+      v29 = handlerCopy;
+      dispatch_async(queueCopy, v28);
       v16 = v29;
       goto LABEL_20;
     }
   }
 }
 
-- (void)writeCharacteristicValue:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)writeCharacteristicValue:(id)value timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  valueCopy = value;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (valueCopy)
   {
-    if (a4 >= 0.0)
+    if (timeout >= 0.0)
     {
-      v16 = [(HAPAccessory *)self server];
-      if (v16)
+      server = [(HAPAccessory *)self server];
+      if (server)
       {
-        v39 = v10;
+        v39 = valueCopy;
         v20 = [NSArray arrayWithObjects:&v39 count:1];
         v27[0] = _NSConcreteStackBlock;
         v27[1] = 3221225472;
         v27[2] = sub_1000799B0;
         v27[3] = &unk_1002745F8;
         v21 = &v29;
-        v29 = v12;
+        v29 = handlerCopy;
         v22 = &v28;
-        v28 = v10;
-        [v16 writeCharacteristicValues:v20 timeout:v11 completionQueue:v27 completionHandler:a4];
+        v28 = valueCopy;
+        [server writeCharacteristicValues:v20 timeout:queueCopy completionQueue:v27 completionHandler:timeout];
       }
 
       else
       {
-        v23 = self;
+        selfCopy = self;
         v24 = sub_10007FAA0();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v25 = sub_10007FAFC(v23);
-          v26 = [v10 characteristic];
+          v25 = sub_10007FAFC(selfCopy);
+          characteristic = [valueCopy characteristic];
           *buf = 138543618;
           v41 = v25;
           v42 = 2112;
-          v43 = v26;
+          v43 = characteristic;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%{public}@Unable to write value for characteristic %@ because there is no server.", buf, 0x16u);
         }
 
-        if (!v11 || !v12)
+        if (!queueCopy || !handlerCopy)
         {
           goto LABEL_21;
         }
@@ -729,64 +729,64 @@ LABEL_20:
         v30[2] = sub_100079918;
         v30[3] = &unk_100273720;
         v21 = &v32;
-        v32 = v12;
+        v32 = handlerCopy;
         v22 = &v31;
-        v31 = v10;
-        dispatch_async(v11, v30);
+        v31 = valueCopy;
+        dispatch_async(queueCopy, v30);
       }
 
 LABEL_21:
       goto LABEL_22;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = sub_10007FAA0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = sub_10007FAFC(v13);
+      v15 = sub_10007FAFC(selfCopy2);
       *buf = 138543362;
       v41 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@The timeout must not be negative.", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100079880;
       block[3] = &unk_100273720;
-      v35 = v12;
-      v34 = v10;
-      dispatch_async(v11, block);
+      v35 = handlerCopy;
+      v34 = valueCopy;
+      dispatch_async(queueCopy, block);
 
-      v16 = v35;
+      server = v35;
       goto LABEL_21;
     }
   }
 
   else
   {
-    v17 = self;
+    selfCopy3 = self;
     v18 = sub_10007FAA0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = sub_10007FAFC(v17);
+      v19 = sub_10007FAFC(selfCopy3);
       *buf = 138543362;
       v41 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@The target characteristic write request is a requried parameter", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_1000797E8;
       v36[3] = &unk_100273720;
       v37 = 0;
-      v38 = v12;
-      dispatch_async(v11, v36);
+      v38 = handlerCopy;
+      dispatch_async(queueCopy, v36);
 
-      v16 = v38;
+      server = v38;
       goto LABEL_21;
     }
   }
@@ -794,68 +794,68 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)writeCharacteristicValues:(id)a3 timeout:(double)a4 completionQueue:(id)a5 completionHandler:(id)a6
+- (void)writeCharacteristicValues:(id)values timeout:(double)timeout completionQueue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 count])
+  valuesCopy = values;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([valuesCopy count])
   {
-    if (a4 >= 0.0)
+    if (timeout >= 0.0)
     {
-      v20 = [(HAPAccessory *)self server];
-      v16 = v20;
-      if (v20)
+      server = [(HAPAccessory *)self server];
+      v16 = server;
+      if (server)
       {
-        [v20 writeCharacteristicValues:v10 timeout:v11 completionQueue:v12 completionHandler:a4];
+        [server writeCharacteristicValues:valuesCopy timeout:queueCopy completionQueue:handlerCopy completionHandler:timeout];
       }
 
       else
       {
-        v21 = self;
+        selfCopy = self;
         v22 = sub_10007FAA0();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = sub_10007FAFC(v21);
+          v23 = sub_10007FAFC(selfCopy);
           *buf = 138543618;
           v31 = v23;
           v32 = 2112;
-          v33 = v10;
+          v33 = valuesCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to write characteristics %@ because there is no server.", buf, 0x16u);
         }
 
-        if (v11 && v12)
+        if (queueCopy && handlerCopy)
         {
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_10007A0DC;
           v24[3] = &unk_100273660;
-          v25 = v12;
-          dispatch_async(v11, v24);
+          v25 = handlerCopy;
+          dispatch_async(queueCopy, v24);
         }
       }
 
       goto LABEL_20;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = sub_10007FAA0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = sub_10007FAFC(v13);
+      v15 = sub_10007FAFC(selfCopy2);
       *buf = 138543362;
       v31 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@The timeout must not be negative.", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100079F90;
       block[3] = &unk_100273660;
-      v27 = v12;
-      dispatch_async(v11, block);
+      v27 = handlerCopy;
+      dispatch_async(queueCopy, block);
       v16 = v27;
 LABEL_20:
     }
@@ -863,24 +863,24 @@ LABEL_20:
 
   else
   {
-    v17 = self;
+    selfCopy3 = self;
     v18 = sub_10007FAA0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = sub_10007FAFC(v17);
+      v19 = sub_10007FAFC(selfCopy3);
       *buf = 138543362;
       v31 = v19;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@One or more target characteristic writes are required.", buf, 0xCu);
     }
 
-    if (v11 && v12)
+    if (queueCopy && handlerCopy)
     {
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100079E44;
       v28[3] = &unk_100273660;
-      v29 = v12;
-      dispatch_async(v11, v28);
+      v29 = handlerCopy;
+      dispatch_async(queueCopy, v28);
       v16 = v29;
       goto LABEL_20;
     }
@@ -894,14 +894,14 @@ LABEL_20:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v4 = [(HAPAccessory *)self services];
-  v5 = [v4 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  services = [(HAPAccessory *)self services];
+  v5 = [services countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v40;
-    v33 = self;
-    v34 = v4;
+    selfCopy = self;
+    v34 = services;
     v31 = *v40;
     while (2)
     {
@@ -911,43 +911,43 @@ LABEL_20:
       {
         if (*v40 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v39 + 1) + 8 * v8);
-        v10 = [v9 instanceID];
-        v11 = [v3 containsObject:v10];
+        instanceID = [v9 instanceID];
+        v11 = [v3 containsObject:instanceID];
 
         if (v11)
         {
-          v13 = sub_10007FAA0();
-          if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          characteristics = sub_10007FAA0();
+          if (!os_log_type_enabled(characteristics, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_23;
           }
 
           v28 = sub_10007FAFC(0);
-          v29 = [v9 instanceID];
-          v30 = [v29 stringValue];
+          instanceID2 = [v9 instanceID];
+          stringValue = [instanceID2 stringValue];
           *buf = 138543618;
           v45 = v28;
           v46 = 2112;
-          v47 = v30;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@### Accessory has service with duplicate instance ID '%@'", buf, 0x16u);
+          v47 = stringValue;
+          _os_log_impl(&_mh_execute_header, characteristics, OS_LOG_TYPE_ERROR, "%{public}@### Accessory has service with duplicate instance ID '%@'", buf, 0x16u);
 
 LABEL_32:
           goto LABEL_23;
         }
 
-        v12 = [v9 instanceID];
-        [v3 addObject:v12];
+        instanceID3 = [v9 instanceID];
+        [v3 addObject:instanceID3];
 
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v13 = [v9 characteristics];
-        v14 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        characteristics = [v9 characteristics];
+        v14 = [characteristics countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v14)
         {
           v15 = v14;
@@ -958,12 +958,12 @@ LABEL_32:
             {
               if (*v36 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(characteristics);
               }
 
               v18 = *(*(&v35 + 1) + 8 * i);
-              v19 = [v18 instanceID];
-              v20 = [v3 containsObject:v19];
+              instanceID4 = [v18 instanceID];
+              v20 = [v3 containsObject:instanceID4];
 
               if (v20)
               {
@@ -971,24 +971,24 @@ LABEL_32:
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
                 {
                   v24 = sub_10007FAFC(0);
-                  v25 = [v18 instanceID];
-                  v26 = [v25 stringValue];
+                  instanceID5 = [v18 instanceID];
+                  stringValue2 = [instanceID5 stringValue];
                   *buf = 138543618;
                   v45 = v24;
                   v46 = 2112;
-                  v47 = v26;
+                  v47 = stringValue2;
                   _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@### Accessory has characteristic with duplicate instance ID '%@'", buf, 0x16u);
                 }
 
-                v4 = v34;
+                services = v34;
                 goto LABEL_23;
               }
 
-              v21 = [v18 instanceID];
-              [v3 addObject:v21];
+              instanceID6 = [v18 instanceID];
+              [v3 addObject:instanceID6];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            v15 = [characteristics countByEnumeratingWithState:&v35 objects:v43 count:16];
             if (v15)
             {
               continue;
@@ -998,12 +998,12 @@ LABEL_32:
           }
         }
 
-        self = v33;
-        if (![(HAPAccessory *)v33 _updateService:v9])
+        self = selfCopy;
+        if (![(HAPAccessory *)selfCopy _updateService:v9])
         {
-          v13 = sub_10007FAA0();
-          v4 = v34;
-          if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          characteristics = sub_10007FAA0();
+          services = v34;
+          if (!os_log_type_enabled(characteristics, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_23;
           }
@@ -1011,13 +1011,13 @@ LABEL_32:
           v28 = sub_10007FAFC(0);
           *buf = 138543362;
           v45 = v28;
-          _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@### Accessory failed _updateService", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, characteristics, OS_LOG_TYPE_ERROR, "%{public}@### Accessory failed _updateService", buf, 0xCu);
           goto LABEL_32;
         }
 
         v8 = v8 + 1;
         v7 = v31;
-        v4 = v34;
+        services = v34;
       }
 
       while (v8 != v32);
@@ -1038,13 +1038,13 @@ LABEL_32:
 
   else
   {
-    v4 = sub_10007FAA0();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    services = sub_10007FAA0();
+    if (os_log_type_enabled(services, OS_LOG_TYPE_ERROR))
     {
-      v13 = sub_10007FAFC(0);
+      characteristics = sub_10007FAFC(0);
       *buf = 138543362;
-      v45 = v13;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "%{public}@### Accessory failed _updateForAccessoryInformationService", buf, 0xCu);
+      v45 = characteristics;
+      _os_log_impl(&_mh_execute_header, services, OS_LOG_TYPE_ERROR, "%{public}@### Accessory failed _updateForAccessoryInformationService", buf, 0xCu);
 LABEL_23:
     }
 
@@ -1054,11 +1054,11 @@ LABEL_23:
   return v22;
 }
 
-- (BOOL)_updateService:(id)a3
+- (BOOL)_updateService:(id)service
 {
-  if (a3)
+  if (service)
   {
-    [a3 setAccessory:self];
+    [service setAccessory:self];
   }
 
   return 1;
@@ -1070,8 +1070,8 @@ LABEL_23:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v2 = [(HAPAccessory *)self services];
-  v3 = [v2 countByEnumeratingWithState:&v47 objects:v54 count:16];
+  services = [(HAPAccessory *)self services];
+  v3 = [services countByEnumeratingWithState:&v47 objects:v54 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1083,12 +1083,12 @@ LABEL_23:
       {
         if (*v48 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(services);
         }
 
         v8 = *(*(&v47 + 1) + 8 * i);
-        v9 = [v8 type];
-        v10 = [v9 isEqualToString:@"0000003E-0000-1000-8000-4D69736D6574"];
+        type = [v8 type];
+        v10 = [type isEqualToString:@"0000003E-0000-1000-8000-4D69736D6574"];
 
         if (v10)
         {
@@ -1110,7 +1110,7 @@ LABEL_23:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v47 objects:v54 count:16];
+      v4 = [services countByEnumeratingWithState:&v47 objects:v54 count:16];
       if (v4)
       {
         continue;
@@ -1125,8 +1125,8 @@ LABEL_23:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v11 = [v5 characteristics];
-      v12 = [v11 countByEnumeratingWithState:&v43 objects:v51 count:16];
+      characteristics = [v5 characteristics];
+      v12 = [characteristics countByEnumeratingWithState:&v43 objects:v51 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1137,19 +1137,19 @@ LABEL_23:
           {
             if (*v44 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(characteristics);
             }
 
             v16 = *(*(&v43 + 1) + 8 * j);
-            v17 = [v16 value];
+            value = [v16 value];
 
-            if (v17)
+            if (value)
             {
-              v18 = [v16 value];
+              value2 = [v16 value];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v19 = v18;
+                v19 = value2;
               }
 
               else
@@ -1161,8 +1161,8 @@ LABEL_23:
 
               v21 = [HMFObjectCacheNSString hmf_cachedInstanceForString:v20];
 
-              v22 = [v16 type];
-              v23 = [v22 isEqualToString:@"00000023-0000-1000-8000-4D69736D6574"];
+              type2 = [v16 type];
+              v23 = [type2 isEqualToString:@"00000023-0000-1000-8000-4D69736D6574"];
 
               if (v23)
               {
@@ -1171,8 +1171,8 @@ LABEL_23:
 
               else
               {
-                v24 = [v16 type];
-                v25 = [v24 isEqualToString:@"00000020-0000-1000-8000-4D69736D6574"];
+                type3 = [v16 type];
+                v25 = [type3 isEqualToString:@"00000020-0000-1000-8000-4D69736D6574"];
 
                 if (v25)
                 {
@@ -1181,8 +1181,8 @@ LABEL_23:
 
                 else
                 {
-                  v26 = [v16 type];
-                  v27 = [v26 isEqualToString:@"00000021-0000-1000-8000-4D69736D6574"];
+                  type4 = [v16 type];
+                  v27 = [type4 isEqualToString:@"00000021-0000-1000-8000-4D69736D6574"];
 
                   if (v27)
                   {
@@ -1191,8 +1191,8 @@ LABEL_23:
 
                   else
                   {
-                    v28 = [v16 type];
-                    v29 = [v28 isEqualToString:@"00000030-0000-1000-8000-4D69736D6574"];
+                    type5 = [v16 type];
+                    v29 = [type5 isEqualToString:@"00000030-0000-1000-8000-4D69736D6574"];
 
                     if (v29)
                     {
@@ -1201,8 +1201,8 @@ LABEL_23:
 
                     else
                     {
-                      v30 = [v16 type];
-                      v31 = [v30 isEqualToString:@"00000052-0000-1000-8000-4D69736D6574"];
+                      type6 = [v16 type];
+                      v31 = [type6 isEqualToString:@"00000052-0000-1000-8000-4D69736D6574"];
 
                       if (v31)
                       {
@@ -1211,14 +1211,14 @@ LABEL_23:
 
                       else
                       {
-                        v32 = [v16 type];
-                        v33 = [v32 isEqualToString:@"00000220-0000-1000-8000-4D69736D6574"];
+                        type7 = [v16 type];
+                        v33 = [type7 isEqualToString:@"00000220-0000-1000-8000-4D69736D6574"];
 
                         if (v33)
                         {
                           v34 = objc_opt_class();
-                          v35 = [v16 value];
-                          v36 = [v34 productDataStringFromData:v35];
+                          value3 = [v16 value];
+                          v36 = [v34 productDataStringFromData:value3];
                           [(HAPAccessory *)self setProductData:v36];
                         }
                       }
@@ -1229,7 +1229,7 @@ LABEL_23:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v43 objects:v51 count:16];
+          v13 = [characteristics countByEnumeratingWithState:&v43 objects:v51 count:16];
         }
 
         while (v13);
@@ -1262,25 +1262,25 @@ LABEL_44:
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10007FAA0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = sub_10007FAFC(v2);
+    v4 = sub_10007FAFC(selfCopy);
     v8 = 138543618;
     v9 = v4;
     v10 = 2112;
-    v11 = v2;
+    v11 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@Invalidating and updating connection state for HAP Accessory: %@", &v8, 0x16u);
   }
 
-  v5 = [(HAPAccessory *)v2 delegate];
+  delegate = [(HAPAccessory *)selfCopy delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HAPAccessory *)v2 delegate];
-    [v7 accessory:v2 didUpdateConnectionState:0];
+    delegate2 = [(HAPAccessory *)selfCopy delegate];
+    [delegate2 accessory:selfCopy didUpdateConnectionState:0];
   }
 }
 
@@ -1290,8 +1290,8 @@ LABEL_44:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v2 = [(HAPAccessory *)self services];
-  v3 = [v2 countByEnumeratingWithState:&v29 objects:v40 count:16];
+  services = [(HAPAccessory *)self services];
+  v3 = [services countByEnumeratingWithState:&v29 objects:v40 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1303,7 +1303,7 @@ LABEL_44:
       {
         if (*v30 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(services);
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
@@ -1311,8 +1311,8 @@ LABEL_44:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v8 = [v7 characteristics];
-        v9 = [v8 countByEnumeratingWithState:&v25 objects:v39 count:16];
+        characteristics = [v7 characteristics];
+        v9 = [characteristics countByEnumeratingWithState:&v25 objects:v39 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1323,22 +1323,22 @@ LABEL_44:
             {
               if (*v26 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(characteristics);
               }
 
               v13 = *(*(&v25 + 1) + 8 * j);
               if ([v13 shouldValidateValueAfterReading])
               {
-                v14 = [v13 value];
-                if (v14)
+                value = [v13 value];
+                if (value)
                 {
-                  v15 = v14;
-                  v16 = [v13 properties];
+                  v15 = value;
+                  properties = [v13 properties];
 
-                  if ((v16 & 2) != 0)
+                  if ((properties & 2) != 0)
                   {
-                    v17 = [v13 value];
-                    v18 = [v13 validateValue:v17 outValue:0];
+                    value2 = [v13 value];
+                    v18 = [v13 validateValue:value2 outValue:0];
 
                     if (v18)
                     {
@@ -1346,11 +1346,11 @@ LABEL_44:
                       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
                       {
                         v21 = sub_10007FAFC(0);
-                        v22 = [v13 type];
+                        type = [v13 type];
                         *buf = 138543874;
                         v34 = v21;
                         v35 = 2112;
-                        v36 = v22;
+                        v36 = type;
                         v37 = 2112;
                         v38 = v18;
                         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@[HAP Accessory] ### Failed to validate value with type %@ with error %@", buf, 0x20u);
@@ -1364,7 +1364,7 @@ LABEL_44:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v25 objects:v39 count:16];
+            v10 = [characteristics countByEnumeratingWithState:&v25 objects:v39 count:16];
             if (v10)
             {
               continue;
@@ -1377,7 +1377,7 @@ LABEL_44:
         v5 = v24;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v29 objects:v40 count:16];
+      v4 = [services countByEnumeratingWithState:&v29 objects:v40 count:16];
       v19 = 1;
     }
 
@@ -1394,16 +1394,16 @@ LABEL_24:
   return v19;
 }
 
-- (id)servicesOfType:(id)a3
+- (id)servicesOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HAPAccessory *)self services];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  services = [(HAPAccessory *)self services];
+  v7 = [services countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1414,12 +1414,12 @@ LABEL_24:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(services);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = [v12 isEqualToString:v4];
+        type = [v11 type];
+        v13 = [type isEqualToString:typeCopy];
 
         if (v13)
         {
@@ -1427,7 +1427,7 @@ LABEL_24:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [services countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1436,16 +1436,16 @@ LABEL_24:
   return v5;
 }
 
-- (id)characteristicsOfType:(id)a3
+- (id)characteristicsOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(HAPAccessory *)self services];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  services = [(HAPAccessory *)self services];
+  v7 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1456,14 +1456,14 @@ LABEL_24:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(services);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) characteristicsOfType:v4];
+        v11 = [*(*(&v13 + 1) + 8 * i) characteristicsOfType:typeCopy];
         [v5 addObjectsFromArray:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [services countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1472,45 +1472,45 @@ LABEL_24:
   return v5;
 }
 
-- (id)characteristicOfType:(id)a3 serviceType:(id)a4
+- (id)characteristicOfType:(id)type serviceType:(id)serviceType
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (!v6 || !v7)
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  v8 = serviceTypeCopy;
+  v11FirstObject = 0;
+  if (!typeCopy || !serviceTypeCopy)
   {
     goto LABEL_8;
   }
 
-  v10 = [(HAPAccessory *)self servicesOfType:v7];
-  v11 = [v10 firstObject];
+  v10 = [(HAPAccessory *)self servicesOfType:serviceTypeCopy];
+  firstObject = [v10 firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = 0;
+    v11FirstObject = 0;
     goto LABEL_7;
   }
 
   v12 = [(HAPAccessory *)self servicesOfType:v8];
-  v13 = [v12 firstObject];
+  firstObject2 = [v12 firstObject];
 
-  if (v13)
+  if (firstObject2)
   {
-    v11 = [v13 characteristicsOfType:v6];
-    v9 = [v11 firstObject];
-    v10 = v13;
+    firstObject = [firstObject2 characteristicsOfType:typeCopy];
+    v11FirstObject = [firstObject firstObject];
+    v10 = firstObject2;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v9 = 0;
+  v11FirstObject = 0;
 LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v9;
+    v14 = v11FirstObject;
   }
 
   else
@@ -1523,17 +1523,17 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)shouldMergeObject:(id)a3
+- (BOOL)shouldMergeObject:(id)object
 {
-  v4 = a3;
-  if ([(HAPAccessory *)self isEqual:v4])
+  objectCopy = object;
+  if ([(HAPAccessory *)self isEqual:objectCopy])
   {
-    v5 = [(HAPAccessory *)self services];
-    v6 = [NSSet setWithArray:v5];
+    services = [(HAPAccessory *)self services];
+    v6 = [NSSet setWithArray:services];
 
-    v23 = v4;
-    v7 = [v4 services];
-    v8 = [NSSet setWithArray:v7];
+    v23 = objectCopy;
+    services2 = [objectCopy services];
+    v8 = [NSSet setWithArray:services2];
 
     v22 = v6;
     v9 = [v6 mutableCopy];
@@ -1571,11 +1571,11 @@ LABEL_8:
             goto LABEL_13;
           }
 
-          v18 = self;
+          selfCopy = self;
           v19 = sub_10007FAA0();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v20 = sub_10007FAFC(v18);
+            v20 = sub_10007FAFC(selfCopy);
             *buf = 138543874;
             v29 = v20;
             v30 = 2112;
@@ -1595,7 +1595,7 @@ LABEL_13:
       {
 LABEL_18:
 
-        v4 = v23;
+        objectCopy = v23;
         goto LABEL_19;
       }
     }
@@ -1607,13 +1607,13 @@ LABEL_19:
   return v14 & 1;
 }
 
-- (BOOL)mergeObject:(id)a3
+- (BOOL)mergeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -1627,12 +1627,12 @@ LABEL_19:
     if ([(HAPAccessory *)self shouldMergeObject:v6])
     {
       v75 = v6;
-      v7 = [(HAPAccessory *)self services];
-      v8 = [NSSet setWithArray:v7];
+      services = [(HAPAccessory *)self services];
+      v8 = [NSSet setWithArray:services];
 
-      v76 = v4;
-      v9 = [v4 services];
-      v10 = [NSSet setWithArray:v9];
+      v76 = objectCopy;
+      services2 = [objectCopy services];
+      v10 = [NSSet setWithArray:services2];
 
       v77 = v8;
       v11 = [(HAPAccessory *)v8 mutableCopy];
@@ -1659,11 +1659,11 @@ LABEL_19:
             }
 
             v16 = *(*(&v91 + 1) + 8 * i);
-            v17 = self;
+            selfCopy = self;
             v18 = sub_10007FAA0();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
-              v19 = sub_10007FAFC(v17);
+              v19 = sub_10007FAFC(selfCopy);
               *buf = 138543618;
               v99 = v19;
               v100 = 2112;
@@ -1703,11 +1703,11 @@ LABEL_19:
             }
 
             v26 = *(*(&v87 + 1) + 8 * j);
-            v27 = self;
+            selfCopy2 = self;
             v28 = sub_10007FAA0();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
             {
-              v29 = sub_10007FAFC(v27);
+              v29 = sub_10007FAFC(selfCopy2);
               *buf = 138543618;
               v99 = v29;
               v100 = 2112;
@@ -1715,7 +1715,7 @@ LABEL_19:
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "%{public}@Added service: %@", buf, 0x16u);
             }
 
-            [v26 setAccessory:v27];
+            [v26 setAccessory:selfCopy2];
           }
 
           v23 = [v80 countByEnumeratingWithState:&v87 objects:v96 count:16];
@@ -1749,11 +1749,11 @@ LABEL_19:
             }
 
             v35 = *(*(&v83 + 1) + 8 * k);
-            v36 = self;
+            selfCopy3 = self;
             v37 = sub_10007FAA0();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
-              v38 = sub_10007FAFC(v36);
+              v38 = sub_10007FAFC(selfCopy3);
               *buf = 138543618;
               v99 = v38;
               v100 = 2112;
@@ -1764,7 +1764,7 @@ LABEL_19:
             v39 = [v10 member:v35];
             if (v39 && [v35 mergeObject:v39])
             {
-              v40 = v36;
+              v40 = selfCopy3;
               v41 = sub_10007FAA0();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
               {
@@ -1788,100 +1788,100 @@ LABEL_19:
         while (v32);
       }
 
-      v43 = [v79 allObjects];
-      v44 = [NSMutableArray arrayWithArray:v43];
+      allObjects = [v79 allObjects];
+      v44 = [NSMutableArray arrayWithArray:allObjects];
 
-      v45 = [v80 allObjects];
-      [v44 addObjectsFromArray:v45];
+      allObjects2 = [v80 allObjects];
+      [v44 addObjectsFromArray:allObjects2];
 
       v46 = [v44 copy];
       [(HAPAccessory *)self setServices:v46];
 
-      v47 = [(HAPAccessory *)self name];
+      name = [(HAPAccessory *)self name];
       v6 = v75;
-      v48 = [v75 name];
-      v49 = [v47 isEqualToString:v48];
+      name2 = [v75 name];
+      v49 = [name isEqualToString:name2];
 
       v50 = v78;
       if ((v49 & 1) == 0)
       {
-        v51 = [v75 name];
-        [(HAPAccessory *)self setName:v51];
+        name3 = [v75 name];
+        [(HAPAccessory *)self setName:name3];
 
         v50 = 1;
       }
 
-      v52 = [(HAPAccessory *)self manufacturer];
-      v53 = [v75 manufacturer];
-      v54 = [v52 isEqualToString:v53];
+      manufacturer = [(HAPAccessory *)self manufacturer];
+      manufacturer2 = [v75 manufacturer];
+      v54 = [manufacturer isEqualToString:manufacturer2];
 
-      v4 = v76;
+      objectCopy = v76;
       if ((v54 & 1) == 0)
       {
-        v55 = [v75 manufacturer];
-        [(HAPAccessory *)self setManufacturer:v55];
+        manufacturer3 = [v75 manufacturer];
+        [(HAPAccessory *)self setManufacturer:manufacturer3];
 
         v50 = 1;
       }
 
-      v56 = [(HAPAccessory *)self model];
-      v57 = [v75 model];
-      v58 = [v56 isEqualToString:v57];
+      model = [(HAPAccessory *)self model];
+      model2 = [v75 model];
+      v58 = [model isEqualToString:model2];
 
       if ((v58 & 1) == 0)
       {
-        v59 = [v75 model];
-        [(HAPAccessory *)self setModel:v59];
+        model3 = [v75 model];
+        [(HAPAccessory *)self setModel:model3];
 
         v50 = 1;
       }
 
-      v60 = [(HAPAccessory *)self serialNumber];
-      v61 = [v75 serialNumber];
-      v62 = [v60 isEqualToString:v61];
+      serialNumber = [(HAPAccessory *)self serialNumber];
+      serialNumber2 = [v75 serialNumber];
+      v62 = [serialNumber isEqualToString:serialNumber2];
 
       if ((v62 & 1) == 0)
       {
-        v63 = [v75 serialNumber];
-        [(HAPAccessory *)self setSerialNumber:v63];
+        serialNumber3 = [v75 serialNumber];
+        [(HAPAccessory *)self setSerialNumber:serialNumber3];
 
         v50 = 1;
       }
 
-      v64 = [(HAPAccessory *)self firmwareVersion];
-      v65 = [v75 firmwareVersion];
-      v66 = [v64 isEqualToString:v65];
+      firmwareVersion = [(HAPAccessory *)self firmwareVersion];
+      firmwareVersion2 = [v75 firmwareVersion];
+      v66 = [firmwareVersion isEqualToString:firmwareVersion2];
 
       if ((v66 & 1) == 0)
       {
-        v67 = [v75 firmwareVersion];
-        [(HAPAccessory *)self setFirmwareVersion:v67];
+        firmwareVersion3 = [v75 firmwareVersion];
+        [(HAPAccessory *)self setFirmwareVersion:firmwareVersion3];
 
         v50 = 1;
       }
 
-      v68 = [(HAPAccessory *)self productData];
-      v69 = [v75 productData];
-      v70 = [v68 isEqualToString:v69];
+      productData = [(HAPAccessory *)self productData];
+      productData2 = [v75 productData];
+      v70 = [productData isEqualToString:productData2];
 
       if ((v70 & 1) == 0)
       {
-        v71 = [v75 productData];
-        [(HAPAccessory *)self setProductData:v71];
+        productData3 = [v75 productData];
+        [(HAPAccessory *)self setProductData:productData3];
 
         v50 = 1;
       }
 
-      v72 = v77;
+      selfCopy4 = v77;
     }
 
     else
     {
-      v72 = self;
+      selfCopy4 = self;
       v10 = sub_10007FAA0();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v73 = sub_10007FAFC(v72);
+        v73 = sub_10007FAFC(selfCopy4);
         *buf = 138543618;
         v99 = v73;
         v100 = 2112;

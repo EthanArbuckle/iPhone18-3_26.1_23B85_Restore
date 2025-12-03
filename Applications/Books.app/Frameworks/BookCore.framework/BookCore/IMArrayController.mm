@@ -1,26 +1,26 @@
 @interface IMArrayController
-- (void)setArrangedObjects:(id)a3;
+- (void)setArrangedObjects:(id)objects;
 @end
 
 @implementation IMArrayController
 
-- (void)setArrangedObjects:(id)a3
+- (void)setArrangedObjects:(id)objects
 {
-  v8 = a3;
-  v5 = [(IMArrayController *)self arrangedObjects];
-  if (v5 == v8)
+  objectsCopy = objects;
+  arrangedObjects = [(IMArrayController *)self arrangedObjects];
+  if (arrangedObjects == objectsCopy)
   {
   }
 
   else
   {
-    v6 = [(IMArrayController *)self arrangedObjects];
-    v7 = [v8 isEqualToArray:v6];
+    arrangedObjects2 = [(IMArrayController *)self arrangedObjects];
+    v7 = [objectsCopy isEqualToArray:arrangedObjects2];
 
     if ((v7 & 1) == 0)
     {
       [(IMArrayController *)self willChangeValueForKey:@"arrangedObjects"];
-      objc_storeStrong(&self->_arrangedObjects, a3);
+      objc_storeStrong(&self->_arrangedObjects, objects);
       [(IMArrayController *)self didChangeValueForKey:@"arrangedObjects"];
     }
   }

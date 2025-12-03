@@ -1,23 +1,23 @@
 @interface HDCategorySampleSyncEntity
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4;
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile;
 + (id)_categoryTypesDerivedFromQuantitySamples;
-+ (id)_objectWithCodable:(id)a3 collection:(id)a4;
++ (id)_objectWithCodable:(id)codable collection:(id)collection;
 + (id)_predicateForCategoryTypesToSync;
-+ (id)_predicateForSyncSession:(id)a3;
++ (id)_predicateForSyncSession:(id)session;
 @end
 
 @implementation HDCategorySampleSyncEntity
 
-+ (id)_objectWithCodable:(id)a3 collection:(id)a4
++ (id)_objectWithCodable:(id)codable collection:(id)collection
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 sample];
-  [v6 dataType];
+  codableCopy = codable;
+  sample = [codableCopy sample];
+  [sample dataType];
 
   if (_HKValidDataTypeCode())
   {
-    v7 = [MEMORY[0x277CCD0B0] createWithCodable:v5];
+    v7 = [MEMORY[0x277CCD0B0] createWithCodable:codableCopy];
   }
 
   else
@@ -27,11 +27,11 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v5 sample];
+      sample2 = [codableCopy sample];
       v13 = 138543618;
-      v14 = a1;
+      selfCopy = self;
       v15 = 2048;
-      v16 = [v10 dataType];
+      dataType = [sample2 dataType];
       _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignorning unknown data type code %lld", &v13, 0x16u);
     }
 
@@ -43,17 +43,17 @@
   return v7;
 }
 
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile
 {
   v71[23] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 daemon];
-  v7 = [v6 behavior];
-  v8 = [v7 supportsSampleExpiration];
+  dateCopy = date;
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsSampleExpiration = [behavior supportsSampleExpiration];
 
-  if (v8)
+  if (supportsSampleExpiration)
   {
-    v59 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v57 = [MEMORY[0x277CCD8D8] dataTypeWithCode:95];
     v71[0] = v57;
     v55 = [MEMORY[0x277CCD8D8] dataTypeWithCode:96];
@@ -95,7 +95,7 @@
     v14 = [MEMORY[0x277CCD8D8] dataTypeWithCode:168];
     v71[19] = v14;
     [MEMORY[0x277CCD8D8] dataTypeWithCode:169];
-    v15 = v62 = v5;
+    v15 = v62 = dateCopy;
     v71[20] = v15;
     v16 = [MEMORY[0x277CCD8D8] dataTypeWithCode:170];
     v71[21] = v16;
@@ -127,14 +127,14 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __67__HDCategorySampleSyncEntity__basePruningPredicateForDate_profile___block_invoke;
     aBlock[3] = &unk_27862F0F0;
-    v64 = v59;
+    v64 = currentCalendar;
     v26 = v62;
     v65 = v26;
     v66 = v24;
     v67 = v25;
     v27 = v25;
     v28 = v24;
-    v60 = v59;
+    v60 = currentCalendar;
     v29 = _Block_copy(aBlock);
     v29[2](v29, v61, *MEMORY[0x277CCCF00]);
     v29[2](v29, v58, *MEMORY[0x277CCCF10]);
@@ -152,7 +152,7 @@
     v36 = MEMORY[0x277D10B20];
     v37 = [v28 copy];
     v38 = v36;
-    v5 = v62;
+    dateCopy = v62;
     v39 = [v38 predicateMatchingAnyPredicates:v37];
   }
 
@@ -176,17 +176,17 @@ void __67__HDCategorySampleSyncEntity__basePruningPredicateForDate_profile___blo
   [*(a1 + 56) addObjectsFromArray:v7];
 }
 
-+ (id)_predicateForSyncSession:(id)a3
++ (id)_predicateForSyncSession:(id)session
 {
   v4 = MEMORY[0x277D10B70];
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___HDCategorySampleSyncEntity;
-  v5 = a3;
-  v6 = objc_msgSendSuper2(&v15, sel__predicateForSyncSession_, v5);
-  v7 = [a1 _predicateForCategoryTypesToSync];
-  v8 = [v4 compoundPredicateWithPredicate:v6 otherPredicate:v7];
+  sessionCopy = session;
+  v6 = objc_msgSendSuper2(&v15, sel__predicateForSyncSession_, sessionCopy);
+  _predicateForCategoryTypesToSync = [self _predicateForCategoryTypesToSync];
+  v8 = [v4 compoundPredicateWithPredicate:v6 otherPredicate:_predicateForCategoryTypesToSync];
 
-  LODWORD(v4) = _isCompanionSyncToUSLegallyCompliantOxygenSaturationDeviceForSyncSession(v5);
+  LODWORD(v4) = _isCompanionSyncToUSLegallyCompliantOxygenSaturationDeviceForSyncSession(sessionCopy);
   if (v4)
   {
     v9 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCBAE0]];

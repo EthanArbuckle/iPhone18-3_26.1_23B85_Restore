@@ -1,90 +1,90 @@
 @interface CPUINowPlayingViewController
-- (BOOL)_isCarScene:(id)a3;
+- (BOOL)_isCarScene:(id)scene;
 - (BOOL)_showsButtonSelectionsForTouch;
 - (CGSize)nowPlayingMaxSize;
-- (CPUINowPlayingViewController)initWithBundleIdentifier:(id)a3 dataSource:(id)a4 delegate:(id)a5;
+- (CPUINowPlayingViewController)initWithBundleIdentifier:(id)identifier dataSource:(id)source delegate:(id)delegate;
 - (CPUINowPlayingViewControllerDataSource)dataSource;
 - (CPUINowPlayingViewControllerDelegate)delegate;
 - (CPUIPlayModeControlView)playModeControlView;
 - (CPUISongDetailsView)songDetailsView;
 - (CPUITransportControlView)transportControlView;
-- (id)_installedFullBackgroundArtworkViewBelowView:(id)a3;
+- (id)_installedFullBackgroundArtworkViewBelowView:(id)view;
 - (id)_upNextBarButtonItem;
 - (id)preferredFocusEnvironments;
-- (void)_albumArtistButtonTapped:(id)a3;
-- (void)_attributionButtonTapped:(id)a3;
-- (void)_backButtonTapped:(id)a3;
+- (void)_albumArtistButtonTapped:(id)tapped;
+- (void)_attributionButtonTapped:(id)tapped;
+- (void)_backButtonTapped:(id)tapped;
 - (void)_checkMetalRendering;
-- (void)_deactivateStatusBarStyleOverrideIfNecessaryForScene:(id)a3;
-- (void)_fastForwardButtonLongPress:(id)a3;
-- (void)_fastForwardButtonTouchDown:(id)a3;
-- (void)_fastForwardButtonTouchUp:(id)a3;
-- (void)_handleVideoAvailabilityChanged:(id)a3;
+- (void)_deactivateStatusBarStyleOverrideIfNecessaryForScene:(id)scene;
+- (void)_fastForwardButtonLongPress:(id)press;
+- (void)_fastForwardButtonTouchDown:(id)down;
+- (void)_fastForwardButtonTouchUp:(id)up;
+- (void)_handleVideoAvailabilityChanged:(id)changed;
 - (void)_initializeTransportControls;
-- (void)_leftButtonLongPress:(id)a3;
-- (void)_leftButtonTouchDown:(id)a3;
-- (void)_leftButtonTouchUp:(id)a3;
-- (void)_playPauseButtonTouchDown:(id)a3;
-- (void)_playPauseButtonTouchUp:(id)a3;
-- (void)_recalculateLayout:(BOOL)a3;
-- (void)_reloadDataForcingLayout:(BOOL)a3 updateControls:(BOOL)a4;
+- (void)_leftButtonLongPress:(id)press;
+- (void)_leftButtonTouchDown:(id)down;
+- (void)_leftButtonTouchUp:(id)up;
+- (void)_playPauseButtonTouchDown:(id)down;
+- (void)_playPauseButtonTouchUp:(id)up;
+- (void)_recalculateLayout:(BOOL)layout;
+- (void)_reloadDataForcingLayout:(BOOL)layout updateControls:(BOOL)controls;
 - (void)_respondToHeldAction;
-- (void)_sceneDidActivate:(id)a3;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)_sceneWillDeactivate:(id)a3;
-- (void)_sceneWillEnterForeground:(id)a3;
-- (void)_sendAction:(int64_t)a3 withState:(int64_t)a4;
+- (void)_sceneDidActivate:(id)activate;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)_sceneWillDeactivate:(id)deactivate;
+- (void)_sceneWillEnterForeground:(id)foreground;
+- (void)_sendAction:(int64_t)action withState:(int64_t)state;
 - (void)_sendHeldAction;
-- (void)_setNowPlayingNavBarActive:(BOOL)a3;
-- (void)_setStatusBarOverrideActive:(BOOL)a3;
-- (void)_updateArtworkViewIfNeeded:(id)a3 placeholder:(id)a4;
+- (void)_setNowPlayingNavBarActive:(BOOL)active;
+- (void)_setStatusBarOverrideActive:(BOOL)active;
+- (void)_updateArtworkViewIfNeeded:(id)needed placeholder:(id)placeholder;
 - (void)_updateArtworkViewVideoPlaybackState;
-- (void)_updateAudioRenderingMode:(int64_t)a3;
+- (void)_updateAudioRenderingMode:(int64_t)mode;
 - (void)_updatePlayModesState;
 - (void)_updatePlaybackRate;
-- (void)_updateRepeatStateWithType:(int64_t)a3;
+- (void)_updateRepeatStateWithType:(int64_t)type;
 - (void)_updateShuffleAndRepeatButtons;
-- (void)_updateShuffleStateWithType:(int64_t)a3;
-- (void)_updateTransportControl:(id)a3 withDefaultImage:(id)a4 actionType:(int64_t)a5;
+- (void)_updateShuffleStateWithType:(int64_t)type;
+- (void)_updateTransportControl:(id)control withDefaultImage:(id)image actionType:(int64_t)type;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3;
-- (void)nowPlayingAudioFormatController:(id)a3 didChangeAudioFormatContentInfo:(id)a4;
-- (void)nowPlayingViewWantsToShowVideo:(id)a3;
-- (void)playModeControlView:(id)a3 didSelectButton:(id)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)environmentMonitorDidChangeThermalLevel:(id)level;
+- (void)nowPlayingAudioFormatController:(id)controller didChangeAudioFormatContentInfo:(id)info;
+- (void)nowPlayingViewWantsToShowVideo:(id)video;
+- (void)playModeControlView:(id)view didSelectButton:(id)button;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reloadData;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)upNextButtonTapped:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)traitCollectionDidChange:(id)change;
+- (void)upNextButtonTapped:(id)tapped;
 - (void)updatePlayControls;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CPUINowPlayingViewController
 
-- (CPUINowPlayingViewController)initWithBundleIdentifier:(id)a3 dataSource:(id)a4 delegate:(id)a5
+- (CPUINowPlayingViewController)initWithBundleIdentifier:(id)identifier dataSource:(id)source delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v33.receiver = self;
   v33.super_class = CPUINowPlayingViewController;
   v12 = [(CPUINowPlayingViewController *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_dataSource, v10);
-    objc_storeWeak(&v13->_delegate, v11);
-    objc_storeStrong(&v13->_bundleIdentifier, a3);
+    objc_storeWeak(&v12->_dataSource, sourceCopy);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_bundleIdentifier, identifier);
     nowPlayingSizeConstraints = v13->_nowPlayingSizeConstraints;
     v13->_nowPlayingSizeConstraints = MEMORY[0x277CBEBF8];
 
@@ -112,17 +112,17 @@
     videoAvailability = v13->_videoAvailability;
     v13->_videoAvailability = v26;
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v13 selector:sel__handleVideoAvailabilityChanged_ name:@"CPUIVideoAvailabilityChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__handleVideoAvailabilityChanged_ name:@"CPUIVideoAvailabilityChangedNotification" object:0];
 
     [(CPUINowPlayingViewController *)v13 nowPlayingAudioFormatController:v13->_audioFormatController didChangeAudioFormatContentInfo:0];
-    v29 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-    v30 = [v29 valueBool];
+    usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+    valueBool = [usesMetalNowPlayingArtwork valueBool];
 
-    if (v30)
+    if (valueBool)
     {
-      v31 = [MEMORY[0x277D7FA90] sharedMonitor];
-      [v31 registerObserver:v13];
+      mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+      [mEMORY[0x277D7FA90] registerObserver:v13];
     }
   }
 
@@ -139,13 +139,13 @@
   uiTimer = self->_uiTimer;
   self->_uiTimer = 0;
 
-  v5 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-  v6 = [v5 valueBool];
+  usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+  valueBool = [usesMetalNowPlayingArtwork valueBool];
 
-  if (v6)
+  if (valueBool)
   {
-    v7 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v7 unregisterObserver:self];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] unregisterObserver:self];
   }
 
   v8.receiver = self;
@@ -153,9 +153,9 @@
   [(CPUINowPlayingViewController *)&v8 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -167,9 +167,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -199,7 +199,7 @@
   }
 }
 
-- (void)nowPlayingViewWantsToShowVideo:(id)a3
+- (void)nowPlayingViewWantsToShowVideo:(id)video
 {
   v4 = CarPlayUIGeneralLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -208,13 +208,13 @@
     _os_log_impl(&dword_243134000, v4, OS_LOG_TYPE_DEFAULT, "setting CarPlay video active", buf, 2u);
   }
 
-  v5 = [(CPUINowPlayingViewController *)self videoAvailability];
+  videoAvailability = [(CPUINowPlayingViewController *)self videoAvailability];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__CPUINowPlayingViewController_nowPlayingViewWantsToShowVideo___block_invoke;
   v6[3] = &unk_278D9C5F8;
   v6[4] = self;
-  [v5 setVideoActive:1 completionHandler:v6];
+  [videoAvailability setVideoActive:1 completionHandler:v6];
 }
 
 void __63__CPUINowPlayingViewController_nowPlayingViewWantsToShowVideo___block_invoke(uint64_t a1, void *a2)
@@ -241,7 +241,7 @@ void __63__CPUINowPlayingViewController_nowPlayingViewWantsToShowVideo___block_i
   }
 }
 
-- (void)_handleVideoAvailabilityChanged:(id)a3
+- (void)_handleVideoAvailabilityChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -259,13 +259,13 @@ uint64_t __64__CPUINowPlayingViewController__handleVideoAvailabilityChanged___bl
   return [v2 _recalculateLayout:1];
 }
 
-- (void)playModeControlView:(id)a3 didSelectButton:(id)a4
+- (void)playModeControlView:(id)view didSelectButton:(id)button
 {
-  v30 = a3;
-  v6 = a4;
-  v7 = [v30 shuffleButton];
-  v8 = v7;
-  if (v7 == v6)
+  viewCopy = view;
+  buttonCopy = button;
+  shuffleButton = [viewCopy shuffleButton];
+  v8 = shuffleButton;
+  if (shuffleButton == buttonCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v10 = objc_opt_respondsToSelector();
@@ -282,9 +282,9 @@ uint64_t __64__CPUINowPlayingViewController__handleVideoAvailabilityChanged___bl
   {
   }
 
-  v12 = [v30 repeatButton];
-  v13 = v12;
-  if (v12 == v6)
+  repeatButton = [viewCopy repeatButton];
+  v13 = repeatButton;
+  if (repeatButton == buttonCopy)
   {
     v14 = objc_loadWeakRetained(&self->_delegate);
     v15 = objc_opt_respondsToSelector();
@@ -301,9 +301,9 @@ uint64_t __64__CPUINowPlayingViewController__handleVideoAvailabilityChanged___bl
   {
   }
 
-  v16 = [v30 moreButton];
-  v17 = v16;
-  if (v16 == v6)
+  moreButton = [viewCopy moreButton];
+  v17 = moreButton;
+  if (moreButton == buttonCopy)
   {
     v18 = objc_loadWeakRetained(&self->_delegate);
     v19 = objc_opt_respondsToSelector();
@@ -320,9 +320,9 @@ uint64_t __64__CPUINowPlayingViewController__handleVideoAvailabilityChanged___bl
   {
   }
 
-  v20 = [v30 addToLibraryButton];
-  v21 = v20;
-  if (v20 == v6)
+  addToLibraryButton = [viewCopy addToLibraryButton];
+  v21 = addToLibraryButton;
+  if (addToLibraryButton == buttonCopy)
   {
     v22 = objc_loadWeakRetained(&self->_delegate);
     v23 = objc_opt_respondsToSelector();
@@ -339,9 +339,9 @@ uint64_t __64__CPUINowPlayingViewController__handleVideoAvailabilityChanged___bl
   {
   }
 
-  v24 = [v30 playbackRateButton];
-  v25 = v24;
-  if (v24 == v6)
+  playbackRateButton = [viewCopy playbackRateButton];
+  v25 = playbackRateButton;
+  if (playbackRateButton == buttonCopy)
   {
     v26 = objc_loadWeakRetained(&self->_delegate);
     v27 = objc_opt_respondsToSelector();
@@ -367,60 +367,60 @@ uint64_t __64__CPUINowPlayingViewController__handleVideoAvailabilityChanged___bl
   }
 
   v11 = objc_loadWeakRetained(&self->_delegate);
-  [v11 nowPlayingViewController:self didSelectButton:v6];
+  [v11 nowPlayingViewController:self didSelectButton:buttonCopy];
 LABEL_23:
 
 LABEL_24:
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CPUINowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v4 viewWillAppear:a3];
+  [(CPUINowPlayingViewController *)&v4 viewWillAppear:appear];
   [(CPUINowPlayingViewController *)self _setNowPlayingNavBarActive:1];
   [(CPUINowPlayingViewController *)self _setStatusBarOverrideActive:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CPUINowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v4 viewWillDisappear:a3];
+  [(CPUINowPlayingViewController *)&v4 viewWillDisappear:disappear];
   [(CPUINowPlayingViewController *)self _setStatusBarOverrideActive:0];
   [(CPUINowPlayingViewController *)self _setNowPlayingNavBarActive:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CPUINowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v6 viewDidAppear:a3];
-  v4 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-  v5 = [v4 valueBool];
+  [(CPUINowPlayingViewController *)&v6 viewDidAppear:appear];
+  usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+  valueBool = [usesMetalNowPlayingArtwork valueBool];
 
-  if (v5)
+  if (valueBool)
   {
     [(CPUINowPlayingViewController *)self _checkMetalRendering];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = CPUINowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v7 viewDidDisappear:a3];
-  v4 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-  v5 = [v4 valueBool];
+  [(CPUINowPlayingViewController *)&v7 viewDidDisappear:disappear];
+  usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+  valueBool = [usesMetalNowPlayingArtwork valueBool];
 
-  if (v5)
+  if (valueBool)
   {
     [(CPUINowPlayingViewController *)self _checkMetalRendering];
     [(CPUINowPlayingViewController *)self _setNowPlayingNavBarActive:0];
   }
 
-  v6 = [(CPUINowPlayingViewController *)self uiTimer];
-  [v6 invalidate];
+  uiTimer = [(CPUINowPlayingViewController *)self uiTimer];
+  [uiTimer invalidate];
 
   [(CPUINowPlayingViewController *)self setUiTimer:0];
 }
@@ -431,34 +431,34 @@ LABEL_24:
   v90.receiver = self;
   v90.super_class = CPUINowPlayingViewController;
   [(CPUINowPlayingViewController *)&v90 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] tableBackgroundColor];
-  v4 = [(CPUINowPlayingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+  view = [(CPUINowPlayingViewController *)self view];
+  [view setBackgroundColor:tableBackgroundColor];
 
-  v5 = [(CPUINowPlayingViewController *)self view];
-  [v5 setAccessibilityIdentifier:@"CPNowPlayingView"];
+  view2 = [(CPUINowPlayingViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"CPNowPlayingView"];
 
   v6 = [CPUINowPlayingView alloc];
   v7 = [(CPUINowPlayingView *)v6 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   nowPlayingView = self->_nowPlayingView;
   self->_nowPlayingView = v7;
 
-  v9 = [(CPUINowPlayingView *)self->_nowPlayingView songDetailsView];
-  v10 = [v9 albumArtistLabelButton];
-  [v10 addTarget:self action:sel__albumArtistButtonTapped_ forControlEvents:64];
+  songDetailsView = [(CPUINowPlayingView *)self->_nowPlayingView songDetailsView];
+  albumArtistLabelButton = [songDetailsView albumArtistLabelButton];
+  [albumArtistLabelButton addTarget:self action:sel__albumArtistButtonTapped_ forControlEvents:64];
 
-  v11 = [(CPUINowPlayingView *)self->_nowPlayingView songDetailsView];
-  v12 = [v11 attributionButton];
-  [v12 addTarget:self action:sel__attributionButtonTapped_ forControlEvents:64];
+  songDetailsView2 = [(CPUINowPlayingView *)self->_nowPlayingView songDetailsView];
+  attributionButton = [songDetailsView2 attributionButton];
+  [attributionButton addTarget:self action:sel__attributionButtonTapped_ forControlEvents:64];
 
-  v13 = [(CPUINowPlayingView *)self->_nowPlayingView playModeControlView];
-  [v13 setDelegate:self];
+  playModeControlView = [(CPUINowPlayingView *)self->_nowPlayingView playModeControlView];
+  [playModeControlView setDelegate:self];
 
   [(CPUINowPlayingView *)self->_nowPlayingView setVideoDelegate:self];
-  v14 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-  LODWORD(v12) = [v14 valueBool];
+  usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+  LODWORD(attributionButton) = [usesMetalNowPlayingArtwork valueBool];
 
-  if (v12)
+  if (attributionButton)
   {
     v15 = objc_alloc_init(_TtC9CarPlayUI25CPUIArtworkBackgroundView);
     artworkBackgroundView = self->_artworkBackgroundView;
@@ -468,38 +468,38 @@ LABEL_24:
     [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView setContentMode:2];
     [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView setOverrideUserInterfaceStyle:2];
-    v17 = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView layer];
-    [v17 setAllowsGroupBlending:0];
+    layer = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView layer];
+    [layer setAllowsGroupBlending:0];
 
-    v18 = [(CPUINowPlayingViewController *)self view];
-    [v18 addSubview:self->_artworkBackgroundView];
+    view3 = [(CPUINowPlayingViewController *)self view];
+    [view3 addSubview:self->_artworkBackgroundView];
 
     v74 = MEMORY[0x277CCAAD0];
-    v86 = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView topAnchor];
-    v88 = [(CPUINowPlayingViewController *)self view];
-    v84 = [v88 topAnchor];
-    v82 = [v86 constraintEqualToAnchor:v84];
+    topAnchor = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView topAnchor];
+    view4 = [(CPUINowPlayingViewController *)self view];
+    topAnchor2 = [view4 topAnchor];
+    v82 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v93[0] = v82;
-    v78 = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView bottomAnchor];
-    v80 = [(CPUINowPlayingViewController *)self view];
-    v76 = [v80 bottomAnchor];
-    v72 = [v78 constraintEqualToAnchor:v76];
+    bottomAnchor = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView bottomAnchor];
+    view5 = [(CPUINowPlayingViewController *)self view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v72 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v93[1] = v72;
-    v19 = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView leadingAnchor];
-    v20 = [(CPUINowPlayingViewController *)self view];
-    v21 = [v20 leadingAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    leadingAnchor = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView leadingAnchor];
+    view6 = [(CPUINowPlayingViewController *)self view];
+    leadingAnchor2 = [view6 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v93[2] = v22;
-    v23 = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView trailingAnchor];
-    v24 = [(CPUINowPlayingViewController *)self view];
-    v25 = [v24 trailingAnchor];
-    v26 = [v23 constraintEqualToAnchor:v25];
+    trailingAnchor = [(CPUIArtworkBackgroundView *)self->_artworkBackgroundView trailingAnchor];
+    view7 = [(CPUINowPlayingViewController *)self view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v93[3] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:4];
     [v74 activateConstraints:v27];
 
-    v28 = [(CPUINowPlayingViewController *)self view];
-    [v28 addSubview:self->_nowPlayingView];
+    view8 = [(CPUINowPlayingViewController *)self view];
+    [view8 addSubview:self->_nowPlayingView];
   }
 
   else
@@ -518,100 +518,100 @@ LABEL_24:
     [(UIVisualEffectView *)self->_artworkVisualEffectView setBackgroundEffects:v33];
 
     [(UIVisualEffectView *)self->_artworkVisualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v34 = [(CPUINowPlayingViewController *)self view];
-    [v34 addSubview:self->_artworkVisualEffectView];
+    view9 = [(CPUINowPlayingViewController *)self view];
+    [view9 addSubview:self->_artworkVisualEffectView];
 
     v73 = MEMORY[0x277CCAAD0];
-    v85 = [(UIVisualEffectView *)self->_artworkVisualEffectView topAnchor];
-    v87 = [(CPUINowPlayingViewController *)self view];
-    v83 = [v87 topAnchor];
-    v81 = [v85 constraintEqualToAnchor:v83];
+    topAnchor3 = [(UIVisualEffectView *)self->_artworkVisualEffectView topAnchor];
+    view10 = [(CPUINowPlayingViewController *)self view];
+    topAnchor4 = [view10 topAnchor];
+    v81 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v91[0] = v81;
-    v77 = [(UIVisualEffectView *)self->_artworkVisualEffectView bottomAnchor];
-    v79 = [(CPUINowPlayingViewController *)self view];
-    v75 = [v79 bottomAnchor];
-    v71 = [v77 constraintEqualToAnchor:v75];
+    bottomAnchor3 = [(UIVisualEffectView *)self->_artworkVisualEffectView bottomAnchor];
+    view11 = [(CPUINowPlayingViewController *)self view];
+    bottomAnchor4 = [view11 bottomAnchor];
+    v71 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v91[1] = v71;
-    v70 = [(UIVisualEffectView *)self->_artworkVisualEffectView leadingAnchor];
-    v35 = [(CPUINowPlayingViewController *)self view];
-    v36 = [v35 leadingAnchor];
-    v37 = [v70 constraintEqualToAnchor:v36];
+    leadingAnchor3 = [(UIVisualEffectView *)self->_artworkVisualEffectView leadingAnchor];
+    view12 = [(CPUINowPlayingViewController *)self view];
+    leadingAnchor4 = [view12 leadingAnchor];
+    v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v91[2] = v37;
-    v38 = [(UIVisualEffectView *)self->_artworkVisualEffectView trailingAnchor];
-    v39 = [(CPUINowPlayingViewController *)self view];
-    v40 = [v39 trailingAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40];
+    trailingAnchor3 = [(UIVisualEffectView *)self->_artworkVisualEffectView trailingAnchor];
+    view13 = [(CPUINowPlayingViewController *)self view];
+    trailingAnchor4 = [view13 trailingAnchor];
+    v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v91[3] = v41;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:4];
     [v73 activateConstraints:v42];
 
-    v43 = [(UIVisualEffectView *)self->_artworkVisualEffectView contentView];
-    [v43 addSubview:self->_nowPlayingView];
+    contentView = [(UIVisualEffectView *)self->_artworkVisualEffectView contentView];
+    [contentView addSubview:self->_nowPlayingView];
 
-    v28 = v89;
+    view8 = v89;
   }
 
   v44 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__leftNudgePress_];
   [(CPUINowPlayingViewController *)self setLeftNudgePressRecognizer:v44];
 
-  v45 = [(CPUINowPlayingViewController *)self leftNudgePressRecognizer];
-  [v45 setAllowedPressTypes:&unk_2855D8500];
+  leftNudgePressRecognizer = [(CPUINowPlayingViewController *)self leftNudgePressRecognizer];
+  [leftNudgePressRecognizer setAllowedPressTypes:&unk_2855D8500];
 
   v46 = self->_nowPlayingView;
-  v47 = [(CPUINowPlayingViewController *)self leftNudgePressRecognizer];
-  [(CPUINowPlayingView *)v46 addGestureRecognizer:v47];
+  leftNudgePressRecognizer2 = [(CPUINowPlayingViewController *)self leftNudgePressRecognizer];
+  [(CPUINowPlayingView *)v46 addGestureRecognizer:leftNudgePressRecognizer2];
 
   v48 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__rightNudgePress_];
   [(CPUINowPlayingViewController *)self setRightNudgePressRecognizer:v48];
 
-  v49 = [(CPUINowPlayingViewController *)self rightNudgePressRecognizer];
-  [v49 setAllowedPressTypes:&unk_2855D8518];
+  rightNudgePressRecognizer = [(CPUINowPlayingViewController *)self rightNudgePressRecognizer];
+  [rightNudgePressRecognizer setAllowedPressTypes:&unk_2855D8518];
 
   v50 = self->_nowPlayingView;
-  v51 = [(CPUINowPlayingViewController *)self rightNudgePressRecognizer];
-  [(CPUINowPlayingView *)v50 addGestureRecognizer:v51];
+  rightNudgePressRecognizer2 = [(CPUINowPlayingViewController *)self rightNudgePressRecognizer];
+  [(CPUINowPlayingView *)v50 addGestureRecognizer:rightNudgePressRecognizer2];
 
   v52 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__leftButtonLongPress_];
   [(CPUINowPlayingViewController *)self setLeftNudgeLongPressRecognizer:v52];
 
-  v53 = [(CPUINowPlayingViewController *)self leftNudgeLongPressRecognizer];
-  [v53 setAllowedPressTypes:&unk_2855D8530];
+  leftNudgeLongPressRecognizer = [(CPUINowPlayingViewController *)self leftNudgeLongPressRecognizer];
+  [leftNudgeLongPressRecognizer setAllowedPressTypes:&unk_2855D8530];
 
-  v54 = [(CPUINowPlayingViewController *)self leftNudgeLongPressRecognizer];
-  v55 = [(CPUINowPlayingViewController *)self leftNudgePressRecognizer];
-  [v54 requireGestureRecognizerToFail:v55];
+  leftNudgeLongPressRecognizer2 = [(CPUINowPlayingViewController *)self leftNudgeLongPressRecognizer];
+  leftNudgePressRecognizer3 = [(CPUINowPlayingViewController *)self leftNudgePressRecognizer];
+  [leftNudgeLongPressRecognizer2 requireGestureRecognizerToFail:leftNudgePressRecognizer3];
 
   v56 = self->_nowPlayingView;
-  v57 = [(CPUINowPlayingViewController *)self leftNudgeLongPressRecognizer];
-  [(CPUINowPlayingView *)v56 addGestureRecognizer:v57];
+  leftNudgeLongPressRecognizer3 = [(CPUINowPlayingViewController *)self leftNudgeLongPressRecognizer];
+  [(CPUINowPlayingView *)v56 addGestureRecognizer:leftNudgeLongPressRecognizer3];
 
   v58 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__fastForwardButtonLongPress_];
   [(CPUINowPlayingViewController *)self setRightNudgeLongPressRecognizer:v58];
 
-  v59 = [(CPUINowPlayingViewController *)self rightNudgeLongPressRecognizer];
-  [v59 setAllowedPressTypes:&unk_2855D8548];
+  rightNudgeLongPressRecognizer = [(CPUINowPlayingViewController *)self rightNudgeLongPressRecognizer];
+  [rightNudgeLongPressRecognizer setAllowedPressTypes:&unk_2855D8548];
 
-  v60 = [(CPUINowPlayingViewController *)self rightNudgeLongPressRecognizer];
-  v61 = [(CPUINowPlayingViewController *)self rightNudgePressRecognizer];
-  [v60 requireGestureRecognizerToFail:v61];
+  rightNudgeLongPressRecognizer2 = [(CPUINowPlayingViewController *)self rightNudgeLongPressRecognizer];
+  rightNudgePressRecognizer3 = [(CPUINowPlayingViewController *)self rightNudgePressRecognizer];
+  [rightNudgeLongPressRecognizer2 requireGestureRecognizerToFail:rightNudgePressRecognizer3];
 
   v62 = self->_nowPlayingView;
-  v63 = [(CPUINowPlayingViewController *)self rightNudgeLongPressRecognizer];
-  [(CPUINowPlayingView *)v62 addGestureRecognizer:v63];
+  rightNudgeLongPressRecognizer3 = [(CPUINowPlayingViewController *)self rightNudgeLongPressRecognizer];
+  [(CPUINowPlayingView *)v62 addGestureRecognizer:rightNudgeLongPressRecognizer3];
 
   [(CPUINowPlayingViewController *)self _initializeTransportControls];
   [(CPUINowPlayingViewController *)self setOverrideUserInterfaceStyle:2];
-  v64 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v64 addObserver:self selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x277D76E80] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x277D76E80] object:0];
 
-  v65 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v65 addObserver:self selector:sel__sceneDidActivate_ name:*MEMORY[0x277D76E48] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__sceneDidActivate_ name:*MEMORY[0x277D76E48] object:0];
 
-  v66 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v66 addObserver:self selector:sel__sceneWillDeactivate_ name:*MEMORY[0x277D76E78] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__sceneWillDeactivate_ name:*MEMORY[0x277D76E78] object:0];
 
-  v67 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v67 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x277D76E58] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x277D76E58] object:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -631,37 +631,37 @@ LABEL_24:
   [(CPUINowPlayingViewController *)self reloadData];
 }
 
-- (void)_backButtonTapped:(id)a3
+- (void)_backButtonTapped:(id)tapped
 {
-  v4 = [(CPUINowPlayingViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(CPUINowPlayingViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
 - (CPUITransportControlView)transportControlView
 {
-  v2 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v3 = [v2 transportControlView];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  transportControlView = [nowPlayingView transportControlView];
 
-  return v3;
+  return transportControlView;
 }
 
 - (CPUIPlayModeControlView)playModeControlView
 {
-  v2 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v3 = [v2 playModeControlView];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  playModeControlView = [nowPlayingView playModeControlView];
 
-  return v3;
+  return playModeControlView;
 }
 
 - (CPUISongDetailsView)songDetailsView
 {
-  v2 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v3 = [v2 songDetailsView];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  songDetailsView = [nowPlayingView songDetailsView];
 
-  return v3;
+  return songDetailsView;
 }
 
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3
+- (void)environmentMonitorDidChangeThermalLevel:(id)level
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -687,12 +687,12 @@ uint64_t __72__CPUINowPlayingViewController_environmentMonitorDidChangeThermalLe
 - (id)preferredFocusEnvironments
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CPUINowPlayingViewController *)self transportControlView];
-  v3 = [v2 playPauseButton];
+  transportControlView = [(CPUINowPlayingViewController *)self transportControlView];
+  playPauseButton = [transportControlView playPauseButton];
 
-  if (v3)
+  if (playPauseButton)
   {
-    v6[0] = v3;
+    v6[0] = playPauseButton;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   }
 
@@ -704,14 +704,14 @@ uint64_t __72__CPUINowPlayingViewController_environmentMonitorDidChangeThermalLe
   return v4;
 }
 
-- (void)_setStatusBarOverrideActive:(BOOL)a3
+- (void)_setStatusBarOverrideActive:(BOOL)active
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invoke;
   v3[3] = &unk_278D9C620;
   v3[4] = self;
-  v4 = a3;
+  activeCopy = active;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -739,13 +739,13 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
   }
 }
 
-- (void)_setNowPlayingNavBarActive:(BOOL)a3
+- (void)_setNowPlayingNavBarActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(CPUINowPlayingViewController *)self navigationController];
-  v7 = [v4 navigationBar];
+  activeCopy = active;
+  navigationController = [(CPUINowPlayingViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  if (v3)
+  if (activeCopy)
   {
     v5 = 4;
   }
@@ -755,7 +755,7 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
     v5 = 0;
   }
 
-  if (v3)
+  if (activeCopy)
   {
     v6 = 2;
   }
@@ -765,15 +765,15 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
     v6 = 0;
   }
 
-  [v7 setBarStyle:v5];
-  [v7 setOverrideUserInterfaceStyle:v6];
+  [navigationBar setBarStyle:v5];
+  [navigationBar setOverrideUserInterfaceStyle:v6];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CPUINowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v4 traitCollectionDidChange:a3];
+  [(CPUINowPlayingViewController *)&v4 traitCollectionDidChange:change];
   [(CPUINowPlayingViewController *)self _reloadDataForcingLayout:1 updateControls:0];
 }
 
@@ -783,28 +783,28 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
   v4.super_class = CPUINowPlayingViewController;
   [(CPUINowPlayingViewController *)&v4 viewDidLayoutSubviews];
   [(CPUINowPlayingViewController *)self _recalculateLayout:0];
-  v3 = [(CPUINowPlayingViewController *)self view];
-  [v3 bounds];
+  view = [(CPUINowPlayingViewController *)self view];
+  [view bounds];
   [(CABackdropLayer *)self->_backdropLayer setFrame:?];
 }
 
-- (void)_recalculateLayout:(BOOL)a3
+- (void)_recalculateLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v79[4] = *MEMORY[0x277D85DE8];
-  v5 = [(CPUINowPlayingViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(CPUINowPlayingViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    v7 = [(CPUINowPlayingViewController *)self delegate];
-    v8 = [v7 nowPlayingViewControllerCanShowAlbumArt:self];
+    delegate = [(CPUINowPlayingViewController *)self delegate];
+    v8 = [delegate nowPlayingViewControllerCanShowAlbumArt:self];
 
-    v9 = [(CPUINowPlayingViewController *)self delegate];
+    delegate2 = [(CPUINowPlayingViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CPUINowPlayingViewController *)self delegate];
-      v11 = [v10 nowPlayingViewControllerIsRightHandDrive:self];
+      delegate3 = [(CPUINowPlayingViewController *)self delegate];
+      v11 = [delegate3 nowPlayingViewControllerIsRightHandDrive:self];
     }
 
     else
@@ -812,26 +812,26 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
       v11 = 0;
     }
 
-    v12 = [(CPUINowPlayingViewController *)self nowPlayingView];
-    v13 = [(CPUINowPlayingViewController *)self view];
-    [v13 frame];
+    nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+    view = [(CPUINowPlayingViewController *)self view];
+    [view frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(CPUINowPlayingViewController *)self view];
-    v23 = [v22 safeAreaLayoutGuide];
-    [v23 layoutFrame];
+    view2 = [(CPUINowPlayingViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v32 = [(CPUINowPlayingViewController *)self sportsData];
-    [v12 recalculateLayout:v3 allowsAlbumArt:v8 viewArea:v11 safeArea:v32 != 0 rightHandDrive:v15 sports:{v17, v19, v21, v25, v27, v29, v31}];
+    sportsData = [(CPUINowPlayingViewController *)self sportsData];
+    [nowPlayingView recalculateLayout:layoutCopy allowsAlbumArt:v8 viewArea:v11 safeArea:sportsData != 0 rightHandDrive:v15 sports:{v17, v19, v21, v25, v27, v29, v31}];
 
-    v33 = [(CPUINowPlayingViewController *)self nowPlayingView];
-    v34 = [v33 nowPlayingLayout];
-    [v34 maximumNowPlayingSize];
+    nowPlayingView2 = [(CPUINowPlayingViewController *)self nowPlayingView];
+    nowPlayingLayout = [nowPlayingView2 nowPlayingLayout];
+    [nowPlayingLayout maximumNowPlayingSize];
     v36 = v35;
     v38 = v37;
 
@@ -843,64 +843,64 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
       self->_nowPlayingMaxSize.height = v38;
       if (v36 == *MEMORY[0x277CBF3A8] && v38 == *(MEMORY[0x277CBF3A8] + 8))
       {
-        v68 = [(CPUINowPlayingView *)self->_nowPlayingView topAnchor];
-        v69 = [(CPUINowPlayingViewController *)self view];
-        v77 = [v69 topAnchor];
-        v76 = [v68 constraintEqualToAnchor:?];
-        v78[0] = v76;
-        v40 = [(CPUINowPlayingView *)self->_nowPlayingView bottomAnchor];
-        v74 = [(CPUINowPlayingViewController *)self view];
-        [v74 bottomAnchor];
-        v73 = v75 = v40;
-        v72 = [v40 constraintEqualToAnchor:?];
-        v78[1] = v72;
-        v41 = [(CPUINowPlayingView *)self->_nowPlayingView leadingAnchor];
-        v70 = [(CPUINowPlayingViewController *)self view];
-        v42 = [v70 safeAreaLayoutGuide];
-        v43 = [v42 leadingAnchor];
-        v71 = v41;
-        v44 = [v41 constraintEqualToAnchor:v43];
-        v78[2] = v44;
-        v45 = [(CPUINowPlayingView *)self->_nowPlayingView trailingAnchor];
-        v46 = [(CPUINowPlayingViewController *)self view];
-        v47 = [v46 safeAreaLayoutGuide];
-        v48 = [v47 trailingAnchor];
-        v49 = [v45 constraintEqualToAnchor:v48];
+        topAnchor = [(CPUINowPlayingView *)self->_nowPlayingView topAnchor];
+        view3 = [(CPUINowPlayingViewController *)self view];
+        topAnchor2 = [view3 topAnchor];
+        centerXAnchor2 = [topAnchor constraintEqualToAnchor:?];
+        v78[0] = centerXAnchor2;
+        bottomAnchor = [(CPUINowPlayingView *)self->_nowPlayingView bottomAnchor];
+        view4 = [(CPUINowPlayingViewController *)self view];
+        [view4 bottomAnchor];
+        view9 = v75 = bottomAnchor;
+        safeAreaLayoutGuide5 = [bottomAnchor constraintEqualToAnchor:?];
+        v78[1] = safeAreaLayoutGuide5;
+        leadingAnchor = [(CPUINowPlayingView *)self->_nowPlayingView leadingAnchor];
+        view5 = [(CPUINowPlayingViewController *)self view];
+        safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+        leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+        v71 = leadingAnchor;
+        heightAnchor = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+        v78[2] = heightAnchor;
+        trailingAnchor = [(CPUINowPlayingView *)self->_nowPlayingView trailingAnchor];
+        view6 = [(CPUINowPlayingViewController *)self view];
+        safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+        trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+        v49 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v78[3] = v49;
         v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:4];
         nowPlayingSizeConstraints = self->_nowPlayingSizeConstraints;
         self->_nowPlayingSizeConstraints = v50;
 
-        v52 = v69;
-        v53 = v68;
+        view8 = view3;
+        centerXAnchor = topAnchor;
 
         v39 = 0x277CCA000;
       }
 
       else
       {
-        v54 = [(CPUINowPlayingViewController *)self view];
-        v55 = [v54 safeAreaLayoutGuide];
-        [v55 layoutFrame];
+        view7 = [(CPUINowPlayingViewController *)self view];
+        safeAreaLayoutGuide4 = [view7 safeAreaLayoutGuide];
+        [safeAreaLayoutGuide4 layoutFrame];
         v57 = v56;
         v59 = v58;
         v61 = v60;
         v63 = v62;
 
-        v53 = [(CPUINowPlayingView *)self->_nowPlayingView centerXAnchor];
-        v52 = [(CPUINowPlayingViewController *)self view];
-        v77 = [v52 safeAreaLayoutGuide];
-        v76 = [v77 centerXAnchor];
-        v75 = [v53 constraintEqualToAnchor:?];
+        centerXAnchor = [(CPUINowPlayingView *)self->_nowPlayingView centerXAnchor];
+        view8 = [(CPUINowPlayingViewController *)self view];
+        topAnchor2 = [view8 safeAreaLayoutGuide];
+        centerXAnchor2 = [topAnchor2 centerXAnchor];
+        v75 = [centerXAnchor constraintEqualToAnchor:?];
         v79[0] = v75;
-        v64 = [(CPUINowPlayingView *)self->_nowPlayingView centerYAnchor];
-        v73 = [(CPUINowPlayingViewController *)self view];
-        v72 = [v73 safeAreaLayoutGuide];
-        [v72 centerYAnchor];
-        v71 = v74 = v64;
-        v70 = [v64 constraintEqualToAnchor:?];
-        v79[1] = v70;
-        v42 = [(CPUINowPlayingView *)self->_nowPlayingView widthAnchor];
+        centerYAnchor = [(CPUINowPlayingView *)self->_nowPlayingView centerYAnchor];
+        view9 = [(CPUINowPlayingViewController *)self view];
+        safeAreaLayoutGuide5 = [view9 safeAreaLayoutGuide];
+        [safeAreaLayoutGuide5 centerYAnchor];
+        v71 = view4 = centerYAnchor;
+        view5 = [centerYAnchor constraintEqualToAnchor:?];
+        v79[1] = view5;
+        safeAreaLayoutGuide2 = [(CPUINowPlayingView *)self->_nowPlayingView widthAnchor];
         v80.origin.x = v57;
         v80.origin.y = v59;
         v80.size.width = v61;
@@ -911,9 +911,9 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
           Width = v36;
         }
 
-        v43 = [v42 constraintEqualToConstant:Width];
-        v79[2] = v43;
-        v44 = [(CPUINowPlayingView *)self->_nowPlayingView heightAnchor];
+        leadingAnchor2 = [safeAreaLayoutGuide2 constraintEqualToConstant:Width];
+        v79[2] = leadingAnchor2;
+        heightAnchor = [(CPUINowPlayingView *)self->_nowPlayingView heightAnchor];
         v81.origin.x = v57;
         v81.origin.y = v59;
         v81.size.width = v61;
@@ -924,10 +924,10 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
           Height = v38;
         }
 
-        v45 = [v44 constraintEqualToConstant:Height];
-        v79[3] = v45;
+        trailingAnchor = [heightAnchor constraintEqualToConstant:Height];
+        v79[3] = trailingAnchor;
         v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:4];
-        v46 = self->_nowPlayingSizeConstraints;
+        view6 = self->_nowPlayingSizeConstraints;
         self->_nowPlayingSizeConstraints = v67;
       }
 
@@ -938,13 +938,13 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
 
 - (BOOL)_showsButtonSelectionsForTouch
 {
-  v2 = [(CPUINowPlayingViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 screen];
+  view = [(CPUINowPlayingViewController *)self view];
+  window = [view window];
+  screen = [window screen];
 
-  if (v4)
+  if (screen)
   {
-    v5 = [v4 supportsFocus] ^ 1;
+    v5 = [screen supportsFocus] ^ 1;
   }
 
   else
@@ -957,35 +957,35 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
 
 - (void)updatePlayControls
 {
-  v3 = [(CPUINowPlayingView *)self->_nowPlayingView transportControlView];
-  v4 = [(CPUINowPlayingView *)self->_nowPlayingView progressView];
-  v5 = [v3 leftButton];
-  v6 = [v3 defaultLeftButtonImage];
-  [(CPUINowPlayingViewController *)self _updateTransportControl:v5 withDefaultImage:v6 actionType:0];
+  transportControlView = [(CPUINowPlayingView *)self->_nowPlayingView transportControlView];
+  progressView = [(CPUINowPlayingView *)self->_nowPlayingView progressView];
+  leftButton = [transportControlView leftButton];
+  defaultLeftButtonImage = [transportControlView defaultLeftButtonImage];
+  [(CPUINowPlayingViewController *)self _updateTransportControl:leftButton withDefaultImage:defaultLeftButtonImage actionType:0];
 
-  v7 = [v3 playPauseButton];
-  [(CPUINowPlayingViewController *)self _updateTransportControl:v7 withDefaultImage:0 actionType:2];
+  playPauseButton = [transportControlView playPauseButton];
+  [(CPUINowPlayingViewController *)self _updateTransportControl:playPauseButton withDefaultImage:0 actionType:2];
 
-  v8 = [v3 fastForwardButton];
-  v9 = [v3 defaultFastForwardButtonImage];
-  [(CPUINowPlayingViewController *)self _updateTransportControl:v8 withDefaultImage:v9 actionType:1];
+  fastForwardButton = [transportControlView fastForwardButton];
+  defaultFastForwardButtonImage = [transportControlView defaultFastForwardButtonImage];
+  [(CPUINowPlayingViewController *)self _updateTransportControl:fastForwardButton withDefaultImage:defaultFastForwardButtonImage actionType:1];
 
-  v10 = [(CPUINowPlayingViewController *)self dataSource];
-  v11 = v10;
+  dataSource = [(CPUINowPlayingViewController *)self dataSource];
+  v11 = dataSource;
   v18 = 0;
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  if (v10)
+  if (dataSource)
   {
-    [v10 durationSnapshotForNowPlayingViewController:self];
+    [dataSource durationSnapshotForNowPlayingViewController:self];
   }
 
   v13[0] = v15;
   v13[1] = v16;
   v13[2] = v17;
   v14 = v18;
-  [v4 setDurationSnapshot:v13];
+  [progressView setDurationSnapshot:v13];
   if (objc_opt_respondsToSelector())
   {
     v12 = [v11 progressBarLocalizedDurationStringForNowPlayingViewController:self];
@@ -996,9 +996,9 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
     v12 = 0;
   }
 
-  [v4 updateLocalizedDurationString:v12];
-  [v4 setHidden:{(*(&v16 + 1) == 0.0) & (v18 ^ 1u), *(&v16 + 1)}];
-  [v3 setProgressActive:{objc_msgSend(v11, "nowPlayingViewControllerIsPlaying:", self)}];
+  [progressView updateLocalizedDurationString:v12];
+  [progressView setHidden:{(*(&v16 + 1) == 0.0) & (v18 ^ 1u), *(&v16 + 1)}];
+  [transportControlView setProgressActive:{objc_msgSend(v11, "nowPlayingViewControllerIsPlaying:", self)}];
   [(CPUINowPlayingViewController *)self _updatePlayModesState];
 }
 
@@ -1111,22 +1111,22 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
     v36 = 0;
   }
 
-  v37 = [(CPUINowPlayingView *)self->_nowPlayingView playModeControlView];
-  v38 = [v37 shuffleButton];
-  [v38 setHidden:v11 ^ 1u];
+  playModeControlView = [(CPUINowPlayingView *)self->_nowPlayingView playModeControlView];
+  shuffleButton = [playModeControlView shuffleButton];
+  [shuffleButton setHidden:v11 ^ 1u];
 
-  v39 = [v37 repeatButton];
-  [v39 setHidden:v20 ^ 1u];
+  repeatButton = [playModeControlView repeatButton];
+  [repeatButton setHidden:v20 ^ 1u];
 
-  v40 = [v37 moreButton];
-  [v40 setHidden:v24 ^ 1u];
+  moreButton = [playModeControlView moreButton];
+  [moreButton setHidden:v24 ^ 1u];
 
-  v41 = [v37 addToLibraryButton];
-  [v41 setHidden:v28 ^ 1u];
+  addToLibraryButton = [playModeControlView addToLibraryButton];
+  [addToLibraryButton setHidden:v28 ^ 1u];
 
-  [v37 setFuseSubscriberLayout:v32];
-  v42 = [v37 playbackRateButton];
-  [v42 setHidden:v36 ^ 1u];
+  [playModeControlView setFuseSubscriberLayout:v32];
+  playbackRateButton = [playModeControlView playbackRateButton];
+  [playbackRateButton setHidden:v36 ^ 1u];
 
   v43 = CarPlayUIGeneralLogging();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -1144,29 +1144,29 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
     _os_log_impl(&dword_243134000, v43, OS_LOG_TYPE_DEFAULT, "Shuffle: %d Repeat: %d Show CTA: %d Bookmark: %d Change Playback Rate: %d", v44, 0x20u);
   }
 
-  [v37 layoutSubviews];
+  [playModeControlView layoutSubviews];
 }
 
-- (void)_updateRepeatStateWithType:(int64_t)a3
+- (void)_updateRepeatStateWithType:(int64_t)type
 {
-  v5 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v6 = [v5 playModeControlView];
-  v7 = [v6 repeatButton];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  playModeControlView = [nowPlayingView playModeControlView];
+  repeatButton = [playModeControlView repeatButton];
 
-  [v7 setRepeatType:a3];
-  if ((((a3 == 0) ^ [v7 isSelected]) & 1) == 0)
+  [repeatButton setRepeatType:type];
+  if ((((type == 0) ^ [repeatButton isSelected]) & 1) == 0)
   {
     [(CPUINowPlayingViewController *)self _updateShuffleAndRepeatButtons];
   }
 }
 
-- (void)_updateShuffleStateWithType:(int64_t)a3
+- (void)_updateShuffleStateWithType:(int64_t)type
 {
-  v5 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v6 = [v5 playModeControlView];
-  v7 = [v6 shuffleButton];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  playModeControlView = [nowPlayingView playModeControlView];
+  shuffleButton = [playModeControlView shuffleButton];
 
-  if ((((a3 == 0) ^ [v7 isSelected]) & 1) == 0)
+  if ((((type == 0) ^ [shuffleButton isSelected]) & 1) == 0)
   {
     [(CPUINowPlayingViewController *)self _updateShuffleAndRepeatButtons];
   }
@@ -1174,20 +1174,20 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
 
 - (void)_updateShuffleAndRepeatButtons
 {
-  v3 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v4 = [v3 playModeControlView];
-  v5 = [v4 shuffleButton];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  playModeControlView = [nowPlayingView playModeControlView];
+  shuffleButton = [playModeControlView shuffleButton];
 
-  v6 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v7 = [v6 playModeControlView];
-  v8 = [v7 repeatButton];
+  nowPlayingView2 = [(CPUINowPlayingViewController *)self nowPlayingView];
+  playModeControlView2 = [nowPlayingView2 playModeControlView];
+  repeatButton = [playModeControlView2 repeatButton];
 
-  v9 = [(CPUINowPlayingViewController *)self uiTimer];
+  uiTimer = [(CPUINowPlayingViewController *)self uiTimer];
 
-  if (v9)
+  if (uiTimer)
   {
-    v10 = [(CPUINowPlayingViewController *)self uiTimer];
-    [v10 invalidate];
+    uiTimer2 = [(CPUINowPlayingViewController *)self uiTimer];
+    [uiTimer2 invalidate];
 
     v11 = CarPlayUIGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1211,9 +1211,9 @@ void __60__CPUINowPlayingViewController__setStatusBarOverrideActive___block_invo
   v17[2] = __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_invoke;
   v17[3] = &unk_278D9C648;
   objc_copyWeak(&v20, buf);
-  v14 = v5;
+  v14 = shuffleButton;
   v18 = v14;
-  v15 = v8;
+  v15 = repeatButton;
   v19 = v15;
   v16 = [v13 scheduledTimerWithTimeInterval:0 repeats:v17 block:0.1];
   [(CPUINowPlayingViewController *)self setUiTimer:v16];
@@ -1273,20 +1273,20 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
 - (void)_updatePlaybackRate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v4 = [v3 playModeControlView];
-  v5 = [v4 playbackRateButton];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  playModeControlView = [nowPlayingView playModeControlView];
+  playbackRateButton = [playModeControlView playbackRateButton];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  LOBYTE(playModeControlView) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (playModeControlView)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
     v8 = [v7 nowPlayingViewControllerGetPlaybackRate:self];
 
     v9 = CPUIFormattedPlaybackRateString(v8);
-    [v5 setTitle:v9 forState:0];
+    [playbackRateButton setTitle:v9 forState:0];
     v10 = CPUIAccessiblePlaybackRateString(v8);
     v14 = v10;
     v11 = CPUILocalizedStringForKey(@"ACCESSIBLE_PLAYBACK_SPEED");
@@ -1294,34 +1294,34 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
     v12 = CPUILocalizedStringForKey(@"ACCESSIBLE_PLAYBACK_RATE");
     v16 = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:3];
-    [v5 setAccessibilityUserInputLabels:{v13, v14, v15}];
+    [playbackRateButton setAccessibilityUserInputLabels:{v13, v14, v15}];
   }
 }
 
-- (void)_sendAction:(int64_t)a3 withState:(int64_t)a4
+- (void)_sendAction:(int64_t)action withState:(int64_t)state
 {
-  v7 = [(CPUINowPlayingViewController *)self delegate];
+  delegate = [(CPUINowPlayingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 nowPlayingViewController:self didSendAction:a3 state:a4];
+    [delegate nowPlayingViewController:self didSendAction:action state:state];
   }
 }
 
-- (void)_playPauseButtonTouchDown:(id)a3
+- (void)_playPauseButtonTouchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   if ([(CPUINowPlayingViewController *)self _showsButtonSelectionsForTouch])
   {
-    [v4 setSelected:1];
+    [downCopy setSelected:1];
   }
 }
 
-- (void)_playPauseButtonTouchUp:(id)a3
+- (void)_playPauseButtonTouchUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   if ([(CPUINowPlayingViewController *)self _showsButtonSelectionsForTouch])
   {
-    [v4 setSelected:0];
+    [upCopy setSelected:0];
   }
 
   [(CPUINowPlayingViewController *)self _sendAction:2 withState:2];
@@ -1342,32 +1342,32 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
   self->_heldAction = -1;
 }
 
-- (void)_leftButtonTouchDown:(id)a3
+- (void)_leftButtonTouchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   if ([(CPUINowPlayingViewController *)self _showsButtonSelectionsForTouch])
   {
-    [v4 setSelected:1];
+    [downCopy setSelected:1];
   }
 
   self->_heldAction = 0;
   [(CPUINowPlayingViewController *)self performSelector:sel__respondToHeldAction withObject:0 afterDelay:0.5];
 }
 
-- (void)_leftButtonTouchUp:(id)a3
+- (void)_leftButtonTouchUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   if ([(CPUINowPlayingViewController *)self _showsButtonSelectionsForTouch])
   {
-    [v4 setSelected:0];
+    [upCopy setSelected:0];
   }
 
   [(CPUINowPlayingViewController *)self _sendHeldAction];
 }
 
-- (void)_leftButtonLongPress:(id)a3
+- (void)_leftButtonLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
     v4 = 1;
   }
@@ -1381,32 +1381,32 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
   [(CPUINowPlayingViewController *)self _sendAction:0 withState:v4];
 }
 
-- (void)_fastForwardButtonTouchDown:(id)a3
+- (void)_fastForwardButtonTouchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   if ([(CPUINowPlayingViewController *)self _showsButtonSelectionsForTouch])
   {
-    [v4 setSelected:1];
+    [downCopy setSelected:1];
   }
 
   self->_heldAction = 1;
   [(CPUINowPlayingViewController *)self performSelector:sel__respondToHeldAction withObject:0 afterDelay:0.5];
 }
 
-- (void)_fastForwardButtonTouchUp:(id)a3
+- (void)_fastForwardButtonTouchUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   if ([(CPUINowPlayingViewController *)self _showsButtonSelectionsForTouch])
   {
-    [v4 setSelected:0];
+    [upCopy setSelected:0];
   }
 
   [(CPUINowPlayingViewController *)self _sendHeldAction];
 }
 
-- (void)_fastForwardButtonLongPress:(id)a3
+- (void)_fastForwardButtonLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
     v4 = 1;
   }
@@ -1420,7 +1420,7 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
   [(CPUINowPlayingViewController *)self _sendAction:1 withState:v4];
 }
 
-- (void)_albumArtistButtonTapped:(id)a3
+- (void)_albumArtistButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -1432,7 +1432,7 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
   }
 }
 
-- (void)_attributionButtonTapped:(id)a3
+- (void)_attributionButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -1444,80 +1444,80 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
   }
 }
 
-- (void)upNextButtonTapped:(id)a3
+- (void)upNextButtonTapped:(id)tapped
 {
-  v4 = [(CPUINowPlayingViewController *)self delegate];
+  delegate = [(CPUINowPlayingViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPUINowPlayingViewController *)self delegate];
-    [v6 nowPlayingViewControllerUpNextButtonTapped:self];
+    delegate2 = [(CPUINowPlayingViewController *)self delegate];
+    [delegate2 nowPlayingViewControllerUpNextButtonTapped:self];
   }
 }
 
 - (void)_initializeTransportControls
 {
-  v17 = [(CPUINowPlayingView *)self->_nowPlayingView transportControlView];
-  v3 = [v17 playPauseButton];
-  [v3 addTarget:self action:sel__playPauseButtonTouchDown_ forControlEvents:1];
+  transportControlView = [(CPUINowPlayingView *)self->_nowPlayingView transportControlView];
+  playPauseButton = [transportControlView playPauseButton];
+  [playPauseButton addTarget:self action:sel__playPauseButtonTouchDown_ forControlEvents:1];
 
-  v4 = [v17 playPauseButton];
-  [v4 addTarget:self action:sel__playPauseButtonTouchUp_ forControlEvents:448];
+  playPauseButton2 = [transportControlView playPauseButton];
+  [playPauseButton2 addTarget:self action:sel__playPauseButtonTouchUp_ forControlEvents:448];
 
-  v5 = [v17 leftButton];
-  [v5 addTarget:self action:sel__leftButtonTouchDown_ forControlEvents:1];
+  leftButton = [transportControlView leftButton];
+  [leftButton addTarget:self action:sel__leftButtonTouchDown_ forControlEvents:1];
 
-  v6 = [v17 leftButton];
-  [v6 addTarget:self action:sel__leftButtonTouchUp_ forControlEvents:448];
+  leftButton2 = [transportControlView leftButton];
+  [leftButton2 addTarget:self action:sel__leftButtonTouchUp_ forControlEvents:448];
 
-  v7 = [v17 fastForwardButton];
-  [v7 addTarget:self action:sel__fastForwardButtonTouchDown_ forControlEvents:1];
+  fastForwardButton = [transportControlView fastForwardButton];
+  [fastForwardButton addTarget:self action:sel__fastForwardButtonTouchDown_ forControlEvents:1];
 
-  v8 = [v17 fastForwardButton];
-  [v8 addTarget:self action:sel__fastForwardButtonTouchUp_ forControlEvents:448];
+  fastForwardButton2 = [transportControlView fastForwardButton];
+  [fastForwardButton2 addTarget:self action:sel__fastForwardButtonTouchUp_ forControlEvents:448];
 
   v9 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__leftButtonLongPress_];
   [(CPUINowPlayingViewController *)self setLeftButtonLongPressRecognizer:v9];
 
-  v10 = [(CPUINowPlayingViewController *)self leftButtonLongPressRecognizer];
-  [v10 setAllowedPressTypes:&unk_2855D8560];
+  leftButtonLongPressRecognizer = [(CPUINowPlayingViewController *)self leftButtonLongPressRecognizer];
+  [leftButtonLongPressRecognizer setAllowedPressTypes:&unk_2855D8560];
 
-  v11 = [v17 leftButton];
-  v12 = [(CPUINowPlayingViewController *)self leftButtonLongPressRecognizer];
-  [v11 addGestureRecognizer:v12];
+  leftButton3 = [transportControlView leftButton];
+  leftButtonLongPressRecognizer2 = [(CPUINowPlayingViewController *)self leftButtonLongPressRecognizer];
+  [leftButton3 addGestureRecognizer:leftButtonLongPressRecognizer2];
 
   v13 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel__fastForwardButtonLongPress_];
   [(CPUINowPlayingViewController *)self setFastForwardButtonLongPressRecognizer:v13];
 
-  v14 = [(CPUINowPlayingViewController *)self fastForwardButtonLongPressRecognizer];
-  [v14 setAllowedPressTypes:&unk_2855D8578];
+  fastForwardButtonLongPressRecognizer = [(CPUINowPlayingViewController *)self fastForwardButtonLongPressRecognizer];
+  [fastForwardButtonLongPressRecognizer setAllowedPressTypes:&unk_2855D8578];
 
-  v15 = [v17 fastForwardButton];
-  v16 = [(CPUINowPlayingViewController *)self fastForwardButtonLongPressRecognizer];
-  [v15 addGestureRecognizer:v16];
+  fastForwardButton3 = [transportControlView fastForwardButton];
+  fastForwardButtonLongPressRecognizer2 = [(CPUINowPlayingViewController *)self fastForwardButtonLongPressRecognizer];
+  [fastForwardButton3 addGestureRecognizer:fastForwardButtonLongPressRecognizer2];
 }
 
-- (void)_updateTransportControl:(id)a3 withDefaultImage:(id)a4 actionType:(int64_t)a5
+- (void)_updateTransportControl:(id)control withDefaultImage:(id)image actionType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  controlCopy = control;
+  imageCopy = image;
   v23 = 0;
-  v10 = [(CPUINowPlayingViewController *)self delegate];
+  delegate = [(CPUINowPlayingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    if (a5 > 2)
+    if (type > 2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = *(&self->super.super.super.isa + *off_278D9C770[a5]);
+      v11 = *(&self->super.super.super.isa + *off_278D9C770[type]);
     }
 
     v22 = 0;
-    v14 = [v10 nowPlayingViewController:self shouldDisplayButton:a5 withImage:&v22 existingIdentifier:v11 tinted:&v23];
+    v14 = [delegate nowPlayingViewController:self shouldDisplayButton:type withImage:&v22 existingIdentifier:v11 tinted:&v23];
     v13 = v22;
     v12 = v14 ^ 1u;
   }
@@ -1529,7 +1529,7 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
     v13 = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v10 nowPlayingViewController:self buttonShouldBeActive:a5])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate nowPlayingViewController:self buttonShouldBeActive:type])
   {
     v16 = 0;
     v15 = 0.3;
@@ -1541,23 +1541,23 @@ void __62__CPUINowPlayingViewController__updateShuffleAndRepeatButtons__block_in
     v16 = 1;
   }
 
-  [v8 setAlpha:v15];
-  [v8 setHidden:v12];
+  [controlCopy setAlpha:v15];
+  [controlCopy setHidden:v12];
   if (v13)
   {
     v17 = 0;
 LABEL_15:
     v19 = [v13 imageWithRenderingMode:v17];
 
-    [v8 setImage:v19 forState:0];
-    v20 = [MEMORY[0x277D75348] whiteColor];
-    v21 = [v19 imageWithTintColor:v20];
-    [v8 setImage:v21 forState:1];
+    [controlCopy setImage:v19 forState:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v21 = [v19 imageWithTintColor:whiteColor];
+    [controlCopy setImage:v21 forState:1];
 
     goto LABEL_16;
   }
 
-  v18 = v9;
+  v18 = imageCopy;
   if (v18)
   {
     v13 = v18;
@@ -1566,126 +1566,126 @@ LABEL_15:
   }
 
 LABEL_16:
-  [v8 setSelected:v23];
-  [v8 setEnabled:v16];
+  [controlCopy setSelected:v23];
+  [controlCopy setEnabled:v16];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 objectsPassingTest:_nonCapturedPressType];
+  eventCopy = event;
+  v7 = [began objectsPassingTest:_nonCapturedPressType];
   if ([v7 count])
   {
     v8.receiver = self;
     v8.super_class = CPUINowPlayingViewController;
-    [(CPUINowPlayingViewController *)&v8 pressesBegan:v7 withEvent:v6];
+    [(CPUINowPlayingViewController *)&v8 pressesBegan:v7 withEvent:eventCopy];
   }
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 objectsPassingTest:_nonCapturedPressType];
+  eventCopy = event;
+  v7 = [changed objectsPassingTest:_nonCapturedPressType];
   if ([v7 count])
   {
     v8.receiver = self;
     v8.super_class = CPUINowPlayingViewController;
-    [(CPUINowPlayingViewController *)&v8 pressesChanged:v7 withEvent:v6];
+    [(CPUINowPlayingViewController *)&v8 pressesChanged:v7 withEvent:eventCopy];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 objectsPassingTest:_nonCapturedPressType];
+  eventCopy = event;
+  v7 = [ended objectsPassingTest:_nonCapturedPressType];
   if ([v7 count])
   {
     v8.receiver = self;
     v8.super_class = CPUINowPlayingViewController;
-    [(CPUINowPlayingViewController *)&v8 pressesEnded:v7 withEvent:v6];
+    [(CPUINowPlayingViewController *)&v8 pressesEnded:v7 withEvent:eventCopy];
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a4;
-  v7 = [a3 objectsPassingTest:_nonCapturedPressType];
+  eventCopy = event;
+  v7 = [cancelled objectsPassingTest:_nonCapturedPressType];
   if ([v7 count])
   {
     v8.receiver = self;
     v8.super_class = CPUINowPlayingViewController;
-    [(CPUINowPlayingViewController *)&v8 pressesCancelled:v7 withEvent:v6];
+    [(CPUINowPlayingViewController *)&v8 pressesCancelled:v7 withEvent:eventCopy];
   }
 }
 
 - (void)_checkMetalRendering
 {
-  v3 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-  v4 = [v3 valueBool];
+  usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+  valueBool = [usesMetalNowPlayingArtwork valueBool];
 
-  if (v4)
+  if (valueBool)
   {
-    v5 = [MEMORY[0x277D7FA90] sharedMonitor];
-    v6 = [v5 currentThermalPressureLevel];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    currentThermalPressureLevel = [mEMORY[0x277D7FA90] currentThermalPressureLevel];
 
-    v7 = [(CPUINowPlayingViewController *)self artworkBackgroundView];
-    v8 = v7;
-    if (v6 < 20)
+    artworkBackgroundView = [(CPUINowPlayingViewController *)self artworkBackgroundView];
+    artworkBackgroundView2 = artworkBackgroundView;
+    if (currentThermalPressureLevel < 20)
     {
-      [v7 setPaused:0];
+      [artworkBackgroundView setPaused:0];
 
-      v8 = [(CPUINowPlayingViewController *)self artworkBackgroundView];
-      [v8 scheduleAnimationPauseTimer];
+      artworkBackgroundView2 = [(CPUINowPlayingViewController *)self artworkBackgroundView];
+      [artworkBackgroundView2 scheduleAnimationPauseTimer];
     }
 
     else
     {
-      [v7 setPaused:1];
+      [artworkBackgroundView setPaused:1];
     }
   }
 }
 
-- (id)_installedFullBackgroundArtworkViewBelowView:(id)a3
+- (id)_installedFullBackgroundArtworkViewBelowView:(id)view
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(MEMORY[0x277D755E8]);
   [v5 setClipsToBounds:1];
   [v5 setContentMode:2];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CPUINowPlayingViewController *)self view];
-  v7 = v6;
-  v27 = v4;
-  if (v4)
+  view = [(CPUINowPlayingViewController *)self view];
+  v7 = view;
+  v27 = viewCopy;
+  if (viewCopy)
   {
-    [v6 insertSubview:v5 belowSubview:v4];
+    [view insertSubview:v5 belowSubview:viewCopy];
   }
 
   else
   {
-    [v6 addSubview:v5];
+    [view addSubview:v5];
   }
 
   v19 = MEMORY[0x277CCAAD0];
-  v25 = [v5 topAnchor];
-  v26 = [(CPUINowPlayingViewController *)self view];
-  v24 = [v26 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor = [v5 topAnchor];
+  view2 = [(CPUINowPlayingViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v28[0] = v23;
-  v21 = [v5 bottomAnchor];
-  v22 = [(CPUINowPlayingViewController *)self view];
-  v20 = [v22 bottomAnchor];
-  v18 = [v21 constraintEqualToAnchor:v20];
+  bottomAnchor = [v5 bottomAnchor];
+  view3 = [(CPUINowPlayingViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v28[1] = v18;
-  v8 = [v5 leadingAnchor];
-  v9 = [(CPUINowPlayingViewController *)self view];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  leadingAnchor = [v5 leadingAnchor];
+  view4 = [(CPUINowPlayingViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v28[2] = v11;
-  v12 = [v5 trailingAnchor];
-  v13 = [(CPUINowPlayingViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  trailingAnchor = [v5 trailingAnchor];
+  view5 = [(CPUINowPlayingViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v28[3] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
   [v19 activateConstraints:v16];
@@ -1695,67 +1695,67 @@ LABEL_16:
 
 - (void)_updateArtworkViewVideoPlaybackState
 {
-  v3 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v14 = [v3 artworkViewBrick];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  artworkViewBrick = [nowPlayingView artworkViewBrick];
 
-  v4 = [(CPUINowPlayingViewController *)self videoAvailability];
-  v5 = [v4 isVideoSupported];
+  videoAvailability = [(CPUINowPlayingViewController *)self videoAvailability];
+  isVideoSupported = [videoAvailability isVideoSupported];
 
-  if ((v5 & 1) == 0)
+  if ((isVideoSupported & 1) == 0)
   {
-    v11 = v14;
+    v11 = artworkViewBrick;
     v12 = 0;
 LABEL_7:
     [v11 setVideoPlaybackState:v12];
     goto LABEL_8;
   }
 
-  v6 = [(CPUINowPlayingViewController *)self videoAvailability];
-  v7 = [v6 isVideoAllowed];
+  videoAvailability2 = [(CPUINowPlayingViewController *)self videoAvailability];
+  isVideoAllowed = [videoAvailability2 isVideoAllowed];
 
-  if ((v7 & 1) == 0)
+  if ((isVideoAllowed & 1) == 0)
   {
-    v11 = v14;
+    v11 = artworkViewBrick;
     v12 = 1;
     goto LABEL_7;
   }
 
-  v8 = [(CPUINowPlayingViewController *)self dataSource];
+  dataSource = [(CPUINowPlayingViewController *)self dataSource];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CPUINowPlayingViewController *)self dataSource];
-    [v14 setVideoPlaybackState:{objc_msgSend(v10, "videoPlaybackStateForNowPlayingController:", self)}];
+    dataSource2 = [(CPUINowPlayingViewController *)self dataSource];
+    [artworkViewBrick setVideoPlaybackState:{objc_msgSend(dataSource2, "videoPlaybackStateForNowPlayingController:", self)}];
   }
 
   else
   {
-    v13 = [(CPUINowPlayingViewController *)self videoAvailability];
-    [v14 setVideoPlaybackState:{objc_msgSend(v13, "playbackState")}];
+    videoAvailability3 = [(CPUINowPlayingViewController *)self videoAvailability];
+    [artworkViewBrick setVideoPlaybackState:{objc_msgSend(videoAvailability3, "playbackState")}];
   }
 
 LABEL_8:
 }
 
-- (void)_updateArtworkViewIfNeeded:(id)a3 placeholder:(id)a4
+- (void)_updateArtworkViewIfNeeded:(id)needed placeholder:(id)placeholder
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  placeholderCopy = placeholder;
   [(CPUINowPlayingViewController *)self _updateArtworkViewVideoPlaybackState];
-  v8 = [(CPUINowPlayingViewController *)self nowPlayingView];
-  v9 = [v8 artworkViewBrick];
+  nowPlayingView = [(CPUINowPlayingViewController *)self nowPlayingView];
+  artworkViewBrick = [nowPlayingView artworkViewBrick];
 
-  [v9 setPlaceholderImage:v7];
-  if (v6)
+  [artworkViewBrick setPlaceholderImage:placeholderCopy];
+  if (neededCopy)
   {
-    v10 = [(CPUINowPlayingViewController *)self delegate];
+    delegate = [(CPUINowPlayingViewController *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(CPUINowPlayingViewController *)self delegate];
-      v13 = [v12 nowPlayingViewControllerShouldCrossfadeArtwork:self];
+      delegate2 = [(CPUINowPlayingViewController *)self delegate];
+      v13 = [delegate2 nowPlayingViewControllerShouldCrossfadeArtwork:self];
     }
 
     else
@@ -1763,36 +1763,36 @@ LABEL_8:
       v13 = 1;
     }
 
-    v17 = [(CPUINowPlayingViewController *)self artworkOperationQueue];
+    artworkOperationQueue = [(CPUINowPlayingViewController *)self artworkOperationQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __71__CPUINowPlayingViewController__updateArtworkViewIfNeeded_placeholder___block_invoke;
     v18[3] = &unk_278D9C6E0;
-    v19 = v6;
-    v20 = v9;
-    v21 = self;
+    v19 = neededCopy;
+    v20 = artworkViewBrick;
+    selfCopy = self;
     v22 = v13;
-    [v17 addOperationWithBlock:v18];
+    [artworkOperationQueue addOperationWithBlock:v18];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
-    v15 = [v14 valueBool];
+    usesMetalNowPlayingArtwork = [MEMORY[0x277CF89D0] usesMetalNowPlayingArtwork];
+    valueBool = [usesMetalNowPlayingArtwork valueBool];
 
-    if (v15)
+    if (valueBool)
     {
-      v16 = [(CPUINowPlayingViewController *)self artworkBackgroundView];
-      [v16 updateWithImage:0 animated:1];
+      artworkBackgroundView = [(CPUINowPlayingViewController *)self artworkBackgroundView];
+      [artworkBackgroundView updateWithImage:0 animated:1];
     }
 
     else
     {
-      v16 = [(CPUINowPlayingViewController *)self artworkView];
-      [v16 setImage:0];
+      artworkBackgroundView = [(CPUINowPlayingViewController *)self artworkView];
+      [artworkBackgroundView setImage:0];
     }
 
-    [v9 setImage:0];
+    [artworkViewBrick setImage:0];
     [(CPUINowPlayingViewController *)self setFinalArtworkImage:0];
   }
 }
@@ -1911,15 +1911,15 @@ void *__71__CPUINowPlayingViewController__updateArtworkViewIfNeeded_placeholder_
 - (id)_upNextBarButtonItem
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v3 = [(CPUINowPlayingViewController *)self delegate];
+  delegate = [(CPUINowPlayingViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CPUINowPlayingViewController *)self delegate];
-    v6 = [v5 titleForUpNextInNowPlayingViewController:self];
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v8 = [v6 stringByTrimmingCharactersInSet:v7];
+    delegate2 = [(CPUINowPlayingViewController *)self delegate];
+    v6 = [delegate2 titleForUpNextInNowPlayingViewController:self];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v8 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   else
@@ -1974,24 +1974,24 @@ LABEL_11:
   return v19;
 }
 
-- (void)_reloadDataForcingLayout:(BOOL)a3 updateControls:(BOOL)a4
+- (void)_reloadDataForcingLayout:(BOOL)layout updateControls:(BOOL)controls
 {
-  v4 = a4;
-  v54 = a3;
+  controlsCopy = controls;
+  layoutCopy = layout;
   v57 = *MEMORY[0x277D85DE8];
   v6 = CarPlayUIGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v56 = self;
+    selfCopy = self;
     _os_log_impl(&dword_243134000, v6, OS_LOG_TYPE_DEFAULT, "Reloading now playing view controller %@", buf, 0xCu);
   }
 
-  v7 = [(CPUINowPlayingViewController *)self dataSource];
-  v8 = [(CPUINowPlayingViewController *)self delegate];
+  dataSource = [(CPUINowPlayingViewController *)self dataSource];
+  delegate = [(CPUINowPlayingViewController *)self delegate];
   if (_os_feature_enabled_impl() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v9 = [v7 sportsDataForNowPlayingController:self];
+    v9 = [dataSource sportsDataForNowPlayingController:self];
     [(CPUINowPlayingViewController *)self setSportsData:v9];
   }
 
@@ -2003,21 +2003,21 @@ LABEL_11:
   if (_os_feature_enabled_impl())
   {
     nowPlayingView = self->_nowPlayingView;
-    v11 = [(CPUINowPlayingViewController *)self sportsData];
-    [(CPUINowPlayingView *)nowPlayingView setSportsData:v11];
+    sportsData = [(CPUINowPlayingViewController *)self sportsData];
+    [(CPUINowPlayingView *)nowPlayingView setSportsData:sportsData];
   }
 
-  v12 = [v7 titleForNowPlayingController:self];
+  v12 = [dataSource titleForNowPlayingController:self];
   v13 = CPUIFilteredString(v12);
 
-  v14 = [v7 artistTextForNowPlayingController:self];
+  v14 = [dataSource artistTextForNowPlayingController:self];
   v15 = CPUIFilteredString(v14);
 
-  v16 = [v7 albumTextForNowPlayingController:self];
+  v16 = [dataSource albumTextForNowPlayingController:self];
   v17 = CPUIFilteredString(v16);
 
-  v18 = [(CPUINowPlayingView *)self->_nowPlayingView songDetailsView];
-  v19 = v18;
+  songDetailsView = [(CPUINowPlayingView *)self->_nowPlayingView songDetailsView];
+  v19 = songDetailsView;
   v53 = v13;
   if (v13)
   {
@@ -2029,7 +2029,7 @@ LABEL_11:
     v20 = &stru_2855CA368;
   }
 
-  [v18 setTrackTitle:v20];
+  [songDetailsView setTrackTitle:v20];
   if (v17)
   {
     v21 = v17;
@@ -2055,37 +2055,37 @@ LABEL_11:
   [v19 setArtistName:v22];
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v7 attributionTitleForNowPlayingViewController:self];
+    v23 = [dataSource attributionTitleForNowPlayingViewController:self];
     [v19 setAttributionName:v23];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v24 = [v7 attributionArtworkForNowPlayingViewController:self];
+    v24 = [dataSource attributionArtworkForNowPlayingViewController:self];
     [v19 setAttributionArtwork:v24];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v25 = [v19 titleView];
-    [v25 setShouldUseMusicExplicitGlyph:{objc_msgSend(v8, "nowPlayingViewControllerShouldUseMusicExplicitGlyph:", self)}];
+    titleView = [v19 titleView];
+    [titleView setShouldUseMusicExplicitGlyph:{objc_msgSend(delegate, "nowPlayingViewControllerShouldUseMusicExplicitGlyph:", self)}];
   }
 
-  v26 = [v7 nowPlayingViewControllerIsShowingExplicitTrack:self];
-  v27 = [v19 titleView];
-  [v27 setExplicitTrack:v26];
+  v26 = [dataSource nowPlayingViewControllerIsShowingExplicitTrack:self];
+  titleView2 = [v19 titleView];
+  [titleView2 setExplicitTrack:v26];
 
   if ([(__CFString *)v17 length]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v28 = [v8 nowPlayingViewControllerCanShowAlbumLink:self];
-    v29 = [v19 albumArtistLabelButton];
-    [v29 setEnabled:v28];
+    v28 = [delegate nowPlayingViewControllerCanShowAlbumLink:self];
+    albumArtistLabelButton = [v19 albumArtistLabelButton];
+    [albumArtistLabelButton setEnabled:v28];
   }
 
-  v30 = [v7 backgroundArtForNowPlayingController:self];
+  v30 = [dataSource backgroundArtForNowPlayingController:self];
   if (objc_opt_respondsToSelector())
   {
-    v31 = [v7 placeholderTypeForNowPlayingViewController:self];
+    v31 = [dataSource placeholderTypeForNowPlayingViewController:self];
   }
 
   else
@@ -2093,16 +2093,16 @@ LABEL_11:
     v31 = 0;
   }
 
-  v32 = [(CPUINowPlayingViewController *)self traitCollection];
-  v33 = CPUIImageForPlaceholderTypeWithTraitCollection(v31, v32);
+  traitCollection = [(CPUINowPlayingViewController *)self traitCollection];
+  v33 = CPUIImageForPlaceholderTypeWithTraitCollection(v31, traitCollection);
 
   v34 = v30;
   v50 = v33;
   [(CPUINowPlayingViewController *)self _updateArtworkViewIfNeeded:v30 placeholder:v33];
-  v35 = [(CPUINowPlayingView *)self->_nowPlayingView playModeControlView];
+  playModeControlView = [(CPUINowPlayingView *)self->_nowPlayingView playModeControlView];
   if (objc_opt_respondsToSelector())
   {
-    v36 = [v8 customPlaybackControlButtonsForNowPlayingViewController:self];
+    v36 = [delegate customPlaybackControlButtonsForNowPlayingViewController:self];
   }
 
   else
@@ -2112,17 +2112,17 @@ LABEL_11:
 
   if (![v36 count])
   {
-    v37 = [v35 defaultPlayModeButtons];
+    defaultPlayModeButtons = [playModeControlView defaultPlayModeButtons];
 
-    v36 = v37;
+    v36 = defaultPlayModeButtons;
   }
 
   [(CPUINowPlayingViewController *)self _updateButtonAXLabelsForButtons:v36];
-  [v35 setMediaButtons:v36];
+  [playModeControlView setMediaButtons:v36];
   v51 = v17;
   if (objc_opt_respondsToSelector())
   {
-    v38 = [v8 nowPlayingViewControllerShouldHideBackButton:self];
+    v38 = [delegate nowPlayingViewControllerShouldHideBackButton:self];
   }
 
   else
@@ -2130,59 +2130,59 @@ LABEL_11:
     v38 = 0;
   }
 
-  v39 = [(CPUINowPlayingViewController *)self navigationItem];
-  [v39 setHidesBackButton:v38];
+  navigationItem = [(CPUINowPlayingViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:v38];
 
-  v49 = v35;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v8 nowPlayingViewControllerShouldOverrideRightBarButtons:self] & 1) == 0)
+  v49 = playModeControlView;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate nowPlayingViewControllerShouldOverrideRightBarButtons:self] & 1) == 0)
   {
-    if ([v8 nowPlayingViewControllerCanShowUpNext:self])
+    if ([delegate nowPlayingViewControllerCanShowUpNext:self])
     {
-      v40 = [(CPUINowPlayingViewController *)self _upNextBarButtonItem];
-      [(CPUINowPlayingViewController *)self setPlaybackQueueBarButtonItem:v40];
-      if (v40)
+      _upNextBarButtonItem = [(CPUINowPlayingViewController *)self _upNextBarButtonItem];
+      [(CPUINowPlayingViewController *)self setPlaybackQueueBarButtonItem:_upNextBarButtonItem];
+      if (_upNextBarButtonItem)
       {
         v47 = v34;
-        v48 = v4;
-        v41 = [MEMORY[0x277CBEB18] arrayWithObject:v40];
-        v42 = [(CPUINowPlayingViewController *)self navigationItem];
-        v43 = [v42 rightBarButtonItems];
-        v44 = [v43 isEqualToArray:v41];
+        v48 = controlsCopy;
+        v41 = [MEMORY[0x277CBEB18] arrayWithObject:_upNextBarButtonItem];
+        navigationItem2 = [(CPUINowPlayingViewController *)self navigationItem];
+        rightBarButtonItems = [navigationItem2 rightBarButtonItems];
+        v44 = [rightBarButtonItems isEqualToArray:v41];
 
         if ((v44 & 1) == 0)
         {
-          v45 = [(CPUINowPlayingViewController *)self navigationItem];
-          [v45 setRightBarButtonItems:v41];
+          navigationItem3 = [(CPUINowPlayingViewController *)self navigationItem];
+          [navigationItem3 setRightBarButtonItems:v41];
         }
 
-        v4 = v48;
+        controlsCopy = v48;
         v34 = v47;
       }
     }
   }
 
-  [(CPUINowPlayingViewController *)self _recalculateLayout:v54];
+  [(CPUINowPlayingViewController *)self _recalculateLayout:layoutCopy];
   if (objc_opt_respondsToSelector())
   {
-    -[CPUINowPlayingViewController _updateAudioRenderingMode:](self, "_updateAudioRenderingMode:", [v7 overrideRenderingModeForNowPlayingViewController:self]);
+    -[CPUINowPlayingViewController _updateAudioRenderingMode:](self, "_updateAudioRenderingMode:", [dataSource overrideRenderingModeForNowPlayingViewController:self]);
   }
 
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v7 badgeAnnotationViewForNowPlayingViewController:self], (v46 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([dataSource badgeAnnotationViewForNowPlayingViewController:self], (audioSessionRenderingModeView = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v46 = [(CPUINowPlayingViewController *)self audioSessionRenderingModeView];
+    audioSessionRenderingModeView = [(CPUINowPlayingViewController *)self audioSessionRenderingModeView];
   }
 
-  [(CPUINowPlayingView *)self->_nowPlayingView setBadgeAnnotationView:v46];
-  if (v4)
+  [(CPUINowPlayingView *)self->_nowPlayingView setBadgeAnnotationView:audioSessionRenderingModeView];
+  if (controlsCopy)
   {
     [(CPUINowPlayingViewController *)self updatePlayControls];
   }
 }
 
-- (void)_sceneWillEnterForeground:(id)a3
+- (void)_sceneWillEnterForeground:(id)foreground
 {
-  v4 = [a3 object];
-  v5 = [(CPUINowPlayingViewController *)self _isCarScene:v4];
+  object = [foreground object];
+  v5 = [(CPUINowPlayingViewController *)self _isCarScene:object];
 
   if (v5)
   {
@@ -2191,10 +2191,10 @@ LABEL_11:
   }
 }
 
-- (void)_sceneDidActivate:(id)a3
+- (void)_sceneDidActivate:(id)activate
 {
-  v4 = [a3 object];
-  v5 = [(CPUINowPlayingViewController *)self _isCarScene:v4];
+  object = [activate object];
+  v5 = [(CPUINowPlayingViewController *)self _isCarScene:object];
 
   if (v5)
   {
@@ -2203,23 +2203,23 @@ LABEL_11:
   }
 }
 
-- (void)_sceneWillDeactivate:(id)a3
+- (void)_sceneWillDeactivate:(id)deactivate
 {
-  v7 = a3;
-  v4 = [v7 object];
-  v5 = [(CPUINowPlayingViewController *)self _isCarScene:v4];
+  deactivateCopy = deactivate;
+  object = [deactivateCopy object];
+  v5 = [(CPUINowPlayingViewController *)self _isCarScene:object];
 
   if (v5)
   {
-    v6 = [v7 object];
-    [(CPUINowPlayingViewController *)self _deactivateStatusBarStyleOverrideIfNecessaryForScene:v6];
+    object2 = [deactivateCopy object];
+    [(CPUINowPlayingViewController *)self _deactivateStatusBarStyleOverrideIfNecessaryForScene:object2];
   }
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v4 = [a3 object];
-  v5 = [(CPUINowPlayingViewController *)self _isCarScene:v4];
+  object = [background object];
+  v5 = [(CPUINowPlayingViewController *)self _isCarScene:object];
 
   if (v5)
   {
@@ -2228,11 +2228,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)_isCarScene:(id)a3
+- (BOOL)_isCarScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   objc_opt_class();
-  v5 = v4;
+  v5 = sceneCopy;
   if (objc_opt_isKindOfClass())
   {
     if (!v5)
@@ -2242,20 +2242,20 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v6 = [v5 traitCollection];
-    v7 = [v6 userInterfaceIdiom];
+    traitCollection = [v5 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v7 != 3)
+    if (userInterfaceIdiom != 3)
     {
       v11 = 0;
       v12 = v5;
       goto LABEL_9;
     }
 
-    v8 = [(CPUINowPlayingViewController *)self view];
-    v9 = [v8 window];
-    v10 = [v9 windowScene];
-    v11 = v10 == v5;
+    view = [(CPUINowPlayingViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    v11 = windowScene == v5;
 
     v12 = v5;
   }
@@ -2264,37 +2264,37 @@ LABEL_11:
   {
     v12 = 0;
     v11 = 0;
-    v8 = v5;
+    view = v5;
   }
 
 LABEL_9:
   return v11;
 }
 
-- (void)_deactivateStatusBarStyleOverrideIfNecessaryForScene:(id)a3
+- (void)_deactivateStatusBarStyleOverrideIfNecessaryForScene:(id)scene
 {
-  v4 = [a3 _FBSScene];
-  v5 = [v4 settings];
+  _FBSScene = [scene _FBSScene];
+  settings = [_FBSScene settings];
 
-  if ([v5 deactivationReasons] != 16)
+  if ([settings deactivationReasons] != 16)
   {
     [(CPUINowPlayingViewController *)self _setStatusBarOverrideActive:0];
   }
 }
 
-- (void)nowPlayingAudioFormatController:(id)a3 didChangeAudioFormatContentInfo:(id)a4
+- (void)nowPlayingAudioFormatController:(id)controller didChangeAudioFormatContentInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__CPUINowPlayingViewController_nowPlayingAudioFormatController_didChangeAudioFormatContentInfo___block_invoke;
   block[3] = &unk_278D9C708;
-  v11 = v7;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v7;
+  v11 = infoCopy;
+  v12 = controllerCopy;
+  selfCopy = self;
+  v8 = controllerCopy;
+  v9 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -2317,16 +2317,16 @@ void __96__CPUINowPlayingViewController_nowPlayingAudioFormatController_didChang
   [a1[6] _updateAudioRenderingMode:v5];
 }
 
-- (void)_updateAudioRenderingMode:(int64_t)a3
+- (void)_updateAudioRenderingMode:(int64_t)mode
 {
   v37 = *MEMORY[0x277D85DE8];
-  if ([(CPUINowPlayingViewController *)self lastRenderingMode]!= a3)
+  if ([(CPUINowPlayingViewController *)self lastRenderingMode]!= mode)
   {
-    self->_lastRenderingMode = a3;
-    if (a3 == 3)
+    self->_lastRenderingMode = mode;
+    if (mode == 3)
     {
       v5 = CPUILocalizedStringForKey(@"SPATIAL_AUDIO");
-      v6 = [(CPUINowPlayingViewController *)self traitCollection];
+      traitCollection = [(CPUINowPlayingViewController *)self traitCollection];
       v7 = [MEMORY[0x277D755B8] _systemImageNamed:@"person.spatialaudio.fill"];
       v8 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:1 scale:10.0];
       v9 = [v7 imageWithConfiguration:v8];
@@ -2334,27 +2334,27 @@ void __96__CPUINowPlayingViewController_nowPlayingAudioFormatController_didChang
 
     else
     {
-      v6 = [(CPUINowPlayingViewController *)self traitCollection];
-      if ((a3 - 1) < 2)
+      traitCollection = [(CPUINowPlayingViewController *)self traitCollection];
+      if ((mode - 1) < 2)
       {
         v5 = 0;
         v11 = 0;
         goto LABEL_13;
       }
 
-      if (a3 == 4)
+      if (mode == 4)
       {
         v10 = @"DolbyAudio";
       }
 
       else
       {
-        if (a3 != 5)
+        if (mode != 5)
         {
           v9 = CarPlayUIGeneralLogging();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            [(CPUINowPlayingViewController *)a3 _updateAudioRenderingMode:v9];
+            [(CPUINowPlayingViewController *)mode _updateAudioRenderingMode:v9];
           }
 
           v5 = 0;
@@ -2365,7 +2365,7 @@ void __96__CPUINowPlayingViewController_nowPlayingAudioFormatController_didChang
         v10 = @"DolbyAtmos";
       }
 
-      v9 = CPUIImageNamedWithTraitCollection(v10, v6);
+      v9 = CPUIImageNamedWithTraitCollection(v10, traitCollection);
       v5 = 0;
     }
 
@@ -2377,8 +2377,8 @@ LABEL_13:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = [(UIStackView *)self->_audioSessionRenderingModeView arrangedSubviews];
-    v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    arrangedSubviews = [(UIStackView *)self->_audioSessionRenderingModeView arrangedSubviews];
+    v13 = [arrangedSubviews countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v13)
     {
       v14 = v13;
@@ -2389,7 +2389,7 @@ LABEL_13:
         {
           if (*v33 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(arrangedSubviews);
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
@@ -2397,7 +2397,7 @@ LABEL_13:
           [v17 removeFromSuperview];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v14 = [arrangedSubviews countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v14);
@@ -2414,8 +2414,8 @@ LABEL_13:
         self->_audioSessionRenderingModeView = v20;
 
         [(UIStackView *)self->_audioSessionRenderingModeView setTranslatesAutoresizingMaskIntoConstraints:0];
-        v22 = [(UIStackView *)self->_audioSessionRenderingModeView layer];
-        [v22 setAllowsGroupBlending:0];
+        layer = [(UIStackView *)self->_audioSessionRenderingModeView layer];
+        [layer setAllowsGroupBlending:0];
 
         [(UIStackView *)self->_audioSessionRenderingModeView setAxis:0];
         [(UIStackView *)self->_audioSessionRenderingModeView setDistribution:2];
@@ -2427,13 +2427,13 @@ LABEL_13:
       if (v11)
       {
         v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v11];
-        v25 = [MEMORY[0x277D75348] whiteColor];
-        [v24 setTintColor:v25];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [v24 setTintColor:whiteColor];
 
         [v24 setContentMode:1];
         v26 = [MEMORY[0x277CD9EA0] filterWithType:*v23];
-        v27 = [v24 layer];
-        [v27 setCompositingFilter:v26];
+        layer2 = [v24 layer];
+        [layer2 setCompositingFilter:v26];
 
         [(UIStackView *)self->_audioSessionRenderingModeView addArrangedSubview:v24];
         if (v5)
@@ -2450,14 +2450,14 @@ LABEL_13:
       audioSessionRenderingModeView = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{*v19, v19[1], v19[2], v19[3]}];
       [(UIStackView *)audioSessionRenderingModeView setText:v5];
       v28 = [MEMORY[0x277CD9EA0] filterWithType:*v23];
-      v29 = [(UIStackView *)audioSessionRenderingModeView layer];
-      [v29 setCompositingFilter:v28];
+      layer3 = [(UIStackView *)audioSessionRenderingModeView layer];
+      [layer3 setCompositingFilter:v28];
 
       v30 = [MEMORY[0x277D74300] systemFontOfSize:10.0 weight:*MEMORY[0x277D74418]];
       [(UIStackView *)audioSessionRenderingModeView setFont:v30];
 
-      v31 = [MEMORY[0x277D75348] whiteColor];
-      [(UIStackView *)audioSessionRenderingModeView setTextColor:v31];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+      [(UIStackView *)audioSessionRenderingModeView setTextColor:whiteColor2];
 
       [(UIStackView *)self->_audioSessionRenderingModeView addArrangedSubview:audioSessionRenderingModeView];
     }

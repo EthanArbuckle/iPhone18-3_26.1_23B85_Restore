@@ -1,34 +1,34 @@
 @interface SKUIMetricsController
 + (void)flushImmediately;
-- (BOOL)canRecordEventWithType:(id)a3;
+- (BOOL)canRecordEventWithType:(id)type;
 - (NSNumber)accountIdentifier;
-- (SKUIMetricsController)initWithGlobalConfiguration:(id)a3;
+- (SKUIMetricsController)initWithGlobalConfiguration:(id)configuration;
 - (SKUIMetricsImpressionSession)activeImpressionsSession;
-- (id)clickEventWithItem:(id)a3 locationPosition:(int64_t)a4;
-- (id)itemOfferClickEventWithItem:(id)a3 locationPosition:(int64_t)a4;
-- (id)locationWithPageComponent:(id)a3;
-- (id)performActionForItem:(id)a3;
-- (id)performActionForItem:(id)a3 clientContext:(id)a4;
-- (id)performActionForItem:(id)a3 offer:(id)a4 clientContext:(id)a5;
-- (id)performActionForItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (id)performActionForSoftwareItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (void)_insertEvent:(id)a3;
+- (id)clickEventWithItem:(id)item locationPosition:(int64_t)position;
+- (id)itemOfferClickEventWithItem:(id)item locationPosition:(int64_t)position;
+- (id)locationWithPageComponent:(id)component;
+- (id)performActionForItem:(id)item;
+- (id)performActionForItem:(id)item clientContext:(id)context;
+- (id)performActionForItem:(id)item offer:(id)offer clientContext:(id)context;
+- (id)performActionForItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block;
+- (id)performActionForSoftwareItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block;
+- (void)_insertEvent:(id)event;
 - (void)_recordActiveImpressions;
 - (void)_waitUntilRecordingComplete;
 - (void)closeImpressionsSession;
 - (void)dealloc;
 - (void)flushImmediately;
-- (void)pingURLs:(id)a3 withClientContext:(id)a4;
-- (void)recordBuyConfirmedEventsForItems:(id)a3 purchaseResponses:(id)a4;
-- (void)recordEvent:(id)a3;
-- (void)setPageConfiguration:(id)a3;
+- (void)pingURLs:(id)ls withClientContext:(id)context;
+- (void)recordBuyConfirmedEventsForItems:(id)items purchaseResponses:(id)responses;
+- (void)recordEvent:(id)event;
+- (void)setPageConfiguration:(id)configuration;
 @end
 
 @implementation SKUIMetricsController
 
-- (SKUIMetricsController)initWithGlobalConfiguration:(id)a3
+- (SKUIMetricsController)initWithGlobalConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIMetricsController initWithGlobalConfiguration:];
@@ -40,8 +40,8 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_globalConfiguration, a3);
-    v8 = [MEMORY[0x277D69B98] databasePath];
+    objc_storeStrong(&v6->_globalConfiguration, configuration);
+    databasePath = [MEMORY[0x277D69B98] databasePath];
     IsLocalWritable = SSFileIsLocalWritable();
 
     v10 = 0x277D69B88;
@@ -54,12 +54,12 @@
     controller = v7->_controller;
     v7->_controller = v11;
 
-    [(SSMetricsController *)v7->_controller setGlobalConfiguration:v5];
+    [(SSMetricsController *)v7->_controller setGlobalConfiguration:configurationCopy];
     [(SSMetricsConfiguration *)v7->_globalConfiguration reportingFrequency];
     v7->_flushesImmediately = v13 == 0.0;
     v7->_impressionsEnabled = [(SKUIMetricsController *)v7 canRecordEventWithType:*MEMORY[0x277D6A480]];
-    v14 = [MEMORY[0x277D69B38] sharedConfig];
-    v7->_loggingEnabled = [v14 shouldLog];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    v7->_loggingEnabled = [mEMORY[0x277D69B38] shouldLog];
 
     v15 = +[SKUIMetricsFlushTimer sharedTimer];
     [v15 addMetricsController:v7];
@@ -86,21 +86,21 @@
 
 - (NSNumber)accountIdentifier
 {
-  v2 = [MEMORY[0x277D69A20] defaultStore];
-  v3 = [v2 activeAccount];
-  v4 = [v3 uniqueIdentifier];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-  return v4;
+  return uniqueIdentifier;
 }
 
 - (SKUIMetricsImpressionSession)activeImpressionsSession
 {
   if (self->_activeImpressionsSession || self->_impressionsEnabled && (v7 = objc_alloc_init(SKUIMetricsImpressionSession), activeImpressionsSession = self->_activeImpressionsSession, self->_activeImpressionsSession = v7, activeImpressionsSession, self->_activeImpressionsSession))
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v4)
+    if (!applicationState)
     {
       impressionsTimer = self->_impressionsTimer;
       if (impressionsTimer)
@@ -144,37 +144,37 @@ void __49__SKUIMetricsController_activeImpressionsSession__block_invoke(uint64_t
   [WeakRetained closeImpressionsSession];
 }
 
-- (BOOL)canRecordEventWithType:(id)a3
+- (BOOL)canRecordEventWithType:(id)type
 {
-  v4 = a3;
-  if (([(SSMetricsConfiguration *)self->_globalConfiguration isEventTypeBlacklisted:v4]& 1) != 0)
+  typeCopy = type;
+  if (([(SSMetricsConfiguration *)self->_globalConfiguration isEventTypeBlacklisted:typeCopy]& 1) != 0)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = [(SSMetricsConfiguration *)self->_pageConfiguration isEventTypeBlacklisted:v4]^ 1;
+    v5 = [(SSMetricsConfiguration *)self->_pageConfiguration isEventTypeBlacklisted:typeCopy]^ 1;
   }
 
   return v5;
 }
 
-- (id)clickEventWithItem:(id)a3 locationPosition:(int64_t)a4
+- (id)clickEventWithItem:(id)item locationPosition:(int64_t)position
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D69B68];
-  v7 = a3;
+  itemCopy = item;
   v8 = objc_alloc_init(v6);
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(v7, "itemIdentifier")];
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(itemCopy, "itemIdentifier")];
   [v8 setTargetIdentifier:v9];
 
   v10 = *MEMORY[0x277D6A4E0];
   [v8 setTargetType:*MEMORY[0x277D6A4E0]];
-  v11 = [v7 productPageURLString];
-  [v8 setTargetURL:v11];
+  productPageURLString = [itemCopy productPageURLString];
+  [v8 setTargetURL:productPageURLString];
 
-  v12 = [(SKUIMetricsController *)self locationWithPosition:a4 type:v10 fieldData:v7];
+  v12 = [(SKUIMetricsController *)self locationWithPosition:position type:v10 fieldData:itemCopy];
 
   if (v12)
   {
@@ -198,13 +198,13 @@ void __49__SKUIMetricsController_activeImpressionsSession__block_invoke(uint64_t
 
 - (void)flushImmediately
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v4 = *MEMORY[0x277D767B0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __41__SKUIMetricsController_flushImmediately__block_invoke;
   v12[3] = &unk_2781FC960;
-  v5 = v3;
+  v5 = mEMORY[0x277D75128];
   v13 = v5;
   v14 = v4;
   v6 = [v5 beginBackgroundTaskWithName:@"SKUIMetricsController.flushImmediately" expirationHandler:v12];
@@ -226,24 +226,24 @@ void __49__SKUIMetricsController_activeImpressionsSession__block_invoke(uint64_t
   [v2 flushAllMetricsControllers];
 }
 
-- (id)itemOfferClickEventWithItem:(id)a3 locationPosition:(int64_t)a4
+- (id)itemOfferClickEventWithItem:(id)item locationPosition:(int64_t)position
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   v7 = objc_alloc_init(MEMORY[0x277D69B68]);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(v6, "itemIdentifier")];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", objc_msgSend(itemCopy, "itemIdentifier")];
   [v7 setTargetIdentifier:v8];
 
   v9 = *MEMORY[0x277D6A4D0];
   [v7 setTargetType:*MEMORY[0x277D6A4D0]];
   v10 = +[SKUIItemStateCenter defaultCenter];
-  v11 = [v10 metricsActionTypeForItem:v6];
+  v11 = [v10 metricsActionTypeForItem:itemCopy];
 
   [v7 setActionType:v11];
   if ([v11 isEqualToString:*MEMORY[0x277D6A450]])
   {
-    v12 = [v6 bundleIdentifier];
-    [v7 setActionDetails:v12];
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    [v7 setActionDetails:bundleIdentifier];
 LABEL_6:
 
     goto LABEL_7;
@@ -251,12 +251,12 @@ LABEL_6:
 
   if ([v11 isEqualToString:*MEMORY[0x277D6A438]])
   {
-    v13 = [v6 primaryItemOffer];
-    v12 = [v13 actionParameters];
+    primaryItemOffer = [itemCopy primaryItemOffer];
+    bundleIdentifier = [primaryItemOffer actionParameters];
 
-    if (v12)
+    if (bundleIdentifier)
     {
-      v14 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v12, @"buyParams", 0}];
+      v14 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{bundleIdentifier, @"buyParams", 0}];
       [v7 setActionDetails:v14];
     }
 
@@ -265,7 +265,7 @@ LABEL_6:
 
 LABEL_7:
   v15 = [(SKUIMetricsController *)self locationWithPosition:0 type:v9 fieldData:0];
-  v16 = [(SKUIMetricsController *)self locationWithPosition:a4 type:*MEMORY[0x277D6A4E0] fieldData:v6];
+  v16 = [(SKUIMetricsController *)self locationWithPosition:position type:*MEMORY[0x277D6A4E0] fieldData:itemCopy];
   v17 = v16;
   if (v15 && v16)
   {
@@ -278,96 +278,96 @@ LABEL_7:
   return v7;
 }
 
-- (id)locationWithPageComponent:(id)a3
+- (id)locationWithPageComponent:(id)component
 {
   controller = self->_controller;
-  v4 = a3;
-  v5 = [v4 metricsLocationPosition];
-  v6 = [v4 metricsElementName];
-  v7 = [(SSMetricsController *)controller locationWithPosition:v5 type:v6 fieldData:v4];
+  componentCopy = component;
+  metricsLocationPosition = [componentCopy metricsLocationPosition];
+  metricsElementName = [componentCopy metricsElementName];
+  v7 = [(SSMetricsController *)controller locationWithPosition:metricsLocationPosition type:metricsElementName fieldData:componentCopy];
 
   return v7;
 }
 
-- (id)performActionForItem:(id)a3
+- (id)performActionForItem:(id)item
 {
-  v4 = a3;
-  v5 = SKUIItemStateCenterUseAppstoredPurchases(v4);
-  v6 = [v4 primaryItemOffer];
+  itemCopy = item;
+  v5 = SKUIItemStateCenterUseAppstoredPurchases(itemCopy);
+  primaryItemOffer = [itemCopy primaryItemOffer];
   if (v5)
   {
-    [(SKUIMetricsController *)self performActionForSoftwareItem:v4 offer:v6 clientContext:0 completionBlock:0];
+    [(SKUIMetricsController *)self performActionForSoftwareItem:itemCopy offer:primaryItemOffer clientContext:0 completionBlock:0];
   }
 
   else
   {
-    [(SKUIMetricsController *)self performActionForItem:v4 offer:v6 clientContext:0 completionBlock:0];
+    [(SKUIMetricsController *)self performActionForItem:itemCopy offer:primaryItemOffer clientContext:0 completionBlock:0];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)performActionForItem:(id)a3 clientContext:(id)a4
+- (id)performActionForItem:(id)item clientContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = SKUIItemStateCenterUseAppstoredPurchases(v7);
-  v9 = [v7 primaryItemOffer];
+  contextCopy = context;
+  itemCopy = item;
+  v8 = SKUIItemStateCenterUseAppstoredPurchases(itemCopy);
+  primaryItemOffer = [itemCopy primaryItemOffer];
   if (v8)
   {
-    [(SKUIMetricsController *)self performActionForSoftwareItem:v7 offer:v9 clientContext:v6 completionBlock:0];
+    [(SKUIMetricsController *)self performActionForSoftwareItem:itemCopy offer:primaryItemOffer clientContext:contextCopy completionBlock:0];
   }
 
   else
   {
-    [(SKUIMetricsController *)self performActionForItem:v7 offer:v9 clientContext:v6 completionBlock:0];
+    [(SKUIMetricsController *)self performActionForItem:itemCopy offer:primaryItemOffer clientContext:contextCopy completionBlock:0];
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)performActionForItem:(id)a3 offer:(id)a4 clientContext:(id)a5
+- (id)performActionForItem:(id)item offer:(id)offer clientContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if (SKUIItemStateCenterUseAppstoredPurchases(v10))
+  contextCopy = context;
+  offerCopy = offer;
+  itemCopy = item;
+  if (SKUIItemStateCenterUseAppstoredPurchases(itemCopy))
   {
-    [(SKUIMetricsController *)self performActionForSoftwareItem:v10 offer:v9 clientContext:v8 completionBlock:0];
+    [(SKUIMetricsController *)self performActionForSoftwareItem:itemCopy offer:offerCopy clientContext:contextCopy completionBlock:0];
   }
 
   else
   {
-    [(SKUIMetricsController *)self performActionForItem:v10 offer:v9 clientContext:v8 completionBlock:0];
+    [(SKUIMetricsController *)self performActionForItem:itemCopy offer:offerCopy clientContext:contextCopy completionBlock:0];
   }
   v11 = ;
 
   return v11;
 }
 
-- (id)performActionForItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (id)performActionForItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v11 = MEMORY[0x277D69BB8];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  contextCopy = context;
+  offerCopy = offer;
+  itemCopy = item;
   v15 = objc_alloc_init(v11);
-  v16 = [v14 itemIdentifier];
+  itemIdentifier = [itemCopy itemIdentifier];
   v17 = +[SKUIItemStateCenter defaultCenter];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __82__SKUIMetricsController_performActionForItem_offer_clientContext_completionBlock___block_invoke;
   v22[3] = &unk_278200F60;
   v23 = v15;
-  v24 = self;
-  v25 = v10;
-  v26 = v16;
-  v18 = v10;
+  selfCopy = self;
+  v25 = blockCopy;
+  v26 = itemIdentifier;
+  v18 = blockCopy;
   v19 = v15;
-  v20 = [v17 performActionForItem:v14 offer:v13 clientContext:v12 completionBlock:v22];
+  v20 = [v17 performActionForItem:itemCopy offer:offerCopy clientContext:contextCopy completionBlock:v22];
 
   return v20;
 }
@@ -408,27 +408,27 @@ uint64_t __82__SKUIMetricsController_performActionForItem_offer_clientContext_co
   return [v2 recordEvent:v3];
 }
 
-- (id)performActionForSoftwareItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (id)performActionForSoftwareItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a6;
+  blockCopy = block;
   v11 = MEMORY[0x277D69BB8];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  contextCopy = context;
+  offerCopy = offer;
+  itemCopy = item;
   v15 = objc_alloc_init(v11);
-  v16 = [v14 itemIdentifier];
+  itemIdentifier = [itemCopy itemIdentifier];
   v17 = +[SKUIItemStateCenter defaultCenter];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __90__SKUIMetricsController_performActionForSoftwareItem_offer_clientContext_completionBlock___block_invoke;
   v22[3] = &unk_278200F88;
   v23 = v15;
-  v24 = self;
-  v25 = v10;
-  v26 = v16;
-  v18 = v10;
+  selfCopy = self;
+  v25 = blockCopy;
+  v26 = itemIdentifier;
+  v18 = blockCopy;
   v19 = v15;
-  v20 = [v17 performActionForSoftwareItem:v14 offer:v13 clientContext:v12 completionBlock:v22];
+  v20 = [v17 performActionForSoftwareItem:itemCopy offer:offerCopy clientContext:contextCopy completionBlock:v22];
 
   return v20;
 }
@@ -490,12 +490,12 @@ uint64_t __90__SKUIMetricsController_performActionForSoftwareItem_offer_clientCo
   return [v7 recordEvent:v8];
 }
 
-- (void)pingURLs:(id)a3 withClientContext:(id)a4
+- (void)pingURLs:(id)ls withClientContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  lsCopy = ls;
+  contextCopy = context;
+  if ([lsCopy count])
   {
     if (!pingURLs_withClientContext__sPingQueue)
     {
@@ -511,7 +511,7 @@ uint64_t __90__SKUIMetricsController_performActionForSoftwareItem_offer_clientCo
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    obj = v5;
+    obj = lsCopy;
     v9 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -530,7 +530,7 @@ uint64_t __90__SKUIMetricsController_performActionForSoftwareItem_offer_clientCo
           v14 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURLRequest:v13];
           [v14 setQueuePriority:-8];
           [v14 setRecordsMetrics:0];
-          v15 = [v6 valueForConfigurationKey:@"sfsuffix"];
+          v15 = [contextCopy valueForConfigurationKey:@"sfsuffix"];
           [v14 setStoreFrontSuffix:v15];
 
           [pingURLs_withClientContext__sPingQueue addOperation:v14];
@@ -544,11 +544,11 @@ uint64_t __90__SKUIMetricsController_performActionForSoftwareItem_offer_clientCo
   }
 }
 
-- (void)recordBuyConfirmedEventsForItems:(id)a3 purchaseResponses:(id)a4
+- (void)recordBuyConfirmedEventsForItems:(id)items purchaseResponses:(id)responses
 {
   v32 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v21 = a4;
+  obj = items;
+  responsesCopy = responses;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -573,7 +573,7 @@ uint64_t __90__SKUIMetricsController_performActionForSoftwareItem_offer_clientCo
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = v21;
+        v10 = responsesCopy;
         v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
         {
@@ -640,9 +640,9 @@ LABEL_18:
   }
 }
 
-- (void)recordEvent:(id)a3
+- (void)recordEvent:(id)event
 {
-  [(SKUIMetricsController *)self _insertEvent:a3];
+  [(SKUIMetricsController *)self _insertEvent:event];
   if (self->_flushesImmediately)
   {
 
@@ -650,14 +650,14 @@ LABEL_18:
   }
 }
 
-- (void)setPageConfiguration:(id)a3
+- (void)setPageConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   p_pageConfiguration = &self->_pageConfiguration;
-  if (self->_pageConfiguration != v5)
+  if (self->_pageConfiguration != configurationCopy)
   {
-    v9 = v5;
-    objc_storeStrong(p_pageConfiguration, a3);
+    v9 = configurationCopy;
+    objc_storeStrong(p_pageConfiguration, configuration);
     [(SSMetricsController *)self->_controller setPageConfiguration:v9];
     [(SSMetricsConfiguration *)self->_globalConfiguration reportingFrequency];
     self->_flushesImmediately = v7 == 0.0;
@@ -671,30 +671,30 @@ LABEL_18:
 
 - (void)_waitUntilRecordingComplete
 {
-  v2 = [(SSMetricsController *)self->_controller serialQueue];
-  dispatch_sync(v2, &__block_literal_global_66);
+  serialQueue = [(SSMetricsController *)self->_controller serialQueue];
+  dispatch_sync(serialQueue, &__block_literal_global_66);
 }
 
-- (void)_insertEvent:(id)a3
+- (void)_insertEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if (self->_loggingEnabled)
   {
-    v5 = [MEMORY[0x277D69B38] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v9 = v7;
     }
@@ -707,7 +707,7 @@ LABEL_18:
     if (v9)
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = eventCopy;
       LODWORD(v17) = 12;
       v16 = &v18;
       v10 = _os_log_send_and_compose_impl();
@@ -719,9 +719,9 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v8 = [MEMORY[0x277CCACA8] stringWithCString:v10 encoding:{4, &v18, v17}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v10 encoding:{4, &v18, v17}];
       free(v10);
-      v16 = v8;
+      v16 = oSLogObject;
       SSFileLog();
     }
 
@@ -729,33 +729,33 @@ LABEL_12:
   }
 
 LABEL_13:
-  v11 = [(SKUIMetricsController *)self accountIdentifier];
-  [v4 setAccountIdentifier:v11];
+  accountIdentifier = [(SKUIMetricsController *)self accountIdentifier];
+  [eventCopy setAccountIdentifier:accountIdentifier];
 
-  [v4 setApplicationIdentifier:self->_applicationIdentifier];
-  v12 = [MEMORY[0x277D7FD00] sharedInstance];
-  [v12 networkType];
+  [eventCopy setApplicationIdentifier:self->_applicationIdentifier];
+  mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+  [mEMORY[0x277D7FD00] networkType];
   v13 = SSGetStringForNetworkType();
-  [v4 setConnection:v13];
+  [eventCopy setConnection:v13];
 
-  [v4 setHostApplicationIdentifier:self->_hostApplicationIdentifier];
-  [v4 setPageContext:self->_pageContext];
-  v14 = [v4 topic];
-  v15 = [v14 length];
+  [eventCopy setHostApplicationIdentifier:self->_hostApplicationIdentifier];
+  [eventCopy setPageContext:self->_pageContext];
+  topic = [eventCopy topic];
+  v15 = [topic length];
 
   if (!v15)
   {
-    [v4 setTopic:self->_topic];
+    [eventCopy setTopic:self->_topic];
   }
 
-  [v4 setUserAgent:self->_userAgent];
-  [v4 setWindowOrientation:self->_windowOrientation];
+  [eventCopy setUserAgent:self->_userAgent];
+  [eventCopy setWindowOrientation:self->_windowOrientation];
   if (self->_pageURL)
   {
-    [v4 setPageURL:?];
+    [eventCopy setPageURL:?];
   }
 
-  [(SSMetricsController *)self->_controller insertEvent:v4 withCompletionHandler:0];
+  [(SSMetricsController *)self->_controller insertEvent:eventCopy withCompletionHandler:0];
 }
 
 - (void)_recordActiveImpressions
@@ -763,11 +763,11 @@ LABEL_13:
   activeImpressionsSession = self->_activeImpressionsSession;
   if (activeImpressionsSession)
   {
-    v4 = [(SKUIMetricsImpressionSession *)activeImpressionsSession impressionIdentifiers];
-    if ([v4 count])
+    impressionIdentifiers = [(SKUIMetricsImpressionSession *)activeImpressionsSession impressionIdentifiers];
+    if ([impressionIdentifiers count])
     {
       v5 = objc_alloc_init(MEMORY[0x277D69BA0]);
-      [v5 setImpressionIdentifiers:v4];
+      [v5 setImpressionIdentifiers:impressionIdentifiers];
       [(SKUIMetricsController *)self _insertEvent:v5];
     }
 

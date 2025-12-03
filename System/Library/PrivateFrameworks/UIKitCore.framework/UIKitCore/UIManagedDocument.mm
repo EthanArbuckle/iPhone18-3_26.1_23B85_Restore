@@ -1,25 +1,25 @@
 @interface UIManagedDocument
 + (void)initialize;
-- (BOOL)_writeMetadataToDocumentURL:(id)a3;
+- (BOOL)_writeMetadataToDocumentURL:(id)l;
 - (BOOL)configurePersistentStoreCoordinatorForURL:(NSURL *)storeURL ofType:(NSString *)fileType modelConfiguration:(NSString *)configuration storeOptions:(NSDictionary *)storeOptions error:(NSError *)error;
-- (BOOL)readFromURL:(id)a3 error:(id *)a4;
-- (BOOL)writeContents:(id)a3 andAttributes:(id)a4 safelyToURL:(id)a5 forSaveOperation:(int64_t)a6 error:(id *)a7;
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7;
+- (BOOL)readFromURL:(id)l error:(id *)error;
+- (BOOL)writeContents:(id)contents andAttributes:(id)attributes safelyToURL:(id)l forSaveOperation:(int64_t)operation error:(id *)error;
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error;
 - (NSManagedObjectModel)managedObjectModel;
-- (UIManagedDocument)initWithFileURL:(id)a3;
-- (id)_readMetadataFromDocumentURL:(id)a3;
-- (id)contentsForType:(id)a3 error:(id *)a4;
-- (void)_handleRelocatingStoreContentDirectoryFromNonSyncedURL:(id)a3 toSyncedURL:(id)a4;
-- (void)_handleRelocatingStoreContentDirectoryFromSyncedURL:(id)a3 toNonSyncedURL:(id)a4;
+- (UIManagedDocument)initWithFileURL:(id)l;
+- (id)_readMetadataFromDocumentURL:(id)l;
+- (id)contentsForType:(id)type error:(id *)error;
+- (void)_handleRelocatingStoreContentDirectoryFromNonSyncedURL:(id)l toSyncedURL:(id)rL;
+- (void)_handleRelocatingStoreContentDirectoryFromSyncedURL:(id)l toNonSyncedURL:(id)rL;
 - (void)dealloc;
-- (void)revertToContentsOfURL:(id)a3 completionHandler:(id)a4;
+- (void)revertToContentsOfURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation UIManagedDocument
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _MergedGlobals_1_8 = dlopen([@"/System/Library/Frameworks/CoreData.framework/CoreData" UTF8String], 1);
     if (_MergedGlobals_1_8 || (v4 = dlerror(), NSLog(&cfstr_Uimanageddocum.isa, @"/System/Library/Frameworks/CoreData.framework/CoreData", v4), _MergedGlobals_1_8) || ([objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")], _MergedGlobals_1_8))
@@ -45,19 +45,19 @@
 
       if (!qword_1ED499280)
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-        [v5 handleFailureInMethod:a2 object:a1 file:@"UIManagedDocument.m" lineNumber:97 description:@"Failed to load class NSPersistentStoreCoordinator"];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIManagedDocument.m" lineNumber:97 description:@"Failed to load class NSPersistentStoreCoordinator"];
       }
     }
   }
 }
 
-- (UIManagedDocument)initWithFileURL:(id)a3
+- (UIManagedDocument)initWithFileURL:(id)l
 {
   v12.receiver = self;
   v12.super_class = UIManagedDocument;
-  v3 = [(UIDocument *)&v12 initWithFileURL:a3];
+  v3 = [(UIDocument *)&v12 initWithFileURL:l];
   if (v3)
   {
     v3->_persistentStoreCoordinator = [[qword_1ED499280 alloc] initWithManagedObjectModel:{-[UIManagedDocument managedObjectModel](v3, "managedObjectModel")}];
@@ -153,15 +153,15 @@ void __37__UIManagedDocument_initWithFileURL___block_invoke_2(uint64_t a1)
   return v14;
 }
 
-- (void)_handleRelocatingStoreContentDirectoryFromNonSyncedURL:(id)a3 toSyncedURL:(id)a4
+- (void)_handleRelocatingStoreContentDirectoryFromNonSyncedURL:(id)l toSyncedURL:(id)rL
 {
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v15 = 1;
-  if ([v7 fileExistsAtPath:objc_msgSend(a3 isDirectory:{"path"), &v15}])
+  if ([defaultManager fileExistsAtPath:objc_msgSend(l isDirectory:{"path"), &v15}])
   {
     if ((v15 & 1) == 0)
     {
-      [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid store content path is file" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", a3, @"path", "raise"}];
+      [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid store content path is file" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", l, @"path", "raise"}];
     }
 
     v14 = 0;
@@ -174,9 +174,9 @@ void __37__UIManagedDocument_initWithFileURL___block_invoke_2(uint64_t a1)
     v9[1] = 3221225472;
     v9[2] = __88__UIManagedDocument__handleRelocatingStoreContentDirectoryFromNonSyncedURL_toSyncedURL___block_invoke;
     v9[3] = &unk_1E7105CF0;
-    v9[4] = v7;
+    v9[4] = defaultManager;
     v9[5] = &v10;
-    [v8 coordinateWritingItemAtURL:a3 options:2 writingItemAtURL:a4 options:8 error:&v14 byAccessor:v9];
+    [v8 coordinateWritingItemAtURL:l options:2 writingItemAtURL:rL options:8 error:&v14 byAccessor:v9];
     if ((v11[3] & 1) == 0)
     {
       NSLog(&cfstr_FailedToCoordi.isa, v14);
@@ -201,9 +201,9 @@ void __88__UIManagedDocument__handleRelocatingStoreContentDirectoryFromNonSynced
   }
 }
 
-- (void)_handleRelocatingStoreContentDirectoryFromSyncedURL:(id)a3 toNonSyncedURL:(id)a4
+- (void)_handleRelocatingStoreContentDirectoryFromSyncedURL:(id)l toNonSyncedURL:(id)rL
 {
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
   v16 = 0;
   v17 = &v16;
@@ -220,10 +220,10 @@ void __88__UIManagedDocument__handleRelocatingStoreContentDirectoryFromNonSynced
   v11[3] = &unk_1E7105D18;
   v11[7] = &v16;
   v11[8] = &v12;
-  v11[4] = v7;
+  v11[4] = defaultManager;
   v11[5] = v8;
-  v11[6] = a4;
-  [v8 coordinateReadingItemAtURL:a3 options:0 error:&v20 byAccessor:v11];
+  v11[6] = rL;
+  [v8 coordinateReadingItemAtURL:l options:0 error:&v20 byAccessor:v11];
   if (v17[3])
   {
     if (v13[3])
@@ -234,8 +234,8 @@ void __88__UIManagedDocument__handleRelocatingStoreContentDirectoryFromNonSynced
       v9[3] = &unk_1E7105CF0;
       v9[5] = &v16;
       v10 = 0;
-      v9[4] = v7;
-      [v8 coordinateWritingItemAtURL:a3 options:2 writingItemAtURL:a4 options:8 error:&v10 byAccessor:v9];
+      v9[4] = defaultManager;
+      [v8 coordinateWritingItemAtURL:l options:2 writingItemAtURL:rL options:8 error:&v10 byAccessor:v9];
       if ((v17[3] & 1) == 0)
       {
         NSLog(&cfstr_FailedToCoordi.isa, v10);
@@ -290,7 +290,7 @@ void __88__UIManagedDocument__handleRelocatingStoreContentDirectoryFromSyncedURL
   }
 }
 
-- (id)_readMetadataFromDocumentURL:(id)a3
+- (id)_readMetadataFromDocumentURL:(id)l
 {
   v14 = 0;
   v15 = &v14;
@@ -304,7 +304,7 @@ void __88__UIManagedDocument__handleRelocatingStoreContentDirectoryFromSyncedURL
   v13 = 0;
   v4 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:self];
   v9 = 0;
-  v5 = [a3 URLByAppendingPathComponent:@"DocumentMetadata.plist"];
+  v5 = [l URLByAppendingPathComponent:@"DocumentMetadata.plist"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__UIManagedDocument__readMetadataFromDocumentURL___block_invoke;
@@ -331,7 +331,7 @@ uint64_t __50__UIManagedDocument__readMetadataFromDocumentURL___block_invoke(uin
   return result;
 }
 
-- (BOOL)_writeMetadataToDocumentURL:(id)a3
+- (BOOL)_writeMetadataToDocumentURL:(id)l
 {
   v5 = [(NSDictionary *)[(UIManagedDocument *)self persistentStoreOptions] objectForKey:@"NSPersistentStoreUbiquitousContentNameKey"];
   v19 = 0;
@@ -360,7 +360,7 @@ uint64_t __50__UIManagedDocument__readMetadataFromDocumentURL___block_invoke(uin
     v16 = 0x2020000000;
     v17 = 0;
     v10 = [objc_alloc(MEMORY[0x1E696ABF8]) initWithFilePresenter:self];
-    v11 = [a3 URLByAppendingPathComponent:@"DocumentMetadata.plist"];
+    v11 = [l URLByAppendingPathComponent:@"DocumentMetadata.plist"];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __49__UIManagedDocument__writeMetadataToDocumentURL___block_invoke;
@@ -395,26 +395,26 @@ uint64_t __49__UIManagedDocument__writeMetadataToDocumentURL___block_invoke(void
   return result;
 }
 
-- (BOOL)readFromURL:(id)a3 error:(id *)a4
+- (BOOL)readFromURL:(id)l error:(id *)error
 {
   v74 = 0;
   v75 = &v74;
   v76 = 0x2020000000;
   v77 = 0;
-  if (![a3 isFileURL])
+  if (![l isFileURL])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"you must override %@ to support reading of non-file URLs", NSStringFromSelector(sel_readFromURL_error_)}];
     goto LABEL_12;
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v73 = 1;
-  if ([v7 fileExistsAtPath:objc_msgSend(a3 isDirectory:{"path"), &v73}])
+  if ([defaultManager fileExistsAtPath:objc_msgSend(l isDirectory:{"path"), &v73}])
   {
     if (v73)
     {
-      v8 = [a3 URLByAppendingPathComponent:@"StoreContent"];
-      v35 = [a3 URLByAppendingPathComponent:@"StoreContent.nosync"];
+      v8 = [l URLByAppendingPathComponent:@"StoreContent"];
+      v35 = [l URLByAppendingPathComponent:@"StoreContent.nosync"];
       v9 = [objc_opt_class() isPersistentStoreSynchronizedViaUbiquitousContentWithOptions:{-[UIManagedDocument persistentStoreOptions](self, "persistentStoreOptions")}];
       v10 = v9;
       if (v9)
@@ -447,25 +447,25 @@ LABEL_43:
         v70 = __Block_byref_object_copy__67;
         v71 = __Block_byref_object_dispose__67;
         v72 = 0;
-        v26 = [(UIManagedDocument *)self managedObjectContext];
+        managedObjectContext = [(UIManagedDocument *)self managedObjectContext];
         v40[0] = MEMORY[0x1E69E9820];
         v40[1] = 3221225472;
         v40[2] = __39__UIManagedDocument_readFromURL_error___block_invoke_5;
         v40[3] = &unk_1E7105E30;
-        v40[4] = v26;
+        v40[4] = managedObjectContext;
         v40[5] = &v67;
-        [(NSManagedObjectContext *)v26 performBlockAndWait:v40];
+        [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v40];
         [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v68[5], @"parentContext", 0}];
         v39.receiver = self;
         v39.super_class = UIManagedDocument;
-        v27 = [(UIDocument *)&v39 _fileOpeningQueue];
+        _fileOpeningQueue = [(UIDocument *)&v39 _fileOpeningQueue];
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __39__UIManagedDocument_readFromURL_error___block_invoke_6;
         v38[3] = &unk_1E7105E80;
-        if (v27)
+        if (_fileOpeningQueue)
         {
-          v28 = v27;
+          v28 = _fileOpeningQueue;
         }
 
         else
@@ -473,22 +473,22 @@ LABEL_43:
           v28 = MEMORY[0x1E69E96A0];
         }
 
-        v38[4] = a3;
+        v38[4] = l;
         v38[5] = self;
         v38[6] = v34;
         v38[7] = &v74;
-        v38[8] = a4;
+        v38[8] = error;
         [(UIDocument *)self _performBlock:v38 synchronouslyOnQueue:v28];
 
         if (((*(v75 + 24) | v12) & 1) == 0)
         {
-          v29 = [(UIManagedDocument *)self managedObjectContext];
+          managedObjectContext2 = [(UIManagedDocument *)self managedObjectContext];
           v37[0] = MEMORY[0x1E69E9820];
           v37[1] = 3221225472;
           v37[2] = __39__UIManagedDocument_readFromURL_error___block_invoke_8;
           v37[3] = &unk_1E70F5CA0;
-          v37[4] = v29;
-          [(NSManagedObjectContext *)v29 performBlockAndWait:v37];
+          v37[4] = managedObjectContext2;
+          [(NSManagedObjectContext *)managedObjectContext2 performBlockAndWait:v37];
           [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator lock];
           v55 = 0;
           if ([(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStoreForURL:v36]&& ![(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator removePersistentStore:v33 error:&v55])
@@ -503,9 +503,9 @@ LABEL_43:
         goto LABEL_12;
       }
 
-      v32 = [(UIDocument *)self fileType];
-      v31 = [(UIManagedDocument *)self persistentStoreOptions];
-      v30 = [(UIManagedDocument *)self modelConfiguration];
+      fileType = [(UIDocument *)self fileType];
+      persistentStoreOptions = [(UIManagedDocument *)self persistentStoreOptions];
+      modelConfiguration = [(UIManagedDocument *)self modelConfiguration];
       v67 = 0;
       v68 = &v67;
       v69 = 0x3052000000;
@@ -516,7 +516,7 @@ LABEL_43:
       v64 = &v63;
       v65 = 0x2020000000;
       v66 = 0;
-      v15 = [(UIManagedDocument *)self _readMetadataFromDocumentURL:a3];
+      v15 = [(UIManagedDocument *)self _readMetadataFromDocumentURL:l];
       v16 = v15;
       if (v15)
       {
@@ -545,15 +545,15 @@ LABEL_27:
             v62[1] = 3221225472;
             v62[2] = __39__UIManagedDocument_readFromURL_error___block_invoke;
             v62[3] = &unk_1E7105D90;
-            v62[4] = v7;
+            v62[4] = defaultManager;
             v62[5] = self;
-            v62[6] = v32;
-            v62[7] = v30;
+            v62[6] = fileType;
+            v62[7] = modelConfiguration;
             v62[9] = &v63;
-            v62[8] = v31;
+            v62[8] = persistentStoreOptions;
             v62[10] = &v74;
-            v62[11] = a4;
-            [v34 coordinateReadingItemAtURL:v36 options:0 error:a4 byAccessor:v62];
+            v62[11] = error;
+            [v34 coordinateReadingItemAtURL:v36 options:0 error:error byAccessor:v62];
 LABEL_41:
             v25 = *(v75 + 24);
             _Block_object_dispose(&v63, 8);
@@ -599,20 +599,20 @@ LABEL_12:
           v40[24] = &unk_1E7105DE0;
           v40[33] = &v63;
           v40[34] = v49;
-          v40[25] = v7;
+          v40[25] = defaultManager;
           v40[26] = v35;
           v40[27] = v34;
           v40[28] = v36;
           v40[35] = &v67;
           v40[36] = &v74;
           v40[29] = self;
-          v40[30] = v32;
-          v40[31] = v30;
-          v40[32] = v31;
+          v40[30] = fileType;
+          v40[31] = modelConfiguration;
+          v40[32] = persistentStoreOptions;
           v40[37] = &v55;
           v40[38] = &v45;
           [v34 coordinateReadingItemAtURL:? options:? error:? byAccessor:?];
-          if (v75[3] & 1) != 0 || ((v46[3] & 1) == 0 ? (v40[6] = MEMORY[0x1E69E9820], v40[7] = 3221225472, v40[8] = __39__UIManagedDocument_readFromURL_error___block_invoke_4, v40[9] = &unk_1E7105E08, v40[16] = &v51, v40[17] = &v74, v40[10] = v7, v40[11] = self, v40[12] = v32, v40[13] = v30, v40[18] = &v55, v40[19] = &v41, v40[20] = a4, v40[14] = v31, v40[15] = v35, [v34 coordinateWritingItemAtURL:? options:? writingItemAtURL:? options:? error:? byAccessor:?], v22 = *(v75 + 24)) : (v22 = 0), !a4 || (v22))
+          if (v75[3] & 1) != 0 || ((v46[3] & 1) == 0 ? (v40[6] = MEMORY[0x1E69E9820], v40[7] = 3221225472, v40[8] = __39__UIManagedDocument_readFromURL_error___block_invoke_4, v40[9] = &unk_1E7105E08, v40[16] = &v51, v40[17] = &v74, v40[10] = defaultManager, v40[11] = self, v40[12] = fileType, v40[13] = modelConfiguration, v40[18] = &v55, v40[19] = &v41, v40[20] = error, v40[14] = persistentStoreOptions, v40[15] = v35, [v34 coordinateWritingItemAtURL:? options:? writingItemAtURL:? options:? error:? byAccessor:?], v22 = *(v75 + 24)) : (v22 = 0), !error || (v22))
           {
 LABEL_40:
             _Block_object_dispose(&v41, 8);
@@ -646,14 +646,14 @@ LABEL_40:
 
           v24 = (v23 + 5);
 LABEL_39:
-          *a4 = *v24;
+          *error = *v24;
           goto LABEL_40;
         }
 
         NSLog(&cfstr_UpdatingDocume.isa, v21, v19);
       }
 
-      [(UIManagedDocument *)self _writeMetadataToDocumentURL:a3];
+      [(UIManagedDocument *)self _writeMetadataToDocumentURL:l];
       goto LABEL_27;
     }
 
@@ -666,9 +666,9 @@ LABEL_14:
     [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"UIManagedDocument can only read documents that are file packages" userInfo:{0), "raise"}];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:0];
   }
 
   v13 = 0;
@@ -796,9 +796,9 @@ uint64_t __39__UIManagedDocument_readFromURL_error___block_invoke_7(uint64_t a1,
   return result;
 }
 
-- (id)contentsForType:(id)a3 error:(id *)a4
+- (id)contentsForType:(id)type error:(id *)error
 {
-  v7 = [(UIManagedDocument *)self additionalContentForURL:[(UIDocument *)self fileURL] error:a4];
+  v7 = [(UIManagedDocument *)self additionalContentForURL:[(UIDocument *)self fileURL] error:error];
   if (!v7)
   {
     return 0;
@@ -811,18 +811,18 @@ uint64_t __39__UIManagedDocument_readFromURL_error___block_invoke_7(uint64_t a1,
   v16 = __Block_byref_object_copy__67;
   v17 = __Block_byref_object_dispose__67;
   v18 = 0;
-  v9 = [(UIManagedDocument *)self managedObjectContext];
+  managedObjectContext = [(UIManagedDocument *)self managedObjectContext];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__UIManagedDocument_contentsForType_error___block_invoke;
   v12[3] = &unk_1E7105ED0;
   v12[5] = &v13;
-  v12[6] = a4;
-  v12[4] = v9;
-  [(NSManagedObjectContext *)v9 performBlockAndWait:v12];
+  v12[6] = error;
+  v12[4] = managedObjectContext;
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v12];
   if (v14[5])
   {
-    v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"parentContext", v8, @"additionalContent", a3, @"fileType", 0}];
+    v10 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"parentContext", v8, @"additionalContent", type, @"fileType", 0}];
   }
 
   else
@@ -846,7 +846,7 @@ uint64_t __43__UIManagedDocument_contentsForType_error___block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)writeContents:(id)a3 andAttributes:(id)a4 safelyToURL:(id)a5 forSaveOperation:(int64_t)a6 error:(id *)a7
+- (BOOL)writeContents:(id)contents andAttributes:(id)attributes safelyToURL:(id)l forSaveOperation:(int64_t)operation error:(id *)error
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -858,9 +858,9 @@ uint64_t __43__UIManagedDocument_contentsForType_error___block_invoke(uint64_t a
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = v13;
-  if (!a6 && ([v13 createDirectoryAtURL:a5 withIntermediateDirectories:0 attributes:a4 error:a7] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v14 = defaultManager;
+  if (!operation && ([defaultManager createDirectoryAtURL:l withIntermediateDirectories:0 attributes:attributes error:error] & 1) == 0)
   {
     v17 = 0;
     goto LABEL_18;
@@ -868,7 +868,7 @@ uint64_t __43__UIManagedDocument_contentsForType_error___block_invoke(uint64_t a
 
   if (*&self->_mdocFlags)
   {
-    v15 = [a5 URLByAppendingPathComponent:objc_msgSend(objc_opt_class() isDirectory:{"additionalContentPathComponent"), 1}];
+    v15 = [l URLByAppendingPathComponent:objc_msgSend(objc_opt_class() isDirectory:{"additionalContentPathComponent"), 1}];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -882,10 +882,10 @@ uint64_t __43__UIManagedDocument_contentsForType_error___block_invoke(uint64_t a
     v19[9] = &v24;
     v19[4] = v15;
     v19[5] = v14;
-    v19[10] = a7;
+    v19[10] = error;
     v19[6] = self;
-    v19[7] = a3;
-    [v16 coordinateWritingItemAtURL:v15 options:8 error:a7 byAccessor:v19];
+    v19[7] = contents;
+    [v16 coordinateWritingItemAtURL:v15 options:8 error:error byAccessor:v19];
     if ((v21[3] & 1) == 0)
     {
       *(v25 + 24) = 0;
@@ -895,7 +895,7 @@ uint64_t __43__UIManagedDocument_contentsForType_error___block_invoke(uint64_t a
     if ((v25[3] & 1) == 0)
     {
       v17 = 0;
-      if (a6)
+      if (operation)
       {
         goto LABEL_18;
       }
@@ -909,9 +909,9 @@ uint64_t __43__UIManagedDocument_contentsForType_error___block_invoke(uint64_t a
     *(v25 + 24) = 1;
   }
 
-  v17 = [(UIManagedDocument *)self writeContents:a3 toURL:a5 forSaveOperation:a6 originalContentsURL:a5 error:a7];
+  v17 = [(UIManagedDocument *)self writeContents:contents toURL:l forSaveOperation:operation originalContentsURL:l error:error];
   *(v25 + 24) = v17;
-  if (a6)
+  if (operation)
   {
     goto LABEL_18;
   }
@@ -922,7 +922,7 @@ LABEL_13:
     v20 = 0;
     if (([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] & 1) == 0)
     {
-      NSLog(&cfstr_Uimanageddocum_2.isa, a5, v20);
+      NSLog(&cfstr_Uimanageddocum_2.isa, l, v20);
     }
 
     v17 = *(v25 + 24);
@@ -977,13 +977,13 @@ uint64_t __84__UIManagedDocument_writeContents_andAttributes_safelyToURL_forSave
   return result;
 }
 
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [a3 objectForKey:@"parentContext"];
-    v12 = [a3 objectForKey:@"fileType"];
+    v11 = [contents objectForKey:@"parentContext"];
+    v12 = [contents objectForKey:@"fileType"];
     v13 = v12;
     if (v11 && v12)
     {
@@ -999,8 +999,8 @@ uint64_t __84__UIManagedDocument_writeContents_andAttributes_safelyToURL_forSave
 
   [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Contents must be a dictionary that contains a reference to the parentContext and fileType" userInfo:{0), "raise"}];
 LABEL_7:
-  v14 = [(UIManagedDocument *)self persistentStoreOptions];
-  v15 = [(NSDictionary *)v14 objectForKey:@"NSPersistentStoreUbiquitousContentNameKey"];
+  persistentStoreOptions = [(UIManagedDocument *)self persistentStoreOptions];
+  v15 = [(NSDictionary *)persistentStoreOptions objectForKey:@"NSPersistentStoreUbiquitousContentNameKey"];
   if (v15)
   {
     v16 = [v15 isEqual:{-[NSDictionary objectForKey:](self->_documentMetadata, "objectForKey:", @"NSPersistentStoreUbiquitousContentNameKey"}];
@@ -1011,12 +1011,12 @@ LABEL_7:
     v16 = 1;
   }
 
-  v28 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 1;
-  if (a5)
+  if (operation)
   {
     v17 = 0;
     v18 = 0;
@@ -1026,7 +1026,7 @@ LABEL_7:
 
   else
   {
-    if ([objc_opt_class() isPersistentStoreSynchronizedViaUbiquitousContentWithOptions:v14])
+    if ([objc_opt_class() isPersistentStoreSynchronizedViaUbiquitousContentWithOptions:persistentStoreOptions])
     {
       v23 = @"StoreContent.nosync";
     }
@@ -1036,7 +1036,7 @@ LABEL_7:
       v23 = @"StoreContent";
     }
 
-    v19 = [a4 URLByAppendingPathComponent:v23];
+    v19 = [l URLByAppendingPathComponent:v23];
     v29 = [v19 URLByAppendingPathComponent:{objc_msgSend(objc_opt_class(), "persistentStoreName")}];
     v24 = [objc_msgSend(v19 "fileReferenceURL")];
     if (v24)
@@ -1049,7 +1049,7 @@ LABEL_7:
 
     else
     {
-      v25 = [v28 createDirectoryAtURL:v19 withIntermediateDirectories:0 attributes:0 error:a7];
+      v25 = [defaultManager createDirectoryAtURL:v19 withIntermediateDirectories:0 attributes:0 error:error];
       *(v34 + 24) = v25;
       if (!v25)
       {
@@ -1057,7 +1057,7 @@ LABEL_7:
       }
     }
 
-    v18 = [(UIManagedDocument *)self configurePersistentStoreCoordinatorForURL:v29 ofType:v13 modelConfiguration:[(UIManagedDocument *)self modelConfiguration] storeOptions:[(UIManagedDocument *)self persistentStoreOptions] error:a7];
+    v18 = [(UIManagedDocument *)self configurePersistentStoreCoordinatorForURL:v29 ofType:v13 modelConfiguration:[(UIManagedDocument *)self modelConfiguration] storeOptions:[(UIManagedDocument *)self persistentStoreOptions] error:error];
     v17 = v24 ^ 1;
     if ((v34[3] & 1) == 0)
     {
@@ -1103,7 +1103,7 @@ LABEL_32:
       if (v29)
       {
         v31 = 0;
-        if (([v28 removeItemAtURL:v29 error:&v31] & 1) == 0)
+        if (([defaultManager removeItemAtURL:v29 error:&v31] & 1) == 0)
         {
           NSLog(&cfstr_Uimanageddocum_4.isa, v29, v31);
         }
@@ -1115,7 +1115,7 @@ LABEL_32:
 
 LABEL_38:
         v31 = 0;
-        if (([v28 removeItemAtURL:v19 error:&v31] & 1) == 0)
+        if (([defaultManager removeItemAtURL:v19 error:&v31] & 1) == 0)
         {
           NSLog(&cfstr_Uimanageddocum_5.isa, v19, v31);
         }
@@ -1139,16 +1139,16 @@ LABEL_37:
   v32[3] = &unk_1E7105ED0;
   v32[4] = v11;
   v32[5] = &v33;
-  v32[6] = a7;
+  v32[6] = error;
   [v11 performBlockAndWait:v32];
   v20 = *(v34 + 24);
   if (!(v16 & 1 | ((v20 & 1) == 0)))
   {
-    [(UIManagedDocument *)self _writeMetadataToDocumentURL:a4];
+    [(UIManagedDocument *)self _writeMetadataToDocumentURL:l];
     v20 = *(v34 + 24);
   }
 
-  if (!a5)
+  if (!operation)
   {
     goto LABEL_15;
   }
@@ -1166,23 +1166,23 @@ uint64_t __84__UIManagedDocument_writeContents_toURL_forSaveOperation_originalCo
   return result;
 }
 
-- (void)revertToContentsOfURL:(id)a3 completionHandler:(id)a4
+- (void)revertToContentsOfURL:(id)l completionHandler:(id)handler
 {
-  v7 = [(UIManagedDocument *)self managedObjectContext];
+  managedObjectContext = [(UIManagedDocument *)self managedObjectContext];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__UIManagedDocument_revertToContentsOfURL_completionHandler___block_invoke;
   v13[3] = &unk_1E70F5CA0;
-  v13[4] = v7;
-  [(NSManagedObjectContext *)v7 performBlockAndWait:v13];
+  v13[4] = managedObjectContext;
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__UIManagedDocument_revertToContentsOfURL_completionHandler___block_invoke_2;
   v12[3] = &unk_1E70F5CA0;
-  v12[4] = v7;
-  [(NSManagedObjectContext *)v7 performBlockAndWait:v12];
+  v12[4] = managedObjectContext;
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v12];
   [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator lock];
-  v8 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStoreForURL:a3];
+  v8 = [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator persistentStoreForURL:l];
   if (v8)
   {
     v11 = 0;
@@ -1207,15 +1207,15 @@ uint64_t __84__UIManagedDocument_writeContents_toURL_forSaveOperation_originalCo
 LABEL_5:
   v10.receiver = self;
   v10.super_class = UIManagedDocument;
-  [(UIDocument *)&v10 revertToContentsOfURL:a3 completionHandler:a4];
+  [(UIDocument *)&v10 revertToContentsOfURL:l completionHandler:handler];
   [(NSPersistentStoreCoordinator *)self->_persistentStoreCoordinator unlock];
 LABEL_7:
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__UIManagedDocument_revertToContentsOfURL_completionHandler___block_invoke_3;
   v9[3] = &unk_1E70F5CA0;
-  v9[4] = v7;
-  [(NSManagedObjectContext *)v7 performBlockAndWait:v9];
+  v9[4] = managedObjectContext;
+  [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v9];
 }
 
 @end

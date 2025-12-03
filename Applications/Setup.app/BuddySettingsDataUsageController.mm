@@ -1,8 +1,8 @@
 @interface BuddySettingsDataUsageController
 - (BOOL)controllerNeedsToRun;
 - (BuddySettingsDataUsageController)init;
-- (void)_learnMoreTapped:(id)a3;
-- (void)continueTapped:(id)a3;
+- (void)_learnMoreTapped:(id)tapped;
+- (void)continueTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -53,26 +53,26 @@
 
 - (void)viewDidLoad
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddySettingsDataUsageController;
   [(BuddyDataUsageController *)&v5 viewDidLoad];
   if ((+[PDCPreflightManager isPreflightFeatureEnabled]& 1) != 0)
   {
-    v2 = v7;
+    v2 = selfCopy;
     v3 = +[NSBundle mainBundle];
     v4 = [(NSBundle *)v3 localizedStringForKey:@"LEARN_MORE" value:&stru_10032F900 table:@"Localizable"];
     [(BuddyWelcomeController *)v2 addLinkButton:v4 action:"_learnMoreTapped:"];
   }
 }
 
-- (void)continueTapped:(id)a3
+- (void)continueTapped:(id)tapped
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   if ((+[PDCPreflightManager isPreflightFeatureEnabled]& 1) != 0)
   {
     v3 = +[BYPreferencesController buddyPreferences];
@@ -85,15 +85,15 @@
     [v3 setObject:&__kCFBooleanTrue forKey:@"SettingsContactsPresented"];
   }
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = BuddySettingsDataUsageController;
-  [(BuddyDataUsageController *)&v4 continueTapped:v6];
+  [(BuddyDataUsageController *)&v4 continueTapped:selfCopy];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddySettingsDataUsageController;
@@ -101,16 +101,16 @@
   {
     if ((+[PDCPreflightManager isPreflightFeatureEnabled]& 1) != 0)
     {
-      v2 = [(BuddyDataUsageController *)v7 existingSettings];
-      v3 = [(BuddyExistingSettings *)v2 backupMetadata];
-      v8 = ([v3 settingsDataUsagePresented] ^ 1) & 1;
+      existingSettings = [(BuddyDataUsageController *)selfCopy existingSettings];
+      backupMetadata = [(BuddyExistingSettings *)existingSettings backupMetadata];
+      v8 = ([backupMetadata settingsDataUsagePresented] ^ 1) & 1;
     }
 
     else
     {
-      v2 = [(BuddyDataUsageController *)v7 existingSettings];
-      v3 = [(BuddyExistingSettings *)v2 backupMetadata];
-      v8 = ([v3 settingsContactsPresented] ^ 1) & 1;
+      existingSettings = [(BuddyDataUsageController *)selfCopy existingSettings];
+      backupMetadata = [(BuddyExistingSettings *)existingSettings backupMetadata];
+      v8 = ([backupMetadata settingsContactsPresented] ^ 1) & 1;
     }
   }
 
@@ -122,12 +122,12 @@
   return v8 & 1;
 }
 
-- (void)_learnMoreTapped:(id)a3
+- (void)_learnMoreTapped:(id)tapped
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v16 = 0;
   obj = 0;
   v3 = [[LSApplicationRecord alloc] initWithBundleIdentifier:@"com.apple.Preferences" allowPlaceholder:0 error:&obj];
@@ -148,9 +148,9 @@
 
       else if (v16)
       {
-        v11 = [v16 domain];
+        domain = [v16 domain];
         v10 = 1;
-        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v11, [v16 code]);
+        v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v16 code]);
         v9 = v4;
         v8 = 1;
       }
@@ -174,13 +174,13 @@
     objc_storeStrong(&oslog, 0);
   }
 
-  v5 = [v15 identities];
-  v7 = [v5 firstObject];
+  identities = [v15 identities];
+  firstObject = [identities firstObject];
 
   v6 = PDUDisclosureReviewViewControllerForApplicationWithVariant();
-  [(BuddySettingsDataUsageController *)v18 presentViewController:v6 animated:1 completion:0];
+  [(BuddySettingsDataUsageController *)selfCopy presentViewController:v6 animated:1 completion:0];
   objc_storeStrong(&v6, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);

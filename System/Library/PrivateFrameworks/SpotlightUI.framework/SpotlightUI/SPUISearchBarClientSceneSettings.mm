@@ -1,14 +1,14 @@
 @interface SPUISearchBarClientSceneSettings
 - (double)headerHeight;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SPUISearchBarClientSceneSettings
 
 - (double)headerHeight
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1000];
 
   objc_opt_class();
   v4 = 0.0;
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SPUISearchBarMutableClientSceneSettings alloc];
 

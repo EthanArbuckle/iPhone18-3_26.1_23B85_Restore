@@ -1,11 +1,11 @@
 @interface MGNotificationObserver
-- (MGNotificationObserver)initWithType:(int)a3 argument:(id)a4;
-- (void)_addBlock:(id)a3;
+- (MGNotificationObserver)initWithType:(int)type argument:(id)argument;
+- (void)_addBlock:(id)block;
 - (void)_cancelRegistration;
-- (void)_removeBlock:(id)a3;
+- (void)_removeBlock:(id)block;
 - (void)dealloc;
 - (void)invokeBlocks;
-- (void)startDynaStoreMonitoringWithArgument:(id)a3;
+- (void)startDynaStoreMonitoringWithArgument:(id)argument;
 @end
 
 @implementation MGNotificationObserver
@@ -27,7 +27,7 @@
   dispatch_async(qword_1ED4ADF50, block);
 }
 
-- (void)startDynaStoreMonitoringWithArgument:(id)a3
+- (void)startDynaStoreMonitoringWithArgument:(id)argument
 {
   v35[1] = *MEMORY[0x1E69E9840];
   context.version = 0;
@@ -89,11 +89,11 @@
         v29 = "/Library/Caches/com.apple.xbs/Sources/MobileGestaltSupport/MobileGestaltExtensions/MGNotifications.m";
       }
 
-      sub_1C3938818(v29, 285, @"Failed to register for %@", v24, v25, v26, v27, v28, a3);
+      sub_1C3938818(v29, 285, @"Failed to register for %@", v24, v25, v26, v27, v28, argument);
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v34 = a3;
+        argumentCopy = argument;
         _os_log_impl(&dword_1C3937000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to register for %@", buf, 0xCu);
       }
 
@@ -126,7 +126,7 @@
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (MGNotificationObserver)initWithType:(int)a3 argument:(id)a4
+- (MGNotificationObserver)initWithType:(int)type argument:(id)argument
 {
   v165 = *MEMORY[0x1E69E9840];
   v161.receiver = self;
@@ -138,9 +138,9 @@
   }
 
   v6->_blocks = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6->_type = a3;
-  v7 = a4;
-  v6->_argument = v7;
+  v6->_type = type;
+  argumentCopy = argument;
+  v6->_argument = argumentCopy;
   type = v6->_type;
   if (type > 4)
   {
@@ -214,7 +214,7 @@
         goto LABEL_51;
       }
 
-      objc_msgSend_startDynaStoreMonitoringWithArgument_(v6, v8, v7, v10, v11);
+      objc_msgSend_startDynaStoreMonitoringWithArgument_(v6, v8, argumentCopy, v10, v11);
     }
 
     else
@@ -313,7 +313,7 @@
     {
       if (type == 1)
       {
-        v30 = objc_msgSend_componentsSeparatedByString_(v7, v8, @",", v10, v11);
+        v30 = objc_msgSend_componentsSeparatedByString_(argumentCopy, v8, @",", v10, v11);
         v6->_registration._darwinTokens = objc_alloc_init(MEMORY[0x1E695DF70]);
         v157 = 0u;
         v158 = 0u;
@@ -416,7 +416,7 @@
 
       if (type == 2)
       {
-        v13 = SCPreferencesCreate(0, @"MobileGestalt", a4);
+        v13 = SCPreferencesCreate(0, @"MobileGestalt", argument);
         v6->_registration._darwinTokens = v13;
         if (v13)
         {
@@ -533,7 +533,7 @@ LABEL_96:
     v150[2] = sub_1C393A9CC;
     v150[3] = &unk_1E81B1490;
     v150[4] = v6;
-    v65 = objc_msgSend_initWithPath_block_(v62, v63, a4, v150, v64);
+    v65 = objc_msgSend_initWithPath_block_(v62, v63, argument, v150, v64);
     v6->_registration._darwinTokens = v65;
     if (!v65)
     {
@@ -759,19 +759,19 @@ LABEL_41:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addBlock:(id)a3
+- (void)_addBlock:(id)block
 {
   dispatch_assert_queue_V2(qword_1ED4ADF50);
   blocks = self->_blocks;
 
-  objc_msgSend_addObject_(blocks, v5, a3, v6, v7);
+  objc_msgSend_addObject_(blocks, v5, block, v6, v7);
 }
 
-- (void)_removeBlock:(id)a3
+- (void)_removeBlock:(id)block
 {
   v29[2] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(qword_1ED4ADF50);
-  objc_msgSend_removeObject_(self->_blocks, v5, a3, v6, v7);
+  objc_msgSend_removeObject_(self->_blocks, v5, block, v6, v7);
   if (!objc_msgSend_count(self->_blocks, v8, v9, v10, v11))
   {
     v16 = objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v12, self->_type, v14, v15);

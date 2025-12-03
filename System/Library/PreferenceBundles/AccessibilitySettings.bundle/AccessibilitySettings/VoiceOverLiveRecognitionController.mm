@@ -1,53 +1,53 @@
 @interface VoiceOverLiveRecognitionController
 - (VoiceOverLiveRecognitionController)init;
-- (id)automaticFlashlightEnabled:(id)a3;
-- (id)chatGPTEnabled:(id)a3;
-- (id)doorsBrailleEnabled:(id)a3;
-- (id)doorsHapticsEnabled:(id)a3;
-- (id)doorsSoundEnabled:(id)a3;
-- (id)doorsSpeechEnabled:(id)a3;
-- (id)furnitureBrailleEnabled:(id)a3;
-- (id)furnitureHapticsEnabled:(id)a3;
-- (id)furnitureSoundEnabled:(id)a3;
-- (id)furnitureSpeechEnabled:(id)a3;
-- (id)peopleBrailleEnabled:(id)a3;
-- (id)peopleHapticsEnabled:(id)a3;
-- (id)peopleSoundsEnabled:(id)a3;
-- (id)peopleSpeechEnabled:(id)a3;
-- (id)pointAndSpeakBrailleEnabled:(id)a3;
-- (id)pointAndSpeakHapticsEnabled:(id)a3;
-- (id)pointAndSpeakSoundsEnabled:(id)a3;
-- (id)pointAndSpeakSpeechEnabled:(id)a3;
-- (id)scenesBrailleEnabled:(id)a3;
-- (id)scenesSpeechEnabled:(id)a3;
+- (id)automaticFlashlightEnabled:(id)enabled;
+- (id)chatGPTEnabled:(id)enabled;
+- (id)doorsBrailleEnabled:(id)enabled;
+- (id)doorsHapticsEnabled:(id)enabled;
+- (id)doorsSoundEnabled:(id)enabled;
+- (id)doorsSpeechEnabled:(id)enabled;
+- (id)furnitureBrailleEnabled:(id)enabled;
+- (id)furnitureHapticsEnabled:(id)enabled;
+- (id)furnitureSoundEnabled:(id)enabled;
+- (id)furnitureSpeechEnabled:(id)enabled;
+- (id)peopleBrailleEnabled:(id)enabled;
+- (id)peopleHapticsEnabled:(id)enabled;
+- (id)peopleSoundsEnabled:(id)enabled;
+- (id)peopleSpeechEnabled:(id)enabled;
+- (id)pointAndSpeakBrailleEnabled:(id)enabled;
+- (id)pointAndSpeakHapticsEnabled:(id)enabled;
+- (id)pointAndSpeakSoundsEnabled:(id)enabled;
+- (id)pointAndSpeakSpeechEnabled:(id)enabled;
+- (id)scenesBrailleEnabled:(id)enabled;
+- (id)scenesSpeechEnabled:(id)enabled;
 - (id)specifiers;
-- (id)textBrailleEnabled:(id)a3;
-- (id)textSpeechEnabled:(id)a3;
-- (void)_showLiveRecognitionActivitiesViewController:(id)a3;
-- (void)_showLiveRecognitionRotorViewController:(id)a3;
-- (void)setAutomaticFlashlight:(id)a3 specifier:(id)a4;
-- (void)setChatGPT:(id)a3 specifier:(id)a4;
-- (void)setDoorsBrailleEnabled:(id)a3 specifier:(id)a4;
-- (void)setDoorsHapticsEnabled:(id)a3 specifier:(id)a4;
-- (void)setDoorsSoundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setDoorsSpeechEnabled:(id)a3 specifier:(id)a4;
-- (void)setFurnitureBrailleEnabled:(id)a3 specifier:(id)a4;
-- (void)setFurnitureHapticsEnabled:(id)a3 specifier:(id)a4;
-- (void)setFurnitureSoundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setFurnitureSpeechEnabled:(id)a3 specifier:(id)a4;
-- (void)setPeopleBrailleEnabled:(id)a3 specifier:(id)a4;
-- (void)setPeopleHapticsEnabled:(id)a3 specifier:(id)a4;
-- (void)setPeopleSoundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setPeopleSpeechEnabled:(id)a3 specifier:(id)a4;
-- (void)setPointAndSpeakBrailleEnabled:(id)a3 specifier:(id)a4;
-- (void)setPointAndSpeakHapticsEnabled:(id)a3 specifier:(id)a4;
-- (void)setPointAndSpeakSoundsEnabled:(id)a3 specifier:(id)a4;
-- (void)setPointAndSpeakSpeechEnabled:(id)a3 specifier:(id)a4;
-- (void)setScenesBrailleEnabled:(id)a3 specifier:(id)a4;
-- (void)setScenesSpeechEnabled:(id)a3 specifier:(id)a4;
-- (void)setTextBrailleEnabled:(id)a3 specifier:(id)a4;
-- (void)setTextSpeechEnabled:(id)a3 specifier:(id)a4;
-- (void)updateFeedbacks:(id)a3 withType:(int64_t)a4 addFeedback:(BOOL)a5;
+- (id)textBrailleEnabled:(id)enabled;
+- (id)textSpeechEnabled:(id)enabled;
+- (void)_showLiveRecognitionActivitiesViewController:(id)controller;
+- (void)_showLiveRecognitionRotorViewController:(id)controller;
+- (void)setAutomaticFlashlight:(id)flashlight specifier:(id)specifier;
+- (void)setChatGPT:(id)t specifier:(id)specifier;
+- (void)setDoorsBrailleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDoorsHapticsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDoorsSoundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDoorsSpeechEnabled:(id)enabled specifier:(id)specifier;
+- (void)setFurnitureBrailleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setFurnitureHapticsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setFurnitureSoundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setFurnitureSpeechEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPeopleBrailleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPeopleHapticsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPeopleSoundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPeopleSpeechEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPointAndSpeakBrailleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPointAndSpeakHapticsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPointAndSpeakSoundsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setPointAndSpeakSpeechEnabled:(id)enabled specifier:(id)specifier;
+- (void)setScenesBrailleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setScenesSpeechEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTextBrailleEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTextSpeechEnabled:(id)enabled specifier:(id)specifier;
+- (void)updateFeedbacks:(id)feedbacks withType:(int64_t)type addFeedback:(BOOL)feedback;
 @end
 
 @implementation VoiceOverLiveRecognitionController
@@ -60,8 +60,8 @@
   if (v2)
   {
     v3 = settingsLocString(@"VO_REAL_WORLD_DETECTION", @"VoiceOverSettings");
-    v4 = [(VoiceOverLiveRecognitionController *)v2 navigationItem];
-    [v4 setTitle:v3];
+    navigationItem = [(VoiceOverLiveRecognitionController *)v2 navigationItem];
+    [navigationItem setTitle:v3];
 
     v5 = v2;
   }
@@ -240,49 +240,49 @@
   return v3;
 }
 
-- (void)_showLiveRecognitionRotorViewController:(id)a3
+- (void)_showLiveRecognitionRotorViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6 = [[VoiceOverLiveRecognitionRotorController alloc] initWithNibName:0 bundle:0];
   [(VoiceOverLiveRecognitionRotorController *)v6 setParentController:self];
-  v5 = [(VoiceOverLiveRecognitionController *)self rootController];
-  [(VoiceOverLiveRecognitionRotorController *)v6 setRootController:v5];
+  rootController = [(VoiceOverLiveRecognitionController *)self rootController];
+  [(VoiceOverLiveRecognitionRotorController *)v6 setRootController:rootController];
 
-  [(VoiceOverLiveRecognitionRotorController *)v6 setSpecifier:v4];
+  [(VoiceOverLiveRecognitionRotorController *)v6 setSpecifier:controllerCopy];
   [(VoiceOverLiveRecognitionController *)self showController:v6 animate:1];
 }
 
-- (void)_showLiveRecognitionActivitiesViewController:(id)a3
+- (void)_showLiveRecognitionActivitiesViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6 = [[VoiceOverLiveRecognitionActivitiesController alloc] initWithNibName:0 bundle:0];
   [(VoiceOverLiveRecognitionActivitiesController *)v6 setParentController:self];
-  v5 = [(VoiceOverLiveRecognitionController *)self rootController];
-  [(VoiceOverLiveRecognitionActivitiesController *)v6 setRootController:v5];
+  rootController = [(VoiceOverLiveRecognitionController *)self rootController];
+  [(VoiceOverLiveRecognitionActivitiesController *)v6 setRootController:rootController];
 
-  [(VoiceOverLiveRecognitionActivitiesController *)v6 setSpecifier:v4];
+  [(VoiceOverLiveRecognitionActivitiesController *)v6 setSpecifier:controllerCopy];
   [(VoiceOverLiveRecognitionController *)self showController:v6 animate:1];
 }
 
-- (void)setChatGPT:(id)a3 specifier:(id)a4
+- (void)setChatGPT:(id)t specifier:(id)specifier
 {
-  v7 = a3;
-  if ([v7 BOOLValue])
+  tCopy = t;
+  if ([tCopy BOOLValue])
   {
     v5 = objc_alloc_init(VoiceOverExternalIntelligenceController);
-    v6 = [(VoiceOverExternalIntelligenceController *)v5 makeOnboardingViewController];
-    [v6 setModalPresentationStyle:1];
-    [(VoiceOverLiveRecognitionController *)self presentViewController:v6 animated:1 completion:0];
+    makeOnboardingViewController = [(VoiceOverExternalIntelligenceController *)v5 makeOnboardingViewController];
+    [makeOnboardingViewController setModalPresentationStyle:1];
+    [(VoiceOverLiveRecognitionController *)self presentViewController:makeOnboardingViewController animated:1 completion:0];
   }
 
   else
   {
     v5 = +[AXSettings sharedInstance];
-    -[VoiceOverExternalIntelligenceController setLiveRecognitionChatGPTEnabled:](v5, "setLiveRecognitionChatGPTEnabled:", [v7 BOOLValue]);
+    -[VoiceOverExternalIntelligenceController setLiveRecognitionChatGPTEnabled:](v5, "setLiveRecognitionChatGPTEnabled:", [tCopy BOOLValue]);
   }
 }
 
-- (id)chatGPTEnabled:(id)a3
+- (id)chatGPTEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 liveRecognitionChatGPTEnabled]);
@@ -290,16 +290,16 @@
   return v4;
 }
 
-- (void)setAutomaticFlashlight:(id)a3 specifier:(id)a4
+- (void)setAutomaticFlashlight:(id)flashlight specifier:(id)specifier
 {
-  v4 = a3;
+  flashlightCopy = flashlight;
   v6 = +[AXSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [flashlightCopy BOOLValue];
 
-  [v6 setLiveRecognitionAutomaticFlashlightEnabled:v5];
+  [v6 setLiveRecognitionAutomaticFlashlightEnabled:bOOLValue];
 }
 
-- (id)automaticFlashlightEnabled:(id)a3
+- (id)automaticFlashlightEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 liveRecognitionAutomaticFlashlightEnabled]);
@@ -307,478 +307,478 @@
   return v4;
 }
 
-- (void)updateFeedbacks:(id)a3 withType:(int64_t)a4 addFeedback:(BOOL)a5
+- (void)updateFeedbacks:(id)feedbacks withType:(int64_t)type addFeedback:(BOOL)feedback
 {
-  v5 = a5;
-  v8 = a3;
-  v7 = [NSNumber numberWithInteger:a4];
-  if (v5)
+  feedbackCopy = feedback;
+  feedbacksCopy = feedbacks;
+  v7 = [NSNumber numberWithInteger:type];
+  if (feedbackCopy)
   {
-    [v8 addObject:v7];
+    [feedbacksCopy addObject:v7];
   }
 
-  else if ([v8 containsObject:v7])
+  else if ([feedbacksCopy containsObject:v7])
   {
-    [v8 removeObject:v7];
+    [feedbacksCopy removeObject:v7];
   }
 }
 
-- (void)setScenesSpeechEnabled:(id)a3 specifier:(id)a4
+- (void)setScenesSpeechEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionSceneFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionSceneFeedbacks = [v6 liveRecognitionSceneFeedbacks];
+  v10 = [liveRecognitionSceneFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionSceneFeedbacks:v10];
 }
 
-- (id)scenesSpeechEnabled:(id)a3
+- (id)scenesSpeechEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionSceneFeedbacks];
+  liveRecognitionSceneFeedbacks = [v3 liveRecognitionSceneFeedbacks];
   v5 = [NSNumber numberWithInteger:0];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionSceneFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setScenesBrailleEnabled:(id)a3 specifier:(id)a4
+- (void)setScenesBrailleEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionSceneFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionSceneFeedbacks = [v6 liveRecognitionSceneFeedbacks];
+  v10 = [liveRecognitionSceneFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionSceneFeedbacks:v10];
 }
 
-- (id)scenesBrailleEnabled:(id)a3
+- (id)scenesBrailleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionSceneFeedbacks];
+  liveRecognitionSceneFeedbacks = [v3 liveRecognitionSceneFeedbacks];
   v5 = [NSNumber numberWithInteger:1];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionSceneFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPeopleSpeechEnabled:(id)a3 specifier:(id)a4
+- (void)setPeopleSpeechEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPeopleFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPeopleFeedbacks = [v6 liveRecognitionPeopleFeedbacks];
+  v10 = [liveRecognitionPeopleFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPeopleFeedbacks:v10];
 }
 
-- (id)peopleSpeechEnabled:(id)a3
+- (id)peopleSpeechEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPeopleFeedbacks];
+  liveRecognitionPeopleFeedbacks = [v3 liveRecognitionPeopleFeedbacks];
   v5 = [NSNumber numberWithInteger:0];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPeopleFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPeopleBrailleEnabled:(id)a3 specifier:(id)a4
+- (void)setPeopleBrailleEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPeopleFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPeopleFeedbacks = [v6 liveRecognitionPeopleFeedbacks];
+  v10 = [liveRecognitionPeopleFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPeopleFeedbacks:v10];
 }
 
-- (id)peopleBrailleEnabled:(id)a3
+- (id)peopleBrailleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPeopleFeedbacks];
+  liveRecognitionPeopleFeedbacks = [v3 liveRecognitionPeopleFeedbacks];
   v5 = [NSNumber numberWithInteger:1];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPeopleFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPeopleSoundsEnabled:(id)a3 specifier:(id)a4
+- (void)setPeopleSoundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPeopleFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPeopleFeedbacks = [v6 liveRecognitionPeopleFeedbacks];
+  v10 = [liveRecognitionPeopleFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPeopleFeedbacks:v10];
 }
 
-- (id)peopleSoundsEnabled:(id)a3
+- (id)peopleSoundsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPeopleFeedbacks];
+  liveRecognitionPeopleFeedbacks = [v3 liveRecognitionPeopleFeedbacks];
   v5 = [NSNumber numberWithInteger:2];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPeopleFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPeopleHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setPeopleHapticsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPeopleFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPeopleFeedbacks = [v6 liveRecognitionPeopleFeedbacks];
+  v10 = [liveRecognitionPeopleFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPeopleFeedbacks:v10];
 }
 
-- (id)peopleHapticsEnabled:(id)a3
+- (id)peopleHapticsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPeopleFeedbacks];
+  liveRecognitionPeopleFeedbacks = [v3 liveRecognitionPeopleFeedbacks];
   v5 = [NSNumber numberWithInteger:3];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPeopleFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setDoorsSpeechEnabled:(id)a3 specifier:(id)a4
+- (void)setDoorsSpeechEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionDoorsFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionDoorsFeedbacks = [v6 liveRecognitionDoorsFeedbacks];
+  v10 = [liveRecognitionDoorsFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionDoorsFeedbacks:v10];
 }
 
-- (id)doorsSpeechEnabled:(id)a3
+- (id)doorsSpeechEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionDoorsFeedbacks];
+  liveRecognitionDoorsFeedbacks = [v3 liveRecognitionDoorsFeedbacks];
   v5 = [NSNumber numberWithInteger:0];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionDoorsFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setDoorsBrailleEnabled:(id)a3 specifier:(id)a4
+- (void)setDoorsBrailleEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionDoorsFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionDoorsFeedbacks = [v6 liveRecognitionDoorsFeedbacks];
+  v10 = [liveRecognitionDoorsFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionDoorsFeedbacks:v10];
 }
 
-- (id)doorsBrailleEnabled:(id)a3
+- (id)doorsBrailleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionDoorsFeedbacks];
+  liveRecognitionDoorsFeedbacks = [v3 liveRecognitionDoorsFeedbacks];
   v5 = [NSNumber numberWithInteger:1];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionDoorsFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setDoorsSoundsEnabled:(id)a3 specifier:(id)a4
+- (void)setDoorsSoundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionDoorsFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionDoorsFeedbacks = [v6 liveRecognitionDoorsFeedbacks];
+  v10 = [liveRecognitionDoorsFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionDoorsFeedbacks:v10];
 }
 
-- (id)doorsSoundEnabled:(id)a3
+- (id)doorsSoundEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionDoorsFeedbacks];
+  liveRecognitionDoorsFeedbacks = [v3 liveRecognitionDoorsFeedbacks];
   v5 = [NSNumber numberWithInteger:2];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionDoorsFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setDoorsHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setDoorsHapticsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionDoorsFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionDoorsFeedbacks = [v6 liveRecognitionDoorsFeedbacks];
+  v10 = [liveRecognitionDoorsFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionDoorsFeedbacks:v10];
 }
 
-- (id)doorsHapticsEnabled:(id)a3
+- (id)doorsHapticsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionDoorsFeedbacks];
+  liveRecognitionDoorsFeedbacks = [v3 liveRecognitionDoorsFeedbacks];
   v5 = [NSNumber numberWithInteger:3];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionDoorsFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setFurnitureSpeechEnabled:(id)a3 specifier:(id)a4
+- (void)setFurnitureSpeechEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionFurnitureFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionFurnitureFeedbacks = [v6 liveRecognitionFurnitureFeedbacks];
+  v10 = [liveRecognitionFurnitureFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionFurnitureFeedbacks:v10];
 }
 
-- (id)furnitureSpeechEnabled:(id)a3
+- (id)furnitureSpeechEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionFurnitureFeedbacks];
+  liveRecognitionFurnitureFeedbacks = [v3 liveRecognitionFurnitureFeedbacks];
   v5 = [NSNumber numberWithInteger:0];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionFurnitureFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setFurnitureBrailleEnabled:(id)a3 specifier:(id)a4
+- (void)setFurnitureBrailleEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionFurnitureFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionFurnitureFeedbacks = [v6 liveRecognitionFurnitureFeedbacks];
+  v10 = [liveRecognitionFurnitureFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionFurnitureFeedbacks:v10];
 }
 
-- (id)furnitureBrailleEnabled:(id)a3
+- (id)furnitureBrailleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionFurnitureFeedbacks];
+  liveRecognitionFurnitureFeedbacks = [v3 liveRecognitionFurnitureFeedbacks];
   v5 = [NSNumber numberWithInteger:1];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionFurnitureFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setFurnitureSoundsEnabled:(id)a3 specifier:(id)a4
+- (void)setFurnitureSoundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionFurnitureFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionFurnitureFeedbacks = [v6 liveRecognitionFurnitureFeedbacks];
+  v10 = [liveRecognitionFurnitureFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionFurnitureFeedbacks:v10];
 }
 
-- (id)furnitureSoundEnabled:(id)a3
+- (id)furnitureSoundEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionFurnitureFeedbacks];
+  liveRecognitionFurnitureFeedbacks = [v3 liveRecognitionFurnitureFeedbacks];
   v5 = [NSNumber numberWithInteger:2];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionFurnitureFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setFurnitureHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setFurnitureHapticsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionFurnitureFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionFurnitureFeedbacks = [v6 liveRecognitionFurnitureFeedbacks];
+  v10 = [liveRecognitionFurnitureFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionFurnitureFeedbacks:v10];
 }
 
-- (id)furnitureHapticsEnabled:(id)a3
+- (id)furnitureHapticsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionFurnitureFeedbacks];
+  liveRecognitionFurnitureFeedbacks = [v3 liveRecognitionFurnitureFeedbacks];
   v5 = [NSNumber numberWithInteger:3];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionFurnitureFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setTextSpeechEnabled:(id)a3 specifier:(id)a4
+- (void)setTextSpeechEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionTextFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionTextFeedbacks = [v6 liveRecognitionTextFeedbacks];
+  v10 = [liveRecognitionTextFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionTextFeedbacks:v10];
 }
 
-- (id)textSpeechEnabled:(id)a3
+- (id)textSpeechEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionTextFeedbacks];
+  liveRecognitionTextFeedbacks = [v3 liveRecognitionTextFeedbacks];
   v5 = [NSNumber numberWithInteger:0];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionTextFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setTextBrailleEnabled:(id)a3 specifier:(id)a4
+- (void)setTextBrailleEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionTextFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionTextFeedbacks = [v6 liveRecognitionTextFeedbacks];
+  v10 = [liveRecognitionTextFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionTextFeedbacks:v10];
 }
 
-- (id)textBrailleEnabled:(id)a3
+- (id)textBrailleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionTextFeedbacks];
+  liveRecognitionTextFeedbacks = [v3 liveRecognitionTextFeedbacks];
   v5 = [NSNumber numberWithInteger:1];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionTextFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPointAndSpeakSpeechEnabled:(id)a3 specifier:(id)a4
+- (void)setPointAndSpeakSpeechEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPointAndSpeakFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPointAndSpeakFeedbacks = [v6 liveRecognitionPointAndSpeakFeedbacks];
+  v10 = [liveRecognitionPointAndSpeakFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:0 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPointAndSpeakFeedbacks:v10];
 }
 
-- (id)pointAndSpeakSpeechEnabled:(id)a3
+- (id)pointAndSpeakSpeechEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPointAndSpeakFeedbacks];
+  liveRecognitionPointAndSpeakFeedbacks = [v3 liveRecognitionPointAndSpeakFeedbacks];
   v5 = [NSNumber numberWithInteger:0];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPointAndSpeakFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPointAndSpeakBrailleEnabled:(id)a3 specifier:(id)a4
+- (void)setPointAndSpeakBrailleEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPointAndSpeakFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPointAndSpeakFeedbacks = [v6 liveRecognitionPointAndSpeakFeedbacks];
+  v10 = [liveRecognitionPointAndSpeakFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:1 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPointAndSpeakFeedbacks:v10];
 }
 
-- (id)pointAndSpeakBrailleEnabled:(id)a3
+- (id)pointAndSpeakBrailleEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPointAndSpeakFeedbacks];
+  liveRecognitionPointAndSpeakFeedbacks = [v3 liveRecognitionPointAndSpeakFeedbacks];
   v5 = [NSNumber numberWithInteger:1];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPointAndSpeakFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPointAndSpeakSoundsEnabled:(id)a3 specifier:(id)a4
+- (void)setPointAndSpeakSoundsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPointAndSpeakFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPointAndSpeakFeedbacks = [v6 liveRecognitionPointAndSpeakFeedbacks];
+  v10 = [liveRecognitionPointAndSpeakFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:2 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPointAndSpeakFeedbacks:v10];
 }
 
-- (id)pointAndSpeakSoundsEnabled:(id)a3
+- (id)pointAndSpeakSoundsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPointAndSpeakFeedbacks];
+  liveRecognitionPointAndSpeakFeedbacks = [v3 liveRecognitionPointAndSpeakFeedbacks];
   v5 = [NSNumber numberWithInteger:2];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPointAndSpeakFeedbacks containsObject:v5]);
 
   return v6;
 }
 
-- (void)setPointAndSpeakHapticsEnabled:(id)a3 specifier:(id)a4
+- (void)setPointAndSpeakHapticsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 liveRecognitionPointAndSpeakFeedbacks];
-  v10 = [v7 mutableCopy];
+  liveRecognitionPointAndSpeakFeedbacks = [v6 liveRecognitionPointAndSpeakFeedbacks];
+  v10 = [liveRecognitionPointAndSpeakFeedbacks mutableCopy];
 
-  v8 = [v5 BOOLValue];
-  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:v8];
+  bOOLValue = [enabledCopy BOOLValue];
+  [(VoiceOverLiveRecognitionController *)self updateFeedbacks:v10 withType:3 addFeedback:bOOLValue];
   v9 = +[AXSettings sharedInstance];
   [v9 setLiveRecognitionPointAndSpeakFeedbacks:v10];
 }
 
-- (id)pointAndSpeakHapticsEnabled:(id)a3
+- (id)pointAndSpeakHapticsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 liveRecognitionPointAndSpeakFeedbacks];
+  liveRecognitionPointAndSpeakFeedbacks = [v3 liveRecognitionPointAndSpeakFeedbacks];
   v5 = [NSNumber numberWithInteger:3];
-  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 containsObject:v5]);
+  v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [liveRecognitionPointAndSpeakFeedbacks containsObject:v5]);
 
   return v6;
 }

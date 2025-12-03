@@ -1,22 +1,22 @@
 @interface CEImageIcon
-- (CEImageIcon)initWithCoder:(id)a3;
-- (CEImageIcon)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CEImageIcon)initWithCoder:(id)coder;
+- (CEImageIcon)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CEImageIcon
 
-- (CEImageIcon)initWithDictionary:(id)a3
+- (CEImageIcon)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = CEImageIcon;
-  v5 = [(CEIcon *)&v17 initWithDictionary:v4];
+  v5 = [(CEIcon *)&v17 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"iconUrls"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"iconUrls"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,23 +61,23 @@
   return v5;
 }
 
-- (CEImageIcon)initWithCoder:(id)a3
+- (CEImageIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CEImageIcon;
-  v5 = [(CEIcon *)&v13 initWithCoder:v4];
+  v5 = [(CEIcon *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url1x"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url1x"];
     URL1x = v5->_URL1x;
     v5->_URL1x = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url2x"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url2x"];
     URL2x = v5->_URL2x;
     v5->_URL2x = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url3x"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url3x"];
     URL3x = v5->_URL3x;
     v5->_URL3x = v10;
   }
@@ -85,26 +85,26 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CEImageIcon;
-  v4 = [(CEIcon *)&v6 copyWithZone:a3];
+  v4 = [(CEIcon *)&v6 copyWithZone:zone];
   [v4 setURL1x:self->_URL1x];
   [v4 setURL2x:self->_URL2x];
   [v4 setURL3x:self->_URL3x];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CEImageIcon;
-  v4 = a3;
-  [(CEIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_URL1x forKey:{@"url1x", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_URL2x forKey:@"url2x"];
-  [v4 encodeObject:self->_URL3x forKey:@"url3x"];
+  coderCopy = coder;
+  [(CEIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_URL1x forKey:{@"url1x", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_URL2x forKey:@"url2x"];
+  [coderCopy encodeObject:self->_URL3x forKey:@"url3x"];
 }
 
 - (id)description

@@ -1,17 +1,17 @@
 @interface CKDPCSFetchAggregator
-- (BOOL)fetchRequestForExistingOperation:(id)a3 isDependentOnOperation:(id)a4;
+- (BOOL)fetchRequestForExistingOperation:(id)operation isDependentOnOperation:(id)onOperation;
 - (CKDContainer)container;
 - (CKDPCSFetchAggregator)init;
-- (CKDPCSFetchAggregator)initWithContainer:(id)a3;
-- (id)_lockedGetQueuedFetchForOperation:(id)a3 ofClass:(Class)a4;
+- (CKDPCSFetchAggregator)initWithContainer:(id)container;
+- (id)_lockedGetQueuedFetchForOperation:(id)operation ofClass:(Class)class;
 - (void)_lockedFetchesAreReady;
 - (void)_lockedRescheduleFetchTimer;
 - (void)_lockedTearDownFetchTimer;
 - (void)cancelAllOperations;
 - (void)dealloc;
-- (void)requestFetchOfRecordWithID:(id)a3 forOperation:(id)a4 withCompletionHandler:(id)a5;
-- (void)requestFetchOfShareWithID:(id)a3 forOperation:(id)a4 withCompletionHandler:(id)a5;
-- (void)requestFetchOfZoneWithID:(id)a3 forOperation:(id)a4 withCompletionHandler:(id)a5;
+- (void)requestFetchOfRecordWithID:(id)d forOperation:(id)operation withCompletionHandler:(id)handler;
+- (void)requestFetchOfShareWithID:(id)d forOperation:(id)operation withCompletionHandler:(id)handler;
+- (void)requestFetchOfZoneWithID:(id)d forOperation:(id)operation withCompletionHandler:(id)handler;
 @end
 
 @implementation CKDPCSFetchAggregator
@@ -25,16 +25,16 @@
   objc_exception_throw(v6);
 }
 
-- (CKDPCSFetchAggregator)initWithContainer:(id)a3
+- (CKDPCSFetchAggregator)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v24.receiver = self;
   v24.super_class = CKDPCSFetchAggregator;
   v5 = [(CKDPCSFetchAggregator *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.cloudkit.pcs.fetchAggregator", v7);
     opQueue = v6->_opQueue;
@@ -498,17 +498,17 @@ LABEL_66:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lockedGetQueuedFetchForOperation:(id)a3 ofClass:(Class)a4
+- (id)_lockedGetQueuedFetchForOperation:(id)operation ofClass:(Class)class
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  operationCopy = operation;
   val = self;
   v9 = objc_msgSend_opQueue(self, v7, v8);
   dispatch_assert_queue_V2(v9);
 
   if (*MEMORY[0x277CBC810] == 1)
   {
-    v12 = objc_msgSend_unitTestOverrides(v6, v10, v11);
+    v12 = objc_msgSend_unitTestOverrides(operationCopy, v10, v11);
     v14 = objc_msgSend_objectForKeyedSubscript_(v12, v13, @"ForceNoQueuedFetchCycleDetection");
 
     if (v14)
@@ -536,7 +536,7 @@ LABEL_6:
       }
 
       v21 = *(*(&v56 + 1) + 8 * v20);
-      if (objc_msgSend_canBeUsedForOperation_(v21, v17, v6))
+      if (objc_msgSend_canBeUsedForOperation_(v21, v17, operationCopy))
       {
         if (objc_opt_isKindOfClass())
         {
@@ -545,7 +545,7 @@ LABEL_6:
             break;
           }
 
-          v23 = objc_msgSend_unitTestOverrides(v6, v17, v22);
+          v23 = objc_msgSend_unitTestOverrides(operationCopy, v17, v22);
           v25 = objc_msgSend_objectForKeyedSubscript_(v23, v24, @"ForceNoQueuedFetchReuse");
           v26 = v25 == 0;
 
@@ -577,7 +577,7 @@ LABEL_6:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v49 = v27;
-      v52 = objc_msgSend_operationID(v6, v50, v51);
+      v52 = objc_msgSend_operationID(operationCopy, v50, v51);
       *location = 138412546;
       *&location[4] = v21;
       v61 = 2114;
@@ -607,16 +607,16 @@ LABEL_15:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v45 = v29;
-    v48 = objc_msgSend_operationID(v6, v46, v47);
+    v48 = objc_msgSend_operationID(operationCopy, v46, v47);
     *location = 138543362;
     *&location[4] = v48;
     _os_log_debug_impl(&dword_22506F000, v45, OS_LOG_TYPE_DEBUG, "Creating a new fetch request for operation %{public}@", location, 0xCu);
   }
 
-  v30 = [a4 alloc];
+  v30 = [class alloc];
   v33 = objc_msgSend_container(val, v31, v32);
   v36 = objc_msgSend_queue(val, v34, v35);
-  v28 = objc_msgSend_initWithOperation_container_operationQueue_(v30, v37, v6, v33, v36);
+  v28 = objc_msgSend_initWithOperation_container_operationQueue_(v30, v37, operationCopy, v33, v36);
 
   objc_initWeak(location, val);
   v54[0] = MEMORY[0x277D85DD0];
@@ -637,10 +637,10 @@ LABEL_26:
   return v28;
 }
 
-- (BOOL)fetchRequestForExistingOperation:(id)a3 isDependentOnOperation:(id)a4
+- (BOOL)fetchRequestForExistingOperation:(id)operation isDependentOnOperation:(id)onOperation
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  onOperationCopy = onOperation;
   v11 = objc_msgSend_opQueue(self, v9, v10);
   dispatch_assert_queue_not_V2(v11);
 
@@ -653,7 +653,7 @@ LABEL_26:
   v23[2] = 0x3032000000;
   v23[3] = sub_225074130;
   v23[4] = sub_225073624;
-  v12 = v8;
+  v12 = onOperationCopy;
   v24 = v12;
   v15 = objc_msgSend_opQueue(self, v13, v14);
   block[0] = MEMORY[0x277D85DD0];
@@ -661,77 +661,77 @@ LABEL_26:
   block[2] = sub_225286B90;
   block[3] = &unk_27854BAE8;
   block[4] = self;
-  v19 = v7;
+  v19 = operationCopy;
   v20 = v23;
   v21 = &v25;
   v22 = a2;
-  v16 = v7;
+  v16 = operationCopy;
   dispatch_sync(v15, block);
 
-  LOBYTE(v7) = *(v26 + 24);
+  LOBYTE(operationCopy) = *(v26 + 24);
   _Block_object_dispose(v23, 8);
 
   _Block_object_dispose(&v25, 8);
-  return v7;
+  return operationCopy;
 }
 
-- (void)requestFetchOfRecordWithID:(id)a3 forOperation:(id)a4 withCompletionHandler:(id)a5
+- (void)requestFetchOfRecordWithID:(id)d forOperation:(id)operation withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  operationCopy = operation;
+  handlerCopy = handler;
   v13 = objc_msgSend_opQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_225286ED0;
   v17[3] = &unk_2785488E0;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = operationCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = operationCopy;
+  v16 = dCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)requestFetchOfShareWithID:(id)a3 forOperation:(id)a4 withCompletionHandler:(id)a5
+- (void)requestFetchOfShareWithID:(id)d forOperation:(id)operation withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  operationCopy = operation;
+  handlerCopy = handler;
   v13 = objc_msgSend_opQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2252874C8;
   v17[3] = &unk_2785488E0;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = operationCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = operationCopy;
+  v16 = dCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)requestFetchOfZoneWithID:(id)a3 forOperation:(id)a4 withCompletionHandler:(id)a5
+- (void)requestFetchOfZoneWithID:(id)d forOperation:(id)operation withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  operationCopy = operation;
+  handlerCopy = handler;
   v13 = objc_msgSend_opQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_225287980;
   v17[3] = &unk_2785488E0;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = dCopy;
+  selfCopy = self;
+  v20 = operationCopy;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = operationCopy;
+  v16 = dCopy;
   dispatch_async(v13, v17);
 }
 

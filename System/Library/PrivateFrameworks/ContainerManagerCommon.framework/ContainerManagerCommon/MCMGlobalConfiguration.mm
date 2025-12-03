@@ -1,19 +1,19 @@
 @interface MCMGlobalConfiguration
 - (BOOL)handlesGlobalContainers;
 - (BOOL)handlesUserContainers;
-- (BOOL)isGlobalBundleContainerWithContainerClass:(unint64_t)a3;
-- (BOOL)isGlobalContainerClass:(unint64_t)a3;
-- (BOOL)isGlobalSystemContainerWithContainerClass:(unint64_t)a3;
+- (BOOL)isGlobalBundleContainerWithContainerClass:(unint64_t)class;
+- (BOOL)isGlobalContainerClass:(unint64_t)class;
+- (BOOL)isGlobalSystemContainerWithContainerClass:(unint64_t)class;
 - (BOOL)isInternalImage;
-- (BOOL)isPerUserBundleContainerWithContainerClass:(unint64_t)a3;
-- (BOOL)isUnsupportedBundleContainerWithContainerClass:(unint64_t)a3;
-- (BOOL)isUnsupportedSystemContainerWithContainerClass:(unint64_t)a3;
-- (BOOL)isUserBundleContainerWithContainerClass:(unint64_t)a3;
-- (BOOL)isUserSystemContainerWithContainerClass:(unint64_t)a3;
+- (BOOL)isPerUserBundleContainerWithContainerClass:(unint64_t)class;
+- (BOOL)isUnsupportedBundleContainerWithContainerClass:(unint64_t)class;
+- (BOOL)isUnsupportedSystemContainerWithContainerClass:(unint64_t)class;
+- (BOOL)isUserBundleContainerWithContainerClass:(unint64_t)class;
+- (BOOL)isUserSystemContainerWithContainerClass:(unint64_t)class;
 - (BOOL)kernelUpcallEnabled;
 - (MCMContainerClassIterator)classIterator;
 - (MCMContainerClassPathCache)classPathCache;
-- (MCMGlobalConfiguration)initWithStaticConfig:(id)a3 runMode:(unsigned int)a4 userContainerMode:(unsigned int)a5 bundleContainerMode:(unsigned int)a6 bundleContainerOwner:(id)a7 systemContainerMode:(unsigned int)a8 systemContainerOwner:(id)a9 kernelUpcallEnabled:(BOOL)a10;
+- (MCMGlobalConfiguration)initWithStaticConfig:(id)config runMode:(unsigned int)mode userContainerMode:(unsigned int)containerMode bundleContainerMode:(unsigned int)bundleContainerMode bundleContainerOwner:(id)owner systemContainerMode:(unsigned int)systemContainerMode systemContainerOwner:(id)containerOwner kernelUpcallEnabled:(BOOL)self0;
 - (MCMLibraryRepair)libraryRepair;
 - (MCMManagedPathRegistry)managedPathRegistry;
 - (MCMPOSIXUser)bundleContainerOwner;
@@ -26,13 +26,13 @@
 - (NSString)csIdentifier;
 - (NSURL)sharedContainersDirectory;
 - (unsigned)bundleContainerMode;
-- (unsigned)dispositionForContainerClass:(unint64_t)a3;
-- (unsigned)dispositionForContainerClass:(unint64_t)a3 forUser:(id)a4;
+- (unsigned)dispositionForContainerClass:(unint64_t)class;
+- (unsigned)dispositionForContainerClass:(unint64_t)class forUser:(id)user;
 - (unsigned)runmode;
 - (unsigned)systemContainerMode;
 - (unsigned)userContainerMode;
-- (void)setIsInternalImage:(BOOL)a3;
-- (void)signpostFirstContainerClass:(unint64_t)a3;
+- (void)setIsInternalImage:(BOOL)image;
+- (void)signpostFirstContainerClass:(unint64_t)class;
 @end
 
 @implementation MCMGlobalConfiguration
@@ -80,20 +80,20 @@
 - (MCMContainerClassPathCache)classPathCache
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_classPathCache)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_classPathCache)
   {
     v3 = [MCMContainerClassPathCache alloc];
     v4 = +[MCMUserIdentitySharedCache sharedInstance];
     v5 = [(MCMContainerClassPathCache *)v3 initWithUserIdentityCache:v4];
-    classPathCache = v2->_classPathCache;
-    v2->_classPathCache = v5;
+    classPathCache = selfCopy->_classPathCache;
+    selfCopy->_classPathCache = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_classPathCache;
+  v7 = selfCopy->_classPathCache;
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
@@ -163,10 +163,10 @@
   return result;
 }
 
-- (void)setIsInternalImage:(BOOL)a3
+- (void)setIsInternalImage:(BOOL)image
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_isInternalImage = a3;
+  self->_isInternalImage = image;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -178,28 +178,28 @@
   return result;
 }
 
-- (unsigned)dispositionForContainerClass:(unint64_t)a3 forUser:(id)a4
+- (unsigned)dispositionForContainerClass:(unint64_t)class forUser:(id)user
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 <= 8 && ((1 << a3) & 0x12A) != 0)
+  userCopy = user;
+  if (class <= 8 && ((1 << class) & 0x12A) != 0)
   {
     v7 = containermanager_copy_global_configuration();
-    v8 = [v7 bundleContainerMode];
+    bundleContainerMode = [v7 bundleContainerMode];
 
-    v9 = v8 - 1;
+    v9 = bundleContainerMode - 1;
   }
 
   else
   {
-    v11 = a3 & 0xFFFFFFFFFFFFFFFELL;
+    v11 = class & 0xFFFFFFFFFFFFFFFELL;
     v12 = containermanager_copy_global_configuration();
     v13 = v12;
     if (v11 != 12)
     {
-      v15 = [v12 userContainerMode];
+      userContainerMode = [v12 userContainerMode];
 
-      if (v15 == 2 || v15 == 1 && (!v6 || (-[MCMGlobalConfiguration defaultUser](self, "defaultUser"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v6 isEqual:v16], v16, v17)))
+      if (userContainerMode == 2 || userContainerMode == 1 && (!userCopy || (-[MCMGlobalConfiguration defaultUser](self, "defaultUser"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [userCopy isEqual:v16], v16, v17)))
       {
         v10 = 1;
         goto LABEL_14;
@@ -210,9 +210,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v14 = [v12 systemContainerMode];
+    systemContainerMode = [v12 systemContainerMode];
 
-    v9 = v14 - 1;
+    v9 = systemContainerMode - 1;
   }
 
   if (v9 >= 3)
@@ -227,12 +227,12 @@ LABEL_14:
   return v10;
 }
 
-- (unsigned)dispositionForContainerClass:(unint64_t)a3
+- (unsigned)dispositionForContainerClass:(unint64_t)class
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [(MCMGlobalConfiguration *)self dispositionForContainerClass:a3 forUser:0];
+  return [(MCMGlobalConfiguration *)self dispositionForContainerClass:class forUser:0];
 }
 
 - (BOOL)handlesUserContainers
@@ -282,15 +282,15 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isGlobalContainerClass:(unint64_t)a3
+- (BOOL)isGlobalContainerClass:(unint64_t)class
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 - 2 < 0xD && ((0x13B5u >> (a3 - 2)) & 1) != 0)
+  if (class - 2 < 0xD && ((0x13B5u >> (class - 2)) & 1) != 0)
   {
     LOBYTE(v5) = 0;
   }
 
-  else if ([(MCMGlobalConfiguration *)self isGlobalSystemContainerWithContainerClass:a3]|| (v5 = [(MCMGlobalConfiguration *)self isGlobalBundleContainerWithContainerClass:a3]))
+  else if ([(MCMGlobalConfiguration *)self isGlobalSystemContainerWithContainerClass:class]|| (v5 = [(MCMGlobalConfiguration *)self isGlobalBundleContainerWithContainerClass:class]))
   {
     LOBYTE(v5) = 1;
   }
@@ -299,11 +299,11 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isUnsupportedBundleContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isUnsupportedBundleContainerWithContainerClass:(unint64_t)class
 {
   v3 = 0;
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0xE && ((1 << a3) & 0x412A) != 0)
+  if (class <= 0xE && ((1 << class) & 0x412A) != 0)
   {
     v4 = containermanager_copy_global_configuration();
     v3 = [v4 bundleContainerMode] == 0;
@@ -313,13 +313,13 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isUserBundleContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isUserBundleContainerWithContainerClass:(unint64_t)class
 {
   v3 = 0;
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 <= 0xE)
+  if (class <= 0xE)
   {
-    if (((1 << a3) & 0x12A) != 0)
+    if (((1 << class) & 0x12A) != 0)
     {
       v4 = containermanager_copy_global_configuration();
       v3 = [v4 bundleContainerMode] == 2;
@@ -327,7 +327,7 @@ LABEL_14:
 
     else
     {
-      if (a3 != 14)
+      if (class != 14)
       {
         goto LABEL_5;
       }
@@ -342,10 +342,10 @@ LABEL_5:
   return v3;
 }
 
-- (BOOL)isPerUserBundleContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isPerUserBundleContainerWithContainerClass:(unint64_t)class
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 == 14)
+  if (class == 14)
   {
     v3 = containermanager_copy_global_configuration();
     v4 = [v3 bundleContainerMode] != 0;
@@ -360,11 +360,11 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)isGlobalBundleContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isGlobalBundleContainerWithContainerClass:(unint64_t)class
 {
   v3 = 0;
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 <= 8 && ((1 << a3) & 0x12A) != 0)
+  if (class <= 8 && ((1 << class) & 0x12A) != 0)
   {
     v4 = containermanager_copy_global_configuration();
     v3 = [v4 bundleContainerMode] == 1;
@@ -374,10 +374,10 @@ LABEL_5:
   return v3;
 }
 
-- (BOOL)isUnsupportedSystemContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isUnsupportedSystemContainerWithContainerClass:(unint64_t)class
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  if ((class & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     v3 = containermanager_copy_global_configuration();
     v4 = [v3 systemContainerMode] == 0;
@@ -392,10 +392,10 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)isUserSystemContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isUserSystemContainerWithContainerClass:(unint64_t)class
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  if ((class & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     v3 = containermanager_copy_global_configuration();
     v4 = [v3 systemContainerMode] == 2;
@@ -410,10 +410,10 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)isGlobalSystemContainerWithContainerClass:(unint64_t)a3
+- (BOOL)isGlobalSystemContainerWithContainerClass:(unint64_t)class
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  if ((class & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     v3 = containermanager_copy_global_configuration();
     v4 = [v3 systemContainerMode] == 1;
@@ -472,22 +472,22 @@ uint64_t __41__MCMGlobalConfiguration_isInternalImage__block_invoke(uint64_t a1)
 - (NSURL)sharedContainersDirectory
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMGlobalConfiguration *)self currentUser];
-  v4 = [v3 isRoot];
+  currentUser = [(MCMGlobalConfiguration *)self currentUser];
+  isRoot = [currentUser isRoot];
 
-  if (v4)
+  if (isRoot)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if (!v5->_sharedContainersDirectory)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_sharedContainersDirectory)
     {
       v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/containers" isDirectory:1];
-      sharedContainersDirectory = v5->_sharedContainersDirectory;
-      v5->_sharedContainersDirectory = v6;
+      sharedContainersDirectory = selfCopy->_sharedContainersDirectory;
+      selfCopy->_sharedContainersDirectory = v6;
     }
 
     v8 = +[MCMFileManager defaultManager];
-    v9 = v5->_sharedContainersDirectory;
+    v9 = selfCopy->_sharedContainersDirectory;
     v18 = 0;
     v10 = [v8 createDirectoryAtURL:v9 withIntermediateDirectories:1 mode:493 error:&v18];
     v11 = v18;
@@ -497,19 +497,19 @@ uint64_t __41__MCMGlobalConfiguration_isInternalImage__block_invoke(uint64_t a1)
       v12 = container_log_handle_for_category();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(NSURL *)v5->_sharedContainersDirectory path];
+        path = [(NSURL *)selfCopy->_sharedContainersDirectory path];
         *buf = 138412546;
-        v20 = v17;
+        v20 = path;
         v21 = 2112;
         v22 = v11;
         _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Failed to create shared container dir at %@: %@", buf, 0x16u);
       }
 
-      v13 = v5->_sharedContainersDirectory;
-      v5->_sharedContainersDirectory = 0;
+      v13 = selfCopy->_sharedContainersDirectory;
+      selfCopy->_sharedContainersDirectory = 0;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   v14 = self->_sharedContainersDirectory;
@@ -518,10 +518,10 @@ uint64_t __41__MCMGlobalConfiguration_isInternalImage__block_invoke(uint64_t a1)
   return v14;
 }
 
-- (void)signpostFirstContainerClass:(unint64_t)a3
+- (void)signpostFirstContainerClass:(unint64_t)class
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 - 1 <= 0xD)
+  if (class - 1 <= 0xD)
   {
     v3 = container_class_normalized();
     os_unfair_lock_lock_with_options();
@@ -544,12 +544,12 @@ uint64_t __41__MCMGlobalConfiguration_isInternalImage__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMGlobalConfiguration)initWithStaticConfig:(id)a3 runMode:(unsigned int)a4 userContainerMode:(unsigned int)a5 bundleContainerMode:(unsigned int)a6 bundleContainerOwner:(id)a7 systemContainerMode:(unsigned int)a8 systemContainerOwner:(id)a9 kernelUpcallEnabled:(BOOL)a10
+- (MCMGlobalConfiguration)initWithStaticConfig:(id)config runMode:(unsigned int)mode userContainerMode:(unsigned int)containerMode bundleContainerMode:(unsigned int)bundleContainerMode bundleContainerOwner:(id)owner systemContainerMode:(unsigned int)systemContainerMode systemContainerOwner:(id)containerOwner kernelUpcallEnabled:(BOOL)self0
 {
   v60 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a7;
-  v50 = a9;
+  configCopy = config;
+  ownerCopy = owner;
+  containerOwnerCopy = containerOwner;
   v51.receiver = self;
   v51.super_class = MCMGlobalConfiguration;
   v19 = [(MCMGlobalConfiguration *)&v51 init];
@@ -562,22 +562,22 @@ LABEL_12:
   }
 
   container_class_for_each_normalized_class();
-  objc_storeStrong(&v19->_staticConfig, a3);
-  v20 = [[MCMContainerClassIterator alloc] initWithStaticConfig:v17];
+  objc_storeStrong(&v19->_staticConfig, config);
+  v20 = [[MCMContainerClassIterator alloc] initWithStaticConfig:configCopy];
   classIterator = v19->_classIterator;
   v19->_classIterator = v20;
 
-  v19->_runmode = a4;
-  v19->_userContainerMode = a5;
-  v19->_bundleContainerMode = a6;
-  objc_storeStrong(&v19->_bundleContainerOwner, a7);
-  v19->_systemContainerMode = a8;
-  objc_storeStrong(&v19->_systemContainerOwner, a9);
-  v22 = [v17 defaultUser];
-  v23 = v22;
-  if (v22)
+  v19->_runmode = mode;
+  v19->_userContainerMode = containerMode;
+  v19->_bundleContainerMode = bundleContainerMode;
+  objc_storeStrong(&v19->_bundleContainerOwner, owner);
+  v19->_systemContainerMode = systemContainerMode;
+  objc_storeStrong(&v19->_systemContainerOwner, containerOwner);
+  defaultUser = [configCopy defaultUser];
+  v23 = defaultUser;
+  if (defaultUser)
   {
-    v24 = v22;
+    v24 = defaultUser;
   }
 
   else
@@ -592,14 +592,14 @@ LABEL_12:
   currentUser = v19->_currentUser;
   v19->_currentUser = v26;
 
-  v19->_kernelUpcallEnabled = a10;
-  v28 = [(MCMPOSIXUser *)v19->_currentUser homeDirectoryURL];
+  v19->_kernelUpcallEnabled = enabled;
+  homeDirectoryURL = [(MCMPOSIXUser *)v19->_currentUser homeDirectoryURL];
   homeDirectory = v19->_homeDirectory;
-  v19->_homeDirectory = v28;
+  v19->_homeDirectory = homeDirectoryURL;
 
   if (v19->_homeDirectory)
   {
-    v30 = [[MCMManagedPathRegistry alloc] initWithDaemonUser:v19->_currentUser privileged:a4 == 0];
+    v30 = [[MCMManagedPathRegistry alloc] initWithDaemonUser:v19->_currentUser privileged:mode == 0];
     managedPathRegistry = v19->_managedPathRegistry;
     v19->_managedPathRegistry = v30;
 
@@ -621,12 +621,12 @@ LABEL_12:
       v38 = "unknown";
     }
 
-    v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v38, v18}];
+    v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v38, ownerCopy}];
     csIdentifier = v19->_csIdentifier;
     v19->_csIdentifier = v39;
 
     v41 = container_log_handle_for_category();
-    v18 = v49;
+    ownerCopy = v49;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       v44 = v19->_defaultUser;

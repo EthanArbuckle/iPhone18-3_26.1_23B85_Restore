@@ -1,38 +1,38 @@
 @interface AGXG18PFamilyComputePipeline
-- (AGXG18PFamilyComputePipeline)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4;
-- (AGXG18PFamilyComputePipeline)initWithParent:(id)a3;
-- (id)functionHandleWithBinaryFunction:(id)a3;
-- (id)functionHandleWithFunction:(id)a3;
-- (id)functionHandleWithName:(id)a3;
-- (id)functionReflectionWithFunctionDescriptor:(id)a3;
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 resourceIndices:(unint64_t *)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3;
+- (AGXG18PFamilyComputePipeline)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor;
+- (AGXG18PFamilyComputePipeline)initWithParent:(id)parent;
+- (id)functionHandleWithBinaryFunction:(id)function;
+- (id)functionHandleWithFunction:(id)function;
+- (id)functionHandleWithName:(id)name;
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor;
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions resourceIndices:(unint64_t *)indices error:(id *)error;
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor;
 - (id)pipelineBinaries;
 - (unint64_t)allocatedSize;
-- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)a3;
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3;
+- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)dimensions;
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)uniqueIdentifier;
 - (void)dealloc;
 @end
 
 @implementation AGXG18PFamilyComputePipeline
 
-- (id)functionReflectionWithFunctionDescriptor:(id)a3
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor
 {
-  v5 = [(_MTLComputePipelineState *)self device];
-  v6 = [(AGXG18PFamilyComputePipeline *)self reflectionData];
+  device = [(_MTLComputePipelineState *)self device];
+  reflectionData = [(AGXG18PFamilyComputePipeline *)self reflectionData];
 
-  return MEMORY[0x2A1C5C358](a3, v5, v6);
+  return MEMORY[0x2A1C5C358](descriptor, device, reflectionData);
 }
 
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
   v18 = *MEMORY[0x29EDCA608];
-  if (a3)
+  if (functions)
   {
-    v7 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+    v7 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(functions, "count")}];
   }
 
   else
@@ -44,7 +44,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [functions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -55,29 +55,29 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(functions);
         }
 
         [v7 addObject:*(*(*(&v13 + 1) + 8 * i) + 80)];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [functions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
-  return [(AGXG18PFamilyComputePipeline *)self newComputePipelineStateWithAdditionalBinaryFunctions:v7 resourceIndices:0 error:a4];
+  return [(AGXG18PFamilyComputePipeline *)self newComputePipelineStateWithAdditionalBinaryFunctions:v7 resourceIndices:0 error:error];
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3
+- (id)functionHandleWithBinaryFunction:(id)function
 {
-  if (!a3)
+  if (!function)
   {
     return 0;
   }
 
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_impl.max_wg_size, *(a3 + 10));
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_impl.max_wg_size, *(function + 10));
   if (result)
   {
     return *(result + 3);
@@ -86,15 +86,15 @@
   return result;
 }
 
-- (id)functionHandleWithName:(id)a3
+- (id)functionHandleWithName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v4 = [a3 UTF8String];
-  v5 = strlen(v4);
+  uTF8String = [name UTF8String];
+  v5 = strlen(uTF8String);
   if (v5 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::__throw_bad_array_new_length[abi:nn200100]();
@@ -109,7 +109,7 @@
   v11 = v5;
   if (v5)
   {
-    memmove(&__dst, v4, v5);
+    memmove(&__dst, uTF8String, v5);
   }
 
   *(&__dst + v6) = 0;
@@ -273,22 +273,22 @@ LABEL_16:
   return result;
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor
 {
-  v5 = [(_MTLComputePipelineState *)self device];
+  device = [(_MTLComputePipelineState *)self device];
   LODWORD(v7) = 0;
-  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", v5, [a3 functionCount], 0, *(*(v5 + 106) + 16989), objc_msgSend(a3, "resourceIndex"), self, v7);
+  return -[AGXG18PFamilyVisibleFunctionTable initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:]([AGXG18PFamilyVisibleFunctionTable alloc], "initWithDevice:functionCount:options:isSuballocDisabled:resourceIndex:pipelineState:type:", device, [descriptor functionCount], 0, *(*(device + 106) + 16989), objc_msgSend(descriptor, "resourceIndex"), self, v7);
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v5 = [(_MTLComputePipelineState *)self device];
-  if ([(MTLDevice *)v5 requiresRaytracingEmulation])
+  device = [(_MTLComputePipelineState *)self device];
+  if ([(MTLDevice *)device requiresRaytracingEmulation])
   {
     v6 = objc_alloc_init(MEMORY[0x29EDBB688]);
-    [v6 setFunctionCount:{objc_msgSend(a3, "functionCount")}];
-    [v6 setResourceIndex:{objc_msgSend(a3, "resourceIndex")}];
-    [v6 setForceResourceIndex:{objc_msgSend(a3, "forceResourceIndex")}];
+    [v6 setFunctionCount:{objc_msgSend(descriptor, "functionCount")}];
+    [v6 setResourceIndex:{objc_msgSend(descriptor, "resourceIndex")}];
+    [v6 setForceResourceIndex:{objc_msgSend(descriptor, "forceResourceIndex")}];
     v7 = [(AGXG18PFamilyComputePipeline *)self newVisibleFunctionTableWithDescriptor:v6];
 
     v8 = [objc_alloc(MEMORY[0x29EDC55A8]) initWithVisibleFunctionTable:v7];
@@ -297,24 +297,24 @@ LABEL_16:
 
   else
   {
-    if ([a3 forceResourceIndex])
+    if ([descriptor forceResourceIndex])
     {
-      v10 = [a3 resourceIndex];
+      resourceIndex = [descriptor resourceIndex];
     }
 
     else
     {
-      v10 = 0;
+      resourceIndex = 0;
     }
 
     v11 = [AGXG18PFamilyUserIntersectionFunctionTable alloc];
-    v12 = [a3 functionCount];
+    functionCount = [descriptor functionCount];
 
-    return [(AGXG18PFamilyUserIntersectionFunctionTable *)v11 initWithDevice:v5 numTableFnSlots:v12 pipelineSets:&self->_impl.ift_set.__cntrl_ pipeline:self stage:0 resourceIndex:v10];
+    return [(AGXG18PFamilyUserIntersectionFunctionTable *)v11 initWithDevice:device numTableFnSlots:functionCount pipelineSets:&self->_impl.ift_set.__cntrl_ pipeline:self stage:0 resourceIndex:resourceIndex];
   }
 }
 
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 resourceIndices:(unint64_t *)a4 error:(id *)a5
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions resourceIndices:(unint64_t *)indices error:(id *)error
 {
   v60 = *MEMORY[0x29EDCA608];
   if (self->_cp)
@@ -328,12 +328,12 @@ LABEL_16:
   }
 
   v10 = [[AGXG18PFamilyComputePipeline alloc] initWithParent:cp];
-  v49 = [(_MTLComputePipelineState *)self device];
+  device = [(_MTLComputePipelineState *)self device];
   v11 = @"Failed to allocate a new pipeline";
   v51 = @"Failed to allocate a new pipeline";
   if (v10)
   {
-    v47 = a5;
+    errorCopy = error;
     v48 = v10;
     p_impl = &v10->_impl;
     v10->_impl.compute_variant = self->_impl.compute_variant;
@@ -347,7 +347,7 @@ LABEL_16:
     *&v10->_impl.ei_state.allocation.buffer_.address.cpu = v14;
     *&v10->_impl.ei_state.allocation.resource_ = v15;
     *&v10->_impl.ei_state.pipeline_state_gpu_address = v13;
-    v16 = ((self->_impl.dylib_resources.dylibs.__begin_ - self->_impl.loader_runtime_state.global_binding_table_layout.global_binding_tgbuffers.mask) >> 4) + [a3 count];
+    v16 = ((self->_impl.dylib_resources.dylibs.__begin_ - self->_impl.loader_runtime_state.global_binding_table_layout.global_binding_tgbuffers.mask) >> 4) + [functions count];
     v50 = &v10->_impl;
     if (v16 > (v10->_impl.dylib_resources.dylibs.__end_ - v10->_impl.loader_runtime_state.global_binding_table_layout.global_binding_tgbuffers.mask) >> 4)
     {
@@ -375,7 +375,7 @@ LABEL_16:
       std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,void *> *>>(v50 + 464, self->_impl.function_handle_map.__table_.__bucket_list_.__deleter_.__size_);
     }
 
-    prime = vcvtps_u32_f32(([a3 count] + *(v50 + 488)) / *(v50 + 496));
+    prime = vcvtps_u32_f32(([functions count] + *(v50 + 488)) / *(v50 + 496));
     if (prime == 1)
     {
       prime = 2;
@@ -455,7 +455,7 @@ LABEL_17:
       std::__shared_weak_count::__release_weak(v31);
     }
 
-    if (AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(v49, a3, a4, (v50 + 464), v50 + 584, &self->_impl.ift_set.__cntrl_, self->_impl.loader_runtime_state.total_ipr_buffer_bytes, &v51))
+    if (AGX::mergeAndInsertAdditionalBinaryLinkedFunctions<AGX::HAL300::ObjClasses,AGX::HAL300::Classes>(device, functions, indices, (v50 + 464), v50 + 584, &self->_impl.ift_set.__cntrl_, self->_impl.loader_runtime_state.total_ipr_buffer_bytes, &v51))
     {
       v56 = 0;
       v57 = 0;
@@ -464,7 +464,7 @@ LABEL_17:
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v32 = [a3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+      v32 = [functions countByEnumeratingWithState:&v52 objects:v59 count:16];
       if (v32)
       {
         v33 = *v53;
@@ -474,11 +474,11 @@ LABEL_17:
           {
             if (*v53 != v33)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(functions);
             }
 
             v35 = *(*(&v52 + 1) + 8 * i);
-            if (([v49 requiresRaytracingEmulation] & 1) != 0 || objc_msgSend(v35, "functionType") != 6)
+            if (([device requiresRaytracingEmulation] & 1) != 0 || objc_msgSend(v35, "functionType") != 6)
             {
               if (![v35 vendorPrivate] || (objc_msgSend(v35, "vendorPrivate"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v36 = objc_msgSend(v35, "vendorPrivate"), (v37 = v36) == 0))
               {
@@ -515,7 +515,7 @@ LABEL_17:
             }
           }
 
-          v32 = [a3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+          v32 = [functions countByEnumeratingWithState:&v52 objects:v59 count:16];
         }
 
         while (v32);
@@ -538,11 +538,11 @@ LABEL_17:
     }
 
 LABEL_67:
-    if (([v49 requiresRaytracingEmulation] & 1) == 0)
+    if (([device requiresRaytracingEmulation] & 1) == 0)
     {
       AGX::ComputePipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::computeMaximumRayPayloadSizes(v50);
       AGX::ComputePipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::createScsPerShaderConfigTable(v50);
-      AGX::ComputePipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::constructSpillParamsForIntersection(v50, v49[106]);
+      AGX::ComputePipeline<AGX::HAL300::ObjClasses,AGX::HAL300::Classes,AGX::HAL300::Encoders>::constructSpillParamsForIntersection(v50, device[106]);
     }
 
     if ((*(*(v50 + 16) + 2407) & 5) != 0)
@@ -550,27 +550,27 @@ LABEL_67:
       *(v50 + 25) = 1;
     }
 
-    *(v50 + 112) = v49;
-    a5 = v47;
+    *(v50 + 112) = device;
+    error = errorCopy;
     v11 = v51;
     v10 = v48;
   }
 
-  if (a5 && v11)
+  if (error && v11)
   {
-    v43 = a5;
+    errorCopy2 = error;
     v44 = v10;
     v45 = [MEMORY[0x29EDB8DC0] dictionaryWithObject:v11 forKey:*MEMORY[0x29EDB9ED8]];
-    *v43 = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v45];
+    *errorCopy2 = [objc_alloc(MEMORY[0x29EDB9FA0]) initWithDomain:@"AGXMetalG18P" code:1 userInfo:v45];
     v10 = v44;
   }
 
   return 0;
 }
 
-- (id)functionHandleWithFunction:(id)a3
+- (id)functionHandleWithFunction:(id)function
 {
-  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_impl.max_wg_size, a3);
+  result = std::__hash_table<std::__hash_value_type<objc_object  {objcproto11MTLFunction}*,RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>,std::__unordered_map_hasher<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::hash<objc_object  {objcproto11MTLFunction}>,std::equal_to<objc_object  {objcproto11MTLFunction}>,true>,std::__unordered_map_equal<objc_object  {objcproto11MTLFunction},RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>,std::equal_to,std::hash,true>,std::allocator<RetainedObjCPointer<AGXG18PFamilyFunctionHandle *>>>::find<objc_object  {objcproto11MTLFunction}>(&self->_impl.max_wg_size, function);
   if (result)
   {
     return *(result + 3);
@@ -579,13 +579,13 @@ LABEL_67:
   return result;
 }
 
-- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageBlockMemoryLengthForDimensions:(id *)dimensions
 {
-  var1 = a3->var1;
+  var1 = dimensions->var1;
   v4 = (*(self->_impl.compute_variant + 1021) + 3) & 0xFFFFFFFC;
-  if (v4 * LODWORD(a3->var0) * var1)
+  if (v4 * LODWORD(dimensions->var0) * var1)
   {
-    return v4 * (1 << -__clz(LODWORD(a3->var0) - 1) << -__clz(var1 - 1));
+    return v4 * (1 << -__clz(LODWORD(dimensions->var0) - 1) << -__clz(var1 - 1));
   }
 
   else
@@ -594,13 +594,13 @@ LABEL_67:
   }
 }
 
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions
 {
-  var1 = a3->var1;
+  var1 = dimensions->var1;
   v4 = (*(self->_impl.compute_variant + 1021) + 3) & 0xFFFFFFFC;
-  if (v4 * LODWORD(a3->var0) * var1)
+  if (v4 * LODWORD(dimensions->var0) * var1)
   {
-    return v4 * (1 << -__clz(LODWORD(a3->var0) - 1) << -__clz(var1 - 1));
+    return v4 * (1 << -__clz(LODWORD(dimensions->var0) - 1) << -__clz(var1 - 1));
   }
 
   else
@@ -624,7 +624,7 @@ LABEL_67:
   [(_MTLComputePipelineState *)&v4 dealloc];
 }
 
-- (AGXG18PFamilyComputePipeline)initWithParent:(id)a3
+- (AGXG18PFamilyComputePipeline)initWithParent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyComputePipeline;
@@ -632,22 +632,22 @@ LABEL_67:
   if (result)
   {
     v5 = result;
-    v6 = a3;
+    parentCopy = parent;
     result = v5;
-    v5->_cp = v6;
+    v5->_cp = parentCopy;
   }
 
   return result;
 }
 
-- (AGXG18PFamilyComputePipeline)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4
+- (AGXG18PFamilyComputePipeline)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = AGXG18PFamilyComputePipeline;
-  v5 = [(_MTLComputePipelineState *)&v9 initWithDevice:a3 pipelineStateDescriptor:?];
+  v5 = [(_MTLComputePipelineState *)&v9 initWithDevice:device pipelineStateDescriptor:?];
   if (v5)
   {
-    v6 = [objc_msgSend(a4 "computeFunction")];
+    v6 = [objc_msgSend(descriptor "computeFunction")];
     v5->_impl.ift_spill_info.__cntrl_ = v6;
     v7 = v6;
   }

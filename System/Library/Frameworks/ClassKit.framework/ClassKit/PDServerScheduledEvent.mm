@@ -1,76 +1,76 @@
 @interface PDServerScheduledEvent
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 - (PDDatabaseValue)identityValue;
-- (PDServerScheduledEvent)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
+- (PDServerScheduledEvent)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDServerScheduledEvent
 
-- (PDServerScheduledEvent)initWithDatabaseRow:(id)a3
+- (PDServerScheduledEvent)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v18.receiver = self;
   v18.super_class = PDServerScheduledEvent;
   v5 = [(PDServerScheduledEvent *)&v18 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"objectID");
+    v6 = sub_10016D778(rowCopy, @"objectID");
     objectID = v5->_objectID;
     v5->_objectID = v6;
 
-    v8 = sub_10016D778(v4, @"scheduleID");
+    v8 = sub_10016D778(rowCopy, @"scheduleID");
     scheduleID = v5->_scheduleID;
     v5->_scheduleID = v8;
 
-    v10 = sub_10016D6F0(v4, @"dateCreated");
+    v10 = sub_10016D6F0(rowCopy, @"dateCreated");
     dateCreated = v5->_dateCreated;
     v5->_dateCreated = v10;
 
-    v12 = sub_10016D6F0(v4, @"dateLastModified");
+    v12 = sub_10016D6F0(rowCopy, @"dateLastModified");
     dateLastModified = v5->_dateLastModified;
     v5->_dateLastModified = v12;
 
-    v14 = sub_10016D6F0(v4, @"eventDate");
+    v14 = sub_10016D6F0(rowCopy, @"eventDate");
     eventDate = v5->_eventDate;
     v5->_eventDate = v14;
 
-    v16 = sub_10016D778(v4, @"status");
+    v16 = sub_10016D778(rowCopy, @"status");
     v5->_status = [v16 integerValue];
   }
 
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   objectID = self->_objectID;
-  v5 = a3;
-  sub_1000982FC(v5, objectID, @"objectID");
-  sub_1000982FC(v5, self->_scheduleID, @"scheduleID");
-  sub_1000982FC(v5, self->_dateCreated, @"dateCreated");
-  sub_1000982FC(v5, self->_dateLastModified, @"dateLastModified");
-  sub_1000982FC(v5, self->_eventDate, @"eventDate");
+  toCopy = to;
+  sub_1000982FC(toCopy, objectID, @"objectID");
+  sub_1000982FC(toCopy, self->_scheduleID, @"scheduleID");
+  sub_1000982FC(toCopy, self->_dateCreated, @"dateCreated");
+  sub_1000982FC(toCopy, self->_dateLastModified, @"dateLastModified");
+  sub_1000982FC(toCopy, self->_eventDate, @"eventDate");
   v6 = [NSNumber numberWithInteger:self->_status];
-  sub_1000982FC(v5, v6, @"status");
+  sub_1000982FC(toCopy, v6, @"status");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDServerScheduledEvent(   objectID          text not null,\n    scheduleID        text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    eventDate         real not null,\n    status            integer default 0\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDServerScheduledEvent_objectID on PDServerScheduledEvent (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDServerScheduledEvent(   objectID          text not null,\n    scheduleID        text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    eventDate         real not null,\n    status            integer default 0\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDServerScheduledEvent_objectID on PDServerScheduledEvent (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 

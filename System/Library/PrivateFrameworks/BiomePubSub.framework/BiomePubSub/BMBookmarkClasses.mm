@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (BMBookmarkClasses)init;
 - (id)allowedClassesForSecureCodingBMBookmark;
-- (void)allowClassesForSecureCodingBMBookmark:(id)a3;
+- (void)allowClassesForSecureCodingBMBookmark:(id)bookmark;
 @end
 
 @implementation BMBookmarkClasses
@@ -108,11 +108,11 @@ uint64_t __35__BMBookmarkClasses_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)allowClassesForSecureCodingBMBookmark:(id)a3
+- (void)allowClassesForSecureCodingBMBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_allowed addObjectsFromArray:v4];
+  [(NSMutableSet *)self->_allowed addObjectsFromArray:bookmarkCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,40 +1,40 @@
 @interface DebugFormatRulerEdgeView
-- (_TtC8NewsFeed24DebugFormatRulerEdgeView)initWithFrame:(CGRect)a3;
-- (void)didUpdatePan:(id)a3;
+- (_TtC8NewsFeed24DebugFormatRulerEdgeView)initWithFrame:(CGRect)frame;
+- (void)didUpdatePan:(id)pan;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DebugFormatRulerEdgeView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6208348();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v9.receiver;
-  [(DebugFormatRulerEdgeView *)&v9 traitCollectionDidChange:v4];
+  [(DebugFormatRulerEdgeView *)&v9 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtC8NewsFeed24DebugFormatRulerEdgeView_markerLayer];
-  v7 = [objc_opt_self() separatorColor];
-  v8 = [v7 CGColor];
+  separatorColor = [objc_opt_self() separatorColor];
+  cGColor = [separatorColor CGColor];
 
   [v6 setStrokeColor_];
 }
 
-- (void)didUpdatePan:(id)a3
+- (void)didUpdatePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6209164(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_1D6209164(panCopy);
 }
 
-- (_TtC8NewsFeed24DebugFormatRulerEdgeView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed24DebugFormatRulerEdgeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

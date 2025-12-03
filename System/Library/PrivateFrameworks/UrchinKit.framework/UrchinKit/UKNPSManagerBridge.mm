@@ -1,6 +1,6 @@
 @interface UKNPSManagerBridge
 - (UKNPSManagerBridge)init;
-- (void)synchronizeUserDefaultsDomain:(id)a3 keys:(id)a4 container:(id)a5 appGroupContainer:(id)a6;
+- (void)synchronizeUserDefaultsDomain:(id)domain keys:(id)keys container:(id)container appGroupContainer:(id)groupContainer;
 @end
 
 @implementation UKNPSManagerBridge
@@ -20,14 +20,14 @@
   return v2;
 }
 
-- (void)synchronizeUserDefaultsDomain:(id)a3 keys:(id)a4 container:(id)a5 appGroupContainer:(id)a6
+- (void)synchronizeUserDefaultsDomain:(id)domain keys:(id)keys container:(id)container appGroupContainer:(id)groupContainer
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(UKNPSManagerBridge *)self npsManager];
-  [v14 synchronizeUserDefaultsDomain:v13 keys:v12 container:v11 appGroupContainer:v10];
+  groupContainerCopy = groupContainer;
+  containerCopy = container;
+  keysCopy = keys;
+  domainCopy = domain;
+  npsManager = [(UKNPSManagerBridge *)self npsManager];
+  [npsManager synchronizeUserDefaultsDomain:domainCopy keys:keysCopy container:containerCopy appGroupContainer:groupContainerCopy];
 }
 
 @end

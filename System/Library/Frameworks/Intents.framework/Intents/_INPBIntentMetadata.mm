@@ -1,61 +1,61 @@
 @interface _INPBIntentMetadata
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (_INPBIntentMetadata)initWithCoder:(id)a3;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (_INPBIntentMetadata)initWithCoder:(id)coder;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsExecutionContext:(id)a3;
-- (int)StringAsIdiom:(id)a3;
-- (int)StringAsIntentCategory:(id)a3;
-- (int)StringAsRequiredEntitlements:(id)a3;
-- (int)StringAsShortcutAvailabilities:(id)a3;
-- (int)StringAsTriggerMethod:(id)a3;
+- (int)StringAsExecutionContext:(id)context;
+- (int)StringAsIdiom:(id)idiom;
+- (int)StringAsIntentCategory:(id)category;
+- (int)StringAsRequiredEntitlements:(id)entitlements;
+- (int)StringAsShortcutAvailabilities:(id)availabilities;
+- (int)StringAsTriggerMethod:(id)method;
 - (unint64_t)hash;
-- (void)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (void)addAirPlayRouteIds:(id)a3;
-- (void)addForceNeedsValueForParameter:(id)a3;
-- (void)addParameterImages:(id)a3;
-- (void)addRequiredEntitlement:(int)a3;
-- (void)addShortcutAvailability:(int)a3;
+- (void)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (void)addAirPlayRouteIds:(id)ids;
+- (void)addForceNeedsValueForParameter:(id)parameter;
+- (void)addParameterImages:(id)images;
+- (void)addRequiredEntitlement:(int)entitlement;
+- (void)addShortcutAvailability:(int)availability;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAirPlayRouteIds:(id)a3;
-- (void)setAuditTokenData:(id)a3;
-- (void)setCategoryVerb:(id)a3;
-- (void)setEndpointId:(id)a3;
-- (void)setExecutionContext:(int)a3;
-- (void)setForceNeedsValueForParameters:(id)a3;
-- (void)setHasBackgroundLaunch:(BOOL)a3;
-- (void)setHasBypassAppProtectionAuthentication:(BOOL)a3;
-- (void)setHasConfirmed:(BOOL)a3;
-- (void)setHasEndpointMediaPlaybackEnabled:(BOOL)a3;
-- (void)setHasIdiom:(BOOL)a3;
-- (void)setHasIntentCategory:(BOOL)a3;
-- (void)setHasIsOwnedByCurrentUser:(BOOL)a3;
-- (void)setHasIsPrimaryDisplayDisabled:(BOOL)a3;
-- (void)setHasMsLimitReached:(BOOL)a3;
-- (void)setHasShowsWhenRun:(BOOL)a3;
-- (void)setHasTriggerMethod:(BOOL)a3;
-- (void)setHasUserConfirmationRequired:(BOOL)a3;
-- (void)setHasVersioningHash:(BOOL)a3;
-- (void)setIdiom:(int)a3;
-- (void)setIntentCategory:(int)a3;
-- (void)setIntentDescription:(id)a3;
-- (void)setIntentId:(id)a3;
-- (void)setLaunchId:(id)a3;
-- (void)setMediaRouteId:(id)a3;
-- (void)setNanoLaunchId:(id)a3;
-- (void)setOriginatingDeviceIdsIdentifier:(id)a3;
-- (void)setOriginatingDeviceRapportEffectiveId:(id)a3;
-- (void)setOriginatingDeviceRapportMediaSystemId:(id)a3;
-- (void)setParameterImages:(id)a3;
-- (void)setPreferredAudioOutputRouteId:(id)a3;
-- (void)setSuggestedInvocationPhrase:(id)a3;
-- (void)setSystemExtensionBundleId:(id)a3;
-- (void)setSystemUIExtensionBundleId:(id)a3;
-- (void)setTriggerMethod:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAirPlayRouteIds:(id)ids;
+- (void)setAuditTokenData:(id)data;
+- (void)setCategoryVerb:(id)verb;
+- (void)setEndpointId:(id)id;
+- (void)setExecutionContext:(int)context;
+- (void)setForceNeedsValueForParameters:(id)parameters;
+- (void)setHasBackgroundLaunch:(BOOL)launch;
+- (void)setHasBypassAppProtectionAuthentication:(BOOL)authentication;
+- (void)setHasConfirmed:(BOOL)confirmed;
+- (void)setHasEndpointMediaPlaybackEnabled:(BOOL)enabled;
+- (void)setHasIdiom:(BOOL)idiom;
+- (void)setHasIntentCategory:(BOOL)category;
+- (void)setHasIsOwnedByCurrentUser:(BOOL)user;
+- (void)setHasIsPrimaryDisplayDisabled:(BOOL)disabled;
+- (void)setHasMsLimitReached:(BOOL)reached;
+- (void)setHasShowsWhenRun:(BOOL)run;
+- (void)setHasTriggerMethod:(BOOL)method;
+- (void)setHasUserConfirmationRequired:(BOOL)required;
+- (void)setHasVersioningHash:(BOOL)hash;
+- (void)setIdiom:(int)idiom;
+- (void)setIntentCategory:(int)category;
+- (void)setIntentDescription:(id)description;
+- (void)setIntentId:(id)id;
+- (void)setLaunchId:(id)id;
+- (void)setMediaRouteId:(id)id;
+- (void)setNanoLaunchId:(id)id;
+- (void)setOriginatingDeviceIdsIdentifier:(id)identifier;
+- (void)setOriginatingDeviceRapportEffectiveId:(id)id;
+- (void)setOriginatingDeviceRapportMediaSystemId:(id)id;
+- (void)setParameterImages:(id)images;
+- (void)setPreferredAudioOutputRouteId:(id)id;
+- (void)setSuggestedInvocationPhrase:(id)phrase;
+- (void)setSystemExtensionBundleId:(id)id;
+- (void)setSystemUIExtensionBundleId:(id)id;
+- (void)setTriggerMethod:(int)method;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBIntentMetadata
@@ -72,63 +72,63 @@
 - (id)dictionaryRepresentation
 {
   v84 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_categoryVerb)
   {
-    v4 = [(_INPBIntentMetadata *)self categoryVerb];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"_categoryVerb"];
+    categoryVerb = [(_INPBIntentMetadata *)self categoryVerb];
+    v5 = [categoryVerb copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"_categoryVerb"];
   }
 
-  v6 = [(_INPBIntentMetadata *)self defaultImageValue];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"_defaultImageValue"];
+  defaultImageValue = [(_INPBIntentMetadata *)self defaultImageValue];
+  dictionaryRepresentation = [defaultImageValue dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"_defaultImageValue"];
 
   if ([(_INPBIntentMetadata *)self hasExecutionContext])
   {
-    v8 = [(_INPBIntentMetadata *)self executionContext];
-    if ((v8 - 1) >= 0xA)
+    executionContext = [(_INPBIntentMetadata *)self executionContext];
+    if ((executionContext - 1) >= 0xA)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", executionContext];
     }
 
     else
     {
-      v9 = *(&off_1E727E330 + (v8 - 1));
+      v9 = *(&off_1E727E330 + (executionContext - 1));
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"_executionContext"];
+    [dictionary setObject:v9 forKeyedSubscript:@"_executionContext"];
   }
 
   if ([(_INPBIntentMetadata *)self hasIntentCategory])
   {
-    v10 = [(_INPBIntentMetadata *)self intentCategory];
-    v11 = v10 - 1;
-    if (v10 - 1) < 0x15 && ((0x1FFDFFu >> v11))
+    intentCategory = [(_INPBIntentMetadata *)self intentCategory];
+    v11 = intentCategory - 1;
+    if (intentCategory - 1) < 0x15 && ((0x1FFDFFu >> v11))
     {
       v12 = *(&off_1E727E380 + v11);
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intentCategory];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"_intentCategory"];
+    [dictionary setObject:v12 forKeyedSubscript:@"_intentCategory"];
   }
 
   if (self->_launchId)
   {
-    v13 = [(_INPBIntentMetadata *)self launchId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"_launchId"];
+    launchId = [(_INPBIntentMetadata *)self launchId];
+    v14 = [launchId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"_launchId"];
   }
 
   if (self->_nanoLaunchId)
   {
-    v15 = [(_INPBIntentMetadata *)self nanoLaunchId];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"_nanoLaunchId"];
+    nanoLaunchId = [(_INPBIntentMetadata *)self nanoLaunchId];
+    v16 = [nanoLaunchId copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"_nanoLaunchId"];
   }
 
   if (self->_requiredEntitlements.count)
@@ -163,154 +163,154 @@
       while (v18 < [(_INPBIntentMetadata *)self requiredEntitlementsCount]);
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"_requiredEntitlement"];
+    [dictionary setObject:v17 forKeyedSubscript:@"_requiredEntitlement"];
   }
 
   if (self->_systemExtensionBundleId)
   {
-    v21 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"_systemExtensionBundleId"];
+    systemExtensionBundleId = [(_INPBIntentMetadata *)self systemExtensionBundleId];
+    v22 = [systemExtensionBundleId copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"_systemExtensionBundleId"];
   }
 
   if (self->_systemUIExtensionBundleId)
   {
-    v23 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"_systemUIExtensionBundleId"];
+    systemUIExtensionBundleId = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
+    v24 = [systemUIExtensionBundleId copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"_systemUIExtensionBundleId"];
   }
 
   if (self->_airPlayRouteIds)
   {
-    v25 = [(_INPBIntentMetadata *)self airPlayRouteIds];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"airPlayRouteIds"];
+    airPlayRouteIds = [(_INPBIntentMetadata *)self airPlayRouteIds];
+    v26 = [airPlayRouteIds copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"airPlayRouteIds"];
   }
 
   if (self->_auditTokenData)
   {
-    v27 = [(_INPBIntentMetadata *)self auditTokenData];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"auditTokenData"];
+    auditTokenData = [(_INPBIntentMetadata *)self auditTokenData];
+    v28 = [auditTokenData copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"auditTokenData"];
   }
 
   if ([(_INPBIntentMetadata *)self hasBackgroundLaunch])
   {
     v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata backgroundLaunch](self, "backgroundLaunch")}];
-    [v3 setObject:v29 forKeyedSubscript:@"backgroundLaunch"];
+    [dictionary setObject:v29 forKeyedSubscript:@"backgroundLaunch"];
   }
 
   if ([(_INPBIntentMetadata *)self hasBypassAppProtectionAuthentication])
   {
     v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata bypassAppProtectionAuthentication](self, "bypassAppProtectionAuthentication")}];
-    [v3 setObject:v30 forKeyedSubscript:@"bypassAppProtectionAuthentication"];
+    [dictionary setObject:v30 forKeyedSubscript:@"bypassAppProtectionAuthentication"];
   }
 
   if ([(_INPBIntentMetadata *)self hasConfirmed])
   {
     v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata confirmed](self, "confirmed")}];
-    [v3 setObject:v31 forKeyedSubscript:@"confirmed"];
+    [dictionary setObject:v31 forKeyedSubscript:@"confirmed"];
   }
 
   if (self->_endpointId)
   {
-    v32 = [(_INPBIntentMetadata *)self endpointId];
-    v33 = [v32 copy];
-    [v3 setObject:v33 forKeyedSubscript:@"endpointId"];
+    endpointId = [(_INPBIntentMetadata *)self endpointId];
+    v33 = [endpointId copy];
+    [dictionary setObject:v33 forKeyedSubscript:@"endpointId"];
   }
 
   if ([(_INPBIntentMetadata *)self hasEndpointMediaPlaybackEnabled])
   {
     v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata endpointMediaPlaybackEnabled](self, "endpointMediaPlaybackEnabled")}];
-    [v3 setObject:v34 forKeyedSubscript:@"endpointMediaPlaybackEnabled"];
+    [dictionary setObject:v34 forKeyedSubscript:@"endpointMediaPlaybackEnabled"];
   }
 
   if (self->_forceNeedsValueForParameters)
   {
-    v35 = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
-    v36 = [v35 copy];
-    [v3 setObject:v36 forKeyedSubscript:@"forceNeedsValueForParameter"];
+    forceNeedsValueForParameters = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
+    v36 = [forceNeedsValueForParameters copy];
+    [dictionary setObject:v36 forKeyedSubscript:@"forceNeedsValueForParameter"];
   }
 
   if ([(_INPBIntentMetadata *)self hasIdiom])
   {
-    v37 = [(_INPBIntentMetadata *)self idiom];
-    if ((v37 - 1) >= 7)
+    idiom = [(_INPBIntentMetadata *)self idiom];
+    if ((idiom - 1) >= 7)
     {
-      v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v37];
+      v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", idiom];
     }
 
     else
     {
-      v38 = *(&off_1E727E428 + (v37 - 1));
+      v38 = *(&off_1E727E428 + (idiom - 1));
     }
 
-    [v3 setObject:v38 forKeyedSubscript:@"idiom"];
+    [dictionary setObject:v38 forKeyedSubscript:@"idiom"];
   }
 
   if (self->_intentDescription)
   {
-    v39 = [(_INPBIntentMetadata *)self intentDescription];
-    v40 = [v39 copy];
-    [v3 setObject:v40 forKeyedSubscript:@"intentDescription"];
+    intentDescription = [(_INPBIntentMetadata *)self intentDescription];
+    v40 = [intentDescription copy];
+    [dictionary setObject:v40 forKeyedSubscript:@"intentDescription"];
   }
 
   if (self->_intentId)
   {
-    v41 = [(_INPBIntentMetadata *)self intentId];
-    v42 = [v41 copy];
-    [v3 setObject:v42 forKeyedSubscript:@"intent_id"];
+    intentId = [(_INPBIntentMetadata *)self intentId];
+    v42 = [intentId copy];
+    [dictionary setObject:v42 forKeyedSubscript:@"intent_id"];
   }
 
   if ([(_INPBIntentMetadata *)self hasIsOwnedByCurrentUser])
   {
     v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata isOwnedByCurrentUser](self, "isOwnedByCurrentUser")}];
-    [v3 setObject:v43 forKeyedSubscript:@"isOwnedByCurrentUser"];
+    [dictionary setObject:v43 forKeyedSubscript:@"isOwnedByCurrentUser"];
   }
 
   if ([(_INPBIntentMetadata *)self hasIsPrimaryDisplayDisabled])
   {
     v44 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata isPrimaryDisplayDisabled](self, "isPrimaryDisplayDisabled")}];
-    [v3 setObject:v44 forKeyedSubscript:@"isPrimaryDisplayDisabled"];
+    [dictionary setObject:v44 forKeyedSubscript:@"isPrimaryDisplayDisabled"];
   }
 
   if (self->_mediaRouteId)
   {
-    v45 = [(_INPBIntentMetadata *)self mediaRouteId];
-    v46 = [v45 copy];
-    [v3 setObject:v46 forKeyedSubscript:@"mediaRouteId"];
+    mediaRouteId = [(_INPBIntentMetadata *)self mediaRouteId];
+    v46 = [mediaRouteId copy];
+    [dictionary setObject:v46 forKeyedSubscript:@"mediaRouteId"];
   }
 
   if ([(_INPBIntentMetadata *)self hasMsLimitReached])
   {
     v47 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata msLimitReached](self, "msLimitReached")}];
-    [v3 setObject:v47 forKeyedSubscript:@"msLimitReached"];
+    [dictionary setObject:v47 forKeyedSubscript:@"msLimitReached"];
   }
 
   if (self->_originatingDeviceIdsIdentifier)
   {
-    v48 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
-    v49 = [v48 copy];
-    [v3 setObject:v49 forKeyedSubscript:@"originatingDeviceIdsIdentifier"];
+    originatingDeviceIdsIdentifier = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
+    v49 = [originatingDeviceIdsIdentifier copy];
+    [dictionary setObject:v49 forKeyedSubscript:@"originatingDeviceIdsIdentifier"];
   }
 
   if (self->_originatingDeviceRapportEffectiveId)
   {
-    v50 = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
-    v51 = [v50 copy];
-    [v3 setObject:v51 forKeyedSubscript:@"originatingDeviceRapportEffectiveId"];
+    originatingDeviceRapportEffectiveId = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
+    v51 = [originatingDeviceRapportEffectiveId copy];
+    [dictionary setObject:v51 forKeyedSubscript:@"originatingDeviceRapportEffectiveId"];
   }
 
   if (self->_originatingDeviceRapportMediaSystemId)
   {
-    v52 = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
-    v53 = [v52 copy];
-    [v3 setObject:v53 forKeyedSubscript:@"originatingDeviceRapportMediaSystemId"];
+    originatingDeviceRapportMediaSystemId = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
+    v53 = [originatingDeviceRapportMediaSystemId copy];
+    [dictionary setObject:v53 forKeyedSubscript:@"originatingDeviceRapportMediaSystemId"];
   }
 
   if ([(NSArray *)self->_parameterImages count])
   {
-    v54 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
@@ -330,8 +330,8 @@
             objc_enumerationMutation(v55);
           }
 
-          v60 = [*(*(&v79 + 1) + 8 * i) dictionaryRepresentation];
-          [v54 addObject:v60];
+          dictionaryRepresentation2 = [*(*(&v79 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v57 = [(NSArray *)v55 countByEnumeratingWithState:&v79 objects:v83 count:16];
@@ -340,14 +340,14 @@
       while (v57);
     }
 
-    [v3 setObject:v54 forKeyedSubscript:@"parameterImages"];
+    [dictionary setObject:array forKeyedSubscript:@"parameterImages"];
   }
 
   if (self->_preferredAudioOutputRouteId)
   {
-    v61 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
-    v62 = [v61 copy];
-    [v3 setObject:v62 forKeyedSubscript:@"preferredAudioOutputRouteId"];
+    preferredAudioOutputRouteId = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
+    v62 = [preferredAudioOutputRouteId copy];
+    [dictionary setObject:v62 forKeyedSubscript:@"preferredAudioOutputRouteId"];
   }
 
   if (self->_shortcutAvailabilities.count)
@@ -377,34 +377,34 @@
       while (v64 < [(_INPBIntentMetadata *)self shortcutAvailabilitiesCount]);
     }
 
-    [v3 setObject:v63 forKeyedSubscript:@"shortcutAvailability"];
+    [dictionary setObject:v63 forKeyedSubscript:@"shortcutAvailability"];
   }
 
   if ([(_INPBIntentMetadata *)self hasShowsWhenRun])
   {
     v67 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata showsWhenRun](self, "showsWhenRun")}];
-    [v3 setObject:v67 forKeyedSubscript:@"showsWhenRun"];
+    [dictionary setObject:v67 forKeyedSubscript:@"showsWhenRun"];
   }
 
   if (self->_suggestedInvocationPhrase)
   {
-    v68 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
-    v69 = [v68 copy];
-    [v3 setObject:v69 forKeyedSubscript:@"suggestedInvocationPhrase"];
+    suggestedInvocationPhrase = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
+    v69 = [suggestedInvocationPhrase copy];
+    [dictionary setObject:v69 forKeyedSubscript:@"suggestedInvocationPhrase"];
   }
 
   if ([(_INPBIntentMetadata *)self hasTriggerMethod])
   {
-    v70 = [(_INPBIntentMetadata *)self triggerMethod];
-    if (v70 > 19)
+    triggerMethod = [(_INPBIntentMetadata *)self triggerMethod];
+    if (triggerMethod > 19)
     {
-      if (v70 == 20)
+      if (triggerMethod == 20)
       {
         v71 = @"RemoteButton";
         goto LABEL_105;
       }
 
-      if (v70 == 30)
+      if (triggerMethod == 30)
       {
         v71 = @"VoiceTrigger";
         goto LABEL_105;
@@ -413,23 +413,23 @@
 
     else
     {
-      if (!v70)
+      if (!triggerMethod)
       {
         v71 = @"Other";
         goto LABEL_105;
       }
 
-      if (v70 == 10)
+      if (triggerMethod == 10)
       {
         v71 = @"HomeButton";
 LABEL_105:
-        [v3 setObject:v71 forKeyedSubscript:@"triggerMethod"];
+        [dictionary setObject:v71 forKeyedSubscript:@"triggerMethod"];
 
         goto LABEL_106;
       }
     }
 
-    v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v70];
+    v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", triggerMethod];
     goto LABEL_105;
   }
 
@@ -437,23 +437,23 @@ LABEL_106:
   if ([(_INPBIntentMetadata *)self hasUserConfirmationRequired])
   {
     v72 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBIntentMetadata userConfirmationRequired](self, "userConfirmationRequired")}];
-    [v3 setObject:v72 forKeyedSubscript:@"userConfirmationRequired"];
+    [dictionary setObject:v72 forKeyedSubscript:@"userConfirmationRequired"];
   }
 
-  v73 = [(_INPBIntentMetadata *)self userUtterance];
-  v74 = [v73 dictionaryRepresentation];
-  [v3 setObject:v74 forKeyedSubscript:@"userUtterance"];
+  userUtterance = [(_INPBIntentMetadata *)self userUtterance];
+  dictionaryRepresentation3 = [userUtterance dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"userUtterance"];
 
   if ([(_INPBIntentMetadata *)self hasVersioningHash])
   {
     v75 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBIntentMetadata versioningHash](self, "versioningHash")}];
-    [v3 setObject:v75 forKeyedSubscript:@"versioningHash"];
+    [dictionary setObject:v75 forKeyedSubscript:@"versioningHash"];
   }
 
-  v76 = v3;
+  v76 = dictionary;
 
   v77 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -623,28 +623,28 @@ LABEL_106:
   return v38 ^ v39 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v15 ^ v14 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_156;
   }
 
-  v5 = [(_INPBIntentMetadata *)self categoryVerb];
-  v6 = [v4 categoryVerb];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self categoryVerb];
+  categoryVerb2 = [equalCopy categoryVerb];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v7 = [(_INPBIntentMetadata *)self categoryVerb];
-  if (v7)
+  categoryVerb3 = [(_INPBIntentMetadata *)self categoryVerb];
+  if (categoryVerb3)
   {
-    v8 = v7;
-    v9 = [(_INPBIntentMetadata *)self categoryVerb];
-    v10 = [v4 categoryVerb];
-    v11 = [v9 isEqual:v10];
+    v8 = categoryVerb3;
+    categoryVerb4 = [(_INPBIntentMetadata *)self categoryVerb];
+    categoryVerb5 = [equalCopy categoryVerb];
+    v11 = [categoryVerb4 isEqual:categoryVerb5];
 
     if (!v11)
     {
@@ -656,20 +656,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self defaultImageValue];
-  v6 = [v4 defaultImageValue];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self defaultImageValue];
+  categoryVerb2 = [equalCopy defaultImageValue];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v12 = [(_INPBIntentMetadata *)self defaultImageValue];
-  if (v12)
+  defaultImageValue = [(_INPBIntentMetadata *)self defaultImageValue];
+  if (defaultImageValue)
   {
-    v13 = v12;
-    v14 = [(_INPBIntentMetadata *)self defaultImageValue];
-    v15 = [v4 defaultImageValue];
-    v16 = [v14 isEqual:v15];
+    v13 = defaultImageValue;
+    defaultImageValue2 = [(_INPBIntentMetadata *)self defaultImageValue];
+    defaultImageValue3 = [equalCopy defaultImageValue];
+    v16 = [defaultImageValue2 isEqual:defaultImageValue3];
 
     if (!v16)
     {
@@ -681,56 +681,56 @@ LABEL_106:
   {
   }
 
-  v17 = [(_INPBIntentMetadata *)self hasExecutionContext];
-  if (v17 != [v4 hasExecutionContext])
+  hasExecutionContext = [(_INPBIntentMetadata *)self hasExecutionContext];
+  if (hasExecutionContext != [equalCopy hasExecutionContext])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasExecutionContext])
   {
-    if ([v4 hasExecutionContext])
+    if ([equalCopy hasExecutionContext])
     {
       executionContext = self->_executionContext;
-      if (executionContext != [v4 executionContext])
+      if (executionContext != [equalCopy executionContext])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v19 = [(_INPBIntentMetadata *)self hasIntentCategory];
-  if (v19 != [v4 hasIntentCategory])
+  hasIntentCategory = [(_INPBIntentMetadata *)self hasIntentCategory];
+  if (hasIntentCategory != [equalCopy hasIntentCategory])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasIntentCategory])
   {
-    if ([v4 hasIntentCategory])
+    if ([equalCopy hasIntentCategory])
     {
       intentCategory = self->_intentCategory;
-      if (intentCategory != [v4 intentCategory])
+      if (intentCategory != [equalCopy intentCategory])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self launchId];
-  v6 = [v4 launchId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self launchId];
+  categoryVerb2 = [equalCopy launchId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v21 = [(_INPBIntentMetadata *)self launchId];
-  if (v21)
+  launchId = [(_INPBIntentMetadata *)self launchId];
+  if (launchId)
   {
-    v22 = v21;
-    v23 = [(_INPBIntentMetadata *)self launchId];
-    v24 = [v4 launchId];
-    v25 = [v23 isEqual:v24];
+    v22 = launchId;
+    launchId2 = [(_INPBIntentMetadata *)self launchId];
+    launchId3 = [equalCopy launchId];
+    v25 = [launchId2 isEqual:launchId3];
 
     if (!v25)
     {
@@ -742,20 +742,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self nanoLaunchId];
-  v6 = [v4 nanoLaunchId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self nanoLaunchId];
+  categoryVerb2 = [equalCopy nanoLaunchId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v26 = [(_INPBIntentMetadata *)self nanoLaunchId];
-  if (v26)
+  nanoLaunchId = [(_INPBIntentMetadata *)self nanoLaunchId];
+  if (nanoLaunchId)
   {
-    v27 = v26;
-    v28 = [(_INPBIntentMetadata *)self nanoLaunchId];
-    v29 = [v4 nanoLaunchId];
-    v30 = [v28 isEqual:v29];
+    v27 = nanoLaunchId;
+    nanoLaunchId2 = [(_INPBIntentMetadata *)self nanoLaunchId];
+    nanoLaunchId3 = [equalCopy nanoLaunchId];
+    v30 = [nanoLaunchId2 isEqual:nanoLaunchId3];
 
     if (!v30)
     {
@@ -772,20 +772,20 @@ LABEL_106:
     goto LABEL_156;
   }
 
-  v5 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
-  v6 = [v4 systemExtensionBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self systemExtensionBundleId];
+  categoryVerb2 = [equalCopy systemExtensionBundleId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v31 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
-  if (v31)
+  systemExtensionBundleId = [(_INPBIntentMetadata *)self systemExtensionBundleId];
+  if (systemExtensionBundleId)
   {
-    v32 = v31;
-    v33 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
-    v34 = [v4 systemExtensionBundleId];
-    v35 = [v33 isEqual:v34];
+    v32 = systemExtensionBundleId;
+    systemExtensionBundleId2 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
+    systemExtensionBundleId3 = [equalCopy systemExtensionBundleId];
+    v35 = [systemExtensionBundleId2 isEqual:systemExtensionBundleId3];
 
     if (!v35)
     {
@@ -797,20 +797,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
-  v6 = [v4 systemUIExtensionBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
+  categoryVerb2 = [equalCopy systemUIExtensionBundleId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v36 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
-  if (v36)
+  systemUIExtensionBundleId = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
+  if (systemUIExtensionBundleId)
   {
-    v37 = v36;
-    v38 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
-    v39 = [v4 systemUIExtensionBundleId];
-    v40 = [v38 isEqual:v39];
+    v37 = systemUIExtensionBundleId;
+    systemUIExtensionBundleId2 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
+    systemUIExtensionBundleId3 = [equalCopy systemUIExtensionBundleId];
+    v40 = [systemUIExtensionBundleId2 isEqual:systemUIExtensionBundleId3];
 
     if (!v40)
     {
@@ -822,20 +822,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self airPlayRouteIds];
-  v6 = [v4 airPlayRouteIds];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self airPlayRouteIds];
+  categoryVerb2 = [equalCopy airPlayRouteIds];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v41 = [(_INPBIntentMetadata *)self airPlayRouteIds];
-  if (v41)
+  airPlayRouteIds = [(_INPBIntentMetadata *)self airPlayRouteIds];
+  if (airPlayRouteIds)
   {
-    v42 = v41;
-    v43 = [(_INPBIntentMetadata *)self airPlayRouteIds];
-    v44 = [v4 airPlayRouteIds];
-    v45 = [v43 isEqual:v44];
+    v42 = airPlayRouteIds;
+    airPlayRouteIds2 = [(_INPBIntentMetadata *)self airPlayRouteIds];
+    airPlayRouteIds3 = [equalCopy airPlayRouteIds];
+    v45 = [airPlayRouteIds2 isEqual:airPlayRouteIds3];
 
     if (!v45)
     {
@@ -847,20 +847,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self auditTokenData];
-  v6 = [v4 auditTokenData];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self auditTokenData];
+  categoryVerb2 = [equalCopy auditTokenData];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v46 = [(_INPBIntentMetadata *)self auditTokenData];
-  if (v46)
+  auditTokenData = [(_INPBIntentMetadata *)self auditTokenData];
+  if (auditTokenData)
   {
-    v47 = v46;
-    v48 = [(_INPBIntentMetadata *)self auditTokenData];
-    v49 = [v4 auditTokenData];
-    v50 = [v48 isEqual:v49];
+    v47 = auditTokenData;
+    auditTokenData2 = [(_INPBIntentMetadata *)self auditTokenData];
+    auditTokenData3 = [equalCopy auditTokenData];
+    v50 = [auditTokenData2 isEqual:auditTokenData3];
 
     if (!v50)
     {
@@ -872,74 +872,74 @@ LABEL_106:
   {
   }
 
-  v51 = [(_INPBIntentMetadata *)self hasBypassAppProtectionAuthentication];
-  if (v51 != [v4 hasBypassAppProtectionAuthentication])
+  hasBypassAppProtectionAuthentication = [(_INPBIntentMetadata *)self hasBypassAppProtectionAuthentication];
+  if (hasBypassAppProtectionAuthentication != [equalCopy hasBypassAppProtectionAuthentication])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasBypassAppProtectionAuthentication])
   {
-    if ([v4 hasBypassAppProtectionAuthentication])
+    if ([equalCopy hasBypassAppProtectionAuthentication])
     {
       bypassAppProtectionAuthentication = self->_bypassAppProtectionAuthentication;
-      if (bypassAppProtectionAuthentication != [v4 bypassAppProtectionAuthentication])
+      if (bypassAppProtectionAuthentication != [equalCopy bypassAppProtectionAuthentication])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v53 = [(_INPBIntentMetadata *)self hasBackgroundLaunch];
-  if (v53 != [v4 hasBackgroundLaunch])
+  hasBackgroundLaunch = [(_INPBIntentMetadata *)self hasBackgroundLaunch];
+  if (hasBackgroundLaunch != [equalCopy hasBackgroundLaunch])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasBackgroundLaunch])
   {
-    if ([v4 hasBackgroundLaunch])
+    if ([equalCopy hasBackgroundLaunch])
     {
       backgroundLaunch = self->_backgroundLaunch;
-      if (backgroundLaunch != [v4 backgroundLaunch])
+      if (backgroundLaunch != [equalCopy backgroundLaunch])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v55 = [(_INPBIntentMetadata *)self hasConfirmed];
-  if (v55 != [v4 hasConfirmed])
+  hasConfirmed = [(_INPBIntentMetadata *)self hasConfirmed];
+  if (hasConfirmed != [equalCopy hasConfirmed])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasConfirmed])
   {
-    if ([v4 hasConfirmed])
+    if ([equalCopy hasConfirmed])
     {
       confirmed = self->_confirmed;
-      if (confirmed != [v4 confirmed])
+      if (confirmed != [equalCopy confirmed])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self endpointId];
-  v6 = [v4 endpointId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self endpointId];
+  categoryVerb2 = [equalCopy endpointId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v57 = [(_INPBIntentMetadata *)self endpointId];
-  if (v57)
+  endpointId = [(_INPBIntentMetadata *)self endpointId];
+  if (endpointId)
   {
-    v58 = v57;
-    v59 = [(_INPBIntentMetadata *)self endpointId];
-    v60 = [v4 endpointId];
-    v61 = [v59 isEqual:v60];
+    v58 = endpointId;
+    endpointId2 = [(_INPBIntentMetadata *)self endpointId];
+    endpointId3 = [equalCopy endpointId];
+    v61 = [endpointId2 isEqual:endpointId3];
 
     if (!v61)
     {
@@ -951,38 +951,38 @@ LABEL_106:
   {
   }
 
-  v62 = [(_INPBIntentMetadata *)self hasEndpointMediaPlaybackEnabled];
-  if (v62 != [v4 hasEndpointMediaPlaybackEnabled])
+  hasEndpointMediaPlaybackEnabled = [(_INPBIntentMetadata *)self hasEndpointMediaPlaybackEnabled];
+  if (hasEndpointMediaPlaybackEnabled != [equalCopy hasEndpointMediaPlaybackEnabled])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasEndpointMediaPlaybackEnabled])
   {
-    if ([v4 hasEndpointMediaPlaybackEnabled])
+    if ([equalCopy hasEndpointMediaPlaybackEnabled])
     {
       endpointMediaPlaybackEnabled = self->_endpointMediaPlaybackEnabled;
-      if (endpointMediaPlaybackEnabled != [v4 endpointMediaPlaybackEnabled])
+      if (endpointMediaPlaybackEnabled != [equalCopy endpointMediaPlaybackEnabled])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
-  v6 = [v4 forceNeedsValueForParameters];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
+  categoryVerb2 = [equalCopy forceNeedsValueForParameters];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v64 = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
-  if (v64)
+  forceNeedsValueForParameters = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
+  if (forceNeedsValueForParameters)
   {
-    v65 = v64;
-    v66 = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
-    v67 = [v4 forceNeedsValueForParameters];
-    v68 = [v66 isEqual:v67];
+    v65 = forceNeedsValueForParameters;
+    forceNeedsValueForParameters2 = [(_INPBIntentMetadata *)self forceNeedsValueForParameters];
+    forceNeedsValueForParameters3 = [equalCopy forceNeedsValueForParameters];
+    v68 = [forceNeedsValueForParameters2 isEqual:forceNeedsValueForParameters3];
 
     if (!v68)
     {
@@ -994,38 +994,38 @@ LABEL_106:
   {
   }
 
-  v69 = [(_INPBIntentMetadata *)self hasIdiom];
-  if (v69 != [v4 hasIdiom])
+  hasIdiom = [(_INPBIntentMetadata *)self hasIdiom];
+  if (hasIdiom != [equalCopy hasIdiom])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasIdiom])
   {
-    if ([v4 hasIdiom])
+    if ([equalCopy hasIdiom])
     {
       idiom = self->_idiom;
-      if (idiom != [v4 idiom])
+      if (idiom != [equalCopy idiom])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self intentDescription];
-  v6 = [v4 intentDescription];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self intentDescription];
+  categoryVerb2 = [equalCopy intentDescription];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v71 = [(_INPBIntentMetadata *)self intentDescription];
-  if (v71)
+  intentDescription = [(_INPBIntentMetadata *)self intentDescription];
+  if (intentDescription)
   {
-    v72 = v71;
-    v73 = [(_INPBIntentMetadata *)self intentDescription];
-    v74 = [v4 intentDescription];
-    v75 = [v73 isEqual:v74];
+    v72 = intentDescription;
+    intentDescription2 = [(_INPBIntentMetadata *)self intentDescription];
+    intentDescription3 = [equalCopy intentDescription];
+    v75 = [intentDescription2 isEqual:intentDescription3];
 
     if (!v75)
     {
@@ -1037,20 +1037,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self intentId];
-  v6 = [v4 intentId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self intentId];
+  categoryVerb2 = [equalCopy intentId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v76 = [(_INPBIntentMetadata *)self intentId];
-  if (v76)
+  intentId = [(_INPBIntentMetadata *)self intentId];
+  if (intentId)
   {
-    v77 = v76;
-    v78 = [(_INPBIntentMetadata *)self intentId];
-    v79 = [v4 intentId];
-    v80 = [v78 isEqual:v79];
+    v77 = intentId;
+    intentId2 = [(_INPBIntentMetadata *)self intentId];
+    intentId3 = [equalCopy intentId];
+    v80 = [intentId2 isEqual:intentId3];
 
     if (!v80)
     {
@@ -1062,56 +1062,56 @@ LABEL_106:
   {
   }
 
-  v81 = [(_INPBIntentMetadata *)self hasIsOwnedByCurrentUser];
-  if (v81 != [v4 hasIsOwnedByCurrentUser])
+  hasIsOwnedByCurrentUser = [(_INPBIntentMetadata *)self hasIsOwnedByCurrentUser];
+  if (hasIsOwnedByCurrentUser != [equalCopy hasIsOwnedByCurrentUser])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasIsOwnedByCurrentUser])
   {
-    if ([v4 hasIsOwnedByCurrentUser])
+    if ([equalCopy hasIsOwnedByCurrentUser])
     {
       isOwnedByCurrentUser = self->_isOwnedByCurrentUser;
-      if (isOwnedByCurrentUser != [v4 isOwnedByCurrentUser])
+      if (isOwnedByCurrentUser != [equalCopy isOwnedByCurrentUser])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v83 = [(_INPBIntentMetadata *)self hasIsPrimaryDisplayDisabled];
-  if (v83 != [v4 hasIsPrimaryDisplayDisabled])
+  hasIsPrimaryDisplayDisabled = [(_INPBIntentMetadata *)self hasIsPrimaryDisplayDisabled];
+  if (hasIsPrimaryDisplayDisabled != [equalCopy hasIsPrimaryDisplayDisabled])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasIsPrimaryDisplayDisabled])
   {
-    if ([v4 hasIsPrimaryDisplayDisabled])
+    if ([equalCopy hasIsPrimaryDisplayDisabled])
     {
       isPrimaryDisplayDisabled = self->_isPrimaryDisplayDisabled;
-      if (isPrimaryDisplayDisabled != [v4 isPrimaryDisplayDisabled])
+      if (isPrimaryDisplayDisabled != [equalCopy isPrimaryDisplayDisabled])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self mediaRouteId];
-  v6 = [v4 mediaRouteId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self mediaRouteId];
+  categoryVerb2 = [equalCopy mediaRouteId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v85 = [(_INPBIntentMetadata *)self mediaRouteId];
-  if (v85)
+  mediaRouteId = [(_INPBIntentMetadata *)self mediaRouteId];
+  if (mediaRouteId)
   {
-    v86 = v85;
-    v87 = [(_INPBIntentMetadata *)self mediaRouteId];
-    v88 = [v4 mediaRouteId];
-    v89 = [v87 isEqual:v88];
+    v86 = mediaRouteId;
+    mediaRouteId2 = [(_INPBIntentMetadata *)self mediaRouteId];
+    mediaRouteId3 = [equalCopy mediaRouteId];
+    v89 = [mediaRouteId2 isEqual:mediaRouteId3];
 
     if (!v89)
     {
@@ -1123,38 +1123,38 @@ LABEL_106:
   {
   }
 
-  v90 = [(_INPBIntentMetadata *)self hasMsLimitReached];
-  if (v90 != [v4 hasMsLimitReached])
+  hasMsLimitReached = [(_INPBIntentMetadata *)self hasMsLimitReached];
+  if (hasMsLimitReached != [equalCopy hasMsLimitReached])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasMsLimitReached])
   {
-    if ([v4 hasMsLimitReached])
+    if ([equalCopy hasMsLimitReached])
     {
       msLimitReached = self->_msLimitReached;
-      if (msLimitReached != [v4 msLimitReached])
+      if (msLimitReached != [equalCopy msLimitReached])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
-  v6 = [v4 originatingDeviceIdsIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
+  categoryVerb2 = [equalCopy originatingDeviceIdsIdentifier];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v92 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
-  if (v92)
+  originatingDeviceIdsIdentifier = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
+  if (originatingDeviceIdsIdentifier)
   {
-    v93 = v92;
-    v94 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
-    v95 = [v4 originatingDeviceIdsIdentifier];
-    v96 = [v94 isEqual:v95];
+    v93 = originatingDeviceIdsIdentifier;
+    originatingDeviceIdsIdentifier2 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
+    originatingDeviceIdsIdentifier3 = [equalCopy originatingDeviceIdsIdentifier];
+    v96 = [originatingDeviceIdsIdentifier2 isEqual:originatingDeviceIdsIdentifier3];
 
     if (!v96)
     {
@@ -1166,20 +1166,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
-  v6 = [v4 originatingDeviceRapportEffectiveId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
+  categoryVerb2 = [equalCopy originatingDeviceRapportEffectiveId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v97 = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
-  if (v97)
+  originatingDeviceRapportEffectiveId = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
+  if (originatingDeviceRapportEffectiveId)
   {
-    v98 = v97;
-    v99 = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
-    v100 = [v4 originatingDeviceRapportEffectiveId];
-    v101 = [v99 isEqual:v100];
+    v98 = originatingDeviceRapportEffectiveId;
+    originatingDeviceRapportEffectiveId2 = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
+    originatingDeviceRapportEffectiveId3 = [equalCopy originatingDeviceRapportEffectiveId];
+    v101 = [originatingDeviceRapportEffectiveId2 isEqual:originatingDeviceRapportEffectiveId3];
 
     if (!v101)
     {
@@ -1191,20 +1191,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
-  v6 = [v4 originatingDeviceRapportMediaSystemId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
+  categoryVerb2 = [equalCopy originatingDeviceRapportMediaSystemId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v102 = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
-  if (v102)
+  originatingDeviceRapportMediaSystemId = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
+  if (originatingDeviceRapportMediaSystemId)
   {
-    v103 = v102;
-    v104 = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
-    v105 = [v4 originatingDeviceRapportMediaSystemId];
-    v106 = [v104 isEqual:v105];
+    v103 = originatingDeviceRapportMediaSystemId;
+    originatingDeviceRapportMediaSystemId2 = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
+    originatingDeviceRapportMediaSystemId3 = [equalCopy originatingDeviceRapportMediaSystemId];
+    v106 = [originatingDeviceRapportMediaSystemId2 isEqual:originatingDeviceRapportMediaSystemId3];
 
     if (!v106)
     {
@@ -1216,20 +1216,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self parameterImages];
-  v6 = [v4 parameterImages];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self parameterImages];
+  categoryVerb2 = [equalCopy parameterImages];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v107 = [(_INPBIntentMetadata *)self parameterImages];
-  if (v107)
+  parameterImages = [(_INPBIntentMetadata *)self parameterImages];
+  if (parameterImages)
   {
-    v108 = v107;
-    v109 = [(_INPBIntentMetadata *)self parameterImages];
-    v110 = [v4 parameterImages];
-    v111 = [v109 isEqual:v110];
+    v108 = parameterImages;
+    parameterImages2 = [(_INPBIntentMetadata *)self parameterImages];
+    parameterImages3 = [equalCopy parameterImages];
+    v111 = [parameterImages2 isEqual:parameterImages3];
 
     if (!v111)
     {
@@ -1241,20 +1241,20 @@ LABEL_106:
   {
   }
 
-  v5 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
-  v6 = [v4 preferredAudioOutputRouteId];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
+  categoryVerb2 = [equalCopy preferredAudioOutputRouteId];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v112 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
-  if (v112)
+  preferredAudioOutputRouteId = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
+  if (preferredAudioOutputRouteId)
   {
-    v113 = v112;
-    v114 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
-    v115 = [v4 preferredAudioOutputRouteId];
-    v116 = [v114 isEqual:v115];
+    v113 = preferredAudioOutputRouteId;
+    preferredAudioOutputRouteId2 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
+    preferredAudioOutputRouteId3 = [equalCopy preferredAudioOutputRouteId];
+    v116 = [preferredAudioOutputRouteId2 isEqual:preferredAudioOutputRouteId3];
 
     if (!v116)
     {
@@ -1271,38 +1271,38 @@ LABEL_106:
     goto LABEL_156;
   }
 
-  v117 = [(_INPBIntentMetadata *)self hasShowsWhenRun];
-  if (v117 != [v4 hasShowsWhenRun])
+  hasShowsWhenRun = [(_INPBIntentMetadata *)self hasShowsWhenRun];
+  if (hasShowsWhenRun != [equalCopy hasShowsWhenRun])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasShowsWhenRun])
   {
-    if ([v4 hasShowsWhenRun])
+    if ([equalCopy hasShowsWhenRun])
     {
       showsWhenRun = self->_showsWhenRun;
-      if (showsWhenRun != [v4 showsWhenRun])
+      if (showsWhenRun != [equalCopy showsWhenRun])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
-  v6 = [v4 suggestedInvocationPhrase];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
+  categoryVerb2 = [equalCopy suggestedInvocationPhrase];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
     goto LABEL_155;
   }
 
-  v119 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
-  if (v119)
+  suggestedInvocationPhrase = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
+  if (suggestedInvocationPhrase)
   {
-    v120 = v119;
-    v121 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
-    v122 = [v4 suggestedInvocationPhrase];
-    v123 = [v121 isEqual:v122];
+    v120 = suggestedInvocationPhrase;
+    suggestedInvocationPhrase2 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
+    suggestedInvocationPhrase3 = [equalCopy suggestedInvocationPhrase];
+    v123 = [suggestedInvocationPhrase2 isEqual:suggestedInvocationPhrase3];
 
     if (!v123)
     {
@@ -1314,58 +1314,58 @@ LABEL_106:
   {
   }
 
-  v124 = [(_INPBIntentMetadata *)self hasTriggerMethod];
-  if (v124 != [v4 hasTriggerMethod])
+  hasTriggerMethod = [(_INPBIntentMetadata *)self hasTriggerMethod];
+  if (hasTriggerMethod != [equalCopy hasTriggerMethod])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasTriggerMethod])
   {
-    if ([v4 hasTriggerMethod])
+    if ([equalCopy hasTriggerMethod])
     {
       triggerMethod = self->_triggerMethod;
-      if (triggerMethod != [v4 triggerMethod])
+      if (triggerMethod != [equalCopy triggerMethod])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v126 = [(_INPBIntentMetadata *)self hasUserConfirmationRequired];
-  if (v126 != [v4 hasUserConfirmationRequired])
+  hasUserConfirmationRequired = [(_INPBIntentMetadata *)self hasUserConfirmationRequired];
+  if (hasUserConfirmationRequired != [equalCopy hasUserConfirmationRequired])
   {
     goto LABEL_156;
   }
 
   if ([(_INPBIntentMetadata *)self hasUserConfirmationRequired])
   {
-    if ([v4 hasUserConfirmationRequired])
+    if ([equalCopy hasUserConfirmationRequired])
     {
       userConfirmationRequired = self->_userConfirmationRequired;
-      if (userConfirmationRequired != [v4 userConfirmationRequired])
+      if (userConfirmationRequired != [equalCopy userConfirmationRequired])
       {
         goto LABEL_156;
       }
     }
   }
 
-  v5 = [(_INPBIntentMetadata *)self userUtterance];
-  v6 = [v4 userUtterance];
-  if ((v5 != 0) == (v6 == 0))
+  categoryVerb = [(_INPBIntentMetadata *)self userUtterance];
+  categoryVerb2 = [equalCopy userUtterance];
+  if ((categoryVerb != 0) == (categoryVerb2 == 0))
   {
 LABEL_155:
 
     goto LABEL_156;
   }
 
-  v128 = [(_INPBIntentMetadata *)self userUtterance];
-  if (v128)
+  userUtterance = [(_INPBIntentMetadata *)self userUtterance];
+  if (userUtterance)
   {
-    v129 = v128;
-    v130 = [(_INPBIntentMetadata *)self userUtterance];
-    v131 = [v4 userUtterance];
-    v132 = [v130 isEqual:v131];
+    v129 = userUtterance;
+    userUtterance2 = [(_INPBIntentMetadata *)self userUtterance];
+    userUtterance3 = [equalCopy userUtterance];
+    v132 = [userUtterance2 isEqual:userUtterance3];
 
     if (!v132)
     {
@@ -1377,10 +1377,10 @@ LABEL_155:
   {
   }
 
-  v135 = [(_INPBIntentMetadata *)self hasVersioningHash];
-  if (v135 == [v4 hasVersioningHash])
+  hasVersioningHash = [(_INPBIntentMetadata *)self hasVersioningHash];
+  if (hasVersioningHash == [equalCopy hasVersioningHash])
   {
-    if (!-[_INPBIntentMetadata hasVersioningHash](self, "hasVersioningHash") || ![v4 hasVersioningHash] || (versioningHash = self->_versioningHash, versioningHash == objc_msgSend(v4, "versioningHash")))
+    if (!-[_INPBIntentMetadata hasVersioningHash](self, "hasVersioningHash") || ![equalCopy hasVersioningHash] || (versioningHash = self->_versioningHash, versioningHash == objc_msgSend(equalCopy, "versioningHash")))
     {
       v133 = 1;
       goto LABEL_157;
@@ -1394,13 +1394,13 @@ LABEL_157:
   return v133;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBIntentMetadata allocWithZone:](_INPBIntentMetadata init];
-  v6 = [(NSString *)self->_categoryVerb copyWithZone:a3];
+  v6 = [(NSString *)self->_categoryVerb copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setCategoryVerb:v6];
 
-  v7 = [(_INPBImageValue *)self->_defaultImageValue copyWithZone:a3];
+  v7 = [(_INPBImageValue *)self->_defaultImageValue copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setDefaultImageValue:v7];
 
   if ([(_INPBIntentMetadata *)self hasExecutionContext])
@@ -1413,23 +1413,23 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setIntentCategory:[(_INPBIntentMetadata *)self intentCategory]];
   }
 
-  v8 = [(NSString *)self->_launchId copyWithZone:a3];
+  v8 = [(NSString *)self->_launchId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setLaunchId:v8];
 
-  v9 = [(NSString *)self->_nanoLaunchId copyWithZone:a3];
+  v9 = [(NSString *)self->_nanoLaunchId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setNanoLaunchId:v9];
 
   PBRepeatedInt32Copy();
-  v10 = [(NSString *)self->_systemExtensionBundleId copyWithZone:a3];
+  v10 = [(NSString *)self->_systemExtensionBundleId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setSystemExtensionBundleId:v10];
 
-  v11 = [(NSString *)self->_systemUIExtensionBundleId copyWithZone:a3];
+  v11 = [(NSString *)self->_systemUIExtensionBundleId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setSystemUIExtensionBundleId:v11];
 
-  v12 = [(NSArray *)self->_airPlayRouteIds copyWithZone:a3];
+  v12 = [(NSArray *)self->_airPlayRouteIds copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setAirPlayRouteIds:v12];
 
-  v13 = [(NSData *)self->_auditTokenData copyWithZone:a3];
+  v13 = [(NSData *)self->_auditTokenData copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setAuditTokenData:v13];
 
   if ([(_INPBIntentMetadata *)self hasBackgroundLaunch])
@@ -1447,7 +1447,7 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setConfirmed:[(_INPBIntentMetadata *)self confirmed]];
   }
 
-  v14 = [(NSString *)self->_endpointId copyWithZone:a3];
+  v14 = [(NSString *)self->_endpointId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setEndpointId:v14];
 
   if ([(_INPBIntentMetadata *)self hasEndpointMediaPlaybackEnabled])
@@ -1455,7 +1455,7 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setEndpointMediaPlaybackEnabled:[(_INPBIntentMetadata *)self endpointMediaPlaybackEnabled]];
   }
 
-  v15 = [(NSArray *)self->_forceNeedsValueForParameters copyWithZone:a3];
+  v15 = [(NSArray *)self->_forceNeedsValueForParameters copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setForceNeedsValueForParameters:v15];
 
   if ([(_INPBIntentMetadata *)self hasIdiom])
@@ -1463,10 +1463,10 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setIdiom:[(_INPBIntentMetadata *)self idiom]];
   }
 
-  v16 = [(NSString *)self->_intentDescription copyWithZone:a3];
+  v16 = [(NSString *)self->_intentDescription copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setIntentDescription:v16];
 
-  v17 = [(NSString *)self->_intentId copyWithZone:a3];
+  v17 = [(NSString *)self->_intentId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setIntentId:v17];
 
   if ([(_INPBIntentMetadata *)self hasIsOwnedByCurrentUser])
@@ -1479,7 +1479,7 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setIsPrimaryDisplayDisabled:[(_INPBIntentMetadata *)self isPrimaryDisplayDisabled]];
   }
 
-  v18 = [(NSString *)self->_mediaRouteId copyWithZone:a3];
+  v18 = [(NSString *)self->_mediaRouteId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setMediaRouteId:v18];
 
   if ([(_INPBIntentMetadata *)self hasMsLimitReached])
@@ -1487,19 +1487,19 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setMsLimitReached:[(_INPBIntentMetadata *)self msLimitReached]];
   }
 
-  v19 = [(NSString *)self->_originatingDeviceIdsIdentifier copyWithZone:a3];
+  v19 = [(NSString *)self->_originatingDeviceIdsIdentifier copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setOriginatingDeviceIdsIdentifier:v19];
 
-  v20 = [(NSString *)self->_originatingDeviceRapportEffectiveId copyWithZone:a3];
+  v20 = [(NSString *)self->_originatingDeviceRapportEffectiveId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setOriginatingDeviceRapportEffectiveId:v20];
 
-  v21 = [(NSString *)self->_originatingDeviceRapportMediaSystemId copyWithZone:a3];
+  v21 = [(NSString *)self->_originatingDeviceRapportMediaSystemId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setOriginatingDeviceRapportMediaSystemId:v21];
 
-  v22 = [(NSArray *)self->_parameterImages copyWithZone:a3];
+  v22 = [(NSArray *)self->_parameterImages copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setParameterImages:v22];
 
-  v23 = [(NSString *)self->_preferredAudioOutputRouteId copyWithZone:a3];
+  v23 = [(NSString *)self->_preferredAudioOutputRouteId copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setPreferredAudioOutputRouteId:v23];
 
   PBRepeatedInt32Copy();
@@ -1508,7 +1508,7 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setShowsWhenRun:[(_INPBIntentMetadata *)self showsWhenRun]];
   }
 
-  v24 = [(NSString *)self->_suggestedInvocationPhrase copyWithZone:a3];
+  v24 = [(NSString *)self->_suggestedInvocationPhrase copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setSuggestedInvocationPhrase:v24];
 
   if ([(_INPBIntentMetadata *)self hasTriggerMethod])
@@ -1521,7 +1521,7 @@ LABEL_157:
     [(_INPBIntentMetadata *)v5 setUserConfirmationRequired:[(_INPBIntentMetadata *)self userConfirmationRequired]];
   }
 
-  v25 = [(_INPBString *)self->_userUtterance copyWithZone:a3];
+  v25 = [(_INPBString *)self->_userUtterance copyWithZone:zone];
   [(_INPBIntentMetadata *)v5 setUserUtterance:v25];
 
   if ([(_INPBIntentMetadata *)self hasVersioningHash])
@@ -1532,47 +1532,47 @@ LABEL_157:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBIntentMetadata *)self data];
+  coderCopy = coder;
+  data = [(_INPBIntentMetadata *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBIntentMetadata)initWithCoder:(id)a3
+- (_INPBIntentMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBIntentMetadata *)self initWithData:v6];
+    self = [(_INPBIntentMetadata *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBIntentMetadata *)self categoryVerb];
+  toCopy = to;
+  categoryVerb = [(_INPBIntentMetadata *)self categoryVerb];
 
-  if (v5)
+  if (categoryVerb)
   {
     categoryVerb = self->_categoryVerb;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBIntentMetadata *)self defaultImageValue];
+  defaultImageValue = [(_INPBIntentMetadata *)self defaultImageValue];
 
-  if (v7)
+  if (defaultImageValue)
   {
-    v8 = [(_INPBIntentMetadata *)self defaultImageValue];
+    defaultImageValue2 = [(_INPBIntentMetadata *)self defaultImageValue];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1588,17 +1588,17 @@ LABEL_157:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(_INPBIntentMetadata *)self launchId];
+  launchId = [(_INPBIntentMetadata *)self launchId];
 
-  if (v11)
+  if (launchId)
   {
     launchId = self->_launchId;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBIntentMetadata *)self nanoLaunchId];
+  nanoLaunchId = [(_INPBIntentMetadata *)self nanoLaunchId];
 
-  if (v13)
+  if (nanoLaunchId)
   {
     nanoLaunchId = self->_nanoLaunchId;
     PBDataWriterWriteStringField();
@@ -1617,17 +1617,17 @@ LABEL_157:
     while (v15 < self->_requiredEntitlements.count);
   }
 
-  v17 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
+  systemExtensionBundleId = [(_INPBIntentMetadata *)self systemExtensionBundleId];
 
-  if (v17)
+  if (systemExtensionBundleId)
   {
     systemExtensionBundleId = self->_systemExtensionBundleId;
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
+  systemUIExtensionBundleId = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
 
-  if (v19)
+  if (systemUIExtensionBundleId)
   {
     systemUIExtensionBundleId = self->_systemUIExtensionBundleId;
     PBDataWriterWriteStringField();
@@ -1662,9 +1662,9 @@ LABEL_157:
     while (v23);
   }
 
-  v27 = [(_INPBIntentMetadata *)self auditTokenData];
+  auditTokenData = [(_INPBIntentMetadata *)self auditTokenData];
 
-  if (v27)
+  if (auditTokenData)
   {
     auditTokenData = self->_auditTokenData;
     PBDataWriterWriteDataField();
@@ -1688,9 +1688,9 @@ LABEL_157:
     PBDataWriterWriteBOOLField();
   }
 
-  v32 = [(_INPBIntentMetadata *)self endpointId];
+  endpointId = [(_INPBIntentMetadata *)self endpointId];
 
-  if (v32)
+  if (endpointId)
   {
     endpointId = self->_endpointId;
     PBDataWriterWriteStringField();
@@ -1737,17 +1737,17 @@ LABEL_157:
     PBDataWriterWriteInt32Field();
   }
 
-  v42 = [(_INPBIntentMetadata *)self intentDescription];
+  intentDescription = [(_INPBIntentMetadata *)self intentDescription];
 
-  if (v42)
+  if (intentDescription)
   {
     intentDescription = self->_intentDescription;
     PBDataWriterWriteStringField();
   }
 
-  v44 = [(_INPBIntentMetadata *)self intentId];
+  intentId = [(_INPBIntentMetadata *)self intentId];
 
-  if (v44)
+  if (intentId)
   {
     intentId = self->_intentId;
     PBDataWriterWriteStringField();
@@ -1765,9 +1765,9 @@ LABEL_157:
     PBDataWriterWriteBOOLField();
   }
 
-  v48 = [(_INPBIntentMetadata *)self mediaRouteId];
+  mediaRouteId = [(_INPBIntentMetadata *)self mediaRouteId];
 
-  if (v48)
+  if (mediaRouteId)
   {
     mediaRouteId = self->_mediaRouteId;
     PBDataWriterWriteStringField();
@@ -1779,25 +1779,25 @@ LABEL_157:
     PBDataWriterWriteBOOLField();
   }
 
-  v51 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
+  originatingDeviceIdsIdentifier = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
 
-  if (v51)
+  if (originatingDeviceIdsIdentifier)
   {
     originatingDeviceIdsIdentifier = self->_originatingDeviceIdsIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v53 = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
+  originatingDeviceRapportEffectiveId = [(_INPBIntentMetadata *)self originatingDeviceRapportEffectiveId];
 
-  if (v53)
+  if (originatingDeviceRapportEffectiveId)
   {
     originatingDeviceRapportEffectiveId = self->_originatingDeviceRapportEffectiveId;
     PBDataWriterWriteStringField();
   }
 
-  v55 = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
+  originatingDeviceRapportMediaSystemId = [(_INPBIntentMetadata *)self originatingDeviceRapportMediaSystemId];
 
-  if (v55)
+  if (originatingDeviceRapportMediaSystemId)
   {
     originatingDeviceRapportMediaSystemId = self->_originatingDeviceRapportMediaSystemId;
     PBDataWriterWriteStringField();
@@ -1832,9 +1832,9 @@ LABEL_157:
     while (v59);
   }
 
-  v63 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
+  preferredAudioOutputRouteId = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
 
-  if (v63)
+  if (preferredAudioOutputRouteId)
   {
     preferredAudioOutputRouteId = self->_preferredAudioOutputRouteId;
     PBDataWriterWriteStringField();
@@ -1859,9 +1859,9 @@ LABEL_157:
     PBDataWriterWriteBOOLField();
   }
 
-  v68 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
+  suggestedInvocationPhrase = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
 
-  if (v68)
+  if (suggestedInvocationPhrase)
   {
     suggestedInvocationPhrase = self->_suggestedInvocationPhrase;
     PBDataWriterWriteStringField();
@@ -1879,11 +1879,11 @@ LABEL_157:
     PBDataWriterWriteBOOLField();
   }
 
-  v72 = [(_INPBIntentMetadata *)self userUtterance];
+  userUtterance = [(_INPBIntentMetadata *)self userUtterance];
 
-  if (v72)
+  if (userUtterance)
   {
-    v73 = [(_INPBIntentMetadata *)self userUtterance];
+    userUtterance2 = [(_INPBIntentMetadata *)self userUtterance];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1896,9 +1896,9 @@ LABEL_157:
   v75 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHasVersioningHash:(BOOL)a3
+- (void)setHasVersioningHash:(BOOL)hash
 {
-  if (a3)
+  if (hash)
   {
     v3 = 0x2000;
   }
@@ -1911,9 +1911,9 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasUserConfirmationRequired:(BOOL)a3
+- (void)setHasUserConfirmationRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 4096;
   }
@@ -1926,25 +1926,25 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (int)StringAsTriggerMethod:(id)a3
+- (int)StringAsTriggerMethod:(id)method
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Other"])
+  methodCopy = method;
+  if ([methodCopy isEqualToString:@"Other"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HomeButton"])
+  else if ([methodCopy isEqualToString:@"HomeButton"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"RemoteButton"])
+  else if ([methodCopy isEqualToString:@"RemoteButton"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"VoiceTrigger"])
+  else if ([methodCopy isEqualToString:@"VoiceTrigger"])
   {
     v4 = 30;
   }
@@ -1957,9 +1957,9 @@ LABEL_157:
   return v4;
 }
 
-- (void)setHasTriggerMethod:(BOOL)a3
+- (void)setHasTriggerMethod:(BOOL)method
 {
-  if (a3)
+  if (method)
   {
     v3 = 2048;
   }
@@ -1972,10 +1972,10 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setTriggerMethod:(int)a3
+- (void)setTriggerMethod:(int)method
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (method == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7FF;
   }
@@ -1983,22 +1983,22 @@ LABEL_157:
   else
   {
     *&self->_has = has | 0x800;
-    self->_triggerMethod = a3;
+    self->_triggerMethod = method;
   }
 }
 
-- (void)setSuggestedInvocationPhrase:(id)a3
+- (void)setSuggestedInvocationPhrase:(id)phrase
 {
-  v4 = [a3 copy];
+  v4 = [phrase copy];
   suggestedInvocationPhrase = self->_suggestedInvocationPhrase;
   self->_suggestedInvocationPhrase = v4;
 
   MEMORY[0x1EEE66BB8](v4, suggestedInvocationPhrase);
 }
 
-- (void)setHasShowsWhenRun:(BOOL)a3
+- (void)setHasShowsWhenRun:(BOOL)run
 {
-  if (a3)
+  if (run)
   {
     v3 = 1024;
   }
@@ -2011,40 +2011,40 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsShortcutAvailabilities:(id)a3
+- (int)StringAsShortcutAvailabilities:(id)availabilities
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SLEEP_MINDFULNESS"])
+  availabilitiesCopy = availabilities;
+  if ([availabilitiesCopy isEqualToString:@"SLEEP_MINDFULNESS"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_JOURNALING"])
+  else if ([availabilitiesCopy isEqualToString:@"SLEEP_JOURNALING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_MUSIC"])
+  else if ([availabilitiesCopy isEqualToString:@"SLEEP_MUSIC"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_PODCASTS"])
+  else if ([availabilitiesCopy isEqualToString:@"SLEEP_PODCASTS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_READING"])
+  else if ([availabilitiesCopy isEqualToString:@"SLEEP_READING"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_WRAP_UP_YOUR_DAY"])
+  else if ([availabilitiesCopy isEqualToString:@"SLEEP_WRAP_UP_YOUR_DAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_YOGA_AND_STRETCHING"])
+  else if ([availabilitiesCopy isEqualToString:@"SLEEP_YOGA_AND_STRETCHING"])
   {
     v4 = 6;
   }
@@ -2057,80 +2057,80 @@ LABEL_157:
   return v4;
 }
 
-- (void)addShortcutAvailability:(int)a3
+- (void)addShortcutAvailability:(int)availability
 {
-  if (a3 != 0x7FFFFFFF)
+  if (availability != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)setPreferredAudioOutputRouteId:(id)a3
+- (void)setPreferredAudioOutputRouteId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   preferredAudioOutputRouteId = self->_preferredAudioOutputRouteId;
   self->_preferredAudioOutputRouteId = v4;
 
   MEMORY[0x1EEE66BB8](v4, preferredAudioOutputRouteId);
 }
 
-- (void)addParameterImages:(id)a3
+- (void)addParameterImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   parameterImages = self->_parameterImages;
-  v8 = v4;
+  v8 = imagesCopy;
   if (!parameterImages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parameterImages;
-    self->_parameterImages = v6;
+    self->_parameterImages = array;
 
-    v4 = v8;
+    imagesCopy = v8;
     parameterImages = self->_parameterImages;
   }
 
-  [(NSArray *)parameterImages addObject:v4];
+  [(NSArray *)parameterImages addObject:imagesCopy];
 }
 
-- (void)setParameterImages:(id)a3
+- (void)setParameterImages:(id)images
 {
-  v4 = [a3 mutableCopy];
+  v4 = [images mutableCopy];
   parameterImages = self->_parameterImages;
   self->_parameterImages = v4;
 
   MEMORY[0x1EEE66BB8](v4, parameterImages);
 }
 
-- (void)setOriginatingDeviceRapportMediaSystemId:(id)a3
+- (void)setOriginatingDeviceRapportMediaSystemId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   originatingDeviceRapportMediaSystemId = self->_originatingDeviceRapportMediaSystemId;
   self->_originatingDeviceRapportMediaSystemId = v4;
 
   MEMORY[0x1EEE66BB8](v4, originatingDeviceRapportMediaSystemId);
 }
 
-- (void)setOriginatingDeviceRapportEffectiveId:(id)a3
+- (void)setOriginatingDeviceRapportEffectiveId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   originatingDeviceRapportEffectiveId = self->_originatingDeviceRapportEffectiveId;
   self->_originatingDeviceRapportEffectiveId = v4;
 
   MEMORY[0x1EEE66BB8](v4, originatingDeviceRapportEffectiveId);
 }
 
-- (void)setOriginatingDeviceIdsIdentifier:(id)a3
+- (void)setOriginatingDeviceIdsIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   originatingDeviceIdsIdentifier = self->_originatingDeviceIdsIdentifier;
   self->_originatingDeviceIdsIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, originatingDeviceIdsIdentifier);
 }
 
-- (void)setHasMsLimitReached:(BOOL)a3
+- (void)setHasMsLimitReached:(BOOL)reached
 {
-  if (a3)
+  if (reached)
   {
     v3 = 512;
   }
@@ -2143,18 +2143,18 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setMediaRouteId:(id)a3
+- (void)setMediaRouteId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   mediaRouteId = self->_mediaRouteId;
   self->_mediaRouteId = v4;
 
   MEMORY[0x1EEE66BB8](v4, mediaRouteId);
 }
 
-- (void)setHasIsPrimaryDisplayDisabled:(BOOL)a3
+- (void)setHasIsPrimaryDisplayDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 256;
   }
@@ -2167,9 +2167,9 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsOwnedByCurrentUser:(BOOL)a3
+- (void)setHasIsOwnedByCurrentUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 128;
   }
@@ -2182,58 +2182,58 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setIntentId:(id)a3
+- (void)setIntentId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   intentId = self->_intentId;
   self->_intentId = v4;
 
   MEMORY[0x1EEE66BB8](v4, intentId);
 }
 
-- (void)setIntentDescription:(id)a3
+- (void)setIntentDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   intentDescription = self->_intentDescription;
   self->_intentDescription = v4;
 
   MEMORY[0x1EEE66BB8](v4, intentDescription);
 }
 
-- (int)StringAsIdiom:(id)a3
+- (int)StringAsIdiom:(id)idiom
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHONE"])
+  idiomCopy = idiom;
+  if ([idiomCopy isEqualToString:@"PHONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PAD"])
+  else if ([idiomCopy isEqualToString:@"PAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WATCH"])
+  else if ([idiomCopy isEqualToString:@"WATCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HOME_POD"])
+  else if ([idiomCopy isEqualToString:@"HOME_POD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CARPLAY"])
+  else if ([idiomCopy isEqualToString:@"CARPLAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([idiomCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MAC"])
+  else if ([idiomCopy isEqualToString:@"MAC"])
   {
     v4 = 7;
   }
@@ -2246,9 +2246,9 @@ LABEL_157:
   return v4;
 }
 
-- (void)setHasIdiom:(BOOL)a3
+- (void)setHasIdiom:(BOOL)idiom
 {
-  if (a3)
+  if (idiom)
   {
     v3 = 64;
   }
@@ -2261,10 +2261,10 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setIdiom:(int)a3
+- (void)setIdiom:(int)idiom
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (idiom == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFFBF;
   }
@@ -2272,40 +2272,40 @@ LABEL_157:
   else
   {
     *&self->_has = has | 0x40;
-    self->_idiom = a3;
+    self->_idiom = idiom;
   }
 }
 
-- (void)addForceNeedsValueForParameter:(id)a3
+- (void)addForceNeedsValueForParameter:(id)parameter
 {
-  v4 = a3;
+  parameterCopy = parameter;
   forceNeedsValueForParameters = self->_forceNeedsValueForParameters;
-  v8 = v4;
+  v8 = parameterCopy;
   if (!forceNeedsValueForParameters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_forceNeedsValueForParameters;
-    self->_forceNeedsValueForParameters = v6;
+    self->_forceNeedsValueForParameters = array;
 
-    v4 = v8;
+    parameterCopy = v8;
     forceNeedsValueForParameters = self->_forceNeedsValueForParameters;
   }
 
-  [(NSArray *)forceNeedsValueForParameters addObject:v4];
+  [(NSArray *)forceNeedsValueForParameters addObject:parameterCopy];
 }
 
-- (void)setForceNeedsValueForParameters:(id)a3
+- (void)setForceNeedsValueForParameters:(id)parameters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [parameters mutableCopy];
   forceNeedsValueForParameters = self->_forceNeedsValueForParameters;
   self->_forceNeedsValueForParameters = v4;
 
   MEMORY[0x1EEE66BB8](v4, forceNeedsValueForParameters);
 }
 
-- (void)setHasEndpointMediaPlaybackEnabled:(BOOL)a3
+- (void)setHasEndpointMediaPlaybackEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -2318,18 +2318,18 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setEndpointId:(id)a3
+- (void)setEndpointId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   endpointId = self->_endpointId;
   self->_endpointId = v4;
 
   MEMORY[0x1EEE66BB8](v4, endpointId);
 }
 
-- (void)setHasConfirmed:(BOOL)a3
+- (void)setHasConfirmed:(BOOL)confirmed
 {
-  if (a3)
+  if (confirmed)
   {
     v3 = 16;
   }
@@ -2342,9 +2342,9 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasBypassAppProtectionAuthentication:(BOOL)a3
+- (void)setHasBypassAppProtectionAuthentication:(BOOL)authentication
 {
-  if (a3)
+  if (authentication)
   {
     v3 = 8;
   }
@@ -2357,9 +2357,9 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBackgroundLaunch:(BOOL)a3
+- (void)setHasBackgroundLaunch:(BOOL)launch
 {
-  if (a3)
+  if (launch)
   {
     v3 = 4;
   }
@@ -2372,67 +2372,67 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setAuditTokenData:(id)a3
+- (void)setAuditTokenData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   auditTokenData = self->_auditTokenData;
   self->_auditTokenData = v4;
 
   MEMORY[0x1EEE66BB8](v4, auditTokenData);
 }
 
-- (void)addAirPlayRouteIds:(id)a3
+- (void)addAirPlayRouteIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   airPlayRouteIds = self->_airPlayRouteIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!airPlayRouteIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_airPlayRouteIds;
-    self->_airPlayRouteIds = v6;
+    self->_airPlayRouteIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     airPlayRouteIds = self->_airPlayRouteIds;
   }
 
-  [(NSArray *)airPlayRouteIds addObject:v4];
+  [(NSArray *)airPlayRouteIds addObject:idsCopy];
 }
 
-- (void)setAirPlayRouteIds:(id)a3
+- (void)setAirPlayRouteIds:(id)ids
 {
-  v4 = [a3 mutableCopy];
+  v4 = [ids mutableCopy];
   airPlayRouteIds = self->_airPlayRouteIds;
   self->_airPlayRouteIds = v4;
 
   MEMORY[0x1EEE66BB8](v4, airPlayRouteIds);
 }
 
-- (void)setSystemUIExtensionBundleId:(id)a3
+- (void)setSystemUIExtensionBundleId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   systemUIExtensionBundleId = self->_systemUIExtensionBundleId;
   self->_systemUIExtensionBundleId = v4;
 
   MEMORY[0x1EEE66BB8](v4, systemUIExtensionBundleId);
 }
 
-- (void)setSystemExtensionBundleId:(id)a3
+- (void)setSystemExtensionBundleId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   systemExtensionBundleId = self->_systemExtensionBundleId;
   self->_systemExtensionBundleId = v4;
 
   MEMORY[0x1EEE66BB8](v4, systemExtensionBundleId);
 }
 
-- (int)StringAsRequiredEntitlements:(id)a3
+- (int)StringAsRequiredEntitlements:(id)entitlements
 {
-  v3 = a3;
+  entitlementsCopy = entitlements;
   v4 = 1;
-  if (([v3 isEqualToString:@"CONTACTS"] & 1) == 0)
+  if (([entitlementsCopy isEqualToString:@"CONTACTS"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"LOCATION"])
+    if ([entitlementsCopy isEqualToString:@"LOCATION"])
     {
       v4 = 2;
     }
@@ -2446,131 +2446,131 @@ LABEL_157:
   return v4;
 }
 
-- (void)addRequiredEntitlement:(int)a3
+- (void)addRequiredEntitlement:(int)entitlement
 {
-  if (a3 != 0x7FFFFFFF)
+  if (entitlement != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)setNanoLaunchId:(id)a3
+- (void)setNanoLaunchId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   nanoLaunchId = self->_nanoLaunchId;
   self->_nanoLaunchId = v4;
 
   MEMORY[0x1EEE66BB8](v4, nanoLaunchId);
 }
 
-- (void)setLaunchId:(id)a3
+- (void)setLaunchId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   launchId = self->_launchId;
   self->_launchId = v4;
 
   MEMORY[0x1EEE66BB8](v4, launchId);
 }
 
-- (int)StringAsIntentCategory:(id)a3
+- (int)StringAsIntentCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CATEGORY_INFORMATION"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"CATEGORY_INFORMATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_AUDIO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_AUDIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_VIDEO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_ORDER"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_ORDER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_NAVIGATION"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_NAVIGATION"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_START"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_START"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SHARE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SHARE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CREATE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CREATE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SEARCH"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SEARCH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_TOGGLE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_TOGGLE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_DOWNLOAD"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_DOWNLOAD"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_LOG"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_LOG"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CHECK_IN"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CHECK_IN"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_WORKFLOW"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_WORKFLOW"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_REQUEST"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_REQUEST"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SET"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SET"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CALL_AUDIO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CALL_AUDIO"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CALL_VIDEO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CALL_VIDEO"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_SOUND"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_SOUND"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_USER_ACTIVITY"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_USER_ACTIVITY"])
   {
     v4 = 21;
   }
@@ -2583,9 +2583,9 @@ LABEL_157:
   return v4;
 }
 
-- (void)setHasIntentCategory:(BOOL)a3
+- (void)setHasIntentCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 2;
   }
@@ -2598,10 +2598,10 @@ LABEL_157:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setIntentCategory:(int)a3
+- (void)setIntentCategory:(int)category
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (category == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFFFD;
   }
@@ -2609,59 +2609,59 @@ LABEL_157:
   else
   {
     *&self->_has = has | 2;
-    self->_intentCategory = a3;
+    self->_intentCategory = category;
   }
 }
 
-- (int)StringAsExecutionContext:(id)a3
+- (int)StringAsExecutionContext:(id)context
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ASSISTANT_DIALOG"])
+  contextCopy = context;
+  if ([contextCopy isEqualToString:@"ASSISTANT_DIALOG"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ASSISTANT_VOICE_SHORTCUT"])
+  else if ([contextCopy isEqualToString:@"ASSISTANT_VOICE_SHORTCUT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"COVER_SHEET_PREDICTION"])
+  else if ([contextCopy isEqualToString:@"COVER_SHEET_PREDICTION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SPOTLIGHT_PREDICTION"])
+  else if ([contextCopy isEqualToString:@"SPOTLIGHT_PREDICTION"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SPOTLIGHT_SEARCH"])
+  else if ([contextCopy isEqualToString:@"SPOTLIGHT_SEARCH"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MAPS"])
+  else if ([contextCopy isEqualToString:@"MAPS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"WORKFLOW"])
+  else if ([contextCopy isEqualToString:@"WORKFLOW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"WATCH_FACE"])
+  else if ([contextCopy isEqualToString:@"WATCH_FACE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ASSISTANT_VOICE_SHORTCUT_VIA_CLOUD_RELAY"])
+  else if ([contextCopy isEqualToString:@"ASSISTANT_VOICE_SHORTCUT_VIA_CLOUD_RELAY"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CARPLAY_HOME_SCREEN"])
+  else if ([contextCopy isEqualToString:@"CARPLAY_HOME_SCREEN"])
   {
     v4 = 10;
   }
@@ -2674,10 +2674,10 @@ LABEL_157:
   return v4;
 }
 
-- (void)setExecutionContext:(int)a3
+- (void)setExecutionContext:(int)context
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (context == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFFFE;
   }
@@ -2685,63 +2685,63 @@ LABEL_157:
   else
   {
     *&self->_has = has | 1;
-    self->_executionContext = a3;
+    self->_executionContext = context;
   }
 }
 
-- (void)setCategoryVerb:(id)a3
+- (void)setCategoryVerb:(id)verb
 {
-  v4 = [a3 copy];
+  v4 = [verb copy];
   categoryVerb = self->_categoryVerb;
   self->_categoryVerb = v4;
 
   MEMORY[0x1EEE66BB8](v4, categoryVerb);
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v76 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  encoderCopy = encoder;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(_INPBIntentMetadata *)self categoryVerb];
-  [v6 if_setObjectIfNonNil:v7 forKey:@"categoryVerb"];
+  categoryVerb = [(_INPBIntentMetadata *)self categoryVerb];
+  [v6 if_setObjectIfNonNil:categoryVerb forKey:@"categoryVerb"];
 
-  v8 = [(_INPBIntentMetadata *)self launchId];
-  [v6 if_setObjectIfNonNil:v8 forKey:@"launchId"];
+  launchId = [(_INPBIntentMetadata *)self launchId];
+  [v6 if_setObjectIfNonNil:launchId forKey:@"launchId"];
 
-  v9 = [(_INPBIntentMetadata *)self nanoLaunchId];
-  [v6 if_setObjectIfNonNil:v9 forKey:@"nanoLaunchId"];
+  nanoLaunchId = [(_INPBIntentMetadata *)self nanoLaunchId];
+  [v6 if_setObjectIfNonNil:nanoLaunchId forKey:@"nanoLaunchId"];
 
-  v10 = [(_INPBIntentMetadata *)self systemExtensionBundleId];
-  [v6 if_setObjectIfNonNil:v10 forKey:@"systemExtensionBundleId"];
+  systemExtensionBundleId = [(_INPBIntentMetadata *)self systemExtensionBundleId];
+  [v6 if_setObjectIfNonNil:systemExtensionBundleId forKey:@"systemExtensionBundleId"];
 
-  v11 = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
-  [v6 if_setObjectIfNonNil:v11 forKey:@"systemUIExtensionBundleId"];
+  systemUIExtensionBundleId = [(_INPBIntentMetadata *)self systemUIExtensionBundleId];
+  [v6 if_setObjectIfNonNil:systemUIExtensionBundleId forKey:@"systemUIExtensionBundleId"];
 
-  v12 = [(_INPBIntentMetadata *)self intentDescription];
-  [v6 if_setObjectIfNonNil:v12 forKey:@"intentDescription"];
+  intentDescription = [(_INPBIntentMetadata *)self intentDescription];
+  [v6 if_setObjectIfNonNil:intentDescription forKey:@"intentDescription"];
 
-  v13 = [(_INPBIntentMetadata *)self intentId];
-  [v6 if_setObjectIfNonNil:v13 forKey:@"intentId"];
+  intentId = [(_INPBIntentMetadata *)self intentId];
+  [v6 if_setObjectIfNonNil:intentId forKey:@"intentId"];
 
-  v14 = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
-  [v6 if_setObjectIfNonNil:v14 forKey:@"originatingDeviceIdsIdentifier"];
+  originatingDeviceIdsIdentifier = [(_INPBIntentMetadata *)self originatingDeviceIdsIdentifier];
+  [v6 if_setObjectIfNonNil:originatingDeviceIdsIdentifier forKey:@"originatingDeviceIdsIdentifier"];
 
-  v15 = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
-  [v6 if_setObjectIfNonNil:v15 forKey:@"suggestedInvocationPhrase"];
+  suggestedInvocationPhrase = [(_INPBIntentMetadata *)self suggestedInvocationPhrase];
+  [v6 if_setObjectIfNonNil:suggestedInvocationPhrase forKey:@"suggestedInvocationPhrase"];
 
-  v16 = [(_INPBIntentMetadata *)self auditTokenData];
-  v17 = [v5 encodeObject:v16];
+  auditTokenData = [(_INPBIntentMetadata *)self auditTokenData];
+  v17 = [encoderCopy encodeObject:auditTokenData];
   [v6 if_setObjectIfNonNil:v17 forKey:@"auditTokenData"];
 
-  v18 = [(_INPBIntentMetadata *)self endpointId];
-  [v6 if_setObjectIfNonNil:v18 forKey:@"endpointId"];
+  endpointId = [(_INPBIntentMetadata *)self endpointId];
+  [v6 if_setObjectIfNonNil:endpointId forKey:@"endpointId"];
 
-  v19 = [(_INPBIntentMetadata *)self mediaRouteId];
-  [v6 if_setObjectIfNonNil:v19 forKey:@"mediaRouteId"];
+  mediaRouteId = [(_INPBIntentMetadata *)self mediaRouteId];
+  [v6 if_setObjectIfNonNil:mediaRouteId forKey:@"mediaRouteId"];
 
-  v20 = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
-  [v6 if_setObjectIfNonNil:v20 forKey:@"preferredAudioOutputRouteId"];
+  preferredAudioOutputRouteId = [(_INPBIntentMetadata *)self preferredAudioOutputRouteId];
+  [v6 if_setObjectIfNonNil:preferredAudioOutputRouteId forKey:@"preferredAudioOutputRouteId"];
 
   [v6 if_setBoolIfYES:-[_INPBIntentMetadata msLimitReached](self forKey:{"msLimitReached"), @"msLimitReached"}];
   [v6 if_setBoolIfYES:-[_INPBIntentMetadata endpointMediaPlaybackEnabled](self forKey:{"endpointMediaPlaybackEnabled"), @"endpointMediaPlaybackEnabled"}];
@@ -2756,15 +2756,15 @@ LABEL_157:
 
   if ([(_INPBIntentMetadata *)self hasExecutionContext])
   {
-    v22 = [(_INPBIntentMetadata *)self executionContext];
-    if ((v22 - 1) >= 0xA)
+    executionContext = [(_INPBIntentMetadata *)self executionContext];
+    if ((executionContext - 1) >= 0xA)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v22];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", executionContext];
     }
 
     else
     {
-      v23 = off_1E7281B78[(v22 - 1)];
+      v23 = off_1E7281B78[(executionContext - 1)];
     }
 
     [v6 if_setObjectIfNonNil:v23 forKey:@"executionContext"];
@@ -2777,16 +2777,16 @@ LABEL_157:
 
   if ([(_INPBIntentMetadata *)self hasIntentCategory])
   {
-    v24 = [(_INPBIntentMetadata *)self intentCategory];
-    v25 = v24 - 1;
-    if (v24 - 1) < 0x15 && ((0x1FFDFFu >> v25))
+    intentCategory = [(_INPBIntentMetadata *)self intentCategory];
+    v25 = intentCategory - 1;
+    if (intentCategory - 1) < 0x15 && ((0x1FFDFFu >> v25))
     {
       v26 = off_1E7281BC8[v25];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v24];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intentCategory];
     }
 
     [v6 if_setObjectIfNonNil:v26 forKey:@"intentCategory"];
@@ -2803,33 +2803,33 @@ LABEL_157:
     goto LABEL_29;
   }
 
-  v27 = [(_INPBIntentMetadata *)self triggerMethod];
-  if (v27 > 19)
+  triggerMethod = [(_INPBIntentMetadata *)self triggerMethod];
+  if (triggerMethod > 19)
   {
-    if (v27 == 20)
+    if (triggerMethod == 20)
     {
       v28 = @"RemoteButton";
       goto LABEL_28;
     }
 
-    if (v27 == 30)
+    if (triggerMethod == 30)
     {
       v28 = @"VoiceTrigger";
       goto LABEL_28;
     }
 
 LABEL_25:
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v27];
+    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", triggerMethod];
     goto LABEL_28;
   }
 
-  if (!v27)
+  if (!triggerMethod)
   {
     v28 = @"Other";
     goto LABEL_28;
   }
 
-  if (v27 != 10)
+  if (triggerMethod != 10)
   {
     goto LABEL_25;
   }
@@ -2839,24 +2839,24 @@ LABEL_28:
   [v6 if_setObjectIfNonNil:v28 forKey:@"triggerMethod"];
 
 LABEL_29:
-  v29 = [(_INPBIntentMetadata *)self defaultImageValue];
-  v30 = INIntentSlotValueTransformFromImageValue(v29);
-  v31 = v5;
-  v32 = [v5 encodeObject:v30];
+  defaultImageValue = [(_INPBIntentMetadata *)self defaultImageValue];
+  v30 = INIntentSlotValueTransformFromImageValue(defaultImageValue);
+  v31 = encoderCopy;
+  v32 = [encoderCopy encodeObject:v30];
   v64 = v6;
   [v6 if_setObjectIfNonNil:v32 forKey:@"defaultImageValue"];
 
   v33 = MEMORY[0x1E695DF90];
-  v34 = [(_INPBIntentMetadata *)self parameterImages];
-  v65 = [v33 dictionaryWithCapacity:{objc_msgSend(v34, "count")}];
+  parameterImages = [(_INPBIntentMetadata *)self parameterImages];
+  v65 = [v33 dictionaryWithCapacity:{objc_msgSend(parameterImages, "count")}];
 
   v72 = 0u;
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v63 = self;
-  v35 = [(_INPBIntentMetadata *)self parameterImages];
-  v36 = [v35 countByEnumeratingWithState:&v70 objects:v75 count:16];
+  selfCopy = self;
+  parameterImages2 = [(_INPBIntentMetadata *)self parameterImages];
+  v36 = [parameterImages2 countByEnumeratingWithState:&v70 objects:v75 count:16];
   if (v36)
   {
     v37 = v36;
@@ -2867,19 +2867,19 @@ LABEL_29:
       {
         if (*v71 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(parameterImages2);
         }
 
         v40 = *(*(&v70 + 1) + 8 * i);
-        v41 = [v40 pairImageValues];
-        v42 = [v41 firstObject];
-        v43 = INIntentSlotValueTransformFromImageValue(v42);
+        pairImageValues = [v40 pairImageValues];
+        firstObject = [pairImageValues firstObject];
+        v43 = INIntentSlotValueTransformFromImageValue(firstObject);
         v44 = [v31 encodeObject:v43];
         v45 = [v40 key];
         [v65 if_setObjectIfNonNil:v44 forKey:v45];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v70 objects:v75 count:16];
+      v37 = [parameterImages2 countByEnumeratingWithState:&v70 objects:v75 count:16];
     }
 
     while (v37);
@@ -2895,8 +2895,8 @@ LABEL_29:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v47 = [(_INPBIntentMetadata *)v63 forceNeedsValueForParameters];
-  v48 = [v47 countByEnumeratingWithState:&v66 objects:v74 count:16];
+  forceNeedsValueForParameters = [(_INPBIntentMetadata *)selfCopy forceNeedsValueForParameters];
+  v48 = [forceNeedsValueForParameters countByEnumeratingWithState:&v66 objects:v74 count:16];
   if (v48)
   {
     v49 = v48;
@@ -2907,14 +2907,14 @@ LABEL_29:
       {
         if (*v67 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(forceNeedsValueForParameters);
         }
 
         v52 = [v31 encodeObject:*(*(&v66 + 1) + 8 * j)];
         [v46 if_addObjectIfNonNil:v52];
       }
 
-      v49 = [v47 countByEnumeratingWithState:&v66 objects:v74 count:16];
+      v49 = [forceNeedsValueForParameters countByEnumeratingWithState:&v66 objects:v74 count:16];
     }
 
     while (v49);
@@ -2925,13 +2925,13 @@ LABEL_29:
     [v64 if_setObjectIfNonNil:v46 forKey:@"forceNeedsValueForParameters"];
   }
 
-  v53 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[_INPBIntentMetadata requiredEntitlementsCount](v63, "requiredEntitlementsCount")}];
-  if ([(_INPBIntentMetadata *)v63 requiredEntitlementsCount])
+  v53 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[_INPBIntentMetadata requiredEntitlementsCount](selfCopy, "requiredEntitlementsCount")}];
+  if ([(_INPBIntentMetadata *)selfCopy requiredEntitlementsCount])
   {
     v54 = 0;
     do
     {
-      v55 = [(_INPBIntentMetadata *)v63 requiredEntitlementAtIndex:v54];
+      v55 = [(_INPBIntentMetadata *)selfCopy requiredEntitlementAtIndex:v54];
       if (v55 == 1)
       {
         v56 = @"CONTACTS";
@@ -2952,7 +2952,7 @@ LABEL_29:
       ++v54;
     }
 
-    while (v54 < [(_INPBIntentMetadata *)v63 requiredEntitlementsCount]);
+    while (v54 < [(_INPBIntentMetadata *)selfCopy requiredEntitlementsCount]);
   }
 
   if ([v53 count])
@@ -2960,13 +2960,13 @@ LABEL_29:
     [v64 if_setObjectIfNonNil:v53 forKey:@"requiredEntitlements"];
   }
 
-  v57 = [(_INPBIntentMetadata *)v63 userUtterance];
-  v58 = INIntentSlotValueTransformFromString(v57);
+  userUtterance = [(_INPBIntentMetadata *)selfCopy userUtterance];
+  v58 = INIntentSlotValueTransformFromString(userUtterance);
   [v64 if_setObjectIfNonNil:v58 forKey:@"userUtterance"];
 
-  if ([(_INPBIntentMetadata *)v63 hasVersioningHash])
+  if ([(_INPBIntentMetadata *)selfCopy hasVersioningHash])
   {
-    v59 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBIntentMetadata versioningHash](v63, "versioningHash")}];
+    v59 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_INPBIntentMetadata versioningHash](selfCopy, "versioningHash")}];
     [v64 if_setObjectIfNonNil:v59 forKey:@"versioningHash"];
   }
 
@@ -2977,19 +2977,19 @@ LABEL_29:
   return v60;
 }
 
-- (void)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
+- (void)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
   v158 = *MEMORY[0x1E69E9840];
-  v141 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  decoderCopy = decoder;
+  descriptionCopy = description;
+  fromCopy = from;
+  if (fromCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v138 = v7;
-    v9 = v8;
+    v138 = descriptionCopy;
+    v9 = fromCopy;
 
     v10 = [v9 objectForKeyedSubscript:@"categoryVerb"];
-    v136 = v8;
+    v136 = fromCopy;
     if (v10)
     {
       objc_opt_class();
@@ -3219,7 +3219,7 @@ LABEL_29:
 
     v40 = v39;
 
-    v41 = [v141 decodeObjectOfClass:v37 from:v40];
+    v41 = [decoderCopy decodeObjectOfClass:v37 from:v40];
     [(_INPBIntentMetadata *)self if_setValueIfNonNil:v41 forKey:@"auditTokenData"];
 
     v42 = [v9 objectForKeyedSubscript:@"endpointId"];
@@ -3690,7 +3690,7 @@ LABEL_29:
 
     v82 = objc_opt_class();
     v83 = [v9 objectForKeyedSubscript:@"defaultImageValue"];
-    v84 = [v141 decodeObjectOfClass:v82 from:v83];
+    v84 = [decoderCopy decodeObjectOfClass:v82 from:v83];
     v85 = INIntentSlotValueTransformToImageValue(v84);
     [(_INPBIntentMetadata *)self setDefaultImageValue:v85];
 
@@ -3721,8 +3721,8 @@ LABEL_29:
     v151 = 0u;
     v152 = 0u;
     v140 = v88;
-    v89 = [v88 allKeys];
-    v90 = [v89 countByEnumeratingWithState:&v151 objects:v157 count:16];
+    allKeys = [v88 allKeys];
+    v90 = [allKeys countByEnumeratingWithState:&v151 objects:v157 count:16];
     if (v90)
     {
       v91 = v90;
@@ -3733,7 +3733,7 @@ LABEL_29:
         {
           if (*v152 != v92)
           {
-            objc_enumerationMutation(v89);
+            objc_enumerationMutation(allKeys);
           }
 
           v94 = *(*(&v151 + 1) + 8 * i);
@@ -3764,7 +3764,7 @@ LABEL_29:
             [(_INPBPair *)v97 setKey:v94];
             v98 = objc_opt_class();
             v99 = [v140 objectForKeyedSubscript:v94];
-            v100 = [v141 decodeObjectOfClass:v98 from:v99];
+            v100 = [decoderCopy decodeObjectOfClass:v98 from:v99];
             v101 = INIntentSlotValueTransformToImageValue(v100);
             [(_INPBPair *)v97 addPairImageValue:v101];
 
@@ -3772,7 +3772,7 @@ LABEL_29:
           }
         }
 
-        v91 = [v89 countByEnumeratingWithState:&v151 objects:v157 count:16];
+        v91 = [allKeys countByEnumeratingWithState:&v151 objects:v157 count:16];
       }
 
       while (v91);
@@ -3996,8 +3996,8 @@ LABEL_29:
       -[_INPBIntentMetadata setVersioningHash:](self, "setVersioningHash:", [v134 unsignedLongLongValue]);
     }
 
-    v8 = v137;
-    v7 = v138;
+    fromCopy = v137;
+    descriptionCopy = v138;
   }
 
   else
@@ -4007,13 +4007,13 @@ LABEL_29:
   v135 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  fromCopy = from;
+  descriptionCopy = description;
+  decoderCopy = decoder;
   v10 = objc_alloc_init(_INPBIntentMetadata);
-  [(_INPBIntentMetadata *)v10 _intents_decodeWithJSONDecoder:v9 codableDescription:v8 from:v7];
+  [(_INPBIntentMetadata *)v10 _intents_decodeWithJSONDecoder:decoderCopy codableDescription:descriptionCopy from:fromCopy];
 
   return v10;
 }

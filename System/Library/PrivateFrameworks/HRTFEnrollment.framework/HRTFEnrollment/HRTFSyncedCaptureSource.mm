@@ -1,31 +1,31 @@
 @interface HRTFSyncedCaptureSource
-- (BOOL)_configureVideoOutputsForDevice:(id)a3 inSession:(id)a4;
+- (BOOL)_configureVideoOutputsForDevice:(id)device inSession:(id)session;
 - (BOOL)_initialize;
-- (BOOL)_verifyCaptureDevice:(id)a3;
-- (HRTFSyncedCaptureSource)initWithQueue:(id)a3 options:(id *)a4;
+- (BOOL)_verifyCaptureDevice:(id)device;
+- (HRTFSyncedCaptureSource)initWithQueue:(id)queue options:(id *)options;
 - (HRTFSyncedCaptureSourceDelegate)delegate;
-- (void)_handleCaptureSessionNotification:(id)a3;
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4;
+- (void)_handleCaptureSessionNotification:(id)notification;
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection;
 - (void)startCaptureSession;
 - (void)stopCaptureSession;
 @end
 
 @implementation HRTFSyncedCaptureSource
 
-- (BOOL)_verifyCaptureDevice:(id)a3
+- (BOOL)_verifyCaptureDevice:(id)device
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v5 = [v4 formats];
-  v6 = [v5 countByEnumeratingWithState:&v57 objects:v64 count:16];
+  formats = [deviceCopy formats];
+  v6 = [formats countByEnumeratingWithState:&v57 objects:v64 count:16];
   if (v6)
   {
     v7 = v6;
-    v50 = v4;
+    v50 = deviceCopy;
     v51 = 0;
     v8 = 0;
     v9 = *v58;
@@ -35,19 +35,19 @@
       {
         if (*v58 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(formats);
         }
 
         v11 = *(*(&v57 + 1) + 8 * i);
-        v12 = [v11 supportedDepthDataFormats];
-        v13 = [v12 count];
+        supportedDepthDataFormats = [v11 supportedDepthDataFormats];
+        v13 = [supportedDepthDataFormats count];
 
         if (v13)
         {
-          v14 = [v11 formatDescription];
-          if (CMFormatDescriptionGetMediaSubType(v14) == self->_preferredPixelFormat)
+          formatDescription = [v11 formatDescription];
+          if (CMFormatDescriptionGetMediaSubType(formatDescription) == self->_preferredPixelFormat)
           {
-            Dimensions = CMVideoFormatDescriptionGetDimensions(v14);
+            Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
             v16 = Dimensions;
             if (self->_preferredColorResolutionX >= Dimensions)
             {
@@ -77,14 +77,14 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v57 objects:v64 count:16];
+      v7 = [formats countByEnumeratingWithState:&v57 objects:v64 count:16];
       v19 = v51;
     }
 
     while (v7);
 LABEL_20:
 
-    v4 = v50;
+    deviceCopy = v50;
     if (v19)
     {
       v49 = v19;
@@ -100,9 +100,9 @@ LABEL_20:
         finalColorFormat = self->_finalColorFormat;
         v22 = v20;
         v23 = [(AVCaptureDeviceFormat *)finalColorFormat description];
-        v24 = [v23 UTF8String];
+        uTF8String = [v23 UTF8String];
         *buf = 136315138;
-        v63 = v24;
+        v63 = uTF8String;
         _os_log_impl(&dword_250984000, v22, OS_LOG_TYPE_INFO, "capture device color format: %s", buf, 0xCu);
       }
 
@@ -110,8 +110,8 @@ LABEL_20:
       v56 = 0u;
       v53 = 0u;
       v54 = 0u;
-      v25 = [v19 supportedDepthDataFormats];
-      v26 = [v25 countByEnumeratingWithState:&v53 objects:v61 count:16];
+      supportedDepthDataFormats2 = [v19 supportedDepthDataFormats];
+      v26 = [supportedDepthDataFormats2 countByEnumeratingWithState:&v53 objects:v61 count:16];
       if (v26)
       {
         v27 = v26;
@@ -124,14 +124,14 @@ LABEL_20:
           {
             if (*v54 != v29)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(supportedDepthDataFormats2);
             }
 
             v31 = *(*(&v53 + 1) + 8 * j);
-            v32 = [v31 formatDescription];
-            if (CMFormatDescriptionGetMediaSubType(v32) == self->_preferredDepthFormat)
+            formatDescription2 = [v31 formatDescription];
+            if (CMFormatDescriptionGetMediaSubType(formatDescription2) == self->_preferredDepthFormat)
             {
-              v33 = CMVideoFormatDescriptionGetDimensions(v32);
+              v33 = CMVideoFormatDescriptionGetDimensions(formatDescription2);
               v34 = v33;
               if (self->_preferredDepthResolutionX >= v33)
               {
@@ -160,14 +160,14 @@ LABEL_20:
             }
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v53 objects:v61 count:16];
+          v27 = [supportedDepthDataFormats2 countByEnumeratingWithState:&v53 objects:v61 count:16];
           v37 = v52;
         }
 
         while (v27);
 LABEL_43:
 
-        v4 = v50;
+        deviceCopy = v50;
         if (v37)
         {
           objc_storeStrong(&self->_finalDepthFormat, v37);
@@ -183,9 +183,9 @@ LABEL_43:
             finalDepthFormat = self->_finalDepthFormat;
             v41 = v39;
             v42 = [(AVCaptureDeviceFormat *)finalDepthFormat description];
-            v43 = [v42 UTF8String];
+            uTF8String2 = [v42 UTF8String];
             *buf = 136315138;
-            v63 = v43;
+            v63 = uTF8String2;
             _os_log_impl(&dword_250984000, v41, OS_LOG_TYPE_INFO, "capture device depth format: %s", buf, 0xCu);
           }
 
@@ -241,16 +241,16 @@ LABEL_62:
   return v44;
 }
 
-- (BOOL)_configureVideoOutputsForDevice:(id)a3 inSession:(id)a4
+- (BOOL)_configureVideoOutputsForDevice:(id)device inSession:(id)session
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  [v5 beginConfiguration];
+  sessionCopy = session;
+  [sessionCopy beginConfiguration];
   v6 = objc_alloc_init(MEMORY[0x277CE5B60]);
   [v6 setAlwaysDiscardsLateVideoFrames:1];
-  if ([v5 canAddOutput:v6])
+  if ([sessionCopy canAddOutput:v6])
   {
-    [v5 addOutput:v6];
+    [sessionCopy addOutput:v6];
     v7 = [v6 connectionWithMediaType:*MEMORY[0x277CE5EA8]];
     v8 = v7;
     if (v7)
@@ -269,9 +269,9 @@ LABEL_62:
   v9 = objc_alloc_init(MEMORY[0x277CE5AC0]);
   [v9 setFilteringEnabled:0];
   [v9 setAlwaysDiscardsLateDepthData:1];
-  if ([v5 canAddOutput:v9])
+  if ([sessionCopy canAddOutput:v9])
   {
-    [v5 addOutput:v9];
+    [sessionCopy addOutput:v9];
     v10 = [v9 connectionWithMediaType:*MEMORY[0x277CE5E60]];
     v11 = v10;
     if (v10)
@@ -287,12 +287,12 @@ LABEL_62:
 
   objc_storeStrong(&self->_depthDataOutput, v9);
   v12 = objc_alloc_init(MEMORY[0x277CE5B00]);
-  if ([v5 canAddOutput:v12])
+  if ([sessionCopy canAddOutput:v12])
   {
-    [v5 addOutput:v12];
-    v13 = [(AVCaptureMetadataOutput *)v12 availableMetadataObjectTypes];
+    [sessionCopy addOutput:v12];
+    availableMetadataObjectTypes = [(AVCaptureMetadataOutput *)v12 availableMetadataObjectTypes];
     v14 = *MEMORY[0x277CE5A50];
-    v15 = [v13 containsObject:*MEMORY[0x277CE5A50]];
+    v15 = [availableMetadataObjectTypes containsObject:*MEMORY[0x277CE5A50]];
 
     if (v15)
     {
@@ -306,10 +306,10 @@ LABEL_62:
   self->_metadataOutput = v12;
   v18 = v12;
 
-  [v5 commitConfiguration];
+  [sessionCopy commitConfiguration];
   v19 = objc_alloc(MEMORY[0x277CE5AB8]);
-  v20 = [v5 outputs];
-  v21 = [v19 initWithDataOutputs:v20];
+  outputs = [sessionCopy outputs];
+  v21 = [v19 initWithDataOutputs:outputs];
 
   [(AVCaptureDataOutputSynchronizer *)v21 setDelegate:self queue:self->_queue];
   outputSynchronizer = self->_outputSynchronizer;
@@ -327,9 +327,9 @@ LABEL_62:
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
   v5 = [v3 discoverySessionWithDeviceTypes:v4 mediaType:*MEMORY[0x277CE5EA8] position:2];
 
-  v6 = [v5 devices];
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  devices = [v5 devices];
+  v7 = devices;
+  if (!devices || ![devices count])
   {
     if (onceTokenHRTFSyncedCaptureSource != -1)
     {
@@ -404,9 +404,9 @@ LABEL_62:
           {
             v21 = v20;
             v22 = [v19 description];
-            v23 = [v22 UTF8String];
+            uTF8String = [v22 UTF8String];
             *buf = 136315138;
-            v46 = v23;
+            v46 = uTF8String;
             _os_log_impl(&dword_250984000, v21, OS_LOG_TYPE_ERROR, "failed to create input device: %s", buf, 0xCu);
           }
 
@@ -435,9 +435,9 @@ LABEL_62:
             {
               v30 = v29;
               v31 = [v19 description];
-              v32 = [v31 UTF8String];
+              uTF8String2 = [v31 UTF8String];
               *buf = 136315138;
-              v46 = v32;
+              v46 = uTF8String2;
               _os_log_impl(&dword_250984000, v30, OS_LOG_TYPE_ERROR, "failed to lock device for configuration: %s", buf, 0xCu);
             }
 
@@ -521,22 +521,22 @@ LABEL_27:
   return v24;
 }
 
-- (HRTFSyncedCaptureSource)initWithQueue:(id)a3 options:(id *)a4
+- (HRTFSyncedCaptureSource)initWithQueue:(id)queue options:(id *)options
 {
-  v7 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = HRTFSyncedCaptureSource;
   v8 = [(HRTFSyncedCaptureSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    v9->_preferredPixelFormat = a4->var0;
-    v9->_preferredDepthFormat = a4->var1;
-    v9->_preferredColorResolutionX = a4->var2;
-    v9->_preferredColorResolutionY = a4->var3;
-    v9->_preferredDepthResolutionX = a4->var4;
-    v9->_preferredDepthResolutionY = a4->var5;
+    objc_storeStrong(&v8->_queue, queue);
+    v9->_preferredPixelFormat = options->var0;
+    v9->_preferredDepthFormat = options->var1;
+    v9->_preferredColorResolutionX = options->var2;
+    v9->_preferredColorResolutionY = options->var3;
+    v9->_preferredDepthResolutionX = options->var4;
+    v9->_preferredDepthResolutionY = options->var5;
     if (![(HRTFSyncedCaptureSource *)v9 _initialize])
     {
 
@@ -547,13 +547,13 @@ LABEL_27:
   return v9;
 }
 
-- (void)dataOutputSynchronizer:(id)a3 didOutputSynchronizedDataCollection:(id)a4
+- (void)dataOutputSynchronizer:(id)synchronizer didOutputSynchronizedDataCollection:(id)collection
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:self->_colorDataOutput];
-  v7 = [v5 objectForKeyedSubscript:self->_depthDataOutput];
-  v8 = [v5 objectForKeyedSubscript:self->_metadataOutput];
+  collectionCopy = collection;
+  v6 = [collectionCopy objectForKeyedSubscript:self->_colorDataOutput];
+  v7 = [collectionCopy objectForKeyedSubscript:self->_depthDataOutput];
+  v8 = [collectionCopy objectForKeyedSubscript:self->_metadataOutput];
   v9 = v8;
   if (v6)
   {
@@ -572,15 +572,15 @@ LABEL_27:
       goto LABEL_17;
     }
 
-    v11 = [v8 metadataObjects];
-    if (!v11)
+    metadataObjects = [v8 metadataObjects];
+    if (!metadataObjects)
     {
       goto LABEL_17;
     }
 
-    v12 = v11;
-    v13 = [v9 metadataObjects];
-    v14 = [v13 count];
+    v12 = metadataObjects;
+    metadataObjects2 = [v9 metadataObjects];
+    v14 = [metadataObjects2 count];
 
     if (v14)
     {
@@ -588,8 +588,8 @@ LABEL_27:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v15 = [v9 metadataObjects];
-      v16 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      metadataObjects3 = [v9 metadataObjects];
+      v16 = [metadataObjects3 countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v16)
       {
         v28 = v6;
@@ -600,7 +600,7 @@ LABEL_27:
           {
             if (*v30 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(metadataObjects3);
             }
 
             v19 = *(*(&v29 + 1) + 8 * i);
@@ -617,7 +617,7 @@ LABEL_27:
             }
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v29 objects:v35 count:16];
+          v16 = [metadataObjects3 countByEnumeratingWithState:&v29 objects:v35 count:16];
           if (v16)
           {
             continue;
@@ -662,12 +662,12 @@ LABEL_17:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCaptureSessionNotification:(id)a3
+- (void)_handleCaptureSessionNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CE5930]];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:*MEMORY[0x277CE5930]];
 
   if (v6)
   {
@@ -682,13 +682,13 @@ LABEL_17:
 
   else
   {
-    v9 = [v4 name];
-    v10 = [v9 isEqualToString:*MEMORY[0x277CE59C0]];
+    name2 = [notificationCopy name];
+    v10 = [name2 isEqualToString:*MEMORY[0x277CE59C0]];
 
     if (v10)
     {
-      v11 = [v4 userInfo];
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CE5940]];
+      userInfo = [notificationCopy userInfo];
+      v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE5940]];
 
       if (onceTokenHRTFSyncedCaptureSource != -1)
       {
@@ -733,11 +733,11 @@ LABEL_17:
     _os_log_impl(&dword_250984000, v3, OS_LOG_TYPE_INFO, "starting capture session\n", v6, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__handleCaptureSessionNotification_ name:*MEMORY[0x277CE5930] object:self->_captureSession];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleCaptureSessionNotification_ name:*MEMORY[0x277CE5930] object:self->_captureSession];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__handleCaptureSessionNotification_ name:*MEMORY[0x277CE59C0] object:self->_captureSession];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleCaptureSessionNotification_ name:*MEMORY[0x277CE59C0] object:self->_captureSession];
 
   [(AVCaptureSession *)self->_captureSession startRunning];
 }
@@ -759,11 +759,11 @@ LABEL_17:
     }
 
     [(AVCaptureSession *)self->_captureSession stopRunning];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277CE5930] object:self->_captureSession];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CE5930] object:self->_captureSession];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x277CE59C0] object:self->_captureSession];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277CE59C0] object:self->_captureSession];
   }
 }
 

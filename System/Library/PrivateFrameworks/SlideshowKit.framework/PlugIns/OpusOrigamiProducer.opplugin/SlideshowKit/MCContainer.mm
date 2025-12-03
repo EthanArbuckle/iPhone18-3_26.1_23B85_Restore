@@ -1,13 +1,13 @@
 @interface MCContainer
 - (MCAudioPlaylist)audioPlaylistCreateIfNeeded;
 - (MCContainer)init;
-- (MCContainer)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCContainer)initWithImprint:(id)imprint andMontage:(id)montage;
 - (id)imprint;
 - (id)specialRetain;
 - (void)dealloc;
 - (void)demolish;
 - (void)specialRelease;
-- (void)unreferenceByPlug:(id)a3;
+- (void)unreferenceByPlug:(id)plug;
 @end
 
 @implementation MCContainer
@@ -26,17 +26,17 @@
   [(MCObject *)&v2 dealloc];
 }
 
-- (MCContainer)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCContainer)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v9.receiver = self;
   v9.super_class = MCContainer;
   v6 = [MCObject initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v7 = +[MCObject objectWithImprint:andMontage:](MCObject, "objectWithImprint:andMontage:", [a3 objectForKey:@"audioPlaylist"], a4);
+    v7 = +[MCObject objectWithImprint:andMontage:](MCObject, "objectWithImprint:andMontage:", [imprint objectForKey:@"audioPlaylist"], montage);
     v6->mAudioPlaylist = v7;
     [(MCObject *)v7 setContainer:v6];
-    v6->mInitialState = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectForKey:", @"initialState"}];
+    v6->mInitialState = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(imprint, "objectForKey:", @"initialState"}];
   }
 
   return v6;
@@ -61,20 +61,20 @@
 {
   v7.receiver = self;
   v7.super_class = MCContainer;
-  v3 = [(MCObject *)&v7 imprint];
+  imprint = [(MCObject *)&v7 imprint];
   mAudioPlaylist = self->mAudioPlaylist;
   if (mAudioPlaylist)
   {
-    [v3 setObject:-[MCAudioPlaylist imprint](mAudioPlaylist forKey:{"imprint"), @"audioPlaylist"}];
+    [imprint setObject:-[MCAudioPlaylist imprint](mAudioPlaylist forKey:{"imprint"), @"audioPlaylist"}];
   }
 
   mInitialState = self->mInitialState;
   if (mInitialState)
   {
-    [v3 setObject:mInitialState forKey:@"initialState"];
+    [imprint setObject:mInitialState forKey:@"initialState"];
   }
 
-  return v3;
+  return imprint;
 }
 
 - (MCAudioPlaylist)audioPlaylistCreateIfNeeded
@@ -99,7 +99,7 @@
   return result;
 }
 
-- (void)unreferenceByPlug:(id)a3
+- (void)unreferenceByPlug:(id)plug
 {
   self->mReferencingPlug = 0;
   if (!self->mSpecialRetainCount)
@@ -113,10 +113,10 @@
 - (id)specialRetain
 {
   objc_sync_enter(self);
-  v3 = self;
+  selfCopy = self;
   ++self->mSpecialRetainCount;
   objc_sync_exit(self);
-  return v3;
+  return selfCopy;
 }
 
 - (void)specialRelease

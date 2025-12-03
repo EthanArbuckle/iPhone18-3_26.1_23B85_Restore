@@ -1,10 +1,10 @@
 @interface TSDMutableImageAdjustments
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSDMutableImageAdjustments
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(TSDImageAdjustments);
   *(result + 1) = *&self->super._exposure;

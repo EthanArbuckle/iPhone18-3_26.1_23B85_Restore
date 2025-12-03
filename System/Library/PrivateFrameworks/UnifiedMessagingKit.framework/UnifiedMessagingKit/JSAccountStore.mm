@@ -2,15 +2,15 @@
 - (_TtC25UnifiedMessagingKitJSCore9JSAccount)activeiCloud;
 - (_TtC25UnifiedMessagingKitJSCore9JSAccount)activeiTunes;
 - (_TtC25UnifiedMessagingKitJSCore9JSAccount)localAccount;
-- (id)activeiTunesForMediaType:(int64_t)a3;
-- (id)localAccountForMediaType:(int64_t)a3;
+- (id)activeiTunesForMediaType:(int64_t)type;
+- (id)localAccountForMediaType:(int64_t)type;
 @end
 
 @implementation JSAccountStore
 
 - (_TtC25UnifiedMessagingKitJSCore9JSAccount)activeiTunes
 {
-  v2 = self;
+  selfCopy = self;
   sub_27057FF9C();
 
   return 0;
@@ -18,7 +18,7 @@
 
 - (_TtC25UnifiedMessagingKitJSCore9JSAccount)activeiCloud
 {
-  v2 = self;
+  selfCopy = self;
   sub_270580188();
 
   return 0;
@@ -26,23 +26,23 @@
 
 - (_TtC25UnifiedMessagingKitJSCore9JSAccount)localAccount
 {
-  v2 = self;
+  selfCopy = self;
   sub_270580388();
 
   return 0;
 }
 
-- (id)activeiTunesForMediaType:(int64_t)a3
+- (id)activeiTunesForMediaType:(int64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   sub_27057FF9C();
 
   return 0;
 }
 
-- (id)localAccountForMediaType:(int64_t)a3
+- (id)localAccountForMediaType:(int64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   sub_270580388();
 
   return 0;

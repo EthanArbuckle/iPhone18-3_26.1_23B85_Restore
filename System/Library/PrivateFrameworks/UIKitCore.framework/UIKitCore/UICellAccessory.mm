@@ -1,15 +1,15 @@
 @interface UICellAccessory
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3;
-- (BOOL)_isDisplayedForEditingState:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from;
+- (BOOL)_isDisplayedForEditingState:(BOOL)state;
+- (BOOL)isEqual:(id)equal;
 - (NSString)_identifier;
 - (UICellAccessory)init;
 - (UICellAccessory)initWithCoder:(NSCoder *)coder;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_compare:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_compare:(id)_compare;
 - (int64_t)_systemType;
-- (int64_t)_systemTypePlacementForHeader:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_systemTypePlacementForHeader:(BOOL)header;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICellAccessory
@@ -24,10 +24,10 @@
     v4 = objc_opt_class();
     if ([v4 isMemberOfClass:objc_opt_class()])
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      [v6 handleFailureInMethod:a2 object:v3 file:@"UICellAccessory.m" lineNumber:30 description:{@"%@ is an abstract base class and should not be instantiated directly.", v8}];
+      [currentHandler handleFailureInMethod:a2 object:v3 file:@"UICellAccessory.m" lineNumber:30 description:{@"%@ is an abstract base class and should not be instantiated directly.", v8}];
     }
 
     v3->_displayedState = 0;
@@ -45,14 +45,14 @@
   return 0;
 }
 
-- (int64_t)_systemTypePlacementForHeader:(BOOL)a3
+- (int64_t)_systemTypePlacementForHeader:(BOOL)header
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (BOOL)_isDisplayedForEditingState:(BOOL)a3
+- (BOOL)_isDisplayedForEditingState:(BOOL)state
 {
   displayedState = self->_displayedState;
   if (!displayedState)
@@ -62,18 +62,18 @@
 
   if (displayedState == 2)
   {
-    return !a3;
+    return !state;
   }
 
   if (displayedState != 1)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:65 description:{@"Unknown UICellAccessoryDisplayedState value (%ld)", self->_displayedState}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:65 description:{@"Unknown UICellAccessoryDisplayedState value (%ld)", self->_displayedState}];
 
     return 0;
   }
 
-  return a3;
+  return state;
 }
 
 - (NSString)_identifier
@@ -109,21 +109,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayedState = self->_displayedState;
-  v5 = a3;
-  [v5 encodeInteger:displayedState forKey:@"displayedState"];
-  [v5 encodeBool:self->_hidden forKey:@"hidden"];
-  [v5 encodeDouble:@"reservedLayoutWidth" forKey:self->_reservedLayoutWidth];
-  [v5 encodeObject:self->_tintColor forKey:@"tintColor"];
-  [v5 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
-  [v5 encodeInteger:self->__monochromaticTreatment forKey:@"monochromaticTreatment"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:displayedState forKey:@"displayedState"];
+  [coderCopy encodeBool:self->_hidden forKey:@"hidden"];
+  [coderCopy encodeDouble:@"reservedLayoutWidth" forKey:self->_reservedLayoutWidth];
+  [coderCopy encodeObject:self->_tintColor forKey:@"tintColor"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  [coderCopy encodeInteger:self->__monochromaticTreatment forKey:@"monochromaticTreatment"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -138,16 +138,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = v6;
@@ -170,42 +170,42 @@
   return v8;
 }
 
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_displayedState == v5->_displayedState && self->_hidden == v5->_hidden && self->_reservedLayoutWidth == v5->_reservedLayoutWidth;
+    v6 = fromCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_displayedState == v5->_displayedState && self->_hidden == v5->_hidden && self->_reservedLayoutWidth == v5->_reservedLayoutWidth;
   }
 
   return v6;
 }
 
-- (int64_t)_compare:(id)a3
+- (int64_t)_compare:(id)_compare
 {
-  v5 = a3;
-  if (!v5)
+  _compareCopy = _compare;
+  if (!_compareCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"other != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICellAccessory.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"other != nil"}];
   }
 
-  if (self == v5)
+  if (self == _compareCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [(UICellAccessory *)self _identifier];
-    v7 = [(UICellAccessory *)v5 _identifier];
-    v8 = [v6 compare:v7];
+    _identifier = [(UICellAccessory *)self _identifier];
+    _identifier2 = [(UICellAccessory *)_compareCopy _identifier];
+    v8 = [_identifier compare:_identifier2];
   }
 
   return v8;

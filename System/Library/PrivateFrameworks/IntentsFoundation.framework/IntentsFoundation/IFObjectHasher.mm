@@ -1,8 +1,8 @@
 @interface IFObjectHasher
 - (id).cxx_construct;
-- (id)combine:(id)a3;
-- (id)combineBytes:(void *)a3 size:(unint64_t)a4;
-- (id)combineInteger:(unint64_t)a3;
+- (id)combine:(id)combine;
+- (id)combineBytes:(void *)bytes size:(unint64_t)size;
+- (id)combineInteger:(unint64_t)integer;
 - (unint64_t)finalize;
 @end
 
@@ -94,16 +94,16 @@
   return self;
 }
 
-- (id)combineBytes:(void *)a3 size:(unint64_t)a4
+- (id)combineBytes:(void *)bytes size:(unint64_t)size
 {
-  if (a4 >= 1)
+  if (size >= 1)
   {
-    v4 = a3 + a4;
+    v4 = bytes + size;
     v5 = *(self + 6);
     while (1)
     {
-      v6 = v4 - a3;
-      if (v4 - a3 >= 8)
+      v6 = v4 - bytes;
+      if (v4 - bytes >= 8)
       {
         v6 = 8;
       }
@@ -113,7 +113,7 @@
         break;
       }
 
-      v7 = *a3;
+      v7 = *bytes;
 LABEL_23:
       v8 = HIBYTE(v5) & 7;
       v9 = 8 * v8;
@@ -168,8 +168,8 @@ LABEL_23:
         *(self + 2) = v17 ^ v12;
       }
 
-      a3 = a3 + 8;
-      if (a3 >= v4)
+      bytes = bytes + 8;
+      if (bytes >= v4)
       {
         return self;
       }
@@ -181,14 +181,14 @@ LABEL_23:
       if (v6 == 1)
       {
 LABEL_22:
-        v7 |= *a3;
+        v7 |= *bytes;
         goto LABEL_23;
       }
 
       if (v6 == 2)
       {
 LABEL_21:
-        v7 |= *(a3 + 1) << 8;
+        v7 |= *(bytes + 1) << 8;
         goto LABEL_22;
       }
 
@@ -198,7 +198,7 @@ LABEL_21:
       }
 
 LABEL_20:
-      v7 |= *(a3 + 2) << 16;
+      v7 |= *(bytes + 2) << 16;
       goto LABEL_21;
     }
 
@@ -206,38 +206,38 @@ LABEL_20:
     {
       if (v6 != 6)
       {
-        v7 = *(a3 + 6) << 48;
+        v7 = *(bytes + 6) << 48;
       }
 
-      v7 |= *(a3 + 5) << 40;
+      v7 |= *(bytes + 5) << 40;
     }
 
     else if (v6 == 4)
     {
 LABEL_19:
-      v7 |= *(a3 + 3) << 24;
+      v7 |= *(bytes + 3) << 24;
       goto LABEL_20;
     }
 
-    v7 |= *(a3 + 4) << 32;
+    v7 |= *(bytes + 4) << 32;
     goto LABEL_19;
   }
 
   return self;
 }
 
-- (id)combineInteger:(unint64_t)a3
+- (id)combineInteger:(unint64_t)integer
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:integer];
   v5 = [(IFObjectHasher *)self combineContentsOfPropertyListObject:v4];
 
   return self;
 }
 
-- (id)combine:(id)a3
+- (id)combine:(id)combine
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "hash")}];
+  combineCopy = combine;
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(combineCopy, "hash")}];
   v6 = [(IFObjectHasher *)self combineContentsOfPropertyListObject:v5];
 
   return self;

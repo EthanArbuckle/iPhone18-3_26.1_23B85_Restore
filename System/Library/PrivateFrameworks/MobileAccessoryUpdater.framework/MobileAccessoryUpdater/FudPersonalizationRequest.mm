@@ -1,36 +1,36 @@
 @interface FudPersonalizationRequest
-- (FudPersonalizationRequest)initWithCoder:(id)a3;
-- (FudPersonalizationRequest)initWithName:(id)a3;
+- (FudPersonalizationRequest)initWithCoder:(id)coder;
+- (FudPersonalizationRequest)initWithName:(id)name;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FudPersonalizationRequest
 
-- (FudPersonalizationRequest)initWithName:(id)a3
+- (FudPersonalizationRequest)initWithName:(id)name
 {
-  v8 = self;
-  if (a3)
+  selfCopy = self;
+  if (name)
   {
     v19.receiver = self;
     v19.super_class = FudPersonalizationRequest;
-    v8 = [(FudPersonalizationRequest *)&v19 init];
-    if (v8)
+    selfCopy = [(FudPersonalizationRequest *)&v19 init];
+    if (selfCopy)
     {
-      v17 = a3;
-      *&v8->_boardID = 0;
-      v8->_responseFormat = 0;
-      v8->_globalSigning = 0;
-      v8->_requestName = v17;
-      v8->_requestPrefix = 0;
-      v8->_ecID = 0;
-      v8->_extEcID = 0;
-      *&v8->_securityDomain = 1;
-      v8->_responseAlignment = 0;
-      *&v8->_cproSet = 0;
-      v8->_objectList = 0;
-      v8->_payload = 0;
-      v8->_nonceHash = 0;
+      nameCopy = name;
+      *&selfCopy->_boardID = 0;
+      selfCopy->_responseFormat = 0;
+      selfCopy->_globalSigning = 0;
+      selfCopy->_requestName = nameCopy;
+      selfCopy->_requestPrefix = 0;
+      selfCopy->_ecID = 0;
+      selfCopy->_extEcID = 0;
+      *&selfCopy->_securityDomain = 1;
+      selfCopy->_responseAlignment = 0;
+      *&selfCopy->_cproSet = 0;
+      selfCopy->_objectList = 0;
+      selfCopy->_payload = 0;
+      selfCopy->_nonceHash = 0;
     }
 
     else
@@ -44,7 +44,7 @@
     [(FudPersonalizationRequest *)self initWithName:a2, 0, v3, v4, v5, v6, v7];
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -84,63 +84,63 @@
   [(FudPersonalizationRequest *)&v9 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_requestName forKey:@"requestName"];
-  [a3 encodeObject:self->_requestPrefix forKey:@"requestPrefix"];
-  [a3 encodeInt32:self->_responseFormat forKey:@"requestRspFormat"];
-  [a3 encodeInt32:self->_boardID forKey:@"requestBoardID"];
-  [a3 encodeInt32:self->_chipID forKey:@"requestChipID"];
-  [a3 encodeInt64:self->_ecID forKey:@"requestECID"];
-  [a3 encodeObject:self->_extEcID forKey:@"requestExtECID"];
-  [a3 encodeBool:self->_globalSigning forKey:@"requestGlobalSign"];
-  [a3 encodeInt32:self->_securityDomain forKey:@"requestSecDomain"];
-  [a3 encodeBool:self->_cproSet forKey:@"requestProdModeSet"];
-  [a3 encodeBool:self->_productionMode forKey:@"requestProdMode"];
-  [a3 encodeBool:self->_csecSet forKey:@"requestSecModeSet"];
-  [a3 encodeBool:self->_securityMode forKey:@"requestSecMode"];
-  [a3 encodeObject:self->_nonceHash forKey:@"requestNonceHash"];
-  [a3 encodeBool:self->_cepoSet forKey:@"requestChipEpochSet"];
-  [a3 encodeInt32:self->_chipEpoch forKey:@"requestChipEpoch"];
-  [a3 encodeBool:self->_enableMixMatch forKey:@"requestEnableMixMatch"];
-  [a3 encodeObject:self->_objectList forKey:@"requestObjects"];
-  [a3 encodeObject:self->_payload forKey:@"requestPayload"];
+  [coder encodeObject:self->_requestName forKey:@"requestName"];
+  [coder encodeObject:self->_requestPrefix forKey:@"requestPrefix"];
+  [coder encodeInt32:self->_responseFormat forKey:@"requestRspFormat"];
+  [coder encodeInt32:self->_boardID forKey:@"requestBoardID"];
+  [coder encodeInt32:self->_chipID forKey:@"requestChipID"];
+  [coder encodeInt64:self->_ecID forKey:@"requestECID"];
+  [coder encodeObject:self->_extEcID forKey:@"requestExtECID"];
+  [coder encodeBool:self->_globalSigning forKey:@"requestGlobalSign"];
+  [coder encodeInt32:self->_securityDomain forKey:@"requestSecDomain"];
+  [coder encodeBool:self->_cproSet forKey:@"requestProdModeSet"];
+  [coder encodeBool:self->_productionMode forKey:@"requestProdMode"];
+  [coder encodeBool:self->_csecSet forKey:@"requestSecModeSet"];
+  [coder encodeBool:self->_securityMode forKey:@"requestSecMode"];
+  [coder encodeObject:self->_nonceHash forKey:@"requestNonceHash"];
+  [coder encodeBool:self->_cepoSet forKey:@"requestChipEpochSet"];
+  [coder encodeInt32:self->_chipEpoch forKey:@"requestChipEpoch"];
+  [coder encodeBool:self->_enableMixMatch forKey:@"requestEnableMixMatch"];
+  [coder encodeObject:self->_objectList forKey:@"requestObjects"];
+  [coder encodeObject:self->_payload forKey:@"requestPayload"];
   responseAlignment = self->_responseAlignment;
 
-  [a3 encodeInt32:responseAlignment forKey:@"requestRspAlign"];
+  [coder encodeInt32:responseAlignment forKey:@"requestRspAlign"];
 }
 
-- (FudPersonalizationRequest)initWithCoder:(id)a3
+- (FudPersonalizationRequest)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = FudPersonalizationRequest;
   v4 = [(FudPersonalizationRequest *)&v10 init];
   if (v4)
   {
-    v4->_requestName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestName"];
-    v4->_requestPrefix = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestPrefix"];
-    v4->_responseFormat = [a3 decodeInt32ForKey:@"requestRspFormat"];
-    v4->_boardID = [a3 decodeInt32ForKey:@"requestBoardID"];
-    v4->_chipID = [a3 decodeInt32ForKey:@"requestChipID"];
-    v4->_ecID = [a3 decodeInt64ForKey:@"requestECID"];
-    v4->_extEcID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestExtECID"];
-    v4->_globalSigning = [a3 decodeBoolForKey:@"requestGlobalSign"];
-    v4->_securityDomain = [a3 decodeInt32ForKey:@"requestSecDomain"];
-    v4->_cproSet = [a3 decodeBoolForKey:@"requestProdModeSet"];
-    v4->_productionMode = [a3 decodeBoolForKey:@"requestProdMode"];
-    v4->_csecSet = [a3 decodeBoolForKey:@"requestSecModeSet"];
-    v4->_securityMode = [a3 decodeBoolForKey:@"requestSecMode"];
-    v4->_nonceHash = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestNonceHash"];
-    v4->_cepoSet = [a3 decodeBoolForKey:@"requestChipEpochSet"];
-    v4->_chipEpoch = [a3 decodeInt32ForKey:@"requestChipEpoch"];
-    v4->_enableMixMatch = [a3 decodeBoolForKey:@"requestEnableMixMatch"];
+    v4->_requestName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestName"];
+    v4->_requestPrefix = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestPrefix"];
+    v4->_responseFormat = [coder decodeInt32ForKey:@"requestRspFormat"];
+    v4->_boardID = [coder decodeInt32ForKey:@"requestBoardID"];
+    v4->_chipID = [coder decodeInt32ForKey:@"requestChipID"];
+    v4->_ecID = [coder decodeInt64ForKey:@"requestECID"];
+    v4->_extEcID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestExtECID"];
+    v4->_globalSigning = [coder decodeBoolForKey:@"requestGlobalSign"];
+    v4->_securityDomain = [coder decodeInt32ForKey:@"requestSecDomain"];
+    v4->_cproSet = [coder decodeBoolForKey:@"requestProdModeSet"];
+    v4->_productionMode = [coder decodeBoolForKey:@"requestProdMode"];
+    v4->_csecSet = [coder decodeBoolForKey:@"requestSecModeSet"];
+    v4->_securityMode = [coder decodeBoolForKey:@"requestSecMode"];
+    v4->_nonceHash = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestNonceHash"];
+    v4->_cepoSet = [coder decodeBoolForKey:@"requestChipEpochSet"];
+    v4->_chipEpoch = [coder decodeInt32ForKey:@"requestChipEpoch"];
+    v4->_enableMixMatch = [coder decodeBoolForKey:@"requestEnableMixMatch"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
-    v4->_objectList = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, objc_opt_class(), 0), @"requestObjects"}];
-    v4->_payload = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"requestPayload"];
-    v4->_responseAlignment = [a3 decodeInt32ForKey:@"requestRspAlign"];
+    v4->_objectList = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, objc_opt_class(), 0), @"requestObjects"}];
+    v4->_payload = [coder decodeObjectOfClass:objc_opt_class() forKey:@"requestPayload"];
+    v4->_responseAlignment = [coder decodeInt32ForKey:@"requestRspAlign"];
   }
 
   return v4;

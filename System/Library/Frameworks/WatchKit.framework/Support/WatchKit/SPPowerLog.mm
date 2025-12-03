@@ -1,9 +1,9 @@
 @interface SPPowerLog
 + (id)sharedInstance;
 - (SPPowerLog)init;
-- (id)newEventFromEvent:(id)a3 usingLogEvent:(id)a4;
+- (id)newEventFromEvent:(id)event usingLogEvent:(id)logEvent;
 - (void)cancelLogUpdateTimer;
-- (void)logEvent:(id)a3 withName:(id)a4;
+- (void)logEvent:(id)event withName:(id)name;
 - (void)startLogUpdateTimer;
 - (void)updatePowerLogs;
 @end
@@ -51,56 +51,56 @@
 
 - (void)startLogUpdateTimer
 {
-  v3 = [(SPPowerLog *)self logQueue];
+  logQueue = [(SPPowerLog *)self logQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000023BC;
   block[3] = &unk_100044778;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(logQueue, block);
 }
 
-- (void)logEvent:(id)a3 withName:(id)a4
+- (void)logEvent:(id)event withName:(id)name
 {
-  v5 = a3;
-  v6 = [(SPPowerLog *)self logQueue];
+  eventCopy = event;
+  logQueue = [(SPPowerLog *)self logQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000025C4;
   v8[3] = &unk_1000447A0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = eventCopy;
+  selfCopy = self;
+  v7 = eventCopy;
+  dispatch_sync(logQueue, v8);
 }
 
-- (id)newEventFromEvent:(id)a3 usingLogEvent:(id)a4
+- (id)newEventFromEvent:(id)event usingLogEvent:(id)logEvent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mutableCopy];
+  eventCopy = event;
+  logEventCopy = logEvent;
+  v7 = [eventCopy mutableCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = [v5 objectForKeyedSubscript:@"count"];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [eventCopy objectForKeyedSubscript:@"count"];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    v11 = [v6 objectForKeyedSubscript:@"length"];
-    v12 = [v11 unsignedIntegerValue];
+    v11 = [logEventCopy objectForKeyedSubscript:@"length"];
+    unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
-    v13 = [v5 objectForKeyedSubscript:@"length"];
-    v14 = [v13 unsignedIntegerValue];
+    v13 = [eventCopy objectForKeyedSubscript:@"length"];
+    unsignedIntegerValue3 = [v13 unsignedIntegerValue];
 
-    v15 = [NSNumber numberWithUnsignedInteger:&v12[v14]];
+    v15 = [NSNumber numberWithUnsignedInteger:&unsignedIntegerValue2[unsignedIntegerValue3]];
     [v8 setObject:v15 forKeyedSubscript:@"length"];
 
-    v16 = [NSNumber numberWithUnsignedInteger:v10 + 1];
+    v16 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
     [v8 setObject:v16 forKeyedSubscript:@"count"];
   }
 
   else
   {
-    v8 = [v6 mutableCopy];
+    v8 = [logEventCopy mutableCopy];
     [v8 setObject:&off_10004AC38 forKeyedSubscript:@"count"];
   }
 

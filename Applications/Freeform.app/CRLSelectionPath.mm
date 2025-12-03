@@ -1,39 +1,39 @@
 @interface CRLSelectionPath
-+ (CRLSelectionPath)selectionPathWithSelectionArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CRLSelectionPath)initWithSelectionArray:(id)a3;
-- (CRLSelectionPath)selectionPathWithAppendedSelection:(id)a3;
-- (CRLSelectionPath)selectionPathWithAppendedSelections:(id)a3;
++ (CRLSelectionPath)selectionPathWithSelectionArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (CRLSelectionPath)initWithSelectionArray:(id)array;
+- (CRLSelectionPath)selectionPathWithAppendedSelection:(id)selection;
+- (CRLSelectionPath)selectionPathWithAppendedSelections:(id)selections;
 - (NSString)UUIDDescription;
 - (id)description;
-- (id)leastSpecificSelectionOfClass:(Class)a3;
-- (id)mostSpecificSelectionConformingToProtocol:(id)a3;
-- (id)mostSpecificSelectionOfClass:(Class)a3;
-- (id)selectionAtIndex:(unint64_t)a3;
-- (id)selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:(id)a3;
-- (id)selectionPathPoppingOffSelection:(id)a3;
-- (id)selectionPathPoppingToSelection:(id)a3;
-- (id)selectionPathReplacingMostSpecificLocationOfSelection:(id)a3 withSelection:(id)a4;
-- (void)enumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)a3;
-- (void)enumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)a3;
+- (id)leastSpecificSelectionOfClass:(Class)class;
+- (id)mostSpecificSelectionConformingToProtocol:(id)protocol;
+- (id)mostSpecificSelectionOfClass:(Class)class;
+- (id)selectionAtIndex:(unint64_t)index;
+- (id)selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:(id)selection;
+- (id)selectionPathPoppingOffSelection:(id)selection;
+- (id)selectionPathPoppingToSelection:(id)selection;
+- (id)selectionPathReplacingMostSpecificLocationOfSelection:(id)selection withSelection:(id)withSelection;
+- (void)enumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)block;
+- (void)enumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)block;
 @end
 
 @implementation CRLSelectionPath
 
-- (CRLSelectionPath)initWithSelectionArray:(id)a3
+- (CRLSelectionPath)initWithSelectionArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = CRLSelectionPath;
   v5 = [(CRLSelectionPath *)&v9 init];
   if (v5)
   {
-    if (!v4)
+    if (!arrayCopy)
     {
-      v4 = +[NSArray array];
+      arrayCopy = +[NSArray array];
     }
 
-    v6 = [v4 copy];
+    v6 = [arrayCopy copy];
     currentSelection = v5->_currentSelection;
     v5->_currentSelection = v6;
   }
@@ -41,10 +41,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -54,7 +54,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [v5[1] count];
       if (v6 == [(NSArray *)self->_currentSelection count])
       {
@@ -99,9 +99,9 @@
   return v10;
 }
 
-- (id)selectionAtIndex:(unint64_t)a3
+- (id)selectionAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_currentSelection count]<= a3)
+  if ([(NSArray *)self->_currentSelection count]<= index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -127,50 +127,50 @@
 
     v7 = [NSString stringWithUTF8String:"[CRLSelectionPath selectionAtIndex:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLSelectionPath.m"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:68 isFatal:0 description:"Requested selection index %tu is out of range!", a3];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:68 isFatal:0 description:"Requested selection index %tu is out of range!", index];
 
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_currentSelection objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_currentSelection objectAtIndexedSubscript:index];
   }
 
   return v5;
 }
 
-+ (CRLSelectionPath)selectionPathWithSelectionArray:(id)a3
++ (CRLSelectionPath)selectionPathWithSelectionArray:(id)array
 {
-  v3 = a3;
-  v4 = [[CRLSelectionPath alloc] initWithSelectionArray:v3];
+  arrayCopy = array;
+  v4 = [[CRLSelectionPath alloc] initWithSelectionArray:arrayCopy];
 
   return v4;
 }
 
-- (CRLSelectionPath)selectionPathWithAppendedSelection:(id)a3
+- (CRLSelectionPath)selectionPathWithAppendedSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v8 = a3;
-    v4 = a3;
-    v5 = [NSArray arrayWithObjects:&v8 count:1];
+    selectionCopy = selection;
+    selectionCopy2 = selection;
+    v5 = [NSArray arrayWithObjects:&selectionCopy count:1];
 
-    v6 = [(CRLSelectionPath *)self selectionPathWithAppendedSelections:v5, v8];
+    selfCopy = [(CRLSelectionPath *)self selectionPathWithAppendedSelections:v5, selectionCopy];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (CRLSelectionPath)selectionPathWithAppendedSelections:(id)a3
+- (CRLSelectionPath)selectionPathWithAppendedSelections:(id)selections
 {
-  v4 = a3;
-  if (!v4)
+  selectionsCopy = selections;
+  if (!selectionsCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -199,7 +199,7 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:92 isFatal:0 description:"invalid nil value for '%{public}s'", "selections"];
   }
 
-  if (![v4 count])
+  if (![selectionsCopy count])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -228,22 +228,22 @@
     [CRLAssertionHandler handleFailureInFunction:v9 file:v10 lineNumber:93 isFatal:0 description:"Must send in some selection to append"];
   }
 
-  v11 = [(CRLSelectionPath *)self orderedSelections];
-  v12 = [v11 mutableCopy];
+  orderedSelections = [(CRLSelectionPath *)self orderedSelections];
+  v12 = [orderedSelections mutableCopy];
 
-  [v12 addObjectsFromArray:v4];
+  [v12 addObjectsFromArray:selectionsCopy];
   v13 = [CRLSelectionPath selectionPathWithSelectionArray:v12];
 
   return v13;
 }
 
-- (id)selectionPathPoppingOffSelection:(id)a3
+- (id)selectionPathPoppingOffSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(CRLSelectionPath *)self orderedSelections];
-  v6 = [v5 mutableCopy];
+  selectionCopy = selection;
+  orderedSelections = [(CRLSelectionPath *)self orderedSelections];
+  v6 = [orderedSelections mutableCopy];
 
-  v7 = [v6 indexOfObjectIdenticalTo:v4];
+  v7 = [v6 indexOfObjectIdenticalTo:selectionCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -283,13 +283,13 @@
   return v11;
 }
 
-- (id)selectionPathPoppingToSelection:(id)a3
+- (id)selectionPathPoppingToSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(CRLSelectionPath *)self orderedSelections];
-  v6 = [v5 mutableCopy];
+  selectionCopy = selection;
+  orderedSelections = [(CRLSelectionPath *)self orderedSelections];
+  v6 = [orderedSelections mutableCopy];
 
-  v7 = [v6 indexOfObjectIdenticalTo:v4];
+  v7 = [v6 indexOfObjectIdenticalTo:selectionCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -329,12 +329,12 @@
   return v11;
 }
 
-- (id)selectionPathReplacingMostSpecificLocationOfSelection:(id)a3 withSelection:(id)a4
+- (id)selectionPathReplacingMostSpecificLocationOfSelection:(id)selection withSelection:(id)withSelection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  selectionCopy = selection;
+  withSelectionCopy = withSelection;
+  v8 = withSelectionCopy;
+  if (!selectionCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -370,7 +370,7 @@
     goto LABEL_17;
   }
 
-  if (!v7)
+  if (!withSelectionCopy)
   {
 LABEL_17:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -400,7 +400,7 @@ LABEL_17:
     [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:121 isFatal:0 description:"invalid nil value for '%{public}s'", "newSelection"];
 
 LABEL_26:
-    v19 = self;
+    selfCopy = self;
     goto LABEL_38;
   }
 
@@ -415,7 +415,7 @@ LABEL_26:
   {
     v11 = [(NSArray *)self->_currentSelection objectAtIndexedSubscript:--v10];
     v12 = v11;
-    if (v11 == v6)
+    if (v11 == selectionCopy)
     {
       break;
     }
@@ -430,7 +430,7 @@ LABEL_26:
   [v20 replaceObjectAtIndex:v10 withObject:v8];
   v21 = [CRLSelectionPath selectionPathWithSelectionArray:v20];
 
-  v22 = v21;
+  selfCopy2 = v21;
   if (!v21)
   {
 LABEL_28:
@@ -461,57 +461,57 @@ LABEL_28:
     [CRLAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:137 isFatal:0 description:"Cannot replace a selection that is not in the selection path."];
 
     v21 = 0;
-    v22 = self;
+    selfCopy2 = self;
   }
 
-  v19 = v22;
+  selfCopy = selfCopy2;
 
 LABEL_38:
 
-  return v19;
+  return selfCopy;
 }
 
-- (id)selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:(id)a3
+- (id)selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:(id)selection
 {
-  v4 = a3;
-  if (v4)
+  selectionCopy = selection;
+  if (selectionCopy)
   {
-    v5 = [(CRLSelectionPath *)self orderedSelections];
-    v6 = [v5 mutableCopy];
+    orderedSelections = [(CRLSelectionPath *)self orderedSelections];
+    v6 = [orderedSelections mutableCopy];
 
-    v7 = [v6 lastObject];
+    lastObject = [v6 lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 replaceObjectAtIndex:objc_msgSend(v6 withObject:{"count") - 1, v4}];
+      [v6 replaceObjectAtIndex:objc_msgSend(v6 withObject:{"count") - 1, selectionCopy}];
     }
 
     else
     {
-      [v6 addObject:v4];
+      [v6 addObject:selectionCopy];
     }
 
-    v8 = [CRLSelectionPath selectionPathWithSelectionArray:v6];
+    selfCopy = [CRLSelectionPath selectionPathWithSelectionArray:v6];
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)mostSpecificSelectionOfClass:(Class)a3
+- (id)mostSpecificSelectionOfClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSArray *)self->_currentSelection reverseObjectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    reverseObjectEnumerator = [(NSArray *)self->_currentSelection reverseObjectEnumerator];
+    v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -522,18 +522,18 @@ LABEL_38:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            v9 = v8;
+            lastObject = v8;
             goto LABEL_12;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -543,27 +543,27 @@ LABEL_38:
       }
     }
 
-    v9 = 0;
+    lastObject = 0;
 LABEL_12:
   }
 
   else
   {
-    v9 = [(NSArray *)self->_currentSelection lastObject];
+    lastObject = [(NSArray *)self->_currentSelection lastObject];
   }
 
-  return v9;
+  return lastObject;
 }
 
-- (id)mostSpecificSelectionConformingToProtocol:(id)a3
+- (id)mostSpecificSelectionConformingToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSArray *)self->_currentSelection reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_currentSelection reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -573,18 +573,18 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 conformsToProtocol:v4])
+        if ([v9 conformsToProtocol:protocolCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -599,9 +599,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)leastSpecificSelectionOfClass:(Class)a3
+- (id)leastSpecificSelectionOfClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v13 = 0u;
     v14 = 0u;
@@ -625,7 +625,7 @@ LABEL_11:
           v8 = *(*(&v11 + 1) + 8 * i);
           if (objc_opt_isKindOfClass())
           {
-            v9 = v8;
+            firstObject = v8;
             goto LABEL_12;
           }
         }
@@ -640,28 +640,28 @@ LABEL_11:
       }
     }
 
-    v9 = 0;
+    firstObject = 0;
 LABEL_12:
   }
 
   else
   {
-    v9 = [(NSArray *)self->_currentSelection firstObject];
+    firstObject = [(NSArray *)self->_currentSelection firstObject];
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (void)enumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)a3
+- (void)enumerateSelectionsMostToLeastSpecificInPathUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSArray *)self->_currentSelection reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_currentSelection reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -672,10 +672,10 @@ LABEL_3:
     {
       if (*v11 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -683,7 +683,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v15 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -695,16 +695,16 @@ LABEL_3:
   }
 }
 
-- (void)enumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)a3
+- (void)enumerateSelectionsLeastToMostSpecificInPathUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSArray *)self->_currentSelection objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  objectEnumerator = [(NSArray *)self->_currentSelection objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -715,10 +715,10 @@ LABEL_3:
     {
       if (*v11 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(objectEnumerator);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -726,7 +726,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v15 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -753,8 +753,8 @@ LABEL_3:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(NSArray *)self->_currentSelection objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [(NSArray *)self->_currentSelection objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -765,14 +765,14 @@ LABEL_3:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) UUIDDescription];
-        [v3 addObject:v9];
+        uUIDDescription = [*(*(&v13 + 1) + 8 * i) UUIDDescription];
+        [v3 addObject:uUIDDescription];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

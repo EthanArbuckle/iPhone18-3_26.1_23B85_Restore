@@ -1,6 +1,6 @@
 @interface PromptEntryViewCoordinator
 - (_TtC21WritingToolsUIService26PromptEntryViewCoordinator)init;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
 @end
 
 @implementation PromptEntryViewCoordinator
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   type metadata accessor for IndexPath();
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
+  viewCopy = view;
+  selfCopy = self;
   v10 = sub_1000A6764(v7);
 
   return v10;

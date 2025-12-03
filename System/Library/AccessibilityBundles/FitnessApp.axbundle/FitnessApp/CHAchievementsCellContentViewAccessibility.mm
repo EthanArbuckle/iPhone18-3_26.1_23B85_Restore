@@ -1,5 +1,5 @@
 @interface CHAchievementsCellContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation CHAchievementsCellContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHAchievementsCellContentView" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHAchievementsCellContentView" hasInstanceMethod:@"badgeView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHAchievementsCellContentView" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHAchievementsCellContentView" hasInstanceMethod:@"badgeView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -21,46 +21,46 @@
   v3 = [(CHAchievementsCellContentViewAccessibility *)self safeValueForKey:@"_label"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
-  v6 = [v5 length];
+  text = [v4 text];
+  v6 = [text length];
 
   if (v6)
   {
-    v7 = [v4 text];
+    text2 = [v4 text];
     v8 = +[NSCharacterSet newlineCharacterSet];
-    v9 = [v7 componentsSeparatedByCharactersInSet:v8];
-    v10 = AXLabelForElements();
+    v9 = [text2 componentsSeparatedByCharactersInSet:v8];
+    accessibilityLabel = AXLabelForElements();
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = CHAchievementsCellContentViewAccessibility;
-    v10 = [(CHAchievementsCellContentViewAccessibility *)&v12 accessibilityLabel];
+    accessibilityLabel = [(CHAchievementsCellContentViewAccessibility *)&v12 accessibilityLabel];
   }
 
-  return v10;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   v3 = [(CHAchievementsCellContentViewAccessibility *)self safeValueForKey:@"_badgeView"];
   v4 = [v3 safeValueForKey:@"image"];
-  v5 = [v4 accessibilityValue];
+  accessibilityValue = [v4 accessibilityValue];
 
-  if ([v5 length])
+  if ([accessibilityValue length])
   {
-    v6 = v5;
+    accessibilityValue2 = accessibilityValue;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CHAchievementsCellContentViewAccessibility;
-    v6 = [(CHAchievementsCellContentViewAccessibility *)&v9 accessibilityValue];
+    accessibilityValue2 = [(CHAchievementsCellContentViewAccessibility *)&v9 accessibilityValue];
   }
 
-  v7 = v6;
+  v7 = accessibilityValue2;
 
   return v7;
 }

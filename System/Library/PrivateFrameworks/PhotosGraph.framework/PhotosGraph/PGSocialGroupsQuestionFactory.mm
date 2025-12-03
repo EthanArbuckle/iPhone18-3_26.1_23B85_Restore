@@ -1,26 +1,26 @@
 @interface PGSocialGroupsQuestionFactory
-+ (void)enumeratePeopleClustersWithGraph:(id)a3 withLinkage:(unint64_t)a4 withBlock:(id)a5;
-+ (void)enumerateSocialGroupsWithGraph:(id)a3 withLinkage:(unint64_t)a4 validGroupsBlock:(id)a5 invalidGroupsBlock:(id)a6 averageWeight:(float *)a7;
-- (id)_createSocialGroupWithPersonLocalIdentifiers:(id)a3;
-- (id)_identifierForPersonNodesAsString:(id)a3;
-- (id)_socialGroupsForSurvey:(id)a3 withLimit:(unint64_t)a4;
-- (id)_socialGroupsForSurveyFromCurrentAlgorithm:(id)a3;
-- (id)_socialGroupsForSurveyFromCustomAlgorithm:(id)a3;
-- (id)_socialGroupsForSurveyFromNewAlgorithm:(id)a3 withLinkage:(unint64_t)a4;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
++ (void)enumeratePeopleClustersWithGraph:(id)graph withLinkage:(unint64_t)linkage withBlock:(id)block;
++ (void)enumerateSocialGroupsWithGraph:(id)graph withLinkage:(unint64_t)linkage validGroupsBlock:(id)block invalidGroupsBlock:(id)groupsBlock averageWeight:(float *)weight;
+- (id)_createSocialGroupWithPersonLocalIdentifiers:(id)identifiers;
+- (id)_identifierForPersonNodesAsString:(id)string;
+- (id)_socialGroupsForSurvey:(id)survey withLimit:(unint64_t)limit;
+- (id)_socialGroupsForSurveyFromCurrentAlgorithm:(id)algorithm;
+- (id)_socialGroupsForSurveyFromCustomAlgorithm:(id)algorithm;
+- (id)_socialGroupsForSurveyFromNewAlgorithm:(id)algorithm withLinkage:(unint64_t)linkage;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGSocialGroupsQuestionFactory
 
-+ (void)enumeratePeopleClustersWithGraph:(id)a3 withLinkage:(unint64_t)a4 withBlock:(id)a5
++ (void)enumeratePeopleClustersWithGraph:(id)graph withLinkage:(unint64_t)linkage withBlock:(id)block
 {
   v148[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v80 = a5;
-  [v7 _checkCanRead];
-  v8 = [v7 meNode];
+  graphCopy = graph;
+  blockCopy = block;
+  [graphCopy _checkCanRead];
+  meNode = [graphCopy meNode];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v84 = [v7 relevantMomentNodesForSocialGroupProcessing];
+  relevantMomentNodesForSocialGroupProcessing = [graphCopy relevantMomentNodesForSocialGroupProcessing];
   v140[0] = 0;
   v140[1] = v140;
   v140[2] = 0x2020000000;
@@ -33,16 +33,16 @@
   v11 = v10;
   v138 = v11;
   v139 = v140;
-  [v84 enumerateObjectsUsingBlock:v137];
+  [relevantMomentNodesForSocialGroupProcessing enumerateObjectsUsingBlock:v137];
   v134[0] = MEMORY[0x277D85DD0];
   v134[1] = 3221225472;
   v134[2] = __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLinkage_withBlock___block_invoke_3;
   v134[3] = &unk_278889EA0;
   v12 = v11;
   v135 = v12;
-  v77 = v8;
+  v77 = meNode;
   v136 = v77;
-  [v7 enumerateNodesInDomain:300 usingBlock:v134];
+  [graphCopy enumerateNodesInDomain:300 usingBlock:v134];
   v130 = 0;
   v131 = &v130;
   v132 = 0x2020000000;
@@ -69,11 +69,11 @@
   v124[1] = 3221225472;
   v124[2] = __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLinkage_withBlock___block_invoke_6;
   v124[3] = &unk_2788887D8;
-  v86 = v7;
+  v86 = graphCopy;
   v125 = v86;
   v15 = [v14 initWithDistanceBlock:v124];
   [v15 setK:1];
-  [v15 setLinkage:a4];
+  [v15 setLinkage:linkage];
   if ([v15 linkage] == 5)
   {
     [v15 setClusterKeyElementBlock:&__block_literal_global_407];
@@ -112,14 +112,14 @@
 
         v20 = *(*(&v120 + 1) + 8 * v79);
         context = objc_autoreleasePoolPush();
-        v21 = [v20 objects];
+        objects = [v20 objects];
         v91 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v118 = 0u;
         v119 = 0u;
         v116 = 0u;
         v117 = 0u;
-        v92 = v21;
-        v22 = [v21 valueForKey:@"momentNodes"];
+        v92 = objects;
+        v22 = [objects valueForKey:@"momentNodes"];
         v23 = [v22 countByEnumeratingWithState:&v116 objects:v146 count:16];
         if (v23)
         {
@@ -243,11 +243,11 @@
 
                     v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(*(*(&v100 + 1) + 8 * m), "identifier")}];
                     v44 = [v94 objectForKeyedSubscript:v43];
-                    v45 = [v44 unsignedIntegerValue];
+                    unsignedIntegerValue = [v44 unsignedIntegerValue];
 
                     v46 = MEMORY[0x277CCABB0];
                     v47 = [v38 objectForKeyedSubscript:@"momentNodes"];
-                    v48 = [v46 numberWithUnsignedInteger:{objc_msgSend(v47, "count") + v45}];
+                    v48 = [v46 numberWithUnsignedInteger:{objc_msgSend(v47, "count") + unsignedIntegerValue}];
                     [v94 setObject:v48 forKeyedSubscript:v43];
                   }
 
@@ -271,8 +271,8 @@
         v49 = [v94 keysSortedByValueUsingComparator:&__block_literal_global_418];
         v50 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v52 = [v49 firstObject];
-        v53 = [v94 objectForKeyedSubscript:v52];
+        firstObject = [v49 firstObject];
+        v53 = [v94 objectForKeyedSubscript:firstObject];
         [v53 floatValue];
         v55 = v54;
 
@@ -340,7 +340,7 @@ LABEL_61:
           v70 = [v26 count];
           v71 = v70 / v131[3];
           v95 = 0;
-          v80[2](v80, v50, v51, v91, v26, &v95, v71);
+          blockCopy[2](blockCopy, v50, v51, v91, v26, &v95, v71);
           v69 = v95;
           goto LABEL_62;
         }
@@ -1087,12 +1087,12 @@ void __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLi
   }
 }
 
-+ (void)enumerateSocialGroupsWithGraph:(id)a3 withLinkage:(unint64_t)a4 validGroupsBlock:(id)a5 invalidGroupsBlock:(id)a6 averageWeight:(float *)a7
++ (void)enumerateSocialGroupsWithGraph:(id)graph withLinkage:(unint64_t)linkage validGroupsBlock:(id)block invalidGroupsBlock:(id)groupsBlock averageWeight:(float *)weight
 {
   v252 = *MEMORY[0x277D85DE8];
-  v196 = a3;
-  v179 = a5;
-  v10 = a6;
+  graphCopy = graph;
+  blockCopy = block;
+  groupsBlockCopy = groupsBlock;
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v242 = 0;
   v243 = &v242;
@@ -1120,11 +1120,11 @@ void __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLi
   v227 = v177;
   v176 = v13;
   v228 = v176;
-  v180 = v10;
+  v180 = groupsBlockCopy;
   v230 = v180;
   v175 = v11;
   v229 = v175;
-  [v14 enumeratePeopleClustersWithGraph:v196 withLinkage:a4 withBlock:v226];
+  [v14 enumeratePeopleClustersWithGraph:graphCopy withLinkage:linkage withBlock:v226];
   v15 = v235[3];
   if (!v15)
   {
@@ -1273,21 +1273,21 @@ void __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLi
         *&v55 = [v51 count];
         LODWORD(v56) = v188;
         LODWORD(v57) = 1060320051;
-        [v196 normalizeFeatureValue:v193 average:v55 featureValues:v56 factor:v57];
+        [graphCopy normalizeFeatureValue:v193 average:v55 featureValues:v56 factor:v57];
         v59 = v58;
         *&v60 = [v212 count];
         LODWORD(v61) = v186;
         LODWORD(v62) = 1060320051;
-        [v196 normalizeFeatureValue:v192 average:v60 featureValues:v61 factor:v62];
+        [graphCopy normalizeFeatureValue:v192 average:v60 featureValues:v61 factor:v62];
         v64 = v63;
-        [v196 averageTopMomentTimes:v212 numberOfMoments:3];
+        [graphCopy averageTopMomentTimes:v212 numberOfMoments:3];
         v66 = v65;
-        v67 = [MEMORY[0x277CBEAA8] date];
-        [v67 timeIntervalSince1970];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSince1970];
         v69 = v68;
 
-        v70 = [MEMORY[0x277CBEAA8] date];
-        v207 = [v70 dateByAddingTimeInterval:-157680000.0];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v207 = [date2 dateByAddingTimeInterval:-157680000.0];
 
         [v207 timeIntervalSince1970];
         v72 = v71;
@@ -1340,17 +1340,17 @@ void __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLi
           [v89 doubleValue];
           v91 = v90;
 
-          v92 = [v88 numberOfMomentNodes];
-          if (v92)
+          numberOfMomentNodes = [v88 numberOfMomentNodes];
+          if (numberOfMomentNodes)
           {
             v93 = [v85 count];
-            v94 = -(v93 * v91 - v92);
-            if (-(v92 - v93 * v91) >= 0.0)
+            v94 = -(v93 * v91 - numberOfMomentNodes);
+            if (-(numberOfMomentNodes - v93 * v91) >= 0.0)
             {
-              v94 = -(v92 - v93 * v91);
+              v94 = -(numberOfMomentNodes - v93 * v91);
             }
 
-            v95 = v94 / v92;
+            v95 = v94 / numberOfMomentNodes;
           }
 
           else
@@ -1470,7 +1470,7 @@ void __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLi
   {
     v121 = [v191 objectAtIndexedSubscript:v119];
     v122 = v121;
-    if (v179)
+    if (blockCopy)
     {
       v123 = [v121 objectForKeyedSubscript:@"ranking"];
       [v123 floatValue];
@@ -1512,7 +1512,7 @@ void __88__PGSocialGroupsQuestionFactory_enumeratePeopleClustersWithGraph_withLi
           v148 = v147;
           v149 = [v122 objectForKeyedSubscript:@"ranking"];
           [v149 floatValue];
-          v179[2](v179, v209, v208, v206, v204, v201, v127, v130, v133, v136, v139, v142, v145, COERCE_DOUBLE(__PAIR64__(v150, v148)));
+          blockCopy[2](blockCopy, v209, v208, v206, v204, v201, v127, v130, v133, v136, v139, v142, v145, COERCE_DOUBLE(__PAIR64__(v150, v148)));
 LABEL_67:
 
           goto LABEL_68;
@@ -1568,9 +1568,9 @@ LABEL_68:
     ++v119;
   }
 
-  if (a7)
+  if (weight)
   {
-    *a7 = v243[6] / v239[6];
+    *weight = v243[6] / v239[6];
   }
 
 LABEL_72:
@@ -1631,24 +1631,24 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_identifierForPersonNodesAsString:(id)a3
+- (id)_identifierForPersonNodesAsString:(id)string
 {
-  v3 = [PGGraphSocialGroupNode identifierForMemberNodes:a3];
+  v3 = [PGGraphSocialGroupNode identifierForMemberNodes:string];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  return v5;
+  return stringValue;
 }
 
-- (id)_createSocialGroupWithPersonLocalIdentifiers:(id)a3
+- (id)_createSocialGroupWithPersonLocalIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = +[PGGraphPersonNode personSortDescriptors];
-  v5 = [v3 sortedArrayUsingDescriptors:v4];
+  v5 = [identifiersCopy sortedArrayUsingDescriptors:v4];
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1669,16 +1669,16 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 localIdentifier];
-        [v6 addObject:v14];
+        localIdentifier = [v13 localIdentifier];
+        [array addObject:localIdentifier];
 
-        v15 = [v13 name];
-        v16 = [v15 length];
+        name = [v13 name];
+        v16 = [name length];
 
         if (v16)
         {
-          v17 = [v13 name];
-          [v7 addObject:v17];
+          name2 = [v13 name];
+          [array2 addObject:name2];
         }
       }
 
@@ -1692,9 +1692,9 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
   v27[0] = @"socialGroupID";
   v27[1] = @"personLocalIdentifiers";
   v28[0] = v18;
-  v28[1] = v6;
+  v28[1] = array;
   v27[2] = @"personNames";
-  v28[2] = v7;
+  v28[2] = array2;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:3];
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1702,26 +1702,26 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
   return v19;
 }
 
-- (id)_socialGroupsForSurveyFromCustomAlgorithm:(id)a3
+- (id)_socialGroupsForSurveyFromCustomAlgorithm:(id)algorithm
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  [v45 _checkCanRead];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v44 = [v45 relevantMomentNodesForSocialGroupProcessing];
+  algorithmCopy = algorithm;
+  [algorithmCopy _checkCanRead];
+  array = [MEMORY[0x277CBEB18] array];
+  relevantMomentNodesForSocialGroupProcessing = [algorithmCopy relevantMomentNodesForSocialGroupProcessing];
   v60[0] = 0;
   v60[1] = v60;
   v60[2] = 0x2020000000;
   v60[3] = 0;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __75__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCustomAlgorithm___block_invoke;
   v57[3] = &unk_278888660;
-  v5 = v4;
+  v5 = dictionary;
   v58 = v5;
   v59 = v60;
-  [v44 enumerateObjectsUsingBlock:v57];
+  [relevantMomentNodesForSocialGroupProcessing enumerateObjectsUsingBlock:v57];
   v56[0] = 0;
   v56[1] = v56;
   v56[2] = 0x2020000000;
@@ -1731,10 +1731,10 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
   v53[2] = __75__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCustomAlgorithm___block_invoke_3;
   v53[3] = &unk_278888860;
   v55 = v56;
-  v6 = v3;
+  v6 = array;
   v54 = v6;
   [v5 enumerateKeysAndObjectsUsingBlock:v53];
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v42 = v5;
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"personNodes" ascending:0 comparator:&__block_literal_global_420];
   v64[0] = v8;
@@ -1750,9 +1750,9 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
     }
 
     v11 = [v6 objectAtIndexedSubscript:i];
-    if (([v7 containsObject:v11] & 1) == 0)
+    if (([orderedSet containsObject:v11] & 1) == 0)
     {
-      [v7 addObject:v11];
+      [orderedSet addObject:v11];
     }
   }
 
@@ -1771,9 +1771,9 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
     v18 = [v17 count];
     if (v18 > v15)
     {
-      if (([v7 containsObject:v16] & 1) == 0)
+      if (([orderedSet containsObject:v16] & 1) == 0)
       {
-        [v7 addObject:v16];
+        [orderedSet addObject:v16];
       }
 
       v15 = v18;
@@ -1793,9 +1793,9 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
   for (j = 0; j < [v6 count]; ++j)
   {
     v22 = [v6 objectAtIndexedSubscript:?];
-    if (([v7 containsObject:v22] & 1) == 0)
+    if (([orderedSet containsObject:v22] & 1) == 0)
     {
-      [v7 addObject:v22];
+      [orderedSet addObject:v22];
       if (++v21 > 0x45)
       {
 
@@ -1808,9 +1808,9 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
         v25 = [v6 objectAtIndexedSubscript:k];
         v26 = [v22 objectForKeyedSubscript:@"personNodes"];
         v27 = [v25 objectForKeyedSubscript:@"personNodes"];
-        if ((([v26 isSubsetOfSet:v27] & 1) != 0 || objc_msgSend(v27, "isSubsetOfSet:", v26)) && (objc_msgSend(v7, "containsObject:", v25) & 1) == 0)
+        if ((([v26 isSubsetOfSet:v27] & 1) != 0 || objc_msgSend(v27, "isSubsetOfSet:", v26)) && (objc_msgSend(orderedSet, "containsObject:", v25) & 1) == 0)
         {
-          [v7 addObject:v25];
+          [orderedSet addObject:v25];
           if (++v21 >= 0x46)
           {
 
@@ -1825,12 +1825,12 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
     ++v46;
   }
 
-  v28 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v29 = v7;
+  v29 = orderedSet;
   v30 = [v29 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v30)
   {
@@ -1848,11 +1848,11 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
         if ([v33 count])
         {
           v34 = MEMORY[0x277CBEA60];
-          v35 = [v33 allObjects];
-          v36 = [v34 arrayWithArray:v35];
+          allObjects = [v33 allObjects];
+          v36 = [v34 arrayWithArray:allObjects];
 
           v37 = [(PGSocialGroupsQuestionFactory *)self _createSocialGroupWithPersonLocalIdentifiers:v36];
-          [v28 addObject:v37];
+          [orderedSet2 addObject:v37];
         }
       }
 
@@ -1867,7 +1867,7 @@ void __126__PGSocialGroupsQuestionFactory_enumerateSocialGroupsWithGraph_withLin
 
   v38 = *MEMORY[0x277D85DE8];
 
-  return v28;
+  return orderedSet2;
 }
 
 void __75__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCustomAlgorithm___block_invoke(uint64_t a1, void *a2, uint64_t a3, BOOL *a4)
@@ -1997,13 +1997,13 @@ void __75__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCustomAlgorit
   }
 }
 
-- (id)_socialGroupsForSurveyFromNewAlgorithm:(id)a3 withLinkage:(unint64_t)a4
+- (id)_socialGroupsForSurveyFromNewAlgorithm:(id)algorithm withLinkage:(unint64_t)linkage
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  algorithmCopy = algorithm;
   v8 = objc_alloc_init(v6);
-  v9 = [MEMORY[0x277CBEB40] orderedSet];
-  v10 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
   v19 = 0;
   v11 = objc_opt_class();
   v17[0] = MEMORY[0x277D85DD0];
@@ -2011,16 +2011,16 @@ void __75__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCustomAlgorit
   v17[2] = __84__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromNewAlgorithm_withLinkage___block_invoke;
   v17[3] = &unk_2788885F0;
   v17[4] = self;
-  v18 = v9;
+  v18 = orderedSet;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromNewAlgorithm_withLinkage___block_invoke_2;
   v15[3] = &unk_2788885F0;
   v15[4] = self;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
-  [v11 enumerateSocialGroupsWithGraph:v7 withLinkage:a4 validGroupsBlock:v17 invalidGroupsBlock:v15 averageWeight:&v19];
+  v16 = orderedSet2;
+  v12 = orderedSet2;
+  v13 = orderedSet;
+  [v11 enumerateSocialGroupsWithGraph:algorithmCopy withLinkage:linkage validGroupsBlock:v17 invalidGroupsBlock:v15 averageWeight:&v19];
 
   [v8 setValue:v13 forKey:@"validSocialGroupsPeopleLocalIdentifiers"];
   [v8 setValue:v12 forKey:@"remainingSocialGroupsPeopleLocalIdentifiers"];
@@ -2040,29 +2040,29 @@ void __84__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromNewAlgorithm_
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_socialGroupsForSurveyFromCurrentAlgorithm:(id)a3
+- (id)_socialGroupsForSurveyFromCurrentAlgorithm:(id)algorithm
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  algorithmCopy = algorithm;
   v6 = objc_alloc_init(v4);
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
-  v8 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
   v16 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCurrentAlgorithm___block_invoke;
   v14[3] = &unk_2788885C8;
   v14[4] = self;
-  v15 = v7;
+  v15 = orderedSet;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCurrentAlgorithm___block_invoke_2;
   v12[3] = &unk_2788885C8;
   v12[4] = self;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
-  [v5 enumerateSocialGroupsIncludingMeNode:0 socialGroupsVersion:1 simulateMeNodeNotSet:0 validGroupsBlock:v14 invalidGroupsBlock:v12 averageWeight:&v16];
+  v13 = orderedSet2;
+  v9 = orderedSet2;
+  v10 = orderedSet;
+  [algorithmCopy enumerateSocialGroupsIncludingMeNode:0 socialGroupsVersion:1 simulateMeNodeNotSet:0 validGroupsBlock:v14 invalidGroupsBlock:v12 averageWeight:&v16];
 
   [v6 setValue:v10 forKey:@"validSocialGroupsPeopleLocalIdentifiers"];
   [v6 setValue:v9 forKey:@"remainingSocialGroupsPeopleLocalIdentifiers"];
@@ -2090,65 +2090,65 @@ void __76__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCurrentAlgori
   }
 }
 
-- (id)_socialGroupsForSurvey:(id)a3 withLimit:(unint64_t)a4
+- (id)_socialGroupsForSurvey:(id)survey withLimit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromCurrentAlgorithm:v6];
+  surveyCopy = survey;
+  v7 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromCurrentAlgorithm:surveyCopy];
   v8 = [v7 objectForKeyedSubscript:@"validSocialGroupsPeopleLocalIdentifiers"];
-  if ([v8 count] >= a4)
+  if ([v8 count] >= limit)
   {
     v20 = v8;
   }
 
   else
   {
-    v9 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:v6 withLinkage:5];
+    v9 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:surveyCopy withLinkage:5];
     v10 = [v9 objectForKeyedSubscript:@"validSocialGroupsPeopleLocalIdentifiers"];
     [v8 unionOrderedSet:v10];
 
-    if ([v8 count] >= a4)
+    if ([v8 count] >= limit)
     {
       v21 = v8;
     }
 
     else
     {
-      v11 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:v6 withLinkage:0];
+      v11 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:surveyCopy withLinkage:0];
       v12 = [v11 objectForKeyedSubscript:@"validSocialGroupsPeopleLocalIdentifiers"];
       [v8 unionOrderedSet:v12];
 
-      if ([v8 count] >= a4)
+      if ([v8 count] >= limit)
       {
         v22 = v8;
       }
 
       else
       {
-        v13 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:v6 withLinkage:3];
+        v13 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:surveyCopy withLinkage:3];
         v14 = [v13 objectForKeyedSubscript:@"validSocialGroupsPeopleLocalIdentifiers"];
         [v8 unionOrderedSet:v14];
 
-        if ([v8 count] >= a4)
+        if ([v8 count] >= limit)
         {
           v23 = v8;
         }
 
         else
         {
-          v15 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:v6 withLinkage:2];
+          v15 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromNewAlgorithm:surveyCopy withLinkage:2];
           v16 = [v15 objectForKeyedSubscript:@"validSocialGroupsPeopleLocalIdentifiers"];
           [v8 unionOrderedSet:v16];
 
-          if ([v8 count] >= a4)
+          if ([v8 count] >= limit)
           {
             v24 = v8;
           }
 
           else
           {
-            v17 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromCustomAlgorithm:v6];
+            v17 = [(PGSocialGroupsQuestionFactory *)self _socialGroupsForSurveyFromCustomAlgorithm:surveyCopy];
             [v8 unionOrderedSet:v17];
-            if ([v8 count] >= a4)
+            if ([v8 count] >= limit)
             {
               v25 = v8;
             }
@@ -2168,26 +2168,26 @@ void __76__PGSocialGroupsQuestionFactory__socialGroupsForSurveyFromCurrentAlgori
   return v8;
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __74__PGSocialGroupsQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __74__PGSocialGroupsQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

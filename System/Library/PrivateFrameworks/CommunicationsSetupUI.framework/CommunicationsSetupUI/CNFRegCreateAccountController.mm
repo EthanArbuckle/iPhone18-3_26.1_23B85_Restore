@@ -1,7 +1,7 @@
 @interface CNFRegCreateAccountController
 - (id)bagKey;
 - (void)cancelTapped;
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6;
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -17,10 +17,10 @@
 
 - (id)bagKey
 {
-  v2 = [(CNFRegServerWebViewController *)self regController];
-  v3 = [v2 serviceType];
+  regController = [(CNFRegServerWebViewController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v3 == 1)
+  if (serviceType == 1)
   {
     return @"md-profile-setup-page";
   }
@@ -33,17 +33,17 @@
 
 - (void)cancelTapped
 {
-  v3 = [(CNFRegCreateAccountController *)self delegate];
-  [v3 createAccountControllerDidFinish:self withAppleId:0 authID:0 authToken:0];
+  delegate = [(CNFRegCreateAccountController *)self delegate];
+  [delegate createAccountControllerDidFinish:self withAppleId:0 authID:0 authToken:0];
 }
 
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CNFRegCreateAccountController *)self delegate];
-  [v12 createAccountControllerDidFinish:self withAppleId:v11 authID:v10 authToken:v9];
+  tokenCopy = token;
+  iDCopy = iD;
+  dCopy = d;
+  delegate = [(CNFRegCreateAccountController *)self delegate];
+  [delegate createAccountControllerDidFinish:self withAppleId:dCopy authID:iDCopy authToken:tokenCopy];
 }
 
 @end

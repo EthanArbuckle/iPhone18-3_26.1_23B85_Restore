@@ -1,8 +1,8 @@
 @interface TRICancelableMAOperation
 - (BOOL)isCanceled;
 - (TRICancelableMAOperation)init;
-- (void)addSemaphore:(id)a3;
-- (void)setCurrentAsset:(id)a3;
+- (void)addSemaphore:(id)semaphore;
+- (void)setCurrentAsset:(id)asset;
 @end
 
 @implementation TRICancelableMAOperation
@@ -32,16 +32,16 @@
   return v2;
 }
 
-- (void)addSemaphore:(id)a3
+- (void)addSemaphore:(id)semaphore
 {
-  v4 = a3;
+  semaphoreCopy = semaphore;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__TRICancelableMAOperation_addSemaphore___block_invoke;
   v7[3] = &unk_279DE2ED0;
-  v8 = v4;
-  v6 = v4;
+  v8 = semaphoreCopy;
+  v6 = semaphoreCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -178,16 +178,16 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCurrentAsset:(id)a3
+- (void)setCurrentAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__TRICancelableMAOperation_setCurrentAsset___block_invoke;
   v7[3] = &unk_279DE2ED0;
-  v8 = v4;
-  v6 = v4;
+  v8 = assetCopy;
+  v6 = assetCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 

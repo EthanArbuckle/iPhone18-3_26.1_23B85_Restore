@@ -1,26 +1,26 @@
 @interface NTKVictoryDigitalColorEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)_orderedValuesForDevice:(id)device;
+- (BOOL)optionExistsInDevice:(id)device;
 @end
 
 @implementation NTKVictoryDigitalColorEditOption
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_51CC;
   v5[3] = &unk_10510;
-  v5[4] = a1;
-  v3 = sub_51CC(v5, a3);
+  v5[4] = self;
+  v3 = sub_51CC(v5, device);
 
   return v3;
 }
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:753405533])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:753405533])
   {
     v5 = 1;
   }

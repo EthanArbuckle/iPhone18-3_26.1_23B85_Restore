@@ -1,30 +1,30 @@
 @interface _HKFeatureStatusProvidingObserverBridge
-- (_HKFeatureStatusProvidingObserverBridge)initWithFeatureIdentifierAndContext:(id)a3 handle:(id)a4;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (_HKFeatureStatusProvidingObserverBridge)initWithFeatureIdentifierAndContext:(id)context handle:(id)handle;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 @end
 
 @implementation _HKFeatureStatusProvidingObserverBridge
 
-- (_HKFeatureStatusProvidingObserverBridge)initWithFeatureIdentifierAndContext:(id)a3 handle:(id)a4
+- (_HKFeatureStatusProvidingObserverBridge)initWithFeatureIdentifierAndContext:(id)context handle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  handleCopy = handle;
   v12.receiver = self;
   v12.super_class = _HKFeatureStatusProvidingObserverBridge;
   v9 = [(_HKFeatureStatusProvidingObserverBridge *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_featureIdentifierAndContext, a3);
-    objc_storeStrong(&v10->_handle, a4);
+    objc_storeStrong(&v9->_featureIdentifierAndContext, context);
+    objc_storeStrong(&v10->_handle, handle);
   }
 
   return v10;
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v5 = a4;
+  statusCopy = status;
   _HKInitializeLogging();
   v6 = HKLogInfrastructure();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -38,7 +38,7 @@
     }
   }
 
-  [(HKObserverBridgeHandle *)self->_handle notifyObserversOfChangeForKey:self->_featureIdentifierAndContext newValue:v5];
+  [(HKObserverBridgeHandle *)self->_handle notifyObserversOfChangeForKey:self->_featureIdentifierAndContext newValue:statusCopy];
 }
 
 - (void)featureStatusProviding:(uint64_t)a1 didUpdateFeatureStatus:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

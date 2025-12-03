@@ -1,17 +1,17 @@
 @interface SBAbstractTraitsSwitcherPolicySpecifier
-- (SBAbstractTraitsSwitcherPolicySpecifier)initWithComponentOrder:(id)a3 arbiter:(id)a4;
+- (SBAbstractTraitsSwitcherPolicySpecifier)initWithComponentOrder:(id)order arbiter:(id)arbiter;
 - (id)_specifierDescription;
-- (void)_updateAcquiredParticipantsPolicies:(id)a3 context:(id)a4;
+- (void)_updateAcquiredParticipantsPolicies:(id)policies context:(id)context;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SBAbstractTraitsSwitcherPolicySpecifier
 
-- (SBAbstractTraitsSwitcherPolicySpecifier)initWithComponentOrder:(id)a3 arbiter:(id)a4
+- (SBAbstractTraitsSwitcherPolicySpecifier)initWithComponentOrder:(id)order arbiter:(id)arbiter
 {
-  v6 = a3;
-  v7 = a4;
+  orderCopy = order;
+  arbiterCopy = arbiter;
   v16.receiver = self;
   v16.super_class = SBAbstractTraitsSwitcherPolicySpecifier;
   v8 = [(SBAbstractTraitsSwitcherPolicySpecifier *)&v16 init];
@@ -24,7 +24,7 @@
     v13[2] = __74__SBAbstractTraitsSwitcherPolicySpecifier_initWithComponentOrder_arbiter___block_invoke;
     v13[3] = &unk_2783B0DE8;
     objc_copyWeak(&v14, &location);
-    v10 = [(SBTraitsPipelineBlockBasedPolicySpecifier *)v9 initWithPolicySpecifierBlock:v13 specifierDescription:@"None" componentOrder:v6 arbiter:v7];
+    v10 = [(SBTraitsPipelineBlockBasedPolicySpecifier *)v9 initWithPolicySpecifierBlock:v13 specifierDescription:@"None" componentOrder:orderCopy arbiter:arbiterCopy];
     blockBasedPolicySpecifier = v8->_blockBasedPolicySpecifier;
     v8->_blockBasedPolicySpecifier = v10;
 
@@ -58,7 +58,7 @@ void __74__SBAbstractTraitsSwitcherPolicySpecifier_initWithComponentOrder_arbite
   self->_blockBasedPolicySpecifier = 0;
 }
 
-- (void)_updateAcquiredParticipantsPolicies:(id)a3 context:(id)a4
+- (void)_updateAcquiredParticipantsPolicies:(id)policies context:(id)context
 {
   objc_opt_class();
 

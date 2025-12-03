@@ -27,10 +27,10 @@
 
 - (uint64_t)_setNowPlayingMetadataObserver:()WKTesting
 {
-  *a1 = &unk_1F10F8E68;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F8E68;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_setNowPlayingMetadataObserver:()WKTesting
@@ -132,7 +132,7 @@
   {
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v4)
   {
   }
@@ -140,10 +140,10 @@
 
 - (uint64_t)_requestActiveNowPlayingSessionInfo:()WKTesting
 {
-  *a1 = &unk_1F10F9E08;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9E08;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_requestActiveNowPlayingSessionInfo:()WKTesting
@@ -165,7 +165,7 @@
     v7 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))(*(a3 + 64), *(a3 + 72));
+  (*(*(self + 8) + 16))(*(a3 + 64), *(a3 + 72));
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -175,66 +175,66 @@
 
 - (uint64_t)_processWillSuspendForTesting:()WKTesting
 {
-  *a1 = &unk_1F10F9E30;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9E30;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_doAfterProcessingAllPendingMouseEvents:()WKTesting
 {
-  *a1 = &unk_1F10F9E80;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9E80;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setPrivateClickMeasurementOverrideTimerForTesting:()WKTesting completionHandler:
 {
-  *a1 = &unk_1F10F9EA8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9EA8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setPrivateClickMeasurementAttributionReportURLsForTesting:()WKTesting destinationURL:completionHandler:
 {
-  *a1 = &unk_1F10F9ED0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9ED0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setPrivateClickMeasurementAttributionTokenPublicKeyURLForTesting:()WKTesting completionHandler:
 {
-  *a1 = &unk_1F10F9EF8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9EF8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setPrivateClickMeasurementAttributionTokenSignatureURLForTesting:()WKTesting completionHandler:
 {
-  *a1 = &unk_1F10F9F20;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9F20;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_setPrivateClickMeasurementAppBundleIDForTesting:()WKTesting completionHandler:
 {
-  *a1 = &unk_1F10F9F48;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9F48;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_dumpPrivateClickMeasurement:()WKTesting
 {
-  *a1 = &unk_1F10F9F70;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9F70;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_dumpPrivateClickMeasurement:()WKTesting
@@ -256,7 +256,7 @@
     v5 = &stru_1F1147748;
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   v6 = v7;
   v7 = 0;
   if (v6)
@@ -266,57 +266,57 @@
 
 - (uint64_t)_lastNavigationWasAppInitiated:()WKTesting
 {
-  *a1 = &unk_1F10F9F98;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9F98;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_appPrivacyReportTestingData:()WKTesting
 {
-  *a1 = &unk_1F10F9FC0;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9FC0;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_clearAppPrivacyReportTestingData:()WKTesting
 {
-  *a1 = &unk_1F10F9FE8;
-  _Block_release(a1[1]);
+  *self = &unk_1F10F9FE8;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_isLayerTreeFrozenForTesting:()WKTesting
 {
-  *a1 = &unk_1F10FA010;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA010;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_computePagesForPrinting:()WKTesting completionHandler:
 {
-  *a1 = &unk_1F10FA038;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA038;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_gpuToWebProcessConnectionCountForTesting:()WKTesting
 {
-  *a1 = &unk_1F10FA060;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA060;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (uint64_t)_getNotifyStateForTesting:()WKTesting completionHandler:
 {
   if (a3)
   {
-    v4 = *(a1 + 8);
+    v4 = *(self + 8);
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a2];
     v6 = *(v4 + 16);
 
@@ -325,7 +325,7 @@
 
   else
   {
-    v8 = *(*(a1 + 8) + 16);
+    v8 = *(*(self + 8) + 16);
 
     return v8();
   }
@@ -333,10 +333,10 @@
 
 - (uint64_t)_textFragmentRangesWithCompletionHandlerForTesting:()WKTesting
 {
-  *a1 = &unk_1F10FA100;
-  _Block_release(a1[1]);
+  *self = &unk_1F10FA100;
+  _Block_release(self[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(self, v2);
 }
 
 - (void)_textFragmentRangesWithCompletionHandlerForTesting:()WKTesting
@@ -373,11 +373,11 @@
     v6 = 0;
   }
 
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = v11;
-  if (v11)
+  array = [MEMORY[0x1E695DF70] array];
+  v12 = array;
+  if (array)
   {
-    v13 = v11;
+    v13 = array;
   }
 
   if (v3)
@@ -398,7 +398,7 @@
     while (v14);
   }
 
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v12)
   {
   }

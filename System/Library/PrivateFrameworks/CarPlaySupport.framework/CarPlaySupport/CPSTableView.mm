@@ -7,10 +7,10 @@
 - (UIView)contentView
 {
   v17 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(CPSTableView *)v14 subviews];
+  obj = [(CPSTableView *)selfCopy subviews];
   v9 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
   if (v9)
   {
@@ -57,7 +57,7 @@ LABEL_9:
   MEMORY[0x277D82BD8](obj);
   if (!v10)
   {
-    v15 = MEMORY[0x277D82BE0](v14);
+    v15 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   v2 = v15;

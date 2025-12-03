@@ -1,9 +1,9 @@
 @interface MNGuidanceSignDescription
-- (MNGuidanceSignDescription)initWithCoder:(id)a3;
-- (MNGuidanceSignDescription)initWithID:(id)a3 titles:(id)a4 details:(id)a5 variableOverrides:(id)a6 distanceDetailLevel:(int)a7 junction:(id)a8 artworkOverride:(id)a9 shieldText:(id)a10 shieldID:(int)a11 shieldStringID:(id)a12 composedGuidanceEventIndex:(int)a13;
+- (MNGuidanceSignDescription)initWithCoder:(id)coder;
+- (MNGuidanceSignDescription)initWithID:(id)d titles:(id)titles details:(id)details variableOverrides:(id)overrides distanceDetailLevel:(int)level junction:(id)junction artworkOverride:(id)override shieldText:(id)self0 shieldID:(int)self1 shieldStringID:(id)self2 composedGuidanceEventIndex:(int)self3;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNGuidanceSignDescription
@@ -14,9 +14,9 @@
   junction = self->_junction;
   if (junction)
   {
-    v5 = [(GEOJunction *)junction maneuverType];
+    maneuverType = [(GEOJunction *)junction maneuverType];
     v6 = @"NO_TURN";
-    switch(v5)
+    switch(maneuverType)
     {
       case 0:
         break;
@@ -207,29 +207,29 @@
         v6 = @"TURN_AROUND";
         break;
       default:
-        v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v5];
+        v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", maneuverType];
         break;
     }
 
     [v3 addObject:v6];
   }
 
-  v7 = [(NSArray *)self->_primaryStrings firstObject];
-  v8 = v7;
-  if (v7)
+  firstObject = [(NSArray *)self->_primaryStrings firstObject];
+  v8 = firstObject;
+  if (firstObject)
   {
-    v9 = [v7 stringWithOptions:0];
+    v9 = [firstObject stringWithOptions:0];
     if (v9)
     {
       [v3 addObject:v9];
     }
   }
 
-  v10 = [(NSArray *)self->_secondaryStrings firstObject];
-  v11 = v10;
-  if (v10)
+  firstObject2 = [(NSArray *)self->_secondaryStrings firstObject];
+  v11 = firstObject2;
+  if (firstObject2)
   {
-    v12 = [v10 stringWithOptions:0];
+    v12 = [firstObject2 stringWithOptions:0];
     if (v12)
     {
       [v3 addObject:v12];
@@ -242,8 +242,8 @@
   uniqueID = self->_uniqueID;
   if (uniqueID)
   {
-    v15 = [(NSUUID *)uniqueID UUIDString];
-    [v3 addObject:v15];
+    uUIDString = [(NSUUID *)uniqueID UUIDString];
+    [v3 addObject:uUIDString];
   }
 
   v16 = [v3 componentsJoinedByString:@" | "];
@@ -251,126 +251,126 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v20 = a3;
-  v4 = [(MNGuidanceSignDescription *)self uniqueID];
+  coderCopy = coder;
+  uniqueID = [(MNGuidanceSignDescription *)self uniqueID];
 
-  if (v4)
+  if (uniqueID)
   {
-    v5 = [(MNGuidanceSignDescription *)self uniqueID];
-    [v20 encodeObject:v5 forKey:@"UniqueID"];
+    uniqueID2 = [(MNGuidanceSignDescription *)self uniqueID];
+    [coderCopy encodeObject:uniqueID2 forKey:@"UniqueID"];
   }
 
-  v6 = [(MNGuidanceSignDescription *)self titles];
+  titles = [(MNGuidanceSignDescription *)self titles];
 
-  if (v6)
+  if (titles)
   {
-    v7 = [(MNGuidanceSignDescription *)self titles];
-    [v20 encodeObject:v7 forKey:@"Titles"];
+    titles2 = [(MNGuidanceSignDescription *)self titles];
+    [coderCopy encodeObject:titles2 forKey:@"Titles"];
   }
 
-  v8 = [(MNGuidanceSignDescription *)self details];
+  details = [(MNGuidanceSignDescription *)self details];
 
-  if (v8)
+  if (details)
   {
-    v9 = [(MNGuidanceSignDescription *)self details];
-    [v20 encodeObject:v9 forKey:@"Details"];
+    details2 = [(MNGuidanceSignDescription *)self details];
+    [coderCopy encodeObject:details2 forKey:@"Details"];
   }
 
-  [v20 encodeObject:self->_primaryStrings forKey:@"_primaryStrings"];
-  [v20 encodeObject:self->_secondaryStrings forKey:@"_secondaryStrings"];
-  [v20 encodeDouble:@"_remainingDistance" forKey:self->_remainingDistance];
-  [v20 encodeObject:self->_displayRemainingDistance forKey:@"_displayRemainingDistance"];
-  v10 = [(MNGuidanceSignDescription *)self shieldText];
+  [coderCopy encodeObject:self->_primaryStrings forKey:@"_primaryStrings"];
+  [coderCopy encodeObject:self->_secondaryStrings forKey:@"_secondaryStrings"];
+  [coderCopy encodeDouble:@"_remainingDistance" forKey:self->_remainingDistance];
+  [coderCopy encodeObject:self->_displayRemainingDistance forKey:@"_displayRemainingDistance"];
+  shieldText = [(MNGuidanceSignDescription *)self shieldText];
 
-  if (v10)
+  if (shieldText)
   {
-    v11 = [(MNGuidanceSignDescription *)self shieldText];
-    [v20 encodeObject:v11 forKey:@"ShieldText"];
+    shieldText2 = [(MNGuidanceSignDescription *)self shieldText];
+    [coderCopy encodeObject:shieldText2 forKey:@"ShieldText"];
   }
 
-  [v20 encodeInt32:-[MNGuidanceSignDescription shieldID](self forKey:{"shieldID"), @"ShieldID"}];
-  v12 = [(MNGuidanceSignDescription *)self shieldStringID];
+  [coderCopy encodeInt32:-[MNGuidanceSignDescription shieldID](self forKey:{"shieldID"), @"ShieldID"}];
+  shieldStringID = [(MNGuidanceSignDescription *)self shieldStringID];
 
-  if (v12)
+  if (shieldStringID)
   {
-    v13 = [(MNGuidanceSignDescription *)self shieldStringID];
-    [v20 encodeObject:v13 forKey:@"ShieldStringID"];
+    shieldStringID2 = [(MNGuidanceSignDescription *)self shieldStringID];
+    [coderCopy encodeObject:shieldStringID2 forKey:@"ShieldStringID"];
   }
 
-  v14 = [(MNGuidanceSignDescription *)self junction];
+  junction = [(MNGuidanceSignDescription *)self junction];
 
-  if (v14)
+  if (junction)
   {
-    v15 = [(MNGuidanceSignDescription *)self junction];
-    [v20 encodeObject:v15 forKey:@"Junction"];
+    junction2 = [(MNGuidanceSignDescription *)self junction];
+    [coderCopy encodeObject:junction2 forKey:@"Junction"];
   }
 
-  v16 = [(MNGuidanceSignDescription *)self artworkOverride];
+  artworkOverride = [(MNGuidanceSignDescription *)self artworkOverride];
 
-  if (v16)
+  if (artworkOverride)
   {
-    v17 = [(MNGuidanceSignDescription *)self artworkOverride];
-    [v20 encodeObject:v17 forKey:@"ArtworkOverride"];
+    artworkOverride2 = [(MNGuidanceSignDescription *)self artworkOverride];
+    [coderCopy encodeObject:artworkOverride2 forKey:@"ArtworkOverride"];
   }
 
-  [v20 encodeInteger:-[MNGuidanceSignDescription distanceDetailLevel](self forKey:{"distanceDetailLevel"), @"DistanceDetailLevel"}];
-  v18 = [(MNGuidanceSignDescription *)self variableOverrides];
+  [coderCopy encodeInteger:-[MNGuidanceSignDescription distanceDetailLevel](self forKey:{"distanceDetailLevel"), @"DistanceDetailLevel"}];
+  variableOverrides = [(MNGuidanceSignDescription *)self variableOverrides];
 
-  if (v18)
+  if (variableOverrides)
   {
-    v19 = [(MNGuidanceSignDescription *)self variableOverrides];
-    [v20 encodeObject:v19 forKey:@"VariableOverrides"];
+    variableOverrides2 = [(MNGuidanceSignDescription *)self variableOverrides];
+    [coderCopy encodeObject:variableOverrides2 forKey:@"VariableOverrides"];
   }
 
-  [v20 encodeInt32:-[MNGuidanceSignDescription composedGuidanceEventIndex](self forKey:{"composedGuidanceEventIndex"), @"ComposedGuidanceEventIndex"}];
-  [v20 encodeBool:self->_isStaticText forKey:@"_isStaticText"];
+  [coderCopy encodeInt32:-[MNGuidanceSignDescription composedGuidanceEventIndex](self forKey:{"composedGuidanceEventIndex"), @"ComposedGuidanceEventIndex"}];
+  [coderCopy encodeBool:self->_isStaticText forKey:@"_isStaticText"];
 }
 
-- (MNGuidanceSignDescription)initWithCoder:(id)a3
+- (MNGuidanceSignDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = MNGuidanceSignDescription;
   v5 = [(MNGuidanceSignDescription *)&v48 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UniqueID"];
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Titles"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Titles"];
     titles = v5->_titles;
     v5->_titles = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"Details"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"Details"];
     details = v5->_details;
     v5->_details = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"_primaryStrings"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_primaryStrings"];
     primaryStrings = v5->_primaryStrings;
     v5->_primaryStrings = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"_secondaryStrings"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"_secondaryStrings"];
     secondaryStrings = v5->_secondaryStrings;
     v5->_secondaryStrings = v26;
 
-    [v4 decodeDoubleForKey:@"_remainingDistance"];
+    [coderCopy decodeDoubleForKey:@"_remainingDistance"];
     v5->_remainingDistance = v28;
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayRemainingDistance"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayRemainingDistance"];
     displayRemainingDistance = v5->_displayRemainingDistance;
     v5->_displayRemainingDistance = v29;
 
@@ -378,32 +378,32 @@
     v32 = objc_opt_class();
     v33 = objc_opt_class();
     v34 = [v31 setWithObjects:{v32, v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"VariableOverrides"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"VariableOverrides"];
     variableOverrides = v5->_variableOverrides;
     v5->_variableOverrides = v35;
 
-    v5->_distanceDetailLevel = [v4 decodeIntegerForKey:@"DistanceDetailLevel"];
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Junction"];
+    v5->_distanceDetailLevel = [coderCopy decodeIntegerForKey:@"DistanceDetailLevel"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Junction"];
     junction = v5->_junction;
     v5->_junction = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ArtworkOverride"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ArtworkOverride"];
     artworkOverride = v5->_artworkOverride;
     v5->_artworkOverride = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ShieldText"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ShieldText"];
     v42 = [v41 copy];
     shieldText = v5->_shieldText;
     v5->_shieldText = v42;
 
-    v5->_shieldID = [v4 decodeInt32ForKey:@"ShieldID"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ShieldStringID"];
+    v5->_shieldID = [coderCopy decodeInt32ForKey:@"ShieldID"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ShieldStringID"];
     v45 = [v44 copy];
     shieldStringID = v5->_shieldStringID;
     v5->_shieldStringID = v45;
 
-    v5->_composedGuidanceEventIndex = [v4 decodeInt32ForKey:@"ComposedGuidanceEventIndex"];
-    v5->_isStaticText = [v4 decodeBoolForKey:@"_isStaticText"];
+    v5->_composedGuidanceEventIndex = [coderCopy decodeInt32ForKey:@"ComposedGuidanceEventIndex"];
+    v5->_isStaticText = [coderCopy decodeBoolForKey:@"_isStaticText"];
   }
 
   return v5;
@@ -412,29 +412,29 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MNGuidanceSignDescription *)self uniqueID];
-  v5 = [v3 stringWithFormat:@"%@ | static: %d", v4, self->_isStaticText];
+  uniqueID = [(MNGuidanceSignDescription *)self uniqueID];
+  v5 = [v3 stringWithFormat:@"%@ | static: %d", uniqueID, self->_isStaticText];
 
-  v6 = [(MNGuidanceSignDescription *)self titles];
-  v7 = [v6 count];
+  titles = [(MNGuidanceSignDescription *)self titles];
+  v7 = [titles count];
 
   if (v7)
   {
-    v8 = [(MNGuidanceSignDescription *)self titles];
-    v9 = [v8 firstObject];
-    v10 = [v5 stringByAppendingFormat:@"\n  title:     %@", v9];
+    titles2 = [(MNGuidanceSignDescription *)self titles];
+    firstObject = [titles2 firstObject];
+    v10 = [v5 stringByAppendingFormat:@"\n  title:     %@", firstObject];
 
     v5 = v10;
   }
 
-  v11 = [(MNGuidanceSignDescription *)self details];
-  v12 = [v11 count];
+  details = [(MNGuidanceSignDescription *)self details];
+  v12 = [details count];
 
   if (v12)
   {
-    v13 = [(MNGuidanceSignDescription *)self details];
-    v14 = [v13 firstObject];
-    v15 = [v5 stringByAppendingFormat:@"\n  detail:    %@", v14];
+    details2 = [(MNGuidanceSignDescription *)self details];
+    firstObject2 = [details2 firstObject];
+    v15 = [v5 stringByAppendingFormat:@"\n  detail:    %@", firstObject2];
 
     v5 = v15;
   }
@@ -442,33 +442,33 @@
   return v5;
 }
 
-- (MNGuidanceSignDescription)initWithID:(id)a3 titles:(id)a4 details:(id)a5 variableOverrides:(id)a6 distanceDetailLevel:(int)a7 junction:(id)a8 artworkOverride:(id)a9 shieldText:(id)a10 shieldID:(int)a11 shieldStringID:(id)a12 composedGuidanceEventIndex:(int)a13
+- (MNGuidanceSignDescription)initWithID:(id)d titles:(id)titles details:(id)details variableOverrides:(id)overrides distanceDetailLevel:(int)level junction:(id)junction artworkOverride:(id)override shieldText:(id)self0 shieldID:(int)self1 shieldStringID:(id)self2 composedGuidanceEventIndex:(int)self3
 {
-  v19 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
-  v20 = a12;
+  dCopy = d;
+  titlesCopy = titles;
+  detailsCopy = details;
+  overridesCopy = overrides;
+  junctionCopy = junction;
+  overrideCopy = override;
+  textCopy = text;
+  stringIDCopy = stringID;
   v31.receiver = self;
   v31.super_class = MNGuidanceSignDescription;
   v21 = [(MNGuidanceSignDescription *)&v31 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_uniqueID, a3);
-    objc_storeStrong(&v22->_titles, a4);
-    objc_storeStrong(&v22->_details, a5);
-    objc_storeStrong(&v22->_variableOverrides, a6);
-    v22->_distanceDetailLevel = a7;
-    objc_storeStrong(&v22->_junction, a8);
-    objc_storeStrong(&v22->_artworkOverride, a9);
-    objc_storeStrong(&v22->_shieldText, a10);
-    v22->_shieldID = a11;
-    objc_storeStrong(&v22->_shieldStringID, a12);
-    v22->_composedGuidanceEventIndex = a13;
+    objc_storeStrong(&v21->_uniqueID, d);
+    objc_storeStrong(&v22->_titles, titles);
+    objc_storeStrong(&v22->_details, details);
+    objc_storeStrong(&v22->_variableOverrides, overrides);
+    v22->_distanceDetailLevel = level;
+    objc_storeStrong(&v22->_junction, junction);
+    objc_storeStrong(&v22->_artworkOverride, override);
+    objc_storeStrong(&v22->_shieldText, text);
+    v22->_shieldID = iD;
+    objc_storeStrong(&v22->_shieldStringID, stringID);
+    v22->_composedGuidanceEventIndex = index;
   }
 
   return v22;

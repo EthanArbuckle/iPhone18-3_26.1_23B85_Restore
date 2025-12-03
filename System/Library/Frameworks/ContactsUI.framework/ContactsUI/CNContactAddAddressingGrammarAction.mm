@@ -1,8 +1,8 @@
 @interface CNContactAddAddressingGrammarAction
 + (id)os_log;
-- (void)performActionWithSender:(id)a3;
-- (void)pronounPickerViewController:(id)a3 didFinishWithTermOfAddress:(id)a4;
-- (void)pronounPickerViewControllerDidCancel:(id)a3;
+- (void)performActionWithSender:(id)sender;
+- (void)pronounPickerViewController:(id)controller didFinishWithTermOfAddress:(id)address;
+- (void)pronounPickerViewControllerDidCancel:(id)cancel;
 @end
 
 @implementation CNContactAddAddressingGrammarAction
@@ -26,42 +26,42 @@ uint64_t __45__CNContactAddAddressingGrammarAction_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)pronounPickerViewControllerDidCancel:(id)a3
+- (void)pronounPickerViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(CNContactAddAddressingGrammarAction *)self setSelectedAddressingGrammar:0];
-  v5 = [(CNContactAction *)self delegate];
-  [v5 actionWasCanceled:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionWasCanceled:self];
 
-  v6 = [(CNContactAction *)self delegate];
-  [v6 action:self dismissViewController:v4 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 action:self dismissViewController:cancelCopy sender:self];
 }
 
-- (void)pronounPickerViewController:(id)a3 didFinishWithTermOfAddress:(id)a4
+- (void)pronounPickerViewController:(id)controller didFinishWithTermOfAddress:(id)address
 {
-  v10 = a4;
-  v6 = a3;
-  if ([v10 isUnspecified])
+  addressCopy = address;
+  controllerCopy = controller;
+  if ([addressCopy isUnspecified])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v10;
+    v7 = addressCopy;
   }
 
   [(CNContactAddAddressingGrammarAction *)self setSelectedAddressingGrammar:v7];
-  v8 = [(CNContactAction *)self delegate];
-  [v8 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 
-  v9 = [(CNContactAction *)self delegate];
-  [v9 action:self dismissViewController:v6 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  [delegate2 action:self dismissViewController:controllerCopy sender:self];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   [(CNContactAddAddressingGrammarAction *)self setSelectedAddressingGrammar:0];
   v10 = 0;
   v11 = &v10;
@@ -82,8 +82,8 @@ uint64_t __45__CNContactAddAddressingGrammarAction_os_log__block_invoke()
   v6 = v5;
   _Block_object_dispose(&v10, 8);
   v7 = [v5 pronounPickerViewControllerWithDelegate:self];
-  v8 = [(CNContactAction *)self delegate];
-  [v8 action:self presentViewController:v7 sender:v4];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v7 sender:senderCopy];
 }
 
 @end

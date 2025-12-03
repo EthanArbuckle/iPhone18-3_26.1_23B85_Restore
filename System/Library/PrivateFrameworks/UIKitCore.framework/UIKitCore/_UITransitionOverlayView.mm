@@ -1,10 +1,10 @@
 @interface _UITransitionOverlayView
-- (_UITransitionOverlayView)initWithCoder:(id)a3;
-- (_UITransitionOverlayView)initWithFrame:(CGRect)a3;
+- (_UITransitionOverlayView)initWithCoder:(id)coder;
+- (_UITransitionOverlayView)initWithFrame:(CGRect)frame;
 - (id)transitionCompletionBlock;
 - (void)finishTransitionImmediately;
 - (void)layoutSubviews;
-- (void)setTransitionCompletionBlock:(id)a3;
+- (void)setTransitionCompletionBlock:(id)block;
 - (void)startTransition;
 @end
 
@@ -34,9 +34,9 @@
   return v4;
 }
 
-- (void)setTransitionCompletionBlock:(id)a3
+- (void)setTransitionCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,23 +54,23 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_188A55B8C(v7);
 }
 
 - (void)startTransition
 {
-  v2 = self;
+  selfCopy = self;
   _UITransitionOverlayView.startTransition()();
 }
 
 - (void)finishTransitionImmediately
 {
-  v2 = self;
+  selfCopy = self;
   _sSo24_UITransitionOverlayViewC5UIKitE27finishTransitionImmediatelyyyF_0();
 }
 
-- (_UITransitionOverlayView)initWithCoder:(id)a3
+- (_UITransitionOverlayView)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____UITransitionOverlayView_state) = 0;
   v3 = (self + OBJC_IVAR____UITransitionOverlayView_transitionCompletionBlock);
@@ -85,17 +85,17 @@
 {
   v5.receiver = self;
   v5.super_class = _UITransitionOverlayView;
-  v2 = self;
+  selfCopy = self;
   [(UIView *)&v5 layoutSubviews];
-  v3 = *(v2 + OBJC_IVAR____UITransitionOverlayView_snapshot);
-  [(UIView *)v2 bounds:v5.receiver];
+  v3 = *(selfCopy + OBJC_IVAR____UITransitionOverlayView_snapshot);
+  [(UIView *)selfCopy bounds:v5.receiver];
   [v3 setFrame_];
-  v4 = *(v2 + OBJC_IVAR____UITransitionOverlayView_backdrop);
-  [(UIView *)v2 bounds];
+  v4 = *(selfCopy + OBJC_IVAR____UITransitionOverlayView_backdrop);
+  [(UIView *)selfCopy bounds];
   [v4 setFrame_];
 }
 
-- (_UITransitionOverlayView)initWithFrame:(CGRect)a3
+- (_UITransitionOverlayView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

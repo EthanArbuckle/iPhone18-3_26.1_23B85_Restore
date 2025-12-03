@@ -1,8 +1,8 @@
 @interface ATXEngagementTrackedMissedNotificationRankingBiomeStream
 - (ATXEngagementTrackedMissedNotificationRankingBiomeStream)init;
-- (id)initFromCompletedMNRBiomeStream:(id)a3;
-- (id)initFromCompletedMNRBiomeStream:(id)a3 resolutionSource:(id)a4;
-- (id)publisherFromStartTime:(double)a3;
+- (id)initFromCompletedMNRBiomeStream:(id)stream;
+- (id)initFromCompletedMNRBiomeStream:(id)stream resolutionSource:(id)source;
+- (id)publisherFromStartTime:(double)time;
 @end
 
 @implementation ATXEngagementTrackedMissedNotificationRankingBiomeStream
@@ -15,36 +15,36 @@
   return v4;
 }
 
-- (id)initFromCompletedMNRBiomeStream:(id)a3
+- (id)initFromCompletedMNRBiomeStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_opt_new();
   [v5 updateDatabase];
-  v6 = [(ATXEngagementTrackedMissedNotificationRankingBiomeStream *)self initFromCompletedMNRBiomeStream:v4 resolutionSource:v5];
+  v6 = [(ATXEngagementTrackedMissedNotificationRankingBiomeStream *)self initFromCompletedMNRBiomeStream:streamCopy resolutionSource:v5];
 
   return v6;
 }
 
-- (id)initFromCompletedMNRBiomeStream:(id)a3 resolutionSource:(id)a4
+- (id)initFromCompletedMNRBiomeStream:(id)stream resolutionSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  streamCopy = stream;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = ATXEngagementTrackedMissedNotificationRankingBiomeStream;
   v9 = [(ATXEngagementTrackedMissedNotificationRankingBiomeStream *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_completedRankingStream, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_completedRankingStream, stream);
+    objc_storeStrong(p_isa + 2, source);
   }
 
   return p_isa;
 }
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
-  v4 = [(ATXCompletedMissedNotificationRankingStream *)self->_completedRankingStream publisherFromStartTime:a3];
+  v4 = [(ATXCompletedMissedNotificationRankingStream *)self->_completedRankingStream publisherFromStartTime:time];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__ATXEngagementTrackedMissedNotificationRankingBiomeStream_publisherFromStartTime___block_invoke;

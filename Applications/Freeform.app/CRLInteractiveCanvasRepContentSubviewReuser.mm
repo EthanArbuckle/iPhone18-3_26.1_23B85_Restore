@@ -1,32 +1,32 @@
 @interface CRLInteractiveCanvasRepContentSubviewReuser
-- (BOOL)canReuseUnmodifiedForRepContentPile:(id)a3;
-- (CRLInteractiveCanvasRepContentSubviewReuser)initWithSubview:(id)a3 originalRepContentPile:(id)a4;
+- (BOOL)canReuseUnmodifiedForRepContentPile:(id)pile;
+- (CRLInteractiveCanvasRepContentSubviewReuser)initWithSubview:(id)subview originalRepContentPile:(id)pile;
 - (void)removeRepContentPlatformViews;
-- (void)reuseForRepContentLayers:(id)a3;
+- (void)reuseForRepContentLayers:(id)layers;
 @end
 
 @implementation CRLInteractiveCanvasRepContentSubviewReuser
 
-- (CRLInteractiveCanvasRepContentSubviewReuser)initWithSubview:(id)a3 originalRepContentPile:(id)a4
+- (CRLInteractiveCanvasRepContentSubviewReuser)initWithSubview:(id)subview originalRepContentPile:(id)pile
 {
-  v6 = a3;
-  v7 = a4;
+  subviewCopy = subview;
+  pileCopy = pile;
   v16.receiver = self;
   v16.super_class = CRLInteractiveCanvasRepContentSubviewReuser;
   v8 = [(CRLInteractiveCanvasRepContentSubviewReuser *)&v16 init];
   if (v8)
   {
-    if ([v7 conformsToProtocol:&OBJC_PROTOCOL___CRLInteractiveCanvasRepLayerPile])
+    if ([pileCopy conformsToProtocol:&OBJC_PROTOCOL___CRLInteractiveCanvasRepLayerPile])
     {
-      v9 = [v6 layer];
+      layer = [subviewCopy layer];
       reusableSubviewLayer = v8->_reusableSubviewLayer;
-      v8->_reusableSubviewLayer = v9;
+      v8->_reusableSubviewLayer = layer;
     }
 
-    else if ([v7 conformsToProtocol:&OBJC_PROTOCOL___CRLInteractiveCanvasRepContentPlatformViewPile])
+    else if ([pileCopy conformsToProtocol:&OBJC_PROTOCOL___CRLInteractiveCanvasRepContentPlatformViewPile])
     {
-      objc_storeStrong(&v8->_originalRepContentPile, a4);
-      reusableSubviewLayer = [v6 subviews];
+      objc_storeStrong(&v8->_originalRepContentPile, pile);
+      reusableSubviewLayer = [subviewCopy subviews];
       v11 = [reusableSubviewLayer copy];
       repContentPlatformViews = v8->_repContentPlatformViews;
       v8->_repContentPlatformViews = v11;
@@ -58,16 +58,16 @@
 
       reusableSubviewLayer = [NSString stringWithUTF8String:"[CRLInteractiveCanvasRepContentSubviewReuser initWithSubview:originalRepContentPile:]"];
       v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLInteractiveCanvasRepContentSubviewUpdater.m"];
-      [CRLAssertionHandler handleFailureInFunction:reusableSubviewLayer file:v14 lineNumber:455 isFatal:0 description:"Rep content pile did not implement either CRLInteractiveCanvasRepLayerPile or CRLInteractiveCanvasRepContentPlatformViewPile: %@", v7];
+      [CRLAssertionHandler handleFailureInFunction:reusableSubviewLayer file:v14 lineNumber:455 isFatal:0 description:"Rep content pile did not implement either CRLInteractiveCanvasRepLayerPile or CRLInteractiveCanvasRepContentPlatformViewPile: %@", pileCopy];
     }
   }
 
   return v8;
 }
 
-- (void)reuseForRepContentLayers:(id)a3
+- (void)reuseForRepContentLayers:(id)layers
 {
-  v4 = a3;
+  layersCopy = layers;
   if (![(CRLInteractiveCanvasRepContentSubviewReuser *)self canReuseForRepContentLayersDuringBackgroundUpdate])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -97,21 +97,21 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:469 isFatal:0 description:"Reusing the subview for rep content layers must be allowed."];
   }
 
-  v8 = [(CALayer *)self->_reusableSubviewLayer sublayers];
-  v9 = [v4 isEqualToArray:v8];
+  sublayers = [(CALayer *)self->_reusableSubviewLayer sublayers];
+  v9 = [layersCopy isEqualToArray:sublayers];
 
   if ((v9 & 1) == 0)
   {
-    [(CALayer *)self->_reusableSubviewLayer setSublayers:v4];
+    [(CALayer *)self->_reusableSubviewLayer setSublayers:layersCopy];
   }
 }
 
-- (BOOL)canReuseUnmodifiedForRepContentPile:(id)a3
+- (BOOL)canReuseUnmodifiedForRepContentPile:(id)pile
 {
   originalRepContentPile = self->_originalRepContentPile;
   if (originalRepContentPile)
   {
-    LOBYTE(originalRepContentPile) = [(CRLInteractiveCanvasRepContentPile *)originalRepContentPile isContentEqualToContentOfRepContentPile:a3];
+    LOBYTE(originalRepContentPile) = [(CRLInteractiveCanvasRepContentPile *)originalRepContentPile isContentEqualToContentOfRepContentPile:pile];
   }
 
   return originalRepContentPile;

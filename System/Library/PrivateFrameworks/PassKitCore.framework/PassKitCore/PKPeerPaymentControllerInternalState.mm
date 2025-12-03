@@ -1,95 +1,95 @@
 @interface PKPeerPaymentControllerInternalState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPeerPaymentControllerInternalState:(id)a3;
-- (PKPeerPaymentControllerInternalState)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPeerPaymentControllerInternalState:(id)state;
+- (PKPeerPaymentControllerInternalState)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentControllerInternalState
 
-- (PKPeerPaymentControllerInternalState)initWithCoder:(id)a3
+- (PKPeerPaymentControllerInternalState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = PKPeerPaymentControllerInternalState;
   v5 = [(PKPeerPaymentControllerInternalState *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     v5->state = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mode"];
     v5->mode = [v7 unsignedIntegerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPaymentType"];
     v5->peerPaymentType = [v8 unsignedIntegerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
     senderAddress = v5->senderAddress;
     v5->senderAddress = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipient"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipient"];
     recipient = v5->recipient;
     v5->recipient = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
     requestToken = v5->requestToken;
     v5->requestToken = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quote"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quote"];
     quote = v5->quote;
     v5->quote = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizedQuote"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizedQuote"];
     authorizedQuote = v5->authorizedQuote;
     v5->authorizedQuote = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"performQuoteResponse"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"performQuoteResponse"];
     performQuoteResponse = v5->performQuoteResponse;
     v5->performQuoteResponse = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quoteCertificatesResponse"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quoteCertificatesResponse"];
     quoteCertificatesResponse = v5->quoteCertificatesResponse;
     v5->quoteCertificatesResponse = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
     accountNumber = v5->accountNumber;
     v5->accountNumber = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
     routingNumber = v5->routingNumber;
     v5->routingNumber = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountName"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountName"];
     accountName = v5->accountName;
     v5->accountName = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quoteRequest"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quoteRequest"];
     quoteRequest = v5->quoteRequest;
     v5->quoteRequest = v29;
 
-    v5->supportsPreserveCurrentBalance = [v4 decodeBoolForKey:@"supportsPreserveCurrentBalance"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentIdentifier"];
+    v5->supportsPreserveCurrentBalance = [coderCopy decodeBoolForKey:@"supportsPreserveCurrentBalance"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentIdentifier"];
     recurringPaymentIdentifier = v5->recurringPaymentIdentifier;
     v5->recurringPaymentIdentifier = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->startDate;
     v5->startDate = v33;
 
-    v5->frequency = [v4 decodeIntegerForKey:@"frequency"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threshold"];
+    v5->frequency = [coderCopy decodeIntegerForKey:@"frequency"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threshold"];
     threshold = v5->threshold;
     v5->threshold = v35;
 
-    v5->supportsGroupMessage = [v4 decodeBoolForKey:@"supportsGroupMessage"];
-    v5->messagesContext = [v4 decodeIntegerForKey:@"messagesContext"];
+    v5->supportsGroupMessage = [coderCopy decodeBoolForKey:@"supportsGroupMessage"];
+    v5->messagesContext = [coderCopy decodeIntegerForKey:@"messagesContext"];
     v37 = MEMORY[0x1E695DFD8];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"recipientAddresses"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"recipientAddresses"];
     recipientAddresses = v5->recipientAddresses;
     v5->recipientAddresses = v40;
   }
@@ -97,39 +97,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   state = self->state;
-  v9 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:state];
-  [v9 encodeObject:v6 forKey:@"state"];
+  [coderCopy encodeObject:v6 forKey:@"state"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->mode];
-  [v9 encodeObject:v7 forKey:@"mode"];
+  [coderCopy encodeObject:v7 forKey:@"mode"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->peerPaymentType];
-  [v9 encodeObject:v8 forKey:@"peerPaymentType"];
+  [coderCopy encodeObject:v8 forKey:@"peerPaymentType"];
 
-  [v9 encodeObject:self->senderAddress forKey:@"senderAddress"];
-  [v9 encodeObject:self->recipient forKey:@"recipient"];
-  [v9 encodeObject:self->requestToken forKey:@"requestToken"];
-  [v9 encodeObject:self->quote forKey:@"quote"];
-  [v9 encodeObject:self->authorizedQuote forKey:@"authorizedQuote"];
-  [v9 encodeObject:self->performQuoteResponse forKey:@"performQuoteResponse"];
-  [v9 encodeObject:self->quoteCertificatesResponse forKey:@"quoteCertificatesResponse"];
-  [v9 encodeObject:self->accountNumber forKey:@"accountNumber"];
-  [v9 encodeObject:self->routingNumber forKey:@"routingNumber"];
-  [v9 encodeObject:self->accountName forKey:@"accountName"];
-  [v9 encodeObject:self->quoteRequest forKey:@"quoteRequest"];
-  [v9 encodeBool:self->supportsPreserveCurrentBalance forKey:@"supportsPreserveCurrentBalance"];
-  [v9 encodeObject:self->recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
-  [v9 encodeObject:self->startDate forKey:@"startDate"];
-  [v9 encodeInteger:self->frequency forKey:@"frequency"];
-  [v9 encodeObject:self->threshold forKey:@"threshold"];
-  [v9 encodeBool:self->supportsGroupMessage forKey:@"supportsGroupMessage"];
-  [v9 encodeInteger:self->messagesContext forKey:@"messagesContext"];
-  [v9 encodeObject:self->recipientAddresses forKey:@"recipientAddresses"];
+  [coderCopy encodeObject:self->senderAddress forKey:@"senderAddress"];
+  [coderCopy encodeObject:self->recipient forKey:@"recipient"];
+  [coderCopy encodeObject:self->requestToken forKey:@"requestToken"];
+  [coderCopy encodeObject:self->quote forKey:@"quote"];
+  [coderCopy encodeObject:self->authorizedQuote forKey:@"authorizedQuote"];
+  [coderCopy encodeObject:self->performQuoteResponse forKey:@"performQuoteResponse"];
+  [coderCopy encodeObject:self->quoteCertificatesResponse forKey:@"quoteCertificatesResponse"];
+  [coderCopy encodeObject:self->accountNumber forKey:@"accountNumber"];
+  [coderCopy encodeObject:self->routingNumber forKey:@"routingNumber"];
+  [coderCopy encodeObject:self->accountName forKey:@"accountName"];
+  [coderCopy encodeObject:self->quoteRequest forKey:@"quoteRequest"];
+  [coderCopy encodeBool:self->supportsPreserveCurrentBalance forKey:@"supportsPreserveCurrentBalance"];
+  [coderCopy encodeObject:self->recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
+  [coderCopy encodeObject:self->startDate forKey:@"startDate"];
+  [coderCopy encodeInteger:self->frequency forKey:@"frequency"];
+  [coderCopy encodeObject:self->threshold forKey:@"threshold"];
+  [coderCopy encodeBool:self->supportsGroupMessage forKey:@"supportsGroupMessage"];
+  [coderCopy encodeInteger:self->messagesContext forKey:@"messagesContext"];
+  [coderCopy encodeObject:self->recipientAddresses forKey:@"recipientAddresses"];
 }
 
 - (id)description
@@ -183,11 +183,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->senderAddress)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->recipient)
@@ -272,28 +272,28 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentControllerInternalState *)self isEqualToPeerPaymentControllerInternalState:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentControllerInternalState *)self isEqualToPeerPaymentControllerInternalState:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPeerPaymentControllerInternalState:(id)a3
+- (BOOL)isEqualToPeerPaymentControllerInternalState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (*&self->state != *(v4 + 8) || self->peerPaymentType != *(v4 + 3) || self->supportsPreserveCurrentBalance != v4[80])
+  stateCopy = state;
+  v5 = stateCopy;
+  if (*&self->state != *(stateCopy + 8) || self->peerPaymentType != *(stateCopy + 3) || self->supportsPreserveCurrentBalance != stateCopy[80])
   {
     goto LABEL_82;
   }

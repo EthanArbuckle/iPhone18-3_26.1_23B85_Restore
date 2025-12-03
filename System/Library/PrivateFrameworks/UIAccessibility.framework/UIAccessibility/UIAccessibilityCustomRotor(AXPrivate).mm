@@ -32,13 +32,13 @@
     v3 = sel_attributedName;
   }
 
-  v9 = [a1 impOrNullForSelector:v3];
-  if (!v9 || (v9(a1, v3), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  v9 = [self impOrNullForSelector:v3];
+  if (!v9 || (v9(self, v3), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v11 = [a1 impOrNullForSelector:v8];
+    v11 = [self impOrNullForSelector:v8];
     if (v11)
     {
-      v10 = v11(a1, v8);
+      v10 = v11(self, v8);
     }
 
     else

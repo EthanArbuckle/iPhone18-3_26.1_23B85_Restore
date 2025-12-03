@@ -1,12 +1,12 @@
 @interface JavaUtilConcurrentConcurrentHashMap_ValuesView
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)removeWithId:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)removeWithId:(id)id;
 - (JavaUtilConcurrentConcurrentHashMap_ValueIterator)iterator;
 @end
 
 @implementation JavaUtilConcurrentConcurrentHashMap_ValuesView
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->super.map_);
   if (!Weak)
@@ -14,12 +14,12 @@
     JreThrowNullPointerException();
   }
 
-  return [Weak containsValueWithId:a3];
+  return [Weak containsValueWithId:id];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = [JavaUtilConcurrentConcurrentHashMap_ValuesView iterator]_0(self);
     if (!v4)
@@ -30,7 +30,7 @@
     v5 = v4;
     while ([(JavaUtilConcurrentConcurrentHashMap_BaseIterator *)v5 hasNext])
     {
-      if ([a3 isEqual:{-[JavaUtilConcurrentConcurrentHashMap_ValueIterator next](v5, "next")}])
+      if ([id isEqual:{-[JavaUtilConcurrentConcurrentHashMap_ValueIterator next](v5, "next")}])
       {
         [(JavaUtilConcurrentConcurrentHashMap_BaseIterator *)v5 remove];
         return 1;
@@ -43,7 +43,7 @@
 
 - (JavaUtilConcurrentConcurrentHashMap_ValueIterator)iterator
 {
-  Weak = objc_loadWeak((a1 + 8));
+  Weak = objc_loadWeak((self + 8));
   if (!Weak)
   {
     JreThrowNullPointerException();

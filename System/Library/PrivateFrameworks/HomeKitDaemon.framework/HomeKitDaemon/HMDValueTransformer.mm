@@ -1,29 +1,29 @@
 @interface HMDValueTransformer
 + (Class)valueClass;
-+ (id)decodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5;
-+ (id)encodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5;
-+ (id)requiredTransformerForName:(uint64_t)a1;
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
++ (id)decodeValue:(id)value withTransformerNamed:(id)named error:(id *)error;
++ (id)encodeValue:(id)value withTransformerNamed:(id)named error:(id *)error;
++ (id)requiredTransformerForName:(uint64_t)name;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
 + (id)sharedTransformer;
-+ (id)transformedValue:(id)a3 error:(id *)a4;
-+ (id)valueTransformerForName:(id)a3;
++ (id)transformedValue:(id)value error:(id *)error;
++ (id)valueTransformerForName:(id)name;
 - (HMDValueTransformer)init;
 - (id)description;
-- (id)reverseTransformedValue:(id)a3;
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4;
-- (id)transformedValue:(id)a3;
-- (id)transformedValue:(id)a3 error:(id *)a4;
+- (id)reverseTransformedValue:(id)value;
+- (id)reverseTransformedValue:(id)value error:(id *)error;
+- (id)transformedValue:(id)value;
+- (id)transformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDValueTransformer
 
-- (id)reverseTransformedValue:(id)a3 error:(id *)a4
+- (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_opt_class();
-  if (checkValueOfClass(v5, [v6 transformedValueClass], a4))
+  if (checkValueOfClass(valueCopy, [v6 transformedValueClass], error))
   {
-    v7 = [v6 reverseTransformedValue:v5 error:a4];
+    v7 = [v6 reverseTransformedValue:valueCopy error:error];
   }
 
   else
@@ -34,13 +34,13 @@
   return v7;
 }
 
-- (id)transformedValue:(id)a3 error:(id *)a4
+- (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = objc_opt_class();
-  if (checkValueOfClass(v5, [v6 valueClass], a4))
+  if (checkValueOfClass(valueCopy, [v6 valueClass], error))
   {
-    v7 = [v6 transformedValue:v5 error:a4];
+    v7 = [v6 transformedValue:valueCopy error:error];
   }
 
   else
@@ -51,14 +51,14 @@
   return v7;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     v15 = 0;
-    v5 = [(HMDValueTransformer *)self reverseTransformedValue:v4 error:&v15];
+    v5 = [(HMDValueTransformer *)self reverseTransformedValue:valueCopy error:&v15];
     v6 = v15;
     if (!v5)
     {
@@ -94,14 +94,14 @@
   return v5;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  valueCopy = value;
+  if (valueCopy)
   {
     v15 = 0;
-    v5 = [(HMDValueTransformer *)self transformedValue:v4 error:&v15];
+    v5 = [(HMDValueTransformer *)self transformedValue:valueCopy error:&v15];
     v6 = v15;
     if (!v5)
     {
@@ -165,9 +165,9 @@
   return [(HMDValueTransformer *)&v13 init];
 }
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];
@@ -179,9 +179,9 @@
   objc_exception_throw(v11);
 }
 
-+ (id)transformedValue:(id)a3 error:(id *)a4
++ (id)transformedValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE658];
   v8 = MEMORY[0x277CCACA8];
@@ -206,10 +206,10 @@
   objc_exception_throw(v7);
 }
 
-+ (id)valueTransformerForName:(id)a3
++ (id)valueTransformerForName:(id)name
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAE68] valueTransformerForName:v3];
+  nameCopy = name;
+  v4 = [MEMORY[0x277CCAE68] valueTransformerForName:nameCopy];
   if (v4)
   {
     objc_opt_class();
@@ -225,7 +225,7 @@
         dispatch_once(&valueTransformerForName__once, &__block_literal_global_276656);
       }
 
-      v5 = [valueTransformerForName__adaptersByName objectForKey:v3];
+      v5 = [valueTransformerForName__adaptersByName objectForKey:nameCopy];
       if (!v5)
       {
         objc_opt_class();
@@ -237,7 +237,7 @@
         else
         {
           v7 = off_278666378;
-          if (([v3 isEqualToString:*MEMORY[0x277CCA310]] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CCA7D0]))
+          if (([nameCopy isEqualToString:*MEMORY[0x277CCA310]] & 1) == 0 && !objc_msgSend(nameCopy, "isEqualToString:", *MEMORY[0x277CCA7D0]))
           {
             v7 = off_278666370;
           }
@@ -246,7 +246,7 @@
         v8 = *v7;
         v5 = [objc_alloc(objc_opt_class()) initWithTransformer:v4];
         v9 = valueTransformerForName__adaptersByName;
-        v10 = [v3 copy];
+        v10 = [nameCopy copy];
         [v9 setObject:v5 forKey:v10];
       }
     }
@@ -275,32 +275,32 @@ void __47__HMDValueTransformer_valueTransformerForName___block_invoke()
 + (id)sharedTransformer
 {
   v2 = MEMORY[0x277CCAE68];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 valueTransformerForName:v3];
 
   return v4;
 }
 
-+ (id)decodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5
++ (id)decodeValue:(id)value withTransformerNamed:(id)named error:(id *)error
 {
-  if (a4)
+  if (named)
   {
-    v7 = a4;
+    namedCopy = named;
   }
 
   else
   {
-    v7 = *MEMORY[0x277CCA310];
+    namedCopy = *MEMORY[0x277CCA310];
   }
 
-  v8 = a3;
-  v9 = [(HMDValueTransformer *)a1 requiredTransformerForName:v7];
-  v10 = [v9 reverseTransformedValue:v8 error:a5];
+  valueCopy = value;
+  v9 = [(HMDValueTransformer *)self requiredTransformerForName:namedCopy];
+  v10 = [v9 reverseTransformedValue:valueCopy error:error];
 
   return v10;
 }
 
-+ (id)requiredTransformerForName:(uint64_t)a1
++ (id)requiredTransformerForName:(uint64_t)name
 {
   v2 = a2;
   v3 = [objc_opt_self() valueTransformerForName:v2];
@@ -318,21 +318,21 @@ void __47__HMDValueTransformer_valueTransformerForName___block_invoke()
   }
 }
 
-+ (id)encodeValue:(id)a3 withTransformerNamed:(id)a4 error:(id *)a5
++ (id)encodeValue:(id)value withTransformerNamed:(id)named error:(id *)error
 {
-  if (a4)
+  if (named)
   {
-    v7 = a4;
+    namedCopy = named;
   }
 
   else
   {
-    v7 = *MEMORY[0x277CCA310];
+    namedCopy = *MEMORY[0x277CCA310];
   }
 
-  v8 = a3;
-  v9 = [(HMDValueTransformer *)a1 requiredTransformerForName:v7];
-  v10 = [v9 transformedValue:v8 error:a5];
+  valueCopy = value;
+  v9 = [(HMDValueTransformer *)self requiredTransformerForName:namedCopy];
+  v10 = [v9 transformedValue:valueCopy error:error];
 
   return v10;
 }

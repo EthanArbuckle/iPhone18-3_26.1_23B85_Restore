@@ -1,37 +1,37 @@
 @interface VNRequestInstanceCreator
 + (id)defaultCreator;
-- (BOOL)_isValidRequestClass:(void *)a1;
-- (VNRequestInstanceCreator)initWithDelegate:(id)a3;
-- (id)_newVNRequestInstanceOfClass:(Class)a3 withCompletionHandler:(id)a4 revision:(unint64_t)a5 error:(id *)a6;
-- (id)_newVNTargetedImageRequestInstanceOfClass:(Class)a3 withCompletionHandler:(id)a4 revision:(unint64_t)a5 error:(id *)a6;
-- (id)errorForFailedInstanceCreationOfRequestClass:(Class)a3 withCompletionHandler:(id)a4;
-- (id)newRequestInstanceForSpecifier:(id)a3 withCompletionHandler:(id)a4 error:(id *)a5;
-- (id)newRequestInstanceOfClass:(Class)a3 withCompletionHandler:(id)a4 revision:(unint64_t)a5 error:(id *)a6;
+- (BOOL)_isValidRequestClass:(void *)class;
+- (VNRequestInstanceCreator)initWithDelegate:(id)delegate;
+- (id)_newVNRequestInstanceOfClass:(Class)class withCompletionHandler:(id)handler revision:(unint64_t)revision error:(id *)error;
+- (id)_newVNTargetedImageRequestInstanceOfClass:(Class)class withCompletionHandler:(id)handler revision:(unint64_t)revision error:(id *)error;
+- (id)errorForFailedInstanceCreationOfRequestClass:(Class)class withCompletionHandler:(id)handler;
+- (id)newRequestInstanceForSpecifier:(id)specifier withCompletionHandler:(id)handler error:(id *)error;
+- (id)newRequestInstanceOfClass:(Class)class withCompletionHandler:(id)handler revision:(unint64_t)revision error:(id *)error;
 @end
 
 @implementation VNRequestInstanceCreator
 
-- (id)_newVNTargetedImageRequestInstanceOfClass:(Class)a3 withCompletionHandler:(id)a4 revision:(unint64_t)a5 error:(id *)a6
+- (id)_newVNTargetedImageRequestInstanceOfClass:(Class)class withCompletionHandler:(id)handler revision:(unint64_t)revision error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:a3 withCompletionHandler:a4, a5];
+    *error = [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:class withCompletionHandler:handler, revision];
   }
 
   return 0;
 }
 
-- (id)_newVNRequestInstanceOfClass:(Class)a3 withCompletionHandler:(id)a4 revision:(unint64_t)a5 error:(id *)a6
+- (id)_newVNRequestInstanceOfClass:(Class)class withCompletionHandler:(id)handler revision:(unint64_t)revision error:(id *)error
 {
-  v10 = a4;
-  v11 = [[a3 alloc] initWithCompletionHandler:v10];
+  handlerCopy = handler;
+  v11 = [[class alloc] initWithCompletionHandler:handlerCopy];
   v12 = v11;
   if (!v11)
   {
-    if (a6)
+    if (error)
     {
-      [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:a3 withCompletionHandler:v10];
-      *a6 = v13 = 0;
+      [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:class withCompletionHandler:handlerCopy];
+      *error = v13 = 0;
       goto LABEL_8;
     }
 
@@ -40,7 +40,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a5 && ![v11 setRevision:a5 error:a6])
+  if (revision && ![v11 setRevision:revision error:error])
   {
     goto LABEL_7;
   }
@@ -51,11 +51,11 @@ LABEL_8:
   return v13;
 }
 
-- (id)errorForFailedInstanceCreationOfRequestClass:(Class)a3 withCompletionHandler:(id)a4
+- (id)errorForFailedInstanceCreationOfRequestClass:(Class)class withCompletionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
   v7 = [v5 initWithFormat:@"A new %@ instance cannot be created", v6];
 
   v11 = *MEMORY[0x1E696A578];
@@ -66,14 +66,14 @@ LABEL_8:
   return v9;
 }
 
-- (id)newRequestInstanceForSpecifier:(id)a3 withCompletionHandler:(id)a4 error:(id *)a5
+- (id)newRequestInstanceForSpecifier:(id)specifier withCompletionHandler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 requestClassAndReturnError:a5];
+  specifierCopy = specifier;
+  handlerCopy = handler;
+  v10 = [specifierCopy requestClassAndReturnError:error];
   if (v10)
   {
-    v11 = -[VNRequestInstanceCreator newRequestInstanceOfClass:withCompletionHandler:revision:error:](self, "newRequestInstanceOfClass:withCompletionHandler:revision:error:", v10, v9, [v8 requestRevision], a5);
+    v11 = -[VNRequestInstanceCreator newRequestInstanceOfClass:withCompletionHandler:revision:error:](self, "newRequestInstanceOfClass:withCompletionHandler:revision:error:", v10, handlerCopy, [specifierCopy requestRevision], error);
   }
 
   else
@@ -84,17 +84,17 @@ LABEL_8:
   return v11;
 }
 
-- (id)newRequestInstanceOfClass:(Class)a3 withCompletionHandler:(id)a4 revision:(unint64_t)a5 error:(id *)a6
+- (id)newRequestInstanceOfClass:(Class)class withCompletionHandler:(id)handler revision:(unint64_t)revision error:(id *)error
 {
-  v10 = a4;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
   v34 = 0;
-  v12 = v10;
+  v12 = handlerCopy;
   if (self)
   {
-    if (![VNRequestInstanceCreator _isValidRequestClass:a3])
+    if (![VNRequestInstanceCreator _isValidRequestClass:class])
     {
-      [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:a3 withCompletionHandler:v12];
+      [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:class withCompletionHandler:v12];
       v34 = v17 = 0;
       goto LABEL_22;
     }
@@ -104,7 +104,7 @@ LABEL_8:
     if (WeakRetained)
     {
       v35 = 0;
-      v15 = [WeakRetained requestInstanceCreator:self newRequestInstance:&v35 ofClass:a3 withCompletionHandler:v12 revision:a5 error:&v34];
+      v15 = [WeakRetained requestInstanceCreator:self newRequestInstance:&v35 ofClass:class withCompletionHandler:v12 revision:revision error:&v34];
       v16 = v35;
       v17 = v16;
       if (v15)
@@ -116,38 +116,38 @@ LABEL_8:
 
         else
         {
-          v34 = [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:a3 withCompletionHandler:v12];
+          v34 = [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:class withCompletionHandler:v12];
         }
 
         goto LABEL_21;
       }
     }
 
-    v33 = a6;
+    errorCopy = error;
     v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v20 = NSStringFromClass(a3);
+    v20 = NSStringFromClass(class);
     v21 = [v19 initWithFormat:@"new%@InstanceWithCompletionHandler:revision:error:", v20];
 
     v22 = NSSelectorFromString(v21);
     if (objc_opt_respondsToSelector())
     {
-      v23 = ([(VNRequestInstanceCreator *)self methodForSelector:v22])(self, v22, v12, a5, &v34);
+      v23 = ([(VNRequestInstanceCreator *)self methodForSelector:v22])(self, v22, v12, revision, &v34);
     }
 
     else
     {
-      if (!a3)
+      if (!class)
       {
         goto LABEL_17;
       }
 
-      v24 = a3;
+      classCopy = class;
       while (1)
       {
-        if ([VNRequestInstanceCreator _isValidRequestClass:a3])
+        if ([VNRequestInstanceCreator _isValidRequestClass:class])
         {
           v25 = objc_alloc(MEMORY[0x1E696AEC0]);
-          v26 = NSStringFromClass(v24);
+          v26 = NSStringFromClass(classCopy);
           v27 = [v25 initWithFormat:@"_new%@InstanceOfClass:withCompletionHandler:revision:error:", v26];
 
           v28 = NSSelectorFromString(v27);
@@ -157,8 +157,8 @@ LABEL_8:
           }
         }
 
-        v24 = [(objc_class *)v24 superclass];
-        if (!v24)
+        classCopy = [(objc_class *)classCopy superclass];
+        if (!classCopy)
         {
           goto LABEL_17;
         }
@@ -167,17 +167,17 @@ LABEL_8:
       if (!v28)
       {
 LABEL_17:
-        [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:a3 withCompletionHandler:v12];
+        [(VNRequestInstanceCreator *)self errorForFailedInstanceCreationOfRequestClass:class withCompletionHandler:v12];
         v34 = v17 = 0;
         goto LABEL_18;
       }
 
-      v23 = ([(VNRequestInstanceCreator *)self methodForSelector:v28])(self, v28, a3, v12, a5, &v34);
+      v23 = ([(VNRequestInstanceCreator *)self methodForSelector:v28])(self, v28, class, v12, revision, &v34);
     }
 
     v17 = v23;
 LABEL_18:
-    a6 = v33;
+    error = errorCopy;
 LABEL_21:
 
     goto LABEL_22;
@@ -193,25 +193,25 @@ LABEL_22:
     v30 = v17;
   }
 
-  else if (a6)
+  else if (error)
   {
     v31 = v29;
-    *a6 = v29;
+    *error = v29;
   }
 
   return v17;
 }
 
-- (BOOL)_isValidRequestClass:(void *)a1
+- (BOOL)_isValidRequestClass:(void *)class
 {
   v2 = objc_opt_class();
-  v3 = [a1 isSubclassOfClass:v2];
-  v4 = v2 == a1 || v3 == 0;
+  v3 = [class isSubclassOfClass:v2];
+  v4 = v2 == class || v3 == 0;
   result = 0;
   if (!v4)
   {
     v5 = NSClassFromString(&cfstr_Vncompoundrequ.isa);
-    if (!v5 || ([a1 isSubclassOfClass:v5] & 1) == 0)
+    if (!v5 || ([class isSubclassOfClass:v5] & 1) == 0)
     {
       return 1;
     }
@@ -220,16 +220,16 @@ LABEL_22:
   return result;
 }
 
-- (VNRequestInstanceCreator)initWithDelegate:(id)a3
+- (VNRequestInstanceCreator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = VNRequestInstanceCreator;
   v5 = [(VNRequestInstanceCreator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

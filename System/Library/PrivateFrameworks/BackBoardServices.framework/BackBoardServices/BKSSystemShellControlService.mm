@@ -1,8 +1,8 @@
 @interface BKSSystemShellControlService
 + (id)sharedInstance;
-- (BKSSystemShellControlService)initWithCalloutQueue:(id)a3;
+- (BKSSystemShellControlService)initWithCalloutQueue:(id)queue;
 - (void)_activateServerConnection;
-- (void)terminateSystemShellWithJobLabel:(id)a3;
+- (void)terminateSystemShellWithJobLabel:(id)label;
 @end
 
 @implementation BKSSystemShellControlService
@@ -35,15 +35,15 @@
       v8 = BKLogSystemShell();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v6 remoteTarget];
+        remoteTarget = [v6 remoteTarget];
         *buf = 138543362;
-        v19 = v16;
+        v19 = remoteTarget;
         _os_log_debug_impl(&dword_186345000, v8, OS_LOG_TYPE_DEBUG, "server remote target %{public}@", buf, 0xCu);
       }
 
-      v9 = [v6 remoteTarget];
+      remoteTarget2 = [v6 remoteTarget];
 
-      if (!v9)
+      if (!remoteTarget2)
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we must have a remote target"];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@
           v20 = 2114;
           v21 = v13;
           v22 = 2048;
-          v23 = self;
+          selfCopy = self;
           v24 = 2114;
           v25 = @"BKSSystemShellControlService.m";
           v26 = 1024;
@@ -144,35 +144,35 @@ void __57__BKSSystemShellControlService__activateServerConnection__block_invoke_
   }
 }
 
-- (void)terminateSystemShellWithJobLabel:(id)a3
+- (void)terminateSystemShellWithJobLabel:(id)label
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
+  labelCopy = label;
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
   v6 = BKLogSystemShell();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v4;
+    v9 = labelCopy;
     v10 = 2114;
-    v11 = v5;
+    v11 = remoteTarget;
     _os_log_impl(&dword_186345000, v6, OS_LOG_TYPE_DEFAULT, "BKSSystemShellControlService: terminate %{public}@ with server:%{public}@", &v8, 0x16u);
   }
 
-  [v5 terminateShellWithJobLabel:v4];
+  [remoteTarget terminateShellWithJobLabel:labelCopy];
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BKSSystemShellControlService)initWithCalloutQueue:(id)a3
+- (BKSSystemShellControlService)initWithCalloutQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = BKSSystemShellControlService;
   v6 = [(BKSSystemShellControlService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calloutQueue, a3);
+    objc_storeStrong(&v6->_calloutQueue, queue);
     [(BKSSystemShellControlService *)v7 _activateServerConnection];
   }
 

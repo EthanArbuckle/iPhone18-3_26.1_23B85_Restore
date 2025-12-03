@@ -1,20 +1,20 @@
 @interface MADNodeData
-- (MADNodeData)initWithCurrentFrameResource:(id)a3 nextSampleBuffer:(opaqueCMSampleBuffer *)a4;
+- (MADNodeData)initWithCurrentFrameResource:(id)resource nextSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation MADNodeData
 
-- (MADNodeData)initWithCurrentFrameResource:(id)a3 nextSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (MADNodeData)initWithCurrentFrameResource:(id)resource nextSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v7 = a3;
+  resourceCopy = resource;
   v11.receiver = self;
   v11.super_class = MADNodeData;
   v8 = [(MADNodeData *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_currentFrame, a3);
-    v9->_nextSample = a4;
+    objc_storeStrong(&v8->_currentFrame, resource);
+    v9->_nextSample = buffer;
   }
 
   return v9;

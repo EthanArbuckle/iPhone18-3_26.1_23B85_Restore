@@ -1,15 +1,15 @@
 @interface MetalRenderer.DisplayLinkTarget
 - (_TtCC14MentalHealthUI13MetalRendererP33_3D7E1FDF28A65721717625FA5324475917DisplayLinkTarget)init;
-- (void)fireWithLink:(id)a3;
+- (void)fireWithLink:(id)link;
 @end
 
 @implementation MetalRenderer.DisplayLinkTarget
 
-- (void)fireWithLink:(id)a3
+- (void)fireWithLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_258A0F874(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_258A0F874(linkCopy);
 }
 
 - (_TtCC14MentalHealthUI13MetalRendererP33_3D7E1FDF28A65721717625FA5324475917DisplayLinkTarget)init

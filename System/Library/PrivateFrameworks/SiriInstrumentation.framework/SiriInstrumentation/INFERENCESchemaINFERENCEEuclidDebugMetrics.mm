@@ -1,33 +1,33 @@
 @interface INFERENCESchemaINFERENCEEuclidDebugMetrics
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)euclidEntityTypeMatchedAtIndex:(unint64_t)a3;
-- (int)tokenWiseAsrConfidenceAtIndex:(unint64_t)a3;
+- (int)euclidEntityTypeMatchedAtIndex:(unint64_t)index;
+- (int)tokenWiseAsrConfidenceAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addEuclidEntityTypeMatched:(int)a3;
-- (void)addMatchedTemplateIds:(id)a3;
-- (void)addTokenWiseAsrConfidence:(int)a3;
-- (void)setHasNumRowsVectorDb:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEuclidEntityTypeMatched:(int)matched;
+- (void)addMatchedTemplateIds:(id)ids;
+- (void)addTokenWiseAsrConfidence:(int)confidence;
+- (void)setHasNumRowsVectorDb:(BOOL)db;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEEuclidDebugMetrics
 
-- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithDictionary:(id)dictionary
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v57.receiver = self;
   v57.super_class = INFERENCESchemaINFERENCEEuclidDebugMetrics;
   v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)&v57 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"templateId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"templateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)v5 setTemplateId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"euclidScoreStatistics"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"euclidScoreStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
     }
 
     v42 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"euclidTrialParameters"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"euclidTrialParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
     }
 
     v41 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"euclidEntityTypeMatched"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"euclidEntityTypeMatched"];
     objc_opt_class();
     v44 = v12;
     if (objc_opt_isKindOfClass())
@@ -92,14 +92,14 @@
       }
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isLmePresent"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isLmePresent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEEuclidDebugMetrics setIsLmePresent:](v5, "setIsLmePresent:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"tokenWiseAsrConfidence"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"tokenWiseAsrConfidence"];
     objc_opt_class();
     v43 = v6;
     v40 = v19;
@@ -143,14 +143,14 @@
       v20 = v21;
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"numRowsVectorDb"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"numRowsVectorDb"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEEuclidDebugMetrics setNumRowsVectorDb:](v5, "setNumRowsVectorDb:", [v28 unsignedIntValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"matchedTemplateIds"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"matchedTemplateIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -199,30 +199,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEEuclidDebugMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -236,55 +236,55 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_euclidEntityTypeMatcheds count])
   {
-    v4 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"euclidEntityTypeMatched"];
+    euclidEntityTypeMatcheds = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
+    v5 = [euclidEntityTypeMatcheds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"euclidEntityTypeMatched"];
   }
 
   if (self->_euclidScoreStatistics)
   {
-    v6 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    euclidScoreStatistics = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+    dictionaryRepresentation = [euclidScoreStatistics dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"euclidScoreStatistics"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"euclidScoreStatistics"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"euclidScoreStatistics"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"euclidScoreStatistics"];
     }
   }
 
   if (self->_euclidTrialParameters)
   {
-    v9 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    euclidTrialParameters = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+    dictionaryRepresentation2 = [euclidTrialParameters dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"euclidTrialParameters"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"euclidTrialParameters"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"euclidTrialParameters"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"euclidTrialParameters"];
     }
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEEuclidDebugMetrics isLmePresent](self, "isLmePresent")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isLmePresent"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isLmePresent"];
   }
 
   if ([(NSArray *)self->_matchedTemplateIds count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -304,16 +304,16 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          if (v19)
+          dictionaryRepresentation3 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v13 addObject:v19];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v20 = [MEMORY[0x1E695DFB0] null];
-            [v13 addObject:v20];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -323,41 +323,41 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"matchedTemplateIds"];
+    [dictionary setObject:array forKeyedSubscript:@"matchedTemplateIds"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCEEuclidDebugMetrics numRowsVectorDb](self, "numRowsVectorDb")}];
-    [v3 setObject:v21 forKeyedSubscript:@"numRowsVectorDb"];
+    [dictionary setObject:v21 forKeyedSubscript:@"numRowsVectorDb"];
   }
 
   if (self->_templateId)
   {
-    v22 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+    dictionaryRepresentation4 = [templateId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"templateId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"templateId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"templateId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"templateId"];
     }
   }
 
   if ([(NSArray *)self->_tokenWiseAsrConfidences count])
   {
-    v25 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
-    v26 = [v25 copy];
-    [v3 setObject:v26 forKeyedSubscript:@"tokenWiseAsrConfidence"];
+    tokenWiseAsrConfidences = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
+    v26 = [tokenWiseAsrConfidences copy];
+    [dictionary setObject:v26 forKeyedSubscript:@"tokenWiseAsrConfidence"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -390,28 +390,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ [(NSArray *)self->_matchedTemplateIds hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
-  v6 = [v4 templateId];
-  if ((v5 != 0) == (v6 == 0))
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+  templateId2 = [equalCopy templateId];
+  if ((templateId != 0) == (templateId2 == 0))
   {
     goto LABEL_37;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
-  if (v7)
+  templateId3 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+  if (templateId3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
-    v10 = [v4 templateId];
-    v11 = [v9 isEqual:v10];
+    v8 = templateId3;
+    templateId4 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+    templateId5 = [equalCopy templateId];
+    v11 = [templateId4 isEqual:templateId5];
 
     if (!v11)
     {
@@ -423,20 +423,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
-  v6 = [v4 euclidScoreStatistics];
-  if ((v5 != 0) == (v6 == 0))
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+  templateId2 = [equalCopy euclidScoreStatistics];
+  if ((templateId != 0) == (templateId2 == 0))
   {
     goto LABEL_37;
   }
 
-  v12 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
-  if (v12)
+  euclidScoreStatistics = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+  if (euclidScoreStatistics)
   {
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
-    v15 = [v4 euclidScoreStatistics];
-    v16 = [v14 isEqual:v15];
+    v13 = euclidScoreStatistics;
+    euclidScoreStatistics2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+    euclidScoreStatistics3 = [equalCopy euclidScoreStatistics];
+    v16 = [euclidScoreStatistics2 isEqual:euclidScoreStatistics3];
 
     if (!v16)
     {
@@ -448,20 +448,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
-  v6 = [v4 euclidTrialParameters];
-  if ((v5 != 0) == (v6 == 0))
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+  templateId2 = [equalCopy euclidTrialParameters];
+  if ((templateId != 0) == (templateId2 == 0))
   {
     goto LABEL_37;
   }
 
-  v17 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
-  if (v17)
+  euclidTrialParameters = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+  if (euclidTrialParameters)
   {
-    v18 = v17;
-    v19 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
-    v20 = [v4 euclidTrialParameters];
-    v21 = [v19 isEqual:v20];
+    v18 = euclidTrialParameters;
+    euclidTrialParameters2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+    euclidTrialParameters3 = [equalCopy euclidTrialParameters];
+    v21 = [euclidTrialParameters2 isEqual:euclidTrialParameters3];
 
     if (!v21)
     {
@@ -473,20 +473,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
-  v6 = [v4 euclidEntityTypeMatcheds];
-  if ((v5 != 0) == (v6 == 0))
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
+  templateId2 = [equalCopy euclidEntityTypeMatcheds];
+  if ((templateId != 0) == (templateId2 == 0))
   {
     goto LABEL_37;
   }
 
-  v22 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
-  if (v22)
+  euclidEntityTypeMatcheds = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
+  if (euclidEntityTypeMatcheds)
   {
-    v23 = v22;
-    v24 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
-    v25 = [v4 euclidEntityTypeMatcheds];
-    v26 = [v24 isEqual:v25];
+    v23 = euclidEntityTypeMatcheds;
+    euclidEntityTypeMatcheds2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidEntityTypeMatcheds];
+    euclidEntityTypeMatcheds3 = [equalCopy euclidEntityTypeMatcheds];
+    v26 = [euclidEntityTypeMatcheds2 isEqual:euclidEntityTypeMatcheds3];
 
     if (!v26)
     {
@@ -498,7 +498,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[72] & 1))
+  if ((*&self->_has & 1) != (equalCopy[72] & 1))
   {
     goto LABEL_38;
   }
@@ -506,26 +506,26 @@
   if (*&self->_has)
   {
     isLmePresent = self->_isLmePresent;
-    if (isLmePresent != [v4 isLmePresent])
+    if (isLmePresent != [equalCopy isLmePresent])
     {
       goto LABEL_38;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
-  v6 = [v4 tokenWiseAsrConfidences];
-  if ((v5 != 0) == (v6 == 0))
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
+  templateId2 = [equalCopy tokenWiseAsrConfidences];
+  if ((templateId != 0) == (templateId2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
-  if (v28)
+  tokenWiseAsrConfidences = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
+  if (tokenWiseAsrConfidences)
   {
-    v29 = v28;
-    v30 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
-    v31 = [v4 tokenWiseAsrConfidences];
-    v32 = [v30 isEqual:v31];
+    v29 = tokenWiseAsrConfidences;
+    tokenWiseAsrConfidences2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self tokenWiseAsrConfidences];
+    tokenWiseAsrConfidences3 = [equalCopy tokenWiseAsrConfidences];
+    v32 = [tokenWiseAsrConfidences2 isEqual:tokenWiseAsrConfidences3];
 
     if (!v32)
     {
@@ -538,7 +538,7 @@
   }
 
   v33 = (*&self->_has >> 1) & 1;
-  if (v33 != ((v4[72] >> 1) & 1))
+  if (v33 != ((equalCopy[72] >> 1) & 1))
   {
     goto LABEL_38;
   }
@@ -546,18 +546,18 @@
   if (v33)
   {
     numRowsVectorDb = self->_numRowsVectorDb;
-    if (numRowsVectorDb != [v4 numRowsVectorDb])
+    if (numRowsVectorDb != [equalCopy numRowsVectorDb])
     {
       goto LABEL_38;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
-  v6 = [v4 matchedTemplateIds];
-  if ((v5 != 0) != (v6 == 0))
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
+  templateId2 = [equalCopy matchedTemplateIds];
+  if ((templateId != 0) != (templateId2 == 0))
   {
-    v35 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
-    if (!v35)
+    matchedTemplateIds = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
+    if (!matchedTemplateIds)
     {
 
 LABEL_41:
@@ -565,10 +565,10 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v36 = v35;
-    v37 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
-    v38 = [v4 matchedTemplateIds];
-    v39 = [v37 isEqual:v38];
+    v36 = matchedTemplateIds;
+    matchedTemplateIds2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
+    matchedTemplateIds3 = [equalCopy matchedTemplateIds];
+    v39 = [matchedTemplateIds2 isEqual:matchedTemplateIds3];
 
     if (v39)
     {
@@ -588,31 +588,31 @@ LABEL_39:
   return v40;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+  toCopy = to;
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
 
-  if (v5)
+  if (templateId)
   {
-    v6 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+    templateId2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+  euclidScoreStatistics = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
 
-  if (v7)
+  if (euclidScoreStatistics)
   {
-    v8 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+    euclidScoreStatistics2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+  euclidTrialParameters = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
 
-  if (v9)
+  if (euclidTrialParameters)
   {
-    v10 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+    euclidTrialParameters2 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
     PBDataWriterWriteSubmessage();
   }
 
@@ -722,27 +722,27 @@ LABEL_39:
   }
 }
 
-- (void)addMatchedTemplateIds:(id)a3
+- (void)addMatchedTemplateIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   matchedTemplateIds = self->_matchedTemplateIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!matchedTemplateIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matchedTemplateIds;
-    self->_matchedTemplateIds = v6;
+    self->_matchedTemplateIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     matchedTemplateIds = self->_matchedTemplateIds;
   }
 
-  [(NSArray *)matchedTemplateIds addObject:v4];
+  [(NSArray *)matchedTemplateIds addObject:idsCopy];
 }
 
-- (void)setHasNumRowsVectorDb:(BOOL)a3
+- (void)setHasNumRowsVectorDb:(BOOL)db
 {
-  if (a3)
+  if (db)
   {
     v3 = 2;
   }
@@ -755,23 +755,23 @@ LABEL_39:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)tokenWiseAsrConfidenceAtIndex:(unint64_t)a3
+- (int)tokenWiseAsrConfidenceAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_tokenWiseAsrConfidences objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_tokenWiseAsrConfidences objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addTokenWiseAsrConfidence:(int)a3
+- (void)addTokenWiseAsrConfidence:(int)confidence
 {
-  v3 = *&a3;
+  v3 = *&confidence;
   tokenWiseAsrConfidences = self->_tokenWiseAsrConfidences;
   if (!tokenWiseAsrConfidences)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokenWiseAsrConfidences;
-    self->_tokenWiseAsrConfidences = v6;
+    self->_tokenWiseAsrConfidences = array;
 
     tokenWiseAsrConfidences = self->_tokenWiseAsrConfidences;
   }
@@ -780,23 +780,23 @@ LABEL_39:
   [(NSArray *)tokenWiseAsrConfidences addObject:v8];
 }
 
-- (int)euclidEntityTypeMatchedAtIndex:(unint64_t)a3
+- (int)euclidEntityTypeMatchedAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_euclidEntityTypeMatcheds objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_euclidEntityTypeMatcheds objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addEuclidEntityTypeMatched:(int)a3
+- (void)addEuclidEntityTypeMatched:(int)matched
 {
-  v3 = *&a3;
+  v3 = *&matched;
   euclidEntityTypeMatcheds = self->_euclidEntityTypeMatcheds;
   if (!euclidEntityTypeMatcheds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_euclidEntityTypeMatcheds;
-    self->_euclidEntityTypeMatcheds = v6;
+    self->_euclidEntityTypeMatcheds = array;
 
     euclidEntityTypeMatcheds = self->_euclidEntityTypeMatcheds;
   }
@@ -805,41 +805,41 @@ LABEL_39:
   [(NSArray *)euclidEntityTypeMatcheds addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = INFERENCESchemaINFERENCEEuclidDebugMetrics;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  templateId = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self templateId];
+  v7 = [templateId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self deleteTemplateId];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  euclidScoreStatistics = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidScoreStatistics];
+  v10 = [euclidScoreStatistics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self deleteEuclidScoreStatistics];
   }
 
-  v12 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  euclidTrialParameters = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self euclidTrialParameters];
+  v13 = [euclidTrialParameters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self deleteEuclidTrialParameters];
   }
 
-  v15 = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
-  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v15 underConditions:v4];
+  matchedTemplateIds = [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self matchedTemplateIds];
+  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:matchedTemplateIds underConditions:policyCopy];
   [(INFERENCESchemaINFERENCEEuclidDebugMetrics *)self setMatchedTemplateIds:v16];
 
   return v5;

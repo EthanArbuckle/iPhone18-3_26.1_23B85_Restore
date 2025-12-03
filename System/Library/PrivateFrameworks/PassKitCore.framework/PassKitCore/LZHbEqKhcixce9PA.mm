@@ -1,19 +1,19 @@
 @interface LZHbEqKhcixce9PA
 + (id)sharedInstance;
-- (BOOL)l7UrdRfCzeduYqtA:(id)a3;
-- (LZHbEqKhcixce9PA)initWithServiceName:(id)a3;
-- (id)BFzukpKGO3cStNGp:(id)a3;
-- (void)JI0A3nkqsab9cUj8:(id)a3 completion:(id)a4;
-- (void)QeMnG23X94qgz7jT:(id)a3 hostChallenge:(id)a4 challengeResponse:(id)a5 seid:(id)a6 nonce:(id)a7 completion:(id)a8;
-- (void)Z8aAH7stm0EYhyxg:(id)a3 dhAnc7b9U376IHnX:(id)a4 xz5EHXEN4FjlhJbi:(id)a5 uhVTXyAfCFn7u0Ue:(id)a6 EQUjQp7JcQbqcPcD:(id)a7 A5wDLa5TFdFZlz3A:(id)a8 TJKMyOe6zn5PdGIr:(id)a9 eCqgGM0WcnHOslnr:(unint64_t)a10 eCszfxdv3kUXvhgV:(unint64_t)a11 uWp4aZpP2vLhc04Q:(id)a12 QZYtNpvp0hKd248p:(id)a13 oCwPYmtRv8s31KUH:(id)a14 completion:(id)a15;
-- (void)ZfE6lVphNUVrZcKx:(id)a3 completion:(id)a4;
-- (void)evrtH713YbFfEOzk:(id)a3 completion:(id)a4;
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 pregeneration:(BOOL)a5 workflowID:(id)a6 completion:(id)a7;
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 workflowID:(id)a5 completion:(id)a6;
-- (void)ofLBc0SV56ddaijH:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5;
+- (BOOL)l7UrdRfCzeduYqtA:(id)a;
+- (LZHbEqKhcixce9PA)initWithServiceName:(id)name;
+- (id)BFzukpKGO3cStNGp:(id)gp;
+- (void)JI0A3nkqsab9cUj8:(id)uj8 completion:(id)completion;
+- (void)QeMnG23X94qgz7jT:(id)t hostChallenge:(id)challenge challengeResponse:(id)response seid:(id)seid nonce:(id)nonce completion:(id)completion;
+- (void)Z8aAH7stm0EYhyxg:(id)yhyxg dhAnc7b9U376IHnX:(id)x xz5EHXEN4FjlhJbi:(id)jbi uhVTXyAfCFn7u0Ue:(id)ue EQUjQp7JcQbqcPcD:(id)d A5wDLa5TFdFZlz3A:(id)a TJKMyOe6zn5PdGIr:(id)ir eCqgGM0WcnHOslnr:(unint64_t)self0 eCszfxdv3kUXvhgV:(unint64_t)self1 uWp4aZpP2vLhc04Q:(id)self2 QZYtNpvp0hKd248p:(id)self3 oCwPYmtRv8s31KUH:(id)self4 completion:(id)self5;
+- (void)ZfE6lVphNUVrZcKx:(id)kx completion:(id)completion;
+- (void)evrtH713YbFfEOzk:(id)ozk completion:(id)completion;
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all pregeneration:(BOOL)pregeneration workflowID:(id)d completion:(id)completion;
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all workflowID:(id)d completion:(id)completion;
+- (void)ofLBc0SV56ddaijH:(id)h i7D0Lridvo8oYoNd:(id)nd completion:(id)completion;
 - (void)uTtwJoGUgL3N0GVz;
-- (void)updateRavioliWithCompletion:(id)a3;
-- (void)vffg4lwI2HftPvpO:(id)a3;
+- (void)updateRavioliWithCompletion:(id)completion;
+- (void)vffg4lwI2HftPvpO:(id)o;
 @end
 
 @implementation LZHbEqKhcixce9PA
@@ -37,9 +37,9 @@ void __34__LZHbEqKhcixce9PA_sharedInstance__block_invoke()
   sharedInstance_reference = v0;
 }
 
-- (LZHbEqKhcixce9PA)initWithServiceName:(id)a3
+- (LZHbEqKhcixce9PA)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = LZHbEqKhcixce9PA;
   v5 = [(LZHbEqKhcixce9PA *)&v20 init];
@@ -53,7 +53,7 @@ void __34__LZHbEqKhcixce9PA_sharedInstance__block_invoke()
     syncQueue = v5->_syncQueue;
     v5->_syncQueue = v8;
 
-    v10 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v4 options:4096];
+    v10 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:4096];
     connection = v5->_connection;
     v5->_connection = v10;
 
@@ -81,16 +81,16 @@ void __40__LZHbEqKhcixce9PA_initWithServiceName___block_invoke(uint64_t a1)
   [WeakRetained uTtwJoGUgL3N0GVz];
 }
 
-- (void)JI0A3nkqsab9cUj8:(id)a3 completion:(id)a4
+- (void)JI0A3nkqsab9cUj8:(id)uj8 completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  uj8Copy = uj8;
+  completionCopy = completion;
   v8 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_50];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__LZHbEqKhcixce9PA_JI0A3nkqsab9cUj8_completion___block_invoke_2;
   aBlock[3] = &unk_1E79C3EF0;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = _Block_copy(aBlock);
   v11 = [(LZHbEqKhcixce9PA *)self BFzukpKGO3cStNGp:v10];
@@ -105,8 +105,8 @@ void __40__LZHbEqKhcixce9PA_initWithServiceName___block_invoke(uint64_t a1)
   v13 = v9;
   v18 = v13;
   v14 = _Block_copy(v16);
-  v15 = [v6 toDictionary];
-  [v8 k0p7Rchr49btq6wB:v15 HY6FXG20397zwmVg:v14];
+  toDictionary = [uj8Copy toDictionary];
+  [v8 k0p7Rchr49btq6wB:toDictionary HY6FXG20397zwmVg:v14];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -124,20 +124,20 @@ void __48__LZHbEqKhcixce9PA_JI0A3nkqsab9cUj8_completion___block_invoke_3(uint64_
   }
 }
 
-- (void)QeMnG23X94qgz7jT:(id)a3 hostChallenge:(id)a4 challengeResponse:(id)a5 seid:(id)a6 nonce:(id)a7 completion:(id)a8
+- (void)QeMnG23X94qgz7jT:(id)t hostChallenge:(id)challenge challengeResponse:(id)response seid:(id)seid nonce:(id)nonce completion:(id)completion
 {
-  v26 = a3;
-  v14 = a4;
-  v25 = a5;
-  v15 = a6;
-  v24 = a7;
-  v16 = a8;
+  tCopy = t;
+  challengeCopy = challenge;
+  responseCopy = response;
+  seidCopy = seid;
+  nonceCopy = nonce;
+  completionCopy = completion;
   v17 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_53];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__LZHbEqKhcixce9PA_QeMnG23X94qgz7jT_hostChallenge_challengeResponse_seid_nonce_completion___block_invoke_2;
   aBlock[3] = &unk_1E79C3EF0;
-  v18 = v16;
+  v18 = completionCopy;
   v33 = v18;
   v19 = _Block_copy(aBlock);
   v20 = [(LZHbEqKhcixce9PA *)self BFzukpKGO3cStNGp:v19];
@@ -152,7 +152,7 @@ void __48__LZHbEqKhcixce9PA_JI0A3nkqsab9cUj8_completion___block_invoke_3(uint64_
   v22 = v18;
   v29 = v22;
   v23 = _Block_copy(v27);
-  [v17 Me7YKKqFAKjegMFz:v26 hostChallenge:v14 challengeResponse:v25 seid:v15 nonce:v24 HY6FXG20397zwmVg:v23];
+  [v17 Me7YKKqFAKjegMFz:tCopy hostChallenge:challengeCopy challengeResponse:responseCopy seid:seidCopy nonce:nonceCopy HY6FXG20397zwmVg:v23];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -169,16 +169,16 @@ void __91__LZHbEqKhcixce9PA_QeMnG23X94qgz7jT_hostChallenge_challengeResponse_sei
   }
 }
 
-- (void)ZfE6lVphNUVrZcKx:(id)a3 completion:(id)a4
+- (void)ZfE6lVphNUVrZcKx:(id)kx completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  kxCopy = kx;
+  completionCopy = completion;
   v8 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_56];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__LZHbEqKhcixce9PA_ZfE6lVphNUVrZcKx_completion___block_invoke_2;
   aBlock[3] = &unk_1E79C3EF0;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
   v10 = _Block_copy(aBlock);
   v11 = [(LZHbEqKhcixce9PA *)self BFzukpKGO3cStNGp:v10];
@@ -193,7 +193,7 @@ void __91__LZHbEqKhcixce9PA_QeMnG23X94qgz7jT_hostChallenge_challengeResponse_sei
   v13 = v9;
   v17 = v13;
   v14 = _Block_copy(v15);
-  [v8 f9MGfLOgnHPuKTrU:v6 HY6FXG20397zwmVg:v14];
+  [v8 f9MGfLOgnHPuKTrU:kxCopy HY6FXG20397zwmVg:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -210,15 +210,15 @@ void __48__LZHbEqKhcixce9PA_ZfE6lVphNUVrZcKx_completion___block_invoke_3(uint64_
   }
 }
 
-- (void)vffg4lwI2HftPvpO:(id)a3
+- (void)vffg4lwI2HftPvpO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_59];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __37__LZHbEqKhcixce9PA_vffg4lwI2HftPvpO___block_invoke_2;
   aBlock[3] = &unk_1E79C3EF0;
-  v6 = v4;
+  v6 = oCopy;
   v18 = v6;
   v7 = _Block_copy(aBlock);
   v8 = [(LZHbEqKhcixce9PA *)self BFzukpKGO3cStNGp:v7];
@@ -250,25 +250,25 @@ void __37__LZHbEqKhcixce9PA_vffg4lwI2HftPvpO___block_invoke_3(uint64_t a1, void 
   }
 }
 
-- (void)Z8aAH7stm0EYhyxg:(id)a3 dhAnc7b9U376IHnX:(id)a4 xz5EHXEN4FjlhJbi:(id)a5 uhVTXyAfCFn7u0Ue:(id)a6 EQUjQp7JcQbqcPcD:(id)a7 A5wDLa5TFdFZlz3A:(id)a8 TJKMyOe6zn5PdGIr:(id)a9 eCqgGM0WcnHOslnr:(unint64_t)a10 eCszfxdv3kUXvhgV:(unint64_t)a11 uWp4aZpP2vLhc04Q:(id)a12 QZYtNpvp0hKd248p:(id)a13 oCwPYmtRv8s31KUH:(id)a14 completion:(id)a15
+- (void)Z8aAH7stm0EYhyxg:(id)yhyxg dhAnc7b9U376IHnX:(id)x xz5EHXEN4FjlhJbi:(id)jbi uhVTXyAfCFn7u0Ue:(id)ue EQUjQp7JcQbqcPcD:(id)d A5wDLa5TFdFZlz3A:(id)a TJKMyOe6zn5PdGIr:(id)ir eCqgGM0WcnHOslnr:(unint64_t)self0 eCszfxdv3kUXvhgV:(unint64_t)self1 uWp4aZpP2vLhc04Q:(id)self2 QZYtNpvp0hKd248p:(id)self3 oCwPYmtRv8s31KUH:(id)self4 completion:(id)self5
 {
-  v21 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
-  v22 = a9;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = a15;
+  yhyxgCopy = yhyxg;
+  xCopy = x;
+  jbiCopy = jbi;
+  ueCopy = ue;
+  dCopy = d;
+  aCopy = a;
+  irCopy = ir;
+  qCopy = q;
+  kd248pCopy = kd248p;
+  hCopy = h;
+  completionCopy = completion;
   v33 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_61];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __235__LZHbEqKhcixce9PA_Z8aAH7stm0EYhyxg_dhAnc7b9U376IHnX_xz5EHXEN4FjlhJbi_uhVTXyAfCFn7u0Ue_EQUjQp7JcQbqcPcD_A5wDLa5TFdFZlz3A_TJKMyOe6zn5PdGIr_eCqgGM0WcnHOslnr_eCszfxdv3kUXvhgV_uWp4aZpP2vLhc04Q_QZYtNpvp0hKd248p_oCwPYmtRv8s31KUH_completion___block_invoke_2;
   aBlock[3] = &unk_1E79C3EF0;
-  v27 = v26;
+  v27 = completionCopy;
   v45 = v27;
   v28 = _Block_copy(aBlock);
   v29 = [(LZHbEqKhcixce9PA *)self BFzukpKGO3cStNGp:v28];
@@ -283,7 +283,7 @@ void __37__LZHbEqKhcixce9PA_vffg4lwI2HftPvpO___block_invoke_3(uint64_t a1, void 
   v31 = v27;
   v41 = v31;
   v32 = _Block_copy(v39);
-  [v33 sPLljm0ZB9z7TiKd:v21 nSLeS2inTAbpsUeZ:v38 noUfOiGjp1iQmKZX:v37 pPGyXmlDbN3mzzHm:v36 iSOZt67ioKsVcqQZ:v22 hjCrdFOLMJN0Cc5Q:a10 lE40aye8U2u533Ka:a11 JRuZv6Feh9qwrGmN:v23 Wn0aIR2B54NCtGQc:v24 B3l3lS18BITy5E4L:v25 UywAszL6AB8Y6LTJ:v32 uNao9X8A82jVmQkK:? completion:?];
+  [v33 sPLljm0ZB9z7TiKd:yhyxgCopy nSLeS2inTAbpsUeZ:xCopy noUfOiGjp1iQmKZX:jbiCopy pPGyXmlDbN3mzzHm:ueCopy iSOZt67ioKsVcqQZ:irCopy hjCrdFOLMJN0Cc5Q:oslnr lE40aye8U2u533Ka:v JRuZv6Feh9qwrGmN:qCopy Wn0aIR2B54NCtGQc:kd248pCopy B3l3lS18BITy5E4L:hCopy UywAszL6AB8Y6LTJ:v32 uNao9X8A82jVmQkK:? completion:?];
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(&location);
@@ -302,16 +302,16 @@ void __235__LZHbEqKhcixce9PA_Z8aAH7stm0EYhyxg_dhAnc7b9U376IHnX_xz5EHXEN4FjlhJbi_
   }
 }
 
-- (void)updateRavioliWithCompletion:(id)a3
+- (void)updateRavioliWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_64];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__LZHbEqKhcixce9PA_updateRavioliWithCompletion___block_invoke_2;
   aBlock[3] = &unk_1E79C3EF0;
-  v6 = v4;
+  v6 = completionCopy;
   v16 = v6;
   v7 = _Block_copy(aBlock);
   v8 = [(LZHbEqKhcixce9PA *)self BFzukpKGO3cStNGp:v7];
@@ -340,71 +340,71 @@ void __48__LZHbEqKhcixce9PA_updateRavioliWithCompletion___block_invoke_3(uint64_
   }
 }
 
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 workflowID:(id)a5 completion:(id)a6
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all workflowID:(id)d completion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696ABC0];
   v8 = MEMORY[0x1E696AEC0];
   v9 = kCoreASErrorDomainCA;
-  v10 = a6;
+  completionCopy = completion;
   v11 = [v8 stringWithUTF8String:v9];
   v14 = *MEMORY[0x1E696A578];
   v15[0] = @"Not implemented";
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v13 = [v7 errorWithDomain:v11 code:-27006 userInfo:v12];
-  (*(a6 + 2))(v10, v13);
+  (*(completion + 2))(completionCopy, v13);
 }
 
-- (void)evrtH713YbFfEOzk:(id)a3 completion:(id)a4
+- (void)evrtH713YbFfEOzk:(id)ozk completion:(id)completion
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
   v6 = MEMORY[0x1E696AEC0];
   v7 = kCoreASErrorDomainCA;
-  v8 = a4;
+  completionCopy = completion;
   v9 = [v6 stringWithUTF8String:v7];
   v12 = *MEMORY[0x1E696A578];
   v13[0] = @"Not implemented";
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v11 = [v5 errorWithDomain:v9 code:-27006 userInfo:v10];
-  (*(a4 + 2))(v8, 0, v11);
+  (*(completion + 2))(completionCopy, 0, v11);
 }
 
-- (void)ofLBc0SV56ddaijH:(id)a3 i7D0Lridvo8oYoNd:(id)a4 completion:(id)a5
+- (void)ofLBc0SV56ddaijH:(id)h i7D0Lridvo8oYoNd:(id)nd completion:(id)completion
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696ABC0];
   v7 = MEMORY[0x1E696AEC0];
   v8 = kCoreASErrorDomainCA;
-  v9 = a5;
+  completionCopy = completion;
   v10 = [v7 stringWithUTF8String:v8];
   v13 = *MEMORY[0x1E696A578];
   v14[0] = @"Not implemented";
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v12 = [v6 errorWithDomain:v10 code:-27006 userInfo:v11];
-  (*(a5 + 2))(v9, 0, v12);
+  (*(completion + 2))(completionCopy, 0, v12);
 }
 
-- (void)llNEghuIdfPH7O8I:(BOOL)a3 all:(BOOL)a4 pregeneration:(BOOL)a5 workflowID:(id)a6 completion:(id)a7
+- (void)llNEghuIdfPH7O8I:(BOOL)i all:(BOOL)all pregeneration:(BOOL)pregeneration workflowID:(id)d completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E696ABC0];
   v9 = MEMORY[0x1E696AEC0];
   v10 = kCoreASErrorDomainCA;
-  v11 = a7;
+  completionCopy = completion;
   v12 = [v9 stringWithUTF8String:v10];
   v15 = *MEMORY[0x1E696A578];
   v16[0] = @"Not implemented";
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   v14 = [v8 errorWithDomain:v12 code:-27006 userInfo:v13];
-  (*(a7 + 2))(v11, v14);
+  (*(completion + 2))(completionCopy, v14);
 }
 
-- (id)BFzukpKGO3cStNGp:(id)a3
+- (id)BFzukpKGO3cStNGp:(id)gp
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  gpCopy = gp;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -412,10 +412,10 @@ void __48__LZHbEqKhcixce9PA_updateRavioliWithCompletion___block_invoke_3(uint64_
   block[2] = __37__LZHbEqKhcixce9PA_BFzukpKGO3cStNGp___block_invoke;
   block[3] = &unk_1E79C3FE0;
   block[4] = self;
-  v15 = v4;
-  v8 = v6;
+  v15 = gpCopy;
+  v8 = uUIDString;
   v14 = v8;
-  v9 = v4;
+  v9 = gpCopy;
   dispatch_sync(syncQueue, block);
   v10 = v14;
   v11 = v8;
@@ -430,9 +430,9 @@ void __37__LZHbEqKhcixce9PA_BFzukpKGO3cStNGp___block_invoke(uint64_t a1)
   [v2 setObject:v3 forKey:*(a1 + 40)];
 }
 
-- (BOOL)l7UrdRfCzeduYqtA:(id)a3
+- (BOOL)l7UrdRfCzeduYqtA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -442,10 +442,10 @@ void __37__LZHbEqKhcixce9PA_BFzukpKGO3cStNGp___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__LZHbEqKhcixce9PA_l7UrdRfCzeduYqtA___block_invoke;
   block[3] = &unk_1E79C4008;
-  v9 = v4;
+  v9 = aCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = aCopy;
   dispatch_sync(syncQueue, block);
   LOBYTE(syncQueue) = *(v12 + 24);
 

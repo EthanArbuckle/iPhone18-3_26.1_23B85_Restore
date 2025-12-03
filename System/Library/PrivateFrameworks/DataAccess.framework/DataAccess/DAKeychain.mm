@@ -1,14 +1,14 @@
 @interface DAKeychain
 + (id)sharedKeychain;
-- (BOOL)canAccessCredentialsWithAccessibility:(int)a3;
-- (BOOL)removePasswordForAccount:(id)a3 withPersistentUUID:(id)a4;
-- (__CFDictionary)_DACopyMutableQueryForAccountWithPersistentUUID:(id)a3;
-- (id)guessPasswordForURL:(id)a3;
-- (id)loadKeychainInformationsForURL:(id)a3;
-- (int)_daKeychainAccessibilityForSecAccessibility:(void *)a3;
-- (void)_secAccessibilityForDAKeychainAccessibility:(int)a3;
-- (void)migratePasswordForAccount:(id)a3;
-- (void)removeKeychainInformationsForURL:(id)a3;
+- (BOOL)canAccessCredentialsWithAccessibility:(int)accessibility;
+- (BOOL)removePasswordForAccount:(id)account withPersistentUUID:(id)d;
+- (__CFDictionary)_DACopyMutableQueryForAccountWithPersistentUUID:(id)d;
+- (id)guessPasswordForURL:(id)l;
+- (id)loadKeychainInformationsForURL:(id)l;
+- (int)_daKeychainAccessibilityForSecAccessibility:(void *)accessibility;
+- (void)_secAccessibilityForDAKeychainAccessibility:(int)accessibility;
+- (void)migratePasswordForAccount:(id)account;
+- (void)removeKeychainInformationsForURL:(id)l;
 - (void)removePersistentCredentials;
 @end
 
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (BOOL)canAccessCredentialsWithAccessibility:(int)a3
+- (BOOL)canAccessCredentialsWithAccessibility:(int)accessibility
 {
-  if (a3 == 1)
+  if (accessibility == 1)
   {
     return MKBGetDeviceLockState() != 0;
   }
 
-  if (a3 == 2)
+  if (accessibility == 2)
   {
     return MKBDeviceUnlockedSinceBoot() == 1;
   }
@@ -44,9 +44,9 @@
   return 1;
 }
 
-- (void)_secAccessibilityForDAKeychainAccessibility:(int)a3
+- (void)_secAccessibilityForDAKeychainAccessibility:(int)accessibility
 {
-  switch(a3)
+  switch(accessibility)
   {
     case 3:
       v3 = MEMORY[0x277CDBEF0];
@@ -62,19 +62,19 @@
   return 0;
 }
 
-- (int)_daKeychainAccessibilityForSecAccessibility:(void *)a3
+- (int)_daKeychainAccessibilityForSecAccessibility:(void *)accessibility
 {
-  if (!a3)
+  if (!accessibility)
   {
     return 2;
   }
 
-  if (CFEqual(a3, *MEMORY[0x277CDBEF0]))
+  if (CFEqual(accessibility, *MEMORY[0x277CDBEF0]))
   {
     return 3;
   }
 
-  if (!CFEqual(a3, *MEMORY[0x277CDBEE0]) && CFEqual(a3, *MEMORY[0x277CDBF10]))
+  if (!CFEqual(accessibility, *MEMORY[0x277CDBEE0]) && CFEqual(accessibility, *MEMORY[0x277CDBF10]))
   {
     return 1;
   }
@@ -85,12 +85,12 @@
   }
 }
 
-- (__CFDictionary)_DACopyMutableQueryForAccountWithPersistentUUID:(id)a3
+- (__CFDictionary)_DACopyMutableQueryForAccountWithPersistentUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v5 = *MEMORY[0x277CDBF20];
-  v6 = [@"DataAccess-" stringByAppendingString:v3];
+  v6 = [@"DataAccess-" stringByAppendingString:dCopy];
 
   CFDictionaryAddValue(Mutable, v5, v6);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC228], *MEMORY[0x277CDC248]);
@@ -99,15 +99,15 @@
 
 - (void)removePersistentCredentials
 {
-  v2 = [MEMORY[0x277CBAB88] sharedCredentialStorage];
-  v3 = [v2 allCredentials];
+  mEMORY[0x277CBAB88] = [MEMORY[0x277CBAB88] sharedCredentialStorage];
+  allCredentials = [mEMORY[0x277CBAB88] allCredentials];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __41__DAKeychain_removePersistentCredentials__block_invoke;
   v5[3] = &unk_278F13510;
-  v6 = v2;
-  v4 = v2;
-  [v3 enumerateKeysAndObjectsUsingBlock:v5];
+  v6 = mEMORY[0x277CBAB88];
+  v4 = mEMORY[0x277CBAB88];
+  [allCredentials enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __41__DAKeychain_removePersistentCredentials__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -167,18 +167,18 @@ void __41__DAKeychain_removePersistentCredentials__block_invoke(uint64_t a1, voi
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removePasswordForAccount:(id)a3 withPersistentUUID:(id)a4
+- (BOOL)removePasswordForAccount:(id)account withPersistentUUID:(id)d
 {
   *&v18[5] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(DAKeychain *)self _DACopyMutableQueryForAccountWithPersistentUUID:v5];
+  dCopy = d;
+  v6 = [(DAKeychain *)self _DACopyMutableQueryForAccountWithPersistentUUID:dCopy];
   v7 = DALoggingwithCategory();
   v8 = MEMORY[0x277D03988];
   v9 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v7, v9))
   {
     v17 = 138412290;
-    *v18 = v5;
+    *v18 = dCopy;
     _os_log_impl(&dword_24844D000, v7, v9, "Removing password for account with UUID %@", &v17, 0xCu);
   }
 
@@ -192,7 +192,7 @@ void __41__DAKeychain_removePersistentCredentials__block_invoke(uint64_t a1, voi
       v17 = 67109378;
       v18[0] = v11;
       LOWORD(v18[1]) = 2112;
-      *(&v18[1] + 2) = v5;
+      *(&v18[1] + 2) = dCopy;
       _os_log_impl(&dword_24844D000, v15, v16, "Error %d, Couldn't delete password from keychain for account %@", &v17, 0x12u);
     }
 
@@ -218,22 +218,22 @@ LABEL_6:
   return v12;
 }
 
-- (void)migratePasswordForAccount:(id)a3
+- (void)migratePasswordForAccount:(id)account
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:?];
+  accountCopy = account;
+  v4 = [accountCopy objectForKeyedSubscript:?];
   v5 = [(DAKeychain *)self passwordForAccountWithPersistentUUID:v4 expectedAccessibility:3 shouldSetAccessibility:0 passwordExpected:0];
 
   if (![v5 length])
   {
-    v6 = [v3 persistentUUID];
-    v7 = [(DAKeychain *)self passwordForAccountWithPersistentUUID:v6 expectedAccessibility:3 shouldSetAccessibility:0 passwordExpected:0];
+    persistentUUID = [accountCopy persistentUUID];
+    v7 = [(DAKeychain *)self passwordForAccountWithPersistentUUID:persistentUUID expectedAccessibility:3 shouldSetAccessibility:0 passwordExpected:0];
 
     v5 = v7;
   }
 
-  v8 = [v3 objectForKeyedSubscript:?];
+  v8 = [accountCopy objectForKeyedSubscript:?];
 
   if (v8)
   {
@@ -241,7 +241,7 @@ LABEL_6:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v9 = [v3 objectForKeyedSubscript:@"DAOldKeychainURLs"];
+    v9 = [accountCopy objectForKeyedSubscript:@"DAOldKeychainURLs"];
     v10 = [v9 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v10)
     {
@@ -276,8 +276,8 @@ LABEL_6:
   if (v5)
   {
     v16 = [objc_alloc(MEMORY[0x277CB8F38]) initWithPassword:v5];
-    v17 = [v3 backingAccountInfo];
-    [v17 setCredential:v16];
+    backingAccountInfo = [accountCopy backingAccountInfo];
+    [backingAccountInfo setCredential:v16];
 
     v37 = 0;
     v38 = &v37;
@@ -289,25 +289,25 @@ LABEL_6:
     if (os_log_type_enabled(v19, v20))
     {
       v21 = v16;
-      v22 = [v3 backingAccountInfo];
-      v23 = [v22 identifier];
-      v24 = [v3 backingAccountInfo];
-      v25 = [v24 username];
+      backingAccountInfo2 = [accountCopy backingAccountInfo];
+      identifier = [backingAccountInfo2 identifier];
+      backingAccountInfo3 = [accountCopy backingAccountInfo];
+      username = [backingAccountInfo3 username];
       *buf = 138412546;
-      v46 = v23;
+      v46 = identifier;
       v47 = 2112;
-      v48 = v25;
+      v48 = username;
       _os_log_impl(&dword_24844D000, v19, v20, "During Migration, password present. Setting _backingAccountInfo.authenticated = YES for Account identifier %@ and username %@", buf, 0x16u);
 
       v16 = v21;
     }
 
-    v26 = [v3 backingAccountInfo];
-    [v26 setAuthenticated:1];
+    backingAccountInfo4 = [accountCopy backingAccountInfo];
+    [backingAccountInfo4 setAuthenticated:1];
 
-    [v3 setObject:0 forKeyedSubscript:@"DAOldKeychainURLs"];
+    [accountCopy setObject:0 forKeyedSubscript:@"DAOldKeychainURLs"];
     v27 = sharedDAAccountStore();
-    v28 = [v3 backingAccountInfo];
+    backingAccountInfo5 = [accountCopy backingAccountInfo];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __40__DAKeychain_migratePasswordForAccount___block_invoke;
@@ -315,16 +315,16 @@ LABEL_6:
     v36 = &v37;
     v29 = v18;
     v35 = v29;
-    [v27 saveVerifiedAccount:v28 withCompletionHandler:v34];
+    [v27 saveVerifiedAccount:backingAccountInfo5 withCompletionHandler:v34];
 
     dispatch_semaphore_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
     if (*(v38 + 24) == 1)
     {
-      v30 = [v3 objectForKeyedSubscript:@"DAAccountPersistentUUID"];
-      [(DAKeychain *)self removePasswordForAccount:v3 withPersistentUUID:v30];
+      v30 = [accountCopy objectForKeyedSubscript:@"DAAccountPersistentUUID"];
+      [(DAKeychain *)self removePasswordForAccount:accountCopy withPersistentUUID:v30];
 
-      v31 = [v3 persistentUUID];
-      [(DAKeychain *)self removePasswordForAccount:v3 withPersistentUUID:v31];
+      persistentUUID2 = [accountCopy persistentUUID];
+      [(DAKeychain *)self removePasswordForAccount:accountCopy withPersistentUUID:persistentUUID2];
     }
 
     _Block_object_dispose(&v37, 8);
@@ -333,43 +333,43 @@ LABEL_6:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadKeychainInformationsForURL:(id)a3
+- (id)loadKeychainInformationsForURL:(id)l
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = DALoggingwithCategory();
   v5 = MEMORY[0x277D03988];
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v4, v6))
   {
     *buf = 138412290;
-    v32 = v3;
+    v32 = lCopy;
     _os_log_impl(&dword_24844D000, v4, v6, "Loading password for %@", buf, 0xCu);
   }
 
-  v7 = [(__CFString *)v3 user];
-  v8 = [(__CFString *)v3 host];
-  v9 = [(__CFString *)v3 scheme];
-  if (!v7 || ([v7 isEqualToString:&stru_285AA6518] & 1) != 0 || !v8 || (objc_msgSend(v8, "isEqualToString:", &stru_285AA6518) & 1) != 0 || !v9 || objc_msgSend(v9, "isEqualToString:", &stru_285AA6518))
+  user = [(__CFString *)lCopy user];
+  host = [(__CFString *)lCopy host];
+  scheme = [(__CFString *)lCopy scheme];
+  if (!user || ([user isEqualToString:&stru_285AA6518] & 1) != 0 || !host || (objc_msgSend(host, "isEqualToString:", &stru_285AA6518) & 1) != 0 || !scheme || objc_msgSend(scheme, "isEqualToString:", &stru_285AA6518))
   {
     v10 = DALoggingwithCategory();
     v11 = *(v5 + 3);
     if (os_log_type_enabled(v10, v11))
     {
       v12 = @"Login ";
-      if (v7 && ![v7 isEqualToString:&stru_285AA6518])
+      if (user && ![user isEqualToString:&stru_285AA6518])
       {
         v12 = &stru_285AA6518;
       }
 
       v13 = @"Host ";
-      if (v8 && ![v8 isEqualToString:&stru_285AA6518])
+      if (host && ![host isEqualToString:&stru_285AA6518])
       {
         v13 = &stru_285AA6518;
       }
 
       v14 = @"Scheme ";
-      if (v9 && ![v9 isEqualToString:&stru_285AA6518])
+      if (scheme && ![scheme isEqualToString:&stru_285AA6518])
       {
         v14 = &stru_285AA6518;
       }
@@ -386,7 +386,7 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  if ([v7 isEqualToString:@"unit-test"])
+  if ([user isEqualToString:@"unit-test"])
   {
 LABEL_21:
     v15 = 0;
@@ -395,16 +395,16 @@ LABEL_21:
 
   result = 0;
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  if ([v9 isEqualToString:@"ftp"])
+  if ([scheme isEqualToString:@"ftp"])
   {
     v19 = MEMORY[0x277CDC0B0];
   }
 
   else
   {
-    if (![v9 isEqualToString:@"http"])
+    if (![scheme isEqualToString:@"http"])
     {
-      if ([v9 isEqualToString:@"https"])
+      if ([scheme isEqualToString:@"https"])
       {
         v20 = *MEMORY[0x277CDC0C0];
       }
@@ -422,38 +422,38 @@ LABEL_21:
 
   v20 = *v19;
 LABEL_34:
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], v7);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], user);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC558], *MEMORY[0x277CBED28]);
   v21 = *MEMORY[0x277CDC228];
   if (v20)
   {
     CFDictionaryAddValue(Mutable, v21, *MEMORY[0x277CDC248]);
     CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC0A8], v20);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC118], v8);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC118], host);
     CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF38], *MEMORY[0x277CDBF40]);
-    v22 = [(__CFString *)v3 port];
+    port = [(__CFString *)lCopy port];
 
     v23 = *MEMORY[0x277CDC0A0];
-    if (v22)
+    if (port)
     {
-      v24 = [(__CFString *)v3 port];
+      port2 = [(__CFString *)lCopy port];
     }
 
     else
     {
-      v24 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(MEMORY[0x277CBEBC0], "da_classicPortForScheme:", v9)}];
+      port2 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(MEMORY[0x277CBEBC0], "da_classicPortForScheme:", scheme)}];
     }
 
-    CFDictionaryAddValue(Mutable, v23, v24);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC098], [(__CFString *)v3 uri]);
+    CFDictionaryAddValue(Mutable, v23, port2);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC098], [(__CFString *)lCopy uri]);
   }
 
   else
   {
     CFDictionaryAddValue(Mutable, v21, *MEMORY[0x277CDC238]);
     v25 = *MEMORY[0x277CDC120];
-    v26 = [(__CFString *)v3 URLWithoutUsername];
-    CFDictionaryAddValue(Mutable, v25, [v26 absoluteString]);
+    uRLWithoutUsername = [(__CFString *)lCopy URLWithoutUsername];
+    CFDictionaryAddValue(Mutable, v25, [uRLWithoutUsername absoluteString]);
   }
 
   if (SecItemCopyMatching(Mutable, &result))
@@ -463,7 +463,7 @@ LABEL_34:
     if (os_log_type_enabled(v27, v28))
     {
       *buf = 138412290;
-      v32 = v3;
+      v32 = lCopy;
       _os_log_impl(&dword_24844D000, v27, v28, "Could not find a password in the keychain for %@", buf, 0xCu);
     }
 
@@ -494,43 +494,43 @@ LABEL_22:
   return v15;
 }
 
-- (void)removeKeychainInformationsForURL:(id)a3
+- (void)removeKeychainInformationsForURL:(id)l
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = DALoggingwithCategory();
   v5 = MEMORY[0x277D03988];
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v4, v6))
   {
     v29 = 138412290;
-    *v30 = v3;
+    *v30 = lCopy;
     _os_log_impl(&dword_24844D000, v4, v6, "Removing password for %@", &v29, 0xCu);
   }
 
-  v7 = [v3 user];
-  v8 = [v3 host];
-  v9 = [v3 scheme];
-  if (!v7 || ([v7 isEqualToString:&stru_285AA6518] & 1) != 0 || !v8 || (objc_msgSend(v8, "isEqualToString:", &stru_285AA6518) & 1) != 0 || !v9 || objc_msgSend(v9, "isEqualToString:", &stru_285AA6518))
+  user = [lCopy user];
+  host = [lCopy host];
+  scheme = [lCopy scheme];
+  if (!user || ([user isEqualToString:&stru_285AA6518] & 1) != 0 || !host || (objc_msgSend(host, "isEqualToString:", &stru_285AA6518) & 1) != 0 || !scheme || objc_msgSend(scheme, "isEqualToString:", &stru_285AA6518))
   {
     v10 = DALoggingwithCategory();
     v11 = *(v5 + 3);
     if (os_log_type_enabled(v10, v11))
     {
       v12 = @"Login ";
-      if (v7 && ![v7 isEqualToString:&stru_285AA6518])
+      if (user && ![user isEqualToString:&stru_285AA6518])
       {
         v12 = &stru_285AA6518;
       }
 
       v13 = @"Host ";
-      if (v8 && ![v8 isEqualToString:&stru_285AA6518])
+      if (host && ![host isEqualToString:&stru_285AA6518])
       {
         v13 = &stru_285AA6518;
       }
 
       v14 = @"Scheme ";
-      if (v9 && ![v9 isEqualToString:&stru_285AA6518])
+      if (scheme && ![scheme isEqualToString:&stru_285AA6518])
       {
         v14 = &stru_285AA6518;
       }
@@ -547,22 +547,22 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if ([v7 isEqualToString:@"unit-test"])
+  if ([user isEqualToString:@"unit-test"])
   {
     goto LABEL_21;
   }
 
   Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  if ([v9 isEqualToString:@"ftp"])
+  if ([scheme isEqualToString:@"ftp"])
   {
     v17 = MEMORY[0x277CDC0B0];
   }
 
   else
   {
-    if (![v9 isEqualToString:@"http"])
+    if (![scheme isEqualToString:@"http"])
     {
-      if ([v9 isEqualToString:@"https"])
+      if ([scheme isEqualToString:@"https"])
       {
         v18 = *MEMORY[0x277CDC0C0];
       }
@@ -580,38 +580,38 @@ LABEL_22:
 
   v18 = *v17;
 LABEL_31:
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], v7);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF20], user);
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC558], *MEMORY[0x277CBED28]);
   v19 = *MEMORY[0x277CDC228];
   if (v18)
   {
     CFDictionaryAddValue(Mutable, v19, *MEMORY[0x277CDC248]);
     CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC0A8], v18);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC118], v8);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC118], host);
     CFDictionaryAddValue(Mutable, *MEMORY[0x277CDBF38], *MEMORY[0x277CDBF40]);
-    v20 = [v3 port];
+    port = [lCopy port];
 
     v21 = *MEMORY[0x277CDC0A0];
-    if (v20)
+    if (port)
     {
-      v22 = [v3 port];
+      port2 = [lCopy port];
     }
 
     else
     {
-      v22 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(MEMORY[0x277CBEBC0], "da_classicPortForScheme:", v9)}];
+      port2 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(MEMORY[0x277CBEBC0], "da_classicPortForScheme:", scheme)}];
     }
 
-    CFDictionaryAddValue(Mutable, v21, v22);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC098], [v3 uri]);
+    CFDictionaryAddValue(Mutable, v21, port2);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x277CDC098], [lCopy uri]);
   }
 
   else
   {
     CFDictionaryAddValue(Mutable, v19, *MEMORY[0x277CDC238]);
     v23 = *MEMORY[0x277CDC120];
-    v24 = [v3 URLWithoutUsername];
-    CFDictionaryAddValue(Mutable, v23, [v24 absoluteString]);
+    uRLWithoutUsername = [lCopy URLWithoutUsername];
+    CFDictionaryAddValue(Mutable, v23, [uRLWithoutUsername absoluteString]);
   }
 
   v25 = SecItemDelete(Mutable);
@@ -625,7 +625,7 @@ LABEL_31:
       v29 = 67109378;
       *v30 = v26;
       *&v30[4] = 2112;
-      *&v30[6] = v3;
+      *&v30[6] = lCopy;
       _os_log_impl(&dword_24844D000, v27, v28, "error %d: Could not delete password for %@", &v29, 0x12u);
     }
   }
@@ -640,41 +640,41 @@ LABEL_21:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)guessPasswordForURL:(id)a3
+- (id)guessPasswordForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(DAKeychain *)self loadKeychainInformationsForURL:v4];
+  lCopy = l;
+  v5 = [(DAKeychain *)self loadKeychainInformationsForURL:lCopy];
   if (v5)
   {
-    v6 = v5;
+    absoluteString = v5;
     v7 = 0;
-    v8 = v4;
+    uRLByRemovingLastPathComponent = lCopy;
   }
 
   else
   {
-    v10 = [v4 port];
-    v11 = [v10 intValue];
+    port = [lCopy port];
+    intValue = [port intValue];
 
-    v8 = v4;
-    if (!v11)
+    uRLByRemovingLastPathComponent = lCopy;
+    if (!intValue)
     {
       goto LABEL_9;
     }
 
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [v4 scheme];
-    v14 = [v4 host];
-    v15 = [v4 path];
-    v16 = [v12 da_URLWithScheme:v13 host:v14 port:0 uri:v15];
+    scheme = [lCopy scheme];
+    host = [lCopy host];
+    path = [lCopy path];
+    v16 = [v12 da_URLWithScheme:scheme host:host port:0 uri:path];
 
-    v17 = [v4 user];
-    v18 = [v4 password];
-    v8 = [v16 URLWithUsername:v17 withPassword:v18];
+    user = [lCopy user];
+    password = [lCopy password];
+    uRLByRemovingLastPathComponent = [v16 URLWithUsername:user withPassword:password];
 
-    v6 = [(DAKeychain *)self loadKeychainInformationsForURL:v8];
+    absoluteString = [(DAKeychain *)self loadKeychainInformationsForURL:uRLByRemovingLastPathComponent];
 
-    if (v6)
+    if (absoluteString)
     {
       v7 = 0;
     }
@@ -683,40 +683,40 @@ LABEL_21:
     {
 LABEL_9:
       v7 = 0;
-      if (v8)
+      if (uRLByRemovingLastPathComponent)
       {
         while (1)
         {
-          v6 = [v7 absoluteString];
-          if (!v6)
+          absoluteString = [v7 absoluteString];
+          if (!absoluteString)
           {
             break;
           }
 
-          v19 = [v8 absoluteString];
-          v20 = [v7 absoluteString];
-          v21 = [v19 isEqualToString:v20];
+          absoluteString2 = [uRLByRemovingLastPathComponent absoluteString];
+          absoluteString3 = [v7 absoluteString];
+          v21 = [absoluteString2 isEqualToString:absoluteString3];
 
           if (v21)
           {
             goto LABEL_15;
           }
 
-          v22 = [(DAKeychain *)self loadKeychainInformationsForURL:v8];
+          v22 = [(DAKeychain *)self loadKeychainInformationsForURL:uRLByRemovingLastPathComponent];
           if (v22)
           {
-            v6 = v22;
+            absoluteString = v22;
             break;
           }
 
-          v23 = v8;
+          v23 = uRLByRemovingLastPathComponent;
 
-          v8 = [v23 URLByRemovingLastPathComponent];
+          uRLByRemovingLastPathComponent = [v23 URLByRemovingLastPathComponent];
 
           v7 = v23;
-          if (!v8)
+          if (!uRLByRemovingLastPathComponent)
           {
-            v6 = 0;
+            absoluteString = 0;
             v7 = v23;
             break;
           }
@@ -726,12 +726,12 @@ LABEL_9:
       else
       {
 LABEL_15:
-        v6 = 0;
+        absoluteString = 0;
       }
     }
   }
 
-  return v6;
+  return absoluteString;
 }
 
 @end

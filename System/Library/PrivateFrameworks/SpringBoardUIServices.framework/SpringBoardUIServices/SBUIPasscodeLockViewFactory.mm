@@ -1,13 +1,13 @@
 @interface SBUIPasscodeLockViewFactory
 + (id)_defaultPasscodeBiometricResource;
-+ (id)_passcodeLockViewForStyle:(int)a3 withLightStyle:(BOOL)a4 dimmed:(BOOL)a5;
++ (id)_passcodeLockViewForStyle:(int)style withLightStyle:(BOOL)lightStyle dimmed:(BOOL)dimmed;
 + (id)installTonightPasscodeLockViewForUsersCurrentStyle;
 + (id)lightPasscodeLockViewForUsersCurrentStyle;
 + (id)passcodeLockViewForUsersCurrentStyle;
 + (id)undimmedLightPasscodeLockViewForUsersCurrentStyle;
 + (id)undimmedPasscodeLockViewForUsersCurrentStyle;
-+ (void)_commonInitPasscodeView:(id)a3 forStyle:(int)a4;
-+ (void)setPasscodeBiometricResource:(id)a3;
++ (void)_commonInitPasscodeView:(id)view forStyle:(int)style;
++ (void)setPasscodeBiometricResource:(id)resource;
 @end
 
 @implementation SBUIPasscodeLockViewFactory
@@ -96,63 +96,63 @@ LABEL_6:
   v7 = [[v8 alloc] initWithLightStyle:0];
 LABEL_10:
   v9 = v7;
-  [a1 _commonInitPasscodeView:v7 forStyle:v4];
+  [self _commonInitPasscodeView:v7 forStyle:v4];
 
   return v9;
 }
 
-+ (id)_passcodeLockViewForStyle:(int)a3 withLightStyle:(BOOL)a4 dimmed:(BOOL)a5
++ (id)_passcodeLockViewForStyle:(int)style withLightStyle:(BOOL)lightStyle dimmed:(BOOL)dimmed
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = *&a3;
-  switch(a3)
+  dimmedCopy = dimmed;
+  lightStyleCopy = lightStyle;
+  v7 = *&style;
+  switch(style)
   {
     case 2:
-      v13 = [[SBUIPasscodeLockViewLongNumericKeypad alloc] initWithLightStyle:a4 providesDimming:a5];
+      v13 = [[SBUIPasscodeLockViewLongNumericKeypad alloc] initWithLightStyle:lightStyle providesDimming:dimmed];
       break;
     case 1:
       v9 = [SBUIPasscodeLockViewSimpleFixedDigitKeypad alloc];
-      v10 = v6;
-      v11 = v5;
+      v10 = lightStyleCopy;
+      v11 = dimmedCopy;
       v12 = 6;
       goto LABEL_6;
     case 0:
       v9 = [SBUIPasscodeLockViewSimpleFixedDigitKeypad alloc];
-      v10 = v6;
-      v11 = v5;
+      v10 = lightStyleCopy;
+      v11 = dimmedCopy;
       v12 = 4;
 LABEL_6:
       v13 = [(SBUIPasscodeLockViewSimpleFixedDigitKeypad *)v9 initWithLightStyle:v10 providesDimming:v11 numberOfDigits:v12];
       break;
     default:
-      v13 = [[SBUIPasscodeLockViewWithKeyboard alloc] initWithLightStyle:a4];
+      v13 = [[SBUIPasscodeLockViewWithKeyboard alloc] initWithLightStyle:lightStyle];
       break;
   }
 
   v14 = v13;
-  [a1 _commonInitPasscodeView:v13 forStyle:v7];
+  [self _commonInitPasscodeView:v13 forStyle:v7];
 
   return v14;
 }
 
-+ (void)_commonInitPasscodeView:(id)a3 forStyle:(int)a4
++ (void)_commonInitPasscodeView:(id)view forStyle:(int)style
 {
-  v4 = *&a4;
-  v6 = a3;
-  [v6 setStyle:v4];
-  v7 = [a1 _defaultPasscodeBiometricResource];
-  [v6 setBiometricResource:v7];
+  v4 = *&style;
+  viewCopy = view;
+  [viewCopy setStyle:v4];
+  _defaultPasscodeBiometricResource = [self _defaultPasscodeBiometricResource];
+  [viewCopy setBiometricResource:_defaultPasscodeBiometricResource];
 }
 
-+ (void)setPasscodeBiometricResource:(id)a3
++ (void)setPasscodeBiometricResource:(id)resource
 {
-  v4 = a3;
-  if (_passcodeBiometricResource != v4)
+  resourceCopy = resource;
+  if (_passcodeBiometricResource != resourceCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&_passcodeBiometricResource, a3);
-    v4 = v5;
+    v5 = resourceCopy;
+    objc_storeStrong(&_passcodeBiometricResource, resource);
+    resourceCopy = v5;
   }
 }
 

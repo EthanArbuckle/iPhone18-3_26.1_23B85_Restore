@@ -10,16 +10,16 @@
   v16.super_class = _UINoDefinitionViewController;
   [(UIViewController *)&v16 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = [_UIContentUnavailableView alloc];
   v6 = _UINSLocalizedStringWithDefaultValue(@"No definition found.", @"No definition found.");
   v7 = [(_UIContentUnavailableView *)v5 initWithFrame:v6 title:0 style:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   [(UIView *)v7 setAutoresizingMask:18];
-  v8 = [(UIViewController *)self view];
-  [v8 bounds];
+  view2 = [(UIViewController *)self view];
+  [view2 bounds];
   [(UIView *)v7 setFrame:?];
 
   objc_initWeak(&location, self);

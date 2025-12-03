@@ -1,5 +1,5 @@
 @interface AVSampleBufferRequest
-+ (AVSampleBufferRequest)sampleBufferRequestWithStartCursor:(id)a3;
++ (AVSampleBufferRequest)sampleBufferRequestWithStartCursor:(id)cursor;
 - (AVSampleBufferRequest)initWithStartCursor:(AVSampleCursor *)startCursor;
 - (void)dealloc;
 - (void)setLimitCursor:(AVSampleCursor *)limitCursor;
@@ -8,9 +8,9 @@
 
 @implementation AVSampleBufferRequest
 
-+ (AVSampleBufferRequest)sampleBufferRequestWithStartCursor:(id)a3
++ (AVSampleBufferRequest)sampleBufferRequestWithStartCursor:(id)cursor
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithStartCursor:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithStartCursor:cursor];
 
   return v3;
 }

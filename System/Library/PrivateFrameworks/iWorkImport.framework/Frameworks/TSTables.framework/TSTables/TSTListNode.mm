@@ -1,34 +1,34 @@
 @interface TSTListNode
-- (BOOL)isEqualToExpressionNode:(id)a3;
-- (TSTCSENodeData)recordHashesForSubexpressions:(id)a3;
-- (TSTListNode)initWithContext:(id)a3 children:(id)a4 firstIndex:(unint64_t)a5 lastIndex:(unint64_t)a6;
+- (BOOL)isEqualToExpressionNode:(id)node;
+- (TSTCSENodeData)recordHashesForSubexpressions:(id)subexpressions;
+- (TSTListNode)initWithContext:(id)context children:(id)children firstIndex:(unint64_t)index lastIndex:(unint64_t)lastIndex;
 - (id)description;
-- (id)initAsCopyOf:(id)a3 intoContext:(id)a4 children:(id)a5;
-- (id)mostSpecificNodeContainingIndex:(unint64_t)a3 correspondingIndex:(unint64_t)a4;
+- (id)initAsCopyOf:(id)of intoContext:(id)context children:(id)children;
+- (id)mostSpecificNodeContainingIndex:(unint64_t)index correspondingIndex:(unint64_t)correspondingIndex;
 - (id)string;
-- (void)buildASTNodeArray:(TSCEASTNodeArray *)a3 hostCell:(TSUCellCoord)a4 symbolTable:(void *)a5;
-- (void)insertFormulaText:(id)a3 printingOptions:(unsigned int)a4;
-- (void)insertFormulaTextNonRecursive:(id)a3 phase:(unint64_t)a4 deferredWorkStack:(id)a5;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)buildASTNodeArray:(TSCEASTNodeArray *)array hostCell:(TSUCellCoord)cell symbolTable:(void *)table;
+- (void)insertFormulaText:(id)text printingOptions:(unsigned int)options;
+- (void)insertFormulaTextNonRecursive:(id)recursive phase:(unint64_t)phase deferredWorkStack:(id)stack;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTListNode
 
-- (TSTListNode)initWithContext:(id)a3 children:(id)a4 firstIndex:(unint64_t)a5 lastIndex:(unint64_t)a6
+- (TSTListNode)initWithContext:(id)context children:(id)children firstIndex:(unint64_t)index lastIndex:(unint64_t)lastIndex
 {
   v7.receiver = self;
   v7.super_class = TSTListNode;
-  return [(TSTExpressionNode *)&v7 initWithContext:a3 children:a4 firstIndex:a5 lastIndex:a6];
+  return [(TSTExpressionNode *)&v7 initWithContext:context children:children firstIndex:index lastIndex:lastIndex];
 }
 
-- (id)initAsCopyOf:(id)a3 intoContext:(id)a4 children:(id)a5
+- (id)initAsCopyOf:(id)of intoContext:(id)context children:(id)children
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  ofCopy = of;
+  contextCopy = context;
+  childrenCopy = children;
   objc_opt_class();
   v14 = TSUDynamicCast();
   if (!v14)
@@ -37,9 +37,9 @@
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSTListNode initAsCopyOf:intoContext:children:]", v12, v13);
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTListNode.mm", v18, v19);
     v22 = @"nil";
-    if (v8)
+    if (ofCopy)
     {
-      v22 = v8;
+      v22 = ofCopy;
     }
 
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v20, v16, v21, 61, 0, "Unexpected object in initAsCopyOf:... expected TSTListNode, got %@", v22);
@@ -49,7 +49,7 @@
 
   v30.receiver = self;
   v30.super_class = TSTListNode;
-  v27 = [(TSTExpressionNode *)&v30 initAsCopyOf:v8 intoContext:v9 children:v10];
+  v27 = [(TSTExpressionNode *)&v30 initAsCopyOf:ofCopy intoContext:contextCopy children:childrenCopy];
   v28 = v27;
   if (v27)
   {
@@ -70,35 +70,35 @@
   return v9;
 }
 
-- (id)mostSpecificNodeContainingIndex:(unint64_t)a3 correspondingIndex:(unint64_t)a4
+- (id)mostSpecificNodeContainingIndex:(unint64_t)index correspondingIndex:(unint64_t)correspondingIndex
 {
-  if (objc_msgSend_subtreeContainsIndex_(self, a2, a3, a4, v4))
+  if (objc_msgSend_subtreeContainsIndex_(self, a2, index, correspondingIndex, v4))
   {
-    if (objc_msgSend_subtreeContainsIndex_(self, v8, a3, v9, v10) && !objc_msgSend_subtreeContainsIndex_(self, v11, a4, v12, v13) || objc_msgSend_subtreeContainsIndex_(self, v11, a3, v12, v13) && (objc_msgSend_firstIndex(self, v14, v15, v16, v17) == a4 || objc_msgSend_lastIndex(self, v18, v19, v20, v21) == a4))
+    if (objc_msgSend_subtreeContainsIndex_(self, v8, index, v9, v10) && !objc_msgSend_subtreeContainsIndex_(self, v11, correspondingIndex, v12, v13) || objc_msgSend_subtreeContainsIndex_(self, v11, index, v12, v13) && (objc_msgSend_firstIndex(self, v14, v15, v16, v17) == correspondingIndex || objc_msgSend_lastIndex(self, v18, v19, v20, v21) == correspondingIndex))
     {
-      v22 = self;
+      selfCopy = self;
     }
 
     else
     {
       v24.receiver = self;
       v24.super_class = TSTListNode;
-      v22 = [(TSTExpressionNode *)&v24 mostSpecificNodeContainingIndex:a3 correspondingIndex:a4];
+      selfCopy = [(TSTExpressionNode *)&v24 mostSpecificNodeContainingIndex:index correspondingIndex:correspondingIndex];
     }
   }
 
   else
   {
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (TSTCSENodeData)recordHashesForSubexpressions:(id)a3
+- (TSTCSENodeData)recordHashesForSubexpressions:(id)subexpressions
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subexpressionsCopy = subexpressions;
   v9 = objc_msgSend_children(self, v5, v6, v7, v8);
   v14 = objc_msgSend_count(v9, v10, v11, v12, v13);
 
@@ -106,7 +106,7 @@
   {
     v19 = objc_msgSend_children(self, v15, v16, v17, v18);
     v24 = objc_msgSend_firstObject(v19, v20, v21, v22, v23);
-    v28 = objc_msgSend_recordHashesForSubexpressions_(v24, v25, v4, v26, v27);
+    v28 = objc_msgSend_recordHashesForSubexpressions_(v24, v25, subexpressionsCopy, v26, v27);
     v30 = v29;
   }
 
@@ -133,7 +133,7 @@
             objc_enumerationMutation(v31);
           }
 
-          v28 ^= objc_msgSend_recordHashesForSubexpressions_(*(*(&v43 + 1) + 8 * v39), v33, v4, v34, v35);
+          v28 ^= objc_msgSend_recordHashesForSubexpressions_(*(*(&v43 + 1) + 8 * v39), v33, subexpressionsCopy, v34, v35);
           v37 += v33;
           ++v39;
         }
@@ -152,7 +152,7 @@
       v28 = 251658240;
     }
 
-    objc_msgSend_recordExpression_data_(v4, v40, self, v28, v30);
+    objc_msgSend_recordExpression_data_(subexpressionsCopy, v40, self, v28, v30);
   }
 
   v41 = v28;
@@ -162,9 +162,9 @@
   return result;
 }
 
-- (BOOL)isEqualToExpressionNode:(id)a3
+- (BOOL)isEqualToExpressionNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v9 = objc_msgSend_children(self, v5, v6, v7, v8);
   v14 = objc_msgSend_count(v9, v10, v11, v12, v13);
 
@@ -172,14 +172,14 @@
   {
     v19 = objc_msgSend_children(self, v15, v16, v17, v18);
     v24 = objc_msgSend_firstObject(v19, v20, v21, v22, v23);
-    isEqualToExpressionNode = objc_msgSend_isEqualToExpressionNode_(v24, v25, v4, v26, v27);
+    isEqualToExpressionNode = objc_msgSend_isEqualToExpressionNode_(v24, v25, nodeCopy, v26, v27);
   }
 
   else
   {
     v30.receiver = self;
     v30.super_class = TSTListNode;
-    isEqualToExpressionNode = [(TSTExpressionNode *)&v30 isEqualToExpressionNode:v4];
+    isEqualToExpressionNode = [(TSTExpressionNode *)&v30 isEqualToExpressionNode:nodeCopy];
   }
 
   return isEqualToExpressionNode;
@@ -196,11 +196,11 @@
   return 0;
 }
 
-- (void)insertFormulaText:(id)a3 printingOptions:(unsigned int)a4
+- (void)insertFormulaText:(id)text printingOptions:(unsigned int)options
 {
-  v4 = *&a4;
+  v4 = *&options;
   v95 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  textCopy = text;
   if (v4)
   {
     v10 = objc_msgSend_whitespaceBefore(self, v5, v6, v7, v8);
@@ -208,24 +208,24 @@
     if (v10)
     {
       v13 = objc_msgSend_whitespaceBefore(self, v5, v11, v12, v8);
-      objc_msgSend_takeText_(v9, v14, v13, v15, v16);
+      objc_msgSend_takeText_(textCopy, v14, v13, v15, v16);
     }
   }
 
   v89 = *MEMORY[0x277D81448];
-  objc_msgSend_takeText_withLanguage_(v9, v5, @"("), *MEMORY[0x277D81448], v8;
+  objc_msgSend_takeText_withLanguage_(textCopy, v5, @"("), *MEMORY[0x277D81448], v8;
   if (v4)
   {
     whitespaceAfterLeftParen = self->_whitespaceAfterLeftParen;
     if (whitespaceAfterLeftParen)
     {
-      objc_msgSend_takeText_(v9, v17, whitespaceAfterLeftParen, v19, v20);
+      objc_msgSend_takeText_(textCopy, v17, whitespaceAfterLeftParen, v19, v20);
     }
   }
 
   v86 = objc_msgSend_children(self, v17, whitespaceAfterLeftParen, v19, v20);
   v25 = objc_msgSend_firstObject(v86, v21, v22, v23, v24);
-  objc_msgSend_insertFormulaText_printingOptions_(v25, v26, v9, v4, v27);
+  objc_msgSend_insertFormulaText_printingOptions_(v25, v26, textCopy, v4, v27);
   v32 = objc_msgSend_count(v86, v28, v29, v30, v31);
   v37 = objc_msgSend_count(self->_whitespaceAfterDelimiters, v33, v34, v35, v36);
   if (v32 >= 2)
@@ -257,14 +257,14 @@
           v61 = *(*(&v90 + 1) + 8 * i);
 
           v25 = v61;
-          objc_msgSend_takeText_withLanguage_(v9, v62, v53, v89, v63);
+          objc_msgSend_takeText_withLanguage_(textCopy, v62, v53, v89, v63);
           if ((v4 & 1) != 0 && v58 < v42)
           {
             v67 = objc_msgSend_objectAtIndex_(self->_whitespaceAfterDelimiters, v64, v58, v65, v66);
-            objc_msgSend_takeText_(v9, v68, v67, v69, v70);
+            objc_msgSend_takeText_(textCopy, v68, v67, v69, v70);
           }
 
-          objc_msgSend_insertFormulaText_printingOptions_(v25, v64, v9, v4, v66);
+          objc_msgSend_insertFormulaText_printingOptions_(v25, v64, textCopy, v4, v66);
           ++v58;
         }
 
@@ -277,7 +277,7 @@
     v25 = 0;
   }
 
-  objc_msgSend_takeText_withLanguage_(v9, v38, @""), v89, v41);
+  objc_msgSend_takeText_withLanguage_(textCopy, v38, @""), v89, v41);
   if (v4)
   {
     v76 = objc_msgSend_whitespaceAfter(self, v72, v73, v74, v75);
@@ -286,18 +286,18 @@
     if (!v77)
     {
       v82 = objc_msgSend_whitespaceAfter(self, v78, v79, v80, v81);
-      objc_msgSend_takeText_(v9, v83, v82, v84, v85);
+      objc_msgSend_takeText_(textCopy, v83, v82, v84, v85);
     }
   }
 }
 
-- (void)insertFormulaTextNonRecursive:(id)a3 phase:(unint64_t)a4 deferredWorkStack:(id)a5
+- (void)insertFormulaTextNonRecursive:(id)recursive phase:(unint64_t)phase deferredWorkStack:(id)stack
 {
-  v8 = a3;
-  v9 = a5;
-  v14 = objc_msgSend_printingOptions(v9, v10, v11, v12, v13);
+  recursiveCopy = recursive;
+  stackCopy = stack;
+  v14 = objc_msgSend_printingOptions(stackCopy, v10, v11, v12, v13);
   v19 = v14;
-  if (!a4)
+  if (!phase)
   {
     if (v14)
     {
@@ -306,40 +306,40 @@
       if (v20)
       {
         v23 = objc_msgSend_whitespaceBefore(self, v15, v21, v22, v18);
-        objc_msgSend_takeText_(v8, v24, v23, v25, v26);
+        objc_msgSend_takeText_(recursiveCopy, v24, v23, v25, v26);
       }
     }
 
-    objc_msgSend_takeText_withLanguage_(v8, v15, @"("), *MEMORY[0x277D81448], v18;
+    objc_msgSend_takeText_withLanguage_(recursiveCopy, v15, @"("), *MEMORY[0x277D81448], v18;
     if (v19)
     {
       whitespaceAfterLeftParen = self->_whitespaceAfterLeftParen;
       if (whitespaceAfterLeftParen)
       {
-        objc_msgSend_takeText_(v8, v15, whitespaceAfterLeftParen, v17, v18);
+        objc_msgSend_takeText_(recursiveCopy, v15, whitespaceAfterLeftParen, v17, v18);
       }
     }
   }
 
   v27 = objc_msgSend_children(self, v15, whitespaceAfterLeftParen, v17, v18);
   v32 = v27;
-  if (!a4)
+  if (!phase)
   {
-    v96 = self;
+    selfCopy2 = self;
     v97 = 1;
-    objc_msgSend_push_(v9, v72, &v96, v73, v74);
+    objc_msgSend_push_(stackCopy, v72, &selfCopy2, v73, v74);
 
-    v96 = objc_msgSend_firstObject(v32, v75, v76, v77, v78);
+    selfCopy2 = objc_msgSend_firstObject(v32, v75, v76, v77, v78);
     v97 = 0;
-    v79 = v96;
-    objc_msgSend_push_(v9, v80, &v96, v81, v82);
+    v79 = selfCopy2;
+    objc_msgSend_push_(stackCopy, v80, &selfCopy2, v81, v82);
 
     goto LABEL_18;
   }
 
-  if (objc_msgSend_count(v27, v28, v29, v30, v31) <= a4)
+  if (objc_msgSend_count(v27, v28, v29, v30, v31) <= phase)
   {
-    objc_msgSend_takeText_withLanguage_(v8, v33, @""), *MEMORY[0x277D81448], v36);
+    objc_msgSend_takeText_withLanguage_(recursiveCopy, v33, @""), *MEMORY[0x277D81448], v36);
     if ((v19 & 1) == 0)
     {
       goto LABEL_19;
@@ -353,7 +353,7 @@
     }
 
     v79 = objc_msgSend_whitespaceAfter(self, v88, v89, v90, v91);
-    objc_msgSend_takeText_(v8, v92, v79, v93, v94);
+    objc_msgSend_takeText_(recursiveCopy, v92, v79, v93, v94);
 LABEL_18:
 
     goto LABEL_19;
@@ -364,29 +364,29 @@ LABEL_18:
   v47 = objc_msgSend_objectLocale(v42, v43, v44, v45, v46);
   v95 = objc_msgSend_listSeparator(v47, v48, v49, v50, v51);
 
-  v96 = self;
-  v97 = a4 + 1;
-  objc_msgSend_push_(v9, v52, &v96, v53, v54);
+  selfCopy2 = self;
+  v97 = phase + 1;
+  objc_msgSend_push_(stackCopy, v52, &selfCopy2, v53, v54);
 
-  v58 = objc_msgSend_objectAtIndex_(v32, v55, a4, v56, v57);
-  objc_msgSend_takeText_withLanguage_(v8, v59, v95, *MEMORY[0x277D81448], v60);
-  if ((v19 & 1) != 0 && a4 - 1 < v37)
+  v58 = objc_msgSend_objectAtIndex_(v32, v55, phase, v56, v57);
+  objc_msgSend_takeText_withLanguage_(recursiveCopy, v59, v95, *MEMORY[0x277D81448], v60);
+  if ((v19 & 1) != 0 && phase - 1 < v37)
   {
-    v64 = objc_msgSend_objectAtIndex_(self->_whitespaceAfterDelimiters, v61, a4 - 1, v62, v63);
-    objc_msgSend_takeText_(v8, v65, v64, v66, v67);
+    v64 = objc_msgSend_objectAtIndex_(self->_whitespaceAfterDelimiters, v61, phase - 1, v62, v63);
+    objc_msgSend_takeText_(recursiveCopy, v65, v64, v66, v67);
   }
 
   v68 = v58;
-  v96 = v68;
+  selfCopy2 = v68;
   v97 = 0;
-  objc_msgSend_push_(v9, v69, &v96, v70, v71);
+  objc_msgSend_push_(stackCopy, v69, &selfCopy2, v70, v71);
 
 LABEL_19:
 }
 
-- (void)buildASTNodeArray:(TSCEASTNodeArray *)a3 hostCell:(TSUCellCoord)a4 symbolTable:(void *)a5
+- (void)buildASTNodeArray:(TSCEASTNodeArray *)array hostCell:(TSUCellCoord)cell symbolTable:(void *)table
 {
-  v58 = objc_msgSend_children(self, a2, a3, *&a4, a5);
+  v58 = objc_msgSend_children(self, a2, array, *&cell, table);
   v13 = objc_msgSend_count(v58, v9, v10, v11, v12);
   v18 = v13;
   if (v13)
@@ -397,15 +397,15 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        TSCEASTListElement::appendListNode(a3, 0, v20, v21, v22);
+        TSCEASTListElement::appendListNode(array, 0, v20, v21, v22);
         goto LABEL_18;
       }
     }
 
     v23 = objc_msgSend_objectAtIndex_(v58, v14, 0, v16, v17);
-    objc_msgSend_buildASTNodeArray_hostCell_symbolTable_(v23, v24, a3, *&a4, a5);
+    objc_msgSend_buildASTNodeArray_hostCell_symbolTable_(v23, v24, array, *&cell, table);
 
-    TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, self->_whitespaceAfterLeftParen);
+    TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, self->_whitespaceAfterLeftParen);
     v29 = objc_msgSend_count(self->_whitespaceAfterDelimiters, v25, v26, v27, v28);
     if (v18 >= 2)
     {
@@ -413,7 +413,7 @@ LABEL_19:
       for (i = 1; i != v18; ++i)
       {
         v33 = objc_msgSend_objectAtIndex_(v58, v30, i, v16, v17);
-        objc_msgSend_buildASTNodeArray_hostCell_symbolTable_(v33, v34, a3, *&a4, a5);
+        objc_msgSend_buildASTNodeArray_hostCell_symbolTable_(v33, v34, array, *&cell, table);
 
         whitespaceAfterDelimiters = self->_whitespaceAfterDelimiters;
         if (whitespaceAfterDelimiters)
@@ -429,7 +429,7 @@ LABEL_19:
         if (v36)
         {
           v37 = objc_msgSend_objectAtIndex_(whitespaceAfterDelimiters, v30, i - 1, v16, v17);
-          TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v37);
+          TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v37);
         }
       }
 
@@ -446,38 +446,38 @@ LABEL_19:
     }
   }
 
-  TSCEASTListElement::appendListNode(a3, v18, v15, v16, v17);
+  TSCEASTListElement::appendListNode(array, v18, v15, v16, v17);
   v42 = objc_msgSend_whitespaceBefore(self, v38, v39, v40, v41);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v42);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v42);
 
   v19 = objc_msgSend_whitespaceAfter(self, v43, v44, v45, v46);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v19);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v19);
 LABEL_18:
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[210], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[210], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v9 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v4, sub_2212CE944, off_2812E4498[210], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2212CE944, off_2812E4498[210], v5);
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v9, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy, v8);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v4 = *(a3 + 3);
+    v4 = *(archive + 3);
   }
 
   else
@@ -487,29 +487,29 @@ LABEL_18:
 
   v5.receiver = self;
   v5.super_class = TSTListNode;
-  [(TSTExpressionNode *)&v5 loadFromArchive:v4 unarchiver:a4];
+  [(TSTExpressionNode *)&v5 loadFromArchive:v4 unarchiver:unarchiver];
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TST::ExpressionNodeArchive>(v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v9.receiver = self;
   v9.super_class = TSTListNode;
-  [(TSTExpressionNode *)&v9 saveToArchive:v7 archiver:v6];
+  [(TSTExpressionNode *)&v9 saveToArchive:v7 archiver:archiverCopy];
 }
 
 @end

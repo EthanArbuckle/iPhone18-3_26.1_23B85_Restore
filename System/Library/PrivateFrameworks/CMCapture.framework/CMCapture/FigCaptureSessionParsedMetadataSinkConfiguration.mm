@@ -1,6 +1,6 @@
 @interface FigCaptureSessionParsedMetadataSinkConfiguration
 - (void)dealloc;
-- (void)initWithMetadataObjectConnectionConfiguration:(uint64_t)a1 sceneClassifierConnectionConfiguration:videoDataConnectionConfiguration:videoPreviewSinkConnectionConfiguration:movieFileVideoConnectionConfiguration:movieFileDetectedObjectMetadataConnectionConfigurations:;
+- (void)initWithMetadataObjectConnectionConfiguration:(uint64_t)configuration sceneClassifierConnectionConfiguration:videoDataConnectionConfiguration:videoPreviewSinkConnectionConfiguration:movieFileVideoConnectionConfiguration:movieFileDetectedObjectMetadataConnectionConfigurations:;
 @end
 
 @implementation FigCaptureSessionParsedMetadataSinkConfiguration
@@ -12,9 +12,9 @@
   [(FigCaptureSessionParsedMetadataSinkConfiguration *)&v3 dealloc];
 }
 
-- (void)initWithMetadataObjectConnectionConfiguration:(uint64_t)a1 sceneClassifierConnectionConfiguration:videoDataConnectionConfiguration:videoPreviewSinkConnectionConfiguration:movieFileVideoConnectionConfiguration:movieFileDetectedObjectMetadataConnectionConfigurations:
+- (void)initWithMetadataObjectConnectionConfiguration:(uint64_t)configuration sceneClassifierConnectionConfiguration:videoDataConnectionConfiguration:videoPreviewSinkConnectionConfiguration:movieFileVideoConnectionConfiguration:movieFileDetectedObjectMetadataConnectionConfigurations:
 {
-  if (!a1)
+  if (!configuration)
   {
     return 0;
   }

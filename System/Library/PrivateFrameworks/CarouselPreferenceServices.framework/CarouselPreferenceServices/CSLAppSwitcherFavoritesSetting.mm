@@ -3,10 +3,10 @@
 - (CSLAppSwitcherFavoritesSettingDelegate)delegate;
 - (NSArray)favorites;
 - (unint64_t)maximumFavorites;
-- (void)_withLock:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMaximumFavorites:(unint64_t)a3;
-- (void)twoWaySyncSettingDidUpdate:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)setDelegate:(id)delegate;
+- (void)setMaximumFavorites:(unint64_t)favorites;
+- (void)twoWaySyncSettingDidUpdate:(id)update;
 @end
 
 @implementation CSLAppSwitcherFavoritesSetting
@@ -18,18 +18,18 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
-  v5 = [(CSLAppSwitcherFavoritesSetting *)self favorites];
-  [v4 appSwitcherFavoritesDidUpdate:v5];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  favorites = [(CSLAppSwitcherFavoritesSetting *)self favorites];
+  [delegateCopy appSwitcherFavoritesDidUpdate:favorites];
 }
 
-- (void)setMaximumFavorites:(unint64_t)a3
+- (void)setMaximumFavorites:(unint64_t)favorites
 {
   maximumFavoritesSetting = self->_maximumFavoritesSetting;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:favorites];
   [(CSLPRFTwoWaySyncSetting *)maximumFavoritesSetting setValue:v4];
 }
 
@@ -98,20 +98,20 @@ void __43__CSLAppSwitcherFavoritesSetting_favorites__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)twoWaySyncSettingDidUpdate:(id)a3
+- (void)twoWaySyncSettingDidUpdate:(id)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(CSLAppSwitcherFavoritesSetting *)self favorites];
-  [WeakRetained appSwitcherFavoritesDidUpdate:v4];
+  favorites = [(CSLAppSwitcherFavoritesSetting *)self favorites];
+  [WeakRetained appSwitcherFavoritesDidUpdate:favorites];
 }
 
 - (CSLAppSwitcherFavoritesSetting)init

@@ -1,30 +1,30 @@
 @interface _UIStatisticsDistribution
-- (BOOL)isTimingForObject:(id)a3;
-- (void)recordTimingForObject:(id)a3;
-- (void)startTimingForObject:(id)a3;
+- (BOOL)isTimingForObject:(id)object;
+- (void)recordTimingForObject:(id)object;
+- (void)startTimingForObject:(id)object;
 @end
 
 @implementation _UIStatisticsDistribution
 
-- (BOOL)isTimingForObject:(id)a3
+- (BOOL)isTimingForObject:(id)object
 {
-  v3 = objc_getAssociatedObject(a3, self);
+  v3 = objc_getAssociatedObject(object, self);
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)startTimingForObject:(id)a3
+- (void)startTimingForObject:(id)object
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  objectCopy = object;
   v6 = [v4 numberWithUnsignedLongLong:{+[_UIStatistics currentTime](_UIStatistics, "currentTime")}];
-  objc_setAssociatedObject(v5, self, v6, 0x303);
+  objc_setAssociatedObject(objectCopy, self, v6, 0x303);
 }
 
-- (void)recordTimingForObject:(id)a3
+- (void)recordTimingForObject:(id)object
 {
-  object = a3;
+  object = object;
   v4 = objc_getAssociatedObject(object, self);
   v5 = v4;
   if (v4)

@@ -78,8 +78,8 @@ LABEL_11:
 
 + (id)_mapkit_formattedStringForCoordinate:()MKAdditions
 {
-  v4 = _CreateCoordinateComponentString(0, a1, a2);
-  v5 = _CreateCoordinateComponentString(1, a1, a2);
+  v4 = _CreateCoordinateComponentString(0, self, a2);
+  v5 = _CreateCoordinateComponentString(1, self, a2);
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = _MKLocalizedStringFromThisBundle(@"%@, %@");
   v8 = [v6 initWithFormat:v7, v4, v5, 0];

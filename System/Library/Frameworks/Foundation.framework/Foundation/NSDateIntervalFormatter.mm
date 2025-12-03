@@ -1,7 +1,7 @@
 @interface NSDateIntervalFormatter
 - (NSCalendar)calendar;
 - (NSDateIntervalFormatter)init;
-- (NSDateIntervalFormatter)initWithCoder:(id)a3;
+- (NSDateIntervalFormatter)initWithCoder:(id)coder;
 - (NSDateIntervalFormatterStyle)dateStyle;
 - (NSDateIntervalFormatterStyle)timeStyle;
 - (NSLocale)locale;
@@ -9,13 +9,13 @@
 - (NSString)stringFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 - (NSString)stringFromDateInterval:(NSDateInterval *)dateInterval;
 - (NSTimeZone)timeZone;
-- (id)_stringFromDate:(id)a3 toDate:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
+- (id)_stringFromDate:(id)date toDate:(id)toDate;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
 - (unint64_t)boundaryStyle;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBoundaryStyle:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBoundaryStyle:(unint64_t)style;
 - (void)setCalendar:(NSCalendar *)calendar;
 - (void)setDateStyle:(NSDateIntervalFormatterStyle)dateStyle;
 - (void)setDateTemplate:(NSString *)dateTemplate;
@@ -271,15 +271,15 @@
   return boundaryStyle;
 }
 
-- (void)setBoundaryStyle:(unint64_t)a3
+- (void)setBoundaryStyle:(unint64_t)style
 {
-  if (a3 >= 3)
+  if (style >= 3)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSDateIntervalFormatter.m" description:321, @"Invalid parameter not satisfying: %@", @"boundaryStyle == NSDateIntervalFormatterBoundaryStyleDefault || boundaryStyle == NSDateIntervalFormatterBoundaryStyleMinimizeAdjacentMonths || boundaryStyle == NSDateIntervalFormatterBoundaryStyleMinimizeAdjacentDays"];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  self->_boundaryStyle = a3;
+  self->_boundaryStyle = style;
   self->_modified = 1;
 
   os_unfair_lock_unlock(&self->_lock);
@@ -320,20 +320,20 @@ LABEL_3:
   return [(NSDateIntervalFormatter *)self stringForObjectValue:dateInterval];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!value || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [a3 startDate];
-  v6 = [a3 endDate];
+  startDate = [value startDate];
+  endDate = [value endDate];
 
-  return [(NSDateIntervalFormatter *)self _stringFromDate:v5 toDate:v6];
+  return [(NSDateIntervalFormatter *)self _stringFromDate:startDate toDate:endDate];
 }
 
-- (id)_stringFromDate:(id)a3 toDate:(id)a4
+- (id)_stringFromDate:(id)date toDate:(id)toDate
 {
   v37 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -359,8 +359,8 @@ LABEL_3:
       calendar = [(NSLocale *)locale objectForKey:*MEMORY[0x1E695D958]];
     }
 
-    v10 = [(NSLocale *)locale _identifierCapturingPreferences];
-    v11 = [objc_msgSend(MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:{v10), "mutableCopy"}];
+    _identifierCapturingPreferences = [(NSLocale *)locale _identifierCapturingPreferences];
+    v11 = [objc_msgSend(MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:{_identifierCapturingPreferences), "mutableCopy"}];
     [v11 setObject:calendar forKey:v9];
     v12 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v11];
 
@@ -375,8 +375,8 @@ LABEL_3:
       timeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
     }
 
-    v14 = [(NSTimeZone *)timeZone name];
-    [(NSString *)v14 getCharacters:v23];
+    name = [(NSTimeZone *)timeZone name];
+    [(NSString *)name getCharacters:v23];
     v15 = 7;
     if (self->_useTemplate)
     {
@@ -388,7 +388,7 @@ LABEL_3:
     memset(v33, 0, sizeof(v33));
     [v16 getCharacters:v33];
     [v16 length];
-    [(NSString *)v14 length];
+    [(NSString *)name length];
     self->_formatter = udtitvfmt_open();
     if (!self->_formatter)
     {
@@ -401,7 +401,7 @@ LABEL_3:
         v27 = 2112;
         v28 = v16;
         v29 = 2112;
-        v30 = v14;
+        v30 = name;
         v31 = 2080;
         v32 = v22;
         _os_log_error_impl(&dword_18075C000, v17, OS_LOG_TYPE_ERROR, "udtitvfmt_open failed!  Formatter is NULL! -- locale: %s, template: %@, timezone: %@, status: %s", buf, 0x2Au);
@@ -416,8 +416,8 @@ LABEL_3:
 
   if (self->_formatter)
   {
-    [a3 timeIntervalSince1970];
-    [a4 timeIntervalSince1970];
+    [date timeIntervalSince1970];
+    [toDate timeIntervalSince1970];
     bzero(v23, 0x7D0uLL);
     v33[0] = 0;
     v18 = udtitvfmt_format();
@@ -444,15 +444,15 @@ LABEL_3:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(NSLocale *)self->_locale copyWithZone:a3];
-  *(v5 + 16) = [(NSCalendar *)self->_calendar copyWithZone:a3];
-  *(v5 + 24) = [(NSTimeZone *)self->_timeZone copyWithZone:a3];
-  *(v5 + 32) = [(NSString *)self->_dateTemplate copyWithZone:a3];
-  *(v5 + 40) = [(NSString *)self->_dateTemplateFromStyles copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(NSLocale *)self->_locale copyWithZone:zone];
+  *(v5 + 16) = [(NSCalendar *)self->_calendar copyWithZone:zone];
+  *(v5 + 24) = [(NSTimeZone *)self->_timeZone copyWithZone:zone];
+  *(v5 + 32) = [(NSString *)self->_dateTemplate copyWithZone:zone];
+  *(v5 + 40) = [(NSString *)self->_dateTemplateFromStyles copyWithZone:zone];
   *(v5 + 56) = self->_dateStyle;
   *(v5 + 64) = self->_timeStyle;
   *(v5 + 84) = self->_modified;
@@ -461,10 +461,10 @@ LABEL_3:
   return v5;
 }
 
-- (NSDateIntervalFormatter)initWithCoder:(id)a3
+- (NSDateIntervalFormatter)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateIntervalFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -472,69 +472,69 @@ LABEL_3:
 
   v8.receiver = self;
   v8.super_class = NSDateIntervalFormatter;
-  v5 = [(NSFormatter *)&v8 initWithCoder:a3];
+  v5 = [(NSFormatter *)&v8 initWithCoder:coder];
   v6 = v5;
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v5->_dateStyle = [a3 decodeInt64ForKey:@"NS.dateStyle"];
-    v6->_timeStyle = [a3 decodeInt64ForKey:@"NS.timeStyle"];
-    v6->_dateTemplate = [a3 decodeObjectForKey:@"NS.dateTemplate"];
-    v6->_dateTemplateFromStyles = [a3 decodeObjectForKey:@"NS.dateTemplateFromStyles"];
-    v6->_modified = [a3 decodeBoolForKey:@"NS.modified"];
-    v6->_useTemplate = [a3 decodeBoolForKey:@"NS.useTemplate"];
+    v5->_dateStyle = [coder decodeInt64ForKey:@"NS.dateStyle"];
+    v6->_timeStyle = [coder decodeInt64ForKey:@"NS.timeStyle"];
+    v6->_dateTemplate = [coder decodeObjectForKey:@"NS.dateTemplate"];
+    v6->_dateTemplateFromStyles = [coder decodeObjectForKey:@"NS.dateTemplateFromStyles"];
+    v6->_modified = [coder decodeBoolForKey:@"NS.modified"];
+    v6->_useTemplate = [coder decodeBoolForKey:@"NS.useTemplate"];
     v6->_locale = 0;
     v6->_calendar = 0;
     v6->_timeZone = 0;
-    if ([a3 containsValueForKey:@"NS.locale"])
+    if ([coder containsValueForKey:@"NS.locale"])
     {
-      v6->_locale = [a3 decodeObjectForKey:@"NS.locale"];
+      v6->_locale = [coder decodeObjectForKey:@"NS.locale"];
     }
 
-    if ([a3 containsValueForKey:@"NS.calendar"])
+    if ([coder containsValueForKey:@"NS.calendar"])
     {
-      v6->_calendar = [a3 decodeObjectForKey:@"NS.calendar"];
+      v6->_calendar = [coder decodeObjectForKey:@"NS.calendar"];
     }
 
-    if ([a3 containsValueForKey:@"NS.timeZone"])
+    if ([coder containsValueForKey:@"NS.timeZone"])
     {
-      v6->_timeZone = [a3 decodeObjectForKey:@"NS.timeZone"];
+      v6->_timeZone = [coder decodeObjectForKey:@"NS.timeZone"];
     }
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSDateIntervalFormatter cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [a3 encodeInt64:self->_dateStyle forKey:@"NS.dateStyle"];
-  [a3 encodeInt64:self->_timeStyle forKey:@"NS.timeStyle"];
-  [a3 encodeObject:self->_dateTemplate forKey:@"NS.dateTemplate"];
-  [a3 encodeObject:self->_dateTemplateFromStyles forKey:@"NS.dateTemplateFromStyles"];
-  [a3 encodeBool:self->_modified forKey:@"NS.modified"];
-  [a3 encodeBool:self->_useTemplate forKey:@"NS.useTemplate"];
+  [coder encodeInt64:self->_dateStyle forKey:@"NS.dateStyle"];
+  [coder encodeInt64:self->_timeStyle forKey:@"NS.timeStyle"];
+  [coder encodeObject:self->_dateTemplate forKey:@"NS.dateTemplate"];
+  [coder encodeObject:self->_dateTemplateFromStyles forKey:@"NS.dateTemplateFromStyles"];
+  [coder encodeBool:self->_modified forKey:@"NS.modified"];
+  [coder encodeBool:self->_useTemplate forKey:@"NS.useTemplate"];
   locale = self->_locale;
   if (locale)
   {
-    [a3 encodeObject:locale forKey:@"NS.locale"];
+    [coder encodeObject:locale forKey:@"NS.locale"];
   }
 
   calendar = self->_calendar;
   if (calendar)
   {
-    [a3 encodeObject:calendar forKey:@"NS.calendar"];
+    [coder encodeObject:calendar forKey:@"NS.calendar"];
   }
 
   timeZone = self->_timeZone;
   if (timeZone)
   {
-    [a3 encodeObject:timeZone forKey:@"NS.timeZone"];
+    [coder encodeObject:timeZone forKey:@"NS.timeZone"];
   }
 
   os_unfair_lock_unlock(&self->_lock);

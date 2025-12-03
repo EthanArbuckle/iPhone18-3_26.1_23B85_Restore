@@ -1,32 +1,32 @@
 @interface CNTestableObserver
-+ (id)observerWithScheduler:(id)a3;
-- (CNTestableObserver)initWithScheduler:(id)a3;
++ (id)observerWithScheduler:(id)scheduler;
+- (CNTestableObserver)initWithScheduler:(id)scheduler;
 - (NSArray)resultValues;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation CNTestableObserver
 
-+ (id)observerWithScheduler:(id)a3
++ (id)observerWithScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScheduler:v4];
+  schedulerCopy = scheduler;
+  v5 = [[self alloc] initWithScheduler:schedulerCopy];
 
   return v5;
 }
 
-- (CNTestableObserver)initWithScheduler:(id)a3
+- (CNTestableObserver)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v14.receiver = self;
   v14.super_class = CNTestableObserver;
   v6 = [(CNTestableObserver *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduler, a3);
+    objc_storeStrong(&v6->_scheduler, scheduler);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     results = v7->_results;
     v7->_results = v8;
@@ -43,20 +43,20 @@
 
 - (NSArray)resultValues
 {
-  v2 = [(CNTestableObserver *)self results];
-  v3 = [v2 _cn_filter:CNObservedResultIsResultFilter];
+  results = [(CNTestableObserver *)self results];
+  v3 = [results _cn_filter:CNObservedResultIsResultFilter];
   v4 = [v3 _cn_map:CNObservedResultValueTransform];
 
   return v4;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   enforcement = self->_enforcement;
-  v5 = a3;
-  [(CNObservableContractEnforcement *)enforcement observerDidReceiveResult:v5];
+  resultCopy = result;
+  [(CNObservableContractEnforcement *)enforcement observerDidReceiveResult:resultCopy];
   results = self->_results;
-  v7 = [CNObservedResult resultWithTime:[(CNVirtualScheduler *)self->_scheduler clock] value:v5];
+  v7 = [CNObservedResult resultWithTime:[(CNVirtualScheduler *)self->_scheduler clock] value:resultCopy];
 
   [(NSMutableArray *)results addObject:v7];
 }
@@ -69,13 +69,13 @@
   [(NSMutableArray *)results addObject:v4];
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   enforcement = self->_enforcement;
-  v5 = a3;
-  [(CNObservableContractEnforcement *)enforcement observerDidFailWithError:v5];
+  errorCopy = error;
+  [(CNObservableContractEnforcement *)enforcement observerDidFailWithError:errorCopy];
   results = self->_results;
-  v7 = [CNObservedResult failureWithError:v5 time:[(CNVirtualScheduler *)self->_scheduler clock]];
+  v7 = [CNObservedResult failureWithError:errorCopy time:[(CNVirtualScheduler *)self->_scheduler clock]];
 
   [(NSMutableArray *)results addObject:v7];
 }

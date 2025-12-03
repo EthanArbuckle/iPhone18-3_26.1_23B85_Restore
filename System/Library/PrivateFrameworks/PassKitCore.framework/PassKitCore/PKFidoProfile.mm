@@ -1,69 +1,69 @@
 @interface PKFidoProfile
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProfile:(id)a3;
-- (PKFidoProfile)initWithCoder:(id)a3;
-- (PKFidoProfile)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProfile:(id)profile;
+- (PKFidoProfile)initWithCoder:(id)coder;
+- (PKFidoProfile)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFidoProfile
 
-- (PKFidoProfile)initWithDictionary:(id)a3
+- (PKFidoProfile)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v14.receiver = self;
     v14.super_class = PKFidoProfile;
     v5 = [(PKFidoProfile *)&v14 init];
     if (v5)
     {
-      v6 = [v4 PKStringForKey:@"relyingPartyIdentifier"];
+      v6 = [dictionaryCopy PKStringForKey:@"relyingPartyIdentifier"];
       relyingPartyIdentifier = v5->_relyingPartyIdentifier;
       v5->_relyingPartyIdentifier = v6;
 
-      v8 = [v4 PKStringForKey:@"accountHash"];
+      v8 = [dictionaryCopy PKStringForKey:@"accountHash"];
       accountHash = v5->_accountHash;
       v5->_accountHash = v8;
 
-      v10 = [v4 PKStringForKey:@"keyHash"];
+      v10 = [dictionaryCopy PKStringForKey:@"keyHash"];
       keyHash = v5->_keyHash;
       v5->_keyHash = v10;
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PKFidoProfile)initWithCoder:(id)a3
+- (PKFidoProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKFidoProfile;
   v5 = [(PKFidoProfile *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
     relyingPartyIdentifier = v5->_relyingPartyIdentifier;
     v5->_relyingPartyIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountHash"];
     accountHash = v5->_accountHash;
     v5->_accountHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyHash"];
     keyHash = v5->_keyHash;
     v5->_keyHash = v10;
   }
@@ -71,13 +71,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v5 encodeObject:self->_accountHash forKey:@"accountHash"];
-  [v5 encodeObject:self->_keyHash forKey:@"keyHash"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_accountHash forKey:@"accountHash"];
+  [coderCopy encodeObject:self->_keyHash forKey:@"keyHash"];
 }
 
 - (id)description
@@ -91,27 +91,27 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFidoProfile *)self isEqualToProfile:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFidoProfile *)self isEqualToProfile:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToProfile:(id)a3
+- (BOOL)isEqualToProfile:(id)profile
 {
-  v4 = a3;
-  v5 = v4[1];
+  profileCopy = profile;
+  v5 = profileCopy[1];
   v6 = self->_relyingPartyIdentifier;
   v7 = v5;
   v8 = v7;
@@ -142,7 +142,7 @@
   if (v10)
   {
 LABEL_10:
-    v11 = v4[2];
+    v11 = profileCopy[2];
     v6 = self->_accountHash;
     v12 = v11;
     v8 = v12;
@@ -150,7 +150,7 @@ LABEL_10:
     {
 
 LABEL_16:
-      v13 = v4[3];
+      v13 = profileCopy[3];
       v6 = self->_keyHash;
       v14 = v13;
       v8 = v14;
@@ -194,27 +194,27 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_relyingPartyIdentifier];
-  [v3 safelyAddObject:self->_accountHash];
-  [v3 safelyAddObject:self->_keyHash];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_relyingPartyIdentifier];
+  [array safelyAddObject:self->_accountHash];
+  [array safelyAddObject:self->_keyHash];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFidoProfile allocWithZone:](PKFidoProfile init];
-  v6 = [(NSString *)self->_relyingPartyIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_relyingPartyIdentifier copyWithZone:zone];
   relyingPartyIdentifier = v5->_relyingPartyIdentifier;
   v5->_relyingPartyIdentifier = v6;
 
-  v8 = [(NSString *)self->_accountHash copyWithZone:a3];
+  v8 = [(NSString *)self->_accountHash copyWithZone:zone];
   accountHash = v5->_accountHash;
   v5->_accountHash = v8;
 
-  v10 = [(NSString *)self->_keyHash copyWithZone:a3];
+  v10 = [(NSString *)self->_keyHash copyWithZone:zone];
   keyHash = v5->_keyHash;
   v5->_keyHash = v10;
 

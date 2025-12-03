@@ -1,29 +1,29 @@
 @interface RTMapItemManager
-+ (id)createMapItemFromMapItem:(id)a3;
-- (RTMapItemManager)initWithLearnedLocationStore:(id)a3 MapServiceManager:(id)a4;
-- (id)getGeoMapItemIdentiferFromMuid:(unint64_t)a3 location:(id)a4;
-- (id)mapItemsFromLocalBluePOIResult:(id)a3 withConfidenceThreshold:(double)a4 error:(id *)a5;
-- (id)updateMapItemsFromMapItems:(id)a3 outError:(id *)a4;
-- (id)updateMapItemsFromMapItems:(id)a3 source:(unint64_t)a4 outError:(id *)a5;
-- (void)_fetchMapItemsWithGeoMapItemIdentifiers:(id)a3 source:(unint64_t)a4 handler:(id)a5;
-- (void)fetchMapItemsWithGeoMapItemIdentifiers:(id)a3 source:(unint64_t)a4 handler:(id)a5;
++ (id)createMapItemFromMapItem:(id)item;
+- (RTMapItemManager)initWithLearnedLocationStore:(id)store MapServiceManager:(id)manager;
+- (id)getGeoMapItemIdentiferFromMuid:(unint64_t)muid location:(id)location;
+- (id)mapItemsFromLocalBluePOIResult:(id)result withConfidenceThreshold:(double)threshold error:(id *)error;
+- (id)updateMapItemsFromMapItems:(id)items outError:(id *)error;
+- (id)updateMapItemsFromMapItems:(id)items source:(unint64_t)source outError:(id *)error;
+- (void)_fetchMapItemsWithGeoMapItemIdentifiers:(id)identifiers source:(unint64_t)source handler:(id)handler;
+- (void)fetchMapItemsWithGeoMapItemIdentifiers:(id)identifiers source:(unint64_t)source handler:(id)handler;
 @end
 
 @implementation RTMapItemManager
 
-- (RTMapItemManager)initWithLearnedLocationStore:(id)a3 MapServiceManager:(id)a4
+- (RTMapItemManager)initWithLearnedLocationStore:(id)store MapServiceManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  storeCopy = store;
+  managerCopy = manager;
+  v9 = managerCopy;
+  if (!storeCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -34,7 +34,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!managerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -53,68 +53,68 @@ LABEL_12:
   p_isa = &v10->super.super.super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_learnedLocationStore, a3);
-    objc_storeStrong(p_isa + 5, a4);
+    objc_storeStrong(&v10->_learnedLocationStore, store);
+    objc_storeStrong(p_isa + 5, manager);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)getGeoMapItemIdentiferFromMuid:(unint64_t)a3 location:(id)a4
+- (id)getGeoMapItemIdentiferFromMuid:(unint64_t)muid location:(id)location
 {
-  v5 = a4;
-  [v5 latitude];
+  locationCopy = location;
+  [locationCopy latitude];
   v7 = v6;
-  [v5 longitude];
+  [locationCopy longitude];
   v9 = v8;
 
-  v10 = [objc_alloc(MEMORY[0x277D0EBA8]) initWithMUID:a3 coordinate:{v7, v9}];
+  v10 = [objc_alloc(MEMORY[0x277D0EBA8]) initWithMUID:muid coordinate:{v7, v9}];
 
   return v10;
 }
 
-- (void)fetchMapItemsWithGeoMapItemIdentifiers:(id)a3 source:(unint64_t)a4 handler:(id)a5
+- (void)fetchMapItemsWithGeoMapItemIdentifiers:(id)identifiers source:(unint64_t)source handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__RTMapItemManager_fetchMapItemsWithGeoMapItemIdentifiers_source_handler___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = identifiersCopy;
+  v15 = handlerCopy;
+  sourceCopy = source;
+  v11 = handlerCopy;
+  v12 = identifiersCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_fetchMapItemsWithGeoMapItemIdentifiers:(id)a3 source:(unint64_t)a4 handler:(id)a5
+- (void)_fetchMapItemsWithGeoMapItemIdentifiers:(id)identifiers source:(unint64_t)source handler:(id)handler
 {
-  v9 = a5;
+  handlerCopy = handler;
   v10 = MEMORY[0x277D011B0];
-  v11 = a3;
+  identifiersCopy = identifiers;
   v12 = [v10 alloc];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   v15 = [v12 initWithUseBackgroundTraits:1 analyticsIdentifier:v14];
 
-  v16 = [(RTMapItemManager *)self mapServiceManager];
+  mapServiceManager = [(RTMapItemManager *)self mapServiceManager];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handler___block_invoke;
   v18[3] = &unk_2788C73D8;
   v20 = a2;
-  v21 = a4;
-  v19 = v9;
-  v17 = v9;
-  [v16 fetchMapItemsFromIdentifiers:v11 options:v15 source:a4 handler:v18];
+  sourceCopy = source;
+  v19 = handlerCopy;
+  v17 = handlerCopy;
+  [mapServiceManager fetchMapItemsFromIdentifiers:identifiersCopy options:v15 source:source handler:v18];
 }
 
 void __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -145,10 +145,10 @@ void __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handl
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)updateMapItemsFromMapItems:(id)a3 source:(unint64_t)a4 outError:(id *)a5
+- (id)updateMapItemsFromMapItems:(id)items source:(unint64_t)source outError:(id *)error
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   v48 = objc_opt_new();
   v52 = objc_opt_new();
   v51 = objc_opt_new();
@@ -156,7 +156,7 @@ void __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handl
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v6 = [obj countByEnumeratingWithState:&v65 objects:v76 count:16];
   if (v6)
   {
@@ -175,8 +175,8 @@ void __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handl
         {
           v10 = MEMORY[0x277CCAAC8];
           v11 = objc_opt_class();
-          v12 = [v9 geoMapItemIdentifier];
-          v13 = [v10 unarchivedObjectOfClass:v11 fromData:v12 error:0];
+          geoMapItemIdentifier = [v9 geoMapItemIdentifier];
+          v13 = [v10 unarchivedObjectOfClass:v11 fromData:geoMapItemIdentifier error:0];
 
           if (v13 || (v14 = [v9 muid], objc_msgSend(v9, "location"), v15 = objc_claimAutoreleasedReturnValue(), -[RTMapItemManager getGeoMapItemIdentiferFromMuid:location:](self, "getGeoMapItemIdentiferFromMuid:location:", v14, v15), v13 = objc_claimAutoreleasedReturnValue(), v15, v13))
           {
@@ -214,7 +214,7 @@ void __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handl
     v55 = v18;
     v19 = v17;
     v56 = v19;
-    [(RTMapItemManager *)self fetchMapItemsWithGeoMapItemIdentifiers:v51 source:a4 handler:v53];
+    [(RTMapItemManager *)self fetchMapItemsWithGeoMapItemIdentifiers:v51 source:source handler:v53];
     v20 = v19;
     v21 = [MEMORY[0x277CBEAA8] now];
     v22 = dispatch_time(0, 3600000000000);
@@ -225,11 +225,11 @@ void __75__RTMapItemManager__fetchMapItemsWithGeoMapItemIdentifiers_source_handl
       v25 = v24;
       v26 = objc_opt_new();
       v27 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_22];
-      v28 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v29 = [v28 filteredArrayUsingPredicate:v27];
-      v30 = [v29 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v29 = [callStackSymbols filteredArrayUsingPredicate:v27];
+      firstObject = [v29 firstObject];
 
-      [v26 submitToCoreAnalytics:v30 type:1 duration:v25];
+      [v26 submitToCoreAnalytics:firstObject type:1 duration:v25];
       v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
@@ -277,9 +277,9 @@ LABEL_23:
           }
         }
 
-        if (a5)
+        if (error)
         {
-          *a5 = v60[5];
+          *error = v60[5];
         }
 
         v37 = v18;
@@ -299,9 +299,9 @@ LABEL_23:
   }
 
   v37 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_32:
@@ -420,21 +420,21 @@ void __63__RTMapItemManager_updateMapItemsFromMapItems_source_outError___block_i
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (id)updateMapItemsFromMapItems:(id)a3 outError:(id *)a4
+- (id)updateMapItemsFromMapItems:(id)items outError:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v33 = a4;
+    errorCopy = error;
     v34 = objc_opt_new();
     v7 = objc_opt_new();
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v35 = v6;
-    v8 = v6;
+    v35 = itemsCopy;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v9)
     {
@@ -492,17 +492,17 @@ void __63__RTMapItemManager_updateMapItemsFromMapItems_source_outError___block_i
 
           v25 = *(*(&v37 + 1) + 8 * j);
           v26 = [v20 objectForKeyedSubscript:v25];
-          v27 = [v25 unsignedIntegerValue];
+          unsignedIntegerValue = [v25 unsignedIntegerValue];
           v36 = 0;
-          v28 = [(RTMapItemManager *)self updateMapItemsFromMapItems:v26 source:v27 outError:&v36];
+          v28 = [(RTMapItemManager *)self updateMapItemsFromMapItems:v26 source:unsignedIntegerValue outError:&v36];
           v29 = v36;
 
           if (v29)
           {
-            if (v33)
+            if (errorCopy)
             {
               v31 = v29;
-              *v33 = v29;
+              *errorCopy = v29;
             }
 
             v30 = MEMORY[0x277CBEBF8];
@@ -522,21 +522,21 @@ void __63__RTMapItemManager_updateMapItemsFromMapItems_source_outError___block_i
       }
     }
 
-    if (v33)
+    if (errorCopy)
     {
-      *v33 = 0;
+      *errorCopy = 0;
     }
 
     v30 = v34;
 LABEL_25:
-    v6 = v35;
+    itemsCopy = v35;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     v30 = MEMORY[0x277CBEBF8];
@@ -545,90 +545,90 @@ LABEL_25:
   return v30;
 }
 
-+ (id)createMapItemFromMapItem:(id)a3
++ (id)createMapItemFromMapItem:(id)item
 {
   v3 = MEMORY[0x277D01060];
-  v4 = a3;
+  itemCopy = item;
   v37 = [v3 alloc];
-  v65 = [MEMORY[0x277CCAD78] UUID];
-  v44 = [v4 address];
-  v63 = [v44 geoAddressData];
-  v43 = [v4 address];
-  v60 = [v43 subPremises];
-  v42 = [v4 address];
-  v58 = [v42 subThoroughfare];
-  v41 = [v4 address];
-  v56 = [v41 thoroughfare];
-  v40 = [v4 address];
-  v52 = [v40 subLocality];
-  v39 = [v4 address];
-  v54 = [v39 locality];
-  v36 = [v4 address];
-  v50 = [v36 subAdministrativeArea];
-  v35 = [v4 address];
-  v48 = [v35 administrativeArea];
-  v34 = [v4 address];
-  v47 = [v34 administrativeAreaCode];
-  v33 = [v4 address];
-  v46 = [v33 postalCode];
-  v32 = [v4 address];
-  v26 = [v32 country];
-  v31 = [v4 address];
-  v25 = [v31 countryCode];
-  v30 = [v4 address];
-  v45 = [v30 inlandWater];
-  v29 = [v4 address];
-  v5 = [v29 ocean];
-  v28 = [v4 address];
-  v23 = [v28 areasOfInterest];
-  v27 = [v4 address];
-  v21 = [v27 isIsland];
-  v24 = [v4 address];
-  v22 = [v24 creationDate];
-  v6 = [v4 address];
-  v7 = [v6 expirationDate];
-  v8 = [v4 address];
-  v9 = [v8 iso3166CountryCode];
-  v10 = [v4 address];
-  v11 = [v10 iso3166SubdivisionCode];
-  LOBYTE(v19) = v21;
-  v38 = [v37 initWithIdentifier:v65 geoAddressData:v63 subPremises:v60 subThoroughfare:v58 thoroughfare:v56 subLocality:v52 locality:v54 subAdministrativeArea:v50 administrativeArea:v48 administrativeAreaCode:v47 postalCode:v46 country:v26 countryCode:v25 inlandWater:v45 ocean:v5 areasOfInterest:v23 isIsland:v19 creationDate:v22 expirationDate:v7 iso3166CountryCode:v9 iso3166SubdivisionCode:v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  address = [itemCopy address];
+  geoAddressData = [address geoAddressData];
+  address2 = [itemCopy address];
+  subPremises = [address2 subPremises];
+  address3 = [itemCopy address];
+  subThoroughfare = [address3 subThoroughfare];
+  address4 = [itemCopy address];
+  thoroughfare = [address4 thoroughfare];
+  address5 = [itemCopy address];
+  subLocality = [address5 subLocality];
+  address6 = [itemCopy address];
+  locality = [address6 locality];
+  address7 = [itemCopy address];
+  subAdministrativeArea = [address7 subAdministrativeArea];
+  address8 = [itemCopy address];
+  administrativeArea = [address8 administrativeArea];
+  address9 = [itemCopy address];
+  administrativeAreaCode = [address9 administrativeAreaCode];
+  address10 = [itemCopy address];
+  postalCode = [address10 postalCode];
+  address11 = [itemCopy address];
+  country = [address11 country];
+  address12 = [itemCopy address];
+  countryCode = [address12 countryCode];
+  address13 = [itemCopy address];
+  inlandWater = [address13 inlandWater];
+  address14 = [itemCopy address];
+  ocean = [address14 ocean];
+  address15 = [itemCopy address];
+  areasOfInterest = [address15 areasOfInterest];
+  address16 = [itemCopy address];
+  isIsland = [address16 isIsland];
+  address17 = [itemCopy address];
+  creationDate = [address17 creationDate];
+  address18 = [itemCopy address];
+  expirationDate = [address18 expirationDate];
+  address19 = [itemCopy address];
+  iso3166CountryCode = [address19 iso3166CountryCode];
+  address20 = [itemCopy address];
+  iso3166SubdivisionCode = [address20 iso3166SubdivisionCode];
+  LOBYTE(v19) = isIsland;
+  v38 = [v37 initWithIdentifier:uUID geoAddressData:geoAddressData subPremises:subPremises subThoroughfare:subThoroughfare thoroughfare:thoroughfare subLocality:subLocality locality:locality subAdministrativeArea:subAdministrativeArea administrativeArea:administrativeArea administrativeAreaCode:administrativeAreaCode postalCode:postalCode country:country countryCode:countryCode inlandWater:inlandWater ocean:ocean areasOfInterest:areasOfInterest isIsland:v19 creationDate:creationDate expirationDate:expirationDate iso3166CountryCode:iso3166CountryCode iso3166SubdivisionCode:iso3166SubdivisionCode];
 
   v61 = objc_alloc(MEMORY[0x277D011A0]);
-  v55 = [MEMORY[0x277CCAD78] UUID];
-  v66 = [v4 name];
-  v64 = [v4 category];
-  v59 = [v4 categoryMUID];
-  v57 = [v4 location];
-  v53 = [v4 mapItemPlaceType];
-  v12 = [v4 muid];
-  v13 = [v4 resultProviderID];
-  v51 = [v4 geoMapItemHandle];
-  v49 = [v4 geoMapItemIdentifier];
-  v14 = [v4 creationDate];
-  v15 = [v4 expirationDate];
-  v16 = [v4 extendedAttributes];
-  v17 = [v4 displayLanguage];
-  LOBYTE(v11) = [v4 disputed];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  name = [itemCopy name];
+  category = [itemCopy category];
+  categoryMUID = [itemCopy categoryMUID];
+  location = [itemCopy location];
+  mapItemPlaceType = [itemCopy mapItemPlaceType];
+  muid = [itemCopy muid];
+  resultProviderID = [itemCopy resultProviderID];
+  geoMapItemHandle = [itemCopy geoMapItemHandle];
+  geoMapItemIdentifier = [itemCopy geoMapItemIdentifier];
+  creationDate2 = [itemCopy creationDate];
+  expirationDate2 = [itemCopy expirationDate];
+  extendedAttributes = [itemCopy extendedAttributes];
+  displayLanguage = [itemCopy displayLanguage];
+  LOBYTE(iso3166SubdivisionCode) = [itemCopy disputed];
 
-  LOBYTE(v20) = v11;
-  v62 = [v61 initWithIdentifier:v55 name:v66 category:v64 categoryMUID:v59 address:v38 location:v57 source:0 mapItemPlaceType:v53 muid:v12 resultProviderID:v13 geoMapItemHandle:v51 geoMapItemIdentifier:v49 creationDate:v14 expirationDate:v15 extendedAttributes:v16 displayLanguage:v17 disputed:v20];
+  LOBYTE(v20) = iso3166SubdivisionCode;
+  v62 = [v61 initWithIdentifier:uUID2 name:name category:category categoryMUID:categoryMUID address:v38 location:location source:0 mapItemPlaceType:mapItemPlaceType muid:muid resultProviderID:resultProviderID geoMapItemHandle:geoMapItemHandle geoMapItemIdentifier:geoMapItemIdentifier creationDate:creationDate2 expirationDate:expirationDate2 extendedAttributes:extendedAttributes displayLanguage:displayLanguage disputed:v20];
 
   return v62;
 }
 
-- (id)mapItemsFromLocalBluePOIResult:(id)a3 withConfidenceThreshold:(double)a4 error:(id *)a5
+- (id)mapItemsFromLocalBluePOIResult:(id)result withConfidenceThreshold:(double)threshold error:(id *)error
 {
   v221 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   v145 = objc_opt_new();
   v202 = 0u;
   v203 = 0u;
   v204 = 0u;
   v205 = 0u;
-  v168 = v6;
-  v7 = [v6 poiConfidences];
-  v8 = [v7 countByEnumeratingWithState:&v202 objects:v218 count:16];
+  v168 = resultCopy;
+  poiConfidences = [resultCopy poiConfidences];
+  v8 = [poiConfidences countByEnumeratingWithState:&v202 objects:v218 count:16];
   if (v8)
   {
     v9 = *v203;
@@ -638,14 +638,14 @@ LABEL_25:
       {
         if (*v203 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(poiConfidences);
         }
 
         v11 = *(*(&v202 + 1) + 8 * i);
-        v12 = [v168 poiConfidences];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        poiConfidences2 = [v168 poiConfidences];
+        v13 = [poiConfidences2 objectForKeyedSubscript:v11];
         [v13 doubleValue];
-        if (v14 >= a4)
+        if (v14 >= threshold)
         {
           v15 = [v11 unsignedLongLongValue] == 0;
 
@@ -660,7 +660,7 @@ LABEL_25:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v202 objects:v218 count:16];
+      v8 = [poiConfidences countByEnumeratingWithState:&v202 objects:v218 count:16];
     }
 
     while (v8);
@@ -670,8 +670,8 @@ LABEL_25:
   v201 = 0u;
   v198 = 0u;
   v199 = 0u;
-  v16 = [v168 aoiConfidences];
-  v17 = [v16 countByEnumeratingWithState:&v198 objects:v217 count:16];
+  aoiConfidences = [v168 aoiConfidences];
+  v17 = [aoiConfidences countByEnumeratingWithState:&v198 objects:v217 count:16];
   if (v17)
   {
     v18 = *v199;
@@ -681,14 +681,14 @@ LABEL_25:
       {
         if (*v199 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(aoiConfidences);
         }
 
         v20 = *(*(&v198 + 1) + 8 * j);
-        v21 = [v168 aoiConfidences];
-        v22 = [v21 objectForKeyedSubscript:v20];
+        aoiConfidences2 = [v168 aoiConfidences];
+        v22 = [aoiConfidences2 objectForKeyedSubscript:v20];
         [v22 doubleValue];
-        if (v23 >= a4)
+        if (v23 >= threshold)
         {
           v24 = [v20 unsignedLongLongValue] == 0;
 
@@ -703,7 +703,7 @@ LABEL_25:
         }
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v198 objects:v217 count:16];
+      v17 = [aoiConfidences countByEnumeratingWithState:&v198 objects:v217 count:16];
     }
 
     while (v17);
@@ -722,7 +722,7 @@ LABEL_25:
       *&buf[12] = 2048;
       *&buf[14] = v27;
       *&buf[22] = 2048;
-      v214 = a4;
+      thresholdCopy = threshold;
       _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_INFO, "%@, muid count, %lu, confidence threshold, %.1f", buf, 0x20u);
     }
   }
@@ -733,16 +733,16 @@ LABEL_25:
   }
 
   v146 = objc_opt_new();
-  v28 = [(RTMapItemManager *)self learnedLocationStore];
-  v158 = [v28 predicateForObjectsFromCurrentDevice];
+  learnedLocationStore = [(RTMapItemManager *)self learnedLocationStore];
+  predicateForObjectsFromCurrentDevice = [learnedLocationStore predicateForObjectsFromCurrentDevice];
 
-  v29 = [(RTMapItemManager *)self learnedLocationStore];
-  v143 = [v29 predicateForObjectsNotFromCurrentDevice];
+  learnedLocationStore2 = [(RTMapItemManager *)self learnedLocationStore];
+  predicateForObjectsNotFromCurrentDevice = [learnedLocationStore2 predicateForObjectsNotFromCurrentDevice];
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v214 = COERCE_DOUBLE(__Block_byref_object_copy__27);
+  thresholdCopy = COERCE_DOUBLE(__Block_byref_object_copy__27);
   v215 = __Block_byref_object_dispose__27;
   v216 = 0;
   v194 = 0u;
@@ -781,8 +781,8 @@ LABEL_25:
       *&v208[8] = v208;
       *&v208[16] = 0x2020000000;
       LOBYTE(v209) = 0;
-      v34 = [(RTMapItemManager *)self learnedLocationStore];
-      v35 = [v32 unsignedLongLongValue];
+      learnedLocationStore3 = [(RTMapItemManager *)self learnedLocationStore];
+      unsignedLongLongValue = [v32 unsignedLongLongValue];
       v188[0] = MEMORY[0x277D85DD0];
       v188[1] = 3221225472;
       v188[2] = __81__RTMapItemManager_mapItemsFromLocalBluePOIResult_withConfidenceThreshold_error___block_invoke;
@@ -794,7 +794,7 @@ LABEL_25:
       v189 = v36;
       v37 = v33;
       v190 = v37;
-      [v34 fetchMapItemWithMuid:v35 predicate:v158 handler:v188];
+      [learnedLocationStore3 fetchMapItemWithMuid:unsignedLongLongValue predicate:predicateForObjectsFromCurrentDevice handler:v188];
 
       dsema = v37;
       v38 = [MEMORY[0x277CBEAA8] now];
@@ -809,11 +809,11 @@ LABEL_25:
       v42 = v41;
       v43 = objc_opt_new();
       v44 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_22];
-      v45 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v46 = [v45 filteredArrayUsingPredicate:v44];
-      v47 = [v46 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v46 = [callStackSymbols filteredArrayUsingPredicate:v44];
+      firstObject = [v46 firstObject];
 
-      [v43 submitToCoreAnalytics:v47 type:1 duration:v42];
+      [v43 submitToCoreAnalytics:firstObject type:1 duration:v42];
       v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
       {
@@ -851,9 +851,9 @@ LABEL_38:
       if (v55)
       {
         v56 = 0;
-        if (a5)
+        if (error)
         {
-          *a5 = v55;
+          *error = v55;
         }
 
         goto LABEL_46;
@@ -869,8 +869,8 @@ LABEL_46:
 
       v57 = dispatch_semaphore_create(0);
 
-      v58 = [(RTMapItemManager *)self learnedLocationStore];
-      v59 = [v32 unsignedLongLongValue];
+      learnedLocationStore4 = [(RTMapItemManager *)self learnedLocationStore];
+      unsignedLongLongValue2 = [v32 unsignedLongLongValue];
       v181[0] = MEMORY[0x277D85DD0];
       v181[1] = 3221225472;
       v181[2] = __81__RTMapItemManager_mapItemsFromLocalBluePOIResult_withConfidenceThreshold_error___block_invoke_18;
@@ -882,7 +882,7 @@ LABEL_46:
       v184 = v32;
       v60 = v57;
       v185 = v60;
-      [v58 fetchMapItemWithMuid:v59 predicate:v143 handler:v181];
+      [learnedLocationStore4 fetchMapItemWithMuid:unsignedLongLongValue2 predicate:predicateForObjectsNotFromCurrentDevice handler:v181];
 
       dsema = v60;
       v61 = [MEMORY[0x277CBEAA8] now];
@@ -897,11 +897,11 @@ LABEL_46:
       v65 = v64;
       v66 = objc_opt_new();
       v67 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_22];
-      v68 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v69 = [v68 filteredArrayUsingPredicate:v67];
-      v70 = [v69 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v69 = [callStackSymbols2 filteredArrayUsingPredicate:v67];
+      firstObject2 = [v69 firstObject];
 
-      [v66 submitToCoreAnalytics:v70 type:1 duration:v65];
+      [v66 submitToCoreAnalytics:firstObject2 type:1 duration:v65];
       v71 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v71, OS_LOG_TYPE_FAULT))
       {
@@ -938,9 +938,9 @@ LABEL_55:
       v77 = *(*&buf[8] + 40);
       if (v77)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = v77;
+          *error = v77;
         }
 
         v56 = 0;
@@ -1012,9 +1012,9 @@ LABEL_67:
           objc_enumerationMutation(v84);
         }
 
-        v88 = [*(*(&v177 + 1) + 8 * k) unsignedLongLongValue];
-        v89 = [v168 referenceLocation];
-        v90 = [(RTMapItemManager *)self getGeoMapItemIdentiferFromMuid:v88 location:v89];
+        unsignedLongLongValue3 = [*(*(&v177 + 1) + 8 * k) unsignedLongLongValue];
+        referenceLocation = [v168 referenceLocation];
+        v90 = [(RTMapItemManager *)self getGeoMapItemIdentiferFromMuid:unsignedLongLongValue3 location:referenceLocation];
 
         if (v90)
         {
@@ -1059,9 +1059,9 @@ LABEL_97:
 
           v152 = v111;
           v113 = *(*(&v169 + 1) + 8 * v111);
-          v114 = [v168 aoiConfidences];
+          aoiConfidences3 = [v168 aoiConfidences];
           v115 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v113, "muid")}];
-          v116 = [v114 objectForKey:v115];
+          v116 = [aoiConfidences3 objectForKey:v115];
           v117 = v116 == 0;
 
           if (v117)
@@ -1076,45 +1076,45 @@ LABEL_97:
 
           if (v117)
           {
-            v119 = [v168 poiConfidences];
+            poiConfidences3 = [v168 poiConfidences];
             v120 = 2;
           }
 
           else
           {
-            v119 = [v168 aoiConfidences];
+            poiConfidences3 = [v168 aoiConfidences];
             v120 = 1;
           }
 
           v154 = v120;
           v121 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v113, "muid")}];
-          v167 = [v119 objectForKeyedSubscript:v121];
+          v167 = [poiConfidences3 objectForKeyedSubscript:v121];
 
           v122 = objc_alloc(MEMORY[0x277D011A8]);
-          v123 = [v113 extendedAttributes];
-          v124 = [v123 addressIdentifier];
-          v125 = [v113 extendedAttributes];
-          v126 = [v125 isMe];
+          extendedAttributes = [v113 extendedAttributes];
+          addressIdentifier = [extendedAttributes addressIdentifier];
+          extendedAttributes2 = [v113 extendedAttributes];
+          isMe = [extendedAttributes2 isMe];
           [v167 doubleValue];
-          dsemaa = [v122 initWithAddressIdentifier:v124 isMe:v126 wifiConfidence:v118 wifiFingerprintLabelType:?];
+          dsemaa = [v122 initWithAddressIdentifier:addressIdentifier isMe:isMe wifiConfidence:v118 wifiFingerprintLabelType:?];
 
           obja = objc_alloc(MEMORY[0x277D011A0]);
-          v163 = [v113 identifier];
+          identifier = [v113 identifier];
           aSelectora = [v113 name];
-          v159 = [v113 category];
-          v157 = [v113 categoryMUID];
-          v155 = [v113 address];
-          v127 = [v113 location];
-          v128 = [v113 source];
-          v129 = [v113 muid];
-          v130 = [v113 resultProviderID];
-          v131 = [v113 geoMapItemHandle];
-          v132 = [v113 geoMapItemIdentifier];
-          v133 = [v113 creationDate];
-          v134 = [v113 expirationDate];
-          v135 = [v113 displayLanguage];
+          category = [v113 category];
+          categoryMUID = [v113 categoryMUID];
+          address = [v113 address];
+          location = [v113 location];
+          source = [v113 source];
+          muid = [v113 muid];
+          resultProviderID = [v113 resultProviderID];
+          geoMapItemHandle = [v113 geoMapItemHandle];
+          geoMapItemIdentifier = [v113 geoMapItemIdentifier];
+          creationDate = [v113 creationDate];
+          expirationDate = [v113 expirationDate];
+          displayLanguage = [v113 displayLanguage];
           LOBYTE(v138) = [v113 disputed];
-          v136 = [obja initWithIdentifier:v163 name:aSelectora category:v159 categoryMUID:v157 address:v155 location:v127 source:v128 | 0x100000 mapItemPlaceType:v154 muid:v129 resultProviderID:v130 geoMapItemHandle:v131 geoMapItemIdentifier:v132 creationDate:v133 expirationDate:v134 extendedAttributes:dsemaa displayLanguage:v135 disputed:v138];
+          v136 = [obja initWithIdentifier:identifier name:aSelectora category:category categoryMUID:categoryMUID address:address location:location source:source | 0x100000 mapItemPlaceType:v154 muid:muid resultProviderID:resultProviderID geoMapItemHandle:geoMapItemHandle geoMapItemIdentifier:geoMapItemIdentifier creationDate:creationDate expirationDate:expirationDate extendedAttributes:dsemaa displayLanguage:displayLanguage disputed:v138];
 
           if (v147)
           {
@@ -1131,9 +1131,9 @@ LABEL_97:
       while (v144);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     goto LABEL_114;
@@ -1163,11 +1163,11 @@ LABEL_97:
   v97 = v96;
   v98 = objc_opt_new();
   v99 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_22];
-  v100 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v101 = [v100 filteredArrayUsingPredicate:v99];
-  v102 = [v101 firstObject];
+  callStackSymbols3 = [MEMORY[0x277CCACC8] callStackSymbols];
+  v101 = [callStackSymbols3 filteredArrayUsingPredicate:v99];
+  firstObject3 = [v101 firstObject];
 
-  [v98 submitToCoreAnalytics:v102 type:1 duration:v97];
+  [v98 submitToCoreAnalytics:firstObject3 type:1 duration:v97];
   v103 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v103, OS_LOG_TYPE_FAULT))
   {
@@ -1208,9 +1208,9 @@ LABEL_86:
     goto LABEL_96;
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v110;
+    *error = v110;
   }
 
   _Block_object_dispose(buf, 8);

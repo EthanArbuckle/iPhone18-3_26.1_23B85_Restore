@@ -1,7 +1,7 @@
 @interface PFMetadataBuilder
 - (PFMetadataBuilder)init;
 - (id)combinedKeywordsAndPeople;
-- (void)setCreationDate:(id)a3 timeZone:(id)a4;
+- (void)setCreationDate:(id)date timeZone:(id)zone;
 @end
 
 @implementation PFMetadataBuilder
@@ -9,11 +9,11 @@
 - (id)combinedKeywordsAndPeople
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadataBuilder *)self keywords];
-  v4 = [(PFMetadataBuilder *)self peopleNames];
-  if ([v3 count])
+  keywords = [(PFMetadataBuilder *)self keywords];
+  peopleNames = [(PFMetadataBuilder *)self peopleNames];
+  if ([keywords count])
   {
-    v5 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+    v5 = [MEMORY[0x1E695DFD8] setWithArray:keywords];
   }
 
   else
@@ -21,17 +21,17 @@
     v5 = 0;
   }
 
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count") + objc_msgSend(v3, "count")}];
-  if ([v3 count])
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(peopleNames, "count") + objc_msgSend(keywords, "count")}];
+  if ([keywords count])
   {
-    [v6 addObjectsFromArray:v3];
+    [v6 addObjectsFromArray:keywords];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = peopleNames;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -62,11 +62,11 @@
   return v6;
 }
 
-- (void)setCreationDate:(id)a3 timeZone:(id)a4
+- (void)setCreationDate:(id)date timeZone:(id)zone
 {
-  v6 = a4;
-  [(PFMetadataBuilder *)self setCreationDate:a3];
-  [(PFMetadataBuilder *)self setCreationTimeZone:v6];
+  zoneCopy = zone;
+  [(PFMetadataBuilder *)self setCreationDate:date];
+  [(PFMetadataBuilder *)self setCreationTimeZone:zoneCopy];
 }
 
 - (PFMetadataBuilder)init
@@ -76,9 +76,9 @@
   v2 = [(PFMetadataBuilder *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
     creationTimeZone = v2->_creationTimeZone;
-    v2->_creationTimeZone = v3;
+    v2->_creationTimeZone = defaultTimeZone;
   }
 
   return v2;

@@ -1,6 +1,6 @@
 @interface FIUIHealthSettingsBirthDatePickerController
 - (FIUIHealthSettingsBirthDatePickerController)init;
-- (void)setDateOfBirth:(id)a3;
+- (void)setDateOfBirth:(id)birth;
 @end
 
 @implementation FIUIHealthSettingsBirthDatePickerController
@@ -48,20 +48,20 @@ void __51__FIUIHealthSettingsBirthDatePickerController_init__block_invoke(uint64
   }
 }
 
-- (void)setDateOfBirth:(id)a3
+- (void)setDateOfBirth:(id)birth
 {
-  v4 = a3;
-  if (!v4)
+  birthCopy = birth;
+  if (!birthCopy)
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v5 dateByAddingUnit:4 value:-30 toDate:v6 options:0];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [currentCalendar dateByAddingUnit:4 value:-30 toDate:date options:0];
 
-    v4 = v7;
+    birthCopy = v7;
   }
 
-  v8 = v4;
-  [(FIUIHealthSettingsDatePicker *)self->_datePickerView setDate:v4];
+  v8 = birthCopy;
+  [(FIUIHealthSettingsDatePicker *)self->_datePickerView setDate:birthCopy];
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface STSMessagesAppViewController
-- (BOOL)searchBrowserRootViewControllerSearchBarShouldBeginEditing:(id)a3;
-- (id)dictForSearchResult:(id)a3;
-- (id)searchResultForDict:(id)a3;
-- (void)_addResultToRecents:(id)a3;
+- (BOOL)searchBrowserRootViewControllerSearchBarShouldBeginEditing:(id)editing;
+- (id)dictForSearchResult:(id)result;
+- (id)searchResultForDict:(id)dict;
+- (void)_addResultToRecents:(id)recents;
 - (void)_setup;
-- (void)_transitionContentFromViewController:(id)a3 toViewController:(id)a4 animations:(id)a5 completion:(id)a6;
+- (void)_transitionContentFromViewController:(id)controller toViewController:(id)viewController animations:(id)animations completion:(id)completion;
 - (void)_updatePickerBottomInset;
 - (void)awakeFromNib;
-- (void)browser:(id)a3 didSearchFor:(id)a4;
-- (void)browser:(id)a3 didSelectProviderLink:(id)a4;
-- (void)browser:(id)a3 didSelectResult:(id)a4 withPayload:(id)a5;
-- (void)browserCategoryButtonClicked:(id)a3 result:(id)a4;
-- (void)browserDidTapLogo:(id)a3;
-- (void)browserSearchBarButtonClicked:(id)a3;
-- (void)browserSuggestionButtonClicked:(id)a3 suggestion:(id)a4;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
-- (void)requestExpandedPresentationStyleForBrowser:(id)a3 completion:(id)a4;
+- (void)browser:(id)browser didSearchFor:(id)for;
+- (void)browser:(id)browser didSelectProviderLink:(id)link;
+- (void)browser:(id)browser didSelectResult:(id)result withPayload:(id)payload;
+- (void)browserCategoryButtonClicked:(id)clicked result:(id)result;
+- (void)browserDidTapLogo:(id)logo;
+- (void)browserSearchBarButtonClicked:(id)clicked;
+- (void)browserSuggestionButtonClicked:(id)clicked suggestion:(id)suggestion;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
+- (void)requestExpandedPresentationStyleForBrowser:(id)browser completion:(id)completion;
 - (void)saveRecents;
-- (void)searchBrowserRootViewControllerDidSelectCancel:(id)a3;
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5;
+- (void)searchBrowserRootViewControllerDidSelectCancel:(id)cancel;
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error;
 - (void)updateConstraintsForSearchBrowser;
 - (void)updateConstraintsForZKWBrowser;
-- (void)updateRecentResults:(id)a3;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
+- (void)updateRecentResults:(id)results;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willBecomeActiveWithConversation:(id)a3;
-- (void)willResignActiveWithConversation:(id)a3;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)willBecomeActiveWithConversation:(id)conversation;
+- (void)willResignActiveWithConversation:(id)conversation;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation STSMessagesAppViewController
@@ -36,30 +36,30 @@
 {
   [NSLayoutConstraint deactivateConstraints:self->_constraints];
   [(NSMutableArray *)self->_constraints removeAllObjects];
-  v3 = [(STSPicker *)self->_zkwPicker view];
-  v4 = [v3 topAnchor];
-  v5 = [(STSMessagesAppViewController *)self view];
-  v6 = [v5 topAnchor];
-  v23 = [v4 constraintEqualToAnchor:v6];
+  view = [(STSPicker *)self->_zkwPicker view];
+  topAnchor = [view topAnchor];
+  view2 = [(STSMessagesAppViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v7 = [(STSPicker *)self->_zkwPicker view];
-  v8 = [v7 bottomAnchor];
-  v9 = [(STSMessagesAppViewController *)self view];
-  v10 = [v9 superview];
-  v11 = [v10 bottomAnchor];
-  v12 = [v8 constraintEqualToAnchor:v11];
+  view3 = [(STSPicker *)self->_zkwPicker view];
+  bottomAnchor = [view3 bottomAnchor];
+  view4 = [(STSMessagesAppViewController *)self view];
+  superview = [view4 superview];
+  bottomAnchor2 = [superview bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v13 = [(STSPicker *)self->_zkwPicker view];
-  v14 = [v13 leadingAnchor];
-  v15 = [(STSMessagesAppViewController *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  view5 = [(STSPicker *)self->_zkwPicker view];
+  leadingAnchor = [view5 leadingAnchor];
+  view6 = [(STSMessagesAppViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v18 = [(STSPicker *)self->_zkwPicker view];
-  v19 = [v18 trailingAnchor];
-  v20 = [(STSMessagesAppViewController *)self view];
-  v21 = [v20 trailingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  view7 = [(STSPicker *)self->_zkwPicker view];
+  trailingAnchor = [view7 trailingAnchor];
+  view8 = [(STSMessagesAppViewController *)self view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   [(NSMutableArray *)self->_constraints addObject:v23];
   [(NSMutableArray *)self->_constraints addObject:v12];
@@ -72,30 +72,30 @@
 {
   [NSLayoutConstraint deactivateConstraints:self->_constraints];
   [(NSMutableArray *)self->_constraints removeAllObjects];
-  v3 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
-  v4 = [v3 topAnchor];
-  v5 = [(STSMessagesAppViewController *)self view];
-  v6 = [v5 topAnchor];
-  v23 = [v4 constraintEqualToAnchor:v6];
+  view = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
+  topAnchor = [view topAnchor];
+  view2 = [(STSMessagesAppViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v7 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
-  v8 = [v7 bottomAnchor];
-  v9 = [(STSMessagesAppViewController *)self view];
-  v10 = [v9 superview];
-  v11 = [v10 bottomAnchor];
-  v12 = [v8 constraintEqualToAnchor:v11];
+  view3 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
+  bottomAnchor = [view3 bottomAnchor];
+  view4 = [(STSMessagesAppViewController *)self view];
+  superview = [view4 superview];
+  bottomAnchor2 = [superview bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v13 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
-  v14 = [v13 leadingAnchor];
-  v15 = [(STSMessagesAppViewController *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  view5 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
+  leadingAnchor = [view5 leadingAnchor];
+  view6 = [(STSMessagesAppViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v18 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
-  v19 = [v18 trailingAnchor];
-  v20 = [(STSMessagesAppViewController *)self view];
-  v21 = [v20 trailingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  view7 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController view];
+  trailingAnchor = [view7 trailingAnchor];
+  view8 = [(STSMessagesAppViewController *)self view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   [(NSMutableArray *)self->_constraints addObject:v23];
   [(NSMutableArray *)self->_constraints addObject:v12];
@@ -118,8 +118,8 @@
 
 - (void)viewDidLoad
 {
-  v2 = [(STSMessagesAppViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(STSMessagesAppViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -127,37 +127,37 @@
   v12.receiver = self;
   v12.super_class = STSMessagesAppViewController;
   [(STSMessagesAppViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [(STSPicker *)self->_zkwPicker pickerView];
-  [v3 setTopInset:4.0];
+  pickerView = [(STSPicker *)self->_zkwPicker pickerView];
+  [pickerView setTopInset:4.0];
 
-  v4 = [(STSPicker *)self->_zkwPicker pickerView];
-  v5 = [(STSMessagesAppViewController *)self view];
-  [v5 layoutMargins];
-  [v4 setBottomInset:v6];
+  pickerView2 = [(STSPicker *)self->_zkwPicker pickerView];
+  view = [(STSMessagesAppViewController *)self view];
+  [view layoutMargins];
+  [pickerView2 setBottomInset:v6];
 
   searchBrowserRootViewController = self->_searchBrowserRootViewController;
-  v8 = [(STSMessagesAppViewController *)self view];
-  [v8 layoutMargins];
+  view2 = [(STSMessagesAppViewController *)self view];
+  [view2 layoutMargins];
   [(STSSearchBrowserRootViewController *)searchBrowserRootViewController setTopInset:?];
 
   v9 = self->_searchBrowserRootViewController;
-  v10 = [(STSMessagesAppViewController *)self view];
-  [v10 layoutMargins];
+  view3 = [(STSMessagesAppViewController *)self view];
+  [view3 layoutMargins];
   [(STSSearchBrowserRootViewController *)v9 setBottomInset:v11];
 }
 
-- (void)willBecomeActiveWithConversation:(id)a3
+- (void)willBecomeActiveWithConversation:(id)conversation
 {
-  objc_storeStrong(&self->_currentConversation, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_currentConversation, conversation);
+  conversationCopy = conversation;
   [(STSMessagesAppViewController *)self _setup];
   zkwSearchModel = self->_zkwSearchModel;
-  v7 = [(MSConversation *)self->_currentConversation conversationIdentifier];
-  [(STSSearchModel *)zkwSearchModel setConversationID:v7];
+  conversationIdentifier = [(MSConversation *)self->_currentConversation conversationIdentifier];
+  [(STSSearchModel *)zkwSearchModel setConversationID:conversationIdentifier];
 
   searchBrowserSearchModel = self->_searchBrowserSearchModel;
-  v9 = [(MSConversation *)self->_currentConversation conversationIdentifier];
-  [(STSSearchModel *)searchBrowserSearchModel setConversationID:v9];
+  conversationIdentifier2 = [(MSConversation *)self->_currentConversation conversationIdentifier];
+  [(STSSearchModel *)searchBrowserSearchModel setConversationID:conversationIdentifier2];
 
   [(STSPicker *)self->_zkwPicker performZKWSearchQuery];
   [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController fetchCategories];
@@ -166,37 +166,37 @@
   [v10 searchViewDidAppearWithEvent:7];
 }
 
-- (void)willResignActiveWithConversation:(id)a3
+- (void)willResignActiveWithConversation:(id)conversation
 {
   zkwPicker = self->_zkwPicker;
-  v5 = a3;
-  [(STSPicker *)zkwPicker willResignActiveWithConversation:v5];
-  v6 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
-  [v6 willResignActiveWithConversation:v5];
+  conversationCopy = conversation;
+  [(STSPicker *)zkwPicker willResignActiveWithConversation:conversationCopy];
+  pickerViewController = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
+  [pickerViewController willResignActiveWithConversation:conversationCopy];
 
   v7 = +[STSFeedbackReporter sharedInstance];
   [v7 searchViewDidDisappear];
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   p_searchBrowserRootViewController = &self->_searchBrowserRootViewController;
   [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController setPresentationStyle:?];
-  if (a3 == 1)
+  if (style == 1)
   {
-    v6 = [(STSMessagesAppViewController *)self requestExpandedCompletion];
+    requestExpandedCompletion = [(STSMessagesAppViewController *)self requestExpandedCompletion];
 
-    if (v6)
+    if (requestExpandedCompletion)
     {
-      v7 = [(STSMessagesAppViewController *)self requestExpandedCompletion];
-      v7[2]();
+      requestExpandedCompletion2 = [(STSMessagesAppViewController *)self requestExpandedCompletion];
+      requestExpandedCompletion2[2]();
     }
   }
 
   [(STSMessagesAppViewController *)self setRequestExpandedCompletion:0];
-  v8 = [(STSSearchBrowserRootViewController *)*p_searchBrowserRootViewController parentViewController];
+  parentViewController = [(STSSearchBrowserRootViewController *)*p_searchBrowserRootViewController parentViewController];
 
-  if (!v8)
+  if (!parentViewController)
   {
     p_searchBrowserRootViewController = &self->_zkwPicker;
   }
@@ -206,18 +206,18 @@
   [(STSSearchBrowserRootViewController *)v9 sendVisibleResultsFeedback];
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
-  if (!a3)
+  if (!style)
   {
-    v4 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController parentViewController];
-    if (v4 && (v5 = v4, v6 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController isPickerVisible], v5, (v6 & 1) == 0))
+    parentViewController = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController parentViewController];
+    if (parentViewController && (v5 = parentViewController, v6 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController isPickerVisible], v5, (v6 & 1) == 0))
     {
-      v7 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
-      [v7 willTransitionToPresentationStyle:0];
+      pickerViewController = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
+      [pickerViewController willTransitionToPresentationStyle:0];
 
-      v8 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
-      [v8 resetContent];
+      pickerViewController2 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
+      [pickerViewController2 resetContent];
 
       searchBrowserRootViewController = self->_searchBrowserRootViewController;
       zkwPicker = self->_zkwPicker;
@@ -232,55 +232,55 @@
     else
     {
       [(STSPicker *)self->_zkwPicker willTransitionToPresentationStyle:0];
-      v11 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
-      [v11 willTransitionToPresentationStyle:0];
+      pickerViewController3 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController pickerViewController];
+      [pickerViewController3 willTransitionToPresentationStyle:0];
     }
   }
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
   zkwPicker = self->_zkwPicker;
-  v4 = a3;
-  v5 = [(STSPicker *)zkwPicker snapshotImage];
-  v4[2](v4, v5);
+  blockCopy = block;
+  snapshotImage = [(STSPicker *)zkwPicker snapshotImage];
+  blockCopy[2](blockCopy, snapshotImage);
 }
 
-- (void)browser:(id)a3 didSelectProviderLink:(id)a4
+- (void)browser:(id)browser didSelectProviderLink:(id)link
 {
-  if (a4)
+  if (link)
   {
-    v5 = a4;
-    v7 = [(STSMessagesAppViewController *)self extensionContext];
-    v6 = [v5 sts_providerHostPageURL];
+    linkCopy = link;
+    extensionContext = [(STSMessagesAppViewController *)self extensionContext];
+    sts_providerHostPageURL = [linkCopy sts_providerHostPageURL];
 
-    [v7 openURL:v6 completionHandler:0];
+    [extensionContext openURL:sts_providerHostPageURL completionHandler:0];
   }
 }
 
-- (void)browser:(id)a3 didSelectResult:(id)a4 withPayload:(id)a5
+- (void)browser:(id)browser didSelectResult:(id)result withPayload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 copy];
-  v12 = [v10 imageURL];
+  browserCopy = browser;
+  resultCopy = result;
+  payloadCopy = payload;
+  v11 = [resultCopy copy];
+  imageURL = [payloadCopy imageURL];
 
-  if (v12)
+  if (imageURL)
   {
     zkwPicker = self->_zkwPicker;
-    if (zkwPicker != v8)
+    if (zkwPicker != browserCopy)
     {
       [(STSPicker *)zkwPicker resetContent];
     }
 
-    v14 = [v9 sts_appProviderName];
-    v15 = [v9 storeIdentifier];
-    v16 = v15;
-    v26 = v8;
-    if (v15)
+    sts_appProviderName = [resultCopy sts_appProviderName];
+    storeIdentifier = [resultCopy storeIdentifier];
+    v16 = storeIdentifier;
+    v26 = browserCopy;
+    if (storeIdentifier)
     {
-      v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 integerValue]);
+      v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [storeIdentifier integerValue]);
     }
 
     else
@@ -289,33 +289,33 @@
     }
 
     currentConversation = self->_currentConversation;
-    v23 = [v10 imageURL];
+    imageURL2 = [payloadCopy imageURL];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100002188;
     v34[3] = &unk_1000082B0;
     v34[4] = self;
-    v35 = v9;
-    [(MSConversation *)currentConversation _insertAttachment:v23 adamID:v17 appName:v14 completionHandler:v34];
+    v35 = resultCopy;
+    [(MSConversation *)currentConversation _insertAttachment:imageURL2 adamID:v17 appName:sts_appProviderName completionHandler:v34];
 
-    v8 = v27;
+    browserCopy = v27;
   }
 
   else
   {
-    v18 = [v10 videoURL];
+    videoURL = [payloadCopy videoURL];
 
-    if (v18)
+    if (videoURL)
     {
       v19 = self->_currentConversation;
-      v20 = [v10 videoURL];
-      v21 = [v20 absoluteString];
+      videoURL2 = [payloadCopy videoURL];
+      absoluteString = [videoURL2 absoluteString];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_100002260;
       v33[3] = &unk_1000082D8;
       v33[4] = self;
-      [(MSConversation *)v19 insertText:v21 completionHandler:v33];
+      [(MSConversation *)v19 insertText:absoluteString completionHandler:v33];
     }
 
     else
@@ -343,12 +343,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)browserSearchBarButtonClicked:(id)a3
+- (void)browserSearchBarButtonClicked:(id)clicked
 {
   [(STSPicker *)self->_zkwPicker cancelImageDownloads];
-  v4 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController searchHeaderView];
-  v5 = [v4 searchBar];
-  [v5 setText:0];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  [searchBar setText:0];
 
   [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController showCategories];
   zkwPicker = self->_zkwPicker;
@@ -366,9 +366,9 @@
   [(STSMessagesAppViewController *)self _transitionContentFromViewController:zkwPicker toViewController:searchBrowserRootViewController animations:v9 completion:v8];
 }
 
-- (void)browser:(id)a3 didSearchFor:(id)a4
+- (void)browser:(id)browser didSearchFor:(id)for
 {
-  v5 = a4;
+  forCopy = for;
   [(STSPicker *)self->_zkwPicker cancelImageDownloads];
   zkwPicker = self->_zkwPicker;
   v8[0] = _NSConcreteStackBlock;
@@ -376,18 +376,18 @@
   v8[2] = sub_10000261C;
   v8[3] = &unk_100008328;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = forCopy;
+  v7 = forCopy;
   [(STSMessagesAppViewController *)self requestExpandedPresentationStyleForBrowser:zkwPicker completion:v8];
 }
 
-- (void)browserCategoryButtonClicked:(id)a3 result:(id)a4
+- (void)browserCategoryButtonClicked:(id)clicked result:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   [(STSPicker *)self->_zkwPicker cancelImageDownloads];
   searchBrowserRootViewController = self->_searchBrowserRootViewController;
-  v7 = [v5 secondaryTitle];
-  [(STSSearchBrowserRootViewController *)searchBrowserRootViewController showPickerAndPerformQuery:v7 requestType:5];
+  secondaryTitle = [resultCopy secondaryTitle];
+  [(STSSearchBrowserRootViewController *)searchBrowserRootViewController showPickerAndPerformQuery:secondaryTitle requestType:5];
 
   zkwPicker = self->_zkwPicker;
   v10[0] = _NSConcreteStackBlock;
@@ -395,18 +395,18 @@
   v10[2] = sub_1000028A4;
   v10[3] = &unk_100008328;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = resultCopy;
+  v9 = resultCopy;
   [(STSMessagesAppViewController *)self requestExpandedPresentationStyleForBrowser:zkwPicker completion:v10];
 }
 
-- (void)browserSuggestionButtonClicked:(id)a3 suggestion:(id)a4
+- (void)browserSuggestionButtonClicked:(id)clicked suggestion:(id)suggestion
 {
-  v5 = a4;
+  suggestionCopy = suggestion;
   [(STSPicker *)self->_zkwPicker cancelImageDownloads];
   searchBrowserRootViewController = self->_searchBrowserRootViewController;
-  v7 = [v5 query];
-  [(STSSearchBrowserRootViewController *)searchBrowserRootViewController showPickerAndPerformQuery:v7 requestType:3];
+  query = [suggestionCopy query];
+  [(STSSearchBrowserRootViewController *)searchBrowserRootViewController showPickerAndPerformQuery:query requestType:3];
 
   zkwPicker = self->_zkwPicker;
   v10[0] = _NSConcreteStackBlock;
@@ -414,64 +414,64 @@
   v10[2] = sub_100002AF0;
   v10[3] = &unk_100008328;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = suggestionCopy;
+  v9 = suggestionCopy;
   [(STSMessagesAppViewController *)self requestExpandedPresentationStyleForBrowser:zkwPicker completion:v10];
 }
 
-- (void)requestExpandedPresentationStyleForBrowser:(id)a3 completion:(id)a4
+- (void)requestExpandedPresentationStyleForBrowser:(id)browser completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if ([(STSMessagesAppViewController *)self presentationStyle]== 1)
   {
-    if (v5)
+    if (completionCopy)
     {
-      v5[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    [(STSMessagesAppViewController *)self setRequestExpandedCompletion:v5];
+    [(STSMessagesAppViewController *)self setRequestExpandedCompletion:completionCopy];
     [(STSMessagesAppViewController *)self requestPresentationStyle:1];
   }
 }
 
-- (void)browserDidTapLogo:(id)a3
+- (void)browserDidTapLogo:(id)logo
 {
-  v4 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController parentViewController];
+  parentViewController = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
-    v5 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController searchHeaderView];
-    v6 = [v5 searchBar];
-    v14 = [v6 text];
+    searchHeaderView = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController searchHeaderView];
+    searchBar = [searchHeaderView searchBar];
+    text = [searchBar text];
 
     v7 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-    v8 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+    extensionContext2 = [text stringByAddingPercentEncodingWithAllowedCharacters:v7];
 
-    v9 = [NSString stringWithFormat:@"%@?q=%@", @"https://www.bing.com/images/search", v8];
+    v9 = [NSString stringWithFormat:@"%@?q=%@", @"https://www.bing.com/images/search", extensionContext2];
     v10 = [NSURL URLWithString:v9];
 
     v11 = +[STSFeedbackReporter sharedInstance];
     [v11 didEngageProviderLogo];
 
-    v12 = [(STSMessagesAppViewController *)self extensionContext];
-    [v12 openURL:v10 completionHandler:0];
+    extensionContext = [(STSMessagesAppViewController *)self extensionContext];
+    [extensionContext openURL:v10 completionHandler:0];
   }
 
   else
   {
-    v14 = [NSURL URLWithString:@"https://www.bing.com/images/search"];
+    text = [NSURL URLWithString:@"https://www.bing.com/images/search"];
     v13 = +[STSFeedbackReporter sharedInstance];
     [v13 didEngageProviderLogo];
 
-    v8 = [(STSMessagesAppViewController *)self extensionContext];
-    [v8 openURL:v14 completionHandler:0];
+    extensionContext2 = [(STSMessagesAppViewController *)self extensionContext];
+    [extensionContext2 openURL:text completionHandler:0];
   }
 }
 
-- (void)searchBrowserRootViewControllerDidSelectCancel:(id)a3
+- (void)searchBrowserRootViewControllerDidSelectCancel:(id)cancel
 {
   if (self->_updateRecents)
   {
@@ -507,9 +507,9 @@
   }
 }
 
-- (BOOL)searchBrowserRootViewControllerSearchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBrowserRootViewControllerSearchBarShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   if ([(STSMessagesAppViewController *)self presentationStyle])
   {
     v5 = 1;
@@ -522,7 +522,7 @@
     v8[1] = 3221225472;
     v8[2] = sub_100003250;
     v8[3] = &unk_100008288;
-    v9 = v4;
+    v9 = editingCopy;
     [(STSMessagesAppViewController *)self requestExpandedPresentationStyleForBrowser:zkwPicker completion:v8];
     v5 = [(STSSearchBrowserRootViewController *)self->_searchBrowserRootViewController presentationStyle]== 1;
   }
@@ -530,41 +530,41 @@
   return v5;
 }
 
-- (void)updateRecentResults:(id)a3
+- (void)updateRecentResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = resultsCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "updating recent results: %@", &v7, 0xCu);
   }
 
-  v5 = [v4 mutableCopy];
+  v5 = [resultsCopy mutableCopy];
   recentResults = self->_recentResults;
   self->_recentResults = v5;
 
   [(STSMessagesAppViewController *)self saveRecents];
 }
 
-- (void)_transitionContentFromViewController:(id)a3 toViewController:(id)a4 animations:(id)a5 completion:(id)a6
+- (void)_transitionContentFromViewController:(id)controller toViewController:(id)viewController animations:(id)animations completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [(STSMessagesAppViewController *)self addChildViewController:v11];
-  if (v10)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  animationsCopy = animations;
+  completionCopy = completion;
+  [(STSMessagesAppViewController *)self addChildViewController:viewControllerCopy];
+  if (controllerCopy)
   {
-    v14 = [v10 parentViewController];
+    parentViewController = [controllerCopy parentViewController];
 
-    if (!v14)
+    if (!parentViewController)
     {
-      [(STSMessagesAppViewController *)self addChildViewController:v10];
+      [(STSMessagesAppViewController *)self addChildViewController:controllerCopy];
     }
 
-    [v10 willMoveToParentViewController:0];
-    if (v12)
+    [controllerCopy willMoveToParentViewController:0];
+    if (animationsCopy)
     {
       v15 = 0.25;
     }
@@ -578,23 +578,23 @@
     v18[1] = 3221225472;
     v18[2] = sub_100003618;
     v18[3] = &unk_100008378;
-    v19 = v10;
-    v20 = self;
-    v21 = v11;
-    v22 = v13;
-    [(STSMessagesAppViewController *)self transitionFromViewController:v19 toViewController:v21 duration:5242880 options:v12 animations:v18 completion:v15];
+    v19 = controllerCopy;
+    selfCopy = self;
+    v21 = viewControllerCopy;
+    v22 = completionCopy;
+    [(STSMessagesAppViewController *)self transitionFromViewController:v19 toViewController:v21 duration:5242880 options:animationsCopy animations:v18 completion:v15];
   }
 
   else
   {
-    v16 = [(STSMessagesAppViewController *)self view];
-    v17 = [v11 view];
-    [v16 setContentView:v17];
+    view = [(STSMessagesAppViewController *)self view];
+    view2 = [viewControllerCopy view];
+    [view setContentView:view2];
 
-    [v11 didMoveToParentViewController:self];
-    if (v13)
+    [viewControllerCopy didMoveToParentViewController:self];
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -626,34 +626,34 @@
 
   [(STSPicker *)self->_zkwPicker setSelectionDelegate:self];
   v50 = +[NSMutableArray array];
-  v11 = [(STSMessagesAppViewController *)self view];
-  v12 = [v11 topAnchor];
-  v13 = [(STSMessagesAppViewController *)self parentViewController];
-  v14 = [v13 view];
-  v15 = [v14 topAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  view = [(STSMessagesAppViewController *)self view];
+  topAnchor = [view topAnchor];
+  parentViewController = [(STSMessagesAppViewController *)self parentViewController];
+  view2 = [parentViewController view];
+  topAnchor2 = [view2 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v17 = [(STSMessagesAppViewController *)self view];
-  v18 = [v17 bottomAnchor];
-  v19 = [(STSMessagesAppViewController *)self parentViewController];
-  v20 = [v19 view];
-  v21 = [v20 safeAreaLayoutGuide];
-  v22 = [v21 bottomAnchor];
-  v49 = [v18 constraintEqualToAnchor:v22];
+  view3 = [(STSMessagesAppViewController *)self view];
+  bottomAnchor = [view3 bottomAnchor];
+  parentViewController2 = [(STSMessagesAppViewController *)self parentViewController];
+  view4 = [parentViewController2 view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v23 = [(STSMessagesAppViewController *)self view];
-  v24 = [v23 leadingAnchor];
-  v25 = [(STSMessagesAppViewController *)self parentViewController];
-  v26 = [v25 view];
-  v27 = [v26 leadingAnchor];
-  v28 = [v24 constraintEqualToAnchor:v27];
+  view5 = [(STSMessagesAppViewController *)self view];
+  leadingAnchor = [view5 leadingAnchor];
+  parentViewController3 = [(STSMessagesAppViewController *)self parentViewController];
+  view6 = [parentViewController3 view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v29 = [(STSMessagesAppViewController *)self view];
-  v30 = [v29 trailingAnchor];
-  v31 = [(STSMessagesAppViewController *)self parentViewController];
-  v32 = [v31 view];
-  v33 = [v32 trailingAnchor];
-  v34 = [v30 constraintEqualToAnchor:v33];
+  view7 = [(STSMessagesAppViewController *)self view];
+  trailingAnchor = [view7 trailingAnchor];
+  parentViewController4 = [(STSMessagesAppViewController *)self parentViewController];
+  view8 = [parentViewController4 view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   [v50 addObject:v16];
   [v50 addObject:v49];
@@ -664,8 +664,8 @@
   zkwHeaderView = self->_zkwHeaderView;
   self->_zkwHeaderView = v35;
 
-  v37 = [(STSPicker *)self->_zkwPicker pickerView];
-  [v37 setHeaderView:self->_zkwHeaderView];
+  pickerView = [(STSPicker *)self->_zkwPicker pickerView];
+  [pickerView setHeaderView:self->_zkwHeaderView];
 
   [(STSZKWBrowserHeaderView *)self->_zkwHeaderView setDelegate:self->_zkwPicker];
   v38 = +[STSFeedbackReporter sharedInstance];
@@ -710,15 +710,15 @@
 
 - (void)_updatePickerBottomInset
 {
-  v2 = [(STSPicker *)self->_zkwPicker pickerView];
-  [v2 setBottomInset:44.0];
+  pickerView = [(STSPicker *)self->_zkwPicker pickerView];
+  [pickerView setBottomInset:44.0];
 }
 
-- (void)_addResultToRecents:(id)a3
+- (void)_addResultToRecents:(id)recents
 {
-  v4 = a3;
-  v5 = [v4 resultType];
-  v6 = [v5 isEqualToString:STSSearchModelResultTypeImage];
+  recentsCopy = recents;
+  resultType = [recentsCopy resultType];
+  v6 = [resultType isEqualToString:STSSearchModelResultTypeImage];
 
   if (v6)
   {
@@ -727,7 +727,7 @@
     v12[1] = 3221225472;
     v12[2] = sub_100003F3C;
     v12[3] = &unk_1000083C8;
-    v8 = v4;
+    v8 = recentsCopy;
     v13 = v8;
     v9 = [(NSMutableArray *)recentResults indexOfObjectPassingTest:v12];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -765,7 +765,7 @@
   v9 = 3221225472;
   v10 = sub_1000040A4;
   v11 = &unk_1000083F0;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
   [(NSMutableArray *)recentResults enumerateObjectsUsingBlock:&v8];
@@ -776,19 +776,19 @@
   [v6 synchronize];
 }
 
-- (id)dictForSearchResult:(id)a3
+- (id)dictForSearchResult:(id)result
 {
-  if (a3)
+  if (result)
   {
-    v3 = a3;
+    resultCopy = result;
     v4 = objc_alloc_init(NSMutableDictionary);
     [v4 setObject:@"image_search" forKey:@"result-type"];
-    v5 = [v3 url];
-    v6 = [v5 absoluteString];
-    v7 = v6;
-    if (v6)
+    v5 = [resultCopy url];
+    absoluteString = [v5 absoluteString];
+    v7 = absoluteString;
+    if (absoluteString)
     {
-      v8 = v6;
+      v8 = absoluteString;
     }
 
     else
@@ -798,11 +798,11 @@
 
     [v4 setObject:v8 forKey:@"url"];
 
-    v9 = [v3 identifier];
-    v10 = v9;
-    if (v9)
+    identifier = [resultCopy identifier];
+    v10 = identifier;
+    if (identifier)
     {
-      v11 = v9;
+      v11 = identifier;
     }
 
     else
@@ -812,11 +812,11 @@
 
     [v4 setObject:v11 forKey:@"id"];
 
-    v12 = [v3 storeIdentifier];
-    v13 = v12;
-    if (v12)
+    storeIdentifier = [resultCopy storeIdentifier];
+    v13 = storeIdentifier;
+    if (storeIdentifier)
     {
-      v14 = v12;
+      v14 = storeIdentifier;
     }
 
     else
@@ -826,11 +826,11 @@
 
     [v4 setObject:v14 forKey:@"store-identifier"];
 
-    v15 = [v3 sts_appProviderName];
-    v16 = v15;
-    if (v15)
+    sts_appProviderName = [resultCopy sts_appProviderName];
+    v16 = sts_appProviderName;
+    if (sts_appProviderName)
     {
-      v17 = v15;
+      v17 = sts_appProviderName;
     }
 
     else
@@ -840,11 +840,11 @@
 
     [v4 setObject:v17 forKey:@"app-provider-name"];
 
-    v18 = [v3 sts_providerName];
-    v19 = v18;
-    if (v18)
+    sts_providerName = [resultCopy sts_providerName];
+    v19 = sts_providerName;
+    if (sts_providerName)
     {
-      v20 = v18;
+      v20 = sts_providerName;
     }
 
     else
@@ -854,13 +854,13 @@
 
     [v4 setObject:v20 forKey:@"desc-provider-name"];
 
-    v21 = [v3 thumbnail];
-    v22 = [v21 urlValue];
-    v23 = [v22 absoluteString];
-    v24 = v23;
-    if (v23)
+    thumbnail = [resultCopy thumbnail];
+    urlValue = [thumbnail urlValue];
+    absoluteString2 = [urlValue absoluteString];
+    v24 = absoluteString2;
+    if (absoluteString2)
     {
-      v25 = v23;
+      v25 = absoluteString2;
     }
 
     else
@@ -870,13 +870,13 @@
 
     [v4 setObject:v25 forKey:@"thumbnail-url"];
 
-    v26 = [v3 sts_providerHostPageURL];
+    sts_providerHostPageURL = [resultCopy sts_providerHostPageURL];
 
-    v27 = [v26 absoluteString];
-    v28 = v27;
-    if (v27)
+    absoluteString3 = [sts_providerHostPageURL absoluteString];
+    v28 = absoluteString3;
+    if (absoluteString3)
     {
-      v29 = v27;
+      v29 = absoluteString3;
     }
 
     else
@@ -897,11 +897,11 @@
   return v30;
 }
 
-- (id)searchResultForDict:(id)a3
+- (id)searchResultForDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_alloc_init(SFSearchResult);
-  v5 = [v3 objectForKey:@"result-type"];
+  v5 = [dictCopy objectForKey:@"result-type"];
   v6 = v5;
   if (v5)
   {
@@ -915,30 +915,30 @@
 
   [v4 setResultType:v7];
 
-  v8 = [v3 objectForKey:@"url"];
+  v8 = [dictCopy objectForKey:@"url"];
   v9 = [NSURL URLWithString:v8];
   [v4 setUrl:v9];
 
-  v10 = [v3 objectForKey:@"id"];
+  v10 = [dictCopy objectForKey:@"id"];
   [v4 setIdentifier:v10];
 
-  v11 = [v3 objectForKey:@"store-identifier"];
+  v11 = [dictCopy objectForKey:@"store-identifier"];
   [v4 setStoreIdentifier:v11];
 
   [v4 setType:2];
   [v4 setSectionBundleIdentifier:@"com.apple.parsec.image_search.msgs-zkw"];
   v12 = [SFURLImage alloc];
-  v13 = [v3 objectForKey:@"thumbnail-url"];
+  v13 = [dictCopy objectForKey:@"thumbnail-url"];
   v14 = [NSURL URLWithString:v13];
   v15 = [v12 initWithURL:v14];
 
   [v4 setThumbnail:v15];
   v16 = objc_alloc_init(SFDescriptionCardSection);
-  v17 = [v3 objectForKey:@"desc-provider-name"];
+  v17 = [dictCopy objectForKey:@"desc-provider-name"];
   [v16 setTitle:v17];
 
   v18 = objc_alloc_init(SFMetaInfoCardSection);
-  v19 = [v3 objectForKey:@"meta-hostpage-url"];
+  v19 = [dictCopy objectForKey:@"meta-hostpage-url"];
   v20 = [NSURL URLWithString:v19];
   [v18 setHostPageURL:v20];
 
@@ -949,7 +949,7 @@
   [v21 setCardSections:v22];
 
   v23 = objc_alloc_init(SFPunchout);
-  v24 = [v3 objectForKey:@"app-provider-name"];
+  v24 = [dictCopy objectForKey:@"app-provider-name"];
 
   [v23 setLabel:v24];
   [v4 setPunchout:v23];
@@ -958,18 +958,18 @@
   return v4;
 }
 
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  bagCopy = bag;
+  errorCopy = error;
   v10 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (errorCopy)
   {
     if (v10)
     {
       v12 = 138412290;
-      v13 = v7;
+      v13 = sessionCopy;
       v11 = "session %@ parsec bag failed to load";
 LABEL_6:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, v11, &v12, 0xCu);
@@ -979,7 +979,7 @@ LABEL_6:
   else if (v10)
   {
     v12 = 138412290;
-    v13 = v7;
+    v13 = sessionCopy;
     v11 = "session %@ parsec bag loaded";
     goto LABEL_6;
   }

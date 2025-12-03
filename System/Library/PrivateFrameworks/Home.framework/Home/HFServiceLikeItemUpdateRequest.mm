@@ -1,22 +1,22 @@
 @interface HFServiceLikeItemUpdateRequest
 - (HFServiceLikeItemUpdateRequest)init;
-- (HFServiceLikeItemUpdateRequest)initWithAccessory:(id)a3 valueSource:(id)a4 characteristics:(id)a5;
-- (HFServiceLikeItemUpdateRequest)initWithService:(id)a3 valueSource:(id)a4 characteristics:(id)a5;
+- (HFServiceLikeItemUpdateRequest)initWithAccessory:(id)accessory valueSource:(id)source characteristics:(id)characteristics;
+- (HFServiceLikeItemUpdateRequest)initWithService:(id)service valueSource:(id)source characteristics:(id)characteristics;
 - (HMAccessory)accessory;
-- (id)_displayMetadataForReadResponse:(id)a3;
-- (id)_standardResultsForReadResponse:(id)a3 displayMetadata:(id)a4 batteryLevelResults:(id)a5 updateOptions:(id)a6;
-- (id)updateWithOptions:(id)a3;
+- (id)_displayMetadataForReadResponse:(id)response;
+- (id)_standardResultsForReadResponse:(id)response displayMetadata:(id)metadata batteryLevelResults:(id)results updateOptions:(id)options;
+- (id)updateWithOptions:(id)options;
 @end
 
 @implementation HFServiceLikeItemUpdateRequest
 
-- (HFServiceLikeItemUpdateRequest)initWithService:(id)a3 valueSource:(id)a4 characteristics:(id)a5
+- (HFServiceLikeItemUpdateRequest)initWithService:(id)service valueSource:(id)source characteristics:(id)characteristics
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && v10)
+  serviceCopy = service;
+  sourceCopy = source;
+  characteristicsCopy = characteristics;
+  if (serviceCopy && sourceCopy)
   {
     v18.receiver = self;
     v18.super_class = HFServiceLikeItemUpdateRequest;
@@ -24,13 +24,13 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_service, a3);
-      objc_storeStrong(p_isa + 3, a4);
-      objc_storeStrong(p_isa + 4, a5);
+      objc_storeStrong(&v12->_service, service);
+      objc_storeStrong(p_isa + 3, source);
+      objc_storeStrong(p_isa + 4, characteristics);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -39,26 +39,26 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v9;
+      v20 = serviceCopy;
       v21 = 2112;
-      v22 = v10;
+      v22 = sourceCopy;
       _os_log_error_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_ERROR, "HFServiceLikeItemUpdateRequest cannot init with nil service %@ or nil valueSource %@", buf, 0x16u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
-- (HFServiceLikeItemUpdateRequest)initWithAccessory:(id)a3 valueSource:(id)a4 characteristics:(id)a5
+- (HFServiceLikeItemUpdateRequest)initWithAccessory:(id)accessory valueSource:(id)source characteristics:(id)characteristics
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && v10)
+  accessoryCopy = accessory;
+  sourceCopy = source;
+  characteristicsCopy = characteristics;
+  if (accessoryCopy && sourceCopy)
   {
     v20.receiver = self;
     v20.super_class = HFServiceLikeItemUpdateRequest;
@@ -66,11 +66,11 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_accessory, a3);
-      objc_storeStrong(&v13->_valueSource, a4);
-      if (v11)
+      objc_storeStrong(&v12->_accessory, accessory);
+      objc_storeStrong(&v13->_valueSource, source);
+      if (characteristicsCopy)
       {
-        v14 = v11;
+        v14 = characteristicsCopy;
       }
 
       else
@@ -83,7 +83,7 @@
     }
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
@@ -92,24 +92,24 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v22 = v9;
+      v22 = accessoryCopy;
       v23 = 2112;
-      v24 = v10;
+      v24 = sourceCopy;
       _os_log_error_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_ERROR, "HFServiceLikeItemUpdateRequest cannot init with nil accessory %@ or nil valueSource %@", buf, 0x16u);
     }
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v16;
+  return selfCopy;
 }
 
 - (HFServiceLikeItemUpdateRequest)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithService_valueSource_characteristics_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceLikeItem.m" lineNumber:105 description:{@"%s is unavailable; use %@ instead", "-[HFServiceLikeItemUpdateRequest init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceLikeItem.m" lineNumber:105 description:{@"%s is unavailable; use %@ instead", "-[HFServiceLikeItemUpdateRequest init]", v5}];
 
   return 0;
 }
@@ -119,54 +119,54 @@
   accessory = self->_accessory;
   if (accessory)
   {
-    v3 = accessory;
+    accessory = accessory;
   }
 
   else
   {
-    v4 = [(HFServiceLikeItemUpdateRequest *)self service];
-    v3 = [v4 accessory];
+    service = [(HFServiceLikeItemUpdateRequest *)self service];
+    accessory = [service accessory];
   }
 
-  return v3;
+  return accessory;
 }
 
-- (id)updateWithOptions:(id)a3
+- (id)updateWithOptions:(id)options
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceLikeItemUpdateRequest *)self characteristics];
-  v6 = [v5 mutableCopy];
+  optionsCopy = options;
+  characteristics = [(HFServiceLikeItemUpdateRequest *)self characteristics];
+  v6 = [characteristics mutableCopy];
 
-  v7 = [(HFServiceLikeItemUpdateRequest *)self service];
+  service = [(HFServiceLikeItemUpdateRequest *)self service];
 
-  if (v7)
+  if (service)
   {
-    v8 = [(HFServiceLikeItemUpdateRequest *)self service];
-    v9 = [v8 hf_requiredCharacteristicTypesForDisplayMetadata];
+    service2 = [(HFServiceLikeItemUpdateRequest *)self service];
+    hf_requiredCharacteristicTypesForDisplayMetadata = [service2 hf_requiredCharacteristicTypesForDisplayMetadata];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __52__HFServiceLikeItemUpdateRequest_updateWithOptions___block_invoke;
     v29[3] = &unk_277DFD7C8;
     v29[4] = self;
-    v10 = [v9 na_map:v29];
+    v10 = [hf_requiredCharacteristicTypesForDisplayMetadata na_map:v29];
     [v6 unionSet:v10];
   }
 
   v11 = [HFAccessoryBatteryLevelItem alloc];
-  v12 = [(HFServiceLikeItemUpdateRequest *)self accessory];
-  v13 = [(HFServiceLikeItemUpdateRequest *)self valueSource];
-  v14 = [(HFAccessoryBatteryLevelItem *)v11 initWithAccessory:v12 valueSource:v13];
+  accessory = [(HFServiceLikeItemUpdateRequest *)self accessory];
+  valueSource = [(HFServiceLikeItemUpdateRequest *)self valueSource];
+  v14 = [(HFAccessoryBatteryLevelItem *)v11 initWithAccessory:accessory valueSource:valueSource];
 
-  v15 = [v4 mutableCopy];
+  v15 = [optionsCopy mutableCopy];
   v16 = [MEMORY[0x277CBEB98] setWithObjects:{@"batteryLow", @"batteryPercentage", 0}];
   [v15 setObject:v16 forKeyedSubscript:@"accessoryBatteryDesiredKeys"];
 
   v17 = [(HFItem *)v14 updateWithOptions:v15];
   v18 = [v17 recover:&__block_literal_global_140];
 
-  v19 = [(HFServiceLikeItemUpdateRequest *)self valueSource];
-  v20 = [v19 readValuesForCharacteristics:v6];
+  valueSource2 = [(HFServiceLikeItemUpdateRequest *)self valueSource];
+  v20 = [valueSource2 readValuesForCharacteristics:v6];
   v30[0] = v20;
   v30[1] = v18;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
@@ -177,8 +177,8 @@
   v27[2] = __52__HFServiceLikeItemUpdateRequest_updateWithOptions___block_invoke_3;
   v27[3] = &unk_277DFCDF8;
   v27[4] = self;
-  v28 = v4;
-  v23 = v4;
+  v28 = optionsCopy;
+  v23 = optionsCopy;
   v24 = [v22 flatMap:v27];
 
   v25 = *MEMORY[0x277D85DE8];
@@ -210,22 +210,22 @@ id __52__HFServiceLikeItemUpdateRequest_updateWithOptions___block_invoke_3(uint6
   return v9;
 }
 
-- (id)_displayMetadataForReadResponse:(id)a3
+- (id)_displayMetadataForReadResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(HFServiceLikeItemUpdateRequest *)self service];
+  responseCopy = response;
+  service = [(HFServiceLikeItemUpdateRequest *)self service];
 
-  if (v5)
+  if (service)
   {
-    v6 = [(HFServiceLikeItemUpdateRequest *)self service];
-    v7 = [HFCharacteristicValueDisplayMetadata displayMetadataForService:v6 characteristicReadResponse:v4];
+    service2 = [(HFServiceLikeItemUpdateRequest *)self service];
+    v7 = [HFCharacteristicValueDisplayMetadata displayMetadataForService:service2 characteristicReadResponse:responseCopy];
   }
 
   else
   {
-    v8 = [(HFServiceLikeItemUpdateRequest *)self accessory];
+    accessory = [(HFServiceLikeItemUpdateRequest *)self accessory];
 
-    if (v8)
+    if (accessory)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
@@ -233,8 +233,8 @@ id __52__HFServiceLikeItemUpdateRequest_updateWithOptions___block_invoke_3(uint6
       v12[3] = &unk_277DFD7F0;
       v12[4] = self;
       v9 = __66__HFServiceLikeItemUpdateRequest__displayMetadataForReadResponse___block_invoke(v12);
-      v10 = [(HFServiceLikeItemUpdateRequest *)self accessory];
-      v7 = [HFCharacteristicValueDisplayMetadata displayMetadataForAccessory:v10 withContextProvider:v9];
+      accessory2 = [(HFServiceLikeItemUpdateRequest *)self accessory];
+      v7 = [HFCharacteristicValueDisplayMetadata displayMetadataForAccessory:accessory2 withContextProvider:v9];
     }
 
     else
@@ -269,24 +269,24 @@ id __66__HFServiceLikeItemUpdateRequest__displayMetadataForReadResponse___block_
   return v6;
 }
 
-- (id)_standardResultsForReadResponse:(id)a3 displayMetadata:(id)a4 batteryLevelResults:(id)a5 updateOptions:(id)a6
+- (id)_standardResultsForReadResponse:(id)response displayMetadata:(id)metadata batteryLevelResults:(id)results updateOptions:(id)options
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HFServiceLikeItemUpdateRequest *)self service];
-  v15 = v14;
-  if (!v14)
+  optionsCopy = options;
+  resultsCopy = results;
+  metadataCopy = metadata;
+  responseCopy = response;
+  service = [(HFServiceLikeItemUpdateRequest *)self service];
+  accessory = service;
+  if (!service)
   {
-    v15 = [(HFServiceLikeItemUpdateRequest *)self accessory];
+    accessory = [(HFServiceLikeItemUpdateRequest *)self accessory];
   }
 
-  v16 = [(HFServiceLikeItemUpdateRequest *)self accessory];
-  v17 = [(HFServiceLikeItemUpdateRequest *)self valueSource];
-  v18 = [HFServiceLikeItemResultFactory populateStandardResultsForHomeKitObject:v15 withBackingAccessory:v16 displayMetadata:v12 readResponse:v13 batteryLevelResults:v11 valueSource:v17 updateOptions:v10];
+  accessory2 = [(HFServiceLikeItemUpdateRequest *)self accessory];
+  valueSource = [(HFServiceLikeItemUpdateRequest *)self valueSource];
+  v18 = [HFServiceLikeItemResultFactory populateStandardResultsForHomeKitObject:accessory withBackingAccessory:accessory2 displayMetadata:metadataCopy readResponse:responseCopy batteryLevelResults:resultsCopy valueSource:valueSource updateOptions:optionsCopy];
 
-  if (!v14)
+  if (!service)
   {
   }
 

@@ -1,32 +1,32 @@
 @interface ASCDigitalIdentityCredentialOptions
-- (ASCDigitalIdentityCredentialOptions)initWithCoder:(id)a3;
-- (ASCDigitalIdentityCredentialOptions)initWithOrigin:(id)a3 requestType:(id)a4 commandData:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ASCDigitalIdentityCredentialOptions)initWithCoder:(id)coder;
+- (ASCDigitalIdentityCredentialOptions)initWithOrigin:(id)origin requestType:(id)type commandData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCDigitalIdentityCredentialOptions
 
-- (ASCDigitalIdentityCredentialOptions)initWithOrigin:(id)a3 requestType:(id)a4 commandData:(id)a5
+- (ASCDigitalIdentityCredentialOptions)initWithOrigin:(id)origin requestType:(id)type commandData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  v12 = 0;
-  if (v8 && v9 && v10)
+  originCopy = origin;
+  typeCopy = type;
+  dataCopy = data;
+  v11 = dataCopy;
+  selfCopy = 0;
+  if (originCopy && typeCopy && dataCopy)
   {
     v20.receiver = self;
     v20.super_class = ASCDigitalIdentityCredentialOptions;
     self = [(ASCDigitalIdentityCredentialOptions *)&v20 init];
     if (self)
     {
-      v13 = [v8 copy];
+      v13 = [originCopy copy];
       origin = self->_origin;
       self->_origin = v13;
 
-      v15 = [v9 copy];
+      v15 = [typeCopy copy];
       requestType = self->_requestType;
       self->_requestType = v15;
 
@@ -35,44 +35,44 @@
       self->_commandData = v17;
 
       self = self;
-      v12 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       origin = self->_origin;
-      v8 = [(ASCDigitalIdentityCredentialOptions *)v6 origin];
-      if ([(NSString *)origin isEqualToString:v8])
+      origin = [(ASCDigitalIdentityCredentialOptions *)v6 origin];
+      if ([(NSString *)origin isEqualToString:origin])
       {
         requestType = self->_requestType;
-        v10 = [(ASCDigitalIdentityCredentialOptions *)v6 requestType];
-        if ([(NSString *)requestType isEqualToString:v10])
+        requestType = [(ASCDigitalIdentityCredentialOptions *)v6 requestType];
+        if ([(NSString *)requestType isEqualToString:requestType])
         {
           commandData = self->_commandData;
-          v12 = [(ASCDigitalIdentityCredentialOptions *)v6 commandData];
-          v13 = [(NSData *)commandData isEqualToData:v12];
+          commandData = [(ASCDigitalIdentityCredentialOptions *)v6 commandData];
+          v13 = [(NSData *)commandData isEqualToData:commandData];
         }
 
         else
@@ -103,24 +103,24 @@
   return v4 ^ [(NSData *)self->_commandData hash];
 }
 
-- (ASCDigitalIdentityCredentialOptions)initWithCoder:(id)a3
+- (ASCDigitalIdentityCredentialOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"origin"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"commandData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"origin"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"commandData"];
 
   v8 = [(ASCDigitalIdentityCredentialOptions *)self initWithOrigin:v5 requestType:v6 commandData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   origin = self->_origin;
-  v5 = a3;
-  [v5 encodeObject:origin forKey:@"origin"];
-  [v5 encodeObject:self->_requestType forKey:@"requestType"];
-  [v5 encodeObject:self->_commandData forKey:@"commandData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:origin forKey:@"origin"];
+  [coderCopy encodeObject:self->_requestType forKey:@"requestType"];
+  [coderCopy encodeObject:self->_commandData forKey:@"commandData"];
 }
 
 @end

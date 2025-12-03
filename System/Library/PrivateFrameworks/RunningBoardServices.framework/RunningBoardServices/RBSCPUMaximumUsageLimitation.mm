@@ -1,11 +1,11 @@
 @interface RBSCPUMaximumUsageLimitation
-+ (id)limitationForRole:(unsigned __int8)a3 withPercentage:(unint64_t)a4 duration:(double)a5 violationPolicy:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (RBSCPUMaximumUsageLimitation)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithRole:(unint64_t)a3 percentage:(unint64_t)a4 duration:(double)a5 violationPolicy:;
++ (id)limitationForRole:(unsigned __int8)role withPercentage:(unint64_t)percentage duration:(double)duration violationPolicy:(unint64_t)policy;
+- (BOOL)isEqual:(id)equal;
+- (RBSCPUMaximumUsageLimitation)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithRole:(unint64_t)role percentage:(unint64_t)percentage duration:(double)duration violationPolicy:;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSCPUMaximumUsageLimitation
@@ -20,9 +20,9 @@
   return v6 ^ v5;
 }
 
-+ (id)limitationForRole:(unsigned __int8)a3 withPercentage:(unint64_t)a4 duration:(double)a5 violationPolicy:(unint64_t)a6
++ (id)limitationForRole:(unsigned __int8)role withPercentage:(unint64_t)percentage duration:(double)duration violationPolicy:(unint64_t)policy
 {
-  v6 = [[RBSCPUMaximumUsageLimitation alloc] _initWithRole:a3 percentage:a4 duration:a6 violationPolicy:a5];
+  v6 = [[RBSCPUMaximumUsageLimitation alloc] _initWithRole:role percentage:percentage duration:policy violationPolicy:duration];
 
   return v6;
 }
@@ -49,47 +49,47 @@
   return v9;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSCPUMaximumUsageLimitation;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeInt64:self->_role forKey:{@"role", v5.receiver, v5.super_class}];
-  [v4 encodeUInt64:self->_percentage forKey:@"percentage"];
-  [v4 encodeDouble:@"duration" forKey:self->_duration];
-  [v4 encodeUInt64:self->_violationPolicy forKey:@"violationPolicy"];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:self->_role forKey:{@"role", v5.receiver, v5.super_class}];
+  [coderCopy encodeUInt64:self->_percentage forKey:@"percentage"];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+  [coderCopy encodeUInt64:self->_violationPolicy forKey:@"violationPolicy"];
 }
 
-- (RBSCPUMaximumUsageLimitation)initWithRBSXPCCoder:(id)a3
+- (RBSCPUMaximumUsageLimitation)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = RBSCPUMaximumUsageLimitation;
-  v5 = [(RBSAttribute *)&v8 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v8 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_role = [v4 decodeInt64ForKey:@"role"];
-    v5->_percentage = [v4 decodeUInt64ForKey:@"percentage"];
-    [v4 decodeDoubleForKey:@"duration"];
+    v5->_role = [coderCopy decodeInt64ForKey:@"role"];
+    v5->_percentage = [coderCopy decodeUInt64ForKey:@"percentage"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v5->_duration = v6;
-    v5->_violationPolicy = [v4 decodeUInt64ForKey:@"violationPolicy"];
+    v5->_violationPolicy = [coderCopy decodeUInt64ForKey:@"violationPolicy"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSCPUMaximumUsageLimitation;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& self->_role == *(v4 + 8) && self->_percentage == *(v4 + 2) && self->_duration == v4[3] && self->_violationPolicy == *(v4 + 4);
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& self->_role == *(equalCopy + 8) && self->_percentage == *(equalCopy + 2) && self->_duration == equalCopy[3] && self->_violationPolicy == *(equalCopy + 4);
 
   return v5;
 }
 
-- (id)_initWithRole:(unint64_t)a3 percentage:(unint64_t)a4 duration:(double)a5 violationPolicy:
+- (id)_initWithRole:(unint64_t)role percentage:(unint64_t)percentage duration:(double)duration violationPolicy:
 {
   if (result)
   {
@@ -97,28 +97,28 @@
     v9 = result;
     if ((a2 - 9) <= 0xFFFFFFF8)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_1();
       [v11 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
 
-    if (a4 >= 3)
+    if (percentage >= 3)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_1();
       [v13 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
 
-    if (a5 <= 0.0)
+    if (duration <= 0.0)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_1();
       [v15 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
 
-    if (a3 >= 0x65)
+    if (role >= 0x65)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_1();
       [v17 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
@@ -129,9 +129,9 @@
     if (result)
     {
       *(result + 8) = v8;
-      *(result + 2) = a3;
-      *(result + 3) = a5;
-      *(result + 4) = a4;
+      *(result + 2) = role;
+      *(result + 3) = duration;
+      *(result + 4) = percentage;
     }
   }
 

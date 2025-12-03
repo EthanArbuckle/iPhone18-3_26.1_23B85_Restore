@@ -1,30 +1,30 @@
 @interface SKRemoteProductViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (SKStoreProductViewController)productViewController;
 - (void)didFinish;
 - (void)didFinishDismissal;
-- (void)didFinishWithResult:(id)a3;
-- (void)didReceiveTitle:(id)a3;
-- (void)loadDidFinishWithResult:(id)a3 error:(id)a4;
-- (void)presentPageWithRequest:(id)a3 animated:(id)a4;
+- (void)didFinishWithResult:(id)result;
+- (void)didReceiveTitle:(id)title;
+- (void)loadDidFinishWithResult:(id)result error:(id)error;
+- (void)presentPageWithRequest:(id)request animated:(id)animated;
 - (void)promptForStarRating;
-- (void)setStatusBarHidden:(id)a3 withAnimation:(id)a4;
-- (void)setStatusBarStyle:(id)a3 animated:(id)a4;
-- (void)userDidInteractWithProduct:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)setStatusBarHidden:(id)hidden withAnimation:(id)animation;
+- (void)setStatusBarStyle:(id)style animated:(id)animated;
+- (void)userDidInteractWithProduct:(id)product;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SKRemoteProductViewController
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
-  LOBYTE(a3) = [WeakRetained shouldAutorotateToInterfaceOrientation:a3];
+  LOBYTE(orientation) = [WeakRetained shouldAutorotateToInterfaceOrientation:orientation];
 
-  return a3;
+  return orientation;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
   [WeakRetained _resetRemoteViewController];
@@ -42,51 +42,51 @@
   [WeakRetained _didFinishDismissal];
 }
 
-- (void)didFinishWithResult:(id)a3
+- (void)didFinishWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
-  v5 = [v4 integerValue];
+  integerValue = [resultCopy integerValue];
 
-  [WeakRetained _didFinishWithResult:v5];
+  [WeakRetained _didFinishWithResult:integerValue];
 }
 
-- (void)userDidInteractWithProduct:(id)a3
+- (void)userDidInteractWithProduct:(id)product
 {
-  v4 = a3;
+  productCopy = product;
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
-  v5 = [v4 integerValue];
+  integerValue = [productCopy integerValue];
 
-  [WeakRetained _userDidInteractWithProduct:v5];
+  [WeakRetained _userDidInteractWithProduct:integerValue];
 }
 
-- (void)didReceiveTitle:(id)a3
+- (void)didReceiveTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
-  [WeakRetained setTitle:v4];
+  [WeakRetained setTitle:titleCopy];
 }
 
-- (void)loadDidFinishWithResult:(id)a3 error:(id)a4
+- (void)loadDidFinishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
-  v8 = [v7 BOOLValue];
+  bOOLValue = [resultCopy BOOLValue];
 
-  [WeakRetained _loadDidFinishWithResult:v8 error:v6];
+  [WeakRetained _loadDidFinishWithResult:bOOLValue error:errorCopy];
 }
 
-- (void)presentPageWithRequest:(id)a3 animated:(id)a4
+- (void)presentPageWithRequest:(id)request animated:(id)animated
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [[SKStorePageRequest alloc] initWithXPCEncoding:v7];
+  animatedCopy = animated;
+  requestCopy = request;
+  v10 = [[SKStorePageRequest alloc] initWithXPCEncoding:requestCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_productViewController);
-  v9 = [v6 BOOLValue];
+  bOOLValue = [animatedCopy BOOLValue];
 
-  [WeakRetained _presentPageWithRequest:v10 animated:v9];
+  [WeakRetained _presentPageWithRequest:v10 animated:bOOLValue];
 }
 
 - (void)promptForStarRating
@@ -123,28 +123,28 @@ void __52__SKRemoteProductViewController_promptForStarRating__block_invoke(uint6
   }
 }
 
-- (void)setStatusBarHidden:(id)a3 withAnimation:(id)a4
+- (void)setStatusBarHidden:(id)hidden withAnimation:(id)animation
 {
   v5 = MEMORY[0x1E69DC668];
-  v6 = a4;
-  v7 = a3;
-  v10 = [v5 sharedApplication];
-  v8 = [v7 BOOLValue];
+  animationCopy = animation;
+  hiddenCopy = hidden;
+  sharedApplication = [v5 sharedApplication];
+  bOOLValue = [hiddenCopy BOOLValue];
 
-  v9 = [v6 integerValue];
-  [v10 setStatusBarHidden:v8 withAnimation:v9];
+  integerValue = [animationCopy integerValue];
+  [sharedApplication setStatusBarHidden:bOOLValue withAnimation:integerValue];
 }
 
-- (void)setStatusBarStyle:(id)a3 animated:(id)a4
+- (void)setStatusBarStyle:(id)style animated:(id)animated
 {
   v5 = MEMORY[0x1E69DC668];
-  v6 = a4;
-  v7 = a3;
-  v10 = [v5 sharedApplication];
-  v8 = [v7 integerValue];
+  animatedCopy = animated;
+  styleCopy = style;
+  sharedApplication = [v5 sharedApplication];
+  integerValue = [styleCopy integerValue];
 
-  v9 = [v6 BOOLValue];
-  [v10 setStatusBarStyle:v8 animated:v9];
+  bOOLValue = [animatedCopy BOOLValue];
+  [sharedApplication setStatusBarStyle:integerValue animated:bOOLValue];
 }
 
 - (SKStoreProductViewController)productViewController

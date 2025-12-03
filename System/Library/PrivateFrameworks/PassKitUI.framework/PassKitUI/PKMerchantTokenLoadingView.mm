@@ -1,5 +1,5 @@
 @interface PKMerchantTokenLoadingView
-- (PKMerchantTokenLoadingView)initWithFrame:(CGRect)a3;
+- (PKMerchantTokenLoadingView)initWithFrame:(CGRect)frame;
 - (void)_setUpActivityIndicator;
 - (void)_setUpConstraints;
 - (void)_setUpLabel;
@@ -10,11 +10,11 @@
 
 @implementation PKMerchantTokenLoadingView
 
-- (PKMerchantTokenLoadingView)initWithFrame:(CGRect)a3
+- (PKMerchantTokenLoadingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKMerchantTokenLoadingView;
-  v3 = [(PKMerchantTokenLoadingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKMerchantTokenLoadingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,8 +36,8 @@
 
 - (void)_setUpSelf
 {
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PKMerchantTokenLoadingView *)self setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PKMerchantTokenLoadingView *)self setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)_setUpStackView
@@ -88,23 +88,23 @@
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v13 = MEMORY[0x1E696ACD8];
-  v18 = [(UIStackView *)self->_stackView centerXAnchor];
-  v17 = [(PKMerchantTokenLoadingView *)self centerXAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  centerXAnchor = [(UIStackView *)self->_stackView centerXAnchor];
+  centerXAnchor2 = [(PKMerchantTokenLoadingView *)self centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v19[0] = v16;
-  v15 = [(UIStackView *)self->_stackView centerYAnchor];
-  v14 = [(PKMerchantTokenLoadingView *)self centerYAnchor];
-  v3 = [v15 constraintEqualToAnchor:v14];
+  centerYAnchor = [(UIStackView *)self->_stackView centerYAnchor];
+  centerYAnchor2 = [(PKMerchantTokenLoadingView *)self centerYAnchor];
+  v3 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v19[1] = v3;
-  v4 = [(UIStackView *)self->_stackView leadingAnchor];
-  v5 = [(PKMerchantTokenLoadingView *)self layoutMarginsGuide];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintGreaterThanOrEqualToAnchor:v6];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  layoutMarginsGuide = [(PKMerchantTokenLoadingView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v7 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v19[2] = v7;
-  v8 = [(UIStackView *)self->_stackView trailingAnchor];
-  v9 = [(PKMerchantTokenLoadingView *)self layoutMarginsGuide];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintLessThanOrEqualToAnchor:v10];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  layoutMarginsGuide2 = [(PKMerchantTokenLoadingView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v11 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v19[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   [v13 activateConstraints:v12];

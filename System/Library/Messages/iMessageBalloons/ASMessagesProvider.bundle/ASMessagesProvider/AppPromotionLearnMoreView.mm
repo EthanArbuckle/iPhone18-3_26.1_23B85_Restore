@@ -1,5 +1,5 @@
 @interface AppPromotionLearnMoreView
-- (_TtC18ASMessagesProvider25AppPromotionLearnMoreView)initWithFrame:(CGRect)a3;
+- (_TtC18ASMessagesProvider25AppPromotionLearnMoreView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_6C5DD8();
 }
 
-- (_TtC18ASMessagesProvider25AppPromotionLearnMoreView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider25AppPromotionLearnMoreView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

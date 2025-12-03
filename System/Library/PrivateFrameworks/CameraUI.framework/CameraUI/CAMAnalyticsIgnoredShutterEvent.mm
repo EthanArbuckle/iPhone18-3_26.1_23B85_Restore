@@ -1,29 +1,29 @@
 @interface CAMAnalyticsIgnoredShutterEvent
-- (CAMAnalyticsIgnoredShutterEvent)initWithReasons:(unint64_t)a3 timeSinceLastPress:(double)a4 dynamicShutterEnabled:(BOOL)a5 responsiveShutterEnabled:(BOOL)a6;
-- (id)_timeSinceLastPressRangeStringForMilliseconds:(int64_t)a3;
+- (CAMAnalyticsIgnoredShutterEvent)initWithReasons:(unint64_t)reasons timeSinceLastPress:(double)press dynamicShutterEnabled:(BOOL)enabled responsiveShutterEnabled:(BOOL)shutterEnabled;
+- (id)_timeSinceLastPressRangeStringForMilliseconds:(int64_t)milliseconds;
 @end
 
 @implementation CAMAnalyticsIgnoredShutterEvent
 
-- (CAMAnalyticsIgnoredShutterEvent)initWithReasons:(unint64_t)a3 timeSinceLastPress:(double)a4 dynamicShutterEnabled:(BOOL)a5 responsiveShutterEnabled:(BOOL)a6
+- (CAMAnalyticsIgnoredShutterEvent)initWithReasons:(unint64_t)reasons timeSinceLastPress:(double)press dynamicShutterEnabled:(BOOL)enabled responsiveShutterEnabled:(BOOL)shutterEnabled
 {
-  v6 = a6;
-  v7 = a5;
+  shutterEnabledCopy = shutterEnabled;
+  enabledCopy = enabled;
   v31.receiver = self;
   v31.super_class = CAMAnalyticsIgnoredShutterEvent;
   v10 = [(CAMAnalyticsEvent *)&v31 init];
   if (v10)
   {
-    if (a3)
+    if (reasons)
     {
       v11 = 1;
       v12 = MEMORY[0x1E695E118];
       do
       {
-        if (a3)
+        if (reasons)
         {
-          v13 = [(CAMAnalyticsEvent *)v10 _eventMap];
-          v14 = v13;
+          _eventMap = [(CAMAnalyticsEvent *)v10 _eventMap];
+          v14 = _eventMap;
           v15 = @"disabledReasonPurgingDiskSpace";
           if (v11 != 128)
           {
@@ -105,32 +105,32 @@
             v19 = v15;
           }
 
-          [v13 setObject:v12 forKeyedSubscript:v19];
+          [_eventMap setObject:v12 forKeyedSubscript:v19];
         }
 
         v11 *= 2;
-        v20 = a3 > 1;
-        a3 >>= 1;
+        v20 = reasons > 1;
+        reasons >>= 1;
       }
 
       while (v20);
     }
 
-    v21 = [MEMORY[0x1E696AD98] numberWithInteger:(a4 * 1000.0)];
-    v22 = [(CAMAnalyticsEvent *)v10 _eventMap];
-    [v22 setObject:v21 forKeyedSubscript:@"timeSinceLastPress"];
+    v21 = [MEMORY[0x1E696AD98] numberWithInteger:(press * 1000.0)];
+    _eventMap2 = [(CAMAnalyticsEvent *)v10 _eventMap];
+    [_eventMap2 setObject:v21 forKeyedSubscript:@"timeSinceLastPress"];
 
-    v23 = [(CAMAnalyticsIgnoredShutterEvent *)v10 _timeSinceLastPressRangeStringForMilliseconds:(a4 * 1000.0)];
-    v24 = [(CAMAnalyticsEvent *)v10 _eventMap];
-    [v24 setObject:v23 forKeyedSubscript:@"timeSinceLastPressRange"];
+    v23 = [(CAMAnalyticsIgnoredShutterEvent *)v10 _timeSinceLastPressRangeStringForMilliseconds:(press * 1000.0)];
+    _eventMap3 = [(CAMAnalyticsEvent *)v10 _eventMap];
+    [_eventMap3 setObject:v23 forKeyedSubscript:@"timeSinceLastPressRange"];
 
-    v25 = [MEMORY[0x1E696AD98] numberWithBool:v7];
-    v26 = [(CAMAnalyticsEvent *)v10 _eventMap];
-    [v26 setObject:v25 forKeyedSubscript:@"dynamicShutter"];
+    v25 = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
+    _eventMap4 = [(CAMAnalyticsEvent *)v10 _eventMap];
+    [_eventMap4 setObject:v25 forKeyedSubscript:@"dynamicShutter"];
 
-    v27 = [MEMORY[0x1E696AD98] numberWithBool:v6];
-    v28 = [(CAMAnalyticsEvent *)v10 _eventMap];
-    [v28 setObject:v27 forKeyedSubscript:@"responsiveShutter"];
+    v27 = [MEMORY[0x1E696AD98] numberWithBool:shutterEnabledCopy];
+    _eventMap5 = [(CAMAnalyticsEvent *)v10 _eventMap];
+    [_eventMap5 setObject:v27 forKeyedSubscript:@"responsiveShutter"];
 
     v29 = v10;
   }
@@ -138,7 +138,7 @@
   return v10;
 }
 
-- (id)_timeSinceLastPressRangeStringForMilliseconds:(int64_t)a3
+- (id)_timeSinceLastPressRangeStringForMilliseconds:(int64_t)milliseconds
 {
   if (_timeSinceLastPressRangeStringForMilliseconds__onceToken != -1)
   {
@@ -156,7 +156,7 @@
   v6[2] = __81__CAMAnalyticsIgnoredShutterEvent__timeSinceLastPressRangeStringForMilliseconds___block_invoke_54;
   v6[3] = &unk_1E76FEEB8;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = milliseconds;
   [_timeSinceLastPressRangeStringForMilliseconds__bucketValues enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

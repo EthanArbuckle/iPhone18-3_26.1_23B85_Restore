@@ -1,20 +1,20 @@
 @interface RTMapItemProviderEventKit
-- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 eventManager:(id)a5 mapServiceManager:(id)a6;
-- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 eventManager:(id)a5 mapServiceManager:(id)a6 parameters:(id)a7;
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4;
+- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator eventManager:(id)eventManager mapServiceManager:(id)serviceManager;
+- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator eventManager:(id)eventManager mapServiceManager:(id)serviceManager parameters:(id)parameters;
+- (id)mapItemsWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation RTMapItemProviderEventKit
 
-- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 eventManager:(id)a5 mapServiceManager:(id)a6
+- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator eventManager:(id)eventManager mapServiceManager:(id)serviceManager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  eventManagerCopy = eventManager;
+  serviceManagerCopy = serviceManager;
+  if (managerCopy)
   {
-    v14 = [v10 objectForKey:@"RTDefaultsMapItemProviderEventKitConfidence"];
+    v14 = [managerCopy objectForKey:@"RTDefaultsMapItemProviderEventKitConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,9 +28,9 @@
     }
 
     v19 = [[RTMapItemProviderEventKitParameters alloc] initWithConfidence:v16];
-    self = [(RTMapItemProviderEventKit *)self initWithDefaultsManager:v10 distanceCalculator:v11 eventManager:v12 mapServiceManager:v13 parameters:v19];
+    self = [(RTMapItemProviderEventKit *)self initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy eventManager:eventManagerCopy mapServiceManager:serviceManagerCopy parameters:v19];
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -42,22 +42,22 @@
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v21, 2u);
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 eventManager:(id)a5 mapServiceManager:(id)a6 parameters:(id)a7
+- (RTMapItemProviderEventKit)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator eventManager:(id)eventManager mapServiceManager:(id)serviceManager parameters:(id)parameters
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v14)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  eventManagerCopy = eventManager;
+  serviceManagerCopy = serviceManager;
+  parametersCopy = parameters;
+  v17 = parametersCopy;
+  if (!eventManagerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -72,7 +72,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v15)
+  if (!serviceManagerCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v16)
+  if (!parametersCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -97,19 +97,19 @@ LABEL_16:
 
 LABEL_17:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   v26.receiver = self;
   v26.super_class = RTMapItemProviderEventKit;
-  v18 = [(RTMapItemProviderBase *)&v26 initWithDefaultsManager:v12 distanceCalculator:v13];
+  v18 = [(RTMapItemProviderBase *)&v26 initWithDefaultsManager:managerCopy distanceCalculator:calculatorCopy];
   p_isa = &v18->super.super.isa;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventManager, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v18->_eventManager, eventManager);
+    objc_storeStrong(p_isa + 4, serviceManager);
+    objc_storeStrong(p_isa + 5, parameters);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v20 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -124,28 +124,28 @@ LABEL_17:
   }
 
   self = p_isa;
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v22;
+  return selfCopy;
 }
 
-- (id)mapItemsWithOptions:(id)a3 error:(id *)a4
+- (id)mapItemsWithOptions:(id)options error:(id *)error
 {
   v123 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 distance];
+  optionsCopy = options;
+  [optionsCopy distance];
   v6 = v5;
-  v80 = v4;
-  v69 = [v4 location];
-  v7 = [v4 startDate];
-  v8 = [v4 endDate];
-  v71 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v7 sinceDate:-3600.0];
+  v80 = optionsCopy;
+  location = [optionsCopy location];
+  startDate = [optionsCopy startDate];
+  endDate = [optionsCopy endDate];
+  v71 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:startDate sinceDate:-3600.0];
 
-  v70 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v8 sinceDate:3600.0];
+  v70 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:endDate sinceDate:3600.0];
 
-  v74 = [MEMORY[0x277CBEB18] array];
-  v75 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v102 = 0;
   v103 = &v102;
   v104 = 0x3032000000;
@@ -159,7 +159,7 @@ LABEL_18:
   v100 = __Block_byref_object_dispose__200;
   v101 = 0;
   v9 = dispatch_semaphore_create(0);
-  v10 = [(RTMapItemProviderEventKit *)self eventManager];
+  eventManager = [(RTMapItemProviderEventKit *)self eventManager];
   v92[0] = MEMORY[0x277D85DD0];
   v92[1] = 3221225472;
   v92[2] = __55__RTMapItemProviderEventKit_mapItemsWithOptions_error___block_invoke;
@@ -168,7 +168,7 @@ LABEL_18:
   v95 = &v96;
   v11 = v9;
   v93 = v11;
-  [v10 fetchEventsBetweenStartDate:v71 endDate:v70 handler:v92];
+  [eventManager fetchEventsBetweenStartDate:v71 endDate:v70 handler:v92];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -182,11 +182,11 @@ LABEL_18:
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_158];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -225,7 +225,7 @@ LABEL_8:
 
   if (v97[5])
   {
-    [v75 addObject:?];
+    [array2 addObject:?];
   }
 
   v90 = 0u;
@@ -250,9 +250,9 @@ LABEL_8:
         }
 
         v33 = *(*(&v88 + 1) + 8 * i);
-        v34 = [v33 locationMapItemHandle];
+        locationMapItemHandle = [v33 locationMapItemHandle];
 
-        if (v34)
+        if (locationMapItemHandle)
         {
           *v114 = 0;
           v115 = v114;
@@ -269,14 +269,14 @@ LABEL_8:
           v35 = dispatch_semaphore_create(0);
 
           v36 = objc_alloc(MEMORY[0x277D011B0]);
-          v37 = [v80 useBackground];
+          useBackground = [v80 useBackground];
           v38 = objc_opt_class();
           v39 = NSStringFromClass(v38);
-          v40 = [v80 clientIdentifier];
-          v41 = [v36 initWithUseBackgroundTraits:v37 analyticsIdentifier:v39 clientIdentifier:v40];
+          clientIdentifier = [v80 clientIdentifier];
+          v41 = [v36 initWithUseBackgroundTraits:useBackground analyticsIdentifier:v39 clientIdentifier:clientIdentifier];
 
-          v42 = [(RTMapItemProviderEventKit *)self mapServiceManager];
-          v43 = [v33 locationMapItemHandle];
+          mapServiceManager = [(RTMapItemProviderEventKit *)self mapServiceManager];
+          locationMapItemHandle2 = [v33 locationMapItemHandle];
           v84[0] = MEMORY[0x277D85DD0];
           v84[1] = 3221225472;
           v84[2] = __55__RTMapItemProviderEventKit_mapItemsWithOptions_error___block_invoke_2;
@@ -285,7 +285,7 @@ LABEL_8:
           v87 = v114;
           v44 = v35;
           v85 = v44;
-          [v42 fetchMapItemFromHandle:v43 options:v41 handler:v84];
+          [mapServiceManager fetchMapItemFromHandle:locationMapItemHandle2 options:v41 handler:v84];
 
           v12 = v44;
           v45 = [MEMORY[0x277CBEAA8] now];
@@ -300,11 +300,11 @@ LABEL_8:
           v49 = v48;
           v50 = objc_opt_new();
           v51 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_158];
-          v52 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v53 = [v52 filteredArrayUsingPredicate:v51];
-          v54 = [v53 firstObject];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+          v53 = [callStackSymbols2 filteredArrayUsingPredicate:v51];
+          firstObject2 = [v53 firstObject];
 
-          [v50 submitToCoreAnalytics:v54 type:1 duration:v49];
+          [v50 submitToCoreAnalytics:firstObject2 type:1 duration:v49];
           v55 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v55, OS_LOG_TYPE_FAULT))
           {
@@ -340,12 +340,12 @@ LABEL_23:
 
           if (*(v115 + 5))
           {
-            [v75 addObject:?];
+            [array2 addObject:?];
           }
 
           if (v109[5])
           {
-            [v74 addObject:?];
+            [array addObject:?];
           }
 
           _Block_object_dispose(&v108, 8);
@@ -361,7 +361,7 @@ LABEL_23:
     while (v31);
   }
 
-  v62 = [[_RTMap alloc] initWithInput:v74];
+  v62 = [[_RTMap alloc] initWithInput:array];
   v83[0] = MEMORY[0x277D85DD0];
   v83[1] = 3221225472;
   v83[2] = __55__RTMapItemProviderEventKit_mapItemsWithOptions_error___block_invoke_3;
@@ -370,18 +370,18 @@ LABEL_23:
   v63 = [(_RTMap *)v62 withBlock:v83];
 
   v82 = 0;
-  v64 = [(RTMapItemProviderBase *)self filterInferredMapItems:v63 byDistance:v69 fromLocation:256 andAppendSource:&v82 error:v6];
+  v64 = [(RTMapItemProviderBase *)self filterInferredMapItems:v63 byDistance:location fromLocation:256 andAppendSource:&v82 error:v6];
   v65 = v82;
 
   if (v65)
   {
-    [v75 addObject:v65];
+    [array2 addObject:v65];
   }
 
-  if (a4 && [v75 count])
+  if (error && [array2 count])
   {
     v66 = _RTSafeArray();
-    *a4 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
   _Block_object_dispose(&v96, 8);

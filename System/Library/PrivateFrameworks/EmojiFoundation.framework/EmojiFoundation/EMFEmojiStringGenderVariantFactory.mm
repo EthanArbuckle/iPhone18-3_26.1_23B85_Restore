@@ -1,40 +1,40 @@
 @interface EMFEmojiStringGenderVariantFactory
-- (EMFEmojiStringGenderVariantFactory)initWithSourceString:(id)a3 gender:(int)a4;
-- (id)stringForGenderVariant:(int)a3;
+- (EMFEmojiStringGenderVariantFactory)initWithSourceString:(id)string gender:(int)gender;
+- (id)stringForGenderVariant:(int)variant;
 @end
 
 @implementation EMFEmojiStringGenderVariantFactory
 
-- (EMFEmojiStringGenderVariantFactory)initWithSourceString:(id)a3 gender:(int)a4
+- (EMFEmojiStringGenderVariantFactory)initWithSourceString:(id)string gender:(int)gender
 {
-  v6 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = EMFEmojiStringGenderVariantFactory;
   v7 = [(EMFEmojiStringGenderVariantFactory *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [stringCopy copy];
     sourceString = v7->_sourceString;
     v7->_sourceString = v8;
 
-    v7->_gender = a4;
+    v7->_gender = gender;
   }
 
   return v7;
 }
 
-- (id)stringForGenderVariant:(int)a3
+- (id)stringForGenderVariant:(int)variant
 {
   v30 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_sourceString length]>= 0x11)
   {
-    v5 = [(EMFEmojiStringGenderVariantFactory *)self sourceString];
+    sourceString = [(EMFEmojiStringGenderVariantFactory *)self sourceString];
     goto LABEL_50;
   }
 
   memset(v29, 0, sizeof(v29));
-  v6 = [(EMFEmojiStringGenderVariantFactory *)self sourceString];
-  Length = CFStringGetLength(v6);
+  sourceString2 = [(EMFEmojiStringGenderVariantFactory *)self sourceString];
+  Length = CFStringGetLength(sourceString2);
   if (Length < 1)
   {
 
@@ -42,16 +42,16 @@
   }
 
   v8 = Length;
-  v28 = a3;
+  variantCopy = variant;
   v9 = 0;
   v10 = 0;
   do
   {
-    CharacterAtIndex = CFStringGetCharacterAtIndex(v6, v9);
+    CharacterAtIndex = CFStringGetCharacterAtIndex(sourceString2, v9);
     v12 = v9 + 1;
     if ((CharacterAtIndex & 0xFC00) == 0xD800 && v12 < v8)
     {
-      v14 = CFStringGetCharacterAtIndex(v6, v9 + 1);
+      v14 = CFStringGetCharacterAtIndex(sourceString2, v9 + 1);
       if ((v14 & 0xFC00) != 0xDC00)
       {
         ++v9;
@@ -83,17 +83,17 @@
 
   v16 = v29[0];
 
-  a3 = v28;
+  variant = variantCopy;
   if ((v16 - 128104) < 2 || v16 == 129489)
   {
-    if ((v28 - 1) > 2)
+    if ((variantCopy - 1) > 2)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = dword_1AF0ABF20[v28 - 1];
+      v17 = dword_1AF0ABF20[variantCopy - 1];
     }
 
     LODWORD(v29[0]) = v17;
@@ -112,9 +112,9 @@ LABEL_25:
     v15 = 1;
   }
 
-  if (a3 != 3)
+  if (variant != 3)
   {
-    if (a3 == 2)
+    if (variant == 2)
     {
       v19 = 9792;
     }
@@ -124,7 +124,7 @@ LABEL_25:
       v19 = 0;
     }
 
-    if (a3 == 1)
+    if (variant == 1)
     {
       v19 = 9794;
     }
@@ -171,19 +171,19 @@ LABEL_46:
   v25 = v24;
   if (v24)
   {
-    v26 = v24;
+    sourceString3 = v24;
   }
 
   else
   {
-    v26 = [(EMFEmojiStringGenderVariantFactory *)self sourceString];
+    sourceString3 = [(EMFEmojiStringGenderVariantFactory *)self sourceString];
   }
 
-  v5 = v26;
+  sourceString = sourceString3;
 
 LABEL_50:
 
-  return v5;
+  return sourceString;
 }
 
 @end

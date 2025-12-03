@@ -1,7 +1,7 @@
 @interface CATSerialOperationQueue
 - (CATSerialOperationQueue)init;
 - (id)debugDescription;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation CATSerialOperationQueue
@@ -34,25 +34,25 @@
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CATSerialOperationQueue operationCount](self, "operationCount")}];
   [v5 appendFormat:@"\nOperation Count: %@", v7];
 
-  v8 = [(CATSerialOperationQueue *)self operations];
-  [v5 appendFormat:@"\nOperations: %@", v8];
+  operations = [(CATSerialOperationQueue *)self operations];
+  [v5 appendFormat:@"\nOperations: %@", operations];
 
   return v5;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   WeakRetained = objc_loadWeakRetained(&self->mLastOperation);
   if (WeakRetained)
   {
-    [v4 addDependency:WeakRetained];
+    [operationCopy addDependency:WeakRetained];
   }
 
-  objc_storeWeak(&self->mLastOperation, v4);
+  objc_storeWeak(&self->mLastOperation, operationCopy);
   v6.receiver = self;
   v6.super_class = CATSerialOperationQueue;
-  [(CATOperationQueue *)&v6 addOperation:v4];
+  [(CATOperationQueue *)&v6 addOperation:operationCopy];
 }
 
 @end

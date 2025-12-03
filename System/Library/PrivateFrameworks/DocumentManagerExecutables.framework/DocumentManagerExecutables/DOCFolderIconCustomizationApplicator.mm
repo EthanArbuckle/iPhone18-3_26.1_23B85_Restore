@@ -1,15 +1,15 @@
 @interface DOCFolderIconCustomizationApplicator
 - (_TtC26DocumentManagerExecutables36DOCFolderIconCustomizationApplicator)init;
-- (void)nodeChanged:(id)a3 for:(unsigned int)a4;
+- (void)nodeChanged:(id)changed for:(unsigned int)for;
 @end
 
 @implementation DOCFolderIconCustomizationApplicator
 
-- (void)nodeChanged:(id)a3 for:(unsigned int)a4
+- (void)nodeChanged:(id)changed for:(unsigned int)for
 {
-  v6 = a3;
-  v7 = self;
-  DOCFolderIconCustomizationApplicator.changed(_:for:)(v6, a4);
+  changedCopy = changed;
+  selfCopy = self;
+  DOCFolderIconCustomizationApplicator.changed(_:for:)(changedCopy, for);
 }
 
 - (_TtC26DocumentManagerExecutables36DOCFolderIconCustomizationApplicator)init

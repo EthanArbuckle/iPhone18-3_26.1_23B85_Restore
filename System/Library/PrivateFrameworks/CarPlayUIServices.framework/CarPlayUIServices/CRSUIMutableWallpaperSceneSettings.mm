@@ -1,25 +1,25 @@
 @interface CRSUIMutableWallpaperSceneSettings
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setIsDimmed:(BOOL)a3;
-- (void)setWallpaper:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setIsDimmed:(BOOL)dimmed;
+- (void)setWallpaper:(id)wallpaper;
 @end
 
 @implementation CRSUIMutableWallpaperSceneSettings
 
-- (void)setWallpaper:(id)a3
+- (void)setWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:1049979832];
+  wallpaperCopy = wallpaper;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:wallpaperCopy forSetting:1049979832];
 }
 
-- (void)setIsDimmed:(BOOL)a3
+- (void)setIsDimmed:(BOOL)dimmed
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:1049979833];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:1049979833];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRSUIWallpaperSceneSettings alloc];
 

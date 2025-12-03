@@ -1,18 +1,18 @@
 @interface PBContextMenuDynamicPasteButtonDrawing
 - (CGSize)drawingSize;
-- (PBContextMenuDynamicPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
-- (__CFString)resolvedIconTextStyleForStyle:(id)a3 tag:(id)a4;
-- (__CTFont)resolvedTitleFontForStyle:(id)a3 tag:(id)a4;
+- (PBContextMenuDynamicPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
+- (__CFString)resolvedIconTextStyleForStyle:(id)style tag:(id)tag;
+- (__CTFont)resolvedTitleFontForStyle:(id)style tag:(id)tag;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation PBContextMenuDynamicPasteButtonDrawing
 
-- (PBContextMenuDynamicPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBContextMenuDynamicPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v60.receiver = self;
   v60.super_class = PBContextMenuDynamicPasteButtonDrawing;
   v8 = [(PBContextMenuDynamicPasteButtonDrawing *)&v60 init];
@@ -21,20 +21,20 @@
     goto LABEL_21;
   }
 
-  v9 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [v7 secureName]);
-  [v7 size];
+  v9 = +[UISPasteVariant variantForSecureName:](UISPasteVariant, "variantForSecureName:", [tagCopy secureName]);
+  [tagCopy size];
   v11 = v10;
   v13 = v12;
-  [v7 titleFrame];
+  [tagCopy titleFrame];
   v55 = v15;
   v56 = v14;
-  [v7 iconFrame];
+  [tagCopy iconFrame];
   v17 = v16;
   v19 = v18;
   v59 = 2;
-  if ([v7 layoutSize] == 2)
+  if ([tagCopy layoutSize] == 2)
   {
-    v59 = [v6 layoutDirection] != 0;
+    v59 = [styleCopy layoutDirection] != 0;
   }
 
   v58 = 0;
@@ -45,21 +45,21 @@
   v65 = 1;
   v66 = &v58;
   v20 = CTParagraphStyleCreate(&settings, 2uLL);
-  v21 = [(PBContextMenuDynamicPasteButtonDrawing *)v8 resolvedTitleFontForStyle:v6 tag:v7];
-  v22 = [v6 localization];
-  v23 = [v9 localizedStringForLocalization:v22];
+  v21 = [(PBContextMenuDynamicPasteButtonDrawing *)v8 resolvedTitleFontForStyle:styleCopy tag:tagCopy];
+  localization = [styleCopy localization];
+  v23 = [v9 localizedStringForLocalization:localization];
 
   v62[0] = v21;
   v61[0] = kCTFontAttributeName;
   v61[1] = kCTForegroundColorAttributeName;
-  v24 = [v6 tintColor];
+  tintColor = [styleCopy tintColor];
   v61[2] = kCTParagraphStyleAttributeName;
-  v62[1] = v24;
+  v62[1] = tintColor;
   v62[2] = v20;
   v25 = [NSDictionary dictionaryWithObjects:v62 forKeys:v61 count:3];
   CFRelease(v20);
   CFRelease(v21);
-  if ([v6 hasAccessibilityContentSizeCategory])
+  if ([styleCopy hasAccessibilityContentSizeCategory])
   {
     v26 = 0;
     width = CGSizeZero.width;
@@ -68,14 +68,14 @@
 
   else
   {
-    [v7 iconFrame];
+    [tagCopy iconFrame];
     v30 = v29;
     v32 = v31;
-    v33 = [(PBContextMenuDynamicPasteButtonDrawing *)v8 resolvedIconTextStyleForStyle:v6 tag:v7];
-    v34 = [v9 glyph];
-    v35 = [v6 assetGlyphWithName:v34 glyphSize:2 textStyle:v33];
+    v33 = [(PBContextMenuDynamicPasteButtonDrawing *)v8 resolvedIconTextStyleForStyle:styleCopy tag:tagCopy];
+    glyph = [v9 glyph];
+    v35 = [styleCopy assetGlyphWithName:glyph glyphSize:2 textStyle:v33];
 
-    v26 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v35 tintColor:{objc_msgSend(v6, "tintColor")}];
+    v26 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v35 tintColor:{objc_msgSend(styleCopy, "tintColor")}];
     [v26 drawingSize];
     width = v36;
     height = v37;
@@ -83,20 +83,20 @@
     v19 = v19 + (v32 - v37) * 0.5;
   }
 
-  [v7 titleFrame];
-  if (CGRectIsEmpty(v67) || ![v7 layoutSize])
+  [tagCopy titleFrame];
+  if (CGRectIsEmpty(v67) || ![tagCopy layoutSize])
   {
     v44 = 0;
   }
 
   else
   {
-    [v7 titleFrame];
+    [tagCopy titleFrame];
     v39 = v38;
     v40 = [UISTextParagraphDrawing alloc];
-    v41 = [v6 hasAccessibilityContentSizeCategory];
-    v42 = [v6 displayScale];
-    if (v41)
+    hasAccessibilityContentSizeCategory = [styleCopy hasAccessibilityContentSizeCategory];
+    displayScale = [styleCopy displayScale];
+    if (hasAccessibilityContentSizeCategory)
     {
       v43 = 0;
     }
@@ -106,7 +106,7 @@
       v43 = 2;
     }
 
-    v44 = [v40 initWithString:v23 attributes:v25 size:v43 numberOfLines:v39 scale:{0.0, v42}];
+    v44 = [v40 initWithString:v23 attributes:v25 size:v43 numberOfLines:v39 scale:{0.0, displayScale}];
   }
 
   [v44 drawingSize];
@@ -208,23 +208,23 @@ LABEL_30:
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   if (self->_titleDrawing)
   {
-    CGContextSaveGState(a3);
-    [(UISTextParagraphDrawing *)self->_titleDrawing drawInContext:a3 atPoint:x + self->_titleOffset.x, y + self->_titleOffset.y];
-    CGContextRestoreGState(a3);
+    CGContextSaveGState(context);
+    [(UISTextParagraphDrawing *)self->_titleDrawing drawInContext:context atPoint:x + self->_titleOffset.x, y + self->_titleOffset.y];
+    CGContextRestoreGState(context);
   }
 
   if (self->_glyph)
   {
-    CGContextSaveGState(a3);
-    [(UISVectorGlyphDrawing *)self->_glyph drawInContext:a3 atPoint:x + self->_glyphOffset.x, y + self->_glyphOffset.y];
+    CGContextSaveGState(context);
+    [(UISVectorGlyphDrawing *)self->_glyph drawInContext:context atPoint:x + self->_glyphOffset.x, y + self->_glyphOffset.y];
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
@@ -244,17 +244,17 @@ LABEL_30:
   [(PBContextMenuDynamicPasteButtonDrawing *)&v5 dealloc];
 }
 
-- (__CTFont)resolvedTitleFontForStyle:(id)a3 tag:(id)a4
+- (__CTFont)resolvedTitleFontForStyle:(id)style tag:(id)tag
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 layout];
-  v8 = [v5 userInterfaceIdiom];
-  v9 = [v6 layoutSize];
+  styleCopy = style;
+  tagCopy = tag;
+  layout = [tagCopy layout];
+  userInterfaceIdiom = [styleCopy userInterfaceIdiom];
+  layoutSize = [tagCopy layoutSize];
 
-  if (v9 != 1)
+  if (layoutSize != 1)
   {
-    if (v7 == 1 && v8 == 1)
+    if (layout == 1 && userInterfaceIdiom == 1)
     {
       v10 = &kCTUIFontTextStyleSubhead;
     }
@@ -267,16 +267,16 @@ LABEL_30:
     goto LABEL_8;
   }
 
-  if (v7 != 1)
+  if (layout != 1)
   {
     v10 = &kCTUIFontTextStyleFootnote;
 LABEL_8:
-    v11 = [v5 newFontForTextStyle:*v10 attributes:0];
+    v11 = [styleCopy newFontForTextStyle:*v10 attributes:0];
     goto LABEL_12;
   }
 
   v12 = &kCTUIFontTextStyleCaption2;
-  if (v8 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v12 = &kCTUIFontTextStyleFootnote;
   }
@@ -287,26 +287,26 @@ LABEL_8:
   v17 = &off_100033C80;
   v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v19 = v14;
-  v11 = [v5 newFontForTextStyle:v13 attributes:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}];
+  v11 = [styleCopy newFontForTextStyle:v13 attributes:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v19, &v18, 1)}];
 
 LABEL_12:
   return v11;
 }
 
-- (__CFString)resolvedIconTextStyleForStyle:(id)a3 tag:(id)a4
+- (__CFString)resolvedIconTextStyleForStyle:(id)style tag:(id)tag
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 layout];
-  v8 = [v6 userInterfaceIdiom];
+  tagCopy = tag;
+  styleCopy = style;
+  layout = [tagCopy layout];
+  userInterfaceIdiom = [styleCopy userInterfaceIdiom];
 
-  v9 = [v5 layoutSize];
-  if (v9 == 1)
+  layoutSize = [tagCopy layoutSize];
+  if (layoutSize == 1)
   {
-    if (v7 == 1)
+    if (layout == 1)
     {
       v10 = &kCTUIFontTextStyleSubhead;
-      if (v8 != 1)
+      if (userInterfaceIdiom != 1)
       {
         v10 = &kCTUIFontTextStyleBody;
       }
@@ -318,7 +318,7 @@ LABEL_12:
     }
   }
 
-  else if (v7 == 1 && v8 == 1)
+  else if (layout == 1 && userInterfaceIdiom == 1)
   {
     v10 = &kCTUIFontTextStyleSubhead;
   }

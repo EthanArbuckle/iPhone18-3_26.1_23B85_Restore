@@ -1,35 +1,35 @@
 @interface EKAttachment
-+ (BOOL)canonicalizedEqualityTestValue1:(id)a3 value2:(id)a4 key:(id)a5 object1:(id)a6 object2:(id)a7;
-+ (id)_compressItemAtURLToTemporaryDirectory:(id)a3;
-+ (id)_prepareFileAtURLInTemporaryDirectory:(id)a3;
-+ (id)createTempDestinationURLWithExtension:(id)a3;
++ (BOOL)canonicalizedEqualityTestValue1:(id)value1 value2:(id)value2 key:(id)key object1:(id)object1 object2:(id)object2;
++ (id)_compressItemAtURLToTemporaryDirectory:(id)directory;
++ (id)_prepareFileAtURLInTemporaryDirectory:(id)directory;
++ (id)createTempDestinationURLWithExtension:(id)extension;
 + (id)knownIdentityKeysForComparison;
 + (id)knownRelationshipWeakKeys;
 + (id)knownSingleValueKeysForComparison;
 - (BOOL)copyLocalFileToNewSource;
-- (BOOL)save:(id *)a3;
+- (BOOL)save:(id *)save;
 - (BOOL)shouldSetQuarantineAttributesOnCopiedFile;
-- (BOOL)validateWithOwner:(id)a3 error:(id *)a4;
+- (BOOL)validateWithOwner:(id)owner error:(id *)error;
 - (EKAttachment)init;
-- (EKAttachment)initWithFilepath:(id)a3;
-- (EKAttachment)initWithUUID:(id)a3;
+- (EKAttachment)initWithFilepath:(id)filepath;
+- (EKAttachment)initWithUUID:(id)d;
 - (NSString)contentType;
 - (NSString)fileName;
 - (NSURL)URL;
 - (NSURL)URLForPendingFileCopy;
 - (NSURL)localURL;
 - (NSURL)localURLForArchivedData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)duplicateWithNewIdentity;
-- (int64_t)compareFileNames:(id)a3;
+- (int64_t)compareFileNames:(id)names;
 - (unsigned)flags;
-- (void)_setFlagValue:(BOOL)a3 withMask:(unsigned int)a4;
-- (void)assignIdentity:(id)a3;
+- (void)_setFlagValue:(BOOL)value withMask:(unsigned int)mask;
+- (void)assignIdentity:(id)identity;
 - (void)assignNewIdentity;
 - (void)invalidateLocalFilePropertiesForNewCopiedFile;
-- (void)setURL:(id)a3;
-- (void)setURLForPendingFileCopy:(id)a3;
+- (void)setURL:(id)l;
+- (void)setURLForPendingFileCopy:(id)copy;
 @end
 
 @implementation EKAttachment
@@ -119,37 +119,37 @@ void __41__EKAttachment_knownRelationshipWeakKeys__block_invoke()
   return v4;
 }
 
-- (EKAttachment)initWithUUID:(id)a3
+- (EKAttachment)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = EKAttachment;
   v5 = [(EKObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(EKAttachment *)v5 setUUID:v4];
+    [(EKAttachment *)v5 setUUID:dCopy];
     [(EKObject *)v6 updatePersistentValueForKeyIfNeeded:*MEMORY[0x1E6992B08]];
   }
 
   return v6;
 }
 
-- (EKAttachment)initWithFilepath:(id)a3
+- (EKAttachment)initWithFilepath:(id)filepath
 {
-  v4 = a3;
+  filepathCopy = filepath;
   v5 = [(EKAttachment *)self init];
   if (v5)
   {
     v11 = 0;
-    [v4 getResourceValue:&v11 forKey:*MEMORY[0x1E695DB78] error:0];
+    [filepathCopy getResourceValue:&v11 forKey:*MEMORY[0x1E695DB78] error:0];
     v6 = v11;
-    v7 = [v4 lastPathComponent];
-    [(EKAttachment *)v5 setFileNameRaw:v7];
-    v8 = [v6 BOOLValue];
+    lastPathComponent = [filepathCopy lastPathComponent];
+    [(EKAttachment *)v5 setFileNameRaw:lastPathComponent];
+    bOOLValue = [v6 BOOLValue];
 
-    [(EKAttachment *)v5 setAutoArchived:v8];
-    v9 = [objc_opt_class() _prepareFileAtURLInTemporaryDirectory:v4];
+    [(EKAttachment *)v5 setAutoArchived:bOOLValue];
+    v9 = [objc_opt_class() _prepareFileAtURLInTemporaryDirectory:filepathCopy];
     [(EKAttachment *)v5 setURLForPendingFileCopy:v9];
   }
 
@@ -158,31 +158,31 @@ void __41__EKAttachment_knownRelationshipWeakKeys__block_invoke()
 
 - (id)duplicateWithNewIdentity
 {
-  v3 = [(EKObject *)self duplicate];
+  duplicate = [(EKObject *)self duplicate];
   [(EKAttachment *)self assignNewIdentity];
 
-  return v3;
+  return duplicate;
 }
 
 - (void)assignNewIdentity
 {
-  v3 = [(EKAttachment *)self securityScopedLocalURLForArchivedDataWrapper];
-  v7 = v3;
-  if (v3)
+  securityScopedLocalURLForArchivedDataWrapper = [(EKAttachment *)self securityScopedLocalURLForArchivedDataWrapper];
+  v7 = securityScopedLocalURLForArchivedDataWrapper;
+  if (securityScopedLocalURLForArchivedDataWrapper)
   {
-    v4 = v3;
+    securityScopedLocalURLWrapper = securityScopedLocalURLForArchivedDataWrapper;
   }
 
   else
   {
-    v4 = [(EKAttachment *)self securityScopedLocalURLWrapper];
-    if (!v4)
+    securityScopedLocalURLWrapper = [(EKAttachment *)self securityScopedLocalURLWrapper];
+    if (!securityScopedLocalURLWrapper)
     {
       goto LABEL_5;
     }
   }
 
-  v5 = [v4 url];
+  v5 = [securityScopedLocalURLWrapper url];
   [(EKAttachment *)self setURLForPendingFileCopy:v5];
 
 LABEL_5:
@@ -190,9 +190,9 @@ LABEL_5:
   [(EKAttachment *)self assignIdentity:v6];
 }
 
-- (void)assignIdentity:(id)a3
+- (void)assignIdentity:(id)identity
 {
-  [(EKAttachment *)self setUUID:a3];
+  [(EKAttachment *)self setUUID:identity];
   v4 = *MEMORY[0x1E6992B08];
 
   [(EKObject *)self updatePersistentValueForKeyIfNeeded:v4];
@@ -200,11 +200,11 @@ LABEL_5:
 
 - (BOOL)copyLocalFileToNewSource
 {
-  v3 = [(EKAttachment *)self localURL];
-  v4 = v3;
-  if (v3)
+  localURL = [(EKAttachment *)self localURL];
+  v4 = localURL;
+  if (localURL)
   {
-    [v3 startAccessingSecurityScopedResource];
+    [localURL startAccessingSecurityScopedResource];
     v5 = [EKAttachment _prepareFileAtURLInTemporaryDirectory:v4];
     [v4 stopAccessingSecurityScopedResource];
     v6 = v5 != 0;
@@ -225,16 +225,16 @@ LABEL_5:
 
 - (void)invalidateLocalFilePropertiesForNewCopiedFile
 {
-  v2 = [(EKObject *)self persistentObject];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E69924E8]];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E69924F8]];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E69924F0]];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E69924B0]];
+  persistentObject = [(EKObject *)self persistentObject];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E69924E8]];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E69924F8]];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E69924F0]];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E69924B0]];
 }
 
-+ (id)createTempDestinationURLWithExtension:(id)a3
++ (id)createTempDestinationURLWithExtension:(id)extension
 {
-  v3 = a3;
+  extensionCopy = extension;
   v4 = CalTemporaryDirectory();
   v5 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v5 setPath:v4];
@@ -243,29 +243,29 @@ LABEL_5:
   v7 = EKUUIDString();
   v8 = [v6 URLByAppendingPathComponent:v7];
 
-  v9 = [v8 URLByAppendingPathExtension:v3];
+  v9 = [v8 URLByAppendingPathExtension:extensionCopy];
 
   return v9;
 }
 
-+ (id)_prepareFileAtURLInTemporaryDirectory:(id)a3
++ (id)_prepareFileAtURLInTemporaryDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [v4 scheme];
+  directoryCopy = directory;
+  scheme = [directoryCopy scheme];
 
-  if (!v5)
+  if (!scheme)
   {
     v6 = MEMORY[0x1E695DFF8];
-    v7 = [v4 path];
-    v8 = [v6 fileURLWithPath:v7];
+    path = [directoryCopy path];
+    v8 = [v6 fileURLWithPath:path];
 
-    v4 = v8;
+    directoryCopy = v8;
   }
 
   v38 = 0;
   v9 = *MEMORY[0x1E695DB78];
   v37 = 0;
-  v10 = [v4 getResourceValue:&v38 forKey:v9 error:&v37];
+  v10 = [directoryCopy getResourceValue:&v38 forKey:v9 error:&v37];
   v11 = v38;
   v12 = v37;
   if ((v10 & 1) == 0 && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -284,19 +284,19 @@ LABEL_5:
 
   if ([v11 BOOLValue])
   {
-    v13 = [a1 _compressItemAtURLToTemporaryDirectory:v4];
+    v13 = [self _compressItemAtURLToTemporaryDirectory:directoryCopy];
     goto LABEL_20;
   }
 
 LABEL_9:
-  v14 = [v4 pathExtension];
-  v15 = [EKAttachment createTempDestinationURLWithExtension:v14];
+  pathExtension = [directoryCopy pathExtension];
+  v15 = [EKAttachment createTempDestinationURLWithExtension:pathExtension];
 
   if (v15)
   {
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v36 = v12;
-    v17 = [v16 copyItemAtURL:v4 toURL:v15 error:&v36];
+    v17 = [defaultManager copyItemAtURL:directoryCopy toURL:v15 error:&v36];
     v18 = v36;
 
     if (v17)
@@ -334,15 +334,15 @@ LABEL_20:
   return v13;
 }
 
-+ (id)_compressItemAtURLToTemporaryDirectory:(id)a3
++ (id)_compressItemAtURLToTemporaryDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = [EKAttachment createTempDestinationURLWithExtension:@"zip"];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v18 = 0;
-    v6 = [v5 archiveURLToFile:v3 toFile:v4 createPKZipArchive:1 error:&v18];
+    v6 = [defaultManager archiveURLToFile:directoryCopy toFile:v4 createPKZipArchive:1 error:&v18];
     v7 = v18;
 
     if (v6)
@@ -377,10 +377,10 @@ LABEL_20:
 
 - (NSURL)URL
 {
-  v2 = [(EKAttachment *)self URLString];
-  if (v2)
+  uRLString = [(EKAttachment *)self URLString];
+  if (uRLString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:uRLString];
   }
 
   else
@@ -391,50 +391,50 @@ LABEL_20:
   return v3;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(EKAttachment *)self setURLString:v4];
+  absoluteString = [l absoluteString];
+  [(EKAttachment *)self setURLString:absoluteString];
 }
 
 - (NSString)fileName
 {
-  v3 = [(EKAttachment *)self fileNameRaw];
-  if (!v3)
+  fileNameRaw = [(EKAttachment *)self fileNameRaw];
+  if (!fileNameRaw)
   {
     v4 = [(EKAttachment *)self URL];
     v5 = v4;
     if (v4)
     {
-      v3 = [v4 lastPathComponent];
+      fileNameRaw = [v4 lastPathComponent];
     }
 
     else
     {
-      v3 = 0;
+      fileNameRaw = 0;
     }
   }
 
-  return v3;
+  return fileNameRaw;
 }
 
 - (NSString)contentType
 {
-  v3 = [(EKAttachment *)self localURL];
-  v4 = [v3 pathExtension];
-  if (v4)
+  localURL = [(EKAttachment *)self localURL];
+  pathExtension = [localURL pathExtension];
+  if (pathExtension)
   {
-    v5 = v4;
-    v6 = [(EKAttachment *)self localURL];
-    v7 = [v6 pathExtension];
-    v8 = [v7 isEqual:&stru_1F1B49D68];
+    v5 = pathExtension;
+    localURL2 = [(EKAttachment *)self localURL];
+    pathExtension2 = [localURL2 pathExtension];
+    v8 = [pathExtension2 isEqual:&stru_1F1B49D68];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(EKAttachment *)self localURL];
+      localURL3 = [(EKAttachment *)self localURL];
 LABEL_8:
-      v16 = v9;
-      v17 = [v9 pathExtension];
+      firstObject = localURL3;
+      pathExtension3 = [localURL3 pathExtension];
       goto LABEL_11;
     }
   }
@@ -444,17 +444,17 @@ LABEL_8:
   }
 
   v10 = [(EKAttachment *)self URL];
-  v11 = [v10 pathExtension];
-  if (v11)
+  pathExtension4 = [v10 pathExtension];
+  if (pathExtension4)
   {
-    v12 = v11;
+    v12 = pathExtension4;
     v13 = [(EKAttachment *)self URL];
-    v14 = [v13 pathExtension];
-    v15 = [v14 isEqual:&stru_1F1B49D68];
+    pathExtension5 = [v13 pathExtension];
+    v15 = [pathExtension5 isEqual:&stru_1F1B49D68];
 
     if ((v15 & 1) == 0)
     {
-      v9 = [(EKAttachment *)self URL];
+      localURL3 = [(EKAttachment *)self URL];
       goto LABEL_8;
     }
   }
@@ -463,38 +463,38 @@ LABEL_8:
   {
   }
 
-  v18 = [(EKAttachment *)self fileFormat];
-  v19 = [v18 componentsSeparatedByString:@""];;
-  v16 = [v19 firstObject];
+  fileFormat = [(EKAttachment *)self fileFormat];
+  v19 = [fileFormat componentsSeparatedByString:@""];;
+  firstObject = [v19 firstObject];
 
-  v20 = [v16 componentsSeparatedByString:@"/"];
-  v17 = [v20 lastObject];
+  v20 = [firstObject componentsSeparatedByString:@"/"];
+  pathExtension3 = [v20 lastObject];
 
 LABEL_11:
 
-  return v17;
+  return pathExtension3;
 }
 
 - (unsigned)flags
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992760]];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)_setFlagValue:(BOOL)a3 withMask:(unsigned int)a4
+- (void)_setFlagValue:(BOOL)value withMask:(unsigned int)mask
 {
-  v5 = a3;
-  v7 = [(EKAttachment *)self flags];
-  if (v5)
+  valueCopy = value;
+  flags = [(EKAttachment *)self flags];
+  if (valueCopy)
   {
-    v8 = v7 | a4;
+    v8 = flags | mask;
   }
 
   else
   {
-    v8 = v7 & ~a4;
+    v8 = flags & ~mask;
   }
 
   [(EKAttachment *)self setFlags:v8];
@@ -502,17 +502,17 @@ LABEL_11:
 
 - (NSURL)localURL
 {
-  v3 = [(EKAttachment *)self URLForPendingFileCopy];
-  v4 = v3;
-  if (v3)
+  uRLForPendingFileCopy = [(EKAttachment *)self URLForPendingFileCopy];
+  v4 = uRLForPendingFileCopy;
+  if (uRLForPendingFileCopy)
   {
-    v5 = v3;
+    v5 = uRLForPendingFileCopy;
   }
 
   else
   {
-    v6 = [(EKAttachment *)self securityScopedLocalURLWrapper];
-    v5 = [v6 url];
+    securityScopedLocalURLWrapper = [(EKAttachment *)self securityScopedLocalURLWrapper];
+    v5 = [securityScopedLocalURLWrapper url];
   }
 
   return v5;
@@ -520,27 +520,27 @@ LABEL_11:
 
 - (NSURL)localURLForArchivedData
 {
-  v2 = [(EKAttachment *)self securityScopedLocalURLForArchivedDataWrapper];
-  v3 = [v2 url];
+  securityScopedLocalURLForArchivedDataWrapper = [(EKAttachment *)self securityScopedLocalURLForArchivedDataWrapper];
+  v3 = [securityScopedLocalURLForArchivedDataWrapper url];
 
   return v3;
 }
 
 - (NSURL)URLForPendingFileCopy
 {
-  v2 = [(EKAttachment *)self URLWrapperForPendingFileCopy];
-  v3 = [v2 url];
+  uRLWrapperForPendingFileCopy = [(EKAttachment *)self URLWrapperForPendingFileCopy];
+  v3 = [uRLWrapperForPendingFileCopy url];
 
   return v3;
 }
 
-- (void)setURLForPendingFileCopy:(id)a3
+- (void)setURLForPendingFileCopy:(id)copy
 {
-  if (a3)
+  if (copy)
   {
     v4 = MEMORY[0x1E6993010];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithURL:v5];
+    copyCopy = copy;
+    v6 = [[v4 alloc] initWithURL:copyCopy];
   }
 
   else
@@ -554,23 +554,23 @@ LABEL_11:
 - (BOOL)shouldSetQuarantineAttributesOnCopiedFile
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992500]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (int64_t)compareFileNames:(id)a3
+- (int64_t)compareFileNames:(id)names
 {
-  v4 = a3;
-  v5 = [(EKAttachment *)self fileName];
-  v6 = [v4 fileName];
+  namesCopy = names;
+  fileName = [(EKAttachment *)self fileName];
+  fileName2 = [namesCopy fileName];
 
-  if (v6)
+  if (fileName2)
   {
-    v7 = [v5 compare:v6];
+    v7 = [fileName compare:fileName2];
   }
 
-  else if (v5)
+  else if (fileName)
   {
     v7 = -1;
   }
@@ -591,23 +591,23 @@ LABEL_11:
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = [(EKAttachment *)self URL];
-  v7 = [(EKAttachment *)self localRelativePath];
-  v8 = [(EKAttachment *)self fileName];
-  v9 = [(EKAttachment *)self fileFormat];
-  v10 = [(EKAttachment *)self fileSize];
-  v11 = [(EKAttachment *)self UUID];
-  v12 = [v4 stringWithFormat:@"%@ <%p> {%@ URL:%@; localRelativePath:%@; filename:%@; fileFormat:%@; fileSize:%@; UUID: %@\n", v5, self, v3, v6, v7, v8, v9, v10, v11];;
+  localRelativePath = [(EKAttachment *)self localRelativePath];
+  fileName = [(EKAttachment *)self fileName];
+  fileFormat = [(EKAttachment *)self fileFormat];
+  fileSize = [(EKAttachment *)self fileSize];
+  uUID = [(EKAttachment *)self UUID];
+  v12 = [v4 stringWithFormat:@"%@ <%p> {%@ URL:%@; localRelativePath:%@; filename:%@; fileFormat:%@; fileSize:%@; UUID: %@\n", v5, self, v3, v6, localRelativePath, fileName, fileFormat, fileSize, uUID];;
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([MEMORY[0x1E6992F30] isProgramSDKAtLeast:0x7E30901FFFFFFFFLL])
   {
     v13.receiver = self;
     v13.super_class = EKAttachment;
-    return [(EKObject *)&v13 copyWithZone:a3];
+    return [(EKObject *)&v13 copyWithZone:zone];
   }
 
   else
@@ -615,63 +615,63 @@ LABEL_11:
     v5 = [[EKAttachment allocWithZone:?]];
     if (v5)
     {
-      v6 = [(EKAttachment *)self URLString];
-      [(EKAttachment *)v5 setURLString:v6];
+      uRLString = [(EKAttachment *)self URLString];
+      [(EKAttachment *)v5 setURLString:uRLString];
 
-      v7 = [(EKAttachment *)self fileNameRaw];
-      [(EKAttachment *)v5 setFileNameRaw:v7];
+      fileNameRaw = [(EKAttachment *)self fileNameRaw];
+      [(EKAttachment *)v5 setFileNameRaw:fileNameRaw];
 
-      v8 = [(EKAttachment *)self fileFormat];
-      [(EKAttachment *)v5 setFileFormat:v8];
+      fileFormat = [(EKAttachment *)self fileFormat];
+      [(EKAttachment *)v5 setFileFormat:fileFormat];
 
       [(EKAttachment *)v5 setIsBinary:[(EKAttachment *)self isBinary]];
-      v9 = [(EKAttachment *)self fileSize];
-      [(EKAttachment *)v5 setFileSize:v9];
+      fileSize = [(EKAttachment *)self fileSize];
+      [(EKAttachment *)v5 setFileSize:fileSize];
 
-      v10 = [(EKAttachment *)self XPropertiesData];
-      [(EKAttachment *)v5 setXPropertiesData:v10];
+      xPropertiesData = [(EKAttachment *)self XPropertiesData];
+      [(EKAttachment *)v5 setXPropertiesData:xPropertiesData];
 
-      v11 = [(EKAttachment *)self externalID];
-      [(EKAttachment *)v5 setExternalID:v11];
+      externalID = [(EKAttachment *)self externalID];
+      [(EKAttachment *)v5 setExternalID:externalID];
     }
   }
 
   return v5;
 }
 
-+ (BOOL)canonicalizedEqualityTestValue1:(id)a3 value2:(id)a4 key:(id)a5 object1:(id)a6 object2:(id)a7
++ (BOOL)canonicalizedEqualityTestValue1:(id)value1 value2:(id)value2 key:(id)key object1:(id)object1 object2:(id)object2
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v14 isEqualToString:*MEMORY[0x1E69924B0]])
+  value1Copy = value1;
+  value2Copy = value2;
+  keyCopy = key;
+  object1Copy = object1;
+  object2Copy = object2;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E69924B0]])
   {
-    v17 = v12;
-    v18 = v13;
+    v17 = value1Copy;
+    v18 = value2Copy;
     v19 = [v17 url];
     if (v19 || ([v18 url], (v31 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v20 = [v17 url];
       [v18 url];
       v33 = v19;
-      v21 = v14;
+      v21 = keyCopy;
       v22 = v17;
       v23 = v18;
-      v24 = v13;
-      v25 = v16;
-      v26 = v12;
-      v28 = v27 = v15;
+      v24 = value2Copy;
+      v25 = object2Copy;
+      v26 = value1Copy;
+      v28 = v27 = object1Copy;
       v29 = [v20 isEqual:v28];
 
-      v15 = v27;
-      v12 = v26;
-      v16 = v25;
-      v13 = v24;
+      object1Copy = v27;
+      value1Copy = v26;
+      object2Copy = v25;
+      value2Copy = v24;
       v18 = v23;
       v17 = v22;
-      v14 = v21;
+      keyCopy = v21;
       v19 = v33;
 
       if (v33)
@@ -691,31 +691,31 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v34.receiver = a1;
+  v34.receiver = self;
   v34.super_class = &OBJC_METACLASS___EKAttachment;
-  v29 = objc_msgSendSuper2(&v34, sel_canonicalizedEqualityTestValue1_value2_key_object1_object2_, v12, v13, v14, v15, v16);
+  v29 = objc_msgSendSuper2(&v34, sel_canonicalizedEqualityTestValue1_value2_key_object1_object2_, value1Copy, value2Copy, keyCopy, object1Copy, object2Copy);
 LABEL_10:
 
   return v29;
 }
 
-- (BOOL)validateWithOwner:(id)a3 error:(id *)a4
+- (BOOL)validateWithOwner:(id)owner error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = EKAttachment;
   LODWORD(v7) = [EKObject validateWithOwner:sel_validateWithOwner_error_ error:?];
   if (v7)
   {
-    v8 = [(EKObject *)self isNew];
+    isNew = [(EKObject *)self isNew];
     LOBYTE(v7) = 1;
-    if (!a3 && v8)
+    if (!owner && isNew)
     {
-      if (a4)
+      if (error)
       {
         v9 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:66];
         v7 = v9;
         LOBYTE(v7) = 0;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -728,11 +728,11 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  if (a3)
+  if (save)
   {
-    *a3 = 0;
+    *save = 0;
   }
 
   [(EKObject *)self insertPersistentObjectIfNeeded];

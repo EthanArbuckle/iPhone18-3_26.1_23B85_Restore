@@ -1,32 +1,32 @@
 @interface PSSearchEntry
 + (id)schemeNameOverride;
-+ (void)setSchemeNameOverride:(id)a3;
-- (BOOL)_specifier:(id)a3 hasDetailController:(BOOL)a4;
++ (void)setSchemeNameOverride:(id)override;
+- (BOOL)_specifier:(id)_specifier hasDetailController:(BOOL)controller;
 - (BOOL)finishIndexing;
 - (BOOL)isRootEntry;
 - (BOOL)isRootUrl;
 - (NSURL)url;
-- (PSSearchEntry)initWithSpecifier:(id)a3 parent:(id)a4;
+- (PSSearchEntry)initWithSpecifier:(id)specifier parent:(id)parent;
 - (PSSearchEntry)parentEntry;
-- (id)_prefsURLIsRoot:(BOOL *)a3;
+- (id)_prefsURLIsRoot:(BOOL *)root;
 - (id)ancestorEntries;
 - (id)debugDescription;
 - (id)description;
-- (id)detailTextWithEffectiveTitle:(id *)a3;
+- (id)detailTextWithEffectiveTitle:(id *)title;
 - (id)hierarchyDescription;
-- (id)recursiveDescriptionForLevel:(unint64_t)a3;
+- (id)recursiveDescriptionForLevel:(unint64_t)level;
 - (id)rootEntry;
 - (id)sectionEntry;
-- (void)setAction:(id)a3;
+- (void)setAction:(id)action;
 @end
 
 @implementation PSSearchEntry
 
-+ (void)setSchemeNameOverride:(id)a3
++ (void)setSchemeNameOverride:(id)override
 {
-  if (_schemeNameOverride != a3)
+  if (_schemeNameOverride != override)
   {
-    v3 = [a3 copy];
+    v3 = [override copy];
     v4 = _schemeNameOverride;
     _schemeNameOverride = v3;
   }
@@ -45,38 +45,38 @@
   }
 }
 
-- (PSSearchEntry)initWithSpecifier:(id)a3 parent:(id)a4
+- (PSSearchEntry)initWithSpecifier:(id)specifier parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  specifierCopy = specifier;
+  parentCopy = parent;
   v36.receiver = self;
   v36.super_class = PSSearchEntry;
   v9 = [(PSSearchEntry *)&v36 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_specifier, a3);
-    objc_storeWeak(&v10->_parentEntry, v8);
+    objc_storeStrong(&v9->_specifier, specifier);
+    objc_storeWeak(&v10->_parentEntry, parentCopy);
     v11 = objc_opt_new();
     childEntries = v10->_childEntries;
     v10->_childEntries = v11;
 
-    v13 = [v7 propertyForKey:@"bundle"];
+    v13 = [specifierCopy propertyForKey:@"bundle"];
     v14 = v13;
     if (v13)
     {
-      v15 = v13;
+      bundleName = v13;
     }
 
     else
     {
-      v15 = [v8 bundleName];
+      bundleName = [parentCopy bundleName];
     }
 
     bundleName = v10->_bundleName;
-    v10->_bundleName = v15;
+    v10->_bundleName = bundleName;
 
-    v17 = [v7 propertyForKey:@"keywords"];
+    v17 = [specifierCopy propertyForKey:@"keywords"];
     v18 = [v17 mutableCopy];
     v19 = v18;
     if (v18)
@@ -92,15 +92,15 @@
     keywords = v10->_keywords;
     v10->_keywords = v20;
 
-    v22 = [v7 name];
+    name = [specifierCopy name];
     name = v10->_name;
-    v10->_name = v22;
+    v10->_name = name;
 
-    v24 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     identifier = v10->_identifier;
-    v10->_identifier = v24;
+    v10->_identifier = identifier;
 
-    v26 = [v7 propertyForKey:@"searchSectionID"];
+    v26 = [specifierCopy propertyForKey:@"searchSectionID"];
     sectionIdentifier = v10->_sectionIdentifier;
     v10->_sectionIdentifier = v26;
 
@@ -108,7 +108,7 @@
     v10->_isSection = [v28 BOOLValue];
 
     v29 = MEMORY[0x1E695DFF8];
-    v30 = [v7 propertyForKey:@"searchURL"];
+    v30 = [specifierCopy propertyForKey:@"searchURL"];
     v31 = [v29 URLWithString:v30];
     url = v10->_url;
     v10->_url = v31;
@@ -122,8 +122,8 @@
     additionalDetailTextComponents = v10->_additionalDetailTextComponents;
     v10->_additionalDetailTextComponents = v33;
 
-    v10->_hasDetailController = [(PSSearchEntry *)v10 _specifier:v7 hasDetailController:0];
-    v10->_hasListController = [(PSSearchEntry *)v10 _specifier:v7 hasDetailController:1];
+    v10->_hasDetailController = [(PSSearchEntry *)v10 _specifier:specifierCopy hasDetailController:0];
+    v10->_hasListController = [(PSSearchEntry *)v10 _specifier:specifierCopy hasDetailController:1];
   }
 
   return v10;
@@ -131,8 +131,8 @@
 
 - (BOOL)finishIndexing
 {
-  v3 = [(PSSearchEntry *)self hasFinishedIndexing];
-  if (!v3)
+  hasFinishedIndexing = [(PSSearchEntry *)self hasFinishedIndexing];
+  if (!hasFinishedIndexing)
   {
     specifier = self->_specifier;
     self->_specifier = 0;
@@ -141,7 +141,7 @@
     self->_groupSpecifier = 0;
   }
 
-  return !v3;
+  return !hasFinishedIndexing;
 }
 
 - (BOOL)isRootEntry
@@ -152,23 +152,23 @@
   return v3;
 }
 
-- (BOOL)_specifier:(id)a3 hasDetailController:(BOOL)a4
+- (BOOL)_specifier:(id)_specifier hasDetailController:(BOOL)controller
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  controllerCopy = controller;
+  _specifierCopy = _specifier;
+  if (_specifierCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [v6 properties];
-      v9 = [v8 objectForKeyedSubscript:@"AppBundleID"];
+      properties = [_specifierCopy properties];
+      v9 = [properties objectForKeyedSubscript:@"AppBundleID"];
       if (v9)
       {
         v10 = v9;
-        v11 = [(PSSearchEntry *)self isSectionEntry];
+        isSectionEntry = [(PSSearchEntry *)self isSectionEntry];
 
-        if (!v11)
+        if (!isSectionEntry)
         {
           LOBYTE(v7) = 0;
 LABEL_25:
@@ -177,17 +177,17 @@ LABEL_25:
         }
       }
 
-      v12 = [v8 objectForKeyedSubscript:@"enabled"];
+      v12 = [properties objectForKeyedSubscript:@"enabled"];
       v13 = v12;
       if (v12 && ![v12 BOOLValue])
       {
         goto LABEL_11;
       }
 
-      if (v4)
+      if (controllerCopy)
       {
-        v14 = [v6 detailControllerClass];
-        if (v14 == objc_opt_class() || ([v14 isSubclassOfClass:objc_opt_class()] & 1) != 0)
+        detailControllerClass = [_specifierCopy detailControllerClass];
+        if (detailControllerClass == objc_opt_class() || ([detailControllerClass isSubclassOfClass:objc_opt_class()] & 1) != 0)
         {
 LABEL_11:
           LOBYTE(v7) = 0;
@@ -196,11 +196,11 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v15 = [v8 objectForKeyedSubscript:@"pane"];
+        v15 = [properties objectForKeyedSubscript:@"pane"];
         if (v15)
         {
           v16 = v15;
-          v7 = [objc_msgSend(v6 "editPaneClass")];
+          v7 = [objc_msgSend(_specifierCopy "editPaneClass")];
 
           if (!v7)
           {
@@ -209,30 +209,30 @@ LABEL_24:
         }
       }
 
-      v17 = [v8 objectForKeyedSubscript:@"cell"];
+      v17 = [properties objectForKeyedSubscript:@"cell"];
       if (v17)
       {
-        v18 = [PSTableCell cellTypeFromString:v17];
+        cellType = [PSTableCell cellTypeFromString:v17];
       }
 
       else
       {
-        v18 = [v6 cellType];
+        cellType = [_specifierCopy cellType];
       }
 
-      if ((v18 - 1) > 1)
+      if ((cellType - 1) > 1)
       {
         LOBYTE(v7) = 0;
       }
 
       else
       {
-        v19 = [v8 objectForKeyedSubscript:@"detail"];
+        v19 = [properties objectForKeyedSubscript:@"detail"];
 
         LOBYTE(v7) = 1;
-        if (!v19 && !v4)
+        if (!v19 && !controllerCopy)
         {
-          v20 = [v8 objectForKeyedSubscript:@"pane"];
+          v20 = [properties objectForKeyedSubscript:@"pane"];
           LOBYTE(v7) = v20 == 0;
         }
       }
@@ -247,88 +247,88 @@ LABEL_26:
   return v7;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   action = self->_action;
   p_action = &self->_action;
-  if (action != v5)
+  if (action != actionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_action, a3);
-    v5 = v8;
+    v8 = actionCopy;
+    objc_storeStrong(p_action, action);
+    actionCopy = v8;
   }
 }
 
 - (id)sectionEntry
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      if ([(PSSearchEntry *)v2 isSectionEntry])
+      if ([(PSSearchEntry *)selfCopy isSectionEntry])
       {
         break;
       }
 
-      v3 = [(PSSearchEntry *)v2 parentEntry];
+      parentEntry = [(PSSearchEntry *)selfCopy parentEntry];
 
-      v2 = v3;
+      selfCopy = parentEntry;
     }
 
-    while (v3);
+    while (parentEntry);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)rootEntry
 {
-  v2 = self;
-  v3 = [(PSSearchEntry *)v2 parentEntry];
+  selfCopy = self;
+  parentEntry = [(PSSearchEntry *)selfCopy parentEntry];
 
-  if (v3)
+  if (parentEntry)
   {
     do
     {
-      v4 = [(PSSearchEntry *)v2 parentEntry];
+      parentEntry2 = [(PSSearchEntry *)selfCopy parentEntry];
 
-      v5 = [(PSSearchEntry *)v4 parentEntry];
+      v4ParentEntry = [(PSSearchEntry *)parentEntry2 parentEntry];
 
-      v2 = v4;
+      selfCopy = parentEntry2;
     }
 
-    while (v5);
+    while (v4ParentEntry);
   }
 
   else
   {
-    v4 = v2;
+    parentEntry2 = selfCopy;
   }
 
-  return v4;
+  return parentEntry2;
 }
 
 - (id)ancestorEntries
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   WeakRetained = objc_loadWeakRetained(&self->_parentEntry);
   if (WeakRetained)
   {
     v5 = WeakRetained;
     do
     {
-      [v3 insertObject:v5 atIndex:0];
-      v6 = [v5 parentEntry];
+      [array insertObject:v5 atIndex:0];
+      parentEntry = [v5 parentEntry];
 
-      v5 = v6;
+      v5 = parentEntry;
     }
 
-    while (v6);
+    while (parentEntry);
   }
 
-  return v3;
+  return array;
 }
 
 - (NSURL)url
@@ -358,20 +358,20 @@ LABEL_26:
   return self->_isRootURL;
 }
 
-- (id)_prefsURLIsRoot:(BOOL *)a3
+- (id)_prefsURLIsRoot:(BOOL *)root
 {
   [(PSSearchEntry *)self hasFinishedIndexing];
-  v5 = [(PSSearchEntry *)self ancestorEntries];
-  v6 = [v5 arrayByAddingObject:self];
+  ancestorEntries = [(PSSearchEntry *)self ancestorEntries];
+  v6 = [ancestorEntries arrayByAddingObject:self];
 
   v7 = [v6 objectAtIndexedSubscript:0];
   v8 = +[PSSearchEntry schemeNameOverride];
   if ([v7 hasDetailController])
   {
     v9 = MEMORY[0x1E696AD60];
-    v10 = [v7 identifier];
-    v11 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v12 = [v10 stringByAddingPercentEncodingWithAllowedCharacters:v11];
+    identifier = [v7 identifier];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v12 = [identifier stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
     v13 = [v9 stringWithFormat:@"%@:root=%@", v8, v12];
 
     v14 = [v6 count];
@@ -393,16 +393,16 @@ LABEL_26:
 
   else
   {
-    if (a3)
+    if (root)
     {
-      *a3 = 1;
+      *root = 1;
     }
 
     v18 = MEMORY[0x1E695DFF8];
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v7 identifier];
-    v21 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v22 = [v20 stringByAddingPercentEncodingWithAllowedCharacters:v21];
+    identifier2 = [v7 identifier];
+    uRLPathAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v22 = [identifier2 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
     v23 = [v19 stringWithFormat:@"%@:root=ROOT#%@", v8, v22];
     v17 = [v18 URLWithString:v23];
   }
@@ -439,7 +439,7 @@ void __33__PSSearchEntry__prefsURLIsRoot___block_invoke(uint64_t a1, void *a2, u
   [*(a1 + 32) appendFormat:v9, v10];
 }
 
-- (id)detailTextWithEffectiveTitle:(id *)a3
+- (id)detailTextWithEffectiveTitle:(id *)title
 {
   v5 = PSLocaleLanguageDirection();
   v6 = @"→";
@@ -449,38 +449,38 @@ void __33__PSSearchEntry__prefsURLIsRoot___block_invoke(uint64_t a1, void *a2, u
   }
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %@ ", v6];
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = v8;
+  array = [MEMORY[0x1E695DF70] array];
+  v9 = array;
   if (v5 == 2)
   {
-    [v8 addObject:@"\u200F"];
+    [array addObject:@"\u200F"];
   }
 
-  v10 = [(PSSearchEntry *)self ancestorEntries];
+  ancestorEntries = [(PSSearchEntry *)self ancestorEntries];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __46__PSSearchEntry_detailTextWithEffectiveTitle___block_invoke;
   v20[3] = &unk_1E71DD8F8;
   v11 = v9;
   v21 = v11;
-  [v10 enumerateObjectsWithOptions:0 usingBlock:v20];
+  [ancestorEntries enumerateObjectsWithOptions:0 usingBlock:v20];
 
   [v11 addObjectsFromArray:self->_additionalDetailTextComponents];
-  v12 = [(PSSearchEntry *)self groupName];
-  if ([v12 length])
+  groupName = [(PSSearchEntry *)self groupName];
+  if ([groupName length])
   {
-    v13 = PSSearchFormattedString(v12);
+    v13 = PSSearchFormattedString(groupName);
     [v11 insertObject:v13 atIndex:{objc_msgSend(v11, "count")}];
   }
 
-  v14 = [(PSSearchEntry *)self name];
-  v15 = [v14 length];
+  name = [(PSSearchEntry *)self name];
+  v15 = [name length];
 
   if (v15)
   {
-    if (a3)
+    if (title)
     {
-      *a3 = [(PSSearchEntry *)self name];
+      *title = [(PSSearchEntry *)self name];
     }
   }
 
@@ -490,9 +490,9 @@ void __33__PSSearchEntry__prefsURLIsRoot___block_invoke(uint64_t a1, void *a2, u
     v17 = v16 - 1;
     if (v16 != 0x8000000000000000)
     {
-      if (a3)
+      if (title)
       {
-        *a3 = [v11 objectAtIndexedSubscript:v17];
+        *title = [v11 objectAtIndexedSubscript:v17];
       }
 
       [v11 removeObjectAtIndex:v17];
@@ -550,41 +550,41 @@ LABEL_11:
   v9.receiver = self;
   v9.super_class = PSSearchEntry;
   v3 = [(PSSearchEntry *)&v9 description];
-  v4 = [(PSSearchEntry *)self hierarchyDescription];
-  v5 = [v3 stringByAppendingFormat:@" %@", v4];
+  hierarchyDescription = [(PSSearchEntry *)self hierarchyDescription];
+  v5 = [v3 stringByAppendingFormat:@" %@", hierarchyDescription];
 
-  v6 = [(PSSearchEntry *)self identifier];
-  v7 = [v5 stringByAppendingFormat:@"\nID: %@, bundle: %@, sectionEntry: %d, rootEntry: %d", v6, self->_bundleName, -[PSSearchEntry isSectionEntry](self, "isSectionEntry"), -[PSSearchEntry isRootEntry](self, "isRootEntry")];
+  identifier = [(PSSearchEntry *)self identifier];
+  v7 = [v5 stringByAppendingFormat:@"\nID: %@, bundle: %@, sectionEntry: %d, rootEntry: %d", identifier, self->_bundleName, -[PSSearchEntry isSectionEntry](self, "isSectionEntry"), -[PSSearchEntry isRootEntry](self, "isRootEntry")];
 
   return v7;
 }
 
-- (id)recursiveDescriptionForLevel:(unint64_t)a3
+- (id)recursiveDescriptionForLevel:(unint64_t)level
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD60] string];
-  if (a3)
+  string = [MEMORY[0x1E696AD60] string];
+  if (level)
   {
-    v6 = a3;
+    levelCopy = level;
     do
     {
-      [v5 appendString:@"    "];
-      --v6;
+      [string appendString:@"    "];
+      --levelCopy;
     }
 
-    while (v6);
+    while (levelCopy);
   }
 
   v7 = MEMORY[0x1E696AD60];
-  v8 = [(PSSearchEntry *)self name];
-  v9 = [v7 stringWithFormat:@"%@%@", v5, v8];
+  name = [(PSSearchEntry *)self name];
+  v9 = [v7 stringWithFormat:@"%@%@", string, name];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(PSSearchEntry *)self childEntries];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childEntries = [(PSSearchEntry *)self childEntries];
+  v11 = [childEntries countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
     v12 = v11;
@@ -595,14 +595,14 @@ LABEL_11:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childEntries);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) recursiveDescriptionForLevel:a3 + 1];
+        v15 = [*(*(&v17 + 1) + 8 * i) recursiveDescriptionForLevel:level + 1];
         [v9 appendFormat:@"\n%@", v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v12 = [childEntries countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v12);
@@ -622,16 +622,16 @@ LABEL_11:
 
 - (id)hierarchyDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PSSearchEntry *)self ancestorEntries];
-  v5 = [v4 arrayByAddingObject:self];
+  string = [MEMORY[0x1E696AD60] string];
+  ancestorEntries = [(PSSearchEntry *)self ancestorEntries];
+  v5 = [ancestorEntries arrayByAddingObject:self];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__PSSearchEntry_hierarchyDescription__block_invoke;
   v9[3] = &unk_1E71DD8F8;
-  v10 = v3;
-  v6 = v3;
+  v10 = string;
+  v6 = string;
   [v5 enumerateObjectsUsingBlock:v9];
   v7 = [MEMORY[0x1E696AEC0] stringWithString:v6];
 

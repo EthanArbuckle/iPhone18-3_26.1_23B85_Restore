@@ -1,7 +1,7 @@
 @interface MTL4CommandAllocatorDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4CommandAllocatorDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -21,16 +21,16 @@
   [(MTL4CommandAllocatorDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(MTL4CommandAllocatorDescriptor);
-  v5->_label = [(NSString *)self->_label copyWithZone:a3];
+  v5->_label = [(NSString *)self->_label copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -38,9 +38,9 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
-      v7 = *(a3 + 1);
+      v7 = *(equal + 1);
       if (v7 == self->_label || (v6 = [(NSString *)v7 isEqualToString:?]))
       {
         LOBYTE(v6) = 1;

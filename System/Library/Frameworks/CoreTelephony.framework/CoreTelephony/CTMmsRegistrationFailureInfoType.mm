@@ -1,10 +1,10 @@
 @interface CTMmsRegistrationFailureInfoType
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTMmsRegistrationFailureInfoType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTMmsRegistrationFailureInfoType:(id)type;
 - (CTMmsRegistrationFailureInfoType)init;
-- (CTMmsRegistrationFailureInfoType)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CTMmsRegistrationFailureInfoType)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTMmsRegistrationFailureInfoType
@@ -27,17 +27,17 @@
   return v2;
 }
 
-- (BOOL)isEqualToCTMmsRegistrationFailureInfoType:(id)a3
+- (BOOL)isEqualToCTMmsRegistrationFailureInfoType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
-    v5 = [(CTMmsRegistrationFailureInfoType *)self pdpContextId];
-    v6 = [v4 pdpContextId];
-    if (v5 == v6 && (v7 = -[CTMmsRegistrationFailureInfoType dataActive](self, "dataActive"), v7 == [v4 dataActive]) && (v8 = -[CTMmsRegistrationFailureInfoType isDataAttached](self, "isDataAttached"), v8 == objc_msgSend(v4, "isDataAttached")))
+    pdpContextId = [(CTMmsRegistrationFailureInfoType *)self pdpContextId];
+    pdpContextId2 = [typeCopy pdpContextId];
+    if (pdpContextId == pdpContextId2 && (v7 = -[CTMmsRegistrationFailureInfoType dataActive](self, "dataActive"), v7 == [typeCopy dataActive]) && (v8 = -[CTMmsRegistrationFailureInfoType isDataAttached](self, "isDataAttached"), v8 == objc_msgSend(typeCopy, "isDataAttached")))
     {
-      v11 = [(CTMmsRegistrationFailureInfoType *)self activationForMms];
-      v9 = v11 ^ [v4 activationForMms] ^ 1;
+      activationForMms = [(CTMmsRegistrationFailureInfoType *)self activationForMms];
+      v9 = activationForMms ^ [typeCopy activationForMms] ^ 1;
     }
 
     else
@@ -54,10 +54,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -65,17 +65,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTMmsRegistrationFailureInfoType *)self isEqualToCTMmsRegistrationFailureInfoType:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTMmsRegistrationFailureInfoType *)self isEqualToCTMmsRegistrationFailureInfoType:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTMmsRegistrationFailureInfoType *)self pdpContextId];
-  [v4 setPdpContextId:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  pdpContextId = [(CTMmsRegistrationFailureInfoType *)self pdpContextId];
+  [v4 setPdpContextId:pdpContextId];
 
   [v4 setDataActive:{-[CTMmsRegistrationFailureInfoType dataActive](self, "dataActive")}];
   [v4 setIsDataAttached:{-[CTMmsRegistrationFailureInfoType isDataAttached](self, "isDataAttached")}];
@@ -83,31 +83,31 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pdpContextId = self->_pdpContextId;
-  v5 = a3;
-  [v5 encodeObject:pdpContextId forKey:@"pdp_context_id"];
-  [v5 encodeBool:self->_dataActive forKey:@"data_active"];
-  [v5 encodeBool:self->_isDataAttached forKey:@"is_data_attached"];
-  [v5 encodeBool:self->_activationForMms forKey:@"activation_for_mms"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pdpContextId forKey:@"pdp_context_id"];
+  [coderCopy encodeBool:self->_dataActive forKey:@"data_active"];
+  [coderCopy encodeBool:self->_isDataAttached forKey:@"is_data_attached"];
+  [coderCopy encodeBool:self->_activationForMms forKey:@"activation_for_mms"];
 }
 
-- (CTMmsRegistrationFailureInfoType)initWithCoder:(id)a3
+- (CTMmsRegistrationFailureInfoType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTMmsRegistrationFailureInfoType;
   v5 = [(CTMmsRegistrationFailureInfoType *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pdp_context_id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pdp_context_id"];
     pdpContextId = v5->_pdpContextId;
     v5->_pdpContextId = v6;
 
-    v5->_dataActive = [v4 decodeBoolForKey:@"data_active"];
-    v5->_isDataAttached = [v4 decodeBoolForKey:@"is_data_attached"];
-    v5->_activationForMms = [v4 decodeBoolForKey:@"activation_for_mms"];
+    v5->_dataActive = [coderCopy decodeBoolForKey:@"data_active"];
+    v5->_isDataAttached = [coderCopy decodeBoolForKey:@"is_data_attached"];
+    v5->_activationForMms = [coderCopy decodeBoolForKey:@"activation_for_mms"];
   }
 
   return v5;

@@ -2,11 +2,11 @@
 - (BOOL)isAvailable;
 - (BOOL)isDefault;
 - (BOOL)isLocal;
-- (BOOL)supportsSettingType:(unint64_t)a3;
+- (BOOL)supportsSettingType:(unint64_t)type;
 - (OKProducerPreset)init;
-- (OKProducerPreset)initWithFamily:(id)a3 andPluginIdentifier:(id)a4;
-- (OKProducerPreset)initWithFamily:(id)a3 name:(id)a4 andDictionary:(id)a5;
-- (id)_settingKeyForType:(unint64_t)a3;
+- (OKProducerPreset)initWithFamily:(id)family andPluginIdentifier:(id)identifier;
+- (OKProducerPreset)initWithFamily:(id)family name:(id)name andDictionary:(id)dictionary;
+- (id)_settingKeyForType:(unint64_t)type;
 - (id)audioURLs;
 - (id)backgroundColor;
 - (id)family;
@@ -34,29 +34,29 @@
   return result;
 }
 
-- (OKProducerPreset)initWithFamily:(id)a3 name:(id)a4 andDictionary:(id)a5
+- (OKProducerPreset)initWithFamily:(id)family name:(id)name andDictionary:(id)dictionary
 {
   v8 = [(OKProducerPreset *)self init];
   if (v8)
   {
-    v8->_family = [a3 copy];
-    v8->_name = [a4 copy];
-    v8->_presetDictionary = a5;
+    v8->_family = [family copy];
+    v8->_name = [name copy];
+    v8->_presetDictionary = dictionary;
   }
 
   return v8;
 }
 
-- (OKProducerPreset)initWithFamily:(id)a3 andPluginIdentifier:(id)a4
+- (OKProducerPreset)initWithFamily:(id)family andPluginIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v6 = [(OKProducerPreset *)self init];
   if (v6)
   {
-    v6->_family = [a3 copy];
+    v6->_family = [family copy];
     v7 = objc_alloc(MEMORY[0x277CBEAC0]);
     v9 = @"pluginIdentifier";
-    v10[0] = a4;
+    v10[0] = identifier;
     v6->_presetDictionary = [v7 initWithDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v10, &v9, 1)}];
   }
 
@@ -234,9 +234,9 @@ LABEL_2:
   }
 
   v5 = +[OKProducerManager defaultManager];
-  v6 = [(OKProducerPreset *)self pluginIdentifier];
+  pluginIdentifier = [(OKProducerPreset *)self pluginIdentifier];
 
-  return [v5 localizedNameForPluginIdentifier:v6];
+  return [v5 localizedNameForPluginIdentifier:pluginIdentifier];
 }
 
 - (BOOL)isDefault
@@ -309,36 +309,36 @@ LABEL_2:
 - (id)backgroundColor
 {
   v3 = +[OKProducerManager defaultManager];
-  v4 = [(OKProducerPreset *)self pluginIdentifier];
+  pluginIdentifier = [(OKProducerPreset *)self pluginIdentifier];
 
-  return [v3 backgroundColorForPluginIdentifier:v4];
+  return [v3 backgroundColorForPluginIdentifier:pluginIdentifier];
 }
 
 - (BOOL)isAvailable
 {
   v3 = +[OKProducerManager defaultManager];
-  v4 = [(OKProducerPreset *)self pluginIdentifier];
+  pluginIdentifier = [(OKProducerPreset *)self pluginIdentifier];
 
-  return [v3 hasPluginWithIdentifier:v4];
+  return [v3 hasPluginWithIdentifier:pluginIdentifier];
 }
 
 - (BOOL)isLocal
 {
   v3 = +[OKProducerManager defaultManager];
-  v4 = [(OKProducerPreset *)self pluginIdentifier];
+  pluginIdentifier = [(OKProducerPreset *)self pluginIdentifier];
 
-  return [v3 hasInstalledPluginAndContentWithIdentifier:v4];
+  return [v3 hasInstalledPluginAndContentWithIdentifier:pluginIdentifier];
 }
 
-- (id)_settingKeyForType:(unint64_t)a3
+- (id)_settingKeyForType:(unint64_t)type
 {
   v3 = @"speed";
-  if (a3 != 2)
+  if (type != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"repeat";
   }
@@ -349,7 +349,7 @@ LABEL_2:
   }
 }
 
-- (BOOL)supportsSettingType:(unint64_t)a3
+- (BOOL)supportsSettingType:(unint64_t)type
 {
   v5 = [(NSDictionary *)self->_presetDictionary objectForKey:@"settingsSupport"];
   if (!v5)
@@ -358,7 +358,7 @@ LABEL_2:
   }
 
   v6 = v5;
-  v7 = [(OKProducerPreset *)self _settingKeyForType:a3];
+  v7 = [(OKProducerPreset *)self _settingKeyForType:type];
   if (!v7)
   {
     return v7;

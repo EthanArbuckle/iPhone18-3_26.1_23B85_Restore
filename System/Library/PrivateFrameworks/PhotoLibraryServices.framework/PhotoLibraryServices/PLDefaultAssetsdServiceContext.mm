@@ -1,8 +1,8 @@
 @interface PLDefaultAssetsdServiceContext
-- (BOOL)hasEntitlement:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (NSString)clientDebugDescription;
-- (PLDefaultAssetsdServiceContext)initWithSelector:(SEL)a3 connection:(id)a4 libraryBundle:(id)a5 connectionAuthorization:(id)a6;
-- (id)awaitLibraryState:(int64_t)a3;
+- (PLDefaultAssetsdServiceContext)initWithSelector:(SEL)selector connection:(id)connection libraryBundle:(id)bundle connectionAuthorization:(id)authorization;
+- (id)awaitLibraryState:(int64_t)state;
 @end
 
 @implementation PLDefaultAssetsdServiceContext
@@ -11,7 +11,7 @@
 {
   v3 = PLClientBundleIdentifierFromXPCConnection();
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(NSXPCConnection *)self->_connection processIdentifier];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
   if (self->_selector)
   {
     selector = self->_selector;
@@ -23,20 +23,20 @@
   }
 
   v7 = NSStringFromSelector(selector);
-  v8 = [v4 stringWithFormat:@"PID: %d, bundle ID: %@, selector: %@", v5, v3, v7];
+  v8 = [v4 stringWithFormat:@"PID: %d, bundle ID: %@, selector: %@", processIdentifier, v3, v7];
 
   return v8;
 }
 
-- (id)awaitLibraryState:(int64_t)a3
+- (id)awaitLibraryState:(int64_t)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(PLDefaultAssetsdServiceContext *)self libraryServicesManager];
-  v6 = v5;
-  if (v5)
+  libraryServicesManager = [(PLDefaultAssetsdServiceContext *)self libraryServicesManager];
+  v6 = libraryServicesManager;
+  if (libraryServicesManager)
   {
     v16 = 0;
-    [v5 awaitLibraryState:a3 error:&v16];
+    [libraryServicesManager awaitLibraryState:state error:&v16];
     v7 = v16;
     v8 = PLVoidResultFromResultAndError();
   }
@@ -46,9 +46,9 @@
     v9 = PLGatekeeperXPCGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PLDefaultAssetsdServiceContext *)self clientDebugDescription];
+      clientDebugDescription = [(PLDefaultAssetsdServiceContext *)self clientDebugDescription];
       *buf = 138543362;
-      v20 = v10;
+      v20 = clientDebugDescription;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "No library services manager: %{public}@", buf, 0xCu);
     }
 
@@ -67,39 +67,39 @@
   return v14;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:entitlement];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (PLDefaultAssetsdServiceContext)initWithSelector:(SEL)a3 connection:(id)a4 libraryBundle:(id)a5 connectionAuthorization:(id)a6
+- (PLDefaultAssetsdServiceContext)initWithSelector:(SEL)selector connection:(id)connection libraryBundle:(id)bundle connectionAuthorization:(id)authorization
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  bundleCopy = bundle;
+  authorizationCopy = authorization;
   v19.receiver = self;
   v19.super_class = PLDefaultAssetsdServiceContext;
   v14 = [(PLDefaultAssetsdServiceContext *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    if (a3)
+    if (selector)
     {
-      v16 = a3;
+      selectorCopy = selector;
     }
 
     else
     {
-      v16 = 0;
+      selectorCopy = 0;
     }
 
-    v14->_selector = v16;
-    objc_storeStrong(&v14->_connection, a4);
-    objc_storeStrong(&v15->_libraryBundle, a5);
-    objc_storeStrong(&v15->_connectionAuthorization, a6);
+    v14->_selector = selectorCopy;
+    objc_storeStrong(&v14->_connection, connection);
+    objc_storeStrong(&v15->_libraryBundle, bundle);
+    objc_storeStrong(&v15->_connectionAuthorization, authorization);
     v17 = v15;
   }
 

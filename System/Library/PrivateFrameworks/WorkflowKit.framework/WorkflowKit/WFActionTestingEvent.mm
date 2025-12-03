@@ -1,19 +1,19 @@
 @interface WFActionTestingEvent
-- (WFActionTestingEvent)initWithAction:(id)a3;
+- (WFActionTestingEvent)initWithAction:(id)action;
 @end
 
 @implementation WFActionTestingEvent
 
-- (WFActionTestingEvent)initWithAction:(id)a3
+- (WFActionTestingEvent)initWithAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v10.receiver = self;
   v10.super_class = WFActionTestingEvent;
   v6 = [(WFActionTestingEvent *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_action, a3);
+    objc_storeStrong(&v6->_action, action);
     v8 = v7;
   }
 

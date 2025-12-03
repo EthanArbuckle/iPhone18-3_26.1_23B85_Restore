@@ -1,8 +1,8 @@
 @interface _HKRemoteDataSources
 - (_HKRemoteDataSources)init;
-- (id)dataSourceForTimeScope:(int64_t)a3;
-- (id)initSupportsChartQueryDataGeneration:(BOOL)a3;
-- (void)setDataSource:(id)a3 forTimeScope:(int64_t)a4;
+- (id)dataSourceForTimeScope:(int64_t)scope;
+- (id)initSupportsChartQueryDataGeneration:(BOOL)generation;
+- (void)setDataSource:(id)source forTimeScope:(int64_t)scope;
 @end
 
 @implementation _HKRemoteDataSources
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (id)initSupportsChartQueryDataGeneration:(BOOL)a3
+- (id)initSupportsChartQueryDataGeneration:(BOOL)generation
 {
   v8.receiver = self;
   v8.super_class = _HKRemoteDataSources;
@@ -35,28 +35,28 @@
     dataSources = v4->_dataSources;
     v4->_dataSources = v5;
 
-    v4->_supportsChartQueryDataGeneration = a3;
+    v4->_supportsChartQueryDataGeneration = generation;
   }
 
   return v4;
 }
 
-- (id)dataSourceForTimeScope:(int64_t)a3
+- (id)dataSourceForTimeScope:(int64_t)scope
 {
   dataSources = self->_dataSources;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
   v5 = [(NSMutableDictionary *)dataSources objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDataSource:(id)a3 forTimeScope:(int64_t)a4
+- (void)setDataSource:(id)source forTimeScope:(int64_t)scope
 {
   dataSources = self->_dataSources;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  [(NSMutableDictionary *)dataSources setObject:v7 forKeyedSubscript:v8];
+  sourceCopy = source;
+  v8 = [v6 numberWithInteger:scope];
+  [(NSMutableDictionary *)dataSources setObject:sourceCopy forKeyedSubscript:v8];
 }
 
 @end

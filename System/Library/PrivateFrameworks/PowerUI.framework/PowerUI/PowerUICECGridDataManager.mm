@@ -1,28 +1,28 @@
 @interface PowerUICECGridDataManager
 + (PowerUICECGridDataManager)sharedInstance;
-+ (id)cleanIntervalsStringFromDates:(id)a3 withIntervalDuration:(double)a4;
-- (BOOL)enoughVariationForForecast:(id)a3 withMinDifference:(double)a4;
++ (id)cleanIntervalsStringFromDates:(id)dates withIntervalDuration:(double)duration;
+- (BOOL)enoughVariationForForecast:(id)forecast withMinDifference:(double)difference;
 - (BOOL)shouldChargeNow;
-- (BOOL)shouldEngageForPluggedInTime:(double)a3;
-- (BOOL)time:(id)a3 isWithinIntervalWithStart:(id)a4;
+- (BOOL)shouldEngageForPluggedInTime:(double)time;
+- (BOOL)time:(id)time isWithinIntervalWithStart:(id)start;
 - (PowerUICECGridDataManager)init;
-- (double)averageEmissionsOverForecastHorizon:(double)a3;
+- (double)averageEmissionsOverForecastHorizon:(double)horizon;
 - (double)timeToNextCleanInterval;
 - (id)balancingAuthorityName;
-- (id)downsampleGridData:(id)a3 fromRes:(unint64_t)a4 toRes:(unint64_t)a5;
+- (id)downsampleGridData:(id)data fromRes:(unint64_t)res toRes:(unint64_t)toRes;
 - (id)fetchForecast;
 - (id)forecastFromDefaults;
-- (id)intervalStartTimesOverForecastHorizon:(double)a3;
-- (id)lastIntervalStartTimeOverForecastHorizon:(double)a3;
-- (id)startTimeCurrentIntervalWithinForecastHorizon:(double)a3;
-- (id)storedForecastForDemoAnalyticsWithForecastHorizon:(double)a3;
-- (id)valuesFromForecast:(id)a3 forInterval:(double)a4;
-- (int64_t)emissionsForTime:(id)a3 overForecastHorizon:(double)a4;
-- (unint64_t)thresholdFromForecast:(id)a3 forChargeTime:(double)a4;
-- (void)recordForecastInDefaults:(id)a3;
+- (id)intervalStartTimesOverForecastHorizon:(double)horizon;
+- (id)lastIntervalStartTimeOverForecastHorizon:(double)horizon;
+- (id)startTimeCurrentIntervalWithinForecastHorizon:(double)horizon;
+- (id)storedForecastForDemoAnalyticsWithForecastHorizon:(double)horizon;
+- (id)valuesFromForecast:(id)forecast forInterval:(double)interval;
+- (int64_t)emissionsForTime:(id)time overForecastHorizon:(double)horizon;
+- (unint64_t)thresholdFromForecast:(id)forecast forChargeTime:(double)time;
+- (void)recordForecastInDefaults:(id)defaults;
 - (void)resetState;
-- (void)setupChargingTime:(double)a3 forPluggedInTime:(double)a4;
-- (void)setupDemoChargingTimeOverForecastHorizon:(double)a3 withKChargingSegments:(int64_t)a4;
+- (void)setupChargingTime:(double)time forPluggedInTime:(double)inTime;
+- (void)setupDemoChargingTimeOverForecastHorizon:(double)horizon withKChargingSegments:(int64_t)segments;
 @end
 
 @implementation PowerUICECGridDataManager
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __43__PowerUICECGridDataManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_8 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_8, block);
@@ -190,7 +190,7 @@ uint64_t __43__PowerUICECGridDataManager_sharedInstance__block_invoke(uint64_t a
   return v2;
 }
 
-- (BOOL)shouldEngageForPluggedInTime:(double)a3
+- (BOOL)shouldEngageForPluggedInTime:(double)time
 {
   if (+[PowerUISmartChargeUtilities isInternalBuild])
   {
@@ -198,9 +198,9 @@ uint64_t __43__PowerUICECGridDataManager_sharedInstance__block_invoke(uint64_t a
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 BOOLValue];
-      self->_tSavingOpportunity = v7;
-      if (v7)
+      bOOLValue = [v5 BOOLValue];
+      self->_tSavingOpportunity = bOOLValue;
+      if (bOOLValue)
       {
 LABEL_4:
         log = self->_log;
@@ -224,7 +224,7 @@ LABEL_4:
     }
   }
 
-  if (a3 >= 3600.0)
+  if (time >= 3600.0)
   {
     *buf = 0;
     v15 = buf;
@@ -237,7 +237,7 @@ LABEL_4:
     block[3] = &unk_2782D4A68;
     block[4] = self;
     block[5] = buf;
-    *&block[6] = a3;
+    *&block[6] = time;
     dispatch_sync(queue, block);
     [(NSUserDefaults *)self->_defaults setInteger:self->_engagementDecisionReason forKey:@"engagementDecisionReason"];
     v9 = v15[24];
@@ -376,12 +376,12 @@ LABEL_23:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)cleanIntervalsStringFromDates:(id)a3 withIntervalDuration:(double)a4
++ (id)cleanIntervalsStringFromDates:(id)dates withIntervalDuration:(double)duration
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  datesCopy = dates;
+  v6 = datesCopy;
+  if (datesCopy && [datesCopy count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
     v8 = [v6 objectAtIndexedSubscript:0];
@@ -413,11 +413,11 @@ LABEL_23:
 
           v15 = *(*(&v33 + 1) + 8 * v12);
           [v15 timeIntervalSinceDate:v14];
-          if (v16 > a4 || v13 == [obj count])
+          if (v16 > duration || v13 == [obj count])
           {
             v17 = [MEMORY[0x277CCA968] localizedStringFromDate:v7 dateStyle:0 timeStyle:1];
             v18 = MEMORY[0x277CCA968];
-            v19 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v14 sinceDate:a4];
+            v19 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v14 sinceDate:duration];
             v20 = [v18 localizedStringFromDate:v19 dateStyle:0 timeStyle:1];
 
             v21 = [*(v11 + 3240) stringWithFormat:@"%@-%@", v17, v20];
@@ -474,60 +474,60 @@ LABEL_23:
   return v25;
 }
 
-- (BOOL)enoughVariationForForecast:(id)a3 withMinDifference:(double)a4
+- (BOOL)enoughVariationForForecast:(id)forecast withMinDifference:(double)difference
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = [a3 mutableCopy];
+  v6 = [forecast mutableCopy];
   v7 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"forecastValue" ascending:1];
   v34[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   [v6 sortUsingDescriptors:v8];
 
-  v9 = [v6 firstObject];
-  v10 = [v9 forecastValue];
-  [v10 doubleValue];
+  firstObject = [v6 firstObject];
+  forecastValue = [firstObject forecastValue];
+  [forecastValue doubleValue];
   v12 = v11;
-  v13 = [v6 lastObject];
-  v14 = [v13 forecastValue];
-  [v14 doubleValue];
+  lastObject = [v6 lastObject];
+  forecastValue2 = [lastObject forecastValue];
+  [forecastValue2 doubleValue];
   v16 = vabdd_f64(v12, v15);
 
-  if (v16 < a4)
+  if (v16 < difference)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v18 = log;
-      v19 = [v6 firstObject];
-      v20 = [v19 forecastValue];
-      [v20 doubleValue];
+      firstObject2 = [v6 firstObject];
+      forecastValue3 = [firstObject2 forecastValue];
+      [forecastValue3 doubleValue];
       v22 = v21;
-      v23 = [v6 lastObject];
-      v24 = [v23 forecastValue];
-      [v24 doubleValue];
+      lastObject2 = [v6 lastObject];
+      forecastValue4 = [lastObject2 forecastValue];
+      [forecastValue4 doubleValue];
       v28 = 134218496;
       v29 = v22;
       v30 = 2048;
       v31 = v25;
       v32 = 2048;
-      v33 = a4;
+      differenceCopy = difference;
       _os_log_impl(&dword_21B766000, v18, OS_LOG_TYPE_DEFAULT, "Not enough variation in forecast values (%.0f - %.0f). Required variation = %.0f", &v28, 0x20u);
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v16 >= a4;
+  return v16 >= difference;
 }
 
-- (void)setupDemoChargingTimeOverForecastHorizon:(double)a3 withKChargingSegments:(int64_t)a4
+- (void)setupDemoChargingTimeOverForecastHorizon:(double)horizon withKChargingSegments:(int64_t)segments
 {
-  v6 = self;
+  selfCopy = self;
   v57 = *MEMORY[0x277D85DE8];
-  v7 = [(_GDSEmissionForecast *)self->_currentForecast fetchDate];
-  [v7 timeIntervalSinceNow];
-  if (v8 >= -v6->_refetchPeriod)
+  fetchDate = [(_GDSEmissionForecast *)self->_currentForecast fetchDate];
+  [fetchDate timeIntervalSinceNow];
+  if (v8 >= -selfCopy->_refetchPeriod)
   {
-    currentForecast = v6->_currentForecast;
+    currentForecast = selfCopy->_currentForecast;
 
     if (currentForecast)
     {
@@ -539,32 +539,32 @@ LABEL_23:
   {
   }
 
-  v10 = [(PowerUICECGridDataManager *)v6 fetchForecast];
+  fetchForecast = [(PowerUICECGridDataManager *)selfCopy fetchForecast];
 LABEL_5:
-  v11 = v6->_currentForecast;
-  log = v6->_log;
+  v11 = selfCopy->_currentForecast;
+  log = selfCopy->_log;
   v13 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
   if (v11)
   {
     if (v13)
     {
       *buf = 134218240;
-      v54 = a4;
+      segmentsCopy3 = segments;
       v55 = 2048;
-      v56 = a3 / 3600.0;
+      v56 = horizon / 3600.0;
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Figuring out cleanest %.2ld hours from %.02lf hours", buf, 0x16u);
     }
 
-    v14 = [(PowerUICECGridDataManager *)v6 valuesFromForecast:v6->_currentForecast forInterval:a3];
+    v14 = [(PowerUICECGridDataManager *)selfCopy valuesFromForecast:selfCopy->_currentForecast forInterval:horizon];
     if ([v14 count] > 1)
     {
-      v18 = [(PowerUICECGridDataManager *)v6 downsampleGridData:v14 fromRes:15 toRes:60];
+      v18 = [(PowerUICECGridDataManager *)selfCopy downsampleGridData:v14 fromRes:15 toRes:60];
 
-      v19 = v6->_log;
+      v19 = selfCopy->_log;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v54 = v18;
+        segmentsCopy3 = v18;
         _os_log_impl(&dword_21B766000, v19, OS_LOG_TYPE_DEFAULT, "Demo CEC will use the following resampled forecast: %@", buf, 0xCu);
       }
 
@@ -575,24 +575,24 @@ LABEL_5:
       v21 = [v18 sortedArrayUsingDescriptors:v20];
 
       v22 = [v21 count];
-      if (v22 >= a4)
+      if (v22 >= segments)
       {
-        v23 = a4;
+        segmentsCopy2 = segments;
       }
 
       else
       {
-        v23 = v22;
+        segmentsCopy2 = v22;
       }
 
       v43 = v21;
-      v24 = [v21 subarrayWithRange:{0, v23}];
+      v24 = [v21 subarrayWithRange:{0, segmentsCopy2}];
       v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v26 = v6->_log;
+      v26 = selfCopy->_log;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v54 = a4;
+        segmentsCopy3 = segments;
         _os_log_impl(&dword_21B766000, v26, OS_LOG_TYPE_DEFAULT, "Cleanest %ld intervals:", buf, 0xCu);
       }
 
@@ -616,26 +616,26 @@ LABEL_5:
             }
 
             v31 = *(*(&v47 + 1) + 8 * i);
-            v32 = v6->_log;
+            v32 = selfCopy->_log;
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
-              v33 = v6;
+              v33 = selfCopy;
               v34 = MEMORY[0x277CCA968];
               v35 = v32;
-              v36 = [v31 forecastDate];
-              v37 = [v34 localizedStringFromDate:v36 dateStyle:0 timeStyle:1];
-              v38 = [v31 forecastValue];
+              forecastDate = [v31 forecastDate];
+              v37 = [v34 localizedStringFromDate:forecastDate dateStyle:0 timeStyle:1];
+              forecastValue = [v31 forecastValue];
               *buf = 138412546;
-              v54 = v37;
+              segmentsCopy3 = v37;
               v55 = 2112;
-              v56 = *&v38;
+              v56 = *&forecastValue;
               _os_log_impl(&dword_21B766000, v35, OS_LOG_TYPE_DEFAULT, "%@: (%@ g/kWh CO2e)", buf, 0x16u);
 
-              v6 = v33;
+              selfCopy = v33;
             }
 
-            v39 = [v31 forecastDate];
-            [v25 addObject:v39];
+            forecastDate2 = [v31 forecastDate];
+            [v25 addObject:forecastDate2];
           }
 
           v28 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
@@ -645,25 +645,25 @@ LABEL_5:
       }
 
       v40 = [v25 copy];
-      cleanIntervals = v6->_cleanIntervals;
-      v6->_cleanIntervals = v40;
+      cleanIntervals = selfCopy->_cleanIntervals;
+      selfCopy->_cleanIntervals = v40;
 
-      v6->_intervalDuration = 3600.0;
-      [(NSUserDefaults *)v6->_defaults setObject:v6->_cleanIntervals forKey:@"cleanIntervals"];
-      [(NSUserDefaults *)v6->_defaults setDouble:@"intervalDuration" forKey:v6->_intervalDuration];
+      selfCopy->_intervalDuration = 3600.0;
+      [(NSUserDefaults *)selfCopy->_defaults setObject:selfCopy->_cleanIntervals forKey:@"cleanIntervals"];
+      [(NSUserDefaults *)selfCopy->_defaults setDouble:@"intervalDuration" forKey:selfCopy->_intervalDuration];
       v14 = v45;
-      [(PowerUICECGridDataManager *)v6 recordForecastInDefaults:v45];
+      [(PowerUICECGridDataManager *)selfCopy recordForecastInDefaults:v45];
     }
 
     else
     {
-      v15 = v6->_log;
+      v15 = selfCopy->_log;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
         v17 = [v14 count];
         *buf = 134217984;
-        v54 = v17;
+        segmentsCopy3 = v17;
         _os_log_impl(&dword_21B766000, v16, OS_LOG_TYPE_DEFAULT, "Forecast had insufficient number of entries. Requires at least two distinct entries, but got %lu.", buf, 0xCu);
       }
     }
@@ -678,16 +678,16 @@ LABEL_5:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupChargingTime:(double)a3 forPluggedInTime:(double)a4
+- (void)setupChargingTime:(double)time forPluggedInTime:(double)inTime
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = [(_GDSEmissionForecast *)self->_currentForecast fetchDate];
-  [v7 timeIntervalSinceNow];
+  fetchDate = [(_GDSEmissionForecast *)self->_currentForecast fetchDate];
+  [fetchDate timeIntervalSinceNow];
   if (v8 < -self->_refetchPeriod)
   {
 
 LABEL_4:
-    v10 = [(PowerUICECGridDataManager *)self fetchForecast];
+    fetchForecast = [(PowerUICECGridDataManager *)self fetchForecast];
     goto LABEL_5;
   }
 
@@ -713,16 +713,16 @@ LABEL_5:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v68 = a3 / 60.0;
+    v68 = time / 60.0;
     v69 = 2048;
-    v70 = a4 / 60.0;
+    v70 = inTime / 60.0;
     _os_log_impl(&dword_21B766000, v12, OS_LOG_TYPE_DEFAULT, "Figuring out cleanest %.02lf mins from %.02lf mins", buf, 0x16u);
   }
 
-  v13 = [(PowerUICECGridDataManager *)self valuesFromForecast:self->_currentForecast forInterval:a4];
-  v50 = self;
-  v14 = [(PowerUICECGridDataManager *)self thresholdFromForecast:v13 forChargeTime:a3];
-  v15 = [MEMORY[0x277CBEB18] array];
+  v13 = [(PowerUICECGridDataManager *)self valuesFromForecast:self->_currentForecast forInterval:inTime];
+  selfCopy = self;
+  v14 = [(PowerUICECGridDataManager *)self thresholdFromForecast:v13 forChargeTime:time];
+  array = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -744,13 +744,13 @@ LABEL_5:
         }
 
         v22 = *(*(&v59 + 1) + 8 * i);
-        v23 = [v22 forecastValue];
-        [v23 doubleValue];
+        forecastValue = [v22 forecastValue];
+        [forecastValue doubleValue];
         v25 = v24;
 
         if (v25 <= v20)
         {
-          [v15 addObject:v22];
+          [array addObject:v22];
         }
       }
 
@@ -763,16 +763,16 @@ LABEL_5:
   v49 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"forecastValue" ascending:1];
   v65 = v49;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
-  [v15 sortUsingDescriptors:v26];
+  [array sortUsingDescriptors:v26];
 
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v28 = v15;
+  v28 = array;
   v29 = [v28 countByEnumeratingWithState:&v55 objects:v64 count:16];
-  v30 = v50;
+  v30 = selfCopy;
   if (v29)
   {
     v31 = v29;
@@ -786,8 +786,8 @@ LABEL_5:
           objc_enumerationMutation(v28);
         }
 
-        v34 = [*(*(&v55 + 1) + 8 * j) forecastDate];
-        [v27 addObject:v34];
+        forecastDate = [*(*(&v55 + 1) + 8 * j) forecastDate];
+        [v27 addObject:forecastDate];
       }
 
       v31 = [v28 countByEnumeratingWithState:&v55 objects:v64 count:16];
@@ -798,8 +798,8 @@ LABEL_5:
 
   v48 = v28;
 
-  objc_storeStrong(&v50->_cleanIntervals, v27);
-  v35 = v50->_log;
+  objc_storeStrong(&selfCopy->_cleanIntervals, v27);
+  v35 = selfCopy->_log;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -810,7 +810,7 @@ LABEL_5:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v36 = v50->_cleanIntervals;
+  v36 = selfCopy->_cleanIntervals;
   v37 = [(NSMutableArray *)v36 countByEnumeratingWithState:&v51 objects:v63 count:16];
   if (v37)
   {
@@ -832,7 +832,7 @@ LABEL_5:
           v43 = MEMORY[0x277CCA968];
           v44 = v41;
           v45 = v42;
-          v30 = v50;
+          v30 = selfCopy;
           [v43 localizedStringFromDate:v45 dateStyle:0 timeStyle:1];
           v46 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           *buf = 138412290;
@@ -851,14 +851,14 @@ LABEL_5:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)thresholdFromForecast:(id)a3 forChargeTime:(double)a4
+- (unint64_t)thresholdFromForecast:(id)forecast forChargeTime:(double)time
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  forecastCopy = forecast;
+  v7 = forecastCopy;
+  if (forecastCopy)
   {
-    if ([v6 count])
+    if ([forecastCopy count])
     {
       v8 = [v7 mutableCopy];
       v9 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"forecastValue" ascending:1];
@@ -866,15 +866,15 @@ LABEL_5:
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
       [v8 sortUsingDescriptors:v10];
 
-      v11 = (a4 / 900.0) + 1;
+      v11 = (time / 900.0) + 1;
       if (v11 >= [v8 count])
       {
         v11 = [v8 count] - 1;
       }
 
       v12 = [v8 objectAtIndex:v11];
-      v13 = [v12 forecastValue];
-      v14 = [v13 unsignedIntegerValue];
+      forecastValue = [v12 forecastValue];
+      unsignedIntegerValue = [forecastValue unsignedIntegerValue];
 
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
       {
@@ -884,7 +884,7 @@ LABEL_5:
 
     else
     {
-      v14 = 99999;
+      unsignedIntegerValue = 99999;
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
       {
         [PowerUICECGridDataManager thresholdFromForecast:forChargeTime:];
@@ -894,7 +894,7 @@ LABEL_5:
 
   else
   {
-    v14 = 99999;
+    unsignedIntegerValue = 99999;
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
       [PowerUICECGridDataManager thresholdFromForecast:forChargeTime:];
@@ -902,7 +902,7 @@ LABEL_5:
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v14;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)shouldChargeNow
@@ -1037,39 +1037,39 @@ LABEL_20:
 - (id)fetchForecast
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(_GDSManager *)self->_gridManager latestMarginalEmissionForecast];
+  latestMarginalEmissionForecast = [(_GDSManager *)self->_gridManager latestMarginalEmissionForecast];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v5 = log;
-    v6 = [v3 forecastMap];
+    forecastMap = [latestMarginalEmissionForecast forecastMap];
     v9 = 138412290;
-    v10 = v6;
+    v10 = forecastMap;
     _os_log_impl(&dword_21B766000, v5, OS_LOG_TYPE_DEFAULT, "Emission Forecast: %@", &v9, 0xCu);
   }
 
-  objc_storeStrong(&self->_currentForecast, v3);
+  objc_storeStrong(&self->_currentForecast, latestMarginalEmissionForecast);
   v7 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return latestMarginalEmissionForecast;
 }
 
-- (id)valuesFromForecast:(id)a3 forInterval:(double)a4
+- (id)valuesFromForecast:(id)forecast forInterval:(double)interval
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v5 = [a3 forecastMap];
-  if ([v5 count])
+  forecastMap = [forecast forecastMap];
+  if ([forecastMap count])
   {
-    v6 = 86400.0;
-    if (a4 <= 86400.0)
+    intervalCopy = 86400.0;
+    if (interval <= 86400.0)
     {
-      v6 = a4;
+      intervalCopy = interval;
     }
 
-    v7 = (v6 / 900.0);
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [v5 allKeys];
-    v10 = [v9 mutableCopy];
+    v7 = (intervalCopy / 900.0);
+    array = [MEMORY[0x277CBEB18] array];
+    allKeys = [forecastMap allKeys];
+    v10 = [allKeys mutableCopy];
 
     v11 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1];
     v23[0] = v11;
@@ -1092,42 +1092,42 @@ LABEL_20:
       for (i = 0; i != v14; ++i)
       {
         v16 = [v10 objectAtIndexedSubscript:i];
-        v17 = [v5 objectForKeyedSubscript:v16];
+        v17 = [forecastMap objectForKeyedSubscript:v16];
 
         v18 = [PowerUICECGridDataForecastEntry alloc];
         v19 = [v10 objectAtIndexedSubscript:i];
         v20 = [(PowerUICECGridDataForecastEntry *)v18 initWithDate:v19 forecastValue:v17];
 
-        [v8 addObject:v20];
+        [array addObject:v20];
       }
     }
   }
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
-- (id)downsampleGridData:(id)a3 fromRes:(unint64_t)a4 toRes:(unint64_t)a5
+- (id)downsampleGridData:(id)data fromRes:(unint64_t)res toRes:(unint64_t)toRes
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dataCopy = data;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v33 = a4;
+    resCopy2 = res;
     v34 = 2048;
-    v35 = a5;
+    toResCopy = toRes;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Downsampling grid data from startResolution = %lu mins to endResolution = %lu mins.", buf, 0x16u);
   }
 
-  if (![v8 count])
+  if (![dataCopy count])
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
@@ -1137,7 +1137,7 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  if (a5 == a4)
+  if (toRes == res)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
@@ -1145,11 +1145,11 @@ LABEL_20:
     }
 
 LABEL_9:
-    v10 = v8;
+    v10 = dataCopy;
     goto LABEL_17;
   }
 
-  if (a5 < a4)
+  if (toRes < res)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -1161,8 +1161,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v11 = a5 / a4;
-  if (a5 % a4)
+  v11 = toRes / res;
+  if (toRes % res)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -1172,17 +1172,17 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v31 = a5;
+  toResCopy2 = toRes;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v8 count])
+  if ([dataCopy count])
   {
     v14 = 0;
     v15 = 0;
     v16 = v11;
     do
     {
-      v17 = [v8 objectAtIndex:v14];
-      v18 = [v17 forecastDate];
+      v17 = [dataCopy objectAtIndex:v14];
+      forecastDate = [v17 forecastDate];
 
       v19 = v11;
       v20 = v14 + v11;
@@ -1192,9 +1192,9 @@ LABEL_16:
         v22 = v15;
         do
         {
-          v23 = [v8 objectAtIndex:v22];
-          v24 = [v23 forecastValue];
-          [v24 doubleValue];
+          v23 = [dataCopy objectAtIndex:v22];
+          forecastValue = [v23 forecastValue];
+          [forecastValue doubleValue];
           v21 = v21 + v25;
 
           ++v22;
@@ -1205,11 +1205,11 @@ LABEL_16:
 
       v26 = [PowerUICECGridDataForecastEntry alloc];
       v27 = [MEMORY[0x277CCABB0] numberWithDouble:v21 / v16];
-      v28 = [(PowerUICECGridDataForecastEntry *)v26 initWithDate:v18 forecastValue:v27];
+      v28 = [(PowerUICECGridDataForecastEntry *)v26 initWithDate:forecastDate forecastValue:v27];
 
       [v10 addObject:v28];
       v14 = v20;
-      v29 = [v8 count] > v20;
+      v29 = [dataCopy count] > v20;
       v15 = v20;
       v11 = v19;
     }
@@ -1221,11 +1221,11 @@ LABEL_16:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218754;
-    v33 = a4;
+    resCopy2 = res;
     v34 = 2048;
-    v35 = v31;
+    toResCopy = toResCopy2;
     v36 = 2112;
-    v37 = v8;
+    v37 = dataCopy;
     v38 = 2112;
     v39 = v10;
     _os_log_debug_impl(&dword_21B766000, v30, OS_LOG_TYPE_DEBUG, "Resampled from startResolution = %lu mins to endResolution = %lu mins. Starting array: %@, ending array: %@ ", buf, 0x2Au);
@@ -1240,19 +1240,19 @@ LABEL_17:
 
 - (id)balancingAuthorityName
 {
-  v2 = [(PowerUICECGridDataManager *)self latestBalancingAuthority];
-  v3 = v2;
-  if (v2)
+  latestBalancingAuthority = [(PowerUICECGridDataManager *)self latestBalancingAuthority];
+  v3 = latestBalancingAuthority;
+  if (latestBalancingAuthority)
   {
-    v4 = [v2 identifier];
+    identifier = [latestBalancingAuthority identifier];
   }
 
   else
   {
-    v4 = @"Unknown";
+    identifier = @"Unknown";
   }
 
-  return v4;
+  return identifier;
 }
 
 - (double)timeToNextCleanInterval
@@ -1376,16 +1376,16 @@ LABEL_14:
   [(NSUserDefaults *)defaults removeObjectForKey:@"engagementDecisionReason"];
 }
 
-- (void)recordForecastInDefaults:(id)a3
+- (void)recordForecastInDefaults:(id)defaults
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = defaultsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -1403,11 +1403,11 @@ LABEL_14:
 
         v10 = *(*(&v17 + 1) + 8 * v9);
         v11 = +[PowerUISmartChargeUtilities dateFormatter];
-        v12 = [v10 forecastDate];
-        v13 = [v11 stringFromDate:v12];
+        forecastDate = [v10 forecastDate];
+        v13 = [v11 stringFromDate:forecastDate];
 
-        v14 = [v10 forecastValue];
-        [v4 setObject:v14 forKey:v13];
+        forecastValue = [v10 forecastValue];
+        [v4 setObject:forecastValue forKey:v13];
 
         ++v9;
       }
@@ -1430,7 +1430,7 @@ LABEL_14:
   v4 = v3;
   if (v3 && [v3 count])
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -1458,7 +1458,7 @@ LABEL_14:
           v14 = [PowerUICECGridDataForecastEntry alloc];
           v15 = [v6 objectForKeyedSubscript:v11];
           v16 = [(PowerUICECGridDataForecastEntry *)v14 initWithDate:v13 forecastValue:v15];
-          [v5 addObject:v16];
+          [array addObject:v16];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -1470,7 +1470,7 @@ LABEL_14:
     v17 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"forecastDate" ascending:1];
     v28 = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-    [v5 sortUsingDescriptors:v18];
+    [array sortUsingDescriptors:v18];
 
     v4 = v22;
   }
@@ -1484,20 +1484,20 @@ LABEL_14:
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "No forecasts stored in defaults. Returning nil.", buf, 2u);
     }
 
-    v5 = 0;
+    array = 0;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)storedForecastForDemoAnalyticsWithForecastHorizon:(double)a3
+- (id)storedForecastForDemoAnalyticsWithForecastHorizon:(double)horizon
 {
   if (self->_currentForecast)
   {
-    v4 = [(PowerUICECGridDataManager *)self valuesFromForecast:a3 forInterval:?];
-    v5 = [(PowerUICECGridDataManager *)self downsampleGridData:v4 fromRes:15 toRes:60];
+    v4 = [(PowerUICECGridDataManager *)self valuesFromForecast:horizon forInterval:?];
+    forecastFromDefaults = [(PowerUICECGridDataManager *)self downsampleGridData:v4 fromRes:15 toRes:60];
   }
 
   else
@@ -1507,26 +1507,26 @@ LABEL_14:
       [PowerUICECGridDataManager storedForecastForDemoAnalyticsWithForecastHorizon:];
     }
 
-    v5 = [(PowerUICECGridDataManager *)self forecastFromDefaults];
-    if (!v5)
+    forecastFromDefaults = [(PowerUICECGridDataManager *)self forecastFromDefaults];
+    if (!forecastFromDefaults)
     {
       if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
       {
         [PowerUICECGridDataManager storedForecastForDemoAnalyticsWithForecastHorizon:];
       }
 
-      v5 = 0;
+      forecastFromDefaults = 0;
     }
   }
 
-  return v5;
+  return forecastFromDefaults;
 }
 
-- (BOOL)time:(id)a3 isWithinIntervalWithStart:(id)a4
+- (BOOL)time:(id)time isWithinIntervalWithStart:(id)start
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 timeIntervalSinceDate:v6];
+  timeCopy = time;
+  startCopy = start;
+  [startCopy timeIntervalSinceDate:timeCopy];
   if (v8 >= 0.0 || v8 <= -self->_intervalDuration)
   {
     v9 = 0;
@@ -1545,7 +1545,7 @@ LABEL_14:
   return v9;
 }
 
-- (id)startTimeCurrentIntervalWithinForecastHorizon:(double)a3
+- (id)startTimeCurrentIntervalWithinForecastHorizon:(double)horizon
 {
   v7 = 0;
   v8 = &v7;
@@ -1558,7 +1558,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __75__PowerUICECGridDataManager_startTimeCurrentIntervalWithinForecastHorizon___block_invoke;
   block[3] = &unk_2782D4A68;
-  *&block[6] = a3;
+  *&block[6] = horizon;
   block[4] = self;
   block[5] = &v7;
   dispatch_sync(queue, block);
@@ -1630,13 +1630,13 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastIntervalStartTimeOverForecastHorizon:(double)a3
+- (id)lastIntervalStartTimeOverForecastHorizon:(double)horizon
 {
-  v4 = [(PowerUICECGridDataManager *)self intervalStartTimesOverForecastHorizon:a3];
+  v4 = [(PowerUICECGridDataManager *)self intervalStartTimesOverForecastHorizon:horizon];
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
   }
 
   else
@@ -1646,19 +1646,19 @@ LABEL_16:
       [PowerUICECGridDataManager lastIntervalStartTimeOverForecastHorizon:];
     }
 
-    v6 = 0;
+    lastObject = 0;
   }
 
-  return v6;
+  return lastObject;
 }
 
-- (id)intervalStartTimesOverForecastHorizon:(double)a3
+- (id)intervalStartTimesOverForecastHorizon:(double)horizon
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(PowerUICECGridDataManager *)self storedForecastForDemoAnalyticsWithForecastHorizon:a3];
+  v3 = [(PowerUICECGridDataManager *)self storedForecastForDemoAnalyticsWithForecastHorizon:horizon];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -1678,8 +1678,8 @@ LABEL_16:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) forecastDate];
-          [v4 addObject:v10];
+          forecastDate = [*(*(&v13 + 1) + 8 * i) forecastDate];
+          [array addObject:forecastDate];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1691,18 +1691,18 @@ LABEL_16:
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (double)averageEmissionsOverForecastHorizon:(double)a3
+- (double)averageEmissionsOverForecastHorizon:(double)horizon
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(PowerUICECGridDataManager *)self storedForecastForDemoAnalyticsWithForecastHorizon:a3];
+  v4 = [(PowerUICECGridDataManager *)self storedForecastForDemoAnalyticsWithForecastHorizon:horizon];
   v5 = v4;
   if (v4 && [v4 count])
   {
@@ -1726,8 +1726,8 @@ LABEL_16:
             objc_enumerationMutation(v6);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) forecastValue];
-          v10 = v10 + [v12 integerValue];
+          forecastValue = [*(*(&v16 + 1) + 8 * i) forecastValue];
+          v10 = v10 + [forecastValue integerValue];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1757,11 +1757,11 @@ LABEL_16:
   return v13;
 }
 
-- (int64_t)emissionsForTime:(id)a3 overForecastHorizon:(double)a4
+- (int64_t)emissionsForTime:(id)time overForecastHorizon:(double)horizon
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PowerUICECGridDataManager *)self storedForecastForDemoAnalyticsWithForecastHorizon:a4];
+  timeCopy = time;
+  v7 = [(PowerUICECGridDataManager *)self storedForecastForDemoAnalyticsWithForecastHorizon:horizon];
   v8 = v7;
   if (v7)
   {
@@ -1785,22 +1785,22 @@ LABEL_16:
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 forecastDate];
-          [v15 timeIntervalSinceDate:v6];
+          forecastDate = [v14 forecastDate];
+          [forecastDate timeIntervalSinceDate:timeCopy];
           if (v16 <= 0.0 && v16 > -self->_intervalDuration)
           {
-            v18 = [v14 forecastValue];
-            v17 = [v18 integerValue];
+            forecastValue = [v14 forecastValue];
+            integerValue = [forecastValue integerValue];
 
             log = self->_log;
             if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412802;
-              v27 = v6;
+              v27 = timeCopy;
               v28 = 2112;
-              v29 = v15;
+              v29 = forecastDate;
               v30 = 2048;
-              v31 = v17;
+              v31 = integerValue;
               _os_log_debug_impl(&dword_21B766000, log, OS_LOG_TYPE_DEBUG, "Time %@ within forecast window starting at %@. Emissions during interval: %ld g/kWh.", buf, 0x20u);
             }
 
@@ -1829,11 +1829,11 @@ LABEL_16:
     [PowerUICECGridDataManager emissionsForTime:overForecastHorizon:];
   }
 
-  v17 = -1;
+  integerValue = -1;
 LABEL_19:
 
   v20 = *MEMORY[0x277D85DE8];
-  return v17;
+  return integerValue;
 }
 
 - (void)thresholdFromForecast:forChargeTime:.cold.1()

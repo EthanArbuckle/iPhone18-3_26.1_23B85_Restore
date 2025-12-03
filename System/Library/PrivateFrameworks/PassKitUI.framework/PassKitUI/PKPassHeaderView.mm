@@ -1,63 +1,63 @@
 @interface PKPassHeaderView
-- ($B0D7179037C8EDE3CE00C7FA70DE5BDA)passSizeInfoForHeight:(SEL)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPassHeaderView)initWithPass:(id)a3 rendererState:(id)a4;
+- ($B0D7179037C8EDE3CE00C7FA70DE5BDA)passSizeInfoForHeight:(SEL)height;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPassHeaderView)initWithPass:(id)pass rendererState:(id)state;
 - (PKPassHeaderViewDelegate)delegate;
 - (id)_primaryTextColor;
 - (id)_secondaryTextColor;
-- (void)_passLibraryDidChange:(id)a3;
+- (void)_passLibraryDidChange:(id)change;
 - (void)_resetFonts;
 - (void)_updateContent;
 - (void)_updateTextContent;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setExpiredPass:(BOOL)a3;
-- (void)setPass:(id)a3;
-- (void)setPeerPaymentAccount:(id)a3;
-- (void)setPrimaryTextColor:(id)a3;
-- (void)setRendererState:(id)a3;
-- (void)setSecondaryTextColor:(id)a3;
-- (void)setShowModificationDate:(BOOL)a3;
-- (void)setSmall:(BOOL)a3;
-- (void)setSuppressedContent:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setExpiredPass:(BOOL)pass;
+- (void)setPass:(id)pass;
+- (void)setPeerPaymentAccount:(id)account;
+- (void)setPrimaryTextColor:(id)color;
+- (void)setRendererState:(id)state;
+- (void)setSecondaryTextColor:(id)color;
+- (void)setShowModificationDate:(BOOL)date;
+- (void)setSmall:(BOOL)small;
+- (void)setSuppressedContent:(unint64_t)content;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateModifiedDate;
-- (void)updateShadow:(double)a3;
+- (void)updateShadow:(double)shadow;
 @end
 
 @implementation PKPassHeaderView
 
-- (PKPassHeaderView)initWithPass:(id)a3 rendererState:(id)a4
+- (PKPassHeaderView)initWithPass:(id)pass rendererState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  stateCopy = state;
   v38.receiver = self;
   v38.super_class = PKPassHeaderView;
   v9 = [(PKPassHeaderView *)&v38 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v10 = v9;
   if (v9)
   {
-    v37 = v8;
-    objc_storeStrong(&v9->_pass, a3);
-    objc_storeStrong(&v10->_rendererState, a4);
+    v37 = stateCopy;
+    objc_storeStrong(&v9->_pass, pass);
+    objc_storeStrong(&v10->_rendererState, state);
     *&v10->_contentInsets.top = StandardContentInsets;
     *&v10->_contentInsets.bottom = unk_1BE116608;
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     if ([(PKPass *)v10->_pass isRemotePass])
     {
-      [v11 addObserver:v10 selector:sel__passLibraryDidChange_ name:*MEMORY[0x1E69BBBD8] object:0];
+      [defaultCenter addObserver:v10 selector:sel__passLibraryDidChange_ name:*MEMORY[0x1E69BBBD8] object:0];
     }
 
     else
     {
-      v12 = [(PKPass *)v10->_pass dataAccessor];
+      dataAccessor = [(PKPass *)v10->_pass dataAccessor];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeStrong(&v10->_remoteDataAccessor, v12);
+        objc_storeStrong(&v10->_remoteDataAccessor, dataAccessor);
         v13 = *MEMORY[0x1E69BBBD8];
-        v14 = [(PKRemoteDataAccessor *)v10->_remoteDataAccessor library];
-        [v11 addObserver:v10 selector:sel__passLibraryDidChange_ name:v13 object:v14];
+        library = [(PKRemoteDataAccessor *)v10->_remoteDataAccessor library];
+        [defaultCenter addObserver:v10 selector:sel__passLibraryDidChange_ name:v13 object:library];
       }
     }
 
@@ -71,9 +71,9 @@
 
     v20 = [v19 imageWithAlignmentRectInsets:{0.0, 15.0, 0.0, 15.0}];
 
-    v21 = [v20 pkui_resizableImageByTilingCenterPixel];
+    pkui_resizableImageByTilingCenterPixel = [v20 pkui_resizableImageByTilingCenterPixel];
 
-    v22 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v21];
+    v22 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:pkui_resizableImageByTilingCenterPixel];
     maskShadow = v10->_maskShadow;
     v10->_maskShadow = v22;
 
@@ -83,12 +83,12 @@
 
     [(UILabel *)v10->_title setNumberOfLines:2];
     v26 = v10->_title;
-    v27 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v26 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v26 setBackgroundColor:clearColor];
 
     v28 = v10->_title;
-    v29 = [(PKPassHeaderView *)v10 _primaryTextColor];
-    [(UILabel *)v28 setTextColor:v29];
+    _primaryTextColor = [(PKPassHeaderView *)v10 _primaryTextColor];
+    [(UILabel *)v28 setTextColor:_primaryTextColor];
 
     [(UILabel *)v10->_title setMinimumScaleFactor:0.6];
     [(UILabel *)v10->_title setAdjustsFontSizeToFitWidth:1];
@@ -102,12 +102,12 @@
     [(UILabel *)v10->_subtitle setMinimumScaleFactor:0.6];
     [(UILabel *)v10->_subtitle setAdjustsFontSizeToFitWidth:1];
     v32 = v10->_subtitle;
-    v33 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v32 setBackgroundColor:v33];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v32 setBackgroundColor:clearColor2];
 
     v34 = v10->_subtitle;
-    v35 = [(PKPassHeaderView *)v10 _secondaryTextColor];
-    [(UILabel *)v34 setTextColor:v35];
+    _secondaryTextColor = [(PKPassHeaderView *)v10 _secondaryTextColor];
+    [(UILabel *)v34 setTextColor:_secondaryTextColor];
 
     [(UILabel *)v10->_subtitle setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     [(PKPassHeaderView *)v10 _resetFonts];
@@ -118,7 +118,7 @@
     [(PKPassHeaderView *)v10 _updateContent];
     [(PKPassHeaderView *)v10 setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
 
-    v8 = v37;
+    stateCopy = v37;
   }
 
   return v10;
@@ -126,8 +126,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKPassHeaderView;
@@ -165,13 +165,13 @@
   }
 
   [(UIImageView *)self->_maskShadow setAlpha:0];
-  v16 = [(PKPassView *)self->_passView layer];
+  layer = [(PKPassView *)self->_passView layer];
   CATransform3DMakeScale(&v69, sx, sx, 1.0);
-  [v16 setTransform:&v69];
-  [v16 bounds];
+  [layer setTransform:&v69];
+  [layer bounds];
   v18 = v17;
   v68 = v19;
-  [v16 anchorPoint];
+  [layer anchorPoint];
   v21 = v20;
   v23 = v22;
   v76.origin.x = v11;
@@ -188,7 +188,7 @@
   v33.n128_f64[0] = v24 + 44.0 + v21 * v18 * sx;
   v34.n128_f64[0] = v26 + 44.0 + v23 * v68 * sx;
   PKPointRoundToPixel(v33, v34, v32);
-  [v16 setPosition:?];
+  [layer setPosition:?];
   [(UIImageView *)self->_maskShadow pkui_alignmentRect];
   v35.n128_u64[0] = v25;
   v36.n128_u64[0] = v27;
@@ -197,12 +197,12 @@
   PKRectRoundToPixel(v35, v36, v37, v38, v39);
   PKSizeAlignedInRect();
   [(UIImageView *)self->_maskShadow pkui_setAlignmentRect:v40 + 44.0, v41 + 44.0];
-  v42 = [(UILabel *)self->_title font];
-  [v42 _bodyLeading];
+  font = [(UILabel *)self->_title font];
+  [font _bodyLeading];
   v44 = v43;
 
-  v45 = [(UILabel *)self->_subtitle font];
-  [v45 _bodyLeading];
+  font2 = [(UILabel *)self->_subtitle font];
+  [font2 _bodyLeading];
   v47 = v46;
 
   v48.n128_f64[0] = v44 * 0.2682;
@@ -219,8 +219,8 @@
   title = self->_title;
   PKSizeAlignedInRect();
   [(UILabel *)title setFrame:?];
-  v60 = [(UILabel *)self->_subtitle text];
-  v61 = [v60 length];
+  text = [(UILabel *)self->_subtitle text];
+  v61 = [text length];
 
   if (v61)
   {
@@ -239,18 +239,18 @@
   CGRectDivide(remainder, &slice, &remainder, v67, CGRectMinYEdge);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  self->passImageHeight = a3.height;
-  [(PKPassHeaderView *)self passSizeInfoForHeight:a3.height, 0, 0, 0];
-  v6 = [(UILabel *)self->_title font];
-  [v6 _bodyLeading];
+  height = fits.height;
+  width = fits.width;
+  self->passImageHeight = fits.height;
+  [(PKPassHeaderView *)self passSizeInfoForHeight:fits.height, 0, 0, 0];
+  font = [(UILabel *)self->_title font];
+  [font _bodyLeading];
   v8 = v7;
 
-  v9 = [(UILabel *)self->_subtitle font];
-  [v9 _bodyLeading];
+  font2 = [(UILabel *)self->_subtitle font];
+  [font2 _bodyLeading];
   v11 = v10;
 
   bottom = self->_contentInsets.bottom;
@@ -269,8 +269,8 @@
   v26.n128_f64[0] = v23 * v24.n128_f64[0];
   PKSizeCeilToPixel(v25, v26, v24);
   v28 = v19 + v27;
-  v29 = [(UILabel *)self->_subtitle text];
-  v30 = [v29 length];
+  text = [(UILabel *)self->_subtitle text];
+  v30 = [text length];
 
   if (v30)
   {
@@ -290,21 +290,21 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPassHeaderView;
-  [(PKPassHeaderView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPassHeaderView *)self traitCollection];
-  v6 = v5;
-  if (v4)
+  [(PKPassHeaderView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPassHeaderView *)self traitCollection];
+  v6 = traitCollection;
+  if (changeCopy)
   {
-    if (v5)
+    if (traitCollection)
     {
-      v7 = [v4 preferredContentSizeCategory];
-      v8 = [v6 preferredContentSizeCategory];
-      v9 = UIContentSizeCategoryCompareToCategory(v7, v8);
+      preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [v6 preferredContentSizeCategory];
+      v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
       if (v9)
       {
@@ -314,22 +314,22 @@
   }
 }
 
-- (void)updateShadow:(double)a3
+- (void)updateShadow:(double)shadow
 {
-  v5 = [(PKPassView *)self->_passView layer];
-  v4 = fmin(fmax(a3, 0.0), 1.0) * 0.25;
+  layer = [(PKPassView *)self->_passView layer];
+  v4 = fmin(fmax(shadow, 0.0), 1.0) * 0.25;
   *&v4 = v4;
-  [v5 setShadowOpacity:v4];
+  [layer setShadowOpacity:v4];
 }
 
-- ($B0D7179037C8EDE3CE00C7FA70DE5BDA)passSizeInfoForHeight:(SEL)a3
+- ($B0D7179037C8EDE3CE00C7FA70DE5BDA)passSizeInfoForHeight:(SEL)height
 {
   [(PKPassView *)self->_passView sizeOfFront];
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
+  pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIView *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
   v12 = 116.0;
-  if (v11)
+  if (pkui_userInterfaceIdiomSupportsLargeLayouts)
   {
     v12 = 128.0;
   }
@@ -357,8 +357,8 @@
   passView = self->_passView;
   if (passView)
   {
-    v4 = [(PKPassView *)passView layer];
-    [v4 shadowOpacity];
+    layer = [(PKPassView *)passView layer];
+    [layer shadowOpacity];
     v6 = v5;
 
     v7 = self->_passView;
@@ -401,16 +401,16 @@
   [(PKPassView *)self->_passView setModallyPresented:1];
   [(PKPassView *)self->_passView setPaused:1];
   [(PKPassView *)self->_passView sizeToFit];
-  v13 = [(PKPassView *)self->_passView layer];
-  [v13 setShouldRasterize:1];
-  [v13 setRasterizationScale:PKUIScreenScale()];
-  v14 = [MEMORY[0x1E69DC888] blackColor];
-  [v13 setShadowColor:{objc_msgSend(v14, "CGColor")}];
+  layer2 = [(PKPassView *)self->_passView layer];
+  [layer2 setShouldRasterize:1];
+  [layer2 setRasterizationScale:PKUIScreenScale()];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer2 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
   *&v15 = v6;
-  [v13 setShadowOpacity:v15];
-  [v13 setShadowOffset:{0.0, 12.0}];
-  [v13 setShadowRadius:18.0];
+  [layer2 setShadowOpacity:v15];
+  [layer2 setShadowOffset:{0.0, 12.0}];
+  [layer2 setShadowRadius:18.0];
   [(UIView *)self->_passMaskView insertSubview:self->_passView belowSubview:self->_maskShadow];
   [(PKPassHeaderView *)self _updateTextContent];
   [(PKPassHeaderView *)self setNeedsLayout];
@@ -430,25 +430,25 @@
 
   v17 = pass;
   title = self->_title;
-  v5 = [(PKPass *)self->_pass localizedDescription];
-  [(UILabel *)title setText:v5];
+  localizedDescription = [(PKPass *)self->_pass localizedDescription];
+  [(UILabel *)title setText:localizedDescription];
 
   if (v17)
   {
     if ([(PKPass *)self->_pass passType]== PKPassTypeSecureElement)
     {
-      v6 = PKPassTypeDisplayStringForPaymentPass();
+      modifiedDate = PKPassTypeDisplayStringForPaymentPass();
     }
 
     else
     {
-      v6 = 0;
+      modifiedDate = 0;
     }
 
-    [(UILabel *)self->_subtitle setText:v6];
+    [(UILabel *)self->_subtitle setText:modifiedDate];
     subtitle = self->_subtitle;
-    v10 = [(PKPassHeaderView *)self _secondaryTextColor];
-    [(UILabel *)subtitle setTextColor:v10];
+    _secondaryTextColor = [(PKPassHeaderView *)self _secondaryTextColor];
+    [(UILabel *)subtitle setTextColor:_secondaryTextColor];
 
     [(UILabel *)self->_subtitle sizeToFit];
 LABEL_16:
@@ -458,8 +458,8 @@ LABEL_16:
 
   if (self->_showModificationDate)
   {
-    v6 = [(PKPass *)self->_pass modifiedDate];
-    if (v6)
+    modifiedDate = [(PKPass *)self->_pass modifiedDate];
+    if (modifiedDate)
     {
       v7 = PKRelativeDateString();
       v8 = PKLocalizedString(&cfstr_LastUpdatedFor.isa, &stru_1F3BD5BF0.isa, v7);
@@ -472,8 +472,8 @@ LABEL_16:
 
     [(UILabel *)self->_subtitle setText:v8];
     v15 = self->_subtitle;
-    v16 = [(PKPassHeaderView *)self _secondaryTextColor];
-    [(UILabel *)v15 setTextColor:v16];
+    _secondaryTextColor2 = [(PKPassHeaderView *)self _secondaryTextColor];
+    [(UILabel *)v15 setTextColor:_secondaryTextColor2];
 
     [(UILabel *)self->_subtitle sizeToFit];
     goto LABEL_16;
@@ -482,8 +482,8 @@ LABEL_16:
   if (self->_expiredPass)
   {
     v11 = self->_subtitle;
-    v12 = [MEMORY[0x1E69DC888] systemRedColor];
-    [(UILabel *)v11 setTextColor:v12];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [(UILabel *)v11 setTextColor:systemRedColor];
 
     v13 = self->_subtitle;
     v14 = PKLocalizedString(&cfstr_NfcPassExpired.isa);
@@ -514,8 +514,8 @@ LABEL_17:
 {
   if (self->_subtitle)
   {
-    v5 = [(PKPass *)self->_pass modifiedDate];
-    if (v5)
+    modifiedDate = [(PKPass *)self->_pass modifiedDate];
+    if (modifiedDate)
     {
       v3 = PKRelativeDateString();
       v4 = PKLocalizedString(&cfstr_LastUpdatedFor.isa, &stru_1F3BD5BF0.isa, v3);
@@ -532,16 +532,16 @@ LABEL_17:
   }
 }
 
-- (void)_passLibraryDidChange:(id)a3
+- (void)_passLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__PKPassHeaderView__passLibraryDidChange___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -633,49 +633,49 @@ void __42__PKPassHeaderView__passLibraryDidChange___block_invoke_2(uint64_t a1, 
 LABEL_6:
 }
 
-- (void)setPeerPaymentAccount:(id)a3
+- (void)setPeerPaymentAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_peerPaymentAccount, a3);
+    objc_storeStrong(&self->_peerPaymentAccount, account);
     [(PKPassHeaderView *)self _updateTextContent];
   }
 }
 
-- (void)setRendererState:(id)a3
+- (void)setRendererState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_rendererState, a3);
+    objc_storeStrong(&self->_rendererState, state);
     [(PKPassHeaderView *)self _updateContent];
   }
 }
 
-- (void)setSuppressedContent:(unint64_t)a3
+- (void)setSuppressedContent:(unint64_t)content
 {
-  if (self->_suppressedContent != a3)
+  if (self->_suppressedContent != content)
   {
-    self->_suppressedContent = a3;
-    [(PKPassView *)self->_passView setSuppressedContent:a3 | 0x7F7];
+    self->_suppressedContent = content;
+    [(PKPassView *)self->_passView setSuppressedContent:content | 0x7F7];
   }
 }
 
-- (void)setShowModificationDate:(BOOL)a3
+- (void)setShowModificationDate:(BOOL)date
 {
-  if (self->_showModificationDate == !a3)
+  if (self->_showModificationDate == !date)
   {
-    self->_showModificationDate = a3;
+    self->_showModificationDate = date;
     [(PKPassHeaderView *)self _updateTextContent];
   }
 }
 
-- (void)setExpiredPass:(BOOL)a3
+- (void)setExpiredPass:(BOOL)pass
 {
-  if (self->_expiredPass == !a3)
+  if (self->_expiredPass == !pass)
   {
-    self->_expiredPass = a3;
+    self->_expiredPass = pass;
     [(PKPassHeaderView *)self _updateTextContent];
   }
 }
@@ -685,15 +685,15 @@ LABEL_6:
   primaryTextColor = self->_primaryTextColor;
   if (primaryTextColor)
   {
-    v3 = primaryTextColor;
+    labelColor = primaryTextColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return labelColor;
 }
 
 - (id)_secondaryTextColor
@@ -701,51 +701,51 @@ LABEL_6:
   secondaryTextColor = self->_secondaryTextColor;
   if (secondaryTextColor)
   {
-    v3 = secondaryTextColor;
+    secondaryLabelColor = secondaryTextColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
-  return v3;
+  return secondaryLabelColor;
 }
 
-- (void)setPrimaryTextColor:(id)a3
+- (void)setPrimaryTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_primaryTextColor != v5)
+  colorCopy = color;
+  if (self->_primaryTextColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_primaryTextColor, a3);
-    v6 = [(PKPassHeaderView *)self _primaryTextColor];
-    [(UILabel *)self->_title setTextColor:v6];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_primaryTextColor, color);
+    _primaryTextColor = [(PKPassHeaderView *)self _primaryTextColor];
+    [(UILabel *)self->_title setTextColor:_primaryTextColor];
 
-    v5 = v7;
-  }
-}
-
-- (void)setSecondaryTextColor:(id)a3
-{
-  v5 = a3;
-  if (self->_secondaryTextColor != v5)
-  {
-    v7 = v5;
-    objc_storeStrong(&self->_secondaryTextColor, a3);
-    v6 = [(PKPassHeaderView *)self _secondaryTextColor];
-    [(UILabel *)self->_subtitle setTextColor:v6];
-
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setSmall:(BOOL)a3
+- (void)setSecondaryTextColor:(id)color
 {
-  if (self->_small == !a3)
+  colorCopy = color;
+  if (self->_secondaryTextColor != colorCopy)
   {
-    self->_small = a3;
-    if (a3)
+    v7 = colorCopy;
+    objc_storeStrong(&self->_secondaryTextColor, color);
+    _secondaryTextColor = [(PKPassHeaderView *)self _secondaryTextColor];
+    [(UILabel *)self->_subtitle setTextColor:_secondaryTextColor];
+
+    colorCopy = v7;
+  }
+}
+
+- (void)setSmall:(BOOL)small
+{
+  if (self->_small == !small)
+  {
+    self->_small = small;
+    if (small)
     {
       v3 = &SmallContentInsets;
     }
@@ -762,12 +762,12 @@ LABEL_6:
   }
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
-  if (([v5 isEqualToPassIncludingMetadata:self->_pass] & 1) == 0)
+  passCopy = pass;
+  if (([passCopy isEqualToPassIncludingMetadata:self->_pass] & 1) == 0)
   {
-    objc_storeStrong(&self->_pass, a3);
+    objc_storeStrong(&self->_pass, pass);
     [(PKPassHeaderView *)self _updateContent];
   }
 }

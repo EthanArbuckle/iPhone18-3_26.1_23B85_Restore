@@ -1,17 +1,17 @@
 @interface MSDAccount
 + (ACAccount)activeiTunesAccount;
-- (BOOL)_accountHasLocalPlayableContent:(id)a3;
+- (BOOL)_accountHasLocalPlayableContent:(id)content;
 - (BOOL)hasValidSubscription;
-- (MSDAccount)initWithHomeIdentifier:(id)a3;
-- (MSDAccount)initWithHomeUserIdentifier:(id)a3;
+- (MSDAccount)initWithHomeIdentifier:(id)identifier;
+- (MSDAccount)initWithHomeUserIdentifier:(id)identifier;
 - (NSString)iTunesAccountName;
 @end
 
 @implementation MSDAccount
 
-- (MSDAccount)initWithHomeUserIdentifier:(id)a3
+- (MSDAccount)initWithHomeUserIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MSDAccount;
   v6 = [(MSDAccount *)&v11 init];
@@ -21,9 +21,9 @@
     goto LABEL_4;
   }
 
-  if (v5)
+  if (identifierCopy)
   {
-    objc_storeStrong(&v6->_homeUserIdentifier, a3);
+    objc_storeStrong(&v6->_homeUserIdentifier, identifier);
     v7->_syncLock._os_unfair_lock_opaque = 0;
 LABEL_4:
     v8 = v7;
@@ -42,9 +42,9 @@ LABEL_8:
   return v8;
 }
 
-- (MSDAccount)initWithHomeIdentifier:(id)a3
+- (MSDAccount)initWithHomeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MSDAccount;
   v6 = [(MSDAccount *)&v11 init];
@@ -54,9 +54,9 @@ LABEL_8:
     goto LABEL_4;
   }
 
-  if (v5)
+  if (identifierCopy)
   {
-    objc_storeStrong(&v6->_homeIdentifier, a3);
+    objc_storeStrong(&v6->_homeIdentifier, identifier);
 LABEL_4:
     v8 = v7;
     goto LABEL_8;
@@ -96,19 +96,19 @@ LABEL_8:
   v5 = sub_100030FE4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v13[5] username];
+    username = [v13[5] username];
     *buf = 138412290;
-    v19 = v6;
+    v19 = username;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "User Active iTunes Account: %@", buf, 0xCu);
   }
 
-  v7 = [v13[5] username];
+  username2 = [v13[5] username];
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);
   _Block_object_dispose(&v12, 8);
 
-  return v7;
+  return username2;
 }
 
 - (BOOL)hasValidSubscription
@@ -123,12 +123,12 @@ LABEL_8:
 
   if (v4)
   {
-    v5 = [v4 ams_DSID];
-    v6 = [qword_100059A78 objectForKey:v5];
+    ams_DSID = [v4 ams_DSID];
+    v6 = [qword_100059A78 objectForKey:ams_DSID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
@@ -144,11 +144,11 @@ LABEL_8:
         *buf = 138478083;
         v35 = v4;
         v36 = 2113;
-        v37 = v5;
+        v37 = ams_DSID;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "UserAccount %{private}@ with DSID %{private}@", buf, 0x16u);
       }
 
-      v11 = [ICUserIdentity specificAccountWithDSID:v5];
+      v11 = [ICUserIdentity specificAccountWithDSID:ams_DSID];
       v12 = sub_100030FE4();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -187,9 +187,9 @@ LABEL_8:
       dispatch_semaphore_wait(v19, v20);
       v21 = qword_100059A78;
       v22 = [NSNumber numberWithBool:*(v31 + 24)];
-      [v21 setObject:v22 forKey:v5];
+      [v21 setObject:v22 forKey:ams_DSID];
 
-      v8 = *(v31 + 24);
+      bOOLValue = *(v31 + 24);
       objc_destroyWeak(v29);
 
       objc_destroyWeak(buf);
@@ -199,23 +199,23 @@ LABEL_8:
 
   else
   {
-    v5 = sub_100030FE4();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    ams_DSID = sub_100030FE4();
+    if (os_log_type_enabled(ams_DSID, OS_LOG_TYPE_ERROR))
     {
       sub_1000196D8(&self->_homeUserIdentifier);
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8 & 1;
+  return bOOLValue & 1;
 }
 
-- (BOOL)_accountHasLocalPlayableContent:(id)a3
+- (BOOL)_accountHasLocalPlayableContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = +[MPMediaQuery songsQuery];
-  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v3];
+  v5 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:contentCopy];
 
   [v4 setIgnoreSystemFilterPredicates:1];
   [v4 setMediaLibrary:v5];
@@ -229,9 +229,9 @@ LABEL_8:
 + (ACAccount)activeiTunesAccount
 {
   v2 = +[ACAccountStore ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 @end

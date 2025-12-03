@@ -1,58 +1,58 @@
 @interface TSCHChartRadialElementsRenderer
-- (CGLayer)p_newPreRenderedImageWithContext:(CGContext *)a3 wedgePath:(CGPath *)a4 fullWedgePath:(CGPath *)a5 fill:(id)a6 stroke:(id)a7 shadow:(id)a8 outUserSpaceLayerBounds:(CGRect *)a9;
+- (CGLayer)p_newPreRenderedImageWithContext:(CGContext *)context wedgePath:(CGPath *)path fullWedgePath:(CGPath *)wedgePath fill:(id)fill stroke:(id)stroke shadow:(id)shadow outUserSpaceLayerBounds:(CGRect *)bounds;
 - (CGRect)chartLayoutSpaceRenderingRect;
-- (double)p_calculateIntersectionAreaForRectangle:(CGRect)a3 circleCenter:(CGPoint)a4 circleRadius:(double)a5;
+- (double)p_calculateIntersectionAreaForRectangle:(CGRect)rectangle circleCenter:(CGPoint)center circleRadius:(double)radius;
 - (id)allRenderingFills;
 - (void)drawAll;
-- (void)drawAllButSeriesIndicies:(id)a3;
-- (void)drawOnlySeriesIndicies:(id)a3;
-- (void)p_drawLinePathsIntoContext:(CGContext *)a3 linePath:(CGPath *)a4 tailPath:(CGPath *)a5 headPath:(CGPath *)a6 fillTail:(BOOL)a7 fillHead:(BOOL)a8 stroke:(id)a9;
-- (void)p_drawOnlyShadow:(id)a3 forImage:(CGLayer *)a4 intoRect:(CGRect)a5 intoContext:(CGContext *)a6 atViewScale:(double)a7 usingBlendMode:(int)a8 opacity:(double)a9;
-- (void)p_drawOnlyShapeImage:(CGLayer *)a3 intoRect:(CGRect)a4 intoContext:(CGContext *)a5 usingBlendMode:(int)a6 opacity:(double)a7;
-- (void)p_drawWedgePathIntoContext:(CGContext *)a3 path:(CGPath *)a4 fill:(id)a5 stroke:(id)a6 opacity:(double)a7 withinBounds:(CGRect)a8;
-- (void)p_renderIntoContext:(CGContext *)a3 visible:(CGRect)a4;
-- (void)renderLabelWithPieLabel:(id)a3 combinedLabelTransform:(CGAffineTransform *)a4 context:(CGContext *)a5 paragraphStyle:(id)a6;
-- (void)renderLabelsWithWedgeLayoutInfo:(id)a3 paragraphStyle:(id)a4 context:(CGContext *)a5;
+- (void)drawAllButSeriesIndicies:(id)indicies;
+- (void)drawOnlySeriesIndicies:(id)indicies;
+- (void)p_drawLinePathsIntoContext:(CGContext *)context linePath:(CGPath *)path tailPath:(CGPath *)tailPath headPath:(CGPath *)headPath fillTail:(BOOL)tail fillHead:(BOOL)head stroke:(id)stroke;
+- (void)p_drawOnlyShadow:(id)shadow forImage:(CGLayer *)image intoRect:(CGRect)rect intoContext:(CGContext *)context atViewScale:(double)scale usingBlendMode:(int)mode opacity:(double)opacity;
+- (void)p_drawOnlyShapeImage:(CGLayer *)image intoRect:(CGRect)rect intoContext:(CGContext *)context usingBlendMode:(int)mode opacity:(double)opacity;
+- (void)p_drawWedgePathIntoContext:(CGContext *)context path:(CGPath *)path fill:(id)fill stroke:(id)stroke opacity:(double)opacity withinBounds:(CGRect)bounds;
+- (void)p_renderIntoContext:(CGContext *)context visible:(CGRect)visible;
+- (void)renderLabelWithPieLabel:(id)label combinedLabelTransform:(CGAffineTransform *)transform context:(CGContext *)context paragraphStyle:(id)style;
+- (void)renderLabelsWithWedgeLayoutInfo:(id)info paragraphStyle:(id)style context:(CGContext *)context;
 @end
 
 @implementation TSCHChartRadialElementsRenderer
 
-- (void)p_drawOnlyShapeImage:(CGLayer *)a3 intoRect:(CGRect)a4 intoContext:(CGContext *)a5 usingBlendMode:(int)a6 opacity:(double)a7
+- (void)p_drawOnlyShapeImage:(CGLayer *)image intoRect:(CGRect)rect intoContext:(CGContext *)context usingBlendMode:(int)mode opacity:(double)opacity
 {
-  if (a3)
+  if (image)
   {
-    if (a5)
+    if (context)
     {
-      height = a4.size.height;
-      width = a4.size.width;
-      y = a4.origin.y;
-      x = a4.origin.x;
-      if (!CGRectIsNull(a4))
+      height = rect.size.height;
+      width = rect.size.width;
+      y = rect.origin.y;
+      x = rect.origin.x;
+      if (!CGRectIsNull(rect))
       {
-        CGContextSaveGState(a5);
-        CGContextSetAlpha(a5, a7);
-        CGContextSetBlendMode(a5, a6);
-        objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v15, x, y, width, a3, a5, height);
+        CGContextSaveGState(context);
+        CGContextSetAlpha(context, opacity);
+        CGContextSetBlendMode(context, mode);
+        objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v15, x, y, width, image, context, height);
 
-        CGContextRestoreGState(a5);
+        CGContextRestoreGState(context);
       }
     }
   }
 }
 
-- (void)p_drawOnlyShadow:(id)a3 forImage:(CGLayer *)a4 intoRect:(CGRect)a5 intoContext:(CGContext *)a6 atViewScale:(double)a7 usingBlendMode:(int)a8 opacity:(double)a9
+- (void)p_drawOnlyShadow:(id)shadow forImage:(CGLayer *)image intoRect:(CGRect)rect intoContext:(CGContext *)context atViewScale:(double)scale usingBlendMode:(int)mode opacity:(double)opacity
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = a3;
-  if (a4)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shadowCopy = shadow;
+  if (image)
   {
-    v44 = v18;
-    hasShadow = objc_msgSend_hasShadow_(TSCHStyleUtilities, v18, v19, v20, v21, v18);
-    v18 = v44;
-    if (a6)
+    v44 = shadowCopy;
+    hasShadow = objc_msgSend_hasShadow_(TSCHStyleUtilities, shadowCopy, v19, v20, v21, shadowCopy);
+    shadowCopy = v44;
+    if (context)
     {
       if (hasShadow)
       {
@@ -61,12 +61,12 @@
         v47.size.width = width;
         v47.size.height = height;
         IsNull = CGRectIsNull(v47);
-        v18 = v44;
+        shadowCopy = v44;
         if (!IsNull)
         {
-          CGContextSaveGState(a6);
-          CGContextSetAlpha(a6, a9);
-          CGContextSetBlendMode(a6, a8);
+          CGContextSaveGState(context);
+          CGContextSetAlpha(context, opacity);
+          CGContextSetBlendMode(context, mode);
           objc_msgSend_offset(v44, v24, v25, v26, v27);
           v29 = fabs(v28);
           objc_msgSend_radius(v44, v30, v28, v31, v32);
@@ -78,47 +78,47 @@
           v49 = CGRectInset(v48, v34, v34);
           v49.origin.x = v49.size.width + v49.size.width;
           v49.origin.y = 0.0;
-          v35 = CGContextConvertSizeToDeviceSpace(a6, v49.origin);
+          v35 = CGContextConvertSizeToDeviceSpace(context, v49.origin);
           v46.width = ceil(v35.width);
           v46.height = ceil(v35.height);
-          v36 = CGContextConvertSizeToUserSpace(a6, v46);
+          v36 = CGContextConvertSizeToUserSpace(context, v46);
           CGContextClipToRectSafe();
-          v41 = sub_27631FD2C(a6, v37, v38, v39, v40);
-          objc_msgSend_applyToContext_viewScale_flipped_extraOffset_(v44, v42, a7, v36.width, v36.height, a6, v41);
-          objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v43, x - v36.width, y - v36.height, width, a4, a6, height);
-          CGContextRestoreGState(a6);
-          v18 = v44;
+          v41 = sub_27631FD2C(context, v37, v38, v39, v40);
+          objc_msgSend_applyToContext_viewScale_flipped_extraOffset_(v44, v42, scale, v36.width, v36.height, context, v41);
+          objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v43, x - v36.width, y - v36.height, width, image, context, height);
+          CGContextRestoreGState(context);
+          shadowCopy = v44;
         }
       }
     }
   }
 }
 
-- (void)p_drawWedgePathIntoContext:(CGContext *)a3 path:(CGPath *)a4 fill:(id)a5 stroke:(id)a6 opacity:(double)a7 withinBounds:(CGRect)a8
+- (void)p_drawWedgePathIntoContext:(CGContext *)context path:(CGPath *)path fill:(id)fill stroke:(id)stroke opacity:(double)opacity withinBounds:(CGRect)bounds
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v60 = a5;
-  v17 = a6;
-  CGContextSaveGState(a3);
-  CGContextSetAlpha(a3, a7);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  fillCopy = fill;
+  strokeCopy = stroke;
+  CGContextSaveGState(context);
+  CGContextSetAlpha(context, opacity);
   objc_opt_class();
   v19 = TSUDynamicCast();
   if (v19)
   {
-    objc_msgSend_drawImageFill_inContext_path_withinBounds_(TSCHRenderUtilities, v18, x, y, width, v19, a3, a4, height);
+    objc_msgSend_drawImageFill_inContext_path_withinBounds_(TSCHRenderUtilities, v18, x, y, width, v19, context, path, height);
   }
 
-  else if (v60)
+  else if (fillCopy)
   {
-    objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v18, v20, v21, v22, v60, a3, a4);
+    objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v18, v20, v21, v22, fillCopy, context, path);
   }
 
-  if (v17 && objc_msgSend_shouldRender(v17, v18, v20, v21, v22))
+  if (strokeCopy && objc_msgSend_shouldRender(strokeCopy, v18, v20, v21, v22))
   {
-    objc_msgSend_width(v17, v23, v24, v25, v26);
+    objc_msgSend_width(strokeCopy, v23, v24, v25, v26);
     if (v28 <= 0.5)
     {
       objc_msgSend_tsk_visionBincompatOrNative_DoNotUseWithoutCRBApproval(MEMORY[0x277D75418], v27, v28, 0.5, v29);
@@ -131,13 +131,13 @@
 
       if ((objc_msgSend_tsk_visionBincompatOrNative_DoNotUseWithoutCRBApproval(MEMORY[0x277D75418], v36, v37, v38, v39) & 1) == 0 && !isDrawingIntoPDF)
       {
-        objc_msgSend_applyToContext_insideStroke_(v17, v40, v41, v42, v43, a3, 1);
+        objc_msgSend_applyToContext_insideStroke_(strokeCopy, v40, v41, v42, v43, context, 1);
         CGContextAddPathSafe();
-        CGContextStrokePath(a3);
-        MutableCopy = CGPathCreateMutableCopy(a4);
-        objc_msgSend_width(v17, v45, v46, v47, v48);
+        CGContextStrokePath(context);
+        MutableCopy = CGPathCreateMutableCopy(path);
+        objc_msgSend_width(strokeCopy, v45, v46, v47, v48);
         v50 = v49 * -2.0;
-        objc_msgSend_width(v17, v51, v49, v52, v53);
+        objc_msgSend_width(strokeCopy, v51, v49, v52, v53);
         v55 = v54 * -2.0;
         v62.origin.x = x;
         v62.origin.y = y;
@@ -145,105 +145,105 @@
         v62.size.height = height;
         CGRectInset(v62, v50, v55);
         CGPathAddRectSafe();
-        CGContextSetBlendMode(a3, kCGBlendModeClear);
+        CGContextSetBlendMode(context, kCGBlendModeClear);
         CGContextAddPathSafe();
-        CGContextEOFillPath(a3);
+        CGContextEOFillPath(context);
         CGPathRelease(MutableCopy);
         goto LABEL_13;
       }
     }
 
     CGContextAddPathSafe();
-    CGContextClip(a3);
-    objc_msgSend_applyToContext_insideStroke_(v17, v56, v57, v58, v59, a3, 1);
+    CGContextClip(context);
+    objc_msgSend_applyToContext_insideStroke_(strokeCopy, v56, v57, v58, v59, context, 1);
     CGContextAddPathSafe();
-    CGContextStrokePath(a3);
+    CGContextStrokePath(context);
   }
 
 LABEL_13:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_drawLinePathsIntoContext:(CGContext *)a3 linePath:(CGPath *)a4 tailPath:(CGPath *)a5 headPath:(CGPath *)a6 fillTail:(BOOL)a7 fillHead:(BOOL)a8 stroke:(id)a9
+- (void)p_drawLinePathsIntoContext:(CGContext *)context linePath:(CGPath *)path tailPath:(CGPath *)tailPath headPath:(CGPath *)headPath fillTail:(BOOL)tail fillHead:(BOOL)head stroke:(id)stroke
 {
-  v98 = a7;
-  v99 = a8;
-  v11 = a9;
-  v101 = objc_msgSend_color(v11, v12, v13, v14, v15);
+  tailCopy = tail;
+  headCopy = head;
+  strokeCopy = stroke;
+  v101 = objc_msgSend_color(strokeCopy, v12, v13, v14, v15);
   objc_msgSend_alphaComponent(v101, v16, v17, v18, v19);
   v21 = v20;
   v25 = objc_msgSend_colorWithAlphaComponent_(v101, v22, 1.0, v23, v24);
   v26 = objc_alloc(MEMORY[0x277D803C0]);
-  objc_msgSend_width(v11, v27, v28, v29, v30);
+  objc_msgSend_width(strokeCopy, v27, v28, v29, v30);
   v32 = v31;
-  v36 = objc_msgSend_cap(v11, v33, v31, v34, v35);
-  v41 = objc_msgSend_join(v11, v37, v38, v39, v40);
-  v46 = objc_msgSend_pattern(v11, v42, v43, v44, v45);
+  v36 = objc_msgSend_cap(strokeCopy, v33, v31, v34, v35);
+  v41 = objc_msgSend_join(strokeCopy, v37, v38, v39, v40);
+  v46 = objc_msgSend_pattern(strokeCopy, v42, v43, v44, v45);
   v50 = objc_msgSend_initWithColor_width_cap_join_pattern_(v26, v47, v32, v48, v49, v25, v36, v41, v46);
 
   v51 = objc_alloc(MEMORY[0x277D801F8]);
   v56 = objc_msgSend_initWithColor_(v51, v52, v53, v54, v55, v25);
   v57 = MEMORY[0x277D803C0];
-  objc_msgSend_width(v11, v58, v59, v60, v61);
+  objc_msgSend_width(strokeCopy, v58, v59, v60, v61);
   v63 = v62;
-  v67 = objc_msgSend_cap(v11, v64, v62, v65, v66);
-  v72 = objc_msgSend_join(v11, v68, v69, v70, v71);
+  v67 = objc_msgSend_cap(strokeCopy, v64, v62, v65, v66);
+  v72 = objc_msgSend_join(strokeCopy, v68, v69, v70, v71);
 
   v77 = objc_msgSend_emptyPattern(MEMORY[0x277D803C8], v73, v74, v75, v76);
   v81 = objc_msgSend_strokeWithColor_width_cap_join_pattern_(v57, v78, v63, v79, v80, v25, v67, v72, v77);
 
-  CGContextSaveGState(a3);
-  CGContextSetAlpha(a3, v21);
-  CGContextBeginTransparencyLayer(a3, 0);
-  if (a5)
+  CGContextSaveGState(context);
+  CGContextSetAlpha(context, v21);
+  CGContextBeginTransparencyLayer(context, 0);
+  if (tailPath)
   {
-    if (v98)
+    if (tailCopy)
     {
-      objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v82, v83, v84, v85, v56, a3, a5);
+      objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v82, v83, v84, v85, v56, context, tailPath);
     }
 
     else
     {
-      CGContextSaveGState(a3);
-      objc_msgSend_applyToContext_(v81, v86, v87, v88, v89, a3);
+      CGContextSaveGState(context);
+      objc_msgSend_applyToContext_(v81, v86, v87, v88, v89, context);
       CGContextAddPathSafe();
-      CGContextStrokePath(a3);
-      CGContextRestoreGState(a3);
+      CGContextStrokePath(context);
+      CGContextRestoreGState(context);
     }
   }
 
-  if (a6)
+  if (headPath)
   {
-    if (v99)
+    if (headCopy)
     {
-      objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v82, v83, v84, v85, v56, a3, a6);
+      objc_msgSend_drawFill_inContext_path_(TSCHRenderUtilities, v82, v83, v84, v85, v56, context, headPath);
     }
 
     else
     {
-      CGContextSaveGState(a3);
-      objc_msgSend_applyToContext_(v81, v90, v91, v92, v93, a3);
+      CGContextSaveGState(context);
+      objc_msgSend_applyToContext_(v81, v90, v91, v92, v93, context);
       CGContextAddPathSafe();
-      CGContextStrokePath(a3);
-      CGContextRestoreGState(a3);
+      CGContextStrokePath(context);
+      CGContextRestoreGState(context);
     }
   }
 
-  CGContextSaveGState(a3);
-  objc_msgSend_applyToContext_(v50, v94, v95, v96, v97, a3);
+  CGContextSaveGState(context);
+  objc_msgSend_applyToContext_(v50, v94, v95, v96, v97, context);
   CGContextAddPathSafe();
-  CGContextStrokePath(a3);
-  CGContextRestoreGState(a3);
-  CGContextEndTransparencyLayer(a3);
-  CGContextRestoreGState(a3);
+  CGContextStrokePath(context);
+  CGContextRestoreGState(context);
+  CGContextEndTransparencyLayer(context);
+  CGContextRestoreGState(context);
 }
 
-- (CGLayer)p_newPreRenderedImageWithContext:(CGContext *)a3 wedgePath:(CGPath *)a4 fullWedgePath:(CGPath *)a5 fill:(id)a6 stroke:(id)a7 shadow:(id)a8 outUserSpaceLayerBounds:(CGRect *)a9
+- (CGLayer)p_newPreRenderedImageWithContext:(CGContext *)context wedgePath:(CGPath *)path fullWedgePath:(CGPath *)wedgePath fill:(id)fill stroke:(id)stroke shadow:(id)shadow outUserSpaceLayerBounds:(CGRect *)bounds
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  BoundingBox = CGPathGetBoundingBox(a4);
+  fillCopy = fill;
+  strokeCopy = stroke;
+  shadowCopy = shadow;
+  BoundingBox = CGPathGetBoundingBox(path);
   v19 = rint(BoundingBox.origin.x);
   if (vabdd_f64(v19, BoundingBox.origin.x) >= 0.001)
   {
@@ -289,9 +289,9 @@ LABEL_13:
     height = v25;
   }
 
-  if (objc_msgSend_hasShadow_(TSCHStyleUtilities, v18, v25, v26, BoundingBox.size.width, v17) && (objc_msgSend_opacity(v17, v28, v29, v30, v31), v33 > 0.0) && ((objc_msgSend_offset(v17, v32, v33, v34, v35), v37 > 0.0) || (objc_msgSend_radius(v17, v36, v37, v38, v39), v40 > 0.0)))
+  if (objc_msgSend_hasShadow_(TSCHStyleUtilities, v18, v25, v26, BoundingBox.size.width, shadowCopy) && (objc_msgSend_opacity(shadowCopy, v28, v29, v30, v31), v33 > 0.0) && ((objc_msgSend_offset(shadowCopy, v32, v33, v34, v35), v37 > 0.0) || (objc_msgSend_radius(shadowCopy, v36, v37, v38, v39), v40 > 0.0)))
   {
-    objc_msgSend_shadowBoundsForRect_(v17, v36, x, y, width, height);
+    objc_msgSend_shadowBoundsForRect_(shadowCopy, v36, x, y, width, height);
     v71.origin.x = v41;
     v71.origin.y = v42;
     v71.size.width = v43;
@@ -313,7 +313,7 @@ LABEL_13:
     v45 = 0;
   }
 
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   v72.origin.x = x;
   v72.origin.y = y;
   v72.size.width = width;
@@ -328,7 +328,7 @@ LABEL_13:
   {
     if (v45)
     {
-      objc_msgSend_shadowBoundsForRect_additionalAngle_(v17, v50, v46, v47, v48, v49, 180.0);
+      objc_msgSend_shadowBoundsForRect_additionalAngle_(shadowCopy, v50, v46, v47, v48, v49, 180.0);
       v73.origin.x = v52;
       v73.origin.y = v53;
       v73.size.width = v54;
@@ -347,39 +347,39 @@ LABEL_13:
     v56 = *(MEMORY[0x277CBF398] + 16);
     v61 = *MEMORY[0x277CBF398];
     v62 = v56;
-    v51 = objc_msgSend_newCGLayerForUserSpaceRect_inContext_outUserSpaceLayerBounds_(TSCHRenderUtilities, v50, v46, v47, v48, a3, &v61, v49);
+    v51 = objc_msgSend_newCGLayerForUserSpaceRect_inContext_outUserSpaceLayerBounds_(TSCHRenderUtilities, v50, v46, v47, v48, context, &v61, v49);
     Context = CGLayerGetContext(v51);
     TSDCGContextShouldRenderHDRContent();
     TSDCGContextSetShouldRenderHDRContent();
     CGContextSaveGState(Context);
     CGContextSetBlendMode(Context, kCGBlendModeNormal);
-    PathBoundingBox = CGPathGetPathBoundingBox(a5);
-    objc_msgSend_p_drawWedgePathIntoContext_path_fill_stroke_opacity_withinBounds_(self, v58, 1.0, PathBoundingBox.origin.x, PathBoundingBox.origin.y, Context, a4, v15, v16, PathBoundingBox.size.width, PathBoundingBox.size.height);
+    PathBoundingBox = CGPathGetPathBoundingBox(wedgePath);
+    objc_msgSend_p_drawWedgePathIntoContext_path_fill_stroke_opacity_withinBounds_(self, v58, 1.0, PathBoundingBox.origin.x, PathBoundingBox.origin.y, Context, path, fillCopy, strokeCopy, PathBoundingBox.size.width, PathBoundingBox.size.height);
     CGContextRestoreGState(Context);
-    if (a9)
+    if (bounds)
     {
       v59 = v62;
-      a9->origin = v61;
-      a9->size = v59;
+      bounds->origin = v61;
+      bounds->size = v59;
     }
   }
 
   return v51;
 }
 
-- (void)p_renderIntoContext:(CGContext *)a3 visible:(CGRect)a4
+- (void)p_renderIntoContext:(CGContext *)context visible:(CGRect)visible
 {
-  if (!a3)
+  if (!context)
   {
     v6 = MEMORY[0x277D81150];
-    v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a4.origin.x, a4.origin.y, a4.size.width, "[TSCHChartRadialElementsRenderer p_renderIntoContext:visible:]", a4.size.height);
+    v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, visible.origin.x, visible.origin.y, visible.size.width, "[TSCHChartRadialElementsRenderer p_renderIntoContext:visible:]", visible.size.height);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartRadialElementsRenderer.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v13, v14, v15, v16, v7, v12, 323, 0, "invalid nil value for '%{public}s'", "pContext");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  v21 = objc_msgSend_chartRep(self, a2, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  v21 = objc_msgSend_chartRep(self, a2, visible.origin.x, visible.origin.y, visible.size.width, visible.size.height);
   v26 = objc_msgSend_renderSeriesIndexSet(v21, v22, v23, v24, v25);
   if (objc_msgSend_count(v26, v27, v28, v29, v30))
   {
@@ -403,7 +403,7 @@ LABEL_13:
     }
 
     isDrawingIntoPDF = objc_msgSend_isDrawingIntoPDF(v21, v46, v47, v48, v49);
-    objc_msgSend_tLayerRectForContext_(self, v67, v68, v69, v70, a3);
+    objc_msgSend_tLayerRectForContext_(self, v67, v68, v69, v70, context);
     v72 = v71;
     v74 = v73;
     v76 = v75;
@@ -449,7 +449,7 @@ LABEL_13:
           v103 = 0;
           if ((HasBackgroundsSuppressed & 1) == 0)
           {
-            v104 = objc_msgSend_newCGLayerForUserSpaceRect_inContext_outUserSpaceLayerBounds_(TSCHRenderUtilities, v100, v72, v74, v76, a3, &v177, v78);
+            v104 = objc_msgSend_newCGLayerForUserSpaceRect_inContext_outUserSpaceLayerBounds_(TSCHRenderUtilities, v100, v72, v74, v76, context, &v177, v78);
             v103 = v104;
             if (v104)
             {
@@ -470,15 +470,15 @@ LABEL_13:
         }
       }
 
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       if (!v99 || (HasBackgroundsSuppressed & 1) != 0)
       {
-        CGContextSetBlendMode(a3, kCGBlendModeNormal);
+        CGContextSetBlendMode(context, kCGBlendModeNormal);
         v179.origin.x = v72;
         v179.origin.y = v74;
         v179.size.width = v76;
         v179.size.height = v78;
-        CGContextBeginTransparencyLayerWithRect(a3, v179, 0);
+        CGContextBeginTransparencyLayerWithRect(context, v179, 0);
       }
 
       else
@@ -497,16 +497,16 @@ LABEL_13:
         v117 = ;
         if (objc_msgSend_hasShadow_(TSCHStyleUtilities, v118, v119, v120, v121, v117) && objc_msgSend_shadowsEnabled(v21, v122, v123, v124, v125) && (objc_msgSend_renderElementsWithoutShadows(v21, v126, v127, v128, v129) & 1) == 0 && (objc_msgSend_renderElementsShadowOnly(v21, v130, v131, v132, v133) & 1) == 0)
         {
-          v138 = sub_27631FD2C(a3, v134, v135, v136, v137);
-          objc_msgSend_applyToContext_viewScale_flipped_(v117, v139, v81, v140, v141, a3, v138);
+          v138 = sub_27631FD2C(context, v134, v135, v136, v137);
+          objc_msgSend_applyToContext_viewScale_flipped_(v117, v139, v81, v140, v141, context, v138);
         }
 
         v180.origin.x = v72;
         v180.origin.y = v74;
         v180.size.width = v76;
         v180.size.height = v78;
-        CGContextBeginTransparencyLayerWithRect(a3, v180, 0);
-        CGContextSetBlendMode(a3, kCGBlendModePlusLighter);
+        CGContextBeginTransparencyLayerWithRect(context, v180, 0);
+        CGContextSetBlendMode(context, kCGBlendModePlusLighter);
 
         v35 = v156;
         v89 = &dword_2764D6000;
@@ -519,7 +519,7 @@ LABEL_13:
       v163[4] = self;
       v164 = v35;
       v165 = v45;
-      v167 = a3;
+      contextCopy = context;
       v174 = HasBackgroundsSuppressed;
       v175 = v157;
       v176 = v99;
@@ -533,12 +533,12 @@ LABEL_13:
       objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v26, v142, v143, v144, v145, 2, v163);
       if ((v99 & 1) == 0 && Context && (v157 & 1) == 0)
       {
-        CGContextSaveGState(a3);
-        CGContextSetBlendMode(a3, kCGBlendModePlusLighter);
-        objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v146, *&v177, *(&v177 + 1), v178[0], v103, a3, v178[1]);
+        CGContextSaveGState(context);
+        CGContextSetBlendMode(context, kCGBlendModePlusLighter);
+        objc_msgSend_drawCGLayer_inContext_rect_(TSCHRenderUtilities, v146, *&v177, *(&v177 + 1), v178[0], v103, context, v178[1]);
         sub_27631FF58(Context, v147, v148, v149, v150);
         TSDClearCGContextInfo();
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
 
       if (v103)
@@ -546,8 +546,8 @@ LABEL_13:
         CGLayerRelease(v103);
       }
 
-      CGContextEndTransparencyLayer(a3);
-      CGContextRestoreGState(a3);
+      CGContextEndTransparencyLayer(context);
+      CGContextRestoreGState(context);
     }
 
     if (objc_msgSend_renderLabels(v21, v85, v86, v87, v88))
@@ -558,25 +558,25 @@ LABEL_13:
       v159[3] = &unk_27A6B7028;
       v159[4] = self;
       v160 = v45;
-      v162 = a3;
+      contextCopy2 = context;
       v161 = v35;
       objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v26, v151, v152, v153, v154, 2, v159);
     }
   }
 }
 
-- (void)renderLabelsWithWedgeLayoutInfo:(id)a3 paragraphStyle:(id)a4 context:(CGContext *)a5
+- (void)renderLabelsWithWedgeLayoutInfo:(id)info paragraphStyle:(id)style context:(CGContext *)context
 {
   v82 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  infoCopy = info;
+  styleCopy = style;
   objc_opt_class();
   v14 = objc_msgSend_layoutItem(self, v10, v11, v12, v13);
   v15 = TSUDynamicCast();
 
   v75 = v15;
   v20 = objc_msgSend_model(v15, v16, v17, v18, v19);
-  v25 = objc_msgSend_wedgeElement(v8, v21, v22, v23, v24);
+  v25 = objc_msgSend_wedgeElement(infoCopy, v21, v22, v23, v24);
   v30 = objc_msgSend_series(v25, v26, v27, v28, v29);
   v35 = objc_msgSend_seriesIndex(v30, v31, v32, v33, v34);
   v40 = objc_msgSend_pieSeriesModelCacheForSeries_(v20, v36, v37, v38, v39, v35);
@@ -595,7 +595,7 @@ LABEL_13:
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v60 = objc_msgSend_pieLabels(v8, v41, 0.0, v43, v44);
+  v60 = objc_msgSend_pieLabels(infoCopy, v41, 0.0, v43, v44);
   v65 = objc_msgSend_countByEnumeratingWithState_objects_count_(v60, v61, v62, v63, v64, &v77, v81, 16);
   if (v65)
   {
@@ -611,9 +611,9 @@ LABEL_13:
         }
 
         v73 = *(*(&v77 + 1) + 8 * i);
-        if (v8)
+        if (infoCopy)
         {
-          objc_msgSend_combinedLabelTransformIntoPieChartCoordinateSpace(v8, v66, v67, v68, v69);
+          objc_msgSend_combinedLabelTransformIntoPieChartCoordinateSpace(infoCopy, v66, v67, v68, v69);
         }
 
         else
@@ -622,7 +622,7 @@ LABEL_13:
           memset(v76, 0, sizeof(v76));
         }
 
-        objc_msgSend_renderLabelWithPieLabel_combinedLabelTransform_context_paragraphStyle_(self, v66, v74, v68, v69, v73, v76, a5, v9);
+        objc_msgSend_renderLabelWithPieLabel_combinedLabelTransform_context_paragraphStyle_(self, v66, v74, v68, v69, v73, v76, context, styleCopy);
       }
 
       v70 = objc_msgSend_countByEnumeratingWithState_objects_count_(v60, v66, v67, v68, v69, &v77, v81, 16);
@@ -632,19 +632,19 @@ LABEL_13:
   }
 }
 
-- (void)renderLabelWithPieLabel:(id)a3 combinedLabelTransform:(CGAffineTransform *)a4 context:(CGContext *)a5 paragraphStyle:(id)a6
+- (void)renderLabelWithPieLabel:(id)label combinedLabelTransform:(CGAffineTransform *)transform context:(CGContext *)context paragraphStyle:(id)style
 {
-  v10 = a3;
-  v11 = a6;
-  objc_msgSend_tLayerRectForContext_(self, v12, v13, v14, v15, a5);
+  labelCopy = label;
+  styleCopy = style;
+  objc_msgSend_tLayerRectForContext_(self, v12, v13, v14, v15, context);
   v20 = v19;
   v21 = v17;
   v22 = v18;
   v24 = v23;
   memset(&v58, 0, sizeof(v58));
-  if (v10)
+  if (labelCopy)
   {
-    objc_msgSend_transform(v10, v16, 0.0, v17, v18);
+    objc_msgSend_transform(labelCopy, v16, 0.0, v17, v18);
   }
 
   else
@@ -652,15 +652,15 @@ LABEL_13:
     memset(&t2, 0, sizeof(t2));
   }
 
-  v25 = *&a4->c;
-  *&v56.a = *&a4->a;
+  v25 = *&transform->c;
+  *&v56.a = *&transform->a;
   *&v56.c = v25;
-  *&v56.tx = *&a4->tx;
+  *&v56.tx = *&transform->tx;
   CGAffineTransformConcat(&v58, &v56, &t2);
-  objc_msgSend_erasableFrame(v10, v26, v27, v28, v29);
+  objc_msgSend_erasableFrame(labelCopy, v26, v27, v28, v29);
   if (!CGRectIsNull(v59))
   {
-    objc_msgSend_erasableFrame(v10, v30, v31, v32, v33);
+    objc_msgSend_erasableFrame(labelCopy, v30, v31, v32, v33);
     t2 = v58;
     v63 = CGRectApplyAffineTransform(v60, &t2);
     v61.origin.x = v20;
@@ -669,27 +669,27 @@ LABEL_13:
     v61.size.height = v24;
     if (CGRectIntersectsRect(v61, v63))
     {
-      CGContextSaveGState(a5);
+      CGContextSaveGState(context);
       t2 = v58;
-      CGContextConcatCTM(a5, &t2);
-      objc_msgSend_erasableFrame(v10, v34, v35, v36, v37);
-      CGContextBeginTransparencyLayerWithRect(a5, v62, 0);
+      CGContextConcatCTM(context, &t2);
+      objc_msgSend_erasableFrame(labelCopy, v34, v35, v36, v37);
+      CGContextBeginTransparencyLayerWithRect(context, v62, 0);
       v42 = objc_msgSend_sharedText(TSCHText, v38, v39, v40, v41);
-      v47 = objc_msgSend_title(v10, v43, v44, v45, v46);
+      v47 = objc_msgSend_title(labelCopy, v43, v44, v45, v46);
       objc_msgSend_viewScale(self, v48, v49, v50, v51);
-      objc_msgSend_drawText_paragraphStyle_intoContext_viewScale_(v42, v52, v53, v54, v55, v47, v11, a5);
+      objc_msgSend_drawText_paragraphStyle_intoContext_viewScale_(v42, v52, v53, v54, v55, v47, styleCopy, context);
 
-      CGContextEndTransparencyLayer(a5);
-      CGContextRestoreGState(a5);
+      CGContextEndTransparencyLayer(context);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-- (void)drawOnlySeriesIndicies:(id)a3
+- (void)drawOnlySeriesIndicies:(id)indicies
 {
-  if (self->_partialRenderingSeriesIndexSet != a3)
+  if (self->_partialRenderingSeriesIndexSet != indicies)
   {
-    v7 = objc_msgSend_copy(a3, a2, v3, v4, v5);
+    v7 = objc_msgSend_copy(indicies, a2, v3, v4, v5);
     partialRenderingSeriesIndexSet = self->_partialRenderingSeriesIndexSet;
     self->_partialRenderingSeriesIndexSet = v7;
   }
@@ -697,11 +697,11 @@ LABEL_13:
   self->_partialRenderingInclusionFlag = 1;
 }
 
-- (void)drawAllButSeriesIndicies:(id)a3
+- (void)drawAllButSeriesIndicies:(id)indicies
 {
-  if (self->_partialRenderingSeriesIndexSet != a3)
+  if (self->_partialRenderingSeriesIndexSet != indicies)
   {
-    v7 = objc_msgSend_copy(a3, a2, v3, v4, v5);
+    v7 = objc_msgSend_copy(indicies, a2, v3, v4, v5);
     partialRenderingSeriesIndexSet = self->_partialRenderingSeriesIndexSet;
     self->_partialRenderingSeriesIndexSet = v7;
   }
@@ -805,15 +805,15 @@ LABEL_13:
   return result;
 }
 
-- (double)p_calculateIntersectionAreaForRectangle:(CGRect)a3 circleCenter:(CGPoint)a4 circleRadius:(double)a5
+- (double)p_calculateIntersectionAreaForRectangle:(CGRect)rectangle circleCenter:(CGPoint)center circleRadius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MaxY = CGRectGetMaxY(a3);
+  y = center.y;
+  x = center.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  v10 = rectangle.origin.y;
+  v11 = rectangle.origin.x;
+  MaxY = CGRectGetMaxY(rectangle);
   v38.origin.x = v11;
   v38.origin.y = v10;
   v38.size.width = width;
@@ -821,23 +821,23 @@ LABEL_13:
   MaxX = CGRectGetMaxX(v38);
   v14 = MaxX;
   v15 = MaxY < y && MaxX < x;
-  if (!v15 || (TSUDistance(), v17 = v16, result = 0.0, v17 <= a5))
+  if (!v15 || (TSUDistance(), v17 = v16, result = 0.0, v17 <= radius))
   {
     v19 = v10 > y && v14 < x;
-    if (!v19 || (TSUDistance(), v21 = v20, result = 0.0, v21 <= a5))
+    if (!v19 || (TSUDistance(), v21 = v20, result = 0.0, v21 <= radius))
     {
-      if (MaxY >= y || v11 <= x || (TSUDistance(), v23 = v22, result = 0.0, v23 <= a5))
+      if (MaxY >= y || v11 <= x || (TSUDistance(), v23 = v22, result = 0.0, v23 <= radius))
       {
-        if (v10 <= y || v11 <= x || (TSUDistance(), v25 = v24, result = 0.0, v25 <= a5))
+        if (v10 <= y || v11 <= x || (TSUDistance(), v25 = v24, result = 0.0, v25 <= radius))
         {
-          if (y >= v10 && y <= MaxY || (vabdd_f64(y, v10) <= vabdd_f64(y, MaxY) ? (v26 = v10) : (v26 = MaxY), v27 = a5, vabdd_f64(v26, y) <= a5))
+          if (y >= v10 && y <= MaxY || (vabdd_f64(y, v10) <= vabdd_f64(y, MaxY) ? (v26 = v10) : (v26 = MaxY), radiusCopy = radius, vabdd_f64(v26, y) <= radius))
           {
             TSURoundForScale();
             v31 = v30;
             TSURoundForScale();
             v28 = v32;
             v29 = v31 + 0.01;
-            v27 = a5;
+            radiusCopy = radius;
           }
 
           else
@@ -849,7 +849,7 @@ LABEL_13:
           result = 0.0;
           if (v29 <= v28)
           {
-            v33 = v27;
+            v33 = radiusCopy;
             v34 = (v33 * v33);
             result = 0.0;
             do

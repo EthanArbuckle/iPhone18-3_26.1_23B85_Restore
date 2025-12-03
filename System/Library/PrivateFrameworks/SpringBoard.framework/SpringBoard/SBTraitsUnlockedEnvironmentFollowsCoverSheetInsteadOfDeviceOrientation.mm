@@ -1,23 +1,23 @@
 @interface SBTraitsUnlockedEnvironmentFollowsCoverSheetInsteadOfDeviceOrientation
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4;
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context;
 @end
 
 @implementation SBTraitsUnlockedEnvironmentFollowsCoverSheetInsteadOfDeviceOrientation
 
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 bs_containsObjectPassingTest:&__block_literal_global_80_1])
+  policiesCopy = policies;
+  if ([policiesCopy bs_containsObjectPassingTest:&__block_literal_global_80_1])
   {
-    v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_83];
+    v5 = [policiesCopy sortedArrayUsingComparator:&__block_literal_global_83];
     v6 = [MEMORY[0x277D734D0] resolutionPolicyInfoForAssociatedParticipantWithRole:@"SBTraitsParticipantRoleCoverSheet"];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [v5 reverseObjectEnumerator];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+    v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -31,16 +31,16 @@
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v14 = *(*(&v21 + 1) + 8 * v13);
           if ((v10 & 1) != 0 || ([*(*(&v21 + 1) + 8 * v13) currentSettings], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "zOrderLevelSettings"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "zOrderLevel"), v18 = v17, v16, v15, v18 < v12))
           {
-            v19 = [v14 orientationResolutionPolicyInfo];
-            v20 = [v19 resolutionPolicy];
+            orientationResolutionPolicyInfo = [v14 orientationResolutionPolicyInfo];
+            resolutionPolicy = [orientationResolutionPolicyInfo resolutionPolicy];
 
-            if (v20 == 1)
+            if (resolutionPolicy == 1)
             {
               [v14 setOrientationResolutionPolicyInfo:v6];
             }
@@ -57,7 +57,7 @@
         }
 
         while (v9 != v13);
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v9);

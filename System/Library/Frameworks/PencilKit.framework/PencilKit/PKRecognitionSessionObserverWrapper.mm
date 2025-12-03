@@ -1,12 +1,12 @@
 @interface PKRecognitionSessionObserverWrapper
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3;
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result;
 @end
 
 @implementation PKRecognitionSessionObserverWrapper
 
-- (void)recognitionSessionDidUpdateRecognitionResult:(id)a3
+- (void)recognitionSessionDidUpdateRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = atomic_load(&self->_deactivated);
   if (v5)
   {
@@ -21,7 +21,7 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_realObserver);
-    [WeakRetained recognitionSessionDidUpdateRecognitionResult:v4];
+    [WeakRetained recognitionSessionDidUpdateRecognitionResult:resultCopy];
   }
 }
 

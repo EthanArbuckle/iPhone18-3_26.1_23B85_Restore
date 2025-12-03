@@ -1,7 +1,7 @@
 @interface PSSystemEventStream
 - (BOOL)start;
 - (BOOL)stop;
-- (PSSystemEventStream)initWithKey:(id)a3 event:(unint64_t)a4 rate:(unint64_t)a5 queue:(id)a6 writerInstance:(PRMWriterInstance *)a7;
+- (PSSystemEventStream)initWithKey:(id)key event:(unint64_t)event rate:(unint64_t)rate queue:(id)queue writerInstance:(PRMWriterInstance *)instance;
 - (uint64_t)start;
 - (void)PLSSystemEventNodeNotifyTimer;
 - (void)dealloc;
@@ -9,15 +9,15 @@
 
 @implementation PSSystemEventStream
 
-- (PSSystemEventStream)initWithKey:(id)a3 event:(unint64_t)a4 rate:(unint64_t)a5 queue:(id)a6 writerInstance:(PRMWriterInstance *)a7
+- (PSSystemEventStream)initWithKey:(id)key event:(unint64_t)event rate:(unint64_t)rate queue:(id)queue writerInstance:(PRMWriterInstance *)instance
 {
-  v13 = a3;
-  v14 = a6;
+  keyCopy = key;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = PSSystemEventStream;
   v15 = [(PSSystemEventStream *)&v26 init];
   v16 = v15;
-  if (!v15 || (objc_storeStrong(&v15->_key, a3), v16->_eventType = a4, v16->_eventRate = a5, objc_storeStrong(&v16->_queue, a6), v16->_writer_inst = a7, v16->_sys_stream_context = ps_system_stream_context_create(), v16->_eventType != 1))
+  if (!v15 || (objc_storeStrong(&v15->_key, key), v16->_eventType = event, v16->_eventRate = rate, objc_storeStrong(&v16->_queue, queue), v16->_writer_inst = instance, v16->_sys_stream_context = ps_system_stream_context_create(), v16->_eventType != 1))
   {
     v21 = 0;
     goto LABEL_6;
@@ -28,7 +28,7 @@
   v16->_timer_stream_context = v17;
   if (v17)
   {
-    v17->var0 = a5;
+    v17->var0 = rate;
     ps_system_stream_context_set_stream_context(v16->_sys_stream_context, v17);
     *&v16->_running = 256;
     v18 = dispatch_semaphore_create(0);
@@ -38,7 +38,7 @@
     v16->_ps_res_array = ps_resource_array_create();
     resource = ps_resource_array_get_resource();
     v16->_ps_res = resource;
-    MEMORY[0x25F8C9510](resource, [v13 UTF8String]);
+    MEMORY[0x25F8C9510](resource, [keyCopy UTF8String]);
     MEMORY[0x25F8C93F0](v16->_ps_res, 1);
     MEMORY[0x25F8C94A0](v16->_ps_res, 1);
     v21 = v16;
@@ -84,8 +84,8 @@ LABEL_6:
 {
   if ((ps_system_stream_context_get_keep_running(self->_sys_stream_context) & 1) != 0 || !self->_nodeStopped)
   {
-    v4 = [(PSSystemEventStream *)&v6 start];
-    [(PSSystemEventStream *)v4 PLSSystemEventNodeNotifyTimer];
+    start = [(PSSystemEventStream *)&v6 start];
+    [(PSSystemEventStream *)start PLSSystemEventNodeNotifyTimer];
   }
 
   else
@@ -110,8 +110,8 @@ LABEL_6:
 
 - (void)PLSSystemEventNodeNotifyTimer
 {
-  v3 = [(PSSystemEventStream *)self queue];
-  dispatch_async_f(v3, self->_sys_stream_context, _timerNotificationFunc);
+  queue = [(PSSystemEventStream *)self queue];
+  dispatch_async_f(queue, self->_sys_stream_context, _timerNotificationFunc);
 }
 
 - (BOOL)stop
@@ -165,9 +165,9 @@ LABEL_6:
 - (uint64_t)start
 {
   v29 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
+  *self = 0;
   v4 = [a2 key];
-  asprintf(a1, "Unexpected state: System Event Node started (when it's already active): %s", [v4 UTF8String]);
+  asprintf(self, "Unexpected state: System Event Node started (when it's already active): %s", [v4 UTF8String]);
 
   v5 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -177,7 +177,7 @@ LABEL_6:
     v25 = 1024;
     v26 = 262;
     v27 = 2080;
-    v28 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     OUTLINED_FUNCTION_4_0(&dword_25EA3A000, v7, v8, "%s:%d Unexpected state: System Event Node started (when it's already active): %s", v9, v10, v11, v12, v21, v22, 2u);
   }
 

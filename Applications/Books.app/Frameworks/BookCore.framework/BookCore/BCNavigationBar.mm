@@ -1,30 +1,30 @@
 @interface BCNavigationBar
-- (BCNavigationBar)initWithCoder:(id)a3;
-- (BCNavigationBar)initWithFrame:(CGRect)a3;
+- (BCNavigationBar)initWithCoder:(id)coder;
+- (BCNavigationBar)initWithFrame:(CGRect)frame;
 - (NSArray)leftItems;
 - (NSArray)rightItems;
 - (int64_t)_accessibilitySortPriority;
 - (void)bc_commonInit;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setItems:(id)a3;
-- (void)setItems:(id)a3 animated:(BOOL)a4;
-- (void)setLeftItems:(id)a3;
-- (void)setLeftItems:(id)a3 rightItems:(id)a4 title:(id)a5 animated:(BOOL)a6;
-- (void)setLeftItems:(id)a3 rightItems:(id)a4 titleView:(id)a5 animated:(BOOL)a6;
-- (void)setPinnedTrailingGroup:(id)a3;
-- (void)setRightItemGroups:(id)a3;
-- (void)setRightItems:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setHidden:(BOOL)hidden;
+- (void)setItems:(id)items;
+- (void)setItems:(id)items animated:(BOOL)animated;
+- (void)setLeftItems:(id)items;
+- (void)setLeftItems:(id)items rightItems:(id)rightItems title:(id)title animated:(BOOL)animated;
+- (void)setLeftItems:(id)items rightItems:(id)rightItems titleView:(id)view animated:(BOOL)animated;
+- (void)setPinnedTrailingGroup:(id)group;
+- (void)setRightItemGroups:(id)groups;
+- (void)setRightItems:(id)items;
+- (void)setTitle:(id)title;
 @end
 
 @implementation BCNavigationBar
 
-- (BCNavigationBar)initWithFrame:(CGRect)a3
+- (BCNavigationBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = BCNavigationBar;
-  v3 = [(BCNavigationBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BCNavigationBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,11 +34,11 @@
   return v4;
 }
 
-- (BCNavigationBar)initWithCoder:(id)a3
+- (BCNavigationBar)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BCNavigationBar;
-  v3 = [(BCNavigationBar *)&v6 initWithCoder:a3];
+  v3 = [(BCNavigationBar *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -48,123 +48,123 @@
   return v4;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = BCNavigationBar;
-  [(BCNavigationBar *)&v4 setHidden:a3];
+  [(BCNavigationBar *)&v4 setHidden:hidden];
   [(BCNavigationBar *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(BCNavigationBar *)self bc_item];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setTitle:titleCopy];
 
-  v6 = [(BCNavigationBar *)self bc_item];
-  [v6 setTitleView:0];
+  bc_item2 = [(BCNavigationBar *)self bc_item];
+  [bc_item2 setTitleView:0];
 }
 
-- (void)setLeftItems:(id)a3
+- (void)setLeftItems:(id)items
 {
-  v4 = a3;
-  v5 = [(BCNavigationBar *)self bc_item];
-  [v5 setLeftBarButtonItems:v4];
+  itemsCopy = items;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setLeftBarButtonItems:itemsCopy];
 }
 
 - (NSArray)leftItems
 {
-  v2 = [(BCNavigationBar *)self bc_item];
-  v3 = [v2 leftBarButtonItems];
+  bc_item = [(BCNavigationBar *)self bc_item];
+  leftBarButtonItems = [bc_item leftBarButtonItems];
 
-  return v3;
+  return leftBarButtonItems;
 }
 
-- (void)setRightItems:(id)a3
+- (void)setRightItems:(id)items
 {
-  v4 = a3;
-  v5 = [(BCNavigationBar *)self bc_item];
-  [v5 setRightBarButtonItems:v4];
+  itemsCopy = items;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setRightBarButtonItems:itemsCopy];
 }
 
 - (NSArray)rightItems
 {
-  v2 = [(BCNavigationBar *)self bc_item];
-  v3 = [v2 rightBarButtonItems];
+  bc_item = [(BCNavigationBar *)self bc_item];
+  rightBarButtonItems = [bc_item rightBarButtonItems];
 
-  return v3;
+  return rightBarButtonItems;
 }
 
-- (void)setRightItemGroups:(id)a3
+- (void)setRightItemGroups:(id)groups
 {
-  v4 = a3;
-  v5 = [(BCNavigationBar *)self bc_item];
-  [v5 setTrailingItemGroups:v4];
+  groupsCopy = groups;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setTrailingItemGroups:groupsCopy];
 }
 
-- (void)setPinnedTrailingGroup:(id)a3
+- (void)setPinnedTrailingGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(BCNavigationBar *)self bc_item];
-  [v5 setPinnedTrailingGroup:v4];
+  groupCopy = group;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setPinnedTrailingGroup:groupCopy];
 }
 
-- (void)setLeftItems:(id)a3 rightItems:(id)a4 titleView:(id)a5 animated:(BOOL)a6
+- (void)setLeftItems:(id)items rightItems:(id)rightItems titleView:(id)view animated:(BOOL)animated
 {
-  v6 = a6;
-  v16 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(BCNavigationBar *)self bc_item];
-  [v12 setLeftBarButtonItems:v11 animated:v6];
+  animatedCopy = animated;
+  viewCopy = view;
+  rightItemsCopy = rightItems;
+  itemsCopy = items;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setLeftBarButtonItems:itemsCopy animated:animatedCopy];
 
-  v13 = [(BCNavigationBar *)self bc_item];
-  [v13 setRightBarButtonItems:v10 animated:v6];
+  bc_item2 = [(BCNavigationBar *)self bc_item];
+  [bc_item2 setRightBarButtonItems:rightItemsCopy animated:animatedCopy];
 
-  v14 = [(BCNavigationBar *)self bc_item];
-  [v14 setTitle:0];
+  bc_item3 = [(BCNavigationBar *)self bc_item];
+  [bc_item3 setTitle:0];
 
-  v15 = [(BCNavigationBar *)self bc_item];
-  [v15 setTitleView:v16];
+  bc_item4 = [(BCNavigationBar *)self bc_item];
+  [bc_item4 setTitleView:viewCopy];
 
-  [v16 _accessibilitySetIsSpeakThisElement:0];
+  [viewCopy _accessibilitySetIsSpeakThisElement:0];
 }
 
-- (void)setLeftItems:(id)a3 rightItems:(id)a4 title:(id)a5 animated:(BOOL)a6
+- (void)setLeftItems:(id)items rightItems:(id)rightItems title:(id)title animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(BCNavigationBar *)self bc_item];
-  [v13 setLeftBarButtonItems:v12 animated:v6];
+  animatedCopy = animated;
+  titleCopy = title;
+  rightItemsCopy = rightItems;
+  itemsCopy = items;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item setLeftBarButtonItems:itemsCopy animated:animatedCopy];
 
-  v14 = [(BCNavigationBar *)self bc_item];
-  [v14 setRightBarButtonItems:v11 animated:v6];
+  bc_item2 = [(BCNavigationBar *)self bc_item];
+  [bc_item2 setRightBarButtonItems:rightItemsCopy animated:animatedCopy];
 
-  v15 = [(BCNavigationBar *)self bc_item];
-  [v15 setTitle:v10];
+  bc_item3 = [(BCNavigationBar *)self bc_item];
+  [bc_item3 setTitle:titleCopy];
 
-  v16 = [(BCNavigationBar *)self bc_item];
-  [v16 setTitleView:0];
+  bc_item4 = [(BCNavigationBar *)self bc_item];
+  [bc_item4 setTitleView:0];
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(BCNavigationBar *)self bc_item];
-  [v4 _setBackgroundHidden:v3];
+  hiddenCopy = hidden;
+  bc_item = [(BCNavigationBar *)self bc_item];
+  [bc_item _setBackgroundHidden:hiddenCopy];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   v3 = objc_opt_class();
   v7 = NSStringFromClass(v3);
   BCReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/Utilities/BCNavigationBar.m", 130, "[BCNavigationBar setItems:]", "NO", @"%s is not supported by %@", v4, v5, v6, "[BCNavigationBar setItems:]");
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4
+- (void)setItems:(id)items animated:(BOOL)animated
 {
   v4 = objc_opt_class();
   v8 = NSStringFromClass(v4);
@@ -173,16 +173,16 @@
 
 - (int64_t)_accessibilitySortPriority
 {
-  v3 = [(BCNavigationBar *)self nextResponder];
+  nextResponder = [(BCNavigationBar *)self nextResponder];
   NSClassFromString(@"BKPDFModernBookViewController");
-  if (v3)
+  if (nextResponder)
   {
     while ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v4 = [v3 nextResponder];
+      v3NextResponder = [nextResponder nextResponder];
 
-      v3 = v4;
-      if (!v4)
+      nextResponder = v3NextResponder;
+      if (!v3NextResponder)
       {
         goto LABEL_4;
       }

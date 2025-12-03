@@ -1,74 +1,74 @@
 @interface BTVCConnection
-- (BOOL)_removeFromHciCommandList:(unsigned __int16)a3;
-- (BOOL)removeClient:(id)a3;
+- (BOOL)_removeFromHciCommandList:(unsigned __int16)list;
+- (BOOL)removeClient:(id)client;
 - (BTVCConnection)init;
 - (NSString)description;
-- (id)initConnectionWithParams:(id)a3 parameters:(id)a4;
+- (id)initConnectionWithParams:(id)params parameters:(id)parameters;
 - (int64_t)connectionState;
 - (void)_activate;
-- (void)_addEncryptedPayload:(id)a3 packet:(id)a4;
+- (void)_addEncryptedPayload:(id)payload packet:(id)packet;
 - (void)_checkDataPendingQueue;
 - (void)_connectIfNeeded;
-- (void)_disconnectDevice:(unsigned __int8)a3;
-- (void)_handleHciCommands:(unsigned __int16)a3 params:(id)a4;
-- (void)_handleReceivedData:(id)a3;
-- (void)_hciDisconnect:(id)a3;
-- (void)_hciLeConnectionUpdate:(id)a3;
-- (void)_hciLeEnableEncryption:(id)a3;
-- (void)_hciLeLongTermKeyRequestNegativeReply:(id)a3;
-- (void)_hciLeLongTermKeyRequestReply:(id)a3;
-- (void)_hciLeReadRemoteFeatures:(id)a3;
-- (void)_hciLeRemoteConnectionParameterRequestNegativeReply:(id)a3;
-- (void)_hciLeRemoteConnectionParameterRequestReply:(id)a3;
-- (void)_hciReadRemoteVersion:(id)a3;
+- (void)_disconnectDevice:(unsigned __int8)device;
+- (void)_handleHciCommands:(unsigned __int16)commands params:(id)params;
+- (void)_handleReceivedData:(id)data;
+- (void)_hciDisconnect:(id)disconnect;
+- (void)_hciLeConnectionUpdate:(id)update;
+- (void)_hciLeEnableEncryption:(id)encryption;
+- (void)_hciLeLongTermKeyRequestNegativeReply:(id)reply;
+- (void)_hciLeLongTermKeyRequestReply:(id)reply;
+- (void)_hciLeReadRemoteFeatures:(id)features;
+- (void)_hciLeRemoteConnectionParameterRequestNegativeReply:(id)reply;
+- (void)_hciLeRemoteConnectionParameterRequestReply:(id)reply;
+- (void)_hciReadRemoteVersion:(id)version;
 - (void)_invalidate;
-- (void)_linkLayerControlInitAndActivate:(unsigned __int8)a3;
+- (void)_linkLayerControlInitAndActivate:(unsigned __int8)activate;
 - (void)_sendHCIEventDisconnectionComplete;
-- (void)_sendHCIEventEncryptionChangeV2:(unsigned __int8)a3;
-- (void)_sendHCIEventLeConnectionUpdateComplete:(unsigned __int8)a3;
+- (void)_sendHCIEventEncryptionChangeV2:(unsigned __int8)v2;
+- (void)_sendHCIEventLeConnectionUpdateComplete:(unsigned __int8)complete;
 - (void)_sendHCIEventLeDataLengthChange;
 - (void)_sendHCIEventLeLongTermKeyRequest;
-- (void)_sendHCIEventLeReadRemoteFeatureComplete:(unsigned __int8)a3;
+- (void)_sendHCIEventLeReadRemoteFeatureComplete:(unsigned __int8)complete;
 - (void)_sendHCIEventLeRemoteConnectionParameterRequest;
 - (void)_sendHCIEventPhyUpdateComplete;
-- (void)_sendHCIEventReadRemoteVersionInformationComplete:(unsigned __int8)a3;
-- (void)_sendHciCommandComplete:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5;
-- (void)_sendHciCommandStatusEvent:(unsigned __int16)a3;
-- (void)_sendLLControlPacket:(id)a3;
-- (void)_sendLLEvent:(int64_t)a3;
-- (void)_sendLmpEvent:(BOOL)a3 payload:(id)a4;
-- (void)_sendPacketCompele:(id)a3 error:(id)a4;
-- (void)_setConnectionHeader:(id)a3;
+- (void)_sendHCIEventReadRemoteVersionInformationComplete:(unsigned __int8)complete;
+- (void)_sendHciCommandComplete:(unsigned __int16)complete params:(char *)params length:(unsigned __int16)length;
+- (void)_sendHciCommandStatusEvent:(unsigned __int16)event;
+- (void)_sendLLControlPacket:(id)packet;
+- (void)_sendLLEvent:(int64_t)event;
+- (void)_sendLmpEvent:(BOOL)event payload:(id)payload;
+- (void)_sendPacketCompele:(id)compele error:(id)error;
+- (void)_setConnectionHeader:(id)header;
 - (void)activate;
 - (void)activateDirect;
-- (void)addClient:(id)a3;
-- (void)btvcBonjourLink:(id)a3 didConnectToPeer:(id)a4 parameters:(id)a5 role:(int64_t)a6 error:(id)a7;
-- (void)btvcBonjourLink:(id)a3 didDisconnectFromPeer:(id)a4 parameters:(id)a5 error:(id)a6;
-- (void)btvcBonjourLink:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5;
-- (void)btvcBonjourLink:(id)a3 didSendData:(id)a4 toPeer:(id)a5 error:(id)a6;
+- (void)addClient:(id)client;
+- (void)btvcBonjourLink:(id)link didConnectToPeer:(id)peer parameters:(id)parameters role:(int64_t)role error:(id)error;
+- (void)btvcBonjourLink:(id)link didDisconnectFromPeer:(id)peer parameters:(id)parameters error:(id)error;
+- (void)btvcBonjourLink:(id)link didReceiveData:(id)data fromPeer:(id)peer;
+- (void)btvcBonjourLink:(id)link didSendData:(id)data toPeer:(id)peer error:(id)error;
 - (void)cleanupPendingHciCommands;
 - (void)dealloc;
-- (void)disconnectDevice:(unsigned __int8)a3;
-- (void)handleHciCommands:(unsigned __int16)a3 params:(id)a4;
-- (void)handleReceivedData:(id)a3;
+- (void)disconnectDevice:(unsigned __int8)device;
+- (void)handleHciCommands:(unsigned __int16)commands params:(id)params;
+- (void)handleReceivedData:(id)data;
 - (void)invalidate;
-- (void)linkLayerControlInitAndActivate:(unsigned __int8)a3;
-- (void)sendData:(id)a3;
-- (void)sendHciCommandStatusEvent:(unsigned __int16)a3;
-- (void)sendLLControlPacket:(id)a3;
-- (void)sendLLEvent:(int64_t)a3;
-- (void)sendingPacket:(id)a3;
-- (void)setAcceptor:(BOOL)a3;
-- (void)setDispatchQueue:(id)a3;
+- (void)linkLayerControlInitAndActivate:(unsigned __int8)activate;
+- (void)sendData:(id)data;
+- (void)sendHciCommandStatusEvent:(unsigned __int16)event;
+- (void)sendLLControlPacket:(id)packet;
+- (void)sendLLEvent:(int64_t)event;
+- (void)sendingPacket:(id)packet;
+- (void)setAcceptor:(BOOL)acceptor;
+- (void)setDispatchQueue:(id)queue;
 - (void)testEncrytion;
 @end
 
 @implementation BTVCConnection
 
-- (id)initConnectionWithParams:(id)a3 parameters:(id)a4
+- (id)initConnectionWithParams:(id)params parameters:(id)parameters
 {
-  v18 = a3;
-  v20 = a4;
+  paramsCopy = params;
+  parametersCopy = parameters;
   v22 = 0;
   v6 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -76,7 +76,7 @@
     *buf = 136315394;
     v24 = "[BTVCConnection initConnectionWithParams:parameters:]";
     v25 = 2112;
-    v26 = v20;
+    v26 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "BTVCConnection:%s, connection parameters: %@\n", buf, 0x16u);
   }
 
@@ -140,7 +140,7 @@ LABEL_15:
 
   else
   {
-    objc_storeStrong(&v8->_peerDevice, a3);
+    objc_storeStrong(&v8->_peerDevice, params);
     v13 = [[BTVCBluetoothAddress alloc] initWithDeviceAddresData:v9];
     localAddress = v8->_localAddress;
     v8->_localAddress = v13;
@@ -175,7 +175,7 @@ LABEL_10:
 
 - (NSString)description
 {
-  v3 = [(BTVCDevice *)self->_peerDevice identifier];
+  identifier = [(BTVCDevice *)self->_peerDevice identifier];
   [(NSNumber *)self->_connectionHandle intValue];
   [(NSMutableSet *)self->_clients count];
   v4 = NSPrintF();
@@ -183,23 +183,23 @@ LABEL_10:
   return v4;
 }
 
-- (void)_setConnectionHeader:(id)a3
+- (void)_setConnectionHeader:(id)header
 {
-  v11 = a3;
+  headerCopy = header;
   v4 = [NSData alloc];
-  v5 = [(BTVCDevice *)self->_peerDevice bluetoothAddress];
-  v6 = [v5 addressWithType];
-  v7 = [v4 initWithData:v6];
+  bluetoothAddress = [(BTVCDevice *)self->_peerDevice bluetoothAddress];
+  addressWithType = [bluetoothAddress addressWithType];
+  v7 = [v4 initWithData:addressWithType];
 
   v8 = [NSData alloc];
-  v9 = [(BTVCBluetoothAddress *)self->_localAddress addressWithType];
-  v10 = [v8 initWithData:v9];
+  addressWithType2 = [(BTVCBluetoothAddress *)self->_localAddress addressWithType];
+  v10 = [v8 initWithData:addressWithType2];
 
-  [v11 setObject:v7 forKeyedSubscript:@"peerA"];
-  [v11 setObject:v10 forKeyedSubscript:@"initA"];
+  [headerCopy setObject:v7 forKeyedSubscript:@"peerA"];
+  [headerCopy setObject:v10 forKeyedSubscript:@"initA"];
 }
 
-- (void)setAcceptor:(BOOL)a3
+- (void)setAcceptor:(BOOL)acceptor
 {
   objc_initWeak(&location, self);
   dispatchQueue = self->_dispatchQueue;
@@ -208,7 +208,7 @@ LABEL_10:
   v6[2] = sub_100396778;
   v6[3] = &unk_100AEF400;
   v6[4] = self;
-  v8 = a3;
+  acceptorCopy = acceptor;
   objc_copyWeak(&v7, &location);
   dispatch_async(dispatchQueue, v6);
   objc_destroyWeak(&v7);
@@ -228,9 +228,9 @@ LABEL_10:
   }
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -242,7 +242,7 @@ LABEL_10:
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
@@ -250,28 +250,28 @@ LABEL_10:
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_activateCalled = 1;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100396B64;
   block[3] = &unk_100ADF820;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)activateDirect
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = self;
-  objc_sync_enter(v3);
-  v3->_activateCalled = 1;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  objc_sync_exit(selfCopy);
 
-  [(BTVCConnection *)v3 _activate];
+  [(BTVCConnection *)selfCopy _activate];
 }
 
 - (void)_activate
@@ -316,8 +316,8 @@ LABEL_10:
     connectionStateChangedHandler = self->_connectionStateChangedHandler;
     if (connectionStateChangedHandler)
     {
-      v11 = [(BTVCConnection *)self identifier];
-      connectionStateChangedHandler[2](connectionStateChangedHandler, v11, 1);
+      identifier = [(BTVCConnection *)self identifier];
+      connectionStateChangedHandler[2](connectionStateChangedHandler, identifier, 1);
 
       isPeripheral = self->_isPeripheral;
     }
@@ -412,8 +412,8 @@ LABEL_10:
       v9 = objc_alloc_init(NSMutableDictionary);
       [(BTVCConnection *)self _setConnectionHeader:v9];
       btvcBonjourLink = self->_btvcBonjourLink;
-      v11 = [(BTVCDevice *)self->_peerDevice identifier];
-      [(BTVCBonjourLink *)btvcBonjourLink disconnectFromPeer:v11 withParameters:v9];
+      identifier = [(BTVCDevice *)self->_peerDevice identifier];
+      [(BTVCBonjourLink *)btvcBonjourLink disconnectFromPeer:identifier withParameters:v9];
     }
 
     v12 = self->_btvcBonjourLink;
@@ -513,7 +513,7 @@ LABEL_10:
   [(NSMutableArray *)self->_packetPendingQueue removeAllObjects];
 }
 
-- (void)linkLayerControlInitAndActivate:(unsigned __int8)a3
+- (void)linkLayerControlInitAndActivate:(unsigned __int8)activate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -521,15 +521,15 @@ LABEL_10:
   v4[2] = sub_100397524;
   v4[3] = &unk_100AE1750;
   v4[4] = self;
-  v5 = a3;
+  activateCopy = activate;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_linkLayerControlInitAndActivate:(unsigned __int8)a3
+- (void)_linkLayerControlInitAndActivate:(unsigned __int8)activate
 {
-  v3 = a3;
+  activateCopy = activate;
   objc_initWeak(&location, self);
-  v5 = [[BTVCLinkLayerControl alloc] initWithDevice:self->_peerDevice role:v3];
+  v5 = [[BTVCLinkLayerControl alloc] initWithDevice:self->_peerDevice role:activateCopy];
   linkLayerControl = self->_linkLayerControl;
   self->_linkLayerControl = v5;
 
@@ -552,7 +552,7 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)disconnectDevice:(unsigned __int8)a3
+- (void)disconnectDevice:(unsigned __int8)device
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -560,13 +560,13 @@ LABEL_10:
   v4[2] = sub_100397814;
   v4[3] = &unk_100AE1750;
   v4[4] = self;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_disconnectDevice:(unsigned __int8)a3
+- (void)_disconnectDevice:(unsigned __int8)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -589,12 +589,12 @@ LABEL_10:
 
     v7 = objc_alloc_init(NSMutableDictionary);
     [(BTVCConnection *)self _setConnectionHeader:v7];
-    v8 = [NSNumber numberWithUnsignedChar:v3];
+    v8 = [NSNumber numberWithUnsignedChar:deviceCopy];
     [v7 setObject:v8 forKeyedSubscript:@"reason"];
 
     btvcBonjourLink = self->_btvcBonjourLink;
-    v10 = [(BTVCDevice *)self->_peerDevice identifier];
-    [(BTVCBonjourLink *)btvcBonjourLink disconnectFromPeer:v10 withParameters:v7];
+    identifier = [(BTVCDevice *)self->_peerDevice identifier];
+    [(BTVCBonjourLink *)btvcBonjourLink disconnectFromPeer:identifier withParameters:v7];
 
     linkLayerControl = self->_linkLayerControl;
     if (linkLayerControl)
@@ -606,48 +606,48 @@ LABEL_10:
   }
 }
 
-- (void)handleHciCommands:(unsigned __int16)a3 params:(id)a4
+- (void)handleHciCommands:(unsigned __int16)commands params:(id)params
 {
-  v6 = a4;
+  paramsCopy = params;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100397AB0;
   block[3] = &unk_100AEF470;
-  v11 = a3;
+  commandsCopy = commands;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = paramsCopy;
+  v8 = paramsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleHciCommands:(unsigned __int16)a3 params:(id)a4
+- (void)_handleHciCommands:(unsigned __int16)commands params:(id)params
 {
-  v4 = a3;
-  v6 = a4;
+  commandsCopy = commands;
+  paramsCopy = params;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315650;
     v14 = "[BTVCConnection _handleHciCommands:params:]";
     v15 = 1024;
-    v16 = v4;
+    v16 = commandsCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = paramsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s opCpde 0x%04X params %@", &v13, 0x1Cu);
   }
 
-  if (v4 <= 8216)
+  if (commandsCopy <= 8216)
   {
-    if (v4 > 8210)
+    if (commandsCopy > 8210)
     {
-      if (v4 == 8211)
+      if (commandsCopy == 8211)
       {
         v8 = &selRef__hciLeConnectionUpdate_;
         goto LABEL_23;
       }
 
-      if (v4 == 8214)
+      if (commandsCopy == 8214)
       {
         v8 = &selRef__hciLeReadRemoteFeatures_;
         goto LABEL_23;
@@ -656,13 +656,13 @@ LABEL_10:
 
     else
     {
-      if (v4 == 1030)
+      if (commandsCopy == 1030)
       {
         v8 = &selRef__hciDisconnect_;
         goto LABEL_23;
       }
 
-      if (v4 == 1053)
+      if (commandsCopy == 1053)
       {
         v8 = &selRef__hciReadRemoteVersion_;
         goto LABEL_23;
@@ -672,9 +672,9 @@ LABEL_10:
 
   else
   {
-    if (v4 <= 8218)
+    if (commandsCopy <= 8218)
     {
-      if (v4 == 8217)
+      if (commandsCopy == 8217)
       {
         v8 = &selRef__hciLeEnableEncryption_;
       }
@@ -687,7 +687,7 @@ LABEL_10:
       goto LABEL_23;
     }
 
-    switch(v4)
+    switch(commandsCopy)
     {
       case 0x201B:
         v8 = &selRef__hciLeLongTermKeyRequestNegativeReply_;
@@ -699,11 +699,11 @@ LABEL_10:
         v8 = &selRef__hciLeRemoteConnectionParameterRequestNegativeReply_;
 LABEL_23:
         v9 = *v8;
-        v10 = [NSNumber numberWithInt:v4];
+        v10 = [NSNumber numberWithInt:commandsCopy];
         hciCommandList = self->_hciCommandList;
         if (hciCommandList)
         {
-          [(NSMutableDictionary *)hciCommandList setObject:v6 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)hciCommandList setObject:paramsCopy forKeyedSubscript:v10];
         }
 
         [self v9];
@@ -721,18 +721,18 @@ LABEL_23:
 LABEL_26:
 }
 
-- (void)_hciDisconnect:(id)a3
+- (void)_hciDisconnect:(id)disconnect
 {
-  v5 = a3;
+  disconnectCopy = disconnect;
   [(BTVCConnection *)self _sendHciCommandStatusEvent:1030];
-  v4 = [v5 bytes];
+  bytes = [disconnectCopy bytes];
   if (self->_linkLayerControl)
   {
-    [(BTVCLinkLayerControl *)self->_linkLayerControl sendTerminateInd:v4[2]];
+    [(BTVCLinkLayerControl *)self->_linkLayerControl sendTerminateInd:bytes[2]];
   }
 }
 
-- (void)_hciReadRemoteVersion:(id)a3
+- (void)_hciReadRemoteVersion:(id)version
 {
   [(BTVCConnection *)self _sendHciCommandStatusEvent:1053];
   v4 = objc_retainBlock(self->_hciEventHandler);
@@ -747,7 +747,7 @@ LABEL_26:
   }
 }
 
-- (void)_hciLeReadRemoteFeatures:(id)a3
+- (void)_hciLeReadRemoteFeatures:(id)features
 {
   [(BTVCConnection *)self _sendHciCommandStatusEvent:8214];
   v4 = objc_retainBlock(self->_leMetaEventHandler);
@@ -762,9 +762,9 @@ LABEL_26:
   }
 }
 
-- (void)_hciLeConnectionUpdate:(id)a3
+- (void)_hciLeConnectionUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(BTVCConnection *)self _sendHciCommandStatusEvent:8211];
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -772,21 +772,21 @@ LABEL_26:
     v8 = 136315394;
     v9 = "[BTVCConnection _hciLeConnectionUpdate:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s params %@", &v8, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
+  v6 = updateCopy;
+  bytes = [updateCopy bytes];
   if (self->_linkLayerControl)
   {
-    [(BTVCLinkLayerControl *)self->_linkLayerControl sendConnectionParamReq:v7[1] intervalMax:v7[2] latency:v7[3] timeout:v7[4]];
+    [(BTVCLinkLayerControl *)self->_linkLayerControl sendConnectionParamReq:bytes[1] intervalMax:bytes[2] latency:bytes[3] timeout:bytes[4]];
   }
 }
 
-- (void)_hciLeEnableEncryption:(id)a3
+- (void)_hciLeEnableEncryption:(id)encryption
 {
-  v4 = a3;
+  encryptionCopy = encryption;
   [(BTVCConnection *)self _sendHciCommandStatusEvent:8217];
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -794,14 +794,14 @@ LABEL_26:
     *v10 = 136315394;
     *&v10[4] = "[BTVCConnection _hciLeEnableEncryption:]";
     *&v10[12] = 2112;
-    *&v10[14] = v4;
+    *&v10[14] = encryptionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s params %@", v10, 0x16u);
   }
 
-  v6 = v4;
-  v7 = [v4 bytes];
-  v8 = *v7;
-  *&v10[12] = *(v7 + 12);
+  v6 = encryptionCopy;
+  bytes = [encryptionCopy bytes];
+  v8 = *bytes;
+  *&v10[12] = *(bytes + 12);
   *v10 = v8;
   linkLayerControl = self->_linkLayerControl;
   if (linkLayerControl)
@@ -810,28 +810,28 @@ LABEL_26:
   }
 }
 
-- (void)_hciLeLongTermKeyRequestReply:(id)a3
+- (void)_hciLeLongTermKeyRequestReply:(id)reply
 {
-  v4 = a3;
-  v5 = [v4 bytes];
+  replyCopy = reply;
+  bytes = [replyCopy bytes];
   linkLayerControl = self->_linkLayerControl;
   if (linkLayerControl)
   {
     self->_dataPacketPending = 1;
     if ([(BTVCLinkLayerControl *)linkLayerControl encryptionState]== 2)
     {
-      [(BTVCLinkLayerControl *)self->_linkLayerControl sendEncryptionRsp:v5 + 2];
+      [(BTVCLinkLayerControl *)self->_linkLayerControl sendEncryptionRsp:bytes + 2];
     }
   }
 
   v7 = 0;
-  v8 = [(NSNumber *)self->_connectionHandle intValue];
+  intValue = [(NSNumber *)self->_connectionHandle intValue];
   [(BTVCConnection *)self _sendHciCommandComplete:8218 params:&v7 length:3];
 }
 
-- (void)_hciLeLongTermKeyRequestNegativeReply:(id)a3
+- (void)_hciLeLongTermKeyRequestNegativeReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   linkLayerControl = self->_linkLayerControl;
   if (linkLayerControl)
   {
@@ -843,40 +843,40 @@ LABEL_26:
   }
 
   v6 = 0;
-  v7 = [(NSNumber *)self->_connectionHandle intValue];
+  intValue = [(NSNumber *)self->_connectionHandle intValue];
   [(BTVCConnection *)self _sendHciCommandComplete:8219 params:&v6 length:3];
 }
 
-- (void)_hciLeRemoteConnectionParameterRequestReply:(id)a3
+- (void)_hciLeRemoteConnectionParameterRequestReply:(id)reply
 {
-  v4 = a3;
-  v5 = [v4 bytes];
+  replyCopy = reply;
+  bytes = [replyCopy bytes];
   if (self->_linkLayerControl)
   {
-    [(BTVCLinkLayerControl *)self->_linkLayerControl sendConnectionParamRsp:v5[1] intervalMax:v5[2] maxLatency:v5[3] timeout:v5[4]];
+    [(BTVCLinkLayerControl *)self->_linkLayerControl sendConnectionParamRsp:bytes[1] intervalMax:bytes[2] maxLatency:bytes[3] timeout:bytes[4]];
   }
 
   v6 = 0;
-  v7 = [(NSNumber *)self->_connectionHandle intValue];
+  intValue = [(NSNumber *)self->_connectionHandle intValue];
   [(BTVCConnection *)self _sendHciCommandComplete:8224 params:&v6 length:3];
 }
 
-- (void)_hciLeRemoteConnectionParameterRequestNegativeReply:(id)a3
+- (void)_hciLeRemoteConnectionParameterRequestNegativeReply:(id)reply
 {
-  v4 = a3;
-  v5 = [v4 bytes];
+  replyCopy = reply;
+  bytes = [replyCopy bytes];
   linkLayerControl = self->_linkLayerControl;
   if (linkLayerControl)
   {
     self->_dataPacketPending = 0;
     if ([(BTVCLinkLayerControl *)linkLayerControl encryptionState]== 2)
     {
-      [(BTVCLinkLayerControl *)self->_linkLayerControl sendRejectExtendedInd:15 errorCode:v5[2]];
+      [(BTVCLinkLayerControl *)self->_linkLayerControl sendRejectExtendedInd:15 errorCode:bytes[2]];
     }
   }
 
   v7 = 0;
-  v8 = [(NSNumber *)self->_connectionHandle intValue];
+  intValue = [(NSNumber *)self->_connectionHandle intValue];
   [(BTVCConnection *)self _sendHciCommandComplete:8225 params:&v7 length:3];
 }
 
@@ -891,15 +891,15 @@ LABEL_26:
   }
 }
 
-- (void)_sendHCIEventReadRemoteVersionInformationComplete:(unsigned __int8)a3
+- (void)_sendHCIEventReadRemoteVersionInformationComplete:(unsigned __int8)complete
 {
   if (self->_hciEventHandler)
   {
-    v3 = a3;
+    completeCopy = complete;
     if ([(BTVCConnection *)self _removeFromHciCommandList:1053])
     {
       [(NSNumber *)self->_connectionHandle intValue];
-      if (!v3)
+      if (!completeCopy)
       {
         [(BTVCDevice *)self->_peerDevice lmpVersion];
         [(BTVCDevice *)self->_peerDevice companyIdentifier];
@@ -911,19 +911,19 @@ LABEL_26:
   }
 }
 
-- (void)_sendHciCommandComplete:(unsigned __int16)a3 params:(char *)a4 length:(unsigned __int16)a5
+- (void)_sendHciCommandComplete:(unsigned __int16)complete params:(char *)params length:(unsigned __int16)length
 {
   if (self->_hciEventHandler)
   {
-    v5 = a5;
+    lengthCopy = length;
     [(BTVCConnection *)self _removeFromHciCommandList:?];
     memset(v8, 0, sizeof(v8));
-    memcpy(&v8[1], a4, v5);
+    memcpy(&v8[1], params, lengthCopy);
     (*(self->_hciEventHandler + 2))();
   }
 }
 
-- (void)sendHciCommandStatusEvent:(unsigned __int16)a3
+- (void)sendHciCommandStatusEvent:(unsigned __int16)event
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -931,28 +931,28 @@ LABEL_26:
   v4[2] = sub_1003985DC;
   v4[3] = &unk_100AEF498;
   v4[4] = self;
-  v5 = a3;
+  eventCopy = event;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_sendHciCommandStatusEvent:(unsigned __int16)a3
+- (void)_sendHciCommandStatusEvent:(unsigned __int16)event
 {
   hciEventHandler = self->_hciEventHandler;
   if (hciEventHandler)
   {
     v4[0] = 256;
-    v4[1] = a3;
+    v4[1] = event;
     hciEventHandler[2](hciEventHandler, 15, v4, 4);
   }
 }
 
-- (void)_sendHCIEventLeConnectionUpdateComplete:(unsigned __int8)a3
+- (void)_sendHCIEventLeConnectionUpdateComplete:(unsigned __int8)complete
 {
   if (self->_leMetaEventHandler)
   {
-    v3 = a3;
+    completeCopy = complete;
     [(BTVCConnection *)self _removeFromHciCommandList:8211];
-    if (!v3)
+    if (!completeCopy)
     {
       [(NSNumber *)self->_connectionHandle intValue];
       [(BTVCLinkLayerControl *)self->_linkLayerControl interval];
@@ -964,17 +964,17 @@ LABEL_26:
   }
 }
 
-- (void)_sendHCIEventLeReadRemoteFeatureComplete:(unsigned __int8)a3
+- (void)_sendHCIEventLeReadRemoteFeatureComplete:(unsigned __int8)complete
 {
   if (self->_leMetaEventHandler)
   {
-    v3 = a3;
+    completeCopy = complete;
     if ([(BTVCConnection *)self _removeFromHciCommandList:8214])
     {
       *(v5 + 7) = 0;
       v5[0] = 0;
       [(NSNumber *)self->_connectionHandle intValue];
-      if (!v3)
+      if (!completeCopy)
       {
         [(BTVCDevice *)self->_peerDevice getLeFeature:v5 + 3];
       }
@@ -1032,7 +1032,7 @@ LABEL_26:
   }
 }
 
-- (void)_sendHCIEventEncryptionChangeV2:(unsigned __int8)a3
+- (void)_sendHCIEventEncryptionChangeV2:(unsigned __int8)v2
 {
   if (self->_hciEventHandler)
   {
@@ -1043,16 +1043,16 @@ LABEL_26:
   }
 }
 
-- (BOOL)_removeFromHciCommandList:(unsigned __int16)a3
+- (BOOL)_removeFromHciCommandList:(unsigned __int16)list
 {
-  v3 = a3;
+  listCopy = list;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 136315394;
     v14 = "[BTVCConnection _removeFromHciCommandList:]";
     v15 = 1024;
-    v16 = v3;
+    v16 = listCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s opCode: 0x%04X", &v13, 0x12u);
   }
 
@@ -1062,7 +1062,7 @@ LABEL_26:
     return 0;
   }
 
-  v7 = [NSNumber numberWithInt:v3];
+  v7 = [NSNumber numberWithInt:listCopy];
   v8 = [(NSMutableDictionary *)self->_hciCommandList objectForKeyedSubscript:v7];
   v9 = v8 != 0;
   if (v8)
@@ -1079,7 +1079,7 @@ LABEL_26:
       v13 = 136315650;
       v14 = "[BTVCConnection _removeFromHciCommandList:]";
       v15 = 1024;
-      v16 = v3;
+      v16 = listCopy;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s opCode: 0x%04X is not in _hciCommandList %@", &v13, 0x1Cu);
@@ -1089,19 +1089,19 @@ LABEL_26:
   return v9;
 }
 
-- (void)_sendLmpEvent:(BOOL)a3 payload:(id)a4
+- (void)_sendLmpEvent:(BOOL)event payload:(id)payload
 {
-  v4 = a3;
-  v6 = a4;
+  eventCopy = event;
+  payloadCopy = payload;
   if (self->_lmpEventHandler)
   {
     v15 = 0;
-    v7 = [(BTVCDevice *)self->_peerDevice bluetoothAddress];
-    v8 = [v7 addressData];
-    v9 = *[v8 bytes];
+    bluetoothAddress = [(BTVCDevice *)self->_peerDevice bluetoothAddress];
+    addressData = [bluetoothAddress addressData];
+    v9 = *[addressData bytes];
 
     v12 = v9;
-    if (v4)
+    if (eventCopy)
     {
       v10 = -127;
     }
@@ -1116,14 +1116,14 @@ LABEL_26:
     sub_1000075EC(&v15, &v12, 6uLL);
     HIWORD(v15) = [(NSNumber *)self->_connectionHandle intValue];
     v11 = [[NSMutableData alloc] initWithBytes:&v13 length:13];
-    [v11 appendData:v6];
+    [v11 appendData:payloadCopy];
     (*(self->_lmpEventHandler + 2))();
   }
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -1136,13 +1136,13 @@ LABEL_26:
   {
     if (self->_dataPacketPending)
     {
-      [(NSMutableArray *)self->_packetPendingQueue addObject:v4];
+      [(NSMutableArray *)self->_packetPendingQueue addObject:dataCopy];
     }
 
     else
     {
-      [(BTVCConnection *)self _setConnectionHeader:v4];
-      v6 = [v4 objectForKeyedSubscript:@"payload"];
+      [(BTVCConnection *)self _setConnectionHeader:dataCopy];
+      v6 = [dataCopy objectForKeyedSubscript:@"payload"];
       if (self->_encryption)
       {
         v7 = qword_100BCEA70;
@@ -1153,12 +1153,12 @@ LABEL_26:
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "BTVC:Encryption: send data payload %@", buf, 0xCu);
         }
 
-        [(BTVCConnection *)self _addEncryptedPayload:v6 packet:v4];
+        [(BTVCConnection *)self _addEncryptedPayload:v6 packet:dataCopy];
         v8 = qword_100BCEA70;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v4 objectForKeyedSubscript:@"payload"];
-          v10 = [v4 objectForKeyedSubscript:@"MIC"];
+          v9 = [dataCopy objectForKeyedSubscript:@"payload"];
+          v10 = [dataCopy objectForKeyedSubscript:@"MIC"];
           *buf = 138412546;
           v15 = v9;
           v16 = 2112;
@@ -1174,46 +1174,46 @@ LABEL_26:
       v12[2] = sub_10039901C;
       v12[3] = &unk_100AEF4C0;
       objc_copyWeak(&v13, buf);
-      [(BTVCPacketControl *)packetControl sendPacket:v4 completion:v12];
+      [(BTVCPacketControl *)packetControl sendPacket:dataCopy completion:v12];
       objc_destroyWeak(&v13);
       objc_destroyWeak(buf);
     }
   }
 }
 
-- (void)_sendPacketCompele:(id)a3 error:(id)a4
+- (void)_sendPacketCompele:(id)compele error:(id)error
 {
   if (self->_hciEventHandler)
   {
-    [(NSNumber *)self->_connectionHandle intValue:a3];
+    [(NSNumber *)self->_connectionHandle intValue:compele];
     (*(self->_hciEventHandler + 2))();
   }
 }
 
-- (void)sendLLControlPacket:(id)a3
+- (void)sendLLControlPacket:(id)packet
 {
-  v4 = a3;
+  packetCopy = packet;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100399234;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = packetCopy;
+  v6 = packetCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_sendLLControlPacket:(id)a3
+- (void)_sendLLControlPacket:(id)packet
 {
-  v4 = a3;
+  packetCopy = packet;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v16 = "[BTVCConnection _sendLLControlPacket:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = packetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s payload %@\n", buf, 0x16u);
   }
 
@@ -1227,11 +1227,11 @@ LABEL_26:
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = packetCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "BTVC:Encryption: send LL control payload %@", buf, 0xCu);
     }
 
-    [(BTVCConnection *)self _addEncryptedPayload:v4 packet:v6];
+    [(BTVCConnection *)self _addEncryptedPayload:packetCopy packet:v6];
     v9 = qword_100BCEA70;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -1247,7 +1247,7 @@ LABEL_26:
 
   else
   {
-    [v6 setObject:v4 forKeyedSubscript:@"payload"];
+    [v6 setObject:packetCopy forKeyedSubscript:@"payload"];
   }
 
   objc_initWeak(buf, self);
@@ -1263,23 +1263,23 @@ LABEL_26:
   objc_destroyWeak(buf);
 }
 
-- (void)_addEncryptedPayload:(id)a3 packet:(id)a4
+- (void)_addEncryptedPayload:(id)payload packet:(id)packet
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bytes];
-  v9 = [v6 length];
+  payloadCopy = payload;
+  packetCopy = packet;
+  bytes = [payloadCopy bytes];
+  v9 = [payloadCopy length];
   v10 = malloc_type_malloc(v9, 0x100004077774924uLL);
   v13 = 0;
-  [(BTVCEncryption *)self->_encryption calculation:v8 length:v9 operation:1 mic:&v13 result:v10];
+  [(BTVCEncryption *)self->_encryption calculation:bytes length:v9 operation:1 mic:&v13 result:v10];
   v11 = [[NSData alloc] initWithBytes:v10 length:v9];
-  [v7 setObject:v11 forKeyedSubscript:@"payload"];
+  [packetCopy setObject:v11 forKeyedSubscript:@"payload"];
   v12 = [[NSData alloc] initWithBytes:&v13 length:4];
-  [v7 setObject:v12 forKeyedSubscript:@"MIC"];
+  [packetCopy setObject:v12 forKeyedSubscript:@"MIC"];
   free(v10);
 }
 
-- (void)sendLLEvent:(int64_t)a3
+- (void)sendLLEvent:(int64_t)event
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -1287,11 +1287,11 @@ LABEL_26:
   v4[2] = sub_100399868;
   v4[3] = &unk_100AE1200;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)_sendLLEvent:(int64_t)a3
+- (void)_sendLLEvent:(int64_t)event
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = qword_100BCEA70;
@@ -1302,11 +1302,11 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s\n", v12, 0xCu);
   }
 
-  if (a3 <= 3)
+  if (event <= 3)
   {
-    if (a3 > 1)
+    if (event > 1)
     {
-      if (a3 == 2)
+      if (event == 2)
       {
         [(BTVCConnection *)self _sendHCIEventLeDataLengthChange];
       }
@@ -1317,9 +1317,9 @@ LABEL_26:
       }
     }
 
-    else if (a3)
+    else if (event)
     {
-      if (a3 == 1)
+      if (event == 1)
       {
         [(BTVCConnection *)self _sendHCIEventLeReadRemoteFeatureComplete:0];
       }
@@ -1331,9 +1331,9 @@ LABEL_26:
     }
   }
 
-  else if (a3 <= 5)
+  else if (event <= 5)
   {
-    if (a3 == 4)
+    if (event == 4)
     {
       [(BTVCConnection *)self _sendHCIEventLeConnectionUpdateComplete:0];
     }
@@ -1346,7 +1346,7 @@ LABEL_26:
 
   else
   {
-    switch(a3)
+    switch(event)
     {
       case 6:
         if ([(BTVCLinkLayerControl *)self->_linkLayerControl encryptionState]== 2)
@@ -1436,17 +1436,17 @@ LABEL_26:
     [v4 setObject:v8 forKeyedSubscript:@"SCA"];
 
     btvcBonjourLink = self->_btvcBonjourLink;
-    v10 = [(BTVCDevice *)self->_peerDevice identifier];
-    [(BTVCBonjourLink *)btvcBonjourLink connectToPeer:v10 withParameters:v4];
+    identifier = [(BTVCDevice *)self->_peerDevice identifier];
+    [(BTVCBonjourLink *)btvcBonjourLink connectToPeer:identifier withParameters:v4];
 
     v11 = qword_100BCEA70;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(BTVCConnection *)self connectionHandle];
+      connectionHandle = [(BTVCConnection *)self connectionHandle];
       v13 = 136315394;
       v14 = "[BTVCConnection _connectIfNeeded]";
       v15 = 1024;
-      v16 = [v12 intValue];
+      intValue = [connectionHandle intValue];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s connection handle 0x%04X\n", &v13, 0x12u);
     }
   }
@@ -1463,18 +1463,18 @@ LABEL_26:
       sub_100822A8C(p_hciCommandList, v4);
     }
 
-    v5 = [*p_hciCommandList allKeys];
-    v6 = [v5 count];
+    allKeys = [*p_hciCommandList allKeys];
+    v6 = [allKeys count];
     v7 = v6;
     if (v6)
     {
       v8 = 0;
       while (1)
       {
-        v9 = [v5 objectAtIndex:v8];
-        v10 = [v9 intValue];
-        v11 = v10;
-        v12 = v10 - 8214;
+        v9 = [allKeys objectAtIndex:v8];
+        intValue = [v9 intValue];
+        v11 = intValue;
+        v12 = intValue - 8214;
         if (v12 > 0xB)
         {
           break;
@@ -1482,20 +1482,20 @@ LABEL_26:
 
         if (((1 << v12) & 0xC30) != 0)
         {
-          v15 = 0;
+          intValue2 = 0;
           v14 = 22;
-          v15 = [(NSNumber *)self->_connectionHandle intValue];
+          intValue2 = [(NSNumber *)self->_connectionHandle intValue];
           [(BTVCConnection *)self _sendHciCommandComplete:v11 params:&v14 length:3];
         }
 
-        else if (v10 == 8214)
+        else if (intValue == 8214)
         {
           [(BTVCConnection *)self _sendHCIEventLeReadRemoteFeatureComplete:22];
         }
 
         else
         {
-          if (v10 != 8217)
+          if (intValue != 8217)
           {
             break;
           }
@@ -1511,12 +1511,12 @@ LABEL_18:
         }
       }
 
-      if (v10 == 1053)
+      if (intValue == 1053)
       {
         [(BTVCConnection *)self _sendHCIEventReadRemoteVersionInformationComplete:22];
       }
 
-      else if (v10 == 8211)
+      else if (intValue == 8211)
       {
         [(BTVCConnection *)self _sendHCIEventLeConnectionUpdateComplete:22];
       }
@@ -1535,43 +1535,43 @@ LABEL_19:
   }
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  clients = v4->_clients;
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clients = selfCopy->_clients;
   if (!clients)
   {
     v6 = objc_alloc_init(NSMutableSet);
-    v7 = v4->_clients;
-    v4->_clients = v6;
+    v7 = selfCopy->_clients;
+    selfCopy->_clients = v6;
 
-    clients = v4->_clients;
+    clients = selfCopy->_clients;
   }
 
-  [(NSMutableSet *)clients addObject:v8];
-  objc_sync_exit(v4);
+  [(NSMutableSet *)clients addObject:clientCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)removeClient:(id)a3
+- (BOOL)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(NSMutableSet *)v5->_clients removeObject:v4];
-  v6 = [(NSMutableSet *)v5->_clients count]!= 0;
-  objc_sync_exit(v5);
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_clients removeObject:clientCopy];
+  v6 = [(NSMutableSet *)selfCopy->_clients count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)btvcBonjourLink:(id)a3 didConnectToPeer:(id)a4 parameters:(id)a5 role:(int64_t)a6 error:(id)a7
+- (void)btvcBonjourLink:(id)link didConnectToPeer:(id)peer parameters:(id)parameters role:(int64_t)role error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  linkCopy = link;
+  peerCopy = peer;
+  parametersCopy = parameters;
+  errorCopy = error;
   v16 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -1583,34 +1583,34 @@ LABEL_19:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v17 = self->_peerDevice;
   v18 = v17;
-  if (!a6)
+  if (!role)
   {
     btvcBonjourLink = self->_btvcBonjourLink;
     if (btvcBonjourLink)
     {
-      if (btvcBonjourLink == v12)
+      if (btvcBonjourLink == linkCopy)
       {
-        v20 = [(BTVCDevice *)v17 identifier];
-        v21 = [v20 isEqual:v13];
+        identifier = [(BTVCDevice *)v17 identifier];
+        v21 = [identifier isEqual:peerCopy];
 
         if (v21)
         {
           v22 = qword_100BCEA70;
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [(BTVCConnection *)self connectionHandle];
-            v24 = [v23 intValue];
+            connectionHandle = [(BTVCConnection *)self connectionHandle];
+            intValue = [connectionHandle intValue];
             *buf = 136315394;
             v38 = "[BTVCConnection btvcBonjourLink:didConnectToPeer:parameters:role:error:]";
             v39 = 1024;
-            LODWORD(v40) = v24;
+            LODWORD(v40) = intValue;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s connection handle 0x%04X\n", buf, 0x12u);
           }
 
           self->_connecting = 0;
           v25 = CFAbsoluteTimeGetCurrent() - self->_connectStartTime;
-          self->_connected = v15 == 0;
-          if (v15)
+          self->_connected = errorCopy == 0;
+          if (errorCopy)
           {
             v26 = qword_100BCEA70;
             if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1618,15 +1618,15 @@ LABEL_19:
               *buf = 134218242;
               v38 = *&v25;
               v39 = 2112;
-              v40 = v15;
+              v40 = errorCopy;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "### Connect failed (%f seconds): %@\n", buf, 0x16u);
             }
 
             if (self->_connectionStateChangedHandler)
             {
               connectionCompletedHandler = self->_connectionCompletedHandler;
-              v28 = [(BTVCConnection *)self connectionHandle];
-              connectionCompletedHandler[2](connectionCompletedHandler, v28, 8);
+              connectionHandle2 = [(BTVCConnection *)self connectionHandle];
+              connectionCompletedHandler[2](connectionCompletedHandler, connectionHandle2, 8);
             }
 
             [(CURetrier *)self->_connectRetrier failedDirect];
@@ -1664,8 +1664,8 @@ LABEL_19:
             v32 = self->_connectionCompletedHandler;
             if (v32)
             {
-              v33 = [(BTVCConnection *)self connectionHandle];
-              v32[2](v32, v33, 0);
+              connectionHandle3 = [(BTVCConnection *)self connectionHandle];
+              v32[2](v32, connectionHandle3, 0);
 
               isPeripheral = self->_isPeripheral;
             }
@@ -1683,12 +1683,12 @@ LABEL_19:
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didDisconnectFromPeer:(id)a4 parameters:(id)a5 error:(id)a6
+- (void)btvcBonjourLink:(id)link didDisconnectFromPeer:(id)peer parameters:(id)parameters error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  linkCopy = link;
+  peerCopy = peer;
+  parametersCopy = parameters;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v14 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -1696,29 +1696,29 @@ LABEL_19:
     *buf = 136315650;
     v32 = "[BTVCConnection btvcBonjourLink:didDisconnectFromPeer:parameters:error:]";
     v33 = 2112;
-    v34 = v11;
+    v34 = peerCopy;
     v35 = 2112;
-    v36 = v12;
+    v36 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s peer device %@ parameters: %@\n", buf, 0x20u);
   }
 
   v15 = 0;
   btvcBonjourLink = self->_btvcBonjourLink;
-  if (btvcBonjourLink && btvcBonjourLink == v10)
+  if (btvcBonjourLink && btvcBonjourLink == linkCopy)
   {
     v17 = qword_100BCEA70;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(BTVCDevice *)self->_peerDevice identifier];
+      identifier = [(BTVCDevice *)self->_peerDevice identifier];
       *buf = 136315394;
       v32 = "[BTVCConnection btvcBonjourLink:didDisconnectFromPeer:parameters:error:]";
       v33 = 2112;
-      v34 = v18;
+      v34 = identifier;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s peer device of current link %@\n", buf, 0x16u);
     }
 
-    v19 = [(BTVCDevice *)self->_peerDevice identifier];
-    v20 = [v19 isEqual:v11];
+    identifier2 = [(BTVCDevice *)self->_peerDevice identifier];
+    v20 = [identifier2 isEqual:peerCopy];
 
     if ((v20 & 1) == 0)
     {
@@ -1731,12 +1731,12 @@ LABEL_19:
     *&self->_connected = 0;
     v21 = qword_100BCEA70;
     v22 = os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (errorCopy)
     {
       if (v22)
       {
         *buf = 138412290;
-        v32 = v13;
+        v32 = errorCopy;
         v23 = "### Disconnect failed: %@\n";
         v24 = v21;
         v25 = 12;
@@ -1769,8 +1769,8 @@ LABEL_14:
     disconnectionCompletedHandler = self->_disconnectionCompletedHandler;
     if (disconnectionCompletedHandler)
     {
-      v29 = [(BTVCConnection *)self connectionHandle];
-      (*(disconnectionCompletedHandler + 2))(disconnectionCompletedHandler, v29, 0, [v15 unsignedIntValue]);
+      connectionHandle = [(BTVCConnection *)self connectionHandle];
+      (*(disconnectionCompletedHandler + 2))(disconnectionCompletedHandler, connectionHandle, 0, [v15 unsignedIntValue]);
     }
 
     [(CURetrier *)self->_connectRetrier invalidateDirect];
@@ -1781,21 +1781,21 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)btvcBonjourLink:(id)a3 didSendData:(id)a4 toPeer:(id)a5 error:(id)a6
+- (void)btvcBonjourLink:(id)link didSendData:(id)data toPeer:(id)peer error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  linkCopy = link;
+  dataCopy = data;
+  peerCopy = peer;
+  errorCopy = error;
   v14 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 136315650;
     v19 = "[BTVCConnection btvcBonjourLink:didSendData:toPeer:error:]";
     v20 = 2112;
-    v21 = v11;
+    v21 = dataCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = peerCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s data %@, peer %@", &v18, 0x20u);
   }
 
@@ -1803,49 +1803,49 @@ LABEL_20:
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    if (btvcBonjourLink == v10)
+    if (btvcBonjourLink == linkCopy)
     {
-      v16 = [(BTVCDevice *)self->_peerDevice identifier];
-      v17 = [v16 isEqual:v12];
+      identifier = [(BTVCDevice *)self->_peerDevice identifier];
+      v17 = [identifier isEqual:peerCopy];
 
       if (v17)
       {
-        [(BTVCPacketControl *)self->_packetControl didSendPacket:v11 error:v13];
+        [(BTVCPacketControl *)self->_packetControl didSendPacket:dataCopy error:errorCopy];
       }
     }
   }
 }
 
-- (void)handleReceivedData:(id)a3
+- (void)handleReceivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10039AB94;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_handleReceivedData:(id)a3
+- (void)_handleReceivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *v25 = 136315394;
     *&v25[4] = "[BTVCConnection _handleReceivedData:]";
     v26 = 2112;
-    v27 = v4;
+    v27 = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s data %@", v25, 0x16u);
   }
 
-  v6 = v4;
+  v6 = dataCopy;
   v7 = [v6 objectForKeyedSubscript:@"header"];
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
   v9 = [v6 objectForKeyedSubscript:@"payload"];
   v10 = [v6 objectForKeyedSubscript:@"MIC"];
@@ -1853,17 +1853,17 @@ LABEL_20:
   if (self->_encryption && v10)
   {
     v12 = v9;
-    v13 = [v9 bytes];
+    bytes = [v9 bytes];
     v14 = [v9 length];
     v15 = malloc_type_malloc(v14, 0x100004077774924uLL);
     v16 = v11;
-    v17 = [v11 bytes];
+    bytes2 = [v11 bytes];
     v18 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       v19 = "data";
       *v25 = 136315906;
-      if (v8 == 3)
+      if (intValue == 3)
       {
         v19 = "LL control";
       }
@@ -1874,11 +1874,11 @@ LABEL_20:
       v28 = 1040;
       v29 = 4;
       v30 = 2096;
-      v31 = v17;
+      v31 = bytes2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "BTVC:Encryption: received encrypted %s payload %@ MIC %.4P", v25, 0x26u);
     }
 
-    if ([(BTVCEncryption *)self->_encryption calculation:v13 length:v14 operation:0 mic:v17 result:v15, *v25])
+    if ([(BTVCEncryption *)self->_encryption calculation:bytes length:v14 operation:0 mic:bytes2 result:v15, *v25])
     {
       v20 = [[NSData alloc] initWithBytes:v15 length:v14];
 
@@ -1886,7 +1886,7 @@ LABEL_20:
       if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
       {
         v22 = "data";
-        if (v8 == 3)
+        if (intValue == 3)
         {
           v22 = "LL control";
         }
@@ -1916,9 +1916,9 @@ LABEL_20:
     v9 = v20;
   }
 
-  if (v8 - 1 > 1)
+  if (intValue - 1 > 1)
   {
-    if (v8 == 3)
+    if (intValue == 3)
     {
       [(BTVCConnection *)self _sendLmpEvent:1 payload:v9];
       [(BTVCLinkLayerControl *)self->_linkLayerControl controlPduReceived:v9];
@@ -1930,41 +1930,41 @@ LABEL_20:
     dataHandler = self->_dataHandler;
     if (dataHandler)
     {
-      dataHandler[2](dataHandler, v9, v8, self);
+      dataHandler[2](dataHandler, v9, intValue, self);
     }
   }
 
   [(BTVCPacketControl *)self->_packetControl update];
 }
 
-- (void)btvcBonjourLink:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5
+- (void)btvcBonjourLink:(id)link didReceiveData:(id)data fromPeer:(id)peer
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  linkCopy = link;
+  dataCopy = data;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    if (btvcBonjourLink == v13)
+    if (btvcBonjourLink == linkCopy)
     {
-      v11 = [(BTVCDevice *)self->_peerDevice identifier];
-      v12 = [v11 isEqual:v9];
+      identifier = [(BTVCDevice *)self->_peerDevice identifier];
+      v12 = [identifier isEqual:peerCopy];
 
       if (v12)
       {
-        [(BTVCConnection *)self handleReceivedData:v8];
+        [(BTVCConnection *)self handleReceivedData:dataCopy];
       }
     }
   }
 }
 
-- (void)sendingPacket:(id)a3
+- (void)sendingPacket:(id)packet
 {
-  v6 = a3;
+  packetCopy = packet;
   btvcBonjourLink = self->_btvcBonjourLink;
-  v5 = [(BTVCDevice *)self->_peerDevice identifier];
-  [(BTVCBonjourLink *)btvcBonjourLink sendData:v6 toPeer:v5];
+  identifier = [(BTVCDevice *)self->_peerDevice identifier];
+  [(BTVCBonjourLink *)btvcBonjourLink sendData:packetCopy toPeer:identifier];
 }
 
 - (void)testEncrytion

@@ -2,24 +2,24 @@
 - (CGRect)p_erasableBounds;
 - (CGRect)p_flippedImageBounds;
 - (THWLabelLayer)init;
-- (double)p_xOffsetForHorizontalAlignment:(int)a3;
-- (double)p_yOffsetForVerticalAlignment:(int)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (double)p_xOffsetForHorizontalAlignment:(int)alignment;
+- (double)p_yOffsetForVerticalAlignment:(int)alignment;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSublayers;
 - (void)p_invalidateText;
-- (void)setContentsScale:(double)a3;
-- (void)setFontName:(id)a3;
-- (void)setFontSize:(double)a3;
-- (void)setHorizontalAlignment:(int)a3;
-- (void)setShadow:(id)a3;
-- (void)setShadowScale:(double)a3;
-- (void)setString:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setVerticalAlignment:(int)a3;
-- (void)setVerticalAlignmentRule:(int)a3;
+- (void)setContentsScale:(double)scale;
+- (void)setFontName:(id)name;
+- (void)setFontSize:(double)size;
+- (void)setHorizontalAlignment:(int)alignment;
+- (void)setShadow:(id)shadow;
+- (void)setShadowScale:(double)scale;
+- (void)setString:(id)string;
+- (void)setTextColor:(id)color;
+- (void)setVerticalAlignment:(int)alignment;
+- (void)setVerticalAlignmentRule:(int)rule;
 @end
 
 @implementation THWLabelLayer
@@ -53,91 +53,91 @@
   [(THWLabelLayer *)&v4 dealloc];
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  if (self->_string != a3 && ([a3 isEqualToString:?] & 1) == 0)
+  if (self->_string != string && ([string isEqualToString:?] & 1) == 0)
   {
 
-    self->_string = [a3 copy];
+    self->_string = [string copy];
 
     [(THWLabelLayer *)self p_invalidateText];
   }
 }
 
-- (void)setFontName:(id)a3
+- (void)setFontName:(id)name
 {
-  if (self->_fontName != a3 && ([a3 isEqualToString:?] & 1) == 0)
+  if (self->_fontName != name && ([name isEqualToString:?] & 1) == 0)
   {
 
-    self->_fontName = [a3 copy];
+    self->_fontName = [name copy];
 
     [(THWLabelLayer *)self p_invalidateText];
   }
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  if (self->_fontSize != a3)
+  if (self->_fontSize != size)
   {
-    self->_fontSize = a3;
+    self->_fontSize = size;
     [(THWLabelLayer *)self p_invalidateText];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  if (self->_textColor != a3 && ([a3 isEqual:?] & 1) == 0)
+  if (self->_textColor != color && ([color isEqual:?] & 1) == 0)
   {
 
-    self->_textColor = a3;
+    self->_textColor = color;
 
     [(THWLabelLayer *)self p_invalidateText];
   }
 }
 
-- (void)setHorizontalAlignment:(int)a3
+- (void)setHorizontalAlignment:(int)alignment
 {
-  if (self->_horizontalAlignment != a3)
+  if (self->_horizontalAlignment != alignment)
   {
-    self->_horizontalAlignment = a3;
+    self->_horizontalAlignment = alignment;
     [(THWLabelLayer *)self p_invalidatePosition];
   }
 }
 
-- (void)setVerticalAlignment:(int)a3
+- (void)setVerticalAlignment:(int)alignment
 {
-  if (self->_verticalAlignment != a3)
+  if (self->_verticalAlignment != alignment)
   {
-    self->_verticalAlignment = a3;
+    self->_verticalAlignment = alignment;
     [(THWLabelLayer *)self p_invalidatePosition];
   }
 }
 
-- (void)setVerticalAlignmentRule:(int)a3
+- (void)setVerticalAlignmentRule:(int)rule
 {
-  if (self->_verticalAlignmentRule != a3)
+  if (self->_verticalAlignmentRule != rule)
   {
-    self->_verticalAlignmentRule = a3;
+    self->_verticalAlignmentRule = rule;
     [(THWLabelLayer *)self p_invalidatePosition];
   }
 }
 
-- (void)setShadow:(id)a3
+- (void)setShadow:(id)shadow
 {
-  if (self->_shadow != a3 && ([a3 isEqual:?] & 1) == 0)
+  if (self->_shadow != shadow && ([shadow isEqual:?] & 1) == 0)
   {
 
-    self->_shadow = [a3 copy];
+    self->_shadow = [shadow copy];
 
     [(THWLabelLayer *)self p_invalidateText];
   }
 }
 
-- (void)setShadowScale:(double)a3
+- (void)setShadowScale:(double)scale
 {
-  if (vabdd_f64(a3, self->_shadowScale) >= 0.00999999978)
+  if (vabdd_f64(scale, self->_shadowScale) >= 0.00999999978)
   {
-    self->_shadowScale = a3;
+    self->_shadowScale = scale;
     [(THWLabelLayer *)self p_invalidateText];
   }
 }
@@ -184,7 +184,7 @@
   [(CALayer *)renderLayer setTransform:&v13];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v3 = +[TSUAssertionHandler currentHandler];
   v4 = [NSString stringWithUTF8String:"[THWLabelLayer drawInContext:]"];
@@ -193,40 +193,40 @@
   [v3 handleFailureInFunction:v4 file:v5 lineNumber:204 description:@"all rendering should happen in the render layer"];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v6.receiver = self;
   v6.super_class = THWLabelLayer;
   [(THWLabelLayer *)&v6 setContentsScale:?];
   [(CALayer *)self->_renderLayer contentsScale];
-  if (v5 != a3)
+  if (v5 != scale)
   {
-    [(CALayer *)self->_renderLayer setContentsScale:a3];
+    [(CALayer *)self->_renderLayer setContentsScale:scale];
     [(CALayer *)self->_renderLayer setNeedsDisplay];
   }
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  if (self->_renderLayer != a3)
+  if (self->_renderLayer != layer)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  [a3 contentsScale];
+  [layer contentsScale];
   TSDSetCGContextInfo();
   CGAffineTransformMakeScale(&v7, 1.0, -1.0);
-  CGContextSetTextMatrix(a4, &v7);
-  [(TSDShadow *)self->_shadow applyToContext:a4 viewScale:1 flipped:self->_shadowScale];
-  CGContextSetTextPosition(a4, 0.0, 0.0);
-  CGContextSetShouldSmoothFonts(a4, 0);
-  CGContextSetShouldAntialias(a4, 1);
-  CTLineDraw(self->_line, a4);
+  CGContextSetTextMatrix(context, &v7);
+  [(TSDShadow *)self->_shadow applyToContext:context viewScale:1 flipped:self->_shadowScale];
+  CGContextSetTextPosition(context, 0.0, 0.0);
+  CGContextSetShouldSmoothFonts(context, 0);
+  CGContextSetShouldAntialias(context, 1);
+  CTLineDraw(self->_line, context);
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  if (self->_renderLayer != a3)
+  if (self->_renderLayer != layer)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -307,15 +307,15 @@
   return result;
 }
 
-- (double)p_xOffsetForHorizontalAlignment:(int)a3
+- (double)p_xOffsetForHorizontalAlignment:(int)alignment
 {
   v3 = 0.0;
-  if (a3 == 1)
+  if (alignment == 1)
   {
     v3 = 0.5;
   }
 
-  if (a3 == 2)
+  if (alignment == 2)
   {
     v4 = 1.0;
   }
@@ -331,12 +331,12 @@
   return CTLineGetPenOffsetForFlush(line, v4, v6);
 }
 
-- (double)p_yOffsetForVerticalAlignment:(int)a3
+- (double)p_yOffsetForVerticalAlignment:(int)alignment
 {
   v16 = 0.0;
   ascent = 0.0;
   TypographicBounds = CTLineGetTypographicBounds(self->_line, &ascent, &v16, 0);
-  if (a3 == 2)
+  if (alignment == 2)
   {
     verticalAlignmentRule = self->_verticalAlignmentRule;
     [(THWLabelLayer *)self bounds];
@@ -350,7 +350,7 @@
   else
   {
     v6 = ascent;
-    if (a3 == 1)
+    if (alignment == 1)
     {
       v8 = v16;
       v9 = self->_verticalAlignmentRule;
@@ -374,7 +374,7 @@
     else
     {
       result = 0.0;
-      if (!a3)
+      if (!alignment)
       {
         return ascent;
       }

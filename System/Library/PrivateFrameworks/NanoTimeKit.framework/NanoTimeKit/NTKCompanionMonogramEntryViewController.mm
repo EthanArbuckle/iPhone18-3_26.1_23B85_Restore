@@ -1,34 +1,34 @@
 @interface NTKCompanionMonogramEntryViewController
 + (NSString)localizedDescription;
-- (NTKCompanionMonogramEntryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NTKCompanionMonogramEntryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_doneTapped;
 - (void)_resetEntryField;
 - (void)returnPressedAtEnd;
-- (void)setCustomMonogram:(id)a3 specifier:(id)a4;
-- (void)setShowsDoneButton:(BOOL)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setCustomMonogram:(id)monogram specifier:(id)specifier;
+- (void)setShowsDoneButton:(BOOL)button;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation NTKCompanionMonogramEntryViewController
 
 + (NSString)localizedDescription
 {
-  v2 = [MEMORY[0x277CBBAE8] currentDevice];
-  if ([v2 deviceCategory] == 1)
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  if ([currentDevice deviceCategory] == 1)
   {
     v3 = @"MONOGRAM_DESCRIPTION";
   }
 
-  else if ([v2 supportsPDRCapability:3588072423])
+  else if ([currentDevice supportsPDRCapability:3588072423])
   {
     v3 = @"MONOGRAM_DESCRIPTION_TYPOGRAPH";
   }
 
-  else if ([v2 isRunningGraceOrLater])
+  else if ([currentDevice isRunningGraceOrLater])
   {
     v3 = @"MONOGRAM_DESCRIPTION_MERIDIAN_CALIFORNIA";
   }
@@ -43,11 +43,11 @@
   return v4;
 }
 
-- (NTKCompanionMonogramEntryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKCompanionMonogramEntryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = NTKCompanionMonogramEntryViewController;
-  v4 = [(NTKCompanionMonogramEntryViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(NTKCompanionMonogramEntryViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NTKCompanionMonogramEntryViewController localizedTitle];
@@ -57,16 +57,16 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v22.receiver = self;
   v22.super_class = NTKCompanionMonogramEntryViewController;
-  [(NTKCompanionMonogramEntryViewController *)&v22 viewWillAppear:a3];
-  v4 = [(NTKCompanionMonogramEntryViewController *)self specifier];
-  v5 = [v4 identifier];
+  [(NTKCompanionMonogramEntryViewController *)&v22 viewWillAppear:appear];
+  specifier = [(NTKCompanionMonogramEntryViewController *)self specifier];
+  identifier = [specifier identifier];
 
-  if (v5)
+  if (identifier)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.NanoClockBridgeSettings"];
     if (([v6 isLoaded] & 1) == 0)
@@ -74,40 +74,40 @@
       [v6 load];
     }
 
-    v7 = [v6 bundleURL];
+    bundleURL = [v6 bundleURL];
 
-    if (v7)
+    if (bundleURL)
     {
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v9 = objc_alloc(MEMORY[0x277CCAEB8]);
-      v10 = [MEMORY[0x277CBEAF8] currentLocale];
-      v11 = [v8 bundleURL];
-      v12 = [v9 initWithKey:@"MONOGRAM" table:@"NanoTimeKitCompanion" locale:v10 bundleURL:v11];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      bundleURL2 = [v8 bundleURL];
+      v12 = [v9 initWithKey:@"MONOGRAM" table:@"NanoTimeKitCompanion" locale:currentLocale bundleURL:bundleURL2];
 
       v13 = objc_alloc(MEMORY[0x277CCAEB8]);
-      v14 = [MEMORY[0x277CBEAF8] currentLocale];
-      v15 = [v6 bundleURL];
-      v16 = [v13 initWithKey:@"PANE_TITLE" table:@"NanoClockBridgeSettings" locale:v14 bundleURL:v15];
+      currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+      bundleURL3 = [v6 bundleURL];
+      v16 = [v13 initWithKey:@"PANE_TITLE" table:@"NanoClockBridgeSettings" locale:currentLocale2 bundleURL:bundleURL3];
 
       v17 = MEMORY[0x277CF3470];
       v23[0] = v16;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
       v19 = MEMORY[0x277CBEBC0];
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"bridge:root=%@&path=%@", @"com.apple.NanoClockBridgeSettings", v5];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"bridge:root=%@&path=%@", @"com.apple.NanoClockBridgeSettings", identifier];
       v21 = [v19 URLWithString:v20];
       [v17 emitNavigationEventForApplicationSettingWithIconSpecifierIdentifier:@"com.apple.NanoClockBridgeSettings" title:v12 localizedNavigationComponents:v18 deepLink:v21];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NTKCompanionMonogramEntryViewController;
-  [(NTKCompanionMonogramEntryViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(NTKCompanionMonogramEntryViewController *)self presentingViewController];
+  [(NTKCompanionMonogramEntryViewController *)&v5 viewWillDisappear:disappear];
+  presentingViewController = [(NTKCompanionMonogramEntryViewController *)self presentingViewController];
 
-  if (v4)
+  if (presentingViewController)
   {
     [(UITextField *)self->_monogramEntry resignFirstResponder];
   }
@@ -137,25 +137,25 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = NTKCompanionMonogramEntryViewController;
-  v5 = [(NTKCompanionMonogramEntryViewController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(NTKCompanionMonogramEntryViewController *)&v10 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == 8)
   {
-    v6 = [v5 editableTextField];
-    [(NTKCompanionMonogramEntryViewController *)self setMonogramEntry:v6];
+    editableTextField = [v5 editableTextField];
+    [(NTKCompanionMonogramEntryViewController *)self setMonogramEntry:editableTextField];
 
     [(UITextField *)self->_monogramEntry setAcceptsEmoji:0];
     [(UITextField *)self->_monogramEntry setAutocorrectionType:1];
     [(UITextField *)self->_monogramEntry setSpellCheckingType:1];
     [(UITextField *)self->_monogramEntry becomeFirstResponder];
-    v7 = [v5 editableTextField];
-    [v7 setClearButtonMode:3];
+    editableTextField2 = [v5 editableTextField];
+    [editableTextField2 setClearButtonMode:3];
 
-    v8 = [v5 editableTextField];
-    [v8 setDelegate:self];
+    editableTextField3 = [v5 editableTextField];
+    [editableTextField3 setDelegate:self];
   }
 
   return v5;
@@ -163,20 +163,20 @@
 
 - (void)returnPressedAtEnd
 {
-  v3 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-  v2 = [v3 firstResponder];
-  [v2 resignFirstResponder];
+  _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+  firstResponder = [_applicationKeyWindow firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [(UITextField *)self->_monogramEntry text];
-  v5 = [v4 length];
+  text = [(UITextField *)self->_monogramEntry text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(UITextField *)self->_monogramEntry text];
-    v7 = [v6 length];
+    text2 = [(UITextField *)self->_monogramEntry text];
+    v7 = [text2 length];
 
     if (v7 >= 5)
     {
@@ -188,55 +188,55 @@
       v8 = v7;
     }
 
-    v9 = [(UITextField *)self->_monogramEntry text];
-    v10 = [v9 rangeOfComposedCharacterSequencesForRange:{0, v8}];
+    text3 = [(UITextField *)self->_monogramEntry text];
+    v10 = [text3 rangeOfComposedCharacterSequencesForRange:{0, v8}];
     v12 = v11;
 
-    v13 = [(UITextField *)self->_monogramEntry text];
-    v14 = [v13 substringWithRange:{v10, v12}];
+    text4 = [(UITextField *)self->_monogramEntry text];
+    v14 = [text4 substringWithRange:{v10, v12}];
 
-    v15 = [MEMORY[0x277CBEAF8] currentLocale];
-    v16 = [v14 uppercaseStringWithLocale:v15];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v16 = [v14 uppercaseStringWithLocale:currentLocale];
 
     [(UITextField *)self->_monogramEntry setText:v16];
   }
 
-  v17 = [(UITextField *)self->_monogramEntry text];
-  v18 = [v17 length];
+  text5 = [(UITextField *)self->_monogramEntry text];
+  v18 = [text5 length];
 
   if (v18)
   {
-    v19 = [(UITextField *)self->_monogramEntry text];
-    [(NTKCompanionMonogramEntryViewController *)self setCustomMonogram:v19 specifier:*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20])];
+    text6 = [(UITextField *)self->_monogramEntry text];
+    [(NTKCompanionMonogramEntryViewController *)self setCustomMonogram:text6 specifier:*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20])];
   }
 }
 
-- (void)setCustomMonogram:(id)a3 specifier:(id)a4
+- (void)setCustomMonogram:(id)monogram specifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 ntk_isValidMonogram])
+  monogramCopy = monogram;
+  if ([monogramCopy ntk_isValidMonogram])
   {
     v4 = +[NTKCustomMonogramStore sharedInstance];
-    [v4 setCustomMonogram:v5];
+    [v4 setCustomMonogram:monogramCopy];
   }
 }
 
-- (void)setShowsDoneButton:(BOOL)a3
+- (void)setShowsDoneButton:(BOOL)button
 {
-  if (self->_showsDoneButton != a3)
+  if (self->_showsDoneButton != button)
   {
-    self->_showsDoneButton = a3;
-    if (a3)
+    self->_showsDoneButton = button;
+    if (button)
     {
-      v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__doneTapped];
-      v5 = [(NTKCompanionMonogramEntryViewController *)self navigationItem];
-      [v5 setRightBarButtonItem:v6];
+      navigationItem2 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__doneTapped];
+      navigationItem = [(NTKCompanionMonogramEntryViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:navigationItem2];
     }
 
     else
     {
-      v6 = [(NTKCompanionMonogramEntryViewController *)self navigationItem];
-      [v6 setRightBarButtonItem:0];
+      navigationItem2 = [(NTKCompanionMonogramEntryViewController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
     }
   }
 }
@@ -249,8 +249,8 @@
 
 - (void)_doneTapped
 {
-  v2 = [(NTKCompanionMonogramEntryViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(NTKCompanionMonogramEntryViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

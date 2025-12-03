@@ -1,26 +1,26 @@
 @interface CCAppEnumCase
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppEnumCase)initWithCaseIdentifier:(id)a3 displayRepresentation:(id)a4 error:(id *)a5;
-- (CCAppEnumCase)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppEnumCase)initWithCaseIdentifier:(id)identifier displayRepresentation:(id)representation error:(id *)error;
+- (CCAppEnumCase)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCAppEnumCaseDisplayRepresentation)displayRepresentation;
 - (NSString)caseIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppEnumCase
 
-- (CCAppEnumCase)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppEnumCase)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v17[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"caseIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"caseIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
     if (v10)
     {
       v11 = v10;
@@ -42,7 +42,7 @@
       v12 = 0;
     }
 
-    v15 = [[CCAppEnumCase alloc] initWithCaseIdentifier:v9 displayRepresentation:v12 error:a4];
+    v15 = [[CCAppEnumCase alloc] initWithCaseIdentifier:v9 displayRepresentation:v12 error:error];
     v11 = v12;
 LABEL_10:
 
@@ -61,15 +61,15 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_caseIdentifier)
   {
-    v4 = [(CCAppEnumCase *)self caseIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"caseIdentifier"];
+    caseIdentifier = [(CCAppEnumCase *)self caseIdentifier];
+    [v3 setObject:caseIdentifier forKeyedSubscript:@"caseIdentifier"];
   }
 
   if (self->_displayRepresentation)
   {
-    v5 = [(CCAppEnumCase *)self displayRepresentation];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"displayRepresentation"];
+    displayRepresentation = [(CCAppEnumCase *)self displayRepresentation];
+    jsonDictionary = [displayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"displayRepresentation"];
   }
 
   v7 = [v3 copy];
@@ -77,19 +77,19 @@ LABEL_11:
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_caseIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:42617 stringValue:self->_caseIdentifier];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_displayRepresentation)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:42616 subMessageValue:self->_displayRepresentation];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -107,10 +107,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -259,15 +259,15 @@ LABEL_36:
   return v33;
 }
 
-- (CCAppEnumCase)initWithCaseIdentifier:(id)a3 displayRepresentation:(id)a4 error:(id *)a5
+- (CCAppEnumCase)initWithCaseIdentifier:(id)identifier displayRepresentation:(id)representation error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  representationCopy = representation;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!representationCopy)
     {
       goto LABEL_8;
     }
@@ -281,12 +281,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v17 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
 
-    v15 = [v9 data];
+    data = [representationCopy data];
     CCPBDataWriterWriteDataField();
 
     v12 = v14;
@@ -299,24 +299,24 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (representationCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v16 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v16 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v17 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v17;
+  return selfCopy;
 }
 
 @end

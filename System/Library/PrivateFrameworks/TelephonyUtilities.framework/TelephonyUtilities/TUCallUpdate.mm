@@ -2,11 +2,11 @@
 - (BOOL)isEligibleForScreening;
 - (BOOL)isHostEligibleForScreening;
 - (TUCallUpdate)init;
-- (TUCallUpdate)initWithCoder:(id)a3;
-- (TUCallUpdate)initWithProvider:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUCallUpdate)initWithCoder:(id)coder;
+- (TUCallUpdate)initWithProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallUpdate
@@ -53,20 +53,20 @@ uint64_t __20__TUCallUpdate_init__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (TUCallUpdate)initWithProvider:(id)a3
+- (TUCallUpdate)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [(TUCallUpdate *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providerCopy copy];
     provider = v5->_provider;
     v5->_provider = v6;
 
     v8 = +[TUCallCenter sharedInstance];
-    v9 = [v8 callServicesInterface];
+    callServicesInterface = [v8 callServicesInterface];
     callServicesInterface = v5->_callServicesInterface;
-    v5->_callServicesInterface = v9;
+    v5->_callServicesInterface = callServicesInterface;
   }
 
   return v5;
@@ -75,18 +75,18 @@ uint64_t __20__TUCallUpdate_init__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUCallUpdate *)self UUID];
-  [v3 appendFormat:@" UUID=%@", v4];
+  uUID = [(TUCallUpdate *)self UUID];
+  [v3 appendFormat:@" UUID=%@", uUID];
 
-  v5 = [(TUCallUpdate *)self callUUID];
-  [v3 appendFormat:@" callUUID=%@", v5];
+  callUUID = [(TUCallUpdate *)self callUUID];
+  [v3 appendFormat:@" callUUID=%@", callUUID];
 
-  v6 = [(TUCallUpdate *)self provider];
-  v7 = [v6 identifier];
-  [v3 appendFormat:@" provider=%@", v7];
+  provider = [(TUCallUpdate *)self provider];
+  identifier = [provider identifier];
+  [v3 appendFormat:@" provider=%@", identifier];
 
-  v8 = [(TUCallUpdate *)self handle];
-  [v3 appendFormat:@" handle=%@", v8];
+  handle = [(TUCallUpdate *)self handle];
+  [v3 appendFormat:@" handle=%@", handle];
 
   [v3 appendFormat:@" priority=%ld", -[TUCallUpdate priority](self, "priority")];
   [v3 appendFormat:@" junkConfidence=%ld", -[TUCallUpdate junkConfidence](self, "junkConfidence")];
@@ -102,8 +102,8 @@ uint64_t __20__TUCallUpdate_init__block_invoke(uint64_t a1)
 - (BOOL)isHostEligibleForScreening
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(TUCallUpdate *)self clarityEnabledBlock];
-  v4 = v3[2]();
+  clarityEnabledBlock = [(TUCallUpdate *)self clarityEnabledBlock];
+  v4 = clarityEnabledBlock[2]();
 
   if (v4)
   {
@@ -141,12 +141,12 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v8 = [(TUCallUpdate *)self provider];
-  if ([v8 isTelephonyProvider])
+  provider = [(TUCallUpdate *)self provider];
+  if ([provider isTelephonyProvider])
   {
-    v9 = [(TUCallUpdate *)self junkConfidence];
+    junkConfidence = [(TUCallUpdate *)self junkConfidence];
 
-    if (v9 < 2)
+    if (junkConfidence < 2)
     {
       goto LABEL_11;
     }
@@ -156,18 +156,18 @@ LABEL_22:
   {
   }
 
-  v10 = [(TUCallUpdate *)self provider];
-  v11 = [v10 isFaceTimeProvider];
+  provider2 = [(TUCallUpdate *)self provider];
+  isFaceTimeProvider = [provider2 isFaceTimeProvider];
 
-  if (!v11)
+  if (!isFaceTimeProvider)
   {
     goto LABEL_20;
   }
 
-  v12 = [(TUCallUpdate *)self handle];
-  v13 = [v12 normalizedValue];
+  handle = [(TUCallUpdate *)self handle];
+  normalizedValue = [handle normalizedValue];
 
-  if (!v13 || [(TUCallUpdate *)self remoteParticipantCount]> 1 || [(TUCallUpdate *)self hasVideo]|| ![(TUCallUpdate *)self isConversation]|| !(*(self->_contactsCountBlock + 2))())
+  if (!normalizedValue || [(TUCallUpdate *)self remoteParticipantCount]> 1 || [(TUCallUpdate *)self hasVideo]|| ![(TUCallUpdate *)self isConversation]|| !(*(self->_contactsCountBlock + 2))())
   {
     goto LABEL_20;
   }
@@ -203,7 +203,7 @@ LABEL_24:
     v19 = 138412546;
     v20 = v16;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "isEligibleForScreening: %@ for call: %@", &v19, 0x16u);
   }
 
@@ -215,8 +215,8 @@ LABEL_28:
 
 - (BOOL)isEligibleForScreening
 {
-  v3 = [(TUCallUpdate *)self featureFlags];
-  v4 = TUCallScreeningEnabled(v3, 0, 0);
+  featureFlags = [(TUCallUpdate *)self featureFlags];
+  v4 = TUCallScreeningEnabled(featureFlags, 0, 0);
 
   if (!v4)
   {
@@ -226,73 +226,73 @@ LABEL_28:
   return [(TUCallUpdate *)self isHostEligibleForScreening];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_callUUID forKey:@"callUUID"];
-  [v5 encodeObject:self->_provider forKey:@"provider"];
-  [v5 encodeObject:self->_handle forKey:@"handle"];
-  [v5 encodeInteger:self->_priority forKey:@"priority"];
-  [v5 encodeInteger:self->_junkConfidence forKey:@"junkConfidence"];
-  [v5 encodeInteger:self->_remoteParticipantCount forKey:@"remoteParticipantCount"];
-  [v5 encodeBool:self->_conversation forKey:@"conversation"];
-  [v5 encodeBool:self->_hasVideo forKey:@"hasVideo"];
-  [v5 encodeBool:self->_answeringMachineAvailable forKey:@"answeringMachineAvailable"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
+  [coderCopy encodeObject:self->_provider forKey:@"provider"];
+  [coderCopy encodeObject:self->_handle forKey:@"handle"];
+  [coderCopy encodeInteger:self->_priority forKey:@"priority"];
+  [coderCopy encodeInteger:self->_junkConfidence forKey:@"junkConfidence"];
+  [coderCopy encodeInteger:self->_remoteParticipantCount forKey:@"remoteParticipantCount"];
+  [coderCopy encodeBool:self->_conversation forKey:@"conversation"];
+  [coderCopy encodeBool:self->_hasVideo forKey:@"hasVideo"];
+  [coderCopy encodeBool:self->_answeringMachineAvailable forKey:@"answeringMachineAvailable"];
 }
 
-- (TUCallUpdate)initWithCoder:(id)a3
+- (TUCallUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provider"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provider"];
   v6 = [v5 copy];
 
   v7 = [(TUCallUpdate *)self initWithProvider:v6];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     v9 = [v8 copy];
     UUID = v7->_UUID;
     v7->_UUID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
     v12 = [v11 copy];
     callUUID = v7->_callUUID;
     v7->_callUUID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     v15 = [v14 copy];
     handle = v7->_handle;
     v7->_handle = v15;
 
-    v7->_priority = [v4 decodeInt32ForKey:@"priority"];
-    v7->_junkConfidence = [v4 decodeInt32ForKey:@"junkConfidence"];
-    v7->_remoteParticipantCount = [v4 decodeInt32ForKey:@"remoteParticipantCount"];
-    v7->_conversation = [v4 decodeBoolForKey:@"conversation"];
-    v7->_hasVideo = [v4 decodeBoolForKey:@"hasVideo"];
-    v7->_answeringMachineAvailable = [v4 decodeBoolForKey:@"answeringMachineAvailable"];
+    v7->_priority = [coderCopy decodeInt32ForKey:@"priority"];
+    v7->_junkConfidence = [coderCopy decodeInt32ForKey:@"junkConfidence"];
+    v7->_remoteParticipantCount = [coderCopy decodeInt32ForKey:@"remoteParticipantCount"];
+    v7->_conversation = [coderCopy decodeBoolForKey:@"conversation"];
+    v7->_hasVideo = [coderCopy decodeBoolForKey:@"hasVideo"];
+    v7->_answeringMachineAvailable = [coderCopy decodeBoolForKey:@"answeringMachineAvailable"];
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUCallUpdate allocWithZone:a3];
-  v5 = [(TUCallUpdate *)self provider];
-  v6 = [(TUCallUpdate *)v4 initWithProvider:v5];
+  v4 = [TUCallUpdate allocWithZone:zone];
+  provider = [(TUCallUpdate *)self provider];
+  v6 = [(TUCallUpdate *)v4 initWithProvider:provider];
 
-  v7 = [(TUCallUpdate *)self UUID];
-  v8 = [v7 copy];
+  uUID = [(TUCallUpdate *)self UUID];
+  v8 = [uUID copy];
   [(TUCallUpdate *)v6 setUUID:v8];
 
-  v9 = [(TUCallUpdate *)self callUUID];
-  v10 = [v9 copy];
+  callUUID = [(TUCallUpdate *)self callUUID];
+  v10 = [callUUID copy];
   [(TUCallUpdate *)v6 setCallUUID:v10];
 
-  v11 = [(TUCallUpdate *)self handle];
-  v12 = [v11 copy];
+  handle = [(TUCallUpdate *)self handle];
+  v12 = [handle copy];
   [(TUCallUpdate *)v6 setHandle:v12];
 
   [(TUCallUpdate *)v6 setPriority:[(TUCallUpdate *)self priority]];

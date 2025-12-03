@@ -1,17 +1,17 @@
 @interface AXIntentHandler
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation AXIntentHandler
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v5 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = intentCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "AXIntentHandler Handling intent: %@", &v11, 0xCu);
   }
 
@@ -20,7 +20,7 @@
   {
     v6 = VoiceOverIntentHandler;
 LABEL_22:
-    v7 = objc_alloc_init(v6);
+    selfCopy = objc_alloc_init(v6);
     goto LABEL_23;
   }
 
@@ -157,12 +157,12 @@ LABEL_21:
   v10 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D8EC(v4, v10);
+    sub_10000D8EC(intentCopy, v10);
   }
 
-  v7 = self;
+  selfCopy = self;
 LABEL_23:
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }

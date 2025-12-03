@@ -1,26 +1,26 @@
 @interface MSPEditableQuery
-- (id)_initWithSource:(id)a3;
+- (id)_initWithSource:(id)source;
 - (id)_visibleState;
-- (void)_didChangeSourceWithNewState:(id)a3 context:(id)a4 inContainer:(id)a5;
-- (void)_performEditWithStateTransformation:(id)a3 containerEdit:(id)a4;
-- (void)deleteContentsObjectAtIndex:(unint64_t)a3;
-- (void)deleteContentsObjectAtIndexes:(id)a3;
-- (void)moveContentsObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
+- (void)_didChangeSourceWithNewState:(id)state context:(id)context inContainer:(id)container;
+- (void)_performEditWithStateTransformation:(id)transformation containerEdit:(id)edit;
+- (void)deleteContentsObjectAtIndex:(unint64_t)index;
+- (void)deleteContentsObjectAtIndexes:(id)indexes;
+- (void)moveContentsObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 @end
 
 @implementation MSPEditableQuery
 
-- (id)_initWithSource:(id)a3
+- (id)_initWithSource:(id)source
 {
   v10.receiver = self;
   v10.super_class = MSPEditableQuery;
-  v3 = [(MSPQuery *)&v10 _initWithSource:a3];
+  v3 = [(MSPQuery *)&v10 _initWithSource:source];
   if (v3)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringWithFormat:@"%@%@", @"com.apple.MapsSupport.MSPEditableQuery.context-", v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v7 = [v4 stringWithFormat:@"%@%@", @"com.apple.MapsSupport.MSPEditableQuery.context-", uUIDString];
     v8 = v3[8];
     v3[8] = v7;
   }
@@ -30,82 +30,82 @@
 
 - (id)_visibleState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  editedState = v2->_editedState;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  editedState = selfCopy->_editedState;
   if (editedState)
   {
-    v4 = editedState;
+    _visibleState = editedState;
   }
 
   else
   {
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = MSPEditableQuery;
-    v4 = [(MSPQuery *)&v7 _visibleState];
+    _visibleState = [(MSPQuery *)&v7 _visibleState];
   }
 
-  v5 = v4;
-  objc_sync_exit(v2);
+  v5 = _visibleState;
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)_didChangeSourceWithNewState:(id)a3 context:(id)a4 inContainer:(id)a5
+- (void)_didChangeSourceWithNewState:(id)state context:(id)context inContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v9 isEqual:self->_context] & 1) == 0)
+  stateCopy = state;
+  contextCopy = context;
+  containerCopy = container;
+  if (([contextCopy isEqual:self->_context] & 1) == 0)
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    editedState = v11->_editedState;
-    v11->_editedState = 0;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    editedState = selfCopy->_editedState;
+    selfCopy->_editedState = 0;
 
-    objc_storeStrong(&v11->_container, a5);
-    objc_sync_exit(v11);
+    objc_storeStrong(&selfCopy->_container, container);
+    objc_sync_exit(selfCopy);
 
-    v13.receiver = v11;
+    v13.receiver = selfCopy;
     v13.super_class = MSPEditableQuery;
-    [(MSPQuery *)&v13 _didChangeSourceWithNewState:v8 context:v9 inContainer:v10];
+    [(MSPQuery *)&v13 _didChangeSourceWithNewState:stateCopy context:contextCopy inContainer:containerCopy];
   }
 }
 
-- (void)_performEditWithStateTransformation:(id)a3 containerEdit:(id)a4
+- (void)_performEditWithStateTransformation:(id)transformation containerEdit:(id)edit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(MSPEditableQuery *)v8 _visibleState];
-  v10 = v6[2](v6, v9);
-  editedState = v8->_editedState;
-  v8->_editedState = v10;
+  transformationCopy = transformation;
+  editCopy = edit;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _visibleState = [(MSPEditableQuery *)selfCopy _visibleState];
+  v10 = transformationCopy[2](transformationCopy, _visibleState);
+  editedState = selfCopy->_editedState;
+  selfCopy->_editedState = v10;
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
   v23 = 0;
-  objc_initWeak(&location, v8);
-  container = v8->_container;
+  objc_initWeak(&location, selfCopy);
+  container = selfCopy->_container;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __70__MSPEditableQuery__performEditWithStateTransformation_containerEdit___block_invoke;
   v18[3] = &unk_279867BD0;
   v20 = v22;
-  v13 = v7;
+  v13 = editCopy;
   v19 = v13;
-  context = v8->_context;
-  v15 = [(MSPQuery *)v8 changeHandlerQueue];
+  context = selfCopy->_context;
+  changeHandlerQueue = [(MSPQuery *)selfCopy changeHandlerQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __70__MSPEditableQuery__performEditWithStateTransformation_containerEdit___block_invoke_2;
   v16[3] = &unk_279867BF8;
   objc_copyWeak(&v17, &location);
   v16[4] = v22;
-  [(MSPContainer *)container editContentsUsingBarrierBlock:v18 context:context completionQueue:v15 completion:v16];
+  [(MSPContainer *)container editContentsUsingBarrierBlock:v18 context:context completionQueue:changeHandlerQueue completion:v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -158,20 +158,20 @@ void __70__MSPEditableQuery__performEditWithStateTransformation_containerEdit___
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteContentsObjectAtIndexes:(id)a3
+- (void)deleteContentsObjectAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
   v10[3] = __Block_byref_object_copy__2;
   v10[4] = __Block_byref_object_dispose__2;
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__MSPEditableQuery_deleteContentsObjectAtIndexes___block_invoke;
   v7[3] = &unk_279867C48;
-  v5 = v4;
+  v5 = indexesCopy;
   v8 = v5;
   v9 = v10;
   v6[0] = MEMORY[0x277D85DD0];
@@ -237,7 +237,7 @@ uint64_t __50__MSPEditableQuery_deleteContentsObjectAtIndexes___block_invoke_4(u
   return v4;
 }
 
-- (void)deleteContentsObjectAtIndex:(unint64_t)a3
+- (void)deleteContentsObjectAtIndex:(unint64_t)index
 {
   v5[0] = 0;
   v5[1] = v5;
@@ -250,7 +250,7 @@ uint64_t __50__MSPEditableQuery_deleteContentsObjectAtIndexes___block_invoke_4(u
   v4[2] = __48__MSPEditableQuery_deleteContentsObjectAtIndex___block_invoke;
   v4[3] = &unk_279867CC0;
   v4[4] = v5;
-  v4[5] = a3;
+  v4[5] = index;
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __48__MSPEditableQuery_deleteContentsObjectAtIndex___block_invoke_2;
@@ -300,7 +300,7 @@ uint64_t __48__MSPEditableQuery_deleteContentsObjectAtIndex___block_invoke_3(uin
   return v4;
 }
 
-- (void)moveContentsObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveContentsObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -320,8 +320,8 @@ uint64_t __48__MSPEditableQuery_deleteContentsObjectAtIndex___block_invoke_3(uin
   v5[3] = &unk_279867CE8;
   v5[4] = v8;
   v5[5] = v6;
-  v5[6] = a3;
-  v5[7] = a4;
+  v5[6] = index;
+  v5[7] = toIndex;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__MSPEditableQuery_moveContentsObjectAtIndex_toIndex___block_invoke_2;

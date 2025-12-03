@@ -1,15 +1,15 @@
 @interface VLFSessionThermalStateMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionThermalStateMonitor)initWithObserver:(id)a3;
+- (VLFSessionThermalStateMonitor)initWithObserver:(id)observer;
 - (id)debugDescription;
-- (void)processInfoThermalStateDidChangeNotification:(id)a3;
+- (void)processInfoThermalStateDidChangeNotification:(id)notification;
 - (void)updateState;
 @end
 
 @implementation VLFSessionThermalStateMonitor
 
-- (void)processInfoThermalStateDidChangeNotification:(id)a3
+- (void)processInfoThermalStateDidChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -56,20 +56,20 @@
 
   v9 = v8;
   v10 = +[NSProcessInfo processInfo];
-  v11 = [v10 thermalState];
-  v12 = [(VLFSessionMonitor *)self state];
+  thermalState = [v10 thermalState];
+  state = [(VLFSessionMonitor *)self state];
   v13 = @"Hide";
-  if (v12 == 1)
+  if (state == 1)
   {
     v13 = @"EnablePuck";
   }
 
-  if (v12 == 2)
+  if (state == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
 
-  v14 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentValue: %ld, currentState: %@>", v3, v5, v7, v9, v11, v13];
+  v14 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentValue: %ld, currentState: %@>", v3, v5, v7, v9, thermalState, v13];
 
   return v14;
 }
@@ -77,11 +77,11 @@
 - (void)updateState
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 thermalState];
+  thermalState = [v3 thermalState];
 
-  if (v4 >= 3)
+  if (thermalState >= 3)
   {
-    if (v4 != 3)
+    if (thermalState != 3)
     {
       return;
     }
@@ -90,15 +90,15 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9 = +[NSProcessInfo processInfo];
-      v10 = [v9 thermalState];
-      if ((v10 - 1) > 2)
+      thermalState2 = [v9 thermalState];
+      if ((thermalState2 - 1) > 2)
       {
         v11 = @"Nominal";
       }
 
       else
       {
-        v11 = *(&off_101651C90 + (v10 - 1));
+        v11 = *(&off_101651C90 + (thermalState2 - 1));
       }
 
       v14 = v11;
@@ -116,15 +116,15 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = +[NSProcessInfo processInfo];
-      v7 = [v6 thermalState];
-      if ((v7 - 1) > 2)
+      thermalState3 = [v6 thermalState];
+      if ((thermalState3 - 1) > 2)
       {
         v8 = @"Nominal";
       }
 
       else
       {
-        v8 = *(&off_101651C90 + (v7 - 1));
+        v8 = *(&off_101651C90 + (thermalState3 - 1));
       }
 
       v12 = v8;
@@ -139,11 +139,11 @@
   [(VLFSessionMonitor *)self setState:v13];
 }
 
-- (VLFSessionThermalStateMonitor)initWithObserver:(id)a3
+- (VLFSessionThermalStateMonitor)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = VLFSessionThermalStateMonitor;
-  v3 = [(VLFSessionMonitor *)&v6 initWithObserver:a3];
+  v3 = [(VLFSessionMonitor *)&v6 initWithObserver:observer];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];

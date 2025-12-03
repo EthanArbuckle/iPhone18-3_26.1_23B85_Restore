@@ -1,32 +1,32 @@
 @interface CKDUpdateMissingAssetStatusOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDUpdateMissingAssetStatusOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDUpdateMissingAssetStatusOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_updateMissingAssetStatus;
 @end
 
 @implementation CKDUpdateMissingAssetStatusOperation
 
-- (CKDUpdateMissingAssetStatusOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDUpdateMissingAssetStatusOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = CKDUpdateMissingAssetStatusOperation;
-  v9 = [(CKDDatabaseOperation *)&v25 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v25 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_repairRecordID(v6, v7, v8);
+    v10 = objc_msgSend_repairRecordID(infoCopy, v7, v8);
     repairRecordID = v9->_repairRecordID;
     v9->_repairRecordID = v10;
 
-    v9->_recovered = objc_msgSend_recovered(v6, v12, v13);
-    v9->_isPackage = objc_msgSend_isPackage(v6, v14, v15);
-    v18 = objc_msgSend_assetSizes(v6, v16, v17);
+    v9->_recovered = objc_msgSend_recovered(infoCopy, v12, v13);
+    v9->_isPackage = objc_msgSend_isPackage(infoCopy, v14, v15);
+    v18 = objc_msgSend_assetSizes(infoCopy, v16, v17);
     assetSizes = v9->_assetSizes;
     v9->_assetSizes = v18;
 
-    v22 = objc_msgSend_assetPutReceipts(v6, v20, v21);
+    v22 = objc_msgSend_assetPutReceipts(infoCopy, v20, v21);
     assetPutReceipts = v9->_assetPutReceipts;
     v9->_assetPutReceipts = v22;
   }
@@ -60,9 +60,9 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Call UpdateMissingAssetStatus";
   }
@@ -71,7 +71,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDUpdateMissingAssetStatusOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }

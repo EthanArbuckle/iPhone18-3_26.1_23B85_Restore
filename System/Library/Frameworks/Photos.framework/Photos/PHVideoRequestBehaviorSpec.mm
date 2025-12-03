@@ -1,22 +1,22 @@
 @interface PHVideoRequestBehaviorSpec
 - ($73DE6CFC58B34F5FFCF9CF852B54AD9C)timeRange;
 - (BOOL)hasValidTimeRange;
-- (PHVideoRequestBehaviorSpec)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHVideoRequestBehaviorSpec)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)shortDescription;
 - (int64_t)videoDeliveryMode;
 - (int64_t)videoVersion;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PHVideoRequestBehaviorSpec
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_timeRange.duration.timescale = *&range->var1.var1;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -54,29 +54,29 @@
   return v4 >= 0;
 }
 
-- (PHVideoRequestBehaviorSpec)initWithCoder:(id)a3
+- (PHVideoRequestBehaviorSpec)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PHVideoRequestBehaviorSpec;
   v5 = [(PHVideoRequestBehaviorSpec *)&v10 init];
   if (v5)
   {
-    *(v5 + 2) = [v4 decodeInt64ForKey:@"deliveryMode"];
-    *(v5 + 3) = [v4 decodeInt64ForKey:@"version"];
-    v5[8] = [v4 decodeBoolForKey:@"networkAccessAllowed"];
-    v5[9] = [v4 decodeBoolForKey:@"streamingAllowed"];
-    *(v5 + 4) = [v4 decodeInt64ForKey:@"streamingVideoIntent"];
-    v5[10] = [v4 decodeBoolForKey:@"videoComplementAllowed"];
-    v5[11] = [v4 decodeBoolForKey:@"mediumHighQualityAllowed"];
-    v5[12] = [v4 decodeBoolForKey:@"restrictToPlayableOnCurrentDevice"];
-    v5[13] = [v4 decodeBoolForKey:@"restrictToStreamable"];
-    v5[14] = [v4 decodeBoolForKey:@"restrictToEncryptedStream"];
-    *(v5 + 5) = [v4 decodeIntegerForKey:@"downloadIntent"];
-    *(v5 + 6) = [v4 decodeIntegerForKey:@"downloadPriority"];
-    if (v4)
+    *(v5 + 2) = [coderCopy decodeInt64ForKey:@"deliveryMode"];
+    *(v5 + 3) = [coderCopy decodeInt64ForKey:@"version"];
+    v5[8] = [coderCopy decodeBoolForKey:@"networkAccessAllowed"];
+    v5[9] = [coderCopy decodeBoolForKey:@"streamingAllowed"];
+    *(v5 + 4) = [coderCopy decodeInt64ForKey:@"streamingVideoIntent"];
+    v5[10] = [coderCopy decodeBoolForKey:@"videoComplementAllowed"];
+    v5[11] = [coderCopy decodeBoolForKey:@"mediumHighQualityAllowed"];
+    v5[12] = [coderCopy decodeBoolForKey:@"restrictToPlayableOnCurrentDevice"];
+    v5[13] = [coderCopy decodeBoolForKey:@"restrictToStreamable"];
+    v5[14] = [coderCopy decodeBoolForKey:@"restrictToEncryptedStream"];
+    *(v5 + 5) = [coderCopy decodeIntegerForKey:@"downloadIntent"];
+    *(v5 + 6) = [coderCopy decodeIntegerForKey:@"downloadPriority"];
+    if (coderCopy)
     {
-      [v4 decodeCMTimeRangeForKey:@"timeRange"];
+      [coderCopy decodeCMTimeRangeForKey:@"timeRange"];
     }
 
     else
@@ -94,30 +94,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deliveryMode = self->_deliveryMode;
-  v5 = a3;
-  [v5 encodeInt64:deliveryMode forKey:@"deliveryMode"];
-  [v5 encodeInt64:self->_version forKey:@"version"];
-  [v5 encodeBool:self->_networkAccessAllowed forKey:@"networkAccessAllowed"];
-  [v5 encodeBool:self->_streamingAllowed forKey:@"streamingAllowed"];
-  [v5 encodeInt64:self->_streamingVideoIntent forKey:@"streamingVideoIntent"];
-  [v5 encodeBool:self->_videoComplementAllowed forKey:@"videoComplementAllowed"];
-  [v5 encodeBool:self->_mediumHighQualityAllowed forKey:@"mediumHighQualityAllowed"];
-  [v5 encodeBool:self->_restrictToPlayableOnCurrentDevice forKey:@"restrictToPlayableOnCurrentDevice"];
-  [v5 encodeBool:self->_restrictToStreamable forKey:@"restrictToStreamable"];
-  [v5 encodeBool:self->_restrictToEncryptedStream forKey:@"restrictToEncryptedStream"];
-  [v5 encodeInteger:self->_downloadIntent forKey:@"downloadIntent"];
-  [v5 encodeInteger:self->_downloadPriority forKey:@"downloadPriority"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:deliveryMode forKey:@"deliveryMode"];
+  [coderCopy encodeInt64:self->_version forKey:@"version"];
+  [coderCopy encodeBool:self->_networkAccessAllowed forKey:@"networkAccessAllowed"];
+  [coderCopy encodeBool:self->_streamingAllowed forKey:@"streamingAllowed"];
+  [coderCopy encodeInt64:self->_streamingVideoIntent forKey:@"streamingVideoIntent"];
+  [coderCopy encodeBool:self->_videoComplementAllowed forKey:@"videoComplementAllowed"];
+  [coderCopy encodeBool:self->_mediumHighQualityAllowed forKey:@"mediumHighQualityAllowed"];
+  [coderCopy encodeBool:self->_restrictToPlayableOnCurrentDevice forKey:@"restrictToPlayableOnCurrentDevice"];
+  [coderCopy encodeBool:self->_restrictToStreamable forKey:@"restrictToStreamable"];
+  [coderCopy encodeBool:self->_restrictToEncryptedStream forKey:@"restrictToEncryptedStream"];
+  [coderCopy encodeInteger:self->_downloadIntent forKey:@"downloadIntent"];
+  [coderCopy encodeInteger:self->_downloadPriority forKey:@"downloadPriority"];
   v6 = *&self->_timeRange.start.epoch;
   v7[0] = *&self->_timeRange.start.value;
   v7[1] = v6;
   v7[2] = *&self->_timeRange.duration.timescale;
-  [v5 encodeCMTimeRange:v7 forKey:@"timeRange"];
+  [coderCopy encodeCMTimeRange:v7 forKey:@"timeRange"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHVideoRequestBehaviorSpec);
   [(PHVideoRequestBehaviorSpec *)v4 setDeliveryMode:[(PHVideoRequestBehaviorSpec *)self deliveryMode]];
@@ -271,8 +271,8 @@ LABEL_30:
 
   v11 = v12;
 LABEL_31:
-  v13 = [(PHVideoRequestBehaviorSpec *)self hasValidTimeRange];
-  if (v13)
+  hasValidTimeRange = [(PHVideoRequestBehaviorSpec *)self hasValidTimeRange];
+  if (hasValidTimeRange)
   {
     v14 = *MEMORY[0x1E695E480];
     [(PHVideoRequestBehaviorSpec *)self timeRange];
@@ -305,7 +305,7 @@ LABEL_31:
   }
 
   v18 = [v3 stringWithFormat:@"net: %@, stream: %@, streamingIntent: %@, downloadIntent: %@, downloadPriority: %@, ver: %@, playable: %@, delivery: %@, timeRange: %@ streamOnly: %@ encryptedOnly: %@", v5, v6, v22, v21, v20, v9, v4, v11, v15, v16, v17];
-  if (v13)
+  if (hasValidTimeRange)
   {
   }
 

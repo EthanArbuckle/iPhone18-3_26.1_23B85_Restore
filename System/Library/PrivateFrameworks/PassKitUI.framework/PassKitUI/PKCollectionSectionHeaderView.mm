@@ -1,23 +1,23 @@
 @interface PKCollectionSectionHeaderView
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCollectionSectionHeaderView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCollectionSectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)_resetFont;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBottomPadding:(double)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setTopPadding:(double)a3;
+- (void)setBottomPadding:(double)padding;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
+- (void)setTopPadding:(double)padding;
 @end
 
 @implementation PKCollectionSectionHeaderView
 
-- (PKCollectionSectionHeaderView)initWithFrame:(CGRect)a3
+- (PKCollectionSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKCollectionSectionHeaderView;
-  v3 = [(PKCollectionSectionHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKCollectionSectionHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,30 +32,30 @@
   v4.receiver = self;
   v4.super_class = PKCollectionSectionHeaderView;
   [(PKCollectionSectionHeaderView *)&v4 layoutSubviews];
-  v3 = [(PKCollectionSectionHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKCollectionSectionHeaderView *)self contentView];
+  [contentView bounds];
   [(PKCollectionSectionHeaderView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKCollectionSectionHeaderView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKCollectionSectionHeaderView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
   topPadding = self->_topPadding;
   bottomPadding = self->_bottomPadding;
-  v8 = a3.origin.x + 4.0;
-  v9 = a3.origin.y + topPadding;
-  width = a3.size.width;
-  v10 = a3.size.width + -8.0;
-  v11 = a3.size.height - (topPadding + bottomPadding);
-  v12 = [(PKCollectionSectionHeaderView *)self contentView];
-  [v12 _shouldReverseLayoutDirection];
+  v8 = bounds.origin.x + 4.0;
+  v9 = bounds.origin.y + topPadding;
+  width = bounds.size.width;
+  v10 = bounds.size.width + -8.0;
+  v11 = bounds.size.height - (topPadding + bottomPadding);
+  contentView = [(PKCollectionSectionHeaderView *)self contentView];
+  [contentView _shouldReverseLayoutDirection];
 
   memset(&slice, 0, sizeof(slice));
   remainder.origin.x = v8;
@@ -89,7 +89,7 @@
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
   v29 = v28;
-  if (!a4)
+  if (!layout)
   {
     v30 = v25;
     v31 = v26;
@@ -105,11 +105,11 @@
   return result;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   primaryText = self->_primaryText;
-  v18 = v5;
+  v18 = textCopy;
   v7 = primaryText;
   if (v7 == v18)
   {
@@ -131,8 +131,8 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    v10 = [(PKCollectionSectionHeaderView *)self _shouldReverseLayoutDirection];
-    objc_storeStrong(&self->_primaryText, a3);
+    _shouldReverseLayoutDirection = [(PKCollectionSectionHeaderView *)self _shouldReverseLayoutDirection];
+    objc_storeStrong(&self->_primaryText, text);
     v11 = [(NSString *)self->_primaryText length];
     primaryLabel = self->_primaryLabel;
     if (v11)
@@ -146,7 +146,7 @@ LABEL_8:
 
         [(UILabel *)self->_primaryLabel setFont:self->_primaryFont];
         [(UILabel *)self->_primaryLabel setNumberOfLines:0];
-        if (v10)
+        if (_shouldReverseLayoutDirection)
         {
           v16 = 2;
         }
@@ -176,11 +176,11 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   secondaryText = self->_secondaryText;
-  v20 = v5;
+  v20 = textCopy;
   v7 = secondaryText;
   if (v7 == v20)
   {
@@ -202,8 +202,8 @@ LABEL_16:
   if (!v8)
   {
 LABEL_8:
-    v10 = [(PKCollectionSectionHeaderView *)self _shouldReverseLayoutDirection];
-    objc_storeStrong(&self->_secondaryText, a3);
+    _shouldReverseLayoutDirection = [(PKCollectionSectionHeaderView *)self _shouldReverseLayoutDirection];
+    objc_storeStrong(&self->_secondaryText, text);
     v11 = [(NSString *)self->_secondaryText length];
     secondaryLabel = self->_secondaryLabel;
     if (v11)
@@ -217,7 +217,7 @@ LABEL_8:
 
         [(UILabel *)self->_secondaryLabel setFont:self->_secondaryFont];
         [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
-        if (v10)
+        if (_shouldReverseLayoutDirection)
         {
           v16 = 2;
         }
@@ -229,8 +229,8 @@ LABEL_8:
 
         [(UILabel *)self->_secondaryLabel setTextAlignment:v16];
         v17 = self->_secondaryLabel;
-        v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(UILabel *)v17 setTextColor:v18];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(UILabel *)v17 setTextColor:secondaryLabelColor];
 
         [(PKCollectionSectionHeaderView *)self addSubview:self->_secondaryLabel];
       }
@@ -251,20 +251,20 @@ LABEL_8:
 LABEL_17:
 }
 
-- (void)setTopPadding:(double)a3
+- (void)setTopPadding:(double)padding
 {
-  if (self->_topPadding != a3)
+  if (self->_topPadding != padding)
   {
-    self->_topPadding = a3;
+    self->_topPadding = padding;
     [(PKCollectionSectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setBottomPadding:(double)a3
+- (void)setBottomPadding:(double)padding
 {
-  if (self->_bottomPadding != a3)
+  if (self->_bottomPadding != padding)
   {
-    self->_bottomPadding = a3;
+    self->_bottomPadding = padding;
     [(PKCollectionSectionHeaderView *)self setNeedsLayout];
   }
 }

@@ -1,25 +1,25 @@
 @interface MCMResultDiskUsageForContainer
 + (id)_reportingWorkloop;
-- (BOOL)encodeResultOntoReply:(id)a3;
-- (MCMResultDiskUsageForContainer)initWithDiskUsageBytes:(unint64_t)a3 descendants:(unint64_t)a4 containerClass:(unint64_t)a5 personaType:(int)a6;
+- (BOOL)encodeResultOntoReply:(id)reply;
+- (MCMResultDiskUsageForContainer)initWithDiskUsageBytes:(unint64_t)bytes descendants:(unint64_t)descendants containerClass:(unint64_t)class personaType:(int)type;
 - (int)personaType;
-- (unint64_t)_roundToTwoSignificantDigitsWithNumber:(unint64_t)a3;
+- (unint64_t)_roundToTwoSignificantDigitsWithNumber:(unint64_t)number;
 - (unint64_t)containerClass;
 - (unint64_t)descendants;
 - (unint64_t)diskUsageBytes;
 - (void)_report;
-- (void)setContainerClass:(unint64_t)a3;
-- (void)setDescendants:(unint64_t)a3;
-- (void)setDiskUsageBytes:(unint64_t)a3;
-- (void)setPersonaType:(int)a3;
+- (void)setContainerClass:(unint64_t)class;
+- (void)setDescendants:(unint64_t)descendants;
+- (void)setDiskUsageBytes:(unint64_t)bytes;
+- (void)setPersonaType:(int)type;
 @end
 
 @implementation MCMResultDiskUsageForContainer
 
-- (void)setPersonaType:(int)a3
+- (void)setPersonaType:(int)type
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_personaType = a3;
+  self->_personaType = type;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (void)setContainerClass:(unint64_t)a3
+- (void)setContainerClass:(unint64_t)class
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_containerClass = a3;
+  self->_containerClass = class;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -46,10 +46,10 @@
   return result;
 }
 
-- (void)setDescendants:(unint64_t)a3
+- (void)setDescendants:(unint64_t)descendants
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_descendants = a3;
+  self->_descendants = descendants;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -61,10 +61,10 @@
   return result;
 }
 
-- (void)setDiskUsageBytes:(unint64_t)a3
+- (void)setDiskUsageBytes:(unint64_t)bytes
 {
   v4 = *MEMORY[0x1E69E9840];
-  self->_diskUsageBytes = a3;
+  self->_diskUsageBytes = bytes;
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -76,14 +76,14 @@
   return result;
 }
 
-- (unint64_t)_roundToTwoSignificantDigitsWithNumber:(unint64_t)a3
+- (unint64_t)_roundToTwoSignificantDigitsWithNumber:(unint64_t)number
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = log10(a3);
+  numberCopy = number;
+  v4 = log10(number);
   v5 = __exp10(ceil(v4) + -2.0);
   v6 = *MEMORY[0x1E69E9840];
-  return (v5 * floor(v3 / v5 + 0.5));
+  return (v5 * floor(numberCopy / v5 + 0.5));
 }
 
 - (void)_report
@@ -96,7 +96,7 @@
   v7 = container_log_handle_for_category();
   v8 = os_signpost_id_make_with_pointer(v7, self);
 
-  v9 = [objc_opt_class() _reportingWorkloop];
+  _reportingWorkloop = [objc_opt_class() _reportingWorkloop];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __41__MCMResultDiskUsageForContainer__report__block_invoke;
@@ -106,7 +106,7 @@
   v11[5] = v8;
   v11[6] = v3;
   v11[7] = v4;
-  dispatch_async(v9, v11);
+  dispatch_async(_reportingWorkloop, v11);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -253,20 +253,20 @@ LABEL_29:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v9.receiver = self;
   v9.super_class = MCMResultDiskUsageForContainer;
-  v5 = [(MCMResultBase *)&v9 encodeResultOntoReply:v4];
+  v5 = [(MCMResultBase *)&v9 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
+    error = [(MCMResultBase *)self error];
 
-    if (!v6)
+    if (!error)
     {
-      xpc_dictionary_set_uint64(v4, "ReplyDiskUsage", [(MCMResultDiskUsageForContainer *)self diskUsageBytes]);
+      xpc_dictionary_set_uint64(replyCopy, "ReplyDiskUsage", [(MCMResultDiskUsageForContainer *)self diskUsageBytes]);
     }
   }
 
@@ -274,7 +274,7 @@ LABEL_29:
   return v5;
 }
 
-- (MCMResultDiskUsageForContainer)initWithDiskUsageBytes:(unint64_t)a3 descendants:(unint64_t)a4 containerClass:(unint64_t)a5 personaType:(int)a6
+- (MCMResultDiskUsageForContainer)initWithDiskUsageBytes:(unint64_t)bytes descendants:(unint64_t)descendants containerClass:(unint64_t)class personaType:(int)type
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -283,10 +283,10 @@ LABEL_29:
   v11 = v10;
   if (v10)
   {
-    v10->_diskUsageBytes = a3;
-    v10->_descendants = a4;
-    v10->_containerClass = a5;
-    v10->_personaType = a6;
+    v10->_diskUsageBytes = bytes;
+    v10->_descendants = descendants;
+    v10->_containerClass = class;
+    v10->_personaType = type;
     [(MCMResultDiskUsageForContainer *)v10 _report];
   }
 

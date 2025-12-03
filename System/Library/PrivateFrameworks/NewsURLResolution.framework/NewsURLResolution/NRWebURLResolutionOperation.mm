@@ -1,8 +1,8 @@
 @interface NRWebURLResolutionOperation
 - (BOOL)validateOperation;
 - (NRWebURLResolutionOperation)init;
-- (NRWebURLResolutionOperation)initWithWebURL:(id)a3 bloomFilterInfoService:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (NRWebURLResolutionOperation)initWithWebURL:(id)l bloomFilterInfoService:(id)service;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -35,20 +35,20 @@
   objc_exception_throw(v6);
 }
 
-- (NRWebURLResolutionOperation)initWithWebURL:(id)a3 bloomFilterInfoService:(id)a4
+- (NRWebURLResolutionOperation)initWithWebURL:(id)l bloomFilterInfoService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  serviceCopy = service;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NRWebURLResolutionOperation initWithWebURL:bloomFilterInfoService:];
-    if (v7)
+    if (serviceCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (serviceCopy)
   {
     goto LABEL_6;
   }
@@ -64,11 +64,11 @@ LABEL_6:
   v8 = [(FCOperation *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     webURL = v8->_webURL;
     v8->_webURL = v9;
 
-    objc_storeStrong(&v8->_bloomFilterInfoService, a4);
+    objc_storeStrong(&v8->_bloomFilterInfoService, service);
   }
 
   return v8;
@@ -76,23 +76,23 @@ LABEL_6:
 
 - (BOOL)validateOperation
 {
-  v3 = [(NRWebURLResolutionOperation *)self webURL];
+  webURL = [(NRWebURLResolutionOperation *)self webURL];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!webURL && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NRWebURLResolutionOperation validateOperation];
   }
 
-  v4 = [(NRWebURLResolutionOperation *)self bloomFilterInfoService];
+  bloomFilterInfoService = [(NRWebURLResolutionOperation *)self bloomFilterInfoService];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!bloomFilterInfoService && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NRWebURLResolutionOperation validateOperation];
   }
 
-  if (v3)
+  if (webURL)
   {
-    v5 = v4 == 0;
+    v5 = bloomFilterInfoService == 0;
   }
 
   else
@@ -105,17 +105,17 @@ LABEL_6:
 
 - (void)performOperation
 {
-  v3 = [(NRWebURLResolutionOperation *)self webURL];
-  if ([v3 nr_isWebURL])
+  webURL = [(NRWebURLResolutionOperation *)self webURL];
+  if ([webURL nr_isWebURL])
   {
-    v4 = [(NRWebURLResolutionOperation *)self bloomFilterInfoService];
+    bloomFilterInfoService = [(NRWebURLResolutionOperation *)self bloomFilterInfoService];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __47__NRWebURLResolutionOperation_performOperation__block_invoke_2;
     v5[3] = &unk_2799A8FA8;
-    v6 = v3;
-    v7 = self;
-    [v4 fetchWebURLBloomFilterInfoWithCompletion:v5];
+    v6 = webURL;
+    selfCopy = self;
+    [bloomFilterInfoService fetchWebURLBloomFilterInfoWithCompletion:v5];
   }
 
   else
@@ -195,16 +195,16 @@ uint64_t __47__NRWebURLResolutionOperation_performOperation__block_invoke_5(uint
   return [v7 invalidate];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(NRWebURLResolutionOperation *)self resolutionCompletion];
+  errorCopy = error;
+  resolutionCompletion = [(NRWebURLResolutionOperation *)self resolutionCompletion];
 
-  if (v4)
+  if (resolutionCompletion)
   {
-    v5 = [(NRWebURLResolutionOperation *)self resolutionCompletion];
-    v6 = [(NRWebURLResolutionOperation *)self resultNewsURL];
-    (v5)[2](v5, v6, v7);
+    resolutionCompletion2 = [(NRWebURLResolutionOperation *)self resolutionCompletion];
+    resultNewsURL = [(NRWebURLResolutionOperation *)self resultNewsURL];
+    (resolutionCompletion2)[2](resolutionCompletion2, resultNewsURL, errorCopy);
   }
 }
 

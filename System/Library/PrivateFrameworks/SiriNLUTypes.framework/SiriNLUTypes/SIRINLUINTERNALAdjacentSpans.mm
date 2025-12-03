@@ -1,21 +1,21 @@
 @interface SIRINLUINTERNALAdjacentSpans
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSpans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSpans:(id)spans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALAdjacentSpans
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(SIRINLUINTERNALAdjacentSpans *)self setCaptureGroupName:?];
   }
@@ -24,7 +24,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -51,13 +51,13 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((captureGroupName = self->_captureGroupName, !(captureGroupName | v4[1])) || -[NSString isEqual:](captureGroupName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((captureGroupName = self->_captureGroupName, !(captureGroupName | equalCopy[1])) || -[NSString isEqual:](captureGroupName, "isEqual:")))
   {
     spans = self->_spans;
-    if (spans | v4[2])
+    if (spans | equalCopy[2])
     {
       v7 = [(NSMutableArray *)spans isEqual:?];
     }
@@ -76,11 +76,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_captureGroupName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_captureGroupName copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -104,7 +104,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addSpans:v13];
 
         ++v12;
@@ -121,34 +121,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_captureGroupName)
   {
-    [v8 setCaptureGroupName:?];
+    [toCopy setCaptureGroupName:?];
   }
 
   if ([(SIRINLUINTERNALAdjacentSpans *)self spansCount])
   {
-    [v8 clearSpans];
-    v4 = [(SIRINLUINTERNALAdjacentSpans *)self spansCount];
-    if (v4)
+    [toCopy clearSpans];
+    spansCount = [(SIRINLUINTERNALAdjacentSpans *)self spansCount];
+    if (spansCount)
     {
-      v5 = v4;
+      v5 = spansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALAdjacentSpans *)self spansAtIndex:i];
-        [v8 addSpans:v7];
+        [toCopy addSpans:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_captureGroupName)
   {
     PBDataWriterWriteStringField();
@@ -192,12 +192,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   captureGroupName = self->_captureGroupName;
   if (captureGroupName)
   {
-    [v3 setObject:captureGroupName forKey:@"capture_group_name"];
+    [dictionary setObject:captureGroupName forKey:@"capture_group_name"];
   }
 
   if ([(NSMutableArray *)self->_spans count])
@@ -222,8 +222,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -246,28 +246,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALAdjacentSpans;
   v4 = [(SIRINLUINTERNALAdjacentSpans *)&v8 description];
-  v5 = [(SIRINLUINTERNALAdjacentSpans *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALAdjacentSpans *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addSpans:(id)a3
+- (void)addSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   spans = self->_spans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!spans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_spans;
     self->_spans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     spans = self->_spans;
   }
 
-  [(NSMutableArray *)spans addObject:v4];
+  [(NSMutableArray *)spans addObject:spansCopy];
 }
 
 @end

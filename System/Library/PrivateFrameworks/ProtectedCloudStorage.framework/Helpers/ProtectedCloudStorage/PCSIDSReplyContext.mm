@@ -1,38 +1,38 @@
 @interface PCSIDSReplyContext
-- (PCSIDSReplyContext)initWithTimeout:(double)a3 queue:(id)a4 logDescription:(id)a5 sentID:(id)a6 replyHandler:(id)a7 completion:(id)a8;
-- (void)runReplyHandlerWithMessage:(id)a3 error:(id)a4;
+- (PCSIDSReplyContext)initWithTimeout:(double)timeout queue:(id)queue logDescription:(id)description sentID:(id)d replyHandler:(id)handler completion:(id)completion;
+- (void)runReplyHandlerWithMessage:(id)message error:(id)error;
 @end
 
 @implementation PCSIDSReplyContext
 
-- (PCSIDSReplyContext)initWithTimeout:(double)a3 queue:(id)a4 logDescription:(id)a5 sentID:(id)a6 replyHandler:(id)a7 completion:(id)a8
+- (PCSIDSReplyContext)initWithTimeout:(double)timeout queue:(id)queue logDescription:(id)description sentID:(id)d replyHandler:(id)handler completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  queueCopy = queue;
+  descriptionCopy = description;
+  dCopy = d;
+  handlerCopy = handler;
+  completionCopy = completion;
   v30.receiver = self;
   v30.super_class = PCSIDSReplyContext;
   v19 = [(PCSIDSReplyContext *)&v30 init];
   if (v19)
   {
-    v20 = [v17 copy];
+    v20 = [handlerCopy copy];
     [(PCSIDSReplyContext *)v19 setReplyBlock:v20];
 
-    v21 = [v18 copy];
+    v21 = [completionCopy copy];
     [(PCSIDSReplyContext *)v19 setCompletion:v21];
 
-    [(PCSIDSReplyContext *)v19 setQueue:v14];
-    v22 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v14);
-    v23 = dispatch_time(0, 1000000000 * a3);
+    [(PCSIDSReplyContext *)v19 setQueue:queueCopy];
+    v22 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queueCopy);
+    v23 = dispatch_time(0, 1000000000 * timeout);
     dispatch_source_set_timer(v22, v23, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10000AE14;
     handler[3] = &unk_100038E38;
-    v27 = v15;
-    v28 = v16;
+    v27 = descriptionCopy;
+    v28 = dCopy;
     v24 = v19;
     v29 = v24;
     dispatch_source_set_event_handler(v22, handler);
@@ -43,20 +43,20 @@
   return v19;
 }
 
-- (void)runReplyHandlerWithMessage:(id)a3 error:(id)a4
+- (void)runReplyHandlerWithMessage:(id)message error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PCSIDSReplyContext *)self replyBlock];
-  (v8)[2](v8, v7, v6);
+  errorCopy = error;
+  messageCopy = message;
+  replyBlock = [(PCSIDSReplyContext *)self replyBlock];
+  (replyBlock)[2](replyBlock, messageCopy, errorCopy);
 
   [(PCSIDSReplyContext *)self setReplyBlock:0];
-  v9 = [(PCSIDSReplyContext *)self completion];
-  v9[2]();
+  completion = [(PCSIDSReplyContext *)self completion];
+  completion[2]();
 
   [(PCSIDSReplyContext *)self setCompletion:0];
-  v10 = [(PCSIDSReplyContext *)self timeoutTimer];
-  dispatch_source_cancel(v10);
+  timeoutTimer = [(PCSIDSReplyContext *)self timeoutTimer];
+  dispatch_source_cancel(timeoutTimer);
 
   [(PCSIDSReplyContext *)self setTimeoutTimer:0];
 }

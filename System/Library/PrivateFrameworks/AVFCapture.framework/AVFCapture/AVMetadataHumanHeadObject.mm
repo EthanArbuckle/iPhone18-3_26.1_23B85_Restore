@@ -1,29 +1,29 @@
 @interface AVMetadataHumanHeadObject
-+ (id)humanHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5;
-- (AVMetadataHumanHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5 type:(id)a6;
++ (id)humanHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp;
+- (AVMetadataHumanHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp type:(id)type;
 - (id)description;
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
 @end
 
 @implementation AVMetadataHumanHeadObject
 
-+ (id)humanHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5
++ (id)humanHeadObjectWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithFigEmbeddedCaptureDeviceObjectDictionary:a3 input:a4 timeStamp:a5 type:@"humanHead"];
+  v5 = [objc_alloc(objc_opt_class()) initWithFigEmbeddedCaptureDeviceObjectDictionary:dictionary input:input timeStamp:stamp type:@"humanHead"];
 
   return v5;
 }
 
-- (AVMetadataHumanHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)a3 input:(id)a4 timeStamp:(id)a5 type:(id)a6
+- (AVMetadataHumanHeadObject)initWithFigEmbeddedCaptureDeviceObjectDictionary:(id)dictionary input:(id)input timeStamp:(id)stamp type:(id)type
 {
   v19 = *MEMORY[0x1E6960C70];
   *&v25.value = *MEMORY[0x1E6960C70];
   v10 = *(MEMORY[0x1E6960C70] + 16);
   v25.epoch = v10;
   v11 = MEMORY[0x1E695F058];
-  if (a5)
+  if (stamp)
   {
-    [a5 longLongValue];
+    [stamp longLongValue];
     v12 = FigHostTimeToNanoseconds();
     CMTimeMake(&v25, v12, 1000000000);
   }
@@ -32,7 +32,7 @@
   y = v11[1];
   width = v11[2];
   height = v11[3];
-  v17 = [a3 objectForKeyedSubscript:{*MEMORY[0x1E69910D8], v19}];
+  v17 = [dictionary objectForKeyedSubscript:{*MEMORY[0x1E69910D8], v19}];
   if (v17)
   {
     memset(&rect, 0, sizeof(rect));
@@ -51,7 +51,7 @@
   *&rect.size.width = v25.epoch;
   v21 = v20;
   v22 = v10;
-  return [(AVMetadataObject *)&v23 initWithType:a6 time:&rect duration:&v21 bounds:a3 optionalInfoDict:0 originalMetadataObject:a4 sourceCaptureInput:x, y, width, height];
+  return [(AVMetadataObject *)&v23 initWithType:type time:&rect duration:&v21 bounds:dictionary optionalInfoDict:0 originalMetadataObject:input sourceCaptureInput:x, y, width, height];
 }
 
 - (id)description
@@ -81,22 +81,22 @@
   return v13;
 }
 
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
   v9 = *(MEMORY[0x1E695F058] + 16);
   v22.origin = *MEMORY[0x1E695F058];
   v22.size = v9;
-  [a3 bounds];
-  v10 = *&a4->c;
-  v19 = *&a4->a;
+  [object bounds];
+  v10 = *&transform->c;
+  v19 = *&transform->a;
   v20 = v10;
-  v21 = *&a4->tx;
+  v21 = *&transform->tx;
   if (AVMetadataObjectAdjustBaseClassProperties(&v19, &v22, v11, v12, v13, v14))
   {
-    if (a3)
+    if (object)
     {
-      [a3 time];
-      [a3 duration];
+      [object time];
+      [object duration];
     }
 
     else
@@ -106,10 +106,10 @@
       memset(v18, 0, sizeof(v18));
     }
 
-    v16 = [a3 input];
+    input = [object input];
     v17.receiver = self;
     v17.super_class = AVMetadataHumanHeadObject;
-    return [(AVMetadataObject *)&v17 initWithType:@"humanHead" time:&v19 duration:v18 bounds:0 optionalInfoDict:a3 originalMetadataObject:v16 sourceCaptureInput:*&v22.origin, *&v22.size];
+    return [(AVMetadataObject *)&v17 initWithType:@"humanHead" time:&v19 duration:v18 bounds:0 optionalInfoDict:object originalMetadataObject:input sourceCaptureInput:*&v22.origin, *&v22.size];
   }
 
   else

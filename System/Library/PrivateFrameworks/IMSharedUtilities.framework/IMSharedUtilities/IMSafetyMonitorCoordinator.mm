@@ -1,27 +1,27 @@
 @interface IMSafetyMonitorCoordinator
 + (id)sharedCoordinator;
 - (BOOL)shouldDisallowBasedOnRegulatoryDomain;
-- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)a3 senderHandle:(id)a4 isFromMe:(BOOL)a5;
+- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)l senderHandle:(id)handle isFromMe:(BOOL)me;
 - (NSDictionary)appPayload;
 - (NSString)appPayloadID;
-- (int64_t)notificationContentForInitiator:(id)a3 messageURL:(id)a4 content:(id)a5;
-- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)a3 andReceiver:(id)a4 completion:(id)a5;
-- (void)checkPreferredHandlesCacheForReceiverWith:(id)a3 completion:(id)a4;
-- (void)informKnownSenderSentMessage:(id)a3;
-- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)informOfChangedGroupDisplayName:(id)a3;
-- (void)informOfChangedGroupMembership:(id)a3;
-- (void)informOfChangedGroupPhoto:(id)a3;
-- (void)informOfDeletedConversationWithReceiverHandles:(id)a3;
-- (void)informOfDeletedMessagesWithMessages:(id)a3;
-- (void)informOfIncomingMessageWithMessage:(id)a3;
-- (void)informOfKickFromGroup:(id)a3;
-- (void)informOfOutgoingMessageWithMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)informOfScheduledMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)informOfSentScheduledMessage:(id)a3;
-- (void)respondToNotificationWithIdentifier:(id)a3 sessionIdentifier:(id)a4 actionIdentifier:(id)a5 completion:(id)a6;
-- (void)shouldShowKeyboardSuggestionForInitiator:(id)a3 andReceiver:(id)a4 completion:(id)a5;
-- (void)shouldShowTipKitSuggestionForInitiator:(id)a3 andReceiver:(id)a4 completion:(id)a5;
+- (int64_t)notificationContentForInitiator:(id)initiator messageURL:(id)l content:(id)content;
+- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)d andReceiver:(id)receiver completion:(id)completion;
+- (void)checkPreferredHandlesCacheForReceiverWith:(id)with completion:(id)completion;
+- (void)informKnownSenderSentMessage:(id)message;
+- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)d sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)informOfChangedGroupDisplayName:(id)name;
+- (void)informOfChangedGroupMembership:(id)membership;
+- (void)informOfChangedGroupPhoto:(id)photo;
+- (void)informOfDeletedConversationWithReceiverHandles:(id)handles;
+- (void)informOfDeletedMessagesWithMessages:(id)messages;
+- (void)informOfIncomingMessageWithMessage:(id)message;
+- (void)informOfKickFromGroup:(id)group;
+- (void)informOfOutgoingMessageWithMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)informOfScheduledMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error;
+- (void)informOfSentScheduledMessage:(id)message;
+- (void)respondToNotificationWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier actionIdentifier:(id)actionIdentifier completion:(id)completion;
+- (void)shouldShowKeyboardSuggestionForInitiator:(id)initiator andReceiver:(id)receiver completion:(id)completion;
+- (void)shouldShowTipKitSuggestionForInitiator:(id)initiator andReceiver:(id)receiver completion:(id)completion;
 @end
 
 @implementation IMSafetyMonitorCoordinator
@@ -41,162 +41,162 @@
 - (NSString)appPayloadID
 {
   v2 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  v3 = [v2 appPayloadID];
+  appPayloadID = [v2 appPayloadID];
 
-  return v3;
+  return appPayloadID;
 }
 
 - (NSDictionary)appPayload
 {
   v2 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  v3 = [v2 appPayload];
+  appPayload = [v2 appPayload];
 
-  return v3;
+  return appPayload;
 }
 
-- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)a3 senderHandle:(id)a4 isFromMe:(BOOL)a5
+- (BOOL)shouldDropIncomingCheckInMessageWithURL:(id)l senderHandle:(id)handle isFromMe:(BOOL)me
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
+  meCopy = me;
+  handleCopy = handle;
+  lCopy = l;
   v9 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  LOBYTE(v5) = [v9 shouldDropIncomingCheckInMessageWithURL:v8 senderHandle:v7 isFromMe:v5];
+  LOBYTE(meCopy) = [v9 shouldDropIncomingCheckInMessageWithURL:lCopy senderHandle:handleCopy isFromMe:meCopy];
 
-  return v5;
+  return meCopy;
 }
 
-- (void)informOfOutgoingMessageWithMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)informOfOutgoingMessageWithMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  successfullyCopy = successfully;
+  errorCopy = error;
+  messageCopy = message;
   v9 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v9 informOfOutgoingMessageWithMessage:v8 sentSuccessfully:v5 error:v7];
+  [v9 informOfOutgoingMessageWithMessage:messageCopy sentSuccessfully:successfullyCopy error:errorCopy];
 }
 
-- (void)informOfIncomingMessageWithMessage:(id)a3
+- (void)informOfIncomingMessageWithMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfIncomingMessageWithMessage:v3];
+  [v4 informOfIncomingMessageWithMessage:messageCopy];
 }
 
-- (void)informOfDeletedMessagesWithMessages:(id)a3
+- (void)informOfDeletedMessagesWithMessages:(id)messages
 {
-  v3 = a3;
+  messagesCopy = messages;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfDeletedMessagesWithMessages:v3];
+  [v4 informOfDeletedMessagesWithMessages:messagesCopy];
 }
 
-- (void)informOfDeletedConversationWithReceiverHandles:(id)a3
+- (void)informOfDeletedConversationWithReceiverHandles:(id)handles
 {
-  v3 = a3;
+  handlesCopy = handles;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfDeletedConversationWithReceiverHandles:v3];
+  [v4 informOfDeletedConversationWithReceiverHandles:handlesCopy];
 }
 
-- (void)informOfScheduledMessage:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)informOfScheduledMessage:(id)message sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  successfullyCopy = successfully;
+  errorCopy = error;
+  messageCopy = message;
   v9 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v9 informOfScheduledMessageSendWithMessage:v8 sentSuccessfully:v5 error:v7];
+  [v9 informOfScheduledMessageSendWithMessage:messageCopy sentSuccessfully:successfullyCopy error:errorCopy];
 }
 
-- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)a3 sentSuccessfully:(BOOL)a4 error:(id)a5
+- (void)informOfCancelledScheduledMessageSendWithMessageGUID:(id)d sentSuccessfully:(BOOL)successfully error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  successfullyCopy = successfully;
+  errorCopy = error;
+  dCopy = d;
   v9 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v9 informOfCancelledScheduledMessageSendWithMessageGUID:v8 sentSuccessfully:v5 error:v7];
+  [v9 informOfCancelledScheduledMessageSendWithMessageGUID:dCopy sentSuccessfully:successfullyCopy error:errorCopy];
 }
 
-- (void)informOfSentScheduledMessage:(id)a3
+- (void)informOfSentScheduledMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfTriggeredScheduledMessageSendWithMessage:v3];
+  [v4 informOfTriggeredScheduledMessageSendWithMessage:messageCopy];
 }
 
-- (void)informOfChangedGroupMembership:(id)a3
+- (void)informOfChangedGroupMembership:(id)membership
 {
-  v3 = a3;
+  membershipCopy = membership;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfChangedGroupMembershipWithGroupID:v3];
+  [v4 informOfChangedGroupMembershipWithGroupID:membershipCopy];
 }
 
-- (void)informOfKickFromGroup:(id)a3
+- (void)informOfKickFromGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfKickFromGroupWithGroupID:v3];
+  [v4 informOfKickFromGroupWithGroupID:groupCopy];
 }
 
-- (void)informOfChangedGroupDisplayName:(id)a3
+- (void)informOfChangedGroupDisplayName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfChangedGroupDisplayNameWithGroupID:v3];
+  [v4 informOfChangedGroupDisplayNameWithGroupID:nameCopy];
 }
 
-- (void)informOfChangedGroupPhoto:(id)a3
+- (void)informOfChangedGroupPhoto:(id)photo
 {
-  v3 = a3;
+  photoCopy = photo;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informOfChangedGroupPhotoWithGroupID:v3];
+  [v4 informOfChangedGroupPhotoWithGroupID:photoCopy];
 }
 
-- (void)informKnownSenderSentMessage:(id)a3
+- (void)informKnownSenderSentMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v4 informKnownSenderSentMessageWithMessage:v3];
+  [v4 informKnownSenderSentMessageWithMessage:messageCopy];
 }
 
-- (void)checkPreferredHandlesCacheForReceiverWith:(id)a3 completion:(id)a4
+- (void)checkPreferredHandlesCacheForReceiverWith:(id)with completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  withCopy = with;
   v7 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v7 checkPreferredHandlesCacheForReceiverWith:v6 completion:v5];
+  [v7 checkPreferredHandlesCacheForReceiverWith:withCopy completion:completionCopy];
 }
 
-- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)a3 andReceiver:(id)a4 completion:(id)a5
+- (void)checkPreferredHandlesCacheForInitiatorHandleID:(id)d andReceiver:(id)receiver completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  receiverCopy = receiver;
+  dCopy = d;
   v10 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v10 checkPreferredHandlesCacheForInitiatorHandleID:v9 andReceiver:v8 completion:v7];
+  [v10 checkPreferredHandlesCacheForInitiatorHandleID:dCopy andReceiver:receiverCopy completion:completionCopy];
 }
 
-- (void)shouldShowKeyboardSuggestionForInitiator:(id)a3 andReceiver:(id)a4 completion:(id)a5
+- (void)shouldShowKeyboardSuggestionForInitiator:(id)initiator andReceiver:(id)receiver completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  receiverCopy = receiver;
+  initiatorCopy = initiator;
   v10 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v10 shouldShowKeyboardSuggestionForInitiator:v9 andReceiver:v8 completion:v7];
+  [v10 shouldShowKeyboardSuggestionForInitiator:initiatorCopy andReceiver:receiverCopy completion:completionCopy];
 }
 
-- (void)shouldShowTipKitSuggestionForInitiator:(id)a3 andReceiver:(id)a4 completion:(id)a5
+- (void)shouldShowTipKitSuggestionForInitiator:(id)initiator andReceiver:(id)receiver completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  receiverCopy = receiver;
+  initiatorCopy = initiator;
   v10 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v10 shouldShowTipKitSuggestionForInitiator:v9 andReceiver:v8 completion:v7];
+  [v10 shouldShowTipKitSuggestionForInitiator:initiatorCopy andReceiver:receiverCopy completion:completionCopy];
 }
 
-- (int64_t)notificationContentForInitiator:(id)a3 messageURL:(id)a4 content:(id)a5
+- (int64_t)notificationContentForInitiator:(id)initiator messageURL:(id)l content:(id)content
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contentCopy = content;
+  lCopy = l;
+  initiatorCopy = initiator;
   v10 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  v11 = [v10 notificationContentForInitiator:v9 messageURL:v8 content:v7];
+  v11 = [v10 notificationContentForInitiator:initiatorCopy messageURL:lCopy content:contentCopy];
 
   return v11;
 }
@@ -204,19 +204,19 @@
 - (BOOL)shouldDisallowBasedOnRegulatoryDomain
 {
   v2 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  v3 = [v2 shouldDisallowBasedOnRegulatoryDomain];
+  shouldDisallowBasedOnRegulatoryDomain = [v2 shouldDisallowBasedOnRegulatoryDomain];
 
-  return v3;
+  return shouldDisallowBasedOnRegulatoryDomain;
 }
 
-- (void)respondToNotificationWithIdentifier:(id)a3 sessionIdentifier:(id)a4 actionIdentifier:(id)a5 completion:(id)a6
+- (void)respondToNotificationWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier actionIdentifier:(id)actionIdentifier completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  actionIdentifierCopy = actionIdentifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  identifierCopy = identifier;
   v13 = +[IMSafetyMonitorCoordinator_Impl sharedCoordinator];
-  [v13 respondToNotificationWithIdentifier:v12 sessionIdentifier:v11 actionIdentifier:v10 completion:v9];
+  [v13 respondToNotificationWithIdentifier:identifierCopy sessionIdentifier:sessionIdentifierCopy actionIdentifier:actionIdentifierCopy completion:completionCopy];
 }
 
 @end

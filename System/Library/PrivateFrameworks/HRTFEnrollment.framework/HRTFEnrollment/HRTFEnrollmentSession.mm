@@ -1,25 +1,25 @@
 @interface HRTFEnrollmentSession
-- (BOOL)_verifyCaptureDevice:(id)a3;
+- (BOOL)_verifyCaptureDevice:(id)device;
 - (HRTFEnrollmentSession)init;
-- (HRTFEnrollmentSession)initWithCameraSession:(BOOL)a3;
+- (HRTFEnrollmentSession)initWithCameraSession:(BOOL)session;
 - (HRTFEnrollmentSessionDelegate)delegate;
 - (id)getMovFileName;
 - (id)getRecordingFolder;
 - (id)getRecordingURL;
 - (void)dealloc;
-- (void)didReceiveVideoData:(id)a3 colorData:(id)a4 depthData:(id)a5 faceObject:(id)a6;
-- (void)didStartCaptureSessionWithError:(id)a3;
-- (void)downloadHRTFAsset:(unint64_t)a3 withCompletion:(id)a4;
-- (void)downloadHRTFAssetV2:(unint64_t)a3 withCompletion:(id)a4;
+- (void)didReceiveVideoData:(id)data colorData:(id)colorData depthData:(id)depthData faceObject:(id)object;
+- (void)didStartCaptureSessionWithError:(id)error;
+- (void)downloadHRTFAsset:(unint64_t)asset withCompletion:(id)completion;
+- (void)downloadHRTFAssetV2:(unint64_t)v2 withCompletion:(id)completion;
 - (void)initializeDevice;
 - (void)pauseSession;
-- (void)requestResultDataAtOffset:(unint64_t)a3 forLength:(unint64_t)a4 withCompletion:(id)a5;
+- (void)requestResultDataAtOffset:(unint64_t)offset forLength:(unint64_t)length withCompletion:(id)completion;
 - (void)resumeSession;
-- (void)startSession:(BOOL)a3 then:(id)a4;
-- (void)startSession:(BOOL)a3 withAssetPath:(id)a4 then:(id)a5;
-- (void)stopSession:(id)a3;
-- (void)updateResultSize:(unint64_t)a3;
-- (void)updateState:(unint64_t)a3 withProgress:(float)a4 facePoseStatus:(id)a5 earPoseStatus:(id)a6 errorStatus:(id)a7;
+- (void)startSession:(BOOL)session then:(id)then;
+- (void)startSession:(BOOL)session withAssetPath:(id)path then:(id)then;
+- (void)stopSession:(id)session;
+- (void)updateResultSize:(unint64_t)size;
+- (void)updateState:(unint64_t)state withProgress:(float)progress facePoseStatus:(id)status earPoseStatus:(id)poseStatus errorStatus:(id)errorStatus;
 @end
 
 @implementation HRTFEnrollmentSession
@@ -87,9 +87,9 @@ void __29__HRTFEnrollmentSession_init__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (HRTFEnrollmentSession)initWithCameraSession:(BOOL)a3
+- (HRTFEnrollmentSession)initWithCameraSession:(BOOL)session
 {
-  if (a3)
+  if (session)
   {
     v3 = [(HRTFEnrollmentSession *)self init];
   }
@@ -140,9 +140,9 @@ void __47__HRTFEnrollmentSession_initWithCameraSession___block_invoke()
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   v5 = [v3 discoverySessionWithDeviceTypes:v4 mediaType:*MEMORY[0x277CE5EA8] position:2];
 
-  v6 = [v5 devices];
-  v7 = v6;
-  if (!v6 || ![v6 count])
+  devices = [v5 devices];
+  v7 = devices;
+  if (!devices || ![devices count])
   {
     if (onceTokenHRTFEnrollmentSession != -1)
     {
@@ -214,20 +214,20 @@ LABEL_19:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_verifyCaptureDevice:(id)a3
+- (BOOL)_verifyCaptureDevice:(id)device
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v5 = [v4 formats];
-  v6 = [v5 countByEnumeratingWithState:&v59 objects:v66 count:16];
+  formats = [deviceCopy formats];
+  v6 = [formats countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v6)
   {
     v7 = v6;
-    v54 = v4;
+    v54 = deviceCopy;
     v8 = 0;
     v9 = 0;
     v10 = *v60;
@@ -238,19 +238,19 @@ LABEL_19:
       {
         if (*v60 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(formats);
         }
 
         v12 = *(*(&v59 + 1) + 8 * v11);
-        v13 = [v12 supportedDepthDataFormats];
-        v14 = [v13 count];
+        supportedDepthDataFormats = [v12 supportedDepthDataFormats];
+        v14 = [supportedDepthDataFormats count];
 
         if (v14)
         {
-          v15 = [v12 formatDescription];
-          if (CMFormatDescriptionGetMediaSubType(v15) == self->_preferredPixelFormat)
+          formatDescription = [v12 formatDescription];
+          if (CMFormatDescriptionGetMediaSubType(formatDescription) == self->_preferredPixelFormat)
           {
-            Dimensions = CMVideoFormatDescriptionGetDimensions(v15);
+            Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
             width = Dimensions.width;
             if (self->_preferredColorResolution.width >= Dimensions.width)
             {
@@ -284,7 +284,7 @@ LABEL_19:
       }
 
       while (v7 != v11);
-      v22 = [v5 countByEnumeratingWithState:&v59 objects:v66 count:16];
+      v22 = [formats countByEnumeratingWithState:&v59 objects:v66 count:16];
       v7 = v22;
       v21 = v9;
     }
@@ -292,7 +292,7 @@ LABEL_19:
     while (v22);
 LABEL_20:
 
-    v4 = v54;
+    deviceCopy = v54;
     if (v21)
     {
       objc_storeStrong(&self->_finalColorFormat, v21);
@@ -307,9 +307,9 @@ LABEL_20:
         finalColorFormat = self->_finalColorFormat;
         v25 = v23;
         v26 = [(AVCaptureDeviceFormat *)finalColorFormat description];
-        v27 = [v26 UTF8String];
+        uTF8String = [v26 UTF8String];
         *buf = 136315138;
-        v65 = v27;
+        v65 = uTF8String;
         _os_log_impl(&dword_250984000, v25, OS_LOG_TYPE_INFO, "capture device color format: %s", buf, 0xCu);
       }
 
@@ -317,8 +317,8 @@ LABEL_20:
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v28 = [v21 supportedDepthDataFormats];
-      v29 = [v28 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      supportedDepthDataFormats2 = [v21 supportedDepthDataFormats];
+      v29 = [supportedDepthDataFormats2 countByEnumeratingWithState:&v55 objects:v63 count:16];
       if (v29)
       {
         v30 = v29;
@@ -332,14 +332,14 @@ LABEL_20:
           {
             if (*v56 != v33)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(supportedDepthDataFormats2);
             }
 
             v35 = *(*(&v55 + 1) + 8 * v34);
-            v36 = [v35 formatDescription];
-            if (CMFormatDescriptionGetMediaSubType(v36) == self->_preferredDepthFormat)
+            formatDescription2 = [v35 formatDescription];
+            if (CMFormatDescriptionGetMediaSubType(formatDescription2) == self->_preferredDepthFormat)
             {
-              v37 = CMVideoFormatDescriptionGetDimensions(v36);
+              v37 = CMVideoFormatDescriptionGetDimensions(formatDescription2);
               v38 = v37.width;
               if (self->_preferredDepthResolution.width >= v37.width)
               {
@@ -372,7 +372,7 @@ LABEL_20:
           }
 
           while (v30 != v34);
-          v43 = [v28 countByEnumeratingWithState:&v55 objects:v63 count:16];
+          v43 = [supportedDepthDataFormats2 countByEnumeratingWithState:&v55 objects:v63 count:16];
           v30 = v43;
           v42 = v31;
         }
@@ -380,7 +380,7 @@ LABEL_20:
         while (v43);
 LABEL_43:
 
-        v4 = v54;
+        deviceCopy = v54;
         if (v42)
         {
           objc_storeStrong(&self->_finalDepthFormat, v42);
@@ -395,9 +395,9 @@ LABEL_43:
             finalDepthFormat = self->_finalDepthFormat;
             v46 = v44;
             v47 = [(AVCaptureDeviceFormat *)finalDepthFormat description];
-            v48 = [v47 UTF8String];
+            uTF8String2 = [v47 UTF8String];
             *buf = 136315138;
-            v65 = v48;
+            v65 = uTF8String2;
             _os_log_impl(&dword_250984000, v46, OS_LOG_TYPE_INFO, "capture device depth format: %s", buf, 0xCu);
           }
 
@@ -525,8 +525,8 @@ void __38__HRTFEnrollmentSession_resumeSession__block_invoke(uint64_t a1)
 {
   v2 = objc_opt_new();
   [v2 setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 stringFromDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [v2 stringFromDate:date];
 
   return v4;
 }
@@ -539,68 +539,68 @@ void __38__HRTFEnrollmentSession_resumeSession__block_invoke(uint64_t a1)
 
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HRTFEnrollmentSession *)self getMovFileName];
-  v9 = [v7 stringWithFormat:@"HRTFEnrollmentRecordings/%@", v8];
+  getMovFileName = [(HRTFEnrollmentSession *)self getMovFileName];
+  v9 = [v7 stringWithFormat:@"HRTFEnrollmentRecordings/%@", getMovFileName];
 
   v10 = [v6 URLByAppendingPathComponent:v9];
-  v11 = [v10 path];
+  path = [v10 path];
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v12 fileExistsAtPath:v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v13 = [defaultManager fileExistsAtPath:path];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
-    [v14 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
   }
 
-  NSLog(&cfstr_Hrtfenrollment_1.isa, v11);
-  v15 = v11;
+  NSLog(&cfstr_Hrtfenrollment_1.isa, path);
+  v15 = path;
 
   return v15;
 }
 
 - (id)getRecordingURL
 {
-  v3 = [(HRTFEnrollmentSession *)self getMovFileName];
-  v4 = [(HRTFEnrollmentSession *)self getRecordingFolder];
-  if (!v4)
+  getMovFileName = [(HRTFEnrollmentSession *)self getMovFileName];
+  getRecordingFolder = [(HRTFEnrollmentSession *)self getRecordingFolder];
+  if (!getRecordingFolder)
   {
-    v4 = NSTemporaryDirectory();
+    getRecordingFolder = NSTemporaryDirectory();
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.MOV", v4, v3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.MOV", getRecordingFolder, getMovFileName];
   NSLog(&cfstr_Hrtfenrollment_2.isa, v5);
   v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
 
   return v6;
 }
 
-- (void)startSession:(BOOL)a3 withAssetPath:(id)a4 then:(id)a5
+- (void)startSession:(BOOL)session withAssetPath:(id)path then:(id)then
 {
-  objc_storeStrong(&self->_assetDownloadPath, a4);
-  v7 = a4;
+  objc_storeStrong(&self->_assetDownloadPath, path);
+  pathCopy = path;
   NSLog(&cfstr_StartsessionWi.isa, self->_assetDownloadPath);
 
   [(HRTFEnrollmentSession *)self startSession:1 then:&__block_literal_global_75];
 }
 
-- (void)startSession:(BOOL)a3 then:(id)a4
+- (void)startSession:(BOOL)session then:(id)then
 {
-  v6 = a4;
+  thenCopy = then;
   if (self->_videoCaptureEnabled)
   {
-    v7 = [(HRTFEnrollmentSession *)self getRecordingURL];
-    v8 = [v7 absoluteString];
-    NSLog(&cfstr_HrtfappHrtfman.isa, v8);
+    getRecordingURL = [(HRTFEnrollmentSession *)self getRecordingURL];
+    absoluteString = [getRecordingURL absoluteString];
+    NSLog(&cfstr_HrtfappHrtfman.isa, absoluteString);
 
     v9 = objc_opt_new();
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v9 framework];
-    v12 = [v11 objectForKeyedSubscript:@"version"];
+    framework = [v9 framework];
+    v12 = [framework objectForKeyedSubscript:@"version"];
     v13 = [v10 stringWithFormat:@"HRTFEnrollment-Visage-%@", v12];
 
-    v14 = [[RecordingManager alloc] initWithFileURL:v7 expectedFrameRate:@"AVCaptureDeviceTypeBuiltInWideAngleCamera.2" colorStreamId:@"AVCaptureDeviceTypeBuiltInTrueDepthCamera.2" depthStreamId:v13 appName:30.0];
+    v14 = [[RecordingManager alloc] initWithFileURL:getRecordingURL expectedFrameRate:@"AVCaptureDeviceTypeBuiltInWideAngleCamera.2" colorStreamId:@"AVCaptureDeviceTypeBuiltInTrueDepthCamera.2" depthStreamId:v13 appName:30.0];
     recordingManager = self->_recordingManager;
     self->_recordingManager = v14;
 
@@ -617,8 +617,8 @@ void __38__HRTFEnrollmentSession_resumeSession__block_invoke(uint64_t a1)
   block[2] = __43__HRTFEnrollmentSession_startSession_then___block_invoke;
   block[3] = &unk_2796A3C78;
   block[4] = self;
-  v17 = v6;
-  v21 = a3;
+  v17 = thenCopy;
+  sessionCopy = session;
   v19 = v17;
   v20 = &v22;
   dispatch_sync(queue, block);
@@ -800,9 +800,9 @@ void __43__HRTFEnrollmentSession_startSession_then___block_invoke_183()
   }
 }
 
-- (void)downloadHRTFAssetV2:(unint64_t)a3 withCompletion:(id)a4
+- (void)downloadHRTFAssetV2:(unint64_t)v2 withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -813,8 +813,8 @@ void __43__HRTFEnrollmentSession_startSession_then___block_invoke_183()
   v9[2] = __60__HRTFEnrollmentSession_downloadHRTFAssetV2_withCompletion___block_invoke;
   v9[3] = &unk_2796A3CF0;
   v9[4] = self;
-  v12 = a3;
-  v8 = v6;
+  v2Copy = v2;
+  v8 = completionCopy;
   v10 = v8;
   v11 = &v13;
   dispatch_async(queue, v9);
@@ -982,9 +982,9 @@ uint64_t __60__HRTFEnrollmentSession_downloadHRTFAssetV2_withCompletion___block_
   return result;
 }
 
-- (void)downloadHRTFAsset:(unint64_t)a3 withCompletion:(id)a4
+- (void)downloadHRTFAsset:(unint64_t)asset withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -995,8 +995,8 @@ uint64_t __60__HRTFEnrollmentSession_downloadHRTFAssetV2_withCompletion___block_
   v9[2] = __58__HRTFEnrollmentSession_downloadHRTFAsset_withCompletion___block_invoke;
   v9[3] = &unk_2796A3CF0;
   v9[4] = self;
-  v12 = a3;
-  v8 = v6;
+  assetCopy = asset;
+  v8 = completionCopy;
   v10 = v8;
   v11 = &v13;
   dispatch_async(queue, v9);
@@ -1150,9 +1150,9 @@ uint64_t __58__HRTFEnrollmentSession_downloadHRTFAsset_withCompletion___block_in
   return result;
 }
 
-- (void)stopSession:(id)a3
+- (void)stopSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1185,7 +1185,7 @@ uint64_t __58__HRTFEnrollmentSession_downloadHRTFAsset_withCompletion___block_in
   block[3] = &unk_2796A3D90;
   block[4] = self;
   v11 = &v13;
-  v8 = v4;
+  v8 = sessionCopy;
   v10 = v8;
   dispatch_sync(queue, block);
   if (*(v14 + 24) == 1)
@@ -1336,9 +1336,9 @@ void __46__HRTFEnrollmentSession_sessionStarted_error___block_invoke(uint64_t a1
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestResultDataAtOffset:(unint64_t)a3 forLength:(unint64_t)a4 withCompletion:(id)a5
+- (void)requestResultDataAtOffset:(unint64_t)offset forLength:(unint64_t)length withCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1350,9 +1350,9 @@ void __46__HRTFEnrollmentSession_sessionStarted_error___block_invoke(uint64_t a1
   block[3] = &unk_2796A3DE0;
   block[4] = self;
   v13 = &v16;
-  v14 = a3;
-  v15 = a4;
-  v10 = v8;
+  offsetCopy = offset;
+  lengthCopy = length;
+  v10 = completionCopy;
   v12 = v10;
   dispatch_sync(queue, block);
   if (*(v17 + 24) == 1)
@@ -1390,51 +1390,51 @@ void __76__HRTFEnrollmentSession_requestResultDataAtOffset_forLength_withComplet
   }
 }
 
-- (void)updateState:(unint64_t)a3 withProgress:(float)a4 facePoseStatus:(id)a5 earPoseStatus:(id)a6 errorStatus:(id)a7
+- (void)updateState:(unint64_t)state withProgress:(float)progress facePoseStatus:(id)status earPoseStatus:(id)poseStatus errorStatus:(id)errorStatus
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  statusCopy = status;
+  poseStatusCopy = poseStatus;
+  errorStatusCopy = errorStatus;
   v15 = objc_alloc(MEMORY[0x277CBEB38]);
   v33[0] = kHRTFStateInfoStateKey;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
   v33[1] = kHRTFStateInfoProgressKey;
   v34[0] = v16;
-  *&v17 = a4;
+  *&v17 = progress;
   v18 = [MEMORY[0x277CCABB0] numberWithFloat:v17];
   v34[1] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
   v20 = [v15 initWithDictionary:v19];
 
-  if (a3 == 5)
+  if (state == 5)
   {
     v21 = kHRTFStateInfoErrorInfoKey;
     v22 = v20;
-    v23 = v14;
+    v23 = errorStatusCopy;
 LABEL_8:
     [v22 setObject:v23 forKeyedSubscript:v21];
     goto LABEL_9;
   }
 
-  if (a3 - 1 <= 1)
+  if (state - 1 <= 1)
   {
-    if (v12)
+    if (statusCopy)
     {
-      [v20 setObject:v12 forKeyedSubscript:kHRTFStateInfoFacePoseStatusKey];
+      [v20 setObject:statusCopy forKeyedSubscript:kHRTFStateInfoFacePoseStatusKey];
     }
 
-    if (v13)
+    if (poseStatusCopy)
     {
-      v24 = [v13 leftStatus];
-      [v20 setObject:v24 forKeyedSubscript:kHRTFStateInfoLeftEarPoseStatusKey];
+      leftStatus = [poseStatusCopy leftStatus];
+      [v20 setObject:leftStatus forKeyedSubscript:kHRTFStateInfoLeftEarPoseStatusKey];
 
-      v25 = [v13 rightStatus];
-      [v20 setObject:v25 forKeyedSubscript:kHRTFStateInfoRightEarPoseStatusKey];
+      rightStatus = [poseStatusCopy rightStatus];
+      [v20 setObject:rightStatus forKeyedSubscript:kHRTFStateInfoRightEarPoseStatusKey];
 
       v21 = kHRTFStateInfoEarPoseStatusKey;
       v22 = v20;
-      v23 = v13;
+      v23 = poseStatusCopy;
       goto LABEL_8;
     }
   }
@@ -1460,7 +1460,7 @@ LABEL_9:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateResultSize:(unint64_t)a3
+- (void)updateResultSize:(unint64_t)size
 {
   v10 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
@@ -1469,7 +1469,7 @@ LABEL_9:
   v7[2] = __42__HRTFEnrollmentSession_updateResultSize___block_invoke;
   v7[3] = &unk_2796A3E30;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = size;
   dispatch_sync(queue, v7);
   if (onceTokenHRTFEnrollmentSession != -1)
   {
@@ -1480,24 +1480,24 @@ LABEL_9:
   if (os_log_type_enabled(logObjHRTFEnrollmentSession, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = a3;
+    sizeCopy = size;
     _os_log_impl(&dword_250984000, v5, OS_LOG_TYPE_INFO, "result data has a size of %lu", buf, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didStartCaptureSessionWithError:(id)a3
+- (void)didStartCaptureSessionWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke;
   block[3] = &unk_2796A3E58;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   objc_copyWeak(&v9, &location);
   dispatch_async(queue, block);
   objc_destroyWeak(&v9);
@@ -1550,12 +1550,12 @@ void __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveVideoData:(id)a3 colorData:(id)a4 depthData:(id)a5 faceObject:(id)a6
+- (void)didReceiveVideoData:(id)data colorData:(id)colorData depthData:(id)depthData faceObject:(id)object
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  colorDataCopy = colorData;
+  depthDataCopy = depthData;
+  objectCopy = object;
   if (onceTokenHRTFEnrollmentSession != -1)
   {
     HRTFLogObjectForCategory_HRTFEnrollmentSession_cold_1();
@@ -1568,16 +1568,16 @@ void __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke(
     _os_log_impl(&dword_250984000, v14, OS_LOG_TYPE_DEBUG, "video frame arrived", buf, 2u);
   }
 
-  v15 = [v11 sampleBuffer];
-  ImageBuffer = CMSampleBufferGetImageBuffer(v15);
+  sampleBuffer = [colorDataCopy sampleBuffer];
+  ImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
   if (ImageBuffer)
   {
     v17 = ImageBuffer;
-    v62 = v13;
-    v18 = [v12 depthData];
-    v19 = [v18 depthDataMap];
-    v61 = v10;
-    if (!v19)
+    v62 = objectCopy;
+    depthData = [depthDataCopy depthData];
+    depthDataMap = [depthData depthDataMap];
+    v61 = dataCopy;
+    if (!depthDataMap)
     {
       if (onceTokenHRTFEnrollmentSession != -1)
       {
@@ -1594,16 +1594,16 @@ void __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke(
       goto LABEL_47;
     }
 
-    v20 = v19;
-    v21 = [v18 cameraCalibrationData];
-    if (!v21)
+    v20 = depthDataMap;
+    cameraCalibrationData = [depthData cameraCalibrationData];
+    if (!cameraCalibrationData)
     {
       if (onceTokenHRTFEnrollmentSession != -1)
       {
         [HRTFEnrollmentSession initializeDevice];
       }
 
-      v13 = v62;
+      objectCopy = v62;
       v33 = logObjHRTFEnrollmentSession;
       if (os_log_type_enabled(logObjHRTFEnrollmentSession, OS_LOG_TYPE_ERROR))
       {
@@ -1614,11 +1614,11 @@ void __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke(
       goto LABEL_46;
     }
 
-    v22 = CMGetAttachment(v15, *MEMORY[0x277CC06B0], 0);
+    v22 = CMGetAttachment(sampleBuffer, *MEMORY[0x277CC06B0], 0);
     v23 = v22;
     if (!v22)
     {
-      v13 = v62;
+      objectCopy = v62;
       if (onceTokenHRTFEnrollmentSession != -1)
       {
         [HRTFEnrollmentSession initializeDevice];
@@ -1641,9 +1641,9 @@ void __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke(
     v25 = v22;
     [v22 getBytes:buf length:48];
     memset(&v65, 0, sizeof(v65));
-    if (v11)
+    if (colorDataCopy)
     {
-      [v11 timestamp];
+      [colorDataCopy timestamp];
     }
 
     time = v65;
@@ -1651,19 +1651,19 @@ void __57__HRTFEnrollmentSession_didStartCaptureSessionWithError___block_invoke(
     if (!self->_videoCaptureEnabled || !self->_recordingManager)
     {
 LABEL_35:
-      [v21 intrinsicMatrix];
+      [cameraCalibrationData intrinsicMatrix];
       v57 = v38;
       logb = v37;
       v56 = v39;
-      [v21 intrinsicMatrixReferenceDimensions];
+      [cameraCalibrationData intrinsicMatrixReferenceDimensions];
       v41 = v40;
       v43 = v42;
-      [v21 lensDistortionCenter];
+      [cameraCalibrationData lensDistortionCenter];
       v45 = v44;
       v47 = v46;
       v48 = [HRTFSerializableCaptureData alloc];
-      v49 = [v21 lensDistortionLookupTable];
-      log = [(HRTFSerializableCaptureData *)v48 initWithColorPixelBuffer:v17 depthPixelBuffer:v20 colorIntrinsics:v49 depthIntrinsics:*buf distortionLookupTable:*&v67 referenceDimensions:v68[0] distortionCenter:logb timestamp:v57, v56, v41, v43, v45, v47, *&Seconds];
+      lensDistortionLookupTable = [cameraCalibrationData lensDistortionLookupTable];
+      log = [(HRTFSerializableCaptureData *)v48 initWithColorPixelBuffer:v17 depthPixelBuffer:v20 colorIntrinsics:lensDistortionLookupTable depthIntrinsics:*buf distortionLookupTable:*&v67 referenceDimensions:v68[0] distortionCenter:logb timestamp:v57, v56, v41, v43, v45, v47, *&Seconds];
 
       if (v62)
       {
@@ -1677,8 +1677,8 @@ LABEL_35:
 
       if (!self->_paused)
       {
-        v51 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-        [v51 processCaptureData:log withFaceData:v50];
+        remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+        [remoteObjectProxy processCaptureData:log withFaceData:v50];
       }
 
       if (*&self->_flags)
@@ -1694,18 +1694,18 @@ LABEL_35:
         }
       }
 
-      v13 = v62;
+      objectCopy = v62;
       v23 = v25;
 LABEL_45:
 
 LABEL_46:
 LABEL_47:
 
-      v10 = v61;
+      dataCopy = v61;
       goto LABEL_48;
     }
 
-    v27 = CMGetAttachment([v11 sampleBuffer], @"{Exif}", 0);
+    v27 = CMGetAttachment([colorDataCopy sampleBuffer], @"{Exif}", 0);
     v28 = [v27 valueForKey:@"ExposureTime"];
     v29 = v28;
     if (v28)
@@ -1737,7 +1737,7 @@ LABEL_47:
 
     v36 = v30;
 LABEL_34:
-    [(RecordingManager *)self->_recordingManager process:v17 depthFrame:v20 faceObject:v62 timestamp:v21 intrinsics:Seconds calibration:*buf exposureTime:*&v67, v68[0], v36];
+    [(RecordingManager *)self->_recordingManager process:v17 depthFrame:v20 faceObject:v62 timestamp:cameraCalibrationData intrinsics:Seconds calibration:*buf exposureTime:*&v67, v68[0], v36];
 
     goto LABEL_35;
   }

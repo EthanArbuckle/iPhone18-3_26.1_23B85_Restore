@@ -1,19 +1,19 @@
 @interface PNDUserNotificationView
 + (void)beginPromptForChangePasscode;
-+ (void)showCFUserNotifcationWithSecureTextFieldOptionForState:(int64_t)a3;
-+ (void)showPasscodePromptForMCPasscodeComplianceTypeAdvisoryWithTitle:(id)a3 message:(id)a4;
-+ (void)showPasscodePromptForMCPasscodeComplianceTypeMandatoryWithTitle:(id)a3 message:(id)a4;
-+ (void)showPasscodePromptForMCPasscodeComplianceTypeOptionalWithTitle:(id)a3 message:(id)a4;
++ (void)showCFUserNotifcationWithSecureTextFieldOptionForState:(int64_t)state;
++ (void)showPasscodePromptForMCPasscodeComplianceTypeAdvisoryWithTitle:(id)title message:(id)message;
++ (void)showPasscodePromptForMCPasscodeComplianceTypeMandatoryWithTitle:(id)title message:(id)message;
++ (void)showPasscodePromptForMCPasscodeComplianceTypeOptionalWithTitle:(id)title message:(id)message;
 @end
 
 @implementation PNDUserNotificationView
 
-+ (void)showPasscodePromptForMCPasscodeComplianceTypeOptionalWithTitle:(id)a3 message:(id)a4
++ (void)showPasscodePromptForMCPasscodeComplianceTypeOptionalWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  titleCopy = title;
+  messageCopy = message;
+  v8 = titleCopy;
+  v9 = messageCopy;
   v10 = MCLocalizedFormat();
   v11 = MCLocalizedFormat();
   +[MCUserNotificationManager sharedManager];
@@ -25,7 +25,7 @@
   v20 = v9;
   v21 = v10;
   v22 = v11;
-  v23 = a1;
+  selfCopy = self;
   v12 = v11;
   v13 = v10;
   v14 = v9;
@@ -34,12 +34,12 @@
   [v16 cancelNotificationsWithIdentifier:@"passcodenagd-user-notification-id" completionBlock:v17];
 }
 
-+ (void)showPasscodePromptForMCPasscodeComplianceTypeAdvisoryWithTitle:(id)a3 message:(id)a4
++ (void)showPasscodePromptForMCPasscodeComplianceTypeAdvisoryWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  titleCopy = title;
+  messageCopy = message;
+  v8 = titleCopy;
+  v9 = messageCopy;
   v10 = MCLocalizedFormat();
   v11 = MCLocalizedFormat();
   +[MCUserNotificationManager sharedManager];
@@ -51,7 +51,7 @@
   v20 = v9;
   v21 = v10;
   v22 = v11;
-  v23 = a1;
+  selfCopy = self;
   v12 = v11;
   v13 = v10;
   v14 = v9;
@@ -60,12 +60,12 @@
   [v16 cancelNotificationsWithIdentifier:@"passcodenagd-user-notification-id" completionBlock:v17];
 }
 
-+ (void)showPasscodePromptForMCPasscodeComplianceTypeMandatoryWithTitle:(id)a3 message:(id)a4
++ (void)showPasscodePromptForMCPasscodeComplianceTypeMandatoryWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  titleCopy = title;
+  messageCopy = message;
+  v8 = titleCopy;
+  v9 = messageCopy;
   v10 = MCLocalizedFormat();
   +[MCUserNotificationManager sharedManager];
   v15[0] = _NSConcreteStackBlock;
@@ -75,7 +75,7 @@
   v17 = v8;
   v18 = v9;
   v19 = v10;
-  v20 = a1;
+  selfCopy = self;
   v11 = v10;
   v12 = v9;
   v13 = v8;
@@ -96,13 +96,13 @@
   qword_10000C398 = 0;
 
   qword_10000C3A0 = [v6 isPasscodeSet] ^ 1;
-  [a1 showCFUserNotifcationWithSecureTextFieldOptionForState:?];
+  [self showCFUserNotifcationWithSecureTextFieldOptionForState:?];
 }
 
-+ (void)showCFUserNotifcationWithSecureTextFieldOptionForState:(int64_t)a3
++ (void)showCFUserNotifcationWithSecureTextFieldOptionForState:(int64_t)state
 {
   v5 = +[MCProfileConnection sharedConnection];
-  switch(a3)
+  switch(state)
   {
     case 2:
       v6 = MCLocalizedFormat();
@@ -114,20 +114,20 @@ LABEL_11:
       v6 = MCLocalizedFormat();
       if (qword_10000C388)
       {
-        v7 = qword_10000C388;
+        localizedDescriptionOfCurrentPasscodeConstraints = qword_10000C388;
       }
 
       else
       {
-        v7 = [v5 localizedDescriptionOfCurrentPasscodeConstraints];
+        localizedDescriptionOfCurrentPasscodeConstraints = [v5 localizedDescriptionOfCurrentPasscodeConstraints];
       }
 
       goto LABEL_10;
     case 0:
       v6 = MCLocalizedFormat();
-      v7 = MCLocalizedFormat();
+      localizedDescriptionOfCurrentPasscodeConstraints = MCLocalizedFormat();
 LABEL_10:
-      v8 = v7;
+      v8 = localizedDescriptionOfCurrentPasscodeConstraints;
       goto LABEL_11;
   }
 
@@ -148,8 +148,8 @@ LABEL_12:
   v24 = v11;
   v25 = v10;
   v26 = v5;
-  v27 = a3;
-  v28 = a1;
+  stateCopy = state;
+  selfCopy = self;
   v12 = v5;
   v13 = v10;
   v14 = v11;

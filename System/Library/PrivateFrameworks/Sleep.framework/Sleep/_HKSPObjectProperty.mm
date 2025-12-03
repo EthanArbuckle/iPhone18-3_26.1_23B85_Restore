@@ -1,39 +1,39 @@
 @interface _HKSPObjectProperty
-- (BOOL)isEqual:(id)a3;
-- (_HKSPObjectProperty)initWithCoder:(id)a3;
-- (_HKSPObjectProperty)initWithIdentifier:(id)a3 propertyName:(id)a4 expectedValueClass:(Class)a5;
-- (_HKSPObjectProperty)initWithIdentifier:(id)a3 propertyName:(id)a4 expectedValueClasses:(id)a5;
-- (void)copyValueFromObject:(id)a3 toObject:(id)a4;
-- (void)decodeValueForObject:(id)a3 fromCoder:(id)a4;
-- (void)encodeValueForObject:(id)a3 fromCoder:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_HKSPObjectProperty)initWithCoder:(id)coder;
+- (_HKSPObjectProperty)initWithIdentifier:(id)identifier propertyName:(id)name expectedValueClass:(Class)class;
+- (_HKSPObjectProperty)initWithIdentifier:(id)identifier propertyName:(id)name expectedValueClasses:(id)classes;
+- (void)copyValueFromObject:(id)object toObject:(id)toObject;
+- (void)decodeValueForObject:(id)object fromCoder:(id)coder;
+- (void)encodeValueForObject:(id)object fromCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKSPObjectProperty
 
-- (_HKSPObjectProperty)initWithIdentifier:(id)a3 propertyName:(id)a4 expectedValueClass:(Class)a5
+- (_HKSPObjectProperty)initWithIdentifier:(id)identifier propertyName:(id)name expectedValueClass:(Class)class
 {
   v15 = *MEMORY[0x277D85DE8];
-  v14 = a5;
+  classCopy = class;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 arrayWithObjects:&v14 count:1];
-  v11 = [(_HKSPObjectProperty *)self initWithIdentifier:v9 propertyName:v8 expectedValueClasses:v10, v14, v15];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v10 = [v7 arrayWithObjects:&classCopy count:1];
+  v11 = [(_HKSPObjectProperty *)self initWithIdentifier:identifierCopy propertyName:nameCopy expectedValueClasses:v10, classCopy, v15];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (_HKSPObjectProperty)initWithIdentifier:(id)a3 propertyName:(id)a4 expectedValueClasses:(id)a5
+- (_HKSPObjectProperty)initWithIdentifier:(id)identifier propertyName:(id)name expectedValueClasses:(id)classes
 {
-  v8 = a5;
+  classesCopy = classes;
   v14.receiver = self;
   v14.super_class = _HKSPObjectProperty;
-  v9 = [(HKSPProperty *)&v14 initWithIdentifier:a3 propertyName:a4];
+  v9 = [(HKSPProperty *)&v14 initWithIdentifier:identifier propertyName:name];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [classesCopy copy];
     expectedValueClasses = v9->_expectedValueClasses;
     v9->_expectedValueClasses = v10;
 
@@ -43,18 +43,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = _HKSPObjectProperty;
-  if ([(HKSPProperty *)&v10 isEqual:v4])
+  if ([(HKSPProperty *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(_HKSPObjectProperty *)self expectedValueClasses];
-    v7 = [v5 expectedValueClasses];
+    v5 = equalCopy;
+    expectedValueClasses = [(_HKSPObjectProperty *)self expectedValueClasses];
+    expectedValueClasses2 = [v5 expectedValueClasses];
 
-    v8 = [v6 isEqualToArray:v7];
+    v8 = [expectedValueClasses isEqualToArray:expectedValueClasses2];
   }
 
   else
@@ -65,29 +65,29 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _HKSPObjectProperty;
-  v4 = a3;
-  [(HKSPProperty *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HKSPProperty *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NSArray *)self->_expectedValueClasses na_map:&__block_literal_global_23, v6.receiver, v6.super_class];
-  [v4 encodeObject:v5 forKey:@"HKSPExpectedClasses"];
+  [coderCopy encodeObject:v5 forKey:@"HKSPExpectedClasses"];
 }
 
-- (_HKSPObjectProperty)initWithCoder:(id)a3
+- (_HKSPObjectProperty)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = _HKSPObjectProperty;
-  v3 = a3;
-  v4 = [(HKSPProperty *)&v13 initWithCoder:v3];
+  coderCopy = coder;
+  v4 = [(HKSPProperty *)&v13 initWithCoder:coderCopy];
   v5 = MEMORY[0x277CBEB98];
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v3 decodeObjectOfClasses:v7 forKey:@"HKSPExpectedClasses"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"HKSPExpectedClasses"];
 
   v9 = [v8 na_map:&__block_literal_global_338_0];
   expectedValueClasses = v4->_expectedValueClasses;
@@ -97,33 +97,33 @@
   return v4;
 }
 
-- (void)copyValueFromObject:(id)a3 toObject:(id)a4
+- (void)copyValueFromObject:(id)object toObject:(id)toObject
 {
-  v6 = a4;
-  v8 = [a3 hksp_valueForProperty:self];
+  toObjectCopy = toObject;
+  v8 = [object hksp_valueForProperty:self];
   v7 = [v8 copy];
-  [v6 hksp_setValue:v7 forProperty:self];
+  [toObjectCopy hksp_setValue:v7 forProperty:self];
 }
 
-- (void)decodeValueForObject:(id)a3 fromCoder:(id)a4
+- (void)decodeValueForObject:(id)object fromCoder:(id)coder
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
-  v12 = [(_HKSPObjectProperty *)self expectedValueClasses];
-  v9 = [v6 setWithArray:v12];
-  v10 = [(HKSPProperty *)self identifier];
-  v11 = [v7 decodeObjectOfClasses:v9 forKey:v10];
+  coderCopy = coder;
+  objectCopy = object;
+  expectedValueClasses = [(_HKSPObjectProperty *)self expectedValueClasses];
+  v9 = [v6 setWithArray:expectedValueClasses];
+  identifier = [(HKSPProperty *)self identifier];
+  v11 = [coderCopy decodeObjectOfClasses:v9 forKey:identifier];
 
-  [v8 hksp_setValue:v11 forProperty:self];
+  [objectCopy hksp_setValue:v11 forProperty:self];
 }
 
-- (void)encodeValueForObject:(id)a3 fromCoder:(id)a4
+- (void)encodeValueForObject:(id)object fromCoder:(id)coder
 {
-  v6 = a4;
-  v8 = [a3 hksp_valueForProperty:self];
-  v7 = [(HKSPProperty *)self identifier];
-  [v6 encodeObject:v8 forKey:v7];
+  coderCopy = coder;
+  v8 = [object hksp_valueForProperty:self];
+  identifier = [(HKSPProperty *)self identifier];
+  [coderCopy encodeObject:v8 forKey:identifier];
 }
 
 @end

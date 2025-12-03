@@ -1,18 +1,18 @@
 @interface AUParameter
-- (AUParameter)initWithCoder:(id)a3;
+- (AUParameter)initWithCoder:(id)coder;
 - (AUValue)value;
 - (AUValue)valueFromString:(NSString *)string;
 - (NSString)stringFromValue:(const AUValue *)value;
 - (NSString)unitName;
 - (float)_internalValue;
 - (id).cxx_construct;
-- (id)copyNodeWithOffset:(unint64_t)a3;
+- (id)copyNodeWithOffset:(unint64_t)offset;
 - (id)description;
-- (void)_observersChanged:(BOOL)a3 deltaCount:(int)a4;
+- (void)_observersChanged:(BOOL)changed deltaCount:(int)count;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setValue:(AUValue)value;
-- (void)setValue:(float)a3 extOriginator:(AUParameterObserverExtendedToken)a4 atHostTime:(unint64_t)a5 eventType:(unsigned int)a6;
+- (void)setValue:(float)value extOriginator:(AUParameterObserverExtendedToken)originator atHostTime:(unint64_t)time eventType:(unsigned int)type;
 @end
 
 @implementation AUParameter
@@ -25,20 +25,20 @@
   return self;
 }
 
-- (void)_observersChanged:(BOOL)a3 deltaCount:(int)a4
+- (void)_observersChanged:(BOOL)changed deltaCount:(int)count
 {
   v4 = &OBJC_IVAR___AUParameter__numUIObservers;
-  if (a3)
+  if (changed)
   {
     v4 = &OBJC_IVAR___AUParameter__numRecordingObservers;
   }
 
-  atomic_fetch_add((self + *v4), a4);
+  atomic_fetch_add((self + *v4), count);
 }
 
-- (AUParameter)initWithCoder:(id)a3
+- (AUParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   {
     v17 = objc_alloc(MEMORY[0x1E695DFD8]);
     v18 = objc_opt_self();
@@ -47,10 +47,10 @@
   }
 
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"id"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"id"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"name"];
 
   v20.receiver = self;
   v20.super_class = AUParameter;
@@ -58,14 +58,14 @@
   if (v9)
   {
     v10 = objc_opt_self();
-    v11 = [v4 decodeObjectOfClass:v10 forKey:@"info"];
+    v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"info"];
     info = v9->_info;
     v9->_info = v11;
 
-    [v4 decodeFloatForKey:@"value"];
+    [coderCopy decodeFloatForKey:@"value"];
     v9->_value = v13;
-    v9->_address = [v4 decodeInt64ForKey:@"address"];
-    v14 = [v4 decodeObjectOfClasses:-[AUParameter initWithCoder:]::depParamClasses forKey:@"deps"];
+    v9->_address = [coderCopy decodeInt64ForKey:@"address"];
+    v14 = [coderCopy decodeObjectOfClasses:-[AUParameter initWithCoder:]::depParamClasses forKey:@"deps"];
     dependentParameters = v9->_dependentParameters;
     v9->_dependentParameters = v14;
   }
@@ -73,39 +73,39 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(AUParameterNode *)self identifier];
-  [v7 encodeObject:v4 forKey:@"id"];
+  coderCopy = coder;
+  identifier = [(AUParameterNode *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"id"];
 
-  v5 = [(AUParameterNode *)self displayName];
-  [v7 encodeObject:v5 forKey:@"name"];
+  displayName = [(AUParameterNode *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"name"];
 
-  v6 = [(AUParameter *)self info];
-  [v7 encodeObject:v6 forKey:@"info"];
+  info = [(AUParameter *)self info];
+  [coderCopy encodeObject:info forKey:@"info"];
 
   [(AUParameter *)self value];
-  [v7 encodeFloat:@"value" forKey:?];
-  [v7 encodeInt64:-[AUParameter address](self forKey:{"address"), @"address"}];
-  [v7 encodeObject:self->_dependentParameters forKey:@"deps"];
+  [coderCopy encodeFloat:@"value" forKey:?];
+  [coderCopy encodeInt64:-[AUParameter address](self forKey:{"address"), @"address"}];
+  [coderCopy encodeObject:self->_dependentParameters forKey:@"deps"];
 }
 
 - (NSString)unitName
 {
-  v3 = [(_AUStaticParameterInfo *)self->_info unitName];
+  unitName = [(_AUStaticParameterInfo *)self->_info unitName];
 
   info = self->_info;
-  if (v3)
+  if (unitName)
   {
-    v5 = [(_AUStaticParameterInfo *)info unitName];
+    unitName2 = [(_AUStaticParameterInfo *)info unitName];
   }
 
   else
   {
-    v6 = [(_AUStaticParameterInfo *)info unit];
+    unit = [(_AUStaticParameterInfo *)info unit];
     v7 = &stru_1F0340B48;
-    switch(v6)
+    switch(unit)
     {
       case 0u:
       case 1u:
@@ -188,12 +188,12 @@ LABEL_22:
           goto LABEL_26;
         }
 
-        v5 = [-[AUParameter unitName]::coreAudioUIBundle localizedStringForKey:v7 value:&stru_1F0340B48 table:@"AUParameters"];
+        unitName2 = [-[AUParameter unitName]::coreAudioUIBundle localizedStringForKey:v7 value:&stru_1F0340B48 table:@"AUParameters"];
         break;
     }
   }
 
-  v7 = v5;
+  v7 = unitName2;
 LABEL_26:
 
   return v7;
@@ -202,27 +202,27 @@ LABEL_26:
 - (AUValue)valueFromString:(NSString *)string
 {
   v4 = string;
-  v5 = [(AUParameterNode *)self implementorValueFromStringCallback];
+  implementorValueFromStringCallback = [(AUParameterNode *)self implementorValueFromStringCallback];
 
-  if (v5)
+  if (implementorValueFromStringCallback)
   {
-    v6 = [(AUParameterNode *)self implementorValueFromStringCallback];
-    v7 = (v6)[2](v6, self, v4);
+    implementorValueFromStringCallback2 = [(AUParameterNode *)self implementorValueFromStringCallback];
+    v7 = (implementorValueFromStringCallback2)[2](implementorValueFromStringCallback2, self, v4);
   }
 
   else
   {
-    v9 = [(AUParameterNode *)self _rootParent];
-    v6 = v9;
+    _rootParent = [(AUParameterNode *)self _rootParent];
+    implementorValueFromStringCallback2 = _rootParent;
     v7 = 0.0;
-    if (v9)
+    if (_rootParent)
     {
-      v10 = [v9 implementorValueFromStringCallback];
+      implementorValueFromStringCallback3 = [_rootParent implementorValueFromStringCallback];
 
-      if (v10)
+      if (implementorValueFromStringCallback3)
       {
-        v11 = [v6 implementorValueFromStringCallback];
-        v7 = (v11)[2](v11, self, v4);
+        v6ImplementorValueFromStringCallback = [implementorValueFromStringCallback2 implementorValueFromStringCallback];
+        v7 = (v6ImplementorValueFromStringCallback)[2](v6ImplementorValueFromStringCallback, self, v4);
       }
     }
   }
@@ -232,26 +232,26 @@ LABEL_26:
 
 - (NSString)stringFromValue:(const AUValue *)value
 {
-  v5 = [(AUParameterNode *)self implementorStringFromValueCallback];
+  implementorStringFromValueCallback = [(AUParameterNode *)self implementorStringFromValueCallback];
 
-  if (v5)
+  if (implementorStringFromValueCallback)
   {
-    v6 = [(AUParameterNode *)self implementorStringFromValueCallback];
-    v7 = (v6)[2](v6, self, value);
+    implementorStringFromValueCallback2 = [(AUParameterNode *)self implementorStringFromValueCallback];
+    v7 = (implementorStringFromValueCallback2)[2](implementorStringFromValueCallback2, self, value);
   }
 
   else
   {
-    v8 = [(AUParameterNode *)self _rootParent];
-    v6 = v8;
-    if (v8)
+    _rootParent = [(AUParameterNode *)self _rootParent];
+    implementorStringFromValueCallback2 = _rootParent;
+    if (_rootParent)
     {
-      v9 = [v8 implementorStringFromValueCallback];
+      implementorStringFromValueCallback3 = [_rootParent implementorStringFromValueCallback];
 
-      if (v9)
+      if (implementorStringFromValueCallback3)
       {
-        v10 = [v6 implementorStringFromValueCallback];
-        v11 = (v10)[2](v10, self, value);
+        v6ImplementorStringFromValueCallback = [implementorStringFromValueCallback2 implementorStringFromValueCallback];
+        v11 = (v6ImplementorStringFromValueCallback)[2](v6ImplementorStringFromValueCallback, self, value);
 
         goto LABEL_10;
       }
@@ -271,24 +271,24 @@ LABEL_10:
   return v11;
 }
 
-- (void)setValue:(float)a3 extOriginator:(AUParameterObserverExtendedToken)a4 atHostTime:(unint64_t)a5 eventType:(unsigned int)a6
+- (void)setValue:(float)value extOriginator:(AUParameterObserverExtendedToken)originator atHostTime:(unint64_t)time eventType:(unsigned int)type
 {
   v11 = objc_autoreleasePoolPush();
-  v12 = [(AUParameterNode *)self _rootParent];
+  _rootParent = [(AUParameterNode *)self _rootParent];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
-  v30[3] = a5;
+  v30[3] = time;
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __59__AUParameter_setValue_extOriginator_atHostTime_eventType___block_invoke;
   v22 = &unk_1E72C13C0;
-  v28 = a3;
-  v23 = self;
-  var0 = a4.var0;
-  v13 = v12;
-  v27 = a5;
-  v29 = a6;
+  valueCopy = value;
+  selfCopy = self;
+  var0 = originator.var0;
+  v13 = _rootParent;
+  timeCopy = time;
+  typeCopy = type;
   v24 = v13;
   v25 = v30;
   v14 = _Block_copy(&v19);
@@ -300,8 +300,8 @@ LABEL_10:
 
   else
   {
-    v18 = [v13 valueAccessQueue];
-    dispatch_sync(v18, v14);
+    valueAccessQueue = [v13 valueAccessQueue];
+    dispatch_sync(valueAccessQueue, v14);
   }
 
   objc_autoreleasePoolPop(v15);
@@ -602,13 +602,13 @@ uint64_t __59__AUParameter_setValue_extOriginator_atHostTime_eventType___block_i
 
 - (AUValue)value
 {
-  v3 = [(AUParameterNode *)self _rootParent];
-  v4 = v3;
+  _rootParent = [(AUParameterNode *)self _rootParent];
+  v4 = _rootParent;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   value = self->_value;
-  if (!v3 || ([v3 valueAccessQueue], v5 = objc_claimAutoreleasedReturnValue(), specific = dispatch_get_specific(&current_queue_key), v5, specific == v5))
+  if (!_rootParent || ([_rootParent valueAccessQueue], v5 = objc_claimAutoreleasedReturnValue(), specific = dispatch_get_specific(&current_queue_key), v5, specific == v5))
   {
     [(AUParameter *)self _internalValue];
     v8 = v9;
@@ -617,14 +617,14 @@ uint64_t __59__AUParameter_setValue_extOriginator_atHostTime_eventType___block_i
 
   else
   {
-    v7 = [v4 valueAccessQueue];
+    valueAccessQueue = [v4 valueAccessQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __20__AUParameter_value__block_invoke;
     v11[3] = &unk_1E72C1370;
     v11[4] = self;
     v11[5] = &v12;
-    dispatch_sync(v7, v11);
+    dispatch_sync(valueAccessQueue, v11);
 
     v8 = v13[6];
   }
@@ -643,31 +643,31 @@ uint64_t __20__AUParameter_value__block_invoke(uint64_t a1)
 
 - (float)_internalValue
 {
-  v3 = [(AUParameterNode *)self _rootParent];
+  _rootParent = [(AUParameterNode *)self _rootParent];
   v4 = atomic_load(&self->_localValueStale);
-  if ((v4 & 1) != 0 || ([(_AUStaticParameterInfo *)self->_info flags]& 0x8000) != 0 && v3)
+  if ((v4 & 1) != 0 || ([(_AUStaticParameterInfo *)self->_info flags]& 0x8000) != 0 && _rootParent)
   {
-    v5 = self;
-    v6 = v5;
+    selfCopy = self;
+    v6 = selfCopy;
     while (1)
     {
-      v7 = [v6 implementorValueProvider];
-      v8 = v7;
-      if (v7)
+      implementorValueProvider = [v6 implementorValueProvider];
+      v8 = implementorValueProvider;
+      if (implementorValueProvider)
       {
         break;
       }
 
-      v9 = [v6 parentNode];
+      parentNode = [v6 parentNode];
 
-      v6 = v9;
-      if (!v9)
+      v6 = parentNode;
+      if (!parentNode)
       {
         goto LABEL_9;
       }
     }
 
-    v5->_value = (*(v7 + 16))(v7, v5);
+    selfCopy->_value = (*(implementorValueProvider + 16))(implementorValueProvider, selfCopy);
     atomic_store(0, &self->_localValueStale);
   }
 
@@ -677,17 +677,17 @@ LABEL_9:
   return value;
 }
 
-- (id)copyNodeWithOffset:(unint64_t)a3
+- (id)copyNodeWithOffset:(unint64_t)offset
 {
   v5 = [AUParameter alloc];
-  v6 = [(AUParameterNode *)self identifier];
-  v7 = [(AUParameterNode *)self displayName];
-  v8 = [(AUParameterNode *)v5 initWithID:v6 name:v7];
+  identifier = [(AUParameterNode *)self identifier];
+  displayName = [(AUParameterNode *)self displayName];
+  v8 = [(AUParameterNode *)v5 initWithID:identifier name:displayName];
 
-  v9 = [(AUParameter *)self info];
-  [(AUParameter *)v8 setInfo:v9];
+  info = [(AUParameter *)self info];
+  [(AUParameter *)v8 setInfo:info];
 
-  [(AUParameter *)v8 setAddress:[(AUParameter *)self address]+ a3];
+  [(AUParameter *)v8 setAddress:[(AUParameter *)self address]+ offset];
   return v8;
 }
 
@@ -695,11 +695,11 @@ LABEL_9:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AUParameterNode *)self identifier];
-  v6 = [(AUParameterNode *)self displayName];
-  v7 = [(AUParameter *)self address];
+  identifier = [(AUParameterNode *)self identifier];
+  displayName = [(AUParameterNode *)self displayName];
+  address = [(AUParameter *)self address];
   [(AUParameter *)self value];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@, %@, addr 0x%llx, val %.3f>", v4, self, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@, %@, addr 0x%llx, val %.3f>", v4, self, identifier, displayName, address, v8];
 
   return v9;
 }

@@ -1,36 +1,36 @@
 @interface _UIWindowTransformLayer
-- (void)addAnimation:(id)a3 forKey:(id)a4;
+- (void)addAnimation:(id)animation forKey:(id)key;
 @end
 
 @implementation _UIWindowTransformLayer
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  animationCopy = animation;
+  keyCopy = key;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqualToString:@"transform"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [keyCopy isEqualToString:@"transform"])
   {
-    v8 = v6;
+    v8 = animationCopy;
     window = self->super._window;
     previousSceneOrientationForCounterRotation = window->_previousSceneOrientationForCounterRotation;
-    v11 = [(UIWindow *)window _toWindowOrientation];
-    v12 = [(UIWindow *)self->super._window _fromWindowOrientation];
+    _toWindowOrientation = [(UIWindow *)window _toWindowOrientation];
+    _fromWindowOrientation = [(UIWindow *)self->super._window _fromWindowOrientation];
     if (previousSceneOrientationForCounterRotation)
     {
       v13 = self->super._window;
       v14 = v13->_previousSceneOrientationForCounterRotation;
-      v15 = [(UIWindow *)v13 _orientationForRootTransform];
+      _orientationForRootTransform = [(UIWindow *)v13 _orientationForRootTransform];
       v16 = 0.0;
       v17 = 0.0;
-      if (v12 != 1)
+      if (_fromWindowOrientation != 1)
       {
-        if (v12 == 3)
+        if (_fromWindowOrientation == 3)
         {
           v17 = 1.57079633;
         }
 
-        else if (v12 == 4)
+        else if (_fromWindowOrientation == 4)
         {
           v17 = -1.57079633;
         }
@@ -38,7 +38,7 @@
         else
         {
           v17 = 3.14159265;
-          if (v12 != 2)
+          if (_fromWindowOrientation != 2)
           {
             v17 = 0.0;
           }
@@ -69,14 +69,14 @@
 
       v18 = 0.0;
       v19 = 0.0;
-      if (v11 != 1)
+      if (_toWindowOrientation != 1)
       {
-        if (v11 == 3)
+        if (_toWindowOrientation == 3)
         {
           v19 = 1.57079633;
         }
 
-        else if (v11 == 4)
+        else if (_toWindowOrientation == 4)
         {
           v19 = -1.57079633;
         }
@@ -84,7 +84,7 @@
         else
         {
           v19 = 3.14159265;
-          if (v11 != 2)
+          if (_toWindowOrientation != 2)
           {
             v19 = 0.0;
           }
@@ -92,9 +92,9 @@
       }
 
       v20 = v17 - v16;
-      if (v15 != 1)
+      if (_orientationForRootTransform != 1)
       {
-        switch(v15)
+        switch(_orientationForRootTransform)
         {
           case 3:
             v18 = 1.57079633;
@@ -113,13 +113,13 @@
 
     else
     {
-      _UIMakeBasicTransformAnimationUnambiguousWithOrientations(v8, v12, v11, 0, 0);
+      _UIMakeBasicTransformAnimationUnambiguousWithOrientations(v8, _fromWindowOrientation, _toWindowOrientation, 0, 0);
     }
   }
 
   v21.receiver = self;
   v21.super_class = _UIWindowTransformLayer;
-  [(_UIWindowTransformLayer *)&v21 addAnimation:v6 forKey:v7];
+  [(_UIWindowTransformLayer *)&v21 addAnimation:animationCopy forKey:keyCopy];
 }
 
 @end

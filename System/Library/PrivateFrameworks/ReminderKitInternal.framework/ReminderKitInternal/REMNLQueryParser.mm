@@ -1,65 +1,65 @@
 @interface REMNLQueryParser
-- (REMNLQueryParser)initWithLocale:(id)a3 referenceDate:(id)a4 referenceTimeZone:(id)a5 forTesting:(BOOL)a6;
-- (id)parseString:(id)a3;
+- (REMNLQueryParser)initWithLocale:(id)locale referenceDate:(id)date referenceTimeZone:(id)zone forTesting:(BOOL)testing;
+- (id)parseString:(id)string;
 - (id)parserManagerTestOptions;
 @end
 
 @implementation REMNLQueryParser
 
-- (REMNLQueryParser)initWithLocale:(id)a3 referenceDate:(id)a4 referenceTimeZone:(id)a5 forTesting:(BOOL)a6
+- (REMNLQueryParser)initWithLocale:(id)locale referenceDate:(id)date referenceTimeZone:(id)zone forTesting:(BOOL)testing
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  localeCopy = locale;
+  dateCopy = date;
+  zoneCopy = zone;
   v19.receiver = self;
   v19.super_class = REMNLQueryParser;
   v14 = [(REMNLQueryParser *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_timeZone, a5);
-    objc_storeStrong(&v15->_locale, a3);
-    if (v12)
+    objc_storeStrong(&v14->_timeZone, zone);
+    objc_storeStrong(&v15->_locale, locale);
+    if (dateCopy)
     {
-      v16 = v12;
+      date = dateCopy;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     referenceDate = v15->_referenceDate;
-    v15->_referenceDate = v16;
+    v15->_referenceDate = date;
 
-    v15->_forTesting = a6;
+    v15->_forTesting = testing;
   }
 
   return v15;
 }
 
-- (id)parseString:(id)a3
+- (id)parseString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
-  v5 = 0;
+  parserManagerTestOptions = 0;
   v15 = objc_opt_new();
   if (self->_forTesting)
   {
-    v5 = [(REMNLQueryParser *)self parserManagerTestOptions];
+    parserManagerTestOptions = [(REMNLQueryParser *)self parserManagerTestOptions];
   }
 
-  v6 = [MEMORY[0x277D43E20] remindersParserManager];
+  remindersParserManager = [MEMORY[0x277D43E20] remindersParserManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __32__REMNLQueryParser_parseString___block_invoke;
   v9[3] = &unk_2788BC4E8;
   v9[4] = &v10;
-  [v6 enumerateParseResultsForString:v4 options:v5 withBlock:v9];
+  [remindersParserManager enumerateParseResultsForString:stringCopy options:parserManagerTestOptions withBlock:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);

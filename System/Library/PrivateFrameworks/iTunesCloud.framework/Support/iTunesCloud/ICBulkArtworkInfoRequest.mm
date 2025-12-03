@@ -1,7 +1,7 @@
 @interface ICBulkArtworkInfoRequest
-- (id)_bodyDataForCloudIDs:(id)a3 itemKind:(unsigned __int8)a4 useLongIDs:(BOOL)a5;
+- (id)_bodyDataForCloudIDs:(id)ds itemKind:(unsigned __int8)kind useLongIDs:(BOOL)iDs;
 - (id)_queryFilterString;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation ICBulkArtworkInfoRequest
@@ -44,20 +44,20 @@
   return v10;
 }
 
-- (id)_bodyDataForCloudIDs:(id)a3 itemKind:(unsigned __int8)a4 useLongIDs:(BOOL)a5
+- (id)_bodyDataForCloudIDs:(id)ds itemKind:(unsigned __int8)kind useLongIDs:(BOOL)iDs
 {
-  v8 = a3;
-  v5 = v8;
+  dsCopy = ds;
+  v5 = dsCopy;
   v6 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v6;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(ICDResponse *)ICBulkArtworkInfoResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  v5 = [ICDResponseDataParser parseResponseData:v4];
+  v3 = [(ICDResponse *)ICBulkArtworkInfoResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  v5 = [ICDResponseDataParser parseResponseData:responseData];
 
   [v3 setArtworkInfoDictionaries:v5];
 

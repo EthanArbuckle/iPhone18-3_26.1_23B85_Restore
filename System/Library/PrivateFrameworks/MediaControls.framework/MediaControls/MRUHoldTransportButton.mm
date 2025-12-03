@@ -1,19 +1,19 @@
 @interface MRUHoldTransportButton
-- (MRUHoldTransportButton)initWithFrame:(CGRect)a3;
-- (void)beganHold:(id)a3;
-- (void)dragEnter:(id)a3;
-- (void)releasedHold:(id)a3;
-- (void)setAnimationTimer:(id)a3;
-- (void)setTransportControlItem:(id)a3;
+- (MRUHoldTransportButton)initWithFrame:(CGRect)frame;
+- (void)beganHold:(id)hold;
+- (void)dragEnter:(id)enter;
+- (void)releasedHold:(id)hold;
+- (void)setAnimationTimer:(id)timer;
+- (void)setTransportControlItem:(id)item;
 @end
 
 @implementation MRUHoldTransportButton
 
-- (MRUHoldTransportButton)initWithFrame:(CGRect)a3
+- (MRUHoldTransportButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MRUHoldTransportButton;
-  v3 = [(MRUTransportButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUTransportButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,43 +26,43 @@
   return v4;
 }
 
-- (void)setTransportControlItem:(id)a3
+- (void)setTransportControlItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = MRUForwardBackwardPackageStateNameForState([(MRUTransportButton *)self packageState]);
-  v6 = [v4 asset];
-  v7 = [v6 packageAsset];
-  [v7 setGlyphState:v5];
+  asset = [itemCopy asset];
+  packageAsset = [asset packageAsset];
+  [packageAsset setGlyphState:v5];
 
   v8.receiver = self;
   v8.super_class = MRUHoldTransportButton;
-  [(MRUTransportButton *)&v8 setTransportControlItem:v4];
+  [(MRUTransportButton *)&v8 setTransportControlItem:itemCopy];
 }
 
-- (void)setAnimationTimer:(id)a3
+- (void)setAnimationTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(MRUHoldTransportButton *)self animationTimer];
-  [v5 invalidate];
+  timerCopy = timer;
+  animationTimer = [(MRUHoldTransportButton *)self animationTimer];
+  [animationTimer invalidate];
 
   animationTimer = self->_animationTimer;
-  self->_animationTimer = v4;
+  self->_animationTimer = timerCopy;
 }
 
-- (void)dragEnter:(id)a3
+- (void)dragEnter:(id)enter
 {
-  v4 = a3;
-  if ([v4 isHolding])
+  enterCopy = enter;
+  if ([enterCopy isHolding])
   {
-    [(MRUHoldTransportButton *)self beganHold:v4];
+    [(MRUHoldTransportButton *)self beganHold:enterCopy];
   }
 }
 
-- (void)beganHold:(id)a3
+- (void)beganHold:(id)hold
 {
-  v4 = a3;
-  v5 = [(MRUTransportButton *)self transportControlItem];
-  if ([v5 supportsHolding])
+  holdCopy = hold;
+  transportControlItem = [(MRUTransportButton *)self transportControlItem];
+  if ([transportControlItem supportsHolding])
   {
     objc_initWeak(&location, self);
     v6 = MEMORY[0x1E695DFF0];
@@ -74,8 +74,8 @@
     v7 = [v6 scheduledTimerWithTimeInterval:1 repeats:&v9 block:0.5];
     [(MRUHoldTransportButton *)self setAnimationTimer:v7, v9, v10, v11, v12];
 
-    v8 = [v5 holdBeganAction];
-    v8[2]();
+    holdBeganAction = [transportControlItem holdBeganAction];
+    holdBeganAction[2]();
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -93,14 +93,14 @@ void __36__MRUHoldTransportButton_beganHold___block_invoke(uint64_t a1)
   }
 }
 
-- (void)releasedHold:(id)a3
+- (void)releasedHold:(id)hold
 {
   [(MRUHoldTransportButton *)self setAnimationTimer:0];
-  v5 = [(MRUTransportButton *)self transportControlItem];
-  if ([v5 supportsHolding])
+  transportControlItem = [(MRUTransportButton *)self transportControlItem];
+  if ([transportControlItem supportsHolding])
   {
-    v4 = [v5 holdEndAction];
-    v4[2]();
+    holdEndAction = [transportControlItem holdEndAction];
+    holdEndAction[2]();
   }
 }
 

@@ -1,5 +1,5 @@
 @interface SubscriptionEntitlementsOperation
-- (id)_fetchSubscriptionEntitlements:(id *)a3;
+- (id)_fetchSubscriptionEntitlements:(id *)entitlements;
 - (void)run;
 @end
 
@@ -7,7 +7,7 @@
 
 - (void)run
 {
-  v3 = [(SubscriptionEntitlementsOperation *)self subscriptionEntitlementsBlock];
+  subscriptionEntitlementsBlock = [(SubscriptionEntitlementsOperation *)self subscriptionEntitlementsBlock];
   v17 = 0;
   if ([(SubscriptionEntitlementsOperation *)self ignoreCaches])
   {
@@ -30,19 +30,19 @@
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -61,7 +61,7 @@
 
   if (v11)
   {
-    v8 = [NSString stringWithCString:v11 encoding:4, &v18, v15];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, &v18, v15];
     free(v11);
     SSFileLog();
 LABEL_15:
@@ -78,13 +78,13 @@ LABEL_15:
   }
 
 LABEL_19:
-  (v3)[2](v3, v4, v13);
+  (subscriptionEntitlementsBlock)[2](subscriptionEntitlementsBlock, v4, v13);
   [(SubscriptionEntitlementsOperation *)self setError:v13];
   [(SubscriptionEntitlementsOperation *)self setSubscriptionEntitlementsBlock:0];
   [(SubscriptionEntitlementsOperation *)self setSuccess:1];
 }
 
-- (id)_fetchSubscriptionEntitlements:(id *)a3
+- (id)_fetchSubscriptionEntitlements:(id *)entitlements
 {
   v5 = objc_alloc_init(ISStoreURLOperation);
   [v5 setCanSendGUIDParameter:0];
@@ -97,17 +97,17 @@ LABEL_19:
   v25 = 0;
   v8 = [(SubscriptionEntitlementsOperation *)self runSubOperation:v5 returningError:&v25];
   v9 = v25;
-  v10 = [v5 response];
+  response = [v5 response];
   objc_opt_class();
   objc_opt_class();
-  v11 = 0;
+  response2 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v5 response];
+    response2 = [v5 response];
   }
 
-  v12 = [v11 statusCode];
-  if (v12 == 200)
+  statusCode = [response2 statusCode];
+  if (statusCode == 200)
   {
     v13 = v8;
   }
@@ -119,8 +119,8 @@ LABEL_19:
 
   if (v13 == 1)
   {
-    v14 = [v5 dataProvider];
-    v15 = [v14 output];
+    dataProvider = [v5 dataProvider];
+    output = [dataProvider output];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -129,11 +129,11 @@ LABEL_19:
       goto LABEL_22;
     }
 
-    v16 = [v15 objectForKey:@"status"];
+    v16 = [output objectForKey:@"status"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v16 integerValue])
     {
-      v17 = [v15 objectForKey:@"errorNumber"];
+      v17 = [output objectForKey:@"errorNumber"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -146,7 +146,7 @@ LABEL_19:
       }
 
       [v18 integerValue];
-      v19 = [v15 objectForKey:@"errorMessage"];
+      v19 = [output objectForKey:@"errorMessage"];
       v24 = SSError();
 
       v20 = 0;
@@ -155,7 +155,7 @@ LABEL_19:
 
     else
     {
-      v17 = [v15 objectForKeyedSubscript:@"entitlements"];
+      v17 = [output objectForKeyedSubscript:@"entitlements"];
       v20 = [SSVSubscriptionEntitlements _parseJSONDictionary:v17];
       [SSVSubscriptionEntitlementsCoordinator setCachedSubscriptionEntitlements:v17];
     }
@@ -166,7 +166,7 @@ LABEL_19:
     if (v9)
     {
       v20 = 0;
-      if (!a3)
+      if (!entitlements)
       {
         goto LABEL_25;
       }
@@ -174,15 +174,15 @@ LABEL_19:
       goto LABEL_23;
     }
 
-    v21 = v12;
+    v21 = statusCode;
     v16 = SSError();
-    v15 = [NSNumber numberWithInteger:v21];
+    output = [NSNumber numberWithInteger:v21];
     v9 = SSErrorBySettingUserInfoValue();
     v20 = 0;
   }
 
 LABEL_22:
-  if (!a3)
+  if (!entitlements)
   {
     goto LABEL_25;
   }
@@ -191,7 +191,7 @@ LABEL_23:
   if (!v20)
   {
     v22 = v9;
-    *a3 = v9;
+    *entitlements = v9;
   }
 
 LABEL_25:

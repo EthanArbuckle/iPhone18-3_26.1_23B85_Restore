@@ -1,26 +1,26 @@
 @interface PPKTextFormattingViewController
 - (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)init;
-- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithCoder:(id)a3;
-- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithConfiguration:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithCoder:(id)coder;
+- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithConfiguration:(id)configuration;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PPKTextFormattingViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(UITextFormattingViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 view];
-  if (v5)
+  [(UITextFormattingViewController *)&v8 viewWillAppear:appearCopy];
+  view = [v4 view];
+  if (view)
   {
-    v6 = v5;
-    v7 = [objc_opt_self() clearColor];
+    v6 = view;
+    clearColor = [objc_opt_self() clearColor];
     [v6 setBackgroundColor_];
   }
 
@@ -30,15 +30,15 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  PPKTextFormattingViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  PPKTextFormattingViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   specialized PPKTextFormattingViewController.viewWillDisappear(_:)();
 }
 
@@ -52,25 +52,25 @@
   return [(UITextFormattingViewController *)&v5 init];
 }
 
-- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithConfiguration:(id)a3
+- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithConfiguration:(id)configuration
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController_observationTimer) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController_lastFirstResponder) = 0;
   v7.receiver = self;
   v7.super_class = ObjectType;
-  return [(UITextFormattingViewController *)&v7 initWithConfiguration:a3];
+  return [(UITextFormattingViewController *)&v7 initWithConfiguration:configuration];
 }
 
-- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithCoder:(id)a3
+- (_TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController_observationTimer) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8PaperKitP33_27F002B93C9F4F9167064F394416CE3031PPKTextFormattingViewController_lastFirstResponder) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(UITextFormattingViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(UITextFormattingViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

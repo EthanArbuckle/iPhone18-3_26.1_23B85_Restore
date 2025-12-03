@@ -1,19 +1,19 @@
 @interface RTUserNotificationAction
-- (RTUserNotificationAction)initWithActionIdentifier:(id)a3 title:(id)a4 iconWithSystemImageName:(id)a5 handler:(id)a6;
+- (RTUserNotificationAction)initWithActionIdentifier:(id)identifier title:(id)title iconWithSystemImageName:(id)name handler:(id)handler;
 @end
 
 @implementation RTUserNotificationAction
 
-- (RTUserNotificationAction)initWithActionIdentifier:(id)a3 title:(id)a4 iconWithSystemImageName:(id)a5 handler:(id)a6
+- (RTUserNotificationAction)initWithActionIdentifier:(id)identifier title:(id)title iconWithSystemImageName:(id)name handler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  identifierCopy = identifier;
+  titleCopy = title;
+  nameCopy = name;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    if (v12)
+    if (titleCopy)
     {
       goto LABEL_10;
     }
@@ -31,7 +31,7 @@
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: actionIdentifier (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v12)
+  if (!titleCopy)
   {
 LABEL_7:
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -52,10 +52,10 @@ LABEL_10:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_actionIdentifier, a3);
-    objc_storeStrong(&v18->_title, a4);
-    objc_storeStrong(&v18->_iconWithSystemImageName, a5);
-    v19 = _Block_copy(v14);
+    objc_storeStrong(&v17->_actionIdentifier, identifier);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v18->_iconWithSystemImageName, name);
+    v19 = _Block_copy(handlerCopy);
     handler = v18->_handler;
     v18->_handler = v19;
   }

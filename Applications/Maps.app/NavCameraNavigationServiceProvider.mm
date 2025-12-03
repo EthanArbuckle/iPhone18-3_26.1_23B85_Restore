@@ -11,15 +11,15 @@
 - (int)navigationState;
 - (unint64_t)displayedStepIndex;
 - (unint64_t)stepIndex;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateAlternateRoutes:(id)a4 traffics:(id)a5;
-- (void)navigationService:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didChangeNavigationState:(int)state;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateAlternateRoutes:(id)routes traffics:(id)traffics;
+- (void)navigationService:(id)service didUpdateDisplayedStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
 @end
 
 @implementation NavCameraNavigationServiceProvider
@@ -34,106 +34,106 @@
 - (GEOComposedRoute)route
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 route];
+  route = [v2 route];
 
-  return v3;
+  return route;
 }
 
 - (unint64_t)displayedStepIndex
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 displayedStepIndex];
+  displayedStepIndex = [v2 displayedStepIndex];
 
-  return v3;
+  return displayedStepIndex;
 }
 
 - (unint64_t)stepIndex
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 stepIndex];
+  stepIndex = [v2 stepIndex];
 
-  return v3;
+  return stepIndex;
 }
 
 - (int)navigationState
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 navigationState];
+  navigationState = [v2 navigationState];
 
-  return v3;
+  return navigationState;
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v10 navigationProvider:self didUpdateRoute:v9 traffic:v8];
+  trafficCopy = traffic;
+  routeCopy = route;
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateRoute:routeCopy traffic:trafficCopy];
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v6 = a4;
-  v8 = [(NavCameraNavigationServiceProvider *)self delegate];
-  v7 = [v6 traffic];
-  [v8 navigationProvider:self didUpdateRoute:v6 traffic:v7];
+  rerouteCopy = reroute;
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  traffic = [rerouteCopy traffic];
+  [delegate navigationProvider:self didUpdateRoute:rerouteCopy traffic:traffic];
 }
 
-- (void)navigationService:(id)a3 didUpdateAlternateRoutes:(id)a4 traffics:(id)a5
+- (void)navigationService:(id)service didUpdateAlternateRoutes:(id)routes traffics:(id)traffics
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v9 navigationProvider:self didUpdateAlternateRoutes:v8 traffics:v7];
+  trafficsCopy = traffics;
+  routesCopy = routes;
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateAlternateRoutes:routesCopy traffics:trafficsCopy];
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index
 {
-  v10 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v10 navigationProvider:self didUpdateDistanceUntilManeuver:a6 timeUntilManeuver:a4 forStepIndex:a5];
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateDistanceUntilManeuver:index timeUntilManeuver:maneuver forStepIndex:untilManeuver];
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateDisplayedStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v8 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v8 navigationProvider:self didUpdateStepIndex:a4 segmentIndex:a5];
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateStepIndex:index segmentIndex:segmentIndex];
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v8 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v8 navigationProvider:self didUpdateStepIndex:a4 segmentIndex:a5];
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateStepIndex:index segmentIndex:segmentIndex];
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v5 = a4;
-  v6 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v6 navigationProvider:self didUpdateMatchedLocation:v5];
+  locationCopy = location;
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateMatchedLocation:locationCopy];
 }
 
-- (void)navigationService:(id)a3 didChangeNavigationState:(int)a4
+- (void)navigationService:(id)service didChangeNavigationState:(int)state
 {
-  v4 = *&a4;
-  v6 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v6 navigationProvider:self didChangeNavigationState:v4];
+  v4 = *&state;
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didChangeNavigationState:v4];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v6 = [(NavCameraNavigationServiceProvider *)self delegate];
-  [v6 navigationProvider:self didChangeToNavigating:MNNavigationServiceStateChangedToNavigating()];
+  delegate = [(NavCameraNavigationServiceProvider *)self delegate];
+  [delegate navigationProvider:self didChangeToNavigating:MNNavigationServiceStateChangedToNavigating()];
 }
 
 - (NSDictionary)alternateRouteTraffics
 {
-  v2 = [(NavCameraNavigationServiceProvider *)self alternateRoutes];
-  v3 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v2 count]);
+  alternateRoutes = [(NavCameraNavigationServiceProvider *)self alternateRoutes];
+  v3 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [alternateRoutes count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = alternateRoutes;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -149,9 +149,9 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 traffic];
-        v11 = [v9 uniqueRouteID];
-        [v3 setObject:v10 forKeyedSubscript:v11];
+        traffic = [v9 traffic];
+        uniqueRouteID = [v9 uniqueRouteID];
+        [v3 setObject:traffic forKeyedSubscript:uniqueRouteID];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -168,9 +168,9 @@
 - (NSArray)alternateRoutes
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 alternateRoutes];
+  alternateRoutes = [v2 alternateRoutes];
 
-  return v3;
+  return alternateRoutes;
 }
 
 - (double)timeUntilManeuver
@@ -194,17 +194,17 @@
 - (MNLocation)lastLocation
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 lastLocation];
+  lastLocation = [v2 lastLocation];
 
-  return v3;
+  return lastLocation;
 }
 
 - (BOOL)isInNavigatingState
 {
   v2 = +[MNNavigationService sharedService];
-  v3 = [v2 isInNavigatingState];
+  isInNavigatingState = [v2 isInNavigatingState];
 
-  return v3;
+  return isInNavigatingState;
 }
 
 - (NavCameraNavigationServiceProvider)init

@@ -1,21 +1,21 @@
 @interface HSUserManagementViewController
-- (HSUserManagementViewController)initWithRootViewController:(id)a3;
-- (void)_notifyHostAndDismissWithError:(id)a3;
+- (HSUserManagementViewController)initWithRootViewController:(id)controller;
+- (void)_notifyHostAndDismissWithError:(id)error;
 - (void)_notifyRemoteReadyToDisplayIfNeeded;
 - (void)_updateHome;
 - (void)_updateViewControllers;
-- (void)addPeopleViewController:(id)a3 didSendInvitations:(id)a4;
-- (void)controllerDidSendInvitations:(id)a3;
-- (void)setHomeUUID:(id)a3;
+- (void)addPeopleViewController:(id)controller didSendInvitations:(id)invitations;
+- (void)controllerDidSendInvitations:(id)invitations;
+- (void)setHomeUUID:(id)d;
 @end
 
 @implementation HSUserManagementViewController
 
-- (HSUserManagementViewController)initWithRootViewController:(id)a3
+- (HSUserManagementViewController)initWithRootViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = HSUserManagementViewController;
-  v3 = [(HSUserManagementViewController *)&v9 initWithRootViewController:a3];
+  v3 = [(HSUserManagementViewController *)&v9 initWithRootViewController:controller];
   if (v3)
   {
     v4 = [HMHomeManager alloc];
@@ -31,31 +31,31 @@
   return v3;
 }
 
-- (void)setHomeUUID:(id)a3
+- (void)setHomeUUID:(id)d
 {
-  objc_storeStrong(&self->_homeUUID, a3);
+  objc_storeStrong(&self->_homeUUID, d);
 
   [(HSUserManagementViewController *)self _updateHome];
 }
 
 - (void)_updateHome
 {
-  v3 = [(HSUserManagementViewController *)self homeUUID];
-  if (v3)
+  homeUUID = [(HSUserManagementViewController *)self homeUUID];
+  if (homeUUID)
   {
-    v4 = v3;
-    v5 = [(HSUserManagementViewController *)self home];
+    v4 = homeUUID;
+    home = [(HSUserManagementViewController *)self home];
 
-    if (!v5)
+    if (!home)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = [(HSUserManagementViewController *)self homeManager];
-      v7 = [v6 homes];
+      homeManager = [(HSUserManagementViewController *)self homeManager];
+      homes = [homeManager homes];
 
-      v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [homes countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         v9 = v8;
@@ -66,13 +66,13 @@
           {
             if (*v17 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(homes);
             }
 
             v12 = *(*(&v16 + 1) + 8 * i);
-            v13 = [v12 uuid];
-            v14 = [(HSUserManagementViewController *)self homeUUID];
-            v15 = [v13 isEqual:v14];
+            uuid = [v12 uuid];
+            homeUUID2 = [(HSUserManagementViewController *)self homeUUID];
+            v15 = [uuid isEqual:homeUUID2];
 
             if (v15)
             {
@@ -81,7 +81,7 @@
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [homes countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v9)
           {
             continue;
@@ -101,16 +101,16 @@ LABEL_13:
 
 - (void)_notifyRemoteReadyToDisplayIfNeeded
 {
-  v3 = [(HSUserManagementViewController *)self home];
-  if (v3)
+  home = [(HSUserManagementViewController *)self home];
+  if (home)
   {
-    v4 = v3;
-    v5 = [(HSUserManagementViewController *)self didNotifyFinishLoading];
+    v4 = home;
+    didNotifyFinishLoading = [(HSUserManagementViewController *)self didNotifyFinishLoading];
 
-    if ((v5 & 1) == 0)
+    if ((didNotifyFinishLoading & 1) == 0)
     {
-      v6 = [(HSUserManagementViewController *)self _remoteViewControllerProxy];
-      [v6 userManagementDidLoad];
+      _remoteViewControllerProxy = [(HSUserManagementViewController *)self _remoteViewControllerProxy];
+      [_remoteViewControllerProxy userManagementDidLoad];
 
       [(HSUserManagementViewController *)self setDidNotifyFinishLoading:1];
     }
@@ -123,8 +123,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(HSUserManagementViewController *)self viewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  viewControllers = [(HSUserManagementViewController *)self viewControllers];
+  v4 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -135,28 +135,28 @@ LABEL_13:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewControllers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 conformsToProtocol:&OBJC_PROTOCOL___HUUserManagementDelegate])
         {
           v9 = v8;
-          v10 = [(HSUserManagementViewController *)self home];
-          [v9 updateHome:v10];
+          home = [(HSUserManagementViewController *)self home];
+          [v9 updateHome:home];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addPeopleViewController:(id)a3 didSendInvitations:(id)a4
+- (void)addPeopleViewController:(id)controller didSendInvitations:(id)invitations
 {
-  v5 = [(HSUserManagementViewController *)self topViewController:a3];
+  v5 = [(HSUserManagementViewController *)self topViewController:controller];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -167,9 +167,9 @@ LABEL_13:
   }
 }
 
-- (void)controllerDidSendInvitations:(id)a3
+- (void)controllerDidSendInvitations:(id)invitations
 {
-  v4 = [(HSUserManagementViewController *)self topViewController];
+  topViewController = [(HSUserManagementViewController *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -180,11 +180,11 @@ LABEL_13:
   }
 }
 
-- (void)_notifyHostAndDismissWithError:(id)a3
+- (void)_notifyHostAndDismissWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HSUserManagementViewController *)self _remoteViewControllerProxy];
-  [v5 userManagementDidFinishWithError:v4];
+  errorCopy = error;
+  _remoteViewControllerProxy = [(HSUserManagementViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy userManagementDidFinishWithError:errorCopy];
 }
 
 @end

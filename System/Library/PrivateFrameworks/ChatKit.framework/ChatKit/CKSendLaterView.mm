@@ -1,13 +1,13 @@
 @interface CKSendLaterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKSendLaterView)initWithCoder:(id)a3;
-- (CKSendLaterView)initWithFrame:(CGRect)a3;
-- (void)removeDelegate:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKSendLaterView)initWithCoder:(id)coder;
+- (CKSendLaterView)initWithFrame:(CGRect)frame;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CKSendLaterView
 
-- (CKSendLaterView)initWithCoder:(id)a3
+- (CKSendLaterView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR___CKSendLaterView_cancellables) = MEMORY[0x1E69E7CD0];
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___CKSendLaterView_hostingView);
   if (v3)
@@ -36,16 +36,16 @@
   return result;
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
     swift_unknownObjectRetain();
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRelease();
-    if (v6 == a3)
+    if (v6 == delegate)
     {
       swift_unknownObjectWeakAssign();
     }
@@ -54,7 +54,7 @@
   }
 }
 
-- (CKSendLaterView)initWithFrame:(CGRect)a3
+- (CKSendLaterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

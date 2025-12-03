@@ -1,9 +1,9 @@
 @interface UIDictationTipPresentationHandler
 - (BOOL)dictationCommandTipsEnabled;
-- (BOOL)dictationTipShownOverLimit:(int64_t)a3;
+- (BOOL)dictationTipShownOverLimit:(int64_t)limit;
 - (BOOL)tipShownLastWeek;
 - (UIDictationTipPresentationHandler)init;
-- (int64_t)dictationTipDisplayCount:(int64_t)a3;
+- (int64_t)dictationTipDisplayCount:(int64_t)count;
 - (void)resetHandler;
 @end
 
@@ -31,15 +31,15 @@
   [(UIDictationTipPresentationHandler *)self resetDictationTipSignal];
 }
 
-- (BOOL)dictationTipShownOverLimit:(int64_t)a3
+- (BOOL)dictationTipShownOverLimit:(int64_t)limit
 {
-  v5 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-  v6 = [v5 valueForPreferenceKey:*MEMORY[0x1E69D9738]];
+  mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+  v6 = [mEMORY[0x1E69D9680] valueForPreferenceKey:*MEMORY[0x1E69D9738]];
 
-  v7 = [v6 integerValue];
-  LOBYTE(a3) = v7 <= [(UIDictationTipPresentationHandler *)self dictationTipDisplayCount:a3];
+  integerValue = [v6 integerValue];
+  LOBYTE(limit) = integerValue <= [(UIDictationTipPresentationHandler *)self dictationTipDisplayCount:limit];
 
-  return a3;
+  return limit;
 }
 
 - (BOOL)tipShownLastWeek
@@ -49,8 +49,8 @@
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E69D9680] sharedPreferencesController];
-    v5 = [v4 valueForPreferenceKey:*MEMORY[0x1E69D9730]];
+    mEMORY[0x1E69D9680] = [MEMORY[0x1E69D9680] sharedPreferencesController];
+    v5 = [mEMORY[0x1E69D9680] valueForPreferenceKey:*MEMORY[0x1E69D9730]];
 
     LOBYTE(v3) = (objc_opt_isKindOfClass() & 1) != 0 && ([MEMORY[0x1E695DF00] date], v6 = objc_opt_class();
   }
@@ -66,22 +66,22 @@
   return v3;
 }
 
-- (int64_t)dictationTipDisplayCount:(int64_t)a3
+- (int64_t)dictationTipDisplayCount:(int64_t)count
 {
-  v3 = [UIDictationTipController dictationTipPreferenceKey:a3];
+  v3 = [UIDictationTipController dictationTipPreferenceKey:count];
   if (v3)
   {
     v4 = +[UIKeyboardPreferencesController sharedPreferencesController];
     v5 = [v4 valueForPreferenceKey:v3];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 @end

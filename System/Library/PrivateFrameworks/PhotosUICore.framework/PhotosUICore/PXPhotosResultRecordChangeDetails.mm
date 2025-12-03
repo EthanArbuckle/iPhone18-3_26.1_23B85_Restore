@@ -1,6 +1,6 @@
 @interface PXPhotosResultRecordChangeDetails
-+ (id)resultRecordChangeDetailsFor:(id)a3 withChange:(id)a4;
-- (PXPhotosResultRecordChangeDetails)initWithResultRecordBeforeChanges:(id)a3 resultRecordAfterChanges:(id)a4 exposedFetchResultChangeDetails:(id)a5 keyAssetsFetchResultChangeDetails:(id)a6;
++ (id)resultRecordChangeDetailsFor:(id)for withChange:(id)change;
+- (PXPhotosResultRecordChangeDetails)initWithResultRecordBeforeChanges:(id)changes resultRecordAfterChanges:(id)afterChanges exposedFetchResultChangeDetails:(id)details keyAssetsFetchResultChangeDetails:(id)changeDetails;
 - (id)description;
 @end
 
@@ -12,64 +12,64 @@
   v11.receiver = self;
   v11.super_class = PXPhotosResultRecordChangeDetails;
   v4 = [(PXPhotosResultRecordChangeDetails *)&v11 description];
-  v5 = [(PXPhotosResultRecordChangeDetails *)self resultRecordBeforeChanges];
-  v6 = [(PXPhotosResultRecordChangeDetails *)self resultRecordAfterChanges];
-  v7 = [(PXPhotosResultRecordChangeDetails *)self exposedFetchResultChangeDetails];
-  v8 = [(PXPhotosResultRecordChangeDetails *)self keyAssetsFetchResultChangeDetails];
-  v9 = [v3 stringWithFormat:@"<%@ beforeChanges:%@ afterChanges:%@ exposedFetchResultChangeDetails:%@ keyAssetsFetchResultChangeDetails:%@>", v4, v5, v6, v7, v8];
+  resultRecordBeforeChanges = [(PXPhotosResultRecordChangeDetails *)self resultRecordBeforeChanges];
+  resultRecordAfterChanges = [(PXPhotosResultRecordChangeDetails *)self resultRecordAfterChanges];
+  exposedFetchResultChangeDetails = [(PXPhotosResultRecordChangeDetails *)self exposedFetchResultChangeDetails];
+  keyAssetsFetchResultChangeDetails = [(PXPhotosResultRecordChangeDetails *)self keyAssetsFetchResultChangeDetails];
+  v9 = [v3 stringWithFormat:@"<%@ beforeChanges:%@ afterChanges:%@ exposedFetchResultChangeDetails:%@ keyAssetsFetchResultChangeDetails:%@>", v4, resultRecordBeforeChanges, resultRecordAfterChanges, exposedFetchResultChangeDetails, keyAssetsFetchResultChangeDetails];
 
   return v9;
 }
 
-- (PXPhotosResultRecordChangeDetails)initWithResultRecordBeforeChanges:(id)a3 resultRecordAfterChanges:(id)a4 exposedFetchResultChangeDetails:(id)a5 keyAssetsFetchResultChangeDetails:(id)a6
+- (PXPhotosResultRecordChangeDetails)initWithResultRecordBeforeChanges:(id)changes resultRecordAfterChanges:(id)afterChanges exposedFetchResultChangeDetails:(id)details keyAssetsFetchResultChangeDetails:(id)changeDetails
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  changesCopy = changes;
+  afterChangesCopy = afterChanges;
+  detailsCopy = details;
+  changeDetailsCopy = changeDetails;
   v18.receiver = self;
   v18.super_class = PXPhotosResultRecordChangeDetails;
   v15 = [(PXPhotosResultRecordChangeDetails *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_resultRecordBeforeChanges, a3);
-    objc_storeStrong(&v16->_resultRecordAfterChanges, a4);
-    objc_storeStrong(&v16->_exposedFetchResultChangeDetails, a5);
-    objc_storeStrong(&v16->_keyAssetsFetchResultChangeDetails, a6);
+    objc_storeStrong(&v15->_resultRecordBeforeChanges, changes);
+    objc_storeStrong(&v16->_resultRecordAfterChanges, afterChanges);
+    objc_storeStrong(&v16->_exposedFetchResultChangeDetails, details);
+    objc_storeStrong(&v16->_keyAssetsFetchResultChangeDetails, changeDetails);
   }
 
   return v16;
 }
 
-+ (id)resultRecordChangeDetailsFor:(id)a3 withChange:(id)a4
++ (id)resultRecordChangeDetailsFor:(id)for withChange:(id)change
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 fetchResult];
-  v8 = [v6 changeDetailsForFetchResult:v7];
+  forCopy = for;
+  changeCopy = change;
+  fetchResult = [forCopy fetchResult];
+  v8 = [changeCopy changeDetailsForFetchResult:fetchResult];
 
-  v9 = [v8 fetchResultAfterChanges];
-  v10 = [v5 keyAssetsFetchResult];
-  v11 = [v6 changeDetailsForFetchResult:v10];
+  fetchResultAfterChanges = [v8 fetchResultAfterChanges];
+  keyAssetsFetchResult = [forCopy keyAssetsFetchResult];
+  v11 = [changeCopy changeDetailsForFetchResult:keyAssetsFetchResult];
 
   v46 = v11;
-  v12 = [v11 fetchResultAfterChanges];
+  fetchResultAfterChanges2 = [v11 fetchResultAfterChanges];
   v48 = 0;
-  v13 = [v5 curatedRefetchCondition];
+  curatedRefetchCondition = [forCopy curatedRefetchCondition];
 
-  v45 = v12;
-  if (v13)
+  v45 = fetchResultAfterChanges2;
+  if (curatedRefetchCondition)
   {
-    v14 = [v5 curatedRefetchCondition];
-    v15 = (v14)[2](v14, v6, &v48);
+    curatedRefetchCondition2 = [forCopy curatedRefetchCondition];
+    v15 = (curatedRefetchCondition2)[2](curatedRefetchCondition2, changeCopy, &v48);
 
     if (v15)
     {
-      v16 = v12 != 0;
-      v17 = [v5 copy];
+      v16 = fetchResultAfterChanges2 != 0;
+      v17 = [forCopy copy];
       v47 = 0;
-      if (!v9)
+      if (!fetchResultAfterChanges)
       {
         goto LABEL_16;
       }
@@ -79,18 +79,18 @@
     }
   }
 
-  v19 = [v5 curatedFetchResult];
-  v20 = [v6 changeDetailsForFetchResult:v19];
+  curatedFetchResult = [forCopy curatedFetchResult];
+  v20 = [changeCopy changeDetailsForFetchResult:curatedFetchResult];
 
   v47 = v20;
-  v21 = [v20 fetchResultAfterChanges];
-  v15 = v21;
-  v18 = v21 != 0;
-  v16 = v12 != 0;
-  if (v9 || v21 || v12)
+  fetchResultAfterChanges3 = [v20 fetchResultAfterChanges];
+  v15 = fetchResultAfterChanges3;
+  v18 = fetchResultAfterChanges3 != 0;
+  v16 = fetchResultAfterChanges2 != 0;
+  if (fetchResultAfterChanges || fetchResultAfterChanges3 || fetchResultAfterChanges2)
   {
-    v17 = [v5 copy];
-    if (!v9)
+    v17 = [forCopy copy];
+    if (!fetchResultAfterChanges)
     {
       if (!v15)
       {
@@ -101,7 +101,7 @@ LABEL_12:
         }
 
 LABEL_17:
-        [v17 setKeyAssetsFetchResult:v12];
+        [v17 setKeyAssetsFetchResult:fetchResultAfterChanges2];
         goto LABEL_18;
       }
 
@@ -116,7 +116,7 @@ LABEL_16:
     }
 
 LABEL_11:
-    [v17 setFetchResult:v9 reverseSortOrder:{objc_msgSend(v17, "reverseSortOrder")}];
+    [v17 setFetchResult:fetchResultAfterChanges reverseSortOrder:{objc_msgSend(v17, "reverseSortOrder")}];
     if (!v18)
     {
       goto LABEL_12;
@@ -129,11 +129,11 @@ LABEL_11:
   {
     v15 = 0;
 LABEL_21:
-    v17 = v5;
+    v17 = forCopy;
     goto LABEL_22;
   }
 
-  v17 = [v5 copy];
+  v17 = [forCopy copy];
   v15 = 0;
 LABEL_18:
   if (v48 == 1)
@@ -147,28 +147,28 @@ LABEL_18:
   }
 
 LABEL_22:
-  v22 = [v5 exposedFetchResult];
-  v23 = [v17 exposedFetchResult];
+  exposedFetchResult = [forCopy exposedFetchResult];
+  exposedFetchResult2 = [v17 exposedFetchResult];
 
   v24 = v8;
-  if (v22 == v23)
+  if (exposedFetchResult == exposedFetchResult2)
   {
     v29 = 0;
     goto LABEL_39;
   }
 
-  v44 = v9;
-  v25 = [v5 exposedFetchResult];
-  v26 = [v17 exposedFetchResult];
+  v44 = fetchResultAfterChanges;
+  exposedFetchResult3 = [forCopy exposedFetchResult];
+  exposedFetchResult4 = [v17 exposedFetchResult];
   if (v8)
   {
-    v27 = [v8 fetchResultBeforeChanges];
-    v28 = v27;
-    if (v27 == v25)
+    fetchResultBeforeChanges = [v8 fetchResultBeforeChanges];
+    v28 = fetchResultBeforeChanges;
+    if (fetchResultBeforeChanges == exposedFetchResult3)
     {
-      v30 = [v8 fetchResultAfterChanges];
+      fetchResultAfterChanges4 = [v8 fetchResultAfterChanges];
 
-      v31 = v30 == v26;
+      v31 = fetchResultAfterChanges4 == exposedFetchResult4;
       v8 = v24;
       if (v31)
       {
@@ -185,42 +185,42 @@ LABEL_22:
   if (!v47)
   {
 LABEL_32:
-    v35 = [v8 changedObjects];
-    v36 = v35;
-    if (v35)
+    changedObjects = [v8 changedObjects];
+    v36 = changedObjects;
+    if (changedObjects)
     {
-      v37 = v35;
+      v37 = changedObjects;
     }
 
     else
     {
-      v38 = [v47 changedObjects];
-      v39 = v38;
+      changedObjects2 = [v47 changedObjects];
+      v39 = changedObjects2;
       v40 = MEMORY[0x1E695E0F0];
-      if (v38)
+      if (changedObjects2)
       {
-        v40 = v38;
+        v40 = changedObjects2;
       }
 
       v37 = v40;
     }
 
-    v29 = [MEMORY[0x1E6978848] changeDetailsFromFetchResult:v25 toFetchResult:v26 changedObjects:v37];
+    v29 = [MEMORY[0x1E6978848] changeDetailsFromFetchResult:exposedFetchResult3 toFetchResult:exposedFetchResult4 changedObjects:v37];
 
     goto LABEL_38;
   }
 
-  v32 = [v47 fetchResultBeforeChanges];
-  v33 = v32;
-  if (v32 != v25)
+  fetchResultBeforeChanges2 = [v47 fetchResultBeforeChanges];
+  v33 = fetchResultBeforeChanges2;
+  if (fetchResultBeforeChanges2 != exposedFetchResult3)
   {
 
     goto LABEL_32;
   }
 
-  v34 = [v47 fetchResultAfterChanges];
+  fetchResultAfterChanges5 = [v47 fetchResultAfterChanges];
 
-  v31 = v34 == v26;
+  v31 = fetchResultAfterChanges5 == exposedFetchResult4;
   v8 = v24;
   if (!v31)
   {
@@ -232,9 +232,9 @@ LABEL_44:
   v29 = v43;
 LABEL_38:
 
-  v9 = v44;
+  fetchResultAfterChanges = v44;
 LABEL_39:
-  v41 = [[PXPhotosResultRecordChangeDetails alloc] initWithResultRecordBeforeChanges:v5 resultRecordAfterChanges:v17 exposedFetchResultChangeDetails:v29 keyAssetsFetchResultChangeDetails:v46];
+  v41 = [[PXPhotosResultRecordChangeDetails alloc] initWithResultRecordBeforeChanges:forCopy resultRecordAfterChanges:v17 exposedFetchResultChangeDetails:v29 keyAssetsFetchResultChangeDetails:v46];
 
   return v41;
 }

@@ -25,7 +25,7 @@
       v13 = *MEMORY[0x277D47048];
       v29[0] = v12;
       v29[1] = v13;
-      v14 = [a1 description];
+      v14 = [self description];
       v30[1] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
       *a4 = [v10 errorWithDomain:v11 code:2 userInfo:v15];
@@ -34,11 +34,11 @@
     v9 = 0;
   }
 
-  v16 = [v6 assertionDescriptor];
-  v17 = [v16 target];
-  v18 = [v17 processIdentity];
+  assertionDescriptor = [v6 assertionDescriptor];
+  target = [assertionDescriptor target];
+  processIdentity = [target processIdentity];
 
-  if (!v18)
+  if (!processIdentity)
   {
     if (a4)
     {
@@ -49,7 +49,7 @@
       v22 = *MEMORY[0x277D47048];
       v27[0] = v21;
       v27[1] = v22;
-      v23 = [a1 description];
+      v23 = [self description];
       v28[1] = v23;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
       *a4 = [v19 errorWithDomain:v20 code:2 userInfo:v24];

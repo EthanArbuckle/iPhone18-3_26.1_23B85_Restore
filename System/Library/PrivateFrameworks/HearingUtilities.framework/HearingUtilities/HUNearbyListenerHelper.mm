@@ -1,15 +1,15 @@
 @interface HUNearbyListenerHelper
-- (HUNearbyListenerHelper)initWithListenerAddress:(id)a3 andDelegate:(id)a4;
-- (void)addKey:(id)a3 forDomain:(id)a4;
+- (HUNearbyListenerHelper)initWithListenerAddress:(id)address andDelegate:(id)delegate;
+- (void)addKey:(id)key forDomain:(id)domain;
 - (void)dealloc;
 @end
 
 @implementation HUNearbyListenerHelper
 
-- (HUNearbyListenerHelper)initWithListenerAddress:(id)a3 andDelegate:(id)a4
+- (HUNearbyListenerHelper)initWithListenerAddress:(id)address andDelegate:(id)delegate
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, address);
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HUNearbyListenerHelper;
   v7 = [(HUNearbyListenerHelper *)&v10 init];
@@ -18,17 +18,17 @@
     v8 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v7->_listenerAddress, v8);
 
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   objc_destroyWeak(&location);
   return v7;
 }
 
-- (void)addKey:(id)a3 forDomain:(id)a4
+- (void)addKey:(id)key forDomain:(id)domain
 {
-  v11 = a3;
-  v6 = a4;
+  keyCopy = key;
+  domainCopy = domain;
   keys = self->_keys;
   if (!keys)
   {
@@ -39,14 +39,14 @@
     keys = self->_keys;
   }
 
-  v10 = [(NSMutableDictionary *)keys objectForKey:v11];
+  v10 = [(NSMutableDictionary *)keys objectForKey:keyCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  [v10 addObject:v6];
-  [(NSMutableDictionary *)self->_keys setObject:v10 forKey:v11];
+  [v10 addObject:domainCopy];
+  [(NSMutableDictionary *)self->_keys setObject:v10 forKey:keyCopy];
 }
 
 - (void)dealloc

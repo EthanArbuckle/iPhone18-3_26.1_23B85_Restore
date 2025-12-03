@@ -1,13 +1,13 @@
 @interface CCUIPPTRootTest
-+ (id)testWithName:(id)a3;
++ (id)testWithName:(id)name;
 @end
 
 @implementation CCUIPPTRootTest
 
-+ (id)testWithName:(id)a3
++ (id)testWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithName:v4 beginSignpost:0 endSignpost:0];
+  nameCopy = name;
+  v5 = [[self alloc] _initWithName:nameCopy beginSignpost:0 endSignpost:0];
 
   return v5;
 }

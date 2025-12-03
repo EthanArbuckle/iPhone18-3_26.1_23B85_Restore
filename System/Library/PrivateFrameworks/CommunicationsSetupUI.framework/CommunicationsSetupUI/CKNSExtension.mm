@@ -1,5 +1,5 @@
 @interface CKNSExtension
-- (void)beginMatchingExtensions:(id)a3;
+- (void)beginMatchingExtensions:(id)extensions;
 - (void)dealloc;
 - (void)endMatchingExtensions;
 @end
@@ -14,10 +14,10 @@
   [(CKNSExtension *)&v3 dealloc];
 }
 
-- (void)beginMatchingExtensions:(id)a3
+- (void)beginMatchingExtensions:(id)extensions
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionsCopy = extensions;
   if (!self->_beginMappingID)
   {
     v12 = *MEMORY[0x277CCA0F8];
@@ -28,7 +28,7 @@
     v10[1] = 3221225472;
     v10[2] = __41__CKNSExtension_beginMatchingExtensions___block_invoke;
     v10[3] = &unk_278DE8B90;
-    v11 = v4;
+    v11 = extensionsCopy;
     v7 = [v6 beginMatchingExtensionsWithAttributes:v5 completion:v10];
     beginMappingID = self->_beginMappingID;
     self->_beginMappingID = v7;

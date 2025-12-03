@@ -1,25 +1,25 @@
 @interface SBLockScreenEmergencyCallViewController
 - (SBLockScreenEmergencyCallViewControllerDelegate)delegate;
-- (id)tintColorForBackgroundStyle:(int64_t)a3 outBlurRadius:(double *)a4;
-- (int64_t)_wallpaperStyleFromUIBackgroundStyle:(int64_t)a3;
+- (id)tintColorForBackgroundStyle:(int64_t)style outBlurRadius:(double *)radius;
+- (int64_t)_wallpaperStyleFromUIBackgroundStyle:(int64_t)style;
 - (void)dismiss;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SBLockScreenEmergencyCallViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = errorCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "View Service terminated with error: %@ -> %@", &v11, 0x16u);
   }
 
@@ -27,15 +27,15 @@
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained emergencyCallViewController:self didExitWithError:v4];
+    [WeakRetained emergencyCallViewController:self didExitWithError:errorCopy];
   }
 
   else
   {
     v8 = +[SBLockScreenManager sharedInstance];
-    v9 = [v8 lockScreenEnvironment];
-    v10 = [v9 callController];
-    [v10 emergencyDialerExitedWithError:v4];
+    lockScreenEnvironment = [v8 lockScreenEnvironment];
+    callController = [lockScreenEnvironment callController];
+    [callController emergencyDialerExitedWithError:errorCopy];
   }
 }
 
@@ -51,37 +51,37 @@
   else
   {
     v4 = +[SBLockScreenManager sharedInstance];
-    v5 = [v4 lockScreenEnvironment];
-    v6 = [v5 callController];
-    [v6 exitEmergencyDialerAnimated:1];
+    lockScreenEnvironment = [v4 lockScreenEnvironment];
+    callController = [lockScreenEnvironment callController];
+    [callController exitEmergencyDialerAnimated:1];
   }
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = SBLockScreenEmergencyCallViewController;
-  [(SBUIEmergencyCallHostViewController *)&v3 setBackgroundStyle:a3];
+  [(SBUIEmergencyCallHostViewController *)&v3 setBackgroundStyle:style];
 }
 
-- (id)tintColorForBackgroundStyle:(int64_t)a3 outBlurRadius:(double *)a4
+- (id)tintColorForBackgroundStyle:(int64_t)style outBlurRadius:(double *)radius
 {
-  [(SBLockScreenEmergencyCallViewController *)self _wallpaperStyleFromUIBackgroundStyle:a3];
+  [(SBLockScreenEmergencyCallViewController *)self _wallpaperStyleFromUIBackgroundStyle:style];
   _WallpaperBackdropParametersForStyleAndAverageColor();
   v5 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:v10];
-  if (a4)
+  if (radius)
   {
     v6 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:v10 graphicsQuality:100];
     [v6 blurRadius];
-    *a4 = v7;
+    *radius = v7;
   }
 
-  v8 = [v5 combinedTintColor];
+  combinedTintColor = [v5 combinedTintColor];
 
-  return v8;
+  return combinedTintColor;
 }
 
-- (int64_t)_wallpaperStyleFromUIBackgroundStyle:(int64_t)a3
+- (int64_t)_wallpaperStyleFromUIBackgroundStyle:(int64_t)style
 {
   v3 = _WallpaperStyleForBackgroundStyle();
 

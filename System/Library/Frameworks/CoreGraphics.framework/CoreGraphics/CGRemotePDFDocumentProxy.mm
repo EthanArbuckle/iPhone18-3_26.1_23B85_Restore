@@ -1,23 +1,23 @@
 @interface CGRemotePDFDocumentProxy
 - (BOOL)isEncrypted;
 - (BOOL)isUnlocked;
-- (CGRemotePDFDocumentProxy)initWithRemoteDocument:(id)a3;
+- (CGRemotePDFDocumentProxy)initWithRemoteDocument:(id)document;
 - (NSDictionary)infoDictionary;
-- (id)pageProxyForRemotePage:(id)a3;
-- (id)sync_pageAtIndex:(int64_t)a3;
+- (id)pageProxyForRemotePage:(id)page;
+- (id)sync_pageAtIndex:(int64_t)index;
 - (unint64_t)pageCount;
-- (void)getPageAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)getVersionMajor:(int64_t *)a3 andMinor:(int64_t *)a4;
+- (void)getPageAtIndex:(int64_t)index completion:(id)completion;
+- (void)getVersionMajor:(int64_t *)major andMinor:(int64_t *)minor;
 @end
 
 @implementation CGRemotePDFDocumentProxy
 
-- (id)pageProxyForRemotePage:(id)a3
+- (id)pageProxyForRemotePage:(id)page
 {
-  if (a3)
+  if (page)
   {
-    v3 = a3;
-    v4 = [[CGRemotePDFPageProxy alloc] initWithRemotePage:v3];
+    pageCopy = page;
+    v4 = [[CGRemotePDFPageProxy alloc] initWithRemotePage:pageCopy];
   }
 
   else
@@ -28,15 +28,15 @@
   return v4;
 }
 
-- (void)getPageAtIndex:(int64_t)a3 completion:(id)a4
+- (void)getPageAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   documentProxy = self->_documentProxy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__CGRemotePDFDocumentProxy_getPageAtIndex_completion___block_invoke;
   v13[3] = &unk_1E6E336B8;
-  v8 = v6;
+  v8 = completionCopy;
   v14 = v8;
   v9 = [(CGRemotePDFDocumentProtocol *)documentProxy remoteObjectProxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
@@ -46,7 +46,7 @@
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v9 getPageAtIndex:a3 completion:v11];
+  [v9 getPageAtIndex:index completion:v11];
 }
 
 uint64_t __54__CGRemotePDFDocumentProxy_getPageAtIndex_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -63,7 +63,7 @@ void __54__CGRemotePDFDocumentProxy_getPageAtIndex_completion___block_invoke_2(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)sync_pageAtIndex:(int64_t)a3
+- (id)sync_pageAtIndex:(int64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -78,7 +78,7 @@ void __54__CGRemotePDFDocumentProxy_getPageAtIndex_completion___block_invoke_2(u
   v8[3] = &unk_1E6E33690;
   v8[4] = self;
   v8[5] = &v9;
-  [v5 getPageAtIndex:a3 completion:v8];
+  [v5 getPageAtIndex:index completion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -150,17 +150,17 @@ uint64_t __45__CGRemotePDFDocumentProxy_sync_pageAtIndex___block_invoke_2(uint64
   return v2;
 }
 
-- (void)getVersionMajor:(int64_t *)a3 andMinor:(int64_t *)a4
+- (void)getVersionMajor:(int64_t *)major andMinor:(int64_t *)minor
 {
-  *a4 = 0;
-  *a3 = 0;
+  *minor = 0;
+  *major = 0;
   v6 = [(CGRemotePDFDocumentProtocol *)self->_documentProxy synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4_20917];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__CGRemotePDFDocumentProxy_getVersionMajor_andMinor___block_invoke_2;
   v7[3] = &__block_descriptor_48_e11_v24__0q8q16l;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = major;
+  v7[5] = minor;
   [v6 getVersion:v7];
 }
 
@@ -194,16 +194,16 @@ uint64_t __53__CGRemotePDFDocumentProxy_getVersionMajor_andMinor___block_invoke_
   return v3;
 }
 
-- (CGRemotePDFDocumentProxy)initWithRemoteDocument:(id)a3
+- (CGRemotePDFDocumentProxy)initWithRemoteDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v9.receiver = self;
   v9.super_class = CGRemotePDFDocumentProxy;
   v6 = [(CGRemotePDFDocumentProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentProxy, a3);
+    objc_storeStrong(&v6->_documentProxy, document);
   }
 
   return v7;

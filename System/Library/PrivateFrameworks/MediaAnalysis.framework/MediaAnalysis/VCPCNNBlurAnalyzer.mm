@@ -1,16 +1,16 @@
 @interface VCPCNNBlurAnalyzer
-+ (VCPCNNBlurAnalyzer)analyzerWithRevision:(unint64_t)a3;
-- (VCPCNNBlurAnalyzer)initWithRevision:(unint64_t)a3;
-- (float)calculateScoreFromNetworkOutput:(float *)a3 outChannel:(int)a4 outHeight:(int)a5 outWidth:(int)a6 textureness:(char *)a7 contrast:(float)a8 imgWidth:(int)a9;
++ (VCPCNNBlurAnalyzer)analyzerWithRevision:(unint64_t)revision;
+- (VCPCNNBlurAnalyzer)initWithRevision:(unint64_t)revision;
+- (float)calculateScoreFromNetworkOutput:(float *)output outChannel:(int)channel outHeight:(int)height outWidth:(int)width textureness:(char *)textureness contrast:(float)contrast imgWidth:(int)imgWidth;
 - (id).cxx_construct;
-- (int)computeCNNBasedSharpness:(__CVBuffer *)a3 sharpnessScore:(float *)a4 textureScore:(float *)a5 contrast:(float)a6 cancel:(id)a7;
-- (int)scaleRegion:(CGRect *)a3 ofImage:(__CVBuffer *)a4 toData:(float *)a5 withWidth:(int)a6 andHeight:(int)a7;
-- (void)copyBufferFrom:(char *)a3 fromStride:(int64_t)a4 toPtr:(float *)a5 toStride:(int64_t)a6 toWidth:(int)a7 toHeight:(int)a8;
+- (int)computeCNNBasedSharpness:(__CVBuffer *)sharpness sharpnessScore:(float *)score textureScore:(float *)textureScore contrast:(float)contrast cancel:(id)cancel;
+- (int)scaleRegion:(CGRect *)region ofImage:(__CVBuffer *)image toData:(float *)data withWidth:(int)width andHeight:(int)height;
+- (void)copyBufferFrom:(char *)from fromStride:(int64_t)stride toPtr:(float *)ptr toStride:(int64_t)toStride toWidth:(int)width toHeight:(int)height;
 @end
 
 @implementation VCPCNNBlurAnalyzer
 
-+ (VCPCNNBlurAnalyzer)analyzerWithRevision:(unint64_t)a3
++ (VCPCNNBlurAnalyzer)analyzerWithRevision:(unint64_t)revision
 {
   p_cache = VCPDatabaseBatchIterator.cache;
   {
@@ -22,59 +22,59 @@
     }
   }
 
-  v5 = [objc_alloc(p_cache[360]) initWithRevision:a3];
+  v5 = [objc_alloc(p_cache[360]) initWithRevision:revision];
 
   return v5;
 }
 
-- (VCPCNNBlurAnalyzer)initWithRevision:(unint64_t)a3
+- (VCPCNNBlurAnalyzer)initWithRevision:(unint64_t)revision
 {
   v5.receiver = self;
   v5.super_class = VCPCNNBlurAnalyzer;
   result = [(VCPCNNBlurAnalyzer *)&v5 init];
   if (result)
   {
-    result->_revision = a3;
+    result->_revision = revision;
   }
 
   return result;
 }
 
-- (void)copyBufferFrom:(char *)a3 fromStride:(int64_t)a4 toPtr:(float *)a5 toStride:(int64_t)a6 toWidth:(int)a7 toHeight:(int)a8
+- (void)copyBufferFrom:(char *)from fromStride:(int64_t)stride toPtr:(float *)ptr toStride:(int64_t)toStride toWidth:(int)width toHeight:(int)height
 {
-  if (a8 >= 1)
+  if (height >= 1)
   {
-    for (i = 0; i != a8; ++i)
+    for (i = 0; i != height; ++i)
     {
-      if (a7 >= 1)
+      if (width >= 1)
       {
-        for (j = 0; j != a7; a5[j++] = v8)
+        for (j = 0; j != width; ptr[j++] = v8)
         {
-          LOBYTE(v8) = a3[j];
+          LOBYTE(v8) = from[j];
           v8 = LODWORD(v8) / 255.0;
         }
       }
 
-      a3 += a4;
-      a5 += a6;
+      from += stride;
+      ptr += toStride;
     }
   }
 }
 
-- (int)scaleRegion:(CGRect *)a3 ofImage:(__CVBuffer *)a4 toData:(float *)a5 withWidth:(int)a6 andHeight:(int)a7
+- (int)scaleRegion:(CGRect *)region ofImage:(__CVBuffer *)image toData:(float *)data withWidth:(int)width andHeight:(int)height
 {
-  v7 = *&a7;
-  v8 = *&a6;
+  v7 = *&height;
+  v8 = *&width;
   cf = 0;
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   if (Width == v8 && Height == v7)
   {
     v16 = v8 == 299 && v8 == v7;
     if (v16 && PixelFormatType == 1278226488)
     {
-      cf = CFRetain(a4);
+      cf = CFRetain(image);
       v22 = 0;
       CF<__CVBuffer *>::~CF(&v22);
 LABEL_15:
@@ -95,7 +95,7 @@ LABEL_15:
         else
         {
           BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(cf, 0);
-          [(VCPCNNBlurAnalyzer *)self copyBufferFrom:CVPixelBufferGetBaseAddressOfPlane(cf fromStride:0) toPtr:BytesPerRowOfPlane toStride:a5 toWidth:v8 toHeight:v8, v7];
+          [(VCPCNNBlurAnalyzer *)self copyBufferFrom:CVPixelBufferGetBaseAddressOfPlane(cf fromStride:0) toPtr:BytesPerRowOfPlane toStride:data toWidth:v8 toHeight:v8, v7];
           v19 = CVPixelBufferLock::Unlock(&v22);
           if (pixelBuffer && !v22 && CVPixelBufferUnlockBaseAddress(pixelBuffer, unlockFlags) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
@@ -118,13 +118,13 @@ LABEL_15:
     }
   }
 
-  v18 = MEMORY[0x1E695F058];
-  if (a3)
+  regionCopy = MEMORY[0x1E695F058];
+  if (region)
   {
-    v18 = a3;
+    regionCopy = region;
   }
 
-  v19 = Scaler::ScaleCropped(&self->_scaler, *v18, a4, &cf, v8, v7, 875704438);
+  v19 = Scaler::ScaleCropped(&self->_scaler, *regionCopy, image, &cf, v8, v7, 875704438);
   if (!v19)
   {
     goto LABEL_15;
@@ -135,7 +135,7 @@ LABEL_22:
   return v19;
 }
 
-- (float)calculateScoreFromNetworkOutput:(float *)a3 outChannel:(int)a4 outHeight:(int)a5 outWidth:(int)a6 textureness:(char *)a7 contrast:(float)a8 imgWidth:(int)a9
+- (float)calculateScoreFromNetworkOutput:(float *)output outChannel:(int)channel outHeight:(int)height outWidth:(int)width textureness:(char *)textureness contrast:(float)contrast imgWidth:(int)imgWidth
 {
   v12 = 0;
   v55 = *MEMORY[0x1E69E9840];
@@ -156,7 +156,7 @@ LABEL_22:
   v52 = xmmword_1C9F632B0;
   v53 = 1077936128;
   memset(v50, 0, sizeof(v50));
-  if (a5 < 1)
+  if (height < 1)
   {
     v48 = 0;
     v17 = 0.0;
@@ -167,34 +167,34 @@ LABEL_22:
   {
     v48 = 0;
     v14 = 0;
-    v44 = 4 * a9;
-    v15 = 4 * (a6 * a5);
+    v44 = 4 * imgWidth;
+    v15 = 4 * (width * height);
     v16 = 0.0;
     v17 = 0.0;
     do
     {
       v47 = v14;
-      if (a6 >= 1)
+      if (width >= 1)
       {
         v18 = 0;
         do
         {
-          if (a4 >= 1)
+          if (channel >= 1)
           {
             v19 = 0.0;
             v20 = v54;
-            v21 = a4;
-            v22 = a3;
+            channelCopy = channel;
+            outputCopy = output;
             do
             {
-              v23 = expf(*v22);
+              v23 = expf(*outputCopy);
               *v20++ = v23;
               v19 = v19 + v23;
-              v22 = (v22 + v15);
-              --v21;
+              outputCopy = (outputCopy + v15);
+              --channelCopy;
             }
 
-            while (v21);
+            while (channelCopy);
             v24 = 0;
             v25 = 0;
             v26 = 0;
@@ -214,8 +214,8 @@ LABEL_22:
               v27 = v27 + (v51[v24++] * v29);
             }
 
-            while (a4 != v24);
-            if (v28 > 0.85 && a7[4 * v18] != 0)
+            while (channel != v24);
+            if (v28 > 0.85 && textureness[4 * v18] != 0)
             {
               v16 = v16 + v27;
               ++HIDWORD(v48);
@@ -228,18 +228,18 @@ LABEL_22:
             }
           }
 
-          ++a3;
+          ++output;
           ++v18;
         }
 
-        while (v18 != a6);
+        while (v18 != width);
       }
 
-      a7 += v44;
+      textureness += v44;
       v14 = v47 + 1;
     }
 
-    while (v47 + 1 != a5);
+    while (v47 + 1 != height);
   }
 
   v31 = v48 / SHIDWORD(v48);
@@ -293,7 +293,7 @@ LABEL_22:
   }
 
   v41 = v31 < 0.3;
-  result = v39 + ((1.0 - v39) * a8);
+  result = v39 + ((1.0 - v39) * contrast);
   if (!v41 || !sdof)
   {
     return v39;
@@ -302,11 +302,11 @@ LABEL_22:
   return result;
 }
 
-- (int)computeCNNBasedSharpness:(__CVBuffer *)a3 sharpnessScore:(float *)a4 textureScore:(float *)a5 contrast:(float)a6 cancel:(id)a7
+- (int)computeCNNBasedSharpness:(__CVBuffer *)sharpness sharpnessScore:(float *)score textureScore:(float *)textureScore contrast:(float)contrast cancel:(id)cancel
 {
-  v12 = a7;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(sharpness);
+  Height = CVPixelBufferGetHeight(sharpness);
   v15 = Height;
   if (Width <= Height)
   {
@@ -328,7 +328,7 @@ LABEL_22:
   if (Width < 60 || v15 <= 59)
   {
     v17 = 0;
-    *a4 = 0.5;
+    *score = 0.5;
   }
 
   else
@@ -337,7 +337,7 @@ LABEL_22:
     if (!v17)
     {
       v18 = [(VCPCNNBlurAnalyzer *)self getInputBuffer:v15 srcWidth:Width cnnInputHeight:&v30 + 4 cnnInputWidth:&v30];
-      v17 = [(VCPCNNBlurAnalyzer *)self scaleRegion:0 ofImage:a3 toData:v18 withWidth:v30 andHeight:HIDWORD(v30)];
+      v17 = [(VCPCNNBlurAnalyzer *)self scaleRegion:0 ofImage:sharpness toData:v18 withWidth:v30 andHeight:HIDWORD(v30)];
       if (!v17)
       {
         v20 = v30;
@@ -371,9 +371,9 @@ LABEL_22:
             *&v23 = v24;
           }
 
-          *a5 = *&v23 / (v30 * HIDWORD(v30));
-          *&v23 = a6;
-          v17 = [VCPCNNBlurAnalyzer computeSharpnessScore:"computeSharpnessScore:textureness:contrast:imgWidth:cancel:" textureness:a4 contrast:v22 imgWidth:v23 cancel:?];
+          *textureScore = *&v23 / (v30 * HIDWORD(v30));
+          *&v23 = contrast;
+          v17 = [VCPCNNBlurAnalyzer computeSharpnessScore:"computeSharpnessScore:textureness:contrast:imgWidth:cancel:" textureness:score contrast:v22 imgWidth:v23 cancel:?];
           MEMORY[0x1CCA95C10](v22, 0x1000C8077774924);
         }
 

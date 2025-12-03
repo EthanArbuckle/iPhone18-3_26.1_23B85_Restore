@@ -1,5 +1,5 @@
 @interface BWVideoQualityMetrics
-+ (id)filterMetadata:(id)a3;
++ (id)filterMetadata:(id)metadata;
 + (void)initialize;
 - (double)_computeLuxScore;
 - (double)computeQualityScore;
@@ -9,18 +9,18 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     vqm_luxThreshold = 0x4062C00000000000;
     vqm_luxTransition = 0x4072C00000000000;
   }
 }
 
-+ (id)filterMetadata:(id)a3
++ (id)filterMetadata:(id)metadata
 {
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   v5 = *off_1E798B4B8;
-  v6 = [a3 objectForKeyedSubscript:*off_1E798B4B8];
+  v6 = [metadata objectForKeyedSubscript:*off_1E798B4B8];
   if (v6)
   {
     [v4 setObject:v6 forKeyedSubscript:v5];

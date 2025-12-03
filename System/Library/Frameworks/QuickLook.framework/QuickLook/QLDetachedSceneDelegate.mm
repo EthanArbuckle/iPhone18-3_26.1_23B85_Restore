@@ -1,77 +1,77 @@
 @interface QLDetachedSceneDelegate
-- (id)activityFromOptions:(id)a3;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (id)stateRestorationActivityForScene:(id)a3;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4;
-- (void)previewControllerWillDismiss:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (id)activityFromOptions:(id)options;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item;
+- (void)previewControllerWillDismiss:(id)dismiss;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation QLDetachedSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 stateRestorationActivity];
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  stateRestorationActivity = [sessionCopy stateRestorationActivity];
 
-  if (v11)
+  if (stateRestorationActivity)
   {
-    [v9 stateRestorationActivity];
+    [sessionCopy stateRestorationActivity];
   }
 
   else
   {
-    [(QLDetachedSceneDelegate *)self activityFromOptions:v10];
+    [(QLDetachedSceneDelegate *)self activityFromOptions:optionsCopy];
   }
   v12 = ;
   [(QLDetachedSceneDelegate *)self setQuicklookActivity:v12];
 
-  v13 = [(QLDetachedSceneDelegate *)self quicklookActivity];
-  v14 = [v13 userInfo];
-  v15 = [v14 objectForKey:@"com.apple.quicklook.private.activity.URLsKey"];
+  quicklookActivity = [(QLDetachedSceneDelegate *)self quicklookActivity];
+  userInfo = [quicklookActivity userInfo];
+  v15 = [userInfo objectForKey:@"com.apple.quicklook.private.activity.URLsKey"];
   [(QLDetachedSceneDelegate *)self setUrls:v15];
 
-  v16 = [(QLDetachedSceneDelegate *)self quicklookActivity];
-  v17 = [v16 userInfo];
-  v18 = [v17 objectForKey:@"com.apple.quicklook.private.activity.IndexKey"];
+  quicklookActivity2 = [(QLDetachedSceneDelegate *)self quicklookActivity];
+  userInfo2 = [quicklookActivity2 userInfo];
+  v18 = [userInfo2 objectForKey:@"com.apple.quicklook.private.activity.IndexKey"];
   -[QLDetachedSceneDelegate setSelectedURLIndex:](self, "setSelectedURLIndex:", [v18 unsignedIntValue]);
 
-  v19 = [(QLDetachedSceneDelegate *)self quicklookActivity];
-  v20 = [v19 userInfo];
-  v21 = [v20 objectForKey:@"com.apple.quicklook.private.activity.EditingModes"];
+  quicklookActivity3 = [(QLDetachedSceneDelegate *)self quicklookActivity];
+  userInfo3 = [quicklookActivity3 userInfo];
+  v21 = [userInfo3 objectForKey:@"com.apple.quicklook.private.activity.EditingModes"];
   [(QLDetachedSceneDelegate *)self setEditingModes:v21];
 
-  v31 = v8;
+  v31 = sceneCopy;
   v22 = objc_alloc_init(QLPreviewController);
   [(QLDetachedSceneDelegate *)self setQuicklookController:v22];
 
-  v23 = [(QLDetachedSceneDelegate *)self quicklookController];
-  [v23 setDelegate:self];
+  quicklookController = [(QLDetachedSceneDelegate *)self quicklookController];
+  [quicklookController setDelegate:self];
 
-  v24 = [(QLDetachedSceneDelegate *)self quicklookController];
-  [v24 setDataSource:self];
+  quicklookController2 = [(QLDetachedSceneDelegate *)self quicklookController];
+  [quicklookController2 setDataSource:self];
 
-  v25 = [(QLDetachedSceneDelegate *)self selectedURLIndex];
-  v26 = [(QLDetachedSceneDelegate *)self quicklookController];
-  [v26 setCurrentPreviewItemIndex:v25];
+  selectedURLIndex = [(QLDetachedSceneDelegate *)self selectedURLIndex];
+  quicklookController3 = [(QLDetachedSceneDelegate *)self quicklookController];
+  [quicklookController3 setCurrentPreviewItemIndex:selectedURLIndex];
 
   v27 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v31];
   [(QLDetachedSceneDelegate *)self setWindow:v27];
 
-  v28 = [(QLDetachedSceneDelegate *)self quicklookController];
-  v29 = [(QLDetachedSceneDelegate *)self window];
-  [v29 setRootViewController:v28];
+  quicklookController4 = [(QLDetachedSceneDelegate *)self quicklookController];
+  window = [(QLDetachedSceneDelegate *)self window];
+  [window setRootViewController:quicklookController4];
 
-  v30 = [(QLDetachedSceneDelegate *)self window];
-  [v30 makeKeyAndVisible];
+  window2 = [(QLDetachedSceneDelegate *)self window];
+  [window2 makeKeyAndVisible];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   [(QLDetachedSceneDelegate *)self setWindow:0];
   [(QLDetachedSceneDelegate *)self setQuicklookController:0];
@@ -82,21 +82,21 @@
   [(QLDetachedSceneDelegate *)self setEditingModes:v4];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = [(QLDetachedSceneDelegate *)self quicklookController];
-  -[QLDetachedSceneDelegate setSelectedURLIndex:](self, "setSelectedURLIndex:", [v4 currentPreviewItemIndex]);
+  quicklookController = [(QLDetachedSceneDelegate *)self quicklookController];
+  -[QLDetachedSceneDelegate setSelectedURLIndex:](self, "setSelectedURLIndex:", [quicklookController currentPreviewItemIndex]);
 }
 
-- (id)activityFromOptions:(id)a3
+- (id)activityFromOptions:(id)options
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 userActivities];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  userActivities = [options userActivities];
+  v4 = [userActivities countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,12 +107,12 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(userActivities);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 activityType];
-        v10 = [v9 isEqualToString:@"com.apple.quicklook.private.scene.detachedActivityType"];
+        activityType = [v8 activityType];
+        v10 = [activityType isEqualToString:@"com.apple.quicklook.private.scene.detachedActivityType"];
 
         if (v10)
         {
@@ -121,7 +121,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [userActivities countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -139,49 +139,49 @@ LABEL_11:
   return v11;
 }
 
-- (void)previewControllerWillDismiss:(id)a3
+- (void)previewControllerWillDismiss:(id)dismiss
 {
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [(QLDetachedSceneDelegate *)self window];
-  v5 = [v4 windowScene];
-  v6 = [v5 session];
-  [v7 requestSceneSessionDestruction:v6 options:0 errorHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  window = [(QLDetachedSceneDelegate *)self window];
+  windowScene = [window windowScene];
+  session = [windowScene session];
+  [mEMORY[0x277D75128] requestSceneSessionDestruction:session options:0 errorHandler:0];
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(QLDetachedSceneDelegate *)self urls];
-  v4 = [v3 count];
+  urls = [(QLDetachedSceneDelegate *)self urls];
+  v4 = [urls count];
 
   return v4;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v5 = [(QLDetachedSceneDelegate *)self urls];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  urls = [(QLDetachedSceneDelegate *)self urls];
+  v6 = [urls objectAtIndexedSubscript:index];
 
   return v6;
 }
 
-- (int64_t)previewController:(id)a3 editingModeForPreviewItem:(id)a4
+- (int64_t)previewController:(id)controller editingModeForPreviewItem:(id)item
 {
-  v5 = a4;
-  v6 = [(QLDetachedSceneDelegate *)self editingModes];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  itemCopy = item;
+  editingModes = [(QLDetachedSceneDelegate *)self editingModes];
+  v7 = [editingModes objectForKeyedSubscript:itemCopy];
 
-  v8 = [v7 integerValue];
-  return v8;
+  integerValue = [v7 integerValue];
+  return integerValue;
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:@"com.apple.quicklook.private.scene.detachedActivityType"];
   v10[0] = @"com.apple.quicklook.private.activity.URLsKey";
-  v5 = [(QLDetachedSceneDelegate *)self urls];
+  urls = [(QLDetachedSceneDelegate *)self urls];
   v10[1] = @"com.apple.quicklook.private.activity.IndexKey";
-  v11[0] = v5;
+  v11[0] = urls;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[QLDetachedSceneDelegate selectedURLIndex](self, "selectedURLIndex")}];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];

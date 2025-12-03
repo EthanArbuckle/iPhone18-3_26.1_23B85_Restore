@@ -1,25 +1,25 @@
 @interface SBCameraButtonPolicyEnforcer
-- (void)enforce:(id)a3;
+- (void)enforce:(id)enforce;
 @end
 
 @implementation SBCameraButtonPolicyEnforcer
 
-- (void)enforce:(id)a3
+- (void)enforce:(id)enforce
 {
-  v6 = a3;
-  v3 = [v6 advicePolicy];
-  v4 = [SBApp cameraHardwareButton];
-  if (v3)
+  enforceCopy = enforce;
+  advicePolicy = [enforceCopy advicePolicy];
+  cameraHardwareButton = [SBApp cameraHardwareButton];
+  if (advicePolicy)
   {
-    v5 = 0;
+    suppressCameraButtonDeferringToApplications = 0;
   }
 
   else
   {
-    v5 = [v6 suppressCameraButtonDeferringToApplications];
+    suppressCameraButtonDeferringToApplications = [enforceCopy suppressCameraButtonDeferringToApplications];
   }
 
-  [v4 setDisableDeferringToApplications:v5];
+  [cameraHardwareButton setDisableDeferringToApplications:suppressCameraButtonDeferringToApplications];
 }
 
 @end

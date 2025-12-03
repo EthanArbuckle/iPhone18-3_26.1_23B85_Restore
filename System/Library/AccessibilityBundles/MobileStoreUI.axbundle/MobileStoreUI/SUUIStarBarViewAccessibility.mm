@@ -1,16 +1,16 @@
 @interface SUUIStarBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation SUUIStarBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIStarBarView" hasInstanceVariable:@"_numberOfStars" withType:"q"];
-  [v3 validateClass:@"SUUIStarBarView" hasInstanceVariable:@"_value" withType:"d"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIStarBarView" hasInstanceVariable:@"_numberOfStars" withType:"q"];
+  [validationsCopy validateClass:@"SUUIStarBarView" hasInstanceVariable:@"_value" withType:"d"];
 }
 
 - (id)accessibilityLabel

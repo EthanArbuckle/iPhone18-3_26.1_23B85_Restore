@@ -1,11 +1,11 @@
 @interface InAppPurchaseShowcaseCollectionViewCell
-- (_TtC8AppStore39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InAppPurchaseShowcaseCollectionViewCell
 
-- (_TtC8AppStore39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore39InAppPurchaseShowcaseCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore39InAppPurchaseShowcaseCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();

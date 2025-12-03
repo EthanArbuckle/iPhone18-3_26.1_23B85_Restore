@@ -1,11 +1,11 @@
 @interface UIViewFloatAnimatableProperty
 - (UIViewFloatAnimatableProperty)init;
-- (UIViewFloatAnimatableProperty)initWithView:(id)a3;
+- (UIViewFloatAnimatableProperty)initWithView:(id)view;
 - (double)presentationValue;
 - (double)value;
 - (double)velocity;
-- (void)setValue:(double)a3;
-- (void)setVelocity:(double)a3;
+- (void)setValue:(double)value;
+- (void)setVelocity:(double)velocity;
 @end
 
 @implementation UIViewFloatAnimatableProperty
@@ -22,9 +22,9 @@
 
 - (double)value
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 value];
-  [v3 doubleValue];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  value = [animatableProperty value];
+  [value doubleValue];
   v5 = v4;
 
   return v5;
@@ -32,9 +32,9 @@
 
 - (double)presentationValue
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 presentationValue];
-  [v3 doubleValue];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  presentationValue = [animatableProperty presentationValue];
+  [presentationValue doubleValue];
   v5 = v4;
 
   return v5;
@@ -42,17 +42,17 @@
 
 - (double)velocity
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 velocity];
-  [v3 doubleValue];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  velocity = [animatableProperty velocity];
+  [velocity doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (UIViewFloatAnimatableProperty)initWithView:(id)a3
+- (UIViewFloatAnimatableProperty)initWithView:(id)view
 {
-  v4 = [UIAnimatablePropertyWrapper makeSwiftFloatAnimatablePropertyWithView:a3];
+  v4 = [UIAnimatablePropertyWrapper makeSwiftFloatAnimatablePropertyWithView:view];
   v7.receiver = self;
   v7.super_class = UIViewFloatAnimatableProperty;
   v5 = [(UIAnimatablePropertyWrapper *)&v7 initWithAnimatableProperty:v4];
@@ -60,18 +60,18 @@
   return v5;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  [v4 setValue:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  [animatableProperty setValue:v5];
 }
 
-- (void)setVelocity:(double)a3
+- (void)setVelocity:(double)velocity
 {
-  v5 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setVelocity:v4];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:velocity];
+  [animatableProperty setVelocity:v4];
 }
 
 @end

@@ -3,8 +3,8 @@
 - (NSString)description;
 - (int64_t)leftOfStartFrameOffset;
 - (int64_t)rightOfEndFrameOffset;
-- (void)setLeftOfStartFrameOffset:(int64_t)a3;
-- (void)setRightOfEndFrameOffset:(int64_t)a3;
+- (void)setLeftOfStartFrameOffset:(int64_t)offset;
+- (void)setRightOfEndFrameOffset:(int64_t)offset;
 @end
 
 @implementation AudioCaptureConfig
@@ -16,11 +16,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setLeftOfStartFrameOffset:(int64_t)a3
+- (void)setLeftOfStartFrameOffset:(int64_t)offset
 {
   v5 = OBJC_IVAR___AudioCaptureConfig_leftOfStartFrameOffset;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = offset;
 }
 
 - (int64_t)rightOfEndFrameOffset
@@ -30,11 +30,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setRightOfEndFrameOffset:(int64_t)a3
+- (void)setRightOfEndFrameOffset:(int64_t)offset
 {
   v5 = OBJC_IVAR___AudioCaptureConfig_rightOfEndFrameOffset;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = offset;
 }
 
 - (AudioCaptureConfig)init
@@ -55,7 +55,7 @@
   v6 = *(v5 + 48);
   v7 = *(v5 + 52);
   swift_allocObject();
-  v8 = self;
+  selfCopy = self;
   sub_272376B2C();
   type metadata accessor for AudioCapture();
   sub_27227DA80(&qword_280882318, v9, type metadata accessor for AudioCapture);

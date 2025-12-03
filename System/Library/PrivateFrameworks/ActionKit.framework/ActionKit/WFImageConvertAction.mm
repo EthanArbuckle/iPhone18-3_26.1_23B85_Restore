@@ -1,22 +1,22 @@
 @interface WFImageConvertAction
-- (BOOL)preserveMetadataWithPreserveMetadata:(BOOL)a3 imageFormat:(id)a4;
-- (id)imageQualityWithQuality:(id)a3 imageFormat:(id)a4;
-- (id)typeFromImageFormatString:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (BOOL)preserveMetadataWithPreserveMetadata:(BOOL)metadata imageFormat:(id)format;
+- (id)imageQualityWithQuality:(id)quality imageFormat:(id)format;
+- (id)typeFromImageFormatString:(id)string;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFImageConvertAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_class();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__WFImageConvertAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_278C211D0;
   v6[4] = self;
-  [v4 generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
+  [inputCopy generateCollectionByCoercingToItemClass:v5 completionHandler:v6];
 }
 
 void __51__WFImageConvertAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -75,25 +75,25 @@ void __51__WFImageConvertAction_runAsynchronouslyWithInput___block_invoke_3(uint
   [*(a1 + 32) finishRunningWithError:v6];
 }
 
-- (BOOL)preserveMetadataWithPreserveMetadata:(BOOL)a3 imageFormat:(id)a4
+- (BOOL)preserveMetadataWithPreserveMetadata:(BOOL)metadata imageFormat:(id)format
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5 && ([v5 conformsToUTType:*MEMORY[0x277CE1DC0]] & 1) == 0 && (objc_msgSend(v6, "conformsToUTType:", *MEMORY[0x277CE1E10]) & 1) == 0 && (objc_msgSend(v6, "conformsToUTType:", *MEMORY[0x277CE1E80]) & 1) == 0)
+  metadataCopy = metadata;
+  formatCopy = format;
+  v6 = formatCopy;
+  if (formatCopy && ([formatCopy conformsToUTType:*MEMORY[0x277CE1DC0]] & 1) == 0 && (objc_msgSend(v6, "conformsToUTType:", *MEMORY[0x277CE1E10]) & 1) == 0 && (objc_msgSend(v6, "conformsToUTType:", *MEMORY[0x277CE1E80]) & 1) == 0)
   {
-    v4 &= [v6 conformsToUTType:*MEMORY[0x277CE1D90]];
+    metadataCopy &= [v6 conformsToUTType:*MEMORY[0x277CE1D90]];
   }
 
-  return v4;
+  return metadataCopy;
 }
 
-- (id)imageQualityWithQuality:(id)a3 imageFormat:(id)a4
+- (id)imageQualityWithQuality:(id)quality imageFormat:(id)format
 {
-  v5 = a3;
-  if ([a4 conformsToUTType:*MEMORY[0x277CE1DC0]])
+  qualityCopy = quality;
+  if ([format conformsToUTType:*MEMORY[0x277CE1DC0]])
   {
-    v6 = v5;
+    v6 = qualityCopy;
   }
 
   else
@@ -104,10 +104,10 @@ void __51__WFImageConvertAction_runAsynchronouslyWithInput___block_invoke_3(uint
   return v6;
 }
 
-- (id)typeFromImageFormatString:(id)a3
+- (id)typeFromImageFormatString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"JPEG"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"JPEG-2000"))
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"JPEG"] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"JPEG-2000"))
   {
     v4 = MEMORY[0x277CE1DC0];
 LABEL_4:
@@ -115,37 +115,37 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:@"PNG"])
+  if ([stringCopy isEqualToString:@"PNG"])
   {
     v4 = MEMORY[0x277CE1E10];
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"TIFF"])
+  if ([stringCopy isEqualToString:@"TIFF"])
   {
     v4 = MEMORY[0x277CE1E80];
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"GIF"])
+  if ([stringCopy isEqualToString:@"GIF"])
   {
     v4 = MEMORY[0x277CE1D88];
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"BMP"])
+  if ([stringCopy isEqualToString:@"BMP"])
   {
     v4 = MEMORY[0x277CE1D10];
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"PDF"])
+  if ([stringCopy isEqualToString:@"PDF"])
   {
     v4 = MEMORY[0x277CE1E08];
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"HEIF"])
+  if ([stringCopy isEqualToString:@"HEIF"])
   {
     v4 = MEMORY[0x277CE1D90];
     goto LABEL_4;

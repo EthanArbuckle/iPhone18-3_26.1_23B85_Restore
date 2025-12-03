@@ -1,35 +1,35 @@
 @interface SBHLibraryCategoryIconViewController
 - (BOOL)_canBeLocked;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4;
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location;
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations;
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location;
 - (CGRect)visibleBounds;
 - (SBIconListView)iconListView;
 - (SBIconViewProviding)iconViewProvider;
-- (id)_createIconListViewWithModel:(id)a3;
+- (id)_createIconListViewWithModel:(id)model;
 - (id)_createLockedModel;
 - (id)_createLockedView;
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4;
-- (id)iconViewForIcon:(id)a3 location:(id)a4;
-- (void)_handleTapOnLockedView:(id)a3;
-- (void)_setLockedIfPossible:(BOOL)a3 animated:(BOOL)a4;
-- (void)_updateLockedViewForLocked:(BOOL)a3 animated:(BOOL)a4;
-- (void)categoryDidUpdate:(id)a3;
-- (void)categoryWillUpdate:(id)a3;
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4;
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3;
-- (void)folder:(id)a3 didAddList:(id)a4;
-- (void)folder:(id)a3 didRemoveLists:(id)a4 atIndexes:(id)a5;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)updateCategory:(id)a3 location:(id)a4;
-- (void)updateFolder:(id)a3 location:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations;
+- (id)iconViewForIcon:(id)icon location:(id)location;
+- (void)_handleTapOnLockedView:(id)view;
+- (void)_setLockedIfPossible:(BOOL)possible animated:(BOOL)animated;
+- (void)_updateLockedViewForLocked:(BOOL)locked animated:(BOOL)animated;
+- (void)categoryDidUpdate:(id)update;
+- (void)categoryWillUpdate:(id)update;
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block;
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block;
+- (void)folder:(id)folder didAddList:(id)list;
+- (void)folder:(id)folder didRemoveLists:(id)lists atIndexes:(id)indexes;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)updateCategory:(id)category location:(id)location;
+- (void)updateFolder:(id)folder location:(id)location;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBHLibraryCategoryIconViewController
@@ -39,74 +39,74 @@
   v19.receiver = self;
   v19.super_class = SBHLibraryCategoryIconViewController;
   [(SBHLibraryCategoryIconViewController *)&v19 viewDidLoad];
-  v3 = [(SBHLibraryCategoryIconViewController *)self view];
-  [v3 bounds];
+  view = [(SBHLibraryCategoryIconViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBHLibraryCategoryIconViewController *)self folder];
+  folder = [(SBHLibraryCategoryIconViewController *)self folder];
   iconListView = self->_iconListView;
   if (!iconListView)
   {
-    v14 = [v12 listAtIndex:0];
+    v14 = [folder listAtIndex:0];
     v15 = [(SBHLibraryCategoryIconViewController *)self _createIconListViewWithModel:v14];
     v16 = self->_iconListView;
     self->_iconListView = v15;
 
-    v17 = [(SBHLibraryCategoryIconViewController *)self view];
-    [v17 addSubview:self->_iconListView];
+    view2 = [(SBHLibraryCategoryIconViewController *)self view];
+    [view2 addSubview:self->_iconListView];
 
     iconListView = self->_iconListView;
   }
 
   [(SBIconListView *)iconListView setFrame:v5, v7, v9, v11];
-  v18 = [(SBHLibraryCategoryIconViewController *)self view];
-  [v18 sbh_applyAppLibraryPodGlass];
+  view3 = [(SBHLibraryCategoryIconViewController *)self view];
+  [view3 sbh_applyAppLibraryPodGlass];
 
   [(SBHLibraryCategoryIconViewController *)self _setLockedIfPossible:1 animated:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBHLibraryCategoryIconViewController;
-  [(SBHLibraryCategoryIconViewController *)&v4 viewWillAppear:a3];
+  [(SBHLibraryCategoryIconViewController *)&v4 viewWillAppear:appear];
   [(SBHLibraryCategoryIconViewController *)self _setLockedIfPossible:1 animated:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBHLibraryCategoryIconViewController;
-  [(SBHLibraryCategoryIconViewController *)&v4 viewDidDisappear:a3];
+  [(SBHLibraryCategoryIconViewController *)&v4 viewDidDisappear:disappear];
   [(SBHLibraryCategoryIconViewController *)self _setLockedIfPossible:1 animated:0];
 }
 
-- (id)_createIconListViewWithModel:(id)a3
+- (id)_createIconListViewWithModel:(id)model
 {
-  v4 = a3;
-  v5 = [(SBHLibraryCategoryIconViewController *)self location];
-  v6 = v5;
+  modelCopy = model;
+  location = [(SBHLibraryCategoryIconViewController *)self location];
+  v6 = location;
   v7 = @"SBIconLocationAppLibraryCategoryPod";
-  if (v5)
+  if (location)
   {
-    v7 = v5;
+    v7 = location;
   }
 
   v8 = v7;
 
   v9 = [SBHLibraryCategoryPodIconListView alloc];
-  v10 = [(SBHLibraryCategoryIconViewController *)self listLayoutProvider];
-  v11 = [(SBHLibraryCategoryIconViewController *)self iconViewProvider];
-  v12 = [(SBIconListView *)v9 initWithModel:v4 layoutProvider:v10 iconLocation:v8 orientation:1 iconViewProvider:v11];
+  listLayoutProvider = [(SBHLibraryCategoryIconViewController *)self listLayoutProvider];
+  iconViewProvider = [(SBHLibraryCategoryIconViewController *)self iconViewProvider];
+  v12 = [(SBIconListView *)v9 initWithModel:modelCopy layoutProvider:listLayoutProvider iconLocation:v8 orientation:1 iconViewProvider:iconViewProvider];
 
   [(SBIconListView *)v12 setUsesGlassGroup:0];
-  v13 = [(SBHLibraryCategoryIconViewController *)self iconImageCache];
-  [(SBIconListView *)v12 setIconImageCache:v13];
+  iconImageCache = [(SBHLibraryCategoryIconViewController *)self iconImageCache];
+  [(SBIconListView *)v12 setIconImageCache:iconImageCache];
 
-  v14 = [(SBHLibraryCategoryIconViewController *)self folderIconImageCache];
-  [(SBIconListView *)v12 setFolderIconImageCache:v14];
+  folderIconImageCache = [(SBHLibraryCategoryIconViewController *)self folderIconImageCache];
+  [(SBIconListView *)v12 setFolderIconImageCache:folderIconImageCache];
 
   [(SBIconListView *)v12 setIconViewConfigurationOptions:2];
   [(SBIconListView *)v12 setEditing:[(SBHLibraryCategoryIconViewController *)self isEditing]];
@@ -115,60 +115,60 @@
   return v12;
 }
 
-- (void)updateCategory:(id)a3 location:(id)a4
+- (void)updateCategory:(id)category location:(id)location
 {
-  v6 = a3;
+  categoryCopy = category;
   preventFolderUpdateAssertion = self->_preventFolderUpdateAssertion;
-  v8 = a4;
+  locationCopy = location;
   [(BSInvalidatable *)preventFolderUpdateAssertion invalidate];
   v9 = self->_preventFolderUpdateAssertion;
   self->_preventFolderUpdateAssertion = 0;
 
   [(SBHLibraryCategory *)self->_category removeObserver:self];
   category = self->_category;
-  self->_category = v6;
-  v12 = v6;
+  self->_category = categoryCopy;
+  v12 = categoryCopy;
 
-  v11 = [(SBHLibraryCategory *)v12 compactPodFolder];
-  [(SBHLibraryCategoryIconViewController *)self updateFolder:v11 location:v8];
+  compactPodFolder = [(SBHLibraryCategory *)v12 compactPodFolder];
+  [(SBHLibraryCategoryIconViewController *)self updateFolder:compactPodFolder location:locationCopy];
 
   [(SBHLibraryCategoryIconViewController *)self _setLockedIfPossible:1 animated:0];
   [(SBHLibraryCategory *)v12 addObserver:self];
 }
 
-- (void)updateFolder:(id)a3 location:(id)a4
+- (void)updateFolder:(id)folder location:(id)location
 {
-  v10 = a3;
-  v7 = a4;
-  if (![v10 isEqual:self->_folder] || !-[NSString isEqualToString:](self->_location, "isEqualToString:", v7))
+  folderCopy = folder;
+  locationCopy = location;
+  if (![folderCopy isEqual:self->_folder] || !-[NSString isEqualToString:](self->_location, "isEqualToString:", locationCopy))
   {
     [(SBFolder *)self->_folder removeFolderObserver:self];
-    objc_storeStrong(&self->_location, a4);
-    objc_storeStrong(&self->_folder, a3);
+    objc_storeStrong(&self->_location, location);
+    objc_storeStrong(&self->_folder, folder);
     iconListView = self->_iconListView;
-    v9 = [v10 listAtIndex:0];
+    v9 = [folderCopy listAtIndex:0];
     [(SBIconListView *)iconListView setModel:v9];
 
-    [(SBIconListView *)self->_iconListView setIconLocation:v7];
-    [v10 addFolderObserver:self];
+    [(SBIconListView *)self->_iconListView setIconLocation:locationCopy];
+    [folderCopy addFolderObserver:self];
   }
 }
 
 - (SBIconListView)iconListView
 {
-  v3 = [(SBHLibraryCategoryIconViewController *)self view];
+  view = [(SBHLibraryCategoryIconViewController *)self view];
   iconListView = self->_iconListView;
 
   return iconListView;
 }
 
-- (void)_setLockedIfPossible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setLockedIfPossible:(BOOL)possible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  possibleCopy = possible;
   if (_os_feature_enabled_impl())
   {
-    if ([(SBHLibraryCategoryIconViewController *)self isLocked]== v5 || ![(SBHLibraryCategoryIconViewController *)self _canBeLocked])
+    if ([(SBHLibraryCategoryIconViewController *)self isLocked]== possibleCopy || ![(SBHLibraryCategoryIconViewController *)self _canBeLocked])
     {
       if (![(SBHLibraryCategoryIconViewController *)self _canBeLocked])
       {
@@ -185,19 +185,19 @@
 
     else
     {
-      self->_locked = v5;
+      self->_locked = possibleCopy;
 
-      [(SBHLibraryCategoryIconViewController *)self _updateLockedViewForLocked:v5 animated:v4];
+      [(SBHLibraryCategoryIconViewController *)self _updateLockedViewForLocked:possibleCopy animated:animatedCopy];
     }
   }
 }
 
 - (BOOL)_canBeLocked
 {
-  v2 = [(SBHLibraryCategory *)self->_category categoryIdentifier];
-  v3 = [v2 predictionCategoryID];
+  categoryIdentifier = [(SBHLibraryCategory *)self->_category categoryIdentifier];
+  predictionCategoryID = [categoryIdentifier predictionCategoryID];
 
-  return v3 == 7;
+  return predictionCategoryID == 7;
 }
 
 - (id)_createLockedModel
@@ -233,11 +233,11 @@
 - (id)_createLockedView
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHLibraryCategoryIconViewController *)self _createLockedModel];
-  v4 = [(SBHLibraryCategoryIconViewController *)self _createIconListViewWithModel:v3];
+  _createLockedModel = [(SBHLibraryCategoryIconViewController *)self _createLockedModel];
+  v4 = [(SBHLibraryCategoryIconViewController *)self _createIconListViewWithModel:_createLockedModel];
   [v4 setAutoresizingMask:18];
-  v5 = [(SBHLibraryCategoryIconViewController *)self view];
-  [v5 bounds];
+  view = [(SBHLibraryCategoryIconViewController *)self view];
+  [view bounds];
   [v4 setFrame:?];
 
   [(SBHLibraryCategoryIconViewController *)self iconImageInfo];
@@ -258,21 +258,21 @@
   return v4;
 }
 
-- (void)_updateLockedViewForLocked:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateLockedViewForLocked:(BOOL)locked animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = self->_lockedView;
-  v8 = [(SBHLibraryCategoryIconViewController *)self view];
+  animatedCopy = animated;
+  lockedCopy = locked;
+  _createLockedView = self->_lockedView;
+  view = [(SBHLibraryCategoryIconViewController *)self view];
   v9 = self->_iconListView;
-  if (v5 && !v7)
+  if (lockedCopy && !_createLockedView)
   {
-    v7 = [(SBHLibraryCategoryIconViewController *)self _createLockedView];
-    [v8 addSubview:v7];
-    objc_storeStrong(&self->_lockedView, v7);
+    _createLockedView = [(SBHLibraryCategoryIconViewController *)self _createLockedView];
+    [view addSubview:_createLockedView];
+    objc_storeStrong(&self->_lockedView, _createLockedView);
   }
 
-  if (v5)
+  if (lockedCopy)
   {
     v10 = 1.0;
   }
@@ -282,7 +282,7 @@
     v10 = 0.0;
   }
 
-  if (v5)
+  if (lockedCopy)
   {
     v11 = 0.0;
   }
@@ -296,7 +296,7 @@
   v17 = 3221225472;
   v18 = __76__SBHLibraryCategoryIconViewController__updateLockedViewForLocked_animated___block_invoke;
   v19 = &unk_1E808A370;
-  v12 = v7;
+  v12 = _createLockedView;
   v20 = v12;
   v21 = v9;
   v22 = v10;
@@ -304,7 +304,7 @@
   v13 = v9;
   v14 = _Block_copy(&v16);
   v15 = v14;
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:0 animations:0.3 completion:{0.0, v16, v17, v18, v19, v20, v21, *&v22, *&v23}];
   }
@@ -324,9 +324,9 @@ uint64_t __76__SBHLibraryCategoryIconViewController__updateLockedViewForLocked_a
   return [v2 setAlpha:v3];
 }
 
-- (void)_handleTapOnLockedView:(id)a3
+- (void)_handleTapOnLockedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = self->_lockedView;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -335,27 +335,27 @@ uint64_t __76__SBHLibraryCategoryIconViewController__updateLockedViewForLocked_a
   v6 = v5;
   v11 = v6;
   v7 = _Block_copy(aBlock);
-  if ([v4 state] == 1)
+  if ([viewCopy state] == 1)
   {
     [(SBIconListView *)v6 setAlpha:0.5];
   }
 
-  else if ([v4 state] == 3)
+  else if ([viewCopy state] == 3)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:327684 delay:v7 options:0 animations:0.2 completion:0.0];
-    if (tapInsideView(v4, v6))
+    if (tapInsideView(viewCopy, v6))
     {
-      v8 = [MEMORY[0x1E698B0D8] sharedGuard];
+      mEMORY[0x1E698B0D8] = [MEMORY[0x1E698B0D8] sharedGuard];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_invoke_2;
       v9[3] = &unk_1E808E538;
       v9[4] = self;
-      [v8 authenticateUnconditionallyWithCompletion:v9];
+      [mEMORY[0x1E698B0D8] authenticateUnconditionallyWithCompletion:v9];
     }
   }
 
-  else if ([v4 state] == 2 && !tapInsideView(v4, v6) || objc_msgSend(v4, "state") == 4 || objc_msgSend(v4, "state") == 5)
+  else if ([viewCopy state] == 2 && !tapInsideView(viewCopy, v6) || objc_msgSend(viewCopy, "state") == 4 || objc_msgSend(viewCopy, "state") == 5)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:327684 delay:v7 options:0 animations:0.2 completion:0.0];
   }
@@ -398,12 +398,12 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   v8 = 0;
-  if (self->_lockedViewLongPress == v6)
+  if (self->_lockedViewLongPress == recognizerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -415,23 +415,23 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   return v8;
 }
 
-- (void)categoryWillUpdate:(id)a3
+- (void)categoryWillUpdate:(id)update
 {
-  v4 = [a3 compactPodFolder];
-  v5 = [v4 lists];
-  v6 = [v5 firstObject];
-  v7 = [v6 icons];
+  compactPodFolder = [update compactPodFolder];
+  lists = [compactPodFolder lists];
+  firstObject = [lists firstObject];
+  icons = [firstObject icons];
   v8 = objc_opt_self();
-  v17 = [v7 bs_firstObjectOfClass:v8];
+  v17 = [icons bs_firstObjectOfClass:v8];
 
-  v9 = [(SBHLibraryCategoryIconViewController *)self iconListView];
-  v10 = [v9 displayedIconViewForIcon:v17];
-  v11 = [v10 _iconImageView];
+  iconListView = [(SBHLibraryCategoryIconViewController *)self iconListView];
+  v10 = [iconListView displayedIconViewForIcon:v17];
+  _iconImageView = [v10 _iconImageView];
 
   v12 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v11;
+    v13 = _iconImageView;
   }
 
   else
@@ -447,56 +447,56 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   self->_preventFolderUpdateAssertion = v15;
 }
 
-- (void)categoryDidUpdate:(id)a3
+- (void)categoryDidUpdate:(id)update
 {
   [(BSInvalidatable *)self->_preventFolderUpdateAssertion invalidate];
   preventFolderUpdateAssertion = self->_preventFolderUpdateAssertion;
   self->_preventFolderUpdateAssertion = 0;
 }
 
-- (void)folder:(id)a3 didAddList:(id)a4
+- (void)folder:(id)folder didAddList:(id)list
 {
-  v9 = a3;
-  v5 = [(SBHLibraryCategoryIconViewController *)self bs_isAppearingOrAppeared];
-  v6 = [(SBIconListView *)self->_iconListView model];
+  folderCopy = folder;
+  bs_isAppearingOrAppeared = [(SBHLibraryCategoryIconViewController *)self bs_isAppearingOrAppeared];
+  model = [(SBIconListView *)self->_iconListView model];
 
-  if (!v6)
+  if (!model)
   {
     iconListView = self->_iconListView;
-    v8 = [v9 listAtIndex:0];
+    v8 = [folderCopy listAtIndex:0];
     [(SBIconListView *)iconListView setModel:v8];
 
-    [(SBIconListView *)self->_iconListView layoutIconsIfNeededWithAnimationType:v5 - 1 options:0];
+    [(SBIconListView *)self->_iconListView layoutIconsIfNeededWithAnimationType:bs_isAppearingOrAppeared - 1 options:0];
   }
 }
 
-- (void)folder:(id)a3 didRemoveLists:(id)a4 atIndexes:(id)a5
+- (void)folder:(id)folder didRemoveLists:(id)lists atIndexes:(id)indexes
 {
-  v6 = a4;
-  v7 = [(SBHLibraryCategoryIconViewController *)self bs_isAppearingOrAppeared];
-  v8 = [(SBIconListView *)self->_iconListView model];
-  v9 = [v6 containsObject:v8];
+  listsCopy = lists;
+  bs_isAppearingOrAppeared = [(SBHLibraryCategoryIconViewController *)self bs_isAppearingOrAppeared];
+  model = [(SBIconListView *)self->_iconListView model];
+  v9 = [listsCopy containsObject:model];
 
   if (v9)
   {
     [(SBIconListView *)self->_iconListView setModel:0];
     iconListView = self->_iconListView;
 
-    [(SBIconListView *)iconListView layoutIconsIfNeededWithAnimationType:v7 - 1 options:0];
+    [(SBIconListView *)iconListView layoutIconsIfNeededWithAnimationType:bs_isAppearingOrAppeared - 1 options:0];
   }
 }
 
-- (id)iconViewForIcon:(id)a3 location:(id)a4
+- (id)iconViewForIcon:(id)icon location:(id)location
 {
-  v6 = a3;
+  iconCopy = icon;
   iconListView = self->_iconListView;
-  v8 = a4;
-  v9 = [(SBIconListView *)iconListView iconLocation];
-  v10 = [v9 isEqual:v8];
+  locationCopy = location;
+  iconLocation = [(SBIconListView *)iconListView iconLocation];
+  v10 = [iconLocation isEqual:locationCopy];
 
   if (v10)
   {
-    v11 = [(SBIconListView *)self->_iconListView iconViewForIcon:v6];
+    v11 = [(SBIconListView *)self->_iconListView iconViewForIcon:iconCopy];
   }
 
   else
@@ -507,17 +507,17 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   return v11;
 }
 
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
+  iconCopy = icon;
   iconListView = self->_iconListView;
-  v8 = a4;
-  v9 = [(SBIconListView *)iconListView iconLocation];
-  v10 = [v8 containsObject:v9];
+  locationsCopy = locations;
+  iconLocation = [(SBIconListView *)iconListView iconLocation];
+  v10 = [locationsCopy containsObject:iconLocation];
 
   if (v10)
   {
-    v11 = [(SBIconListView *)self->_iconListView iconViewForIcon:v6];
+    v11 = [(SBIconListView *)self->_iconListView iconViewForIcon:iconCopy];
   }
 
   else
@@ -528,33 +528,33 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   return v11;
 }
 
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations
 {
   v6 = MEMORY[0x1E695DFA8];
   iconListView = self->_iconListView;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SBIconListView *)iconListView iconLocation];
-  v11 = [v6 setWithObject:v10];
+  locationsCopy = locations;
+  iconCopy = icon;
+  iconLocation = [(SBIconListView *)iconListView iconLocation];
+  v11 = [v6 setWithObject:iconLocation];
 
-  [v11 minusSet:v8];
-  v12 = [v11 allObjects];
-  v13 = [(SBHLibraryCategoryIconViewController *)self firstIconViewForIcon:v9 inLocations:v12];
+  [v11 minusSet:locationsCopy];
+  allObjects = [v11 allObjects];
+  v13 = [(SBHLibraryCategoryIconViewController *)self firstIconViewForIcon:iconCopy inLocations:allObjects];
 
   return v13;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location
 {
-  v6 = a3;
+  iconCopy = icon;
   iconListView = self->_iconListView;
-  v8 = a4;
-  v9 = [(SBIconListView *)iconListView iconLocation];
-  v10 = [v9 isEqual:v8];
+  locationCopy = location;
+  iconLocation = [(SBIconListView *)iconListView iconLocation];
+  v10 = [iconLocation isEqual:locationCopy];
 
   if (v10)
   {
-    v11 = [(SBHLibraryCategoryIconViewController *)self isDisplayingIcon:v6];
+    v11 = [(SBHLibraryCategoryIconViewController *)self isDisplayingIcon:iconCopy];
   }
 
   else
@@ -565,17 +565,17 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   return v11;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
+  iconCopy = icon;
   iconListView = self->_iconListView;
-  v8 = a4;
-  v9 = [(SBIconListView *)iconListView iconLocation];
-  v10 = [v8 containsObject:v9];
+  locationsCopy = locations;
+  iconLocation = [(SBIconListView *)iconListView iconLocation];
+  v10 = [locationsCopy containsObject:iconLocation];
 
   if (v10)
   {
-    v11 = [(SBHLibraryCategoryIconViewController *)self isDisplayingIcon:v6];
+    v11 = [(SBHLibraryCategoryIconViewController *)self isDisplayingIcon:iconCopy];
   }
 
   else
@@ -586,17 +586,17 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   return v11;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location
 {
-  v6 = a3;
+  viewCopy = view;
   iconListView = self->_iconListView;
-  v8 = a4;
-  v9 = [(SBIconListView *)iconListView iconLocation];
-  v10 = [v9 isEqual:v8];
+  locationCopy = location;
+  iconLocation = [(SBIconListView *)iconListView iconLocation];
+  v10 = [iconLocation isEqual:locationCopy];
 
   if (v10)
   {
-    v11 = [(SBIconListView *)self->_iconListView isDisplayingIconView:v6];
+    v11 = [(SBIconListView *)self->_iconListView isDisplayingIconView:viewCopy];
   }
 
   else
@@ -607,19 +607,19 @@ void __63__SBHLibraryCategoryIconViewController__handleTapOnLockedView___block_i
   return v11;
 }
 
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  blockCopy = block;
   iconListView = self->_iconListView;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__SBHLibraryCategoryIconViewController_enumerateDisplayedIconViewsForIcon_usingBlock___block_invoke;
   v11[3] = &unk_1E808E560;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = iconCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = iconCopy;
   [(SBIconListView *)iconListView enumerateIconViewsUsingBlock:v11];
 }
 
@@ -635,20 +635,20 @@ void __86__SBHLibraryCategoryIconViewController_enumerateDisplayedIconViewsForIc
   }
 }
 
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   iconListView = self->_iconListView;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__SBHLibraryCategoryIconViewController_enumerateDisplayedIconViewsUsingBlock___block_invoke;
   v7[3] = &unk_1E8089310;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(SBIconListView *)iconListView enumerateIconViewsUsingBlock:v7];
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -661,37 +661,37 @@ void __86__SBHLibraryCategoryIconViewController_enumerateDisplayedIconViewsForIc
     p_iconImageInfo->size.height = v9;
     p_iconImageInfo->scale = v8;
     p_iconImageInfo->continuousCornerRadius = v7;
-    v13 = [(SBHLibraryCategoryIconViewController *)self view];
-    [v13 _setContinuousCornerRadius:v7];
+    view = [(SBHLibraryCategoryIconViewController *)self view];
+    [view _setContinuousCornerRadius:v7];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v5 = a4;
-    self->_editing = a3;
+    animatedCopy = animated;
+    self->_editing = editing;
     [(SBIconListView *)self->_iconListView setEditing:?];
     iconListView = self->_iconListView;
 
-    [(SBIconListView *)iconListView updateEditingStateAnimated:v5];
+    [(SBIconListView *)iconListView updateEditingStateAnimated:animatedCopy];
   }
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
-    self->_contentVisibility = a3;
-    if (!SBHContentVisibilityIsVisible(a3))
+    self->_contentVisibility = visibility;
+    if (!SBHContentVisibilityIsVisible(visibility))
     {
       [(SBHLibraryCategoryIconViewController *)self _setLockedIfPossible:1 animated:1];
     }
 
     iconListView = self->_iconListView;
 
-    [(SBIconListView *)iconListView setContentVisibility:a3];
+    [(SBIconListView *)iconListView setContentVisibility:visibility];
   }
 }
 

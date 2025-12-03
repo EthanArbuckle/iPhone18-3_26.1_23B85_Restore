@@ -4,23 +4,23 @@
 - (id)_init;
 - (id)configuredModes;
 - (id)debug_allModeDescriptions;
-- (id)dndModeForATXMode:(unint64_t)a3;
-- (id)dndModeForDNDModeWithUUID:(id)a3 useCache:(BOOL)a4;
-- (id)dndModeUUIDForDNDModeIdentifier:(id)a3;
-- (id)dndModeUUIDForDNDModeSemanticType:(int64_t)a3;
-- (id)dndSemanticTypeForATXMode:(unint64_t)a3;
+- (id)dndModeForATXMode:(unint64_t)mode;
+- (id)dndModeForDNDModeWithUUID:(id)d useCache:(BOOL)cache;
+- (id)dndModeUUIDForDNDModeIdentifier:(id)identifier;
+- (id)dndModeUUIDForDNDModeSemanticType:(int64_t)type;
+- (id)dndSemanticTypeForATXMode:(unint64_t)mode;
 - (id)getAllModeConfigurationsWithoutCache;
-- (id)iOSAppListForMode:(int64_t)a3 configurationType:(unint64_t)a4;
-- (id)iOSContactListForMode:(int64_t)a3 configurationType:(unint64_t)a4;
-- (id)modeConfigurationForDNDModeWithUUID:(id)a3 useCache:(BOOL)a4;
+- (id)iOSAppListForMode:(int64_t)mode configurationType:(unint64_t)type;
+- (id)iOSContactListForMode:(int64_t)mode configurationType:(unint64_t)type;
+- (id)modeConfigurationForDNDModeWithUUID:(id)d useCache:(BOOL)cache;
 - (id)modesByModeIdentifiers;
-- (unint64_t)atxModeForDNDMode:(id)a3;
+- (unint64_t)atxModeForDNDMode:(id)mode;
 - (void)configuredModesDidChange;
 - (void)getAllModeConfigurationsWithoutCache;
 - (void)invalidateCaches;
 - (void)refreshCachedConfigs;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ATXDNDModeConfigurationClient
@@ -125,54 +125,54 @@ void __47__ATXDNDModeConfigurationClient_sharedInstance__block_invoke()
 
 - (id)configuredModes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_isCacheValid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isCacheValid)
   {
-    [(ATXDNDModeConfigurationClient *)v2 refreshCachedConfigs];
+    [(ATXDNDModeConfigurationClient *)selfCopy refreshCachedConfigs];
   }
 
-  v3 = v2->_cachedModeConfig;
-  objc_sync_exit(v2);
+  v3 = selfCopy->_cachedModeConfig;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)modesByModeIdentifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_isCacheValid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isCacheValid)
   {
-    [(ATXDNDModeConfigurationClient *)v2 refreshCachedConfigs];
+    [(ATXDNDModeConfigurationClient *)selfCopy refreshCachedConfigs];
   }
 
-  v3 = v2->_cachedModesByModeIdentifiers;
-  objc_sync_exit(v2);
+  v3 = selfCopy->_cachedModesByModeIdentifiers;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)_configuredModesBySemanticType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_isCacheValid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_isCacheValid)
   {
-    [(ATXDNDModeConfigurationClient *)v2 refreshCachedConfigs];
+    [(ATXDNDModeConfigurationClient *)selfCopy refreshCachedConfigs];
   }
 
-  v3 = v2->_cachedModesBySemanticType;
-  objc_sync_exit(v2);
+  v3 = selfCopy->_cachedModesBySemanticType;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)dndModeForDNDModeWithUUID:(id)a3 useCache:(BOOL)a4
+- (id)dndModeForDNDModeWithUUID:(id)d useCache:(BOOL)cache
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  dCopy = d;
+  if (!cache)
   {
     v7 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -185,18 +185,18 @@ void __47__ATXDNDModeConfigurationClient_sharedInstance__block_invoke()
     [(ATXDNDModeConfigurationClient *)self invalidateCaches];
   }
 
-  v8 = [(ATXDNDModeConfigurationClient *)self configuredModes];
-  v9 = v8;
+  configuredModes = [(ATXDNDModeConfigurationClient *)self configuredModes];
+  v9 = configuredModes;
   v10 = 0;
-  if (v6)
+  if (dCopy)
   {
-    if (v8)
+    if (configuredModes)
     {
-      v10 = [v8 objectForKeyedSubscript:v6];
+      v10 = [configuredModes objectForKeyedSubscript:dCopy];
 
       if (v10)
       {
-        v10 = [v9 objectForKeyedSubscript:v6];
+        v10 = [v9 objectForKeyedSubscript:dCopy];
       }
     }
   }
@@ -204,9 +204,9 @@ void __47__ATXDNDModeConfigurationClient_sharedInstance__block_invoke()
   return v10;
 }
 
-- (unint64_t)atxModeForDNDMode:(id)a3
+- (unint64_t)atxModeForDNDMode:(id)mode
 {
-  v4 = [(ATXDNDModeConfigurationClient *)self dndModeForDNDModeWithUUID:a3];
+  v4 = [(ATXDNDModeConfigurationClient *)self dndModeForDNDModeWithUUID:mode];
   v5 = v4;
   if (v4)
   {
@@ -221,15 +221,15 @@ void __47__ATXDNDModeConfigurationClient_sharedInstance__block_invoke()
   return v6;
 }
 
-- (id)dndModeUUIDForDNDModeIdentifier:(id)a3
+- (id)dndModeUUIDForDNDModeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ATXDNDModeConfigurationClient *)self modesByModeIdentifiers];
-  v6 = v5;
-  if (v4 && v5 && ([v5 objectForKeyedSubscript:v4], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  identifierCopy = identifier;
+  modesByModeIdentifiers = [(ATXDNDModeConfigurationClient *)self modesByModeIdentifiers];
+  v6 = modesByModeIdentifiers;
+  if (identifierCopy && modesByModeIdentifiers && ([modesByModeIdentifiers objectForKeyedSubscript:identifierCopy], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v6 objectForKeyedSubscript:v4];
-    v9 = [v8 identifier];
+    v8 = [v6 objectForKeyedSubscript:identifierCopy];
+    identifier = [v8 identifier];
   }
 
   else
@@ -240,21 +240,21 @@ void __47__ATXDNDModeConfigurationClient_sharedInstance__block_invoke()
       [ATXDNDModeConfigurationClient dndModeUUIDForDNDModeIdentifier:];
     }
 
-    v9 = objc_opt_new();
+    identifier = objc_opt_new();
   }
 
-  return v9;
+  return identifier;
 }
 
-- (id)dndModeUUIDForDNDModeSemanticType:(int64_t)a3
+- (id)dndModeUUIDForDNDModeSemanticType:(int64_t)type
 {
-  v4 = [(ATXDNDModeConfigurationClient *)self _configuredModesBySemanticType];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  _configuredModesBySemanticType = [(ATXDNDModeConfigurationClient *)self _configuredModesBySemanticType];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [_configuredModesBySemanticType objectForKeyedSubscript:v5];
 
   if ([v6 count] < 2)
   {
-    v8 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
@@ -262,56 +262,56 @@ void __47__ATXDNDModeConfigurationClient_sharedInstance__block_invoke()
     v7 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(ATXDNDModeConfigurationClient *)a3 dndModeUUIDForDNDModeSemanticType:v7];
+      [(ATXDNDModeConfigurationClient *)type dndModeUUIDForDNDModeSemanticType:v7];
     }
 
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (id)dndSemanticTypeForATXMode:(unint64_t)a3
+- (id)dndSemanticTypeForATXMode:(unint64_t)mode
 {
-  if (a3 - 1 > 0xE)
+  if (mode - 1 > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E80C43F8[a3 - 1];
+    return qword_1E80C43F8[mode - 1];
   }
 }
 
-- (id)dndModeForATXMode:(unint64_t)a3
+- (id)dndModeForATXMode:(unint64_t)mode
 {
-  v4 = [(ATXDNDModeConfigurationClient *)self dndSemanticTypeForATXMode:a3];
+  v4 = [(ATXDNDModeConfigurationClient *)self dndSemanticTypeForATXMode:mode];
   if (v4)
   {
-    v5 = [(ATXDNDModeConfigurationClient *)self _configuredModesBySemanticType];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 firstObject];
+    _configuredModesBySemanticType = [(ATXDNDModeConfigurationClient *)self _configuredModesBySemanticType];
+    v6 = [_configuredModesBySemanticType objectForKeyedSubscript:v4];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 - (id)debug_allModeDescriptions
 {
-  v3 = [(ATXDNDModeConfigurationClient *)self configuredModes];
-  v4 = [v3 allValues];
+  configuredModes = [(ATXDNDModeConfigurationClient *)self configuredModes];
+  allValues = [configuredModes allValues];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__ATXDNDModeConfigurationClient_debug_allModeDescriptions__block_invoke;
   v7[3] = &unk_1E80C43B0;
   v7[4] = self;
-  v5 = [v4 _pas_mappedArrayWithTransform:v7];
+  v5 = [allValues _pas_mappedArrayWithTransform:v7];
 
   return v5;
 }
@@ -333,7 +333,7 @@ id __58__ATXDNDModeConfigurationClient_debug_allModeDescriptions__block_invoke(u
   return v12;
 }
 
-- (id)iOSAppListForMode:(int64_t)a3 configurationType:(unint64_t)a4
+- (id)iOSAppListForMode:(int64_t)mode configurationType:(unint64_t)type
 {
   dndConfigurationService = self->_dndConfigurationService;
   v17 = 0;
@@ -346,8 +346,8 @@ id __58__ATXDNDModeConfigurationClient_debug_allModeDescriptions__block_invoke(u
     v13[1] = 3221225472;
     v13[2] = __69__ATXDNDModeConfigurationClient_iOSAppListForMode_configurationType___block_invoke;
     v13[3] = &unk_1E80C43D8;
-    v15 = a3;
-    v16 = a4;
+    modeCopy = mode;
+    typeCopy = type;
     v10 = v9;
     v14 = v10;
     [v7 enumerateKeysAndObjectsUsingBlock:v13];
@@ -423,7 +423,7 @@ void __69__ATXDNDModeConfigurationClient_iOSAppListForMode_configurationType___b
   }
 }
 
-- (id)iOSContactListForMode:(int64_t)a3 configurationType:(unint64_t)a4
+- (id)iOSContactListForMode:(int64_t)mode configurationType:(unint64_t)type
 {
   dndConfigurationService = self->_dndConfigurationService;
   v17 = 0;
@@ -436,8 +436,8 @@ void __69__ATXDNDModeConfigurationClient_iOSAppListForMode_configurationType___b
     v13[1] = 3221225472;
     v13[2] = __73__ATXDNDModeConfigurationClient_iOSContactListForMode_configurationType___block_invoke;
     v13[3] = &unk_1E80C43D8;
-    v15 = a3;
-    v16 = a4;
+    modeCopy = mode;
+    typeCopy = type;
     v10 = v9;
     v14 = v10;
     [v7 enumerateKeysAndObjectsUsingBlock:v13];
@@ -526,17 +526,17 @@ void __73__ATXDNDModeConfigurationClient_iOSContactListForMode_configurationType
   }
 }
 
-- (id)modeConfigurationForDNDModeWithUUID:(id)a3 useCache:(BOOL)a4
+- (id)modeConfigurationForDNDModeWithUUID:(id)d useCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ATXDNDModeConfigurationClient *)self dndModeForDNDModeWithUUID:v6 useCache:v4];
-  v8 = [v7 modeIdentifier];
-  if (v8)
+  cacheCopy = cache;
+  dCopy = d;
+  v7 = [(ATXDNDModeConfigurationClient *)self dndModeForDNDModeWithUUID:dCopy useCache:cacheCopy];
+  modeIdentifier = [v7 modeIdentifier];
+  if (modeIdentifier)
   {
     dndConfigurationService = self->_dndConfigurationService;
     v15 = 0;
-    v10 = [(DNDModeConfigurationService *)dndConfigurationService modeConfigurationForModeIdentifier:v8 error:&v15];
+    v10 = [(DNDModeConfigurationService *)dndConfigurationService modeConfigurationForModeIdentifier:modeIdentifier error:&v15];
     v11 = v15;
     v12 = v11;
     if (!v10 && v11)
@@ -588,35 +588,35 @@ void __73__ATXDNDModeConfigurationClient_iOSContactListForMode_configurationType
   return v6;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)configuredModesDidChange
 {
   v16 = *MEMORY[0x1E69E9840];
   [(ATXDNDModeConfigurationClient *)self invalidateCaches];
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3->_observers;
+  v4 = selfCopy->_observers;
   v5 = [(NSHashTable *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -632,13 +632,13 @@ void __73__ATXDNDModeConfigurationClient_iOSContactListForMode_configurationType
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        observerQueue = v3->_observerQueue;
+        observerQueue = selfCopy->_observerQueue;
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __57__ATXDNDModeConfigurationClient_configuredModesDidChange__block_invoke;
         v10[3] = &unk_1E80C0958;
         v10[4] = v8;
-        v10[5] = v3;
+        v10[5] = selfCopy;
         dispatch_async(observerQueue, v10);
         ++v7;
       }
@@ -650,7 +650,7 @@ void __73__ATXDNDModeConfigurationClient_iOSContactListForMode_configurationType
     while (v5);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 void __38__ATXDNDModeConfigurationClient__init__block_invoke_cold_1(id *a1)

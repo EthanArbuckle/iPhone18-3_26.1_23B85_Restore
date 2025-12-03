@@ -1,46 +1,46 @@
 @interface TSCHStyleAndPropertyPair
-+ (id)pairWithStyle:(id)a3 property:(int)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCHStyleAndPropertyPair)initWithStyle:(id)a3 property:(int)a4;
++ (id)pairWithStyle:(id)style property:(int)property;
+- (BOOL)isEqual:(id)equal;
+- (TSCHStyleAndPropertyPair)initWithStyle:(id)style property:(int)property;
 - (id)description;
 @end
 
 @implementation TSCHStyleAndPropertyPair
 
-+ (id)pairWithStyle:(id)a3 property:(int)a4
++ (id)pairWithStyle:(id)style property:(int)property
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  v12 = objc_msgSend_initWithStyle_property_(v7, v8, v9, v10, v11, v6, v4);
+  v4 = *&property;
+  styleCopy = style;
+  v7 = [self alloc];
+  v12 = objc_msgSend_initWithStyle_property_(v7, v8, v9, v10, v11, styleCopy, v4);
 
   return v12;
 }
 
-- (TSCHStyleAndPropertyPair)initWithStyle:(id)a3 property:(int)a4
+- (TSCHStyleAndPropertyPair)initWithStyle:(id)style property:(int)property
 {
-  v7 = a3;
+  styleCopy = style;
   v11.receiver = self;
   v11.super_class = TSCHStyleAndPropertyPair;
   v8 = [(TSCHStyleAndPropertyPair *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_style, a3);
-    v9->_property = a4;
+    objc_storeStrong(&v8->_style, style);
+    v9->_property = property;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

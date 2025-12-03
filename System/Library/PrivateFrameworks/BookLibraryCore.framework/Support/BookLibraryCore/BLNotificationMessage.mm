@@ -1,26 +1,26 @@
 @interface BLNotificationMessage
-- (BLNotificationMessage)initWithUserInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessage:(id)a3;
+- (BLNotificationMessage)initWithUserInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessage:(id)message;
 - (NSNumber)accountID;
 - (NSURL)actionURL;
 - (id)description;
-- (id)valueForUserInfoKey:(id)a3;
-- (int64_t)_integerValueForKey:(id)a3 defaultValue:(int64_t)a4;
+- (id)valueForUserInfoKey:(id)key;
+- (int64_t)_integerValueForKey:(id)key defaultValue:(int64_t)value;
 - (unint64_t)hash;
 @end
 
 @implementation BLNotificationMessage
 
-- (BLNotificationMessage)initWithUserInfo:(id)a3
+- (BLNotificationMessage)initWithUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = BLNotificationMessage;
   v5 = [(BLNotificationMessage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [infoCopy copy];
     userInfo = v5->_userInfo;
     v5->_userInfo = v6;
   }
@@ -63,29 +63,29 @@
   return v5;
 }
 
-- (BOOL)isEqualToMessage:(id)a3
+- (BOOL)isEqualToMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(BLNotificationMessage *)self userInfo];
-  v6 = [v4 userInfo];
+  messageCopy = message;
+  userInfo = [(BLNotificationMessage *)self userInfo];
+  userInfo2 = [messageCopy userInfo];
 
-  LOBYTE(v4) = [v5 isEqualToDictionary:v6];
-  return v4;
+  LOBYTE(messageCopy) = [userInfo isEqualToDictionary:userInfo2];
+  return messageCopy;
 }
 
-- (id)valueForUserInfoKey:(id)a3
+- (id)valueForUserInfoKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BLNotificationMessage *)self userInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  userInfo = [(BLNotificationMessage *)self userInfo];
+  v6 = [userInfo objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -95,7 +95,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BLNotificationMessage *)self isEqualToMessage:v4];
+      v5 = [(BLNotificationMessage *)self isEqualToMessage:equalCopy];
     }
 
     else
@@ -109,16 +109,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BLNotificationMessage *)self userInfo];
-  v3 = [v2 hash];
+  userInfo = [(BLNotificationMessage *)self userInfo];
+  v3 = [userInfo hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(BLNotificationMessage *)self userInfo];
-  v3 = [v2 mutableCopy];
+  userInfo = [(BLNotificationMessage *)self userInfo];
+  v3 = [userInfo mutableCopy];
 
   v4 = [v3 objectForKeyedSubscript:@"0"];
   if (v4)
@@ -135,16 +135,16 @@
   return v8;
 }
 
-- (int64_t)_integerValueForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)_integerValueForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(BLNotificationMessage *)self valueForUserInfoKey:a3];
+  v5 = [(BLNotificationMessage *)self valueForUserInfoKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
 @end

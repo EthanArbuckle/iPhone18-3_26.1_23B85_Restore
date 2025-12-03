@@ -1,18 +1,18 @@
 @interface SmartCoverStateObserver
 - (SmartCoverStateObserver)init;
-- (void)smartCoverStateDidChange:(int64_t)a3;
+- (void)smartCoverStateDidChange:(int64_t)change;
 @end
 
 @implementation SmartCoverStateObserver
 
-- (void)smartCoverStateDidChange:(int64_t)a3
+- (void)smartCoverStateDidChange:(int64_t)change
 {
   v4 = sub_100017F4C();
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1004A1AB8;
   v5[3] = &unk_100ADF8F8;
-  v5[4] = a3;
+  v5[4] = change;
   sub_10000CA94(v4, v5);
 }
 
@@ -43,8 +43,8 @@
     v5 = [(SmartCoverStateObserver *)&v12 init];
     if (v5)
     {
-      v6 = [v3 sharedInstance];
-      v7 = [v6 registerSmartCoverStateObserver:v5];
+      sharedInstance = [v3 sharedInstance];
+      v7 = [sharedInstance registerSmartCoverStateObserver:v5];
       observability = v5->observability;
       v5->observability = v7;
 
@@ -55,7 +55,7 @@
     }
 
     self = v5;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -67,10 +67,10 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SpringBoardServices framework is missing", buf, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

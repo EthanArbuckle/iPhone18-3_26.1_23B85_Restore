@@ -1,42 +1,42 @@
 @interface MechanismPassword
-- (MechanismPassword)initWithACMContextRecord:(id)a3 passwordMode:(int64_t)a4 request:(id)a5;
-- (MechanismPassword)initWithParams:(id)a3 request:(id)a4;
-- (id)additionalControllerInternalInfoForPolicy:(int64_t)a3;
-- (void)enterPassphrase:(id)a3 reply:(id)a4;
+- (MechanismPassword)initWithACMContextRecord:(id)record passwordMode:(int64_t)mode request:(id)request;
+- (MechanismPassword)initWithParams:(id)params request:(id)request;
+- (id)additionalControllerInternalInfoForPolicy:(int64_t)policy;
+- (void)enterPassphrase:(id)passphrase reply:(id)reply;
 @end
 
 @implementation MechanismPassword
 
-- (MechanismPassword)initWithParams:(id)a3 request:(id)a4
+- (MechanismPassword)initWithParams:(id)params request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"AcmContextRecord"];
-  v9 = [v7 objectForKeyedSubscript:@"PasswordMode"];
+  requestCopy = request;
+  paramsCopy = params;
+  v8 = [paramsCopy objectForKeyedSubscript:@"AcmContextRecord"];
+  v9 = [paramsCopy objectForKeyedSubscript:@"PasswordMode"];
 
-  v10 = [v9 integerValue];
-  v11 = [(MechanismPassword *)self initWithACMContextRecord:v8 passwordMode:v10 request:v6];
+  integerValue = [v9 integerValue];
+  v11 = [(MechanismPassword *)self initWithACMContextRecord:v8 passwordMode:integerValue request:requestCopy];
 
   return v11;
 }
 
-- (MechanismPassword)initWithACMContextRecord:(id)a3 passwordMode:(int64_t)a4 request:(id)a5
+- (MechanismPassword)initWithACMContextRecord:(id)record passwordMode:(int64_t)mode request:(id)request
 {
   v7.receiver = self;
   v7.super_class = MechanismPassword;
-  result = [(MechanismPassword *)&v7 initWithEventIdentifier:4 remoteViewController:4 acmContextRecord:a3 request:a5];
+  result = [(MechanismPassword *)&v7 initWithEventIdentifier:4 remoteViewController:4 acmContextRecord:record request:request];
   if (result)
   {
-    result->_mode = a4;
+    result->_mode = mode;
   }
 
   return result;
 }
 
-- (void)enterPassphrase:(id)a3 reply:(id)a4
+- (void)enterPassphrase:(id)passphrase reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  passphraseCopy = passphrase;
+  replyCopy = reply;
   if (qword_20A88 != -1)
   {
     sub_BC60();
@@ -48,7 +48,7 @@
     *buf = 136315394;
     v28 = "[MechanismPassword enterPassphrase:reply:]";
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&def_13158, v8, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -58,8 +58,8 @@
   v11 = v22;
   if (v10)
   {
-    v12 = [(MechanismPassword *)self policyOptions];
-    v13 = [v12 objectForKey:&off_1C888];
+    policyOptions = [(MechanismPassword *)self policyOptions];
+    v13 = [policyOptions objectForKey:&off_1C888];
     [v13 doubleValue];
     v15 = v14;
 
@@ -74,10 +74,10 @@
     }
 
     v21 = v11;
-    v17 = [v9 replacePassphraseCredentialWithPurpose:0 passphrase:v6 scope:v16 error:&v21];
+    v17 = [v9 replacePassphraseCredentialWithPurpose:0 passphrase:passphraseCopy scope:v16 error:&v21];
     v18 = v21;
 
-    v7[2](v7, v17, v18);
+    replyCopy[2](replyCopy, v17, v18);
     if (v17)
     {
       v25 = @"Result";
@@ -99,11 +99,11 @@
 
   else
   {
-    v7[2](v7, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
   }
 }
 
-- (id)additionalControllerInternalInfoForPolicy:(int64_t)a3
+- (id)additionalControllerInternalInfoForPolicy:(int64_t)policy
 {
   v6 = @"PasswordMode";
   v3 = [NSNumber numberWithInteger:self->_mode];

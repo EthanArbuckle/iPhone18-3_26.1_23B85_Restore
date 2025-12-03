@@ -1,34 +1,34 @@
 @interface CPDistributedMessagingCallout
-- (CPDistributedMessagingCallout)initWithTarget:(id)a3 selector:(SEL)a4;
+- (CPDistributedMessagingCallout)initWithTarget:(id)target selector:(SEL)selector;
 - (SEL)selector;
 - (void)dealloc;
 @end
 
 @implementation CPDistributedMessagingCallout
 
-- (CPDistributedMessagingCallout)initWithTarget:(id)a3 selector:(SEL)a4
+- (CPDistributedMessagingCallout)initWithTarget:(id)target selector:(SEL)selector
 {
   v11.receiver = self;
   v11.super_class = CPDistributedMessagingCallout;
   v6 = [(CPDistributedMessagingCallout *)&v11 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_target = v7;
+    targetCopy = target;
+    v6->_target = targetCopy;
     p_selector = &v6->_selector;
-    if (a4)
+    if (selector)
     {
-      *p_selector = a4;
-      v9 = a4;
+      *p_selector = selector;
+      selectorCopy = selector;
     }
 
     else
     {
-      v9 = 0;
+      selectorCopy = 0;
       *p_selector = 0;
     }
 
-    v6->_returnsVoid = [objc_msgSend(v7 methodSignatureForSelector:{v9), "methodReturnLength"}] == 0;
+    v6->_returnsVoid = [objc_msgSend(targetCopy methodSignatureForSelector:{selectorCopy), "methodReturnLength"}] == 0;
   }
 
   return v6;

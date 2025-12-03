@@ -1,14 +1,14 @@
 @interface RouteTrafficFeatureCalculator
 - (RouteTrafficFeatureCalculator)init;
-- (id)_cacheKeyForRoutes:(id)a3;
-- (id)cachedSharedTrafficFeaturesForRoutes:(id)a3;
-- (id)cachedTrafficFeaturesForRoute:(id)a3;
-- (void)_calculateCameraFeaturesForRoute:(id)a3;
-- (void)_startCalculationTaskForRoute:(id)a3 completion:(id)a4;
-- (void)clearCachedSharedTrafficFeaturesForRoutes:(id)a3;
-- (void)clearCachedTrafficFeaturesForRoute:(id)a3;
-- (void)getSharedTrafficFeaturesForRoutes:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)getTrafficFeaturesForRoute:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
+- (id)_cacheKeyForRoutes:(id)routes;
+- (id)cachedSharedTrafficFeaturesForRoutes:(id)routes;
+- (id)cachedTrafficFeaturesForRoute:(id)route;
+- (void)_calculateCameraFeaturesForRoute:(id)route;
+- (void)_startCalculationTaskForRoute:(id)route completion:(id)completion;
+- (void)clearCachedSharedTrafficFeaturesForRoutes:(id)routes;
+- (void)clearCachedTrafficFeaturesForRoute:(id)route;
+- (void)getSharedTrafficFeaturesForRoutes:(id)routes completionQueue:(id)queue completionHandler:(id)handler;
+- (void)getTrafficFeaturesForRoute:(id)route completionQueue:(id)queue completionHandler:(id)handler;
 @end
 
 @implementation RouteTrafficFeatureCalculator
@@ -44,30 +44,30 @@
   return v2;
 }
 
-- (void)_calculateCameraFeaturesForRoute:(id)a3
+- (void)_calculateCameraFeaturesForRoute:(id)route
 {
-  v4 = a3;
-  v46 = self;
-  v5 = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
-  dispatch_assert_queue_V2(v5);
+  routeCopy = route;
+  selfCopy = self;
+  synchronizationQueue = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
 
   v6 = [NSMutableArray alloc];
-  v7 = [v4 enrouteNotices];
-  v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
+  enrouteNotices = [routeCopy enrouteNotices];
+  v8 = [v6 initWithCapacity:{objc_msgSend(enrouteNotices, "count")}];
 
   v9 = sub_10009737C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v4 uniqueRouteID];
-    v11 = [v4 enrouteNotices];
-    v12 = [v11 count];
-    v13 = [v4 enrouteNotices];
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    enrouteNotices2 = [routeCopy enrouteNotices];
+    v12 = [enrouteNotices2 count];
+    enrouteNotices3 = [routeCopy enrouteNotices];
     *buf = 138412803;
-    v62 = v10;
+    v62 = uniqueRouteID;
     v63 = 2048;
     v64 = v12;
     v65 = 2113;
-    v66 = v13;
+    v66 = enrouteNotices3;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Route with ID: %@ has %lu enroute notices: %{private}@", buf, 0x20u);
   }
 
@@ -75,8 +75,8 @@
   v58 = 0u;
   v56 = 0u;
   v55 = 0u;
-  v14 = [v4 enrouteNotices];
-  v15 = [v14 countByEnumeratingWithState:&v55 objects:v60 count:16];
+  enrouteNotices4 = [routeCopy enrouteNotices];
+  v15 = [enrouteNotices4 countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v15)
   {
     v16 = v15;
@@ -88,16 +88,16 @@
       {
         if (*v56 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(enrouteNotices4);
         }
 
         v19 = *(*(&v55 + 1) + 8 * v18);
-        v20 = [v19 trafficCamera];
-        if (v20 || ([v19 trafficSignal], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+        trafficCamera = [v19 trafficCamera];
+        if (trafficCamera || ([v19 trafficSignal], (trafficCamera = objc_claimAutoreleasedReturnValue()) != 0))
         {
 
 LABEL_11:
-          v21 = [VKTrafficFeature newTrafficFeatureForEnrouteNotice:v19 onRoute:v4];
+          v21 = [VKTrafficFeature newTrafficFeatureForEnrouteNotice:v19 onRoute:routeCopy];
           if (v21)
           {
             v22 = v21;
@@ -109,9 +109,9 @@ LABEL_11:
             v23 = sub_10009737C();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
-              v24 = [v19 identifier];
+              identifier = [v19 identifier];
               *buf = 138412547;
-              v62 = v24;
+              v62 = identifier;
               v63 = 2113;
               v64 = v19;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Traffic feature for notice %@ (%{private}@) was nil; ignoring", buf, 0x16u);
@@ -123,9 +123,9 @@ LABEL_11:
           goto LABEL_16;
         }
 
-        v25 = [v19 routeAnnotation];
+        routeAnnotation = [v19 routeAnnotation];
 
-        if (v25)
+        if (routeAnnotation)
         {
           goto LABEL_11;
         }
@@ -133,9 +133,9 @@ LABEL_11:
         v22 = sub_10009737C();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
-          v26 = [v19 identifier];
+          identifier2 = [v19 identifier];
           *buf = 138412290;
-          v62 = v26;
+          v62 = identifier2;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Enroute notice %@ has nil traffic camera, traffic signal and route annotation; ignoring", buf, 0xCu);
         }
 
@@ -145,7 +145,7 @@ LABEL_16:
       }
 
       while (v16 != v18);
-      v27 = [v14 countByEnumeratingWithState:&v55 objects:v60 count:16];
+      v27 = [enrouteNotices4 countByEnumeratingWithState:&v55 objects:v60 count:16];
       v16 = v27;
     }
 
@@ -155,29 +155,29 @@ LABEL_16:
   v28 = [v8 copy];
   if ([v28 count])
   {
-    v29 = [(RouteTrafficFeatureCalculator *)v46 cache];
-    v30 = [v4 uniqueRouteID];
-    [v29 setObject:v28 forKey:v30];
+    cache = [(RouteTrafficFeatureCalculator *)selfCopy cache];
+    uniqueRouteID2 = [routeCopy uniqueRouteID];
+    [cache setObject:v28 forKey:uniqueRouteID2];
   }
 
   v31 = sub_10009737C();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     v32 = [v28 count];
-    v33 = [v4 uniqueRouteID];
+    uniqueRouteID3 = [routeCopy uniqueRouteID];
     *buf = 134218499;
     v62 = v32;
     v63 = 2113;
     v64 = v28;
     v65 = 2112;
-    v66 = v33;
+    v66 = uniqueRouteID3;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Finished calculation with %lu traffic features (%{private}@) for route with ID: %@", buf, 0x20u);
   }
 
-  v34 = [(RouteTrafficFeatureCalculator *)v46 completionHandlers];
-  v35 = v4;
-  v36 = [v4 uniqueRouteID];
-  v37 = [v34 objectForKey:v36];
+  completionHandlers = [(RouteTrafficFeatureCalculator *)selfCopy completionHandlers];
+  v35 = routeCopy;
+  uniqueRouteID4 = [routeCopy uniqueRouteID];
+  v37 = [completionHandlers objectForKey:uniqueRouteID4];
 
   v53 = 0u;
   v54 = 0u;
@@ -199,7 +199,7 @@ LABEL_16:
         }
 
         v42 = *(*(&v51 + 1) + 8 * i);
-        v43 = [v42 completionQueue];
+        completionQueue = [v42 completionQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100CEB3A0;
@@ -207,7 +207,7 @@ LABEL_16:
         block[4] = v42;
         v49 = v35;
         v50 = v28;
-        dispatch_async(v43, block);
+        dispatch_async(completionQueue, block);
       }
 
       v39 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
@@ -216,55 +216,55 @@ LABEL_16:
     while (v39);
   }
 
-  v44 = [(RouteTrafficFeatureCalculator *)v46 completionHandlers];
-  v45 = [v35 uniqueRouteID];
-  [v44 removeObjectForKey:v45];
+  completionHandlers2 = [(RouteTrafficFeatureCalculator *)selfCopy completionHandlers];
+  uniqueRouteID5 = [v35 uniqueRouteID];
+  [completionHandlers2 removeObjectForKey:uniqueRouteID5];
 }
 
-- (void)_startCalculationTaskForRoute:(id)a3 completion:(id)a4
+- (void)_startCalculationTaskForRoute:(id)route completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
-  dispatch_assert_queue_V2(v8);
+  routeCopy = route;
+  completionCopy = completion;
+  synchronizationQueue = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
 
   v9 = sub_10009737C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v6 uniqueRouteID];
+    uniqueRouteID = [routeCopy uniqueRouteID];
     v16 = 138412290;
-    v17 = v10;
+    v17 = uniqueRouteID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Starting calculation for route with ID: %@", &v16, 0xCu);
   }
 
-  v11 = [(RouteTrafficFeatureCalculator *)self completionHandlers];
-  v12 = [v6 uniqueRouteID];
-  v13 = [v11 objectForKey:v12];
+  completionHandlers = [(RouteTrafficFeatureCalculator *)self completionHandlers];
+  uniqueRouteID2 = [routeCopy uniqueRouteID];
+  v13 = [completionHandlers objectForKey:uniqueRouteID2];
 
   if (v13)
   {
-    [v13 addObject:v7];
+    [v13 addObject:completionCopy];
   }
 
   else
   {
-    v13 = [NSMutableArray arrayWithObject:v7];
-    v14 = [(RouteTrafficFeatureCalculator *)self completionHandlers];
-    v15 = [v6 uniqueRouteID];
-    [v14 setObject:v13 forKey:v15];
+    v13 = [NSMutableArray arrayWithObject:completionCopy];
+    completionHandlers2 = [(RouteTrafficFeatureCalculator *)self completionHandlers];
+    uniqueRouteID3 = [routeCopy uniqueRouteID];
+    [completionHandlers2 setObject:v13 forKey:uniqueRouteID3];
 
-    [(RouteTrafficFeatureCalculator *)self _calculateCameraFeaturesForRoute:v6];
+    [(RouteTrafficFeatureCalculator *)self _calculateCameraFeaturesForRoute:routeCopy];
   }
 }
 
-- (void)getSharedTrafficFeaturesForRoutes:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)getSharedTrafficFeaturesForRoutes:(id)routes completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v27 = a4;
-  v26 = a5;
+  routesCopy = routes;
+  queueCopy = queue;
+  handlerCopy = handler;
   group = dispatch_group_create();
   v9 = objc_alloc_init(NSMutableArray);
-  v25 = [(RouteTrafficFeatureCalculator *)self _cacheKeyForRoutes:v8];
+  v25 = [(RouteTrafficFeatureCalculator *)self _cacheKeyForRoutes:routesCopy];
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_100CEB950;
@@ -276,7 +276,7 @@ LABEL_16:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v11 = v8;
+  v11 = routesCopy;
   v12 = [v11 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v12)
   {
@@ -309,7 +309,7 @@ LABEL_16:
             v36[3] = &unk_101650CB0;
             v38 = v10;
             v37 = group;
-            [(RouteTrafficFeatureCalculator *)self getTrafficFeaturesForRoute:v16 completionQueue:v27 completionHandler:v36];
+            [(RouteTrafficFeatureCalculator *)self getTrafficFeaturesForRoute:v16 completionQueue:queueCopy completionHandler:v36];
           }
         }
       }
@@ -320,67 +320,67 @@ LABEL_16:
     while (v13);
   }
 
-  v18 = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
+  synchronizationQueue = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100CEBAA4;
   block[3] = &unk_101650CD8;
   v30 = v24;
-  v31 = self;
+  selfCopy = self;
   v32 = v25;
-  v33 = v27;
+  v33 = queueCopy;
   v34 = v11;
-  v35 = v26;
+  v35 = handlerCopy;
   v19 = v11;
-  v20 = v26;
-  v21 = v27;
+  v20 = handlerCopy;
+  v21 = queueCopy;
   v22 = v25;
   v23 = v24;
-  dispatch_group_notify(group, v18, block);
+  dispatch_group_notify(group, synchronizationQueue, block);
 }
 
-- (void)getTrafficFeaturesForRoute:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)getTrafficFeaturesForRoute:(id)route completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 transportType] == 1 || (objc_msgSend(v8, "uniqueRouteID"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
+  routeCopy = route;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if ([routeCopy transportType] == 1 || (objc_msgSend(routeCopy, "uniqueRouteID"), v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100CEBD30;
     block[3] = &unk_101661090;
-    v23 = v8;
-    v24 = v10;
-    v16 = v10;
-    v17 = v8;
-    dispatch_async(v9, block);
+    v23 = routeCopy;
+    v24 = handlerCopy;
+    v16 = handlerCopy;
+    v17 = routeCopy;
+    dispatch_async(queueCopy, block);
 
     v15 = v24;
   }
 
   else
   {
-    v12 = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
+    synchronizationQueue = [(RouteTrafficFeatureCalculator *)self synchronizationQueue];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100CEBD4C;
     v18[3] = &unk_101660380;
     v18[4] = self;
-    v19 = v8;
-    v20 = v9;
-    v21 = v10;
-    v13 = v10;
-    v14 = v8;
-    dispatch_async(v12, v18);
+    v19 = routeCopy;
+    v20 = queueCopy;
+    v21 = handlerCopy;
+    v13 = handlerCopy;
+    v14 = routeCopy;
+    dispatch_async(synchronizationQueue, v18);
 
     v15 = v19;
   }
 }
 
-- (void)clearCachedSharedTrafficFeaturesForRoutes:(id)a3
+- (void)clearCachedSharedTrafficFeaturesForRoutes:(id)routes
 {
-  v4 = [(RouteTrafficFeatureCalculator *)self _cacheKeyForRoutes:a3];
+  v4 = [(RouteTrafficFeatureCalculator *)self _cacheKeyForRoutes:routes];
   v5 = sub_10009737C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -389,36 +389,36 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Clearing cached shared traffic features for routes: %@", &v7, 0xCu);
   }
 
-  v6 = [(RouteTrafficFeatureCalculator *)self sharedFeatureCache];
-  [v6 removeObjectForKey:v4];
+  sharedFeatureCache = [(RouteTrafficFeatureCalculator *)self sharedFeatureCache];
+  [sharedFeatureCache removeObjectForKey:v4];
 }
 
-- (void)clearCachedTrafficFeaturesForRoute:(id)a3
+- (void)clearCachedTrafficFeaturesForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = sub_10009737C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uniqueRouteID];
+    uniqueRouteID = [routeCopy uniqueRouteID];
     v9 = 138412290;
-    v10 = v6;
+    v10 = uniqueRouteID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Clearing cached traffic features for route with ID: %@", &v9, 0xCu);
   }
 
-  v7 = [(RouteTrafficFeatureCalculator *)self cache];
-  v8 = [v4 uniqueRouteID];
-  [v7 removeObjectForKey:v8];
+  cache = [(RouteTrafficFeatureCalculator *)self cache];
+  uniqueRouteID2 = [routeCopy uniqueRouteID];
+  [cache removeObjectForKey:uniqueRouteID2];
 }
 
-- (id)_cacheKeyForRoutes:(id)a3
+- (id)_cacheKeyForRoutes:(id)routes
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+  routesCopy = routes;
+  v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(routesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = routesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -433,8 +433,8 @@ LABEL_16:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) uniqueRouteID];
-        [v4 addObject:v10];
+        uniqueRouteID = [*(*(&v13 + 1) + 8 * i) uniqueRouteID];
+        [v4 addObject:uniqueRouteID];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -448,22 +448,22 @@ LABEL_16:
   return v11;
 }
 
-- (id)cachedSharedTrafficFeaturesForRoutes:(id)a3
+- (id)cachedSharedTrafficFeaturesForRoutes:(id)routes
 {
-  v4 = [(RouteTrafficFeatureCalculator *)self _cacheKeyForRoutes:a3];
-  v5 = [(RouteTrafficFeatureCalculator *)self sharedFeatureCache];
-  v6 = [v5 objectForKey:v4];
+  v4 = [(RouteTrafficFeatureCalculator *)self _cacheKeyForRoutes:routes];
+  sharedFeatureCache = [(RouteTrafficFeatureCalculator *)self sharedFeatureCache];
+  v6 = [sharedFeatureCache objectForKey:v4];
 
   return v6;
 }
 
-- (id)cachedTrafficFeaturesForRoute:(id)a3
+- (id)cachedTrafficFeaturesForRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(RouteTrafficFeatureCalculator *)self cache];
-  v6 = [v4 uniqueRouteID];
+  routeCopy = route;
+  cache = [(RouteTrafficFeatureCalculator *)self cache];
+  uniqueRouteID = [routeCopy uniqueRouteID];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [cache objectForKey:uniqueRouteID];
 
   return v7;
 }

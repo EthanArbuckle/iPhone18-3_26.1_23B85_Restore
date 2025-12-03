@@ -1,33 +1,33 @@
 @interface AKFormFeature
-+ (id)featureWithRect:(CGRect)a3 onPage:(id)a4;
-- (AKFormFeature)initWithRect:(CGRect)a3 onPage:(id)a4;
++ (id)featureWithRect:(CGRect)rect onPage:(id)page;
+- (AKFormFeature)initWithRect:(CGRect)rect onPage:(id)page;
 - (AKPageController)page;
 - (CGRect)rect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation AKFormFeature
 
-+ (id)featureWithRect:(CGRect)a3 onPage:(id)a4
++ (id)featureWithRect:(CGRect)rect onPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithRect:v9 onPage:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageCopy = page;
+  v10 = [[self alloc] initWithRect:pageCopy onPage:{x, y, width, height}];
 
   return v10;
 }
 
-- (AKFormFeature)initWithRect:(CGRect)a3 onPage:(id)a4
+- (AKFormFeature)initWithRect:(CGRect)rect onPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pageCopy = page;
   v13.receiver = self;
   v13.super_class = AKFormFeature;
   v10 = [(AKFormFeature *)&v13 init];
@@ -38,15 +38,15 @@
     v10->_rect.origin.y = y;
     v10->_rect.size.width = width;
     v10->_rect.size.height = height;
-    objc_storeWeak(&v10->_page, v9);
+    objc_storeWeak(&v10->_page, pageCopy);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   size = self->_rect.size;
   *(v4 + 16) = self->_rect.origin;
   *(v4 + 32) = size;

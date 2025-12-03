@@ -6,7 +6,7 @@
 
 + (id)msvIndexMapTableWithCapacity:()MSVAdditions
 {
-  v3 = [[a1 alloc] initWithKeyOptions:512 valueOptions:1282 capacity:a3];
+  v3 = [[self alloc] initWithKeyOptions:512 valueOptions:1282 capacity:a3];
 
   return v3;
 }

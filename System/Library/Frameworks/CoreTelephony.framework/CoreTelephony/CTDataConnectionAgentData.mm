@@ -1,10 +1,10 @@
 @interface CTDataConnectionAgentData
-- (CTDataConnectionAgentData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTDataConnectionAgentData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initAgentDataFromCellularInternetPath;
-- (id)initAgentDataFromPath:(id)a3 domain:(id)a4 agentType:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)initAgentDataFromPath:(id)path domain:(id)domain agentType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTDataConnectionAgentData
@@ -13,8 +13,8 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", registrationStatus=%d", -[CTDataConnectionAgentData registrationStatus](self, "registrationStatus")];
-  v4 = [(CTDataConnectionAgentData *)self inHomeCountry];
-  [v3 appendFormat:@", inHomeCountry=%@", v4];
+  inHomeCountry = [(CTDataConnectionAgentData *)self inHomeCountry];
+  [v3 appendFormat:@", inHomeCountry=%@", inHomeCountry];
 
   [v3 appendFormat:@", dataPlanTier=%d", -[CTDataConnectionAgentData dataPlanTier](self, "dataPlanTier")];
   [v3 appendString:@">"];
@@ -22,42 +22,42 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRegistrationStatus:{-[CTDataConnectionAgentData registrationStatus](self, "registrationStatus")}];
-  v5 = [(CTDataConnectionAgentData *)self inHomeCountry];
-  v6 = [v5 copy];
+  inHomeCountry = [(CTDataConnectionAgentData *)self inHomeCountry];
+  v6 = [inHomeCountry copy];
   [v4 setInHomeCountry:v6];
 
   [v4 setDataPlanTier:{-[CTDataConnectionAgentData dataPlanTier](self, "dataPlanTier")}];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt:-[CTDataConnectionAgentData registrationStatus](self forKey:{"registrationStatus"), @"registrationStatus"}];
-  v4 = [(CTDataConnectionAgentData *)self inHomeCountry];
-  [v5 encodeObject:v4 forKey:@"inHomeCountry"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[CTDataConnectionAgentData registrationStatus](self forKey:{"registrationStatus"), @"registrationStatus"}];
+  inHomeCountry = [(CTDataConnectionAgentData *)self inHomeCountry];
+  [coderCopy encodeObject:inHomeCountry forKey:@"inHomeCountry"];
 
-  [v5 encodeInt:-[CTDataConnectionAgentData dataPlanTier](self forKey:{"dataPlanTier"), @"dataPlanTier"}];
+  [coderCopy encodeInt:-[CTDataConnectionAgentData dataPlanTier](self forKey:{"dataPlanTier"), @"dataPlanTier"}];
 }
 
-- (CTDataConnectionAgentData)initWithCoder:(id)a3
+- (CTDataConnectionAgentData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTDataConnectionAgentData;
   v5 = [(CTDataConnectionAgentData *)&v9 init];
   if (v5)
   {
-    v5->_registrationStatus = [v4 decodeIntForKey:@"registrationStatus"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inHomeCountry"];
+    v5->_registrationStatus = [coderCopy decodeIntForKey:@"registrationStatus"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inHomeCountry"];
     inHomeCountry = v5->_inHomeCountry;
     v5->_inHomeCountry = v6;
 
-    v5->_dataPlanTier = [v4 decodeIntForKey:@"dataPlanTier"];
+    v5->_dataPlanTier = [coderCopy decodeIntForKey:@"dataPlanTier"];
   }
 
   return v5;
@@ -103,11 +103,11 @@
   return v9;
 }
 
-- (id)initAgentDataFromPath:(id)a3 domain:(id)a4 agentType:(id)a5
+- (id)initAgentDataFromPath:(id)path domain:(id)domain agentType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  domainCopy = domain;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = CTDataConnectionAgentData;
   v11 = [(CTDataConnectionAgentData *)&v22 init];
@@ -119,7 +119,7 @@
     v11->_inHomeCountry = 0;
 
     v12->_dataPlanTier = 0;
-    if (v8 && v9 && v10)
+    if (pathCopy && domainCopy && typeCopy)
     {
       v14 = nw_path_copy_netagent_dictionary();
       if (v14)
@@ -128,8 +128,8 @@
         applier[1] = 3221225472;
         applier[2] = __68__CTDataConnectionAgentData_initAgentDataFromPath_domain_agentType___block_invoke;
         applier[3] = &unk_1E6A48800;
-        v19 = v9;
-        v20 = v10;
+        v19 = domainCopy;
+        v20 = typeCopy;
         v21 = v12;
         xpc_dictionary_apply(v14, applier);
       }

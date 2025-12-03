@@ -1,85 +1,85 @@
 @interface AMDBaseRecoModel
-+ (id)getCurrentDirURLForName:(id)a3;
-+ (id)getModelforId:(id)a3 useMinimalMap:(id)a4 error:(id *)a5;
-- (AMDBaseRecoModel)initWithId:(id)a3;
-- (AMDBaseRecoModel)initWithId:(id)a3 andVersion:(unint64_t)a4;
++ (id)getCurrentDirURLForName:(id)name;
++ (id)getModelforId:(id)id useMinimalMap:(id)map error:(id *)error;
+- (AMDBaseRecoModel)initWithId:(id)id;
+- (AMDBaseRecoModel)initWithId:(id)id andVersion:(unint64_t)version;
 - (BOOL)isValid;
-- (BOOL)parseModelInfoFromBuffer:(id)a3 error:(id *)a4;
-- (id)getPredictions:(unint64_t)a3 andInputBuilder:(id)a4 andOutputBuilder:(id)a5 withColdstartModelId:(id)a6 error:(id *)a7;
-- (void)loadModelMetadataFromDir:(id)a3 error:(id *)a4;
+- (BOOL)parseModelInfoFromBuffer:(id)buffer error:(id *)error;
+- (id)getPredictions:(unint64_t)predictions andInputBuilder:(id)builder andOutputBuilder:(id)outputBuilder withColdstartModelId:(id)id error:(id *)error;
+- (void)loadModelMetadataFromDir:(id)dir error:(id *)error;
 @end
 
 @implementation AMDBaseRecoModel
 
-- (AMDBaseRecoModel)initWithId:(id)a3
+- (AMDBaseRecoModel)initWithId:(id)id
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, id);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AMDBaseRecoModel;
-  v8 = [(AMDBaseRecoModel *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  [(AMDBaseRecoModel *)v8 setModelId:location[0]];
-  [(AMDBaseRecoModel *)v8 setVersion:-1];
-  [(AMDBaseRecoModel *)v8 setAssetCreationTimestamp:0];
-  v5 = MEMORY[0x277D82BE0](v8);
+  selfCopy = [(AMDBaseRecoModel *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDBaseRecoModel *)selfCopy setModelId:location[0]];
+  [(AMDBaseRecoModel *)selfCopy setVersion:-1];
+  [(AMDBaseRecoModel *)selfCopy setAssetCreationTimestamp:0];
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AMDBaseRecoModel)initWithId:(id)a3 andVersion:(unint64_t)a4
+- (AMDBaseRecoModel)initWithId:(id)id andVersion:(unint64_t)version
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(location, id);
+  versionCopy = version;
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = AMDBaseRecoModel;
-  v11 = [(AMDBaseRecoModel *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  [(AMDBaseRecoModel *)v11 setModelId:location[0]];
-  [(AMDBaseRecoModel *)v11 setVersion:v9];
-  [(AMDBaseRecoModel *)v11 setAssetCreationTimestamp:0];
-  v7 = MEMORY[0x277D82BE0](v11);
+  selfCopy = [(AMDBaseRecoModel *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [(AMDBaseRecoModel *)selfCopy setModelId:location[0]];
+  [(AMDBaseRecoModel *)selfCopy setVersion:versionCopy];
+  [(AMDBaseRecoModel *)selfCopy setAssetCreationTimestamp:0];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
 - (BOOL)isValid
 {
-  v6 = [(AMDBaseRecoModel *)self modelMetadata];
+  modelMetadata = [(AMDBaseRecoModel *)self modelMetadata];
   v8 = 0;
-  v7 = 0;
-  if (v6)
+  isValid = 0;
+  if (modelMetadata)
   {
-    v9 = [(AMDBaseRecoModel *)self modelMetadata];
+    modelMetadata2 = [(AMDBaseRecoModel *)self modelMetadata];
     v8 = 1;
-    v7 = [(AMDModelMetadata *)v9 isValid];
+    isValid = [(AMDModelMetadata *)modelMetadata2 isValid];
   }
 
   if (v8)
   {
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](modelMetadata2);
   }
 
-  MEMORY[0x277D82BD8](v6);
-  v2 = [(AMDBaseRecoModel *)self model];
-  v4 = v2 != 0;
-  MEMORY[0x277D82BD8](v2);
+  MEMORY[0x277D82BD8](modelMetadata);
+  model = [(AMDBaseRecoModel *)self model];
+  v4 = model != 0;
+  MEMORY[0x277D82BD8](model);
   v5 = 0;
   if (v4)
   {
     v5 = 0;
-    if (v7)
+    if (isValid)
     {
       return [(AMDBaseRecoModel *)self version]!= 0;
     }
@@ -88,42 +88,42 @@
   return v5;
 }
 
-- (id)getPredictions:(unint64_t)a3 andInputBuilder:(id)a4 andOutputBuilder:(id)a5 withColdstartModelId:(id)a6 error:(id *)a7
+- (id)getPredictions:(unint64_t)predictions andInputBuilder:(id)builder andOutputBuilder:(id)outputBuilder withColdstartModelId:(id)id error:(id *)error
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = predictions;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, builder);
   v14 = 0;
-  objc_storeStrong(&v14, a5);
+  objc_storeStrong(&v14, outputBuilder);
   v13 = 0;
-  objc_storeStrong(&v13, a6);
+  objc_storeStrong(&v13, id);
   v12 = [AMDError allocError:24 withMessage:@"Programmer error"];
   v7 = v12;
-  *a7 = v12;
+  *error = v12;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-+ (id)getModelforId:(id)a3 useMinimalMap:(id)a4 error:(id *)a5
++ (id)getModelforId:(id)id useMinimalMap:(id)map error:(id *)error
 {
   v82[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
-  v70 = a5;
-  v69 = [AMDModel getModelInfo:location[0] error:a5];
+  objc_storeStrong(&v71, map);
+  errorCopy = error;
+  v69 = [AMDModel getModelInfo:location[0] error:error];
   v68 = [v69 objectForKey:0x2852B1768];
   v67 = [v69 objectForKey:0x2852ADE08];
   v66 = [v69 objectForKey:0x2852A7108];
   v65 = [v69 objectForKey:0x2852AAF08];
-  if (*a5)
+  if (*error)
   {
     v73 = 0;
     v64 = 1;
@@ -139,15 +139,15 @@
     [AMDFrameworkMetrics log:v63 withKey:@"inferenceModelInfo" atVerbosity:0];
     if (v69)
     {
-      v29 = [MEMORY[0x277CBEAA8] date];
-      [v29 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v30 = v6;
-      MEMORY[0x277D82BD8](v29);
+      MEMORY[0x277D82BD8](date);
       v59 = v30;
-      v58 = [v68 longLongValue];
-      v57[1] = (v30 - v58);
+      longLongValue = [v68 longLongValue];
+      v57[1] = (v30 - longLongValue);
       v57[0] = [location[0] stringByAppendingString:@"_modelAge"];
-      v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v30 - v58];
+      v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v30 - longLongValue];
       [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
       MEMORY[0x277D82BD8](v31);
       [AMDPerf sampleForKey:@"InferenceLoadModelAndMetadata"];
@@ -167,21 +167,21 @@
         v49 = objc_alloc_init(MEMORY[0x277CBFF38]);
         [v49 setComputeUnits:0];
         v48 = -[AMDClassifierRecoModel initWithId:andVersion:]([AMDClassifierRecoModel alloc], "initWithId:andVersion:", location[0], [v66 longLongValue]);
-        v27 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v50 configuration:v49 error:v70];
+        v27 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v50 configuration:v49 error:errorCopy];
         [v48 setModel:?];
         MEMORY[0x277D82BD8](v27);
-        if (*v70)
+        if (*errorCopy)
         {
           oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v46 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v50 path];
-            v25 = [*v70 localizedDescription];
-            __os_log_helper_16_2_2_8_64_8_64(v77, v26, v25);
+            path = [v50 path];
+            localizedDescription = [*errorCopy localizedDescription];
+            __os_log_helper_16_2_2_8_64_8_64(v77, path, localizedDescription);
             _os_log_error_impl(&dword_240CB9000, oslog, v46, "Error loading model from %@: %@", v77, 0x16u);
-            MEMORY[0x277D82BD8](v25);
-            MEMORY[0x277D82BD8](v26);
+            MEMORY[0x277D82BD8](localizedDescription);
+            MEMORY[0x277D82BD8](path);
           }
 
           objc_storeStrong(&oslog, 0);
@@ -197,22 +197,22 @@
           v44 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v45];
           if (v44)
           {
-            v21 = [[AMDModelMetadata alloc] initWithMetadataJSON:v44 error:v70];
+            v21 = [[AMDModelMetadata alloc] initWithMetadataJSON:v44 error:errorCopy];
             [v48 setModelMetadata:?];
             MEMORY[0x277D82BD8](v21);
-            v9 = *v70;
+            v9 = *errorCopy;
             v39 = 0;
             v22 = 1;
             if (!v9)
             {
-              v40 = [v48 modelMetadata];
+              modelMetadata = [v48 modelMetadata];
               v39 = 1;
-              v22 = v40 == 0;
+              v22 = modelMetadata == 0;
             }
 
             if (v39)
             {
-              MEMORY[0x277D82BD8](v40);
+              MEMORY[0x277D82BD8](modelMetadata);
             }
 
             if (v22)
@@ -222,10 +222,10 @@
               if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
               {
                 v19 = v65;
-                v20 = [*v70 localizedDescription];
-                __os_log_helper_16_2_2_8_64_8_64(v75, v19, v20);
+                localizedDescription2 = [*errorCopy localizedDescription];
+                __os_log_helper_16_2_2_8_64_8_64(v75, v19, localizedDescription2);
                 _os_log_error_impl(&dword_240CB9000, v38, v37, "error while loading metadata from %@: %@", v75, 0x16u);
-                MEMORY[0x277D82BD8](v20);
+                MEMORY[0x277D82BD8](localizedDescription2);
               }
 
               objc_storeStrong(&v38, 0);
@@ -236,31 +236,31 @@
             else
             {
               [AMDPerf sampleForKey:@"InferenceLoadAssets"];
-              v36 = 0;
+              bOOLValue = 0;
               if (v71)
               {
-                v36 = [v71 BOOLValue];
+                bOOLValue = [v71 BOOLValue];
               }
 
               v15 = [AMDModelAssets alloc];
               v14 = v65;
-              v18 = [v48 modelMetadata];
-              v17 = [v18 getAssetsMetadata];
-              v16 = [AMDModelAssets initFromDir:v15 andMetadata:"initFromDir:andMetadata:useBinaryInputMap:useBinaryOutputMap:withModelId:isInference:error:" useBinaryInputMap:v14 useBinaryOutputMap:v70 withModelId:? isInference:? error:?];
+              modelMetadata2 = [v48 modelMetadata];
+              getAssetsMetadata = [modelMetadata2 getAssetsMetadata];
+              v16 = [AMDModelAssets initFromDir:v15 andMetadata:"initFromDir:andMetadata:useBinaryInputMap:useBinaryOutputMap:withModelId:isInference:error:" useBinaryInputMap:v14 useBinaryOutputMap:errorCopy withModelId:? isInference:? error:?];
               [v48 setModelAssets:?];
               MEMORY[0x277D82BD8](v16);
-              MEMORY[0x277D82BD8](v17);
-              MEMORY[0x277D82BD8](v18);
-              if (*v70)
+              MEMORY[0x277D82BD8](getAssetsMetadata);
+              MEMORY[0x277D82BD8](modelMetadata2);
+              if (*errorCopy)
               {
                 v35 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
                 {
                   v12 = v65;
-                  v13 = [*v70 localizedDescription];
-                  __os_log_helper_16_2_2_8_64_8_64(v74, v12, v13);
+                  localizedDescription3 = [*errorCopy localizedDescription];
+                  __os_log_helper_16_2_2_8_64_8_64(v74, v12, localizedDescription3);
                   _os_log_error_impl(&dword_240CB9000, v35, OS_LOG_TYPE_ERROR, "Error loading assets from %@: %@", v74, 0x16u);
-                  MEMORY[0x277D82BD8](v13);
+                  MEMORY[0x277D82BD8](localizedDescription3);
                 }
 
                 objc_storeStrong(&v35, 0);
@@ -291,7 +291,7 @@
             objc_storeStrong(&v42, 0);
             v23 = [AMDError allocError:16 withMessage:v43];
             v8 = v23;
-            *v70 = v23;
+            *errorCopy = v23;
             v73 = 0;
             v64 = 1;
             objc_storeStrong(&v43, 0);
@@ -320,7 +320,7 @@
         objc_storeStrong(&v52, 0);
         v28 = [AMDError allocError:16 withMessage:v53];
         v7 = v28;
-        *v70 = v28;
+        *errorCopy = v28;
         v73 = 0;
         v64 = 1;
         objc_storeStrong(&v53, 0);
@@ -344,7 +344,7 @@
       objc_storeStrong(&v61, 0);
       v32 = [AMDError allocError:16 withMessage:v62];
       v5 = v32;
-      *v70 = v32;
+      *errorCopy = v32;
       v73 = 0;
       v64 = 1;
       objc_storeStrong(&v62, 0);
@@ -366,17 +366,17 @@
   return v10;
 }
 
-+ (id)getCurrentDirURLForName:(id)a3
++ (id)getCurrentDirURLForName:(id)name
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v11 URLsForDirectory:14 inDomains:1];
-  v10 = [v4 lastObject];
+  objc_storeStrong(location, name);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager URLsForDirectory:14 inDomains:1];
+  lastObject = [v4 lastObject];
   MEMORY[0x277D82BD8](v4);
-  v9 = [v10 URLByAppendingPathComponent:0x2852AD488];
+  v9 = [lastObject URLByAppendingPathComponent:0x2852AD488];
   v8 = [v9 URLByAppendingPathComponent:@"models"];
   v7 = [v8 URLByAppendingPathComponent:location[0]];
   v6 = [v7 URLByAppendingPathComponent:@"current"];
@@ -385,31 +385,31 @@
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&lastObject, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (void)loadModelMetadataFromDir:(id)a3 error:(id *)a4
+- (void)loadModelMetadataFromDir:(id)dir error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, dir);
+  errorCopy = error;
   v9 = [location[0] URLByAppendingPathComponent:@"model_metadata"];
   v8 = [v9 URLByAppendingPathExtension:@"json"];
-  v13 = [v8 path];
+  path = [v8 path];
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  v12 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v13];
+  v12 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
   if (v12)
   {
-    v5 = [[AMDModelMetadata alloc] initWithMetadataJSON:v12 error:v14];
-    [(AMDBaseRecoModel *)v16 setModelMetadata:?];
+    v5 = [[AMDModelMetadata alloc] initWithMetadataJSON:v12 error:errorCopy];
+    [(AMDBaseRecoModel *)selfCopy setModelMetadata:?];
     MEMORY[0x277D82BD8](v5);
   }
 
@@ -426,26 +426,26 @@
     objc_storeStrong(&v10, 0);
     v6 = [AMDError allocError:15 withMessage:v11];
     v4 = v6;
-    *v14 = v6;
+    *errorCopy = v6;
     objc_storeStrong(&v11, 0);
   }
 
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&path, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)parseModelInfoFromBuffer:(id)a3 error:(id *)a4
+- (BOOL)parseModelInfoFromBuffer:(id)buffer error:(id *)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
-  v4 = [location[0] getShortWithError:a4];
-  [(AMDBaseRecoModel *)v16 setVersion:v4];
-  if (a4 && *v14)
+  objc_storeStrong(location, buffer);
+  errorCopy = error;
+  v4 = [location[0] getShortWithError:error];
+  [(AMDBaseRecoModel *)selfCopy setVersion:v4];
+  if (error && *errorCopy)
   {
     v17 = 0;
     v13 = 1;
@@ -453,15 +453,15 @@
 
   else
   {
-    v5 = [location[0] getLongWithError:v14];
-    [(AMDBaseRecoModel *)v16 setAssetCreationTimestamp:v5];
-    if (v14 && *v14)
+    v5 = [location[0] getLongWithError:errorCopy];
+    [(AMDBaseRecoModel *)selfCopy setAssetCreationTimestamp:v5];
+    if (errorCopy && *errorCopy)
     {
       v17 = 0;
       v13 = 1;
     }
 
-    else if ([(AMDBaseRecoModel *)v16 version]&& [(AMDBaseRecoModel *)v16 assetCreationTimestamp]> 0)
+    else if ([(AMDBaseRecoModel *)selfCopy version]&& [(AMDBaseRecoModel *)selfCopy assetCreationTimestamp]> 0)
     {
       v17 = 1;
       v13 = 1;

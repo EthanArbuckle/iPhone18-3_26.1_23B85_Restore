@@ -1,30 +1,30 @@
 @interface PXPassiveContentPeoplePickerDataSourceBase
-- (PXPassiveContentPeoplePickerDataSourceBase)initWithPhotoLibrary:(id)a3;
+- (PXPassiveContentPeoplePickerDataSourceBase)initWithPhotoLibrary:(id)library;
 - (id)peopleSuggestionSubtypes;
 - (void)_fetchPeople;
 - (void)_fetchPeopleWallpaperSuggestions;
-- (void)addChangeObserver:(id)a3;
-- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)a3;
+- (void)addChangeObserver:(id)observer;
+- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)feedback;
 - (void)notifyChanges;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)removeChangeObserver:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
+- (void)removeChangeObserver:(id)observer;
 - (void)startBackgroundFetch;
 @end
 
 @implementation PXPassiveContentPeoplePickerDataSourceBase
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
+  changeCopy = change;
+  workQueue = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__PXPassiveContentPeoplePickerDataSourceBase_photoLibraryDidChange___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __68__PXPassiveContentPeoplePickerDataSourceBase_photoLibraryDidChange___block_invoke(uint64_t a1)
@@ -80,18 +80,18 @@ void __68__PXPassiveContentPeoplePickerDataSourceBase_photoLibraryDidChange___bl
 LABEL_9:
 }
 
-- (void)removeChangeObserver:(id)a3
+- (void)removeChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
+  observerCopy = observer;
+  workQueue = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__PXPassiveContentPeoplePickerDataSourceBase_removeChangeObserver___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __67__PXPassiveContentPeoplePickerDataSourceBase_removeChangeObserver___block_invoke(uint64_t a1)
@@ -100,18 +100,18 @@ void __67__PXPassiveContentPeoplePickerDataSourceBase_removeChangeObserver___blo
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addChangeObserver:(id)a3
+- (void)addChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
+  observerCopy = observer;
+  workQueue = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PXPassiveContentPeoplePickerDataSourceBase_addChangeObserver___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __64__PXPassiveContentPeoplePickerDataSourceBase_addChangeObserver___block_invoke(uint64_t a1)
@@ -122,13 +122,13 @@ void __64__PXPassiveContentPeoplePickerDataSourceBase_addChangeObserver___block_
 
 - (void)notifyChanges
 {
-  v3 = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
+  workQueue = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PXPassiveContentPeoplePickerDataSourceBase_notifyChanges__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __59__PXPassiveContentPeoplePickerDataSourceBase_notifyChanges__block_invoke(uint64_t a1)
@@ -167,13 +167,13 @@ void __59__PXPassiveContentPeoplePickerDataSourceBase_notifyChanges__block_invok
 
 - (void)_fetchPeople
 {
-  v3 = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
+  workQueue = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__PXPassiveContentPeoplePickerDataSourceBase__fetchPeople__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __58__PXPassiveContentPeoplePickerDataSourceBase__fetchPeople__block_invoke(uint64_t a1)
@@ -264,14 +264,14 @@ void __58__PXPassiveContentPeoplePickerDataSourceBase__fetchPeople__block_invoke
 
 - (void)_fetchPeopleWallpaperSuggestions
 {
-  v4 = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
+  workQueue = [(PXPassiveContentPeoplePickerDataSourceBase *)self workQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78__PXPassiveContentPeoplePickerDataSourceBase__fetchPeopleWallpaperSuggestions__block_invoke;
   v5[3] = &unk_1E77498A0;
   v5[4] = self;
   v5[5] = a2;
-  dispatch_async(v4, v5);
+  dispatch_async(workQueue, v5);
 }
 
 void __78__PXPassiveContentPeoplePickerDataSourceBase__fetchPeopleWallpaperSuggestions__block_invoke(uint64_t a1)
@@ -358,23 +358,23 @@ void __78__PXPassiveContentPeoplePickerDataSourceBase__fetchPeopleWallpaperSugge
   }
 }
 
-- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)a3
+- (void)computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:(id)feedback
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  feedbackCopy = feedback;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPassiveContentPeoplePickerDataSourceBase.m" lineNumber:53 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentPeoplePickerDataSourceBase computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentPeoplePickerDataSourceBase.m" lineNumber:53 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentPeoplePickerDataSourceBase computeAndCachePersonsWithPersonLocalIdentifierWithNegativeFeedback:]", v8}];
 
   abort();
 }
 
 - (id)peopleSuggestionSubtypes
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPassiveContentPeoplePickerDataSourceBase.m" lineNumber:49 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentPeoplePickerDataSourceBase peopleSuggestionSubtypes]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentPeoplePickerDataSourceBase.m" lineNumber:49 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentPeoplePickerDataSourceBase peopleSuggestionSubtypes]", v6}];
 
   abort();
 }
@@ -387,17 +387,17 @@ void __78__PXPassiveContentPeoplePickerDataSourceBase__fetchPeopleWallpaperSugge
   [(PXPassiveContentPeoplePickerDataSourceBase *)self notifyChanges];
 }
 
-- (PXPassiveContentPeoplePickerDataSourceBase)initWithPhotoLibrary:(id)a3
+- (PXPassiveContentPeoplePickerDataSourceBase)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = PXPassiveContentPeoplePickerDataSourceBase;
   v6 = [(PXPassiveContentPeoplePickerDataSourceBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    [v5 registerChangeObserver:v7];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    [libraryCopy registerChangeObserver:v7];
     px_dispatch_queue_create_serial();
   }
 

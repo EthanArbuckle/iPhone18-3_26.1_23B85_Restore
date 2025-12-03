@@ -1,6 +1,6 @@
 @interface DASRenderServerInfo
-- (id)_initWithPort:(unsigned int)a3 raw:(id)a4;
-- (id)archiveOfContext:(id)a3;
+- (id)_initWithPort:(unsigned int)port raw:(id)raw;
+- (id)archiveOfContext:(id)context;
 - (id)description;
 - (void)_parseRaw;
 - (void)dealloc;
@@ -19,7 +19,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v111 = v62;
+      selfCopy6 = v62;
       _os_log_error_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "failed to create display info parser -> %@", buf, 0xCu);
     }
   }
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v111 = v61;
+      selfCopy6 = v61;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "failed to create context info parser -> %@", buf, 0xCu);
     }
   }
@@ -47,11 +47,11 @@
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
       *buf = 138544642;
-      v111 = v50;
+      selfCopy6 = v50;
       v112 = 2114;
       v113 = v52;
       v114 = 2048;
-      v115 = self;
+      selfCopy5 = self;
       v116 = 2114;
       v117 = @"DASParsing.m";
       v118 = 1024;
@@ -71,9 +71,9 @@
   v6 = sub_100005B8C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v47 = [v2 pattern];
+    pattern = [v2 pattern];
     *buf = 138412290;
-    v111 = v47;
+    selfCopy6 = pattern;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "created display pattern %@", buf, 0xCu);
   }
 
@@ -86,11 +86,11 @@
       v56 = objc_opt_class();
       v57 = NSStringFromClass(v56);
       *buf = 138544642;
-      v111 = v55;
+      selfCopy6 = v55;
       v112 = 2114;
       v113 = v57;
       v114 = 2048;
-      v115 = self;
+      selfCopy5 = self;
       v116 = 2114;
       v117 = @"DASParsing.m";
       v118 = 1024;
@@ -110,9 +110,9 @@
   v7 = sub_100005B8C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v48 = [v4 pattern];
+    pattern2 = [v4 pattern];
     *buf = 138412290;
-    v111 = v48;
+    selfCopy6 = pattern2;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "created context pattern %@", buf, 0xCu);
   }
 
@@ -148,7 +148,7 @@
   v99 = a2;
   v70 = v11;
   v93 = v70;
-  v94 = self;
+  selfCopy3 = self;
   v13 = v9;
   v95 = v13;
   v98 = v100;
@@ -161,7 +161,7 @@
   v91 = a2;
   v59 = v2;
   v82 = v59;
-  v83 = self;
+  selfCopy4 = self;
   v16 = v14;
   v88 = v16;
   v89 = v104;
@@ -229,11 +229,11 @@
                   v44 = objc_opt_class();
                   v45 = NSStringFromClass(v44);
                   *buf = 138544642;
-                  v111 = v43;
+                  selfCopy6 = v43;
                   v112 = 2114;
                   v113 = v45;
                   v114 = 2048;
-                  v115 = self;
+                  selfCopy5 = self;
                   v116 = 2114;
                   v117 = @"DASParsing.m";
                   v118 = 1024;
@@ -281,8 +281,8 @@
   contextIDNumberToContextMap = self->_contextIDNumberToContextMap;
   self->_contextIDNumberToContextMap = v33;
 
-  v35 = [v18 allValues];
-  v36 = [NSSet setWithArray:v35];
+  allValues = [v18 allValues];
+  v36 = [NSSet setWithArray:allValues];
   contexts = self->_contexts;
   self->_contexts = v36;
 
@@ -294,7 +294,7 @@
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v111 = self;
+    selfCopy6 = self;
     _os_log_debug_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEBUG, "parse result: '%@'", buf, 0xCu);
   }
 
@@ -311,18 +311,18 @@
   v8 = 3221225472;
   v9 = sub_100004504;
   v11 = v10 = &unk_1000104A8;
-  v12 = self;
+  selfCopy = self;
   v3 = v11;
   v4 = [v3 modifyBody:&v7];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (id)archiveOfContext:(id)a3
+- (id)archiveOfContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v27 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"contextInfo"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -346,9 +346,9 @@
     JUMPOUT(0x100004FF8);
   }
 
-  v5 = v4;
+  v5 = contextCopy;
   port = self->_port;
-  v7 = [v4 identifier];
+  identifier = [contextCopy identifier];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -378,7 +378,7 @@
     __break(1u);
   }
 
-  v11 = v8(port, v7);
+  v11 = v8(port, identifier);
   if (v11)
   {
     v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"DumpDisplay: capture %x from %i", [v5 identifier], objc_msgSend(v5, "pid"));
@@ -397,10 +397,10 @@
       v19 = sub_100005B8C();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v5 identifier];
+        identifier2 = [v5 identifier];
         v25 = [v5 pid];
         *buf = 67109376;
-        *&buf[4] = v24;
+        *&buf[4] = identifier2;
         *&buf[8] = 1024;
         *&buf[10] = v25;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "error acquiring assertion to capture archive of context %x (from %i)", buf, 0xEu);
@@ -419,9 +419,9 @@
     v22 = sub_100005B8C();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v5 identifier];
+      identifier3 = [v5 identifier];
       *buf = 67109120;
-      *&buf[4] = v26;
+      *&buf[4] = identifier3;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "unable to capture archive of context %x", buf, 8u);
     }
   }
@@ -431,9 +431,9 @@
     v12 = sub_100005B8C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v5 identifier];
+      identifier4 = [v5 identifier];
       *buf = 67109120;
-      *&buf[4] = v21;
+      *&buf[4] = identifier4;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "server doesn't know about context %x", buf, 8u);
     }
   }
@@ -453,9 +453,9 @@ LABEL_18:
   [(DASRenderServerInfo *)&v4 dealloc];
 }
 
-- (id)_initWithPort:(unsigned int)a3 raw:(id)a4
+- (id)_initWithPort:(unsigned int)port raw:(id)raw
 {
-  v7 = a4;
+  rawCopy = raw;
   if ((BSMachPortIsType() & 1) == 0)
   {
     v13 = [NSString stringWithFormat:@"invalid port"];
@@ -469,7 +469,7 @@ LABEL_18:
       v24 = 2114;
       v25 = v16;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = @"DASParsing.m";
       v30 = 1024;
@@ -485,7 +485,7 @@ LABEL_18:
     JUMPOUT(0x100005548);
   }
 
-  if (!v7)
+  if (!rawCopy)
   {
     v17 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"raw"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -498,7 +498,7 @@ LABEL_18:
       v24 = 2114;
       v25 = v20;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = @"DASParsing.m";
       v30 = 1024;
@@ -520,8 +520,8 @@ LABEL_18:
   v9 = v8;
   if (v8)
   {
-    v8->_port = a3;
-    v10 = [v7 copy];
+    v8->_port = port;
+    v10 = [rawCopy copy];
     raw = v9->_raw;
     v9->_raw = v10;
 

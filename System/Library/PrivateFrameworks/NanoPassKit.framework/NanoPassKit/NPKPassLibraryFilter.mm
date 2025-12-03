@@ -1,37 +1,37 @@
 @interface NPKPassLibraryFilter
-- (BOOL)_entitledForObject:(id)a3;
-- (BOOL)_entitledForPassTypeID:(id)a3 teamID:(id)a4 associatedPassTypeIdentifiers:(id)a5;
+- (BOOL)_entitledForObject:(id)object;
+- (BOOL)_entitledForPassTypeID:(id)d teamID:(id)iD associatedPassTypeIdentifiers:(id)identifiers;
 - (BOOL)allowsSilentAdd;
-- (NPKPassLibraryFilter)initWithConnection:(id)a3;
-- (id)entitlementFilteredPasses:(id)a3;
-- (id)filterPassIfNeeded:(id)a3;
+- (NPKPassLibraryFilter)initWithConnection:(id)connection;
+- (id)entitlementFilteredPasses:(id)passes;
+- (id)filterPassIfNeeded:(id)needed;
 @end
 
 @implementation NPKPassLibraryFilter
 
-- (NPKPassLibraryFilter)initWithConnection:(id)a3
+- (NPKPassLibraryFilter)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = NPKPassLibraryFilter;
   v5 = [(NPKPassLibraryFilter *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(NPKPassLibraryFilter *)v5 setConnection:v4];
-    v7 = [[PKEntitlementWhitelist alloc] initWithConnection:v4];
+    [(NPKPassLibraryFilter *)v5 setConnection:connectionCopy];
+    v7 = [[PKEntitlementWhitelist alloc] initWithConnection:connectionCopy];
     [(NPKPassLibraryFilter *)v6 setAllowlist:v7];
   }
 
   return v6;
 }
 
-- (id)filterPassIfNeeded:(id)a3
+- (id)filterPassIfNeeded:(id)needed
 {
-  v4 = a3;
-  if ([(NPKPassLibraryFilter *)self allowAccessToPass:v4])
+  neededCopy = needed;
+  if ([(NPKPassLibraryFilter *)self allowAccessToPass:neededCopy])
   {
-    v5 = v4;
+    v5 = neededCopy;
   }
 
   else
@@ -46,18 +46,18 @@
 
 - (BOOL)allowsSilentAdd
 {
-  v2 = [(NPKPassLibraryFilter *)self allowlist];
-  v3 = [v2 passesAddSilently];
+  allowlist = [(NPKPassLibraryFilter *)self allowlist];
+  passesAddSilently = [allowlist passesAddSilently];
 
-  return v3;
+  return passesAddSilently;
 }
 
-- (id)entitlementFilteredPasses:(id)a3
+- (id)entitlementFilteredPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   if (([(PKEntitlementWhitelist *)self->_allowlist passesAllAccess]& 1) != 0 || [(PKEntitlementWhitelist *)self->_allowlist paymentAllAccess])
   {
-    v5 = v4;
+    v5 = passesCopy;
   }
 
   else
@@ -67,7 +67,7 @@
     v8[2] = sub_10003A590;
     v8[3] = &unk_100072800;
     v8[4] = self;
-    v5 = [v4 objectsPassingTest:v8];
+    v5 = [passesCopy objectsPassingTest:v8];
   }
 
   v6 = v5;
@@ -75,9 +75,9 @@
   return v6;
 }
 
-- (BOOL)_entitledForObject:(id)a3
+- (BOOL)_entitledForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (([(PKEntitlementWhitelist *)self->_allowlist passesAllAccess]& 1) != 0)
   {
     v5 = 1;
@@ -88,11 +88,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [v6 passTypeIdentifier];
-      v8 = [v6 teamID];
-      v9 = [v6 associatedPassTypeIdentifiers];
-      v10 = [(NPKPassLibraryFilter *)self _entitledForPassTypeID:v7 teamID:v8 associatedPassTypeIdentifiers:v9];
+      v6 = objectCopy;
+      passTypeIdentifier = [v6 passTypeIdentifier];
+      teamID = [v6 teamID];
+      associatedPassTypeIdentifiers = [v6 associatedPassTypeIdentifiers];
+      v10 = [(NPKPassLibraryFilter *)self _entitledForPassTypeID:passTypeIdentifier teamID:teamID associatedPassTypeIdentifiers:associatedPassTypeIdentifiers];
 
       if (v10)
       {
@@ -119,13 +119,13 @@
   return v5;
 }
 
-- (BOOL)_entitledForPassTypeID:(id)a3 teamID:(id)a4 associatedPassTypeIdentifiers:(id)a5
+- (BOOL)_entitledForPassTypeID:(id)d teamID:(id)iD associatedPassTypeIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKEntitlementWhitelist *)self->_allowlist passTypeIDs];
-  v12 = [NSSet setWithArray:v11];
+  dCopy = d;
+  iDCopy = iD;
+  identifiersCopy = identifiers;
+  passTypeIDs = [(PKEntitlementWhitelist *)self->_allowlist passTypeIDs];
+  v12 = [NSSet setWithArray:passTypeIDs];
 
   if (([(PKEntitlementWhitelist *)self->_allowlist passesAllAccess]& 1) != 0)
   {
@@ -134,23 +134,23 @@
 
   else
   {
-    v14 = [(PKEntitlementWhitelist *)self->_allowlist passTypeIDs];
-    if ([v14 containsObject:v8])
+    passTypeIDs2 = [(PKEntitlementWhitelist *)self->_allowlist passTypeIDs];
+    if ([passTypeIDs2 containsObject:dCopy])
     {
       v13 = 1;
     }
 
     else
     {
-      v15 = [(PKEntitlementWhitelist *)self->_allowlist teamIDs];
-      if ([v15 containsObject:v9])
+      teamIDs = [(PKEntitlementWhitelist *)self->_allowlist teamIDs];
+      if ([teamIDs containsObject:iDCopy])
       {
         v13 = 1;
       }
 
       else
       {
-        v13 = [v10 intersectsSet:v12];
+        v13 = [identifiersCopy intersectsSet:v12];
       }
     }
   }

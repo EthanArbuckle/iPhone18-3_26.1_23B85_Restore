@@ -1,23 +1,23 @@
 @interface PXContextualMemoriesLocationSetting
 + (CLLocationCoordinate2D)_simulatedLocationCoordinate;
-+ (void)_setSimulatedLocationCoordinate:(CLLocationCoordinate2D)a3;
++ (void)_setSimulatedLocationCoordinate:(CLLocationCoordinate2D)coordinate;
 - (CLLocation)location;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)headerTitle;
 - (NSString)subtitle;
 - (NSString)title;
 - (PXContextualMemoriesLocationSetting)init;
-- (id)_locationForCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_handleLocationAcquisitionUpdate:(id)a3;
-- (void)_initiateLocationAcquisitionWithAccuracy:(double)a3;
-- (void)_setCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_updatePlacemarkForCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_updatePlacemarkWithPlacemarks:(id)a3 error:(id)a4;
-- (void)didCallLastCompletionHandlerForCompletionHandlerManager:(id)a3;
-- (void)requestLocationUpdateWithAccuracy:(double)a3 completionHandler:(id)a4;
+- (id)_locationForCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_handleLocationAcquisitionUpdate:(id)update;
+- (void)_initiateLocationAcquisitionWithAccuracy:(double)accuracy;
+- (void)_setCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_updatePlacemarkForCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_updatePlacemarkWithPlacemarks:(id)placemarks error:(id)error;
+- (void)didCallLastCompletionHandlerForCompletionHandlerManager:(id)manager;
+- (void)requestLocationUpdateWithAccuracy:(double)accuracy completionHandler:(id)handler;
 - (void)resetToDefault;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setMonitorsCurrentLocation:(BOOL)a3;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setMonitorsCurrentLocation:(BOOL)location;
 @end
 
 @implementation PXContextualMemoriesLocationSetting
@@ -31,34 +31,34 @@
   return result;
 }
 
-- (void)requestLocationUpdateWithAccuracy:(double)a3 completionHandler:(id)a4
+- (void)requestLocationUpdateWithAccuracy:(double)accuracy completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = [(PXContextualMemoriesLocationSetting *)self locationState];
-  if (v6 - 2 < 2)
+  handlerCopy = handler;
+  locationState = [(PXContextualMemoriesLocationSetting *)self locationState];
+  if (locationState - 2 < 2)
   {
-    v9[2]();
+    handlerCopy[2]();
   }
 
-  else if (v6 == 1)
+  else if (locationState == 1)
   {
-    v8 = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
-    [v8 addCompletionHandler:v9];
+    completionHandlerManager = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
+    [completionHandlerManager addCompletionHandler:handlerCopy];
   }
 
-  else if (!v6)
+  else if (!locationState)
   {
-    v7 = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
-    [v7 addCompletionHandler:v9];
+    completionHandlerManager2 = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
+    [completionHandlerManager2 addCompletionHandler:handlerCopy];
 
-    [(PXContextualMemoriesLocationSetting *)self _initiateLocationAcquisitionWithAccuracy:a3];
+    [(PXContextualMemoriesLocationSetting *)self _initiateLocationAcquisitionWithAccuracy:accuracy];
   }
 }
 
-- (void)didCallLastCompletionHandlerForCompletionHandlerManager:(id)a3
+- (void)didCallLastCompletionHandlerForCompletionHandlerManager:(id)manager
 {
-  v4 = [(PXContextualMemoriesLocationSetting *)self locationStream];
-  if (v4)
+  locationStream = [(PXContextualMemoriesLocationSetting *)self locationStream];
+  if (locationStream)
   {
     if ([(PXContextualMemoriesLocationSetting *)self monitorsCurrentLocation])
     {
@@ -73,24 +73,24 @@
     else
     {
       [(PXContextualMemoriesLocationSetting *)self setLocationState:0];
-      [v4 setClosed:1];
+      [locationStream setClosed:1];
       [(PXContextualMemoriesLocationSetting *)self setLocationStream:0];
     }
   }
 }
 
-- (void)setMonitorsCurrentLocation:(BOOL)a3
+- (void)setMonitorsCurrentLocation:(BOOL)location
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (self->_monitorsCurrentLocation != a3)
+  if (self->_monitorsCurrentLocation != location)
   {
-    v3 = a3;
-    self->_monitorsCurrentLocation = a3;
+    locationCopy = location;
+    self->_monitorsCurrentLocation = location;
     v5 = PLMemoriesGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = @"Disable";
-      if (v3)
+      if (locationCopy)
       {
         v6 = @"Enable";
       }
@@ -102,29 +102,29 @@
 
     if ([(PXContextualMemoriesLocationSetting *)self locationState]!= 3)
     {
-      if (v3)
+      if (locationCopy)
       {
         [(PXContextualMemoriesLocationSetting *)self _initiateLocationAcquisitionWithAccuracy:*MEMORY[0x1E6985CA0]];
       }
 
       else
       {
-        v7 = [(PXContextualMemoriesLocationSetting *)self locationStream];
+        locationStream = [(PXContextualMemoriesLocationSetting *)self locationStream];
 
-        if (v7)
+        if (locationStream)
         {
           [(PXContextualMemoriesLocationSetting *)self setLocationState:0];
-          v8 = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
-          [v8 callCompletionHandlers];
+          completionHandlerManager = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
+          [completionHandlerManager callCompletionHandlers];
         }
       }
     }
   }
 }
 
-- (void)_updatePlacemarkForCoordinate:(CLLocationCoordinate2D)a3
+- (void)_updatePlacemarkForCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  v4 = [(PXContextualMemoriesLocationSetting *)self _locationForCoordinate:a3.latitude, a3.longitude];
+  v4 = [(PXContextualMemoriesLocationSetting *)self _locationForCoordinate:coordinate.latitude, coordinate.longitude];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695FBC8]);
@@ -148,23 +148,23 @@ void __69__PXContextualMemoriesLocationSetting__updatePlacemarkForCoordinate___b
   [WeakRetained _updatePlacemarkWithPlacemarks:v6 error:v5];
 }
 
-- (void)_updatePlacemarkWithPlacemarks:(id)a3 error:(id)a4
+- (void)_updatePlacemarkWithPlacemarks:(id)placemarks error:(id)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  placemarksCopy = placemarks;
+  errorCopy = error;
+  if ([placemarksCopy count])
   {
-    v8 = [v6 objectAtIndexedSubscript:0];
+    v8 = [placemarksCopy objectAtIndexedSubscript:0];
     v9 = PLMemoriesGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(CLPlacemark *)v8 px_title];
-      v11 = [(CLPlacemark *)v8 px_subtitle];
+      px_title = [(CLPlacemark *)v8 px_title];
+      px_subtitle = [(CLPlacemark *)v8 px_subtitle];
       v15 = 138412546;
-      v16 = v10;
+      v16 = px_title;
       v17 = 2112;
-      v18 = v11;
+      v18 = px_subtitle;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "[Settings] Reverse geocode returned: %@, %@", &v15, 0x16u);
     }
 
@@ -180,9 +180,9 @@ void __69__PXContextualMemoriesLocationSetting__updatePlacemarkForCoordinate___b
     v13 = PLMemoriesGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v15 = 138412290;
-      v16 = v14;
+      v16 = localizedDescription;
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "[Settings] Reverse geocode failed: %@", &v15, 0xCu);
     }
   }
@@ -209,11 +209,11 @@ void __53__PXContextualMemoriesLocationSetting_resetToDefault__block_invoke(uint
   return [(PXContextualMemoriesLocationSetting *)self _locationForCoordinate:?];
 }
 
-- (id)_locationForCoordinate:(CLLocationCoordinate2D)a3
+- (id)_locationForCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  if (CLLocationCoordinate2DIsValid(a3))
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  if (CLLocationCoordinate2DIsValid(coordinate))
   {
     v5 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:latitude longitude:longitude];
   }
@@ -226,11 +226,11 @@ void __53__PXContextualMemoriesLocationSetting_resetToDefault__block_invoke(uint
   return v5;
 }
 
-- (void)_initiateLocationAcquisitionWithAccuracy:(double)a3
+- (void)_initiateLocationAcquisitionWithAccuracy:(double)accuracy
 {
-  v5 = [(PXContextualMemoriesLocationSetting *)self locationStream];
+  locationStream = [(PXContextualMemoriesLocationSetting *)self locationStream];
 
-  if (!v5)
+  if (!locationStream)
   {
     [(PXContextualMemoriesLocationSetting *)self _setCoordinate:*MEMORY[0x1E6985CC0], *(MEMORY[0x1E6985CC0] + 8)];
     v6 = PLMemoriesGetLog();
@@ -248,7 +248,7 @@ void __53__PXContextualMemoriesLocationSetting_resetToDefault__block_invoke(uint
     v9[2] = __80__PXContextualMemoriesLocationSetting__initiateLocationAcquisitionWithAccuracy___block_invoke;
     v9[3] = &unk_1E772F6E0;
     objc_copyWeak(&v10, buf);
-    v8 = [(PXLocationStream *)v7 initWithAccuracy:v9 handler:a3];
+    v8 = [(PXLocationStream *)v7 initWithAccuracy:v9 handler:accuracy];
     [(PXContextualMemoriesLocationSetting *)self setLocationStream:v8];
 
     objc_destroyWeak(&v10);
@@ -263,41 +263,41 @@ void __80__PXContextualMemoriesLocationSetting__initiateLocationAcquisitionWithA
   [WeakRetained _handleLocationAcquisitionUpdate:v3];
 }
 
-- (void)_handleLocationAcquisitionUpdate:(id)a3
+- (void)_handleLocationAcquisitionUpdate:(id)update
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   if ([(PXContextualMemoriesLocationSetting *)self locationState]== 3)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXContextualMemoriesLocationSetting.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"PXContextualMemoriesLocationStateSimulated != [self locationState]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContextualMemoriesLocationSetting.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"PXContextualMemoriesLocationStateSimulated != [self locationState]"}];
 
-    if (!v5)
+    if (!updateCopy)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!v5)
+  else if (!updateCopy)
   {
     goto LABEL_12;
   }
 
-  [v5 coordinate];
+  [updateCopy coordinate];
   [(PXContextualMemoriesLocationSetting *)self _setCoordinate:?];
   if ([(PXContextualMemoriesLocationSetting *)self locationState]== 1)
   {
-    [v5 horizontalAccuracy];
+    [updateCopy horizontalAccuracy];
     v7 = v6;
-    v8 = PLMemoriesGetLog();
-    v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
+    completionHandlerManager = PLMemoriesGetLog();
+    v9 = os_log_type_enabled(completionHandlerManager, OS_LOG_TYPE_DEBUG);
     if (v7 <= 0.0 || v7 >= 100.0)
     {
       if (v9)
       {
         *buf = 138412290;
-        v12 = v5;
-        _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "[Settings] Did receive location not meeting accuracy goal: %@", buf, 0xCu);
+        v12 = updateCopy;
+        _os_log_impl(&dword_1A3C1C000, completionHandlerManager, OS_LOG_TYPE_DEBUG, "[Settings] Did receive location not meeting accuracy goal: %@", buf, 0xCu);
       }
     }
 
@@ -306,23 +306,23 @@ void __80__PXContextualMemoriesLocationSetting__initiateLocationAcquisitionWithA
       if (v9)
       {
         *buf = 138412290;
-        v12 = v5;
-        _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "[Settings] Did acquire the current location: %@", buf, 0xCu);
+        v12 = updateCopy;
+        _os_log_impl(&dword_1A3C1C000, completionHandlerManager, OS_LOG_TYPE_DEBUG, "[Settings] Did acquire the current location: %@", buf, 0xCu);
       }
 
       [(PXContextualMemoriesLocationSetting *)self setLocationState:2];
-      v8 = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
-      [v8 callCompletionHandlers];
+      completionHandlerManager = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
+      [completionHandlerManager callCompletionHandlers];
     }
   }
 
 LABEL_12:
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v11 = *MEMORY[0x1E69E9840];
   v6 = PLMemoriesGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -336,15 +336,15 @@ LABEL_12:
   [(PXContextualMemoriesLocationSetting *)self setLocationState:3];
   [objc_opt_class() _setSimulatedLocationCoordinate:{latitude, longitude}];
   [(PXContextualMemoriesLocationSetting *)self _setCoordinate:latitude, longitude];
-  v8 = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
-  [v8 callCompletionHandlers];
+  completionHandlerManager = [(PXContextualMemoriesLocationSetting *)self completionHandlerManager];
+  [completionHandlerManager callCompletionHandlers];
 }
 
-- (void)_setCoordinate:(CLLocationCoordinate2D)a3
+- (void)_setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  if (self->_coordinate.latitude != a3.latitude || self->_coordinate.longitude != a3.longitude)
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  if (self->_coordinate.latitude != coordinate.latitude || self->_coordinate.longitude != coordinate.longitude)
   {
     [(PXContextualMemoriesLocationSetting *)self willChangeValueForKey:@"coordinate"];
     self->_coordinate.latitude = latitude;
@@ -360,20 +360,20 @@ LABEL_12:
 
 - (NSString)subtitle
 {
-  v2 = [(PXContextualMemoriesLocationSetting *)self placemark];
-  v3 = [v2 px_subtitle];
+  placemark = [(PXContextualMemoriesLocationSetting *)self placemark];
+  px_subtitle = [placemark px_subtitle];
 
-  return v3;
+  return px_subtitle;
 }
 
 - (NSString)title
 {
-  v3 = [(PXContextualMemoriesLocationSetting *)self placemark];
+  placemark = [(PXContextualMemoriesLocationSetting *)self placemark];
 
-  if (v3)
+  if (placemark)
   {
-    v4 = [(PXContextualMemoriesLocationSetting *)self placemark];
-    v5 = [v4 px_title];
+    placemark2 = [(PXContextualMemoriesLocationSetting *)self placemark];
+    px_title = [placemark2 px_title];
   }
 
   else
@@ -384,11 +384,11 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    v4 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v4 localizedStringForKey:@"No Location Available" value:&stru_1F1741150 table:0];
+    placemark2 = [MEMORY[0x1E696AAE8] mainBundle];
+    px_title = [placemark2 localizedStringForKey:@"No Location Available" value:&stru_1F1741150 table:0];
   }
 
-  v6 = v5;
+  v6 = px_title;
 
 LABEL_7:
 
@@ -397,8 +397,8 @@ LABEL_7:
 
 - (NSString)headerTitle
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Location" value:&stru_1F1741150 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Location" value:&stru_1F1741150 table:0];
 
   return v3;
 }
@@ -509,15 +509,15 @@ void __67__PXContextualMemoriesLocationSetting__simulatedLocationCoordinate__blo
   }
 }
 
-+ (void)_setSimulatedLocationCoordinate:(CLLocationCoordinate2D)a3
++ (void)_setSimulatedLocationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v14 = *MEMORY[0x1E69E9840];
-  if (*&_simulatedLocationCoordinate != a3.latitude || *(&_simulatedLocationCoordinate + 1) != a3.longitude)
+  if (*&_simulatedLocationCoordinate != coordinate.latitude || *(&_simulatedLocationCoordinate + 1) != coordinate.longitude)
   {
-    _simulatedLocationCoordinate = a3;
-    if (CLLocationCoordinate2DIsValid(a3))
+    _simulatedLocationCoordinate = coordinate;
+    if (CLLocationCoordinate2DIsValid(coordinate))
     {
       v6 = MEMORY[0x1E696AD98];
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];

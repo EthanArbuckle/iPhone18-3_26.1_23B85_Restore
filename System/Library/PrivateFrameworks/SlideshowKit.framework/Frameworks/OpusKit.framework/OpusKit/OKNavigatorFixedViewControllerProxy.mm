@@ -1,23 +1,23 @@
 @interface OKNavigatorFixedViewControllerProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (BOOL)prepareForDisplay;
 - (BOOL)prepareForUnload;
 - (BOOL)prepareForWarmup;
 - (void)commonInit;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didReceiveMemoryWarning;
 - (void)resolutionDidChange;
 - (void)updatePageViewController;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation OKNavigatorFixedViewControllerProxy
@@ -63,32 +63,32 @@
   [(OKNavigatorViewControllerProxy *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorFixedViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewWillAppear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorFixedViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewDidAppear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorFixedViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewWillDisappear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorFixedViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 viewDidDisappear:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 viewDidDisappear:disappear];
 }
 
 - (void)viewWillLayoutSubviews
@@ -112,23 +112,23 @@
   [(OKNavigatorViewControllerProxy *)&v2 resolutionDidChange];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorFixedViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 willMoveToParentViewController:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 willMoveToParentViewController:controller];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = OKNavigatorFixedViewControllerProxy;
-  [(OKNavigatorViewControllerProxy *)&v3 didMoveToParentViewController:a3];
+  [(OKNavigatorViewControllerProxy *)&v3 didMoveToParentViewController:controller];
 }
 
 + (id)supportedSettings
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKNavigatorFixedViewControllerProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   [v2 addEntriesFromDictionary:MEMORY[0x277CBEC10]];
@@ -146,9 +146,9 @@
 
   else
   {
-    v4 = [(OKNavigatorViewControllerProxy *)self prepareMode];
+    prepareMode = [(OKNavigatorViewControllerProxy *)self prepareMode];
     v5 = self->_pageViewController;
-    if (v4 == 2)
+    if (prepareMode == 2)
     {
 
       [(OKPageViewController *)v5 prepareForWarmup];
@@ -166,47 +166,47 @@
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorFixedViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForDisplay];
-  if (v3)
+  prepareForDisplay = [(OKNavigatorViewControllerProxy *)&v5 prepareForDisplay];
+  if (prepareForDisplay)
   {
     [(OKNavigatorFixedViewControllerProxy *)self updatePageViewController];
   }
 
-  return v3;
+  return prepareForDisplay;
 }
 
 - (BOOL)prepareForWarmup
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorFixedViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForWarmup];
-  if (v3)
+  prepareForWarmup = [(OKNavigatorViewControllerProxy *)&v5 prepareForWarmup];
+  if (prepareForWarmup)
   {
     [(OKNavigatorFixedViewControllerProxy *)self updatePageViewController];
   }
 
-  return v3;
+  return prepareForWarmup;
 }
 
 - (BOOL)prepareForUnload
 {
   v5.receiver = self;
   v5.super_class = OKNavigatorFixedViewControllerProxy;
-  v3 = [(OKNavigatorViewControllerProxy *)&v5 prepareForUnload];
-  if (v3)
+  prepareForUnload = [(OKNavigatorViewControllerProxy *)&v5 prepareForUnload];
+  if (prepareForUnload)
   {
     [(OKNavigatorFixedViewControllerProxy *)self updatePageViewController];
   }
 
-  return v3;
+  return prepareForUnload;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKNavigatorFixedViewController"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKNavigatorFixedViewController"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

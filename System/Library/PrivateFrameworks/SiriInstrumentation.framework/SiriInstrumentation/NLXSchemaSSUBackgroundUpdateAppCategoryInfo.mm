@@ -1,49 +1,49 @@
 @interface NLXSchemaSSUBackgroundUpdateAppCategoryInfo
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithDictionary:(id)a3;
-- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithDictionary:(id)dictionary;
+- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCacheAction:(BOOL)a3;
-- (void)setHasNumAppExamplesNegative:(BOOL)a3;
-- (void)setHasNumAppExamplesPositive:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCacheAction:(BOOL)action;
+- (void)setHasNumAppExamplesNegative:(BOOL)negative;
+- (void)setHasNumAppExamplesPositive:(BOOL)positive;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaSSUBackgroundUpdateAppCategoryInfo
 
-- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithDictionary:(id)a3
+- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = NLXSchemaSSUBackgroundUpdateAppCategoryInfo;
   v5 = [(NLXSchemaSSUBackgroundUpdateAppCategoryInfo *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"categoryType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"categoryType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUBackgroundUpdateAppCategoryInfo setCategoryType:](v5, "setCategoryType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numAppExamplesPositive"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numAppExamplesPositive"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUBackgroundUpdateAppCategoryInfo setNumAppExamplesPositive:](v5, "setNumAppExamplesPositive:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numAppExamplesNegative"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numAppExamplesNegative"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaSSUBackgroundUpdateAppCategoryInfo setNumAppExamplesNegative:](v5, "setNumAppExamplesNegative:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"cacheAction"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"cacheAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithJSON:(id)a3
+- (NLXSchemaSSUBackgroundUpdateAppCategoryInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaSSUBackgroundUpdateAppCategoryInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaSSUBackgroundUpdateAppCategoryInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaSSUBackgroundUpdateAppCategoryInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,7 +92,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -107,7 +107,7 @@
       v6 = off_1E78DC868[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"cacheAction"];
+    [dictionary setObject:v6 forKeyedSubscript:@"cacheAction"];
     has = self->_has;
   }
 
@@ -124,14 +124,14 @@
       v8 = off_1E78DC880[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"categoryType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"categoryType"];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaSSUBackgroundUpdateAppCategoryInfo numAppExamplesNegative](self, "numAppExamplesNegative")}];
-    [v3 setObject:v9 forKeyedSubscript:@"numAppExamplesNegative"];
+    [dictionary setObject:v9 forKeyedSubscript:@"numAppExamplesNegative"];
 
     has = self->_has;
   }
@@ -139,12 +139,12 @@
   if ((has & 2) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NLXSchemaSSUBackgroundUpdateAppCategoryInfo numAppExamplesPositive](self, "numAppExamplesPositive")}];
-    [v3 setObject:v10 forKeyedSubscript:@"numAppExamplesPositive"];
+    [dictionary setObject:v10 forKeyedSubscript:@"numAppExamplesPositive"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -201,16 +201,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -219,13 +219,13 @@ LABEL_5:
   if (*&has)
   {
     categoryType = self->_categoryType;
-    if (categoryType != [v4 categoryType])
+    if (categoryType != [equalCopy categoryType])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -237,13 +237,13 @@ LABEL_5:
   if (v8)
   {
     numAppExamplesPositive = self->_numAppExamplesPositive;
-    if (numAppExamplesPositive != [v4 numAppExamplesPositive])
+    if (numAppExamplesPositive != [equalCopy numAppExamplesPositive])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -255,10 +255,10 @@ LABEL_5:
   if (v10)
   {
     numAppExamplesNegative = self->_numAppExamplesNegative;
-    if (numAppExamplesNegative == [v4 numAppExamplesNegative])
+    if (numAppExamplesNegative == [equalCopy numAppExamplesNegative])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -277,7 +277,7 @@ LABEL_14:
   if (v12)
   {
     cacheAction = self->_cacheAction;
-    if (cacheAction != [v4 cacheAction])
+    if (cacheAction != [equalCopy cacheAction])
     {
       goto LABEL_18;
     }
@@ -289,9 +289,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -338,9 +338,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasCacheAction:(BOOL)a3
+- (void)setHasCacheAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 8;
   }
@@ -353,9 +353,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumAppExamplesNegative:(BOOL)a3
+- (void)setHasNumAppExamplesNegative:(BOOL)negative
 {
-  if (a3)
+  if (negative)
   {
     v3 = 4;
   }
@@ -368,9 +368,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumAppExamplesPositive:(BOOL)a3
+- (void)setHasNumAppExamplesPositive:(BOOL)positive
 {
-  if (a3)
+  if (positive)
   {
     v3 = 2;
   }

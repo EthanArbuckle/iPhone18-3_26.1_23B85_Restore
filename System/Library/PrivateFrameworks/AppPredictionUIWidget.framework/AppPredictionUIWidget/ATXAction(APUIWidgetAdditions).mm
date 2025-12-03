@@ -6,12 +6,12 @@
 
 - (id)subtitleForSuggestionsWidget
 {
-  if ([a1 isHeuristic])
+  if ([self isHeuristic])
   {
-    v2 = [a1 actionSubtitle];
-    if ([v2 length])
+    actionSubtitle = [self actionSubtitle];
+    if ([actionSubtitle length])
     {
-      if (v2)
+      if (actionSubtitle)
       {
         goto LABEL_7;
       }
@@ -22,15 +22,15 @@
     }
   }
 
-  v3 = [a1 bundleId];
-  v4 = [a1 userActivityWebpageURL];
+  bundleId = [self bundleId];
+  userActivityWebpageURL = [self userActivityWebpageURL];
   v5 = ATXBundleIdReplacementForBundleIdWithWebpageURLHint();
 
-  v2 = [MEMORY[0x277CEB3B8] localizedNameForBundle:v5];
+  actionSubtitle = [MEMORY[0x277CEB3B8] localizedNameForBundle:v5];
 
 LABEL_7:
 
-  return v2;
+  return actionSubtitle;
 }
 
 @end

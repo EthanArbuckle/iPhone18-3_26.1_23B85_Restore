@@ -1,22 +1,22 @@
 @interface AWDMETRICSKCellularPowerLogLteCarrierComponentInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCarrierInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCarrierInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogLteCarrierComponentInfo
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -29,27 +29,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCarrierInfo:(id)a3
+- (void)addCarrierInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   carrierInfos = self->_carrierInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!carrierInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_carrierInfos;
     self->_carrierInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     carrierInfos = self->_carrierInfos;
   }
 
-  [(NSMutableArray *)carrierInfos addObject:v4];
+  [(NSMutableArray *)carrierInfos addObject:infoCopy];
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 4;
   }
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogLteCarrierComponentInfo;
   v4 = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,12 +77,12 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -90,7 +90,7 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v6 forKey:@"subs_id"];
+    [dictionary setObject:v6 forKey:@"subs_id"];
   }
 
   if ([(NSMutableArray *)self->_carrierInfos count])
@@ -115,8 +115,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -125,24 +125,24 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"carrier_info"];
+    [dictionary setObject:v7 forKey:@"carrier_info"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
-    [v3 setObject:v14 forKey:@"is_data_preferred"];
+    [dictionary setObject:v14 forKey:@"is_data_preferred"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -195,31 +195,31 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = self->_subsId;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 6) = self->_subsId;
+    *(toCopy + 32) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)self carrierInfosCount])
   {
     [v10 clearCarrierInfos];
-    v6 = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)self carrierInfosCount];
-    if (v6)
+    carrierInfosCount = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)self carrierInfosCount];
+    if (carrierInfosCount)
     {
-      v7 = v6;
+      v7 = carrierInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDMETRICSKCellularPowerLogLteCarrierComponentInfo *)self carrierInfoAtIndex:i];
@@ -235,10 +235,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -273,7 +273,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addCarrierInfo:v13];
       }
 
@@ -293,44 +293,44 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_subsId != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_subsId != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   carrierInfos = self->_carrierInfos;
-  if (carrierInfos | *(v4 + 2))
+  if (carrierInfos | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)carrierInfos isEqual:?])
     {
@@ -340,20 +340,20 @@
     has = self->_has;
   }
 
-  v8 = (*(v4 + 32) & 4) == 0;
+  v8 = (*(equalCopy + 32) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) != 0)
+    if ((*(equalCopy + 32) & 4) != 0)
     {
       if (self->_isDataPreferred)
       {
-        if ((*(v4 + 28) & 1) == 0)
+        if ((*(equalCopy + 28) & 1) == 0)
         {
           goto LABEL_17;
         }
       }
 
-      else if (*(v4 + 28))
+      else if (*(equalCopy + 28))
       {
         goto LABEL_17;
       }
@@ -409,22 +409,22 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_subsId = *(v4 + 6);
+    self->_subsId = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
@@ -432,7 +432,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

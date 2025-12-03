@@ -1,29 +1,29 @@
 @interface NMRMediaRemoteGetIconMessage
-+ (id)messageWithIconWidth:(double)a3 height:(double)a4 bundleID:(id)a5 originIdentifier:(id)a6;
-- (NMRMediaRemoteGetIconMessage)initWithProtobufData:(id)a3;
++ (id)messageWithIconWidth:(double)width height:(double)height bundleID:(id)d originIdentifier:(id)identifier;
+- (NMRMediaRemoteGetIconMessage)initWithProtobufData:(id)data;
 - (NSDate)serializationDate;
 - (NSNumber)height;
 - (NSNumber)originIdentifier;
 - (NSNumber)width;
-- (id)_initWithIconWidth:(double)a3 height:(double)a4 bundleID:(id)a5 originIdentifier:(id)a6;
+- (id)_initWithIconWidth:(double)width height:(double)height bundleID:(id)d originIdentifier:(id)identifier;
 - (id)protobufData;
 @end
 
 @implementation NMRMediaRemoteGetIconMessage
 
-+ (id)messageWithIconWidth:(double)a3 height:(double)a4 bundleID:(id)a5 originIdentifier:(id)a6
++ (id)messageWithIconWidth:(double)width height:(double)height bundleID:(id)d originIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [[a1 alloc] _initWithIconWidth:v11 height:v10 bundleID:a3 originIdentifier:a4];
+  identifierCopy = identifier;
+  dCopy = d;
+  v12 = [[self alloc] _initWithIconWidth:dCopy height:identifierCopy bundleID:width originIdentifier:height];
 
   return v12;
 }
 
-- (id)_initWithIconWidth:(double)a3 height:(double)a4 bundleID:(id)a5 originIdentifier:(id)a6
+- (id)_initWithIconWidth:(double)width height:(double)height bundleID:(id)d originIdentifier:(id)identifier
 {
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = NMRMediaRemoteGetIconMessage;
   v12 = [(NMRMediaRemoteGetIconMessage *)&v16 init];
@@ -33,10 +33,10 @@
     protobuf = v12->_protobuf;
     v12->_protobuf = v13;
 
-    [(_NMRMediaRemoteGetIconMessage *)v12->_protobuf setWidth:a3];
-    [(_NMRMediaRemoteGetIconMessage *)v12->_protobuf setHeight:a4];
-    [(_NMRMediaRemoteGetIconMessage *)v12->_protobuf setBundleID:v10];
-    -[_NMRMediaRemoteGetIconMessage setOriginIdentifier:](v12->_protobuf, "setOriginIdentifier:", [v11 intValue]);
+    [(_NMRMediaRemoteGetIconMessage *)v12->_protobuf setWidth:width];
+    [(_NMRMediaRemoteGetIconMessage *)v12->_protobuf setHeight:height];
+    [(_NMRMediaRemoteGetIconMessage *)v12->_protobuf setBundleID:dCopy];
+    -[_NMRMediaRemoteGetIconMessage setOriginIdentifier:](v12->_protobuf, "setOriginIdentifier:", [identifierCopy intValue]);
   }
 
   return v12;
@@ -87,15 +87,15 @@
   return v3;
 }
 
-- (NMRMediaRemoteGetIconMessage)initWithProtobufData:(id)a3
+- (NMRMediaRemoteGetIconMessage)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = NMRMediaRemoteGetIconMessage;
   v5 = [(NMRMediaRemoteGetIconMessage *)&v10 init];
   if (v5)
   {
-    v6 = [[_NMRMediaRemoteGetIconMessage alloc] initWithData:v4];
+    v6 = [[_NMRMediaRemoteGetIconMessage alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 

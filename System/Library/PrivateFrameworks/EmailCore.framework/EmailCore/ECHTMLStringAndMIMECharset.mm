@@ -1,23 +1,23 @@
 @interface ECHTMLStringAndMIMECharset
-- (ECHTMLStringAndMIMECharset)initWithString:(id)a3 charset:(id)a4;
+- (ECHTMLStringAndMIMECharset)initWithString:(id)string charset:(id)charset;
 @end
 
 @implementation ECHTMLStringAndMIMECharset
 
-- (ECHTMLStringAndMIMECharset)initWithString:(id)a3 charset:(id)a4
+- (ECHTMLStringAndMIMECharset)initWithString:(id)string charset:(id)charset
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  charsetCopy = charset;
   v12.receiver = self;
   v12.super_class = ECHTMLStringAndMIMECharset;
   v8 = [(ECHTMLStringAndMIMECharset *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     string = v8->_string;
     v8->_string = v9;
 
-    objc_storeStrong(&v8->_charset, a4);
+    objc_storeStrong(&v8->_charset, charset);
   }
 
   return v8;

@@ -1,18 +1,18 @@
 @interface PXHUDBoxedValueVisualization
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation PXHUDBoxedValueVisualization
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->_value != v5)
+  valueCopy = value;
+  if (self->_value != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_value, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->_value, value);
     [(PXHUDVisualization *)self _notifyDelegateVisualizationDidChange];
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 

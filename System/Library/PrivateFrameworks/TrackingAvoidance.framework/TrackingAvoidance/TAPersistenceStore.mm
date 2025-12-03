@@ -1,15 +1,15 @@
 @interface TAPersistenceStore
-- (BOOL)isEqual:(id)a3;
-- (TAPersistenceStore)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TAPersistenceStore)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAPersistenceStore
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -19,14 +19,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(TAPersistenceStore *)self deviceRecord];
-      v8 = [(TAPersistenceStore *)v6 deviceRecord];
-      if (v7 != v8)
+      v6 = equalCopy;
+      deviceRecord = [(TAPersistenceStore *)self deviceRecord];
+      deviceRecord2 = [(TAPersistenceStore *)v6 deviceRecord];
+      if (deviceRecord != deviceRecord2)
       {
-        v9 = [(TAPersistenceStore *)self deviceRecord];
-        v3 = [(TAPersistenceStore *)v6 deviceRecord];
-        if (![v9 isEqual:v3])
+        deviceRecord3 = [(TAPersistenceStore *)self deviceRecord];
+        deviceRecord4 = [(TAPersistenceStore *)v6 deviceRecord];
+        if (![deviceRecord3 isEqual:deviceRecord4])
         {
           v10 = 0;
 LABEL_13:
@@ -35,25 +35,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = deviceRecord3;
       }
 
-      v11 = [(TAPersistenceStore *)self visitState];
-      v12 = [(TAPersistenceStore *)v6 visitState];
-      if (v11 == v12)
+      visitState = [(TAPersistenceStore *)self visitState];
+      visitState2 = [(TAPersistenceStore *)v6 visitState];
+      if (visitState == visitState2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(TAPersistenceStore *)self visitState];
-        v14 = [(TAPersistenceStore *)v6 visitState];
-        v10 = [v13 isEqual:v14];
+        visitState3 = [(TAPersistenceStore *)self visitState];
+        visitState4 = [(TAPersistenceStore *)v6 visitState];
+        v10 = [visitState3 isEqual:visitState4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      deviceRecord3 = v16;
+      if (deviceRecord == deviceRecord2)
       {
         goto LABEL_14;
       }
@@ -69,19 +69,19 @@ LABEL_15:
   return v10;
 }
 
-- (TAPersistenceStore)initWithCoder:(id)a3
+- (TAPersistenceStore)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TAPersistenceStore;
   v5 = [(TAPersistenceStore *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceRecord"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceRecord"];
     deviceRecord = v5->_deviceRecord;
     v5->_deviceRecord = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VisitState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VisitState"];
     visitState = v5->_visitState;
     v5->_visitState = v8;
   }
@@ -89,12 +89,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceRecord = self->_deviceRecord;
-  v5 = a3;
-  [v5 encodeObject:deviceRecord forKey:@"DeviceRecord"];
-  [v5 encodeObject:self->_visitState forKey:@"VisitState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceRecord forKey:@"DeviceRecord"];
+  [coderCopy encodeObject:self->_visitState forKey:@"VisitState"];
 }
 
 @end

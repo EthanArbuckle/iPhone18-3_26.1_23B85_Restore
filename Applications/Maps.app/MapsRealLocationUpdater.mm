@@ -1,15 +1,15 @@
 @interface MapsRealLocationUpdater
-- (BOOL)startLocationUpdatesForDelegate:(id)a3;
+- (BOOL)startLocationUpdatesForDelegate:(id)delegate;
 - (MapsRealLocationUpdater)init;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)stopLocationUpdates;
 @end
 
 @implementation MapsRealLocationUpdater
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -25,8 +25,8 @@
   v8[5] = &v9;
   dispatch_sync(delegateAccessQueue, v8);
   v6 = v10[5];
-  v7 = [v4 currentLocation];
-  [v6 didUpdateLocation:v7];
+  currentLocation = [locationCopy currentLocation];
+  [v6 didUpdateLocation:currentLocation];
 
   _Block_object_dispose(&v9, 8);
 }
@@ -57,10 +57,10 @@
   [v9 stopLocationUpdateWithObserver:self];
 }
 
-- (BOOL)startLocationUpdatesForDelegate:(id)a3
+- (BOOL)startLocationUpdatesForDelegate:(id)delegate
 {
-  v5 = a3;
-  if (v5)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     *v31 = 0;
     *&v31[8] = v31;
@@ -109,8 +109,8 @@
       v21 = 3221225472;
       v22 = sub_100943AD0;
       v23 = &unk_101661A90;
-      v24 = self;
-      v25 = v5;
+      selfCopy = self;
+      v25 = delegateCopy;
       dispatch_sync(v17, &v20);
       v18 = [MKLocationManager sharedLocationManager:v20];
       [v18 startLocationUpdateWithObserver:self];

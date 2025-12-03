@@ -1,9 +1,9 @@
 @interface PerformanceDebugBookmarksController
 - (PerformanceDebugBookmarksController)init;
 - (id)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PerformanceDebugBookmarksController
@@ -15,21 +15,21 @@
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [NSBundle bundleWithIdentifier:@"com.apple.Maps", a4];
-  v5 = [v4 pathForResource:@"Bookmarks" ofType:@"plist"];
+  section = [NSBundle bundleWithIdentifier:@"com.apple.Maps", section];
+  v5 = [section pathForResource:@"Bookmarks" ofType:@"plist"];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
   [(PerformanceDebugBookmarksController *)self dismissViewControllerAnimated:1 completion:0];
   items = self->_items;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v39 = [(NSMutableArray *)items objectAtIndexedSubscript:v8];
   v9 = [v39 objectForKeyedSubscript:@"latitude"];
@@ -86,44 +86,44 @@
   }
 
   log2(v24);
-  v25 = [(PerformanceDebugBookmarksController *)self delegate];
-  v26 = [v25 allVisibleMapViewsForDebugController:self];
-  v27 = [v26 firstObject];
+  delegate = [(PerformanceDebugBookmarksController *)self delegate];
+  v26 = [delegate allVisibleMapViewsForDebugController:self];
+  firstObject = [v26 firstObject];
 
-  [v27 frame];
+  [firstObject frame];
   MKCoordinateRegionMakeWithZoomLevel();
   MKMapRectForCoordinateRegion();
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  [v27 frame];
+  [firstObject frame];
   v38 = [MKMapCamera _cameraLookingAtMapRect:v29 forViewSize:v31, v33, v35, v36, v37];
   [v38 setPitch:v20];
   [v38 setHeading:v16];
-  [v27 setCamera:v38];
+  [firstObject setCamera:v38];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PerformanceCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PerformanceCell"];
   if (!v7)
   {
     v7 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"PerformanceCell"];
   }
 
   [v7 setAccessoryView:0];
-  v8 = [v7 detailTextLabel];
-  [v8 setText:0];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:0];
 
   items = self->_items;
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSMutableArray *)items objectAtIndexedSubscript:v10];
   v12 = [v11 objectForKeyedSubscript:@"Name"];
-  v13 = [v7 textLabel];
-  [v13 setText:v12];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v12];
 
   return v7;
 }

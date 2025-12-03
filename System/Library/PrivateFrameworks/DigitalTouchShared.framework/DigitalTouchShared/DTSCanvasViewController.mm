@@ -8,8 +8,8 @@
 - (BOOL)_usingDemoHook;
 - (BOOL)canReplay;
 - (BOOL)canShowReplayButton;
-- (BOOL)dataSource:(id)a3 addDemoHookToMessage:(id *)a4;
-- (BOOL)dataSourceViewIsMostlyVisible:(id)a3;
+- (BOOL)dataSource:(id)source addDemoHookToMessage:(id *)message;
+- (BOOL)dataSourceViewIsMostlyVisible:(id)visible;
 - (DTSCanvasViewController)init;
 - (DTSCanvasViewControllerSendDelegate)sendDelegate;
 - (ETBalloonPluginDataSource)dataSource;
@@ -21,23 +21,23 @@
 - (void)_cancelButtonTapped;
 - (void)_clearComposeSessionEndTimer;
 - (void)_composeSessionEndTimerFired;
-- (void)_continueMessagePlaybackLoopWithDelay:(BOOL)a3;
+- (void)_continueMessagePlaybackLoopWithDelay:(BOOL)delay;
 - (void)_exportDemoHookMessage;
 - (void)_hideVideoPlayer;
-- (void)_playMessage:(id)a3;
+- (void)_playMessage:(id)message;
 - (void)_playNextMessage;
 - (void)_relinquishAudio;
 - (void)_reloadUnplayedMessages;
-- (void)_schedulePlaybackOfCompositeMessageContent:(id)a3;
+- (void)_schedulePlaybackOfCompositeMessageContent:(id)content;
 - (void)_sendAutosendingComposition;
 - (void)_sendDemoHookMessage;
-- (void)_setCachedMessageForReplay:(id)a3;
-- (void)_setShowingReplayButton:(BOOL)a3;
-- (void)_showDemoHookAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_setCachedMessageForReplay:(id)replay;
+- (void)_setShowingReplayButton:(BOOL)button;
+- (void)_showDemoHookAlertWithTitle:(id)title message:(id)message;
 - (void)_skipButtonTapped;
 - (void)_startComposeSessionEndTimer;
-- (void)_startVideoPlayerWithMessage:(id)a3;
-- (void)_stopPlaybackAnimated:(BOOL)a3;
+- (void)_startVideoPlayerWithMessage:(id)message;
+- (void)_stopPlaybackAnimated:(BOOL)animated;
 - (void)_updateAudioOnOffButton;
 - (void)_updateAudioOnOffButtonImage;
 - (void)_updateCanvasInteractionEnabled;
@@ -45,34 +45,34 @@
 - (void)_updatePlaybackControls;
 - (void)_updateSkipButtonFrame;
 - (void)_updateVideoPlayerUI;
-- (void)_videoMessageDidFinishPlaying:(id)a3;
-- (void)addUnplayedMessage:(id)a3;
-- (void)canvasView:(id)a3 didBeginComposingMessageType:(unsigned __int16)a4;
-- (void)canvasView:(id)a3 didBeginPlayingMessage:(id)a4;
-- (void)canvasView:(id)a3 didEndComposingMessageType:(unsigned __int16)a4;
-- (void)canvasView:(id)a3 didEndPlayingMessage:(id)a4;
-- (void)canvasView:(id)a3 sendMessage:(id)a4;
-- (void)canvasView:(id)a3 willEndPlayingMessage:(id)a4;
-- (void)canvasViewWillReachComposingSizeLimit:(id)a3;
-- (void)colorPickerSelectedColorDidChange:(id)a3;
-- (void)colorPickerTapped:(id)a3;
-- (void)dataSource:(id)a3 didUpdateAttachmentURL:(id)a4 forMessageWithIdentifier:(id)a5;
-- (void)dataSource:(id)a3 startPlaybackWithCompletion:(id)a4;
-- (void)dataSourceStopPlayback:(id)a3;
+- (void)_videoMessageDidFinishPlaying:(id)playing;
+- (void)addUnplayedMessage:(id)message;
+- (void)canvasView:(id)view didBeginComposingMessageType:(unsigned __int16)type;
+- (void)canvasView:(id)view didBeginPlayingMessage:(id)message;
+- (void)canvasView:(id)view didEndComposingMessageType:(unsigned __int16)type;
+- (void)canvasView:(id)view didEndPlayingMessage:(id)message;
+- (void)canvasView:(id)view sendMessage:(id)message;
+- (void)canvasView:(id)view willEndPlayingMessage:(id)message;
+- (void)canvasViewWillReachComposingSizeLimit:(id)limit;
+- (void)colorPickerSelectedColorDidChange:(id)change;
+- (void)colorPickerTapped:(id)tapped;
+- (void)dataSource:(id)source didUpdateAttachmentURL:(id)l forMessageWithIdentifier:(id)identifier;
+- (void)dataSource:(id)source startPlaybackWithCompletion:(id)completion;
+- (void)dataSourceStopPlayback:(id)playback;
 - (void)replay;
-- (void)setComposeDisabled:(BOOL)a3;
-- (void)setComposingCompositeMessage:(BOOL)a3;
-- (void)setDataSource:(id)a3;
-- (void)setPlaybackEnabled:(BOOL)a3;
-- (void)setPlayingCompositeMessage:(BOOL)a3;
-- (void)setPlayingMessage:(id)a3;
-- (void)setPlayingMessages:(BOOL)a3;
+- (void)setComposeDisabled:(BOOL)disabled;
+- (void)setComposingCompositeMessage:(BOOL)message;
+- (void)setDataSource:(id)source;
+- (void)setPlaybackEnabled:(BOOL)enabled;
+- (void)setPlayingCompositeMessage:(BOOL)message;
+- (void)setPlayingMessage:(id)message;
+- (void)setPlayingMessages:(BOOL)messages;
 - (void)startMessagePlaybackLoop;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -131,9 +131,9 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
     canvasView = v2->_canvasView;
     v2->_canvasView = v3;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     unplayedMessages = v2->_unplayedMessages;
-    v2->_unplayedMessages = v5;
+    v2->_unplayedMessages = array;
 
     [(DTSCanvasViewController *)v2 setComposingMessageType:0xFFFFLL];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -195,10 +195,10 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
   return v2;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  objc_storeWeak(&self->_dataSource, a3);
-  if (!a3)
+  objc_storeWeak(&self->_dataSource, source);
+  if (!source)
   {
     [(DTSCanvasViewController *)self _sendAutosendingComposition];
     [(DTSCanvasViewController *)self setPlaybackEnabled:0];
@@ -213,42 +213,42 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
   v9.receiver = self;
   v9.super_class = DTSCanvasViewController;
   [(DTSCanvasViewController *)&v9 viewDidLoad];
-  v3 = [(DTSCanvasViewController *)self view];
-  [v3 setAccessibilityIgnoresInvertColors:1];
-  [v3 addSubview:self->_canvasView];
+  view = [(DTSCanvasViewController *)self view];
+  [view setAccessibilityIgnoresInvertColors:1];
+  [view addSubview:self->_canvasView];
   [(ETCanvasView *)self->_canvasView setCanvasDelegate:self];
-  v4 = [(DTSCanvasViewController *)self colorPicker];
+  colorPicker = [(DTSCanvasViewController *)self colorPicker];
   colorPicker = self->_colorPicker;
-  self->_colorPicker = v4;
+  self->_colorPicker = colorPicker;
 
   v6 = self->_colorPicker;
   if (v6)
   {
     [(DTSColorPicker *)v6 setDelegate:self];
-    [v3 addSubview:self->_colorPicker];
+    [view addSubview:self->_colorPicker];
     canvasView = self->_canvasView;
-    v8 = [(DTSColorPicker *)self->_colorPicker selectedColor];
-    [(ETCanvasView *)canvasView setDrawingColor:v8];
+    selectedColor = [(DTSColorPicker *)self->_colorPicker selectedColor];
+    [(ETCanvasView *)canvasView setDrawingColor:selectedColor];
   }
 
-  [v3 insertSubview:self->_audioToggleButton above:self->_canvasView];
-  [v3 addSubview:self->_cancelButton];
-  [v3 addSubview:self->_skipButton];
+  [view insertSubview:self->_audioToggleButton above:self->_canvasView];
+  [view addSubview:self->_cancelButton];
+  [view addSubview:self->_skipButton];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   if (!self->_ignoreAppearanceCallbacks)
   {
     v7.receiver = self;
     v7.super_class = DTSCanvasViewController;
-    [(DTSCanvasViewController *)&v7 viewDidAppear:a3];
+    [(DTSCanvasViewController *)&v7 viewDidAppear:appear];
     if ([(DTSCanvasViewController *)self _canComposeAfterMediaPlayback])
     {
-      v4 = [MEMORY[0x277D75128] sharedApplication];
-      v5 = [v4 applicationState];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      applicationState = [mEMORY[0x277D75128] applicationState];
 
-      if (!v5)
+      if (!applicationState)
       {
         +[ETGLSketchRenderer warmupShaders];
       }
@@ -261,32 +261,32 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
       [(DTSCanvasViewController *)self startMessagePlaybackLoop];
     }
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel__applicationWillResignActive name:*MEMORY[0x277D76768] object:0];
-    [v6 addObserver:self selector:sel__applicationDidBecomeActive name:*MEMORY[0x277D76648] object:0];
-    [v6 addObserver:self selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__applicationWillResignActive name:*MEMORY[0x277D76768] object:0];
+    [defaultCenter addObserver:self selector:sel__applicationDidBecomeActive name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:self selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   if (!self->_ignoreAppearanceCallbacks)
   {
     v5.receiver = self;
     v5.super_class = DTSCanvasViewController;
-    [(DTSCanvasViewController *)&v5 viewWillDisappear:a3];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    [(DTSCanvasViewController *)&v5 viewWillDisappear:disappear];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     [(DTSCanvasViewController *)self setPlaybackEnabled:0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = DTSCanvasViewController;
-  [(DTSCanvasViewController *)&v4 viewDidDisappear:a3];
+  [(DTSCanvasViewController *)&v4 viewDidDisappear:disappear];
   [(DTSCanvasViewController *)self _sendAutosendingComposition];
   [(ETCanvasView *)self->_canvasView clearCanvasAnimated:0];
 }
@@ -296,10 +296,10 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
   v5.receiver = self;
   v5.super_class = DTSCanvasViewController;
   [(DTSCanvasViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(DTSCanvasViewController *)self canvasView];
-  v4 = [(DTSCanvasViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  canvasView = [(DTSCanvasViewController *)self canvasView];
+  view = [(DTSCanvasViewController *)self view];
+  [view bounds];
+  [canvasView setFrame:?];
 }
 
 - (void)viewDidLayoutSubviews
@@ -325,15 +325,15 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained sessionHasMultipleMessages];
+  sessionHasMultipleMessages = [WeakRetained sessionHasMultipleMessages];
 
-  return v4;
+  return sessionHasMultipleMessages;
 }
 
 - (double)_cornerButtonInset
 {
-  v2 = [(ETCanvasView *)self->_canvasView layer];
-  [v2 cornerRadius];
+  layer = [(ETCanvasView *)self->_canvasView layer];
+  [layer cornerRadius];
   v4 = v3 * 0.5;
 
   return v4;
@@ -342,8 +342,8 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
 - (void)_updateSkipButtonFrame
 {
   skipButton = self->_skipButton;
-  v4 = [(DTSCanvasViewController *)self _cancelButton];
-  [v4 frame];
+  _cancelButton = [(DTSCanvasViewController *)self _cancelButton];
+  [_cancelButton frame];
   [(UIButton *)skipButton setFrame:?];
 
   v5 = self->_skipButton;
@@ -357,32 +357,32 @@ void __46__DTSCanvasViewController_audioToggleOffImage__block_invoke()
   [(ETCanvasView *)self->_canvasView frame];
   v4 = v3;
   v6 = v5;
-  v18 = [(DTSCanvasViewController *)self _cancelButton];
-  [v18 frame];
+  _cancelButton = [(DTSCanvasViewController *)self _cancelButton];
+  [_cancelButton frame];
   v8 = v7;
   v10 = v9;
   [(DTSCanvasViewController *)self _cornerButtonInset];
   v12 = v4 + v11;
   [(DTSCanvasViewController *)self _cornerButtonInset];
-  [v18 setFrame:{v12, v6 + v13, v8, v10}];
-  v14 = [(DTSCanvasViewController *)self _shouldShowCancelButton];
-  v15 = [(ETCanvasView *)self->_canvasView usesMediaAppearance];
+  [_cancelButton setFrame:{v12, v6 + v13, v8, v10}];
+  _shouldShowCancelButton = [(DTSCanvasViewController *)self _shouldShowCancelButton];
+  usesMediaAppearance = [(ETCanvasView *)self->_canvasView usesMediaAppearance];
   v16 = 0.4;
-  if (v15)
+  if (usesMediaAppearance)
   {
     v16 = 1.0;
   }
 
-  if (!v14)
+  if (!_shouldShowCancelButton)
   {
     v16 = 0.0;
   }
 
-  [v18 setAlpha:v16];
+  [_cancelButton setAlpha:v16];
   [(UIButton *)self->_skipButton setAlpha:[(DTSCanvasViewController *)self _shouldShowSkipButton]];
   [(DTSCanvasViewController *)self _updateSkipButtonFrame];
-  v17 = [(DTSCanvasViewController *)self _replayButton];
-  [v17 setEnabled:{-[DTSCanvasViewController canReplay](self, "canReplay")}];
+  _replayButton = [(DTSCanvasViewController *)self _replayButton];
+  [_replayButton setEnabled:{-[DTSCanvasViewController canReplay](self, "canReplay")}];
 
   [(DTSCanvasViewController *)self _setShowingReplayButton:[(DTSCanvasViewController *)self canShowReplayButton]];
 }
@@ -482,11 +482,11 @@ void __43__DTSCanvasViewController__relinquishAudio__block_invoke()
 
 - (void)_audioToggleButtonTapped
 {
-  v3 = [(AVPlayer *)self->_videoPlayer isMuted];
-  [(AVPlayer *)self->_videoPlayer setMuted:!v3];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:!v3];
-  [v4 setValue:v5 forKey:@"ETVideoAudioOffPreference"];
+  isMuted = [(AVPlayer *)self->_videoPlayer isMuted];
+  [(AVPlayer *)self->_videoPlayer setMuted:!isMuted];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:!isMuted];
+  [standardUserDefaults setValue:v5 forKey:@"ETVideoAudioOffPreference"];
 
   [(DTSCanvasViewController *)self _updateAudioOnOffButtonImage];
   block[0] = MEMORY[0x277D85DD0];
@@ -530,8 +530,8 @@ uint64_t __51__DTSCanvasViewController__audioToggleButtonTapped__block_invoke(ui
 
 - (void)_applicationDidBecomeActive
 {
-  v2 = [(DTSCanvasViewController *)self canvasView];
-  [v2 setAlwaysPaused:0];
+  canvasView = [(DTSCanvasViewController *)self canvasView];
+  [canvasView setAlwaysPaused:0];
 }
 
 - (void)_applicationDidEnterBackground
@@ -545,29 +545,29 @@ uint64_t __51__DTSCanvasViewController__audioToggleButtonTapped__block_invoke(ui
   [(ETCanvasView *)canvasView clearCanvasAnimated:0];
 }
 
-- (void)addUnplayedMessage:(id)a3
+- (void)addUnplayedMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (messageCopy)
   {
     if (v5)
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v4 identifier];
+        identifier = [messageCopy identifier];
         v8 = [(NSMutableArray *)self->_unplayedMessages count];
         v10 = 138412546;
-        v11 = v7;
+        v11 = identifier;
         v12 = 2048;
         v13 = v8;
         _os_log_impl(&dword_248D00000, v6, OS_LOG_TYPE_INFO, "Adding to session unplayed message ID: %@, total count: %lu", &v10, 0x16u);
       }
     }
 
-    [(NSMutableArray *)self->_unplayedMessages addObject:v4];
+    [(NSMutableArray *)self->_unplayedMessages addObject:messageCopy];
     [(DTSCanvasViewController *)self startMessagePlaybackLoop];
   }
 
@@ -603,8 +603,8 @@ uint64_t __51__DTSCanvasViewController__audioToggleButtonTapped__block_invoke(ui
 {
   if (self->_messageForReplay && !self->_isPlayingMessage)
   {
-    v4 = [(DTSCanvasViewController *)self canvasView];
-    if ([v4 isComposing])
+    canvasView = [(DTSCanvasViewController *)self canvasView];
+    if ([canvasView isComposing])
     {
       LOBYTE(v3) = 0;
     }
@@ -623,26 +623,26 @@ uint64_t __51__DTSCanvasViewController__audioToggleButtonTapped__block_invoke(ui
   return v3;
 }
 
-- (void)_setCachedMessageForReplay:(id)a3
+- (void)_setCachedMessageForReplay:(id)replay
 {
-  v4 = a3;
+  replayCopy = replay;
   [(ETMessage *)self->_messageForReplay wispChildren];
   messageForReplay = self->_messageForReplay;
-  self->_messageForReplay = v4;
+  self->_messageForReplay = replayCopy;
 
   [(DTSCanvasViewController *)self _updatePlaybackControls];
 }
 
-- (void)setComposingCompositeMessage:(BOOL)a3
+- (void)setComposingCompositeMessage:(BOOL)message
 {
-  if (self->_composingCompositeMessage != a3)
+  if (self->_composingCompositeMessage != message)
   {
-    self->_composingCompositeMessage = a3;
-    if (!a3)
+    self->_composingCompositeMessage = message;
+    if (!message)
     {
-      v4 = [(DTSCanvasViewController *)self canvasView];
-      [v4 endMessageComposition];
-      [v4 clearCanvasAnimated:0];
+      canvasView = [(DTSCanvasViewController *)self canvasView];
+      [canvasView endMessageComposition];
+      [canvasView clearCanvasAnimated:0];
       [(NSMutableArray *)self->_unplayedMessages removeAllObjects];
       [(ETMessage *)self->_playingMessage stopPlaying];
       [(DTSCanvasViewController *)self _hideVideoPlayer];
@@ -655,12 +655,12 @@ uint64_t __51__DTSCanvasViewController__audioToggleButtonTapped__block_invoke(ui
   }
 }
 
-- (void)setPlayingMessage:(id)a3
+- (void)setPlayingMessage:(id)message
 {
-  v4 = a3;
-  [v4 setMissedDuringPlayback:0];
-  [(DTSCanvasViewController *)self _setCachedMessageForReplay:v4];
-  if (!v4 || [v4 messageType] != 8)
+  messageCopy = message;
+  [messageCopy setMissedDuringPlayback:0];
+  [(DTSCanvasViewController *)self _setCachedMessageForReplay:messageCopy];
+  if (!messageCopy || [messageCopy messageType] != 8)
   {
     [(DTSCanvasViewController *)self _hideVideoPlayer];
     v5 = 0;
@@ -669,23 +669,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v4 mediaType] != 1)
+  if ([messageCopy mediaType] != 1)
   {
     [(DTSCanvasViewController *)self _hideVideoPlayer];
   }
 
   v5 = 1;
-  if ([v4 mediaType] != 2)
+  if ([messageCopy mediaType] != 2)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v6 = [(DTSCanvasViewController *)self canvasView];
-  [v6 setUsesMediaAppearance:v5];
+  canvasView = [(DTSCanvasViewController *)self canvasView];
+  [canvasView setUsesMediaAppearance:v5];
   if (v5)
   {
-    v7 = v4;
+    v7 = messageCopy;
   }
 
   else
@@ -693,10 +693,10 @@ LABEL_9:
     v7 = 0;
   }
 
-  [v6 setParentMessage:v7];
-  if (v4)
+  [canvasView setParentMessage:v7];
+  if (messageCopy)
   {
-    [(DTSCanvasViewController *)self _playMessage:v4];
+    [(DTSCanvasViewController *)self _playMessage:messageCopy];
   }
 
   v8[0] = MEMORY[0x277D85DD0];
@@ -707,29 +707,29 @@ LABEL_9:
   [MEMORY[0x277D75D18] performWithoutAnimation:v8];
 }
 
-- (void)_playMessage:(id)a3
+- (void)_playMessage:(id)message
 {
-  v5 = a3;
-  if (self->_playingMessage != v5 && self->_playbackEnabled && [(DTSCanvasViewController *)self _isVisible])
+  messageCopy = message;
+  if (self->_playingMessage != messageCopy && self->_playbackEnabled && [(DTSCanvasViewController *)self _isVisible])
   {
-    [(ETMessage *)v5 setMissedDuringPlayback:0];
-    if ([(ETMessage *)v5 messageType]== 8)
+    [(ETMessage *)messageCopy setMissedDuringPlayback:0];
+    if ([(ETMessage *)messageCopy messageType]== 8)
     {
       [(DTSCanvasViewController *)self setPlayingCompositeMessage:1];
-      [(DTSCanvasViewController *)self _setCachedMessageForReplay:v5];
+      [(DTSCanvasViewController *)self _setCachedMessageForReplay:messageCopy];
     }
 
-    objc_storeStrong(&self->_playingMessage, a3);
+    objc_storeStrong(&self->_playingMessage, message);
     if (self->_playingMessage)
     {
       if ([(DTSCanvasViewController *)self _isVisible])
       {
-        if (!self->_isPlayingMessage || (messageForReplay = self->_messageForReplay, [(ETMessage *)v5 parentMessage], v7 = objc_claimAutoreleasedReturnValue(), v7, messageForReplay == v7))
+        if (!self->_isPlayingMessage || (messageForReplay = self->_messageForReplay, [(ETMessage *)messageCopy parentMessage], v7 = objc_claimAutoreleasedReturnValue(), v7, messageForReplay == v7))
         {
-          if ([(ETMessage *)v5 messageType]== 8)
+          if ([(ETMessage *)messageCopy messageType]== 8)
           {
             [(ETCanvasView *)self->_canvasView setUsesMediaAppearance:1];
-            v8 = v5;
+            v8 = messageCopy;
             if ([(ETMessage *)v8 mediaType]== 1)
             {
               [(DTSCanvasViewController *)self _startVideoPlayerWithMessage:v8];
@@ -738,8 +738,8 @@ LABEL_9:
             else if ([(ETMessage *)v8 mediaType]== 2)
             {
               canvasView = self->_canvasView;
-              v10 = [(ETMessage *)v8 stillImage];
-              [(ETCanvasView *)canvasView showPhotoForImage:v10];
+              stillImage = [(ETMessage *)v8 stillImage];
+              [(ETCanvasView *)canvasView showPhotoForImage:stillImage];
 
               [(DTSCanvasViewController *)self _schedulePlaybackOfCompositeMessageContent:v8];
             }
@@ -748,7 +748,7 @@ LABEL_9:
           self->_isPlayingMessage = 1;
           [(DTSCanvasViewController *)self _updateColorPickerEnabled];
           [(ETCanvasView *)self->_canvasView playMessage:self->_playingMessage];
-          if (![(ETMessage *)v5 isAnimated])
+          if (![(ETMessage *)messageCopy isAnimated])
           {
             v11 = self->_playingMessage;
             objc_initWeak(&location, self);
@@ -791,25 +791,25 @@ void __40__DTSCanvasViewController__playMessage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlayingMessages:(BOOL)a3
+- (void)setPlayingMessages:(BOOL)messages
 {
-  if (self->_playingMessages != a3)
+  if (self->_playingMessages != messages)
   {
-    self->_playingMessages = a3;
+    self->_playingMessages = messages;
     [(DTSCanvasViewController *)self _updateCanvasInteractionEnabled];
   }
 }
 
-- (void)_schedulePlaybackOfCompositeMessageContent:(id)a3
+- (void)_schedulePlaybackOfCompositeMessageContent:(id)content
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentCopy = content;
   Current = CFAbsoluteTimeGetCurrent();
   self->_mediaMessagePlayTrackerTime = Current;
-  if ([v4 messageType] == 8)
+  if ([contentCopy messageType] == 8)
   {
-    v6 = [v4 introMessage];
-    if (v6)
+    introMessage = [contentCopy introMessage];
+    if (introMessage)
     {
       v7 = dispatch_time(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -818,14 +818,14 @@ void __40__DTSCanvasViewController__playMessage___block_invoke(uint64_t a1)
       block[3] = &unk_278F7A2C0;
       block[4] = self;
       v31 = Current;
-      v30 = v6;
+      v30 = introMessage;
       dispatch_after(v7, MEMORY[0x277D85CD0], block);
     }
   }
 
   v8 = MEMORY[0x277CBEB18];
-  v9 = [v4 playingMessages];
-  v10 = [v8 arrayWithArray:v9];
+  playingMessages = [contentCopy playingMessages];
+  v10 = [v8 arrayWithArray:playingMessages];
   unplayedMessages = self->_unplayedMessages;
   self->_unplayedMessages = v10;
 
@@ -833,9 +833,9 @@ void __40__DTSCanvasViewController__playMessage___block_invoke(uint64_t a1)
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v22 = v4;
-  v12 = [v4 playingMessages];
-  v13 = [v12 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  v22 = contentCopy;
+  playingMessages2 = [contentCopy playingMessages];
+  v13 = [playingMessages2 countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v13)
   {
     v14 = v13;
@@ -847,7 +847,7 @@ void __40__DTSCanvasViewController__playMessage___block_invoke(uint64_t a1)
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(playingMessages2);
         }
 
         v18 = *(*(&v25 + 1) + 8 * i);
@@ -863,7 +863,7 @@ void __40__DTSCanvasViewController__playMessage___block_invoke(uint64_t a1)
         dispatch_after(v20, v16, v24);
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v14 = [playingMessages2 countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v14);
@@ -919,9 +919,9 @@ double *__70__DTSCanvasViewController__schedulePlaybackOfCompositeMessageContent
     return 0;
   }
 
-  v3 = [(DTSCanvasViewController *)self view];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  view = [(DTSCanvasViewController *)self view];
+  window = [view window];
+  v5 = window != 0;
 
   return v5;
 }
@@ -938,50 +938,50 @@ double *__70__DTSCanvasViewController__schedulePlaybackOfCompositeMessageContent
 
 - (void)_updateColorPickerEnabled
 {
-  v3 = [(DTSCanvasViewController *)self colorPicker];
-  [v3 setDimmed:{-[DTSCanvasViewController _shouldDimColorPicker](self, "_shouldDimColorPicker")}];
+  colorPicker = [(DTSCanvasViewController *)self colorPicker];
+  [colorPicker setDimmed:{-[DTSCanvasViewController _shouldDimColorPicker](self, "_shouldDimColorPicker")}];
 }
 
-- (void)setComposeDisabled:(BOOL)a3
+- (void)setComposeDisabled:(BOOL)disabled
 {
-  if (self->_composeDisabled != a3)
+  if (self->_composeDisabled != disabled)
   {
-    self->_composeDisabled = a3;
+    self->_composeDisabled = disabled;
     [(DTSCanvasViewController *)self _updateCanvasInteractionEnabled];
   }
 }
 
-- (void)colorPickerSelectedColorDidChange:(id)a3
+- (void)colorPickerSelectedColorDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(DTSCanvasViewController *)self canvasView];
-  v6 = [v4 selectedColor];
+  changeCopy = change;
+  canvasView = [(DTSCanvasViewController *)self canvasView];
+  selectedColor = [changeCopy selectedColor];
 
-  [v5 setDrawingColor:v6];
+  [canvasView setDrawingColor:selectedColor];
 
   [(DTSCanvasViewController *)self didChangeColorPickerColor];
 }
 
-- (void)colorPickerTapped:(id)a3
+- (void)colorPickerTapped:(id)tapped
 {
-  v9 = a3;
+  tappedCopy = tapped;
   if ([(DTSCanvasViewController *)self _usingDemoHook])
   {
-    v4 = [v9 selectedCircle];
-    v5 = [v9 paletteCircles];
-    v6 = [v5 firstObject];
+    selectedCircle = [tappedCopy selectedCircle];
+    paletteCircles = [tappedCopy paletteCircles];
+    firstObject = [paletteCircles firstObject];
 
-    if (v6 == v4)
+    if (firstObject == selectedCircle)
     {
       [(DTSCanvasViewController *)self _exportDemoHookMessage];
     }
 
     else
     {
-      v7 = [v9 paletteCircles];
-      v8 = [v7 lastObject];
+      paletteCircles2 = [tappedCopy paletteCircles];
+      lastObject = [paletteCircles2 lastObject];
 
-      if (v8 == v4)
+      if (lastObject == selectedCircle)
       {
         [(DTSCanvasViewController *)self _sendDemoHookMessage];
       }
@@ -991,19 +991,19 @@ double *__70__DTSCanvasViewController__schedulePlaybackOfCompositeMessageContent
 
 - (BOOL)_usingDemoHook
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"DigitalTouchDemoHook"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"DigitalTouchDemoHook"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(standardUserDefaults) = [v3 BOOLValue];
+  return standardUserDefaults;
 }
 
 - (void)_sendDemoHookMessage
 {
   v7 = objc_alloc_init(ETHeartbeatMessage);
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ETMessage *)v7 identifier];
-  v5 = [v3 stringWithFormat:@"%@%@", @"DemoHook-", v4];
+  identifier = [(ETMessage *)v7 identifier];
+  v5 = [v3 stringWithFormat:@"%@%@", @"DemoHook-", identifier];
   [(ETMessage *)v7 setIdentifier:v5];
 
   WeakRetained = objc_loadWeakRetained(&self->_sendDelegate);
@@ -1012,8 +1012,8 @@ double *__70__DTSCanvasViewController__schedulePlaybackOfCompositeMessageContent
 
 - (void)_exportDemoHookMessage
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 objectForKey:@"DigitalTouchDemoHookExportDirectory"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"DigitalTouchDemoHookExportDirectory"];
 
   if (!v4)
   {
@@ -1028,13 +1028,13 @@ LABEL_9:
   if (messageForReplay)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(ETMessage *)messageForReplay identifier];
-    v8 = [v6 stringWithFormat:@"%@%@", @"DemoHook-", v7];
+    identifier = [(ETMessage *)messageForReplay identifier];
+    v8 = [v6 stringWithFormat:@"%@%@", @"DemoHook-", identifier];
     v9 = [v4 stringByAppendingPathComponent:v8];
 
-    v10 = [(ETMessage *)self->_messageForReplay archive];
+    archive = [(ETMessage *)self->_messageForReplay archive];
     v15 = 0;
-    v11 = [v10 writeToFile:v9 options:1 error:&v15];
+    v11 = [archive writeToFile:v9 options:1 error:&v15];
     v12 = v15;
 
     if (v11)
@@ -1058,9 +1058,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_showDemoHookAlertWithTitle:(id)a3 message:(id)a4
+- (void)_showDemoHookAlertWithTitle:(id)title message:(id)message
 {
-  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v6 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = [MEMORY[0x277D750F8] actionWithTitle:@"Done" style:0 handler:0];
   [v6 addAction:v5];
   [(DTSCanvasViewController *)self presentViewController:v6 animated:1 completion:0];
@@ -1068,7 +1068,7 @@ LABEL_10:
 
 - (void)_updateCanvasInteractionEnabled
 {
-  v4 = [(DTSCanvasViewController *)self canvasView];
+  canvasView = [(DTSCanvasViewController *)self canvasView];
   if (self->_composeDisabled || [(DTSCanvasViewController *)self isPlayingMessages])
   {
     v3 = 0;
@@ -1079,20 +1079,20 @@ LABEL_10:
     v3 = [(DTSCanvasViewController *)self isPlayingCompositeMessage]^ 1;
   }
 
-  [v4 setUserInteractionEnabled:v3];
+  [canvasView setUserInteractionEnabled:v3];
 }
 
-- (void)canvasView:(id)a3 didBeginPlayingMessage:(id)a4
+- (void)canvasView:(id)view didBeginPlayingMessage:(id)message
 {
-  [(DTSCanvasViewController *)self updateVideoUI:a3];
+  [(DTSCanvasViewController *)self updateVideoUI:view];
 
   [(DTSCanvasViewController *)self _updateCanvasInteractionEnabled];
 }
 
-- (void)canvasView:(id)a3 willEndPlayingMessage:(id)a4
+- (void)canvasView:(id)view willEndPlayingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  messageCopy = message;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1102,16 +1102,16 @@ LABEL_10:
   v25 = 3221225472;
   v26 = __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invoke;
   v27 = &unk_278F7A760;
-  v9 = v7;
+  v9 = messageCopy;
   v28 = v9;
   v29 = &v30;
   [(NSMutableArray *)unplayedMessages enumerateObjectsUsingBlock:&v24];
   v10 = v31[3];
-  v11 = [v9 parentMessage];
-  if ([v11 messageType] == 1)
+  parentMessage = [v9 parentMessage];
+  if ([parentMessage messageType] == 1)
   {
-    v12 = [v11 introMessage];
-    v13 = v12 != v9;
+    introMessage = [parentMessage introMessage];
+    v13 = introMessage != v9;
   }
 
   else
@@ -1119,8 +1119,8 @@ LABEL_10:
     v13 = 1;
   }
 
-  v14 = [v9 messageType];
-  v16 = v10 == 0x7FFFFFFFFFFFFFFFLL && v14 != 8;
+  messageType = [v9 messageType];
+  v16 = v10 == 0x7FFFFFFFFFFFFFFFLL && messageType != 8;
   if (!v16 || !v13)
   {
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1128,11 +1128,11 @@ LABEL_10:
       [(NSMutableArray *)self->_unplayedMessages removeObjectAtIndex:v31[3]];
     }
 
-    v17 = [v9 parentMessage];
-    if (v17 && (v18 = -[NSMutableArray count](self->_unplayedMessages, "count"), v17, !v18) && (-[AVPlayer rate](self->_videoPlayer, "rate"), v19 == 0.0) || [v9 messageType] == 8)
+    parentMessage2 = [v9 parentMessage];
+    if (parentMessage2 && (v18 = -[NSMutableArray count](self->_unplayedMessages, "count"), parentMessage2, !v18) && (-[AVPlayer rate](self->_videoPlayer, "rate"), v19 == 0.0) || [v9 messageType] == 8)
     {
-      v20 = [(DTSCanvasViewController *)self canvasView];
-      [v20 wispVisibleSketchViewsWithCompletion:0];
+      canvasView = [(DTSCanvasViewController *)self canvasView];
+      [canvasView wispVisibleSketchViewsWithCompletion:0];
 
       v21 = 1;
     }
@@ -1142,8 +1142,8 @@ LABEL_10:
       v21 = 0;
     }
 
-    v22 = [v9 parentMessage];
-    if (v22)
+    parentMessage3 = [v9 parentMessage];
+    if (parentMessage3)
     {
       v23 = 0;
     }
@@ -1178,10 +1178,10 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
   }
 }
 
-- (void)canvasView:(id)a3 didEndPlayingMessage:(id)a4
+- (void)canvasView:(id)view didEndPlayingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  messageCopy = message;
   self->_isPlayingMessage = 0;
   playingMessage = self->_playingMessage;
   self->_playingMessage = 0;
@@ -1190,8 +1190,8 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
   if (v9)
   {
     [(DTSCanvasViewController *)self setPlayingMessages:self->_playbackEnabled];
-    v10 = [v7 parentMessage];
-    [v10 childMessageDidCompleteWisp:v7];
+    parentMessage = [messageCopy parentMessage];
+    [parentMessage childMessageDidCompleteWisp:messageCopy];
 
     playbackEnabled = self->_playbackEnabled;
   }
@@ -1199,15 +1199,15 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
   else
   {
     [(DTSCanvasViewController *)self setPlayingMessages:0];
-    v12 = [v7 parentMessage];
-    [v12 childMessageDidCompleteWisp:v7];
+    parentMessage2 = [messageCopy parentMessage];
+    [parentMessage2 childMessageDidCompleteWisp:messageCopy];
 
     playbackEnabled = 0;
   }
 
-  if ([(DTSCanvasViewController *)self _canLoopMessageDuringPlayback:v7]&& [(ETMessage *)self->_messageForReplay shouldLoopDuringPlayback]&& self->_playbackEnabled)
+  if ([(DTSCanvasViewController *)self _canLoopMessageDuringPlayback:messageCopy]&& [(ETMessage *)self->_messageForReplay shouldLoopDuringPlayback]&& self->_playbackEnabled)
   {
-    v13 = [v7 missedDuringPlayback] ^ 1;
+    v13 = [messageCopy missedDuringPlayback] ^ 1;
   }
 
   else
@@ -1215,7 +1215,7 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
     v13 = 0;
   }
 
-  v14 = [(ETMessage *)self->_messageForReplay hasWispingChildren];
+  hasWispingChildren = [(ETMessage *)self->_messageForReplay hasWispingChildren];
   if (playbackEnabled)
   {
     if (!self->_playingCompositeMessage)
@@ -1232,7 +1232,7 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
     }
   }
 
-  else if (v14)
+  else if (hasWispingChildren)
   {
     [(ETMessage *)self->_messageForReplay wispChildren];
   }
@@ -1252,8 +1252,8 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
         }
       }
 
-      v18 = [(DTSCanvasViewController *)self canExpireMessages];
-      if (!v9 && v18 && ([v7 missedDuringPlayback] & 1) == 0)
+      canExpireMessages = [(DTSCanvasViewController *)self canExpireMessages];
+      if (!v9 && canExpireMessages && ([messageCopy missedDuringPlayback] & 1) == 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_dataSource);
         [WeakRetained markAsPlayed];
@@ -1266,25 +1266,25 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
       [(DTSCanvasViewController *)self _updateColorPickerEnabled];
       [(DTSCanvasViewController *)self _updatePlaybackControls];
       [(DTSCanvasViewController *)self updateVideoUI];
-      [v7 setMissedDuringPlayback:0];
+      [messageCopy setMissedDuringPlayback:0];
     }
   }
 
   [(DTSCanvasViewController *)self _updateCanvasInteractionEnabled];
 }
 
-- (void)_videoMessageDidFinishPlaying:(id)a3
+- (void)_videoMessageDidFinishPlaying:(id)playing
 {
   videoPlayer = self->_videoPlayer;
-  v5 = a3;
-  v9 = [(AVPlayer *)videoPlayer currentItem];
-  v6 = [v5 object];
+  playingCopy = playing;
+  currentItem = [(AVPlayer *)videoPlayer currentItem];
+  object = [playingCopy object];
 
-  if (v9 == v6)
+  if (currentItem == object)
   {
-    v7 = [(ETMessage *)self->_messageForReplay messageType];
+    messageType = [(ETMessage *)self->_messageForReplay messageType];
 
-    if (v7 == 8)
+    if (messageType == 8)
     {
       messageForReplay = self->_messageForReplay;
 
@@ -1297,11 +1297,11 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
   }
 }
 
-- (void)_startVideoPlayerWithMessage:(id)a3
+- (void)_startVideoPlayerWithMessage:(id)message
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mediaURL];
+  messageCopy = message;
+  mediaURL = [messageCopy mediaURL];
   videoPlayer = self->_videoPlayer;
   if (videoPlayer)
   {
@@ -1311,13 +1311,13 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x277CE6598]) initWithURL:v5];
+    v7 = [objc_alloc(MEMORY[0x277CE6598]) initWithURL:mediaURL];
     v8 = self->_videoPlayer;
     self->_videoPlayer = v7;
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    v10 = [(AVPlayer *)self->_videoPlayer currentItem];
-    [v9 addObserver:self selector:sel__videoMessageDidFinishPlaying_ name:*MEMORY[0x277CE60C0] object:v10];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    currentItem = [(AVPlayer *)self->_videoPlayer currentItem];
+    [defaultCenter addObserver:self selector:sel__videoMessageDidFinishPlaying_ name:*MEMORY[0x277CE60C0] object:currentItem];
 
     if (IMOSLoggingEnabled())
     {
@@ -1325,7 +1325,7 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         LODWORD(buf.value) = 138412290;
-        *(&buf.value + 4) = v5;
+        *(&buf.value + 4) = mediaURL;
         _os_log_impl(&dword_248D00000, v11, OS_LOG_TYPE_INFO, "Setting video player URL: %@", &buf, 0xCu);
       }
     }
@@ -1340,8 +1340,8 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
 
       else
       {
-        v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v14 = [v13 valueForKey:@"ETVideoAudioOffPreference"];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v14 = [standardUserDefaults valueForKey:@"ETVideoAudioOffPreference"];
         -[AVPlayer setMuted:](v12, "setMuted:", [v14 BOOLValue]);
       }
     }
@@ -1360,7 +1360,7 @@ void __60__DTSCanvasViewController_canvasView_willEndPlayingMessage___block_invo
     v21[2] = __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke;
     v21[3] = &unk_278F7A788;
     objc_copyWeak(&v24, &location);
-    v22 = v4;
+    v22 = messageCopy;
     v19 = v15;
     v23 = v19;
     v20 = [(AVPlayer *)v16 addBoundaryTimeObserverForTimes:v18 queue:0 usingBlock:v21];
@@ -1395,10 +1395,10 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
 
 - (void)_hideVideoPlayer
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277CE60C0];
-  v5 = [(AVPlayer *)self->_videoPlayer currentItem];
-  [v3 removeObserver:self name:v4 object:v5];
+  currentItem = [(AVPlayer *)self->_videoPlayer currentItem];
+  [defaultCenter removeObserver:self name:v4 object:currentItem];
 
   [(ETCanvasView *)self->_canvasView hideVideo];
   [(AVPlayer *)self->_videoPlayer pause];
@@ -1415,11 +1415,11 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   }
 }
 
-- (void)canvasView:(id)a3 didBeginComposingMessageType:(unsigned __int16)a4
+- (void)canvasView:(id)view didBeginComposingMessageType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   [(DTSCanvasViewController *)self didBeginComposingMessage];
-  [(DTSCanvasViewController *)self setComposingMessageType:v4];
+  [(DTSCanvasViewController *)self setComposingMessageType:typeCopy];
   [(DTSCanvasViewController *)self _setCachedMessageForReplay:0];
   [(DTSCanvasViewController *)self _updateColorPickerEnabled];
   [(DTSCanvasViewController *)self _updatePlaybackControls];
@@ -1427,9 +1427,9 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   [(DTSCanvasViewController *)self updateVideoUI];
 }
 
-- (void)canvasView:(id)a3 didEndComposingMessageType:(unsigned __int16)a4
+- (void)canvasView:(id)view didEndComposingMessageType:(unsigned __int16)type
 {
-  [(DTSCanvasViewController *)self setComposingMessageType:0xFFFFLL, a4];
+  [(DTSCanvasViewController *)self setComposingMessageType:0xFFFFLL, type];
   [(DTSCanvasViewController *)self _updateColorPickerEnabled];
   if ([(DTSCanvasViewController *)self _shouldAutoSend])
   {
@@ -1439,19 +1439,19 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   [(DTSCanvasViewController *)self didEndComposingMessage];
 }
 
-- (void)canvasView:(id)a3 sendMessage:(id)a4
+- (void)canvasView:(id)view sendMessage:(id)message
 {
-  v8 = a4;
+  messageCopy = message;
   if ([(DTSCanvasViewController *)self deferMessageSend])
   {
     if (!self->_deferredMessages)
     {
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       deferredMessages = self->_deferredMessages;
-      self->_deferredMessages = v5;
+      self->_deferredMessages = array;
     }
 
-    if (v8)
+    if (messageCopy)
     {
       [(NSMutableArray *)self->_deferredMessages addObject:?];
     }
@@ -1460,7 +1460,7 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_sendDelegate);
-    [WeakRetained canvasViewController:self sendMessage:v8];
+    [WeakRetained canvasViewController:self sendMessage:messageCopy];
 
     [(DTSCanvasViewController *)self _updateSendButton];
   }
@@ -1468,10 +1468,10 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   MEMORY[0x2821F9730]();
 }
 
-- (void)canvasViewWillReachComposingSizeLimit:(id)a3
+- (void)canvasViewWillReachComposingSizeLimit:(id)limit
 {
-  v3 = [(DTSCanvasViewController *)self colorPicker];
-  [v3 setDimmed:1];
+  colorPicker = [(DTSCanvasViewController *)self colorPicker];
+  [colorPicker setDimmed:1];
 }
 
 - (BOOL)_canStartMessagePlaybackLoop
@@ -1481,24 +1481,24 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
     return 0;
   }
 
-  v5 = [(DTSCanvasViewController *)self playingMessage];
-  if (v5 || ![(NSMutableArray *)self->_unplayedMessages count])
+  playingMessage = [(DTSCanvasViewController *)self playingMessage];
+  if (playingMessage || ![(NSMutableArray *)self->_unplayedMessages count])
   {
     v3 = 0;
   }
 
   else
   {
-    v6 = [(DTSCanvasViewController *)self canvasView];
-    if (([v6 isComposing] & 1) != 0 || self->_composeSessionEndTimer)
+    canvasView = [(DTSCanvasViewController *)self canvasView];
+    if (([canvasView isComposing] & 1) != 0 || self->_composeSessionEndTimer)
     {
       v3 = 0;
     }
 
     else
     {
-      v7 = [MEMORY[0x277D75128] sharedApplication];
-      v3 = [v7 applicationState] == 0;
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      v3 = [mEMORY[0x277D75128] applicationState] == 0;
     }
   }
 
@@ -1510,9 +1510,9 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   if ([(DTSCanvasViewController *)self _canStartMessagePlaybackLoop])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v4 = [WeakRetained mediaURL];
+    mediaURL = [WeakRetained mediaURL];
 
-    if (!v4)
+    if (!mediaURL)
     {
       [(DTSCanvasViewController *)self willBeginSessionPlayback];
     }
@@ -1523,9 +1523,9 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   }
 }
 
-- (void)_stopPlaybackAnimated:(BOOL)a3
+- (void)_stopPlaybackAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   isPlayingMessage = self->_isPlayingMessage;
   if (isPlayingMessage)
   {
@@ -1534,7 +1534,7 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
 
   [(ETMessage *)self->_playingMessage setMissedDuringPlayback:1];
   [(ETMessage *)self->_playingMessage stopPlaying];
-  [(ETCanvasView *)self->_canvasView clearCanvasAnimated:v3];
+  [(ETCanvasView *)self->_canvasView clearCanvasAnimated:animatedCopy];
   playingMessage = self->_playingMessage;
   self->_playingMessage = 0;
 
@@ -1558,18 +1558,18 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
 {
   v3 = MEMORY[0x277CBEB18];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained createSessionMessages];
-  v5 = [v3 arrayWithArray:v4];
+  createSessionMessages = [WeakRetained createSessionMessages];
+  v5 = [v3 arrayWithArray:createSessionMessages];
   unplayedMessages = self->_unplayedMessages;
   self->_unplayedMessages = v5;
 }
 
-- (void)setPlaybackEnabled:(BOOL)a3
+- (void)setPlaybackEnabled:(BOOL)enabled
 {
-  if (self->_playbackEnabled != a3)
+  if (self->_playbackEnabled != enabled)
   {
-    self->_playbackEnabled = a3;
-    if (a3)
+    self->_playbackEnabled = enabled;
+    if (enabled)
     {
       [(DTSCanvasViewController *)self _reloadUnplayedMessages];
     }
@@ -1586,19 +1586,19 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   }
 }
 
-- (void)setPlayingCompositeMessage:(BOOL)a3
+- (void)setPlayingCompositeMessage:(BOOL)message
 {
-  if (self->_playingCompositeMessage != a3)
+  if (self->_playingCompositeMessage != message)
   {
     v9 = v4;
     v10 = v3;
-    self->_playingCompositeMessage = a3;
-    if (!a3)
+    self->_playingCompositeMessage = message;
+    if (!message)
     {
       self->_mediaMessagePlayTrackerTime = 0.0;
       [(NSMutableArray *)self->_unplayedMessages removeAllObjects];
-      v8 = [(DTSCanvasViewController *)self canvasView];
-      [v8 clearCanvasAnimated:0];
+      canvasView = [(DTSCanvasViewController *)self canvasView];
+      [canvasView clearCanvasAnimated:0];
 
       [(ETMessage *)self->_playingMessage stopPlaying];
     }
@@ -1613,13 +1613,13 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
 {
   if (self->_playbackEnabled && [(NSMutableArray *)self->_unplayedMessages count])
   {
-    v3 = [(DTSCanvasViewController *)self playingMessage];
-    if (!v3)
+    playingMessage = [(DTSCanvasViewController *)self playingMessage];
+    if (!playingMessage)
     {
-      v4 = [MEMORY[0x277D75128] sharedApplication];
-      v5 = [v4 applicationState];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      applicationState = [mEMORY[0x277D75128] applicationState];
 
-      if (v5)
+      if (applicationState)
       {
         return;
       }
@@ -1636,14 +1636,14 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
         [(DTSCanvasViewController *)self setPlayingMessage:v6];
       }
 
-      v3 = v6;
+      playingMessage = v6;
     }
   }
 }
 
-- (void)_continueMessagePlaybackLoopWithDelay:(BOOL)a3
+- (void)_continueMessagePlaybackLoopWithDelay:(BOOL)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__DTSCanvasViewController__continueMessagePlaybackLoopWithDelay___block_invoke;
@@ -1651,7 +1651,7 @@ void __56__DTSCanvasViewController__startVideoPlayerWithMessage___block_invoke(u
   v7[4] = self;
   v4 = MEMORY[0x24C1E9BB0](v7, a2);
   v5 = v4;
-  if (v3)
+  if (delayCopy)
   {
     v6 = dispatch_time(0, 1000000000);
     dispatch_after(v6, MEMORY[0x277D85CD0], v5);
@@ -1730,8 +1730,8 @@ uint64_t __65__DTSCanvasViewController__continueMessagePlaybackLoopWithDelay___b
 
   else
   {
-    v5 = [(DTSCanvasViewController *)self playingMessage];
-    if (v5 || [(DTSCanvasViewController *)self _shouldShowSkipButton])
+    playingMessage = [(DTSCanvasViewController *)self playingMessage];
+    if (playingMessage || [(DTSCanvasViewController *)self _shouldShowSkipButton])
     {
       LOBYTE(v3) = 0;
     }
@@ -1745,18 +1745,18 @@ uint64_t __65__DTSCanvasViewController__continueMessagePlaybackLoopWithDelay___b
   return v3;
 }
 
-- (void)_setShowingReplayButton:(BOOL)a3
+- (void)_setShowingReplayButton:(BOOL)button
 {
-  if (self->_showingReplayButton != a3)
+  if (self->_showingReplayButton != button)
   {
     v12 = v3;
     v13 = v4;
-    self->_showingReplayButton = a3;
-    if (a3)
+    self->_showingReplayButton = button;
+    if (button)
     {
       [(UIButton *)self->_replayButton setAlpha:0.0];
-      v7 = [(DTSCanvasViewController *)self view];
-      [v7 addSubview:self->_replayButton];
+      view = [(DTSCanvasViewController *)self view];
+      [view addSubview:self->_replayButton];
     }
 
     v10[0] = MEMORY[0x277D85DD0];
@@ -1764,12 +1764,12 @@ uint64_t __65__DTSCanvasViewController__continueMessagePlaybackLoopWithDelay___b
     v10[2] = __51__DTSCanvasViewController__setShowingReplayButton___block_invoke;
     v10[3] = &unk_278F7A6E8;
     v10[4] = self;
-    v11 = a3;
+    buttonCopy = button;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__DTSCanvasViewController__setShowingReplayButton___block_invoke_2;
     v8[3] = &unk_278F7A7B0;
-    v9 = a3;
+    buttonCopy2 = button;
     v8[4] = self;
     [MEMORY[0x277D75D18] animateWithDuration:v10 animations:v8 completion:0.25];
   }
@@ -1785,17 +1785,17 @@ uint64_t __51__DTSCanvasViewController__setShowingReplayButton___block_invoke_2(
   return result;
 }
 
-- (void)dataSource:(id)a3 startPlaybackWithCompletion:(id)a4
+- (void)dataSource:(id)source startPlaybackWithCompletion:(id)completion
 {
-  v5 = MEMORY[0x24C1E9BB0](a4, a2, a3);
+  v5 = MEMORY[0x24C1E9BB0](completion, a2, source);
   balloonPlaybackCompletion = self->_balloonPlaybackCompletion;
   self->_balloonPlaybackCompletion = v5;
 
   [(DTSCanvasViewController *)self setAutoPlayOnAppearanceDisabled:0];
   if (self->_playingMessages && ([MEMORY[0x277D75128] sharedApplication], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "applicationState"), v7, !v8))
   {
-    v9 = [(DTSCanvasViewController *)self canvasView];
-    [v9 setPaused:0];
+    canvasView = [(DTSCanvasViewController *)self canvasView];
+    [canvasView setPaused:0];
   }
 
   else
@@ -1806,17 +1806,17 @@ uint64_t __51__DTSCanvasViewController__setShowingReplayButton___block_invoke_2(
   }
 }
 
-- (BOOL)dataSource:(id)a3 addDemoHookToMessage:(id *)a4
+- (BOOL)dataSource:(id)source addDemoHookToMessage:(id *)message
 {
   if ([(DTSCanvasViewController *)self _usingDemoHook])
   {
-    v6 = [*a4 identifier];
-    v7 = [v6 hasPrefix:@"DemoHook-"];
+    identifier = [*message identifier];
+    v7 = [identifier hasPrefix:@"DemoHook-"];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v9 = [v8 objectForKey:@"DigitalTouchDemoHookMessageDataPath"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v9 = [standardUserDefaults objectForKey:@"DigitalTouchDemoHookMessageDataPath"];
 
       v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v9];
       v11 = v10;
@@ -1830,20 +1830,20 @@ uint64_t __51__DTSCanvasViewController__setShowingReplayButton___block_invoke_2(
           {
 LABEL_10:
             v19 = v13;
-            *a4 = v13;
+            *message = v13;
             v20 = 1;
 LABEL_18:
 
             return v20;
           }
 
-          v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v15 = [v14 objectForKey:@"DigitalTouchDemoHookAssetPath"];
+          standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v15 = [standardUserDefaults2 objectForKey:@"DigitalTouchDemoHookAssetPath"];
 
           if (v15)
           {
-            v16 = [MEMORY[0x277CCAA00] defaultManager];
-            v17 = [v16 fileExistsAtPath:v15];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+            v17 = [defaultManager fileExistsAtPath:v15];
 
             if (v17)
             {
@@ -1884,12 +1884,12 @@ LABEL_18:
   return 0;
 }
 
-- (void)dataSourceStopPlayback:(id)a3
+- (void)dataSourceStopPlayback:(id)playback
 {
   if (self->_playingMessages)
   {
-    v4 = [(DTSCanvasViewController *)self canvasView];
-    [v4 setPaused:1];
+    canvasView = [(DTSCanvasViewController *)self canvasView];
+    [canvasView setPaused:1];
   }
 
   else
@@ -1900,23 +1900,23 @@ LABEL_18:
   [(DTSCanvasViewController *)self setAutoPlayOnAppearanceDisabled:1];
 }
 
-- (BOOL)dataSourceViewIsMostlyVisible:(id)a3
+- (BOOL)dataSourceViewIsMostlyVisible:(id)visible
 {
   if (![(DTSCanvasViewController *)self isViewLoaded])
   {
     return 0;
   }
 
-  v4 = [(DTSCanvasViewController *)self view];
-  v5 = [v4 window];
-  [v4 bounds];
+  view = [(DTSCanvasViewController *)self view];
+  window = [view window];
+  [view bounds];
   v7 = v6;
-  [v4 convertRect:v5 toView:?];
+  [view convertRect:window toView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v5 bounds];
+  [window bounds];
   v20.origin.x = v9;
   v20.origin.y = v11;
   v20.size.width = v13;
@@ -1927,14 +1927,14 @@ LABEL_18:
   return v16;
 }
 
-- (void)dataSource:(id)a3 didUpdateAttachmentURL:(id)a4 forMessageWithIdentifier:(id)a5
+- (void)dataSource:(id)source didUpdateAttachmentURL:(id)l forMessageWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(ETMessage *)self->_messageForReplay identifier];
-  v11 = [v10 isEqualToString:v9];
+  sourceCopy = source;
+  lCopy = l;
+  identifierCopy = identifier;
+  identifier = [(ETMessage *)self->_messageForReplay identifier];
+  v11 = [identifier isEqualToString:identifierCopy];
 
   if (v11)
   {
@@ -1965,8 +1965,8 @@ LABEL_18:
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 identifier];
-        v19 = [v18 isEqualToString:v9];
+        identifier2 = [v17 identifier];
+        v19 = [identifier2 isEqualToString:identifierCopy];
 
         if (v19)
         {
@@ -1987,17 +1987,17 @@ LABEL_18:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(ETMessage *)v12 setMediaURL:v8];
+      [(ETMessage *)v12 setMediaURL:lCopy];
       if (IMOSLoggingEnabled())
       {
         v21 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = [MEMORY[0x277CCAA00] defaultManager];
-          v23 = [v8 path];
-          v24 = [v22 fileExistsAtPath:v23];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          path = [lCopy path];
+          v24 = [defaultManager fileExistsAtPath:path];
           *buf = 138412546;
-          v31 = v8;
+          v31 = lCopy;
           v32 = 1024;
           v33 = v24;
           _os_log_impl(&dword_248D00000, v21, OS_LOG_TYPE_INFO, "Setting media URL: %@, URL exists on disk: %d", buf, 0x12u);

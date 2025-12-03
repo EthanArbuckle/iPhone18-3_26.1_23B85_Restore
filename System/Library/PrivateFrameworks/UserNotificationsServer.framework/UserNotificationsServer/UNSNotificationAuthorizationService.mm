@@ -1,32 +1,32 @@
 @interface UNSNotificationAuthorizationService
-- (BOOL)_queue_isCarPlayAvailableForApplication:(id)a3;
-- (UNSNotificationAuthorizationService)initWithDataProviderFactory:(id)a3 settingsService:(id)a4 localizationService:(id)a5;
-- (void)_didForegroundApplicationWithBundleIdentifier:(id)a3;
-- (void)_queue_requestAuthorizationWithOptions:(unint64_t)a3 forNotificationSourceDescription:(id)a4 withExpirationDate:(id)a5 completionHandler:(id)a6;
-- (void)_queue_requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4;
-- (void)_queue_requestRemoveAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4;
-- (void)didChangeProcessState:(id)a3 forBundleIdentifier:(id)a4;
-- (void)requestAuthorizationWithOptions:(unint64_t)a3 expirationDate:(id)a4 forNotificationSourceDescription:(id)a5 completionHandler:(id)a6;
-- (void)requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4;
-- (void)requestRemoveAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4;
+- (BOOL)_queue_isCarPlayAvailableForApplication:(id)application;
+- (UNSNotificationAuthorizationService)initWithDataProviderFactory:(id)factory settingsService:(id)service localizationService:(id)localizationService;
+- (void)_didForegroundApplicationWithBundleIdentifier:(id)identifier;
+- (void)_queue_requestAuthorizationWithOptions:(unint64_t)options forNotificationSourceDescription:(id)description withExpirationDate:(id)date completionHandler:(id)handler;
+- (void)_queue_requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler;
+- (void)_queue_requestRemoveAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler;
+- (void)didChangeProcessState:(id)state forBundleIdentifier:(id)identifier;
+- (void)requestAuthorizationWithOptions:(unint64_t)options expirationDate:(id)date forNotificationSourceDescription:(id)description completionHandler:(id)handler;
+- (void)requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler;
+- (void)requestRemoveAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler;
 @end
 
 @implementation UNSNotificationAuthorizationService
 
-- (UNSNotificationAuthorizationService)initWithDataProviderFactory:(id)a3 settingsService:(id)a4 localizationService:(id)a5
+- (UNSNotificationAuthorizationService)initWithDataProviderFactory:(id)factory settingsService:(id)service localizationService:(id)localizationService
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  factoryCopy = factory;
+  serviceCopy = service;
+  localizationServiceCopy = localizationService;
   v26.receiver = self;
   v26.super_class = UNSNotificationAuthorizationService;
   v12 = [(UNSNotificationAuthorizationService *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataProviderFactory, a3);
-    objc_storeStrong(&v13->_settingsService, a4);
-    objc_storeStrong(&v13->_localizationService, a5);
+    objc_storeStrong(&v12->_dataProviderFactory, factory);
+    objc_storeStrong(&v13->_settingsService, service);
+    objc_storeStrong(&v13->_localizationService, localizationService);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("com.apple.usernotificationsserver.AuthorizationService", v14);
     queue = v13->_queue;
@@ -52,24 +52,24 @@
   return v13;
 }
 
-- (void)requestAuthorizationWithOptions:(unint64_t)a3 expirationDate:(id)a4 forNotificationSourceDescription:(id)a5 completionHandler:(id)a6
+- (void)requestAuthorizationWithOptions:(unint64_t)options expirationDate:(id)date forNotificationSourceDescription:(id)description completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  descriptionCopy = description;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __137__UNSNotificationAuthorizationService_requestAuthorizationWithOptions_expirationDate_forNotificationSourceDescription_completionHandler___block_invoke;
   block[3] = &unk_279E10268;
-  v20 = v12;
-  v21 = a3;
+  v20 = handlerCopy;
+  optionsCopy = options;
   block[4] = self;
-  v18 = v11;
-  v19 = v10;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
+  v18 = descriptionCopy;
+  v19 = dateCopy;
+  v14 = handlerCopy;
+  v15 = dateCopy;
+  v16 = descriptionCopy;
   dispatch_async(queue, block);
 }
 
@@ -145,71 +145,71 @@ uint64_t __137__UNSNotificationAuthorizationService_requestAuthorizationWithOpti
   return result;
 }
 
-- (void)requestRemoveAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4
+- (void)requestRemoveAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __116__UNSNotificationAuthorizationService_requestRemoveAuthorizationForNotificationSourceDescription_completionHandler___block_invoke;
   block[3] = &unk_279E10290;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = descriptionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4
+- (void)requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __123__UNSNotificationAuthorizationService_requestCriticalAlertAuthorizationForNotificationSourceDescription_completionHandler___block_invoke;
   block[3] = &unk_279E10290;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = descriptionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = descriptionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didChangeProcessState:(id)a3 forBundleIdentifier:(id)a4
+- (void)didChangeProcessState:(id)state forBundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  stateCopy = state;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if ([v9 isRunning])
+    if ([stateCopy isRunning])
     {
-      v7 = [v9 endowmentNamespaces];
-      v8 = [v7 containsObject:@"com.apple.frontboard.visibility"];
+      endowmentNamespaces = [stateCopy endowmentNamespaces];
+      v8 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
       if (v8)
       {
-        [(UNSNotificationAuthorizationService *)self _didForegroundApplicationWithBundleIdentifier:v6];
+        [(UNSNotificationAuthorizationService *)self _didForegroundApplicationWithBundleIdentifier:identifierCopy];
       }
     }
   }
 }
 
-- (void)_didForegroundApplicationWithBundleIdentifier:(id)a3
+- (void)_didForegroundApplicationWithBundleIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D77CB8] sourceDescriptionWithBundleIdentifier:v4];
-  v6 = [(__CFString *)v5 isAppClip];
-  v7 = [(__CFString *)v5 wantsEphemeralNotifications];
+  identifierCopy = identifier;
+  v5 = [MEMORY[0x277D77CB8] sourceDescriptionWithBundleIdentifier:identifierCopy];
+  isAppClip = [(__CFString *)v5 isAppClip];
+  wantsEphemeralNotifications = [(__CFString *)v5 wantsEphemeralNotifications];
   v8 = *MEMORY[0x277CE20B0];
   v9 = os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isAppClip)
   {
-    v10 = v7 == 0;
+    v10 = wantsEphemeralNotifications == 0;
   }
 
   else
@@ -222,7 +222,7 @@ uint64_t __137__UNSNotificationAuthorizationService_requestAuthorizationWithOpti
     if (v9)
     {
       v11 = @"NO";
-      if (v6)
+      if (isAppClip)
       {
         v12 = @"YES";
       }
@@ -233,10 +233,10 @@ uint64_t __137__UNSNotificationAuthorizationService_requestAuthorizationWithOpti
       }
 
       *buf = 138543874;
-      v18 = v4;
+      v18 = identifierCopy;
       v19 = 2114;
       v20 = v12;
-      if (v7)
+      if (wantsEphemeralNotifications)
       {
         v11 = @"YES";
       }
@@ -252,7 +252,7 @@ uint64_t __137__UNSNotificationAuthorizationService_requestAuthorizationWithOpti
     if (v9)
     {
       *buf = 138543618;
-      v18 = v4;
+      v18 = identifierCopy;
       v19 = 2114;
       v20 = v5;
       _os_log_impl(&dword_270AA8000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] App clip wants ephemeral notifications for foregrounded application with source description: %{public}@", buf, 0x16u);
@@ -263,7 +263,7 @@ uint64_t __137__UNSNotificationAuthorizationService_requestAuthorizationWithOpti
     v15[1] = 3221225472;
     v15[2] = __85__UNSNotificationAuthorizationService__didForegroundApplicationWithBundleIdentifier___block_invoke;
     v15[3] = &unk_279E102B8;
-    v16 = v4;
+    v16 = identifierCopy;
     [(UNSNotificationAuthorizationService *)self requestAuthorizationWithOptions:7 expirationDate:v13 forNotificationSourceDescription:v5 completionHandler:v15];
   }
 
@@ -279,49 +279,49 @@ void __85__UNSNotificationAuthorizationService__didForegroundApplicationWithBund
   }
 }
 
-- (void)_queue_requestAuthorizationWithOptions:(unint64_t)a3 forNotificationSourceDescription:(id)a4 withExpirationDate:(id)a5 completionHandler:(id)a6
+- (void)_queue_requestAuthorizationWithOptions:(unint64_t)options forNotificationSourceDescription:(id)description withExpirationDate:(id)date completionHandler:(id)handler
 {
   v65 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 bundleIdentifier];
+  descriptionCopy = description;
+  dateCopy = date;
+  handlerCopy = handler;
+  bundleIdentifier = [descriptionCopy bundleIdentifier];
   v14 = MEMORY[0x277CE20B0];
   v15 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v62 = v13;
+    v62 = bundleIdentifier;
     v63 = 2048;
-    v64 = a3;
+    optionsCopy3 = options;
     _os_log_impl(&dword_270AA8000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting authorization with options %ld", buf, 0x16u);
   }
 
-  v16 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v13];
-  if ((a3 & 8) != 0 && ![(UNSNotificationAuthorizationService *)self _queue_isCarPlayAvailableForApplication:v16])
+  v16 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:bundleIdentifier];
+  if ((options & 8) != 0 && ![(UNSNotificationAuthorizationService *)self _queue_isCarPlayAvailableForApplication:v16])
   {
     v17 = *v14;
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = v13;
+      v62 = bundleIdentifier;
       _os_log_impl(&dword_270AA8000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] CarPlay authorization is not permitted", buf, 0xCu);
     }
 
-    a3 &= ~8uLL;
+    options &= ~8uLL;
   }
 
-  v18 = [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory notificationSettingsForBundleIdentifier:v13];
+  v18 = [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory notificationSettingsForBundleIdentifier:bundleIdentifier];
   v19 = v18;
-  if ((a3 & 0x6F) != 0)
+  if ((options & 0x6F) != 0)
   {
-    if (v11)
+    if (dateCopy)
     {
       v20 = *v14;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v13;
+        v62 = bundleIdentifier;
         _os_log_impl(&dword_270AA8000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Suppress user authorization prompt for temporary authorization", buf, 0xCu);
       }
 
@@ -330,13 +330,13 @@ void __85__UNSNotificationAuthorizationService__didForegroundApplicationWithBund
       v53[1] = 3221225472;
       v53[2] = __148__UNSNotificationAuthorizationService__queue_requestAuthorizationWithOptions_forNotificationSourceDescription_withExpirationDate_completionHandler___block_invoke;
       v53[3] = &unk_279E102E0;
-      v54 = v13;
+      v54 = bundleIdentifier;
       v55 = v19;
-      v56 = self;
-      v60 = a3;
-      v57 = v11;
-      v58 = v10;
-      v59 = v12;
+      selfCopy = self;
+      optionsCopy2 = options;
+      v57 = dateCopy;
+      v58 = descriptionCopy;
+      v59 = handlerCopy;
       [v21 getUserNotificationConsentForBundleID:v54 completion:v53];
 
       goto LABEL_40;
@@ -348,23 +348,23 @@ void __85__UNSNotificationAuthorizationService__didForegroundApplicationWithBund
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v62 = v13;
+        v62 = bundleIdentifier;
         v63 = 2048;
-        v64 = a3;
+        optionsCopy3 = options;
         _os_log_impl(&dword_270AA8000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] Already registered. Update authorization with options %ld", buf, 0x16u);
       }
 
-      -[UNSDefaultDataProviderFactory updateAuthorizationWithOptions:scheduledDeliveryEnabled:forNotificationSourceDescription:completionHandler:](self->_dataProviderFactory, "updateAuthorizationWithOptions:scheduledDeliveryEnabled:forNotificationSourceDescription:completionHandler:", a3, [v19 scheduledDeliverySetting] == 2, v10, v12);
+      -[UNSDefaultDataProviderFactory updateAuthorizationWithOptions:scheduledDeliveryEnabled:forNotificationSourceDescription:completionHandler:](self->_dataProviderFactory, "updateAuthorizationWithOptions:scheduledDeliveryEnabled:forNotificationSourceDescription:completionHandler:", options, [v19 scheduledDeliverySetting] == 2, descriptionCopy, handlerCopy);
       goto LABEL_40;
     }
 
-    if ((a3 & 0x10000) != 0)
+    if ((options & 0x10000) != 0)
     {
       v26 = *v14;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v13;
+        v62 = bundleIdentifier;
         _os_log_impl(&dword_270AA8000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Suppress user authorization prompt for disabled request", buf, 0xCu);
       }
 
@@ -375,13 +375,13 @@ void __85__UNSNotificationAuthorizationService__didForegroundApplicationWithBund
       goto LABEL_39;
     }
 
-    if ([v10 suppressUserAuthorizationPrompt])
+    if ([descriptionCopy suppressUserAuthorizationPrompt])
     {
       v24 = *v14;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v13;
+        v62 = bundleIdentifier;
         v25 = "[%{public}@] Suppress user authorization prompt for system service";
 LABEL_37:
         _os_log_impl(&dword_270AA8000, v24, OS_LOG_TYPE_DEFAULT, v25, buf, 0xCu);
@@ -391,8 +391,8 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v44 = [MEMORY[0x277D262A0] sharedConnection];
-    v41 = [v44 isNotificationsModificationAllowedForBundleID:v13];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v41 = [mEMORY[0x277D262A0] isNotificationsModificationAllowedForBundleID:bundleIdentifier];
 
     if ((v41 & 1) == 0)
     {
@@ -400,7 +400,7 @@ LABEL_37:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v13;
+        v62 = bundleIdentifier;
         v25 = "[%{public}@] Suppress user authorization prompt for restricted application";
         goto LABEL_37;
       }
@@ -411,17 +411,17 @@ LABEL_38:
       v29 = v32;
       v30 = 2;
 LABEL_39:
-      [(UNSDefaultDataProviderFactory *)v29 requestAuthorizationStatus:v30 withOptions:a3 scheduledDeliveryEnabled:v28 forNotificationSourceDescription:v10 completionHandler:v12];
+      [(UNSDefaultDataProviderFactory *)v29 requestAuthorizationStatus:v30 withOptions:options scheduledDeliveryEnabled:v28 forNotificationSourceDescription:descriptionCopy completionHandler:handlerCopy];
       goto LABEL_40;
     }
 
-    if ((a3 & 0x40) != 0)
+    if ((options & 0x40) != 0)
     {
       v34 = *v14;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v13;
+        v62 = bundleIdentifier;
         _os_log_impl(&dword_270AA8000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] Suppress user authorization prompt for provisional request", buf, 0xCu);
       }
 
@@ -434,11 +434,11 @@ LABEL_39:
 
     if (_os_feature_enabled_impl())
     {
-      v45 = [(UNSNotificationSettingsService *)self->_settingsService notificationSystemSettings];
-      v42 = [v45 scheduledDeliverySetting];
+      notificationSystemSettings = [(UNSNotificationSettingsService *)self->_settingsService notificationSystemSettings];
+      scheduledDeliverySetting = [notificationSystemSettings scheduledDeliverySetting];
 
       v31 = 32;
-      if (v42 == 2)
+      if (scheduledDeliverySetting == 2)
       {
         v31 = 40;
       }
@@ -454,30 +454,30 @@ LABEL_39:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = v13;
+      v62 = bundleIdentifier;
       _os_log_impl(&dword_270AA8000, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request notification user authorization prompt", buf, 0xCu);
     }
 
-    v46 = [(UNCLocalizationService *)self->_localizationService bundleWithIdentifier:v13];
-    v39 = [v46 localizedInfoDictionary];
-    v43 = [v39 bs_safeObjectForKey:@"NSUserNotificationsUsageDescription" ofType:objc_opt_class()];
+    v46 = [(UNCLocalizationService *)self->_localizationService bundleWithIdentifier:bundleIdentifier];
+    localizedInfoDictionary = [v46 localizedInfoDictionary];
+    v43 = [localizedInfoDictionary bs_safeObjectForKey:@"NSUserNotificationsUsageDescription" ofType:objc_opt_class()];
     if (!v43)
     {
-      v37 = [v46 infoDictionary];
-      v43 = [v37 bs_safeObjectForKey:@"NSUserNotificationsUsageDescription" ofType:objc_opt_class()];
+      infoDictionary = [v46 infoDictionary];
+      v43 = [infoDictionary bs_safeObjectForKey:@"NSUserNotificationsUsageDescription" ofType:objc_opt_class()];
     }
 
-    v38 = [v10 displayName];
+    displayName = [descriptionCopy displayName];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __148__UNSNotificationAuthorizationService__queue_requestAuthorizationWithOptions_forNotificationSourceDescription_withExpirationDate_completionHandler___block_invoke_85;
     v47[3] = &unk_279E10308;
-    v48 = v13;
-    v49 = self;
-    v52 = a3;
-    v50 = v10;
-    v51 = v12;
-    [v40 requestAuthorizationForBundleIdentifier:v48 displayName:v38 usageDescription:v43 withResult:v47];
+    v48 = bundleIdentifier;
+    selfCopy2 = self;
+    optionsCopy4 = options;
+    v50 = descriptionCopy;
+    v51 = handlerCopy;
+    [v40 requestAuthorizationForBundleIdentifier:v48 displayName:displayName usageDescription:v43 withResult:v47];
   }
 
   else
@@ -486,13 +486,13 @@ LABEL_39:
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = v13;
+      v62 = bundleIdentifier;
       _os_log_impl(&dword_270AA8000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}@] No options requiring notification authorization", buf, 0xCu);
     }
 
-    if (v12)
+    if (handlerCopy)
     {
-      (*(v12 + 2))(v12, [v19 hasEnabledSettings], 0);
+      (*(handlerCopy + 2))(handlerCopy, [v19 hasEnabledSettings], 0);
     }
   }
 
@@ -633,22 +633,22 @@ LABEL_14:
   return result;
 }
 
-- (void)_queue_requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4
+- (void)_queue_requestCriticalAlertAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleIdentifier];
+  descriptionCopy = description;
+  handlerCopy = handler;
+  bundleIdentifier = [descriptionCopy bundleIdentifier];
   v9 = MEMORY[0x277CE20B0];
   v10 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = v8;
+    v28 = bundleIdentifier;
     _os_log_impl(&dword_270AA8000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting critical alert authorization", buf, 0xCu);
   }
 
-  v11 = [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory notificationSettingsForBundleIdentifier:v8];
+  v11 = [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory notificationSettingsForBundleIdentifier:bundleIdentifier];
   if ([v11 criticalAlertSetting])
   {
     v12 = *v9;
@@ -658,12 +658,12 @@ LABEL_14:
     }
 
     *buf = 138543362;
-    v28 = v8;
+    v28 = bundleIdentifier;
     v13 = "[%{public}@] Already registered for critical alerts.";
     goto LABEL_16;
   }
 
-  if (([v6 allowCriticalAlerts] & 1) == 0)
+  if (([descriptionCopy allowCriticalAlerts] & 1) == 0)
   {
     v12 = *v9;
     if (!os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
@@ -672,13 +672,13 @@ LABEL_14:
     }
 
     *buf = 138543362;
-    v28 = v8;
+    v28 = bundleIdentifier;
     v13 = "[%{public}@] Critical alert authorization is not permitted";
     goto LABEL_16;
   }
 
-  v14 = [MEMORY[0x277D262A0] sharedConnection];
-  v15 = [v14 isNotificationsModificationAllowedForBundleID:v8];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v15 = [mEMORY[0x277D262A0] isNotificationsModificationAllowedForBundleID:bundleIdentifier];
 
   if ((v15 & 1) == 0)
   {
@@ -689,32 +689,32 @@ LABEL_14:
     }
 
     *buf = 138543362;
-    v28 = v8;
+    v28 = bundleIdentifier;
     v13 = "[%{public}@] Suppress critical alert user authorization prompt for restricted application";
 LABEL_16:
     _os_log_impl(&dword_270AA8000, v12, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
 LABEL_17:
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, [v11 criticalAlertSetting] == 2, 0);
+      handlerCopy[2](handlerCopy, [v11 criticalAlertSetting] == 2, 0);
     }
 
     goto LABEL_19;
   }
 
-  v16 = [v6 suppressUserAuthorizationPrompt];
+  suppressUserAuthorizationPrompt = [descriptionCopy suppressUserAuthorizationPrompt];
   v17 = *v9;
   v18 = os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT);
-  if (v16)
+  if (suppressUserAuthorizationPrompt)
   {
     if (v18)
     {
       *buf = 138543362;
-      v28 = v8;
+      v28 = bundleIdentifier;
       _os_log_impl(&dword_270AA8000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Suppress critical alert user authorization prompt for system service", buf, 0xCu);
     }
 
-    [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory setCriticalAlertAuthorization:1 forNotificationSourceDescription:v6 completionHandler:v7];
+    [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory setCriticalAlertAuthorization:1 forNotificationSourceDescription:descriptionCopy completionHandler:handlerCopy];
   }
 
   else
@@ -722,21 +722,21 @@ LABEL_17:
     if (v18)
     {
       *buf = 138543362;
-      v28 = v8;
+      v28 = bundleIdentifier;
       _os_log_impl(&dword_270AA8000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Request critical alert user authorization prompt", buf, 0xCu);
     }
 
     criticalAlertAuthorizationAlertController = self->_criticalAlertAuthorizationAlertController;
-    v21 = [v6 displayName];
+    displayName = [descriptionCopy displayName];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __130__UNSNotificationAuthorizationService__queue_requestCriticalAlertAuthorizationForNotificationSourceDescription_completionHandler___block_invoke;
     v22[3] = &unk_279E10330;
-    v23 = v8;
-    v24 = self;
-    v25 = v6;
-    v26 = v7;
-    [(UNSAuthorizationAlertController *)criticalAlertAuthorizationAlertController requestAuthorizationForBundleIdentifier:v23 displayName:v21 usageDescription:&stru_288095958 withResult:v22];
+    v23 = bundleIdentifier;
+    selfCopy = self;
+    v25 = descriptionCopy;
+    v26 = handlerCopy;
+    [(UNSAuthorizationAlertController *)criticalAlertAuthorizationAlertController requestAuthorizationForBundleIdentifier:v23 displayName:displayName usageDescription:&stru_288095958 withResult:v22];
   }
 
 LABEL_19:
@@ -769,31 +769,31 @@ uint64_t __130__UNSNotificationAuthorizationService__queue_requestCriticalAlertA
   return result;
 }
 
-- (BOOL)_queue_isCarPlayAvailableForApplication:(id)a3
+- (BOOL)_queue_isCarPlayAvailableForApplication:(id)application
 {
-  v4 = [MEMORY[0x277CF8A10] declarationForAppProxy:a3];
+  v4 = [MEMORY[0x277CF8A10] declarationForAppProxy:application];
   v5 = [(CRCarPlayAppPolicyEvaluator *)self->_policyEvaluator effectivePolicyForAppDeclaration:v4];
-  v6 = [v5 showsNotifications];
+  showsNotifications = [v5 showsNotifications];
 
-  return v6;
+  return showsNotifications;
 }
 
-- (void)_queue_requestRemoveAuthorizationForNotificationSourceDescription:(id)a3 completionHandler:(id)a4
+- (void)_queue_requestRemoveAuthorizationForNotificationSourceDescription:(id)description completionHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  handlerCopy = handler;
   v8 = *MEMORY[0x277CE20B0];
   if (os_log_type_enabled(*MEMORY[0x277CE20B0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 bundleIdentifier];
+    bundleIdentifier = [descriptionCopy bundleIdentifier];
     v12 = 138543362;
-    v13 = v10;
+    v13 = bundleIdentifier;
     _os_log_impl(&dword_270AA8000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting remove authorization", &v12, 0xCu);
   }
 
-  [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory requestRemoveAuthorizationforNotificationSourceDescription:v6 completionHandler:v7];
+  [(UNSDefaultDataProviderFactory *)self->_dataProviderFactory requestRemoveAuthorizationforNotificationSourceDescription:descriptionCopy completionHandler:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }

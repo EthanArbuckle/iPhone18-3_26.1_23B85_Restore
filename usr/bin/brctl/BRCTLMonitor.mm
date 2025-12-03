@@ -1,13 +1,13 @@
 @interface BRCTLMonitor
 - (BRCTLMonitor)init;
 - (NSProgress)progressObserved;
-- (id)_prettyDescriptionFromError:(id)a3;
-- (void)_checkIfQueryShouldStop:(id)a3;
+- (id)_prettyDescriptionFromError:(id)error;
+- (void)_checkIfQueryShouldStop:(id)stop;
 - (void)dealloc;
 - (void)monitorGlobalActivity;
-- (void)monitorQuery:(id)a3 rootPath:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)parseOption:(int)a3 arg:(const char *)a4;
+- (void)monitorQuery:(id)query rootPath:(id)path;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)parseOption:(int)option arg:(const char *)arg;
 @end
 
 @implementation BRCTLMonitor
@@ -33,24 +33,24 @@
   [(BRCTLMonitor *)&v3 dealloc];
 }
 
-- (void)parseOption:(int)a3 arg:(const char *)a4
+- (void)parseOption:(int)option arg:(const char *)arg
 {
-  if (a3 <= 111)
+  if (option <= 111)
   {
-    switch(a3)
+    switch(option)
     {
       case 'S':
-        if (!strcasecmp(a4, "docs"))
+        if (!strcasecmp(arg, "docs"))
         {
           self->_scopes = 1;
         }
 
-        if (!strcasecmp(a4, "data"))
+        if (!strcasecmp(arg, "data"))
         {
           self->_scopes = 2;
         }
 
-        if (!strcasecmp(a4, "ext"))
+        if (!strcasecmp(arg, "ext"))
         {
           self->_scopes = 4;
         }
@@ -65,29 +65,29 @@
     }
   }
 
-  else if (a3 > 116)
+  else if (option > 116)
   {
-    if (a3 == 117)
+    if (option == 117)
     {
       self->_waitForStartUploading = 1;
     }
 
-    else if (a3 == 119)
+    else if (option == 119)
     {
       self->_waitForAllUploaded = 1;
     }
   }
 
-  else if (a3 == 112)
+  else if (option == 112)
   {
     self->_isStaticGathering = 1;
   }
 
-  else if (a3 == 116)
+  else if (option == 116)
   {
-    if (a4)
+    if (arg)
     {
-      v6 = [NSNumber numberWithInt:atoi(a4)];
+      v6 = [NSNumber numberWithInt:atoi(arg)];
       requestedTime = self->_requestedTime;
       self->_requestedTime = v6;
 
@@ -121,42 +121,42 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v11;
-    v14 = [(BRCTLMonitor *)self progressObserved];
-    v15 = [v13 isEqual:v14];
+    v13 = objectCopy;
+    progressObserved = [(BRCTLMonitor *)self progressObserved];
+    v15 = [v13 isEqual:progressObserved];
 
     if (v15)
     {
       v16 = +[NSMutableString string];
       v17 = +[NSMutableArray array];
-      v18 = [v13 localizedAdditionalDescription];
-      v19 = [v18 length];
+      localizedAdditionalDescription = [v13 localizedAdditionalDescription];
+      v19 = [localizedAdditionalDescription length];
 
       [v13 localizedDescription];
       if (v19)
         v20 = {;
-        v21 = [v13 localizedAdditionalDescription];
-        v22 = [NSString stringWithFormat:@"%@ (%@)", v20, v21];
+        localizedAdditionalDescription2 = [v13 localizedAdditionalDescription];
+        v22 = [NSString stringWithFormat:@"%@ (%@)", v20, localizedAdditionalDescription2];
       }
 
       else
         v22 = {;
       }
 
-      v23 = [v22 UTF8String];
+      uTF8String = [v22 UTF8String];
       [v13 fractionCompleted];
-      [v16 appendFormat:@"%-45s %5.1f%% ", v23, v24 * 100.0];
+      [v16 appendFormat:@"%-45s %5.1f%% ", uTF8String, v24 * 100.0];
 
-      v25 = [v13 userInfo];
-      v26 = [v25 objectForKeyedSubscript:NSProgressFileTotalCountKey];
+      userInfo = [v13 userInfo];
+      v26 = [userInfo objectForKeyedSubscript:NSProgressFileTotalCountKey];
       [v16 appendFormat:@"[fileCount: %@] ", v26];
 
       if ([v13 isFinished])
@@ -191,20 +191,20 @@
       }
 
       [v16 appendFormat:@"%-25s ", -[__CFString UTF8String](v28, "UTF8String")];
-      v29 = [(BRCTLMonitor *)self previousDescription];
-      v30 = [v29 isEqualToString:v16];
+      previousDescription = [(BRCTLMonitor *)self previousDescription];
+      v30 = [previousDescription isEqualToString:v16];
 
       if (v30)
       {
         [v16 length];
-        [v10 UTF8String];
+        [pathCopy UTF8String];
         printf("%*s (%s)\n");
       }
 
       else
       {
         [v16 UTF8String];
-        [v10 UTF8String];
+        [pathCopy UTF8String];
         printf("%s (%s)\n");
       }
 
@@ -216,28 +216,28 @@
   {
     v31.receiver = self;
     v31.super_class = BRCTLMonitor;
-    [(BRCTLMonitor *)&v31 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BRCTLMonitor *)&v31 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)_prettyDescriptionFromError:(id)a3
+- (id)_prettyDescriptionFromError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:NSCocoaErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:NSCocoaErrorDomain];
 
   if (!v5)
   {
     goto LABEL_6;
   }
 
-  if ([v3 code] == 4354)
+  if ([errorCopy code] == 4354)
   {
     v6 = @"pending-quota";
     goto LABEL_7;
   }
 
-  if ([v3 code] == 4355)
+  if ([errorCopy code] == 4355)
   {
     v6 = @"offline";
   }
@@ -245,7 +245,7 @@
   else
   {
 LABEL_6:
-    v6 = [v3 description];
+    v6 = [errorCopy description];
   }
 
 LABEL_7:
@@ -253,9 +253,9 @@ LABEL_7:
   return v6;
 }
 
-- (void)_checkIfQueryShouldStop:(id)a3
+- (void)_checkIfQueryShouldStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -275,7 +275,7 @@ LABEL_13:
     v10 = 0;
 LABEL_14:
     [(NSMetadataQuery *)self->_currentWatchedQuery stopQuery];
-    [v4 invalidate];
+    [stopCopy invalidate];
     exit(v10);
   }
 
@@ -293,16 +293,16 @@ LABEL_14:
   }
 }
 
-- (void)monitorQuery:(id)a3 rootPath:(id)a4
+- (void)monitorQuery:(id)query rootPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  pathCopy = path;
   v9 = [[BRCTermDumper alloc] initWithFd:1 forceColor:0];
   v10 = objc_alloc_init(NSOperationQueue);
   [v10 setMaxConcurrentOperationCount:1];
-  [v7 _setExternalDocumentsBundleIdentifier:0];
-  [v7 setOperationQueue:v10];
-  objc_storeStrong(&self->_currentWatchedQuery, a3);
+  [queryCopy _setExternalDocumentsBundleIdentifier:0];
+  [queryCopy setOperationQueue:v10];
+  objc_storeStrong(&self->_currentWatchedQuery, query);
   v41[0] = NSMetadataUbiquitousItemDownloadingStatusNotDownloaded;
   v41[1] = NSMetadataUbiquitousItemDownloadingStatusDownloaded;
   v42[0] = @"not downloaded";
@@ -317,21 +317,21 @@ LABEL_14:
   startDate = self->_startDate;
   self->_startDate = v13;
 
-  v15 = [v8 fileSystemRepresentation];
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
   scopes = self->_scopes;
   v17 = BRCPrettyPrintBitmap();
-  [v9 write:{"observing in %s for the %s scope(s)\n", v15, objc_msgSend(v17, "UTF8String")}];
+  [v9 write:{"observing in %s for the %s scope(s)\n", fileSystemRepresentation, objc_msgSend(v17, "UTF8String")}];
 
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100006A14;
   v34[3] = &unk_100024F78;
-  v18 = v7;
+  v18 = queryCopy;
   v34[4] = v18;
   v19 = v9;
   v34[5] = v19;
   v34[6] = self;
-  v34[7] = v8;
+  v34[7] = pathCopy;
   v34[8] = v11;
   v34[9] = v12;
   v20 = objc_retainBlock(v34);

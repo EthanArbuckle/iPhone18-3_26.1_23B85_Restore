@@ -2,25 +2,25 @@
 - (ASBulletinPostingManagerDelegate)delegate;
 - (ASCompanionBulletinPostingManager)init;
 - (BOOL)_isPostingAllowed;
-- (BOOL)shouldUseSpecializedStringForWorkout:(id)a3;
-- (id)_achievementForAchievementData:(id)a3;
+- (BOOL)shouldUseSpecializedStringForWorkout:(id)workout;
+- (id)_achievementForAchievementData:(id)data;
 - (id)_activityDataNotificationCategories;
-- (id)_activitySharingAchievementForAchievementData:(id)a3;
-- (id)_activitySharingWorkoutForWorkoutData:(id)a3;
-- (id)_activitySnapshotForSnapshotData:(id)a3;
-- (id)_notificationRequestForCodableBulletin:(id)a3;
-- (id)_subtitleBodyPairForAchievementCodableBulletin:(id)a3;
-- (id)_subtitleBodyPairForCodableBulletin:(id)a3;
-- (id)_subtitleBodyPairForWorkoutCodableBulletin:(id)a3;
+- (id)_activitySharingAchievementForAchievementData:(id)data;
+- (id)_activitySharingWorkoutForWorkoutData:(id)data;
+- (id)_activitySnapshotForSnapshotData:(id)data;
+- (id)_notificationRequestForCodableBulletin:(id)bulletin;
+- (id)_subtitleBodyPairForAchievementCodableBulletin:(id)bulletin;
+- (id)_subtitleBodyPairForCodableBulletin:(id)bulletin;
+- (id)_subtitleBodyPairForWorkoutCodableBulletin:(id)bulletin;
 - (id)topicIdentifiers;
-- (void)_handleActivityDataNotificationResponse:(id)a3;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)enqueueBulletins:(id)a3 withPostingSyle:(int64_t)a4;
-- (void)handleNotificationResponse:(id)a3 completion:(id)a4;
-- (void)postNotificationRequest:(id)a3;
-- (void)registerNotificationCategories:(id)a3;
-- (void)removeNotificationWithIdentifier:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)_handleActivityDataNotificationResponse:(id)response;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)enqueueBulletins:(id)bulletins withPostingSyle:(int64_t)syle;
+- (void)handleNotificationResponse:(id)response completion:(id)completion;
+- (void)postNotificationRequest:(id)request;
+- (void)registerNotificationCategories:(id)categories;
+- (void)removeNotificationWithIdentifier:(id)identifier;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation ASCompanionBulletinPostingManager
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
   [(UNUserNotificationCenter *)self->_userNotificationCenter setDelegate:self];
   userNotificationCenter = self->_userNotificationCenter;
@@ -48,11 +48,11 @@
   [(UNUserNotificationCenter *)userNotificationCenter setWantsNotificationResponsesDelivered];
 }
 
-- (void)registerNotificationCategories:(id)a3
+- (void)registerNotificationCategories:(id)categories
 {
-  v4 = a3;
-  v5 = [(ASCompanionBulletinPostingManager *)self _activityDataNotificationCategories];
-  v6 = [v4 setByAddingObjectsFromSet:v5];
+  categoriesCopy = categories;
+  _activityDataNotificationCategories = [(ASCompanionBulletinPostingManager *)self _activityDataNotificationCategories];
+  v6 = [categoriesCopy setByAddingObjectsFromSet:_activityDataNotificationCategories];
 
   userNotificationCenter = self->_userNotificationCenter;
   v9[0] = MEMORY[0x277D85DD0];
@@ -60,7 +60,7 @@
   v9[2] = __68__ASCompanionBulletinPostingManager_registerNotificationCategories___block_invoke;
   v9[3] = &unk_278C4C410;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v8 = v6;
   [(UNUserNotificationCenter *)userNotificationCenter getNotificationCategoriesWithCompletionHandler:v9];
 }
@@ -73,14 +73,14 @@ void __68__ASCompanionBulletinPostingManager_registerNotificationCategories___bl
 
 - (BOOL)_isPostingAllowed
 {
-  v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v3 = [v2 fitnessMode];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  fitnessMode = [mEMORY[0x277CCDD30] fitnessMode];
 
-  if (v3 == 1)
+  if (fitnessMode == 1)
   {
     v4 = objc_alloc(MEMORY[0x277D2BA58]);
     v5 = [v4 initWithDomain:*MEMORY[0x277CE91F8]];
-    v6 = [v5 synchronize];
+    synchronize = [v5 synchronize];
   }
 
   else
@@ -94,15 +94,15 @@ void __68__ASCompanionBulletinPostingManager_registerNotificationCategories___bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 1;
+    bOOLValue = 1;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)_activityDataNotificationCategories
@@ -122,19 +122,19 @@ void __68__ASCompanionBulletinPostingManager_registerNotificationCategories___bl
   return v7;
 }
 
-- (void)postNotificationRequest:(id)a3
+- (void)postNotificationRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   ASLoggingInitialize();
   v5 = MEMORY[0x277CE8FF8];
   v6 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [requestCopy identifier];
     *buf = 138412290;
-    v15 = v8;
+    v15 = identifier;
     _os_log_impl(&dword_23E5E3000, v7, OS_LOG_TYPE_DEFAULT, "Adding notification request with identifier %@", buf, 0xCu);
   }
 
@@ -147,7 +147,7 @@ void __68__ASCompanionBulletinPostingManager_registerNotificationCategories___bl
     v12[2] = __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_invoke;
     v12[3] = &unk_278C4C438;
     objc_copyWeak(&v13, buf);
-    [(UNUserNotificationCenter *)userNotificationCenter addNotificationRequest:v4 withCompletionHandler:v12];
+    [(UNUserNotificationCenter *)userNotificationCenter addNotificationRequest:requestCopy withCompletionHandler:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
@@ -180,21 +180,21 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
   }
 }
 
-- (void)enqueueBulletins:(id)a3 withPostingSyle:(int64_t)a4
+- (void)enqueueBulletins:(id)bulletins withPostingSyle:(int64_t)syle
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 fitnessMode];
+  bulletinsCopy = bulletins;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  fitnessMode = [mEMORY[0x277CCDD30] fitnessMode];
 
-  if (v7 != 1)
+  if (fitnessMode != 1)
   {
     ASLoggingInitialize();
     v8 = *MEMORY[0x277CE8FF8];
     if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v5;
+      v22 = bulletinsCopy;
       _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "CompanionBulletinPostingManager enqueuing bulletins %@", buf, 0xCu);
     }
 
@@ -202,8 +202,8 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [v5 allObjects];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allObjects = [bulletinsCopy allObjects];
+    v10 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -215,7 +215,7 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = [(ASCompanionBulletinPostingManager *)self _notificationRequestForCodableBulletin:*(*(&v16 + 1) + 8 * v13)];
@@ -225,7 +225,7 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -235,20 +235,20 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "Withdrawing bulletin with identifier %@", buf, 0xCu);
   }
 
-  v8 = v4;
+  v8 = identifierCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
   [(ASCompanionBulletinPostingManager *)self _withdrawNotificationRequestsWithIdentifiers:v6];
 
@@ -257,81 +257,81 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
 
 - (id)topicIdentifiers
 {
-  v2 = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationTopics];
-  v3 = [v2 hk_map:&__block_literal_global_8];
-  v4 = [v3 allObjects];
+  notificationTopics = [(UNUserNotificationCenter *)self->_userNotificationCenter notificationTopics];
+  v3 = [notificationTopics hk_map:&__block_literal_global_8];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 actionIdentifier];
-  v10 = [v8 notification];
+  handlerCopy = handler;
+  responseCopy = response;
+  actionIdentifier = [responseCopy actionIdentifier];
+  notification = [responseCopy notification];
 
-  v11 = [v10 request];
-  v12 = [v11 content];
-  v13 = [v12 userInfo];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v14 = [objc_alloc(MEMORY[0x277CE9138]) initWithActionIdentifier:v9 userInfo:v13];
+  v14 = [objc_alloc(MEMORY[0x277CE9138]) initWithActionIdentifier:actionIdentifier userInfo:userInfo];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __113__ASCompanionBulletinPostingManager_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   v16[3] = &unk_278C4C178;
-  v17 = v7;
-  v15 = v7;
+  v17 = handlerCopy;
+  v15 = handlerCopy;
   [(ASCompanionBulletinPostingManager *)self handleNotificationResponse:v14 completion:v16];
 }
 
-- (void)handleNotificationResponse:(id)a3 completion:(id)a4
+- (void)handleNotificationResponse:(id)response completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   ASLoggingInitialize();
   v8 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v6;
+    v14 = responseCopy;
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "CompanionBulletinPostingManager received notification response: %{public}@", &v13, 0xCu);
   }
 
-  v9 = [v6 actionIdentifier];
-  v10 = [v9 isEqualToString:@"Reply"];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [actionIdentifier isEqualToString:@"Reply"];
 
   if (v10)
   {
-    [(ASCompanionBulletinPostingManager *)self _handleActivityDataNotificationResponse:v6];
+    [(ASCompanionBulletinPostingManager *)self _handleActivityDataNotificationResponse:responseCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained bulletinPostingManager:self didReceiveNotificationResponse:v6];
+    [WeakRetained bulletinPostingManager:self didReceiveNotificationResponse:responseCopy];
   }
 
-  v7[2](v7, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActivityDataNotificationResponse:(id)a3
+- (void)_handleActivityDataNotificationResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277CE9280]];
+  responseCopy = response;
+  userInfo = [responseCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE9280]];
 
-  v7 = [v6 integerValue];
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CE9278]];
+  integerValue = [v6 integerValue];
+  userInfo2 = [responseCopy userInfo];
+  v9 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CE9278]];
 
   if (v9)
   {
-    v10 = [v4 userInfo];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CE9260]];
+    userInfo3 = [responseCopy userInfo];
+    v11 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x277CE9260]];
 
     if (!v11)
     {
@@ -346,9 +346,9 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
 
     v12 = [objc_alloc(MEMORY[0x277CE90A0]) initWithData:v11];
     v13 = ASFriendsFromCodableFriendList();
-    v14 = [v13 anyObject];
+    anyObject = [v13 anyObject];
 
-    if (!v14)
+    if (!anyObject)
     {
       ASLoggingInitialize();
       if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_ERROR))
@@ -359,39 +359,39 @@ void __61__ASCompanionBulletinPostingManager_postNotificationRequest___block_inv
       goto LABEL_25;
     }
 
-    if (v7 <= 2)
+    if (integerValue <= 2)
     {
-      if (v7)
+      if (integerValue)
       {
-        if (v7 == 1)
+        if (integerValue == 1)
         {
-          v25 = [v4 userInfo];
-          v26 = [v25 objectForKeyedSubscript:*MEMORY[0x277CE9250]];
+          userInfo4 = [responseCopy userInfo];
+          v26 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x277CE9250]];
 
           v31 = v26;
           v27 = [(ASCompanionBulletinPostingManager *)self _activitySnapshotForSnapshotData:v26];
-          v18 = [v14 UUID];
-          v19 = [v14 contact];
-          v20 = [v19 primaryDestinationForMessaging];
+          uUID = [anyObject UUID];
+          contact = [anyObject contact];
+          primaryDestinationForMessaging = [contact primaryDestinationForMessaging];
           v30 = v27;
           v21 = ASRichMessagePayloadForGoalCompletion();
         }
 
         else
         {
-          if (v7 != 2)
+          if (integerValue != 2)
           {
             goto LABEL_23;
           }
 
-          v22 = [v4 userInfo];
-          v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277CE9288]];
+          userInfo5 = [responseCopy userInfo];
+          v23 = [userInfo5 objectForKeyedSubscript:*MEMORY[0x277CE9288]];
 
           v31 = v23;
           v24 = [(ASCompanionBulletinPostingManager *)self _activitySharingWorkoutForWorkoutData:v23];
-          v18 = [v14 UUID];
-          v19 = [v14 contact];
-          v20 = [v19 primaryDestinationForMessaging];
+          uUID = [anyObject UUID];
+          contact = [anyObject contact];
+          primaryDestinationForMessaging = [contact primaryDestinationForMessaging];
           v30 = v24;
           v21 = ASRichMessagePayloadForWorkout();
         }
@@ -406,8 +406,8 @@ LABEL_21:
           block[2] = __77__ASCompanionBulletinPostingManager__handleActivityDataNotificationResponse___block_invoke;
           block[3] = &unk_278C4BB98;
           v33 = v28;
-          v34 = v14;
-          v35 = v4;
+          v34 = anyObject;
+          v35 = responseCopy;
           v29 = v28;
           dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -428,21 +428,21 @@ LABEL_23:
       }
     }
 
-    else if ((v7 - 4) >= 5)
+    else if ((integerValue - 4) >= 5)
     {
-      if (v7 != 3)
+      if (integerValue != 3)
       {
         goto LABEL_23;
       }
 
-      v15 = [v4 userInfo];
-      v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277CE9248]];
+      userInfo6 = [responseCopy userInfo];
+      v16 = [userInfo6 objectForKeyedSubscript:*MEMORY[0x277CE9248]];
 
       v31 = v16;
       v17 = [(ASCompanionBulletinPostingManager *)self _activitySharingAchievementForAchievementData:v16];
-      v18 = [v14 UUID];
-      v19 = [v14 contact];
-      v20 = [v19 primaryDestinationForMessaging];
+      uUID = [anyObject UUID];
+      contact = [anyObject contact];
+      primaryDestinationForMessaging = [contact primaryDestinationForMessaging];
       v30 = v17;
       v21 = ASRichMessagePayloadForAchievement();
       goto LABEL_21;
@@ -487,9 +487,9 @@ void __77__ASCompanionBulletinPostingManager__handleActivityDataNotificationResp
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_notificationRequestForCodableBulletin:(id)a3
+- (id)_notificationRequestForCodableBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   v5 = objc_alloc_init(MEMORY[0x277CE1F60]);
   IsInstalled = ASMessagesIsInstalled();
   v7 = MEMORY[0x277CE9198];
@@ -500,27 +500,27 @@ void __77__ASCompanionBulletinPostingManager__handleActivityDataNotificationResp
 
   [v5 setCategoryIdentifier:*v7];
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [v4 type];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:v9];
+  type = [bulletinCopy type];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CE9280]];
 
-  v11 = [v4 friendListData];
-  [v8 setObject:v11 forKeyedSubscript:*MEMORY[0x277CE9260]];
+  friendListData = [bulletinCopy friendListData];
+  [v8 setObject:friendListData forKeyedSubscript:*MEMORY[0x277CE9260]];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "competitionStage")}];
+  v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(bulletinCopy, "competitionStage")}];
   [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277CE9258]];
 
-  v13 = [v4 achievementData];
-  [v8 setObject:v13 forKeyedSubscript:*MEMORY[0x277CE9248]];
+  achievementData = [bulletinCopy achievementData];
+  [v8 setObject:achievementData forKeyedSubscript:*MEMORY[0x277CE9248]];
 
-  v14 = [v4 workoutData];
-  [v8 setObject:v14 forKeyedSubscript:*MEMORY[0x277CE9288]];
+  workoutData = [bulletinCopy workoutData];
+  [v8 setObject:workoutData forKeyedSubscript:*MEMORY[0x277CE9288]];
 
-  v15 = [v4 snapshotData];
-  [v8 setObject:v15 forKeyedSubscript:*MEMORY[0x277CE9250]];
+  snapshotData = [bulletinCopy snapshotData];
+  [v8 setObject:snapshotData forKeyedSubscript:*MEMORY[0x277CE9250]];
 
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = ExpirationDateForBulletinTypeAndPublishDate(v9, v16);
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = ExpirationDateForBulletinTypeAndPublishDate(type, date);
 
   if (v17)
   {
@@ -532,107 +532,107 @@ void __77__ASCompanionBulletinPostingManager__handleActivityDataNotificationResp
   v19 = ActivitySharingBundle();
   v20 = [v19 localizedStringForKey:@"FITNESS_APP_NAME" value:&stru_2850E59E8 table:@"Localizable"];
 
-  v21 = [(ASCompanionBulletinPostingManager *)self _subtitleBodyPairForCodableBulletin:v4];
+  v21 = [(ASCompanionBulletinPostingManager *)self _subtitleBodyPairForCodableBulletin:bulletinCopy];
   [v5 setSound:v18];
   [v5 setTitle:v20];
-  v22 = [v21 subtitle];
-  [v5 setSubtitle:v22];
+  subtitle = [v21 subtitle];
+  [v5 setSubtitle:subtitle];
 
-  v23 = [v21 body];
-  [v5 setBody:v23];
+  body = [v21 body];
+  [v5 setBody:body];
 
-  v24 = ThreadIdentifierForBulletinType(v9);
+  v24 = ThreadIdentifierForBulletinType(type);
   [v5 setThreadIdentifier:v24];
 
   [v5 setUserInfo:v8];
   v25 = MEMORY[0x277CE1FC0];
-  v26 = [MEMORY[0x277CCAD78] UUID];
-  v27 = [v26 UUIDString];
-  v28 = [v25 requestWithIdentifier:v27 content:v5 trigger:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v28 = [v25 requestWithIdentifier:uUIDString content:v5 trigger:0];
 
   return v28;
 }
 
-- (id)_subtitleBodyPairForCodableBulletin:(id)a3
+- (id)_subtitleBodyPairForCodableBulletin:(id)bulletin
 {
-  v4 = a3;
-  v5 = [v4 achievementData];
+  bulletinCopy = bulletin;
+  achievementData = [bulletinCopy achievementData];
 
-  if (v5)
+  if (achievementData)
   {
-    v6 = [(ASCompanionBulletinPostingManager *)self _subtitleBodyPairForAchievementCodableBulletin:v4];
+    v6 = [(ASCompanionBulletinPostingManager *)self _subtitleBodyPairForAchievementCodableBulletin:bulletinCopy];
 LABEL_5:
     v8 = v6;
     goto LABEL_6;
   }
 
-  v7 = [v4 workoutData];
+  workoutData = [bulletinCopy workoutData];
 
-  if (v7)
+  if (workoutData)
   {
-    v6 = [(ASCompanionBulletinPostingManager *)self _subtitleBodyPairForWorkoutCodableBulletin:v4];
+    v6 = [(ASCompanionBulletinPostingManager *)self _subtitleBodyPairForWorkoutCodableBulletin:bulletinCopy];
     goto LABEL_5;
   }
 
   v10 = [ASCompanionBulletinPostingManagerSubtitleBodyPair alloc];
-  v11 = [v4 title];
-  v8 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v10 initWithSubtitle:v11 body:0];
+  title = [bulletinCopy title];
+  v8 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v10 initWithSubtitle:title body:0];
 
 LABEL_6:
 
   return v8;
 }
 
-- (id)_subtitleBodyPairForWorkoutCodableBulletin:(id)a3
+- (id)_subtitleBodyPairForWorkoutCodableBulletin:(id)bulletin
 {
-  v4 = a3;
-  v5 = [v4 workoutData];
-  v6 = [(ASCompanionBulletinPostingManager *)self _activitySharingWorkoutForWorkoutData:v5];
+  bulletinCopy = bulletin;
+  workoutData = [bulletinCopy workoutData];
+  v6 = [(ASCompanionBulletinPostingManager *)self _activitySharingWorkoutForWorkoutData:workoutData];
 
-  v7 = [v6 hkWorkoutFromFriendWorkout];
-  if (-[ASCompanionBulletinPostingManager shouldUseSpecializedStringForWorkout:](self, "shouldUseSpecializedStringForWorkout:", v7) && ([v7 fi_activityType], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "localizationKey"), v9 = objc_claimAutoreleasedReturnValue(), v8, v9))
+  hkWorkoutFromFriendWorkout = [v6 hkWorkoutFromFriendWorkout];
+  if (-[ASCompanionBulletinPostingManager shouldUseSpecializedStringForWorkout:](self, "shouldUseSpecializedStringForWorkout:", hkWorkoutFromFriendWorkout) && ([hkWorkoutFromFriendWorkout fi_activityType], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "localizationKey"), localizedName = objc_claimAutoreleasedReturnValue(), v8, localizedName))
   {
-    v10 = [@"NOTIFICATION_TITLE_FORMAT_WORKOUT_" stringByAppendingString:v9];
+    title = [@"NOTIFICATION_TITLE_FORMAT_WORKOUT_" stringByAppendingString:localizedName];
     v11 = objc_alloc(MEMORY[0x277CE90A0]);
-    v12 = [v4 friendListData];
-    v25 = [v11 initWithData:v12];
+    friendListData = [bulletinCopy friendListData];
+    v25 = [v11 initWithData:friendListData];
 
     v13 = ASFriendsFromCodableFriendList();
-    v14 = [v13 allObjects];
-    v24 = [v14 firstObject];
+    allObjects = [v13 allObjects];
+    firstObject = [allObjects firstObject];
 
     v15 = MEMORY[0x277CCACA8];
     v16 = ActivitySharingBundle();
-    v17 = [v16 localizedStringForKey:v10 value:&stru_2850E59E8 table:@"Localizable"];
-    v18 = [v24 displayName];
-    v19 = [v15 localizedStringWithFormat:v17, v18];
+    v17 = [v16 localizedStringForKey:title value:&stru_2850E59E8 table:@"Localizable"];
+    displayName = [firstObject displayName];
+    v19 = [v15 localizedStringWithFormat:v17, displayName];
 
     v20 = [[ASCompanionBulletinPostingManagerSubtitleBodyPair alloc] initWithSubtitle:0 body:v19];
   }
 
   else
   {
-    v21 = [v7 fi_activityType];
-    v9 = [v21 localizedName];
+    fi_activityType = [hkWorkoutFromFriendWorkout fi_activityType];
+    localizedName = [fi_activityType localizedName];
 
     v22 = [ASCompanionBulletinPostingManagerSubtitleBodyPair alloc];
-    v10 = [v4 title];
-    v20 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v22 initWithSubtitle:v10 body:v9];
+    title = [bulletinCopy title];
+    v20 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v22 initWithSubtitle:title body:localizedName];
   }
 
   return v20;
 }
 
-- (id)_subtitleBodyPairForAchievementCodableBulletin:(id)a3
+- (id)_subtitleBodyPairForAchievementCodableBulletin:(id)bulletin
 {
-  v4 = a3;
-  v5 = [v4 achievementData];
-  v6 = [(ASCompanionBulletinPostingManager *)self _achievementForAchievementData:v5];
+  bulletinCopy = bulletin;
+  achievementData = [bulletinCopy achievementData];
+  v6 = [(ASCompanionBulletinPostingManager *)self _achievementForAchievementData:achievementData];
 
   if (v6)
   {
-    v7 = [v6 template];
-    v8 = [v7 uniqueName];
+    template = [v6 template];
+    uniqueName = [template uniqueName];
     v9 = ASIsCompetitionVictoryTemplate();
 
     v10 = objc_alloc_init(MEMORY[0x277CE8CB8]);
@@ -640,15 +640,15 @@ LABEL_6:
     if (v9)
     {
       v12 = objc_alloc(MEMORY[0x277CE90A0]);
-      v13 = [v4 friendListData];
-      v14 = [v12 initWithData:v13];
+      friendListData = [bulletinCopy friendListData];
+      v14 = [v12 initWithData:friendListData];
 
       v15 = ASFriendsFromCodableFriendList();
-      v16 = [v15 allObjects];
-      v17 = [v16 firstObject];
+      allObjects = [v15 allObjects];
+      firstObject = [allObjects firstObject];
 
-      v18 = [v17 displayName];
-      [v11 setName:v18];
+      displayName = [firstObject displayName];
+      [v11 setName:displayName];
 
       v19 = [v11 friendAchievedDescriptionForAchievement:v6];
     }
@@ -659,8 +659,8 @@ LABEL_6:
     }
 
     v24 = [ASCompanionBulletinPostingManagerSubtitleBodyPair alloc];
-    v25 = [v4 title];
-    v23 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v24 initWithSubtitle:v25 body:v19];
+    title = [bulletinCopy title];
+    v23 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v24 initWithSubtitle:title body:v19];
   }
 
   else
@@ -669,56 +669,56 @@ LABEL_6:
     v20 = *MEMORY[0x277CE8FF8];
     if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_ERROR))
     {
-      [(ASCompanionBulletinPostingManager *)v20 _subtitleBodyPairForAchievementCodableBulletin:v4];
+      [(ASCompanionBulletinPostingManager *)v20 _subtitleBodyPairForAchievementCodableBulletin:bulletinCopy];
     }
 
     v21 = [ASCompanionBulletinPostingManagerSubtitleBodyPair alloc];
-    v22 = [v4 title];
-    v23 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v21 initWithSubtitle:v22 body:0];
+    title2 = [bulletinCopy title];
+    v23 = [(ASCompanionBulletinPostingManagerSubtitleBodyPair *)v21 initWithSubtitle:title2 body:0];
   }
 
   return v23;
 }
 
-- (id)_achievementForAchievementData:(id)a3
+- (id)_achievementForAchievementData:(id)data
 {
   v3 = MEMORY[0x277CE8CE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[v3 alloc] initWithData:dataCopy];
 
   v6 = [objc_alloc(MEMORY[0x277CE8CB0]) initWithCodable:v5];
 
   return v6;
 }
 
-- (id)_activitySharingAchievementForAchievementData:(id)a3
+- (id)_activitySharingAchievementForAchievementData:(id)data
 {
-  v3 = [(ASCompanionBulletinPostingManager *)self _achievementForAchievementData:a3];
-  v4 = [v3 relevantEarnedInstance];
-  v5 = [v3 template];
+  v3 = [(ASCompanionBulletinPostingManager *)self _achievementForAchievementData:data];
+  relevantEarnedInstance = [v3 relevantEarnedInstance];
+  template = [v3 template];
   v6 = ASFriendAchievementFromTemplateAndEarnedInstance();
 
   return v6;
 }
 
-- (id)_activitySharingWorkoutForWorkoutData:(id)a3
+- (id)_activitySharingWorkoutForWorkoutData:(id)data
 {
   v3 = MEMORY[0x277CE9060];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[v3 alloc] initWithData:dataCopy];
 
   v6 = [MEMORY[0x277CCDDD0] fitnessFriendWorkoutWithCodableWorkout:v5];
 
   return v6;
 }
 
-- (id)_activitySnapshotForSnapshotData:(id)a3
+- (id)_activitySnapshotForSnapshotData:(id)data
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:&v11];
+  v5 = [[v3 alloc] initForReadingFromData:dataCopy error:&v11];
 
   v6 = v11;
   if (v6)
@@ -741,11 +741,11 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)shouldUseSpecializedStringForWorkout:(id)a3
+- (BOOL)shouldUseSpecializedStringForWorkout:(id)workout
 {
-  v3 = [a3 workoutActivityType];
+  workoutActivityType = [workout workoutActivityType];
   result = FIActivityTypeIsCalorimetryOptimized();
-  if (v3 == 84)
+  if (workoutActivityType == 84)
   {
     return 1;
   }

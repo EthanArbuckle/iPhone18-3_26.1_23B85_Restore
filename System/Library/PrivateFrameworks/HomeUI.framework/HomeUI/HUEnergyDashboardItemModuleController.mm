@@ -1,43 +1,43 @@
 @interface HUEnergyDashboardItemModuleController
-- (Class)collectionCellClassForItem:(id)a3;
-- (HUEnergyDashboardItemModuleController)initWithModule:(id)a3;
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (Class)collectionCellClassForItem:(id)item;
+- (HUEnergyDashboardItemModuleController)initWithModule:(id)module;
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUEnergyDashboardItemModuleController
 
-- (HUEnergyDashboardItemModuleController)initWithModule:(id)a3
+- (HUEnergyDashboardItemModuleController)initWithModule:(id)module
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
   sub_20CF3035C();
 
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
   _s6HomeUI35EnergyDashboardItemModuleControllerC13configureCell_3forySo016UICollectionViewI0C_So6HFItemCtF_0();
 }
 
-- (id)collectionLayoutSectionForSectionWithIdentifier:(id)a3 layoutEnvironment:(id)a4
+- (id)collectionLayoutSectionForSectionWithIdentifier:(id)identifier layoutEnvironment:(id)environment
 {
   v6 = sub_20D567838();
   v8 = v7;
   v13 = xmmword_20D5BE8F0;
   v14 = 2;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_20CEFA3C8(v6, v8, &v13, a4);
+  selfCopy = self;
+  sub_20CEFA3C8(v6, v8, &v13, environment);
   v11 = v10;
 
   swift_unknownObjectRelease();

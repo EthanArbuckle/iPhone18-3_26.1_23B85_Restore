@@ -6,7 +6,7 @@
 
 - (void)settingsNavigationProxy_pop
 {
-  v2 = self;
+  selfCopy = self;
   UIViewController.settingsNavigationProxy_pop()();
 }
 

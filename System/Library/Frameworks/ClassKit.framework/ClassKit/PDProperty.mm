@@ -1,8 +1,8 @@
 @interface PDProperty
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
 + (NSString)entityName;
 - (PDDatabaseValue)identityValue;
-- (PDProperty)initWithDatabaseRow:(id)a3;
+- (PDProperty)initWithDatabaseRow:(id)row;
 @end
 
 @implementation PDProperty
@@ -28,15 +28,15 @@
   return self;
 }
 
-- (PDProperty)initWithDatabaseRow:(id)a3
+- (PDProperty)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v9.receiver = self;
   v9.super_class = PDProperty;
   v5 = [(PDProperty *)&v9 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"name");
+    v6 = sub_10016D778(rowCopy, @"name");
     name = v5->_name;
     v5->_name = v6;
   }
@@ -44,10 +44,10 @@
   return v5;
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v8 = a5;
-  if (a3)
+  databaseCopy = database;
+  if (version)
   {
     v9 = 1;
   }
@@ -55,18 +55,18 @@
   else
   {
     v10 = [[NSMutableString alloc] initWithString:@"create table "];
-    v11 = NSStringFromClass(a1);
+    v11 = NSStringFromClass(self);
     [v10 appendString:v11];
     objc_msgSend(v10, "appendString:", @" (");
     [v10 appendString:{@" name text not null, "}];
     [v10 appendString:@" value "];
-    v12 = [a1 valueSQLType];
-    [v10 appendString:v12];
+    valueSQLType = [self valueSQLType];
+    [v10 appendString:valueSQLType];
     [v10 appendString:@""]);
-    if (sub_1000B9298(v8, v10, 0, 0, 0) && ([v10 setString:@"create unique index "], objc_msgSend(v10, "appendString:", v11), objc_msgSend(v10, "appendString:", @"_name on "), objc_msgSend(v10, "appendString:", v11), objc_msgSend(v10, "appendString:", @" (name)"), sub_1000B9298(v8, v10, 0, 0, 0)))
+    if (sub_1000B9298(databaseCopy, v10, 0, 0, 0) && ([v10 setString:@"create unique index "], objc_msgSend(v10, "appendString:", v11), objc_msgSend(v10, "appendString:", @"_name on "), objc_msgSend(v10, "appendString:", v11), objc_msgSend(v10, "appendString:", @" (name)"), sub_1000B9298(databaseCopy, v10, 0, 0, 0)))
     {
       v9 = 1;
-      *a4 = 1;
+      *finalVersion = 1;
     }
 
     else

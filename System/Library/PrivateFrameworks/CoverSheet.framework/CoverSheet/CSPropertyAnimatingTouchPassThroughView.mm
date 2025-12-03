@@ -1,14 +1,14 @@
 @interface CSPropertyAnimatingTouchPassThroughView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation CSPropertyAnimatingTouchPassThroughView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CSPropertyAnimatingTouchPassThroughView *)self animatedLayerProperties];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  animatedLayerProperties = [(CSPropertyAnimatingTouchPassThroughView *)self animatedLayerProperties];
+  v6 = [animatedLayerProperties containsObject:keyCopy];
 
   if (v6)
   {
@@ -19,7 +19,7 @@
   {
     v9.receiver = self;
     v9.super_class = CSPropertyAnimatingTouchPassThroughView;
-    v7 = [(CSPropertyAnimatingTouchPassThroughView *)&v9 _shouldAnimatePropertyWithKey:v4];
+    v7 = [(CSPropertyAnimatingTouchPassThroughView *)&v9 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v7;

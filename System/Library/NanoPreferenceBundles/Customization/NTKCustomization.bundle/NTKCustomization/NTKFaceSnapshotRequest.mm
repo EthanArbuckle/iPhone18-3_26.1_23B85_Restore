@@ -1,15 +1,15 @@
 @interface NTKFaceSnapshotRequest
 - (BOOL)isReady;
-- (NTKFaceSnapshotRequest)initWithFace:(id)a3 options:(id)a4 completion:(id)a5;
+- (NTKFaceSnapshotRequest)initWithFace:(id)face options:(id)options completion:(id)completion;
 @end
 
 @implementation NTKFaceSnapshotRequest
 
-- (NTKFaceSnapshotRequest)initWithFace:(id)a3 options:(id)a4 completion:(id)a5
+- (NTKFaceSnapshotRequest)initWithFace:(id)face options:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  faceCopy = face;
+  optionsCopy = options;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = NTKFaceSnapshotRequest;
   v12 = [(NTKFaceSnapshotRequest *)&v20 init];
@@ -19,12 +19,12 @@
     creationDate = v12->_creationDate;
     v12->_creationDate = v13;
 
-    objc_storeStrong(&v12->_face, a3);
-    v15 = [v10 copy];
+    objc_storeStrong(&v12->_face, face);
+    v15 = [optionsCopy copy];
     options = v12->_options;
     v12->_options = v15;
 
-    v17 = [v11 copy];
+    v17 = [completionCopy copy];
     completion = v12->_completion;
     v12->_completion = v17;
   }
@@ -48,20 +48,20 @@
   [v2 enumerateComplicationSlotsWithBlock:&v9];
   if (*(v16 + 24))
   {
-    v3 = [v2 device];
-    v4 = [v3 pairingID];
-    if (v4)
+    device = [v2 device];
+    pairingID = [device pairingID];
+    if (pairingID)
     {
-      v5 = [qword_277A8 objectForKey:v4];
-      v6 = [v5 hasLoaded];
+      v5 = [qword_277A8 objectForKey:pairingID];
+      hasLoaded = [v5 hasLoaded];
     }
 
     else
     {
-      v6 = 1;
+      hasLoaded = 1;
     }
 
-    v7 = v6 & byte_277B0;
+    v7 = hasLoaded & byte_277B0;
   }
 
   else

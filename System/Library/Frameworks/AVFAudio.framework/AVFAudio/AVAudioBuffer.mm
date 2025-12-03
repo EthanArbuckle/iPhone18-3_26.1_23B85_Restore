@@ -1,13 +1,13 @@
 @interface AVAudioBuffer
-- (AVAudioBuffer)initWithFormat:(id)a3 byteCapacity:(unsigned int)a4;
-- (AVAudioBuffer)initWithPCMFormat:(id)a3 byteCapacity:(unsigned int)a4 bufferListNoCopy:(const AudioBufferList *)a5 deallocator:(id)a6;
+- (AVAudioBuffer)initWithFormat:(id)format byteCapacity:(unsigned int)capacity;
+- (AVAudioBuffer)initWithPCMFormat:(id)format byteCapacity:(unsigned int)capacity bufferListNoCopy:(const AudioBufferList *)copy deallocator:(id)deallocator;
 - (AudioBufferList)mutableAudioBufferList;
 - (const)audioBufferList;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unsigned)byteLength;
 - (void)dealloc;
-- (void)setByteLength:(unsigned int)a3;
+- (void)setByteLength:(unsigned int)length;
 @end
 
 @implementation AVAudioBuffer
@@ -181,7 +181,7 @@ LABEL_23:
   [(AVAudioBuffer *)&v13 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[AVAudioBuffer allocWithZone:?]byteCapacity:"initWithFormat:byteCapacity:", *self->_impl, *(self->_impl + 10)];
   impl = v4->_impl;
@@ -237,11 +237,11 @@ LABEL_23:
   return [v3 stringWithFormat:@"<%@@%p: %d/%d bytes>", NSStringFromClass(v4), self, -[AVAudioBuffer byteLength](self, "byteLength"), -[AVAudioBuffer byteCapacity](self, "byteCapacity")];
 }
 
-- (void)setByteLength:(unsigned int)a3
+- (void)setByteLength:(unsigned int)length
 {
   v29 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  if (impl[10] < a3)
+  if (impl[10] < length)
   {
     if (AVAudioEngineLogCategory(void)::once != -1)
     {
@@ -294,18 +294,18 @@ LABEL_23:
       v15 = vmovn_s64(vcgeq_u64(v10, v12));
       if (vuzp1_s16(v15, *v10.i8).u8[0])
       {
-        *(v13 - 8) = a3;
+        *(v13 - 8) = length;
       }
 
       if (vuzp1_s16(v15, *&v10).i8[2])
       {
-        *(v13 - 4) = a3;
+        *(v13 - 4) = length;
       }
 
       if (vuzp1_s16(*&v10, vmovn_s64(vcgeq_u64(v10, *&v11))).i32[1])
       {
-        *v13 = a3;
-        v13[4] = a3;
+        *v13 = length;
+        v13[4] = length;
       }
 
       v11 = vaddq_s64(v11, v14);
@@ -336,18 +336,18 @@ LABEL_23:
   return *(v3 + 12);
 }
 
-- (AVAudioBuffer)initWithPCMFormat:(id)a3 byteCapacity:(unsigned int)a4 bufferListNoCopy:(const AudioBufferList *)a5 deallocator:(id)a6
+- (AVAudioBuffer)initWithPCMFormat:(id)format byteCapacity:(unsigned int)capacity bufferListNoCopy:(const AudioBufferList *)copy deallocator:(id)deallocator
 {
   v31 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = AVAudioBuffer;
   if ([(AVAudioBuffer *)&v19 init])
   {
-    v8 = [a3 streamDescription];
-    v9 = *(v8 + 16);
-    v16 = *v8;
+    streamDescription = [format streamDescription];
+    v9 = *(streamDescription + 16);
+    v16 = *streamDescription;
     v17 = v9;
-    v18 = *(v8 + 32);
+    v18 = *(streamDescription + 32);
     {
       if (AVAudioEngineLogCategory(void)::once != -1)
       {
@@ -385,7 +385,7 @@ LABEL_23:
       v11 = 1;
     }
 
-    if (!a5)
+    if (!copy)
     {
       if (AVAudioEngineLogCategory(void)::once != -1)
       {
@@ -413,7 +413,7 @@ LABEL_23:
       [MEMORY[0x1E695DF30] raise:@"com.apple.coreaudio.avfaudio" format:{@"required condition is false: %s", "bufferList != nullptr"}];
     }
 
-    if (a5->mNumberBuffers != v11)
+    if (copy->mNumberBuffers != v11)
     {
       if (AVAudioEngineLogCategory(void)::once != -1)
       {
@@ -448,17 +448,17 @@ LABEL_23:
   return 0;
 }
 
-- (AVAudioBuffer)initWithFormat:(id)a3 byteCapacity:(unsigned int)a4
+- (AVAudioBuffer)initWithFormat:(id)format byteCapacity:(unsigned int)capacity
 {
   v9.receiver = self;
   v9.super_class = AVAudioBuffer;
   if ([(AVAudioBuffer *)&v9 init])
   {
-    v5 = [a3 streamDescription];
-    v6 = v5[2];
-    if ((v5[3] & 0x20) != 0)
+    streamDescription = [format streamDescription];
+    v6 = streamDescription[2];
+    if ((streamDescription[3] & 0x20) != 0)
     {
-      v7 = v5[7];
+      v7 = streamDescription[7];
     }
 
     operator new();

@@ -14,15 +14,15 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF70];
-  v3 = [a1 topics];
-  v4 = [v2 arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  topics = [self topics];
+  v4 = [v2 arrayWithCapacity:{objc_msgSend(topics, "count")}];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a1 topics];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  topics2 = [self topics];
+  v6 = [topics2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -33,14 +33,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(topics2);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) tagID];
-        [v4 addObject:v10];
+        tagID = [*(*(&v13 + 1) + 8 * i) tagID];
+        [v4 addObject:tagID];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [topics2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -57,16 +57,16 @@
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 base];
-    v9 = [v8 cacheLifetimeHint];
-    if (v9 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v10 = 2;
     }
 
     else
     {
-      v10 = v9 == 1;
+      v10 = cacheLifetimeHint == 1;
     }
 
     v11 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v10];
@@ -83,22 +83,22 @@
 - (id)generateFlintDocumentAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 flintDocumentURL];
-  if (v5)
+  flintDocumentURL = [self flintDocumentURL];
+  if (flintDocumentURL)
   {
-    v6 = [a1 base];
-    v7 = [v6 cacheLifetimeHint];
-    if (v7 == 2)
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = v7 == 1;
+      v8 = cacheLifetimeHint == 1;
     }
 
-    v9 = [v4 assetHandleForCKAssetURLString:v5 lifetimeHint:v8];
+    v9 = [v4 assetHandleForCKAssetURLString:flintDocumentURL lifetimeHint:v8];
   }
 
   else
@@ -112,35 +112,35 @@
 - (id)generateWebExcerptAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 base];
-  v6 = [v5 cacheLifetimeHint];
-  if (v6 == 2)
+  base = [self base];
+  cacheLifetimeHint = [base cacheLifetimeHint];
+  if (cacheLifetimeHint == 2)
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = v6 == 1;
+    v7 = cacheLifetimeHint == 1;
   }
 
-  v8 = [a1 excerptURL];
+  excerptURL = [self excerptURL];
 
-  if (v8)
+  if (excerptURL)
   {
-    v9 = [a1 excerptURL];
-    [v4 assetHandleForCKAssetURLString:v9 lifetimeHint:v7];
+    excerptURL2 = [self excerptURL];
+    [v4 assetHandleForCKAssetURLString:excerptURL2 lifetimeHint:v7];
   }
 
   else
   {
-    v10 = [a1 base];
-    v11 = [v10 identifier];
-    v12 = [a1 base];
-    v13 = [v12 changeTag];
-    v9 = [FCExcerptURLProtocol excerptURLForArticleID:v11 changeTag:v13];
+    base2 = [self base];
+    identifier = [base2 identifier];
+    base3 = [self base];
+    changeTag = [base3 changeTag];
+    excerptURL2 = [FCExcerptURLProtocol excerptURLForArticleID:identifier changeTag:changeTag];
 
-    [v4 assetHandleForURL:v9 lifetimeHint:v7];
+    [v4 assetHandleForURL:excerptURL2 lifetimeHint:v7];
   }
   v14 = ;
 
@@ -151,9 +151,9 @@
 {
   v4 = a3;
   v5 = +[FCRestrictions sharedInstance];
-  v6 = [a1 allowedStorefrontIDs];
-  v7 = [a1 blockedStorefrontIDs];
-  v8 = [v5 isContentAllowedInStorefrontID:v4 withAllowedStorefrontIDs:v6 blockedStorefrontIDs:v7];
+  allowedStorefrontIDs = [self allowedStorefrontIDs];
+  blockedStorefrontIDs = [self blockedStorefrontIDs];
+  v8 = [v5 isContentAllowedInStorefrontID:v4 withAllowedStorefrontIDs:allowedStorefrontIDs blockedStorefrontIDs:blockedStorefrontIDs];
 
   return v8;
 }
@@ -161,12 +161,12 @@
 - (id)narrativeTrackFullIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 base];
-  v4 = [v3 identifier];
+  base = [self base];
+  identifier = [base identifier];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [a1 narrativeTrackFullURL];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
-  v8 = [v2 stringWithFormat:@"%@-narration-full-%@", v4, v7];
+  narrativeTrackFullURL = [self narrativeTrackFullURL];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(narrativeTrackFullURL, "hash")}];
+  v8 = [v2 stringWithFormat:@"%@-narration-full-%@", identifier, v7];
 
   return v8;
 }
@@ -174,12 +174,12 @@
 - (id)narrativeTrackSampleIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 base];
-  v4 = [v3 identifier];
+  base = [self base];
+  identifier = [base identifier];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [a1 narrativeTrackSampleURL];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "hash")}];
-  v8 = [v2 stringWithFormat:@"%@-narration-sample-%@", v4, v7];
+  narrativeTrackSampleURL = [self narrativeTrackSampleURL];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(narrativeTrackSampleURL, "hash")}];
+  v8 = [v2 stringWithFormat:@"%@-narration-sample-%@", identifier, v7];
 
   return v8;
 }

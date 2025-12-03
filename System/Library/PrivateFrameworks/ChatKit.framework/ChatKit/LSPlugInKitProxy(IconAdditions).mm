@@ -8,19 +8,19 @@
 - (id)iconDataForInterfaceStyle:()IconAdditions
 {
   v4 = a3 == 2;
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
   v10 = v7;
-  v8 = [a1 iconDataForVariant:objc_msgSend(MEMORY[0x1E69DCAB8] withOptions:{"_iconVariantForUIApplicationIconFormat:scale:", 14, &v10), (v4 << 16)}];
+  v8 = [self iconDataForVariant:objc_msgSend(MEMORY[0x1E69DCAB8] withOptions:{"_iconVariantForUIApplicationIconFormat:scale:", 14, &v10), (v4 << 16)}];
 
   return v8;
 }
 
 - (id)iconForInterfaceStyle:()IconAdditions
 {
-  v1 = [a1 iconDataForInterfaceStyle:?];
+  v1 = [self iconDataForInterfaceStyle:?];
   if (v1 && (v2 = LICreateIconFromCachedBitmap()) != 0)
   {
     v3 = v2;

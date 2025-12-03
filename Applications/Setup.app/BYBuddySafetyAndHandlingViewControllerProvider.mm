@@ -1,17 +1,17 @@
 @interface BYBuddySafetyAndHandlingViewControllerProvider
 - (BOOL)canShow;
 - (BYBuddySafetyAndHandlingViewControllerProvider)init;
-- (BYBuddySafetyAndHandlingViewControllerProvider)initWithLanguageCode:(id)a3 regionCode:(id)a4;
+- (BYBuddySafetyAndHandlingViewControllerProvider)initWithLanguageCode:(id)code regionCode:(id)regionCode;
 - (id)makeViewController;
 @end
 
 @implementation BYBuddySafetyAndHandlingViewControllerProvider
 
-- (BYBuddySafetyAndHandlingViewControllerProvider)initWithLanguageCode:(id)a3 regionCode:(id)a4
+- (BYBuddySafetyAndHandlingViewControllerProvider)initWithLanguageCode:(id)code regionCode:(id)regionCode
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = [objc_allocWithZone(BYBuddySafetyAndHandlingBundleLocalizationProvider) initWithLanguageCode:a3];
+  v9 = [objc_allocWithZone(BYBuddySafetyAndHandlingBundleLocalizationProvider) initWithLanguageCode:code];
   *(&self->super.isa + OBJC_IVAR___BYBuddySafetyAndHandlingViewControllerProvider_localizationProvider) = v9;
   v10 = (self + OBJC_IVAR___BYBuddySafetyAndHandlingViewControllerProvider_region);
   *v10 = v6;
@@ -23,7 +23,7 @@
 
 - (BOOL)canShow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002AD44();
 
   return v3 & 1;
@@ -31,7 +31,7 @@
 
 - (id)makeViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002B024();
 
   return v3;

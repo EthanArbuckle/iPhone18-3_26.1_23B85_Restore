@@ -1,83 +1,83 @@
 @interface CNDataMapperContactStore
 + (BOOL)hasEnvironmentSettingsEnabledContactsOutOfProcess;
-+ (Class)dataMapperClassForConfiguration:(id)a3;
-- (BOOL)_requestDataMapperAccessType:(unint64_t)a3 error:(id *)a4;
-- (BOOL)analyzeDatabaseWithError:(id *)a3;
-- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)executeChangeHistoryClearRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6;
++ (Class)dataMapperClassForConfiguration:(id)configuration;
+- (BOOL)_requestDataMapperAccessType:(unint64_t)type error:(id *)error;
+- (BOOL)analyzeDatabaseWithError:(id *)error;
+- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block;
+- (BOOL)executeChangeHistoryClearRequest:(id)request error:(id *)error;
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error;
 - (BOOL)hasGroups;
 - (BOOL)hasMultipleGroupsOrAccounts;
-- (BOOL)isValidSaveRequest:(id)a3 authorizationContext:(id)a4 error:(id *)a5;
-- (BOOL)moveContacts:(id)a3 fromContainer:(id)a4 toContainer:(id)a5 error:(id *)a6;
-- (BOOL)registerChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)resetSortDataIfNeededWithError:(id *)a3;
-- (BOOL)setBestMeIfNeededForGivenName:(id)a3 familyName:(id)a4 email:(id)a5 error:(id *)a6;
-- (BOOL)setDefaultAccountIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setMeContact:(id)a3 error:(id *)a4;
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5;
-- (BOOL)shouldAnalyzeDatabaseWithError:(id *)a3;
+- (BOOL)isValidSaveRequest:(id)request authorizationContext:(id)context error:(id *)error;
+- (BOOL)moveContacts:(id)contacts fromContainer:(id)container toContainer:(id)toContainer error:(id *)error;
+- (BOOL)registerChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error;
+- (BOOL)resetSortDataIfNeededWithError:(id *)error;
+- (BOOL)setBestMeIfNeededForGivenName:(id)name familyName:(id)familyName email:(id)email error:(id *)error;
+- (BOOL)setDefaultAccountIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setMeContact:(id)contact error:(id *)error;
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error;
+- (BOOL)shouldAnalyzeDatabaseWithError:(id *)error;
 - (BOOL)supportsMatchingDictionaries;
-- (BOOL)unregisterChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)unregisterChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error;
 - (CNDataMapperContactStore)init;
-- (CNDataMapperContactStore)initWithConfiguration:(id)a3;
-- (CNDataMapperContactStore)initWithDataMapper:(id)a3 dataMapperConfiguration:(id)a4;
-- (CNDataMapperContactStore)initWithEnvironment:(id)a3 managedConfiguration:(id)a4;
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)changeHistoryWithFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactIdentifierWithMatchingDictionary:(id)a3;
-- (id)contactWithUserActivityUserInfo:(id)a3 keysToFetch:(id)a4;
-- (id)contactsForFetchRequest:(id)a3 matchInfos:(id *)a4 error:(id *)a5;
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4;
+- (CNDataMapperContactStore)initWithConfiguration:(id)configuration;
+- (CNDataMapperContactStore)initWithDataMapper:(id)mapper dataMapperConfiguration:(id)configuration;
+- (CNDataMapperContactStore)initWithEnvironment:(id)environment managedConfiguration:(id)configuration;
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)changeHistoryWithFetchRequest:(id)request error:(id *)error;
+- (id)contactCountForFetchRequest:(id)request error:(id *)error;
+- (id)contactIdentifierWithMatchingDictionary:(id)dictionary;
+- (id)contactWithUserActivityUserInfo:(id)info keysToFetch:(id)fetch;
+- (id)contactsForFetchRequest:(id)request matchInfos:(id *)infos error:(id *)error;
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error;
 - (id)currentHistoryAnchor;
 - (id)currentHistoryToken;
 - (id)defaultContainerIdentifier;
 - (id)description;
 - (id)descriptorForRequiredKeysForMatchingDictionary;
-- (id)executeFetchRequest:(id)a3 progressiveResults:(id)a4 completion:(id)a5;
-- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)a3;
-- (id)getBackgroundColorOnImageData:(id)a3 bitmapFormat:(id)a4 error:(id *)a5;
-- (id)getLimitedAccessContactsCountForBundle:(id)a3;
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3;
-- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(int64_t)a3;
-- (id)groupWithIdentifier:(id)a3 error:(id *)a4;
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4;
+- (id)executeFetchRequest:(id)request progressiveResults:(id)results completion:(id)completion;
+- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)bundle;
+- (id)getBackgroundColorOnImageData:(id)data bitmapFormat:(id)format error:(id *)error;
+- (id)getLimitedAccessContactsCountForBundle:(id)bundle;
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number;
+- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(int64_t)number;
+- (id)groupWithIdentifier:(id)identifier error:(id *)error;
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error;
 - (id)iOSMapper;
-- (id)identifierWithError:(id *)a3;
+- (id)identifierWithError:(id *)error;
 - (id)legacyTetheredSyncComputerAnchor;
 - (id)legacyTetheredSyncDeviceAnchor;
-- (id)matchingDictionaryForContact:(id)a3;
-- (id)meContactIdentifiers:(id *)a3;
-- (id)membersOfGroupWithIdentifier:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
-- (id)policyWithDescription:(id)a3 error:(id *)a4;
-- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)a3;
-- (id)requestAccessForEntityType:(int64_t)a3;
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4;
-- (id)serverSearchContainersMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4;
-- (id)unifiedContactCountWithError:(id *)a3;
-- (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4 error:(id *)a5;
-- (id)usedLabelsForPropertyWithKey:(id)a3 error:(id *)a4;
-- (id)userActivityUserInfoForContact:(id)a3;
+- (id)matchingDictionaryForContact:(id)contact;
+- (id)meContactIdentifiers:(id *)identifiers;
+- (id)membersOfGroupWithIdentifier:(id)identifier keysToFetch:(id)fetch error:(id *)error;
+- (id)policyWithDescription:(id)description error:(id *)error;
+- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)number;
+- (id)requestAccessForEntityType:(int64_t)type;
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error;
+- (id)serverSearchContainersMatchingPredicate:(id)predicate error:(id *)error;
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error;
+- (id)unifiedContactCountWithError:(id *)error;
+- (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch error:(id *)error;
+- (id)usedLabelsForPropertyWithKey:(id)key error:(id *)error;
+- (id)userActivityUserInfoForContact:(id)contact;
 - (int)saveSequenceCount;
-- (void)_logContactsAccessWasDeniedForAccessType:(unint64_t)a3 error:(id)a4;
-- (void)_logContactsAccessWasGrantedForAccessType:(unint64_t)a3;
-- (void)_logGreenTeaForAccessType:(unint64_t)a3;
-- (void)_logPrivacyAccountingForAccessType:(unint64_t)a3;
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4;
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4;
-- (void)applyLimitedAccessSyncEvents:(id)a3;
+- (void)_logContactsAccessWasDeniedForAccessType:(unint64_t)type error:(id)error;
+- (void)_logContactsAccessWasGrantedForAccessType:(unint64_t)type;
+- (void)_logGreenTeaForAccessType:(unint64_t)type;
+- (void)_logPrivacyAccountingForAccessType:(unint64_t)type;
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier;
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers;
+- (void)applyLimitedAccessSyncEvents:(id)events;
 - (void)dropAllLimitedAccessRows;
 - (void)dropAllLimitedAccessRowsAndSyncNotify;
-- (void)purgeLimitedAccessRecordsForBundle:(id)a3;
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4;
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4;
-- (void)requestReadAccessForEntityType:(int64_t)a3 completionHandler:(id)a4;
-- (void)setLegacyTetheredSyncComputerAnchor:(id)a3;
-- (void)setLegacyTetheredSyncDeviceAnchor:(id)a3;
-- (void)setLimitedAccessTableCurrentSequenceNumber:(id)a3;
-- (void)updateLimitedAccessTable:(id)a3;
+- (void)purgeLimitedAccessRecordsForBundle:(id)bundle;
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier;
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers;
+- (void)requestReadAccessForEntityType:(int64_t)type completionHandler:(id)handler;
+- (void)setLegacyTetheredSyncComputerAnchor:(id)anchor;
+- (void)setLegacyTetheredSyncDeviceAnchor:(id)anchor;
+- (void)setLimitedAccessTableCurrentSequenceNumber:(id)number;
+- (void)updateLimitedAccessTable:(id)table;
 @end
 
 @implementation CNDataMapperContactStore
@@ -94,12 +94,12 @@ void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfPr
 
 + (BOOL)hasEnvironmentSettingsEnabledContactsOutOfProcess
 {
-  v2 = [MEMORY[0x1E6996888] standardPreferences];
-  v3 = [v2 objectForKey:@"SUDO_OOP"];
+  standardPreferences = [MEMORY[0x1E6996888] standardPreferences];
+  v3 = [standardPreferences objectForKey:@"SUDO_OOP"];
   v4 = v3;
   if (!v3)
   {
-    if (([v2 userHasOptedOutOfPreference:@"TESTING_OUT_OF_PROCESS"] & 1) == 0)
+    if (([standardPreferences userHasOptedOutOfPreference:@"TESTING_OUT_OF_PROCESS"] & 1) == 0)
     {
       if (_block_invoke_cn_once_token_0 != -1)
       {
@@ -108,7 +108,7 @@ void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfPr
 
       if (![_block_invoke_cn_once_object_0 BOOLValue])
       {
-        v5 = 1;
+        bOOLValue = 1;
         goto LABEL_10;
       }
     }
@@ -121,10 +121,10 @@ void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfPr
     v3 = _block_invoke_2_cn_once_object_1;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 LABEL_10:
 
-  return v5;
+  return bOOLValue;
 }
 
 void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfProcess__block_invoke_4()
@@ -139,26 +139,26 @@ void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfPr
 
 - (id)currentHistoryToken
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) != 0 && [(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
   {
-    v5 = [(CNDataMapperContactStore *)self mapper];
-    v6 = [v5 currentHistoryToken];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    currentHistoryToken = [mapper2 currentHistoryToken];
   }
 
   else
   {
-    v6 = 0;
+    currentHistoryToken = 0;
   }
 
-  return v6;
+  return currentHistoryToken;
 }
 
 - (id)currentHistoryAnchor
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -168,8 +168,8 @@ void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfPr
     v6 = v12;
     if (v5)
     {
-      v7 = [(CNDataMapperContactStore *)self mapper];
-      v8 = [v7 currentHistoryAnchor];
+      mapper2 = [(CNDataMapperContactStore *)self mapper];
+      currentHistoryAnchor = [mapper2 currentHistoryAnchor];
 
       goto LABEL_7;
     }
@@ -184,19 +184,19 @@ void __77__CNDataMapperContactStore_hasEnvironmentSettingsEnabledContactsOutOfPr
     v10 = v9;
   }
 
-  v8 = [v10 failureWithError:v6];
+  currentHistoryAnchor = [v10 failureWithError:v6];
 LABEL_7:
 
-  return v8;
+  return currentHistoryAnchor;
 }
 
 - (id)iOSMapper
 {
   objc_opt_class();
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = mapper;
   }
 
   else
@@ -209,10 +209,10 @@ LABEL_7:
   return v4;
 }
 
-+ (Class)dataMapperClassForConfiguration:(id)a3
++ (Class)dataMapperClassForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 useOutOfProcessMapperExclusively] || !objc_msgSend(v4, "useInProcessMapperExclusively") && objc_msgSend(a1, "hasEnvironmentSettingsEnabledContactsOutOfProcess"))
+  configurationCopy = configuration;
+  if ([configurationCopy useOutOfProcessMapperExclusively] || !objc_msgSend(configurationCopy, "useInProcessMapperExclusively") && objc_msgSend(self, "hasEnvironmentSettingsEnabledContactsOutOfProcess"))
   {
     v5 = objc_opt_class();
   }
@@ -235,24 +235,24 @@ LABEL_7:
   return v4;
 }
 
-- (CNDataMapperContactStore)initWithEnvironment:(id)a3 managedConfiguration:(id)a4
+- (CNDataMapperContactStore)initWithEnvironment:(id)environment managedConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  environmentCopy = environment;
   v8 = objc_alloc_init(CNContactStoreConfiguration);
-  [(CNContactStoreConfiguration *)v8 setEnvironment:v7];
+  [(CNContactStoreConfiguration *)v8 setEnvironment:environmentCopy];
 
-  [(CNContactStoreConfiguration *)v8 setManagedConfiguration:v6];
+  [(CNContactStoreConfiguration *)v8 setManagedConfiguration:configurationCopy];
   v9 = [(CNDataMapperContactStore *)self initWithConfiguration:v8];
 
   return v9;
 }
 
-- (CNDataMapperContactStore)initWithConfiguration:(id)a3
+- (CNDataMapperContactStore)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:v4];
-  v6 = [objc_opt_class() dataMapperClassForConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [[CNDataMapperConfiguration alloc] initWithContactStoreConfiguration:configurationCopy];
+  v6 = [objc_opt_class() dataMapperClassForConfiguration:configurationCopy];
 
   v7 = [[v6 alloc] initWithConfiguration:v5];
   v8 = [(CNDataMapperContactStore *)self initWithDataMapper:v7 dataMapperConfiguration:v5];
@@ -260,10 +260,10 @@ LABEL_7:
   return v8;
 }
 
-- (CNDataMapperContactStore)initWithDataMapper:(id)a3 dataMapperConfiguration:(id)a4
+- (CNDataMapperContactStore)initWithDataMapper:(id)mapper dataMapperConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  mapperCopy = mapper;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = CNDataMapperContactStore;
   v9 = [(CNContactStore *)&v29 init];
@@ -273,44 +273,44 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v9->_mapper, a3);
-  v11 = [v8 environment];
-  v12 = [v11 loggerProvider];
-  v13 = [v12 contactsLogger];
+  objc_storeStrong(&v9->_mapper, mapper);
+  environment = [configurationCopy environment];
+  loggerProvider = [environment loggerProvider];
+  contactsLogger = [loggerProvider contactsLogger];
   logger = v10->_logger;
-  v10->_logger = v13;
+  v10->_logger = contactsLogger;
 
-  v10->_isContactProvider = [v8 isContactProvider];
+  v10->_isContactProvider = [configurationCopy isContactProvider];
   v15 = objc_alloc(MEMORY[0x1E6996800]);
-  v16 = [v8 assumedIdentity];
-  v17 = [v15 initWithAuditToken:0 assumedIdentity:v16];
+  assumedIdentity = [configurationCopy assumedIdentity];
+  v17 = [v15 initWithAuditToken:0 assumedIdentity:assumedIdentity];
   regulatoryLogger = v10->_regulatoryLogger;
   v10->_regulatoryLogger = v17;
 
   v10->_shouldLogPrivacyAccountingAccessEvents = 1;
-  v19 = [(CNDataMapperContactStore *)v10 mapper];
-  LOBYTE(v16) = objc_opt_respondsToSelector();
+  mapper = [(CNDataMapperContactStore *)v10 mapper];
+  LOBYTE(assumedIdentity) = objc_opt_respondsToSelector();
 
-  if (v16)
+  if (assumedIdentity)
   {
-    v20 = [(CNDataMapperContactStore *)v10 mapper];
-    v10->_shouldLogPrivacyAccountingAccessEvents = [v20 shouldLogPrivacyAccountingAccessEvents];
+    mapper2 = [(CNDataMapperContactStore *)v10 mapper];
+    v10->_shouldLogPrivacyAccountingAccessEvents = [mapper2 shouldLogPrivacyAccountingAccessEvents];
   }
 
-  v21 = [(CNDataMapperContactStore *)v10 mapper];
+  mapper3 = [(CNDataMapperContactStore *)v10 mapper];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v22 = [(CNDataMapperContactStore *)v10 mapper];
-  v23 = [v22 shouldCaptureMetricsForQueries];
+  mapper4 = [(CNDataMapperContactStore *)v10 mapper];
+  shouldCaptureMetricsForQueries = [mapper4 shouldCaptureMetricsForQueries];
 
-  if (v23)
+  if (shouldCaptureMetricsForQueries)
   {
     v24 = [CNQueryAnalyticsLogger alloc];
-    v21 = [v8 assumedIdentity];
-    v25 = [(CNQueryAnalyticsLogger *)v24 initWithAuditToken:0 assumedIdentity:v21];
+    mapper3 = [configurationCopy assumedIdentity];
+    v25 = [(CNQueryAnalyticsLogger *)v24 initWithAuditToken:0 assumedIdentity:mapper3];
     queryAnalyticsLogger = v10->_queryAnalyticsLogger;
     v10->_queryAnalyticsLogger = v25;
 
@@ -328,9 +328,9 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)setDefaultAccountIdentifier:(id)a3 error:(id *)a4
+- (BOOL)setDefaultAccountIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -341,7 +341,7 @@ LABEL_11:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__CNDataMapperContactStore_setDefaultAccountIdentifier_error___block_invoke;
@@ -349,14 +349,14 @@ LABEL_11:
   v11[4] = self;
   v13 = &v19;
   v14 = &v15;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  [v7 settingDefaultAccount:v11];
+  [logger settingDefaultAccount:v11];
 
   v9 = *(v16 + 24);
-  if (a4 && (v16[3] & 1) == 0)
+  if (error && (v16[3] & 1) == 0)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -399,7 +399,7 @@ void __62__CNDataMapperContactStore_setDefaultAccountIdentifier_error___block_in
   }
 }
 
-- (BOOL)resetSortDataIfNeededWithError:(id *)a3
+- (BOOL)resetSortDataIfNeededWithError:(id *)error
 {
   v13 = 0;
   v14 = &v13;
@@ -411,7 +411,7 @@ void __62__CNDataMapperContactStore_setDefaultAccountIdentifier_error___block_in
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__CNDataMapperContactStore_resetSortDataIfNeededWithError___block_invoke;
@@ -419,11 +419,11 @@ void __62__CNDataMapperContactStore_setDefaultAccountIdentifier_error___block_in
   v8[4] = self;
   v8[5] = &v13;
   v8[6] = &v9;
-  [v5 resettingSortDataIfNeeded:v8];
+  [logger resettingSortDataIfNeeded:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v14[5];
+    *error = v14[5];
   }
 
   v6 = *(v10 + 24);
@@ -469,20 +469,20 @@ void __59__CNDataMapperContactStore_resetSortDataIfNeededWithError___block_invok
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNDataMapperContactStore *)self mapper];
-  v5 = [v3 appendName:@"mapper" object:v4];
+  mapper = [(CNDataMapperContactStore *)self mapper];
+  v5 = [v3 appendName:@"mapper" object:mapper];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (id)identifierWithError:(id *)a3
+- (id)identifierWithError:(id *)error
 {
   if ([(CNDataMapperContactStore *)self requestMetadataAccessWithError:?]&& ([(CNDataMapperContactStore *)self mapper], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
-    v7 = [(CNDataMapperContactStore *)self mapper];
-    v8 = [v7 identifierWithError:a3];
+    mapper = [(CNDataMapperContactStore *)self mapper];
+    v8 = [mapper identifierWithError:error];
   }
 
   else
@@ -495,7 +495,7 @@ void __59__CNDataMapperContactStore_resetSortDataIfNeededWithError___block_invok
 
 - (int)saveSequenceCount
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || ![(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
@@ -503,13 +503,13 @@ void __59__CNDataMapperContactStore_resetSortDataIfNeededWithError___block_invok
     return -1;
   }
 
-  v5 = [(CNDataMapperContactStore *)self mapper];
-  v6 = [v5 saveSequenceCount];
+  mapper2 = [(CNDataMapperContactStore *)self mapper];
+  saveSequenceCount = [mapper2 saveSequenceCount];
 
-  return v6;
+  return saveSequenceCount;
 }
 
-- (id)meContactIdentifiers:(id *)a3
+- (id)meContactIdentifiers:(id *)identifiers
 {
   v11 = 0;
   v12 = &v11;
@@ -517,36 +517,36 @@ void __59__CNDataMapperContactStore_resetSortDataIfNeededWithError___block_invok
   v14 = __Block_byref_object_copy__19;
   v15 = __Block_byref_object_dispose__19;
   v16 = 0;
-  v5 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__CNDataMapperContactStore_meContactIdentifiers___block_invoke;
   v10[3] = &unk_1E7415558;
   v10[4] = self;
   v10[5] = &v11;
-  [v5 fetchingMeContactIdentifier:v10];
+  [logger fetchingMeContactIdentifier:v10];
 
   v6 = v12[5];
   if ((*(*MEMORY[0x1E6996490] + 16))())
   {
-    v7 = [v6 left];
+    left = [v6 left];
   }
 
   else
   {
-    v8 = [v6 right];
-    if (a3)
+    right = [v6 right];
+    if (identifiers)
     {
-      v8 = v8;
-      *a3 = v8;
+      right = right;
+      *identifiers = right;
     }
 
-    v7 = 0;
+    left = 0;
   }
 
   _Block_object_dispose(&v11, 8);
 
-  return v7;
+  return left;
 }
 
 void __49__CNDataMapperContactStore_meContactIdentifiers___block_invoke(uint64_t a1)
@@ -579,9 +579,9 @@ void __49__CNDataMapperContactStore_meContactIdentifiers___block_invoke(uint64_t
   }
 }
 
-- (BOOL)setMeContact:(id)a3 error:(id *)a4
+- (BOOL)setMeContact:(id)contact error:(id *)error
 {
-  v6 = a3;
+  contactCopy = contact;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -592,7 +592,7 @@ void __49__CNDataMapperContactStore_meContactIdentifiers___block_invoke(uint64_t
   v18 = __Block_byref_object_copy__19;
   v19 = __Block_byref_object_dispose__19;
   v20 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__CNDataMapperContactStore_setMeContact_error___block_invoke;
@@ -600,14 +600,14 @@ void __49__CNDataMapperContactStore_meContactIdentifiers___block_invoke(uint64_t
   v11[4] = self;
   v13 = &v15;
   v14 = &v21;
-  v8 = v6;
+  v8 = contactCopy;
   v12 = v8;
-  [v7 changingMeContact:v11];
+  [logger changingMeContact:v11];
 
   v9 = *(v22 + 24);
-  if (a4 && (v22[3] & 1) == 0)
+  if (error && (v22[3] & 1) == 0)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -659,10 +659,10 @@ void __47__CNDataMapperContactStore_setMeContact_error___block_invoke(uint64_t a
   }
 }
 
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  contactCopy = contact;
+  containerCopy = container;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -673,7 +673,7 @@ void __47__CNDataMapperContactStore_setMeContact_error___block_invoke(uint64_t a
   v23 = __Block_byref_object_copy__19;
   v24 = __Block_byref_object_dispose__19;
   v25 = 0;
-  v10 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__CNDataMapperContactStore_setMeContact_forContainer_error___block_invoke;
@@ -681,16 +681,16 @@ void __47__CNDataMapperContactStore_setMeContact_error___block_invoke(uint64_t a
   v15[4] = self;
   v18 = &v20;
   v19 = &v26;
-  v11 = v8;
+  v11 = contactCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = containerCopy;
   v17 = v12;
-  [v10 changingMeContact:v15];
+  [logger changingMeContact:v15];
 
   v13 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -743,11 +743,11 @@ void __60__CNDataMapperContactStore_setMeContact_forContainer_error___block_invo
   }
 }
 
-- (BOOL)setBestMeIfNeededForGivenName:(id)a3 familyName:(id)a4 email:(id)a5 error:(id *)a6
+- (BOOL)setBestMeIfNeededForGivenName:(id)name familyName:(id)familyName email:(id)email error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  familyNameCopy = familyName;
+  emailCopy = email;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -758,7 +758,7 @@ void __60__CNDataMapperContactStore_setMeContact_forContainer_error___block_invo
   v28 = __Block_byref_object_copy__19;
   v29 = __Block_byref_object_dispose__19;
   v30 = 0;
-  v13 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __81__CNDataMapperContactStore_setBestMeIfNeededForGivenName_familyName_email_error___block_invoke;
@@ -766,18 +766,18 @@ void __60__CNDataMapperContactStore_setMeContact_forContainer_error___block_invo
   v19[4] = self;
   v23 = &v25;
   v24 = &v31;
-  v14 = v10;
+  v14 = nameCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = familyNameCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = emailCopy;
   v22 = v16;
-  [v13 changingMeContact:v19];
+  [logger changingMeContact:v19];
 
   v17 = *(v32 + 24);
-  if (a6 && (v32[3] & 1) == 0)
+  if (error && (v32[3] & 1) == 0)
   {
-    *a6 = v26[5];
+    *error = v26[5];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -825,7 +825,7 @@ void __81__CNDataMapperContactStore_setBestMeIfNeededForGivenName_familyName_ema
   }
 }
 
-- (id)unifiedContactCountWithError:(id *)a3
+- (id)unifiedContactCountWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -839,7 +839,7 @@ void __81__CNDataMapperContactStore_setBestMeIfNeededForGivenName_familyName_ema
   v15 = __Block_byref_object_copy__19;
   v16 = __Block_byref_object_dispose__19;
   v17 = 0;
-  v5 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__CNDataMapperContactStore_unifiedContactCountWithError___block_invoke;
@@ -847,15 +847,15 @@ void __81__CNDataMapperContactStore_setBestMeIfNeededForGivenName_familyName_ema
   v11[4] = self;
   v11[5] = &v12;
   v11[6] = &v18;
-  [v5 fetchingContactCount:v11];
+  [logger fetchingContactCount:v11];
 
   v6 = v13[5];
   v7 = v19[5];
   v8 = v7;
-  if (a3 && !v7)
+  if (error && !v7)
   {
     v9 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   _Block_object_dispose(&v12, 8);
@@ -909,16 +909,16 @@ void __57__CNDataMapperContactStore_unifiedContactCountWithError___block_invoke(
   }
 }
 
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4
+- (id)contactCountForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  if ([v6 shouldFailIfAccountNotYetSynced] && !-[CNContactStore hasAccountFirstSyncCompleted](self, "hasAccountFirstSyncCompleted"))
+  requestCopy = request;
+  if ([requestCopy shouldFailIfAccountNotYetSynced] && !-[CNContactStore hasAccountFirstSyncCompleted](self, "hasAccountFirstSyncCompleted"))
   {
     v12 = [CNErrorFactory errorWithCode:1007];
-    if (a4)
+    if (error)
     {
       v12 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v10 = 0;
@@ -938,7 +938,7 @@ void __57__CNDataMapperContactStore_unifiedContactCountWithError___block_invoke(
     v21 = __Block_byref_object_copy__19;
     v22 = __Block_byref_object_dispose__19;
     v23 = 0;
-    v7 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __62__CNDataMapperContactStore_contactCountForFetchRequest_error___block_invoke;
@@ -946,16 +946,16 @@ void __57__CNDataMapperContactStore_unifiedContactCountWithError___block_invoke(
     v14[4] = self;
     v16 = &v18;
     v17 = &v24;
-    v15 = v6;
-    [v7 fetchingContactCount:v14];
+    v15 = requestCopy;
+    [logger fetchingContactCount:v14];
 
     v8 = v19[5];
     v9 = v25[5];
     v10 = v9;
-    if (a4 && !v9)
+    if (error && !v9)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     _Block_object_dispose(&v18, 8);
@@ -986,7 +986,7 @@ void __62__CNDataMapperContactStore_contactCountForFetchRequest_error___block_in
   }
 }
 
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -1000,7 +1000,7 @@ void __62__CNDataMapperContactStore_contactCountForFetchRequest_error___block_in
   v17 = __Block_byref_object_copy__19;
   v18 = __Block_byref_object_dispose__19;
   v19 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__CNDataMapperContactStore_sectionListOffsetsForSortOrder_error___block_invoke;
@@ -1008,16 +1008,16 @@ void __62__CNDataMapperContactStore_contactCountForFetchRequest_error___block_in
   v13[4] = self;
   v13[5] = &v14;
   v13[6] = &v20;
-  v13[7] = a3;
-  [v7 fetchingContactSectionCounts:v13];
+  v13[7] = order;
+  [logger fetchingContactSectionCounts:v13];
 
   v8 = v15[5];
   v9 = v21[5];
   v10 = v9;
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   _Block_object_dispose(&v14, 8);
@@ -1063,11 +1063,11 @@ void __65__CNDataMapperContactStore_sectionListOffsetsForSortOrder_error___block
   }
 }
 
-- (BOOL)moveContacts:(id)a3 fromContainer:(id)a4 toContainer:(id)a5 error:(id *)a6
+- (BOOL)moveContacts:(id)contacts fromContainer:(id)container toContainer:(id)toContainer error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  contactsCopy = contacts;
+  containerCopy = container;
+  toContainerCopy = toContainer;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1078,7 +1078,7 @@ void __65__CNDataMapperContactStore_sectionListOffsetsForSortOrder_error___block
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  v13 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __73__CNDataMapperContactStore_moveContacts_fromContainer_toContainer_error___block_invoke;
@@ -1086,18 +1086,18 @@ void __65__CNDataMapperContactStore_sectionListOffsetsForSortOrder_error___block
   v19[4] = self;
   v23 = &v29;
   v24 = &v25;
-  v14 = v10;
+  v14 = contactsCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = containerCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = toContainerCopy;
   v22 = v16;
-  [v13 fetchingContactSectionCounts:v19];
+  [logger fetchingContactSectionCounts:v19];
 
   v17 = *(v26 + 24);
-  if (a6 && (v26[3] & 1) == 0)
+  if (error && (v26[3] & 1) == 0)
   {
-    *a6 = v30[5];
+    *error = v30[5];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -1141,10 +1141,10 @@ void __73__CNDataMapperContactStore_moveContacts_fromContainer_toContainer_error
   }
 }
 
-- (id)unifiedContactsMatchingPredicate:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)unifiedContactsMatchingPredicate:(id)predicate keysToFetch:(id)fetch error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  predicateCopy = predicate;
+  fetchCopy = fetch;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v11 = +[CNAPITriageLogger os_log];
   v12 = os_signpost_id_generate(v11);
@@ -1168,14 +1168,14 @@ void __73__CNDataMapperContactStore_moveContacts_fromContainer_toContainer_error
   v18 = _Block_copy(v17);
   [v15 push:v18];
 
-  if (!v9 && pthread_main_np() == 1)
+  if (!predicateCopy && pthread_main_np() == 1)
   {
-    v19 = [MEMORY[0x1E69C75D0] currentProcess];
-    if ([v19 isApplication])
+    currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+    if ([currentProcess isApplication])
     {
-      v20 = [MEMORY[0x1E696AE30] processInfo];
-      v21 = [v20 environment];
-      v22 = [v21 objectForKeyedSubscript:@"CN_UNIT_TESTING"];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      environment = [processInfo environment];
+      v22 = [environment objectForKeyedSubscript:@"CN_UNIT_TESTING"];
       v23 = v22;
       if (!v22 || ![v22 length] || (objc_msgSend(v23, "_cn_caseInsensitiveIsEqual:", @"NO") & 1) != 0 || (objc_msgSend(v23, "_cn_caseInsensitiveIsEqual:", @"N") & 1) != 0 || (objc_msgSend(v23, "_cn_caseInsensitiveIsEqual:", @"FALSE") & 1) != 0 || (objc_msgSend(v23, "_cn_caseInsensitiveIsEqual:", @"F") & 1) != 0)
       {
@@ -1221,25 +1221,25 @@ LABEL_19:
   v41 = __Block_byref_object_copy__19;
   v42 = __Block_byref_object_dispose__19;
   v43 = 0;
-  v25 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __79__CNDataMapperContactStore_unifiedContactsMatchingPredicate_keysToFetch_error___block_invoke_67;
   v33[3] = &unk_1E74155F8;
   v33[4] = self;
   v36 = &v38;
-  v34 = v10;
-  v35 = v9;
+  v34 = fetchCopy;
+  v35 = predicateCopy;
   v37 = buf;
-  [v25 fetchingContacts:v33];
+  [logger fetchingContacts:v33];
 
   v26 = v39[5];
   v27 = *(v45 + 5);
   v28 = v27;
-  if (a5 && !v27)
+  if (error && !v27)
   {
     v29 = v26;
-    *a5 = v26;
+    *error = v26;
   }
 
   _Block_object_dispose(&v38, 8);
@@ -1299,10 +1299,10 @@ void __79__CNDataMapperContactStore_unifiedContactsMatchingPredicate_keysToFetch
   }
 }
 
-- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateContactsAndMatchInfoWithFetchRequest:(id)request error:(id *)error usingBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  requestCopy = request;
+  blockCopy = block;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v11 = +[CNAPITriageLogger os_log];
   v12 = os_signpost_id_generate(v11);
@@ -1326,8 +1326,8 @@ void __79__CNDataMapperContactStore_unifiedContactsMatchingPredicate_keysToFetch
   v18 = _Block_copy(v17);
   [v15 push:v18];
 
-  v19 = [(CNDataMapperContactStore *)self queryAnalyticsLogger];
-  [v19 recordQueryWithFetchRequest:v9];
+  queryAnalyticsLogger = [(CNDataMapperContactStore *)self queryAnalyticsLogger];
+  [queryAnalyticsLogger recordQueryWithFetchRequest:requestCopy];
 
   *buf = 0;
   v38 = buf;
@@ -1335,26 +1335,26 @@ void __79__CNDataMapperContactStore_unifiedContactsMatchingPredicate_keysToFetch
   v40 = __Block_byref_object_copy__19;
   v41 = __Block_byref_object_dispose__19;
   v42 = 0;
-  v20 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v29 = MEMORY[0x1E69E9820];
   v30 = 3221225472;
   v31 = __91__CNDataMapperContactStore_enumerateContactsAndMatchInfoWithFetchRequest_error_usingBlock___block_invoke_71;
   v32 = &unk_1E7415698;
-  v33 = self;
+  selfCopy = self;
   v36 = buf;
-  v34 = v9;
-  v35 = v10;
-  [v20 fetchingContacts:&v29];
+  v34 = requestCopy;
+  v35 = blockCopy;
+  [logger fetchingContacts:&v29];
 
   v21 = *(v38 + 5);
   v25 = (*(*MEMORY[0x1E6996490] + 16))(*MEMORY[0x1E6996490], v21, v22, v23, v24);
   if ((v25 & 1) == 0)
   {
-    v26 = [v21 right];
-    if (a4)
+    right = [v21 right];
+    if (error)
     {
-      v26 = v26;
-      *a4 = v26;
+      right = right;
+      *error = right;
     }
   }
 
@@ -1526,9 +1526,9 @@ void __91__CNDataMapperContactStore_enumerateContactsAndMatchInfoWithFetchReques
   }
 }
 
-- (id)contactsForFetchRequest:(id)a3 matchInfos:(id *)a4 error:(id *)a5
+- (id)contactsForFetchRequest:(id)request matchInfos:(id *)infos error:(id *)error
 {
-  v9 = a3;
+  requestCopy = request;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v10 = +[CNAPITriageLogger os_log];
   v11 = os_signpost_id_generate(v10);
@@ -1552,25 +1552,25 @@ void __91__CNDataMapperContactStore_enumerateContactsAndMatchInfoWithFetchReques
   v17 = _Block_copy(v16);
   [v14 push:v17];
 
-  v18 = [(CNDataMapperContactStore *)self queryAnalyticsLogger];
-  [v18 recordQueryWithFetchRequest:v9];
+  queryAnalyticsLogger = [(CNDataMapperContactStore *)self queryAnalyticsLogger];
+  [queryAnalyticsLogger recordQueryWithFetchRequest:requestCopy];
 
   v19 = [CNContactFetchRequestExecutor alloc];
-  v20 = [(CNDataMapperContactStore *)self mapper];
-  v21 = [(CNContactFetchRequestExecutor *)&v19->super.isa initWithDataMapper:v20];
+  mapper = [(CNDataMapperContactStore *)self mapper];
+  v21 = [(CNContactFetchRequestExecutor *)&v19->super.isa initWithDataMapper:mapper];
 
-  v22 = [(CNContactFetchRequestExecutor *)v21 observableForFetchRequest:v9];
-  v23 = [v22 allObjects:a5];
-  v24 = [v23 _cn_flatten];
+  v22 = [(CNContactFetchRequestExecutor *)v21 observableForFetchRequest:requestCopy];
+  v23 = [v22 allObjects:error];
+  _cn_flatten = [v23 _cn_flatten];
 
-  v25 = [v24 _cn_map:*MEMORY[0x1E69965A0]];
-  if (a4)
+  v25 = [_cn_flatten _cn_map:*MEMORY[0x1E69965A0]];
+  if (infos)
   {
-    v26 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v24, "count")}];
-    v27 = [v24 _cn_reduce:&__block_literal_global_89_0 initialValue:v26];
+    v26 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(_cn_flatten, "count")}];
+    v27 = [_cn_flatten _cn_reduce:&__block_literal_global_89_0 initialValue:v26];
 
     v28 = v27;
-    *a4 = v27;
+    *infos = v27;
   }
 
   [v14 popAllWithHandler:&__block_literal_global_92];
@@ -1609,11 +1609,11 @@ id __69__CNDataMapperContactStore_contactsForFetchRequest_matchInfos_error___blo
   return v4;
 }
 
-- (id)executeFetchRequest:(id)a3 progressiveResults:(id)a4 completion:(id)a5
+- (id)executeFetchRequest:(id)request progressiveResults:(id)results completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  resultsCopy = results;
+  completionCopy = completion;
   [CNAPITriageLogger setThreadEntryPoint:a2];
   v12 = +[CNAPITriageLogger os_log];
   v13 = os_signpost_id_generate(v12);
@@ -1638,18 +1638,18 @@ id __69__CNDataMapperContactStore_contactsForFetchRequest_matchInfos_error___blo
   [v16 push:v19];
 
   v20 = objc_alloc_init(MEMORY[0x1E6996668]);
-  v21 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __78__CNDataMapperContactStore_executeFetchRequest_progressiveResults_completion___block_invoke_94;
   v30 = &unk_1E7415708;
-  v34 = v11;
-  v31 = v9;
-  v32 = self;
+  v34 = completionCopy;
+  v31 = requestCopy;
+  selfCopy = self;
   v22 = v20;
   v33 = v22;
-  v35 = v10;
-  [v21 fetchingContacts:&v27];
+  v35 = resultsCopy;
+  [logger fetchingContacts:&v27];
 
   v23 = v35;
   v24 = v22;
@@ -1753,9 +1753,9 @@ LABEL_9:
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1768,7 +1768,7 @@ LABEL_9:
   v21 = __Block_byref_object_copy__19;
   v22 = __Block_byref_object_dispose__19;
   v23 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__CNDataMapperContactStore_groupsMatchingPredicate_error___block_invoke;
@@ -1776,17 +1776,17 @@ LABEL_9:
   v14[4] = self;
   v16 = &v18;
   v17 = &v24;
-  v8 = v6;
+  v8 = predicateCopy;
   v15 = v8;
-  [v7 fetchingGroups:v14];
+  [logger fetchingGroups:v14];
 
   v9 = v19[5];
   v10 = v25[5];
   v11 = v10;
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -1816,9 +1816,9 @@ void __58__CNDataMapperContactStore_groupsMatchingPredicate_error___block_invoke
   }
 }
 
-- (id)groupWithIdentifier:(id)a3 error:(id *)a4
+- (id)groupWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1831,7 +1831,7 @@ void __58__CNDataMapperContactStore_groupsMatchingPredicate_error___block_invoke
   v21 = __Block_byref_object_copy__19;
   v22 = __Block_byref_object_dispose__19;
   v23 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__CNDataMapperContactStore_groupWithIdentifier_error___block_invoke;
@@ -1839,17 +1839,17 @@ void __58__CNDataMapperContactStore_groupsMatchingPredicate_error___block_invoke
   v14[4] = self;
   v16 = &v18;
   v17 = &v24;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
-  [v7 fetchingGroups:v14];
+  [logger fetchingGroups:v14];
 
   v9 = v19[5];
   v10 = v25[5];
   v11 = v10;
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -1905,10 +1905,10 @@ void __54__CNDataMapperContactStore_groupWithIdentifier_error___block_invoke(uin
   }
 }
 
-- (id)membersOfGroupWithIdentifier:(id)a3 keysToFetch:(id)a4 error:(id *)a5
+- (id)membersOfGroupWithIdentifier:(id)identifier keysToFetch:(id)fetch error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  fetchCopy = fetch;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1921,27 +1921,27 @@ void __54__CNDataMapperContactStore_groupWithIdentifier_error___block_invoke(uin
   v26 = __Block_byref_object_copy__19;
   v27 = __Block_byref_object_dispose__19;
   v28 = 0;
-  v10 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__CNDataMapperContactStore_membersOfGroupWithIdentifier_keysToFetch_error___block_invoke;
   v18[3] = &unk_1E74155F8;
   v18[4] = self;
   v21 = &v23;
-  v11 = v8;
+  v11 = identifierCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = fetchCopy;
   v20 = v12;
   v22 = &v29;
-  [v10 fetchingContacts:v18];
+  [logger fetchingContacts:v18];
 
   v13 = v24[5];
   v14 = v30[5];
   v15 = v14;
-  if (a5 && !v14)
+  if (error && !v14)
   {
     v16 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
   _Block_object_dispose(&v23, 8);
@@ -1973,9 +1973,9 @@ void __75__CNDataMapperContactStore_membersOfGroupWithIdentifier_keysToFetch_err
   }
 }
 
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1988,7 +1988,7 @@ void __75__CNDataMapperContactStore_membersOfGroupWithIdentifier_keysToFetch_err
   v21 = __Block_byref_object_copy__19;
   v22 = __Block_byref_object_dispose__19;
   v23 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__CNDataMapperContactStore_subgroupsOfGroupWithIdentifier_error___block_invoke;
@@ -1996,17 +1996,17 @@ void __75__CNDataMapperContactStore_membersOfGroupWithIdentifier_keysToFetch_err
   v14[4] = self;
   v16 = &v18;
   v17 = &v24;
-  v8 = v6;
+  v8 = identifierCopy;
   v15 = v8;
-  [v7 fetchingGroups:v14];
+  [logger fetchingGroups:v14];
 
   v9 = v19[5];
   v10 = v25[5];
   v11 = v10;
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -2036,9 +2036,9 @@ void __65__CNDataMapperContactStore_subgroupsOfGroupWithIdentifier_error___block
   }
 }
 
-- (id)containersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)containersMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2051,7 +2051,7 @@ void __65__CNDataMapperContactStore_subgroupsOfGroupWithIdentifier_error___block
   v21 = __Block_byref_object_copy__19;
   v22 = __Block_byref_object_dispose__19;
   v23 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__CNDataMapperContactStore_containersMatchingPredicate_error___block_invoke;
@@ -2059,17 +2059,17 @@ void __65__CNDataMapperContactStore_subgroupsOfGroupWithIdentifier_error___block
   v14[4] = self;
   v16 = &v18;
   v17 = &v24;
-  v8 = v6;
+  v8 = predicateCopy;
   v15 = v8;
-  [v7 fetchingContainers:v14];
+  [logger fetchingContainers:v14];
 
   v9 = v19[5];
   v10 = v25[5];
   v11 = v10;
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -2099,9 +2099,9 @@ void __62__CNDataMapperContactStore_containersMatchingPredicate_error___block_in
   }
 }
 
-- (id)serverSearchContainersMatchingPredicate:(id)a3 error:(id *)a4
+- (id)serverSearchContainersMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2114,7 +2114,7 @@ void __62__CNDataMapperContactStore_containersMatchingPredicate_error___block_in
   v21 = __Block_byref_object_copy__19;
   v22 = __Block_byref_object_dispose__19;
   v23 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__CNDataMapperContactStore_serverSearchContainersMatchingPredicate_error___block_invoke;
@@ -2122,17 +2122,17 @@ void __62__CNDataMapperContactStore_containersMatchingPredicate_error___block_in
   v14[4] = self;
   v16 = &v18;
   v17 = &v24;
-  v8 = v6;
+  v8 = predicateCopy;
   v15 = v8;
-  [v7 fetchingContainers:v14];
+  [logger fetchingContainers:v14];
 
   v9 = v19[5];
   v10 = v25[5];
   v11 = v10;
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -2162,9 +2162,9 @@ void __74__CNDataMapperContactStore_serverSearchContainersMatchingPredicate_erro
   }
 }
 
-- (id)policyWithDescription:(id)a3 error:(id *)a4
+- (id)policyWithDescription:(id)description error:(id *)error
 {
-  v6 = a3;
+  descriptionCopy = description;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2177,7 +2177,7 @@ void __74__CNDataMapperContactStore_serverSearchContainersMatchingPredicate_erro
   v21 = __Block_byref_object_copy__19;
   v22 = __Block_byref_object_dispose__19;
   v23 = 0;
-  v7 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke;
@@ -2185,17 +2185,17 @@ void __74__CNDataMapperContactStore_serverSearchContainersMatchingPredicate_erro
   v14[4] = self;
   v16 = &v18;
   v17 = &v24;
-  v8 = v6;
+  v8 = descriptionCopy;
   v15 = v8;
-  [v7 fetchingContainers:v14];
+  [logger fetchingContainers:v14];
 
   v9 = v19[5];
   v10 = v25[5];
   v11 = v10;
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v12 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   _Block_object_dispose(&v18, 8);
@@ -2225,16 +2225,16 @@ void __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke(u
   }
 }
 
-- (id)usedLabelsForPropertyWithKey:(id)a3 error:(id *)a4
+- (id)usedLabelsForPropertyWithKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  keyCopy = key;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
-    v10 = [v9 usedLabelsForPropertyWithKey:v6 error:a4];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v10 = [mapper2 usedLabelsForPropertyWithKey:keyCopy error:error];
   }
 
   else
@@ -2245,13 +2245,13 @@ void __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke(u
   return v10;
 }
 
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
-  if ([(CNDataMapperContactStore *)self requestMetadataAccessWithError:a4])
+  predicateCopy = predicate;
+  if ([(CNDataMapperContactStore *)self requestMetadataAccessWithError:error])
   {
-    v7 = [(CNDataMapperContactStore *)self mapper];
-    v8 = [v7 accountsMatchingPredicate:v6 error:a4];
+    mapper = [(CNDataMapperContactStore *)self mapper];
+    v8 = [mapper accountsMatchingPredicate:predicateCopy error:error];
   }
 
   else
@@ -2262,16 +2262,16 @@ void __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke(u
   return v8;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  contextCopy = context;
   v10 = +[CNAPITriageLogger os_log];
   v11 = os_signpost_id_generate(v10);
-  v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v13 = [v12 timeProvider];
-  [v13 timestamp];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   v15 = v14;
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2306,20 +2306,20 @@ void __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke(u
   v43 = __Block_byref_object_copy__19;
   v44 = __Block_byref_object_dispose__19;
   v45 = 0;
-  v20 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __83__CNDataMapperContactStore_executeSaveRequest_response_authorizationContext_error___block_invoke;
   v34[3] = &unk_1E7415730;
   v34[4] = self;
   v37 = buf;
-  v21 = v8;
+  v21 = requestCopy;
   v35 = v21;
-  v22 = v9;
+  v22 = contextCopy;
   v36 = v22;
   v38 = &v49;
   v39 = &v40;
-  [v20 saving:v34];
+  [logger saving:v34];
 
   v23 = v17;
   v24 = v23;
@@ -2329,14 +2329,14 @@ void __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke(u
     _os_signpost_emit_with_name_impl(&dword_1954A0000, v24, OS_SIGNPOST_INTERVAL_END, v19, "Saving Contacts", "", v53, 2u);
   }
 
-  if (a4)
+  if (response)
   {
-    *a4 = v41[5];
+    *response = v41[5];
   }
 
-  v25 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v26 = [v25 timeProvider];
-  [v26 timestamp];
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider2 = [currentEnvironment2 timeProvider];
+  [timeProvider2 timestamp];
   v28 = v27;
 
   v29 = [MEMORY[0x1E6996858] stringForTimeInterval:v28 - v15];
@@ -2356,9 +2356,9 @@ void __56__CNDataMapperContactStore_policyWithDescription_error___block_invoke(u
   }
 
   v30 = *(v50 + 24);
-  if (a6 && (v50[3] & 1) == 0)
+  if (error && (v50[3] & 1) == 0)
   {
-    *a6 = *(v47[0] + 40);
+    *error = *(v47[0] + 40);
   }
 
   _Block_object_dispose(&v40, 8);
@@ -2433,36 +2433,36 @@ void __83__CNDataMapperContactStore_executeSaveRequest_response_authorizationCon
   }
 }
 
-- (BOOL)isValidSaveRequest:(id)a3 authorizationContext:(id)a4 error:(id *)a5
+- (BOOL)isValidSaveRequest:(id)request authorizationContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() storeIdentifier];
+  requestCopy = request;
+  contextCopy = context;
+  storeIdentifier = [objc_opt_class() storeIdentifier];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__19;
   v28 = __Block_byref_object_dispose__19;
   v29 = 0;
-  v10 = [v7 addedContactsByContainerIdentifier];
-  v11 = [v10 allValues];
+  addedContactsByContainerIdentifier = [requestCopy addedContactsByContainerIdentifier];
+  allValues = [addedContactsByContainerIdentifier allValues];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __74__CNDataMapperContactStore_isValidSaveRequest_authorizationContext_error___block_invoke;
   v21[3] = &unk_1E7415780;
-  v12 = v9;
+  v12 = storeIdentifier;
   v22 = v12;
   v23 = &v24;
-  v13 = [v11 _cn_all:v21];
+  v13 = [allValues _cn_all:v21];
 
   if (v13)
   {
     v14 = (v25 + 5);
     obj = v25[5];
-    v15 = [CNSaveRequestVerifier isValidSaveRequest:v7 error:&obj];
+    v15 = [CNSaveRequestVerifier isValidSaveRequest:requestCopy error:&obj];
     objc_storeStrong(v14, obj);
     v16 = !v15;
-    if (!v8)
+    if (!contextCopy)
     {
       v16 = 1;
     }
@@ -2471,7 +2471,7 @@ void __83__CNDataMapperContactStore_executeSaveRequest_response_authorizationCon
     {
       v17 = (v25 + 5);
       v19 = v25[5];
-      v15 = [CNSaveRequestVerifier isSaveRequest:v7 authorizedForSavingWithContext:v8 error:&v19];
+      v15 = [CNSaveRequestVerifier isSaveRequest:requestCopy authorizedForSavingWithContext:contextCopy error:&v19];
       objc_storeStrong(v17, v19);
     }
   }
@@ -2481,9 +2481,9 @@ void __83__CNDataMapperContactStore_executeSaveRequest_response_authorizationCon
     v15 = 0;
   }
 
-  if (a5 && !v15)
+  if (error && !v15)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   _Block_object_dispose(&v24, 8);
@@ -2544,14 +2544,14 @@ uint64_t __74__CNDataMapperContactStore_isValidSaveRequest_authorizationContext_
     v10 = __Block_byref_object_copy__19;
     v11 = __Block_byref_object_dispose__19;
     v12 = 0;
-    v4 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __54__CNDataMapperContactStore_defaultContainerIdentifier__block_invoke;
     v6[3] = &unk_1E74157A8;
     v6[4] = self;
     v6[5] = &v7;
-    [v4 fetchingDefaultContainerIdentifier:v6];
+    [logger fetchingDefaultContainerIdentifier:v6];
 
     v3 = v8[5];
     _Block_object_dispose(&v7, 8);
@@ -2571,72 +2571,72 @@ void __54__CNDataMapperContactStore_defaultContainerIdentifier__block_invoke(uin
 
 - (id)legacyTetheredSyncDeviceAnchor
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) != 0 && [(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
   {
-    v5 = [(CNDataMapperContactStore *)self mapper];
-    v6 = [v5 legacyTetheredSyncDeviceAnchor];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    legacyTetheredSyncDeviceAnchor = [mapper2 legacyTetheredSyncDeviceAnchor];
   }
 
   else
   {
-    v6 = 0;
+    legacyTetheredSyncDeviceAnchor = 0;
   }
 
-  return v6;
+  return legacyTetheredSyncDeviceAnchor;
 }
 
-- (void)setLegacyTetheredSyncDeviceAnchor:(id)a3
+- (void)setLegacyTetheredSyncDeviceAnchor:(id)anchor
 {
-  v7 = a3;
-  v4 = [(CNDataMapperContactStore *)self mapper];
+  anchorCopy = anchor;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) != 0 && [(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
   {
-    v6 = [(CNDataMapperContactStore *)self mapper];
-    [v6 setLegacyTetheredSyncDeviceAnchor:v7];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    [mapper2 setLegacyTetheredSyncDeviceAnchor:anchorCopy];
   }
 }
 
 - (id)legacyTetheredSyncComputerAnchor
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) != 0 && [(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
   {
-    v5 = [(CNDataMapperContactStore *)self mapper];
-    v6 = [v5 legacyTetheredSyncComputerAnchor];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    legacyTetheredSyncComputerAnchor = [mapper2 legacyTetheredSyncComputerAnchor];
   }
 
   else
   {
-    v6 = 0;
+    legacyTetheredSyncComputerAnchor = 0;
   }
 
-  return v6;
+  return legacyTetheredSyncComputerAnchor;
 }
 
-- (void)setLegacyTetheredSyncComputerAnchor:(id)a3
+- (void)setLegacyTetheredSyncComputerAnchor:(id)anchor
 {
-  v7 = a3;
-  v4 = [(CNDataMapperContactStore *)self mapper];
+  anchorCopy = anchor;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) != 0 && [(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
   {
-    v6 = [(CNDataMapperContactStore *)self mapper];
-    [v6 setLegacyTetheredSyncComputerAnchor:v7];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    [mapper2 setLegacyTetheredSyncComputerAnchor:anchorCopy];
   }
 }
 
-- (id)contactWithUserActivityUserInfo:(id)a3 keysToFetch:(id)a4
+- (id)contactWithUserActivityUserInfo:(id)info keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  fetchCopy = fetch;
   if ((*(*MEMORY[0x1E6996548] + 16))() & 1) == 0 && ([(CNDataMapperContactStore *)self mapper], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9) && [(CNDataMapperContactStore *)self requestContactsReadAccessWithError:0])
   {
     v17 = 0;
@@ -2645,16 +2645,16 @@ void __54__CNDataMapperContactStore_defaultContainerIdentifier__block_invoke(uin
     v20 = __Block_byref_object_copy__19;
     v21 = __Block_byref_object_dispose__19;
     v22 = 0;
-    v10 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __72__CNDataMapperContactStore_contactWithUserActivityUserInfo_keysToFetch___block_invoke;
     v13[3] = &unk_1E74157D0;
     v13[4] = self;
     v16 = &v17;
-    v14 = v6;
-    v15 = v7;
-    [v10 fetchingContactWithUserActivity:v13];
+    v14 = infoCopy;
+    v15 = fetchCopy;
+    [logger fetchingContactWithUserActivity:v13];
 
     v11 = v18[5];
     _Block_object_dispose(&v17, 8);
@@ -2683,9 +2683,9 @@ void __72__CNDataMapperContactStore_contactWithUserActivityUserInfo_keysToFetch_
   }
 }
 
-- (id)userActivityUserInfoForContact:(id)a3
+- (id)userActivityUserInfoForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = 0;
   if ([(CNDataMapperContactStore *)self requestContactsReadAccessWithError:0])
   {
@@ -2695,15 +2695,15 @@ void __72__CNDataMapperContactStore_contactWithUserActivityUserInfo_keysToFetch_
     v14 = __Block_byref_object_copy__19;
     v15 = __Block_byref_object_dispose__19;
     v16 = 0;
-    v6 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__CNDataMapperContactStore_userActivityUserInfoForContact___block_invoke;
     v8[3] = &unk_1E74157F8;
     v8[4] = self;
     v10 = &v11;
-    v9 = v4;
-    [v6 fetchingContactWithUserActivity:v8];
+    v9 = contactCopy;
+    [logger fetchingContactWithUserActivity:v8];
 
     v5 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -2729,7 +2729,7 @@ void __59__CNDataMapperContactStore_userActivityUserInfoForContact___block_invok
 
 - (BOOL)supportsMatchingDictionaries
 {
-  v2 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v3 = objc_opt_respondsToSelector();
 
   return v3 & 1;
@@ -2737,27 +2737,27 @@ void __59__CNDataMapperContactStore_userActivityUserInfoForContact___block_invok
 
 - (id)descriptorForRequiredKeysForMatchingDictionary
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNDataMapperContactStore *)self mapper];
-    v6 = [v5 descriptorForRequiredKeysForMatchingDictionary];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    descriptorForRequiredKeysForMatchingDictionary = [mapper2 descriptorForRequiredKeysForMatchingDictionary];
   }
 
   else
   {
-    v6 = 0;
+    descriptorForRequiredKeysForMatchingDictionary = 0;
   }
 
-  return v6;
+  return descriptorForRequiredKeysForMatchingDictionary;
 }
 
-- (id)contactIdentifierWithMatchingDictionary:(id)a3
+- (id)contactIdentifierWithMatchingDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  dictionaryCopy = dictionary;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) != 0 && [(CNDataMapperContactStore *)self requestContactsReadAccessWithError:0])
@@ -2768,15 +2768,15 @@ void __59__CNDataMapperContactStore_userActivityUserInfoForContact___block_invok
     v16 = __Block_byref_object_copy__19;
     v17 = __Block_byref_object_dispose__19;
     v18 = 0;
-    v7 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__CNDataMapperContactStore_contactIdentifierWithMatchingDictionary___block_invoke;
     v10[3] = &unk_1E7415820;
     v12 = &v13;
     v10[4] = self;
-    v11 = v4;
-    [v7 fetchingContactIdentifierWithMatchingDictionary:v10];
+    v11 = dictionaryCopy;
+    [logger fetchingContactIdentifierWithMatchingDictionary:v10];
 
     v8 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -2799,16 +2799,16 @@ void __68__CNDataMapperContactStore_contactIdentifierWithMatchingDictionary___bl
   *(v3 + 40) = v2;
 }
 
-- (id)matchingDictionaryForContact:(id)a3
+- (id)matchingDictionaryForContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  contactCopy = contact;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) != 0 && [(CNDataMapperContactStore *)self requestContactsReadAccessWithError:0])
   {
-    v7 = [(CNDataMapperContactStore *)self mapper];
-    v8 = [v7 matchingDictionaryForContact:v4];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v8 = [mapper2 matchingDictionaryForContact:contactCopy];
   }
 
   else
@@ -2819,11 +2819,11 @@ void __68__CNDataMapperContactStore_contactIdentifierWithMatchingDictionary___bl
   return v8;
 }
 
-- (BOOL)registerChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)registerChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CNDataMapperContactStore *)self mapper];
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -2838,7 +2838,7 @@ void __68__CNDataMapperContactStore_contactIdentifierWithMatchingDictionary___bl
     v23 = __Block_byref_object_copy__19;
     v24 = __Block_byref_object_dispose__19;
     v25 = 0;
-    v12 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __95__CNDataMapperContactStore_registerChangeHistoryClientIdentifier_forContainerIdentifier_error___block_invoke;
@@ -2846,14 +2846,14 @@ void __68__CNDataMapperContactStore_contactIdentifierWithMatchingDictionary___bl
     v15[4] = self;
     v18 = &v20;
     v19 = &v26;
-    v16 = v8;
-    v17 = v9;
-    [v12 registeringForChangeHistory:v15];
+    v16 = identifierCopy;
+    v17 = containerIdentifierCopy;
+    [logger registeringForChangeHistory:v15];
 
     v13 = *(v27 + 24);
-    if (a5 && (v27[3] & 1) == 0)
+    if (error && (v27[3] & 1) == 0)
     {
-      *a5 = v21[5];
+      *error = v21[5];
     }
 
     _Block_object_dispose(&v20, 8);
@@ -2888,11 +2888,11 @@ void __95__CNDataMapperContactStore_registerChangeHistoryClientIdentifier_forCon
   }
 }
 
-- (BOOL)unregisterChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)unregisterChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CNDataMapperContactStore *)self mapper];
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -2907,7 +2907,7 @@ void __95__CNDataMapperContactStore_registerChangeHistoryClientIdentifier_forCon
     v23 = __Block_byref_object_copy__19;
     v24 = __Block_byref_object_dispose__19;
     v25 = 0;
-    v12 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __97__CNDataMapperContactStore_unregisterChangeHistoryClientIdentifier_forContainerIdentifier_error___block_invoke;
@@ -2915,14 +2915,14 @@ void __95__CNDataMapperContactStore_registerChangeHistoryClientIdentifier_forCon
     v15[4] = self;
     v18 = &v20;
     v19 = &v26;
-    v16 = v8;
-    v17 = v9;
-    [v12 unregisteringForChangeHistory:v15];
+    v16 = identifierCopy;
+    v17 = containerIdentifierCopy;
+    [logger unregisteringForChangeHistory:v15];
 
     v13 = *(v27 + 24);
-    if (a5 && (v27[3] & 1) == 0)
+    if (error && (v27[3] & 1) == 0)
     {
-      *a5 = v21[5];
+      *error = v21[5];
     }
 
     _Block_object_dispose(&v20, 8);
@@ -2957,10 +2957,10 @@ void __97__CNDataMapperContactStore_unregisterChangeHistoryClientIdentifier_forC
   }
 }
 
-- (id)changeHistoryWithFetchRequest:(id)a3 error:(id *)a4
+- (id)changeHistoryWithFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  requestCopy = request;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
@@ -2982,41 +2982,41 @@ void __97__CNDataMapperContactStore_unregisterChangeHistoryClientIdentifier_forC
   v38 = __Block_byref_object_dispose__19;
   v39 = 0;
   v9 = +[CNChangeHistoryTriageLogger fetchLogger];
-  [v9 willFetchHistoryWithRequest:v6];
-  v10 = [(CNDataMapperContactStore *)self logger];
+  [v9 willFetchHistoryWithRequest:requestCopy];
+  logger = [(CNDataMapperContactStore *)self logger];
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __64__CNDataMapperContactStore_changeHistoryWithFetchRequest_error___block_invoke;
   v29 = &unk_1E7415508;
-  v30 = self;
+  selfCopy = self;
   v32 = &v34;
   v33 = &v40;
-  v11 = v6;
+  v11 = requestCopy;
   v31 = v11;
-  [v10 fetchingChangeHistory:&v26];
+  [logger fetchingChangeHistory:&v26];
 
-  v12 = [v11 resultType];
+  resultType = [v11 resultType];
   if (v41[5])
   {
-    v13 = v12;
+    v13 = resultType;
     if (![v11 resultType] || v13 == 2)
     {
       v17 = [CNChangeHistoryLegacyResultConverter alloc];
-      v18 = [v11 additionalContactKeyDescriptors];
-      v15 = [(CNChangeHistoryLegacyResultConverter *)v17 initWithContactStore:self additionalContactKeyDescriptors:v18];
+      additionalContactKeyDescriptors = [v11 additionalContactKeyDescriptors];
+      latestChangeAnchor2 = [(CNChangeHistoryLegacyResultConverter *)v17 initWithContactStore:self additionalContactKeyDescriptors:additionalContactKeyDescriptors];
 
-      v19 = [(CNChangeHistoryLegacyResultConverter *)v15 eventsFromResult:v41[5]];
+      v19 = [(CNChangeHistoryLegacyResultConverter *)latestChangeAnchor2 eventsFromResult:v41[5]];
       if ([v19 isSuccess])
       {
-        v20 = [v19 value];
-        v21 = [v41[5] latestChangeAnchor];
-        [v9 didFetchHistoryEvents:v20 anchor:v21];
+        value = [v19 value];
+        latestChangeAnchor = [v41[5] latestChangeAnchor];
+        [v9 didFetchHistoryEvents:value anchor:latestChangeAnchor];
       }
 
       else
       {
-        v20 = [v19 error];
-        [v9 fetchDidFailWithError:v20];
+        value = [v19 error];
+        [v9 fetchDidFailWithError:value];
       }
     }
 
@@ -3027,9 +3027,9 @@ void __97__CNDataMapperContactStore_unregisterChangeHistoryClientIdentifier_forC
         goto LABEL_14;
       }
 
-      v14 = [v41[5] changesCount];
-      v15 = [v41[5] latestChangeAnchor];
-      [v9 didFetchHistoryEventsCount:v14 anchor:v15 truncated:{objc_msgSend(v41[5], "changesTruncated")}];
+      changesCount = [v41[5] changesCount];
+      latestChangeAnchor2 = [v41[5] latestChangeAnchor];
+      [v9 didFetchHistoryEventsCount:changesCount anchor:latestChangeAnchor2 truncated:{objc_msgSend(v41[5], "changesTruncated")}];
     }
   }
 
@@ -3042,10 +3042,10 @@ LABEL_14:
   v22 = v35[5];
   v23 = v41[5];
   v16 = v23;
-  if (a4 && !v23)
+  if (error && !v23)
   {
     v24 = v22;
-    *a4 = v22;
+    *error = v22;
   }
 
   _Block_object_dispose(&v34, 8);
@@ -3077,10 +3077,10 @@ void __64__CNDataMapperContactStore_changeHistoryWithFetchRequest_error___block_
   }
 }
 
-- (BOOL)executeChangeHistoryClearRequest:(id)a3 error:(id *)a4
+- (BOOL)executeChangeHistoryClearRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  requestCopy = request;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -3095,7 +3095,7 @@ void __64__CNDataMapperContactStore_changeHistoryWithFetchRequest_error___block_
     v19 = __Block_byref_object_copy__19;
     v20 = __Block_byref_object_dispose__19;
     v21 = 0;
-    v9 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67__CNDataMapperContactStore_executeChangeHistoryClearRequest_error___block_invoke;
@@ -3103,13 +3103,13 @@ void __64__CNDataMapperContactStore_changeHistoryWithFetchRequest_error___block_
     v12[4] = self;
     v14 = &v16;
     v15 = &v22;
-    v13 = v6;
-    [v9 clearingChangeHistory:v12];
+    v13 = requestCopy;
+    [logger clearingChangeHistory:v12];
 
     v10 = *(v23 + 24);
-    if (a4 && (v23[3] & 1) == 0)
+    if (error && (v23[3] & 1) == 0)
     {
-      *a4 = v17[5];
+      *error = v17[5];
     }
 
     _Block_object_dispose(&v16, 8);
@@ -3145,7 +3145,7 @@ void __67__CNDataMapperContactStore_executeChangeHistoryClearRequest_error___blo
 
 - (BOOL)hasMultipleGroupsOrAccounts
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || ![(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
@@ -3153,15 +3153,15 @@ void __67__CNDataMapperContactStore_executeChangeHistoryClearRequest_error___blo
     return 0;
   }
 
-  v5 = [(CNDataMapperContactStore *)self mapper];
-  v6 = [v5 hasMultipleGroupsOrAccounts];
+  mapper2 = [(CNDataMapperContactStore *)self mapper];
+  hasMultipleGroupsOrAccounts = [mapper2 hasMultipleGroupsOrAccounts];
 
-  return v6;
+  return hasMultipleGroupsOrAccounts;
 }
 
 - (BOOL)hasGroups
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0 || ![(CNDataMapperContactStore *)self requestMetadataAccessWithError:0])
@@ -3169,17 +3169,17 @@ void __67__CNDataMapperContactStore_executeChangeHistoryClearRequest_error___blo
     return 0;
   }
 
-  v5 = [(CNDataMapperContactStore *)self mapper];
-  v6 = [v5 hasGroups];
+  mapper2 = [(CNDataMapperContactStore *)self mapper];
+  hasGroups = [mapper2 hasGroups];
 
-  return v6;
+  return hasGroups;
 }
 
-- (id)getBackgroundColorOnImageData:(id)a3 bitmapFormat:(id)a4 error:(id *)a5
+- (id)getBackgroundColorOnImageData:(id)data bitmapFormat:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CNDataMapperContactStore *)self mapper];
+  dataCopy = data;
+  formatCopy = format;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
@@ -3196,25 +3196,25 @@ void __67__CNDataMapperContactStore_executeChangeHistoryClearRequest_error___blo
     v27 = __Block_byref_object_copy__19;
     v28 = __Block_byref_object_dispose__19;
     v29 = 0;
-    v12 = [(CNDataMapperContactStore *)self logger];
+    logger = [(CNDataMapperContactStore *)self logger];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __77__CNDataMapperContactStore_getBackgroundColorOnImageData_bitmapFormat_error___block_invoke;
     v19[3] = &unk_1E7415848;
     v22 = &v30;
     v19[4] = self;
-    v20 = v8;
-    v21 = v9;
+    v20 = dataCopy;
+    v21 = formatCopy;
     v23 = &v24;
-    [v12 gettingBackgroundColor:v19];
+    [logger gettingBackgroundColor:v19];
 
     v13 = v25[5];
     v14 = v31[5];
     v15 = v14;
-    if (a5 && !v14)
+    if (error && !v14)
     {
       v16 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     _Block_object_dispose(&v24, 8);
@@ -3224,10 +3224,10 @@ void __67__CNDataMapperContactStore_executeChangeHistoryClearRequest_error___blo
   else
   {
     v17 = [CNErrorFactory errorWithCode:1005];
-    if (a5)
+    if (error)
     {
       v17 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     v15 = 0;
@@ -3250,23 +3250,23 @@ void __77__CNDataMapperContactStore_getBackgroundColorOnImageData_bitmapFormat_e
   *(v7 + 40) = v6;
 }
 
-- (id)requestAccessForEntityType:(int64_t)a3
+- (id)requestAccessForEntityType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v6 = [(CNDataMapperContactStore *)self logger];
+  logger = [(CNDataMapperContactStore *)self logger];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__CNDataMapperContactStore_requestAccessForEntityType___block_invoke;
   v10[3] = &unk_1E7415898;
   v11 = v5;
-  v12 = a3;
+  typeCopy = type;
   v10[4] = self;
   v7 = v5;
-  [v6 requestingAccessForContacts:v10];
+  [logger requestingAccessForContacts:v10];
 
-  v8 = [v7 future];
+  future = [v7 future];
 
-  return v8;
+  return future;
 }
 
 void __55__CNDataMapperContactStore_requestAccessForEntityType___block_invoke(uint64_t a1, void *a2)
@@ -3305,23 +3305,23 @@ void __55__CNDataMapperContactStore_requestAccessForEntityType___block_invoke_2(
   }
 }
 
-- (void)requestReadAccessForEntityType:(int64_t)a3 completionHandler:(id)a4
+- (void)requestReadAccessForEntityType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if ([(CNDataMapperContactStore *)self isContactProvider])
   {
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHandler___block_invoke;
   v9[3] = &unk_1E74158C0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 requestAccessForEntityType:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [mapper requestAccessForEntityType:type completionHandler:v9];
 }
 
 void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHandler___block_invoke(uint64_t a1, int a2, void *a3)
@@ -3342,7 +3342,7 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_requestDataMapperAccessType:(unint64_t)a3 error:(id *)a4
+- (BOOL)_requestDataMapperAccessType:(unint64_t)type error:(id *)error
 {
   if ([(CNDataMapperContactStore *)self isContactProvider])
   {
@@ -3351,23 +3351,23 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
 
   else
   {
-    v8 = [(CNDataMapperContactStore *)self mapper];
+    mapper = [(CNDataMapperContactStore *)self mapper];
     v12 = 0;
-    v7 = [v8 requestAccessForEntityType:0 error:&v12];
+    v7 = [mapper requestAccessForEntityType:0 error:&v12];
     v9 = v12;
 
     if (v7)
     {
-      [(CNDataMapperContactStore *)self _logContactsAccessWasGrantedForAccessType:a3];
+      [(CNDataMapperContactStore *)self _logContactsAccessWasGrantedForAccessType:type];
     }
 
     else
     {
-      [(CNDataMapperContactStore *)self _logContactsAccessWasDeniedForAccessType:a3 error:v9];
-      if (a4)
+      [(CNDataMapperContactStore *)self _logContactsAccessWasDeniedForAccessType:type error:v9];
+      if (error)
       {
         v10 = v9;
-        *a4 = v9;
+        *error = v9;
       }
     }
   }
@@ -3375,74 +3375,74 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   return v7;
 }
 
-- (void)_logContactsAccessWasGrantedForAccessType:(unint64_t)a3
+- (void)_logContactsAccessWasGrantedForAccessType:(unint64_t)type
 {
-  v5 = [(CNDataMapperContactStore *)self mapper];
-  v6 = [v5 shouldLogContactsAccess];
+  mapper = [(CNDataMapperContactStore *)self mapper];
+  shouldLogContactsAccess = [mapper shouldLogContactsAccess];
 
-  if (v6)
+  if (shouldLogContactsAccess)
   {
-    v7 = [(CNDataMapperContactStore *)self logger];
-    [v7 contactsAccessWasGranted];
+    logger = [(CNDataMapperContactStore *)self logger];
+    [logger contactsAccessWasGranted];
 
-    [(CNDataMapperContactStore *)self _logGreenTeaForAccessType:a3];
+    [(CNDataMapperContactStore *)self _logGreenTeaForAccessType:type];
 
-    [(CNDataMapperContactStore *)self _logPrivacyAccountingForAccessType:a3];
+    [(CNDataMapperContactStore *)self _logPrivacyAccountingForAccessType:type];
   }
 }
 
-- (void)_logContactsAccessWasDeniedForAccessType:(unint64_t)a3 error:(id)a4
+- (void)_logContactsAccessWasDeniedForAccessType:(unint64_t)type error:(id)error
 {
-  v8 = a4;
-  v5 = [(CNDataMapperContactStore *)self mapper];
-  v6 = [v5 shouldLogContactsAccess];
+  errorCopy = error;
+  mapper = [(CNDataMapperContactStore *)self mapper];
+  shouldLogContactsAccess = [mapper shouldLogContactsAccess];
 
-  if (v6)
+  if (shouldLogContactsAccess)
   {
-    v7 = [(CNDataMapperContactStore *)self logger];
-    [v7 contactsAccessWasDeniedWithError:v8];
+    logger = [(CNDataMapperContactStore *)self logger];
+    [logger contactsAccessWasDeniedWithError:errorCopy];
   }
 }
 
-- (void)_logGreenTeaForAccessType:(unint64_t)a3
+- (void)_logGreenTeaForAccessType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [(CNDataMapperContactStore *)self regulatoryLogger];
-    [v3 modifyingContactsData];
+    regulatoryLogger = [(CNDataMapperContactStore *)self regulatoryLogger];
+    [regulatoryLogger modifyingContactsData];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       return;
     }
 
-    v3 = [(CNDataMapperContactStore *)self regulatoryLogger];
-    [v3 readingContactsData];
+    regulatoryLogger = [(CNDataMapperContactStore *)self regulatoryLogger];
+    [regulatoryLogger readingContactsData];
   }
 }
 
-- (void)_logPrivacyAccountingForAccessType:(unint64_t)a3
+- (void)_logPrivacyAccountingForAccessType:(unint64_t)type
 {
-  if (a3 != 2 && [(CNDataMapperContactStore *)self shouldLogPrivacyAccountingAccessEvents])
+  if (type != 2 && [(CNDataMapperContactStore *)self shouldLogPrivacyAccountingAccessEvents])
   {
-    v4 = [(CNDataMapperContactStore *)self regulatoryLogger];
-    [v4 logContactsDataAccessEvent];
+    regulatoryLogger = [(CNDataMapperContactStore *)self regulatoryLogger];
+    [regulatoryLogger logContactsDataAccessEvent];
   }
 }
 
-- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)a3
+- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if (v6 & 1) != 0 && ([(CNDataMapperContactStore *)self mapper], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8))
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
-    v10 = [v9 fetchLimitedAccessContactIdentifiersForBundle:v4];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v10 = [mapper2 fetchLimitedAccessContactIdentifiersForBundle:bundleCopy];
   }
 
   else
@@ -3453,96 +3453,96 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   return v10;
 }
 
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  identifierCopy = identifier;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CNDataMapperContactStore *)self mapper];
-      [v11 addLimitedAccessForBundle:v12 contactIdentifier:v6];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 addLimitedAccessForBundle:bundleCopy contactIdentifier:identifierCopy];
     }
   }
 }
 
-- (void)addLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4
+- (void)addLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  identifiersCopy = identifiers;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CNDataMapperContactStore *)self mapper];
-      [v11 addLimitedAccessForBundle:v12 contactIdentifiers:v6];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 addLimitedAccessForBundle:bundleCopy contactIdentifiers:identifiersCopy];
     }
   }
 }
 
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifier:(id)a4
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifier:(id)identifier
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  identifierCopy = identifier;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CNDataMapperContactStore *)self mapper];
-      [v11 removeLimitedAccessForBundle:v12 contactIdentifier:v6];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 removeLimitedAccessForBundle:bundleCopy contactIdentifier:identifierCopy];
     }
   }
 }
 
-- (void)removeLimitedAccessForBundle:(id)a3 contactIdentifiers:(id)a4
+- (void)removeLimitedAccessForBundle:(id)bundle contactIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  identifiersCopy = identifiers;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CNDataMapperContactStore *)self mapper];
-      [v11 removeLimitedAccessForBundle:v12 contactIdentifiers:v6];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 removeLimitedAccessForBundle:bundleCopy contactIdentifiers:identifiersCopy];
     }
   }
 }
 
-- (id)getLimitedAccessContactsCountForBundle:(id)a3
+- (id)getLimitedAccessContactsCountForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNDataMapperContactStore *)self mapper];
-    v8 = [v7 getLimitedAccessContactsCountForBundle:v4];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v8 = [mapper2 getLimitedAccessContactsCountForBundle:bundleCopy];
   }
 
   else
@@ -3553,16 +3553,16 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   return v8;
 }
 
-- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)a3
+- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  numberCopy = number;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if (v6 & 1) != 0 && ([(CNDataMapperContactStore *)self mapper], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8))
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
-    v10 = [v9 populateSyncTableForLimitedAccessAboveSequenceNumber:v4];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v10 = [mapper2 populateSyncTableForLimitedAccessAboveSequenceNumber:numberCopy];
   }
 
   else
@@ -3573,64 +3573,64 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   return v10;
 }
 
-- (void)purgeLimitedAccessRecordsForBundle:(id)a3
+- (void)purgeLimitedAccessRecordsForBundle:(id)bundle
 {
-  v9 = a3;
-  v4 = [(CNDataMapperContactStore *)self mapper];
+  bundleCopy = bundle;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CNDataMapperContactStore *)self mapper];
-      [v8 purgeLimitedAccessRecordsForBundle:v9];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 purgeLimitedAccessRecordsForBundle:bundleCopy];
     }
   }
 }
 
-- (void)updateLimitedAccessTable:(id)a3
+- (void)updateLimitedAccessTable:(id)table
 {
-  v9 = a3;
-  v4 = [(CNDataMapperContactStore *)self mapper];
+  tableCopy = table;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CNDataMapperContactStore *)self mapper];
-      [v8 updateLimitedAccessTable:v9];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 updateLimitedAccessTable:tableCopy];
     }
   }
 }
 
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number
 {
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CNDataMapperContactStore *)self mapper];
-    v8 = [v7 getLimitedAccessLastSyncSequenceNumber:a3];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v8 = [mapper2 getLimitedAccessLastSyncSequenceNumber:number];
   }
 
   else
   {
     v9 = [CNErrorFactory errorWithCode:1];
-    v7 = v9;
-    if (a3)
+    mapper2 = v9;
+    if (number)
     {
       v10 = v9;
       v8 = 0;
-      *a3 = v7;
+      *number = mapper2;
     }
 
     else
@@ -3642,16 +3642,16 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   return v8;
 }
 
-- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(int64_t)a3
+- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(int64_t)number
 {
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if (v6 & 1) != 0 && ([(CNDataMapperContactStore *)self mapper], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, (v8))
   {
-    v9 = [(CNDataMapperContactStore *)self mapper];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v11 = [v9 getWatchLimitedAccessSyncDataStartingAtSequenceNumber:v10];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:number];
+    v11 = [mapper2 getWatchLimitedAccessSyncDataStartingAtSequenceNumber:v10];
   }
 
   else
@@ -3662,83 +3662,83 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
   return v11;
 }
 
-- (void)applyLimitedAccessSyncEvents:(id)a3
+- (void)applyLimitedAccessSyncEvents:(id)events
 {
-  v9 = a3;
-  v4 = [(CNDataMapperContactStore *)self mapper];
+  eventsCopy = events;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CNDataMapperContactStore *)self mapper];
-      [v8 applyLimitedAccessSyncEvents:v9];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 applyLimitedAccessSyncEvents:eventsCopy];
     }
   }
 }
 
 - (void)dropAllLimitedAccessRows
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CNDataMapperContactStore *)self mapper];
-      [v7 dropAllLimitedAccessRows];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 dropAllLimitedAccessRows];
     }
   }
 }
 
 - (void)dropAllLimitedAccessRowsAndSyncNotify
 {
-  v3 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CNDataMapperContactStore *)self mapper];
-      [v7 dropAllLimitedAccessRowsAndSyncNotify];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 dropAllLimitedAccessRowsAndSyncNotify];
     }
   }
 }
 
-- (void)setLimitedAccessTableCurrentSequenceNumber:(id)a3
+- (void)setLimitedAccessTableCurrentSequenceNumber:(id)number
 {
-  v9 = a3;
-  v4 = [(CNDataMapperContactStore *)self mapper];
+  numberCopy = number;
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNDataMapperContactStore *)self mapper];
+    mapper2 = [(CNDataMapperContactStore *)self mapper];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CNDataMapperContactStore *)self mapper];
-      [v8 setLimitedAccessTableCurrentSequenceNumber:v9];
+      mapper3 = [(CNDataMapperContactStore *)self mapper];
+      [mapper3 setLimitedAccessTableCurrentSequenceNumber:numberCopy];
     }
   }
 }
 
-- (BOOL)shouldAnalyzeDatabaseWithError:(id *)a3
+- (BOOL)shouldAnalyzeDatabaseWithError:(id *)error
 {
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -3746,15 +3746,15 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
     return 0;
   }
 
-  v7 = [(CNDataMapperContactStore *)self mapper];
-  v8 = [v7 shouldAnalyzeDatabaseWithError:a3];
+  mapper2 = [(CNDataMapperContactStore *)self mapper];
+  v8 = [mapper2 shouldAnalyzeDatabaseWithError:error];
 
   return v8;
 }
 
-- (BOOL)analyzeDatabaseWithError:(id *)a3
+- (BOOL)analyzeDatabaseWithError:(id *)error
 {
-  v5 = [(CNDataMapperContactStore *)self mapper];
+  mapper = [(CNDataMapperContactStore *)self mapper];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -3762,8 +3762,8 @@ void __77__CNDataMapperContactStore_requestReadAccessForEntityType_completionHan
     return 1;
   }
 
-  v7 = [(CNDataMapperContactStore *)self mapper];
-  v8 = [v7 analyzeDatabaseWithError:a3];
+  mapper2 = [(CNDataMapperContactStore *)self mapper];
+  v8 = [mapper2 analyzeDatabaseWithError:error];
 
   return v8;
 }

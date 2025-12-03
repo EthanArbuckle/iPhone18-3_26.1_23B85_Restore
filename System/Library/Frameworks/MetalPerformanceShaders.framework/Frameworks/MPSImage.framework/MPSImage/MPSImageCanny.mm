@@ -2,10 +2,10 @@
 - (MPSImageCanny)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageCanny)initWithDevice:(id)device;
 - (MPSImageCanny)initWithDevice:(id)device linearToGrayScaleTransform:(const float *)transform sigma:(const float)sigma;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageCanny
@@ -83,26 +83,26 @@
   return objc_msgSend_stringWithFormat_(v3, v11, @"%@\n\tsigma: %f\n\tlow threshold: %f\n\thigh threshold: %f\n", v12, v13, v14, v4, v10, self->lThresh, self->hThresh);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v42.receiver = self;
   v42.super_class = MPSImageCanny;
   [(MPSUnaryImageKernel *)&v42 encodeWithCoder:?];
   *&v5 = self->_colVec[0];
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSImageCanny.transformR", v7, v8, v9, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSImageCanny.transformR", v7, v8, v9, v5);
   *&v10 = self->_colVec[1];
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"MPSImageCanny.transformG", v12, v13, v14, v10);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"MPSImageCanny.transformG", v12, v13, v14, v10);
   *&v15 = self->_colVec[2];
-  objc_msgSend_encodeFloat_forKey_(a3, v16, @"MPSImageCanny.transformB", v17, v18, v19, v15);
+  objc_msgSend_encodeFloat_forKey_(coder, v16, @"MPSImageCanny.transformB", v17, v18, v19, v15);
   *&v20 = self->lThresh;
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"MPSImageCanny.lowThresh", v22, v23, v24, v20);
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"MPSImageCanny.lowThresh", v22, v23, v24, v20);
   *&v25 = self->hThresh;
-  objc_msgSend_encodeFloat_forKey_(a3, v26, @"MPSImageCanny.highThresh", v27, v28, v29, v25);
+  objc_msgSend_encodeFloat_forKey_(coder, v26, @"MPSImageCanny.highThresh", v27, v28, v29, v25);
   *&v30 = self->_maxEdgeTracingIterations;
-  objc_msgSend_encodeFloat_forKey_(a3, v31, @"MPSImageCanny.edgeTracingIterations", v32, v33, v34, v30);
-  objc_msgSend_encodeBool_forKey_(a3, v35, self->_useFastMode, @"MPSImageCanny.fastMode", v36, v37);
-  objc_msgSend_encodeWithCoder_(self->gaussKernel, v38, a3, v39, v40, v41);
+  objc_msgSend_encodeFloat_forKey_(coder, v31, @"MPSImageCanny.edgeTracingIterations", v32, v33, v34, v30);
+  objc_msgSend_encodeBool_forKey_(coder, v35, self->_useFastMode, @"MPSImageCanny.fastMode", v36, v37);
+  objc_msgSend_encodeWithCoder_(self->gaussKernel, v38, coder, v39, v40, v41);
 }
 
 - (MPSImageCanny)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -152,11 +152,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSImageCanny;
-  result = [(MPSUnaryImageKernel *)&v11 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v11 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 52) = LODWORD(self->_colVec[0]);

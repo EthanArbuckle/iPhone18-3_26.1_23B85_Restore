@@ -9,40 +9,40 @@
 - (id)_currentAssetViewModelDescription;
 - (id)_currentWindows;
 - (id)_descriptionForAllUIState;
-- (id)_descriptionOfUIState:(int64_t)a3;
+- (id)_descriptionOfUIState:(int64_t)state;
 - (id)_selectedAssetIdentifiersDescription;
 - (id)_selectedAssetUUIDsDescription;
 - (id)_uuidsShownInGrid;
 - (id)_viewControllerHierarchyDescription;
 - (id)_viewModelDescription;
 - (id)_windowRecursiveDescription;
-- (void)_captureCurrentAssetResourcesToDirectory:(id)a3 withResultHandler:(id)a4;
-- (void)captureDescriptionOfCloudPhotoLibraryWithResultHandler:(id)a3;
-- (void)captureDescriptionOfPhotoAnalysisWithResultHandler:(id)a3;
-- (void)captureDescriptionOfStatisticsWithResultHandler:(id)a3;
-- (void)captureDescriptionOfUIState:(int64_t)a3 resultHandler:(id)a4;
-- (void)dumpState:(int64_t)a3 toDirectoryURL:(id)a4 resultHandler:(id)a5;
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4 resultHandler:(id)a5;
-- (void)setContentPrivacyState:(int64_t)a3 resultHandler:(id)a4;
-- (void)setSystemAuthenticationType:(int64_t)a3 resultHandler:(id)a4;
-- (void)startTungstenRecordingToDirectoryURL:(id)a3 resultHandler:(id)a4;
-- (void)stopTungstenRecordingWithResultHandler:(id)a3;
-- (void)timelineForAlbum:(id)a3 widgetSize:(id)a4 jsonFormat:(BOOL)a5 resultHandler:(id)a6;
-- (void)timelineForWidgetSize:(id)a3 jsonFormat:(BOOL)a4 resultHandler:(id)a5;
+- (void)_captureCurrentAssetResourcesToDirectory:(id)directory withResultHandler:(id)handler;
+- (void)captureDescriptionOfCloudPhotoLibraryWithResultHandler:(id)handler;
+- (void)captureDescriptionOfPhotoAnalysisWithResultHandler:(id)handler;
+- (void)captureDescriptionOfStatisticsWithResultHandler:(id)handler;
+- (void)captureDescriptionOfUIState:(int64_t)state resultHandler:(id)handler;
+- (void)dumpState:(int64_t)state toDirectoryURL:(id)l resultHandler:(id)handler;
+- (void)postNotificationWithName:(id)name userInfo:(id)info resultHandler:(id)handler;
+- (void)setContentPrivacyState:(int64_t)state resultHandler:(id)handler;
+- (void)setSystemAuthenticationType:(int64_t)type resultHandler:(id)handler;
+- (void)startTungstenRecordingToDirectoryURL:(id)l resultHandler:(id)handler;
+- (void)stopTungstenRecordingWithResultHandler:(id)handler;
+- (void)timelineForAlbum:(id)album widgetSize:(id)size jsonFormat:(BOOL)format resultHandler:(id)handler;
+- (void)timelineForWidgetSize:(id)size jsonFormat:(BOOL)format resultHandler:(id)handler;
 @end
 
 @implementation PUPhotosDiagnosticsAgent
 
-- (void)captureDescriptionOfPhotoAnalysisWithResultHandler:(id)a3
+- (void)captureDescriptionOfPhotoAnalysisWithResultHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v5 = [v4 photoAnalysisClient];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  photoAnalysisClient = [px_deprecated_appPhotoLibrary photoAnalysisClient];
+  v6 = photoAnalysisClient;
+  if (photoAnalysisClient)
   {
     v11 = 0;
-    v7 = [v5 dumpAnalysisStatusError:&v11];
+    v7 = [photoAnalysisClient dumpAnalysisStatusError:&v11];
     v8 = v11;
     v9 = v8;
     if (v7)
@@ -55,19 +55,19 @@
       [v8 localizedDescription];
     }
     v10 = ;
-    v3[2](v3, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   else
   {
-    v3[2](v3, &stru_1F2AC6818);
+    handlerCopy[2](handlerCopy, &stru_1F2AC6818);
   }
 }
 
-- (void)captureDescriptionOfCloudPhotoLibraryWithResultHandler:(id)a3
+- (void)captureDescriptionOfCloudPhotoLibraryWithResultHandler:(id)handler
 {
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v4 = objc_alloc(MEMORY[0x1E6994AE8]);
     v5 = [v4 initForManagementWithLibraryIdentifier:*MEMORY[0x1E69949B0]];
@@ -76,7 +76,7 @@
     v7[2] = __83__PUPhotosDiagnosticsAgent_captureDescriptionOfCloudPhotoLibraryWithResultHandler___block_invoke;
     v7[3] = &unk_1E7B7C770;
     v8 = v5;
-    v9 = v3;
+    v9 = handlerCopy;
     v6 = v5;
     [v6 openWithCompletionHandler:v7];
   }
@@ -123,10 +123,10 @@ uint64_t __83__PUPhotosDiagnosticsAgent_captureDescriptionOfCloudPhotoLibraryWit
   return [v6 closeWithCompletionHandler:&__block_literal_global_361_64035];
 }
 
-- (void)captureDescriptionOfStatisticsWithResultHandler:(id)a3
+- (void)captureDescriptionOfStatisticsWithResultHandler:(id)handler
 {
-  v3 = a3;
-  if (v3)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v5 = dispatch_queue_create("PUPhotosDiagnosticsAgent.output", 0);
@@ -175,7 +175,7 @@ uint64_t __83__PUPhotosDiagnosticsAgent_captureDescriptionOfCloudPhotoLibraryWit
     v19[2] = __76__PUPhotosDiagnosticsAgent_captureDescriptionOfStatisticsWithResultHandler___block_invoke_9;
     v19[3] = &unk_1E7B80B48;
     v20 = v6;
-    v21 = v3;
+    v21 = handlerCopy;
     v18 = v6;
     dispatch_group_notify(v17, v16, v19);
   }
@@ -321,18 +321,18 @@ uint64_t __76__PUPhotosDiagnosticsAgent_captureDescriptionOfStatisticsWithResult
   return result;
 }
 
-- (void)_captureCurrentAssetResourcesToDirectory:(id)a3 withResultHandler:(id)a4
+- (void)_captureCurrentAssetResourcesToDirectory:(id)directory withResultHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v6 = a4;
-  v29 = [MEMORY[0x1E695DF70] array];
+  directoryCopy = directory;
+  handlerCopy = handler;
+  array = [MEMORY[0x1E695DF70] array];
   group = dispatch_group_create();
-  v7 = [MEMORY[0x1E69DC668] pu_debugCurrentAsset];
+  pu_debugCurrentAsset = [MEMORY[0x1E69DC668] pu_debugCurrentAsset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = pu_debugCurrentAsset;
   }
 
   else
@@ -344,8 +344,8 @@ uint64_t __76__PUPhotosDiagnosticsAgent_captureDescriptionOfStatisticsWithResult
   v32 = v8;
   if (v32 && [MEMORY[0x1E69789A8] authorizationStatusForAccessLevel:2] == 3)
   {
-    v27 = v7;
-    v28 = [(PUPhotosDiagnosticsAgent *)self __currentTimestamp];
+    v27 = pu_debugCurrentAsset;
+    __currentTimestamp = [(PUPhotosDiagnosticsAgent *)self __currentTimestamp];
     [MEMORY[0x1E69786D8] assetResourcesForAsset:v32];
     v46 = 0u;
     v47 = 0u;
@@ -371,34 +371,34 @@ uint64_t __76__PUPhotosDiagnosticsAgent_captureDescriptionOfStatisticsWithResult
           if (([v14 type] & 0xFFFFFFFFFFFFFFFBLL) != 2)
           {
             v15 = MEMORY[0x1E696AEC0];
-            v16 = [v32 uuid];
-            v17 = [v14 type];
-            v18 = [v14 originalFilename];
-            v19 = v18;
+            uuid = [v32 uuid];
+            type = [v14 type];
+            originalFilename = [v14 originalFilename];
+            v19 = originalFilename;
             v20 = @".unknown";
-            if (v18)
+            if (originalFilename)
             {
-              v20 = v18;
+              v20 = originalFilename;
             }
 
-            v21 = [v15 stringWithFormat:@"%@/AssetResource_%@_%@_%ld_%@", v31, v28, v16, v17, v20];
+            v21 = [v15 stringWithFormat:@"%@/AssetResource_%@_%@_%ld_%@", directoryCopy, __currentTimestamp, uuid, type, v20];
 
             dispatch_group_enter(group);
-            v22 = [MEMORY[0x1E69786F0] defaultManager];
+            defaultManager = [MEMORY[0x1E69786F0] defaultManager];
             v23 = [MEMORY[0x1E695DFF8] fileURLWithPath:v21 isDirectory:0];
             v38[0] = MEMORY[0x1E69E9820];
             v38[1] = 3221225472;
             v38[2] = __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_withResultHandler___block_invoke;
             v38[3] = &unk_1E7B7C6A8;
-            v39 = v31;
-            v40 = v28;
+            v39 = directoryCopy;
+            v40 = __currentTimestamp;
             v41 = v32;
             v42 = v14;
-            v43 = v29;
+            v43 = array;
             v44 = v21;
             v45 = group;
             v24 = v21;
-            [v22 writeDataForAssetResource:v14 toFile:v23 options:0 completionHandler:v38];
+            [defaultManager writeDataForAssetResource:v14 toFile:v23 options:0 completionHandler:v38];
 
             v11 = v33;
           }
@@ -413,7 +413,7 @@ uint64_t __76__PUPhotosDiagnosticsAgent_captureDescriptionOfStatisticsWithResult
       while (v11);
     }
 
-    v7 = v27;
+    pu_debugCurrentAsset = v27;
     v9 = &unk_1B3D0C000;
   }
 
@@ -421,10 +421,10 @@ uint64_t __76__PUPhotosDiagnosticsAgent_captureDescriptionOfStatisticsWithResult
   block[1] = v9[211];
   block[2] = __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_withResultHandler___block_invoke_325;
   block[3] = &unk_1E7B80B48;
-  v36 = v29;
-  v37 = v6;
-  v25 = v29;
-  v26 = v6;
+  v36 = array;
+  v37 = handlerCopy;
+  v25 = array;
+  v26 = handlerCopy;
   dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
 }
 
@@ -497,32 +497,32 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
 
 - (id)__currentTimestamp
 {
-  v2 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v3 setDateFormat:@"yyyy_MM_dd_HH_mm_ssZ"];
-  v4 = [v3 stringFromDate:v2];
+  v4 = [v3 stringFromDate:date];
 
   return v4;
 }
 
 - (id)_currentWindows
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 windows];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
 
-  return v3;
+  return windows;
 }
 
 - (id)_windowRecursiveDescription
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PUPhotosDiagnosticsAgent *)self _currentWindows];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _currentWindows = [(PUPhotosDiagnosticsAgent *)self _currentWindows];
+  v5 = [_currentWindows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -533,34 +533,34 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_currentWindows);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 recursiveDescription];
-        v11 = [v10 pu_stringByIndentingNewLines];
-        [v3 appendFormat:@"%@:\n\t%@\n", v9, v11];
+        recursiveDescription = [v9 recursiveDescription];
+        pu_stringByIndentingNewLines = [recursiveDescription pu_stringByIndentingNewLines];
+        [string appendFormat:@"%@:\n\t%@\n", v9, pu_stringByIndentingNewLines];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_currentWindows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 - (id)_viewControllerHierarchyDescription
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(PUPhotosDiagnosticsAgent *)self _currentWindows];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _currentWindows = [(PUPhotosDiagnosticsAgent *)self _currentWindows];
+  v5 = [_currentWindows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -571,92 +571,92 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_currentWindows);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) rootViewController];
-        v10 = [v9 _printHierarchy];
+        rootViewController = [*(*(&v13 + 1) + 8 * i) rootViewController];
+        _printHierarchy = [rootViewController _printHierarchy];
 
-        if (v10)
+        if (_printHierarchy)
         {
-          [v3 addObject:v10];
+          [array addObject:_printHierarchy];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_currentWindows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v3 componentsJoinedByString:@"\n"];
+  v11 = [array componentsJoinedByString:@"\n"];
 
   return v11;
 }
 
 - (id)_viewModelDescription
 {
-  v2 = [MEMORY[0x1E69DC668] pu_debugCurrentViewModel];
-  v3 = [v2 debugDetailedDescription];
+  pu_debugCurrentViewModel = [MEMORY[0x1E69DC668] pu_debugCurrentViewModel];
+  debugDetailedDescription = [pu_debugCurrentViewModel debugDetailedDescription];
 
-  return v3;
+  return debugDetailedDescription;
 }
 
 - (id)_currentAssetDetailedDescription
 {
-  v2 = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 photoLibrary];
-  v5 = [v2 detailedDebugDescriptionInLibrary:v4];
+  _currentAsset = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
+  photoLibrary = [_currentAsset photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
+  v5 = [_currentAsset detailedDebugDescriptionInLibrary:v3PhotoLibrary];
 
   return v5;
 }
 
 - (id)_currentAssetMetadata
 {
-  v2 = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
-  v3 = [v2 metadataDebugDescription];
+  _currentAsset = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
+  metadataDebugDescription = [_currentAsset metadataDebugDescription];
 
-  return v3;
+  return metadataDebugDescription;
 }
 
 - (id)_currentAssetViewModelDescription
 {
-  v2 = [MEMORY[0x1E69DC668] pu_debugCurrentViewModel];
+  pu_debugCurrentViewModel = [MEMORY[0x1E69DC668] pu_debugCurrentViewModel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 currentAssetReference];
-    if (v3)
+    currentAssetReference = [pu_debugCurrentViewModel currentAssetReference];
+    if (currentAssetReference)
     {
-      v4 = [v2 assetViewModelForAssetReference:v3];
-      v5 = [v4 debugDetailedDescription];
+      v4 = [pu_debugCurrentViewModel assetViewModelForAssetReference:currentAssetReference];
+      debugDetailedDescription = [v4 debugDetailedDescription];
     }
 
     else
     {
-      v5 = 0;
+      debugDetailedDescription = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    debugDetailedDescription = 0;
   }
 
-  return v5;
+  return debugDetailedDescription;
 }
 
 - (id)_selectedAssetUUIDsDescription
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPhotosDiagnosticsAgent *)self _selectedAssets];
-  v3 = [MEMORY[0x1E695DF70] array];
+  _selectedAssets = [(PUPhotosDiagnosticsAgent *)self _selectedAssets];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = _selectedAssets;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -675,8 +675,8 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 uuid];
-          [v3 addObject:v10];
+          uuid = [v9 uuid];
+          [array addObject:uuid];
         }
       }
 
@@ -686,7 +686,7 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
     while (v6);
   }
 
-  v11 = [v3 componentsJoinedByString:{@", "}];
+  v11 = [array componentsJoinedByString:{@", "}];
 
   return v11;
 }
@@ -694,13 +694,13 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
 - (id)_selectedAssetIdentifiersDescription
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(PUPhotosDiagnosticsAgent *)self _selectedAssets];
-  v3 = [MEMORY[0x1E695DF70] array];
+  _selectedAssets = [(PUPhotosDiagnosticsAgent *)self _selectedAssets];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = _selectedAssets;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -719,8 +719,8 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 localIdentifier];
-          [v3 addObject:v10];
+          localIdentifier = [v9 localIdentifier];
+          [array addObject:localIdentifier];
         }
       }
 
@@ -730,44 +730,44 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
     while (v6);
   }
 
-  v11 = [v3 componentsJoinedByString:{@", "}];
+  v11 = [array componentsJoinedByString:{@", "}];
 
   return v11;
 }
 
 - (id)_uuidsShownInGrid
 {
-  v2 = [MEMORY[0x1E69DC668] pu_debugCurrentPhotosViewController];
-  v3 = [v2 visibleUUIDs];
+  pu_debugCurrentPhotosViewController = [MEMORY[0x1E69DC668] pu_debugCurrentPhotosViewController];
+  visibleUUIDs = [pu_debugCurrentPhotosViewController visibleUUIDs];
 
-  v4 = [v3 description];
+  v4 = [visibleUUIDs description];
 
   return v4;
 }
 
 - (id)_currentAssetIdentifierUUID
 {
-  v2 = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
-  v3 = [v2 uuid];
+  _currentAsset = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
+  uuid = [_currentAsset uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (id)_currentAssetIdentifierDescription
 {
-  v2 = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
-  v3 = [v2 localIdentifier];
+  _currentAsset = [(PUPhotosDiagnosticsAgent *)self _currentAsset];
+  localIdentifier = [_currentAsset localIdentifier];
 
-  return v3;
+  return localIdentifier;
 }
 
 - (id)_currentAsset
 {
-  v2 = [MEMORY[0x1E69DC668] pu_debugCurrentAsset];
+  pu_debugCurrentAsset = [MEMORY[0x1E69DC668] pu_debugCurrentAsset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = pu_debugCurrentAsset;
   }
 
   else
@@ -780,49 +780,49 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
   return v3;
 }
 
-- (id)_descriptionOfUIState:(int64_t)a3
+- (id)_descriptionOfUIState:(int64_t)state
 {
-  switch(a3)
+  switch(state)
   {
     case 1:
-      v3 = [MEMORY[0x1E69C3450] sharedController];
-      v4 = [v3 currentItemProviders];
-      v5 = [v3 servicesWithItemProviders:v4];
-      v6 = [v3 consoleDescriptionForServices:v5];
+      mEMORY[0x1E69C3450] = [MEMORY[0x1E69C3450] sharedController];
+      currentItemProviders = [mEMORY[0x1E69C3450] currentItemProviders];
+      v5 = [mEMORY[0x1E69C3450] servicesWithItemProviders:currentItemProviders];
+      v6 = [mEMORY[0x1E69C3450] consoleDescriptionForServices:v5];
 
       goto LABEL_10;
     case 2:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _currentAssetIdentifierDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _currentAssetIdentifierDescription];
       goto LABEL_23;
     case 3:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _currentAssetIdentifierUUID];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _currentAssetIdentifierUUID];
       goto LABEL_23;
     case 4:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _currentAssetViewModelDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _currentAssetViewModelDescription];
       goto LABEL_23;
     case 5:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _currentAssetDetailedDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _currentAssetDetailedDescription];
       goto LABEL_23;
     case 6:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _currentAssetMetadata];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _currentAssetMetadata];
       goto LABEL_23;
     case 7:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _selectedAssetIdentifiersDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _selectedAssetIdentifiersDescription];
       goto LABEL_23;
     case 8:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _selectedAssetUUIDsDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _selectedAssetUUIDsDescription];
       goto LABEL_23;
     case 9:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _viewModelDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _viewModelDescription];
       goto LABEL_23;
     case 10:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _viewControllerHierarchyDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _viewControllerHierarchyDescription];
       goto LABEL_23;
     case 11:
-      v10 = [MEMORY[0x1E69DD258] _allDescriptions];
+      _currentAssetIdentifierDescription = [MEMORY[0x1E69DD258] _allDescriptions];
       goto LABEL_23;
     case 12:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _windowRecursiveDescription];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _windowRecursiveDescription];
       goto LABEL_23;
     case 13:
       v11 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -832,25 +832,25 @@ void __87__PUPhotosDiagnosticsAgent__captureCurrentAssetResourcesToDirectory_wit
       v14[2] = __50__PUPhotosDiagnosticsAgent__descriptionOfUIState___block_invoke;
       v14[3] = &unk_1E7B7C658;
       v15 = v11;
-      v3 = v11;
+      mEMORY[0x1E69C3450] = v11;
       [v12 enumerateAllViewsUsingBlock:v14];
-      v6 = [v3 copy];
+      v6 = [mEMORY[0x1E69C3450] copy];
 
       goto LABEL_10;
     case 14:
-      v10 = [MEMORY[0x1E69C3B30] allDiagnosticDescriptions];
+      _currentAssetIdentifierDescription = [MEMORY[0x1E69C3B30] allDiagnosticDescriptions];
       goto LABEL_23;
     case 15:
       v9 = MEMORY[0x1E69C38A8];
-      v3 = [(PUPhotosDiagnosticsAgent *)self _currentWindows];
-      v6 = [v9 diagnosticDescriptionForWindows:v3];
+      mEMORY[0x1E69C3450] = [(PUPhotosDiagnosticsAgent *)self _currentWindows];
+      v6 = [v9 diagnosticDescriptionForWindows:mEMORY[0x1E69C3450]];
 LABEL_10:
 
       break;
     case 16:
-      v10 = [(PUPhotosDiagnosticsAgent *)self _uuidsShownInGrid];
+      _currentAssetIdentifierDescription = [(PUPhotosDiagnosticsAgent *)self _uuidsShownInGrid];
 LABEL_23:
-      v6 = v10;
+      v6 = _currentAssetIdentifierDescription;
       break;
     case 17:
       v7 = +[_TtC15PhotosUIPrivate22PUSearchDebugUtilities assetRetrievalMap];
@@ -890,11 +890,11 @@ void __50__PUPhotosDiagnosticsAgent__descriptionOfUIState___block_invoke(uint64_
 
 - (id)_descriptionForAllUIState
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v7 = MEMORY[0x1E69E9820];
-  v8 = self;
-  v9 = v3;
-  v4 = v3;
+  selfCopy = self;
+  v9 = string;
+  v4 = string;
   PLDiagnosticsEnumerateAllUIStatesUsingBlock();
   v5 = [v4 copy];
 
@@ -914,16 +914,16 @@ void __53__PUPhotosDiagnosticsAgent__descriptionForAllUIState__block_invoke(uint
   }
 }
 
-- (void)setSystemAuthenticationType:(int64_t)a3 resultHandler:(id)a4
+- (void)setSystemAuthenticationType:(int64_t)type resultHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PUPhotosDiagnosticsAgent_setSystemAuthenticationType_resultHandler___block_invoke;
   v7[3] = &unk_1E7B7C608;
-  v8 = v5;
-  v9 = a3;
-  v6 = v5;
+  v8 = handlerCopy;
+  typeCopy = type;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -943,11 +943,11 @@ void __70__PUPhotosDiagnosticsAgent_setSystemAuthenticationType_resultHandler___
   (*(v7 + 16))(v7, v8);
 }
 
-- (void)postNotificationWithName:(id)a3 userInfo:(id)a4 resultHandler:(id)a5
+- (void)postNotificationWithName:(id)name userInfo:(id)info resultHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  infoCopy = info;
+  handlerCopy = handler;
   diagnosticsNotificationCenter = self->_diagnosticsNotificationCenter;
   if (!diagnosticsNotificationCenter)
   {
@@ -958,19 +958,19 @@ void __70__PUPhotosDiagnosticsAgent_setSystemAuthenticationType_resultHandler___
     diagnosticsNotificationCenter = self->_diagnosticsNotificationCenter;
   }
 
-  [(PXDiagnosticsNotificationCenter *)diagnosticsNotificationCenter postNotificationWithName:v13 userInfo:v8 resultHandler:v9];
+  [(PXDiagnosticsNotificationCenter *)diagnosticsNotificationCenter postNotificationWithName:nameCopy userInfo:infoCopy resultHandler:handlerCopy];
 }
 
-- (void)stopTungstenRecordingWithResultHandler:(id)a3
+- (void)stopTungstenRecordingWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__PUPhotosDiagnosticsAgent_stopTungstenRecordingWithResultHandler___block_invoke;
   v6[3] = &unk_1E7B80B48;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1016,19 +1016,19 @@ uint64_t __67__PUPhotosDiagnosticsAgent_stopTungstenRecordingWithResultHandler__
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)startTungstenRecordingToDirectoryURL:(id)a3 resultHandler:(id)a4
+- (void)startTungstenRecordingToDirectoryURL:(id)l resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__PUPhotosDiagnosticsAgent_startTungstenRecordingToDirectoryURL_resultHandler___block_invoke;
   block[3] = &unk_1E7B80CB0;
-  v12 = self;
-  v13 = v7;
-  v11 = v6;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v11 = lCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1140,17 +1140,17 @@ void __79__PUPhotosDiagnosticsAgent_startTungstenRecordingToDirectoryURL_resultH
   }
 }
 
-- (void)setContentPrivacyState:(int64_t)a3 resultHandler:(id)a4
+- (void)setContentPrivacyState:(int64_t)state resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PUPhotosDiagnosticsAgent_setContentPrivacyState_resultHandler___block_invoke;
   block[3] = &unk_1E7B7D790;
-  v9 = v6;
-  v10 = a3;
+  v9 = handlerCopy;
+  stateCopy = state;
   block[4] = self;
-  v7 = v6;
+  v7 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1192,41 +1192,41 @@ LABEL_8:
   (*(v6 + 16))(v6, v7);
 }
 
-- (void)timelineForAlbum:(id)a3 widgetSize:(id)a4 jsonFormat:(BOOL)a5 resultHandler:(id)a6
+- (void)timelineForAlbum:(id)album widgetSize:(id)size jsonFormat:(BOOL)format resultHandler:(id)handler
 {
-  v6 = a5;
+  formatCopy = format;
   v9 = MEMORY[0x1E69C3BA0];
-  v10 = a6;
-  v11 = [v9 timelineDiagnosticForAlbum:a3 widgetSize:a4 jsonFormat:v6];
-  v10[2](v10, v11);
+  handlerCopy = handler;
+  v11 = [v9 timelineDiagnosticForAlbum:album widgetSize:size jsonFormat:formatCopy];
+  handlerCopy[2](handlerCopy, v11);
 }
 
-- (void)timelineForWidgetSize:(id)a3 jsonFormat:(BOOL)a4 resultHandler:(id)a5
+- (void)timelineForWidgetSize:(id)size jsonFormat:(BOOL)format resultHandler:(id)handler
 {
-  v5 = a4;
+  formatCopy = format;
   v7 = MEMORY[0x1E69C3BA0];
-  v8 = a5;
-  v9 = [v7 timelineDiagnosticForWidgetSize:a3 jsonFormat:v5];
-  v8[2](v8, v9);
+  handlerCopy = handler;
+  v9 = [v7 timelineDiagnosticForWidgetSize:size jsonFormat:formatCopy];
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)dumpState:(int64_t)a3 toDirectoryURL:(id)a4 resultHandler:(id)a5
+- (void)dumpState:(int64_t)state toDirectoryURL:(id)l resultHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = v10;
-  if (v8)
+  lCopy = l;
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = defaultManager;
+  if (lCopy)
   {
-    v12 = v8;
+    temporaryDirectory = lCopy;
   }
 
   else
   {
-    v12 = [v10 temporaryDirectory];
+    temporaryDirectory = [defaultManager temporaryDirectory];
   }
 
-  v13 = v12;
+  v13 = temporaryDirectory;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1234,7 +1234,7 @@ LABEL_8:
   v28 = __Block_byref_object_dispose__64131;
   v29 = 0;
   obj = 0;
-  v14 = [v11 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&obj];
+  v14 = [v11 createDirectoryAtURL:temporaryDirectory withIntermediateDirectories:1 attributes:0 error:&obj];
   objc_storeStrong(&v29, obj);
   if (v14)
   {
@@ -1242,21 +1242,21 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __67__PUPhotosDiagnosticsAgent_dumpState_toDirectoryURL_resultHandler___block_invoke;
     block[3] = &unk_1E7B7C5B8;
-    v22 = a3;
+    stateCopy = state;
     v17 = v13;
-    v18 = self;
+    selfCopy = self;
     v19 = v11;
     v21 = &v24;
-    v20 = v9;
+    v20 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
-    v15 = v17;
+    localizedDescription = v17;
   }
 
   else
   {
-    v15 = [v25[5] localizedDescription];
-    (*(v9 + 2))(v9, v15);
+    localizedDescription = [v25[5] localizedDescription];
+    (*(handlerCopy + 2))(handlerCopy, localizedDescription);
   }
 
   _Block_object_dispose(&v24, 8);
@@ -1507,19 +1507,19 @@ uint64_t __67__PUPhotosDiagnosticsAgent_dumpState_toDirectoryURL_resultHandler__
   return [v3 next];
 }
 
-- (void)captureDescriptionOfUIState:(int64_t)a3 resultHandler:(id)a4
+- (void)captureDescriptionOfUIState:(int64_t)state resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (handlerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__PUPhotosDiagnosticsAgent_captureDescriptionOfUIState_resultHandler___block_invoke;
     block[3] = &unk_1E7B7D790;
-    v10 = a3;
+    stateCopy = state;
     block[4] = self;
-    v9 = v6;
+    v9 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

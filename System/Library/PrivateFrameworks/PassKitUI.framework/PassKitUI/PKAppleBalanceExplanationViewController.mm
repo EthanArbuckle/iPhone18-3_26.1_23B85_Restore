@@ -1,24 +1,24 @@
 @interface PKAppleBalanceExplanationViewController
-- (PKAppleBalanceExplanationViewController)initWithSetupController:(id)a3;
+- (PKAppleBalanceExplanationViewController)initWithSetupController:(id)controller;
 - (PKAppleBalanceExplanationViewControllerDelegate)delegate;
 - (id)_bodyText;
-- (void)_setShowSpinner:(BOOL)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)_setShowSpinner:(BOOL)spinner;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)viewDidLoad;
 @end
 
 @implementation PKAppleBalanceExplanationViewController
 
-- (PKAppleBalanceExplanationViewController)initWithSetupController:(id)a3
+- (PKAppleBalanceExplanationViewController)initWithSetupController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PKAppleBalanceExplanationViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v9, sel_initWithContext_, [v5 setupContext]);
+  v6 = -[PKExplanationViewController initWithContext:](&v9, sel_initWithContext_, [controllerCopy setupContext]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_setupController, a3);
+    objc_storeStrong(&v6->_setupController, controller);
     [(PKExplanationViewController *)v7 setShowCancelButton:[(PKAppleBalanceSetupController *)v7->_setupController uiOnly]];
   }
 
@@ -31,17 +31,17 @@
   v27.receiver = self;
   v27.super_class = PKAppleBalanceExplanationViewController;
   [(PKExplanationViewController *)&v27 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = [MEMORY[0x1E69B7D50] pk_privacyLinkForContext:8];
-  [v3 setShowPrivacyView:1];
+  [explanationView setShowPrivacyView:1];
   [(PKExplanationViewController *)self setPrivacyLinkController:v4];
-  [v3 setDelegate:self];
-  [v3 setBodyDataDetectorTypes:0];
-  v5 = [(PKAppleBalanceExplanationViewController *)self _titleText];
-  [v3 setTitleText:v5];
+  [explanationView setDelegate:self];
+  [explanationView setBodyDataDetectorTypes:0];
+  _titleText = [(PKAppleBalanceExplanationViewController *)self _titleText];
+  [explanationView setTitleText:_titleText];
 
-  v6 = [(PKAppleBalanceExplanationViewController *)self _bodyText];
-  [v3 setBodyText:v6];
+  _bodyText = [(PKAppleBalanceExplanationViewController *)self _bodyText];
+  [explanationView setBodyText:_bodyText];
 
   v7 = MEMORY[0x1E69B8948];
   v8 = PKPassKitUIBundle();
@@ -52,17 +52,17 @@
     v13 = objc_alloc_init(MEMORY[0x1E69B8C10]);
     v14 = objc_alloc(MEMORY[0x1E69B8C08]);
     v15 = MEMORY[0x1E695DEF0];
-    v16 = [v9 path];
-    v17 = [v15 dataWithContentsOfFile:v16];
+    path = [v9 path];
+    v17 = [v15 dataWithContentsOfFile:path];
     v18 = [v14 initWithIdentifier:@"AppleBalance_Hero" imageData:v17 credentialType:135];
 
     if (v18)
     {
       v19 = [PKPaymentSetupHeroView alloc];
-      v20 = [(PKAppleBalanceSetupController *)self->_setupController setupContext];
+      setupContext = [(PKAppleBalanceSetupController *)self->_setupController setupContext];
       v28[0] = v18;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-      v22 = [(PKPaymentSetupHeroView *)v19 initWithContext:v20 heroImageController:v13 heroImages:v21];
+      v22 = [(PKPaymentSetupHeroView *)v19 initWithContext:setupContext heroImageController:v13 heroImages:v21];
     }
 
     else
@@ -76,26 +76,26 @@
     v22 = 0;
   }
 
-  [v3 setHeroView:v22];
+  [explanationView setHeroView:v22];
   v23 = PKProvisioningSecondaryBackgroundColor();
-  [v3 setTopBackgroundColor:v23];
+  [explanationView setTopBackgroundColor:v23];
 
-  v24 = [v3 dockView];
-  v25 = [(PKAppleBalanceExplanationViewController *)self _primaryActionTitle];
-  v26 = [v24 primaryButton];
-  [v26 setTitle:v25 forState:0];
+  dockView = [explanationView dockView];
+  _primaryActionTitle = [(PKAppleBalanceExplanationViewController *)self _primaryActionTitle];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setTitle:_primaryActionTitle forState:0];
 }
 
 - (id)_bodyText
 {
-  v2 = [(PKAppleBalanceSetupController *)self->_setupController credential];
-  v3 = [v2 product];
+  credential = [(PKAppleBalanceSetupController *)self->_setupController credential];
+  product = [credential product];
 
-  v4 = [v3 longLocalizedDescription];
-  v5 = v4;
-  if (v4)
+  longLocalizedDescription = [product longLocalizedDescription];
+  v5 = longLocalizedDescription;
+  if (longLocalizedDescription)
   {
-    v6 = v4;
+    v6 = longLocalizedDescription;
   }
 
   else
@@ -108,7 +108,7 @@
   return v7;
 }
 
-- (void)_setShowSpinner:(BOOL)a3
+- (void)_setShowSpinner:(BOOL)spinner
 {
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
@@ -116,7 +116,7 @@
   block[2] = __59__PKAppleBalanceExplanationViewController__setShowSpinner___block_invoke;
   block[3] = &unk_1E80111A8;
   objc_copyWeak(&v5, &location);
-  v6 = a3;
+  spinnerCopy = spinner;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -137,7 +137,7 @@ void __59__PKAppleBalanceExplanationViewController__setShowSpinner___block_invok
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained appleBalanceExplanationViewControllerDidSelectContinue:self];

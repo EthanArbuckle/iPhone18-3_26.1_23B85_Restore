@@ -1,6 +1,6 @@
 @interface ANAnalyticsContext
-+ (id)contextWithAnnouncer:(id)a3;
-+ (id)contextWithEndpointID:(id)a3;
++ (id)contextWithAnnouncer:(id)announcer;
++ (id)contextWithEndpointID:(id)d;
 - (NSDictionary)analyticsPayload;
 @end
 
@@ -17,25 +17,25 @@
   return v5;
 }
 
-+ (id)contextWithAnnouncer:(id)a3
++ (id)contextWithAnnouncer:(id)announcer
 {
-  v3 = a3;
+  announcerCopy = announcer;
   v4 = objc_opt_new();
-  if (v3)
+  if (announcerCopy)
   {
-    [v4 setIsEndpoint:{objc_msgSend(v3, "isEndpoint")}];
+    [v4 setIsEndpoint:{objc_msgSend(announcerCopy, "isEndpoint")}];
   }
 
   return v4;
 }
 
-+ (id)contextWithEndpointID:(id)a3
++ (id)contextWithEndpointID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_new();
-  if (v3)
+  if (dCopy)
   {
-    [v4 setIsEndpoint:{objc_msgSend(v3, "an_isLocalDevice") ^ 1}];
+    [v4 setIsEndpoint:{objc_msgSend(dCopy, "an_isLocalDevice") ^ 1}];
   }
 
   return v4;

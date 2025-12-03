@@ -1,16 +1,16 @@
 @interface OKActionBindingKeyPressed
 + (id)supportedSettings;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingKeyPressed)init;
-- (OKActionBindingKeyPressed)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingKeyPressed)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setSettingKeyPressed:(id)a3;
+- (void)setSettingKeyPressed:(id)pressed;
 @end
 
 @implementation OKActionBindingKeyPressed
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -20,10 +20,10 @@
       goto LABEL_6;
     }
 
-    if ([objc_msgSend(a3 "keyPressed")])
+    if ([objc_msgSend(action "keyPressed")])
     {
       isKeyUp = self->_isKeyUp;
-      if (isKeyUp == [a3 isKeyUp])
+      if (isKeyUp == [action isKeyUp])
       {
         return 1;
       }
@@ -33,7 +33,7 @@
     {
 LABEL_6:
       v7 = self->_isKeyUp;
-      if (v7 == [a3 isKeyUp])
+      if (v7 == [action isKeyUp])
       {
         return 1;
       }
@@ -57,14 +57,14 @@ LABEL_6:
   return result;
 }
 
-- (OKActionBindingKeyPressed)initWithSettings:(id)a3
+- (OKActionBindingKeyPressed)initWithSettings:(id)settings
 {
   v11.receiver = self;
   v11.super_class = OKActionBindingKeyPressed;
   v4 = [(OKActionBinding *)&v11 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"keyPressed"];
+    v5 = [settings objectForKey:@"keyPressed"];
     if (v5)
     {
       v6 = v5;
@@ -82,7 +82,7 @@ LABEL_6:
       }
     }
 
-    v8 = [a3 objectForKey:@"isKeyUp"];
+    v8 = [settings objectForKey:@"isKeyUp"];
     if (v8)
     {
       v9 = v8;
@@ -111,11 +111,11 @@ LABEL_6:
   [(OKActionBinding *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingKeyPressed;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -129,7 +129,7 @@ LABEL_6:
 + (id)supportedSettings
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKActionBindingKeyPressed;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v9[0] = @"keyPressed";
@@ -144,14 +144,14 @@ LABEL_6:
   return v2;
 }
 
-- (void)setSettingKeyPressed:(id)a3
+- (void)setSettingKeyPressed:(id)pressed
 {
   keyPressed = self->_keyPressed;
   if (keyPressed)
   {
   }
 
-  self->_keyPressed = a3;
+  self->_keyPressed = pressed;
 }
 
 @end

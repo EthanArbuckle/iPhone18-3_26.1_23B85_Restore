@@ -1,11 +1,11 @@
 @interface CSDSimulatedConversationManager
-- (void)createIncomingConversationWithHandles:(id)a3;
-- (void)removeRemoteParticipant:(id)a3 fromConversationWithGroupUUID:(id)a4;
+- (void)createIncomingConversationWithHandles:(id)handles;
+- (void)removeRemoteParticipant:(id)participant fromConversationWithGroupUUID:(id)d;
 @end
 
 @implementation CSDSimulatedConversationManager
 
-- (void)removeRemoteParticipant:(id)a3 fromConversationWithGroupUUID:(id)a4
+- (void)removeRemoteParticipant:(id)participant fromConversationWithGroupUUID:(id)d
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -13,18 +13,18 @@
   __chkstk_darwin(v6, v9);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
+  participantCopy = participant;
+  selfCopy = self;
   sub_10032C8EC();
 
   (*(v7 + 8))(v11, v6);
 }
 
-- (void)createIncomingConversationWithHandles:(id)a3
+- (void)createIncomingConversationWithHandles:(id)handles
 {
   sub_100006AF0(0, &qword_1006A2640, TUHandle_ptr);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_10032D160();
 }
 

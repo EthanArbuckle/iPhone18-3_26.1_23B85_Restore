@@ -10,12 +10,12 @@
 - (NSURL)url;
 - (SOAuthorizationParameters)init;
 - (int64_t)responseCode;
-- (void)setAuditTokenData:(id)a3;
-- (void)setHttpBody:(id)a3;
-- (void)setHttpHeaders:(id)a3;
-- (void)setOperation:(id)a3;
-- (void)setResponseCode:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setAuditTokenData:(id)data;
+- (void)setHttpBody:(id)body;
+- (void)setHttpHeaders:(id)headers;
+- (void)setOperation:(id)operation;
+- (void)setResponseCode:(int64_t)code;
+- (void)setUrl:(id)url;
 @end
 
 @implementation SOAuthorizationParameters
@@ -57,123 +57,123 @@
 
 - (NSString)identifier
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 identifier];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  identifier = [authorizationParametersCore identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)operation
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 operation];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  operation = [authorizationParametersCore operation];
 
-  return v3;
+  return operation;
 }
 
-- (void)setOperation:(id)a3
+- (void)setOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  [v5 setOperation:v4];
+  operationCopy = operation;
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  [authorizationParametersCore setOperation:operationCopy];
 }
 
 - (NSURL)url
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 url];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  v3 = [authorizationParametersCore url];
 
   return v3;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v4 = a3;
-  v5 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  [v5 setUrl:v4];
+  urlCopy = url;
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  [authorizationParametersCore setUrl:urlCopy];
 }
 
 - (NSDictionary)httpHeaders
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 httpHeaders];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  httpHeaders = [authorizationParametersCore httpHeaders];
 
-  return v3;
+  return httpHeaders;
 }
 
-- (void)setHttpHeaders:(id)a3
+- (void)setHttpHeaders:(id)headers
 {
-  v4 = a3;
-  v5 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  [v5 setHttpHeaders:v4];
+  headersCopy = headers;
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  [authorizationParametersCore setHttpHeaders:headersCopy];
 }
 
 - (NSData)httpBody
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 httpBody];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  httpBody = [authorizationParametersCore httpBody];
 
-  return v3;
+  return httpBody;
 }
 
-- (void)setHttpBody:(id)a3
+- (void)setHttpBody:(id)body
 {
-  v4 = a3;
-  v5 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  [v5 setHttpBody:v4];
+  bodyCopy = body;
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  [authorizationParametersCore setHttpBody:bodyCopy];
 }
 
 - (NSData)auditTokenData
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 auditTokenData];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  auditTokenData = [authorizationParametersCore auditTokenData];
 
-  return v3;
+  return auditTokenData;
 }
 
-- (void)setAuditTokenData:(id)a3
+- (void)setAuditTokenData:(id)data
 {
-  v4 = a3;
-  v5 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  [v5 setAuditTokenData:v4];
+  dataCopy = data;
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  [authorizationParametersCore setAuditTokenData:dataCopy];
 }
 
 - (BOOL)useInternalExtensions
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 useInternalExtensions];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  useInternalExtensions = [authorizationParametersCore useInternalExtensions];
 
-  return v3;
+  return useInternalExtensions;
 }
 
 - (int64_t)responseCode
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 responseCode];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  responseCode = [authorizationParametersCore responseCode];
 
-  return v3;
+  return responseCode;
 }
 
-- (void)setResponseCode:(int64_t)a3
+- (void)setResponseCode:(int64_t)code
 {
-  v4 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  [v4 setResponseCode:a3];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  [authorizationParametersCore setResponseCode:code];
 }
 
 - (BOOL)isCFNetworkInterception
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 isCFNetworkInterception];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  isCFNetworkInterception = [authorizationParametersCore isCFNetworkInterception];
 
-  return v3;
+  return isCFNetworkInterception;
 }
 
 - (BOOL)canShowOnCoverScreen
 {
-  v2 = [(SOAuthorizationParameters *)self authorizationParametersCore];
-  v3 = [v2 canShowOnCoverScreen];
+  authorizationParametersCore = [(SOAuthorizationParameters *)self authorizationParametersCore];
+  canShowOnCoverScreen = [authorizationParametersCore canShowOnCoverScreen];
 
-  return v3;
+  return canShowOnCoverScreen;
 }
 
 @end

@@ -6,8 +6,8 @@
 
 - (id)_searchUIHorizontalViewClass
 {
-  v1 = [a1 thumbnail];
-  [v1 size];
+  thumbnail = [self thumbnail];
+  [thumbnail size];
   v3 = v2;
 
   if (v3 <= 150.0)

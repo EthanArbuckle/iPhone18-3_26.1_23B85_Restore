@@ -1,27 +1,27 @@
 @interface PGHomeFoodieMemoryGenerator
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGHomeFoodieMemoryGenerator
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:@"Food" inGraph:v6];
-  v8 = [v7 momentNodes];
-  v9 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:v6];
-  v10 = [v9 homeNodes];
-  v11 = [v10 addressNodes];
+  blockCopy = block;
+  graphCopy = graph;
+  v7 = [PGGraphSceneFeatureNodeCollection sceneFeatureNodesForSceneName:@"Food" inGraph:graphCopy];
+  momentNodes = [v7 momentNodes];
+  v9 = [(PGGraphNodeCollection *)PGGraphMeNodeCollection nodesInGraph:graphCopy];
+  homeNodes = [v9 homeNodes];
+  addressNodes = [homeNodes addressNodes];
 
   v12 = MEMORY[0x277D22BF8];
   v13 = +[PGGraphAddressNode momentOfAddress];
-  v14 = [v12 adjacencyWithSources:v11 relation:v13 targetsClass:objc_opt_class()];
+  v14 = [v12 adjacencyWithSources:addressNodes relation:v13 targetsClass:objc_opt_class()];
 
-  v15 = [v14 intersectingTargetsWith:v8];
+  v15 = [v14 intersectingTargetsWith:momentNodes];
 
-  v16 = [PGFoodieMemoryGenerator incompatibleMomentNodesInGraph:v6];
+  v16 = [PGFoodieMemoryGenerator incompatibleMomentNodesInGraph:graphCopy];
 
   v17 = [v15 subtractingTargetsWith:v16];
 
@@ -30,8 +30,8 @@
   v20[2] = __85__PGHomeFoodieMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
   v20[3] = &unk_2788871B8;
   v21 = v7;
-  v22 = v5;
-  v18 = v5;
+  v22 = blockCopy;
+  v18 = blockCopy;
   v19 = v7;
   [v17 enumerateTargetsBySourceWithBlock:v20];
 }
@@ -49,34 +49,34 @@ void __85__PGHomeFoodieMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGrap
   (*(*(a1 + 40) + 16))();
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 6009;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 6010;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;

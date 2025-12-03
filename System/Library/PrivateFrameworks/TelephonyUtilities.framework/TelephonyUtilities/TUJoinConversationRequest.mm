@@ -6,17 +6,17 @@
 
 - (CXJoinCallAction)joinCallAction
 {
-  v2 = self;
-  v3 = [(TUJoinConversationRequest *)v2 remoteMembers];
-  v60 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  selfCopy = self;
+  remoteMembers = [(TUJoinConversationRequest *)selfCopy remoteMembers];
+  v60 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [remoteMembers count]);
 
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v59 = v2;
-  v4 = [(TUJoinConversationRequest *)v2 remoteMembers];
-  v5 = [v4 countByEnumeratingWithState:&v65 objects:v72 count:16];
+  v59 = selfCopy;
+  remoteMembers2 = [(TUJoinConversationRequest *)selfCopy remoteMembers];
+  v5 = [remoteMembers2 countByEnumeratingWithState:&v65 objects:v72 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,33 +27,33 @@
       {
         if (*v66 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(remoteMembers2);
         }
 
         v9 = *(*(&v65 + 1) + 8 * i);
         v10 = [CXMember alloc];
-        v11 = [v9 handle];
-        v12 = [CXHandle handleWithTUHandle:v11];
-        v13 = [v9 stableDeviceIdentifier];
-        v14 = [v10 initWithHandle:v12 identityBlob:0 stableDeviceIdentifier:v13];
+        handle = [v9 handle];
+        v12 = [CXHandle handleWithTUHandle:handle];
+        stableDeviceIdentifier = [v9 stableDeviceIdentifier];
+        v14 = [v10 initWithHandle:v12 identityBlob:0 stableDeviceIdentifier:stableDeviceIdentifier];
         [v60 addObject:v14];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v65 objects:v72 count:16];
+      v6 = [remoteMembers2 countByEnumeratingWithState:&v65 objects:v72 count:16];
     }
 
     while (v6);
   }
 
-  v15 = [(TUJoinConversationRequest *)v2 otherInvitedHandles];
-  v16 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v15 count]);
+  otherInvitedHandles = [(TUJoinConversationRequest *)selfCopy otherInvitedHandles];
+  v16 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [otherInvitedHandles count]);
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v17 = [(TUJoinConversationRequest *)v2 otherInvitedHandles];
-  v18 = [v17 countByEnumeratingWithState:&v61 objects:v71 count:16];
+  otherInvitedHandles2 = [(TUJoinConversationRequest *)selfCopy otherInvitedHandles];
+  v18 = [otherInvitedHandles2 countByEnumeratingWithState:&v61 objects:v71 count:16];
   if (v18)
   {
     v19 = v18;
@@ -64,42 +64,42 @@
       {
         if (*v62 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(otherInvitedHandles2);
         }
 
         v22 = [CXHandle handleWithTUHandle:*(*(&v61 + 1) + 8 * j)];
         [v16 addObject:v22];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v61 objects:v71 count:16];
+      v19 = [otherInvitedHandles2 countByEnumeratingWithState:&v61 objects:v71 count:16];
     }
 
     while (v19);
   }
 
-  v23 = [(TUJoinConversationRequest *)v59 conversationLink];
-  if (v23 && ([(TUJoinConversationRequest *)v59 isJoiningConversationWithLink]& 1) == 0)
+  conversationLink = [(TUJoinConversationRequest *)v59 conversationLink];
+  if (conversationLink && ([(TUJoinConversationRequest *)v59 isJoiningConversationWithLink]& 1) == 0)
   {
-    v26 = [(TUJoinConversationRequest *)v59 UUID];
+    uUID = [(TUJoinConversationRequest *)v59 UUID];
   }
 
   else
   {
-    v24 = [(TUJoinConversationRequest *)v59 messagesGroupUUID];
-    v25 = v24;
-    if (v24)
+    messagesGroupUUID = [(TUJoinConversationRequest *)v59 messagesGroupUUID];
+    v25 = messagesGroupUUID;
+    if (messagesGroupUUID)
     {
-      v26 = v24;
+      uUID = messagesGroupUUID;
     }
 
     else
     {
-      v27 = [(TUJoinConversationRequest *)v59 conversationLink];
-      v28 = [v27 groupUUID];
-      v29 = v28;
-      if (v28)
+      conversationLink2 = [(TUJoinConversationRequest *)v59 conversationLink];
+      groupUUID = [conversationLink2 groupUUID];
+      v29 = groupUUID;
+      if (groupUUID)
       {
-        v30 = v28;
+        v30 = groupUUID;
       }
 
       else
@@ -107,31 +107,31 @@
         v30 = +[NSUUID UUID];
       }
 
-      v26 = v30;
+      uUID = v30;
     }
   }
 
   v31 = [CXJoinCallAction alloc];
-  v32 = [(TUJoinConversationRequest *)v59 UUID];
-  v33 = [v31 initWithCallUUID:v32 groupUUID:v26];
+  uUID2 = [(TUJoinConversationRequest *)v59 UUID];
+  v33 = [v31 initWithCallUUID:uUID2 groupUUID:uUID];
 
-  if (v23)
+  if (conversationLink)
   {
-    v34 = [v23 pseudonym];
-    [v33 setPseudonym:v34];
+    pseudonym = [conversationLink pseudonym];
+    [v33 setPseudonym:pseudonym];
 
-    v35 = [v23 publicKey];
-    [v33 setPublicKey:v35];
+    publicKey = [conversationLink publicKey];
+    [v33 setPublicKey:publicKey];
   }
 
   [v33 setRemoteMembers:v60];
   [v33 setOtherInvitedHandles:v16];
   [v33 setVideoEnabled:{-[TUJoinConversationRequest isVideoEnabled](v59, "isVideoEnabled")}];
-  v36 = [(TUJoinConversationRequest *)v59 activity];
-  if (v36)
+  activity = [(TUJoinConversationRequest *)v59 activity];
+  if (activity)
   {
-    v37 = [(TUJoinConversationRequest *)v59 activity];
-    v38 = [CXJoinCallActivity activityWithTUConversationActivity:v37];
+    activity2 = [(TUJoinConversationRequest *)v59 activity];
+    v38 = [CXJoinCallActivity activityWithTUConversationActivity:activity2];
     [v33 setJoinCallActivity:v38];
   }
 
@@ -141,11 +141,11 @@
   }
 
   [v33 setVideo:{-[TUJoinConversationRequest isVideo](v59, "isVideo")}];
-  v39 = [(TUJoinConversationRequest *)v59 callerID];
-  if (v39)
+  callerID = [(TUJoinConversationRequest *)v59 callerID];
+  if (callerID)
   {
-    v40 = [(TUJoinConversationRequest *)v59 callerID];
-    v41 = [CXHandle handleWithTUHandle:v40];
+    callerID2 = [(TUJoinConversationRequest *)v59 callerID];
+    v41 = [CXHandle handleWithTUHandle:callerID2];
     [v33 setCallerID:v41];
   }
 
@@ -159,50 +159,50 @@
   [v33 setUplinkMuted:{-[TUJoinConversationRequest isUplinkMuted](v59, "isUplinkMuted")}];
   [v33 setShouldSuppressInCallUI:{-[TUJoinConversationRequest shouldSuppressInCallUI](v59, "shouldSuppressInCallUI")}];
   [v33 setLaunchInBackground:{-[TUJoinConversationRequest launchInBackground](v59, "launchInBackground")}];
-  v42 = [(TUJoinConversationRequest *)v59 messagesGroupUUID];
-  [v33 setMessagesGroupUUID:v42];
+  messagesGroupUUID2 = [(TUJoinConversationRequest *)v59 messagesGroupUUID];
+  [v33 setMessagesGroupUUID:messagesGroupUUID2];
 
-  v43 = [(TUJoinConversationRequest *)v59 messagesGroupName];
-  [v33 setMessagesGroupName:v43];
+  messagesGroupName = [(TUJoinConversationRequest *)v59 messagesGroupName];
+  [v33 setMessagesGroupName:messagesGroupName];
 
   [v33 setWantsStagingArea:{-[TUJoinConversationRequest wantsStagingArea](v59, "wantsStagingArea")}];
   [v33 setLetMeIn:{-[TUJoinConversationRequest sendLetMeInRequest](v59, "sendLetMeInRequest")}];
   [v33 setJoiningConversationWithLink:{-[TUJoinConversationRequest isJoiningConversationWithLink](v59, "isJoiningConversationWithLink")}];
-  v44 = [(TUJoinConversationRequest *)v59 provider];
-  v45 = [v44 identifier];
-  [v33 setConversationProviderIdentifier:v45];
+  provider = [(TUJoinConversationRequest *)v59 provider];
+  identifier = [provider identifier];
+  [v33 setConversationProviderIdentifier:identifier];
 
-  v46 = [(TUJoinConversationRequest *)v59 collaborationIdentifier];
-  [v33 setCollaborationIdentifier:v46];
+  collaborationIdentifier = [(TUJoinConversationRequest *)v59 collaborationIdentifier];
+  [v33 setCollaborationIdentifier:collaborationIdentifier];
 
-  v47 = [(TUJoinConversationRequest *)v59 invitationPreferences];
-  v48 = [v47 count];
+  invitationPreferences = [(TUJoinConversationRequest *)v59 invitationPreferences];
+  v48 = [invitationPreferences count];
 
   if (v48)
   {
     v49 = sub_100004778();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
-      v50 = [(TUJoinConversationRequest *)v59 invitationPreferences];
+      invitationPreferences2 = [(TUJoinConversationRequest *)v59 invitationPreferences];
       *buf = 138412290;
-      v70 = v50;
+      v70 = invitationPreferences2;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "Join request specifies invitation preferences: %@", buf, 0xCu);
     }
 
-    v51 = [(TUJoinConversationRequest *)v59 notificationStylesByHandleType];
-    [v33 setNotificationStylesByHandleType:v51];
+    notificationStylesByHandleType = [(TUJoinConversationRequest *)v59 notificationStylesByHandleType];
+    [v33 setNotificationStylesByHandleType:notificationStylesByHandleType];
   }
 
   [v33 setRelay:{-[TUJoinConversationRequest endpointOnCurrentDevice](v59, "endpointOnCurrentDevice") ^ 1}];
-  v52 = [(TUJoinConversationRequest *)v59 participantCluster];
+  participantCluster = [(TUJoinConversationRequest *)v59 participantCluster];
 
-  if (v52)
+  if (participantCluster)
   {
     v53 = [CXJoinCallParticipantCluster alloc];
-    v54 = [(TUJoinConversationRequest *)v59 participantCluster];
-    v55 = [v54 UUID];
-    v56 = [(TUJoinConversationRequest *)v59 participantCluster];
-    v57 = [v53 initWithUUID:v55 type:{objc_msgSend(v56, "type")}];
+    participantCluster2 = [(TUJoinConversationRequest *)v59 participantCluster];
+    uUID3 = [participantCluster2 UUID];
+    participantCluster3 = [(TUJoinConversationRequest *)v59 participantCluster];
+    v57 = [v53 initWithUUID:uUID3 type:{objc_msgSend(participantCluster3, "type")}];
     [v33 setParticipantCluster:v57];
   }
 

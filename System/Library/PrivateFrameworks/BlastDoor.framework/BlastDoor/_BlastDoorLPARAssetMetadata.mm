@@ -1,10 +1,10 @@
 @interface _BlastDoorLPARAssetMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BlastDoorLPARAssetMetadata)init;
-- (_BlastDoorLPARAssetMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (id)_initWithURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPARAssetMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)_initWithURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPARAssetMetadata
@@ -26,31 +26,31 @@
   return v3;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(_BlastDoorLPARAssetMetadata *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_BlastDoorLPARAssetMetadata *)self init];
-  if (v5 && (URLForKey(v4, @"LPMetadataARAssetURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
+  if (v5 && (URLForKey(dictionaryCopy, @"LPMetadataARAssetURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
   {
-    v8 = stringForKey(v4, @"LPMetadataARAssetType");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataARAssetType");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = stringForKey(v4, @"LPMetadataARAssetAccessibilityText");
+    v10 = stringForKey(dictionaryCopy, @"LPMetadataARAssetAccessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v10;
 
@@ -65,25 +65,25 @@
   return v12;
 }
 
-- (_BlastDoorLPARAssetMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPARAssetMetadata)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _BlastDoorLPARAssetMetadata;
   v5 = [(_BlastDoorLPARAssetMetadata *)&v15 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"type");
+    v8 = decodeStringForKey(coderCopy, @"type");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = decodeStringForKey(v4, @"accessibilityText");
+    v10 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v10;
 
@@ -94,23 +94,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInt32:version forKey:@"version"];
-  [v5 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_type forKey:@"type"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:version forKey:@"version"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_type forKey:@"type"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _BlastDoorLPARAssetMetadata;
-  if ([(_BlastDoorLPARAssetMetadata *)&v12 isEqual:v4])
+  if ([(_BlastDoorLPARAssetMetadata *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -120,7 +120,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && ((v8 = v6[2], !(v8 | self->_URL)) || [v8 isEqual:?]))
       {

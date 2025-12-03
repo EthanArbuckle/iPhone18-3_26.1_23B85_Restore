@@ -1,18 +1,18 @@
 @interface PAEDisplace
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEDisplace)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEDisplace)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEDisplace
 
-- (PAEDisplace)initWithAPIManager:(id)a3
+- (PAEDisplace)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEDisplace;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -45,7 +45,7 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (!v9)
@@ -57,13 +57,13 @@
   v29 = 0;
   v27 = 0;
   v28 = 0;
-  [v9 getFloatValue:&v28 fromParm:3 atFxTime:a5->var0.var1];
-  [v10 getFloatValue:&v27 fromParm:4 atFxTime:a5->var0.var1];
-  [v10 getBoolValue:&v29 fromParm:5 atFxTime:a5->var0.var1];
-  v11 = [a3 imageType];
-  if ([(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1])
+  [v9 getFloatValue:&v28 fromParm:3 atFxTime:info->var0.var1];
+  [v10 getFloatValue:&v27 fromParm:4 atFxTime:info->var0.var1];
+  [v10 getBoolValue:&v29 fromParm:5 atFxTime:info->var0.var1];
+  imageType = [output imageType];
+  if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1])
   {
-    v12 = v11 == 3;
+    v12 = imageType == 3;
   }
 
   else
@@ -75,54 +75,54 @@
   if (v12)
   {
     v26 = 0;
-    v14 = *&a5->var2;
-    v15 = *&a5->var4;
-    v25[0] = *&a5->var0.var0;
+    v14 = *&info->var2;
+    v15 = *&info->var4;
+    v25[0] = *&info->var0.var0;
     v25[1] = v14;
     v25[2] = v15;
-    [(PAESharedDefaultBase *)self getHeliumImage:&v26 layerOffsetX:0 layerOffsetY:0 requestInfo:v25 fromParm:1 atTime:a5->var0.var1];
+    [(PAESharedDefaultBase *)self getHeliumImage:&v26 layerOffsetX:0 layerOffsetY:0 requestInfo:v25 fromParm:1 atTime:info->var0.var1];
     if (v26)
     {
       [v26 heliumRef];
       v16 = *&v25[0];
-      v17 = [v26 width];
-      v18 = [v26 height];
+      width = [v26 width];
+      height = [v26 height];
     }
 
     else
     {
       v16 = 0;
-      v17 = 0;
-      v18 = 0;
+      width = 0;
+      height = 0;
     }
 
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
-    if (v16 && v17 && v18)
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input];
+    if (v16 && width && height)
     {
-      [(PAESharedDefaultBase *)self getImageBoundary:a4];
+      [(PAESharedDefaultBase *)self getImageBoundary:input];
       v19 = *(&v25[0] + 1);
       HGTransform::HGTransform(v25);
-      v20 = v17 / a5->var3;
-      v21 = v18 / a5->var4;
+      v20 = width / info->var3;
+      v21 = height / info->var4;
       HGTransform::Scale(v25, *&v19 / (v20 + 4.0), *(&v19 + 1) / (v21 + 4.0), 1.0);
       v22 = HGObject::operator new(0x210uLL);
       HGXForm::HGXForm(v22);
       (*(*v22 + 576))(v22, v25);
       (*(*v22 + 120))(v22, 0, v16);
       (*(*v22 + 136))(v22, 0, 32);
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       v23 = HGObject::operator new(0x1A0uLL);
       HgcDisplace::HgcDisplace(v23);
     }
 
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -130,7 +130,7 @@
       *&v25[0] = 0;
     }
 
-    [a3 setHeliumRef:v25];
+    [output setHeliumRef:v25];
     if (*&v25[0])
     {
       (*(**&v25[0] + 24))(*&v25[0]);
@@ -145,15 +145,15 @@
   return v13;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

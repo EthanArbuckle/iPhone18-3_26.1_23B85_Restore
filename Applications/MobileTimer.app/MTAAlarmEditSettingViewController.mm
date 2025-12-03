@@ -1,38 +1,38 @@
 @interface MTAAlarmEditSettingViewController
-- (MTAAlarmEditSettingViewController)initWithAlarm:(id)a3 setting:(int64_t)a4 delegate:(id)a5;
-- (MTAAlarmEditSettingViewController)initWithSetting:(int64_t)a3 editController:(id)a4;
+- (MTAAlarmEditSettingViewController)initWithAlarm:(id)alarm setting:(int64_t)setting delegate:(id)delegate;
+- (MTAAlarmEditSettingViewController)initWithSetting:(int64_t)setting editController:(id)controller;
 - (MTAlarmEditSettingViewControllerDelegate)delegate;
 - (double)rowHeightWithCurrentAccessibilityConfiguration;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_commonInitialization;
 - (void)_dismiss;
 - (void)addDefaultSongsIfNeeded;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textValueChanged:(id)a3;
-- (void)tonePickerViewController:(id)a3 selectedMediaItemWithIdentifier:(id)a4;
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4;
-- (void)tonePickerViewController:(id)a3 willPresentVibrationPickerViewController:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textValueChanged:(id)changed;
+- (void)tonePickerViewController:(id)controller selectedMediaItemWithIdentifier:(id)identifier;
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier;
+- (void)tonePickerViewController:(id)controller willPresentVibrationPickerViewController:(id)viewController;
 - (void)updateTableViewRowHeight;
-- (void)vibrationPickerViewController:(id)a3 selectedVibrationWithIdentifier:(id)a4;
+- (void)vibrationPickerViewController:(id)controller selectedVibrationWithIdentifier:(id)identifier;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAAlarmEditSettingViewController
 
-- (MTAAlarmEditSettingViewController)initWithSetting:(int64_t)a3 editController:(id)a4
+- (MTAAlarmEditSettingViewController)initWithSetting:(int64_t)setting editController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = MTAAlarmEditSettingViewController;
-  v5 = [(MTAAlarmEditSettingViewController *)&v9 init:a3];
+  v5 = [(MTAAlarmEditSettingViewController *)&v9 init:setting];
   v6 = v5;
   if (v5)
   {
-    v5->_setting = a3;
+    v5->_setting = setting;
     [(MTAAlarmEditSettingViewController *)v5 _commonInitialization];
     v7 = v6;
   }
@@ -40,19 +40,19 @@
   return v6;
 }
 
-- (MTAAlarmEditSettingViewController)initWithAlarm:(id)a3 setting:(int64_t)a4 delegate:(id)a5
+- (MTAAlarmEditSettingViewController)initWithAlarm:(id)alarm setting:(int64_t)setting delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  alarmCopy = alarm;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = MTAAlarmEditSettingViewController;
   v10 = [(MTAAlarmEditSettingViewController *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_setting = a4;
-    objc_storeWeak(&v10->_delegate, v9);
-    v12 = [v8 mutableCopy];
+    v10->_setting = setting;
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    v12 = [alarmCopy mutableCopy];
     alarm = v11->_alarm;
     v11->_alarm = v12;
 
@@ -88,34 +88,34 @@
     [(TKTonePickerViewController *)self->_tonePickerViewController setStyleProvider:v11];
 
     v12 = +[UIColor mtui_backgroundColor];
-    v13 = [(TKTonePickerViewController *)self->_tonePickerViewController tableView];
-    [v13 setBackgroundColor:v12];
+    tableView = [(TKTonePickerViewController *)self->_tonePickerViewController tableView];
+    [tableView setBackgroundColor:v12];
 
     [(MTAAlarmEditSettingViewController *)self addDefaultSongsIfNeeded];
-    v14 = [(MTAAlarmEditSettingViewController *)self alarm];
-    v4 = [v14 sound];
+    alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+    sound = [alarm sound];
 
-    v15 = [v4 soundType];
-    if (v15 == 3)
+    soundType = [sound soundType];
+    if (soundType == 3)
     {
       v17 = [MPMediaItem alloc];
-      v18 = [v4 mediaItemIdentifier];
-      v16 = [v17 initWithPersistentID:{objc_msgSend(v18, "longLongValue")}];
+      mediaItemIdentifier = [sound mediaItemIdentifier];
+      toneIdentifier = [v17 initWithPersistentID:{objc_msgSend(mediaItemIdentifier, "longLongValue")}];
 
-      if (v16)
+      if (toneIdentifier)
       {
-        v19 = [v16 valueForProperty:MPMediaItemPropertyPersistentID];
+        v19 = [toneIdentifier valueForProperty:MPMediaItemPropertyPersistentID];
         [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedMediaIdentifier:v19];
       }
     }
 
     else
     {
-      if (v15 != 2)
+      if (soundType != 2)
       {
 LABEL_11:
-        v20 = [v4 vibrationIdentifier];
-        [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedVibrationIdentifier:v20];
+        vibrationIdentifier = [sound vibrationIdentifier];
+        [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedVibrationIdentifier:vibrationIdentifier];
 
         [(TKTonePickerViewController *)self->_tonePickerViewController setDelegate:self];
         [(MTAAlarmEditSettingViewController *)self addChildViewController:self->_tonePickerViewController];
@@ -123,8 +123,8 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v16 = [v4 toneIdentifier];
-      [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:v16];
+      toneIdentifier = [sound toneIdentifier];
+      [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:toneIdentifier];
     }
 
     goto LABEL_11;
@@ -137,8 +137,8 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v4 = +[NSBundle mainBundle];
-  v21 = [v4 localizedStringForKey:@"EDIT_REPEAT" value:&stru_1000AEF10 table:0];
+  sound = +[NSBundle mainBundle];
+  v21 = [sound localizedStringForKey:@"EDIT_REPEAT" value:&stru_1000AEF10 table:0];
 LABEL_12:
 
   [(MTAAlarmEditSettingViewController *)self setTitle:v21];
@@ -150,8 +150,8 @@ LABEL_13:
   [(TKTonePickerViewController *)self->_tonePickerViewController willMoveToParentViewController:0];
   if ([(TKTonePickerViewController *)self->_tonePickerViewController isViewLoaded])
   {
-    v3 = [(TKTonePickerViewController *)self->_tonePickerViewController view];
-    [v3 removeFromSuperview];
+    view = [(TKTonePickerViewController *)self->_tonePickerViewController view];
+    [view removeFromSuperview];
   }
 
   [(TKTonePickerViewController *)self->_tonePickerViewController removeFromParentViewController];
@@ -195,21 +195,21 @@ LABEL_13:
   [v10 setAutoresizingMask:18];
   if (self->_setting)
   {
-    v3 = [(TKTonePickerViewController *)self->_tonePickerViewController view];
+    view = [(TKTonePickerViewController *)self->_tonePickerViewController view];
     [v10 bounds];
-    [v3 setFrame:?];
-    [v3 setAutoresizingMask:18];
-    [v10 addSubview:v3];
+    [view setFrame:?];
+    [view setAutoresizingMask:18];
+    [v10 addSubview:view];
   }
 
   else
   {
-    v4 = [(MTAAlarmEditSettingViewController *)self alarm];
-    self->_repeatSchedule = [v4 repeatSchedule];
+    alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+    self->_repeatSchedule = [alarm repeatSchedule];
 
-    LODWORD(v4) = _os_feature_enabled_impl();
+    LODWORD(alarm) = _os_feature_enabled_impl();
     v5 = [UITableView alloc];
-    if (v4)
+    if (alarm)
     {
       v6 = 2;
     }
@@ -236,11 +236,11 @@ LABEL_13:
   [v9 addObserver:self selector:"updateTableViewRowHeight" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MTAAlarmEditSettingViewController;
-  [(MTAAlarmEditSettingViewController *)&v6 viewWillAppear:a3];
+  [(MTAAlarmEditSettingViewController *)&v6 viewWillAppear:appear];
   if (!self->_setting)
   {
     v4 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -261,15 +261,15 @@ LABEL_13:
   [(MTAAlarmEditSettingViewController *)&v4 viewDidUnload];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = MTAAlarmEditSettingViewController;
-  [(MTAAlarmEditSettingViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(MTAAlarmEditSettingViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   if ((MTUIIsPadIdiom() & 1) == 0)
   {
-    v5 = [(MTAAlarmEditableTextCell *)self->_editingCell textField];
-    [v5 becomeFirstResponder];
+    textField = [(MTAAlarmEditableTextCell *)self->_editingCell textField];
+    [textField becomeFirstResponder];
   }
 }
 
@@ -287,32 +287,32 @@ LABEL_13:
   v3 = MTLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MTAAlarmEditSettingViewController *)self alarm];
-    v5 = [v4 alarmID];
+    alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+    alarmID = [alarm alarmID];
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v5;
+    v11 = alarmID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ dismissing with alarm: %{public}@", &v8, 0x16u);
   }
 
-  v6 = [(MTAAlarmEditSettingViewController *)self navigationController];
-  v7 = [v6 popViewControllerAnimated:1];
+  navigationController = [(MTAAlarmEditSettingViewController *)self navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 }
 
 - (void)updateTableViewRowHeight
 {
   [(MTAAlarmEditSettingViewController *)self rowHeightWithCurrentAccessibilityConfiguration];
   [(UITableView *)self->_tableView setRowHeight:?];
-  v3 = [(UITableView *)self->_tableView visibleCells];
-  v4 = [v3 count];
+  visibleCells = [(UITableView *)self->_tableView visibleCells];
+  v4 = [visibleCells count];
 
   tableView = self->_tableView;
   if (v4)
   {
-    v6 = [(UITableView *)self->_tableView visibleCells];
-    v7 = [v6 firstObject];
-    v9 = [(UITableView *)tableView indexPathForCell:v7];
+    visibleCells2 = [(UITableView *)self->_tableView visibleCells];
+    firstObject = [visibleCells2 firstObject];
+    v9 = [(UITableView *)tableView indexPathForCell:firstObject];
 
     [(UITableView *)self->_tableView reloadData];
     if (v9)
@@ -329,95 +329,95 @@ LABEL_13:
   }
 }
 
-- (void)tonePickerViewController:(id)a3 selectedToneWithIdentifier:(id)a4
+- (void)tonePickerViewController:(id)controller selectedToneWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v17 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v17 = identifierCopy;
+  if (identifierCopy)
   {
-    v7 = v6;
+    defaultToneIdentifier = identifierCopy;
   }
 
   else
   {
-    v7 = [a3 defaultToneIdentifier];
+    defaultToneIdentifier = [controller defaultToneIdentifier];
   }
 
-  v8 = v7;
-  v9 = [(MTAAlarmEditSettingViewController *)self alarm];
-  v10 = [v9 sound];
+  v8 = defaultToneIdentifier;
+  alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+  sound = [alarm sound];
 
-  v11 = [v10 vibrationIdentifier];
-  v12 = [v10 soundVolume];
-  v13 = [MTSound toneSoundWithIdentifier:v8 vibrationIdentifer:v11 volume:v12];
+  vibrationIdentifier = [sound vibrationIdentifier];
+  soundVolume = [sound soundVolume];
+  v13 = [MTSound toneSoundWithIdentifier:v8 vibrationIdentifer:vibrationIdentifier volume:soundVolume];
 
-  v14 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v14 setSound:v13];
+  alarm2 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [alarm2 setSound:v13];
 
-  v15 = [(MTAAlarmEditSettingViewController *)self delegate];
-  v16 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v15 alarmEditSettingController:self didEditAlarm:v16];
+  delegate = [(MTAAlarmEditSettingViewController *)self delegate];
+  alarm3 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [delegate alarmEditSettingController:self didEditAlarm:alarm3];
 
   [MTSound setDefaultSound:v13 forCategory:0];
 }
 
-- (void)tonePickerViewController:(id)a3 selectedMediaItemWithIdentifier:(id)a4
+- (void)tonePickerViewController:(id)controller selectedMediaItemWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(MTAAlarmEditSettingViewController *)self alarm];
-  v13 = [v6 sound];
+  identifierCopy = identifier;
+  alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+  sound = [alarm sound];
 
-  v7 = [v13 vibrationIdentifier];
-  v8 = [v13 soundVolume];
-  v9 = [MTSound songSoundWithIdentifier:v5 vibrationIdentifier:v7 volume:v8];
+  vibrationIdentifier = [sound vibrationIdentifier];
+  soundVolume = [sound soundVolume];
+  v9 = [MTSound songSoundWithIdentifier:identifierCopy vibrationIdentifier:vibrationIdentifier volume:soundVolume];
 
-  v10 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v10 setSound:v9];
+  alarm2 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [alarm2 setSound:v9];
 
-  v11 = [(MTAAlarmEditSettingViewController *)self delegate];
-  v12 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v11 alarmEditSettingController:self didEditAlarm:v12];
+  delegate = [(MTAAlarmEditSettingViewController *)self delegate];
+  alarm3 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [delegate alarmEditSettingController:self didEditAlarm:alarm3];
 
   [MTSound setDefaultSound:v9 forCategory:0];
 }
 
-- (void)tonePickerViewController:(id)a3 willPresentVibrationPickerViewController:(id)a4
+- (void)tonePickerViewController:(id)controller willPresentVibrationPickerViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 setShowsEditButtonInNavigationBar:1];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  [viewControllerCopy setShowsEditButtonInNavigationBar:1];
   v8 = +[TLVibrationManager sharedVibrationManager];
-  v9 = [v7 alertType];
-  v10 = [v7 topic];
+  alertType = [controllerCopy alertType];
+  topic = [controllerCopy topic];
 
-  v11 = [v8 defaultVibrationIdentifierForAlertType:v9 topic:v10];
-  [v6 setDefaultVibrationIdentifier:v11];
+  v11 = [v8 defaultVibrationIdentifierForAlertType:alertType topic:topic];
+  [viewControllerCopy setDefaultVibrationIdentifier:v11];
 
-  [v6 setDelegate:self];
+  [viewControllerCopy setDelegate:self];
   v12 = objc_opt_new();
-  [v6 setStyleProvider:v12];
+  [viewControllerCopy setStyleProvider:v12];
 }
 
-- (void)vibrationPickerViewController:(id)a3 selectedVibrationWithIdentifier:(id)a4
+- (void)vibrationPickerViewController:(id)controller selectedVibrationWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(MTAAlarmEditSettingViewController *)self alarm];
-  v7 = [v6 sound];
-  v8 = [v7 soundByUpdatingVibrationIdentifier:v5];
+  identifierCopy = identifier;
+  alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+  sound = [alarm sound];
+  v8 = [sound soundByUpdatingVibrationIdentifier:identifierCopy];
 
-  v9 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v9 setSound:v8];
+  alarm2 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [alarm2 setSound:v8];
 
-  v10 = [(MTAAlarmEditSettingViewController *)self delegate];
-  v11 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v10 alarmEditSettingController:self didEditAlarm:v11];
+  delegate = [(MTAAlarmEditSettingViewController *)self delegate];
+  alarm3 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [delegate alarmEditSettingController:self didEditAlarm:alarm3];
 
-  v13 = [(MTAAlarmEditSettingViewController *)self alarm];
-  v12 = [v13 sound];
-  [MTSound setDefaultSound:v12 forCategory:0];
+  alarm4 = [(MTAAlarmEditSettingViewController *)self alarm];
+  sound2 = [alarm4 sound];
+  [MTSound setDefaultSound:sound2 forCategory:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_setting)
   {
@@ -430,7 +430,7 @@ LABEL_13:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   if (self->_setting)
   {
@@ -439,27 +439,27 @@ LABEL_13:
 
   else
   {
-    v7 = a3;
-    v8 = -[MTAAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [a4 row]);
-    v4 = [v7 dequeueReusableCellWithIdentifier:@"UITVC"];
+    viewCopy = view;
+    v8 = -[MTAAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [path row]);
+    v4 = [viewCopy dequeueReusableCellWithIdentifier:@"UITVC"];
 
     if (!v4)
     {
       v4 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"UITVC"];
       v9 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-      v10 = [v4 textLabel];
-      [v10 setFont:v9];
+      textLabel = [v4 textLabel];
+      [textLabel setFont:v9];
 
-      v11 = [v4 textLabel];
-      [v11 setAdjustsFontForContentSizeCategory:1];
+      textLabel2 = [v4 textLabel];
+      [textLabel2 setAdjustsFontForContentSizeCategory:1];
     }
 
     v12 = DateMaskToString();
-    v13 = [v4 textLabel];
-    [v13 setText:v12];
+    textLabel3 = [v4 textLabel];
+    [textLabel3 setText:v12];
 
-    v14 = [(MTAAlarmEditSettingViewController *)self alarm];
-    if (([v14 repeatSchedule] & v8) != 0)
+    alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+    if (([alarm repeatSchedule] & v8) != 0)
     {
       v15 = 3;
     }
@@ -472,12 +472,12 @@ LABEL_13:
     [v4 setAccessoryType:v15];
   }
 
-  v16 = [UIColor mtui_foregroundColor:a3];
+  v16 = [UIColor mtui_foregroundColor:view];
   [v4 setBackgroundColor:v16];
 
   v17 = +[UIColor mtui_primaryTextColor];
-  v18 = [v4 textLabel];
-  [v18 setTextColor:v17];
+  textLabel4 = [v4 textLabel];
+  [textLabel4 setTextColor:v17];
 
   v19 = +[UIColor mtui_cellHighlightColor];
   [v4 setSelectedBackgroundColor:v19];
@@ -485,13 +485,13 @@ LABEL_13:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = a4;
-  if (v6 && !self->_setting)
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy && !self->_setting)
   {
-    v7 = [v15 cellForRowAtIndexPath:v6];
+    v7 = [viewCopy cellForRowAtIndexPath:pathCopy];
     if ([v7 accessoryType] == 3)
     {
       v8 = 0;
@@ -503,8 +503,8 @@ LABEL_13:
     }
 
     [v7 setAccessoryType:v8];
-    [v15 deselectRowAtIndexPath:v6 animated:1];
-    v9 = -[MTAAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [v6 row]);
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    v9 = -[MTAAlarmEditSettingViewController maskForRow:](self, "maskForRow:", [pathCopy row]);
     if ([v7 accessoryType] == 3)
     {
       v10 = [(MTAAlarmEditSettingViewController *)self repeatSchedule]| v9;
@@ -516,26 +516,26 @@ LABEL_13:
     }
 
     [(MTAAlarmEditSettingViewController *)self setRepeatSchedule:v10];
-    v11 = [(MTAAlarmEditSettingViewController *)self repeatSchedule];
-    v12 = [(MTAAlarmEditSettingViewController *)self alarm];
-    [v12 setRepeatSchedule:v11];
+    repeatSchedule = [(MTAAlarmEditSettingViewController *)self repeatSchedule];
+    alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+    [alarm setRepeatSchedule:repeatSchedule];
 
-    v13 = [(MTAAlarmEditSettingViewController *)self delegate];
-    v14 = [(MTAAlarmEditSettingViewController *)self alarm];
-    [v13 alarmEditSettingController:self didEditAlarm:v14];
+    delegate = [(MTAAlarmEditSettingViewController *)self delegate];
+    alarm2 = [(MTAAlarmEditSettingViewController *)self alarm];
+    [delegate alarmEditSettingController:self didEditAlarm:alarm2];
   }
 }
 
-- (void)textValueChanged:(id)a3
+- (void)textValueChanged:(id)changed
 {
-  v8 = [a3 object];
-  v4 = [v8 text];
-  v5 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v5 setTitle:v4];
+  object = [changed object];
+  text = [object text];
+  alarm = [(MTAAlarmEditSettingViewController *)self alarm];
+  [alarm setTitle:text];
 
-  v6 = [(MTAAlarmEditSettingViewController *)self delegate];
-  v7 = [(MTAAlarmEditSettingViewController *)self alarm];
-  [v6 alarmEditSettingController:self didEditAlarm:v7];
+  delegate = [(MTAAlarmEditSettingViewController *)self delegate];
+  alarm2 = [(MTAAlarmEditSettingViewController *)self alarm];
+  [delegate alarmEditSettingController:self didEditAlarm:alarm2];
 }
 
 - (MTAlarmEditSettingViewControllerDelegate)delegate

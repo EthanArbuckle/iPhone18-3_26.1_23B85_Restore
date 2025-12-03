@@ -1,25 +1,25 @@
 @interface COSGeneralSettingsController
 + (id)_dictationAutoPunctuationSupportedLanguages;
-+ (id)_dictationPrivacyTextWithUnsupportedLanguages:(id)a3 supportedInstalledLanguages:(id)a4 supportedWaitingLanguages:(id)a5 supportedInstallingLanguages:(id)a6 andLanguageMapping:(id)a7;
-+ (id)_displayNamesForLanguageIDs:(id)a3;
++ (id)_dictationPrivacyTextWithUnsupportedLanguages:(id)languages supportedInstalledLanguages:(id)installedLanguages supportedWaitingLanguages:(id)waitingLanguages supportedInstallingLanguages:(id)installingLanguages andLanguageMapping:(id)mapping;
++ (id)_displayNamesForLanguageIDs:(id)ds;
 + (id)_enabledDictationLanguageCodes;
-+ (id)_footerTextForAutoPunctuationLanguages:(id)a3 withLanguageMapping:(id)a4;
-+ (id)_localizedListForLanguageCodes:(id)a3 andLanguageMapping:(id)a4;
-+ (id)_pendingLanguagesFooterTextForWaitingLanguages:(id)a3 installingLanguages:(id)a4 andLanguageMapping:(id)a5;
++ (id)_footerTextForAutoPunctuationLanguages:(id)languages withLanguageMapping:(id)mapping;
++ (id)_localizedListForLanguageCodes:(id)codes andLanguageMapping:(id)mapping;
++ (id)_pendingLanguagesFooterTextForWaitingLanguages:(id)languages installingLanguages:(id)installingLanguages andLanguageMapping:(id)mapping;
 - (BOOL)allowLogCollection;
 - (COSGeneralSettingsController)init;
 - (id)dictationAutoPunctuationEnabled;
 - (id)dictationEnabled;
 - (id)specifiers;
-- (void)_prepareDictationFooterForSpecifier:(id)a3;
+- (void)_prepareDictationFooterForSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)dumpLogs:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)presentPrivacySheet:(id)a3;
-- (void)setAutomaticDownloadsEnabled:(id)a3 specifier:(id)a4;
-- (void)setDictationAutoPunctuationEnabled:(id)a3;
-- (void)setDictationEnabled:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)dumpLogs:(id)logs;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)presentPrivacySheet:(id)sheet;
+- (void)setAutomaticDownloadsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setDictationAutoPunctuationEnabled:(id)enabled;
+- (void)setDictationEnabled:(id)enabled;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation COSGeneralSettingsController
@@ -82,7 +82,7 @@
 
     objc_initWeak(location, v2);
     v15 = +[UIApplication sharedApplication];
-    v16 = [v15 activeWatch];
+    activeWatch = [v15 activeWatch];
 
     v17 = +[ACXDeviceConnection sharedDeviceConnection];
     v24 = _NSConcreteStackBlock;
@@ -90,7 +90,7 @@
     v26 = sub_100130A24;
     v27 = &unk_100268260;
     objc_copyWeak(&v28, location);
-    [v17 getAlwaysInstallForPairedDevice:v16 completion:&v24];
+    [v17 getAlwaysInstallForPairedDevice:activeWatch completion:&v24];
 
     v18 = objc_alloc_init(HKHealthStore);
     v19 = [_HKWheelchairUseCharacteristicCache alloc];
@@ -122,17 +122,17 @@
   [(COSGeneralSettingsController *)&v6 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = COSGeneralSettingsController;
-  [(COSGeneralSettingsController *)&v9 viewDidAppear:a3];
+  [(COSGeneralSettingsController *)&v9 viewDidAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"GENERAL" table:@"Settings" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"GENERAL" table:@"Settings" locale:v6 bundleURL:bundleURL];
 
   v8 = [NSURL URLWithString:@"bridge:root=GENERAL_LINK"];
   [BPSWatchSettingsNavigationDonation emitNavigationEventForSystemSettingWithIconSpecifierIdentifier:@"GENERAL_LINK" title:v7 localizedNavigationComponents:&__NSArray0__struct deepLink:v8];
@@ -148,7 +148,7 @@
     v6 = +[NRPairedDeviceRegistry sharedInstance];
     v7 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v8 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:v7];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
 
     if (+[COSPreferencesAppController hasUpdateAvailable])
     {
@@ -184,7 +184,7 @@
     }
 
     v19 = [[NSUUID alloc] initWithUUIDString:@"FFDA9C57-8508-4B50-B6D8-EEE862251FC0"];
-    v20 = [v9 supportsCapability:v19];
+    v20 = [firstObject supportsCapability:v19];
 
     if (v20)
     {
@@ -207,19 +207,19 @@
       v25 = [v5 specifierForID:@"BUTTON_CHORD_CELL_ID"];
       [v5 removeObject:v25];
 
-      v26 = [v5 specifierForID:@"BUTTON_CHORD_GROUP_ID"];
-      [v5 removeObject:v26];
+      activeWatch = [v5 specifierForID:@"BUTTON_CHORD_GROUP_ID"];
+      [v5 removeObject:activeWatch];
     }
 
     else
     {
       v27 = +[UIApplication sharedApplication];
-      v26 = [v27 activeWatch];
+      activeWatch = [v27 activeWatch];
 
-      v28 = [v26 valueForProperty:NRDevicePropertyIsInternalInstall];
-      v29 = [v28 BOOLValue];
+      v28 = [activeWatch valueForProperty:NRDevicePropertyIsInternalInstall];
+      bOOLValue = [v28 BOOLValue];
 
-      if (v29)
+      if (bOOLValue)
       {
         v30 = [v5 specifierForID:@"BUTTON_CHORD_CELL_ID"];
         [v30 setProperty:&__kCFBooleanTrue forKey:PSDefaultValueKey];
@@ -268,14 +268,14 @@
   }
 
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 sf_isDeveloperModeEnabled];
+  sf_isDeveloperModeEnabled = [v3 sf_isDeveloperModeEnabled];
 
-  return v4;
+  return sf_isDeveloperModeEnabled;
 }
 
-- (void)dumpLogs:(id)a3
+- (void)dumpLogs:(id)logs
 {
-  v4 = a3;
+  logsCopy = logs;
   if (!self->_logsAreDumping)
   {
     self->_logsAreDumping = 1;
@@ -291,21 +291,21 @@
   dispatch_async(qword_1002BD6C8, &stru_10026CA78);
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v5 = a3;
+  lCopy = l;
   [(COSListController *)self reloadSpecifiers];
   v6.receiver = self;
   v6.super_class = COSGeneralSettingsController;
-  [(COSGeneralSettingsController *)&v6 handleURL:v5 withCompletion:0];
+  [(COSGeneralSettingsController *)&v6 handleURL:lCopy withCompletion:0];
 }
 
-- (void)setAutomaticDownloadsEnabled:(id)a3 specifier:(id)a4
+- (void)setAutomaticDownloadsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  self->_alwaysInstall = [v5 BOOLValue];
+  enabledCopy = enabled;
+  self->_alwaysInstall = [enabledCopy BOOLValue];
   v6 = +[ACXDeviceConnection sharedDeviceConnection];
-  [v6 setAlwaysInstall:v5];
+  [v6 setAlwaysInstall:enabledCopy];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 postNotificationName:@"COSAlwaysInstallSettingChangedNotification" object:0];
@@ -313,18 +313,18 @@
 
 - (id)dictationEnabled
 {
-  v2 = [sub_1001318D4() sharedPreferences];
-  v3 = [v2 nanoDictationEnabled];
+  sharedPreferences = [sub_1001318D4() sharedPreferences];
+  nanoDictationEnabled = [sharedPreferences nanoDictationEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:nanoDictationEnabled];
 }
 
-- (void)setDictationEnabled:(id)a3
+- (void)setDictationEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
-  if (v4)
+  if (bOOLValue)
   {
     v7 = [v5 localizedStringForKey:@"DICTATION_ENABLE_TITLE" value:&stru_10026E598 table:@"General"];
 
@@ -343,8 +343,8 @@
     v13 = +[NSBundle mainBundle];
     v11 = [v13 localizedStringForKey:@"DICTATION_DISABLE_CONFIRMATION" value:&stru_10026E598 table:@"General"];
 
-    v14 = [sub_1001318D4() sharedPreferences];
-    LODWORD(v13) = [v14 nanoAssistantEnabled];
+    sharedPreferences = [sub_1001318D4() sharedPreferences];
+    LODWORD(v13) = [sharedPreferences nanoAssistantEnabled];
 
     v15 = +[NSBundle mainBundle];
     v10 = v15;
@@ -367,7 +367,7 @@
   v23[1] = 3221225472;
   v23[2] = sub_100131CF8;
   v23[3] = &unk_10026CA98;
-  v24 = v4;
+  v24 = bOOLValue;
   v18 = [UIAlertAction actionWithTitle:v11 style:v12 handler:v23];
   [v17 addAction:v18];
 
@@ -386,31 +386,31 @@
 
 - (id)dictationAutoPunctuationEnabled
 {
-  v2 = [sub_1001318D4() sharedPreferences];
-  v3 = [v2 nanoDictationAutoPunctuationEnabled];
+  sharedPreferences = [sub_1001318D4() sharedPreferences];
+  nanoDictationAutoPunctuationEnabled = [sharedPreferences nanoDictationAutoPunctuationEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:nanoDictationAutoPunctuationEnabled];
 }
 
-- (void)setDictationAutoPunctuationEnabled:(id)a3
+- (void)setDictationAutoPunctuationEnabled:(id)enabled
 {
-  v3 = [a3 BOOLValue];
-  v4 = [sub_1001318D4() sharedPreferences];
-  [v4 setNanoDictationAutoPunctuationEnabled:v3];
+  bOOLValue = [enabled BOOLValue];
+  sharedPreferences = [sub_1001318D4() sharedPreferences];
+  [sharedPreferences setNanoDictationAutoPunctuationEnabled:bOOLValue];
 }
 
-- (void)_prepareDictationFooterForSpecifier:(id)a3
+- (void)_prepareDictationFooterForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [sub_1001318D4() sharedPreferences];
-  v6 = [v5 nanoDictationEnabled];
+  specifierCopy = specifier;
+  sharedPreferences = [sub_1001318D4() sharedPreferences];
+  nanoDictationEnabled = [sharedPreferences nanoDictationEnabled];
 
-  if (v6)
+  if (nanoDictationEnabled)
   {
-    v44 = self;
+    selfCopy = self;
     v7 = +[COSGeneralSettingsController _enabledDictationLanguageCodes];
-    v8 = [sub_1001318D4() sharedPreferences];
-    v9 = [v8 nanoOfflineDictationStatus];
+    sharedPreferences2 = [sub_1001318D4() sharedPreferences];
+    nanoOfflineDictationStatus = [sharedPreferences2 nanoOfflineDictationStatus];
 
     v10 = objc_alloc_init(NSMutableArray);
     v11 = objc_alloc_init(NSMutableArray);
@@ -420,7 +420,7 @@
     v45[1] = 3221225472;
     v45[2] = sub_1001322A8;
     v45[3] = &unk_10026CAC0;
-    v43 = v9;
+    v43 = nanoOfflineDictationStatus;
     v46 = v43;
     v14 = v10;
     v47 = v14;
@@ -459,8 +459,8 @@
       {
         v39 = v16;
         v29 = [COSGeneralSettingsController _displayNamesForLanguageIDs:v28];
-        v30 = [v28 allObjects];
-        v31 = [COSGeneralSettingsController _footerTextForAutoPunctuationLanguages:v30 withLanguageMapping:v29];
+        allObjects = [v28 allObjects];
+        v31 = [COSGeneralSettingsController _footerTextForAutoPunctuationLanguages:allObjects withLanguageMapping:v29];
 
         if ([v31 length])
         {
@@ -476,22 +476,22 @@
 
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
-    [v4 setProperty:v34 forKey:PSFooterCellClassGroupKey];
+    [specifierCopy setProperty:v34 forKey:PSFooterCellClassGroupKey];
 
-    [v4 setProperty:v25 forKey:PSFooterHyperlinkViewTitleKey];
+    [specifierCopy setProperty:v25 forKey:PSFooterHyperlinkViewTitleKey];
     v51.location = [v25 rangeOfString:v22];
     v35 = NSStringFromRange(v51);
-    [v4 setProperty:v35 forKey:PSFooterHyperlinkViewLinkRangeKey];
+    [specifierCopy setProperty:v35 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
-    v36 = [NSValue valueWithNonretainedObject:v44];
-    [v4 setProperty:v36 forKey:PSFooterHyperlinkViewTargetKey];
+    v36 = [NSValue valueWithNonretainedObject:selfCopy];
+    [specifierCopy setProperty:v36 forKey:PSFooterHyperlinkViewTargetKey];
 
     v37 = NSStringFromSelector("presentPrivacySheet:");
-    [v4 setProperty:v37 forKey:PSFooterHyperlinkViewActionKey];
+    [specifierCopy setProperty:v37 forKey:PSFooterHyperlinkViewActionKey];
   }
 }
 
-- (void)presentPrivacySheet:(id)a3
+- (void)presentPrivacySheet:(id)sheet
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.siri"];
   [v4 setPresentingViewController:self];
@@ -501,8 +501,8 @@
 + (id)_enabledDictationLanguageCodes
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  v4 = [v3 valueForPreferenceKey:UIDictationLanguagesEnabled];
+  preferencesActions = [v2 preferencesActions];
+  v4 = [preferencesActions valueForPreferenceKey:UIDictationLanguagesEnabled];
 
   v5 = [v4 keysOfEntriesPassingTest:&stru_10026CB00];
 
@@ -512,26 +512,26 @@
 + (id)_dictationAutoPunctuationSupportedLanguages
 {
   v2 = +[COSGeneralSettingsController _enabledDictationLanguageCodes];
-  v3 = [sub_1001318D4() sharedPreferences];
-  v4 = [v3 nanoDictationAutoPunctuationSupportedLanguages];
+  sharedPreferences = [sub_1001318D4() sharedPreferences];
+  nanoDictationAutoPunctuationSupportedLanguages = [sharedPreferences nanoDictationAutoPunctuationSupportedLanguages];
 
   v5 = objc_alloc_init(NSMutableSet);
-  v6 = [sub_1001318D4() sharedPreferences];
-  v7 = [v6 nanoLanguageCode];
+  sharedPreferences2 = [sub_1001318D4() sharedPreferences];
+  nanoLanguageCode = [sharedPreferences2 nanoLanguageCode];
 
-  if (v7)
+  if (nanoLanguageCode)
   {
-    v8 = [sub_1001318D4() sharedPreferences];
-    if ([v8 nanoAssistantEnabled])
+    sharedPreferences3 = [sub_1001318D4() sharedPreferences];
+    if ([sharedPreferences3 nanoAssistantEnabled])
     {
-      v9 = [v4 containsObject:v7];
+      v9 = [nanoDictationAutoPunctuationSupportedLanguages containsObject:nanoLanguageCode];
 
       if (v9)
       {
-        v10 = [v7 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+        v10 = [nanoLanguageCode stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
         [v5 addObject:v10];
-        v7 = v10;
+        nanoLanguageCode = v10;
       }
     }
 
@@ -540,7 +540,7 @@
     }
   }
 
-  v21 = v7;
+  v21 = nanoLanguageCode;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -563,7 +563,7 @@
 
         v16 = *(*(&v23 + 1) + 8 * i);
         v17 = [v16 stringByReplacingOccurrencesOfString:@"_" withString:{@"-", v21}];
-        if ([v4 containsObject:v17])
+        if ([nanoDictationAutoPunctuationSupportedLanguages containsObject:v17])
         {
           [v5 addObject:v16];
         }
@@ -612,17 +612,17 @@ LABEL_26:
   return v19;
 }
 
-+ (id)_dictationPrivacyTextWithUnsupportedLanguages:(id)a3 supportedInstalledLanguages:(id)a4 supportedWaitingLanguages:(id)a5 supportedInstallingLanguages:(id)a6 andLanguageMapping:(id)a7
++ (id)_dictationPrivacyTextWithUnsupportedLanguages:(id)languages supportedInstalledLanguages:(id)installedLanguages supportedWaitingLanguages:(id)waitingLanguages supportedInstallingLanguages:(id)installingLanguages andLanguageMapping:(id)mapping
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v11 count];
-  v17 = [v12 count];
-  v18 = [v13 count];
-  v19 = [v14 count];
+  languagesCopy = languages;
+  installedLanguagesCopy = installedLanguages;
+  waitingLanguagesCopy = waitingLanguages;
+  installingLanguagesCopy = installingLanguages;
+  mappingCopy = mapping;
+  v16 = [languagesCopy count];
+  v17 = [installedLanguagesCopy count];
+  v18 = [waitingLanguagesCopy count];
+  v19 = [installingLanguagesCopy count];
   if (!v17)
   {
     v20 = +[NSBundle mainBundle];
@@ -664,10 +664,10 @@ LABEL_20:
 
   v26 = [v23 localizedStringForKey:v25 value:&stru_10026E598 table:@"General"];
 
-  v27 = [COSGeneralSettingsController _localizedListForLanguageCodes:v12 andLanguageMapping:v15];
+  v27 = [COSGeneralSettingsController _localizedListForLanguageCodes:installedLanguagesCopy andLanguageMapping:mappingCopy];
   v28 = [NSString stringWithFormat:v26, v27];
 
-  v29 = [v13 arrayByAddingObjectsFromArray:v14];
+  v29 = [waitingLanguagesCopy arrayByAddingObjectsFromArray:installingLanguagesCopy];
   v30 = [v29 count];
   v31 = v30;
   v49 = v29;
@@ -702,8 +702,8 @@ LABEL_20:
 
       v38 = [v33 localizedStringForKey:v37 value:&stru_10026E598 table:@"General"];
 
-      v39 = [COSGeneralSettingsController _localizedListForLanguageCodes:v11 andLanguageMapping:v15];
-      v40 = [COSGeneralSettingsController _localizedListForLanguageCodes:v29 andLanguageMapping:v15];
+      v39 = [COSGeneralSettingsController _localizedListForLanguageCodes:languagesCopy andLanguageMapping:mappingCopy];
+      v40 = [COSGeneralSettingsController _localizedListForLanguageCodes:v29 andLanguageMapping:mappingCopy];
       v21 = [NSString stringWithFormat:v38, v39, v40];
 
       goto LABEL_30;
@@ -723,7 +723,7 @@ LABEL_20:
 
     v38 = [v44 localizedStringForKey:v46 value:&stru_10026E598 table:@"General"];
 
-    v39 = [COSGeneralSettingsController _localizedListForLanguageCodes:v11 andLanguageMapping:v15];
+    v39 = [COSGeneralSettingsController _localizedListForLanguageCodes:languagesCopy andLanguageMapping:mappingCopy];
     [NSString stringWithFormat:v38, v39];
   }
 
@@ -743,7 +743,7 @@ LABEL_20:
 
     v38 = [v41 localizedStringForKey:v43 value:&stru_10026E598 table:@"General"];
 
-    v39 = [COSGeneralSettingsController _localizedListForLanguageCodes:v29 andLanguageMapping:v15];
+    v39 = [COSGeneralSettingsController _localizedListForLanguageCodes:v29 andLanguageMapping:mappingCopy];
     [NSString stringWithFormat:v38, v39];
   }
   v21 = ;
@@ -761,14 +761,14 @@ LABEL_33:
   return v28;
 }
 
-+ (id)_pendingLanguagesFooterTextForWaitingLanguages:(id)a3 installingLanguages:(id)a4 andLanguageMapping:(id)a5
++ (id)_pendingLanguagesFooterTextForWaitingLanguages:(id)languages installingLanguages:(id)installingLanguages andLanguageMapping:(id)mapping
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  languagesCopy = languages;
+  installingLanguagesCopy = installingLanguages;
+  mappingCopy = mapping;
+  if ([languagesCopy count])
   {
-    v10 = [v7 count];
+    v10 = [languagesCopy count];
     v11 = +[NSBundle mainBundle];
     v12 = v11;
     if (v10 >= 2)
@@ -782,18 +782,18 @@ LABEL_33:
     }
 
     v14 = [v11 localizedStringForKey:v13 value:&stru_10026E598 table:@"General"];
-    v15 = v7;
+    v15 = languagesCopy;
 LABEL_11:
 
-    v19 = [COSGeneralSettingsController _localizedListForLanguageCodes:v15 andLanguageMapping:v9];
+    v19 = [COSGeneralSettingsController _localizedListForLanguageCodes:v15 andLanguageMapping:mappingCopy];
     v20 = [NSString stringWithFormat:v14, v19];
 
     goto LABEL_12;
   }
 
-  if ([v8 count])
+  if ([installingLanguagesCopy count])
   {
-    v16 = [v8 count];
+    v16 = [installingLanguagesCopy count];
     v17 = +[NSBundle mainBundle];
     v12 = v17;
     if (v16 >= 2)
@@ -807,7 +807,7 @@ LABEL_11:
     }
 
     v14 = [v17 localizedStringForKey:v18 value:&stru_10026E598 table:@"General"];
-    v15 = v8;
+    v15 = installingLanguagesCopy;
     goto LABEL_11;
   }
 
@@ -817,13 +817,13 @@ LABEL_12:
   return v20;
 }
 
-+ (id)_footerTextForAutoPunctuationLanguages:(id)a3 withLanguageMapping:(id)a4
++ (id)_footerTextForAutoPunctuationLanguages:(id)languages withLanguageMapping:(id)mapping
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  languagesCopy = languages;
+  mappingCopy = mapping;
+  if ([languagesCopy count])
   {
-    v7 = [v5 count];
+    v7 = [languagesCopy count];
     v8 = +[NSBundle mainBundle];
     v9 = v8;
     if (v7 >= 2)
@@ -838,7 +838,7 @@ LABEL_12:
 
     v11 = [v8 localizedStringForKey:v10 value:&stru_10026E598 table:@"General"];
 
-    v12 = [COSGeneralSettingsController _localizedListForLanguageCodes:v5 andLanguageMapping:v6];
+    v12 = [COSGeneralSettingsController _localizedListForLanguageCodes:languagesCopy andLanguageMapping:mappingCopy];
     v13 = [NSString stringWithFormat:v11, v12];
   }
 
@@ -850,16 +850,16 @@ LABEL_12:
   return v13;
 }
 
-+ (id)_localizedListForLanguageCodes:(id)a3 andLanguageMapping:(id)a4
++ (id)_localizedListForLanguageCodes:(id)codes andLanguageMapping:(id)mapping
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  codesCopy = codes;
+  mappingCopy = mapping;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [codesCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = codesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -874,7 +874,7 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v6 objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
+        v13 = [mappingCopy objectForKey:{*(*(&v16 + 1) + 8 * i), v16}];
         if (v13 && ([v7 containsObject:v13] & 1) == 0)
         {
           [v7 addObject:v13];
@@ -892,16 +892,16 @@ LABEL_12:
   return v14;
 }
 
-+ (id)_displayNamesForLanguageIDs:(id)a3
++ (id)_displayNamesForLanguageIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[NSCountedSet set];
-  v24 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v3 count]);
+  v24 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [dsCopy count]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
@@ -917,9 +917,9 @@ LABEL_12:
         }
 
         v10 = [NSLocale localeWithLocaleIdentifier:*(*(&v29 + 1) + 8 * i)];
-        v11 = [v10 languageCode];
+        languageCode = [v10 languageCode];
 
-        [v4 addObject:v11];
+        [v4 addObject:languageCode];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -949,9 +949,9 @@ LABEL_12:
 
         v17 = *(*(&v25 + 1) + 8 * j);
         v18 = [NSLocale localeWithLocaleIdentifier:v17];
-        v19 = [v18 languageCode];
+        languageCode2 = [v18 languageCode];
 
-        if ([v4 countForObject:v19] > 1 || objc_msgSend(v19, "isEqualToString:", @"pt"))
+        if ([v4 countForObject:languageCode2] > 1 || objc_msgSend(languageCode2, "isEqualToString:", @"pt"))
         {
           v20 = +[NSLocale currentLocale];
           v21 = [v20 localizedStringForLocaleIdentifier:v17];
@@ -960,7 +960,7 @@ LABEL_12:
         else
         {
           v20 = +[NSLocale currentLocale];
-          v21 = [v20 localizedStringForLanguageCode:v19];
+          v21 = [v20 localizedStringForLanguageCode:languageCode2];
         }
 
         v22 = v21;

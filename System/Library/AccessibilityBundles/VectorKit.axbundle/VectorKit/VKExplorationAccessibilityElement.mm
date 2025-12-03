@@ -3,7 +3,7 @@
 - (BOOL)isAccessibilityElement;
 - (BOOL)isCurrent;
 - (CGRect)accessibilityFrame;
-- (VKExplorationAccessibilityElement)initWithAccessibilityContainer:(id)a3 andVertex:(id)a4;
+- (VKExplorationAccessibilityElement)initWithAccessibilityContainer:(id)container andVertex:(id)vertex;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
 - (id)accessibilityPaths;
@@ -13,10 +13,10 @@
 
 - (BOOL)isCurrent
 {
-  v2 = [(VKExplorationAccessibilityElement *)self vertex];
-  v3 = [v2 isCurrent];
+  vertex = [(VKExplorationAccessibilityElement *)self vertex];
+  isCurrent = [vertex isCurrent];
 
-  return v3;
+  return isCurrent;
 }
 
 - (BOOL)isAccessibilityElement
@@ -26,12 +26,12 @@
     return 1;
   }
 
-  v3 = [(VKExplorationAccessibilityElement *)self vertex];
-  if ([v3 isComputed])
+  vertex = [(VKExplorationAccessibilityElement *)self vertex];
+  if ([vertex isComputed])
   {
-    v4 = [(VKExplorationAccessibilityElement *)self vertex];
-    v5 = [v4 roads];
-    v6 = [v5 count] != 0;
+    vertex2 = [(VKExplorationAccessibilityElement *)self vertex];
+    roads = [vertex2 roads];
+    v6 = [roads count] != 0;
   }
 
   else
@@ -46,23 +46,23 @@
 {
   if ([(VKExplorationAccessibilityElement *)self isCurrent])
   {
-    v3 = [(VKExplorationAccessibilityElement *)self vertex];
-    v4 = [v3 roads];
-    if ([v4 count])
+    vertex = [(VKExplorationAccessibilityElement *)self vertex];
+    roads = [vertex roads];
+    if ([roads count])
     {
-      v5 = [(VKExplorationAccessibilityElement *)self vertex];
-      v6 = [v5 isComputed];
+      vertex2 = [(VKExplorationAccessibilityElement *)self vertex];
+      isComputed = [vertex2 isComputed];
 
-      if (v6)
+      if (isComputed)
       {
         v7 = MEMORY[0x29EDBA0F8];
         v8 = AXVectorKitLocString(@"INTERSECTION_INFO_FORMAT");
-        v9 = [(VKExplorationAccessibilityElement *)self vertex];
-        v10 = [v9 edges];
-        v11 = [v10 count];
-        v12 = [(VKExplorationAccessibilityElement *)self vertex];
-        v13 = [v12 accessibilityLabel];
-        v14 = [v7 localizedStringWithFormat:v8, v11, v13];
+        vertex3 = [(VKExplorationAccessibilityElement *)self vertex];
+        edges = [vertex3 edges];
+        v11 = [edges count];
+        vertex4 = [(VKExplorationAccessibilityElement *)self vertex];
+        accessibilityLabel = [vertex4 accessibilityLabel];
+        v14 = [v7 localizedStringWithFormat:v8, v11, accessibilityLabel];
 
         goto LABEL_19;
       }
@@ -76,14 +76,14 @@
     goto LABEL_21;
   }
 
-  v15 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
-  v16 = [v15 accessibilityElementManager];
-  v17 = [v16 currentExplorationVertex];
+  accessibilityContainer = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
+  accessibilityElementManager = [accessibilityContainer accessibilityElementManager];
+  currentExplorationVertex = [accessibilityElementManager currentExplorationVertex];
 
-  if (v17)
+  if (currentExplorationVertex)
   {
-    v18 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
-    [v18 accessibilityYaw];
+    accessibilityContainer2 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
+    [accessibilityContainer2 accessibilityYaw];
     v20 = v19;
 
     v21 = v20 + 360.0;
@@ -102,15 +102,15 @@
       v22 = v21 + 360.0;
     }
 
-    v23 = [(VKExplorationAccessibilityElement *)self vertex];
-    [v23 getScreenPoint];
+    vertex5 = [(VKExplorationAccessibilityElement *)self vertex];
+    [vertex5 getScreenPoint];
     v25 = v24;
     v27 = v26;
 
-    v28 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
-    v29 = [v28 accessibilityElementManager];
-    v30 = [v29 currentExplorationVertex];
-    [v30 getScreenPoint];
+    accessibilityContainer3 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
+    accessibilityElementManager2 = [accessibilityContainer3 accessibilityElementManager];
+    currentExplorationVertex2 = [accessibilityElementManager2 currentExplorationVertex];
+    [currentExplorationVertex2 getScreenPoint];
     v32 = v31;
     v34 = v33;
 
@@ -129,32 +129,32 @@
 
     v49 = v35;
     v8 = AXDescriptionForHeadingInDegrees();
-    v36 = [(VKExplorationAccessibilityElement *)self vertex];
-    v37 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
-    v38 = [v37 accessibilityElementManager];
-    v39 = [v38 currentExplorationVertex];
-    v40 = [v36 connectingRoadWith:v39];
-    v41 = [v40 trueLabel];
+    vertex6 = [(VKExplorationAccessibilityElement *)self vertex];
+    accessibilityContainer4 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
+    accessibilityElementManager3 = [accessibilityContainer4 accessibilityElementManager];
+    currentExplorationVertex3 = [accessibilityElementManager3 currentExplorationVertex];
+    v40 = [vertex6 connectingRoadWith:currentExplorationVertex3];
+    trueLabel = [v40 trueLabel];
 
-    if (![v41 length])
+    if (![trueLabel length])
     {
       v42 = AXVectorKitLocString(@"UNNAMED_ROAD");
 
-      v41 = v42;
+      trueLabel = v42;
     }
 
     v43 = MEMORY[0x29EDBA0F8];
     v44 = AXVectorKitLocString(@"MOVE_ON_FORMAT");
-    v14 = [v43 stringWithFormat:v44, v8, v41];
+    v14 = [v43 stringWithFormat:v44, v8, trueLabel];
 
     goto LABEL_20;
   }
 
   v45 = MEMORY[0x29EDBA0F8];
   v8 = AXVectorKitLocString(@"MOVE_TO_FORMAT");
-  v9 = [(VKExplorationAccessibilityElement *)self vertex];
-  v46 = [v9 accessibilityLabel];
-  v14 = [v45 stringWithFormat:v8, v46];
+  vertex3 = [(VKExplorationAccessibilityElement *)self vertex];
+  accessibilityLabel2 = [vertex3 accessibilityLabel];
+  v14 = [v45 stringWithFormat:v8, accessibilityLabel2];
 
 LABEL_19:
 LABEL_20:
@@ -167,8 +167,8 @@ LABEL_21:
 - (id)accessibilityPath
 {
   v2 = MEMORY[0x29EDC7948];
-  v3 = [(VKExplorationAccessibilityElement *)self accessibilityPaths];
-  v4 = [v3 objectAtIndex:0];
+  accessibilityPaths = [(VKExplorationAccessibilityElement *)self accessibilityPaths];
+  v4 = [accessibilityPaths objectAtIndex:0];
   v5 = [v2 bezierPathWithCGPath:v4];
 
   return v5;
@@ -186,10 +186,10 @@ LABEL_21:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(VKExplorationAccessibilityElement *)self vertex];
-  v4 = [v3 neighbors];
+  vertex = [(VKExplorationAccessibilityElement *)self vertex];
+  neighbors = [vertex neighbors];
 
-  v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  v5 = [neighbors countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (!v5)
   {
 
@@ -207,8 +207,8 @@ LABEL_14:
     v41.size.height = height;
     v28 = [v26 bezierPathWithArcCenter:1 radius:MidX startAngle:CGRectGetMidY(v41) endAngle:30.0 clockwise:{0.0, 6.28318531}];
     v29 = v28;
-    v35 = [v28 CGPath];
-    v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v35 count:1];
+    cGPath = [v28 CGPath];
+    v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:&cGPath count:1];
 
     goto LABEL_15;
   }
@@ -221,7 +221,7 @@ LABEL_14:
     {
       if (*v32 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(neighbors);
       }
 
       v9 = *(*(&v31 + 1) + 8 * i);
@@ -230,25 +230,25 @@ LABEL_14:
         [(AXVKExplorationVertexElement *)v9 getScreenPoint];
         v11 = v10;
         v13 = v12;
-        v14 = [(VKExplorationAccessibilityElement *)self vertex];
-        v15 = AXVKGetWalkingDirectionBetweenVertices(v9, v14);
+        vertex2 = [(VKExplorationAccessibilityElement *)self vertex];
+        v15 = AXVKGetWalkingDirectionBetweenVertices(v9, vertex2);
 
-        v16 = [MEMORY[0x29EDC7948] bezierPath];
+        bezierPath = [MEMORY[0x29EDC7948] bezierPath];
         v17 = v15 * 0.0174532925 + 3.14159265;
         v18 = v17 + -0.261799388;
         v19 = v17 + 0.261799388;
-        [v16 addArcWithCenter:1 radius:v11 startAngle:v13 endAngle:1000.0 clockwise:{v17 + -0.261799388, v17 + 0.261799388}];
-        [v16 addArcWithCenter:0 radius:v11 startAngle:v13 endAngle:30.0 clockwise:{v19, v18}];
-        [v16 closePath];
-        v20 = v16;
-        v36 = [v16 CGPath];
-        v21 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v36 count:1];
+        [bezierPath addArcWithCenter:1 radius:v11 startAngle:v13 endAngle:1000.0 clockwise:{v17 + -0.261799388, v17 + 0.261799388}];
+        [bezierPath addArcWithCenter:0 radius:v11 startAngle:v13 endAngle:30.0 clockwise:{v19, v18}];
+        [bezierPath closePath];
+        v20 = bezierPath;
+        cGPath2 = [bezierPath CGPath];
+        v21 = [MEMORY[0x29EDB8D80] arrayWithObjects:&cGPath2 count:1];
 
         v6 = v21;
       }
     }
 
-    v5 = [v4 countByEnumeratingWithState:&v31 objects:v37 count:16];
+    v5 = [neighbors countByEnumeratingWithState:&v31 objects:v37 count:16];
   }
 
   while (v5);
@@ -265,11 +265,11 @@ LABEL_15:
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(VKExplorationAccessibilityElement *)self vertex];
-  [v3 getScreenPoint];
+  vertex = [(VKExplorationAccessibilityElement *)self vertex];
+  [vertex getScreenPoint];
 
-  v4 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
-  v5 = [v4 accessibilityLayerHostingView];
+  accessibilityContainer = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
+  accessibilityLayerHostingView = [accessibilityContainer accessibilityLayerHostingView];
 
   UIAccessibilityFrameForBounds();
   v7 = v6;
@@ -288,17 +288,17 @@ LABEL_15:
   return result;
 }
 
-- (VKExplorationAccessibilityElement)initWithAccessibilityContainer:(id)a3 andVertex:(id)a4
+- (VKExplorationAccessibilityElement)initWithAccessibilityContainer:(id)container andVertex:(id)vertex
 {
-  v7 = a4;
+  vertexCopy = vertex;
   v11.receiver = self;
   v11.super_class = VKExplorationAccessibilityElement;
-  v8 = [(VKExplorationAccessibilityElement *)&v11 initWithAccessibilityContainer:a3];
+  v8 = [(VKExplorationAccessibilityElement *)&v11 initWithAccessibilityContainer:container];
   v9 = v8;
   if (v8)
   {
     v8->_isExplorationElement = 1;
-    objc_storeStrong(&v8->_vertex, a4);
+    objc_storeStrong(&v8->_vertex, vertex);
   }
 
   return v9;
@@ -306,16 +306,16 @@ LABEL_15:
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(VKExplorationAccessibilityElement *)self isCurrent];
-  if (!v3)
+  isCurrent = [(VKExplorationAccessibilityElement *)self isCurrent];
+  if (!isCurrent)
   {
-    v4 = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
-    v5 = [v4 accessibilityElementManager];
-    v6 = [(VKExplorationAccessibilityElement *)self vertex];
-    [v5 accessibilityMapsExplorationContinueWithVertex:v6];
+    accessibilityContainer = [(VKExplorationAccessibilityElement *)self accessibilityContainer];
+    accessibilityElementManager = [accessibilityContainer accessibilityElementManager];
+    vertex = [(VKExplorationAccessibilityElement *)self vertex];
+    [accessibilityElementManager accessibilityMapsExplorationContinueWithVertex:vertex];
   }
 
-  return !v3;
+  return !isCurrent;
 }
 
 @end

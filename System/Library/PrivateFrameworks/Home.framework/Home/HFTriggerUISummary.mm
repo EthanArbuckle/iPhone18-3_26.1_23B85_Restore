@@ -1,25 +1,25 @@
 @interface HFTriggerUISummary
-- (void)_getTriggerName:(id)a3 home:(id)a4;
-- (void)_updateWithTrigger:(id)a3 inHome:(id)a4 forceDisabled:(BOOL)a5 ignoringDisabled:(BOOL)a6;
+- (void)_getTriggerName:(id)name home:(id)home;
+- (void)_updateWithTrigger:(id)trigger inHome:(id)home forceDisabled:(BOOL)disabled ignoringDisabled:(BOOL)ignoringDisabled;
 @end
 
 @implementation HFTriggerUISummary
 
-- (void)_updateWithTrigger:(id)a3 inHome:(id)a4 forceDisabled:(BOOL)a5 ignoringDisabled:(BOOL)a6
+- (void)_updateWithTrigger:(id)trigger inHome:(id)home forceDisabled:(BOOL)disabled ignoringDisabled:(BOOL)ignoringDisabled
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  [(HFTriggerUISummary *)self _getTriggerName:v10 home:v11];
-  v12 = [v10 isEnabled];
+  ignoringDisabledCopy = ignoringDisabled;
+  disabledCopy = disabled;
+  triggerCopy = trigger;
+  homeCopy = home;
+  [(HFTriggerUISummary *)self _getTriggerName:triggerCopy home:homeCopy];
+  isEnabled = [triggerCopy isEnabled];
   v13 = [HFTriggerActionSetsBuilder alloc];
-  v14 = [v10 actionSets];
-  v15 = [(HFTriggerActionSetsBuilder *)v13 initWithActionSets:v14 inHome:v11 filterEmptyActionSets:1];
+  actionSets = [triggerCopy actionSets];
+  v15 = [(HFTriggerActionSetsBuilder *)v13 initWithActionSets:actionSets inHome:homeCopy filterEmptyActionSets:1];
 
-  v16 = [(HFTriggerActionSetsBuilder *)v15 actionSetsSummary];
+  actionSetsSummary = [(HFTriggerActionSetsBuilder *)v15 actionSetsSummary];
   objc_opt_class();
-  v26 = v10;
+  v26 = triggerCopy;
   if (objc_opt_isKindOfClass())
   {
     v17 = v26;
@@ -32,23 +32,23 @@
 
   v18 = v17;
 
-  v19 = [v11 hf_remoteAccessState];
-  if (v19 == 1 || [v18 triggerActivationState] == 1)
+  hf_remoteAccessState = [homeCopy hf_remoteAccessState];
+  if (hf_remoteAccessState == 1 || [v18 triggerActivationState] == 1)
   {
-    v20 = _HFLocalizedStringWithDefaultValue(@"HFTriggerDescriptionRemoteAccessStateNotCapable", @"HFTriggerDescriptionRemoteAccessStateNotCapable", 1);
+    ignoringDisabledCopy = _HFLocalizedStringWithDefaultValue(@"HFTriggerDescriptionRemoteAccessStateNotCapable", @"HFTriggerDescriptionRemoteAccessStateNotCapable", 1);
   }
 
   else
   {
-    v20 = [v16 summaryText:v12 & !v7 | v6];
+    ignoringDisabledCopy = [actionSetsSummary summaryText:isEnabled & !disabledCopy | ignoringDisabledCopy];
   }
 
   triggerDescription = self->_triggerDescription;
-  self->_triggerDescription = v20;
+  self->_triggerDescription = ignoringDisabledCopy;
 
-  v22 = [v16 summaryIconDescriptors];
+  summaryIconDescriptors = [actionSetsSummary summaryIconDescriptors];
   triggerSummaryIconDescriptors = self->_triggerSummaryIconDescriptors;
-  self->_triggerSummaryIconDescriptors = v22;
+  self->_triggerSummaryIconDescriptors = summaryIconDescriptors;
 
   self->_triggerType = [v26 hf_triggerType];
   v24 = [HFTriggerIconFactory iconDescriptorForTrigger:v26];
@@ -56,29 +56,29 @@
   self->_triggerIconDescriptor = v24;
 }
 
-- (void)_getTriggerName:(id)a3 home:(id)a4
+- (void)_getTriggerName:(id)name home:(id)home
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 configuredName];
-  self->_triggerNameIsConfigured = v7 != 0;
+  nameCopy = name;
+  homeCopy = home;
+  configuredName = [nameCopy configuredName];
+  self->_triggerNameIsConfigured = configuredName != 0;
 
-  v8 = [v15 configuredName];
-  v9 = v8;
-  if (v8)
+  configuredName2 = [nameCopy configuredName];
+  v9 = configuredName2;
+  if (configuredName2)
   {
-    v10 = v8;
+    name = configuredName2;
   }
 
   else
   {
-    v10 = [v15 name];
+    name = [nameCopy name];
   }
 
   triggerName = self->_triggerName;
-  self->_triggerName = v10;
+  self->_triggerName = name;
 
-  v12 = [v15 hf_naturalLanguageNameWithHome:v6 type:2];
+  v12 = [nameCopy hf_naturalLanguageNameWithHome:homeCopy type:2];
 
   triggerNaturalLanguageTitle = self->_triggerNaturalLanguageTitle;
   self->_triggerNaturalLanguageTitle = v12;

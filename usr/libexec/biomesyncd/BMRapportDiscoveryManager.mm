@@ -1,33 +1,33 @@
 @interface BMRapportDiscoveryManager
-- (BMRapportDiscoveryManager)initWithServiceName:(id)a3 delegate:(id)a4 queue:(id)a5;
+- (BMRapportDiscoveryManager)initWithServiceName:(id)name delegate:(id)delegate queue:(id)queue;
 - (NSArray)devices;
-- (id)deviceWithIdentifier:(id)a3;
+- (id)deviceWithIdentifier:(id)identifier;
 - (id)localDevice;
 - (id)newDiscoveryClients;
-- (void)ignoreDevice:(id)a3;
+- (void)ignoreDevice:(id)device;
 - (void)invalidate;
-- (void)rapportClient:(id)a3 didDiscoverDevice:(id)a4;
-- (void)rapportClient:(id)a3 didLoseDevice:(id)a4;
-- (void)startWithCompletion:(id)a3;
+- (void)rapportClient:(id)client didDiscoverDevice:(id)device;
+- (void)rapportClient:(id)client didLoseDevice:(id)device;
+- (void)startWithCompletion:(id)completion;
 - (void)stop;
 @end
 
 @implementation BMRapportDiscoveryManager
 
-- (BMRapportDiscoveryManager)initWithServiceName:(id)a3 delegate:(id)a4 queue:(id)a5
+- (BMRapportDiscoveryManager)initWithServiceName:(id)name delegate:(id)delegate queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = BMRapportDiscoveryManager;
   v12 = [(BMRapportDiscoveryManager *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceName, a3);
-    objc_storeStrong(&v13->_queue, a5);
-    objc_storeWeak(&v13->_delegate, v10);
+    objc_storeStrong(&v12->_serviceName, name);
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = objc_opt_new();
     devices = v13->_devices;
     v13->_devices = v14;
@@ -78,35 +78,35 @@
   return v3;
 }
 
-- (void)rapportClient:(id)a3 didDiscoverDevice:(id)a4
+- (void)rapportClient:(id)client didDiscoverDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_invalidated)
   {
-    v6 = [v5 bm_companionLinkDeviceIdentifier];
-    if (v6)
+    bm_companionLinkDeviceIdentifier = [deviceCopy bm_companionLinkDeviceIdentifier];
+    if (bm_companionLinkDeviceIdentifier)
     {
-      v7 = [v5 model];
+      model = [deviceCopy model];
 
-      if (v7)
+      if (model)
       {
-        v8 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v6];
+        v8 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:bm_companionLinkDeviceIdentifier];
         if (v8)
         {
         }
 
         else
         {
-          v10 = [(NSMutableDictionary *)self->_unsupportedDevices objectForKeyedSubscript:v6];
+          v10 = [(NSMutableDictionary *)self->_unsupportedDevices objectForKeyedSubscript:bm_companionLinkDeviceIdentifier];
 
           if (!v10)
           {
-            v11 = [[BMRapportDevice alloc] initWithRPCompanionLinkDevice:v5];
-            v12 = [(BMRapportDevice *)v11 serviceTypes];
-            if (v12 && (v13 = v12, -[BMRapportDevice serviceTypes](v11, "serviceTypes"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 containsObject:self->_serviceName], v14, v13, (v15 & 1) == 0))
+            v11 = [[BMRapportDevice alloc] initWithRPCompanionLinkDevice:deviceCopy];
+            serviceTypes = [(BMRapportDevice *)v11 serviceTypes];
+            if (serviceTypes && (v13 = serviceTypes, -[BMRapportDevice serviceTypes](v11, "serviceTypes"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 containsObject:self->_serviceName], v14, v13, (v15 & 1) == 0))
             {
-              [(NSMutableDictionary *)self->_unsupportedDevices setObject:v11 forKeyedSubscript:v6];
+              [(NSMutableDictionary *)self->_unsupportedDevices setObject:v11 forKeyedSubscript:bm_companionLinkDeviceIdentifier];
             }
 
             else
@@ -114,13 +114,13 @@
               WeakRetained = objc_loadWeakRetained(&self->_delegate);
               if ([WeakRetained discoveryManager:self supportsDevice:v11])
               {
-                [(NSMutableDictionary *)self->_devices setObject:v11 forKeyedSubscript:v6];
+                [(NSMutableDictionary *)self->_devices setObject:v11 forKeyedSubscript:bm_companionLinkDeviceIdentifier];
                 v17 = __biome_log_for_category();
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
                 {
-                  v18 = [(BMRapportDevice *)v11 shortenedRapportIdentifier];
+                  shortenedRapportIdentifier = [(BMRapportDevice *)v11 shortenedRapportIdentifier];
                   v19 = 138412290;
-                  v20 = v18;
+                  v20 = shortenedRapportIdentifier;
                   _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "BMRappportDiscoveryManager: discovered device %@", &v19, 0xCu);
                 }
 
@@ -129,7 +129,7 @@
 
               else
               {
-                [(NSMutableDictionary *)self->_unsupportedDevices setObject:v11 forKeyedSubscript:v6];
+                [(NSMutableDictionary *)self->_unsupportedDevices setObject:v11 forKeyedSubscript:bm_companionLinkDeviceIdentifier];
               }
             }
           }
@@ -141,7 +141,7 @@
       v9 = __biome_log_for_category();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_100047F90(v5, v9);
+        sub_100047F90(deviceCopy, v9);
       }
     }
 
@@ -150,7 +150,7 @@
       v9 = __biome_log_for_category();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_100048008(v5, v9);
+        sub_100048008(deviceCopy, v9);
       }
     }
 
@@ -158,22 +158,22 @@ LABEL_11:
   }
 }
 
-- (void)rapportClient:(id)a3 didLoseDevice:(id)a4
+- (void)rapportClient:(id)client didLoseDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_invalidated)
   {
-    v8 = [v7 bm_companionLinkDeviceIdentifier];
-    v9 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v8];
+    bm_companionLinkDeviceIdentifier = [deviceCopy bm_companionLinkDeviceIdentifier];
+    v9 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:bm_companionLinkDeviceIdentifier];
     if (v9)
     {
     }
 
     else
     {
-      v10 = [(NSMutableDictionary *)self->_unsupportedDevices objectForKeyedSubscript:v8];
+      v10 = [(NSMutableDictionary *)self->_unsupportedDevices objectForKeyedSubscript:bm_companionLinkDeviceIdentifier];
 
       if (!v10)
       {
@@ -204,10 +204,10 @@ LABEL_22:
           }
 
           v16 = *(*(&v22 + 1) + 8 * v15);
-          if (v16 != v6)
+          if (v16 != clientCopy)
           {
-            v17 = [v16 activeDevices];
-            v18 = [v17 containsObject:v7];
+            activeDevices = [v16 activeDevices];
+            v18 = [activeDevices containsObject:deviceCopy];
 
             if (v18)
             {
@@ -215,7 +215,7 @@ LABEL_22:
               if (os_log_type_enabled(WeakRetained, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v27 = v7;
+                v27 = deviceCopy;
                 _os_log_impl(&_mh_execute_header, WeakRetained, OS_LOG_TYPE_INFO, "BMRappportDiscoveryManager: already discovered by other connection to rapport %@", buf, 0xCu);
               }
 
@@ -237,17 +237,17 @@ LABEL_22:
       }
     }
 
-    v11 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v8];
-    [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:v8];
-    [(NSMutableDictionary *)self->_unsupportedDevices setObject:0 forKeyedSubscript:v8];
+    v11 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:bm_companionLinkDeviceIdentifier];
+    [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:bm_companionLinkDeviceIdentifier];
+    [(NSMutableDictionary *)self->_unsupportedDevices setObject:0 forKeyedSubscript:bm_companionLinkDeviceIdentifier];
     if (v11)
     {
       v19 = __biome_log_for_category();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [(NSArray *)v11 shortenedRapportIdentifier];
+        shortenedRapportIdentifier = [(NSArray *)v11 shortenedRapportIdentifier];
         *buf = 138412290;
-        v27 = v20;
+        v27 = shortenedRapportIdentifier;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "BMRappportDiscoveryManager: lost device %@", buf, 0xCu);
       }
 
@@ -262,45 +262,45 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)ignoreDevice:(id)a3
+- (void)ignoreDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (deviceCopy)
   {
     if (!self->_invalidated)
     {
       unsupportedDevices = self->_unsupportedDevices;
-      v6 = [v4 rapportIdentifier];
-      v7 = [(NSMutableDictionary *)unsupportedDevices objectForKeyedSubscript:v6];
+      rapportIdentifier = [deviceCopy rapportIdentifier];
+      v7 = [(NSMutableDictionary *)unsupportedDevices objectForKeyedSubscript:rapportIdentifier];
 
       if (!v7)
       {
         devices = self->_devices;
-        v9 = [v4 rapportIdentifier];
-        v10 = [(NSMutableDictionary *)devices objectForKeyedSubscript:v9];
+        rapportIdentifier2 = [deviceCopy rapportIdentifier];
+        v10 = [(NSMutableDictionary *)devices objectForKeyedSubscript:rapportIdentifier2];
 
         if (v10)
         {
           v11 = __biome_log_for_category();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v12 = [v4 shortenedRapportIdentifier];
+            shortenedRapportIdentifier = [deviceCopy shortenedRapportIdentifier];
             v18 = 138412290;
-            v19 = v12;
+            v19 = shortenedRapportIdentifier;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "BMRappportDiscoveryManager: ignore device %@", &v18, 0xCu);
           }
 
           v13 = self->_devices;
-          v14 = [v4 rapportIdentifier];
-          [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:v14];
+          rapportIdentifier3 = [deviceCopy rapportIdentifier];
+          [(NSMutableDictionary *)v13 setObject:0 forKeyedSubscript:rapportIdentifier3];
 
           v15 = self->_unsupportedDevices;
-          v16 = [v4 rapportIdentifier];
-          [(NSMutableDictionary *)v15 setObject:v4 forKeyedSubscript:v16];
+          rapportIdentifier4 = [deviceCopy rapportIdentifier];
+          [(NSMutableDictionary *)v15 setObject:deviceCopy forKeyedSubscript:rapportIdentifier4];
 
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          [WeakRetained discoveryManager:self didLoseDevice:v4];
+          [WeakRetained discoveryManager:self didLoseDevice:deviceCopy];
         }
       }
     }
@@ -312,20 +312,20 @@ LABEL_23:
   dispatch_assert_queue_V2(self->_queue);
   if (self->_invalidated)
   {
-    v3 = 0;
+    allValues = 0;
   }
 
   else
   {
-    v3 = [(NSMutableDictionary *)self->_devices allValues];
+    allValues = [(NSMutableDictionary *)self->_devices allValues];
   }
 
-  return v3;
+  return allValues;
 }
 
-- (id)deviceWithIdentifier:(id)a3
+- (id)deviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_invalidated)
   {
@@ -334,10 +334,10 @@ LABEL_23:
 
   else
   {
-    v6 = [(NSArray *)self->_discoveryClients firstObject];
-    v7 = [v6 localDevice];
-    v8 = [v7 bm_companionLinkDeviceIdentifier];
-    v9 = [v8 isEqual:v4];
+    firstObject = [(NSArray *)self->_discoveryClients firstObject];
+    localDevice = [firstObject localDevice];
+    bm_companionLinkDeviceIdentifier = [localDevice bm_companionLinkDeviceIdentifier];
+    v9 = [bm_companionLinkDeviceIdentifier isEqual:identifierCopy];
 
     if (v9)
     {
@@ -346,7 +346,7 @@ LABEL_23:
 
     else
     {
-      [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifierCopy];
     }
     v5 = ;
   }
@@ -365,17 +365,17 @@ LABEL_23:
   else
   {
     v4 = [BMRapportDevice alloc];
-    v5 = [(NSArray *)self->_discoveryClients firstObject];
-    v6 = [v5 localDevice];
-    v3 = [(BMRapportDevice *)v4 initWithRPCompanionLinkDevice:v6];
+    firstObject = [(NSArray *)self->_discoveryClients firstObject];
+    localDevice = [firstObject localDevice];
+    v3 = [(BMRapportDevice *)v4 initWithRPCompanionLinkDevice:localDevice];
   }
 
   return v3;
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_invalidated)
   {
@@ -383,7 +383,7 @@ LABEL_23:
     v33 = @"BMRappportDiscoveryManager has been invalidated";
     v5 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v6 = [NSError errorWithDomain:@"BMRapportErrorDomain" code:4 userInfo:v5];
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
   }
 
   else
@@ -400,14 +400,14 @@ LABEL_23:
     discoveryClients = self->_discoveryClients;
     if (!discoveryClients)
     {
-      v9 = [(BMRapportDiscoveryManager *)self newDiscoveryClients];
+      newDiscoveryClients = [(BMRapportDiscoveryManager *)self newDiscoveryClients];
       v10 = self->_discoveryClients;
-      self->_discoveryClients = v9;
+      self->_discoveryClients = newDiscoveryClients;
 
       discoveryClients = self->_discoveryClients;
     }
 
-    v18 = self;
+    selfCopy = self;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -444,17 +444,17 @@ LABEL_23:
       while (v13);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      queue = v18->_queue;
+      queue = selfCopy->_queue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000E6C4;
       block[3] = &unk_100078DF0;
       v5 = v5;
       v20 = v5;
-      v21 = v18;
-      v22 = v4;
+      v21 = selfCopy;
+      v22 = completionCopy;
       dispatch_group_notify(v6, queue, block);
     }
   }

@@ -2,10 +2,10 @@
 - (NSNumber)timestamp;
 - (NSString)bundleID;
 - (_TtC9MomentsUI19ApprovedApplication)init;
-- (_TtC9MomentsUI19ApprovedApplication)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBundleID:(id)a3;
-- (void)setTimestamp:(id)a3;
+- (_TtC9MomentsUI19ApprovedApplication)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBundleID:(id)d;
+- (void)setTimestamp:(id)timestamp;
 @end
 
 @implementation ApprovedApplication
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -57,25 +57,25 @@
   return *(self + v3);
 }
 
-- (void)setTimestamp:(id)a3
+- (void)setTimestamp:(id)timestamp
 {
   v5 = OBJC_IVAR____TtC9MomentsUI19ApprovedApplication_timestamp;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = timestamp;
+  timestampCopy = timestamp;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ApprovedApplication.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ApprovedApplication.encode(with:)(coderCopy);
 }
 
-- (_TtC9MomentsUI19ApprovedApplication)initWithCoder:(id)a3
+- (_TtC9MomentsUI19ApprovedApplication)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = specialized ApprovedApplication.init(coder:)();
 
   return v4;

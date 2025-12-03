@@ -1,28 +1,28 @@
 @interface MUPDFView
-- (void)PDFViewWillClickOnLink:(id)a3 withURL:(id)a4;
+- (void)PDFViewWillClickOnLink:(id)link withURL:(id)l;
 @end
 
 @implementation MUPDFView
 
-- (void)PDFViewWillClickOnLink:(id)a3 withURL:(id)a4
+- (void)PDFViewWillClickOnLink:(id)link withURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MUPDFView *)self delegate];
+  linkCopy = link;
+  lCopy = l;
+  delegate = [(MUPDFView *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v10 = self;
-    v9 = &v10;
+    selfCopy = self;
+    v9 = &selfCopy;
     goto LABEL_5;
   }
 
-  if ([v8 PDFView:v6 shouldHandleLink:v7])
+  if ([delegate PDFView:linkCopy shouldHandleLink:lCopy])
   {
-    v11 = self;
-    v9 = &v11;
+    selfCopy2 = self;
+    v9 = &selfCopy2;
 LABEL_5:
     v9[1] = MUPDFView;
-    objc_msgSendSuper2(v9, sel_PDFViewWillClickOnLink_withURL_, v6, v7, v10);
+    objc_msgSendSuper2(v9, sel_PDFViewWillClickOnLink_withURL_, linkCopy, lCopy, selfCopy);
   }
 }
 

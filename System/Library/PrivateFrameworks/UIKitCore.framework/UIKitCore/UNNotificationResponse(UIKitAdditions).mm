@@ -7,15 +7,15 @@
 - (id)targetScene
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [UIApp connectedScenes];
-  v3 = [a1 targetSceneIdentifier];
-  if (v3)
+  connectedScenes = [UIApp connectedScenes];
+  targetSceneIdentifier = [self targetSceneIdentifier];
+  if (targetSceneIdentifier)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v2;
+    v4 = connectedScenes;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -30,9 +30,9 @@
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
-          v9 = [v8 session];
-          v10 = [v9 persistentIdentifier];
-          v11 = [v10 isEqualToString:v3];
+          session = [v8 session];
+          persistentIdentifier = [session persistentIdentifier];
+          v11 = [persistentIdentifier isEqualToString:targetSceneIdentifier];
 
           if (v11)
           {

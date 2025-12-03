@@ -1,11 +1,11 @@
 @interface NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest;
   v4 = [(NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest *)&v8 description];
-  v5 = [(NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   containerData = self->_containerData;
   if (containerData)
   {
-    [v3 setObject:containerData forKey:@"containerData"];
+    [dictionary setObject:containerData forKey:@"containerData"];
   }
 
   invitationIdentifier = self->_invitationIdentifier;
@@ -41,61 +41,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_containerData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_invitationIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_containerData)
   {
-    [v4 setContainerData:?];
-    v4 = v5;
+    [toCopy setContainerData:?];
+    toCopy = v5;
   }
 
   if (self->_invitationIdentifier)
   {
     [v5 setInvitationIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_containerData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_containerData copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_invitationIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_invitationIdentifier copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((containerData = self->_containerData, !(containerData | v4[1])) || -[NSData isEqual:](containerData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((containerData = self->_containerData, !(containerData | equalCopy[1])) || -[NSData isEqual:](containerData, "isEqual:")))
   {
     invitationIdentifier = self->_invitationIdentifier;
-    if (invitationIdentifier | v4[2])
+    if (invitationIdentifier | equalCopy[2])
     {
       v7 = [(NSString *)invitationIdentifier isEqual:?];
     }
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest *)self setContainerData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoCarKeySetEncryptedProductPlanIdentifierContainerRequest *)self setInvitationIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

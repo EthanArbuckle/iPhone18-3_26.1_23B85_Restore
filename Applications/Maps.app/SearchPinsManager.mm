@@ -1,28 +1,28 @@
 @interface SearchPinsManager
 - (BOOL)_canDroppedPinBeVisibleInVenue;
 - (BOOL)_isShowingDirectionsPins;
-- (BOOL)canSelectPin:(id)a3;
+- (BOOL)canSelectPin:(id)pin;
 - (BOOL)disableEndPins;
 - (BOOL)disableStartPin;
 - (CustomPOIsController)customPOIsController;
 - (MKMapView)mapView;
 - (MapSelectionManager)mapSelectionManager;
 - (NSArray)endPOIShapesIfLoaded;
-- (SearchPinsManager)initWithMapViewCameraController:(id)a3;
+- (SearchPinsManager)initWithMapViewCameraController:(id)controller;
 - (SearchPinsManagerDelegate)delegate;
 - (SearchResult)endPin;
 - (SearchResultsDebugOverlay)searchResultsDebugOverlay;
 - (UIEdgeInsets)carRecommendedMapPadding;
 - (VenuesManager)venuesManager;
-- (id)_setOfPinsForPinType:(unint64_t)a3;
-- (void)_animateShowingSearchResults:(id)a3 selectedSearchResult:(id)a4 historyItem:(id)a5 suggestedMapRegion:(id)a6 minZoom:(id)a7 maxZoom:(id)a8 disableAdditionalViewportPadding:(BOOL)a9 completion:(id)a10;
+- (id)_setOfPinsForPinType:(unint64_t)type;
+- (void)_animateShowingSearchResults:(id)results selectedSearchResult:(id)result historyItem:(id)item suggestedMapRegion:(id)region minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)padding completion:(id)self0;
 - (void)_clearEndPins;
 - (void)_clearShowSearchResultsAnimation;
 - (void)_clearStartPin;
 - (void)_completeShowSearchResultsAnimation;
-- (void)_notifyDidLoadStartPOIShape:(id)a3 endPOIShapes:(id)a4;
-- (void)_setEndPOIShapes:(id)a3;
-- (void)_setStartPOIShape:(id)a3;
+- (void)_notifyDidLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes;
+- (void)_setEndPOIShapes:(id)shapes;
+- (void)_setStartPOIShape:(id)shape;
 - (void)_startLoadingNewEndPOIShapes;
 - (void)_startLoadingNewStartPOIShape;
 - (void)_updateDroppedPinVisibility;
@@ -33,25 +33,25 @@
 - (void)clearSearchPins;
 - (void)clearSingleResultPins;
 - (void)dealloc;
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5;
-- (void)dropPinsForSearchResults:(id)a3 searchDotPlaces:(id)a4 selectedSearchResult:(id)a5 animate:(BOOL)a6 itemSource:(id)a7;
-- (void)mapSelectionManagerDidDeselectSearchResult:(id)a3;
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal;
+- (void)dropPinsForSearchResults:(id)results searchDotPlaces:(id)places selectedSearchResult:(id)result animate:(BOOL)animate itemSource:(id)source;
+- (void)mapSelectionManagerDidDeselectSearchResult:(id)result;
 - (void)mapViewDidBecomeFullyDrawn;
-- (void)registerPOIShapeLoadingObserver:(id)a3;
-- (void)selectAndShowSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)selectDroppedPinIsAnimated:(BOOL)a3;
-- (void)selectLabelMarkerForSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)setCustomPOIsController:(id)a3;
-- (void)setDisableEndPins:(BOOL)a3;
-- (void)setDisableStartPin:(BOOL)a3;
-- (void)setDroppedPin:(id)a3 animated:(BOOL)a4 shouldSelect:(BOOL)a5;
-- (void)setMapCameraController:(id)a3;
-- (void)setSearchPins:(id)a3 selectedPin:(id)a4 animated:(BOOL)a5;
-- (void)setSearchPinsFromSearchInfo:(id)a3 scrollToResults:(BOOL)a4 displayPlaceCardForResult:(id)a5 historyItem:(id)a6 animated:(BOOL)a7 itemSource:(id)a8 completion:(id)a9;
-- (void)setStartPin:(id)a3 endPin:(id)a4 useAlternateDirectionsPins:(BOOL)a5;
-- (void)setStartPin:(id)a3 endPins:(id)a4 useAlternateDirectionsPins:(BOOL)a5;
-- (void)showLinkedPlacesAndPolygonForPlaceCardItem:(id)a3;
-- (void)unregisterPOIShapeLoadingObserver:(id)a3;
+- (void)registerPOIShapeLoadingObserver:(id)observer;
+- (void)selectAndShowSearchResult:(id)result animated:(BOOL)animated;
+- (void)selectDroppedPinIsAnimated:(BOOL)animated;
+- (void)selectLabelMarkerForSearchResult:(id)result animated:(BOOL)animated;
+- (void)setCustomPOIsController:(id)controller;
+- (void)setDisableEndPins:(BOOL)pins;
+- (void)setDisableStartPin:(BOOL)pin;
+- (void)setDroppedPin:(id)pin animated:(BOOL)animated shouldSelect:(BOOL)select;
+- (void)setMapCameraController:(id)controller;
+- (void)setSearchPins:(id)pins selectedPin:(id)pin animated:(BOOL)animated;
+- (void)setSearchPinsFromSearchInfo:(id)info scrollToResults:(BOOL)results displayPlaceCardForResult:(id)result historyItem:(id)item animated:(BOOL)animated itemSource:(id)source completion:(id)completion;
+- (void)setStartPin:(id)pin endPin:(id)endPin useAlternateDirectionsPins:(BOOL)pins;
+- (void)setStartPin:(id)pin endPins:(id)pins useAlternateDirectionsPins:(BOOL)directionsPins;
+- (void)showLinkedPlacesAndPolygonForPlaceCardItem:(id)item;
+- (void)unregisterPOIShapeLoadingObserver:(id)observer;
 @end
 
 @implementation SearchPinsManager
@@ -90,8 +90,8 @@
   if (!searchResultsDebugOverlay)
   {
     v4 = [SearchResultsDebugOverlay alloc];
-    v5 = [(SearchPinsManager *)self mapView];
-    v6 = [(SearchResultsDebugOverlay *)v4 initWithMapView:v5];
+    mapView = [(SearchPinsManager *)self mapView];
+    v6 = [(SearchResultsDebugOverlay *)v4 initWithMapView:mapView];
     v7 = self->_searchResultsDebugOverlay;
     self->_searchResultsDebugOverlay = v6;
 
@@ -107,30 +107,30 @@
   v4 = v3;
   [(SearchResult *)self->_droppedPin coordinate];
   v6 = v5;
-  v7 = [(SearchPinsManager *)self mapView];
-  v8 = [v7 _mapLayer];
-  v9 = [v8 venueAtLocation:0 withMarginForError:{v4, v6}];
+  mapView = [(SearchPinsManager *)self mapView];
+  _mapLayer = [mapView _mapLayer];
+  v9 = [_mapLayer venueAtLocation:0 withMarginForError:{v4, v6}];
 
-  v10 = [(SearchPinsManager *)self mapView];
-  v11 = [v10 displayedFloorOrdinalForBuildingsInVenue:v9];
+  mapView2 = [(SearchPinsManager *)self mapView];
+  v11 = [mapView2 displayedFloorOrdinalForBuildingsInVenue:v9];
 
-  v12 = [(SearchPinsManager *)self mapView];
-  v13 = [v12 venueWithFocus];
-  v14 = [v13 venueID];
+  mapView3 = [(SearchPinsManager *)self mapView];
+  venueWithFocus = [mapView3 venueWithFocus];
+  venueID = [venueWithFocus venueID];
   v15 = 0;
-  if (v14 == [v9 venueID])
+  if (venueID == [v9 venueID])
   {
     v15 = [(SearchResultRepr *)self->_droppedPin floorOrdinal]== v11;
   }
 
-  v16 = [(SearchPinsManager *)self mapView];
-  v17 = [v16 venueWithFocus];
-  if (v17)
+  mapView4 = [(SearchPinsManager *)self mapView];
+  venueWithFocus2 = [mapView4 venueWithFocus];
+  if (venueWithFocus2)
   {
-    v18 = [(SearchPinsManager *)self mapView];
-    v19 = [v18 venueWithFocus];
-    v20 = [v19 venueID];
-    v21 = v20 != [v9 venueID];
+    mapView5 = [(SearchPinsManager *)self mapView];
+    venueWithFocus3 = [mapView5 venueWithFocus];
+    venueID2 = [venueWithFocus3 venueID];
+    v21 = venueID2 != [v9 venueID];
   }
 
   else
@@ -170,15 +170,15 @@ LABEL_11:
     return;
   }
 
-  v6 = [(SearchPinsManager *)self mapView];
-  [(SearchResultsItemSource *)self->_droppedPinsItemSource setShouldHideSearchResults:(sub_10000FA08(v6) != 5) & v3];
+  mapView = [(SearchPinsManager *)self mapView];
+  [(SearchResultsItemSource *)self->_droppedPinsItemSource setShouldHideSearchResults:(sub_10000FA08(mapView) != 5) & v3];
 }
 
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal
 {
   if (self->_droppedPin)
   {
-    [(SearchPinsManager *)self _updateDroppedPinVisibility:a3];
+    [(SearchPinsManager *)self _updateDroppedPinVisibility:venue];
   }
 }
 
@@ -187,10 +187,10 @@ LABEL_11:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -198,32 +198,32 @@ LABEL_11:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v10 = [(NSArray *)v4->_endPins count];
+    v10 = [(NSArray *)selfCopy->_endPins count];
     *buf = 138543618;
-    v25 = v9;
+    v25 = selfCopy;
     v26 = 2048;
     v27 = v10;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Will start loading POI shape for %lu end pins", buf, 0x16u);
   }
 
   [(SearchPinsManager *)self _setEndPOIShapes:0];
-  v11 = [(SearchPinsManager *)self mapView];
-  v12 = v11;
-  if (!v11)
+  mapView = [(SearchPinsManager *)self mapView];
+  v12 = mapView;
+  if (!mapView)
   {
     v15 = sub_100015F58();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -231,10 +231,10 @@ LABEL_10:
       goto LABEL_23;
     }
 
-    v16 = self;
-    if (!v16)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v21 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_22;
     }
 
@@ -242,22 +242,22 @@ LABEL_10:
     v18 = NSStringFromClass(v17);
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(SearchPinsManager *)v16 performSelector:"accessibilityIdentifier"];
+      v19 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v20 = v19;
       if (v19 && ![v19 isEqualToString:v18])
       {
-        v21 = [NSString stringWithFormat:@"%@<%p, %@>", v18, v16, v20];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v18, selfCopy2, v20];
 
         goto LABEL_20;
       }
     }
 
-    v21 = [NSString stringWithFormat:@"%@<%p>", v18, v16];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v18, selfCopy2];
 LABEL_20:
 
 LABEL_22:
     *buf = 138543362;
-    v25 = v21;
+    v25 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}@] Map view is nil; will not load end POI shapes", buf, 0xCu);
 
     goto LABEL_23;
@@ -268,7 +268,7 @@ LABEL_22:
   v22[1] = 3221225472;
   v22[2] = sub_100C345DC;
   v22[3] = &unk_10164E3A8;
-  v23 = v11;
+  v23 = mapView;
   v14 = sub_100021DB0(endPins, v22);
   [(SearchPinsManager *)self _setEndPOIShapes:v14];
 
@@ -281,10 +281,10 @@ LABEL_23:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -292,39 +292,39 @@ LABEL_23:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v21 = v9;
+    v21 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Will start loading POI shape for start pin", buf, 0xCu);
   }
 
   [(SearchPinsManager *)self _setStartPOIShape:0];
-  v10 = [(SearchPinsManager *)self mapView];
-  if (!v10)
+  mapView = [(SearchPinsManager *)self mapView];
+  if (!mapView)
   {
-    v11 = sub_100015F58();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    startPin = sub_100015F58();
+    if (!os_log_type_enabled(startPin, OS_LOG_TYPE_INFO))
     {
       goto LABEL_27;
     }
 
-    v13 = self;
-    if (!v13)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v18 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_26;
     }
 
@@ -332,31 +332,31 @@ LABEL_10:
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(SearchPinsManager *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy2, v17];
 
         goto LABEL_21;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy2];
 LABEL_21:
 
 LABEL_26:
     *buf = 138543362;
-    v21 = v18;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] Map view is nil; will not load start POI shape", buf, 0xCu);
+    v21 = selfCopy2;
+    _os_log_impl(&_mh_execute_header, startPin, OS_LOG_TYPE_INFO, "[%{public}@] Map view is nil; will not load start POI shape", buf, 0xCu);
 
     goto LABEL_27;
   }
 
-  v11 = [(SearchPinsManager *)self startPin];
-  if ([v11 isDynamicCurrentLocation])
+  startPin = [(SearchPinsManager *)self startPin];
+  if ([startPin isDynamicCurrentLocation])
   {
-    v12 = [POIShapeFactory userLocationPOIShapeWithMapView:v10];
+    v12 = [POIShapeFactory userLocationPOIShapeWithMapView:mapView];
 LABEL_24:
     v19 = v12;
     [(SearchPinsManager *)self _setStartPOIShape:v12];
@@ -364,31 +364,31 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  if (v11)
+  if (startPin)
   {
-    v12 = [POIShapeFactory searchResultWaypointPOIShapeWithMapView:v10 searchResult:v11];
+    v12 = [POIShapeFactory searchResultWaypointPOIShapeWithMapView:mapView searchResult:startPin];
     goto LABEL_24;
   }
 
 LABEL_27:
 }
 
-- (void)_notifyDidLoadStartPOIShape:(id)a3 endPOIShapes:(id)a4
+- (void)_notifyDidLoadStartPOIShape:(id)shape endPOIShapes:(id)shapes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  shapeCopy = shape;
+  shapesCopy = shapes;
+  v8 = shapeCopy;
+  v9 = shapesCopy;
   v10 = sub_100015F58();
   if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     goto LABEL_11;
   }
 
-  v11 = self;
-  if (!v11)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v16 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -396,24 +396,24 @@ LABEL_27:
   v13 = NSStringFromClass(v12);
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(SearchPinsManager *)v11 performSelector:"accessibilityIdentifier"];
+    v14 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v15 = v14;
     if (v14 && ![v14 isEqualToString:v13])
     {
-      v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy, v15];
 
       goto LABEL_8;
     }
   }
 
-  v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy];
 LABEL_8:
 
-  v8 = v6;
+  v8 = shapeCopy;
 LABEL_10:
 
   *buf = 138543874;
-  v42 = v16;
+  v42 = selfCopy;
   v43 = 2112;
   v44 = v8;
   v45 = 2112;
@@ -451,7 +451,7 @@ LABEL_11:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
         v23 = v9;
-        v24 = self;
+        selfCopy2 = self;
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
         if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -459,29 +459,29 @@ LABEL_11:
           goto LABEL_21;
         }
 
-        v27 = self;
+        selfCopy3 = self;
         v28 = v8;
-        v29 = [(SearchPinsManager *)v24 performSelector:"accessibilityIdentifier"];
+        v29 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
         v30 = v29;
         if (v29 && ![v29 isEqualToString:v26])
         {
-          v31 = [NSString stringWithFormat:@"%@<%p, %@>", v26, v24, v30];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v26, selfCopy2, v30];
 
           v8 = v28;
-          self = v27;
+          self = selfCopy3;
         }
 
         else
         {
 
           v8 = v28;
-          self = v27;
+          self = selfCopy3;
 LABEL_21:
-          v31 = [NSString stringWithFormat:@"%@<%p>", v26, v24];
+          selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v26, selfCopy2];
         }
 
         *buf = 138543618;
-        v42 = v31;
+        v42 = selfCopy2;
         v43 = 2112;
         v44 = v21;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "[%{public}@] Notifying observer %@", buf, 0x16u);
@@ -504,11 +504,11 @@ LABEL_21:
 LABEL_27:
 }
 
-- (void)_setEndPOIShapes:(id)a3
+- (void)_setEndPOIShapes:(id)shapes
 {
-  v5 = a3;
+  shapesCopy = shapes;
   endPOIShapes = self->_endPOIShapes;
-  v7 = v5;
+  v7 = shapesCopy;
   v8 = endPOIShapes;
   if (!(v7 | v8))
   {
@@ -526,46 +526,46 @@ LABEL_27:
   v11 = sub_100015F58();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = self;
+    selfCopy = self;
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(SearchPinsManager *)v12 performSelector:"accessibilityIdentifier"];
+      v15 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v16 = v15;
       if (v15 && ![v15 isEqualToString:v14])
       {
-        v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
         goto LABEL_9;
       }
     }
 
-    v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_9:
 
     *buf = 138543618;
-    v21 = v17;
+    v21 = selfCopy;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] Setting end POI shapes: %@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_endPOIShapes, a3);
-  v18 = [(SearchPinsManager *)self startPOIShapeIfLoaded];
-  v19 = v18;
-  if (v7 && v18)
+  objc_storeStrong(&self->_endPOIShapes, shapes);
+  startPOIShapeIfLoaded = [(SearchPinsManager *)self startPOIShapeIfLoaded];
+  v19 = startPOIShapeIfLoaded;
+  if (v7 && startPOIShapeIfLoaded)
   {
-    [(SearchPinsManager *)self _notifyDidLoadStartPOIShape:v18 endPOIShapes:v7];
+    [(SearchPinsManager *)self _notifyDidLoadStartPOIShape:startPOIShapeIfLoaded endPOIShapes:v7];
   }
 
 LABEL_14:
 }
 
-- (void)_setStartPOIShape:(id)a3
+- (void)_setStartPOIShape:(id)shape
 {
-  v5 = a3;
-  if (self->_startPOIShape == v5)
+  shapeCopy = shape;
+  if (self->_startPOIShape == shapeCopy)
   {
     goto LABEL_13;
   }
@@ -573,52 +573,52 @@ LABEL_14:
   v6 = sub_100015F58();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = self;
+    selfCopy = self;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(SearchPinsManager *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_8;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_8:
 
     *buf = 138543618;
-    v16 = v12;
+    v16 = selfCopy;
     v17 = 2112;
-    v18 = v5;
+    v18 = shapeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Setting start POI shape: %@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_startPOIShape, a3);
-  v13 = [(SearchPinsManager *)self endPOIShapesIfLoaded];
-  v14 = v13;
-  if (v5 && v13)
+  objc_storeStrong(&self->_startPOIShape, shape);
+  endPOIShapesIfLoaded = [(SearchPinsManager *)self endPOIShapesIfLoaded];
+  v14 = endPOIShapesIfLoaded;
+  if (shapeCopy && endPOIShapesIfLoaded)
   {
-    [(SearchPinsManager *)self _notifyDidLoadStartPOIShape:v5 endPOIShapes:v13];
+    [(SearchPinsManager *)self _notifyDidLoadStartPOIShape:shapeCopy endPOIShapes:endPOIShapesIfLoaded];
   }
 
 LABEL_13:
 }
 
-- (void)unregisterPOIShapeLoadingObserver:(id)a3
+- (void)unregisterPOIShapeLoadingObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_100015F58();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -626,40 +626,40 @@ LABEL_13:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(SearchPinsManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v13 = v11;
+    v13 = selfCopy;
     v14 = 2112;
-    v15 = v4;
+    v15 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] Removing observer: %@", buf, 0x16u);
   }
 
-  [(NSHashTable *)self->_poiShapeLoadingObservers removeObject:v4];
+  [(NSHashTable *)self->_poiShapeLoadingObservers removeObject:observerCopy];
 }
 
-- (void)registerPOIShapeLoadingObserver:(id)a3
+- (void)registerPOIShapeLoadingObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_100015F58();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = self;
-    if (!v6)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -667,28 +667,28 @@ LABEL_10:
     v8 = NSStringFromClass(v7);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(SearchPinsManager *)v6 performSelector:"accessibilityIdentifier"];
+      v9 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v10 = v9;
       if (v9 && ![v9 isEqualToString:v8])
       {
-        v11 = [NSString stringWithFormat:@"%@<%p, %@>", v8, v6, v10];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v8, selfCopy, v10];
 
         goto LABEL_8;
       }
     }
 
-    v11 = [NSString stringWithFormat:@"%@<%p>", v8, v6];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v8, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543618;
-    v13 = v11;
+    v13 = selfCopy;
     v14 = 2112;
-    v15 = v4;
+    v15 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}@] Adding observer: %@", buf, 0x16u);
   }
 
-  [(NSHashTable *)self->_poiShapeLoadingObservers addObject:v4];
+  [(NSHashTable *)self->_poiShapeLoadingObservers addObject:observerCopy];
 }
 
 - (NSArray)endPOIShapesIfLoaded
@@ -715,37 +715,37 @@ LABEL_10:
 
 - (void)clearLinkedPlacesAndPolygon
 {
-  v3 = [(SearchPinsManager *)self placeCardLinkedPlacesItemSource];
-  [v3 updateForPlaceCardItem:0];
+  placeCardLinkedPlacesItemSource = [(SearchPinsManager *)self placeCardLinkedPlacesItemSource];
+  [placeCardLinkedPlacesItemSource updateForPlaceCardItem:0];
 
-  v4 = [(SearchPinsManager *)self mapView];
-  [v4 _setSelectedFeatureID:0];
+  mapView = [(SearchPinsManager *)self mapView];
+  [mapView _setSelectedFeatureID:0];
 }
 
-- (void)showLinkedPlacesAndPolygonForPlaceCardItem:(id)a3
+- (void)showLinkedPlacesAndPolygonForPlaceCardItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SearchPinsManager *)self placeCardLinkedPlacesItemSource];
-  [v5 updateForPlaceCardItem:v4];
+  itemCopy = item;
+  placeCardLinkedPlacesItemSource = [(SearchPinsManager *)self placeCardLinkedPlacesItemSource];
+  [placeCardLinkedPlacesItemSource updateForPlaceCardItem:itemCopy];
 
-  v8 = [(SearchPinsManager *)self placeCardLinkedPlacesItemSource];
-  v6 = [v8 featureID];
-  v7 = [(SearchPinsManager *)self mapView];
-  [v7 _setSelectedFeatureID:v6];
+  placeCardLinkedPlacesItemSource2 = [(SearchPinsManager *)self placeCardLinkedPlacesItemSource];
+  featureID = [placeCardLinkedPlacesItemSource2 featureID];
+  mapView = [(SearchPinsManager *)self mapView];
+  [mapView _setSelectedFeatureID:featureID];
 }
 
-- (void)mapSelectionManagerDidDeselectSearchResult:(id)a3
+- (void)mapSelectionManagerDidDeselectSearchResult:(id)result
 {
   [(SearchPinsManager *)self clearSingleResultPins];
-  v6 = [(SearchPinsManager *)self mapView];
-  if (sub_10000FA08(v6) == 5)
+  mapView = [(SearchPinsManager *)self mapView];
+  if (sub_10000FA08(mapView) == 5)
   {
   }
 
   else
   {
-    v4 = [(SearchPinsManager *)self allSearchResults];
-    v5 = [v4 count];
+    allSearchResults = [(SearchPinsManager *)self allSearchResults];
+    v5 = [allSearchResults count];
 
     if (v5 == 1)
     {
@@ -755,15 +755,15 @@ LABEL_10:
   }
 }
 
-- (void)selectAndShowSearchResult:(id)a3 animated:(BOOL)a4
+- (void)selectAndShowSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  resultCopy = result;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  v9 = [(SearchPinsManager *)self canSelectPin:v6];
-  if (v8 != 5)
+  v9 = [(SearchPinsManager *)self canSelectPin:resultCopy];
+  if (userInterfaceIdiom != 5)
   {
     if (v9)
     {
@@ -776,10 +776,10 @@ LABEL_10:
       goto LABEL_15;
     }
 
-    v13 = self;
-    if (!v13)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v18 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_14;
     }
 
@@ -787,22 +787,22 @@ LABEL_10:
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(SearchPinsManager *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
         goto LABEL_12;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_12:
 
 LABEL_14:
     *buf = 138543362;
-    v35 = v18;
+    v35 = selfCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "[%{public}@] Asked to show a search result not in the search pins manager!", buf, 0xCu);
 
 LABEL_15:
@@ -811,22 +811,22 @@ LABEL_15:
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(SearchPinsManager *)self mapCameraController];
-    v11 = [v6 mapItem];
+    mapCameraController = [(SearchPinsManager *)self mapCameraController];
+    mapItem = [resultCopy mapItem];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100C35AB0;
     v31[3] = &unk_101656010;
     v31[4] = self;
-    v32 = v6;
-    v33 = v4;
-    [v10 frameMapItem:v11 animated:1 completion:v31];
+    v32 = resultCopy;
+    v33 = animatedCopy;
+    [mapCameraController frameMapItem:mapItem animated:1 completion:v31];
 
     goto LABEL_31;
   }
 
 LABEL_16:
-  if (!v6)
+  if (!resultCopy)
   {
     v20 = sub_100015F58();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -836,10 +836,10 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v21 = self;
-    if (!v21)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v26 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_29;
     }
 
@@ -847,22 +847,22 @@ LABEL_30:
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(SearchPinsManager *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy2, v25];
 
         goto LABEL_26;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy2];
 LABEL_26:
 
 LABEL_29:
     *buf = 138543362;
-    v35 = v26;
+    v35 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[%{public}@] No search result to select.", buf, 0xCu);
 
     goto LABEL_30;
@@ -877,8 +877,8 @@ LABEL_29:
     v27[2] = sub_100C35B20;
     v27[3] = &unk_10164E380;
     objc_copyWeak(&v29, buf);
-    v28 = v6;
-    v30 = v4;
+    v28 = resultCopy;
+    v30 = animatedCopy;
     [(SearchPinsManagerShowSearchResultsAnimation *)showSearchResultsAnimation addCompletion:v27];
 
     objc_destroyWeak(&v29);
@@ -887,30 +887,30 @@ LABEL_29:
 
   else
   {
-    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:v6 animated:v4];
+    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:resultCopy animated:animatedCopy];
   }
 
 LABEL_31:
 }
 
-- (void)dropPinsForSearchResults:(id)a3 searchDotPlaces:(id)a4 selectedSearchResult:(id)a5 animate:(BOOL)a6 itemSource:(id)a7
+- (void)dropPinsForSearchResults:(id)results searchDotPlaces:(id)places selectedSearchResult:(id)result animate:(BOOL)animate itemSource:(id)source
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a4;
+  animateCopy = animate;
+  resultsCopy = results;
+  resultCopy = result;
+  sourceCopy = source;
+  placesCopy = places;
   v16 = sub_100015F58();
   if (!os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     goto LABEL_13;
   }
 
-  v17 = self;
-  v42 = v8;
-  if (!v17)
+  selfCopy = self;
+  v42 = animateCopy;
+  if (!selfCopy)
   {
-    v22 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -918,49 +918,49 @@ LABEL_31:
   v19 = NSStringFromClass(v18);
   if (objc_opt_respondsToSelector())
   {
-    v20 = [(SearchPinsManager *)v17 performSelector:"accessibilityIdentifier"];
+    v20 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v21 = v20;
     if (v20 && ![v20 isEqualToString:v19])
     {
-      v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy, v21];
 
       goto LABEL_8;
     }
   }
 
-  v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v23 = v22;
-  v24 = [v12 count];
-  v25 = [(SearchResultsItemSource *)v17->_searchResultsItemSource shouldHideSearchResults];
+  v23 = selfCopy;
+  v24 = [resultsCopy count];
+  shouldHideSearchResults = [(SearchResultsItemSource *)selfCopy->_searchResultsItemSource shouldHideSearchResults];
 
   v26 = @"NO";
-  if (v25)
+  if (shouldHideSearchResults)
   {
     v26 = @"YES";
   }
 
   v27 = v26;
   *buf = 138544130;
-  v46 = v22;
+  v46 = selfCopy;
   v47 = 2048;
   v48 = v24;
   v49 = 2112;
-  v50 = v14;
+  v50 = sourceCopy;
   v51 = 2112;
   v52 = v27;
   _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}@] Setting %lu results for %@. Hiding Results: %@", buf, 0x2Au);
 
-  v8 = v42;
+  animateCopy = v42;
 LABEL_13:
 
-  [v14 setSearchResults:v12];
-  v28 = [(SearchPinsManager *)self searchDotPlacesItemSource];
-  v29 = [v15 copy];
+  [sourceCopy setSearchResults:resultsCopy];
+  searchDotPlacesItemSource = [(SearchPinsManager *)self searchDotPlacesItemSource];
+  v29 = [placesCopy copy];
 
-  [v28 setSearchDotPlaces:v29];
+  [searchDotPlacesItemSource setSearchDotPlaces:v29];
   if (![(SearchResultsItemSource *)self->_searchResultsItemSource shouldHideSearchResults])
   {
     goto LABEL_22;
@@ -969,49 +969,49 @@ LABEL_13:
   v30 = sub_100015F58();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
-    v31 = self;
+    selfCopy2 = self;
     v32 = objc_opt_class();
     v33 = NSStringFromClass(v32);
     if (objc_opt_respondsToSelector())
     {
-      v34 = [(SearchPinsManager *)v31 performSelector:"accessibilityIdentifier"];
+      v34 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v35 = v34;
       if (v34 && ![v34 isEqualToString:v33])
       {
-        v36 = [NSString stringWithFormat:@"%@<%p, %@>", v33, v31, v35];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v33, selfCopy2, v35];
 
         goto LABEL_20;
       }
     }
 
-    v36 = [NSString stringWithFormat:@"%@<%p>", v33, v31];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v33, selfCopy2];
 LABEL_20:
 
     *buf = 138543362;
-    v46 = v36;
+    v46 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[%{public}@] SearchResultsItemSource is hiding results but we are setting search results. So unhide them", buf, 0xCu);
   }
 
   [(SearchResultsItemSource *)self->_searchResultsItemSource setShouldHideSearchResults:0];
 LABEL_22:
-  if (v13)
+  if (resultCopy)
   {
-    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:v13 animated:v8];
+    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:resultCopy animated:animateCopy];
   }
 
-  v37 = [(SearchPinsManager *)self delegate];
+  delegate = [(SearchPinsManager *)self delegate];
   v38 = objc_opt_respondsToSelector();
 
   if (v38)
   {
-    v39 = [(SearchPinsManager *)self delegate];
-    [v39 setNeedsUserActivityUpdate];
+    delegate2 = [(SearchPinsManager *)self delegate];
+    [delegate2 setNeedsUserActivityUpdate];
   }
 
-  if (v13)
+  if (resultCopy)
   {
     v43 = @"selectedSearchResult";
-    v44 = v13;
+    v44 = resultCopy;
     v40 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
   }
 
@@ -1024,31 +1024,31 @@ LABEL_22:
   [v41 postNotificationName:@"MapsPinsDroppedForSearchResultsNotification" object:self userInfo:v40];
 }
 
-- (void)selectLabelMarkerForSearchResult:(id)a3 animated:(BOOL)a4
+- (void)selectLabelMarkerForSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SearchResultsItemSource *)self->_searchResultsItemSource keysForSearchResult:v6];
+  animatedCopy = animated;
+  resultCopy = result;
+  v7 = [(SearchResultsItemSource *)self->_searchResultsItemSource keysForSearchResult:resultCopy];
   if (![v7 count])
   {
-    v8 = [(SearchResultsItemSource *)self->_droppedPinsItemSource keysForSearchResult:v6];
+    v8 = [(SearchResultsItemSource *)self->_droppedPinsItemSource keysForSearchResult:resultCopy];
 
     v7 = v8;
   }
 
   if (![v7 count])
   {
-    v9 = [(SearchResultsItemSource *)self->_singleSearchResultItemSource keysForSearchResult:v6];
+    v9 = [(SearchResultsItemSource *)self->_singleSearchResultItemSource keysForSearchResult:resultCopy];
 
     v7 = v9;
   }
 
   if (![v7 count])
   {
-    v10 = [(RouteStartEndItemSource *)self->_routeStartEndItemSource itemMatchingLocation:v6];
-    v11 = [v10 keys];
+    v10 = [(RouteStartEndItemSource *)self->_routeStartEndItemSource itemMatchingLocation:resultCopy];
+    keys = [v10 keys];
 
-    v7 = v11;
+    v7 = keys;
   }
 
   if (![v7 count])
@@ -1061,45 +1061,45 @@ LABEL_17:
       goto LABEL_20;
     }
 
-    v16 = self;
+    selfCopy = self;
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(SearchPinsManager *)v16 performSelector:"accessibilityIdentifier"];
+      v19 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v20 = v19;
       if (v19 && ![v19 isEqualToString:v18])
       {
-        v21 = [NSString stringWithFormat:@"%@<%p, %@>", v18, v16, v20];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v18, selfCopy, v20];
 
         goto LABEL_16;
       }
     }
 
-    v21 = [NSString stringWithFormat:@"%@<%p>", v18, v16];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v18, selfCopy];
 LABEL_16:
 
     *buf = 138543618;
-    v25 = v21;
+    v25 = selfCopy;
     v26 = 2112;
-    v27 = v6;
+    v27 = resultCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%{public}@] No keys found for search result: %@", buf, 0x16u);
 
     goto LABEL_17;
   }
 
-  v12 = [v6 autocompletePerson];
+  autocompletePerson = [resultCopy autocompletePerson];
 
   WeakRetained = objc_loadWeakRetained(&self->_mapSelectionManager);
   v14 = WeakRetained;
-  if (v12)
+  if (autocompletePerson)
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100C36304;
     v23[3] = &unk_10164E358;
     v23[4] = self;
-    [WeakRetained selectLabelMarkerWithKeys:v7 animated:v4 restoreRegion:0 completion:v23];
+    [WeakRetained selectLabelMarkerWithKeys:v7 animated:animatedCopy restoreRegion:0 completion:v23];
   }
 
   else
@@ -1109,7 +1109,7 @@ LABEL_16:
     v22[2] = sub_100C36310;
     v22[3] = &unk_10164E358;
     v22[4] = self;
-    [WeakRetained selectLabelMarkerWithKeys:v7 animated:v4 completion:v22];
+    [WeakRetained selectLabelMarkerWithKeys:v7 animated:animatedCopy completion:v22];
   }
 
 LABEL_20:
@@ -1140,10 +1140,10 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  v4 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!selfCopy)
   {
-    v9 = @"<nil>";
+    selfCopy = @"<nil>";
     goto LABEL_10;
   }
 
@@ -1151,23 +1151,23 @@ LABEL_20:
   v6 = NSStringFromClass(v5);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+    v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v8 = v7;
     if (v7 && ![v7 isEqualToString:v6])
     {
-      v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
       goto LABEL_8;
     }
   }
 
-  v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
-  v10 = [(SearchPinsManagerShowSearchResultsAnimation *)v4->_showSearchResultsAnimation debugDescription];
+  v10 = [(SearchPinsManagerShowSearchResultsAnimation *)selfCopy->_showSearchResultsAnimation debugDescription];
   *buf = 138543618;
-  v17 = v9;
+  v17 = selfCopy;
   v18 = 2112;
   v19 = v10;
   _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Cancelling search result animation: %@", buf, 0x16u);
@@ -1177,14 +1177,14 @@ LABEL_11:
   showSearchResultsAnimation = self->_showSearchResultsAnimation;
   self->_showSearchResultsAnimation = 0;
 
-  v12 = [(SearchPinsManager *)self searchResultsDebugOverlay];
-  v13 = [v12 polygons];
-  v14 = [v13 count];
+  searchResultsDebugOverlay = [(SearchPinsManager *)self searchResultsDebugOverlay];
+  polygons = [searchResultsDebugOverlay polygons];
+  v14 = [polygons count];
 
   if (v14)
   {
-    v15 = [(SearchPinsManager *)self searchResultsDebugOverlay];
-    [v15 removeDrawnDebugMapRegions];
+    searchResultsDebugOverlay2 = [(SearchPinsManager *)self searchResultsDebugOverlay];
+    [searchResultsDebugOverlay2 removeDrawnDebugMapRegions];
   }
 }
 
@@ -1193,10 +1193,10 @@ LABEL_11:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -1204,23 +1204,23 @@ LABEL_11:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
-    v10 = [(SearchPinsManagerShowSearchResultsAnimation *)v4->_showSearchResultsAnimation debugDescription];
+    v10 = [(SearchPinsManagerShowSearchResultsAnimation *)selfCopy->_showSearchResultsAnimation debugDescription];
     *buf = 138543618;
-    v12 = v9;
+    v12 = selfCopy;
     v13 = 2112;
     v14 = v10;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Map view is fully drawn, proceeding with dropping pins using animation: %@", buf, 0x16u);
@@ -1229,68 +1229,68 @@ LABEL_10:
   [(SearchPinsManagerShowSearchResultsAnimation *)self->_showSearchResultsAnimation proceedWithDroppingPins:1];
 }
 
-- (void)_animateShowingSearchResults:(id)a3 selectedSearchResult:(id)a4 historyItem:(id)a5 suggestedMapRegion:(id)a6 minZoom:(id)a7 maxZoom:(id)a8 disableAdditionalViewportPadding:(BOOL)a9 completion:(id)a10
+- (void)_animateShowingSearchResults:(id)results selectedSearchResult:(id)result historyItem:(id)item suggestedMapRegion:(id)region minZoom:(id)zoom maxZoom:(id)maxZoom disableAdditionalViewportPadding:(BOOL)padding completion:(id)self0
 {
-  v16 = a3;
-  v38 = a6;
-  v17 = a10;
-  v18 = a8;
-  v19 = a7;
-  v20 = a5;
-  v21 = a4;
+  resultsCopy = results;
+  regionCopy = region;
+  completionCopy = completion;
+  maxZoomCopy = maxZoom;
+  zoomCopy = zoom;
+  itemCopy = item;
+  resultCopy = result;
   [(SearchPinsManager *)self _clearShowSearchResultsAnimation];
   v22 = sub_100015F58();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = self;
-    v37 = v17;
-    if (!v23)
+    selfCopy = self;
+    v37 = completionCopy;
+    if (!selfCopy)
     {
-      v28 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
-    v36 = v16;
+    v36 = resultsCopy;
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     if (objc_opt_respondsToSelector())
     {
-      v26 = [(SearchPinsManager *)v23 performSelector:"accessibilityIdentifier"];
+      v26 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v27 = v26;
       if (v26 && ![v26 isEqualToString:v25])
       {
-        v28 = [NSString stringWithFormat:@"%@<%p, %@>", v25, v23, v27];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v25, selfCopy, v27];
 
         goto LABEL_8;
       }
     }
 
-    v28 = [NSString stringWithFormat:@"%@<%p>", v25, v23];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v25, selfCopy];
 LABEL_8:
 
-    v16 = v36;
+    resultsCopy = v36;
 LABEL_10:
 
     *buf = 138543618;
-    v42 = v28;
+    v42 = selfCopy;
     v43 = 2048;
-    v44 = [v16 count];
+    v44 = [resultsCopy count];
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}@] Initializing animation for %lu results", buf, 0x16u);
 
-    v17 = v37;
+    completionCopy = v37;
   }
 
   v29 = [SearchPinsManagerShowSearchResultsAnimation alloc];
-  v30 = [(SearchPinsManager *)self mapCameraController];
+  mapCameraController = [(SearchPinsManager *)self mapCameraController];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100C36A3C;
   v39[3] = &unk_10164E330;
-  v31 = v17;
+  v31 = completionCopy;
   v39[4] = self;
   v40 = v31;
-  LOBYTE(v35) = a9;
-  v32 = [(SearchPinsManagerShowSearchResultsAnimation *)v29 initWithSearchResults:v16 selectedSearchResult:v21 historyItem:v20 suggestedMapRegion:v38 mapCameraController:v30 minZoom:v19 maxZoom:v18 disableAdditionalViewportPadding:v35 completion:v39];
+  LOBYTE(v35) = padding;
+  v32 = [(SearchPinsManagerShowSearchResultsAnimation *)v29 initWithSearchResults:resultsCopy selectedSearchResult:resultCopy historyItem:itemCopy suggestedMapRegion:regionCopy mapCameraController:mapCameraController minZoom:zoomCopy maxZoom:maxZoomCopy disableAdditionalViewportPadding:v35 completion:v39];
 
   showSearchResultsAnimation = self->_showSearchResultsAnimation;
   self->_showSearchResultsAnimation = v32;
@@ -1298,43 +1298,43 @@ LABEL_10:
   [(SearchPinsManagerShowSearchResultsAnimation *)self->_showSearchResultsAnimation start];
   if (GEOConfigGetBOOL())
   {
-    v34 = [(SearchPinsManager *)self searchResultsDebugOverlay];
-    [v34 drawDebugMapRegionsWithSearchResults:v16 suggestedMapRegion:v38];
+    searchResultsDebugOverlay = [(SearchPinsManager *)self searchResultsDebugOverlay];
+    [searchResultsDebugOverlay drawDebugMapRegionsWithSearchResults:resultsCopy suggestedMapRegion:regionCopy];
   }
 }
 
-- (void)setSearchPinsFromSearchInfo:(id)a3 scrollToResults:(BOOL)a4 displayPlaceCardForResult:(id)a5 historyItem:(id)a6 animated:(BOOL)a7 itemSource:(id)a8 completion:(id)a9
+- (void)setSearchPinsFromSearchInfo:(id)info scrollToResults:(BOOL)results displayPlaceCardForResult:(id)result historyItem:(id)item animated:(BOOL)animated itemSource:(id)source completion:(id)completion
 {
-  v78 = a4;
-  v13 = a3;
-  v14 = a5;
-  v81 = a6;
-  v15 = a8;
-  v82 = a9;
-  if (self->_startPin && [(NSArray *)self->_endPins count]&& self->_searchResultsItemSource == v15)
+  resultsCopy = results;
+  infoCopy = info;
+  resultCopy = result;
+  itemCopy = item;
+  sourceCopy = source;
+  completionCopy = completion;
+  if (self->_startPin && [(NSArray *)self->_endPins count]&& self->_searchResultsItemSource == sourceCopy)
   {
-    [(SearchResultsItemSource *)v15 setShouldHideSearchResults:0];
+    [(SearchResultsItemSource *)sourceCopy setShouldHideSearchResults:0];
   }
 
-  if (self->_searchResultsItemSource == v15)
+  if (self->_searchResultsItemSource == sourceCopy)
   {
     [(SearchPinsManager *)self clearSearchPins];
   }
 
-  v16 = [(SearchPinsManager *)self delegate];
-  [v16 setSuggestedApplicationState:0];
+  delegate = [(SearchPinsManager *)self delegate];
+  [delegate setSuggestedApplicationState:0];
 
-  v17 = [(SearchPinsManager *)self mapView];
-  [v17 setUserTrackingMode:0 animated:0];
+  mapView = [(SearchPinsManager *)self mapView];
+  [mapView setUserTrackingMode:0 animated:0];
 
-  if ([v13 mapDisplayType] == 1)
+  if ([infoCopy mapDisplayType] == 1)
   {
-    v18 = [(SearchPinsManager *)self mapView];
-    v19 = [v18 preferredConfiguration];
+    mapView2 = [(SearchPinsManager *)self mapView];
+    preferredConfiguration = [mapView2 preferredConfiguration];
 
-    if ([v19 conformsToProtocol:&OBJC_PROTOCOL___MKMapConfigurationHiking])
+    if ([preferredConfiguration conformsToProtocol:&OBJC_PROTOCOL___MKMapConfigurationHiking])
     {
-      v20 = v19;
+      v20 = preferredConfiguration;
     }
 
     else
@@ -1347,83 +1347,83 @@ LABEL_10:
     [v21 setShowsTopographicFeatures:1];
   }
 
-  v22 = [(SearchPinsManager *)self mapView];
-  [v22 _selectAnnotation:0 animated:0];
+  mapView3 = [(SearchPinsManager *)self mapView];
+  [mapView3 _selectAnnotation:0 animated:0];
 
   self->_hasAutoSelectedResult = 1;
-  v83 = [v13 selectedResult];
-  v84 = [v13 mapRegion];
+  selectedResult = [infoCopy selectedResult];
+  mapRegion = [infoCopy mapRegion];
   v23 = sub_100015F58();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = self;
+    selfCopy = self;
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     if (objc_opt_respondsToSelector())
     {
-      v27 = v15;
-      v28 = [(SearchPinsManager *)v24 performSelector:"accessibilityIdentifier"];
+      v27 = sourceCopy;
+      v28 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v29 = v28;
       if (v28 && ![v28 isEqualToString:v26])
       {
-        v30 = v14;
-        v31 = [NSString stringWithFormat:@"%@<%p, %@>", v26, v24, v29];
+        v30 = resultCopy;
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v26, selfCopy, v29];
 
-        v15 = v27;
+        sourceCopy = v27;
         goto LABEL_18;
       }
 
-      v15 = v27;
+      sourceCopy = v27;
     }
 
-    v30 = v14;
-    v31 = [NSString stringWithFormat:@"%@<%p>", v26, v24];
+    v30 = resultCopy;
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v26, selfCopy];
 LABEL_18:
 
     *buf = 138543874;
-    v98 = v31;
+    v98 = selfCopy;
     v99 = 2112;
-    v100 = v13;
+    v100 = infoCopy;
     v101 = 2112;
-    v102 = v84;
+    v102 = mapRegion;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}@] Server provided map region for searchInfo: %@ is %@", buf, 0x20u);
 
-    v14 = v30;
+    resultCopy = v30;
   }
 
-  v32 = [v13 results];
-  if (self->_singleSearchResultItemSource == v15)
+  results = [infoCopy results];
+  if (self->_singleSearchResultItemSource == sourceCopy)
   {
-    v36 = [(SearchPinsManager *)self allSearchResults];
-    v37 = [v32 arrayByAddingObjectsFromArray:v36];
+    allSearchResults = [(SearchPinsManager *)self allSearchResults];
+    v37 = [results arrayByAddingObjectsFromArray:allSearchResults];
 
-    v34 = [(SearchResultsItemSource *)self->_collectionPinsItemSource searchResults];
-    v35 = [v37 arrayByAddingObjectsFromArray:v34];
-    v32 = v37;
+    searchResults = [(SearchResultsItemSource *)self->_collectionPinsItemSource searchResults];
+    v35 = [v37 arrayByAddingObjectsFromArray:searchResults];
+    results = v37;
   }
 
   else
   {
     collectionPinsItemSource = self->_collectionPinsItemSource;
-    if (collectionPinsItemSource == v15)
+    if (collectionPinsItemSource == sourceCopy)
     {
-      v38 = [(SearchPinsManager *)self allSearchResults];
-      v35 = [v32 arrayByAddingObjectsFromArray:v38];
+      allSearchResults2 = [(SearchPinsManager *)self allSearchResults];
+      v35 = [results arrayByAddingObjectsFromArray:allSearchResults2];
 
-      if (!v14)
+      if (!resultCopy)
       {
         goto LABEL_26;
       }
 
-      v34 = [v14 mapItem];
-      [v34 _displayMapRegion];
-      v84 = v32 = v84;
+      searchResults = [resultCopy mapItem];
+      [searchResults _displayMapRegion];
+      mapRegion = results = mapRegion;
     }
 
     else
     {
-      v34 = [(SearchResultsItemSource *)collectionPinsItemSource searchResults];
-      v35 = [v32 arrayByAddingObjectsFromArray:v34];
+      searchResults = [(SearchResultsItemSource *)collectionPinsItemSource searchResults];
+      v35 = [results arrayByAddingObjectsFromArray:searchResults];
     }
   }
 
@@ -1434,190 +1434,190 @@ LABEL_26:
     goto LABEL_33;
   }
 
-  v40 = self;
+  selfCopy2 = self;
   v41 = objc_opt_class();
   v42 = NSStringFromClass(v41);
   if (objc_opt_respondsToSelector())
   {
-    v43 = v14;
-    v44 = [(SearchPinsManager *)v40 performSelector:"accessibilityIdentifier"];
+    v43 = resultCopy;
+    v44 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
     v45 = v44;
     if (v44 && ![v44 isEqualToString:v42])
     {
-      v46 = v15;
-      v47 = [NSString stringWithFormat:@"%@<%p, %@>", v42, v40, v45];
+      v46 = sourceCopy;
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v42, selfCopy2, v45];
 
-      v14 = v43;
+      resultCopy = v43;
       goto LABEL_32;
     }
 
-    v14 = v43;
+    resultCopy = v43;
   }
 
-  v46 = v15;
-  v47 = [NSString stringWithFormat:@"%@<%p>", v42, v40];
+  v46 = sourceCopy;
+  selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v42, selfCopy2];
 LABEL_32:
 
   v48 = [v35 count];
   *buf = 138543618;
-  v98 = v47;
+  v98 = selfCopy2;
   v99 = 2048;
   v100 = v48;
   _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "[%{public}@] Setting search results with determining Region:%lu", buf, 0x16u);
 
-  v15 = v46;
+  sourceCopy = v46;
 LABEL_33:
 
-  v49 = [(SearchPinsManager *)self venuesManager];
+  venuesManager = [(SearchPinsManager *)self venuesManager];
   v95 = 0;
   v96 = 0;
   v94 = v35;
-  v50 = [v13 searchFieldItem];
-  [v49 getMinZoom:&v96 maxZoom:&v95 resultsForDeterminingRegion:&v94 forDisplayingResults:v35 fromSearch:v50];
+  searchFieldItem = [infoCopy searchFieldItem];
+  [venuesManager getMinZoom:&v96 maxZoom:&v95 resultsForDeterminingRegion:&v94 forDisplayingResults:v35 fromSearch:searchFieldItem];
   v51 = v96;
   v80 = v95;
   v52 = v94;
 
   if ([v52 count])
   {
-    v53 = v83;
-    if (v83 && ([v52 containsObject:v83] & 1) == 0)
+    v53 = selectedResult;
+    if (selectedResult && ([v52 containsObject:selectedResult] & 1) == 0)
     {
 
-      v63 = [v13 results];
+      results2 = [infoCopy results];
 
       v51 = 0;
-      v52 = v63;
+      v52 = results2;
     }
 
     else
     {
       v54 = [v52 count];
-      v55 = [v13 results];
-      v56 = [v55 count];
+      results3 = [infoCopy results];
+      v56 = [results3 count];
 
       if (v54 < v56)
       {
-        v57 = v84;
-        v84 = 0;
+        v57 = mapRegion;
+        mapRegion = 0;
         goto LABEL_39;
       }
 
-      v53 = v83;
-      if (!v83)
+      v53 = selectedResult;
+      if (!selectedResult)
       {
         goto LABEL_42;
       }
     }
 
 LABEL_45:
-    v64 = [(SearchPinsManager *)self mapSelectionManager];
-    [v64 suspendUpdates];
+    mapSelectionManager = [(SearchPinsManager *)self mapSelectionManager];
+    [mapSelectionManager suspendUpdates];
 
     v65 = sub_100015F58();
     if (!os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
     {
 LABEL_52:
 
-      v74 = [v13 disableAdditionalViewportPadding];
+      disableAdditionalViewportPadding = [infoCopy disableAdditionalViewportPadding];
       v90[0] = _NSConcreteStackBlock;
       v90[1] = 3221225472;
       v90[2] = sub_100C38988;
       v90[3] = &unk_10164E2E0;
       v90[4] = self;
-      v91 = v13;
+      v91 = infoCopy;
       v92 = v53;
-      v93 = v15;
-      LOBYTE(v77) = v74;
+      v93 = sourceCopy;
+      LOBYTE(v77) = disableAdditionalViewportPadding;
       v61 = v80;
-      v60 = v81;
-      v62 = v84;
-      [(SearchPinsManager *)self _animateShowingSearchResults:v52 selectedSearchResult:v92 historyItem:v81 suggestedMapRegion:v84 minZoom:v51 maxZoom:v80 disableAdditionalViewportPadding:v77 completion:v90];
+      v60 = itemCopy;
+      v62 = mapRegion;
+      [(SearchPinsManager *)self _animateShowingSearchResults:v52 selectedSearchResult:v92 historyItem:itemCopy suggestedMapRegion:mapRegion minZoom:v51 maxZoom:v80 disableAdditionalViewportPadding:v77 completion:v90];
 
       goto LABEL_53;
     }
 
-    v79 = v15;
-    v66 = self;
+    v79 = sourceCopy;
+    selfCopy3 = self;
     v67 = objc_opt_class();
     v68 = NSStringFromClass(v67);
     if (objc_opt_respondsToSelector())
     {
-      v69 = [(SearchPinsManager *)v66 performSelector:"accessibilityIdentifier"];
+      v69 = [(SearchPinsManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v70 = v69;
       if (v69 && ![v69 isEqualToString:v68])
       {
-        v71 = v14;
-        v72 = [NSString stringWithFormat:@"%@<%p, %@>", v68, v66, v70];
+        v71 = resultCopy;
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v68, selfCopy3, v70];
 
         goto LABEL_51;
       }
     }
 
-    v71 = v14;
-    v72 = [NSString stringWithFormat:@"%@<%p>", v68, v66];
+    v71 = resultCopy;
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v68, selfCopy3];
 LABEL_51:
 
     v73 = [v52 count];
     *buf = 138543618;
-    v98 = v72;
+    v98 = selfCopy3;
     v99 = 2048;
     v100 = v73;
     _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, "[%{public}@] Animate showing search results. Count: %lu", buf, 0x16u);
 
-    v14 = v71;
-    v15 = v79;
-    v53 = v83;
+    resultCopy = v71;
+    sourceCopy = v79;
+    v53 = selectedResult;
     goto LABEL_52;
   }
 
-  v58 = [v13 results];
+  results4 = [infoCopy results];
   v51 = 0;
   v57 = v52;
-  v52 = v58;
+  v52 = results4;
 LABEL_39:
-  v53 = v83;
+  v53 = selectedResult;
 
-  if (v83)
+  if (selectedResult)
   {
     goto LABEL_45;
   }
 
 LABEL_42:
-  if (v78)
+  if (resultsCopy)
   {
-    v59 = [(SearchPinsManager *)self mapSelectionManager];
-    [v59 suspendUpdates];
+    mapSelectionManager2 = [(SearchPinsManager *)self mapSelectionManager];
+    [mapSelectionManager2 suspendUpdates];
 
-    LOBYTE(v59) = [v13 disableAdditionalViewportPadding];
+    LOBYTE(mapSelectionManager2) = [infoCopy disableAdditionalViewportPadding];
     v85[0] = _NSConcreteStackBlock;
     v85[1] = 3221225472;
     v85[2] = sub_100C38A7C;
     v85[3] = &unk_10164E308;
     v85[4] = self;
-    v86 = v13;
-    v87 = v14;
-    v88 = v15;
-    v89 = v82;
-    LOBYTE(v77) = v59;
+    v86 = infoCopy;
+    v87 = resultCopy;
+    v88 = sourceCopy;
+    v89 = completionCopy;
+    LOBYTE(v77) = mapSelectionManager2;
     v61 = v80;
-    v60 = v81;
-    v62 = v84;
-    [(SearchPinsManager *)self _animateShowingSearchResults:v52 selectedSearchResult:v87 historyItem:v81 suggestedMapRegion:v84 minZoom:v51 maxZoom:v80 disableAdditionalViewportPadding:v77 completion:v85];
+    v60 = itemCopy;
+    v62 = mapRegion;
+    [(SearchPinsManager *)self _animateShowingSearchResults:v52 selectedSearchResult:v87 historyItem:itemCopy suggestedMapRegion:mapRegion minZoom:v51 maxZoom:v80 disableAdditionalViewportPadding:v77 completion:v85];
 
-    v53 = v83;
+    v53 = selectedResult;
   }
 
   else
   {
-    v75 = [v13 results];
-    v76 = [v13 searchDotPlaces];
-    [(SearchPinsManager *)self dropPinsForSearchResults:v75 searchDotPlaces:v76 selectedSearchResult:v14 animate:1 itemSource:v15];
+    results5 = [infoCopy results];
+    searchDotPlaces = [infoCopy searchDotPlaces];
+    [(SearchPinsManager *)self dropPinsForSearchResults:results5 searchDotPlaces:searchDotPlaces selectedSearchResult:resultCopy animate:1 itemSource:sourceCopy];
 
-    v53 = v83;
-    v62 = v84;
+    v53 = selectedResult;
+    v62 = mapRegion;
     v61 = v80;
-    v60 = v81;
+    v60 = itemCopy;
   }
 
 LABEL_53:
@@ -1625,16 +1625,16 @@ LABEL_53:
 
 - (BOOL)_isShowingDirectionsPins
 {
-  v3 = [(SearchPinsManager *)self startPin];
-  if (v3)
+  startPin = [(SearchPinsManager *)self startPin];
+  if (startPin)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SearchPinsManager *)self endPin];
-    v4 = v5 != 0;
+    endPin = [(SearchPinsManager *)self endPin];
+    v4 = endPin != 0;
   }
 
   return v4;
@@ -1645,10 +1645,10 @@ LABEL_53:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -1656,65 +1656,65 @@ LABEL_53:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v37 = v9;
+    v37 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Will clear collection pins.", buf, 0xCu);
   }
 
-  v10 = [(SearchPinsManager *)self delegate];
-  [v10 setSuggestedApplicationState:0];
+  delegate = [(SearchPinsManager *)self delegate];
+  [delegate setSuggestedApplicationState:0];
 
   if (self->_selectedLabelMarker)
   {
-    v11 = [(SearchPinsManager *)self mapView];
-    [v11 _deselectLabelMarkerAnimated:0];
+    mapView = [(SearchPinsManager *)self mapView];
+    [mapView _deselectLabelMarkerAnimated:0];
   }
 
-  v12 = [(SearchResultsItemSource *)self->_collectionPinsItemSource searchResults];
+  searchResults = [(SearchResultsItemSource *)self->_collectionPinsItemSource searchResults];
 
   v13 = sub_100015F58();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-  if (!v12)
+  if (!searchResults)
   {
     if (!v14)
     {
       goto LABEL_38;
     }
 
-    v31 = self;
+    selfCopy2 = self;
     v32 = objc_opt_class();
     v33 = NSStringFromClass(v32);
     if (objc_opt_respondsToSelector())
     {
-      v34 = [(SearchPinsManager *)v31 performSelector:"accessibilityIdentifier"];
+      v34 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v35 = v34;
       if (v34 && ![v34 isEqualToString:v33])
       {
-        v29 = [NSString stringWithFormat:@"%@<%p, %@>", v33, v31, v35];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v33, selfCopy2, v35];
 
         goto LABEL_36;
       }
     }
 
-    v29 = [NSString stringWithFormat:@"%@<%p>", v33, v31];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v33, selfCopy2];
 LABEL_36:
 
     *buf = 138543362;
-    v37 = v29;
+    v37 = selfCopy2;
     v30 = "[%{public}@] No collections pins to clear, returning.";
     goto LABEL_37;
   }
@@ -1724,62 +1724,62 @@ LABEL_36:
     goto LABEL_21;
   }
 
-  v15 = self;
+  selfCopy3 = self;
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
   if (objc_opt_respondsToSelector())
   {
-    v18 = [(SearchPinsManager *)v15 performSelector:"accessibilityIdentifier"];
+    v18 = [(SearchPinsManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
     v19 = v18;
     if (v18 && ![v18 isEqualToString:v17])
     {
-      v20 = [NSString stringWithFormat:@"%@<%p, %@>", v17, v15, v19];
+      selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v17, selfCopy3, v19];
 
       goto LABEL_20;
     }
   }
 
-  v20 = [NSString stringWithFormat:@"%@<%p>", v17, v15];
+  selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v17, selfCopy3];
 LABEL_20:
 
   *buf = 138543362;
-  v37 = v20;
+  v37 = selfCopy3;
   _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}@] CollectionPinsItemSource is clearing search results.", buf, 0xCu);
 
 LABEL_21:
   [(SearchResultsItemSource *)self->_collectionPinsItemSource setSearchResults:&__NSArray0__struct];
-  v21 = [(SearchPinsManager *)self delegate];
+  delegate2 = [(SearchPinsManager *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(SearchPinsManager *)self delegate];
-    [v23 setNeedsUserActivityUpdate];
+    delegate3 = [(SearchPinsManager *)self delegate];
+    [delegate3 setNeedsUserActivityUpdate];
   }
 
   v13 = sub_100015F58();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v24 = self;
+    selfCopy4 = self;
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
     if (objc_opt_respondsToSelector())
     {
-      v27 = [(SearchPinsManager *)v24 performSelector:"accessibilityIdentifier"];
+      v27 = [(SearchPinsManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v28 = v27;
       if (v27 && ![v27 isEqualToString:v26])
       {
-        v29 = [NSString stringWithFormat:@"%@<%p, %@>", v26, v24, v28];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v26, selfCopy4, v28];
 
         goto LABEL_29;
       }
     }
 
-    v29 = [NSString stringWithFormat:@"%@<%p>", v26, v24];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v26, selfCopy4];
 LABEL_29:
 
     *buf = 138543362;
-    v37 = v29;
+    v37 = selfCopy2;
     v30 = "[%{public}@] Clearing collection pins completed";
 LABEL_37:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, v30, buf, 0xCu);
@@ -1793,10 +1793,10 @@ LABEL_38:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -1804,27 +1804,27 @@ LABEL_38:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v41 = v9;
+    v41 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Will clear single result pins.", buf, 0xCu);
   }
 
-  v10 = [(SearchResultsItemSource *)self->_singleSearchResultItemSource searchResults];
-  v11 = [v10 count];
+  searchResults = [(SearchResultsItemSource *)self->_singleSearchResultItemSource searchResults];
+  v11 = [searchResults count];
 
   v12 = sub_100015F58();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
@@ -1835,26 +1835,26 @@ LABEL_10:
       goto LABEL_36;
     }
 
-    v35 = self;
+    selfCopy2 = self;
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     if (objc_opt_respondsToSelector())
     {
-      v38 = [(SearchPinsManager *)v35 performSelector:"accessibilityIdentifier"];
+      v38 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v39 = v38;
       if (v38 && ![v38 isEqualToString:v37])
       {
-        v33 = [NSString stringWithFormat:@"%@<%p, %@>", v37, v35, v39];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v37, selfCopy2, v39];
 
         goto LABEL_34;
       }
     }
 
-    v33 = [NSString stringWithFormat:@"%@<%p>", v37, v35];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v37, selfCopy2];
 LABEL_34:
 
     *buf = 138543362;
-    v41 = v33;
+    v41 = selfCopy2;
     v34 = "[%{public}@] No single result pins to clear, returning.";
     goto LABEL_35;
   }
@@ -1864,72 +1864,72 @@ LABEL_34:
     goto LABEL_19;
   }
 
-  v14 = self;
+  selfCopy3 = self;
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   if (objc_opt_respondsToSelector())
   {
-    v17 = [(SearchPinsManager *)v14 performSelector:"accessibilityIdentifier"];
+    v17 = [(SearchPinsManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
     v18 = v17;
     if (v17 && ![v17 isEqualToString:v16])
     {
-      v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+      selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy3, v18];
 
       goto LABEL_18;
     }
   }
 
-  v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+  selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy3];
 LABEL_18:
 
   *buf = 138543362;
-  v41 = v19;
+  v41 = selfCopy3;
   _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}@] _singleSearchResultItemSource is clearing search results.", buf, 0xCu);
 
 LABEL_19:
   [(SearchResultsItemSource *)self->_singleSearchResultItemSource setSearchResults:&__NSArray0__struct];
   searchResultsItemSource = self->_searchResultsItemSource;
-  v21 = [(SearchPinsManager *)self searchResultsItemSource];
-  v22 = [v21 searchResults];
-  [(SearchResultsItemSource *)searchResultsItemSource setSearchResults:v22];
+  searchResultsItemSource = [(SearchPinsManager *)self searchResultsItemSource];
+  searchResults2 = [searchResultsItemSource searchResults];
+  [(SearchResultsItemSource *)searchResultsItemSource setSearchResults:searchResults2];
 
   searchDotPlacesItemSource = self->_searchDotPlacesItemSource;
-  v24 = [(SearchPinsManager *)self searchDotPlacesItemSource];
-  v25 = [v24 searchDotPlaces];
-  [(SearchDotPlacesItemSource *)searchDotPlacesItemSource setSearchDotPlaces:v25];
+  searchDotPlacesItemSource = [(SearchPinsManager *)self searchDotPlacesItemSource];
+  searchDotPlaces = [searchDotPlacesItemSource searchDotPlaces];
+  [(SearchDotPlacesItemSource *)searchDotPlacesItemSource setSearchDotPlaces:searchDotPlaces];
 
-  v26 = [(SearchPinsManager *)self delegate];
-  LOBYTE(v24) = objc_opt_respondsToSelector();
+  delegate = [(SearchPinsManager *)self delegate];
+  LOBYTE(searchDotPlacesItemSource) = objc_opt_respondsToSelector();
 
-  if (v24)
+  if (searchDotPlacesItemSource)
   {
-    v27 = [(SearchPinsManager *)self delegate];
-    [v27 setNeedsUserActivityUpdate];
+    delegate2 = [(SearchPinsManager *)self delegate];
+    [delegate2 setNeedsUserActivityUpdate];
   }
 
   v12 = sub_100015F58();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v28 = self;
+    selfCopy4 = self;
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
     if (objc_opt_respondsToSelector())
     {
-      v31 = [(SearchPinsManager *)v28 performSelector:"accessibilityIdentifier"];
+      v31 = [(SearchPinsManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v32 = v31;
       if (v31 && ![v31 isEqualToString:v30])
       {
-        v33 = [NSString stringWithFormat:@"%@<%p, %@>", v30, v28, v32];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v30, selfCopy4, v32];
 
         goto LABEL_27;
       }
     }
 
-    v33 = [NSString stringWithFormat:@"%@<%p>", v30, v28];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v30, selfCopy4];
 LABEL_27:
 
     *buf = 138543362;
-    v41 = v33;
+    v41 = selfCopy2;
     v34 = "[%{public}@] Clearing single result pins completed";
 LABEL_35:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v34, buf, 0xCu);
@@ -1940,9 +1940,9 @@ LABEL_36:
 
 - (void)clearDroppedPin
 {
-  v3 = [(SearchPinsManager *)self customPOIsController];
+  customPOIsController = [(SearchPinsManager *)self customPOIsController];
 
-  if (v3)
+  if (customPOIsController)
   {
     v4 = sub_100015F58();
     if (!os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1953,10 +1953,10 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v5 = self;
-    if (!v5)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v10 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -1964,22 +1964,22 @@ LABEL_12:
     v7 = NSStringFromClass(v6);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(SearchPinsManager *)v5 performSelector:"accessibilityIdentifier"];
+      v8 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v9 = v8;
       if (v8 && ![v8 isEqualToString:v7])
       {
-        v10 = [NSString stringWithFormat:@"%@<%p, %@>", v7, v5, v9];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v7, selfCopy, v9];
 
         goto LABEL_9;
       }
     }
 
-    v10 = [NSString stringWithFormat:@"%@<%p>", v7, v5];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v7, selfCopy];
 LABEL_9:
 
 LABEL_11:
     *buf = 138543362;
-    v24 = v10;
+    v24 = selfCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}@] Clearing DroppedPinsItemSource.", buf, 0xCu);
 
     goto LABEL_12;
@@ -1991,39 +1991,39 @@ LABEL_13:
     return;
   }
 
-  v11 = [(SearchPinsManager *)self mapSelectionManager];
-  v12 = [v11 customLabelMarker];
-  v13 = [v12 searchResult];
+  mapSelectionManager = [(SearchPinsManager *)self mapSelectionManager];
+  customLabelMarker = [mapSelectionManager customLabelMarker];
+  searchResult = [customLabelMarker searchResult];
 
-  if (v13 && [v13 type] == 3)
+  if (searchResult && [searchResult type] == 3)
   {
-    v14 = [(SearchPinsManager *)self mapSelectionManager];
-    [v14 clearSelection];
+    mapSelectionManager2 = [(SearchPinsManager *)self mapSelectionManager];
+    [mapSelectionManager2 clearSelection];
   }
 
   v15 = sub_100015F58();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = self;
+    selfCopy2 = self;
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     if (objc_opt_respondsToSelector())
     {
-      v19 = [(SearchPinsManager *)v16 performSelector:"accessibilityIdentifier"];
+      v19 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v20 = v19;
       if (v19 && ![v19 isEqualToString:v18])
       {
-        v21 = [NSString stringWithFormat:@"%@<%p, %@>", v18, v16, v20];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v18, selfCopy2, v20];
 
         goto LABEL_23;
       }
     }
 
-    v21 = [NSString stringWithFormat:@"%@<%p>", v18, v16];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v18, selfCopy2];
 LABEL_23:
 
     *buf = 138543362;
-    v24 = v21;
+    v24 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}@] Setting dropped pin to nil.", buf, 0xCu);
   }
 
@@ -2036,10 +2036,10 @@ LABEL_23:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -2047,33 +2047,33 @@ LABEL_23:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v41 = v9;
+    v41 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Will clear search pins.", buf, 0xCu);
   }
 
   [(SearchPinsManager *)self _clearShowSearchResultsAnimation];
-  v10 = [(SearchPinsManager *)self delegate];
-  [v10 setSuggestedApplicationState:0];
+  delegate = [(SearchPinsManager *)self delegate];
+  [delegate setSuggestedApplicationState:0];
 
   if (self->_selectedLabelMarker)
   {
-    v11 = [(SearchPinsManager *)self mapView];
-    [v11 _deselectLabelMarkerAnimated:0];
+    mapView = [(SearchPinsManager *)self mapView];
+    [mapView _deselectLabelMarkerAnimated:0];
   }
 
   if (!self->_startPin && ![(NSArray *)self->_endPins count])
@@ -2083,12 +2083,12 @@ LABEL_10:
     {
 LABEL_22:
 
-      v19 = [(SearchPinsManager *)self mapView];
-      v20 = [v19 preferredConfiguration];
+      mapView2 = [(SearchPinsManager *)self mapView];
+      preferredConfiguration = [mapView2 preferredConfiguration];
 
-      if ([v20 conformsToProtocol:&OBJC_PROTOCOL___MKMapConfigurationHiking])
+      if ([preferredConfiguration conformsToProtocol:&OBJC_PROTOCOL___MKMapConfigurationHiking])
       {
-        v21 = v20;
+        v21 = preferredConfiguration;
       }
 
       else
@@ -2102,26 +2102,26 @@ LABEL_22:
       goto LABEL_26;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(SearchPinsManager *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy2, v17];
 
         goto LABEL_21;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy2];
 LABEL_21:
 
     *buf = 138543362;
-    v41 = v18;
+    v41 = selfCopy2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}@] Clearing the topographic map", buf, 0xCu);
 
     goto LABEL_22;
@@ -2134,63 +2134,63 @@ LABEL_26:
     goto LABEL_33;
   }
 
-  v24 = self;
+  selfCopy3 = self;
   v25 = objc_opt_class();
   v26 = NSStringFromClass(v25);
   if (objc_opt_respondsToSelector())
   {
-    v27 = [(SearchPinsManager *)v24 performSelector:"accessibilityIdentifier"];
+    v27 = [(SearchPinsManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
     v28 = v27;
     if (v27 && ![v27 isEqualToString:v26])
     {
-      v29 = [NSString stringWithFormat:@"%@<%p, %@>", v26, v24, v28];
+      selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v26, selfCopy3, v28];
 
       goto LABEL_32;
     }
   }
 
-  v29 = [NSString stringWithFormat:@"%@<%p>", v26, v24];
+  selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v26, selfCopy3];
 LABEL_32:
 
   *buf = 138543362;
-  v41 = v29;
+  v41 = selfCopy3;
   _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}@] SearchResultsItemSource is clearing search results.", buf, 0xCu);
 
 LABEL_33:
   [(SearchResultsItemSource *)self->_searchResultsItemSource setSearchResults:&__NSArray0__struct];
   [(SearchDotPlacesItemSource *)self->_searchDotPlacesItemSource setSearchDotPlaces:&__NSArray0__struct];
-  v30 = [(SearchPinsManager *)self delegate];
+  delegate2 = [(SearchPinsManager *)self delegate];
   v31 = objc_opt_respondsToSelector();
 
   if (v31)
   {
-    v32 = [(SearchPinsManager *)self delegate];
-    [v32 setNeedsUserActivityUpdate];
+    delegate3 = [(SearchPinsManager *)self delegate];
+    [delegate3 setNeedsUserActivityUpdate];
   }
 
   v33 = sub_100015F58();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
-    v34 = self;
+    selfCopy4 = self;
     v35 = objc_opt_class();
     v36 = NSStringFromClass(v35);
     if (objc_opt_respondsToSelector())
     {
-      v37 = [(SearchPinsManager *)v34 performSelector:"accessibilityIdentifier"];
+      v37 = [(SearchPinsManager *)selfCopy4 performSelector:"accessibilityIdentifier"];
       v38 = v37;
       if (v37 && ![v37 isEqualToString:v36])
       {
-        v39 = [NSString stringWithFormat:@"%@<%p, %@>", v36, v34, v38];
+        selfCopy4 = [NSString stringWithFormat:@"%@<%p, %@>", v36, selfCopy4, v38];
 
         goto LABEL_41;
       }
     }
 
-    v39 = [NSString stringWithFormat:@"%@<%p>", v36, v34];
+    selfCopy4 = [NSString stringWithFormat:@"%@<%p>", v36, selfCopy4];
 LABEL_41:
 
     *buf = 138543362;
-    v41 = v39;
+    v41 = selfCopy4;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "[%{public}@] Clearing search pins completed", buf, 0xCu);
   }
 }
@@ -2200,10 +2200,10 @@ LABEL_41:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -2211,35 +2211,35 @@ LABEL_41:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v14 = v9;
+    v14 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Clearing directions pins.", buf, 0xCu);
   }
 
   [(SearchPinsManager *)self _clearStartPin];
   [(SearchPinsManager *)self _clearEndPins];
-  v10 = [(SearchPinsManager *)self routeStartEndItemSource];
-  [v10 clearStartAndEndLocations];
+  routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+  [routeStartEndItemSource clearStartAndEndLocations];
 
-  v11 = [(SearchPinsManager *)self searchResultsItemSource];
-  [v11 setShouldHideSearchResults:0];
+  searchResultsItemSource = [(SearchPinsManager *)self searchResultsItemSource];
+  [searchResultsItemSource setShouldHideSearchResults:0];
 
-  v12 = [(SearchPinsManager *)self searchDotPlacesItemSource];
-  [v12 setShouldHideSearchDotPlaces:0];
+  searchDotPlacesItemSource = [(SearchPinsManager *)self searchDotPlacesItemSource];
+  [searchDotPlacesItemSource setShouldHideSearchDotPlaces:0];
 
   [(SearchPinsManager *)self _updateDroppedPinVisibility];
 }
@@ -2254,26 +2254,26 @@ LABEL_10:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v25 = v9;
+    v25 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Clearing end pins", buf, 0xCu);
   }
 
@@ -2336,26 +2336,26 @@ LABEL_8:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v16 = v9;
+    v16 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Clearing start pin", buf, 0xCu);
   }
 
@@ -2385,65 +2385,65 @@ LABEL_8:
   [(SearchPinsManager *)self _setStartPOIShape:0];
 }
 
-- (void)setDisableEndPins:(BOOL)a3
+- (void)setDisableEndPins:(BOOL)pins
 {
-  v3 = a3;
-  v6 = [(SearchPinsManager *)self routeStartEndItemSource];
-  v4 = [v6 visibilityMask] & 0xFFFFFFFFFFFFFFF9;
+  pinsCopy = pins;
+  routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+  v4 = [routeStartEndItemSource visibilityMask] & 0xFFFFFFFFFFFFFFF9;
   v5 = 6;
-  if (v3)
+  if (pinsCopy)
   {
     v5 = 0;
   }
 
-  [v6 setVisibilityMask:v4 | v5];
+  [routeStartEndItemSource setVisibilityMask:v4 | v5];
 }
 
 - (BOOL)disableEndPins
 {
-  v2 = [(SearchPinsManager *)self routeStartEndItemSource];
-  v3 = ([v2 visibilityMask] & 4) == 0;
+  routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+  v3 = ([routeStartEndItemSource visibilityMask] & 4) == 0;
 
   return v3;
 }
 
-- (void)setDisableStartPin:(BOOL)a3
+- (void)setDisableStartPin:(BOOL)pin
 {
-  v3 = a3;
-  v4 = [(SearchPinsManager *)self routeStartEndItemSource];
-  [v4 setVisibilityMask:{objc_msgSend(v4, "visibilityMask") & 0xFFFFFFFFFFFFFFFELL | !v3}];
+  pinCopy = pin;
+  routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+  [routeStartEndItemSource setVisibilityMask:{objc_msgSend(routeStartEndItemSource, "visibilityMask") & 0xFFFFFFFFFFFFFFFELL | !pinCopy}];
 }
 
 - (BOOL)disableStartPin
 {
-  v2 = [(SearchPinsManager *)self routeStartEndItemSource];
-  v3 = ([v2 visibilityMask] & 1) == 0;
+  routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+  v3 = ([routeStartEndItemSource visibilityMask] & 1) == 0;
 
   return v3;
 }
 
-- (BOOL)canSelectPin:(id)a3
+- (BOOL)canSelectPin:(id)pin
 {
-  v4 = a3;
-  v5 = [(SearchPinsManager *)self allSearchResults];
-  v6 = [v5 _maps_containsSearchResultEqualToResult:v4 forPurpose:5];
+  pinCopy = pin;
+  allSearchResults = [(SearchPinsManager *)self allSearchResults];
+  v6 = [allSearchResults _maps_containsSearchResultEqualToResult:pinCopy forPurpose:5];
 
-  v7 = [(SearchResultsItemSource *)self->_droppedPinsItemSource searchResults];
-  v8 = [v7 _maps_containsSearchResultEqualToResult:v4 forPurpose:5];
+  searchResults = [(SearchResultsItemSource *)self->_droppedPinsItemSource searchResults];
+  v8 = [searchResults _maps_containsSearchResultEqualToResult:pinCopy forPurpose:5];
 
-  v9 = [(SearchResultsItemSource *)self->_singleSearchResultItemSource searchResults];
-  LOBYTE(v7) = [v9 _maps_containsSearchResultEqualToResult:v4 forPurpose:5];
+  searchResults2 = [(SearchResultsItemSource *)self->_singleSearchResultItemSource searchResults];
+  LOBYTE(searchResults) = [searchResults2 _maps_containsSearchResultEqualToResult:pinCopy forPurpose:5];
 
-  return (v6 | v8 | v7) & 1;
+  return (v6 | v8 | searchResults) & 1;
 }
 
-- (void)selectDroppedPinIsAnimated:(BOOL)a3
+- (void)selectDroppedPinIsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   droppedPin = self->_droppedPin;
   if (droppedPin)
   {
-    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:droppedPin animated:v3];
+    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:droppedPin animated:animatedCopy];
     v6 = self->_droppedPin;
     v9 = @"selectedSearchResult";
     v10 = v6;
@@ -2453,52 +2453,52 @@ LABEL_8:
   }
 }
 
-- (void)setDroppedPin:(id)a3 animated:(BOOL)a4 shouldSelect:(BOOL)a5
+- (void)setDroppedPin:(id)pin animated:(BOOL)animated shouldSelect:(BOOL)select
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  selectCopy = select;
+  animatedCopy = animated;
+  pinCopy = pin;
   if (self->_droppedPin)
   {
     [(SearchPinsManager *)self clearDroppedPin];
   }
 
   droppedPinsItemSource = self->_droppedPinsItemSource;
-  v16 = v8;
+  v16 = pinCopy;
   v10 = [NSArray arrayWithObjects:&v16 count:1];
   [(SearchResultsItemSource *)droppedPinsItemSource setSearchResults:v10];
 
   droppedPin = self->_droppedPin;
-  self->_droppedPin = v8;
-  v12 = v8;
+  self->_droppedPin = pinCopy;
+  v12 = pinCopy;
 
   [(SearchPinsManager *)self _updateDroppedPinVisibility];
-  if (v5)
+  if (selectCopy)
   {
-    [(SearchPinsManager *)self selectDroppedPinIsAnimated:v6];
+    [(SearchPinsManager *)self selectDroppedPinIsAnimated:animatedCopy];
   }
 
-  v13 = [(SearchPinsManager *)self delegate];
+  delegate = [(SearchPinsManager *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(SearchPinsManager *)self delegate];
-    [v15 setNeedsUserActivityUpdate];
+    delegate2 = [(SearchPinsManager *)self delegate];
+    [delegate2 setNeedsUserActivityUpdate];
   }
 }
 
-- (void)setStartPin:(id)a3 endPins:(id)a4 useAlternateDirectionsPins:(BOOL)a5
+- (void)setStartPin:(id)pin endPins:(id)pins useAlternateDirectionsPins:(BOOL)directionsPins
 {
-  v5 = a5;
-  v8 = a3;
-  v65 = a4;
+  directionsPinsCopy = directionsPins;
+  pinCopy = pin;
+  pinsCopy = pins;
   [(SearchPinsManager *)self _completeShowSearchResultsAnimation];
   useAlternateDirectionsPins = self->_useAlternateDirectionsPins;
-  v64 = v8;
-  if (useAlternateDirectionsPins == v5)
+  v64 = pinCopy;
+  if (useAlternateDirectionsPins == directionsPinsCopy)
   {
-    if (!(v8 | self->_startPin))
+    if (!(pinCopy | self->_startPin))
     {
       v10 = 0;
       v73 = 0;
@@ -2506,12 +2506,12 @@ LABEL_8:
       v75 = 0x2020000000;
 LABEL_7:
       v12 = [(NSArray *)self->_endPins count];
-      v13 = v12 != [v65 count];
+      v13 = v12 != [pinsCopy count];
       v11 = v74;
       goto LABEL_9;
     }
 
-    v10 = [v8 isEqualToSearchResult:? forPurpose:?] ^ 1;
+    v10 = [pinCopy isEqualToSearchResult:? forPurpose:?] ^ 1;
     useAlternateDirectionsPins = self->_useAlternateDirectionsPins;
   }
 
@@ -2524,7 +2524,7 @@ LABEL_7:
   v73 = 0;
   v74 = &v73;
   v75 = 0x2020000000;
-  if (useAlternateDirectionsPins == v5)
+  if (useAlternateDirectionsPins == directionsPinsCopy)
   {
     goto LABEL_7;
   }
@@ -2539,13 +2539,13 @@ LABEL_9:
     v70[1] = 3221225472;
     v70[2] = sub_100C3B16C;
     v70[3] = &unk_101650128;
-    v71 = v65;
+    v71 = pinsCopy;
     v72 = &v73;
     [(NSArray *)endPins enumerateObjectsUsingBlock:v70];
   }
 
   v15 = [(SearchPinsManager *)self _setOfPinsForPinType:9];
-  self->_useAlternateDirectionsPins = v5;
+  self->_useAlternateDirectionsPins = directionsPinsCopy;
   if (v10)
   {
     p_startPin = &self->_startPin;
@@ -2574,27 +2574,27 @@ LABEL_9:
       goto LABEL_24;
     }
 
-    v21 = self;
+    selfCopy = self;
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(SearchPinsManager *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ([v24 isEqualToString:v23] & 1) == 0)
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy, v25];
 
         goto LABEL_23;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy];
 LABEL_23:
 
     v27 = *p_startPin;
     *buf = 138543618;
-    v78 = v26;
+    v78 = selfCopy;
     v79 = 2112;
     v80 = v27;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}@] Setting start pin: %@", buf, 0x16u);
@@ -2609,12 +2609,12 @@ LABEL_24:
       [(SearchPinsManager *)self _clearEndPins];
     }
 
-    v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v65, "count")}];
+    v28 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(pinsCopy, "count")}];
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v29 = v65;
+    v29 = pinsCopy;
     v30 = [v29 countByEnumeratingWithState:&v66 objects:v83 count:16];
     if (v30)
     {
@@ -2662,27 +2662,27 @@ LABEL_24:
       goto LABEL_45;
     }
 
-    v41 = self;
+    selfCopy2 = self;
     v42 = objc_opt_class();
     v43 = NSStringFromClass(v42);
     if (objc_opt_respondsToSelector())
     {
-      v44 = [(SearchPinsManager *)v41 performSelector:"accessibilityIdentifier"];
+      v44 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v45 = v44;
       if (v44 && ([v44 isEqualToString:v43] & 1) == 0)
       {
-        v46 = [NSString stringWithFormat:@"%@<%p, %@>", v43, v41, v45];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v43, selfCopy2, v45];
 
         goto LABEL_44;
       }
     }
 
-    v46 = [NSString stringWithFormat:@"%@<%p>", v43, v41];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v43, selfCopy2];
 LABEL_44:
 
     v47 = self->_endPins;
     *buf = 138543618;
-    v78 = v46;
+    v78 = selfCopy2;
     v79 = 2112;
     v80 = v47;
     _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "[%{public}@] Setting end pins: %@", buf, 0x16u);
@@ -2692,11 +2692,11 @@ LABEL_45:
 
   if ((v10 & 1) != 0 || *(v74 + 24) == 1)
   {
-    v48 = [(SearchPinsManager *)self routeStartEndItemSource];
-    [v48 setStartLocation:self->_startPin endLocations:self->_endPins];
+    routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+    [routeStartEndItemSource setStartLocation:self->_startPin endLocations:self->_endPins];
 
-    v49 = [(SearchPinsManager *)self mapSelectionManager];
-    [v49 clearSelection];
+    mapSelectionManager = [(SearchPinsManager *)self mapSelectionManager];
+    [mapSelectionManager clearSelection];
 
     if (v10 && self->_startPin)
     {
@@ -2708,8 +2708,8 @@ LABEL_45:
       [(SearchPinsManager *)self _startLoadingNewEndPOIShapes];
     }
 
-    v50 = [(SearchPinsManager *)self mapView];
-    v51 = sub_10000FA08(v50) == 5;
+    mapView = [(SearchPinsManager *)self mapView];
+    v51 = sub_10000FA08(mapView) == 5;
 
     if (v51)
     {
@@ -2721,44 +2721,44 @@ LABEL_45:
     {
 LABEL_62:
 
-      v62 = [(SearchPinsManager *)self searchResultsItemSource];
-      [v62 setShouldHideSearchResults:1];
+      searchResultsItemSource = [(SearchPinsManager *)self searchResultsItemSource];
+      [searchResultsItemSource setShouldHideSearchResults:1];
 
-      v63 = [(SearchPinsManager *)self searchDotPlacesItemSource];
-      [v63 setShouldHideSearchDotPlaces:1];
+      searchDotPlacesItemSource = [(SearchPinsManager *)self searchDotPlacesItemSource];
+      [searchDotPlacesItemSource setShouldHideSearchDotPlaces:1];
 
 LABEL_63:
       [(SearchPinsManager *)self _updateDroppedPinVisibility];
       goto LABEL_64;
     }
 
-    v53 = self;
+    selfCopy3 = self;
     v54 = objc_opt_class();
     v55 = NSStringFromClass(v54);
     if (objc_opt_respondsToSelector())
     {
-      v56 = [(SearchPinsManager *)v53 performSelector:"accessibilityIdentifier"];
+      v56 = [(SearchPinsManager *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v57 = v56;
       if (v56 && ([v56 isEqualToString:v55] & 1) == 0)
       {
-        v58 = [NSString stringWithFormat:@"%@<%p, %@>", v55, v53, v57];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v55, selfCopy3, v57];
 
         goto LABEL_61;
       }
     }
 
-    v58 = [NSString stringWithFormat:@"%@<%p>", v55, v53];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v55, selfCopy3];
 LABEL_61:
 
-    v59 = v58;
-    v60 = [(SearchPinsManager *)v53 searchResultsItemSource];
-    v61 = [(SearchPinsManager *)v53 searchDotPlacesItemSource];
+    v59 = selfCopy3;
+    searchResultsItemSource2 = [(SearchPinsManager *)selfCopy3 searchResultsItemSource];
+    searchDotPlacesItemSource2 = [(SearchPinsManager *)selfCopy3 searchDotPlacesItemSource];
     *buf = 138543874;
     v78 = v59;
     v79 = 2048;
-    v80 = v60;
+    v80 = searchResultsItemSource2;
     v81 = 2048;
-    v82 = v61;
+    v82 = searchDotPlacesItemSource2;
     _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "[%{public}@] SearchResultsItemSource<%p>, SearchDotPlacesItemSource<%p> will hide search results.", buf, 0x20u);
 
     goto LABEL_62;
@@ -2769,34 +2769,34 @@ LABEL_64:
   _Block_object_dispose(&v73, 8);
 }
 
-- (void)setStartPin:(id)a3 endPin:(id)a4 useAlternateDirectionsPins:(BOOL)a5
+- (void)setStartPin:(id)pin endPin:(id)endPin useAlternateDirectionsPins:(BOOL)pins
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  pinsCopy = pins;
+  endPinCopy = endPin;
+  v9 = endPinCopy;
+  if (endPinCopy)
   {
-    v12 = v8;
-    v10 = a3;
-    v11 = [NSArray arrayWithObjects:&v12 count:1];
-    [(SearchPinsManager *)self setStartPin:v10 endPins:v11 useAlternateDirectionsPins:v5, v12];
+    v12 = endPinCopy;
+    pinCopy = pin;
+    pinCopy2 = [NSArray arrayWithObjects:&v12 count:1];
+    [(SearchPinsManager *)self setStartPin:pinCopy endPins:pinCopy2 useAlternateDirectionsPins:pinsCopy, v12];
   }
 
   else
   {
-    v11 = a3;
-    [(SearchPinsManager *)self setStartPin:v11 endPins:0 useAlternateDirectionsPins:v5];
+    pinCopy2 = pin;
+    [(SearchPinsManager *)self setStartPin:pinCopy2 endPins:0 useAlternateDirectionsPins:pinsCopy];
   }
 }
 
-- (void)setSearchPins:(id)a3 selectedPin:(id)a4 animated:(BOOL)a5
+- (void)setSearchPins:(id)pins selectedPin:(id)pin animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  pinsCopy = pins;
+  pinCopy = pin;
   [(SearchPinsManager *)self clearSearchPins];
   v10 = [(SearchPinsManager *)self _setOfPinsForPinType:6];
-  v11 = [(SearchResultsItemSource *)v8 mutableCopy];
+  v11 = [(SearchResultsItemSource *)pinsCopy mutableCopy];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -2825,16 +2825,16 @@ LABEL_64:
     while (v14);
   }
 
-  [(SearchPinsManager *)self dropPinsForSearchResults:v11 animate:v5];
+  [(SearchPinsManager *)self dropPinsForSearchResults:v11 animate:animatedCopy];
   v17 = sub_100015F58();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v41 = v9;
-    v40 = v5;
-    v18 = self;
-    if (!v18)
+    v41 = pinCopy;
+    v40 = animatedCopy;
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v23 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_17;
     }
 
@@ -2842,34 +2842,34 @@ LABEL_64:
     v20 = NSStringFromClass(v19);
     if (objc_opt_respondsToSelector())
     {
-      v21 = [(SearchPinsManager *)v18 performSelector:"accessibilityIdentifier"];
+      v21 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v22 = v21;
       if (v21 && ![v21 isEqualToString:v20])
       {
-        v23 = [NSString stringWithFormat:@"%@<%p, %@>", v20, v18, v22];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v20, selfCopy, v22];
 
         goto LABEL_15;
       }
     }
 
-    v23 = [NSString stringWithFormat:@"%@<%p>", v20, v18];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v20, selfCopy];
 LABEL_15:
 
 LABEL_17:
-    v24 = v23;
-    v25 = [(SearchResultsItemSource *)v8 count];
-    searchResultsItemSource = v18->_searchResultsItemSource;
-    v27 = [(SearchResultsItemSource *)searchResultsItemSource shouldHideSearchResults];
+    v24 = selfCopy;
+    v25 = [(SearchResultsItemSource *)pinsCopy count];
+    searchResultsItemSource = selfCopy->_searchResultsItemSource;
+    shouldHideSearchResults = [(SearchResultsItemSource *)searchResultsItemSource shouldHideSearchResults];
 
     v28 = @"NO";
-    if (v27)
+    if (shouldHideSearchResults)
     {
       v28 = @"YES";
     }
 
     v29 = v28;
     *buf = 138544130;
-    v48 = v23;
+    v48 = selfCopy;
     v49 = 2048;
     v50 = v25;
     v51 = 2048;
@@ -2878,8 +2878,8 @@ LABEL_17:
     v54 = v29;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}@] Setting %lu search results for SearchResultsItemSource<%p>. SearchResultsItemSource hiding results: %@", buf, 0x2Au);
 
-    v5 = v40;
-    v9 = v41;
+    animatedCopy = v40;
+    pinCopy = v41;
   }
 
   if (![(SearchResultsItemSource *)self->_searchResultsItemSource shouldHideSearchResults])
@@ -2890,65 +2890,65 @@ LABEL_17:
   v30 = sub_100015F58();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
-    v42 = v9;
-    v31 = v5;
-    v32 = self;
+    v42 = pinCopy;
+    v31 = animatedCopy;
+    selfCopy2 = self;
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
     if (objc_opt_respondsToSelector())
     {
-      v35 = [(SearchPinsManager *)v32 performSelector:"accessibilityIdentifier"];
+      v35 = [(SearchPinsManager *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v36 = v35;
       if (v35 && ![v35 isEqualToString:v34])
       {
-        v37 = [NSString stringWithFormat:@"%@<%p, %@>", v34, v32, v36];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v34, selfCopy2, v36];
 
         goto LABEL_27;
       }
     }
 
-    v37 = [NSString stringWithFormat:@"%@<%p>", v34, v32];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v34, selfCopy2];
 LABEL_27:
 
     v38 = self->_searchResultsItemSource;
     *buf = 138543874;
-    v48 = v37;
+    v48 = selfCopy2;
     v49 = 2048;
     v50 = v38;
     v51 = 2112;
-    v52 = v8;
+    v52 = pinsCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[%{public}@] SearchResultsItemSource<%p> Setting search results:\n(%@) but results were hidden. Unhiding them.", buf, 0x20u);
 
-    v5 = v31;
-    v9 = v42;
+    animatedCopy = v31;
+    pinCopy = v42;
   }
 
   [(SearchResultsItemSource *)self->_searchResultsItemSource setShouldHideSearchResults:0];
 LABEL_29:
-  [(SearchResultsItemSource *)self->_searchResultsItemSource setSearchResults:v8];
-  v39 = [(SearchPinsManager *)self mapView];
-  [v39 _setApplicationState:0];
+  [(SearchResultsItemSource *)self->_searchResultsItemSource setSearchResults:pinsCopy];
+  mapView = [(SearchPinsManager *)self mapView];
+  [mapView _setApplicationState:0];
 
-  if (v9)
+  if (pinCopy)
   {
-    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:v9 animated:v5];
+    [(SearchPinsManager *)self selectLabelMarkerForSearchResult:pinCopy animated:animatedCopy];
   }
 }
 
 - (SearchResult)endPin
 {
-  v2 = [(SearchPinsManager *)self endPins];
-  v3 = [v2 lastObject];
+  endPins = [(SearchPinsManager *)self endPins];
+  lastObject = [endPins lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)_setOfPinsForPinType:(unint64_t)a3
+- (id)_setOfPinsForPinType:(unint64_t)type
 {
-  v3 = a3;
-  v5 = [(SearchPinsManager *)self allSearchResults];
-  v6 = v5;
-  if ((v3 & 1) != 0 && [v5 count])
+  typeCopy = type;
+  allSearchResults = [(SearchPinsManager *)self allSearchResults];
+  v6 = allSearchResults;
+  if ((typeCopy & 1) != 0 && [allSearchResults count])
   {
     v7 = [[NSMutableSet alloc] initWithArray:v6];
   }
@@ -2959,17 +2959,17 @@ LABEL_29:
   }
 
   v8 = v7;
-  if ((v3 & 2) != 0 && self->_startPin)
+  if ((typeCopy & 2) != 0 && self->_startPin)
   {
     [v7 addObject:?];
   }
 
-  if ((v3 & 4) != 0 && [(NSArray *)self->_endPins count])
+  if ((typeCopy & 4) != 0 && [(NSArray *)self->_endPins count])
   {
     [v8 addObjectsFromArray:self->_endPins];
   }
 
-  if ((v3 & 8) != 0 && self->_droppedPin)
+  if ((typeCopy & 8) != 0 && self->_droppedPin)
   {
     [v8 addObject:?];
   }
@@ -2977,9 +2977,9 @@ LABEL_29:
   return v8;
 }
 
-- (void)setCustomPOIsController:(id)a3
+- (void)setCustomPOIsController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_customPOIsController);
 
   v5 = obj;
@@ -3005,41 +3005,41 @@ LABEL_29:
   }
 }
 
-- (void)setMapCameraController:(id)a3
+- (void)setMapCameraController:(id)controller
 {
-  v5 = a3;
-  if (self->_mapCameraController != v5)
+  controllerCopy = controller;
+  if (self->_mapCameraController != controllerCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->_mapCameraController, a3);
-    v6 = [(SearchPinsManager *)self searchResultsItemSource];
-    v7 = [(SearchPinsManager *)self searchResultsItemSource];
-    v8 = [v7 searchResults];
-    [v6 setSearchResults:v8];
+    v16 = controllerCopy;
+    objc_storeStrong(&self->_mapCameraController, controller);
+    searchResultsItemSource = [(SearchPinsManager *)self searchResultsItemSource];
+    searchResultsItemSource2 = [(SearchPinsManager *)self searchResultsItemSource];
+    searchResults = [searchResultsItemSource2 searchResults];
+    [searchResultsItemSource setSearchResults:searchResults];
 
-    v9 = [(SearchPinsManager *)self droppedPinsItemSource];
-    v10 = [(SearchPinsManager *)self droppedPinsItemSource];
-    v11 = [v10 searchResults];
-    [v9 setSearchResults:v11];
+    droppedPinsItemSource = [(SearchPinsManager *)self droppedPinsItemSource];
+    droppedPinsItemSource2 = [(SearchPinsManager *)self droppedPinsItemSource];
+    searchResults2 = [droppedPinsItemSource2 searchResults];
+    [droppedPinsItemSource setSearchResults:searchResults2];
 
-    v12 = [(SearchPinsManager *)self routeStartEndItemSource];
-    [v12 setStartLocation:self->_startPin endLocations:self->_endPins];
+    routeStartEndItemSource = [(SearchPinsManager *)self routeStartEndItemSource];
+    [routeStartEndItemSource setStartLocation:self->_startPin endLocations:self->_endPins];
 
-    v13 = [(SearchPinsManager *)self searchDotPlacesItemSource];
-    v14 = [(SearchPinsManager *)self searchDotPlacesItemSource];
-    v15 = [v14 searchDotPlaces];
-    [v13 setSearchDotPlaces:v15];
+    searchDotPlacesItemSource = [(SearchPinsManager *)self searchDotPlacesItemSource];
+    searchDotPlacesItemSource2 = [(SearchPinsManager *)self searchDotPlacesItemSource];
+    searchDotPlaces = [searchDotPlacesItemSource2 searchDotPlaces];
+    [searchDotPlacesItemSource setSearchDotPlaces:searchDotPlaces];
 
-    v5 = v16;
+    controllerCopy = v16;
   }
 }
 
 - (MKMapView)mapView
 {
-  v2 = [(SearchPinsManager *)self mapCameraController];
-  v3 = [v2 mapView];
+  mapCameraController = [(SearchPinsManager *)self mapCameraController];
+  mapView = [mapCameraController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (void)dealloc
@@ -3047,10 +3047,10 @@ LABEL_29:
   v3 = sub_100015F58();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -3058,22 +3058,22 @@ LABEL_29:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(SearchPinsManager *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(SearchPinsManager *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v13 = v9;
+    v13 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] Deallocating", buf, 0xCu);
   }
 
@@ -3086,9 +3086,9 @@ LABEL_10:
   [(SearchPinsManager *)&v11 dealloc];
 }
 
-- (SearchPinsManager)initWithMapViewCameraController:(id)a3
+- (SearchPinsManager)initWithMapViewCameraController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v33.receiver = self;
   v33.super_class = SearchPinsManager;
   v6 = [(SearchPinsManager *)&v33 init];
@@ -3099,7 +3099,7 @@ LABEL_10:
     {
 LABEL_9:
 
-      objc_storeStrong(&v6->_mapCameraController, a3);
+      objc_storeStrong(&v6->_mapCameraController, controller);
       v14 = objc_alloc_init(SearchResultsItemSource);
       searchResultsItemSource = v6->_searchResultsItemSource;
       v6->_searchResultsItemSource = v14;

@@ -1,32 +1,32 @@
 @interface SFBlockBasedCAAnimationDelegate
-+ (id)animationDelegateWithDidStopBlock:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
++ (id)animationDelegateWithDidStopBlock:(id)block;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation SFBlockBasedCAAnimationDelegate
 
-+ (id)animationDelegateWithDidStopBlock:(id)a3
++ (id)animationDelegateWithDidStopBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setAnimationDidStopBlock:v4];
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  [v5 setAnimationDidStopBlock:blockCopy];
 
   return v5;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
+  finishedCopy = finished;
+  stopCopy = stop;
   animationDidStopBlock = self->_animationDidStopBlock;
-  v8 = v6;
+  v8 = stopCopy;
   if (animationDidStopBlock)
   {
-    animationDidStopBlock[2](animationDidStopBlock, v6, v4);
-    v6 = v8;
+    animationDidStopBlock[2](animationDidStopBlock, stopCopy, finishedCopy);
+    stopCopy = v8;
   }
 
-  [v6 setValue:0 forKey:@"blockBasedAnimationDelegate"];
+  [stopCopy setValue:0 forKey:@"blockBasedAnimationDelegate"];
 }
 
 @end

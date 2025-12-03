@@ -1,20 +1,20 @@
 @interface HDCachedSecureDeleteCKRecordJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDCachedSecureDeleteCKRecordJournalEntry)initWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDCachedSecureDeleteCKRecordJournalEntry)initWithCoder:(id)coder;
 @end
 
 @implementation HDCachedSecureDeleteCKRecordJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v7 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v7)
   {
@@ -34,9 +34,9 @@
         if (objc_opt_isKindOfClass())
         {
           v12 = HDPredicateForRecordID([v11 recordID]);
-          v13 = [v6 database];
+          database = [profileCopy database];
           v31 = 0;
-          v14 = [(HDHealthEntity *)HDCachedSecureCKRecordEntity deleteEntitiesWithPredicate:v12 healthDatabase:v13 error:&v31];
+          v14 = [(HDHealthEntity *)HDCachedSecureCKRecordEntity deleteEntitiesWithPredicate:v12 healthDatabase:database error:&v31];
           v15 = v31;
 
           if (!v14)
@@ -62,9 +62,9 @@
             }
 
             v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", objc_opt_class()];
-            v18 = [v6 daemon];
-            v19 = [v18 autoBugCaptureReporter];
-            [v19 reportJournalFailureWithErrorDescription:v17 provenance:0 error:v15];
+            daemon = [profileCopy daemon];
+            autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+            [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v17 provenance:0 error:v15];
           }
         }
 
@@ -103,15 +103,15 @@ LABEL_19:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (HDCachedSecureDeleteCKRecordJournalEntry)initWithCoder:(id)a3
+- (HDCachedSecureDeleteCKRecordJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HDCachedSecureDeleteCKRecordJournalEntry;
-  v5 = [(HDJournalEntry *)&v7 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_recordID = [v4 decodeInt64ForKey:@"journal_entry_record_id"];
+    v5->_recordID = [coderCopy decodeInt64ForKey:@"journal_entry_record_id"];
   }
 
   return v5;

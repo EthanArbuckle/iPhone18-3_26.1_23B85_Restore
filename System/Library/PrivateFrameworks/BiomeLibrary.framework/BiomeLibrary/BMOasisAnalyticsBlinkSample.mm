@@ -1,28 +1,28 @@
 @interface BMOasisAnalyticsBlinkSample
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsBlinkSample)initWithCount:(id)a3 medianDurationMs:(id)a4 blinkDurations:(id)a5 medianTimeIntervalMs:(id)a6 blinkIntervals:(id)a7 medianBlinkOnsetVelocity:(id)a8 medianBlinkOffsetVelocity:(id)a9 medianBlinkOpenness:(id)a10 medianEyelidOpenness:(id)a11;
-- (BMOasisAnalyticsBlinkSample)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsBlinkSample)initWithCount:(id)count medianDurationMs:(id)ms blinkDurations:(id)durations medianTimeIntervalMs:(id)intervalMs blinkIntervals:(id)intervals medianBlinkOnsetVelocity:(id)velocity medianBlinkOffsetVelocity:(id)offsetVelocity medianBlinkOpenness:(id)self0 medianEyelidOpenness:(id)self1;
+- (BMOasisAnalyticsBlinkSample)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_blinkDurationsJSONArray;
 - (id)_blinkIntervalsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsBlinkSample
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMOasisAnalyticsBlinkSample hasCount](self, "hasCount") || [v5 hasCount])
     {
       if (![(BMOasisAnalyticsBlinkSample *)self hasCount])
@@ -63,18 +63,18 @@
       }
     }
 
-    v10 = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
-    v11 = [v5 blinkDurations];
-    v12 = v11;
-    if (v10 == v11)
+    blinkDurations = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
+    blinkDurations2 = [v5 blinkDurations];
+    v12 = blinkDurations2;
+    if (blinkDurations == blinkDurations2)
     {
     }
 
     else
     {
-      v13 = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
-      v14 = [v5 blinkDurations];
-      v15 = [v13 isEqual:v14];
+      blinkDurations3 = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
+      blinkDurations4 = [v5 blinkDurations];
+      v15 = [blinkDurations3 isEqual:blinkDurations4];
 
       if (!v15)
       {
@@ -103,18 +103,18 @@
       }
     }
 
-    v20 = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
-    v21 = [v5 blinkIntervals];
-    v22 = v21;
-    if (v20 == v21)
+    blinkIntervals = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
+    blinkIntervals2 = [v5 blinkIntervals];
+    v22 = blinkIntervals2;
+    if (blinkIntervals == blinkIntervals2)
     {
     }
 
     else
     {
-      v23 = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
-      v24 = [v5 blinkIntervals];
-      v25 = [v23 isEqual:v24];
+      blinkIntervals3 = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
+      blinkIntervals4 = [v5 blinkIntervals];
+      v25 = [blinkIntervals3 isEqual:blinkIntervals4];
 
       if (!v25)
       {
@@ -185,7 +185,7 @@ LABEL_48:
     v6 = [v5 numberWithFloat:?];
   }
 
-  v7 = [(BMOasisAnalyticsBlinkSample *)self _blinkDurationsJSONArray];
+  _blinkDurationsJSONArray = [(BMOasisAnalyticsBlinkSample *)self _blinkDurationsJSONArray];
   if (![(BMOasisAnalyticsBlinkSample *)self hasMedianTimeIntervalMs]|| ([(BMOasisAnalyticsBlinkSample *)self medianTimeIntervalMs], fabsf(v8) == INFINITY))
   {
     v10 = 0;
@@ -199,7 +199,7 @@ LABEL_48:
     v10 = [v9 numberWithFloat:?];
   }
 
-  v11 = [(BMOasisAnalyticsBlinkSample *)self _blinkIntervalsJSONArray];
+  _blinkIntervalsJSONArray = [(BMOasisAnalyticsBlinkSample *)self _blinkIntervalsJSONArray];
   if (![(BMOasisAnalyticsBlinkSample *)self hasMedianBlinkOnsetVelocity]|| ([(BMOasisAnalyticsBlinkSample *)self medianBlinkOnsetVelocity], fabsf(v12) == INFINITY))
   {
     v14 = 0;
@@ -253,86 +253,86 @@ LABEL_48:
   }
 
   v45[0] = @"count";
-  v23 = v3;
+  null = v3;
   if (!v3)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v43 = v3;
-  v38 = v23;
-  v46[0] = v23;
+  v38 = null;
+  v46[0] = null;
   v45[1] = @"medianDurationMs";
-  v24 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v42 = v6;
-  v37 = v24;
-  v46[1] = v24;
+  v37 = null2;
+  v46[1] = null2;
   v45[2] = @"blinkDurations";
-  v25 = v7;
-  if (!v7)
+  null3 = _blinkDurationsJSONArray;
+  if (!_blinkDurationsJSONArray)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41 = v7;
-  v36 = v25;
-  v46[2] = v25;
+  v41 = _blinkDurationsJSONArray;
+  v36 = null3;
+  v46[2] = null3;
   v45[3] = @"medianTimeIntervalMs";
-  v26 = v10;
+  null4 = v10;
   if (!v10)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v40 = v10;
-  v46[3] = v26;
+  v46[3] = null4;
   v45[4] = @"blinkIntervals";
-  v27 = v11;
-  if (!v11)
+  null5 = _blinkIntervalsJSONArray;
+  if (!_blinkIntervalsJSONArray)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39 = v11;
-  v46[4] = v27;
+  v39 = _blinkIntervalsJSONArray;
+  v46[4] = null5;
   v45[5] = @"medianBlinkOnsetVelocity";
-  v28 = v14;
+  null6 = v14;
   if (!v14)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v29 = v14;
-  v46[5] = v28;
+  v46[5] = null6;
   v45[6] = @"medianBlinkOffsetVelocity";
-  v30 = v44;
+  null7 = v44;
   if (!v44)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46[6] = v30;
+  v46[6] = null7;
   v45[7] = @"medianBlinkOpenness";
-  v31 = v19;
+  null8 = v19;
   if (!v19)
   {
-    v31 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46[7] = v31;
+  v46[7] = null8;
   v45[8] = @"medianEyelidOpenness";
-  v32 = v22;
+  null9 = v22;
   if (!v22)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v46[8] = v32;
+  v46[8] = null9;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:9];
   if (v22)
   {
@@ -393,8 +393,8 @@ LABEL_48:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  blinkIntervals = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
+  v5 = [blinkIntervals countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -405,14 +405,14 @@ LABEL_48:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(blinkIntervals);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [blinkIntervals countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -431,8 +431,8 @@ LABEL_48:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  blinkDurations = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
+  v5 = [blinkDurations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -443,14 +443,14 @@ LABEL_48:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(blinkDurations);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [blinkDurations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -461,17 +461,17 @@ LABEL_48:
   return v3;
 }
 
-- (BMOasisAnalyticsBlinkSample)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsBlinkSample)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v161[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"count"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"count"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
         v25 = *MEMORY[0x1E698F240];
@@ -481,13 +481,13 @@ LABEL_48:
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v161 forKeys:&v160 count:1];
         v28 = [v24 initWithDomain:v25 code:2 userInfo:v27];
         v7 = 0;
-        v29 = 0;
-        *a4 = v28;
+        selfCopy3 = 0;
+        *error = v28;
         goto LABEL_110;
       }
 
       v7 = 0;
-      v29 = 0;
+      selfCopy3 = 0;
       goto LABEL_111;
     }
 
@@ -499,7 +499,7 @@ LABEL_48:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"medianDurationMs"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"medianDurationMs"];
   v120 = v6;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -507,7 +507,7 @@ LABEL_48:
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v30 = v8;
-      if (a4)
+      if (error)
       {
         v31 = v7;
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -521,14 +521,14 @@ LABEL_48:
         v27 = v30;
         v123 = v34;
         v26 = 0;
-        v29 = 0;
-        *a4 = [v35 initWithDomain:v33 code:2 userInfo:?];
+        selfCopy3 = 0;
+        *error = [v35 initWithDomain:v33 code:2 userInfo:?];
 
         goto LABEL_109;
       }
 
       v26 = 0;
-      v29 = 0;
+      selfCopy3 = 0;
       v27 = v8;
       goto LABEL_110;
     }
@@ -543,13 +543,13 @@ LABEL_48:
     v119 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"blinkDurations"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"blinkDurations"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   if (v11)
   {
-    v112 = self;
+    selfCopy2 = self;
     v115 = v7;
 
     v9 = 0;
@@ -562,7 +562,7 @@ LABEL_48:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v43 = objc_alloc(MEMORY[0x1E696ABC0]);
           v44 = *MEMORY[0x1E698F240];
@@ -570,19 +570,19 @@ LABEL_48:
           v122 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"blinkDurations"];
           v157 = v122;
           v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v157 forKeys:&v156 count:1];
-          v29 = 0;
-          *a4 = [v43 initWithDomain:v44 code:2 userInfo:v45];
+          selfCopy3 = 0;
+          *error = [v43 initWithDomain:v44 code:2 userInfo:v45];
           goto LABEL_63;
         }
 
-        v29 = 0;
+        selfCopy3 = 0;
         v27 = v116;
         v26 = v119;
         goto LABEL_109;
       }
     }
 
-    v112 = self;
+    selfCopy2 = self;
     v115 = v7;
   }
 
@@ -597,15 +597,15 @@ LABEL_48:
   {
 LABEL_22:
 
-    v17 = [v5 objectForKeyedSubscript:@"medianTimeIntervalMs"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"medianTimeIntervalMs"];
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       v7 = v115;
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        self = v112;
-        if (a4)
+        self = selfCopy2;
+        if (error)
         {
           v56 = objc_alloc(MEMORY[0x1E696ABC0]);
           v57 = *MEMORY[0x1E698F240];
@@ -617,15 +617,15 @@ LABEL_22:
           v7 = v115;
           v118 = v58;
           v109 = 0;
-          v29 = 0;
-          *a4 = [v59 initWithDomain:v57 code:2 userInfo:?];
+          selfCopy3 = 0;
+          *error = [v59 initWithDomain:v57 code:2 userInfo:?];
           v27 = v116;
 
           goto LABEL_105;
         }
 
         v109 = 0;
-        v29 = 0;
+        selfCopy3 = 0;
         v27 = v116;
 LABEL_106:
 
@@ -642,9 +642,9 @@ LABEL_106:
       v109 = 0;
     }
 
-    v21 = [v5 objectForKeyedSubscript:@"blinkIntervals"];
-    v22 = [MEMORY[0x1E695DFB0] null];
-    v23 = [v21 isEqual:v22];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"blinkIntervals"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v23 = [v21 isEqual:null2];
 
     if (v23)
     {
@@ -657,10 +657,10 @@ LABEL_106:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        self = v112;
-        if (!a4)
+        self = selfCopy2;
+        if (!error)
         {
-          v29 = 0;
+          selfCopy3 = 0;
           goto LABEL_44;
         }
 
@@ -672,8 +672,8 @@ LABEL_106:
         v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
         v72 = v70;
         v55 = v71;
-        v29 = 0;
-        *a4 = [v69 initWithDomain:v72 code:2 userInfo:v71];
+        selfCopy3 = 0;
+        *error = [v69 initWithDomain:v72 code:2 userInfo:v71];
 LABEL_83:
         v27 = v116;
         goto LABEL_103;
@@ -694,7 +694,7 @@ LABEL_83:
 
     v47 = v46;
     v48 = *v126;
-    v111 = v5;
+    v111 = dictionaryCopy;
 LABEL_51:
     v49 = 0;
     while (1)
@@ -714,8 +714,8 @@ LABEL_51:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v60 = a4;
-        if (a4)
+        errorCopy2 = error;
+        if (error)
         {
           v61 = objc_alloc(MEMORY[0x1E696ABC0]);
           v62 = *MEMORY[0x1E698F240];
@@ -739,13 +739,13 @@ LABEL_51:
       if (v54)
       {
         v66 = v54;
-        if (a4)
+        if (error)
         {
           v68 = v54;
-          *a4 = v66;
+          *error = v66;
         }
 
-        v29 = 0;
+        selfCopy3 = 0;
         goto LABEL_79;
       }
 
@@ -754,7 +754,7 @@ LABEL_51:
       if (v47 == ++v49)
       {
         v47 = [v21 countByEnumeratingWithState:&v125 objects:v146 count:16];
-        v5 = v111;
+        dictionaryCopy = v111;
         if (v47)
         {
           goto LABEL_51;
@@ -762,27 +762,27 @@ LABEL_51:
 
 LABEL_59:
 
-        v51 = [v5 objectForKeyedSubscript:@"medianBlinkOnsetVelocity"];
+        v51 = [dictionaryCopy objectForKeyedSubscript:@"medianBlinkOnsetVelocity"];
         if (!v51)
         {
           v55 = 0;
-          self = v112;
+          self = selfCopy2;
           goto LABEL_87;
         }
 
         objc_opt_class();
-        self = v112;
+        self = selfCopy2;
         if (objc_opt_isKindOfClass())
         {
           v55 = 0;
 LABEL_87:
-          v73 = [v5 objectForKeyedSubscript:@"medianBlinkOffsetVelocity"];
+          v73 = [dictionaryCopy objectForKeyedSubscript:@"medianBlinkOffsetVelocity"];
           v107 = v73;
           if (!v73 || (v74 = v73, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v66 = 0;
 LABEL_90:
-            v75 = [v5 objectForKeyedSubscript:@"medianBlinkOpenness"];
+            v75 = [dictionaryCopy objectForKeyedSubscript:@"medianBlinkOpenness"];
             v105 = v75;
             if (!v75 || (v76 = v75, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
@@ -795,7 +795,7 @@ LABEL_90:
             {
               v113 = v76;
 LABEL_93:
-              v77 = [v5 objectForKeyedSubscript:@"medianEyelidOpenness"];
+              v77 = [dictionaryCopy objectForKeyedSubscript:@"medianEyelidOpenness"];
               v103 = v77;
               if (!v77)
               {
@@ -820,12 +820,12 @@ LABEL_96:
 LABEL_97:
                 v101 = v77;
                 self = [(BMOasisAnalyticsBlinkSample *)self initWithCount:v115 medianDurationMs:v119 blinkDurations:v122 medianTimeIntervalMs:v109 blinkIntervals:v117 medianBlinkOnsetVelocity:v55 medianBlinkOffsetVelocity:v66 medianBlinkOpenness:v113 medianEyelidOpenness:v77];
-                v29 = self;
+                selfCopy3 = self;
               }
 
               else
               {
-                if (a4)
+                if (error)
                 {
                   v102 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v99 = *MEMORY[0x1E698F240];
@@ -834,13 +834,13 @@ LABEL_97:
                   v95 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"medianEyelidOpenness"];
                   v135 = v95;
                   v96 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
-                  *a4 = [v102 initWithDomain:v99 code:2 userInfo:v96];
+                  *error = [v102 initWithDomain:v99 code:2 userInfo:v96];
 
                   v55 = v100;
                 }
 
                 v101 = 0;
-                v29 = 0;
+                selfCopy3 = 0;
               }
 
 LABEL_98:
@@ -858,7 +858,7 @@ LABEL_105:
               goto LABEL_106;
             }
 
-            if (a4)
+            if (error)
             {
               v90 = objc_alloc(MEMORY[0x1E696ABC0]);
               v114 = *MEMORY[0x1E698F240];
@@ -873,14 +873,14 @@ LABEL_105:
               v103 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
               v94 = [v90 initWithDomain:v114 code:2 userInfo:?];
               v113 = 0;
-              v29 = 0;
-              *a4 = v94;
+              selfCopy3 = 0;
+              *error = v94;
               v27 = v116;
               goto LABEL_98;
             }
 
             v113 = 0;
-            v29 = 0;
+            selfCopy3 = 0;
 LABEL_133:
             v27 = v116;
             goto LABEL_99;
@@ -893,7 +893,7 @@ LABEL_133:
             goto LABEL_90;
           }
 
-          if (a4)
+          if (error)
           {
             v106 = objc_alloc(MEMORY[0x1E696ABC0]);
             v104 = *MEMORY[0x1E698F240];
@@ -909,13 +909,13 @@ LABEL_133:
             v89 = v106;
             v105 = v88;
             v66 = 0;
-            v29 = 0;
-            *a4 = [v89 initWithDomain:v104 code:2 userInfo:?];
+            selfCopy3 = 0;
+            *error = [v89 initWithDomain:v104 code:2 userInfo:?];
             goto LABEL_133;
           }
 
           v66 = 0;
-          v29 = 0;
+          selfCopy3 = 0;
         }
 
         else
@@ -927,10 +927,10 @@ LABEL_133:
             goto LABEL_87;
           }
 
-          if (!a4)
+          if (!error)
           {
             v55 = 0;
-            v29 = 0;
+            selfCopy3 = 0;
             v27 = v116;
             goto LABEL_102;
           }
@@ -945,8 +945,8 @@ LABEL_133:
           v107 = v82;
           v84 = [v83 initWithDomain:v81 code:2 userInfo:?];
           v55 = 0;
-          v29 = 0;
-          *a4 = v84;
+          selfCopy3 = 0;
+          *error = v84;
         }
 
         v27 = v116;
@@ -954,8 +954,8 @@ LABEL_133:
       }
     }
 
-    v60 = a4;
-    if (a4)
+    errorCopy2 = error;
+    if (error)
     {
       v61 = objc_alloc(MEMORY[0x1E696ABC0]);
       v62 = *MEMORY[0x1E698F240];
@@ -968,27 +968,27 @@ LABEL_133:
 LABEL_75:
       v66 = [v63 dictionaryWithObjects:v64 forKeys:v65 count:1];
       v67 = [v61 initWithDomain:v62 code:2 userInfo:v66];
-      v29 = 0;
-      *v60 = v67;
+      selfCopy3 = 0;
+      *errorCopy2 = v67;
 LABEL_79:
       v55 = v21;
-      v5 = v111;
-      self = v112;
+      dictionaryCopy = v111;
+      self = selfCopy2;
       v27 = v116;
       goto LABEL_101;
     }
 
 LABEL_82:
-    v29 = 0;
+    selfCopy3 = 0;
     v55 = v21;
-    v5 = v111;
-    self = v112;
+    dictionaryCopy = v111;
+    self = selfCopy2;
     goto LABEL_83;
   }
 
   v13 = v12;
   v14 = *v131;
-  v110 = v5;
+  v110 = dictionaryCopy;
 LABEL_14:
   v15 = 0;
   while (1)
@@ -1008,8 +1008,8 @@ LABEL_14:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v36 = a4;
-      if (!a4)
+      errorCopy4 = error;
+      if (!error)
       {
         goto LABEL_62;
       }
@@ -1024,8 +1024,8 @@ LABEL_14:
       v41 = &v151;
 LABEL_39:
       v21 = [v39 dictionaryWithObjects:v40 forKeys:v41 count:1];
-      v29 = 0;
-      *v36 = [v37 initWithDomain:v38 code:2 userInfo:v21];
+      selfCopy3 = 0;
+      *errorCopy4 = [v37 initWithDomain:v38 code:2 userInfo:v21];
       goto LABEL_43;
     }
 
@@ -1037,17 +1037,17 @@ LABEL_39:
     if (v20)
     {
       v21 = v20;
-      if (a4)
+      if (error)
       {
         v42 = v20;
-        *a4 = v21;
+        *error = v21;
       }
 
-      v29 = 0;
+      selfCopy3 = 0;
 LABEL_43:
       v109 = v9;
-      v5 = v110;
-      self = v112;
+      dictionaryCopy = v110;
+      self = selfCopy2;
 LABEL_44:
       v7 = v115;
       v27 = v116;
@@ -1059,7 +1059,7 @@ LABEL_44:
     if (v13 == ++v15)
     {
       v13 = [v9 countByEnumeratingWithState:&v130 objects:v155 count:16];
-      v5 = v110;
+      dictionaryCopy = v110;
       if (!v13)
       {
         goto LABEL_22;
@@ -1069,8 +1069,8 @@ LABEL_44:
     }
   }
 
-  v36 = a4;
-  if (a4)
+  errorCopy4 = error;
+  if (error)
   {
     v37 = objc_alloc(MEMORY[0x1E696ABC0]);
     v38 = *MEMORY[0x1E698F240];
@@ -1084,10 +1084,10 @@ LABEL_44:
   }
 
 LABEL_62:
-  v29 = 0;
+  selfCopy3 = 0;
   v45 = v9;
-  v5 = v110;
-  self = v112;
+  dictionaryCopy = v110;
+  self = selfCopy2;
   v7 = v115;
 LABEL_63:
   v27 = v116;
@@ -1100,22 +1100,22 @@ LABEL_110:
 
 LABEL_111:
   v79 = *MEMORY[0x1E69E9840];
-  return v29;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsBlinkSample *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasCount)
   {
     count = self->_count;
@@ -1151,7 +1151,7 @@ LABEL_111:
         v12 = *(*(&v30 + 1) + 8 * v11);
         v29 = 0;
         PBDataWriterPlaceMark();
-        [v12 writeTo:v4];
+        [v12 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v11;
       }
@@ -1192,7 +1192,7 @@ LABEL_111:
         v19 = *(*(&v25 + 1) + 8 * v18);
         v29 = 0;
         PBDataWriterPlaceMark();
-        [v19 writeTo:{v4, v25}];
+        [v19 writeTo:{toCopy, v25}];
         PBDataWriterRecallMark();
         ++v18;
       }
@@ -1231,9 +1231,9 @@ LABEL_111:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v57.receiver = self;
   v57.super_class = BMOasisAnalyticsBlinkSample;
   v5 = [(BMEventBase *)&v57 init];
@@ -1244,12 +1244,12 @@ LABEL_111:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1260,18 +1260,18 @@ LABEL_111:
       while (1)
       {
         LOBYTE(v58) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v58 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (v58 & 0x7F) << v9;
@@ -1289,9 +1289,9 @@ LABEL_111:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -1305,7 +1305,7 @@ LABEL_16:
           {
             v58 = 0;
             v59 = 0;
-            if (!PBReaderPlaceMark() || (v33 = [[BMBlinkDurationEntry alloc] initByReadFrom:v4]) == 0)
+            if (!PBReaderPlaceMark() || (v33 = [[BMBlinkDurationEntry alloc] initByReadFrom:fromCopy]) == 0)
             {
 LABEL_88:
 
@@ -1321,18 +1321,18 @@ LABEL_88:
           {
             v5->_hasMedianTimeIntervalMs = 1;
             LODWORD(v58) = 0;
-            v22 = [v4 position] + 4;
-            if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 4, v23 <= objc_msgSend(v4, "length")))
+            v22 = [fromCopy position] + 4;
+            if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 4, v23 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:&v58 range:{objc_msgSend(v4, "position"), 4}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 = v58;
@@ -1352,18 +1352,18 @@ LABEL_88:
             while (1)
             {
               LOBYTE(v58) = 0;
-              v29 = [v4 position] + 1;
-              if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+              v29 = [fromCopy position] + 1;
+              if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
               {
-                v31 = [v4 data];
-                [v31 getBytes:&v58 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v28 |= (v58 & 0x7F) << v26;
@@ -1381,7 +1381,7 @@ LABEL_88:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v32 = 0;
             }
@@ -1400,18 +1400,18 @@ LABEL_69:
           {
             v5->_hasMedianDurationMs = 1;
             LODWORD(v58) = 0;
-            v20 = [v4 position] + 4;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 4, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 4;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 4, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v41 = [v4 data];
-              [v41 getBytes:&v58 range:{objc_msgSend(v4, "position"), 4}];
+              data4 = [fromCopy data];
+              [data4 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 = v58;
@@ -1432,7 +1432,7 @@ LABEL_69:
             goto LABEL_88;
           }
 
-          v38 = [[BMBlinkIntervalEntry alloc] initByReadFrom:v4];
+          v38 = [[BMBlinkIntervalEntry alloc] initByReadFrom:fromCopy];
           if (!v38)
           {
             goto LABEL_88;
@@ -1451,18 +1451,18 @@ LABEL_60:
         {
           v5->_hasMedianBlinkOnsetVelocity = 1;
           LODWORD(v58) = 0;
-          v24 = [v4 position] + 4;
-          if (v24 >= [v4 position] && (v25 = objc_msgSend(v4, "position") + 4, v25 <= objc_msgSend(v4, "length")))
+          v24 = [fromCopy position] + 4;
+          if (v24 >= [fromCopy position] && (v25 = objc_msgSend(fromCopy, "position") + 4, v25 <= objc_msgSend(fromCopy, "length")))
           {
-            v45 = [v4 data];
-            [v45 getBytes:&v58 range:{objc_msgSend(v4, "position"), 4}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v42 = v58;
@@ -1478,18 +1478,18 @@ LABEL_60:
           case 7:
             v5->_hasMedianBlinkOffsetVelocity = 1;
             LODWORD(v58) = 0;
-            v36 = [v4 position] + 4;
-            if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 4, v37 <= objc_msgSend(v4, "length")))
+            v36 = [fromCopy position] + 4;
+            if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 4, v37 <= objc_msgSend(fromCopy, "length")))
             {
-              v46 = [v4 data];
-              [v46 getBytes:&v58 range:{objc_msgSend(v4, "position"), 4}];
+              data6 = [fromCopy data];
+              [data6 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 = v58;
@@ -1498,18 +1498,18 @@ LABEL_60:
           case 8:
             v5->_hasMedianBlinkOpenness = 1;
             LODWORD(v58) = 0;
-            v39 = [v4 position] + 4;
-            if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 4, v40 <= objc_msgSend(v4, "length")))
+            v39 = [fromCopy position] + 4;
+            if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 4, v40 <= objc_msgSend(fromCopy, "length")))
             {
-              v48 = [v4 data];
-              [v48 getBytes:&v58 range:{objc_msgSend(v4, "position"), 4}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 = v58;
@@ -1518,18 +1518,18 @@ LABEL_60:
           case 9:
             v5->_hasMedianEyelidOpenness = 1;
             LODWORD(v58) = 0;
-            v18 = [v4 position] + 4;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 4, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 4;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 4, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v47 = [v4 data];
-              [v47 getBytes:&v58 range:{objc_msgSend(v4, "position"), 4}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v58 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 = v58;
@@ -1546,10 +1546,10 @@ LABEL_82:
       }
 
 LABEL_83:
-      v49 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v49 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v50 = [v6 copy];
@@ -1560,8 +1560,8 @@ LABEL_83:
   blinkIntervals = v5->_blinkIntervals;
   v5->_blinkIntervals = v52;
 
-  v54 = [v4 hasError];
-  if (v54)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_85:
     v55 = 0;
@@ -1583,11 +1583,11 @@ LABEL_86:
   v4 = MEMORY[0x1E696AD98];
   [(BMOasisAnalyticsBlinkSample *)self medianDurationMs];
   v5 = [v4 numberWithFloat:?];
-  v6 = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
+  blinkDurations = [(BMOasisAnalyticsBlinkSample *)self blinkDurations];
   v7 = MEMORY[0x1E696AD98];
   [(BMOasisAnalyticsBlinkSample *)self medianTimeIntervalMs];
   v8 = [v7 numberWithFloat:?];
-  v9 = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
+  blinkIntervals = [(BMOasisAnalyticsBlinkSample *)self blinkIntervals];
   v10 = MEMORY[0x1E696AD98];
   [(BMOasisAnalyticsBlinkSample *)self medianBlinkOnsetVelocity];
   v11 = [v10 numberWithFloat:?];
@@ -1600,45 +1600,45 @@ LABEL_86:
   v16 = MEMORY[0x1E696AD98];
   [(BMOasisAnalyticsBlinkSample *)self medianEyelidOpenness];
   v17 = [v16 numberWithFloat:?];
-  v18 = [v20 initWithFormat:@"BMOasisAnalyticsBlinkSample with count: %@, medianDurationMs: %@, blinkDurations: %@, medianTimeIntervalMs: %@, blinkIntervals: %@, medianBlinkOnsetVelocity: %@, medianBlinkOffsetVelocity: %@, medianBlinkOpenness: %@, medianEyelidOpenness: %@", v3, v5, v6, v8, v9, v11, v13, v15, v17];
+  v18 = [v20 initWithFormat:@"BMOasisAnalyticsBlinkSample with count: %@, medianDurationMs: %@, blinkDurations: %@, medianTimeIntervalMs: %@, blinkIntervals: %@, medianBlinkOnsetVelocity: %@, medianBlinkOffsetVelocity: %@, medianBlinkOpenness: %@, medianEyelidOpenness: %@", v3, v5, blinkDurations, v8, blinkIntervals, v11, v13, v15, v17];
 
   return v18;
 }
 
-- (BMOasisAnalyticsBlinkSample)initWithCount:(id)a3 medianDurationMs:(id)a4 blinkDurations:(id)a5 medianTimeIntervalMs:(id)a6 blinkIntervals:(id)a7 medianBlinkOnsetVelocity:(id)a8 medianBlinkOffsetVelocity:(id)a9 medianBlinkOpenness:(id)a10 medianEyelidOpenness:(id)a11
+- (BMOasisAnalyticsBlinkSample)initWithCount:(id)count medianDurationMs:(id)ms blinkDurations:(id)durations medianTimeIntervalMs:(id)intervalMs blinkIntervals:(id)intervals medianBlinkOnsetVelocity:(id)velocity medianBlinkOffsetVelocity:(id)offsetVelocity medianBlinkOpenness:(id)self0 medianEyelidOpenness:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v34 = a5;
-  v19 = a6;
-  v33 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  countCopy = count;
+  msCopy = ms;
+  durationsCopy = durations;
+  intervalMsCopy = intervalMs;
+  intervalsCopy = intervals;
+  velocityCopy = velocity;
+  offsetVelocityCopy = offsetVelocity;
+  opennessCopy = openness;
+  eyelidOpennessCopy = eyelidOpenness;
   v35.receiver = self;
   v35.super_class = BMOasisAnalyticsBlinkSample;
   v24 = [(BMEventBase *)&v35 init];
   if (v24)
   {
     v24->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v17)
+    if (countCopy)
     {
       v24->_hasCount = 1;
-      v25 = [v17 unsignedIntValue];
+      unsignedIntValue = [countCopy unsignedIntValue];
     }
 
     else
     {
-      v25 = 0;
+      unsignedIntValue = 0;
       v24->_hasCount = 0;
     }
 
-    v24->_count = v25;
-    if (v18)
+    v24->_count = unsignedIntValue;
+    if (msCopy)
     {
       v24->_hasMedianDurationMs = 1;
-      [v18 floatValue];
+      [msCopy floatValue];
     }
 
     else
@@ -1648,11 +1648,11 @@ LABEL_86:
     }
 
     v24->_medianDurationMs = v26;
-    objc_storeStrong(&v24->_blinkDurations, a5);
-    if (v19)
+    objc_storeStrong(&v24->_blinkDurations, durations);
+    if (intervalMsCopy)
     {
       v24->_hasMedianTimeIntervalMs = 1;
-      [v19 floatValue];
+      [intervalMsCopy floatValue];
     }
 
     else
@@ -1662,11 +1662,11 @@ LABEL_86:
     }
 
     v24->_medianTimeIntervalMs = v27;
-    objc_storeStrong(&v24->_blinkIntervals, a7);
-    if (v20)
+    objc_storeStrong(&v24->_blinkIntervals, intervals);
+    if (velocityCopy)
     {
       v24->_hasMedianBlinkOnsetVelocity = 1;
-      [v20 floatValue];
+      [velocityCopy floatValue];
     }
 
     else
@@ -1676,10 +1676,10 @@ LABEL_86:
     }
 
     v24->_medianBlinkOnsetVelocity = v28;
-    if (v21)
+    if (offsetVelocityCopy)
     {
       v24->_hasMedianBlinkOffsetVelocity = 1;
-      [v21 floatValue];
+      [offsetVelocityCopy floatValue];
     }
 
     else
@@ -1689,10 +1689,10 @@ LABEL_86:
     }
 
     v24->_medianBlinkOffsetVelocity = v29;
-    if (v22)
+    if (opennessCopy)
     {
       v24->_hasMedianBlinkOpenness = 1;
-      [v22 floatValue];
+      [opennessCopy floatValue];
     }
 
     else
@@ -1702,10 +1702,10 @@ LABEL_86:
     }
 
     v24->_medianBlinkOpenness = v30;
-    if (v23)
+    if (eyelidOpennessCopy)
     {
       v24->_hasMedianEyelidOpenness = 1;
-      [v23 floatValue];
+      [eyelidOpennessCopy floatValue];
     }
 
     else
@@ -1793,9 +1793,9 @@ id __38__BMOasisAnalyticsBlinkSample_columns__block_invoke(uint64_t a1, void *a2
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1803,8 +1803,8 @@ id __38__BMOasisAnalyticsBlinkSample_columns__block_invoke(uint64_t a1, void *a2
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsBlinkSample alloc] initByReadFrom:v7];
     v4 = v8;

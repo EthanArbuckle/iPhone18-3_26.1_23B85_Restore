@@ -1,5 +1,5 @@
 @interface WFDatabaseMergePolicy
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4;
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error;
 - (WFDatabase)database;
 @end
 
@@ -12,21 +12,21 @@
   return WeakRetained;
 }
 
-- (BOOL)resolveOptimisticLockingVersionConflicts:(id)a3 error:(id *)a4
+- (BOOL)resolveOptimisticLockingVersionConflicts:(id)conflicts error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  conflictsCopy = conflicts;
   v59.receiver = self;
   v59.super_class = WFDatabaseMergePolicy;
-  v50 = [(NSMergePolicy *)&v59 resolveOptimisticLockingVersionConflicts:v6 error:a4];
-  v7 = [(WFDatabaseMergePolicy *)self database];
-  v51 = [v7 persistenceMode];
+  v50 = [(NSMergePolicy *)&v59 resolveOptimisticLockingVersionConflicts:conflictsCopy error:error];
+  database = [(WFDatabaseMergePolicy *)self database];
+  persistenceMode = [database persistenceMode];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v6;
+  obj = conflictsCopy;
   v8 = [obj countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v8)
   {
@@ -44,10 +44,10 @@
         }
 
         v13 = *(*(&v55 + 1) + 8 * v12);
-        v14 = [v13 newVersionNumber];
-        v15 = [v13 sourceObject];
-        v16 = v15;
-        if (v14)
+        newVersionNumber = [v13 newVersionNumber];
+        sourceObject = [v13 sourceObject];
+        v16 = sourceObject;
+        if (newVersionNumber)
         {
           v17 = v10[31];
           objc_opt_class();
@@ -68,10 +68,10 @@
             _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_DEBUG, "%s Found coherence library conflict: %@", buf, 0x16u);
           }
 
-          v20 = [v13 sourceObject];
+          sourceObject2 = [v13 sourceObject];
           v21 = v10[31];
           v22 = objc_opt_class();
-          v23 = v20;
+          v23 = sourceObject2;
           if (v23 && (objc_opt_isKindOfClass() & 1) == 0)
           {
             v26 = getWFGeneralLogObject();
@@ -98,8 +98,8 @@
             v16 = v23;
           }
 
-          v29 = [v13 persistedSnapshot];
-          v30 = [v29 objectForKey:@"data"];
+          persistedSnapshot = [v13 persistedSnapshot];
+          v30 = [persistedSnapshot objectForKey:@"data"];
 
           if (v30)
           {
@@ -122,8 +122,8 @@
 
           v32 = v31;
 
-          v33 = [v13 cachedSnapshot];
-          v34 = [v33 objectForKey:@"data"];
+          cachedSnapshot = [v13 cachedSnapshot];
+          v34 = [cachedSnapshot objectForKey:@"data"];
 
           if (v34)
           {
@@ -147,15 +147,15 @@
           v36 = v35;
 
           v37 = [WFLibrary alloc];
-          v38 = [v16 identifier];
-          v24 = [(WFLibrary *)v37 initWithIdentifier:v38 data:v32];
+          identifier = [v16 identifier];
+          managedObjectContext = [(WFLibrary *)v37 initWithIdentifier:identifier data:v32];
 
           v39 = [WFLibrary alloc];
-          v40 = [v16 identifier];
-          v25 = [(WFLibrary *)v39 initWithIdentifier:v40 data:v36];
+          identifier2 = [v16 identifier];
+          sourceObject3 = [(WFLibrary *)v39 initWithIdentifier:identifier2 data:v36];
 
           v54 = 0;
-          v41 = [(WFLibrary *)v24 mergeWithOther:v25 error:&v54];
+          v41 = [(WFLibrary *)managedObjectContext mergeWithOther:sourceObject3 error:&v54];
           v42 = v54;
 
           if (!v41)
@@ -172,7 +172,7 @@
           }
 
           v53 = v42;
-          v44 = [(WFLibrary *)v24 capsuleDataWithPersistenceMode:v51 error:&v53];
+          v44 = [(WFLibrary *)managedObjectContext capsuleDataWithPersistenceMode:persistenceMode error:&v53];
           v45 = v53;
 
           if (v44)
@@ -209,9 +209,9 @@ LABEL_33:
           goto LABEL_33;
         }
 
-        v24 = [v15 managedObjectContext];
-        v25 = [v13 sourceObject];
-        [(WFLibrary *)v24 deleteObject:v25];
+        managedObjectContext = [sourceObject managedObjectContext];
+        sourceObject3 = [v13 sourceObject];
+        [(WFLibrary *)managedObjectContext deleteObject:sourceObject3];
 LABEL_34:
 
 LABEL_35:

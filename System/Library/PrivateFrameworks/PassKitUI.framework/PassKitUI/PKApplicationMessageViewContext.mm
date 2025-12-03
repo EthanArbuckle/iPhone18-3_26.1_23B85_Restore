@@ -1,17 +1,17 @@
 @interface PKApplicationMessageViewContext
-- (void)initForNode:(void *)a1;
-- (void)setNode:(uint64_t)a1;
+- (void)initForNode:(void *)node;
+- (void)setNode:(uint64_t)node;
 @end
 
 @implementation PKApplicationMessageViewContext
 
-- (void)initForNode:(void *)a1
+- (void)initForNode:(void *)node
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (node && v3)
   {
-    v8.receiver = a1;
+    v8.receiver = node;
     v8.super_class = PKApplicationMessageViewContext;
     v5 = objc_msgSendSuper2(&v8, sel_init);
     if (v5)
@@ -19,33 +19,33 @@
       v5[2] = v4;
     }
 
-    a1 = v5;
-    v6 = a1;
+    node = v5;
+    nodeCopy = node;
   }
 
   else
   {
-    v6 = 0;
+    nodeCopy = 0;
   }
 
-  return v6;
+  return nodeCopy;
 }
 
-- (void)setNode:(uint64_t)a1
+- (void)setNode:(uint64_t)node
 {
   v3 = a2;
-  if (a1)
+  if (node)
   {
-    if (*(a1 + 16) != v3)
+    if (*(node + 16) != v3)
     {
-      *(a1 + 16) = v3;
-      v4 = *(a1 + 32);
+      *(node + 16) = v3;
+      v4 = *(node + 32);
       v6 = v3;
       v5 = [v3 numberOfChildren] + v4;
       v3 = v6;
       if (v5 <= 1)
       {
-        *(a1 + 8) = 0;
+        *(node + 8) = 0;
       }
     }
   }

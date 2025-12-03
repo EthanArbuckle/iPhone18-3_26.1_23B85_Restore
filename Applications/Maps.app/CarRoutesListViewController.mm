@@ -1,12 +1,12 @@
 @interface CarRoutesListViewController
-- (_TtC4MapsP33_9D7EA3A8BD90A11521A12E311756C9B827CarRoutesListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4MapsP33_9D7EA3A8BD90A11521A12E311756C9B827CarRoutesListViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation CarRoutesListViewController
 
-- (_TtC4MapsP33_9D7EA3A8BD90A11521A12E311756C9B827CarRoutesListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4MapsP33_9D7EA3A8BD90A11521A12E311756C9B827CarRoutesListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -18,8 +18,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10028B094(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10028B094(v5, v7, bundle);
 }
 
 @end

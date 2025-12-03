@@ -1,39 +1,39 @@
 @interface _INPBRentalCarReservation
-- (BOOL)isEqual:(id)a3;
-- (_INPBRentalCarReservation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRentalCarReservation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRentalCarReservation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRentalCarReservation *)self dropOffLocation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dropOffLocation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dropOffLocation = [(_INPBRentalCarReservation *)self dropOffLocation];
+  dictionaryRepresentation = [dropOffLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dropOffLocation"];
 
-  v6 = [(_INPBRentalCarReservation *)self pickupLocation];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"pickupLocation"];
+  pickupLocation = [(_INPBRentalCarReservation *)self pickupLocation];
+  dictionaryRepresentation2 = [pickupLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pickupLocation"];
 
-  v8 = [(_INPBRentalCarReservation *)self rentalCar];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"rentalCar"];
+  rentalCar = [(_INPBRentalCarReservation *)self rentalCar];
+  dictionaryRepresentation3 = [rentalCar dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"rentalCar"];
 
-  v10 = [(_INPBRentalCarReservation *)self rentalDuration];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"rentalDuration"];
+  rentalDuration = [(_INPBRentalCarReservation *)self rentalDuration];
+  dictionaryRepresentation4 = [rentalDuration dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"rentalDuration"];
 
-  v12 = [(_INPBRentalCarReservation *)self reservation];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"reservation"];
+  reservation = [(_INPBRentalCarReservation *)self reservation];
+  dictionaryRepresentation5 = [reservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"reservation"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -45,28 +45,28 @@
   return v6 ^ [(_INPBReservation *)self->_reservation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBRentalCarReservation *)self dropOffLocation];
-  v6 = [v4 dropOffLocation];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRentalCarReservation *)self dropOffLocation];
+  dropOffLocation2 = [equalCopy dropOffLocation];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBRentalCarReservation *)self dropOffLocation];
-  if (v7)
+  dropOffLocation3 = [(_INPBRentalCarReservation *)self dropOffLocation];
+  if (dropOffLocation3)
   {
-    v8 = v7;
-    v9 = [(_INPBRentalCarReservation *)self dropOffLocation];
-    v10 = [v4 dropOffLocation];
-    v11 = [v9 isEqual:v10];
+    v8 = dropOffLocation3;
+    dropOffLocation4 = [(_INPBRentalCarReservation *)self dropOffLocation];
+    dropOffLocation5 = [equalCopy dropOffLocation];
+    v11 = [dropOffLocation4 isEqual:dropOffLocation5];
 
     if (!v11)
     {
@@ -78,20 +78,20 @@
   {
   }
 
-  v5 = [(_INPBRentalCarReservation *)self pickupLocation];
-  v6 = [v4 pickupLocation];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRentalCarReservation *)self pickupLocation];
+  dropOffLocation2 = [equalCopy pickupLocation];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBRentalCarReservation *)self pickupLocation];
-  if (v12)
+  pickupLocation = [(_INPBRentalCarReservation *)self pickupLocation];
+  if (pickupLocation)
   {
-    v13 = v12;
-    v14 = [(_INPBRentalCarReservation *)self pickupLocation];
-    v15 = [v4 pickupLocation];
-    v16 = [v14 isEqual:v15];
+    v13 = pickupLocation;
+    pickupLocation2 = [(_INPBRentalCarReservation *)self pickupLocation];
+    pickupLocation3 = [equalCopy pickupLocation];
+    v16 = [pickupLocation2 isEqual:pickupLocation3];
 
     if (!v16)
     {
@@ -103,20 +103,20 @@
   {
   }
 
-  v5 = [(_INPBRentalCarReservation *)self rentalCar];
-  v6 = [v4 rentalCar];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRentalCarReservation *)self rentalCar];
+  dropOffLocation2 = [equalCopy rentalCar];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBRentalCarReservation *)self rentalCar];
-  if (v17)
+  rentalCar = [(_INPBRentalCarReservation *)self rentalCar];
+  if (rentalCar)
   {
-    v18 = v17;
-    v19 = [(_INPBRentalCarReservation *)self rentalCar];
-    v20 = [v4 rentalCar];
-    v21 = [v19 isEqual:v20];
+    v18 = rentalCar;
+    rentalCar2 = [(_INPBRentalCarReservation *)self rentalCar];
+    rentalCar3 = [equalCopy rentalCar];
+    v21 = [rentalCar2 isEqual:rentalCar3];
 
     if (!v21)
     {
@@ -128,20 +128,20 @@
   {
   }
 
-  v5 = [(_INPBRentalCarReservation *)self rentalDuration];
-  v6 = [v4 rentalDuration];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRentalCarReservation *)self rentalDuration];
+  dropOffLocation2 = [equalCopy rentalDuration];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBRentalCarReservation *)self rentalDuration];
-  if (v22)
+  rentalDuration = [(_INPBRentalCarReservation *)self rentalDuration];
+  if (rentalDuration)
   {
-    v23 = v22;
-    v24 = [(_INPBRentalCarReservation *)self rentalDuration];
-    v25 = [v4 rentalDuration];
-    v26 = [v24 isEqual:v25];
+    v23 = rentalDuration;
+    rentalDuration2 = [(_INPBRentalCarReservation *)self rentalDuration];
+    rentalDuration3 = [equalCopy rentalDuration];
+    v26 = [rentalDuration2 isEqual:rentalDuration3];
 
     if (!v26)
     {
@@ -153,12 +153,12 @@
   {
   }
 
-  v5 = [(_INPBRentalCarReservation *)self reservation];
-  v6 = [v4 reservation];
-  if ((v5 != 0) != (v6 == 0))
+  dropOffLocation = [(_INPBRentalCarReservation *)self reservation];
+  dropOffLocation2 = [equalCopy reservation];
+  if ((dropOffLocation != 0) != (dropOffLocation2 == 0))
   {
-    v27 = [(_INPBRentalCarReservation *)self reservation];
-    if (!v27)
+    reservation = [(_INPBRentalCarReservation *)self reservation];
+    if (!reservation)
     {
 
 LABEL_30:
@@ -166,10 +166,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBRentalCarReservation *)self reservation];
-    v30 = [v4 reservation];
-    v31 = [v29 isEqual:v30];
+    v28 = reservation;
+    reservation2 = [(_INPBRentalCarReservation *)self reservation];
+    reservation3 = [equalCopy reservation];
+    v31 = [reservation2 isEqual:reservation3];
 
     if (v31)
     {
@@ -189,95 +189,95 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRentalCarReservation allocWithZone:](_INPBRentalCarReservation init];
-  v6 = [(_INPBLocationValue *)self->_dropOffLocation copyWithZone:a3];
+  v6 = [(_INPBLocationValue *)self->_dropOffLocation copyWithZone:zone];
   [(_INPBRentalCarReservation *)v5 setDropOffLocation:v6];
 
-  v7 = [(_INPBLocationValue *)self->_pickupLocation copyWithZone:a3];
+  v7 = [(_INPBLocationValue *)self->_pickupLocation copyWithZone:zone];
   [(_INPBRentalCarReservation *)v5 setPickupLocation:v7];
 
-  v8 = [(_INPBRentalCar *)self->_rentalCar copyWithZone:a3];
+  v8 = [(_INPBRentalCar *)self->_rentalCar copyWithZone:zone];
   [(_INPBRentalCarReservation *)v5 setRentalCar:v8];
 
-  v9 = [(_INPBDateTimeRange *)self->_rentalDuration copyWithZone:a3];
+  v9 = [(_INPBDateTimeRange *)self->_rentalDuration copyWithZone:zone];
   [(_INPBRentalCarReservation *)v5 setRentalDuration:v9];
 
-  v10 = [(_INPBReservation *)self->_reservation copyWithZone:a3];
+  v10 = [(_INPBReservation *)self->_reservation copyWithZone:zone];
   [(_INPBRentalCarReservation *)v5 setReservation:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRentalCarReservation *)self data];
+  coderCopy = coder;
+  data = [(_INPBRentalCarReservation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRentalCarReservation)initWithCoder:(id)a3
+- (_INPBRentalCarReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRentalCarReservation *)self initWithData:v6];
+    self = [(_INPBRentalCarReservation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBRentalCarReservation *)self dropOffLocation];
+  toCopy = to;
+  dropOffLocation = [(_INPBRentalCarReservation *)self dropOffLocation];
 
-  if (v4)
+  if (dropOffLocation)
   {
-    v5 = [(_INPBRentalCarReservation *)self dropOffLocation];
+    dropOffLocation2 = [(_INPBRentalCarReservation *)self dropOffLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRentalCarReservation *)self pickupLocation];
+  pickupLocation = [(_INPBRentalCarReservation *)self pickupLocation];
 
-  if (v6)
+  if (pickupLocation)
   {
-    v7 = [(_INPBRentalCarReservation *)self pickupLocation];
+    pickupLocation2 = [(_INPBRentalCarReservation *)self pickupLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRentalCarReservation *)self rentalCar];
+  rentalCar = [(_INPBRentalCarReservation *)self rentalCar];
 
-  if (v8)
+  if (rentalCar)
   {
-    v9 = [(_INPBRentalCarReservation *)self rentalCar];
+    rentalCar2 = [(_INPBRentalCarReservation *)self rentalCar];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBRentalCarReservation *)self rentalDuration];
+  rentalDuration = [(_INPBRentalCarReservation *)self rentalDuration];
 
-  if (v10)
+  if (rentalDuration)
   {
-    v11 = [(_INPBRentalCarReservation *)self rentalDuration];
+    rentalDuration2 = [(_INPBRentalCarReservation *)self rentalDuration];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBRentalCarReservation *)self reservation];
+  reservation = [(_INPBRentalCarReservation *)self reservation];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (reservation)
   {
-    v14 = [(_INPBRentalCarReservation *)self reservation];
+    reservation2 = [(_INPBRentalCarReservation *)self reservation];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 

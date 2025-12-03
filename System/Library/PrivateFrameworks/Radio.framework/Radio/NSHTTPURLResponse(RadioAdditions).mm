@@ -7,7 +7,7 @@
 - (id)radio_decompressedDataWithBodyData:()RadioAdditions
 {
   v4 = a3;
-  v5 = [a1 itunes_allHeaderFields];
+  itunes_allHeaderFields = [self itunes_allHeaderFields];
   v6 = ISDictionaryValueForCaseInsensitiveString();
 
   v7 = v4;

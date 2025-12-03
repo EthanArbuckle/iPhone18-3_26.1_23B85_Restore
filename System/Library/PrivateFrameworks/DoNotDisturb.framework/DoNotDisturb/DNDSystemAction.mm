@@ -1,19 +1,19 @@
 @interface DNDSystemAction
-+ (BOOL)runtimeIsSupported:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (DNDSystemAction)initWithAction:(id)a3 enabled:(BOOL)a4;
-- (DNDSystemAction)initWithCoder:(id)a3;
++ (BOOL)runtimeIsSupported:(id *)supported;
+- (BOOL)isEqual:(id)equal;
+- (DNDSystemAction)initWithAction:(id)action enabled:(BOOL)enabled;
+- (DNDSystemAction)initWithCoder:(id)coder;
 - (NSString)identifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDSystemAction
 
-+ (BOOL)runtimeIsSupported:(id *)a3
++ (BOOL)runtimeIsSupported:(id *)supported
 {
   v10[1] = *MEMORY[0x277D85DE8];
   if (!NSClassFromString(&cfstr_Wftogglesettin.isa) || !NSClassFromString(&cfstr_Wfreverseconte.isa))
@@ -22,13 +22,13 @@
     if (os_log_type_enabled(DNDLogAppConfiguration, OS_LOG_TYPE_ERROR))
     {
       [DNDSystemAction runtimeIsSupported:v5];
-      if (!a3)
+      if (!supported)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!a3)
+    else if (!supported)
     {
 LABEL_7:
       result = 0;
@@ -39,7 +39,7 @@ LABEL_7:
     v9 = *MEMORY[0x277CCA450];
     v10[0] = @"Failed to store system action: VoiceShortcutClient framework is not loaded.";
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    *a3 = [v6 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v7];
+    *supported = [v6 errorWithDomain:@"DNDErrorDomain" code:1006 userInfo:v7];
 
     goto LABEL_7;
   }
@@ -50,9 +50,9 @@ LABEL_8:
   return result;
 }
 
-- (DNDSystemAction)initWithAction:(id)a3 enabled:(BOOL)a4
+- (DNDSystemAction)initWithAction:(id)action enabled:(BOOL)enabled
 {
-  v7 = a3;
+  actionCopy = action;
   if ([objc_opt_class() runtimeIsSupported:0])
   {
     v12.receiver = self;
@@ -61,79 +61,79 @@ LABEL_8:
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_action, a3);
-      v9->_enabled = a4;
+      objc_storeStrong(&v8->_action, action);
+      v9->_enabled = enabled;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSString)identifier
 {
-  v2 = [(DNDSystemAction *)self action];
-  v3 = [v2 identifier];
+  action = [(DNDSystemAction *)self action];
+  identifier = [action identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (DNDSystemAction)initWithCoder:(id)a3
+- (DNDSystemAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if ([objc_opt_class() runtimeIsSupported:0])
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionEnabled"];
-    v6 = [v5 BOOLValue];
-    v7 = [v4 decodeObjectOfClass:NSClassFromString(&cfstr_Wftogglesettin.isa) forKey:@"DNDActionAction"];
-    v8 = [v4 decodeObjectOfClass:NSClassFromString(&cfstr_Wfreverseconte.isa) forKey:@"DNDActionReverseAction"];
-    self = [(DNDSystemAction *)self initWithAction:v7 reverseAction:v8 enabled:v6];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DNDActionEnabled"];
+    bOOLValue = [v5 BOOLValue];
+    v7 = [coderCopy decodeObjectOfClass:NSClassFromString(&cfstr_Wftogglesettin.isa) forKey:@"DNDActionAction"];
+    v8 = [coderCopy decodeObjectOfClass:NSClassFromString(&cfstr_Wfreverseconte.isa) forKey:@"DNDActionReverseAction"];
+    self = [(DNDSystemAction *)self initWithAction:v7 reverseAction:v8 enabled:bOOLValue];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   enabled = self->_enabled;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:enabled];
-  [v7 encodeObject:v6 forKey:@"DNDActionEnabled"];
+  [coderCopy encodeObject:v6 forKey:@"DNDActionEnabled"];
 
-  [v7 encodeObject:self->_action forKey:@"DNDActionAction"];
-  [v7 encodeObject:self->_reverseAction forKey:@"DNDActionReverseAction"];
+  [coderCopy encodeObject:self->_action forKey:@"DNDActionAction"];
+  [coderCopy encodeObject:self->_reverseAction forKey:@"DNDActionReverseAction"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSystemAction *)self action];
-  v4 = [v3 hash];
-  v5 = [(DNDSystemAction *)self reverseAction];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSystemAction *)self isEnabled];
+  action = [(DNDSystemAction *)self action];
+  v4 = [action hash];
+  reverseAction = [(DNDSystemAction *)self reverseAction];
+  v6 = [reverseAction hash] ^ v4;
+  isEnabled = [(DNDSystemAction *)self isEnabled];
 
-  return v6 ^ v7;
+  return v6 ^ isEnabled;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (self == v7)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -143,21 +143,21 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
-      v9 = [(DNDSystemAction *)self action];
-      v10 = [(DNDSystemAction *)v8 action];
-      if (v9 != v10)
+      v8 = equalCopy;
+      action = [(DNDSystemAction *)self action];
+      action2 = [(DNDSystemAction *)v8 action];
+      if (action != action2)
       {
-        v11 = [(DNDSystemAction *)self action];
-        if (!v11)
+        action3 = [(DNDSystemAction *)self action];
+        if (!action3)
         {
           LOBYTE(v14) = 0;
           goto LABEL_27;
         }
 
-        v3 = v11;
-        v12 = [(DNDSystemAction *)v8 action];
-        if (!v12)
+        v3 = action3;
+        action4 = [(DNDSystemAction *)v8 action];
+        if (!action4)
         {
           LOBYTE(v14) = 0;
 LABEL_26:
@@ -165,10 +165,10 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v4 = v12;
-        v13 = [(DNDSystemAction *)self action];
-        v5 = [(DNDSystemAction *)v8 action];
-        if (![v13 isEqual:v5])
+        v4 = action4;
+        action5 = [(DNDSystemAction *)self action];
+        action6 = [(DNDSystemAction *)v8 action];
+        if (![action5 isEqual:action6])
         {
           LOBYTE(v14) = 0;
 LABEL_25:
@@ -176,54 +176,54 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v26 = v5;
-        v27 = v13;
+        v26 = action6;
+        v27 = action5;
         v28 = v4;
       }
 
-      v15 = [(DNDSystemAction *)self reverseAction];
-      v16 = [(DNDSystemAction *)v8 reverseAction];
-      if (v15 == v16)
+      reverseAction = [(DNDSystemAction *)self reverseAction];
+      reverseAction2 = [(DNDSystemAction *)v8 reverseAction];
+      if (reverseAction == reverseAction2)
       {
         goto LABEL_16;
       }
 
-      v17 = [(DNDSystemAction *)self reverseAction];
-      if (!v17)
+      reverseAction3 = [(DNDSystemAction *)self reverseAction];
+      if (!reverseAction3)
       {
 
         LOBYTE(v14) = 0;
         goto LABEL_24;
       }
 
-      v5 = v17;
-      v18 = [(DNDSystemAction *)v8 reverseAction];
-      if (!v18)
+      action6 = reverseAction3;
+      reverseAction4 = [(DNDSystemAction *)v8 reverseAction];
+      if (!reverseAction4)
       {
         LOBYTE(v14) = 0;
         goto LABEL_22;
       }
 
-      v24 = v18;
-      v19 = [(DNDSystemAction *)self reverseAction];
-      v20 = [(DNDSystemAction *)v8 reverseAction];
-      v25 = v19;
-      v21 = v19;
-      v4 = v20;
-      if ([v21 isEqual:v20])
+      v24 = reverseAction4;
+      reverseAction5 = [(DNDSystemAction *)self reverseAction];
+      reverseAction6 = [(DNDSystemAction *)v8 reverseAction];
+      v25 = reverseAction5;
+      v21 = reverseAction5;
+      v4 = reverseAction6;
+      if ([v21 isEqual:reverseAction6])
       {
 LABEL_16:
-        v22 = [(DNDSystemAction *)self isEnabled];
-        v14 = v22 ^ [(DNDSystemAction *)v8 isEnabled]^ 1;
-        if (v15 == v16)
+        isEnabled = [(DNDSystemAction *)self isEnabled];
+        v14 = isEnabled ^ [(DNDSystemAction *)v8 isEnabled]^ 1;
+        if (reverseAction == reverseAction2)
         {
 LABEL_23:
 
 LABEL_24:
-          v13 = v27;
+          action5 = v27;
           v4 = v28;
-          v5 = v26;
-          if (v9 != v10)
+          action6 = v26;
+          if (action != action2)
           {
             goto LABEL_25;
           }
@@ -255,18 +255,18 @@ LABEL_28:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSystemAction *)self identifier];
+  identifier = [(DNDSystemAction *)self identifier];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[DNDSystemAction isEnabled](self, "isEnabled")}];
-  v7 = [(DNDSystemAction *)self action];
-  v8 = [(DNDSystemAction *)self reverseAction];
-  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %@; enabled: %@; action: %@; reverse: %@>", v4, self, v5, v6, v7, v8];;
+  action = [(DNDSystemAction *)self action];
+  reverseAction = [(DNDSystemAction *)self reverseAction];
+  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %@; enabled: %@; action: %@; reverse: %@>", v4, self, identifier, v6, action, reverseAction];;
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   action = self->_action;
   reverseAction = self->_reverseAction;
   enabled = self->_enabled;
@@ -274,9 +274,9 @@ LABEL_28:
   return [v4 initWithAction:action reverseAction:reverseAction enabled:enabled];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [DNDMutableSystemAction allocWithZone:a3];
+  v4 = [DNDMutableSystemAction allocWithZone:zone];
   action = self->_action;
   reverseAction = self->_reverseAction;
   enabled = self->_enabled;

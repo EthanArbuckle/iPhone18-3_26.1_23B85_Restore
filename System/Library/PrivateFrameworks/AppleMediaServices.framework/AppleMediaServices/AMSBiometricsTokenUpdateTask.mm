@@ -1,24 +1,24 @@
 @interface AMSBiometricsTokenUpdateTask
 + (AMSBagKeySet)bagKeySet;
-- (AMSBiometricsTokenUpdateTask)initWithAccount:(id)a3;
+- (AMSBiometricsTokenUpdateTask)initWithAccount:(id)account;
 - (id)_performBiometricsTokenUpdate;
 - (id)performUpdate;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSBiometricsTokenUpdateTask
 
-- (AMSBiometricsTokenUpdateTask)initWithAccount:(id)a3
+- (AMSBiometricsTokenUpdateTask)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AMSBiometricsTokenUpdateTask;
   v6 = [(AMSTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -34,8 +34,8 @@
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
@@ -44,13 +44,13 @@
     v20 = v6;
     v21 = 2114;
     v22 = v8;
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting token update.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting token update.", buf, 0x16u);
   }
 
   v9 = objc_alloc_init(AMSMutableBinaryPromise);
   if (+[AMSBiometrics type](AMSBiometrics, "type") && +[AMSBiometrics type]!= 1)
   {
-    v12 = [(AMSBiometricsTokenUpdateTask *)self _performBiometricsTokenUpdate];
+    _performBiometricsTokenUpdate = [(AMSBiometricsTokenUpdateTask *)self _performBiometricsTokenUpdate];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __45__AMSBiometricsTokenUpdateTask_performUpdate__block_invoke;
@@ -58,7 +58,7 @@
     v17[4] = self;
     v13 = v9;
     v18 = v13;
-    [v12 addFinishBlock:v17];
+    [_performBiometricsTokenUpdate addFinishBlock:v17];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -182,8 +182,8 @@ void __45__AMSBiometricsTokenUpdateTask_performUpdate__block_invoke_7(uint64_t a
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -192,7 +192,7 @@ void __45__AMSBiometricsTokenUpdateTask_performUpdate__block_invoke_7(uint64_t a
     *&buf[4] = v5;
     *&buf[12] = 2114;
     *&buf[14] = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Sending request to amsaccountsd", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Sending request to amsaccountsd", buf, 0x16u);
   }
 
   *buf = 0;
@@ -209,11 +209,11 @@ void __45__AMSBiometricsTokenUpdateTask_performUpdate__block_invoke_7(uint64_t a
   v12[4] = self;
   v12[5] = buf;
   v9 = [v8 thenWithBlock:v12];
-  v10 = [v9 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v9 binaryPromiseAdapter];
 
   _Block_object_dispose(buf, 8);
 
-  return v10;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__61__AMSBiometricsTokenUpdateTask__performBiometricsTokenUpdate__block_invoke(uint64_t a1, void *a2)
@@ -266,55 +266,55 @@ void __61__AMSBiometricsTokenUpdateTask__performBiometricsTokenUpdate__block_inv
   *(v5 + 40) = 0;
 }
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = +[AMSLogConfig sharedBiometricsConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
     v12 = AMSLogKey();
-    v13 = AMSHashIfNeeded(v6);
+    v13 = AMSHashIfNeeded(requestCopy);
     *buf = 138543874;
     v22 = v10;
     v23 = 2114;
     v24 = v12;
     v25 = 2114;
     v26 = v13;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling authenticate request. Request: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling authenticate request. Request: %{public}@", buf, 0x20u);
   }
 
-  v14 = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
+  presentationDelegate = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
 
-  if (v14)
+  if (presentationDelegate)
   {
-    v15 = [v6 options];
-    [v15 setAllowPasswordGeneration:2];
+    options = [requestCopy options];
+    [options setAllowPasswordGeneration:2];
 
-    v16 = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
+    presentationDelegate2 = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __69__AMSBiometricsTokenUpdateTask_handleAuthenticateRequest_completion___block_invoke;
     v18[3] = &unk_1E73B5390;
     v18[4] = self;
-    v19 = v6;
-    v20 = v7;
-    [v16 handleAuthenticateRequest:v19 completion:v18];
+    v19 = requestCopy;
+    v20 = completionCopy;
+    [presentationDelegate2 handleAuthenticateRequest:v19 completion:v18];
   }
 
   else
   {
     v17 = AMSError(6, @"Token Update Error", @"Could not handle authenticate request, presentation delegate not set", 0);
-    (*(v7 + 2))(v7, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 }
 
@@ -348,19 +348,19 @@ void __69__AMSBiometricsTokenUpdateTask_handleAuthenticateRequest_completion___b
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = +[AMSLogConfig sharedBiometricsConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
@@ -370,29 +370,29 @@ void __69__AMSBiometricsTokenUpdateTask_handleAuthenticateRequest_completion___b
     v21 = 2114;
     v22 = v12;
     v23 = 2114;
-    v24 = v6;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling dialog request. Request: %{public}@", buf, 0x20u);
+    v24 = requestCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling dialog request. Request: %{public}@", buf, 0x20u);
   }
 
-  v13 = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
+  presentationDelegate = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
 
-  if (v13)
+  if (presentationDelegate)
   {
-    v14 = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
+    presentationDelegate2 = [(AMSBiometricsTokenUpdateTask *)self presentationDelegate];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __63__AMSBiometricsTokenUpdateTask_handleDialogRequest_completion___block_invoke;
     v16[3] = &unk_1E73B53B8;
     v16[4] = self;
-    v17 = v6;
-    v18 = v7;
-    [v14 handleDialogRequest:v17 completion:v16];
+    v17 = requestCopy;
+    v18 = completionCopy;
+    [presentationDelegate2 handleDialogRequest:v17 completion:v16];
   }
 
   else
   {
     v15 = AMSError(6, @"Token Update Error", @"Could not handle dialog request, presentation delegate not set", 0);
-    (*(v7 + 2))(v7, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 

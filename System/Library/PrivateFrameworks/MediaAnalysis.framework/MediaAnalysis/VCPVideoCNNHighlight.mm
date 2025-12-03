@@ -2,8 +2,8 @@
 - (VCPVideoCNNHighlight)init;
 - (id).cxx_construct;
 - (id)results;
-- (int)loadAnalysisResults:(id)a3;
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7;
+- (int)loadAnalysisResults:(id)results;
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration;
 - (void)dealloc;
 @end
 
@@ -17,14 +17,14 @@
   v2 = [(VCPVideoCNNHighlight *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v4 = [v3 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    [MEMORY[0x1E695DFF8] URLWithString:@"highlight_head.espresso.net" relativeToURL:v4];
+    [MEMORY[0x1E695DFF8] URLWithString:@"highlight_head.espresso.net" relativeToURL:resourceURL];
     objc_claimAutoreleasedReturnValue();
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v2->_results;
-    v2->_results = v5;
+    v2->_results = array;
 
     inputNames = v2->_inputNames;
     v2->_inputNames = &unk_1F49BEAD0;
@@ -49,10 +49,10 @@
   [(VCPVideoCNNHighlight *)&v4 dealloc];
 }
 
-- (int)loadAnalysisResults:(id)a3
+- (int)loadAnalysisResults:(id)results
 {
   v5[8] = *MEMORY[0x1E69E9840];
-  a3;
+  results;
   {
     {
       v5[0] = @"QualityResults";
@@ -71,18 +71,18 @@
   operator new[]();
 }
 
-- (int)run:(id)a3 withPersons:(id)a4 andRegionCrop:(CGRect)a5 atTime:(id *)a6 andDuration:(id *)a7
+- (int)run:(id)run withPersons:(id)persons andRegionCrop:(CGRect)crop atTime:(id *)time andDuration:(id *)duration
 {
   v42[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  runCopy = run;
   p_inputsData = &self->_inputsData;
-  v32 = v10;
+  v32 = runCopy;
   if ((self->_inputsData.__end_ - self->_inputsData.__begin_) != 16)
   {
     goto LABEL_16;
   }
 
-  *p_inputsData->__begin_ = [v10 outputBeforeTemporalPooling];
+  *p_inputsData->__begin_ = [runCopy outputBeforeTemporalPooling];
   *(p_inputsData->__begin_ + 1) = self->_analysisInput;
   begin = p_inputsData->__begin_;
   if (!*p_inputsData->__begin_ || !*(begin + 8))
@@ -136,12 +136,12 @@
 
           while (v22 != 5);
           memset(&v35, 0, sizeof(v35));
-          time = *a7;
+          time = *duration;
           CMTimeMultiply(&v33, &time, v16);
           time = v33;
           CMTimeMultiplyByRatio(&v34, &time, 1, 2);
           time = v34;
-          rhs = *a6;
+          rhs = *time;
           CMTimeAdd(&v35, &time, &rhs);
           results = self->_results;
           v41[0] = @"start";
@@ -149,7 +149,7 @@
           v25 = CMTimeCopyAsDictionary(&time, 0);
           v42[0] = v25;
           v41[1] = @"duration";
-          time = *a7;
+          time = *duration;
           CMTimeMultiplyByRatio(&rhs, &time, 1, 2);
           time = rhs;
           v26 = CMTimeCopyAsDictionary(&time, 0);

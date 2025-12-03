@@ -1,45 +1,45 @@
 @interface _CDQueryInteractionAdvisor
-- (_CDQueryInteractionAdvisor)initWithStore:(id)a3;
-- (id)adviseInteractionsForKeywordsInString:(id)a3 usingSettings:(id)a4;
+- (_CDQueryInteractionAdvisor)initWithStore:(id)store;
+- (id)adviseInteractionsForKeywordsInString:(id)string usingSettings:(id)settings;
 @end
 
 @implementation _CDQueryInteractionAdvisor
 
-- (_CDQueryInteractionAdvisor)initWithStore:(id)a3
+- (_CDQueryInteractionAdvisor)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = _CDQueryInteractionAdvisor;
   v5 = [(_CDQueryInteractionAdvisor *)&v8 init];
   store = v5->_store;
-  v5->_store = v4;
+  v5->_store = storeCopy;
 
   return v5;
 }
 
-- (id)adviseInteractionsForKeywordsInString:(id)a3 usingSettings:(id)a4
+- (id)adviseInteractionsForKeywordsInString:(id)string usingSettings:(id)settings
 {
   v138 = *MEMORY[0x1E69E9840];
-  v75 = a3;
-  v74 = a4;
+  stringCopy = string;
+  settingsCopy = settings;
   store = self->_store;
   v7 = [MEMORY[0x1E696AE18] predicateWithValue:1];
   v80 = [(_CDInteractionStore *)store countInteractionsUsingPredicate:v7 error:0];
 
-  v73 = [v74 copy];
+  v73 = [settingsCopy copy];
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [v74 constrainKeywords];
-  v72 = [v8 setWithSet:v9];
+  constrainKeywords = [settingsCopy constrainKeywords];
+  v72 = [v8 setWithSet:constrainKeywords];
 
-  v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v11 = [v75 componentsSeparatedByCharactersInSet:v10];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v11 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   [v72 addObjectsFromArray:v11];
 
   [v73 setConstrainKeywords:v72];
-  v71 = [v73 interactionPredicate];
-  v12 = [(_CDInteractionStore *)self->_store queryInteractionsUsingPredicate:v71 sortDescriptors:0 limit:0 error:0];
-  v13 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v86 = [v75 componentsSeparatedByCharactersInSet:v13];
+  interactionPredicate = [v73 interactionPredicate];
+  v12 = [(_CDInteractionStore *)self->_store queryInteractionsUsingPredicate:interactionPredicate sortDescriptors:0 limit:0 error:0];
+  whitespaceAndNewlineCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v86 = [stringCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
   v84 = [MEMORY[0x1E695DFD8] setWithArray:v86];
   v87 = [v86 count];
@@ -86,34 +86,34 @@
         v111 = 0u;
         v112 = 0u;
         v113 = 0u;
-        v16 = [v15 keywords];
-        v17 = [v16 countByEnumeratingWithState:&v110 objects:v136 count:16];
+        keywords = [v15 keywords];
+        v17 = [keywords countByEnumeratingWithState:&v110 objects:v136 count:16];
         if (v17)
         {
           v88 = *v111;
-          v85 = v16;
+          v85 = keywords;
           do
           {
-            v89 = v17;
-            for (j = 0; j != v89; j = (j + 1))
+            firstObject = v17;
+            for (j = 0; j != firstObject; j = (j + 1))
             {
               if (*v111 != v88)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(keywords);
               }
 
               v19 = *(*(&v110 + 1) + 8 * j);
               if ([v84 containsObject:v19])
               {
-                v20 = [v15 sender];
-                (v14)[2](v14, v20, v19);
+                sender = [v15 sender];
+                (v14)[2](v14, sender, v19);
 
                 v108 = 0u;
                 v109 = 0u;
                 v106 = 0u;
                 v107 = 0u;
-                v21 = [v15 recipients];
-                v22 = [v21 countByEnumeratingWithState:&v106 objects:v135 count:16];
+                recipients = [v15 recipients];
+                v22 = [recipients countByEnumeratingWithState:&v106 objects:v135 count:16];
                 if (v22)
                 {
                   v23 = *v107;
@@ -123,23 +123,23 @@
                     {
                       if (*v107 != v23)
                       {
-                        objc_enumerationMutation(v21);
+                        objc_enumerationMutation(recipients);
                       }
 
                       v14[2](v14, *(*(&v106 + 1) + 8 * k), v19);
                     }
 
-                    v22 = [v21 countByEnumeratingWithState:&v106 objects:v135 count:16];
+                    v22 = [recipients countByEnumeratingWithState:&v106 objects:v135 count:16];
                   }
 
                   while (v22);
                 }
 
-                v16 = v85;
+                keywords = v85;
               }
             }
 
-            v17 = [v16 countByEnumeratingWithState:&v110 objects:v136 count:16];
+            v17 = [keywords countByEnumeratingWithState:&v110 objects:v136 count:16];
           }
 
           while (v17);
@@ -230,7 +230,7 @@
     {
       v81 = v81;
       v82 = 0;
-      v89 = &v77[i * v81];
+      firstObject = &v77[i * v81];
       do
       {
         if (*v99 != v79)
@@ -265,7 +265,7 @@
               v46 = [v45 objectForKeyedSubscript:v44];
               LODWORD(v44) = [v46 intValue];
 
-              v89[v41++] = v44;
+              firstObject[v41++] = v44;
               ++v43;
             }
 
@@ -276,7 +276,7 @@
           while (v40);
         }
 
-        v89 = (v89 + i);
+        firstObject = (firstObject + i);
         ++v81;
         ++v82;
       }
@@ -288,7 +288,7 @@
     while (v80);
   }
 
-  v89 = [v76 firstObject];
+  firstObject = [v76 firstObject];
   v82 = [MEMORY[0x1E695DF70] arrayWithCapacity:v69];
   v92 = 0u;
   v93 = 0u;
@@ -314,12 +314,12 @@
 
         v51 = *(*(&v90 + 1) + 8 * v49);
         v52 = objc_alloc_init(_CDAdvisedInteraction);
-        -[_CDAdvisedInteraction setMechanism:](v52, "setMechanism:", [v89 mechanism]);
-        v53 = [v89 bundleId];
-        [(_CDAdvisedInteraction *)v52 setBundleId:v53];
+        -[_CDAdvisedInteraction setMechanism:](v52, "setMechanism:", [firstObject mechanism]);
+        bundleId = [firstObject bundleId];
+        [(_CDAdvisedInteraction *)v52 setBundleId:bundleId];
 
-        v54 = [v89 account];
-        [(_CDAdvisedInteraction *)v52 setAccount:v54];
+        account = [firstObject account];
+        [(_CDAdvisedInteraction *)v52 setAccount:account];
         v55 = v87 == 0;
 
         v56 = 0.0;
@@ -357,10 +357,10 @@
   }
 
   v63 = [v82 sortedArrayUsingComparator:&__block_literal_global_20];
-  v64 = [v74 resultLimit];
-  if (v64 < [v63 count])
+  resultLimit = [settingsCopy resultLimit];
+  if (resultLimit < [v63 count])
   {
-    v65 = [v63 subarrayWithRange:{0, objc_msgSend(v74, "resultLimit")}];
+    v65 = [v63 subarrayWithRange:{0, objc_msgSend(settingsCopy, "resultLimit")}];
 
     v63 = v65;
   }

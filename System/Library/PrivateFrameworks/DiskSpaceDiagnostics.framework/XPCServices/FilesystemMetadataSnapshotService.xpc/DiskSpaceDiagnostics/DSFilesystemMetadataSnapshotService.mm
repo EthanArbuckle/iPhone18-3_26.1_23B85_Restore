@@ -1,42 +1,42 @@
 @interface DSFilesystemMetadataSnapshotService
-+ (id)_validateOptions:(id)a3 error:(id *)a4;
-- (id)generateFilesystemMetadataSnapshotWithOptions:(id)a3 reply:(id)a4;
++ (id)_validateOptions:(id)options error:(id *)error;
+- (id)generateFilesystemMetadataSnapshotWithOptions:(id)options reply:(id)reply;
 @end
 
 @implementation DSFilesystemMetadataSnapshotService
 
-+ (id)_validateOptions:(id)a3 error:(id *)a4
++ (id)_validateOptions:(id)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v88 = v5;
+    v88 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Validating options: %{public}@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v7 = +[NSMutableDictionary dictionary];
-  if (v5)
+  if (optionsCopy)
   {
     v8 = @"FilesystemMetadatSnapshotOptionShouldHashVolumeListings";
-    if (![v5 count])
+    if (![optionsCopy count])
     {
       goto LABEL_36;
     }
 
-    v65 = a4;
+    errorCopy = error;
     v66 = v7;
     v86[0] = @"FilesystemMetadatSnapshotOptionMountPointsAllowListArray";
     v86[1] = @"FilesystemMetadatSnapshotOptionShouldHashVolumeListings";
     v9 = [NSArray arrayWithObjects:v86 count:2];
-    v10 = [v5 allKeys];
-    v11 = [NSSet setWithArray:v10];
+    allKeys = [optionsCopy allKeys];
+    v11 = [NSSet setWithArray:allKeys];
 
     v74 = 0u;
     v75 = 0u;
@@ -73,10 +73,10 @@
               sub_1000300FC();
             }
 
-            if (v65)
+            if (errorCopy)
             {
               v41 = v39;
-              *v65 = v39;
+              *errorCopy = v39;
             }
 
             v18 = v12;
@@ -96,7 +96,7 @@
 
     v18 = @"FilesystemMetadatSnapshotOptionMountPointsAllowListArray";
     v19 = objc_opt_class();
-    v20 = [v5 objectForKeyedSubscript:v18];
+    v20 = [optionsCopy objectForKeyedSubscript:v18];
     if (v20)
     {
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -114,10 +114,10 @@
           sub_1000300FC();
         }
 
-        if (v65)
+        if (errorCopy)
         {
           v47 = v45;
-          *v65 = v45;
+          *errorCopy = v45;
           v39 = v42;
         }
 
@@ -177,10 +177,10 @@ LABEL_66:
 
               v20 = v62;
               v39 = v63;
-              if (v65)
+              if (errorCopy)
               {
                 v53 = v51;
-                *v65 = v51;
+                *errorCopy = v51;
               }
 
               v47 = v64;
@@ -192,12 +192,12 @@ LABEL_66:
             {
               [v28 substringToIndex:{objc_msgSend(v28, "length") - 1}];
               v29 = v8;
-              v30 = v5;
+              v30 = optionsCopy;
               v32 = v31 = v21;
 
               v28 = v32;
               v21 = v31;
-              v5 = v30;
+              optionsCopy = v30;
               v8 = v29;
               v22 = v64;
             }
@@ -226,7 +226,7 @@ LABEL_66:
 
     v8 = v8;
     v33 = objc_opt_class();
-    v34 = [v5 objectForKeyedSubscript:v8];
+    v34 = [optionsCopy objectForKeyedSubscript:v8];
     if (!v34)
     {
 LABEL_34:
@@ -254,10 +254,10 @@ LABEL_34:
       sub_1000300FC();
     }
 
-    if (v65)
+    if (errorCopy)
     {
       v59 = v57;
-      *v65 = v57;
+      *errorCopy = v57;
     }
 
 LABEL_67:
@@ -309,10 +309,10 @@ LABEL_68:
   return v36;
 }
 
-- (id)generateFilesystemMetadataSnapshotWithOptions:(id)a3 reply:(id)a4
+- (id)generateFilesystemMetadataSnapshotWithOptions:(id)options reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  optionsCopy = options;
   v7 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -321,7 +321,7 @@ LABEL_68:
   }
 
   v21 = 0;
-  v8 = [objc_opt_class() _validateOptions:v6 error:&v21];
+  v8 = [objc_opt_class() _validateOptions:optionsCopy error:&v21];
 
   v9 = v21;
   if (v9)
@@ -332,7 +332,7 @@ LABEL_68:
       sub_10003016C();
     }
 
-    v5[2](v5, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
   }
 
   v11 = shared_filesystem_metadata_snapshot_service_log_handle();
@@ -354,13 +354,13 @@ LABEL_68:
   block[2] = sub_10000682C;
   block[3] = &unk_1000687B8;
   v19 = v12;
-  v20 = v5;
-  v14 = v5;
+  v20 = replyCopy;
+  v14 = replyCopy;
   v15 = v12;
   dispatch_async(&_dispatch_main_q, block);
-  v16 = [(DSSnapshotRequest *)v15 progress];
+  progress = [(DSSnapshotRequest *)v15 progress];
 
-  return v16;
+  return progress;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface HDSampleEntity
-+ (BOOL)_validateEntityWithEnumerator:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5;
-+ (BOOL)enumerateAssociatedObjectsForIdentifier:(int64_t)a3 inDatabase:(id)a4 predicate:(id)a5 error:(id *)a6 associatedObjectHandler:(id)a7;
-+ (BOOL)validateEntitiesOfTypes:(id)a3 profile:(id)a4 error:(id *)a5 validationErrorHandler:(id)a6;
-+ (id)anySampleOfType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 error:(id *)a7;
++ (BOOL)_validateEntityWithEnumerator:(id)enumerator error:(id *)error validationErrorHandler:(id)handler;
++ (BOOL)enumerateAssociatedObjectsForIdentifier:(int64_t)identifier inDatabase:(id)database predicate:(id)predicate error:(id *)error associatedObjectHandler:(id)handler;
++ (BOOL)validateEntitiesOfTypes:(id)types profile:(id)profile error:(id *)error validationErrorHandler:(id)handler;
++ (id)anySampleOfType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate error:(id *)error;
 + (id)columnNamesForTimeOffset;
-+ (id)dateIntervalsForSampleTypes:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)entityEnumeratorWithType:(id)a3 profile:(id)a4;
-+ (id)entityEnumeratorWithTypes:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)dateIntervalsForSampleTypes:(id)types profile:(id)profile error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)entityEnumeratorWithType:(id)type profile:(id)profile;
++ (id)entityEnumeratorWithTypes:(id)types profile:(id)profile error:(id *)error;
 + (id)indices;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)maxAnchorForSamplesWithType:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)minimumSampleStartDateForProfile:(id)a3 error:(id *)a4;
-+ (id)mostRecentSampleWithType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 anchor:(id *)a7 error:(id *)a8;
-+ (id)objectInsertionFilterForProfile:(id)a3;
-+ (id)oldestSampleWithType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 error:(id *)a7;
-+ (id)orderingTermForSortDescriptor:(id)a3;
-+ (id)populatedSampleTypes:(id)a3 inDateInterval:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)sampleCountsByTypeForProfile:(id)a3 error:(id *)a4;
-+ (id)sampleTypesForSamplesMatchingPredicate:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)samplesWithType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 limit:(unint64_t)a7 anchor:(id *)a8 error:(id *)a9;
-+ (id)sourceIDsForSamplesWithType:(id)a3 profile:(id)a4 predicate:(id)a5 error:(id *)a6;
-+ (int64_t)countOfSamplesWithType:(id)a3 profile:(id)a4 matchingPredicate:(id)a5 withError:(id *)a6;
-+ (void)deleteSamplesWithPredicate:(id)a3 limit:(unint64_t)a4 deletionContext:(id)a5 completionHandler:(id)a6;
-+ (void)deleteSamplesWithTypes:(id)a3 sourceEntities:(id)a4 profile:(id)a5 recursiveDeleteAuthorizationBlock:(id)a6 completionHandler:(id)a7;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)maxAnchorForSamplesWithType:(id)type profile:(id)profile error:(id *)error;
++ (id)minimumSampleStartDateForProfile:(id)profile error:(id *)error;
++ (id)mostRecentSampleWithType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate anchor:(id *)anchor error:(id *)error;
++ (id)objectInsertionFilterForProfile:(id)profile;
++ (id)oldestSampleWithType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate error:(id *)error;
++ (id)orderingTermForSortDescriptor:(id)descriptor;
++ (id)populatedSampleTypes:(id)types inDateInterval:(id)interval profile:(id)profile error:(id *)error;
++ (id)sampleCountsByTypeForProfile:(id)profile error:(id *)error;
++ (id)sampleTypesForSamplesMatchingPredicate:(id)predicate profile:(id)profile error:(id *)error;
++ (id)samplesWithType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate limit:(unint64_t)limit anchor:(id *)anchor error:(id *)error;
++ (id)sourceIDsForSamplesWithType:(id)type profile:(id)profile predicate:(id)predicate error:(id *)error;
++ (int64_t)countOfSamplesWithType:(id)type profile:(id)profile matchingPredicate:(id)predicate withError:(id *)error;
++ (void)deleteSamplesWithPredicate:(id)predicate limit:(unint64_t)limit deletionContext:(id)context completionHandler:(id)handler;
++ (void)deleteSamplesWithTypes:(id)types sourceEntities:(id)entities profile:(id)profile recursiveDeleteAuthorizationBlock:(id)block completionHandler:(id)handler;
 @end
 
 @implementation HDSampleEntity
@@ -60,27 +60,27 @@
   return v14;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"HDSampleEntity.m" lineNumber:100 description:{@"Subclasses must override %s", "+[HDSampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSampleEntity.m" lineNumber:100 description:{@"Subclasses must override %s", "+[HDSampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __80__HDSampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v22[3] = &unk_278613038;
-  v23 = v14;
-  v24 = v12;
-  v16 = v12;
-  v17 = v14;
-  if ([v13 executeSQL:@"INSERT INTO samples (data_id error:data_type bindingHandler:start_date enumerationHandler:{end_date) VALUES (?, ?, ?, ?)", a7, v22, 0}])
+  v23 = dCopy;
+  v24 = objectCopy;
+  v16 = objectCopy;
+  v17 = dCopy;
+  if ([databaseCopy executeSQL:@"INSERT INTO samples (data_id error:data_type bindingHandler:start_date enumerationHandler:{end_date) VALUES (?, ?, ?, ?)", error, v22, 0}])
   {
     v18 = v17;
   }
@@ -108,11 +108,11 @@ uint64_t __80__HDSampleEntity_insertDataObject_withProvenance_inDatabase_persist
   return sqlite3_bind_double(a2, 4, v6);
 }
 
-+ (id)orderingTermForSortDescriptor:(id)a3
++ (id)orderingTermForSortDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v4 ascending];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy key];
+  ascending = [descriptorCopy ascending];
   if ([v5 isEqualToString:*MEMORY[0x277CCCD50]])
   {
     v7 = MEMORY[0x277D10B68];
@@ -121,7 +121,7 @@ uint64_t __80__HDSampleEntity_insertDataObject_withProvenance_inDatabase_persist
 LABEL_5:
     v10 = v7;
 LABEL_6:
-    v11 = [v10 orderingTermWithProperty:v9 entityClass:v8 ascending:v6];
+    v11 = [v10 orderingTermWithProperty:v9 entityClass:v8 ascending:ascending];
     goto LABEL_7;
   }
 
@@ -142,21 +142,21 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___HDSampleEntity;
-  v11 = objc_msgSendSuper2(&v15, sel_orderingTermForSortDescriptor_, v4);
+  v11 = objc_msgSendSuper2(&v15, sel_orderingTermForSortDescriptor_, descriptorCopy);
 LABEL_7:
   v12 = v11;
 
   return v12;
 }
 
-+ (id)mostRecentSampleWithType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 anchor:(id *)a7 error:(id *)a8
++ (id)mostRecentSampleWithType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate anchor:(id *)anchor error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  typeCopy = type;
+  profileCopy = profile;
+  optionsCopy = options;
+  predicateCopy = predicate;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -169,9 +169,9 @@ LABEL_7:
   v26 = __Block_byref_object_copy__57;
   v27 = __Block_byref_object_dispose__57;
   v28 = 0;
-  v18 = [a1 entityEnumeratorWithType:v14 profile:v15];
-  [v18 setPredicate:v17];
-  [v18 addEncodingOptionsFromDictionary:v16];
+  v18 = [self entityEnumeratorWithType:typeCopy profile:profileCopy];
+  [v18 setPredicate:predicateCopy];
+  [v18 addEncodingOptionsFromDictionary:optionsCopy];
   v19 = HDSampleEntityOrderingTermsForRecentness();
   [v18 setOrderingTerms:v19];
 
@@ -182,10 +182,10 @@ LABEL_7:
   v22[3] = &unk_27861B5A8;
   v22[4] = &v29;
   v22[5] = &v23;
-  [v18 enumerateWithError:a8 handler:v22];
-  if (a7)
+  [v18 enumerateWithError:error handler:v22];
+  if (anchor)
   {
-    *a7 = v24[5];
+    *anchor = v24[5];
   }
 
   v20 = v30[5];
@@ -208,21 +208,21 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
   return 0;
 }
 
-+ (id)oldestSampleWithType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 error:(id *)a7
++ (id)oldestSampleWithType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  typeCopy = type;
+  profileCopy = profile;
+  optionsCopy = options;
+  predicateCopy = predicate;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__57;
   v25 = __Block_byref_object_dispose__57;
   v26 = 0;
-  v16 = [a1 entityEnumeratorWithType:v12 profile:v13];
-  [v16 setPredicate:v15];
-  [v16 addEncodingOptionsFromDictionary:v14];
+  v16 = [self entityEnumeratorWithType:typeCopy profile:profileCopy];
+  [v16 setPredicate:predicateCopy];
+  [v16 addEncodingOptionsFromDictionary:optionsCopy];
   v17 = HDSampleEntityOrderingTermsForOldness();
   [v16 setOrderingTerms:v17];
 
@@ -232,7 +232,7 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
   v20[2] = __79__HDSampleEntity_oldestSampleWithType_profile_encodingOptions_predicate_error___block_invoke;
   v20[3] = &unk_278613718;
   v20[4] = &v21;
-  [v16 enumerateWithError:a7 handler:v20];
+  [v16 enumerateWithError:error handler:v20];
   v18 = v22[5];
 
   _Block_object_dispose(&v21, 8);
@@ -240,24 +240,24 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
   return v18;
 }
 
-+ (id)maxAnchorForSamplesWithType:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)maxAnchorForSamplesWithType:(id)type profile:(id)profile error:(id *)error
 {
-  v7 = a4;
-  v8 = HDSampleEntityPredicateForDataType(a3);
-  v9 = [v7 database];
+  profileCopy = profile;
+  v8 = HDSampleEntityPredicateForDataType(type);
+  database = [profileCopy database];
 
-  v10 = [(HDHealthEntity *)HDSampleEntity maxRowIDForPredicate:v8 healthDatabase:v9 error:a5];
+  v10 = [(HDHealthEntity *)HDSampleEntity maxRowIDForPredicate:v8 healthDatabase:database error:error];
 
   return v10;
 }
 
-+ (void)deleteSamplesWithTypes:(id)a3 sourceEntities:(id)a4 profile:(id)a5 recursiveDeleteAuthorizationBlock:(id)a6 completionHandler:(id)a7
++ (void)deleteSamplesWithTypes:(id)types sourceEntities:(id)entities profile:(id)profile recursiveDeleteAuthorizationBlock:(id)block completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  typesCopy = types;
+  entitiesCopy = entities;
+  profileCopy = profile;
+  blockCopy = block;
+  handlerCopy = handler;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -280,11 +280,11 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
   v47 = __Block_byref_object_copy__57;
   v48 = __Block_byref_object_dispose__57;
   v49 = 0;
-  if ([v13 count] || objc_msgSend(v14, "count"))
+  if ([typesCopy count] || objc_msgSend(entitiesCopy, "count"))
   {
-    if ([v14 count])
+    if ([entitiesCopy count])
     {
-      v18 = HDDataEntityPredicateForSourceEntitySet(7, v14);
+      v18 = HDDataEntityPredicateForSourceEntitySet(7, entitiesCopy);
     }
 
     else
@@ -292,20 +292,20 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
       v18 = 0;
     }
 
-    v26 = v13;
-    if ([v13 count])
+    v26 = typesCopy;
+    if ([typesCopy count])
     {
-      v19 = HDSampleEntityPredicateForDataTypes(v13);
-      v20 = v14;
+      v19 = HDSampleEntityPredicateForDataTypes(typesCopy);
+      v20 = entitiesCopy;
     }
 
     else
     {
-      v20 = v14;
+      v20 = entitiesCopy;
       v19 = 0;
     }
 
-    v21 = [v15 database];
+    database = [profileCopy database];
     v43 = 0;
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -315,9 +315,9 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
     v34 = v22;
     v23 = v18;
     v35 = v23;
-    v42 = a1;
-    v36 = v15;
-    v37 = v16;
+    selfCopy = self;
+    v36 = profileCopy;
+    v37 = blockCopy;
     v38 = &v62;
     v39 = &v56;
     v40 = &v50;
@@ -330,22 +330,22 @@ uint64_t __90__HDSampleEntity_mostRecentSampleWithType_profile_encodingOptions_p
     v30 = v27;
     v32 = &v62;
     v31 = v36;
-    v24 = [a1 performWriteTransactionWithHealthDatabase:v21 error:&v43 block:v33 inaccessibilityHandler:v28];
+    v24 = [self performWriteTransactionWithHealthDatabase:database error:&v43 block:v33 inaccessibilityHandler:v28];
     v25 = v43;
 
-    if (v17)
+    if (handlerCopy)
     {
-      v17[2](v17, v24, *(v63 + 24), v57[5], v51[5], v45[5], v25);
+      handlerCopy[2](handlerCopy, v24, *(v63 + 24), v57[5], v51[5], v45[5], v25);
     }
 
-    v14 = v20;
-    v13 = v27;
+    entitiesCopy = v20;
+    typesCopy = v27;
   }
 
   else
   {
     v23 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Invalid arguments to delete source entities or types must be non-empty."];;
-    v17[2](v17, 0, 0, 0, 0, 0, v23);
+    handlerCopy[2](handlerCopy, 0, 0, 0, 0, 0, v23);
     v25 = 0;
   }
 
@@ -456,16 +456,16 @@ uint64_t __116__HDSampleEntity_deleteSamplesWithTypes_sourceEntities_profile_rec
   return [v2 numberWithLongLong:v3];
 }
 
-+ (void)deleteSamplesWithPredicate:(id)a3 limit:(unint64_t)a4 deletionContext:(id)a5 completionHandler:(id)a6
++ (void)deleteSamplesWithPredicate:(id)predicate limit:(unint64_t)limit deletionContext:(id)context completionHandler:(id)handler
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  predicateCopy = predicate;
+  contextCopy = context;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (predicateCopy)
   {
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -473,8 +473,8 @@ uint64_t __116__HDSampleEntity_deleteSamplesWithTypes_sourceEntities_profile_rec
 
   else
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:a1 file:@"HDSampleEntity.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSampleEntity.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
 
     if (v14)
     {
@@ -482,28 +482,28 @@ uint64_t __116__HDSampleEntity_deleteSamplesWithTypes_sourceEntities_profile_rec
     }
   }
 
-  v33 = [MEMORY[0x277CCA890] currentHandler];
-  [v33 handleFailureInMethod:a2 object:a1 file:@"HDSampleEntity.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDSampleEntity.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v15 = [v12 transaction];
-  v16 = [v15 databaseForEntityClass:a1];
-  v17 = [a1 queryWithDatabase:v16 predicate:v11 limit:a4 orderingTerms:0 groupBy:0];
+  transaction = [contextCopy transaction];
+  v16 = [transaction databaseForEntityClass:self];
+  v17 = [self queryWithDatabase:v16 predicate:predicateCopy limit:limit orderingTerms:0 groupBy:0];
 
   v41[0] = @"data_type";
   v41[1] = @"uuid";
   v41[2] = @"provenance";
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:3];
-  v19 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v20 = objc_alloc_init(MEMORY[0x277CCD2D8]);
   v40 = 0;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __85__HDSampleEntity_deleteSamplesWithPredicate_limit_deletionContext_completionHandler___block_invoke;
   v36[3] = &unk_27861B648;
-  v21 = v12;
+  v21 = contextCopy;
   v37 = v21;
-  v22 = v19;
+  v22 = date;
   v38 = v22;
   v23 = v20;
   v39 = v23;
@@ -514,18 +514,18 @@ LABEL_3:
   {
     if (v24)
     {
-      v26 = [v21 lastInsertedDeletedObjectPersistentID];
+      lastInsertedDeletedObjectPersistentID = [v21 lastInsertedDeletedObjectPersistentID];
       v34 = v18;
       v27 = v17;
-      v28 = [v21 deletedObjectCount];
+      deletedObjectCount = [v21 deletedObjectCount];
       [v21 deletedObjectTypeSet];
-      v29 = v35 = v11;
-      v30 = v28;
+      v29 = v35 = predicateCopy;
+      v30 = deletedObjectCount;
       v17 = v27;
       v18 = v34;
-      (v14)[2](v14, 1, v26, v30, v29, v23, v25);
+      (v14)[2](v14, 1, lastInsertedDeletedObjectPersistentID, v30, v29, v23, v25);
 
-      v11 = v35;
+      predicateCopy = v35;
     }
 
     else
@@ -557,18 +557,18 @@ uint64_t __85__HDSampleEntity_deleteSamplesWithPredicate_limit_deletionContext_c
   return v14;
 }
 
-+ (BOOL)enumerateAssociatedObjectsForIdentifier:(int64_t)a3 inDatabase:(id)a4 predicate:(id)a5 error:(id *)a6 associatedObjectHandler:(id)a7
++ (BOOL)enumerateAssociatedObjectsForIdentifier:(int64_t)identifier inDatabase:(id)database predicate:(id)predicate error:(id *)error associatedObjectHandler:(id)handler
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a7;
-  v13 = a4;
-  v14 = HDAssociationEntityPredicateForChildObjectsAssociatedWithParentObject(a3);
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  databaseCopy = database;
+  v14 = HDAssociationEntityPredicateForChildObjectsAssociatedWithParentObject(identifier);
   v15 = v14;
-  if (v11)
+  if (predicateCopy)
   {
     v16 = MEMORY[0x277D10B20];
-    v31[0] = v11;
+    v31[0] = predicateCopy;
     v31[1] = v14;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
     v18 = [v16 predicateMatchingAllPredicates:v17];
@@ -586,10 +586,10 @@ uint64_t __85__HDSampleEntity_deleteSamplesWithPredicate_limit_deletionContext_c
   v26 = 3221225472;
   v27 = __109__HDSampleEntity_enumerateAssociatedObjectsForIdentifier_inDatabase_predicate_error_associatedObjectHandler___block_invoke;
   v28 = &unk_2786145A8;
-  v29 = v12;
-  v20 = v12;
+  v29 = handlerCopy;
+  v20 = handlerCopy;
   v21 = _Block_copy(&aBlock);
-  v22 = [(HDSQLiteEntity *)HDSampleEntity enumerateQueryResultsFromColumns:v19 properties:v19 predicate:v15 groupBy:0 orderingTerms:0 limit:0 database:v13 error:a6 enumerationHandler:v21, aBlock, v26, v27, v28];
+  v22 = [(HDSQLiteEntity *)HDSampleEntity enumerateQueryResultsFromColumns:v19 properties:v19 predicate:v15 groupBy:0 orderingTerms:0 limit:0 database:databaseCopy error:error enumerationHandler:v21, aBlock, v26, v27, v28];
 
   v23 = *MEMORY[0x277D85DE8];
   return v22;
@@ -608,45 +608,45 @@ uint64_t __109__HDSampleEntity_enumerateAssociatedObjectsForIdentifier_inDatabas
   return v9;
 }
 
-+ (id)samplesWithType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 limit:(unint64_t)a7 anchor:(id *)a8 error:(id *)a9
++ (id)samplesWithType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate limit:(unint64_t)limit anchor:(id *)anchor error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  typeCopy = type;
+  profileCopy = profile;
+  optionsCopy = options;
+  predicateCopy = predicate;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = [a1 entityEnumeratorWithType:v15 profile:v16];
-  [v20 setPredicate:v18];
-  [v20 addEncodingOptionsFromDictionary:v17];
-  [v20 setLimitCount:a7];
+  array = [MEMORY[0x277CBEB18] array];
+  v20 = [self entityEnumeratorWithType:typeCopy profile:profileCopy];
+  [v20 setPredicate:predicateCopy];
+  [v20 addEncodingOptionsFromDictionary:optionsCopy];
+  [v20 setLimitCount:limit];
   v21 = [MEMORY[0x277D10B68] orderingTermWithProperty:*MEMORY[0x277D10A40] entityClass:objc_opt_class() ascending:1];
   v40[0] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:1];
   [v20 setOrderingTerms:v22];
 
-  if (a8)
+  if (anchor)
   {
-    [v20 setAnchor:*a8];
-    v23 = [*a8 longLongValue];
-    v37[3] = v23;
+    [v20 setAnchor:*anchor];
+    longLongValue = [*anchor longLongValue];
+    v37[3] = longLongValue;
   }
 
   v30 = MEMORY[0x277D85DD0];
   v31 = 3221225472;
   v32 = __87__HDSampleEntity_samplesWithType_profile_encodingOptions_predicate_limit_anchor_error___block_invoke;
   v33 = &unk_2786136F0;
-  v24 = v19;
+  v24 = array;
   v34 = v24;
   v35 = &v36;
-  v25 = [v20 enumerateWithError:a9 handler:&v30];
-  if (a8)
+  v25 = [v20 enumerateWithError:error handler:&v30];
+  if (anchor)
   {
-    *a8 = [MEMORY[0x277CCABB0] numberWithLongLong:{v37[3], v30, v31, v32, v33}];
+    *anchor = [MEMORY[0x277CCABB0] numberWithLongLong:{v37[3], v30, v31, v32, v33}];
   }
 
   if (v25)
@@ -684,36 +684,36 @@ uint64_t __87__HDSampleEntity_samplesWithType_profile_encodingOptions_predicate_
   return 1;
 }
 
-+ (id)entityEnumeratorWithType:(id)a3 profile:(id)a4
++ (id)entityEnumeratorWithType:(id)type profile:(id)profile
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = -[HDDataEntityEnumerator _initWithObjectType:entityClass:profile:]([HDDataEntityEnumerator alloc], "_initWithObjectType:entityClass:profile:", v6, [objc_msgSend(v6 "dataObjectClass")], v5);
+  profileCopy = profile;
+  typeCopy = type;
+  v7 = -[HDDataEntityEnumerator _initWithObjectType:entityClass:profile:]([HDDataEntityEnumerator alloc], "_initWithObjectType:entityClass:profile:", typeCopy, [objc_msgSend(typeCopy "dataObjectClass")], profileCopy);
 
   return v7;
 }
 
-+ (id)entityEnumeratorWithTypes:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)entityEnumeratorWithTypes:(id)types profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 hk_map:&__block_literal_global_376_1];
+  typesCopy = types;
+  profileCopy = profile;
+  v9 = [typesCopy hk_map:&__block_literal_global_376_1];
   v10 = v9;
   if (!v9 || ![v9 count])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:{@"Unable to determine entity class for object types (%@)", v7, v13}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Unable to determine entity class for object types (%@)", typesCopy, v13}];
     goto LABEL_6;
   }
 
   if ([v10 count] >= 2)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:{@"Attempt to query across object types (%@) with incompatible entity classes (%@)", v7, v10}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Attempt to query across object types (%@) with incompatible entity classes (%@)", typesCopy, v10}];
 LABEL_6:
     v11 = 0;
     goto LABEL_7;
   }
 
-  v11 = -[HDDataEntityEnumerator _initWithObjectTypes:entityClass:profile:]([HDDataEntityEnumerator alloc], "_initWithObjectTypes:entityClass:profile:", v7, [v10 anyObject], v8);
+  v11 = -[HDDataEntityEnumerator _initWithObjectTypes:entityClass:profile:]([HDDataEntityEnumerator alloc], "_initWithObjectTypes:entityClass:profile:", typesCopy, [v10 anyObject], profileCopy);
 LABEL_7:
 
   return v11;
@@ -726,15 +726,15 @@ uint64_t __58__HDSampleEntity_entityEnumeratorWithTypes_profile_error___block_in
   return [v2 hd_dataEntityClass];
 }
 
-+ (id)sourceIDsForSamplesWithType:(id)a3 profile:(id)a4 predicate:(id)a5 error:(id *)a6
++ (id)sourceIDsForSamplesWithType:(id)type profile:(id)profile predicate:(id)predicate error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = HDSampleEntityPredicateForDataType(a3);
+  profileCopy = profile;
+  predicateCopy = predicate;
+  v12 = HDSampleEntityPredicateForDataType(type);
   v13 = v12;
-  if (v11)
+  if (predicateCopy)
   {
-    v14 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v11 otherPredicate:v12];
+    v14 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:predicateCopy otherPredicate:v12];
   }
 
   else
@@ -742,37 +742,37 @@ uint64_t __58__HDSampleEntity_entityEnumeratorWithTypes_profile_error___block_in
     v14 = v12;
   }
 
-  v15 = [a1 sourceIDsForObjectsOfType:1 profile:v10 predicate:v14 error:a6];
+  v15 = [self sourceIDsForObjectsOfType:1 profile:profileCopy predicate:v14 error:error];
 
   return v15;
 }
 
-+ (int64_t)countOfSamplesWithType:(id)a3 profile:(id)a4 matchingPredicate:(id)a5 withError:(id *)a6
++ (int64_t)countOfSamplesWithType:(id)type profile:(id)profile matchingPredicate:(id)predicate withError:(id *)error
 {
   v9 = MEMORY[0x277D10B70];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = HDSampleEntityPredicateForDataType(v12);
-  v14 = [v9 compoundPredicateWithPredicate:v13 otherPredicate:v10];
+  predicateCopy = predicate;
+  profileCopy = profile;
+  typeCopy = type;
+  v13 = HDSampleEntityPredicateForDataType(typeCopy);
+  v14 = [v9 compoundPredicateWithPredicate:v13 otherPredicate:predicateCopy];
 
-  v15 = [v12 dataObjectClass];
-  v16 = [v15 hd_dataEntityClass];
-  v17 = [v11 database];
+  dataObjectClass = [typeCopy dataObjectClass];
+  hd_dataEntityClass = [dataObjectClass hd_dataEntityClass];
+  database = [profileCopy database];
 
-  v18 = [v16 countOfObjectsWithPredicate:v14 healthDatabase:v17 error:a6];
+  v18 = [hd_dataEntityClass countOfObjectsWithPredicate:v14 healthDatabase:database error:error];
   return v18;
 }
 
-+ (id)sampleCountsByTypeForProfile:(id)a3 error:(id *)a4
++ (id)sampleCountsByTypeForProfile:(id)profile error:(id *)error
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
+  profileCopy = profile;
   v9 = +[(HDSQLiteSchemaEntity *)HDSampleEntity];
   v10 = [v7 stringWithFormat:@"SELECT %@, COUNT(%@) FROM %@ GROUP BY %@", @"data_type", @"data_type", v9, @"data_type"];;
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v12 = [v8 database];
+  database = [profileCopy database];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -780,13 +780,13 @@ uint64_t __58__HDSampleEntity_entityEnumeratorWithTypes_profile_error___block_in
   v18[3] = &unk_2786154B8;
   v19 = v10;
   v20 = v11;
-  v21 = a1;
+  selfCopy = self;
   v22 = a2;
   v13 = v11;
   v14 = v10;
-  LODWORD(a4) = [a1 performReadTransactionWithHealthDatabase:v12 error:a4 block:v18];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  if (a4)
+  if (error)
   {
     v15 = v13;
   }
@@ -856,11 +856,11 @@ LABEL_6:
   return 1;
 }
 
-+ (id)dateIntervalsForSampleTypes:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)dateIntervalsForSampleTypes:(id)types profile:(id)profile error:(id *)error
 {
-  v7 = a3;
+  typesCopy = types;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a4;
+  profileCopy = profile;
   v10 = +[(HDSQLiteSchemaEntity *)HDSampleEntity];
   v11 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
   v12 = +[(HDSQLiteSchemaEntity *)HDSampleEntity];
@@ -878,18 +878,18 @@ LABEL_6:
   v16 = v15;
   v17 = v14;
   v18 = _Block_copy(aBlock);
-  v19 = [v9 database];
+  database = [profileCopy database];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __60__HDSampleEntity_dateIntervalsForSampleTypes_profile_error___block_invoke_397;
   v28[3] = &unk_27861B6E8;
   v30 = v18;
-  v31 = a1;
-  v29 = v7;
+  selfCopy = self;
+  v29 = typesCopy;
   v20 = v18;
-  v21 = v7;
-  v22 = [a1 performReadTransactionWithHealthDatabase:v19 error:a5 block:v28];
+  v21 = typesCopy;
+  v22 = [self performReadTransactionWithHealthDatabase:database error:error block:v28];
 
   if (v22)
   {
@@ -1047,18 +1047,18 @@ LABEL_12:
   return v11;
 }
 
-+ (id)populatedSampleTypes:(id)a3 inDateInterval:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)populatedSampleTypes:(id)types inDateInterval:(id)interval profile:(id)profile error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v34 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
+  typesCopy = types;
+  intervalCopy = interval;
+  profileCopy = profile;
+  array = [MEMORY[0x277CBEB18] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v12 = v9;
+  v12 = typesCopy;
   v13 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v13)
   {
@@ -1074,7 +1074,7 @@ LABEL_12:
         }
 
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", objc_msgSend(*(*(&v40 + 1) + 8 * i), "code")];
-        [v11 addObject:v17];
+        [array addObject:v17];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -1086,23 +1086,23 @@ LABEL_12:
   v18 = MEMORY[0x277CCACA8];
   v19 = +[(HDSQLiteSchemaEntity *)HDSampleEntity];
   v20 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
-  v21 = [v11 componentsJoinedByString:{@", "}];
+  v21 = [array componentsJoinedByString:{@", "}];
   v22 = [v18 stringWithFormat:@"SELECT COUNT(%@), %@ FROM %@ INNER JOIN %@ USING(%@) WHERE %@ = ? AND (%@ > ?) AND (%@ < ?) AND %@ IN (%@) GROUP BY %@", @"start_date", @"data_type", v19, v20, @"data_id", @"type", @"start_date", @"start_date", @"data_type", v21, @"data_type"];
 
   v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
-  v24 = [v34 database];
+  database = [profileCopy database];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __68__HDSampleEntity_populatedSampleTypes_inDateInterval_profile_error___block_invoke;
   v35[3] = &unk_278613550;
   v36 = v22;
-  v37 = v10;
+  v37 = intervalCopy;
   v38 = v23;
-  v39 = a1;
+  selfCopy = self;
   v25 = v23;
-  v26 = v10;
+  v26 = intervalCopy;
   v27 = v22;
-  v28 = [a1 performReadTransactionWithHealthDatabase:v24 error:a6 block:v35];
+  v28 = [self performReadTransactionWithHealthDatabase:database error:error block:v35];
 
   if (v28)
   {
@@ -1167,28 +1167,28 @@ uint64_t __68__HDSampleEntity_populatedSampleTypes_inDateInterval_profile_error_
   return 1;
 }
 
-+ (id)sampleTypesForSamplesMatchingPredicate:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)sampleTypesForSamplesMatchingPredicate:(id)predicate profile:(id)profile error:(id *)error
 {
   v8 = MEMORY[0x277CBEB58];
-  v9 = a4;
-  v10 = a3;
+  profileCopy = profile;
+  predicateCopy = predicate;
   v11 = objc_alloc_init(v8);
-  v12 = [a1 predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:v10];
+  v12 = [self predicateMatchingPreferredEntityTypeIfRequiredWithPredicate:predicateCopy];
 
-  v13 = [v9 database];
+  database = [profileCopy database];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __71__HDSampleEntity_sampleTypesForSamplesMatchingPredicate_profile_error___block_invoke;
   v19[3] = &unk_278614698;
   v21 = v11;
-  v22 = a1;
+  selfCopy = self;
   v20 = v12;
   v14 = v11;
   v15 = v12;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v13 error:a5 block:v19];
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v19];
 
-  if (a5)
+  if (error)
   {
     v16 = v14;
   }
@@ -1251,28 +1251,28 @@ BOOL __71__HDSampleEntity_sampleTypesForSamplesMatchingPredicate_profile_error__
   return v7 != 0;
 }
 
-+ (id)anySampleOfType:(id)a3 profile:(id)a4 encodingOptions:(id)a5 predicate:(id)a6 error:(id *)a7
++ (id)anySampleOfType:(id)type profile:(id)profile encodingOptions:(id)options predicate:(id)predicate error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  typeCopy = type;
+  profileCopy = profile;
+  optionsCopy = options;
+  predicateCopy = predicate;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__57;
   v24 = __Block_byref_object_dispose__57;
   v25 = 0;
-  v16 = [a1 entityEnumeratorWithType:v12 profile:v13];
-  [v16 setPredicate:v15];
-  [v16 addEncodingOptionsFromDictionary:v14];
+  v16 = [self entityEnumeratorWithType:typeCopy profile:profileCopy];
+  [v16 setPredicate:predicateCopy];
+  [v16 addEncodingOptionsFromDictionary:optionsCopy];
   [v16 setLimitCount:1];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __74__HDSampleEntity_anySampleOfType_profile_encodingOptions_predicate_error___block_invoke;
   v19[3] = &unk_278613718;
   v19[4] = &v20;
-  [v16 enumerateWithError:a7 handler:v19];
+  [v16 enumerateWithError:error handler:v19];
   v17 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -1280,13 +1280,13 @@ BOOL __71__HDSampleEntity_sampleTypesForSamplesMatchingPredicate_profile_error__
   return v17;
 }
 
-+ (id)minimumSampleStartDateForProfile:(id)a3 error:(id *)a4
++ (id)minimumSampleStartDateForProfile:(id)profile error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = [HDSampleEntity dateIntervalsForSampleTypes:0 profile:a3 error:a4];
-  v5 = [v4 allValues];
-  v6 = v5;
-  if (!v5)
+  v4 = [HDSampleEntity dateIntervalsForSampleTypes:0 profile:profile error:error];
+  allValues = [v4 allValues];
+  v6 = allValues;
+  if (!allValues)
   {
     goto LABEL_16;
   }
@@ -1295,7 +1295,7 @@ BOOL __71__HDSampleEntity_sampleTypesForSamplesMatchingPredicate_profile_error__
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v7)
   {
     goto LABEL_17;
@@ -1313,22 +1313,22 @@ BOOL __71__HDSampleEntity_sampleTypesForSamplesMatchingPredicate_profile_error__
       }
 
       v11 = *(*(&v22 + 1) + 8 * i);
-      v12 = [v11 startDate];
-      [v12 timeIntervalSinceReferenceDate];
+      startDate = [v11 startDate];
+      [startDate timeIntervalSinceReferenceDate];
       if (v13 == 2.22507386e-308)
       {
       }
 
       else
       {
-        v14 = [v11 startDate];
-        [v14 timeIntervalSinceReferenceDate];
+        startDate2 = [v11 startDate];
+        [startDate2 timeIntervalSinceReferenceDate];
         v16 = v15;
 
         if (v16 >= 0.0)
         {
-          v17 = [v11 startDate];
-          [v17 timeIntervalSinceReferenceDate];
+          startDate3 = [v11 startDate];
+          [startDate3 timeIntervalSinceReferenceDate];
           v19 = v18;
 
           if (v9 >= v19)
@@ -1361,17 +1361,17 @@ LABEL_17:
   return v7;
 }
 
-+ (BOOL)validateEntitiesOfTypes:(id)a3 profile:(id)a4 error:(id *)a5 validationErrorHandler:(id)a6
++ (BOOL)validateEntitiesOfTypes:(id)types profile:(id)profile error:(id *)error validationErrorHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  typesCopy = types;
+  profileCopy = profile;
+  handlerCopy = handler;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = v10;
+  v13 = typesCopy;
   v14 = [v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
@@ -1386,8 +1386,8 @@ LABEL_17:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [a1 entityEnumeratorWithType:*(*(&v23 + 1) + 8 * i) profile:{v11, v23}];
-        v19 = [a1 _validateEntityWithEnumerator:v18 error:a5 validationErrorHandler:v12];
+        v18 = [self entityEnumeratorWithType:*(*(&v23 + 1) + 8 * i) profile:{profileCopy, v23}];
+        v19 = [self _validateEntityWithEnumerator:v18 error:error validationErrorHandler:handlerCopy];
 
         if (!v19)
         {
@@ -1413,19 +1413,19 @@ LABEL_11:
   return v20;
 }
 
-+ (BOOL)_validateEntityWithEnumerator:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5
++ (BOOL)_validateEntityWithEnumerator:(id)enumerator error:(id *)error validationErrorHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__HDSampleEntity__validateEntityWithEnumerator_error_validationErrorHandler___block_invoke;
   v11[3] = &unk_278617230;
-  v12 = v8;
-  v13 = a1;
-  v9 = v8;
-  LOBYTE(a4) = [a3 enumerateWithError:a4 handler:v11];
+  v12 = handlerCopy;
+  selfCopy = self;
+  v9 = handlerCopy;
+  LOBYTE(error) = [enumerator enumerateWithError:error handler:v11];
 
-  return a4;
+  return error;
 }
 
 uint64_t __77__HDSampleEntity__validateEntityWithEnumerator_error_validationErrorHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1487,18 +1487,18 @@ uint64_t __77__HDSampleEntity__validateEntityWithEnumerator_error_validationErro
   return 1;
 }
 
-+ (id)objectInsertionFilterForProfile:(id)a3
++ (id)objectInsertionFilterForProfile:(id)profile
 {
-  v3 = [a3 daemon];
-  v4 = [v3 behavior];
-  v5 = [v4 supportsSampleExpiration];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsSampleExpiration = [behavior supportsSampleExpiration];
 
-  if (v5)
+  if (supportsSampleExpiration)
   {
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v7 = *MEMORY[0x277CCCEE8];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [v6 hk_startOfDateBySubtractingDays:v7 fromDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    v9 = [currentCalendar hk_startOfDateBySubtractingDays:v7 fromDate:date];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -1530,13 +1530,13 @@ uint64_t __50__HDSampleEntity_objectInsertionFilterForProfile___block_invoke(uin
   return v6;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
@@ -1544,7 +1544,7 @@ uint64_t __50__HDSampleEntity_objectInsertionFilterForProfile___block_invoke(uin
 + (id)columnNamesForTimeOffset
 {
   v5[2] = *MEMORY[0x277D85DE8];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5[0] = @"start_date";
     v5[1] = @"end_date";

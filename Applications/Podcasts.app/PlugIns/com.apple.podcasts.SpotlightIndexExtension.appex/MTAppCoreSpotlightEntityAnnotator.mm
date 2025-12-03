@@ -1,16 +1,16 @@
 @interface MTAppCoreSpotlightEntityAnnotator
 - (MTAppCoreSpotlightEntityAnnotator)init;
-- (id)annotateItem:(id)a3 withManagedObject:(id)a4;
+- (id)annotateItem:(id)item withManagedObject:(id)object;
 @end
 
 @implementation MTAppCoreSpotlightEntityAnnotator
 
-- (id)annotateItem:(id)a3 withManagedObject:(id)a4
+- (id)annotateItem:(id)item withManagedObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000A890(v7, &v10);
+  itemCopy = item;
+  objectCopy = object;
+  selfCopy = self;
+  sub_10000A890(objectCopy, &v10);
   if (v11)
   {
     sub_10000ABEC(&v10, v12);
@@ -26,7 +26,7 @@
     sub_10000AAD8(&v10);
   }
 
-  return v6;
+  return itemCopy;
 }
 
 - (MTAppCoreSpotlightEntityAnnotator)init

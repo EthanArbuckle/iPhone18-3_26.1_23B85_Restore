@@ -1,17 +1,17 @@
 @interface HDXPCAlarmScheduler
 - (HDXPCAlarmScheduler)init;
 - (id)diagnosticDescription;
-- (void)_queue_handleEvent:(id)a3;
-- (void)_queue_handleXPCEvent:(id)a3;
+- (void)_queue_handleEvent:(id)event;
+- (void)_queue_handleXPCEvent:(id)event;
 - (void)_queue_notifyAlarmsOfPendingEvents;
-- (void)_queue_scheduleEvent:(id)a3;
-- (void)_queue_unscheduleEventWithName:(id)a3;
-- (void)addAlarm:(id)a3;
+- (void)_queue_scheduleEvent:(id)event;
+- (void)_queue_unscheduleEventWithName:(id)name;
+- (void)addAlarm:(id)alarm;
 - (void)dealloc;
-- (void)removeAlarm:(id)a3;
-- (void)scheduleEvent:(id)a3;
-- (void)unittest_fireEvent:(id)a3;
-- (void)unscheduleEventWithName:(id)a3;
+- (void)removeAlarm:(id)alarm;
+- (void)scheduleEvent:(id)event;
+- (void)unittest_fireEvent:(id)event;
+- (void)unscheduleEventWithName:(id)name;
 @end
 
 @implementation HDXPCAlarmScheduler
@@ -23,9 +23,9 @@
   v2 = [(HDXPCAlarmScheduler *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     alarms = v2->_alarms;
-    v2->_alarms = v3;
+    v2->_alarms = strongToWeakObjectsMapTable;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     pendingEvents = v2->_pendingEvents;
@@ -38,10 +38,10 @@
     v9 = +[HDDiagnosticManager sharedDiagnosticManager];
     [v9 addObject:v2];
 
-    v10 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v11 = [v10 schedulesXPCAlarms];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    schedulesXPCAlarms = [mEMORY[0x277CCDD30] schedulesXPCAlarms];
 
-    if (v11)
+    if (schedulesXPCAlarms)
     {
       objc_initWeak(&location, v2);
       v12 = v2->_queue;
@@ -74,13 +74,13 @@ void __27__HDXPCAlarmScheduler_init__block_invoke(uint64_t a1, void *a2)
   [(HDXPCAlarmScheduler *)&v3 dealloc];
 }
 
-- (void)_queue_handleXPCEvent:(id)a3
+- (void)_queue_handleXPCEvent:(id)event
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  string = xpc_dictionary_get_string(v4, *MEMORY[0x277D86430]);
-  v6 = [MEMORY[0x277CBEAA8] date];
+  string = xpc_dictionary_get_string(eventCopy, *MEMORY[0x277D86430]);
+  date = [MEMORY[0x277CBEAA8] date];
   xpc_set_event();
   _HKInitializeLogging();
   v7 = HKLogInfrastructure();
@@ -88,7 +88,7 @@ void __27__HDXPCAlarmScheduler_init__block_invoke(uint64_t a1, void *a2)
   {
     v8 = objc_opt_class();
     v9 = v8;
-    [v6 timeIntervalSince1970];
+    [date timeIntervalSince1970];
     v14 = 138543874;
     v15 = v8;
     v16 = 2082;
@@ -101,7 +101,7 @@ void __27__HDXPCAlarmScheduler_init__block_invoke(uint64_t a1, void *a2)
   if (string)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
-    v12 = [[HDXPCAlarmEvent alloc] initWithName:v11 fireDate:v6 isUserVisible:xpc_dictionary_get_BOOL(v4, "UserVisible")];
+    v12 = [[HDXPCAlarmEvent alloc] initWithName:v11 fireDate:date isUserVisible:xpc_dictionary_get_BOOL(eventCopy, "UserVisible")];
     [(HDXPCAlarmScheduler *)self _queue_handleEvent:v12];
   }
 
@@ -118,55 +118,55 @@ void __27__HDXPCAlarmScheduler_init__block_invoke(uint64_t a1, void *a2)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_scheduleEvent:(id)a3
+- (void)_queue_scheduleEvent:(id)event
 {
   queue = self->_queue;
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(queue);
   xdict = xpc_dictionary_create(0, 0, 0);
-  v5 = [v4 fireDate];
-  xpc_dictionary_set_date(xdict, "Date", [v5 hk_nanosecondsSince1970]);
+  fireDate = [eventCopy fireDate];
+  xpc_dictionary_set_date(xdict, "Date", [fireDate hk_nanosecondsSince1970]);
 
-  xpc_dictionary_set_BOOL(xdict, "UserVisible", [v4 isUserVisible]);
-  v6 = [v4 name];
+  xpc_dictionary_set_BOOL(xdict, "UserVisible", [eventCopy isUserVisible]);
+  name = [eventCopy name];
 
-  [v6 UTF8String];
+  [name UTF8String];
   xpc_set_event();
 }
 
-- (void)_queue_unscheduleEventWithName:(id)a3
+- (void)_queue_unscheduleEventWithName:(id)name
 {
   queue = self->_queue;
-  v5 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(queue);
-  [v5 UTF8String];
+  [nameCopy UTF8String];
   xpc_set_event();
   pendingEvents = self->_pendingEvents;
-  v7 = [HDXPCAlarmEvent _eventWithName:v5];
+  v7 = [HDXPCAlarmEvent _eventWithName:nameCopy];
 
   [(NSMutableSet *)pendingEvents removeObject:v7];
 }
 
-- (void)unittest_fireEvent:(id)a3
+- (void)unittest_fireEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HDXPCAlarmScheduler_unittest_fireEvent___block_invoke;
   v7[3] = &unk_2796BDA28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_queue_handleEvent:(id)a3
+- (void)_queue_handleEvent:(id)event
 {
   queue = self->_queue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(queue);
-  [(NSMutableSet *)self->_pendingEvents addObject:v5];
+  [(NSMutableSet *)self->_pendingEvents addObject:eventCopy];
 
   [(HDXPCAlarmScheduler *)self _queue_notifyAlarmsOfPendingEvents];
 }
@@ -199,8 +199,8 @@ void __27__HDXPCAlarmScheduler_init__block_invoke(uint64_t a1, void *a2)
 
         v9 = *(*(&v23 + 1) + 8 * i);
         alarms = self->_alarms;
-        v11 = [v9 name];
-        v12 = [(NSMapTable *)alarms objectForKey:v11];
+        name = [v9 name];
+        v12 = [(NSMapTable *)alarms objectForKey:name];
 
         _HKInitializeLogging();
         v13 = HKLogInfrastructure();
@@ -252,17 +252,17 @@ void __27__HDXPCAlarmScheduler_init__block_invoke(uint64_t a1, void *a2)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAlarm:(id)a3
+- (void)addAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__HDXPCAlarmScheduler_addAlarm___block_invoke;
   v7[3] = &unk_2796BDA28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = alarmCopy;
+  v6 = alarmCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -294,17 +294,17 @@ uint64_t __32__HDXPCAlarmScheduler_addAlarm___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeAlarm:(id)a3
+- (void)removeAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__HDXPCAlarmScheduler_removeAlarm___block_invoke;
   v7[3] = &unk_2796BDA28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = alarmCopy;
+  v6 = alarmCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -334,17 +334,17 @@ void __35__HDXPCAlarmScheduler_removeAlarm___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleEvent:(id)a3
+- (void)scheduleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__HDXPCAlarmScheduler_scheduleEvent___block_invoke;
   v7[3] = &unk_2796BDA28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -371,17 +371,17 @@ uint64_t __37__HDXPCAlarmScheduler_scheduleEvent___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)unscheduleEventWithName:(id)a3
+- (void)unscheduleEventWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HDXPCAlarmScheduler_unscheduleEventWithName___block_invoke;
   v7[3] = &unk_2796BDA28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -411,18 +411,18 @@ uint64_t __47__HDXPCAlarmScheduler_unscheduleEventWithName___block_invoke(uint64
 - (id)diagnosticDescription
 {
   dispatch_assert_queue_not_V2(self->_queue);
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%p", objc_opt_class(), self];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HDXPCAlarmScheduler_diagnosticDescription__block_invoke;
   block[3] = &unk_2796BDA28;
-  v10 = v3;
-  v11 = self;
-  v6 = v3;
+  v10 = array;
+  selfCopy = self;
+  v6 = array;
   dispatch_sync(queue, block);
   v7 = [v6 componentsJoinedByString:@"\n"];
 

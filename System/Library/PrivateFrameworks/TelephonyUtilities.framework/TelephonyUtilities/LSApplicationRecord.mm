@@ -1,17 +1,17 @@
 @interface LSApplicationRecord
-+ (id)csd_applicationRecordForApplicationIdentifier:(id)a3;
-+ (id)csd_applicationRecordForBundleIdentifier:(id)a3;
++ (id)csd_applicationRecordForApplicationIdentifier:(id)identifier;
++ (id)csd_applicationRecordForBundleIdentifier:(id)identifier;
 - (BOOL)csd_hasPTTSelfAddEntitlement;
 - (BOOL)csd_hasVoIPNetworkExtensionEntitlement;
 @end
 
 @implementation LSApplicationRecord
 
-+ (id)csd_applicationRecordForApplicationIdentifier:(id)a3
++ (id)csd_applicationRecordForApplicationIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v9 = 0;
-  v4 = [LSBundleRecord bundleRecordWithApplicationIdentifier:v3 error:&v9];
+  v4 = [LSBundleRecord bundleRecordWithApplicationIdentifier:identifierCopy error:&v9];
   v5 = v9;
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -35,11 +35,11 @@
   return v6;
 }
 
-+ (id)csd_applicationRecordForBundleIdentifier:(id)a3
++ (id)csd_applicationRecordForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v8 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v8];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v8];
   v5 = v8;
   if (!v4)
   {
@@ -55,18 +55,18 @@
 
 - (BOOL)csd_hasPTTSelfAddEntitlement
 {
-  v2 = [(LSApplicationRecord *)self entitlements];
-  v3 = [v2 objectForKey:@"com.apple.developer.push-to-talk" ofClass:objc_opt_class()];
-  v4 = [v3 BOOLValue];
+  entitlements = [(LSApplicationRecord *)self entitlements];
+  v3 = [entitlements objectForKey:@"com.apple.developer.push-to-talk" ofClass:objc_opt_class()];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)csd_hasVoIPNetworkExtensionEntitlement
 {
-  v2 = [(LSApplicationRecord *)self entitlements];
+  entitlements = [(LSApplicationRecord *)self entitlements];
   v3 = objc_opt_class();
-  v4 = [v2 objectForKey:@"com.apple.developer.networking.networkextension" ofClass:v3 valuesOfClass:objc_opt_class()];
+  v4 = [entitlements objectForKey:@"com.apple.developer.networking.networkextension" ofClass:v3 valuesOfClass:objc_opt_class()];
 
   if (v4)
   {

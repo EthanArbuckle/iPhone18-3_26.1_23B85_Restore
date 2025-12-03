@@ -1,12 +1,12 @@
 @interface HKCodableSummaryBreathingDisturbancesValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryBreathingDisturbancesValue
@@ -17,88 +17,88 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryBreathingDisturbancesValue;
   v4 = [(HKCodableSummaryBreathingDisturbancesValue *)&v8 description];
-  v5 = [(HKCodableSummaryBreathingDisturbancesValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryBreathingDisturbancesValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   quantity = self->_quantity;
   if (quantity)
   {
-    v5 = [(HKCodableSummaryQuantityValue *)quantity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"quantity"];
+    dictionaryRepresentation = [(HKCodableSummaryQuantityValue *)quantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"quantity"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_classificationRawValue];
-    [v3 setObject:v6 forKey:@"classificationRawValue"];
+    [dictionary setObject:v6 forKey:@"classificationRawValue"];
   }
 
   levelViewDataConfiguration = self->_levelViewDataConfiguration;
   if (levelViewDataConfiguration)
   {
-    v8 = [(HKCodableLevelViewDataConfiguration *)levelViewDataConfiguration dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"levelViewDataConfiguration"];
+    dictionaryRepresentation2 = [(HKCodableLevelViewDataConfiguration *)levelViewDataConfiguration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"levelViewDataConfiguration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_quantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_levelViewDataConfiguration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_quantity)
   {
-    [v4 setQuantity:?];
-    v4 = v5;
+    [toCopy setQuantity:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_classificationRawValue;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = self->_classificationRawValue;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_levelViewDataConfiguration)
   {
     [v5 setLevelViewDataConfiguration:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableSummaryQuantityValue *)self->_quantity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableSummaryQuantityValue *)self->_quantity copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -108,23 +108,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(HKCodableLevelViewDataConfiguration *)self->_levelViewDataConfiguration copyWithZone:a3];
+  v8 = [(HKCodableLevelViewDataConfiguration *)self->_levelViewDataConfiguration copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   quantity = self->_quantity;
-  if (quantity | *(v4 + 3))
+  if (quantity | *(equalCopy + 3))
   {
     if (![(HKCodableSummaryQuantityValue *)quantity isEqual:?])
     {
@@ -134,13 +134,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_classificationRawValue != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_classificationRawValue != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -148,7 +148,7 @@ LABEL_11:
   }
 
   levelViewDataConfiguration = self->_levelViewDataConfiguration;
-  if (levelViewDataConfiguration | *(v4 + 2))
+  if (levelViewDataConfiguration | *(equalCopy + 2))
   {
     v7 = [(HKCodableLevelViewDataConfiguration *)levelViewDataConfiguration isEqual:?];
   }
@@ -179,12 +179,12 @@ LABEL_12:
   return v4 ^ v3 ^ [(HKCodableLevelViewDataConfiguration *)self->_levelViewDataConfiguration hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   quantity = self->_quantity;
-  v6 = v4[3];
-  v9 = v4;
+  v6 = fromCopy[3];
+  v9 = fromCopy;
   if (quantity)
   {
     if (!v6)
@@ -205,16 +205,16 @@ LABEL_12:
     [(HKCodableSummaryBreathingDisturbancesValue *)self setQuantity:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_classificationRawValue = v4[1];
+    self->_classificationRawValue = fromCopy[1];
     *&self->_has |= 1u;
   }
 
   levelViewDataConfiguration = self->_levelViewDataConfiguration;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (levelViewDataConfiguration)
   {
     if (!v8)
@@ -235,10 +235,10 @@ LABEL_7:
     levelViewDataConfiguration = [(HKCodableSummaryBreathingDisturbancesValue *)self setLevelViewDataConfiguration:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
 
-  MEMORY[0x1EEE66BB8](levelViewDataConfiguration, v4);
+  MEMORY[0x1EEE66BB8](levelViewDataConfiguration, fromCopy);
 }
 
 @end

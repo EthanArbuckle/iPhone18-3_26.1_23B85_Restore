@@ -41,9 +41,9 @@
 + (id)pf_UUIDFromArbitraryString:()PosterFoundation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [a3 UTF8String];
-  v4 = strlen(v3);
-  CC_SHA256(v3, v4, md);
+  uTF8String = [a3 UTF8String];
+  v4 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v4, md);
   v5 = objc_opt_new();
   for (i = 0; i != 32; ++i)
   {
@@ -67,11 +67,11 @@
 
 + (__CFString)pf_nonnullUUIDStringOrSentinel:()PosterFoundation
 {
-  v3 = [a3 UUIDString];
-  v4 = v3;
-  if (v3)
+  uUIDString = [a3 UUIDString];
+  v4 = uUIDString;
+  if (uUIDString)
   {
-    v5 = v3;
+    v5 = uUIDString;
   }
 
   else

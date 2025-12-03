@@ -1,27 +1,27 @@
 @interface PKDashboardPassMessagePresenter
-- (BOOL)messagesView:(id)a3 shouldEnqueueEventForView:(id)a4;
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
-- (PKDashboardPassMessagePresenter)initWithPassGroupView:(id)a3;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (BOOL)messagesView:(id)view shouldEnqueueEventForView:(id)forView;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
+- (PKDashboardPassMessagePresenter)initWithPassGroupView:(id)view;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (unint64_t)_indexForIdentifier:(id)a3 inMessages:(id)a4;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6;
-- (void)messagesView:(id)a3 scrolledToMessageWithIdentifier:(id)a4;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (unint64_t)_indexForIdentifier:(id)identifier inMessages:(id)messages;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path;
+- (void)messagesView:(id)view scrolledToMessageWithIdentifier:(id)identifier;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardPassMessagePresenter
 
-- (PKDashboardPassMessagePresenter)initWithPassGroupView:(id)a3
+- (PKDashboardPassMessagePresenter)initWithPassGroupView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = PKDashboardPassMessagePresenter;
   v6 = [(PKDashboardPassMessagePresenter *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_groupView, a3);
+    objc_storeStrong(&v6->_groupView, view);
     v8 = [PKDashboardMessagesView alloc];
     v9 = [(PKDashboardMessagesView *)v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     sampleMessageView = v7->_sampleMessageView;
@@ -41,52 +41,52 @@
   return v2;
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKDashboardPassMessagePresenter *)self _identifierForItem:v10];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [(PKDashboardPassMessagePresenter *)self _identifierForItem:itemCopy];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  [(PKDashboardPassMessagePresenter *)self _configureCell:v12 forItem:v10 inCollectionView:v9 forIndexPath:v8];
+  [(PKDashboardPassMessagePresenter *)self _configureCell:v12 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy];
 
   return v12;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
   sampleMessageView = self->_sampleMessageView;
-  v9 = [a3 messages];
-  [(PKDashboardMessagesView *)sampleMessageView updateWithMessages:v9 currentIndex:0];
+  messages = [item messages];
+  [(PKDashboardMessagesView *)sampleMessageView updateWithMessages:messages currentIndex:0];
 
   v10 = self->_sampleMessageView;
 
-  [(PKDashboardMessagesView *)v10 sizeThatFits:a5, 3.40282347e38];
+  [(PKDashboardMessagesView *)v10 sizeThatFits:width, 3.40282347e38];
   result.height = v12;
   result.width = v11;
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = [v19 hostedContentView];
-  if (!v9)
+  cellCopy = cell;
+  itemCopy = item;
+  hostedContentView = [cellCopy hostedContentView];
+  if (!hostedContentView)
   {
     v10 = [PKDashboardMessagesView alloc];
-    v9 = [(PKDashboardMessagesView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    [(PKDashboardMessagesView *)v9 setDelegate:self];
-    [v19 setHostedContentView:v9];
+    hostedContentView = [(PKDashboardMessagesView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    [(PKDashboardMessagesView *)hostedContentView setDelegate:self];
+    [cellCopy setHostedContentView:hostedContentView];
   }
 
-  v11 = [v8 messages];
-  v12 = v11;
+  messages = [itemCopy messages];
+  v12 = messages;
   currentIdentifier = self->_currentIdentifier;
   if (currentIdentifier)
   {
-    v14 = [(PKDashboardPassMessagePresenter *)self _indexForIdentifier:currentIdentifier inMessages:v11];
+    v14 = [(PKDashboardPassMessagePresenter *)self _indexForIdentifier:currentIdentifier inMessages:messages];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = [v12 count];
@@ -104,29 +104,29 @@
 
   else
   {
-    v16 = [v11 firstObject];
-    v17 = [v16 identifier];
+    firstObject = [messages firstObject];
+    identifier = [firstObject identifier];
     v18 = self->_currentIdentifier;
-    self->_currentIdentifier = v17;
+    self->_currentIdentifier = identifier;
 
     self->_currentIndex = 0;
   }
 
-  [v19 setAccessibilityIdentifier:*MEMORY[0x1E69B9958]];
-  [(PKDashboardMessagesView *)v9 updateWithMessages:v12 currentIndex:self->_currentIndex];
+  [cellCopy setAccessibilityIdentifier:*MEMORY[0x1E69B9958]];
+  [(PKDashboardMessagesView *)hostedContentView updateWithMessages:v12 currentIndex:self->_currentIndex];
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  if (a3)
+  if (trait)
   {
-    if (a4)
+    if (toTrait)
     {
-      v7 = a4;
-      v8 = [a3 preferredContentSizeCategory];
-      v9 = [v7 preferredContentSizeCategory];
+      toTraitCopy = toTrait;
+      preferredContentSizeCategory = [trait preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
 
-      v10 = UIContentSizeCategoryCompareToCategory(v8, v9);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
       if (v10)
       {
         v11 = [PKDashboardMessagesView alloc];
@@ -138,22 +138,22 @@
   }
 }
 
-- (void)messagesView:(id)a3 scrolledToMessageWithIdentifier:(id)a4
+- (void)messagesView:(id)view scrolledToMessageWithIdentifier:(id)identifier
 {
-  objc_storeStrong(&self->_currentIdentifier, a4);
-  v7 = a4;
-  v8 = a3;
+  objc_storeStrong(&self->_currentIdentifier, identifier);
+  identifierCopy = identifier;
+  viewCopy = view;
   currentIdentifier = self->_currentIdentifier;
-  v11 = [v8 messages];
+  messages = [viewCopy messages];
 
-  v10 = [(PKDashboardPassMessagePresenter *)self _indexForIdentifier:currentIdentifier inMessages:v11];
+  v10 = [(PKDashboardPassMessagePresenter *)self _indexForIdentifier:currentIdentifier inMessages:messages];
   self->_currentIndex = v10;
 }
 
-- (BOOL)messagesView:(id)a3 shouldEnqueueEventForView:(id)a4
+- (BOOL)messagesView:(id)view shouldEnqueueEventForView:(id)forView
 {
-  v5 = a4;
-  if ([v5 type] == 2 && (objc_msgSend(v5, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  forViewCopy = forView;
+  if ([forViewCopy type] == 2 && (objc_msgSend(forViewCopy, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     viewEventEnqueued = self->_viewEventEnqueued;
     if (!viewEventEnqueued)
@@ -165,11 +165,11 @@
       viewEventEnqueued = self->_viewEventEnqueued;
     }
 
-    v10 = [v5 identifier];
-    v11 = [(NSMutableDictionary *)viewEventEnqueued objectForKeyedSubscript:v10];
-    v12 = [v11 BOOLValue];
+    identifier = [forViewCopy identifier];
+    v11 = [(NSMutableDictionary *)viewEventEnqueued objectForKeyedSubscript:identifier];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = 0;
     }
@@ -179,8 +179,8 @@
       v13 = 1;
       v15 = [MEMORY[0x1E696AD98] numberWithBool:1];
       v16 = self->_viewEventEnqueued;
-      v17 = [v5 identifier];
-      [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v17];
+      identifier2 = [forViewCopy identifier];
+      [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:identifier2];
     }
   }
 
@@ -192,16 +192,16 @@
   return v13;
 }
 
-- (unint64_t)_indexForIdentifier:(id)a3 inMessages:(id)a4
+- (unint64_t)_indexForIdentifier:(id)identifier inMessages:(id)messages
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__PKDashboardPassMessagePresenter__indexForIdentifier_inMessages___block_invoke;
   v9[3] = &unk_1E801D5F8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 indexOfObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [messages indexOfObjectPassingTest:v9];
 
   return v7;
 }

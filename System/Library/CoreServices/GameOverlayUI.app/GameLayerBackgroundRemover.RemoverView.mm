@@ -1,6 +1,6 @@
 @interface GameLayerBackgroundRemover.RemoverView
-- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithCoder:(id)a3;
-- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithFrame:(CGRect)a3;
+- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithCoder:(id)coder;
+- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -12,40 +12,40 @@
   v7.super_class = type metadata accessor for GameLayerBackgroundRemover.RemoverView();
   v2 = v7.receiver;
   [(GameLayerBackgroundRemover.RemoverView *)&v7 layoutSubviews];
-  v3 = [v2 superview];
-  if (v3)
+  superview = [v2 superview];
+  if (superview)
   {
-    v4 = v3;
+    v4 = superview;
     do
     {
-      v5 = [objc_opt_self() clearColor];
-      [v4 setBackgroundColor:v5];
+      clearColor = [objc_opt_self() clearColor];
+      [v4 setBackgroundColor:clearColor];
 
-      v6 = [v4 superview];
-      v4 = v6;
+      superview2 = [v4 superview];
+      v4 = superview2;
     }
 
-    while (v6);
+    while (superview2);
   }
 }
 
-- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithFrame:(CGRect)a3
+- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for GameLayerBackgroundRemover.RemoverView();
   return [(GameLayerBackgroundRemover.RemoverView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithCoder:(id)a3
+- (_TtCV13GameOverlayUI26GameLayerBackgroundRemover11RemoverView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for GameLayerBackgroundRemover.RemoverView();
-  v4 = a3;
-  v5 = [(GameLayerBackgroundRemover.RemoverView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GameLayerBackgroundRemover.RemoverView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

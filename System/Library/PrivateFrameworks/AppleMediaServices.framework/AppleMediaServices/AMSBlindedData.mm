@@ -1,17 +1,17 @@
 @interface AMSBlindedData
-- (AMSBlindedData)initWithBlindedElement:(id)a3 privateInput:(id)a4 timestamp:(id)a5;
+- (AMSBlindedData)initWithBlindedElement:(id)element privateInput:(id)input timestamp:(id)timestamp;
 - (NSString)blindedElementString;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSBlindedData
 
-- (AMSBlindedData)initWithBlindedElement:(id)a3 privateInput:(id)a4 timestamp:(id)a5
+- (AMSBlindedData)initWithBlindedElement:(id)element privateInput:(id)input timestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  inputCopy = input;
+  timestampCopy = timestamp;
   v10 = sub_192F95B7C();
   v12 = v11;
 
@@ -26,7 +26,7 @@
 
 - (NSString)blindedElementString
 {
-  v2 = self;
+  selfCopy = self;
   BlindedData.blindedElementString.getter();
 
   v3 = sub_192F9679C();
@@ -34,16 +34,16 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  BlindedData.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  BlindedData.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   BlindedData.copy(with:)();
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);

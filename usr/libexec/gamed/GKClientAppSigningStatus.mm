@@ -1,38 +1,38 @@
 @interface GKClientAppSigningStatus
-+ (BOOL)appIsDevSigned:(int)a3 auditToken:(id *)a4;
-+ (BOOL)appIsDevSigned:(int)a3 auditToken:(id *)a4 csopsFnValidCat:(void *)a5 csopsFnStatus:(void *)a6;
-+ (BOOL)isForcedAsDevSignedTeamWith:(id *)a3 processIdentifier:(int)a4;
-+ (id)headerValueForSignatureType:(int64_t)a3;
-+ (id)opsValidationCategoryAndStatus:(int)a3 auditToken:(id *)a4 csopsFnValidCat:(void *)a5 csopsFnStatus:(void *)a6;
-+ (id)teamIdentifierFor:(id *)a3 processIdentifier:(int)a4;
-+ (int64_t)appSignatureType:(int)a3 auditToken:(id *)a4;
-+ (int64_t)appSignatureType:(int)a3 auditToken:(id *)a4 csopsFnValidCat:(void *)a5 csopsFnStatus:(void *)a6;
++ (BOOL)appIsDevSigned:(int)signed auditToken:(id *)token;
++ (BOOL)appIsDevSigned:(int)signed auditToken:(id *)token csopsFnValidCat:(void *)cat csopsFnStatus:(void *)status;
++ (BOOL)isForcedAsDevSignedTeamWith:(id *)with processIdentifier:(int)identifier;
++ (id)headerValueForSignatureType:(int64_t)type;
++ (id)opsValidationCategoryAndStatus:(int)status auditToken:(id *)token csopsFnValidCat:(void *)cat csopsFnStatus:(void *)fnStatus;
++ (id)teamIdentifierFor:(id *)for processIdentifier:(int)identifier;
++ (int64_t)appSignatureType:(int)type auditToken:(id *)token;
++ (int64_t)appSignatureType:(int)type auditToken:(id *)token csopsFnValidCat:(void *)cat csopsFnStatus:(void *)status;
 @end
 
 @implementation GKClientAppSigningStatus
 
-+ (BOOL)appIsDevSigned:(int)a3 auditToken:(id *)a4
++ (BOOL)appIsDevSigned:(int)signed auditToken:(id *)token
 {
-  v4 = *&a4->var0[4];
-  v6[0] = *a4->var0;
+  v4 = *&token->var0[4];
+  v6[0] = *token->var0;
   v6[1] = v4;
-  return [GKClientAppSigningStatus appIsDevSigned:*&a3 auditToken:v6 csopsFnValidCat:&csops_audittoken csopsFnStatus:&csops_audittoken];
+  return [GKClientAppSigningStatus appIsDevSigned:*&signed auditToken:v6 csopsFnValidCat:&csops_audittoken csopsFnStatus:&csops_audittoken];
 }
 
-+ (int64_t)appSignatureType:(int)a3 auditToken:(id *)a4
++ (int64_t)appSignatureType:(int)type auditToken:(id *)token
 {
-  v4 = *&a4->var0[4];
-  v6[0] = *a4->var0;
+  v4 = *&token->var0[4];
+  v6[0] = *token->var0;
   v6[1] = v4;
-  return [GKClientAppSigningStatus appSignatureType:*&a3 auditToken:v6 csopsFnValidCat:&csops_audittoken csopsFnStatus:&csops_audittoken];
+  return [GKClientAppSigningStatus appSignatureType:*&type auditToken:v6 csopsFnValidCat:&csops_audittoken csopsFnStatus:&csops_audittoken];
 }
 
-+ (BOOL)appIsDevSigned:(int)a3 auditToken:(id *)a4 csopsFnValidCat:(void *)a5 csopsFnStatus:(void *)a6
++ (BOOL)appIsDevSigned:(int)signed auditToken:(id *)token csopsFnValidCat:(void *)cat csopsFnStatus:(void *)status
 {
-  v6 = *&a4->var0[4];
-  v12[0] = *a4->var0;
+  v6 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v6;
-  v7 = [GKClientAppSigningStatus opsValidationCategoryAndStatus:*&a3 auditToken:v12 csopsFnValidCat:a5 csopsFnStatus:a6];
+  v7 = [GKClientAppSigningStatus opsValidationCategoryAndStatus:*&signed auditToken:v12 csopsFnValidCat:cat csopsFnStatus:status];
   if ([v7 category] && objc_msgSend(v7, "status"))
   {
     if ([v7 category] == 3)
@@ -57,10 +57,10 @@
   return v8;
 }
 
-+ (id)teamIdentifierFor:(id *)a3 processIdentifier:(int)a4
++ (id)teamIdentifierFor:(id *)for processIdentifier:(int)identifier
 {
-  v4 = *&a3->var0[4];
-  *v11.val = *a3->var0;
+  v4 = *&for->var0[4];
+  *v11.val = *for->var0;
   *&v11.val[4] = v4;
   v5 = SecTaskCreateWithAuditToken(kCFAllocatorDefault, &v11);
   if (v5)
@@ -101,12 +101,12 @@
   return v7;
 }
 
-+ (BOOL)isForcedAsDevSignedTeamWith:(id *)a3 processIdentifier:(int)a4
++ (BOOL)isForcedAsDevSignedTeamWith:(id *)with processIdentifier:(int)identifier
 {
-  v4 = *&a3->var0[4];
-  v9[0] = *a3->var0;
+  v4 = *&with->var0[4];
+  v9[0] = *with->var0;
   v9[1] = v4;
-  v5 = [GKClientAppSigningStatus teamIdentifierFor:v9 processIdentifier:*&a4];
+  v5 = [GKClientAppSigningStatus teamIdentifierFor:v9 processIdentifier:*&identifier];
   v6 = v5;
   if (v5)
   {
@@ -129,12 +129,12 @@
   return v7;
 }
 
-+ (int64_t)appSignatureType:(int)a3 auditToken:(id *)a4 csopsFnValidCat:(void *)a5 csopsFnStatus:(void *)a6
++ (int64_t)appSignatureType:(int)type auditToken:(id *)token csopsFnValidCat:(void *)cat csopsFnStatus:(void *)status
 {
-  v6 = *&a4->var0[4];
-  v11[0] = *a4->var0;
+  v6 = *&token->var0[4];
+  v11[0] = *token->var0;
   v11[1] = v6;
-  v7 = [GKClientAppSigningStatus opsValidationCategoryAndStatus:*&a3 auditToken:v11 csopsFnValidCat:a5 csopsFnStatus:a6];
+  v7 = [GKClientAppSigningStatus opsValidationCategoryAndStatus:*&type auditToken:v11 csopsFnValidCat:cat csopsFnStatus:status];
   v8 = [v7 category] - 2;
   if (v8 > 8)
   {
@@ -149,11 +149,11 @@
   return v9;
 }
 
-+ (id)opsValidationCategoryAndStatus:(int)a3 auditToken:(id *)a4 csopsFnValidCat:(void *)a5 csopsFnStatus:(void *)a6
++ (id)opsValidationCategoryAndStatus:(int)status auditToken:(id *)token csopsFnValidCat:(void *)cat csopsFnStatus:(void *)fnStatus
 {
-  v9 = *&a3;
-  v10 = *&a4->var0[4];
-  v25[0] = *a4->var0;
+  v9 = *&status;
+  v10 = *&token->var0[4];
+  v25[0] = *token->var0;
   v25[1] = v10;
   v11 = [GKClientAppSigningStatus hashForAuditToken:v25];
   v12 = [SigningStatusCache getValue:v11];
@@ -186,7 +186,7 @@
     }
 
     LODWORD(v25[0]) = 0;
-    if ((a5)(v9, 17, v25, 4, a4))
+    if ((cat)(v9, 17, v25, 4, token))
     {
       if (!os_log_GKGeneral)
       {
@@ -202,7 +202,7 @@
     }
 
     v24 = 0;
-    if ((a6)(v9, 0, &v24, 4, a4))
+    if ((fnStatus)(v9, 0, &v24, 4, token))
     {
       if (!os_log_GKGeneral)
       {
@@ -230,16 +230,16 @@
   return v22;
 }
 
-+ (id)headerValueForSignatureType:(int64_t)a3
++ (id)headerValueForSignatureType:(int64_t)type
 {
-  if ((a3 - 1) > 3)
+  if ((type - 1) > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_100369D98 + a3 - 1);
+    return *(&off_100369D98 + type - 1);
   }
 }
 

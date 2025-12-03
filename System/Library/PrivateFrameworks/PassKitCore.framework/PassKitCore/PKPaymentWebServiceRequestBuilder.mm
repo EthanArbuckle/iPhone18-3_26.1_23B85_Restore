@@ -1,35 +1,35 @@
 @interface PKPaymentWebServiceRequestBuilder
 - (PKPaymentWebService)webService;
-- (PKPaymentWebServiceRequestBuilder)initWithBrokerURL:(id)a3 deviceID:(id)a4 appleAccountInformation:(id)a5;
-- (void)configureOverlayRequest:(id)a3 urlRequest:(id)a4 dictionary:(id)a5;
+- (PKPaymentWebServiceRequestBuilder)initWithBrokerURL:(id)l deviceID:(id)d appleAccountInformation:(id)information;
+- (void)configureOverlayRequest:(id)request urlRequest:(id)urlRequest dictionary:(id)dictionary;
 @end
 
 @implementation PKPaymentWebServiceRequestBuilder
 
-- (PKPaymentWebServiceRequestBuilder)initWithBrokerURL:(id)a3 deviceID:(id)a4 appleAccountInformation:(id)a5
+- (PKPaymentWebServiceRequestBuilder)initWithBrokerURL:(id)l deviceID:(id)d appleAccountInformation:(id)information
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  dCopy = d;
+  informationCopy = information;
   v15.receiver = self;
   v15.super_class = PKPaymentWebServiceRequestBuilder;
   v12 = [(PKPaymentWebServiceRequestBuilder *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_brokerURL, a3);
-    objc_storeStrong(&v13->_deviceID, a4);
-    objc_storeStrong(&v13->_appleAccountInformation, a5);
+    objc_storeStrong(&v12->_brokerURL, l);
+    objc_storeStrong(&v13->_deviceID, d);
+    objc_storeStrong(&v13->_appleAccountInformation, information);
   }
 
   return v13;
 }
 
-- (void)configureOverlayRequest:(id)a3 urlRequest:(id)a4 dictionary:(id)a5
+- (void)configureOverlayRequest:(id)request urlRequest:(id)urlRequest dictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = [(PKWebServiceRequest *)PKOverlayableWebServiceRequest _HTTPBodyWithDictionary:a5];
-  [v6 setHTTPBody:v7];
+  urlRequestCopy = urlRequest;
+  v7 = [(PKWebServiceRequest *)PKOverlayableWebServiceRequest _HTTPBodyWithDictionary:dictionary];
+  [urlRequestCopy setHTTPBody:v7];
 }
 
 - (PKPaymentWebService)webService

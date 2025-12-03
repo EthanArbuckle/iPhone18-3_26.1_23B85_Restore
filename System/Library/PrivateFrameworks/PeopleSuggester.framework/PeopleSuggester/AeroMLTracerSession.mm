@@ -1,25 +1,25 @@
 @interface AeroMLTracerSession
 + (id)generateTraceId;
-+ (id)logChannelWithSubsystem:(const char *)a3 category:(const char *)a4;
-- (AeroMLTracerSession)initWithProjectName:(id)a3;
-- (AeroMLTracerSession)initWithTraceId:(id)a3 projectName:(id)a4;
-- (id)createRootSpanWithName:(id)a3;
-- (id)createSubSpanWithName:(id)a3 parentSpanId:(id)a4;
++ (id)logChannelWithSubsystem:(const char *)subsystem category:(const char *)category;
+- (AeroMLTracerSession)initWithProjectName:(id)name;
+- (AeroMLTracerSession)initWithTraceId:(id)id projectName:(id)name;
+- (id)createRootSpanWithName:(id)name;
+- (id)createSubSpanWithName:(id)name parentSpanId:(id)id;
 @end
 
 @implementation AeroMLTracerSession
 
 + (id)generateTraceId
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-+ (id)logChannelWithSubsystem:(const char *)a3 category:(const char *)a4
++ (id)logChannelWithSubsystem:(const char *)subsystem category:(const char *)category
 {
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%s", a3, a4];
+  category = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%s", subsystem, category];
   if (logChannelWithSubsystem_category___pasOnceToken2 != -1)
   {
     +[AeroMLTracerSession logChannelWithSubsystem:category:];
@@ -37,10 +37,10 @@
   v11[2] = __56__AeroMLTracerSession_logChannelWithSubsystem_category___block_invoke_11;
   v11[3] = &unk_1E7C25A48;
   v13 = &v16;
-  v8 = v6;
+  v8 = category;
   v12 = v8;
-  v14 = a3;
-  v15 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   [v7 runWithLockAcquired:v11];
   v9 = v17[5];
 
@@ -103,18 +103,18 @@ void __56__AeroMLTracerSession_logChannelWithSubsystem_category___block_invoke_1
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (AeroMLTracerSession)initWithTraceId:(id)a3 projectName:(id)a4
+- (AeroMLTracerSession)initWithTraceId:(id)id projectName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = AeroMLTracerSession;
   v8 = [(AeroMLTracerSession *)&v18 init];
   if (v8)
   {
-    if (v6)
+    if (idCopy)
     {
-      v9 = [v6 copy];
+      v9 = [idCopy copy];
     }
 
     else
@@ -125,15 +125,15 @@ void __56__AeroMLTracerSession_logChannelWithSubsystem_category___block_invoke_1
     traceId = v8->_traceId;
     v8->_traceId = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     projectName = v8->_projectName;
     v8->_projectName = v11;
 
-    v13 = [objc_opt_class() logChannelWithSubsystem:objc_msgSend(v7 category:{"UTF8String"), "signpost"}];
+    v13 = [objc_opt_class() logChannelWithSubsystem:objc_msgSend(nameCopy category:{"UTF8String"), "signpost"}];
     traceSignpost = v8->_traceSignpost;
     v8->_traceSignpost = v13;
 
-    v15 = [objc_opt_class() logChannelWithSubsystem:objc_msgSend(v7 category:{"UTF8String"), "AMLTracer"}];
+    v15 = [objc_opt_class() logChannelWithSubsystem:objc_msgSend(nameCopy category:{"UTF8String"), "AMLTracer"}];
     traceChannel = v8->_traceChannel;
     v8->_traceChannel = v15;
   }
@@ -141,28 +141,28 @@ void __56__AeroMLTracerSession_logChannelWithSubsystem_category___block_invoke_1
   return v8;
 }
 
-- (AeroMLTracerSession)initWithProjectName:(id)a3
+- (AeroMLTracerSession)initWithProjectName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[AeroMLTracerSession generateTraceId];
-  v6 = [(AeroMLTracerSession *)self initWithTraceId:v5 projectName:v4];
+  v6 = [(AeroMLTracerSession *)self initWithTraceId:v5 projectName:nameCopy];
 
   return v6;
 }
 
-- (id)createRootSpanWithName:(id)a3
+- (id)createRootSpanWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[AeroMLTracerSpan alloc] initSpanWithSpanName:v4 traceSession:self parentSpanId:0];
+  nameCopy = name;
+  v5 = [[AeroMLTracerSpan alloc] initSpanWithSpanName:nameCopy traceSession:self parentSpanId:0];
 
   return v5;
 }
 
-- (id)createSubSpanWithName:(id)a3 parentSpanId:(id)a4
+- (id)createSubSpanWithName:(id)name parentSpanId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AeroMLTracerSpan alloc] initSpanWithSpanName:v7 traceSession:self parentSpanId:v6];
+  idCopy = id;
+  nameCopy = name;
+  v8 = [[AeroMLTracerSpan alloc] initSpanWithSpanName:nameCopy traceSession:self parentSpanId:idCopy];
 
   return v8;
 }

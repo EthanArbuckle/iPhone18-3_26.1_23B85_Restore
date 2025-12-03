@@ -1,120 +1,120 @@
 @interface RAPTablePartsDataSource
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (RAPTablePartsDataSource)init;
-- (RAPTablePartsDataSource)initWithPresentingViewController:(id)a3;
-- (id)indexPathForRow:(int64_t)a3 ofSection:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)indexOfSection:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (RAPTablePartsDataSource)initWithPresentingViewController:(id)controller;
+- (id)indexPathForRow:(int64_t)row ofSection:(id)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)indexOfSection:(id)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_clearPartsAndSections;
 - (void)_createPartAndSectionArraysIfNeeded;
 - (void)_rebuildTableSections;
 - (void)_updateTableAppearance;
 - (void)dealloc;
-- (void)popTablePart:(id)a3 withRowAnimation:(int64_t)a4;
-- (void)pushTablePart:(id)a3 withRowAnimation:(int64_t)a4;
-- (void)setTableParts:(id)a3 withRowAnimation:(int64_t)a4;
-- (void)setTableView:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)popTablePart:(id)part withRowAnimation:(int64_t)animation;
+- (void)pushTablePart:(id)part withRowAnimation:(int64_t)animation;
+- (void)setTableParts:(id)parts withRowAnimation:(int64_t)animation;
+- (void)setTableView:(id)view;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation RAPTablePartsDataSource
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = -[RAPTablePartsDataSource sectionAtIndex:](self, "sectionAtIndex:", [v7 section]);
-  [v8 commitEdit:a4 forRowAtIndex:objc_msgSend(v7 tableViewIndexPath:{"row"), v7}];
+  pathCopy = path;
+  v8 = -[RAPTablePartsDataSource sectionAtIndex:](self, "sectionAtIndex:", [pathCopy section]);
+  [v8 commitEdit:style forRowAtIndex:objc_msgSend(pathCopy tableViewIndexPath:{"row"), pathCopy}];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RAPTablePartsDataSource sectionAtIndex:](self, "sectionAtIndex:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[RAPTablePartsDataSource sectionAtIndex:](self, "sectionAtIndex:", [pathCopy section]);
+  v7 = [pathCopy row];
 
-  LOBYTE(v5) = [v6 canEditRowAtIndex:v7];
-  return v5;
+  LOBYTE(pathCopy) = [v6 canEditRowAtIndex:v7];
+  return pathCopy;
 }
 
-- (id)indexPathForRow:(int64_t)a3 ofSection:(id)a4
+- (id)indexPathForRow:(int64_t)row ofSection:(id)section
 {
-  v5 = [(RAPTablePartsDataSource *)self indexOfSection:a4];
+  v5 = [(RAPTablePartsDataSource *)self indexOfSection:section];
 
-  return [NSIndexPath indexPathForRow:a3 inSection:v5];
+  return [NSIndexPath indexPathForRow:row inSection:v5];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(RAPTablePartsDataSource *)self sectionAtIndex:a4];
-  v5 = [v4 footerTitle];
+  v4 = [(RAPTablePartsDataSource *)self sectionAtIndex:section];
+  footerTitle = [v4 footerTitle];
 
-  return v5;
+  return footerTitle;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
-    v6 = [(RAPTablePartsDataSource *)self sectionAtIndex:a4];
-    v7 = [v6 headerTitle];
+    v6 = [(RAPTablePartsDataSource *)self sectionAtIndex:section];
+    headerTitle = [v6 headerTitle];
   }
 
   else
   {
-    v7 = 0;
+    headerTitle = 0;
   }
 
-  return v7;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RAPTablePartsDataSource sectionAtIndex:](self, "sectionAtIndex:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[RAPTablePartsDataSource sectionAtIndex:](self, "sectionAtIndex:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   v8 = [v6 cellForRowAtIndex:v7];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(RAPTablePartsDataSource *)self sectionAtIndex:a4];
-  v5 = [v4 rowsCount];
+  v4 = [(RAPTablePartsDataSource *)self sectionAtIndex:section];
+  rowsCount = [v4 rowsCount];
 
-  return v5;
+  return rowsCount;
 }
 
-- (int64_t)indexOfSection:(id)a3
+- (int64_t)indexOfSection:(id)section
 {
-  v3 = objc_getAssociatedObject(a3, off_101929930);
-  v4 = [v3 integerValue];
+  v3 = objc_getAssociatedObject(section, off_101929930);
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)popTablePart:(id)a3 withRowAnimation:(int64_t)a4
+- (void)popTablePart:(id)part withRowAnimation:(int64_t)animation
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_tableParts lastObject];
+  partCopy = part;
+  lastObject = [(NSMutableArray *)self->_tableParts lastObject];
 
-  if (v7 == v6)
+  if (lastObject == partCopy)
   {
-    v8 = [v6 sections];
+    sections = [partCopy sections];
     tableSections = self->_tableSections;
-    v10 = [v8 firstObject];
-    v11 = [(NSMutableArray *)tableSections indexOfObject:v10];
+    firstObject = [sections firstObject];
+    v11 = [(NSMutableArray *)tableSections indexOfObject:firstObject];
 
-    v12 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v11, [v8 count]);
+    v12 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v11, [sections count]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = v8;
+    v13 = sections;
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
@@ -141,35 +141,35 @@
       while (v15);
     }
 
-    [v6 _setTableView:{0, v19}];
-    [v6 setPresentingViewController:0];
+    [partCopy _setTableView:{0, v19}];
+    [partCopy setPresentingViewController:0];
     [(NSMutableArray *)self->_tableParts removeLastObject];
     [(NSMutableArray *)self->_tableSections removeObjectsAtIndexes:v12];
-    v18 = [(RAPTablePartsDataSource *)self tableView];
-    [v18 deleteSections:v12 withRowAnimation:a4];
+    tableView = [(RAPTablePartsDataSource *)self tableView];
+    [tableView deleteSections:v12 withRowAnimation:animation];
   }
 }
 
-- (void)pushTablePart:(id)a3 withRowAnimation:(int64_t)a4
+- (void)pushTablePart:(id)part withRowAnimation:(int64_t)animation
 {
-  v5 = a3;
+  partCopy = part;
   [(RAPTablePartsDataSource *)self _createPartAndSectionArraysIfNeeded];
   v22 = [(NSMutableArray *)self->_tableSections count];
-  [(NSMutableArray *)self->_tableParts addObject:v5];
-  v6 = [v5 sections];
-  [(NSMutableArray *)self->_tableSections addObjectsFromArray:v6];
-  v7 = [(RAPTablePartsDataSource *)self tableView];
-  [v5 _setTableView:v7];
+  [(NSMutableArray *)self->_tableParts addObject:partCopy];
+  sections = [partCopy sections];
+  [(NSMutableArray *)self->_tableSections addObjectsFromArray:sections];
+  tableView = [(RAPTablePartsDataSource *)self tableView];
+  [partCopy _setTableView:tableView];
 
-  v20 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
-  [v5 setPresentingViewController:WeakRetained];
+  [partCopy setPresentingViewController:WeakRetained];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = sections;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -187,8 +187,8 @@
 
         v15 = *(*(&v23 + 1) + 8 * i);
         v16 = off_101929930;
-        v17 = [NSNumber numberWithUnsignedInteger:v13, v20];
-        objc_setAssociatedObject(v15, v16, v17, 3);
+        selfCopy = [NSNumber numberWithUnsignedInteger:v13, selfCopy];
+        objc_setAssociatedObject(v15, v16, selfCopy, 3);
 
         ++v13;
       }
@@ -199,9 +199,9 @@
     while (v11);
   }
 
-  v18 = [(RAPTablePartsDataSource *)v20 tableView];
+  tableView2 = [(RAPTablePartsDataSource *)selfCopy tableView];
   v19 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v22, [v9 count]);
-  [v18 insertSections:v19 withRowAnimation:a4];
+  [tableView2 insertSections:v19 withRowAnimation:animation];
 }
 
 - (void)_createPartAndSectionArraysIfNeeded
@@ -234,7 +234,7 @@
   {
     v4 = 0;
     v23 = *v32;
-    v24 = self;
+    selfCopy = self;
     do
     {
       v5 = 0;
@@ -247,8 +247,8 @@
 
         v26 = v5;
         v6 = *(*(&v31 + 1) + 8 * v5);
-        v7 = [(RAPTablePartsDataSource *)self tableView];
-        [v6 _setTableView:v7];
+        tableView = [(RAPTablePartsDataSource *)self tableView];
+        [v6 _setTableView:tableView];
 
         WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
         [v6 setPresentingViewController:WeakRetained];
@@ -257,8 +257,8 @@
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v9 = [v6 sections];
-        v10 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        sections = [v6 sections];
+        v10 = [sections countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v10)
         {
           v11 = v10;
@@ -269,7 +269,7 @@
             {
               if (*v28 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(sections);
               }
 
               v14 = *(*(&v27 + 1) + 8 * i);
@@ -281,14 +281,14 @@
               ++v4;
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v11 = [sections countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v11);
         }
 
         v5 = v26 + 1;
-        self = v24;
+        self = selfCopy;
       }
 
       while ((v26 + 1) != v25);
@@ -302,32 +302,32 @@
   tableSections = self->_tableSections;
   self->_tableSections = v17;
 
-  v19 = [(RAPTablePartsDataSource *)self tableView];
-  v20 = [RAPTablePart isHoldingChangesAffectingTableView:v19];
+  tableView2 = [(RAPTablePartsDataSource *)self tableView];
+  v20 = [RAPTablePart isHoldingChangesAffectingTableView:tableView2];
 
   if ((v20 & 1) == 0)
   {
-    v21 = [(RAPTablePartsDataSource *)self tableView];
-    [v21 reloadData];
+    tableView3 = [(RAPTablePartsDataSource *)self tableView];
+    [tableView3 reloadData];
   }
 }
 
-- (void)setTableParts:(id)a3 withRowAnimation:(int64_t)a4
+- (void)setTableParts:(id)parts withRowAnimation:(int64_t)animation
 {
-  v6 = a3;
-  if (([(NSMutableArray *)self->_tableParts isEqual:v6]& 1) == 0)
+  partsCopy = parts;
+  if (([(NSMutableArray *)self->_tableParts isEqual:partsCopy]& 1) == 0)
   {
-    if ([(NSMutableArray *)self->_tableParts _maps_isPrefixOfArray:v6])
+    if ([(NSMutableArray *)self->_tableParts _maps_isPrefixOfArray:partsCopy])
     {
       v7 = [(NSMutableArray *)self->_tableParts count];
-      v8 = [v6 count];
+      v8 = [partsCopy count];
       v9 = [(NSMutableArray *)self->_tableParts count];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v10 = [v6 subarrayWithRange:{v7, v8 - v9}];
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      reverseObjectEnumerator = [partsCopy subarrayWithRange:{v7, v8 - v9}];
+      v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v11)
       {
         v12 = v11;
@@ -338,13 +338,13 @@
           {
             if (*v29 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
-            [(RAPTablePartsDataSource *)self pushTablePart:*(*(&v28 + 1) + 8 * i) withRowAnimation:a4];
+            [(RAPTablePartsDataSource *)self pushTablePart:*(*(&v28 + 1) + 8 * i) withRowAnimation:animation];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v33 count:16];
         }
 
         while (v12);
@@ -353,10 +353,10 @@
 
     else
     {
-      if (![v6 _maps_isPrefixOfArray:self->_tableParts])
+      if (![partsCopy _maps_isPrefixOfArray:self->_tableParts])
       {
         [(RAPTablePartsDataSource *)self _clearPartsAndSections];
-        v22 = [v6 mutableCopy];
+        v22 = [partsCopy mutableCopy];
         tableParts = self->_tableParts;
         self->_tableParts = v22;
 
@@ -365,16 +365,16 @@
         goto LABEL_21;
       }
 
-      v15 = [v6 count];
+      v15 = [partsCopy count];
       v16 = [(NSMutableArray *)self->_tableParts count];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v17 = -[NSMutableArray subarrayWithRange:](self->_tableParts, "subarrayWithRange:", v15, v16 - [v6 count], 0);
-      v10 = [v17 reverseObjectEnumerator];
+      v17 = -[NSMutableArray subarrayWithRange:](self->_tableParts, "subarrayWithRange:", v15, v16 - [partsCopy count], 0);
+      reverseObjectEnumerator = [v17 reverseObjectEnumerator];
 
-      v18 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v18)
       {
         v19 = v18;
@@ -385,13 +385,13 @@
           {
             if (*v25 != v20)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
-            [(RAPTablePartsDataSource *)self popTablePart:*(*(&v24 + 1) + 8 * j) withRowAnimation:a4];
+            [(RAPTablePartsDataSource *)self popTablePart:*(*(&v24 + 1) + 8 * j) withRowAnimation:animation];
           }
 
-          v19 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v24 objects:v32 count:16];
         }
 
         while (v19);
@@ -402,21 +402,21 @@
 LABEL_21:
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_tableView = &self->_tableView;
   tableView = self->_tableView;
-  if (tableView != v5)
+  if (tableView != viewCopy)
   {
-    v8 = [(UITableView *)tableView dataSource];
+    dataSource = [(UITableView *)tableView dataSource];
 
-    if (v8 == self)
+    if (dataSource == self)
     {
       [(UITableView *)*p_tableView setDataSource:0];
     }
 
-    objc_storeStrong(&self->_tableView, a3);
+    objc_storeStrong(&self->_tableView, view);
     [(UITableView *)self->_tableView setDataSource:self];
     v16 = 0u;
     v17 = 0u;
@@ -502,14 +502,14 @@ LABEL_10:
       v7 = 1;
     }
 
-    v9 = [(RAPTablePartsDataSource *)self tableView];
-    [v9 _maps_initializeRAPAppearanceWithStyle:v7];
+    tableView = [(RAPTablePartsDataSource *)self tableView];
+    [tableView _maps_initializeRAPAppearanceWithStyle:v7];
   }
 
   else
   {
-    v10 = [(RAPTablePartsDataSource *)self tableView];
-    [v10 _maps_initializeRAPAppearance];
+    tableView2 = [(RAPTablePartsDataSource *)self tableView];
+    [tableView2 _maps_initializeRAPAppearance];
   }
 }
 
@@ -577,9 +577,9 @@ LABEL_10:
 - (void)dealloc
 {
   [(RAPTablePartsDataSource *)self _clearPartsAndSections];
-  v3 = [(UITableView *)self->_tableView dataSource];
+  dataSource = [(UITableView *)self->_tableView dataSource];
 
-  if (v3 == self)
+  if (dataSource == self)
   {
     [(UITableView *)self->_tableView setDataSource:0];
   }
@@ -589,16 +589,16 @@ LABEL_10:
   [(RAPTablePartsDataSource *)&v4 dealloc];
 }
 
-- (RAPTablePartsDataSource)initWithPresentingViewController:(id)a3
+- (RAPTablePartsDataSource)initWithPresentingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = RAPTablePartsDataSource;
   v5 = [(RAPTablePartsDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_presentingViewController, v4);
+    objc_storeWeak(&v5->_presentingViewController, controllerCopy);
   }
 
   return v6;

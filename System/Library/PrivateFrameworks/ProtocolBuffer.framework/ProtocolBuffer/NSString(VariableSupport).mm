@@ -6,11 +6,11 @@
 
 - (__CFString)_pb_fixCase:()VariableSupport
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 lengthOfBytesUsingEncoding:4];
+    v5 = [self lengthOfBytesUsingEncoding:4];
     v6 = malloc_type_malloc(v5 + 1, 0x29EBA39CuLL);
-    [a1 getBytes:v6 maxLength:v5 usedLength:0 encoding:4 options:1 range:0 remainingRange:{objc_msgSend(a1, "length"), 0}];
+    [self getBytes:v6 maxLength:v5 usedLength:0 encoding:4 options:1 range:0 remainingRange:{objc_msgSend(self, "length"), 0}];
     v6[v5] = 0;
     v7 = 0;
     if (v5)

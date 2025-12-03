@@ -1,23 +1,23 @@
 @interface _TUIFocusContainerRenderModel
-- (_TUIFocusContainerRenderModel)initWithIdentifier:(id)a3 submodel:(id)a4 focusStyle:(id)a5 actionHandler:(id)a6 linkEntities:(id)a7;
+- (_TUIFocusContainerRenderModel)initWithIdentifier:(id)identifier submodel:(id)submodel focusStyle:(id)style actionHandler:(id)handler linkEntities:(id)entities;
 @end
 
 @implementation _TUIFocusContainerRenderModel
 
-- (_TUIFocusContainerRenderModel)initWithIdentifier:(id)a3 submodel:(id)a4 focusStyle:(id)a5 actionHandler:(id)a6 linkEntities:(id)a7
+- (_TUIFocusContainerRenderModel)initWithIdentifier:(id)identifier submodel:(id)submodel focusStyle:(id)style actionHandler:(id)handler linkEntities:(id)entities
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  styleCopy = style;
+  handlerCopy = handler;
+  entitiesCopy = entities;
   v19.receiver = self;
   v19.super_class = _TUIFocusContainerRenderModel;
-  v16 = [(TUIRenderModelView *)&v19 initWithReuseIdentifier:@"TUIReuseIdentifierFocusContainerView" identifier:a3 submodel:a4];
+  v16 = [(TUIRenderModelView *)&v19 initWithReuseIdentifier:@"TUIReuseIdentifierFocusContainerView" identifier:identifier submodel:submodel];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_focusStyle, a5);
-    objc_storeStrong(&v17->_actionHandler, a6);
-    objc_storeStrong(&v17->_linkEntities, a7);
+    objc_storeStrong(&v16->_focusStyle, style);
+    objc_storeStrong(&v17->_actionHandler, handler);
+    objc_storeStrong(&v17->_linkEntities, entities);
   }
 
   return v17;

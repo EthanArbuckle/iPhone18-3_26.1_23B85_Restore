@@ -1,14 +1,14 @@
 @interface ClockManager
-+ (void)saveAndNotifyForUserPreferences:(BOOL)a3 localNotifications:(BOOL)a4;
++ (void)saveAndNotifyForUserPreferences:(BOOL)preferences localNotifications:(BOOL)notifications;
 @end
 
 @implementation ClockManager
 
-+ (void)saveAndNotifyForUserPreferences:(BOOL)a3 localNotifications:(BOOL)a4
++ (void)saveAndNotifyForUserPreferences:(BOOL)preferences localNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (preferences)
   {
-    if (a4)
+    if (notifications)
     {
       v4 = @"com.apple.mobiletimer.user-preferences-and-local-notifications-changed";
     }
@@ -23,7 +23,7 @@
 
   else
   {
-    if (!a4)
+    if (!notifications)
     {
       return;
     }

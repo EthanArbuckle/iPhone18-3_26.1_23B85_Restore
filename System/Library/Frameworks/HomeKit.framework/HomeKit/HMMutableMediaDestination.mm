@@ -1,18 +1,18 @@
 @interface HMMutableMediaDestination
 + (id)logCategory;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableMediaDestination
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMediaDestination allocWithZone:a3];
-  v5 = [(HMMediaDestination *)self uniqueIdentifier];
-  v6 = [(HMMediaDestination *)self parentIdentifier];
-  v7 = [(HMMediaDestination *)self supportedOptions];
-  v8 = [(HMMediaDestination *)self audioGroupIdentifier];
-  v9 = [(HMMediaDestination *)v4 initWithUniqueIdentifier:v5 parentIdentifier:v6 supportedOptions:v7 audioGroupIdentifier:v8];
+  v4 = [HMMediaDestination allocWithZone:zone];
+  uniqueIdentifier = [(HMMediaDestination *)self uniqueIdentifier];
+  parentIdentifier = [(HMMediaDestination *)self parentIdentifier];
+  supportedOptions = [(HMMediaDestination *)self supportedOptions];
+  audioGroupIdentifier = [(HMMediaDestination *)self audioGroupIdentifier];
+  v9 = [(HMMediaDestination *)v4 initWithUniqueIdentifier:uniqueIdentifier parentIdentifier:parentIdentifier supportedOptions:supportedOptions audioGroupIdentifier:audioGroupIdentifier];
 
   return v9;
 }

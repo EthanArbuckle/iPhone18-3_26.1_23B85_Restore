@@ -1,33 +1,33 @@
 @interface EKCalendarNotificationReference
-+ (id)batchLoadNotifications:(id)a3;
-+ (id)batchLoadTypeForRelationsOfObjectType:(int)a3;
-+ (id)requiredPropertiesForBatchLoadType:(int)a3;
++ (id)batchLoadNotifications:(id)notifications;
++ (id)batchLoadTypeForRelationsOfObjectType:(int)type;
++ (id)requiredPropertiesForBatchLoadType:(int)type;
 - (BOOL)loaded;
 - (EKCalendarNotification)notification;
-- (EKCalendarNotificationReference)initWithType:(int)a3 objectID:(id)a4 date:(id)a5 eventStore:(id)a6;
+- (EKCalendarNotificationReference)initWithType:(int)type objectID:(id)d date:(id)date eventStore:(id)store;
 - (id)_notification;
 - (id)description;
 - (int)batchLoadType;
-- (int64_t)_notificationTypeForResourceChange:(id)a3 notificationType:(int)a4;
+- (int64_t)_notificationTypeForResourceChange:(id)change notificationType:(int)type;
 @end
 
 @implementation EKCalendarNotificationReference
 
-- (EKCalendarNotificationReference)initWithType:(int)a3 objectID:(id)a4 date:(id)a5 eventStore:(id)a6
+- (EKCalendarNotificationReference)initWithType:(int)type objectID:(id)d date:(id)date eventStore:(id)store
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dateCopy = date;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = EKCalendarNotificationReference;
   v14 = [(EKCalendarNotificationReference *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_objectID, a4);
-    objc_storeStrong(&v15->_date, a5);
-    objc_storeStrong(&v15->_eventStore, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_objectID, d);
+    objc_storeStrong(&v15->_date, date);
+    objc_storeStrong(&v15->_eventStore, store);
     notification = v15->_notification;
     v15->_notification = 0;
 
@@ -40,10 +40,10 @@
 - (EKCalendarNotification)notification
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(EKCalendarNotificationReference *)self _notification];
+  _notification = [(EKCalendarNotificationReference *)self _notification];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _notification;
 }
 
 - (id)_notification
@@ -65,8 +65,8 @@
       if ((type - 4) < 2)
       {
         v8 = [(EKEventStore *)self->_eventStore publicObjectWithPersistentObject:v5];
-        v10 = [(EKEvent *)v8 calendarItem];
-        v71 = [(EKCalendarItem *)v8 calendar];
+        calendarItem = [(EKEvent *)v8 calendarItem];
+        calendar = [(EKCalendarItem *)v8 calendar];
         v13 = [(EKCalendarNotificationReference *)self _notificationTypeForResourceChange:v8 notificationType:self->_type];
         v14 = off_1E77FB878;
         if (self->_type != 5)
@@ -77,31 +77,31 @@
         v15 = [objc_alloc(*v14) initWithType:v13];
         if ([(EKEvent *)v8 changeType]== 3)
         {
-          v16 = [(EKEvent *)v8 deletedTitle];
-          v17 = v16;
-          if (v16)
+          deletedTitle = [(EKEvent *)v8 deletedTitle];
+          v17 = deletedTitle;
+          if (deletedTitle)
           {
-            v18 = v16;
+            title = deletedTitle;
           }
 
           else
           {
-            v18 = [v10 title];
+            title = [calendarItem title];
           }
 
-          v41 = v18;
+          title2 = title;
         }
 
         else
         {
-          v41 = [v10 title];
+          title2 = [calendarItem title];
         }
 
         v42 = v13 - 4;
-        if (!v41)
+        if (!title2)
         {
-          v43 = [(EKCalendarItem *)v8 calendar];
-          v41 = [v43 title];
+          calendar2 = [(EKCalendarItem *)v8 calendar];
+          title2 = [calendar2 title];
         }
 
         v44 = v42 & 0xFFFFFFFFFFFFFFF5;
@@ -118,74 +118,74 @@
           v72 = 0;
         }
 
-        v46 = v71;
-        [v15 setTitle:v41];
+        v46 = calendar;
+        [v15 setTitle:title2];
         if (v44)
         {
-          v47 = [(EKObject *)v8 objectID];
-          v48 = [v47 URIRepresentation];
-          [v15 setURL:v48];
+          objectID = [(EKObject *)v8 objectID];
+          uRIRepresentation = [objectID URIRepresentation];
+          [v15 setURL:uRIRepresentation];
         }
 
         else
         {
-          v47 = [v10 externalURI];
-          [v15 setURL:v47];
+          objectID = [calendarItem externalURI];
+          [v15 setURL:objectID];
         }
 
-        v49 = [(EKEvent *)v8 changedByDisplayName];
-        [v15 setName:v49];
+        changedByDisplayName = [(EKEvent *)v8 changedByDisplayName];
+        [v15 setName:changedByDisplayName];
 
-        v50 = [(EKEvent *)v8 emailAddress];
-        [v15 setEmailAddress:v50];
+        emailAddress = [(EKEvent *)v8 emailAddress];
+        [v15 setEmailAddress:emailAddress];
 
-        v51 = [(EKEvent *)v8 phoneNumber];
-        [v15 setPhoneNumber:v51];
+        phoneNumber = [(EKEvent *)v8 phoneNumber];
+        [v15 setPhoneNumber:phoneNumber];
 
-        v52 = [(EKCalendarItem *)v8 calendar];
-        v53 = [v52 title];
-        [v15 setCalendarName:v53];
+        calendar3 = [(EKCalendarItem *)v8 calendar];
+        title3 = [calendar3 title];
+        [v15 setCalendarName:title3];
 
-        v54 = [v10 eventIdentifier];
-        [v15 setEventID:v54];
+        eventIdentifier = [calendarItem eventIdentifier];
+        [v15 setEventID:eventIdentifier];
 
         [v15 setAlerted:{-[EKEvent alerted](v8, "alerted")}];
-        v55 = [v71 calendarIdentifier];
-        [v15 setHiddenFromNotificationCenter:{objc_msgSend(v72, "containsObject:", v55)}];
+        calendarIdentifier = [calendar calendarIdentifier];
+        [v15 setHiddenFromNotificationCenter:{objc_msgSend(v72, "containsObject:", calendarIdentifier)}];
 
-        if (v10)
+        if (calendarItem)
         {
-          v56 = [v10 calendar];
-          [v15 setDotColor:{objc_msgSend(v56, "CGColor")}];
+          calendar4 = [calendarItem calendar];
+          [v15 setDotColor:{objc_msgSend(calendar4, "CGColor")}];
         }
 
         else
         {
-          [v15 setDotColor:{objc_msgSend(v71, "CGColor")}];
+          [v15 setDotColor:{objc_msgSend(calendar, "CGColor")}];
         }
 
-        v57 = [(EKObject *)v8 objectID];
-        [v15 setObjectID:v57];
+        objectID2 = [(EKObject *)v8 objectID];
+        [v15 setObjectID:objectID2];
 
-        v58 = [(EKCalendarItem *)v8 calendar];
-        v59 = [v58 source];
-        [v15 setSource:v59];
+        calendar5 = [(EKCalendarItem *)v8 calendar];
+        source = [calendar5 source];
+        [v15 setSource:source];
 
-        [v15 setEvent:v10];
-        v60 = [(EKCalendarItem *)v8 calendar];
-        [v15 setCalendar:v60];
+        [v15 setEvent:calendarItem];
+        calendar6 = [(EKCalendarItem *)v8 calendar];
+        [v15 setCalendar:calendar6];
 
         [v15 setChangeType:{-[EKEvent changeType](v8, "changeType")}];
         if ([(EKEvent *)v8 changeType]== 4)
         {
-          v61 = [(EKEvent *)v8 createCount];
-          [v15 setCreateCount:v61];
+          createCount = [(EKEvent *)v8 createCount];
+          [v15 setCreateCount:createCount];
 
-          v62 = [(EKEvent *)v8 updateCount];
-          [v15 setUpdateCount:v62];
+          updateCount = [(EKEvent *)v8 updateCount];
+          [v15 setUpdateCount:updateCount];
 
-          v63 = [(EKEvent *)v8 deleteCount];
-          [v15 setDeleteCount:v63];
+          deleteCount = [(EKEvent *)v8 deleteCount];
+          [v15 setDeleteCount:deleteCount];
         }
 
         else
@@ -194,21 +194,21 @@
           [v15 setTimeChanged:{-[EKEvent timeChanged](v8, "timeChanged")}];
           [v15 setLocationChanged:{-[EKEvent locationChanged](v8, "locationChanged")}];
           [v15 setTitleChanged:{-[EKEvent titleChanged](v8, "titleChanged")}];
-          v64 = [v10 startDate];
-          [v15 setStartDate:v64];
+          startDate = [calendarItem startDate];
+          [v15 setStartDate:startDate];
 
-          v65 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
-          v66 = [v10 earliestOccurrenceEndingAfter:v65 excludeSignificantDetachments:1 excludeCanceledDetachments:1 excludeDeclinedDetachments:1];
-          v67 = [v66 startDate];
-          [v15 setStartDateForNextOccurrence:v67];
+          calSimulatedDateForNow = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+          v66 = [calendarItem earliestOccurrenceEndingAfter:calSimulatedDateForNow excludeSignificantDetachments:1 excludeCanceledDetachments:1 excludeDeclinedDetachments:1];
+          startDate2 = [v66 startDate];
+          [v15 setStartDateForNextOccurrence:startDate2];
 
-          v46 = v71;
-          v68 = [v10 endDateUnadjustedForLegacyClients];
-          [v15 setEndDate:v68];
+          v46 = calendar;
+          endDateUnadjustedForLegacyClients = [calendarItem endDateUnadjustedForLegacyClients];
+          [v15 setEndDate:endDateUnadjustedForLegacyClients];
 
-          [v15 setAllDay:{objc_msgSend(v10, "isAllDay")}];
-          v63 = [v10 locationWithoutPrediction];
-          [v15 setLocation:v63];
+          [v15 setAllDay:{objc_msgSend(calendarItem, "isAllDay")}];
+          deleteCount = [calendarItem locationWithoutPrediction];
+          [v15 setLocation:deleteCount];
         }
 
         objc_storeStrong(p_notification, v15);
@@ -235,45 +235,45 @@
         }
 
         v19 = [[EKCalendarInviteReplyNotification alloc] initWithType:v28];
-        v29 = [(EKEvent *)v8 calendarName];
-        [(EKCalendarNotification *)v19 setTitle:v29];
+        calendarName = [(EKEvent *)v8 calendarName];
+        [(EKCalendarNotification *)v19 setTitle:calendarName];
 
-        v30 = [(EKEvent *)v8 shareeDisplayName];
-        [(EKCalendarNotification *)v19 setName:v30];
+        shareeDisplayName = [(EKEvent *)v8 shareeDisplayName];
+        [(EKCalendarNotification *)v19 setName:shareeDisplayName];
 
-        v31 = [(EKEvent *)v8 shareeEmailAddress];
-        [(EKCalendarNotification *)v19 setEmailAddress:v31];
+        shareeEmailAddress = [(EKEvent *)v8 shareeEmailAddress];
+        [(EKCalendarNotification *)v19 setEmailAddress:shareeEmailAddress];
 
-        v32 = [(EKEvent *)v8 shareePhoneNumber];
-        [(EKCalendarNotification *)v19 setPhoneNumber:v32];
+        shareePhoneNumber = [(EKEvent *)v8 shareePhoneNumber];
+        [(EKCalendarNotification *)v19 setPhoneNumber:shareePhoneNumber];
 
-        v33 = [(EKEvent *)v8 shareeURL];
-        [(EKCalendarNotification *)v19 setURL:v33];
+        shareeURL = [(EKEvent *)v8 shareeURL];
+        [(EKCalendarNotification *)v19 setURL:shareeURL];
 
         [(EKCalendarNotification *)v19 setAlerted:[(EKEvent *)v8 alerted]];
         [(EKCalendarNotification *)v19 setHiddenFromNotificationCenter:0];
         [(EKCalendarInviteReplyNotification *)v19 setStatus:[(EKEvent *)v8 shareeStatus]];
-        v34 = [(EKEvent *)v8 inviteReplyCalendar];
-        -[EKCalendarNotification setDotColor:](v19, "setDotColor:", [v34 CGColor]);
+        inviteReplyCalendar = [(EKEvent *)v8 inviteReplyCalendar];
+        -[EKCalendarNotification setDotColor:](v19, "setDotColor:", [inviteReplyCalendar CGColor]);
 
-        v35 = [(EKObject *)v8 objectID];
-        [(EKCalendarNotification *)v19 setObjectID:v35];
+        objectID3 = [(EKObject *)v8 objectID];
+        [(EKCalendarNotification *)v19 setObjectID:objectID3];
 
-        v36 = [(EKObject *)v8 objectID];
-        v37 = [v36 URIRepresentation];
-        [(EKCalendarNotification *)v19 setURL:v37];
+        objectID4 = [(EKObject *)v8 objectID];
+        uRIRepresentation2 = [objectID4 URIRepresentation];
+        [(EKCalendarNotification *)v19 setURL:uRIRepresentation2];
 
         v38 = [EKInviteReplyNotification sourceForInviteReplyNotification:v8];
         [(EKCalendarNotification *)v19 setSource:v38];
 
-        v39 = [(EKEvent *)v8 inviteReplyCalendar];
-        [(EKCalendarNotification *)v19 setCalendar:v39];
+        inviteReplyCalendar2 = [(EKEvent *)v8 inviteReplyCalendar];
+        [(EKCalendarNotification *)v19 setCalendar:inviteReplyCalendar2];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v40 = [(EKEvent *)v8 inviteReplyCalendar];
-          -[EKCalendarInviteReplyNotification setAllowedEntityTypes:](v19, "setAllowedEntityTypes:", [v40 allowedEntityTypes]);
+          inviteReplyCalendar3 = [(EKEvent *)v8 inviteReplyCalendar];
+          -[EKCalendarInviteReplyNotification setAllowedEntityTypes:](v19, "setAllowedEntityTypes:", [inviteReplyCalendar3 allowedEntityTypes]);
         }
 
         else
@@ -291,7 +291,7 @@
       {
         v8 = [[EKEvent alloc] initWithPersistentObject:v5 occurrenceDate:self->_date];
         v9 = [[EKCalendarEventInvitationNotification alloc] initWithEvent:v8];
-        v10 = self->_notification;
+        calendarItem = self->_notification;
         self->_notification = &v9->super;
 LABEL_45:
 
@@ -302,38 +302,38 @@ LABEL_45:
       {
         v8 = [(EKObject *)[EKCalendar alloc] initWithPersistentObject:v5];
         v19 = [[EKCalendarSharedCalendarNotification alloc] initWithType:8];
-        v20 = [(EKEvent *)v8 title];
-        [(EKCalendarNotification *)v19 setTitle:v20];
+        title4 = [(EKEvent *)v8 title];
+        [(EKCalendarNotification *)v19 setTitle:title4];
 
         [(EKCalendarNotification *)v19 setHiddenFromNotificationCenter:[(EKEvent *)v8 invitationStatus]== 1];
-        v21 = [(EKEvent *)v8 sharedOwnerName];
-        [(EKCalendarNotification *)v19 setName:v21];
+        sharedOwnerName = [(EKEvent *)v8 sharedOwnerName];
+        [(EKCalendarNotification *)v19 setName:sharedOwnerName];
 
-        v22 = [(EKEvent *)v8 sharedOwnerEmail];
-        [(EKCalendarNotification *)v19 setEmailAddress:v22];
+        sharedOwnerEmail = [(EKEvent *)v8 sharedOwnerEmail];
+        [(EKCalendarNotification *)v19 setEmailAddress:sharedOwnerEmail];
 
-        v23 = [(EKEvent *)v8 sharedOwnerPhoneNumber];
-        [(EKCalendarNotification *)v19 setPhoneNumber:v23];
+        sharedOwnerPhoneNumber = [(EKEvent *)v8 sharedOwnerPhoneNumber];
+        [(EKCalendarNotification *)v19 setPhoneNumber:sharedOwnerPhoneNumber];
 
-        v24 = [(EKEvent *)v8 sharedOwnerURL];
-        [(EKCalendarNotification *)v19 setURL:v24];
+        sharedOwnerURL = [(EKEvent *)v8 sharedOwnerURL];
+        [(EKCalendarNotification *)v19 setURL:sharedOwnerURL];
 
         [(EKCalendarNotification *)v19 setAlerted:[(EKEvent *)v8 invitationStatus]!= 3];
         [(EKCalendarInviteReplyNotification *)v19 setSharingInvitationResponse:[(EKEvent *)v8 sharingInvitationResponse]];
         [(EKCalendarNotification *)v19 setDotColor:0];
-        v25 = [(EKObject *)v8 objectID];
-        [(EKCalendarNotification *)v19 setObjectID:v25];
+        objectID5 = [(EKObject *)v8 objectID];
+        [(EKCalendarNotification *)v19 setObjectID:objectID5];
 
-        v26 = [(EKEvent *)v8 externalURI];
-        [(EKCalendarNotification *)v19 setURL:v26];
+        externalURI = [(EKEvent *)v8 externalURI];
+        [(EKCalendarNotification *)v19 setURL:externalURI];
 
         [(EKCalendarInviteReplyNotification *)v19 setAllowedEntityTypes:[(EKEvent *)v8 allowedEntityTypes]];
-        v27 = [(EKEvent *)v8 source];
-        [(EKCalendarNotification *)v19 setSource:v27];
+        source2 = [(EKEvent *)v8 source];
+        [(EKCalendarNotification *)v19 setSource:source2];
 
         [(EKCalendarNotification *)v19 setCalendar:v8];
 LABEL_25:
-        v10 = *p_notification;
+        calendarItem = *p_notification;
         *p_notification = &v19->super;
         goto LABEL_45;
       }
@@ -359,71 +359,71 @@ LABEL_48:
   return v12;
 }
 
-- (int64_t)_notificationTypeForResourceChange:(id)a3 notificationType:(int)a4
+- (int64_t)_notificationTypeForResourceChange:(id)change notificationType:(int)type
 {
-  v5 = [a3 changeType];
+  changeType = [change changeType];
   v6 = -1;
   v7 = 13;
-  if (a4 != 5)
+  if (type != 5)
   {
     v7 = -1;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v7 = 5;
   }
 
   v8 = 7;
   v9 = 11;
-  if (v5 != 5)
+  if (changeType != 5)
   {
     v9 = -1;
   }
 
-  if (v5 != 4)
+  if (changeType != 4)
   {
     v8 = v9;
   }
 
-  if (v5 != 3)
+  if (changeType != 3)
   {
     v7 = v8;
   }
 
   v10 = 12;
-  if (a4 != 5)
+  if (type != 5)
   {
     v10 = -1;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v10 = 4;
   }
 
   v11 = 14;
-  if (a4 != 5)
+  if (type != 5)
   {
     v11 = -1;
   }
 
-  if (a4 == 4)
+  if (type == 4)
   {
     v11 = 6;
   }
 
-  if (v5 == 2)
+  if (changeType == 2)
   {
     v6 = v11;
   }
 
-  if (v5 == 1)
+  if (changeType == 1)
   {
     v6 = v10;
   }
 
-  if (v5 <= 2)
+  if (changeType <= 2)
   {
     return v6;
   }
@@ -456,21 +456,21 @@ LABEL_48:
   }
 }
 
-+ (id)requiredPropertiesForBatchLoadType:(int)a3
++ (id)requiredPropertiesForBatchLoadType:(int)type
 {
   v63[34] = *MEMORY[0x1E69E9840];
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      if (a3 == 7)
+      if (type == 7)
       {
         v32 = EKPersistentEvent;
       }
 
       else
       {
-        if (a3 != 8)
+        if (type != 8)
         {
           goto LABEL_25;
         }
@@ -478,11 +478,11 @@ LABEL_48:
         v32 = EKPersistentLocation;
       }
 
-      v51 = [(__objc2_class *)v32 defaultPropertiesToLoad];
+      defaultPropertiesToLoad = [(__objc2_class *)v32 defaultPropertiesToLoad];
       goto LABEL_24;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v44 = *MEMORY[0x1E6992B60];
       v59[0] = *MEMORY[0x1E6992B50];
@@ -530,15 +530,15 @@ LABEL_48:
 LABEL_18:
     v39 = 9;
 LABEL_23:
-    v51 = [v30 arrayWithObjects:v31 count:v39];
+    defaultPropertiesToLoad = [v30 arrayWithObjects:v31 count:v39];
 LABEL_24:
-    v3 = v51;
+    v3 = defaultPropertiesToLoad;
     goto LABEL_25;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
       v52 = *MEMORY[0x1E6992B00];
       v61[0] = *MEMORY[0x1E6992AF0];
@@ -586,7 +586,7 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  if (a3 < 2)
+  if (type < 2)
   {
     v5 = *MEMORY[0x1E6992988];
     v63[0] = *MEMORY[0x1E69929E0];
@@ -644,7 +644,7 @@ LABEL_24:
     v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v23, "count") + 1}];
     [v3 addObjectsFromArray:v23];
     v24 = *MEMORY[0x1E6992568];
-    if (a3)
+    if (type)
     {
       v25 = *MEMORY[0x1E6992568];
     }
@@ -659,7 +659,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v40 = *MEMORY[0x1E6992760];
     v62[0] = *MEMORY[0x1E69928A8];
@@ -685,10 +685,10 @@ LABEL_25:
   return v3;
 }
 
-+ (id)batchLoadTypeForRelationsOfObjectType:(int)a3
++ (id)batchLoadTypeForRelationsOfObjectType:(int)type
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(type)
   {
     case 4:
       v14 = *MEMORY[0x1E6992BF8];
@@ -743,12 +743,12 @@ LABEL_9:
   return v11;
 }
 
-+ (id)batchLoadNotifications:(id)a3
++ (id)batchLoadNotifications:(id)notifications
 {
   v89 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v51 = [v4 eventStore];
+  notificationsCopy = notifications;
+  firstObject = [notificationsCopy firstObject];
+  eventStore = [firstObject eventStore];
 
   v88 = 0;
   memset(v87, 0, sizeof(v87));
@@ -756,7 +756,7 @@ LABEL_9:
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v3;
+  obj = notificationsCopy;
   v5 = [obj countByEnumeratingWithState:&v78 objects:v86 count:16];
   if (v5)
   {
@@ -775,22 +775,22 @@ LABEL_9:
         v10 = *(*(&v78 + 1) + 8 * i);
         if (([v10 loaded] & 1) == 0)
         {
-          v11 = [v10 objectID];
-          if (([v7 containsObject:v11] & 1) == 0)
+          objectID = [v10 objectID];
+          if (([v7 containsObject:objectID] & 1) == 0)
           {
-            v12 = [v10 batchLoadType];
-            v13 = [v51 registerFetchedObjectWithID:v11];
+            batchLoadType = [v10 batchLoadType];
+            v13 = [eventStore registerFetchedObjectWithID:objectID];
             if (!v7)
             {
               v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
             }
 
-            [v7 addObject:v11];
-            v14 = *(v87 + v12);
+            [v7 addObject:objectID];
+            v14 = *(v87 + batchLoadType);
             if (!v14)
             {
               v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-              *(v87 + v12) = v14;
+              *(v87 + batchLoadType) = v14;
             }
 
             [v14 addObject:v13];
@@ -818,12 +818,12 @@ LABEL_9:
     v19 = v16;
     if (v18)
     {
-      v20 = [a1 requiredPropertiesForBatchLoadType:v15];
-      [v51 ensureLoadedProperties:v20 forObjects:v17];
+      v20 = [self requiredPropertiesForBatchLoadType:v15];
+      [eventStore ensureLoadedProperties:v20 forObjects:v17];
 
       *(v87 + v15) = 0;
       v50 = v15;
-      v55 = [a1 batchLoadTypeForRelationsOfObjectType:v15];
+      v55 = [self batchLoadTypeForRelationsOfObjectType:v15];
       v74 = 0u;
       v75 = 0u;
       v76 = 0u;
@@ -868,13 +868,13 @@ LABEL_9:
                   if (v24)
                   {
                     v25 = [v61 objectForKeyedSubscript:v23];
-                    v26 = [v25 intValue];
+                    intValue = [v25 intValue];
 
-                    v27 = *(v87 + v26);
+                    v27 = *(v87 + intValue);
                     if (!v27)
                     {
                       v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-                      *(v87 + v26) = v27;
+                      *(v87 + intValue) = v27;
                     }
 
                     objc_opt_class();
@@ -900,10 +900,10 @@ LABEL_9:
                             }
 
                             v33 = *(*(&v66 + 1) + 8 * k);
-                            v34 = [v33 objectID];
-                            if (([v7 containsObject:v34] & 1) == 0)
+                            objectID2 = [v33 objectID];
+                            if (([v7 containsObject:objectID2] & 1) == 0)
                             {
-                              [v7 addObject:v34];
+                              [v7 addObject:objectID2];
                               [v27 addObject:v33];
                             }
                           }
@@ -918,10 +918,10 @@ LABEL_9:
                     else
                     {
                       v35 = v24;
-                      v36 = [v35 objectID];
-                      if (([v7 containsObject:v36] & 1) == 0)
+                      objectID3 = [v35 objectID];
+                      if (([v7 containsObject:objectID3] & 1) == 0)
                       {
-                        [v7 addObject:v36];
+                        [v7 addObject:objectID3];
                         [v27 addObject:v35];
                       }
                     }
@@ -984,10 +984,10 @@ LABEL_9:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v62 + 1) + 8 * m) notification];
-        if (v45)
+        notification = [*(*(&v62 + 1) + 8 * m) notification];
+        if (notification)
         {
-          [v39 addObject:v45];
+          [v39 addObject:notification];
         }
       }
 
@@ -1011,11 +1011,11 @@ LABEL_9:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   type = self->_type;
-  v6 = [(EKObjectID *)self->_objectID rowID];
+  rowID = [(EKObjectID *)self->_objectID rowID];
   date = self->_date;
-  v8 = [MEMORY[0x1E695DF58] currentLocale];
-  v9 = [(NSDate *)date descriptionWithLocale:v8];
-  v10 = [v3 stringWithFormat:@"%@{type: %d, rowID: %d, date: %@}", v4, type, v6, v9];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v9 = [(NSDate *)date descriptionWithLocale:currentLocale];
+  v10 = [v3 stringWithFormat:@"%@{type: %d, rowID: %d, date: %@}", v4, type, rowID, v9];
 
   return v10;
 }

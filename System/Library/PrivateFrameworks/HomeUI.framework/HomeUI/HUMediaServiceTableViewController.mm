@@ -1,46 +1,46 @@
 @interface HUMediaServiceTableViewController
-- (BOOL)moduleController:(id)a3 shouldDisableItem:(id)a4;
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3;
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3;
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUMediaServiceTableViewController)initWithItem:(id)a3 mediaServiceItem:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
+- (BOOL)moduleController:(id)controller shouldDisableItem:(id)item;
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section;
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section;
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUMediaServiceTableViewController)initWithItem:(id)item mediaServiceItem:(id)serviceItem;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
 - (id)itemModuleControllers;
-- (id)moduleController:(id)a3 requestPresentViewController:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6;
+- (id)moduleController:(id)controller requestPresentViewController:(id)viewController animated:(BOOL)animated withCompletion:(id)completion;
 - (void)_removeService;
-- (void)moduleController:(id)a3 preflightCheckToAllowSwitchingForSettingItem:(id)a4 changingToOn:(BOOL)a5 withCompletion:(id)a6;
-- (void)moduleController:(id)a3 presentGroup:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)moduleController:(id)controller preflightCheckToAllowSwitchingForSettingItem:(id)item changingToOn:(BOOL)on withCompletion:(id)completion;
+- (void)moduleController:(id)controller presentGroup:(id)group;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUMediaServiceTableViewController
 
-- (HUMediaServiceTableViewController)initWithItem:(id)a3 mediaServiceItem:(id)a4
+- (HUMediaServiceTableViewController)initWithItem:(id)item mediaServiceItem:(id)serviceItem
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  serviceItemCopy = serviceItem;
   v8 = [HUMediaServiceItemManager alloc];
-  v9 = [v6 home];
-  v10 = [v7 copy];
-  v11 = [(HUMediaServiceItemManager *)v8 initWithHome:v9 mediaServiceItem:v10 delegate:self];
+  home = [itemCopy home];
+  v10 = [serviceItemCopy copy];
+  v11 = [(HUMediaServiceItemManager *)v8 initWithHome:home mediaServiceItem:v10 delegate:self];
 
   v18.receiver = self;
   v18.super_class = HUMediaServiceTableViewController;
   v12 = [(HUItemTableViewController *)&v18 initWithItemManager:v11 tableViewStyle:1];
   if (v12)
   {
-    v13 = [v6 copy];
+    v13 = [itemCopy copy];
     userItem = v12->_userItem;
     v12->_userItem = v13;
 
-    v15 = [v7 copy];
+    v15 = [serviceItemCopy copy];
     mediaServiceItem = v12->_mediaServiceItem;
     v12->_mediaServiceItem = v15;
 
@@ -55,22 +55,22 @@
   v6.receiver = self;
   v6.super_class = HUMediaServiceTableViewController;
   [(HUItemTableViewController *)&v6 viewDidLoad];
-  v3 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
-  v4 = [v3 latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  mediaServiceItem = [(HUMediaServiceTableViewController *)self mediaServiceItem];
+  latestResults = [mediaServiceItem latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
 
   [(HUMediaServiceTableViewController *)self setTitle:v5];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v9 = [v8 mediaServiceItem];
-  v10 = [v6 isEqual:v9];
+  itemCopy = item;
+  pathCopy = path;
+  mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  mediaServiceItem = [mediaServiceItemManager mediaServiceItem];
+  v10 = [itemCopy isEqual:mediaServiceItem];
 
-  if (v10 || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v11 = objc_claimAutoreleasedReturnValue(), [v11 updateListeningHistoryItem], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v6, "isEqual:", v12), v12, v11, v13) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "updateListeningHistoryFooterItem"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v6, "isEqual:", v15), v15, v14, v16) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "removeItem"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v6, "isEqual:", v18), v18, v17, v19) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "reconnectItem"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v6, "isEqual:", v21), v21, v20, v22) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "reconnectTitleItem"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v6, "isEqual:", v24), v24, v23, v25))
+  if (v10 || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v11 = objc_claimAutoreleasedReturnValue(), [v11 updateListeningHistoryItem], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(itemCopy, "isEqual:", v12), v12, v11, v13) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "updateListeningHistoryFooterItem"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(itemCopy, "isEqual:", v15), v15, v14, v16) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "removeItem"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(itemCopy, "isEqual:", v18), v18, v17, v19) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "reconnectItem"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(itemCopy, "isEqual:", v21), v21, v20, v22) || (-[HUMediaServiceTableViewController mediaServiceItemManager](self, "mediaServiceItemManager"), v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "reconnectTitleItem"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(itemCopy, "isEqual:", v24), v24, v23, v25))
   {
     v26 = objc_opt_class();
   }
@@ -79,7 +79,7 @@
   {
     v29.receiver = self;
     v29.super_class = HUMediaServiceTableViewController;
-    v26 = [(HUItemTableViewController *)&v29 cellClassForItem:v6 indexPath:v7];
+    v26 = [(HUItemTableViewController *)&v29 cellClassForItem:itemCopy indexPath:pathCopy];
   }
 
   v27 = v26;
@@ -87,143 +87,143 @@
   return v27;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v31.receiver = self;
   v31.super_class = HUMediaServiceTableViewController;
-  [(HUItemTableViewController *)&v31 setupCell:v8 forItem:v9 indexPath:a5];
-  v10 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v11 = [v10 updateListeningHistoryItem];
-  v12 = [v9 isEqual:v11];
+  [(HUItemTableViewController *)&v31 setupCell:cellCopy forItem:itemCopy indexPath:path];
+  mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  updateListeningHistoryItem = [mediaServiceItemManager updateListeningHistoryItem];
+  v12 = [itemCopy isEqual:updateListeningHistoryItem];
 
   if (v12)
   {
-    v13 = v8;
+    v13 = cellCopy;
     [v13 setDelegate:self];
     [v13 setSelectionStyle:0];
   }
 
-  v14 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v15 = [v14 removeItem];
-  v16 = [v9 isEqual:v15];
+  mediaServiceItemManager2 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  removeItem = [mediaServiceItemManager2 removeItem];
+  v16 = [itemCopy isEqual:removeItem];
 
   if (v16)
   {
-    v17 = v8;
+    v17 = cellCopy;
     [v17 setDestructive:1];
     [v17 setUseFullWidthSeparator:0];
   }
 
-  v18 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v19 = [v18 reconnectItem];
-  v20 = [v9 isEqual:v19];
+  mediaServiceItemManager3 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  reconnectItem = [mediaServiceItemManager3 reconnectItem];
+  v20 = [itemCopy isEqual:reconnectItem];
 
   if (v20)
   {
-    v21 = v8;
+    v21 = cellCopy;
     [v21 setTitleColorFollowsTintColor:1];
     [v21 setHideIcon:1];
   }
 
-  v22 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v23 = [v22 reconnectTitleItem];
-  v24 = [v9 isEqual:v23];
+  mediaServiceItemManager4 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  reconnectTitleItem = [mediaServiceItemManager4 reconnectTitleItem];
+  v24 = [itemCopy isEqual:reconnectTitleItem];
 
   if (v24)
   {
-    v25 = v8;
-    v26 = [v9 latestResults];
-    v27 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v28 = [v25 textLabel];
-    [v28 setText:v27];
+    v25 = cellCopy;
+    latestResults = [itemCopy latestResults];
+    v27 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    textLabel = [v25 textLabel];
+    [textLabel setText:v27];
 
-    v29 = [v25 textLabel];
-    [v29 setNumberOfLines:0];
+    textLabel2 = [v25 textLabel];
+    [textLabel2 setNumberOfLines:0];
 
-    v30 = [MEMORY[0x277D75348] clearColor];
-    [v25 setBackgroundColor:v30];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v25 setBackgroundColor:clearColor];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v26.receiver = self;
   v26.super_class = HUMediaServiceTableViewController;
-  [(HUItemTableViewController *)&v26 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v13 = [v12 updateListeningHistoryItem];
-  v14 = [v11 isEqual:v13];
+  [(HUItemTableViewController *)&v26 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  updateListeningHistoryItem = [mediaServiceItemManager updateListeningHistoryItem];
+  v14 = [itemCopy isEqual:updateListeningHistoryItem];
 
   if (v14)
   {
-    v15 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-    v16 = [v15 mediaServiceItem];
+    mediaServiceItemManager2 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+    mediaServiceItem = [mediaServiceItemManager2 mediaServiceItem];
 
-    v17 = [v16 mediaService];
-    v18 = [v17 updateListeningHistoryEnabled];
+    mediaService = [mediaServiceItem mediaService];
+    updateListeningHistoryEnabled = [mediaService updateListeningHistoryEnabled];
 
-    [v10 setOn:v18 animated:1];
+    [cellCopy setOn:updateListeningHistoryEnabled animated:1];
   }
 
-  v19 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v20 = [v19 removeItem];
-  v21 = [v11 isEqual:v20];
+  mediaServiceItemManager3 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  removeItem = [mediaServiceItemManager3 removeItem];
+  v21 = [itemCopy isEqual:removeItem];
 
   if (v21)
   {
-    v22 = v10;
-    v23 = [v11 latestResults];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v25 = [v22 textLabel];
+    v22 = cellCopy;
+    latestResults = [itemCopy latestResults];
+    v24 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    textLabel = [v22 textLabel];
 
-    [v25 setText:v24];
+    [textLabel setText:v24];
   }
 }
 
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  pathCopy = path;
+  cellCopy = cell;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v14.receiver = self;
   v14.super_class = HUMediaServiceTableViewController;
-  LOBYTE(v8) = [(HUItemTableViewController *)&v14 shouldHideSeparatorsForCell:v7 indexPath:v6];
+  LOBYTE(itemManager) = [(HUItemTableViewController *)&v14 shouldHideSeparatorsForCell:cellCopy indexPath:pathCopy];
 
-  if (v8)
+  if (itemManager)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-    v12 = [v11 updateListeningHistoryItem];
-    v10 = [v9 isEqual:v12];
+    mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+    updateListeningHistoryItem = [mediaServiceItemManager updateListeningHistoryItem];
+    v10 = [v9 isEqual:updateListeningHistoryItem];
   }
 
   return v10;
 }
 
-- (BOOL)shouldHideHeaderAboveSection:(int64_t)a3
+- (BOOL)shouldHideHeaderAboveSection:(int64_t)section
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v5 = [itemManager displayedSectionIdentifierForSectionIndex:section];
   v6 = [v5 isEqualToString:@"HUMediaServiceUpdateListeningHistoryFooterSectionIdentifier"];
 
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 displayedSectionIdentifierForSectionIndex:a4];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v6 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
   v7 = 0.01;
   if (([v6 isEqualToString:@"HUMediaServiceUpdateListeningHistorySectionIdentifier"] & 1) == 0 && (objc_msgSend(v6, "isEqualToString:", @"HUMediaServiceReconnectServiceTitleSectionIdentifier") & 1) == 0)
@@ -242,10 +242,10 @@
   return v7;
 }
 
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  v5 = [v4 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v5 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
   if ([v5 isEqualToString:@"HUMediaServiceUpdateListeningHistorySectionIdentifier"])
   {
@@ -260,41 +260,41 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v46.receiver = self;
   v46.super_class = HUMediaServiceTableViewController;
-  v7 = a3;
-  [(HUItemTableViewController *)&v46 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  viewCopy = view;
+  [(HUItemTableViewController *)&v46 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v10 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v11 = [v10 removeItem];
-  v12 = [v9 isEqual:v11];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  removeItem = [mediaServiceItemManager removeItem];
+  v12 = [v9 isEqual:removeItem];
 
   if (v12)
   {
-    v13 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
-    v43 = [v13 home];
+    mediaServiceItem = [(HUMediaServiceTableViewController *)self mediaServiceItem];
+    home = [mediaServiceItem home];
 
-    v14 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
-    v15 = [v14 mediaService];
-    v16 = [v15 serviceName];
+    mediaServiceItem2 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
+    mediaService = [mediaServiceItem2 mediaService];
+    serviceName = [mediaService serviceName];
 
-    v23 = HULocalizedStringWithFormat(@"HUMediaServiceRemoveServiceAlertTitle", @"%@", v17, v18, v19, v20, v21, v22, v16);
-    v42 = [v43 name];
-    v44 = HULocalizedStringWithFormat(@"HUMediaServiceRemoveServiceAlertConfirmationMessage", @"%@%@", v24, v25, v26, v27, v28, v29, v16);
+    mEMORY[0x277D148E8] = HULocalizedStringWithFormat(@"HUMediaServiceRemoveServiceAlertTitle", @"%@", v17, v18, v19, v20, v21, v22, serviceName);
+    name = [home name];
+    v44 = HULocalizedStringWithFormat(@"HUMediaServiceRemoveServiceAlertConfirmationMessage", @"%@%@", v24, v25, v26, v27, v28, v29, serviceName);
 
     v30 = _HULocalizedStringWithDefaultValue(@"HUCancelTitle", @"HUCancelTitle", 1);
     v31 = _HULocalizedStringWithDefaultValue(@"HURemoveTitle", @"HURemoveTitle", 1);
-    v32 = [(UITableViewController *)self hu_actionSheetWithTitle:v23 message:v44 indexPath:v6];
+    v32 = [(UITableViewController *)self hu_actionSheetWithTitle:mEMORY[0x277D148E8] message:v44 indexPath:pathCopy];
     v33 = [MEMORY[0x277D750F8] actionWithTitle:v30 style:1 handler:0];
     [v32 addAction:v33];
 
-    v34 = v43;
+    bundleIdentifier = home;
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __71__HUMediaServiceTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
@@ -309,100 +309,100 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v36 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v37 = [v36 reconnectItem];
-  v38 = [v9 isEqual:v37];
+  mediaServiceItemManager2 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  reconnectItem = [mediaServiceItemManager2 reconnectItem];
+  v38 = [v9 isEqual:reconnectItem];
 
   if (v38)
   {
-    v39 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
-    v40 = [v39 mediaService];
-    v34 = [v40 bundleIdentifier];
+    mediaServiceItem3 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
+    mediaService2 = [mediaServiceItem3 mediaService];
+    bundleIdentifier = [mediaService2 bundleIdentifier];
 
-    v16 = [MEMORY[0x277CBEBC0] hf_appStoreURLForBundleIdentifier:v34];
-    v23 = [MEMORY[0x277D148E8] sharedInstance];
-    v41 = [v23 openURL:v16];
+    serviceName = [MEMORY[0x277CBEBC0] hf_appStoreURLForBundleIdentifier:bundleIdentifier];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    v41 = [mEMORY[0x277D148E8] openURL:serviceName];
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = HUMediaServiceTableViewController;
-  [(HUItemTableViewController *)&v10 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
+  [(HUItemTableViewController *)&v10 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [cellCopy setBackgroundColor:clearColor];
   }
 }
 
 - (id)itemModuleControllers
 {
   v3 = objc_opt_new();
-  v4 = [(HUMediaServiceTableViewController *)self userSettingsItemModuleController];
-  if (!v4)
+  userSettingsItemModuleController = [(HUMediaServiceTableViewController *)self userSettingsItemModuleController];
+  if (!userSettingsItemModuleController)
   {
-    v5 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-    v6 = [v5 userSettingsItemModule];
+    mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+    userSettingsItemModule = [mediaServiceItemManager userSettingsItemModule];
 
-    if (!v6)
+    if (!userSettingsItemModule)
     {
       goto LABEL_5;
     }
 
     v7 = [HUAccessorySettingsItemModuleController alloc];
-    v4 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-    v8 = [v4 userSettingsItemModule];
-    v9 = [(HUAccessorySettingsItemModuleController *)v7 initWithModule:v8 delegate:self];
+    userSettingsItemModuleController = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+    userSettingsItemModule2 = [userSettingsItemModuleController userSettingsItemModule];
+    v9 = [(HUAccessorySettingsItemModuleController *)v7 initWithModule:userSettingsItemModule2 delegate:self];
     [(HUMediaServiceTableViewController *)self setUserSettingsItemModuleController:v9];
   }
 
 LABEL_5:
-  v10 = [(HUMediaServiceTableViewController *)self userSettingsItemModuleController];
-  [v3 na_safeAddObject:v10];
+  userSettingsItemModuleController2 = [(HUMediaServiceTableViewController *)self userSettingsItemModuleController];
+  [v3 na_safeAddObject:userSettingsItemModuleController2];
 
   return v3;
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUMediaServiceTableViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  onCopy = on;
+  cellCopy = cell;
+  tableView = [(HUMediaServiceTableViewController *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:v8];
 
-  v11 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v12 = [v11 updateListeningHistoryItem];
-  v13 = [v10 isEqual:v12];
+  mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  updateListeningHistoryItem = [mediaServiceItemManager updateListeningHistoryItem];
+  v13 = [v10 isEqual:updateListeningHistoryItem];
 
   if (v13)
   {
-    v14 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-    v15 = [v14 mediaServiceItem];
+    mediaServiceItemManager2 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+    mediaServiceItem = [mediaServiceItemManager2 mediaServiceItem];
 
     v16 = objc_opt_new();
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:v4];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:onCopy];
     [v16 na_safeSetObject:v17 forKey:&unk_282492648];
 
-    v18 = [MEMORY[0x277D14820] sharedManager];
-    v19 = [v15 mediaService];
-    v20 = [v15 home];
-    v21 = [v18 updateProperty:v19 forHome:v20 withOptions:v16];
+    mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+    mediaService = [mediaServiceItem mediaService];
+    home = [mediaServiceItem home];
+    v21 = [mEMORY[0x277D14820] updateProperty:mediaService forHome:home withOptions:v16];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __58__HUMediaServiceTableViewController_switchCell_didTurnOn___block_invoke;
     v23[3] = &unk_277DBC098;
-    v24 = v6;
-    v25 = v4;
+    v24 = cellCopy;
+    v25 = onCopy;
     v22 = [v21 addFailureBlock:v23];
   }
 }
@@ -435,12 +435,12 @@ uint64_t __58__HUMediaServiceTableViewController_switchCell_didTurnOn___block_in
   return [v3 setOn:v4 animated:1];
 }
 
-- (void)moduleController:(id)a3 presentGroup:(id)a4
+- (void)moduleController:(id)controller presentGroup:(id)group
 {
-  v15 = a4;
-  v5 = [v15 latestResults];
+  groupCopy = group;
+  latestResults = [groupCopy latestResults];
   v6 = *MEMORY[0x277D13EA8];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
   if (!v7)
   {
 
@@ -448,23 +448,23 @@ uint64_t __58__HUMediaServiceTableViewController_switchCell_didTurnOn___block_in
   }
 
   v8 = v7;
-  v9 = [v15 latestResults];
-  v10 = [v9 objectForKeyedSubscript:v6];
-  v11 = [v10 BOOLValue];
+  latestResults2 = [groupCopy latestResults];
+  v10 = [latestResults2 objectForKeyedSubscript:v6];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 LABEL_5:
-    v12 = [HUAccessorySettingsDetailsViewControllerFactory viewControllerForGroup:v15];
-    v13 = [(HUMediaServiceTableViewController *)self navigationController];
-    v14 = [v13 hu_pushPreloadableViewController:v12 animated:1];
+    v12 = [HUAccessorySettingsDetailsViewControllerFactory viewControllerForGroup:groupCopy];
+    navigationController = [(HUMediaServiceTableViewController *)self navigationController];
+    v14 = [navigationController hu_pushPreloadableViewController:v12 animated:1];
   }
 }
 
-- (id)moduleController:(id)a3 requestPresentViewController:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6
+- (id)moduleController:(id)controller requestPresentViewController:(id)viewController animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a5;
-  v8 = a4;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
   v9 = objc_opt_new();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -472,30 +472,30 @@ LABEL_5:
   v12[3] = &unk_277DB8488;
   v10 = v9;
   v13 = v10;
-  [(HUMediaServiceTableViewController *)self presentViewController:v8 animated:v6 completion:v12];
+  [(HUMediaServiceTableViewController *)self presentViewController:viewControllerCopy animated:animatedCopy completion:v12];
 
   return v10;
 }
 
-- (void)moduleController:(id)a3 preflightCheckToAllowSwitchingForSettingItem:(id)a4 changingToOn:(BOOL)a5 withCompletion:(id)a6
+- (void)moduleController:(id)controller preflightCheckToAllowSwitchingForSettingItem:(id)item changingToOn:(BOOL)on withCompletion:(id)completion
 {
-  v7 = a5;
+  onCopy = on;
   location[2] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v11)
+  controllerCopy = controller;
+  itemCopy = item;
+  completionCopy = completion;
+  if (!itemCopy)
   {
     v13 = NSStringFromSelector(a2);
     NSLog(&cfstr_CalledWithNoSe.isa, v13);
   }
 
-  v14 = [v11 settingKeyPath];
-  v15 = [v14 isEqualToString:*MEMORY[0x277D13990]];
+  settingKeyPath = [itemCopy settingKeyPath];
+  v15 = [settingKeyPath isEqualToString:*MEMORY[0x277D13990]];
 
   if (v15)
   {
-    v16 = !v7;
+    v16 = !onCopy;
   }
 
   else
@@ -505,25 +505,25 @@ LABEL_5:
 
   if (!v16)
   {
-    v17 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-    v18 = [v17 userSettingsItemModule];
-    v19 = [v18 accessorySettingsItemProvider];
-    v20 = [v19 homeKitSettingsVendor];
-    v21 = [v20 settings];
+    mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+    userSettingsItemModule = [mediaServiceItemManager userSettingsItemModule];
+    accessorySettingsItemProvider = [userSettingsItemModule accessorySettingsItemProvider];
+    homeKitSettingsVendor = [accessorySettingsItemProvider homeKitSettingsVendor];
+    settings = [homeKitSettingsVendor settings];
 
-    v36 = [v21 hf_accessorySettingAtKeyPath:*MEMORY[0x277D139B8]];
-    v22 = [v36 value];
-    v23 = [v22 BOOLValue];
+    v36 = [settings hf_accessorySettingAtKeyPath:*MEMORY[0x277D139B8]];
+    value = [v36 value];
+    bOOLValue = [value BOOLValue];
 
     v24 = HFLogForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(location[0]) = 67109120;
-      HIDWORD(location[0]) = v23;
+      HIDWORD(location[0]) = bOOLValue;
       _os_log_debug_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_DEBUG, "isVoiceIDSetup = %{BOOL}d", location, 8u);
     }
 
-    if ((v23 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v25 = MEMORY[0x277D75110];
       v26 = _HULocalizedStringWithDefaultValue(@"HUPlaybackInfluencesActivation_Alert_Title", @"HUPlaybackInfluencesActivation_Alert_Title", 1);
@@ -536,10 +536,10 @@ LABEL_5:
       v41[1] = 3221225472;
       v41[2] = __127__HUMediaServiceTableViewController_moduleController_preflightCheckToAllowSwitchingForSettingItem_changingToOn_withCompletion___block_invoke;
       v41[3] = &unk_277DBDB08;
-      v42 = v21;
-      v43 = self;
+      v42 = settings;
+      selfCopy = self;
       v45 = a2;
-      v31 = v12;
+      v31 = completionCopy;
       v44 = v31;
       v32 = [v29 actionWithTitle:v30 style:1 handler:v41];
 
@@ -563,7 +563,7 @@ LABEL_5:
     }
   }
 
-  (*(v12 + 2))(v12, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 }
 
 void __127__HUMediaServiceTableViewController_moduleController_preflightCheckToAllowSwitchingForSettingItem_changingToOn_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -672,24 +672,24 @@ void __127__HUMediaServiceTableViewController_moduleController_preflightCheckToA
   (*(v4 + 16))(v4, v8);
 }
 
-- (BOOL)moduleController:(id)a3 shouldDisableItem:(id)a4
+- (BOOL)moduleController:(id)controller shouldDisableItem:(id)item
 {
   v5 = MEMORY[0x277D14CE8];
-  v6 = a4;
-  v7 = [v5 isAMac];
-  v8 = [v6 settingKeyPath];
+  itemCopy = item;
+  isAMac = [v5 isAMac];
+  settingKeyPath = [itemCopy settingKeyPath];
 
-  v9 = [v8 isEqualToString:*MEMORY[0x277D13990]];
-  if (!v7)
+  v9 = [settingKeyPath isEqualToString:*MEMORY[0x277D13990]];
+  if (!isAMac)
   {
     if (v9)
     {
-      v11 = [(HUMediaServiceTableViewController *)self userItem];
-      v12 = [v11 user];
-      v13 = [(HUMediaServiceTableViewController *)self userItem];
-      v14 = [v13 home];
-      v15 = [v14 currentUser];
-      v10 = [v12 isEqual:v15] ^ 1;
+      userItem = [(HUMediaServiceTableViewController *)self userItem];
+      user = [userItem user];
+      userItem2 = [(HUMediaServiceTableViewController *)self userItem];
+      home = [userItem2 home];
+      currentUser = [home currentUser];
+      v10 = [user isEqual:currentUser] ^ 1;
 
       return v10;
     }
@@ -708,53 +708,53 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v7;
+    v24 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v21, 0x16u);
   }
 
-  v9 = [v7 absoluteString];
-  v10 = [MEMORY[0x277D14C80] musicPrivacyURL];
-  v11 = [v10 absoluteString];
-  v12 = [v9 isEqualToString:v11];
+  absoluteString = [lCopy absoluteString];
+  musicPrivacyURL = [MEMORY[0x277D14C80] musicPrivacyURL];
+  absoluteString2 = [musicPrivacyURL absoluteString];
+  v12 = [absoluteString isEqualToString:absoluteString2];
 
   if (v12)
   {
-    v13 = [(HUMediaServiceTableViewController *)self navigationController];
-    v14 = v13;
-    if (v13)
+    navigationController = [(HUMediaServiceTableViewController *)self navigationController];
+    v14 = navigationController;
+    if (navigationController)
     {
-      v15 = v13;
+      selfCopy2 = navigationController;
     }
 
     else
     {
-      v15 = self;
+      selfCopy2 = self;
     }
 
-    v16 = v15;
+    v16 = selfCopy2;
 
-    v17 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
-    v18 = [v17 splashController];
-    [v18 setDisplayDeviceType:6];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
+    splashController = [mEMORY[0x277D148E8] splashController];
+    [splashController setDisplayDeviceType:6];
 
-    [v17 setPresentingViewController:v16];
-    [v17 present];
+    [mEMORY[0x277D148E8] setPresentingViewController:v16];
+    [mEMORY[0x277D148E8] present];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D148E8] sharedInstance];
-    v19 = [v17 openURL:v7];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    v19 = [mEMORY[0x277D148E8] openURL:lCopy];
   }
 
   return 0;
@@ -762,20 +762,20 @@ LABEL_6:
 
 - (void)_removeService
 {
-  v3 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v4 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
-  v5 = [v4 removeItem];
-  v6 = [v3 indexPathForItem:v5];
+  mediaServiceItemManager = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  mediaServiceItemManager2 = [(HUMediaServiceTableViewController *)self mediaServiceItemManager];
+  removeItem = [mediaServiceItemManager2 removeItem];
+  v6 = [mediaServiceItemManager indexPathForItem:removeItem];
 
-  v7 = [(HUMediaServiceTableViewController *)self tableView];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  tableView = [(HUMediaServiceTableViewController *)self tableView];
+  v8 = [tableView cellForRowAtIndexPath:v6];
 
-  v9 = [MEMORY[0x277D14820] sharedManager];
-  v10 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
-  v11 = [v10 mediaService];
-  v12 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
-  v13 = [v12 home];
-  v14 = [v9 removeMediaService:v11 forHome:v13];
+  mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+  mediaServiceItem = [(HUMediaServiceTableViewController *)self mediaServiceItem];
+  mediaService = [mediaServiceItem mediaService];
+  mediaServiceItem2 = [(HUMediaServiceTableViewController *)self mediaServiceItem];
+  home = [mediaServiceItem2 home];
+  v14 = [mEMORY[0x277D14820] removeMediaService:mediaService forHome:home];
 
   [v8 setShowSpinner:1];
   v17[0] = MEMORY[0x277D85DD0];
@@ -783,7 +783,7 @@ LABEL_6:
   v17[2] = __51__HUMediaServiceTableViewController__removeService__block_invoke;
   v17[3] = &unk_277DB7158;
   v18 = v8;
-  v19 = self;
+  selfCopy = self;
   v15 = v8;
   v16 = [v14 addCompletionBlock:v17];
 }

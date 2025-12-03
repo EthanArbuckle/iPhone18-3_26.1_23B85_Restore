@@ -15,21 +15,21 @@
 - (id)accessibilityLabel
 {
   v3 = [(TVRUITitleViewAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityLabel];
-  v5 = v4;
-  if (v4)
+  accessibilityLabel = [v3 accessibilityLabel];
+  v5 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v6 = v4;
+    accessibilityLabel2 = accessibilityLabel;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TVRUITitleViewAccessibility;
-    v6 = [(TVRUITitleViewAccessibility *)&v9 accessibilityLabel];
+    accessibilityLabel2 = [(TVRUITitleViewAccessibility *)&v9 accessibilityLabel];
   }
 
-  v7 = v6;
+  v7 = accessibilityLabel2;
 
   return v7;
 }

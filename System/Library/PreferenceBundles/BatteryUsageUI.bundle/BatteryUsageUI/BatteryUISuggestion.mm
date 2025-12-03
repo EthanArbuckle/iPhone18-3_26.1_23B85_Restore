@@ -1,7 +1,7 @@
 @interface BatteryUISuggestion
 - (BatteryUISuggestion)init;
-- (BatteryUISuggestion)initWithSuggestionType:(int)a3 andData:(id)a4;
-- (void)enableOptionForTip:(id)a3;
+- (BatteryUISuggestion)initWithSuggestionType:(int)type andData:(id)data;
+- (void)enableOptionForTip:(id)tip;
 @end
 
 @implementation BatteryUISuggestion
@@ -46,9 +46,9 @@
   return v2;
 }
 
-- (BatteryUISuggestion)initWithSuggestionType:(int)a3 andData:(id)a4
+- (BatteryUISuggestion)initWithSuggestionType:(int)type andData:(id)data
 {
-  v54 = a4;
+  dataCopy = data;
   v6 = [(BatteryUISuggestion *)self init];
   v7 = v6;
   if (!v6)
@@ -56,18 +56,18 @@
     goto LABEL_58;
   }
 
-  v6->_suggestionType = a3;
+  v6->_suggestionType = type;
   v6->_isInsight = 0;
-  v8 = [v54 objectForKeyedSubscript:@"PLBatteryUILocationDictKey"];
+  v8 = [dataCopy objectForKeyedSubscript:@"PLBatteryUILocationDictKey"];
   locationDict = v7->_locationDict;
   v7->_locationDict = v8;
 
-  objc_storeStrong(&v7->_dataDict, a4);
-  if ((a3 & 0xFFFFFFFE) == 6)
+  objc_storeStrong(&v7->_dataDict, data);
+  if ((type & 0xFFFFFFFE) == 6)
   {
     v7->_isInsight = 1;
     v10 = @"BACKGROUNDLOCATION";
-    if (a3 == 7)
+    if (type == 7)
     {
       v10 = @"BACKGROUNDCPU";
     }
@@ -77,7 +77,7 @@
     buttonName = v7->_buttonName;
     v7->_buttonName = @"DISABLE";
 
-    v13 = [(BatteryUISuggestion *)v7 specifier];
+    specifier = [(BatteryUISuggestion *)v7 specifier];
     v14 = +[BatteryUIResourceClass inDemoMode];
     v15 = v7->_buttonName;
     if (v14)
@@ -94,10 +94,10 @@
 
     v16 = BatteryUILocalization(v15);
 LABEL_9:
-    [v13 setProperty:v16 forKey:STStorageTipEnableButtonTitleKey];
+    [specifier setProperty:v16 forKey:STStorageTipEnableButtonTitleKey];
 
-    v17 = [v54 objectForKeyedSubscript:@"PLBatteryUIInsightAppNameKey"];
-    v18 = [v54 objectForKeyedSubscript:@"PLBatteryUISuggestionPercentKey"];
+    v17 = [dataCopy objectForKeyedSubscript:@"PLBatteryUIInsightAppNameKey"];
+    v18 = [dataCopy objectForKeyedSubscript:@"PLBatteryUISuggestionPercentKey"];
     [v18 doubleValue];
     v19 = [PLBatteryUIUtilities localizedStringWithPercentage:?];
     v20 = [NSString stringWithFormat:@"%@_INFO_TEXT", v11, v19];
@@ -116,18 +116,18 @@ LABEL_9:
   }
 
   v23 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
       v24 = 0;
       v11 = 0;
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_43;
       }
 
-      v23 = [v54 objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyPercentKey"];
+      v23 = [dataCopy objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyPercentKey"];
       v28 = v7->_buttonName;
       v7->_buttonName = @"ENABLE";
 
@@ -145,7 +145,7 @@ LABEL_9:
 
     else
     {
-      v23 = [v54 objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyPercentKey"];
+      v23 = [dataCopy objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyPercentKey"];
       v34 = v7->_buttonName;
       v7->_buttonName = @"ENABLE";
 
@@ -166,20 +166,20 @@ LABEL_42:
 LABEL_43:
     v53 = v24;
     [(BatteryUISuggestion *)v7 setIdentifier:v11];
-    v36 = [(BatteryUISuggestion *)v7 specifier];
+    specifier2 = [(BatteryUISuggestion *)v7 specifier];
     if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (v37 = v7->_buttonName, +[BatteryUIResourceClass containerPath], (v38 = _CFPreferencesCopyValueWithContainer()) == 0))
     {
       v38 = BatteryUILocalization(v7->_buttonName);
     }
 
-    [v36 setProperty:v38 forKey:STStorageTipEnableButtonTitleKey];
+    [specifier2 setProperty:v38 forKey:STStorageTipEnableButtonTitleKey];
 
     goto LABEL_47;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v23 = [v54 objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyPercentKey"];
+    v23 = [dataCopy objectForKeyedSubscript:@"PLBatteryUISuggestionEnergyPercentKey"];
     v31 = v7->_buttonName;
     v7->_buttonName = @"->";
 
@@ -194,11 +194,11 @@ LABEL_43:
     goto LABEL_42;
   }
 
-  if (a3 != 8)
+  if (type != 8)
   {
     v24 = 0;
     v11 = 0;
-    if (a3 == 10)
+    if (type == 10)
     {
       v7->_isInsight = 1;
       if (!+[BatteryUIResourceClass inDemoMode](BatteryUIResourceClass, "inDemoMode") || (+[UIDevice modelSpecificLocalizedStringKeyForKey:](UIDevice, "modelSpecificLocalizedStringKeyForKey:", @"DEVICE_SETUP_INFO_TEXT"), +[BatteryUIResourceClass containerPath], (v25 = _CFPreferencesCopyValueWithContainer()) == 0))
@@ -239,19 +239,19 @@ LABEL_43:
   v23 = 0;
   v53 = 0;
 LABEL_47:
-  v39 = [(BatteryUISuggestion *)v7 specifier];
+  specifier3 = [(BatteryUISuggestion *)v7 specifier];
   v40 = PSIDKey;
-  [v39 setProperty:v11 forKey:PSIDKey];
+  [specifier3 setProperty:v11 forKey:PSIDKey];
 
-  v41 = [(BatteryUISuggestion *)v7 infoSpecifier];
+  infoSpecifier = [(BatteryUISuggestion *)v7 infoSpecifier];
   v42 = [(__CFString *)v11 stringByAppendingString:@"_INFO"];
-  [v41 setProperty:v42 forKey:v40];
+  [infoSpecifier setProperty:v42 forKey:v40];
 
   v43 = [NSString stringWithFormat:@"%@_TITLE", v11];
-  v44 = [(BatteryUISuggestion *)v7 title];
-  if (v44)
+  title = [(BatteryUISuggestion *)v7 title];
+  if (title)
   {
-    v45 = [(BatteryUISuggestion *)v7 title];
+    title2 = [(BatteryUISuggestion *)v7 title];
   }
 
   else
@@ -266,40 +266,40 @@ LABEL_47:
       }
     }
 
-    v45 = BatteryUILocalization(v43);
+    title2 = BatteryUILocalization(v43);
   }
 
-  v46 = v45;
+  v46 = title2;
 LABEL_53:
   [(BatteryUISuggestion *)v7 setTitle:v46];
 
   v47 = objc_opt_new();
   [(BatteryUISuggestion *)v7 setIcon:v47];
 
-  v48 = [(BatteryUISuggestion *)v7 specifier];
-  [v48 setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
+  specifier4 = [(BatteryUISuggestion *)v7 specifier];
+  [specifier4 setObject:&__kCFBooleanTrue forKeyedSubscript:PSLazyIconLoading];
 
-  v49 = [PLBatteryUIUtilities iconUTTypeIdentifierForSuggestion:a3];
+  v49 = [PLBatteryUIUtilities iconUTTypeIdentifierForSuggestion:type];
   if (v49)
   {
-    v50 = [(BatteryUISuggestion *)v7 specifier];
-    [v50 setObject:v49 forKeyedSubscript:PSIconUTTypeIdentifierKey];
+    specifier5 = [(BatteryUISuggestion *)v7 specifier];
+    [specifier5 setObject:v49 forKeyedSubscript:PSIconUTTypeIdentifierKey];
   }
 
   [(BatteryUISuggestion *)v7 setDelegate:v7];
   if (v7->_isInsight)
   {
-    v51 = [(BatteryUISuggestion *)v7 specifier];
-    [v51 setProperty:STStorageTipKindActionKey forKey:STStorageTipKindKey];
+    specifier6 = [(BatteryUISuggestion *)v7 specifier];
+    [specifier6 setProperty:STStorageTipKindActionKey forKey:STStorageTipKindKey];
   }
 
 LABEL_58:
   return v7;
 }
 
-- (void)enableOptionForTip:(id)a3
+- (void)enableOptionForTip:(id)tip
 {
-  v4 = a3;
+  tipCopy = tip;
   if (!qword_187B58)
   {
     v5 = dispatch_queue_create("opQ", 0);
@@ -315,11 +315,11 @@ LABEL_58:
   v12[2] = sub_976C;
   v12[3] = &unk_163E68;
   v16 = suggestionType;
-  v13 = v4;
-  v14 = self;
+  v13 = tipCopy;
+  selfCopy = self;
   v15 = v8;
   v10 = v8;
-  v11 = v4;
+  v11 = tipCopy;
   dispatch_async(v9, v12);
 }
 

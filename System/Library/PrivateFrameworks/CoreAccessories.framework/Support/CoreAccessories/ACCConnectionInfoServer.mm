@@ -1,40 +1,40 @@
 @interface ACCConnectionInfoServer
 + (id)sharedServer;
-- (ACCConnectionInfoServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)accessoryConnectionFiltered:(id)a3 forClient:(id)a4;
-- (BOOL)accessoryEndpointFiltered:(id)a3 forConnection:(id)a4 forClient:(id)a5;
-- (BOOL)checkClient:(id)a3 hasEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (id)copyClientUID:(id)a3;
-- (void)_updateFilteredListForClient:(id)a3 forConnection:(id)a4;
-- (void)_updateFilteredListForClient:(id)a3 forEndpoint:(id)a4 connection:(id)a5;
-- (void)accessoryConnectionAttached:(id)a3 type:(int)a4 info:(id)a5 properties:(id)a6;
-- (void)accessoryConnectionDetached:(id)a3;
-- (void)accessoryConnectionDetached:(id)a3 forClient:(id)a4;
-- (void)accessoryConnectionInfoPropertyChanged:(id)a3 properties:(id)a4;
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4;
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4 forClient:(id)a5;
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5;
-- (void)accessoryEndpointUpdate:(id)a3 protocol:(int)a4 properties:(id)a5 forConnection:(id)a6;
-- (void)configStreamCategoriesResponse:(id)a3 forEndpoint:(id)a4 connection:(id)a5 client:(id)a6 success:(BOOL)a7;
-- (void)configStreamCategoryListReady:(id)a3 connection:(id)a4 client:(id)a5;
-- (void)configStreamPropertyResponse:(unsigned __int8)a3 forCategory:(unsigned __int16)a4 forEndpoint:(id)a5 connection:(id)a6 client:(id)a7 value:(id)a8 success:(BOOL)a9;
-- (void)handleInterceptData:(id)a3 forEndpoint:(id)a4 connection:(id)a5;
-- (void)notifyClientOfConnections:(id)a3;
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 forClient:(id)a5 withFilter:(id)a6;
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 forClient:(id)a5 withFilter:(id)a6 forIdentifier:(id)a7;
-- (void)removeConnection:(id)a3 forClientFilter:(id)a4;
-- (void)removeEndpoint:(id)a3 connection:(id)a4 forClientFilter:(id)a5;
-- (void)setInterceptState:(BOOL)a3 forEndpoint:(id)a4 connection:(id)a5 clientInfo:(id)a6;
-- (void)updateFilteredListForClient:(id)a3;
+- (ACCConnectionInfoServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)accessoryConnectionFiltered:(id)filtered forClient:(id)client;
+- (BOOL)accessoryEndpointFiltered:(id)filtered forConnection:(id)connection forClient:(id)client;
+- (BOOL)checkClient:(id)client hasEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (id)copyClientUID:(id)d;
+- (void)_updateFilteredListForClient:(id)client forConnection:(id)connection;
+- (void)_updateFilteredListForClient:(id)client forEndpoint:(id)endpoint connection:(id)connection;
+- (void)accessoryConnectionAttached:(id)attached type:(int)type info:(id)info properties:(id)properties;
+- (void)accessoryConnectionDetached:(id)detached;
+- (void)accessoryConnectionDetached:(id)detached forClient:(id)client;
+- (void)accessoryConnectionInfoPropertyChanged:(id)changed properties:(id)properties;
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection;
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection forClient:(id)client;
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection;
+- (void)accessoryEndpointUpdate:(id)update protocol:(int)protocol properties:(id)properties forConnection:(id)connection;
+- (void)configStreamCategoriesResponse:(id)response forEndpoint:(id)endpoint connection:(id)connection client:(id)client success:(BOOL)success;
+- (void)configStreamCategoryListReady:(id)ready connection:(id)connection client:(id)client;
+- (void)configStreamPropertyResponse:(unsigned __int8)response forCategory:(unsigned __int16)category forEndpoint:(id)endpoint connection:(id)connection client:(id)client value:(id)value success:(BOOL)success;
+- (void)handleInterceptData:(id)data forEndpoint:(id)endpoint connection:(id)connection;
+- (void)notifyClientOfConnections:(id)connections;
+- (void)notifyOfClient:(id)client bundleID:(id)d forClient:(id)forClient withFilter:(id)filter;
+- (void)notifyOfClient:(id)client bundleID:(id)d forClient:(id)forClient withFilter:(id)filter forIdentifier:(id)identifier;
+- (void)removeConnection:(id)connection forClientFilter:(id)filter;
+- (void)removeEndpoint:(id)endpoint connection:(id)connection forClientFilter:(id)filter;
+- (void)setInterceptState:(BOOL)state forEndpoint:(id)endpoint connection:(id)connection clientInfo:(id)info;
+- (void)updateFilteredListForClient:(id)client;
 @end
 
 @implementation ACCConnectionInfoServer
 
-- (ACCConnectionInfoServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCConnectionInfoServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 9;
@@ -64,13 +64,13 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = nameCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "ACCConnectionInfoServer initWithXPCServiceName: %@", buf, 0xCu);
   }
 
   v22.receiver = self;
   v22.super_class = ACCConnectionInfoServer;
-  v10 = [(ACCFeatureServer *)&v22 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v10 = [(ACCFeatureServer *)&v22 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (v10)
   {
     v11 = objc_alloc_init(NSMutableSet);
@@ -97,10 +97,10 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 9;
@@ -135,17 +135,17 @@
   }
 
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCConnectionInfoXPCServerProtocol];
-  [v7 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  v12 = [[ACCConnectionInfoClientInfo alloc] initWithXPCConnection:v7];
+  v12 = [[ACCConnectionInfoClientInfo alloc] initWithXPCConnection:connectionCopy];
   v13 = [[ACCConnectionInfoServerRemote alloc] initWithClientInfo:v12];
-  [v7 setExportedObject:v13];
+  [connectionCopy setExportedObject:v13];
 
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCConnectionInfoXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -153,12 +153,12 @@
   objc_copyWeak(&v30, &from);
   v29[4] = self;
   objc_copyWeak(&v31, &location);
-  [v7 setInvalidationHandler:v29];
-  v15 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v15 lock];
+  [connectionCopy setInvalidationHandler:v29];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
-  v16 = [(ACCConnectionInfoServer *)self clientConnections];
-  [v16 addObject:v12];
+  clientConnections = [(ACCConnectionInfoServer *)self clientConnections];
+  [clientConnections addObject:v12];
 
   if (gLogObjects && gNumLogObjects >= 9)
   {
@@ -178,17 +178,17 @@
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(ACCConnectionInfoServer *)self clientConnections];
-    v20 = [v19 count];
+    clientConnections2 = [(ACCConnectionInfoServer *)self clientConnections];
+    v20 = [clientConnections2 count];
     *buf = 134217984;
     v35 = v20;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "There are now %lu client(s).", buf, 0xCu);
   }
 
-  v21 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v21 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
-  [v7 resume];
+  [connectionCopy resume];
   if (![(ACCConnectionInfoClientInfo *)v12 allConnectionsNotificationsEntitlement])
   {
     if (gLogObjects && gNumLogObjects >= 9)
@@ -209,26 +209,26 @@
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(ACCConnectionInfoClientInfo *)v12 clientUID];
-      v25 = [(ACCConnectionInfoClientInfo *)v12 clientBundleID];
-      v26 = [(ACCConnectionInfoClientInfo *)v12 allConnectionsNotificationsEntitlement];
+      clientUID = [(ACCConnectionInfoClientInfo *)v12 clientUID];
+      clientBundleID = [(ACCConnectionInfoClientInfo *)v12 clientBundleID];
+      allConnectionsNotificationsEntitlement = [(ACCConnectionInfoClientInfo *)v12 allConnectionsNotificationsEntitlement];
       *buf = 138412802;
-      v35 = v24;
+      v35 = clientUID;
       v36 = 2112;
-      v37 = v25;
+      v37 = clientBundleID;
       v38 = 1024;
-      v39 = v26;
+      v39 = allConnectionsNotificationsEntitlement;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Client %@ (%@) not entitled for showallconnections!!! return %d", buf, 0x1Cu);
     }
   }
 
-  v27 = [(ACCConnectionInfoClientInfo *)v12 allConnectionsNotificationsEntitlement];
+  allConnectionsNotificationsEntitlement2 = [(ACCConnectionInfoClientInfo *)v12 allConnectionsNotificationsEntitlement];
   objc_destroyWeak(&v31);
   objc_destroyWeak(&v30);
   objc_destroyWeak(&from);
   objc_destroyWeak(&location);
 
-  return v27;
+  return allConnectionsNotificationsEntitlement2;
 }
 
 void __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invoke(id *a1)
@@ -380,10 +380,10 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
   return v5;
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v3 = a3;
-  if (([v3 allConnectionsNotificationsEntitlement] & 1) == 0)
+  connectionCopy = connection;
+  if (([connectionCopy allConnectionsNotificationsEntitlement] & 1) == 0)
   {
     if (gLogObjects)
     {
@@ -413,29 +413,29 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 clientUID];
-      v8 = [v3 clientBundleID];
+      clientUID = [connectionCopy clientUID];
+      clientBundleID = [connectionCopy clientBundleID];
       v11 = 138412802;
-      v12 = v7;
+      v12 = clientUID;
       v13 = 2112;
-      v14 = v8;
+      v14 = clientBundleID;
       v15 = 1024;
-      v16 = [v3 allConnectionsNotificationsEntitlement];
+      allConnectionsNotificationsEntitlement = [connectionCopy allConnectionsNotificationsEntitlement];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "shouldAcceptXPCConnection: client %@ (%@) not entitled for showallconnections!!! return %d", &v11, 0x1Cu);
     }
   }
 
-  v9 = [v3 allConnectionsNotificationsEntitlement];
+  allConnectionsNotificationsEntitlement2 = [connectionCopy allConnectionsNotificationsEntitlement];
 
-  return v9;
+  return allConnectionsNotificationsEntitlement2;
 }
 
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 forClient:(id)a5 withFilter:(id)a6
+- (void)notifyOfClient:(id)client bundleID:(id)d forClient:(id)forClient withFilter:(id)filter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  dCopy = d;
+  forClientCopy = forClient;
+  filterCopy = filter;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 9;
@@ -464,48 +464,48 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v12 clientUID];
-    v18 = [v12 clientBundleID];
-    v19 = [v12 accessoryFilterDictionary];
+    clientUID = [forClientCopy clientUID];
+    clientBundleID = [forClientCopy clientBundleID];
+    accessoryFilterDictionary = [forClientCopy accessoryFilterDictionary];
     v21 = 138413570;
-    v22 = v17;
+    v22 = clientUID;
     v23 = 2112;
-    v24 = v10;
+    v24 = clientCopy;
     v25 = 2112;
-    v26 = v18;
+    v26 = clientBundleID;
     v27 = 2112;
-    v28 = v11;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v19;
+    v30 = accessoryFilterDictionary;
     v31 = 2112;
-    v32 = v13;
+    v32 = filterCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "clientUID received %@ -> %@, clientBundleID %@ -> %@, accessoryFilterDictionary %@ -> %@", &v21, 0x3Eu);
   }
 
-  [v12 setClientUID:v10];
-  [v12 setClientBundleID:v11];
-  if ([v12 hasHIDClient])
+  [forClientCopy setClientUID:clientCopy];
+  [forClientCopy setClientBundleID:dCopy];
+  if ([forClientCopy hasHIDClient])
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = v13;
+    v20 = filterCopy;
   }
 
-  [v12 setAccessoryFilterDictionary:v20];
-  [(ACCConnectionInfoServer *)self updateFilteredListForClient:v12];
-  [(ACCConnectionInfoServer *)self notifyClientOfConnections:v12];
+  [forClientCopy setAccessoryFilterDictionary:v20];
+  [(ACCConnectionInfoServer *)self updateFilteredListForClient:forClientCopy];
+  [(ACCConnectionInfoServer *)self notifyClientOfConnections:forClientCopy];
 }
 
-- (void)notifyOfClient:(id)a3 bundleID:(id)a4 forClient:(id)a5 withFilter:(id)a6 forIdentifier:(id)a7
+- (void)notifyOfClient:(id)client bundleID:(id)d forClient:(id)forClient withFilter:(id)filter forIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  clientCopy = client;
+  dCopy = d;
+  forClientCopy = forClient;
+  filterCopy = filter;
+  identifierCopy = identifier;
   if (gLogObjects)
   {
     v17 = gNumLogObjects < 9;
@@ -534,52 +534,52 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v20 = [v14 clientUID];
-    v21 = [v14 clientBundleID];
-    v22 = [v14 accessoryFilterDictionary];
+    clientUID = [forClientCopy clientUID];
+    clientBundleID = [forClientCopy clientBundleID];
+    accessoryFilterDictionary = [forClientCopy accessoryFilterDictionary];
     v23 = 138413570;
-    v24 = v20;
+    v24 = clientUID;
     v25 = 2112;
-    v26 = v12;
+    v26 = clientCopy;
     v27 = 2112;
-    v28 = v21;
+    v28 = clientBundleID;
     v29 = 2112;
-    v30 = v13;
+    v30 = dCopy;
     v31 = 2112;
-    v32 = v22;
+    v32 = accessoryFilterDictionary;
     v33 = 2112;
-    v34 = v15;
+    v34 = filterCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "clientUID received %@ -> %@, clientBundleID %@ -> %@, accessoryFilterDictionary %@ -> %@", &v23, 0x3Eu);
   }
 
-  [v14 setClientUID:v12];
-  [v14 setClientBundleID:v13];
-  [v14 setHasHIDClient:1];
-  [v14 setAccessoryFilterDictionary:0];
-  [(ACCConnectionInfoServer *)self updateFilteredListForClient:v14];
-  [(ACCConnectionInfoServer *)self notifyClientOfConnections:v14];
+  [forClientCopy setClientUID:clientCopy];
+  [forClientCopy setClientBundleID:dCopy];
+  [forClientCopy setHasHIDClient:1];
+  [forClientCopy setAccessoryFilterDictionary:0];
+  [(ACCConnectionInfoServer *)self updateFilteredListForClient:forClientCopy];
+  [(ACCConnectionInfoServer *)self notifyClientOfConnections:forClientCopy];
 }
 
-- (BOOL)checkClient:(id)a3 hasEntitlement:(id)a4
+- (BOOL)checkClient:(id)client hasEntitlement:(id)entitlement
 {
-  v5 = a4;
-  v6 = [a3 XPCConnection];
-  v7 = [v6 hasEntitlement:v5];
+  entitlementCopy = entitlement;
+  xPCConnection = [client XPCConnection];
+  v7 = [xPCConnection hasEntitlement:entitlementCopy];
 
   return v7;
 }
 
-- (id)copyClientUID:(id)a3
+- (id)copyClientUID:(id)d
 {
-  v3 = [a3 clientUID];
-  v4 = [v3 copy];
+  clientUID = [d clientUID];
+  v4 = [clientUID copy];
 
   return v4;
 }
 
-- (void)notifyClientOfConnections:(id)a3
+- (void)notifyClientOfConnections:(id)connections
 {
-  v54 = a3;
+  connectionsCopy = connections;
   v3 = platform_connectionInfo_accessoryConnections();
   if (gLogObjects)
   {
@@ -609,18 +609,18 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v54 clientUID];
-    v8 = [v54 clientBundleID];
+    clientUID = [connectionsCopy clientUID];
+    clientBundleID = [connectionsCopy clientBundleID];
     v9 = [(__CFSet *)v3 count];
-    v10 = [v54 accessoryFilterDictionary];
+    accessoryFilterDictionary = [connectionsCopy accessoryFilterDictionary];
     *buf = 138413058;
-    v66 = v7;
+    v66 = clientUID;
     v67 = 2112;
-    v68 = v8;
+    v68 = clientBundleID;
     v69 = 2048;
     v70 = v9;
     v71 = 2112;
-    v72 = v10;
+    v72 = accessoryFilterDictionary;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "clientUID %@ (%@), notify of connections (%lu), accessoryFilterDictionary %@", buf, 0x2Au);
   }
 
@@ -681,12 +681,12 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
-          v44 = [v54 clientUID];
-          v45 = [v54 clientBundleID];
+          clientUID2 = [connectionsCopy clientUID];
+          clientBundleID2 = [connectionsCopy clientBundleID];
           *buf = 138412802;
-          v66 = v44;
+          v66 = clientUID2;
           v67 = 2112;
-          v68 = v45;
+          v68 = clientBundleID2;
           v69 = 2112;
           v70 = v13;
           _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "clientUID received %@ (%@), sending attach of connection %@", buf, 0x20u);
@@ -720,13 +720,13 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v25 = [v54 clientUID];
-          v26 = [v54 clientBundleID];
+          clientUID3 = [connectionsCopy clientUID];
+          clientBundleID3 = [connectionsCopy clientBundleID];
           v27 = [(__CFSet *)v21 count];
           *buf = 138413058;
-          v66 = v25;
+          v66 = clientUID3;
           v67 = 2112;
-          v68 = v26;
+          v68 = clientBundleID3;
           v69 = 2048;
           v70 = v27;
           v71 = 2112;
@@ -790,12 +790,12 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
 
               if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
               {
-                v42 = [v54 clientUID];
-                v43 = [v54 clientBundleID];
+                clientUID4 = [connectionsCopy clientUID];
+                clientBundleID4 = [connectionsCopy clientBundleID];
                 *buf = 138413058;
-                v66 = v42;
+                v66 = clientUID4;
                 v67 = 2112;
-                v68 = v43;
+                v68 = clientBundleID4;
                 v69 = 2112;
                 v70 = v32;
                 v71 = 2112;
@@ -804,11 +804,11 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
               }
 
               v40 = platform_connectionInfo_accessoryPropertiesForEndpoint(v13, v32);
-              [(ACCConnectionInfoServer *)self accessoryEndpointAttached:v32 transportType:v33 protocol:v34 properties:v40 forConnection:v13 forClient:v54];
+              [(ACCConnectionInfoServer *)self accessoryEndpointAttached:v32 transportType:v33 protocol:v34 properties:v40 forConnection:v13 forClient:connectionsCopy];
               if (platform_connectionInfo_checkConfigStreamCategoryListReady(v13, v32))
               {
-                v41 = [v54 clientUID];
-                [(ACCConnectionInfoServer *)self configStreamCategoryListReady:v32 connection:v13 client:v41];
+                clientUID5 = [connectionsCopy clientUID];
+                [(ACCConnectionInfoServer *)self configStreamCategoryListReady:v32 connection:v13 client:clientUID5];
               }
             }
 
@@ -830,21 +830,21 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
   }
 }
 
-- (void)setInterceptState:(BOOL)a3 forEndpoint:(id)a4 connection:(id)a5 clientInfo:(id)a6
+- (void)setInterceptState:(BOOL)state forEndpoint:(id)endpoint connection:(id)connection clientInfo:(id)info
 {
-  if (a3)
+  if (state)
   {
-    v7 = a4;
-    v8 = [a6 interceptEnabled];
-    [v8 addObject:v7];
+    endpointCopy = endpoint;
+    interceptEnabled = [info interceptEnabled];
+    [interceptEnabled addObject:endpointCopy];
   }
 }
 
-- (void)accessoryConnectionAttached:(id)a3 type:(int)a4 info:(id)a5 properties:(id)a6
+- (void)accessoryConnectionAttached:(id)attached type:(int)type info:(id)info properties:(id)properties
 {
-  v35 = a3;
-  v9 = a5;
-  v10 = a6;
+  attachedCopy = attached;
+  infoCopy = info;
+  propertiesCopy = properties;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 9;
@@ -875,29 +875,29 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
   {
     v14 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 138412546;
-    v42 = v35;
+    v42 = attachedCopy;
     v43 = 2048;
     v44 = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "sending accessoryConnectionAttached for connectionUUID %@, to %lu clients", buf, 0x16u);
   }
 
-  v15 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v15 lock];
+  connectedAccessoryLock = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock lock];
 
-  if (([(NSMutableSet *)self->_accessories containsObject:v35]& 1) == 0)
+  if (([(NSMutableSet *)self->_accessories containsObject:attachedCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_accessories addObject:v35];
+    [(NSMutableSet *)self->_accessories addObject:attachedCopy];
   }
 
-  v16 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v16 unlock];
+  connectedAccessoryLock2 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock2 unlock];
 
-  v17 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v17 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v18 = [(NSMutableSet *)self->_clientConnections copy];
-  v19 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v19 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v38 = 0u;
   v39 = 0u;
@@ -921,12 +921,12 @@ id __62__ACCConnectionInfoServer_listener_shouldAcceptNewConnection___block_invo
         }
 
         v26 = *(*(&v36 + 1) + 8 * i);
-        v27 = [v26 clientUID];
+        clientUID = [v26 clientUID];
 
-        if (v27)
+        if (clientUID)
         {
           [(ACCConnectionInfoServer *)self updateFilteredListForClient:v26];
-          [(ACCConnectionInfoServer *)self accessoryConnectionAttached:v35 type:a4 info:v9 properties:v10 forClient:v26];
+          [(ACCConnectionInfoServer *)self accessoryConnectionAttached:attachedCopy type:type info:infoCopy properties:propertiesCopy forClient:v26];
         }
 
         else
@@ -1013,9 +1013,9 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
   }
 }
 
-- (void)accessoryConnectionDetached:(id)a3
+- (void)accessoryConnectionDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 9;
@@ -1046,25 +1046,25 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
   {
     v8 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 138412546;
-    v34 = v4;
+    v34 = detachedCopy;
     v35 = 2048;
     v36 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "sending accessoryConnectionDetached for connectionUUID %@, to %lu clients", buf, 0x16u);
   }
 
-  v9 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v9 lock];
+  connectedAccessoryLock = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock lock];
 
-  [(NSMutableSet *)self->_accessories removeObject:v4];
-  v10 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v10 unlock];
+  [(NSMutableSet *)self->_accessories removeObject:detachedCopy];
+  connectedAccessoryLock2 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock2 unlock];
 
-  v11 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v11 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v12 = [(NSMutableSet *)self->_clientConnections copy];
-  v13 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v13 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v30 = 0u;
   v31 = 0u;
@@ -1088,12 +1088,12 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
         }
 
         v20 = *(*(&v28 + 1) + 8 * i);
-        v21 = [v20 clientUID];
+        clientUID = [v20 clientUID];
 
-        if (v21)
+        if (clientUID)
         {
-          [(ACCConnectionInfoServer *)self accessoryConnectionDetached:v4 forClient:v20];
-          [(ACCConnectionInfoServer *)self removeConnection:v4 forClientFilter:v20];
+          [(ACCConnectionInfoServer *)self accessoryConnectionDetached:detachedCopy forClient:v20];
+          [(ACCConnectionInfoServer *)self removeConnection:detachedCopy forClientFilter:v20];
         }
 
         else
@@ -1145,11 +1145,11 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
   }
 }
 
-- (void)accessoryConnectionDetached:(id)a3 forClient:(id)a4
+- (void)accessoryConnectionDetached:(id)detached forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCConnectionInfoServer *)self accessoryConnectionFiltered:v6 forClient:v7];
+  detachedCopy = detached;
+  clientCopy = client;
+  v8 = [(ACCConnectionInfoServer *)self accessoryConnectionFiltered:detachedCopy forClient:clientCopy];
   if (gLogObjects)
   {
     v9 = gNumLogObjects <= 8;
@@ -1165,7 +1165,7 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
   {
     if (v10)
     {
-      v11 = *(gLogObjects + 64);
+      xPCConnection = *(gLogObjects + 64);
     }
 
     else
@@ -1175,11 +1175,11 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v11 = &_os_log_default;
+      xPCConnection = &_os_log_default;
       v13 = &_os_log_default;
     }
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_DEBUG))
     {
       [ACCConnectionInfoServer accessoryConnectionDetached:forClient:];
     }
@@ -1208,20 +1208,20 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
       [ACCConnectionInfoServer accessoryConnectionDetached:forClient:];
     }
 
-    v15 = [v7 clientUID];
+    clientUID = [clientCopy clientUID];
 
-    if (v15)
+    if (clientUID)
     {
-      v11 = [v7 XPCConnection];
-      v16 = [v11 remoteObjectProxyWithErrorHandler:&__block_literal_global_206];
-      [v16 accessoryConnectionDetached:v6];
+      xPCConnection = [clientCopy XPCConnection];
+      v16 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_206];
+      [v16 accessoryConnectionDetached:detachedCopy];
     }
 
     else
     {
       if (gLogObjects && gNumLogObjects >= 9)
       {
-        v11 = *(gLogObjects + 64);
+        xPCConnection = *(gLogObjects + 64);
       }
 
       else
@@ -1231,11 +1231,11 @@ void __86__ACCConnectionInfoServer_accessoryConnectionAttached_type_info_propert
           platform_connectionInfo_configStreamGetCategories_cold_2();
         }
 
-        v11 = &_os_log_default;
+        xPCConnection = &_os_log_default;
         v17 = &_os_log_default;
       }
 
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_DEBUG))
       {
         [ACCConnectionInfoServer accessoryConnectionAttached:type:info:properties:forClient:];
       }
@@ -1313,10 +1313,10 @@ void __111__ACCConnectionInfoServer_accessoryEndpointAttached_transportType_prot
   }
 }
 
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  detachedCopy = detached;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 9;
@@ -1347,34 +1347,34 @@ void __111__ACCConnectionInfoServer_accessoryEndpointAttached_transportType_prot
   {
     v11 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 138412802;
-    v38 = v6;
+    v38 = detachedCopy;
     v39 = 2112;
-    v40 = v7;
+    v40 = connectionCopy;
     v41 = 2048;
     v42 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "sending accessoryEndpointDetached for endpointUUID %@, connectionUUID %@, to %lu clients", buf, 0x20u);
   }
 
-  v12 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v12 lock];
+  connectedAccessoryLock = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock lock];
 
-  v13 = [(NSMutableDictionary *)self->_endpoints objectForKey:v7];
+  v13 = [(NSMutableDictionary *)self->_endpoints objectForKey:connectionCopy];
   v14 = v13;
   if (v13)
   {
-    [v13 removeObject:v6];
+    [v13 removeObject:detachedCopy];
   }
 
   v31 = v14;
-  v15 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v15 unlock];
+  connectedAccessoryLock2 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock2 unlock];
 
-  v16 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v16 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v17 = [(NSMutableSet *)self->_clientConnections copy];
-  v18 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v18 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v34 = 0u;
   v35 = 0u;
@@ -1396,12 +1396,12 @@ void __111__ACCConnectionInfoServer_accessoryEndpointAttached_transportType_prot
         }
 
         v24 = *(*(&v32 + 1) + 8 * i);
-        v25 = [v24 clientUID];
+        clientUID = [v24 clientUID];
 
-        if (v25)
+        if (clientUID)
         {
-          [(ACCConnectionInfoServer *)self accessoryEndpointDetached:v6 forConnection:v7 forClient:v24];
-          [(ACCConnectionInfoServer *)self removeEndpoint:v6 connection:v7 forClientFilter:v24];
+          [(ACCConnectionInfoServer *)self accessoryEndpointDetached:detachedCopy forConnection:connectionCopy forClient:v24];
+          [(ACCConnectionInfoServer *)self removeEndpoint:detachedCopy connection:connectionCopy forClientFilter:v24];
         }
 
         else
@@ -1453,12 +1453,12 @@ void __111__ACCConnectionInfoServer_accessoryEndpointAttached_transportType_prot
   }
 }
 
-- (void)accessoryEndpointDetached:(id)a3 forConnection:(id)a4 forClient:(id)a5
+- (void)accessoryEndpointDetached:(id)detached forConnection:(id)connection forClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ACCConnectionInfoServer *)self accessoryEndpointFiltered:v8 forConnection:v9 forClient:v10];
+  detachedCopy = detached;
+  connectionCopy = connection;
+  clientCopy = client;
+  v11 = [(ACCConnectionInfoServer *)self accessoryEndpointFiltered:detachedCopy forConnection:connectionCopy forClient:clientCopy];
   if (gLogObjects)
   {
     v12 = gNumLogObjects <= 8;
@@ -1474,7 +1474,7 @@ void __111__ACCConnectionInfoServer_accessoryEndpointAttached_transportType_prot
   {
     if (v13)
     {
-      v14 = *(gLogObjects + 64);
+      xPCConnection = *(gLogObjects + 64);
     }
 
     else
@@ -1484,23 +1484,23 @@ void __111__ACCConnectionInfoServer_accessoryEndpointAttached_transportType_prot
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v14 = &_os_log_default;
+      xPCConnection = &_os_log_default;
       v16 = &_os_log_default;
     }
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [v10 clientUID];
-      v18 = [v10 clientBundleID];
+      clientUID = [clientCopy clientUID];
+      clientBundleID = [clientCopy clientBundleID];
       v24 = 138413058;
-      v25 = v8;
+      v25 = detachedCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = connectionCopy;
       v28 = 2112;
-      v29 = v17;
+      v29 = clientUID;
       v30 = 2112;
-      v31 = v18;
-      _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Skip sending filtered accessoryEndpointDetached for endpointUUID %@, connectionUUID %@, to client %@ (%@)", &v24, 0x2Au);
+      v31 = clientBundleID;
+      _os_log_debug_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_DEBUG, "Skip sending filtered accessoryEndpointDetached for endpointUUID %@, connectionUUID %@, to client %@ (%@)", &v24, 0x2Au);
 
 LABEL_24:
     }
@@ -1526,32 +1526,32 @@ LABEL_24:
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v10 clientUID];
-      v23 = [v10 clientBundleID];
+      clientUID2 = [clientCopy clientUID];
+      clientBundleID2 = [clientCopy clientBundleID];
       v24 = 138413058;
-      v25 = v8;
+      v25 = detachedCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = connectionCopy;
       v28 = 2112;
-      v29 = v22;
+      v29 = clientUID2;
       v30 = 2112;
-      v31 = v23;
+      v31 = clientBundleID2;
       _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "sending accessoryEndpointDetached for endpointUUID %@, connectionUUID %@, to client %@ (%@)", &v24, 0x2Au);
     }
 
-    v20 = [v10 clientUID];
+    clientUID3 = [clientCopy clientUID];
 
-    if (v20)
+    if (clientUID3)
     {
-      v14 = [v10 XPCConnection];
-      v17 = [v14 remoteObjectProxyWithErrorHandler:&__block_literal_global_210];
-      [v17 accessoryEndpointDetached:v8 forConnection:v9];
+      xPCConnection = [clientCopy XPCConnection];
+      clientUID = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_210];
+      [clientUID accessoryEndpointDetached:detachedCopy forConnection:connectionCopy];
       goto LABEL_24;
     }
 
     if (gLogObjects && gNumLogObjects >= 9)
     {
-      v14 = *(gLogObjects + 64);
+      xPCConnection = *(gLogObjects + 64);
     }
 
     else
@@ -1561,11 +1561,11 @@ LABEL_24:
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v14 = &_os_log_default;
+      xPCConnection = &_os_log_default;
       v21 = &_os_log_default;
     }
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_DEBUG))
     {
       [ACCConnectionInfoServer accessoryConnectionAttached:type:info:properties:forClient:];
     }
@@ -1607,12 +1607,12 @@ void __77__ACCConnectionInfoServer_accessoryEndpointDetached_forConnection_forCl
   }
 }
 
-- (BOOL)accessoryConnectionFiltered:(id)a3 forClient:(id)a4
+- (BOOL)accessoryConnectionFiltered:(id)filtered forClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6 && ([v6 filteredAccessories], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsObject:", v5), v8, v9))
+  filteredCopy = filtered;
+  clientCopy = client;
+  v7 = clientCopy;
+  if (filteredCopy && clientCopy && ([clientCopy filteredAccessories], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "containsObject:", filteredCopy), v8, v9))
   {
     if (gLogObjects && gNumLogObjects >= 9)
     {
@@ -1677,23 +1677,23 @@ void __77__ACCConnectionInfoServer_accessoryEndpointDetached_forConnection_forCl
   return v13;
 }
 
-- (BOOL)accessoryEndpointFiltered:(id)a3 forConnection:(id)a4 forClient:(id)a5
+- (BOOL)accessoryEndpointFiltered:(id)filtered forConnection:(id)connection forClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v8 && v9)
+  filteredCopy = filtered;
+  connectionCopy = connection;
+  clientCopy = client;
+  v10 = clientCopy;
+  if (filteredCopy && connectionCopy && clientCopy)
   {
-    v11 = [v9 filteredAccessories];
-    if ([v11 containsObject:v8])
+    filteredAccessories = [clientCopy filteredAccessories];
+    if ([filteredAccessories containsObject:connectionCopy])
     {
 
       goto LABEL_7;
     }
 
-    v12 = [v10 filteredEndpoints];
-    v13 = [v12 containsObject:v7];
+    filteredEndpoints = [v10 filteredEndpoints];
+    v13 = [filteredEndpoints containsObject:filteredCopy];
 
     if (v13)
     {
@@ -1716,16 +1716,16 @@ LABEL_7:
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v22 = [v10 clientUID];
-        v23 = [v10 clientBundleID];
+        clientUID = [v10 clientUID];
+        clientBundleID = [v10 clientBundleID];
         v24 = 138413058;
-        v25 = v8;
+        v25 = connectionCopy;
         v26 = 2112;
-        v27 = v7;
+        v27 = filteredCopy;
         v28 = 2112;
-        v29 = v22;
+        v29 = clientUID;
         v30 = 2112;
-        v31 = v23;
+        v31 = clientBundleID;
         _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "endpoint %@ - %@ filtered for client %@ (%@)", &v24, 0x2Au);
       }
 
@@ -1762,16 +1762,16 @@ LABEL_7:
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v10 clientUID];
-    v21 = [v10 clientBundleID];
+    clientUID2 = [v10 clientUID];
+    clientBundleID2 = [v10 clientBundleID];
     v24 = 138413058;
-    v25 = v8;
+    v25 = connectionCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = filteredCopy;
     v28 = 2112;
-    v29 = v20;
+    v29 = clientUID2;
     v30 = 2112;
-    v31 = v21;
+    v31 = clientBundleID2;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "endpoint %@ - %@ NOT filtered for client %@ (%@)", &v24, 0x2Au);
   }
 
@@ -1781,11 +1781,11 @@ LABEL_27:
   return v17;
 }
 
-- (void)updateFilteredListForClient:(id)a3
+- (void)updateFilteredListForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v5 lock];
+  clientCopy = client;
+  connectedAccessoryLock = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock lock];
 
   v16 = 0u;
   v17 = 0u;
@@ -1806,7 +1806,7 @@ LABEL_27:
           objc_enumerationMutation(v6);
         }
 
-        [(ACCConnectionInfoServer *)self _updateFilteredListForClient:v4 forConnection:*(*(&v14 + 1) + 8 * i), v14];
+        [(ACCConnectionInfoServer *)self _updateFilteredListForClient:clientCopy forConnection:*(*(&v14 + 1) + 8 * i), v14];
       }
 
       v8 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -1815,8 +1815,8 @@ LABEL_27:
     while (v8);
   }
 
-  v11 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
-  [v11 unlock];
+  connectedAccessoryLock2 = [(ACCConnectionInfoServer *)self connectedAccessoryLock];
+  [connectedAccessoryLock2 unlock];
 
   if (gLogObjects && gNumLogObjects >= 9)
   {
@@ -1836,20 +1836,20 @@ LABEL_27:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCConnectionInfoServer *)v4 updateFilteredListForClient:v12];
+    [(ACCConnectionInfoServer *)clientCopy updateFilteredListForClient:v12];
   }
 }
 
-- (void)_updateFilteredListForClient:(id)a3 forConnection:(id)a4
+- (void)_updateFilteredListForClient:(id)client forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accessoryFilterDictionary];
-  v9 = [v8 objectForKey:ACCConnectionInfoFilterAllowConnectionType];
-  v10 = [v9 unsignedIntValue];
-  if ([(NSMutableSet *)self->_accessories containsObject:v7])
+  clientCopy = client;
+  connectionCopy = connection;
+  accessoryFilterDictionary = [clientCopy accessoryFilterDictionary];
+  v9 = [accessoryFilterDictionary objectForKey:ACCConnectionInfoFilterAllowConnectionType];
+  unsignedIntValue = [v9 unsignedIntValue];
+  if ([(NSMutableSet *)self->_accessories containsObject:connectionCopy])
   {
-    v11 = platform_connectionInfo_accessoryConnectionType(v7);
+    v11 = platform_connectionInfo_accessoryConnectionType(connectionCopy);
     if (gLogObjects && gNumLogObjects >= 9)
     {
       v12 = *(gLogObjects + 64);
@@ -1870,30 +1870,30 @@ LABEL_27:
     v15 = &audioProductCerts_endpoint_publish_onceToken;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v37 = [v6 clientUID];
-      [v6 clientBundleID];
+      clientUID = [clientCopy clientUID];
+      [clientCopy clientBundleID];
       *buf = 138413570;
-      v44 = v37;
+      v44 = clientUID;
       v46 = v45 = 2112;
       v34 = v46;
       v47 = 2112;
-      v48 = v7;
+      v48 = connectionCopy;
       v49 = 1024;
       *v50 = v14;
       *&v50[4] = 2112;
       *&v50[6] = v9;
       v51 = 1024;
-      v52 = v10;
+      v52 = unsignedIntValue;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "updateFilteredListForClient:%@, clientInfo.clientBundleID %@, %@ connTypeMask %xh, connTypeFilterValue %@ (%xh)", buf, 0x36u);
 
       v15 = &audioProductCerts_endpoint_publish_onceToken;
     }
 
-    v16 = [v6 filteredAccessories];
-    v17 = v16;
-    if (!v9 || (v14 & v10) != 0)
+    filteredAccessories = [clientCopy filteredAccessories];
+    v17 = filteredAccessories;
+    if (!v9 || (v14 & unsignedIntValue) != 0)
     {
-      [v16 removeObject:v7];
+      [filteredAccessories removeObject:connectionCopy];
 
       v20 = v15[491];
       if (v20 && gNumLogObjects >= 9)
@@ -1920,7 +1920,7 @@ LABEL_27:
 
     else
     {
-      [v16 addObject:v7];
+      [filteredAccessories addObject:connectionCopy];
 
       v18 = v15[491];
       if (v18 && gNumLogObjects >= 9)
@@ -1945,7 +1945,7 @@ LABEL_27:
       }
     }
 
-    v23 = [(NSMutableDictionary *)self->_endpoints objectForKey:v7];
+    v23 = [(NSMutableDictionary *)self->_endpoints objectForKey:connectionCopy];
     v24 = v15[491];
     if (v24 && gNumLogObjects >= 9)
     {
@@ -1965,14 +1965,14 @@ LABEL_27:
 
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v35 = [v6 clientUID];
-      v36 = [v6 clientBundleID];
+      clientUID2 = [clientCopy clientUID];
+      clientBundleID = [clientCopy clientBundleID];
       *buf = 138413058;
-      v44 = v35;
+      v44 = clientUID2;
       v45 = 2112;
-      v46 = v36;
+      v46 = clientBundleID;
       v47 = 2112;
-      v48 = v7;
+      v48 = connectionCopy;
       v49 = 2112;
       *v50 = v23;
       _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "updateFilteredListForClient:%@ (%@), connection %@, process endpointSet %@ ", buf, 0x2Au);
@@ -1997,7 +1997,7 @@ LABEL_27:
             objc_enumerationMutation(v27);
           }
 
-          [(ACCConnectionInfoServer *)self _updateFilteredListForClient:v6 forEndpoint:*(*(&v38 + 1) + 8 * i) connection:v7];
+          [(ACCConnectionInfoServer *)self _updateFilteredListForClient:clientCopy forEndpoint:*(*(&v38 + 1) + 8 * i) connection:connectionCopy];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -2025,28 +2025,28 @@ LABEL_27:
 
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
-    [ACCConnectionInfoServer _updateFilteredListForClient:v6 forConnection:v32];
+    [ACCConnectionInfoServer _updateFilteredListForClient:clientCopy forConnection:v32];
   }
 }
 
-- (void)_updateFilteredListForClient:(id)a3 forEndpoint:(id)a4 connection:(id)a5
+- (void)_updateFilteredListForClient:(id)client forEndpoint:(id)endpoint connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 accessoryFilterDictionary];
-  v12 = [v11 objectForKey:ACCConnectionInfoFilterAllowEndpointTransport];
-  v13 = [v11 objectForKey:ACCConnectionInfoFilterAllowEndpointProtocol];
+  clientCopy = client;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  accessoryFilterDictionary = [clientCopy accessoryFilterDictionary];
+  v12 = [accessoryFilterDictionary objectForKey:ACCConnectionInfoFilterAllowEndpointTransport];
+  v13 = [accessoryFilterDictionary objectForKey:ACCConnectionInfoFilterAllowEndpointProtocol];
   if (v12 | v13)
   {
-    v35 = [v12 unsignedIntValue];
-    v14 = [v13 unsignedIntValue];
-    v15 = [(NSMutableDictionary *)self->_endpoints objectForKey:v10];
-    if ([v15 containsObject:v9])
+    unsignedIntValue = [v12 unsignedIntValue];
+    unsignedIntValue2 = [v13 unsignedIntValue];
+    v15 = [(NSMutableDictionary *)self->_endpoints objectForKey:connectionCopy];
+    if ([v15 containsObject:endpointCopy])
     {
-      v32 = v14;
-      v16 = platform_connectionInfo_endpointTransportType(v10, v9);
-      v33 = platform_connectionInfo_endpointProtocol(v10, v9);
+      v32 = unsignedIntValue2;
+      v16 = platform_connectionInfo_endpointTransportType(connectionCopy, endpointCopy);
+      v33 = platform_connectionInfo_endpointProtocol(connectionCopy, endpointCopy);
       if (gLogObjects && gNumLogObjects >= 9)
       {
         v17 = *(gLogObjects + 64);
@@ -2066,22 +2066,22 @@ LABEL_27:
       v19 = 1 << v16;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [v8 clientUID];
-        [v8 clientBundleID];
+        clientUID = [clientCopy clientUID];
+        [clientCopy clientBundleID];
         *buf = 138413826;
-        v37 = v31;
+        v37 = clientUID;
         v39 = v38 = 2112;
         v30 = v39;
         v40 = 2112;
-        v41 = v10;
+        v41 = connectionCopy;
         v42 = 2112;
-        v43 = v9;
+        v43 = endpointCopy;
         v44 = 1024;
         v45 = v19;
         v46 = 2112;
         v47 = v12;
         v48 = 1024;
-        v49 = v35;
+        v49 = unsignedIntValue;
         _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "updateFilteredListForClient:%@ (%@), %@ - %@ endpTransportMask %xh, endpTransportFilterValue %@ (%xh)", buf, 0x40u);
       }
 
@@ -2104,16 +2104,16 @@ LABEL_27:
       v22 = 1 << v33;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [v8 clientUID];
-        v31 = [v8 clientBundleID];
+        clientUID2 = [clientCopy clientUID];
+        clientUID = [clientCopy clientBundleID];
         *buf = 138413826;
-        v37 = v34;
+        v37 = clientUID2;
         v38 = 2112;
-        v39 = v31;
+        v39 = clientUID;
         v40 = 2112;
-        v41 = v10;
+        v41 = connectionCopy;
         v42 = 2112;
-        v43 = v9;
+        v43 = endpointCopy;
         v44 = 1024;
         v45 = v22;
         v46 = 2112;
@@ -2123,10 +2123,10 @@ LABEL_27:
         _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "updateFilteredListForClient:%@ (%@), %@ - %@ endpProtocolMask %xh, endpProtocolFilterValue %@ (%xh)", buf, 0x40u);
       }
 
-      if ((!v12 || (v19 & v35) != 0) && (!v13 || (v22 & v32) != 0))
+      if ((!v12 || (v19 & unsignedIntValue) != 0) && (!v13 || (v22 & v32) != 0))
       {
-        v26 = [v8 filteredEndpoints];
-        [v26 removeObject:v9];
+        filteredEndpoints = [clientCopy filteredEndpoints];
+        [filteredEndpoints removeObject:endpointCopy];
 
         if (gLogObjects && gNumLogObjects >= 9)
         {
@@ -2152,8 +2152,8 @@ LABEL_27:
 
       else
       {
-        v23 = [v8 filteredEndpoints];
-        [v23 addObject:v9];
+        filteredEndpoints2 = [clientCopy filteredEndpoints];
+        [filteredEndpoints2 addObject:endpointCopy];
 
         if (gLogObjects && gNumLogObjects >= 9)
         {
@@ -2197,21 +2197,21 @@ LABEL_27:
 
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    [ACCConnectionInfoServer _updateFilteredListForClient:v8 forEndpoint:v28 connection:?];
+    [ACCConnectionInfoServer _updateFilteredListForClient:clientCopy forEndpoint:v28 connection:?];
   }
 }
 
-- (void)removeConnection:(id)a3 forClientFilter:(id)a4
+- (void)removeConnection:(id)connection forClientFilter:(id)filter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 filteredAccessories];
-  v8 = [v7 containsObject:v5];
+  connectionCopy = connection;
+  filterCopy = filter;
+  filteredAccessories = [filterCopy filteredAccessories];
+  v8 = [filteredAccessories containsObject:connectionCopy];
 
   if (v8)
   {
-    v9 = [v6 filteredAccessories];
-    [v9 removeObject:v5];
+    filteredAccessories2 = [filterCopy filteredAccessories];
+    [filteredAccessories2 removeObject:connectionCopy];
   }
 
   if (gLogObjects && gNumLogObjects >= 9)
@@ -2236,18 +2236,18 @@ LABEL_27:
   }
 }
 
-- (void)removeEndpoint:(id)a3 connection:(id)a4 forClientFilter:(id)a5
+- (void)removeEndpoint:(id)endpoint connection:(id)connection forClientFilter:(id)filter
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 filteredEndpoints];
-  v11 = [v10 containsObject:v7];
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  filterCopy = filter;
+  filteredEndpoints = [filterCopy filteredEndpoints];
+  v11 = [filteredEndpoints containsObject:endpointCopy];
 
   if (v11)
   {
-    v12 = [v9 filteredEndpoints];
-    [v12 removeObject:v7];
+    filteredEndpoints2 = [filterCopy filteredEndpoints];
+    [filteredEndpoints2 removeObject:endpointCopy];
   }
 
   if (gLogObjects && gNumLogObjects >= 9)
@@ -2268,28 +2268,28 @@ LABEL_27:
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [v9 clientUID];
-    v16 = [v9 clientBundleID];
-    v17 = [v9 filteredEndpoints];
+    clientUID = [filterCopy clientUID];
+    clientBundleID = [filterCopy clientBundleID];
+    filteredEndpoints3 = [filterCopy filteredEndpoints];
     v18 = 138413314;
-    v19 = v15;
+    v19 = clientUID;
     v20 = 2112;
-    v21 = v16;
+    v21 = clientBundleID;
     v22 = 2112;
-    v23 = v8;
+    v23 = connectionCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = endpointCopy;
     v26 = 2112;
-    v27 = v17;
+    v27 = filteredEndpoints3;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "client %@ (%@), connectionUUID %@, endpointUUID %@, remove from filteredEndpoints %@", &v18, 0x34u);
   }
 }
 
-- (void)accessoryEndpointUpdate:(id)a3 protocol:(int)a4 properties:(id)a5 forConnection:(id)a6
+- (void)accessoryEndpointUpdate:(id)update protocol:(int)protocol properties:(id)properties forConnection:(id)connection
 {
-  v9 = a3;
-  v37 = a5;
-  v10 = a6;
+  updateCopy = update;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 9;
@@ -2320,22 +2320,22 @@ LABEL_27:
   {
     v14 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 67109890;
-    *v44 = a4;
+    *v44 = protocol;
     *&v44[4] = 2112;
-    *&v44[6] = v9;
+    *&v44[6] = updateCopy;
     *&v44[14] = 2112;
-    *&v44[16] = v10;
+    *&v44[16] = connectionCopy;
     *&v44[24] = 2048;
     *&v44[26] = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "sending accessoryEndpointUpdate:protocol %d for endpointUUID %@, connectionUUID %@, to %lu clients", buf, 0x26u);
   }
 
-  v15 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v15 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v16 = [(NSMutableSet *)self->_clientConnections copy];
-  v17 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v17 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v41 = 0u;
   v42 = 0u;
@@ -2359,16 +2359,16 @@ LABEL_27:
         }
 
         v23 = *(*(&v39 + 1) + 8 * i);
-        v24 = [v23 clientUID];
+        clientUID = [v23 clientUID];
 
-        if (v24)
+        if (clientUID)
         {
           [(ACCConnectionInfoServer *)self updateFilteredListForClient:v23];
-          if (![(ACCConnectionInfoServer *)self accessoryEndpointFiltered:v9 forConnection:v10 forClient:v23])
+          if (![(ACCConnectionInfoServer *)self accessoryEndpointFiltered:updateCopy forConnection:connectionCopy forClient:v23])
           {
-            v27 = [v23 XPCConnection];
-            v32 = [v27 remoteObjectProxyWithErrorHandler:&__block_literal_global_212];
-            [v32 accessoryEndpointUpdate:v9 protocol:a4 properties:v37 forConnection:v10];
+            xPCConnection = [v23 XPCConnection];
+            clientUID2 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_212];
+            [clientUID2 accessoryEndpointUpdate:updateCopy protocol:protocol properties:propertiesCopy forConnection:connectionCopy];
 LABEL_37:
 
             goto LABEL_38;
@@ -2378,7 +2378,7 @@ LABEL_37:
           v26 = gNumLogObjects;
           if (gLogObjects && gNumLogObjects >= 9)
           {
-            v27 = *(gLogObjects + 64);
+            xPCConnection = *(gLogObjects + 64);
           }
 
           else
@@ -2393,22 +2393,22 @@ LABEL_37:
             }
 
             v33 = &_os_log_default;
-            v27 = &_os_log_default;
+            xPCConnection = &_os_log_default;
           }
 
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_INFO))
           {
-            v32 = [v23 clientUID];
-            v34 = [v23 clientBundleID];
+            clientUID2 = [v23 clientUID];
+            clientBundleID = [v23 clientBundleID];
             *buf = 138413058;
-            *v44 = v9;
+            *v44 = updateCopy;
             *&v44[8] = 2112;
-            *&v44[10] = v10;
+            *&v44[10] = connectionCopy;
             *&v44[18] = 2112;
-            *&v44[20] = v32;
+            *&v44[20] = clientUID2;
             *&v44[28] = 2112;
-            *&v44[30] = v34;
-            _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Skip sending filtered accessoryEndpointUpdate for endpointUUID %@, connectionUUID %@, to client %@ (%@)", buf, 0x2Au);
+            *&v44[30] = clientBundleID;
+            _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_INFO, "Skip sending filtered accessoryEndpointUpdate for endpointUUID %@, connectionUUID %@, to client %@ (%@)", buf, 0x2Au);
 
             goto LABEL_37;
           }
@@ -2440,18 +2440,18 @@ LABEL_37:
             }
 
             v31 = &_os_log_default;
-            v27 = &_os_log_default;
+            xPCConnection = &_os_log_default;
           }
 
           else
           {
-            v27 = *(gLogObjects + 64);
+            xPCConnection = *(gLogObjects + 64);
           }
 
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
+            _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
           }
         }
 
@@ -2500,10 +2500,10 @@ void __85__ACCConnectionInfoServer_accessoryEndpointUpdate_protocol_properties_f
   }
 }
 
-- (void)accessoryConnectionInfoPropertyChanged:(id)a3 properties:(id)a4
+- (void)accessoryConnectionInfoPropertyChanged:(id)changed properties:(id)properties
 {
-  v6 = a3;
-  v33 = a4;
+  changedCopy = changed;
+  propertiesCopy = properties;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 9;
@@ -2534,18 +2534,18 @@ void __85__ACCConnectionInfoServer_accessoryEndpointUpdate_protocol_properties_f
   {
     v10 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 138412546;
-    v39 = v6;
+    v39 = changedCopy;
     v40 = 2048;
     v41 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "sending accessoryConnectionInfoPropertyChanged for connectionUUID %@, to %lu clients", buf, 0x16u);
   }
 
-  v11 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v11 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v12 = [(NSMutableSet *)self->_clientConnections copy];
-  v13 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v13 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v36 = 0u;
   v37 = 0u;
@@ -2569,16 +2569,16 @@ void __85__ACCConnectionInfoServer_accessoryEndpointUpdate_protocol_properties_f
         }
 
         v20 = *(*(&v34 + 1) + 8 * i);
-        v21 = [v20 clientUID];
+        clientUID = [v20 clientUID];
 
-        if (v21)
+        if (clientUID)
         {
           [(ACCConnectionInfoServer *)self updateFilteredListForClient:v20];
-          if (![(ACCConnectionInfoServer *)self accessoryConnectionFiltered:v6 forClient:v20])
+          if (![(ACCConnectionInfoServer *)self accessoryConnectionFiltered:changedCopy forClient:v20])
           {
-            v24 = [v20 XPCConnection];
-            v29 = [v24 remoteObjectProxyWithErrorHandler:&__block_literal_global_214];
-            [v29 accessoryConnectionInfoPropertyChanged:v6 properties:v33];
+            xPCConnection = [v20 XPCConnection];
+            clientUID2 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_214];
+            [clientUID2 accessoryConnectionInfoPropertyChanged:changedCopy properties:propertiesCopy];
 LABEL_37:
 
             goto LABEL_38;
@@ -2588,7 +2588,7 @@ LABEL_37:
           v23 = gNumLogObjects;
           if (gLogObjects && gNumLogObjects >= 9)
           {
-            v24 = *(gLogObjects + 64);
+            xPCConnection = *(gLogObjects + 64);
           }
 
           else
@@ -2603,20 +2603,20 @@ LABEL_37:
             }
 
             v30 = &_os_log_default;
-            v24 = &_os_log_default;
+            xPCConnection = &_os_log_default;
           }
 
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_INFO))
           {
-            v29 = [v20 clientUID];
-            v31 = [v20 clientBundleID];
+            clientUID2 = [v20 clientUID];
+            clientBundleID = [v20 clientBundleID];
             *buf = 138412802;
-            v39 = v6;
+            v39 = changedCopy;
             v40 = 2112;
-            v41 = v29;
+            v41 = clientUID2;
             v42 = 2112;
-            v43 = v31;
-            _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Skip sending filtered accessoryConnectionInfoPropertyChanged for connectionUUID %@, to client %@ (%@)", buf, 0x20u);
+            v43 = clientBundleID;
+            _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_INFO, "Skip sending filtered accessoryConnectionInfoPropertyChanged for connectionUUID %@, to client %@ (%@)", buf, 0x20u);
 
             goto LABEL_37;
           }
@@ -2648,18 +2648,18 @@ LABEL_37:
             }
 
             v28 = &_os_log_default;
-            v24 = &_os_log_default;
+            xPCConnection = &_os_log_default;
           }
 
           else
           {
-            v24 = *(gLogObjects + 64);
+            xPCConnection = *(gLogObjects + 64);
           }
 
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
+            _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
           }
         }
 
@@ -2708,11 +2708,11 @@ void __77__ACCConnectionInfoServer_accessoryConnectionInfoPropertyChanged_proper
   }
 }
 
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection
 {
-  v8 = a3;
-  v35 = a4;
-  v9 = a5;
+  changedCopy = changed;
+  propertiesCopy = properties;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 9;
@@ -2743,20 +2743,20 @@ void __77__ACCConnectionInfoServer_accessoryConnectionInfoPropertyChanged_proper
   {
     v13 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 138412802;
-    v42 = v8;
+    v42 = changedCopy;
     v43 = 2112;
-    v44 = v9;
+    v44 = connectionCopy;
     v45 = 2048;
     v46 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "sending accessoryEndpointInfoPropertyChanged for endpointUUID %@, connectionUUID %@, to %lu clients", buf, 0x20u);
   }
 
-  v14 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v14 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v15 = [(NSMutableSet *)self->_clientConnections copy];
-  v16 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v16 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v39 = 0u;
   v40 = 0u;
@@ -2780,16 +2780,16 @@ void __77__ACCConnectionInfoServer_accessoryConnectionInfoPropertyChanged_proper
         }
 
         v22 = *(*(&v37 + 1) + 8 * i);
-        v23 = [v22 clientUID];
+        clientUID = [v22 clientUID];
 
-        if (v23)
+        if (clientUID)
         {
           [(ACCConnectionInfoServer *)self updateFilteredListForClient:v22];
-          if (![(ACCConnectionInfoServer *)self accessoryEndpointFiltered:v8 forConnection:v9 forClient:v22])
+          if (![(ACCConnectionInfoServer *)self accessoryEndpointFiltered:changedCopy forConnection:connectionCopy forClient:v22])
           {
-            v26 = [v22 XPCConnection];
-            v31 = [v26 remoteObjectProxyWithErrorHandler:&__block_literal_global_216];
-            [v31 accessoryEndpointInfoPropertyChanged:v8 properties:v35 forConnection:v9];
+            xPCConnection = [v22 XPCConnection];
+            clientUID2 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_216];
+            [clientUID2 accessoryEndpointInfoPropertyChanged:changedCopy properties:propertiesCopy forConnection:connectionCopy];
 LABEL_37:
 
             goto LABEL_38;
@@ -2799,7 +2799,7 @@ LABEL_37:
           v25 = gNumLogObjects;
           if (gLogObjects && gNumLogObjects >= 9)
           {
-            v26 = *(gLogObjects + 64);
+            xPCConnection = *(gLogObjects + 64);
           }
 
           else
@@ -2814,22 +2814,22 @@ LABEL_37:
             }
 
             v32 = &_os_log_default;
-            v26 = &_os_log_default;
+            xPCConnection = &_os_log_default;
           }
 
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_INFO))
           {
-            v31 = [v22 clientUID];
-            v33 = [v22 clientBundleID];
+            clientUID2 = [v22 clientUID];
+            clientBundleID = [v22 clientBundleID];
             *buf = 138413058;
-            v42 = v8;
+            v42 = changedCopy;
             v43 = 2112;
-            v44 = v9;
+            v44 = connectionCopy;
             v45 = 2112;
-            v46 = v31;
+            v46 = clientUID2;
             v47 = 2112;
-            v48 = v33;
-            _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Skip sending filtered accessoryEndpointInfoPropertyChanged for endpointUUID %@, connectionUUID %@, to client %@ (%@)", buf, 0x2Au);
+            v48 = clientBundleID;
+            _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_INFO, "Skip sending filtered accessoryEndpointInfoPropertyChanged for endpointUUID %@, connectionUUID %@, to client %@ (%@)", buf, 0x2Au);
 
             goto LABEL_37;
           }
@@ -2861,18 +2861,18 @@ LABEL_37:
             }
 
             v30 = &_os_log_default;
-            v26 = &_os_log_default;
+            xPCConnection = &_os_log_default;
           }
 
           else
           {
-            v26 = *(gLogObjects + 64);
+            xPCConnection = *(gLogObjects + 64);
           }
 
-          if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(xPCConnection, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
+            _os_log_impl(&_mh_execute_header, xPCConnection, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
           }
         }
 
@@ -2921,17 +2921,17 @@ void __89__ACCConnectionInfoServer_accessoryEndpointInfoPropertyChanged_properti
   }
 }
 
-- (void)configStreamCategoryListReady:(id)a3 connection:(id)a4 client:(id)a5
+- (void)configStreamCategoryListReady:(id)ready connection:(id)connection client:(id)client
 {
-  v33 = a3;
-  v32 = a4;
-  v8 = a5;
-  v9 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v9 lock];
+  readyCopy = ready;
+  connectionCopy = connection;
+  clientCopy = client;
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v10 = [(NSMutableSet *)self->_clientConnections copy];
-  v11 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v11 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v12 = &audioProductCerts_endpoint_publish_onceToken;
   v13 = &audioProductCerts_endpoint_publish_onceToken;
@@ -2954,11 +2954,11 @@ void __89__ACCConnectionInfoServer_accessoryEndpointInfoPropertyChanged_properti
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v40 = v33;
+    v40 = readyCopy;
     v41 = 2112;
-    v42 = v32;
+    v42 = connectionCopy;
     v43 = 2112;
-    v44 = v8;
+    v44 = clientCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "sending configStreamCategoryListReady for endpointUUID %@, connectionUUID %@, clientUUID %@", buf, 0x20u);
   }
 
@@ -2983,19 +2983,19 @@ LABEL_11:
       }
 
       v22 = *(*(&v34 + 1) + 8 * v21);
-      v23 = [v22 clientUID];
-      if (v23)
+      clientUID = [v22 clientUID];
+      if (clientUID)
       {
-        v24 = v23;
-        if (!v8)
+        v24 = clientUID;
+        if (!clientCopy)
         {
 
 LABEL_19:
-          v27 = [v22 XPCConnection];
-          v28 = [v27 remoteObjectProxyWithErrorHandler:&__block_literal_global_218];
-          [v28 configStreamCategoryListReady:v33 connection:v32];
+          xPCConnection = [v22 XPCConnection];
+          v28 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_218];
+          [v28 configStreamCategoryListReady:readyCopy connection:connectionCopy];
 
-          if (v8)
+          if (clientCopy)
           {
             v29 = v16;
             goto LABEL_35;
@@ -3005,8 +3005,8 @@ LABEL_19:
           goto LABEL_21;
         }
 
-        v25 = [v22 clientUID];
-        v26 = [v25 isEqualToString:v8];
+        clientUID2 = [v22 clientUID];
+        v26 = [clientUID2 isEqualToString:clientCopy];
 
         if (v26)
         {
@@ -3056,11 +3056,11 @@ LABEL_27:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v40 = v33;
+    v40 = readyCopy;
     v41 = 2112;
-    v42 = v32;
+    v42 = connectionCopy;
     v43 = 2112;
-    v44 = v8;
+    v44 = clientCopy;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Could not find client to send configStreamCategoryListReady for endpointUUID %@, connectionUUID %@, clientUUID %@", buf, 0x20u);
   }
 
@@ -3104,19 +3104,19 @@ void __75__ACCConnectionInfoServer_configStreamCategoryListReady_connection_clie
   }
 }
 
-- (void)configStreamCategoriesResponse:(id)a3 forEndpoint:(id)a4 connection:(id)a5 client:(id)a6 success:(BOOL)a7
+- (void)configStreamCategoriesResponse:(id)response forEndpoint:(id)endpoint connection:(id)connection client:(id)client success:(BOOL)success
 {
-  v35 = a7;
-  v37 = a3;
-  v36 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v13 lock];
+  successCopy = success;
+  responseCopy = response;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  clientCopy = client;
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v14 = [(NSMutableSet *)self->_clientConnections copy];
-  v15 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v15 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v40 = 0u;
   v41 = 0u;
@@ -3138,26 +3138,26 @@ void __75__ACCConnectionInfoServer_configStreamCategoryListReady_connection_clie
         }
 
         v21 = *(*(&v38 + 1) + 8 * i);
-        v22 = [v21 clientUID];
-        if (v22)
+        clientUID = [v21 clientUID];
+        if (clientUID)
         {
-          v23 = v22;
-          v24 = [v21 clientUID];
-          v25 = [v24 isEqualToString:v12];
+          v23 = clientUID;
+          clientUID2 = [v21 clientUID];
+          v25 = [clientUID2 isEqualToString:clientCopy];
 
           if (v25)
           {
             if (gLogObjects && gNumLogObjects >= 9)
             {
               v30 = *(gLogObjects + 64);
-              v28 = v36;
-              v27 = v37;
+              v28 = endpointCopy;
+              v27 = responseCopy;
             }
 
             else
             {
-              v28 = v36;
-              v27 = v37;
+              v28 = endpointCopy;
+              v27 = responseCopy;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
                 platform_connectionInfo_configStreamGetCategories_cold_2();
@@ -3172,19 +3172,19 @@ void __75__ACCConnectionInfoServer_configStreamCategoryListReady_connection_clie
               *buf = 138413314;
               v43 = v28;
               v44 = 2112;
-              v45 = v11;
+              v45 = connectionCopy;
               v46 = 2112;
-              v47 = v12;
+              v47 = clientCopy;
               v48 = 1024;
-              v49 = v35;
+              v49 = successCopy;
               v50 = 2112;
               v51 = v27;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "sending configStreamCategoriesResponse for endpointUUID %@, connectionUUID %@, clientUUID %@, success %d, categories %@", buf, 0x30u);
             }
 
-            v32 = [v21 XPCConnection];
-            v33 = [v32 remoteObjectProxyWithErrorHandler:&__block_literal_global_220];
-            [v33 configStreamCategoriesResponse:v27 forEndpoint:v28 connection:v11 success:v35];
+            xPCConnection = [v21 XPCConnection];
+            v33 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_220];
+            [v33 configStreamCategoriesResponse:v27 forEndpoint:v28 connection:connectionCopy success:successCopy];
 
             v26 = v16;
             goto LABEL_27;
@@ -3205,14 +3205,14 @@ void __75__ACCConnectionInfoServer_configStreamCategoryListReady_connection_clie
   if (gLogObjects && gNumLogObjects >= 9)
   {
     v26 = *(gLogObjects + 64);
-    v28 = v36;
-    v27 = v37;
-    v29 = v35;
+    v28 = endpointCopy;
+    v27 = responseCopy;
+    v29 = successCopy;
   }
 
   else
   {
-    v29 = v35;
+    v29 = successCopy;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       platform_connectionInfo_configStreamGetCategories_cold_2();
@@ -3220,8 +3220,8 @@ void __75__ACCConnectionInfoServer_configStreamCategoryListReady_connection_clie
 
     v26 = &_os_log_default;
     v34 = &_os_log_default;
-    v28 = v36;
-    v27 = v37;
+    v28 = endpointCopy;
+    v27 = responseCopy;
   }
 
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -3229,9 +3229,9 @@ void __75__ACCConnectionInfoServer_configStreamCategoryListReady_connection_clie
     *buf = 138413314;
     v43 = v28;
     v44 = 2112;
-    v45 = v11;
+    v45 = connectionCopy;
     v46 = 2112;
-    v47 = v12;
+    v47 = clientCopy;
     v48 = 1024;
     v49 = v29;
     v50 = 2112;
@@ -3277,20 +3277,20 @@ void __96__ACCConnectionInfoServer_configStreamCategoriesResponse_forEndpoint_co
   }
 }
 
-- (void)configStreamPropertyResponse:(unsigned __int8)a3 forCategory:(unsigned __int16)a4 forEndpoint:(id)a5 connection:(id)a6 client:(id)a7 value:(id)a8 success:(BOOL)a9
+- (void)configStreamPropertyResponse:(unsigned __int8)response forCategory:(unsigned __int16)category forEndpoint:(id)endpoint connection:(id)connection client:(id)client value:(id)value success:(BOOL)success
 {
-  LODWORD(v36) = a3;
-  HIDWORD(v36) = a4;
-  v38 = a5;
-  v37 = a6;
-  v13 = a7;
-  v14 = a8;
-  v15 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v15 lock];
+  LODWORD(v36) = response;
+  HIDWORD(v36) = category;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
+  clientCopy = client;
+  valueCopy = value;
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v16 = [(NSMutableSet *)self->_clientConnections copy];
-  v17 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v17 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v41 = 0u;
   v42 = 0u;
@@ -3312,26 +3312,26 @@ void __96__ACCConnectionInfoServer_configStreamCategoriesResponse_forEndpoint_co
         }
 
         v23 = *(*(&v39 + 1) + 8 * i);
-        v24 = [v23 clientUID];
-        if (v24)
+        clientUID = [v23 clientUID];
+        if (clientUID)
         {
-          v25 = v24;
-          v26 = [v23 clientUID];
-          v27 = [v26 isEqualToString:v13];
+          v25 = clientUID;
+          clientUID2 = [v23 clientUID];
+          v27 = [clientUID2 isEqualToString:clientCopy];
 
           if (v27)
           {
             if (gLogObjects && gNumLogObjects >= 9)
             {
               v29 = *(gLogObjects + 64);
-              v31 = v37;
-              v30 = v38;
+              v31 = connectionCopy;
+              v30 = endpointCopy;
             }
 
             else
             {
-              v31 = v37;
-              v30 = v38;
+              v31 = connectionCopy;
+              v30 = endpointCopy;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
                 platform_connectionInfo_configStreamGetCategories_cold_2();
@@ -3348,17 +3348,17 @@ void __96__ACCConnectionInfoServer_configStreamCategoriesResponse_forEndpoint_co
               v45 = 2112;
               v46 = v31;
               v47 = 2112;
-              v48 = v13;
+              v48 = clientCopy;
               v49 = 1024;
-              v50 = a9;
+              successCopy2 = success;
               v51 = 2112;
-              v52 = v14;
+              v52 = valueCopy;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "sending configStreamPropertyResponse for endpointUUID %@, connectionUUID %@, clientUUID %@, success %d, value %@", buf, 0x30u);
             }
 
-            v33 = [v23 XPCConnection];
-            v34 = [v33 remoteObjectProxyWithErrorHandler:&__block_literal_global_222];
-            [v34 configStreamPropertyResponse:v36 forCategory:HIDWORD(v36) forEndpoint:v30 connection:v31 value:v14 success:a9];
+            xPCConnection = [v23 XPCConnection];
+            v34 = [xPCConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_222];
+            [v34 configStreamPropertyResponse:v36 forCategory:HIDWORD(v36) forEndpoint:v30 connection:v31 value:valueCopy success:success];
 
             v28 = v18;
             goto LABEL_27;
@@ -3392,20 +3392,20 @@ void __96__ACCConnectionInfoServer_configStreamCategoriesResponse_forEndpoint_co
     v35 = &_os_log_default;
   }
 
-  v31 = v37;
-  v30 = v38;
+  v31 = connectionCopy;
+  v30 = endpointCopy;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     *buf = 138413314;
-    v44 = v38;
+    v44 = endpointCopy;
     v45 = 2112;
-    v46 = v37;
+    v46 = connectionCopy;
     v47 = 2112;
-    v48 = v13;
+    v48 = clientCopy;
     v49 = 1024;
-    v50 = a9;
+    successCopy2 = success;
     v51 = 2112;
-    v52 = v14;
+    v52 = valueCopy;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Could not find client to send configStreamPropertyResponse for endpointUUID %@, connectionUUID %@, clientUUID %@, success %d, value %@", buf, 0x30u);
   }
 
@@ -3447,11 +3447,11 @@ void __112__ACCConnectionInfoServer_configStreamPropertyResponse_forCategory_for
   }
 }
 
-- (void)handleInterceptData:(id)a3 forEndpoint:(id)a4 connection:(id)a5
+- (void)handleInterceptData:(id)data forEndpoint:(id)endpoint connection:(id)connection
 {
-  v35 = a3;
-  v8 = a4;
-  v36 = a5;
+  dataCopy = data;
+  endpointCopy = endpoint;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v9 = gNumLogObjects < 9;
@@ -3482,20 +3482,20 @@ void __112__ACCConnectionInfoServer_configStreamPropertyResponse_forCategory_for
   {
     v12 = [(NSMutableSet *)self->_clientConnections count];
     *buf = 138412802;
-    v43 = v8;
+    v43 = endpointCopy;
     v44 = 2112;
-    v45 = v36;
+    v45 = connectionCopy;
     v46 = 2048;
     v47 = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "sending handleInterceptData for endpointUUID %@, connectionUUID %@, to %lu clients", buf, 0x20u);
   }
 
-  v13 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v13 lock];
+  clientListLock = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock lock];
 
   v14 = [(NSMutableSet *)self->_clientConnections copy];
-  v15 = [(ACCConnectionInfoServer *)self clientListLock];
-  [v15 unlock];
+  clientListLock2 = [(ACCConnectionInfoServer *)self clientListLock];
+  [clientListLock2 unlock];
 
   v39 = 0u;
   v40 = 0u;
@@ -3519,21 +3519,21 @@ void __112__ACCConnectionInfoServer_configStreamPropertyResponse_forCategory_for
         }
 
         v22 = *(*(&v37 + 1) + 8 * i);
-        v23 = [v22 interceptEnabled];
-        v24 = [v23 containsObject:v8];
+        interceptEnabled = [v22 interceptEnabled];
+        v24 = [interceptEnabled containsObject:endpointCopy];
 
-        v25 = [v22 clientUID];
-        v26 = v25;
-        if (v25 && (v24 & 1) != 0)
+        clientUID = [v22 clientUID];
+        v26 = clientUID;
+        if (clientUID && (v24 & 1) != 0)
         {
-          v27 = [v22 XPCConnection];
-          v28 = [v27 hasEntitlement:@"com.apple.accessory.testing"];
+          xPCConnection = [v22 XPCConnection];
+          v28 = [xPCConnection hasEntitlement:@"com.apple.accessory.testing"];
 
           if (v28)
           {
-            v29 = [v22 XPCConnection];
-            v30 = [v29 remoteObjectProxyWithErrorHandler:&__block_literal_global_227];
-            [v30 handleInterceptData:v35 forEndpoint:v8 connection:v36];
+            xPCConnection2 = [v22 XPCConnection];
+            v30 = [xPCConnection2 remoteObjectProxyWithErrorHandler:&__block_literal_global_227];
+            [v30 handleInterceptData:dataCopy forEndpoint:endpointCopy connection:connectionCopy];
 
             goto LABEL_29;
           }
@@ -3547,7 +3547,7 @@ void __112__ACCConnectionInfoServer_configStreamPropertyResponse_forCategory_for
         v32 = gNumLogObjects;
         if (gLogObjects && gNumLogObjects >= 9)
         {
-          v29 = *(gLogObjects + 64);
+          xPCConnection2 = *(gLogObjects + 64);
         }
 
         else
@@ -3562,13 +3562,13 @@ void __112__ACCConnectionInfoServer_configStreamPropertyResponse_forCategory_for
           }
 
           v33 = &_os_log_default;
-          v29 = &_os_log_default;
+          xPCConnection2 = &_os_log_default;
         }
 
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(xPCConnection2, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
+          _os_log_impl(&_mh_execute_header, xPCConnection2, OS_LOG_TYPE_INFO, "skip processing unregistered client", buf, 2u);
         }
 
 LABEL_29:
@@ -3622,7 +3622,7 @@ void __70__ACCConnectionInfoServer_handleInterceptData_forEndpoint_connection___
   block[1] = 3221225472;
   block[2] = __39__ACCConnectionInfoServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_0 != -1)
   {
     dispatch_once(&sharedServer_once_0, block);

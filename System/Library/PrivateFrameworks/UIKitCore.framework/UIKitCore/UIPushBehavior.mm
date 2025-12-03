@@ -1,5 +1,5 @@
 @interface UIPushBehavior
-- (CGPoint)targetPointForItem:(id)a3;
+- (CGPoint)targetPointForItem:(id)item;
 - (CGVector)pushDirection;
 - (NSArray)items;
 - (UIPushBehavior)initWithItems:(NSArray *)items mode:(UIPushBehaviorMode)mode;
@@ -13,10 +13,10 @@
 - (void)setAngle:(CGFloat)angle;
 - (void)setAngle:(CGFloat)angle magnitude:(CGFloat)magnitude;
 - (void)setMagnitude:(CGFloat)magnitude;
-- (void)setTargetPoint:(CGPoint)a3 forItem:(id)a4;
-- (void)setXComponent:(double)a3;
-- (void)setXComponent:(double)a3 yComponent:(double)a4;
-- (void)setYComponent:(double)a3;
+- (void)setTargetPoint:(CGPoint)point forItem:(id)item;
+- (void)setXComponent:(double)component;
+- (void)setXComponent:(double)component yComponent:(double)yComponent;
+- (void)setYComponent:(double)component;
 @end
 
 @implementation UIPushBehavior
@@ -44,8 +44,8 @@
 - (NSArray)items
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v2 arrayWithArray:v3];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [v2 arrayWithArray:_items];
 
   return v4;
 }
@@ -55,21 +55,21 @@
   if (self->_active != active)
   {
     self->_active = active;
-    v4 = [(UIDynamicBehavior *)self _context];
-    [v4 _tickle];
+    _context = [(UIDynamicBehavior *)self _context];
+    [_context _tickle];
   }
 }
 
 - (void)addItem:(id)item
 {
   v8 = item;
-  v4 = [(UIDynamicBehavior *)self _items];
-  v5 = [v4 containsObject:v8];
+  _items = [(UIDynamicBehavior *)self _items];
+  v5 = [_items containsObject:v8];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(UIDynamicBehavior *)self _context];
-    v7 = [v6 _registerBodyForItem:v8];
+    _context = [(UIDynamicBehavior *)self _context];
+    v7 = [_context _registerBodyForItem:v8];
 
     [(UIDynamicBehavior *)self _addItem:v8];
   }
@@ -78,13 +78,13 @@
 - (void)removeItem:(id)item
 {
   v9 = item;
-  v4 = [(UIDynamicBehavior *)self _items];
-  v5 = [v4 containsObject:v9];
+  _items = [(UIDynamicBehavior *)self _items];
+  v5 = [_items containsObject:v9];
 
   if (v5)
   {
-    v6 = [(UIDynamicBehavior *)self _context];
-    [v6 _unregisterBodyForItem:v9 action:0];
+    _context = [(UIDynamicBehavior *)self _context];
+    [_context _unregisterBodyForItem:v9 action:0];
 
     targetPoints = self->_targetPoints;
     v8 = [MEMORY[0x1E696B098] valueWithPointer:v9];
@@ -94,10 +94,10 @@
   }
 }
 
-- (CGPoint)targetPointForItem:(id)a3
+- (CGPoint)targetPointForItem:(id)item
 {
   targetPoints = self->_targetPoints;
-  v4 = [MEMORY[0x1E696B098] valueWithPointer:a3];
+  v4 = [MEMORY[0x1E696B098] valueWithPointer:item];
   v5 = [(NSMutableDictionary *)targetPoints objectForKey:v4];
 
   if (v5)
@@ -120,21 +120,21 @@
   return result;
 }
 
-- (void)setTargetPoint:(CGPoint)a3 forItem:(id)a4
+- (void)setTargetPoint:(CGPoint)point forItem:(id)item
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  y = point.y;
+  x = point.x;
+  itemCopy = item;
+  v8 = itemCopy;
+  if (itemCopy)
   {
     v9 = *(MEMORY[0x1E695EFF8] + 8);
     targetPoints = self->_targetPoints;
     v11 = *MEMORY[0x1E695EFF8] == x && v9 == y;
-    v17 = v7;
+    v17 = itemCopy;
     if (v11)
     {
-      v16 = [MEMORY[0x1E696B098] valueWithPointer:{v7, *MEMORY[0x1E695EFF8], v9}];
+      v16 = [MEMORY[0x1E696B098] valueWithPointer:{itemCopy, *MEMORY[0x1E695EFF8], v9}];
       [(NSMutableDictionary *)targetPoints removeObjectForKey:v16];
 
       if ([(NSMutableDictionary *)self->_targetPoints count])
@@ -178,8 +178,8 @@ LABEL_13:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [_items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -191,19 +191,19 @@ LABEL_13:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_items);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(UIDynamicBehavior *)self _context];
-        v10 = [v9 _registerBodyForItem:v8];
+        _context = [(UIDynamicBehavior *)self _context];
+        v10 = [_context _registerBodyForItem:v8];
 
         [v10 setUsesPreciseCollisionDetection:1];
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [_items countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -217,8 +217,8 @@ LABEL_13:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [_items countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -230,18 +230,18 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_items);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(UIDynamicBehavior *)self _context];
-        [v9 _unregisterBodyForItem:v8 action:0];
+        _context = [(UIDynamicBehavior *)self _context];
+        [_context _unregisterBodyForItem:v8 action:0];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [_items countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -265,14 +265,14 @@ LABEL_13:
   }
 }
 
-- (void)setXComponent:(double)a3 yComponent:(double)a4
+- (void)setXComponent:(double)component yComponent:(double)yComponent
 {
-  if (self->_forceVector.dx != a3 || self->_forceVector.dy != a4)
+  if (self->_forceVector.dx != component || self->_forceVector.dy != yComponent)
   {
-    self->_forceVector.dx = a3;
-    self->_forceVector.dy = a4;
-    self->_angle = atan2(a4, a3);
-    self->_magnitude = sqrt(a3 * a3 + a4 * a4);
+    self->_forceVector.dx = component;
+    self->_forceVector.dy = yComponent;
+    self->_angle = atan2(yComponent, component);
+    self->_magnitude = sqrt(component * component + yComponent * yComponent);
 
     [(UIDynamicBehavior *)self _changedParameterForBody:0];
   }
@@ -287,14 +287,14 @@ LABEL_13:
   return result;
 }
 
-- (void)setXComponent:(double)a3
+- (void)setXComponent:(double)component
 {
   [(UIPushBehavior *)self yComponent];
 
-  [(UIPushBehavior *)self setXComponent:a3 yComponent:v5];
+  [(UIPushBehavior *)self setXComponent:component yComponent:v5];
 }
 
-- (void)setYComponent:(double)a3
+- (void)setYComponent:(double)component
 {
   [(UIPushBehavior *)self xComponent];
 
@@ -341,8 +341,8 @@ LABEL_13:
           }
 
           v8 = *(*(&v29 + 1) + 8 * i);
-          v9 = [(UIDynamicBehavior *)self _context];
-          v10 = [v9 _bodyForItem:v8];
+          _context = [(UIDynamicBehavior *)self _context];
+          v10 = [_context _bodyForItem:v8];
 
           if (targetPoints)
           {
@@ -433,8 +433,8 @@ LABEL_13:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(UIDynamicBehavior *)self _items];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    _items = [(UIDynamicBehavior *)self _items];
+    v7 = [_items countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v7)
     {
       v8 = v7;
@@ -442,7 +442,7 @@ LABEL_13:
       v10 = *v20;
       do
       {
-        v11 = v6;
+        v11 = _items;
         for (i = 0; i != v8; ++i)
         {
           if (*v20 != v10)
@@ -463,7 +463,7 @@ LABEL_13:
           }
         }
 
-        v6 = v11;
+        _items = v11;
         v8 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
@@ -474,8 +474,8 @@ LABEL_13:
 
   else
   {
-    v6 = [(UIDynamicBehavior *)self _itemsDescription];
-    [v5 appendString:v6];
+    _items = [(UIDynamicBehavior *)self _itemsDescription];
+    [v5 appendString:_items];
   }
 
   return v5;

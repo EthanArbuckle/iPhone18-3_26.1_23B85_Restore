@@ -1,48 +1,48 @@
 @interface EKRecurrenceChooserController
-+ (int)dayFromNumber:(int64_t)a3;
-- (EKRecurrenceChooserController)initWithDate:(id)a3;
++ (int)dayFromNumber:(int64_t)number;
+- (EKRecurrenceChooserController)initWithDate:(id)date;
 - (EKRecurrenceChooserControllerDelegate)delegate;
-- (id)cellForRow:(int64_t)a3;
-- (id)startDateComponents:(unint64_t)a3;
+- (id)cellForRow:(int64_t)row;
+- (id)startDateComponents:(unint64_t)components;
 - (int64_t)frequency;
 - (void)notifyDelegate;
 @end
 
 @implementation EKRecurrenceChooserController
 
-- (EKRecurrenceChooserController)initWithDate:(id)a3
+- (EKRecurrenceChooserController)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [(EKRecurrenceChooserController *)self init];
   v6 = v5;
   if (v5)
   {
-    [(EKRecurrenceChooserController *)v5 setDate:v4];
+    [(EKRecurrenceChooserController *)v5 setDate:dateCopy];
   }
 
   return v6;
 }
 
-+ (int)dayFromNumber:(int64_t)a3
++ (int)dayFromNumber:(int64_t)number
 {
-  if ((a3 - 1) > 6)
+  if ((number - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return dword_1D36008B0[a3 - 1];
+    return dword_1D36008B0[number - 1];
   }
 }
 
-- (id)startDateComponents:(unint64_t)a3
+- (id)startDateComponents:(unint64_t)components
 {
-  v4 = [(EKRecurrenceChooserController *)self date];
-  if (v4)
+  date = [(EKRecurrenceChooserController *)self date];
+  if (date)
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [v5 components:a3 fromDate:v4];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v6 = [currentCalendar components:components fromDate:date];
   }
 
   else
@@ -55,8 +55,8 @@
 
 - (void)notifyDelegate
 {
-  v3 = [(EKRecurrenceChooserController *)self delegate];
-  [v3 recurrenceChooserUpdated:self];
+  delegate = [(EKRecurrenceChooserController *)self delegate];
+  [delegate recurrenceChooserUpdated:self];
 }
 
 - (EKRecurrenceChooserControllerDelegate)delegate
@@ -73,7 +73,7 @@
   return -1;
 }
 
-- (id)cellForRow:(int64_t)a3
+- (id)cellForRow:(int64_t)row
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

@@ -1,7 +1,7 @@
 @interface CLBRingerManager
 - (CLBRingerManager)init;
 - (void)_updateAVSystemController;
-- (void)setIsMuted:(BOOL)a3;
+- (void)setIsMuted:(BOOL)muted;
 @end
 
 @implementation CLBRingerManager
@@ -14,9 +14,9 @@
   if (v2)
   {
     v3 = +[CLFSettings sharedInstance];
-    v4 = [v3 silentModeToggleEnabled];
+    silentModeToggleEnabled = [v3 silentModeToggleEnabled];
 
-    if (v4)
+    if (silentModeToggleEnabled)
     {
       if (AXDeviceIsRingerSwitchAvailable())
       {
@@ -94,13 +94,13 @@ LABEL_19:
   return v2;
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v5 = +[CLFSettings sharedInstance];
-  v6 = [v5 silentModeToggleEnabled];
+  silentModeToggleEnabled = [v5 silentModeToggleEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((silentModeToggleEnabled & 1) == 0)
   {
     v7 = +[CLFLog commonLog];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -109,9 +109,9 @@ LABEL_19:
     }
   }
 
-  if (self->_isMuted != v3)
+  if (self->_isMuted != mutedCopy)
   {
-    self->_isMuted = v3;
+    self->_isMuted = mutedCopy;
     [(CLBRingerManager *)self _updateAVSystemController];
   }
 }

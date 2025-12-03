@@ -1,26 +1,26 @@
 @interface HMIFaceDetectorVision
-+ (id)detectFacesInImageData:(id)a3 error:(id *)a4;
-+ (id)detectFacesInPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
++ (id)detectFacesInImageData:(id)data error:(id *)error;
++ (id)detectFacesInPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 + (void)releaseCachedResources;
 @end
 
 @implementation HMIFaceDetectorVision
 
-+ (id)detectFacesInPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
++ (id)detectFacesInPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CE2C88]);
   v7 = +[HMIPreference sharedInstance];
-  v8 = [v7 shouldUseCPUOnlyForVisionFaceDetection];
+  shouldUseCPUOnlyForVisionFaceDetection = [v7 shouldUseCPUOnlyForVisionFaceDetection];
 
-  if (v8)
+  if (shouldUseCPUOnlyForVisionFaceDetection)
   {
     [v6 setUsesCPUOnly:1];
   }
 
   [v6 setRevision:{+[HMIFaceDetectorVision defaultRevision](HMIFaceDetectorVision, "defaultRevision")}];
   v9 = objc_alloc(MEMORY[0x277CE2D50]);
-  v10 = [v9 initWithCVPixelBuffer:a3 options:MEMORY[0x277CBEC10]];
+  v10 = [v9 initWithCVPixelBuffer:buffer options:MEMORY[0x277CBEC10]];
   v18[0] = v6;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v17 = 0;
@@ -29,34 +29,34 @@
 
   if (v12)
   {
-    v14 = [v6 results];
+    results = [v6 results];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v15 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     HMIErrorLogC(v13);
-    v14 = 0;
+    results = 0;
   }
 
-  return v14;
+  return results;
 }
 
-+ (id)detectFacesInImageData:(id)a3 error:(id *)a4
++ (id)detectFacesInImageData:(id)data error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CE2C88];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_alloc_init(v5);
   v8 = +[HMIPreference sharedInstance];
-  v9 = [v8 shouldUseCPUOnlyForVisionFaceDetection];
+  shouldUseCPUOnlyForVisionFaceDetection = [v8 shouldUseCPUOnlyForVisionFaceDetection];
 
-  if (v9)
+  if (shouldUseCPUOnlyForVisionFaceDetection)
   {
     [v7 setUsesCPUOnly:1];
   }
@@ -64,40 +64,40 @@
   [v7 setRevision:{+[HMIFaceDetectorVision defaultRevision](HMIFaceDetectorVision, "defaultRevision")}];
   v10 = objc_alloc(MEMORY[0x277CE2D50]);
   v11 = +[HMIVisionSession sharedInstance];
-  v12 = [v11 vnSession];
-  v13 = [v10 initWithData:v6 options:MEMORY[0x277CBEC10] session:v12];
+  vnSession = [v11 vnSession];
+  v13 = [v10 initWithData:dataCopy options:MEMORY[0x277CBEC10] session:vnSession];
 
   v20[0] = v7;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v19 = 0;
-  LOBYTE(v12) = [v13 performRequests:v14 error:&v19];
+  LOBYTE(vnSession) = [v13 performRequests:v14 error:&v19];
   v15 = v19;
 
-  if (v12)
+  if (vnSession)
   {
-    v16 = [v7 results];
+    results = [v7 results];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v17 = v15;
-      *a4 = v15;
+      *error = v15;
     }
 
     HMIErrorLogC(v15);
-    v16 = 0;
+    results = 0;
   }
 
-  return v16;
+  return results;
 }
 
 + (void)releaseCachedResources
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = a1;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {

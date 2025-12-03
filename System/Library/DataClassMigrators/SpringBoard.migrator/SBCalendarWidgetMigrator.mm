@@ -1,8 +1,8 @@
 @interface SBCalendarWidgetMigrator
 - (SBCalendarWidgetMigrator)init;
-- (SBCalendarWidgetMigrator)initWithIconModelStore:(id)a3;
-- (id)_maybeMigratedListFromList:(id)a3;
-- (id)_performMigration:(id)a3;
+- (SBCalendarWidgetMigrator)initWithIconModelStore:(id)store;
+- (id)_maybeMigratedListFromList:(id)list;
+- (id)_performMigration:(id)migration;
 - (void)migrateIfNecessary;
 @end
 
@@ -10,11 +10,11 @@
 
 - (SBCalendarWidgetMigrator)init
 {
-  v3 = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
-  v4 = [NSURL fileURLWithPath:v3];
+  stringByExpandingTildeInPath = [@"~/Library/SpringBoard/IconState.plist" stringByExpandingTildeInPath];
+  v4 = [NSURL fileURLWithPath:stringByExpandingTildeInPath];
 
-  v5 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
-  v6 = [NSURL fileURLWithPath:v5];
+  stringByExpandingTildeInPath2 = [@"~/Library/SpringBoard/DesiredIconState.plist" stringByExpandingTildeInPath];
+  v6 = [NSURL fileURLWithPath:stringByExpandingTildeInPath2];
 
   v7 = [[SBIconModelPropertyListFileStore alloc] initWithIconStateURL:v4 desiredIconStateURL:v6];
   v8 = [(SBCalendarWidgetMigrator *)self initWithIconModelStore:v7];
@@ -22,16 +22,16 @@
   return v8;
 }
 
-- (SBCalendarWidgetMigrator)initWithIconModelStore:(id)a3
+- (SBCalendarWidgetMigrator)initWithIconModelStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = SBCalendarWidgetMigrator;
   v6 = [(SBCalendarWidgetMigrator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
@@ -164,19 +164,19 @@ LABEL_8:
 LABEL_13:
 }
 
-- (id)_performMigration:(id)a3
+- (id)_performMigration:(id)migration
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  migrationCopy = migration;
+  v5 = [migrationCopy mutableCopy];
   v6 = kSBIconStateIconLists;
-  v7 = [v4 objectForKeyedSubscript:kSBIconStateIconLists];
+  v7 = [migrationCopy objectForKeyedSubscript:kSBIconStateIconLists];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v28 = v6;
     v29 = v7;
     v30 = v5;
-    v31 = v4;
+    v31 = migrationCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -237,7 +237,7 @@ LABEL_13:
 
     v5 = v30;
     [v30 setObject:v11 forKeyedSubscript:v28];
-    v4 = v31;
+    migrationCopy = v31;
     v7 = v29;
   }
 
@@ -248,7 +248,7 @@ LABEL_13:
   }
 
   v20 = kSBIconStateTodayPageList;
-  v21 = [v4 objectForKeyedSubscript:{kSBIconStateTodayPageList, v28}];
+  v21 = [migrationCopy objectForKeyedSubscript:{kSBIconStateTodayPageList, v28}];
   if (v21)
   {
     v22 = [(SBCalendarWidgetMigrator *)self _maybeMigratedListFromList:v21];
@@ -282,9 +282,9 @@ LABEL_13:
   return v25;
 }
 
-- (id)_maybeMigratedListFromList:(id)a3
+- (id)_maybeMigratedListFromList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -297,7 +297,7 @@ LABEL_13:
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v5 = v3;
+  v5 = listCopy;
   v6 = [v5 countByEnumeratingWithState:&v84 objects:v89 count:16];
   if (!v6)
   {
@@ -307,7 +307,7 @@ LABEL_13:
   }
 
   v7 = v6;
-  v63 = v3;
+  v63 = listCopy;
   v73 = 0;
   v8 = *v85;
   v77 = kSBIconStateCustomIconElementTypeWidget;
@@ -643,7 +643,7 @@ LABEL_68:
     v60 = 0;
   }
 
-  v3 = v63;
+  listCopy = v63;
 LABEL_76:
   v61 = v60;
 

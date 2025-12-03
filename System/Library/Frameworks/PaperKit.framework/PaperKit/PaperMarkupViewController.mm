@@ -1,24 +1,24 @@
 @interface PaperMarkupViewController
 - (NSUndoManager)undoManager;
-- (_TtC8PaperKit25PaperMarkupViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)insertNewLineWithLineStartMarker:(BOOL)a3 lineEndMarker:(BOOL)a4;
-- (void)insertNewShape:(int64_t)a3;
+- (_TtC8PaperKit25PaperMarkupViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)insertNewLineWithLineStartMarker:(BOOL)marker lineEndMarker:(BOOL)endMarker;
+- (void)insertNewShape:(int64_t)shape;
 - (void)insertNewTextbox;
-- (void)setEnableUndo:(BOOL)a3;
-- (void)setScreenPotentialHeadroom:(double)a3;
-- (void)setZoomRangeWithMin:(double)a3 max:(double)a4;
-- (void)toolPickerIsRulerActiveDidChange:(id)a3;
-- (void)toolPickerSelectedToolItemDidChange:(id)a3;
+- (void)setEnableUndo:(BOOL)undo;
+- (void)setScreenPotentialHeadroom:(double)headroom;
+- (void)setZoomRangeWithMin:(double)min max:(double)max;
+- (void)toolPickerIsRulerActiveDidChange:(id)change;
+- (void)toolPickerSelectedToolItemDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)xpc_receiveFileBookmark:(id)a3;
-- (void)xpc_receiveMulticastData:(id)a3;
-- (void)xpc_setContentVisibleFrame:(CGRect)a3 animated:(BOOL)a4;
-- (void)xpc_startMulticastWithSharedContextSecurityScopedUrl:(id)a3;
+- (void)xpc_receiveFileBookmark:(id)bookmark;
+- (void)xpc_receiveMulticastData:(id)data;
+- (void)xpc_setContentVisibleFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)xpc_startMulticastWithSharedContextSecurityScopedUrl:(id)url;
 @end
 
 @implementation PaperMarkupViewController
 
-- (void)setScreenPotentialHeadroom:(double)a3
+- (void)setScreenPotentialHeadroom:(double)headroom
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -28,20 +28,20 @@
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v10 = self;
+  selfCopy = self;
 
   v11 = static MainActor.shared.getter();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];
   *(v12 + 16) = v11;
   *(v12 + 24) = v13;
-  *(v12 + 32) = a3;
+  *(v12 + 32) = headroom;
   *(v12 + 40) = v9;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &async function pointer to partial apply for closure #1 in PaperMarkupViewController.setScreenPotentialHeadroom(_:), v12);
 }
 
-- (void)setEnableUndo:(BOOL)a3
+- (void)setEnableUndo:(BOOL)undo
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -51,26 +51,26 @@
   v9 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v10 = self;
+  selfCopy = self;
 
   v11 = static MainActor.shared.getter();
   v12 = swift_allocObject();
   v13 = MEMORY[0x1E69E85E0];
   *(v12 + 16) = v11;
   *(v12 + 24) = v13;
-  *(v12 + 32) = a3;
+  *(v12 + 32) = undo;
   *(v12 + 40) = v9;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &async function pointer to partial apply for closure #1 in PaperMarkupViewController.setEnableUndo(_:), v12);
 }
 
-- (void)insertNewShape:(int64_t)a3
+- (void)insertNewShape:(int64_t)shape
 {
-  v4 = self;
-  PaperMarkupViewController.insertNewShape(_:)(a3);
+  selfCopy = self;
+  PaperMarkupViewController.insertNewShape(_:)(shape);
 }
 
-- (void)insertNewLineWithLineStartMarker:(BOOL)a3 lineEndMarker:(BOOL)a4
+- (void)insertNewLineWithLineStartMarker:(BOOL)marker lineEndMarker:(BOOL)endMarker
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -80,7 +80,7 @@
   v11 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v12 = self;
+  selfCopy = self;
 
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
@@ -88,8 +88,8 @@
   *(v14 + 16) = v13;
   *(v14 + 24) = v15;
   *(v14 + 32) = v11;
-  *(v14 + 40) = a3;
-  *(v14 + 41) = a4;
+  *(v14 + 40) = marker;
+  *(v14 + 41) = endMarker;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCytSg_Tt2g5(0, 0, v9, &async function pointer to partial apply for closure #1 in PaperMarkupViewController.insertNewLine(lineStartMarker:lineEndMarker:), v14);
 }
@@ -104,7 +104,7 @@
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v8 = self;
+  selfCopy = self;
 
   v9 = static MainActor.shared.getter();
   v10 = swift_allocObject();
@@ -116,12 +116,12 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCytSg_Tt2g5(0, 0, v5, &async function pointer to partial apply for closure #1 in PaperMarkupViewController.insertNewTextbox(), v10);
 }
 
-- (void)xpc_setContentVisibleFrame:(CGRect)a3 animated:(BOOL)a4
+- (void)xpc_setContentVisibleFrame:(CGRect)frame animated:(BOOL)animated
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v19 - v11;
@@ -130,7 +130,7 @@
   v14 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v15 = self;
+  selfCopy = self;
 
   v16 = static MainActor.shared.getter();
   v17 = swift_allocObject();
@@ -142,12 +142,12 @@
   *(v17 + 48) = y;
   *(v17 + 56) = width;
   *(v17 + 64) = height;
-  *(v17 + 72) = a4;
+  *(v17 + 72) = animated;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCytSg_Tt2g5(0, 0, v12, &async function pointer to partial apply for closure #1 in PaperMarkupViewController.xpc_setContentVisibleFrame(_:animated:), v17);
 }
 
-- (void)setZoomRangeWithMin:(double)a3 max:(double)a4
+- (void)setZoomRangeWithMin:(double)min max:(double)max
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -157,7 +157,7 @@
   v11 = swift_allocObject();
   swift_unknownObjectWeakInit();
   type metadata accessor for MainActor();
-  v12 = self;
+  selfCopy = self;
 
   v13 = static MainActor.shared.getter();
   v14 = swift_allocObject();
@@ -165,19 +165,19 @@
   *(v14 + 16) = v13;
   *(v14 + 24) = v15;
   *(v14 + 32) = v11;
-  *(v14 + 40) = a3;
-  *(v14 + 48) = a4;
+  *(v14 + 40) = min;
+  *(v14 + 48) = max;
 
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCytSg_Tt2g5(0, 0, v9, &async function pointer to partial apply for closure #1 in PaperMarkupViewController.setZoomRange(min:max:), v14);
 }
 
-- (void)xpc_receiveMulticastData:(id)a3
+- (void)xpc_receiveMulticastData:(id)data
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v18 - v6;
-  v8 = a3;
-  v9 = self;
+  dataCopy = data;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
@@ -202,10 +202,10 @@
   outlined consume of Data._Representation(v10, v12);
 }
 
-- (void)xpc_receiveFileBookmark:(id)a3
+- (void)xpc_receiveFileBookmark:(id)bookmark
 {
-  v4 = a3;
-  v8 = self;
+  bookmarkCopy = bookmark;
+  selfCopy = self;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
 
@@ -213,71 +213,71 @@
   outlined consume of Data._Representation(v5, v7);
 }
 
-- (void)xpc_startMulticastWithSharedContextSecurityScopedUrl:(id)a3
+- (void)xpc_startMulticastWithSharedContextSecurityScopedUrl:(id)url
 {
-  v3 = a3;
-  if (a3)
+  urlCopy = url;
+  if (url)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    selfCopy = self;
+    v5 = urlCopy;
+    urlCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  PaperMarkupViewController.xpc_startMulticast(sharedContextSecurityScopedUrl:)(v3, v7);
-  outlined consume of Data?(v3, v7);
+  PaperMarkupViewController.xpc_startMulticast(sharedContextSecurityScopedUrl:)(urlCopy, v7);
+  outlined consume of Data?(urlCopy, v7);
 }
 
 - (NSUndoManager)undoManager
 {
   swift_getKeyPath();
-  v7 = self;
+  selfCopy = self;
   _s8PaperKit0A20MarkupViewControllerCAC11Observation10ObservableAAWlTm_0(&lazy protocol witness table cache variable for type PaperMarkupViewController and conformance PaperMarkupViewController, 255, type metadata accessor for PaperMarkupViewController);
-  v3 = self;
+  selfCopy2 = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
-  if (*(&v3->super.super.super.isa + OBJC_IVAR____TtC8PaperKit25PaperMarkupViewController__undoIsEnabled) == 1)
+  if (*(&selfCopy2->super.super.super.isa + OBJC_IVAR____TtC8PaperKit25PaperMarkupViewController__undoIsEnabled) == 1)
   {
-    v6.receiver = v3;
+    v6.receiver = selfCopy2;
     v6.super_class = type metadata accessor for PaperMarkupViewController();
-    v4 = [(PaperMarkupViewController *)&v6 undoManager];
+    undoManager = [(PaperMarkupViewController *)&v6 undoManager];
   }
 
   else
   {
-    v4 = 0;
+    undoManager = 0;
   }
 
-  return v4;
+  return undoManager;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PaperMarkupViewController.viewDidLoad()();
 }
 
-- (void)toolPickerSelectedToolItemDidChange:(id)a3
+- (void)toolPickerSelectedToolItemDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  PaperMarkupViewController.toolPickerSelectedToolItemDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  PaperMarkupViewController.toolPickerSelectedToolItemDidChange(_:)(changeCopy);
 }
 
-- (void)toolPickerIsRulerActiveDidChange:(id)a3
+- (void)toolPickerIsRulerActiveDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  PaperMarkupViewController.isRulerActive.setter([v4 isRulerActive]);
+  changeCopy = change;
+  selfCopy = self;
+  PaperMarkupViewController.isRulerActive.setter([changeCopy isRulerActive]);
 }
 
-- (_TtC8PaperKit25PaperMarkupViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit25PaperMarkupViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

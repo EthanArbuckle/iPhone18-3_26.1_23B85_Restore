@@ -2,10 +2,10 @@
 - (BOOL)startMSDeviceNotifications;
 - (MSRemoteCameraDeviceManager)init;
 - (void)dealloc;
-- (void)processAddedURLs:(id)a3;
-- (void)processMountURLs:(id)a3;
-- (void)processRemovedURLs:(id)a3;
-- (void)updatedWithAddedMountPoints:(id)a3 andRemovedMountPoints:(id)a4;
+- (void)processAddedURLs:(id)ls;
+- (void)processMountURLs:(id)ls;
+- (void)processRemovedURLs:(id)ls;
+- (void)updatedWithAddedMountPoints:(id)points andRemovedMountPoints:(id)mountPoints;
 @end
 
 @implementation MSRemoteCameraDeviceManager
@@ -71,7 +71,7 @@
     v9 = v5;
     v10 = v8;
     *buf = 136446466;
-    v16 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -217,19 +217,19 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
   }
 }
 
-- (void)processMountURLs:(id)a3
+- (void)processMountURLs:(id)ls
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSRemoteCameraDeviceManager *)v5 mountURLs];
+  lsCopy = ls;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  mountURLs = [(MSRemoteCameraDeviceManager *)selfCopy mountURLs];
   v7 = +[NSMutableArray array];
   v8 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = mountURLs;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v10)
   {
@@ -244,7 +244,7 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        if (([v4 containsObject:v13] & 1) == 0)
+        if (([lsCopy containsObject:v13] & 1) == 0)
         {
           [v7 addObject:v13];
         }
@@ -260,7 +260,7 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = v4;
+  v14 = lsCopy;
   v15 = [v14 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v15)
   {
@@ -287,20 +287,20 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
     while (v15);
   }
 
-  [(MSRemoteCameraDeviceManager *)v5 processRemovedURLs:v7];
-  [(MSRemoteCameraDeviceManager *)v5 processAddedURLs:v8];
-  [(MSRemoteCameraDeviceManager *)v5 setMountURLs:v14];
+  [(MSRemoteCameraDeviceManager *)selfCopy processRemovedURLs:v7];
+  [(MSRemoteCameraDeviceManager *)selfCopy processAddedURLs:v8];
+  [(MSRemoteCameraDeviceManager *)selfCopy setMountURLs:v14];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)processRemovedURLs:(id)a3
+- (void)processRemovedURLs:(id)ls
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = ls;
   v4 = [obj countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v4)
   {
@@ -316,12 +316,12 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * v7) path];
-        v9 = [NSString stringWithFormat:@"/private%@/", v8];
+        path = [*(*(&v19 + 1) + 8 * v7) path];
+        v9 = [NSString stringWithFormat:@"/private%@/", path];
 
-        v10 = [(MSRemoteCameraDeviceManager *)self domainsByURLEnabled];
+        domainsByURLEnabled = [(MSRemoteCameraDeviceManager *)self domainsByURLEnabled];
         v11 = [NSURL fileURLWithPath:v9];
-        v12 = [v10 objectForKeyedSubscript:v11];
+        v12 = [domainsByURLEnabled objectForKeyedSubscript:v11];
 
         v13 = [v12 objectForKeyedSubscript:@"ICProviderEnabled"];
         LODWORD(v11) = [v13 BOOLValue];
@@ -334,9 +334,9 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
           [(MSRemoteCameraDeviceManager *)self updatedWithAddedMountPoints:0 andRemovedMountPoints:v15];
         }
 
-        v16 = [(MSRemoteCameraDeviceManager *)self domainsByURLEnabled];
+        domainsByURLEnabled2 = [(MSRemoteCameraDeviceManager *)self domainsByURLEnabled];
         v17 = [NSURL fileURLWithPath:v9];
-        [v16 removeObjectForKey:v17];
+        [domainsByURLEnabled2 removeObjectForKey:v17];
 
         v7 = v7 + 1;
       }
@@ -349,20 +349,20 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
   }
 }
 
-- (void)processAddedURLs:(id)a3
+- (void)processAddedURLs:(id)ls
 {
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  obj = a3;
+  obj = ls;
   v4 = [obj countByEnumeratingWithState:&v92 objects:v98 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v93;
     v7 = &__ICLogTypeEnabled_ptr;
-    v75 = self;
+    selfCopy = self;
     v74 = *v93;
     do
     {
@@ -384,10 +384,10 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
         if (v11)
         {
           v80 = v12;
-          v83 = [v11 identifier];
-          v82 = [v11 providerDisplayName];
-          v14 = [v9 path];
-          v15 = [NSString stringWithFormat:@"/private%@", v14];
+          identifier = [v11 identifier];
+          providerDisplayName = [v11 providerDisplayName];
+          path = [v9 path];
+          v15 = [NSString stringWithFormat:@"/private%@", path];
 
           v16 = IsSupportedMassStorageCameraVolume(v15, 0, self->_deviceMatchingInfo);
           __ICOSLogCreate();
@@ -412,9 +412,9 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
           {
             v22 = v17;
             v23 = v21;
-            v24 = [(__CFString *)v17 UTF8String];
+            uTF8String = [(__CFString *)v17 UTF8String];
             *buf = 136446466;
-            *&buf[4] = v24;
+            *&buf[4] = uTF8String;
             *&buf[12] = 2114;
             *&buf[14] = v20;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -432,7 +432,7 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
             handler[3] = &unk_100024698;
             v29 = v28;
             v88 = v29;
-            v89 = self;
+            selfCopy2 = self;
             v79 = v25;
             v90 = v79;
             dispatch_source_set_event_handler(v29, handler);
@@ -445,16 +445,16 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
             __src[0] = 0;
             __src[1] = 0;
             v84 = 0;
-            if (!v83)
+            if (!identifier)
             {
               goto LABEL_22;
             }
 
-            v30 = [(__CFString *)v83 smallestEncoding];
-            [(__CFString *)v83 length];
-            v31 = [(__CFString *)v83 length]- 16;
-            [(__CFString *)v83 length];
-            if (![(__CFString *)v83 getBytes:__src maxLength:16 usedLength:&v84 encoding:v30 options:1 range:v31 remainingRange:16, 0])
+            smallestEncoding = [(__CFString *)identifier smallestEncoding];
+            [(__CFString *)identifier length];
+            v31 = [(__CFString *)identifier length]- 16;
+            [(__CFString *)identifier length];
+            if (![(__CFString *)identifier getBytes:__src maxLength:16 usedLength:&v84 encoding:smallestEncoding options:1 range:v31 remainingRange:16, 0])
             {
               goto LABEL_22;
             }
@@ -509,8 +509,8 @@ void __57__MSRemoteCameraDeviceManager_startMSDeviceNotifications__block_invoke(
             {
 LABEL_22:
               v52 = +[NSUUID UUID];
-              v53 = [v52 UUIDString];
-              v51 = [v53 copy];
+              uUIDString = [v52 UUIDString];
+              v51 = [uUIDString copy];
             }
 
             v54 = +[NSMutableDictionary dictionary];
@@ -518,11 +518,11 @@ LABEL_22:
             v55 = [NSNumber numberWithBool:v81];
             [v54 setObject:v55 forKeyedSubscript:@"ICProviderEnabled"];
 
-            [v54 setObject:v82 forKeyedSubscript:@"ICDeviceName"];
+            [v54 setObject:providerDisplayName forKeyedSubscript:@"ICDeviceName"];
             [v54 setObject:v51 forKeyedSubscript:@"ICDeviceMSUUID"];
-            v56 = [(MSRemoteCameraDeviceManager *)self domainsByURLEnabled];
+            domainsByURLEnabled = [(MSRemoteCameraDeviceManager *)self domainsByURLEnabled];
             v57 = [NSURL fileURLWithPath:v79];
-            [v56 setObject:v54 forKeyedSubscript:v57];
+            [domainsByURLEnabled setObject:v54 forKeyedSubscript:v57];
 
             v58 = +[NSMutableDictionary dictionary];
             v59 = [NSURL fileURLWithPath:v79];
@@ -542,18 +542,18 @@ LABEL_22:
             {
               v64 = v60;
               v65 = v63;
-              v66 = [(__CFString *)v60 UTF8String];
+              uTF8String2 = [(__CFString *)v60 UTF8String];
               *buf = 136446466;
-              *&buf[4] = v66;
+              *&buf[4] = uTF8String2;
               *&buf[12] = 2114;
               *&buf[14] = v62;
               _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
             }
 
-            self = v75;
+            self = selfCopy;
             if (v81)
             {
-              [(MSRemoteCameraDeviceManager *)v75 updatedWithAddedMountPoints:v58 andRemovedMountPoints:0];
+              [(MSRemoteCameraDeviceManager *)selfCopy updatedWithAddedMountPoints:v58 andRemovedMountPoints:0];
             }
 
             dispatch_resume(v29);
@@ -564,8 +564,8 @@ LABEL_22:
           }
 
           v13 = v80;
-          v68 = v82;
-          v67 = v83;
+          v68 = providerDisplayName;
+          v67 = identifier;
         }
 
         else
@@ -584,9 +584,9 @@ LABEL_22:
           {
             v71 = v67;
             v72 = v70;
-            v73 = [(__CFString *)v67 UTF8String];
+            uTF8String3 = [(__CFString *)v67 UTF8String];
             *buf = 136446466;
-            *&buf[4] = v73;
+            *&buf[4] = uTF8String3;
             *&buf[12] = 2114;
             *&buf[14] = v68;
             _os_log_error_impl(&_mh_execute_header, v72, OS_LOG_TYPE_ERROR, "%{public}20s ! %{public}@", buf, 0x16u);
@@ -685,14 +685,14 @@ LABEL_14:
   }
 }
 
-- (void)updatedWithAddedMountPoints:(id)a3 andRemovedMountPoints:(id)a4
+- (void)updatedWithAddedMountPoints:(id)points andRemovedMountPoints:(id)mountPoints
 {
-  v38 = a3;
+  pointsCopy = points;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = a4;
+  obj = mountPoints;
   v5 = [obj countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v5)
   {
@@ -716,24 +716,24 @@ LABEL_14:
           v10 = [v11 stringByAppendingString:@".."];
         }
 
-        v12 = [v9 lastPathComponent];
-        v13 = [NSString stringWithFormat:@"Removed: %@", v12];
+        lastPathComponent = [v9 lastPathComponent];
+        v13 = [NSString stringWithFormat:@"Removed: %@", lastPathComponent];
 
         v14 = _gICOSLog;
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v10;
           v16 = v14;
-          v17 = [(__CFString *)v10 UTF8String];
+          uTF8String = [(__CFString *)v10 UTF8String];
           *buf = 136446466;
-          v50 = v17;
+          v50 = uTF8String;
           v51 = 2114;
           v52 = v13;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
         }
 
-        v18 = [v9 path];
-        [(MSRemoteCameraDeviceManager *)self notifyClientDeviceRemoved:v18];
+        path = [v9 path];
+        [(MSRemoteCameraDeviceManager *)self notifyClientDeviceRemoved:path];
       }
 
       v6 = [obj countByEnumeratingWithState:&v44 objects:v53 count:16];
@@ -746,8 +746,8 @@ LABEL_14:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v35 = [v38 allKeys];
-  v19 = [v35 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  allKeys = [pointsCopy allKeys];
+  v19 = [allKeys countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v19)
   {
     v20 = v19;
@@ -758,11 +758,11 @@ LABEL_14:
       {
         if (*v41 != v37)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allKeys);
         }
 
         v22 = *(*(&v40 + 1) + 8 * j);
-        v23 = [v38 objectForKeyedSubscript:v22];
+        v23 = [pointsCopy objectForKeyedSubscript:v22];
         v24 = [v23 objectForKeyedSubscript:@"ICDeviceName"];
         v25 = [v23 objectForKeyedSubscript:@"ICDeviceMSUUID"];
         __ICOSLogCreate();
@@ -773,27 +773,27 @@ LABEL_14:
           v26 = [v27 stringByAppendingString:@".."];
         }
 
-        v28 = [v22 lastPathComponent];
-        v29 = [NSString stringWithFormat:@"Added: %@:%@", v24, v28];
+        lastPathComponent2 = [v22 lastPathComponent];
+        v29 = [NSString stringWithFormat:@"Added: %@:%@", v24, lastPathComponent2];
 
         v30 = _gICOSLog;
         if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v26;
           v32 = v30;
-          v33 = [(__CFString *)v26 UTF8String];
+          uTF8String2 = [(__CFString *)v26 UTF8String];
           *buf = 136446466;
-          v50 = v33;
+          v50 = uTF8String2;
           v51 = 2114;
           v52 = v29;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
         }
 
-        v34 = [v22 path];
-        [(MSRemoteCameraDeviceManager *)self notifyClientDeviceAdded:v34 uuidString:v25 deviceName:v24];
+        path2 = [v22 path];
+        [(MSRemoteCameraDeviceManager *)self notifyClientDeviceAdded:path2 uuidString:v25 deviceName:v24];
       }
 
-      v20 = [v35 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v20 = [allKeys countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v20);

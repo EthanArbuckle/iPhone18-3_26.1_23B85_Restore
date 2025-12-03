@@ -1,6 +1,6 @@
 @interface VSAccountChannelsSaveOperation
 - (VSAccountChannelsSaveOperation)init;
-- (VSAccountChannelsSaveOperation)initWithUnsavedAccountChannels:(id)a3 accountChannelsCenter:(id)a4;
+- (VSAccountChannelsSaveOperation)initWithUnsavedAccountChannels:(id)channels accountChannelsCenter:(id)center;
 - (void)executionDidBegin;
 @end
 
@@ -16,11 +16,11 @@
   return 0;
 }
 
-- (VSAccountChannelsSaveOperation)initWithUnsavedAccountChannels:(id)a3 accountChannelsCenter:(id)a4
+- (VSAccountChannelsSaveOperation)initWithUnsavedAccountChannels:(id)channels accountChannelsCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  channelsCopy = channels;
+  centerCopy = center;
+  if (!channelsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The accountChannels parameter must not be nil."];
   }
@@ -31,8 +31,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_unsavedAccountChannels, a3);
-    objc_storeStrong(&v10->_accountChannelsCenter, a4);
+    objc_storeStrong(&v9->_unsavedAccountChannels, channels);
+    objc_storeStrong(&v10->_accountChannelsCenter, center);
   }
 
   return v10;
@@ -40,15 +40,15 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSAccountChannelsSaveOperation *)self unsavedAccountChannels];
+  unsavedAccountChannels = [(VSAccountChannelsSaveOperation *)self unsavedAccountChannels];
   objc_initWeak(&location, self);
-  v4 = [(VSAccountChannelsSaveOperation *)self accountChannelsCenter];
+  accountChannelsCenter = [(VSAccountChannelsSaveOperation *)self accountChannelsCenter];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__VSAccountChannelsSaveOperation_executionDidBegin__block_invoke;
   v5[3] = &unk_278B73358;
   objc_copyWeak(&v6, &location);
-  [v4 _saveAccountChannels:v3 withCompletionHandler:v5];
+  [accountChannelsCenter _saveAccountChannels:unsavedAccountChannels withCompletionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);

@@ -1,24 +1,24 @@
 @interface PKPeerPaymentMessagesRecipientPickerViewController
-- (PKPeerPaymentMessagesRecipientPickerViewController)initWithValidRecipients:(id)a3 invalidRecipients:(id)a4 amount:(id)a5 peerPaymentController:(id)a6 contentDelegate:(id)a7;
+- (PKPeerPaymentMessagesRecipientPickerViewController)initWithValidRecipients:(id)recipients invalidRecipients:(id)invalidRecipients amount:(id)amount peerPaymentController:(id)controller contentDelegate:(id)delegate;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKPeerPaymentMessagesRecipientPickerViewController
 
-- (PKPeerPaymentMessagesRecipientPickerViewController)initWithValidRecipients:(id)a3 invalidRecipients:(id)a4 amount:(id)a5 peerPaymentController:(id)a6 contentDelegate:(id)a7
+- (PKPeerPaymentMessagesRecipientPickerViewController)initWithValidRecipients:(id)recipients invalidRecipients:(id)invalidRecipients amount:(id)amount peerPaymentController:(id)controller contentDelegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  recipientsCopy = recipients;
+  invalidRecipientsCopy = invalidRecipients;
+  amountCopy = amount;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = PKPeerPaymentMessagesRecipientPickerViewController;
   v17 = [(PKPeerPaymentMessagesRecipientPickerViewController *)&v21 initWithNibName:0 bundle:0];
   if (v17)
   {
-    v18 = [[_PKPeerPaymentMessagesRecipientPickerViewController alloc] initWithValidRecipients:v12 invalidRecipients:v13 amount:v14 peerPaymentController:v15 contentDelegate:v16];
+    v18 = [[_PKPeerPaymentMessagesRecipientPickerViewController alloc] initWithValidRecipients:recipientsCopy invalidRecipients:invalidRecipientsCopy amount:amountCopy peerPaymentController:controllerCopy contentDelegate:delegateCopy];
     internalController = v17->_internalController;
     v17->_internalController = v18;
 
@@ -34,9 +34,9 @@
   v5.super_class = PKPeerPaymentMessagesRecipientPickerViewController;
   [(PKPeerPaymentMessagesRecipientPickerViewController *)&v5 loadView];
   [(_PKPeerPaymentMessagesRecipientPickerViewController *)self->_internalController didMoveToParentViewController:self];
-  v3 = [(_PKPeerPaymentMessagesRecipientPickerViewController *)self->_internalController view];
-  v4 = [(PKPeerPaymentMessagesRecipientPickerViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(_PKPeerPaymentMessagesRecipientPickerViewController *)self->_internalController view];
+  view2 = [(PKPeerPaymentMessagesRecipientPickerViewController *)self view];
+  [view2 addSubview:view];
 }
 
 - (void)viewWillLayoutSubviews
@@ -44,15 +44,15 @@
   v13.receiver = self;
   v13.super_class = PKPeerPaymentMessagesRecipientPickerViewController;
   [(PKPeerPaymentMessagesRecipientPickerViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(PKPeerPaymentMessagesRecipientPickerViewController *)self view];
-  [v3 bounds];
+  view = [(PKPeerPaymentMessagesRecipientPickerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_PKPeerPaymentMessagesRecipientPickerViewController *)self->_internalController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(_PKPeerPaymentMessagesRecipientPickerViewController *)self->_internalController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 @end

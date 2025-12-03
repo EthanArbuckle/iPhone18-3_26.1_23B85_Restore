@@ -1,26 +1,26 @@
 @interface PPNamedEntityReadOnlyClient
 + (id)sharedInstance;
-- (BOOL)namedEntityRecordsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)rankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
+- (BOOL)namedEntityRecordsWithQuery:(id)query error:(id *)error handleBatch:(id)batch;
+- (BOOL)rankedNamedEntitiesWithQuery:(id)query error:(id *)error handleBatch:(id)batch;
 - (PPNamedEntityReadOnlyClient)init;
-- (id)mapItemForPlaceName:(id)a3 error:(id *)a4;
+- (id)mapItemForPlaceName:(id)name error:(id *)error;
 - (void)_unblockPendingQueries;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPNamedEntityReadOnlyClient
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PPNamedEntityReadOnlyClient *)self _remoteObjectProxy];
-  [v8 registerFeedback:v7 completion:v6];
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  _remoteObjectProxy = [(PPNamedEntityReadOnlyClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (id)mapItemForPlaceName:(id)a3 error:(id *)a4
+- (id)mapItemForPlaceName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -45,11 +45,11 @@
   v10[3] = &unk_1E77F75A0;
   v10[4] = &v18;
   v10[5] = &v12;
-  [v7 mapItemForPlaceName:v6 completion:v10];
+  [v7 mapItemForPlaceName:nameCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[5];
@@ -74,10 +74,10 @@ void __57__PPNamedEntityReadOnlyClient_mapItemForPlaceName_error___block_invoke_
   *(v9 + 40) = v6;
 }
 
-- (BOOL)namedEntityRecordsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)namedEntityRecordsWithQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = objc_opt_class();
   queryManager = self->_queryManager;
   v19[0] = MEMORY[0x1E69E9820];
@@ -85,19 +85,19 @@ void __57__PPNamedEntityReadOnlyClient_mapItemForPlaceName_error___block_invoke_
   v19[2] = __77__PPNamedEntityReadOnlyClient_namedEntityRecordsWithQuery_error_handleBatch___block_invoke;
   v19[3] = &unk_1E77F7998;
   v19[4] = self;
-  v20 = v8;
+  v20 = queryCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__PPNamedEntityReadOnlyClient_namedEntityRecordsWithQuery_error_handleBatch___block_invoke_2;
   v15[3] = &unk_1E77F79C0;
-  v17 = v9;
+  v17 = batchCopy;
   v18 = v10;
   v16 = @"namedEntityRecordsWithQuery";
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a4) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"namedEntityRecordsWithQuery" error:a4 queryInitializer:v19 handleBatch:v15];
+  v12 = batchCopy;
+  v13 = queryCopy;
+  LOBYTE(error) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"namedEntityRecordsWithQuery" error:error queryInitializer:v19 handleBatch:v15];
 
-  return a4;
+  return error;
 }
 
 void __77__PPNamedEntityReadOnlyClient_namedEntityRecordsWithQuery_error_handleBatch___block_invoke(uint64_t a1, uint64_t a2)
@@ -115,10 +115,10 @@ void __77__PPNamedEntityReadOnlyClient_namedEntityRecordsWithQuery_error_handleB
   (*(a1[5] + 16))();
 }
 
-- (BOOL)rankedNamedEntitiesWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)rankedNamedEntitiesWithQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = objc_opt_class();
   queryManager = self->_queryManager;
   v19[0] = MEMORY[0x1E69E9820];
@@ -126,19 +126,19 @@ void __77__PPNamedEntityReadOnlyClient_namedEntityRecordsWithQuery_error_handleB
   v19[2] = __78__PPNamedEntityReadOnlyClient_rankedNamedEntitiesWithQuery_error_handleBatch___block_invoke;
   v19[3] = &unk_1E77F7998;
   v19[4] = self;
-  v20 = v8;
+  v20 = queryCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__PPNamedEntityReadOnlyClient_rankedNamedEntitiesWithQuery_error_handleBatch___block_invoke_2;
   v15[3] = &unk_1E77F79C0;
-  v17 = v9;
+  v17 = batchCopy;
   v18 = v10;
   v16 = @"rankedNamedEntitiesWithQuery";
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a4) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedNamedEntitiesWithQuery" error:a4 queryInitializer:v19 handleBatch:v15];
+  v12 = batchCopy;
+  v13 = queryCopy;
+  LOBYTE(error) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedNamedEntitiesWithQuery" error:error queryInitializer:v19 handleBatch:v15];
 
-  return a4;
+  return error;
 }
 
 void __78__PPNamedEntityReadOnlyClient_rankedNamedEntitiesWithQuery_error_handleBatch___block_invoke(uint64_t a1, uint64_t a2)
@@ -266,7 +266,7 @@ void __35__PPNamedEntityReadOnlyClient_init__block_invoke_85(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__PPNamedEntityReadOnlyClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken8_6175 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken8_6175, block);

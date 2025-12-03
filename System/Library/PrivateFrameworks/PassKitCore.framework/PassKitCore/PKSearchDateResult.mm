@@ -1,34 +1,34 @@
 @interface PKSearchDateResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchDateResult)initWithCoder:(id)a3;
+- (PKSearchDateResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSearchDateResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
 }
 
-- (PKSearchDateResult)initWithCoder:(id)a3
+- (PKSearchDateResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchDateResult *)self init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v8;
   }
@@ -51,17 +51,17 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != v4[1])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != equalCopy[1])
   {
     goto LABEL_10;
   }
 
   startDate = self->_startDate;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (!startDate || !v6)
   {
     if (startDate == v6)
@@ -81,7 +81,7 @@ LABEL_10:
 
 LABEL_6:
   endDate = self->_endDate;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (endDate && v8)
   {
     v9 = [(NSDate *)endDate isEqual:?];

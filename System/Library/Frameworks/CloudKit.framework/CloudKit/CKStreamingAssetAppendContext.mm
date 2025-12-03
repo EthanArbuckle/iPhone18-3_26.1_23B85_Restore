@@ -1,13 +1,13 @@
 @interface CKStreamingAssetAppendContext
-+ (id)requestToAppendSegmentData:(id)a3 uploadURL:(id)a4 requestUUID:(id)a5 offset:(unint64_t)a6;
-- (BOOL)appendSegmentWithData:(id)a3 newStreamingAsset:(id *)a4 error:(id *)a5;
++ (id)requestToAppendSegmentData:(id)data uploadURL:(id)l requestUUID:(id)d offset:(unint64_t)offset;
+- (BOOL)appendSegmentWithData:(id)data newStreamingAsset:(id *)asset error:(id *)error;
 - (CKStreamingAssetAppendContext)init;
-- (CKStreamingAssetAppendContext)initWithStreamingAsset:(id)a3;
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
+- (CKStreamingAssetAppendContext)initWithStreamingAsset:(id)asset;
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
 - (void)abort;
-- (void)appendSegmentWithData:(id)a3 completionHandler:(id)a4;
+- (void)appendSegmentWithData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation CKStreamingAssetAppendContext
@@ -24,16 +24,16 @@
   objc_exception_throw(v7);
 }
 
-- (CKStreamingAssetAppendContext)initWithStreamingAsset:(id)a3
+- (CKStreamingAssetAppendContext)initWithStreamingAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v15.receiver = self;
   v15.super_class = CKStreamingAssetAppendContext;
   v6 = [(CKStreamingAssetAppendContext *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_streamingAsset, a3);
+    objc_storeStrong(&v6->_streamingAsset, asset);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.cloudkit.streaming-asset.append-context.append", v8);
     appendQueue = v7->_appendQueue;
@@ -48,7 +48,7 @@
   return v7;
 }
 
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand
 {
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_msgSend_streamingAsset(self, v7, v8);
@@ -66,9 +66,9 @@
   return v6;
 }
 
-- (BOOL)appendSegmentWithData:(id)a3 newStreamingAsset:(id *)a4 error:(id *)a5
+- (BOOL)appendSegmentWithData:(id)data newStreamingAsset:(id *)asset error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -90,16 +90,16 @@
   v17 = &v24;
   v10 = v9;
   v15 = v10;
-  objc_msgSend_appendSegmentWithData_completionHandler_(self, v11, v8, v14);
+  objc_msgSend_appendSegmentWithData_completionHandler_(self, v11, dataCopy, v14);
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
-  if (a4)
+  if (asset)
   {
-    *a4 = v19[5];
+    *asset = v19[5];
   }
 
   v12 = v25[5] == 0;
@@ -110,13 +110,13 @@
   return v12;
 }
 
-- (void)appendSegmentWithData:(id)a3 completionHandler:(id)a4
+- (void)appendSegmentWithData:(id)data completionHandler:(id)handler
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v63 = 0;
-  v8 = _CKCheckArgument("data", v6, 0, 0, 0, &v63);
+  v8 = _CKCheckArgument("data", dataCopy, 0, 0, 0, &v63);
   v9 = v63;
   v10 = v9;
   if ((v8 & 1) == 0)
@@ -130,7 +130,7 @@
     objc_exception_throw(v42);
   }
 
-  v11 = _Block_copy(v7);
+  v11 = _Block_copy(handlerCopy);
   v62 = 0;
   v12 = _CKCheckArgument("completionHandler", v11, 0, 0, 0, &v62);
   v13 = v62;
@@ -161,17 +161,17 @@
   v21 = ck_log_facility_ck;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v33 = objc_msgSend_length(v6, v22, v23);
+    v33 = objc_msgSend_length(dataCopy, v22, v23);
     *buf = 134218498;
     v65 = v33;
     v66 = 2112;
-    v67 = self;
+    selfCopy = self;
     v68 = 2114;
     v69 = v20;
     _os_log_debug_impl(&dword_1883EA000, v21, OS_LOG_TYPE_DEBUG, "Appending segment of length %ld to %@ with requestUUID %{public}@", buf, 0x20u);
   }
 
-  if (objc_msgSend_length(v6, v24, v25))
+  if (objc_msgSend_length(dataCopy, v24, v25))
   {
     v28 = objc_msgSend_appendQueue(self, v26, v27);
     block[0] = MEMORY[0x1E69E9820];
@@ -179,11 +179,11 @@
     block[2] = sub_18852FF78;
     block[3] = &unk_1E70BC310;
     block[4] = self;
-    v58 = v7;
-    v55 = v6;
+    v58 = handlerCopy;
+    v55 = dataCopy;
     v56 = v20;
     v57 = v14;
-    v29 = v7;
+    v29 = handlerCopy;
     dispatch_async(v28, block);
   }
 
@@ -194,8 +194,8 @@
     v59[1] = 3221225472;
     v59[2] = sub_18852FEF4;
     v59[3] = &unk_1E70BC2C0;
-    v60 = v7;
-    v31 = v7;
+    v60 = handlerCopy;
+    v31 = handlerCopy;
     dispatch_async(v30, v59);
   }
 
@@ -203,27 +203,27 @@
   v32 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)requestToAppendSegmentData:(id)a3 uploadURL:(id)a4 requestUUID:(id)a5 offset:(unint64_t)a6
++ (id)requestToAppendSegmentData:(id)data uploadURL:(id)l requestUUID:(id)d offset:(unint64_t)offset
 {
   v70 = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696AD68];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  dCopy = d;
+  lCopy = l;
+  dataCopy = data;
   v13 = [v9 alloc];
-  v15 = objc_msgSend_initWithURL_(v13, v14, v11);
+  v15 = objc_msgSend_initWithURL_(v13, v14, lCopy);
 
   objc_msgSend_setHTTPMethod_(v15, v16, @"PUT");
-  objc_msgSend_setValue_forHTTPHeaderField_(v15, v17, v10, @"X-Apple-Request-UUID");
+  objc_msgSend_setValue_forHTTPHeaderField_(v15, v17, dCopy, @"X-Apple-Request-UUID");
 
   objc_msgSend_setValue_forHTTPHeaderField_(v15, v18, @"1", @"x-apple-sa-version");
-  v20 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v19, @"%lu", a6);
+  v20 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v19, @"%lu", offset);
   objc_msgSend_setValue_forHTTPHeaderField_(v15, v21, v20, @"x-apple-sa-offset");
   v22 = objc_alloc_init(CKDPStreamingAssetFooter);
   objc_msgSend_setStatus_(v22, v23, 0);
-  v24 = v12;
+  v24 = dataCopy;
   v27 = objc_msgSend_bytes(v24, v25, v26);
-  v30 = objc_msgSend_length(v12, v28, v29);
+  v30 = objc_msgSend_length(dataCopy, v28, v29);
   CC_MD5(v27, v30, md);
   v32 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v31, md, 16);
   objc_msgSend_setMd5_(v22, v33, v32);
@@ -233,11 +233,11 @@
   v66 = bswap32(v39);
   v41 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v40, &v66, 4);
   v42 = objc_alloc(MEMORY[0x1E695DF88]);
-  v45 = objc_msgSend_length(v12, v43, v44);
+  v45 = objc_msgSend_length(dataCopy, v43, v44);
   v48 = objc_msgSend_length(v36, v46, v47);
   v51 = objc_msgSend_length(v41, v49, v50);
   v53 = objc_msgSend_initWithCapacity_(v42, v52, v48 + v45 + v51);
-  objc_msgSend_appendData_(v53, v54, v12);
+  objc_msgSend_appendData_(v53, v54, dataCopy);
 
   objc_msgSend_appendData_(v53, v55, v36);
   objc_msgSend_appendData_(v53, v56, v41);
@@ -267,28 +267,28 @@
   return v15;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v11 = objc_msgSend_appendQueue(self, v9, v10);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1885309CC;
   block[3] = &unk_1E70BC360;
   block[4] = self;
-  v15 = v8;
-  v16 = v7;
-  v12 = v7;
-  v13 = v8;
+  v15 = errorCopy;
+  v16 = taskCopy;
+  v12 = taskCopy;
+  v13 = errorCopy;
   dispatch_async(v11, block);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v8 = a5;
-  objc_msgSend_cancel(a4, v6, v7);
-  v8[2](v8, 0);
+  streamCopy = stream;
+  objc_msgSend_cancel(task, v6, v7);
+  streamCopy[2](streamCopy, 0);
 }
 
 - (void)abort

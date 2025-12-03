@@ -128,7 +128,7 @@
   v33 = [CIVector vectorWithX:(v32.__cosval / v6) Y:(v32.__sinval / v6) Z:(-v32.__sinval / v6) W:?];
   v34 = [CIVector vectorWithX:v40 Y:v24 Z:*&v16 W:v27];
   v35 = [CIVector vectorWithX:v41 Y:v39 Z:*&v12 W:*&v14];
-  v36 = [(CIModTransition *)self _kernel];
+  _kernel = [(CIModTransition *)self _kernel];
   inputTargetImage = self->inputTargetImage;
   v46[0] = self->inputImage;
   v46[1] = inputTargetImage;
@@ -137,7 +137,7 @@
   v46[4] = v33;
   v46[5] = v34;
   v46[6] = v35;
-  return [v36 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v46, 7), x, y, width, height}];
+  return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v46, 7), x, y, width, height}];
 }
 
 @end

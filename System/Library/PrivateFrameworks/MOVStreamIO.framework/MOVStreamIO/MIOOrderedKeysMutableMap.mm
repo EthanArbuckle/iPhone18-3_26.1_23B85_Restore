@@ -2,8 +2,8 @@
 - (MIOOrderedKeysMutableMap)init;
 - (id)allOrderedKeys;
 - (id)allValues;
-- (id)objectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation MIOOrderedKeysMutableMap
@@ -27,50 +27,50 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (([(NSMutableArray *)v7->_keys containsObject:v6]& 1) == 0)
+  objectCopy = object;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(NSMutableArray *)selfCopy->_keys containsObject:keyCopy]& 1) == 0)
   {
-    [(NSMutableArray *)v7->_keys addObject:v6];
+    [(NSMutableArray *)selfCopy->_keys addObject:keyCopy];
   }
 
-  [(NSMutableDictionary *)v7->_map setObject:v8 forKey:v6];
-  objc_sync_exit(v7);
+  [(NSMutableDictionary *)selfCopy->_map setObject:objectCopy forKey:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)allOrderedKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_keys copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_keys copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_map objectForKey:v4];
-  objc_sync_exit(v5);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_map objectForKey:keyCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)allValues
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_map allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_map allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
 @end

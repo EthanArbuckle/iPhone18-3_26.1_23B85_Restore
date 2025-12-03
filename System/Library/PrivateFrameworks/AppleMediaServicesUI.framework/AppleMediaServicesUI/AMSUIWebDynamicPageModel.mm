@@ -1,43 +1,43 @@
 @interface AMSUIWebDynamicPageModel
-- (AMSUIWebDynamicPageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebDynamicPageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
 - (NSString)description;
-- (id)createViewControllerForContainer:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
 @end
 
 @implementation AMSUIWebDynamicPageModel
 
-- (AMSUIWebDynamicPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebDynamicPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v37.receiver = self;
   v37.super_class = AMSUIWebDynamicPageModel;
   v8 = [(AMSUIWebDynamicPageModel *)&v37 init];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"account"];
-    v10 = [v7 iTunesAccountFromJSAccount:v9];
+    v9 = [objectCopy objectForKeyedSubscript:@"account"];
+    v10 = [contextCopy iTunesAccountFromJSAccount:v9];
     account = v8->_account;
     v8->_account = v10;
 
-    v12 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+    v12 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
     backgroundColor = v8->_backgroundColor;
     v8->_backgroundColor = v12;
 
-    v14 = [AMSUIWebModel impressionEventFromPageModel:v6 context:v7];
+    v14 = [AMSUIWebModel impressionEventFromPageModel:objectCopy context:contextCopy];
     impressionEvent = v8->_impressionEvent;
     v8->_impressionEvent = v14;
 
-    v16 = [AMSUIWebModel navigationBarFromPageModel:v6 context:v7];
+    v16 = [AMSUIWebModel navigationBarFromPageModel:objectCopy context:contextCopy];
     navigationBar = v8->_navigationBar;
     v8->_navigationBar = v16;
 
-    [AMSUIWebModel windowSizeFromPageModel:v6];
+    [AMSUIWebModel windowSizeFromPageModel:objectCopy];
     v8->_windowSize.width = v18;
     v8->_windowSize.height = v19;
-    objc_storeStrong(&v8->_context, a4);
-    v20 = [v6 objectForKeyedSubscript:@"clientOptions"];
+    objc_storeStrong(&v8->_context, context);
+    v20 = [objectCopy objectForKeyedSubscript:@"clientOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
     clientOptions = v8->_clientOptions;
     v8->_clientOptions = v21;
 
-    v23 = [v6 objectForKeyedSubscript:@"metricsOverlay"];
+    v23 = [objectCopy objectForKeyedSubscript:@"metricsOverlay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,19 +72,19 @@
 
     v26 = v25;
 
-    v27 = [v7 metricsOverlay];
+    metricsOverlay = [contextCopy metricsOverlay];
 
-    if (v27)
+    if (metricsOverlay)
     {
       v28 = [v26 mutableCopy];
-      v29 = [v7 metricsOverlay];
-      [v28 addEntriesFromDictionary:v29];
+      metricsOverlay2 = [contextCopy metricsOverlay];
+      [v28 addEntriesFromDictionary:metricsOverlay2];
 
       v26 = v28;
     }
 
     objc_storeStrong(&v8->_metricsOverlay, v26);
-    v30 = [v6 objectForKeyedSubscript:@"url"];
+    v30 = [objectCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,25 +113,25 @@
   return v8;
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
   v4 = [AMSUIWebDynamicViewController alloc];
-  v5 = [(AMSUIWebDynamicPageModel *)self context];
+  context = [(AMSUIWebDynamicPageModel *)self context];
   v6 = [(AMSUIWebDynamicPageModel *)self URL];
-  v7 = [(AMSUIWebDynamicViewController *)v4 initWithContext:v5 URL:v6];
+  v7 = [(AMSUIWebDynamicViewController *)v4 initWithContext:context URL:v6];
 
-  v8 = [(AMSUIWebDynamicPageModel *)self account];
-  [(AMSUIDynamicViewController *)v7 setAccount:v8];
+  account = [(AMSUIWebDynamicPageModel *)self account];
+  [(AMSUIDynamicViewController *)v7 setAccount:account];
 
-  v9 = [(AMSUIWebDynamicPageModel *)self context];
-  v10 = [v9 clientInfo];
-  [(AMSUIDynamicViewController *)v7 setClientInfo:v10];
+  context2 = [(AMSUIWebDynamicPageModel *)self context];
+  clientInfo = [context2 clientInfo];
+  [(AMSUIDynamicViewController *)v7 setClientInfo:clientInfo];
 
-  v11 = [(AMSUIWebDynamicPageModel *)self clientOptions];
-  [(AMSUIDynamicViewController *)v7 setClientOptions:v11];
+  clientOptions = [(AMSUIWebDynamicPageModel *)self clientOptions];
+  [(AMSUIDynamicViewController *)v7 setClientOptions:clientOptions];
 
-  v12 = [(AMSUIWebDynamicPageModel *)self metricsOverlay];
-  [(AMSUIDynamicViewController *)v7 setMetricsOverlay:v12];
+  metricsOverlay = [(AMSUIWebDynamicPageModel *)self metricsOverlay];
+  [(AMSUIDynamicViewController *)v7 setMetricsOverlay:metricsOverlay];
 
   [(AMSUIDynamicViewController *)v7 setDelegate:v7];
 
@@ -142,9 +142,9 @@
 {
   v27[3] = *MEMORY[0x1E69E9840];
   v26[0] = @"disableReappearPlaceholder";
-  v3 = [(AMSUIWebDynamicPageModel *)self disableReappearPlaceholder];
+  disableReappearPlaceholder = [(AMSUIWebDynamicPageModel *)self disableReappearPlaceholder];
   v4 = @"false";
-  if (v3)
+  if (disableReappearPlaceholder)
   {
     v4 = @"true";
   }
@@ -152,8 +152,8 @@
   v27[0] = v4;
   v26[1] = @"URL";
   v5 = [(AMSUIWebDynamicPageModel *)self URL];
-  v6 = [v5 absoluteString];
-  v27[1] = v6;
+  absoluteString = [v5 absoluteString];
+  v27[1] = absoluteString;
   v26[2] = @"windowSize";
   [(AMSUIWebDynamicPageModel *)self windowSize];
   v7 = NSStringFromCGSize(v29);
@@ -161,53 +161,53 @@
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
   v9 = [v8 mutableCopy];
 
-  v10 = [(AMSUIWebDynamicPageModel *)self account];
+  account = [(AMSUIWebDynamicPageModel *)self account];
 
-  if (v10)
+  if (account)
   {
-    v11 = [(AMSUIWebDynamicPageModel *)self account];
-    v12 = [v11 username];
-    [v9 setObject:v12 forKey:@"account"];
+    account2 = [(AMSUIWebDynamicPageModel *)self account];
+    username = [account2 username];
+    [v9 setObject:username forKey:@"account"];
   }
 
-  v13 = [(AMSUIWebDynamicPageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebDynamicPageModel *)self backgroundColor];
 
-  if (v13)
+  if (backgroundColor)
   {
-    v14 = [(AMSUIWebDynamicPageModel *)self backgroundColor];
-    [v9 setObject:v14 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebDynamicPageModel *)self backgroundColor];
+    [v9 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v15 = [(AMSUIWebDynamicPageModel *)self clientOptions];
+  clientOptions = [(AMSUIWebDynamicPageModel *)self clientOptions];
 
-  if (v15)
+  if (clientOptions)
   {
-    v16 = [(AMSUIWebDynamicPageModel *)self clientOptions];
-    [v9 setObject:v16 forKey:@"clientOptions"];
+    clientOptions2 = [(AMSUIWebDynamicPageModel *)self clientOptions];
+    [v9 setObject:clientOptions2 forKey:@"clientOptions"];
   }
 
-  v17 = [(AMSUIWebDynamicPageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebDynamicPageModel *)self impressionEvent];
 
-  if (v17)
+  if (impressionEvent)
   {
-    v18 = [(AMSUIWebDynamicPageModel *)self impressionEvent];
-    [v9 setObject:v18 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebDynamicPageModel *)self impressionEvent];
+    [v9 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v19 = [(AMSUIWebDynamicPageModel *)self metricsOverlay];
+  metricsOverlay = [(AMSUIWebDynamicPageModel *)self metricsOverlay];
 
-  if (v19)
+  if (metricsOverlay)
   {
-    v20 = [(AMSUIWebDynamicPageModel *)self metricsOverlay];
-    [v9 setObject:v20 forKey:@"metricsOverlay"];
+    metricsOverlay2 = [(AMSUIWebDynamicPageModel *)self metricsOverlay];
+    [v9 setObject:metricsOverlay2 forKey:@"metricsOverlay"];
   }
 
-  v21 = [(AMSUIWebDynamicPageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebDynamicPageModel *)self navigationBar];
 
-  if (v21)
+  if (navigationBar)
   {
-    v22 = [(AMSUIWebDynamicPageModel *)self navigationBar];
-    [v9 setObject:v22 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebDynamicPageModel *)self navigationBar];
+    [v9 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
   v23 = [v9 description];

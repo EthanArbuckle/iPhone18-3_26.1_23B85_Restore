@@ -1,35 +1,35 @@
 @interface AXSDTimeStamp
-- (AXSDTimeStamp)initWithResult:(id)a3;
-- (AXSDTimeStamp)initWithTime:(double)a3 andDuration:(double)a4;
+- (AXSDTimeStamp)initWithResult:(id)result;
+- (AXSDTimeStamp)initWithTime:(double)time andDuration:(double)duration;
 @end
 
 @implementation AXSDTimeStamp
 
-- (AXSDTimeStamp)initWithTime:(double)a3 andDuration:(double)a4
+- (AXSDTimeStamp)initWithTime:(double)time andDuration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = AXSDTimeStamp;
   result = [(AXSDTimeStamp *)&v7 init];
   if (result)
   {
-    result->_duration = a4;
-    result->_time = a3;
+    result->_duration = duration;
+    result->_time = time;
   }
 
   return result;
 }
 
-- (AXSDTimeStamp)initWithResult:(id)a3
+- (AXSDTimeStamp)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = AXSDTimeStamp;
   v5 = [(AXSDTimeStamp *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (resultCopy)
     {
-      [v4 timeRange];
+      [resultCopy timeRange];
       v6 = 0 / 0;
       v7 = v6;
     }

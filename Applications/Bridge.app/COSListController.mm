@@ -50,8 +50,8 @@
       }
 
       v11 = *(*(&v33 + 1) + 8 * v10);
-      v12 = [v11 identifier];
-      v13 = [v4 specifierForID:v12];
+      identifier = [v11 identifier];
+      v13 = [v4 specifierForID:identifier];
 
       if (v13)
       {

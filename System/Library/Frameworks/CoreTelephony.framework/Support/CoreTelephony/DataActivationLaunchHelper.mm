@@ -1,32 +1,32 @@
 @interface DataActivationLaunchHelper
 - (BOOL)isAlertHandleExistAndValid;
-- (DataActivationLaunchHelper)initWithLogger:(const void *)a3;
+- (DataActivationLaunchHelper)initWithLogger:(const void *)logger;
 - (void)invalidateRemoteAlertHandle;
-- (void)launchWithServiceName:(id)a3 viewControllerClassName:(id)a4 options:(id)a5;
+- (void)launchWithServiceName:(id)name viewControllerClassName:(id)className options:(id)options;
 - (void)reactivateDataActivationIfPresent;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
 @end
 
 @implementation DataActivationLaunchHelper
 
-- (DataActivationLaunchHelper)initWithLogger:(const void *)a3
+- (DataActivationLaunchHelper)initWithLogger:(const void *)logger
 {
   v5.receiver = self;
   v5.super_class = DataActivationLaunchHelper;
   result = [(DataActivationLaunchHelper *)&v5 init];
   if (result)
   {
-    result->fLogger = a3;
+    result->fLogger = logger;
   }
 
   return result;
 }
 
-- (void)launchWithServiceName:(id)a3 viewControllerClassName:(id)a4 options:(id)a5
+- (void)launchWithServiceName:(id)name viewControllerClassName:(id)className options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  classNameCopy = className;
+  optionsCopy = options;
   if (self->fAlertHandle)
   {
     v11 = sub_100032AC8(self->fLogger);
@@ -39,9 +39,9 @@
     [(DataActivationLaunchHelper *)self invalidateRemoteAlertHandle];
   }
 
-  v12 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:v8 viewControllerClassName:v9];
+  v12 = [[SBSRemoteAlertDefinition alloc] initWithServiceName:nameCopy viewControllerClassName:classNameCopy];
   v13 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
-  [v13 setUserInfo:v10];
+  [v13 setUserInfo:optionsCopy];
   v14 = [SBSRemoteAlertHandle newHandleWithDefinition:v12 configurationContext:v13];
   fAlertHandle = self->fAlertHandle;
   self->fAlertHandle = v14;
@@ -54,7 +54,7 @@
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543362;
-    v19 = v8;
+    v19 = nameCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#I %{public}@: launched...", &v18, 0xCu);
   }
 }
@@ -67,16 +67,16 @@
     fAlertHandle = self->fAlertHandle;
     if (fAlertHandle)
     {
-      v5 = [(SBSRemoteAlertHandle *)fAlertHandle isValid];
+      isValid = [(SBSRemoteAlertHandle *)fAlertHandle isValid];
     }
 
     else
     {
-      v5 = -1;
+      isValid = -1;
     }
 
     v8[0] = 67109120;
-    v8[1] = v5;
+    v8[1] = isValid;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I alert handle is valid: %d", v8, 8u);
   }
 
@@ -109,20 +109,20 @@
   self->fAlertHandle = 0;
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   v8 = sub_100032AC8(self->fLogger);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 description];
+    v9 = [errorCopy description];
     v12 = 136315138;
-    v13 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I RemoteAlertHandle: invalidated with error %s", &v12, 0xCu);
   }
 
-  if (self->fAlertHandle == v6)
+  if (self->fAlertHandle == handleCopy)
   {
     v10 = sub_100032AC8(self->fLogger);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))

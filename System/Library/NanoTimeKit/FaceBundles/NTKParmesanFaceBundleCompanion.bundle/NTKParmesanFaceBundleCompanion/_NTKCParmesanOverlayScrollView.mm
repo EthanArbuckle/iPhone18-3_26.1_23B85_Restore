@@ -1,15 +1,15 @@
 @interface _NTKCParmesanOverlayScrollView
-- (_NTKCParmesanOverlayScrollView)initWithCoder:(id)a3;
-- (_NTKCParmesanOverlayScrollView)initWithFrame:(CGRect)a3;
+- (_NTKCParmesanOverlayScrollView)initWithCoder:(id)coder;
+- (_NTKCParmesanOverlayScrollView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _NTKCParmesanOverlayScrollView
 
-- (_NTKCParmesanOverlayScrollView)initWithFrame:(CGRect)a3
+- (_NTKCParmesanOverlayScrollView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _NTKCParmesanOverlayScrollView;
-  v3 = [(NTKCCenteringScrollView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCCenteringScrollView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (_NTKCParmesanOverlayScrollView)initWithCoder:(id)a3
+- (_NTKCParmesanOverlayScrollView)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = _NTKCParmesanOverlayScrollView;
-  v3 = [(_NTKCParmesanOverlayScrollView *)&v9 initWithCoder:a3];
+  v3 = [(_NTKCParmesanOverlayScrollView *)&v9 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

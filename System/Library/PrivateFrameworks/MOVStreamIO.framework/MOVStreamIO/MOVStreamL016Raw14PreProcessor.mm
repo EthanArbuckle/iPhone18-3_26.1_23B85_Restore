@@ -1,22 +1,22 @@
 @interface MOVStreamL016Raw14PreProcessor
-- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4;
+- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)buffer streamData:(StreamRecordingData *)data;
 @end
 
 @implementation MOVStreamL016Raw14PreProcessor
 
-- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)a3 streamData:(StreamRecordingData *)a4
+- (opaqueCMFormatDescription)formatDescriptionForPixelBuffer:(__CVBuffer *)buffer streamData:(StreamRecordingData *)data
 {
-  result = a4->var0;
-  if (!a4->var1)
+  result = data->var0;
+  if (!data->var1)
   {
     if (result)
     {
       CFRelease(result);
     }
 
-    result = [MOVStreamIOUtility formatForPixelBuffer:a3];
-    a4->var0 = result;
-    a4->var1 = 1;
+    result = [MOVStreamIOUtility formatForPixelBuffer:buffer];
+    data->var0 = result;
+    data->var1 = 1;
   }
 
   return result;

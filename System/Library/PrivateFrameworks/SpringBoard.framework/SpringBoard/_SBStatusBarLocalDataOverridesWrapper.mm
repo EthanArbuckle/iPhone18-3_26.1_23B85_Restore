@@ -1,6 +1,6 @@
 @interface _SBStatusBarLocalDataOverridesWrapper
 - (void)dealloc;
-- (void)setOverrides:(id *)a3;
+- (void)setOverrides:(id *)overrides;
 @end
 
 @implementation _SBStatusBarLocalDataOverridesWrapper
@@ -18,12 +18,12 @@
   [(_SBStatusBarLocalDataOverridesWrapper *)&v4 dealloc];
 }
 
-- (void)setOverrides:(id *)a3
+- (void)setOverrides:(id *)overrides
 {
   overrides = self->_overrides;
-  if (overrides != a3)
+  if (overrides != overrides)
   {
-    if (a3)
+    if (overrides)
     {
       if (!overrides)
       {
@@ -31,7 +31,7 @@
         self->_overrides = overrides;
       }
 
-      memcpy(overrides, a3, sizeof($ED9261D9D3B12DF754DECF3403E2B70A));
+      memcpy(overrides, overrides, sizeof($ED9261D9D3B12DF754DECF3403E2B70A));
     }
 
     else if (overrides)

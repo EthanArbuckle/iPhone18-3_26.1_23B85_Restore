@@ -1,21 +1,21 @@
 @interface ATXDigestFeedbackProcessingPipeline
 - (ATXDigestFeedbackProcessingPipeline)init;
-- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)a3 path:(id)a4 trackedDigestStream:(id)a5;
-- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)a3 path:(id)a4 trackedDigestStream:(id)a5 digestFeedbackLogger:(id)a6;
-- (BOOL)_fileExistsAtPath:(id)a3;
+- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)bookmark path:(id)path trackedDigestStream:(id)stream;
+- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)bookmark path:(id)path trackedDigestStream:(id)stream digestFeedbackLogger:(id)logger;
+- (BOOL)_fileExistsAtPath:(id)path;
 - (void)_readBookmarkFromPath;
 - (void)_writeBookmarkToPath;
-- (void)logFeedbackForDigest:(id)a3;
-- (void)logMetricsForDigest:(id)a3;
-- (void)logMetricsWithXPCActivity:(id)a3;
+- (void)logFeedbackForDigest:(id)digest;
+- (void)logMetricsForDigest:(id)digest;
+- (void)logMetricsWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXDigestFeedbackProcessingPipeline
 
 - (ATXDigestFeedbackProcessingPipeline)init
 {
-  v3 = [MEMORY[0x277CEBCB0] metricsRootDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@"digestLoggingBookmark"];
+  metricsRootDirectory = [MEMORY[0x277CEBCB0] metricsRootDirectory];
+  v4 = [metricsRootDirectory stringByAppendingPathComponent:@"digestLoggingBookmark"];
 
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -24,46 +24,46 @@
   return v7;
 }
 
-- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)a3 path:(id)a4 trackedDigestStream:(id)a5
+- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)bookmark path:(id)path trackedDigestStream:(id)stream
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  streamCopy = stream;
+  pathCopy = path;
+  bookmarkCopy = bookmark;
   v11 = objc_opt_new();
-  v12 = [(ATXDigestFeedbackProcessingPipeline *)self initWithBookmark:v10 path:v9 trackedDigestStream:v8 digestFeedbackLogger:v11];
+  v12 = [(ATXDigestFeedbackProcessingPipeline *)self initWithBookmark:bookmarkCopy path:pathCopy trackedDigestStream:streamCopy digestFeedbackLogger:v11];
 
   return v12;
 }
 
-- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)a3 path:(id)a4 trackedDigestStream:(id)a5 digestFeedbackLogger:(id)a6
+- (ATXDigestFeedbackProcessingPipeline)initWithBookmark:(id)bookmark path:(id)path trackedDigestStream:(id)stream digestFeedbackLogger:(id)logger
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  bookmarkCopy = bookmark;
+  pathCopy = path;
+  streamCopy = stream;
+  loggerCopy = logger;
   v18.receiver = self;
   v18.super_class = ATXDigestFeedbackProcessingPipeline;
   v15 = [(ATXDigestFeedbackProcessingPipeline *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bookmark, a3);
-    objc_storeStrong(&v16->_path, a4);
-    objc_storeStrong(&v16->_trackedDigestStream, a5);
+    objc_storeStrong(&v15->_bookmark, bookmark);
+    objc_storeStrong(&v16->_path, path);
+    objc_storeStrong(&v16->_trackedDigestStream, stream);
     if (!v16->_bookmark)
     {
       [(ATXDigestFeedbackProcessingPipeline *)v16 _readBookmarkFromPath];
     }
 
-    objc_storeStrong(&v16->_feedbackLogger, a6);
+    objc_storeStrong(&v16->_feedbackLogger, logger);
   }
 
   return v16;
 }
 
-- (void)logMetricsWithXPCActivity:(id)a3
+- (void)logMetricsWithXPCActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   trackedDigestStream = self->_trackedDigestStream;
   v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-172800.0];
   [v6 timeIntervalSinceReferenceDate];
@@ -91,7 +91,7 @@
   v11[3] = &unk_278597788;
   v11[4] = self;
   v13 = v16;
-  v9 = v4;
+  v9 = activityCopy;
   v12 = v9;
   v14 = v17;
   v10 = [v7 drivableSinkWithBookmark:bookmark completion:v15 shouldContinue:v11];
@@ -187,69 +187,69 @@ uint64_t __65__ATXDigestFeedbackProcessingPipeline_logMetricsWithXPCActivity___b
   return v5 ^ 1u;
 }
 
-- (void)logFeedbackForDigest:(id)a3
+- (void)logFeedbackForDigest:(id)digest
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  digestCopy = digest;
   v5 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 uuid];
-    v9 = [v8 UUIDString];
+    uuid = [digestCopy uuid];
+    uUIDString = [uuid UUIDString];
     v16 = 138412546;
     v17 = v7;
     v18 = 2112;
-    v19 = v9;
+    v19 = uUIDString;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "[%@] Logging feedback for digest %@", &v16, 0x16u);
   }
 
-  [(ATXNotificationDigestFeedbackLogger *)self->_feedbackLogger logFeedbackForAnnotatedDigest:v4];
+  [(ATXNotificationDigestFeedbackLogger *)self->_feedbackLogger logFeedbackForAnnotatedDigest:digestCopy];
   v10 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v4 uuid];
-    v14 = [v13 UUIDString];
+    uuid2 = [digestCopy uuid];
+    uUIDString2 = [uuid2 UUIDString];
     v16 = 138412546;
     v17 = v12;
     v18 = 2112;
-    v19 = v14;
+    v19 = uUIDString2;
     _os_log_impl(&dword_2263AA000, v10, OS_LOG_TYPE_INFO, "[%@] Finished logging feedback for digest %@", &v16, 0x16u);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMetricsForDigest:(id)a3
+- (void)logMetricsForDigest:(id)digest
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  digestCopy = digest;
   v4 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v3 uuid];
-    v8 = [v7 UUIDString];
+    uuid = [digestCopy uuid];
+    uUIDString = [uuid UUIDString];
     *buf = 138412546;
     v26 = v6;
     v27 = 2112;
-    v28 = v8;
+    v28 = uUIDString;
     _os_log_impl(&dword_2263AA000, v4, OS_LOG_TYPE_INFO, "[%@] Logging metrics for digest %@", buf, 0x16u);
   }
 
   v9 = objc_opt_new();
-  [v9 populateMetricsFromDigest:v3];
+  [v9 populateMetricsFromDigest:digestCopy];
   [v9 logToCoreAnalytics];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v3 viewFlattenedGroups];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  viewFlattenedGroups = [digestCopy viewFlattenedGroups];
+  v11 = [viewFlattenedGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -260,23 +260,23 @@ uint64_t __65__ATXDigestFeedbackProcessingPipeline_logMetricsWithXPCActivity___b
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(viewFlattenedGroups);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 digestEngagementTrackingMetrics];
+        digestEngagementTrackingMetrics = [v15 digestEngagementTrackingMetrics];
 
-        if (v16)
+        if (digestEngagementTrackingMetrics)
         {
           v17 = objc_opt_new();
-          v18 = [v3 uuid];
-          [v17 populateMetricsFromDigestGroup:v15 digestUUID:v18];
+          uuid2 = [digestCopy uuid];
+          [v17 populateMetricsFromDigestGroup:v15 digestUUID:uuid2];
 
           [v17 logToCoreAnalytics];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [viewFlattenedGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v12);
@@ -289,9 +289,9 @@ uint64_t __65__ATXDigestFeedbackProcessingPipeline_logMetricsWithXPCActivity___b
 {
   v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:self->_path];
   v3 = [MEMORY[0x277CEBBF8] bookmarkFromURLPath:v6 maxFileSize:2000000 versionNumber:&unk_283A55298];
-  v4 = [v3 bookmark];
+  bookmark = [v3 bookmark];
   bookmark = self->_bookmark;
-  self->_bookmark = v4;
+  self->_bookmark = bookmark;
 }
 
 - (void)_writeBookmarkToPath
@@ -308,12 +308,12 @@ uint64_t __65__ATXDigestFeedbackProcessingPipeline_logMetricsWithXPCActivity___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_fileExistsAtPath:(id)a3
+- (BOOL)_fileExistsAtPath:(id)path
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   return v6;
 }

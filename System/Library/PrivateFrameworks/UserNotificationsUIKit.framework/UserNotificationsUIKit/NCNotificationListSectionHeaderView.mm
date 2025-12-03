@@ -1,33 +1,33 @@
 @interface NCNotificationListSectionHeaderView
 + (CGSize)_clearButtonPreferredSize;
 + (CGSize)_collapseButtonPreferredSize;
-+ (double)headerHeightWithWidth:(double)a3 title:(id)a4 isShowingCollapseButton:(BOOL)a5;
++ (double)headerHeightWithWidth:(double)width title:(id)title isShowingCollapseButton:(BOOL)button;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (NCNotificationListSectionHeaderView)initWithFrame:(CGRect)a3;
+- (NCNotificationListSectionHeaderView)initWithFrame:(CGRect)frame;
 - (NCNotificationListSectionHeaderViewDelegate)delegate;
 - (id)_legibilitySettings;
-- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)a3;
+- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)content;
 - (void)_configureClearButtonIfNecessary;
 - (void)_configureCollapseButtonIfNecessary;
 - (void)_configureHeaderTitleViewIfNecessary;
-- (void)_handleClearAll:(id)a3;
-- (void)_handleClearButtonPrimaryActionTriggered:(id)a3;
-- (void)_handleClearButtonTouchUpInside:(id)a3;
-- (void)_handleCollapseActionTriggered:(id)a3;
+- (void)_handleClearAll:(id)all;
+- (void)_handleClearButtonPrimaryActionTriggered:(id)triggered;
+- (void)_handleClearButtonTouchUpInside:(id)inside;
+- (void)_handleCollapseActionTriggered:(id)triggered;
 - (void)_layoutClearButton;
 - (void)_layoutCollapseButton;
 - (void)_layoutHeaderTitleView;
-- (void)_resetClearButtonStateAnimated:(BOOL)a3;
-- (void)_updateHeaderTitleViewWithLegibilitySettings:(id)a3;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
+- (void)_resetClearButtonStateAnimated:(BOOL)animated;
+- (void)_updateHeaderTitleViewWithLegibilitySettings:(id)settings;
+- (void)adjustForLegibilitySettingsChange:(id)change;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)toggleControlDidBeginClickInteraction:(id)a3;
-- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)a3;
-- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setTitle:(id)title;
+- (void)toggleControlDidBeginClickInteraction:(id)interaction;
+- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)content;
+- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)content;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NCNotificationListSectionHeaderView
@@ -83,14 +83,14 @@
   return result;
 }
 
-+ (double)headerHeightWithWidth:(double)a3 title:(id)a4 isShowingCollapseButton:(BOOL)a5
++ (double)headerHeightWithWidth:(double)width title:(id)title isShowingCollapseButton:(BOOL)button
 {
   v60[1] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277D76620];
   v10 = *MEMORY[0x277D76620];
-  v11 = a4;
-  v12 = [v10 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v12);
+  titleCopy = title;
+  preferredContentSizeCategory = [v10 preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   v14 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
   if (IsAX)
@@ -98,12 +98,12 @@
     goto LABEL_23;
   }
 
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v17 = v16 & 0xFFFFFFFFFFFFFFFBLL;
-  v58 = a5;
-  if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  v17 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
+  buttonCopy = button;
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if (([*v9 activeInterfaceOrientation] - 1) >= 2)
     {
@@ -113,13 +113,13 @@
 
   else
   {
-    v57 = [MEMORY[0x277D75C80] currentTraitCollection];
-    if ([v57 verticalSizeClass] != 2)
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    if ([currentTraitCollection verticalSizeClass] != 2)
     {
 LABEL_4:
       v18 = v9;
-      v5 = [MEMORY[0x277D75418] currentDevice];
-      if ([v5 userInterfaceIdiom])
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom])
       {
         v19 = 0;
         v20 = 1;
@@ -145,8 +145,8 @@ LABEL_4:
   }
 
   v18 = v9;
-  v16 = [MEMORY[0x277D75418] currentDevice];
-  if ([v16 userInterfaceIdiom])
+  userInterfaceIdiom = [MEMORY[0x277D75418] currentDevice];
+  if ([userInterfaceIdiom userInterfaceIdiom])
   {
     v20 = 0;
     v19 = 1;
@@ -192,27 +192,27 @@ LABEL_20:
   {
   }
 
-  a5 = v58;
+  button = buttonCopy;
 LABEL_23:
   __clearButtonPreferredSize = *MEMORY[0x277CBF3A8];
   __collapseButtonPreferredSize = __clearButtonPreferredSize;
-  [a1 _clearButtonPreferredSize];
+  [self _clearButtonPreferredSize];
   v24 = v23;
-  [a1 _collapseButtonPreferredSize];
+  [self _collapseButtonPreferredSize];
   v26 = v25;
-  v27 = [MEMORY[0x277D75418] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice3 userInterfaceIdiom];
 
-  v29 = v28 & 0xFFFFFFFFFFFFFFFBLL;
-  if ((v28 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  v29 = userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL;
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v30 = ([*v9 activeInterfaceOrientation] - 1) < 2;
   }
 
   else
   {
-    v27 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v30 = [v27 verticalSizeClass] == 2;
+    currentDevice3 = [MEMORY[0x277D75C80] currentTraitCollection];
+    v30 = [currentDevice3 verticalSizeClass] == 2;
   }
 
   v31 = 6.0;
@@ -221,18 +221,18 @@ LABEL_23:
     v31 = 10.0;
   }
 
-  v32 = a3 - v31;
+  v32 = width - v31;
   if (!IsAX)
   {
-    v33 = [MEMORY[0x277D75418] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice4 userInterfaceIdiom];
 
-    v35 = v34 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    v35 = userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [*v9 activeInterfaceOrientation];
       v36 = v24 + 0.0;
-      if (!a5)
+      if (!button)
       {
         v32 = v32 - v36;
         goto LABEL_45;
@@ -243,10 +243,10 @@ LABEL_23:
 
     else
     {
-      v33 = [MEMORY[0x277D75C80] currentTraitCollection];
-      [v33 verticalSizeClass];
+      currentDevice4 = [MEMORY[0x277D75C80] currentTraitCollection];
+      [currentDevice4 verticalSizeClass];
       v36 = v24 + 0.0;
-      if (!a5)
+      if (!button)
       {
         v32 = v32 - v36;
 LABEL_44:
@@ -257,14 +257,14 @@ LABEL_44:
       v37 = v9;
     }
 
-    v38 = [MEMORY[0x277D75418] currentDevice];
-    v39 = [v38 userInterfaceIdiom];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice5 userInterfaceIdiom];
 
-    if ((v39 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v40 = [*v37 activeInterfaceOrientation];
+      activeInterfaceOrientation = [*v37 activeInterfaceOrientation];
       v41 = 6.0;
-      if ((v40 - 1) < 2)
+      if ((activeInterfaceOrientation - 1) < 2)
       {
         v41 = 10.0;
       }
@@ -274,10 +274,10 @@ LABEL_44:
 
     else
     {
-      v42 = [MEMORY[0x277D75C80] currentTraitCollection];
-      v43 = [v42 verticalSizeClass];
+      currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+      verticalSizeClass = [currentTraitCollection2 verticalSizeClass];
       v44 = 6.0;
-      if (v43 == 2)
+      if (verticalSizeClass == 2)
       {
         v44 = 10.0;
       }
@@ -299,7 +299,7 @@ LABEL_45:
   v59 = *MEMORY[0x277D740A8];
   v60[0] = v14;
   v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
-  [v11 boundingRectWithSize:1 options:v45 attributes:0 context:{v32, 0.0}];
+  [titleCopy boundingRectWithSize:1 options:v45 attributes:0 context:{v32, 0.0}];
   v47 = v46;
   v49 = v48;
   v51 = v50;
@@ -323,32 +323,32 @@ LABEL_45:
   return v55;
 }
 
-- (NCNotificationListSectionHeaderView)initWithFrame:(CGRect)a3
+- (NCNotificationListSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NCNotificationListSectionHeaderView;
-  v3 = [(NCNotificationListSectionHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationListSectionHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(NCNotificationListSectionHeaderView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NCNotificationListSectionHeaderView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v4 = a3;
+  baseCopy = base;
   [(NCNotificationListSectionHeaderView *)self _configureClearButtonIfNecessary];
-  [(PLGlyphControl *)self->_clearButton setMaterialGroupNameBase:v4];
+  [(PLGlyphControl *)self->_clearButton setMaterialGroupNameBase:baseCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(NCNotificationListHeaderTitleView *)self->_headerTitleView setTitle:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(NCNotificationListHeaderTitleView *)self->_headerTitleView setTitle:titleCopy];
 }
 
 - (void)layoutSubviews
@@ -364,7 +364,7 @@ LABEL_45:
   [(NCNotificationListSectionHeaderView *)self _layoutCollapseButton];
 }
 
-- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)a3
+- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained containerViewForHeaderViewPreviewInteractionPresentedContent:self];
@@ -372,19 +372,19 @@ LABEL_45:
   return v5;
 }
 
-- (void)toggleControlDidBeginClickInteraction:(id)a3
+- (void)toggleControlDidBeginClickInteraction:(id)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sectionHeaderViewDidBeginForceTouchInteraction:self];
 }
 
-- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)a3
+- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sectionHeaderViewDidPresentForceTouchView:self];
 }
 
-- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)a3
+- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)content
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained sectionHeaderViewDidDismissForceTouchView:self];
@@ -406,35 +406,35 @@ LABEL_45:
   return legibilitySettings;
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v7 = a3;
-  if (([v7 isEqual:self->_legibilitySettings] & 1) == 0)
+  changeCopy = change;
+  if (([changeCopy isEqual:self->_legibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, change);
     [(NCNotificationListSectionHeaderView *)self _updateHeaderTitleViewWithLegibilitySettings:self->_legibilitySettings];
     collapseButton = self->_collapseButton;
-    v6 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UIButton *)collapseButton setTintColor:v6];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UIButton *)collapseButton setTintColor:primaryColor];
   }
 }
 
-- (void)_updateHeaderTitleViewWithLegibilitySettings:(id)a3
+- (void)_updateHeaderTitleViewWithLegibilitySettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
     [(NCNotificationListHeaderTitleView *)self->_headerTitleView adjustForLegibilitySettingsChange:?];
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    v3 = a3;
-    self->_adjustsFontForContentSizeCategory = a3;
+    categoryCopy = category;
+    self->_adjustsFontForContentSizeCategory = category;
     [(NCNotificationListHeaderTitleView *)self->_headerTitleView setAdjustsFontForContentSizeCategory:?];
-    [(NCToggleControl *)self->_clearButton setAdjustsFontForContentSizeCategory:v3];
+    [(NCToggleControl *)self->_clearButton setAdjustsFontForContentSizeCategory:categoryCopy];
     if (self->_adjustsFontForContentSizeCategory)
     {
 
@@ -447,18 +447,18 @@ LABEL_45:
 {
   if ([(NCNotificationListSectionHeaderView *)self adjustsFontForContentSizeCategory])
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 preferredContentSizeCategory];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-    v5 = [(NCNotificationListSectionHeaderView *)self preferredContentSizeCategory];
-    v6 = [v4 isEqualToString:v5];
+    preferredContentSizeCategory2 = [(NCNotificationListSectionHeaderView *)self preferredContentSizeCategory];
+    v6 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v6 & 1) == 0)
     {
-      [(NCNotificationListSectionHeaderView *)self setPreferredContentSizeCategory:v4];
+      [(NCNotificationListSectionHeaderView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
       clearButton = self->_clearButton;
-      v8 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-      if (_NCSizeCategoryIsAX(v8))
+      preferredContentSizeCategory3 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+      if (_NCSizeCategoryIsAX(preferredContentSizeCategory3))
       {
         v9 = 0;
       }
@@ -471,8 +471,8 @@ LABEL_45:
       [(NCToggleControl *)clearButton setAnchorEdge:v9];
     }
 
-    v10 = [(NCNotificationListHeaderTitleView *)self->_headerTitleView adjustForContentSizeCategoryChange];
-    v11 = [(NCToggleControl *)self->_clearButton adjustForContentSizeCategoryChange];
+    adjustForContentSizeCategoryChange = [(NCNotificationListHeaderTitleView *)self->_headerTitleView adjustForContentSizeCategoryChange];
+    adjustForContentSizeCategoryChange2 = [(NCToggleControl *)self->_clearButton adjustForContentSizeCategoryChange];
     if ([(NCNotificationListSectionHeaderView *)self showCollapseButton]&& (v12 = self->_collapseButton) != 0)
     {
       [(UIButton *)v12 removeFromSuperview];
@@ -480,7 +480,7 @@ LABEL_45:
       self->_collapseButton = 0;
     }
 
-    else if ((((v11 || v10) | v6 ^ 1) & 1) == 0)
+    else if ((((adjustForContentSizeCategoryChange2 || adjustForContentSizeCategoryChange) | v6 ^ 1) & 1) == 0)
     {
       v14 = 0;
       goto LABEL_14;
@@ -496,17 +496,17 @@ LABEL_14:
   return 0;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NCNotificationListSectionHeaderView;
-  v4 = a3;
-  [(NCNotificationListSectionHeaderView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NCNotificationListSectionHeaderView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NCNotificationListSectionHeaderView *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(NCNotificationListSectionHeaderView *)self _contentSizeCategoryDidChange];
   }
@@ -514,10 +514,10 @@ LABEL_14:
   [(NCNotificationListSectionHeaderView *)self setNeedsLayout];
 }
 
-- (void)_resetClearButtonStateAnimated:(BOOL)a3
+- (void)_resetClearButtonStateAnimated:(BOOL)animated
 {
   clearButton = self->_clearButton;
-  if (a3)
+  if (animated)
   {
     v5 = clearButton;
     v6 = objc_opt_class();
@@ -560,8 +560,8 @@ uint64_t __70__NCNotificationListSectionHeaderView__resetClearButtonStateAnimate
     [(NCToggleControl *)self->_clearButton addTarget:self forPreviewInteractionPresentedContentWithAction:sel__handleClearAll_];
     [(NCToggleControl *)self->_clearButton setDelegate:self];
     v7 = self->_clearButton;
-    v8 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    if (_NCSizeCategoryIsAX(v8))
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    if (_NCSizeCategoryIsAX(preferredContentSizeCategory))
     {
       v9 = 0;
     }
@@ -574,8 +574,8 @@ uint64_t __70__NCNotificationListSectionHeaderView__resetClearButtonStateAnimate
     [(NCToggleControl *)v7 setAnchorEdge:v9];
 
     [(NCToggleControl *)self->_clearButton setAdjustsFontForContentSizeCategory:self->_adjustsFontForContentSizeCategory];
-    v10 = [(NCNotificationListSectionHeaderView *)self clearButton];
-    [(NCNotificationListSectionHeaderView *)self addSubview:v10];
+    clearButton = [(NCNotificationListSectionHeaderView *)self clearButton];
+    [(NCNotificationListSectionHeaderView *)self addSubview:clearButton];
   }
 }
 
@@ -616,8 +616,8 @@ uint64_t __70__NCNotificationListSectionHeaderView__resetClearButtonStateAnimate
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.down" withConfiguration:v13];
     [(UIButton *)self->_collapseButton setImage:v10 forState:0];
     v11 = self->_collapseButton;
-    v12 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UIButton *)v11 setTintColor:v12];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UIButton *)v11 setTintColor:primaryColor];
 
     [(UIButton *)self->_collapseButton addTarget:self action:sel__handleCollapseActionTriggered_ forControlEvents:64];
     [(UIButton *)self->_collapseButton _setTouchInsets:-10.0, -10.0, -10.0, -10.0];
@@ -659,24 +659,24 @@ uint64_t __70__NCNotificationListSectionHeaderView__resetClearButtonStateAnimate
   v15 = v14;
   v17 = v16;
   v18 = MEMORY[0x277D76620];
-  v19 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v19);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   v21 = IsAX ^ [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
-  v22 = [MEMORY[0x277D75418] currentDevice];
-  v23 = [v22 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (!IsAX)
   {
-    if ((v23 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [*v18 activeInterfaceOrientation];
     }
 
     else
     {
-      v26 = [MEMORY[0x277D75C80] currentTraitCollection];
-      [v26 verticalSizeClass];
+      currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+      [currentTraitCollection verticalSizeClass];
     }
 
     v24 = 0.0;
@@ -688,7 +688,7 @@ uint64_t __70__NCNotificationListSectionHeaderView__resetClearButtonStateAnimate
     goto LABEL_18;
   }
 
-  if ((v23 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if (([*v18 activeInterfaceOrientation] - 1) >= 2)
     {
@@ -708,8 +708,8 @@ uint64_t __70__NCNotificationListSectionHeaderView__resetClearButtonStateAnimate
     goto LABEL_18;
   }
 
-  v25 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v25 verticalSizeClass] == 2)
+  currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection2 verticalSizeClass] == 2)
   {
     v24 = 10.0;
   }
@@ -762,21 +762,21 @@ LABEL_19:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
   v20 = MEMORY[0x277D76620];
   rect = v10;
   v65 = v14;
-  if (v19)
+  if (_shouldReverseLayoutDirection)
   {
     v70.origin.x = v4;
     v70.origin.y = v6;
     v70.size.width = v8;
     v70.size.height = v10;
     Width = CGRectGetWidth(v70);
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    v23 = [v22 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v24 = v23 & 0xFFFFFFFFFFFFFFFBLL;
+    v24 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
     if (v24 == 1)
     {
       v25 = ([*v20 activeInterfaceOrientation] - 1) < 2;
@@ -784,8 +784,8 @@ LABEL_19:
 
     else
     {
-      v22 = [MEMORY[0x277D75C80] currentTraitCollection];
-      v25 = [v22 verticalSizeClass] == 2;
+      currentDevice = [MEMORY[0x277D75C80] currentTraitCollection];
+      v25 = [currentDevice verticalSizeClass] == 2;
     }
 
     v29 = 6.0;
@@ -809,10 +809,10 @@ LABEL_19:
 
   else
   {
-    v26 = [MEMORY[0x277D75418] currentDevice];
-    v27 = [v26 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       if (([*v20 activeInterfaceOrientation] - 1) >= 2)
       {
@@ -827,8 +827,8 @@ LABEL_19:
 
     else
     {
-      v32 = [MEMORY[0x277D75C80] currentTraitCollection];
-      if ([v32 verticalSizeClass] == 2)
+      currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+      if ([currentTraitCollection verticalSizeClass] == 2)
       {
         v28 = 10.0;
       }
@@ -840,8 +840,8 @@ LABEL_19:
     }
   }
 
-  v33 = [*v20 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v33);
+  preferredContentSizeCategory = [*v20 preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   [objc_opt_class() _clearButtonPreferredSize];
   v68 = v18;
@@ -855,19 +855,19 @@ LABEL_19:
     v72.size.width = v8;
     v72.size.height = rect;
     v38 = CGRectGetWidth(v72);
-    v39 = [MEMORY[0x277D75418] currentDevice];
-    v40 = [v39 userInterfaceIdiom];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-    v41 = v40 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v40 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    v41 = userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v42 = ([*v20 activeInterfaceOrientation] - 1) < 2;
     }
 
     else
     {
-      v39 = [MEMORY[0x277D75C80] currentTraitCollection];
-      v42 = [v39 verticalSizeClass] == 2;
+      currentDevice3 = [MEMORY[0x277D75C80] currentTraitCollection];
+      v42 = [currentDevice3 verticalSizeClass] == 2;
     }
 
     v43 = 6.0;
@@ -877,28 +877,28 @@ LABEL_19:
     }
 
     v44 = v38 - v43;
-    v45 = [MEMORY[0x277D75418] currentDevice];
-    v46 = [v45 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    v47 = v46 & 0xFFFFFFFFFFFFFFFBLL;
-    if ((v46 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    v47 = userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL;
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [*v20 activeInterfaceOrientation];
     }
 
     else
     {
-      v45 = [MEMORY[0x277D75C80] currentTraitCollection];
-      [v45 verticalSizeClass];
+      currentDevice4 = [MEMORY[0x277D75C80] currentTraitCollection];
+      [currentDevice4 verticalSizeClass];
     }
 
     v48 = v44 - (v37 + 0.0);
     if ([(NCNotificationListSectionHeaderView *)self showCollapseButton])
     {
-      v49 = [MEMORY[0x277D75418] currentDevice];
-      v50 = [v49 userInterfaceIdiom];
+      currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
-      v51 = v50 & 0xFFFFFFFFFFFFFFFBLL;
+      v51 = userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL;
       if (v51 == 1)
       {
         v52 = ([*v20 activeInterfaceOrientation] - 1) < 2;
@@ -906,8 +906,8 @@ LABEL_19:
 
       else
       {
-        v49 = [MEMORY[0x277D75C80] currentTraitCollection];
-        v52 = [v49 verticalSizeClass] == 2;
+        currentDevice5 = [MEMORY[0x277D75C80] currentTraitCollection];
+        v52 = [currentDevice5 verticalSizeClass] == 2;
       }
 
       v53 = v52 ? 10.0 : 6.0;
@@ -937,9 +937,9 @@ LABEL_19:
 
   v64 = v18;
   v59 = v16;
-  v60 = [*v20 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [*v20 preferredContentSizeCategory];
   v61 = 12.0;
-  if (!_NCSizeCategoryIsAX(v60))
+  if (!_NCSizeCategoryIsAX(preferredContentSizeCategory2))
   {
     v74.origin.x = v4;
     v74.origin.y = v6;
@@ -1000,19 +1000,19 @@ LABEL_19:
   [(NCNotificationListSectionHeaderView *)self bounds];
   [(UIButton *)collapseButton sizeThatFits:v22, v23];
   v25 = v24;
-  v26 = [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
   v27 = MEMORY[0x277D76620];
   v28 = v8;
   v29 = v10;
   v30 = v12;
   v31 = v14;
-  if (v26)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = CGRectGetMinX(*&v28);
-    v33 = [MEMORY[0x277D75418] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v35 = [*v27 activeInterfaceOrientation] - 1;
       v36 = 6.0;
@@ -1025,10 +1025,10 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v43 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v44 = [v43 verticalSizeClass];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    verticalSizeClass = [currentTraitCollection verticalSizeClass];
     v45 = 6.0;
-    if (v44 == 2)
+    if (verticalSizeClass == 2)
     {
       v45 = 10.0;
     }
@@ -1040,15 +1040,15 @@ LABEL_18:
   }
 
   MaxX = CGRectGetMaxX(*&v28);
-  v39 = [MEMORY[0x277D75418] currentDevice];
-  v40 = [v39 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v40 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    v43 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v46 = [v43 verticalSizeClass];
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    verticalSizeClass2 = [currentTraitCollection verticalSizeClass];
     v47 = 6.0;
-    if (v46 == 2)
+    if (verticalSizeClass2 == 2)
     {
       v47 = 10.0;
     }
@@ -1066,8 +1066,8 @@ LABEL_18:
 
   v37 = MaxX + v42;
 LABEL_19:
-  v48 = [*v27 preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v48);
+  preferredContentSizeCategory = [*v27 preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
   if ([(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection])
   {
@@ -1093,10 +1093,10 @@ LABEL_25:
       v64.origin.y = v18;
       v64.size.height = v20;
       CGRectGetMinX(v64);
-      v50 = [MEMORY[0x277D75418] currentDevice];
-      v51 = [v50 userInterfaceIdiom];
+      currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-      if ((v51 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
 LABEL_26:
         [*v27 activeInterfaceOrientation];
@@ -1104,8 +1104,8 @@ LABEL_26:
       }
 
 LABEL_29:
-      v54 = [MEMORY[0x277D75C80] currentTraitCollection];
-      [v54 verticalSizeClass];
+      currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+      [currentTraitCollection2 verticalSizeClass];
 
       goto LABEL_30;
     }
@@ -1115,10 +1115,10 @@ LABEL_29:
     v65.origin.y = v18;
     v65.size.height = v20;
     CGRectGetMaxX(v65);
-    v52 = [MEMORY[0x277D75418] currentDevice];
-    v53 = [v52 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-    if ((v53 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       goto LABEL_26;
     }
@@ -1144,47 +1144,47 @@ LABEL_30:
   [(UIButton *)v55 setFrame:?];
 }
 
-- (void)_handleClearButtonTouchUpInside:(id)a3
+- (void)_handleClearButtonTouchUpInside:(id)inside
 {
-  v4 = a3;
-  v5 = [(NCNotificationListSectionHeaderView *)self clearButton];
+  insideCopy = inside;
+  clearButton = [(NCNotificationListSectionHeaderView *)self clearButton];
 
-  if (v5 == v4 && ![(NCToggleControl *)self->_clearButton isExpanded])
+  if (clearButton == insideCopy && ![(NCToggleControl *)self->_clearButton isExpanded])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained sectionHeaderViewDidTransitionToClearState:self];
   }
 }
 
-- (void)_handleClearButtonPrimaryActionTriggered:(id)a3
+- (void)_handleClearButtonPrimaryActionTriggered:(id)triggered
 {
   [(NCNotificationListSectionHeaderView *)self _resetClearButtonStateAnimated:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(NCNotificationListSectionHeaderView *)self sectionIdentifier];
-  [WeakRetained sectionHeaderView:self didReceiveClearActionForSectionIdentifier:v4];
+  sectionIdentifier = [(NCNotificationListSectionHeaderView *)self sectionIdentifier];
+  [WeakRetained sectionHeaderView:self didReceiveClearActionForSectionIdentifier:sectionIdentifier];
 }
 
-- (void)_handleClearAll:(id)a3
+- (void)_handleClearAll:(id)all
 {
-  v4 = [(NCNotificationListSectionHeaderView *)self delegate];
-  [v4 sectionHeaderViewDidReceiveClearAllAction:self];
+  delegate = [(NCNotificationListSectionHeaderView *)self delegate];
+  [delegate sectionHeaderViewDidReceiveClearAllAction:self];
 
   clearButton = self->_clearButton;
 
   [(NCToggleControl *)clearButton dismissModalFullScreenIfNeeded];
 }
 
-- (void)_handleCollapseActionTriggered:(id)a3
+- (void)_handleCollapseActionTriggered:(id)triggered
 {
-  v4 = [(NCNotificationListSectionHeaderView *)self delegate];
+  delegate = [(NCNotificationListSectionHeaderView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 sectionHeaderViewDidRequestCollapsing:self];
-    v5 = [(NCNotificationListSectionHeaderView *)self collapseButton];
+    [delegate sectionHeaderViewDidRequestCollapsing:self];
+    collapseButton = [(NCNotificationListSectionHeaderView *)self collapseButton];
     memset(&v16, 0, sizeof(v16));
-    v6 = [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(NCNotificationListSectionHeaderView *)self _shouldReverseLayoutDirection];
     v7 = -1.57;
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v7 = 1.57;
     }
@@ -1195,7 +1195,7 @@ LABEL_30:
     v13[1] = 3221225472;
     v13[2] = __70__NCNotificationListSectionHeaderView__handleCollapseActionTriggered___block_invoke;
     v13[3] = &unk_278370CA8;
-    v9 = v5;
+    v9 = collapseButton;
     v15 = v16;
     v14 = v9;
     v11[0] = MEMORY[0x277D85DD0];

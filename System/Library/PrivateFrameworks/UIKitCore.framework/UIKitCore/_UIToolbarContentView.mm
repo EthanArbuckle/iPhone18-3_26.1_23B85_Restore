@@ -1,22 +1,22 @@
 @interface _UIToolbarContentView
 - (NSDirectionalEdgeInsets)_directionalSafeArea;
 - (NSDirectionalEdgeInsets)padding;
-- (double)absorptionForItem:(id)a3;
+- (double)absorptionForItem:(id)item;
 - (double)defaultEdgeSpacing;
 - (double)defaultTextPadding;
-- (id)_computeEdgeAbsorptionForItems:(id)a3;
-- (unint64_t)edgesPaddingBarButtonItem:(id)a3;
+- (id)_computeEdgeAbsorptionForItems:(id)items;
+- (unint64_t)edgesPaddingBarButtonItem:(id)item;
 - (void)_ensureButtonBar;
-- (void)_setButtonBarLeadingInset:(double)a3 trailingInset:(double)a4;
-- (void)_updateThreeUpFlagsForItems:(id)a3;
+- (void)_setButtonBarLeadingInset:(double)inset trailingInset:(double)trailingInset;
+- (void)_updateThreeUpFlagsForItems:(id)items;
 - (void)layoutMarginsDidChange;
-- (void)reloadWithItems:(id)a3;
-- (void)setCompactMetrics:(BOOL)a3;
-- (void)setDoneItemAppearance:(id)a3;
-- (void)setPlainItemAppearance:(id)a3;
+- (void)reloadWithItems:(id)items;
+- (void)setCompactMetrics:(BOOL)metrics;
+- (void)setDoneItemAppearance:(id)appearance;
+- (void)setPlainItemAppearance:(id)appearance;
 - (void)updateConstraints;
 - (void)updateContent;
-- (void)updateWithItems:(id)a3 fromOldItems:(id)a4 animate:(BOOL)a5;
+- (void)updateWithItems:(id)items fromOldItems:(id)oldItems animate:(BOOL)animate;
 @end
 
 @implementation _UIToolbarContentView
@@ -36,8 +36,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIView *)self _shouldReverseLayoutDirection];
-  if (v11)
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v12 = v6;
   }
@@ -47,7 +47,7 @@
     v12 = v10;
   }
 
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v13 = v10;
   }
@@ -66,13 +66,13 @@
   return result;
 }
 
-- (void)_setButtonBarLeadingInset:(double)a3 trailingInset:(double)a4
+- (void)_setButtonBarLeadingInset:(double)inset trailingInset:(double)trailingInset
 {
   [(NSLayoutConstraint *)self->_buttonBarLeadingConstraint setConstant:?];
-  [(NSLayoutConstraint *)self->_buttonBarTrailingConstraint setConstant:a4];
+  [(NSLayoutConstraint *)self->_buttonBarTrailingConstraint setConstant:trailingInset];
   buttonBar = self->_buttonBar;
 
-  [(_UIButtonBar *)buttonBar setHitTestDirectionalInsets:0.0, -a3, 0.0, -a4];
+  [(_UIButtonBar *)buttonBar setHitTestDirectionalInsets:0.0, -inset, 0.0, -trailingInset];
 }
 
 - (void)updateContent
@@ -82,28 +82,28 @@
   leading = self->_padding.leading;
   bottom = self->_padding.bottom;
   trailing = self->_padding.trailing;
-  v7 = [(_UIButtonBar *)self->_buttonBar view];
-  [v7 setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
+  view = [(_UIButtonBar *)self->_buttonBar view];
+  [view setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
 
-  v8 = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
-  v9 = [v8 firstObject];
-  v10 = [v9 _items];
+  barButtonGroups = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
+  firstObject = [barButtonGroups firstObject];
+  _items = [firstObject _items];
 
-  if ([v10 count])
+  if ([_items count])
   {
     [(_UIToolbarContentView *)self _directionalSafeArea];
     v12 = v11;
     v14 = v13;
-    v15 = [(UIView *)self superview];
-    [v15 _contentMargin];
+    superview = [(UIView *)self superview];
+    [superview _contentMargin];
     v17 = v16;
 
     v18 = v12 + v17;
-    v19 = [v10 firstObject];
-    v20 = [v10 lastObject];
-    if ([v19 isSystemItem] && objc_msgSend(v19, "systemItem") == 6)
+    firstObject2 = [_items firstObject];
+    lastObject = [_items lastObject];
+    if ([firstObject2 isSystemItem] && objc_msgSend(firstObject2, "systemItem") == 6)
     {
-      [v19 width];
+      [firstObject2 width];
       v22 = v18 + v21;
       if (v18 + v21 < 0.0)
       {
@@ -117,10 +117,10 @@
     }
 
     v23 = v14 + v17;
-    v45 = v19;
-    if ([v20 isSystemItem] && objc_msgSend(v20, "systemItem") == 6)
+    v45 = firstObject2;
+    if ([lastObject isSystemItem] && objc_msgSend(lastObject, "systemItem") == 6)
     {
-      [v20 width];
+      [lastObject width];
       v25 = v23 + v24;
       if (v23 + v24 < 0.0)
       {
@@ -147,7 +147,7 @@
 
     v46 = 0uLL;
     v47 = 0uLL;
-    v27 = v10;
+    v27 = _items;
     v28 = [v27 countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v28)
     {
@@ -202,13 +202,13 @@ LABEL_51:
 
     standardEdgeSpacing = self->_standardEdgeSpacing;
     self->_standardEdgeSpacing = v26;
-    v37 = [(UIView *)self traitCollection];
-    if ([v37 userInterfaceIdiom] == 6)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 6)
     {
-      v38 = [(UIView *)self traitCollection];
-      v39 = [v38 _presentationSemanticContext];
+      traitCollection2 = [(UIView *)self traitCollection];
+      _presentationSemanticContext = [traitCollection2 _presentationSemanticContext];
 
-      if (v39 != 3)
+      if (_presentationSemanticContext != 3)
       {
         goto LABEL_46;
       }
@@ -220,8 +220,8 @@ LABEL_51:
 
     if ([v30 isCustomViewItem])
     {
-      v41 = [v27 firstObject];
-      v42 = v30 != v41;
+      firstObject3 = [v27 firstObject];
+      v42 = v30 != firstObject3;
 
       if (([v31 isCustomViewItem] & 1) == 0)
       {
@@ -246,8 +246,8 @@ LABEL_46:
       LOBYTE(v42) = 1;
     }
 
-    v43 = [v27 lastObject];
-    v44 = v31 != v43;
+    lastObject2 = [v27 lastObject];
+    v44 = v31 != lastObject2;
 
     if (v42)
     {
@@ -297,8 +297,8 @@ LABEL_52:
     [(_UIButtonBar *)self->_buttonBar set_appearanceDelegate:self];
     [(_UIButtonBar *)self->_buttonBar setAllowsViewWrappers:1];
     [(_UIButtonBar *)self->_buttonBar setItemDistribution:self->_itemDistribution];
-    v5 = [(UIView *)self traitCollection];
-    v6 = +[_UIButtonBarButtonVisualProvider visualProviderForIdiom:](_UIButtonBarButtonVisualProvider, "visualProviderForIdiom:", [v5 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v6 = +[_UIButtonBarButtonVisualProvider visualProviderForIdiom:](_UIButtonBarButtonVisualProvider, "visualProviderForIdiom:", [traitCollection userInterfaceIdiom]);
     objc_opt_class();
     v7 = _UIButtonBarButtonMakerForVisualProvider();
     [(_UIButtonBar *)self->_buttonBar setViewUpdater:v7];
@@ -314,8 +314,8 @@ LABEL_52:
     leading = self->_padding.leading;
     bottom = self->_padding.bottom;
     trailing = self->_padding.trailing;
-    v14 = [(_UIButtonBar *)self->_buttonBar view];
-    [v14 setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
+    view = [(_UIButtonBar *)self->_buttonBar view];
+    [view setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
 
     v15 = objc_alloc_init(_UIPointerInteractionAssistant);
     assistant = self->_assistant;
@@ -323,24 +323,24 @@ LABEL_52:
 
     [(UIView *)self addInteraction:self->_assistant];
     v17 = self->_assistant;
-    v18 = [(_UIButtonBar *)self->_buttonBar assistantView];
-    [(_UIPointerInteractionAssistant *)v17 setAssistedView:v18 identifier:@"ContentView.buttonBar"];
+    assistantView = [(_UIButtonBar *)self->_buttonBar assistantView];
+    [(_UIPointerInteractionAssistant *)v17 setAssistedView:assistantView identifier:@"ContentView.buttonBar"];
 
     [(_UIButtonBar *)self->_buttonBar setAssistant:self->_assistant];
-    v19 = [(_UIButtonBar *)self->_buttonBar view];
-    [(UIView *)self insertSubview:v19 atIndex:0];
-    v20 = [(_UIPointerInteractionAssistant *)self->_assistant previewContainer];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)self insertSubview:v20 atIndex:1];
-    v21 = [v19 leadingAnchor];
-    v22 = [(UIView *)self leadingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    view2 = [(_UIButtonBar *)self->_buttonBar view];
+    [(UIView *)self insertSubview:view2 atIndex:0];
+    previewContainer = [(_UIPointerInteractionAssistant *)self->_assistant previewContainer];
+    [previewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIView *)self insertSubview:previewContainer atIndex:1];
+    leadingAnchor = [view2 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     buttonBarLeadingConstraint = self->_buttonBarLeadingConstraint;
     self->_buttonBarLeadingConstraint = v23;
 
-    v25 = [(UIView *)self trailingAnchor];
-    v26 = [v19 trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    trailingAnchor = [(UIView *)self trailingAnchor];
+    trailingAnchor2 = [view2 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     buttonBarTrailingConstraint = self->_buttonBarTrailingConstraint;
     self->_buttonBarTrailingConstraint = v27;
 
@@ -348,27 +348,27 @@ LABEL_52:
     v29 = self->_buttonBarTrailingConstraint;
     v49[0] = self->_buttonBarLeadingConstraint;
     v49[1] = v29;
-    v47 = [v19 topAnchor];
-    v46 = [(UIView *)self topAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    topAnchor = [view2 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[2] = v45;
-    v44 = [v19 bottomAnchor];
-    v43 = [(UIView *)self bottomAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    bottomAnchor = [view2 bottomAnchor];
+    bottomAnchor2 = [(UIView *)self bottomAnchor];
+    v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v49[3] = v42;
-    v40 = [v20 leadingAnchor];
-    v39 = [v19 leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    leadingAnchor3 = [previewContainer leadingAnchor];
+    leadingAnchor4 = [view2 leadingAnchor];
+    v38 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v49[4] = v38;
-    v30 = [v20 topAnchor];
-    v31 = [v19 topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    topAnchor3 = [previewContainer topAnchor];
+    topAnchor4 = [view2 topAnchor];
+    v32 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v49[5] = v32;
-    v33 = [v20 widthAnchor];
-    v34 = [v33 constraintEqualToConstant:0.0];
+    widthAnchor = [previewContainer widthAnchor];
+    v34 = [widthAnchor constraintEqualToConstant:0.0];
     v49[6] = v34;
-    v35 = [v20 heightAnchor];
-    v36 = [v35 constraintEqualToConstant:0.0];
+    heightAnchor = [previewContainer heightAnchor];
+    v36 = [heightAnchor constraintEqualToConstant:0.0];
     v49[7] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:8];
     [v41 activateConstraints:v37];
@@ -383,24 +383,24 @@ LABEL_52:
   [(_UIToolbarContentView *)self updateContent];
 }
 
-- (void)reloadWithItems:(id)a3
+- (void)reloadWithItems:(id)items
 {
-  v6 = [(_UIToolbarContentView *)self _computeEdgeAbsorptionForItems:a3];
-  v4 = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  v6 = [(_UIToolbarContentView *)self _computeEdgeAbsorptionForItems:items];
+  barButtonGroups = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
+  v5 = [barButtonGroups objectAtIndexedSubscript:0];
   [v5 setBarButtonItems:v6];
 }
 
-- (void)_updateThreeUpFlagsForItems:(id)a3
+- (void)_updateThreeUpFlagsForItems:(id)items
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
@@ -437,10 +437,10 @@ LABEL_52:
 
         else if (([v13 isCustomViewItem] & 1) == 0)
         {
-          v14 = [v13 title];
-          if (v14)
+          title = [v13 title];
+          if (title)
           {
-            v15 = v14;
+            v15 = title;
             v16 = ~[v13 hasImage];
 
             v8 += v16 & 1;
@@ -506,15 +506,15 @@ LABEL_52:
   }
 }
 
-- (void)updateWithItems:(id)a3 fromOldItems:(id)a4 animate:(BOOL)a5
+- (void)updateWithItems:(id)items fromOldItems:(id)oldItems animate:(BOOL)animate
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5 && (-[_UIButtonBar view](self->_buttonBar, "view"), v10 = objc_claimAutoreleasedReturnValue(), [v10 window], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  animateCopy = animate;
+  itemsCopy = items;
+  oldItemsCopy = oldItems;
+  if (animateCopy && (-[_UIButtonBar view](self->_buttonBar, "view"), v10 = objc_claimAutoreleasedReturnValue(), [v10 window], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v12 = [(_UIButtonBar *)self->_buttonBar view];
-    v13 = [v12 snapshotViewAfterScreenUpdates:0];
+    view = [(_UIButtonBar *)self->_buttonBar view];
+    v13 = [view snapshotViewAfterScreenUpdates:0];
   }
 
   else
@@ -522,25 +522,25 @@ LABEL_52:
     v13 = 0;
   }
 
-  v14 = [(_UIToolbarContentView *)self _computeEdgeAbsorptionForItems:v8];
+  v14 = [(_UIToolbarContentView *)self _computeEdgeAbsorptionForItems:itemsCopy];
 
   [(_UIToolbarContentView *)self _updateThreeUpFlagsForItems:v14];
   [(_UIToolbarContentView *)self _ensureButtonBar];
-  v15 = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  barButtonGroups = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
+  v16 = [barButtonGroups objectAtIndexedSubscript:0];
   [v16 setBarButtonItems:v14];
 
   [(_UIToolbarContentView *)self updateContent];
-  v17 = [(_UIButtonBar *)self->_buttonBar view];
-  v18 = v17;
+  view2 = [(_UIButtonBar *)self->_buttonBar view];
+  v18 = view2;
   if (v13)
   {
-    [v17 frame];
+    [view2 frame];
     [v13 setFrame:?];
 
     [(UIView *)self addSubview:v13];
-    v19 = [(_UIButtonBar *)self->_buttonBar view];
-    [v19 setAlpha:0.0];
+    view3 = [(_UIButtonBar *)self->_buttonBar view];
+    [view3 setAlpha:0.0];
 
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -558,36 +558,36 @@ LABEL_52:
 
   else
   {
-    [v17 setAlpha:1.0];
+    [view2 setAlpha:1.0];
   }
 }
 
-- (unint64_t)edgesPaddingBarButtonItem:(id)a3
+- (unint64_t)edgesPaddingBarButtonItem:(id)item
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   if (self->_itemDistribution)
   {
     v6 = 0;
   }
 
-  else if ([v4 _wantsThreeUp])
+  else if ([itemCopy _wantsThreeUp])
   {
     v6 = 15;
   }
 
   else
   {
-    v7 = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 barButtonItems];
+    barButtonGroups = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
+    v8 = [barButtonGroups objectAtIndexedSubscript:0];
+    barButtonItems = [v8 barButtonItems];
     v10 = objc_opt_new();
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v9;
+    v11 = barButtonItems;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
@@ -616,7 +616,7 @@ LABEL_52:
     }
 
     v17 = *(&self->super.super._viewFlags + 2);
-    v18 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
     v19 = (v17 & 0x400000) == 0;
     if ((v17 & 0x400000) != 0)
@@ -635,7 +635,7 @@ LABEL_52:
       v21 = 13;
     }
 
-    if (v18 == v5)
+    if (firstObject == v5)
     {
       v22 = v21;
     }
@@ -645,9 +645,9 @@ LABEL_52:
       v22 = 15;
     }
 
-    v23 = [v10 lastObject];
+    lastObject = [v10 lastObject];
 
-    if (v23 == v5)
+    if (lastObject == v5)
     {
       v24 = v20;
     }
@@ -663,10 +663,10 @@ LABEL_52:
   return v6;
 }
 
-- (id)_computeEdgeAbsorptionForItems:(id)a3
+- (id)_computeEdgeAbsorptionForItems:(id)items
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   obj = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   v4 = objc_opt_new();
   v52 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -674,7 +674,7 @@ LABEL_52:
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v6)
   {
@@ -717,8 +717,8 @@ LABEL_52:
     while (v7);
   }
 
-  v13 = [(UIView *)self traitCollection];
-  [v13 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection userInterfaceIdiom];
 
   if ([v4 count])
   {
@@ -785,13 +785,13 @@ LABEL_56:
       goto LABEL_57;
     }
 
-    v27 = [v21 _viewOwner];
-    v50 = [v20 _viewOwner];
-    v48 = [v22 _viewOwner];
+    _viewOwner = [v21 _viewOwner];
+    _viewOwner2 = [v20 _viewOwner];
+    _viewOwner3 = [v22 _viewOwner];
     [v21 _setViewOwner:0];
     [v20 _setViewOwner:0];
     [v22 _setViewOwner:0];
-    v49 = v27;
+    v49 = _viewOwner;
     if ([v21 isSpaceItem] && objc_msgSend(v22, "isSpaceItem"))
     {
       [v22 width];
@@ -821,8 +821,8 @@ LABEL_56:
     {
       if (v21 || ![v22 isSpaceItem])
       {
-        v36 = [v21 isSpaceItem];
-        if (v22 || !v36)
+        isSpaceItem = [v21 isSpaceItem];
+        if (v22 || !isSpaceItem)
         {
           goto LABEL_55;
         }
@@ -843,11 +843,11 @@ LABEL_56:
 LABEL_54:
         [v35 width];
         [v35 setWidth:v39 - v24];
-        v27 = v49;
+        _viewOwner = v49;
 LABEL_55:
-        [v21 _setViewOwner:v27];
-        [v20 _setViewOwner:v50];
-        [v22 _setViewOwner:v48];
+        [v21 _setViewOwner:_viewOwner];
+        [v20 _setViewOwner:_viewOwner2];
+        [v22 _setViewOwner:_viewOwner3];
 
         goto LABEL_56;
       }
@@ -911,9 +911,9 @@ LABEL_60:
   return v4;
 }
 
-- (double)absorptionForItem:(id)a3
+- (double)absorptionForItem:(id)item
 {
-  v3 = [(NSMapTable *)self->_absorptionTable objectForKey:a3];
+  v3 = [(NSMapTable *)self->_absorptionTable objectForKey:item];
   v4 = v3;
   if (v3)
   {
@@ -942,8 +942,8 @@ LABEL_60:
 
 - (double)defaultTextPadding
 {
-  v2 = [(UIView *)self traitCollection];
-  if ([v2 userInterfaceIdiom] == 5)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     v3 = 6.0;
   }
@@ -956,21 +956,21 @@ LABEL_60:
   return v3;
 }
 
-- (void)setCompactMetrics:(BOOL)a3
+- (void)setCompactMetrics:(BOOL)metrics
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_compactMetrics != a3)
+  if (self->_compactMetrics != metrics)
   {
-    self->_compactMetrics = a3;
-    v3 = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
-    v4 = [v3 firstObject];
-    v5 = [v4 _items];
+    self->_compactMetrics = metrics;
+    barButtonGroups = [(_UIButtonBar *)self->_buttonBar barButtonGroups];
+    firstObject = [barButtonGroups firstObject];
+    _items = [firstObject _items];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = v5;
+    v6 = _items;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -998,9 +998,9 @@ LABEL_60:
   }
 }
 
-- (void)setPlainItemAppearance:(id)a3
+- (void)setPlainItemAppearance:(id)appearance
 {
-  v4 = [a3 copy];
+  v4 = [appearance copy];
   plainItemAppearance = self->_plainItemAppearance;
   self->_plainItemAppearance = v4;
 
@@ -1010,9 +1010,9 @@ LABEL_60:
   [(_UIButtonBar *)buttonBar setPlainItemAppearance:v6];
 }
 
-- (void)setDoneItemAppearance:(id)a3
+- (void)setDoneItemAppearance:(id)appearance
 {
-  v4 = [a3 copy];
+  v4 = [appearance copy];
   doneItemAppearance = self->_doneItemAppearance;
   self->_doneItemAppearance = v4;
 

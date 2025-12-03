@@ -1,35 +1,35 @@
 @interface SUUIGiftTableSectionHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setLabel:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SUUIGiftTableSectionHeaderView
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(SUUIGiftTableSectionHeaderView *)self setNeedsLayout];
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v15 = a3;
-  v4 = [(SUUIGiftTableSectionHeaderView *)self label];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  labelCopy = label;
+  label = [(SUUIGiftTableSectionHeaderView *)self label];
+  if (label != labelCopy && ([labelCopy isEqualToString:label] & 1) == 0)
   {
     label = self->_label;
-    if (v15)
+    if (labelCopy)
     {
       if (!label)
       {
@@ -38,16 +38,16 @@
         self->_label = v6;
 
         v8 = self->_label;
-        v9 = [(SUUIGiftTableSectionHeaderView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIGiftTableSectionHeaderView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_label;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:15.0];
         [(UILabel *)v10 setFont:v11];
 
         v12 = self->_label;
-        v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        [(UILabel *)v12 setTextColor:secondaryLabelColor];
 
         [(UILabel *)self->_label setTextAlignment:4];
         [(SUUIGiftTableSectionHeaderView *)self addSubview:self->_label];
@@ -78,24 +78,24 @@
   [(UILabel *)label setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   label = self->_label;
-  v5 = a3;
-  [(UILabel *)label setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)label setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIGiftTableSectionHeaderView;
-  [(SUUIGiftTableSectionHeaderView *)&v6 setBackgroundColor:v5];
+  [(SUUIGiftTableSectionHeaderView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  width = fits.width;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v7 = 22.0;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 24.0;
   }

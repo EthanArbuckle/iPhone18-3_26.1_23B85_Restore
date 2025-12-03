@@ -1,36 +1,36 @@
 @interface HDFeatureSettingsManager
-- (BOOL)_performWriteTransactionAndNotifyObserversWithError:(uint64_t)a1 suppressNotificationsToObserver:(uint64_t)a2 block:(void *)a3 inaccessibilityHandler:(void *)a4;
-- (BOOL)removeFeatureSettingsValueForKey:(id)a3 featureIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)resetFeatureSettingsForFeatureIdentifier:(id)a3 suppressNotificationsToObserver:(id)a4 error:(id *)a5;
-- (BOOL)setFeatureSettingsData:(id)a3 forKey:(id)a4 featureIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)setFeatureSettingsNumber:(id)a3 forKey:(id)a4 featureIdentifier:(id)a5 suppressNotificationsToObserver:(id)a6 error:(id *)a7;
-- (BOOL)setFeatureSettingsString:(id)a3 forKey:(id)a4 featureIdentifier:(id)a5 error:(id *)a6;
-- (BOOL)setFeatureSettingsValues:(id)a3 featureIdentifier:(id)a4 suppressNotificationsToObserver:(id)a5 error:(id *)a6;
-- (HDFeatureSettingsManager)initWithProfile:(id)a3;
-- (id)_featureSettingsKeyValueDomainWithFeatureIdentifier:(id *)a1;
-- (id)featureSettingsForFeatureIdentifier:(id)a3 error:(id *)a4;
-- (uint64_t)_setFeatureSettingsValue:(void *)a3 forKey:(void *)a4 keyValueDomain:(void *)a5 error:;
-- (void)_lock_unregisterObserver:(void *)a3 featureIdentifier:;
-- (void)_notifyObserversOfFeatureIdentifier:(void *)a3 excludingObserver:;
-- (void)_settingsDidSyncNotification:(id)a3;
+- (BOOL)_performWriteTransactionAndNotifyObserversWithError:(uint64_t)error suppressNotificationsToObserver:(uint64_t)observer block:(void *)block inaccessibilityHandler:(void *)handler;
+- (BOOL)removeFeatureSettingsValueForKey:(id)key featureIdentifier:(id)identifier error:(id *)error;
+- (BOOL)resetFeatureSettingsForFeatureIdentifier:(id)identifier suppressNotificationsToObserver:(id)observer error:(id *)error;
+- (BOOL)setFeatureSettingsData:(id)data forKey:(id)key featureIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setFeatureSettingsNumber:(id)number forKey:(id)key featureIdentifier:(id)identifier suppressNotificationsToObserver:(id)observer error:(id *)error;
+- (BOOL)setFeatureSettingsString:(id)string forKey:(id)key featureIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setFeatureSettingsValues:(id)values featureIdentifier:(id)identifier suppressNotificationsToObserver:(id)observer error:(id *)error;
+- (HDFeatureSettingsManager)initWithProfile:(id)profile;
+- (id)_featureSettingsKeyValueDomainWithFeatureIdentifier:(id *)identifier;
+- (id)featureSettingsForFeatureIdentifier:(id)identifier error:(id *)error;
+- (uint64_t)_setFeatureSettingsValue:(void *)value forKey:(void *)key keyValueDomain:(void *)domain error:;
+- (void)_lock_unregisterObserver:(void *)observer featureIdentifier:;
+- (void)_notifyObserversOfFeatureIdentifier:(void *)identifier excludingObserver:;
+- (void)_settingsDidSyncNotification:(id)notification;
 - (void)invalidateAndWait;
-- (void)registerObserver:(id)a3 featureIdentifier:(id)a4 queue:(id)a5;
-- (void)unregisterObserver:(id)a3;
-- (void)unregisterObserver:(id)a3 featureIdentifier:(id)a4;
+- (void)registerObserver:(id)observer featureIdentifier:(id)identifier queue:(id)queue;
+- (void)unregisterObserver:(id)observer;
+- (void)unregisterObserver:(id)observer featureIdentifier:(id)identifier;
 @end
 
 @implementation HDFeatureSettingsManager
 
-- (HDFeatureSettingsManager)initWithProfile:(id)a3
+- (HDFeatureSettingsManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDFeatureSettingsManager;
   v5 = [(HDFeatureSettingsManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -40,8 +40,8 @@
     observersByFeatureIdentifier = v6->_observersByFeatureIdentifier;
     v6->_observersByFeatureIdentifier = v9;
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v6 selector:sel__settingsDidSyncNotification_ name:@"HDUnprotectedFeatureSettingsSyncEntityDidSync" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__settingsDidSyncNotification_ name:@"HDUnprotectedFeatureSettingsSyncEntityDidSync" object:profileCopy];
   }
 
   return v6;
@@ -49,15 +49,15 @@
 
 - (void)invalidateAndWait
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  [v4 removeObserver:self name:@"HDUnprotectedFeatureSettingsSyncEntityDidSync" object:WeakRetained];
+  [defaultCenter removeObserver:self name:@"HDUnprotectedFeatureSettingsSyncEntityDidSync" object:WeakRetained];
 }
 
-- (id)featureSettingsForFeatureIdentifier:(id)a3 error:(id *)a4
+- (id)featureSettingsForFeatureIdentifier:(id)identifier error:(id *)error
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(v6);
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -70,7 +70,7 @@
   v19 = v11;
   v12 = v9;
   v20 = v12;
-  LOBYTE(v9) = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity enumerateValuesForDomain:v7 category:4 keys:0 profile:WeakRetained error:&v21 usingBlock:v18];
+  LOBYTE(v9) = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity enumerateValuesForDomain:identifierCopy category:4 keys:0 profile:WeakRetained error:&v21 usingBlock:v18];
 
   v13 = v21;
   if (v9)
@@ -83,10 +83,10 @@
     v15 = v13;
     if (v15)
     {
-      if (a4)
+      if (error)
       {
         v16 = v15;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -124,12 +124,12 @@ void __70__HDFeatureSettingsManager_featureSettingsForFeatureIdentifier_error___
   }
 }
 
-- (BOOL)setFeatureSettingsValues:(id)a3 featureIdentifier:(id)a4 suppressNotificationsToObserver:(id)a5 error:(id *)a6
+- (BOOL)setFeatureSettingsValues:(id)values featureIdentifier:(id)identifier suppressNotificationsToObserver:(id)observer error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:v11];
+  valuesCopy = values;
+  identifierCopy = identifier;
+  observerCopy = observer;
+  v13 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:identifierCopy];
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -148,13 +148,13 @@ void __70__HDFeatureSettingsManager_featureSettingsForFeatureIdentifier_error___
   v30 = &v38;
   v31 = &v32;
   block[4] = self;
-  v15 = v12;
+  v15 = observerCopy;
   v26 = v15;
   v16 = v13;
   v27 = v16;
-  v17 = v10;
+  v17 = valuesCopy;
   v28 = v17;
-  v18 = v11;
+  v18 = identifierCopy;
   v29 = v18;
   dispatch_sync(queue, block);
   v19 = v33[5];
@@ -162,10 +162,10 @@ void __70__HDFeatureSettingsManager_featureSettingsForFeatureIdentifier_error___
   {
     v20 = v19;
     v21 = v20;
-    if (a6)
+    if (error)
     {
       v22 = v20;
-      *a6 = v21;
+      *error = v21;
     }
 
     else
@@ -182,18 +182,18 @@ void __70__HDFeatureSettingsManager_featureSettingsForFeatureIdentifier_error___
   return v23;
 }
 
-- (id)_featureSettingsKeyValueDomainWithFeatureIdentifier:(id *)a1
+- (id)_featureSettingsKeyValueDomainWithFeatureIdentifier:(id *)identifier
 {
-  v2 = a1;
-  if (a1)
+  identifierCopy = identifier;
+  if (identifier)
   {
     v3 = a2;
     v4 = [HDKeyValueDomain alloc];
-    WeakRetained = objc_loadWeakRetained(v2 + 1);
-    v2 = [(HDKeyValueDomain *)v4 initWithCategory:4 domainName:v3 profile:WeakRetained];
+    WeakRetained = objc_loadWeakRetained(identifierCopy + 1);
+    identifierCopy = [(HDKeyValueDomain *)v4 initWithCategory:4 domainName:v3 profile:WeakRetained];
   }
 
-  return v2;
+  return identifierCopy;
 }
 
 void __109__HDFeatureSettingsManager_setFeatureSettingsValues_featureIdentifier_suppressNotificationsToObserver_error___block_invoke(uint64_t a1)
@@ -411,18 +411,18 @@ LABEL_38:
   return v11;
 }
 
-- (uint64_t)_setFeatureSettingsValue:(void *)a3 forKey:(void *)a4 keyValueDomain:(void *)a5 error:
+- (uint64_t)_setFeatureSettingsValue:(void *)value forKey:(void *)key keyValueDomain:(void *)domain error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  valueCopy = value;
+  keyCopy = key;
+  if (self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v18 = 0;
-      a1 = [v11 setData:v9 forKey:v10 error:&v18];
+      self = [keyCopy setData:v9 forKey:valueCopy error:&v18];
       v12 = v18;
     }
 
@@ -432,7 +432,7 @@ LABEL_38:
       if (objc_opt_isKindOfClass())
       {
         v17 = 0;
-        a1 = [v11 setNumber:v9 forKey:v10 error:&v17];
+        self = [keyCopy setNumber:v9 forKey:valueCopy error:&v17];
         v12 = v17;
       }
 
@@ -442,14 +442,14 @@ LABEL_38:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v13 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:sel__setFeatureSettingsValue_forKey_keyValueDomain_error_ format:{@"Value (%@) has an invalid type, expected NSData, NSNumber or NSString.", v9}];
-          a1 = 0;
+          self = 0;
           if (v13)
           {
 LABEL_9:
-            if (a5)
+            if (domain)
             {
               v14 = v13;
-              *a5 = v13;
+              *domain = v13;
             }
 
             else
@@ -464,7 +464,7 @@ LABEL_12:
         }
 
         v16 = 0;
-        a1 = [v11 setString:v9 forKey:v10 error:&v16];
+        self = [keyCopy setString:v9 forKey:valueCopy error:&v16];
         v12 = v16;
       }
     }
@@ -480,14 +480,14 @@ LABEL_12:
 
 LABEL_13:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_performWriteTransactionAndNotifyObserversWithError:(uint64_t)a1 suppressNotificationsToObserver:(uint64_t)a2 block:(void *)a3 inaccessibilityHandler:(void *)a4
+- (BOOL)_performWriteTransactionAndNotifyObserversWithError:(uint64_t)error suppressNotificationsToObserver:(uint64_t)observer block:(void *)block inaccessibilityHandler:(void *)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  blockCopy = block;
+  handlerCopy = handler;
+  if (error)
   {
     v17[0] = 0;
     v17[1] = v17;
@@ -495,17 +495,17 @@ LABEL_13:
     v17[3] = __Block_byref_object_copy__160;
     v17[4] = __Block_byref_object_dispose__160;
     v18 = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v10 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((error + 8));
+    database = [WeakRetained database];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __141__HDFeatureSettingsManager__performWriteTransactionAndNotifyObserversWithError_suppressNotificationsToObserver_block_inaccessibilityHandler___block_invoke;
     v13[3] = &unk_278628D20;
     v16 = v17;
-    v15 = v8;
-    v13[4] = a1;
-    v14 = v7;
-    v11 = [(HDHealthEntity *)HDOnboardingCompletionEntity performWriteTransactionWithHealthDatabase:v10 error:a2 block:v13 inaccessibilityHandler:0];
+    v15 = handlerCopy;
+    v13[4] = error;
+    v14 = blockCopy;
+    v11 = [(HDHealthEntity *)HDOnboardingCompletionEntity performWriteTransactionWithHealthDatabase:database error:observer block:v13 inaccessibilityHandler:0];
 
     _Block_object_dispose(v17, 8);
   }
@@ -518,12 +518,12 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)setFeatureSettingsData:(id)a3 forKey:(id)a4 featureIdentifier:(id)a5 error:(id *)a6
+- (BOOL)setFeatureSettingsData:(id)data forKey:(id)key featureIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:v12];
+  dataCopy = data;
+  keyCopy = key;
+  identifierCopy = identifier;
+  v13 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:identifierCopy];
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -542,9 +542,9 @@ LABEL_13:
   v28 = &v36;
   v15 = v13;
   v25 = v15;
-  v16 = v10;
+  v16 = dataCopy;
   v26 = v16;
-  v17 = v11;
+  v17 = keyCopy;
   v27 = v17;
   v29 = &v30;
   dispatch_sync(queue, block);
@@ -553,10 +553,10 @@ LABEL_13:
   {
     v19 = v18;
     v20 = v19;
-    if (a6)
+    if (error)
     {
       v21 = v19;
-      *a6 = v20;
+      *error = v20;
     }
 
     else
@@ -567,7 +567,7 @@ LABEL_13:
 
   if (*(v37 + 24) == 1)
   {
-    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:v12 excludingObserver:0];
+    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:identifierCopy excludingObserver:0];
     v22 = *(v37 + 24);
   }
 
@@ -594,34 +594,34 @@ void __82__HDFeatureSettingsManager_setFeatureSettingsData_forKey_featureIdentif
   *(*(a1[7] + 8) + 24) = v6;
 }
 
-- (void)_notifyObserversOfFeatureIdentifier:(void *)a3 excludingObserver:
+- (void)_notifyObserversOfFeatureIdentifier:(void *)identifier excludingObserver:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 24));
-    v7 = [*(a1 + 32) objectForKeyedSubscript:v5];
+    os_unfair_lock_lock((self + 24));
+    v7 = [*(self + 32) objectForKeyedSubscript:v5];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __82__HDFeatureSettingsManager__notifyObserversOfFeatureIdentifier_excludingObserver___block_invoke;
     v8[3] = &unk_278628D48;
-    v9 = v6;
-    v10 = a1;
+    v9 = identifierCopy;
+    selfCopy = self;
     v11 = v5;
     [v7 notifyObservers:v8];
 
-    os_unfair_lock_unlock((a1 + 24));
+    os_unfair_lock_unlock((self + 24));
   }
 }
 
-- (BOOL)setFeatureSettingsNumber:(id)a3 forKey:(id)a4 featureIdentifier:(id)a5 suppressNotificationsToObserver:(id)a6 error:(id *)a7
+- (BOOL)setFeatureSettingsNumber:(id)number forKey:(id)key featureIdentifier:(id)identifier suppressNotificationsToObserver:(id)observer error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:v14];
+  numberCopy = number;
+  keyCopy = key;
+  identifierCopy = identifier;
+  observerCopy = observer;
+  v16 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:identifierCopy];
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -640,9 +640,9 @@ void __82__HDFeatureSettingsManager_setFeatureSettingsData_forKey_featureIdentif
   v31 = &v39;
   v18 = v16;
   v28 = v18;
-  v19 = v12;
+  v19 = numberCopy;
   v29 = v19;
-  v20 = v13;
+  v20 = keyCopy;
   v30 = v20;
   v32 = &v33;
   dispatch_sync(queue, block);
@@ -651,10 +651,10 @@ void __82__HDFeatureSettingsManager_setFeatureSettingsData_forKey_featureIdentif
   {
     v22 = v21;
     v23 = v22;
-    if (a7)
+    if (error)
     {
       v24 = v22;
-      *a7 = v23;
+      *error = v23;
     }
 
     else
@@ -665,7 +665,7 @@ void __82__HDFeatureSettingsManager_setFeatureSettingsData_forKey_featureIdentif
 
   if (*(v40 + 24) == 1)
   {
-    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:v14 excludingObserver:v15];
+    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:identifierCopy excludingObserver:observerCopy];
     v25 = *(v40 + 24);
   }
 
@@ -692,12 +692,12 @@ void __116__HDFeatureSettingsManager_setFeatureSettingsNumber_forKey_featureIden
   *(*(a1[7] + 8) + 24) = v6;
 }
 
-- (BOOL)setFeatureSettingsString:(id)a3 forKey:(id)a4 featureIdentifier:(id)a5 error:(id *)a6
+- (BOOL)setFeatureSettingsString:(id)string forKey:(id)key featureIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:v12];
+  stringCopy = string;
+  keyCopy = key;
+  identifierCopy = identifier;
+  v13 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:identifierCopy];
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -716,9 +716,9 @@ void __116__HDFeatureSettingsManager_setFeatureSettingsNumber_forKey_featureIden
   v28 = &v36;
   v15 = v13;
   v25 = v15;
-  v16 = v10;
+  v16 = stringCopy;
   v26 = v16;
-  v17 = v11;
+  v17 = keyCopy;
   v27 = v17;
   v29 = &v30;
   dispatch_sync(queue, block);
@@ -727,10 +727,10 @@ void __116__HDFeatureSettingsManager_setFeatureSettingsNumber_forKey_featureIden
   {
     v19 = v18;
     v20 = v19;
-    if (a6)
+    if (error)
     {
       v21 = v19;
-      *a6 = v20;
+      *error = v20;
     }
 
     else
@@ -741,7 +741,7 @@ void __116__HDFeatureSettingsManager_setFeatureSettingsNumber_forKey_featureIden
 
   if (*(v37 + 24) == 1)
   {
-    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:v12 excludingObserver:0];
+    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:identifierCopy excludingObserver:0];
     v22 = *(v37 + 24);
   }
 
@@ -768,12 +768,12 @@ void __84__HDFeatureSettingsManager_setFeatureSettingsString_forKey_featureIdent
   *(*(a1[7] + 8) + 24) = v6;
 }
 
-- (BOOL)removeFeatureSettingsValueForKey:(id)a3 featureIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeFeatureSettingsValueForKey:(id)key featureIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:v9];
-  v11 = [MEMORY[0x277CBEB98] setWithObject:v8];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v10 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:identifierCopy];
+  v11 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -801,10 +801,10 @@ void __84__HDFeatureSettingsManager_setFeatureSettingsString_forKey_featureIdent
   {
     v16 = v15;
     v17 = v16;
-    if (a5)
+    if (error)
     {
       v18 = v16;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -815,7 +815,7 @@ void __84__HDFeatureSettingsManager_setFeatureSettingsString_forKey_featureIdent
 
   if (*(v33 + 24) == 1)
   {
-    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:v9 excludingObserver:0];
+    [(HDFeatureSettingsManager *)self _notifyObserversOfFeatureIdentifier:identifierCopy excludingObserver:0];
     v19 = *(v33 + 24);
   }
 
@@ -841,11 +841,11 @@ void __85__HDFeatureSettingsManager_removeFeatureSettingsValueForKey_featureIden
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)resetFeatureSettingsForFeatureIdentifier:(id)a3 suppressNotificationsToObserver:(id)a4 error:(id *)a5
+- (BOOL)resetFeatureSettingsForFeatureIdentifier:(id)identifier suppressNotificationsToObserver:(id)observer error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:v8];
+  identifierCopy = identifier;
+  observerCopy = observer;
+  v10 = [(HDFeatureSettingsManager *)&self->super.isa _featureSettingsKeyValueDomainWithFeatureIdentifier:identifierCopy];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -864,11 +864,11 @@ void __85__HDFeatureSettingsManager_removeFeatureSettingsValueForKey_featureIden
   v25 = &v33;
   v26 = &v27;
   v21[4] = self;
-  v12 = v9;
+  v12 = observerCopy;
   v22 = v12;
   v13 = v10;
   v23 = v13;
-  v14 = v8;
+  v14 = identifierCopy;
   v24 = v14;
   dispatch_sync(queue, v21);
   v15 = v28[5];
@@ -876,10 +876,10 @@ void __85__HDFeatureSettingsManager_removeFeatureSettingsValueForKey_featureIden
   {
     v16 = v15;
     v17 = v16;
-    if (a5)
+    if (error)
     {
       v18 = v16;
-      *a5 = v17;
+      *error = v17;
     }
 
     else
@@ -1000,60 +1000,60 @@ void __82__HDFeatureSettingsManager__notifyObserversOfFeatureIdentifier_excludin
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3 featureIdentifier:(id)a4 queue:(id)a5
+- (void)registerObserver:(id)observer featureIdentifier:(id)identifier queue:(id)queue
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_observersByFeatureIdentifier objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_observersByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v10)
   {
     v11 = objc_alloc(MEMORY[0x277CCD738]);
     v12 = HKLogInfrastructure();
-    v10 = [v11 initWithName:v8 loggingCategory:v12];
+    v10 = [v11 initWithName:identifierCopy loggingCategory:v12];
 
-    [(NSMutableDictionary *)self->_observersByFeatureIdentifier setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_observersByFeatureIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
   }
 
-  [v10 registerObserver:v13 queue:v9];
+  [v10 registerObserver:observerCopy queue:queueCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3 featureIdentifier:(id)a4
+- (void)unregisterObserver:(id)observer featureIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(HDFeatureSettingsManager *)self _lock_unregisterObserver:v7 featureIdentifier:v6];
+  [(HDFeatureSettingsManager *)self _lock_unregisterObserver:observerCopy featureIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_unregisterObserver:(void *)a3 featureIdentifier:
+- (void)_lock_unregisterObserver:(void *)observer featureIdentifier:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    observerCopy = observer;
     v6 = a2;
-    os_unfair_lock_assert_owner((a1 + 24));
-    v7 = [*(a1 + 32) objectForKeyedSubscript:v5];
+    os_unfair_lock_assert_owner((self + 24));
+    v7 = [*(self + 32) objectForKeyedSubscript:observerCopy];
 
     [v7 unregisterObserver:v6];
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMutableDictionary *)self->_observersByFeatureIdentifier allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_observersByFeatureIdentifier allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1065,14 +1065,14 @@ void __82__HDFeatureSettingsManager__notifyObserversOfFeatureIdentifier_excludin
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [(HDFeatureSettingsManager *)self _lock_unregisterObserver:v4 featureIdentifier:*(*(&v11 + 1) + 8 * v9++)];
+        [(HDFeatureSettingsManager *)self _lock_unregisterObserver:observerCopy featureIdentifier:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1082,10 +1082,10 @@ void __82__HDFeatureSettingsManager__notifyObserversOfFeatureIdentifier_excludin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_settingsDidSyncNotification:(id)a3
+- (void)_settingsDidSyncNotification:(id)notification
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2B0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B0], OS_LOG_TYPE_DEFAULT))
@@ -1093,16 +1093,16 @@ void __82__HDFeatureSettingsManager__notifyObserversOfFeatureIdentifier_excludin
     v6 = v5;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138543618;
     v24 = v7;
     v25 = 2114;
-    v26 = v9;
+    v26 = name;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Feature settings notification received (%{public}@)", buf, 0x16u);
   }
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKeyedSubscript:@"HDUnprotectedFeatureSettingsSyncEntityDidSyncNotificationDomainNamesKey"];
+  userInfo = [notificationCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"HDUnprotectedFeatureSettingsSyncEntityDidSyncNotificationDomainNamesKey"];
 
   v20 = 0u;
   v21 = 0u;

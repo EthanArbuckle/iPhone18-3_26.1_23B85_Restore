@@ -3,7 +3,7 @@
 - (NSString)getFromBundleLocalizedName;
 - (NSString)getToBundleLocalizedName;
 - (id)description;
-- (void)getFromBundleLocalizedNameWithCompletion:(id)a3;
+- (void)getFromBundleLocalizedNameWithCompletion:(id)completion;
 - (void)getToBundleLocalizedName;
 - (void)reset;
 @end
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __41__SAAuthorizationInFlight_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -62,21 +62,21 @@ uint64_t __41__SAAuthorizationInFlight_sharedInstance__block_invoke(uint64_t a1)
 
 - (NSString)getFromBundleLocalizedName
 {
-  v2 = [(SAAuthorizationInFlight *)self fromApp];
-  v3 = [v2 getLocalizedName];
+  fromApp = [(SAAuthorizationInFlight *)self fromApp];
+  getLocalizedName = [fromApp getLocalizedName];
 
-  return v3;
+  return getLocalizedName;
 }
 
-- (void)getFromBundleLocalizedNameWithCompletion:(id)a3
+- (void)getFromBundleLocalizedNameWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(SAAuthorizationInFlight *)self fromApp];
-  v5 = [v4 getLocalizedName];
+  completionCopy = completion;
+  fromApp = [(SAAuthorizationInFlight *)self fromApp];
+  getLocalizedName = [fromApp getLocalizedName];
 
-  if (v5)
+  if (getLocalizedName)
   {
-    v6 = v8[2];
+    v6 = completionCopy[2];
 LABEL_3:
     v6();
     goto LABEL_6;
@@ -85,11 +85,11 @@ LABEL_3:
   fromApp = self->_fromApp;
   if (!fromApp)
   {
-    v6 = v8[2];
+    v6 = completionCopy[2];
     goto LABEL_3;
   }
 
-  [(SABundleManagerApp *)fromApp getLocalizedNameForPairedDeviceWithCompletion:v8];
+  [(SABundleManagerApp *)fromApp getLocalizedNameForPairedDeviceWithCompletion:completionCopy];
 LABEL_6:
 }
 
@@ -110,13 +110,13 @@ LABEL_6:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SAAuthorizationInFlight *)self isInFlight];
-  v5 = [(SAAuthorizationInFlight *)self fromApp];
-  v6 = [v5 bundleId];
-  v7 = [(SAAuthorizationInFlight *)self getFromBundleLocalizedName];
-  v8 = [(SAAuthorizationInFlight *)self toBundleId];
-  v9 = [(SAAuthorizationInFlight *)self getToBundleLocalizedName];
-  v10 = [v3 stringWithFormat:@"Authorization, isInFlight: %d, from: %@ (%@), to: %@ (%@)", v4, v6, v7, v8, v9];
+  isInFlight = [(SAAuthorizationInFlight *)self isInFlight];
+  fromApp = [(SAAuthorizationInFlight *)self fromApp];
+  bundleId = [fromApp bundleId];
+  getFromBundleLocalizedName = [(SAAuthorizationInFlight *)self getFromBundleLocalizedName];
+  toBundleId = [(SAAuthorizationInFlight *)self toBundleId];
+  getToBundleLocalizedName = [(SAAuthorizationInFlight *)self getToBundleLocalizedName];
+  v10 = [v3 stringWithFormat:@"Authorization, isInFlight: %d, from: %@ (%@), to: %@ (%@)", isInFlight, bundleId, getFromBundleLocalizedName, toBundleId, getToBundleLocalizedName];
 
   return v10;
 }
@@ -124,7 +124,7 @@ LABEL_6:
 - (void)getToBundleLocalizedName
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_4_0(&dword_23AA4D000, a1, a3, "Unable to get Bundle for app requesting authorization: %@", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_4_0(&dword_23AA4D000, self, a3, "Unable to get Bundle for app requesting authorization: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

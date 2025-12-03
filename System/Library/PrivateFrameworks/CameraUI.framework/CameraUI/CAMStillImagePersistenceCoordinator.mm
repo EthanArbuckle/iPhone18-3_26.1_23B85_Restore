@@ -1,13 +1,13 @@
 @interface CAMStillImagePersistenceCoordinator
 - (BOOL)hasReceivedAllExpectedResponses;
-- (CAMStillImagePersistenceCoordinator)initWithDelegate:(id)a3 loggingIdentifier:(id)a4;
+- (CAMStillImagePersistenceCoordinator)initWithDelegate:(id)delegate loggingIdentifier:(id)identifier;
 - (CAMStillImagePersistenceCoordinatorDelegate)delegate;
-- (id)_debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:(id)a3 receivedCoordinationInfos:(id)a4;
-- (unsigned)_powerAssertionReasonForResultSpecifiers:(unint64_t)a3;
-- (void)_dispatchRemotePersistenceIfPossibleForPairWithOriginalResultSpecifiers:(unint64_t)a3 processedResultSpecifiers:(unint64_t)a4 request:(id)a5 shouldPersistAsSingleAsset:(BOOL)a6;
-- (void)_dispatchRemotePersistenceIfPossibleForResultSpecifiers:(unint64_t)a3 request:(id)a4;
-- (void)updateForCoordinationInfo:(id)a3 localPersistenceResult:(id)a4 request:(id)a5;
-- (void)updateForTimeoutTimerFiredForCoordinationInfo:(id)a3 request:(id)a4;
+- (id)_debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:(id)specifiers receivedCoordinationInfos:(id)infos;
+- (unsigned)_powerAssertionReasonForResultSpecifiers:(unint64_t)specifiers;
+- (void)_dispatchRemotePersistenceIfPossibleForPairWithOriginalResultSpecifiers:(unint64_t)specifiers processedResultSpecifiers:(unint64_t)resultSpecifiers request:(id)request shouldPersistAsSingleAsset:(BOOL)asset;
+- (void)_dispatchRemotePersistenceIfPossibleForResultSpecifiers:(unint64_t)specifiers request:(id)request;
+- (void)updateForCoordinationInfo:(id)info localPersistenceResult:(id)result request:(id)request;
+- (void)updateForTimeoutTimerFiredForCoordinationInfo:(id)info request:(id)request;
 @end
 
 @implementation CAMStillImagePersistenceCoordinator
@@ -21,12 +21,12 @@
 
 - (BOOL)hasReceivedAllExpectedResponses
 {
-  v2 = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
-  if ([v2 count])
+  _receivedCoordinationInfos = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
+  if ([_receivedCoordinationInfos count])
   {
-    v3 = [v2 allValues];
-    v4 = [v3 firstObject];
-    v5 = [v4 allExpectedResultSpecifiers];
+    allValues = [_receivedCoordinationInfos allValues];
+    firstObject = [allValues firstObject];
+    allExpectedResultSpecifiers = [firstObject allExpectedResultSpecifiers];
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -35,9 +35,9 @@
     v8[1] = 3221225472;
     v8[2] = __70__CAMStillImagePersistenceCoordinator_hasReceivedAllExpectedResponses__block_invoke;
     v8[3] = &unk_1E76FA350;
-    v9 = v2;
+    v9 = _receivedCoordinationInfos;
     v10 = &v11;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [allExpectedResultSpecifiers enumerateObjectsUsingBlock:v8];
     v6 = *(v12 + 24);
 
     _Block_object_dispose(&v11, 8);
@@ -62,32 +62,32 @@ void __70__CAMStillImagePersistenceCoordinator_hasReceivedAllExpectedResponses__
   }
 }
 
-- (CAMStillImagePersistenceCoordinator)initWithDelegate:(id)a3 loggingIdentifier:(id)a4
+- (CAMStillImagePersistenceCoordinator)initWithDelegate:(id)delegate loggingIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = CAMStillImagePersistenceCoordinator;
   v8 = [(CAMStillImagePersistenceCoordinator *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [identifierCopy copy];
     loggingIdentifier = v9->_loggingIdentifier;
     v9->_loggingIdentifier = v10;
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ PersistenceCoordinator:", v7];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ PersistenceCoordinator:", identifierCopy];
     loggingPrefix = v9->__loggingPrefix;
-    v9->__loggingPrefix = v12;
+    v9->__loggingPrefix = identifierCopy;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     receivedCoordinationInfos = v9->__receivedCoordinationInfos;
-    v9->__receivedCoordinationInfos = v14;
+    v9->__receivedCoordinationInfos = dictionary;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     pendingLocalPersistenceResults = v9->__pendingLocalPersistenceResults;
-    v9->__pendingLocalPersistenceResults = v16;
+    v9->__pendingLocalPersistenceResults = dictionary2;
 
     v18 = v9;
   }
@@ -95,19 +95,19 @@ void __70__CAMStillImagePersistenceCoordinator_hasReceivedAllExpectedResponses__
   return v9;
 }
 
-- (void)updateForCoordinationInfo:(id)a3 localPersistenceResult:(id)a4 request:(id)a5
+- (void)updateForCoordinationInfo:(id)info localPersistenceResult:(id)result request:(id)request
 {
   v103 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v91 = a5;
-  v89 = [(CAMStillImagePersistenceCoordinator *)self delegate];
-  v10 = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
-  v11 = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
-  v12 = [v8 resultSpecifiers];
-  v92 = [v8 allExpectedResultSpecifiers];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-  v14 = [v10 objectForKeyedSubscript:v13];
+  infoCopy = info;
+  resultCopy = result;
+  requestCopy = request;
+  delegate = [(CAMStillImagePersistenceCoordinator *)self delegate];
+  _receivedCoordinationInfos = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
+  _pendingLocalPersistenceResults = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
+  resultSpecifiers = [infoCopy resultSpecifiers];
+  allExpectedResultSpecifiers = [infoCopy allExpectedResultSpecifiers];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  v14 = [_receivedCoordinationInfos objectForKeyedSubscript:v13];
 
   v88 = v14;
   if (v14)
@@ -115,15 +115,15 @@ void __70__CAMStillImagePersistenceCoordinator_hasReceivedAllExpectedResponses__
     v15 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [CAMStillImagePersistenceCoordinator updateForCoordinationInfo:v12 localPersistenceResult:v15 request:?];
+      [CAMStillImagePersistenceCoordinator updateForCoordinationInfo:resultSpecifiers localPersistenceResult:v15 request:?];
     }
   }
 
-  if (v9)
+  if (resultCopy)
   {
-    v16 = [v9 error];
+    error = [resultCopy error];
 
-    if (!v16)
+    if (!error)
     {
       v17 = os_log_create("com.apple.camera", "Camera");
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -131,14 +131,14 @@ void __70__CAMStillImagePersistenceCoordinator_hasReceivedAllExpectedResponses__
         goto LABEL_26;
       }
 
-      v18 = v9;
-      v19 = v11;
-      v20 = v10;
-      v21 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-      if ((v12 & 2) != 0)
+      v18 = resultCopy;
+      v19 = _pendingLocalPersistenceResults;
+      v20 = _receivedCoordinationInfos;
+      _loggingPrefix = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+      if ((resultSpecifiers & 2) != 0)
       {
         v22 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-        if ((v12 & 1) == 0)
+        if ((resultSpecifiers & 1) == 0)
         {
 LABEL_22:
           if (![(__CFString *)v22 length])
@@ -148,7 +148,7 @@ LABEL_22:
           }
 
           *buf = 138543618;
-          v94 = v21;
+          v94 = _loggingPrefix;
           v95 = 2114;
           v96 = v22;
           v24 = "%{public}@ Updating persistence coordination with %{public}@ image";
@@ -159,7 +159,7 @@ LABEL_22:
       else
       {
         v22 = &stru_1F1660A30;
-        if ((v12 & 1) == 0)
+        if ((resultSpecifiers & 1) == 0)
         {
           goto LABEL_22;
         }
@@ -175,14 +175,14 @@ LABEL_22:
   v17 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = v9;
-    v19 = v11;
-    v20 = v10;
-    v21 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-    if ((v12 & 2) != 0)
+    v18 = resultCopy;
+    v19 = _pendingLocalPersistenceResults;
+    v20 = _receivedCoordinationInfos;
+    _loggingPrefix = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+    if ((resultSpecifiers & 2) != 0)
     {
       v22 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-      if ((v12 & 1) == 0)
+      if ((resultSpecifiers & 1) == 0)
       {
 LABEL_17:
         if (![(__CFString *)v22 length])
@@ -192,16 +192,16 @@ LABEL_17:
         }
 
         *buf = 138543618;
-        v94 = v21;
+        v94 = _loggingPrefix;
         v95 = 2114;
         v96 = v22;
         v24 = "%{public}@ Updating persistence coordination with %{public}@ image (unusable result)";
 LABEL_25:
         _os_log_impl(&dword_1A3640000, v17, OS_LOG_TYPE_DEFAULT, v24, buf, 0x16u);
 
-        v10 = v20;
-        v11 = v19;
-        v9 = v18;
+        _receivedCoordinationInfos = v20;
+        _pendingLocalPersistenceResults = v19;
+        resultCopy = v18;
         goto LABEL_26;
       }
     }
@@ -209,7 +209,7 @@ LABEL_25:
     else
     {
       v22 = &stru_1F1660A30;
-      if ((v12 & 1) == 0)
+      if ((resultSpecifiers & 1) == 0)
       {
         goto LABEL_17;
       }
@@ -222,32 +222,32 @@ LABEL_25:
   }
 
 LABEL_26:
-  v90 = self;
+  selfCopy = self;
 
-  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-  [v10 setObject:v8 forKeyedSubscript:v26];
+  v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  [_receivedCoordinationInfos setObject:infoCopy forKeyedSubscript:v26];
 
-  if (v9)
+  if (resultCopy)
   {
-    v27 = [v9 error];
+    error2 = [resultCopy error];
 
-    if (!v27)
+    if (!error2)
     {
-      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-      [v11 setObject:v9 forKeyedSubscript:v28];
+      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+      [_pendingLocalPersistenceResults setObject:resultCopy forKeyedSubscript:v28];
     }
   }
 
-  v29 = v9;
-  v30 = [v92 containsObject:&unk_1F16C7928];
-  v31 = [v92 containsObject:&unk_1F16C7940];
-  v32 = [v92 containsObject:&unk_1F16C7958];
-  if ([v92 containsObject:&unk_1F16C7970] && v32 && v31 && v30)
+  v29 = resultCopy;
+  v30 = [allExpectedResultSpecifiers containsObject:&unk_1F16C7928];
+  v31 = [allExpectedResultSpecifiers containsObject:&unk_1F16C7940];
+  v32 = [allExpectedResultSpecifiers containsObject:&unk_1F16C7958];
+  if ([allExpectedResultSpecifiers containsObject:&unk_1F16C7970] && v32 && v31 && v30)
   {
     v33 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v83 = [(CAMStillImagePersistenceCoordinator *)v90 _loggingPrefix];
+      _loggingPrefix2 = [(CAMStillImagePersistenceCoordinator *)selfCopy _loggingPrefix];
       v34 = [&stru_1F1660A30 length];
       v35 = @"None";
       if (v34)
@@ -257,17 +257,17 @@ LABEL_26:
 
       v81 = v35;
       v36 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-      v85 = v10;
+      v85 = _receivedCoordinationInfos;
       if (![(__CFString *)v36 length])
       {
 
         v36 = @"None";
       }
 
-      v86 = v8;
+      v86 = infoCopy;
       v37 = v36;
       v38 = [&stru_1F1660A30 stringByAppendingString:@"HDR"];
-      v39 = v9;
+      v39 = resultCopy;
       if (![(__CFString *)v38 length])
       {
 
@@ -284,9 +284,9 @@ LABEL_26:
         v42 = @"None";
       }
 
-      v9 = v39;
+      resultCopy = v39;
       *buf = 138544386;
-      v94 = v83;
+      v94 = _loggingPrefix2;
       v95 = 2114;
       v96 = v81;
       v97 = 2114;
@@ -297,22 +297,22 @@ LABEL_26:
       v102 = v42;
       _os_log_impl(&dword_1A3640000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Expecting %{public}@+%{public}@ and %{public}@+%{public}@ pairs", buf, 0x34u);
 
-      v10 = v85;
-      v8 = v86;
+      _receivedCoordinationInfos = v85;
+      infoCopy = v86;
     }
 
-    v43 = [v10 objectForKey:&unk_1F16C7928];
+    v43 = [_receivedCoordinationInfos objectForKey:&unk_1F16C7928];
 
-    v44 = [v10 objectForKey:&unk_1F16C7958];
+    v44 = [_receivedCoordinationInfos objectForKey:&unk_1F16C7958];
 
-    v45 = v90;
+    v45 = selfCopy;
     if (v43 && v44)
     {
-      [(CAMStillImagePersistenceCoordinator *)v90 _dispatchRemotePersistenceIfPossibleForPairWithOriginalResultSpecifiers:0 processedResultSpecifiers:2 request:v91 shouldPersistAsSingleAsset:1];
-      v46 = v90;
+      [(CAMStillImagePersistenceCoordinator *)selfCopy _dispatchRemotePersistenceIfPossibleForPairWithOriginalResultSpecifiers:0 processedResultSpecifiers:2 request:requestCopy shouldPersistAsSingleAsset:1];
+      v46 = selfCopy;
       v47 = 1;
       v48 = 3;
-      v49 = v91;
+      v49 = requestCopy;
 LABEL_69:
       v59 = 1;
 LABEL_70:
@@ -322,14 +322,14 @@ LABEL_70:
 
   else
   {
-    if (([v8 isUnfilteredImageForFilteredPair] & 1) != 0 || objc_msgSend(v8, "isFilteredImageForFilteredPair"))
+    if (([infoCopy isUnfilteredImageForFilteredPair] & 1) != 0 || objc_msgSend(infoCopy, "isFilteredImageForFilteredPair"))
     {
       v50 = os_log_create("com.apple.camera", "Camera");
-      v45 = v90;
+      v45 = selfCopy;
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
-        v87 = [(CAMStillImagePersistenceCoordinator *)v90 _loggingPrefix];
-        if (v12)
+        _loggingPrefix3 = [(CAMStillImagePersistenceCoordinator *)selfCopy _loggingPrefix];
+        if (resultSpecifiers)
         {
           v51 = [&stru_1F1660A30 stringByAppendingString:@"HDR"];
         }
@@ -348,16 +348,16 @@ LABEL_70:
         v84 = v51;
         v60 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
         v61 = v60;
-        if (v12)
+        if (resultSpecifiers)
         {
           [(__CFString *)v60 stringByAppendingString:@"HDR"];
-          v62 = v8;
-          v64 = v63 = v9;
+          v62 = infoCopy;
+          v64 = v63 = resultCopy;
 
           v61 = v64;
-          v9 = v63;
-          v8 = v62;
-          v45 = v90;
+          resultCopy = v63;
+          infoCopy = v62;
+          v45 = selfCopy;
         }
 
         if (![(__CFString *)v61 length])
@@ -367,7 +367,7 @@ LABEL_70:
         }
 
         *buf = 138543874;
-        v94 = v87;
+        v94 = _loggingPrefix3;
         v95 = 2114;
         v96 = v51;
         v97 = 2114;
@@ -375,10 +375,10 @@ LABEL_70:
         _os_log_impl(&dword_1A3640000, v50, OS_LOG_TYPE_DEFAULT, "%{public}@ Expecting %{public}@+%{public}@", buf, 0x20u);
       }
 
-      v47 = v12 & 0xFFFFFFFFFFFFFFFDLL;
-      v48 = v12 | 2;
+      v47 = resultSpecifiers & 0xFFFFFFFFFFFFFFFDLL;
+      v48 = resultSpecifiers | 2;
       v46 = v45;
-      v49 = v91;
+      v49 = requestCopy;
       goto LABEL_69;
     }
 
@@ -386,13 +386,13 @@ LABEL_70:
     v53 = os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT);
     if ((v31 & v30) == 1)
     {
-      v45 = v90;
+      v45 = selfCopy;
       if (v53)
       {
-        v82 = v11;
-        v54 = v10;
-        v55 = v9;
-        v56 = [(CAMStillImagePersistenceCoordinator *)v90 _loggingPrefix];
+        v82 = _pendingLocalPersistenceResults;
+        v54 = _receivedCoordinationInfos;
+        v55 = resultCopy;
+        _loggingPrefix4 = [(CAMStillImagePersistenceCoordinator *)selfCopy _loggingPrefix];
         if ([&stru_1F1660A30 length])
         {
           v57 = &stru_1F1660A30;
@@ -411,32 +411,32 @@ LABEL_70:
         }
 
         *buf = 138543874;
-        v94 = v56;
+        v94 = _loggingPrefix4;
         v95 = 2114;
         v96 = v57;
         v97 = 2114;
         v98 = v58;
         _os_log_impl(&dword_1A3640000, v52, OS_LOG_TYPE_DEFAULT, "%{public}@ Expecting %{public}@+%{public}@", buf, 0x20u);
 
-        v9 = v55;
-        v10 = v54;
-        v11 = v82;
+        resultCopy = v55;
+        _receivedCoordinationInfos = v54;
+        _pendingLocalPersistenceResults = v82;
       }
 
-      v46 = v90;
+      v46 = selfCopy;
       v47 = 0;
       v48 = 1;
-      v49 = v91;
+      v49 = requestCopy;
       v59 = 0;
       goto LABEL_70;
     }
 
     if (v53)
     {
-      v76 = v11;
-      v77 = v10;
-      v78 = [(CAMStillImagePersistenceCoordinator *)v90 _loggingPrefix];
-      if ((v12 & 2) != 0)
+      v76 = _pendingLocalPersistenceResults;
+      v77 = _receivedCoordinationInfos;
+      _loggingPrefix5 = [(CAMStillImagePersistenceCoordinator *)selfCopy _loggingPrefix];
+      if ((resultSpecifiers & 2) != 0)
       {
         v79 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
       }
@@ -446,7 +446,7 @@ LABEL_70:
         v79 = &stru_1F1660A30;
       }
 
-      if (v12)
+      if (resultSpecifiers)
       {
         v80 = [(__CFString *)v79 stringByAppendingString:@"HDR"];
 
@@ -460,47 +460,47 @@ LABEL_70:
       }
 
       *buf = 138543618;
-      v94 = v78;
+      v94 = _loggingPrefix5;
       v95 = 2114;
       v96 = v79;
       _os_log_impl(&dword_1A3640000, v52, OS_LOG_TYPE_DEFAULT, "%{public}@ Not expecting any pairs, persisting %{public}@ on its own", buf, 0x16u);
 
-      v10 = v77;
-      v11 = v76;
-      v9 = v29;
+      _receivedCoordinationInfos = v77;
+      _pendingLocalPersistenceResults = v76;
+      resultCopy = v29;
     }
 
-    v45 = v90;
-    [(CAMStillImagePersistenceCoordinator *)v90 _dispatchRemotePersistenceIfPossibleForResultSpecifiers:v12 request:v91];
+    v45 = selfCopy;
+    [(CAMStillImagePersistenceCoordinator *)selfCopy _dispatchRemotePersistenceIfPossibleForResultSpecifiers:resultSpecifiers request:requestCopy];
   }
 
-  v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-  v66 = [v11 objectForKeyedSubscript:v65];
+  v65 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  v66 = [_pendingLocalPersistenceResults objectForKeyedSubscript:v65];
 
-  v67 = v89;
+  v67 = delegate;
   if (v66)
   {
-    v68 = v9;
-    v69 = v11;
-    v70 = v10;
-    v71 = [(CAMStillImagePersistenceCoordinator *)v45 _debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:v92 receivedCoordinationInfos:v10];
+    v68 = resultCopy;
+    v69 = _pendingLocalPersistenceResults;
+    v70 = _receivedCoordinationInfos;
+    v71 = [(CAMStillImagePersistenceCoordinator *)v45 _debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:allExpectedResultSpecifiers receivedCoordinationInfos:_receivedCoordinationInfos];
     v72 = os_log_create("com.apple.camera", "Camera");
     if (!os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_81:
 
-      [v67 stillImagePersistenceCoordinator:v45 requestsTimeoutScheduledForDeferredRemotePersistenceForCoordinationInfo:v8 request:v91];
-      v10 = v70;
-      v11 = v69;
-      v9 = v68;
+      [v67 stillImagePersistenceCoordinator:v45 requestsTimeoutScheduledForDeferredRemotePersistenceForCoordinationInfo:infoCopy request:requestCopy];
+      _receivedCoordinationInfos = v70;
+      _pendingLocalPersistenceResults = v69;
+      resultCopy = v68;
       goto LABEL_82;
     }
 
-    v73 = [(CAMStillImagePersistenceCoordinator *)v45 _loggingPrefix];
-    if ((v12 & 2) != 0)
+    _loggingPrefix6 = [(CAMStillImagePersistenceCoordinator *)v45 _loggingPrefix];
+    if ((resultSpecifiers & 2) != 0)
     {
       v74 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-      if ((v12 & 1) == 0)
+      if ((resultSpecifiers & 1) == 0)
       {
 LABEL_78:
         if (![(__CFString *)v74 length])
@@ -510,14 +510,14 @@ LABEL_78:
         }
 
         *buf = 138543874;
-        v94 = v73;
+        v94 = _loggingPrefix6;
         v95 = 2114;
         v96 = v74;
         v97 = 2114;
         v98 = v71;
         _os_log_impl(&dword_1A3640000, v72, OS_LOG_TYPE_DEFAULT, "%{public}@ Deferring persistence of %{public}@ image while waiting on %{public}@", buf, 0x20u);
 
-        v45 = v90;
+        v45 = selfCopy;
         goto LABEL_81;
       }
     }
@@ -525,7 +525,7 @@ LABEL_78:
     else
     {
       v74 = &stru_1F1660A30;
-      if ((v12 & 1) == 0)
+      if ((resultSpecifiers & 1) == 0)
       {
         goto LABEL_78;
       }
@@ -534,45 +534,45 @@ LABEL_78:
     v75 = [(__CFString *)v74 stringByAppendingString:@"HDR"];
 
     v74 = v75;
-    v67 = v89;
+    v67 = delegate;
     goto LABEL_78;
   }
 
 LABEL_82:
 }
 
-- (void)_dispatchRemotePersistenceIfPossibleForPairWithOriginalResultSpecifiers:(unint64_t)a3 processedResultSpecifiers:(unint64_t)a4 request:(id)a5 shouldPersistAsSingleAsset:(BOOL)a6
+- (void)_dispatchRemotePersistenceIfPossibleForPairWithOriginalResultSpecifiers:(unint64_t)specifiers processedResultSpecifiers:(unint64_t)resultSpecifiers request:(id)request shouldPersistAsSingleAsset:(BOOL)asset
 {
-  v6 = a6;
+  assetCopy = asset;
   v59 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v47 = [(CAMStillImagePersistenceCoordinator *)self delegate];
-  v11 = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
-  v48 = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v14 = [v11 objectForKey:v12];
+  requestCopy = request;
+  delegate = [(CAMStillImagePersistenceCoordinator *)self delegate];
+  _receivedCoordinationInfos = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
+  _pendingLocalPersistenceResults = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  v14 = [_receivedCoordinationInfos objectForKey:v12];
 
-  v15 = [v11 objectForKey:v13];
+  v15 = [_receivedCoordinationInfos objectForKey:v13];
 
-  if (v6)
+  if (assetCopy)
   {
-    v16 = v10;
+    v16 = requestCopy;
     if (v14 && v15)
     {
-      v17 = [v48 objectForKeyedSubscript:v12];
-      v18 = [v48 objectForKeyedSubscript:v13];
+      v17 = [_pendingLocalPersistenceResults objectForKeyedSubscript:v12];
+      v18 = [_pendingLocalPersistenceResults objectForKeyedSubscript:v13];
       v19 = v18;
       v46 = v17;
       if (v17 && v18)
       {
-        v43 = a4;
-        v20 = [v17 localPersistenceUUID];
+        resultSpecifiersCopy = resultSpecifiers;
+        localPersistenceUUID = [v17 localPersistenceUUID];
         v21 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-          if ((a3 & 2) != 0)
+          _loggingPrefix = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+          if ((specifiers & 2) != 0)
           {
             v22 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
           }
@@ -583,7 +583,7 @@ LABEL_82:
           }
 
           v41 = v19;
-          if (a3)
+          if (specifiers)
           {
             v27 = [(__CFString *)v22 stringByAppendingString:@"HDR"];
 
@@ -597,7 +597,7 @@ LABEL_82:
           }
 
           v36 = v22;
-          if ((v43 & 2) != 0)
+          if ((resultSpecifiersCopy & 2) != 0)
           {
             v28 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
           }
@@ -607,8 +607,8 @@ LABEL_82:
             v28 = &stru_1F1660A30;
           }
 
-          v16 = v10;
-          if (v43)
+          v16 = requestCopy;
+          if (resultSpecifiersCopy)
           {
             v29 = [(__CFString *)v28 stringByAppendingString:@"HDR"];
 
@@ -623,19 +623,19 @@ LABEL_82:
           }
 
           *buf = 138544130;
-          v50 = v38;
+          v50 = _loggingPrefix;
           v51 = 2114;
           v52 = v36;
           v53 = 2114;
           v54 = v28;
           v55 = 2114;
-          v56 = v20;
+          v56 = localPersistenceUUID;
           _os_log_impl(&dword_1A3640000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Dispatching remote persistence for %{public}@+%{public}@ as %{public}@", buf, 0x2Au);
         }
 
-        [v47 stillImagePersistenceCoordinator:self requestsRemotePersistenceForLocalPersistenceResult:v46 filteredLocalResult:v19 request:v16 powerAssertionReason:{-[CAMStillImagePersistenceCoordinator _powerAssertionReasonForResultSpecifiers:](self, "_powerAssertionReasonForResultSpecifiers:", v43)}];
-        [v48 setObject:0 forKeyedSubscript:v12];
-        [v48 setObject:0 forKeyedSubscript:v13];
+        [delegate stillImagePersistenceCoordinator:self requestsRemotePersistenceForLocalPersistenceResult:v46 filteredLocalResult:v19 request:v16 powerAssertionReason:{-[CAMStillImagePersistenceCoordinator _powerAssertionReasonForResultSpecifiers:](self, "_powerAssertionReasonForResultSpecifiers:", resultSpecifiersCopy)}];
+        [_pendingLocalPersistenceResults setObject:0 forKeyedSubscript:v12];
+        [_pendingLocalPersistenceResults setObject:0 forKeyedSubscript:v13];
 
         goto LABEL_34;
       }
@@ -645,14 +645,14 @@ LABEL_82:
         v23 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
-          v37 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-          v44 = CAMDebugStringForCaptureResultSpecifiers(a4);
-          v30 = CAMDebugStringForCaptureResultSpecifiers(a3);
-          v31 = CAMDebugStringForCaptureResultSpecifiers(a4);
-          CAMDebugStringForCaptureResultSpecifiers(a3);
+          _loggingPrefix2 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+          v44 = CAMDebugStringForCaptureResultSpecifiers(resultSpecifiers);
+          v30 = CAMDebugStringForCaptureResultSpecifiers(specifiers);
+          v31 = CAMDebugStringForCaptureResultSpecifiers(resultSpecifiers);
+          CAMDebugStringForCaptureResultSpecifiers(specifiers);
           v32 = v39 = v23;
           *buf = 138544386;
-          v50 = v37;
+          v50 = _loggingPrefix2;
           v51 = 2114;
           v52 = v44;
           v53 = 2114;
@@ -666,8 +666,8 @@ LABEL_82:
           v23 = v39;
         }
 
-        v24 = self;
-        v25 = a3;
+        selfCopy2 = self;
+        resultSpecifiersCopy2 = specifiers;
       }
 
       else
@@ -682,14 +682,14 @@ LABEL_34:
         v26 = os_log_create("com.apple.camera", "Camera");
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v45 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-          v40 = CAMDebugStringForCaptureResultSpecifiers(a3);
-          v33 = CAMDebugStringForCaptureResultSpecifiers(a3);
-          CAMDebugStringForCaptureResultSpecifiers(a4);
+          _loggingPrefix3 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+          v40 = CAMDebugStringForCaptureResultSpecifiers(specifiers);
+          v33 = CAMDebugStringForCaptureResultSpecifiers(specifiers);
+          CAMDebugStringForCaptureResultSpecifiers(resultSpecifiers);
           v34 = v42 = v19;
-          CAMDebugStringForCaptureResultSpecifiers(a4);
+          CAMDebugStringForCaptureResultSpecifiers(resultSpecifiers);
           *buf = 138544386;
-          v50 = v45;
+          v50 = _loggingPrefix3;
           v51 = 2114;
           v52 = v40;
           v53 = 2114;
@@ -703,57 +703,57 @@ LABEL_34:
           v19 = v42;
         }
 
-        v24 = self;
-        v25 = a4;
+        selfCopy2 = self;
+        resultSpecifiersCopy2 = resultSpecifiers;
       }
 
-      [(CAMStillImagePersistenceCoordinator *)v24 _dispatchRemotePersistenceIfPossibleForResultSpecifiers:v25 request:v16];
+      [(CAMStillImagePersistenceCoordinator *)selfCopy2 _dispatchRemotePersistenceIfPossibleForResultSpecifiers:resultSpecifiersCopy2 request:v16];
       goto LABEL_34;
     }
   }
 
   else
   {
-    v16 = v10;
+    v16 = requestCopy;
     if (v14)
     {
-      [(CAMStillImagePersistenceCoordinator *)self _dispatchRemotePersistenceIfPossibleForResultSpecifiers:a3 request:v10];
-      [(CAMStillImagePersistenceCoordinator *)self _dispatchRemotePersistenceIfPossibleForResultSpecifiers:a4 request:v10];
+      [(CAMStillImagePersistenceCoordinator *)self _dispatchRemotePersistenceIfPossibleForResultSpecifiers:specifiers request:requestCopy];
+      [(CAMStillImagePersistenceCoordinator *)self _dispatchRemotePersistenceIfPossibleForResultSpecifiers:resultSpecifiers request:requestCopy];
     }
   }
 
 LABEL_35:
 }
 
-- (void)_dispatchRemotePersistenceIfPossibleForResultSpecifiers:(unint64_t)a3 request:(id)a4
+- (void)_dispatchRemotePersistenceIfPossibleForResultSpecifiers:(unint64_t)specifiers request:(id)request
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(CAMStillImagePersistenceCoordinator *)self delegate];
-  v8 = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  requestCopy = request;
+  delegate = [(CAMStillImagePersistenceCoordinator *)self delegate];
+  _pendingLocalPersistenceResults = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+  v10 = [_pendingLocalPersistenceResults objectForKeyedSubscript:v9];
 
   if (v10)
   {
-    v11 = [v10 localPersistenceUUID];
+    localPersistenceUUID = [v10 localPersistenceUUID];
     v12 = os_log_create("com.apple.camera", "Camera");
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_11:
 
-      [v7 stillImagePersistenceCoordinator:self requestsRemotePersistenceForLocalPersistenceResult:v10 filteredLocalResult:0 request:v6 powerAssertionReason:{-[CAMStillImagePersistenceCoordinator _powerAssertionReasonForResultSpecifiers:](self, "_powerAssertionReasonForResultSpecifiers:", a3)}];
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-      [v8 setObject:0 forKeyedSubscript:v15];
+      [delegate stillImagePersistenceCoordinator:self requestsRemotePersistenceForLocalPersistenceResult:v10 filteredLocalResult:0 request:requestCopy powerAssertionReason:{-[CAMStillImagePersistenceCoordinator _powerAssertionReasonForResultSpecifiers:](self, "_powerAssertionReasonForResultSpecifiers:", specifiers)}];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:specifiers];
+      [_pendingLocalPersistenceResults setObject:0 forKeyedSubscript:v15];
 
       goto LABEL_12;
     }
 
-    v17 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-    if ((a3 & 2) != 0)
+    _loggingPrefix = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+    if ((specifiers & 2) != 0)
     {
       v13 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-      if ((a3 & 1) == 0)
+      if ((specifiers & 1) == 0)
       {
 LABEL_8:
         if (![(__CFString *)v13 length])
@@ -763,14 +763,14 @@ LABEL_8:
         }
 
         *buf = 138543874;
-        v19 = v17;
+        v19 = _loggingPrefix;
         v20 = 2114;
         v21 = v13;
         v22 = 2114;
-        v23 = v11;
+        v23 = localPersistenceUUID;
         _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Dispatching remote persistence for %{public}@ as %{public}@", buf, 0x20u);
 
-        v6 = v16;
+        requestCopy = v16;
         goto LABEL_11;
       }
     }
@@ -778,7 +778,7 @@ LABEL_8:
     else
     {
       v13 = &stru_1F1660A30;
-      if ((a3 & 1) == 0)
+      if ((specifiers & 1) == 0)
       {
         goto LABEL_8;
       }
@@ -793,27 +793,27 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)updateForTimeoutTimerFiredForCoordinationInfo:(id)a3 request:(id)a4
+- (void)updateForTimeoutTimerFiredForCoordinationInfo:(id)info request:(id)request
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
-  v9 = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
-  v10 = [v7 allExpectedResultSpecifiers];
-  v11 = [v7 resultSpecifiers];
+  requestCopy = request;
+  infoCopy = info;
+  _receivedCoordinationInfos = [(CAMStillImagePersistenceCoordinator *)self _receivedCoordinationInfos];
+  _pendingLocalPersistenceResults = [(CAMStillImagePersistenceCoordinator *)self _pendingLocalPersistenceResults];
+  allExpectedResultSpecifiers = [infoCopy allExpectedResultSpecifiers];
+  resultSpecifiers = [infoCopy resultSpecifiers];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-  v13 = [v9 objectForKeyedSubscript:v12];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resultSpecifiers];
+  v13 = [_pendingLocalPersistenceResults objectForKeyedSubscript:v12];
 
   if (v13)
   {
-    v14 = [(CAMStillImagePersistenceCoordinator *)self _debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:v10 receivedCoordinationInfos:v8];
+    v14 = [(CAMStillImagePersistenceCoordinator *)self _debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:allExpectedResultSpecifiers receivedCoordinationInfos:_receivedCoordinationInfos];
     v15 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v18 = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
-      if ((v11 & 2) != 0)
+      _loggingPrefix = [(CAMStillImagePersistenceCoordinator *)self _loggingPrefix];
+      if ((resultSpecifiers & 2) != 0)
       {
         v16 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
       }
@@ -823,7 +823,7 @@ LABEL_12:
         v16 = &stru_1F1660A30;
       }
 
-      if (v11)
+      if (resultSpecifiers)
       {
         v17 = [(__CFString *)v16 stringByAppendingString:@"HDR"];
 
@@ -837,7 +837,7 @@ LABEL_12:
       }
 
       *buf = 138543874;
-      v20 = v18;
+      v20 = _loggingPrefix;
       v21 = 2114;
       v22 = v14;
       v23 = 2114;
@@ -845,13 +845,13 @@ LABEL_12:
       _os_log_error_impl(&dword_1A3640000, v15, OS_LOG_TYPE_ERROR, "%{public}@ Timed out while waiting for other capture results (%{public}@). Submitting %{public}@ image as a standalone image", buf, 0x20u);
     }
 
-    [(CAMStillImagePersistenceCoordinator *)self _dispatchRemotePersistenceIfPossibleForResultSpecifiers:v11 request:v6];
+    [(CAMStillImagePersistenceCoordinator *)self _dispatchRemotePersistenceIfPossibleForResultSpecifiers:resultSpecifiers request:requestCopy];
   }
 }
 
-- (unsigned)_powerAssertionReasonForResultSpecifiers:(unint64_t)a3
+- (unsigned)_powerAssertionReasonForResultSpecifiers:(unint64_t)specifiers
 {
-  if (a3)
+  if (specifiers)
   {
     v3 = 1024;
   }
@@ -861,12 +861,12 @@ LABEL_12:
     v3 = 512;
   }
 
-  if ((a3 & 2) != 0)
+  if ((specifiers & 2) != 0)
   {
     v3 = 2048;
   }
 
-  if ((~a3 & 3) != 0)
+  if ((~specifiers & 3) != 0)
   {
     return v3;
   }
@@ -877,10 +877,10 @@ LABEL_12:
   }
 }
 
-- (id)_debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:(id)a3 receivedCoordinationInfos:(id)a4
+- (id)_debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers:(id)specifiers receivedCoordinationInfos:(id)infos
 {
-  v5 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  infosCopy = infos;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -891,10 +891,10 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = __135__CAMStillImagePersistenceCoordinator__debugStringForUnreceivedResultSpecifiersFromExpectedResultSpecifiers_receivedCoordinationInfos___block_invoke;
   v10[3] = &unk_1E76FA350;
-  v7 = v6;
+  v7 = infosCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [specifiersCopy enumerateObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);

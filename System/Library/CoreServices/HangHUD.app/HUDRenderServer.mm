@@ -1,13 +1,13 @@
 @interface HUDRenderServer
 + (id)sharedInstance;
 - (id)_init;
-- (void)clearHUDWithCompletion:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)clearHUDWithCompletion:(id)completion;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)prepareHUDContextIfNeeded;
-- (void)receiveHangHUDInfo:(id)a3 completion:(id)a4;
-- (void)receiveHudConfiguration:(id)a3 completion:(id)a4;
-- (void)receiveMonitoredStates:(id)a3 completion:(id)a4;
-- (void)receiveProcExitRecord:(id)a3 completion:(id)a4;
+- (void)receiveHangHUDInfo:(id)info completion:(id)completion;
+- (void)receiveHudConfiguration:(id)configuration completion:(id)completion;
+- (void)receiveMonitoredStates:(id)states completion:(id)completion;
+- (void)receiveProcExitRecord:(id)record completion:(id)completion;
 - (void)turnOffProcessTerminationMonitoring;
 - (void)turnOnProcessTerminationMonitoring;
 @end
@@ -105,36 +105,36 @@
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  connectionCopy = connection;
+  contextCopy = context;
   v9 = +[HangHUDServiceSpecification clientContextIdentifierKey];
-  v10 = [v8 decodeStringForKey:v9];
+  v10 = [contextCopy decodeStringForKey:v9];
 
-  v11 = [v7 remoteProcess];
+  remoteProcess = [connectionCopy remoteProcess];
   v12 = sub_10000A9AC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v21 = v7;
+    v21 = connectionCopy;
     v22 = 2112;
     v23 = v10;
     v24 = 2112;
-    v25 = v11;
+    v25 = remoteProcess;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "received connection %p with identifier %@ from %@", buf, 0x20u);
   }
 
-  if ([v11 hasEntitlement:@"com.apple.HangHUD"])
+  if ([remoteProcess hasEntitlement:@"com.apple.HangHUD"])
   {
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_100004FB4;
     v17 = &unk_1000309E0;
     v18 = v10;
-    v19 = self;
-    [v7 configureConnection:&v14];
-    [v7 activate];
+    selfCopy = self;
+    [connectionCopy configureConnection:&v14];
+    [connectionCopy activate];
   }
 
   else
@@ -145,24 +145,24 @@
       sub_1000186E4();
     }
 
-    [v7 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
-- (void)receiveHangHUDInfo:(id)a3 completion:(id)a4
+- (void)receiveHangHUDInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = sub_10000A9AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100018758(v6);
+    sub_100018758(infoCopy);
   }
 
   if (!sub_1000178F8())
   {
-    v10 = [v6 mutableCopy];
-    if ([v6 count])
+    v10 = [infoCopy mutableCopy];
+    if ([infoCopy count])
     {
       if ([v10 count])
       {
@@ -198,7 +198,7 @@
     [v15 forceUpdate];
 
 LABEL_18:
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
 
     goto LABEL_19;
   }
@@ -209,22 +209,22 @@ LABEL_18:
     sub_1000188A4();
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_19:
 }
 
-- (void)receiveProcExitRecord:(id)a3 completion:(id)a4
+- (void)receiveProcExitRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   v8 = sub_10000A9AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100018940(v6);
+    sub_100018940(recordCopy);
   }
 
   v9 = +[HUDContextUpdater sharedInstance];
-  [v9 addHUDContents:v6];
+  [v9 addHUDContents:recordCopy];
 
   if (!self->_areProcessTerminationsMonitored)
   {
@@ -238,13 +238,13 @@ LABEL_19:
     [v11 forceUpdate];
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)receiveHudConfiguration:(id)a3 completion:(id)a4
+- (void)receiveHudConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = sub_10000A9AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -252,20 +252,20 @@ LABEL_19:
   }
 
   v9 = +[HUDConfiguration sharedInstance];
-  [v9 updateWithHUDConfiguration:v6];
+  [v9 updateWithHUDConfiguration:configurationCopy];
 
   v10 = +[ProcessExitScreener sharedInstance];
-  v11 = [v6 processTerminationsFiltering];
-  [v10 setFilteringConfiguration:v11];
+  processTerminationsFiltering = [configurationCopy processTerminationsFiltering];
+  [v10 setFilteringConfiguration:processTerminationsFiltering];
 
-  self->_areProcessTerminationsMonitored = [v6 areProcessTerminationsMonitored];
+  self->_areProcessTerminationsMonitored = [configurationCopy areProcessTerminationsMonitored];
   v12 = sub_100002F0C();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    sub_100018A8C(v6);
+    sub_100018A8C(configurationCopy);
   }
 
-  if ([v6 areProcessTerminationsMonitored])
+  if ([configurationCopy areProcessTerminationsMonitored])
   {
     [(HUDRenderServer *)self turnOnProcessTerminationMonitoring];
   }
@@ -275,21 +275,21 @@ LABEL_19:
     [(HUDRenderServer *)self turnOffProcessTerminationMonitoring];
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)receiveMonitoredStates:(id)a3 completion:(id)a4
+- (void)receiveMonitoredStates:(id)states completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  statesCopy = states;
   v8 = sub_10000A9AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_100018B28();
   }
 
-  [(HUDContext *)self->_hudContext setRenderParametersFromMonitoredStates:v7];
-  v6[2](v6, 0);
+  [(HUDContext *)self->_hudContext setRenderParametersFromMonitoredStates:statesCopy];
+  completionCopy[2](completionCopy, 0);
 }
 
 - (void)turnOnProcessTerminationMonitoring
@@ -301,11 +301,11 @@ LABEL_19:
   [v4 kickOffFetchTimer];
 
   v5 = +[HUDContextUpdater sharedInstance];
-  v6 = [v5 isNoTaskPending];
+  isNoTaskPending = [v5 isNoTaskPending];
 
-  if (v6)
+  if (isNoTaskPending)
   {
-    v7 = [(AssertionManager *)self->_assertionManager acquireKeepAliveAssertion];
+    acquireKeepAliveAssertion = [(AssertionManager *)self->_assertionManager acquireKeepAliveAssertion];
   }
 }
 
@@ -315,9 +315,9 @@ LABEL_19:
   [v3 stopFetchTimer];
 
   v4 = +[HUDContextUpdater sharedInstance];
-  v5 = [v4 isNoTaskPending];
+  isNoTaskPending = [v4 isNoTaskPending];
 
-  if (v5)
+  if (isNoTaskPending)
   {
     v6 = +[HUDContextUpdater sharedInstance];
     [v6 stopUpdater];
@@ -328,9 +328,9 @@ LABEL_19:
   }
 }
 
-- (void)clearHUDWithCompletion:(id)a3
+- (void)clearHUDWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100002F0C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -345,7 +345,7 @@ LABEL_19:
   block[4] = self;
   dispatch_sync(v6, block);
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 @end

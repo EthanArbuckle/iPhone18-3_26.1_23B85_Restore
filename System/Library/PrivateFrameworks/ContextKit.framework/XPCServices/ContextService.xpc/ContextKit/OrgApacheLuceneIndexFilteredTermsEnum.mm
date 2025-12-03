@@ -1,40 +1,40 @@
 @interface OrgApacheLuceneIndexFilteredTermsEnum
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3;
-- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withBoolean:(BOOL)a4;
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum;
+- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withBoolean:(BOOL)boolean;
 - (id)attributes;
 - (id)next;
-- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)term;
 - (id)termState;
 - (int)docFreq;
 - (int64_t)ord;
 - (int64_t)totalTermFreq;
 - (void)dealloc;
-- (void)seekExactWithLong:(int64_t)a3;
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4;
+- (void)seekExactWithLong:(int64_t)long;
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneIndexFilteredTermsEnum
 
-- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3
+- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum
 {
   OrgApacheLuceneIndexTermsEnum_init(self);
-  JreStrongAssign(&self->tenum_, a3);
+  JreStrongAssign(&self->tenum_, enum);
   self->doSeek_ = 1;
   return self;
 }
 
-- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withBoolean:(BOOL)a4
+- (OrgApacheLuceneIndexFilteredTermsEnum)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withBoolean:(BOOL)boolean
 {
   OrgApacheLuceneIndexTermsEnum_init(self);
-  JreStrongAssign(&self->tenum_, a3);
-  self->doSeek_ = a4;
+  JreStrongAssign(&self->tenum_, enum);
+  self->doSeek_ = boolean;
   return self;
 }
 
-- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)nextSeekTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   initialSeekTerm = self->initialSeekTerm_;
   JreStrongAssign(&self->initialSeekTerm_, 0);
@@ -85,26 +85,26 @@
   return [(OrgApacheLuceneIndexTermsEnum *)tenum totalTermFreq];
 }
 
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  v3 = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
-  v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, v3);
+  getClass = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
+  v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, getClass);
   v12 = new_JavaLangUnsupportedOperationException_initWithNSString_(v11);
   objc_exception_throw(v12);
 }
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  v3 = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
-  v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, v3);
+  getClass = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
+  v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, getClass);
   v12 = new_JavaLangUnsupportedOperationException_initWithNSString_(v11);
   objc_exception_throw(v12);
 }
 
-- (void)seekExactWithLong:(int64_t)a3
+- (void)seekExactWithLong:(int64_t)long
 {
-  v3 = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
-  v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, v3);
+  getClass = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
+  v11 = JreStrcat("$$", v4, v5, v6, v7, v8, v9, v10, getClass);
   v12 = new_JavaLangUnsupportedOperationException_initWithNSString_(v11);
   objc_exception_throw(v12);
 }
@@ -120,10 +120,10 @@
   return [(OrgApacheLuceneIndexTermsEnum *)tenum ord];
 }
 
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state
 {
-  v4 = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
-  v12 = JreStrcat("$$", v5, v6, v7, v8, v9, v10, v11, v4);
+  getClass = [-[OrgApacheLuceneIndexFilteredTermsEnum getClass](self getClass];
+  v12 = JreStrcat("$$", v5, v6, v7, v8, v9, v10, v11, getClass);
   v13 = new_JavaLangUnsupportedOperationException_initWithNSString_(v12);
   objc_exception_throw(v13);
 }

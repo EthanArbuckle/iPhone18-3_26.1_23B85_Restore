@@ -1,16 +1,16 @@
 @interface TUICandidateSortControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)layoutSubviews;
 @end
 
 @implementation TUICandidateSortControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TUICandidateSortControl" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TUICandidateSortControl" hasInstanceMethod:@"segmentedControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UISegmentedControl" hasInstanceVariable:@"_segments" withType:"NSMutableArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TUICandidateSortControl" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TUICandidateSortControl" hasInstanceMethod:@"segmentedControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UISegmentedControl" hasInstanceVariable:@"_segments" withType:"NSMutableArray"];
 }
 
 - (void)layoutSubviews

@@ -8,7 +8,7 @@
 - (id)displayTypeController
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC18HealthExperienceUIP33_32BBCFBB356028961E4520309C3A50C420DataMetadataDelegate_healthStore);
-  v3 = self;
+  selfCopy = self;
   result = [v2 displayTypeController];
   if (result)
   {

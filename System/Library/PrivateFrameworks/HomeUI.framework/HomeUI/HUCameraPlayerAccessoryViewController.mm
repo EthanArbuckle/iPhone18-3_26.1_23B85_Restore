@@ -5,33 +5,33 @@
 - (HFCameraPlaybackEngine)playbackEngine;
 - (HFCameraRecordingEvent)lastDisplayedEvent;
 - (HUCameraLoadingActivityIndicatorView)loadingActivityIndicator;
-- (HUCameraPlayerAccessoryViewController)initWithPlaybackEngine:(id)a3;
+- (HUCameraPlayerAccessoryViewController)initWithPlaybackEngine:(id)engine;
 - (UIImageView)noResponseView;
 - (UILabel)noActivityLabel;
 - (UILabel)primaryErrorLabel;
 - (UILabel)secondaryErrorLabel;
 - (UIView)loadingOverlayView;
-- (id)_errorStringDetailsForError:(id)a3;
-- (void)_displayReachabilityMessageForEvent:(id)a3;
-- (void)_updateAllOverlayStateAnimated:(BOOL)a3;
-- (void)_updateErrorStateAnimated:(BOOL)a3;
-- (void)_updateLoadingStateAnimated:(BOOL)a3;
-- (void)_updateNoActivityStateAnimated:(BOOL)a3;
-- (void)_updateStateAnimated:(BOOL)a3 usingBlock:(id)a4;
+- (id)_errorStringDetailsForError:(id)error;
+- (void)_displayReachabilityMessageForEvent:(id)event;
+- (void)_updateAllOverlayStateAnimated:(BOOL)animated;
+- (void)_updateErrorStateAnimated:(BOOL)animated;
+- (void)_updateLoadingStateAnimated:(BOOL)animated;
+- (void)_updateNoActivityStateAnimated:(BOOL)animated;
+- (void)_updateStateAnimated:(BOOL)animated usingBlock:(id)block;
 - (void)hu_reloadData;
-- (void)playbackEngine:(id)a3 didUpdatePlaybackError:(id)a4;
-- (void)playbackEngine:(id)a3 didUpdateTimeControlStatus:(unint64_t)a4;
-- (void)setCanShowOverlayContent:(BOOL)a3;
-- (void)setPlaybackEngine:(id)a3;
-- (void)setShouldShowLoadingIndicatorForClipPlayback:(BOOL)a3;
+- (void)playbackEngine:(id)engine didUpdatePlaybackError:(id)error;
+- (void)playbackEngine:(id)engine didUpdateTimeControlStatus:(unint64_t)status;
+- (void)setCanShowOverlayContent:(BOOL)content;
+- (void)setPlaybackEngine:(id)engine;
+- (void)setShouldShowLoadingIndicatorForClipPlayback:(BOOL)playback;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCameraPlayerAccessoryViewController
 
-- (void)setPlaybackEngine:(id)a3
+- (void)setPlaybackEngine:(id)engine
 {
-  obj = a3;
+  obj = engine;
   WeakRetained = objc_loadWeakRetained(&self->_playbackEngine);
 
   if (WeakRetained != obj)
@@ -47,16 +47,16 @@
   }
 }
 
-- (HUCameraPlayerAccessoryViewController)initWithPlaybackEngine:(id)a3
+- (HUCameraPlayerAccessoryViewController)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v8.receiver = self;
   v8.super_class = HUCameraPlayerAccessoryViewController;
   v5 = [(HUCameraPlayerAccessoryViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HUCameraPlayerAccessoryViewController *)v5 setPlaybackEngine:v4];
+    [(HUCameraPlayerAccessoryViewController *)v5 setPlaybackEngine:engineCopy];
   }
 
   return v6;
@@ -68,129 +68,129 @@
   v82.receiver = self;
   v82.super_class = HUCameraPlayerAccessoryViewController;
   [(HUCameraPlayerAccessoryViewController *)&v82 viewDidLoad];
-  v3 = [(HUCameraPlayerAccessoryViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(HUCameraPlayerAccessoryViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v5 = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
-  [v4 addSubview:v5];
+  view2 = [(HUCameraPlayerAccessoryViewController *)self view];
+  loadingActivityIndicator = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
+  [view2 addSubview:loadingActivityIndicator];
 
-  v6 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v7 = [(HUCameraPlayerAccessoryViewController *)self noActivityLabel];
-  [v6 naui_addAutoLayoutSubview:v7];
+  view3 = [(HUCameraPlayerAccessoryViewController *)self view];
+  noActivityLabel = [(HUCameraPlayerAccessoryViewController *)self noActivityLabel];
+  [view3 naui_addAutoLayoutSubview:noActivityLabel];
 
-  v8 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v9 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  [v8 addSubview:v9];
+  view4 = [(HUCameraPlayerAccessoryViewController *)self view];
+  primaryErrorLabel = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  [view4 addSubview:primaryErrorLabel];
 
-  v10 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v11 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
-  [v10 addSubview:v11];
+  view5 = [(HUCameraPlayerAccessoryViewController *)self view];
+  secondaryErrorLabel = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
+  [view5 addSubview:secondaryErrorLabel];
 
-  v12 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v13 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
-  [v12 addSubview:v13];
+  view6 = [(HUCameraPlayerAccessoryViewController *)self view];
+  noResponseView = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
+  [view6 addSubview:noResponseView];
 
-  v14 = [(HUCameraPlayerAccessoryViewController *)self view];
-  [v14 center];
+  view7 = [(HUCameraPlayerAccessoryViewController *)self view];
+  [view7 center];
   v16 = v15;
   v18 = v17;
-  v19 = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
-  [v19 setCenter:{v16, v18}];
+  loadingActivityIndicator2 = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
+  [loadingActivityIndicator2 setCenter:{v16, v18}];
 
   v55 = MEMORY[0x277CCAAD0];
-  v81 = [(HUCameraPlayerAccessoryViewController *)self noActivityLabel];
-  v79 = [v81 centerYAnchor];
-  v80 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v78 = [v80 centerYAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  noActivityLabel2 = [(HUCameraPlayerAccessoryViewController *)self noActivityLabel];
+  centerYAnchor = [noActivityLabel2 centerYAnchor];
+  view8 = [(HUCameraPlayerAccessoryViewController *)self view];
+  centerYAnchor2 = [view8 centerYAnchor];
+  v77 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v83[0] = v77;
-  v76 = [(HUCameraPlayerAccessoryViewController *)self noActivityLabel];
-  v74 = [v76 centerXAnchor];
-  v75 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v73 = [v75 centerXAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  noActivityLabel3 = [(HUCameraPlayerAccessoryViewController *)self noActivityLabel];
+  centerXAnchor = [noActivityLabel3 centerXAnchor];
+  view9 = [(HUCameraPlayerAccessoryViewController *)self view];
+  centerXAnchor2 = [view9 centerXAnchor];
+  v72 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v83[1] = v72;
-  v71 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  v69 = [v71 centerXAnchor];
-  v70 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v68 = [v70 centerXAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  primaryErrorLabel2 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  centerXAnchor3 = [primaryErrorLabel2 centerXAnchor];
+  view10 = [(HUCameraPlayerAccessoryViewController *)self view];
+  centerXAnchor4 = [view10 centerXAnchor];
+  v67 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v83[2] = v67;
-  v66 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  v64 = [v66 centerYAnchor];
-  v65 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v63 = [v65 centerYAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  primaryErrorLabel3 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  centerYAnchor3 = [primaryErrorLabel3 centerYAnchor];
+  view11 = [(HUCameraPlayerAccessoryViewController *)self view];
+  centerYAnchor4 = [view11 centerYAnchor];
+  v62 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v83[3] = v62;
-  v61 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  v59 = [v61 widthAnchor];
-  v60 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v58 = [v60 readableContentGuide];
-  v57 = [v58 widthAnchor];
-  v56 = [v59 constraintEqualToAnchor:v57];
+  primaryErrorLabel4 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  widthAnchor = [primaryErrorLabel4 widthAnchor];
+  view12 = [(HUCameraPlayerAccessoryViewController *)self view];
+  readableContentGuide = [view12 readableContentGuide];
+  widthAnchor2 = [readableContentGuide widthAnchor];
+  v56 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v83[4] = v56;
-  v54 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
-  v52 = [v54 topAnchor];
-  v53 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  v51 = [v53 bottomAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51 constant:6.0];
+  secondaryErrorLabel2 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
+  topAnchor = [secondaryErrorLabel2 topAnchor];
+  primaryErrorLabel5 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  bottomAnchor = [primaryErrorLabel5 bottomAnchor];
+  v50 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:6.0];
   v83[5] = v50;
-  v49 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
-  v47 = [v49 leadingAnchor];
-  v48 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v46 = [v48 safeAreaLayoutGuide];
-  v45 = [v46 leadingAnchor];
-  v44 = [v47 constraintEqualToAnchor:v45 constant:10.0];
+  secondaryErrorLabel3 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
+  leadingAnchor = [secondaryErrorLabel3 leadingAnchor];
+  view13 = [(HUCameraPlayerAccessoryViewController *)self view];
+  safeAreaLayoutGuide = [view13 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v83[6] = v44;
-  v43 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
-  v41 = [v43 trailingAnchor];
-  v42 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v40 = [v42 safeAreaLayoutGuide];
-  v39 = [v40 trailingAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39 constant:-10.0];
+  secondaryErrorLabel4 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
+  trailingAnchor = [secondaryErrorLabel4 trailingAnchor];
+  view14 = [(HUCameraPlayerAccessoryViewController *)self view];
+  safeAreaLayoutGuide2 = [view14 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v83[7] = v38;
-  v37 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
-  v35 = [v37 bottomAnchor];
-  v36 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  v34 = [v36 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34 constant:-10.0];
+  noResponseView2 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
+  bottomAnchor2 = [noResponseView2 bottomAnchor];
+  primaryErrorLabel6 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  topAnchor2 = [primaryErrorLabel6 topAnchor];
+  v33 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2 constant:-10.0];
   v83[8] = v33;
-  v32 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
-  v30 = [v32 centerXAnchor];
-  v31 = [(HUCameraPlayerAccessoryViewController *)self view];
-  v29 = [v31 centerXAnchor];
-  v20 = [v30 constraintEqualToAnchor:v29];
+  noResponseView3 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
+  centerXAnchor5 = [noResponseView3 centerXAnchor];
+  view15 = [(HUCameraPlayerAccessoryViewController *)self view];
+  centerXAnchor6 = [view15 centerXAnchor];
+  v20 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v83[9] = v20;
-  v21 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
-  v22 = [v21 widthAnchor];
-  v23 = [v22 constraintEqualToConstant:61.0];
+  noResponseView4 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
+  widthAnchor3 = [noResponseView4 widthAnchor];
+  v23 = [widthAnchor3 constraintEqualToConstant:61.0];
   v83[10] = v23;
-  v24 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
-  v25 = [v24 heightAnchor];
-  v26 = [v25 constraintEqualToConstant:50.0];
+  noResponseView5 = [(HUCameraPlayerAccessoryViewController *)self noResponseView];
+  heightAnchor = [noResponseView5 heightAnchor];
+  v26 = [heightAnchor constraintEqualToConstant:50.0];
   v83[11] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v83 count:12];
-  v28 = [v27 na_arrayByFlattening];
-  [v55 activateConstraints:v28];
+  na_arrayByFlattening = [v27 na_arrayByFlattening];
+  [v55 activateConstraints:na_arrayByFlattening];
 
   [(HUCameraPlayerAccessoryViewController *)self _updateAllOverlayStateAnimated:0];
 }
 
-- (void)setCanShowOverlayContent:(BOOL)a3
+- (void)setCanShowOverlayContent:(BOOL)content
 {
-  if (self->_canShowOverlayContent != a3)
+  if (self->_canShowOverlayContent != content)
   {
-    self->_canShowOverlayContent = a3;
+    self->_canShowOverlayContent = content;
     [(HUCameraPlayerAccessoryViewController *)self _updateAllOverlayStateAnimated:1];
   }
 }
 
-- (void)setShouldShowLoadingIndicatorForClipPlayback:(BOOL)a3
+- (void)setShouldShowLoadingIndicatorForClipPlayback:(BOOL)playback
 {
-  if (self->_shouldShowLoadingIndicatorForClipPlayback != a3)
+  if (self->_shouldShowLoadingIndicatorForClipPlayback != playback)
   {
-    self->_shouldShowLoadingIndicatorForClipPlayback = a3;
+    self->_shouldShowLoadingIndicatorForClipPlayback = playback;
     [(HUCameraPlayerAccessoryViewController *)self _updateLoadingStateAnimated:1];
   }
 }
@@ -205,7 +205,7 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)playbackEngine:(id)a3 didUpdateTimeControlStatus:(unint64_t)a4
+- (void)playbackEngine:(id)engine didUpdateTimeControlStatus:(unint64_t)status
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -215,7 +215,7 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)playbackEngine:(id)a3 didUpdatePlaybackError:(id)a4
+- (void)playbackEngine:(id)engine didUpdatePlaybackError:(id)error
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -233,16 +233,16 @@ uint64_t __79__HUCameraPlayerAccessoryViewController_playbackEngine_didUpdatePla
   return [v2 _updateLoadingStateAnimated:1];
 }
 
-- (void)_updateAllOverlayStateAnimated:(BOOL)a3
+- (void)_updateAllOverlayStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(HUCameraPlayerAccessoryViewController *)self _updateLoadingStateAnimated:?];
-  [(HUCameraPlayerAccessoryViewController *)self _updateNoActivityStateAnimated:v3];
+  [(HUCameraPlayerAccessoryViewController *)self _updateNoActivityStateAnimated:animatedCopy];
 
-  [(HUCameraPlayerAccessoryViewController *)self _updateErrorStateAnimated:v3];
+  [(HUCameraPlayerAccessoryViewController *)self _updateErrorStateAnimated:animatedCopy];
 }
 
-- (void)_updateLoadingStateAnimated:(BOOL)a3
+- (void)_updateLoadingStateAnimated:(BOOL)animated
 {
   v38 = *MEMORY[0x277D85DE8];
   if ([(HUCameraPlayerAccessoryViewController *)self shouldShortCircuitLoadingIndicator])
@@ -250,32 +250,32 @@ uint64_t __79__HUCameraPlayerAccessoryViewController_playbackEngine_didUpdatePla
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      playbackEngine = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
       v32 = 134217984;
-      *v33 = [v5 timeControlStatus];
+      *v33 = [playbackEngine timeControlStatus];
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "Short-circuiting accessory view loading UI. %lu", &v32, 0xCu);
     }
 
-    v6 = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
-    [v6 setAlpha:0.0];
+    loadingActivityIndicator = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
+    [loadingActivityIndicator setAlpha:0.0];
 
-    v7 = [(HUCameraPlayerAccessoryViewController *)self loadingOverlayView];
-    [v7 setAlpha:0.0];
+    loadingOverlayView = [(HUCameraPlayerAccessoryViewController *)self loadingOverlayView];
+    [loadingOverlayView setAlpha:0.0];
 
     [(HUCameraPlayerAccessoryViewController *)self setShowingLoadingIndicator:0];
     return;
   }
 
-  v8 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
-  v9 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v10 = [v9 playbackPosition];
-  v11 = [v10 contentType];
+  showingLoadingIndicator = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
+  playbackEngine2 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine2 playbackPosition];
+  contentType = [playbackPosition contentType];
 
-  v12 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v13 = v12;
-  if (v11 == 1)
+  playbackEngine3 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  v13 = playbackEngine3;
+  if (contentType == 1)
   {
-    if ([v12 timelineState] == 3)
+    if ([playbackEngine3 timelineState] == 3)
     {
 
 LABEL_13:
@@ -285,30 +285,30 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v17 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    v18 = [v17 timelineState];
+    playbackEngine4 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    timelineState = [playbackEngine4 timelineState];
 
-    if (v18 == 4)
+    if (timelineState == 4)
     {
       goto LABEL_13;
     }
 
-    v14 = [(HUCameraPlayerAccessoryViewController *)self shouldShowLoadingIndicatorForClipPlayback];
+    shouldShowLoadingIndicatorForClipPlayback = [(HUCameraPlayerAccessoryViewController *)self shouldShowLoadingIndicatorForClipPlayback];
   }
 
   else
   {
-    v14 = [v12 timeControlStatus] == 1;
+    shouldShowLoadingIndicatorForClipPlayback = [playbackEngine3 timeControlStatus] == 1;
   }
 
-  if (![(HUCameraPlayerAccessoryViewController *)self canShowOverlayContent]|| !v14)
+  if (![(HUCameraPlayerAccessoryViewController *)self canShowOverlayContent]|| !shouldShowLoadingIndicatorForClipPlayback)
   {
     goto LABEL_14;
   }
 
-  v15 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v16 = [v15 playbackError];
-  [(HUCameraPlayerAccessoryViewController *)self setShowingLoadingIndicator:v16 == 0];
+  playbackEngine5 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  playbackError = [playbackEngine5 playbackError];
+  [(HUCameraPlayerAccessoryViewController *)self setShowingLoadingIndicator:playbackError == 0];
 
 LABEL_15:
   if ([(HUCameraPlayerAccessoryViewController *)self forceLoadingIndicatorToDisplay])
@@ -316,27 +316,27 @@ LABEL_15:
     [(HUCameraPlayerAccessoryViewController *)self setShowingLoadingIndicator:1];
   }
 
-  v19 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
+  showingLoadingIndicator2 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
   v20 = HFLogForCategory();
   v21 = v20;
-  if (v8 == v19)
+  if (showingLoadingIndicator == showingLoadingIndicator2)
   {
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
-      v27 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v28 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v29 = [v28 playbackPosition];
-      v30 = [v29 contentType];
-      v31 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      showingLoadingIndicator3 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
+      playbackEngine6 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      playbackEngine7 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      playbackPosition2 = [playbackEngine7 playbackPosition];
+      contentType2 = [playbackPosition2 contentType];
+      playbackEngine8 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
       v32 = 67109890;
-      *v33 = v26;
+      *v33 = showingLoadingIndicator3;
       *&v33[4] = 2112;
-      *&v33[6] = v27;
+      *&v33[6] = playbackEngine6;
       v34 = 2048;
-      v35 = v30;
+      v35 = contentType2;
       v36 = 2048;
-      v37 = [v31 timeControlStatus];
+      timeControlStatus = [playbackEngine8 timeControlStatus];
       _os_log_debug_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEBUG, "Loading state unchanged. Showing:%{BOOL}d for engine:%@ contentType:%lu timeControlStatus:%lu.", &v32, 0x26u);
     }
   }
@@ -350,9 +350,9 @@ LABEL_15:
       _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "Loading state updated. Showing:%{BOOL}d.", &v32, 8u);
     }
 
-    v22 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
-    v23 = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
-    [v23 setAlpha:v22];
+    showingLoadingIndicator4 = [(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator];
+    loadingActivityIndicator2 = [(HUCameraPlayerAccessoryViewController *)self loadingActivityIndicator];
+    [loadingActivityIndicator2 setAlpha:showingLoadingIndicator4];
 
     if ([(HUCameraPlayerAccessoryViewController *)self showingLoadingIndicator])
     {
@@ -364,29 +364,29 @@ LABEL_15:
       v24 = 0.0;
     }
 
-    v25 = [(HUCameraPlayerAccessoryViewController *)self loadingOverlayView];
-    [v25 setAlpha:v24];
+    loadingOverlayView2 = [(HUCameraPlayerAccessoryViewController *)self loadingOverlayView];
+    [loadingOverlayView2 setAlpha:v24];
   }
 }
 
-- (void)_updateNoActivityStateAnimated:(BOOL)a3
+- (void)_updateNoActivityStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(HUCameraPlayerAccessoryViewController *)self showingNoActivity];
+  animatedCopy = animated;
+  showingNoActivity = [(HUCameraPlayerAccessoryViewController *)self showingNoActivity];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated___block_invoke;
   v7[3] = &unk_277DBA888;
   v7[4] = self;
   [(HUCameraPlayerAccessoryViewController *)self setShowingNoActivity:__72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated___block_invoke(v7) != 0];
-  if (v5 != [(HUCameraPlayerAccessoryViewController *)self showingNoActivity])
+  if (showingNoActivity != [(HUCameraPlayerAccessoryViewController *)self showingNoActivity])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated___block_invoke_2;
     v6[3] = &unk_277DB8488;
     v6[4] = self;
-    [(HUCameraPlayerAccessoryViewController *)self _updateStateAnimated:v3 usingBlock:v6];
+    [(HUCameraPlayerAccessoryViewController *)self _updateStateAnimated:animatedCopy usingBlock:v6];
   }
 }
 
@@ -425,55 +425,55 @@ void __72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated_
   [v3 setAlpha:v2];
 }
 
-- (void)_updateErrorStateAnimated:(BOOL)a3
+- (void)_updateErrorStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v70 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D14CE8] isPressDemoModeEnabled])
   {
     return;
   }
 
-  v52 = v3;
-  v5 = [(HUCameraPlayerAccessoryViewController *)self showingError];
-  v6 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v53 = [v6 playbackError];
+  v52 = animatedCopy;
+  showingError = [(HUCameraPlayerAccessoryViewController *)self showingError];
+  playbackEngine = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  playbackError = [playbackEngine playbackError];
 
-  if ([(HUCameraPlayerAccessoryViewController *)self canShowOverlayContent]&& v53)
+  if ([(HUCameraPlayerAccessoryViewController *)self canShowOverlayContent]&& playbackError)
   {
     [(HUCameraPlayerAccessoryViewController *)self setShowingError:1];
   }
 
   else
   {
-    v7 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    v8 = [v7 cameraProfile];
-    -[HUCameraPlayerAccessoryViewController setShowingError:](self, "setShowingError:", [v8 hf_shouldDisableLiveStream]);
+    playbackEngine2 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    cameraProfile = [playbackEngine2 cameraProfile];
+    -[HUCameraPlayerAccessoryViewController setShowingError:](self, "setShowingError:", [cameraProfile hf_shouldDisableLiveStream]);
   }
 
-  v9 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v10 = [v9 playbackPosition];
-  v11 = [v10 contentType];
+  playbackEngine3 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine3 playbackPosition];
+  contentType = [playbackPosition contentType];
 
-  if (v11 == 1)
+  if (contentType == 1)
   {
     [(HUCameraPlayerAccessoryViewController *)self setShowingError:0];
   }
 
-  v12 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v13 = [v12 timelineState];
+  playbackEngine4 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  timelineState = [playbackEngine4 timelineState];
 
-  if (v13 == 3 && ((-[HUCameraPlayerAccessoryViewController setShowingError:](self, "setShowingError:", 1), -[HUCameraPlayerAccessoryViewController reachabilityEventWasOffline](self, "reachabilityEventWasOffline")) || (-[HUCameraPlayerAccessoryViewController lastDisplayedEvent](self, "lastDisplayedEvent"), v14 = objc_claimAutoreleasedReturnValue(), -[HUCameraPlayerAccessoryViewController playbackEngine](self, "playbackEngine"), v15 = objc_claimAutoreleasedReturnValue(), [v15 currentClip], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v14, "isEqual:", v16), v16, v15, v14, (v17 & 1) == 0)))
+  if (timelineState == 3 && ((-[HUCameraPlayerAccessoryViewController setShowingError:](self, "setShowingError:", 1), -[HUCameraPlayerAccessoryViewController reachabilityEventWasOffline](self, "reachabilityEventWasOffline")) || (-[HUCameraPlayerAccessoryViewController lastDisplayedEvent](self, "lastDisplayedEvent"), v14 = objc_claimAutoreleasedReturnValue(), -[HUCameraPlayerAccessoryViewController playbackEngine](self, "playbackEngine"), v15 = objc_claimAutoreleasedReturnValue(), [v15 currentClip], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v14, "isEqual:", v16), v16, v15, v14, (v17 & 1) == 0)))
   {
-    v19 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    v20 = [v19 currentClip];
-    [(HUCameraPlayerAccessoryViewController *)self setLastDisplayedEvent:v20];
+    playbackEngine5 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    currentClip = [playbackEngine5 currentClip];
+    [(HUCameraPlayerAccessoryViewController *)self setLastDisplayedEvent:currentClip];
 
     objc_opt_class();
-    v21 = [(HUCameraPlayerAccessoryViewController *)self lastDisplayedEvent];
+    lastDisplayedEvent = [(HUCameraPlayerAccessoryViewController *)self lastDisplayedEvent];
     if (objc_opt_isKindOfClass())
     {
-      v22 = v21;
+      v22 = lastDisplayedEvent;
     }
 
     else
@@ -483,9 +483,9 @@ void __72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated_
 
     v23 = v22;
 
-    v24 = [v23 endEvent];
+    endEvent = [v23 endEvent];
 
-    [(HUCameraPlayerAccessoryViewController *)self setReachabilityEventWasOffline:v24 == 0];
+    [(HUCameraPlayerAccessoryViewController *)self setReachabilityEventWasOffline:endEvent == 0];
     v18 = 1;
   }
 
@@ -494,30 +494,30 @@ void __72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated_
     v18 = 0;
   }
 
-  v25 = [(HUCameraPlayerAccessoryViewController *)self currentAccessMode];
-  v26 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v27 = [v26 cameraProfile];
-  v28 = [v27 userSettings];
-  v29 = [v28 currentAccessMode];
+  currentAccessMode = [(HUCameraPlayerAccessoryViewController *)self currentAccessMode];
+  playbackEngine6 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  cameraProfile2 = [playbackEngine6 cameraProfile];
+  userSettings = [cameraProfile2 userSettings];
+  currentAccessMode2 = [userSettings currentAccessMode];
 
-  if (v25 != v29)
+  if (currentAccessMode != currentAccessMode2)
   {
-    v30 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    v31 = [v30 cameraProfile];
-    v32 = [v31 userSettings];
-    -[HUCameraPlayerAccessoryViewController setCurrentAccessMode:](self, "setCurrentAccessMode:", [v32 currentAccessMode]);
+    playbackEngine7 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    cameraProfile3 = [playbackEngine7 cameraProfile];
+    userSettings2 = [cameraProfile3 userSettings];
+    -[HUCameraPlayerAccessoryViewController setCurrentAccessMode:](self, "setCurrentAccessMode:", [userSettings2 currentAccessMode]);
 
     v18 = 1;
   }
 
-  v33 = [(HUCameraPlayerAccessoryViewController *)self lastEngineMode];
-  v34 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  if (v33 == [v34 engineMode])
+  lastEngineMode = [(HUCameraPlayerAccessoryViewController *)self lastEngineMode];
+  playbackEngine8 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  if (lastEngineMode == [playbackEngine8 engineMode])
   {
-    v35 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    v36 = [v35 engineMode];
+    playbackEngine9 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    engineMode = [playbackEngine9 engineMode];
 
-    if (v36)
+    if (engineMode)
     {
       goto LABEL_23;
     }
@@ -527,40 +527,40 @@ void __72__HUCameraPlayerAccessoryViewController__updateNoActivityStateAnimated_
   {
   }
 
-  v37 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  -[HUCameraPlayerAccessoryViewController setLastEngineMode:](self, "setLastEngineMode:", [v37 engineMode]);
+  playbackEngine10 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  -[HUCameraPlayerAccessoryViewController setLastEngineMode:](self, "setLastEngineMode:", [playbackEngine10 engineMode]);
 
   v18 = 1;
 LABEL_23:
-  v38 = [(HUCameraPlayerAccessoryViewController *)self showingError];
-  if (v18 || v5 != v38)
+  showingError2 = [(HUCameraPlayerAccessoryViewController *)self showingError];
+  if (v18 || showingError != showingError2)
   {
     v39 = HFLogForCategory();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v40 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v51 = [v40 cameraProfile];
-      v50 = [v51 userSettings];
-      v48 = [v50 hu_currentAccessModeDescription];
-      v49 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v41 = [v49 cameraProfile];
-      v42 = [v41 hf_shouldDisableLiveStream];
-      v43 = [(HUCameraPlayerAccessoryViewController *)self showingError];
-      v44 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v45 = [v44 timelineStateDescription];
-      v46 = [(HUCameraPlayerAccessoryViewController *)self lastDisplayedEvent];
+      playbackEngine11 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      cameraProfile4 = [playbackEngine11 cameraProfile];
+      userSettings3 = [cameraProfile4 userSettings];
+      hu_currentAccessModeDescription = [userSettings3 hu_currentAccessModeDescription];
+      playbackEngine12 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      cameraProfile5 = [playbackEngine12 cameraProfile];
+      hf_shouldDisableLiveStream = [cameraProfile5 hf_shouldDisableLiveStream];
+      showingError3 = [(HUCameraPlayerAccessoryViewController *)self showingError];
+      playbackEngine13 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      timelineStateDescription = [playbackEngine13 timelineStateDescription];
+      lastDisplayedEvent2 = [(HUCameraPlayerAccessoryViewController *)self lastDisplayedEvent];
       *buf = 138413570;
-      v59 = v48;
+      v59 = hu_currentAccessModeDescription;
       v60 = 1024;
-      v61 = v42;
+      v61 = hf_shouldDisableLiveStream;
       v62 = 1024;
-      v63 = v43;
+      v63 = showingError3;
       v64 = 2112;
-      v65 = v45;
+      v65 = timelineStateDescription;
       v66 = 1024;
-      v67 = [v46 containerType] == 1;
+      v67 = [lastDisplayedEvent2 containerType] == 1;
       v68 = 1024;
-      v69 = [(HUCameraPlayerAccessoryViewController *)self reachabilityEventWasOffline];
+      reachabilityEventWasOffline = [(HUCameraPlayerAccessoryViewController *)self reachabilityEventWasOffline];
       _os_log_impl(&dword_20CEB6000, v39, OS_LOG_TYPE_DEFAULT, "Update AccessoryController cameraAccessMode:%@ liveStreamDisabled:%{BOOL}d showingError:%{BOOL}d timelineState:%@ containerTypeRecording:%{BOOL}d offline:%{BOOL}d", buf, 0x2Eu);
     }
 
@@ -570,7 +570,7 @@ LABEL_23:
     v55[2] = __67__HUCameraPlayerAccessoryViewController__updateErrorStateAnimated___block_invoke;
     v55[3] = &unk_277DBA860;
     objc_copyWeak(&v57, buf);
-    v56 = v53;
+    v56 = playbackError;
     [(HUCameraPlayerAccessoryViewController *)self _updateStateAnimated:v52 usingBlock:v55];
     v47 = HFLogForCategory();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -675,22 +675,22 @@ LABEL_15:
   [v32 setAlpha:v31];
 }
 
-- (void)_updateStateAnimated:(BOOL)a3 usingBlock:(id)a4
+- (void)_updateStateAnimated:(BOOL)animated usingBlock:(id)block
 {
-  if (a3)
+  if (animated)
   {
-    [MEMORY[0x277D75D18] animateWithDuration:a4 animations:0.3];
+    [MEMORY[0x277D75D18] animateWithDuration:block animations:0.3];
   }
 
   else
   {
-    (*(a4 + 2))(a4);
+    (*(block + 2))(block);
   }
 }
 
-- (id)_errorStringDetailsForError:(id)a3
+- (id)_errorStringDetailsForError:(id)error
 {
-  [a3 code];
+  [error code];
   v3 = HFLocalizedString();
 
   return v3;
@@ -703,16 +703,16 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  if ([v4 timeControlStatus])
+  playbackEngine = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  if ([playbackEngine timeControlStatus])
   {
-    v5 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    v6 = [v5 cameraProfile];
-    if ([v6 hf_shouldDisableLiveStream])
+    playbackEngine2 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    cameraProfile = [playbackEngine2 cameraProfile];
+    if ([cameraProfile hf_shouldDisableLiveStream])
     {
-      v7 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v8 = [v7 playbackPosition];
-      v3 = [v8 contentType] == 0;
+      playbackEngine3 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      playbackPosition = [playbackEngine3 playbackPosition];
+      v3 = [playbackPosition contentType] == 0;
     }
 
     else
@@ -741,15 +741,15 @@ LABEL_15:
     return 0;
   }
 
-  v4 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-  v5 = [v4 playbackPosition];
-  if ([v5 contentType])
+  playbackEngine = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+  playbackPosition = [playbackEngine playbackPosition];
+  if ([playbackPosition contentType])
   {
-    v6 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-    if ([v6 timeControlStatus] == 2)
+    playbackEngine2 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+    if ([playbackEngine2 timeControlStatus] == 2)
     {
-      v7 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
-      v3 = [v7 timelineState] == 2;
+      playbackEngine3 = [(HUCameraPlayerAccessoryViewController *)self playbackEngine];
+      v3 = [playbackEngine3 timelineState] == 2;
     }
 
     else
@@ -766,12 +766,12 @@ LABEL_15:
   return v3;
 }
 
-- (void)_displayReachabilityMessageForEvent:(id)a3
+- (void)_displayReachabilityMessageForEvent:(id)event
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
-  v5 = v4;
+  v5 = eventCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -795,12 +795,12 @@ LABEL_15:
     }
   }
 
-  v9 = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
-  [v9 setText:&stru_2823E0EE8];
+  primaryErrorLabel = [(HUCameraPlayerAccessoryViewController *)self primaryErrorLabel];
+  [primaryErrorLabel setText:&stru_2823E0EE8];
 
-  v10 = [v7 displayDescription];
-  v11 = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
-  [v11 setText:v10];
+  displayDescription = [v7 displayDescription];
+  secondaryErrorLabel = [(HUCameraPlayerAccessoryViewController *)self secondaryErrorLabel];
+  [secondaryErrorLabel setText:displayDescription];
 }
 
 - (HUCameraLoadingActivityIndicatorView)loadingActivityIndicator
@@ -809,8 +809,8 @@ LABEL_15:
   if (!loadingActivityIndicator)
   {
     v4 = [HUCameraLoadingActivityIndicatorView alloc];
-    v5 = [(HUCameraPlayerAccessoryViewController *)self view];
-    [v5 bounds];
+    view = [(HUCameraPlayerAccessoryViewController *)self view];
+    [view bounds];
     v6 = [(HUCameraLoadingActivityIndicatorView *)v4 initWithFrame:?];
     v7 = self->_loadingActivityIndicator;
     self->_loadingActivityIndicator = v6;
@@ -827,14 +827,14 @@ LABEL_15:
   primaryErrorLabel = self->_primaryErrorLabel;
   if (!primaryErrorLabel)
   {
-    v4 = [objc_opt_class() _newLabel];
+    _newLabel = [objc_opt_class() _newLabel];
     v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-    [(UILabel *)v4 setFont:v5];
+    [(UILabel *)_newLabel setFont:v5];
 
-    [(UILabel *)v4 setNumberOfLines:0];
-    [(UILabel *)v4 setAlpha:0.0];
+    [(UILabel *)_newLabel setNumberOfLines:0];
+    [(UILabel *)_newLabel setAlpha:0.0];
     v6 = self->_primaryErrorLabel;
-    self->_primaryErrorLabel = v4;
+    self->_primaryErrorLabel = _newLabel;
 
     primaryErrorLabel = self->_primaryErrorLabel;
   }
@@ -847,14 +847,14 @@ LABEL_15:
   secondaryErrorLabel = self->_secondaryErrorLabel;
   if (!secondaryErrorLabel)
   {
-    v4 = [objc_opt_class() _newLabel];
+    _newLabel = [objc_opt_class() _newLabel];
     v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-    [(UILabel *)v4 setFont:v5];
+    [(UILabel *)_newLabel setFont:v5];
 
-    [(UILabel *)v4 setNumberOfLines:0];
-    [(UILabel *)v4 setAlpha:0.0];
+    [(UILabel *)_newLabel setNumberOfLines:0];
+    [(UILabel *)_newLabel setAlpha:0.0];
     v6 = self->_secondaryErrorLabel;
-    self->_secondaryErrorLabel = v4;
+    self->_secondaryErrorLabel = _newLabel;
 
     secondaryErrorLabel = self->_secondaryErrorLabel;
   }
@@ -867,17 +867,17 @@ LABEL_15:
   noActivityLabel = self->_noActivityLabel;
   if (!noActivityLabel)
   {
-    v4 = [objc_opt_class() _newLabel];
+    _newLabel = [objc_opt_class() _newLabel];
     v5 = _HULocalizedStringWithDefaultValue(@"HUCameraPlayerNoActivity", @"HUCameraPlayerNoActivity", 1);
-    v6 = [v5 localizedUppercaseString];
-    [(UILabel *)v4 setText:v6];
+    localizedUppercaseString = [v5 localizedUppercaseString];
+    [(UILabel *)_newLabel setText:localizedUppercaseString];
 
     v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-    [(UILabel *)v4 setFont:v7];
+    [(UILabel *)_newLabel setFont:v7];
 
-    [(UILabel *)v4 setAlpha:0.0];
+    [(UILabel *)_newLabel setAlpha:0.0];
     v8 = self->_noActivityLabel;
-    self->_noActivityLabel = v4;
+    self->_noActivityLabel = _newLabel;
 
     noActivityLabel = self->_noActivityLabel;
   }
@@ -889,27 +889,27 @@ LABEL_15:
 {
   v2 = objc_alloc(MEMORY[0x277D756B8]);
   v3 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v4 = [MEMORY[0x277D75348] lightTextColor];
-  [v3 setTextColor:v4];
+  lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+  [v3 setTextColor:lightTextColor];
 
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v3 setFont:v5];
 
   [v3 setTextAlignment:1];
-  v6 = [v3 layer];
-  [v6 setShadowRadius:3.0];
+  layer = [v3 layer];
+  [layer setShadowRadius:3.0];
 
-  v7 = [v3 layer];
+  layer2 = [v3 layer];
   LODWORD(v8) = *"333?";
-  [v7 setShadowOpacity:v8];
+  [layer2 setShadowOpacity:v8];
 
   v9 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.7];
-  v10 = [v9 CGColor];
-  v11 = [v3 layer];
-  [v11 setShadowColor:v10];
+  cGColor = [v9 CGColor];
+  layer3 = [v3 layer];
+  [layer3 setShadowColor:cGColor];
 
-  v12 = [v3 layer];
-  [v12 setShadowOffset:{0.0, 0.0}];
+  layer4 = [v3 layer];
+  [layer4 setShadowOffset:{0.0, 0.0}];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   return v3;
@@ -920,12 +920,12 @@ LABEL_15:
   noResponseView = self->_noResponseView;
   if (!noResponseView)
   {
-    v4 = [MEMORY[0x277D755B8] hu_cameraErrorImage];
-    v5 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v4];
+    hu_cameraErrorImage = [MEMORY[0x277D755B8] hu_cameraErrorImage];
+    v5 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:hu_cameraErrorImage];
     [(UIImageView *)v5 setContentMode:1];
     [(UIImageView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIImageView *)v5 setTintColor:v6];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIImageView *)v5 setTintColor:systemGrayColor];
 
     [(UIImageView *)v5 setAlpha:0.0];
     v7 = self->_noResponseView;

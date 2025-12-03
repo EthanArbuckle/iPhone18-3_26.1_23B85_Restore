@@ -1,19 +1,19 @@
 @interface NTKMovingMedian
-- (NTKMovingMedian)initWithSampleSize:(unint64_t)a3;
+- (NTKMovingMedian)initWithSampleSize:(unint64_t)size;
 - (uint64_t)_entryAtIndex:(uint64_t)result;
-- (void)addNewValue:(double)a3;
+- (void)addNewValue:(double)value;
 @end
 
 @implementation NTKMovingMedian
 
-- (NTKMovingMedian)initWithSampleSize:(unint64_t)a3
+- (NTKMovingMedian)initWithSampleSize:(unint64_t)size
 {
   v4 = [(NTKMovingMedian *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_sampleSize = a3;
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v4->_sampleSize = size;
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:size];
     values = v5->_values;
     v5->_values = v6;
   }
@@ -21,9 +21,9 @@
   return v5;
 }
 
-- (void)addNewValue:(double)a3
+- (void)addNewValue:(double)value
 {
-  v13[0] = a3;
+  v13[0] = value;
   *&v13[1] = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   v4 = [objc_alloc(MEMORY[0x277CCAE60]) initWithBytes:v13 objCType:"{_SortedEntry=dQ}"];
   p_values = &self->_values;

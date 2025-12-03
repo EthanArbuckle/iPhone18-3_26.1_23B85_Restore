@@ -1,17 +1,17 @@
 @interface _UIKeyShortcutHUDSeparatorView
 - (UIColor)separatorColor;
-- (_UIKeyShortcutHUDSeparatorView)initWithFrame:(CGRect)a3;
+- (_UIKeyShortcutHUDSeparatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setSeparatorColor:(id)a3;
+- (void)setSeparatorColor:(id)color;
 @end
 
 @implementation _UIKeyShortcutHUDSeparatorView
 
-- (_UIKeyShortcutHUDSeparatorView)initWithFrame:(CGRect)a3
+- (_UIKeyShortcutHUDSeparatorView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _UIKeyShortcutHUDSeparatorView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,25 +33,25 @@
   v4.receiver = self;
   v4.super_class = _UIKeyShortcutHUDSeparatorView;
   [(UIView *)&v4 layoutSubviews];
-  v3 = [(UIView *)self layoutMarginsGuide];
-  [v3 layoutFrame];
+  layoutMarginsGuide = [(UIView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   [(UIView *)self->_separatorVisualEffectView setFrame:?];
 }
 
 - (UIColor)separatorColor
 {
-  v2 = [(UIVisualEffectView *)self->_separatorVisualEffectView contentView];
-  v3 = [v2 backgroundColor];
+  contentView = [(UIVisualEffectView *)self->_separatorVisualEffectView contentView];
+  backgroundColor = [contentView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setSeparatorColor:(id)a3
+- (void)setSeparatorColor:(id)color
 {
   separatorVisualEffectView = self->_separatorVisualEffectView;
-  v4 = a3;
-  v5 = [(UIVisualEffectView *)separatorVisualEffectView contentView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  contentView = [(UIVisualEffectView *)separatorVisualEffectView contentView];
+  [contentView setBackgroundColor:colorCopy];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = objc_alloc_init(_TtC16CarPlayWallpaper15CPWAssetLibrary);
   [(AppDelegate *)self setAssetLibrary:v5];
@@ -26,19 +26,19 @@
   v10 = [[_TtC16CarPlayWallpaper22CPWWallpaperImageCache alloc] initWithImageCache:v7 imageIDsCache:v9];
   [(AppDelegate *)self setWallpaperCache:v10];
 
-  v11 = [(AppDelegate *)self wallpaperCache];
-  [v11 updateCacheVersionIfNeededWithVersion:CRSUIWallpaperCacheCurrentVersion];
+  wallpaperCache = [(AppDelegate *)self wallpaperCache];
+  [wallpaperCache updateCacheVersionIfNeededWithVersion:CRSUIWallpaperCacheCurrentVersion];
 
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
+  role = [sessionCopy role];
 
-  v8 = [v6 initWithName:@"Default Configuration" sessionRole:v7];
+  v8 = [v6 initWithName:@"Default Configuration" sessionRole:role];
 
   return v8;
 }

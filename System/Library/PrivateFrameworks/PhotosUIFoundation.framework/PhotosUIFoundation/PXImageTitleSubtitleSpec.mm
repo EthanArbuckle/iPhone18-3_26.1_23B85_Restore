@@ -1,50 +1,50 @@
 @interface PXImageTitleSubtitleSpec
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PXImageTitleSubtitleSpec
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = PXImageTitleSubtitleSpec;
   v5 = [(PXViewSpec *)&v11 copyWithZone:?];
-  v6 = [(PXTitleSubtitleLabelSpec *)self->_titleSubtitleSpec copyWithZone:a3];
+  v6 = [(PXTitleSubtitleLabelSpec *)self->_titleSubtitleSpec copyWithZone:zone];
   v7 = v5[12];
   v5[12] = v6;
 
-  v8 = [(PXImageViewSpec *)self->_imageSpec copyWithZone:a3];
+  v8 = [(PXImageViewSpec *)self->_imageSpec copyWithZone:zone];
   v9 = v5[13];
   v5[13] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = PXImageTitleSubtitleSpec;
-  v5 = [(PXViewSpec *)&v16 isEqual:v4];
-  v6 = v4;
+  v5 = [(PXViewSpec *)&v16 isEqual:equalCopy];
+  v6 = equalCopy;
   v7 = v6;
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v8 = [v6 titleSubtitleSpec];
-  v9 = [(PXImageTitleSubtitleSpec *)self titleSubtitleSpec];
-  v10 = v9;
-  if (v8 == v9)
+  titleSubtitleSpec = [v6 titleSubtitleSpec];
+  titleSubtitleSpec2 = [(PXImageTitleSubtitleSpec *)self titleSubtitleSpec];
+  v10 = titleSubtitleSpec2;
+  if (titleSubtitleSpec == titleSubtitleSpec2)
   {
   }
 
   else
   {
-    v11 = [v8 isEqual:v9];
+    v11 = [titleSubtitleSpec isEqual:titleSubtitleSpec2];
 
     if ((v11 & 1) == 0)
     {
@@ -54,16 +54,16 @@ LABEL_4:
     }
   }
 
-  v13 = [v7 imageSpec];
-  v14 = [(PXImageTitleSubtitleSpec *)self imageSpec];
-  if (v13 == v14)
+  imageSpec = [v7 imageSpec];
+  imageSpec2 = [(PXImageTitleSubtitleSpec *)self imageSpec];
+  if (imageSpec == imageSpec2)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = [v13 isEqual:v14];
+    v12 = [imageSpec isEqual:imageSpec2];
   }
 
 LABEL_10:
@@ -75,11 +75,11 @@ LABEL_10:
   v9.receiver = self;
   v9.super_class = PXImageTitleSubtitleSpec;
   v3 = [(PXViewSpec *)&v9 hash];
-  v4 = [(PXImageTitleSubtitleSpec *)self titleSubtitleSpec];
-  v5 = [v4 hash];
+  titleSubtitleSpec = [(PXImageTitleSubtitleSpec *)self titleSubtitleSpec];
+  v5 = [titleSubtitleSpec hash];
 
-  v6 = [(PXImageTitleSubtitleSpec *)self imageSpec];
-  v7 = v5 ^ [v6 hash];
+  imageSpec = [(PXImageTitleSubtitleSpec *)self imageSpec];
+  v7 = v5 ^ [imageSpec hash];
 
   return v7 ^ v3;
 }

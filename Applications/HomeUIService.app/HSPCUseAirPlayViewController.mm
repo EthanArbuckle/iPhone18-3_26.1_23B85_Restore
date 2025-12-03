@@ -1,5 +1,5 @@
 @interface HSPCUseAirPlayViewController
-- (HSPCUseAirPlayViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCUseAirPlayViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_applyOnboardingSelections;
 - (id)_applyOnboardingSelectionsIfNeeded;
 - (id)_enableAirPlay;
@@ -8,17 +8,17 @@
 
 @implementation HSPCUseAirPlayViewController
 
-- (HSPCUseAirPlayViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCUseAirPlayViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = objc_alloc_init(UIView);
   v9 = [UIImageView alloc];
   v10 = +[UIImage hu_airPlaySpeakerImage];
   v11 = [v9 initWithImage:v10];
 
-  v12 = [v11 layer];
-  [v12 setMasksToBounds:1];
+  layer = [v11 layer];
+  [layer setMasksToBounds:1];
 
   [v11 setContentMode:2];
   v13 = [[HUAirPlayIconView alloc] initWithFrame:0.0, 0.0, 34.0, 34.0];
@@ -30,8 +30,8 @@
   v15 = v14;
   if (v14)
   {
-    [(HSPCUseAirPlayViewController *)v14 setConfig:v7];
-    [(HSPCUseAirPlayViewController *)v15 setCoordinator:v6];
+    [(HSPCUseAirPlayViewController *)v14 setConfig:configCopy];
+    [(HSPCUseAirPlayViewController *)v15 setCoordinator:coordinatorCopy];
     [(HSPCUseAirPlayViewController *)v15 setContainerView:v8];
     [(HSPCUseAirPlayViewController *)v15 setSpeakerIconImageView:v11];
     [(HSPCUseAirPlayViewController *)v15 setAirplayIconView:v13];
@@ -44,10 +44,10 @@
     v19 = HULocalizedString();
     v20 = [(HSPCUseAirPlayViewController *)v15 addOptionalButtonWithLocalizedTitle:v19 target:v15 futureSelector:"_applyOnboardingSelectionsIfNeeded"];
 
-    v21 = [v7 addedAccessory];
-    v22 = [v21 hf_userFriendlyLocalizedLowercaseDescription];
+    addedAccessory = [configCopy addedAccessory];
+    hf_userFriendlyLocalizedLowercaseDescription = [addedAccessory hf_userFriendlyLocalizedLowercaseDescription];
     v23 = HULocalizedStringWithFormat();
-    [(HSPCUseAirPlayViewController *)v15 setSubtitle:v23, v22];
+    [(HSPCUseAirPlayViewController *)v15 setSubtitle:v23, hf_userFriendlyLocalizedLowercaseDescription];
   }
 
   return v15;
@@ -58,47 +58,47 @@
   v55.receiver = self;
   v55.super_class = HSPCUseAirPlayViewController;
   [(HSPCFixedSizeCenterContentViewController *)&v55 viewDidLoad];
-  v54 = [(HSPCUseAirPlayViewController *)self containerView];
-  v52 = [v54 centerXAnchor];
-  v53 = [(HSPCUseAirPlayViewController *)self contentView];
-  v51 = [v53 mainContentGuide];
-  v50 = [v51 centerXAnchor];
-  v49 = [v52 constraintEqualToAnchor:v50];
+  containerView = [(HSPCUseAirPlayViewController *)self containerView];
+  centerXAnchor = [containerView centerXAnchor];
+  contentView = [(HSPCUseAirPlayViewController *)self contentView];
+  mainContentGuide = [contentView mainContentGuide];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v56[0] = v49;
-  v48 = [(HSPCUseAirPlayViewController *)self containerView];
-  v46 = [v48 centerYAnchor];
-  v47 = [(HSPCUseAirPlayViewController *)self contentView];
-  v45 = [v47 mainContentGuide];
-  v44 = [v45 centerYAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44];
+  containerView2 = [(HSPCUseAirPlayViewController *)self containerView];
+  centerYAnchor = [containerView2 centerYAnchor];
+  contentView2 = [(HSPCUseAirPlayViewController *)self contentView];
+  mainContentGuide2 = [contentView2 mainContentGuide];
+  centerYAnchor2 = [mainContentGuide2 centerYAnchor];
+  v43 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v56[1] = v43;
-  v42 = [(HSPCUseAirPlayViewController *)self speakerIconImageView];
-  v40 = [v42 centerXAnchor];
-  v41 = [(HSPCUseAirPlayViewController *)self contentView];
-  v39 = [v41 mainContentGuide];
-  v38 = [v39 centerXAnchor];
-  v37 = [v40 constraintEqualToAnchor:v38];
+  speakerIconImageView = [(HSPCUseAirPlayViewController *)self speakerIconImageView];
+  centerXAnchor3 = [speakerIconImageView centerXAnchor];
+  contentView3 = [(HSPCUseAirPlayViewController *)self contentView];
+  mainContentGuide3 = [contentView3 mainContentGuide];
+  centerXAnchor4 = [mainContentGuide3 centerXAnchor];
+  v37 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v56[2] = v37;
-  v36 = [(HSPCUseAirPlayViewController *)self speakerIconImageView];
-  v34 = [v36 centerYAnchor];
-  v35 = [(HSPCUseAirPlayViewController *)self contentView];
-  v33 = [v35 mainContentGuide];
-  v3 = [v33 centerYAnchor];
-  v4 = [v34 constraintEqualToAnchor:v3];
+  speakerIconImageView2 = [(HSPCUseAirPlayViewController *)self speakerIconImageView];
+  centerYAnchor3 = [speakerIconImageView2 centerYAnchor];
+  contentView4 = [(HSPCUseAirPlayViewController *)self contentView];
+  mainContentGuide4 = [contentView4 mainContentGuide];
+  centerYAnchor4 = [mainContentGuide4 centerYAnchor];
+  v4 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v56[3] = v4;
-  v5 = [(HSPCUseAirPlayViewController *)self airplayIconView];
-  v6 = [v5 widthAnchor];
-  v7 = [v6 constraintEqualToConstant:34.0];
+  airplayIconView = [(HSPCUseAirPlayViewController *)self airplayIconView];
+  widthAnchor = [airplayIconView widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:34.0];
   v56[4] = v7;
-  v8 = [(HSPCUseAirPlayViewController *)self airplayIconView];
-  v9 = [v8 heightAnchor];
-  v10 = [v9 constraintEqualToConstant:34.0];
+  airplayIconView2 = [(HSPCUseAirPlayViewController *)self airplayIconView];
+  heightAnchor = [airplayIconView2 heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:34.0];
   v56[5] = v10;
   v11 = [NSArray arrayWithObjects:v56 count:6];
   [NSLayoutConstraint activateConstraints:v11];
 
-  v12 = [(HSPCUseAirPlayViewController *)self speakerIconImageView];
-  [v12 bounds];
+  speakerIconImageView3 = [(HSPCUseAirPlayViewController *)self speakerIconImageView];
+  [speakerIconImageView3 bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -116,40 +116,40 @@
   v58.size.width = v18;
   v58.size.height = v20;
   CGRectGetMaxY(v58);
-  v23 = [(HSPCUseAirPlayViewController *)self airplayIconView];
-  [v23 intrinsicContentSize];
+  airplayIconView3 = [(HSPCUseAirPlayViewController *)self airplayIconView];
+  [airplayIconView3 intrinsicContentSize];
   HURoundToScreenScale();
   v25 = v24;
 
-  v26 = [(HSPCUseAirPlayViewController *)self airplayIconView];
-  [v26 intrinsicContentSize];
+  airplayIconView4 = [(HSPCUseAirPlayViewController *)self airplayIconView];
+  [airplayIconView4 intrinsicContentSize];
   v28 = v27;
-  v29 = [(HSPCUseAirPlayViewController *)self airplayIconView];
-  [v29 intrinsicContentSize];
+  airplayIconView5 = [(HSPCUseAirPlayViewController *)self airplayIconView];
+  [airplayIconView5 intrinsicContentSize];
   v31 = v30;
-  v32 = [(HSPCUseAirPlayViewController *)self airplayIconView];
-  [v32 setFrame:{v22, v25, v28, v31}];
+  airplayIconView6 = [(HSPCUseAirPlayViewController *)self airplayIconView];
+  [airplayIconView6 setFrame:{v22, v25, v28, v31}];
 }
 
 - (id)_applyOnboardingSelections
 {
-  v3 = [(HSPCUseAirPlayViewController *)self config];
-  v4 = [v3 addedAccessory];
+  config = [(HSPCUseAirPlayViewController *)self config];
+  addedAccessory = [config addedAccessory];
 
-  v5 = [v4 hf_siriEndpointProfile];
+  hf_siriEndpointProfile = [addedAccessory hf_siriEndpointProfile];
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HSPCUseAirPlayViewController *)self config];
-    v8 = [v7 onboardingSelections];
+    config2 = [(HSPCUseAirPlayViewController *)self config];
+    onboardingSelections = [config2 onboardingSelections];
     *buf = 138412290;
-    v19 = v8;
+    v19 = onboardingSelections;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Applying onboarding selections: %@", buf, 0xCu);
   }
 
-  v16 = v5;
-  v17 = self;
-  v9 = v5;
+  v16 = hf_siriEndpointProfile;
+  selfCopy = self;
+  v9 = hf_siriEndpointProfile;
   v10 = [NAScheduler globalAsyncScheduler:_NSConcreteStackBlock];
   v11 = [NAFuture futureWithBlock:&v15 scheduler:v10];
   v12 = +[NAScheduler mainThreadScheduler];
@@ -160,27 +160,27 @@
 
 - (id)_applyOnboardingSelectionsIfNeeded
 {
-  v3 = [(HSPCUseAirPlayViewController *)self config];
-  v4 = [v3 onboardingSelections];
+  config = [(HSPCUseAirPlayViewController *)self config];
+  onboardingSelections = [config onboardingSelections];
 
   v5 = HFLogForCategory();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (onboardingSelections)
   {
     if (v6)
     {
-      v7 = [(HSPCUseAirPlayViewController *)self config];
-      v8 = [v7 onboardingSelections];
+      config2 = [(HSPCUseAirPlayViewController *)self config];
+      onboardingSelections2 = [config2 onboardingSelections];
       *buf = 138412290;
-      v16 = v8;
+      v16 = onboardingSelections2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will not enable AirPlay selection but will apply existing selections: %@", buf, 0xCu);
     }
 
-    v9 = [(HSPCUseAirPlayViewController *)self _applyOnboardingSelections];
-    v10 = [(HSPCUseAirPlayViewController *)self commitConfiguration];
-    v14[1] = v10;
+    _applyOnboardingSelections = [(HSPCUseAirPlayViewController *)self _applyOnboardingSelections];
+    commitConfiguration = [(HSPCUseAirPlayViewController *)self commitConfiguration];
+    v14[1] = commitConfiguration;
     v11 = [NSArray arrayWithObjects:v14 count:2];
-    v12 = [NAFuture chainFutures:v11];
+    commitConfiguration2 = [NAFuture chainFutures:v11];
   }
 
   else
@@ -191,10 +191,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "No onboarding selections to apply", buf, 2u);
     }
 
-    v12 = [(HSPCUseAirPlayViewController *)self commitConfiguration];
+    commitConfiguration2 = [(HSPCUseAirPlayViewController *)self commitConfiguration];
   }
 
-  return v12;
+  return commitConfiguration2;
 }
 
 - (id)_enableAirPlay
@@ -206,73 +206,73 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Adding Enable AirPlay selection", buf, 2u);
   }
 
-  v4 = [(HSPCUseAirPlayViewController *)self config];
-  v5 = [v4 onboardingSelections];
+  config = [(HSPCUseAirPlayViewController *)self config];
+  onboardingSelections = [config onboardingSelections];
 
-  if (v5)
+  if (onboardingSelections)
   {
-    v6 = [v5 languageValue];
+    languageValue = [onboardingSelections languageValue];
 
     v34 = [HMSiriEndpointOnboardingSelections alloc];
-    v39 = [(HSPCUseAirPlayViewController *)self config];
-    v38 = [v39 onboardingSelections];
-    v7 = [v38 isSiriEnabled];
-    v37 = [(HSPCUseAirPlayViewController *)self config];
-    v36 = [v37 onboardingSelections];
-    v8 = [v36 allowHeySiri];
-    v9 = [(HSPCUseAirPlayViewController *)self config];
-    v10 = [v9 isPlaybackInfluencesForYouEnabled];
+    config2 = [(HSPCUseAirPlayViewController *)self config];
+    onboardingSelections2 = [config2 onboardingSelections];
+    isSiriEnabled = [onboardingSelections2 isSiriEnabled];
+    config3 = [(HSPCUseAirPlayViewController *)self config];
+    onboardingSelections3 = [config3 onboardingSelections];
+    allowHeySiri = [onboardingSelections3 allowHeySiri];
+    config4 = [(HSPCUseAirPlayViewController *)self config];
+    isPlaybackInfluencesForYouEnabled = [config4 isPlaybackInfluencesForYouEnabled];
     [(HSPCUseAirPlayViewController *)self config];
-    v11 = v35 = v5;
-    v12 = [v11 isShareSiriAnalyticsEnabled];
-    v13 = [(HSPCUseAirPlayViewController *)self config];
-    v14 = [v13 isExplicitContentAllowed];
-    if (v6)
+    v11 = v35 = onboardingSelections;
+    isShareSiriAnalyticsEnabled = [v11 isShareSiriAnalyticsEnabled];
+    config5 = [(HSPCUseAirPlayViewController *)self config];
+    isExplicitContentAllowed = [config5 isExplicitContentAllowed];
+    if (languageValue)
     {
-      v15 = [v35 languageValue];
-      v16 = [v34 initWithSiriEnabled:v7 allowHeySiri:v8 airPlayEnabled:1 playbackInfluencesForYouEnabled:v10 shareSiriAnalyticsEnabled:v12 explicitContentAllowed:v14 languageValue:v15];
-      v17 = [(HSPCUseAirPlayViewController *)self config];
-      [v17 setOnboardingSelections:v16];
+      languageValue2 = [v35 languageValue];
+      config7 = [v34 initWithSiriEnabled:isSiriEnabled allowHeySiri:allowHeySiri airPlayEnabled:1 playbackInfluencesForYouEnabled:isPlaybackInfluencesForYouEnabled shareSiriAnalyticsEnabled:isShareSiriAnalyticsEnabled explicitContentAllowed:isExplicitContentAllowed languageValue:languageValue2];
+      config6 = [(HSPCUseAirPlayViewController *)self config];
+      [config6 setOnboardingSelections:config7];
     }
 
     else
     {
-      v15 = [v34 initWithSiriEnabled:v7 allowHeySiri:v8 airPlayEnabled:1 playbackInfluencesForYouEnabled:v10 shareSiriAnalyticsEnabled:v12 explicitContentAllowed:v14];
-      v16 = [(HSPCUseAirPlayViewController *)self config];
-      [v16 setOnboardingSelections:v15];
+      languageValue2 = [v34 initWithSiriEnabled:isSiriEnabled allowHeySiri:allowHeySiri airPlayEnabled:1 playbackInfluencesForYouEnabled:isPlaybackInfluencesForYouEnabled shareSiriAnalyticsEnabled:isShareSiriAnalyticsEnabled explicitContentAllowed:isExplicitContentAllowed];
+      config7 = [(HSPCUseAirPlayViewController *)self config];
+      [config7 setOnboardingSelections:languageValue2];
     }
 
-    v5 = v35;
-    v26 = v39;
+    onboardingSelections = v35;
+    v26 = config2;
   }
 
   else
   {
     v18 = [HMSiriEndpointOnboardingSelections alloc];
-    v19 = [(HSPCUseAirPlayViewController *)self config];
-    v20 = [v19 isPlaybackInfluencesForYouEnabled];
-    v21 = [(HSPCUseAirPlayViewController *)self config];
-    v22 = [v21 isShareSiriAnalyticsEnabled];
-    v23 = [(HSPCUseAirPlayViewController *)self config];
-    v24 = [v18 initWithSiriEnabled:1 allowHeySiri:0 airPlayEnabled:1 playbackInfluencesForYouEnabled:v20 shareSiriAnalyticsEnabled:v22 explicitContentAllowed:{objc_msgSend(v23, "isExplicitContentAllowed")}];
-    v25 = [(HSPCUseAirPlayViewController *)self config];
-    [v25 setOnboardingSelections:v24];
+    config8 = [(HSPCUseAirPlayViewController *)self config];
+    isPlaybackInfluencesForYouEnabled2 = [config8 isPlaybackInfluencesForYouEnabled];
+    config9 = [(HSPCUseAirPlayViewController *)self config];
+    isShareSiriAnalyticsEnabled2 = [config9 isShareSiriAnalyticsEnabled];
+    config10 = [(HSPCUseAirPlayViewController *)self config];
+    v24 = [v18 initWithSiriEnabled:1 allowHeySiri:0 airPlayEnabled:1 playbackInfluencesForYouEnabled:isPlaybackInfluencesForYouEnabled2 shareSiriAnalyticsEnabled:isShareSiriAnalyticsEnabled2 explicitContentAllowed:{objc_msgSend(config10, "isExplicitContentAllowed")}];
+    config11 = [(HSPCUseAirPlayViewController *)self config];
+    [config11 setOnboardingSelections:v24];
 
     v26 = HFLogForCategory();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(HSPCUseAirPlayViewController *)self config];
-      v28 = [v27 onboardingSelections];
+      config12 = [(HSPCUseAirPlayViewController *)self config];
+      onboardingSelections4 = [config12 onboardingSelections];
       *buf = 138412290;
-      v42 = v28;
+      v42 = onboardingSelections4;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "No existing onboarding selections found. This is unexpected. Will assume Siri should be disabled. Onboarding selections: %@", buf, 0xCu);
     }
   }
 
-  v29 = [(HSPCUseAirPlayViewController *)self _applyOnboardingSelections];
-  v40[0] = v29;
-  v30 = [(HSPCUseAirPlayViewController *)self commitConfiguration];
-  v40[1] = v30;
+  _applyOnboardingSelections = [(HSPCUseAirPlayViewController *)self _applyOnboardingSelections];
+  v40[0] = _applyOnboardingSelections;
+  commitConfiguration = [(HSPCUseAirPlayViewController *)self commitConfiguration];
+  v40[1] = commitConfiguration;
   v31 = [NSArray arrayWithObjects:v40 count:2];
   v32 = [NAFuture chainFutures:v31];
 

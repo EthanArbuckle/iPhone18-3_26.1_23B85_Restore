@@ -8,12 +8,12 @@
 {
   if (a4)
   {
-    return [a1 activateConstraints:?];
+    return [self activateConstraints:?];
   }
 
   else
   {
-    return [a1 deactivateConstraints:?];
+    return [self deactivateConstraints:?];
   }
 }
 

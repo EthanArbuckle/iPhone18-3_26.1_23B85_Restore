@@ -1,34 +1,34 @@
 @interface DNDSAppInfoCache
 + (id)_fallbackAppInfoByBundleIdentifier;
-- (DNDSAppInfoCache)initWithKeybag:(id)a3;
+- (DNDSAppInfoCache)initWithKeybag:(id)keybag;
 - (id)_cacheURL;
-- (id)_fallbackAppInfoForBundleIdentifier:(id)a3;
+- (id)_fallbackAppInfoForBundleIdentifier:(id)identifier;
 - (id)_installedBundleIdentifiers;
-- (id)_parseAppStoreResponseForBundleIdentifiers:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6;
+- (id)_parseAppStoreResponseForBundleIdentifiers:(id)identifiers response:(id)response data:(id)data error:(id)error;
 - (id)_queue_bundleIdentifiersWithMissingInfo;
-- (id)_sanitizeAppInfo:(id)a3;
-- (id)appInfoForBundleIdentifier:(id)a3;
-- (id)appInfoForBundleIdentifiers:(id)a3;
-- (void)_fetchAppStoreInfoForBundleIdentifiers:(id)a3 timeoutInterval:(double)a4 limit:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_fetchIconForAppInfo:(id)a3 timeoutInterval:(double)a4 completionHandler:(id)a5;
-- (void)_fetchIconsForAppInfo:(id)a3 timeoutInterval:(double)a4 completionHandler:(id)a5;
+- (id)_sanitizeAppInfo:(id)info;
+- (id)appInfoForBundleIdentifier:(id)identifier;
+- (id)appInfoForBundleIdentifiers:(id)identifiers;
+- (void)_fetchAppStoreInfoForBundleIdentifiers:(id)identifiers timeoutInterval:(double)interval limit:(unint64_t)limit completionHandler:(id)handler;
+- (void)_fetchIconForAppInfo:(id)info timeoutInterval:(double)interval completionHandler:(id)handler;
+- (void)_fetchIconsForAppInfo:(id)info timeoutInterval:(double)interval completionHandler:(id)handler;
 - (void)_queue_fetchMissingAppInfo;
-- (void)_queue_monitorBundleIdentifiers:(id)a3;
+- (void)_queue_monitorBundleIdentifiers:(id)identifiers;
 - (void)_queue_read;
-- (void)_queue_removeCachedDataForAppInfo:(id)a3;
+- (void)_queue_removeCachedDataForAppInfo:(id)info;
 - (void)_queue_removeUnusedAppInfo;
 - (void)_queue_write;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)keybagDidUnlockForTheFirstTime:(id)a3;
-- (void)monitorApplicationIdentifiers:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)keybagDidUnlockForTheFirstTime:(id)time;
+- (void)monitorApplicationIdentifiers:(id)identifiers;
 @end
 
 @implementation DNDSAppInfoCache
 
-- (DNDSAppInfoCache)initWithKeybag:(id)a3
+- (DNDSAppInfoCache)initWithKeybag:(id)keybag
 {
-  v5 = a3;
+  keybagCopy = keybag;
   v23.receiver = self;
   v23.super_class = DNDSAppInfoCache;
   v6 = [(DNDSAppInfoCache *)&v23 init];
@@ -42,27 +42,27 @@
     inflightBundleIdentifiers = v6->_inflightBundleIdentifiers;
     v6->_inflightBundleIdentifiers = v9;
 
-    v11 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
-    v12 = [MEMORY[0x277CCACD8] sharedURLCache];
-    [v11 setURLCache:v12];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    mEMORY[0x277CCACD8] = [MEMORY[0x277CCACD8] sharedURLCache];
+    [ephemeralSessionConfiguration setURLCache:mEMORY[0x277CCACD8]];
 
-    [v11 setRequestCachePolicy:2];
-    [v11 setHTTPShouldUsePipelining:1];
+    [ephemeralSessionConfiguration setRequestCachePolicy:2];
+    [ephemeralSessionConfiguration setHTTPShouldUsePipelining:1];
     v13 = objc_opt_new();
     [v13 setName:@"com.apple.donotdisturb.iconcache"];
     [v13 setUnderlyingQueue:v6->_queue];
-    v14 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v11 delegate:0 delegateQueue:v13];
+    v14 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration delegate:0 delegateQueue:v13];
     urlSession = v6->_urlSession;
     v6->_urlSession = v14;
 
     v16 = v6->_urlSession;
-    v17 = [v13 name];
-    [(NSURLSession *)v16 setSessionDescription:v17];
+    name = [v13 name];
+    [(NSURLSession *)v16 setSessionDescription:name];
 
-    objc_storeStrong(&v6->_keybag, a3);
+    objc_storeStrong(&v6->_keybag, keybag);
     [(DNDSKeybagStateProviding *)v6->_keybag addObserver:v6];
-    v18 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v18 addObserver:v6];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v6];
 
     v19 = v6->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -76,17 +76,17 @@
   return v6;
 }
 
-- (void)monitorApplicationIdentifiers:(id)a3
+- (void)monitorApplicationIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__DNDSAppInfoCache_monitorApplicationIdentifiers___block_invoke;
   v7[3] = &unk_278F89F48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(queue, v7);
 }
 
@@ -131,9 +131,9 @@ void __50__DNDSAppInfoCache_monitorApplicationIdentifiers___block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appInfoForBundleIdentifier:(id)a3
+- (id)appInfoForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -145,10 +145,10 @@ void __50__DNDSAppInfoCache_monitorApplicationIdentifiers___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __47__DNDSAppInfoCache_appInfoForBundleIdentifier___block_invoke;
   block[3] = &unk_278F8ACF0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -189,20 +189,20 @@ void __47__DNDSAppInfoCache_appInfoForBundleIdentifier___block_invoke(void *a1)
   dispatch_async(v10, block);
 }
 
-- (id)appInfoForBundleIdentifiers:(id)a3
+- (id)appInfoForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  identifiersCopy = identifiers;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__DNDSAppInfoCache_appInfoForBundleIdentifiers___block_invoke;
   block[3] = &unk_278F89E30;
-  v13 = v4;
-  v14 = self;
-  v7 = v5;
+  v13 = identifiersCopy;
+  selfCopy = self;
+  v7 = dictionary;
   v15 = v7;
-  v8 = v4;
+  v8 = identifiersCopy;
   dispatch_sync(queue, block);
   v9 = v15;
   v10 = v7;
@@ -265,7 +265,7 @@ void __48__DNDSAppInfoCache_appInfoForBundleIdentifiers___block_invoke(uint64_t 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)keybagDidUnlockForTheFirstTime:(id)a3
+- (void)keybagDidUnlockForTheFirstTime:(id)time
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -288,7 +288,7 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v4 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
@@ -306,7 +306,7 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
   dispatch_async(queue, block);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v4 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
@@ -356,12 +356,12 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
   dispatch_assert_queue_V2(self->_queue);
   if (([(DNDSKeybagStateProviding *)self->_keybag hasUnlockedSinceBoot]& 1) != 0)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     appInfoByBundleIdentifier = self->_appInfoByBundleIdentifier;
-    self->_appInfoByBundleIdentifier = v3;
+    self->_appInfoByBundleIdentifier = dictionary;
 
-    v24 = [(DNDSAppInfoCache *)self _cacheURL];
-    v23 = [v24 URLByAppendingPathComponent:@"AppInfoMetadata.plist"];
+    _cacheURL = [(DNDSAppInfoCache *)self _cacheURL];
+    v23 = [_cacheURL URLByAppendingPathComponent:@"AppInfoMetadata.plist"];
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:?];
     v5 = [v22 objectForKeyedSubscript:@"appInfo"];
     v6 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:3 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
@@ -385,10 +385,10 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
           }
 
           v12 = [MEMORY[0x277D058B0] newWithDictionaryRepresentation:*(*(&v25 + 1) + 8 * i) context:v6];
-          v13 = [v12 applicationIdentifier];
-          v14 = [v13 bundleID];
+          applicationIdentifier = [v12 applicationIdentifier];
+          bundleID = [applicationIdentifier bundleID];
 
-          [(NSMutableDictionary *)self->_appInfoByBundleIdentifier setObject:v12 forKeyedSubscript:v14];
+          [(NSMutableDictionary *)self->_appInfoByBundleIdentifier setObject:v12 forKeyedSubscript:bundleID];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -428,31 +428,31 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchAppStoreInfoForBundleIdentifiers:(id)a3 timeoutInterval:(double)a4 limit:(unint64_t)a5 completionHandler:(id)a6
+- (void)_fetchAppStoreInfoForBundleIdentifiers:(id)identifiers timeoutInterval:(double)interval limit:(unint64_t)limit completionHandler:(id)handler
 {
   v38[4] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   if (([(DNDSKeybagStateProviding *)self->_keybag hasUnlockedSinceBoot]& 1) != 0)
   {
-    if ([v10 count])
+    if ([identifiersCopy count])
     {
       v12 = [MEMORY[0x277CCACE0] componentsWithString:@"https://itunes.apple.com/lookup"];
       v13 = MEMORY[0x277CCAD18];
-      v14 = [v10 allObjects];
-      v15 = [v14 componentsJoinedByString:{@", "}];
+      allObjects = [identifiersCopy allObjects];
+      v15 = [allObjects componentsJoinedByString:{@", "}];
       v16 = [v13 queryItemWithName:@"bundleId" value:v15];
 
       v17 = MEMORY[0x277CCAD18];
-      v18 = [MEMORY[0x277CBEAF8] currentLocale];
-      v19 = [v18 countryCode];
-      v20 = [v17 queryItemWithName:@"country" value:v19];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      countryCode = [currentLocale countryCode];
+      v20 = [v17 queryItemWithName:@"country" value:countryCode];
 
       v21 = [MEMORY[0x277CCAD18] queryItemWithName:@"entity" value:{@"software, iPadSoftware, macSoftware"}];
       v22 = MEMORY[0x277CCAD18];
-      v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", a5];
-      v24 = [v22 queryItemWithName:@"limit" value:v23];
+      limit = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", limit];
+      v24 = [v22 queryItemWithName:@"limit" value:limit];
 
       v38[0] = v16;
       v38[1] = v20;
@@ -464,14 +464,14 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
       objc_initWeak(&location, self);
       v26 = MEMORY[0x277CCAD20];
       v27 = [v12 URL];
-      if (a4 <= 0.0)
+      if (interval <= 0.0)
       {
         [v26 requestWithURL:v27];
       }
 
       else
       {
-        [v26 requestWithURL:v27 cachePolicy:2 timeoutInterval:a4];
+        [v26 requestWithURL:v27 cachePolicy:2 timeoutInterval:interval];
       }
       v29 = ;
 
@@ -481,8 +481,8 @@ void __51__DNDSAppInfoCache_keybagDidUnlockForTheFirstTime___block_invoke(uint64
       v33[2] = __99__DNDSAppInfoCache__fetchAppStoreInfoForBundleIdentifiers_timeoutInterval_limit_completionHandler___block_invoke;
       v33[3] = &unk_278F8B410;
       objc_copyWeak(&v36, &location);
-      v34 = v10;
-      v35 = v11;
+      v34 = identifiersCopy;
+      v35 = handlerCopy;
       v31 = [(NSURLSession *)urlSession dataTaskWithRequest:v29 completionHandler:v33];
       [v31 resume];
 
@@ -515,18 +515,18 @@ void __99__DNDSAppInfoCache__fetchAppStoreInfoForBundleIdentifiers_timeoutInterv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchIconsForAppInfo:(id)a3 timeoutInterval:(double)a4 completionHandler:(id)a5
+- (void)_fetchIconsForAppInfo:(id)info timeoutInterval:(double)interval completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v22 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  infoCopy = info;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = dispatch_group_create();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v8;
+  v11 = infoCopy;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v12)
   {
@@ -549,10 +549,10 @@ void __99__DNDSAppInfoCache__fetchAppStoreInfoForBundleIdentifiers_timeoutInterv
         v26[1] = 3221225472;
         v26[2] = __76__DNDSAppInfoCache__fetchIconsForAppInfo_timeoutInterval_completionHandler___block_invoke;
         v26[3] = &unk_278F8B438;
-        v27 = v9;
+        v27 = dictionary;
         v28 = v16;
         v29 = v10;
-        [(DNDSAppInfoCache *)self _fetchIconForAppInfo:v17 timeoutInterval:v26 completionHandler:a4];
+        [(DNDSAppInfoCache *)self _fetchIconForAppInfo:v17 timeoutInterval:v26 completionHandler:interval];
 
         ++v15;
       }
@@ -569,10 +569,10 @@ void __99__DNDSAppInfoCache__fetchAppStoreInfoForBundleIdentifiers_timeoutInterv
   block[1] = 3221225472;
   block[2] = __76__DNDSAppInfoCache__fetchIconsForAppInfo_timeoutInterval_completionHandler___block_invoke_2;
   block[3] = &unk_278F8B460;
-  v24 = v9;
-  v25 = v22;
-  v19 = v9;
-  v20 = v22;
+  v24 = dictionary;
+  v25 = handlerCopy;
+  v19 = dictionary;
+  v20 = handlerCopy;
   dispatch_group_notify(v10, queue, block);
 
   v21 = *MEMORY[0x277D85DE8];
@@ -586,25 +586,25 @@ void __76__DNDSAppInfoCache__fetchIconsForAppInfo_timeoutInterval_completionHand
   dispatch_group_leave(v3);
 }
 
-- (void)_fetchIconForAppInfo:(id)a3 timeoutInterval:(double)a4 completionHandler:(id)a5
+- (void)_fetchIconForAppInfo:(id)info timeoutInterval:(double)interval completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 mutableCopy];
-  v11 = [v10 storeIconURL];
+  infoCopy = info;
+  handlerCopy = handler;
+  v10 = [infoCopy mutableCopy];
+  storeIconURL = [v10 storeIconURL];
 
-  if (v11)
+  if (storeIconURL)
   {
     v12 = MEMORY[0x277CCAD20];
-    v13 = [v8 storeIconURL];
-    if (a4 <= 0.0)
+    storeIconURL2 = [infoCopy storeIconURL];
+    if (interval <= 0.0)
     {
-      [v12 requestWithURL:v13];
+      [v12 requestWithURL:storeIconURL2];
     }
 
     else
     {
-      [v12 requestWithURL:v13 cachePolicy:2 timeoutInterval:a4];
+      [v12 requestWithURL:storeIconURL2 cachePolicy:2 timeoutInterval:interval];
     }
     v16 = ;
 
@@ -613,11 +613,11 @@ void __76__DNDSAppInfoCache__fetchIconsForAppInfo_timeoutInterval_completionHand
     v23[1] = 3221225472;
     v23[2] = __75__DNDSAppInfoCache__fetchIconForAppInfo_timeoutInterval_completionHandler___block_invoke;
     v23[3] = &unk_278F8B488;
-    v24 = v8;
-    v25 = self;
+    v24 = infoCopy;
+    selfCopy = self;
     v26 = v10;
-    v27 = v9;
-    v17 = v9;
+    v27 = handlerCopy;
+    v17 = handlerCopy;
     v15 = v10;
     v19 = [(NSURLSession *)urlSession downloadTaskWithRequest:v16 completionHandler:v23];
     [v19 resume];
@@ -631,8 +631,8 @@ void __76__DNDSAppInfoCache__fetchIconsForAppInfo_timeoutInterval_completionHand
     v20[2] = __75__DNDSAppInfoCache__fetchIconForAppInfo_timeoutInterval_completionHandler___block_invoke_78;
     v20[3] = &unk_278F8B460;
     v21 = v10;
-    v22 = v9;
-    v15 = v9;
+    v22 = handlerCopy;
+    v15 = handlerCopy;
     v16 = v10;
     dispatch_async(queue, v20);
 
@@ -721,37 +721,37 @@ void __75__DNDSAppInfoCache__fetchIconForAppInfo_timeoutInterval_completionHandl
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseAppStoreResponseForBundleIdentifiers:(id)a3 response:(id)a4 data:(id)a5 error:(id)a6
+- (id)_parseAppStoreResponseForBundleIdentifiers:(id)identifiers response:(id)response data:(id)data error:(id)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (!v11 || v12)
+  identifiersCopy = identifiers;
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  v13 = errorCopy;
+  if (!dataCopy || errorCopy)
   {
     if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_ERROR))
     {
       [DNDSAppInfoCache _parseAppStoreResponseForBundleIdentifiers:response:data:error:];
     }
 
-    v43 = 0;
+    dictionary = 0;
   }
 
   else
   {
     v50 = 0;
-    v14 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v11 options:0 error:&v50];
+    v14 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v50];
     v15 = v50;
     v16 = v15;
     if (v14)
     {
       v38 = v15;
-      v40 = v11;
-      v41 = v10;
-      v42 = v9;
-      v43 = [MEMORY[0x277CBEB38] dictionary];
+      v40 = dataCopy;
+      v41 = responseCopy;
+      v42 = identifiersCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v39 = v14;
       [v14 bs_safeArrayForKey:@"results"];
       v46 = 0u;
@@ -845,7 +845,7 @@ LABEL_18:
             [v33 setStoreIconURL:0];
           }
 
-          [v43 setObject:v33 forKeyedSubscript:v22];
+          [dictionary setObject:v33 forKeyedSubscript:v22];
           v35 = DNDSLogGeneral;
           if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
           {
@@ -865,10 +865,10 @@ LABEL_28:
         {
 LABEL_30:
 
-          v10 = v41;
-          v9 = v42;
+          responseCopy = v41;
+          identifiersCopy = v42;
           v13 = 0;
-          v11 = v40;
+          dataCopy = v40;
           v16 = v38;
           v14 = v39;
           goto LABEL_37;
@@ -881,29 +881,29 @@ LABEL_30:
       [DNDSAppInfoCache _parseAppStoreResponseForBundleIdentifiers:response:data:error:];
     }
 
-    v43 = 0;
+    dictionary = 0;
 LABEL_37:
   }
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return v43;
+  return dictionary;
 }
 
-- (void)_queue_removeCachedDataForAppInfo:(id)a3
+- (void)_queue_removeCachedDataForAppInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
   appInfoByBundleIdentifier = self->_appInfoByBundleIdentifier;
-  v6 = [v4 applicationIdentifier];
-  v7 = [v6 bundleID];
-  [(NSMutableDictionary *)appInfoByBundleIdentifier setObject:0 forKeyedSubscript:v7];
+  applicationIdentifier = [infoCopy applicationIdentifier];
+  bundleID = [applicationIdentifier bundleID];
+  [(NSMutableDictionary *)appInfoByBundleIdentifier setObject:0 forKeyedSubscript:bundleID];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v4 cachedIconURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  cachedIconURL = [infoCopy cachedIconURL];
   v15 = 0;
-  [v8 removeItemAtURL:v9 error:&v15];
+  [defaultManager removeItemAtURL:cachedIconURL error:&v15];
   v10 = v15;
 
   v11 = DNDSLogGeneral;
@@ -911,16 +911,16 @@ LABEL_37:
   {
     if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_ERROR))
     {
-      [(DNDSAppInfoCache *)v11 _queue_removeCachedDataForAppInfo:v4, v10];
+      [(DNDSAppInfoCache *)v11 _queue_removeCachedDataForAppInfo:infoCopy, v10];
     }
   }
 
   else if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v4 applicationIdentifier];
+    applicationIdentifier2 = [infoCopy applicationIdentifier];
     *buf = 138477827;
-    v17 = v13;
+    v17 = applicationIdentifier2;
     _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "Cleaned up %{private}@", buf, 0xCu);
   }
 
@@ -932,8 +932,8 @@ LABEL_37:
   v19 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(NSMutableDictionary *)self->_appInfoByBundleIdentifier allKeys];
-  v5 = [v3 setWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_appInfoByBundleIdentifier allKeys];
+  v5 = [v3 setWithArray:allKeys];
 
   v6 = [v5 mutableCopy];
   [v6 minusSet:self->_relevantBundleIdentifiers];
@@ -973,21 +973,21 @@ LABEL_37:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_monitorBundleIdentifiers:(id)a3
+- (void)_queue_monitorBundleIdentifiers:(id)identifiers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(self->_queue);
   v6 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v5;
+    v14 = identifiersCopy;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "Monitoring bundle identifiers: %{public}@", &v13, 0xCu);
   }
 
   monitoredBundleIdentifiers = self->_monitoredBundleIdentifiers;
-  if (monitoredBundleIdentifiers == v5)
+  if (monitoredBundleIdentifiers == identifiersCopy)
   {
     v8 = 0;
   }
@@ -995,16 +995,16 @@ LABEL_37:
   else
   {
     v8 = 1;
-    if (v5 && monitoredBundleIdentifiers)
+    if (identifiersCopy && monitoredBundleIdentifiers)
     {
-      v8 = [(NSSet *)monitoredBundleIdentifiers isEqual:v5]^ 1;
+      v8 = [(NSSet *)monitoredBundleIdentifiers isEqual:identifiersCopy]^ 1;
     }
   }
 
-  objc_storeStrong(&self->_monitoredBundleIdentifiers, a3);
-  v9 = [(DNDSAppInfoCache *)self _installedBundleIdentifiers];
-  v10 = [(NSSet *)v5 mutableCopy];
-  [(NSSet *)v10 minusSet:v9];
+  objc_storeStrong(&self->_monitoredBundleIdentifiers, identifiers);
+  _installedBundleIdentifiers = [(DNDSAppInfoCache *)self _installedBundleIdentifiers];
+  v10 = [(NSSet *)identifiersCopy mutableCopy];
+  [(NSSet *)v10 minusSet:_installedBundleIdentifiers];
   objc_storeStrong(&self->_relevantBundleIdentifiers, v10);
   v11 = DNDSLogGeneral;
   if (os_log_type_enabled(DNDSLogGeneral, OS_LOG_TYPE_DEFAULT))
@@ -1074,14 +1074,14 @@ LABEL_37:
 
 - (void)_queue_fetchMissingAppInfo
 {
-  v3 = [(DNDSAppInfoCache *)self _queue_bundleIdentifiersWithMissingInfo];
-  v4 = [v3 allObjects];
+  _queue_bundleIdentifiersWithMissingInfo = [(DNDSAppInfoCache *)self _queue_bundleIdentifiersWithMissingInfo];
+  allObjects = [_queue_bundleIdentifiersWithMissingInfo allObjects];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__DNDSAppInfoCache__queue_fetchMissingAppInfo__block_invoke;
   v5[3] = &unk_278F8B4D8;
   v5[4] = self;
-  [v4 enumerateBatchesOfSize:50 handler:v5];
+  [allObjects enumerateBatchesOfSize:50 handler:v5];
 }
 
 void __46__DNDSAppInfoCache__queue_fetchMissingAppInfo__block_invoke(uint64_t a1, uint64_t a2)
@@ -1185,8 +1185,8 @@ void __46__DNDSAppInfoCache__queue_fetchMissingAppInfo__block_invoke_3(uint64_t 
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) bundleIdentifier];
-        [v2 addObject:v8];
+        bundleIdentifier = [*(*(&v11 + 1) + 8 * i) bundleIdentifier];
+        [v2 addObject:bundleIdentifier];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1200,35 +1200,35 @@ void __46__DNDSAppInfoCache__queue_fetchMissingAppInfo__block_invoke_3(uint64_t 
   return v2;
 }
 
-- (id)_sanitizeAppInfo:(id)a3
+- (id)_sanitizeAppInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  v6 = [v5 bundleID];
-  v7 = [(DNDSAppInfoCache *)self _fallbackAppInfoForBundleIdentifier:v6];
+  infoCopy = info;
+  applicationIdentifier = [infoCopy applicationIdentifier];
+  bundleID = [applicationIdentifier bundleID];
+  v7 = [(DNDSAppInfoCache *)self _fallbackAppInfoForBundleIdentifier:bundleID];
 
   if (v7)
   {
-    v8 = [v4 mutableCopy];
-    v9 = [v7 displayName];
-    [v8 setDisplayName:v9];
+    v8 = [infoCopy mutableCopy];
+    displayName = [v7 displayName];
+    [v8 setDisplayName:displayName];
 
     v10 = [v8 copy];
   }
 
   else
   {
-    v10 = v4;
+    v10 = infoCopy;
   }
 
   return v10;
 }
 
-- (id)_fallbackAppInfoForBundleIdentifier:(id)a3
+- (id)_fallbackAppInfoForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _fallbackAppInfoByBundleIdentifier];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  identifierCopy = identifier;
+  _fallbackAppInfoByBundleIdentifier = [objc_opt_class() _fallbackAppInfoByBundleIdentifier];
+  v5 = [_fallbackAppInfoByBundleIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }

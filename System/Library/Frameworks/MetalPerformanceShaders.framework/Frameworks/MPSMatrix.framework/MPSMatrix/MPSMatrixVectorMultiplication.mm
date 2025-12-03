@@ -1,11 +1,11 @@
 @interface MPSMatrixVectorMultiplication
 - (MPSMatrixVectorMultiplication)initWithDevice:(id)device transpose:(BOOL)transpose rows:(NSUInteger)rows columns:(NSUInteger)columns alpha:(double)alpha beta:(double)beta;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputMatrix:(MPSMatrix *)inputMatrix inputVector:(MPSVector *)inputVector resultVector:(MPSVector *)resultVector;
-- (void)setPrimarySourceMatrixOrigin:(id *)a3;
-- (void)setResultMatrixOrigin:(id *)a3;
-- (void)setSecondarySourceMatrixOrigin:(id *)a3;
+- (void)setPrimarySourceMatrixOrigin:(id *)origin;
+- (void)setResultMatrixOrigin:(id *)origin;
+- (void)setSecondarySourceMatrixOrigin:(id *)origin;
 @end
 
 @implementation MPSMatrixVectorMultiplication
@@ -39,11 +39,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v9.receiver = self;
   v9.super_class = MPSMatrixVectorMultiplication;
-  result = [(MPSMatrixBinaryKernel *)&v9 copyWithZone:a3 device:a4];
+  result = [(MPSMatrixBinaryKernel *)&v9 copyWithZone:zone device:device];
   if (result)
   {
     z = self->_resultMatrixOrigin.z;
@@ -416,24 +416,24 @@ LABEL_68:
   [(MPSKernel *)&v3 dealloc];
 }
 
-- (void)setResultMatrixOrigin:(id *)a3
+- (void)setResultMatrixOrigin:(id *)origin
 {
-  var2 = a3->var2;
-  *&self->_resultMatrixOrigin.x = *&a3->var0;
+  var2 = origin->var2;
+  *&self->_resultMatrixOrigin.x = *&origin->var0;
   self->_resultMatrixOrigin.z = var2;
 }
 
-- (void)setPrimarySourceMatrixOrigin:(id *)a3
+- (void)setPrimarySourceMatrixOrigin:(id *)origin
 {
-  var2 = a3->var2;
-  *&self->_primarySourceMatrixOrigin.x = *&a3->var0;
+  var2 = origin->var2;
+  *&self->_primarySourceMatrixOrigin.x = *&origin->var0;
   self->_primarySourceMatrixOrigin.z = var2;
 }
 
-- (void)setSecondarySourceMatrixOrigin:(id *)a3
+- (void)setSecondarySourceMatrixOrigin:(id *)origin
 {
-  var2 = a3->var2;
-  *&self->_secondarySourceMatrixOrigin.x = *&a3->var0;
+  var2 = origin->var2;
+  *&self->_secondarySourceMatrixOrigin.x = *&origin->var0;
   self->_secondarySourceMatrixOrigin.z = var2;
 }
 

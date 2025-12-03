@@ -1,43 +1,43 @@
 @interface _INPBRideDriver
-- (BOOL)isEqual:(id)a3;
-- (_INPBRideDriver)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRideDriver)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setRating:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPhoneNumber:(id)number;
+- (void)setRating:(id)rating;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRideDriver
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRideDriver *)self image];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"image"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  image = [(_INPBRideDriver *)self image];
+  dictionaryRepresentation = [image dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"image"];
 
-  v6 = [(_INPBRideDriver *)self person];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"person"];
+  person = [(_INPBRideDriver *)self person];
+  dictionaryRepresentation2 = [person dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"person"];
 
   if (self->_phoneNumber)
   {
-    v8 = [(_INPBRideDriver *)self phoneNumber];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"phoneNumber"];
+    phoneNumber = [(_INPBRideDriver *)self phoneNumber];
+    v9 = [phoneNumber copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"phoneNumber"];
   }
 
   if (self->_rating)
   {
-    v10 = [(_INPBRideDriver *)self rating];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"rating"];
+    rating = [(_INPBRideDriver *)self rating];
+    v11 = [rating copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"rating"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -48,28 +48,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_rating hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBRideDriver *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_INPBRideDriver *)self image];
+  image2 = [equalCopy image];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBRideDriver *)self image];
-  if (v7)
+  image3 = [(_INPBRideDriver *)self image];
+  if (image3)
   {
-    v8 = v7;
-    v9 = [(_INPBRideDriver *)self image];
-    v10 = [v4 image];
-    v11 = [v9 isEqual:v10];
+    v8 = image3;
+    image4 = [(_INPBRideDriver *)self image];
+    image5 = [equalCopy image];
+    v11 = [image4 isEqual:image5];
 
     if (!v11)
     {
@@ -81,20 +81,20 @@
   {
   }
 
-  v5 = [(_INPBRideDriver *)self person];
-  v6 = [v4 person];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_INPBRideDriver *)self person];
+  image2 = [equalCopy person];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBRideDriver *)self person];
-  if (v12)
+  person = [(_INPBRideDriver *)self person];
+  if (person)
   {
-    v13 = v12;
-    v14 = [(_INPBRideDriver *)self person];
-    v15 = [v4 person];
-    v16 = [v14 isEqual:v15];
+    v13 = person;
+    person2 = [(_INPBRideDriver *)self person];
+    person3 = [equalCopy person];
+    v16 = [person2 isEqual:person3];
 
     if (!v16)
     {
@@ -106,20 +106,20 @@
   {
   }
 
-  v5 = [(_INPBRideDriver *)self phoneNumber];
-  v6 = [v4 phoneNumber];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_INPBRideDriver *)self phoneNumber];
+  image2 = [equalCopy phoneNumber];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBRideDriver *)self phoneNumber];
-  if (v17)
+  phoneNumber = [(_INPBRideDriver *)self phoneNumber];
+  if (phoneNumber)
   {
-    v18 = v17;
-    v19 = [(_INPBRideDriver *)self phoneNumber];
-    v20 = [v4 phoneNumber];
-    v21 = [v19 isEqual:v20];
+    v18 = phoneNumber;
+    phoneNumber2 = [(_INPBRideDriver *)self phoneNumber];
+    phoneNumber3 = [equalCopy phoneNumber];
+    v21 = [phoneNumber2 isEqual:phoneNumber3];
 
     if (!v21)
     {
@@ -131,12 +131,12 @@
   {
   }
 
-  v5 = [(_INPBRideDriver *)self rating];
-  v6 = [v4 rating];
-  if ((v5 != 0) != (v6 == 0))
+  image = [(_INPBRideDriver *)self rating];
+  image2 = [equalCopy rating];
+  if ((image != 0) != (image2 == 0))
   {
-    v22 = [(_INPBRideDriver *)self rating];
-    if (!v22)
+    rating = [(_INPBRideDriver *)self rating];
+    if (!rating)
     {
 
 LABEL_25:
@@ -144,10 +144,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBRideDriver *)self rating];
-    v25 = [v4 rating];
-    v26 = [v24 isEqual:v25];
+    v23 = rating;
+    rating2 = [(_INPBRideDriver *)self rating];
+    rating3 = [equalCopy rating];
+    v26 = [rating2 isEqual:rating3];
 
     if (v26)
     {
@@ -167,98 +167,98 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRideDriver allocWithZone:](_INPBRideDriver init];
-  v6 = [(_INPBImageValue *)self->_image copyWithZone:a3];
+  v6 = [(_INPBImageValue *)self->_image copyWithZone:zone];
   [(_INPBRideDriver *)v5 setImage:v6];
 
-  v7 = [(_INPBContactValue *)self->_person copyWithZone:a3];
+  v7 = [(_INPBContactValue *)self->_person copyWithZone:zone];
   [(_INPBRideDriver *)v5 setPerson:v7];
 
-  v8 = [(NSString *)self->_phoneNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_phoneNumber copyWithZone:zone];
   [(_INPBRideDriver *)v5 setPhoneNumber:v8];
 
-  v9 = [(NSString *)self->_rating copyWithZone:a3];
+  v9 = [(NSString *)self->_rating copyWithZone:zone];
   [(_INPBRideDriver *)v5 setRating:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRideDriver *)self data];
+  coderCopy = coder;
+  data = [(_INPBRideDriver *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRideDriver)initWithCoder:(id)a3
+- (_INPBRideDriver)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRideDriver *)self initWithData:v6];
+    self = [(_INPBRideDriver *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBRideDriver *)self image];
+  toCopy = to;
+  image = [(_INPBRideDriver *)self image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(_INPBRideDriver *)self image];
+    image2 = [(_INPBRideDriver *)self image];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRideDriver *)self person];
+  person = [(_INPBRideDriver *)self person];
 
-  if (v6)
+  if (person)
   {
-    v7 = [(_INPBRideDriver *)self person];
+    person2 = [(_INPBRideDriver *)self person];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRideDriver *)self phoneNumber];
+  phoneNumber = [(_INPBRideDriver *)self phoneNumber];
 
-  if (v8)
+  if (phoneNumber)
   {
     phoneNumber = self->_phoneNumber;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBRideDriver *)self rating];
+  rating = [(_INPBRideDriver *)self rating];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (rating)
   {
     rating = self->_rating;
     PBDataWriterWriteStringField();
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (void)setRating:(id)a3
+- (void)setRating:(id)rating
 {
-  v4 = [a3 copy];
+  v4 = [rating copy];
   rating = self->_rating;
   self->_rating = v4;
 
   MEMORY[0x1EEE66BB8](v4, rating);
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   phoneNumber = self->_phoneNumber;
   self->_phoneNumber = v4;
 

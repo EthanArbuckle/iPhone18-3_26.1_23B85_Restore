@@ -15,7 +15,7 @@
 - (id)_intents_widgetPlistRepresentableForKey:()INIntentImpl ofClass:error:
 {
   v8 = a3;
-  v9 = [a1 intents_safeObjectForKey:v8 ofType:objc_opt_class()];
+  v9 = [self intents_safeObjectForKey:v8 ofType:objc_opt_class()];
 
   if (v9)
   {
@@ -55,7 +55,7 @@
 - (id)intents_urlForKey:()INIntentImpl
 {
   v4 = a3;
-  v5 = [a1 intents_safeObjectForKey:v4 ofType:objc_opt_class()];
+  v5 = [self intents_safeObjectForKey:v4 ofType:objc_opt_class()];
 
   v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
 
@@ -65,14 +65,14 @@
 - (id)intents_numberForKey:()INIntentImpl
 {
   v4 = a3;
-  v5 = [a1 intents_safeObjectForKey:v4 ofType:objc_opt_class()];
+  v5 = [self intents_safeObjectForKey:v4 ofType:objc_opt_class()];
 
   return v5;
 }
 
 - (double)intents_doubleForKey:()INIntentImpl
 {
-  v1 = [a1 intents_numberForKey:?];
+  v1 = [self intents_numberForKey:?];
   v2 = v1;
   if (v1)
   {
@@ -90,41 +90,41 @@
 
 - (uint64_t)intents_int64ForKey:()INIntentImpl
 {
-  v1 = [a1 intents_numberForKey:?];
+  v1 = [self intents_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 longLongValue];
+    longLongValue = [v1 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
 - (uint64_t)intents_intForKey:()INIntentImpl
 {
-  v1 = [a1 intents_numberForKey:?];
+  v1 = [self intents_numberForKey:?];
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (id)intents_stringForKey:()INIntentImpl
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = [MEMORY[0x1E696AEC0] intents_makeFromWidgetPlistableRepresentation:v1];
 
   return v2;
@@ -133,15 +133,15 @@
 - (uint64_t)intents_BOOLForKey:()INIntentImpl
 {
   v4 = a3;
-  v5 = [a1 intents_safeObjectForKey:v4 ofType:objc_opt_class()];
+  v5 = [self intents_safeObjectForKey:v4 ofType:objc_opt_class()];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (void)intents_safeObjectForKey:()INIntentImpl ofType:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1)
   {
     if (objc_opt_isKindOfClass())

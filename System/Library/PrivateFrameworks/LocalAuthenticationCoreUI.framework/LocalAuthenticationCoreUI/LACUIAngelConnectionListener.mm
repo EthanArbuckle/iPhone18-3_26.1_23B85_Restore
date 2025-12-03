@@ -1,7 +1,7 @@
 @interface LACUIAngelConnectionListener
 - (_TtC25LocalAuthenticationCoreUI28LACUIAngelConnectionListener)init;
-- (void)connectionDidInvalidate:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4;
+- (void)connectionDidInvalidate:(id)invalidate;
+- (void)listener:(id)listener didReceiveConnection:(id)connection;
 @end
 
 @implementation LACUIAngelConnectionListener
@@ -13,21 +13,21 @@
   return result;
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4
+- (void)listener:(id)listener didReceiveConnection:(id)connection
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  specialized LACUIAngelConnectionListener.listener(_:didReceive:)(a4);
+  selfCopy = self;
+  specialized LACUIAngelConnectionListener.listener(_:didReceive:)(connection);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)connectionDidInvalidate:(id)a3
+- (void)connectionDidInvalidate:(id)invalidate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  LACUIAngelConnectionListener.connectionDidInvalidate(_:)(a3);
+  selfCopy = self;
+  LACUIAngelConnectionListener.connectionDidInvalidate(_:)(invalidate);
   swift_unknownObjectRelease();
 }
 

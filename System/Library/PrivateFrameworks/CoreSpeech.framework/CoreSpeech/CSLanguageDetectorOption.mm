@@ -7,35 +7,35 @@
 - (id)languageDetectorRequestContext
 {
   v3 = objc_alloc_init(MEMORY[0x277D07260]);
-  v4 = [(CSLanguageDetectorOption *)self dictationLanguages];
-  [v3 setDictationLanguages:v4];
+  dictationLanguages = [(CSLanguageDetectorOption *)self dictationLanguages];
+  [v3 setDictationLanguages:dictationLanguages];
 
-  v5 = [(CSLanguageDetectorOption *)self currentKeyboard];
-  [v3 setCurrentDictationLanguage:v5];
+  currentKeyboard = [(CSLanguageDetectorOption *)self currentKeyboard];
+  [v3 setCurrentDictationLanguage:currentKeyboard];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[CSLanguageDetectorOption wasLanguageToggled](self, "wasLanguageToggled")}];
   [v3 setWasLanguageToggled:v6];
 
-  v7 = [(CSLanguageDetectorOption *)self multilingualKeyboardLanguages];
-  [v3 setMultilingualKeyboardLanguages:v7];
+  multilingualKeyboardLanguages = [(CSLanguageDetectorOption *)self multilingualKeyboardLanguages];
+  [v3 setMultilingualKeyboardLanguages:multilingualKeyboardLanguages];
 
-  v8 = [(CSLanguageDetectorOption *)self keyboardConvoLanguagePriors];
-  [v3 setKeyboardConvoLanguagePriors:v8];
+  keyboardConvoLanguagePriors = [(CSLanguageDetectorOption *)self keyboardConvoLanguagePriors];
+  [v3 setKeyboardConvoLanguagePriors:keyboardConvoLanguagePriors];
 
-  v9 = [(CSLanguageDetectorOption *)self keyboardGlobalLanguagePriors];
-  [v3 setKeyboardGlobalLanguagePriors:v9];
+  keyboardGlobalLanguagePriors = [(CSLanguageDetectorOption *)self keyboardGlobalLanguagePriors];
+  [v3 setKeyboardGlobalLanguagePriors:keyboardGlobalLanguagePriors];
 
-  v10 = [(CSLanguageDetectorOption *)self previousMessageLanguage];
-  [v3 setPreviousMessageLanguage:v10];
+  previousMessageLanguage = [(CSLanguageDetectorOption *)self previousMessageLanguage];
+  [v3 setPreviousMessageLanguage:previousMessageLanguage];
 
-  v11 = [(CSLanguageDetectorOption *)self globalLastKeyboardUsed];
-  [v3 setGlobalLastKeyboardUsed:v11];
+  globalLastKeyboardUsed = [(CSLanguageDetectorOption *)self globalLastKeyboardUsed];
+  [v3 setGlobalLastKeyboardUsed:globalLastKeyboardUsed];
 
-  v12 = [(CSLanguageDetectorOption *)self dictationLanguagePriors];
-  [v3 setDictationLanguagePriors:v12];
+  dictationLanguagePriors = [(CSLanguageDetectorOption *)self dictationLanguagePriors];
+  [v3 setDictationLanguagePriors:dictationLanguagePriors];
 
-  v13 = [(CSLanguageDetectorOption *)self conversationalMessages];
-  [v3 setRecentMessages:v13];
+  conversationalMessages = [(CSLanguageDetectorOption *)self conversationalMessages];
+  [v3 setRecentMessages:conversationalMessages];
 
   return v3;
 }

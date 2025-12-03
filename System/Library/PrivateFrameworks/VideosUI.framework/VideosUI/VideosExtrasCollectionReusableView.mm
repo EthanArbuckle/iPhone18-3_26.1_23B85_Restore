@@ -1,34 +1,34 @@
 @interface VideosExtrasCollectionReusableView
-- (VideosExtrasCollectionReusableView)initWithFrame:(CGRect)a3;
-- (void)_configureConstraintsForInsets:(UIEdgeInsets)a3;
-- (void)configureForHeaderElement:(id)a3 headerStyle:(id)a4;
+- (VideosExtrasCollectionReusableView)initWithFrame:(CGRect)frame;
+- (void)_configureConstraintsForInsets:(UIEdgeInsets)insets;
+- (void)configureForHeaderElement:(id)element headerStyle:(id)style;
 @end
 
 @implementation VideosExtrasCollectionReusableView
 
-- (VideosExtrasCollectionReusableView)initWithFrame:(CGRect)a3
+- (VideosExtrasCollectionReusableView)initWithFrame:(CGRect)frame
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VideosExtrasCollectionReusableView;
-  v3 = [(VideosExtrasCollectionReusableView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VideosExtrasCollectionReusableView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(VideosExtrasCollectionReusableView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(VideosExtrasCollectionReusableView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(VideosExtrasCollectionReusableView *)v4 setBackgroundColor:clearColor];
 
-    v6 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+    initForAutolayout = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
     textLabel = v4->_textLabel;
-    v4->_textLabel = v6;
+    v4->_textLabel = initForAutolayout;
 
     [(UILabel *)v4->_textLabel MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v4->_textLabel setBackgroundColor:v8];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v4->_textLabel setBackgroundColor:clearColor2];
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v4->_textLabel setTextColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v4->_textLabel setTextColor:whiteColor];
 
     [(VideosExtrasCollectionReusableView *)v4 addSubview:v4->_textLabel];
     v10 = [MEMORY[0x1E696ACD8] constraintWithItem:v4->_textLabel attribute:1 relatedBy:0 toItem:v4 attribute:1 multiplier:1.0 constant:0.0];
@@ -48,12 +48,12 @@
   return v4;
 }
 
-- (void)_configureConstraintsForInsets:(UIEdgeInsets)a3
+- (void)_configureConstraintsForInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(NSLayoutConstraint *)self->_textLeftConstraint constant];
   if (left != v8)
   {
@@ -74,34 +74,34 @@
   self->_labelInsets.right = right;
 }
 
-- (void)configureForHeaderElement:(id)a3 headerStyle:(id)a4
+- (void)configureForHeaderElement:(id)element headerStyle:(id)style
 {
-  v38 = a3;
-  v6 = a4;
-  v7 = [v38 title];
-  v8 = [v7 text];
-  v9 = [v8 length];
+  elementCopy = element;
+  styleCopy = style;
+  title = [elementCopy title];
+  text = [title text];
+  v9 = [text length];
 
   if (v9)
   {
-    [v6 insets];
+    [styleCopy insets];
     [(VideosExtrasCollectionReusableView *)self _configureConstraintsForInsets:?];
-    v10 = [v6 textColor];
-    [(UILabel *)self->_textLabel setTextColor:v10];
+    textColor = [styleCopy textColor];
+    [(UILabel *)self->_textLabel setTextColor:textColor];
 
-    v11 = [v6 textStyle];
+    textStyle = [styleCopy textStyle];
     v12 = MEMORY[0x1E69DB880];
-    v13 = [v6 defaultFontAttributes];
-    v14 = [v12 fontDescriptorWithFontAttributes:v13];
+    defaultFontAttributes = [styleCopy defaultFontAttributes];
+    v14 = [v12 fontDescriptorWithFontAttributes:defaultFontAttributes];
 
-    [(UILabel *)self->_textLabel configureForIKTextElement:v7 fontDescriptor:v14 textStyle:v11];
+    [(UILabel *)self->_textLabel configureForIKTextElement:title fontDescriptor:v14 textStyle:textStyle];
     textBottomConstraint = self->_textBottomConstraint;
     if (!textBottomConstraint)
     {
       v16 = MEMORY[0x1E69AD980];
       textLabel = self->_textLabel;
-      [v6 textBaselineDescender];
-      v19 = [v16 contentSizeAutoupdatingConstraintWithItem:self attribute:4 relatedBy:0 toItem:textLabel attribute:12 multiplier:v11 textStyle:1.0 defaultSizeConstant:v18];
+      [styleCopy textBaselineDescender];
+      v19 = [v16 contentSizeAutoupdatingConstraintWithItem:self attribute:4 relatedBy:0 toItem:textLabel attribute:12 multiplier:textStyle textStyle:1.0 defaultSizeConstant:v18];
       v20 = self->_textBottomConstraint;
       self->_textBottomConstraint = v19;
 
@@ -110,8 +110,8 @@
       textBottomConstraint = self->_textBottomConstraint;
     }
 
-    [(MPUContentSizeLayoutConstraint *)textBottomConstraint setTextStyle:v11];
-    [v6 textBaselineDescender];
+    [(MPUContentSizeLayoutConstraint *)textBottomConstraint setTextStyle:textStyle];
+    [styleCopy textBaselineDescender];
     [(MPUContentSizeLayoutConstraint *)self->_textBottomConstraint setDefaultSizeConstant:?];
     [(MPUContentSizeLayoutConstraint *)self->_textBottomConstraint setActive:1];
     textTopConstraint = self->_textTopConstraint;
@@ -119,8 +119,8 @@
     {
       v23 = MEMORY[0x1E69AD980];
       v24 = self->_textLabel;
-      [v6 textBaselineHeight];
-      v26 = [v23 constraintWithAutoupdatingBaselineOfView:v24 relation:0 toView:self attribute:3 withTextStyle:v11 multiplier:1.0 nonStandardLeading:v25];
+      [styleCopy textBaselineHeight];
+      v26 = [v23 constraintWithAutoupdatingBaselineOfView:v24 relation:0 toView:self attribute:3 withTextStyle:textStyle multiplier:1.0 nonStandardLeading:v25];
       v27 = self->_textTopConstraint;
       self->_textTopConstraint = v26;
 
@@ -129,15 +129,15 @@
       textTopConstraint = self->_textTopConstraint;
     }
 
-    [(MPUContentSizeLayoutConstraint *)textTopConstraint setTextStyle:v11];
-    [v6 textBaselineHeight];
+    [(MPUContentSizeLayoutConstraint *)textTopConstraint setTextStyle:textStyle];
+    [styleCopy textBaselineHeight];
     [(MPUContentSizeLayoutConstraint *)self->_textTopConstraint setDefaultSizeConstant:?];
     [(MPUContentSizeLayoutConstraint *)self->_textTopConstraint setActive:1];
   }
 
-  v29 = [v38 separator];
+  separator = [elementCopy separator];
   borderView = self->_borderView;
-  if (v29 == 1)
+  if (separator == 1)
   {
     if (!borderView)
     {

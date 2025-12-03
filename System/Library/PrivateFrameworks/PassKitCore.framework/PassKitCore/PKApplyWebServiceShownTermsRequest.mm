@@ -1,32 +1,32 @@
 @interface PKApplyWebServiceShownTermsRequest
-- (PKApplyWebServiceShownTermsRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceShownTermsRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceShownTermsRequest
 
-- (PKApplyWebServiceShownTermsRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceShownTermsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKApplyWebServiceShownTermsRequest;
-  v5 = [(PKApplyWebServiceRequest *)&v15 initWithCoder:v4];
+  v5 = [(PKApplyWebServiceRequest *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsIdentifier"];
     termsIdentifier = v5->_termsIdentifier;
     v5->_termsIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"termsType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"termsType"];
     termsType = v5->_termsType;
     v5->_termsType = v12;
   }
@@ -34,22 +34,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceShownTermsRequest;
-  v4 = a3;
-  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_baseURL forKey:@"baseURL"];
-  [v4 encodeObject:self->_termsIdentifier forKey:@"termsIdentifier"];
-  [v4 encodeObject:self->_termsType forKey:@"termsType"];
+  coderCopy = coder;
+  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_baseURL forKey:@"baseURL"];
+  [coderCopy encodeObject:self->_termsIdentifier forKey:@"termsIdentifier"];
+  [coderCopy encodeObject:self->_termsType forKey:@"termsType"];
 }
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -112,14 +112,14 @@ LABEL_14:
     v18[1] = applicationIdentifier;
     v18[2] = @"shownTerms";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
-    v8 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v7 queryParameters:0 appleAccountInformation:v4];
+    v8 = [(PKApplyWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v7 queryParameters:0 appleAccountInformation:informationCopy];
 
     [v8 setHTTPMethod:@"POST"];
     [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    v9 = [(PKApplyWebServiceRequest *)self _createMutableBody];
-    [v9 setObject:self->_termsType forKey:@"termsType"];
-    [v9 setObject:self->_termsIdentifier forKey:@"termsIdentifier"];
-    v10 = [objc_opt_class() _HTTPBodyWithDictionary:v9];
+    _createMutableBody = [(PKApplyWebServiceRequest *)self _createMutableBody];
+    [_createMutableBody setObject:self->_termsType forKey:@"termsType"];
+    [_createMutableBody setObject:self->_termsIdentifier forKey:@"termsIdentifier"];
+    v10 = [objc_opt_class() _HTTPBodyWithDictionary:_createMutableBody];
     [v8 setHTTPBody:v10];
 
     v11 = [v8 copy];

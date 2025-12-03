@@ -6,8 +6,8 @@
 
 - (id)fileCacheStableDataRepresentation
 {
-  v1 = [a1 absoluteString];
-  v2 = [v1 dataUsingEncoding:4];
+  absoluteString = [self absoluteString];
+  v2 = [absoluteString dataUsingEncoding:4];
 
   return v2;
 }

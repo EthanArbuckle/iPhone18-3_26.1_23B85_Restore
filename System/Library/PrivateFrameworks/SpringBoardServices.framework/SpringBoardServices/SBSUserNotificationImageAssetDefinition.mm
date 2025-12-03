@@ -1,18 +1,18 @@
 @interface SBSUserNotificationImageAssetDefinition
-- (id)_initWithDictionary:(id)a3;
-- (id)_initWithImagePath:(id)a3 imageCatalogPath:(id)a4 catalogImageKey:(id)a5;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)_initWithImagePath:(id)path imageCatalogPath:(id)catalogPath catalogImageKey:(id)key;
 - (id)build;
 @end
 
 @implementation SBSUserNotificationImageAssetDefinition
 
-- (id)_initWithImagePath:(id)a3 imageCatalogPath:(id)a4 catalogImageKey:(id)a5
+- (id)_initWithImagePath:(id)path imageCatalogPath:(id)catalogPath catalogImageKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10 && (!v11 || !v12))
+  pathCopy = path;
+  catalogPathCopy = catalogPath;
+  keyCopy = key;
+  v13 = keyCopy;
+  if (!pathCopy && (!catalogPathCopy || !keyCopy))
   {
     [SBSUserNotificationImageAssetDefinition _initWithImagePath:a2 imageCatalogPath:self catalogImageKey:?];
   }
@@ -23,31 +23,31 @@
   p_isa = &v14->super.super.super.isa;
   if (v14)
   {
-    objc_storeStrong(&v14->_imagePath, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v14->_imagePath, path);
+    objc_storeStrong(p_isa + 2, catalogPath);
+    objc_storeStrong(p_isa + 3, key);
   }
 
   return p_isa;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SBSUserNotificationImageAssetDefinition;
-  v5 = [(SBSUserNotificationAssetDefinition *)&v13 _initWithDictionary:v4];
+  v5 = [(SBSUserNotificationAssetDefinition *)&v13 _initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 bs_safeStringForKey:@"SBSCFUNImagePath"];
+    v6 = [dictionaryCopy bs_safeStringForKey:@"SBSCFUNImagePath"];
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [v4 bs_safeStringForKey:@"SBSCFUNCatalogPath"];
+    v8 = [dictionaryCopy bs_safeStringForKey:@"SBSCFUNCatalogPath"];
     v9 = v5[2];
     v5[2] = v8;
 
-    v10 = [v4 bs_safeStringForKey:@"SBSCFUNCatalogImageKey"];
+    v10 = [dictionaryCopy bs_safeStringForKey:@"SBSCFUNCatalogImageKey"];
     v11 = v5[3];
     v5[3] = v10;
   }
@@ -59,8 +59,8 @@
 {
   v10.receiver = self;
   v10.super_class = SBSUserNotificationImageAssetDefinition;
-  v3 = [(SBSUserNotificationAssetDefinition *)&v10 build];
-  v4 = [v3 mutableCopy];
+  build = [(SBSUserNotificationAssetDefinition *)&v10 build];
+  v4 = [build mutableCopy];
 
   imagePath = self->_imagePath;
   if (imagePath)

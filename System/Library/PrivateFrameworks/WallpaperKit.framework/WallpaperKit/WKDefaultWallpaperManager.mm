@@ -1,8 +1,8 @@
 @interface WKDefaultWallpaperManager
 + (WKDefaultWallpaperManager)defaultWallpaperManager;
 + (id)defaultWallpaperLookupURL;
-- (WKDefaultWallpaperManager)initWithCollectionsManager:(id)a3;
-- (id)_wallpaperRepresentingWithIdentifier:(id)a3;
+- (WKDefaultWallpaperManager)initWithCollectionsManager:(id)manager;
+- (id)_wallpaperRepresentingWithIdentifier:(id)identifier;
 - (id)deviceColor;
 - (id)deviceEnclosureColor;
 - (id)deviceLogicalScreenClass;
@@ -13,16 +13,16 @@
 
 @implementation WKDefaultWallpaperManager
 
-- (WKDefaultWallpaperManager)initWithCollectionsManager:(id)a3
+- (WKDefaultWallpaperManager)initWithCollectionsManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = WKDefaultWallpaperManager;
   v6 = [(WKDefaultWallpaperManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__collectionsManager, a3);
+    objc_storeStrong(&v6->__collectionsManager, manager);
     [(WKDefaultWallpaperManager *)v7 _loadDefaultWallpaperFile];
     [(WKDefaultWallpaperManager *)v7 _loadDefaultWallpaperInformation];
   }
@@ -55,11 +55,11 @@ void __52__WKDefaultWallpaperManager_defaultWallpaperManager__block_invoke()
   v13 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [a2 path];
+  path = [a2 path];
   v9 = 138543618;
   v10 = v6;
   v11 = 2114;
-  v12 = v7;
+  v12 = path;
   _os_log_error_impl(&dword_1E4A23000, a3, OS_LOG_TYPE_ERROR, "%{public}@: Default wallpaper lookup file does not exist at path '%{public}@'", &v9, 0x16u);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -68,7 +68,7 @@ void __52__WKDefaultWallpaperManager_defaultWallpaperManager__block_invoke()
 - (void)_loadDefaultWallpaperInformation
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1E4A23000, log, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get default wallpaper!", buf, 0xCu);
 }
 
@@ -94,7 +94,7 @@ void __61__WKDefaultWallpaperManager__loadDefaultWallpaperInformation__block_inv
   v5 = WKLogForCategory(2uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromClass(a1);
+    v6 = NSStringFromClass(self);
     *buf = 138543618;
     v17 = v6;
     v18 = 2114;
@@ -103,19 +103,19 @@ void __61__WKDefaultWallpaperManager__loadDefaultWallpaperInformation__block_inv
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 lowercaseString];
-  v9 = [v7 stringWithFormat:@"DefaultWallpapers~%@.plist", v8];
+  lowercaseString = [v4 lowercaseString];
+  v9 = [v7 stringWithFormat:@"DefaultWallpapers~%@.plist", lowercaseString];
   v10 = [v3 URLByAppendingPathComponent:v9];
 
   v11 = WKLogForCategory(2uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = NSStringFromClass(a1);
-    v13 = [v10 path];
+    v12 = NSStringFromClass(self);
+    path = [v10 path];
     *buf = 138543618;
     v17 = v12;
     v18 = 2114;
-    v19 = v13;
+    v19 = path;
     _os_log_impl(&dword_1E4A23000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Resolved to default wallpaper look up file at path '%{public}@'", buf, 0x16u);
   }
 
@@ -166,13 +166,13 @@ void __61__WKDefaultWallpaperManager__loadDefaultWallpaperInformation__block_inv
   return v2;
 }
 
-- (id)_wallpaperRepresentingWithIdentifier:(id)a3
+- (id)_wallpaperRepresentingWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WKDefaultWallpaperManager *)self _collectionsManager];
-  v6 = [v5 numberOfWallpaperCollections];
+  identifierCopy = identifier;
+  _collectionsManager = [(WKDefaultWallpaperManager *)self _collectionsManager];
+  numberOfWallpaperCollections = [_collectionsManager numberOfWallpaperCollections];
 
-  if (v6 < 1)
+  if (numberOfWallpaperCollections < 1)
   {
 LABEL_5:
     v10 = 0;
@@ -183,10 +183,10 @@ LABEL_5:
     v7 = 0;
     while (1)
     {
-      v8 = [(WKDefaultWallpaperManager *)self _collectionsManager];
-      v9 = [v8 wallpaperCollectionAtIndex:v7];
+      _collectionsManager2 = [(WKDefaultWallpaperManager *)self _collectionsManager];
+      v9 = [_collectionsManager2 wallpaperCollectionAtIndex:v7];
 
-      v10 = [v9 wallpaperRepresentingWithIdentifier:v4];
+      v10 = [v9 wallpaperRepresentingWithIdentifier:identifierCopy];
 
       if (v10)
       {
@@ -194,10 +194,10 @@ LABEL_5:
       }
 
       ++v7;
-      v11 = [(WKDefaultWallpaperManager *)self _collectionsManager];
-      v12 = [v11 numberOfWallpaperCollections];
+      _collectionsManager3 = [(WKDefaultWallpaperManager *)self _collectionsManager];
+      numberOfWallpaperCollections2 = [_collectionsManager3 numberOfWallpaperCollections];
 
-      if (v7 >= v12)
+      if (v7 >= numberOfWallpaperCollections2)
       {
         goto LABEL_5;
       }

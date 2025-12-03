@@ -1,28 +1,28 @@
 @interface TUIGenmojiTipView
-- (TUIGenmojiTipView)initWith:(id)a3;
-- (TUIGenmojiTipView)initWithCoder:(id)a3;
-- (TUIGenmojiTipView)initWithFrame:(CGRect)a3;
-- (void)setHostingController:(id)a3;
+- (TUIGenmojiTipView)initWith:(id)with;
+- (TUIGenmojiTipView)initWithCoder:(id)coder;
+- (TUIGenmojiTipView)initWithFrame:(CGRect)frame;
+- (void)setHostingController:(id)controller;
 @end
 
 @implementation TUIGenmojiTipView
 
-- (void)setHostingController:(id)a3
+- (void)setHostingController:(id)controller
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___TUIGenmojiTipView_hostingController);
-  *(&self->super.super.super.isa + OBJC_IVAR___TUIGenmojiTipView_hostingController) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___TUIGenmojiTipView_hostingController) = controller;
+  controllerCopy = controller;
 }
 
-- (TUIGenmojiTipView)initWith:(id)a3
+- (TUIGenmojiTipView)initWith:(id)with
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(with);
   *(swift_allocObject() + 16) = v3;
   sub_18FFFB5BC();
   return result;
 }
 
-- (TUIGenmojiTipView)initWithCoder:(id)a3
+- (TUIGenmojiTipView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___TUIGenmojiTipView_viewModel;
   type metadata accessor for TipView.ViewModel();
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (TUIGenmojiTipView)initWithFrame:(CGRect)a3
+- (TUIGenmojiTipView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

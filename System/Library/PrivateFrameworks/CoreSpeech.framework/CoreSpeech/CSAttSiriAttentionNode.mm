@@ -1,9 +1,9 @@
 @interface CSAttSiriAttentionNode
-- (CSAttSiriAttentionNode)initWithAttSiriController:(id)a3;
+- (CSAttSiriAttentionNode)initWithAttSiriController:(id)controller;
 - (CSAttSiriController)attSiriController;
-- (void)addReceiver:(id)a3;
-- (void)handleFaceAttentionEvent:(id)a3;
-- (void)removeReceiver:(id)a3;
+- (void)addReceiver:(id)receiver;
+- (void)handleFaceAttentionEvent:(id)event;
+- (void)removeReceiver:(id)receiver;
 - (void)start;
 - (void)stop;
 @end
@@ -17,17 +17,17 @@
   return WeakRetained;
 }
 
-- (void)handleFaceAttentionEvent:(id)a3
+- (void)handleFaceAttentionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100135E18;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
@@ -53,37 +53,37 @@
   dispatch_async(queue, block);
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100136904;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001369F0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttSiriAttentionNode)initWithAttSiriController:(id)a3
+- (CSAttSiriAttentionNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (+[CSAttSiriAttentionNode supportAttentionLostAndGain])
   {
     v14.receiver = self;
@@ -104,11 +104,11 @@
       requiredNodes = v5->_requiredNodes;
       v5->_requiredNodes = 0;
 
-      objc_storeWeak(&v5->_attSiriController, v4);
+      objc_storeWeak(&v5->_attSiriController, controllerCopy);
     }
 
     self = v5;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -121,10 +121,10 @@
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Attention is NOT supported on this platform", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

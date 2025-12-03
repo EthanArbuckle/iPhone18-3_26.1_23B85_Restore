@@ -1,21 +1,21 @@
 @interface FeedbackSubmissionManager
 - (FeedbackSubmissionManager)init;
-- (id)_feedbackUploaderForUploadPolicy:(int64_t)a3;
+- (id)_feedbackUploaderForUploadPolicy:(int64_t)policy;
 - (id)observers;
-- (void)_logDiscardIfNeededForFeedback:(id)a3 userInfo:(id)a4 feedbackObjectToUpdate:(id)a5;
-- (void)_recordRAPSubmissionID:(id)a3;
-- (void)_sendTdmFraudNotificationWithFraudReportResponse:(id)a3 tdmRequestInfo:(id)a4;
-- (void)_startFraudScoreExchangeIfNeededWithResponse:(id)a3 request:(id)a4;
-- (void)_submitOrEnqueueFeedback:(id)a3 attachedImages:(id)a4 resolvedUserInfo:(id)a5 traits:(id)a6 debugSettings:(id)a7 uploadPolicy:(int64_t)a8 feedbackObjectToUpdate:(id)a9 completion:(id)a10;
-- (void)_submitOrEnqueueFeedback:(id)a3 resolvedUserInfo:(id)a4 traits:(id)a5 debugSettings:(id)a6 uploadPolicy:(int64_t)a7 feedbackObjectToUpdate:(id)a8 completion:(id)a9;
-- (void)_updateSpamStatusWithResponse:(id)a3 request:(id)a4;
-- (void)_updateUserInfo:(id)a3 requestParameters:(id)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)finishedCorrectionsUploadWithResponse:(id)a3 request:(id)a4 error:(id)a5;
-- (void)finishedUploadingImagesWithImageUpdate:(id)a3 correctionsRequest:(id)a4 completion:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)submitOrEnqueueFeedback:(id)a3 attachedImages:(id)a4 userInfo:(id)a5 traits:(id)a6 debugSettings:(id)a7 uploadPolicy:(int64_t)a8 feedbackObjectToUpdate:(id)a9 completion:(id)a10;
-- (void)submitOrEnqueueFeedback:(id)a3 userInfo:(id)a4 traits:(id)a5 debugSettings:(id)a6 uploadPolicy:(int64_t)a7 feedbackObjectToUpdate:(id)a8 completion:(id)a9;
+- (void)_logDiscardIfNeededForFeedback:(id)feedback userInfo:(id)info feedbackObjectToUpdate:(id)update;
+- (void)_recordRAPSubmissionID:(id)d;
+- (void)_sendTdmFraudNotificationWithFraudReportResponse:(id)response tdmRequestInfo:(id)info;
+- (void)_startFraudScoreExchangeIfNeededWithResponse:(id)response request:(id)request;
+- (void)_submitOrEnqueueFeedback:(id)feedback attachedImages:(id)images resolvedUserInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)self0;
+- (void)_submitOrEnqueueFeedback:(id)feedback resolvedUserInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)completion;
+- (void)_updateSpamStatusWithResponse:(id)response request:(id)request;
+- (void)_updateUserInfo:(id)info requestParameters:(id)parameters completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)finishedCorrectionsUploadWithResponse:(id)response request:(id)request error:(id)error;
+- (void)finishedUploadingImagesWithImageUpdate:(id)update correctionsRequest:(id)request completion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)submitOrEnqueueFeedback:(id)feedback attachedImages:(id)images userInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)self0;
+- (void)submitOrEnqueueFeedback:(id)feedback userInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)completion;
 @end
 
 @implementation FeedbackSubmissionManager
@@ -65,40 +65,40 @@
   return observers;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(FeedbackSubmissionManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(FeedbackSubmissionManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(FeedbackSubmissionManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(FeedbackSubmissionManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)_recordRAPSubmissionID:(id)a3
+- (void)_recordRAPSubmissionID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = a3;
+    dCopy = d;
     v14 = +[NSUserDefaults standardUserDefaults];
     v4 = [v14 mutableArrayValueForKey:@"RAPPreviouslySubmittedProblemIDs"];
-    [v4 insertObject:v3 atIndex:0];
+    [v4 insertObject:dCopy atIndex:0];
     v5 = [v14 mutableArrayValueForKey:@"RAPPreviouslySubmittedProblemURLs"];
     v6 = GEOURLString();
     v7 = [NSURL URLWithString:v6];
 
-    v8 = [v7 host];
-    v9 = [v8 stringByReplacingOccurrencesOfString:@"sundew" withString:@"bluegrass"];
+    host = [v7 host];
+    v9 = [host stringByReplacingOccurrencesOfString:@"sundew" withString:@"bluegrass"];
     v10 = [v9 stringByReplacingOccurrencesOfString:@"ls" withString:@"geo"];
-    v11 = [NSString stringWithFormat:@"https://%@/raps/%@", v10, v3];
-    [v5 insertObject:v11 atIndex:0];
+    dCopy = [NSString stringWithFormat:@"https://%@/raps/%@", v10, dCopy];
+    [v5 insertObject:dCopy atIndex:0];
     [v4 trimToLength:5];
     [v5 trimToLength:5];
-    [v14 setObject:v3 forKey:@"RAPLastSubmittedProblemID"];
+    [v14 setObject:dCopy forKey:@"RAPLastSubmittedProblemID"];
 
     v12 = [NSArray arrayWithArray:v5];
     [v14 setObject:v12 forKey:@"RAPPreviouslySubmittedProblemURLs"];
@@ -110,62 +110,62 @@
   }
 }
 
-- (void)_updateSpamStatusWithResponse:(id)a3 request:(id)a4
+- (void)_updateSpamStatusWithResponse:(id)response request:(id)request
 {
-  v14 = a4;
-  v5 = [a3 feedbackResult];
-  v6 = [v5 submissionResult];
-  v7 = [v6 tdmFraudRequestInfo];
+  requestCopy = request;
+  feedbackResult = [response feedbackResult];
+  submissionResult = [feedbackResult submissionResult];
+  tdmFraudRequestInfo = [submissionResult tdmFraudRequestInfo];
 
-  if ([v7 hasTdmUserMapsStatus] && objc_msgSend(v14, "feedbackRequestType") == 1)
+  if ([tdmFraudRequestInfo hasTdmUserMapsStatus] && objc_msgSend(requestCopy, "feedbackRequestType") == 1)
   {
-    v8 = [v14 isPOIEnrichment];
+    isPOIEnrichment = [requestCopy isPOIEnrichment];
     v9 = +[_TtC4Maps30ServerEvaluationStatusMapsSync shared];
-    v10 = [v7 tdmUserMapsStatus];
-    v11 = [v10 isBlocked];
-    v12 = [v7 tdmUserMapsStatus];
-    v13 = [v12 isTrusted];
-    if (v8)
+    tdmUserMapsStatus = [tdmFraudRequestInfo tdmUserMapsStatus];
+    isBlocked = [tdmUserMapsStatus isBlocked];
+    tdmUserMapsStatus2 = [tdmFraudRequestInfo tdmUserMapsStatus];
+    isTrusted = [tdmUserMapsStatus2 isTrusted];
+    if (isPOIEnrichment)
     {
-      [v9 setARPStatusWithIsBlocked:v11 isTrusted:v13 completion:0];
+      [v9 setARPStatusWithIsBlocked:isBlocked isTrusted:isTrusted completion:0];
     }
 
     else
     {
-      [v9 setRAPStatusWithIsBlocked:v11 isTrusted:v13 completion:0];
+      [v9 setRAPStatusWithIsBlocked:isBlocked isTrusted:isTrusted completion:0];
     }
   }
 }
 
-- (void)_sendTdmFraudNotificationWithFraudReportResponse:(id)a3 tdmRequestInfo:(id)a4
+- (void)_sendTdmFraudNotificationWithFraudReportResponse:(id)response tdmRequestInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
+  infoCopy = info;
+  responseCopy = response;
   v7 = +[MKMapService sharedService];
-  v8 = [v7 defaultTraits];
+  defaultTraits = [v7 defaultTraits];
 
   v9 = objc_alloc_init(GEORPTdmFraudNotificationParameters);
-  v10 = [v5 anonymousId];
-  [v9 setAnonymousId:v10];
+  anonymousId = [infoCopy anonymousId];
+  [v9 setAnonymousId:anonymousId];
 
-  v11 = [v6 nameSpace];
-  [v9 setTdmNamespace:v11];
+  nameSpace = [responseCopy nameSpace];
+  [v9 setTdmNamespace:nameSpace];
 
-  v12 = [v6 finalizedElement];
-  [v9 setToken:v12];
+  finalizedElement = [responseCopy finalizedElement];
+  [v9 setToken:finalizedElement];
 
-  v13 = [v6 reportedScore];
-  v14 = [v6 newScore];
+  reportedScore = [responseCopy reportedScore];
+  newScore = [responseCopy newScore];
 
-  v15 = [NSString stringWithFormat:@"rs=%ldns=%ld", v13, v14];;
+  v15 = [NSString stringWithFormat:@"rs=%ldns=%ld", reportedScore, newScore];;
   [v9 setFsrData:v15];
 
-  v16 = [v5 transactionId];
+  transactionId = [infoCopy transactionId];
 
-  [v9 setTransactionId:v16];
+  [v9 setTransactionId:transactionId];
   v17 = objc_alloc_init(GEORPFeedbackRequestParameters);
   [v17 setTdmFraudNotificationParameters:v9];
-  v18 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v17 userInfo:0 traits:v8 debugSettings:0];
+  v18 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v17 userInfo:0 traits:defaultTraits debugSettings:0];
   v19 = sub_10002E924();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
@@ -174,29 +174,29 @@
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "Send TDM Fraud Notification... requestParams: %@", buf, 0xCu);
   }
 
-  v20 = [MSPFeedbackSubmissionTicket ticketForFeedbackRequest:v18 traits:v8];
+  v20 = [MSPFeedbackSubmissionTicket ticketForFeedbackRequest:v18 traits:defaultTraits];
   [v20 submitWithHandler:&stru_101636C28 networkActivity:0];
 }
 
-- (void)_startFraudScoreExchangeIfNeededWithResponse:(id)a3 request:(id)a4
+- (void)_startFraudScoreExchangeIfNeededWithResponse:(id)response request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  requestCopy = request;
   if ((MapsFeature_IsEnabled_RAPCommunityID() & 1) != 0 || MapsFeature_IsEnabled_ARPCommunityID())
   {
-    v8 = [v6 feedbackResult];
-    v9 = [v8 submissionResult];
-    v10 = [v9 tdmFraudRequestInfo];
+    feedbackResult = [responseCopy feedbackResult];
+    submissionResult = [feedbackResult submissionResult];
+    tdmFraudRequestInfo = [submissionResult tdmFraudRequestInfo];
 
     v11 = sub_10002E924();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v26 = v10;
+      v26 = tdmFraudRequestInfo;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "tdmFraudRequestInfo in FeedbackResponse: %@", buf, 0xCu);
     }
 
-    if (v10)
+    if (tdmFraudRequestInfo)
     {
       v12 = sub_10002E924();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -205,17 +205,17 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Start Fraud Score Exchange Flow...", buf, 2u);
       }
 
-      [(FeedbackSubmissionManager *)self _updateSpamStatusWithResponse:v6 request:v7];
+      [(FeedbackSubmissionManager *)self _updateSpamStatusWithResponse:responseCopy request:requestCopy];
       v13 = +[GEOUserAccountInfo primaryICloudAccount];
       v14 = [AMSFraudReportOptions alloc];
-      v15 = [v10 transactionId];
-      v16 = [v10 tdmNamespace];
-      v17 = [v10 fsrData];
-      v18 = [v14 initWithTransactionIdentifier:v15 nameSpace:v16 fsrData:v17];
+      transactionId = [tdmFraudRequestInfo transactionId];
+      tdmNamespace = [tdmFraudRequestInfo tdmNamespace];
+      fsrData = [tdmFraudRequestInfo fsrData];
+      v18 = [v14 initWithTransactionIdentifier:transactionId nameSpace:tdmNamespace fsrData:fsrData];
 
       [v18 setAccount:v13];
-      v19 = [v10 keyId];
-      [v18 setKeyIdentifier:v19];
+      keyId = [tdmFraudRequestInfo keyId];
+      [v18 setKeyIdentifier:keyId];
 
       v20 = [AMSFraudReportTask performFraudReportRefreshWithOptions:v18];
       v21 = sub_10002E924();
@@ -231,7 +231,7 @@
       v22[2] = sub_100AA988C;
       v22[3] = &unk_101636BE8;
       objc_copyWeak(&v24, buf);
-      v23 = v10;
+      v23 = tdmFraudRequestInfo;
       [v20 resultWithCompletion:v22];
 
       objc_destroyWeak(&v24);
@@ -240,53 +240,53 @@
   }
 }
 
-- (void)finishedCorrectionsUploadWithResponse:(id)a3 request:(id)a4 error:(id)a5
+- (void)finishedCorrectionsUploadWithResponse:(id)response request:(id)request error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  responseCopy = response;
+  requestCopy = request;
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v11 = [v8 feedbackResult];
-    v12 = [v11 submissionResult];
-    v13 = [v12 feedbackId];
+    feedbackResult = [responseCopy feedbackResult];
+    submissionResult = [feedbackResult submissionResult];
+    feedbackId = [submissionResult feedbackId];
 
     v14 = sub_10002E924();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v27 = 138412290;
-      v28 = v13;
+      v28 = feedbackId;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Received a GEORPFeedbackResponse object feedback id %@", &v27, 0xCu);
     }
 
-    v15 = [v8 feedbackResult];
-    v16 = [v15 submissionResult];
-    v17 = [v16 feedbackId];
-    [(FeedbackSubmissionManager *)self _recordRAPSubmissionID:v17];
+    feedbackResult2 = [responseCopy feedbackResult];
+    submissionResult2 = [feedbackResult2 submissionResult];
+    feedbackId2 = [submissionResult2 feedbackId];
+    [(FeedbackSubmissionManager *)self _recordRAPSubmissionID:feedbackId2];
 
-    [(FeedbackSubmissionPostActionManager *)self->_feedbackSubmissionPostActionManager performActionWithFeedbackResponse:v8 feedbackRequest:v9];
-    v18 = [v9 feedbackRequestParameters];
-    v19 = [v18 submissionParameters];
-    v20 = [v19 details];
-    v21 = [v20 poiEnrichmentUpdate];
+    [(FeedbackSubmissionPostActionManager *)self->_feedbackSubmissionPostActionManager performActionWithFeedbackResponse:responseCopy feedbackRequest:requestCopy];
+    feedbackRequestParameters = [requestCopy feedbackRequestParameters];
+    submissionParameters = [feedbackRequestParameters submissionParameters];
+    details = [submissionParameters details];
+    poiEnrichmentUpdate = [details poiEnrichmentUpdate];
 
-    v22 = [v21 placeContext];
-    if (v22)
+    placeContext = [poiEnrichmentUpdate placeContext];
+    if (placeContext)
     {
-      v23 = v22;
-      v24 = [v21 placeContext];
-      v25 = [v24 muid];
+      v23 = placeContext;
+      placeContext2 = [poiEnrichmentUpdate placeContext];
+      muid = [placeContext2 muid];
 
-      if (v25)
+      if (muid)
       {
-        [(GEOObserverHashTable *)self->_observers feedbackSubmissionManagerCompletedSubmissionWithMUID:v25 withError:0];
+        [(GEOObserverHashTable *)self->_observers feedbackSubmissionManagerCompletedSubmissionWithMUID:muid withError:0];
       }
     }
 
-    [(FeedbackSubmissionManager *)self _startFraudScoreExchangeIfNeededWithResponse:v8 request:v9];
+    [(FeedbackSubmissionManager *)self _startFraudScoreExchangeIfNeededWithResponse:responseCopy request:requestCopy];
   }
 
-  if ([v8 attestationNotFound])
+  if ([responseCopy attestationNotFound])
   {
     v26 = sub_10002171C();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -299,30 +299,30 @@
   }
 }
 
-- (void)finishedUploadingImagesWithImageUpdate:(id)a3 correctionsRequest:(id)a4 completion:(id)a5
+- (void)finishedUploadingImagesWithImageUpdate:(id)update correctionsRequest:(id)request completion:(id)completion
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 feedbackRequestParameters];
-  v10 = [v9 submissionParameters];
-  v11 = [v10 isPOIEnrichment];
+  updateCopy = update;
+  requestCopy = request;
+  completionCopy = completion;
+  feedbackRequestParameters = [requestCopy feedbackRequestParameters];
+  submissionParameters = [feedbackRequestParameters submissionParameters];
+  isPOIEnrichment = [submissionParameters isPOIEnrichment];
 
-  if (v11)
+  if (isPOIEnrichment)
   {
-    v12 = [v7 feedbackRequestParameters];
-    v13 = [v12 submissionParameters];
-    [v13 updatePOIEnrichmentWithCloudKitReceipts:v14];
+    feedbackRequestParameters2 = [requestCopy feedbackRequestParameters];
+    submissionParameters2 = [feedbackRequestParameters2 submissionParameters];
+    [submissionParameters2 updatePOIEnrichmentWithCloudKitReceipts:updateCopy];
   }
 
-  v8[2](v8, v7);
+  completionCopy[2](completionCopy, requestCopy);
 }
 
-- (id)_feedbackUploaderForUploadPolicy:(int64_t)a3
+- (id)_feedbackUploaderForUploadPolicy:(int64_t)policy
 {
-  if (a3)
+  if (policy)
   {
-    if (a3 != 1)
+    if (policy != 1)
     {
       goto LABEL_6;
     }
@@ -341,28 +341,28 @@ LABEL_6:
   return a2;
 }
 
-- (void)_logDiscardIfNeededForFeedback:(id)a3 userInfo:(id)a4 feedbackObjectToUpdate:(id)a5
+- (void)_logDiscardIfNeededForFeedback:(id)feedback userInfo:(id)info feedbackObjectToUpdate:(id)update
 {
-  v18 = a3;
-  v7 = a5;
-  if ([a4 hasUserCredentials] && objc_msgSend(v18, "hasSubmissionParameters"))
+  feedbackCopy = feedback;
+  updateCopy = update;
+  if ([info hasUserCredentials] && objc_msgSend(feedbackCopy, "hasSubmissionParameters"))
   {
-    v8 = [v18 submissionParameters];
-    [v8 logDiscardTriggerType];
+    submissionParameters = [feedbackCopy submissionParameters];
+    [submissionParameters logDiscardTriggerType];
 
     v9 = sub_10002E924();
-    v10 = [v18 submissionParameters];
-    v11 = [v10 clientSubmissionUuid];
-    if ([v11 length])
+    submissionParameters2 = [feedbackCopy submissionParameters];
+    clientSubmissionUuid = [submissionParameters2 clientSubmissionUuid];
+    if ([clientSubmissionUuid length])
     {
-      v12 = [v18 submissionParameters];
-      [v12 clientSubmissionUuid];
+      submissionParameters3 = [feedbackCopy submissionParameters];
+      [submissionParameters3 clientSubmissionUuid];
     }
 
     else
     {
-      v12 = +[NSUUID UUID];
-      [v12 UUIDString];
+      submissionParameters3 = +[NSUUID UUID];
+      [submissionParameters3 UUIDString];
     }
     v13 = ;
 
@@ -370,16 +370,16 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v7;
+      v14 = updateCopy;
       if ([v14 hasDirections])
       {
-        v15 = [v14 directions];
-        v16 = [v15 hasNavigationSessionID];
+        directions = [v14 directions];
+        hasNavigationSessionID = [directions hasNavigationSessionID];
 
-        if (v16)
+        if (hasNavigationSessionID)
         {
-          v17 = [v14 directions];
-          [v17 navigationSessionID];
+          directions2 = [v14 directions];
+          [directions2 navigationSessionID];
 
           MSPUGCPerformLogDiscardForSessionWithCompletion();
         }
@@ -388,34 +388,34 @@ LABEL_6:
   }
 }
 
-- (void)_submitOrEnqueueFeedback:(id)a3 resolvedUserInfo:(id)a4 traits:(id)a5 debugSettings:(id)a6 uploadPolicy:(int64_t)a7 feedbackObjectToUpdate:(id)a8 completion:(id)a9
+- (void)_submitOrEnqueueFeedback:(id)feedback resolvedUserInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v38 = a9;
-  v19 = a6;
-  v20 = [(FeedbackSubmissionManager *)self _feedbackUploaderForUploadPolicy:a7];
-  v21 = [GEORPFeedbackRequest defaultDebugSettingsMergedWithSettings:v19];
+  feedbackCopy = feedback;
+  infoCopy = info;
+  traitsCopy = traits;
+  updateCopy = update;
+  completionCopy = completion;
+  settingsCopy = settings;
+  v20 = [(FeedbackSubmissionManager *)self _feedbackUploaderForUploadPolicy:policy];
+  v21 = [GEORPFeedbackRequest defaultDebugSettingsMergedWithSettings:settingsCopy];
 
   v39 = v21;
-  v22 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v15 userInfo:v16 traits:v17 debugSettings:v21];
+  v22 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:feedbackCopy userInfo:infoCopy traits:traitsCopy debugSettings:v21];
   v23 = v22;
-  if (v18)
+  if (updateCopy)
   {
     v37 = v20;
-    v24 = [v22 feedbackRequestParameters];
-    v25 = [v24 submissionParameters];
-    v26 = [v25 clientSubmissionUuid];
+    feedbackRequestParameters = [v22 feedbackRequestParameters];
+    submissionParameters = [feedbackRequestParameters submissionParameters];
+    clientSubmissionUuid = [submissionParameters clientSubmissionUuid];
 
-    v27 = [v23 feedbackRequestParameters];
-    v28 = [v27 submissionParameters];
-    v29 = [v28 hasClientSubmissionUuid];
+    feedbackRequestParameters2 = [v23 feedbackRequestParameters];
+    submissionParameters2 = [feedbackRequestParameters2 submissionParameters];
+    hasClientSubmissionUuid = [submissionParameters2 hasClientSubmissionUuid];
 
-    if (v29 && v26)
+    if (hasClientSubmissionUuid && clientSubmissionUuid)
     {
-      [(FeedbackSubmissionPostActionManager *)self->_feedbackSubmissionPostActionManager saveFeedbackObject:v18 forSubmissionIdentifier:v26];
+      [(FeedbackSubmissionPostActionManager *)self->_feedbackSubmissionPostActionManager saveFeedbackObject:updateCopy forSubmissionIdentifier:clientSubmissionUuid];
     }
 
     else
@@ -433,10 +433,10 @@ LABEL_6:
 
   if (MapsFeature_IsEnabled_MoreReportTypes())
   {
-    v31 = [v15 submissionParameters];
-    v32 = [v31 type];
+    submissionParameters3 = [feedbackCopy submissionParameters];
+    type = [submissionParameters3 type];
 
-    if (v32 == 11)
+    if (type == 11)
     {
       [v23 addFeedbackClientCapabilities:2];
     }
@@ -447,62 +447,62 @@ LABEL_6:
   self->_currentProgress = v33;
   v35 = v33;
 
-  [(FeedbackSubmissionManager *)self _logDiscardIfNeededForFeedback:v15 userInfo:v16 feedbackObjectToUpdate:v18];
+  [(FeedbackSubmissionManager *)self _logDiscardIfNeededForFeedback:feedbackCopy userInfo:infoCopy feedbackObjectToUpdate:updateCopy];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100AAA208;
   v40[3] = &unk_101636B20;
-  v41 = v38;
-  v36 = v38;
-  [v20 submitCorrectionsRequest:v23 traits:v17 parentProgress:v35 completion:v40];
+  v41 = completionCopy;
+  v36 = completionCopy;
+  [v20 submitCorrectionsRequest:v23 traits:traitsCopy parentProgress:v35 completion:v40];
 }
 
-- (void)submitOrEnqueueFeedback:(id)a3 userInfo:(id)a4 traits:(id)a5 debugSettings:(id)a6 uploadPolicy:(int64_t)a7 feedbackObjectToUpdate:(id)a8 completion:(id)a9
+- (void)submitOrEnqueueFeedback:(id)feedback userInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  feedbackCopy = feedback;
+  infoCopy = info;
+  traitsCopy = traits;
+  settingsCopy = settings;
+  updateCopy = update;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100AAA3CC;
   v26[3] = &unk_101636BC0;
   objc_copyWeak(v32, &location);
-  v21 = v20;
+  v21 = completionCopy;
   v31 = v21;
-  v22 = v15;
+  v22 = feedbackCopy;
   v27 = v22;
-  v23 = v17;
+  v23 = traitsCopy;
   v28 = v23;
-  v24 = v18;
+  v24 = settingsCopy;
   v29 = v24;
-  v32[1] = a7;
-  v25 = v19;
+  v32[1] = policy;
+  v25 = updateCopy;
   v30 = v25;
-  [(FeedbackSubmissionManager *)self _updateUserInfo:v16 requestParameters:v22 completion:v26];
+  [(FeedbackSubmissionManager *)self _updateUserInfo:infoCopy requestParameters:v22 completion:v26];
 
   objc_destroyWeak(v32);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateUserInfo:(id)a3 requestParameters:(id)a4 completion:(id)a5
+- (void)_updateUserInfo:(id)info requestParameters:(id)parameters completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  parametersCopy = parameters;
+  completionCopy = completion;
   if (GEOConfigGetBOOL())
   {
-    v10 = [v7 tdmUserInfo];
-    v11 = [v10 anonymousUserId];
+    tdmUserInfo = [infoCopy tdmUserInfo];
+    anonymousUserId = [tdmUserInfo anonymousUserId];
 
-    if ([v11 length])
+    if ([anonymousUserId length])
     {
-      v12 = [v7 tdmUserInfo];
-      v13 = [v12 baaCertificates];
-      v14 = [v13 count];
+      tdmUserInfo2 = [infoCopy tdmUserInfo];
+      baaCertificates = [tdmUserInfo2 baaCertificates];
+      v14 = [baaCertificates count];
 
       if (v14)
       {
@@ -521,13 +521,13 @@ LABEL_12:
 
       else
       {
-        if ([v8 hasSubmissionParameters] & 1) != 0 || (objc_msgSend(v8, "hasImageUploadParameters") & 1) != 0 || (objc_msgSend(v8, "hasLogEventParameters"))
+        if ([parametersCopy hasSubmissionParameters] & 1) != 0 || (objc_msgSend(parametersCopy, "hasImageUploadParameters") & 1) != 0 || (objc_msgSend(parametersCopy, "hasLogEventParameters"))
         {
-          v20 = [v11 dataUsingEncoding:4];
+          v20 = [anonymousUserId dataUsingEncoding:4];
           GEOConfigGetBOOL();
           GEOConfigGetDouble();
-          v21 = v7;
-          v22 = v9;
+          v21 = infoCopy;
+          v22 = completionCopy;
           MSPUGCFetchClientCertificate();
 
           goto LABEL_18;
@@ -537,7 +537,7 @@ LABEL_12:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v24 = v8;
+          v24 = parametersCopy;
           v16 = "Request parameters are not not writable so early exit.\n %@";
           v18 = v15;
           v19 = 12;
@@ -557,7 +557,7 @@ LABEL_12:
       }
     }
 
-    (*(v9 + 2))(v9, v7, 0);
+    (*(completionCopy + 2))(completionCopy, infoCopy, 0);
 LABEL_18:
 
     goto LABEL_19;
@@ -570,20 +570,20 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "GeoConfig is disabled so not fetching BAA certificates.", buf, 2u);
   }
 
-  (*(v9 + 2))(v9, v7, 0);
+  (*(completionCopy + 2))(completionCopy, infoCopy, 0);
 LABEL_19:
 }
 
-- (void)_submitOrEnqueueFeedback:(id)a3 attachedImages:(id)a4 resolvedUserInfo:(id)a5 traits:(id)a6 debugSettings:(id)a7 uploadPolicy:(int64_t)a8 feedbackObjectToUpdate:(id)a9 completion:(id)a10
+- (void)_submitOrEnqueueFeedback:(id)feedback attachedImages:(id)images resolvedUserInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)self0
 {
-  v65 = a3;
-  v15 = a4;
-  v66 = a5;
-  v16 = a6;
-  v17 = a7;
-  v63 = a9;
-  v59 = a10;
-  v60 = a8;
+  feedbackCopy = feedback;
+  imagesCopy = images;
+  infoCopy = info;
+  traitsCopy = traits;
+  settingsCopy = settings;
+  updateCopy = update;
+  completionCopy = completion;
+  policyCopy = policy;
   if (qword_10195E488 != -1)
   {
     dispatch_once(&qword_10195E488, &stru_1016373C0);
@@ -599,16 +599,16 @@ LABEL_19:
   v21 = objc_alloc_init(GEORPFeedbackImageUploadParameters);
   [v20 setImageUploadParameters:{v21, v19, v57, v58}];
 
-  v22 = [v65 submissionParameters];
-  v23 = [v22 isPOIEnrichment];
-  v24 = [v20 imageUploadParameters];
-  [v24 setIsEnrichment:v23];
+  submissionParameters = [feedbackCopy submissionParameters];
+  isPOIEnrichment = [submissionParameters isPOIEnrichment];
+  imageUploadParameters = [v20 imageUploadParameters];
+  [imageUploadParameters setIsEnrichment:isPOIEnrichment];
 
   v77 = 0u;
   v75 = 0u;
   v76 = 0u;
   v74 = 0u;
-  v25 = v15;
+  v25 = imagesCopy;
   v26 = [v25 countByEnumeratingWithState:&v74 objects:v82 count:16];
   if (v26)
   {
@@ -623,9 +623,9 @@ LABEL_19:
         }
 
         v29 = *(*(&v74 + 1) + 8 * i);
-        v30 = [v20 imageUploadParameters];
-        v31 = [v29 photoMetadata];
-        [v30 addImage:v31];
+        imageUploadParameters2 = [v20 imageUploadParameters];
+        photoMetadata = [v29 photoMetadata];
+        [imageUploadParameters2 addImage:photoMetadata];
       }
 
       v26 = [v25 countByEnumeratingWithState:&v74 objects:v82 count:16];
@@ -637,28 +637,28 @@ LABEL_19:
   if ((sub_100742958() & 1) == 0)
   {
     v32 = +[MKMapService sharedService];
-    v33 = [v32 defaultTraitsWithTraits:v16];
+    v33 = [v32 defaultTraitsWithTraits:traitsCopy];
 
-    v16 = v33;
+    traitsCopy = v33;
   }
 
-  v62 = [GEORPFeedbackRequest defaultDebugSettingsMergedWithSettings:v17];
+  v62 = [GEORPFeedbackRequest defaultDebugSettingsMergedWithSettings:settingsCopy];
 
-  v61 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v20 userInfo:v66 traits:v16 debugSettings:v62];
-  v34 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v65 userInfo:v66 traits:v16 debugSettings:v62];
+  v61 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:v20 userInfo:infoCopy traits:traitsCopy debugSettings:v62];
+  v34 = [[GEORPFeedbackRequest alloc] initWithFeedbackRequestParameters:feedbackCopy userInfo:infoCopy traits:traitsCopy debugSettings:v62];
   v35 = v34;
-  if (v63)
+  if (updateCopy)
   {
-    v36 = [v34 feedbackRequestParameters];
-    v37 = [v36 submissionParameters];
-    v38 = [v37 clientSubmissionUuid];
+    feedbackRequestParameters = [v34 feedbackRequestParameters];
+    submissionParameters2 = [feedbackRequestParameters submissionParameters];
+    clientSubmissionUuid = [submissionParameters2 clientSubmissionUuid];
 
-    v39 = [v35 feedbackRequestParameters];
-    v40 = [v39 submissionParameters];
-    v41 = [v40 hasClientSubmissionUuid];
-    if (v38)
+    feedbackRequestParameters2 = [v35 feedbackRequestParameters];
+    submissionParameters3 = [feedbackRequestParameters2 submissionParameters];
+    hasClientSubmissionUuid = [submissionParameters3 hasClientSubmissionUuid];
+    if (clientSubmissionUuid)
     {
-      v42 = v41;
+      v42 = hasClientSubmissionUuid;
     }
 
     else
@@ -668,7 +668,7 @@ LABEL_19:
 
     if (v42)
     {
-      [(FeedbackSubmissionPostActionManager *)self->_feedbackSubmissionPostActionManager saveFeedbackObject:v63 forSubmissionIdentifier:v38];
+      [(FeedbackSubmissionPostActionManager *)self->_feedbackSubmissionPostActionManager saveFeedbackObject:updateCopy forSubmissionIdentifier:clientSubmissionUuid];
     }
 
     else
@@ -687,36 +687,36 @@ LABEL_19:
   v45 = sub_10002E924();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
   {
-    v46 = [v66 userCredentials];
-    v47 = [v46 icloudUserPersonId];
-    v48 = [v66 userCredentials];
-    v49 = [v48 icloudUserMapsAuthToken];
+    userCredentials = [infoCopy userCredentials];
+    icloudUserPersonId = [userCredentials icloudUserPersonId];
+    userCredentials2 = [infoCopy userCredentials];
+    icloudUserMapsAuthToken = [userCredentials2 icloudUserMapsAuthToken];
     *buf = 138412546;
-    v79 = v47;
+    v79 = icloudUserPersonId;
     v80 = 2112;
-    v81 = v49;
+    v81 = icloudUserMapsAuthToken;
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "Submitting with icloud person id %@ and auth token %@", buf, 0x16u);
   }
 
-  v50 = [MSPFeedbackSubmissionTicket ticketForFeedbackRequest:v61 traits:v16];
-  v51 = [v50 fakeProgress];
-  [v44 addChild:v51 withPendingUnitCount:1];
+  v50 = [MSPFeedbackSubmissionTicket ticketForFeedbackRequest:v61 traits:traitsCopy];
+  fakeProgress = [v50 fakeProgress];
+  [v44 addChild:fakeProgress withPendingUnitCount:1];
 
-  [(FeedbackSubmissionManager *)self _logDiscardIfNeededForFeedback:v65 userInfo:v66 feedbackObjectToUpdate:v63];
+  [(FeedbackSubmissionManager *)self _logDiscardIfNeededForFeedback:feedbackCopy userInfo:infoCopy feedbackObjectToUpdate:updateCopy];
   objc_initWeak(buf, self);
   v67[0] = _NSConcreteStackBlock;
   v67[1] = 3221225472;
   v67[2] = sub_100AAB014;
   v67[3] = &unk_101636B48;
   objc_copyWeak(v73, buf);
-  v52 = v59;
+  v52 = completionCopy;
   v72 = v52;
   v53 = v25;
   v68 = v53;
   v54 = v35;
   v69 = v54;
-  v73[1] = v60;
-  v55 = v16;
+  v73[1] = policyCopy;
+  v55 = traitsCopy;
   v70 = v55;
   v56 = v44;
   v71 = v56;
@@ -726,16 +726,16 @@ LABEL_19:
   objc_destroyWeak(buf);
 }
 
-- (void)submitOrEnqueueFeedback:(id)a3 attachedImages:(id)a4 userInfo:(id)a5 traits:(id)a6 debugSettings:(id)a7 uploadPolicy:(int64_t)a8 feedbackObjectToUpdate:(id)a9 completion:(id)a10
+- (void)submitOrEnqueueFeedback:(id)feedback attachedImages:(id)images userInfo:(id)info traits:(id)traits debugSettings:(id)settings uploadPolicy:(int64_t)policy feedbackObjectToUpdate:(id)update completion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  if ([v17 count])
+  feedbackCopy = feedback;
+  imagesCopy = images;
+  infoCopy = info;
+  traitsCopy = traits;
+  settingsCopy = settings;
+  updateCopy = update;
+  completionCopy = completion;
+  if ([imagesCopy count])
   {
     objc_initWeak(&location, self);
     v23[0] = _NSConcreteStackBlock;
@@ -743,14 +743,14 @@ LABEL_19:
     v23[2] = sub_100AAB560;
     v23[3] = &unk_101636AD0;
     objc_copyWeak(v30, &location);
-    v29 = v22;
-    v24 = v16;
-    v25 = v17;
-    v26 = v19;
-    v27 = v20;
-    v30[1] = a8;
-    v28 = v21;
-    [(FeedbackSubmissionManager *)self _updateUserInfo:v18 requestParameters:v24 completion:v23];
+    v29 = completionCopy;
+    v24 = feedbackCopy;
+    v25 = imagesCopy;
+    v26 = traitsCopy;
+    v27 = settingsCopy;
+    v30[1] = policy;
+    v28 = updateCopy;
+    [(FeedbackSubmissionManager *)self _updateUserInfo:infoCopy requestParameters:v24 completion:v23];
 
     objc_destroyWeak(v30);
     objc_destroyWeak(&location);
@@ -758,7 +758,7 @@ LABEL_19:
 
   else
   {
-    [(FeedbackSubmissionManager *)self submitOrEnqueueFeedback:v16 userInfo:v18 traits:v19 debugSettings:v20 uploadPolicy:a8 feedbackObjectToUpdate:v21 completion:v22];
+    [(FeedbackSubmissionManager *)self submitOrEnqueueFeedback:feedbackCopy userInfo:infoCopy traits:traitsCopy debugSettings:settingsCopy uploadPolicy:policy feedbackObjectToUpdate:updateCopy completion:completionCopy];
   }
 }
 

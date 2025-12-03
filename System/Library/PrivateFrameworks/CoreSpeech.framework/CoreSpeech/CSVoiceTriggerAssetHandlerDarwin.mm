@@ -1,25 +1,25 @@
 @interface CSVoiceTriggerAssetHandlerDarwin
 - (CSVoiceTriggerAssetHandlerDarwin)init;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSRemoteAssetManagerDidDownloadNewAsset:(id)a3;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSRemoteAssetManagerDidDownloadNewAsset:(id)asset;
 - (void)_checkNewAssetAvailability;
-- (void)_getVoiceTriggerAssetFromAssetManager:(id)a3;
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4;
+- (void)_getVoiceTriggerAssetFromAssetManager:(id)manager;
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion;
 - (void)start;
 @end
 
 @implementation CSVoiceTriggerAssetHandlerDarwin
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CSVoiceTriggerAssetHandlerDarwin CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v10 = 2114;
-    v11 = v5;
+    v11 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Language Code Changed : %{public}@", &v8, 0x16u);
   }
 
@@ -28,7 +28,7 @@
   [v7 notifyNewVoiceTriggerAssetMetaDataUpdated];
 }
 
-- (void)CSRemoteAssetManagerDidDownloadNewAsset:(id)a3
+- (void)CSRemoteAssetManagerDidDownloadNewAsset:(id)asset
 {
   v4 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
@@ -38,13 +38,13 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s new VoiceTrigger asset downloaded", buf, 0xCu);
   }
 
-  v5 = [(CSVoiceTriggerAssetHandler *)self queue];
+  queue = [(CSVoiceTriggerAssetHandler *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100143C2C;
   block[3] = &unk_100253C20;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_checkNewAssetAvailability
@@ -57,9 +57,9 @@
   [(CSVoiceTriggerAssetHandlerDarwin *)self _getVoiceTriggerAssetFromAssetManager:v2];
 }
 
-- (void)_getVoiceTriggerAssetFromAssetManager:(id)a3
+- (void)_getVoiceTriggerAssetFromAssetManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = +[CSRemoteAssetManagerFactory remoteAssetManager];
   v5 = [v4 assetForCurrentLanguageOfType:0];
 
@@ -81,9 +81,9 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Fetching CSVoiceTriggerAsset failed with error error %{public}@", buf, 0x16u);
     }
 
-    if (v3)
+    if (managerCopy)
     {
-      v3[2](v3, 0, v7);
+      managerCopy[2](managerCopy, 0, v7);
     }
   }
 
@@ -98,24 +98,24 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s CSVoiceTriggerAsset found: %{public}@", buf, 0x16u);
     }
 
-    if (v3)
+    if (managerCopy)
     {
-      (v3)[2](v3, v5, 0);
+      (managerCopy)[2](managerCopy, v5, 0);
     }
   }
 }
 
-- (void)getVoiceTriggerAssetWithEndpointId:(id)a3 completion:(id)a4
+- (void)getVoiceTriggerAssetWithEndpointId:(id)id completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(CSVoiceTriggerAssetHandlerDarwin *)self cachedAsset];
+  completionCopy = completion;
+  cachedAsset = [(CSVoiceTriggerAssetHandlerDarwin *)self cachedAsset];
 
-  if (v6)
+  if (cachedAsset)
   {
-    if (v5)
+    if (completionCopy)
     {
-      v7 = [(CSVoiceTriggerAssetHandlerDarwin *)self cachedAsset];
-      v5[2](v5, v7, 0);
+      cachedAsset2 = [(CSVoiceTriggerAssetHandlerDarwin *)self cachedAsset];
+      completionCopy[2](completionCopy, cachedAsset2, 0);
     }
   }
 
@@ -126,7 +126,7 @@
     v8[2] = sub_1001441E4;
     v8[3] = &unk_100252878;
     v8[4] = self;
-    v9 = v5;
+    v9 = completionCopy;
     [(CSVoiceTriggerAssetHandlerDarwin *)self _getVoiceTriggerAssetFromAssetManager:v8];
   }
 }
@@ -155,15 +155,15 @@
     }
 
     self = v4;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

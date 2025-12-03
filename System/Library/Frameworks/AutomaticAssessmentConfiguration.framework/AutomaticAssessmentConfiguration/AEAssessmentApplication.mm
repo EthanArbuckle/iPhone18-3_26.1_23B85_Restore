@@ -1,11 +1,11 @@
 @interface AEAssessmentApplication
-+ (id)instanceFromApplicationDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceFromApplicationDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
 - (id)applicationDescriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initWithBundleIdentifier:(void *)a3 teamIdentifier:(char)a4 requiresSignatureValidation:;
-- (uint64_t)isEqualToApplication:(uint64_t)a1;
+- (id)initWithBundleIdentifier:(void *)identifier teamIdentifier:(char)teamIdentifier requiresSignatureValidation:;
+- (uint64_t)isEqualToApplication:(uint64_t)application;
 - (unint64_t)hash;
 @end
 
@@ -18,13 +18,13 @@
   return v2;
 }
 
-+ (id)instanceFromApplicationDescriptor:(id)a3
++ (id)instanceFromApplicationDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     v7[1] = v3;
     v8 = v4;
-    [(AEAssessmentApplication *)a3 instanceFromApplicationDescriptor:v7];
+    [(AEAssessmentApplication *)descriptor instanceFromApplicationDescriptor:v7];
     v5 = v7[0];
   }
 
@@ -46,19 +46,19 @@
   return v4 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v6 = 1;
       goto LABEL_6;
     }
 
-    if ([(AEAssessmentApplication *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(AEAssessmentApplication *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v6 = [(AEAssessmentApplication *)self isEqualToApplication:v5];
       goto LABEL_6;
@@ -88,35 +88,35 @@ LABEL_6:
   return [v3 stringWithFormat:@"<%@: %p { bundleIdentifier = %@, teamIdentifier = %@, requiresSignatureChecks = %@ }>", v4, self, self->_bundleIdentifier, self->_teamIdentifier, v5];
 }
 
-- (id)initWithBundleIdentifier:(void *)a3 teamIdentifier:(char)a4 requiresSignatureValidation:
+- (id)initWithBundleIdentifier:(void *)identifier teamIdentifier:(char)teamIdentifier requiresSignatureValidation:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = AEAssessmentApplication;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v14, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = *(a1 + 2);
-      *(a1 + 2) = v9;
+      v10 = *(self + 2);
+      *(self + 2) = v9;
 
-      v11 = [v8 copy];
-      v12 = *(a1 + 3);
-      *(a1 + 3) = v11;
+      v11 = [identifierCopy copy];
+      v12 = *(self + 3);
+      *(self + 3) = v11;
 
-      *(a1 + 8) = a4;
+      *(self + 8) = teamIdentifier;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AEAssessmentApplication allocWithZone:a3];
+  v4 = [AEAssessmentApplication allocWithZone:zone];
   bundleIdentifier = self->_bundleIdentifier;
   teamIdentifier = self->_teamIdentifier;
   requiresSignatureValidation = self->_requiresSignatureValidation;
@@ -124,16 +124,16 @@ LABEL_6:
   return [(AEAssessmentApplication *)v4 initWithBundleIdentifier:teamIdentifier teamIdentifier:requiresSignatureValidation requiresSignatureValidation:?];
 }
 
-- (uint64_t)isEqualToApplication:(uint64_t)a1
+- (uint64_t)isEqualToApplication:(uint64_t)application
 {
   v3 = a2;
-  if (a1)
+  if (application)
   {
-    v4 = *(a1 + 16);
-    a1 = (!(v4 | v3[2]) || [v4 isEqual:?]) && ((v5 = *(a1 + 24), !(v5 | v3[3])) || objc_msgSend(v5, "isEqual:")) && *(a1 + 8) == *(v3 + 8);
+    v4 = *(application + 16);
+    application = (!(v4 | v3[2]) || [v4 isEqual:?]) && ((v5 = *(application + 24), !(v5 | v3[3])) || objc_msgSend(v5, "isEqual:")) && *(application + 8) == *(v3 + 8);
   }
 
-  return a1;
+  return application;
 }
 
 + (void)instanceFromApplicationDescriptor:(void *)a1 .cold.1(void *a1, id *a2)

@@ -1,21 +1,21 @@
 @interface TIKeyboardFeatureSpecialization
-+ (USet)createAcceptableCharacterSetForKeyboardLocale:(id)a3;
-+ (id)createSpecializationForInputMode:(id)a3;
-+ (id)findPrefixMatchesFor:(id)a3 fromIndex:(unint64_t)a4 usingCompositionMap:(id)a5 matchesInputAsPrefix:(BOOL)a6;
-- (BOOL)acceptsCharacter:(unsigned int)a3;
++ (USet)createAcceptableCharacterSetForKeyboardLocale:(id)locale;
++ (id)createSpecializationForInputMode:(id)mode;
++ (id)findPrefixMatchesFor:(id)for fromIndex:(unint64_t)index usingCompositionMap:(id)map matchesInputAsPrefix:(BOOL)prefix;
+- (BOOL)acceptsCharacter:(unsigned int)character;
 - (BOOL)deletesByComposedCharacterSequence;
 - (BOOL)doesComposeText;
-- (BOOL)shouldClearInput:(id)a3;
-- (TIKeyboardFeatureSpecialization)initWithInputMode:(id)a3;
+- (BOOL)shouldClearInput:(id)input;
+- (TIKeyboardFeatureSpecialization)initWithInputMode:(id)mode;
 - (USet)createAcceptableCharacterSet;
 - (const)precomposedCharacterSet;
 - (id)allAccentKeyStrings;
 - (id)clauseDelimitingCharacters;
-- (id)compositionMapForLayout:(id)a3 reverse:(BOOL)a4;
-- (id)externalStringToInternal:(id)a3;
-- (id)getComposedStringFor:(id)a3 usingMap:(id)a4;
-- (id)getComposedStringFor:(id)a3 usingMap:(id)a4 byConvertingEagerly:(BOOL)a5;
-- (id)internalStringToExternal:(id)a3;
+- (id)compositionMapForLayout:(id)layout reverse:(BOOL)reverse;
+- (id)externalStringToInternal:(id)internal;
+- (id)getComposedStringFor:(id)for usingMap:(id)map;
+- (id)getComposedStringFor:(id)for usingMap:(id)map byConvertingEagerly:(BOOL)eagerly;
+- (id)internalStringToExternal:(id)external;
 - (id)layoutTags;
 - (id)nonstopPunctuationCharacters;
 - (id)replacementForDoubleSpace;
@@ -28,9 +28,9 @@
 - (id)wordCharacters;
 - (id)wordMedialPunctuationCharacters;
 - (void)dealloc;
-- (void)reloadPrecomposedCharacterSetWithIdiom:(int64_t)a3;
-- (void)setCurrentUserInterfaceIdiom:(int64_t)a3;
-- (void)specializeInputManager:(void *)a3 forLayoutState:(id)a4;
+- (void)reloadPrecomposedCharacterSetWithIdiom:(int64_t)idiom;
+- (void)setCurrentUserInterfaceIdiom:(int64_t)idiom;
+- (void)specializeInputManager:(void *)manager forLayoutState:(id)state;
 @end
 
 @implementation TIKeyboardFeatureSpecialization
@@ -49,20 +49,20 @@
 
 - (id)allAccentKeyStrings
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 allAccentKeyStrings];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  allAccentKeyStrings = [inputMode allAccentKeyStrings];
 
-  return v3;
+  return allAccentKeyStrings;
 }
 
 - (id)replacementForDoubleSpace
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 replacementForDoubleSpace];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  replacementForDoubleSpace = [inputMode replacementForDoubleSpace];
+  v4 = replacementForDoubleSpace;
+  if (replacementForDoubleSpace)
   {
-    v5 = v3;
+    v5 = replacementForDoubleSpace;
   }
 
   else
@@ -77,13 +77,13 @@
 
 - (id)layoutTags
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 layoutTags];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  layoutTags = [inputMode layoutTags];
 
-  return v3;
+  return layoutTags;
 }
 
-- (void)reloadPrecomposedCharacterSetWithIdiom:(int64_t)a3
+- (void)reloadPrecomposedCharacterSetWithIdiom:(int64_t)idiom
 {
   if (self->m_precomposedCharacterSet)
   {
@@ -92,10 +92,10 @@
 
   m_precomposedCharacterSet = uset_openEmpty();
   self->m_precomposedCharacterSet = m_precomposedCharacterSet;
-  if (a3 != -1)
+  if (idiom != -1)
   {
-    v6 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-    v7 = [v6 normalizedIdentifier];
+    inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+    normalizedIdentifier = [inputMode normalizedIdentifier];
     v8 = TIKeyboardPopupVariantsForInputMode();
 
     v9[0] = MEMORY[0x277D85DD0];
@@ -134,11 +134,11 @@ uint64_t __74__TIKeyboardFeatureSpecialization_reloadPrecomposedCharacterSetWith
   return result;
 }
 
-- (void)setCurrentUserInterfaceIdiom:(int64_t)a3
+- (void)setCurrentUserInterfaceIdiom:(int64_t)idiom
 {
-  if (self->_currentUserInterfaceIdiom != a3)
+  if (self->_currentUserInterfaceIdiom != idiom)
   {
-    self->_currentUserInterfaceIdiom = a3;
+    self->_currentUserInterfaceIdiom = idiom;
     [(TIKeyboardFeatureSpecialization *)self reloadPrecomposedCharacterSetWithIdiom:?];
   }
 }
@@ -160,25 +160,25 @@ uint64_t __74__TIKeyboardFeatureSpecialization_reloadPrecomposedCharacterSetWith
   [(TIKeyboardFeatureSpecialization *)&v3 dealloc];
 }
 
-- (TIKeyboardFeatureSpecialization)initWithInputMode:(id)a3
+- (TIKeyboardFeatureSpecialization)initWithInputMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v9.receiver = self;
   v9.super_class = TIKeyboardFeatureSpecialization;
   v6 = [(TIKeyboardFeatureSpecialization *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputMode, a3);
+    objc_storeStrong(&v6->_inputMode, mode);
   }
 
   return v7;
 }
 
-+ (id)createSpecializationForInputMode:(id)a3
++ (id)createSpecializationForInputMode:(id)mode
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_msgSend(v3 "keyboardFeatureSpecializationClass"))];
+  modeCopy = mode;
+  v4 = [objc_alloc(objc_msgSend(modeCopy "keyboardFeatureSpecializationClass"))];
 
   return v4;
 }
@@ -199,14 +199,14 @@ void __70__TIKeyboardFeatureSpecialization_ar_ars_terminatorsDeletingAutospace__
 
 - (USet)createAcceptableCharacterSet
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 locale];
-  v4 = [TIKeyboardFeatureSpecialization createAcceptableCharacterSetForKeyboardLocale:v3];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  locale = [inputMode locale];
+  v4 = [TIKeyboardFeatureSpecialization createAcceptableCharacterSetForKeyboardLocale:locale];
 
   return v4;
 }
 
-- (BOOL)acceptsCharacter:(unsigned int)a3
+- (BOOL)acceptsCharacter:(unsigned int)character
 {
   if (!self->m_acceptableCharacterSet)
   {
@@ -218,13 +218,13 @@ void __70__TIKeyboardFeatureSpecialization_ar_ars_terminatorsDeletingAutospace__
 
 - (id)spaceDeletingCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 spaceDeletingCharacters];
-  v4 = v3;
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  spaceDeletingCharacters = [inputMode spaceDeletingCharacters];
+  v4 = spaceDeletingCharacters;
   v5 = &stru_283FDFAF8;
-  if (v3)
+  if (spaceDeletingCharacters)
   {
-    v5 = v3;
+    v5 = spaceDeletingCharacters;
   }
 
   v6 = v5;
@@ -290,20 +290,20 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 - (id)wordCharacters
 {
   v3 = [objc_alloc(MEMORY[0x277D6F458]) initWithBaseCharacterSet:10];
-  v4 = [(TIKeyboardFeatureSpecialization *)self nonstopPunctuationCharacters];
-  [v3 addCharactersInString:v4];
+  nonstopPunctuationCharacters = [(TIKeyboardFeatureSpecialization *)self nonstopPunctuationCharacters];
+  [v3 addCharactersInString:nonstopPunctuationCharacters];
 
   return v3;
 }
 
 - (id)wordMedialPunctuationCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 wordMedialPunctuationCharacters];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  wordMedialPunctuationCharacters = [inputMode wordMedialPunctuationCharacters];
+  v4 = wordMedialPunctuationCharacters;
+  if (wordMedialPunctuationCharacters)
   {
-    v5 = v3;
+    v5 = wordMedialPunctuationCharacters;
   }
 
   else
@@ -318,12 +318,12 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
 - (id)sentenceTrailingCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 sentenceTrailingCharacters];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  sentenceTrailingCharacters = [inputMode sentenceTrailingCharacters];
+  v4 = sentenceTrailingCharacters;
+  if (sentenceTrailingCharacters)
   {
-    v5 = v3;
+    v5 = sentenceTrailingCharacters;
   }
 
   else
@@ -338,12 +338,12 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
 - (id)clauseDelimitingCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 clauseDelimitingCharacters];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  clauseDelimitingCharacters = [inputMode clauseDelimitingCharacters];
+  v4 = clauseDelimitingCharacters;
+  if (clauseDelimitingCharacters)
   {
-    v5 = v3;
+    v5 = clauseDelimitingCharacters;
   }
 
   else
@@ -358,12 +358,12 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
 - (id)sentenceDelimitingCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 sentenceDelimitingCharacters];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  sentenceDelimitingCharacters = [inputMode sentenceDelimitingCharacters];
+  v4 = sentenceDelimitingCharacters;
+  if (sentenceDelimitingCharacters)
   {
-    v5 = v3;
+    v5 = sentenceDelimitingCharacters;
   }
 
   else
@@ -378,12 +378,12 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
 - (id)sentencePrefixingCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 sentencePrefixingCharacters];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  sentencePrefixingCharacters = [inputMode sentencePrefixingCharacters];
+  v4 = sentencePrefixingCharacters;
+  if (sentencePrefixingCharacters)
   {
-    v5 = v3;
+    v5 = sentencePrefixingCharacters;
   }
 
   else
@@ -398,12 +398,12 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
 - (id)nonstopPunctuationCharacters
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 nonstopPunctuationCharacters];
-  v4 = v3;
-  if (v3)
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  nonstopPunctuationCharacters = [inputMode nonstopPunctuationCharacters];
+  v4 = nonstopPunctuationCharacters;
+  if (nonstopPunctuationCharacters)
   {
-    v5 = v3;
+    v5 = nonstopPunctuationCharacters;
   }
 
   else
@@ -415,21 +415,21 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
   return v5;
 }
 
-- (id)internalStringToExternal:(id)a3
+- (id)internalStringToExternal:(id)external
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  externalCopy = external;
   if ([(TIKeyboardFeatureSpecialization *)self doesComposeText])
   {
     v5 = [(TIKeyboardFeatureSpecialization *)self compositionMapForLayout:self->m_softwareLayout reverse:0];
     if ([v5 count])
     {
-      v6 = [(TIKeyboardFeatureSpecialization *)self getComposedStringFor:v4 usingMap:v5];
+      v6 = [(TIKeyboardFeatureSpecialization *)self getComposedStringFor:externalCopy usingMap:v5];
     }
 
     else
     {
-      KB::utf8_string(v4, v10);
+      KB::utf8_string(externalCopy, v10);
       KB::compose_diacritics(v10, [(TIKeyboardFeatureSpecialization *)self precomposedCharacterSet], v12);
       v6 = KB::ns_string(v12, v7);
       if (v13 && v12[6] == 1)
@@ -446,7 +446,7 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
   else
   {
-    v6 = v4;
+    v6 = externalCopy;
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -454,18 +454,18 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
   return v6;
 }
 
-- (id)externalStringToInternal:(id)a3
+- (id)externalStringToInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(TIKeyboardFeatureSpecialization *)self externalStringToInternal:v4 byConvertingEagerly:[(TIKeyboardFeatureSpecialization *)self shouldConvertEagerly]];
+  internalCopy = internal;
+  v5 = [(TIKeyboardFeatureSpecialization *)self externalStringToInternal:internalCopy byConvertingEagerly:[(TIKeyboardFeatureSpecialization *)self shouldConvertEagerly]];
 
   return v5;
 }
 
-- (BOOL)shouldClearInput:(id)a3
+- (BOOL)shouldClearInput:(id)input
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v5 = [(TIKeyboardFeatureSpecialization *)self compositionMapForLayout:self->m_softwareLayout reverse:0];
   v6 = [v5 count];
   v17 = 0u;
@@ -508,18 +508,18 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
 
   if (v6)
   {
-    if ([v4 length] <= v11)
+    if ([inputCopy length] <= v11)
     {
       LOBYTE(v6) = 0;
     }
 
     else
     {
-      v14 = [(TIKeyboardFeatureSpecialization *)self getComposedStringFor:v4 usingMap:v7 byConvertingEagerly:0];
+      v14 = [(TIKeyboardFeatureSpecialization *)self getComposedStringFor:inputCopy usingMap:v7 byConvertingEagerly:0];
       if ([v14 length])
       {
         LODWORD(v6) = [v14 characterAtIndex:{objc_msgSend(v14, "length") - 1}];
-        LOBYTE(v6) = v6 != [v4 characterAtIndex:{objc_msgSend(v4, "length") - 1}];
+        LOBYTE(v6) = v6 != [inputCopy characterAtIndex:{objc_msgSend(inputCopy, "length") - 1}];
       }
 
       else
@@ -533,19 +533,19 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
   return v6;
 }
 
-- (id)getComposedStringFor:(id)a3 usingMap:(id)a4 byConvertingEagerly:(BOOL)a5
+- (id)getComposedStringFor:(id)for usingMap:(id)map byConvertingEagerly:(BOOL)eagerly
 {
-  v19 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length] || !objc_msgSend(v8, "count"))
+  eagerlyCopy = eagerly;
+  forCopy = for;
+  mapCopy = map;
+  if (![forCopy length] || !objc_msgSend(mapCopy, "count"))
   {
-    v9 = v7;
+    v9 = forCopy;
     goto LABEL_12;
   }
 
-  v9 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(v7, "length")}];
-  if (![v7 length])
+  v9 = [MEMORY[0x277CCAB68] stringWithCapacity:{objc_msgSend(forCopy, "length")}];
+  if (![forCopy length])
   {
     goto LABEL_12;
   }
@@ -553,36 +553,36 @@ void __85__TIKeyboardFeatureSpecialization_ZephyrSpecialization__terminatorsDele
   v10 = 0;
   while (1)
   {
-    v11 = [(TIKeyboardFeatureSpecialization *)self findPrefixMatchesFor:v7 fromIndex:v10 usingCompositionMap:v8 matchesInputAsPrefix:!v19];
+    v11 = [(TIKeyboardFeatureSpecialization *)self findPrefixMatchesFor:forCopy fromIndex:v10 usingCompositionMap:mapCopy matchesInputAsPrefix:!eagerlyCopy];
     if (![v11 count])
     {
-      [v9 appendFormat:@"%C", objc_msgSend(v7, "characterAtIndex:", v10)];
+      [v9 appendFormat:@"%C", objc_msgSend(forCopy, "characterAtIndex:", v10)];
       v16 = 1;
       goto LABEL_9;
     }
 
-    v12 = [v11 firstObject];
-    v13 = [v12 key];
+    firstObject = [v11 firstObject];
+    v13 = [firstObject key];
     v14 = [v13 length];
-    if (v14 > [v7 length] - v10)
+    if (v14 > [forCopy length] - v10)
     {
       break;
     }
 
-    v15 = [v12 value];
-    [v9 appendString:v15];
+    value = [firstObject value];
+    [v9 appendString:value];
     v16 = [v13 length];
 
 LABEL_9:
     v10 += v16;
 
-    if (v10 >= [v7 length])
+    if (v10 >= [forCopy length])
     {
       goto LABEL_12;
     }
   }
 
-  v18 = [v7 substringFromIndex:v10];
+  v18 = [forCopy substringFromIndex:v10];
   [v9 appendString:v18];
 
 LABEL_12:
@@ -590,22 +590,22 @@ LABEL_12:
   return v9;
 }
 
-- (id)getComposedStringFor:(id)a3 usingMap:(id)a4
+- (id)getComposedStringFor:(id)for usingMap:(id)map
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TIKeyboardFeatureSpecialization *)self getComposedStringFor:v7 usingMap:v6 byConvertingEagerly:[(TIKeyboardFeatureSpecialization *)self shouldConvertEagerly]];
+  mapCopy = map;
+  forCopy = for;
+  v8 = [(TIKeyboardFeatureSpecialization *)self getComposedStringFor:forCopy usingMap:mapCopy byConvertingEagerly:[(TIKeyboardFeatureSpecialization *)self shouldConvertEagerly]];
 
   return v8;
 }
 
-- (id)compositionMapForLayout:(id)a3 reverse:(BOOL)a4
+- (id)compositionMapForLayout:(id)layout reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  reverseCopy = reverse;
+  layoutCopy = layout;
+  if ([layoutCopy length])
   {
-    if (v4)
+    if (reverseCopy)
     {
       v7 = 40;
     }
@@ -615,23 +615,23 @@ LABEL_12:
       v7 = 32;
     }
 
-    v8 = *(&self->super.isa + v7);
-    if (!v8)
+    dictionary = *(&self->super.isa + v7);
+    if (!dictionary)
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
-      objc_storeStrong((&self->super.isa + v7), v8);
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      objc_storeStrong((&self->super.isa + v7), dictionary);
     }
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __89__TIKeyboardFeatureSpecialization_ZephyrSpecialization__compositionMapForLayout_reverse___block_invoke;
     aBlock[3] = &unk_27872FE40;
-    v17 = v4;
-    v15 = v8;
-    v16 = self;
-    v9 = v8;
+    v17 = reverseCopy;
+    v15 = dictionary;
+    selfCopy = self;
+    v9 = dictionary;
     v10 = _Block_copy(aBlock);
-    v11 = v10[2](v10, v6);
+    v11 = v10[2](v10, layoutCopy);
     if (![v11 count])
     {
       v12 = v10[2](v10, @"AnyLayout");
@@ -739,33 +739,33 @@ id __89__TIKeyboardFeatureSpecialization_ZephyrSpecialization__compositionMapFor
 
 - (BOOL)deletesByComposedCharacterSequence
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 deletesByComposedCharacterSequence];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  deletesByComposedCharacterSequence = [inputMode deletesByComposedCharacterSequence];
 
-  return v3;
+  return deletesByComposedCharacterSequence;
 }
 
 - (BOOL)doesComposeText
 {
-  v2 = [(TIKeyboardFeatureSpecialization *)self inputMode];
-  v3 = [v2 doesComposeText];
+  inputMode = [(TIKeyboardFeatureSpecialization *)self inputMode];
+  doesComposeText = [inputMode doesComposeText];
 
-  return v3;
+  return doesComposeText;
 }
 
-- (void)specializeInputManager:(void *)a3 forLayoutState:(id)a4
+- (void)specializeInputManager:(void *)manager forLayoutState:(id)state
 {
-  v5 = [a4 softwareLayout];
+  softwareLayout = [state softwareLayout];
   m_softwareLayout = self->m_softwareLayout;
-  self->m_softwareLayout = v5;
+  self->m_softwareLayout = softwareLayout;
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (USet)createAcceptableCharacterSetForKeyboardLocale:(id)a3
++ (USet)createAcceptableCharacterSetForKeyboardLocale:(id)locale
 {
-  v3 = [a3 localeIdentifier];
-  [v3 UTF8String];
+  localeIdentifier = [locale localeIdentifier];
+  [localeIdentifier UTF8String];
   v4 = ulocdata_open();
 
   ExemplarSet = ulocdata_getExemplarSet();
@@ -795,21 +795,21 @@ id __89__TIKeyboardFeatureSpecialization_ZephyrSpecialization__compositionMapFor
   return v7;
 }
 
-+ (id)findPrefixMatchesFor:(id)a3 fromIndex:(unint64_t)a4 usingCompositionMap:(id)a5 matchesInputAsPrefix:(BOOL)a6
++ (id)findPrefixMatchesFor:(id)for fromIndex:(unint64_t)index usingCompositionMap:(id)map matchesInputAsPrefix:(BOOL)prefix
 {
-  v6 = a6;
+  prefixCopy = prefix;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if ([v9 length] && objc_msgSend(v9, "length") > a4)
+  forCopy = for;
+  mapCopy = map;
+  if ([forCopy length] && objc_msgSend(forCopy, "length") > index)
   {
-    v11 = [v9 substringFromIndex:a4];
-    v12 = [MEMORY[0x277CBEB18] array];
+    v11 = [forCopy substringFromIndex:index];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = v10;
+    v13 = mapCopy;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
@@ -825,9 +825,9 @@ id __89__TIKeyboardFeatureSpecialization_ZephyrSpecialization__compositionMapFor
           }
 
           v18 = *(*(&v22 + 1) + 8 * i);
-          if (([v11 hasPrefix:{v18, v22}] & 1) != 0 || v6 && objc_msgSend(v18, "hasPrefix:", v11))
+          if (([v11 hasPrefix:{v18, v22}] & 1) != 0 || prefixCopy && objc_msgSend(v18, "hasPrefix:", v11))
           {
-            [v12 addObject:v18];
+            [array addObject:v18];
           }
         }
 
@@ -837,7 +837,7 @@ id __89__TIKeyboardFeatureSpecialization_ZephyrSpecialization__compositionMapFor
       while (v15);
     }
 
-    v19 = [v12 sortedArrayUsingComparator:&__block_literal_global_4046];
+    v19 = [array sortedArrayUsingComparator:&__block_literal_global_4046];
   }
 
   else

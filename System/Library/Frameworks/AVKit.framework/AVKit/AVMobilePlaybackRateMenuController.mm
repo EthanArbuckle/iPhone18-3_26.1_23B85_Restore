@@ -1,11 +1,11 @@
 @interface AVMobilePlaybackRateMenuController
-+ (void)_loadPlaybackSpeedControlImageWithCompletionHandler:(id)a3;
++ (void)_loadPlaybackSpeedControlImageWithCompletionHandler:(id)handler;
 - (AVMobilePlaybackRateMenuController)init;
 - (void)_reconstructPlaybackRateMenuItems;
 - (void)_updatePlaybackRateMenuIfNeeded;
 - (void)_updatePlaybackRateMenuItemStatesIfNeeded;
 - (void)dealloc;
-- (void)setPlaybackSpeedCollection:(id)a3;
+- (void)setPlaybackSpeedCollection:(id)collection;
 @end
 
 @implementation AVMobilePlaybackRateMenuController
@@ -15,12 +15,12 @@
   v18 = *MEMORY[0x1E69E9840];
   v3 = self->_activeMenuItems;
   v4 = self->_activePlaybackRateCollection;
-  v5 = [(AVPlaybackSpeedCollection *)v4 speeds];
-  v6 = [(AVPlaybackSpeedCollection *)v4 activeSpeed];
-  v7 = [v5 indexOfObject:v6];
+  speeds = [(AVPlaybackSpeedCollection *)v4 speeds];
+  activeSpeed = [(AVPlaybackSpeedCollection *)v4 activeSpeed];
+  v7 = [speeds indexOfObject:activeSpeed];
 
   v8 = [(NSArray *)v3 count];
-  if (v8 != [v5 count])
+  if (v8 != [speeds count])
   {
     v9 = _AVLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@
   }
 
   v10 = [(NSArray *)v3 count];
-  v11 = v10 != [v5 count] || v7 == 0x7FFFFFFFFFFFFFFFLL;
+  v11 = v10 != [speeds count] || v7 == 0x7FFFFFFFFFFFFFFFLL;
   if (!v11 && [(NSArray *)v3 count])
   {
     v12 = 0;
@@ -53,13 +53,13 @@
 - (void)_updatePlaybackRateMenuIfNeeded
 {
   obj = [(AVMobilePlaybackRateMenuController *)self playbackSpeedCollection];
-  v3 = [obj activeSpeed];
+  activeSpeed = [obj activeSpeed];
   v4 = AVMobilePlaybackSpeedControlImage;
   v5 = v4 != 0;
-  if (*&self->_activePlaybackRateCollection != __PAIR128__(v3, obj) || self->_activeMenuHasImage != v5)
+  if (*&self->_activePlaybackRateCollection != __PAIR128__(activeSpeed, obj) || self->_activeMenuHasImage != v5)
   {
     objc_storeStrong(&self->_activePlaybackRateCollection, obj);
-    objc_storeStrong(&self->_activeSelectedPlaybackSpeed, v3);
+    objc_storeStrong(&self->_activeSelectedPlaybackSpeed, activeSpeed);
     self->_activeMenuHasImage = v5;
     v6 = AVLocalizedString(@"Playback Speed");
     [(AVMobilePlaybackRateMenuController *)self willChangeValueForKey:@"menu"];
@@ -74,14 +74,14 @@
 - (void)_reconstructPlaybackRateMenuItems
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(AVMobilePlaybackRateMenuController *)self playbackSpeedCollection];
-  v3 = [v2 displaySpeeds];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  playbackSpeedCollection = [(AVMobilePlaybackRateMenuController *)self playbackSpeedCollection];
+  displaySpeeds = [playbackSpeedCollection displaySpeeds];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(displaySpeeds, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = displaySpeeds;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -97,8 +97,8 @@
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 localizedNumericName];
-        v11 = [v2 activeSpeed];
+        localizedNumericName = [v9 localizedNumericName];
+        activeSpeed = [playbackSpeedCollection activeSpeed];
 
         v12 = MEMORY[0x1E69DC628];
         v18[0] = MEMORY[0x1E69E9820];
@@ -106,10 +106,10 @@
         v18[2] = __71__AVMobilePlaybackRateMenuController__reconstructPlaybackRateMenuItems__block_invoke;
         v18[3] = &unk_1E72076E8;
         v18[4] = v9;
-        v19 = v2;
-        v13 = [v12 actionWithTitle:v10 image:0 identifier:0 handler:v18];
+        v19 = playbackSpeedCollection;
+        v13 = [v12 actionWithTitle:localizedNumericName image:0 identifier:0 handler:v18];
         v14 = v13;
-        if (v11 == v9)
+        if (activeSpeed == v9)
         {
           [v13 setState:1];
         }
@@ -146,14 +146,14 @@ uint64_t __71__AVMobilePlaybackRateMenuController__reconstructPlaybackRateMenuIt
   return result;
 }
 
-- (void)setPlaybackSpeedCollection:(id)a3
+- (void)setPlaybackSpeedCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_playbackSpeedCollection != v5)
+  collectionCopy = collection;
+  if (self->_playbackSpeedCollection != collectionCopy)
   {
-    v8 = v5;
+    v8 = collectionCopy;
     [(AVObservationController *)self->_observationController stopAllObservation];
-    objc_storeStrong(&self->_playbackSpeedCollection, a3);
+    objc_storeStrong(&self->_playbackSpeedCollection, collection);
     playbackSpeedCollection = self->_playbackSpeedCollection;
     if (playbackSpeedCollection)
     {
@@ -162,7 +162,7 @@ uint64_t __71__AVMobilePlaybackRateMenuController__reconstructPlaybackRateMenuIt
 
     [(AVMobilePlaybackRateMenuController *)self _reconstructPlaybackRateMenuItems];
     [(AVMobilePlaybackRateMenuController *)self _updatePlaybackRateMenuIfNeeded];
-    v5 = v8;
+    collectionCopy = v8;
   }
 }
 
@@ -225,9 +225,9 @@ void __42__AVMobilePlaybackRateMenuController_init__block_invoke(uint64_t a1)
   [WeakRetained _updatePlaybackRateMenuIfNeeded];
 }
 
-+ (void)_loadPlaybackSpeedControlImageWithCompletionHandler:(id)a3
++ (void)_loadPlaybackSpeedControlImageWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (!AVMobilePlaybackSpeedControlImage)
   {
     v4 = MEMORY[0x1E69DCAB8];
@@ -236,7 +236,7 @@ void __42__AVMobilePlaybackRateMenuController_init__block_invoke(uint64_t a1)
     v6[1] = 3221225472;
     v6[2] = __90__AVMobilePlaybackRateMenuController__loadPlaybackSpeedControlImageWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E7207710;
-    v7 = v3;
+    v7 = handlerCopy;
     [v4 avkit_imageWithSymbolNamed:@"speedometer" font:v5 completion:v6];
   }
 }

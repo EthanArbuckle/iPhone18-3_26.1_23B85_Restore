@@ -1,16 +1,16 @@
 @interface AVFigRoutingContextInputContextCompletionContext
-- (AVFigRoutingContextInputContextCompletionContext)initWithCompletionHandler:(id)a3;
+- (AVFigRoutingContextInputContextCompletionContext)initWithCompletionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation AVFigRoutingContextInputContextCompletionContext
 
-- (AVFigRoutingContextInputContextCompletionContext)initWithCompletionHandler:(id)a3
+- (AVFigRoutingContextInputContextCompletionContext)initWithCompletionHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = AVFigRoutingContextInputContextCompletionContext;
   v4 = [(AVFigRoutingContextInputContextCompletionContext *)&v6 init];
-  v4->_completionHandler = [a3 copy];
+  v4->_completionHandler = [handler copy];
   return v4;
 }
 

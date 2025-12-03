@@ -2,110 +2,110 @@
 - (BOOL)_protectedDataAvailable;
 - (BOOL)hasFavoriteMailboxes;
 - (BOOL)willUseGeneratedSummaries;
-- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)a3 conversationSubscriptionProvider:(id)a4 favoritesReader:(id)a5 vipReader:(id)a6 blockedSenderReader:(id)a7 messageChangeManager:(id)a8 messagePersistence:(id)a9 hookRegistry:(id)a10 analyticsCollector:(id)a11;
-- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)a3 persistence:(id)a4 favoritesReader:(id)a5 analyticsCollector:(id)a6;
+- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)center conversationSubscriptionProvider:(id)provider favoritesReader:(id)reader vipReader:(id)vipReader blockedSenderReader:(id)senderReader messageChangeManager:(id)manager messagePersistence:(id)persistence hookRegistry:(id)self0 analyticsCollector:(id)self1;
+- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)center persistence:(id)persistence favoritesReader:(id)reader analyticsCollector:(id)collector;
 - (double)_postingDelayFromDefaults;
-- (double)_postingDelayIsMailForeground:(BOOL)a3;
-- (id)_coreAnaltyicsForSettings:(id)a3;
-- (id)_currentSettingsStringForSettingsByTopic:(id)a3;
-- (id)_libraryMessagesForMessageReferences:(id)a3;
+- (double)_postingDelayIsMailForeground:(BOOL)foreground;
+- (id)_coreAnaltyicsForSettings:(id)settings;
+- (id)_currentSettingsStringForSettingsByTopic:(id)topic;
+- (id)_libraryMessagesForMessageReferences:(id)references;
 - (id)coreAnalyticsPeriodicEvent;
 - (id)defaultTopicRequests;
-- (id)delayedNotificationsPresenter:(id)a3 userNotificationRequestForNotificationMessage:(id)a4 context:(id)a5;
-- (id)notificationRequestForNotificationMessage:(id)a3 destinations:(unint64_t)a4;
-- (id)notificationRequestForNotificationMessage:(id)a3 destinations:(unint64_t)a4 isAdd:(BOOL)a5 soundController:(id)a6;
-- (id)topicRequestsForAccounts:(id)a3;
-- (int64_t)_swipeActionForNotificationActionIdentifier:(id)a3;
-- (void)_applicationForegroundStateChanged:(id)a3;
+- (id)delayedNotificationsPresenter:(id)presenter userNotificationRequestForNotificationMessage:(id)message context:(id)context;
+- (id)notificationRequestForNotificationMessage:(id)message destinations:(unint64_t)destinations;
+- (id)notificationRequestForNotificationMessage:(id)message destinations:(unint64_t)destinations isAdd:(BOOL)add soundController:(id)controller;
+- (id)topicRequestsForAccounts:(id)accounts;
+- (int64_t)_swipeActionForNotificationActionIdentifier:(id)identifier;
+- (void)_applicationForegroundStateChanged:(id)changed;
 - (void)_loadCurrentSettingsAndNotifyObservers;
 - (void)_logCurrentSettings;
-- (void)_networkConfigurationChanged:(id)a3;
-- (void)_nts_invalidateClient:(id)a3 summaryClientsByReference:(id)a4;
+- (void)_networkConfigurationChanged:(id)changed;
+- (void)_nts_invalidateClient:(id)client summaryClientsByReference:(id)reference;
 - (void)_performCleanup;
-- (void)_performCleanupForNotifications:(id)a3;
-- (void)_performCleanupForRemindMeNotifications:(id)a3;
+- (void)_performCleanupForNotifications:(id)notifications;
+- (void)_performCleanupForRemindMeNotifications:(id)notifications;
 - (void)_performCleanupOnStartup;
-- (void)_persistenceDidUpdateSummaryForMessage:(id)a3;
+- (void)_persistenceDidUpdateSummaryForMessage:(id)message;
 - (void)_registerStateCapture;
 - (void)_setupPostingDelayDefaultsObserver;
-- (void)activeAccountsDidChangeForNotificationCenterObserver:(id)a3;
-- (void)addSettingsObserver:(id)a3;
-- (void)cancelSummaryRequestForMessageWithExternalReference:(id)a3;
-- (void)cancelSummaryRequestsForAccountWithID:(id)a3;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
-- (void)controller:(id)a3 messageTimerFired:(id)a4;
-- (void)conversationFlagsDidChangeForNotificationCenterObserver:(id)a3;
+- (void)activeAccountsDidChangeForNotificationCenterObserver:(id)observer;
+- (void)addSettingsObserver:(id)observer;
+- (void)cancelSummaryRequestForMessageWithExternalReference:(id)reference;
+- (void)cancelSummaryRequestsForAccountWithID:(id)d;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
+- (void)controller:(id)controller messageTimerFired:(id)fired;
+- (void)conversationFlagsDidChangeForNotificationCenterObserver:(id)observer;
 - (void)dealloc;
-- (void)delayedNotificationsPresenter:(id)a3 handleUserNotificationRequest:(id)a4 notificationMessage:(id)a5 context:(id)a6;
-- (void)handleDidFetchMessages:(id)a3 postImmediately:(BOOL)a4;
-- (void)notificationCenterObserver:(id)a3 didStopListeningForChangesForAccountIDs:(id)a4;
-- (void)notificationCenterObserver:(id)a3 messagesDeleted:(id)a4;
-- (void)notificationCenterObserver:(id)a3 messagesUpdated:(id)a4 flags:(id)a5;
-- (void)notificationCenterObserver:(id)a3 removedVIPs:(id)a4;
-- (void)notifyMessagesAdded:(id)a3 context:(id)a4;
+- (void)delayedNotificationsPresenter:(id)presenter handleUserNotificationRequest:(id)request notificationMessage:(id)message context:(id)context;
+- (void)handleDidFetchMessages:(id)messages postImmediately:(BOOL)immediately;
+- (void)notificationCenterObserver:(id)observer didStopListeningForChangesForAccountIDs:(id)ds;
+- (void)notificationCenterObserver:(id)observer messagesDeleted:(id)deleted;
+- (void)notificationCenterObserver:(id)observer messagesUpdated:(id)updated flags:(id)flags;
+- (void)notificationCenterObserver:(id)observer removedVIPs:(id)ps;
+- (void)notifyMessagesAdded:(id)added context:(id)context;
 - (void)nts_removeNotificationsForRemovedAccounts;
 - (void)nts_resetUserNotificationCenterTopics;
-- (void)persistenceDidChangeGlobalMessageID:(int64_t)a3 orConversationID:(int64_t)a4 message:(id)a5 generationWindow:(id)a6;
-- (void)persistenceDidChangeReadLaterDate:(id)a3 messages:(id)a4 changeIsRemote:(BOOL)a5 generationWindow:(id)a6;
+- (void)persistenceDidChangeGlobalMessageID:(int64_t)d orConversationID:(int64_t)iD message:(id)message generationWindow:(id)window;
+- (void)persistenceDidChangeReadLaterDate:(id)date messages:(id)messages changeIsRemote:(BOOL)remote generationWindow:(id)window;
 - (void)persistenceDidInitializeConversationSubscriptionProvider;
-- (void)persistenceDidUpdateProperties:(id)a3 message:(id)a4 generationWindow:(id)a5;
-- (void)processNotificationActionForMessageReferenceURL:(id)a3 actionIdentifier:(id)a4;
-- (void)removeNotificationsWithIdentifiers:(id)a3;
-- (void)removeSettingsObserver:(id)a3;
-- (void)requestSummaryForMessage:(id)a3;
-- (void)requestSummaryWithClient:(id)a3;
+- (void)persistenceDidUpdateProperties:(id)properties message:(id)message generationWindow:(id)window;
+- (void)processNotificationActionForMessageReferenceURL:(id)l actionIdentifier:(id)identifier;
+- (void)removeNotificationsWithIdentifiers:(id)identifiers;
+- (void)removeSettingsObserver:(id)observer;
+- (void)requestSummaryForMessage:(id)message;
+- (void)requestSummaryWithClient:(id)client;
 - (void)resetUserNotificationCenterTopics;
 - (void)start;
 - (void)startUpgradeIfNecessary;
 - (void)stop;
-- (void)updateMessage:(id)a3 withSummary:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)vipsChangedForNotificationCenterObserver:(id)a3;
+- (void)updateMessage:(id)message withSummary:(id)summary;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)vipsChangedForNotificationCenterObserver:(id)observer;
 @end
 
 @implementation MFUserNotificationCenterController
 
-- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)a3 persistence:(id)a4 favoritesReader:(id)a5 analyticsCollector:(id)a6
+- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)center persistence:(id)persistence favoritesReader:(id)reader analyticsCollector:(id)collector
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 conversationPersistence];
-  v20 = [v10 vipManager];
-  v19 = [v10 blockedSenderManager];
-  v18 = [v10 messageChangeManager];
-  v14 = [v10 messagePersistence];
-  v15 = [v10 hookRegistry];
-  v17 = [(MFUserNotificationCenterController *)self initWithSystemUserNotificationCenter:v21 conversationSubscriptionProvider:v13 favoritesReader:v11 vipReader:v20 blockedSenderReader:v19 messageChangeManager:v18 messagePersistence:v14 hookRegistry:v15 analyticsCollector:v12];
+  centerCopy = center;
+  persistenceCopy = persistence;
+  readerCopy = reader;
+  collectorCopy = collector;
+  conversationPersistence = [persistenceCopy conversationPersistence];
+  vipManager = [persistenceCopy vipManager];
+  blockedSenderManager = [persistenceCopy blockedSenderManager];
+  messageChangeManager = [persistenceCopy messageChangeManager];
+  messagePersistence = [persistenceCopy messagePersistence];
+  hookRegistry = [persistenceCopy hookRegistry];
+  v17 = [(MFUserNotificationCenterController *)self initWithSystemUserNotificationCenter:centerCopy conversationSubscriptionProvider:conversationPersistence favoritesReader:readerCopy vipReader:vipManager blockedSenderReader:blockedSenderManager messageChangeManager:messageChangeManager messagePersistence:messagePersistence hookRegistry:hookRegistry analyticsCollector:collectorCopy];
 
   return v17;
 }
 
-- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)a3 conversationSubscriptionProvider:(id)a4 favoritesReader:(id)a5 vipReader:(id)a6 blockedSenderReader:(id)a7 messageChangeManager:(id)a8 messagePersistence:(id)a9 hookRegistry:(id)a10 analyticsCollector:(id)a11
+- (MFUserNotificationCenterController)initWithSystemUserNotificationCenter:(id)center conversationSubscriptionProvider:(id)provider favoritesReader:(id)reader vipReader:(id)vipReader blockedSenderReader:(id)senderReader messageChangeManager:(id)manager messagePersistence:(id)persistence hookRegistry:(id)self0 analyticsCollector:(id)self1
 {
-  v65 = a3;
-  v64 = a4;
-  v63 = a5;
-  v62 = a6;
-  v67 = a7;
-  v61 = a8;
-  v60 = a9;
-  v59 = a10;
-  v66 = a11;
+  centerCopy = center;
+  providerCopy = provider;
+  readerCopy = reader;
+  vipReaderCopy = vipReader;
+  senderReaderCopy = senderReader;
+  managerCopy = manager;
+  persistenceCopy = persistence;
+  registryCopy = registry;
+  collectorCopy = collector;
   v68.receiver = self;
   v68.super_class = MFUserNotificationCenterController;
   v18 = [(MFUserNotificationCenterController *)&v68 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_messagePersistence, a9);
-    objc_storeStrong(&v19->_systemUserNotificationCenter, a3);
-    objc_storeStrong(&v19->_conversationSubscriptionProvider, a4);
-    objc_storeStrong(&v19->_favoritesReader, a5);
-    objc_storeStrong(&v19->_vipReader, a6);
-    objc_storeStrong(&v19->_hookRegistry, a10);
-    objc_storeStrong(&v19->_messageChangeManager, a8);
+    objc_storeStrong(&v18->_messagePersistence, persistence);
+    objc_storeStrong(&v19->_systemUserNotificationCenter, center);
+    objc_storeStrong(&v19->_conversationSubscriptionProvider, provider);
+    objc_storeStrong(&v19->_favoritesReader, reader);
+    objc_storeStrong(&v19->_vipReader, vipReader);
+    objc_storeStrong(&v19->_hookRegistry, registry);
+    objc_storeStrong(&v19->_messageChangeManager, manager);
     *&v19->_settingsLock._os_unfair_lock_opaque = 0;
     v20 = [[MFUserNotificationCenterObserver alloc] initWithVIPReader:v19->_vipReader favoritesReader:v19->_favoritesReader delegate:v19];
     observer = v19->_observer;
@@ -121,7 +121,7 @@
     queue = v19->_queue;
     v19->_queue = v26;
 
-    v28 = [[EDUserNotificationFilter alloc] initWithBlockedSenderReader:v67 vipReader:v19->_vipReader];
+    v28 = [[EDUserNotificationFilter alloc] initWithBlockedSenderReader:senderReaderCopy vipReader:v19->_vipReader];
     notificationFilter = v19->_notificationFilter;
     v19->_notificationFilter = v28;
 
@@ -167,9 +167,9 @@
     remindMeNotificationsNeedingSummaries = v19->_remindMeNotificationsNeedingSummaries;
     v19->_remindMeNotificationsNeedingSummaries = v48;
 
-    objc_storeStrong(&v19->_analyticsCollector, a11);
+    objc_storeStrong(&v19->_analyticsCollector, collector);
     v50 = [(EMCoreAnalyticsCollector *)v19->_analyticsCollector registerForLogEventsWithPeriodicDataProvider:v19];
-    v51 = [[MSUserNotificationCenterAnalyticsLogger alloc] initWithCoreAnalyticsCollector:v66];
+    v51 = [[MSUserNotificationCenterAnalyticsLogger alloc] initWithCoreAnalyticsCollector:collectorCopy];
     notificationAnalyticsLogger = v19->_notificationAnalyticsLogger;
     v19->_notificationAnalyticsLogger = v51;
 
@@ -212,8 +212,8 @@
 
   [(MFUserNotificationCenterController *)self startUpgradeIfNecessary];
   [(MFUserNotificationCenterController *)self _loadCurrentSettingsAndNotifyObservers];
-  v6 = [(MFUserNotificationCenterController *)self observer];
-  [v6 startObserving];
+  observer = [(MFUserNotificationCenterController *)self observer];
+  [observer startObserving];
 
   [(MFUserNotificationCenterController *)self _performCleanupOnStartup];
   v7 = +[NSNotificationCenter defaultCenter];
@@ -223,8 +223,8 @@
 
 - (void)stop
 {
-  v4 = [(MFUserNotificationCenterController *)self observer];
-  [v4 startObserving];
+  observer = [(MFUserNotificationCenterController *)self observer];
+  [observer startObserving];
 
   v5 = +[NSNotificationCenter defaultCenter];
   v3 = +[MFNetworkController sharedInstance];
@@ -247,12 +247,12 @@
 - (BOOL)willUseGeneratedSummaries
 {
   os_unfair_lock_lock(&self->_summarizationSettingLock);
-  v3 = [(MFUserNotificationCenterController *)self notificationSummarizationEnabled];
+  notificationSummarizationEnabled = [(MFUserNotificationCenterController *)self notificationSummarizationEnabled];
   os_unfair_lock_unlock(&self->_summarizationSettingLock);
   v4 = _os_feature_enabled_impl();
   if (v4)
   {
-    LOBYTE(v4) = EMIsGreymatterAvailable() & v3;
+    LOBYTE(v4) = EMIsGreymatterAvailable() & notificationSummarizationEnabled;
   }
 
   return v4;
@@ -261,22 +261,22 @@
 - (void)startUpgradeIfNecessary
 {
   v3 = [MFUserNotificationCenterUpgrader alloc];
-  v10 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
-  v4 = [(MFUserNotificationCenterController *)self conversationSubscriptionProvider];
-  v5 = [(MFUserNotificationCenterController *)self favoritesReader];
-  v6 = [(MFUserNotificationCenterController *)self vipReader];
-  v7 = [(MFUserNotificationCenterController *)self observer];
-  v8 = [v7 activeAccounts];
-  v9 = [(MFUserNotificationCenterUpgrader *)v3 initWithDelegate:self systemUserNotificationCenter:v10 conversationSubscriptionProvider:v4 favoritesReader:v5 vipReader:v6 activeAccounts:v8];
+  systemUserNotificationCenter = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
+  conversationSubscriptionProvider = [(MFUserNotificationCenterController *)self conversationSubscriptionProvider];
+  favoritesReader = [(MFUserNotificationCenterController *)self favoritesReader];
+  vipReader = [(MFUserNotificationCenterController *)self vipReader];
+  observer = [(MFUserNotificationCenterController *)self observer];
+  activeAccounts = [observer activeAccounts];
+  v9 = [(MFUserNotificationCenterUpgrader *)v3 initWithDelegate:self systemUserNotificationCenter:systemUserNotificationCenter conversationSubscriptionProvider:conversationSubscriptionProvider favoritesReader:favoritesReader vipReader:vipReader activeAccounts:activeAccounts];
   [(MFUserNotificationCenterController *)self setUpgrader:v9];
 
-  v11 = [(MFUserNotificationCenterController *)self upgrader];
-  [v11 performUpgradeIfNecessary];
+  upgrader = [(MFUserNotificationCenterController *)self upgrader];
+  [upgrader performUpgradeIfNecessary];
 }
 
-- (double)_postingDelayIsMailForeground:(BOOL)a3
+- (double)_postingDelayIsMailForeground:(BOOL)foreground
 {
-  if (a3 && ![(MFUserNotificationCenterController *)self willUseGeneratedSummaries])
+  if (foreground && ![(MFUserNotificationCenterController *)self willUseGeneratedSummaries])
   {
     return 2.0;
   }
@@ -285,13 +285,13 @@
   return result;
 }
 
-- (void)_applicationForegroundStateChanged:(id)a3
+- (void)_applicationForegroundStateChanged:(id)changed
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:EDClientStateForegroundStateDidChangeKeyIsForeground];
-  v5 = [v4 BOOLValue];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKeyedSubscript:EDClientStateForegroundStateDidChangeKeyIsForeground];
+  bOOLValue = [v4 BOOLValue];
 
-  [(MFUserNotificationCenterController *)self _updatePostingDelay:v5];
+  [(MFUserNotificationCenterController *)self _updatePostingDelay:bOOLValue];
 }
 
 - (double)_postingDelayFromDefaults
@@ -330,38 +330,38 @@
   objc_destroyWeak(&location);
 }
 
-- (void)notifyMessagesAdded:(id)a3 context:(id)a4
+- (void)notifyMessagesAdded:(id)added context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009B374;
   block[3] = &unk_1001573C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = addedCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = addedCopy;
   dispatch_async(queue, block);
 }
 
 - (void)nts_removeNotificationsForRemovedAccounts
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(MFUserNotificationCenterController *)self observer];
-  v4 = [v3 activeAccounts];
-  v5 = [v4 ef_map:&stru_100159D38];
+  observer = [(MFUserNotificationCenterController *)self observer];
+  activeAccounts = [observer activeAccounts];
+  v5 = [activeAccounts ef_map:&stru_100159D38];
 
-  v6 = [(MFSystemUserNotificationCenter *)self->_systemUserNotificationCenter deliveredNotifications];
+  deliveredNotifications = [(MFSystemUserNotificationCenter *)self->_systemUserNotificationCenter deliveredNotifications];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10009BC8C;
   v11[3] = &unk_100159D60;
   v7 = v5;
   v12 = v7;
-  v8 = [v6 ef_compactMap:v11];
+  v8 = [deliveredNotifications ef_compactMap:v11];
   if ([v8 count])
   {
     v9 = MSUserNotificationsLog();
@@ -377,23 +377,23 @@
   }
 }
 
-- (void)handleDidFetchMessages:(id)a3 postImmediately:(BOOL)a4
+- (void)handleDidFetchMessages:(id)messages postImmediately:(BOOL)immediately
 {
-  v21 = a3;
+  messagesCopy = messages;
   v6 = MSUserNotificationsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v21;
+    v29 = messagesCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "fetched messages = %{public}@", buf, 0xCu);
   }
 
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v21 count]);
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [messagesCopy count]);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v21;
+  obj = messagesCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -409,20 +409,20 @@
         }
 
         v11 = *(*(&v23 + 1) + 8 * v10);
-        v12 = [v11 notificationID];
-        v13 = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
-        [v13 schedulePendingNotificationMessage:v11 identifier:v12 context:@"add"];
+        notificationID = [v11 notificationID];
+        delayedNotificationPresenter = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
+        [delayedNotificationPresenter schedulePendingNotificationMessage:v11 identifier:notificationID context:@"add"];
 
-        v14 = [(MFUserNotificationCenterController *)self willUseGeneratedSummaries];
-        if (a4)
+        willUseGeneratedSummaries = [(MFUserNotificationCenterController *)self willUseGeneratedSummaries];
+        if (immediately)
         {
           goto LABEL_13;
         }
 
-        if (!v14)
+        if (!willUseGeneratedSummaries)
         {
-          v17 = [v11 summary];
-          v18 = v17 == 0;
+          summary = [v11 summary];
+          v18 = summary == 0;
 
           if (v18)
           {
@@ -432,13 +432,13 @@
           goto LABEL_13;
         }
 
-        v15 = [v11 libraryMessage];
-        v16 = [v15 generatedSummary];
-        if (v16)
+        libraryMessage = [v11 libraryMessage];
+        generatedSummary = [libraryMessage generatedSummary];
+        if (generatedSummary)
         {
 
 LABEL_13:
-          [v7 addObject:v12];
+          [v7 addObject:notificationID];
           goto LABEL_14;
         }
 
@@ -456,42 +456,42 @@ LABEL_14:
 
   if ([v7 count])
   {
-    v20 = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
-    [v20 immediatelyProcessPendingMessagesWithIdentifiers:v7];
+    delayedNotificationPresenter2 = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
+    [delayedNotificationPresenter2 immediatelyProcessPendingMessagesWithIdentifiers:v7];
   }
 }
 
-- (void)removeNotificationsWithIdentifiers:(id)a3
+- (void)removeNotificationsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = MSUserNotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v19 = [v4 count];
+    v19 = [identifiersCopy count];
     v20 = 2112;
-    v21 = v4;
+    v21 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing %lu notifications with identifiers: %@", buf, 0x16u);
   }
 
-  v6 = [(MFUserNotificationCenterController *)self notificationAnalyticsLogger];
-  [v6 notificationRemovedWithNotificationIDs:v4];
+  notificationAnalyticsLogger = [(MFUserNotificationCenterController *)self notificationAnalyticsLogger];
+  [notificationAnalyticsLogger notificationRemovedWithNotificationIDs:identifiersCopy];
 
-  v7 = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
-  [v7 removePendingMessagesWithIdentifiers:v4];
+  delayedNotificationPresenter = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
+  [delayedNotificationPresenter removePendingMessagesWithIdentifiers:identifiersCopy];
 
-  v8 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
-  [v8 removePendingNotificationRequestsWithIdentifiers:v4];
+  systemUserNotificationCenter = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
+  [systemUserNotificationCenter removePendingNotificationRequestsWithIdentifiers:identifiersCopy];
 
-  v9 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
-  [v9 removeDeliveredNotificationsWithIdentifiers:v4];
+  systemUserNotificationCenter2 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
+  [systemUserNotificationCenter2 removeDeliveredNotificationsWithIdentifiers:identifiersCopy];
 
   notificationsNeedingSummaries = self->_notificationsNeedingSummaries;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10009C33C;
   v16[3] = &unk_100159D88;
-  v11 = v4;
+  v11 = identifiersCopy;
   v17 = v11;
   [(EFLocked *)notificationsNeedingSummaries performWhileLocked:v16];
   remindMeNotificationsNeedingSummaries = self->_remindMeNotificationsNeedingSummaries;
@@ -504,11 +504,11 @@ LABEL_14:
   [(EFLocked *)remindMeNotificationsNeedingSummaries performWhileLocked:v14];
 }
 
-- (id)delayedNotificationsPresenter:(id)a3 userNotificationRequestForNotificationMessage:(id)a4 context:(id)a5
+- (id)delayedNotificationsPresenter:(id)presenter userNotificationRequestForNotificationMessage:(id)message context:(id)context
 {
-  v7 = a4;
-  v8 = [@"add" isEqual:a5];
-  if ([v7 isRemindMe] & 1) != 0 || (-[MFUserNotificationCenterController mailboxCutoffController](self, "mailboxCutoffController"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "libraryMessage"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isMessageAboveMailboxCutoff:", v10), v10, v9, (v11))
+  messageCopy = message;
+  v8 = [@"add" isEqual:context];
+  if ([messageCopy isRemindMe] & 1) != 0 || (-[MFUserNotificationCenterController mailboxCutoffController](self, "mailboxCutoffController"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(messageCopy, "libraryMessage"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isMessageAboveMailboxCutoff:", v10), v10, v9, (v11))
   {
     v12 = 0;
   }
@@ -519,54 +519,54 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v7;
+      v18 = messageCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notification is below cutoff. Sending directly to NotificationCener. %{public}@", &v17, 0xCu);
     }
 
     v12 = 4;
   }
 
-  v14 = [(MFUserNotificationCenterController *)self soundController];
-  v15 = [(MFUserNotificationCenterController *)self notificationRequestForNotificationMessage:v7 destinations:v12 isAdd:v8 soundController:v14];
+  soundController = [(MFUserNotificationCenterController *)self soundController];
+  v15 = [(MFUserNotificationCenterController *)self notificationRequestForNotificationMessage:messageCopy destinations:v12 isAdd:v8 soundController:soundController];
 
   return v15;
 }
 
-- (id)notificationRequestForNotificationMessage:(id)a3 destinations:(unint64_t)a4
+- (id)notificationRequestForNotificationMessage:(id)message destinations:(unint64_t)destinations
 {
-  v4 = [(MFUserNotificationCenterController *)self notificationRequestForNotificationMessage:a3 destinations:a4 isAdd:0 soundController:0];
+  v4 = [(MFUserNotificationCenterController *)self notificationRequestForNotificationMessage:message destinations:destinations isAdd:0 soundController:0];
 
   return v4;
 }
 
-- (id)notificationRequestForNotificationMessage:(id)a3 destinations:(unint64_t)a4 isAdd:(BOOL)a5 soundController:(id)a6
+- (id)notificationRequestForNotificationMessage:(id)message destinations:(unint64_t)destinations isAdd:(BOOL)add soundController:(id)controller
 {
-  v60 = a5;
-  v8 = a3;
-  v65 = a6;
-  v63 = [v8 notificationID];
+  addCopy = add;
+  messageCopy = message;
+  controllerCopy = controller;
+  notificationID = [messageCopy notificationID];
   v9 = MSUserNotificationsLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 ef_publicDescription];
+    ef_publicDescription = [messageCopy ef_publicDescription];
     *buf = 138543874;
-    v76 = v10;
+    v76 = ef_publicDescription;
     v77 = 2048;
-    v78 = a4;
+    destinationsCopy = destinations;
     v79 = 1026;
-    v80 = v60;
+    v80 = addCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "notificationRequestForNotificationMessage: %{public}@, destinations=%lu, isAdd=%{public}d", buf, 0x1Cu);
   }
 
   v11 = objc_alloc_init(NSMutableDictionary);
   nanoServer = self->_nanoServer;
-  v13 = [v8 account];
-  v14 = [v8 libraryMessage];
-  v15 = [v14 mailbox];
-  v16 = [v15 URLString];
-  v17 = [v8 status];
-  v18 = [v8 dateReceived];
-  v64 = [(MFNanoServer *)nanoServer nanoBulletinFlagsForMessageFromAccount:v13 mailboxURLString:v16 status:v17 dateReceived:v18];
+  account = [messageCopy account];
+  libraryMessage = [messageCopy libraryMessage];
+  mailbox = [libraryMessage mailbox];
+  uRLString = [mailbox URLString];
+  status = [messageCopy status];
+  dateReceived = [messageCopy dateReceived];
+  v64 = [(MFNanoServer *)nanoServer nanoBulletinFlagsForMessageFromAccount:account mailboxURLString:uRLString status:status dateReceived:dateReceived];
 
   if (v64)
   {
@@ -579,60 +579,60 @@ LABEL_14:
   }
 
   [v11 setObject:v19 forKeyedSubscript:MSUserNotificationContentKeyNanoFlags];
-  v20 = [v8 messageReference];
-  [v11 setObject:v20 forKeyedSubscript:MSUserNotificationContentKeyMessageReference];
+  messageReference = [messageCopy messageReference];
+  [v11 setObject:messageReference forKeyedSubscript:MSUserNotificationContentKeyMessageReference];
 
-  v21 = [v8 accountID];
-  [v11 setObject:v21 forKeyedSubscript:MSUserNotificationContentKeyAccountReference];
+  accountID = [messageCopy accountID];
+  [v11 setObject:accountID forKeyedSubscript:MSUserNotificationContentKeyAccountReference];
 
-  v22 = [v8 nanoMessageId];
-  [v11 setObject:v22 forKeyedSubscript:MSUserNotificationContentKeyNanoMessageId];
+  nanoMessageId = [messageCopy nanoMessageId];
+  [v11 setObject:nanoMessageId forKeyedSubscript:MSUserNotificationContentKeyNanoMessageId];
 
-  v58 = [v8 senderAddress];
+  senderAddress = [messageCopy senderAddress];
   [v11 setObject:? forKeyedSubscript:?];
-  v59 = [v8 suppressionContexts];
-  if (v59 && ([v8 isRemindMe] & 1) == 0)
+  suppressionContexts = [messageCopy suppressionContexts];
+  if (suppressionContexts && ([messageCopy isRemindMe] & 1) == 0)
   {
-    v23 = [v59 allObjects];
-    v24 = [v23 componentsJoinedByString:{@", "}];
+    allObjects = [suppressionContexts allObjects];
+    v24 = [allObjects componentsJoinedByString:{@", "}];
 
     [v11 setObject:v24 forKeyedSubscript:MSUserNotificationContentKeySuppressionContext];
   }
 
-  v62 = [v8 coalesceThreadID];
+  coalesceThreadID = [messageCopy coalesceThreadID];
   v25 = objc_alloc_init(UNMutableNotificationContent);
-  v26 = [v8 title];
-  [v25 setTitle:v26];
+  title = [messageCopy title];
+  [v25 setTitle:title];
 
-  v27 = [v8 subtitle];
-  [v25 setSubtitle:v27];
+  subtitle = [messageCopy subtitle];
+  [v25 setSubtitle:subtitle];
 
-  v28 = [v8 dateReceived];
-  if (!v28)
+  dateReceived2 = [messageCopy dateReceived];
+  if (!dateReceived2)
   {
     goto LABEL_12;
   }
 
-  v29 = [v8 dateReceived];
+  dateReceived3 = [messageCopy dateReceived];
   v30 = +[NSDate date];
-  v31 = [v29 ef_isEarlierThanDate:v30];
+  v31 = [dateReceived3 ef_isEarlierThanDate:v30];
 
   if (v31)
   {
-    v32 = [v8 dateReceived];
-    [v25 setDate:v32];
+    dateReceived4 = [messageCopy dateReceived];
+    [v25 setDate:dateReceived4];
   }
 
   else
   {
 LABEL_12:
-    v32 = +[NSDate date];
-    [v25 setDate:v32];
+    dateReceived4 = +[NSDate date];
+    [v25 setDate:dateReceived4];
   }
 
   [v25 setCategoryIdentifier:@"mail-message"];
-  v33 = [v8 messageReference];
-  v34 = [NSURL URLWithString:v33];
+  messageReference2 = [messageCopy messageReference];
+  v34 = [NSURL URLWithString:messageReference2];
   [v25 setDefaultActionURL:v34];
 
   v74[0] = MSUserNotificationCenterTopicVIP;
@@ -641,39 +641,39 @@ LABEL_12:
   v74[3] = MSUserNotificationCenterTopicPrimaryMessageBadges;
   v74[4] = MSUserNotificationCenterTopicAllMessages;
   v57 = [NSArray arrayWithObjects:v74 count:5];
-  v56 = [(MFSystemUserNotificationCenter *)self->_systemUserNotificationCenter notificationSettingsForTopics];
-  v35 = [v8 topicIdentifiers];
+  notificationSettingsForTopics = [(MFSystemUserNotificationCenter *)self->_systemUserNotificationCenter notificationSettingsForTopics];
+  topicIdentifiers = [messageCopy topicIdentifiers];
   v71[0] = _NSConcreteStackBlock;
   v71[1] = 3221225472;
   v71[2] = sub_10009D118;
   v71[3] = &unk_100159DD8;
-  v36 = v56;
+  v36 = notificationSettingsForTopics;
   v72 = v36;
   v37 = v57;
   v73 = v37;
-  v38 = [v35 ef_filter:v71];
+  v38 = [topicIdentifiers ef_filter:v71];
   [v25 setTopicIdentifiers:v38];
 
-  v39 = [v8 accountID];
-  [v25 setFilterCriteria:v39];
+  accountID2 = [messageCopy accountID];
+  [v25 setFilterCriteria:accountID2];
 
-  if ([v8 isRemindMe])
+  if ([messageCopy isRemindMe])
   {
-    v40 = [v8 remindMeDate];
-    [v25 setDate:v40];
+    remindMeDate = [messageCopy remindMeDate];
+    [v25 setDate:remindMeDate];
   }
 
-  v41 = [v8 summary];
-  if ([v41 length])
+  summary = [messageCopy summary];
+  if ([summary length])
   {
-    [v25 setBody:v41];
+    [v25 setBody:summary];
     v42 = @"Summary added";
 LABEL_19:
     v44 = 1;
     goto LABEL_20;
   }
 
-  if (v41)
+  if (summary)
   {
     v43 = MFLookupLocalizedString();
     [v25 setBody:v43];
@@ -682,7 +682,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ([v8 isRemindMe])
+  if ([messageCopy isRemindMe])
   {
     +[EDRemindMeNotificationController localizedRemindMeNotificationTitle];
   }
@@ -695,9 +695,9 @@ LABEL_19:
   [v25 setBody:v53];
 
   [v11 setObject:&__kCFBooleanTrue forKeyedSubscript:MSUserNotificationContentKeyMissingSummary];
-  v54 = [v8 isRemindMe];
+  isRemindMe = [messageCopy isRemindMe];
   v55 = @"Summary loading";
-  if (v54)
+  if (isRemindMe)
   {
     v55 = @"Summary for RemindMe will load on unlock";
   }
@@ -713,7 +713,7 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Notification Request For Message: %{public}@", buf, 0xCu);
   }
 
-  if ([v8 isRemindMe])
+  if ([messageCopy isRemindMe])
   {
     remindMeNotificationsNeedingSummaries = self->_remindMeNotificationsNeedingSummaries;
     v47 = v69;
@@ -722,7 +722,7 @@ LABEL_20:
     v69[2] = sub_10009D1AC;
     v69[3] = &unk_100159E00;
     v70 = v44;
-    v69[4] = v8;
+    v69[4] = messageCopy;
     [(EFLocked *)remindMeNotificationsNeedingSummaries performWhileLocked:v69];
   }
 
@@ -735,24 +735,24 @@ LABEL_20:
     v66[2] = sub_10009D318;
     v66[3] = &unk_100159E28;
     v67 = v44;
-    v66[4] = v8;
-    v68 = v60;
+    v66[4] = messageCopy;
+    v68 = addCopy;
     [(EFLocked *)notificationsNeedingSummaries performWhileLocked:v66];
   }
 
-  [v25 setThreadIdentifier:v62];
+  [v25 setThreadIdentifier:coalesceThreadID];
   [v25 setUserInfo:v11];
-  v49 = [v8 isRemindMe] ^ 1;
-  if (!v65)
+  v49 = [messageCopy isRemindMe] ^ 1;
+  if (!controllerCopy)
   {
     v49 = 1;
   }
 
   if (v49)
   {
-    if (v65 && v60)
+    if (controllerCopy && addCopy)
     {
-      [v65 addSoundForAccountIfNecessaryForNotificationContent:v25 notificationMessage:v8];
+      [controllerCopy addSoundForAccountIfNecessaryForNotificationContent:v25 notificationMessage:messageCopy];
     }
   }
 
@@ -764,50 +764,50 @@ LABEL_20:
       sub_1000D51AC(v50);
     }
 
-    [v65 addRemindMeSoundForNotificationContent:v25];
+    [controllerCopy addRemindMeSoundForNotificationContent:v25];
   }
 
-  if (a4)
+  if (destinations)
   {
-    [UNNotificationRequest requestWithIdentifier:v63 content:v25 trigger:0 destinations:?];
+    [UNNotificationRequest requestWithIdentifier:notificationID content:v25 trigger:0 destinations:?];
   }
 
   else
   {
-    [UNNotificationRequest requestWithIdentifier:v63 content:v25 trigger:0];
+    [UNNotificationRequest requestWithIdentifier:notificationID content:v25 trigger:0];
   }
   v51 = ;
 
   return v51;
 }
 
-- (void)delayedNotificationsPresenter:(id)a3 handleUserNotificationRequest:(id)a4 notificationMessage:(id)a5 context:(id)a6
+- (void)delayedNotificationsPresenter:(id)presenter handleUserNotificationRequest:(id)request notificationMessage:(id)message context:(id)context
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [@"add" isEqual:v11];
-  v13 = [@"modify" isEqual:v11];
-  v14 = [v9 content];
-  v15 = [v14 userInfo];
-  v16 = [v15 objectForKeyedSubscript:MSUserNotificationContentKeyMissingSummary];
-  v17 = [v16 BOOLValue];
+  requestCopy = request;
+  messageCopy = message;
+  contextCopy = context;
+  v12 = [@"add" isEqual:contextCopy];
+  v13 = [@"modify" isEqual:contextCopy];
+  content = [requestCopy content];
+  userInfo = [content userInfo];
+  v16 = [userInfo objectForKeyedSubscript:MSUserNotificationContentKeyMissingSummary];
+  bOOLValue = [v16 BOOLValue];
 
-  v18 = [v10 notificationID];
+  notificationID = [messageCopy notificationID];
   objc_initWeak(&location, self);
   if (v12)
   {
-    v19 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
+    systemUserNotificationCenter = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10009D7F8;
     v29[3] = &unk_100159E50;
     v20 = &v32;
     objc_copyWeak(&v32, &location);
-    v30 = v9;
-    v33 = v17 ^ 1;
-    v31 = v18;
-    [v19 addNotificationRequest:v30 withCompletionHandler:v29];
+    v30 = requestCopy;
+    v33 = bOOLValue ^ 1;
+    v31 = notificationID;
+    [systemUserNotificationCenter addNotificationRequest:v30 withCompletionHandler:v29];
     v21 = &v30;
     v22 = &v31;
 LABEL_5:
@@ -818,18 +818,18 @@ LABEL_5:
 
   if (v13)
   {
-    v19 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
-    v23 = [v9 content];
+    systemUserNotificationCenter = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
+    content2 = [requestCopy content];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10009DA5C;
     v24[3] = &unk_100159E50;
     v20 = &v27;
     objc_copyWeak(&v27, &location);
-    v25 = v9;
-    v28 = v17 ^ 1;
-    v26 = v18;
-    [v19 replaceContentForRequestWithIdentifier:v26 replacementContent:v23 completionHandler:v24];
+    v25 = requestCopy;
+    v28 = bOOLValue ^ 1;
+    v26 = notificationID;
+    [systemUserNotificationCenter replaceContentForRequestWithIdentifier:v26 replacementContent:content2 completionHandler:v24];
     v21 = &v25;
     v22 = &v26;
 
@@ -842,36 +842,36 @@ LABEL_6:
 
 - (void)resetUserNotificationCenterTopics
 {
-  v3 = [(MFUserNotificationCenterController *)self queue];
+  queue = [(MFUserNotificationCenterController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009DD20;
   block[3] = &unk_100156400;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)nts_resetUserNotificationCenterTopics
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(MFUserNotificationCenterController *)self observer];
-  v4 = [v3 activeAccounts];
+  observer = [(MFUserNotificationCenterController *)self observer];
+  activeAccounts = [observer activeAccounts];
 
   v5 = MSUserNotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v4 count];
+    v16 = [activeAccounts count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Generating new topics based on %lu active accounts", buf, 0xCu);
   }
 
-  v6 = [NSSet setWithArray:v4];
+  v6 = [NSSet setWithArray:activeAccounts];
   v7 = [(MFUserNotificationCenterController *)self topicRequestsForAccounts:v6];
 
-  v8 = [(MFUserNotificationCenterController *)self defaultTopicRequests];
-  if ([v7 count] && objc_msgSend(v8, "count"))
+  defaultTopicRequests = [(MFUserNotificationCenterController *)self defaultTopicRequests];
+  if ([v7 count] && objc_msgSend(defaultTopicRequests, "count"))
   {
-    v9 = [v7 setByAddingObjectsFromSet:v8];
+    v9 = [v7 setByAddingObjectsFromSet:defaultTopicRequests];
 
     v7 = v9;
   }
@@ -884,19 +884,19 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting new NotificationCenter topics: %@", buf, 0xCu);
   }
 
-  v11 = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
+  systemUserNotificationCenter = [(MFUserNotificationCenterController *)self systemUserNotificationCenter];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10009DFC8;
   v13[3] = &unk_100156918;
   v12 = v7;
   v14 = v12;
-  [v11 setNotificationTopics:v12 withCompletionHandler:v13];
+  [systemUserNotificationCenter setNotificationTopics:v12 withCompletionHandler:v13];
 }
 
-- (id)topicRequestsForAccounts:(id)a3
+- (id)topicRequestsForAccounts:(id)accounts
 {
-  v3 = [a3 ef_compactMap:&stru_100159E90];
+  v3 = [accounts ef_compactMap:&stru_100159E90];
 
   return v3;
 }
@@ -904,10 +904,10 @@ LABEL_6:
 - (id)defaultTopicRequests
 {
   v3 = objc_alloc_init(NSMutableSet);
-  v4 = [(MFUserNotificationCenterController *)self vipReader];
-  v5 = [v4 hasVIPs];
+  vipReader = [(MFUserNotificationCenterController *)self vipReader];
+  hasVIPs = [vipReader hasVIPs];
 
-  if (v5)
+  if (hasVIPs)
   {
     v6 = MFLookupLocalizedString();
     v7 = [UNNotificationTopicRequest topicRequestWithIdentifier:MSUserNotificationCenterTopicVIP displayName:v6 priority:3 sortIdentifier:@"vip" supportedOptions:5 enabledOptions:5];
@@ -921,10 +921,10 @@ LABEL_6:
     [v3 addObject:v9];
   }
 
-  v10 = [(MFUserNotificationCenterController *)self conversationSubscriptionProvider];
-  v11 = [v10 hasSubscribedConversations];
+  conversationSubscriptionProvider = [(MFUserNotificationCenterController *)self conversationSubscriptionProvider];
+  hasSubscribedConversations = [conversationSubscriptionProvider hasSubscribedConversations];
 
-  if (v11)
+  if (hasSubscribedConversations)
   {
     v12 = MFLookupLocalizedString();
     v13 = [UNNotificationTopicRequest topicRequestWithIdentifier:MSUserNotificationCenterTopicNotifiedThreads displayName:v12 priority:4 sortIdentifier:@"Thread" supportedOptions:5 enabledOptions:5];
@@ -955,38 +955,38 @@ LABEL_6:
 
 - (BOOL)hasFavoriteMailboxes
 {
-  v2 = [(MFUserNotificationCenterController *)self favoritesReader];
-  v3 = [v2 hasFavoriteMailboxes];
+  favoritesReader = [(MFUserNotificationCenterController *)self favoritesReader];
+  hasFavoriteMailboxes = [favoritesReader hasFavoriteMailboxes];
 
-  return v3;
+  return hasFavoriteMailboxes;
 }
 
-- (void)notificationCenterObserver:(id)a3 messagesUpdated:(id)a4 flags:(id)a5
+- (void)notificationCenterObserver:(id)observer messagesUpdated:(id)updated flags:(id)flags
 {
-  v7 = a4;
-  v8 = a5;
+  updatedCopy = updated;
+  flagsCopy = flags;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009E740;
   block[3] = &unk_1001573C0;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = updatedCopy;
+  v14 = flagsCopy;
+  v10 = flagsCopy;
+  v11 = updatedCopy;
   dispatch_async(queue, block);
 }
 
-- (void)notificationCenterObserver:(id)a3 messagesDeleted:(id)a4
+- (void)notificationCenterObserver:(id)observer messagesDeleted:(id)deleted
 {
-  v5 = a4;
+  deletedCopy = deleted;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10009EC04;
   v9[3] = &unk_100158500;
   v9[4] = self;
-  v6 = [v5 ef_compactMap:v9];
+  v6 = [deletedCopy ef_compactMap:v9];
   v7 = MSUserNotificationsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1001,7 +1001,7 @@ LABEL_6:
   [(MFUserNotificationCenterController *)self removeNotificationsWithIdentifiers:v6];
 }
 
-- (void)vipsChangedForNotificationCenterObserver:(id)a3
+- (void)vipsChangedForNotificationCenterObserver:(id)observer
 {
   v4 = MSUserNotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1013,9 +1013,9 @@ LABEL_6:
   [(MFUserNotificationCenterController *)self resetUserNotificationCenterTopics];
 }
 
-- (void)notificationCenterObserver:(id)a3 removedVIPs:(id)a4
+- (void)notificationCenterObserver:(id)observer removedVIPs:(id)ps
 {
-  v5 = [(MFUserNotificationCenterController *)self queue:a3];
+  v5 = [(MFUserNotificationCenterController *)self queue:observer];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009ED90;
@@ -1024,7 +1024,7 @@ LABEL_6:
   dispatch_async(v5, block);
 }
 
-- (void)conversationFlagsDidChangeForNotificationCenterObserver:(id)a3
+- (void)conversationFlagsDidChangeForNotificationCenterObserver:(id)observer
 {
   v4 = MSUserNotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1036,25 +1036,25 @@ LABEL_6:
   [(MFUserNotificationCenterController *)self resetUserNotificationCenterTopics];
 }
 
-- (void)notificationCenterObserver:(id)a3 didStopListeningForChangesForAccountIDs:(id)a4
+- (void)notificationCenterObserver:(id)observer didStopListeningForChangesForAccountIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v6 = MSUserNotificationsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v5;
+    v18 = dsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "No longer listenting for changes for accounts: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
-  [v7 removePendingMessagesWithAccountIdentifiers:v5];
+  delayedNotificationPresenter = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
+  [delayedNotificationPresenter removePendingMessagesWithAccountIdentifiers:dsCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v8 = v5;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
@@ -1081,7 +1081,7 @@ LABEL_6:
   }
 }
 
-- (void)activeAccountsDidChangeForNotificationCenterObserver:(id)a3
+- (void)activeAccountsDidChangeForNotificationCenterObserver:(id)observer
 {
   v4 = MSUserNotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1099,19 +1099,19 @@ LABEL_6:
   dispatch_async(queue, block);
 }
 
-- (void)controller:(id)a3 messageTimerFired:(id)a4
+- (void)controller:(id)controller messageTimerFired:(id)fired
 {
-  v5 = a4;
+  firedCopy = fired;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = firedCopy;
     v7 = MSUserNotificationsLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 ef_publicDescription];
+      ef_publicDescription = [v6 ef_publicDescription];
       *buf = 138543362;
-      v14 = v8;
+      v14 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Remind Me: messageTimerFired message:%{public}@", buf, 0xCu);
     }
 
@@ -1126,36 +1126,36 @@ LABEL_6:
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = [EFProcessTransaction transactionWithDescription:@"Handle Notification Action Transaction"];
-  v10 = [v7 notification];
-  v11 = [v7 actionIdentifier];
+  notification = [responseCopy notification];
+  actionIdentifier = [responseCopy actionIdentifier];
   v12 = MSUserNotificationsLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138543874;
-    v27 = v7;
+    v27 = responseCopy;
     v28 = 2114;
-    v29 = v10;
+    v29 = notification;
     v30 = 2114;
-    v31 = v11;
+    v31 = actionIdentifier;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Did receive response %{public}@ for notification: %{public}@ and action: %{public}@", &v26, 0x20u);
   }
 
-  v13 = [v7 notification];
-  v14 = [v13 request];
-  v15 = [v14 content];
-  v16 = [v15 userInfo];
+  notification2 = [responseCopy notification];
+  request = [notification2 request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v17 = [v16 objectForKeyedSubscript:MSUserNotificationContentKeyMessageReference];
+  v17 = [userInfo objectForKeyedSubscript:MSUserNotificationContentKeyMessageReference];
   v18 = [NSURL URLWithString:v17];
 
   if (v18)
   {
-    [(MFUserNotificationCenterController *)self processNotificationActionForMessageReferenceURL:v18 actionIdentifier:v11];
+    [(MFUserNotificationCenterController *)self processNotificationActionForMessageReferenceURL:v18 actionIdentifier:actionIdentifier];
   }
 
   else
@@ -1163,38 +1163,38 @@ LABEL_6:
     v19 = MSUserNotificationsLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_1000D52CC(v7, v19, v20, v21, v22, v23, v24, v25);
+      sub_1000D52CC(responseCopy, v19, v20, v21, v22, v23, v24, v25);
     }
   }
 
   [v9 invalidate];
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)addSettingsObserver:(id)a3
+- (void)addSettingsObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_settingsLock);
-  v4 = [(MFUserNotificationCenterController *)self settingsObservers];
-  [v4 addObject:v6];
+  settingsObservers = [(MFUserNotificationCenterController *)self settingsObservers];
+  [settingsObservers addObject:observerCopy];
 
-  v5 = [(MFUserNotificationCenterController *)self currentSettingsByTopic];
+  currentSettingsByTopic = [(MFUserNotificationCenterController *)self currentSettingsByTopic];
   os_unfair_lock_unlock(&self->_settingsLock);
-  if (v5)
+  if (currentSettingsByTopic)
   {
-    [v6 userNotificationCenterSettingsDidChange:v5];
+    [observerCopy userNotificationCenterSettingsDidChange:currentSettingsByTopic];
   }
 }
 
-- (void)removeSettingsObserver:(id)a3
+- (void)removeSettingsObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_settingsLock);
-  v4 = [(MFUserNotificationCenterController *)self settingsObservers];
-  [v4 removeObject:v5];
+  settingsObservers = [(MFUserNotificationCenterController *)self settingsObservers];
+  [settingsObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_settingsLock);
 }
@@ -1236,16 +1236,16 @@ LABEL_6:
   }
 }
 
-- (id)_currentSettingsStringForSettingsByTopic:(id)a3
+- (id)_currentSettingsStringForSettingsByTopic:(id)topic
 {
-  v3 = a3;
+  topicCopy = topic;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000A0290;
   v6[3] = &unk_100159F48;
   v4 = [[NSMutableString alloc] initWithString:@"User Notification Settings\n"];
   v7 = v4;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [topicCopy enumerateKeysAndObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -1260,7 +1260,7 @@ LABEL_6:
   return v4;
 }
 
-- (id)_coreAnaltyicsForSettings:(id)a3
+- (id)_coreAnaltyicsForSettings:(id)settings
 {
   v103 = 0;
   v104 = &v103;
@@ -1367,7 +1367,7 @@ LABEL_6:
   v26[22] = &v95;
   v26[23] = &v91;
   v26[24] = &v87;
-  [a3 enumerateKeysAndObjectsUsingBlock:v26];
+  [settings enumerateKeysAndObjectsUsingBlock:v26];
   v107[0] = @"totalAccounts";
   v108[0] = [NSNumber numberWithInteger:v104[3]];
   v107[1] = @"accountsWithAlertsEnabled";
@@ -1455,26 +1455,26 @@ LABEL_6:
   return v13;
 }
 
-- (void)processNotificationActionForMessageReferenceURL:(id)a3 actionIdentifier:(id)a4
+- (void)processNotificationActionForMessageReferenceURL:(id)l actionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFUserNotificationCenterController *)self _swipeActionForNotificationActionIdentifier:v7];
-  v9 = [(MFUserNotificationCenterController *)self messagePersistence];
-  v10 = [v9 messageObjectIDForURL:v6];
+  lCopy = l;
+  identifierCopy = identifier;
+  v8 = [(MFUserNotificationCenterController *)self _swipeActionForNotificationActionIdentifier:identifierCopy];
+  messagePersistence = [(MFUserNotificationCenterController *)self messagePersistence];
+  v10 = [messagePersistence messageObjectIDForURL:lCopy];
 
-  v11 = [(MFUserNotificationCenterController *)self messagePersistence];
+  messagePersistence2 = [(MFUserNotificationCenterController *)self messagePersistence];
   v47 = v10;
   v12 = [NSArray arrayWithObjects:&v47 count:1];
-  v13 = [v11 persistedMessagesForMessageObjectIDs:v12 requireProtectedData:0 temporarilyUnavailableMessageObjectIDs:0];
+  v13 = [messagePersistence2 persistedMessagesForMessageObjectIDs:v12 requireProtectedData:0 temporarilyUnavailableMessageObjectIDs:0];
 
   if ([v13 count])
   {
     if ((v8 & 0xFFFFFFFFFFFFFFFELL) == 8)
     {
-      v14 = [v13 firstObject];
-      v15 = [v14 account];
-      v16 = v15;
+      firstObject = [v13 firstObject];
+      account = [firstObject account];
+      v16 = account;
       if (v8 == 9)
       {
         v17 = 2;
@@ -1485,10 +1485,10 @@ LABEL_6:
         v17 = 3;
       }
 
-      v18 = [v15 mailboxForType:v17];
-      v19 = [(MFUserNotificationCenterController *)self messageChangeManager];
+      v18 = [account mailboxForType:v17];
+      messageChangeManager = [(MFUserNotificationCenterController *)self messageChangeManager];
       v20 = [v18 URL];
-      v21 = [v19 moveMessages:v13 destinationMailboxURL:v20 userInitiated:0];
+      v21 = [messageChangeManager moveMessages:v13 destinationMailboxURL:v20 userInitiated:0];
 
       v22 = MSUserNotificationsLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1497,7 +1497,7 @@ LABEL_6:
         v43 = 138543618;
         v44 = v23;
         v45 = 2114;
-        v46 = v6;
+        v46 = lCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "process notification %{public}@ action for messageID: %{public}@.", &v43, 0x16u);
       }
 
@@ -1506,68 +1506,68 @@ LABEL_6:
 
     if (v8 == 6)
     {
-      v34 = [(MFUserNotificationCenterController *)self messageChangeManager];
+      messageChangeManager2 = [(MFUserNotificationCenterController *)self messageChangeManager];
       v35 = +[ECMessageFlagChange setFlagged];
-      v36 = [v34 applyFlagChange:v35 toMessages:v13];
+      v36 = [messageChangeManager2 applyFlagChange:v35 toMessages:v13];
 
-      v14 = MSUserNotificationsLog();
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      firstObject = MSUserNotificationsLog();
+      if (!os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
       }
 
       v43 = 138543362;
-      v44 = v6;
+      v44 = lCopy;
       v33 = "process notification flag action for messageID: %{public}@.";
       goto LABEL_17;
     }
 
     if (v8 == 2)
     {
-      v30 = [(MFUserNotificationCenterController *)self messageChangeManager];
+      messageChangeManager3 = [(MFUserNotificationCenterController *)self messageChangeManager];
       v31 = +[ECMessageFlagChange setRead];
-      v32 = [v30 applyFlagChange:v31 toMessages:v13];
+      v32 = [messageChangeManager3 applyFlagChange:v31 toMessages:v13];
 
-      v14 = MSUserNotificationsLog();
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      firstObject = MSUserNotificationsLog();
+      if (!os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
       }
 
       v43 = 138543362;
-      v44 = v6;
+      v44 = lCopy;
       v33 = "process notification mark as read action for messageID: %{public}@.";
 LABEL_17:
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v33, &v43, 0xCu);
+      _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_DEFAULT, v33, &v43, 0xCu);
       goto LABEL_20;
     }
 
-    v14 = MSUserNotificationsLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    firstObject = MSUserNotificationsLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      sub_1000D5338(v7, v14, v37, v38, v39, v40, v41, v42);
+      sub_1000D5338(identifierCopy, firstObject, v37, v38, v39, v40, v41, v42);
     }
   }
 
   else
   {
-    v14 = MSUserNotificationsLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    firstObject = MSUserNotificationsLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      sub_1000D53A4(v6, v14, v24, v25, v26, v27, v28, v29);
+      sub_1000D53A4(lCopy, firstObject, v24, v25, v26, v27, v28, v29);
     }
   }
 
 LABEL_20:
 }
 
-- (int64_t)_swipeActionForNotificationActionIdentifier:(id)a3
+- (int64_t)_swipeActionForNotificationActionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = MSMailNotificationActionIdentifierPrefix;
-  if ([v3 hasPrefix:MSMailNotificationActionIdentifierPrefix])
+  if ([identifierCopy hasPrefix:MSMailNotificationActionIdentifierPrefix])
   {
-    v5 = [v3 substringFromIndex:{objc_msgSend(v4, "length")}];
+    v5 = [identifierCopy substringFromIndex:{objc_msgSend(v4, "length")}];
     v6 = [MFTriageActionUtilities triageActionForActionKey:v5];
   }
 
@@ -1591,25 +1591,25 @@ LABEL_20:
   [(MFUserNotificationCenterController *)self resetUserNotificationCenterTopics];
 }
 
-- (void)persistenceDidUpdateProperties:(id)a3 message:(id)a4 generationWindow:(id)a5
+- (void)persistenceDidUpdateProperties:(id)properties message:(id)message generationWindow:(id)window
 {
-  v7 = a3;
-  v8 = a4;
+  propertiesCopy = properties;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 containsObject:ECMessagePropertySummary];
-    v10 = [v7 containsObject:EDPersistedMessagePropertyGeneratedSummary];
+    v9 = [propertiesCopy containsObject:ECMessagePropertySummary];
+    v10 = [propertiesCopy containsObject:EDPersistedMessagePropertyGeneratedSummary];
     v11 = v10;
     if (v9)
     {
-      [(MFUserNotificationCenterController *)self _persistenceDidUpdateSummaryForMessage:v8];
+      [(MFUserNotificationCenterController *)self _persistenceDidUpdateSummaryForMessage:messageCopy];
       if ((v11 & 1) == 0)
       {
 LABEL_9:
-        v17 = [(MFUserNotificationCenterController *)self notificationAnalyticsLogger];
-        v18 = [v8 notificationID];
-        [v17 messageSummaryAddedForNotificationID:v18 isGeneratedSummary:v11];
+        notificationAnalyticsLogger = [(MFUserNotificationCenterController *)self notificationAnalyticsLogger];
+        notificationID = [messageCopy notificationID];
+        [notificationAnalyticsLogger messageSummaryAddedForNotificationID:notificationID isGeneratedSummary:v11];
 
         goto LABEL_10;
       }
@@ -1618,17 +1618,17 @@ LABEL_6:
       v12 = MSUserNotificationsLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v8 notificationID];
+        notificationID2 = [messageCopy notificationID];
         *buf = 138543362;
-        v21 = v13;
+        v21 = notificationID2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Generated summary updated for %{public}@", buf, 0xCu);
       }
 
-      v14 = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
-      v15 = [v8 notificationID];
-      v19 = v15;
+      delayedNotificationPresenter = [(MFUserNotificationCenterController *)self delayedNotificationPresenter];
+      notificationID3 = [messageCopy notificationID];
+      v19 = notificationID3;
       v16 = [NSArray arrayWithObjects:&v19 count:1];
-      [v14 immediatelyProcessPendingMessagesWithIdentifiers:v16];
+      [delayedNotificationPresenter immediatelyProcessPendingMessagesWithIdentifiers:v16];
 
       goto LABEL_9;
     }
@@ -1642,10 +1642,10 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)_persistenceDidUpdateSummaryForMessage:(id)a3
+- (void)_persistenceDidUpdateSummaryForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 notificationID];
+  messageCopy = message;
+  notificationID = [messageCopy notificationID];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1656,7 +1656,7 @@ LABEL_10:
   v21[2] = sub_1000A1C54;
   v21[3] = &unk_100159F98;
   v23 = &v24;
-  v7 = v5;
+  v7 = notificationID;
   v22 = v7;
   [(EFLocked *)notificationsNeedingSummaries performWhileLocked:v21];
   summaryClientsByReference = self->_summaryClientsByReference;
@@ -1664,7 +1664,7 @@ LABEL_10:
   v18[1] = 3221225472;
   v18[2] = sub_1000A1D40;
   v18[3] = &unk_100159FC0;
-  v9 = v4;
+  v9 = messageCopy;
   v19 = v9;
   v20 = &v24;
   [(EFLocked *)summaryClientsByReference performWhileLocked:v18];
@@ -1673,13 +1673,13 @@ LABEL_10:
     v10 = MSUserNotificationsLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 summary];
-      v12 = [v11 length];
-      v13 = [v9 ef_publicDescription];
+      summary = [v9 summary];
+      v12 = [summary length];
+      ef_publicDescription = [v9 ef_publicDescription];
       *buf = 67109378;
       v30 = v12;
       v31 = 2114;
-      v32 = v13;
+      v32 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Persistence did update summary=%u, message=%{public}@", buf, 0x12u);
     }
 
@@ -1693,13 +1693,13 @@ LABEL_10:
     v14 = MSUserNotificationsLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 summary];
-      v16 = [v15 length];
-      v17 = [v9 ef_publicDescription];
+      summary2 = [v9 summary];
+      v16 = [summary2 length];
+      ef_publicDescription2 = [v9 ef_publicDescription];
       *buf = 67109378;
       v30 = v16;
       v31 = 2114;
-      v32 = v17;
+      v32 = ef_publicDescription2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Persistence did update summary=%u, message=%{public}@, but there were no notifications needing summaries", buf, 0x12u);
     }
   }
@@ -1707,24 +1707,24 @@ LABEL_10:
   _Block_object_dispose(&v24, 8);
 }
 
-- (void)persistenceDidChangeGlobalMessageID:(int64_t)a3 orConversationID:(int64_t)a4 message:(id)a5 generationWindow:(id)a6
+- (void)persistenceDidChangeGlobalMessageID:(int64_t)d orConversationID:(int64_t)iD message:(id)message generationWindow:(id)window
 {
-  v8 = a5;
+  messageCopy = message;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A1EB8;
   block[3] = &unk_100157098;
-  v13 = self;
-  v14 = a4;
-  v12 = v8;
-  v10 = v8;
+  selfCopy = self;
+  iDCopy = iD;
+  v12 = messageCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)persistenceDidChangeReadLaterDate:(id)a3 messages:(id)a4 changeIsRemote:(BOOL)a5 generationWindow:(id)a6
+- (void)persistenceDidChangeReadLaterDate:(id)date messages:(id)messages changeIsRemote:(BOOL)remote generationWindow:(id)window
 {
-  v9 = a4;
+  messagesCopy = messages;
   v10 = MSUserNotificationsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1732,13 +1732,13 @@ LABEL_10:
     v17 = 138543618;
     v18 = v11;
     v19 = 2048;
-    v20 = [v9 count];
+    v20 = [messagesCopy count];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ message.count:%ld", &v17, 0x16u);
   }
 
-  v12 = v9;
+  v12 = messagesCopy;
   v13 = v12;
-  if (!a3)
+  if (!date)
   {
     v14 = [v12 ef_compactMap:&stru_10015A008];
     v15 = MSUserNotificationsLog();
@@ -1756,12 +1756,12 @@ LABEL_10:
   }
 }
 
-- (void)_networkConfigurationChanged:(id)a3
+- (void)_networkConfigurationChanged:(id)changed
 {
   v4 = +[MFNetworkController sharedInstance];
-  v5 = [v4 isDataAvailable];
+  isDataAvailable = [v4 isDataAvailable];
 
-  if (v5)
+  if (isDataAvailable)
   {
     v8 = 0;
     v9 = &v8;
@@ -1783,15 +1783,15 @@ LABEL_10:
   }
 }
 
-- (void)requestSummaryWithClient:(id)a3
+- (void)requestSummaryWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = MSUserNotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 ef_publicDescription];
+    ef_publicDescription = [clientCopy ef_publicDescription];
     *buf = 138543362;
-    v15 = v6;
+    v15 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "requestSummaryWithClient=%{public}@", buf, 0xCu);
   }
 
@@ -1800,75 +1800,75 @@ LABEL_10:
   v12[1] = 3221225472;
   v12[2] = sub_1000A27E4;
   v12[3] = &unk_10015A058;
-  v8 = v4;
+  v8 = clientCopy;
   v13 = v8;
   [(EFLocked *)summaryClientsByReference performWhileLocked:v12];
-  v9 = [v8 message];
-  v10 = [v9 account];
-  v11 = [MessageBodyLoader loaderForAccount:v10];
+  message = [v8 message];
+  account = [message account];
+  v11 = [MessageBodyLoader loaderForAccount:account];
   [v11 addSingleMessageClient:v8];
 }
 
-- (void)requestSummaryForMessage:(id)a3
+- (void)requestSummaryForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MSUserNotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 ef_publicDescription];
+    ef_publicDescription = [messageCopy ef_publicDescription];
     v8 = 138543362;
-    v9 = v6;
+    v9 = ef_publicDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "requestSummaryForMessage=%{public}@", &v8, 0xCu);
   }
 
-  v7 = [[_MFUserNotificationCenterSummaryClient alloc] initWithObserver:self message:v4];
+  v7 = [[_MFUserNotificationCenterSummaryClient alloc] initWithObserver:self message:messageCopy];
   [(MFUserNotificationCenterController *)self requestSummaryWithClient:v7];
 }
 
-- (void)_nts_invalidateClient:(id)a3 summaryClientsByReference:(id)a4
+- (void)_nts_invalidateClient:(id)client summaryClientsByReference:(id)reference
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v11 message];
-  v7 = [v6 mf_externalReference];
+  clientCopy = client;
+  referenceCopy = reference;
+  message = [clientCopy message];
+  mf_externalReference = [message mf_externalReference];
 
-  [v11 setObserver:0];
-  v8 = [v11 message];
-  v9 = [v8 account];
-  v10 = [MessageBodyLoader loaderForAccount:v9];
-  [v10 removeSingleMessageClient:v11];
+  [clientCopy setObserver:0];
+  message2 = [clientCopy message];
+  account = [message2 account];
+  v10 = [MessageBodyLoader loaderForAccount:account];
+  [v10 removeSingleMessageClient:clientCopy];
 
-  if (v7)
+  if (mf_externalReference)
   {
-    [v5 removeObjectForKey:v7];
+    [referenceCopy removeObjectForKey:mf_externalReference];
   }
 }
 
-- (void)cancelSummaryRequestForMessageWithExternalReference:(id)a3
+- (void)cancelSummaryRequestForMessageWithExternalReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(MFUserNotificationCenterController *)self summaryClientsLock];
-  [v5 lock];
+  referenceCopy = reference;
+  summaryClientsLock = [(MFUserNotificationCenterController *)self summaryClientsLock];
+  [summaryClientsLock lock];
 
   summaryClientsByReference = self->_summaryClientsByReference;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A2BEC;
   v8[3] = &unk_10015A080;
-  v7 = v4;
+  v7 = referenceCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [(EFLocked *)summaryClientsByReference performWhileLocked:v8];
 }
 
-- (void)cancelSummaryRequestsForAccountWithID:(id)a3
+- (void)cancelSummaryRequestsForAccountWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MSUserNotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "cancelSummaryRequestsForAccountWithID=%{public}@", buf, 0xCu);
   }
 
@@ -1877,22 +1877,22 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = sub_1000A2DC0;
   v8[3] = &unk_10015A080;
-  v7 = v4;
+  v7 = dCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [(EFLocked *)summaryClientsByReference performWhileLocked:v8];
 }
 
-- (void)updateMessage:(id)a3 withSummary:(id)a4
+- (void)updateMessage:(id)message withSummary:(id)summary
 {
-  v5 = a3;
+  messageCopy = message;
   summaryClientsByReference = self->_summaryClientsByReference;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A3024;
   v8[3] = &unk_10015A058;
-  v9 = v5;
-  v7 = v5;
+  v9 = messageCopy;
+  v7 = messageCopy;
   [(EFLocked *)summaryClientsByReference performWhileLocked:v8];
 }
 
@@ -1922,9 +1922,9 @@ LABEL_10:
   dispatch_async(queue, block);
 }
 
-- (void)_performCleanupForRemindMeNotifications:(id)a3
+- (void)_performCleanupForRemindMeNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -1937,17 +1937,17 @@ LABEL_10:
   block[2] = sub_1000A33D8;
   block[3] = &unk_10015A110;
   block[4] = self;
-  v8 = v4;
+  v8 = notificationsCopy;
   v9 = v10;
-  v6 = v4;
+  v6 = notificationsCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v10, 8);
 }
 
-- (id)_libraryMessagesForMessageReferences:(id)a3
+- (id)_libraryMessagesForMessageReferences:(id)references
 {
-  v3 = [a3 ef_compactMap:&stru_10015A130];
+  v3 = [references ef_compactMap:&stru_10015A130];
   v4 = [MFMessageCriterion orCompoundCriterionWithCriteria:v3];
   v5 = +[MFMailMessageLibrary defaultInstance];
   v6 = [v5 messagesMatchingCriterion:v4 options:6297663];
@@ -1955,10 +1955,10 @@ LABEL_10:
   return v6;
 }
 
-- (void)_performCleanupForNotifications:(id)a3
+- (void)_performCleanupForNotifications:(id)notifications
 {
-  v30 = a3;
-  v31 = self;
+  notificationsCopy = notifications;
+  selfCopy = self;
   if (![(MFUserNotificationCenterController *)self _protectedDataAvailable])
   {
     v4 = MSUserNotificationsLog();
@@ -1983,7 +1983,7 @@ LABEL_10:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v30;
+  obj = notificationsCopy;
   v8 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v8)
   {
@@ -1999,16 +1999,16 @@ LABEL_10:
         }
 
         v12 = *(*(&v40 + 1) + 8 * i);
-        v13 = [v12 request];
-        v14 = [v13 identifier];
+        request = [v12 request];
+        identifier = [request identifier];
 
-        [v7 addObject:v14];
-        v15 = [v12 request];
-        v16 = [v15 content];
-        v17 = [v16 userInfo];
+        [v7 addObject:identifier];
+        request2 = [v12 request];
+        content = [request2 content];
+        userInfo = [content userInfo];
 
-        [v6 setObject:v17 forKeyedSubscript:v14];
-        v18 = [v17 objectForKeyedSubscript:v10];
+        [v6 setObject:userInfo forKeyedSubscript:identifier];
+        v18 = [userInfo objectForKeyedSubscript:v10];
         [v35 ef_addOptionalObject:v18];
       }
 
@@ -2018,7 +2018,7 @@ LABEL_10:
     while (v8);
   }
 
-  [(MFUserNotificationCenterController *)v31 _libraryMessagesForMessageReferences:v35];
+  [(MFUserNotificationCenterController *)selfCopy _libraryMessagesForMessageReferences:v35];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -2038,17 +2038,17 @@ LABEL_10:
         }
 
         v22 = *(*(&v36 + 1) + 8 * j);
-        v23 = [v22 notificationID];
+        notificationID = [v22 notificationID];
         if (([v22 read] & 1) == 0 && (objc_msgSend(v22, "deleted") & 1) == 0)
         {
-          [v7 removeObject:v23];
-          v24 = [v6 objectForKeyedSubscript:v23];
+          [v7 removeObject:notificationID];
+          v24 = [v6 objectForKeyedSubscript:notificationID];
           v25 = [v24 objectForKeyedSubscript:v32];
-          v26 = [v25 BOOLValue];
+          bOOLValue = [v25 BOOLValue];
 
-          if (v26)
+          if (bOOLValue)
           {
-            [(MFUserNotificationCenterController *)v31 requestSummaryForMessage:v22];
+            [(MFUserNotificationCenterController *)selfCopy requestSummaryForMessage:v22];
           }
         }
       }
@@ -2072,22 +2072,22 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Removing %lu stale notifications during cleanup. %{public}@", buf, 0x16u);
     }
 
-    v29 = [v7 allObjects];
-    [(MFUserNotificationCenterController *)v31 removeNotificationsWithIdentifiers:v29];
+    allObjects = [v7 allObjects];
+    [(MFUserNotificationCenterController *)selfCopy removeNotificationsWithIdentifiers:allObjects];
   }
 }
 
 - (BOOL)_protectedDataAvailable
 {
   v2 = +[MFMailMessageLibrary defaultInstance];
-  v3 = [v2 protectedDataAvailability];
+  protectedDataAvailability = [v2 protectedDataAvailability];
 
-  return v3 == 0;
+  return protectedDataAvailability == 0;
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
-  if (!a3)
+  if (!changed)
   {
     v7 = 0;
     v8 = &v7;
@@ -2101,7 +2101,7 @@ LABEL_10:
     v6[2] = sub_1000A42BC;
     v6[3] = &unk_10015A158;
     v6[4] = &v7;
-    [(EFLocked *)remindMeNotificationsNeedingSummaries performWhileLocked:v6, a4];
+    [(EFLocked *)remindMeNotificationsNeedingSummaries performWhileLocked:v6, state];
     if ([v8[5] count])
     {
       [(MFUserNotificationCenterController *)self _performCleanupForRemindMeNotifications:v8[5]];

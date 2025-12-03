@@ -1,18 +1,18 @@
 @interface FCContentColorMap
-- (FCContentColorMap)initWithColors:(id)a3;
+- (FCContentColorMap)initWithColors:(id)colors;
 @end
 
 @implementation FCContentColorMap
 
-- (FCContentColorMap)initWithColors:(id)a3
+- (FCContentColorMap)initWithColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   v10.receiver = self;
   v10.super_class = FCContentColorMap;
   v5 = [(FCContentColorMap *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [colorsCopy copy];
     v7 = v6;
     if (v6)
     {

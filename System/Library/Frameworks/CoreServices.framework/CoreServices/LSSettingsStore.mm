@@ -1,12 +1,12 @@
 @interface LSSettingsStore
 + (id)sharedInstance;
-- (BOOL)resetUserElectionsWithError:(id *)a3;
-- (BOOL)setUserElection:(unsigned __int8)a3 forExtensionKey:(id)a4 error:(id *)a5;
+- (BOOL)resetUserElectionsWithError:(id *)error;
+- (BOOL)setUserElection:(unsigned __int8)election forExtensionKey:(id)key error:(id *)error;
 - (id)_init;
-- (id)addChangeObserver:(id)a3;
-- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)a3;
-- (unsigned)userElectionForExtensionKey:(id)a3;
-- (void)removeChangeObserver:(id)a3;
+- (id)addChangeObserver:(id)observer;
+- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)token;
+- (unsigned)userElectionForExtensionKey:(id)key;
+- (void)removeChangeObserver:(id)observer;
 @end
 
 @implementation LSSettingsStore
@@ -57,31 +57,31 @@ void __33__LSSettingsStore_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)setUserElection:(unsigned __int8)a3 forExtensionKey:(id)a4 error:(id *)a5
+- (BOOL)setUserElection:(unsigned __int8)election forExtensionKey:(id)key error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[LSSettingsStore setUserElection:forExtensionKey:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/SettingsStore/LSSettingsStore.mm", 204);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[LSSettingsStore setUserElection:forExtensionKey:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/SettingsStore/LSSettingsStore.mm", 204);
   }
 
   return 0;
 }
 
-- (BOOL)resetUserElectionsWithError:(id *)a3
+- (BOOL)resetUserElectionsWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[LSSettingsStore resetUserElectionsWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/SettingsStore/LSSettingsStore.mm", 211);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -54, 0, "[LSSettingsStore resetUserElectionsWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/SettingsStore/LSSettingsStore.mm", 211);
   }
 
   return 0;
 }
 
-- (id)addChangeObserver:(id)a3
+- (id)addChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = objc_opt_new();
-  v6 = MEMORY[0x1865D71B0](v4);
+  v6 = MEMORY[0x1865D71B0](observerCopy);
   v7 = v5[1];
   v5[1] = v6;
 
@@ -123,16 +123,16 @@ uint64_t __37__LSSettingsStore_addChangeObserver___block_invoke(uint64_t a1)
   return (*(*(*(a1 + 40) + 8) + 16))();
 }
 
-- (void)removeChangeObserver:(id)a3
+- (void)removeChangeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"LSSettingsStore.mm" lineNumber:238 description:{@"Unexpected class %@", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LSSettingsStore.mm" lineNumber:238 description:{@"Unexpected class %@", v10}];
   }
 
   observerQueue = self->_observerQueue;
@@ -140,8 +140,8 @@ uint64_t __37__LSSettingsStore_addChangeObserver___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__LSSettingsStore_removeChangeObserver___block_invoke;
   block[3] = &unk_1E6A1A830;
-  v12 = v5;
-  v7 = v5;
+  v12 = observerCopy;
+  v7 = observerCopy;
   dispatch_sync(observerQueue, block);
 }
 
@@ -156,14 +156,14 @@ uint64_t __40__LSSettingsStore_removeChangeObserver___block_invoke(uint64_t a1)
   return LaunchServices::notifyd::NotifyToken::cancel(v4);
 }
 
-- (unsigned)userElectionForExtensionKey:(id)a3
+- (unsigned)userElectionForExtensionKey:(id)key
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)a3
+- (id)settingsStoreConfigurationForProcessWithAuditToken:(id *)token
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

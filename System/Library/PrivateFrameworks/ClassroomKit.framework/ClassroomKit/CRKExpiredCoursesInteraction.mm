@@ -1,30 +1,30 @@
 @interface CRKExpiredCoursesInteraction
 + (id)new;
 - (CRKExpiredCoursesInteraction)init;
-- (CRKExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)a3 delegate:(id)a4 courses:(id)a5;
+- (CRKExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)proxy delegate:(id)delegate courses:(id)courses;
 - (void)cancel;
-- (void)leaveControlGroupsOperationDidFinish:(id)a3;
+- (void)leaveControlGroupsOperationDidFinish:(id)finish;
 - (void)main;
-- (void)removeCourses:(id)a3;
+- (void)removeCourses:(id)courses;
 @end
 
 @implementation CRKExpiredCoursesInteraction
 
-- (CRKExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)a3 delegate:(id)a4 courses:(id)a5
+- (CRKExpiredCoursesInteraction)initWithStudentDaemonProxy:(id)proxy delegate:(id)delegate courses:(id)courses
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  proxyCopy = proxy;
+  delegateCopy = delegate;
+  coursesCopy = courses;
+  if (proxyCopy)
   {
-    if (v10)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [CRKExpiredCoursesInteraction initWithStudentDaemonProxy:delegate:courses:];
-    if (v11)
+    if (coursesCopy)
     {
       goto LABEL_4;
     }
@@ -33,13 +33,13 @@ LABEL_8:
   }
 
   [CRKExpiredCoursesInteraction initWithStudentDaemonProxy:delegate:courses:];
-  if (!v10)
+  if (!delegateCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (coursesCopy)
   {
     goto LABEL_4;
   }
@@ -53,9 +53,9 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_studentDaemonProxy, a3);
-    objc_storeStrong(&v13->_delegate, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_studentDaemonProxy, proxy);
+    objc_storeStrong(&v13->_delegate, delegate);
+    v14 = [coursesCopy copy];
     courses = v13->_courses;
     v13->_courses = v14;
   }
@@ -167,41 +167,41 @@ uint64_t __36__CRKExpiredCoursesInteraction_main__block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)removeCourses:(id)a3
+- (void)removeCourses:(id)courses
 {
-  v10 = a3;
-  if (!v10)
+  coursesCopy = courses;
+  if (!coursesCopy)
   {
     [CRKExpiredCoursesInteraction removeCourses:];
   }
 
   v4 = objc_opt_new();
-  v5 = [v10 crk_mapUsingBlock:&__block_literal_global_22];
+  v5 = [coursesCopy crk_mapUsingBlock:&__block_literal_global_22];
   [v4 setGroupIdentifiers:v5];
 
-  v6 = [(CRKExpiredCoursesInteraction *)self studentDaemonProxy];
-  v7 = [v6 operationForRequest:v4];
+  studentDaemonProxy = [(CRKExpiredCoursesInteraction *)self studentDaemonProxy];
+  v7 = [studentDaemonProxy operationForRequest:v4];
   mLeaveControlGroupsOperation = self->mLeaveControlGroupsOperation;
   self->mLeaveControlGroupsOperation = v7;
 
   [(CATRemoteTaskOperation *)self->mLeaveControlGroupsOperation addTarget:self selector:sel_leaveControlGroupsOperationDidFinish_ forOperationEvents:6];
-  v9 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  [v9 addOperation:self->mLeaveControlGroupsOperation];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  [crk_backgroundQueue addOperation:self->mLeaveControlGroupsOperation];
 }
 
-- (void)leaveControlGroupsOperationDidFinish:(id)a3
+- (void)leaveControlGroupsOperationDidFinish:(id)finish
 {
-  v4 = a3;
-  if (!v4)
+  finishCopy = finish;
+  if (!finishCopy)
   {
     [CRKExpiredCoursesInteraction leaveControlGroupsOperationDidFinish:];
   }
 
   if ([(CRKExpiredCoursesInteraction *)self isExecuting])
   {
-    v5 = [v4 error];
+    error = [finishCopy error];
 
-    if (v5)
+    if (error)
     {
       if (_CRKLogGeneral_onceToken_11 != -1)
       {
@@ -211,15 +211,15 @@ uint64_t __36__CRKExpiredCoursesInteraction_main__block_invoke_3(uint64_t a1)
       v6 = _CRKLogGeneral_logObj_11;
       if (os_log_type_enabled(_CRKLogGeneral_logObj_11, OS_LOG_TYPE_ERROR))
       {
-        [(CRKExpiredCoursesInteraction *)v6 leaveControlGroupsOperationDidFinish:v4];
+        [(CRKExpiredCoursesInteraction *)v6 leaveControlGroupsOperationDidFinish:finishCopy];
       }
 
-      v7 = [v4 error];
-      [(CRKExpiredCoursesInteraction *)self endOperationWithError:v7];
+      error2 = [finishCopy error];
+      [(CRKExpiredCoursesInteraction *)self endOperationWithError:error2];
 
-      v8 = [(CRKExpiredCoursesInteraction *)self delegate];
-      v9 = [v4 error];
-      [v8 interaction:self didEncounterError:v9];
+      delegate = [(CRKExpiredCoursesInteraction *)self delegate];
+      error3 = [finishCopy error];
+      [delegate interaction:self didEncounterError:error3];
     }
 
     else
@@ -231,18 +231,18 @@ uint64_t __36__CRKExpiredCoursesInteraction_main__block_invoke_3(uint64_t a1)
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKExpiredCoursesInteraction.m" lineNumber:137 description:{@"%@ is unavailable for %@", v5, a1}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKExpiredCoursesInteraction.m" lineNumber:137 description:{@"%@ is unavailable for %@", v5, self}];
 
   return 0;
 }
 
 - (CRKExpiredCoursesInteraction)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKExpiredCoursesInteraction.m" lineNumber:142 description:{@"%@ is unavailable for %@", v5, self}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKExpiredCoursesInteraction.m" lineNumber:142 description:{@"%@ is unavailable for %@", v5, self}];
 
   return 0;
 }

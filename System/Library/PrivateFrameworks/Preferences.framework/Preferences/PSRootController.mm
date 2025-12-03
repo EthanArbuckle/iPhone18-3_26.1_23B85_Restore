@@ -1,21 +1,21 @@
 @interface PSRootController
-+ (id)readPreferenceValue:(id)a3;
-+ (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-+ (void)writePreference:(id)a3;
++ (id)readPreferenceValue:(id)value;
++ (void)setPreferenceValue:(id)value specifier:(id)specifier;
++ (void)writePreference:(id)preference;
 - (BOOL)_isBridgeBundle;
-- (PSRootController)initWithCoder:(id)a3;
-- (PSRootController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (PSRootController)initWithRootViewController:(id)a3;
-- (PSRootController)initWithTitle:(id)a3 identifier:(id)a4;
+- (PSRootController)initWithCoder:(id)coder;
+- (PSRootController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (PSRootController)initWithRootViewController:(id)controller;
+- (PSRootController)initWithTitle:(id)title identifier:(id)identifier;
 - (id)aggregateDictionaryPath;
 - (id)contentViewForTopController;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (id)tasksDescription;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_delayedControllerReleaseAfterPop:(id)a3;
-- (void)addTask:(id)a3;
+- (void)_delayedControllerReleaseAfterPop:(id)pop;
+- (void)addTask:(id)task;
 - (void)commonInit;
 - (void)dealloc;
 - (void)didDismissFormSheetView;
@@ -23,20 +23,20 @@
 - (void)didLock;
 - (void)didUnlock;
 - (void)didWake;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)logSettingsPath;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)sendWillBecomeActive;
 - (void)sendWillResignActive;
-- (void)setSpecifier:(id)a3;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)showController:(id)a3 animate:(BOOL)a4;
-- (void)showLeftButton:(id)a3 withStyle:(int64_t)a4 rightButton:(id)a5 withStyle:(int64_t)a6;
-- (void)statusBarWillChangeHeight:(id)a3;
+- (void)setSpecifier:(id)specifier;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)showController:(id)controller animate:(BOOL)animate;
+- (void)showLeftButton:(id)button withStyle:(int64_t)style rightButton:(id)rightButton withStyle:(int64_t)withStyle;
+- (void)statusBarWillChangeHeight:(id)height;
 - (void)suspend;
-- (void)taskFinished:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)taskFinished:(id)finished;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willDismissFormSheetView;
 - (void)willDismissPopupView;
 - (void)willUnlock;
@@ -46,14 +46,14 @@
 
 - (void)commonInit
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_sendWillBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sendWillBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_sendWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_sendWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_statusBarWillChangeHeight_ name:*MEMORY[0x1E69DDBB0] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_statusBarWillChangeHeight_ name:*MEMORY[0x1E69DDBB0] object:0];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   tasks = self->_tasks;
@@ -66,7 +66,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_18B008000, a2, OS_LOG_TYPE_FAULT, "logSettingsPath %{public}@: PSViewController's PSIDKey == nil AND identifier == nil. This breaks Settings' Search.", &v2, 0xCu);
 }
 
@@ -82,17 +82,17 @@
   }
 
   [(PSRootController *)self willBecomeActive];
-  v4 = [(PSRootController *)self viewControllers];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_149];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_149];
 }
 
-+ (void)writePreference:(id)a3
++ (void)writePreference:(id)preference
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"key"];
-  v5 = [v3 propertyForKey:@"defaults"];
-  v6 = [v3 propertyForKey:@"containerBundleID"];
+  preferenceCopy = preference;
+  v4 = [preferenceCopy propertyForKey:@"key"];
+  v5 = [preferenceCopy propertyForKey:@"defaults"];
+  v6 = [preferenceCopy propertyForKey:@"containerBundleID"];
   if (v5)
   {
     v7 = v4 == 0;
@@ -115,14 +115,14 @@
 
   else
   {
-    v9 = [v3 propertyForKey:@"value"];
+    v9 = [preferenceCopy propertyForKey:@"value"];
     v8 = v9;
-    if (v9 || ([v3 propertyForKey:@"default"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v9 || ([preferenceCopy propertyForKey:@"default"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [v3 propertyForKey:@"negate"];
-      v11 = [v10 BOOLValue];
+      v10 = [preferenceCopy propertyForKey:@"negate"];
+      bOOLValue = [v10 BOOLValue];
 
-      if (v11)
+      if (bOOLValue)
       {
         v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject BOOLValue](v8, "BOOLValue") ^ 1}];
 
@@ -131,25 +131,25 @@
 
       if ([(__CFString *)v5 isEqualToString:@"STANDARD"])
       {
-        v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v13 setObject:v8 forKey:v4];
-        [v13 synchronize];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults setObject:v8 forKey:v4];
+        [standardUserDefaults synchronize];
       }
 
       else
       {
-        v14 = [v3 propertyForKey:@"isPerGizmo"];
-        v15 = [v14 BOOLValue];
+        v14 = [preferenceCopy propertyForKey:@"isPerGizmo"];
+        bOOLValue2 = [v14 BOOLValue];
 
-        v41 = v15;
-        if (v15)
+        v41 = bOOLValue2;
+        if (bOOLValue2)
         {
           v16 = [objc_alloc(getNPSDomainAccessorClass()) initWithDomain:v5];
           v17 = v16;
           if (v16)
           {
             [v16 setObject:v8 forKey:v4];
-            v18 = [v17 synchronize];
+            synchronize = [v17 synchronize];
           }
 
           else
@@ -160,15 +160,15 @@
 
         else
         {
-          v19 = [v3 propertyForKey:@"appGroupBundleID"];
+          v19 = [preferenceCopy propertyForKey:@"appGroupBundleID"];
 
           if (v19 && v6)
           {
             v40 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v5];
-            v20 = [v40 groupContainerURLs];
-            v21 = [v3 propertyForKey:@"appGroupBundleID"];
-            v22 = [v20 objectForKey:v21];
-            v23 = [v22 path];
+            groupContainerURLs = [v40 groupContainerURLs];
+            v21 = [preferenceCopy propertyForKey:@"appGroupBundleID"];
+            v22 = [groupContainerURLs objectForKey:v21];
+            path = [v22 path];
 
             _CFPreferencesSetAppValueWithContainer();
             _CFPreferencesAppSynchronizeWithContainer();
@@ -179,8 +179,8 @@
             if (v6)
             {
               v24 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v6];
-              v25 = [v24 dataContainerURL];
-              v26 = [v25 path];
+              dataContainerURL = [v24 dataContainerURL];
+              path2 = [dataContainerURL path];
 
               _CFPreferencesSetAppValueWithContainer();
               _CFPreferencesAppSynchronizeWithContainer();
@@ -198,10 +198,10 @@
           }
         }
 
-        v29 = [v3 propertyForKey:@"notifyNano"];
-        v30 = [v29 BOOLValue];
+        v29 = [preferenceCopy propertyForKey:@"notifyNano"];
+        bOOLValue3 = [v29 BOOLValue];
 
-        if (v30)
+        if (bOOLValue3)
         {
           v47 = 0;
           v48 = &v47;
@@ -233,48 +233,48 @@
 
           else
           {
-            v35 = [v3 propertyForKey:@"containerBundleID"];
-            v36 = [v3 propertyForKey:@"appGroupBundleID"];
+            v35 = [preferenceCopy propertyForKey:@"containerBundleID"];
+            v36 = [preferenceCopy propertyForKey:@"appGroupBundleID"];
             v37 = [MEMORY[0x1E695DFD8] setWithObject:v4];
             [v33 synchronizeUserDefaultsDomain:v5 keys:v37 container:v35 appGroupContainer:v36];
           }
         }
       }
 
-      v38 = [v3 propertyForKey:@"PostNotification"];
+      v38 = [preferenceCopy propertyForKey:@"PostNotification"];
 
       if (v38)
       {
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-        CFNotificationCenterPostNotification(DarwinNotifyCenter, [v3 propertyForKey:@"PostNotification"], 0, 0, 1u);
+        CFNotificationCenterPostNotification(DarwinNotifyCenter, [preferenceCopy propertyForKey:@"PostNotification"], 0, 0, 1u);
       }
     }
   }
 }
 
-+ (void)setPreferenceValue:(id)a3 specifier:(id)a4
++ (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  valueCopy = value;
+  specifierCopy = specifier;
+  if (valueCopy)
   {
-    v6 = [v5 propertyForKey:@"value"];
-    v7 = [v8 isEqual:v6];
+    v6 = [specifierCopy propertyForKey:@"value"];
+    v7 = [valueCopy isEqual:v6];
 
     if ((v7 & 1) == 0)
     {
-      [v5 setProperty:v8 forKey:@"value"];
-      [PSRootController writePreference:v5];
+      [specifierCopy setProperty:valueCopy forKey:@"value"];
+      [PSRootController writePreference:specifierCopy];
     }
   }
 }
 
-+ (id)readPreferenceValue:(id)a3
++ (id)readPreferenceValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"defaults"];
-  v5 = [v3 propertyForKey:@"containerBundleID"];
-  v6 = [v3 propertyForKey:@"key"];
+  valueCopy = value;
+  v4 = [valueCopy propertyForKey:@"defaults"];
+  v5 = [valueCopy propertyForKey:@"containerBundleID"];
+  v6 = [valueCopy propertyForKey:@"key"];
   v7 = v6;
   if (v4)
   {
@@ -293,21 +293,21 @@
 
   if ([(__CFString *)v4 isEqualToString:@"STANDARD"])
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10 = [v9 objectForKey:v7];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10 = [standardUserDefaults objectForKey:v7];
     if (v10)
     {
       v11 = v10;
-      v12 = [v3 propertyForKey:@"negate"];
-      v13 = [v12 BOOLValue];
+      v12 = [valueCopy propertyForKey:@"negate"];
+      bOOLValue = [v12 BOOLValue];
 
-      if (!v13)
+      if (!bOOLValue)
       {
 LABEL_11:
-        [v3 setProperty:v11 forKey:@"value"];
+        [valueCopy setProperty:v11 forKey:@"value"];
 
 LABEL_30:
-        v9 = [v3 propertyForKey:@"value"];
+        standardUserDefaults = [valueCopy propertyForKey:@"value"];
         goto LABEL_31;
       }
 
@@ -318,14 +318,14 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v23 = [v3 propertyForKey:@"default"];
+    v23 = [valueCopy propertyForKey:@"default"];
     if (v23)
     {
       v11 = v23;
-      v24 = [v3 propertyForKey:@"negate"];
-      v25 = [v24 BOOLValue];
+      v24 = [valueCopy propertyForKey:@"negate"];
+      bOOLValue2 = [v24 BOOLValue];
 
-      if ((v25 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         goto LABEL_11;
       }
@@ -334,31 +334,31 @@ LABEL_10:
     }
 
 LABEL_6:
-    v9 = 0;
+    standardUserDefaults = 0;
     goto LABEL_31;
   }
 
-  v15 = [v3 propertyForKey:@"isPerGizmo"];
-  v16 = [v15 BOOLValue];
+  v15 = [valueCopy propertyForKey:@"isPerGizmo"];
+  bOOLValue3 = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue3)
   {
     v17 = [objc_alloc(getNPSDomainAccessorClass()) initWithDomain:v4];
     v18 = v17;
     if (v17)
     {
-      v9 = [v17 objectForKey:v7];
+      standardUserDefaults = [v17 objectForKey:v7];
     }
 
     else
     {
       NSLog(&cfstr_FailedToInstan.isa, v4);
-      v9 = 0;
+      standardUserDefaults = 0;
     }
 
 LABEL_26:
 
-    if (v9)
+    if (standardUserDefaults)
     {
       goto LABEL_27;
     }
@@ -366,7 +366,7 @@ LABEL_26:
     goto LABEL_36;
   }
 
-  v19 = [v3 propertyForKey:@"appGroupBundleID"];
+  v19 = [valueCopy propertyForKey:@"appGroupBundleID"];
 
   if (v19)
   {
@@ -381,54 +381,54 @@ LABEL_26:
   if (!v20)
   {
     v18 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v4];
-    v26 = [v18 groupContainerURLs];
-    v27 = [v3 propertyForKey:@"appGroupBundleID"];
-    v28 = [v26 objectForKey:v27];
-    v29 = [v28 path];
+    groupContainerURLs = [v18 groupContainerURLs];
+    v27 = [valueCopy propertyForKey:@"appGroupBundleID"];
+    v28 = [groupContainerURLs objectForKey:v27];
+    path = [v28 path];
 
-    v9 = _CFPreferencesCopyAppValueWithContainer();
+    standardUserDefaults = _CFPreferencesCopyAppValueWithContainer();
     goto LABEL_26;
   }
 
   if (v5)
   {
     v18 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v5 placeholder:0];
-    v21 = [v18 dataContainerURL];
-    v22 = [v21 path];
+    dataContainerURL = [v18 dataContainerURL];
+    path2 = [dataContainerURL path];
 
-    v9 = _CFPreferencesCopyAppValueWithContainer();
+    standardUserDefaults = _CFPreferencesCopyAppValueWithContainer();
     goto LABEL_26;
   }
 
-  v9 = CFPreferencesCopyValue(v7, v4, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
-  if (v9)
+  standardUserDefaults = CFPreferencesCopyValue(v7, v4, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
+  if (standardUserDefaults)
   {
 LABEL_27:
-    v30 = [v3 propertyForKey:@"negate"];
-    v31 = [v30 BOOLValue];
+    v30 = [valueCopy propertyForKey:@"negate"];
+    bOOLValue4 = [v30 BOOLValue];
 
-    if (!v31)
+    if (!bOOLValue4)
     {
 LABEL_29:
-      [v3 setProperty:v9 forKey:@"value"];
+      [valueCopy setProperty:standardUserDefaults forKey:@"value"];
       goto LABEL_30;
     }
 
 LABEL_28:
-    v32 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v9, "BOOLValue") ^ 1}];
+    v32 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(standardUserDefaults, "BOOLValue") ^ 1}];
 
-    v9 = v32;
+    standardUserDefaults = v32;
     goto LABEL_29;
   }
 
 LABEL_36:
-  v9 = [v3 propertyForKey:@"default"];
-  if (v9)
+  standardUserDefaults = [valueCopy propertyForKey:@"default"];
+  if (standardUserDefaults)
   {
-    v34 = [v3 propertyForKey:@"negate"];
-    v35 = [v34 BOOLValue];
+    v34 = [valueCopy propertyForKey:@"negate"];
+    bOOLValue5 = [v34 BOOLValue];
 
-    if ((v35 & 1) == 0)
+    if ((bOOLValue5 & 1) == 0)
     {
       goto LABEL_29;
     }
@@ -438,13 +438,13 @@ LABEL_36:
 
 LABEL_31:
 
-  return v9;
+  return standardUserDefaults;
 }
 
-- (PSRootController)initWithCoder:(id)a3
+- (PSRootController)initWithCoder:(id)coder
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = _PSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -455,7 +455,7 @@ LABEL_31:
 
   v8.receiver = self;
   v8.super_class = PSRootController;
-  v6 = [(PSRootController *)&v8 initWithCoder:v4];
+  v6 = [(PSRootController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -465,7 +465,7 @@ LABEL_31:
   return v6;
 }
 
-- (PSRootController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (PSRootController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v14 = *MEMORY[0x1E69E9840];
   v7 = _PSLoggingFacility();
@@ -478,7 +478,7 @@ LABEL_31:
 
   v11.receiver = self;
   v11.super_class = PSRootController;
-  v8 = [(PSRootController *)&v11 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v8 = [(PSRootController *)&v11 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   v9 = v8;
   if (v8)
   {
@@ -488,10 +488,10 @@ LABEL_31:
   return v9;
 }
 
-- (PSRootController)initWithRootViewController:(id)a3
+- (PSRootController)initWithRootViewController:(id)controller
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _PSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -502,7 +502,7 @@ LABEL_31:
 
   v8.receiver = self;
   v8.super_class = PSRootController;
-  v6 = [(PSRootController *)&v8 initWithRootViewController:v4];
+  v6 = [(PSRootController *)&v8 initWithRootViewController:controllerCopy];
 
   if (v6)
   {
@@ -512,10 +512,10 @@ LABEL_31:
   return v6;
 }
 
-- (PSRootController)initWithTitle:(id)a3 identifier:(id)a4
+- (PSRootController)initWithTitle:(id)title identifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   v6 = _PSLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -530,7 +530,7 @@ LABEL_31:
   v8 = v7;
   if (v7)
   {
-    [(PSRootController *)v7 setTitle:v5];
+    [(PSRootController *)v7 setTitle:titleCopy];
     [(PSRootController *)v8 commonInit];
   }
 
@@ -540,7 +540,7 @@ LABEL_31:
 - (id)tasksDescription
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -561,7 +561,7 @@ LABEL_31:
         }
 
         v9 = [*(*(&v11 + 1) + 8 * i) description];
-        [v3 appendFormat:@"%@\n", v9];
+        [string appendFormat:@"%@\n", v9];
       }
 
       v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -570,63 +570,63 @@ LABEL_31:
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   [(PSRootController *)self busy];
-  [(NSMutableSet *)self->_tasks addObject:v4];
+  [(NSMutableSet *)self->_tasks addObject:taskCopy];
 }
 
-- (void)taskFinished:(id)a3
+- (void)taskFinished:(id)finished
 {
-  [(NSMutableSet *)self->_tasks removeObject:a3];
+  [(NSMutableSet *)self->_tasks removeObject:finished];
   if (![(PSRootController *)self busy])
   {
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v6 performSelector:sel_controllerFinished_ withObject:self afterDelay:0.001];
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668]2 performSelector:sel_controllerFinished_ withObject:self afterDelay:0.001];
     }
   }
 }
 
 - (id)contentViewForTopController
 {
-  v3 = [(PSRootController *)self topViewController];
-  v4 = v3;
-  if (!v3)
+  selfCopy = [(PSRootController *)self topViewController];
+  v4 = selfCopy;
+  if (!selfCopy)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  v5 = [v3 view];
+  view = [selfCopy view];
 
-  return v5;
+  return view;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (self->_specifier != v5)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = v6;
+    v6 = specifierCopy;
+    objc_storeStrong(&self->_specifier, specifier);
+    specifierCopy = v6;
   }
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PSRootController *)self childViewControllers];
-  if ([v7 containsObject:v6])
+  animateCopy = animate;
+  controllerCopy = controller;
+  childViewControllers = [(PSRootController *)self childViewControllers];
+  if ([childViewControllers containsObject:controllerCopy])
   {
     v8 = _PSLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -647,67 +647,67 @@ LABEL_31:
     }
   }
 
-  if ([v6 conformsToProtocol:&unk_1EFE6C730])
+  if ([controllerCopy conformsToProtocol:&unk_1EFE6C730])
   {
-    [v6 setParentController:self];
-    [v6 setRootController:self];
+    [controllerCopy setParentController:self];
+    [controllerCopy setRootController:self];
   }
 
-  if (v4)
+  if (animateCopy)
   {
-    [(PSRootController *)self showViewController:v6 sender:self];
+    [(PSRootController *)self showViewController:controllerCopy sender:self];
   }
 
   else
   {
-    [(PSRootController *)self pushViewController:v6 animated:0];
+    [(PSRootController *)self pushViewController:controllerCopy animated:0];
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v7 = a4;
-  [(PSRootController *)self handleURL:a3];
-  v6 = v7;
-  if (v7)
+  completionCopy = completion;
+  [(PSRootController *)self handleURL:l];
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7);
-    v6 = v7;
+    (*(completionCopy + 2))(completionCopy);
+    v6 = completionCopy;
   }
 }
 
-- (void)showLeftButton:(id)a3 withStyle:(int64_t)a4 rightButton:(id)a5 withStyle:(int64_t)a6
+- (void)showLeftButton:(id)button withStyle:(int64_t)style rightButton:(id)rightButton withStyle:(int64_t)withStyle
 {
   v10 = MEMORY[0x1E69DC708];
-  v11 = a5;
-  v12 = a3;
+  rightButtonCopy = rightButton;
+  buttonCopy = button;
   v18 = objc_alloc_init(v10);
-  [v18 setTitle:v12];
+  [v18 setTitle:buttonCopy];
 
-  [v18 setStyle:a4];
+  [v18 setStyle:style];
   v13 = objc_alloc_init(MEMORY[0x1E69DC708]);
-  [v13 setTitle:v11];
+  [v13 setTitle:rightButtonCopy];
 
-  [v13 setStyle:a6];
-  v14 = [(PSRootController *)self navigationBar];
-  v15 = [v14 topItem];
-  [v15 setRightBarButtonItem:v13];
+  [v13 setStyle:withStyle];
+  navigationBar = [(PSRootController *)self navigationBar];
+  topItem = [navigationBar topItem];
+  [topItem setRightBarButtonItem:v13];
 
-  v16 = [(PSRootController *)self navigationBar];
-  v17 = [v16 topItem];
-  [v17 setLeftBarButtonItem:v18];
+  navigationBar2 = [(PSRootController *)self navigationBar];
+  topItem2 = [navigationBar2 topItem];
+  [topItem2 setLeftBarButtonItem:v18];
 }
 
-- (void)statusBarWillChangeHeight:(id)a3
+- (void)statusBarWillChangeHeight:(id)height
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  v6 = [v5 statusBar];
+  userInfo = [height userInfo];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  statusBar = [mEMORY[0x1E69DC668] statusBar];
 
-  v7 = [v4 objectForKey:*MEMORY[0x1E69DDB90]];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E69DDB90]];
   v8 = v7;
-  if (v6)
+  if (statusBar)
   {
     v9 = v7 == 0;
   }
@@ -719,10 +719,10 @@ LABEL_31:
 
   if (!v9)
   {
-    v24 = v4;
-    [v6 frame];
+    v24 = userInfo;
+    [statusBar frame];
     v11 = v10;
-    [v6 frame];
+    [statusBar frame];
     if (v11 >= v12)
     {
       v13 = v12;
@@ -745,8 +745,8 @@ LABEL_31:
 
     v27 = 0uLL;
     v28 = 0uLL;
-    v17 = [(PSRootController *)self viewControllers];
-    v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    viewControllers = [(PSRootController *)self viewControllers];
+    v18 = [viewControllers countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v18)
     {
       v19 = v18;
@@ -758,7 +758,7 @@ LABEL_31:
         {
           if (*v26 != v21)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(viewControllers);
           }
 
           v23 = *(*(&v25 + 1) + 8 * i);
@@ -768,13 +768,13 @@ LABEL_31:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v19 = [viewControllers countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v19);
     }
 
-    v4 = v24;
+    userInfo = v24;
   }
 }
 
@@ -790,8 +790,8 @@ LABEL_31:
   }
 
   [(PSRootController *)self willResignActive];
-  v4 = [(PSRootController *)self viewControllers];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_12];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_12];
 }
 
 void __40__PSRootController_sendWillResignActive__block_invoke(uint64_t a1, void *a2)
@@ -825,8 +825,8 @@ void __40__PSRootController_sendWillBecomeActive__block_invoke(uint64_t a1, void
 
 - (void)suspend
 {
-  v2 = [(PSRootController *)self viewControllers];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_152];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_152];
 }
 
 void __27__PSRootController_suspend__block_invoke(uint64_t a1, void *a2)
@@ -840,8 +840,8 @@ void __27__PSRootController_suspend__block_invoke(uint64_t a1, void *a2)
 
 - (void)didLock
 {
-  v2 = [(PSRootController *)self viewControllers];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_155];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_155];
 }
 
 void __27__PSRootController_didLock__block_invoke(uint64_t a1, void *a2)
@@ -855,8 +855,8 @@ void __27__PSRootController_didLock__block_invoke(uint64_t a1, void *a2)
 
 - (void)willUnlock
 {
-  v2 = [(PSRootController *)self viewControllers];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_158];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_158];
 }
 
 void __30__PSRootController_willUnlock__block_invoke(uint64_t a1, void *a2)
@@ -870,8 +870,8 @@ void __30__PSRootController_willUnlock__block_invoke(uint64_t a1, void *a2)
 
 - (void)didUnlock
 {
-  v2 = [(PSRootController *)self viewControllers];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_161];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_161];
 }
 
 void __29__PSRootController_didUnlock__block_invoke(uint64_t a1, void *a2)
@@ -885,8 +885,8 @@ void __29__PSRootController_didUnlock__block_invoke(uint64_t a1, void *a2)
 
 - (void)didWake
 {
-  v2 = [(PSRootController *)self viewControllers];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_164];
+  viewControllers = [(PSRootController *)self viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_164];
 }
 
 void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
@@ -901,23 +901,23 @@ void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
 - (void)dealloc
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   self->_deallocating = 1;
   if ([(PSRootController *)self isViewLoaded])
   {
-    v4 = [(PSRootController *)self view];
-    v5 = [v4 firstResponder];
-    [v5 resignFirstResponder];
+    view = [(PSRootController *)self view];
+    firstResponder = [view firstResponder];
+    [firstResponder resignFirstResponder];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(PSRootController *)self viewControllers];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  viewControllers = [(PSRootController *)self viewControllers];
+  v7 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -928,7 +928,7 @@ void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewControllers);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -938,14 +938,14 @@ void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   v13.receiver = self;
   v13.super_class = PSRootController;
@@ -964,25 +964,25 @@ void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = MEMORY[0x1E695DF70];
-    v6 = [(PSRootController *)self viewControllers];
-    v7 = [v5 arrayWithArray:v6];
+    viewControllers = [(PSRootController *)self viewControllers];
+    v7 = [v5 arrayWithArray:viewControllers];
 
-    v8 = [MEMORY[0x1E696AB08] letterCharacterSet];
-    v31 = [v8 invertedSet];
+    letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
+    invertedSet = [letterCharacterSet invertedSet];
 
-    v9 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     v10 = &selRef_observer_removeBulletin_;
-    v11 = [v9 conformsToProtocol:&unk_1EFE6C730];
+    v11 = [firstObject conformsToProtocol:&unk_1EFE6C730];
 
     if (v11)
     {
-      v12 = [v7 firstObject];
-      v13 = [v12 specifier];
-      v14 = [v13 objectForKeyedSubscript:@"id"];
+      firstObject2 = [v7 firstObject];
+      specifier = [firstObject2 specifier];
+      v14 = [specifier objectForKeyedSubscript:@"id"];
 
       if (!v14)
       {
-        [v7 removeObject:v12];
+        [v7 removeObject:firstObject2];
       }
     }
 
@@ -1011,12 +1011,12 @@ void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
           {
             v21 = v4;
             v22 = v20;
-            v23 = [v22 specifier];
-            v24 = [v23 objectForKeyedSubscript:v30];
+            specifier2 = [v22 specifier];
+            v24 = [specifier2 objectForKeyedSubscript:v30];
 
-            v25 = [v24 lastPathComponent];
+            lastPathComponent = [v24 lastPathComponent];
 
-            if (!v25 || [v25 rangeOfString:@"[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" options:1025] != 0x7FFFFFFFFFFFFFFFLL)
+            if (!lastPathComponent || [lastPathComponent rangeOfString:@"[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}" options:1025] != 0x7FFFFFFFFFFFFFFFLL)
             {
 
               v3 = 0;
@@ -1024,7 +1024,7 @@ void __27__PSRootController_didWake__block_invoke(uint64_t a1, void *a2)
               goto LABEL_20;
             }
 
-            v26 = [v25 stringByReplacingCharactersInSet:v31 withCharacter:95];
+            v26 = [lastPathComponent stringByReplacingCharactersInSet:invertedSet withCharacter:95];
             [v26 lowercaseString];
             v28 = v27 = v10;
 
@@ -1055,19 +1055,19 @@ LABEL_20:
 - (void)willDismissPopupView
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PSRootController *)self topViewController];
+  topViewController = [(PSRootController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 popupViewWillDisappear];
+    [topViewController popupViewWillDisappear];
   }
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [topViewController childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1079,7 +1079,7 @@ LABEL_20:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1093,7 +1093,7 @@ LABEL_20:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1103,19 +1103,19 @@ LABEL_20:
 - (void)didDismissPopupView
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PSRootController *)self topViewController];
+  topViewController = [(PSRootController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 popupViewDidDisappear];
+    [topViewController popupViewDidDisappear];
   }
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [topViewController childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1127,7 +1127,7 @@ LABEL_20:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1141,7 +1141,7 @@ LABEL_20:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1151,19 +1151,19 @@ LABEL_20:
 - (void)willDismissFormSheetView
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PSRootController *)self topViewController];
+  topViewController = [(PSRootController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 formSheetViewWillDisappear];
+    [topViewController formSheetViewWillDisappear];
   }
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [topViewController childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1175,7 +1175,7 @@ LABEL_20:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1189,7 +1189,7 @@ LABEL_20:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1199,19 +1199,19 @@ LABEL_20:
 - (void)didDismissFormSheetView
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(PSRootController *)self topViewController];
+  topViewController = [(PSRootController *)self topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 formSheetViewDidDisappear];
+    [topViewController formSheetViewDidDisappear];
   }
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childViewControllers = [topViewController childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1223,7 +1223,7 @@ LABEL_20:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -1237,18 +1237,18 @@ LABEL_20:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_delayedControllerReleaseAfterPop:(id)a3
+- (void)_delayedControllerReleaseAfterPop:(id)pop
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  popCopy = pop;
+  v4 = [popCopy mutableCopy];
   v5 = dispatch_time(0, 360000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1257,12 +1257,12 @@ LABEL_20:
   v6 = v4;
   v24 = v6;
   dispatch_after(v5, MEMORY[0x1E69E96A0], block);
-  v7 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v3;
+  v8 = popCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v9)
   {
@@ -1278,7 +1278,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        [v7 addPointer:*(*(&v19 + 1) + 8 * v12++)];
+        [weakObjectsPointerArray addPointer:*(*(&v19 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
@@ -1288,17 +1288,17 @@ LABEL_20:
     while (v10);
   }
 
-  v13 = [MEMORY[0x1E69DC938] currentDevice];
-  v14 = [v13 sf_isInternalInstall];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isInternalInstall = [currentDevice sf_isInternalInstall];
 
-  if (v14)
+  if (sf_isInternalInstall)
   {
     v15 = dispatch_time(0, 15000000000);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __54__PSRootController__delayedControllerReleaseAfterPop___block_invoke_188;
     v17[3] = &unk_1E71DBE20;
-    v18 = v7;
+    v18 = weakObjectsPointerArray;
     v16 = MEMORY[0x1E69E96A0];
     dispatch_after(v15, MEMORY[0x1E69E96A0], v17);
   }
@@ -1407,28 +1407,28 @@ void __54__PSRootController__delayedControllerReleaseAfterPop___block_invoke_2(u
   }
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   v13.receiver = self;
   v13.super_class = PSRootController;
-  v4 = [(PSRootController *)&v13 popViewControllerAnimated:a3];
+  v4 = [(PSRootController *)&v13 popViewControllerAnimated:animated];
   if ([v4 conformsToProtocol:&unk_1EFE6C730])
   {
-    v5 = [v4 parentController];
-    v6 = [v4 rootController];
+    parentController = [v4 parentController];
+    rootController = [v4 rootController];
     [v4 setParentController:0];
     [v4 setRootController:0];
-    v7 = [(PSRootController *)self transitionCoordinator];
-    if (v7)
+    transitionCoordinator = [(PSRootController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __46__PSRootController_popViewControllerAnimated___block_invoke;
       v9[3] = &unk_1E71DC9C0;
       v10 = v4;
-      v11 = v5;
-      v12 = v6;
-      [v7 notifyWhenInteractionChangesUsingBlock:v9];
+      v11 = parentController;
+      v12 = rootController;
+      [transitionCoordinator notifyWhenInteractionChangesUsingBlock:v9];
     }
   }
 
@@ -1450,12 +1450,12 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
   return result;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PSRootController;
-  v5 = [(PSRootController *)&v16 popToViewController:a3 animated:a4];
+  v5 = [(PSRootController *)&v16 popToViewController:controller animated:animated];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1493,12 +1493,12 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
   return v5;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PSRootController;
-  v4 = [(PSRootController *)&v15 popToRootViewControllerAnimated:a3];
+  v4 = [(PSRootController *)&v15 popToRootViewControllerAnimated:animated];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1536,17 +1536,17 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
   return v4;
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllersCopy = controllers;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [(PSRootController *)self viewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  viewControllers = [(PSRootController *)self viewControllers];
+  v8 = [viewControllers countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1557,7 +1557,7 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(viewControllers);
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
@@ -1568,25 +1568,25 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v9 = [viewControllers countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v9);
   }
 
-  v13 = self;
+  selfCopy = self;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v6;
+  v14 = controllersCopy;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
-  v16 = v13;
+  v16 = selfCopy;
   if (v15)
   {
     v17 = v15;
     v18 = *v25;
-    v16 = v13;
+    v16 = selfCopy;
     do
     {
       for (j = 0; j != v17; ++j)
@@ -1599,7 +1599,7 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
         v20 = *(*(&v24 + 1) + 8 * j);
         if ([v20 conformsToProtocol:&unk_1EFE6C730])
         {
-          [v20 setRootController:v13];
+          [v20 setRootController:selfCopy];
           [v20 setParentController:v16];
           v21 = v20;
 
@@ -1613,33 +1613,33 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
     while (v17);
   }
 
-  v22 = [(PSRootController *)v13 viewControllers];
-  [(PSRootController *)v13 _delayedControllerReleaseAfterPop:v22];
+  viewControllers2 = [(PSRootController *)selfCopy viewControllers];
+  [(PSRootController *)selfCopy _delayedControllerReleaseAfterPop:viewControllers2];
 
-  v23.receiver = v13;
+  v23.receiver = selfCopy;
   v23.super_class = PSRootController;
-  [(PSRootController *)&v23 setViewControllers:v14 animated:v4];
+  [(PSRootController *)&v23 setViewControllers:v14 animated:animatedCopy];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v20 = a4;
+  viewControllerCopy = viewController;
   v7 = MEMORY[0x1E696AD80];
   v8 = MEMORY[0x1E695DF20];
-  v9 = a3;
-  v10 = [v9 disappearingViewController];
+  controllerCopy = controller;
+  disappearingViewController = [controllerCopy disappearingViewController];
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v9 lastOperation];
+  lastOperation = [controllerCopy lastOperation];
 
-  v13 = [v11 numberWithInt:v12];
-  v14 = [v8 dictionaryWithObjectsAndKeys:{v20, @"appearing", v10, @"disappearing", v13, @"operation", 0}];
+  v13 = [v11 numberWithInt:lastOperation];
+  v14 = [v8 dictionaryWithObjectsAndKeys:{viewControllerCopy, @"appearing", disappearingViewController, @"disappearing", v13, @"operation", 0}];
   v15 = [v7 notificationWithName:@"PSNavigationControllerWillShow" object:self userInfo:v14];
 
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotification:v15];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotification:v15];
 
-  v17 = [(PSRootController *)self viewControllers];
-  LODWORD(v7) = [v17 containsObject:v20];
+  viewControllers = [(PSRootController *)self viewControllers];
+  LODWORD(v7) = [viewControllers containsObject:viewControllerCopy];
 
   if (v7)
   {
@@ -1650,24 +1650,24 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  if ([(PSRootController *)self isMovingFromParentViewController]&& !v3)
+  disappearCopy = disappear;
+  if ([(PSRootController *)self isMovingFromParentViewController]&& !disappearCopy)
   {
-    v5 = [(PSRootController *)self topViewController];
-    v6 = [v5 navigationItem];
-    [v6 setSearchController:0];
+    topViewController = [(PSRootController *)self topViewController];
+    navigationItem = [topViewController navigationItem];
+    [navigationItem setSearchController:0];
   }
 
   v7.receiver = self;
   v7.super_class = PSRootController;
-  [(PSRootController *)&v7 viewWillDisappear:v3];
+  [(PSRootController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x1E69E9840];
   if (![(PSRootController *)self _isBridgeBundle]&& [(PSRootController *)self isMovingFromParentViewController])
   {
@@ -1675,10 +1675,10 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(PSRootController *)self viewControllers];
-    v6 = [v5 reverseObjectEnumerator];
+    viewControllers = [(PSRootController *)self viewControllers];
+    reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
 
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1690,14 +1690,14 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          [*(*(&v12 + 1) + 8 * v10++) viewDidDisappear:v3];
+          [*(*(&v12 + 1) + 8 * v10++) viewDidDisappear:disappearCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1708,14 +1708,14 @@ uint64_t __46__PSRootController_popViewControllerAnimated___block_invoke(uint64_
 
   v11.receiver = self;
   v11.super_class = PSRootController;
-  [(PSRootController *)&v11 viewDidDisappear:v3];
+  [(PSRootController *)&v11 viewDidDisappear:disappearCopy];
 }
 
 - (BOOL)_isBridgeBundle
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.Bridge"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.Bridge"];
 
   return v4;
 }

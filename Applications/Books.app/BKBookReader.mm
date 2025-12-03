@@ -1,6 +1,6 @@
 @interface BKBookReader
-- (BKBookReader)initWithDelegate:(id)a3;
-- (float)getFloatDefault:(id)a3 default:(float)a4;
+- (BKBookReader)initWithDelegate:(id)delegate;
+- (float)getFloatDefault:(id)default default:(float)a4;
 - (void)bookDidAppear;
 - (void)decideAboutOpeningTheNextBook;
 - (void)doneSleepingBeforeNextBook;
@@ -19,11 +19,11 @@
 
 @implementation BKBookReader
 
-- (float)getFloatDefault:(id)a3 default:(float)a4
+- (float)getFloatDefault:(id)default default:(float)a4
 {
-  v5 = a3;
+  defaultCopy = default;
   v6 = +[NSUserDefaults standardUserDefaults];
-  [v6 floatForKey:v5];
+  [v6 floatForKey:defaultCopy];
   v8 = v7;
 
   if (v8 <= 0.0)
@@ -37,16 +37,16 @@
   }
 }
 
-- (BKBookReader)initWithDelegate:(id)a3
+- (BKBookReader)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = BKBookReader;
   v6 = [(BKBookReader *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v7->_state = 0;
     LODWORD(v8) = 2.0;
     [(BKBookReader *)v7 getFloatDefault:@"BKBookReaderSleepBeforePagination" default:v8];
@@ -67,11 +67,11 @@
   if (self->_state == 1)
   {
     [(BKBookReaderDelegate *)self->_delegate openNextBook];
-    v3 = [(BKBookReaderDelegate *)self->_delegate paginationDidEnd];
-    v4 = [(BKBookReaderDelegate *)self->_delegate bookDidAppear];
-    if (v3)
+    paginationDidEnd = [(BKBookReaderDelegate *)self->_delegate paginationDidEnd];
+    bookDidAppear = [(BKBookReaderDelegate *)self->_delegate bookDidAppear];
+    if (paginationDidEnd)
     {
-      if (v4)
+      if (bookDidAppear)
       {
         [(BKBookReaderDelegate *)self->_delegate goToFirstPage];
         v5 = 9;
@@ -83,7 +83,7 @@
       }
     }
 
-    else if (v4)
+    else if (bookDidAppear)
     {
       v5 = 5;
     }
@@ -100,13 +100,13 @@
 - (void)sleepBeforeNextBook
 {
   v3 = dispatch_time(0, (self->_sleepBeforeNextBook * 1000000000.0));
-  v4 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F158;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, queue, block);
 }
 
 - (void)doneSleepingBeforeSnapshot
@@ -122,13 +122,13 @@
 - (void)sleepBeforeSnapshot
 {
   v3 = dispatch_time(0, (self->_sleepBeforeSnapshot * 1000000000.0));
-  v4 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F264;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, queue, block);
 }
 
 - (void)doneSleepingBeforePagination
@@ -143,13 +143,13 @@
 - (void)sleepBeforePagination
 {
   v3 = dispatch_time(0, (self->_sleepBeforePagination * 1000000000.0));
-  v4 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F364;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, queue, block);
 }
 
 - (void)decideAboutOpeningTheNextBook
@@ -171,79 +171,79 @@
 
 - (void)start
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F444;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)paginationDidEnd
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F540;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)libraryDidAppear
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F628;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)bookDidAppear
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F6CC;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)newPageIsReady
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F7B4;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)pageTurnFailed
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F880;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)firstPageRequested
 {
-  v3 = [(BKBookReaderDelegate *)self->_delegate queue];
+  queue = [(BKBookReaderDelegate *)self->_delegate queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10016F980;
   block[3] = &unk_100A033C8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 @end

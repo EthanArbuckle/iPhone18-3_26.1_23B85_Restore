@@ -1,15 +1,15 @@
 @interface HKCalendarScrollViewController
-- (CGPoint)_centerPointToCenterDate:(id)a3;
-- (CGPoint)_setWeekViewsToCenterDate:(id)a3 forceUpdate:(BOOL)a4;
+- (CGPoint)_centerPointToCenterDate:(id)date;
+- (CGPoint)_setWeekViewsToCenterDate:(id)date forceUpdate:(BOOL)update;
 - (CGRect)_visibleContentRect;
-- (HKCalendarScrollViewController)initWithCoder:(id)a3;
-- (HKCalendarScrollViewController)initWithSelectedDate:(id)a3;
+- (HKCalendarScrollViewController)initWithCoder:(id)coder;
+- (HKCalendarScrollViewController)initWithSelectedDate:(id)date;
 - (HKCalendarScrollViewControllerDelegate)delegate;
 - (UIScrollView)scrollView;
 - (double)_heightOfAllWeekCells;
 - (id)_currentlyCenteredVisibleWeek;
-- (id)_startDateToTileWeekViews:(id)a3;
-- (id)_weekForDate:(id)a3;
+- (id)_startDateToTileWeekViews:(id)views;
+- (id)_weekForDate:(id)date;
 - (id)_weekViewContainingTitleForThisMonth;
 - (id)_weekViewForToday;
 - (unint64_t)_firstVisibleWeekIndex;
@@ -17,26 +17,26 @@
 - (void)_findCenteredWeekAndUpdateTitleIfNecessary;
 - (void)_pulseCircle;
 - (void)_refreshViewsAndUpdateToday;
-- (void)_selectCellForDate:(id)a3;
+- (void)_selectCellForDate:(id)date;
 - (void)_selectTodayCell;
 - (void)dealloc;
 - (void)loadView;
-- (void)scrollToDate:(id)a3 animateIfPossible:(BOOL)a4;
+- (void)scrollToDate:(id)date animateIfPossible:(BOOL)possible;
 - (void)scrollView;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setSelectedCell:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setSelectedCell:(id)cell;
 - (void)updateVisibleAccessoryViews;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)week:(id)a3 cellSelected:(id)a4;
+- (void)week:(id)week cellSelected:(id)selected;
 @end
 
 @implementation HKCalendarScrollViewController
 
-- (HKCalendarScrollViewController)initWithSelectedDate:(id)a3
+- (HKCalendarScrollViewController)initWithSelectedDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = HKCalendarScrollViewController;
   v6 = [(HKCalendarScrollViewController *)&v17 initWithNibName:0 bundle:0];
@@ -44,9 +44,9 @@
   if (v6)
   {
     v6->_numberOfRows = 32;
-    v8 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = v7->_calendar;
-    v7->_calendar = v8;
+    v7->_calendar = currentCalendar;
 
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7->_numberOfRows];
     weekViews = v7->_weekViews;
@@ -54,24 +54,24 @@
 
     v7->_needsInitialOffset = 1;
     v12 = [HKDateCache alloc];
-    v13 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v14 = [(HKDateCache *)v12 initWithCalendar:v13];
+    currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+    v14 = [(HKDateCache *)v12 initWithCalendar:currentCalendar2];
     dateCache = v7->_dateCache;
     v7->_dateCache = v14;
 
     [(HKDateCache *)v7->_dateCache registerObserver:v7];
     v7->_topInset = 42.0;
-    objc_storeStrong(&v7->_initiallyCenteredDate, a3);
+    objc_storeStrong(&v7->_initiallyCenteredDate, date);
   }
 
   return v7;
 }
 
-- (HKCalendarScrollViewController)initWithCoder:(id)a3
+- (HKCalendarScrollViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HKCalendarScrollViewController;
-  return [(HKCalendarScrollViewController *)&v4 initWithCoder:a3];
+  return [(HKCalendarScrollViewController *)&v4 initWithCoder:coder];
 }
 
 - (void)dealloc
@@ -84,7 +84,7 @@
 
 - (UIScrollView)scrollView
 {
-  v4 = [(HKCalendarScrollViewController *)self view];
+  view = [(HKCalendarScrollViewController *)self view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -105,8 +105,8 @@
     {
       v4 = [[HKMonthWeekView alloc] initWithDateCache:self->_dateCache displaysMonthTitle:1 displaysTopBorderLine:1];
       [(HKCalendarWeekView *)v4 setDelegate:self];
-      v5 = [(HKCalendarScrollViewController *)self scrollView];
-      [v5 addSubview:v4];
+      scrollView = [(HKCalendarScrollViewController *)self scrollView];
+      [scrollView addSubview:v4];
 
       [(NSMutableArray *)self->_weekViews addObject:v4];
       ++v3;
@@ -119,7 +119,7 @@
 - (void)_refreshViewsAndUpdateToday
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(HKCalendarScrollViewController *)self _weekViewContainingTitleForThisMonth];
+  _weekViewContainingTitleForThisMonth = [(HKCalendarScrollViewController *)self _weekViewContainingTitleForThisMonth];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -141,7 +141,7 @@
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 reloadCells];
-        [v9 setTitleHighlighted:v9 == v3];
+        [v9 setTitleHighlighted:v9 == _weekViewContainingTitleForThisMonth];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -150,8 +150,8 @@
     while (v6);
   }
 
-  v10 = [(HKCalendarDayCell *)self->_selectedCell date];
-  if (v10 && (v11 = v10, calendar = self->_calendar, [(HKCalendarDayCell *)self->_selectedCell date], v13 = objc_claimAutoreleasedReturnValue(), LOBYTE(calendar) = [(NSCalendar *)calendar isDateInYesterday:v13], v13, v11, (calendar & 1) == 0))
+  date = [(HKCalendarDayCell *)self->_selectedCell date];
+  if (date && (v11 = date, calendar = self->_calendar, [(HKCalendarDayCell *)self->_selectedCell date], v13 = objc_claimAutoreleasedReturnValue(), LOBYTE(calendar) = [(NSCalendar *)calendar isDateInYesterday:v13], v13, v11, (calendar & 1) == 0))
   {
     [(HKCalendarScrollViewController *)self setSelectedCell:self->_selectedCell];
   }
@@ -167,32 +167,32 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
   [(HKCalendarScrollViewController *)self setView:v3];
 
-  v4 = [(HKCalendarScrollViewController *)self scrollView];
-  [v4 setDelegate:self];
+  scrollView = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView setDelegate:self];
 
-  v5 = [(HKCalendarScrollViewController *)self scrollView];
-  [v5 setScrollsToTop:0];
+  scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView2 setScrollsToTop:0];
 
-  v6 = [(HKCalendarScrollViewController *)self scrollView];
-  [v6 setBounces:0];
+  scrollView3 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView3 setBounces:0];
 
   v7 = *MEMORY[0x1E69DDCE0];
   v8 = *(MEMORY[0x1E69DDCE0] + 8);
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
   v10 = *(MEMORY[0x1E69DDCE0] + 24);
-  v11 = [(HKCalendarScrollViewController *)self scrollView];
-  [v11 setContentInset:{v7, v8, v9, v10}];
+  scrollView4 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView4 setContentInset:{v7, v8, v9, v10}];
 
-  v12 = [(HKCalendarScrollViewController *)self scrollView];
-  [v12 setShowsVerticalScrollIndicator:0];
+  scrollView5 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView5 setShowsVerticalScrollIndicator:0];
 
-  v13 = [(HKCalendarScrollViewController *)self scrollView];
-  [v13 setShowsHorizontalScrollIndicator:0];
+  scrollView6 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView6 setShowsHorizontalScrollIndicator:0];
 
   v14 = *MEMORY[0x1E695F060];
   v15 = *(MEMORY[0x1E695F060] + 8);
-  v16 = [(HKCalendarScrollViewController *)self scrollView];
-  [v16 setContentSize:{v14, v15}];
+  scrollView7 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView7 setContentSize:{v14, v15}];
 
   [(HKCalendarScrollViewController *)self _createWeekViews];
 }
@@ -207,27 +207,27 @@
     initiallyCenteredDate = self->_initiallyCenteredDate;
     if (initiallyCenteredDate)
     {
-      v4 = initiallyCenteredDate;
+      date = initiallyCenteredDate;
     }
 
     else
     {
-      v4 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    v5 = v4;
-    [(HKCalendarScrollViewController *)self _setWeekViewsToCenterDate:v4 forceUpdate:0];
+    v5 = date;
+    [(HKCalendarScrollViewController *)self _setWeekViewsToCenterDate:date forceUpdate:0];
     v7 = v6;
     v9 = v8;
-    v10 = [(HKCalendarScrollViewController *)self scrollView];
-    v11 = [(HKCalendarScrollViewController *)self scrollView];
-    [v11 bounds];
+    scrollView = [(HKCalendarScrollViewController *)self scrollView];
+    scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView2 bounds];
     v13 = v12;
     [(HKCalendarScrollViewController *)self _heightOfAllWeekCells];
-    [v10 setContentSize:{v13, v14}];
+    [scrollView setContentSize:{v13, v14}];
 
-    v15 = [(HKCalendarScrollViewController *)self scrollView];
-    [v15 setContentOffset:0 animated:{v7, v9}];
+    scrollView3 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView3 setContentOffset:0 animated:{v7, v9}];
 
     if (!self->_selectedCell)
     {
@@ -237,23 +237,23 @@
     self->_needsInitialOffset = 0;
   }
 
-  v16 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v17 = [(HKCalendarScrollViewController *)self scrollView];
-  [v17 setBackgroundColor:v16];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  scrollView4 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView4 setBackgroundColor:systemBackgroundColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HKCalendarScrollViewController;
-  [(HKCalendarScrollViewController *)&v4 viewDidAppear:a3];
+  [(HKCalendarScrollViewController *)&v4 viewDidAppear:appear];
   [(HKCalendarScrollViewController *)self updateVisibleAccessoryViews];
 }
 
 - (id)_weekViewForToday
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(HKCalendarScrollViewController *)self _weekForDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [(HKCalendarScrollViewController *)self _weekForDate:date];
 
   return v4;
 }
@@ -261,8 +261,8 @@
 - (id)_weekViewContainingTitleForThisMonth
 {
   calendar = self->_calendar;
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(NSCalendar *)calendar components:14 fromDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [(NSCalendar *)calendar components:14 fromDate:date];
 
   [v5 setDay:1];
   v6 = [(NSCalendar *)self->_calendar dateFromComponents:v5];
@@ -273,17 +273,17 @@
 
 - (void)_pulseCircle
 {
-  v3 = [(HKCalendarScrollViewController *)self _weekViewForToday];
+  _weekViewForToday = [(HKCalendarScrollViewController *)self _weekViewForToday];
   v4 = [HKUITodayCirclePulseView alloc];
   [(HKMonthDayCell *)self->_selectedCell frame];
   v5 = [(HKUITodayCirclePulseView *)v4 initWithFrame:?];
   [(HKCalendarDayCell *)self->_selectedCell dayDiameter];
   [(HKUITodayCirclePulseView *)v5 setCircleDiameter:?];
-  v6 = [(HKCalendarDayCell *)self->_selectedCell dayLabel];
-  v7 = [v6 contents];
-  [(HKUITodayCirclePulseView *)v5 setDayLabelContent:v7];
+  dayLabel = [(HKCalendarDayCell *)self->_selectedCell dayLabel];
+  contents = [dayLabel contents];
+  [(HKUITodayCirclePulseView *)v5 setDayLabelContent:contents];
 
-  [v3 addSubview:v5];
+  [_weekViewForToday addSubview:v5];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__HKCalendarScrollViewController__pulseCircle__block_invoke;
@@ -296,8 +296,8 @@
 - (void)_selectTodayCell
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(HKCalendarDayCell *)self->_selectedCell date];
-  if (v3 && (v4 = v3, v5 = self->_dateCache, [(HKCalendarDayCell *)self->_selectedCell date], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(v5) = [(HKDateCache *)v5 isDateInToday:v6], v6, v4, v5))
+  date = [(HKCalendarDayCell *)self->_selectedCell date];
+  if (date && (v4 = date, v5 = self->_dateCache, [(HKCalendarDayCell *)self->_selectedCell date], v6 = objc_claimAutoreleasedReturnValue(), LODWORD(v5) = [(HKDateCache *)v5 isDateInToday:v6], v6, v4, v5))
   {
 
     [(HKCalendarScrollViewController *)self _pulseCircle];
@@ -332,8 +332,8 @@
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v11 = [v10 dayCells];
-          v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          dayCells = [v10 dayCells];
+          v12 = [dayCells countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v12)
           {
             v13 = v12;
@@ -344,17 +344,17 @@
               {
                 if (*v26 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(dayCells);
                 }
 
                 v16 = *(*(&v25 + 1) + 8 * i);
-                v17 = [v16 date];
-                if (v17)
+                date2 = [v16 date];
+                if (date2)
                 {
-                  v18 = v17;
+                  v18 = date2;
                   dateCache = self->_dateCache;
-                  v20 = [v16 date];
-                  LOBYTE(dateCache) = [(HKDateCache *)dateCache isDateInToday:v20];
+                  date3 = [v16 date];
+                  LOBYTE(dateCache) = [(HKDateCache *)dateCache isDateInToday:date3];
 
                   if (dateCache)
                   {
@@ -366,7 +366,7 @@
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v13 = [dayCells countByEnumeratingWithState:&v25 objects:v33 count:16];
               if (v13)
               {
                 continue;
@@ -392,13 +392,13 @@ LABEL_24:
   }
 }
 
-- (void)_selectCellForDate:(id)a3
+- (void)_selectCellForDate:(id)date
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKCalendarDayCell *)self->_selectedCell date];
+  dateCopy = date;
+  date = [(HKCalendarDayCell *)self->_selectedCell date];
   v6 = 0x1E695D000uLL;
-  if (!v5 || (v7 = v5, [MEMORY[0x1E695DEE8] currentCalendar], v8 = objc_claimAutoreleasedReturnValue(), -[HKCalendarDayCell date](self->_selectedCell, "date"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "compareDate:toDate:toUnitGranularity:", v9, v4, 16), v9, v8, v7, v10))
+  if (!date || (v7 = date, [MEMORY[0x1E695DEE8] currentCalendar], v8 = objc_claimAutoreleasedReturnValue(), -[HKCalendarDayCell date](self->_selectedCell, "date"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "compareDate:toDate:toUnitGranularity:", v9, dateCopy, 16), v9, v8, v7, v10))
   {
     v39 = 0u;
     v40 = 0u;
@@ -410,9 +410,9 @@ LABEL_24:
     {
       v12 = *v38;
       v27 = *v38;
-      v28 = self;
+      selfCopy = self;
       v31 = v11;
-      v32 = v4;
+      v32 = dateCopy;
       do
       {
         v13 = 0;
@@ -429,8 +429,8 @@ LABEL_24:
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v15 = [v14 dayCells];
-          v16 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          dayCells = [v14 dayCells];
+          v16 = [dayCells countByEnumeratingWithState:&v33 objects:v41 count:16];
           if (v16)
           {
             v17 = v16;
@@ -441,32 +441,32 @@ LABEL_24:
               {
                 if (*v34 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(dayCells);
                 }
 
                 v20 = *(*(&v33 + 1) + 8 * i);
-                v21 = [v20 date];
-                if (v21)
+                date2 = [v20 date];
+                if (date2)
                 {
-                  v22 = v21;
+                  v22 = date2;
                   [*(v6 + 3816) currentCalendar];
                   v24 = v23 = v6;
-                  v25 = [v20 date];
-                  v26 = [v24 compareDate:v25 toDate:v32 toUnitGranularity:16];
+                  date3 = [v20 date];
+                  v26 = [v24 compareDate:date3 toDate:v32 toUnitGranularity:16];
 
                   v6 = v23;
                   if (!v26)
                   {
-                    [(HKCalendarScrollViewController *)v28 setSelectedCell:v20];
+                    [(HKCalendarScrollViewController *)selfCopy setSelectedCell:v20];
 
                     v11 = v31;
-                    v4 = v32;
+                    dateCopy = v32;
                     goto LABEL_21;
                   }
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
+              v17 = [dayCells countByEnumeratingWithState:&v33 objects:v41 count:16];
               if (v17)
               {
                 continue;
@@ -478,7 +478,7 @@ LABEL_24:
 
           v13 = v30 + 1;
           v11 = v31;
-          v4 = v32;
+          dateCopy = v32;
           v12 = v27;
         }
 
@@ -493,13 +493,13 @@ LABEL_21:
   }
 }
 
-- (void)setSelectedCell:(id)a3
+- (void)setSelectedCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   [(HKMonthDayCell *)self->_selectedCell setSelected:0];
-  [(HKMonthDayCell *)v4 setSelected:1];
+  [(HKMonthDayCell *)cellCopy setSelected:1];
   selectedCell = self->_selectedCell;
-  self->_selectedCell = v4;
+  self->_selectedCell = cellCopy;
 }
 
 - (double)_heightOfAllWeekCells
@@ -543,37 +543,37 @@ LABEL_21:
   return v6;
 }
 
-- (id)_startDateToTileWeekViews:(id)a3
+- (id)_startDateToTileWeekViews:(id)views
 {
   v4 = MEMORY[0x1E695DF10];
-  v5 = a3;
+  viewsCopy = views;
   v6 = objc_alloc_init(v4);
   [v6 setWeekOfYear:-((self->_numberOfRows >> 1) - 1)];
-  v7 = [(NSCalendar *)self->_calendar dateByAddingComponents:v6 toDate:v5 options:0];
+  v7 = [(NSCalendar *)self->_calendar dateByAddingComponents:v6 toDate:viewsCopy options:0];
 
   v8 = [(NSCalendar *)self->_calendar hk_startOfWeekWithFirstWeekday:[(NSCalendar *)self->_calendar firstWeekday] beforeDate:v7 addingWeeks:0];
 
   return v8;
 }
 
-- (CGPoint)_centerPointToCenterDate:(id)a3
+- (CGPoint)_centerPointToCenterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKCalendarScrollViewController *)self _weekForDate:v4];
+  dateCopy = date;
+  v5 = [(HKCalendarScrollViewController *)self _weekForDate:dateCopy];
   v6 = v5;
   if (v5)
   {
-    [v5 frameForDayCell:v4];
+    [v5 frameForDayCell:dateCopy];
     v8 = v7;
     v10 = v9;
     [v6 frame];
     v12 = v8 + v11;
-    v13 = [(HKCalendarScrollViewController *)self view];
-    [v13 safeAreaInsets];
+    view = [(HKCalendarScrollViewController *)self view];
+    [view safeAreaInsets];
     v15 = v14;
 
-    v16 = [(HKCalendarScrollViewController *)self scrollView];
-    [v16 frame];
+    scrollView = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView frame];
     v18 = v15 + round((v17 - v15) * 0.5);
 
     v19 = v10 * 0.5 + v12 - v18;
@@ -593,35 +593,35 @@ LABEL_21:
   return result;
 }
 
-- (CGPoint)_setWeekViewsToCenterDate:(id)a3 forceUpdate:(BOOL)a4
+- (CGPoint)_setWeekViewsToCenterDate:(id)date forceUpdate:(BOOL)update
 {
-  v6 = a3;
-  v7 = [(HKCalendarScrollViewController *)self _currentlyCenteredVisibleWeek];
-  v8 = v7;
-  if (v7 && [v7 containsDate:v6] && !a4)
+  dateCopy = date;
+  _currentlyCenteredVisibleWeek = [(HKCalendarScrollViewController *)self _currentlyCenteredVisibleWeek];
+  v8 = _currentlyCenteredVisibleWeek;
+  if (_currentlyCenteredVisibleWeek && [_currentlyCenteredVisibleWeek containsDate:dateCopy] && !update)
   {
-    v9 = [(HKCalendarScrollViewController *)self scrollView];
-    [v9 contentOffset];
+    scrollView = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView contentOffset];
     v11 = v10;
     v13 = v12;
   }
 
   else
   {
-    v9 = [(HKCalendarScrollViewController *)self _startDateToTileWeekViews:v6];
-    v14 = [(HKCalendarDayCell *)self->_selectedCell date];
+    scrollView = [(HKCalendarScrollViewController *)self _startDateToTileWeekViews:dateCopy];
+    date = [(HKCalendarDayCell *)self->_selectedCell date];
     if (self->_numberOfRows)
     {
       v15 = 0;
       do
       {
         v16 = [(NSMutableArray *)self->_weekViews objectAtIndex:v15];
-        v17 = [(NSCalendar *)self->_calendar dateByAddingUnit:0x2000 value:v15 toDate:v9 options:0];
+        v17 = [(NSCalendar *)self->_calendar dateByAddingUnit:0x2000 value:v15 toDate:scrollView options:0];
         [v16 setMonthWeekStart:v17];
 
-        if ([v16 containsDate:v14])
+        if ([v16 containsDate:date])
         {
-          v18 = [v16 cellMatchingDate:v14];
+          v18 = [v16 cellMatchingDate:date];
           [(HKCalendarScrollViewController *)self setSelectedCell:v18];
         }
 
@@ -637,8 +637,8 @@ LABEL_21:
           MaxY = 0.0;
         }
 
-        v21 = [(HKCalendarScrollViewController *)self view];
-        [v21 bounds];
+        view = [(HKCalendarScrollViewController *)self view];
+        [view bounds];
         v23 = v22;
         [v16 preferredHeight];
         [v16 setFrame:{0.0, MaxY, v23, v24}];
@@ -650,10 +650,10 @@ LABEL_21:
       while (v15 < self->_numberOfRows);
     }
 
-    v25 = [(HKCalendarScrollViewController *)self _weekViewContainingTitleForThisMonth];
-    [v25 setTitleHighlighted:1];
+    _weekViewContainingTitleForThisMonth = [(HKCalendarScrollViewController *)self _weekViewContainingTitleForThisMonth];
+    [_weekViewContainingTitleForThisMonth setTitleHighlighted:1];
 
-    [(HKCalendarScrollViewController *)self _centerPointToCenterDate:v6];
+    [(HKCalendarScrollViewController *)self _centerPointToCenterDate:dateCopy];
     v11 = v26;
     v13 = v27;
   }
@@ -665,10 +665,10 @@ LABEL_21:
   return result;
 }
 
-- (id)_weekForDate:(id)a3
+- (id)_weekForDate:(id)date
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -688,7 +688,7 @@ LABEL_21:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 containsDate:{v4, v11}])
+        if ([v9 containsDate:{dateCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -712,33 +712,33 @@ LABEL_11:
 
 - (CGRect)_visibleContentRect
 {
-  v3 = [(HKCalendarScrollViewController *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  viewIfLoaded = [(HKCalendarScrollViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
-    v6 = [v5 statusBarManager];
-    [v6 statusBarFrame];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v8 = v7;
 
-    v9 = [(HKCalendarScrollViewController *)self view];
-    [v9 safeAreaInsets];
+    view = [(HKCalendarScrollViewController *)self view];
+    [view safeAreaInsets];
     v11 = v8 + v10;
 
-    v12 = [(HKCalendarScrollViewController *)self scrollView];
-    [v12 contentOffset];
+    scrollView = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView contentOffset];
     v14 = v11 + v13;
 
-    v15 = [(HKCalendarScrollViewController *)self scrollView];
-    [v15 frame];
+    scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView2 frame];
     v17 = v16 - v11;
 
-    v18 = [(HKCalendarScrollViewController *)self scrollView];
-    [v18 frame];
+    scrollView3 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView3 frame];
     v20 = v19;
-    v21 = [(HKCalendarScrollViewController *)self scrollView];
-    [v21 frame];
+    scrollView4 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView4 frame];
     v23 = v22;
   }
 
@@ -764,15 +764,15 @@ LABEL_11:
 - (id)_currentlyCenteredVisibleWeek
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(HKCalendarScrollViewController *)self _firstVisibleWeekIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  _firstVisibleWeekIndex = [(HKCalendarScrollViewController *)self _firstVisibleWeekIndex];
+  if (_firstVisibleWeekIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
+    v5 = _firstVisibleWeekIndex;
     v6 = [(NSMutableArray *)self->_weekViews count];
     v7 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v5, v6 - v5}];
     v31 = 0u;
@@ -795,18 +795,18 @@ LABEL_11:
           }
 
           v13 = *(*(&v31 + 1) + 8 * i);
-          v14 = [(HKCalendarScrollViewController *)self scrollView];
+          scrollView = [(HKCalendarScrollViewController *)self scrollView];
           [v13 frame];
           v16 = v15;
           v18 = v17;
-          v19 = [(HKCalendarScrollViewController *)self view];
-          [v14 convertPoint:v19 toView:{v16, v18}];
+          view = [(HKCalendarScrollViewController *)self view];
+          [scrollView convertPoint:view toView:{v16, v18}];
           v21 = v20;
 
           [v13 frame];
           v23 = v21 + v22;
-          v24 = [(HKCalendarScrollViewController *)self scrollView];
-          [v24 frame];
+          scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
+          [scrollView2 frame];
           v26 = floor(v25 * 0.5);
 
           if (v23 > v26)
@@ -830,8 +830,8 @@ LABEL_11:
 LABEL_13:
   }
 
-  v27 = [v4 currentWeekStartDate];
-  if (v27)
+  currentWeekStartDate = [v4 currentWeekStartDate];
+  if (currentWeekStartDate)
   {
     v28 = v4;
   }
@@ -879,38 +879,38 @@ void __56__HKCalendarScrollViewController__firstVisibleWeekIndex__block_invoke(u
   }
 }
 
-- (void)scrollToDate:(id)a3 animateIfPossible:(BOOL)a4
+- (void)scrollToDate:(id)date animateIfPossible:(BOOL)possible
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [(HKCalendarScrollViewController *)self scrollView];
-  if ([v6 isTracking])
+  possibleCopy = possible;
+  dateCopy = date;
+  scrollView = [(HKCalendarScrollViewController *)self scrollView];
+  if ([scrollView isTracking])
   {
   }
 
   else
   {
-    v7 = [(HKCalendarScrollViewController *)self scrollView];
-    v8 = [v7 isDecelerating];
+    scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
+    isDecelerating = [scrollView2 isDecelerating];
 
-    if (!v8)
+    if (!isDecelerating)
     {
       goto LABEL_5;
     }
   }
 
-  v9 = [(HKCalendarScrollViewController *)self scrollView];
-  [v9 stopScrollingAndZooming];
+  scrollView3 = [(HKCalendarScrollViewController *)self scrollView];
+  [scrollView3 stopScrollingAndZooming];
 
 LABEL_5:
-  v10 = [(HKCalendarScrollViewController *)self _currentlyCenteredVisibleWeek];
-  if ([v10 containsDate:v15])
+  _currentlyCenteredVisibleWeek = [(HKCalendarScrollViewController *)self _currentlyCenteredVisibleWeek];
+  if ([_currentlyCenteredVisibleWeek containsDate:dateCopy])
   {
     goto LABEL_12;
   }
 
-  v11 = [v10 currentWeekStartDate];
-  [v11 timeIntervalSinceDate:v15];
+  currentWeekStartDate = [_currentlyCenteredVisibleWeek currentWeekStartDate];
+  [currentWeekStartDate timeIntervalSinceDate:dateCopy];
   v13 = (v12 / (*MEMORY[0x1E696B760] * *MEMORY[0x1E696B510]));
 
   if (v13 < 0)
@@ -918,13 +918,13 @@ LABEL_5:
     v13 = -v13;
   }
 
-  v14 = [(HKCalendarScrollViewController *)self scrollView];
+  scrollView4 = [(HKCalendarScrollViewController *)self scrollView];
   if (v13 < 0x11)
   {
-    [(HKCalendarScrollViewController *)self _centerPointToCenterDate:v15];
-    [v14 setContentOffset:v4 animated:?];
+    [(HKCalendarScrollViewController *)self _centerPointToCenterDate:dateCopy];
+    [scrollView4 setContentOffset:possibleCopy animated:?];
 
-    if (v4)
+    if (possibleCopy)
     {
       goto LABEL_12;
     }
@@ -932,57 +932,57 @@ LABEL_5:
 
   else
   {
-    [(HKCalendarScrollViewController *)self _setWeekViewsToCenterDate:v15 forceUpdate:0];
-    [v14 setContentOffset:0 animated:?];
+    [(HKCalendarScrollViewController *)self _setWeekViewsToCenterDate:dateCopy forceUpdate:0];
+    [scrollView4 setContentOffset:0 animated:?];
   }
 
   [(HKCalendarScrollViewController *)self updateVisibleAccessoryViews];
 LABEL_12:
-  [(HKCalendarScrollViewController *)self _selectCellForDate:v15];
+  [(HKCalendarScrollViewController *)self _selectCellForDate:dateCopy];
 }
 
-- (void)week:(id)a3 cellSelected:(id)a4
+- (void)week:(id)week cellSelected:(id)selected
 {
-  v5 = a4;
-  [(HKCalendarScrollViewController *)self setSelectedCell:v5];
-  v7 = [(HKCalendarScrollViewController *)self delegate];
-  v6 = [v5 date];
+  selectedCopy = selected;
+  [(HKCalendarScrollViewController *)self setSelectedCell:selectedCopy];
+  delegate = [(HKCalendarScrollViewController *)self delegate];
+  date = [selectedCopy date];
 
-  [v7 calendarScrollViewController:self didSelectDate:v6];
+  [delegate calendarScrollViewController:self didSelectDate:date];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scrollCopy = scroll;
   if ([(NSMutableArray *)self->_weekViews count])
   {
-    [v4 contentOffset];
-    if (v5 < 150.0 || (v6 = v5, [v4 contentSize], v8 = v7, objc_msgSend(v4, "frame"), v6 > v8 - v9 + -150.0))
+    [scrollCopy contentOffset];
+    if (v5 < 150.0 || (v6 = v5, [scrollCopy contentSize], v8 = v7, objc_msgSend(scrollCopy, "frame"), v6 > v8 - v9 + -150.0))
     {
-      v10 = [(HKCalendarScrollViewController *)self _currentlyCenteredVisibleWeek];
-      if (!v10)
+      _currentlyCenteredVisibleWeek = [(HKCalendarScrollViewController *)self _currentlyCenteredVisibleWeek];
+      if (!_currentlyCenteredVisibleWeek)
       {
-        v10 = [(NSMutableArray *)self->_weekViews lastObject];
+        _currentlyCenteredVisibleWeek = [(NSMutableArray *)self->_weekViews lastObject];
       }
 
-      v11 = [v10 currentWeekStartDate];
+      currentWeekStartDate = [_currentlyCenteredVisibleWeek currentWeekStartDate];
 
-      if (v11)
+      if (currentWeekStartDate)
       {
-        v12 = [v10 currentWeekStartDate];
-        v13 = [(HKCalendarScrollViewController *)self view];
-        v14 = [v13 superview];
-        [v10 frame];
-        [v14 convertPoint:v4 fromView:?];
+        currentWeekStartDate2 = [_currentlyCenteredVisibleWeek currentWeekStartDate];
+        view = [(HKCalendarScrollViewController *)self view];
+        superview = [view superview];
+        [_currentlyCenteredVisibleWeek frame];
+        [superview convertPoint:scrollCopy fromView:?];
 
-        [(HKCalendarScrollViewController *)self _setWeekViewsToCenterDate:v12 forceUpdate:1];
-        [v4 setContentOffset:?];
-        v15 = [(HKCalendarScrollViewController *)self _weekForDate:v12];
-        v16 = [(HKCalendarScrollViewController *)self view];
-        v17 = [v16 superview];
+        [(HKCalendarScrollViewController *)self _setWeekViewsToCenterDate:currentWeekStartDate2 forceUpdate:1];
+        [scrollCopy setContentOffset:?];
+        v15 = [(HKCalendarScrollViewController *)self _weekForDate:currentWeekStartDate2];
+        view2 = [(HKCalendarScrollViewController *)self view];
+        superview2 = [view2 superview];
         [v15 frame];
-        [v17 convertPoint:v4 fromView:?];
+        [superview2 convertPoint:scrollCopy fromView:?];
 
         v26 = 0u;
         v27 = 0u;
@@ -1020,9 +1020,9 @@ LABEL_12:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(HKCalendarScrollViewController *)self updateVisibleAccessoryViews];
   }
@@ -1031,22 +1031,22 @@ LABEL_12:
 - (void)updateVisibleAccessoryViews
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(HKCalendarScrollViewController *)self delegate];
+  delegate = [(HKCalendarScrollViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HKCalendarScrollViewController *)self scrollView];
-    [v5 contentOffset];
+    scrollView = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView contentOffset];
     v7 = v6;
-    v8 = [(HKCalendarScrollViewController *)self scrollView];
-    [v8 contentOffset];
+    scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView2 contentOffset];
     v10 = v9;
-    v11 = [(HKCalendarScrollViewController *)self scrollView];
-    [v11 frame];
+    scrollView3 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView3 frame];
     v13 = v12;
-    v14 = [(HKCalendarScrollViewController *)self scrollView];
-    [v14 frame];
+    scrollView4 = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView4 frame];
     v16 = v15;
 
     v46 = 0u;
@@ -1061,7 +1061,7 @@ LABEL_12:
       v20 = *v45;
       v34 = v39;
       v36 = v17;
-      v37 = self;
+      selfCopy = self;
       v35 = *v45;
       do
       {
@@ -1093,8 +1093,8 @@ LABEL_12:
                 v43 = 0u;
                 v40 = 0u;
                 v41 = 0u;
-                v27 = [v22 accessoryViews];
-                v28 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
+                accessoryViews = [v22 accessoryViews];
+                v28 = [accessoryViews countByEnumeratingWithState:&v40 objects:v48 count:16];
                 if (v28)
                 {
                   v29 = v28;
@@ -1105,28 +1105,28 @@ LABEL_12:
                     {
                       if (*v41 != v30)
                       {
-                        objc_enumerationMutation(v27);
+                        objc_enumerationMutation(accessoryViews);
                       }
 
-                      v32 = [*(*(&v40 + 1) + 8 * j) subviews];
-                      [v32 makeObjectsPerformSelector:sel_removeFromSuperview];
+                      subviews = [*(*(&v40 + 1) + 8 * j) subviews];
+                      [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
                     }
 
-                    v29 = [v27 countByEnumeratingWithState:&v40 objects:v48 count:16];
+                    v29 = [accessoryViews countByEnumeratingWithState:&v40 objects:v48 count:16];
                   }
 
                   while (v29);
                 }
 
                 [v22 setAccessoryContentsFetched:1];
-                v33 = [v22 dayCells];
+                dayCells = [v22 dayCells];
                 v38[0] = MEMORY[0x1E69E9820];
                 v38[1] = 3221225472;
                 v39[0] = __61__HKCalendarScrollViewController_updateVisibleAccessoryViews__block_invoke;
                 v39[1] = &unk_1E81B74B0;
-                v39[2] = v37;
+                v39[2] = selfCopy;
                 v39[3] = v22;
-                [v33 enumerateObjectsUsingBlock:v38];
+                [dayCells enumerateObjectsUsingBlock:v38];
 
                 v20 = v35;
                 v17 = v36;
@@ -1207,12 +1207,12 @@ void __61__HKCalendarScrollViewController_updateVisibleAccessoryViews__block_inv
 - (void)_findCenteredWeekAndUpdateTitleIfNecessary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(HKCalendarScrollViewController *)self delegate];
+  delegate = [(HKCalendarScrollViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(HKCalendarScrollViewController *)self scrollView];
-    [v4 bounds];
+    scrollView = [(HKCalendarScrollViewController *)self scrollView];
+    [scrollView bounds];
     MidY = CGRectGetMidY(v38);
 
     v34 = 0u;
@@ -1236,14 +1236,14 @@ void __61__HKCalendarScrollViewController_updateVisibleAccessoryViews__block_inv
           }
 
           v11 = *(*(&v32 + 1) + 8 * v10);
-          v12 = [(HKCalendarScrollViewController *)self scrollView];
+          scrollView2 = [(HKCalendarScrollViewController *)self scrollView];
           [v11 frame];
           v14 = v13;
           v16 = v15;
           v18 = v17;
           v20 = v19;
-          v21 = [(HKCalendarScrollViewController *)self view];
-          [v12 convertRect:v21 toView:{v14, v16, v18, v20}];
+          view = [(HKCalendarScrollViewController *)self view];
+          [scrollView2 convertRect:view toView:{v14, v16, v18, v20}];
           v23 = v22;
           v25 = v24;
           v27 = v26;
@@ -1261,9 +1261,9 @@ void __61__HKCalendarScrollViewController_updateVisibleAccessoryViews__block_inv
             v40.size.height = v29;
             if (CGRectGetMaxY(v40) > MidY)
             {
-              v30 = [(HKCalendarScrollViewController *)self delegate];
-              v31 = [v11 currentWeekStartDate];
-              [v30 calendarScrollViewController:self didUpdateCenteredMonth:v31];
+              delegate2 = [(HKCalendarScrollViewController *)self delegate];
+              currentWeekStartDate = [v11 currentWeekStartDate];
+              [delegate2 calendarScrollViewController:self didUpdateCenteredMonth:currentWeekStartDate];
             }
           }
 
@@ -1288,8 +1288,8 @@ void __61__HKCalendarScrollViewController_updateVisibleAccessoryViews__block_inv
 
 - (void)scrollView
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKCalendarScrollViewController.m" lineNumber:59 description:@"Our view should be a UIScrollView. It's not and now I'm sad."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKCalendarScrollViewController.m" lineNumber:59 description:@"Our view should be a UIScrollView. It's not and now I'm sad."];
 }
 
 @end

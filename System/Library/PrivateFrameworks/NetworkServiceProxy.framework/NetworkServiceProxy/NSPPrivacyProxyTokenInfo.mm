@@ -1,52 +1,52 @@
 @interface NSPPrivacyProxyTokenInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTokenRequestList:(id)a3;
-- (void)addUnactivatedTokenList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokenRequestList:(id)list;
+- (void)addUnactivatedTokenList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTokenInfo
 
-- (void)addUnactivatedTokenList:(id)a3
+- (void)addUnactivatedTokenList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   unactivatedTokenLists = self->_unactivatedTokenLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!unactivatedTokenLists)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_unactivatedTokenLists;
     self->_unactivatedTokenLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     unactivatedTokenLists = self->_unactivatedTokenLists;
   }
 
-  [(NSMutableArray *)unactivatedTokenLists addObject:v4];
+  [(NSMutableArray *)unactivatedTokenLists addObject:listCopy];
 }
 
-- (void)addTokenRequestList:(id)a3
+- (void)addTokenRequestList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   tokenRequestLists = self->_tokenRequestLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!tokenRequestLists)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_tokenRequestLists;
     self->_tokenRequestLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     tokenRequestLists = self->_tokenRequestLists;
   }
 
-  [(NSMutableArray *)tokenRequestLists addObject:v4];
+  [(NSMutableArray *)tokenRequestLists addObject:listCopy];
 }
 
 - (id)description
@@ -55,20 +55,20 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTokenInfo;
   v4 = [(NSPPrivacyProxyTokenInfo *)&v8 description];
-  v5 = [(NSPPrivacyProxyTokenInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTokenInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   proxyURL = self->_proxyURL;
   if (proxyURL)
   {
-    [v3 setObject:proxyURL forKey:@"proxyURL"];
+    [dictionary setObject:proxyURL forKey:@"proxyURL"];
   }
 
   tokenKeyID = self->_tokenKeyID;
@@ -98,16 +98,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_proxyURL)
   {
     __assert_rtn("[NSPPrivacyProxyTokenInfo writeTo:]", "NSPPrivacyProxyTokenInfo.m", 187, "nil != self->_proxyURL");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_tokenKeyID)
   {
@@ -187,56 +187,56 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
-  [v12 setProxyURL:self->_proxyURL];
-  [v12 setTokenKeyID:self->_tokenKeyID];
+  toCopy = to;
+  [toCopy setProxyURL:self->_proxyURL];
+  [toCopy setTokenKeyID:self->_tokenKeyID];
   if ([(NSPPrivacyProxyTokenInfo *)self unactivatedTokenListsCount])
   {
-    [v12 clearUnactivatedTokenLists];
-    v4 = [(NSPPrivacyProxyTokenInfo *)self unactivatedTokenListsCount];
-    if (v4)
+    [toCopy clearUnactivatedTokenLists];
+    unactivatedTokenListsCount = [(NSPPrivacyProxyTokenInfo *)self unactivatedTokenListsCount];
+    if (unactivatedTokenListsCount)
     {
-      v5 = v4;
+      v5 = unactivatedTokenListsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSPPrivacyProxyTokenInfo *)self unactivatedTokenListAtIndex:i];
-        [v12 addUnactivatedTokenList:v7];
+        [toCopy addUnactivatedTokenList:v7];
       }
     }
   }
 
   if (self->_vendor)
   {
-    [v12 setVendor:?];
+    [toCopy setVendor:?];
   }
 
   if ([(NSPPrivacyProxyTokenInfo *)self tokenRequestListsCount])
   {
-    [v12 clearTokenRequestLists];
-    v8 = [(NSPPrivacyProxyTokenInfo *)self tokenRequestListsCount];
-    if (v8)
+    [toCopy clearTokenRequestLists];
+    tokenRequestListsCount = [(NSPPrivacyProxyTokenInfo *)self tokenRequestListsCount];
+    if (tokenRequestListsCount)
     {
-      v9 = v8;
+      v9 = tokenRequestListsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NSPPrivacyProxyTokenInfo *)self tokenRequestListAtIndex:j];
-        [v12 addTokenRequestList:v11];
+        [toCopy addTokenRequestList:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_proxyURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_proxyURL copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_tokenKeyID copyWithZone:a3];
+  v8 = [(NSData *)self->_tokenKeyID copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -260,7 +260,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v30 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v30 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addUnactivatedTokenList:v15];
 
         ++v14;
@@ -273,7 +273,7 @@
     while (v12);
   }
 
-  v16 = [(NSString *)self->_vendor copyWithZone:a3];
+  v16 = [(NSString *)self->_vendor copyWithZone:zone];
   v17 = v5[5];
   v5[5] = v16;
 
@@ -297,7 +297,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{a3, v26}];
+        v23 = [*(*(&v26 + 1) + 8 * v22) copyWithZone:{zone, v26}];
         [v5 addTokenRequestList:v23];
 
         ++v22;
@@ -314,13 +314,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((proxyURL = self->_proxyURL, !(proxyURL | v4[1])) || -[NSString isEqual:](proxyURL, "isEqual:")) && ((tokenKeyID = self->_tokenKeyID, !(tokenKeyID | v4[2])) || -[NSData isEqual:](tokenKeyID, "isEqual:")) && ((unactivatedTokenLists = self->_unactivatedTokenLists, !(unactivatedTokenLists | v4[4])) || -[NSMutableArray isEqual:](unactivatedTokenLists, "isEqual:")) && ((vendor = self->_vendor, !(vendor | v4[5])) || -[NSString isEqual:](vendor, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((proxyURL = self->_proxyURL, !(proxyURL | equalCopy[1])) || -[NSString isEqual:](proxyURL, "isEqual:")) && ((tokenKeyID = self->_tokenKeyID, !(tokenKeyID | equalCopy[2])) || -[NSData isEqual:](tokenKeyID, "isEqual:")) && ((unactivatedTokenLists = self->_unactivatedTokenLists, !(unactivatedTokenLists | equalCopy[4])) || -[NSMutableArray isEqual:](unactivatedTokenLists, "isEqual:")) && ((vendor = self->_vendor, !(vendor | equalCopy[5])) || -[NSString isEqual:](vendor, "isEqual:")))
   {
     tokenRequestLists = self->_tokenRequestLists;
-    if (tokenRequestLists | v4[3])
+    if (tokenRequestLists | equalCopy[3])
     {
       v10 = [(NSMutableArray *)tokenRequestLists isEqual:?];
     }
@@ -348,16 +348,16 @@
   return v6 ^ [(NSMutableArray *)self->_tokenRequestLists hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(NSPPrivacyProxyTokenInfo *)self setProxyURL:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NSPPrivacyProxyTokenInfo *)self setTokenKeyID:?];
   }
@@ -366,7 +366,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -390,7 +390,7 @@
     while (v7);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NSPPrivacyProxyTokenInfo *)self setVendor:?];
   }
@@ -399,7 +399,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

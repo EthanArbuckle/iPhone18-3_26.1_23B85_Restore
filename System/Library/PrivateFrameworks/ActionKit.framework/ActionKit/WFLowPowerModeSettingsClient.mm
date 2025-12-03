@@ -1,28 +1,28 @@
 @interface WFLowPowerModeSettingsClient
 + (id)energyModeStream;
 + (id)reversalArbiter;
-+ (void)createClientWithCompletionHandler:(id)a3;
-+ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)a3;
-+ (void)getBookmarkForFirstEventAfterBookmark:(id)a3 completionHandler:(id)a4;
-+ (void)getReversalStateWithBookmark:(id)a3 completionHandler:(id)a4;
-- (WFLowPowerModeSettingsClient)initWithLowPowerMode:(id)a3;
-- (void)getStateWithCompletionHandler:(id)a3;
-- (void)setState:(BOOL)a3 completionHandler:(id)a4;
++ (void)createClientWithCompletionHandler:(id)handler;
++ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)handler;
++ (void)getBookmarkForFirstEventAfterBookmark:(id)bookmark completionHandler:(id)handler;
++ (void)getReversalStateWithBookmark:(id)bookmark completionHandler:(id)handler;
+- (WFLowPowerModeSettingsClient)initWithLowPowerMode:(id)mode;
+- (void)getStateWithCompletionHandler:(id)handler;
+- (void)setState:(BOOL)state completionHandler:(id)handler;
 @end
 
 @implementation WFLowPowerModeSettingsClient
 
-- (void)setState:(BOOL)a3 completionHandler:(id)a4
+- (void)setState:(BOOL)state completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__WFLowPowerModeSettingsClient_setState_completionHandler___block_invoke;
   v8[3] = &unk_278C1D8F8;
   v8[4] = self;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = handlerCopy;
+  stateCopy = state;
+  v7 = handlerCopy;
   [(WFLowPowerModeSettingsClient *)self getStateWithCompletionHandler:v8];
 }
 
@@ -144,13 +144,13 @@ void __59__WFLowPowerModeSettingsClient_setState_completionHandler___block_invok
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getStateWithCompletionHandler:(id)a3
+- (void)getStateWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAC38];
-  v4 = a3;
-  v5 = [v3 processInfo];
-  v6 = [v5 isLowPowerModeEnabled];
+  handlerCopy = handler;
+  processInfo = [v3 processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
   v7 = getWFBundledIntentsLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -158,21 +158,21 @@ void __59__WFLowPowerModeSettingsClient_setState_completionHandler___block_invok
     v9 = 136315394;
     v10 = "[WFLowPowerModeSettingsClient getStateWithCompletionHandler:]";
     v11 = 1024;
-    v12 = v6;
+    v12 = isLowPowerModeEnabled;
     _os_log_impl(&dword_23DE30000, v7, OS_LOG_TYPE_INFO, "%s Retrieved Low Power Mode state: %d", &v9, 0x12u);
   }
 
-  v4[2](v4, v6, 0);
+  handlerCopy[2](handlerCopy, isLowPowerModeEnabled, 0);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (WFLowPowerModeSettingsClient)initWithLowPowerMode:(id)a3
+- (WFLowPowerModeSettingsClient)initWithLowPowerMode:(id)mode
 {
-  v6 = a3;
-  if (!v6)
+  modeCopy = mode;
+  if (!modeCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFLowPowerModeSettingsClient.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"lowPowerMode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLowPowerModeSettingsClient.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"lowPowerMode"}];
   }
 
   v12.receiver = self;
@@ -181,27 +181,27 @@ void __59__WFLowPowerModeSettingsClient_setState_completionHandler___block_invok
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_lowPowerMode, a3);
+    objc_storeStrong(&v7->_lowPowerMode, mode);
     v9 = v8;
   }
 
   return v8;
 }
 
-+ (void)getReversalStateWithBookmark:(id)a3 completionHandler:(id)a4
++ (void)getReversalStateWithBookmark:(id)bookmark completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 reversalArbiter];
-  v9 = [v7 biomeBookmark];
+  handlerCopy = handler;
+  bookmarkCopy = bookmark;
+  reversalArbiter = [self reversalArbiter];
+  biomeBookmark = [bookmarkCopy biomeBookmark];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __79__WFLowPowerModeSettingsClient_getReversalStateWithBookmark_completionHandler___block_invoke;
   v11[3] = &unk_278C19A68;
-  v12 = v6;
-  v10 = v6;
-  [v8 getReversalStateWithBookmark:v9 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [reversalArbiter getReversalStateWithBookmark:biomeBookmark completionHandler:v11];
 }
 
 void __79__WFLowPowerModeSettingsClient_getReversalStateWithBookmark_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -223,17 +223,17 @@ void __79__WFLowPowerModeSettingsClient_getReversalStateWithBookmark_completionH
   }
 }
 
-+ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)a3
++ (void)getBookmarkForCurrentStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 reversalArbiter];
+  handlerCopy = handler;
+  reversalArbiter = [self reversalArbiter];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__WFLowPowerModeSettingsClient_getBookmarkForCurrentStateWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C1D920;
-  v8 = v4;
-  v6 = v4;
-  [v5 getBookmarkForCurrentStateWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [reversalArbiter getBookmarkForCurrentStateWithCompletionHandler:v7];
 }
 
 void __80__WFLowPowerModeSettingsClient_getBookmarkForCurrentStateWithCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -253,20 +253,20 @@ void __80__WFLowPowerModeSettingsClient_getBookmarkForCurrentStateWithCompletion
   }
 }
 
-+ (void)getBookmarkForFirstEventAfterBookmark:(id)a3 completionHandler:(id)a4
++ (void)getBookmarkForFirstEventAfterBookmark:(id)bookmark completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 reversalArbiter];
-  v9 = [v7 biomeBookmark];
+  handlerCopy = handler;
+  bookmarkCopy = bookmark;
+  reversalArbiter = [self reversalArbiter];
+  biomeBookmark = [bookmarkCopy biomeBookmark];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__WFLowPowerModeSettingsClient_getBookmarkForFirstEventAfterBookmark_completionHandler___block_invoke;
   v11[3] = &unk_278C1D920;
-  v12 = v6;
-  v10 = v6;
-  [v8 getBookmarkForFirstEventAfterBookmark:v9 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [reversalArbiter getBookmarkForFirstEventAfterBookmark:biomeBookmark completionHandler:v11];
 }
 
 void __88__WFLowPowerModeSettingsClient_getBookmarkForFirstEventAfterBookmark_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -289,8 +289,8 @@ void __88__WFLowPowerModeSettingsClient_getBookmarkForFirstEventAfterBookmark_co
 + (id)reversalArbiter
 {
   v3 = objc_alloc(MEMORY[0x277D7C850]);
-  v4 = [a1 energyModeStream];
-  v5 = [v3 initWithBiomeStream:v4];
+  energyModeStream = [self energyModeStream];
+  v5 = [v3 initWithBiomeStream:energyModeStream];
 
   return v5;
 }
@@ -298,16 +298,16 @@ void __88__WFLowPowerModeSettingsClient_getBookmarkForFirstEventAfterBookmark_co
 + (id)energyModeStream
 {
   v2 = BiomeLibrary();
-  v3 = [v2 Device];
-  v4 = [v3 Power];
-  v5 = [v4 EnergyMode];
+  device = [v2 Device];
+  power = [device Power];
+  energyMode = [power EnergyMode];
 
-  return v5;
+  return energyMode;
 }
 
-+ (void)createClientWithCompletionHandler:(id)a3
++ (void)createClientWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -326,17 +326,17 @@ void __88__WFLowPowerModeSettingsClient_getBookmarkForFirstEventAfterBookmark_co
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [v5 sharedInstance];
-  if (v7)
+  sharedInstance = [v5 sharedInstance];
+  if (sharedInstance)
   {
-    v8 = [[a1 alloc] initWithLowPowerMode:v7];
-    v4[2](v4, v8, 0);
+    v8 = [[self alloc] initWithLowPowerMode:sharedInstance];
+    handlerCopy[2](handlerCopy, v8, 0);
   }
 
   else
   {
     v8 = WFSettingsClientError();
-    (v4)[2](v4, 0, v8);
+    (handlerCopy)[2](handlerCopy, 0, v8);
   }
 }
 

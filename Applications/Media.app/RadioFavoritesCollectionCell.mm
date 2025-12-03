@@ -1,25 +1,25 @@
 @interface RadioFavoritesCollectionCell
-- (_TtC5Media28RadioFavoritesCollectionCell)initWithCoder:(id)a3;
-- (_TtC5Media28RadioFavoritesCollectionCell)initWithFrame:(CGRect)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC5Media28RadioFavoritesCollectionCell)initWithCoder:(id)coder;
+- (_TtC5Media28RadioFavoritesCollectionCell)initWithFrame:(CGRect)frame;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation RadioFavoritesCollectionCell
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10005A7C0(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_10005A7C0(contextCopy, coordinatorCopy);
 }
 
-- (_TtC5Media28RadioFavoritesCollectionCell)initWithFrame:(CGRect)a3
+- (_TtC5Media28RadioFavoritesCollectionCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC5Media28RadioFavoritesCollectionCell_config;
   *v7 = 0;
   v7[10] = 0;
@@ -29,7 +29,7 @@
   return [(RadioFavoritesCollectionCell *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5Media28RadioFavoritesCollectionCell)initWithCoder:(id)a3
+- (_TtC5Media28RadioFavoritesCollectionCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC5Media28RadioFavoritesCollectionCell_config;
   *v4 = 0;
@@ -37,8 +37,8 @@
   *(v4 + 4) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for RadioFavoritesCollectionCell();
-  v5 = a3;
-  v6 = [(RadioFavoritesCollectionCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(RadioFavoritesCollectionCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

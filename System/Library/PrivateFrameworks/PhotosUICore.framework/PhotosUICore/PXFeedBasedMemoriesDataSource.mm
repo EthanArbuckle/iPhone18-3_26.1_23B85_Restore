@@ -1,27 +1,27 @@
 @interface PXFeedBasedMemoriesDataSource
-- (PXFeedBasedMemoriesDataSource)initWithDataSource:(id)a3;
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)sectionedObjectReferenceForMemoryUUID:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (PXFeedBasedMemoriesDataSource)initWithDataSource:(id)source;
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)sectionedObjectReferenceForMemoryUUID:(id)d;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
 @end
 
 @implementation PXFeedBasedMemoriesDataSource
 
-- (id)sectionedObjectReferenceForMemoryUUID:(id)a3
+- (id)sectionedObjectReferenceForMemoryUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PXFeedBasedMemoriesDataSource *)self entries];
-  v6 = [v5 firstObject];
-  v7 = [v6 memories];
+  dCopy = d;
+  entries = [(PXFeedBasedMemoriesDataSource *)self entries];
+  firstObject = [entries firstObject];
+  memories = [firstObject memories];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__PXFeedBasedMemoriesDataSource_sectionedObjectReferenceForMemoryUUID___block_invoke;
   v13[3] = &unk_1E7735308;
-  v8 = v4;
+  v8 = dCopy;
   v14 = v8;
-  v9 = [v7 indexOfObjectPassingTest:v13];
+  v9 = [memories indexOfObjectPassingTest:v13];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -51,7 +51,7 @@ uint64_t __71__PXFeedBasedMemoriesDataSource_sectionedObjectReferenceForMemoryUU
   return v7;
 }
 
-- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)a3
+- (PXSimpleIndexPath)indexPathForObjectReference:(SEL)reference
 {
   v6 = a4;
   *&retstr->dataSourceIdentifier = 0u;
@@ -61,11 +61,11 @@ uint64_t __71__PXFeedBasedMemoriesDataSource_sectionedObjectReferenceForMemoryUU
   [(PXSimpleIndexPath *)&v17 indexPathForObjectReference:v6];
   if (retstr->dataSourceIdentifier == *off_1E7721F68)
   {
-    v7 = [v6 itemObject];
+    itemObject = [v6 itemObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 assetCollection];
+      assetCollection = [itemObject assetCollection];
     }
 
     else
@@ -79,22 +79,22 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v8 = v7;
+      assetCollection = itemObject;
     }
 
-    v9 = v8;
-    if (v8)
+    v9 = assetCollection;
+    if (assetCollection)
     {
-      v10 = [(PXFeedBasedMemoriesDataSource *)self entries];
-      v11 = [v10 firstObject];
-      v12 = [v11 memories];
+      entries = [(PXFeedBasedMemoriesDataSource *)self entries];
+      firstObject = [entries firstObject];
+      memories = [firstObject memories];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __61__PXFeedBasedMemoriesDataSource_indexPathForObjectReference___block_invoke;
       v15[3] = &unk_1E7735308;
       v9 = v9;
       v16 = v9;
-      v13 = [v12 indexOfObjectPassingTest:v15];
+      v13 = [memories indexOfObjectPassingTest:v15];
 
       if (v13 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -130,22 +130,22 @@ uint64_t __61__PXFeedBasedMemoriesDataSource_indexPathForObjectReference___block
   return v5;
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  p_item = &a3->item;
-  if (a3->dataSourceIdentifier == *off_1E7721F68)
+  p_item = &path->item;
+  if (path->dataSourceIdentifier == *off_1E7721F68)
   {
 LABEL_12:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = NSStringFromSelector(a2);
-    [v13 handleFailureInMethod:a2 object:self file:@"PXMemoriesDataSource.m" lineNumber:247 description:{@"%@: expected an item or section index path", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMemoriesDataSource.m" lineNumber:247 description:{@"%@: expected an item or section index path", v14}];
 
     abort();
   }
 
-  p_section = &a3->section;
+  p_section = &path->section;
   v5 = *p_item;
-  if (a3->section == 0x7FFFFFFFFFFFFFFFLL)
+  if (path->section == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -155,56 +155,56 @@ LABEL_12:
 
   else if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(PXFeedBasedMemoriesDataSource *)self entries];
+    entries = [(PXFeedBasedMemoriesDataSource *)self entries];
     goto LABEL_9;
   }
 
-  if (a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_12;
   }
 
-  v7 = [(PXFeedBasedMemoriesDataSource *)self entries];
-  v8 = [v7 firstObject];
-  v6 = [v8 memories];
+  entries2 = [(PXFeedBasedMemoriesDataSource *)self entries];
+  firstObject = [entries2 firstObject];
+  entries = [firstObject memories];
 
   p_section = p_item;
 LABEL_9:
-  v9 = [v6 objectAtIndexedSubscript:*p_section];
+  v9 = [entries objectAtIndexedSubscript:*p_section];
 
   return v9;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(PXFeedBasedMemoriesDataSource *)self entries];
-  v4 = [v3 firstObject];
-  v5 = [v4 memories];
-  v6 = [v5 count];
+  entries = [(PXFeedBasedMemoriesDataSource *)self entries];
+  firstObject = [entries firstObject];
+  memories = [firstObject memories];
+  v6 = [memories count];
 
   return v6;
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(PXFeedBasedMemoriesDataSource *)self entries];
-  v3 = [v2 firstObject];
-  v4 = v3 != 0;
+  entries = [(PXFeedBasedMemoriesDataSource *)self entries];
+  firstObject = [entries firstObject];
+  v4 = firstObject != 0;
 
   return v4;
 }
 
-- (PXFeedBasedMemoriesDataSource)initWithDataSource:(id)a3
+- (PXFeedBasedMemoriesDataSource)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = PXFeedBasedMemoriesDataSource;
   v5 = [(PXFeedBasedMemoriesDataSource *)&v9 init];
   if (v5)
   {
-    v6 = [v4 entries];
+    entries = [sourceCopy entries];
     entries = v5->_entries;
-    v5->_entries = v6;
+    v5->_entries = entries;
   }
 
   return v5;

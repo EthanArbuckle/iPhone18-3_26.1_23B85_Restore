@@ -1,22 +1,22 @@
 @interface MTL4DebugCounterHeap
-- (MTL4DebugCounterHeap)initWithCounterHeap:(id)a3 device:(id)a4;
-- (id)resolveCounterRange:(_NSRange)a3;
-- (void)invalidateCounterRange:(_NSRange)a3;
+- (MTL4DebugCounterHeap)initWithCounterHeap:(id)heap device:(id)device;
+- (id)resolveCounterRange:(_NSRange)range;
+- (void)invalidateCounterRange:(_NSRange)range;
 @end
 
 @implementation MTL4DebugCounterHeap
 
-- (MTL4DebugCounterHeap)initWithCounterHeap:(id)a3 device:(id)a4
+- (MTL4DebugCounterHeap)initWithCounterHeap:(id)heap device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MTL4DebugCounterHeap;
-  return [(MTL4ToolsCounterHeap *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTL4ToolsCounterHeap *)&v5 initWithBaseObject:heap parent:device];
 }
 
-- (void)invalidateCounterRange:(_NSRange)a3
+- (void)invalidateCounterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13 = 0;
   v11 = 0u;
   v12 = 0u;
@@ -37,10 +37,10 @@
   _MTLMessageContextEnd();
 }
 
-- (id)resolveCounterRange:(_NSRange)a3
+- (id)resolveCounterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v15 = 0;
   v13 = 0u;
   v14 = 0u;

@@ -1,8 +1,8 @@
 @interface _DKAppUsageTombstoneRequirement
 - (id)eventPredicate;
 - (id)predicate;
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromEvent:(id)a4;
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromPartialEvent:(id)a4;
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromEvent:(id)event;
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromPartialEvent:(id)event;
 @end
 
 @implementation _DKAppUsageTombstoneRequirement
@@ -11,8 +11,8 @@
 {
   v2 = MEMORY[0x1E696AE18];
   v3 = +[_DKSystemEventStreams appUsageStream];
-  v4 = [v3 name];
-  v5 = [v2 predicateWithFormat:@"streamName == %@", v4];
+  name = [v3 name];
+  v5 = [v2 predicateWithFormat:@"streamName == %@", name];
 
   return v5;
 }
@@ -21,34 +21,34 @@
 {
   v2 = MEMORY[0x1E696AE18];
   v3 = +[_DKSystemEventStreams appUsageStream];
-  v4 = [v3 name];
-  v5 = [v2 predicateWithFormat:@"stream.name == %@", v4];
+  name = [v3 name];
+  v5 = [v2 predicateWithFormat:@"stream.name == %@", name];
 
   return v5;
 }
 
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromEvent:(id)a4
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 startDate];
-  [v6 setStartDate:v7];
+  eventCopy = event;
+  tombstoneCopy = tombstone;
+  startDate = [eventCopy startDate];
+  [tombstoneCopy setStartDate:startDate];
 
-  v8 = [v5 endDate];
+  endDate = [eventCopy endDate];
 
-  [v6 setEndDate:v8];
+  [tombstoneCopy setEndDate:endDate];
 }
 
-- (void)assignPropertiesToTombstone:(id)a3 extractedFromPartialEvent:(id)a4
+- (void)assignPropertiesToTombstone:(id)tombstone extractedFromPartialEvent:(id)event
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectForKeyedSubscript:@"startDate"];
-  [v6 setStartDate:v7];
+  eventCopy = event;
+  tombstoneCopy = tombstone;
+  v7 = [eventCopy objectForKeyedSubscript:@"startDate"];
+  [tombstoneCopy setStartDate:v7];
 
-  v8 = [v5 objectForKeyedSubscript:@"endDate"];
+  v8 = [eventCopy objectForKeyedSubscript:@"endDate"];
 
-  [v6 setEndDate:v8];
+  [tombstoneCopy setEndDate:v8];
 }
 
 @end

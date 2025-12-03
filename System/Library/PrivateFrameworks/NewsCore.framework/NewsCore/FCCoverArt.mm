@@ -1,30 +1,30 @@
 @interface FCCoverArt
-- (FCCoverArt)initWithJSONData:(id)a3;
-- (FCCoverArt)initWithJSONString:(id)a3;
+- (FCCoverArt)initWithJSONData:(id)data;
+- (FCCoverArt)initWithJSONString:(id)string;
 @end
 
 @implementation FCCoverArt
 
-- (FCCoverArt)initWithJSONString:(id)a3
+- (FCCoverArt)initWithJSONString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   v5 = [(FCCoverArt *)self initWithJSONData:v4];
 
   return v5;
 }
 
-- (FCCoverArt)initWithJSONData:(id)a3
+- (FCCoverArt)initWithJSONData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v14 = 0;
-    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v14];
+    v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v14];
     v6 = v14;
     if (v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
 
-      v11 = 0;
+      selfCopy = 0;
       v5 = v6;
     }
 
@@ -42,16 +42,16 @@
       }
 
       self = v7;
-      v11 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

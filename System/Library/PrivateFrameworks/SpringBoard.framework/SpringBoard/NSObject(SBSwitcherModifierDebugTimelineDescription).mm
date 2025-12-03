@@ -8,12 +8,12 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 succinctDescription];
+    [self succinctDescription];
   }
 
   else
   {
-    [a1 description];
+    [self description];
   }
   v2 = ;
 

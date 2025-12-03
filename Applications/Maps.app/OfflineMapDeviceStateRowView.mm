@@ -1,49 +1,49 @@
 @interface OfflineMapDeviceStateRowView
-- (OfflineMapDeviceStateRowView)initWithFrame:(CGRect)a3;
+- (OfflineMapDeviceStateRowView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)_updateContent;
-- (void)setLabelText:(id)a3;
-- (void)setTrailingAccessoryView:(id)a3;
-- (void)setValueText:(id)a3;
+- (void)setLabelText:(id)text;
+- (void)setTrailingAccessoryView:(id)view;
+- (void)setValueText:(id)text;
 @end
 
 @implementation OfflineMapDeviceStateRowView
 
 - (void)_updateContent
 {
-  v3 = [(OfflineMapDeviceStateRowView *)self labelText];
-  [(UILabel *)self->_titleLabel setText:v3];
+  labelText = [(OfflineMapDeviceStateRowView *)self labelText];
+  [(UILabel *)self->_titleLabel setText:labelText];
 
-  v4 = [(OfflineMapDeviceStateRowView *)self valueText];
-  [(UILabel *)self->_valueLabel setText:v4];
+  valueText = [(OfflineMapDeviceStateRowView *)self valueText];
+  [(UILabel *)self->_valueLabel setText:valueText];
 }
 
-- (void)setTrailingAccessoryView:(id)a3
+- (void)setTrailingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingAccessoryView = self->_trailingAccessoryView;
-  if (trailingAccessoryView != v5)
+  if (trailingAccessoryView != viewCopy)
   {
     [(UIView *)trailingAccessoryView removeFromSuperview];
-    objc_storeStrong(&self->_trailingAccessoryView, a3);
+    objc_storeStrong(&self->_trailingAccessoryView, view);
     if (self->_trailingAccessoryView)
     {
       [(OfflineMapDeviceStateRowView *)self addSubview:?];
-      v19 = [(OfflineMapDeviceStateRowView *)self trailingAnchor];
-      v18 = [(UIView *)self->_trailingAccessoryView trailingAnchor];
-      v17 = [v19 constraintEqualToAnchor:v18 constant:kMUPlacePlatterPadding];
+      trailingAnchor = [(OfflineMapDeviceStateRowView *)self trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_trailingAccessoryView trailingAnchor];
+      v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:kMUPlacePlatterPadding];
       v20[0] = v17;
-      v16 = [(UIView *)self->_trailingAccessoryView leadingAnchor];
-      v7 = [(UILabel *)self->_titleLabel trailingAnchor];
-      v8 = [v16 constraintEqualToSystemSpacingAfterAnchor:v7 multiplier:1.0];
+      leadingAnchor = [(UIView *)self->_trailingAccessoryView leadingAnchor];
+      trailingAnchor3 = [(UILabel *)self->_titleLabel trailingAnchor];
+      v8 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
       v20[1] = v8;
-      v9 = [(UIView *)self->_trailingAccessoryView leadingAnchor];
-      v10 = [(UILabel *)self->_valueLabel trailingAnchor];
-      v11 = [v9 constraintEqualToSystemSpacingAfterAnchor:v10 multiplier:1.0];
+      leadingAnchor2 = [(UIView *)self->_trailingAccessoryView leadingAnchor];
+      trailingAnchor4 = [(UILabel *)self->_valueLabel trailingAnchor];
+      v11 = [leadingAnchor2 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
       v20[2] = v11;
-      v12 = [(UIView *)self->_trailingAccessoryView centerYAnchor];
-      v13 = [(OfflineMapDeviceStateRowView *)self centerYAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      centerYAnchor = [(UIView *)self->_trailingAccessoryView centerYAnchor];
+      centerYAnchor2 = [(OfflineMapDeviceStateRowView *)self centerYAnchor];
+      v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v20[3] = v14;
       v15 = [NSArray arrayWithObjects:v20 count:4];
       [NSLayoutConstraint activateConstraints:v15];
@@ -51,11 +51,11 @@
   }
 }
 
-- (void)setValueText:(id)a3
+- (void)setValueText:(id)text
 {
-  if (self->_valueText != a3)
+  if (self->_valueText != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     valueText = self->_valueText;
     self->_valueText = v4;
 
@@ -63,11 +63,11 @@
   }
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  if (self->_labelText != a3)
+  if (self->_labelText != text)
   {
-    v4 = [a3 copy];
+    v4 = [text copy];
     labelText = self->_labelText;
     self->_labelText = v4;
 
@@ -103,41 +103,41 @@
   [(UILabel *)self->_valueLabel setAccessibilityIdentifier:@"RowValue"];
   [(UILabel *)self->_valueLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(OfflineMapDeviceStateRowView *)self addSubview:self->_valueLabel];
-  v34 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v33 = [(OfflineMapDeviceStateRowView *)self leadingAnchor];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor2 = [(OfflineMapDeviceStateRowView *)self leadingAnchor];
   v11 = kMUPlacePlatterPadding;
-  v32 = [v34 constraintEqualToAnchor:v33 constant:kMUPlacePlatterPadding];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:kMUPlacePlatterPadding];
   v35[0] = v32;
-  v31 = [(UILabel *)self->_titleLabel topAnchor];
-  v30 = [(OfflineMapDeviceStateRowView *)self topAnchor];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(OfflineMapDeviceStateRowView *)self topAnchor];
   v12 = kMUPlacePlatterCompactVerticalPadding;
-  v29 = [v31 constraintEqualToAnchor:v30 constant:kMUPlacePlatterCompactVerticalPadding];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:kMUPlacePlatterCompactVerticalPadding];
   v35[1] = v29;
-  v28 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v27 = [(OfflineMapDeviceStateRowView *)self trailingAnchor];
-  v26 = [v28 constraintLessThanOrEqualToAnchor:v27 constant:-v11];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor2 = [(OfflineMapDeviceStateRowView *)self trailingAnchor];
+  v26 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-v11];
   v35[2] = v26;
-  v25 = [(UILabel *)self->_valueLabel leadingAnchor];
-  v24 = [(OfflineMapDeviceStateRowView *)self leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:v11];
+  leadingAnchor3 = [(UILabel *)self->_valueLabel leadingAnchor];
+  leadingAnchor4 = [(OfflineMapDeviceStateRowView *)self leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v11];
   v35[3] = v23;
-  v13 = [(UILabel *)self->_valueLabel topAnchor];
-  v14 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:2.0];
+  topAnchor3 = [(UILabel *)self->_valueLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v15 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
   v35[4] = v15;
-  v16 = [(UILabel *)self->_valueLabel trailingAnchor];
-  v17 = [(OfflineMapDeviceStateRowView *)self trailingAnchor];
-  v18 = [v16 constraintLessThanOrEqualToAnchor:v17 constant:-v11];
+  trailingAnchor3 = [(UILabel *)self->_valueLabel trailingAnchor];
+  trailingAnchor4 = [(OfflineMapDeviceStateRowView *)self trailingAnchor];
+  v18 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-v11];
   v35[5] = v18;
-  v19 = [(UILabel *)self->_valueLabel bottomAnchor];
-  v20 = [(OfflineMapDeviceStateRowView *)self bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:-v12];
+  bottomAnchor2 = [(UILabel *)self->_valueLabel bottomAnchor];
+  bottomAnchor3 = [(OfflineMapDeviceStateRowView *)self bottomAnchor];
+  v21 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v12];
   v35[6] = v21;
   v22 = [NSArray arrayWithObjects:v35 count:7];
   [NSLayoutConstraint activateConstraints:v22];
 }
 
-- (OfflineMapDeviceStateRowView)initWithFrame:(CGRect)a3
+- (OfflineMapDeviceStateRowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = OfflineMapDeviceStateRowView;

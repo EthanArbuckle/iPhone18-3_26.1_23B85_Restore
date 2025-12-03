@@ -1,13 +1,13 @@
 @interface AKStarAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKStarAnnotation)initWithCoder:(id)a3;
+- (AKStarAnnotation)initWithCoder:(id)coder;
 - (id)displayName;
 - (id)keysForValuesToObserveForAdornments;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKStarAnnotation
@@ -15,7 +15,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKStarAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -28,7 +28,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKStarAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -38,14 +38,14 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if (![v4 isEqualToString:@"innerRadiusFactor"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Inner Radius", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"innerRadiusFactor"] || (+[AKController akBundle](AKController, "akBundle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "localizedStringForKey:value:table:", @"Inner Radius", &stru_28519E870, @"AnnotationStrings"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___AKStarAnnotation;
-    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
   }
 
   return v6;
@@ -64,8 +64,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKStarAnnotation;
-  v3 = [(AKPolygonAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKPolygonAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAB48];
 
@@ -77,8 +77,8 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKStarAnnotation;
-  v3 = [(AKPolygonAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKPolygonAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAB60];
 
@@ -90,33 +90,33 @@
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKStarAnnotation;
-  v3 = [(AKPolygonAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKPolygonAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BAB78];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AKStarAnnotation;
-  v4 = a3;
-  [(AKPolygonAnnotation *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AKPolygonAnnotation *)&v5 encodeWithCoder:coderCopy];
   [(AKStarAnnotation *)self innerRadiusFactor:v5.receiver];
-  [v4 encodeDouble:@"innerRadiusFactor" forKey:?];
+  [coderCopy encodeDouble:@"innerRadiusFactor" forKey:?];
 }
 
-- (AKStarAnnotation)initWithCoder:(id)a3
+- (AKStarAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AKStarAnnotation;
-  v5 = [(AKPolygonAnnotation *)&v7 initWithCoder:v4];
+  v5 = [(AKPolygonAnnotation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"innerRadiusFactor"];
+    [coderCopy decodeDoubleForKey:@"innerRadiusFactor"];
     [(AKStarAnnotation *)v5 setInnerRadiusFactor:?];
   }
 

@@ -1,6 +1,6 @@
 @interface MBActivityScheduler
 + (_TtC7backupd19MBActivityScheduler)sharedInstance;
-- (id)controlWithArguments:(id)a3 error:(id *)a4;
+- (id)controlWithArguments:(id)arguments error:(id *)error;
 @end
 
 @implementation MBActivityScheduler
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (id)controlWithArguments:(id)a3 error:(id *)a4
+- (id)controlWithArguments:(id)arguments error:(id *)error
 {
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = self;
+  selfCopy = self;
   sub_10001BEEC(v5);
 
   sub_1000042B4(&qword_10041EBC8, &qword_1002B96D8);

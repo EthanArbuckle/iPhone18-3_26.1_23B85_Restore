@@ -1,11 +1,11 @@
 @interface RMModelStatusAccountListGoogle
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 visibleName:(id)a6 username:(id)a7 isMailEnabled:(id)a8 areCalendarsEnabled:(id)a9 areContactsEnabled:(id)a10 areNotesEnabled:(id)a11;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier visibleName:(id)name username:(id)username isMailEnabled:(id)enabled areCalendarsEnabled:(id)calendarsEnabled areContactsEnabled:(id)self0 areNotesEnabled:(id)self1;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusAccountListGoogle
@@ -31,23 +31,23 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 declarationIdentifier:(id)a5 visibleName:(id)a6 username:(id)a7 isMailEnabled:(id)a8 areCalendarsEnabled:(id)a9 areContactsEnabled:(id)a10 areNotesEnabled:(id)a11
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed declarationIdentifier:(id)declarationIdentifier visibleName:(id)name username:(id)username isMailEnabled:(id)enabled areCalendarsEnabled:(id)calendarsEnabled areContactsEnabled:(id)self0 areNotesEnabled:(id)self1
 {
-  v28 = a11;
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  notesEnabledCopy = notesEnabled;
+  contactsEnabledCopy = contactsEnabled;
+  calendarsEnabledCopy = calendarsEnabled;
+  enabledCopy = enabled;
+  usernameCopy = username;
+  nameCopy = name;
+  declarationIdentifierCopy = declarationIdentifier;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v25 = objc_opt_new();
-  [v25 setStatusIdentifier:v24];
+  [v25 setStatusIdentifier:identifierCopy];
 
-  if (v23)
+  if (removedCopy)
   {
-    v26 = v23;
+    v26 = removedCopy;
   }
 
   else
@@ -57,25 +57,25 @@
 
   [v25 setStatusRemoved:v26];
 
-  [v25 setStatusDeclarationIdentifier:v22];
-  [v25 setStatusVisibleName:v21];
+  [v25 setStatusDeclarationIdentifier:declarationIdentifierCopy];
+  [v25 setStatusVisibleName:nameCopy];
 
-  [v25 setStatusUsername:v20];
-  [v25 setStatusIsMailEnabled:v19];
+  [v25 setStatusUsername:usernameCopy];
+  [v25 setStatusIsMailEnabled:enabledCopy];
 
-  [v25 setStatusAreCalendarsEnabled:v18];
-  [v25 setStatusAreContactsEnabled:v17];
+  [v25 setStatusAreCalendarsEnabled:calendarsEnabledCopy];
+  [v25 setStatusAreContactsEnabled:contactsEnabledCopy];
 
-  [v25 setStatusAreNotesEnabled:v28];
+  [v25 setStatusAreNotesEnabled:notesEnabledCopy];
 
   return v25;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
-  [v4 setStatusIdentifier:v3];
+  [v4 setStatusIdentifier:identifierCopy];
 
   return v4;
 }
@@ -118,12 +118,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusAccountListGoogle allowedStatusKeys];
   [v10 minusSet:v11];
@@ -131,50 +131,50 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"visible-name" forKeyPath:@"statusVisibleName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"username" forKeyPath:@"statusUsername" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"is-mail-enabled" forKeyPath:@"statusIsMailEnabled" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"are-calendars-enabled" forKeyPath:@"statusAreCalendarsEnabled" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"are-contacts-enabled" forKeyPath:@"statusAreContactsEnabled" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"are-notes-enabled" forKeyPath:@"statusAreNotesEnabled" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"declaration-identifier" forKeyPath:@"statusDeclarationIdentifier" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"visible-name" forKeyPath:@"statusVisibleName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"username" forKeyPath:@"statusUsername" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"is-mail-enabled" forKeyPath:@"statusIsMailEnabled" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"are-calendars-enabled" forKeyPath:@"statusAreCalendarsEnabled" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"are-contacts-enabled" forKeyPath:@"statusAreContactsEnabled" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"are-notes-enabled" forKeyPath:@"statusAreNotesEnabled" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusAccountListGoogle *)self statusIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"identifier" value:v5 isRequired:1 defaultValue:0];
+  statusIdentifier = [(RMModelStatusAccountListGoogle *)self statusIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"identifier" value:statusIdentifier isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusAccountListGoogle *)self statusRemoved];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"_removed" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  statusRemoved = [(RMModelStatusAccountListGoogle *)self statusRemoved];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"_removed" value:statusRemoved isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v7 = [(RMModelStatusAccountListGoogle *)self statusDeclarationIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"declaration-identifier" value:v7 isRequired:0 defaultValue:0];
+  statusDeclarationIdentifier = [(RMModelStatusAccountListGoogle *)self statusDeclarationIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"declaration-identifier" value:statusDeclarationIdentifier isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelStatusAccountListGoogle *)self statusVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"visible-name" value:v8 isRequired:0 defaultValue:0];
+  statusVisibleName = [(RMModelStatusAccountListGoogle *)self statusVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"visible-name" value:statusVisibleName isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelStatusAccountListGoogle *)self statusUsername];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"username" value:v9 isRequired:0 defaultValue:0];
+  statusUsername = [(RMModelStatusAccountListGoogle *)self statusUsername];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"username" value:statusUsername isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelStatusAccountListGoogle *)self statusIsMailEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"is-mail-enabled" value:v10 isRequired:0 defaultValue:0];
+  statusIsMailEnabled = [(RMModelStatusAccountListGoogle *)self statusIsMailEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"is-mail-enabled" value:statusIsMailEnabled isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelStatusAccountListGoogle *)self statusAreCalendarsEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"are-calendars-enabled" value:v11 isRequired:0 defaultValue:0];
+  statusAreCalendarsEnabled = [(RMModelStatusAccountListGoogle *)self statusAreCalendarsEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"are-calendars-enabled" value:statusAreCalendarsEnabled isRequired:0 defaultValue:0];
 
-  v12 = [(RMModelStatusAccountListGoogle *)self statusAreContactsEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"are-contacts-enabled" value:v12 isRequired:0 defaultValue:0];
+  statusAreContactsEnabled = [(RMModelStatusAccountListGoogle *)self statusAreContactsEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"are-contacts-enabled" value:statusAreContactsEnabled isRequired:0 defaultValue:0];
 
-  v13 = [(RMModelStatusAccountListGoogle *)self statusAreNotesEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"are-notes-enabled" value:v13 isRequired:0 defaultValue:0];
+  statusAreNotesEnabled = [(RMModelStatusAccountListGoogle *)self statusAreNotesEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"are-notes-enabled" value:statusAreNotesEnabled isRequired:0 defaultValue:0];
 
   v14 = [v4 copy];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24.receiver = self;
   v24.super_class = RMModelStatusAccountListGoogle;
-  v4 = [(RMModelPayloadBase *)&v24 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v24 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

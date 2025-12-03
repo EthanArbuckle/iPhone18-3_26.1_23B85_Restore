@@ -1,13 +1,13 @@
 @interface WiFiUsageSessionCAConfig
 - (BOOL)canSubmit;
-- (WiFiUsageSessionCAConfig)initWithSampling:(unint64_t)a3 minInterval:(double)a4;
+- (WiFiUsageSessionCAConfig)initWithSampling:(unint64_t)sampling minInterval:(double)interval;
 - (id)description;
 - (void)countSubmission;
 @end
 
 @implementation WiFiUsageSessionCAConfig
 
-- (WiFiUsageSessionCAConfig)initWithSampling:(unint64_t)a3 minInterval:(double)a4
+- (WiFiUsageSessionCAConfig)initWithSampling:(unint64_t)sampling minInterval:(double)interval
 {
   v10.receiver = self;
   v10.super_class = WiFiUsageSessionCAConfig;
@@ -15,8 +15,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_ca_sampling = a3;
-    v6->_ca_minTimeIntervalBetweenSubmissions = a4;
+    v6->_ca_sampling = sampling;
+    v6->_ca_minTimeIntervalBetweenSubmissions = interval;
     ca_lastSubmission = v6->_ca_lastSubmission;
     v6->_ca_lastSubmission = 0;
   }

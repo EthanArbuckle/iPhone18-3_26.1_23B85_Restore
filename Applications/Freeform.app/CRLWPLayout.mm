@@ -1,12 +1,12 @@
 @interface CRLWPLayout
 - (BOOL)isInstructional;
 - (BOOL)isOverflowing;
-- (BOOL)markedTextContainsPoint:(CGPoint)a3;
+- (BOOL)markedTextContainsPoint:(CGPoint)point;
 - (BOOL)parentAutosizes;
 - (CGPoint)anchorPoint;
 - (CGPoint)position;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3;
+- (CGRect)rectInRootForSelectionPath:(id)path;
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path;
 - (CGSize)currentSize;
 - (CGSize)maxSize;
 - (CGSize)minSize;
@@ -14,75 +14,75 @@
 - (NSArray)dependentLayouts;
 - (NSArray)renderingOverrides;
 - (NSMutableArray)columns;
-- (_TtC8Freeform11CRLWPLayout)initWithInfo:(id)a3;
-- (double)viewScaleForZoomingToSelectionPath:(id)a3 targetPointSize:(double)a4;
-- (id)closestPositionTo:(CGPoint)a3;
-- (id)columnMetricsForCharIndex:(int64_t)a3 outRange:(_NSRange *)a4;
+- (_TtC8Freeform11CRLWPLayout)initWithInfo:(id)info;
+- (double)viewScaleForZoomingToSelectionPath:(id)path targetPointSize:(double)size;
+- (id)closestPositionTo:(CGPoint)to;
+- (id)columnMetricsForCharIndex:(int64_t)index outRange:(_NSRange *)range;
 - (id)computeLayoutGeometry;
-- (id)selectionRectsFor:(id)a3;
+- (id)selectionRectsFor:(id)for;
 - (id)textWrapper;
 - (int64_t)naturalAlignment;
 - (void)invalidateSize;
 - (void)invalidateTextLayout;
-- (void)layoutSearchForSpellingErrorsWithHitBlock:(id)a3 stop:(BOOL *)a4;
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5 completionBlock:(id)a6;
+- (void)layoutSearchForSpellingErrorsWithHitBlock:(id)block stop:(BOOL *)stop;
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block completionBlock:(id)completionBlock;
 - (void)validate;
 @end
 
 @implementation CRLWPLayout
 
-- (_TtC8Freeform11CRLWPLayout)initWithInfo:(id)a3
+- (_TtC8Freeform11CRLWPLayout)initWithInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v4 = sub_1007AB2E4(a3);
+  v4 = sub_1007AB2E4(info);
   swift_unknownObjectRelease();
   return v4;
 }
 
 - (BOOL)parentAutosizes
 {
-  v2 = self;
-  v3 = [(CRLCanvasAbstractLayout *)v2 parent];
-  if (!v3)
+  selfCopy = self;
+  parent = [(CRLCanvasAbstractLayout *)selfCopy parent];
+  if (!parent)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
+  v4 = parent;
   v5 = swift_dynamicCastObjCProtocolConditional();
   if (!v5)
   {
 
 LABEL_5:
-    v9.receiver = v2;
+    v9.receiver = selfCopy;
     v9.super_class = type metadata accessor for CRLWPLayout();
-    v7 = [(CRLCanvasLayout *)&v9 parentAutosizes];
+    parentAutosizes = [(CRLCanvasLayout *)&v9 parentAutosizes];
 
-    return v7;
+    return parentAutosizes;
   }
 
-  v6 = [v5 autosizeFlagsFor:v2];
+  v6 = [v5 autosizeFlagsFor:selfCopy];
 
   return v6 != 0;
 }
 
 - (void)validate
 {
-  v2 = self;
+  selfCopy = self;
   CRLWPLayout.validate()();
 }
 
 - (void)invalidateTextLayout
 {
-  v2 = self;
-  if ([(CRLWPLayout *)v2 parentAutosizes])
+  selfCopy = self;
+  if ([(CRLWPLayout *)selfCopy parentAutosizes])
   {
-    [(CRLWPLayout *)v2 invalidateSize];
+    [(CRLWPLayout *)selfCopy invalidateSize];
   }
 
-  *(&v2->super.super.super.isa + OBJC_IVAR____TtC8Freeform11CRLWPLayout_textLayoutIsValid) = 0;
-  [(CRLCanvasLayout *)v2 invalidate];
-  [(CRLCanvasLayout *)v2 setNeedsDisplay];
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8Freeform11CRLWPLayout_textLayoutIsValid) = 0;
+  [(CRLCanvasLayout *)selfCopy invalidate];
+  [(CRLCanvasLayout *)selfCopy setNeedsDisplay];
 }
 
 - (void)invalidateSize
@@ -95,27 +95,27 @@ LABEL_5:
 
 - (id)computeLayoutGeometry
 {
-  v2 = self;
+  selfCopy = self;
   CRLWPLayout.computeLayoutGeometry()(v3);
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)markedTextContainsPoint:(CGPoint)a3
+- (BOOL)markedTextContainsPoint:(CGPoint)point
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1007A1554();
 
   return v4 & 1;
 }
 
-- (id)selectionRectsFor:(id)a3
+- (id)selectionRectsFor:(id)for
 {
   type metadata accessor for CRLTextRange();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = qword_1019F1570;
-  v6 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
@@ -124,7 +124,7 @@ LABEL_5:
   v10[3] = sub_1005B981C(&unk_101A001E0);
   v10[0] = v4;
 
-  sub_1007A22B0(v6, v4, &v9);
+  sub_1007A22B0(selfCopy, v4, &v9);
   sub_100005070(v10);
 
   type metadata accessor for CRLTextSelectionRect();
@@ -133,16 +133,16 @@ LABEL_5:
   return v7.super.isa;
 }
 
-- (id)closestPositionTo:(CGPoint)a3
+- (id)closestPositionTo:(CGPoint)to
 {
   v3 = qword_1019F1570;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
   }
 
-  sub_1007A3814(v4, &v7);
+  sub_1007A3814(selfCopy, &v7);
 
   v5 = v7;
 
@@ -151,7 +151,7 @@ LABEL_5:
 
 - (NSArray)dependentLayouts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLWPLayout.dependentLayouts.getter();
 
   if (v3)
@@ -168,10 +168,10 @@ LABEL_5:
   return v4.super.isa;
 }
 
-- (void)layoutSearchForString:(id)a3 options:(unint64_t)a4 hitBlock:(id)a5 completionBlock:(id)a6
+- (void)layoutSearchForString:(id)string options:(unint64_t)options hitBlock:(id)block completionBlock:(id)completionBlock
 {
-  v9 = _Block_copy(a5);
-  v10 = _Block_copy(a6);
+  v9 = _Block_copy(block);
+  v10 = _Block_copy(completionBlock);
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = swift_allocObject();
@@ -188,25 +188,25 @@ LABEL_5:
     v15 = 0;
   }
 
-  v16 = self;
-  CRLWPLayout.layoutSearch(for:options:hit:completionBlock:)(v11, v13, a4, sub_1007AB830, v14, v10, v15);
+  selfCopy = self;
+  CRLWPLayout.layoutSearch(for:options:hit:completionBlock:)(v11, v13, options, sub_1007AB830, v14, v10, v15);
   sub_1000C1014(v10);
 }
 
-- (void)layoutSearchForSpellingErrorsWithHitBlock:(id)a3 stop:(BOOL *)a4
+- (void)layoutSearchForSpellingErrorsWithHitBlock:(id)block stop:(BOOL *)stop
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(block);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  CRLWPLayout.layoutSearchForSpellingErrors(hit:stop:)(sub_1007127A4, v7, a4);
+  selfCopy = self;
+  CRLWPLayout.layoutSearchForSpellingErrors(hit:stop:)(sub_1007127A4, v7, stop);
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  CRLWPLayout.rectInRoot(for:)(v4);
+  pathCopy = path;
+  selfCopy = self;
+  CRLWPLayout.rectInRoot(for:)(pathCopy);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -223,26 +223,26 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)a3
+- (CGRect)rectInRootOfAutoZoomContextOfSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(CRLCanvasAbstractLayout *)v5 parent];
-  if (!v6)
+  pathCopy = path;
+  selfCopy = self;
+  parent = [(CRLCanvasAbstractLayout *)selfCopy parent];
+  if (!parent)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
+  v7 = parent;
   objc_opt_self();
   v8 = swift_dynamicCastObjCClass();
   if (!v8)
   {
 
 LABEL_5:
-    v25.receiver = v5;
+    v25.receiver = selfCopy;
     v25.super_class = type metadata accessor for CRLWPLayout();
-    [(CRLCanvasLayout *)&v25 rectInRootOfAutoZoomContextOfSelectionPath:v4];
+    [(CRLCanvasLayout *)&v25 rectInRootOfAutoZoomContextOfSelectionPath:pathCopy];
     v10 = v17;
     v12 = v18;
     v14 = v19;
@@ -250,7 +250,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v8 rectInRootOfAutoZoomContextOfSelectionPath:v4];
+  [v8 rectInRootOfAutoZoomContextOfSelectionPath:pathCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -268,31 +268,31 @@ LABEL_6:
   return result;
 }
 
-- (double)viewScaleForZoomingToSelectionPath:(id)a3 targetPointSize:(double)a4
+- (double)viewScaleForZoomingToSelectionPath:(id)path targetPointSize:(double)size
 {
-  v6 = a3;
-  v7 = self;
-  v8 = [(CRLCanvasAbstractLayout *)v7 parent];
-  if (!v8)
+  pathCopy = path;
+  selfCopy = self;
+  parent = [(CRLCanvasAbstractLayout *)selfCopy parent];
+  if (!parent)
   {
     goto LABEL_5;
   }
 
-  v9 = v8;
+  v9 = parent;
   objc_opt_self();
   v10 = swift_dynamicCastObjCClass();
   if (!v10)
   {
 
 LABEL_5:
-    v15.receiver = v7;
+    v15.receiver = selfCopy;
     v15.super_class = type metadata accessor for CRLWPLayout();
-    [(CRLCanvasLayout *)&v15 viewScaleForZoomingToSelectionPath:v6 targetPointSize:a4];
+    [(CRLCanvasLayout *)&v15 viewScaleForZoomingToSelectionPath:pathCopy targetPointSize:size];
     v12 = v13;
     goto LABEL_6;
   }
 
-  [v10 viewScaleForZoomingToSelectionPath:v6 targetPointSize:a4];
+  [v10 viewScaleForZoomingToSelectionPath:pathCopy targetPointSize:size];
   v12 = v11;
 
 LABEL_6:
@@ -301,7 +301,7 @@ LABEL_6:
 
 - (BOOL)isOverflowing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLWPLayout.isOverflowing()();
 
   return v3;
@@ -309,9 +309,9 @@ LABEL_6:
 
 - (id)textWrapper
 {
-  v2 = self;
-  v3 = [(CRLCanvasAbstractLayout *)v2 parent];
-  if (v3)
+  selfCopy = self;
+  parent = [(CRLCanvasAbstractLayout *)selfCopy parent];
+  if (parent)
   {
     objc_opt_self();
     v4 = swift_dynamicCastObjCClass();
@@ -319,15 +319,15 @@ LABEL_6:
     {
     }
 
-    v3 = [v4 textWrapper];
+    parent = [v4 textWrapper];
   }
 
-  return v3;
+  return parent;
 }
 
-- (id)columnMetricsForCharIndex:(int64_t)a3 outRange:(_NSRange *)a4
+- (id)columnMetricsForCharIndex:(int64_t)index outRange:(_NSRange *)range
 {
-  v4 = [(CRLCanvasAbstractLayout *)self parent:a3];
+  v4 = [(CRLCanvasAbstractLayout *)self parent:index];
   if (v4)
   {
     v5 = v4;
@@ -351,7 +351,7 @@ LABEL_6:
 
 - (BOOL)isInstructional
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLWPLayout.isInstructional.getter();
 
   return v3 & 1;
@@ -359,7 +359,7 @@ LABEL_6:
 
 - (CGSize)minSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLWPLayout.minSize.getter();
   v5 = v4;
 
@@ -372,7 +372,7 @@ LABEL_6:
 
 - (CGSize)maxSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CRLWPLayout.maxSize.getter();
   v5 = v4;
 
@@ -385,9 +385,9 @@ LABEL_6:
 
 - (CGSize)currentSize
 {
-  v2 = self;
-  v3 = [(CRLCanvasAbstractLayout *)v2 geometry];
-  [(CRLCanvasLayoutGeometry *)v3 size];
+  selfCopy = self;
+  geometry = [(CRLCanvasAbstractLayout *)selfCopy geometry];
+  [(CRLCanvasLayoutGeometry *)geometry size];
   v5 = v4;
   v7 = v6;
 
@@ -400,9 +400,9 @@ LABEL_6:
 
 - (CGPoint)position
 {
-  v2 = self;
-  v3 = [(CRLCanvasAbstractLayout *)v2 geometry];
-  [(CRLCanvasLayoutGeometry *)v3 frame];
+  selfCopy = self;
+  geometry = [(CRLCanvasAbstractLayout *)selfCopy geometry];
+  [(CRLCanvasLayoutGeometry *)geometry frame];
   v5 = v4;
   v7 = v6;
 
@@ -424,15 +424,15 @@ LABEL_6:
 
 - (int64_t)naturalAlignment
 {
-  v2 = self;
-  v3 = [(CRLCanvasAbstractLayout *)v2 parent];
-  if (v3)
+  selfCopy = self;
+  parent = [(CRLCanvasAbstractLayout *)selfCopy parent];
+  if (parent)
   {
-    v4 = v3;
+    v4 = parent;
     v5 = swift_dynamicCastObjCProtocolConditional();
     if (v5)
     {
-      v6 = [v5 naturalAlignmentFor:v2];
+      v6 = [v5 naturalAlignmentFor:selfCopy];
 
       return v6;
     }
@@ -447,15 +447,15 @@ LABEL_6:
 
 - (CRLWrapSegments)interiorWrapSegments
 {
-  v2 = self;
-  v3 = [(CRLCanvasAbstractLayout *)v2 parent];
-  if (v3)
+  selfCopy = self;
+  parent = [(CRLCanvasAbstractLayout *)selfCopy parent];
+  if (parent)
   {
-    v4 = v3;
+    v4 = parent;
     v5 = swift_dynamicCastObjCProtocolConditional();
     if (v5)
     {
-      v6 = [v5 interiorWrapSegmentsFor:v2];
+      v6 = [v5 interiorWrapSegmentsFor:selfCopy];
 
       v7 = v6;
       goto LABEL_7;
@@ -474,7 +474,7 @@ LABEL_7:
 
 - (NSArray)renderingOverrides
 {
-  v2 = self;
+  selfCopy = self;
   CRLWPLayout.renderingOverrides.getter();
 
   sub_100006370(0, &qword_1019FFE60);

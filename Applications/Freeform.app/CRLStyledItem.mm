@@ -1,24 +1,24 @@
 @interface CRLStyledItem
 - (CRLStroke)stroke;
 - (void)_clearStrokeCache;
-- (void)setStroke:(id)a3;
+- (void)setStroke:(id)stroke;
 @end
 
 @implementation CRLStyledItem
 
 - (CRLStroke)stroke
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D652D4();
 
   return v3;
 }
 
-- (void)setStroke:(id)a3
+- (void)setStroke:(id)stroke
 {
-  v5 = a3;
-  v6 = self;
-  sub_100D654FC(a3);
+  strokeCopy = stroke;
+  selfCopy = self;
+  sub_100D654FC(stroke);
 }
 
 - (void)_clearStrokeCache

@@ -1,18 +1,18 @@
 @interface BAURLDownload
 - (BAURLDownload)init;
-- (BAURLDownload)initWithCoder:(id)a3;
+- (BAURLDownload)initWithCoder:(id)coder;
 - (BAURLDownload)initWithIdentifier:(NSString *)identifier request:(NSURLRequest *)request essential:(BOOL)essential fileSize:(NSUInteger)fileSize applicationGroupIdentifier:(NSString *)applicationGroupIdentifier priority:(BADownloaderPriority)priority;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)syncTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)syncTo:(id)to;
 @end
 
 @implementation BAURLDownload
 
-- (void)syncTo:(id)a3
+- (void)syncTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,12 +20,12 @@
     [v5 raise];
   }
 
-  v6 = [v4 request];
-  [(BAURLDownload *)self setRequest:v6];
+  request = [toCopy request];
+  [(BAURLDownload *)self setRequest:request];
 
   v7.receiver = self;
   v7.super_class = BAURLDownload;
-  [(BADownload *)&v7 syncTo:v4];
+  [(BADownload *)&v7 syncTo:toCopy];
 }
 
 - (BAURLDownload)init
@@ -71,8 +71,8 @@
   }
 
   v19 = [(NSURLRequest *)v15 URL];
-  v20 = [v19 scheme];
-  v21 = [v20 caseInsensitiveCompare:@"https"];
+  scheme = [v19 scheme];
+  v21 = [scheme caseInsensitiveCompare:@"https"];
 
   if (v21)
   {
@@ -83,7 +83,7 @@ LABEL_7:
     v25 = [v22 exceptionWithName:v23 reason:v24 userInfo:0];
     [v25 raise];
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -122,19 +122,19 @@ LABEL_7:
   }
 
   self = v31;
-  v26 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v26;
+  return selfCopy;
 }
 
-- (BAURLDownload)initWithCoder:(id)a3
+- (BAURLDownload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BAURLDownload;
-  v5 = [(BADownload *)&v10 initWithCoder:v4];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"request"], v6 = objc_claimAutoreleasedReturnValue(), request = v5->_request, v5->_request = v6, request, !v5->_request))
+  v5 = [(BADownload *)&v10 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"request"], v6 = objc_claimAutoreleasedReturnValue(), request = v5->_request, v5->_request = v6, request, !v5->_request))
   {
     v8 = 0;
   }
@@ -147,23 +147,23 @@ LABEL_8:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = BAURLDownload;
-  v4 = [(BADownload *)&v6 copyWithZone:a3];
+  v4 = [(BADownload *)&v6 copyWithZone:zone];
   [v4 setRequest:self->_request];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   request = self->_request;
-  v5 = a3;
-  [v5 encodeObject:request forKey:@"request"];
+  coderCopy = coder;
+  [coderCopy encodeObject:request forKey:@"request"];
   v6.receiver = self;
   v6.super_class = BAURLDownload;
-  [(BADownload *)&v6 encodeWithCoder:v5];
+  [(BADownload *)&v6 encodeWithCoder:coderCopy];
 }
 
 - (id)debugDescription

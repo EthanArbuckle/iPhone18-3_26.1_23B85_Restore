@@ -1,27 +1,27 @@
 @interface DMCEnrollmentUIBarButtonItem
-- (DMCEnrollmentUIBarButtonItem)initWithType:(unint64_t)a3 target:(id)a4 action:(SEL)a5;
+- (DMCEnrollmentUIBarButtonItem)initWithType:(unint64_t)type target:(id)target action:(SEL)action;
 @end
 
 @implementation DMCEnrollmentUIBarButtonItem
 
-- (DMCEnrollmentUIBarButtonItem)initWithType:(unint64_t)a3 target:(id)a4 action:(SEL)a5
+- (DMCEnrollmentUIBarButtonItem)initWithType:(unint64_t)type target:(id)target action:(SEL)action
 {
-  v8 = a4;
-  if (a3 <= 1)
+  targetCopy = target;
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
 
       self = 0;
       goto LABEL_17;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v9 = self;
+      selfCopy2 = self;
       v10 = 1;
 LABEL_9:
-      self = [(DMCEnrollmentUIBarButtonItem *)v9 initWithBarButtonSystemItem:v10 target:v8 action:a5];
+      self = [(DMCEnrollmentUIBarButtonItem *)selfCopy2 initWithBarButtonSystemItem:v10 target:targetCopy action:action];
       if (!self)
       {
         goto LABEL_17;
@@ -33,11 +33,11 @@ LABEL_9:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2uLL:
         v11 = DMCLocalizedString();
-        self = [(DMCEnrollmentUIBarButtonItem *)self initWithTitle:v11 style:2 target:v8 action:a5];
+        self = [(DMCEnrollmentUIBarButtonItem *)self initWithTitle:v11 style:2 target:targetCopy action:action];
 
         break;
       case 3uLL:
@@ -52,7 +52,7 @@ LABEL_9:
 
         goto LABEL_13;
       case 4uLL:
-        v9 = self;
+        selfCopy2 = self;
         v10 = 0;
         goto LABEL_9;
     }
@@ -61,7 +61,7 @@ LABEL_9:
   if (self)
   {
 LABEL_13:
-    self->_buttonType = a3;
+    self->_buttonType = type;
   }
 
 LABEL_17:

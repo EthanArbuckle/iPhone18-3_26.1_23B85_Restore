@@ -1,49 +1,49 @@
 @interface CPLReactChange
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLReactChange
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [v5 objectForKey:@"commentTimestamp"];
-  [(CPLReactChange *)v4 setCommentDate:v6];
+  selfCopy = self;
+  recordCopy = record;
+  v6 = [recordCopy objectForKey:@"commentTimestamp"];
+  [(CPLReactChange *)selfCopy setCommentDate:v6];
 
-  v9 = [v5 objectForKey:@"associatedAssetRef"];
+  v9 = [recordCopy objectForKey:@"associatedAssetRef"];
 
-  v7 = [v9 recordID];
-  v8 = [v7 recordName];
+  recordID = [v9 recordID];
+  recordName = [recordID recordName];
 
-  [(CPLReactChange *)v4 setAssetIdentifier:v8];
+  [(CPLReactChange *)selfCopy setAssetIdentifier:recordName];
 }
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [v7 fingerprintContext];
-  if ([(CPLReactChange *)v8 hasChangeType:2])
+  builderCopy = builder;
+  providerCopy = provider;
+  selfCopy = self;
+  fingerprintContext = [providerCopy fingerprintContext];
+  if ([(CPLReactChange *)selfCopy hasChangeType:2])
   {
-    if ([(CPLReactChange *)v8 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"commentDate")])
+    if ([(CPLReactChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"commentDate")])
     {
-      v10 = [(CPLReactChange *)v8 commentDate];
-      [v13 setObject:v10 forKey:@"commentTimestamp"];
+      commentDate = [(CPLReactChange *)selfCopy commentDate];
+      [builderCopy setObject:commentDate forKey:@"commentTimestamp"];
     }
 
-    if ([(CPLReactChange *)v8 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"assetIdentifier")])
+    if ([(CPLReactChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"assetIdentifier")])
     {
-      v11 = [(CPLReactChange *)v8 assetScopedIdentifier];
-      if (!v11)
+      assetScopedIdentifier = [(CPLReactChange *)selfCopy assetScopedIdentifier];
+      if (!assetScopedIdentifier)
       {
-        sub_1001AC528(a2, v8);
+        sub_1001AC528(a2, selfCopy);
       }
 
-      v12 = v11;
-      [v13 setCKReferenceWithScopedIdentifier:v11 forKey:@"associatedAssetRef" referenceAction:1];
+      v12 = assetScopedIdentifier;
+      [builderCopy setCKReferenceWithScopedIdentifier:assetScopedIdentifier forKey:@"associatedAssetRef" referenceAction:1];
     }
   }
 }

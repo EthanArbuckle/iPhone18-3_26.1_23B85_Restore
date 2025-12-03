@@ -1,8 +1,8 @@
 @interface ICAttachmentDrawingModel
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4;
-- (BOOL)shouldSyncPreviewImageToCloud:(id)a3;
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state;
+- (BOOL)shouldSyncPreviewImageToCloud:(id)cloud;
 - (CGAffineTransform)previewImageOrientationTransform;
-- (ICAttachmentDrawingModel)initWithAttachment:(id)a3;
+- (ICAttachmentDrawingModel)initWithAttachment:(id)attachment;
 - (ICDrawing)drawing;
 - (id)drawingDocument;
 - (id)previewImageURL;
@@ -12,19 +12,19 @@
 - (int64_t)previewImageOrientation;
 - (void)dealloc;
 - (void)drawingPreviewIsUpToDate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startObservingAttachment;
-- (void)stopObservingAttachment:(id)a3;
+- (void)stopObservingAttachment:(id)attachment;
 - (void)writeMergeableData;
 @end
 
 @implementation ICAttachmentDrawingModel
 
-- (ICAttachmentDrawingModel)initWithAttachment:(id)a3
+- (ICAttachmentDrawingModel)initWithAttachment:(id)attachment
 {
   v6.receiver = self;
   v6.super_class = ICAttachmentDrawingModel;
-  v3 = [(ICAttachmentModel *)&v6 initWithAttachment:a3];
+  v3 = [(ICAttachmentModel *)&v6 initWithAttachment:attachment];
   v4 = v3;
   if (v3)
   {
@@ -36,12 +36,12 @@
 
 - (void)dealloc
 {
-  v3 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
 
-  if (v3)
+  if (attachment)
   {
-    v4 = [(ICAttachmentModel *)self attachment];
-    [(ICAttachmentDrawingModel *)self stopObservingAttachment:v4];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    [(ICAttachmentDrawingModel *)self stopObservingAttachment:attachment2];
   }
 
   v5.receiver = self;
@@ -53,63 +53,63 @@
 {
   if (![(ICAttachmentDrawingModel *)self observingAttachment])
   {
-    v3 = [(ICAttachmentModel *)self attachment];
-    [v3 ic_addObserver:self forKeyPath:@"mergeableData" context:&compoundliteral_0];
+    attachment = [(ICAttachmentModel *)self attachment];
+    [attachment ic_addObserver:self forKeyPath:@"mergeableData" context:&compoundliteral_0];
 
     [(ICAttachmentDrawingModel *)self setObservingAttachment:1];
   }
 }
 
-- (void)stopObservingAttachment:(id)a3
+- (void)stopObservingAttachment:(id)attachment
 {
-  v7 = a3;
+  attachmentCopy = attachment;
   if ([(ICAttachmentDrawingModel *)self observingAttachment])
   {
-    v4 = [(ICAttachmentModel *)self attachment];
-    if (v4)
+    attachment = [(ICAttachmentModel *)self attachment];
+    if (attachment)
     {
-      v5 = v4;
-      v6 = [(ICAttachmentModel *)self attachment];
+      v5 = attachment;
+      attachment2 = [(ICAttachmentModel *)self attachment];
 
-      if (v6 != v7)
+      if (attachment2 != attachmentCopy)
       {
-        [MEMORY[0x277D36198] handleFailedAssertWithCondition:"!self.attachment || self.attachment == attachment" functionName:"-[ICAttachmentDrawingModel stopObservingAttachment:]" simulateCrash:1 showAlert:0 format:{@"unexpected attachment %@ in stopObservingAttachment for %@", v7, self}];
+        [MEMORY[0x277D36198] handleFailedAssertWithCondition:"!self.attachment || self.attachment == attachment" functionName:"-[ICAttachmentDrawingModel stopObservingAttachment:]" simulateCrash:1 showAlert:0 format:{@"unexpected attachment %@ in stopObservingAttachment for %@", attachmentCopy, self}];
       }
     }
 
-    [v7 ic_removeObserver:self forKeyPath:@"mergeableData" context:&compoundliteral_0];
+    [attachmentCopy ic_removeObserver:self forKeyPath:@"mergeableData" context:&compoundliteral_0];
     [(ICAttachmentDrawingModel *)self setObservingAttachment:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICAttachmentDrawingModel *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/Shared/CoreData/AttachmentModel/ICAttachmentDrawingModel.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICAttachmentDrawingModel *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/Shared/CoreData/AttachmentModel/ICAttachmentDrawingModel.m"]& 1) != 0)
   {
-    v13 = [(ICAttachmentDrawingModel *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICAttachmentDrawingModel *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == &compoundliteral_0 && (v13 & 1) == 0 && self->_drawingDocument)
+    if (context == &compoundliteral_0 && (v13 & 1) == 0 && self->_drawingDocument)
     {
-      v18 = [(ICAttachmentModel *)self attachment];
-      if (![v18 faultingState])
+      attachment = [(ICAttachmentModel *)self attachment];
+      if (![attachment faultingState])
       {
-        v14 = [(ICAttachmentModel *)self attachment];
-        v15 = [v14 isSettingMergeableData];
+        attachment2 = [(ICAttachmentModel *)self attachment];
+        isSettingMergeableData = [attachment2 isSettingMergeableData];
 
-        if (v15)
+        if (isSettingMergeableData)
         {
           return;
         }
 
-        v16 = [(ICAttachmentModel *)self attachment];
-        v18 = [v16 mergeableData];
+        attachment3 = [(ICAttachmentModel *)self attachment];
+        attachment = [attachment3 mergeableData];
 
-        [(ICAttachmentModel *)self mergeWithMergeableData:v18];
-        v17 = [(ICAttachmentModel *)self attachment];
-        [v17 saveMergeableDataIfNeeded];
+        [(ICAttachmentModel *)self mergeWithMergeableData:attachment];
+        attachment4 = [(ICAttachmentModel *)self attachment];
+        [attachment4 saveMergeableDataIfNeeded];
       }
     }
   }
@@ -118,16 +118,16 @@
   {
     v19.receiver = self;
     v19.super_class = ICAttachmentDrawingModel;
-    [(ICAttachmentDrawingModel *)&v19 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICAttachmentDrawingModel *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (ICDrawing)drawing
 {
-  v2 = [(ICAttachmentDrawingModel *)self drawingDocument];
-  v3 = [v2 drawing];
+  drawingDocument = [(ICAttachmentDrawingModel *)self drawingDocument];
+  drawing = [drawingDocument drawing];
 
-  return v3;
+  return drawing;
 }
 
 - (id)drawingDocument
@@ -136,10 +136,10 @@
   if (!drawingDocument)
   {
     v4 = [ICDrawingVersionedDocument alloc];
-    v5 = [(ICAttachmentModel *)self attachment];
-    v6 = [v5 mergeableData];
-    v7 = [(ICAttachmentModel *)self currentReplicaID];
-    v8 = [(ICTTVersionedDocument *)v4 initWithData:v6 replicaID:v7];
+    attachment = [(ICAttachmentModel *)self attachment];
+    mergeableData = [attachment mergeableData];
+    currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+    v8 = [(ICTTVersionedDocument *)v4 initWithData:mergeableData replicaID:currentReplicaID];
     v9 = self->_drawingDocument;
     self->_drawingDocument = v8;
 
@@ -149,14 +149,14 @@
   return drawingDocument;
 }
 
-- (BOOL)mergeWithMergeableData:(id)a3 mergeableFieldState:(id)a4
+- (BOOL)mergeWithMergeableData:(id)data mergeableFieldState:(id)state
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v5 = a3;
+  dataCopy = data;
   v6 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -164,25 +164,25 @@
   }
 
   v14 = [ICDrawingVersionedDocument alloc];
-  v15 = [(ICAttachmentModel *)self currentReplicaID];
-  v16 = [(ICTTVersionedDocument *)v14 initWithData:v5 replicaID:v15];
+  currentReplicaID = [(ICAttachmentModel *)self currentReplicaID];
+  v16 = [(ICTTVersionedDocument *)v14 initWithData:dataCopy replicaID:currentReplicaID];
 
-  v17 = [(ICAttachmentDrawingModel *)self drawingDocument];
-  v18 = [v17 mergeWithDrawingVersionedDocument:v16];
+  drawingDocument = [(ICAttachmentDrawingModel *)self drawingDocument];
+  v18 = [drawingDocument mergeWithDrawingVersionedDocument:v16];
 
   v19 = v18 == 2;
   if (v18 == 2)
   {
-    v20 = [(ICAttachmentModel *)self attachment];
-    v21 = [v20 previewUpdateDate];
-    v22 = [(ICAttachmentModel *)self attachment];
-    v23 = [v22 modificationDate];
-    v24 = [v21 compare:v23];
+    attachment = [(ICAttachmentModel *)self attachment];
+    previewUpdateDate = [attachment previewUpdateDate];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    modificationDate = [attachment2 modificationDate];
+    v24 = [previewUpdateDate compare:modificationDate];
 
     if (v24 != -1)
     {
-      v25 = [(ICAttachmentModel *)self attachment];
-      [v25 setPreviewUpdateDate:0];
+      attachment3 = [(ICAttachmentModel *)self attachment];
+      [attachment3 setPreviewUpdateDate:0];
     }
 
     v26 = os_log_create("com.apple.notes", "PencilKit");
@@ -200,10 +200,10 @@
 - (void)writeMergeableData
 {
   [(ICAttachmentModel *)self setMergeableDataDirty:0];
-  v5 = [(ICAttachmentDrawingModel *)self drawingDocument];
-  v3 = [v5 serialize];
-  v4 = [(ICAttachmentModel *)self attachment];
-  [v4 setMergeableData:v3];
+  drawingDocument = [(ICAttachmentDrawingModel *)self drawingDocument];
+  serialize = [drawingDocument serialize];
+  attachment = [(ICAttachmentModel *)self attachment];
+  [attachment setMergeableData:serialize];
 }
 
 - (id)saveURL
@@ -214,15 +214,15 @@
   v11 = __Block_byref_object_copy__30;
   v12 = __Block_byref_object_dispose__30;
   v13 = 0;
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ICAttachmentDrawingModel_saveURL__block_invoke;
   v7[3] = &unk_278194D68;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -250,82 +250,82 @@ void __35__ICAttachmentDrawingModel_saveURL__block_invoke(uint64_t a1)
     [(ICAttachmentDrawingModel *)v3 drawingPreviewIsUpToDate:v4];
   }
 
-  v11 = [(ICAttachmentModel *)self attachment];
-  v12 = [v11 modificationDate];
-  v13 = [(ICAttachmentModel *)self attachment];
-  [v13 setPreviewUpdateDate:v12];
+  attachment = [(ICAttachmentModel *)self attachment];
+  modificationDate = [attachment modificationDate];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  [attachment2 setPreviewUpdateDate:modificationDate];
 
-  v14 = [(ICAttachmentModel *)self attachment];
-  [v14 ic_postNotificationOnMainThreadWithName:@"ICAttachmentPreviewImagesDidUpdateNotification"];
+  attachment3 = [(ICAttachmentModel *)self attachment];
+  [attachment3 ic_postNotificationOnMainThreadWithName:@"ICAttachmentPreviewImagesDidUpdateNotification"];
 }
 
 - (CGAffineTransform)previewImageOrientationTransform
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 orientation];
+  attachment = [(ICAttachmentModel *)self attachment];
+  orientation = [attachment orientation];
 
   +[ICDrawing defaultSize];
-  [ICDrawing fullSize:v4 forOrientation:?];
+  [ICDrawing fullSize:orientation forOrientation:?];
 
-  return [ICDrawing orientationTransform:v4 size:?];
+  return [ICDrawing orientationTransform:orientation size:?];
 }
 
 - (int64_t)previewImageOrientation
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 orientation];
+  attachment = [(ICAttachmentModel *)self attachment];
+  orientation = [attachment orientation];
 
-  return v3;
+  return orientation;
 }
 
-- (BOOL)shouldSyncPreviewImageToCloud:(id)a3
+- (BOOL)shouldSyncPreviewImageToCloud:(id)cloud
 {
-  v3 = a3;
-  [v3 width];
+  cloudCopy = cloud;
+  [cloudCopy width];
   v5 = v4;
-  [v3 height];
+  [cloudCopy height];
   if (v5 < v6)
   {
     v5 = v6;
   }
 
-  [v3 scale];
+  [cloudCopy scale];
   v8 = v7 * v5 <= 640.0;
-  v9 = [v3 appearanceType];
+  appearanceType = [cloudCopy appearanceType];
 
-  return !v9 && v8;
+  return !appearanceType && v8;
 }
 
 - (id)previewImageURL
 {
-  v2 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   +[ICDrawing defaultPixelSize];
-  v3 = [v2 attachmentPreviewImageWithMinSize:? scale:?];
+  v3 = [attachment attachmentPreviewImageWithMinSize:? scale:?];
 
-  v4 = [v3 orientedPreviewImageURL];
+  orientedPreviewImageURL = [v3 orientedPreviewImageURL];
 
-  return v4;
+  return orientedPreviewImageURL;
 }
 
 - (id)previewItemTitle
 {
   v9.receiver = self;
   v9.super_class = ICAttachmentDrawingModel;
-  v3 = [(ICAttachmentModel *)&v9 previewItemTitle];
-  v4 = v3;
-  if (v3)
+  previewItemTitle = [(ICAttachmentModel *)&v9 previewItemTitle];
+  v4 = previewItemTitle;
+  if (previewItemTitle)
   {
-    v5 = v3;
+    title = previewItemTitle;
   }
 
   else
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    v7 = [v6 note];
-    v5 = [v7 title];
+    attachment = [(ICAttachmentModel *)self attachment];
+    note = [attachment note];
+    title = [note title];
   }
 
-  return v5;
+  return title;
 }
 
 - (id)previewItemURL
@@ -336,15 +336,15 @@ void __35__ICAttachmentDrawingModel_saveURL__block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy__30;
   v12 = __Block_byref_object_dispose__30;
   v13 = 0;
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 managedObjectContext];
+  attachment = [(ICAttachmentModel *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ICAttachmentDrawingModel_previewItemURL__block_invoke;
   v7[3] = &unk_278194DE8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);

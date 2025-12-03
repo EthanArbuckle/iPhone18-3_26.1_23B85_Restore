@@ -1,11 +1,11 @@
 @interface UITabBarSwappableImageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UITabBarSwappableImageView)initWithImage:(id)a3 alternateImage:(id)a4 landscapeImage:(id)a5 landscapeAlternateImage:(id)a6;
-- (void)setAlternateImage:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UITabBarSwappableImageView)initWithImage:(id)image alternateImage:(id)alternateImage landscapeImage:(id)landscapeImage landscapeAlternateImage:(id)landscapeAlternateImage;
+- (void)setAlternateImage:(id)image;
 - (void)setCurrentImage;
-- (void)setImage:(id)a3;
-- (void)setLandscape:(BOOL)a3;
-- (void)showAlternateImage:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setLandscape:(BOOL)landscape;
+- (void)showAlternateImage:(BOOL)image;
 @end
 
 @implementation UITabBarSwappableImageView
@@ -53,22 +53,22 @@ LABEL_10:
   [(UIImageView *)&v7 setImage:v6];
 }
 
-- (UITabBarSwappableImageView)initWithImage:(id)a3 alternateImage:(id)a4 landscapeImage:(id)a5 landscapeAlternateImage:(id)a6
+- (UITabBarSwappableImageView)initWithImage:(id)image alternateImage:(id)alternateImage landscapeImage:(id)landscapeImage landscapeAlternateImage:(id)landscapeAlternateImage
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  imageCopy = image;
+  alternateImageCopy = alternateImage;
+  landscapeImageCopy = landscapeImage;
+  landscapeAlternateImageCopy = landscapeAlternateImage;
   v18.receiver = self;
   v18.super_class = UITabBarSwappableImageView;
   v15 = [(UIImageView *)&v18 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_value, a3);
-    objc_storeStrong(&v16->_alternate, a4);
-    objc_storeStrong(&v16->_landscapeValue, a5);
-    objc_storeStrong(&v16->_landscapeAlternate, a6);
+    objc_storeStrong(&v15->_value, image);
+    objc_storeStrong(&v16->_alternate, alternateImage);
+    objc_storeStrong(&v16->_landscapeValue, landscapeImage);
+    objc_storeStrong(&v16->_landscapeAlternate, landscapeAlternateImage);
     [(UIView *)v16 setOpaque:0];
     [(UITabBarSwappableImageView *)v16 setCurrentImage];
     [(UIImageView *)v16 setContentMode:1];
@@ -79,10 +79,10 @@ LABEL_10:
   return v16;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (!self->_showLandscape)
   {
     goto LABEL_8;
@@ -92,10 +92,10 @@ LABEL_10:
   {
     if (!self->_landscapeAlternate)
     {
-      v6 = [(UIImage *)self->_alternate isSymbolImage];
+      isSymbolImage = [(UIImage *)self->_alternate isSymbolImage];
       v7 = 20.0;
       v8 = 20.0;
-      if (!v6)
+      if (!isSymbolImage)
       {
         goto LABEL_9;
       }
@@ -113,10 +113,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v9 = [(UIImage *)self->_value isSymbolImage];
+  isSymbolImage2 = [(UIImage *)self->_value isSymbolImage];
   v7 = 20.0;
   v8 = 20.0;
-  if (v9)
+  if (isSymbolImage2)
   {
     goto LABEL_8;
   }
@@ -127,43 +127,43 @@ LABEL_9:
   return result;
 }
 
-- (void)showAlternateImage:(BOOL)a3
+- (void)showAlternateImage:(BOOL)image
 {
-  if (self->_showAlternate != a3)
+  if (self->_showAlternate != image)
   {
-    self->_showAlternate = a3;
+    self->_showAlternate = image;
   }
 
   [(UITabBarSwappableImageView *)self setCurrentImage];
 }
 
-- (void)setAlternateImage:(id)a3
+- (void)setAlternateImage:(id)image
 {
-  v5 = a3;
-  if (self->_alternate != v5)
+  imageCopy = image;
+  if (self->_alternate != imageCopy)
   {
-    objc_storeStrong(&self->_alternate, a3);
+    objc_storeStrong(&self->_alternate, image);
   }
 
   [(UITabBarSwappableImageView *)self setCurrentImage];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_value != v5)
+  imageCopy = image;
+  if (self->_value != imageCopy)
   {
-    objc_storeStrong(&self->_value, a3);
+    objc_storeStrong(&self->_value, image);
   }
 
   [(UITabBarSwappableImageView *)self setCurrentImage];
 }
 
-- (void)setLandscape:(BOOL)a3
+- (void)setLandscape:(BOOL)landscape
 {
-  if (self->_showLandscape != a3)
+  if (self->_showLandscape != landscape)
   {
-    self->_showLandscape = a3;
+    self->_showLandscape = landscape;
   }
 
   [(UITabBarSwappableImageView *)self setCurrentImage];

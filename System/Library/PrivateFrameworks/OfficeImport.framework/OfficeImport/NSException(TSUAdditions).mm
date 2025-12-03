@@ -15,29 +15,29 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v5 = [a3 localizedFailureReason];
-  if (!v5)
+  localizedFailureReason = [a3 localizedFailureReason];
+  if (!localizedFailureReason)
   {
-    v6 = [a3 localizedDescription];
-    if (v6)
+    localizedDescription = [a3 localizedDescription];
+    if (localizedDescription)
     {
-      v5 = v6;
+      localizedFailureReason = localizedDescription;
     }
 
     else
     {
-      v5 = @"NSError exception";
+      localizedFailureReason = @"NSError exception";
     }
   }
 
   v8 = @"TSUErrorExceptionUserInfoKey";
   v9[0] = a3;
-  return [objc_msgSend(MEMORY[0x277CBEAD8] exceptionWithName:@"TSUErrorException" reason:v5 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)), "raise"}];
+  return [objc_msgSend(MEMORY[0x277CBEAD8] exceptionWithName:@"TSUErrorException" reason:localizedFailureReason userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)), "raise"}];
 }
 
 - (uint64_t)tsu_error
 {
-  v1 = [objc_msgSend(a1 "userInfo")];
+  v1 = [objc_msgSend(self "userInfo")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && v1)
   {

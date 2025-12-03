@@ -1,16 +1,16 @@
 @interface OAVTextBodyProperties
-+ (int)readAnchor:(id)a3;
-+ (int)readRotation:(id)a3;
-+ (int)readWrapStyle:(id)a3;
-+ (unsigned)flowTypeWithLayoutFlowString:(id)a3 altLayoutFlowString:(id)a4;
-+ (void)readFromManager:(id)a3 toShape:(id)a4 state:(id)a5;
++ (int)readAnchor:(id)anchor;
++ (int)readRotation:(id)rotation;
++ (int)readWrapStyle:(id)style;
++ (unsigned)flowTypeWithLayoutFlowString:(id)string altLayoutFlowString:(id)flowString;
++ (void)readFromManager:(id)manager toShape:(id)shape state:(id)state;
 @end
 
 @implementation OAVTextBodyProperties
 
-+ (int)readRotation:(id)a3
++ (int)readRotation:(id)rotation
 {
-  v3 = a3;
+  rotationCopy = rotation;
   v4 = +[OAVTextBodyProperties readRotation:]::rotationEnumMap;
   if (!+[OAVTextBodyProperties readRotation:]::rotationEnumMap)
   {
@@ -25,14 +25,14 @@
     v4 = +[OAVTextBodyProperties readRotation:]::rotationEnumMap;
   }
 
-  v7 = [v4 valueForString:v3];
+  v7 = [v4 valueForString:rotationCopy];
 
   return v7;
 }
 
-+ (int)readWrapStyle:(id)a3
++ (int)readWrapStyle:(id)style
 {
-  v3 = a3;
+  styleCopy = style;
   v4 = +[OAVTextBodyProperties readWrapStyle:]::wrapEnumMap;
   if (!+[OAVTextBodyProperties readWrapStyle:]::wrapEnumMap)
   {
@@ -47,14 +47,14 @@
     v4 = +[OAVTextBodyProperties readWrapStyle:]::wrapEnumMap;
   }
 
-  v7 = [v4 valueForString:v3];
+  v7 = [v4 valueForString:styleCopy];
 
   return v7;
 }
 
-+ (int)readAnchor:(id)a3
++ (int)readAnchor:(id)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   v4 = +[OAVTextBodyProperties readAnchor:]::anchorEnumMap;
   if (!+[OAVTextBodyProperties readAnchor:]::anchorEnumMap)
   {
@@ -69,50 +69,50 @@
     v4 = +[OAVTextBodyProperties readAnchor:]::anchorEnumMap;
   }
 
-  v7 = [v4 valueForString:v3];
+  v7 = [v4 valueForString:anchorCopy];
 
   return v7;
 }
 
-+ (unsigned)flowTypeWithLayoutFlowString:(id)a3 altLayoutFlowString:(id)a4
++ (unsigned)flowTypeWithLayoutFlowString:(id)string altLayoutFlowString:(id)flowString
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"vertical"])
+  stringCopy = string;
+  flowStringCopy = flowString;
+  if ([stringCopy isEqualToString:@"vertical"])
   {
-    if ([v6 isEqualToString:@"top-to-bottom"])
+    if ([flowStringCopy isEqualToString:@"top-to-bottom"])
     {
       v7 = 4;
       goto LABEL_13;
     }
 
-    if ([v6 isEqualToString:@"bottom-to-top"])
+    if ([flowStringCopy isEqualToString:@"bottom-to-top"])
     {
       v7 = 3;
       goto LABEL_13;
     }
 
-    if (![v6 length])
+    if (![flowStringCopy length])
     {
       v7 = 2;
       goto LABEL_13;
     }
   }
 
-  [v6 length];
-  if ([v5 isEqualToString:@"vertical-ideographic"])
+  [flowStringCopy length];
+  if ([stringCopy isEqualToString:@"vertical-ideographic"])
   {
     v7 = 6;
   }
 
-  else if ([v5 isEqualToString:@"horizontal-ideographic"])
+  else if ([stringCopy isEqualToString:@"horizontal-ideographic"])
   {
     v7 = 1;
   }
 
   else
   {
-    [v5 isEqualToString:@"horizontal"];
+    [stringCopy isEqualToString:@"horizontal"];
     v7 = 0;
   }
 
@@ -121,30 +121,30 @@ LABEL_13:
   return v7;
 }
 
-+ (void)readFromManager:(id)a3 toShape:(id)a4 state:(id)a5
++ (void)readFromManager:(id)manager toShape:(id)shape state:(id)state
 {
-  v31 = a3;
-  v8 = a5;
-  v9 = [a4 textBody];
-  v10 = [v9 properties];
+  managerCopy = manager;
+  stateCopy = state;
+  textBody = [shape textBody];
+  properties = [textBody properties];
 
-  v11 = [objc_msgSend(v8 "client")];
-  [v31 textInsets];
+  v11 = [objc_msgSend(stateCopy "client")];
+  [managerCopy textInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v10 setLeftInset:?];
+  [properties setLeftInset:?];
   LODWORD(v18) = v13;
-  [v10 setTopInset:v18];
+  [properties setTopInset:v18];
   LODWORD(v19) = v15;
-  [v10 setRightInset:v19];
+  [properties setRightInset:v19];
   LODWORD(v20) = v17;
-  [v10 setBottomInset:v20];
-  [v10 setIsUpright:v11 != 2];
+  [properties setBottomInset:v20];
+  [properties setIsUpright:v11 != 2];
   if (v11 == 2)
   {
-    v22 = [v31 textRotation];
-    v21 = [a1 readRotation:v22];
+    textRotation = [managerCopy textRotation];
+    v21 = [self readRotation:textRotation];
   }
 
   else
@@ -152,15 +152,15 @@ LABEL_13:
     v21 = 0;
   }
 
-  [OABTextBodyProperties setTextRotation:v21 textBodyProperties:v10];
-  v23 = [v31 textLayoutFlow];
-  v24 = [v31 textAltLayoutFlow];
-  [v10 setFlowType:{objc_msgSend(a1, "flowTypeWithLayoutFlowString:altLayoutFlowString:", v23, v24)}];
-  +[OABTextBodyProperties setAutoFit:textBodyProperties:](OABTextBodyProperties, "setAutoFit:textBodyProperties:", [v31 fitShapeToText], v10);
+  [OABTextBodyProperties setTextRotation:v21 textBodyProperties:properties];
+  textLayoutFlow = [managerCopy textLayoutFlow];
+  textAltLayoutFlow = [managerCopy textAltLayoutFlow];
+  [properties setFlowType:{objc_msgSend(self, "flowTypeWithLayoutFlowString:altLayoutFlowString:", textLayoutFlow, textAltLayoutFlow)}];
+  +[OABTextBodyProperties setAutoFit:textBodyProperties:](OABTextBodyProperties, "setAutoFit:textBodyProperties:", [managerCopy fitShapeToText], properties);
   if (v11 == 2)
   {
-    v26 = [v31 textWrapStyle];
-    v25 = [a1 readWrapStyle:v26];
+    textWrapStyle = [managerCopy textWrapStyle];
+    v25 = [self readWrapStyle:textWrapStyle];
   }
 
   else
@@ -168,7 +168,7 @@ LABEL_13:
     v25 = 0;
   }
 
-  [OABTextBodyProperties setWrap:v25 textBodyProperties:v10];
+  [OABTextBodyProperties setWrap:v25 textBodyProperties:properties];
   if (v11 < 1)
   {
     v30 = 0;
@@ -176,8 +176,8 @@ LABEL_13:
 
   else
   {
-    v27 = [v31 textAnchor];
-    v28 = [a1 readAnchor:v27];
+    textAnchor = [managerCopy textAnchor];
+    v28 = [self readAnchor:textAnchor];
     if (v28 > 2 && v11 == 1)
     {
       v30 = 0;
@@ -189,8 +189,8 @@ LABEL_13:
     }
   }
 
-  [OABTextBodyProperties setTextAnchor:v30 textBodyProperties:v10];
-  [OABTextBodyProperties setIsAnchorCenter:v30 textBodyProperties:v10];
+  [OABTextBodyProperties setTextAnchor:v30 textBodyProperties:properties];
+  [OABTextBodyProperties setIsAnchorCenter:v30 textBodyProperties:properties];
 }
 
 + (void)readRotation:.cold.1()

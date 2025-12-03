@@ -1,58 +1,58 @@
 @interface WFPBSetupAutomationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasShowsNotification:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasShowsNotification:(BOOL)notification;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBSetupAutomationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(WFPBSetupAutomationEvent *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(WFPBSetupAutomationEvent *)self setTriggerType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = v4[44];
+  v5 = fromCopy[44];
   if (v5)
   {
-    self->_requiredRuntimeConfirmation = v4[40];
+    self->_requiredRuntimeConfirmation = fromCopy[40];
     *&self->_has |= 1u;
-    v5 = v4[44];
+    v5 = fromCopy[44];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_showsNotification = v4[41];
+    self->_showsNotification = fromCopy[41];
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(WFPBSetupAutomationEvent *)self setActionIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFPBSetupAutomationEvent *)self setBundleIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -86,16 +86,16 @@ LABEL_6:
   return v7 ^ [(NSString *)self->_bundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -104,7 +104,7 @@ LABEL_6:
   }
 
   triggerType = self->_triggerType;
-  if (triggerType | *(v4 + 4))
+  if (triggerType | *(equalCopy + 4))
   {
     if (![(NSString *)triggerType isEqual:?])
     {
@@ -112,48 +112,48 @@ LABEL_6:
     }
   }
 
-  v7 = *(v4 + 44);
+  v7 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_26;
     }
 
-    v11 = *(v4 + 40);
+    v11 = *(equalCopy + 40);
     if (self->_requiredRuntimeConfirmation)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) != 0)
+    if ((*(equalCopy + 44) & 2) != 0)
     {
-      v12 = *(v4 + 41);
+      v12 = *(equalCopy + 41);
       if (self->_showsNotification)
       {
-        if (*(v4 + 41))
+        if (*(equalCopy + 41))
         {
           goto LABEL_10;
         }
       }
 
-      else if ((*(v4 + 41) & 1) == 0)
+      else if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -164,20 +164,20 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_26;
   }
 
 LABEL_10:
   actionIdentifier = self->_actionIdentifier;
-  if (actionIdentifier | *(v4 + 1) && ![(NSString *)actionIdentifier isEqual:?])
+  if (actionIdentifier | *(equalCopy + 1) && ![(NSString *)actionIdentifier isEqual:?])
   {
     goto LABEL_26;
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 2))
+  if (bundleIdentifier | *(equalCopy + 2))
   {
     v10 = [(NSString *)bundleIdentifier isEqual:?];
   }
@@ -192,14 +192,14 @@ LABEL_27:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_triggerType copyWithZone:a3];
+  v8 = [(NSString *)self->_triggerType copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -217,74 +217,74 @@ LABEL_27:
     *(v5 + 44) |= 2u;
   }
 
-  v11 = [(NSString *)self->_actionIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_actionIdentifier copyWithZone:zone];
   v12 = *(v5 + 8);
   *(v5 + 8) = v11;
 
-  v13 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v13 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v14 = *(v5 + 16);
   *(v5 + 16) = v13;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if (self->_triggerType)
   {
     [v6 setTriggerType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    v4[40] = self->_requiredRuntimeConfirmation;
-    v4[44] |= 1u;
+    toCopy[40] = self->_requiredRuntimeConfirmation;
+    toCopy[44] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[41] = self->_showsNotification;
-    v4[44] |= 2u;
+    toCopy[41] = self->_showsNotification;
+    toCopy[44] |= 2u;
   }
 
   if (self->_actionIdentifier)
   {
     [v6 setActionIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleIdentifier)
   {
     [v6 setBundleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_triggerType)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -292,7 +292,7 @@ LABEL_27:
   {
     requiredRuntimeConfirmation = self->_requiredRuntimeConfirmation;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -300,30 +300,30 @@ LABEL_27:
   {
     showsNotification = self->_showsNotification;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_actionIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   triggerType = self->_triggerType;
@@ -368,15 +368,15 @@ LABEL_27:
   v8.receiver = self;
   v8.super_class = WFPBSetupAutomationEvent;
   v4 = [(WFPBSetupAutomationEvent *)&v8 description];
-  v5 = [(WFPBSetupAutomationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBSetupAutomationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasShowsNotification:(BOOL)a3
+- (void)setHasShowsNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = 2;
   }

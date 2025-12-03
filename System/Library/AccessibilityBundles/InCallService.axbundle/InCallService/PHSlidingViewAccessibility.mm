@@ -1,27 +1,27 @@
 @interface PHSlidingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)createFindMyUI;
-- (void)interactiveStartWithCountdownModel:(id)a3;
-- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)a3 forModel:(id)a4;
-- (void)setSlidingViewState:(unint64_t)a3;
-- (void)showSlidingViewModel:(id)a3 animatedSliderCompletion:(id)a4 medicalIDSliderCompletion:(id)a5 shouldMaxVolumeCompletion:(id)a6;
+- (void)interactiveStartWithCountdownModel:(id)model;
+- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)number forModel:(id)model;
+- (void)setSlidingViewState:(unint64_t)state;
+- (void)showSlidingViewModel:(id)model animatedSliderCompletion:(id)completion medicalIDSliderCompletion:(id)sliderCompletion shouldMaxVolumeCompletion:(id)volumeCompletion;
 @end
 
 @implementation PHSlidingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"animatedSlidingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"findMyButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"createFindMyUI" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"medicalIDSlidingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"showSlidingViewModel:animatedSliderCompletion:medicalIDSliderCompletion:shouldMaxVolumeCompletion:" withFullSignature:{"v", "@", "@?", "@?", "@?", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"repeatingUpdateAnimatedSliderForCountdownNumber:forModel:" withFullSignature:{"v", "Q", "@", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"setSlidingViewState:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"PHSlidingView" hasInstanceMethod:@"interactiveStartWithCountdownModel:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PHSOSNotifyCountdownViewModel" hasInstanceMethod:@"playsSound" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"animatedSlidingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"findMyButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"createFindMyUI" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"medicalIDSlidingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"showSlidingViewModel:animatedSliderCompletion:medicalIDSliderCompletion:shouldMaxVolumeCompletion:" withFullSignature:{"v", "@", "@?", "@?", "@?", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"repeatingUpdateAnimatedSliderForCountdownNumber:forModel:" withFullSignature:{"v", "Q", "@", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"setSlidingViewState:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"PHSlidingView" hasInstanceMethod:@"interactiveStartWithCountdownModel:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PHSOSNotifyCountdownViewModel" hasInstanceMethod:@"playsSound" withFullSignature:{"B", 0}];
 }
 
 - (void)createFindMyUI
@@ -62,19 +62,19 @@ id __72__PHSlidingViewAccessibility__accessibilityLoadAccessibilityInformation__
   return v3;
 }
 
-- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)a3 forModel:(id)a4
+- (void)repeatingUpdateAnimatedSliderForCountdownNumber:(unint64_t)number forModel:(id)model
 {
   v6.receiver = self;
   v6.super_class = PHSlidingViewAccessibility;
-  [(PHSlidingViewAccessibility *)&v6 repeatingUpdateAnimatedSliderForCountdownNumber:a3 forModel:a4];
-  if (a3 <= 4)
+  [(PHSlidingViewAccessibility *)&v6 repeatingUpdateAnimatedSliderForCountdownNumber:number forModel:model];
+  if (number <= 4)
   {
     v5 = AXFormatInteger();
     UIAccessibilitySpeak();
   }
 }
 
-- (void)setSlidingViewState:(unint64_t)a3
+- (void)setSlidingViewState:(unint64_t)state
 {
   v19 = *MEMORY[0x29EDCA608];
   v5 = [(PHSlidingViewAccessibility *)self safeUIViewForKey:@"titleLabel"];
@@ -83,7 +83,7 @@ id __72__PHSlidingViewAccessibility__accessibilityLoadAccessibilityInformation__
 
   v16.receiver = self;
   v16.super_class = PHSlidingViewAccessibility;
-  [(PHSlidingViewAccessibility *)&v16 setSlidingViewState:a3];
+  [(PHSlidingViewAccessibility *)&v16 setSlidingViewState:state];
   v8 = [(PHSlidingViewAccessibility *)self safeUIViewForKey:@"titleLabel"];
   [v8 alpha];
   v10 = v9;
@@ -95,12 +95,12 @@ id __72__PHSlidingViewAccessibility__accessibilityLoadAccessibilityInformation__
     UIAccessibilityPostNotification(v11, v12);
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
     v13 = AXLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:a3];
+      v14 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:state];
       *buf = 138412290;
       v18 = v14;
       _os_log_impl(&dword_29BEB2000, v13, OS_LOG_TYPE_DEFAULT, "Resetting VO quiet state: %@", buf, 0xCu);
@@ -112,10 +112,10 @@ id __72__PHSlidingViewAccessibility__accessibilityLoadAccessibilityInformation__
   v15 = *MEMORY[0x29EDCA608];
 }
 
-- (void)interactiveStartWithCountdownModel:(id)a3
+- (void)interactiveStartWithCountdownModel:(id)model
 {
-  v4 = a3;
-  if (UIAccessibilityIsVoiceOverRunning() && ([v4 safeBoolForKey:@"playsSound"] & 1) == 0)
+  modelCopy = model;
+  if (UIAccessibilityIsVoiceOverRunning() && ([modelCopy safeBoolForKey:@"playsSound"] & 1) == 0)
   {
     v5 = AXLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -130,14 +130,14 @@ id __72__PHSlidingViewAccessibility__accessibilityLoadAccessibilityInformation__
 
   v6.receiver = self;
   v6.super_class = PHSlidingViewAccessibility;
-  [(PHSlidingViewAccessibility *)&v6 interactiveStartWithCountdownModel:v4];
+  [(PHSlidingViewAccessibility *)&v6 interactiveStartWithCountdownModel:modelCopy];
 }
 
-- (void)showSlidingViewModel:(id)a3 animatedSliderCompletion:(id)a4 medicalIDSliderCompletion:(id)a5 shouldMaxVolumeCompletion:(id)a6
+- (void)showSlidingViewModel:(id)model animatedSliderCompletion:(id)completion medicalIDSliderCompletion:(id)sliderCompletion shouldMaxVolumeCompletion:(id)volumeCompletion
 {
   v8.receiver = self;
   v8.super_class = PHSlidingViewAccessibility;
-  [(PHSlidingViewAccessibility *)&v8 showSlidingViewModel:a3 animatedSliderCompletion:a4 medicalIDSliderCompletion:a5 shouldMaxVolumeCompletion:a6];
+  [(PHSlidingViewAccessibility *)&v8 showSlidingViewModel:model animatedSliderCompletion:completion medicalIDSliderCompletion:sliderCompletion shouldMaxVolumeCompletion:volumeCompletion];
   v7 = [(PHSlidingViewAccessibility *)self safeValueForKey:@"animatedSlidingButton"];
   if (!v7)
   {

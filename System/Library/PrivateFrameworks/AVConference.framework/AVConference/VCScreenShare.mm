@@ -1,15 +1,15 @@
 @interface VCScreenShare
-- (VCScreenShare)initWithConfig:(id)a3 pid:(id)a4 captureSourceID:(id)a5;
+- (VCScreenShare)initWithConfig:(id)config pid:(id)pid captureSourceID:(id)d;
 - (void)dealloc;
-- (void)setConfig:(id)a3 pid:(id)a4 captureSourceID:(id)a5;
-- (void)setPrivateContentCaptureAllowedForConfig:(id)a3;
-- (void)setScreenVirtualDisplayLabelforConfig:(id)a3;
-- (void)updateScreenCaptureWithConfig:(id)a3;
+- (void)setConfig:(id)config pid:(id)pid captureSourceID:(id)d;
+- (void)setPrivateContentCaptureAllowedForConfig:(id)config;
+- (void)setScreenVirtualDisplayLabelforConfig:(id)config;
+- (void)updateScreenCaptureWithConfig:(id)config;
 @end
 
 @implementation VCScreenShare
 
-- (VCScreenShare)initWithConfig:(id)a3 pid:(id)a4 captureSourceID:(id)a5
+- (VCScreenShare)initWithConfig:(id)config pid:(id)pid captureSourceID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -83,9 +83,9 @@
 
     _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, v12, buf, v14);
 LABEL_13:
-    [(VCScreenShare *)v8 setConfig:a3 pid:a4 captureSourceID:a5];
-    [(VCScreenShare *)v8 setScreenVirtualDisplayLabelforConfig:a3];
-    [(VCScreenShare *)v8 setPrivateContentCaptureAllowedForConfig:a3];
+    [(VCScreenShare *)v8 setConfig:config pid:pid captureSourceID:d];
+    [(VCScreenShare *)v8 setScreenVirtualDisplayLabelforConfig:config];
+    [(VCScreenShare *)v8 setPrivateContentCaptureAllowedForConfig:config];
   }
 
   return v8;
@@ -144,7 +144,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -166,44 +166,44 @@ LABEL_11:
   [(VCScreenShare *)&v11 dealloc];
 }
 
-- (void)updateScreenCaptureWithConfig:(id)a3
+- (void)updateScreenCaptureWithConfig:(id)config
 {
-  v5 = [(VCScreenShare *)self clientPID];
+  clientPID = [(VCScreenShare *)self clientPID];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_captureSourceID];
 
-  [(VCScreenShare *)self setConfig:a3 pid:v5 captureSourceID:v6];
+  [(VCScreenShare *)self setConfig:config pid:clientPID captureSourceID:v6];
 }
 
-- (void)setConfig:(id)a3 pid:(id)a4 captureSourceID:(id)a5
+- (void)setConfig:(id)config pid:(id)pid captureSourceID:(id)d
 {
-  self->_width = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureWidth", "intValue"}];
-  self->_height = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureHeight", "intValue"}];
-  self->_frameRate = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureFramerate", "intValue"}];
-  self->_screenCaptureDisplayID = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureScreenDisplayID", "intValue"}];
-  self->_displayMode = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureScreenDisplayMode", "intValue"}];
-  -[VCScreenShare setClientBundleID:](self, "setClientBundleID:", [a3 objectForKey:@"vcScreenCaptureClientBundleID"]);
-  [(VCScreenShare *)self setClientPID:a4];
-  self->_isWindowed = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureScreenIsWindowed", "BOOLValue"}];
-  self->_isCursorCaptured = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureIsCursorCaptured", "BOOLValue"}];
-  -[VCScreenShare setExcludedApplicationBundleIDs:](self, "setExcludedApplicationBundleIDs:", [a3 objectForKey:@"vcScreenCaptureCaptureExcludedBundleIDs"]);
-  self->_selectiveSharingPort = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureScreenMachPort", "unsignedIntValue"}];
-  -[VCScreenShare setSelectiveScreenUUID:](self, "setSelectiveScreenUUID:", [a3 objectForKey:@"vcScreenCaptureScreenUUID"]);
-  self->_captureSourceID = [a5 integerValue];
-  v9 = [(VCScreenShare *)self excludedApplicationBundleIDs];
-  v10 = (-[NSArray isEqual:](v9, "isEqual:", [MEMORY[0x1E695DFB0] null]) & 1) == 0 && -[NSArray count](-[VCScreenShare excludedApplicationBundleIDs](self, "excludedApplicationBundleIDs"), "count") != 0;
+  self->_width = [objc_msgSend(config objectForKey:{@"vcScreenCaptureWidth", "intValue"}];
+  self->_height = [objc_msgSend(config objectForKey:{@"vcScreenCaptureHeight", "intValue"}];
+  self->_frameRate = [objc_msgSend(config objectForKey:{@"vcScreenCaptureFramerate", "intValue"}];
+  self->_screenCaptureDisplayID = [objc_msgSend(config objectForKey:{@"vcScreenCaptureScreenDisplayID", "intValue"}];
+  self->_displayMode = [objc_msgSend(config objectForKey:{@"vcScreenCaptureScreenDisplayMode", "intValue"}];
+  -[VCScreenShare setClientBundleID:](self, "setClientBundleID:", [config objectForKey:@"vcScreenCaptureClientBundleID"]);
+  [(VCScreenShare *)self setClientPID:pid];
+  self->_isWindowed = [objc_msgSend(config objectForKey:{@"vcScreenCaptureScreenIsWindowed", "BOOLValue"}];
+  self->_isCursorCaptured = [objc_msgSend(config objectForKey:{@"vcScreenCaptureIsCursorCaptured", "BOOLValue"}];
+  -[VCScreenShare setExcludedApplicationBundleIDs:](self, "setExcludedApplicationBundleIDs:", [config objectForKey:@"vcScreenCaptureCaptureExcludedBundleIDs"]);
+  self->_selectiveSharingPort = [objc_msgSend(config objectForKey:{@"vcScreenCaptureScreenMachPort", "unsignedIntValue"}];
+  -[VCScreenShare setSelectiveScreenUUID:](self, "setSelectiveScreenUUID:", [config objectForKey:@"vcScreenCaptureScreenUUID"]);
+  self->_captureSourceID = [d integerValue];
+  excludedApplicationBundleIDs = [(VCScreenShare *)self excludedApplicationBundleIDs];
+  v10 = (-[NSArray isEqual:](excludedApplicationBundleIDs, "isEqual:", [MEMORY[0x1E695DFB0] null]) & 1) == 0 && -[NSArray count](-[VCScreenShare excludedApplicationBundleIDs](self, "excludedApplicationBundleIDs"), "count") != 0;
   self->_contentRepickingAllowed = v10;
-  self->_pdProtectionOptions = [objc_msgSend(a3 objectForKey:{@"vcScreenCaptureCapturePdProtectionFlags", "unsignedIntValue"}];
-  -[VCScreenShare setExcludedAudioPids:](self, "setExcludedAudioPids:", [a3 objectForKey:@"vcScreenCaptureCaptureExcludedAudioPids"]);
-  v11 = [a3 objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"];
+  self->_pdProtectionOptions = [objc_msgSend(config objectForKey:{@"vcScreenCaptureCapturePdProtectionFlags", "unsignedIntValue"}];
+  -[VCScreenShare setExcludedAudioPids:](self, "setExcludedAudioPids:", [config objectForKey:@"vcScreenCaptureCaptureExcludedAudioPids"]);
+  v11 = [config objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"];
   if (v11)
   {
-    v11 = [a3 objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"];
+    v11 = [config objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"];
   }
 
   self->_clientAuditTokenData = v11;
 }
 
-- (void)setScreenVirtualDisplayLabelforConfig:(id)a3
+- (void)setScreenVirtualDisplayLabelforConfig:(id)config
 {
   v29 = *MEMORY[0x1E69E9840];
   if ([(VCScreenShare *)self clientBundleID])
@@ -245,7 +245,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v6;
         v23 = 1024;
-        LODWORD(v24) = v4;
+        LODWORD(selfCopy) = v4;
         v10 = " [%s] %s:%d screenVirtualDisplayLabel=%@ forceEnableScreenVirtualDisplayLabel=%d";
         v11 = v9;
         v12 = 44;
@@ -284,7 +284,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v7;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
         v26 = v6;
         v27 = 1024;
@@ -301,13 +301,13 @@ LABEL_18:
   }
 }
 
-- (void)setPrivateContentCaptureAllowedForConfig:(id)a3
+- (void)setPrivateContentCaptureAllowedForConfig:(id)config
 {
   v26 = *MEMORY[0x1E69E9840];
   IsInternalOSInstalled = VRTraceIsInternalOSInstalled();
-  v6 = [a3 objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"];
+  v6 = [config objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"];
   v7 = v6 != 0;
-  if (v6 && (v8 = [a3 objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"], *&v9 = 0xAAAAAAAAAAAAAAAALL, *(&v9 + 1) = 0xAAAAAAAAAAAAAAAALL, *v16 = v9, *&v16[16] = v9, objc_msgSend(v8, "getBytes:length:", v16, 32), v25[0] = *v16, v25[1] = *&v16[16], !+[AVConferenceXPCServer clientWithToken:hasEntitlement:](AVConferenceXPCServer, "clientWithToken:hasEntitlement:", v25, @"com.apple.avconference.screencapture.privatecontent.allow")))
+  if (v6 && (v8 = [config objectForKeyedSubscript:@"vcScreenCaptureXpcAuthToken"], *&v9 = 0xAAAAAAAAAAAAAAAALL, *(&v9 + 1) = 0xAAAAAAAAAAAAAAAALL, *v16 = v9, *&v16[16] = v9, objc_msgSend(v8, "getBytes:length:", v16, 32), v25[0] = *v16, v25[1] = *&v16[16], !+[AVConferenceXPCServer clientWithToken:hasEntitlement:](AVConferenceXPCServer, "clientWithToken:hasEntitlement:", v25, @"com.apple.avconference.screencapture.privatecontent.allow")))
   {
     v12 = 0;
     v11 = 0;

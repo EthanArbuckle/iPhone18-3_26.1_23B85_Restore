@@ -4,15 +4,15 @@
 - (CGRect)frame;
 - (NSDate)releaseDate;
 - (NSString)accessibilityDateReleasedText;
-- (_TtC16MusicApplication30FeaturedMusicVideoVerticalCell)initWithCoder:(id)a3;
+- (_TtC16MusicApplication30FeaturedMusicVideoVerticalCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setReleaseDate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setReleaseDate:(id)date;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FeaturedMusicVideoVerticalCell
 
-- (_TtC16MusicApplication30FeaturedMusicVideoVerticalCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication30FeaturedMusicVideoVerticalCell)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC16MusicApplication30FeaturedMusicVideoVerticalCell_title);
   *v4 = 0;
@@ -56,14 +56,14 @@
   return v10;
 }
 
-- (void)setReleaseDate:(id)a3
+- (void)setReleaseDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_E01230);
   v6 = __chkstk_darwin(v5 - 8);
   v8 = &v15[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v6);
   v10 = &v15[-v9];
-  if (a3)
+  if (date)
   {
     sub_AB33F0();
     v11 = sub_AB3430();
@@ -80,7 +80,7 @@
   swift_beginAccess();
   sub_2EC64(self + v13, v8);
   swift_beginAccess();
-  v14 = self;
+  selfCopy = self;
   sub_2F0A8(v10, self + v13);
   swift_endAccess();
   sub_172550(v8);
@@ -110,15 +110,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_172D7C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_17300C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_17300C(change);
 }
 
 - (NSString)accessibilityDateReleasedText

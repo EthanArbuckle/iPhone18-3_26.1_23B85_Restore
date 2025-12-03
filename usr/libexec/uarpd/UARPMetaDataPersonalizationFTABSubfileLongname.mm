@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationFTABSubfileLongname
 - (UARPMetaDataPersonalizationFTABSubfileLongname)init;
-- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationFTABSubfileLongname *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationFTABSubfileLongname;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     longname = v7->_longname;
     v7->_longname = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationFTABSubfileLongname)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationFTABSubfileLongname *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     longname = v6->_longname;
     v6->_longname = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataPersonalizationFTABSubfileLongname *)self longname];
+  longname = [(UARPMetaDataPersonalizationFTABSubfileLongname *)self longname];
   v6.receiver = self;
   v6.super_class = UARPMetaDataPersonalizationFTABSubfileLongname;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:longname];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationFTABSubfileLongname *)self longname];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  longname = [(UARPMetaDataPersonalizationFTABSubfileLongname *)self longname];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, longname];
 
   return v5;
 }

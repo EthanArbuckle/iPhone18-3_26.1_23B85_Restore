@@ -1,12 +1,12 @@
 @interface BLCacheDeleteStorageManager
 - (BLCacheDeleteStorageManager)init;
-- (int64_t)purgeableForVolume:(id)a3 urgency:(int64_t)a4;
-- (void)_storageUseChangedNotification:(id)a3;
+- (int64_t)purgeableForVolume:(id)volume urgency:(int64_t)urgency;
+- (void)_storageUseChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5;
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4;
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error;
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change;
 - (void)dq_updateAvailableStorage;
-- (void)dq_updateAvailableStorageForVolumeInfo:(id)a3 inVolume:(id)a4;
+- (void)dq_updateAvailableStorageForVolumeInfo:(id)info inVolume:(id)volume;
 - (void)updateAvailableStorage;
 @end
 
@@ -59,8 +59,8 @@
 
 - (void)dealloc
 {
-  v3 = [(BLCacheDeleteStorageManager *)self blDownloadQueue];
-  [v3 removeObserver:self];
+  blDownloadQueue = [(BLCacheDeleteStorageManager *)self blDownloadQueue];
+  [blDownloadQueue removeObserver:self];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
@@ -84,50 +84,50 @@
   objc_destroyWeak(&location);
 }
 
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v8 = [(BLCacheDeleteStorageManager *)self dispatchQueue];
+  dispatchQueue = [(BLCacheDeleteStorageManager *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A980C;
   block[3] = &unk_10011E5E8;
   objc_copyWeak(&v12, &location);
-  v11 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = changeCopy;
+  v9 = changeCopy;
+  dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 }
 
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  statesCopy = states;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v11 = [(BLCacheDeleteStorageManager *)self dispatchQueue];
+  dispatchQueue = [(BLCacheDeleteStorageManager *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A9B8C;
   block[3] = &unk_10011E5E8;
   objc_copyWeak(&v15, &location);
-  v14 = v9;
-  v12 = v9;
-  dispatch_async(v11, block);
+  v14 = statesCopy;
+  v12 = statesCopy;
+  dispatch_async(dispatchQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (int64_t)purgeableForVolume:(id)a3 urgency:(int64_t)a4
+- (int64_t)purgeableForVolume:(id)volume urgency:(int64_t)urgency
 {
-  v6 = a3;
-  v7 = [(BLCacheDeleteStorageManager *)self volumeInfos];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  volumeCopy = volume;
+  volumeInfos = [(BLCacheDeleteStorageManager *)self volumeInfos];
+  v8 = [volumeInfos objectForKeyedSubscript:volumeCopy];
 
   if (!v8)
   {
@@ -137,49 +137,49 @@
       v13 = 141558274;
       v14 = 1752392040;
       v15 = 2112;
-      v16 = v6;
+      v16 = volumeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Missing info for volume %{mask.hash}@", &v13, 0x16u);
     }
   }
 
   v10 = 0;
-  if (a4 > 2)
+  if (urgency > 2)
   {
-    if (a4 == 3)
+    if (urgency == 3)
     {
-      v11 = [v8 purgeableHighPriority];
+      purgeableHighPriority = [v8 purgeableHighPriority];
       goto LABEL_14;
     }
 
-    if (a4 == 4)
+    if (urgency == 4)
     {
-      v11 = [v8 purgeableSpecialCasePriority];
+      purgeableHighPriority = [v8 purgeableSpecialCasePriority];
       goto LABEL_14;
     }
   }
 
   else
   {
-    if (a4 == 1)
+    if (urgency == 1)
     {
-      v11 = [v8 purgeableLowPriority];
+      purgeableHighPriority = [v8 purgeableLowPriority];
       goto LABEL_14;
     }
 
-    if (a4 == 2)
+    if (urgency == 2)
     {
-      v11 = [v8 purgeableMediumPriority];
+      purgeableHighPriority = [v8 purgeableMediumPriority];
 LABEL_14:
-      v10 = v11;
+      v10 = purgeableHighPriority;
     }
   }
 
   return v10;
 }
 
-- (void)_storageUseChangedNotification:(id)a3
+- (void)_storageUseChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = BLBookCacheDeleteLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -193,8 +193,8 @@ LABEL_14:
   v8[1] = 3221225472;
   v8[2] = sub_1000A9FD8;
   v8[3] = &unk_10011DF70;
-  v9 = v4;
-  v7 = v4;
+  v9 = notificationCopy;
+  v7 = notificationCopy;
   objc_copyWeak(&v10, buf);
   dispatch_async(dispatchQueue, v8);
   objc_destroyWeak(&v10);
@@ -208,8 +208,8 @@ LABEL_14:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(BLCacheDeleteStorageManager *)self volumeInfos];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  volumeInfos = [(BLCacheDeleteStorageManager *)self volumeInfos];
+  v4 = [volumeInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -221,31 +221,31 @@ LABEL_14:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(volumeInfos);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(BLCacheDeleteStorageManager *)self volumeInfos];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        volumeInfos2 = [(BLCacheDeleteStorageManager *)self volumeInfos];
+        v10 = [volumeInfos2 objectForKeyedSubscript:v8];
 
         [(BLCacheDeleteStorageManager *)self dq_updateAvailableStorageForVolumeInfo:v10 inVolume:v8];
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [volumeInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)dq_updateAvailableStorageForVolumeInfo:(id)a3 inVolume:(id)a4
+- (void)dq_updateAvailableStorageForVolumeInfo:(id)info inVolume:(id)volume
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLCacheDeleteStorageManager *)self dispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  infoCopy = info;
+  volumeCopy = volume;
+  dispatchQueue = [(BLCacheDeleteStorageManager *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v9 = BLBookCacheDeleteLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -253,36 +253,36 @@ LABEL_14:
     *buf = 141558274;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v7;
+    v25 = volumeCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Checking purgeable amounts for volume %{mask.hash}@.", buf, 0x16u);
   }
 
   v10 = objc_alloc_init(BLCacheDelete);
-  [v6 setPurgeableValueChanged:0];
-  [v6 setPurgeableLowPriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", v7, 1)}];
-  [v6 setPurgeableMediumPriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", v7, 2)}];
-  [v6 setPurgeableHighPriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", v7, 3)}];
-  [v6 setPurgeableSpecialCasePriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", v7, 4)}];
-  if ([v6 purgeableValueChanged])
+  [infoCopy setPurgeableValueChanged:0];
+  [infoCopy setPurgeableLowPriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", volumeCopy, 1)}];
+  [infoCopy setPurgeableMediumPriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", volumeCopy, 2)}];
+  [infoCopy setPurgeableHighPriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", volumeCopy, 3)}];
+  [infoCopy setPurgeableSpecialCasePriority:{-[BLCacheDelete purgeableAmountForVolume:urgency:](v10, "purgeableAmountForVolume:urgency:", volumeCopy, 4)}];
+  if ([infoCopy purgeableValueChanged])
   {
     v20[0] = &off_100129A70;
-    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 purgeableLowPriority]);
+    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [infoCopy purgeableLowPriority]);
     v21[0] = v11;
     v20[1] = &off_100129A88;
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 purgeableMediumPriority]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [infoCopy purgeableMediumPriority]);
     v21[1] = v12;
     v20[2] = &off_100129AA0;
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 purgeableHighPriority]);
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [infoCopy purgeableHighPriority]);
     v21[2] = v13;
     v20[3] = &off_100129AB8;
-    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 purgeableSpecialCasePriority]);
+    v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [infoCopy purgeableSpecialCasePriority]);
     v21[3] = v14;
     v15 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:4];
 
     v18[0] = @"CACHE_DELETE_ID";
     v18[1] = @"CACHE_DELETE_VOLUME";
     v19[0] = kiBooksCacheDeleteID;
-    v19[1] = v7;
+    v19[1] = volumeCopy;
     v18[2] = @"CACHE_DELETE_AMOUNT";
     v19[2] = v15;
     v16 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
@@ -293,7 +293,7 @@ LABEL_14:
       *buf = 141558274;
       v23 = 1752392040;
       v24 = 2112;
-      v25 = v7;
+      v25 = volumeCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Pushed purgeable amount update for volume %{mask.hash}@.", buf, 0x16u);
     }
   }
@@ -306,7 +306,7 @@ LABEL_14:
       *buf = 141558274;
       v23 = 1752392040;
       v24 = 2112;
-      v25 = v7;
+      v25 = volumeCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No change in purgeable amounts for volume %{mask.hash}@.", buf, 0x16u);
     }
   }

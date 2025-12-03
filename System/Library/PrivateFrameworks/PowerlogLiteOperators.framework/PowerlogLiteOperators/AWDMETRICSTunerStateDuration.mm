@@ -1,24 +1,24 @@
 @interface AWDMETRICSTunerStateDuration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRat:(id)a3;
-- (int)StringAsScenarioDecision:(id)a3;
-- (int)StringAsTxBand:(id)a3;
+- (int)StringAsRat:(id)rat;
+- (int)StringAsScenarioDecision:(id)decision;
+- (int)StringAsTxBand:(id)band;
 - (int)rat;
 - (int)scenarioDecision;
 - (int)txBand;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFtQualInd:(BOOL)a3;
-- (void)setHasPort:(BOOL)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)setHasScenarioDecision:(BOOL)a3;
-- (void)setHasTxBand:(BOOL)a3;
-- (void)setHasWorkMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFtQualInd:(BOOL)ind;
+- (void)setHasPort:(BOOL)port;
+- (void)setHasRat:(BOOL)rat;
+- (void)setHasScenarioDecision:(BOOL)decision;
+- (void)setHasTxBand:(BOOL)band;
+- (void)setHasWorkMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSTunerStateDuration
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 8;
   }
@@ -51,80 +51,80 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_NO_SRV"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"SYS_MODE_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE_V2"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_LTE_V2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_CDMA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_HDR"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_HDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WCDMA"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_WCDMA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_EHRPD"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_EHRPD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GW"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_GW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WLAN"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_WLAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GWL"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_GWL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_UMTS"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA_HDR"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_CDMA_HDR"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_SUSPENDED"])
+  else if ([ratCopy isEqualToString:@"SYS_MODE_SUSPENDED"])
   {
     v4 = 16;
   }
@@ -150,9 +150,9 @@
   }
 }
 
-- (void)setHasTxBand:(BOOL)a3
+- (void)setHasTxBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 32;
   }
@@ -165,765 +165,765 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsTxBand:(id)a3
+- (int)StringAsTxBand:(id)band
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_BAND_BC0"])
+  bandCopy = band;
+  if ([bandCopy isEqualToString:@"SYS_BAND_BC0"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC4"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC5"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC6"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC6"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC7"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC7"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC8"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC8"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC9"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC9"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC10"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC10"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC11"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC11"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC12"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC12"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC13"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC13"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC14"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC14"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC15"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC15"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC16"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC16"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC17"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC17"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC18"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC18"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_BC19"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_BC19"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_450"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_450"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_480"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_480"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_750"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_750"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_850"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_850"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_EGSM_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_EGSM_900"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_PGSM_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_PGSM_900"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_RGSM_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_RGSM_900"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_DCS_1800"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_DCS_1800"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_GSM_PCS_1900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_GSM_PCS_1900"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_I_IMT_2000"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_I_IMT_2000"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_II_PCS_1900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_II_PCS_1900"])
   {
     v4 = 81;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_III_1700"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_III_1700"])
   {
     v4 = 82;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_IV_1700"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_IV_1700"])
   {
     v4 = 83;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_V_850"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_V_850"])
   {
     v4 = 84;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_VI_800"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_VI_800"])
   {
     v4 = 85;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_VII_2600"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_VII_2600"])
   {
     v4 = 86;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_VIII_900"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_VIII_900"])
   {
     v4 = 87;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_IX_1700"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_IX_1700"])
   {
     v4 = 88;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_XI_1500"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_XI_1500"])
   {
     v4 = 90;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_WCDMA_XIX_850"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_WCDMA_XIX_850"])
   {
     v4 = 91;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND1"])
   {
     v4 = 120;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND2"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND2"])
   {
     v4 = 121;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND3"])
   {
     v4 = 122;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND4"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND4"])
   {
     v4 = 123;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND5"])
   {
     v4 = 124;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND6"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND6"])
   {
     v4 = 125;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND7"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND7"])
   {
     v4 = 126;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND8"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND8"])
   {
     v4 = 127;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND9"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND9"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND10"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND10"])
   {
     v4 = 129;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND11"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND11"])
   {
     v4 = 130;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND12"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND12"])
   {
     v4 = 131;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND13"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND13"])
   {
     v4 = 132;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND14"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND14"])
   {
     v4 = 133;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND17"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND17"])
   {
     v4 = 136;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND18"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND18"])
   {
     v4 = 137;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND19"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND19"])
   {
     v4 = 138;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND20"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND20"])
   {
     v4 = 139;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND21"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND21"])
   {
     v4 = 140;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND24"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND24"])
   {
     v4 = 143;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND25"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND25"])
   {
     v4 = 144;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND26"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND26"])
   {
     v4 = 145;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND27"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND27"])
   {
     v4 = 146;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND28"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND28"])
   {
     v4 = 147;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND29"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND29"])
   {
     v4 = 148;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND30"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND30"])
   {
     v4 = 149;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND31"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND31"])
   {
     v4 = 150;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND32"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND32"])
   {
     v4 = 151;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND33"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND33"])
   {
     v4 = 152;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND34"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND34"])
   {
     v4 = 153;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND35"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND35"])
   {
     v4 = 154;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND36"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND36"])
   {
     v4 = 155;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND37"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND37"])
   {
     v4 = 156;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND38"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND38"])
   {
     v4 = 157;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND39"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND39"])
   {
     v4 = 158;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND40"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND40"])
   {
     v4 = 159;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND41"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND41"])
   {
     v4 = 160;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND42"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND42"])
   {
     v4 = 161;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND43"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND43"])
   {
     v4 = 162;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND125"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND125"])
   {
     v4 = 163;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND126"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND126"])
   {
     v4 = 164;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND127"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND127"])
   {
     v4 = 165;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND252"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND252"])
   {
     v4 = 166;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND255"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND255"])
   {
     v4 = 167;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND66"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND66"])
   {
     v4 = 168;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND250"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND250"])
   {
     v4 = 169;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND1"])
   {
     v4 = 170;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND2"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND2"])
   {
     v4 = 171;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND3"])
   {
     v4 = 172;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND4"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND4"])
   {
     v4 = 173;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND5"])
   {
     v4 = 174;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_UMTS_BAND6"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_UMTS_BAND6"])
   {
     v4 = 175;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND46"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND46"])
   {
     v4 = 176;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND47"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND47"])
   {
     v4 = 177;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND48"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND48"])
   {
     v4 = 178;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND71"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND71"])
   {
     v4 = 179;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND67"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND67"])
   {
     v4 = 180;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND68"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND68"])
   {
     v4 = 181;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND1"])
   {
     v4 = 182;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND2"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND2"])
   {
     v4 = 183;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND3"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND3"])
   {
     v4 = 184;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND5"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND5"])
   {
     v4 = 185;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND7"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND7"])
   {
     v4 = 186;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND8"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND8"])
   {
     v4 = 187;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND20"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND20"])
   {
     v4 = 188;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND28"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND28"])
   {
     v4 = 189;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND38"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND38"])
   {
     v4 = 190;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND41"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND41"])
   {
     v4 = 191;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND50"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND50"])
   {
     v4 = 192;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND51"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND51"])
   {
     v4 = 193;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND66"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND66"])
   {
     v4 = 194;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND70"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND70"])
   {
     v4 = 195;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND71"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND71"])
   {
     v4 = 196;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND74"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND74"])
   {
     v4 = 197;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND75"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND75"])
   {
     v4 = 198;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND76"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND76"])
   {
     v4 = 199;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND77"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND77"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND78"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND78"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND79"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND79"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND80"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND80"])
   {
     v4 = 203;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND81"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND81"])
   {
     v4 = 204;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND82"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND82"])
   {
     v4 = 205;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND83"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND83"])
   {
     v4 = 206;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND84"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND84"])
   {
     v4 = 207;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND85"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND85"])
   {
     v4 = 208;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND257"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND257"])
   {
     v4 = 209;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND258"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND258"])
   {
     v4 = 210;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND259"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND259"])
   {
     v4 = 211;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND260"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND260"])
   {
     v4 = 212;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND261"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND261"])
   {
     v4 = 213;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND49"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND49"])
   {
     v4 = 214;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND12"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND12"])
   {
     v4 = 215;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND25"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND25"])
   {
     v4 = 216;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND34"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND34"])
   {
     v4 = 217;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND39"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND39"])
   {
     v4 = 218;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND40"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND40"])
   {
     v4 = 219;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND65"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND65"])
   {
     v4 = 220;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND86"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND86"])
   {
     v4 = 221;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND48"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND48"])
   {
     v4 = 222;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND14"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND14"])
   {
     v4 = 223;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND13"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND13"])
   {
     v4 = 224;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND18"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND18"])
   {
     v4 = 225;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND26"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND26"])
   {
     v4 = 226;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND30"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND30"])
   {
     v4 = 227;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND29"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND29"])
   {
     v4 = 228;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND53"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_LTE_EUTRAN_BAND53"])
   {
     v4 = 229;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND53"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND53"])
   {
     v4 = 230;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_RESERVED_1"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_RESERVED_1"])
   {
     v4 = 231;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND46"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND46"])
   {
     v4 = 232;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND91"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND91"])
   {
     v4 = 233;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND92"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND92"])
   {
     v4 = 234;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND93"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND93"])
   {
     v4 = 235;
   }
 
-  else if ([v3 isEqualToString:@"SYS_BAND_NR5G_BAND94"])
+  else if ([bandCopy isEqualToString:@"SYS_BAND_NR5G_BAND94"])
   {
     v4 = 236;
   }
@@ -936,9 +936,9 @@
   return v4;
 }
 
-- (void)setHasPort:(BOOL)a3
+- (void)setHasPort:(BOOL)port
 {
-  if (a3)
+  if (port)
   {
     v3 = 4;
   }
@@ -964,9 +964,9 @@
   }
 }
 
-- (void)setHasScenarioDecision:(BOOL)a3
+- (void)setHasScenarioDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 16;
   }
@@ -979,75 +979,75 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsScenarioDecision:(id)a3
+- (int)StringAsScenarioDecision:(id)decision
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FREE_SPACE_SCENARIO"])
+  decisionCopy = decision;
+  if ([decisionCopy isEqualToString:@"FREE_SPACE_SCENARIO"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LATG_UATF_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATG_UATF_SCENARIO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LATA_UATF_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATA_UATF_SCENARIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LATGA_UATF_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATGA_UATF_SCENARIO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LATF_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATF_UATH_SCENARIO"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATG_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATG_UATH_SCENARIO"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LATA_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATA_UATH_SCENARIO"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LATGA_UATH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LATGA_UATH_SCENARIO"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RHH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"RHH_SCENARIO"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"LHH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"LHH_SCENARIO"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"UHH_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"UHH_SCENARIO"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"E_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"E_SCENARIO"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"R_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"R_SCENARIO"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"IDLE_MODE_SCENARIO"])
+  else if ([decisionCopy isEqualToString:@"IDLE_MODE_SCENARIO"])
   {
     v4 = 13;
   }
@@ -1060,9 +1060,9 @@
   return v4;
 }
 
-- (void)setHasWorkMode:(BOOL)a3
+- (void)setHasWorkMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 64;
   }
@@ -1075,9 +1075,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasFtQualInd:(BOOL)a3
+- (void)setHasFtQualInd:(BOOL)ind
 {
-  if (a3)
+  if (ind)
   {
     v3 = 2;
   }
@@ -1096,15 +1096,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSTunerStateDuration;
   v4 = [(AWDMETRICSTunerStateDuration *)&v8 description];
-  v5 = [(AWDMETRICSTunerStateDuration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSTunerStateDuration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1119,7 +1119,7 @@
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_rat];
     }
 
-    [v3 setObject:v6 forKey:@"rat"];
+    [dictionary setObject:v6 forKey:@"rat"];
 
     has = self->_has;
   }
@@ -1589,7 +1589,7 @@
         break;
     }
 
-    [v3 setObject:v7 forKey:@"tx_band"];
+    [dictionary setObject:v7 forKey:@"tx_band"];
 
     has = self->_has;
   }
@@ -1597,7 +1597,7 @@
   if ((has & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_port];
-    [v3 setObject:v10 forKey:@"port"];
+    [dictionary setObject:v10 forKey:@"port"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -1628,7 +1628,7 @@ LABEL_164:
     v12 = off_278259360[scenarioDecision];
   }
 
-  [v3 setObject:v12 forKey:@"scenario_decision"];
+  [dictionary setObject:v12 forKey:@"scenario_decision"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -1644,7 +1644,7 @@ LABEL_165:
 
 LABEL_176:
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_duration];
-  [v3 setObject:v13 forKey:@"duration"];
+  [dictionary setObject:v13 forKey:@"duration"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -1660,23 +1660,23 @@ LABEL_166:
 
 LABEL_177:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_workMode];
-  [v3 setObject:v14 forKey:@"work_mode"];
+  [dictionary setObject:v14 forKey:@"work_mode"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_167:
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ftQualInd];
-    [v3 setObject:v8 forKey:@"ft_qual_ind"];
+    [dictionary setObject:v8 forKey:@"ft_qual_ind"];
   }
 
 LABEL_168:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1772,14 +1772,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[5] = self->_rat;
-    *(v4 + 36) |= 8u;
+    toCopy[5] = self->_rat;
+    *(toCopy + 36) |= 8u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -1798,8 +1798,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[7] = self->_txBand;
-  *(v4 + 36) |= 0x20u;
+  toCopy[7] = self->_txBand;
+  *(toCopy + 36) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1813,8 +1813,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  v4[4] = self->_port;
-  *(v4 + 36) |= 4u;
+  toCopy[4] = self->_port;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1828,8 +1828,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  v4[6] = self->_scenarioDecision;
-  *(v4 + 36) |= 0x10u;
+  toCopy[6] = self->_scenarioDecision;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1843,8 +1843,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  v4[2] = self->_duration;
-  *(v4 + 36) |= 1u;
+  toCopy[2] = self->_duration;
+  *(toCopy + 36) |= 1u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1858,21 +1858,21 @@ LABEL_7:
   }
 
 LABEL_17:
-  v4[8] = self->_workMode;
-  *(v4 + 36) |= 0x40u;
+  toCopy[8] = self->_workMode;
+  *(toCopy + 36) |= 0x40u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    v4[3] = self->_ftQualInd;
-    *(v4 + 36) |= 2u;
+    toCopy[3] = self->_ftQualInd;
+    *(toCopy + 36) |= 2u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1969,23 +1969,23 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_rat != *(v4 + 5))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_rat != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
 LABEL_36:
     v5 = 0;
@@ -1994,73 +1994,73 @@ LABEL_36:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_txBand != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_txBand != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_port != *(v4 + 4))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_port != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_scenarioDecision != *(v4 + 6))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_scenarioDecision != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_36;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_duration != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 36) & 0x40) == 0 || self->_workMode != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x40) == 0 || self->_workMode != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 36) & 0x40) != 0)
+  else if ((*(equalCopy + 36) & 0x40) != 0)
   {
     goto LABEL_36;
   }
 
-  v5 = (*(v4 + 36) & 2) == 0;
+  v5 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_ftQualInd != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_ftQualInd != *(equalCopy + 3))
     {
       goto LABEL_36;
     }
@@ -2169,15 +2169,15 @@ LABEL_8:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) != 0)
   {
-    self->_rat = *(v4 + 5);
+    self->_rat = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 0x20) == 0)
     {
 LABEL_3:
@@ -2190,14 +2190,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) == 0)
+  else if ((*(fromCopy + 36) & 0x20) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_txBand = *(v4 + 7);
+  self->_txBand = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -2210,9 +2210,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_port = *(v4 + 4);
+  self->_port = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_5:
@@ -2225,9 +2225,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_scenarioDecision = *(v4 + 6);
+  self->_scenarioDecision = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -2240,9 +2240,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_duration = *(v4 + 2);
+  self->_duration = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -2255,12 +2255,12 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_workMode = *(v4 + 8);
+  self->_workMode = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 36) & 2) != 0)
+  if ((*(fromCopy + 36) & 2) != 0)
   {
 LABEL_8:
-    self->_ftQualInd = *(v4 + 3);
+    self->_ftQualInd = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

@@ -1,47 +1,47 @@
 @interface RTLocationOfInterestEnumerationOptions
-- (BOOL)isEqual:(id)a3;
-- (RTLocationOfInterestEnumerationOptions)initWithAscending:(BOOL)a3 batchSize:(unint64_t)a4 dateInterval:(id)a5 wrappedVisit:(BOOL)a6;
-- (RTLocationOfInterestEnumerationOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTLocationOfInterestEnumerationOptions)initWithAscending:(BOOL)ascending batchSize:(unint64_t)size dateInterval:(id)interval wrappedVisit:(BOOL)visit;
+- (RTLocationOfInterestEnumerationOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)processingBlock;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDateInterval:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDateInterval:(id)interval;
 @end
 
 @implementation RTLocationOfInterestEnumerationOptions
 
-- (RTLocationOfInterestEnumerationOptions)initWithAscending:(BOOL)a3 batchSize:(unint64_t)a4 dateInterval:(id)a5 wrappedVisit:(BOOL)a6
+- (RTLocationOfInterestEnumerationOptions)initWithAscending:(BOOL)ascending batchSize:(unint64_t)size dateInterval:(id)interval wrappedVisit:(BOOL)visit
 {
-  v10 = a5;
+  intervalCopy = interval;
   v14.receiver = self;
   v14.super_class = RTLocationOfInterestEnumerationOptions;
   v11 = [(RTLocationOfInterestEnumerationOptions *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_ascending = a3;
-    [(RTLocationOfInterestEnumerationOptions *)v11 setDateInterval:v10];
-    v12->_batchSize = a4;
-    v12->_wrappedVisit = a6;
+    v11->_ascending = ascending;
+    [(RTLocationOfInterestEnumerationOptions *)v11 setDateInterval:intervalCopy];
+    v12->_batchSize = size;
+    v12->_wrappedVisit = visit;
   }
 
   return v12;
 }
 
-- (void)setDateInterval:(id)a3
+- (void)setDateInterval:(id)interval
 {
-  v6 = a3;
-  v9 = v6;
-  if (!v6)
+  intervalCopy = interval;
+  v9 = intervalCopy;
+  if (!intervalCopy)
   {
     v7 = objc_alloc(MEMORY[0x1E696AB80]);
-    v3 = [MEMORY[0x1E695DF00] distantPast];
-    v4 = [MEMORY[0x1E695DF00] distantFuture];
-    v6 = [v7 initWithStartDate:v3 endDate:v4];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    intervalCopy = [v7 initWithStartDate:distantPast endDate:distantFuture];
   }
 
-  objc_storeStrong(&self->_dateInterval, v6);
+  objc_storeStrong(&self->_dateInterval, intervalCopy);
   v8 = v9;
   if (!v9)
   {
@@ -110,10 +110,10 @@ id __57__RTLocationOfInterestEnumerationOptions_processingBlock__block_invoke(ui
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -123,23 +123,23 @@ id __57__RTLocationOfInterestEnumerationOptions_processingBlock__block_invoke(ui
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTLocationOfInterestEnumerationOptions *)self ascending];
-      v7 = [(RTLocationOfInterestEnumerationOptions *)v5 ascending];
-      v8 = [(RTLocationOfInterestEnumerationOptions *)self batchSize];
-      v9 = [(RTLocationOfInterestEnumerationOptions *)v5 batchSize];
-      v10 = [(RTLocationOfInterestEnumerationOptions *)self dateInterval];
-      v11 = [(RTLocationOfInterestEnumerationOptions *)v5 dateInterval];
-      v12 = [v10 isEqualToDateInterval:v11];
+      v5 = equalCopy;
+      ascending = [(RTLocationOfInterestEnumerationOptions *)self ascending];
+      ascending2 = [(RTLocationOfInterestEnumerationOptions *)v5 ascending];
+      batchSize = [(RTLocationOfInterestEnumerationOptions *)self batchSize];
+      batchSize2 = [(RTLocationOfInterestEnumerationOptions *)v5 batchSize];
+      dateInterval = [(RTLocationOfInterestEnumerationOptions *)self dateInterval];
+      dateInterval2 = [(RTLocationOfInterestEnumerationOptions *)v5 dateInterval];
+      v12 = [dateInterval isEqualToDateInterval:dateInterval2];
 
-      v13 = [(RTLocationOfInterestEnumerationOptions *)self wrappedVisit];
-      v14 = v12 & (v13 ^ [(RTLocationOfInterestEnumerationOptions *)v5 wrappedVisit]^ 1);
-      if (v8 != v9)
+      wrappedVisit = [(RTLocationOfInterestEnumerationOptions *)self wrappedVisit];
+      v14 = v12 & (wrappedVisit ^ [(RTLocationOfInterestEnumerationOptions *)v5 wrappedVisit]^ 1);
+      if (batchSize != batchSize2)
       {
         LOBYTE(v14) = 0;
       }
 
-      v15 = v6 == v7 && v14;
+      v15 = ascending == ascending2 && v14;
     }
 
     else
@@ -164,9 +164,9 @@ id __57__RTLocationOfInterestEnumerationOptions_processingBlock__block_invoke(ui
   return v6 ^ v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   ascending = self->_ascending;
   batchSize = self->_batchSize;
   dateInterval = self->_dateInterval;
@@ -175,23 +175,23 @@ id __57__RTLocationOfInterestEnumerationOptions_processingBlock__block_invoke(ui
   return [v4 initWithAscending:ascending batchSize:batchSize dateInterval:dateInterval wrappedVisit:wrappedVisit];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ascending = self->_ascending;
-  v5 = a3;
-  [v5 encodeBool:ascending forKey:@"ascending"];
-  [v5 encodeInteger:self->_batchSize forKey:@"batchSize"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeBool:self->_wrappedVisit forKey:@"wrappedVisit"];
+  coderCopy = coder;
+  [coderCopy encodeBool:ascending forKey:@"ascending"];
+  [coderCopy encodeInteger:self->_batchSize forKey:@"batchSize"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeBool:self->_wrappedVisit forKey:@"wrappedVisit"];
 }
 
-- (RTLocationOfInterestEnumerationOptions)initWithCoder:(id)a3
+- (RTLocationOfInterestEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"ascending"];
-  v6 = [v4 decodeIntegerForKey:@"batchSize"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v8 = [v4 decodeBoolForKey:@"wrappedVisit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"ascending"];
+  v6 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v8 = [coderCopy decodeBoolForKey:@"wrappedVisit"];
 
   v9 = [(RTLocationOfInterestEnumerationOptions *)self initWithAscending:v5 batchSize:v6 dateInterval:v7 wrappedVisit:v8];
   return v9;

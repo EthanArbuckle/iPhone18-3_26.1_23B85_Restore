@@ -1,30 +1,30 @@
 @interface HAP2AccessoryServerSecureTransportPairVerify
-- (HAP2AccessoryServerSecureTransportPairVerify)initWithTransport:(id)a3 operationQueue:(id)a4;
+- (HAP2AccessoryServerSecureTransportPairVerify)initWithTransport:(id)transport operationQueue:(id)queue;
 - (HAPSecuritySession)securitySession;
-- (id)securitySession:(id)a3 didReceiveLocalPairingIdentityRequestWithError:(id *)a4;
-- (id)securitySession:(id)a3 didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)a4 error:(id *)a5;
-- (void)_closeWithError:(id)a3;
+- (id)securitySession:(id)session didReceiveLocalPairingIdentityRequestWithError:(id *)error;
+- (id)securitySession:(id)session didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)identifier error:(id *)error;
+- (void)_closeWithError:(id)error;
 - (void)_openTransport;
 - (void)_secureTransport;
-- (void)_sendSetupExchangeData:(id)a3;
-- (void)doCloseWithError:(id)a3 completion:(id)a4;
-- (void)doOpenWithCompletion:(id)a3;
-- (void)securitySession:(id)a3 didCloseWithError:(id)a4;
-- (void)securitySession:(id)a3 didReceiveSetupExchangeData:(id)a4;
-- (void)securitySessionDidOpen:(id)a3;
-- (void)setSecuritySession:(id)a3;
+- (void)_sendSetupExchangeData:(id)data;
+- (void)doCloseWithError:(id)error completion:(id)completion;
+- (void)doOpenWithCompletion:(id)completion;
+- (void)securitySession:(id)session didCloseWithError:(id)error;
+- (void)securitySession:(id)session didReceiveSetupExchangeData:(id)data;
+- (void)securitySessionDidOpen:(id)open;
+- (void)setSecuritySession:(id)session;
 @end
 
 @implementation HAP2AccessoryServerSecureTransportPairVerify
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerSecureTransportPairVerify *)self securitySession];
-  if (v6)
+  securitySession = [(HAP2AccessoryServerSecureTransportPairVerify *)self securitySession];
+  if (securitySession)
   {
     [(HAP2AccessoryServerSecureTransportPairVerify *)self setSecuritySession:0];
     if (hap2LogInitialize_onceToken != -1)
@@ -39,7 +39,7 @@
       _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "Secure Transport: Closing security session", buf, 2u);
     }
 
-    [v6 close];
+    [securitySession close];
   }
 
   if (hap2LogInitialize_onceToken != -1)
@@ -54,13 +54,13 @@
     _os_log_impl(&dword_22AADC000, v8, OS_LOG_TYPE_INFO, "Secure Transport: Closing transport", buf, 2u);
   }
 
-  v9 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HAP2AccessoryServerSecureTransportPairVerify__closeWithError___block_invoke;
   v10[3] = &unk_2786D6CC8;
   v10[4] = self;
-  [v9 closeWithError:v4 completion:v10];
+  [transport closeWithError:errorCopy completion:v10];
 }
 
 void __64__HAP2AccessoryServerSecureTransportPairVerify__closeWithError___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -119,26 +119,26 @@ void __64__HAP2AccessoryServerSecureTransportPairVerify__closeWithError___block_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendSetupExchangeData:(id)a3
+- (void)_sendSetupExchangeData:(id)data
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  dataCopy = data;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v6 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v7 = [v6 wellKnownEndpoint:3];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v7 = [transport wellKnownEndpoint:3];
 
-  v8 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
-  v9 = [v8 mimeTypeForWellKnownEndpoint:3];
+  transport2 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v9 = [transport2 mimeTypeForWellKnownEndpoint:3];
 
-  v10 = [[HAP2AccessoryServerTransportRequest alloc] initForWritingWithEndpoint:v7 data:v4 encrypted:0 mimeType:v9 dscpPriority:0];
-  v11 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  v10 = [[HAP2AccessoryServerTransportRequest alloc] initForWritingWithEndpoint:v7 data:dataCopy encrypted:0 mimeType:v9 dscpPriority:0];
+  transport3 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__HAP2AccessoryServerSecureTransportPairVerify__sendSetupExchangeData___block_invoke;
   v12[3] = &unk_2786D3968;
   v12[4] = self;
-  [v11 sendRequest:v10 completion:v12];
+  [transport3 sendRequest:v10 completion:v12];
 }
 
 void __71__HAP2AccessoryServerSecureTransportPairVerify__sendSetupExchangeData___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -167,8 +167,8 @@ void __71__HAP2AccessoryServerSecureTransportPairVerify__sendSetupExchangeData__
 
 - (void)_secureTransport
 {
-  v3 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   v4 = [[HAPSecuritySession alloc] initWithRole:0 resumeSessionID:0 delegate:self];
   [(HAP2AccessoryServerSecureTransportPairVerify *)self setSecuritySession:v4];
@@ -189,16 +189,16 @@ void __71__HAP2AccessoryServerSecureTransportPairVerify__sendSetupExchangeData__
 
 - (void)_openTransport
 {
-  v3 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  v4 = [(HAP2AccessoryServerSecureTransportBase *)self transport];
+  transport = [(HAP2AccessoryServerSecureTransportBase *)self transport];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__HAP2AccessoryServerSecureTransportPairVerify__openTransport__block_invoke;
   v5[3] = &unk_2786D6CC8;
   v5[4] = self;
-  [v4 openWithCompletion:v5];
+  [transport openWithCompletion:v5];
 }
 
 void __62__HAP2AccessoryServerSecureTransportPairVerify__openTransport__block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -271,22 +271,22 @@ void __62__HAP2AccessoryServerSecureTransportPairVerify__openTransport__block_in
   }
 }
 
-- (void)securitySession:(id)a3 didCloseWithError:(id)a4
+- (void)securitySession:(id)session didCloseWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didCloseWithError___block_invoke;
   v12[3] = &unk_2786D7078;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = sessionCopy;
+  selfCopy = self;
+  v15 = errorCopy;
+  v8 = errorCopy;
+  v9 = sessionCopy;
   v10 = MEMORY[0x231885210](v12);
-  v11 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v11 addConcurrentBlock:v10];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue addConcurrentBlock:v10];
 }
 
 void __82__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didCloseWithError___block_invoke(uint64_t a1)
@@ -406,16 +406,16 @@ void __82__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didClose
   }
 }
 
-- (void)securitySessionDidOpen:(id)a3
+- (void)securitySessionDidOpen:(id)open
 {
-  v4 = a3;
+  openCopy = open;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __71__HAP2AccessoryServerSecureTransportPairVerify_securitySessionDidOpen___block_invoke;
   v11 = &unk_2786D7050;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = openCopy;
+  v5 = openCopy;
   v6 = MEMORY[0x231885210](&v8);
   v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue:v8];
   [v7 addConcurrentBlock:v6];
@@ -433,26 +433,26 @@ void __71__HAP2AccessoryServerSecureTransportPairVerify_securitySessionDidOpen__
   }
 }
 
-- (void)securitySession:(id)a3 didReceiveSetupExchangeData:(id)a4
+- (void)securitySession:(id)session didReceiveSetupExchangeData:(id)data
 {
-  v5 = a4;
+  dataCopy = data;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __92__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didReceiveSetupExchangeData___block_invoke;
   v12 = &unk_2786D7050;
-  v13 = self;
-  v14 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v14 = dataCopy;
+  v6 = dataCopy;
   v7 = MEMORY[0x231885210](&v9);
   v8 = [(HAP2AccessoryServerTransportBase *)self operationQueue:v9];
   [v8 addConcurrentBlock:v7];
 }
 
-- (id)securitySession:(id)a3 didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)a4 error:(id *)a5
+- (id)securitySession:(id)session didReceiveRequestForPeerPairingIdentityWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[HAPDeviceID alloc] initWithDeviceIDString:v9];
+  sessionCopy = session;
+  identifierCopy = identifier;
+  v10 = [[HAPDeviceID alloc] initWithDeviceIDString:identifierCopy];
   if (v10)
   {
     v11 = dispatch_group_create();
@@ -480,8 +480,8 @@ void __71__HAP2AccessoryServerSecureTransportPairVerify_securitySessionDidOpen__
     v20 = v10;
     v22 = &v29;
     v13 = MEMORY[0x231885210](v18);
-    v14 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-    [v14 addConcurrentBlock:v13];
+    operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+    [operationQueue addConcurrentBlock:v13];
 
     dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     v15 = v30[5];
@@ -490,19 +490,19 @@ void __71__HAP2AccessoryServerSecureTransportPairVerify_securitySessionDidOpen__
       v16 = v15;
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = v24[5];
+      *error = v24[5];
     }
 
     _Block_object_dispose(&v23, 8);
     _Block_object_dispose(&v29, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] hapErrorWithCode:9];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -589,9 +589,9 @@ void __124__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didRece
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)securitySession:(id)a3 didReceiveLocalPairingIdentityRequestWithError:(id *)a4
+- (id)securitySession:(id)session didReceiveLocalPairingIdentityRequestWithError:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v7 = dispatch_group_create();
   v28 = 0;
   v29 = &v28;
@@ -610,7 +610,7 @@ void __124__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didRece
   v15 = 3221225472;
   v16 = __111__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didReceiveLocalPairingIdentityRequestWithError___block_invoke;
   v17 = &unk_2786D4598;
-  v18 = self;
+  selfCopy = self;
   v20 = &v22;
   v8 = v7;
   v19 = v8;
@@ -626,9 +626,9 @@ void __124__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didRece
     v12 = v11;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v23[5];
+    *error = v23[5];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -712,63 +712,63 @@ void __111__HAP2AccessoryServerSecureTransportPairVerify_securitySession_didRece
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)doCloseWithError:(id)a3 completion:(id)a4
+- (void)doCloseWithError:(id)error completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v7 assertCurrentQueue];
+  completionCopy = completion;
+  errorCopy = error;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  [(HAP2AccessoryServerSecureTransportPairVerify *)self setStateChangeCompletion:v6];
-  [(HAP2AccessoryServerSecureTransportPairVerify *)self _closeWithError:v8];
+  [(HAP2AccessoryServerSecureTransportPairVerify *)self setStateChangeCompletion:completionCopy];
+  [(HAP2AccessoryServerSecureTransportPairVerify *)self _closeWithError:errorCopy];
 }
 
-- (void)doOpenWithCompletion:(id)a3
+- (void)doOpenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  completionCopy = completion;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
-  [(HAP2AccessoryServerSecureTransportPairVerify *)self setStateChangeCompletion:v4];
+  [(HAP2AccessoryServerSecureTransportPairVerify *)self setStateChangeCompletion:completionCopy];
 
   [(HAP2AccessoryServerSecureTransportPairVerify *)self _openTransport];
 }
 
-- (void)setSecuritySession:(id)a3
+- (void)setSecuritySession:(id)session
 {
-  v4 = a3;
-  v5 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v5 assertCurrentQueue];
+  sessionCopy = session;
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   securitySession = self->_securitySession;
-  self->_securitySession = v4;
+  self->_securitySession = sessionCopy;
 }
 
 - (HAPSecuritySession)securitySession
 {
-  v3 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v3 assertCurrentQueue];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue assertCurrentQueue];
 
   securitySession = self->_securitySession;
 
   return securitySession;
 }
 
-- (HAP2AccessoryServerSecureTransportPairVerify)initWithTransport:(id)a3 operationQueue:(id)a4
+- (HAP2AccessoryServerSecureTransportPairVerify)initWithTransport:(id)transport operationQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  transportCopy = transport;
+  queueCopy = queue;
   v8 = HAPDispatchQueueName(self, @"delegateQueue");
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10 = dispatch_queue_create(v8, v9);
 
   v14.receiver = self;
   v14.super_class = HAP2AccessoryServerSecureTransportPairVerify;
-  v11 = [(HAP2AccessoryServerSecureTransportBase *)&v14 initWithOperationQueue:v7 delegateQueue:v10 transport:v6];
+  v11 = [(HAP2AccessoryServerSecureTransportBase *)&v14 initWithOperationQueue:queueCopy delegateQueue:v10 transport:transportCopy];
 
   if (v11)
   {
-    [v6 setDelegate:v11];
+    [transportCopy setDelegate:v11];
     sessionInfo = v11->_sessionInfo;
     v11->_sessionInfo = 0;
   }

@@ -1,6 +1,6 @@
 @interface MPSCNNBatchNormalizationGradientNode
 + (MPSCNNBatchNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState;
-- (MPSCNNBatchNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNBatchNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNBatchNormalizationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNBatchNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_(v8, v9, sourceGradient, sourceImage, gradientState, v10, v11, v12);
 
   return v13;
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (MPSCNNBatchNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNBatchNormalizationGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -41,7 +41,7 @@
   {
     v9.receiver = self;
     v9.super_class = MPSCNNBatchNormalizationGradientNode;
-    return [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:a3 forwardFilter:a4];
+    return [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:images forwardFilter:filter];
   }
 
   else

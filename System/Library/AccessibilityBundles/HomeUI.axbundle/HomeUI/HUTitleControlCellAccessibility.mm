@@ -1,5 +1,5 @@
 @interface HUTitleControlCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axControlElement;
 - (id)accessibilityLabel;
@@ -9,33 +9,33 @@
 
 @implementation HUTitleControlCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUTitleControlCell" hasInstanceMethod:@"controlView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUTitleControlCell" hasInstanceMethod:@"controlTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUTitleControlCell" hasInstanceMethod:@"controlView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUTitleControlCell" hasInstanceMethod:@"controlTitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(HUTitleControlCellAccessibility *)self safeValueForKey:@"controlTitle"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(HUTitleControlCellAccessibility *)self _axControlElement];
-  v3 = [v2 accessibilityValue];
+  _axControlElement = [(HUTitleControlCellAccessibility *)self _axControlElement];
+  accessibilityValue = [_axControlElement accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(HUTitleControlCellAccessibility *)self _axControlElement];
-  [v2 accessibilityActivationPoint];
+  _axControlElement = [(HUTitleControlCellAccessibility *)self _axControlElement];
+  [_axControlElement accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 
@@ -48,10 +48,10 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(HUTitleControlCellAccessibility *)self _axControlElement];
-  v3 = [v2 accessibilityTraits];
+  _axControlElement = [(HUTitleControlCellAccessibility *)self _axControlElement];
+  accessibilityTraits = [_axControlElement accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)_axControlElement

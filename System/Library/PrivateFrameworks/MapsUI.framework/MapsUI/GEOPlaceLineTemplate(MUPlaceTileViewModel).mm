@@ -14,22 +14,22 @@
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 locationName];
+  locationName = [self locationName];
   v6 = v4;
-  if ([v5 length])
+  if ([locationName length])
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     v9 = *MEMORY[0x1E69DB650];
     v16[0] = *MEMORY[0x1E69DB648];
     v16[1] = v9;
     v17[0] = v6;
-    v17[1] = v8;
+    v17[1] = systemGrayColor;
     v10 = MEMORY[0x1E695DF20];
     v11 = v6;
     v12 = [v10 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-    v13 = [v7 initWithString:v5 attributes:v12];
+    v13 = [v7 initWithString:locationName attributes:v12];
   }
 
   else
@@ -45,8 +45,8 @@
 - (id)_factoidAttributedStringForFont:()MUPlaceTileViewModel
 {
   v4 = a3;
-  v5 = [a1 factoid];
-  v6 = _MUFactoidStringForFactoid(v5, v4);
+  factoid = [self factoid];
+  v6 = _MUFactoidStringForFactoid(factoid, v4);
 
   return v6;
 }
@@ -55,37 +55,37 @@
 {
   v40[3] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 ratingSummary];
-  v6 = [v5 isAppleRating];
+  ratingSummary = [self ratingSummary];
+  isAppleRating = [ratingSummary isAppleRating];
 
-  if (v6)
+  if (isAppleRating)
   {
-    v7 = [MEMORY[0x1E696F1F8] ratingSymbolName];
-    v37 = [MEMORY[0x1E69DC888] labelColor];
+    ratingSymbolName = [MEMORY[0x1E696F1F8] ratingSymbolName];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [a1 ratingSummary];
-    [v9 normalizedUserRatingScore];
+    ratingSummary2 = [self ratingSummary];
+    [ratingSummary2 normalizedUserRatingScore];
     v11 = [v8 localizedStringWithFormat:@"%lu%%", v10];
   }
 
   else
   {
     v12 = MEMORY[0x1E696F3B0];
-    v13 = [a1 ratingSummary];
-    [v13 normalizedUserRatingScore];
-    v37 = [v12 colorForRating:v14];
+    ratingSummary3 = [self ratingSummary];
+    [ratingSummary3 normalizedUserRatingScore];
+    labelColor = [v12 colorForRating:v14];
 
     v15 = MEMORY[0x1E696AEC0];
-    v9 = [a1 ratingSummary];
-    [v9 normalizedUserRatingScore];
+    ratingSummary2 = [self ratingSummary];
+    [ratingSummary2 normalizedUserRatingScore];
     v11 = [v15 localizedStringWithFormat:@"%.1f", v16];
-    v7 = @"star.fill";
+    ratingSymbolName = @"star.fill";
   }
 
   v17 = MEMORY[0x1E69DCAB8];
   v18 = MEMORY[0x1E69DCAD8];
   v19 = v4;
-  v20 = v7;
+  v20 = ratingSymbolName;
   v21 = [v18 configurationWithFont:v19 scale:1];
   v22 = [v17 _mapsui_resolvedSymbolImageNamed:v20 withConfiguration:v21];
 
@@ -107,7 +107,7 @@
   v31 = *MEMORY[0x1E69DB648];
   v38[0] = *MEMORY[0x1E69DB650];
   v38[1] = v31;
-  v39[0] = v37;
+  v39[0] = labelColor;
   v39[1] = v19;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
   [v30 addAttributes:v32 range:{0, objc_msgSend(v30, "length")}];
@@ -122,31 +122,31 @@
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 ratingSummary];
+  ratingSummary = [self ratingSummary];
 
-  if (v5)
+  if (ratingSummary)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = MEMORY[0x1E696F1F0];
-    v8 = [a1 ratingSummary];
-    [v8 sampleSizeUsedForScore];
+    ratingSummary2 = [self ratingSummary];
+    [ratingSummary2 sampleSizeUsedForScore];
     v10 = [v7 stringFromCount:v9];
     v11 = [v6 stringWithFormat:@"(%@)", v10];
 
     v12 = objc_alloc_init(MEMORY[0x1E696AD40]);
     v13 = [v4 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
-    v14 = [a1 _ratingGlyphAttributedStringForFont:v13];
+    v14 = [self _ratingGlyphAttributedStringForFont:v13];
 
-    v15 = [a1 ratingSummary];
-    v16 = [v15 isAppleRating];
+    ratingSummary3 = [self ratingSummary];
+    isAppleRating = [ratingSummary3 isAppleRating];
 
-    if ((v16 & 1) == 0)
+    if ((isAppleRating & 1) == 0)
     {
       v17 = objc_alloc(MEMORY[0x1E696AAB0]);
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [a1 ratingSummary];
-      v20 = [v19 vendorName];
-      v21 = [v18 stringWithFormat:@"%@\n", v20];
+      ratingSummary4 = [self ratingSummary];
+      vendorName = [ratingSummary4 vendorName];
+      v21 = [v18 stringWithFormat:@"%@\n", vendorName];
       v22 = [v17 initWithString:v21];
 
       [v12 appendAttributedString:v22];
@@ -181,22 +181,22 @@
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 categoryName];
+  categoryName = [self categoryName];
   v6 = v4;
-  if ([v5 length])
+  if ([categoryName length])
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v8 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     v9 = *MEMORY[0x1E69DB650];
     v16[0] = *MEMORY[0x1E69DB648];
     v16[1] = v9;
     v17[0] = v6;
-    v17[1] = v8;
+    v17[1] = systemGrayColor;
     v10 = MEMORY[0x1E695DF20];
     v11 = v6;
     v12 = [v10 dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-    v13 = [v7 initWithString:v5 attributes:v12];
+    v13 = [v7 initWithString:categoryName attributes:v12];
   }
 
   else
@@ -214,26 +214,26 @@
   v21[2] = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_alloc(MEMORY[0x1E696F468]);
-  v6 = [a1 businessHours];
-  v7 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-  v8 = [v5 initWithBusinessHours:v6 timeZone:v7 localizedHoursStringOptions:128];
+  businessHours = [self businessHours];
+  defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+  v8 = [v5 initWithBusinessHours:businessHours timeZone:defaultTimeZone localizedHoursStringOptions:128];
 
-  v9 = [v8 localizedOpenState];
+  localizedOpenState = [v8 localizedOpenState];
   v10 = v4;
-  if ([v9 length])
+  if ([localizedOpenState length])
   {
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v12 = [MEMORY[0x1E69DC888] systemGrayColor];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
     v13 = *MEMORY[0x1E69DB650];
     v20[0] = *MEMORY[0x1E69DB648];
     v20[1] = v13;
     v21[0] = v10;
-    v21[1] = v12;
+    v21[1] = systemGrayColor;
     v14 = MEMORY[0x1E695DF20];
     v15 = v10;
     v16 = [v14 dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-    v17 = [v11 initWithString:v9 attributes:v16];
+    v17 = [v11 initWithString:localizedOpenState attributes:v16];
   }
 
   else
@@ -249,38 +249,38 @@
 - (id)attributedStringForFont:()MUPlaceTileViewModel
 {
   v4 = a3;
-  v5 = [a1 type];
+  type = [self type];
   v6 = 0;
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
-      v7 = [a1 _categoryStringForFont:v4];
+      v7 = [self _categoryStringForFont:v4];
     }
 
     else
     {
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_13;
       }
 
-      v7 = [a1 _businessHoursAttributedStringForFont:v4];
+      v7 = [self _businessHoursAttributedStringForFont:v4];
     }
   }
 
   else
   {
-    switch(v5)
+    switch(type)
     {
       case 3:
-        v7 = [a1 _ratingSummaryAttributedStringForFont:v4];
+        v7 = [self _ratingSummaryAttributedStringForFont:v4];
         break;
       case 4:
-        v7 = [a1 _factoidAttributedStringForFont:v4];
+        v7 = [self _factoidAttributedStringForFont:v4];
         break;
       case 5:
-        v7 = [a1 _locationAttributedStringForFont:v4];
+        v7 = [self _locationAttributedStringForFont:v4];
         break;
       default:
         goto LABEL_13;

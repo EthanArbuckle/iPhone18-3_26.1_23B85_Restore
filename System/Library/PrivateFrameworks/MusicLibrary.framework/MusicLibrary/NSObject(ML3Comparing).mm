@@ -9,12 +9,12 @@
   v6 = a3;
   if (a4 == 2)
   {
-    v7 = [a1 isEqual:v6] ^ 1;
+    v7 = [self isEqual:v6] ^ 1;
   }
 
   else if (a4 == 1)
   {
-    v7 = [a1 isEqual:v6];
+    v7 = [self isEqual:v6];
   }
 
   else

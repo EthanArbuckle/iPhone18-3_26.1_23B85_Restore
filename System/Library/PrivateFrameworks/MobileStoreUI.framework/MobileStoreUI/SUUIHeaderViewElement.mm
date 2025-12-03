@@ -1,42 +1,42 @@
 @interface SUUIHeaderViewElement
 - (NSArray)titleLabels;
 - (SUUIButtonViewElement)button;
-- (SUUIHeaderViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIHeaderViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUIHeaderViewElement
 
-- (SUUIHeaderViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIHeaderViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v11 = objc_opt_class();
-  if (v11 == objc_opt_class() && ([v8 getAttribute:@"type"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"browse"), v12, v13))
+  if (v11 == objc_opt_class() && ([elementCopy getAttribute:@"type"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"browse"), v12, v13))
   {
-    v14 = v9;
+    v14 = parentCopy;
     v15 = v14;
     if (v14)
     {
       v16 = v14;
       do
       {
-        v17 = [v16 parent];
+        parent = [v16 parent];
 
-        v16 = v17;
+        v16 = parent;
       }
 
-      while (v17);
+      while (parent);
     }
 
-    v18 = [(SUUIHeaderViewElement *)[SUUIBrowseHeaderViewElement alloc] initWithDOMElement:v8 parent:v15 elementFactory:v10];
+    v18 = [(SUUIHeaderViewElement *)[SUUIBrowseHeaderViewElement alloc] initWithDOMElement:elementCopy parent:v15 elementFactory:factoryCopy];
   }
 
   else
   {
     v21.receiver = self;
     v21.super_class = SUUIHeaderViewElement;
-    v18 = [(SUUIViewElement *)&v21 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+    v18 = [(SUUIViewElement *)&v21 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
     self = &v18->super;
   }
 
@@ -77,12 +77,12 @@ void __31__SUUIHeaderViewElement_button__block_invoke(uint64_t a1, void *a2, _BY
 
 - (NSArray)titleLabels
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__SUUIHeaderViewElement_titleLabels__block_invoke;
   v6[3] = &unk_2798F5B20;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
 

@@ -1,14 +1,14 @@
 @interface COBallot
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBallot:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBallot:(id)ballot;
 - (COBallot)init;
-- (COBallot)initWithBallot:(id)a3;
-- (COBallot)initWithCandidate:(id)a3;
-- (COBallot)initWithCoder:(id)a3;
+- (COBallot)initWithBallot:(id)ballot;
+- (COBallot)initWithCandidate:(id)candidate;
+- (COBallot)initWithCoder:(id)coder;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COBallot
@@ -32,21 +32,21 @@
   return v2;
 }
 
-- (COBallot)initWithBallot:(id)a3
+- (COBallot)initWithBallot:(id)ballot
 {
-  v4 = a3;
+  ballotCopy = ballot;
   v13.receiver = self;
   v13.super_class = COBallot;
   v5 = [(COBallot *)&v13 init];
   if (v5)
   {
-    v6 = [v4 candidates];
-    v7 = [v6 copy];
+    candidates = [ballotCopy candidates];
+    v7 = [candidates copy];
     candidates = v5->_candidates;
     v5->_candidates = v7;
 
-    v9 = [v4 discovery];
-    v10 = [v9 copy];
+    discovery = [ballotCopy discovery];
+    v10 = [discovery copy];
     discovery = v5->_discovery;
     v5->_discovery = v10;
   }
@@ -54,21 +54,21 @@
   return v5;
 }
 
-- (COBallot)initWithCandidate:(id)a3
+- (COBallot)initWithCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   v5 = objc_alloc_init(COMutableBallot);
-  [(COMutableBallot *)v5 addCandidate:v4];
+  [(COMutableBallot *)v5 addCandidate:candidateCopy];
 
   v6 = [(COBallot *)self initWithBallot:v5];
   return v6;
 }
 
-- (COBallot)initWithCoder:(id)a3
+- (COBallot)initWithCoder:(id)coder
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"version"] != 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"version"] != 1)
   {
 
     v5 = 0;
@@ -81,7 +81,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"candidates"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"candidates"];
     candidates = v5->_candidates;
     v5->_candidates = v9;
 
@@ -130,11 +130,11 @@ LABEL_12:
             v20 = objc_opt_class();
             v21 = [v18 setWithObjects:{v19, v20, objc_opt_class(), 0}];
 
-            v22 = [v4 decodeObjectOfClasses:v21 forKey:@"discovery"];
+            v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"discovery"];
             discovery = v5->_discovery;
             v5->_discovery = v22;
 
-            if (!v5->_discovery && ([v4 containsValueForKey:@"discovery"] & 1) == 0)
+            if (!v5->_discovery && ([coderCopy containsValueForKey:@"discovery"] & 1) == 0)
             {
               v24 = objc_alloc_init(MEMORY[0x277CBEAC0]);
               v25 = v5->_discovery;
@@ -229,15 +229,15 @@ LABEL_31:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"version"];
-  v5 = [(COBallot *)self candidates];
-  [v4 encodeObject:v5 forKey:@"candidates"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
+  candidates = [(COBallot *)self candidates];
+  [coderCopy encodeObject:candidates forKey:@"candidates"];
 
-  v6 = [(COBallot *)self discovery];
-  [v4 encodeObject:v6 forKey:@"discovery"];
+  discovery = [(COBallot *)self discovery];
+  [coderCopy encodeObject:discovery forKey:@"discovery"];
 }
 
 - (id)description
@@ -245,14 +245,14 @@ LABEL_31:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COBallot *)self candidates];
-  v7 = [v6 description];
+  candidates = [(COBallot *)self candidates];
+  v7 = [candidates description];
   v8 = [v3 stringWithFormat:@"<%@: %p, candidates = %@>", v5, self, v7];
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [COMutableBallot alloc];
 
@@ -261,16 +261,16 @@ LABEL_31:
 
 - (unint64_t)hash
 {
-  v2 = [(COBallot *)self candidates];
-  v3 = [v2 hash];
+  candidates = [(COBallot *)self candidates];
+  v3 = [candidates hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -278,20 +278,20 @@ LABEL_31:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(COBallot *)self isEqualToBallot:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(COBallot *)self isEqualToBallot:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToBallot:(id)a3
+- (BOOL)isEqualToBallot:(id)ballot
 {
-  v4 = a3;
-  v5 = [(COBallot *)self candidates];
-  v6 = [v4 candidates];
+  ballotCopy = ballot;
+  candidates = [(COBallot *)self candidates];
+  candidates2 = [ballotCopy candidates];
 
-  LOBYTE(v4) = [v5 isEqualToOrderedSet:v6];
-  return v4;
+  LOBYTE(ballotCopy) = [candidates isEqualToOrderedSet:candidates2];
+  return ballotCopy;
 }
 
 @end

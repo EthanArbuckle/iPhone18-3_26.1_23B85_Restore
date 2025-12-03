@@ -1,7 +1,7 @@
 @interface HMMQueuingRTCBackendSession
 + (id)logCategory;
-- (BOOL)sendMessage:(id)a3;
-- (HMMQueuingRTCBackendSession)initWithServiceName:(id)a3 sessionUUID:(id)a4 isRealtime:(BOOL)a5 submitter:(id)a6 timeSourceBlock:(id)a7;
+- (BOOL)sendMessage:(id)message;
+- (HMMQueuingRTCBackendSession)initWithServiceName:(id)name sessionUUID:(id)d isRealtime:(BOOL)realtime submitter:(id)submitter timeSourceBlock:(id)block;
 - (_HMMLogBackendSubmitterDelegate)submitter;
 - (double)lastEventTime;
 - (void)close;
@@ -33,11 +33,11 @@
   os_unfair_lock_unlock(&self->_lock);
   if (isOpen && [(NSMutableArray *)self->_queuedEvents count])
   {
-    v7 = [(HMMQueuingRTCBackendSession *)self submitter];
+    submitter = [(HMMQueuingRTCBackendSession *)self submitter];
     v4 = [(NSMutableArray *)self->_queuedEvents copy];
-    v5 = [(HMMQueuingRTCBackendSession *)self serviceName];
-    v6 = [(HMMQueuingRTCBackendSession *)self sessionUUID];
-    [v7 submitMessages:v4 serviceName:v5 sessionUUID:v6 isRealtime:{-[HMMQueuingRTCBackendSession isRealtime](self, "isRealtime")}];
+    serviceName = [(HMMQueuingRTCBackendSession *)self serviceName];
+    sessionUUID = [(HMMQueuingRTCBackendSession *)self sessionUUID];
+    [submitter submitMessages:v4 serviceName:serviceName sessionUUID:sessionUUID isRealtime:{-[HMMQueuingRTCBackendSession isRealtime](self, "isRealtime")}];
   }
 }
 
@@ -49,13 +49,13 @@
   return lastEventTime;
 }
 
-- (BOOL)sendMessage:(id)a3
+- (BOOL)sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   os_unfair_lock_lock_with_options();
   if (self->_isOpen)
   {
-    [(NSMutableArray *)self->_queuedEvents addObject:v4];
+    [(NSMutableArray *)self->_queuedEvents addObject:messageCopy];
     self->_lastEventTime = (*(self->_timeSourceBlock + 2))();
   }
 
@@ -64,32 +64,32 @@
   return 1;
 }
 
-- (HMMQueuingRTCBackendSession)initWithServiceName:(id)a3 sessionUUID:(id)a4 isRealtime:(BOOL)a5 submitter:(id)a6 timeSourceBlock:(id)a7
+- (HMMQueuingRTCBackendSession)initWithServiceName:(id)name sessionUUID:(id)d isRealtime:(BOOL)realtime submitter:(id)submitter timeSourceBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  dCopy = d;
+  submitterCopy = submitter;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = HMMQueuingRTCBackendSession;
   v17 = [(HMMQueuingRTCBackendSession *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_serviceName, a3);
-    objc_storeStrong(&v18->_sessionUUID, a4);
-    v18->_isRealtime = a5;
-    objc_storeWeak(&v18->_submitter, v15);
-    v19 = _Block_copy(v16);
+    objc_storeStrong(&v17->_serviceName, name);
+    objc_storeStrong(&v18->_sessionUUID, d);
+    v18->_isRealtime = realtime;
+    objc_storeWeak(&v18->_submitter, submitterCopy);
+    v19 = _Block_copy(blockCopy);
     timeSourceBlock = v18->_timeSourceBlock;
     v18->_timeSourceBlock = v19;
 
     v18->_isOpen = 1;
-    v21 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queuedEvents = v18->_queuedEvents;
-    v18->_queuedEvents = v21;
+    v18->_queuedEvents = array;
 
-    v18->_lastEventTime = v16[2](v16);
+    v18->_lastEventTime = blockCopy[2](blockCopy);
   }
 
   return v18;

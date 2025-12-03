@@ -1,8 +1,8 @@
 @interface NSSQLForeignKey
-- (NSSQLForeignKey)initWithEntity:(id)a3 propertyDescription:(id)a4;
-- (NSSQLForeignKey)initWithEntity:(id)a3 toOneRelationship:(id)a4;
-- (id)initForReadOnlyFetchingOfEntity:(id)a3 toOneRelationship:(id)a4;
-- (void)copyValuesForReadOnlyFetch:(id)a3;
+- (NSSQLForeignKey)initWithEntity:(id)entity propertyDescription:(id)description;
+- (NSSQLForeignKey)initWithEntity:(id)entity toOneRelationship:(id)relationship;
+- (id)initForReadOnlyFetchingOfEntity:(id)entity toOneRelationship:(id)relationship;
+- (void)copyValuesForReadOnlyFetch:(id)fetch;
 - (void)dealloc;
 @end
 
@@ -17,20 +17,20 @@
   [(NSSQLColumn *)&v3 dealloc];
 }
 
-- (NSSQLForeignKey)initWithEntity:(id)a3 toOneRelationship:(id)a4
+- (NSSQLForeignKey)initWithEntity:(id)entity toOneRelationship:(id)relationship
 {
   v16.receiver = self;
   v16.super_class = NSSQLForeignKey;
-  v6 = [(NSSQLColumn *)&v16 initWithEntity:a3 propertyDescription:0];
+  v6 = [(NSSQLColumn *)&v16 initWithEntity:entity propertyDescription:0];
   v7 = v6;
   if (v6)
   {
     v6->super.super._propertyType = 3;
-    v6->_toOne = a4;
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", @"Z", objc_msgSend(objc_msgSend(a4, "name"), "uppercaseString")];
-    if (a3)
+    v6->_toOne = relationship;
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@%@", @"Z", objc_msgSend(objc_msgSend(relationship, "name"), "uppercaseString")];
+    if (entity)
     {
-      v9 = *(a3 + 22);
+      v9 = *(entity + 22);
     }
 
     else
@@ -61,12 +61,12 @@
   return v7;
 }
 
-- (NSSQLForeignKey)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLForeignKey)initWithEntity:(id)entity propertyDescription:(id)description
 {
-  v6 = [a4 name];
-  if (a3)
+  name = [description name];
+  if (entity)
   {
-    v7 = [*(a3 + 5) objectForKey:v6];
+    v7 = [*(entity + 5) objectForKey:name];
   }
 
   else
@@ -74,19 +74,19 @@
     v7 = 0;
   }
 
-  return [(NSSQLForeignKey *)self initWithEntity:a3 toOneRelationship:v7];
+  return [(NSSQLForeignKey *)self initWithEntity:entity toOneRelationship:v7];
 }
 
-- (id)initForReadOnlyFetchingOfEntity:(id)a3 toOneRelationship:(id)a4
+- (id)initForReadOnlyFetchingOfEntity:(id)entity toOneRelationship:(id)relationship
 {
   v10.receiver = self;
   v10.super_class = NSSQLForeignKey;
-  v5 = [(NSSQLColumn *)&v10 initWithEntity:a3 propertyDescription:0];
+  v5 = [(NSSQLColumn *)&v10 initWithEntity:entity propertyDescription:0];
   v6 = v5;
   if (v5)
   {
     v5->super.super._propertyType = 3;
-    v5->_toOne = a4;
+    v5->_toOne = relationship;
     columnName = v5->super._columnName;
     if (columnName != @"Z_PK")
     {
@@ -107,13 +107,13 @@
   return v6;
 }
 
-- (void)copyValuesForReadOnlyFetch:(id)a3
+- (void)copyValuesForReadOnlyFetch:(id)fetch
 {
   v5.receiver = self;
   v5.super_class = NSSQLForeignKey;
   [(NSSQLColumn *)&v5 copyValuesForReadOnlyFetch:?];
-  self->_toOne = [a3 toOneRelationship];
-  self->_name = [objc_msgSend(a3 "name")];
+  self->_toOne = [fetch toOneRelationship];
+  self->_name = [objc_msgSend(fetch "name")];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface DirectionsElevationLabelSummaryView
 - (BOOL)_shouldStackVertically;
-- (DirectionsElevationLabelSummaryView)initWithFrame:(CGRect)a3;
+- (DirectionsElevationLabelSummaryView)initWithFrame:(CGRect)frame;
 - (id)accessibilityIdentifier;
 - (void)_updateShouldStackVertically;
 - (void)_updateStackViewMetrics;
-- (void)setAscent:(id)a3 descent:(id)a4;
-- (void)setFont:(id)a3;
-- (void)setFont:(id)a3 color:(id)a4;
+- (void)setAscent:(id)ascent descent:(id)descent;
+- (void)setFont:(id)font;
+- (void)setFont:(id)font color:(id)color;
 @end
 
 @implementation DirectionsElevationLabelSummaryView
@@ -40,55 +40,55 @@
 
 - (BOOL)_shouldStackVertically
 {
-  v2 = [(DirectionsElevationLabelSummaryView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(DirectionsElevationLabelSummaryView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
 
 - (void)_updateShouldStackVertically
 {
-  v3 = [(DirectionsElevationLabelSummaryView *)self _shouldStackVertically];
-  if (self->_stackVertically != v3)
+  _shouldStackVertically = [(DirectionsElevationLabelSummaryView *)self _shouldStackVertically];
+  if (self->_stackVertically != _shouldStackVertically)
   {
-    self->_stackVertically = v3;
+    self->_stackVertically = _shouldStackVertically;
     [(DirectionsElevationLabelSummaryView *)self _updateStackViewMetrics];
 
     [(DirectionsElevationLabelSummaryView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setFont:(id)a3 color:(id)a4
+- (void)setFont:(id)font color:(id)color
 {
   ascentLabel = self->_ascentLabel;
-  v7 = a4;
-  v8 = a3;
-  [(DirectionsElevationLabelView *)ascentLabel setFont:v8 color:v7];
-  [(DirectionsElevationLabelView *)self->_descentLabel setFont:v8 color:v7];
+  colorCopy = color;
+  fontCopy = font;
+  [(DirectionsElevationLabelView *)ascentLabel setFont:fontCopy color:colorCopy];
+  [(DirectionsElevationLabelView *)self->_descentLabel setFont:fontCopy color:colorCopy];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   ascentLabel = self->_ascentLabel;
-  v5 = a3;
-  [(DirectionsElevationLabelView *)ascentLabel setFont:v5];
-  [(DirectionsElevationLabelView *)self->_descentLabel setFont:v5];
+  fontCopy = font;
+  [(DirectionsElevationLabelView *)ascentLabel setFont:fontCopy];
+  [(DirectionsElevationLabelView *)self->_descentLabel setFont:fontCopy];
 }
 
-- (void)setAscent:(id)a3 descent:(id)a4
+- (void)setAscent:(id)ascent descent:(id)descent
 {
   ascentLabel = self->_ascentLabel;
-  v7 = a4;
-  [(DirectionsElevationLabelView *)ascentLabel setElevation:a3];
-  [(DirectionsElevationLabelView *)self->_descentLabel setElevation:v7];
+  descentCopy = descent;
+  [(DirectionsElevationLabelView *)ascentLabel setElevation:ascent];
+  [(DirectionsElevationLabelView *)self->_descentLabel setElevation:descentCopy];
 }
 
-- (DirectionsElevationLabelSummaryView)initWithFrame:(CGRect)a3
+- (DirectionsElevationLabelSummaryView)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = DirectionsElevationLabelSummaryView;
-  v3 = [(DirectionsElevationLabelSummaryView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DirectionsElevationLabelSummaryView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[DirectionsElevationLabelView alloc] initWithStyle:0];
@@ -124,21 +124,21 @@
 
     v3->_stackVertically = [(DirectionsElevationLabelSummaryView *)v3 _shouldStackVertically];
     [(DirectionsElevationLabelSummaryView *)v3 _updateStackViewMetrics];
-    v30 = [(UIStackView *)v16 topAnchor];
-    v29 = [(DirectionsElevationLabelSummaryView *)v3 topAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    topAnchor = [(UIStackView *)v16 topAnchor];
+    topAnchor2 = [(DirectionsElevationLabelSummaryView *)v3 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v32[0] = v28;
-    v27 = [(UIStackView *)v16 leadingAnchor];
-    v26 = [(DirectionsElevationLabelSummaryView *)v3 leadingAnchor];
-    v17 = [v27 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UIStackView *)v16 leadingAnchor];
+    leadingAnchor2 = [(DirectionsElevationLabelSummaryView *)v3 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v32[1] = v17;
-    v18 = [(DirectionsElevationLabelSummaryView *)v3 bottomAnchor];
-    v19 = [(UIStackView *)v16 bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    bottomAnchor = [(DirectionsElevationLabelSummaryView *)v3 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v16 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v32[2] = v20;
-    v21 = [(DirectionsElevationLabelSummaryView *)v3 trailingAnchor];
-    v22 = [(UIStackView *)v16 trailingAnchor];
-    v23 = [v21 constraintGreaterThanOrEqualToAnchor:v22];
+    trailingAnchor = [(DirectionsElevationLabelSummaryView *)v3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v16 trailingAnchor];
+    v23 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
     v32[3] = v23;
     v24 = [NSArray arrayWithObjects:v32 count:4];
     [NSLayoutConstraint activateConstraints:v24];

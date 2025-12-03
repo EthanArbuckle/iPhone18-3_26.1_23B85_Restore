@@ -1,14 +1,14 @@
 @interface UIControl
-+ (unint64_t)_primaryStateForState:(unint64_t)a3;
++ (unint64_t)_primaryStateForState:(unint64_t)state;
 - (BOOL)_allowsSymbolAnimations;
-- (BOOL)_hasActionForEventMask:(unint64_t)a3;
+- (BOOL)_hasActionForEventMask:(unint64_t)mask;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canBecomeFocused;
 - (BOOL)cancelMouseTracking;
 - (BOOL)cancelTouchTracking;
 - (BOOL)isContextMenuInteractionEnabled;
 - (BOOL)isPointerInteractionEnabled;
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldTrack;
 - (BOOL)showsMenuAsPrimaryAction;
 - (CGPoint)menuAttachmentPointForConfiguration:(UIContextMenuConfiguration *)configuration;
@@ -26,46 +26,46 @@
 - (UIPointerInteraction)pointerInteraction;
 - (double)_highlightCornerRadius;
 - (id)_contextMenuInteraction;
-- (id)_contextMenuInteraction:(id)a3 configuration:(id)a4 interactionEffectForTargetedPreview:(id)a5;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction configuration:(id)configuration interactionEffectForTargetedPreview:(id)preview;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_createPointerInteraction;
 - (id)_distributionStatisticsForUserInteractionDuration;
-- (id)_firstTouchForEvent:(void *)a1;
+- (id)_firstTouchForEvent:(void *)event;
 - (id)_proxySender;
 - (id)_safeHoverStyle;
 - (id)_scalarStatisticsForUserTouchUpInsideEvent;
 - (id)_scalarStatisticsForUserValueChangedEvent;
 - (id)_systemDefaultFocusGroupIdentifier;
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (int64_t)effectiveContentVerticalAlignment;
-- (unint64_t)_stateForFocusUpdateContext:(id)a3;
-- (void)_activateForAccessibilityHUDLiftAtPoint:(CGPoint)a3;
-- (void)_addControlTargetAction:(id)a3;
+- (unint64_t)_stateForFocusUpdateContext:(id)context;
+- (void)_activateForAccessibilityHUDLiftAtPoint:(CGPoint)point;
+- (void)_addControlTargetAction:(id)action;
 - (void)_beginInteractionDurationStatisticMeasurements;
 - (void)_commitInteractionDurationStatisticMeasurements;
-- (void)_connectInterfaceBuilderEventConnection:(id)a3;
-- (void)_contextMenuInteraction:(id)a3 willBeginWithConfiguration:(id)a4;
-- (void)_diagnoseFocusabilityForReport:(id)a3;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_incrementStatisticsForUserActionForEvents:(unint64_t)a3;
+- (void)_connectInterfaceBuilderEventConnection:(id)connection;
+- (void)_contextMenuInteraction:(id)interaction willBeginWithConfiguration:(id)configuration;
+- (void)_diagnoseFocusabilityForReport:(id)report;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_incrementStatisticsForUserActionForEvents:(unint64_t)events;
 - (void)_invalidatePointerInteraction;
 - (void)_registerCustomHoverStylePointerDriverIfNeeded;
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4;
-- (void)_setHasActiveMenuPresentation:(BOOL)a3;
-- (void)_setHighlightOnMouseDown:(BOOL)a3;
-- (void)_setHoverStyle:(void *)a1 implicit:(void *)a2;
-- (void)_setLastHighlightSuccessful:(BOOL)a3;
-- (void)_setProxyPointerInteraction:(id)a3;
-- (void)_setProxySender:(id)a3;
-- (void)_setTouchHasHighlighted:(BOOL)a3;
-- (void)_willMoveToWindow:(id)a3;
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event;
+- (void)_setHasActiveMenuPresentation:(BOOL)presentation;
+- (void)_setHighlightOnMouseDown:(BOOL)down;
+- (void)_setHoverStyle:(void *)style implicit:(void *)implicit;
+- (void)_setLastHighlightSuccessful:(BOOL)successful;
+- (void)_setProxyPointerInteraction:(id)interaction;
+- (void)_setProxySender:(id)sender;
+- (void)_setTouchHasHighlighted:(BOOL)highlighted;
+- (void)_willMoveToWindow:(id)window;
 - (void)addAction:(UIAction *)action forControlEvents:(UIControlEvents)controlEvents;
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
 - (void)cancelTrackingWithEvent:(UIEvent *)event;
 - (void)contextMenuInteraction:(UIContextMenuInteraction *)interaction willEndForConfiguration:(UIContextMenuConfiguration *)configuration animator:(id)animator;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)enumerateEventHandlers:(void *)iterator;
 - (void)performPrimaryAction;
 - (void)removeAction:(UIAction *)action forControlEvents:(UIControlEvents)controlEvents;
@@ -75,17 +75,17 @@
 - (void)setContextMenuInteractionEnabled:(BOOL)contextMenuInteractionEnabled;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setHighlighted:(BOOL)highlighted;
-- (void)setPointerInteractionEnabled:(BOOL)a3;
-- (void)setRequiresDisplayOnTracking:(BOOL)a3;
+- (void)setPointerInteractionEnabled:(BOOL)enabled;
+- (void)setRequiresDisplayOnTracking:(BOOL)tracking;
 - (void)setSelected:(BOOL)selected;
 - (void)setShowsMenuAsPrimaryAction:(BOOL)showsMenuAsPrimaryAction;
-- (void)setShowsMenuFromSource:(BOOL)a3;
+- (void)setShowsMenuFromSource:(BOOL)source;
 - (void)setSymbolAnimationEnabled:(BOOL)symbolAnimationEnabled;
-- (void)setTracking:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setTracking:(BOOL)tracking;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIControl
@@ -121,17 +121,17 @@
 
 - (void)_invalidatePointerInteraction
 {
-  v3 = [(UIControl *)self _proxyPointerInteraction];
-  v5 = v3;
-  if (v3)
+  _proxyPointerInteraction = [(UIControl *)self _proxyPointerInteraction];
+  v5 = _proxyPointerInteraction;
+  if (_proxyPointerInteraction)
   {
-    [v3 invalidate];
+    [_proxyPointerInteraction invalidate];
   }
 
   else
   {
-    v4 = [(UIControl *)self _pointerInteraction];
-    [v4 invalidate];
+    _pointerInteraction = [(UIControl *)self _pointerInteraction];
+    [_pointerInteraction invalidate];
   }
 }
 
@@ -177,9 +177,9 @@
     v2 = 0;
   }
 
-  v3 = [v2 _presentOnTouchDown];
+  _presentOnTouchDown = [v2 _presentOnTouchDown];
 
-  return v3;
+  return _presentOnTouchDown;
 }
 
 - (BOOL)_allowsSymbolAnimations
@@ -271,23 +271,23 @@
 
 - (id)_safeHoverStyle
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     if (dyld_program_sdk_at_least())
     {
-      [v2 hoverStyle];
+      [selfCopy hoverStyle];
     }
 
     else
     {
-      [(UIView *)v2 _hoverStyleStorage];
+      [(UIView *)selfCopy _hoverStyleStorage];
     }
-    a1 = ;
+    self = ;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (int64_t)effectiveContentVerticalAlignment
@@ -319,8 +319,8 @@
     v2 = 0;
   }
 
-  v3 = [v2 view];
-  v4 = v3 != 0;
+  view = [v2 view];
+  v4 = view != 0;
 
   return v4;
 }
@@ -369,15 +369,15 @@
 
 - (BOOL)isPointerInteractionEnabled
 {
-  v2 = [(UIControl *)self pointerInteraction];
-  v3 = [v2 isEnabled];
+  pointerInteraction = [(UIControl *)self pointerInteraction];
+  isEnabled = [pointerInteraction isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (void)_registerCustomHoverStylePointerDriverIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_188CB148C();
 }
 
@@ -410,17 +410,17 @@
 
         if (WeakRetained)
         {
-          v11 = objc_loadWeakRetained((v9 + 16));
+          null = objc_loadWeakRetained((v9 + 16));
 LABEL_8:
-          v12 = v11;
-          [v3 addObject:{v11, v15}];
+          v12 = null;
+          [v3 addObject:{null, v15}];
 
           goto LABEL_10;
         }
 
         if (!*(v9 + 8))
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           goto LABEL_8;
         }
 
@@ -446,12 +446,12 @@ LABEL_10:
     dispatch_once(_configureDefaultStatisticHandling_onceToken, &__block_literal_global_13_5);
   }
 
-  v3 = [(UIControl *)self _distributionStatisticsForUserInteractionDuration];
-  if (v3)
+  _distributionStatisticsForUserInteractionDuration = [(UIControl *)self _distributionStatisticsForUserInteractionDuration];
+  if (_distributionStatisticsForUserInteractionDuration)
   {
-    v4 = v3;
-    [v3 startTimingForObject:self];
-    v3 = v4;
+    v4 = _distributionStatisticsForUserInteractionDuration;
+    [_distributionStatisticsForUserInteractionDuration startTimingForObject:self];
+    _distributionStatisticsForUserInteractionDuration = v4;
   }
 }
 
@@ -467,14 +467,14 @@ LABEL_10:
 
 - (BOOL)shouldTrack
 {
-  v3 = [(UIControl *)self isEnabled];
-  if (v3)
+  isEnabled = [(UIControl *)self isEnabled];
+  if (isEnabled)
   {
 
-    LOBYTE(v3) = [(UIView *)self isUserInteractionEnabled];
+    LOBYTE(isEnabled) = [(UIView *)self isUserInteractionEnabled];
   }
 
-  return v3;
+  return isEnabled;
 }
 
 - (void)_commitInteractionDurationStatisticMeasurements
@@ -484,12 +484,12 @@ LABEL_10:
     dispatch_once(_configureDefaultStatisticHandling_onceToken, &__block_literal_global_13_5);
   }
 
-  v3 = [(UIControl *)self _distributionStatisticsForUserInteractionDuration];
-  if (v3)
+  _distributionStatisticsForUserInteractionDuration = [(UIControl *)self _distributionStatisticsForUserInteractionDuration];
+  if (_distributionStatisticsForUserInteractionDuration)
   {
-    v4 = v3;
-    [v3 recordTimingForObject:self];
-    v3 = v4;
+    v4 = _distributionStatisticsForUserInteractionDuration;
+    [_distributionStatisticsForUserInteractionDuration recordTimingForObject:self];
+    _distributionStatisticsForUserInteractionDuration = v4;
   }
 }
 
@@ -505,8 +505,8 @@ LABEL_10:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 controlCanBecomeFocused:self];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  v4 = [_focusBehavior controlCanBecomeFocused:self];
 
   return v4 & [(UIControl *)self isEnabled];
 }
@@ -523,14 +523,14 @@ LABEL_10:
   return [(UIResponder *)&v4 canBecomeFirstResponder];
 }
 
-- (void)_activateForAccessibilityHUDLiftAtPoint:(CGPoint)a3
+- (void)_activateForAccessibilityHUDLiftAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (dyld_program_sdk_at_least() && [(UIControl *)self isContextMenuInteractionEnabled]&& [(UIControl *)self showsMenuAsPrimaryAction]&& ([(UIControl *)self contextMenuInteraction], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(UIControl *)self contextMenuInteraction];
-    [v7 _presentMenuAtLocation:{x, y}];
+    contextMenuInteraction = [(UIControl *)self contextMenuInteraction];
+    [contextMenuInteraction _presentMenuAtLocation:{x, y}];
   }
 
   else
@@ -581,11 +581,11 @@ LABEL_10:
   y = frame.origin.y;
   x = frame.origin.x;
   v9 = primaryAction;
-  v10 = [(UIControl *)self initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIControl *)self initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(UIControl *)v10 _commonInitForPrimaryAction:v9];
+    [(UIControl *)height _commonInitForPrimaryAction:v9];
   }
 
   return v11;
@@ -706,16 +706,16 @@ LABEL_33:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UIControl;
-  [(UIView *)&v12 encodeWithCoder:v4];
+  [(UIView *)&v12 encodeWithCoder:coderCopy];
   controlFlags = self->_controlFlags;
   if ((*&controlFlags & 0x20) != 0)
   {
-    [v4 encodeBool:1 forKey:@"UIHighlighted"];
+    [coderCopy encodeBool:1 forKey:@"UIHighlighted"];
     controlFlags = self->_controlFlags;
     if ((*&controlFlags & 0x200) == 0)
     {
@@ -734,12 +734,12 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v4 encodeBool:1 forKey:@"UISelected"];
+  [coderCopy encodeBool:1 forKey:@"UISelected"];
   controlFlags = self->_controlFlags;
   if (*&controlFlags)
   {
 LABEL_4:
-    [v4 encodeBool:1 forKey:@"UIDisabled"];
+    [coderCopy encodeBool:1 forKey:@"UIDisabled"];
     controlFlags = self->_controlFlags;
   }
 
@@ -749,22 +749,22 @@ LABEL_5:
   {
     if (((*&controlFlags >> 10) & 6) != 4)
     {
-      [v4 encodeInteger:? forKey:?];
+      [coderCopy encodeInteger:? forKey:?];
       v6 = (self->_controlFlags >> 10) & 7;
     }
 
-    [v4 encodeInteger:v6 forKey:@"UIContentVerticalAlignment2"];
+    [coderCopy encodeInteger:v6 forKey:@"UIContentVerticalAlignment2"];
     controlFlags = self->_controlFlags;
   }
 
   if (*&controlFlags >> 13)
   {
-    [v4 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 
   if ([(UIControl *)self isPointerInteractionEnabled])
   {
-    [v4 encodeBool:1 forKey:@"UIPointerInteractionEnabled"];
+    [coderCopy encodeBool:1 forKey:@"UIPointerInteractionEnabled"];
   }
 
   if ((*(&self->_controlFlags + 2) & 0x20) != 0)
@@ -773,16 +773,16 @@ LABEL_5:
     v7 = v8;
     if (v8)
     {
-      v9 = [v8 view];
+      view = [v8 view];
 
-      if (v9)
+      if (view)
       {
-        [v4 encodeBool:1 forKey:@"UIContextMenuIsEnabled"];
+        [coderCopy encodeBool:1 forKey:@"UIContextMenuIsEnabled"];
       }
 
       if ([v7 _presentOnTouchDown])
       {
-        [v4 encodeBool:1 forKey:@"UIContextMenuIsPrimary"];
+        [coderCopy encodeBool:1 forKey:@"UIContextMenuIsPrimary"];
       }
     }
   }
@@ -792,12 +792,12 @@ LABEL_5:
     v7 = 0;
   }
 
-  v10 = [(UIControl *)self toolTip];
+  toolTip = [(UIControl *)self toolTip];
 
-  if (v10)
+  if (toolTip)
   {
-    v11 = [(UIControl *)self toolTip];
-    [v4 encodeObject:v11 forKey:@"UIToolTip"];
+    toolTip2 = [(UIControl *)self toolTip];
+    [coderCopy encodeObject:toolTip2 forKey:@"UIToolTip"];
   }
 }
 
@@ -808,8 +808,8 @@ LABEL_5:
   {
     v5 = enabled;
     self->_controlFlags = (*&controlFlags & 0xFFFFFFFE | !enabled);
-    v7 = [(UIControl *)self _safeHoverStyle];
-    [v7 setEnabled:v5];
+    _safeHoverStyle = [(UIControl *)self _safeHoverStyle];
+    [_safeHoverStyle setEnabled:v5];
     [(UIView *)self setNeedsDisplay];
   }
 }
@@ -876,12 +876,12 @@ LABEL_5:
   }
 }
 
-- (void)_setHasActiveMenuPresentation:(BOOL)a3
+- (void)_setHasActiveMenuPresentation:(BOOL)presentation
 {
   controlFlags = self->_controlFlags;
-  if (((((*&controlFlags & 0x400000) == 0) ^ a3) & 1) == 0)
+  if (((((*&controlFlags & 0x400000) == 0) ^ presentation) & 1) == 0)
   {
-    if (a3)
+    if (presentation)
     {
       v4 = 0x400000;
     }
@@ -918,16 +918,16 @@ LABEL_5:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(UIControl *)self isEnabled])
   {
     v10.receiver = self;
     v10.super_class = UIControl;
-    v8 = [(UIView *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(UIView *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -938,15 +938,15 @@ LABEL_5:
   return v8;
 }
 
-- (id)hitTest:(CGPoint)a3 forEvent:(__GSEvent *)a4
+- (id)hitTest:(CGPoint)test forEvent:(__GSEvent *)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   if ([(UIControl *)self isEnabled])
   {
     v10.receiver = self;
     v10.super_class = UIControl;
-    v8 = [(UIView *)&v10 hitTest:a4 forEvent:x, y];
+    v8 = [(UIView *)&v10 hitTest:event forEvent:x, y];
   }
 
   else
@@ -957,18 +957,18 @@ LABEL_5:
   return v8;
 }
 
-- (id)_firstTouchForEvent:(void *)a1
+- (id)_firstTouchForEvent:(void *)event
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (event)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [a1 _additionalTrackingViews];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    _additionalTrackingViews = [event _additionalTrackingViews];
+    v5 = [_additionalTrackingViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -979,7 +979,7 @@ LABEL_5:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_additionalTrackingViews);
           }
 
           v9 = [v3 _firstTouchForView:*(*(&v12 + 1) + 8 * i)];
@@ -991,7 +991,7 @@ LABEL_5:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [_additionalTrackingViews countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -1001,7 +1001,7 @@ LABEL_5:
       }
     }
 
-    v10 = [v3 _firstTouchForView:a1];
+    v10 = [v3 _firstTouchForView:event];
   }
 
   else
@@ -1014,25 +1014,25 @@ LABEL_12:
   return v10;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if (_UITouchesContainsTouchFromCarTouchpad(v6))
+  beganCopy = began;
+  eventCopy = event;
+  if (_UITouchesContainsTouchFromCarTouchpad(beganCopy))
   {
     goto LABEL_2;
   }
 
-  v8 = [(UIControl *)self _requiredButtonMask];
-  v9 = v7;
+  _requiredButtonMask = [(UIControl *)self _requiredButtonMask];
+  v9 = eventCopy;
   if ([v9 _buttonMask])
   {
-    v10 = [v9 _buttonMask] & v8;
+    v10 = [v9 _buttonMask] & _requiredButtonMask;
 
     if (!v10)
     {
 LABEL_2:
-      [(UIResponder *)&v15 touchesBegan:v6 withEvent:v7, v14.receiver, v14.super_class, self, UIControl];
+      [(UIResponder *)&v15 touchesBegan:beganCopy withEvent:eventCopy, v14.receiver, v14.super_class, self, UIControl];
       goto LABEL_19;
     }
   }
@@ -1075,28 +1075,28 @@ LABEL_2:
 
   else
   {
-    [(UIResponder *)&v14 touchesBegan:v6 withEvent:v9, self, UIControl, v15.receiver, v15.super_class];
+    [(UIResponder *)&v14 touchesBegan:beganCopy withEvent:v9, self, UIControl, v15.receiver, v15.super_class];
   }
 
 LABEL_19:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if ([(UIControl *)self isTracking])
   {
-    v8 = [(UIControl *)self _firstTouchForEvent:v7];
+    v8 = [(UIControl *)self _firstTouchForEvent:eventCopy];
     if (v8)
     {
       v9 = v8;
-      [(UIControl *)self setTracking:[(UIControl *)self continueTrackingWithTouch:v8 withEvent:v7]];
+      [(UIControl *)self setTracking:[(UIControl *)self continueTrackingWithTouch:v8 withEvent:eventCopy]];
       if ([(UIControl *)self isTracking])
       {
         [v9 locationInView:self];
-        v10 = [(UIControl *)self pointMostlyInside:v7 withEvent:?];
-        v11 = [(UIControl *)self isTouchInside];
+        v10 = [(UIControl *)self pointMostlyInside:eventCopy withEvent:?];
+        isTouchInside = [(UIControl *)self isTouchInside];
         controlFlags = self->_controlFlags;
         if (v10)
         {
@@ -1114,7 +1114,7 @@ LABEL_19:
           [(UIControl *)self setHighlighted:v10];
         }
 
-        if (v11 != [(UIControl *)self isTouchInside])
+        if (isTouchInside != [(UIControl *)self isTouchInside])
         {
           if ([(UIControl *)self isTouchInside])
           {
@@ -1126,7 +1126,7 @@ LABEL_19:
             v14 = 32;
           }
 
-          [(UIControl *)self _sendActionsForEvents:v14 withEvent:v7];
+          [(UIControl *)self _sendActionsForEvents:v14 withEvent:eventCopy];
         }
 
         *&self->_controlFlags |= 8u;
@@ -1140,10 +1140,10 @@ LABEL_19:
           v15 = 8;
         }
 
-        [(UIControl *)self _sendActionsForEvents:v15 withEvent:v7];
+        [(UIControl *)self _sendActionsForEvents:v15 withEvent:eventCopy];
       }
 
-      [(UIResponder *)self _controlTouchMoved:v9 withEvent:v7];
+      [(UIResponder *)self _controlTouchMoved:v9 withEvent:eventCopy];
     }
   }
 
@@ -1151,30 +1151,30 @@ LABEL_19:
   {
     v16.receiver = self;
     v16.super_class = UIControl;
-    [(UIResponder *)&v16 touchesMoved:v6 withEvent:v7];
+    [(UIResponder *)&v16 touchesMoved:movedCopy withEvent:eventCopy];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (![(UIControl *)self isTracking])
   {
     v25.receiver = self;
     v25.super_class = UIControl;
-    [(UIResponder *)&v25 touchesEnded:v6 withEvent:v7];
+    [(UIResponder *)&v25 touchesEnded:endedCopy withEvent:eventCopy];
 LABEL_30:
     [(UIControl *)self _setTouchHasHighlighted:0];
     goto LABEL_31;
   }
 
-  v8 = [(UIControl *)self _firstTouchForEvent:v7];
+  v8 = [(UIControl *)self _firstTouchForEvent:eventCopy];
   if (v8)
   {
     v9 = v8;
     [v8 locationInView:self];
-    v10 = [(UIControl *)self pointMostlyInside:v7 withEvent:?];
+    v10 = [(UIControl *)self pointMostlyInside:eventCopy withEvent:?];
     Current = 0.0;
     if ([(UIControl *)self isHighlighted])
     {
@@ -1215,7 +1215,7 @@ LABEL_30:
         v14 = 32;
       }
 
-      [(UIControl *)self _sendActionsForEvents:v14 withEvent:v7];
+      [(UIControl *)self _sendActionsForEvents:v14 withEvent:eventCopy];
     }
 
     if ([(UIControl *)self _deferFinalActions])
@@ -1225,7 +1225,7 @@ LABEL_30:
 
     else
     {
-      [(UIControl *)self endTrackingWithTouch:v9 withEvent:v7];
+      [(UIControl *)self endTrackingWithTouch:v9 withEvent:eventCopy];
       [(UIControl *)self setTracking:0];
       *&self->_controlFlags &= ~8u;
       if (v10)
@@ -1238,14 +1238,14 @@ LABEL_30:
         v15 = 128;
       }
 
-      [(UIControl *)self _sendActionsForEvents:v15 withEvent:v7];
+      [(UIControl *)self _sendActionsForEvents:v15 withEvent:eventCopy];
     }
 
     v16 = +[UIEventSessionActionAnalytics sharedInstance];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v7;
+      v17 = eventCopy;
     }
 
     else
@@ -1260,12 +1260,12 @@ LABEL_30:
     {
       *&self->_controlFlags |= 0x100u;
       v20 = MEMORY[0x1E695DFA8];
-      v21 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      v22 = [v21 currentMode];
-      v23 = [v20 setWithObjects:{v22, *MEMORY[0x1E695D918], 0}];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      currentMode = [currentRunLoop currentMode];
+      v23 = [v20 setWithObjects:{currentMode, *MEMORY[0x1E695D918], 0}];
 
-      v24 = [v23 allObjects];
-      [(UIControl *)self performSelector:sel__unhighlight withObject:0 afterDelay:v24 inModes:0.12 - v19];
+      allObjects = [v23 allObjects];
+      [(UIControl *)self performSelector:sel__unhighlight withObject:0 afterDelay:allObjects inModes:0.12 - v19];
     }
 
     else
@@ -1275,7 +1275,7 @@ LABEL_30:
     }
 
     self->_controlFlags = (*&self->_controlFlags & 0xFDFFFFFB | (((*&self->_controlFlags >> 2) & 1) << 25));
-    [(UIResponder *)self _controlTouchEnded:v9 withEvent:v7];
+    [(UIResponder *)self _controlTouchEnded:v9 withEvent:eventCopy];
 
     goto LABEL_30;
   }
@@ -1283,21 +1283,21 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   if ([(UIControl *)self isTracking])
   {
-    [(UIControl *)self cancelTrackingWithEvent:v5];
+    [(UIControl *)self cancelTrackingWithEvent:eventCopy];
   }
 
   [(UIControl *)self _setTouchHasHighlighted:0];
 }
 
-- (void)_willMoveToWindow:(id)a3
+- (void)_willMoveToWindow:(id)window
 {
-  v4 = a3;
-  if (!v4)
+  windowCopy = window;
+  if (!windowCopy)
   {
     if ((*(&self->_controlFlags + 2) & 0x20) != 0)
     {
@@ -1314,15 +1314,15 @@ LABEL_31:
 
   v6.receiver = self;
   v6.super_class = UIControl;
-  [(UIView *)&v6 _willMoveToWindow:v4];
+  [(UIView *)&v6 _willMoveToWindow:windowCopy];
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   v6.receiver = self;
   v6.super_class = UIControl;
-  [(UIView *)&v6 _didMoveFromWindow:a3 toWindow:?];
-  if (!a4)
+  [(UIView *)&v6 _didMoveFromWindow:window toWindow:?];
+  if (!toWindow)
   {
     if ([(UIControl *)self isTracking])
     {
@@ -1331,9 +1331,9 @@ LABEL_31:
   }
 }
 
-- (void)_addControlTargetAction:(id)a3
+- (void)_addControlTargetAction:(id)action
 {
-  v19 = a3;
+  actionCopy = action;
   targetActions = self->_targetActions;
   if (!targetActions)
   {
@@ -1351,9 +1351,9 @@ LABEL_31:
     while (1)
     {
       v9 = [(NSMutableArray *)self->_targetActions objectAtIndexedSubscript:v8 - 2];
-      v10 = v19;
+      v10 = actionCopy;
       v11 = v9;
-      v12 = v19[1];
+      v12 = actionCopy[1];
       v13 = *(v11 + 1);
       if (!v12)
       {
@@ -1380,7 +1380,7 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    WeakRetained = objc_loadWeakRetained(v19 + 2);
+    WeakRetained = objc_loadWeakRetained(actionCopy + 2);
     v16 = objc_loadWeakRetained(v11 + 2);
     if (WeakRetained != v16)
     {
@@ -1389,9 +1389,9 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v19[3])
+    if (actionCopy[3])
     {
-      v17 = v19[3];
+      v17 = actionCopy[3];
     }
 
     else
@@ -1415,13 +1415,13 @@ LABEL_11:
     }
 
 LABEL_7:
-    v19[4] = (v19[4] | *(v11 + 4));
+    actionCopy[4] = (actionCopy[4] | *(v11 + 4));
     [(NSMutableArray *)self->_targetActions removeObjectAtIndex:v8 - 2];
     goto LABEL_12;
   }
 
 LABEL_22:
-  [(NSMutableArray *)self->_targetActions addObject:v19];
+  [(NSMutableArray *)self->_targetActions addObject:actionCopy];
 }
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
@@ -1438,16 +1438,16 @@ LABEL_7:
   v10 = v8;
   if ((v9 & 1) == 0)
   {
-    v11 = [v8 allowsWeakReference];
+    allowsWeakReference = [v8 allowsWeakReference];
     v10 = v8;
-    if ((v11 & 1) == 0)
+    if ((allowsWeakReference & 1) == 0)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __47__UIControl_addTarget_action_forControlEvents___block_invoke;
       v14[3] = &unk_1E70F35B8;
       v15 = v8;
-      v16 = self;
+      selfCopy = self;
       if (addTarget_action_forControlEvents__once != -1)
       {
         dispatch_once(&addTarget_action_forControlEvents__once, v14);
@@ -1499,8 +1499,8 @@ void __47__UIControl_addTarget_action_forControlEvents___block_invoke(uint64_t a
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIControl.m" lineNumber:848 description:{@"Attempt to set nil action with event mask:%08lx", controlEvents}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIControl.m" lineNumber:848 description:{@"Attempt to set nil action with event mask:%08lx", controlEvents}];
 
     if (controlEvents)
     {
@@ -1508,8 +1508,8 @@ void __47__UIControl_addTarget_action_forControlEvents___block_invoke(uint64_t a
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"UIControl.m" lineNumber:849 description:{@"Attempt to set action '%@' with no event mask set", v12}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIControl.m" lineNumber:849 description:{@"Attempt to set action '%@' with no event mask set", v12}];
 
 LABEL_3:
   v7 = objc_alloc_init(UIControlTargetAction);
@@ -1590,8 +1590,8 @@ LABEL_3:
   v17 = actionIdentifier;
   if (!v17)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIControl.m" lineNumber:889 description:{@"Attempt to remove action handlers for a nil identifier with event mask:%08lx", controlEvents}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIControl.m" lineNumber:889 description:{@"Attempt to remove action handlers for a nil identifier with event mask:%08lx", controlEvents}];
   }
 
   v7 = [(NSMutableArray *)self->_targetActions count];
@@ -1606,8 +1606,8 @@ LABEL_3:
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 identifier];
-        v14 = [v13 isEqualToString:v17];
+        identifier = [v11 identifier];
+        v14 = [identifier isEqualToString:v17];
 
         if (v14)
         {
@@ -1704,12 +1704,12 @@ LABEL_3:
   v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v8)
   {
-    v10 = 0;
+    array = 0;
     goto LABEL_21;
   }
 
   v9 = v8;
-  v10 = 0;
+  array = 0;
   v11 = *v21;
   do
   {
@@ -1746,12 +1746,12 @@ LABEL_3:
         v15 = NSStringFromSelector(v17);
         if (v15)
         {
-          if (!v10)
+          if (!array)
           {
-            v10 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v10 addObject:{v15, v20}];
+          [array addObject:{v15, v20}];
         }
 
 LABEL_7:
@@ -1768,7 +1768,7 @@ LABEL_7:
   while (v18);
 LABEL_21:
 
-  return v10;
+  return array;
 }
 
 - (void)enumerateEventHandlers:(void *)iterator
@@ -1842,7 +1842,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   return v4 * 0.5;
 }
 
-- (BOOL)_hasActionForEventMask:(unint64_t)a3
+- (BOOL)_hasActionForEventMask:(unint64_t)mask
 {
   v5 = [(NSMutableArray *)self->_targetActions count];
   if (v5 < 1)
@@ -1851,7 +1851,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   }
 
   v6 = [(NSMutableArray *)self->_targetActions objectAtIndex:0];
-  v7 = v6[4] & a3;
+  v7 = v6[4] & mask;
 
   if (v7)
   {
@@ -1869,7 +1869,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     }
 
     v12 = [(NSMutableArray *)self->_targetActions objectAtIndex:v10];
-    v13 = v12[4] & a3;
+    v13 = v12[4] & mask;
 
     v10 = v11 + 1;
   }
@@ -1878,20 +1878,20 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   return v11 < v9;
 }
 
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   v7 = _os_activity_create(&dword_188A29000, "send control actions", MEMORY[0x1E69E9C08], OS_ACTIVITY_FLAG_DEFAULT);
   v16.opaque[0] = 0;
   v16.opaque[1] = 0;
   os_activity_scope_enter(v7, &v16);
-  if (([(UIControl *)self _controlEventsForActionTriggered]& a3) != 0)
+  if (([(UIControl *)self _controlEventsForActionTriggered]& events) != 0)
   {
     [UIViewController _sendPrepareForTapGesture:?];
   }
 
-  [(UIControl *)self _incrementStatisticsForUserActionForEvents:a3];
-  if ((a3 & 0xC0) != 0 && (*&self->_controlFlags & 0x1000000) != 0)
+  [(UIControl *)self _incrementStatisticsForUserActionForEvents:events];
+  if ((events & 0xC0) != 0 && (*&self->_controlFlags & 0x1000000) != 0)
   {
     [(UIControl *)self setTracking:0];
     *&self->_controlFlags &= 0xFEFFFFF7;
@@ -1907,7 +1907,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     {
       v12 = [v8 objectAtIndex:v10];
       v13 = v12;
-      if ((*(v12 + 32) & a3) != 0)
+      if ((*(v12 + 32) & events) != 0)
       {
         if (*(v12 + 8))
         {
@@ -1927,7 +1927,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
           }
 
           WeakRetained = objc_loadWeakRetained((v12 + 16));
-          [(UIControl *)self sendAction:v14 to:WeakRetained forEvent:v6];
+          [(UIControl *)self sendAction:v14 to:WeakRetained forEvent:eventCopy];
         }
       }
 
@@ -1938,15 +1938,15 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   }
 
   os_activity_scope_leave(&v16);
-  if (([(UIControl *)self _controlEventsForActionTriggered]& a3) != 0)
+  if (([(UIControl *)self _controlEventsForActionTriggered]& events) != 0)
   {
-    [(UIControl *)self _sendActionsForEvents:0x2000 withEvent:v6];
+    [(UIControl *)self _sendActionsForEvents:0x2000 withEvent:eventCopy];
   }
 }
 
-- (void)_setHighlightOnMouseDown:(BOOL)a3
+- (void)_setHighlightOnMouseDown:(BOOL)down
 {
-  if (a3)
+  if (down)
   {
     v3 = 0;
   }
@@ -1959,11 +1959,11 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   self->_controlFlags = (*&self->_controlFlags & 0xFFFFFFBF | v3);
 }
 
-- (BOOL)pointMostlyInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointMostlyInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1983,14 +1983,14 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   v33.size.width = v28;
   v32.x = x;
   v32.y = y;
-  v30 = CGRectContainsPoint(v33, v32) || [(UIView *)self pointInside:v7 withEvent:x, y];
+  v30 = CGRectContainsPoint(v33, v32) || [(UIView *)self pointInside:eventCopy withEvent:x, y];
 
   return v30;
 }
 
-- (void)_setLastHighlightSuccessful:(BOOL)a3
+- (void)_setLastHighlightSuccessful:(BOOL)successful
 {
-  if (a3)
+  if (successful)
   {
     v3 = 0x10000;
   }
@@ -2003,9 +2003,9 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   self->_controlFlags = (*&self->_controlFlags & 0xFFFEFFFF | v3);
 }
 
-- (void)_setTouchHasHighlighted:(BOOL)a3
+- (void)_setTouchHasHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     v3 = 0x20000;
   }
@@ -2018,9 +2018,9 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   self->_controlFlags = (*&self->_controlFlags & 0xFFFDFFFF | v3);
 }
 
-- (void)setRequiresDisplayOnTracking:(BOOL)a3
+- (void)setRequiresDisplayOnTracking:(BOOL)tracking
 {
-  if (a3)
+  if (tracking)
   {
     v3 = 16;
   }
@@ -2033,11 +2033,11 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   self->_controlFlags = (*&self->_controlFlags & 0xFFFFFFEF | v3);
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
-  if (((((*&self->_controlFlags & 2) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_controlFlags & 2) == 0) ^ tracking) & 1) == 0)
   {
-    if (a3)
+    if (tracking)
     {
       v3 = 2;
     }
@@ -2048,7 +2048,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     }
 
     self->_controlFlags = (*&self->_controlFlags & 0xFFFFFFFD | v3);
-    if (a3)
+    if (tracking)
     {
       [(UIControl *)self _beginInteractionDurationStatisticMeasurements];
     }
@@ -2060,21 +2060,21 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-+ (unint64_t)_primaryStateForState:(unint64_t)a3
++ (unint64_t)_primaryStateForState:(unint64_t)state
 {
   v3 = 8;
-  v4 = a3 & 2;
-  if ((a3 & 4) != 0)
+  v4 = state & 2;
+  if ((state & 4) != 0)
   {
     v4 = 4;
   }
 
-  if ((a3 & 8) == 0)
+  if ((state & 8) == 0)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (state)
   {
     return 1;
   }
@@ -2087,51 +2087,51 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x10) != 0)
+  if ((focusGroupContainmentBehavior & 0x10) != 0)
   {
-    v5 = _UIFocusGroupIdentifierForInstance(self);
+    _systemDefaultFocusGroupIdentifier = _UIFocusGroupIdentifierForInstance(self);
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIControl;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
-- (void)_diagnoseFocusabilityForReport:(id)a3
+- (void)_diagnoseFocusabilityForReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   if (([(UIControl *)self state]& 2) != 0)
   {
     v4 = [_UIDebugIssue issueWithDescription:@"This control is disabled."];
-    [v5 addIssue:v4];
+    [reportCopy addIssue:v4];
   }
 }
 
-- (unint64_t)_stateForFocusUpdateContext:(id)a3
+- (unint64_t)_stateForFocusUpdateContext:(id)context
 {
-  v4 = a3;
-  v5 = [(UIControl *)self state];
-  if (v4)
+  contextCopy = context;
+  state = [(UIControl *)self state];
+  if (contextCopy)
   {
-    v6 = [v4 nextFocusedView];
-    v7 = v6 == self;
+    nextFocusedView = [contextCopy nextFocusedView];
+    isFocused = nextFocusedView == self;
   }
 
   else
   {
-    v7 = [(UIView *)self isFocused];
+    isFocused = [(UIView *)self isFocused];
   }
 
-  v8 = v5 & 0xFFFFFFFFFFFFFFF7;
-  if (v7)
+  v8 = state & 0xFFFFFFFFFFFFFFF7;
+  if (isFocused)
   {
     v9 = 8;
   }
@@ -2159,52 +2159,52 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   self->_controlFlags = (*&self->_controlFlags & 0xFFFBFFFF | v3);
 }
 
-- (void)setPointerInteractionEnabled:(BOOL)a3
+- (void)setPointerInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(UIControl *)self pointerInteraction];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  pointerInteraction = [(UIControl *)self pointerInteraction];
+  [pointerInteraction setEnabled:enabledCopy];
 }
 
-- (void)_setProxyPointerInteraction:(id)a3
+- (void)_setProxyPointerInteraction:(id)interaction
 {
-  value = a3;
-  v4 = [(UIControl *)self _proxyPointerInteraction];
-  if (v4 != value)
+  value = interaction;
+  _proxyPointerInteraction = [(UIControl *)self _proxyPointerInteraction];
+  if (_proxyPointerInteraction != value)
   {
     objc_setAssociatedObject(self, &_UIControlProxyPointerInteractionKey, value, 1);
     self->_controlFlags = (*&self->_controlFlags & 0xFFEFFFFF | ((value != 0) << 20));
-    v5 = [(UIControl *)self pointerInteraction];
-    if (v5)
+    pointerInteraction = [(UIControl *)self pointerInteraction];
+    if (pointerInteraction)
     {
       if ((*(&self->_controlFlags + 2) & 0x10) != 0)
       {
-        [(UIView *)self removeInteraction:v5];
+        [(UIView *)self removeInteraction:pointerInteraction];
       }
 
       else
       {
-        [(UIView *)self addInteraction:v5];
+        [(UIView *)self addInteraction:pointerInteraction];
       }
     }
   }
 }
 
-- (void)_setHoverStyle:(void *)a1 implicit:(void *)a2
+- (void)_setHoverStyle:(void *)style implicit:(void *)implicit
 {
-  if (a1)
+  if (style)
   {
-    v3 = a2;
-    v4 = [a1 hoverStyle];
-    v5.receiver = a1;
+    implicitCopy = implicit;
+    hoverStyle = [style hoverStyle];
+    v5.receiver = style;
     v5.super_class = UIControl;
-    objc_msgSendSuper2(&v5, sel_setHoverStyle_, v3);
+    objc_msgSendSuper2(&v5, sel_setHoverStyle_, implicitCopy);
 
-    if (v3)
+    if (implicitCopy)
     {
-      if (v4 != v3)
+      if (hoverStyle != implicitCopy)
       {
-        [a1 _registerCustomHoverStylePointerDriverIfNeeded];
+        [style _registerCustomHoverStylePointerDriverIfNeeded];
       }
     }
   }
@@ -2233,24 +2233,24 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIView *)self window];
-  [(UIView *)self convertRect:v13 toView:v6, v8, v10, v12];
+  window = [(UIView *)self window];
+  [(UIView *)self convertRect:window toView:v6, v8, v10, v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  LODWORD(v13) = [(UIContextMenuConfiguration *)v4 prefersHorizontalAttachment];
-  v22 = [(UIView *)self window];
-  v23 = v22;
-  if (v13)
+  LODWORD(window) = [(UIContextMenuConfiguration *)v4 prefersHorizontalAttachment];
+  window2 = [(UIView *)self window];
+  v23 = window2;
+  if (window)
   {
-    v24 = _UIControlMenuAttachmentPointForRectInContainerForHorizontalAttachment(v22, v15, v17, v19, v21);
+    v24 = _UIControlMenuAttachmentPointForRectInContainerForHorizontalAttachment(window2, v15, v17, v19, v21);
   }
 
   else
   {
-    v24 = _UIControlMenuAttachmentPointForRectInContainer(v22, v15, v17, v19, v21);
+    v24 = _UIControlMenuAttachmentPointForRectInContainer(window2, v15, v17, v19, v21);
   }
 
   v26 = v24;
@@ -2275,14 +2275,14 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     v2 = 0;
   }
 
-  v3 = [v2 _proxySender];
+  _proxySender = [v2 _proxySender];
 
-  return v3;
+  return _proxySender;
 }
 
-- (void)_setProxySender:(id)a3
+- (void)_setProxySender:(id)sender
 {
-  v5 = a3;
+  senderCopy = sender;
   if ((*(&self->_controlFlags + 2) & 0x20) != 0)
   {
     v4 = objc_getAssociatedObject(self, &_UIControlContextMenuInteractionKey);
@@ -2293,19 +2293,19 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     v4 = 0;
   }
 
-  [v4 _setProxySender:v5];
+  [v4 _setProxySender:senderCopy];
 }
 
 - (void)setContextMenuInteractionEnabled:(BOOL)contextMenuInteractionEnabled
 {
   if (contextMenuInteractionEnabled)
   {
-    v7 = [(UIControl *)self contextMenuInteraction];
-    v4 = [v7 view];
+    contextMenuInteraction = [(UIControl *)self contextMenuInteraction];
+    view = [contextMenuInteraction view];
 
-    if (!v4)
+    if (!view)
     {
-      [(UIView *)self addInteraction:v7];
+      [(UIView *)self addInteraction:contextMenuInteraction];
     }
   }
 
@@ -2321,12 +2321,12 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
       v5 = 0;
     }
 
-    v7 = v5;
-    v6 = [v5 view];
+    contextMenuInteraction = v5;
+    view2 = [v5 view];
 
-    if (v6 == self)
+    if (view2 == self)
     {
-      [(UIView *)self removeInteraction:v7];
+      [(UIView *)self removeInteraction:contextMenuInteraction];
       [(UIControl *)self _setHasActiveMenuPresentation:0];
     }
   }
@@ -2337,26 +2337,26 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   v3 = showsMenuAsPrimaryAction;
   if (showsMenuAsPrimaryAction)
   {
-    v4 = [(UIControl *)self contextMenuInteraction];
+    contextMenuInteraction = [(UIControl *)self contextMenuInteraction];
   }
 
   else if ((*(&self->_controlFlags + 2) & 0x20) != 0)
   {
-    v4 = objc_getAssociatedObject(self, &_UIControlContextMenuInteractionKey);
+    contextMenuInteraction = objc_getAssociatedObject(self, &_UIControlContextMenuInteractionKey);
   }
 
   else
   {
-    v4 = 0;
+    contextMenuInteraction = 0;
   }
 
-  v5 = v4;
-  [v4 _setPresentOnTouchDown:v3];
+  v5 = contextMenuInteraction;
+  [contextMenuInteraction _setPresentOnTouchDown:v3];
 }
 
-- (void)setShowsMenuFromSource:(BOOL)a3
+- (void)setShowsMenuFromSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 0x800000;
   }
@@ -2390,10 +2390,10 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   if ((*(&self->_controlFlags + 2) & 0x20) != 0)
   {
     v8 = objc_getAssociatedObject(self, &_UIControlContextMenuInteractionKey);
@@ -2404,12 +2404,12 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     v8 = 0;
   }
 
-  if (v8 == v6)
+  if (v8 == interactionCopy)
   {
     if (dyld_program_sdk_at_least())
     {
-      v10 = [(UIView *)self _containingScrollView];
-      v11 = v10 != 0;
+      _containingScrollView = [(UIView *)self _containingScrollView];
+      v11 = _containingScrollView != 0;
     }
 
     else
@@ -2418,13 +2418,13 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     }
 
     v9 = _UIControlMenuSupportDefaultMenuStyle(v11, (*&self->_controlFlags >> 23) & 1);
-    v12 = [(UIControl *)self contextMenuInteraction];
-    v13 = [(UIControl *)self contextMenuInteraction:v12 previewForHighlightingMenuWithConfiguration:v7];
+    contextMenuInteraction = [(UIControl *)self contextMenuInteraction];
+    v13 = [(UIControl *)self contextMenuInteraction:contextMenuInteraction previewForHighlightingMenuWithConfiguration:configurationCopy];
 
-    [(UIControl *)self menuAttachmentPointForConfiguration:v7];
+    [(UIControl *)self menuAttachmentPointForConfiguration:configurationCopy];
     v15 = v14;
     v17 = v16;
-    if ([v7 prefersHorizontalAttachment])
+    if ([configurationCopy prefersHorizontalAttachment])
     {
       _UIControlMenuSupportUpdateStyleWithHorizontalPreference(v9, self, v13, v15, v17);
     }
@@ -2443,11 +2443,11 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   return v9;
 }
 
-- (id)_contextMenuInteraction:(id)a3 configuration:(id)a4 interactionEffectForTargetedPreview:(id)a5
+- (id)_contextMenuInteraction:(id)interaction configuration:(id)configuration interactionEffectForTargetedPreview:(id)preview
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  previewCopy = preview;
   if ((*(&self->_controlFlags + 2) & 0x20) != 0)
   {
     v11 = objc_getAssociatedObject(self, &_UIControlContextMenuInteractionKey);
@@ -2458,9 +2458,9 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
     v11 = 0;
   }
 
-  if (v11 == v8)
+  if (v11 == interactionCopy)
   {
-    v12 = [_UINullClickHighlightEffect effectWithPreview:v10 continuingFromPreview:0];
+    v12 = [_UINullClickHighlightEffect effectWithPreview:previewCopy continuingFromPreview:0];
   }
 
   else
@@ -2471,9 +2471,9 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   return v12;
 }
 
-- (void)_contextMenuInteraction:(id)a3 willBeginWithConfiguration:(id)a4
+- (void)_contextMenuInteraction:(id)interaction willBeginWithConfiguration:(id)configuration
 {
-  if (a4)
+  if (configuration)
   {
     [(UIControl *)self _setHasActiveMenuPresentation:1];
 
@@ -2481,10 +2481,10 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(UIControl *)self _safeHoverStyle];
-  if (v5)
+  _safeHoverStyle = [(UIControl *)self _safeHoverStyle];
+  if (_safeHoverStyle)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2494,7 +2494,7 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
 
     else
     {
-      [UIPointerStyle _makeStyleWithHoverStyle:v5 view:self convertAutomatic:0];
+      [UIPointerStyle _makeStyleWithHoverStyle:_safeHoverStyle view:self convertAutomatic:0];
     }
     v6 = ;
   }
@@ -2507,14 +2507,14 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   return v6;
 }
 
-- (void)_connectInterfaceBuilderEventConnection:(id)a3
+- (void)_connectInterfaceBuilderEventConnection:(id)connection
 {
-  v4 = a3;
-  v7 = [v4 target];
-  v5 = [v4 action];
-  v6 = [v4 eventMask];
+  connectionCopy = connection;
+  target = [connectionCopy target];
+  action = [connectionCopy action];
+  eventMask = [connectionCopy eventMask];
 
-  [(UIControl *)self addTarget:v7 action:v5 forControlEvents:v6];
+  [(UIControl *)self addTarget:target action:action forControlEvents:eventMask];
 }
 
 - (id)_scalarStatisticsForUserValueChangedEvent
@@ -2527,12 +2527,12 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   return [(UIControl *)self __scalarStatisticsForUserValueChangedEvent];
 }
 
-- (void)_incrementStatisticsForUserActionForEvents:(unint64_t)a3
+- (void)_incrementStatisticsForUserActionForEvents:(unint64_t)events
 {
-  v3 = a3;
+  eventsCopy = events;
   if (_configureDefaultStatisticHandling_onceToken[0] == -1)
   {
-    if ((a3 & 0x40) == 0)
+    if ((events & 0x40) == 0)
     {
       goto LABEL_6;
     }
@@ -2541,28 +2541,28 @@ void __36__UIControl_enumerateEventHandlers___block_invoke(uint64_t a1, uint64_t
   else
   {
     dispatch_once(_configureDefaultStatisticHandling_onceToken, &__block_literal_global_13_5);
-    if ((v3 & 0x40) == 0)
+    if ((eventsCopy & 0x40) == 0)
     {
       goto LABEL_6;
     }
   }
 
-  v5 = [(UIControl *)self _scalarStatisticsForUserTouchUpInsideEvent];
-  v6 = v5;
-  if (v5)
+  _scalarStatisticsForUserTouchUpInsideEvent = [(UIControl *)self _scalarStatisticsForUserTouchUpInsideEvent];
+  v6 = _scalarStatisticsForUserTouchUpInsideEvent;
+  if (_scalarStatisticsForUserTouchUpInsideEvent)
   {
-    [v5 incrementValueBy:1];
+    [_scalarStatisticsForUserTouchUpInsideEvent incrementValueBy:1];
   }
 
 LABEL_6:
-  if ((v3 & 0x1000) != 0)
+  if ((eventsCopy & 0x1000) != 0)
   {
-    v7 = [(UIControl *)self _scalarStatisticsForUserValueChangedEvent];
-    if (v7)
+    _scalarStatisticsForUserValueChangedEvent = [(UIControl *)self _scalarStatisticsForUserValueChangedEvent];
+    if (_scalarStatisticsForUserValueChangedEvent)
     {
-      v8 = v7;
-      [v7 incrementValueBy:1];
-      v7 = v8;
+      v8 = _scalarStatisticsForUserValueChangedEvent;
+      [_scalarStatisticsForUserValueChangedEvent incrementValueBy:1];
+      _scalarStatisticsForUserValueChangedEvent = v8;
     }
   }
 }

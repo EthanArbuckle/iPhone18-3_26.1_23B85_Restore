@@ -7,7 +7,7 @@
 
 - (id)serializeWithError:()HAPTLVHelpers
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
 
   return v1;
 }

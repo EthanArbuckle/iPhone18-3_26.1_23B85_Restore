@@ -7,12 +7,12 @@
 - (void)pk_applyAppearance:()PKAppearanceObject
 {
   v4 = a3;
-  v5 = [v4 backgroundColor];
-  [a1 setBackgroundColor:v5];
+  backgroundColor = [v4 backgroundColor];
+  [self setBackgroundColor:backgroundColor];
 
-  v6 = [v4 tintColor];
+  tintColor = [v4 tintColor];
 
-  [a1 setTintColor:v6];
+  [self setTintColor:tintColor];
 }
 
 @end

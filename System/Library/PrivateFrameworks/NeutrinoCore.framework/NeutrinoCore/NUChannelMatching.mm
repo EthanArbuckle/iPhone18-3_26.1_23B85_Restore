@@ -1,23 +1,23 @@
 @interface NUChannelMatching
 + (NUChannelMatching)primary;
-+ (id)channel:(id)a3;
-+ (id)format:(id)a3;
-+ (id)image:(int64_t)a3;
-+ (id)media:(int64_t)a3;
-+ (id)name:(id)a3;
-+ (id)type:(int64_t)a3;
-+ (id)video:(int64_t)a3;
-- (BOOL)match:(id)a3;
-- (id)subchannel:(id)a3;
++ (id)channel:(id)channel;
++ (id)format:(id)format;
++ (id)image:(int64_t)image;
++ (id)media:(int64_t)media;
++ (id)name:(id)name;
++ (id)type:(int64_t)type;
++ (id)video:(int64_t)video;
+- (BOOL)match:(id)match;
+- (id)subchannel:(id)subchannel;
 @end
 
 @implementation NUChannelMatching
 
-- (id)subchannel:(id)a3
+- (id)subchannel:(id)subchannel
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  subchannelCopy = subchannel;
+  if (!subchannelCopy)
   {
     v10 = NUAssertLogger_4187();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -38,8 +38,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -50,8 +50,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -60,7 +60,7 @@
     _NUAssertFailHandler("[NUChannelMatching subchannel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2637, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "matching != nil");
   }
 
-  v5 = v4;
+  v5 = subchannelCopy;
   v6 = [NUChannelSequenceMatching alloc];
   v26[0] = self;
   v26[1] = v5;
@@ -94,11 +94,11 @@
   return v12;
 }
 
-+ (id)channel:(id)a3
++ (id)channel:(id)channel
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  channelCopy = channel;
+  if (!channelCopy)
   {
     v15 = NUAssertLogger_4187();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -119,8 +119,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v22;
         v34 = 2114;
@@ -131,8 +131,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -141,14 +141,14 @@
     _NUAssertFailHandler("+[NUChannelMatching channel:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2610, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "channel != nil");
   }
 
-  v4 = v3;
+  v4 = channelCopy;
   v5 = [NUChannelNameMatching alloc];
-  v6 = [v4 name];
-  v7 = [(NUChannelNameMatching *)v5 initWithName:v6];
+  name = [v4 name];
+  v7 = [(NUChannelNameMatching *)v5 initWithName:name];
 
   v8 = [NUChannelFormatMatching alloc];
-  v9 = [v4 format];
-  v10 = [(NUChannelFormatMatching *)v8 initWithChannelFormat:v9];
+  format = [v4 format];
+  v10 = [(NUChannelFormatMatching *)v8 initWithChannelFormat:format];
 
   v11 = [NUChannelAllMatching alloc];
   v31[0] = v7;
@@ -159,56 +159,56 @@
   return v13;
 }
 
-+ (id)video:(int64_t)a3
++ (id)video:(int64_t)video
 {
-  v3 = [NUChannelImageMediaFormat videoImageFormat:a3];
+  v3 = [NUChannelImageMediaFormat videoImageFormat:video];
   v4 = [[NUChannelFormatMatching alloc] initWithChannelFormat:v3];
 
   return v4;
 }
 
-+ (id)image:(int64_t)a3
++ (id)image:(int64_t)image
 {
-  v3 = [NUChannelImageMediaFormat stillImageFormat:a3];
+  v3 = [NUChannelImageMediaFormat stillImageFormat:image];
   v4 = [[NUChannelFormatMatching alloc] initWithChannelFormat:v3];
 
   return v4;
 }
 
-+ (id)media:(int64_t)a3
++ (id)media:(int64_t)media
 {
-  v3 = [[NUChannelMediaTypeMatching alloc] initWithMediaType:a3];
+  v3 = [[NUChannelMediaTypeMatching alloc] initWithMediaType:media];
 
   return v3;
 }
 
-+ (id)format:(id)a3
++ (id)format:(id)format
 {
-  v3 = a3;
-  v4 = [[NUChannelFormatMatching alloc] initWithChannelFormat:v3];
+  formatCopy = format;
+  v4 = [[NUChannelFormatMatching alloc] initWithChannelFormat:formatCopy];
 
   return v4;
 }
 
-+ (id)type:(int64_t)a3
++ (id)type:(int64_t)type
 {
-  v3 = [[NUChannelTypeMatching alloc] initWithChannelType:a3];
+  v3 = [[NUChannelTypeMatching alloc] initWithChannelType:type];
 
   return v3;
 }
 
-+ (id)name:(id)a3
++ (id)name:(id)name
 {
-  v3 = a3;
-  v4 = [[NUChannelNameMatching alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[NUChannelNameMatching alloc] initWithName:nameCopy];
 
   return v4;
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  matchCopy = match;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -251,8 +251,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -268,8 +268,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

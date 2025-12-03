@@ -1,30 +1,30 @@
 @interface UARPHIDManager
 - (BOOL)ensureDatabaseExists;
 - (BOOL)loadMappingDatabase;
-- (UARPHIDManager)initWithTempFolder:(id)a3 transportReleasePolicy:(int64_t)a4;
-- (id)checkDatabaseForKnownVendorID:(id)a3 productID:(id)a4 serialNumber:(id)a5;
+- (UARPHIDManager)initWithTempFolder:(id)folder transportReleasePolicy:(int64_t)policy;
+- (id)checkDatabaseForKnownVendorID:(id)d productID:(id)iD serialNumber:(id)number;
 - (id)knownDevices;
 - (void)clearDatabase;
 - (void)flushDatabase;
-- (void)handleIOKitMatching:(id)a3;
-- (void)handleServiceMatching:(unsigned int)a3;
-- (void)hidDeviceDisconnect:(id)a3;
+- (void)handleIOKitMatching:(id)matching;
+- (void)handleServiceMatching:(unsigned int)matching;
+- (void)hidDeviceDisconnect:(id)disconnect;
 - (void)startIOKitMatching;
-- (void)startMonitoringForDevices:(id)a3;
+- (void)startMonitoringForDevices:(id)devices;
 - (void)stopMonitoringForDevices;
 @end
 
 @implementation UARPHIDManager
 
-- (UARPHIDManager)initWithTempFolder:(id)a3 transportReleasePolicy:(int64_t)a4
+- (UARPHIDManager)initWithTempFolder:(id)folder transportReleasePolicy:(int64_t)policy
 {
-  v6 = a3;
+  folderCopy = folder;
   v23.receiver = self;
   v23.super_class = UARPHIDManager;
   v7 = [(UARPHIDManager *)&v23 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [folderCopy copy];
     tmpFolderBasePath = v7->_tmpFolderBasePath;
     v7->_tmpFolderBasePath = v8;
 
@@ -48,7 +48,7 @@
     uuidDatabase = v7->_uuidDatabase;
     v7->_uuidDatabase = v18;
 
-    v7->_transportReleasePolicy = a4;
+    v7->_transportReleasePolicy = policy;
     v20 = objc_opt_new();
     allowedSerialNumbers = v7->_allowedSerialNumbers;
     v7->_allowedSerialNumbers = v20;
@@ -68,9 +68,9 @@
   xpc_set_event_stream_handler("com.apple.iokit.matching", self->_internalQueue, v3);
 }
 
-- (void)handleIOKitMatching:(id)a3
+- (void)handleIOKitMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -79,7 +79,7 @@
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s", &object, 0xCu);
   }
 
-  string = xpc_dictionary_get_string(v4, _xpc_event_key_name);
+  string = xpc_dictionary_get_string(matchingCopy, _xpc_event_key_name);
   v7 = self->_log;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -90,7 +90,7 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s: IOKit matching on %s", &object, 0x16u);
   }
 
-  uint64 = xpc_dictionary_get_uint64(v4, "IOMatchLaunchServiceID");
+  uint64 = xpc_dictionary_get_uint64(matchingCopy, "IOMatchLaunchServiceID");
   v9 = IORegistryEntryIDMatching(uint64);
   object = 0;
   if (IOServiceGetMatchingServices(kIOMainPortDefault, v9, &object))
@@ -108,9 +108,9 @@
   }
 }
 
-- (void)handleServiceMatching:(unsigned int)a3
+- (void)handleServiceMatching:(unsigned int)matching
 {
-  v5 = IOIteratorNext(a3);
+  v5 = IOIteratorNext(matching);
   if (v5)
   {
     v6 = v5;
@@ -118,30 +118,30 @@
     {
       [(UARPHIDManager *)self startService:v6];
       IOObjectRelease(v6);
-      v6 = IOIteratorNext(a3);
+      v6 = IOIteratorNext(matching);
     }
 
     while (v6);
   }
 }
 
-- (void)hidDeviceDisconnect:(id)a3
+- (void)hidDeviceDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   internalQueue = self->_internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003688;
   v7[3] = &unk_10000C368;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectCopy;
+  v6 = disconnectCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)startMonitoringForDevices:(id)a3
+- (void)startMonitoringForDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   if (self->_notifyPort)
   {
     log = self->_log;
@@ -162,7 +162,7 @@
 
   else
   {
-    objc_storeStrong(&self->_listener, a3);
+    objc_storeStrong(&self->_listener, devices);
     v22 = IONotificationPortCreate(kIOMainPortDefault);
     self->_notifyPort = v22;
     IONotificationPortSetDispatchQueue(v22, self->_internalQueue);
@@ -251,9 +251,9 @@
       {
         v15 = *p_uuidDatabaseURL;
         v16 = v14;
-        v17 = [v15 path];
+        path = [v15 path];
         *buf = 138412290;
-        v22 = v17;
+        v22 = path;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Assume no entries in HID UUID Database at %@", buf, 0xCu);
       }
     }
@@ -290,8 +290,8 @@
   self->_uuidDatabaseURL = v7;
 
   v10 = +[NSFileManager defaultManager];
-  v11 = [v5 path];
-  v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:0];
+  path = [v5 path];
+  v12 = [v10 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
   if ((v12 & 1) == 0)
   {
@@ -304,13 +304,13 @@
     goto LABEL_7;
   }
 
-  v13 = [*p_uuidDatabaseURL path];
-  v14 = [v10 fileExistsAtPath:v13];
+  path2 = [*p_uuidDatabaseURL path];
+  v14 = [v10 fileExistsAtPath:path2];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [*p_uuidDatabaseURL path];
-    v16 = [v10 createFileAtPath:v15 contents:0 attributes:0];
+    path3 = [*p_uuidDatabaseURL path];
+    v16 = [v10 createFileAtPath:path3 contents:0 attributes:0];
 
     if ((v16 & 1) == 0)
     {
@@ -332,16 +332,16 @@ LABEL_8:
   return v17;
 }
 
-- (id)checkDatabaseForKnownVendorID:(id)a3 productID:(id)a4 serialNumber:(id)a5
+- (id)checkDatabaseForKnownVendorID:(id)d productID:(id)iD serialNumber:(id)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  numberCopy = number;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v28 = self;
+  selfCopy = self;
   v11 = self->_uuidDatabase;
   v12 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v12)
@@ -358,22 +358,22 @@ LABEL_8:
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        v17 = [v16 vendorID];
-        v18 = [v17 isEqual:v8];
+        vendorID = [v16 vendorID];
+        v18 = [vendorID isEqual:dCopy];
 
         if (v18)
         {
-          v19 = [v16 productID];
-          v20 = [v19 isEqual:v9];
+          productID = [v16 productID];
+          v20 = [productID isEqual:iDCopy];
 
           if (v20)
           {
-            v21 = [v16 serialNumber];
-            v22 = [v21 isEqualToString:v10];
+            serialNumber = [v16 serialNumber];
+            v22 = [serialNumber isEqualToString:numberCopy];
 
             if (v22)
             {
-              log = v28->_log;
+              log = selfCopy->_log;
               if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
@@ -398,8 +398,8 @@ LABEL_8:
     }
   }
 
-  v11 = [[UARPHIDDatabaseEntry alloc] initWithVendorID:v8 productID:v9 serialNumber:v10];
-  v23 = os_log_type_enabled(v28->_log, OS_LOG_TYPE_ERROR);
+  v11 = [[UARPHIDDatabaseEntry alloc] initWithVendorID:dCopy productID:iDCopy serialNumber:numberCopy];
+  v23 = os_log_type_enabled(selfCopy->_log, OS_LOG_TYPE_ERROR);
   if (v11)
   {
     if (v23)
@@ -407,8 +407,8 @@ LABEL_8:
       sub_100005374();
     }
 
-    [(NSMutableArray *)v28->_uuidDatabase addObject:v11];
-    [(UARPHIDManager *)v28 flushDatabase];
+    [(NSMutableArray *)selfCopy->_uuidDatabase addObject:v11];
+    [(UARPHIDManager *)selfCopy flushDatabase];
     v24 = v11;
     v11 = v24;
 LABEL_18:

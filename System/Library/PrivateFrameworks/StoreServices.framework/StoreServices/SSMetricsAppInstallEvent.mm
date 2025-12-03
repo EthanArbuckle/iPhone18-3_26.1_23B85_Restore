@@ -1,16 +1,16 @@
 @interface SSMetricsAppInstallEvent
-+ (id)_stringForInstallStatus:(unint64_t)a3;
-+ (id)_stringForInstallType:(unint64_t)a3;
-+ (unint64_t)_installStatusForString:(id)a3;
-+ (unint64_t)_installTypeForString:(id)a3;
++ (id)_stringForInstallStatus:(unint64_t)status;
++ (id)_stringForInstallType:(unint64_t)type;
++ (unint64_t)_installStatusForString:(id)string;
++ (unint64_t)_installTypeForString:(id)string;
 - (SSMetricsAppInstallEvent)init;
 - (id)description;
 - (int64_t)jobID;
 - (unint64_t)installStatus;
 - (unint64_t)installType;
-- (void)setInstallStatus:(unint64_t)a3;
-- (void)setInstallType:(unint64_t)a3;
-- (void)setJobID:(int64_t)a3;
+- (void)setInstallStatus:(unint64_t)status;
+- (void)setInstallType:(unint64_t)type;
+- (void)setJobID:(int64_t)d;
 @end
 
 @implementation SSMetricsAppInstallEvent
@@ -52,26 +52,26 @@
 - (int64_t)jobID
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"jobId"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)setInstallStatus:(unint64_t)a3
+- (void)setInstallStatus:(unint64_t)status
 {
-  v4 = [objc_opt_class() _stringForInstallStatus:a3];
+  v4 = [objc_opt_class() _stringForInstallStatus:status];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"installStatus"];
 }
 
-- (void)setInstallType:(unint64_t)a3
+- (void)setInstallType:(unint64_t)type
 {
-  v4 = [objc_opt_class() _stringForInstallType:a3];
+  v4 = [objc_opt_class() _stringForInstallType:type];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"installType"];
 }
 
-- (void)setJobID:(int64_t)a3
+- (void)setJobID:(int64_t)d
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"jobId"];
 }
 
@@ -83,17 +83,17 @@
   v4 = [(SSMetricsAppInstallEvent *)&v12 description];
   [v3 appendString:v4];
 
-  v5 = [(SSMetricsAppInstallEvent *)self buildVersion];
-  [v3 appendFormat:@"\nbuildVersion = %@", v5];
+  buildVersion = [(SSMetricsAppInstallEvent *)self buildVersion];
+  [v3 appendFormat:@"\nbuildVersion = %@", buildVersion];
 
-  v6 = [(SSMetricsAppInstallEvent *)self bundleID];
-  [v3 appendFormat:@"\nbundleID = %@", v6];
+  bundleID = [(SSMetricsAppInstallEvent *)self bundleID];
+  [v3 appendFormat:@"\nbundleID = %@", bundleID];
 
-  v7 = [(SSMetricsAppInstallEvent *)self hardwareType];
-  [v3 appendFormat:@"\nhardwareType = %@", v7];
+  hardwareType = [(SSMetricsAppInstallEvent *)self hardwareType];
+  [v3 appendFormat:@"\nhardwareType = %@", hardwareType];
 
-  v8 = [(SSMetricsAppInstallEvent *)self installError];
-  [v3 appendFormat:@"\ninstallError = %@", v8];
+  installError = [(SSMetricsAppInstallEvent *)self installError];
+  [v3 appendFormat:@"\ninstallError = %@", installError];
 
   v9 = [objc_opt_class() _stringForInstallStatus:{-[SSMetricsAppInstallEvent installStatus](self, "installStatus")}];
   [v3 appendFormat:@"\ninstallStatus = %@", v9];
@@ -106,106 +106,106 @@
   return v3;
 }
 
-+ (unint64_t)_installStatusForString:(id)a3
++ (unint64_t)_installStatusForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Cancelled"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Cancelled"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Failed"])
+  else if ([stringCopy isEqualToString:@"Failed"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FailedAssetBlocked"])
+  else if ([stringCopy isEqualToString:@"FailedAssetBlocked"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FailedDownloadRemoved"])
+  else if ([stringCopy isEqualToString:@"FailedDownloadRemoved"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FailedInstallVerification"])
+  else if ([stringCopy isEqualToString:@"FailedInstallVerification"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"FailedKeepSafeHarborContainer"])
+  else if ([stringCopy isEqualToString:@"FailedKeepSafeHarborContainer"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"FailedPermanently"])
+  else if ([stringCopy isEqualToString:@"FailedPermanently"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Started"])
+  else if ([stringCopy isEqualToString:@"Started"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Succeeded"];
+    v4 = [stringCopy isEqualToString:@"Succeeded"];
   }
 
   return v4;
 }
 
-+ (unint64_t)_installTypeForString:(id)a3
++ (unint64_t)_installTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AutoStoreQueue"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"AutoStoreQueue"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AutoUpdate"])
+  else if ([stringCopy isEqualToString:@"AutoUpdate"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"External"])
+  else if ([stringCopy isEqualToString:@"External"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Internal"])
+  else if ([stringCopy isEqualToString:@"Internal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ManualUpdate"])
+  else if ([stringCopy isEqualToString:@"ManualUpdate"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PerDevice"])
+  else if ([stringCopy isEqualToString:@"PerDevice"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Restore"])
+  else if ([stringCopy isEqualToString:@"Restore"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RestoreDemoted"])
+  else if ([stringCopy isEqualToString:@"RestoreDemoted"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"StoreQueue"])
+  else if ([stringCopy isEqualToString:@"StoreQueue"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"VPP"])
+  else if ([stringCopy isEqualToString:@"VPP"])
   {
     v4 = 8;
   }
@@ -218,29 +218,29 @@
   return v4;
 }
 
-+ (id)_stringForInstallStatus:(unint64_t)a3
++ (id)_stringForInstallStatus:(unint64_t)status
 {
-  if (a3 > 8)
+  if (status > 8)
   {
     return @"Cancelled";
   }
 
   else
   {
-    return off_1E84B33D0[a3];
+    return off_1E84B33D0[status];
   }
 }
 
-+ (id)_stringForInstallType:(unint64_t)a3
++ (id)_stringForInstallType:(unint64_t)type
 {
-  if (a3 > 9)
+  if (type > 9)
   {
     return @"AutoStoreQueue";
   }
 
   else
   {
-    return off_1E84B3418[a3];
+    return off_1E84B3418[type];
   }
 }
 

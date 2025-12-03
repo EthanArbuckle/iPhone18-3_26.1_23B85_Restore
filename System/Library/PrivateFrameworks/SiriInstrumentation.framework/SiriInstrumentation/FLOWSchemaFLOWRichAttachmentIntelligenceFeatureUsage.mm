@@ -1,29 +1,29 @@
 @interface FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isReadingIntelligenceAttemptedAtIndex:(unint64_t)a3;
-- (BOOL)isReadingIntelligenceUsedAtIndex:(unint64_t)a3;
-- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isReadingIntelligenceAttemptedAtIndex:(unint64_t)index;
+- (BOOL)isReadingIntelligenceUsedAtIndex:(unint64_t)index;
+- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addIsReadingIntelligenceAttempted:(BOOL)a3;
-- (void)addIsReadingIntelligenceUsed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addIsReadingIntelligenceAttempted:(BOOL)attempted;
+- (void)addIsReadingIntelligenceUsed:(BOOL)used;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage
 
-- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage;
   v5 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)&v30 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isReadingIntelligenceAttempted"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isReadingIntelligenceAttempted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isReadingIntelligenceUsed"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isReadingIntelligenceUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,30 +113,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithJSON:(id)a3
+- (FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -149,48 +149,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_isReadingIntelligenceAttempteds count])
   {
-    v4 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"isReadingIntelligenceAttempted"];
+    isReadingIntelligenceAttempteds = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
+    v5 = [isReadingIntelligenceAttempteds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"isReadingIntelligenceAttempted"];
   }
 
   if ([(NSArray *)self->_isReadingIntelligenceUseds count])
   {
-    v6 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"isReadingIntelligenceUsed"];
+    isReadingIntelligenceUseds = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
+    v7 = [isReadingIntelligenceUseds copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"isReadingIntelligenceUsed"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
-  v6 = [v4 isReadingIntelligenceAttempteds];
-  if ((v5 != 0) == (v6 == 0))
+  isReadingIntelligenceAttempteds = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
+  isReadingIntelligenceAttempteds2 = [equalCopy isReadingIntelligenceAttempteds];
+  if ((isReadingIntelligenceAttempteds != 0) == (isReadingIntelligenceAttempteds2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
-  if (v7)
+  isReadingIntelligenceAttempteds3 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
+  if (isReadingIntelligenceAttempteds3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
-    v10 = [v4 isReadingIntelligenceAttempteds];
-    v11 = [v9 isEqual:v10];
+    v8 = isReadingIntelligenceAttempteds3;
+    isReadingIntelligenceAttempteds4 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceAttempteds];
+    isReadingIntelligenceAttempteds5 = [equalCopy isReadingIntelligenceAttempteds];
+    v11 = [isReadingIntelligenceAttempteds4 isEqual:isReadingIntelligenceAttempteds5];
 
     if (!v11)
     {
@@ -202,12 +202,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
-  v6 = [v4 isReadingIntelligenceUseds];
-  if ((v5 != 0) != (v6 == 0))
+  isReadingIntelligenceAttempteds = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
+  isReadingIntelligenceAttempteds2 = [equalCopy isReadingIntelligenceUseds];
+  if ((isReadingIntelligenceAttempteds != 0) != (isReadingIntelligenceAttempteds2 == 0))
   {
-    v12 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
-    if (!v12)
+    isReadingIntelligenceUseds = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
+    if (!isReadingIntelligenceUseds)
     {
 
 LABEL_15:
@@ -215,10 +215,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
-    v15 = [v4 isReadingIntelligenceUseds];
-    v16 = [v14 isEqual:v15];
+    v13 = isReadingIntelligenceUseds;
+    isReadingIntelligenceUseds2 = [(FLOWSchemaFLOWRichAttachmentIntelligenceFeatureUsage *)self isReadingIntelligenceUseds];
+    isReadingIntelligenceUseds3 = [equalCopy isReadingIntelligenceUseds];
+    v16 = [isReadingIntelligenceUseds2 isEqual:isReadingIntelligenceUseds3];
 
     if (v16)
     {
@@ -238,10 +238,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -307,53 +307,53 @@ LABEL_13:
   }
 }
 
-- (BOOL)isReadingIntelligenceUsedAtIndex:(unint64_t)a3
+- (BOOL)isReadingIntelligenceUsedAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isReadingIntelligenceUseds objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isReadingIntelligenceUseds objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsReadingIntelligenceUsed:(BOOL)a3
+- (void)addIsReadingIntelligenceUsed:(BOOL)used
 {
-  v3 = a3;
+  usedCopy = used;
   isReadingIntelligenceUseds = self->_isReadingIntelligenceUseds;
   if (!isReadingIntelligenceUseds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isReadingIntelligenceUseds;
-    self->_isReadingIntelligenceUseds = v6;
+    self->_isReadingIntelligenceUseds = array;
 
     isReadingIntelligenceUseds = self->_isReadingIntelligenceUseds;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:usedCopy];
   [(NSArray *)isReadingIntelligenceUseds addObject:v8];
 }
 
-- (BOOL)isReadingIntelligenceAttemptedAtIndex:(unint64_t)a3
+- (BOOL)isReadingIntelligenceAttemptedAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_isReadingIntelligenceAttempteds objectAtIndexedSubscript:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(NSArray *)self->_isReadingIntelligenceAttempteds objectAtIndexedSubscript:index];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)addIsReadingIntelligenceAttempted:(BOOL)a3
+- (void)addIsReadingIntelligenceAttempted:(BOOL)attempted
 {
-  v3 = a3;
+  attemptedCopy = attempted;
   isReadingIntelligenceAttempteds = self->_isReadingIntelligenceAttempteds;
   if (!isReadingIntelligenceAttempteds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_isReadingIntelligenceAttempteds;
-    self->_isReadingIntelligenceAttempteds = v6;
+    self->_isReadingIntelligenceAttempteds = array;
 
     isReadingIntelligenceAttempteds = self->_isReadingIntelligenceAttempteds;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:attemptedCopy];
   [(NSArray *)isReadingIntelligenceAttempteds addObject:v8];
 }
 

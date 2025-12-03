@@ -1,10 +1,10 @@
 @interface ConfirmationFeatureView
-- (_TtC13SleepHealthUI23ConfirmationFeatureView)initWithCoder:(id)a3;
+- (_TtC13SleepHealthUI23ConfirmationFeatureView)initWithCoder:(id)coder;
 @end
 
 @implementation ConfirmationFeatureView
 
-- (_TtC13SleepHealthUI23ConfirmationFeatureView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI23ConfirmationFeatureView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

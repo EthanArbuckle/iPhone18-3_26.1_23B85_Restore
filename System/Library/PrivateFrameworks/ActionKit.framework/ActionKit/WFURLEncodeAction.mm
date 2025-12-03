@@ -1,12 +1,12 @@
 @interface WFURLEncodeAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFURLEncodeAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFURLEncodeAction *)self parameterValueForKey:@"WFEncodeMode" ofClass:objc_opt_class()];
   v6 = objc_opt_class();
   v9[0] = MEMORY[0x277D85DD0];
@@ -20,7 +20,7 @@
   v8[3] = &unk_278C21E70;
   v8[4] = self;
   v7 = v5;
-  [v4 transformObjectRepresentationsForClass:v6 usingBlock:v9 completionHandler:v8];
+  [inputCopy transformObjectRepresentationsForClass:v6 usingBlock:v9 completionHandler:v8];
 }
 
 void __48__WFURLEncodeAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4, void *a5)

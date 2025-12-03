@@ -1,19 +1,19 @@
 @interface OBIconTextView
 - (CGSize)iconSize;
-- (OBIconTextView)initWithIcon:(id)a3 iconSize:(CGSize)a4 text:(id)a5 dataDetectorTypes:(unint64_t)a6;
-- (void)traitCollectionDidChange:(id)a3;
+- (OBIconTextView)initWithIcon:(id)icon iconSize:(CGSize)size text:(id)text dataDetectorTypes:(unint64_t)types;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 - (void)updateFont;
 @end
 
 @implementation OBIconTextView
 
-- (OBIconTextView)initWithIcon:(id)a3 iconSize:(CGSize)a4 text:(id)a5 dataDetectorTypes:(unint64_t)a6
+- (OBIconTextView)initWithIcon:(id)icon iconSize:(CGSize)size text:(id)text dataDetectorTypes:(unint64_t)types
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  iconCopy = icon;
+  textCopy = text;
   v26.receiver = self;
   v26.super_class = OBIconTextView;
   v13 = [(OBIconTextView *)&v26 init];
@@ -22,7 +22,7 @@
   {
     v13->_iconSize.width = width;
     v13->_iconSize.height = height;
-    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];
+    v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:iconCopy];
     iconView = v14->_iconView;
     v14->_iconView = v15;
 
@@ -35,13 +35,13 @@
     v14->_textView = v18;
 
     [(UITextView *)v14->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UITextView *)v14->_textView setDataDetectorTypes:a6];
+    [(UITextView *)v14->_textView setDataDetectorTypes:types];
     [(UITextView *)v14->_textView setEditable:0];
     [(UITextView *)v14->_textView setSelectable:1];
     [(UITextView *)v14->_textView setScrollEnabled:0];
     v20 = v14->_textView;
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v20 setBackgroundColor:v21];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v20 setBackgroundColor:clearColor];
 
     v22 = +[OBFeatureFlags isNaturalUIEnabled];
     v23 = v14->_textView;
@@ -57,9 +57,9 @@
     v24 = ;
     [(UITextView *)v23 setTextColor:v24];
 
-    if (v12)
+    if (textCopy)
     {
-      [(UITextView *)v14->_textView setText:v12];
+      [(UITextView *)v14->_textView setText:textCopy];
     }
 
     [(OBIconTextView *)v14 updateFont];
@@ -72,8 +72,8 @@
 - (void)updateConstraints
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v3 = [(OBIconTextView *)self constraints];
-  [(OBIconTextView *)self removeConstraints:v3];
+  constraints = [(OBIconTextView *)self constraints];
+  [(OBIconTextView *)self removeConstraints:constraints];
 
   v30.receiver = self;
   v30.super_class = OBIconTextView;
@@ -87,36 +87,36 @@
   v8 = [v4 constraintsWithVisualFormat:@"|[_iconView]-(padding)-[_textView]|" options:0 metrics:v6 views:v7];
   [v4 activateConstraints:v8];
 
-  v9 = [(UITextView *)self->_textView heightAnchor];
-  v10 = [(OBIconTextView *)self heightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  heightAnchor = [(UITextView *)self->_textView heightAnchor];
+  heightAnchor2 = [(OBIconTextView *)self heightAnchor];
+  v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UITextView *)self->_textView topAnchor];
-  v13 = [(OBIconTextView *)self topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor = [(UITextView *)self->_textView topAnchor];
+  topAnchor2 = [(OBIconTextView *)self topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v14 setActive:1];
 
-  v15 = [(UIImageView *)self->_iconView centerYAnchor];
-  v16 = [(UITextView *)self->_textView firstBaselineAnchor];
-  v17 = [(UITextView *)self->_textView font];
-  [v17 capHeight];
-  v19 = [v15 constraintEqualToAnchor:v16 constant:v18 * -0.5];
+  centerYAnchor = [(UIImageView *)self->_iconView centerYAnchor];
+  firstBaselineAnchor = [(UITextView *)self->_textView firstBaselineAnchor];
+  font = [(UITextView *)self->_textView font];
+  [font capHeight];
+  v19 = [centerYAnchor constraintEqualToAnchor:firstBaselineAnchor constant:v18 * -0.5];
   [v19 setActive:1];
 
   [(OBIconTextView *)self iconSize];
   if (v21 != *MEMORY[0x1E695F060] || v20 != *(MEMORY[0x1E695F060] + 8))
   {
-    v22 = [(UIImageView *)self->_iconView heightAnchor];
+    heightAnchor3 = [(UIImageView *)self->_iconView heightAnchor];
     [(OBIconTextView *)self iconSize];
-    v24 = [v22 constraintEqualToConstant:v23];
+    v24 = [heightAnchor3 constraintEqualToConstant:v23];
 
     LODWORD(v25) = 1148846080;
     [v24 setPriority:v25];
     [v24 setActive:1];
-    v26 = [(UIImageView *)self->_iconView widthAnchor];
+    widthAnchor = [(UIImageView *)self->_iconView widthAnchor];
     [(OBIconTextView *)self iconSize];
-    v27 = [v26 constraintEqualToConstant:?];
+    v27 = [widthAnchor constraintEqualToConstant:?];
 
     LODWORD(v28) = 1148846080;
     [v27 setPriority:v28];
@@ -139,11 +139,11 @@
   [(UITextView *)self->_textView setFont:v5];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = OBIconTextView;
-  [(OBIconTextView *)&v4 traitCollectionDidChange:a3];
+  [(OBIconTextView *)&v4 traitCollectionDidChange:change];
   [(OBIconTextView *)self updateFont];
 }
 

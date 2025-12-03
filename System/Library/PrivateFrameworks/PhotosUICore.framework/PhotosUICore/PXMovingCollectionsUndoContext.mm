@@ -1,25 +1,25 @@
 @interface PXMovingCollectionsUndoContext
-+ (id)makeFetchOptionsWithCollectionList:(id)a3;
-+ (id)parentCollectionListsForCollections:(id)a3;
++ (id)makeFetchOptionsWithCollectionList:(id)list;
++ (id)parentCollectionListsForCollections:(id)collections;
 - (PXMovingCollectionsUndoContext)init;
-- (PXMovingCollectionsUndoContext)initWithCollections:(id)a3;
-- (void)enumerateCollectionListsUsingBlock:(id)a3;
+- (PXMovingCollectionsUndoContext)initWithCollections:(id)collections;
+- (void)enumerateCollectionListsUsingBlock:(id)block;
 - (void)storeOriginalParentCollectionListFetchResults;
 @end
 
 @implementation PXMovingCollectionsUndoContext
 
-- (void)enumerateCollectionListsUsingBlock:(id)a3
+- (void)enumerateCollectionListsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   parentCollectionChildInfos = self->_parentCollectionChildInfos;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__PXMovingCollectionsUndoContext_enumerateCollectionListsUsingBlock___block_invoke;
   v7[3] = &unk_1E7748078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)parentCollectionChildInfos enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -107,15 +107,15 @@ void __69__PXMovingCollectionsUndoContext_enumerateCollectionListsUsingBlock___b
   }
 }
 
-- (PXMovingCollectionsUndoContext)initWithCollections:(id)a3
+- (PXMovingCollectionsUndoContext)initWithCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v19.receiver = self;
   v19.super_class = PXMovingCollectionsUndoContext;
   v5 = [(PXMovingCollectionsUndoContext *)&v19 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [collectionsCopy copy];
     collections = v5->_collections;
     v5->_collections = v6;
 
@@ -128,7 +128,7 @@ void __69__PXMovingCollectionsUndoContext_enumerateCollectionListsUsingBlock___b
     v5->_storedParentCollectionFetchResults = v10;
 
     v12 = objc_opt_new();
-    v13 = [objc_opt_class() parentCollectionListsForCollections:v4];
+    v13 = [objc_opt_class() parentCollectionListsForCollections:collectionsCopy];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __54__PXMovingCollectionsUndoContext_initWithCollections___block_invoke;
@@ -170,33 +170,33 @@ void __54__PXMovingCollectionsUndoContext_initWithCollections___block_invoke(uin
 
 - (PXMovingCollectionsUndoContext)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMovingCollectionsUndoContext.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXMovingCollectionsUndoContext init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMovingCollectionsUndoContext.m" lineNumber:42 description:{@"%s is not available as initializer", "-[PXMovingCollectionsUndoContext init]"}];
 
   abort();
 }
 
-+ (id)makeFetchOptionsWithCollectionList:(id)a3
++ (id)makeFetchOptionsWithCollectionList:(id)list
 {
-  v3 = [a3 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  photoLibrary = [list photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setIncludeUserSmartAlbums:1];
-  [v4 setIncludeTrashedAssets:1];
+  [librarySpecificFetchOptions setIncludeUserSmartAlbums:1];
+  [librarySpecificFetchOptions setIncludeTrashedAssets:1];
 
-  return v4;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)parentCollectionListsForCollections:(id)a3
++ (id)parentCollectionListsForCollections:(id)collections
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  collectionsCopy = collections;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = collectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -212,8 +212,8 @@ void __54__PXMovingCollectionsUndoContext_initWithCollections___block_invoke(uin
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 px_fetchContainer];
-        [v4 setObject:v11 forKeyedSubscript:v10];
+        px_fetchContainer = [v10 px_fetchContainer];
+        [v4 setObject:px_fetchContainer forKeyedSubscript:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

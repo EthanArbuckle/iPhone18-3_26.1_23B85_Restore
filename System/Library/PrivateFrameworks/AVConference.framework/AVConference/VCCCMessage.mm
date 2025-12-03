@@ -1,13 +1,13 @@
 @interface VCCCMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCCCMessage
@@ -32,24 +32,24 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_transactionID), @"transactionID"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedLongLong:", self->_transactionID), @"transactionID"}];
   topic = self->_topic;
   if (topic)
   {
-    [v3 setObject:topic forKey:@"topic"];
+    [dictionary setObject:topic forKey:@"topic"];
   }
 
   payload = self->_payload;
   if (payload)
   {
-    [v3 setObject:payload forKey:@"payload"];
+    [dictionary setObject:payload forKey:@"payload"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint64Field();
   PBDataWriterWriteStringField();
@@ -60,39 +60,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 1) = self->_transactionID;
-  [a3 setTopic:self->_topic];
+  *(to + 1) = self->_transactionID;
+  [to setTopic:self->_topic];
   if (self->_payload)
   {
 
-    [a3 setPayload:?];
+    [to setPayload:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_transactionID;
 
-  *(v5 + 24) = [(NSString *)self->_topic copyWithZone:a3];
-  *(v5 + 16) = [(NSData *)self->_payload copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_topic copyWithZone:zone];
+  *(v5 + 16) = [(NSData *)self->_payload copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_transactionID == *(a3 + 1))
+    if (self->_transactionID == *(equal + 1))
     {
       topic = self->_topic;
-      if (!(topic | *(a3 + 3)) || (v5 = [(NSString *)topic isEqual:?]) != 0)
+      if (!(topic | *(equal + 3)) || (v5 = [(NSString *)topic isEqual:?]) != 0)
       {
         payload = self->_payload;
-        if (payload | *(a3 + 2))
+        if (payload | *(equal + 2))
         {
 
           LOBYTE(v5) = [(NSData *)payload isEqual:?];
@@ -121,15 +121,15 @@
   return v4 ^ [(NSData *)self->_payload hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_transactionID = *(a3 + 1);
-  if (*(a3 + 3))
+  self->_transactionID = *(from + 1);
+  if (*(from + 3))
   {
     [(VCCCMessage *)self setTopic:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
 
     [(VCCCMessage *)self setPayload:?];

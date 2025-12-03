@@ -1,29 +1,29 @@
 @interface WBSCRDTPosition
-+ (id)positionBetweenPosition:(id)a3 andPosition:(id)a4 withDeviceIdentifier:(id)a5 changeID:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)positionBetweenPosition:(id)position andPosition:(id)andPosition withDeviceIdentifier:(id)identifier changeID:(int64_t)d;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSCRDTPosition)initWithCoder:(id)a3;
-- (WBSCRDTPosition)initWithDictionaryRepresentation:(id)a3;
-- (WBSCRDTPosition)initWithSortValue:(id)a3 parentSortValues:(id)a4;
-- (WBSCRDTPosition)initWithSortValues:(id)a3;
+- (WBSCRDTPosition)initWithCoder:(id)coder;
+- (WBSCRDTPosition)initWithDictionaryRepresentation:(id)representation;
+- (WBSCRDTPosition)initWithSortValue:(id)value parentSortValues:(id)values;
+- (WBSCRDTPosition)initWithSortValues:(id)values;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation WBSCRDTPosition
 
-+ (id)positionBetweenPosition:(id)a3 andPosition:(id)a4 withDeviceIdentifier:(id)a5 changeID:(int64_t)a6
++ (id)positionBetweenPosition:(id)position andPosition:(id)andPosition withDeviceIdentifier:(id)identifier changeID:(int64_t)d
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [[WBSCRDTPositionSortValue alloc] initWithSortValue:0 deviceIdentifier:v12 changeID:a6];
+  positionCopy = position;
+  andPositionCopy = andPosition;
+  identifierCopy = identifier;
+  v13 = [[WBSCRDTPositionSortValue alloc] initWithSortValue:0 deviceIdentifier:identifierCopy changeID:d];
   v14 = v13;
-  if (!(v10 | v11))
+  if (!(positionCopy | andPositionCopy))
   {
-    v27 = [a1 alloc];
+    v27 = [self alloc];
     v59[0] = v14;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:1];
     v26 = [v27 initWithSortValues:v28];
@@ -31,12 +31,12 @@
     goto LABEL_32;
   }
 
-  if (!v11)
+  if (!andPositionCopy)
   {
-    v29 = [a1 alloc];
-    v30 = [v10 sortValues];
-    v31 = [v30 firstObject];
-    v32 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v14, "positionSortValueWithSortValue:", [v31 sortValue] + 1000);
+    v29 = [self alloc];
+    sortValues = [positionCopy sortValues];
+    firstObject = [sortValues firstObject];
+    v32 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v14, "positionSortValueWithSortValue:", [firstObject sortValue] + 1000);
     v58 = v32;
     v33 = MEMORY[0x1E695DEC8];
     v34 = &v58;
@@ -47,26 +47,26 @@ LABEL_17:
     goto LABEL_32;
   }
 
-  if (!v10)
+  if (!positionCopy)
   {
-    v29 = [a1 alloc];
-    v30 = [v11 sortValues];
-    v31 = [v30 firstObject];
-    v32 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v14, "positionSortValueWithSortValue:", [v31 sortValue] - 1000);
+    v29 = [self alloc];
+    sortValues = [andPositionCopy sortValues];
+    firstObject = [sortValues firstObject];
+    v32 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v14, "positionSortValueWithSortValue:", [firstObject sortValue] - 1000);
     v57 = v32;
     v33 = MEMORY[0x1E695DEC8];
     v34 = &v57;
     goto LABEL_17;
   }
 
-  v55 = v10;
+  v55 = positionCopy;
   v56 = v13;
-  v53 = v12;
-  v15 = [v10 sortValues];
-  v54 = v11;
-  v16 = [v11 sortValues];
-  v17 = [v15 count];
-  v18 = [v16 count];
+  v53 = identifierCopy;
+  sortValues2 = [positionCopy sortValues];
+  v54 = andPositionCopy;
+  sortValues3 = [andPositionCopy sortValues];
+  v17 = [sortValues2 count];
+  v18 = [sortValues3 count];
   v52 = v18;
   if (v17 >= v18)
   {
@@ -83,31 +83,31 @@ LABEL_17:
 LABEL_12:
     if (v17 == v52)
     {
-      v25 = [a1 alloc];
+      v25 = [self alloc];
       v14 = v56;
       v21 = [(WBSCRDTPositionSortValue *)v56 positionSortValueWithSortValue:0];
-      v26 = [v25 initWithSortValue:v21 parentSortValues:v15];
-      v12 = v53;
+      v26 = [v25 initWithSortValue:v21 parentSortValues:sortValues2];
+      identifierCopy = v53;
     }
 
     else
     {
-      v36 = [a1 alloc];
-      v12 = v53;
+      v36 = [self alloc];
+      identifierCopy = v53;
       v14 = v56;
       if (v17 <= v52)
       {
-        v21 = [v16 objectAtIndexedSubscript:v17];
+        v21 = [sortValues3 objectAtIndexedSubscript:v17];
         v37 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v56, "positionSortValueWithSortValue:", [v21 sortValue] - 1000);
-        v38 = v16;
+        v38 = sortValues3;
         v39 = v17;
       }
 
       else
       {
-        v21 = [v15 objectAtIndexedSubscript:v52];
+        v21 = [sortValues2 objectAtIndexedSubscript:v52];
         v37 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v56, "positionSortValueWithSortValue:", [v21 sortValue] + 1000);
-        v38 = v15;
+        v38 = sortValues2;
         v39 = v52;
       }
 
@@ -121,13 +121,13 @@ LABEL_12:
   v20 = 0;
   while (1)
   {
-    v21 = [v15 objectAtIndexedSubscript:v20];
-    v22 = [v16 objectAtIndexedSubscript:v20];
+    v21 = [sortValues2 objectAtIndexedSubscript:v20];
+    v22 = [sortValues3 objectAtIndexedSubscript:v20];
     if (([v21 isEqualToPositionSortValue:v22] & 1) == 0)
     {
-      v23 = [v21 sortValue];
-      v24 = [v22 sortValue];
-      if (v24 != v23)
+      sortValue = [v21 sortValue];
+      sortValue2 = [v22 sortValue];
+      if (sortValue2 != sortValue)
       {
         break;
       }
@@ -139,64 +139,64 @@ LABEL_12:
     }
   }
 
-  if (v24 - v23 < 2)
+  if (sortValue2 - sortValue < 2)
   {
     v45 = v20 + 1;
     if (v17 > v45)
     {
-      v46 = [a1 alloc];
-      v42 = [v15 objectAtIndexedSubscript:v45];
+      v46 = [self alloc];
+      v42 = [sortValues2 objectAtIndexedSubscript:v45];
       v47 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v56, "positionSortValueWithSortValue:", [v42 sortValue] + 1000);
-      v48 = [v15 subarrayWithRange:{0, v45}];
+      v48 = [sortValues2 subarrayWithRange:{0, v45}];
       v26 = [v46 initWithSortValue:v47 parentSortValues:v48];
 
       goto LABEL_30;
     }
 
-    v49 = [a1 alloc];
+    v49 = [self alloc];
     if (v52 <= v45)
     {
-      v42 = [v15 subarrayWithRange:{0, v45}];
+      v42 = [sortValues2 subarrayWithRange:{0, v45}];
       v26 = [v49 initWithSortValue:v56 parentSortValues:v42];
       goto LABEL_30;
     }
 
-    v42 = [v16 objectAtIndexedSubscript:v45];
+    v42 = [sortValues3 objectAtIndexedSubscript:v45];
     v43 = -[WBSCRDTPositionSortValue positionSortValueWithSortValue:](v56, "positionSortValueWithSortValue:", [v42 sortValue] - 1000);
-    v50 = [v16 subarrayWithRange:{0, v45}];
+    v50 = [sortValues3 subarrayWithRange:{0, v45}];
     v26 = [v49 initWithSortValue:v43 parentSortValues:v50];
   }
 
   else
   {
-    v40 = v24;
-    v41 = [a1 alloc];
-    v42 = [(WBSCRDTPositionSortValue *)v56 positionSortValueWithSortValue:(v40 + v23) / 2];
-    v43 = [v15 subarrayWithRange:{0, v20}];
+    v40 = sortValue2;
+    v41 = [self alloc];
+    v42 = [(WBSCRDTPositionSortValue *)v56 positionSortValueWithSortValue:(v40 + sortValue) / 2];
+    v43 = [sortValues2 subarrayWithRange:{0, v20}];
     v26 = [v41 initWithSortValue:v42 parentSortValues:v43];
   }
 
 LABEL_30:
-  v12 = v53;
+  identifierCopy = v53;
   v14 = v56;
 LABEL_31:
 
-  v11 = v54;
-  v10 = v55;
+  andPositionCopy = v54;
+  positionCopy = v55;
 LABEL_32:
 
   return v26;
 }
 
-- (WBSCRDTPosition)initWithSortValues:(id)a3
+- (WBSCRDTPosition)initWithSortValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v10.receiver = self;
   v10.super_class = WBSCRDTPosition;
   v5 = [(WBSCRDTPosition *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valuesCopy copy];
     sortValues = v5->_sortValues;
     v5->_sortValues = v6;
 
@@ -206,12 +206,12 @@ LABEL_32:
   return v5;
 }
 
-- (WBSCRDTPosition)initWithSortValue:(id)a3 parentSortValues:(id)a4
+- (WBSCRDTPosition)initWithSortValue:(id)value parentSortValues:(id)values
 {
-  v6 = a4;
-  if (v6)
+  valuesCopy = values;
+  if (valuesCopy)
   {
-    v7 = v6;
+    v7 = valuesCopy;
   }
 
   else
@@ -219,22 +219,22 @@ LABEL_32:
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  v8 = [v7 arrayByAddingObject:a3];
+  v8 = [v7 arrayByAddingObject:value];
   v9 = [(WBSCRDTPosition *)self initWithSortValues:v8];
 
   return v9;
 }
 
-- (WBSCRDTPosition)initWithDictionaryRepresentation:(id)a3
+- (WBSCRDTPosition)initWithDictionaryRepresentation:(id)representation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  representationCopy = representation;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [v4 safari_arrayForKey:{@"sortValues", 0}];
+  v6 = [representationCopy safari_arrayForKey:{@"sortValues", 0}];
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -260,7 +260,7 @@ LABEL_32:
         }
 
         v13 = v12;
-        [v5 addObject:v12];
+        [array addObject:v12];
 
         ++v10;
       }
@@ -276,18 +276,18 @@ LABEL_32:
     }
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    self = [(WBSCRDTPosition *)self initWithSortValues:v5];
-    v14 = self;
+    self = [(WBSCRDTPosition *)self initWithSortValues:array];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  v15 = v14;
+  v15 = selfCopy;
 LABEL_15:
 
   return v15;
@@ -306,16 +306,16 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(NSArray *)self->_sortValues lastObject];
-  v3 = [v2 hash];
+  lastObject = [(NSArray *)self->_sortValues lastObject];
+  v3 = [lastObject hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -323,16 +323,16 @@ LABEL_15:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSArray *)self->_sortValues isEqualToArray:v4->_sortValues];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSArray *)self->_sortValues isEqualToArray:equalCopy->_sortValues];
   }
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (self == v4)
+  compareCopy = compare;
+  if (self == compareCopy)
   {
     v12 = 0;
   }
@@ -340,7 +340,7 @@ LABEL_15:
   else
   {
     v5 = [(NSArray *)self->_sortValues count];
-    v6 = [(NSArray *)v4->_sortValues count];
+    v6 = [(NSArray *)compareCopy->_sortValues count];
     v7 = v6;
     if (v5 >= v6)
     {
@@ -358,7 +358,7 @@ LABEL_15:
       while (1)
       {
         v10 = [(NSArray *)self->_sortValues objectAtIndexedSubscript:v9];
-        v11 = [(NSArray *)v4->_sortValues objectAtIndexedSubscript:v9];
+        v11 = [(NSArray *)compareCopy->_sortValues objectAtIndexedSubscript:v9];
         v12 = [v10 compare:v11];
 
         if (v12)
@@ -401,29 +401,29 @@ LABEL_9:
   return v5;
 }
 
-- (WBSCRDTPosition)initWithCoder:(id)a3
+- (WBSCRDTPosition)initWithCoder:(id)coder
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v11[0] = objc_opt_class();
   v11[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"sortValues"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sortValues"];
 
   if ([v8 count])
   {
     self = [(WBSCRDTPosition *)self initWithSortValues:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

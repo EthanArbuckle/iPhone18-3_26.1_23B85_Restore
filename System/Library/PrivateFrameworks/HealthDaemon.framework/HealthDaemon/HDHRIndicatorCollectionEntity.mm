@@ -3,7 +3,7 @@
 + (id)foreignKeys;
 + (id)privateSubEntities;
 - (_TtC12HealthDaemon29HDHRIndicatorCollectionEntity)init;
-- (_TtC12HealthDaemon29HDHRIndicatorCollectionEntity)initWithPersistentID:(int64_t)a3;
+- (_TtC12HealthDaemon29HDHRIndicatorCollectionEntity)initWithPersistentID:(int64_t)d;
 @end
 
 @implementation HDHRIndicatorCollectionEntity
@@ -41,11 +41,11 @@
   return v2;
 }
 
-- (_TtC12HealthDaemon29HDHRIndicatorCollectionEntity)initWithPersistentID:(int64_t)a3
+- (_TtC12HealthDaemon29HDHRIndicatorCollectionEntity)initWithPersistentID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for HDHRIndicatorCollectionEntity();
-  return [(HDSQLiteEntity *)&v5 initWithPersistentID:a3];
+  return [(HDSQLiteEntity *)&v5 initWithPersistentID:d];
 }
 
 - (_TtC12HealthDaemon29HDHRIndicatorCollectionEntity)init

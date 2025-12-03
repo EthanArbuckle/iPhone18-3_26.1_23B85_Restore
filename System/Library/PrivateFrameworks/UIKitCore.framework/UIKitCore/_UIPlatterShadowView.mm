@@ -1,35 +1,35 @@
 @interface _UIPlatterShadowView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGSize)shadowOffset;
 - (UIBezierPath)shadowPath;
 - (UIColor)shadowColor;
-- (_UIPlatterShadowView)initWithShadowPath:(id)a3;
+- (_UIPlatterShadowView)initWithShadowPath:(id)path;
 - (double)shadowOpacity;
 - (double)shadowRadius;
-- (void)setPunchOut:(BOOL)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setShadowPath:(id)a3;
-- (void)setShadowRadius:(double)a3;
+- (void)setPunchOut:(BOOL)out;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setShadowPath:(id)path;
+- (void)setShadowRadius:(double)radius;
 @end
 
 @implementation _UIPlatterShadowView
 
-- (_UIPlatterShadowView)initWithShadowPath:(id)a3
+- (_UIPlatterShadowView)initWithShadowPath:(id)path
 {
-  v4 = a3;
-  [v4 bounds];
+  pathCopy = path;
+  [pathCopy bounds];
   v11.receiver = self;
   v11.super_class = _UIPlatterShadowView;
   v5 = [(UIView *)&v11 initWithFrame:0.0, 0.0];
   v6 = v5;
   if (v5)
   {
-    v7 = [(UIView *)v5 layer];
-    [v7 setAllowsGroupBlending:1];
+    layer = [(UIView *)v5 layer];
+    [layer setAllowsGroupBlending:1];
 
-    [(_UIPlatterShadowView *)v6 setShadowPath:v4];
+    [(_UIPlatterShadowView *)v6 setShadowPath:pathCopy];
     v8 = +[UIColor blackColor];
     [(_UIPlatterShadowView *)v6 setShadowColor:v8];
 
@@ -39,31 +39,31 @@
   return v6;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _UIPlatterShadowView;
-  if (-[UIView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, v4) || ([v4 isEqualToString:@"shadowOpacity"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"shadowColor") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"shadowRadius") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"shadowOffset") & 1) != 0)
+  if (-[UIView _shouldAnimatePropertyWithKey:](&v7, sel__shouldAnimatePropertyWithKey_, keyCopy) || ([keyCopy isEqualToString:@"shadowOpacity"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"shadowColor") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"shadowRadius") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"shadowOffset") & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"shadowPath"];
+    v5 = [keyCopy isEqualToString:@"shadowPath"];
   }
 
   return v5;
 }
 
-- (void)setPunchOut:(BOOL)a3
+- (void)setPunchOut:(BOOL)out
 {
-  if (self->_punchOut != a3)
+  if (self->_punchOut != out)
   {
-    self->_punchOut = a3;
+    self->_punchOut = out;
     shadowMaskView = self->_shadowMaskView;
-    if (a3)
+    if (out)
     {
       if (!shadowMaskView)
       {
@@ -74,13 +74,13 @@
         self->_shadowMaskView = v6;
 
         v8 = *MEMORY[0x1E69798E8];
-        v9 = [(UIView *)self->_shadowMaskView layer];
-        [v9 setCompositingFilter:v8];
+        layer = [(UIView *)self->_shadowMaskView layer];
+        [layer setCompositingFilter:v8];
 
-        v10 = [(UIView *)self layer];
-        v11 = [v10 shadowPath];
-        v12 = [(_UIShapeView *)self->_shadowMaskView shapeLayer];
-        [v12 setPath:v11];
+        layer2 = [(UIView *)self layer];
+        shadowPath = [layer2 shadowPath];
+        shapeLayer = [(_UIShapeView *)self->_shadowMaskView shapeLayer];
+        [shapeLayer setPath:shadowPath];
 
         shadowMaskView = self->_shadowMaskView;
       }
@@ -97,68 +97,68 @@
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
-  v7 = [(UIView *)self layer];
-  [v7 setShadowColor:v6];
+  colorCopy = color;
+  cGColor = [color CGColor];
+  layer = [(UIView *)self layer];
+  [layer setShadowColor:cGColor];
 }
 
 - (UIColor)shadowColor
 {
-  v2 = [(UIView *)self layer];
-  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [v2 shadowColor]);
+  layer = [(UIView *)self layer];
+  v3 = +[UIColor colorWithCGColor:](UIColor, "colorWithCGColor:", [layer shadowColor]);
 
   return v3;
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  v5 = [(UIView *)self layer];
-  [v5 setShadowRadius:a3];
+  layer = [(UIView *)self layer];
+  [layer setShadowRadius:radius];
 
   [(UIView *)self setNeedsLayout];
 }
 
 - (double)shadowRadius
 {
-  v2 = [(UIView *)self layer];
-  [v2 shadowRadius];
+  layer = [(UIView *)self layer];
+  [layer shadowRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  v3 = a3;
-  v5 = [(UIView *)self layer];
-  *&v4 = v3;
-  [v5 setShadowOpacity:v4];
+  opacityCopy = opacity;
+  layer = [(UIView *)self layer];
+  *&v4 = opacityCopy;
+  [layer setShadowOpacity:v4];
 }
 
 - (double)shadowOpacity
 {
-  v2 = [(UIView *)self layer];
-  [v2 shadowOpacity];
+  layer = [(UIView *)self layer];
+  [layer shadowOpacity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIView *)self layer];
-  [v5 setShadowOffset:{width, height}];
+  height = offset.height;
+  width = offset.width;
+  layer = [(UIView *)self layer];
+  [layer setShadowOffset:{width, height}];
 }
 
 - (CGSize)shadowOffset
 {
-  v2 = [(UIView *)self layer];
-  [v2 shadowOffset];
+  layer = [(UIView *)self layer];
+  [layer shadowOffset];
   v4 = v3;
   v6 = v5;
 
@@ -171,24 +171,24 @@
 
 - (UIBezierPath)shadowPath
 {
-  v2 = [(UIView *)self layer];
-  v3 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v2 shadowPath]);
+  layer = [(UIView *)self layer];
+  v3 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [layer shadowPath]);
 
   return v3;
 }
 
-- (void)setShadowPath:(id)a3
+- (void)setShadowPath:(id)path
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 CGPath];
-  v8 = [(UIView *)self layer];
-  [v8 setShadowPath:v7];
+  pathCopy = path;
+  pathCopy2 = path;
+  cGPath = [pathCopy2 CGPath];
+  layer = [(UIView *)self layer];
+  [layer setShadowPath:cGPath];
 
-  v9 = [v6 CGPath];
-  v11 = [(_UIPlatterShadowView *)self shadowMaskView];
-  v10 = [v11 shapeLayer];
-  [v10 setPath:v9];
+  cGPath2 = [pathCopy2 CGPath];
+  shadowMaskView = [(_UIPlatterShadowView *)self shadowMaskView];
+  shapeLayer = [shadowMaskView shapeLayer];
+  [shapeLayer setPath:cGPath2];
 }
 
 @end

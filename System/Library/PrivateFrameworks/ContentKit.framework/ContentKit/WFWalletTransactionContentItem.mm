@@ -1,29 +1,29 @@
 @interface WFWalletTransactionContentItem
 + (id)coercions;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 - (WFWalletTransaction)transaction;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 @end
 
 @implementation WFWalletTransactionContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Transactions", @"Transactions");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Transaction", @"Transaction");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -72,12 +72,12 @@
   return v8;
 }
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A320]];
-  v6 = [(WFContentItem *)self cachingIdentifier];
-  v7 = [WFContentAttributionSet attributionSetWithAppDescriptor:v5 disclosureLevel:1 originalItemIdentifier:v6];
+  cachingIdentifier = [(WFContentItem *)self cachingIdentifier];
+  v7 = [WFContentAttributionSet attributionSetWithAppDescriptor:v5 disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
 
   return v7;
 }

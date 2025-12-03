@@ -1,9 +1,9 @@
 @interface DBAppProtectionCoordinator
-- (BOOL)applicationBundleIdentifierIsLockedOrHidden:(id)a3;
+- (BOOL)applicationBundleIdentifierIsLockedOrHidden:(id)hidden;
 - (DBAppProtectionCoordinator)init;
-- (void)addObserver:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DBAppProtectionCoordinator
@@ -18,16 +18,16 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v5 = [v4 addMonitor:v3 subjectMask:1];
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v5 = [subjectMonitorRegistry addMonitor:v3 subjectMask:1];
 
-    v6 = [MEMORY[0x277CEBE80] lockedApplications];
-    v7 = [MEMORY[0x277CEBE80] hiddenApplications];
+    lockedApplications = [MEMORY[0x277CEBE80] lockedApplications];
+    hiddenApplications = [MEMORY[0x277CEBE80] hiddenApplications];
     v8 = DBLogForCategory(1uLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = lockedApplications;
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[DBAppProtectionCoordinator] App protection locked applications: %@", buf, 0xCu);
     }
 
@@ -35,7 +35,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v7;
+      v29 = hiddenApplications;
       _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "[DBAppProtectionCoordinator] App protection hidden applications: %@", buf, 0xCu);
     }
 
@@ -54,14 +54,14 @@
     v25[3] = &unk_278F02B08;
     v14 = v3;
     v26 = v14;
-    [v6 enumerateObjectsUsingBlock:v25];
+    [lockedApplications enumerateObjectsUsingBlock:v25];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __34__DBAppProtectionCoordinator_init__block_invoke_2;
     v23 = &unk_278F02B08;
     v15 = v14;
     v24 = v15;
-    [v7 enumerateObjectsUsingBlock:&v20];
+    [hiddenApplications enumerateObjectsUsingBlock:&v20];
     os_unfair_lock_unlock(&v3->_lock);
     v16 = objc_alloc(MEMORY[0x277CF89C0]);
     v17 = [v16 initWithProtocol:{&unk_285AEEA28, v20, v21, v22, v23}];
@@ -86,50 +86,50 @@ void __34__DBAppProtectionCoordinator_init__block_invoke_2(uint64_t a1, void *a2
   [v2 addObject:v3];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBAppProtectionCoordinator *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBAppProtectionCoordinator *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBAppProtectionCoordinator *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBAppProtectionCoordinator *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
-- (BOOL)applicationBundleIdentifierIsLockedOrHidden:(id)a3
+- (BOOL)applicationBundleIdentifierIsLockedOrHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(DBAppProtectionCoordinator *)self lockedApplicationBundleIdentifiers];
-  if ([v5 containsObject:v4])
+  lockedApplicationBundleIdentifiers = [(DBAppProtectionCoordinator *)self lockedApplicationBundleIdentifiers];
+  if ([lockedApplicationBundleIdentifiers containsObject:hiddenCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(DBAppProtectionCoordinator *)self hiddenApplicationBundleIdentifiers];
-    v6 = [v7 containsObject:v4];
+    hiddenApplicationBundleIdentifiers = [(DBAppProtectionCoordinator *)self hiddenApplicationBundleIdentifiers];
+    v6 = [hiddenApplicationBundleIdentifiers containsObject:hiddenCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
   return v6;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a3;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__DBAppProtectionCoordinator_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_278F014B8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 

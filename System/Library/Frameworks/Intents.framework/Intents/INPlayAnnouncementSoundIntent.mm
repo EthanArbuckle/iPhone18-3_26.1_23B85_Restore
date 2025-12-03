@@ -1,19 +1,19 @@
 @interface INPlayAnnouncementSoundIntent
-- (INPlayAnnouncementSoundIntent)initWithSoundType:(int64_t)a3;
+- (INPlayAnnouncementSoundIntent)initWithSoundType:(int64_t)type;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
 - (int64_t)soundType;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setSoundType:(int64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setSoundType:(int64_t)type;
 @end
 
 @implementation INPlayAnnouncementSoundIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore:a3];
+  v6 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -22,9 +22,9 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"soundType";
-  v2 = [(INPlayAnnouncementSoundIntent *)self soundType];
+  soundType = [(INPlayAnnouncementSoundIntent *)self soundType];
   v3 = @"unknown";
-  if (v2 == 1)
+  if (soundType == 1)
   {
     v3 = @"announcementSent";
   }
@@ -38,27 +38,27 @@
   return v5;
 }
 
-- (void)setSoundType:(int64_t)a3
+- (void)setSoundType:(int64_t)type
 {
-  v4 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 == 1)
+  _typedBackingStore = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (type == 1)
   {
-    [v4 setSoundType:1];
+    [_typedBackingStore setSoundType:1];
   }
 
   else
   {
-    [v4 setHasSoundType:0];
+    [_typedBackingStore setHasSoundType:0];
   }
 }
 
 - (int64_t)soundType
 {
-  v3 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
-  LODWORD(v4) = [v3 hasSoundType];
-  v5 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
-  if ([v5 soundType] == 1)
+  _typedBackingStore = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
+  LODWORD(v4) = [_typedBackingStore hasSoundType];
+  _typedBackingStore2 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
+  if ([_typedBackingStore2 soundType] == 1)
   {
     v4 = v4;
   }
@@ -71,7 +71,7 @@
   return v4;
 }
 
-- (INPlayAnnouncementSoundIntent)initWithSoundType:(int64_t)a3
+- (INPlayAnnouncementSoundIntent)initWithSoundType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = INPlayAnnouncementSoundIntent;
@@ -79,34 +79,34 @@
   v5 = v4;
   if (v4)
   {
-    [(INPlayAnnouncementSoundIntent *)v4 setSoundType:a3];
+    [(INPlayAnnouncementSoundIntent *)v4 setSoundType:type];
   }
 
   return v5;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INPlayAnnouncementSoundIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

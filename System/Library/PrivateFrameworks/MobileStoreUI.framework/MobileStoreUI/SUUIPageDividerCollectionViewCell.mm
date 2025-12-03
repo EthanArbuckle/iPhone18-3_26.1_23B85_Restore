@@ -1,26 +1,26 @@
 @interface SUUIPageDividerCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUIPageDividerCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUIPageDividerCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setColoringWithStyle:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setDividerType:(int64_t)a3;
-- (void)setInsetColor:(id)a3;
-- (void)setLeftEdgeInset:(double)a3;
-- (void)setRightEdgeInset:(double)a3;
-- (void)setVerticalAlignment:(int64_t)a3;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setColoringWithStyle:(id)style;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setDividerType:(int64_t)type;
+- (void)setInsetColor:(id)color;
+- (void)setLeftEdgeInset:(double)inset;
+- (void)setRightEdgeInset:(double)inset;
+- (void)setVerticalAlignment:(int64_t)alignment;
 @end
 
 @implementation SUUIPageDividerCollectionViewCell
 
-- (SUUIPageDividerCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIPageDividerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIPageDividerCollectionViewCell;
-  v3 = [(SUUIPageDividerCollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIPageDividerCollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -31,19 +31,19 @@
     v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v6 setBackgroundColor:v7];
 
-    v8 = [(SUUIPageDividerCollectionViewCell *)v3 contentView];
-    [v8 addSubview:v3->_topDividerLine];
+    contentView = [(SUUIPageDividerCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_topDividerLine];
   }
 
   return v3;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -54,14 +54,14 @@
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  elementCopy = element;
+  contextCopy = context;
+  if (elementCopy)
   {
-    v9 = [v7 style];
-    v10 = SUUIViewElementPaddingForStyle(v9, 0);
+    style = [elementCopy style];
+    v10 = SUUIViewElementPaddingForStyle(style, 0);
     v12 = v11;
   }
 
@@ -71,12 +71,12 @@
     v12 = *(MEMORY[0x277D768C8] + 16);
   }
 
-  [v8 displayScale];
+  [contextCopy displayScale];
   v14 = 1.0 / v13;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v7;
+    v15 = elementCopy;
     if ([v15 dividerType] == 2)
     {
       [SUUIPageTitledDividerCollectionViewCell viewElementInsetDividerHeight:v15];
@@ -84,34 +84,34 @@
     }
   }
 
-  v17 = a3;
+  widthCopy = width;
   v18 = v12 + v10 + v14;
   result.height = v18;
-  result.width = v17;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = [a3 primaryTextColor];
+  primaryTextColor = [scheme primaryTextColor];
   topDividerLine = self->_topDividerLine;
-  v10 = v4;
-  if (v4)
+  v10 = primaryTextColor;
+  if (primaryTextColor)
   {
-    [(UIView *)topDividerLine setBackgroundColor:v4];
+    [(UIView *)topDividerLine setBackgroundColor:primaryTextColor];
     bottomDividerLine = self->_bottomDividerLine;
     if (bottomDividerLine)
     {
@@ -133,19 +133,19 @@
   }
 }
 
-- (void)setColoringWithStyle:(id)a3
+- (void)setColoringWithStyle:(id)style
 {
-  v4 = [a3 ikBorderColor];
-  v10 = [v4 color];
+  ikBorderColor = [style ikBorderColor];
+  color = [ikBorderColor color];
 
   topDividerLine = self->_topDividerLine;
-  if (v10)
+  if (color)
   {
-    [(UIView *)self->_topDividerLine setBackgroundColor:v10];
+    [(UIView *)self->_topDividerLine setBackgroundColor:color];
     bottomDividerLine = self->_bottomDividerLine;
     if (bottomDividerLine)
     {
-      [(UIView *)bottomDividerLine setBackgroundColor:v10];
+      [(UIView *)bottomDividerLine setBackgroundColor:color];
     }
   }
 
@@ -163,14 +163,14 @@
   }
 }
 
-- (void)setDividerType:(int64_t)a3
+- (void)setDividerType:(int64_t)type
 {
-  if (self->_dividerType != a3)
+  if (self->_dividerType != type)
   {
-    self->_dividerType = a3;
-    v4 = [(SUUIPageDividerCollectionViewCell *)self dividerType];
+    self->_dividerType = type;
+    dividerType = [(SUUIPageDividerCollectionViewCell *)self dividerType];
     bottomDividerLine = self->_bottomDividerLine;
-    if (v4 == 2)
+    if (dividerType == 2)
     {
       if (!bottomDividerLine)
       {
@@ -183,8 +183,8 @@
         [(UIView *)v8 setBackgroundColor:v9];
       }
 
-      v10 = [(SUUIPageDividerCollectionViewCell *)self contentView];
-      [v10 addSubview:self->_bottomDividerLine];
+      contentView = [(SUUIPageDividerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_bottomDividerLine];
 
       if (!self->_insetView)
       {
@@ -205,8 +205,8 @@
         }
       }
 
-      v16 = [(SUUIPageDividerCollectionViewCell *)self contentView];
-      [v16 addSubview:self->_insetView];
+      contentView2 = [(SUUIPageDividerCollectionViewCell *)self contentView];
+      [contentView2 addSubview:self->_insetView];
     }
 
     else
@@ -226,17 +226,17 @@
   }
 }
 
-- (void)setInsetColor:(id)a3
+- (void)setInsetColor:(id)color
 {
-  v4 = a3;
-  if (self->_insetColor != v4)
+  colorCopy = color;
+  if (self->_insetColor != colorCopy)
   {
-    v9 = v4;
-    v5 = [(UIColor *)v4 copy];
+    v9 = colorCopy;
+    v5 = [(UIColor *)colorCopy copy];
     insetColor = self->_insetColor;
     self->_insetColor = v5;
 
-    v4 = v9;
+    colorCopy = v9;
     insetView = self->_insetView;
     if (insetView)
     {
@@ -251,47 +251,47 @@
         [(UIView *)insetView setBackgroundColor:v8];
       }
 
-      v4 = v9;
+      colorCopy = v9;
     }
   }
 }
 
-- (void)setLeftEdgeInset:(double)a3
+- (void)setLeftEdgeInset:(double)inset
 {
-  if (self->_leftEdgeInset != a3)
+  if (self->_leftEdgeInset != inset)
   {
-    self->_leftEdgeInset = a3;
+    self->_leftEdgeInset = inset;
     [(SUUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setRightEdgeInset:(double)a3
+- (void)setRightEdgeInset:(double)inset
 {
-  if (self->_rightEdgeInset != a3)
+  if (self->_rightEdgeInset != inset)
   {
-    self->_rightEdgeInset = a3;
+    self->_rightEdgeInset = inset;
     [(SUUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
-  if (self->_verticalAlignment != a3)
+  if (self->_verticalAlignment != alignment)
   {
-    self->_verticalAlignment = a3;
+    self->_verticalAlignment = alignment;
     [(SUUIPageDividerCollectionViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 backgroundColor];
-  [(SUUIPageDividerCollectionViewCell *)self setBackgroundColor:v5];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SUUIPageDividerCollectionViewCell *)self setBackgroundColor:backgroundColor];
 
   v6.receiver = self;
   v6.super_class = SUUIPageDividerCollectionViewCell;
-  [(SUUIPageDividerCollectionViewCell *)&v6 applyLayoutAttributes:v4];
+  [(SUUIPageDividerCollectionViewCell *)&v6 applyLayoutAttributes:attributesCopy];
 }
 
 - (void)layoutSubviews
@@ -299,24 +299,24 @@
   v29.receiver = self;
   v29.super_class = SUUIPageDividerCollectionViewCell;
   [(SUUIPageDividerCollectionViewCell *)&v29 layoutSubviews];
-  v3 = [(SUUIPageDividerCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SUUIPageDividerCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(SUUIPageDividerCollectionViewCell *)self dividerType];
-  v9 = [(SUUIPageDividerCollectionViewCell *)self traitCollection];
-  [v9 displayScale];
+  dividerType = [(SUUIPageDividerCollectionViewCell *)self dividerType];
+  traitCollection = [(SUUIPageDividerCollectionViewCell *)self traitCollection];
+  [traitCollection displayScale];
   v11 = v10;
   if (v10 <= 0.00000011920929)
   {
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v11 = v13;
   }
 
   v14 = 1.0 / v11;
-  if (v8 != 2)
+  if (dividerType != 2)
   {
     verticalAlignment = self->_verticalAlignment;
     if (verticalAlignment)

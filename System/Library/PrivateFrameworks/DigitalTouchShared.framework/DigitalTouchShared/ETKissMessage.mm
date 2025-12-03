@@ -2,17 +2,17 @@
 + (id)_kissColor;
 - (BOOL)_hasKissesThatLeaveMark;
 - (ETKissMessage)init;
-- (ETKissMessage)initWithArchiveData:(id)a3;
+- (ETKissMessage)initWithArchiveData:(id)data;
 - (double)messageDuration;
 - (id)archiveData;
-- (void)_displayKissAtPoint:(CGPoint)a3 angle:(double)a4 leavesMark:(BOOL)a5 inScene:(id)a6;
+- (void)_displayKissAtPoint:(CGPoint)point angle:(double)angle leavesMark:(BOOL)mark inScene:(id)scene;
 - (void)_initAtlas;
 - (void)_notifyDelegateDidStopPlaying;
 - (void)_notifyDelegateWillStopPlaying;
-- (void)_setKissLeavesMark:(id)a3;
-- (void)addKissAtNormalizedPoint:(CGPoint)a3 angle:(double)a4 time:(double)a5 toScene:(id)a6;
-- (void)displayInScene:(id)a3;
-- (void)setParentMessage:(id)a3;
+- (void)_setKissLeavesMark:(id)mark;
+- (void)addKissAtNormalizedPoint:(CGPoint)point angle:(double)angle time:(double)time toScene:(id)scene;
+- (void)displayInScene:(id)scene;
+- (void)setParentMessage:(id)message;
 - (void)stopPlaying;
 @end
 
@@ -44,17 +44,17 @@ uint64_t __27__ETKissMessage__kissColor__block_invoke()
   v2 = [(ETMessage *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     points = v2->_points;
-    v2->_points = v3;
+    v2->_points = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     angles = v2->_angles;
-    v2->_angles = v5;
+    v2->_angles = array2;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     delays = v2->_delays;
-    v2->_delays = v7;
+    v2->_delays = array3;
 
     v9 = [MEMORY[0x277CBEB58] set];
     kissMarkNodes = v2->_kissMarkNodes;
@@ -66,49 +66,49 @@ uint64_t __27__ETKissMessage__kissColor__block_invoke()
   return v2;
 }
 
-- (ETKissMessage)initWithArchiveData:(id)a3
+- (ETKissMessage)initWithArchiveData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v38.receiver = self;
   v38.super_class = ETKissMessage;
-  v5 = [(ETMessage *)&v38 initWithArchiveData:v4];
+  v5 = [(ETMessage *)&v38 initWithArchiveData:dataCopy];
   if (v5)
   {
-    v6 = [[ETPKiss alloc] initWithData:v4];
+    v6 = [[ETPKiss alloc] initWithData:dataCopy];
     v7 = v6;
     if (v6)
     {
       if ([(ETPKiss *)v6 hasPoints]&& [(ETPKiss *)v7 hasAngles]&& [(ETPKiss *)v7 hasDelays])
       {
-        v8 = [(ETPKiss *)v7 points];
-        v33 = [v8 length];
+        points = [(ETPKiss *)v7 points];
+        v33 = [points length];
         v9 = v33 >> 2;
-        v32 = v8;
-        v10 = [v8 bytes];
-        v11 = [(ETPKiss *)v7 angles];
-        v12 = [v11 length];
-        v31 = v11;
-        v13 = [v11 bytes];
-        v14 = [(ETPKiss *)v7 delays];
-        v15 = [v14 length];
-        v30 = v14;
-        v16 = [v14 bytes];
+        v32 = points;
+        bytes = [points bytes];
+        angles = [(ETPKiss *)v7 angles];
+        v12 = [angles length];
+        v31 = angles;
+        bytes2 = [angles bytes];
+        delays = [(ETPKiss *)v7 delays];
+        v15 = [delays length];
+        v30 = delays;
+        bytes3 = [delays bytes];
         v17 = 0;
         if (v33 >> 2 == v12 >> 1 && v9 == v15 >> 1)
         {
           if (v33 >= 4)
           {
-            v18 = v16;
+            v18 = bytes3;
             do
             {
-              v19 = *v10++;
+              v19 = *bytes++;
               *buf = v19 / 32767.0 + -1.0;
               v37 = HIWORD(v19) / 32767.0 + -1.0;
               points = v5->_points;
               v21 = [MEMORY[0x277CCAE60] value:buf withObjCType:"{CGPoint=dd}"];
               [(NSMutableArray *)points addObject:v21];
 
-              v22 = *v13++;
+              v22 = *bytes2++;
               v35 = v22 / 1000.0;
               angles = v5->_angles;
               v24 = [MEMORY[0x277CCAE60] value:&v35 withObjCType:"d"];
@@ -159,20 +159,20 @@ LABEL_20:
 {
   v22 = objc_alloc_init(ETPKiss);
   v3 = [(NSMutableArray *)self->_points count];
-  v4 = [MEMORY[0x277CBEB28] data];
-  [v4 setLength:4 * v3];
-  v21 = v4;
-  v5 = [v4 mutableBytes];
-  v6 = [MEMORY[0x277CBEB28] data];
-  [v6 setLength:2 * v3];
-  v7 = [v6 mutableBytes];
-  v8 = [MEMORY[0x277CBEB28] data];
-  [v8 setLength:2 * v3];
-  v20 = v8;
-  v9 = [v8 mutableBytes];
+  data = [MEMORY[0x277CBEB28] data];
+  [data setLength:4 * v3];
+  v21 = data;
+  mutableBytes = [data mutableBytes];
+  data2 = [MEMORY[0x277CBEB28] data];
+  [data2 setLength:2 * v3];
+  mutableBytes2 = [data2 mutableBytes];
+  data3 = [MEMORY[0x277CBEB28] data];
+  [data3 setLength:2 * v3];
+  v20 = data3;
+  mutableBytes3 = [data3 mutableBytes];
   if (v3)
   {
-    v10 = v9;
+    v10 = mutableBytes3;
     v11 = 0;
     v23 = *MEMORY[0x277CBF348];
     do
@@ -184,12 +184,12 @@ LABEL_20:
       v13 = (*&v26 + 1.0) * 32767.0;
       v14 = llroundf(v13);
       v15 = (*(&v26 + 1) + 1.0) * 32767.0;
-      *(v5 + 4 * v11) = v14 | (llroundf(v15) << 16);
+      *(mutableBytes + 4 * v11) = v14 | (llroundf(v15) << 16);
       v25 = 0.0;
       v16 = [(NSMutableArray *)self->_angles objectAtIndexedSubscript:v11];
       [v16 getValue:&v25];
 
-      *(v7 + 2 * v11) = (v25 * 1000.0);
+      *(mutableBytes2 + 2 * v11) = (v25 * 1000.0);
       v24 = 0.0;
       v17 = [(NSMutableArray *)self->_delays objectAtIndexedSubscript:v11];
       [v17 getValue:&v24];
@@ -201,11 +201,11 @@ LABEL_20:
   }
 
   [(ETPKiss *)v22 setPoints:v21];
-  [(ETPKiss *)v22 setAngles:v6];
+  [(ETPKiss *)v22 setAngles:data2];
   [(ETPKiss *)v22 setDelays:v20];
-  v18 = [(ETPKiss *)v22 data];
+  data4 = [(ETPKiss *)v22 data];
 
-  return v18;
+  return data4;
 }
 
 - (void)_initAtlas
@@ -243,35 +243,35 @@ LABEL_20:
   }
 }
 
-- (void)addKissAtNormalizedPoint:(CGPoint)a3 angle:(double)a4 time:(double)a5 toScene:(id)a6
+- (void)addKissAtNormalizedPoint:(CGPoint)point angle:(double)angle time:(double)time toScene:(id)scene
 {
-  v20 = a3;
+  pointCopy = point;
   lastKissTime = self->_lastKissTime;
   if (lastKissTime == 0.0)
   {
-    lastKissTime = a5;
+    lastKissTime = time;
   }
 
-  v18 = a5 - lastKissTime;
-  v19 = a4;
-  self->_lastKissTime = a5;
+  v18 = time - lastKissTime;
+  angleCopy = angle;
+  self->_lastKissTime = time;
   delays = self->_delays;
   v9 = MEMORY[0x277CCAE60];
-  v10 = a6;
+  sceneCopy = scene;
   v11 = [v9 valueWithBytes:&v18 objCType:"d"];
   [(NSMutableArray *)delays addObject:v11];
 
   points = self->_points;
-  v13 = [MEMORY[0x277CCAE60] valueWithBytes:&v20 objCType:"{CGPoint=dd}"];
+  v13 = [MEMORY[0x277CCAE60] valueWithBytes:&pointCopy objCType:"{CGPoint=dd}"];
   [(NSMutableArray *)points addObject:v13];
 
   angles = self->_angles;
-  v15 = [MEMORY[0x277CCAE60] valueWithBytes:&v19 objCType:"d"];
+  v15 = [MEMORY[0x277CCAE60] valueWithBytes:&angleCopy objCType:"d"];
   [(NSMutableArray *)angles addObject:v15];
 
   [(ETKissMessage *)self _initAtlas];
-  [(ETMessage *)self scenePointFromNormalizedPoint:v10 inScene:v20.x, v20.y];
-  [(ETKissMessage *)self _displayKissAtPoint:[(ETKissMessage *)self _leaveMarkAtDelay:v18] angle:v10 leavesMark:v16 inScene:v17, v19];
+  [(ETMessage *)self scenePointFromNormalizedPoint:sceneCopy inScene:pointCopy.x, pointCopy.y];
+  [(ETKissMessage *)self _displayKissAtPoint:[(ETKissMessage *)self _leaveMarkAtDelay:v18] angle:sceneCopy leavesMark:v16 inScene:v17, angleCopy];
 }
 
 - (BOOL)_hasKissesThatLeaveMark
@@ -322,16 +322,16 @@ LABEL_11:
   return v9;
 }
 
-- (void)displayInScene:(id)a3
+- (void)displayInScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   self->_didDelegateWillStopPlaying = 0;
   self->_didDelegateDidStopPlaying = 0;
   [(ETKissMessage *)self _initAtlas];
-  objc_initWeak(location, v4);
+  objc_initWeak(location, sceneCopy);
   objc_initWeak(&from, self);
   v5 = self->_kissMarkNodes;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [(NSMutableArray *)self->_points count];
   if (v7)
   {
@@ -344,7 +344,7 @@ LABEL_11:
       if (![(ETMessage *)self isRenderingOffscreen])
       {
         v10 = [getSKActionClass_2() waitForDuration:*&v37];
-        [v6 addObject:v10];
+        [array addObject:v10];
       }
 
       SKActionClass_2 = getSKActionClass_2();
@@ -358,7 +358,7 @@ LABEL_11:
       objc_copyWeak(v36, location);
       v36[2] = v37;
       v12 = [SKActionClass_2 runBlock:v34];
-      [v6 addObject:v12];
+      [array addObject:v12];
 
       objc_destroyWeak(v36);
       objc_destroyWeak(&v35);
@@ -367,38 +367,38 @@ LABEL_11:
 
   if (![(ETMessage *)self isRenderingOffscreen])
   {
-    v13 = [(ETKissMessage *)self _hasKissesThatLeaveMark];
+    _hasKissesThatLeaveMark = [(ETKissMessage *)self _hasKissesThatLeaveMark];
     v14 = getSKActionClass_2();
     v15 = 0.3;
-    if (v13)
+    if (_hasKissesThatLeaveMark)
     {
       v15 = 1.0;
     }
 
     v16 = [v14 waitForDuration:v15];
-    [v6 addObject:v16];
+    [array addObject:v16];
 
     v17 = getSKActionClass_2();
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __32__ETKissMessage_displayInScene___block_invoke_2;
     v31[3] = &unk_278F7A658;
-    v33 = v13;
+    v33 = _hasKissesThatLeaveMark;
     objc_copyWeak(&v32, &from);
     v18 = MEMORY[0x277D85CD0];
     v19 = MEMORY[0x277D85CD0];
     v20 = [v17 runBlock:v31 queue:v18];
-    [v6 addObject:v20];
+    [array addObject:v20];
 
     v21 = getSKActionClass_2();
     v22 = 1.7;
-    if (v13)
+    if (_hasKissesThatLeaveMark)
     {
       v22 = 1.0;
     }
 
     v23 = [v21 waitForDuration:v22];
-    [v6 addObject:v23];
+    [array addObject:v23];
 
     v24 = getSKActionClass_2();
     v27[0] = MEMORY[0x277D85DD0];
@@ -406,17 +406,17 @@ LABEL_11:
     v27[2] = __32__ETKissMessage_displayInScene___block_invoke_3;
     v27[3] = &unk_278F7A680;
     objc_copyWeak(&v29, &from);
-    v30 = v13;
+    v30 = _hasKissesThatLeaveMark;
     v28 = v5;
     v25 = [v24 runBlock:v27];
-    [v6 addObject:v25];
+    [array addObject:v25];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v32);
   }
 
-  v26 = [getSKActionClass_2() sequence:v6];
-  [v4 runAction:v26];
+  v26 = [getSKActionClass_2() sequence:array];
+  [sceneCopy runAction:v26];
 
   objc_destroyWeak(&from);
   objc_destroyWeak(location);
@@ -543,28 +543,28 @@ void __32__ETKissMessage_displayInScene___block_invoke_4(uint64_t a1)
   [WeakRetained _notifyDelegateDidStopPlaying];
 }
 
-- (void)_setKissLeavesMark:(id)a3
+- (void)_setKissLeavesMark:(id)mark
 {
-  if (a3)
+  if (mark)
   {
-    v4 = a3;
-    [v4 setLeavesMark:1];
-    [(NSMutableSet *)self->_kissMarkNodes addObject:v4];
+    markCopy = mark;
+    [markCopy setLeavesMark:1];
+    [(NSMutableSet *)self->_kissMarkNodes addObject:markCopy];
   }
 }
 
-- (void)_displayKissAtPoint:(CGPoint)a3 angle:(double)a4 leavesMark:(BOOL)a5 inScene:(id)a6
+- (void)_displayKissAtPoint:(CGPoint)point angle:(double)angle leavesMark:(BOOL)mark inScene:(id)scene
 {
-  v6 = a5;
-  y = a3.y;
-  x = a3.x;
+  markCopy = mark;
+  y = point.y;
+  x = point.x;
   v62[2] = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_lastKiss);
 
   if (WeakRetained)
   {
-    v13 = v6;
+    v13 = markCopy;
   }
 
   else
@@ -608,8 +608,8 @@ void __32__ETKissMessage_displayInScene___block_invoke_4(uint64_t a1)
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:2];
     [v19 setUniforms:v21];
 
-    v22 = [MEMORY[0x277D75348] clearColor];
-    v23 = [KissNode kissNodeWithColor:v22 size:256.0, 256.0];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    v23 = [KissNode kissNodeWithColor:clearColor size:256.0, 256.0];
 
     [v23 setShader:v19];
     v24 = +[ETKissMessage _kissColor];
@@ -618,11 +618,11 @@ void __32__ETKissMessage_displayInScene___block_invoke_4(uint64_t a1)
     [v23 setColorBlendFactor:1.0];
     [v23 setBlendMode:1];
     [v23 setPosition:{x, y}];
-    [v23 setZRotation:a4 + 0.175];
-    [v11 size];
+    [v23 setZRotation:angle + 0.175];
+    [sceneCopy size];
     [v23 setScale:{fmax(v25 / 156.0, 1.0) * 0.35}];
-    v26 = [v23 node];
-    [v11 addChild:v26];
+    node = [v23 node];
+    [sceneCopy addChild:node];
 
     if (v13)
     {
@@ -643,9 +643,9 @@ void __32__ETKissMessage_displayInScene___block_invoke_4(uint64_t a1)
       v52 = 0;
       v53 = &v52;
       v54 = 0x2020000000;
-      v29 = [(ETMessage *)self isRenderingOffscreen];
+      isRenderingOffscreen = [(ETMessage *)self isRenderingOffscreen];
       v28 = 0.3;
-      if (!v29)
+      if (!isRenderingOffscreen)
       {
         v28 = 0.0;
       }
@@ -673,14 +673,14 @@ void __32__ETKissMessage_displayInScene___block_invoke_4(uint64_t a1)
       v43 = 3221225472;
       v44 = __62__ETKissMessage__displayKissAtPoint_angle_leavesMark_inScene___block_invoke_2;
       v45 = &unk_278F7A6A8;
-      v46 = self;
+      selfCopy = self;
       v37 = v23;
       v47 = v37;
       v49 = &v52;
       v48 = v32;
       v38 = [v36 runBlock:&v42];
       v61[1] = v38;
-      v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:{2, v42, v43, v44, v45, v46}];
+      v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:{2, v42, v43, v44, v45, selfCopy}];
       v40 = [v34 sequence:v39];
       [v37 runAction:v40];
     }
@@ -721,8 +721,8 @@ uint64_t __62__ETKissMessage__displayKissAtPoint_angle_leavesMark_inScene___bloc
   if (!self->_didDelegateDidStopPlaying)
   {
     self->_didDelegateDidStopPlaying = 1;
-    v4 = [(ETMessage *)self delegate];
-    [v4 messageDidStopPlaying:self];
+    delegate = [(ETMessage *)self delegate];
+    [delegate messageDidStopPlaying:self];
   }
 }
 
@@ -731,8 +731,8 @@ uint64_t __62__ETKissMessage__displayKissAtPoint_angle_leavesMark_inScene___bloc
   if (!self->_didDelegateWillStopPlaying)
   {
     self->_didDelegateWillStopPlaying = 1;
-    v4 = [(ETMessage *)self delegate];
-    [v4 messageWillStopPlaying:self];
+    delegate = [(ETMessage *)self delegate];
+    [delegate messageWillStopPlaying:self];
   }
 }
 
@@ -761,8 +761,8 @@ uint64_t __62__ETKissMessage__displayKissAtPoint_angle_leavesMark_inScene___bloc
         SKActionClass_2 = getSKActionClass_2();
         v8 = [getSKActionClass_2() fadeOutWithDuration:0.25];
         v21[0] = v8;
-        v9 = [getSKActionClass_2() removeFromParent];
-        v21[1] = v9;
+        removeFromParent = [getSKActionClass_2() removeFromParent];
+        v21[1] = removeFromParent;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
         v11 = [SKActionClass_2 sequence:v10];
         [v6 runAction:v11];
@@ -847,11 +847,11 @@ void __28__ETKissMessage_stopPlaying__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)setParentMessage:(id)a3
+- (void)setParentMessage:(id)message
 {
   v4.receiver = self;
   v4.super_class = ETKissMessage;
-  [(ETMessage *)&v4 setParentMessage:a3];
+  [(ETMessage *)&v4 setParentMessage:message];
   [(ETMessage *)self setDelayWisp:1];
 }
 

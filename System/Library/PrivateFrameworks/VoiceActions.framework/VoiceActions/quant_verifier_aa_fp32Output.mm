@@ -1,6 +1,6 @@
 @interface quant_verifier_aa_fp32Output
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation quant_verifier_aa_fp32Output
@@ -9,7 +9,7 @@
 {
   v2 = *self->provider;
 
-  v3 = [v2 featureNames];
+  featureNames = [v2 featureNames];
   sub_272377D8C();
 
   v4 = sub_272377D7C();
@@ -17,11 +17,11 @@
   return v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v3 = [*self->provider featureValueForName_];
+  featureValueForName_ = [*self->provider featureValueForName_];
 
-  return v3;
+  return featureValueForName_;
 }
 
 @end

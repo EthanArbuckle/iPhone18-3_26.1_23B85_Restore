@@ -7,10 +7,10 @@
 
 - (BOOL)wf_isUnsupportedUserInterfaceError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"WFUserInterfaceErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"WFUserInterfaceErrorDomain"])
   {
-    v3 = [a1 code] == 0;
+    v3 = [self code] == 0;
   }
 
   else
@@ -23,10 +23,10 @@
 
 - (BOOL)wf_isSiriPunchOutError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"WFUserInterfaceErrorDomain"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"WFUserInterfaceErrorDomain"])
   {
-    v3 = [a1 code] == 2;
+    v3 = [self code] == 2;
   }
 
   else

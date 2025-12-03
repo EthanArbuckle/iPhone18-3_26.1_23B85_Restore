@@ -4,17 +4,17 @@
 - (BOOL)PME_enabled;
 - (BOOL)_RLSAllowsMXVolumeLimit;
 - (HAENVolumeControl)init;
-- (float)computeLimitedVolume:(float)a3 event:(id)a4 action:(unsigned int *)a5;
-- (float)getCurrentVolumeForCategory:(__CFString *)a3 route:(id *)a4;
-- (unsigned)limitVolume:(id)a3;
-- (void)_fetchCategory:(__CFString *)a3 routeInfo:(id *)a4;
+- (float)computeLimitedVolume:(float)volume event:(id)event action:(unsigned int *)action;
+- (float)getCurrentVolumeForCategory:(__CFString *)category route:(id *)route;
+- (unsigned)limitVolume:(id)volume;
+- (void)_fetchCategory:(__CFString *)category routeInfo:(id *)info;
 - (void)_updateFlags;
 - (void)_updateMXVolumeLimit;
 - (void)applyVolumeLoweringAtNextSession;
-- (void)limitVolumeTo:(float)a3 category:(__CFString *)a4 route:(id *)a5 actionResult:(unsigned int *)a6;
-- (void)setDeviceInfo:(id)a3;
+- (void)limitVolumeTo:(float)to category:(__CFString *)category route:(id *)route actionResult:(unsigned int *)result;
+- (void)setDeviceInfo:(id)info;
 - (void)updateMXVolumeLimitStatus;
-- (void)wiredHeadphoneConnected:(BOOL)a3;
+- (void)wiredHeadphoneConnected:(BOOL)connected;
 @end
 
 @implementation HAENVolumeControl
@@ -93,16 +93,16 @@ uint64_t __35__HAENVolumeControl_sharedInstance__block_invoke()
   return v2;
 }
 
-- (float)computeLimitedVolume:(float)a3 event:(id)a4 action:(unsigned int *)a5
+- (float)computeLimitedVolume:(float)volume event:(id)event action:(unsigned int *)action
 {
   v8 = 1986817143;
-  if ([a4 eventType] == 1818850917)
+  if ([event eventType] == 1818850917)
   {
     v9 = +[HAENDefaults sharedInstance];
     [v9 volumeReductionDelta];
     v11 = v10;
 
-    v12 = a3 - v11;
+    v12 = volume - v11;
   }
 
   else
@@ -119,34 +119,34 @@ uint64_t __35__HAENVolumeControl_sharedInstance__block_invoke()
       if (targetVolume80dB <= 0.0 || (targetVolume74dB = self->_targetVolume74dB, targetVolume74dB <= 0.0))
       {
         v15 = +[HAENUnknownDeviceManager sharedInstance];
-        v16 = [v15 unknownWiredHeadsetConnectedThroughB204];
+        unknownWiredHeadsetConnectedThroughB204 = [v15 unknownWiredHeadsetConnectedThroughB204];
 
         targetVolume74dB = 0.5;
-        if (!v16)
+        if (!unknownWiredHeadsetConnectedThroughB204)
         {
           targetVolume74dB = 0.56;
         }
 
         targetVolume80dB = 0.63;
-        if (v16)
+        if (unknownWiredHeadsetConnectedThroughB204)
         {
           targetVolume80dB = 0.59;
         }
       }
     }
 
-    if (targetVolume74dB > a3)
+    if (targetVolume74dB > volume)
     {
-      targetVolume74dB = a3;
+      targetVolume74dB = volume;
     }
 
-    if (a3 + -0.001 <= targetVolume80dB)
+    if (volume + -0.001 <= targetVolume80dB)
     {
       targetVolume80dB = targetVolume74dB;
     }
 
     v12 = targetVolume80dB;
-    if (v12 + 0.001 >= a3)
+    if (v12 + 0.001 >= volume)
     {
       v8 = 1986814576;
     }
@@ -157,16 +157,16 @@ uint64_t __35__HAENVolumeControl_sharedInstance__block_invoke()
     }
   }
 
-  *a5 = v8;
+  *action = v8;
   return fmin(fmax(v12, 0.0), 1.0);
 }
 
-- (float)getCurrentVolumeForCategory:(__CFString *)a3 route:(id *)a4
+- (float)getCurrentVolumeForCategory:(__CFString *)category route:(id *)route
 {
   [HAENVolumeControl _fetchCategory:"_fetchCategory:routeInfo:" routeInfo:?];
-  var0 = a4->var0;
-  var1 = a4->var1;
-  var2 = a4->var2;
+  var0 = route->var0;
+  var1 = route->var1;
+  var2 = route->var2;
   pid = self->_pid;
   if (!CMSessionManagerPerformVolumeOperationWithSequenceNumber())
   {
@@ -208,7 +208,7 @@ void __53__HAENVolumeControl_applyVolumeLoweringAtNextSession__block_invoke(doub
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)limitVolume:(id)a3
+- (unsigned)limitVolume:(id)volume
 {
   v4 = HAENotificationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -221,21 +221,21 @@ void __53__HAENVolumeControl_applyVolumeLoweringAtNextSession__block_invoke(doub
   return 1986814576;
 }
 
-- (void)limitVolumeTo:(float)a3 category:(__CFString *)a4 route:(id *)a5 actionResult:(unsigned int *)a6
+- (void)limitVolumeTo:(float)to category:(__CFString *)category route:(id *)route actionResult:(unsigned int *)result
 {
   v23 = *MEMORY[0x277D85DE8];
   v11 = HAENotificationsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v20 = a3;
+    toCopy = to;
     v21 = 2112;
-    v22 = *&a4;
+    toCopy2 = *&category;
     _os_log_impl(&dword_25081E000, v11, OS_LOG_TYPE_DEFAULT, ">>> limiting volume to %.2f for category %@, ", buf, 0x16u);
   }
 
-  var0 = a5->var0;
-  var2 = a5->var2;
+  var0 = route->var0;
+  var2 = route->var2;
   pid = self->_pid;
   v15 = CMSessionManagerPerformVolumeOperationWithSequenceNumber();
   v16 = HAENotificationsLog();
@@ -247,7 +247,7 @@ void __53__HAENVolumeControl_applyVolumeLoweringAtNextSession__block_invoke(doub
       [HAENVolumeControl limitVolumeTo:category:route:actionResult:];
     }
 
-    *a6 = 561409132;
+    *result = 561409132;
   }
 
   else
@@ -255,9 +255,9 @@ void __53__HAENVolumeControl_applyVolumeLoweringAtNextSession__block_invoke(doub
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = *&a4;
+      toCopy = *&category;
       v21 = 2048;
-      v22 = a3;
+      toCopy2 = to;
       _os_log_impl(&dword_25081E000, v17, OS_LOG_TYPE_DEFAULT, "========> SET %@ volume to: %.2f", buf, 0x16u);
     }
   }
@@ -265,18 +265,18 @@ void __53__HAENVolumeControl_applyVolumeLoweringAtNextSession__block_invoke(doub
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchCategory:(__CFString *)a3 routeInfo:(id *)a4
+- (void)_fetchCategory:(__CFString *)category routeInfo:(id *)info
 {
   v19 = *MEMORY[0x277D85DE8];
   CMSessionMgrCopyDeviceRouteForRouteConfiguration();
   v6 = HAENotificationsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    var0 = a4->var0;
-    var1 = a4->var1;
-    var2 = a4->var2;
+    var0 = info->var0;
+    var1 = info->var1;
+    var2 = info->var2;
     v11 = 138413058;
-    v12 = a3;
+    categoryCopy = category;
     v13 = 2112;
     v14 = var0;
     v15 = 2112;
@@ -314,30 +314,30 @@ void __53__HAENVolumeControl_applyVolumeLoweringAtNextSession__block_invoke(doub
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = +[HAENDefaults sharedInstance];
-  v3 = [v2 isReduceLoudSoundEnabled];
+  isReduceLoudSoundEnabled = [v2 isReduceLoudSoundEnabled];
 
   v4 = +[HAENDefaults sharedInstance];
-  v5 = [v4 getReduceLoudSoundThreshold];
+  getReduceLoudSoundThreshold = [v4 getReduceLoudSoundThreshold];
 
   v6 = HAENotificationsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:isReduceLoudSoundEnabled];
     v10 = 138412546;
     v11 = v7;
     v12 = 1024;
-    v13 = v5;
+    v13 = getReduceLoudSoundThreshold;
     _os_log_impl(&dword_25081E000, v6, OS_LOG_TYPE_DEFAULT, "RLS volume limit %@, threshold %d", &v10, 0x12u);
   }
 
-  if (v5 > 99)
+  if (getReduceLoudSoundThreshold > 99)
   {
     result = 1;
   }
 
   else
   {
-    result = v3 ^ 1;
+    result = isReduceLoudSoundEnabled ^ 1;
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -373,7 +373,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
   }
 
@@ -395,17 +395,17 @@ LABEL_14:
       return;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
   }
 
-  [(HAENVolumeControl *)v6 _setMXVolumeLimit:v7];
+  [(HAENVolumeControl *)selfCopy2 _setMXVolumeLimit:v7];
 }
 
-- (void)wiredHeadphoneConnected:(BOOL)a3
+- (void)wiredHeadphoneConnected:(BOOL)connected
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_wiredHeadphoneConnected = a3;
+  self->_wiredHeadphoneConnected = connected;
   [(HAENVolumeControl *)self _updateFlags];
   [(HAENVolumeControl *)self _updateMXVolumeLimit];
 
@@ -417,11 +417,11 @@ LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
   if (objc_opt_class())
   {
-    v2 = [MEMORY[0x277D3A1D8] sharedInstance];
-    if ([v2 personalMediaEnabled])
+    mEMORY[0x277D3A1D8] = [MEMORY[0x277D3A1D8] sharedInstance];
+    if ([mEMORY[0x277D3A1D8] personalMediaEnabled])
     {
-      v3 = [MEMORY[0x277D3A1D8] sharedInstance];
-      v4 = ([v3 personalAudioAccommodationTypes] >> 2) & 1;
+      mEMORY[0x277D3A1D8]2 = [MEMORY[0x277D3A1D8] sharedInstance];
+      v4 = ([mEMORY[0x277D3A1D8]2 personalAudioAccommodationTypes] >> 2) & 1;
     }
 
     else
@@ -453,18 +453,18 @@ LABEL_14:
   return v4;
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_lock);
   __asm { FMOV            V0.2S, #-1.0 }
 
   *&self->_targetVolume80dB = _D0;
-  if (v4)
+  if (infoCopy)
   {
-    v9 = [v4 objectForKey:@"_HAENMITSV80DB"];
-    v10 = [v4 objectForKey:@"_HAENMITSV74DB"];
+    v9 = [infoCopy objectForKey:@"_HAENMITSV80DB"];
+    v10 = [infoCopy objectForKey:@"_HAENMITSV74DB"];
     v11 = v10;
     if (v10)
     {

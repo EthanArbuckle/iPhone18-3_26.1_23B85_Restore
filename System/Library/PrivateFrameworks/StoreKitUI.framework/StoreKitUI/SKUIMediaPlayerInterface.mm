@@ -1,42 +1,42 @@
 @interface SKUIMediaPlayerInterface
-+ (BOOL)identifierMatches:(id)a3 item:(id)a4;
-+ (BOOL)isRadioItemIdentifier:(id)a3;
++ (BOOL)identifierMatches:(id)matches item:(id)item;
++ (BOOL)isRadioItemIdentifier:(id)identifier;
 + (id)sharedInstance;
-- (BOOL)identifierIsOnDeck:(id)a3;
-- (BOOL)isItemWithIdentifierActive:(id)a3;
+- (BOOL)identifierIsOnDeck:(id)deck;
+- (BOOL)isItemWithIdentifierActive:(id)active;
 - (SKUIMediaPlayerInterface)init;
-- (id)_itemFromNotification:(id)a3;
-- (id)_playerForNotification:(id)a3;
-- (id)playerForItemWithIdentifier:(id)a3;
-- (void)_bufferingStateChangedNotification:(id)a3;
+- (id)_itemFromNotification:(id)notification;
+- (id)_playerForNotification:(id)notification;
+- (id)playerForItemWithIdentifier:(id)identifier;
+- (void)_bufferingStateChangedNotification:(id)notification;
 - (void)_cancelOnDeckItem;
-- (void)_createPeriodicTimeObserverIfNeeded:(id)a3;
-- (void)_currentItemDurationAvailableNotification:(id)a3;
-- (void)_destroyPeridicTimeObseverIfNeeded:(id)a3;
-- (void)_itemDidChange:(id)a3 incomingItem:(id)a4;
-- (void)_notifiyObserversOfItemChange:(id)a3;
-- (void)_notifyFinishedItem:(id)a3;
+- (void)_createPeriodicTimeObserverIfNeeded:(id)needed;
+- (void)_currentItemDurationAvailableNotification:(id)notification;
+- (void)_destroyPeridicTimeObseverIfNeeded:(id)needed;
+- (void)_itemDidChange:(id)change incomingItem:(id)item;
+- (void)_notifiyObserversOfItemChange:(id)change;
+- (void)_notifyFinishedItem:(id)item;
 - (void)_notifyObserversOfItemStateChange;
 - (void)_onDeckTimedOut;
-- (void)_playbackErrorNotification:(id)a3;
-- (void)_playerItemDidChangeNotification:(id)a3;
-- (void)_playerItemReady:(id)a3;
-- (void)_playerItemWillChangeNotification:(id)a3;
-- (void)_playerRateDidChangeNotification:(id)a3;
-- (void)_registerForNotificationsForCurrentItem:(id)a3;
-- (void)_setCurrentTimeIfPossible:(double)a3 player:(id)a4;
+- (void)_playbackErrorNotification:(id)notification;
+- (void)_playerItemDidChangeNotification:(id)notification;
+- (void)_playerItemReady:(id)ready;
+- (void)_playerItemWillChangeNotification:(id)notification;
+- (void)_playerRateDidChangeNotification:(id)notification;
+- (void)_registerForNotificationsForCurrentItem:(id)item;
+- (void)_setCurrentTimeIfPossible:(double)possible player:(id)player;
 - (void)_startOnDeckTimer;
-- (void)_unregisterForNotificationsForCurrentItem:(id)a3;
-- (void)_updateBufferingState:(unint64_t)a3 player:(id)a4;
-- (void)_updateDurationForPlayerItem:(id)a3 withMPAVItem:(id)a4;
-- (void)_updateItemForPlayer:(id)a3 currentTime:(double)a4;
-- (void)_updateTimeValuesUsingItemTime:(BOOL)a3 player:(id)a4 item:(id)a5;
-- (void)addObserver:(id)a3;
+- (void)_unregisterForNotificationsForCurrentItem:(id)item;
+- (void)_updateBufferingState:(unint64_t)state player:(id)player;
+- (void)_updateDurationForPlayerItem:(id)item withMPAVItem:(id)vItem;
+- (void)_updateItemForPlayer:(id)player currentTime:(double)time;
+- (void)_updateTimeValuesUsingItemTime:(BOOL)time player:(id)player item:(id)item;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)init;
-- (void)notifyWillChangeToItemWithItemIdentifer:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)togglePlayStateForItemWithIdentifier:(id)a3;
+- (void)notifyWillChangeToItemWithItemIdentifer:(id)identifer;
+- (void)removeObserver:(id)observer;
+- (void)togglePlayStateForItemWithIdentifier:(id)identifier;
 @end
 
 @implementation SKUIMediaPlayerInterface
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __42__SKUIMediaPlayerInterface_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_sOnce != -1)
   {
     dispatch_once(&sharedInstance_sOnce, block);
@@ -95,24 +95,24 @@ uint64_t __42__SKUIMediaPlayerInterface_sharedInstance__block_invoke(uint64_t a1
     observerQueue = v3->_observerQueue;
     v3->_observerQueue = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = SKUIMediaPlayerFramework();
     v14 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemChangedNotification", v13);
-    [v12 addObserver:v3 selector:sel__playerItemDidChangeNotification_ name:v14 object:0];
+    [defaultCenter addObserver:v3 selector:sel__playerItemDidChangeNotification_ name:v14 object:0];
     v15 = SKUIMediaPlayerFramework();
     v16 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemWillChangeNotification", v15);
-    [v12 addObserver:v3 selector:sel__playerItemWillChangeNotification_ name:v16 object:0];
+    [defaultCenter addObserver:v3 selector:sel__playerItemWillChangeNotification_ name:v16 object:0];
     v17 = SKUIMediaPlayerFramework();
     v18 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemReadyToPlayNotification", v17);
-    [v12 addObserver:v3 selector:sel__playerItemReady_ name:v18 object:0];
+    [defaultCenter addObserver:v3 selector:sel__playerItemReady_ name:v18 object:0];
     v19 = SKUIMediaPlayerFramework();
     v20 = *SKUIWeakLinkedSymbolForString("MPAVControllerRateDidChangeNotification", v19);
-    [v12 addObserver:v3 selector:sel__playerRateDidChangeNotification_ name:v20 object:0];
+    [defaultCenter addObserver:v3 selector:sel__playerRateDidChangeNotification_ name:v20 object:0];
     v21 = SKUIMediaPlayerFramework();
     v22 = *SKUIWeakLinkedSymbolForString("MPAVControllerBufferingStateChangedNotification", v21);
-    [v12 addObserver:v3 selector:sel__bufferingStateChangedNotification_ name:v22 object:0];
+    [defaultCenter addObserver:v3 selector:sel__bufferingStateChangedNotification_ name:v22 object:0];
     v23 = SKUIMediaPlayerFramework();
-    [v12 addObserver:v3 selector:sel__playbackErrorNotification_ name:*SKUIWeakLinkedSymbolForString("MPAVControllerPlaybackErrorNotification" object:{v23), 0}];
+    [defaultCenter addObserver:v3 selector:sel__playbackErrorNotification_ name:*SKUIWeakLinkedSymbolForString("MPAVControllerPlaybackErrorNotification" object:{v23), 0}];
   }
 
   return v3;
@@ -120,41 +120,41 @@ uint64_t __42__SKUIMediaPlayerInterface_sharedInstance__block_invoke(uint64_t a1
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = SKUIMediaPlayerFramework();
   v5 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemChangedNotification", v4);
-  [v3 removeObserver:self name:v5 object:0];
+  [defaultCenter removeObserver:self name:v5 object:0];
   v6 = SKUIMediaPlayerFramework();
   v7 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemWillChangeNotification", v6);
-  [v3 removeObserver:self name:v7 object:0];
+  [defaultCenter removeObserver:self name:v7 object:0];
   v8 = SKUIMediaPlayerFramework();
   v9 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemReadyToPlayNotification", v8);
-  [v3 removeObserver:self name:v9 object:0];
+  [defaultCenter removeObserver:self name:v9 object:0];
   v10 = SKUIMediaPlayerFramework();
   v11 = *SKUIWeakLinkedSymbolForString("MPAVControllerRateDidChangeNotification", v10);
-  [v3 removeObserver:self name:v11 object:0];
+  [defaultCenter removeObserver:self name:v11 object:0];
   v12 = SKUIMediaPlayerFramework();
   v13 = *SKUIWeakLinkedSymbolForString("MPAVControllerBufferingStateChangedNotification", v12);
-  [v3 removeObserver:self name:v13 object:0];
+  [defaultCenter removeObserver:self name:v13 object:0];
   v14 = SKUIMediaPlayerFramework();
-  [v3 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPAVControllerPlaybackErrorNotification" object:{v14), 0}];
+  [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPAVControllerPlaybackErrorNotification" object:{v14), 0}];
 
   v15.receiver = self;
   v15.super_class = SKUIMediaPlayerInterface;
   [(SKUIMediaPlayerInterface *)&v15 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SKUIMediaPlayerInterface_addObserver___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -176,10 +176,10 @@ uint64_t __40__SKUIMediaPlayerInterface_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (BOOL)isItemWithIdentifierActive:(id)a3
+- (BOOL)isItemWithIdentifierActive:(id)active
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activeCopy = active;
   [(NSMapTable *)self->_players keyEnumerator];
   v16 = 0u;
   v17 = 0u;
@@ -200,11 +200,11 @@ uint64_t __40__SKUIMediaPlayerInterface_addObserver___block_invoke(uint64_t a1)
         }
 
         v10 = [(NSMapTable *)self->_players objectForKey:*(*(&v16 + 1) + 8 * i), v16];
-        v11 = [v10 playerItem];
-        v12 = [v10 player];
-        v13 = [v12 currentItem];
+        playerItem = [v10 playerItem];
+        player = [v10 player];
+        currentItem = [player currentItem];
 
-        if (v13 && [SKUIMediaPlayerInterface identifierMatches:v4 item:v11])
+        if (currentItem && [SKUIMediaPlayerInterface identifierMatches:activeCopy item:playerItem])
         {
 
           v14 = 1;
@@ -228,40 +228,40 @@ LABEL_12:
   return v14;
 }
 
-+ (BOOL)identifierMatches:(id)a3 item:(id)a4
++ (BOOL)identifierMatches:(id)matches item:(id)item
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  matchesCopy = matches;
+  itemCopy = item;
+  v9 = itemCopy;
+  if (matchesCopy)
   {
-    v10 = [v8 storeID];
-    if (v10)
+    storeID = [itemCopy storeID];
+    if (storeID)
     {
-      v4 = [v9 storeID];
-      if ([v4 isEqualToString:v7])
+      storeID2 = [v9 storeID];
+      if ([storeID2 isEqualToString:matchesCopy])
       {
         v11 = 1;
         goto LABEL_13;
       }
     }
 
-    v12 = [v9 storeAlbumID];
-    if (v12 && ([v9 storeAlbumID], v5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v5, "isEqualToString:", v7) & 1) != 0))
+    storeAlbumID = [v9 storeAlbumID];
+    if (storeAlbumID && ([v9 storeAlbumID], v5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v5, "isEqualToString:", matchesCopy) & 1) != 0))
     {
       v11 = 1;
     }
 
     else
     {
-      v13 = [v9 itemIdentifier];
-      if (v13)
+      itemIdentifier = [v9 itemIdentifier];
+      if (itemIdentifier)
       {
-        v14 = v13;
-        v15 = [v9 itemIdentifier];
-        v11 = [v15 isEqualToString:v7];
+        v14 = itemIdentifier;
+        itemIdentifier2 = [v9 itemIdentifier];
+        v11 = [itemIdentifier2 isEqualToString:matchesCopy];
 
-        if (!v12)
+        if (!storeAlbumID)
         {
           goto LABEL_12;
         }
@@ -270,10 +270,10 @@ LABEL_12:
       else
       {
         v11 = 0;
-        if (!v12)
+        if (!storeAlbumID)
         {
 LABEL_12:
-          if (!v10)
+          if (!storeID)
           {
 LABEL_14:
 
@@ -296,13 +296,13 @@ LABEL_15:
   return v11;
 }
 
-+ (BOOL)isRadioItemIdentifier:(id)a3
++ (BOOL)isRadioItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
-    if ([v3 hasPrefix:@"ra."])
+    if ([identifierCopy hasPrefix:@"ra."])
     {
       v5 = 1;
     }
@@ -321,17 +321,17 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)identifierIsOnDeck:(id)a3
+- (BOOL)identifierIsOnDeck:(id)deck
 {
-  v4 = a3;
+  deckCopy = deck;
   v8 = 0;
-  if (v4)
+  if (deckCopy)
   {
     onDeckItem = self->_onDeckItem;
     if (onDeckItem)
     {
-      v6 = [(SKUIMediaPlayerItemStatus *)onDeckItem itemIdentifier];
-      v7 = [v6 isEqualToString:v4];
+      itemIdentifier = [(SKUIMediaPlayerItemStatus *)onDeckItem itemIdentifier];
+      v7 = [itemIdentifier isEqualToString:deckCopy];
 
       if (v7)
       {
@@ -343,10 +343,10 @@ LABEL_15:
   return v8;
 }
 
-- (void)notifyWillChangeToItemWithItemIdentifer:(id)a3
+- (void)notifyWillChangeToItemWithItemIdentifer:(id)identifer
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identiferCopy = identifer;
   [(NSMapTable *)self->_players keyEnumerator];
   v18 = 0u;
   v19 = 0u;
@@ -368,17 +368,17 @@ LABEL_15:
         }
 
         v10 = [(NSMapTable *)self->_players objectForKey:*(*(&v18 + 1) + 8 * v9), v18];
-        v11 = [v10 currentItem];
-        v12 = [v10 playerItem];
-        if (v12 && [SKUIMediaPlayerInterface identifierMatches:v4 item:v12])
+        currentItem = [v10 currentItem];
+        playerItem = [v10 playerItem];
+        if (playerItem && [SKUIMediaPlayerInterface identifierMatches:identiferCopy item:playerItem])
         {
 
           goto LABEL_18;
         }
 
-        if (v11)
+        if (currentItem)
         {
-          [(SKUIMediaPlayerInterface *)self _unregisterForNotificationsForCurrentItem:v11];
+          [(SKUIMediaPlayerInterface *)self _unregisterForNotificationsForCurrentItem:currentItem];
         }
 
         [(SKUIMediaPlayerInterface *)self _destroyPeridicTimeObseverIfNeeded:v10];
@@ -403,8 +403,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v14 = [(SKUIMediaPlayerItemStatus *)onDeckItem itemIdentifier];
-  v15 = [v14 isEqualToString:v4];
+  itemIdentifier = [(SKUIMediaPlayerItemStatus *)onDeckItem itemIdentifier];
+  v15 = [itemIdentifier isEqualToString:identiferCopy];
 
   if ((v15 & 1) == 0)
   {
@@ -418,7 +418,7 @@ LABEL_16:
     v17 = self->_onDeckItem;
     self->_onDeckItem = v16;
 
-    [(SKUIMediaPlayerItemStatus *)self->_onDeckItem setItemIdentifier:v4];
+    [(SKUIMediaPlayerItemStatus *)self->_onDeckItem setItemIdentifier:identiferCopy];
     [(SKUIMediaPlayerItemStatus *)self->_onDeckItem setPlayState:1];
     [(SKUIMediaPlayerInterface *)self _notifiyObserversOfItemChange:self->_onDeckItem];
     [(SKUIMediaPlayerInterface *)self _startOnDeckTimer];
@@ -427,10 +427,10 @@ LABEL_16:
 LABEL_18:
 }
 
-- (id)playerForItemWithIdentifier:(id)a3
+- (id)playerForItemWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [(NSMapTable *)self->_players keyEnumerator];
   v15 = 0u;
   v16 = 0u;
@@ -451,11 +451,11 @@ LABEL_18:
         }
 
         v10 = [(NSMapTable *)self->_players objectForKey:*(*(&v15 + 1) + 8 * i), v15];
-        v11 = [v10 playerItem];
-        v12 = [v10 player];
-        v13 = [v12 currentItem];
+        playerItem = [v10 playerItem];
+        player = [v10 player];
+        currentItem = [player currentItem];
 
-        if (v13 && [SKUIMediaPlayerInterface identifierMatches:v4 item:v11])
+        if (currentItem && [SKUIMediaPlayerInterface identifierMatches:identifierCopy item:playerItem])
         {
 
           goto LABEL_12;
@@ -478,64 +478,64 @@ LABEL_12:
   return v10;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SKUIMediaPlayerInterface_removeObserver___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)togglePlayStateForItemWithIdentifier:(id)a3
+- (void)togglePlayStateForItemWithIdentifier:(id)identifier
 {
-  v3 = [(SKUIMediaPlayerInterface *)self playerForItemWithIdentifier:a3];
+  v3 = [(SKUIMediaPlayerInterface *)self playerForItemWithIdentifier:identifier];
   if (v3)
   {
     v8 = v3;
-    v4 = [v3 player];
-    v5 = [v4 isPlaying];
+    player = [v3 player];
+    isPlaying = [player isPlaying];
 
-    v6 = [v8 player];
-    v7 = v6;
-    if (v5)
+    player2 = [v8 player];
+    v7 = player2;
+    if (isPlaying)
     {
-      [v6 pause];
+      [player2 pause];
     }
 
     else
     {
-      [v6 play];
+      [player2 play];
     }
 
     v3 = v8;
   }
 }
 
-- (void)_bufferingStateChangedNotification:(id)a3
+- (void)_bufferingStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = SKUIMediaPlayerFramework();
   v6 = *SKUIWeakLinkedSymbolForString("MPAVControllerNewStateParameter", v5);
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:v6];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKey:v6];
 
-  v9 = [v8 unsignedIntegerValue];
-  v10 = [(SKUIMediaPlayerInterface *)self _playerForNotification:v4];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
+  v10 = [(SKUIMediaPlayerInterface *)self _playerForNotification:notificationCopy];
 
-  [(SKUIMediaPlayerInterface *)self _updateBufferingState:v9 player:v10];
+  [(SKUIMediaPlayerInterface *)self _updateBufferingState:unsignedIntegerValue player:v10];
   [(SKUIMediaPlayerInterface *)self _notifyObserversOfItemStateChange];
 }
 
-- (void)_currentItemDurationAvailableNotification:(id)a3
+- (void)_currentItemDurationAvailableNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [notification object];
   [(NSMapTable *)self->_players keyEnumerator];
   v14 = 0u;
   v15 = 0u;
@@ -559,12 +559,12 @@ LABEL_12:
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 currentItem];
+          currentItem = [v10 currentItem];
 
-          if (v12 == v4)
+          if (currentItem == object)
           {
-            v13 = [v11 playerItem];
-            [(SKUIMediaPlayerInterface *)self _updateDurationForPlayerItem:v13 withMPAVItem:v4];
+            playerItem = [v11 playerItem];
+            [(SKUIMediaPlayerInterface *)self _updateDurationForPlayerItem:playerItem withMPAVItem:object];
 
             [(SKUIMediaPlayerInterface *)self _notifyObserversOfItemStateChange];
             goto LABEL_12;
@@ -585,10 +585,10 @@ LABEL_12:
 LABEL_12:
 }
 
-- (void)_notifiyObserversOfItemChange:(id)a3
+- (void)_notifiyObserversOfItemChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
@@ -634,7 +634,7 @@ LABEL_12:
     v13[2] = __58__SKUIMediaPlayerInterface__notifiyObserversOfItemChange___block_invoke;
     v13[3] = &unk_2781F80C8;
     v14 = v5;
-    v15 = v4;
+    v15 = changeCopy;
     dispatch_async(observerQueue, v13);
   }
 }
@@ -673,24 +673,24 @@ void __58__SKUIMediaPlayerInterface__notifiyObserversOfItemChange___block_invoke
   }
 }
 
-- (void)_playerItemReady:(id)a3
+- (void)_playerItemReady:(id)ready
 {
-  v4 = a3;
-  v7 = [(SKUIMediaPlayerInterface *)self _playerForNotification:v4];
-  v5 = [(SKUIMediaPlayerInterface *)self _itemFromNotification:v4];
+  readyCopy = ready;
+  v7 = [(SKUIMediaPlayerInterface *)self _playerForNotification:readyCopy];
+  v5 = [(SKUIMediaPlayerInterface *)self _itemFromNotification:readyCopy];
 
   if (v5)
   {
-    v6 = [v7 currentItem];
+    currentItem = [v7 currentItem];
 
-    if (v6 != v5)
+    if (currentItem != v5)
     {
       [(SKUIMediaPlayerInterface *)self _itemDidChange:v7 incomingItem:v5];
     }
   }
 }
 
-- (void)_playbackErrorNotification:(id)a3
+- (void)_playbackErrorNotification:(id)notification
 {
   [(SKUIMediaPlayerInterface *)self _cancelOnDeckItem];
   v4 = objc_opt_new();
@@ -698,26 +698,26 @@ void __58__SKUIMediaPlayerInterface__notifiyObserversOfItemChange___block_invoke
   [(SKUIMediaPlayerInterface *)self _notifiyObserversOfItemChange:v4];
 }
 
-- (void)_playerItemDidChangeNotification:(id)a3
+- (void)_playerItemDidChangeNotification:(id)notification
 {
-  v6 = [(SKUIMediaPlayerInterface *)self _playerForNotification:a3];
-  v4 = [v6 player];
-  v5 = [v4 currentItem];
-  [(SKUIMediaPlayerInterface *)self _itemDidChange:v6 incomingItem:v5];
+  v6 = [(SKUIMediaPlayerInterface *)self _playerForNotification:notification];
+  player = [v6 player];
+  currentItem = [player currentItem];
+  [(SKUIMediaPlayerInterface *)self _itemDidChange:v6 incomingItem:currentItem];
 }
 
-- (void)_playerItemWillChangeNotification:(id)a3
+- (void)_playerItemWillChangeNotification:(id)notification
 {
-  v4 = a3;
-  v9 = [(SKUIMediaPlayerInterface *)self _playerForNotification:v4];
-  v5 = [(SKUIMediaPlayerInterface *)self _itemFromNotification:v4];
+  notificationCopy = notification;
+  v9 = [(SKUIMediaPlayerInterface *)self _playerForNotification:notificationCopy];
+  v5 = [(SKUIMediaPlayerInterface *)self _itemFromNotification:notificationCopy];
 
   v6 = SKUIMediaPlayerFramework();
   SKUIWeakLinkedClassForString(&cfstr_Mpplaceholdera.isa, v6);
   if (v5)
   {
-    v7 = [v9 currentItem];
-    if (v7 == v5)
+    currentItem = [v9 currentItem];
+    if (currentItem == v5)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -727,75 +727,75 @@ void __58__SKUIMediaPlayerInterface__notifiyObserversOfItemChange___block_invoke
         goto LABEL_6;
       }
 
-      v7 = [v9 playerItem];
-      [v7 setPlayState:5];
+      currentItem = [v9 playerItem];
+      [currentItem setPlayState:5];
     }
   }
 
 LABEL_6:
 }
 
-- (void)_playerRateDidChangeNotification:(id)a3
+- (void)_playerRateDidChangeNotification:(id)notification
 {
-  v17 = [(SKUIMediaPlayerInterface *)self _playerForNotification:a3];
-  v4 = [v17 player];
-  v5 = [v4 currentItem];
-  v6 = [v17 currentItem];
+  v17 = [(SKUIMediaPlayerInterface *)self _playerForNotification:notification];
+  player = [v17 player];
+  currentItem = [player currentItem];
+  currentItem2 = [v17 currentItem];
 
-  if (v5 == v6)
+  if (currentItem == currentItem2)
   {
-    v7 = [v17 currentItem];
-    [(SKUIMediaPlayerInterface *)self _updateTimeValuesUsingItemTime:0 player:v17 item:v7];
+    currentItem3 = [v17 currentItem];
+    [(SKUIMediaPlayerInterface *)self _updateTimeValuesUsingItemTime:0 player:v17 item:currentItem3];
 
-    v8 = [v17 playerItem];
-    v9 = [v8 playState];
+    playerItem = [v17 playerItem];
+    playState = [playerItem playState];
 
-    v10 = [v17 player];
-    v11 = [v10 shouldDisplayAsPlaying];
+    player2 = [v17 player];
+    shouldDisplayAsPlaying = [player2 shouldDisplayAsPlaying];
 
-    if (v11)
+    if (shouldDisplayAsPlaying)
     {
-      v9 = 2;
+      playState = 2;
     }
 
     else
     {
       [(SKUIMediaPlayerInterface *)self _cancelOnDeckItem];
-      v12 = [v17 player];
-      v13 = [v12 state];
+      player3 = [v17 player];
+      state = [player3 state];
 
-      if (v13 == 1)
+      if (state == 1)
       {
-        v9 = 3;
+        playState = 3;
       }
 
-      else if (v13 == 7)
+      else if (state == 7)
       {
-        v9 = 4;
+        playState = 4;
       }
     }
 
-    v14 = [v17 playerItem];
-    v15 = [v14 playState];
+    playerItem2 = [v17 playerItem];
+    playState2 = [playerItem2 playState];
 
-    if (v9 != v15)
+    if (playState != playState2)
     {
-      v16 = [v17 playerItem];
-      [v16 setPlayState:v9];
+      playerItem3 = [v17 playerItem];
+      [playerItem3 setPlayState:playState];
 
       [(SKUIMediaPlayerInterface *)self _notifyObserversOfItemStateChange];
     }
   }
 }
 
-- (id)_itemFromNotification:(id)a3
+- (id)_itemFromNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = SKUIMediaPlayerFramework();
   v5 = *SKUIWeakLinkedSymbolForString("MPAVControllerItemParameter", v4);
-  v6 = [v3 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:v5];
+  v7 = [userInfo objectForKey:v5];
 
   v8 = SKUIMediaPlayerFramework();
   SKUIWeakLinkedClassForString(&cfstr_Mpavitem.isa, v8);
@@ -813,15 +813,15 @@ LABEL_6:
   return v9;
 }
 
-- (id)_playerForNotification:(id)a3
+- (id)_playerForNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   v5 = SKUIMediaPlayerFramework();
   SKUIWeakLinkedClassForString(&cfstr_Mpavcontroller_7.isa, v5);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = object;
     v7 = [(NSMapTable *)self->_players objectForKey:v6];
     if (!v7)
     {
@@ -839,28 +839,28 @@ LABEL_6:
   return v7;
 }
 
-- (void)_createPeriodicTimeObserverIfNeeded:(id)a3
+- (void)_createPeriodicTimeObserverIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 player];
-  [v4 rate];
+  neededCopy = needed;
+  player = [neededCopy player];
+  [neededCopy rate];
   v7 = v6;
   if (v6 > 0.00000011921)
   {
-    v8 = [v4 periodicTimeObserver];
+    periodicTimeObserver = [neededCopy periodicTimeObserver];
 
-    if (!v8)
+    if (!periodicTimeObserver)
     {
       objc_initWeak(&location, self);
-      objc_initWeak(&from, v4);
+      objc_initWeak(&from, neededCopy);
       v11 = 3221225472;
       v10 = MEMORY[0x277D85DD0];
       v12 = __64__SKUIMediaPlayerInterface__createPeriodicTimeObserverIfNeeded___block_invoke;
       v13 = &unk_2781FF698;
       objc_copyWeak(&v14, &location);
       objc_copyWeak(&v15, &from);
-      v9 = [v5 addPeriodicTimeObserverForInterval:&v10 usingBlock:1.0 / v7];
-      [v4 setPeriodicTimeObserver:{v9, v10, v11, v12, v13}];
+      v9 = [player addPeriodicTimeObserverForInterval:&v10 usingBlock:1.0 / v7];
+      [neededCopy setPeriodicTimeObserver:{v9, v10, v11, v12, v13}];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&v14);
@@ -880,18 +880,18 @@ void __64__SKUIMediaPlayerInterface__createPeriodicTimeObserverIfNeeded___block_
   }
 }
 
-- (void)_destroyPeridicTimeObseverIfNeeded:(id)a3
+- (void)_destroyPeridicTimeObseverIfNeeded:(id)needed
 {
-  v6 = a3;
-  v3 = [v6 periodicTimeObserver];
+  neededCopy = needed;
+  periodicTimeObserver = [neededCopy periodicTimeObserver];
 
-  if (v3)
+  if (periodicTimeObserver)
   {
-    v4 = [v6 player];
-    v5 = [v6 periodicTimeObserver];
-    [v4 removeTimeObserver:v5];
+    player = [neededCopy player];
+    periodicTimeObserver2 = [neededCopy periodicTimeObserver];
+    [player removeTimeObserver:periodicTimeObserver2];
 
-    [v6 setPeriodicTimeObserver:0];
+    [neededCopy setPeriodicTimeObserver:0];
   }
 }
 
@@ -937,12 +937,12 @@ void __64__SKUIMediaPlayerInterface__createPeriodicTimeObserverIfNeeded___block_
 
   if ([v3 count])
   {
-    v10 = [(NSMapTable *)self->_players keyEnumerator];
+    keyEnumerator = [(NSMapTable *)self->_players keyEnumerator];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v11)
     {
       v12 = v11;
@@ -954,7 +954,7 @@ void __64__SKUIMediaPlayerInterface__createPeriodicTimeObserverIfNeeded___block_
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v15 = [(NSMapTable *)self->_players objectForKey:*(*(&v20 + 1) + 8 * v14)];
@@ -974,7 +974,7 @@ void __64__SKUIMediaPlayerInterface__createPeriodicTimeObserverIfNeeded___block_
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
       }
 
       while (v12);
@@ -1023,24 +1023,24 @@ void __61__SKUIMediaPlayerInterface__notifyObserversOfItemStateChange__block_inv
   }
 }
 
-- (void)_notifyFinishedItem:(id)a3
+- (void)_notifyFinishedItem:(id)item
 {
-  [a3 setPlayState:5];
+  [item setPlayState:5];
 
   [(SKUIMediaPlayerInterface *)self _notifyObserversOfItemStateChange];
 }
 
-- (void)_itemDidChange:(id)a3 incomingItem:(id)a4
+- (void)_itemDidChange:(id)change incomingItem:(id)item
 {
-  v28 = a3;
-  v6 = a4;
-  v7 = [v28 currentItem];
-  v8 = v7;
-  if (v7 != v6)
+  changeCopy = change;
+  itemCopy = item;
+  currentItem = [changeCopy currentItem];
+  v8 = currentItem;
+  if (currentItem != itemCopy)
   {
-    if (v7)
+    if (currentItem)
     {
-      [(SKUIMediaPlayerInterface *)self _unregisterForNotificationsForCurrentItem:v7];
+      [(SKUIMediaPlayerInterface *)self _unregisterForNotificationsForCurrentItem:currentItem];
     }
 
     v9 = SKUIMediaPlayerFramework();
@@ -1048,62 +1048,62 @@ void __61__SKUIMediaPlayerInterface__notifyObserversOfItemStateChange__block_inv
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [v28 setCurrentItem:v6];
+      [changeCopy setCurrentItem:itemCopy];
       SKUIMPUFoundationFramework();
-      v10 = [v6 feeder];
-      v11 = [v10 MPU_contentItemIdentifierCollection];
+      feeder = [itemCopy feeder];
+      mPU_contentItemIdentifierCollection = [feeder MPU_contentItemIdentifierCollection];
 
-      v12 = [v6 MPU_contentItemIdentifierCollection];
-      v13 = [v12 identifierForIdentifierType:1];
-      v14 = [v13 longLongValue];
+      mPU_contentItemIdentifierCollection2 = [itemCopy MPU_contentItemIdentifierCollection];
+      v13 = [mPU_contentItemIdentifierCollection2 identifierForIdentifierType:1];
+      longLongValue = [v13 longLongValue];
 
-      if (!v14)
+      if (!longLongValue)
       {
-        v15 = [v12 identifierForIdentifierType:8];
-        v14 = [v15 longLongValue];
+        v15 = [mPU_contentItemIdentifierCollection2 identifierForIdentifierType:8];
+        longLongValue = [v15 longLongValue];
       }
 
-      if ([v11 itemType] == 4)
+      if ([mPU_contentItemIdentifierCollection itemType] == 4)
       {
-        v16 = [v11 identifierForIdentifierType:1];
-        v17 = [v16 longLongValue];
+        v16 = [mPU_contentItemIdentifierCollection identifierForIdentifierType:1];
+        longLongValue2 = [v16 longLongValue];
 
-        if (!v17)
+        if (!longLongValue2)
         {
-          v18 = [v11 identifierForIdentifierType:8];
-          v17 = [v18 longLongValue];
+          v18 = [mPU_contentItemIdentifierCollection identifierForIdentifierType:8];
+          longLongValue2 = [v18 longLongValue];
         }
       }
 
       else
       {
-        v17 = 0;
+        longLongValue2 = 0;
       }
 
-      v19 = [v11 identifierForIdentifierType:3];
-      v20 = [v11 identifierForIdentifierType:2];
+      v19 = [mPU_contentItemIdentifierCollection identifierForIdentifierType:3];
+      v20 = [mPU_contentItemIdentifierCollection identifierForIdentifierType:2];
       v21 = v20;
-      if (!v14 && !v17 && !v19 && !v20)
+      if (!longLongValue && !longLongValue2 && !v19 && !v20)
       {
         v22 = 0;
 LABEL_26:
-        [(SKUIMediaPlayerInterface *)self _updateDurationForPlayerItem:v22 withMPAVItem:v6];
-        if (v6)
+        [(SKUIMediaPlayerInterface *)self _updateDurationForPlayerItem:v22 withMPAVItem:itemCopy];
+        if (itemCopy)
         {
-          [(SKUIMediaPlayerInterface *)self _updateTimeValuesUsingItemTime:1 player:v28 item:v6];
-          [(SKUIMediaPlayerInterface *)self _registerForNotificationsForCurrentItem:v6];
+          [(SKUIMediaPlayerInterface *)self _updateTimeValuesUsingItemTime:1 player:changeCopy item:itemCopy];
+          [(SKUIMediaPlayerInterface *)self _registerForNotificationsForCurrentItem:itemCopy];
         }
 
         goto LABEL_29;
       }
 
-      v27 = v12;
+      v27 = mPU_contentItemIdentifierCollection2;
       v22 = objc_alloc_init(SKUIMediaPlayerItemStatus);
-      if (v14)
+      if (longLongValue)
       {
-        v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v14];
+        v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", longLongValue];
         [(SKUIMediaPlayerItemStatus *)v22 setStoreID:v23];
-        if (v17)
+        if (longLongValue2)
         {
           goto LABEL_18;
         }
@@ -1112,13 +1112,13 @@ LABEL_26:
       else
       {
         v23 = 0;
-        if (v17)
+        if (longLongValue2)
         {
 LABEL_18:
-          v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", v17];
+          v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", longLongValue2];
 
           [(SKUIMediaPlayerItemStatus *)v22 setStoreAlbumID:v24];
-          if (v14)
+          if (longLongValue)
           {
             v25 = 1;
           }
@@ -1159,9 +1159,9 @@ LABEL_25:
       [(SKUIMediaPlayerItemStatus *)v22 setItemType:v25];
       [(SKUIMediaPlayerItemStatus *)v22 setItemIdentifier:v23];
       [(SKUIMediaPlayerItemStatus *)v22 setPlayState:1];
-      [v28 setPlayerItem:v22];
+      [changeCopy setPlayerItem:v22];
 
-      v12 = v27;
+      mPU_contentItemIdentifierCollection2 = v27;
       goto LABEL_26;
     }
   }
@@ -1169,49 +1169,49 @@ LABEL_25:
 LABEL_29:
 }
 
-- (void)_registerForNotificationsForCurrentItem:(id)a3
+- (void)_registerForNotificationsForCurrentItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     v4 = MEMORY[0x277CCAB98];
-    v5 = a3;
-    v7 = [v4 defaultCenter];
+    itemCopy = item;
+    defaultCenter = [v4 defaultCenter];
     v6 = SKUIMediaPlayerFramework();
-    [v7 addObserver:self selector:sel__currentItemDurationAvailableNotification_ name:*SKUIWeakLinkedSymbolForString("MPAVItemDurationAvailableNotification" object:{v6), v5}];
+    [defaultCenter addObserver:self selector:sel__currentItemDurationAvailableNotification_ name:*SKUIWeakLinkedSymbolForString("MPAVItemDurationAvailableNotification" object:{v6), itemCopy}];
   }
 }
 
-- (void)_setCurrentTimeIfPossible:(double)a3 player:(id)a4
+- (void)_setCurrentTimeIfPossible:(double)possible player:(id)player
 {
-  v8 = a4;
-  v6 = [v8 playerItem];
-  [v6 currentTime];
-  if (v7 != a3)
+  playerCopy = player;
+  playerItem = [playerCopy playerItem];
+  [playerItem currentTime];
+  if (v7 != possible)
   {
-    [(SKUIMediaPlayerInterface *)self _updateItemForPlayer:v8 currentTime:a3];
+    [(SKUIMediaPlayerInterface *)self _updateItemForPlayer:playerCopy currentTime:possible];
     [(SKUIMediaPlayerInterface *)self _notifyObserversOfItemStateChange];
   }
 }
 
-- (void)_unregisterForNotificationsForCurrentItem:(id)a3
+- (void)_unregisterForNotificationsForCurrentItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     v4 = MEMORY[0x277CCAB98];
-    v5 = a3;
-    v7 = [v4 defaultCenter];
+    itemCopy = item;
+    defaultCenter = [v4 defaultCenter];
     v6 = SKUIMediaPlayerFramework();
-    [v7 removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPAVItemDurationAvailableNotification" object:{v6), v5}];
+    [defaultCenter removeObserver:self name:*SKUIWeakLinkedSymbolForString("MPAVItemDurationAvailableNotification" object:{v6), itemCopy}];
   }
 }
 
-- (void)_updateBufferingState:(unint64_t)a3 player:(id)a4
+- (void)_updateBufferingState:(unint64_t)state player:(id)player
 {
-  v4 = a3;
-  v7 = [a4 playerItem];
-  if ([v7 playState] != 5)
+  stateCopy = state;
+  playerItem = [player playerItem];
+  if ([playerItem playState] != 5)
   {
-    if ((v4 & 0xB) != 0)
+    if ((stateCopy & 0xB) != 0)
     {
       [(SKUIMediaPlayerInterface *)self _cancelOnDeckItem];
       v6 = 2;
@@ -1222,9 +1222,9 @@ LABEL_29:
       v6 = 1;
     }
 
-    if (v6 != [v7 playState])
+    if (v6 != [playerItem playState])
     {
-      [v7 setPlayState:v6];
+      [playerItem setPlayState:v6];
     }
   }
 }
@@ -1295,42 +1295,42 @@ void __45__SKUIMediaPlayerInterface__startOnDeckTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateDurationForPlayerItem:(id)a3 withMPAVItem:(id)a4
+- (void)_updateDurationForPlayerItem:(id)item withMPAVItem:(id)vItem
 {
-  if (a3)
+  if (item)
   {
-    v5 = a4;
-    v10 = a3;
-    [v5 durationIfAvailable];
+    vItemCopy = vItem;
+    itemCopy = item;
+    [vItemCopy durationIfAvailable];
     v7 = v6;
-    v8 = [v5 isAlwaysLive];
+    isAlwaysLive = [vItemCopy isAlwaysLive];
 
-    [v10 setHideDuration:v8];
+    [itemCopy setHideDuration:isAlwaysLive];
     v9 = 0.0;
     if (v7 >= 2.22044605e-16)
     {
       v9 = v7;
     }
 
-    [v10 setDuration:v9];
+    [itemCopy setDuration:v9];
   }
 }
 
-- (void)_updateItemForPlayer:(id)a3 currentTime:(double)a4
+- (void)_updateItemForPlayer:(id)player currentTime:(double)time
 {
-  v5 = [a3 playerItem];
-  [v5 setCurrentTime:a4];
+  playerItem = [player playerItem];
+  [playerItem setCurrentTime:time];
 }
 
-- (void)_updateTimeValuesUsingItemTime:(BOOL)a3 player:(id)a4 item:(id)a5
+- (void)_updateTimeValuesUsingItemTime:(BOOL)time player:(id)player item:(id)item
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 rate];
+  timeCopy = time;
+  playerCopy = player;
+  itemCopy = item;
+  [playerCopy rate];
   v11 = v10;
-  v12 = [v8 player];
-  [v12 rate];
+  player = [playerCopy player];
+  [player rate];
   v14 = v13;
 
   v15 = vabds_f32(v11, v14);
@@ -1338,28 +1338,28 @@ void __45__SKUIMediaPlayerInterface__startOnDeckTimer__block_invoke(uint64_t a1)
   if (v15 > 0.00000011921)
   {
     *&v16 = v14;
-    [v8 setRate:v16];
+    [playerCopy setRate:v16];
   }
 
-  [v9 currentTimeDisplayOverride];
+  [itemCopy currentTimeDisplayOverride];
   v18 = v17;
   if (v17 <= 2.22044605e-16)
   {
-    if (!v6)
+    if (!timeCopy)
     {
-      v20 = [v8 player];
-      [v20 currentTime];
+      player2 = [playerCopy player];
+      [player2 currentTime];
       goto LABEL_12;
     }
 
     v18 = 0.0;
-    if ([v9 isAssetLoaded])
+    if ([itemCopy isAssetLoaded])
     {
-      v19 = [v9 playerItem];
-      v20 = v19;
-      if (v19)
+      playerItem = [itemCopy playerItem];
+      player2 = playerItem;
+      if (playerItem)
       {
-        [v19 currentTime];
+        [playerItem currentTime];
       }
 
       else
@@ -1384,11 +1384,11 @@ LABEL_13:
     }
   }
 
-  [(SKUIMediaPlayerInterface *)self _setCurrentTimeIfPossible:v8 player:v18];
-  if (v15 > 0.00000011921 || ([v8 periodicTimeObserver], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
+  [(SKUIMediaPlayerInterface *)self _setCurrentTimeIfPossible:playerCopy player:v18];
+  if (v15 > 0.00000011921 || ([playerCopy periodicTimeObserver], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
   {
-    [(SKUIMediaPlayerInterface *)self _destroyPeridicTimeObseverIfNeeded:v8];
-    [(SKUIMediaPlayerInterface *)self _createPeriodicTimeObserverIfNeeded:v8];
+    [(SKUIMediaPlayerInterface *)self _destroyPeridicTimeObseverIfNeeded:playerCopy];
+    [(SKUIMediaPlayerInterface *)self _createPeriodicTimeObserverIfNeeded:playerCopy];
   }
 }
 

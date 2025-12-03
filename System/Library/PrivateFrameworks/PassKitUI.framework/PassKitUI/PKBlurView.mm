@@ -1,18 +1,18 @@
 @interface PKBlurView
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (PKBlurView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setBlurRadius:(double)a3;
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (PKBlurView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation PKBlurView
 
-- (PKBlurView)initWithFrame:(CGRect)a3
+- (PKBlurView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKBlurView;
-  v3 = [(PKBlurView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKBlurView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -35,16 +35,16 @@
   {
     v7.receiver = self;
     v7.super_class = PKBlurView;
-    v5 = [(PKBlurView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PKBlurView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyAdditivelyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -53,13 +53,13 @@
   {
     v7.receiver = self;
     v7.super_class = PKBlurView;
-    v5 = [(PKBlurView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:v4];
+    v5 = [(PKBlurView *)&v7 _shouldAnimatePropertyAdditivelyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   if (self->_hitTestEnabled)
   {
@@ -67,7 +67,7 @@
     v10 = v5;
     v8.receiver = self;
     v8.super_class = PKBlurView;
-    v6 = [(PKBlurView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+    v6 = [(PKBlurView *)&v8 hitTest:event withEvent:test.x, test.y];
   }
 
   else
@@ -78,11 +78,11 @@
   return v6;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  if (self->_blurRadius != a3)
+  if (self->_blurRadius != radius)
   {
-    if (a3 != 0.0 && self->_filter == 0)
+    if (radius != 0.0 && self->_filter == 0)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -92,12 +92,12 @@
       [MEMORY[0x1E69DD250] performWithoutAnimation:v8];
     }
 
-    self->_blurRadius = a3;
+    self->_blurRadius = radius;
     if (self->_filter)
     {
-      v6 = [(PKBlurView *)self layer];
+      layer = [(PKBlurView *)self layer];
       v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_blurRadius];
-      [v6 setValue:v7 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+      [layer setValue:v7 forKeyPath:@"filters.gaussianBlur.inputRadius"];
     }
   }
 }

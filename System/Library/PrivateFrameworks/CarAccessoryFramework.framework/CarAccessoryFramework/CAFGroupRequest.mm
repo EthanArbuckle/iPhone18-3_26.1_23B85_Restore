@@ -1,24 +1,24 @@
 @interface CAFGroupRequest
 - (CAFCar)car;
-- (CAFGroupRequest)initWithCar:(id)a3;
+- (CAFGroupRequest)initWithCar:(id)car;
 - (NSString)description;
 - (NSString)fullDescription;
 - (id)_currentDescriptionForFull;
 - (id)_currentDescriptionForRequests;
-- (id)currentDescriptionForCache:(id)a3;
+- (id)currentDescriptionForCache:(id)cache;
 - (unint64_t)count;
-- (void)_addRequest:(id)a3;
-- (void)_lockedPerformBlock:(id)a3;
-- (void)addCharacteristic:(id)a3;
-- (void)addCharacteristics:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_addRequest:(id)request;
+- (void)_lockedPerformBlock:(id)block;
+- (void)addCharacteristic:(id)characteristic;
+- (void)addCharacteristics:(id)characteristics;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CAFGroupRequest
 
-- (CAFGroupRequest)initWithCar:(id)a3
+- (CAFGroupRequest)initWithCar:(id)car
 {
-  v4 = a3;
+  carCopy = car;
   v21.receiver = self;
   v21.super_class = CAFGroupRequest;
   v5 = [(CAFGroupRequest *)&v21 init];
@@ -26,11 +26,11 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uniqueIdentifier = v6->_uniqueIdentifier;
-    v6->_uniqueIdentifier = v7;
+    v6->_uniqueIdentifier = uUID;
 
-    objc_storeWeak(&v6->_car, v4);
+    objc_storeWeak(&v6->_car, carCopy);
     v9 = objc_opt_new();
     requests = v6->_requests;
     v6->_requests = v9;
@@ -63,28 +63,28 @@
 
 - (unint64_t)count
 {
-  v2 = [(CAFGroupRequest *)self requests];
-  v3 = [v2 count];
+  requests = [(CAFGroupRequest *)self requests];
+  v3 = [requests count];
 
   return v3;
 }
 
-- (void)addCharacteristic:(id)a3
+- (void)addCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __37__CAFGroupRequest_addCharacteristic___block_invoke;
   v11 = &unk_27890D548;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = characteristicCopy;
+  v5 = characteristicCopy;
   [(CAFGroupRequest *)self _lockedPerformBlock:&v8];
   v6 = [(CAFGroupRequest *)self cachedRequestsDescription:v8];
   [v6 setNeedsRefreshDescription];
 
-  v7 = [(CAFGroupRequest *)self cachedFullDescription];
-  [v7 setNeedsRefreshDescription];
+  cachedFullDescription = [(CAFGroupRequest *)self cachedFullDescription];
+  [cachedFullDescription setNeedsRefreshDescription];
 }
 
 uint64_t __37__CAFGroupRequest_addCharacteristic___block_invoke(uint64_t a1)
@@ -98,22 +98,22 @@ uint64_t __37__CAFGroupRequest_addCharacteristic___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addCharacteristics:(id)a3
+- (void)addCharacteristics:(id)characteristics
 {
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __38__CAFGroupRequest_addCharacteristics___block_invoke;
   v11 = &unk_27890D548;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = characteristicsCopy;
+  selfCopy = self;
+  v5 = characteristicsCopy;
   [(CAFGroupRequest *)self _lockedPerformBlock:&v8];
   v6 = [(CAFGroupRequest *)self cachedRequestsDescription:v8];
   [v6 setNeedsRefreshDescription];
 
-  v7 = [(CAFGroupRequest *)self cachedFullDescription];
-  [v7 setNeedsRefreshDescription];
+  cachedFullDescription = [(CAFGroupRequest *)self cachedFullDescription];
+  [cachedFullDescription setNeedsRefreshDescription];
 }
 
 void __38__CAFGroupRequest_addCharacteristics___block_invoke(uint64_t a1)
@@ -158,10 +158,10 @@ void __38__CAFGroupRequest_addCharacteristics___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if ([(CAFGroupRequest *)self performed])
   {
@@ -171,10 +171,10 @@ void __38__CAFGroupRequest_addCharacteristics___block_invoke(uint64_t a1)
       [CAFGroupRequest performWithCompletion:?];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v6 = [MEMORY[0x277CCA9B8] CAF_groupRequestAlreadyPerformed];
-      v4[2](v4, v6);
+      cAF_groupRequestAlreadyPerformed = [MEMORY[0x277CCA9B8] CAF_groupRequestAlreadyPerformed];
+      completionCopy[2](completionCopy, cAF_groupRequestAlreadyPerformed);
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -183,14 +183,14 @@ void __38__CAFGroupRequest_addCharacteristics___block_invoke(uint64_t a1)
 
   [(CAFGroupRequest *)self setPerformed:1];
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [(CAFGroupRequest *)self cachedFullDescription];
-  [v7 setNeedsRefreshDescription];
+  cachedFullDescription = [(CAFGroupRequest *)self cachedFullDescription];
+  [cachedFullDescription setNeedsRefreshDescription];
 
-  v8 = [(CAFGroupRequest *)self requests];
-  -[CAFGroupRequest setPendingGroups:](self, "setPendingGroups:", [v8 count]);
+  requests = [(CAFGroupRequest *)self requests];
+  -[CAFGroupRequest setPendingGroups:](self, "setPendingGroups:", [requests count]);
 
-  v9 = [(CAFGroupRequest *)self requests];
-  v10 = [v9 count];
+  requests2 = [(CAFGroupRequest *)self requests];
+  v10 = [requests2 count];
 
   if (v10)
   {
@@ -210,14 +210,14 @@ void __38__CAFGroupRequest_addCharacteristics___block_invoke(uint64_t a1)
       {
 LABEL_20:
 
-        v17 = [(CAFGroupRequest *)self requests];
+        requests3 = [(CAFGroupRequest *)self requests];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __41__CAFGroupRequest_performWithCompletion___block_invoke;
         v19[3] = &unk_27890F2B0;
         v19[4] = self;
-        v20 = v4;
-        [v17 enumerateKeysAndObjectsUsingBlock:v19];
+        v20 = completionCopy;
+        [requests3 enumerateKeysAndObjectsUsingBlock:v19];
 
         goto LABEL_21;
       }
@@ -231,7 +231,7 @@ LABEL_20:
     if (os_signpost_enabled(v12))
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_signpost_emit_with_name_impl(&dword_231618000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "Perform", "GroupRequest %@", buf, 0xCu);
     }
 
@@ -244,10 +244,10 @@ LABEL_20:
     [CAFGroupRequest performWithCompletion:?];
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v16 = [MEMORY[0x277CCA9B8] CAF_groupRequestWithNoCharacteristics];
-    v4[2](v4, v16);
+    cAF_groupRequestWithNoCharacteristics = [MEMORY[0x277CCA9B8] CAF_groupRequestWithNoCharacteristics];
+    completionCopy[2](completionCopy, cAF_groupRequestWithNoCharacteristics);
   }
 
 LABEL_21:
@@ -482,23 +482,23 @@ LABEL_25:
 
 - (NSString)description
 {
-  v2 = [(CAFGroupRequest *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFGroupRequest *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
 
 - (NSString)fullDescription
 {
-  v2 = [(CAFGroupRequest *)self cachedFullDescription];
-  v3 = [v2 description];
+  cachedFullDescription = [(CAFGroupRequest *)self cachedFullDescription];
+  v3 = [cachedFullDescription description];
 
   return v3;
 }
 
-- (void)_lockedPerformBlock:(id)a3
+- (void)_lockedPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   if ([(CAFGroupRequest *)self performed])
   {
@@ -511,16 +511,16 @@ LABEL_25:
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addRequest:(id)a3
+- (void)_addRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestKey];
+  requestCopy = request;
+  requestKey = [requestCopy requestKey];
   if ([(CAFGroupRequest *)self forced])
   {
     v6 = CAFGroupRequestLogging();
@@ -529,51 +529,51 @@ LABEL_25:
       [CAFGroupRequest _addRequest:];
     }
 
-    v7 = [v5 copyWithPriority:0x284683558];
-    v5 = v7;
+    v7 = [requestKey copyWithPriority:0x284683558];
+    requestKey = v7;
   }
 
-  v8 = [(CAFGroupRequest *)self requests];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  requests = [(CAFGroupRequest *)self requests];
+  v9 = [requests objectForKeyedSubscript:requestKey];
 
   if (!v9)
   {
     v9 = objc_opt_new();
-    v10 = [(CAFGroupRequest *)self requests];
-    [v10 setObject:v9 forKeyedSubscript:v5];
+    requests2 = [(CAFGroupRequest *)self requests];
+    [requests2 setObject:v9 forKeyedSubscript:requestKey];
   }
 
-  [v9 addObject:v4];
+  [v9 addObject:requestCopy];
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(CAFGroupRequest *)self cachedFullDescription];
+  cacheCopy = cache;
+  cachedFullDescription = [(CAFGroupRequest *)self cachedFullDescription];
 
-  if (v5 == v4)
+  if (cachedFullDescription == cacheCopy)
   {
-    v11 = [(CAFGroupRequest *)self _currentDescriptionForFull];
+    _currentDescriptionForFull = [(CAFGroupRequest *)self _currentDescriptionForFull];
   }
 
   else
   {
-    v6 = [(CAFGroupRequest *)self cachedRequestsDescription];
+    cachedRequestsDescription = [(CAFGroupRequest *)self cachedRequestsDescription];
 
-    if (v6 != v4)
+    if (cachedRequestsDescription != cacheCopy)
     {
       v7 = MEMORY[0x277CCACA8];
       v8 = objc_opt_class();
-      v9 = [(CAFGroupRequest *)self uniqueIdentifier];
-      v10 = [v7 stringWithFormat:@"<%@: %p %@>", v8, self, v9];
+      uniqueIdentifier = [(CAFGroupRequest *)self uniqueIdentifier];
+      v10 = [v7 stringWithFormat:@"<%@: %p %@>", v8, self, uniqueIdentifier];
 
       goto LABEL_7;
     }
 
-    v11 = [(CAFGroupRequest *)self _currentDescriptionForRequests];
+    _currentDescriptionForFull = [(CAFGroupRequest *)self _currentDescriptionForRequests];
   }
 
-  v10 = v11;
+  v10 = _currentDescriptionForFull;
 LABEL_7:
 
   return v10;
@@ -583,9 +583,9 @@ LABEL_7:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFGroupRequest *)self uniqueIdentifier];
-  v6 = [(CAFGroupRequest *)self performed];
-  if (v6)
+  uniqueIdentifier = [(CAFGroupRequest *)self uniqueIdentifier];
+  performed = [(CAFGroupRequest *)self performed];
+  if (performed)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@" Pending=%lu", -[CAFGroupRequest pendingGroups](self, "pendingGroups")];
   }
@@ -595,10 +595,10 @@ LABEL_7:
     v7 = &stru_284626CA8;
   }
 
-  v8 = [(CAFGroupRequest *)self cachedRequestsDescription];
-  v9 = [v3 stringWithFormat:@"<%@: %p %@%@ {%@}>", v4, self, v5, v7, v8];
+  cachedRequestsDescription = [(CAFGroupRequest *)self cachedRequestsDescription];
+  v9 = [v3 stringWithFormat:@"<%@: %p %@%@ {%@}>", v4, self, uniqueIdentifier, v7, cachedRequestsDescription];
 
-  if (v6)
+  if (performed)
   {
   }
 
@@ -608,14 +608,14 @@ LABEL_7:
 - (id)_currentDescriptionForRequests
 {
   v3 = objc_opt_new();
-  v4 = [(CAFGroupRequest *)self requests];
+  requests = [(CAFGroupRequest *)self requests];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__CAFGroupRequest__currentDescriptionForRequests__block_invoke;
   v8[3] = &unk_27890F2D8;
   v9 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [requests enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = [v5 componentsJoinedByString:{@", "}];
 

@@ -1,24 +1,24 @@
 @interface ICASAudioTranscriptInteractionData
-- (ICASAudioTranscriptInteractionData)initWithWasTranscriptViewed:(id)a3 wasSummaryViewed:(id)a4 transcriptInteractionSummaryArray:(id)a5;
+- (ICASAudioTranscriptInteractionData)initWithWasTranscriptViewed:(id)viewed wasSummaryViewed:(id)summaryViewed transcriptInteractionSummaryArray:(id)array;
 - (id)toDict;
 @end
 
 @implementation ICASAudioTranscriptInteractionData
 
-- (ICASAudioTranscriptInteractionData)initWithWasTranscriptViewed:(id)a3 wasSummaryViewed:(id)a4 transcriptInteractionSummaryArray:(id)a5
+- (ICASAudioTranscriptInteractionData)initWithWasTranscriptViewed:(id)viewed wasSummaryViewed:(id)summaryViewed transcriptInteractionSummaryArray:(id)array
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewedCopy = viewed;
+  summaryViewedCopy = summaryViewed;
+  arrayCopy = array;
   v15.receiver = self;
   v15.super_class = ICASAudioTranscriptInteractionData;
   v12 = [(ICASAudioTranscriptInteractionData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_wasTranscriptViewed, a3);
-    objc_storeStrong(&v13->_wasSummaryViewed, a4);
-    objc_storeStrong(&v13->_transcriptInteractionSummaryArray, a5);
+    objc_storeStrong(&v12->_wasTranscriptViewed, viewed);
+    objc_storeStrong(&v13->_wasSummaryViewed, summaryViewed);
+    objc_storeStrong(&v13->_transcriptInteractionSummaryArray, array);
   }
 
   return v13;
@@ -28,47 +28,47 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"wasTranscriptViewed";
-  v3 = [(ICASAudioTranscriptInteractionData *)self wasTranscriptViewed];
-  if (v3)
+  wasTranscriptViewed = [(ICASAudioTranscriptInteractionData *)self wasTranscriptViewed];
+  if (wasTranscriptViewed)
   {
-    v4 = [(ICASAudioTranscriptInteractionData *)self wasTranscriptViewed];
+    wasTranscriptViewed2 = [(ICASAudioTranscriptInteractionData *)self wasTranscriptViewed];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    wasTranscriptViewed2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = wasTranscriptViewed2;
+  v16[0] = wasTranscriptViewed2;
   v15[1] = @"wasSummaryViewed";
-  v6 = [(ICASAudioTranscriptInteractionData *)self wasSummaryViewed];
-  if (v6)
+  wasSummaryViewed = [(ICASAudioTranscriptInteractionData *)self wasSummaryViewed];
+  if (wasSummaryViewed)
   {
-    v7 = [(ICASAudioTranscriptInteractionData *)self wasSummaryViewed];
+    wasSummaryViewed2 = [(ICASAudioTranscriptInteractionData *)self wasSummaryViewed];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    wasSummaryViewed2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = wasSummaryViewed2;
+  v16[1] = wasSummaryViewed2;
   v15[2] = @"transcriptInteractionSummaryArray";
-  v9 = [(ICASAudioTranscriptInteractionData *)self transcriptInteractionSummaryArray];
-  if (v9)
+  transcriptInteractionSummaryArray = [(ICASAudioTranscriptInteractionData *)self transcriptInteractionSummaryArray];
+  if (transcriptInteractionSummaryArray)
   {
-    v10 = [(ICASAudioTranscriptInteractionData *)self transcriptInteractionSummaryArray];
+    transcriptInteractionSummaryArray2 = [(ICASAudioTranscriptInteractionData *)self transcriptInteractionSummaryArray];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    transcriptInteractionSummaryArray2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v16[2] = v10;
+  v11 = transcriptInteractionSummaryArray2;
+  v16[2] = transcriptInteractionSummaryArray2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
   v13 = *MEMORY[0x277D85DE8];

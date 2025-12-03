@@ -1,10 +1,10 @@
 @interface RBSAcquisitionCompletionAttribute
-+ (id)attributeWithCompletionPolicy:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSAcquisitionCompletionAttribute)initWithRBSXPCCoder:(id)a3;
++ (id)attributeWithCompletionPolicy:(unint64_t)policy;
+- (BOOL)isEqual:(id)equal;
+- (RBSAcquisitionCompletionAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)_initWithCompletionPolicy:(void *)a1;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)_initWithCompletionPolicy:(void *)policy;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSAcquisitionCompletionAttribute
@@ -19,41 +19,41 @@
   return v6;
 }
 
-+ (id)attributeWithCompletionPolicy:(unint64_t)a3
++ (id)attributeWithCompletionPolicy:(unint64_t)policy
 {
-  v3 = [[RBSAcquisitionCompletionAttribute alloc] _initWithCompletionPolicy:a3];
+  v3 = [[RBSAcquisitionCompletionAttribute alloc] _initWithCompletionPolicy:policy];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSAcquisitionCompletionAttribute;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& self->_policy == v4[1];
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& self->_policy == equalCopy[1];
 
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSAcquisitionCompletionAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeUInt64:self->_policy forKey:{@"_policy", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeUInt64:self->_policy forKey:{@"_policy", v5.receiver, v5.super_class}];
 }
 
-- (RBSAcquisitionCompletionAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSAcquisitionCompletionAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RBSAcquisitionCompletionAttribute;
-  v5 = [(RBSAttribute *)&v9 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v9 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeUInt64ForKey:@"_policy"];
+    v6 = [coderCopy decodeUInt64ForKey:@"_policy"];
     if (RBSAcquisitionCompletionPolicyIsValid(v6))
     {
       v7 = v6;
@@ -70,14 +70,14 @@
   return v5;
 }
 
-- (void)_initWithCompletionPolicy:(void *)a1
+- (void)_initWithCompletionPolicy:(void *)policy
 {
-  if (!a1)
+  if (!policy)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = policy;
   v6.super_class = RBSAcquisitionCompletionAttribute;
   v3 = objc_msgSendSuper2(&v6, sel__init);
   if (v3)

@@ -1,18 +1,18 @@
 @interface NTKLeghornCylindricalPickerView
-- (NTKLeghornCylindricalPickerView)initWithFrame:(CGRect)a3;
+- (NTKLeghornCylindricalPickerView)initWithFrame:(CGRect)frame;
 - (NTKLeghornCylindricalPickerViewDelegate)delegate;
-- (void)setCellHeight:(double)a3;
-- (void)setFarthestCellScaleFactor:(double)a3;
-- (void)setItems:(id)a3;
+- (void)setCellHeight:(double)height;
+- (void)setFarthestCellScaleFactor:(double)factor;
+- (void)setItems:(id)items;
 @end
 
 @implementation NTKLeghornCylindricalPickerView
 
-- (NTKLeghornCylindricalPickerView)initWithFrame:(CGRect)a3
+- (NTKLeghornCylindricalPickerView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = NTKLeghornCylindricalPickerView;
-  v3 = [(NTKLeghornCylindricalPickerView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKLeghornCylindricalPickerView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,26 +30,26 @@
   return v4;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  objc_storeStrong(&self->_items, a3);
-  v7 = a3;
+  objc_storeStrong(&self->_items, items);
+  itemsCopy = items;
   objc_msgSend_invalidateLayout(self->_layout, v5, v6);
 }
 
-- (void)setFarthestCellScaleFactor:(double)a3
+- (void)setFarthestCellScaleFactor:(double)factor
 {
-  objc_msgSend_setFarthestCellScaleFactor_(self->_layout, a2, a3);
+  objc_msgSend_setFarthestCellScaleFactor_(self->_layout, a2, factor);
   layout = self->_layout;
 
   objc_msgSend_invalidateLayout(layout, v4, v5);
 }
 
-- (void)setCellHeight:(double)a3
+- (void)setCellHeight:(double)height
 {
-  self->_cellHeight = a3;
-  objc_msgSend_bounds(self, a2, a3);
-  objc_msgSend_setItemSize_(self->_layout, v5, v6, a3);
+  self->_cellHeight = height;
+  objc_msgSend_bounds(self, a2, height);
+  objc_msgSend_setItemSize_(self->_layout, v5, v6, height);
   layout = self->_layout;
 
   objc_msgSend_invalidateLayout(layout, v7, v8);

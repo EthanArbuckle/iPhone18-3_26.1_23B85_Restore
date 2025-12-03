@@ -1,24 +1,24 @@
 @interface OfflineMapsManagementExpiredDataSource
-- (BOOL)_canItemIdentifierBeSelected:(id)a3;
+- (BOOL)_canItemIdentifierBeSelected:(id)selected;
 - (BOOL)canRestoreAnyMaps;
 - (BOOL)canRestoreSelectedMaps;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (OfflineMapsManagementExpiredDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (OfflineMapsManagementExpiredDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location;
 - (OfflineMapsManagementExpiredDataSourceDelegate)offlineDelegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)swipeActionsConfigurationForIndexPath:(id)a3;
-- (void)_deleteSelectedMapsAndPerformBlock:(id)a3;
-- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)a3;
-- (void)_restoreSubscription:(id)a3 completionHandler:(id)a4;
-- (void)_updateContentAnimated:(BOOL)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)swipeActionsConfigurationForIndexPath:(id)path;
+- (void)_deleteSelectedMapsAndPerformBlock:(id)block;
+- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)animated;
+- (void)_restoreSubscription:(id)subscription completionHandler:(id)handler;
+- (void)_updateContentAnimated:(BOOL)animated;
 - (void)clearSelectedMaps;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)commonInit;
 - (void)restoreSelectedMaps;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation OfflineMapsManagementExpiredDataSource
@@ -30,27 +30,27 @@
   return WeakRetained;
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v8 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  v8 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  v7 = [(DataSource *)self delegate];
-  [v7 dataSource:self itemTapped:v8];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:v8];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v8 = [v7 itemIdentifierForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  v8 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  if (([v10 isEditing] & 1) != 0 || (objc_msgSend(v10, "deselectItemAtIndexPath:animated:", v6, 1), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (([viewCopy isEditing] & 1) != 0 || (objc_msgSend(viewCopy, "deselectItemAtIndexPath:animated:", pathCopy, 1), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v9 = [(DataSource *)self delegate];
-    [v9 dataSource:self itemTapped:v8];
+    delegate = [(DataSource *)self delegate];
+    [delegate dataSource:self itemTapped:v8];
   }
 
   else
@@ -59,35 +59,35 @@
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   LOBYTE(self) = [(OfflineMapsManagementExpiredDataSource *)self _canItemIdentifierBeSelected:v7];
   return self;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   LOBYTE(self) = [(OfflineMapsManagementExpiredDataSource *)self _canItemIdentifierBeSelected:v7];
   return self;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v12 = [v11 sectionIdentifierForIndex:{objc_msgSend(v9, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  v12 = [diffableDataSource sectionIdentifierForIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v13 = [v10 isEqualToString:UICollectionElementKindSectionFooter];
+  v13 = [kindCopy isEqualToString:UICollectionElementKindSectionFooter];
   if (v13 && [v12 isEqual:@"kExpiredSectionIdentifier"])
   {
     if (GEOConfigGetBOOL())
@@ -119,7 +119,7 @@
     v21 = [[UserProfileSectionFooterViewModel alloc] initWithContentString:v20];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    v17 = [v8 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v23 forIndexPath:v9];
+    v17 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v23 forIndexPath:pathCopy];
 
     [v17 configureWithViewModel:v21];
     [v17 setNeedsLayout];
@@ -134,23 +134,23 @@
   return v17;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = identifierCopy;
     v12 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-    v13 = [v8 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
 
-    v14 = [v11 subscription];
-    v15 = sub_10086FE68(v14);
+    subscription = [v11 subscription];
+    v15 = sub_10086FE68(subscription);
 
-    v16 = [v11 subscription];
-    v17 = [TwoLinesContentViewModelComposer cellModelForExpiredOfflineMapSubscription:v16 isAvailable:v15 isSupportedOSVersion:GEOConfigGetBOOL() ^ 1];
+    subscription2 = [v11 subscription];
+    v17 = [TwoLinesContentViewModelComposer cellModelForExpiredOfflineMapSubscription:subscription2 isAvailable:v15 isSupportedOSVersion:GEOConfigGetBOOL() ^ 1];
     [v13 setViewModel:v17];
 
     v18 = objc_alloc_init(UICellAccessoryMultiselect);
@@ -195,9 +195,9 @@
   return v13;
 }
 
-- (void)_updateContentAnimated:(BOOL)a3
+- (void)_updateContentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   if ([(NSArray *)self->_expiredSubscriptions count])
   {
@@ -208,15 +208,15 @@
     [v5 appendItemsWithIdentifiers:self->_expiredSubscriptions intoSectionWithIdentifier:@"kExpiredSectionIdentifier"];
   }
 
-  v7 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  [v7 applySnapshot:v5 animatingDifferences:v3];
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  [diffableDataSource applySnapshot:v5 animatingDifferences:animatedCopy];
 }
 
-- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)a3
+- (void)_fetchExpiredSubscriptionsAnimated:(BOOL)animated
 {
   objc_initWeak(&location, self);
   v5 = [NSString stringWithFormat:@"%@*", @"com.apple.Maps.offline."];
-  v6 = [(OfflineMapsManagementExpiredDataSource *)self subscriptionManager];
+  subscriptionManager = [(OfflineMapsManagementExpiredDataSource *)self subscriptionManager];
   v13 = v5;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
   v8 = &_dispatch_main_q;
@@ -225,30 +225,30 @@
   v9[2] = sub_1008F9FB0;
   v9[3] = &unk_10162E3B8;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
-  [v6 fetchExpiredSubscriptionsWithIdentifiers:v7 callbackQueue:&_dispatch_main_q completionHandler:v9];
+  animatedCopy = animated;
+  [subscriptionManager fetchExpiredSubscriptionsWithIdentifiers:v7 callbackQueue:&_dispatch_main_q completionHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_canItemIdentifierBeSelected:(id)a3
+- (BOOL)_canItemIdentifierBeSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(DataSource *)self collectionView];
-    if ([v6 isEditing])
+    v5 = selectedCopy;
+    collectionView = [(DataSource *)self collectionView];
+    if ([collectionView isEditing])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [v5 subscription];
-      v7 = sub_10086FE68(v8);
+      subscription = [v5 subscription];
+      v7 = sub_10086FE68(subscription);
     }
   }
 
@@ -260,35 +260,35 @@
   return v7;
 }
 
-- (void)_restoreSubscription:(id)a3 completionHandler:(id)a4
+- (void)_restoreSubscription:(id)subscription completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  subscriptionCopy = subscription;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(OfflineMapsManagementExpiredDataSource *)self offlineDelegate];
-  v9 = [v6 subscription];
-  v18 = v9;
+  offlineDelegate = [(OfflineMapsManagementExpiredDataSource *)self offlineDelegate];
+  subscription = [subscriptionCopy subscription];
+  v18 = subscription;
   v10 = [NSArray arrayWithObjects:&v18 count:1];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1008FA374;
   v13[3] = &unk_10163BD00;
   objc_copyWeak(&v16, &location);
-  v11 = v6;
+  v11 = subscriptionCopy;
   v14 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v15 = v12;
-  [v8 didSelectRestoreExpiredSubscriptions:v10 completionHandler:v13];
+  [offlineDelegate didSelectRestoreExpiredSubscriptions:v10 completionHandler:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (id)swipeActionsConfigurationForIndexPath:(id)a3
+- (id)swipeActionsConfigurationForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v6 = [v5 itemIdentifierForIndexPath:v4];
+  pathCopy = path;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  v6 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -307,8 +307,8 @@
     v11 = [UIContextualAction contextualActionWithStyle:1 title:v9 handler:v24];
 
     v12 = [NSMutableArray arrayWithObject:v11];
-    v13 = [v10 subscription];
-    v14 = sub_10086FE68(v13);
+    subscription = [v10 subscription];
+    v14 = sub_10086FE68(subscription);
 
     if (v14)
     {
@@ -343,21 +343,21 @@
   return v19;
 }
 
-- (void)_deleteSelectedMapsAndPerformBlock:(id)a3
+- (void)_deleteSelectedMapsAndPerformBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  v19 = [v5 snapshot];
+  blockCopy = block;
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  snapshot = [diffableDataSource snapshot];
 
   v20 = +[NSMutableArray array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(DataSource *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
+  collectionView = [(DataSource *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [indexPathsForSelectedItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -369,46 +369,46 @@
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-        v14 = [v13 itemIdentifierForIndexPath:v12];
+        diffableDataSource2 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+        v14 = [diffableDataSource2 itemIdentifierForIndexPath:v12];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v15 = v14;
           [v20 addObject:v15];
-          v4[2](v4, v15);
+          blockCopy[2](blockCopy, v15);
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [indexPathsForSelectedItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
   }
 
   v16 = [v20 copy];
-  [v19 deleteItemsWithIdentifiers:v16];
+  [snapshot deleteItemsWithIdentifiers:v16];
 
-  v17 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  [v17 applySnapshot:v19 animatingDifferences:1];
+  diffableDataSource3 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  [diffableDataSource3 applySnapshot:snapshot animatingDifferences:1];
 
-  v18 = [(OfflineMapsManagementExpiredDataSource *)self offlineDelegate];
-  [v18 dismissExpiredViewControllerIfNecessary];
+  offlineDelegate = [(OfflineMapsManagementExpiredDataSource *)self offlineDelegate];
+  [offlineDelegate dismissExpiredViewControllerIfNecessary];
 }
 
 - (BOOL)canRestoreSelectedMaps
 {
-  v3 = [(DataSource *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
-  v5 = [v4 count];
+  collectionView = [(DataSource *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count];
 
   if (!v5)
   {
@@ -419,10 +419,10 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(DataSource *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
+  collectionView2 = [(DataSource *)self collectionView];
+  indexPathsForSelectedItems2 = [collectionView2 indexPathsForSelectedItems];
 
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [indexPathsForSelectedItems2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -433,18 +433,18 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(indexPathsForSelectedItems2);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-        v14 = [v13 itemIdentifierForIndexPath:v12];
+        diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+        v14 = [diffableDataSource itemIdentifierForIndexPath:v12];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 subscription];
-          v16 = sub_10086FE68(v15);
+          subscription = [v14 subscription];
+          v16 = sub_10086FE68(subscription);
 
           if (!v16)
           {
@@ -455,7 +455,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [indexPathsForSelectedItems2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -491,8 +491,8 @@ LABEL_14:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) subscription];
-        v7 = sub_10086FE68(v6);
+        subscription = [*(*(&v9 + 1) + 8 * i) subscription];
+        v7 = sub_10086FE68(subscription);
 
         if (v7)
         {
@@ -524,10 +524,10 @@ LABEL_11:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(DataSource *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(DataSource *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = *v22;
@@ -538,19 +538,19 @@ LABEL_11:
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v9 = *(*(&v21 + 1) + 8 * v8);
-        v10 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-        v11 = [v10 itemIdentifierForIndexPath:v9];
+        diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+        v11 = [diffableDataSource itemIdentifierForIndexPath:v9];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v12 = v11;
-          v13 = [v12 subscription];
-          [v16 addObject:v13];
+          subscription = [v12 subscription];
+          [v16 addObject:subscription];
 
           [v3 addObject:v12];
         }
@@ -559,14 +559,14 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v6);
   }
 
   objc_initWeak(&location, self);
-  v14 = [(OfflineMapsManagementExpiredDataSource *)self offlineDelegate];
+  offlineDelegate = [(OfflineMapsManagementExpiredDataSource *)self offlineDelegate];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1008FB330;
@@ -574,7 +574,7 @@ LABEL_11:
   objc_copyWeak(&v19, &location);
   v15 = v3;
   v18 = v15;
-  [v14 didSelectRestoreExpiredSubscriptions:v16 completionHandler:v17];
+  [offlineDelegate didSelectRestoreExpiredSubscriptions:v16 completionHandler:v17];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -593,15 +593,15 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v7.receiver = self;
   v7.super_class = OfflineMapsManagementExpiredDataSource;
   [(DataSource *)&v7 setActive:?];
   v5 = +[MapsOfflineUIHelper sharedHelper];
   v6 = v5;
-  if (v3)
+  if (activeCopy)
   {
     [v5 addObserver:self];
   }
@@ -617,38 +617,38 @@ LABEL_11:
   v3 = objc_alloc_init(GEOMapDataSubscriptionManager);
   [(OfflineMapsManagementExpiredDataSource *)self setSubscriptionManager:v3];
 
-  v4 = [(DataSource *)self collectionView];
-  [v4 setDelegate:self];
+  collectionView = [(DataSource *)self collectionView];
+  [collectionView setDelegate:self];
 
-  v5 = [(DataSource *)self collectionView];
+  collectionView2 = [(DataSource *)self collectionView];
   v6 = objc_opt_class();
   v7 = +[(TwoLineCollectionViewListCell *)TwoLinesCollectionViewInsetGroupedListCell];
-  [v5 registerClass:v6 forCellWithReuseIdentifier:v7];
+  [collectionView2 registerClass:v6 forCellWithReuseIdentifier:v7];
 
-  v8 = [(DataSource *)self collectionView];
+  collectionView3 = [(DataSource *)self collectionView];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v8 registerClass:v9 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v11];
+  [collectionView3 registerClass:v9 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:v11];
 
   v12 = [UICollectionViewDiffableDataSource alloc];
-  v13 = [(DataSource *)self collectionView];
+  collectionView4 = [(DataSource *)self collectionView];
   v14 = sub_1007CDFC8(self);
-  v15 = [v12 initWithCollectionView:v13 cellProvider:v14];
+  v15 = [v12 initWithCollectionView:collectionView4 cellProvider:v14];
   [(OfflineMapsManagementExpiredDataSource *)self setDiffableDataSource:v15];
 
   v16 = sub_1007CE178(self);
-  v17 = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
-  [v17 setSupplementaryViewProvider:v16];
+  diffableDataSource = [(OfflineMapsManagementExpiredDataSource *)self diffableDataSource];
+  [diffableDataSource setSupplementaryViewProvider:v16];
 
   [(OfflineMapsManagementExpiredDataSource *)self _fetchExpiredSubscriptionsAnimated:0];
 }
 
-- (OfflineMapsManagementExpiredDataSource)initWithCollectionView:(id)a3 updateLocation:(BOOL)a4
+- (OfflineMapsManagementExpiredDataSource)initWithCollectionView:(id)view updateLocation:(BOOL)location
 {
   v7.receiver = self;
   v7.super_class = OfflineMapsManagementExpiredDataSource;
-  v4 = [(DataSource *)&v7 initWithCollectionView:a3 updateLocation:a4];
+  v4 = [(DataSource *)&v7 initWithCollectionView:view updateLocation:location];
   v5 = v4;
   if (v4)
   {

@@ -7,8 +7,8 @@
 - (id)hmu_destinationForService:()HMU_IDS
 {
   v4 = a3;
-  v5 = [a1 device];
-  v6 = [v5 IDSDestinationForIDSService:v4];
+  device = [self device];
+  v6 = [device IDSDestinationForIDSService:v4];
 
   return v6;
 }

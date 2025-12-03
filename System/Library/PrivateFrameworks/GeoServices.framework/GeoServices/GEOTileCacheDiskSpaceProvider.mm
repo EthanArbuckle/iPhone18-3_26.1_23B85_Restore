@@ -1,30 +1,30 @@
 @interface GEOTileCacheDiskSpaceProvider
-- (unint64_t)purgableDiskSpaceForUrgency:(int)a3;
+- (unint64_t)purgableDiskSpaceForUrgency:(int)urgency;
 @end
 
 @implementation GEOTileCacheDiskSpaceProvider
 
-- (unint64_t)purgableDiskSpaceForUrgency:(int)a3
+- (unint64_t)purgableDiskSpaceForUrgency:(int)urgency
 {
-  if ([(GEOTileCacheDiskSpaceProvider *)self minimumUregency]> a3)
+  if ([(GEOTileCacheDiskSpaceProvider *)self minimumUregency]> urgency)
   {
     return 0;
   }
 
   v4 = +[NSUUID UUID];
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"GEODiskSpaceManager-%@", v5];
+  uUIDString = [v4 UUIDString];
+  v6 = [NSString stringWithFormat:@"GEODiskSpaceManager-%@", uUIDString];
 
   v7 = +[GEOTileLoader modernLoader];
   [v7 openForClient:v6];
 
   v8 = +[GEOTileLoader modernLoader];
-  v9 = [v8 calculateFreeableSizeSync];
+  calculateFreeableSizeSync = [v8 calculateFreeableSizeSync];
 
   v10 = +[GEOTileLoader modernLoader];
   [v10 closeForClient:v6];
 
-  return v9;
+  return calculateFreeableSizeSync;
 }
 
 @end

@@ -31,23 +31,23 @@
 - (void)_createCTServerConnection;
 - (void)_initializeDataState;
 - (void)_lockedAdjustCellularAutoAssociation;
-- (void)_locked_recalculateDataContextUsableAndPostNotificationIfNeeded:(BOOL)a3;
-- (void)_locked_updateDataConnectionStateWithContext:(id)a3;
-- (void)_locked_updateDataStateBasedOnDataStatus:(id)a3;
-- (void)_locked_updateDataStateWithContext:(id)a3;
+- (void)_locked_recalculateDataContextUsableAndPostNotificationIfNeeded:(BOOL)needed;
+- (void)_locked_updateDataConnectionStateWithContext:(id)context;
+- (void)_locked_updateDataStateBasedOnDataStatus:(id)status;
+- (void)_locked_updateDataStateWithContext:(id)context;
 - (void)_releaseCTServerConnection;
-- (void)addCellularAutoAssociationClientToken:(id)a3;
-- (void)addFastDormancyDisableToken:(id)a3;
-- (void)addWiFiAutoAssociationClientToken:(id)a3;
+- (void)addCellularAutoAssociationClientToken:(id)token;
+- (void)addFastDormancyDisableToken:(id)token;
+- (void)addWiFiAutoAssociationClientToken:(id)token;
 - (void)airplaneModeChanged;
-- (void)currentDataSimChanged:(id)a3;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
-- (void)internetConnectionActivationError:(int)a3;
-- (void)internetConnectionStateChanged:(id)a3;
-- (void)internetDataStatusBasic:(id)a3;
-- (void)removeCellularAutoAssociationClientToken:(id)a3;
-- (void)removeFastDormancyDisableToken:(id)a3;
-- (void)removeWiFiAutoAssociationClientToken:(id)a3;
+- (void)internetConnectionActivationError:(int)error;
+- (void)internetConnectionStateChanged:(id)changed;
+- (void)internetDataStatusBasic:(id)basic;
+- (void)removeCellularAutoAssociationClientToken:(id)token;
+- (void)removeFastDormancyDisableToken:(id)token;
+- (void)removeWiFiAutoAssociationClientToken:(id)token;
 - (void)showNetworkOptions;
 - (void)showSIMUnlock;
 @end
@@ -270,7 +270,7 @@
 
 - (BOOL)isAirplaneModeEnabled
 {
-  v3 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -280,13 +280,13 @@
   v6[1] = 3221225472;
   v6[2] = sub_1959BC21C;
   v6[3] = &unk_1E7439688;
-  v6[4] = v3;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   dispatch_sync(v4, v6);
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return selfCopy;
 }
 
 - (void)_adjustCellularAutoAssociation
@@ -350,20 +350,20 @@
   return v6;
 }
 
-- (void)addFastDormancyDisableToken:(id)a3
+- (void)addFastDormancyDisableToken:(id)token
 {
   v3 = MEMORY[0x1E69956F0];
-  v4 = a3;
+  tokenCopy = token;
   v8 = objc_msgSend_sharedInstance(v3, v5, v6);
-  objc_msgSend_addFastDormancyDisableToken_(v8, v7, v4);
+  objc_msgSend_addFastDormancyDisableToken_(v8, v7, tokenCopy);
 }
 
-- (void)removeFastDormancyDisableToken:(id)a3
+- (void)removeFastDormancyDisableToken:(id)token
 {
   v3 = MEMORY[0x1E69956F0];
-  v4 = a3;
+  tokenCopy = token;
   v8 = objc_msgSend_sharedInstance(v3, v5, v6);
-  objc_msgSend_removeFastDormancyDisableToken_(v8, v7, v4);
+  objc_msgSend_removeFastDormancyDisableToken_(v8, v7, tokenCopy);
 }
 
 - (BOOL)willTryToAutoAssociateWiFiNetwork
@@ -414,20 +414,20 @@
   return v6;
 }
 
-- (void)addWiFiAutoAssociationClientToken:(id)a3
+- (void)addWiFiAutoAssociationClientToken:(id)token
 {
   v3 = MEMORY[0x1E6995708];
-  v4 = a3;
+  tokenCopy = token;
   v8 = objc_msgSend_sharedInstance(v3, v5, v6);
-  objc_msgSend_addWiFiAutoAssociationClientToken_(v8, v7, v4);
+  objc_msgSend_addWiFiAutoAssociationClientToken_(v8, v7, tokenCopy);
 }
 
-- (void)removeWiFiAutoAssociationClientToken:(id)a3
+- (void)removeWiFiAutoAssociationClientToken:(id)token
 {
   v3 = MEMORY[0x1E6995708];
-  v4 = a3;
+  tokenCopy = token;
   v8 = objc_msgSend_sharedInstance(v3, v5, v6);
-  objc_msgSend_removeWiFiAutoAssociationClientToken_(v8, v7, v4);
+  objc_msgSend_removeWiFiAutoAssociationClientToken_(v8, v7, tokenCopy);
 }
 
 - (void)showNetworkOptions
@@ -444,11 +444,11 @@
   return v6;
 }
 
-- (void)addCellularAutoAssociationClientToken:(id)a3
+- (void)addCellularAutoAssociationClientToken:(id)token
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     objc_msgSend_lock(self->_lock, v4, v5);
     cellAutoAssociationTokens = self->_cellAutoAssociationTokens;
@@ -461,14 +461,14 @@
       cellAutoAssociationTokens = self->_cellAutoAssociationTokens;
     }
 
-    objc_msgSend_addObject_(cellAutoAssociationTokens, v7, v6);
+    objc_msgSend_addObject_(cellAutoAssociationTokens, v7, tokenCopy);
     objc_msgSend_unlock(self->_lock, v11, v12);
     v13 = OSLogHandleForIDSCategory("Network");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = self->_cellAutoAssociationTokens;
       v18 = 138412546;
-      v19 = v6;
+      v19 = tokenCopy;
       v20 = 2112;
       v21 = v14;
       _os_log_impl(&dword_195988000, v13, OS_LOG_TYPE_DEFAULT, "Client token: %@ being added to Cellular association clients (%@)", &v18, 0x16u);
@@ -480,25 +480,25 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeCellularAutoAssociationClientToken:(id)a3
+- (void)removeCellularAutoAssociationClientToken:(id)token
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v5 = OSLogHandleForIDSCategory("Network");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       cellAutoAssociationTokens = self->_cellAutoAssociationTokens;
       v15 = 138412546;
-      v16 = v4;
+      v16 = tokenCopy;
       v17 = 2112;
       v18 = cellAutoAssociationTokens;
       _os_log_impl(&dword_195988000, v5, OS_LOG_TYPE_DEFAULT, "Client token: %@ being removed to cellular association clients (%@)", &v15, 0x16u);
     }
 
     objc_msgSend_lock(self->_lock, v7, v8);
-    objc_msgSend_removeObject_(self->_cellAutoAssociationTokens, v9, v4);
+    objc_msgSend_removeObject_(self->_cellAutoAssociationTokens, v9, tokenCopy);
     objc_msgSend_unlock(self->_lock, v10, v11);
     objc_msgSend__lockedAdjustCellularAutoAssociation(self, v12, v13);
   }
@@ -506,14 +506,14 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)internetConnectionActivationError:(int)a3
+- (void)internetConnectionActivationError:(int)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = OSLogHandleForIDSCategory("Network");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = a3;
+    v12[1] = error;
     _os_log_impl(&dword_195988000, v5, OS_LOG_TYPE_DEFAULT, "Received core telephony connection activation error callback { error: %d }", v12, 8u);
   }
 
@@ -530,52 +530,52 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)internetConnectionStateChanged:(id)a3
+- (void)internetConnectionStateChanged:(id)changed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = OSLogHandleForIDSCategory("Network");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = changedCopy;
     _os_log_impl(&dword_195988000, v5, OS_LOG_TYPE_DEFAULT, "Received core telephony connection state changed callback { dataConnectionStatusInfo: %@ }", &v13, 0xCu);
   }
 
   objc_msgSend_lock(self->_lock, v6, v7);
   self->_shouldBringUpDataContext = 1;
-  objc_msgSend__locked_updateDataStateBasedOnDataConnectionStatus_(self, v8, v4);
+  objc_msgSend__locked_updateDataStateBasedOnDataConnectionStatus_(self, v8, changedCopy);
   objc_msgSend__locked_recalculateDataContextUsableAndPostNotificationIfNeeded_(self, v9, 1);
   objc_msgSend_unlock(self->_lock, v10, v11);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)internetDataStatusBasic:(id)a3
+- (void)internetDataStatusBasic:(id)basic
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  basicCopy = basic;
   v5 = OSLogHandleForIDSCategory("Network");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = basicCopy;
     _os_log_impl(&dword_195988000, v5, OS_LOG_TYPE_DEFAULT, "Received core telephony internetDataStatus callback { dataStatus: %@ }", &v13, 0xCu);
   }
 
   objc_msgSend_lock(self->_lock, v6, v7);
   self->_shouldBringUpDataContext = 1;
-  objc_msgSend__locked_updateDataStateBasedOnDataStatus_(self, v8, v4);
+  objc_msgSend__locked_updateDataStateBasedOnDataStatus_(self, v8, basicCopy);
   objc_msgSend__locked_recalculateDataContextUsableAndPostNotificationIfNeeded_(self, v9, 1);
   objc_msgSend_unlock(self->_lock, v10, v11);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   objc_msgSend_lock(self->_lock, v5, v6);
   v7 = OSLogHandleForIDSCategory("Network");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -584,11 +584,11 @@
     v16 = 138412546;
     v17 = currentDataSubscriptionContextSync;
     v18 = 2112;
-    v19 = v4;
+    v19 = changedCopy;
     _os_log_impl(&dword_195988000, v7, OS_LOG_TYPE_DEFAULT, "Interface manager: updating currentDataSimContext. {old: %@; new: %@}", &v16, 0x16u);
   }
 
-  v11 = objc_msgSend_copy(v4, v9, v10);
+  v11 = objc_msgSend_copy(changedCopy, v9, v10);
   v12 = self->_currentDataSubscriptionContextSync;
   self->_currentDataSubscriptionContextSync = v11;
 
@@ -632,13 +632,13 @@
   return v14;
 }
 
-- (void)_locked_updateDataStateWithContext:(id)a3
+- (void)_locked_updateDataStateWithContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   coreTelephonyClient = self->_coreTelephonyClient;
   v15 = 0;
-  v7 = objc_msgSend_getDataStatus_error_(coreTelephonyClient, v6, v4, &v15);
+  v7 = objc_msgSend_getDataStatus_error_(coreTelephonyClient, v6, contextCopy, &v15);
   v10 = v15;
   if (v7)
   {
@@ -654,7 +654,7 @@
       *buf = 138412546;
       v17 = v10;
       v18 = 2112;
-      v19 = v4;
+      v19 = contextCopy;
       _os_log_impl(&dword_195988000, v13, OS_LOG_TYPE_DEFAULT, "Failed to query initial data status from telephony { dataError: %@, context: %@ }", buf, 0x16u);
     }
   }
@@ -662,13 +662,13 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_locked_updateDataConnectionStateWithContext:(id)a3
+- (void)_locked_updateDataConnectionStateWithContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   coreTelephonyClient = self->_coreTelephonyClient;
   v12 = 0;
-  v7 = objc_msgSend_getConnectionState_connectionType_error_(coreTelephonyClient, v6, v4, 0, &v12);
+  v7 = objc_msgSend_getConnectionState_connectionType_error_(coreTelephonyClient, v6, contextCopy, 0, &v12);
   v9 = v12;
   if (v7)
   {
@@ -683,7 +683,7 @@
       *buf = 138412546;
       v14 = v9;
       v15 = 2112;
-      v16 = v4;
+      v16 = contextCopy;
       _os_log_impl(&dword_195988000, v10, OS_LOG_TYPE_DEFAULT, "Failed to query initial data connection status from telephony { connectionError: %@, context: %@ }", buf, 0x16u);
     }
   }
@@ -691,18 +691,18 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_locked_updateDataStateBasedOnDataStatus:(id)a3
+- (void)_locked_updateDataStateBasedOnDataStatus:(id)status
 {
-  v4 = a3;
-  self->_isDataPossible = objc_msgSend_cellularDataPossible(v4, v5, v6);
-  hasIndicator = objc_msgSend_hasIndicator(v4, v7, v8);
+  statusCopy = status;
+  self->_isDataPossible = objc_msgSend_cellularDataPossible(statusCopy, v5, v6);
+  hasIndicator = objc_msgSend_hasIndicator(statusCopy, v7, v8);
 
   self->_isDataIndicatorNone = hasIndicator ^ 1;
 }
 
-- (void)_locked_recalculateDataContextUsableAndPostNotificationIfNeeded:(BOOL)a3
+- (void)_locked_recalculateDataContextUsableAndPostNotificationIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v28 = *MEMORY[0x1E69E9840];
   v5 = !self->_isDataIndicatorNone && self->_isDataContextActive && self->_isDataPossible;
   v6 = OSLogHandleForIDSCategory("Network");
@@ -795,7 +795,7 @@
   if (self->_isDataContextUsable != v14)
   {
     self->_isDataContextUsable = v14;
-    if (v3)
+    if (neededCopy)
     {
       v17 = OSLogHandleForIDSCategory("Network");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))

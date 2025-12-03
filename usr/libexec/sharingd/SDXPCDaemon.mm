@@ -1,25 +1,25 @@
 @interface SDXPCDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptNewConnection:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
 - (NSString)machServiceName;
 - (NSXPCInterface)exportedInterface;
 - (NSXPCInterface)remoteObjectInterface;
 - (SDXPCDaemon)init;
 - (void)_activate;
 - (void)_invalidate;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)connectionEstablished:(id)a3;
-- (void)connectionInvalidated:(id)a3;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)connectionEstablished:(id)established;
+- (void)connectionInvalidated:(id)invalidated;
 - (void)dealloc;
-- (void)enumerateRemoteObjectProxiesUsingBlock:(id)a3;
-- (void)establishConnectionWithCompletionHandler:(id)a3;
+- (void)enumerateRemoteObjectProxiesUsingBlock:(id)block;
+- (void)establishConnectionWithCompletionHandler:(id)handler;
 - (void)onqueue_activate;
-- (void)onqueue_connectionInvalidated:(id)a3;
-- (void)onqueue_enumerateRemoteObjectProxiesUsingBlock:(id)a3;
+- (void)onqueue_connectionInvalidated:(id)invalidated;
+- (void)onqueue_enumerateRemoteObjectProxiesUsingBlock:(id)block;
 - (void)onqueue_invalidate;
-- (void)onqueue_remoteObjectProxyForConnection:(id)a3 usingBlock:(id)a4;
-- (void)remoteObjectProxyForConnection:(id)a3 usingBlock:(id)a4;
-- (void)setDispatchQueue:(id)a3;
+- (void)onqueue_remoteObjectProxyForConnection:(id)connection usingBlock:(id)block;
+- (void)remoteObjectProxyForConnection:(id)connection usingBlock:(id)block;
+- (void)setDispatchQueue:(id)queue;
 @end
 
 @implementation SDXPCDaemon
@@ -61,9 +61,9 @@
   }
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -75,29 +75,29 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)enumerateRemoteObjectProxiesUsingBlock:(id)a3
+- (void)enumerateRemoteObjectProxiesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10027C260;
   v7[3] = &unk_1008CE708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)onqueue_enumerateRemoteObjectProxiesUsingBlock:(id)a3
+- (void)onqueue_enumerateRemoteObjectProxiesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (!self->_activateCalled)
   {
@@ -109,8 +109,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SDXPCDaemon *)self activeConnections];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  activeConnections = [(SDXPCDaemon *)self activeConnections];
+  v6 = [activeConnections countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -120,7 +120,7 @@ LABEL_4:
     {
       if (*v17 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(activeConnections);
       }
 
       v9 = *(*(&v16 + 1) + 8 * v8);
@@ -132,7 +132,7 @@ LABEL_4:
       objc_copyWeak(&v14, &location);
       v10 = [v9 remoteObjectProxyWithErrorHandler:v13];
       v12 = 0;
-      v4[2](v4, v10, &v12);
+      blockCopy[2](blockCopy, v10, &v12);
       v11 = v12;
 
       objc_destroyWeak(&v14);
@@ -144,7 +144,7 @@ LABEL_4:
 
       if (v6 == ++v8)
       {
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [activeConnections countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v6)
         {
           goto LABEL_4;
@@ -156,36 +156,36 @@ LABEL_4:
   }
 }
 
-- (void)remoteObjectProxyForConnection:(id)a3 usingBlock:(id)a4
+- (void)remoteObjectProxyForConnection:(id)connection usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10027C598;
   block[3] = &unk_1008CE730;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectionCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = connectionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)onqueue_remoteObjectProxyForConnection:(id)a3 usingBlock:(id)a4
+- (void)onqueue_remoteObjectProxyForConnection:(id)connection usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, connectionCopy);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10027C6B4;
   v9[3] = &unk_1008D2B80;
   objc_copyWeak(&v10, &location);
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v7[2](v7, v8);
+  v8 = [connectionCopy remoteObjectProxyWithErrorHandler:v9];
+  blockCopy[2](blockCopy, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -220,16 +220,16 @@ LABEL_4:
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SDXPCDaemon *)self machServiceName];
+      machServiceName = [(SDXPCDaemon *)self machServiceName];
       v11 = 138412290;
-      v12 = v6;
+      v12 = machServiceName;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Activating %@", &v11, 0xCu);
     }
 
     self->_activateCalled = 1;
     v7 = [NSXPCListener alloc];
-    v8 = [(SDXPCDaemon *)self machServiceName];
-    v9 = [v7 initWithMachServiceName:v8];
+    machServiceName2 = [(SDXPCDaemon *)self machServiceName];
+    v9 = [v7 initWithMachServiceName:machServiceName2];
     xpcListener = self->_xpcListener;
     self->_xpcListener = v9;
 
@@ -261,8 +261,8 @@ LABEL_4:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(SDXPCDaemon *)self activeConnections];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    activeConnections = [(SDXPCDaemon *)self activeConnections];
+    v4 = [activeConnections countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -274,7 +274,7 @@ LABEL_4:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(activeConnections);
           }
 
           [*(*(&v8 + 1) + 8 * v7) invalidate];
@@ -282,7 +282,7 @@ LABEL_4:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [activeConnections countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -292,17 +292,17 @@ LABEL_4:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = [(SDXPCDaemon *)self shouldAcceptNewConnection:v7];
+  v8 = [(SDXPCDaemon *)self shouldAcceptNewConnection:connectionCopy];
   v9 = daemon_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 sd_description];
-    v11 = v10;
+    sd_description = [connectionCopy sd_description];
+    v11 = sd_description;
     v12 = "no";
     if (v8)
     {
@@ -310,7 +310,7 @@ LABEL_4:
     }
 
     *buf = 138412546;
-    v23 = v10;
+    v23 = sd_description;
     v24 = 2080;
     v25 = v12;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "New connection from %@ accepted %s", buf, 0x16u);
@@ -318,29 +318,29 @@ LABEL_4:
 
   if (v8)
   {
-    [v7 _setQueue:self->_dispatchQueue];
-    [v7 setDelegate:self];
-    [v7 setExportedObject:self];
-    v13 = [(SDXPCDaemon *)self exportedInterface];
-    [v7 setExportedInterface:v13];
+    [connectionCopy _setQueue:self->_dispatchQueue];
+    [connectionCopy setDelegate:self];
+    [connectionCopy setExportedObject:self];
+    exportedInterface = [(SDXPCDaemon *)self exportedInterface];
+    [connectionCopy setExportedInterface:exportedInterface];
 
-    v14 = [(SDXPCDaemon *)self remoteObjectInterface];
-    [v7 setRemoteObjectInterface:v14];
+    remoteObjectInterface = [(SDXPCDaemon *)self remoteObjectInterface];
+    [connectionCopy setRemoteObjectInterface:remoteObjectInterface];
 
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10027CD58;
     v18[3] = &unk_1008D2FE0;
     objc_copyWeak(&v19, &location);
     objc_copyWeak(&v20, buf);
-    [v7 setInvalidationHandler:v18];
-    [v7 resume];
-    v15 = [(SDXPCDaemon *)self activeConnections];
-    v16 = [NSMutableSet setWithSet:v15];
+    [connectionCopy setInvalidationHandler:v18];
+    [connectionCopy resume];
+    activeConnections = [(SDXPCDaemon *)self activeConnections];
+    v16 = [NSMutableSet setWithSet:activeConnections];
 
-    [v16 addObject:v7];
+    [v16 addObject:connectionCopy];
     [(SDXPCDaemon *)self setActiveConnections:v16];
 
     objc_destroyWeak(&v20);
@@ -352,63 +352,63 @@ LABEL_4:
   return v8;
 }
 
-- (void)onqueue_connectionInvalidated:(id)a3
+- (void)onqueue_connectionInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 sd_description];
+    sd_description = [invalidatedCopy sd_description];
     v9 = 138412290;
-    v10 = v6;
+    v10 = sd_description;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Connection %@ invalidated", &v9, 0xCu);
   }
 
-  v7 = [(SDXPCDaemon *)self activeConnections];
-  v8 = [v7 mutableCopy];
+  activeConnections = [(SDXPCDaemon *)self activeConnections];
+  v8 = [activeConnections mutableCopy];
 
-  [v8 removeObject:v4];
+  [v8 removeObject:invalidatedCopy];
   [(SDXPCDaemon *)self setActiveConnections:v8];
-  [(SDXPCDaemon *)self connectionInvalidated:v4];
+  [(SDXPCDaemon *)self connectionInvalidated:invalidatedCopy];
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v7 = a3;
-  v8 = a4;
-  [v8 retainArguments];
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10027CFA0;
   block[3] = &unk_1008CE900;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = connectionCopy;
+  selfCopy = self;
+  v15 = invocationCopy;
+  v10 = invocationCopy;
+  v11 = connectionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)establishConnectionWithCompletionHandler:(id)a3
+- (void)establishConnectionWithCompletionHandler:(id)handler
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(dispatchQueue);
-  v5[2](v5);
+  handlerCopy[2](handlerCopy);
 
-  v6 = [(SDXPCDaemon *)self currentConnection];
+  currentConnection = [(SDXPCDaemon *)self currentConnection];
   v7 = daemon_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 sd_description];
+    sd_description = [currentConnection sd_description];
     v9 = 138412290;
-    v10 = v8;
+    v10 = sd_description;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "New connection established to %@", &v9, 0xCu);
   }
 
-  [(SDXPCDaemon *)self connectionEstablished:v6];
+  [(SDXPCDaemon *)self connectionEstablished:currentConnection];
 }
 
 - (NSString)machServiceName
@@ -447,9 +447,9 @@ LABEL_4:
   objc_exception_throw(v7);
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);
@@ -460,9 +460,9 @@ LABEL_4:
   objc_exception_throw(v9);
 }
 
-- (void)connectionEstablished:(id)a3
+- (void)connectionEstablished:(id)established
 {
-  v4 = a3;
+  establishedCopy = established;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);
@@ -473,9 +473,9 @@ LABEL_4:
   objc_exception_throw(v9);
 }
 
-- (void)connectionInvalidated:(id)a3
+- (void)connectionInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = NSStringFromSelector(a2);

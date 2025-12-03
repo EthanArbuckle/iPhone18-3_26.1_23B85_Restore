@@ -1,33 +1,33 @@
 @interface NTKCompanion3rdPartyApp
-+ (BOOL)_isValidApplication:(id)a3;
-+ (BOOL)_isValidComplicationsInformation:(id)a3;
-+ (id)_URLOfFirstItemWithExtension:(id)a3 inDirectory:(id)a4;
-+ (id)_urlsToGalleryBundleInApplicationWithContainerBundleId:(id)a3;
-+ (id)companion3rdPartyRemoteApp:(id)a3 device:(id)a4;
-- (BOOL)applicationHasBeenUpdated:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)_isValidApplication:(id)application;
++ (BOOL)_isValidComplicationsInformation:(id)information;
++ (id)_URLOfFirstItemWithExtension:(id)extension inDirectory:(id)directory;
++ (id)_urlsToGalleryBundleInApplicationWithContainerBundleId:(id)id;
++ (id)companion3rdPartyRemoteApp:(id)app device:(id)device;
+- (BOOL)applicationHasBeenUpdated:(id)updated;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)supportedFamilies;
 - (NSURL)urlToComplicationBundle;
-- (id)_initWithDevice:(id)a3 remoteApplication:(id)a4 galleryBundles:(id)a5 watchKitBundle:(id)a6;
-- (id)_initWithWatchAppId:(id)a3 containerAppId:(id)a4 complicationClientId:(id)a5;
+- (id)_initWithDevice:(id)device remoteApplication:(id)application galleryBundles:(id)bundles watchKitBundle:(id)bundle;
+- (id)_initWithWatchAppId:(id)id containerAppId:(id)appId complicationClientId:(id)clientId;
 - (id)appRegistrationDate;
-- (id)localizedNameForRemoteApp:(id)a3;
+- (id)localizedNameForRemoteApp:(id)app;
 - (unint64_t)hash;
 - (void)install;
 @end
 
 @implementation NTKCompanion3rdPartyApp
 
-+ (id)companion3rdPartyRemoteApp:(id)a3 device:(id)a4
++ (id)companion3rdPartyRemoteApp:(id)app device:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isValidApplication:v6])
+  appCopy = app;
+  deviceCopy = device;
+  if ([self _isValidApplication:appCopy])
   {
-    v8 = [v6 companionAppBundleID];
+    companionAppBundleID = [appCopy companionAppBundleID];
     v24 = 0;
-    v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v8 allowPlaceholder:1 error:&v24];
+    v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:companionAppBundleID allowPlaceholder:1 error:&v24];
     v10 = v24;
     if (!v9)
     {
@@ -38,22 +38,22 @@
       }
     }
 
-    v12 = [v9 applicationState];
-    v13 = [v12 isValid];
+    applicationState = [v9 applicationState];
+    isValid = [applicationState isValid];
 
-    if (v13)
+    if (isValid)
     {
       v14 = [v9 URL];
       v15 = v14;
       if (v14)
       {
         v16 = [v14 URLByAppendingPathComponent:@"Watch" isDirectory:1];
-        v17 = [a1 _URLOfFirstItemWithExtension:@"app" inDirectory:v16];
+        v17 = [self _URLOfFirstItemWithExtension:@"app" inDirectory:v16];
         v18 = v17;
         if (v17)
         {
           v19 = [v17 URLByAppendingPathComponent:@"PlugIns" isDirectory:1];
-          v20 = [a1 _URLOfFirstItemWithExtension:@"appex" inDirectory:v19];
+          v20 = [self _URLOfFirstItemWithExtension:@"appex" inDirectory:v19];
           if (!v20)
           {
             log = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
@@ -101,7 +101,7 @@
       v20 = 0;
     }
 
-    v21 = [[NTKCompanion3rdPartyApp alloc] _initWithDevice:v7 remoteApplication:v6 galleryBundles:0 watchKitBundle:v20];
+    v21 = [[NTKCompanion3rdPartyApp alloc] _initWithDevice:deviceCopy remoteApplication:appCopy galleryBundles:0 watchKitBundle:v20];
   }
 
   else
@@ -112,45 +112,45 @@
   return v21;
 }
 
-- (id)_initWithDevice:(id)a3 remoteApplication:(id)a4 galleryBundles:(id)a5 watchKitBundle:(id)a6
+- (id)_initWithDevice:(id)device remoteApplication:(id)application galleryBundles:(id)bundles watchKitBundle:(id)bundle
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 bundleIdentifier];
-  v15 = [v11 companionAppBundleID];
-  v16 = [v11 watchKitAppExtensionBundleID];
-  v17 = [(NTKCompanion3rdPartyApp *)self _initWithWatchAppId:v14 containerAppId:v15 complicationClientId:v16];
+  deviceCopy = device;
+  applicationCopy = application;
+  bundlesCopy = bundles;
+  bundleCopy = bundle;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  companionAppBundleID = [applicationCopy companionAppBundleID];
+  watchKitAppExtensionBundleID = [applicationCopy watchKitAppExtensionBundleID];
+  v17 = [(NTKCompanion3rdPartyApp *)self _initWithWatchAppId:bundleIdentifier containerAppId:companionAppBundleID complicationClientId:watchKitAppExtensionBundleID];
   v18 = v17;
   if (v17)
   {
-    v37 = v15;
-    v38 = v14;
-    v40 = v10;
-    [v17 setDevice:v10];
+    v37 = companionAppBundleID;
+    v38 = bundleIdentifier;
+    v40 = deviceCopy;
+    [v17 setDevice:deviceCopy];
     v19 = MEMORY[0x277CCACA8];
-    v20 = [v11 databaseUUID];
-    v21 = [v20 UUIDString];
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "sequenceNumber")}];
-    v23 = [v22 stringValue];
-    v24 = [v19 stringWithFormat:@"%@-%@", v21, v23];
+    databaseUUID = [applicationCopy databaseUUID];
+    uUIDString = [databaseUUID UUIDString];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(applicationCopy, "sequenceNumber")}];
+    stringValue = [v22 stringValue];
+    v24 = [v19 stringWithFormat:@"%@-%@", uUIDString, stringValue];
     [v18 setUniqueID:v24];
 
     [v18 setInstalled:{objc_msgSend(v18, "_installStateFromAppConduitInstallState:", 2)}];
-    v39 = v12;
-    v25 = [v12 firstObject];
-    [v18 setUrlToComplicationBundle:v25];
+    v39 = bundlesCopy;
+    firstObject = [bundlesCopy firstObject];
+    [v18 setUrlToComplicationBundle:firstObject];
 
-    [v18 setUrlToWatchKitBundle:v13];
-    v26 = [MEMORY[0x277CBEB18] array];
+    [v18 setUrlToWatchKitBundle:bundleCopy];
+    array = [MEMORY[0x277CBEB18] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v27 = [v11 supportedComplicationFamilies];
-    v28 = [v27 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    supportedComplicationFamilies = [applicationCopy supportedComplicationFamilies];
+    v28 = [supportedComplicationFamilies countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v28)
     {
       v29 = v28;
@@ -161,52 +161,52 @@
         {
           if (*v42 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(supportedComplicationFamilies);
           }
 
           if (CLKComplicationFamilyFromString())
           {
             v32 = [MEMORY[0x277CCABB0] numberWithInteger:0];
-            [v26 addObject:v32];
+            [array addObject:v32];
           }
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v29 = [supportedComplicationFamilies countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v29);
     }
 
-    if ([v26 count])
+    if ([array count])
     {
-      [v18 setSupportedFamilies:v26];
+      [v18 setSupportedFamilies:array];
     }
 
-    v33 = [v18 name];
-    v34 = [v33 length];
+    name = [v18 name];
+    v34 = [name length];
 
-    v10 = v40;
+    deviceCopy = v40;
     if (!v34)
     {
-      v35 = [v18 localizedNameForRemoteApp:v11];
+      v35 = [v18 localizedNameForRemoteApp:applicationCopy];
       [v18 setName:v35];
     }
 
-    v12 = v39;
-    v15 = v37;
-    v14 = v38;
+    bundlesCopy = v39;
+    companionAppBundleID = v37;
+    bundleIdentifier = v38;
   }
 
   return v18;
 }
 
-- (id)localizedNameForRemoteApp:(id)a3
+- (id)localizedNameForRemoteApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = *MEMORY[0x277CBEC40];
   v5 = [MEMORY[0x277CBEB98] setWithObject:*MEMORY[0x277CBEC40]];
-  v6 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v7 = [v3 localizedInfoPlistStringsForKeys:v5 fetchingFirstMatchingLocalizationInList:v6];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v7 = [appCopy localizedInfoPlistStringsForKeys:v5 fetchingFirstMatchingLocalizationInList:preferredLanguages];
 
   if (v7)
   {
@@ -220,45 +220,45 @@
 
   if (![v8 length])
   {
-    v9 = [v3 applicationName];
+    applicationName = [appCopy applicationName];
 
-    v8 = v9;
+    v8 = applicationName;
   }
 
   return v8;
 }
 
-- (id)_initWithWatchAppId:(id)a3 containerAppId:(id)a4 complicationClientId:(id)a5
+- (id)_initWithWatchAppId:(id)id containerAppId:(id)appId complicationClientId:(id)clientId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  appIdCopy = appId;
+  clientIdCopy = clientId;
   v24.receiver = self;
   v24.super_class = NTKCompanion3rdPartyApp;
   v11 = [(NTKCompanion3rdPartyApp *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    [(NTKCompanionApp *)v11 setWatchApplicationIdentifier:v8];
-    [(NTKCompanionApp *)v12 setContainerApplicationIdentifier:v9];
-    [(NTKCompanion3rdPartyApp *)v12 setComplicationClientIdentifier:v10];
-    v13 = [(NTKCompanionApp *)v12 containerApplicationIdentifier];
+    [(NTKCompanionApp *)v11 setWatchApplicationIdentifier:idCopy];
+    [(NTKCompanionApp *)v12 setContainerApplicationIdentifier:appIdCopy];
+    [(NTKCompanion3rdPartyApp *)v12 setComplicationClientIdentifier:clientIdCopy];
+    containerApplicationIdentifier = [(NTKCompanionApp *)v12 containerApplicationIdentifier];
 
-    if (v13)
+    if (containerApplicationIdentifier)
     {
       v14 = objc_alloc(MEMORY[0x277CC1E70]);
-      v15 = [(NTKCompanionApp *)v12 containerApplicationIdentifier];
+      containerApplicationIdentifier2 = [(NTKCompanionApp *)v12 containerApplicationIdentifier];
       v23 = 0;
-      v16 = [v14 initWithBundleIdentifier:v15 allowPlaceholder:1 error:&v23];
+      v16 = [v14 initWithBundleIdentifier:containerApplicationIdentifier2 allowPlaceholder:1 error:&v23];
       v17 = v23;
 
       if (v16)
       {
-        v18 = [v16 localizedName];
-        [(NTKCompanionApp *)v12 setName:v18];
+        localizedName = [v16 localizedName];
+        [(NTKCompanionApp *)v12 setName:localizedName];
 
-        v19 = [(NTKCompanionApp *)v12 name];
-        v20 = [v19 length];
+        name = [(NTKCompanionApp *)v12 name];
+        v20 = [name length];
 
         if (v20)
         {
@@ -267,14 +267,14 @@ LABEL_9:
           goto LABEL_10;
         }
 
-        v21 = [v16 localizedShortName];
-        [(NTKCompanionApp *)v12 setName:v21];
+        localizedShortName = [v16 localizedShortName];
+        [(NTKCompanionApp *)v12 setName:localizedShortName];
       }
 
       else
       {
-        v21 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        localizedShortName = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
+        if (os_log_type_enabled(localizedShortName, OS_LOG_TYPE_ERROR))
         {
           [NTKCompanion3rdPartyApp _initWithWatchAppId:v12 containerAppId:? complicationClientId:?];
         }
@@ -291,51 +291,51 @@ LABEL_10:
 
 - (NSURL)urlToComplicationBundle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_galleryBundlesLoaded && !v2->_urlToComplicationBundle)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_galleryBundlesLoaded && !selfCopy->_urlToComplicationBundle)
   {
-    v3 = [(NTKCompanionApp *)v2 containerApplicationIdentifier];
-    v4 = [NTKCompanion3rdPartyApp _urlsToGalleryBundleInApplicationWithContainerBundleId:v3];
+    containerApplicationIdentifier = [(NTKCompanionApp *)selfCopy containerApplicationIdentifier];
+    v4 = [NTKCompanion3rdPartyApp _urlsToGalleryBundleInApplicationWithContainerBundleId:containerApplicationIdentifier];
 
-    v5 = [v4 firstObject];
-    urlToComplicationBundle = v2->_urlToComplicationBundle;
-    v2->_urlToComplicationBundle = v5;
+    firstObject = [v4 firstObject];
+    urlToComplicationBundle = selfCopy->_urlToComplicationBundle;
+    selfCopy->_urlToComplicationBundle = firstObject;
 
-    v2->_galleryBundlesLoaded = 1;
+    selfCopy->_galleryBundlesLoaded = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v7 = v2->_urlToComplicationBundle;
+  v7 = selfCopy->_urlToComplicationBundle;
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NTKCompanionApp *)self watchApplicationIdentifier];
-  v4 = [v3 hash];
-  v5 = [(NTKCompanionApp *)self containerApplicationIdentifier];
-  v6 = [v5 hash];
+  watchApplicationIdentifier = [(NTKCompanionApp *)self watchApplicationIdentifier];
+  v4 = [watchApplicationIdentifier hash];
+  containerApplicationIdentifier = [(NTKCompanionApp *)self containerApplicationIdentifier];
+  v6 = [containerApplicationIdentifier hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(NTKCompanionApp *)self watchApplicationIdentifier];
-    v7 = [v5 watchApplicationIdentifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    watchApplicationIdentifier = [(NTKCompanionApp *)self watchApplicationIdentifier];
+    watchApplicationIdentifier2 = [v5 watchApplicationIdentifier];
+    if ([watchApplicationIdentifier isEqualToString:watchApplicationIdentifier2])
     {
-      v8 = [(NTKCompanionApp *)self containerApplicationIdentifier];
-      v9 = [v5 containerApplicationIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      containerApplicationIdentifier = [(NTKCompanionApp *)self containerApplicationIdentifier];
+      containerApplicationIdentifier2 = [v5 containerApplicationIdentifier];
+      v10 = [containerApplicationIdentifier isEqualToString:containerApplicationIdentifier2];
     }
 
     else
@@ -355,14 +355,14 @@ LABEL_10:
 - (id)appRegistrationDate
 {
   v3 = objc_alloc(MEMORY[0x277CC1E70]);
-  v4 = [(NTKCompanionApp *)self containerApplicationIdentifier];
+  containerApplicationIdentifier = [(NTKCompanionApp *)self containerApplicationIdentifier];
   v10 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v10];
+  v5 = [v3 initWithBundleIdentifier:containerApplicationIdentifier allowPlaceholder:1 error:&v10];
   v6 = v10;
 
   if (v5)
   {
-    v7 = [v5 registrationDate];
+    registrationDate = [v5 registrationDate];
   }
 
   else
@@ -373,20 +373,20 @@ LABEL_10:
       [NTKCompanion3rdPartyApp _initWithWatchAppId:? containerAppId:? complicationClientId:?];
     }
 
-    v7 = 0;
+    registrationDate = 0;
   }
 
-  return v7;
+  return registrationDate;
 }
 
-- (BOOL)applicationHasBeenUpdated:(id)a3
+- (BOOL)applicationHasBeenUpdated:(id)updated
 {
-  v4 = a3;
-  if ([(NTKCompanion3rdPartyApp *)self isEqual:v4])
+  updatedCopy = updated;
+  if ([(NTKCompanion3rdPartyApp *)self isEqual:updatedCopy])
   {
-    v5 = [(NTKCompanion3rdPartyApp *)self uniqueID];
-    v6 = [v4 uniqueID];
-    v7 = [v5 isEqualToString:v6];
+    uniqueID = [(NTKCompanion3rdPartyApp *)self uniqueID];
+    uniqueID2 = [updatedCopy uniqueID];
+    v7 = [uniqueID isEqualToString:uniqueID2];
 
     v8 = v7 ^ 1;
   }
@@ -404,13 +404,13 @@ LABEL_10:
   v3 = self->_supportedFamilies;
   if (!v3)
   {
-    v4 = [(NTKCompanion3rdPartyApp *)self urlToComplicationBundle];
+    urlToComplicationBundle = [(NTKCompanion3rdPartyApp *)self urlToComplicationBundle];
 
-    if (v4)
+    if (urlToComplicationBundle)
     {
       v5 = MEMORY[0x277CCA8D8];
-      v6 = [(NTKCompanion3rdPartyApp *)self urlToComplicationBundle];
-      v7 = [v5 bundleWithURL:v6];
+      urlToComplicationBundle2 = [(NTKCompanion3rdPartyApp *)self urlToComplicationBundle];
+      v7 = [v5 bundleWithURL:urlToComplicationBundle2];
 
       v8 = [NTKComplicationBundleHelper supportedComplicationFamiliesForBundle:v7];
       [(NTKCompanion3rdPartyApp *)self setSupportedFamilies:v8];
@@ -422,19 +422,19 @@ LABEL_10:
 
 - (void)install
 {
-  v3 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-  v4 = [(NTKCompanionApp *)self watchApplicationIdentifier];
-  v5 = [(NTKCompanion3rdPartyApp *)self device];
-  v6 = [v5 nrDevice];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  watchApplicationIdentifier = [(NTKCompanionApp *)self watchApplicationIdentifier];
+  device = [(NTKCompanion3rdPartyApp *)self device];
+  nrDevice = [device nrDevice];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__NTKCompanion3rdPartyApp_install__block_invoke;
   v8[3] = &unk_278781338;
   v8[4] = self;
-  [v3 installApplication:v4 onPairedDevice:v6 completion:v8];
+  [mEMORY[0x277CEAF80] installApplication:watchApplicationIdentifier onPairedDevice:nrDevice completion:v8];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:self];
 }
 
 void __34__NTKCompanion3rdPartyApp_install__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -452,14 +452,14 @@ void __34__NTKCompanion3rdPartyApp_install__block_invoke(uint64_t a1, uint64_t a
   [*(a1 + 32) setInstalled:{objc_msgSend(*(a1 + 32), "_installStateFromAppConduitInstallState:", a2)}];
 }
 
-+ (id)_URLOfFirstItemWithExtension:(id)a3 inDirectory:(id)a4
++ (id)_URLOfFirstItemWithExtension:(id)extension inDirectory:(id)directory
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  extensionCopy = extension;
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v23 = 0;
-  v8 = [v7 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:0 options:5 error:&v23];
+  v8 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:5 error:&v23];
   v9 = v23;
 
   if (v8)
@@ -484,8 +484,8 @@ void __34__NTKCompanion3rdPartyApp_install__block_invoke(uint64_t a1, uint64_t a
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 pathExtension];
-          v16 = [v15 isEqualToString:v5];
+          pathExtension = [v14 pathExtension];
+          v16 = [pathExtension isEqualToString:extensionCopy];
 
           if (v16)
           {
@@ -516,11 +516,11 @@ LABEL_12:
   return v11;
 }
 
-+ (BOOL)_isValidApplication:(id)a3
++ (BOOL)_isValidApplication:(id)application
 {
-  v3 = a3;
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 length];
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v5 = [bundleIdentifier length];
   if (!v5)
   {
     v6 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
@@ -533,9 +533,9 @@ LABEL_12:
   return v5 != 0;
 }
 
-+ (BOOL)_isValidComplicationsInformation:(id)a3
++ (BOOL)_isValidComplicationsInformation:(id)information
 {
-  v3 = [a3 count];
+  v3 = [information count];
   if (!v3)
   {
     v4 = _NTKLoggingObjectForDomain(24, "NTKLoggingDomainCompanionApp");
@@ -548,13 +548,13 @@ LABEL_12:
   return v3 != 0;
 }
 
-+ (id)_urlsToGalleryBundleInApplicationWithContainerBundleId:(id)a3
++ (id)_urlsToGalleryBundleInApplicationWithContainerBundleId:(id)id
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v4 = objc_opt_new();
   v31 = 0;
-  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v31];
+  v5 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:idCopy allowPlaceholder:1 error:&v31];
   v6 = v31;
   if (!v5)
   {
@@ -565,18 +565,18 @@ LABEL_12:
     }
   }
 
-  v8 = [v5 applicationState];
-  v9 = [v8 isInstalled];
+  applicationState = [v5 applicationState];
+  isInstalled = [applicationState isInstalled];
 
-  if (v9)
+  if (isInstalled)
   {
     v24 = v6;
-    v25 = v3;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    v25 = idCopy;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     [v5 URL];
     v22 = v30 = 0;
-    v23 = v10;
-    v11 = [v10 contentsOfDirectoryAtURL:? includingPropertiesForKeys:? options:? error:?];
+    v23 = defaultManager;
+    v11 = [defaultManager contentsOfDirectoryAtURL:? includingPropertiesForKeys:? options:? error:?];
     v21 = v30;
     v26 = 0u;
     v27 = 0u;
@@ -598,8 +598,8 @@ LABEL_12:
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
-          v18 = [v17 path];
-          v19 = [v18 hasSuffix:@".ckcomplication"];
+          path = [v17 path];
+          v19 = [path hasSuffix:@".ckcomplication"];
 
           if (v19)
           {
@@ -614,7 +614,7 @@ LABEL_12:
     }
 
     v6 = v24;
-    v3 = v25;
+    idCopy = v25;
   }
 
   return v4;

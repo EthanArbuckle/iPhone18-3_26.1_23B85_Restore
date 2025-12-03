@@ -1,17 +1,17 @@
 @interface TFBetaAppLaunchScreenProvider
-+ (id)createBetaAppLaunchViewControllerForIdentifier:(id)a3 hostedIn:(id)a4 withSidepackLaunchInfo:(id)a5;
++ (id)createBetaAppLaunchViewControllerForIdentifier:(id)identifier hostedIn:(id)in withSidepackLaunchInfo:(id)info;
 @end
 
 @implementation TFBetaAppLaunchScreenProvider
 
-+ (id)createBetaAppLaunchViewControllerForIdentifier:(id)a3 hostedIn:(id)a4 withSidepackLaunchInfo:(id)a5
++ (id)createBetaAppLaunchViewControllerForIdentifier:(id)identifier hostedIn:(id)in withSidepackLaunchInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  inCopy = in;
+  infoCopy = info;
+  if (infoCopy)
   {
-    v10 = [TFLaunchScreenBuilder buildLaunchScreenFromBetaAppLaunchInfo:v9];
+    v10 = [TFLaunchScreenBuilder buildLaunchScreenFromBetaAppLaunchInfo:infoCopy];
   }
 
   else
@@ -20,7 +20,7 @@
   }
 
   v21 = 0;
-  v11 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v7 allowPlaceholder:0 error:&v21];
+  v11 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v21];
   v12 = v21;
   if (!v11)
   {
@@ -36,7 +36,7 @@
 
   v18 = [[TFBetaAppLaunchScreenViewController alloc] initWithPresenter:v17];
   [(TFBetaAppLaunchPresenter *)v17 setPresenterView:v18];
-  [(TFBetaAppLaunchScreenViewController *)v18 setLaunchScreenHost:v8];
+  [(TFBetaAppLaunchScreenViewController *)v18 setLaunchScreenHost:inCopy];
 
   return v18;
 }

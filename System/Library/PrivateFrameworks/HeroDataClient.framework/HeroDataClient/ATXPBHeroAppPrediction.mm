@@ -1,28 +1,28 @@
 @interface ATXPBHeroAppPrediction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsTouristApp:(BOOL)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLatitudeAtPredictionTime:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasLongitudeAtPredictionTime:(BOOL)a3;
-- (void)setHasPoiMuid:(BOOL)a3;
-- (void)setHasRadius:(BOOL)a3;
-- (void)setHasRank:(BOOL)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsTouristApp:(BOOL)app;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLatitudeAtPredictionTime:(BOOL)time;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasLongitudeAtPredictionTime:(BOOL)time;
+- (void)setHasPoiMuid:(BOOL)muid;
+- (void)setHasRadius:(BOOL)radius;
+- (void)setHasRank:(BOOL)rank;
+- (void)setHasScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBHeroAppPrediction
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 2;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 8;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasIsTouristApp:(BOOL)a3
+- (void)setHasIsTouristApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 512;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 256;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRank:(BOOL)a3
+- (void)setHasRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 128;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRadius:(BOOL)a3
+- (void)setHasRadius:(BOOL)radius
 {
-  if (a3)
+  if (radius)
   {
     v3 = 64;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasLatitudeAtPredictionTime:(BOOL)a3
+- (void)setHasLatitudeAtPredictionTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLongitudeAtPredictionTime:(BOOL)a3
+- (void)setHasLongitudeAtPredictionTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 16;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPoiMuid:(BOOL)a3
+- (void)setHasPoiMuid:(BOOL)muid
 {
-  if (a3)
+  if (muid)
   {
     v3 = 32;
   }
@@ -161,20 +161,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBHeroAppPrediction;
   v4 = [(ATXPBHeroAppPrediction *)&v8 description];
-  v5 = [(ATXPBHeroAppPrediction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBHeroAppPrediction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_latitude];
-    [v3 setObject:v5 forKey:@"latitude"];
+    [dictionary setObject:v5 forKey:@"latitude"];
 
     has = self->_has;
   }
@@ -182,20 +182,20 @@
   if ((has & 8) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_longitude];
-    [v3 setObject:v6 forKey:@"longitude"];
+    [dictionary setObject:v6 forKey:@"longitude"];
   }
 
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   v8 = self->_has;
   if ((v8 & 0x200) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_isTouristApp];
-    [v3 setObject:v9 forKey:@"isTouristApp"];
+    [dictionary setObject:v9 forKey:@"isTouristApp"];
 
     v8 = self->_has;
   }
@@ -203,26 +203,26 @@
   if ((v8 & 0x100) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_score];
-    [v3 setObject:v10 forKey:@"score"];
+    [dictionary setObject:v10 forKey:@"score"];
   }
 
   urlHash = self->_urlHash;
   if (urlHash)
   {
-    [v3 setObject:urlHash forKey:@"urlHash"];
+    [dictionary setObject:urlHash forKey:@"urlHash"];
   }
 
   clipMetadata = self->_clipMetadata;
   if (clipMetadata)
   {
-    [v3 setObject:clipMetadata forKey:@"clipMetadata"];
+    [dictionary setObject:clipMetadata forKey:@"clipMetadata"];
   }
 
   v13 = self->_has;
   if (v13)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_adamId];
-    [v3 setObject:v18 forKey:@"adamId"];
+    [dictionary setObject:v18 forKey:@"adamId"];
 
     v13 = self->_has;
     if ((v13 & 0x80) == 0)
@@ -243,7 +243,7 @@ LABEL_17:
   }
 
   v19 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_rank];
-  [v3 setObject:v19 forKey:@"rank"];
+  [dictionary setObject:v19 forKey:@"rank"];
 
   v13 = self->_has;
   if ((v13 & 0x40) == 0)
@@ -259,7 +259,7 @@ LABEL_18:
 
 LABEL_30:
   v20 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_radius];
-  [v3 setObject:v20 forKey:@"radius"];
+  [dictionary setObject:v20 forKey:@"radius"];
 
   v13 = self->_has;
   if ((v13 & 4) == 0)
@@ -275,34 +275,34 @@ LABEL_19:
 
 LABEL_31:
   v21 = [MEMORY[0x277CCABB0] numberWithDouble:self->_latitudeAtPredictionTime];
-  [v3 setObject:v21 forKey:@"latitudeAtPredictionTime"];
+  [dictionary setObject:v21 forKey:@"latitudeAtPredictionTime"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_20:
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_longitudeAtPredictionTime];
-    [v3 setObject:v14 forKey:@"longitudeAtPredictionTime"];
+    [dictionary setObject:v14 forKey:@"longitudeAtPredictionTime"];
   }
 
 LABEL_21:
   poiCategory = self->_poiCategory;
   if (poiCategory)
   {
-    [v3 setObject:poiCategory forKey:@"poiCategory"];
+    [dictionary setObject:poiCategory forKey:@"poiCategory"];
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_poiMuid];
-    [v3 setObject:v16 forKey:@"poiMuid"];
+    [dictionary setObject:v16 forKey:@"poiMuid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -421,61 +421,61 @@ LABEL_21:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_latitude;
-    *(v4 + 58) |= 2u;
+    toCopy[2] = *&self->_latitude;
+    *(toCopy + 58) |= 2u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_longitude;
-    *(v4 + 58) |= 8u;
+    toCopy[4] = *&self->_longitude;
+    *(toCopy + 58) |= 8u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v8;
+    [toCopy setBundleId:?];
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 0x200) != 0)
   {
-    *(v4 + 112) = self->_isTouristApp;
-    *(v4 + 58) |= 0x200u;
+    *(toCopy + 112) = self->_isTouristApp;
+    *(toCopy + 58) |= 0x200u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x100) != 0)
   {
-    v4[9] = *&self->_score;
-    *(v4 + 58) |= 0x100u;
+    toCopy[9] = *&self->_score;
+    *(toCopy + 58) |= 0x100u;
   }
 
   if (self->_urlHash)
   {
     [v8 setUrlHash:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_clipMetadata)
   {
     [v8 setClipMetadata:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if (v7)
   {
-    v4[1] = self->_adamId;
-    *(v4 + 58) |= 1u;
+    toCopy[1] = self->_adamId;
+    *(toCopy + 58) |= 1u;
     v7 = self->_has;
     if ((v7 & 0x80) == 0)
     {
@@ -494,8 +494,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v4[8] = self->_rank;
-  *(v4 + 58) |= 0x80u;
+  toCopy[8] = self->_rank;
+  *(toCopy + 58) |= 0x80u;
   v7 = self->_has;
   if ((v7 & 0x40) == 0)
   {
@@ -509,8 +509,8 @@ LABEL_18:
   }
 
 LABEL_30:
-  v4[7] = self->_radius;
-  *(v4 + 58) |= 0x40u;
+  toCopy[7] = self->_radius;
+  *(toCopy + 58) |= 0x40u;
   v7 = self->_has;
   if ((v7 & 4) == 0)
   {
@@ -524,32 +524,32 @@ LABEL_19:
   }
 
 LABEL_31:
-  v4[3] = *&self->_latitudeAtPredictionTime;
-  *(v4 + 58) |= 4u;
+  toCopy[3] = *&self->_latitudeAtPredictionTime;
+  *(toCopy + 58) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_20:
-    v4[5] = *&self->_longitudeAtPredictionTime;
-    *(v4 + 58) |= 0x10u;
+    toCopy[5] = *&self->_longitudeAtPredictionTime;
+    *(toCopy + 58) |= 0x10u;
   }
 
 LABEL_21:
   if (self->_poiCategory)
   {
     [v8 setPoiCategory:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[6] = self->_poiMuid;
-    *(v4 + 58) |= 0x20u;
+    toCopy[6] = self->_poiMuid;
+    *(toCopy + 58) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -565,7 +565,7 @@ LABEL_21:
     *(v5 + 116) |= 8u;
   }
 
-  v8 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleId copyWithZone:zone];
   v9 = *(v6 + 80);
   *(v6 + 80) = v8;
 
@@ -583,11 +583,11 @@ LABEL_21:
     *(v6 + 116) |= 0x100u;
   }
 
-  v11 = [(NSString *)self->_urlHash copyWithZone:a3];
+  v11 = [(NSString *)self->_urlHash copyWithZone:zone];
   v12 = *(v6 + 104);
   *(v6 + 104) = v11;
 
-  v13 = [(NSData *)self->_clipMetadata copyWithZone:a3];
+  v13 = [(NSData *)self->_clipMetadata copyWithZone:zone];
   v14 = *(v6 + 88);
   *(v6 + 88) = v13;
 
@@ -654,7 +654,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  v16 = [(NSString *)self->_poiCategory copyWithZone:a3];
+  v16 = [(NSString *)self->_poiCategory copyWithZone:zone];
   v17 = *(v6 + 96);
   *(v6 + 96) = v16;
 
@@ -667,19 +667,19 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_65;
   }
 
   has = self->_has;
-  v6 = *(v4 + 58);
+  v6 = *(equalCopy + 58);
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_latitude != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_latitude != *(equalCopy + 2))
     {
       goto LABEL_65;
     }
@@ -692,7 +692,7 @@ LABEL_15:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_longitude != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_longitude != *(equalCopy + 4))
     {
       goto LABEL_65;
     }
@@ -704,7 +704,7 @@ LABEL_15:
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 10))
+  if (bundleId | *(equalCopy + 10))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -714,55 +714,55 @@ LABEL_15:
     has = self->_has;
   }
 
-  v8 = *(v4 + 58);
+  v8 = *(equalCopy + 58);
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 58) & 0x200) == 0)
+    if ((*(equalCopy + 58) & 0x200) == 0)
     {
       goto LABEL_65;
     }
 
-    v9 = *(v4 + 112);
+    v9 = *(equalCopy + 112);
     if (self->_isTouristApp)
     {
-      if ((*(v4 + 112) & 1) == 0)
+      if ((*(equalCopy + 112) & 1) == 0)
       {
         goto LABEL_65;
       }
     }
 
-    else if (*(v4 + 112))
+    else if (*(equalCopy + 112))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 58) & 0x200) != 0)
+  else if ((*(equalCopy + 58) & 0x200) != 0)
   {
     goto LABEL_65;
   }
 
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 58) & 0x100) == 0 || self->_score != *(v4 + 9))
+    if ((*(equalCopy + 58) & 0x100) == 0 || self->_score != *(equalCopy + 9))
     {
       goto LABEL_65;
     }
   }
 
-  else if ((*(v4 + 58) & 0x100) != 0)
+  else if ((*(equalCopy + 58) & 0x100) != 0)
   {
     goto LABEL_65;
   }
 
   urlHash = self->_urlHash;
-  if (urlHash | *(v4 + 13) && ![(NSString *)urlHash isEqual:?])
+  if (urlHash | *(equalCopy + 13) && ![(NSString *)urlHash isEqual:?])
   {
     goto LABEL_65;
   }
 
   clipMetadata = self->_clipMetadata;
-  if (clipMetadata | *(v4 + 11))
+  if (clipMetadata | *(equalCopy + 11))
   {
     if (![(NSData *)clipMetadata isEqual:?])
     {
@@ -771,10 +771,10 @@ LABEL_15:
   }
 
   v12 = self->_has;
-  v13 = *(v4 + 58);
+  v13 = *(equalCopy + 58);
   if (v12)
   {
-    if ((v13 & 1) == 0 || self->_adamId != *(v4 + 1))
+    if ((v13 & 1) == 0 || self->_adamId != *(equalCopy + 1))
     {
       goto LABEL_65;
     }
@@ -787,7 +787,7 @@ LABEL_15:
 
   if ((v12 & 0x80) != 0)
   {
-    if ((v13 & 0x80) == 0 || self->_rank != *(v4 + 8))
+    if ((v13 & 0x80) == 0 || self->_rank != *(equalCopy + 8))
     {
       goto LABEL_65;
     }
@@ -800,7 +800,7 @@ LABEL_15:
 
   if ((v12 & 0x40) != 0)
   {
-    if ((v13 & 0x40) == 0 || self->_radius != *(v4 + 7))
+    if ((v13 & 0x40) == 0 || self->_radius != *(equalCopy + 7))
     {
       goto LABEL_65;
     }
@@ -813,7 +813,7 @@ LABEL_15:
 
   if ((v12 & 4) != 0)
   {
-    if ((v13 & 4) == 0 || self->_latitudeAtPredictionTime != *(v4 + 3))
+    if ((v13 & 4) == 0 || self->_latitudeAtPredictionTime != *(equalCopy + 3))
     {
       goto LABEL_65;
     }
@@ -826,7 +826,7 @@ LABEL_15:
 
   if ((v12 & 0x10) != 0)
   {
-    if ((v13 & 0x10) == 0 || self->_longitudeAtPredictionTime != *(v4 + 5))
+    if ((v13 & 0x10) == 0 || self->_longitudeAtPredictionTime != *(equalCopy + 5))
     {
       goto LABEL_65;
     }
@@ -838,7 +838,7 @@ LABEL_15:
   }
 
   poiCategory = self->_poiCategory;
-  if (poiCategory | *(v4 + 12))
+  if (poiCategory | *(equalCopy + 12))
   {
     if ([(NSString *)poiCategory isEqual:?])
     {
@@ -852,10 +852,10 @@ LABEL_65:
   }
 
 LABEL_60:
-  v15 = *(v4 + 58);
+  v15 = *(equalCopy + 58);
   if ((v12 & 0x20) != 0)
   {
-    if ((v15 & 0x20) == 0 || self->_poiMuid != *(v4 + 6))
+    if ((v15 & 0x20) == 0 || self->_poiMuid != *(equalCopy + 6))
     {
       goto LABEL_65;
     }
@@ -1117,62 +1117,62 @@ LABEL_37:
   return v41 ^ v42 ^ v39 ^ v19 ^ v40 ^ v38 ^ v20 ^ v24 ^ v25 ^ v26 ^ v30 ^ v31 ^ v35 ^ v36;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 58);
+  fromCopy = from;
+  v5 = *(fromCopy + 58);
   if ((v5 & 2) != 0)
   {
-    self->_latitude = *(v4 + 2);
+    self->_latitude = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 58);
+    v5 = *(fromCopy + 58);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_longitude = *(v4 + 4);
+    self->_longitude = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
-  v8 = v4;
-  if (*(v4 + 10))
+  v8 = fromCopy;
+  if (*(fromCopy + 10))
   {
     [(ATXPBHeroAppPrediction *)self setBundleId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v6 = *(v4 + 58);
+  v6 = *(fromCopy + 58);
   if ((v6 & 0x200) != 0)
   {
-    self->_isTouristApp = *(v4 + 112);
+    self->_isTouristApp = *(fromCopy + 112);
     *&self->_has |= 0x200u;
-    v6 = *(v4 + 58);
+    v6 = *(fromCopy + 58);
   }
 
   if ((v6 & 0x100) != 0)
   {
-    self->_score = *(v4 + 9);
+    self->_score = *(fromCopy + 9);
     *&self->_has |= 0x100u;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(ATXPBHeroAppPrediction *)self setUrlHash:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(ATXPBHeroAppPrediction *)self setClipMetadata:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 58);
+  v7 = *(fromCopy + 58);
   if (v7)
   {
-    self->_adamId = *(v4 + 1);
+    self->_adamId = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 58);
+    v7 = *(fromCopy + 58);
     if ((v7 & 0x80) == 0)
     {
 LABEL_17:
@@ -1190,9 +1190,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  self->_rank = *(v4 + 8);
+  self->_rank = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v7 = *(v4 + 58);
+  v7 = *(fromCopy + 58);
   if ((v7 & 0x40) == 0)
   {
 LABEL_18:
@@ -1205,9 +1205,9 @@ LABEL_18:
   }
 
 LABEL_30:
-  self->_radius = *(v4 + 7);
+  self->_radius = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v7 = *(v4 + 58);
+  v7 = *(fromCopy + 58);
   if ((v7 & 4) == 0)
   {
 LABEL_19:
@@ -1220,25 +1220,25 @@ LABEL_19:
   }
 
 LABEL_31:
-  self->_latitudeAtPredictionTime = *(v4 + 3);
+  self->_latitudeAtPredictionTime = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 58) & 0x10) != 0)
+  if ((*(fromCopy + 58) & 0x10) != 0)
   {
 LABEL_20:
-    self->_longitudeAtPredictionTime = *(v4 + 5);
+    self->_longitudeAtPredictionTime = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_21:
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ATXPBHeroAppPrediction *)self setPoiCategory:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 58) & 0x20) != 0)
+  if ((*(fromCopy + 58) & 0x20) != 0)
   {
-    self->_poiMuid = *(v4 + 6);
+    self->_poiMuid = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 }

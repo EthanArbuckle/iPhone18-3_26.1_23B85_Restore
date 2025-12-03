@@ -1,19 +1,19 @@
 @interface SYStoreDeltaSessionOwner
-- (SYStoreDeltaSessionOwner)initWithChanges:(id)a3;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
+- (SYStoreDeltaSessionOwner)initWithChanges:(id)changes;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
 @end
 
 @implementation SYStoreDeltaSessionOwner
 
-- (SYStoreDeltaSessionOwner)initWithChanges:(id)a3
+- (SYStoreDeltaSessionOwner)initWithChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v10.receiver = self;
   v10.super_class = SYStoreDeltaSessionOwner;
   v5 = [(SYStoreDeltaSessionOwner *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [changesCopy copy];
     changes = v5->_changes;
     v5->_changes = v6;
 
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  changesCopy = changes;
   currentIdx = self->_currentIdx;
   if (currentIdx >= [(NSArray *)self->_changes count])
   {
@@ -43,7 +43,7 @@
       while (1)
       {
         v13 = [(NSArray *)self->_changes objectAtIndexedSubscript:v11];
-        v14 = v8[2](v8, v13);
+        v14 = changesCopy[2](changesCopy, v13);
 
         if ((v14 & 1) == 0)
         {
@@ -58,7 +58,7 @@
         }
       }
 
-      if ([v7 state] == 5)
+      if ([sessionCopy state] == 5)
       {
         v15 = 5;
         goto LABEL_14;

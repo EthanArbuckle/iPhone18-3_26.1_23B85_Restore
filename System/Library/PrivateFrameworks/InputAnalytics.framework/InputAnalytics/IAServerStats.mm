@@ -1,7 +1,7 @@
 @interface IAServerStats
 + (void)logShutdown;
 + (void)logStart;
-+ (void)reportConnectionStatusSuccessful:(BOOL)a3;
++ (void)reportConnectionStatusSuccessful:(BOOL)successful;
 + (void)reportDailyStats;
 @end
 
@@ -35,13 +35,13 @@
   }
 }
 
-+ (void)reportConnectionStatusSuccessful:(BOOL)a3
++ (void)reportConnectionStatusSuccessful:(BOOL)successful
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1D461D3F0;
   block[3] = &unk_1E848A6A0;
-  v4 = a3;
+  successfulCopy = successful;
   if (qword_1ED82C5D0 != -1)
   {
     dispatch_once(&qword_1ED82C5D0, block);

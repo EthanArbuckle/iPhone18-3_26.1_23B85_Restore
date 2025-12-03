@@ -1,6 +1,6 @@
 @interface _NSUIKitTextGraphicsContext
 + (_NSUIKitTextGraphicsContext)sharedContext;
-+ (id)graphicsContextForApplicationFrameworkContext:(int64_t)a3;
++ (id)graphicsContextForApplicationFrameworkContext:(int64_t)context;
 - (void)restoreGraphicsState;
 - (void)saveGraphicsState;
 @end
@@ -17,11 +17,11 @@
   return sharedContext_sharedContext;
 }
 
-+ (id)graphicsContextForApplicationFrameworkContext:(int64_t)a3
++ (id)graphicsContextForApplicationFrameworkContext:(int64_t)context
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
-  v6 = NSStringFromClass(a1);
+  v6 = NSStringFromClass(self);
   [v4 raise:v5 format:{@"+[%@ %@] should not be invoked.", v6, NSStringFromSelector(a2)}];
   return 0;
 }

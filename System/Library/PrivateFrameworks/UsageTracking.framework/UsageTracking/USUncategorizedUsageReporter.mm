@@ -33,15 +33,15 @@
 
 + (void)startReporting
 {
-  v2 = [a1 sharedReporter];
-  [v2 _startReporting];
+  sharedReporter = [self sharedReporter];
+  [sharedReporter _startReporting];
 }
 
 - (void)_startReporting
 {
-  v2 = [(USUncategorizedUsageReporter *)self backgroundActivity];
-  [v2 setPreregistered:1];
-  [v2 scheduleWithBlock:&stru_100086568];
+  backgroundActivity = [(USUncategorizedUsageReporter *)self backgroundActivity];
+  [backgroundActivity setPreregistered:1];
+  [backgroundActivity scheduleWithBlock:&stru_100086568];
 }
 
 @end

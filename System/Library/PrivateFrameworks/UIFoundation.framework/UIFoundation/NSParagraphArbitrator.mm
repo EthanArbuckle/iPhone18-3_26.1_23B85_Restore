@@ -1,37 +1,37 @@
 @interface NSParagraphArbitrator
 + (BOOL)_hyphenatesAsLastResort;
-+ (id)paragraphArbitratorWithAttributedString:(id)a3 range:(_NSRange)a4;
-+ (int)_languageCategoryForLanguageCode:(id)a3;
-+ (int)_lineBreakStyleForFont:(id)a3;
++ (id)paragraphArbitratorWithAttributedString:(id)string range:(_NSRange)range;
++ (int)_languageCategoryForLanguageCode:(id)code;
++ (int)_lineBreakStyleForFont:(id)font;
 + (void)initialize;
-- ($F08F7EC4C389A89376F473094BC6C9F8)_firstFitLineBreakContextBeforeIndex:(SEL)a3 lineFragmentWidth:(unint64_t)a4 range:(double)a5;
-- ($F08F7EC4C389A89376F473094BC6C9F8)_optimalLineBreakContextBeforeIndex:(SEL)a3 lineFragmentWidth:(unint64_t)a4 range:(double)a5;
-- ($F08F7EC4C389A89376F473094BC6C9F8)lineBreakContextBeforeIndex:(SEL)a3 lineFragmentWidth:(unint64_t)a4 range:(double)a5;
-- (BOOL)_attributedStringOverridesLineBreakBeforeIndex:(id)a3;
+- ($F08F7EC4C389A89376F473094BC6C9F8)_firstFitLineBreakContextBeforeIndex:(SEL)index lineFragmentWidth:(unint64_t)width range:(double)range;
+- ($F08F7EC4C389A89376F473094BC6C9F8)_optimalLineBreakContextBeforeIndex:(SEL)index lineFragmentWidth:(unint64_t)width range:(double)range;
+- ($F08F7EC4C389A89376F473094BC6C9F8)lineBreakContextBeforeIndex:(SEL)index lineFragmentWidth:(unint64_t)width range:(double)range;
+- (BOOL)_attributedStringOverridesLineBreakBeforeIndex:(id)index;
 - (BOOL)_hyphenatesAsLastResort;
 - (BOOL)_shouldUseCFStringTokenizerForLineBreaks;
 - (BOOL)_shouldUseOptimalLayout;
-- (BOOL)prepareBreakIteratorForCharacterAtIndex:(unint64_t)a3;
-- (BOOL)prepareTokenizerForPreferredLanguage:(id)a3;
-- (NSParagraphArbitrator)initWithAttributedString:(id)a3 range:(_NSRange)a4;
+- (BOOL)prepareBreakIteratorForCharacterAtIndex:(unint64_t)index;
+- (BOOL)prepareTokenizerForPreferredLanguage:(id)language;
+- (NSParagraphArbitrator)initWithAttributedString:(id)string range:(_NSRange)range;
 - (NSParagraphStyle)defaultParagraphStyle;
 - (NSString)debugString;
 - (_NSRange)paragraphRange;
 - (_NSRange)previousLineRange;
-- (double)raggednessWithCharIndexAsLineBreak:(unint64_t)a3 inRange:(_NSRange)a4;
-- (id)_preferredLanguageForCharacterAtIndex:(unint64_t)a3;
-- (int)_lineBreakStyleForLastResortHyphenation:(BOOL)a3;
-- (unint64_t)adjustedLineBreakIndexForProposedIndex:(unint64_t)a3;
+- (double)raggednessWithCharIndexAsLineBreak:(unint64_t)break inRange:(_NSRange)range;
+- (id)_preferredLanguageForCharacterAtIndex:(unint64_t)index;
+- (int)_lineBreakStyleForLastResortHyphenation:(BOOL)hyphenation;
+- (unint64_t)adjustedLineBreakIndexForProposedIndex:(unint64_t)index;
 - (void)_computeOptimalLayout;
 - (void)configureOptimalLineBreaker;
 - (void)dealloc;
 - (void)reset;
 - (void)resetBreaker;
-- (void)setAttributedString:(id)a3;
-- (void)setDefaultParagraphStyle:(id)a3;
-- (void)setParagraphLine:(__CTLine *)a3;
-- (void)setParagraphRange:(_NSRange)a3;
-- (void)setTextContainerWidth:(double)a3;
+- (void)setAttributedString:(id)string;
+- (void)setDefaultParagraphStyle:(id)style;
+- (void)setParagraphLine:(__CTLine *)line;
+- (void)setParagraphRange:(_NSRange)range;
+- (void)setTextContainerWidth:(double)width;
 @end
 
 @implementation NSParagraphArbitrator
@@ -44,25 +44,25 @@
     v3 = +[NSParagraphStyle defaultParagraphStyle];
   }
 
-  v4 = [(NSParagraphStyle *)v3 secondaryLineBreakMode];
-  if (v4 != 1)
+  secondaryLineBreakMode = [(NSParagraphStyle *)v3 secondaryLineBreakMode];
+  if (secondaryLineBreakMode != 1)
   {
-    if (v4 == 2)
+    if (secondaryLineBreakMode == 2)
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(secondaryLineBreakMode) = 0;
     }
 
     else
     {
-      LODWORD(v4) = +[NSParagraphArbitrator _hyphenatesAsLastResort];
-      if (v4)
+      LODWORD(secondaryLineBreakMode) = +[NSParagraphArbitrator _hyphenatesAsLastResort];
+      if (secondaryLineBreakMode)
       {
-        LOBYTE(v4) = [(NSParagraphArbitrator *)self _lineBreakStyleForLastResortHyphenation:1]!= 1;
+        LOBYTE(secondaryLineBreakMode) = [(NSParagraphArbitrator *)self _lineBreakStyleForLastResortHyphenation:1]!= 1;
       }
     }
   }
 
-  return v4;
+  return secondaryLineBreakMode;
 }
 
 + (BOOL)_hyphenatesAsLastResort
@@ -138,14 +138,14 @@ uint64_t __35__NSParagraphArbitrator_initialize__block_invoke()
   usesOptimalLayout = self->_usesOptimalLayout;
   if (usesOptimalLayout == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] string];
-    v5 = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] attribute:@"NSParagraphStyle" atIndex:[(NSParagraphArbitrator *)self paragraphRange] effectiveRange:0];
-    if (!v5)
+    string = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] string];
+    defaultParagraphStyle = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] attribute:@"NSParagraphStyle" atIndex:[(NSParagraphArbitrator *)self paragraphRange] effectiveRange:0];
+    if (!defaultParagraphStyle)
     {
-      v5 = [(NSParagraphArbitrator *)self defaultParagraphStyle];
+      defaultParagraphStyle = [(NSParagraphArbitrator *)self defaultParagraphStyle];
     }
 
-    v6 = [(NSParagraphArbitrator *)self _lineBreakStyle];
+    _lineBreakStyle = [(NSParagraphArbitrator *)self _lineBreakStyle];
     if (([(NSParagraphArbitrator *)self lineBreakStrategy]& 4) != 0)
     {
       goto LABEL_9;
@@ -158,7 +158,7 @@ uint64_t __35__NSParagraphArbitrator_initialize__block_invoke()
 
     else
     {
-      if ((__NSLineBreakStrategyStandardActualOptions([(NSParagraphStyle *)v5 alignment]== NSTextAlignmentJustified) & 8) == 0)
+      if ((__NSLineBreakStrategyStandardActualOptions([(NSParagraphStyle *)defaultParagraphStyle alignment]== NSTextAlignmentJustified) & 8) == 0)
       {
 LABEL_9:
         v7 = 0;
@@ -169,16 +169,16 @@ LABEL_9:
     }
 
 LABEL_12:
-    if (![(NSParagraphArbitrator *)self breaksLinesForInteractiveText]&& (v6 != 1 || [(NSParagraphStyle *)v5 spansAllLines]))
+    if (![(NSParagraphArbitrator *)self breaksLinesForInteractiveText]&& (_lineBreakStyle != 1 || [(NSParagraphStyle *)defaultParagraphStyle spansAllLines]))
     {
       v7 = 1;
     }
 
-    if (self->_textContainerIsSimple && self->_textContainerWidth > 0.001 && [(NSString *)v4 length]<= 0x2000)
+    if (self->_textContainerIsSimple && self->_textContainerWidth > 0.001 && [(NSString *)string length]<= 0x2000)
     {
       v8 = _shouldUseOptimalLayout_forbiddenCharacterSet;
-      v9 = [(NSParagraphArbitrator *)self paragraphRange];
-      v11 = [(NSString *)v4 rangeOfCharacterFromSet:v8 options:0 range:v9, v10]== 0x7FFFFFFFFFFFFFFFLL;
+      paragraphRange = [(NSParagraphArbitrator *)self paragraphRange];
+      v11 = [(NSString *)string rangeOfCharacterFromSet:v8 options:0 range:paragraphRange, v10]== 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -244,77 +244,77 @@ uint64_t __65__NSParagraphArbitrator__shouldUseCFStringTokenizerForLineBreaks__b
   return result;
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
   attributedString = self->_attributedString;
-  if (attributedString != a3)
+  if (attributedString != string)
   {
 
-    self->_attributedString = a3;
+    self->_attributedString = string;
     self->_needsOptimalLayout = 1;
     self->_usesOptimalLayout = 0x7FFFFFFFFFFFFFFFLL;
     self->_lineBreakStyle = 0;
   }
 }
 
-- (void)setParagraphRange:(_NSRange)a3
+- (void)setParagraphRange:(_NSRange)range
 {
-  if (a3.location != self->_paragraphRange.location || a3.length != self->_paragraphRange.length)
+  if (range.location != self->_paragraphRange.location || range.length != self->_paragraphRange.length)
   {
-    self->_paragraphRange = a3;
+    self->_paragraphRange = range;
     self->_needsOptimalLayout = 1;
     self->_usesOptimalLayout = 0x7FFFFFFFFFFFFFFFLL;
     self->_lineBreakStyle = 0;
   }
 }
 
-- (void)setParagraphLine:(__CTLine *)a3
+- (void)setParagraphLine:(__CTLine *)line
 {
   paragraphLine = self->_paragraphLine;
-  if (paragraphLine != a3)
+  if (paragraphLine != line)
   {
     if (paragraphLine)
     {
       CFRelease(paragraphLine);
     }
 
-    if (a3)
+    if (line)
     {
-      CFRetain(a3);
+      CFRetain(line);
     }
 
-    self->_paragraphLine = a3;
+    self->_paragraphLine = line;
     self->_needsOptimalLayout = 1;
   }
 }
 
-- (void)setTextContainerWidth:(double)a3
+- (void)setTextContainerWidth:(double)width
 {
-  if (self->_textContainerWidth != a3)
+  if (self->_textContainerWidth != width)
   {
-    self->_textContainerWidth = a3;
+    self->_textContainerWidth = width;
     self->_needsOptimalLayout = 1;
     self->_usesOptimalLayout = 0x7FFFFFFFFFFFFFFFLL;
   }
 }
 
-- (void)setDefaultParagraphStyle:(id)a3
+- (void)setDefaultParagraphStyle:(id)style
 {
   defaultParagraphStyle = self->_defaultParagraphStyle;
-  if (defaultParagraphStyle != a3)
+  if (defaultParagraphStyle != style)
   {
 
-    self->_defaultParagraphStyle = [a3 copy];
+    self->_defaultParagraphStyle = [style copy];
     self->_needsOptimalLayout = 1;
     self->_usesOptimalLayout = 0x7FFFFFFFFFFFFFFFLL;
     self->_lineBreakStyle = 0;
   }
 }
 
-+ (id)paragraphArbitratorWithAttributedString:(id)a3 range:(_NSRange)a4
++ (id)paragraphArbitratorWithAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = [objc_msgSend(MEMORY[0x1E696AF00] "currentThread")];
   v8 = v7;
   if (v7)
@@ -341,17 +341,17 @@ uint64_t __65__NSParagraphArbitrator__shouldUseCFStringTokenizerForLineBreaks__b
 
   v11 = v9;
 LABEL_7:
-  if ([a3 length])
+  if ([string length])
   {
-    v12 = a3;
+    stringCopy = string;
   }
 
   else
   {
-    v12 = 0;
+    stringCopy = 0;
   }
 
-  [v9 setAttributedString:v12];
+  [v9 setAttributedString:stringCopy];
   [v9 setParagraphRange:{location, length}];
   [v9 setHyphenationFactor:0.0];
   [v9 setLineBreakStrategy:0];
@@ -366,10 +366,10 @@ LABEL_7:
   return v9;
 }
 
-- (NSParagraphArbitrator)initWithAttributedString:(id)a3 range:(_NSRange)a4
+- (NSParagraphArbitrator)initWithAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v11.receiver = self;
   v11.super_class = NSParagraphArbitrator;
   v7 = [(NSParagraphArbitrator *)&v11 init];
@@ -377,17 +377,17 @@ LABEL_7:
   if (v7)
   {
     [(NSParagraphArbitrator *)v7 reset];
-    if ([a3 length])
+    if ([string length])
     {
-      v9 = a3;
+      stringCopy = string;
     }
 
     else
     {
-      v9 = 0;
+      stringCopy = 0;
     }
 
-    [(NSParagraphArbitrator *)v8 setAttributedString:v9];
+    [(NSParagraphArbitrator *)v8 setAttributedString:stringCopy];
     [(NSParagraphArbitrator *)v8 setParagraphRange:location, length];
     v8->_usesOptimalLayout = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -412,7 +412,7 @@ LABEL_7:
   [(NSParagraphArbitrator *)&v4 dealloc];
 }
 
-- (BOOL)_attributedStringOverridesLineBreakBeforeIndex:(id)a3
+- (BOOL)_attributedStringOverridesLineBreakBeforeIndex:(id)index
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -436,16 +436,16 @@ IMP __72__NSParagraphArbitrator__attributedStringOverridesLineBreakBeforeIndex__
   return result;
 }
 
-- (BOOL)prepareBreakIteratorForCharacterAtIndex:(unint64_t)a3
+- (BOOL)prepareBreakIteratorForCharacterAtIndex:(unint64_t)index
 {
-  v5 = [(NSParagraphArbitrator *)self attributedString];
-  v6 = [(NSAttributedString *)v5 length];
+  attributedString = [(NSParagraphArbitrator *)self attributedString];
+  v6 = [(NSAttributedString *)attributedString length];
   if (v6 > 0x200)
   {
     return 0;
   }
 
-  v7 = [(NSParagraphArbitrator *)self _preferredLanguageForCharacterAtIndex:a3 - (v6 == a3)];
+  v7 = [(NSParagraphArbitrator *)self _preferredLanguageForCharacterAtIndex:index - (v6 == index)];
   if (!self->_breaker || (breakerLanguage = self->_breakerLanguage, breakerLanguage != v7) && ([(NSString *)breakerLanguage isEqual:v7]& 1) == 0)
   {
     [(NSParagraphArbitrator *)self resetBreaker];
@@ -455,14 +455,14 @@ IMP __72__NSParagraphArbitrator__attributedStringOverridesLineBreakBeforeIndex__
     self->_breakerLanguage = v7;
   }
 
-  v9 = [(NSAttributedString *)v5 string];
+  string = [(NSAttributedString *)attributedString string];
   if (!self->_breaker)
   {
     return 0;
   }
 
-  v10 = v9;
-  if (self->_breakerString == v9)
+  v10 = string;
+  if (self->_breakerString == string)
   {
     return 1;
   }
@@ -475,11 +475,11 @@ IMP __72__NSParagraphArbitrator__attributedStringOverridesLineBreakBeforeIndex__
   return self->_breaker != 0;
 }
 
-- (BOOL)prepareTokenizerForPreferredLanguage:(id)a3
+- (BOOL)prepareTokenizerForPreferredLanguage:(id)language
 {
-  if (a3)
+  if (language)
   {
-    v5 = __NSShouldUseTokenizerForPushOut(a3);
+    v5 = __NSShouldUseTokenizerForPushOut(language);
     if (!v5)
     {
       return v5;
@@ -488,14 +488,14 @@ IMP __72__NSParagraphArbitrator__attributedStringOverridesLineBreakBeforeIndex__
 LABEL_7:
     if (self->_tokenizer)
     {
-      if ([(NSString *)[(NSParagraphArbitrator *)self preferredLanguage] isEqualToString:a3])
+      if ([(NSString *)[(NSParagraphArbitrator *)self preferredLanguage] isEqualToString:language])
       {
 LABEL_16:
         LOBYTE(v5) = 1;
         return v5;
       }
 
-      v6 = __NSCreateLocaleForPreferredLanguage(a3);
+      v6 = __NSCreateLocaleForPreferredLanguage(language);
       _CFStringTokenizerSetLocale();
       if (v6)
       {
@@ -505,7 +505,7 @@ LABEL_16:
 
     else
     {
-      v7 = __NSCreateLocaleForPreferredLanguage(a3);
+      v7 = __NSCreateLocaleForPreferredLanguage(language);
       v10.location = 0;
       v10.length = 0;
       v8 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], 0, v10, 4uLL, v7);
@@ -517,7 +517,7 @@ LABEL_16:
       self->_tokenizer = v8;
     }
 
-    [(NSParagraphArbitrator *)self setPreferredLanguage:a3];
+    [(NSParagraphArbitrator *)self setPreferredLanguage:language];
     goto LABEL_16;
   }
 
@@ -542,12 +542,12 @@ uint64_t __62__NSParagraphArbitrator_prepareTokenizerForPreferredLanguage___bloc
   return result;
 }
 
-- (double)raggednessWithCharIndexAsLineBreak:(unint64_t)a3 inRange:(_NSRange)a4
+- (double)raggednessWithCharIndexAsLineBreak:(unint64_t)break inRange:(_NSRange)range
 {
-  location = a4.location;
-  v5 = a3;
-  v7 = [(NSParagraphArbitrator *)self lineWidth:a3];
-  if (v7 && ((v8 = v7, v9 = v7[2](v7, location, v5 - location, 0), [(NSParagraphArbitrator *)self previousLineRange], !v10) ? (v13 = [(NSParagraphArbitrator *)self paragraphRange], v12 = v14 - v5 + v13) : (v5 = [(NSParagraphArbitrator *)self previousLineRange], v12 = v11), v15 = v8[2](v8, v5, v12, 0), v15 > 0.0))
+  location = range.location;
+  breakCopy = break;
+  v7 = [(NSParagraphArbitrator *)self lineWidth:break];
+  if (v7 && ((v8 = v7, v9 = v7[2](v7, location, breakCopy - location, 0), [(NSParagraphArbitrator *)self previousLineRange], !v10) ? (v13 = [(NSParagraphArbitrator *)self paragraphRange], v12 = v14 - breakCopy + v13) : (breakCopy = [(NSParagraphArbitrator *)self previousLineRange], v12 = v11), v15 = v8[2](v8, breakCopy, v12, 0), v15 > 0.0))
   {
     return v9 / v15;
   }
@@ -558,50 +558,50 @@ uint64_t __62__NSParagraphArbitrator_prepareTokenizerForPreferredLanguage___bloc
   }
 }
 
-- ($F08F7EC4C389A89376F473094BC6C9F8)_firstFitLineBreakContextBeforeIndex:(SEL)a3 lineFragmentWidth:(unint64_t)a4 range:(double)a5
+- ($F08F7EC4C389A89376F473094BC6C9F8)_firstFitLineBreakContextBeforeIndex:(SEL)index lineFragmentWidth:(unint64_t)width range:(double)range
 {
   location = a6.location;
-  v8 = a4;
-  v9 = self;
+  widthCopy = width;
+  selfCopy = self;
   *&retstr->var2 = 0;
   *&retstr->var0 = xmmword_18E856458;
-  v11 = [(NSParagraphArbitrator *)self attributedString:a4];
+  v11 = [(NSParagraphArbitrator *)self attributedString:width];
   theString = [(NSAttributedString *)v11 string];
-  v104 = v8 - location;
-  v95 = [(NSParagraphArbitrator *)v9 paragraphRange];
+  v104 = widthCopy - location;
+  paragraphRange = [(NSParagraphArbitrator *)selfCopy paragraphRange];
   v13 = v12;
-  [(NSParagraphArbitrator *)v9 hyphenationFactor];
+  [(NSParagraphArbitrator *)selfCopy hyphenationFactor];
   v15 = v14;
-  v94 = [(NSParagraphArbitrator *)v9 _hyphenatesAsLastResort];
-  v97 = [(NSParagraphArbitrator *)v9 lineBreakStrategy];
+  _hyphenatesAsLastResort = [(NSParagraphArbitrator *)selfCopy _hyphenatesAsLastResort];
+  lineBreakStrategy = [(NSParagraphArbitrator *)selfCopy lineBreakStrategy];
   v103 = v11;
-  v96 = [(NSParagraphArbitrator *)v9 _attributedStringOverridesLineBreakBeforeIndex:v11];
-  v102 = [(NSParagraphArbitrator *)v9 lineWidth];
+  v96 = [(NSParagraphArbitrator *)selfCopy _attributedStringOverridesLineBreakBeforeIndex:v11];
+  lineWidth = [(NSParagraphArbitrator *)selfCopy lineWidth];
   v92 = retstr;
   if (_firstFitLineBreakContextBeforeIndex_lineFragmentWidth_range__once != -1)
   {
     [NSParagraphArbitrator _firstFitLineBreakContextBeforeIndex:lineFragmentWidth:range:];
   }
 
-  v99 = [(NSParagraphArbitrator *)v9 prepareBreakIteratorForCharacterAtIndex:v8];
+  v99 = [(NSParagraphArbitrator *)selfCopy prepareBreakIteratorForCharacterAtIndex:widthCopy];
   v16 = 0;
-  v93 = v95 + v13;
+  v93 = paragraphRange + v13;
   v98 = 0x7FFFFFFFFFFFFFFFLL;
   v17 = 0x7FFFFFFFFFFFFFFFLL;
   v18 = 0x7FFFFFFFFFFFFFFFLL;
-  v100 = v9;
+  v100 = selfCopy;
   while (1)
   {
     v19 = 0.0;
-    if (v16 == 1 && ([(NSParagraphArbitrator *)v9 previousLineRange], !v20))
+    if (v16 == 1 && ([(NSParagraphArbitrator *)selfCopy previousLineRange], !v20))
     {
-      [(NSParagraphArbitrator *)v9 raggednessWithCharIndexAsLineBreak:v18 inRange:location, v104];
+      [(NSParagraphArbitrator *)selfCopy raggednessWithCharIndexAsLineBreak:v18 inRange:location, v104];
       v19 = v22;
-      if (v8)
+      if (widthCopy)
       {
 LABEL_7:
-        v18 = v8 - 1;
-        result = CFStringGetCharacterAtIndex(theString, v8 - 1);
+        v18 = widthCopy - 1;
+        result = CFStringGetCharacterAtIndex(theString, widthCopy - 1);
         if (result == 9)
         {
           goto LABEL_20;
@@ -609,14 +609,14 @@ LABEL_7:
       }
     }
 
-    else if (v8)
+    else if (widthCopy)
     {
       goto LABEL_7;
     }
 
     if (v99)
     {
-      if (!v9->_breaker)
+      if (!selfCopy->_breaker)
       {
         [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
       }
@@ -627,21 +627,21 @@ LABEL_7:
 
     else
     {
-      result = (v96 ? [(NSAttributedString *)v103 lineBreakBeforeIndex:v8 withinRange:location, v104]: [(NSAttributedString *)v103 _lineBreakBeforeIndex:v8 withinRange:location lineBreakStrategy:v104, [(NSParagraphArbitrator *)v9 lineBreakStrategy]]);
+      result = (v96 ? [(NSAttributedString *)v103 lineBreakBeforeIndex:widthCopy withinRange:location, v104]: [(NSAttributedString *)v103 _lineBreakBeforeIndex:widthCopy withinRange:location lineBreakStrategy:v104, [(NSParagraphArbitrator *)selfCopy lineBreakStrategy]]);
       v18 = result;
     }
 
 LABEL_20:
     if (v16 == 1)
     {
-      result = [(NSParagraphArbitrator *)v9 raggednessWithCharIndexAsLineBreak:v18 inRange:location, v104];
-      if (v23 < 0.6 || (v24 = v23, result = [(NSParagraphArbitrator *)v9 previousLineRange], !v25) && vabdd_f64(1.0, v24) > vabdd_f64(1.0, v19))
+      result = [(NSParagraphArbitrator *)selfCopy raggednessWithCharIndexAsLineBreak:v18 inRange:location, v104];
+      if (v23 < 0.6 || (v24 = v23, result = [(NSParagraphArbitrator *)selfCopy previousLineRange], !v25) && vabdd_f64(1.0, v24) > vabdd_f64(1.0, v19))
       {
-        v18 = v8;
+        v18 = widthCopy;
       }
     }
 
-    if (!v18 || v18 == 0x7FFFFFFFFFFFFFFFLL || v18 <= location || v18 >= v8)
+    if (!v18 || v18 == 0x7FFFFFFFFFFFFFFFLL || v18 <= location || v18 >= widthCopy)
     {
       v18 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -657,7 +657,7 @@ LABEL_20:
 
       v18 = result + v26;
       v27 = location;
-      if (result + v26 >= v8)
+      if (result + v26 >= widthCopy)
       {
         goto LABEL_36;
       }
@@ -685,7 +685,7 @@ LABEL_36:
     if (v18 <= location)
     {
       v28 = 0;
-      if (!v102)
+      if (!lineWidth)
       {
         goto LABEL_48;
       }
@@ -700,10 +700,10 @@ LABEL_36:
         v17 = v18 - 1;
       }
 
-      if (!v102)
+      if (!lineWidth)
       {
 LABEL_48:
-        if (!v102)
+        if (!lineWidth)
         {
           goto LABEL_85;
         }
@@ -719,19 +719,19 @@ LABEL_48:
 
     if (v15 <= 0.0)
     {
-      if (v18 != location || !v94)
+      if (v18 != location || !_hyphenatesAsLastResort)
       {
         goto LABEL_85;
       }
     }
 
-    else if (v18 != location && (*(v102 + 16))(v102, location, v18 - location, 0) / a5 >= v15)
+    else if (v18 != location && (*(lineWidth + 16))(lineWidth, location, v18 - location, 0) / range >= v15)
     {
       goto LABEL_85;
     }
 
 LABEL_57:
-    v30 = v8;
+    v30 = widthCopy;
     for (i = 3; i; --i)
     {
       result = [(NSAttributedString *)v103 lineBreakByHyphenatingBeforeIndex:v30 withinRange:location, v104];
@@ -747,12 +747,12 @@ LABEL_57:
         break;
       }
 
-      if (v37 > location && v37 < v8)
+      if (v37 > location && v37 < widthCopy)
       {
-        LOBYTE(v39) = 1;
-        if ((*(v102 + 16))() <= a5)
+        LOBYTE(tokenizer) = 1;
+        if ((*(lineWidth + 16))() <= range)
         {
-          v9 = v100;
+          selfCopy = v100;
           goto LABEL_140;
         }
 
@@ -774,23 +774,23 @@ LABEL_85:
       break;
     }
 
-    v8 = v18 - (v18 == v8);
+    widthCopy = v18 - (v18 == widthCopy);
     v17 = 0x7FFFFFFFFFFFFFFFLL;
-    v9 = v100;
+    selfCopy = v100;
 LABEL_143:
-    if (v8 <= location)
+    if (widthCopy <= location)
     {
-      LOBYTE(v39) = 0;
+      LOBYTE(tokenizer) = 0;
       goto LABEL_157;
     }
   }
 
-  LOBYTE(v39) = 0;
-  v9 = v100;
-  if ((v97 & 1) != 0 && !v16)
+  LOBYTE(tokenizer) = 0;
+  selfCopy = v100;
+  if ((lineBreakStrategy & 1) != 0 && !v16)
   {
-    LOBYTE(v39) = 0;
-    if (location == v95 && v18 < v8)
+    LOBYTE(tokenizer) = 0;
+    if (location == paragraphRange && v18 < widthCopy)
     {
       v42 = v93 - v18;
       if (v93 - v18 > 0xA)
@@ -799,28 +799,28 @@ LABEL_143:
       }
 
       v43 = [(NSParagraphArbitrator *)v100 prepareTokenizerForPreferredLanguage:[(NSParagraphArbitrator *)v100 _preferredLanguageForCharacterAtIndex:v18]];
-      v44 = [(NSParagraphArbitrator *)v100 attributedString];
-      v45 = [(NSParagraphArbitrator *)v100 paragraphRange];
+      attributedString = [(NSParagraphArbitrator *)v100 attributedString];
+      paragraphRange2 = [(NSParagraphArbitrator *)v100 paragraphRange];
       range = v46;
-      if (v43 && (v47 = v45, tokenizera = -[NSAttributedString string](v44, "string"), -[__CFStringTokenizer rangeOfCharacterFromSet:options:range:](tokenizera, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] alphanumericCharacterSet], 8, v18, v42), v93 > v18) && v48)
+      if (v43 && (v47 = paragraphRange2, tokenizera = -[NSAttributedString string](attributedString, "string"), -[__CFStringTokenizer rangeOfCharacterFromSet:options:range:](tokenizera, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] alphanumericCharacterSet], 8, v18, v42), v93 > v18) && v48)
       {
-        v39 = [(NSParagraphArbitrator *)v100 tokenizer];
-        if (!v39)
+        tokenizer = [(NSParagraphArbitrator *)v100 tokenizer];
+        if (!tokenizer)
         {
           goto LABEL_138;
         }
 
         v82 = v43;
-        v49 = [(NSAttributedString *)v44 string];
+        string = [(NSAttributedString *)attributedString string];
         v107.location = v47;
         v107.length = range;
-        CFStringTokenizerSetString(v39, v49, v107);
-        CFStringTokenizerGoToTokenAtIndex(v39, v18);
-        CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v39);
+        CFStringTokenizerSetString(tokenizer, string, v107);
+        CFStringTokenizerGoToTokenAtIndex(tokenizer, v18);
+        CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(tokenizer);
         v51 = CurrentTokenRange.location;
-        rangea = CFStringTokenizerAdvanceToNextToken(v39);
-        tokenizer = v39;
-        v52 = CFStringTokenizerGetCurrentTokenRange(v39);
+        rangea = CFStringTokenizerAdvanceToNextToken(tokenizer);
+        tokenizer = tokenizer;
+        v52 = CFStringTokenizerGetCurrentTokenRange(tokenizer);
         if (v52.location == -1)
         {
           v53 = 0x7FFFFFFFFFFFFFFFLL;
@@ -831,21 +831,21 @@ LABEL_143:
           v53 = v52.location;
         }
 
-        v54 = v44;
+        v54 = attributedString;
         v83 = v53;
-        v84 = v44;
+        v84 = attributedString;
         v55 = v53 + v52.length;
         result = [(NSAttributedString *)v54 length];
         if (CurrentTokenRange.location >= v18)
         {
           v81 = CurrentTokenRange.location + CurrentTokenRange.length;
           v16 = 0;
-          LOBYTE(v39) = 0;
+          LOBYTE(tokenizer) = 0;
           if (CurrentTokenRange.location == v18 && rangea && v55 <= result)
           {
             v66 = v84;
-            v67 = [(NSAttributedString *)v84 string];
-            -[NSString rangeOfCharacterFromSet:options:range:](v67, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] punctuationCharacterSet], 12, v83, v52.length);
+            string2 = [(NSAttributedString *)v84 string];
+            -[NSString rangeOfCharacterFromSet:options:range:](string2, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] punctuationCharacterSet], 12, v83, v52.length);
             if (!v68)
             {
               goto LABEL_137;
@@ -858,10 +858,10 @@ LABEL_143:
               goto LABEL_137;
             }
 
-            v39 = CFStringTokenizerGoToTokenAtIndex(tokenizer, v18 - 1);
+            tokenizer = CFStringTokenizerGoToTokenAtIndex(tokenizer, v18 - 1);
             v73 = CFStringTokenizerGetCurrentTokenRange(tokenizer);
             v72 = v73.location;
-            if (v39)
+            if (tokenizer)
             {
               length = v73.length;
               v75 = 0;
@@ -875,15 +875,15 @@ LABEL_143:
                   goto LABEL_137;
                 }
 
-                v77 = [(NSAttributedString *)v66 string];
-                result = -[NSString rangeOfCharacterFromSet:options:range:](v77, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] alphanumericCharacterSet], 0, v76, length);
+                string3 = [(NSAttributedString *)v66 string];
+                result = -[NSString rangeOfCharacterFromSet:options:range:](string3, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] alphanumericCharacterSet], 0, v76, length);
                 if (v78)
                 {
                   v51 = rangeb;
                   goto LABEL_108;
                 }
 
-                v39 = CFStringTokenizerGoToTokenAtIndex(tokenizer, rangeb - 1);
+                tokenizer = CFStringTokenizerGoToTokenAtIndex(tokenizer, rangeb - 1);
                 v79 = CFStringTokenizerGetCurrentTokenRange(tokenizer);
                 v72 = v79.location;
                 if (v85 > 1)
@@ -895,7 +895,7 @@ LABEL_143:
                 v75 = v85 + 1;
               }
 
-              while (v39);
+              while (tokenizer);
             }
 
 LABEL_138:
@@ -911,11 +911,11 @@ LABEL_138:
           }
 
           v16 = 0;
-          LOBYTE(v39) = 0;
+          LOBYTE(tokenizer) = 0;
           if (rangea && v55 <= result)
           {
-            v56 = [(NSAttributedString *)v84 string];
-            result = -[NSString rangeOfCharacterFromSet:options:range:](v56, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] punctuationCharacterSet], 12, v83, v52.length);
+            string4 = [(NSAttributedString *)v84 string];
+            result = -[NSString rangeOfCharacterFromSet:options:range:](string4, "rangeOfCharacterFromSet:options:range:", [MEMORY[0x1E696AB08] punctuationCharacterSet], 12, v83, v52.length);
             if (v57)
             {
 LABEL_108:
@@ -936,12 +936,12 @@ LABEL_116:
               {
                 if (v43)
                 {
-                  v8 = v16 + 1;
+                  widthCopy = v16 + 1;
                 }
 
                 else
                 {
-                  v8 = v18;
+                  widthCopy = v18;
                 }
 
                 v16 = 1;
@@ -951,7 +951,7 @@ LABEL_116:
             }
 
 LABEL_137:
-            LOBYTE(v39) = 0;
+            LOBYTE(tokenizer) = 0;
             goto LABEL_138;
           }
         }
@@ -959,26 +959,26 @@ LABEL_137:
 
       else
       {
-        v58 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+        alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
         if (v93 <= v18)
         {
           goto LABEL_137;
         }
 
-        v59 = v58;
-        [(NSString *)[(NSAttributedString *)v44 string] rangeOfCharacterFromSet:v58 options:8 range:v18, v42];
+        v59 = alphanumericCharacterSet;
+        [(NSString *)[(NSAttributedString *)attributedString string] rangeOfCharacterFromSet:alphanumericCharacterSet options:8 range:v18, v42];
         if (!v60)
         {
           goto LABEL_137;
         }
 
-        result = [(NSAttributedString *)v44 nextWordFromIndex:v18 forward:1];
+        result = [(NSAttributedString *)attributedString nextWordFromIndex:v18 forward:1];
         v61 = result;
         v62 = v93;
         if (v93 > result)
         {
           v63 = v93 - result;
-          result = [(NSString *)[(NSAttributedString *)v44 string] rangeOfCharacterFromSet:v59 options:0 range:result, v63];
+          result = [(NSString *)[(NSAttributedString *)attributedString string] rangeOfCharacterFromSet:v59 options:0 range:result, v63];
           v62 = v93;
           if (!v64)
           {
@@ -992,25 +992,25 @@ LABEL_137:
           goto LABEL_116;
         }
 
-        LOBYTE(v39) = 0;
+        LOBYTE(tokenizer) = 0;
       }
     }
   }
 
   v37 = v18;
 LABEL_140:
-  result = [(NSParagraphArbitrator *)v9 validateLineBreakContext];
+  result = [(NSParagraphArbitrator *)selfCopy validateLineBreakContext];
   if (result)
   {
     v71 = *&result->var2;
     v105[0] = v37;
     v105[1] = v16;
-    v106 = v39;
+    v106 = tokenizer;
     result = v71(result, v105);
     if ((result & 1) == 0)
     {
       v16 = 0;
-      v8 = v37 - (v37 == v8);
+      widthCopy = v37 - (v37 == widthCopy);
       v18 = v37;
       goto LABEL_143;
     }
@@ -1018,7 +1018,7 @@ LABEL_140:
 
   v18 = v37;
 LABEL_157:
-  v92->var2 = v39;
+  v92->var2 = tokenizer;
   v80 = 0x7FFFFFFFFFFFFFFFLL;
   if (v18 > location)
   {
@@ -1029,10 +1029,10 @@ LABEL_157:
   v92->var1 = v16;
   if (v18 > location)
   {
-    result = [(NSAttributedString *)[(NSParagraphArbitrator *)v9 attributedString] length];
+    result = [(NSAttributedString *)[(NSParagraphArbitrator *)selfCopy attributedString] length];
     if (v18 < result)
     {
-      return [(NSParagraphArbitrator *)v9 setPreviousLineRange:location, v18 - location];
+      return [(NSParagraphArbitrator *)selfCopy setPreviousLineRange:location, v18 - location];
     }
   }
 
@@ -1046,14 +1046,14 @@ id __86__NSParagraphArbitrator__firstFitLineBreakContextBeforeIndex_lineFragment
   return result;
 }
 
-- ($F08F7EC4C389A89376F473094BC6C9F8)_optimalLineBreakContextBeforeIndex:(SEL)a3 lineFragmentWidth:(unint64_t)a4 range:(double)a5
+- ($F08F7EC4C389A89376F473094BC6C9F8)_optimalLineBreakContextBeforeIndex:(SEL)index lineFragmentWidth:(unint64_t)width range:(double)range
 {
   length = a6.length;
   location = a6.location;
-  if ([(NSParagraphArbitrator *)self paragraphRange:a4]<= a6.location)
+  if ([(NSParagraphArbitrator *)self paragraphRange:width]<= a6.location)
   {
-    v10 = [(NSParagraphArbitrator *)self paragraphRange];
-    if (location + length <= v10 + v11)
+    paragraphRange = [(NSParagraphArbitrator *)self paragraphRange];
+    if (location + length <= paragraphRange + v11)
     {
       [(NSParagraphArbitrator *)self _computeOptimalLayout];
       *&retstr->var2 = 0;
@@ -1082,15 +1082,15 @@ id __86__NSParagraphArbitrator__firstFitLineBreakContextBeforeIndex_lineFragment
   [NSParagraphArbitrator _optimalLineBreakContextBeforeIndex:lineFragmentWidth:range:];
 }
 
-+ (int)_lineBreakStyleForFont:(id)a3
++ (int)_lineBreakStyleForFont:(id)font
 {
   if (_lineBreakStyleForFont__once != -1)
   {
     +[NSParagraphArbitrator _lineBreakStyleForFont:];
   }
 
-  v4 = [a3 fontDescriptor];
-  v5 = [v4 objectForKey:*MEMORY[0x1E6965708]];
+  fontDescriptor = [font fontDescriptor];
+  v5 = [fontDescriptor objectForKey:*MEMORY[0x1E6965708]];
   if (!v5)
   {
     return 1;
@@ -1129,9 +1129,9 @@ LABEL_11:
     [_lineBreakStyleForFont__cache setObject:v8 forKeyedSubscript:v6];
   }
 
-  v12 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
   objc_sync_exit(v7);
-  return v12;
+  return unsignedIntegerValue;
 }
 
 id __48__NSParagraphArbitrator__lineBreakStyleForFont___block_invoke()
@@ -1150,20 +1150,20 @@ id __48__NSParagraphArbitrator__lineBreakStyleForFont___block_invoke()
   }
 
   v4 = v3;
-  v5 = [(NSDictionary *)v3 objectForKey:@"NSFont"];
+  verticalFont = [(NSDictionary *)v3 objectForKey:@"NSFont"];
   if ([-[NSDictionary objectForKey:](v4 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
   {
-    v5 = [v5 verticalFont];
+    verticalFont = [verticalFont verticalFont];
   }
 
-  if (!v5)
+  if (!verticalFont)
   {
 LABEL_5:
-    v5 = NSDefaultFont();
+    verticalFont = NSDefaultFont();
   }
 
-  v6 = [v5 fontDescriptor];
-  v7 = [v6 objectForKey:*MEMORY[0x1E6965708]];
+  fontDescriptor = [verticalFont fontDescriptor];
+  v7 = [fontDescriptor objectForKey:*MEMORY[0x1E6965708]];
   if (!v7)
   {
     return @"ts=nil";
@@ -1175,12 +1175,12 @@ LABEL_5:
     v8 = [v8 substringFromIndex:{objc_msgSend(@"UICTFontTextStyle", "length")}];
   }
 
-  v9 = [(NSParagraphArbitrator *)self _lineBreakStyle];
+  _lineBreakStyle = [(NSParagraphArbitrator *)self _lineBreakStyle];
   v10 = [MEMORY[0x1E696AD60] stringWithFormat:@"ts=%@", v8];
   v11 = v10;
-  if ((v9 - 2) <= 3)
+  if ((_lineBreakStyle - 2) <= 3)
   {
-    [(NSString *)v10 appendFormat:off_1E7267108[v9 - 2]];
+    [(NSString *)v10 appendFormat:off_1E7267108[_lineBreakStyle - 2]];
   }
 
   return v11;
@@ -1194,50 +1194,50 @@ LABEL_5:
     self->_needsOptimalLayout = 1;
   }
 
-  v3 = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] attribute:@"NSParagraphStyle" atIndex:[(NSParagraphArbitrator *)self paragraphRange] effectiveRange:0];
-  if (!v3)
+  defaultParagraphStyle = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] attribute:@"NSParagraphStyle" atIndex:[(NSParagraphArbitrator *)self paragraphRange] effectiveRange:0];
+  if (!defaultParagraphStyle)
   {
-    v3 = [(NSParagraphArbitrator *)self defaultParagraphStyle];
+    defaultParagraphStyle = [(NSParagraphArbitrator *)self defaultParagraphStyle];
   }
 
-  v4 = [(NSParagraphArbitrator *)self _lineBreakStyle];
+  _lineBreakStyle = [(NSParagraphArbitrator *)self _lineBreakStyle];
   [(NSParagraphArbitrator *)self hyphenationFactor];
   v6 = v5;
-  if (v3)
+  if (defaultParagraphStyle)
   {
-    v30 = [(NSParagraphStyle *)v3 spansAllLines];
+    spansAllLines = [(NSParagraphStyle *)defaultParagraphStyle spansAllLines];
   }
 
   else
   {
-    v30 = 0;
+    spansAllLines = 0;
   }
 
-  v27 = [(NSParagraphArbitrator *)self lineBreakStrategy];
-  v28 = [(NSParagraphArbitrator *)self _hyphenatesAsLastResort];
+  lineBreakStrategy = [(NSParagraphArbitrator *)self lineBreakStrategy];
+  _hyphenatesAsLastResort = [(NSParagraphArbitrator *)self _hyphenatesAsLastResort];
   v29 = __NSCreateLocaleForPreferredLanguage([(NSParagraphArbitrator *)self _preferredLanguageForCharacterAtIndex:[(NSParagraphArbitrator *)self paragraphRange]]);
-  v7 = [(__CFLocale *)v29 languageCode];
-  v8 = [objc_opt_class() _languageCategoryForLanguageCode:v7];
+  languageCode = [(__CFLocale *)v29 languageCode];
+  v8 = [objc_opt_class() _languageCategoryForLanguageCode:languageCode];
   v9 = 0;
   v10 = 0;
   v11 = 0.0;
   v12 = 1;
   v13 = 3;
   v14 = 2;
-  if (v4 == 1 || (v15 = v8) == 0)
+  if (_lineBreakStyle == 1 || (v15 = v8) == 0)
   {
     v26 = 0x7FFFFFFFFFFFFFFFLL;
-    v17 = v28;
-    v18 = v27;
+    v17 = _hyphenatesAsLastResort;
+    v18 = lineBreakStrategy;
     goto LABEL_52;
   }
 
-  v16 = [(NSParagraphStyle *)v3 alignment];
+  alignment = [(NSParagraphStyle *)defaultParagraphStyle alignment];
   if ((v15 & 0xFFFFFFFE) == 2)
   {
-    if (v16 == 1)
+    if (alignment == 1)
     {
-      if ((v4 - 2) >= 3)
+      if ((_lineBreakStyle - 2) >= 3)
       {
         v11 = 0.4;
       }
@@ -1247,25 +1247,25 @@ LABEL_5:
         v11 = 0.0;
       }
 
-      v30 |= (v4 - 2) < 3;
-      if (![v7 isEqualToString:@"ko"])
+      spansAllLines |= (_lineBreakStyle - 2) < 3;
+      if (![languageCode isEqualToString:@"ko"])
       {
 LABEL_29:
-        if (([v7 isEqualToString:@"zh"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"ja") & 1) == 0)
+        if (([languageCode isEqualToString:@"zh"] & 1) == 0 && (objc_msgSend(languageCode, "isEqualToString:", @"ja") & 1) == 0)
         {
           [NSParagraphArbitrator configureOptimalLineBreaker];
         }
 
         v10 = 0;
         v9 = 0;
-        v12 = (v4 - 5) < 0xFFFFFFFD;
+        v12 = (_lineBreakStyle - 5) < 0xFFFFFFFD;
         goto LABEL_32;
       }
     }
 
     else
     {
-      if ((v4 & 0xFFFFFFFE) == 2 && v16 != 3)
+      if ((_lineBreakStyle & 0xFFFFFFFE) == 2 && alignment != 3)
       {
         v11 = 0.0;
       }
@@ -1275,13 +1275,13 @@ LABEL_29:
         v11 = 0.2;
       }
 
-      v30 |= (v4 & 0xFFFFFFFE) == 2 && v16 != 3;
-      if (([v7 isEqualToString:@"ko"] & 1) == 0)
+      spansAllLines |= (_lineBreakStyle & 0xFFFFFFFE) == 2 && alignment != 3;
+      if (([languageCode isEqualToString:@"ko"] & 1) == 0)
       {
         goto LABEL_29;
       }
 
-      if ((v4 - 2) > 2)
+      if ((_lineBreakStyle - 2) > 2)
       {
         v10 = 0;
         v9 = 0;
@@ -1303,7 +1303,7 @@ LABEL_29:
     v13 = 0;
     v10 = 0;
     v9 = 0;
-    v18 = v27 | 2;
+    v18 = lineBreakStrategy | 2;
     v19 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_50:
     v26 = v19;
@@ -1312,9 +1312,9 @@ LABEL_50:
 
   if (v15 == 1)
   {
-    if (v16 == 1)
+    if (alignment == 1)
     {
-      if ((v4 - 2) < 3)
+      if ((_lineBreakStyle - 2) < 3)
       {
         v10 = 1;
         goto LABEL_41;
@@ -1331,9 +1331,9 @@ LABEL_39:
       goto LABEL_41;
     }
 
-    if (v4 != 4)
+    if (_lineBreakStyle != 4)
     {
-      if (v4 == 3)
+      if (_lineBreakStyle == 3)
       {
         v10 = 1;
         v6 = 0.6;
@@ -1341,7 +1341,7 @@ LABEL_39:
 
       else
       {
-        if (v4 == 2)
+        if (_lineBreakStyle == 2)
         {
           goto LABEL_37;
         }
@@ -1351,8 +1351,8 @@ LABEL_39:
       }
 
 LABEL_41:
-      v18 = v27;
-      if (([v7 isEqualToString:@"ru"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"uk"))
+      v18 = lineBreakStrategy;
+      if (([languageCode isEqualToString:@"ru"] & 1) != 0 || objc_msgSend(languageCode, "isEqualToString:", @"uk"))
       {
         v14 = 1;
         v13 = 3;
@@ -1381,14 +1381,14 @@ LABEL_32:
   v26 = 0x7FFFFFFFFFFFFFFFLL;
   v13 = 3;
 LABEL_33:
-  v18 = v27;
+  v18 = lineBreakStrategy;
 LABEL_51:
-  v17 = [(NSParagraphStyle *)v3 secondaryLineBreakMode]!= 2 || v28;
+  v17 = [(NSParagraphStyle *)defaultParagraphStyle secondaryLineBreakMode]!= 2 || _hyphenatesAsLastResort;
 LABEL_52:
   optimalLineBreaker = self->_optimalLineBreaker;
-  v22 = [(NSParagraphArbitrator *)self attributedString];
-  v23 = [(NSParagraphArbitrator *)self paragraphRange];
-  [(_NSOptimalLineBreaker *)optimalLineBreaker setAttributedString:v22 paragraphRange:v23, v24];
+  attributedString = [(NSParagraphArbitrator *)self attributedString];
+  paragraphRange = [(NSParagraphArbitrator *)self paragraphRange];
+  [(_NSOptimalLineBreaker *)optimalLineBreaker setAttributedString:attributedString paragraphRange:paragraphRange, v24];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setParagraphLine:[(NSParagraphArbitrator *)self paragraphLine]];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setTextContainerWidth:self->_textContainerWidth];
   if (v6 == 0.0)
@@ -1404,7 +1404,7 @@ LABEL_52:
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setAllowsHyphenation:v25];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setHyphenationFactor:v6];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setLocale:v29];
-  [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setShouldFillLastLine:v30 & 1];
+  [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setShouldFillLastLine:spansAllLines & 1];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setLineBreakStrategy:v18];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setMinimumLastLineLength:v11];
   [(_NSOptimalLineBreaker *)self->_optimalLineBreaker setKoreanLineBreakBehavior:v13];
@@ -1434,40 +1434,40 @@ LABEL_52:
   }
 }
 
-- (id)_preferredLanguageForCharacterAtIndex:(unint64_t)a3
+- (id)_preferredLanguageForCharacterAtIndex:(unint64_t)index
 {
   if (_preferredLanguageForCharacterAtIndex__once != -1)
   {
     [NSParagraphArbitrator _preferredLanguageForCharacterAtIndex:];
   }
 
-  v5 = [(NSParagraphArbitrator *)self attributedString];
-  result = [(NSAttributedString *)v5 attribute:NSLanguageAttributeName atIndex:a3 effectiveRange:0];
+  attributedString = [(NSParagraphArbitrator *)self attributedString];
+  result = [(NSAttributedString *)attributedString attribute:NSLanguageAttributeName atIndex:index effectiveRange:0];
   if (!result)
   {
-    v7 = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] attributesAtIndex:a3 effectiveRange:0];
+    v7 = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] attributesAtIndex:index effectiveRange:0];
     if (v7)
     {
       v8 = v7;
-      v9 = [(NSDictionary *)v7 objectForKey:@"NSFont"];
+      verticalFont = [(NSDictionary *)v7 objectForKey:@"NSFont"];
       if ([-[NSDictionary objectForKey:](v8 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
       {
-        v9 = [v9 verticalFont];
+        verticalFont = [verticalFont verticalFont];
       }
 
-      if (v9)
+      if (verticalFont)
       {
         goto LABEL_9;
       }
     }
 
     result = NSDefaultFont();
-    v9 = result;
+    verticalFont = result;
     if (result)
     {
 LABEL_9:
-      v10 = [v9 fontDescriptor];
-      result = [v10 objectForKey:*MEMORY[0x1E69656F0]];
+      fontDescriptor = [verticalFont fontDescriptor];
+      result = [fontDescriptor objectForKey:*MEMORY[0x1E69656F0]];
       if (result)
       {
         v11 = result;
@@ -1500,12 +1500,12 @@ uint64_t __63__NSParagraphArbitrator__preferredLanguageForCharacterAtIndex___blo
   return result;
 }
 
-+ (int)_languageCategoryForLanguageCode:(id)a3
++ (int)_languageCategoryForLanguageCode:(id)code
 {
   if (_languageCategoryForLanguageCode__once != -1)
   {
     +[NSParagraphArbitrator _languageCategoryForLanguageCode:];
-    if (a3)
+    if (code)
     {
       goto LABEL_3;
     }
@@ -1513,7 +1513,7 @@ uint64_t __63__NSParagraphArbitrator__preferredLanguageForCharacterAtIndex___blo
     return 0;
   }
 
-  if (!a3)
+  if (!code)
   {
     return 0;
   }
@@ -1521,13 +1521,13 @@ uint64_t __63__NSParagraphArbitrator__preferredLanguageForCharacterAtIndex___blo
 LABEL_3:
   v4 = _languageCategoryForLanguageCode__cache;
   objc_sync_enter(_languageCategoryForLanguageCode__cache);
-  v5 = [_languageCategoryForLanguageCode__cache objectForKeyedSubscript:a3];
+  v5 = [_languageCategoryForLanguageCode__cache objectForKeyedSubscript:code];
   if (!v5)
   {
-    v6 = [MEMORY[0x1E695DF58] scriptCodeFromLanguage:a3];
+    v6 = [MEMORY[0x1E695DF58] scriptCodeFromLanguage:code];
     if (([v6 isEqualToString:@"Latn"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"Cyrl") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"Grek") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Hebr"))
     {
-      if ((_languageCategoryForLanguageCode__enabledForAllLanguages & 1) != 0 || ([a3 isEqualToString:@"de"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ru") & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"uk"))
+      if ((_languageCategoryForLanguageCode__enabledForAllLanguages & 1) != 0 || ([code isEqualToString:@"de"] & 1) != 0 || (objc_msgSend(code, "isEqualToString:", @"ru") & 1) != 0 || objc_msgSend(code, "isEqualToString:", @"uk"))
       {
         v5 = &unk_1F01CC2A0;
       }
@@ -1538,12 +1538,12 @@ LABEL_3:
       }
     }
 
-    else if ([a3 isEqualToString:@"zh"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"ja"))
+    else if ([code isEqualToString:@"zh"] & 1) != 0 || (objc_msgSend(code, "isEqualToString:", @"ja"))
     {
       v5 = &unk_1F01CC2D0;
     }
 
-    else if ([a3 isEqualToString:@"ko"])
+    else if ([code isEqualToString:@"ko"])
     {
       v5 = &unk_1F01CC2E8;
     }
@@ -1553,7 +1553,7 @@ LABEL_3:
       v5 = &unk_1F01CC2B8;
     }
 
-    [_languageCategoryForLanguageCode__cache setObject:v5 forKeyedSubscript:a3];
+    [_languageCategoryForLanguageCode__cache setObject:v5 forKeyedSubscript:code];
   }
 
   objc_sync_exit(v4);
@@ -1568,7 +1568,7 @@ id __58__NSParagraphArbitrator__languageCategoryForLanguageCode___block_invoke()
   return result;
 }
 
-- (int)_lineBreakStyleForLastResortHyphenation:(BOOL)a3
+- (int)_lineBreakStyleForLastResortHyphenation:(BOOL)hyphenation
 {
   if (_lineBreakStyleForLastResortHyphenation__once != -1)
   {
@@ -1578,7 +1578,7 @@ id __58__NSParagraphArbitrator__languageCategoryForLanguageCode___block_invoke()
   if (self->_lineBreakStyle)
   {
 LABEL_12:
-    if (a3)
+    if (hyphenation)
     {
       return self->_lineBreakStyle;
     }
@@ -1595,19 +1595,19 @@ LABEL_12:
     }
 
     v6 = v5;
-    v7 = [(NSDictionary *)v5 objectForKey:@"NSFont"];
+    verticalFont = [(NSDictionary *)v5 objectForKey:@"NSFont"];
     if ([-[NSDictionary objectForKey:](v6 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
     {
-      v7 = [v7 verticalFont];
+      verticalFont = [verticalFont verticalFont];
     }
 
-    if (!v7)
+    if (!verticalFont)
     {
 LABEL_9:
-      v7 = NSDefaultFont();
+      verticalFont = NSDefaultFont();
     }
 
-    v8 = [objc_opt_class() _lineBreakStyleForFont:v7];
+    v8 = [objc_opt_class() _lineBreakStyleForFont:verticalFont];
     self->_lineBreakStyle = v8;
     if (v8 != 1)
     {
@@ -1624,7 +1624,7 @@ LABEL_9:
   }
 
   self->_languageSupportsLineBreakStyle = 0;
-  if (a3)
+  if (hyphenation)
   {
     return self->_lineBreakStyle;
   }
@@ -1645,7 +1645,7 @@ uint64_t __65__NSParagraphArbitrator__lineBreakStyleForLastResortHyphenation___b
   return result;
 }
 
-- ($F08F7EC4C389A89376F473094BC6C9F8)lineBreakContextBeforeIndex:(SEL)a3 lineFragmentWidth:(unint64_t)a4 range:(double)a5
+- ($F08F7EC4C389A89376F473094BC6C9F8)lineBreakContextBeforeIndex:(SEL)index lineFragmentWidth:(unint64_t)width range:(double)range
 {
   length = a6.length;
   location = a6.location;
@@ -1655,7 +1655,7 @@ uint64_t __65__NSParagraphArbitrator__lineBreakStyleForLastResortHyphenation___b
     if (self)
     {
 
-      return [(NSParagraphArbitrator *)self _optimalLineBreakContextBeforeIndex:a4 lineFragmentWidth:location range:length, a5];
+      return [(NSParagraphArbitrator *)self _optimalLineBreakContextBeforeIndex:width lineFragmentWidth:location range:length, range];
     }
 
 LABEL_10:
@@ -1670,13 +1670,13 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  return [(NSParagraphArbitrator *)self _firstFitLineBreakContextBeforeIndex:a4 lineFragmentWidth:location range:length, a5];
+  return [(NSParagraphArbitrator *)self _firstFitLineBreakContextBeforeIndex:width lineFragmentWidth:location range:length, range];
 }
 
-- (unint64_t)adjustedLineBreakIndexForProposedIndex:(unint64_t)a3
+- (unint64_t)adjustedLineBreakIndexForProposedIndex:(unint64_t)index
 {
-  v4 = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] string];
-  v5 = [(NSString *)v4 length];
+  string = [(NSAttributedString *)[(NSParagraphArbitrator *)self attributedString] string];
+  v5 = [(NSString *)string length];
   if (adjustedLineBreakIndexForProposedIndex__onceToken != -1)
   {
     [NSParagraphArbitrator adjustedLineBreakIndexForProposedIndex:];
@@ -1684,19 +1684,19 @@ LABEL_10:
 
   while (1)
   {
-    v6 = [(NSString *)v4 rangeOfCharacterFromSet:adjustedLineBreakIndexForProposedIndex__whitespaceNoTab options:8 range:a3, v5 - a3];
+    index = [(NSString *)string rangeOfCharacterFromSet:adjustedLineBreakIndexForProposedIndex__whitespaceNoTab options:8 range:index, v5 - index];
     if (!v7)
     {
       break;
     }
 
-    a3 = v6 + v7;
+    index = index + v7;
   }
 
-  v8 = a3 + 1;
-  if (a3 + 1 < [(NSString *)v4 length]&& ([(NSString *)v4 characterAtIndex:a3 + 1]& 0xFC00) == 0xDC00)
+  v8 = index + 1;
+  if (index + 1 < [(NSString *)string length]&& ([(NSString *)string characterAtIndex:index + 1]& 0xFC00) == 0xDC00)
   {
-    return a3 + 2;
+    return index + 2;
   }
 
   return v8;

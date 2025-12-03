@@ -2,16 +2,16 @@
 + (id)_makeImageView;
 + (id)_makeLabelView;
 - ($1945D2EFE1244E2A91EF2AFFF7F2C6FE)content;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UICursorAccessoryItemView)initWithFrame:(CGRect)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UICursorAccessoryItemView)initWithFrame:(CGRect)frame;
 - (double)horizontalPadding;
 - (void)_recomputeColors;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setContent:(id *)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setContent:(id *)content;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _UICursorAccessoryItemView
@@ -40,20 +40,20 @@
   return v2;
 }
 
-- (_UICursorAccessoryItemView)initWithFrame:(CGRect)a3
+- (_UICursorAccessoryItemView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _UICursorAccessoryItemView;
-  v3 = [(UIControl *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_roundedEdges = 10;
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v6 = [(UIView *)v4 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setAllowsGroupOpacity:0];
 
     v7 = [_UIShapeView alloc];
     v8 = [(UIView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -109,22 +109,22 @@
   }
 
   v3 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v4 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v5 = _UISetCurrentFallbackEnvironment(self);
-  v6 = [(UIView *)self traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection2 = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-  if (v7 != 6)
+  if (userInterfaceIdiom != 6)
   {
     v8 = +[UIColor labelColor];
     v9 = +[UIColor clearColor];
     style = self->_style;
     if (style == 1)
     {
-      v15 = [(UIView *)self tintColor];
-      [_UICursorAccessoryView grayscaleLuminance:v15];
+      tintColor = [(UIView *)self tintColor];
+      [_UICursorAccessoryView grayscaleLuminance:tintColor];
       v17 = v16;
 
       if (v17 <= 0.75)
@@ -164,19 +164,19 @@ LABEL_16:
 LABEL_17:
         v8 = v11;
 LABEL_18:
-        v20 = [v9 CGColor];
-        v21 = [(_UIShapeView *)self->_backgroundView shapeLayer];
-        [v21 setFillColor:v20];
+        cGColor = [v9 CGColor];
+        shapeLayer = [(_UIShapeView *)self->_backgroundView shapeLayer];
+        [shapeLayer setFillColor:cGColor];
 
         [(UIView *)self->_imageView setTintColor:v8];
         [(UIView *)self->_imageView setAlpha:v13];
-        v22 = [(UIView *)self->_imageView layer];
-        [v22 setCompositingFilter:v12];
+        layer = [(UIView *)self->_imageView layer];
+        [layer setCompositingFilter:v12];
 
         [(UILabel *)self->_labelView setTextColor:v8];
         [(UIView *)self->_labelView setAlpha:v13];
-        v23 = [(UIView *)self->_labelView layer];
-        [v23 setCompositingFilter:v12];
+        layer2 = [(UIView *)self->_labelView layer];
+        [layer2 setCompositingFilter:v12];
 
         goto LABEL_19;
       }
@@ -210,27 +210,27 @@ LABEL_19:
   [UITraitCollection setCurrentTraitCollection:v3];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
     v21 = v3;
     v22 = v4;
-    v5 = a3;
-    self->_highlighted = a3;
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
     [(_UICursorAccessoryItemView *)self _recomputeColors];
-    v7 = [(UIView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v8 == 6)
+    if (userInterfaceIdiom == 6)
     {
-      if (v5)
+      if (highlightedCopy)
       {
         v16 = MEMORY[0x1E69E9820];
         v17 = 3221225472;
         v18 = __45___UICursorAccessoryItemView_setHighlighted___block_invoke;
         v19 = &unk_1E70F3590;
-        v20 = self;
+        selfCopy = self;
         v9 = &__block_literal_global_15_4;
         v10 = &v16;
       }
@@ -241,23 +241,23 @@ LABEL_19:
         v12 = 3221225472;
         v13 = __45___UICursorAccessoryItemView_setHighlighted___block_invoke_3;
         v14 = &unk_1E70F3590;
-        v15 = self;
+        selfCopy2 = self;
         v9 = &__block_literal_global_17_3;
         v10 = &v11;
       }
 
-      [UIView animateWithDuration:0 delay:v10 options:v9 animations:0.05 completion:0.0, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20];
+      [UIView animateWithDuration:0 delay:v10 options:v9 animations:0.05 completion:0.0, v11, v12, v13, v14, selfCopy2, v16, v17, v18, v19, selfCopy];
     }
   }
 }
 
-- (void)setContent:(id *)a3
+- (void)setContent:(id *)content
 {
   p_content = &self->_content;
-  objc_storeStrong(&self->_content.label, a3->var0);
-  objc_storeStrong(&p_content->identifier, a3->var1);
-  objc_storeStrong(&p_content->image, a3->var2);
-  var3 = a3->var3;
+  objc_storeStrong(&self->_content.label, content->var0);
+  objc_storeStrong(&p_content->identifier, content->var1);
+  objc_storeStrong(&p_content->image, content->var2);
+  var3 = content->var3;
   p_content->type = var3;
   if (var3 - 2 >= 2)
   {
@@ -269,20 +269,20 @@ LABEL_19:
     labelView = self->_labelView;
     if (!labelView)
     {
-      v13 = [objc_opt_class() _makeLabelView];
+      _makeLabelView = [objc_opt_class() _makeLabelView];
       v14 = self->_labelView;
-      self->_labelView = v13;
+      self->_labelView = _makeLabelView;
 
       [(UILabel *)self->_labelView setUserInteractionEnabled:0];
       [(UIView *)self addSubview:self->_labelView];
       labelView = self->_labelView;
     }
 
-    [(UILabel *)labelView setText:a3->var0];
-    v15 = [a3->var1 stringByAppendingString:@"Label"];
+    [(UILabel *)labelView setText:content->var0];
+    v15 = [content->var1 stringByAppendingString:@"Label"];
     [self->_labelView setAccessibilityLabel:v15];
 
-    [self->_labelView setAccessibilityIdentifier:a3->var1];
+    [self->_labelView setAccessibilityIdentifier:content->var1];
     p_imageView = &self->_imageView;
     [(UIView *)self->_imageView removeFromSuperview];
   }
@@ -292,20 +292,20 @@ LABEL_19:
     imageView = self->_imageView;
     if (!imageView)
     {
-      v8 = [objc_opt_class() _makeImageView];
+      _makeImageView = [objc_opt_class() _makeImageView];
       v9 = self->_imageView;
-      self->_imageView = v8;
+      self->_imageView = _makeImageView;
 
       [(UIView *)self->_imageView setUserInteractionEnabled:0];
       [(UIView *)self addSubview:self->_imageView];
       imageView = self->_imageView;
     }
 
-    [(UIImageView *)imageView setImage:a3->var2];
-    v10 = [a3->var1 stringByAppendingString:@"-Label"];
+    [(UIImageView *)imageView setImage:content->var2];
+    v10 = [content->var1 stringByAppendingString:@"-Label"];
     [self->_imageView setAccessibilityLabel:v10];
 
-    [self->_imageView setAccessibilityIdentifier:a3->var1];
+    [self->_imageView setAccessibilityIdentifier:content->var1];
     p_imageView = &self->_labelView;
     [(UIView *)self->_labelView removeFromSuperview];
   }
@@ -316,10 +316,10 @@ LABEL_19:
 LABEL_10:
   [(_UICursorAccessoryItemView *)self _recomputeColors];
 
-  __destructor_8_sb0_AB8s24n1_S_sb8_sb16_AE(a3);
+  __destructor_8_sb0_AB8s24n1_S_sb8_sb16_AE(content);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v16[1] = *MEMORY[0x1E69E9840];
   type = self->_content.type;
@@ -327,7 +327,7 @@ LABEL_10:
   {
     label = self->_content.label;
     v15 = *off_1E70EC918;
-    v10 = [(UILabel *)self->_labelView font:a3.width];
+    v10 = [(UILabel *)self->_labelView font:fits.width];
     v16[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     [(NSString *)label sizeWithAttributes:v11];
@@ -351,7 +351,7 @@ LABEL_9:
     v4 = 0.0;
     if (type == 2)
     {
-      [_UICursorAccessoryView glyphWidth:a3.width];
+      [_UICursorAccessoryView glyphWidth:fits.width];
       v4 = v5;
     }
 
@@ -360,7 +360,7 @@ LABEL_9:
 
   image = self->_content.image;
 
-  [(UIImage *)image size:a3.width];
+  [(UIImage *)image size:fits.width];
 LABEL_12:
   result.height = v8;
   result.width = v7;
@@ -417,10 +417,10 @@ LABEL_12:
     }
 
     [(UIImageView *)imageView setBounds:v28, v29, v24, v26];
-    v33 = [(UIView *)self traitCollection];
-    v34 = [v33 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v34 == 6)
+    if (userInterfaceIdiom == 6)
     {
       [(UIView *)self bounds];
       v36 = v35;
@@ -445,17 +445,17 @@ LABEL_12:
 
   if (self->_backgroundView)
   {
-    v42 = [(UIView *)self traitCollection];
-    v43 = [v42 userInterfaceIdiom];
+    traitCollection2 = [(UIView *)self traitCollection];
+    userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
     [(UIView *)self bounds];
     v45 = v44;
-    if (v43 == 6)
+    if (userInterfaceIdiom2 == 6)
     {
       [(UIView *)self bounds];
       [(UIView *)self->_backgroundView setBounds:v45];
-      v46 = [(_UIShapeView *)self->_backgroundView shapeLayer];
-      [v46 setCornerRadius:22.0];
+      shapeLayer = [(_UIShapeView *)self->_backgroundView shapeLayer];
+      [shapeLayer setCornerRadius:22.0];
 
       [(UIView *)self bounds];
       [(UIView *)self->_backgroundView setCenter:v48 + v47 * 0.5, v50 + v49 * 0.5];
@@ -479,38 +479,38 @@ LABEL_12:
       CGRectGetHeight(v59);
       [(UIView *)self bounds];
       v53 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:" byRoundingCorners:v52 cornerRadii:?];
-      v54 = [v53 CGPath];
-      v55 = [(_UIShapeView *)self->_backgroundView shapeLayer];
-      [v55 setPath:v54];
+      cGPath = [v53 CGPath];
+      shapeLayer2 = [(_UIShapeView *)self->_backgroundView shapeLayer];
+      [shapeLayer2 setPath:cGPath];
     }
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(_UICursorAccessoryItemView *)self setHighlighted:1];
   v9.receiver = self;
   v9.super_class = _UICursorAccessoryItemView;
-  LOBYTE(self) = [(UIControl *)&v9 beginTrackingWithTouch:v7 withEvent:v6];
+  LOBYTE(self) = [(UIControl *)&v9 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return self;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _UICursorAccessoryItemView;
-  [(UIControl *)&v5 endTrackingWithTouch:a3 withEvent:a4];
+  [(UIControl *)&v5 endTrackingWithTouch:touch withEvent:event];
   [(_UICursorAccessoryItemView *)self setHighlighted:0];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = _UICursorAccessoryItemView;
-  [(UIControl *)&v4 cancelTrackingWithEvent:a3];
+  [(UIControl *)&v4 cancelTrackingWithEvent:event];
   [(_UICursorAccessoryItemView *)self setHighlighted:0];
 }
 

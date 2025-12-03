@@ -1,27 +1,27 @@
 @interface PLModelMigrationAction_RemoveOrphanGeneratedAssetDescriptionNodes
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveOrphanGeneratedAssetDescriptionNodes
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v112 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v72 = 0;
   v73 = &v72;
   v74 = 0x2020000000;
   v75 = 0;
   v6 = objc_opt_class();
   v64 = NSStringFromClass(v6);
-  v7 = [v5 pl_graphCache];
-  v65 = [v7 objectIDForLabelWithCode:1300 inContext:v5];
+  pl_graphCache = [contextCopy pl_graphCache];
+  v65 = [pl_graphCache objectIDForLabelWithCode:1300 inContext:contextCopy];
 
   if (v65)
   {
-    v8 = [(PLModelMigrationActionBackground *)self resumeMarker];
-    v9 = v5;
-    v10 = v8;
+    resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+    v9 = contextCopy;
+    v10 = resumeMarker;
     if (v10)
     {
       v11 = [MEMORY[0x1E695DFF8] URLWithString:v10];
@@ -32,8 +32,8 @@
       v11 = 0;
     }
 
-    v19 = [v9 persistentStoreCoordinator];
-    v20 = [v19 managedObjectIDForURIRepresentation:v11];
+    persistentStoreCoordinator = [v9 persistentStoreCoordinator];
+    v20 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v11];
 
     v21 = MEMORY[0x1E695D5E0];
     v22 = +[PLGraphNode entityName];
@@ -63,7 +63,7 @@
     v66[2] = __113__PLModelMigrationAction_RemoveOrphanGeneratedAssetDescriptionNodes_performActionWithManagedObjectContext_error___block_invoke;
     v66[3] = &unk_1E7564B38;
     v67 = v9;
-    v68 = self;
+    selfCopy = self;
     v28 = v64;
     v69 = v28;
     v70 = &v72;
@@ -79,8 +79,8 @@
         goto LABEL_38;
       }
 
-      v41 = [(PLModelMigrationActionBackground *)self logger];
-      v42 = v41 == 0;
+      logger = [(PLModelMigrationActionBackground *)self logger];
+      v42 = logger == 0;
 
       if (!v42)
       {
@@ -155,8 +155,8 @@
           goto LABEL_38;
         }
 
-        v33 = [(PLModelMigrationActionBackground *)self logger];
-        v34 = v33 == 0;
+        logger2 = [(PLModelMigrationActionBackground *)self logger];
+        v34 = logger2 == 0;
 
         if (!v34)
         {
@@ -229,8 +229,8 @@
         goto LABEL_38;
       }
 
-      v48 = [(PLModelMigrationActionBackground *)self logger];
-      v49 = v48 == 0;
+      logger3 = [(PLModelMigrationActionBackground *)self logger];
+      v49 = logger3 == 0;
 
       if (!v49)
       {
@@ -303,10 +303,10 @@ LABEL_38:
     [(PLModelMigrationActionBackground *)self finalizeProgress];
     v57 = v30;
     v53 = v57;
-    if (v29 != 1 && a4)
+    if (v29 != 1 && error)
     {
       v58 = v57;
-      *a4 = v53;
+      *error = v53;
     }
 
     goto LABEL_42;
@@ -317,8 +317,8 @@ LABEL_38:
 
   if (v13)
   {
-    v14 = [(PLModelMigrationActionBackground *)self logger];
-    v15 = v14 == 0;
+    logger4 = [(PLModelMigrationActionBackground *)self logger];
+    v15 = logger4 == 0;
 
     if (v15)
     {

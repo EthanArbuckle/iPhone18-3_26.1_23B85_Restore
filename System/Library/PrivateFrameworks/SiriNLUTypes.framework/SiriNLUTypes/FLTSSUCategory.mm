@@ -1,12 +1,12 @@
 @interface FLTSSUCategory
-- (FLTSSUCategory)initWithFlatbuffData:(id)a3 root:(const SSUCategory *)a4 verify:(BOOL)a5;
+- (FLTSSUCategory)initWithFlatbuffData:(id)data root:(const SSUCategory *)root verify:(BOOL)verify;
 - (NSArray)groups;
-- (Offset<SSUCategory>)addObjectToBuffer:(void *)a3;
+- (Offset<SSUCategory>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)groups_objectAtIndex:(unint64_t)a3;
+- (id)groups_objectAtIndex:(unint64_t)index;
 - (int64_t)type;
 - (unint64_t)groups_count;
-- (void)groups_enumerateObjectsUsingBlock:(id)a3;
+- (void)groups_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FLTSSUCategory
@@ -40,12 +40,12 @@ apple::aiml::flatbuffers2::DetachedBuffer *__30__FLTSSUCategory_flatbuffData__bl
   return result;
 }
 
-- (Offset<SSUCategory>)addObjectToBuffer:(void *)a3
+- (Offset<SSUCategory>)addObjectToBuffer:(void *)buffer
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [(FLTSSUCategory *)self type];
-  v6 = [(FLTSSUCategory *)self groups];
-  v7 = [v6 count];
+  type = [(FLTSSUCategory *)self type];
+  groups = [(FLTSSUCategory *)self groups];
+  v7 = [groups count];
   if (v7)
   {
     if (!(v7 >> 62))
@@ -61,64 +61,64 @@ apple::aiml::flatbuffers2::DetachedBuffer *__30__FLTSSUCategory_flatbuffData__bl
   v23 = 0u;
   v24 = 0u;
   obj = [(FLTSSUCategory *)self groups];
-  v21 = v5;
+  v21 = type;
   if ([obj countByEnumeratingWithState:&v23 objects:v27 count:16])
   {
     *v24;
     *v24;
-    [**(&v23 + 1) addObjectToBuffer:{a3, v5}];
+    [**(&v23 + 1) addObjectToBuffer:{buffer, type}];
     std::__allocate_at_least[abi:ne200100]<std::allocator<float>>(1uLL);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v8 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(a3, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v9 = *(a3 + 8);
-  v10 = *(a3 + 12);
-  v11 = *(a3 + 10);
-  if (v21 || *(a3 + 80) == 1)
+  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v8 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(buffer, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v9 = *(buffer + 8);
+  v10 = *(buffer + 12);
+  v11 = *(buffer + 10);
+  if (v21 || *(buffer + 80) == 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(a3, 1uLL);
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 1uLL);
-    v12 = *(a3 + 6);
-    *(a3 + 6) = v12 - 1;
+    apple::aiml::flatbuffers2::FlatBufferBuilder::Align(buffer, 1uLL);
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 1uLL);
+    v12 = *(buffer + 6);
+    *(buffer + 6) = v12 - 1;
     *(v12 - 1) = v21;
-    v14 = *(a3 + 5);
-    v13 = *(a3 + 6);
-    v15 = *(a3 + 4);
-    apple::aiml::flatbuffers2::vector_downward::ensure_space(a3, 8uLL);
-    **(a3 + 7) = (v15 - v13 + v14) | 0x400000000;
-    *(a3 + 7) += 8;
-    ++*(a3 + 16);
-    v16 = *(a3 + 34);
+    v14 = *(buffer + 5);
+    v13 = *(buffer + 6);
+    v15 = *(buffer + 4);
+    apple::aiml::flatbuffers2::vector_downward::ensure_space(buffer, 8uLL);
+    **(buffer + 7) = (v15 - v13 + v14) | 0x400000000;
+    *(buffer + 7) += 8;
+    ++*(buffer + 16);
+    v16 = *(buffer + 34);
     if (v16 <= 4)
     {
       LOWORD(v16) = 4;
     }
 
-    *(a3 + 34) = v16;
+    *(buffer + 34) = v16;
   }
 
   if (v8)
   {
-    v17 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v8);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v17, 0);
+    v17 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v8);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v17, 0);
   }
 
-  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v9 - v10 + v11);
+  v18.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v9 - v10 + v11);
   v19 = *MEMORY[0x1E69E9840];
   return v18;
 }
 
-- (void)groups_enumerateObjectsUsingBlock:(id)a3
+- (void)groups_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"groups"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -141,7 +141,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__30__FLTSSUCategory_flatbuffData__bl
           do
           {
             v15 = [[FLTSSUCategoryGroup alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -189,13 +189,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__30__FLTSSUCategory_flatbuffData__bl
   return v5;
 }
 
-- (id)groups_objectAtIndex:(unint64_t)a3
+- (id)groups_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"groups"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -209,12 +209,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[FLTSSUCategoryGroup alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[FLTSSUCategoryGroup alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -230,12 +230,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"groups"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __24__FLTSSUCategory_groups__block_invoke;
     v6[3] = &unk_1E8328338;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FLTSSUCategory *)self groups_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"groups"];
@@ -259,10 +259,10 @@ LABEL_9:
   }
 }
 
-- (FLTSSUCategory)initWithFlatbuffData:(id)a3 root:(const SSUCategory *)a4 verify:(BOOL)a5
+- (FLTSSUCategory)initWithFlatbuffData:(id)data root:(const SSUCategory *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FLTSSUCategory;
   v10 = [(FLTSSUCategory *)&v25 init];
@@ -271,35 +271,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1C8C15D50;
   v23 = 0;

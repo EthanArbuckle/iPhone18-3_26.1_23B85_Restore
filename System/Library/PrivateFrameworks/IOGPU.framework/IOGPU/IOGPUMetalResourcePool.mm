@@ -4,7 +4,7 @@
 - (void)dealloc;
 - (void)purge;
 - (void)purgeWithLock;
-- (void)setResourceArgs:(const IOGPUNewResourceArgs *)a3 resourceArgsSize:(unsigned int)a4;
+- (void)setResourceArgs:(const IOGPUNewResourceArgs *)args resourceArgsSize:(unsigned int)size;
 @end
 
 @implementation IOGPUMetalResourcePool
@@ -77,21 +77,21 @@
   }
 }
 
-- (void)setResourceArgs:(const IOGPUNewResourceArgs *)a3 resourceArgsSize:(unsigned int)a4
+- (void)setResourceArgs:(const IOGPUNewResourceArgs *)args resourceArgsSize:(unsigned int)size
 {
-  if (a4 <= 0x57)
+  if (size <= 0x57)
   {
     [IOGPUMetalResourcePool setResourceArgs:resourceArgsSize:];
   }
 
-  v7 = a4;
+  sizeCopy = size;
   os_unfair_lock_lock(&self->_priv.lock);
   [(IOGPUMetalResourcePool *)self purgeWithLock];
   free(self->_resourceArgs);
-  self->_resourceArgsSize = a4;
-  v8 = malloc_type_malloc(v7, 0x1000040931E79F6uLL);
+  self->_resourceArgsSize = size;
+  v8 = malloc_type_malloc(sizeCopy, 0x1000040931E79F6uLL);
   self->_resourceArgs = v8;
-  memcpy(v8, a3, self->_resourceArgsSize);
+  memcpy(v8, args, self->_resourceArgsSize);
   self->_resourceArgs->var0.var10 |= 0x4000u;
   ++self->generation;
 

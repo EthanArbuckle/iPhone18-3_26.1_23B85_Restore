@@ -1,18 +1,18 @@
 @interface PAELevels
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAELevels)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAELevels)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAELevels
 
-- (PAELevels)initWithAPIManager:(id)a3
+- (PAELevels)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAELevels;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -69,7 +69,7 @@
   return v6;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v28[21] = *MEMORY[0x277D85DE8];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E548];
@@ -97,9 +97,9 @@ LABEL_18:
   v25 = 0;
   v26 = 0;
   v24 = 0.0;
-  [v8 mixAmountAtTime:a5->var0.var1];
+  [v8 mixAmountAtTime:info->var0.var1];
   LODWORD(v21) = 1;
-  [v8 getHistogramBlackIn:v28 BlackOut:&v27 WhiteIn:&v26 WhiteOut:&v25 Gamma:&v24 forChannel:0 fromParm:v21 atFxTime:a5->var0.var1];
+  [v8 getHistogramBlackIn:v28 BlackOut:&v27 WhiteIn:&v26 WhiteOut:&v25 Gamma:&v24 forChannel:0 fromParm:v21 atFxTime:info->var0.var1];
   v13 = 0;
   v14 = v24;
   if (v24 < 0.001)
@@ -112,7 +112,7 @@ LABEL_18:
   do
   {
     LODWORD(v22) = 1;
-    [v8 getHistogramBlackIn:&v28[v13 + 17] BlackOut:&v28[v13 + 13] WhiteIn:&v28[v13 + 9] WhiteOut:&v28[v13 + 5] Gamma:&v28[v13 + 1] forChannel:v15 fromParm:v22 atFxTime:a5->var0.var1];
+    [v8 getHistogramBlackIn:&v28[v13 + 17] BlackOut:&v28[v13 + 13] WhiteIn:&v28[v13 + 9] WhiteOut:&v28[v13 + 5] Gamma:&v28[v13 + 1] forChannel:v15 fromParm:v22 atFxTime:info->var0.var1];
     v16 = *&v28[v13 + 1];
     if (v16 < 0.001)
     {
@@ -127,15 +127,15 @@ LABEL_18:
   [v9 colorPrimaries];
   v17 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v23 = 0;
-  [v17 getBoolValue:&v23 fromParm:2 atFxTime:a5->var0.var1];
-  v18 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  [v17 getBoolValue:&v23 fromParm:2 atFxTime:info->var0.var1];
+  v18 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   if (v18)
   {
-    if ([a4 imageType] == 3)
+    if ([input imageType] == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       v19 = HGObject::operator new(0x1A0uLL);
@@ -148,15 +148,15 @@ LABEL_18:
   return v18;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

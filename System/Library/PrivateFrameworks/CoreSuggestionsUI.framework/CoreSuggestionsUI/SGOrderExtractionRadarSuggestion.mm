@@ -1,5 +1,5 @@
 @interface SGOrderExtractionRadarSuggestion
-- (SGOrderExtractionRadarSuggestion)initWithSourceMessageId:(id)a3 localizedDescription:(id)a4;
+- (SGOrderExtractionRadarSuggestion)initWithSourceMessageId:(id)id localizedDescription:(id)description;
 - (id)suggestionPrimaryAction;
 @end
 
@@ -7,13 +7,13 @@
 
 - (id)suggestionPrimaryAction
 {
-  v3 = [(SGRadarSuggestionBase *)self primaryActionTitle];
+  primaryActionTitle = [(SGRadarSuggestionBase *)self primaryActionTitle];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__SGOrderExtractionRadarSuggestion_suggestionPrimaryAction__block_invoke;
   v6[3] = &unk_1E7CD9340;
   v6[4] = self;
-  v4 = [SGSuggestionAction actionWithTitle:v3 handler:v6];
+  v4 = [SGSuggestionAction actionWithTitle:primaryActionTitle handler:v6];
 
   return v4;
 }
@@ -48,16 +48,16 @@ void __59__SGOrderExtractionRadarSuggestion_suggestionPrimaryAction__block_invok
   [v14 openURL:v15 configuration:0 completionHandler:0];
 }
 
-- (SGOrderExtractionRadarSuggestion)initWithSourceMessageId:(id)a3 localizedDescription:(id)a4
+- (SGOrderExtractionRadarSuggestion)initWithSourceMessageId:(id)id localizedDescription:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   v10.receiver = self;
   v10.super_class = SGOrderExtractionRadarSuggestion;
-  v7 = [(SGRadarSuggestionBase *)&v10 initWithSourceMessageId:a3];
+  v7 = [(SGRadarSuggestionBase *)&v10 initWithSourceMessageId:id];
   v8 = v7;
   if (v7)
   {
-    [(SGOrderExtractionRadarSuggestion *)v7 setLocalizedDescription:v6];
+    [(SGOrderExtractionRadarSuggestion *)v7 setLocalizedDescription:descriptionCopy];
   }
 
   return v8;

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexWriter
 - (void)close;
 - (void)dealloc;
-- (void)writeIndexWithInt:(int)a3 withLong:(int64_t)a4;
+- (void)writeIndexWithInt:(int)int withLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingStoredFieldsIndexWriter
 
-- (void)writeIndexWithInt:(int)a3 withLong:(int64_t)a4
+- (void)writeIndexWithInt:(int)int withLong:(int64_t)long
 {
   blockChunks = self->blockChunks_;
   if (blockChunks == self->blockSize_)
@@ -15,8 +15,8 @@
     blockChunks = 0;
     *&self->blockDocs_ = 0;
 LABEL_4:
-    self->firstStartPointer_ = a4;
-    self->maxStartPointer_ = a4;
+    self->firstStartPointer_ = long;
+    self->maxStartPointer_ = long;
     goto LABEL_5;
   }
 
@@ -38,7 +38,7 @@ LABEL_5:
     IOSArray_throwOutOfBoundsWithMsg(size, blockChunks);
   }
 
-  *(&docBaseDeltas->super.size_ + blockChunks + 1) = a3;
+  *(&docBaseDeltas->super.size_ + blockChunks + 1) = int;
   startPointerDeltas = self->startPointerDeltas_;
   if (!startPointerDeltas)
   {
@@ -54,10 +54,10 @@ LABEL_12:
   }
 
   v13 = self->blockChunks_;
-  startPointerDeltas->buffer_[v11] = a4 - self->maxStartPointer_;
+  startPointerDeltas->buffer_[v11] = long - self->maxStartPointer_;
   self->blockChunks_ = v11 + 1;
-  *&self->totalDocs_ = vadd_s32(*&self->totalDocs_, vdup_n_s32(a3));
-  self->maxStartPointer_ = a4;
+  *&self->totalDocs_ = vadd_s32(*&self->totalDocs_, vdup_n_s32(int));
+  self->maxStartPointer_ = long;
 }
 
 - (void)close

@@ -1,22 +1,22 @@
 @interface CarStateManager
-- (void)setMapsActivity:(id)a3 assumedSourceFidelity:(unint64_t)a4 source:(int64_t)a5;
+- (void)setMapsActivity:(id)activity assumedSourceFidelity:(unint64_t)fidelity source:(int64_t)source;
 @end
 
 @implementation CarStateManager
 
-- (void)setMapsActivity:(id)a3 assumedSourceFidelity:(unint64_t)a4 source:(int64_t)a5
+- (void)setMapsActivity:(id)activity assumedSourceFidelity:(unint64_t)fidelity source:(int64_t)source
 {
-  v6 = a3;
+  activityCopy = activity;
   if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
   {
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
+    uUIDString = [v7 UUIDString];
 
     v9 = sub_100005610();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v51 = v8;
+      sourceCopy2 = uUIDString;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "setting Maps activity (tag %@)", buf, 0xCu);
     }
 
@@ -25,10 +25,10 @@
     block[1] = 3221225472;
     block[2] = sub_100F1B818;
     block[3] = &unk_10165E668;
-    v11 = v8;
+    v11 = uUIDString;
     v45 = v11;
-    v47 = a5;
-    v12 = v6;
+    sourceCopy = source;
+    v12 = activityCopy;
     v46 = v12;
     dispatch_async(v10, block);
 
@@ -41,7 +41,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v51 = a5;
+      sourceCopy2 = source;
       v52 = 2112;
       v53 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "setting Maps activity from source: %ld : state: %@", buf, 0x16u);
@@ -52,29 +52,29 @@
       goto LABEL_39;
     }
 
-    v14 = [v12 directionsPlan];
-    v15 = [v14 routeRequestStorage];
-    v16 = [v15 waypoints];
-    v17 = [v16 count];
+    directionsPlan = [v12 directionsPlan];
+    routeRequestStorage = [directionsPlan routeRequestStorage];
+    waypoints = [routeRequestStorage waypoints];
+    v17 = [waypoints count];
 
     v18 = objc_alloc_init(NSMutableDictionary);
-    v19 = [v14 originString];
-    v20 = [v14 destinationString];
-    v21 = v20;
-    if (v19 && !v20 && v17)
+    originString = [directionsPlan originString];
+    destinationString = [directionsPlan destinationString];
+    v21 = destinationString;
+    if (originString && !destinationString && v17)
     {
-      v22 = [v14 routeRequestStorage];
-      v23 = [v22 waypoints];
-      v24 = [v23 firstObject];
+      routeRequestStorage2 = [directionsPlan routeRequestStorage];
+      waypoints2 = [routeRequestStorage2 waypoints];
+      firstObject = [waypoints2 firstObject];
 
-      if ([v24 isCurrentLocation])
+      if ([firstObject isCurrentLocation])
       {
         v25 = +[SearchResult currentLocationSearchResult];
       }
 
       else
       {
-        v25 = [[SearchResult alloc] initWithComposedWaypoint:v24];
+        v25 = [[SearchResult alloc] initWithComposedWaypoint:firstObject];
       }
 
       v26 = v25;
@@ -82,9 +82,9 @@
 
     else
     {
-      if (!v19 && v20 && v17)
+      if (!originString && destinationString && v17)
       {
-        if ([v20 _maps_isEqualToSearchStringForCurrentLocationSearchResult])
+        if ([destinationString _maps_isEqualToSearchStringForCurrentLocationSearchResult])
         {
           v26 = +[SearchResult currentLocationSearchResult];
         }
@@ -114,7 +114,7 @@ LABEL_39:
 
 LABEL_32:
           v32 = 0.0;
-          if (a5 == 5)
+          if (source == 5)
           {
             v33 = [NSNumber numberWithDouble:5.0];
             v34 = +[NSUserDefaults standardUserDefaults];
@@ -140,34 +140,34 @@ LABEL_32:
           v39 = [NSNumber numberWithDouble:v32];
           v48[1] = @"DirectionsShouldRestoreLowGuidance";
           v49[0] = v39;
-          v40 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v14 shouldRestoreLowGuidance]);
+          v40 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [directionsPlan shouldRestoreLowGuidance]);
           v49[1] = v40;
           v41 = [NSDictionary dictionaryWithObjects:v49 forKeys:v48 count:2];
 
           v42 = +[CarChromeModeCoordinator sharedInstance];
           [v42 displayRoutePlanningForDestination:v26 userInfo:v41];
 
-          v19 = v18;
+          originString = v18;
           goto LABEL_38;
         }
 
         v30 = [SearchResult alloc];
-        v24 = [v14 routeRequestStorage];
-        v43 = [v24 waypoints];
-        v31 = [v43 firstObject];
-        v26 = [(SearchResult *)v30 initWithComposedWaypoint:v31];
+        firstObject = [directionsPlan routeRequestStorage];
+        waypoints3 = [firstObject waypoints];
+        firstObject2 = [waypoints3 firstObject];
+        v26 = [(SearchResult *)v30 initWithComposedWaypoint:firstObject2];
       }
 
       else
       {
-        v27 = [v14 routeRequestStorage];
-        v28 = [v27 waypoints];
-        v24 = [v28 lastObject];
+        routeRequestStorage3 = [directionsPlan routeRequestStorage];
+        waypoints4 = [routeRequestStorage3 waypoints];
+        firstObject = [waypoints4 lastObject];
 
-        v26 = [[SearchResult alloc] initWithComposedWaypoint:v24];
-        if (a5 <= 4 && ((1 << a5) & 0x15) != 0)
+        v26 = [[SearchResult alloc] initWithComposedWaypoint:firstObject];
+        if (source <= 4 && ((1 << source) & 0x15) != 0)
         {
-          if ([v24 isCurrentLocation])
+          if ([firstObject isCurrentLocation])
           {
             v29 = +[SearchResult currentLocationSearchResult];
 

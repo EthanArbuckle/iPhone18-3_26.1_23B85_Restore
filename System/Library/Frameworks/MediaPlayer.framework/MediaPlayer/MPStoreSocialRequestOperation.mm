@@ -1,24 +1,24 @@
 @interface MPStoreSocialRequestOperation
-+ (id)_stringRepresentationForHTTPBodyType:(int64_t)a3;
-+ (id)_stringRepresentationForHTTPMethod:(int64_t)a3;
-+ (id)_urlStringForKey:(id)a3 inBag:(id)a4;
-- (MPStoreSocialRequestOperation)initWithDataSource:(id)a3;
-- (id)_requestURLFromBag:(id)a3;
++ (id)_stringRepresentationForHTTPBodyType:(int64_t)type;
++ (id)_stringRepresentationForHTTPMethod:(int64_t)method;
++ (id)_urlStringForKey:(id)key inBag:(id)bag;
+- (MPStoreSocialRequestOperation)initWithDataSource:(id)source;
+- (id)_requestURLFromBag:(id)bag;
 - (void)cancel;
 - (void)execute;
-- (void)setResponseHandler:(id)a3;
+- (void)setResponseHandler:(id)handler;
 @end
 
 @implementation MPStoreSocialRequestOperation
 
-- (id)_requestURLFromBag:(id)a3
+- (id)_requestURLFromBag:(id)bag
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MPStoreSocialRequestOperationDataSource *)self->_dataSource bagKey];
-  if (v5)
+  bagCopy = bag;
+  bagKey = [(MPStoreSocialRequestOperationDataSource *)self->_dataSource bagKey];
+  if (bagKey)
   {
-    v6 = [objc_opt_class() _urlStringForKey:v5 inBag:v4];
+    v6 = [objc_opt_class() _urlStringForKey:bagKey inBag:bagCopy];
     if (v6)
     {
       goto LABEL_15;
@@ -30,8 +30,8 @@
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v7 = [(MPStoreSocialRequestOperationDataSource *)self->_dataSource fallbackBagKeys];
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      fallbackBagKeys = [(MPStoreSocialRequestOperationDataSource *)self->_dataSource fallbackBagKeys];
+      v8 = [fallbackBagKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v8)
       {
         v9 = v8;
@@ -42,10 +42,10 @@
           {
             if (*v19 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(fallbackBagKeys);
             }
 
-            v12 = [objc_opt_class() _urlStringForKey:*(*(&v18 + 1) + 8 * i) inBag:v4];
+            v12 = [objc_opt_class() _urlStringForKey:*(*(&v18 + 1) + 8 * i) inBag:bagCopy];
             if (v12)
             {
               v13 = v12;
@@ -54,7 +54,7 @@
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v9 = [fallbackBagKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v9)
           {
             continue;
@@ -76,8 +76,8 @@ LABEL_15:
   v13 = v6;
 LABEL_16:
   v14 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v13];
-  v15 = [(MPStoreSocialRequestOperationDataSource *)self->_dataSource queryItems];
-  [v14 setQueryItems:v15];
+  queryItems = [(MPStoreSocialRequestOperationDataSource *)self->_dataSource queryItems];
+  [v14 setQueryItems:queryItems];
 
   v16 = [v14 URL];
 
@@ -95,10 +95,10 @@ LABEL_18:
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
   v4 = objc_alloc(MEMORY[0x1E69E4618]);
-  v5 = [MEMORY[0x1E69E4680] activeAccount];
-  v6 = [v4 initWithIdentity:v5];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v6 = [v4 initWithIdentity:activeAccount];
 
-  v7 = [MEMORY[0x1E69E4658] sharedBagProvider];
+  mEMORY[0x1E69E4658] = [MEMORY[0x1E69E4658] sharedBagProvider];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__MPStoreSocialRequestOperation_execute__block_invoke_2;
@@ -106,7 +106,7 @@ LABEL_18:
   v9[4] = self;
   v10 = v3;
   v8 = v3;
-  [v7 getBagForRequestContext:v6 withCompletionHandler:v9];
+  [mEMORY[0x1E69E4658] getBagForRequestContext:v6 withCompletionHandler:v9];
 }
 
 void __40__MPStoreSocialRequestOperation_execute__block_invoke(uint64_t a1, void *a2)
@@ -247,22 +247,22 @@ void __40__MPStoreSocialRequestOperation_execute__block_invoke_4(uint64_t a1)
   [(MPAsyncOperation *)&v4 cancel];
   if (self->_request)
   {
-    v3 = [MEMORY[0x1E69E4678] defaultSession];
-    [v3 cancelRequest:self->_request];
+    defaultSession = [MEMORY[0x1E69E4678] defaultSession];
+    [defaultSession cancelRequest:self->_request];
   }
 }
 
-- (void)setResponseHandler:(id)a3
+- (void)setResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__MPStoreSocialRequestOperation_setResponseHandler___block_invoke;
   v7[3] = &unk_1E76824C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -274,9 +274,9 @@ void __52__MPStoreSocialRequestOperation_setResponseHandler___block_invoke(uint6
   *(v3 + 296) = v2;
 }
 
-- (MPStoreSocialRequestOperation)initWithDataSource:(id)a3
+- (MPStoreSocialRequestOperation)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = MPStoreSocialRequestOperation;
   v6 = [(MPAsyncOperation *)&v10 init];
@@ -286,20 +286,20 @@ void __52__MPStoreSocialRequestOperation_setResponseHandler___block_invoke(uint6
     accessQueue = v6->_accessQueue;
     v6->_accessQueue = v7;
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v6;
 }
 
-+ (id)_urlStringForKey:(id)a3 inBag:(id)a4
++ (id)_urlStringForKey:(id)key inBag:(id)bag
 {
-  v5 = a3;
-  v6 = [a4 dictionaryForBagKey:*MEMORY[0x1E69E4318]];
+  keyCopy = key;
+  v6 = [bag dictionaryForBagKey:*MEMORY[0x1E69E4318]];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 objectForKey:v5];
+    v8 = [v6 objectForKey:keyCopy];
     if (_NSIsNSString())
     {
       v9 = v8;
@@ -319,28 +319,28 @@ void __52__MPStoreSocialRequestOperation_setResponseHandler___block_invoke(uint6
   return v9;
 }
 
-+ (id)_stringRepresentationForHTTPMethod:(int64_t)a3
++ (id)_stringRepresentationForHTTPMethod:(int64_t)method
 {
-  if (a3 > 2)
+  if (method > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E767D310[a3];
+    return off_1E767D310[method];
   }
 }
 
-+ (id)_stringRepresentationForHTTPBodyType:(int64_t)a3
++ (id)_stringRepresentationForHTTPBodyType:(int64_t)type
 {
   v3 = @"application/json; charset=utf-8";
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     return v3;
   }

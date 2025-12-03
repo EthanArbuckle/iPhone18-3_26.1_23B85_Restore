@@ -1,5 +1,5 @@
 @interface _SVXDeviceSetupFlowDisplayKeyFrameMutation
-- (_SVXDeviceSetupFlowDisplayKeyFrameMutation)initWithBaseModel:(id)a3;
+- (_SVXDeviceSetupFlowDisplayKeyFrameMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -37,14 +37,14 @@ LABEL_5:
     if ((*&self->_mutationFlags & 4) != 0)
     {
 LABEL_8:
-      v7 = self->_text;
+      text = self->_text;
       goto LABEL_11;
     }
   }
 
-  v7 = [(SVXDeviceSetupFlowDisplayKeyFrame *)self->_baseModel text];
+  text = [(SVXDeviceSetupFlowDisplayKeyFrame *)self->_baseModel text];
 LABEL_11:
-  v8 = v7;
+  v8 = text;
   if ((*&self->_mutationFlags & 8) != 0)
   {
     offset = self->_offset;
@@ -76,16 +76,16 @@ LABEL_17:
   return v5;
 }
 
-- (_SVXDeviceSetupFlowDisplayKeyFrameMutation)initWithBaseModel:(id)a3
+- (_SVXDeviceSetupFlowDisplayKeyFrameMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeviceSetupFlowDisplayKeyFrameMutation;
   v6 = [(_SVXDeviceSetupFlowDisplayKeyFrameMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

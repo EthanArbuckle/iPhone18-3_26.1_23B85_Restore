@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_SetUniqueEdgeExternalIdentifiers
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_SetUniqueEdgeExternalIdentifiers
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLModelMigrationActionCore *)self progress];
-  v8 = [v7 totalUnitCount];
+  contextCopy = context;
+  progress = [(PLModelMigrationActionCore *)self progress];
+  totalUnitCount = [progress totalUnitCount];
 
   v26[0] = 0;
   v26[1] = v26;
@@ -17,7 +17,7 @@
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLGraphEdge entityName];
   v11 = [v9 fetchRequestWithEntityName:v10];
-  v12 = v8 / 2;
+  v12 = totalUnitCount / 2;
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -25,7 +25,7 @@
   v24[3] = &unk_1E7571BB0;
   v24[4] = v26;
   v25 = 0;
-  v13 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v11 pendingParentUnitCount:v12 error:&v25 processingBlock:v24];
+  v13 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v11 pendingParentUnitCount:v12 error:&v25 processingBlock:v24];
   v14 = v25;
 
   _Block_object_dispose(v26, 8);
@@ -36,7 +36,7 @@
     v17 = [v15 fetchRequestWithEntityName:v16];
 
     v23 = v14;
-    v13 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v17 pendingParentUnitCount:v12 error:&v23 processingBlock:&__block_literal_global_76478];
+    v13 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v17 pendingParentUnitCount:v12 error:&v23 processingBlock:&__block_literal_global_76478];
     v18 = v23;
 
     v14 = v18;
@@ -45,10 +45,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v19 = v14;
   v20 = v19;
-  if (v13 != 1 && a4)
+  if (v13 != 1 && error)
   {
     v21 = v19;
-    *a4 = v20;
+    *error = v20;
   }
 
   return v13;

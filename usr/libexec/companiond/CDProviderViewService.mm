@@ -1,20 +1,20 @@
 @interface CDProviderViewService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CDProviderViewService)init;
-- (void)activateWithCompletionHandler:(id)a3;
+- (void)activateWithCompletionHandler:(id)handler;
 - (void)confirm;
-- (void)deactivateWithError:(id)a3;
+- (void)deactivateWithError:(id)error;
 - (void)invalidate;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)setActionHandler:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)setActionHandler:(id)handler;
 - (void)shareCompleted;
-- (void)shareFailedWithError:(id)a3;
-- (void)storeAuthenticationFailedWithError:(id)a3;
-- (void)storeAuthenticationFinishedWithResult:(id)a3;
-- (void)webAuthenticationFailedWithError:(id)a3;
-- (void)webAuthenticationFinishedWithCallbackURL:(id)a3;
+- (void)shareFailedWithError:(id)error;
+- (void)storeAuthenticationFailedWithError:(id)error;
+- (void)storeAuthenticationFinishedWithResult:(id)result;
+- (void)webAuthenticationFailedWithError:(id)error;
+- (void)webAuthenticationFinishedWithCallbackURL:(id)l;
 @end
 
 @implementation CDProviderViewService
@@ -36,18 +36,18 @@
   return v3;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000FCB8;
     v9[3] = &unk_10008A650;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     v6 = objc_retainBlock(v9);
     actionHandler = self->_actionHandler;
     self->_actionHandler = v6;
@@ -62,9 +62,9 @@
   }
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(BSAtomicSignal *)self->_activateCalledSignal signal];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -72,8 +72,8 @@
   v7[2] = sub_10000FDA4;
   v7[3] = &unk_100089D58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -88,26 +88,26 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v3 = a3;
+  activateCopy = activate;
   v4 = cps_daemon_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = activateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "View service activated: %@", &v5, 0xCu);
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = cps_daemon_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = deactivateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "View service deactivated: %@", buf, 0xCu);
   }
 
@@ -120,17 +120,17 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   v8 = cps_daemon_log();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_100063704(v6, v7, v9);
+      sub_100063704(handleCopy, errorCopy, v9);
     }
 
     dispatchQueue = self->_dispatchQueue;
@@ -139,7 +139,7 @@
     block[2] = sub_100063440;
     block[3] = &unk_10008A030;
     block[4] = self;
-    v14 = v7;
+    v14 = errorCopy;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -148,7 +148,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = handleCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "View service invalidated: %@", buf, 0xCu);
     }
 
@@ -173,45 +173,45 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)deactivateWithError:(id)a3
+- (void)deactivateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006352C;
   v7[3] = &unk_10008A030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)webAuthenticationFinishedWithCallbackURL:(id)a3
+- (void)webAuthenticationFinishedWithCallbackURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100063578;
   v7[3] = &unk_10008A030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)webAuthenticationFailedWithError:(id)a3
+- (void)webAuthenticationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000635DC;
   v7[3] = &unk_10008A030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -226,52 +226,52 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)shareFailedWithError:(id)a3
+- (void)shareFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100063640;
   v7[3] = &unk_10008A030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)storeAuthenticationFinishedWithResult:(id)a3
+- (void)storeAuthenticationFinishedWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000106E8;
   v7[3] = &unk_10008A030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)storeAuthenticationFailedWithError:(id)a3
+- (void)storeAuthenticationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000107E8;
   v7[3] = &unk_10008A030;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  [(NSXPCConnection *)v6 setExportedObject:self];
+  connectionCopy = connection;
+  [(NSXPCConnection *)connectionCopy setExportedObject:self];
   +[CPSViewServiceInterface presenterInterface];
   objc_claimAutoreleasedReturnValue();
   [sub_100010AB0() setExportedInterface:?];
@@ -280,9 +280,9 @@
   objc_claimAutoreleasedReturnValue();
   [sub_100010AB0() setRemoteObjectInterface:?];
 
-  [(NSXPCConnection *)v6 resume];
+  [(NSXPCConnection *)connectionCopy resume];
   viewServiceConnection = self->_viewServiceConnection;
-  self->_viewServiceConnection = v6;
+  self->_viewServiceConnection = connectionCopy;
 
   v8 = sub_100063200(&self->super.isa);
   [v8 establishConnection];

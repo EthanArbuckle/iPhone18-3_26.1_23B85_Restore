@@ -1,5 +1,5 @@
 @interface HDSQLiteDatabaseColumnSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -16,26 +16,26 @@
   return v5 ^ v7 ^ [(NSString *)self->_foreignKeyTargetColumn hash]^ self->_deletionAction;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   name = self->_name;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (name != v6 && (!v6 || ![(NSString *)name isEqual:?]))
   {
     goto LABEL_20;
   }
 
   type = self->_type;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (type != v8 && (!v8 || ![(NSString *)type isEqual:?]))
   {
     goto LABEL_20;
   }
 
-  if (((defaultValue = self->_defaultValue, v10 = v4[4], defaultValue == v10) || v10 && [(NSString *)defaultValue isEqual:?]) && self->_isAutoincrement == *(v4 + 8) && self->_isPrimaryKey == *(v4 + 9) && self->_isNullable == *(v4 + 10) && ((foreignKeyTargetTable = self->_foreignKeyTargetTable, v12 = v4[5], foreignKeyTargetTable == v12) || v12 && [(NSString *)foreignKeyTargetTable isEqual:?]) && ((foreignKeyTargetColumn = self->_foreignKeyTargetColumn, v14 = v4[6], foreignKeyTargetColumn == v14) || v14 && [(NSString *)foreignKeyTargetColumn isEqual:?]))
+  if (((defaultValue = self->_defaultValue, v10 = equalCopy[4], defaultValue == v10) || v10 && [(NSString *)defaultValue isEqual:?]) && self->_isAutoincrement == *(equalCopy + 8) && self->_isPrimaryKey == *(equalCopy + 9) && self->_isNullable == *(equalCopy + 10) && ((foreignKeyTargetTable = self->_foreignKeyTargetTable, v12 = equalCopy[5], foreignKeyTargetTable == v12) || v12 && [(NSString *)foreignKeyTargetTable isEqual:?]) && ((foreignKeyTargetColumn = self->_foreignKeyTargetColumn, v14 = equalCopy[6], foreignKeyTargetColumn == v14) || v14 && [(NSString *)foreignKeyTargetColumn isEqual:?]))
   {
-    v15 = self->_deletionAction == v4[7];
+    v15 = self->_deletionAction == equalCopy[7];
   }
 
   else

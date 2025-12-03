@@ -1,10 +1,10 @@
 @interface INRentalCarReservation
-- (BOOL)isEqual:(id)a3;
-- (INRentalCarReservation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRentalCarReservation)initWithCoder:(id)coder;
 - (INRentalCarReservation)initWithItemReference:(INSpeakableString *)itemReference reservationNumber:(NSString *)reservationNumber bookingTime:(NSDate *)bookingTime reservationStatus:(INReservationStatus)reservationStatus reservationHolderName:(NSString *)reservationHolderName actions:(NSArray *)actions URL:(NSURL *)URL rentalCar:(INRentalCar *)rentalCar rentalDuration:(INDateComponentsRange *)rentalDuration pickupLocation:(CLPlacemark *)pickupLocation dropOffLocation:(CLPlacemark *)dropOffLocation;
 - (id)_dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRentalCarReservation
@@ -14,45 +14,45 @@
   v18[4] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = INRentalCarReservation;
-  v3 = [(INReservation *)&v16 _dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  _dictionaryRepresentation = [(INReservation *)&v16 _dictionaryRepresentation];
+  v4 = [_dictionaryRepresentation mutableCopy];
 
   v17[0] = @"rentalCar";
   rentalCar = self->_rentalCar;
-  v6 = rentalCar;
+  null = rentalCar;
   if (!rentalCar)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v6;
+  v18[0] = null;
   v17[1] = @"rentalDuration";
   rentalDuration = self->_rentalDuration;
-  v8 = rentalDuration;
+  null2 = rentalDuration;
   if (!rentalDuration)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v8;
+  v18[1] = null2;
   v17[2] = @"pickupLocation";
   pickupLocation = self->_pickupLocation;
-  v10 = pickupLocation;
+  null3 = pickupLocation;
   if (!pickupLocation)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v10;
+  v18[2] = null3;
   v17[3] = @"dropOffLocation";
   dropOffLocation = self->_dropOffLocation;
-  v12 = dropOffLocation;
+  null4 = dropOffLocation;
   if (!dropOffLocation)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v12;
+  v18[3] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
   [v4 addEntriesFromDictionary:v13];
 
@@ -105,58 +105,58 @@ LABEL_13:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = INRentalCarReservation;
-  v4 = a3;
-  [(INReservation *)&v13 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(INReservation *)&v13 encodeWithCoder:coderCopy];
   rentalCar = self->_rentalCar;
   v6 = NSStringFromSelector(sel_rentalCar);
-  [v4 encodeObject:rentalCar forKey:{v6, v13.receiver, v13.super_class}];
+  [coderCopy encodeObject:rentalCar forKey:{v6, v13.receiver, v13.super_class}];
 
   rentalDuration = self->_rentalDuration;
   v8 = NSStringFromSelector(sel_rentalDuration);
-  [v4 encodeObject:rentalDuration forKey:v8];
+  [coderCopy encodeObject:rentalDuration forKey:v8];
 
   pickupLocation = self->_pickupLocation;
   v10 = NSStringFromSelector(sel_pickupLocation);
-  [v4 encodeObject:pickupLocation forKey:v10];
+  [coderCopy encodeObject:pickupLocation forKey:v10];
 
   dropOffLocation = self->_dropOffLocation;
   v12 = NSStringFromSelector(sel_dropOffLocation);
-  [v4 encodeObject:dropOffLocation forKey:v12];
+  [coderCopy encodeObject:dropOffLocation forKey:v12];
 }
 
-- (INRentalCarReservation)initWithCoder:(id)a3
+- (INRentalCarReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = INRentalCarReservation;
-  v5 = [(INReservation *)&v23 initWithCoder:v4];
+  v5 = [(INReservation *)&v23 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_rentalCar);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     rentalCar = v5->_rentalCar;
     v5->_rentalCar = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_rentalDuration);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     rentalDuration = v5->_rentalDuration;
     v5->_rentalDuration = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_pickupLocation);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     pickupLocation = v5->_pickupLocation;
     v5->_pickupLocation = v16;
 
     v18 = objc_opt_class();
     v19 = NSStringFromSelector(sel_dropOffLocation);
-    v20 = [v4 decodeObjectOfClass:v18 forKey:v19];
+    v20 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
     dropOffLocation = v5->_dropOffLocation;
     v5->_dropOffLocation = v20;
   }
@@ -164,10 +164,10 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -175,9 +175,9 @@ LABEL_13:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v12.receiver = self, v12.super_class = INRentalCarReservation, [(INReservation *)&v12 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v12.receiver = self, v12.super_class = INRentalCarReservation, [(INReservation *)&v12 isEqual:equalCopy]))
     {
-      v5 = v4;
+      v5 = equalCopy;
       rentalCar = self->_rentalCar;
       v10 = 0;
       if (rentalCar == v5->_rentalCar || [(INRentalCar *)rentalCar isEqual:?])

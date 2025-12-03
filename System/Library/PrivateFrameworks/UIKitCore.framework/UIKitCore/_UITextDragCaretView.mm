@@ -1,22 +1,22 @@
 @interface _UITextDragCaretView
 - (BOOL)_isRemoveAnimatesBackToCaret;
-- (CGRect)_configureMask:(id)a3 withPath:(id)a4;
-- (_UITextDragCaretView)initWithTextInputView:(id)a3;
+- (CGRect)_configureMask:(id)mask withPath:(id)path;
+- (_UITextDragCaretView)initWithTextInputView:(id)view;
 - (id)_caretColor;
-- (id)_maskForRects:(id)a3;
+- (id)_maskForRects:(id)rects;
 - (id)_rangeColor;
-- (id)_rectsForRange:(id)a3;
-- (void)_insertAtRangeOrPosition:(id)a3 animations:(id)a4 completion:(id)a5 animated:(BOOL)a6;
-- (void)_performUpdate:(id)a3;
-- (void)_updateToRangeOrPosition:(id)a3 animations:(id)a4 completion:(id)a5 animated:(BOOL)a6;
-- (void)removeWithAnimations:(id)a3 completion:(id)a4 animated:(BOOL)a5;
+- (id)_rectsForRange:(id)range;
+- (void)_insertAtRangeOrPosition:(id)position animations:(id)animations completion:(id)completion animated:(BOOL)animated;
+- (void)_performUpdate:(id)update;
+- (void)_updateToRangeOrPosition:(id)position animations:(id)animations completion:(id)completion animated:(BOOL)animated;
+- (void)removeWithAnimations:(id)animations completion:(id)completion animated:(BOOL)animated;
 @end
 
 @implementation _UITextDragCaretView
 
-- (_UITextDragCaretView)initWithTextInputView:(id)a3
+- (_UITextDragCaretView)initWithTextInputView:(id)view
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, view);
   v9.receiver = self;
   v9.super_class = _UITextDragCaretView;
   v4 = [(UIView *)&v9 init];
@@ -25,9 +25,9 @@
     v5 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v4->_view, v5);
 
-    v6 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     mask = v4->_mask;
-    v4->_mask = v6;
+    v4->_mask = layer;
 
     [(UIView *)v4 setUserInteractionEnabled:0];
   }
@@ -36,26 +36,26 @@
   return v4;
 }
 
-- (void)_insertAtRangeOrPosition:(id)a3 animations:(id)a4 completion:(id)a5 animated:(BOOL)a6
+- (void)_insertAtRangeOrPosition:(id)position animations:(id)animations completion:(id)completion animated:(BOOL)animated
 {
-  v61 = a6;
-  v9 = a3;
-  v60 = a4;
-  v10 = a5;
+  animatedCopy = animated;
+  positionCopy = position;
+  animationsCopy = animations;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained addSubview:self];
 
-  v12 = v9;
+  v12 = positionCopy;
   v13 = objc_opt_respondsToSelector();
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v12 isEmpty];
+    isEmpty = [v12 isEmpty];
     if (v13)
     {
-      if (v14)
+      if (isEmpty)
       {
-        v15 = [v12 start];
-        v16 = v15;
+        start = [v12 start];
+        v16 = start;
         v17 = 0;
         goto LABEL_8;
       }
@@ -68,22 +68,22 @@
   {
 LABEL_6:
     v18 = v12;
-    v15 = 0;
+    start = 0;
     v17 = v12;
     goto LABEL_8;
   }
 
   v19 = v12;
   v17 = 0;
-  v15 = v12;
+  start = v12;
 LABEL_8:
 
   v20 = v17;
-  v21 = v15;
+  v21 = start;
   if (v21)
   {
-    v22 = [(_UITextDragCaretView *)self _caretColor];
-    [(UIView *)self setBackgroundColor:v22];
+    _caretColor = [(_UITextDragCaretView *)self _caretColor];
+    [(UIView *)self setBackgroundColor:_caretColor];
 
     v23 = objc_loadWeakRetained(&self->_view);
     [v23 caretRectForPosition:v21];
@@ -92,8 +92,8 @@ LABEL_8:
     v29 = v28;
     v31 = v30;
     v32 = objc_loadWeakRetained(&self->_view);
-    v33 = [v32 textInputView];
-    [v23 convertRect:v33 fromView:{v25, v27, v29, v31}];
+    textInputView = [v32 textInputView];
+    [v23 convertRect:textInputView fromView:{v25, v27, v29, v31}];
     v35 = v34;
     v37 = v36;
     v39 = v38;
@@ -104,8 +104,8 @@ LABEL_8:
 
   else
   {
-    v43 = [(_UITextDragCaretView *)self _rangeColor];
-    [(UIView *)self setBackgroundColor:v43];
+    _rangeColor = [(_UITextDragCaretView *)self _rangeColor];
+    [(UIView *)self setBackgroundColor:_rangeColor];
 
     mask = self->_mask;
     v45 = [(_UITextDragCaretView *)self _rectsForRange:v20];
@@ -132,8 +132,8 @@ LABEL_8:
       [v54 _caretRect];
       [(UIView *)self setFrame:?];
 
-      v55 = [(UIView *)self layer];
-      [v55 setMask:0];
+      layer = [(UIView *)self layer];
+      [layer setMask:0];
 
       goto LABEL_16;
     }
@@ -143,7 +143,7 @@ LABEL_8:
   {
   }
 
-  [(UIView *)self setAlpha:0.0, v60];
+  [(UIView *)self setAlpha:0.0, animationsCopy];
   CGAffineTransformMakeScale(&v72, 2.0, 2.0);
   v71 = v72;
   [(UIView *)self setTransform:&v71];
@@ -160,41 +160,41 @@ LABEL_16:
   v70 = v41;
   v56 = v42;
   v65 = v56;
-  v57 = v60;
+  v57 = animationsCopy;
   v66 = v57;
   v58 = _Block_copy(aBlock);
   v59 = v58;
-  if (!v10)
+  if (!completionCopy)
   {
-    v10 = &__block_literal_global_591;
+    completionCopy = &__block_literal_global_591;
   }
 
-  if (v61)
+  if (animatedCopy)
   {
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __80___UITextDragCaretView__insertAtRangeOrPosition_animations_completion_animated___block_invoke_3;
     v62[3] = &unk_1E7103030;
-    v63 = v10;
+    v63 = completionCopy;
     [UIView _animateUsingSpringWithTension:0 friction:v59 interactive:v62 animations:400.0 completion:35.0];
   }
 
   else
   {
     (*(v58 + 2))(v58);
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_updateToRangeOrPosition:(id)a3 animations:(id)a4 completion:(id)a5 animated:(BOOL)a6
+- (void)_updateToRangeOrPosition:(id)position animations:(id)animations completion:(id)completion animated:(BOOL)animated
 {
-  v65 = a6;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v10)
+  animatedCopy = animated;
+  positionCopy = position;
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (animationsCopy)
   {
-    v12 = v10;
+    v12 = animationsCopy;
   }
 
   else
@@ -202,9 +202,9 @@ LABEL_16:
     v12 = &__block_literal_global_18_6;
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v13 = v11;
+    v13 = completionCopy;
   }
 
   else
@@ -212,17 +212,17 @@ LABEL_16:
     v13 = &__block_literal_global_20_9;
   }
 
-  v66 = v9;
+  v66 = positionCopy;
   v14 = objc_opt_respondsToSelector();
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v66 isEmpty];
+    isEmpty = [v66 isEmpty];
     if (v14)
     {
-      if (v15)
+      if (isEmpty)
       {
-        v16 = [v66 start];
-        v17 = v16;
+        start = [v66 start];
+        v17 = start;
         v18 = v66;
         v19 = 0;
         goto LABEL_14;
@@ -236,21 +236,21 @@ LABEL_16:
   {
 LABEL_12:
     v18 = v66;
-    v16 = 0;
+    start = 0;
     v19 = v18;
     goto LABEL_14;
   }
 
   v18 = v66;
   v19 = 0;
-  v16 = v18;
+  start = v18;
 LABEL_14:
 
   v20 = v19;
-  v21 = v16;
+  v21 = start;
   if (v21)
   {
-    v64 = v16;
+    v64 = start;
     v22 = v19;
     v23 = objc_opt_new();
     v24 = objc_loadWeakRetained(&self->_view);
@@ -263,8 +263,8 @@ LABEL_14:
     v34 = v13;
     v35 = v12;
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v37 = [WeakRetained textInputView];
-    [v24 convertRect:v37 fromView:{v26, v28, v30, v32}];
+    textInputView = [WeakRetained textInputView];
+    [v24 convertRect:textInputView fromView:{v26, v28, v30, v32}];
     v39 = v38;
     v41 = v40;
     v43 = v42;
@@ -275,7 +275,7 @@ LABEL_14:
     v20 = v33;
     v46 = v23;
     v19 = v22;
-    v16 = v64;
+    start = v64;
   }
 
   else
@@ -298,7 +298,7 @@ LABEL_14:
   if (!CGRectEqualToRect(v68, v69))
   {
     v52 = objc_opt_new();
-    objc_storeStrong((v52 + 8), v16);
+    objc_storeStrong((v52 + 8), start);
     objc_storeStrong((v52 + 16), v19);
     objc_storeStrong((v52 + 24), v46);
     v53 = _Block_copy(v12);
@@ -309,8 +309,8 @@ LABEL_14:
     v56 = *(v52 + 40);
     *(v52 + 40) = v55;
 
-    *(v52 + 48) = v65;
-    if (v21 && v65 && (v57 = objc_loadWeakRetained(&self->_view), [v57 tokenizer], v58 = v46, v59 = v20, v60 = v13, v61 = v12, v62 = objc_claimAutoreleasedReturnValue(), v63 = objc_msgSend(v62, "isPosition:atBoundary:inDirection:", v21, 4, 1), v62, v12 = v61, v13 = v60, v20 = v59, v46 = v58, v57, v63))
+    *(v52 + 48) = animatedCopy;
+    if (v21 && animatedCopy && (v57 = objc_loadWeakRetained(&self->_view), [v57 tokenizer], v58 = v46, v59 = v20, v60 = v13, v61 = v12, v62 = objc_claimAutoreleasedReturnValue(), v63 = objc_msgSend(v62, "isPosition:atBoundary:inDirection:", v21, 4, 1), v62, v12 = v61, v13 = v60, v20 = v59, v46 = v58, v57, v63))
     {
       [(_UITextDragCaretView *)self performSelector:sel__performUpdate_ withObject:v52 afterDelay:0.5];
     }
@@ -322,15 +322,15 @@ LABEL_14:
   }
 }
 
-- (void)_performUpdate:(id)a3
+- (void)_performUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [objc_opt_class() cancelPreviousPerformRequestsWithTarget:self];
-  v5 = *(v4 + 1);
-  v6 = *(v4 + 3);
-  v7 = _Block_copy(*(v4 + 4));
-  v8 = _Block_copy(*(v4 + 5));
-  v9 = v4[48];
+  v5 = *(updateCopy + 1);
+  v6 = *(updateCopy + 3);
+  v7 = _Block_copy(*(updateCopy + 4));
+  v8 = _Block_copy(*(updateCopy + 5));
+  v9 = updateCopy[48];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __39___UITextDragCaretView__performUpdate___block_invoke;
@@ -362,11 +362,11 @@ LABEL_14:
   }
 }
 
-- (void)removeWithAnimations:(id)a3 completion:(id)a4 animated:(BOOL)a5
+- (void)removeWithAnimations:(id)animations completion:(id)completion animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  animationsCopy = animations;
+  completionCopy = completion;
   if ([(_UITextDragCaretView *)self _isRemoveAnimatesBackToCaret])
   {
     v10 = v23;
@@ -386,7 +386,7 @@ LABEL_14:
   v10[2] = v11;
   v10[3] = &unk_1E70F37C0;
   v10[4] = self;
-  v12 = v8;
+  v12 = animationsCopy;
   v10[5] = v12;
   v13 = _Block_copy(v10);
 
@@ -394,13 +394,13 @@ LABEL_14:
   v17 = 3221225472;
   v18 = __65___UITextDragCaretView_removeWithAnimations_completion_animated___block_invoke_3;
   v19 = &unk_1E711F7E0;
-  v20 = self;
-  v14 = v9;
+  selfCopy = self;
+  v14 = completionCopy;
   v21 = v14;
   v15 = _Block_copy(&v16);
-  if (v5)
+  if (animatedCopy)
   {
-    [UIView _animateUsingSpringWithTension:0 friction:v13 interactive:v15 animations:400.0 completion:35.0, v16, v17, v18, v19, v20];
+    [UIView _animateUsingSpringWithTension:0 friction:v13 interactive:v15 animations:400.0 completion:35.0, v16, v17, v18, v19, selfCopy];
   }
 
   else
@@ -454,25 +454,25 @@ LABEL_14:
   return v6;
 }
 
-- (id)_rectsForRange:(id)a3
+- (id)_rectsForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v6 = [WeakRetained selectionRectsForRange:v4];
+  v6 = [WeakRetained selectionRectsForRange:rangeCopy];
 
   return v6;
 }
 
-- (id)_maskForRects:(id)a3
+- (id)_maskForRects:(id)rects
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rectsCopy = rects;
   v5 = objc_opt_new();
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = v4;
+  v6 = rectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v7)
   {
@@ -506,33 +506,33 @@ LABEL_14:
   if ([(_UITextDragCaretView *)self rangesExcludeSelection])
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v14 = [WeakRetained selectedTextRange];
-    if (!v14)
+    selectedTextRange = [WeakRetained selectedTextRange];
+    if (!selectedTextRange)
     {
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v15 = v14;
+    v15 = selectedTextRange;
     v16 = objc_loadWeakRetained(&self->_view);
-    v17 = [v16 selectedTextRange];
-    if ([v17 _isCaret])
+    selectedTextRange2 = [v16 selectedTextRange];
+    if ([selectedTextRange2 _isCaret])
     {
 
       goto LABEL_14;
     }
 
     v41 = objc_loadWeakRetained(&self->_view);
-    v19 = [v41 selectedTextRange];
-    v42 = [v19 isEmpty];
+    selectedTextRange3 = [v41 selectedTextRange];
+    isEmpty = [selectedTextRange3 isEmpty];
 
-    if ((v42 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       WeakRetained = objc_opt_new();
       v20 = objc_loadWeakRetained(&self->_view);
-      v21 = [v20 selectedTextRange];
-      v22 = [v20 selectionRectsForRange:v21];
+      selectedTextRange4 = [v20 selectedTextRange];
+      v22 = [v20 selectionRectsForRange:selectedTextRange4];
 
       v45 = 0u;
       v46 = 0u;
@@ -598,25 +598,25 @@ LABEL_15:
   return v5;
 }
 
-- (CGRect)_configureMask:(id)a3 withPath:(id)a4
+- (CGRect)_configureMask:(id)mask withPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 bounds];
+  pathCopy = path;
+  maskCopy = mask;
+  [pathCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   CGAffineTransformMakeTranslation(&v27, -v7, -v9);
-  [v5 applyTransform:&v27];
-  [v6 setPath:{objc_msgSend(v5, "CGPath")}];
-  [v5 bounds];
+  [pathCopy applyTransform:&v27];
+  [maskCopy setPath:{objc_msgSend(pathCopy, "CGPath")}];
+  [pathCopy bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v6 setFrame:{v16, v18, v20, v22}];
+  [maskCopy setFrame:{v16, v18, v20, v22}];
   v23 = v8;
   v24 = v10;
   v25 = v12;

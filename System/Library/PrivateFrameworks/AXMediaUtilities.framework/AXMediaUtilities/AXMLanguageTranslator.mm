@@ -2,18 +2,18 @@
 + (id)allowedTargetLocalesForTranslation;
 - (AXMLanguageTranslator)init;
 - (_LTTranslator)translator;
-- (id)_canonicalLocaleForLocale:(id)a3;
-- (id)_canonicalLocalesForLocales:(id)a3;
-- (id)_descriptionForLocales:(id)a3;
-- (id)_filteredLocalesToInstallFromAvailableLocales:(id)a3 requestedLocales:(id)a4 fallBackToBaseLanguageIfNeeded:(BOOL)a5;
-- (id)_proposedTranslationLocaleForLocale:(id)a3;
-- (id)translateText:(id)a3 toLocale:(id)a4 respectAllowList:(BOOL)a5 metrics:(id)a6 error:(id *)a7;
-- (void)availableTranslationLocales:(id)a3;
-- (void)installOfflineTranslationModelForLanguageCodeIfNeeded:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)installOfflineTranslationModelForLocales:(id)a3 fallBackToBaseLanguageIfNeeded:(BOOL)a4 forceReinstall:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)installedTranslationLocales:(id)a3;
-- (void)translateText:(id)a3 toLocale:(id)a4 respectAllowList:(BOOL)a5 completion:(id)a6;
-- (void)userSelectableTranslationLocales:(id)a3;
+- (id)_canonicalLocaleForLocale:(id)locale;
+- (id)_canonicalLocalesForLocales:(id)locales;
+- (id)_descriptionForLocales:(id)locales;
+- (id)_filteredLocalesToInstallFromAvailableLocales:(id)locales requestedLocales:(id)requestedLocales fallBackToBaseLanguageIfNeeded:(BOOL)needed;
+- (id)_proposedTranslationLocaleForLocale:(id)locale;
+- (id)translateText:(id)text toLocale:(id)locale respectAllowList:(BOOL)list metrics:(id)metrics error:(id *)error;
+- (void)availableTranslationLocales:(id)locales;
+- (void)installOfflineTranslationModelForLanguageCodeIfNeeded:(id)needed progress:(id)progress completion:(id)completion;
+- (void)installOfflineTranslationModelForLocales:(id)locales fallBackToBaseLanguageIfNeeded:(BOOL)needed forceReinstall:(BOOL)reinstall progress:(id)progress completion:(id)completion;
+- (void)installedTranslationLocales:(id)locales;
+- (void)translateText:(id)text toLocale:(id)locale respectAllowList:(BOOL)list completion:(id)completion;
+- (void)userSelectableTranslationLocales:(id)locales;
 @end
 
 @implementation AXMLanguageTranslator
@@ -61,40 +61,40 @@
   return v11;
 }
 
-- (id)_proposedTranslationLocaleForLocale:(id)a3
+- (id)_proposedTranslationLocaleForLocale:(id)locale
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  localeCopy = locale;
   v4 = +[AXMLanguageTranslator allowedTargetLocalesForTranslation];
-  if ([v4 containsObject:v3])
+  if ([v4 containsObject:localeCopy])
   {
-    v5 = v3;
+    v5 = localeCopy;
   }
 
   else
   {
     v6 = +[AXMLocSupport sharedInstance];
-    v5 = [v6 localeMatchingBaseLanguageOfLocale:v3 fromLocales:v4];
+    v5 = [v6 localeMatchingBaseLanguageOfLocale:localeCopy fromLocales:v4];
   }
 
   v7 = AXMediaLogLanguageTranslation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v3 localeIdentifier];
-    v9 = [v5 localeIdentifier];
+    localeIdentifier = [localeCopy localeIdentifier];
+    localeIdentifier2 = [v5 localeIdentifier];
     v11 = 138412546;
-    v12 = v8;
+    v12 = localeIdentifier;
     v13 = 2112;
-    v14 = v9;
+    v14 = localeIdentifier2;
     _os_log_impl(&dword_1AE37B000, v7, OS_LOG_TYPE_DEFAULT, "inLocale: '%@' proposed: '%@'", &v11, 0x16u);
   }
 
   return v5;
 }
 
-- (void)availableTranslationLocales:(id)a3
+- (void)availableTranslationLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v5 = AXMediaLogLanguageTranslation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,7 +117,7 @@
   AX_PERFORM_WITH_LOCK();
   if ([*(v12 + 5) count])
   {
-    v4[2](v4, *(v12 + 5));
+    localesCopy[2](localesCopy, *(v12 + 5));
   }
 
   else
@@ -129,7 +129,7 @@
     v7[2] = __53__AXMLanguageTranslator_availableTranslationLocales___block_invoke_2;
     v7[3] = &unk_1E7A1D338;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = localesCopy;
     [LTTranslatorClass availableLocalePairsForTask:1 completion:v7];
 
     objc_destroyWeak(&v9);
@@ -238,15 +238,15 @@ void __53__AXMLanguageTranslator_availableTranslationLocales___block_invoke_63(u
   *(v3 + 16) = v2;
 }
 
-- (void)userSelectableTranslationLocales:(id)a3
+- (void)userSelectableTranslationLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__AXMLanguageTranslator_userSelectableTranslationLocales___block_invoke;
   v6[3] = &unk_1E7A1D380;
-  v7 = v4;
-  v5 = v4;
+  v7 = localesCopy;
+  v5 = localesCopy;
   [(AXMLanguageTranslator *)self availableTranslationLocales:v6];
 }
 
@@ -266,9 +266,9 @@ uint64_t __58__AXMLanguageTranslator_userSelectableTranslationLocales___block_in
   return v5 ^ 1u;
 }
 
-- (void)installedTranslationLocales:(id)a3
+- (void)installedTranslationLocales:(id)locales
 {
-  v4 = a3;
+  localesCopy = locales;
   v5 = AXMediaLogLanguageTranslation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,8 +282,8 @@ uint64_t __58__AXMLanguageTranslator_userSelectableTranslationLocales___block_in
   v8[2] = __53__AXMLanguageTranslator_installedTranslationLocales___block_invoke;
   v8[3] = &unk_1E7A1D3A8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = localesCopy;
+  v7 = localesCopy;
   [LTTranslatorClass installedLocales:v8];
 }
 
@@ -318,16 +318,16 @@ void __53__AXMLanguageTranslator_installedTranslationLocales___block_invoke(uint
   }
 }
 
-- (void)installOfflineTranslationModelForLocales:(id)a3 fallBackToBaseLanguageIfNeeded:(BOOL)a4 forceReinstall:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)installOfflineTranslationModelForLocales:(id)locales fallBackToBaseLanguageIfNeeded:(BOOL)needed forceReinstall:(BOOL)reinstall progress:(id)progress completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  localesCopy = locales;
+  progressCopy = progress;
+  completionCopy = completion;
   v14 = AXMediaLogLanguageTranslation();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(AXMLanguageTranslator *)self _descriptionForLocales:v11];
+    v15 = [(AXMLanguageTranslator *)self _descriptionForLocales:localesCopy];
     *buf = 138412290;
     v25 = v15;
     _os_log_impl(&dword_1AE37B000, v14, OS_LOG_TYPE_DEFAULT, "Requesting installation of translation assets: %@", buf, 0xCu);
@@ -338,13 +338,13 @@ void __53__AXMLanguageTranslator_installedTranslationLocales___block_invoke(uint
   v19[2] = __132__AXMLanguageTranslator_installOfflineTranslationModelForLocales_fallBackToBaseLanguageIfNeeded_forceReinstall_progress_completion___block_invoke;
   v19[3] = &unk_1E7A1D448;
   v19[4] = self;
-  v20 = v11;
-  v23 = a4;
-  v21 = v13;
-  v22 = v12;
-  v16 = v12;
-  v17 = v13;
-  v18 = v11;
+  v20 = localesCopy;
+  neededCopy = needed;
+  v21 = completionCopy;
+  v22 = progressCopy;
+  v16 = progressCopy;
+  v17 = completionCopy;
+  v18 = localesCopy;
   [(AXMLanguageTranslator *)self availableTranslationLocales:v19];
 }
 
@@ -518,18 +518,18 @@ uint64_t __132__AXMLanguageTranslator_installOfflineTranslationModelForLocales_f
   return result;
 }
 
-- (id)_filteredLocalesToInstallFromAvailableLocales:(id)a3 requestedLocales:(id)a4 fallBackToBaseLanguageIfNeeded:(BOOL)a5
+- (id)_filteredLocalesToInstallFromAvailableLocales:(id)locales requestedLocales:(id)requestedLocales fallBackToBaseLanguageIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
+  localesCopy = locales;
+  requestedLocalesCopy = requestedLocales;
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v8;
+  v10 = requestedLocalesCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v11)
   {
@@ -547,14 +547,14 @@ uint64_t __132__AXMLanguageTranslator_installOfflineTranslationModelForLocales_f
         }
 
         v16 = *(*(&v26 + 1) + 8 * i);
-        if ([v7 containsObject:{v16, v25, v26}])
+        if ([localesCopy containsObject:{v16, v25, v26}])
         {
-          [v9 addObject:v16];
+          [array addObject:v16];
         }
 
         else
         {
-          if (!v5)
+          if (!neededCopy)
           {
             goto LABEL_15;
           }
@@ -562,27 +562,27 @@ uint64_t __132__AXMLanguageTranslator_installOfflineTranslationModelForLocales_f
           v17 = AXMediaLogLanguageTranslation();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [v16 localeIdentifier];
+            localeIdentifier = [v16 localeIdentifier];
             *buf = v25;
-            v31 = v18;
+            v31 = localeIdentifier;
             _os_log_impl(&dword_1AE37B000, v17, OS_LOG_TYPE_DEFAULT, "No exact match for translation asset matching '%@'. falling back to base language", buf, 0xCu);
           }
 
           v19 = +[AXMLocSupport sharedInstance];
-          v20 = [v19 localeMatchingBaseLanguageOfLocale:v16 fromLocales:v7];
+          v20 = [v19 localeMatchingBaseLanguageOfLocale:v16 fromLocales:localesCopy];
 
           if (v20)
           {
             v21 = AXMediaLogLanguageTranslation();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v20 localeIdentifier];
+              localeIdentifier2 = [v20 localeIdentifier];
               *buf = v25;
-              v31 = v22;
+              v31 = localeIdentifier2;
               _os_log_impl(&dword_1AE37B000, v21, OS_LOG_TYPE_DEFAULT, "Found fallback locale: %@", buf, 0xCu);
             }
 
-            [v9 addObject:v20];
+            [array addObject:v20];
           }
 
           else
@@ -591,9 +591,9 @@ LABEL_15:
             v20 = AXMediaLogLanguageTranslation();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v16 localeIdentifier];
+              localeIdentifier3 = [v16 localeIdentifier];
               *buf = v25;
-              v31 = v23;
+              v31 = localeIdentifier3;
               _os_log_impl(&dword_1AE37B000, v20, OS_LOG_TYPE_DEFAULT, "Cannot install requested translation locale '%@'. Not available", buf, 0xCu);
             }
           }
@@ -606,25 +606,25 @@ LABEL_15:
     while (v13);
   }
 
-  return v9;
+  return array;
 }
 
-- (void)installOfflineTranslationModelForLanguageCodeIfNeeded:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)installOfflineTranslationModelForLanguageCodeIfNeeded:(id)needed progress:(id)progress completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  neededCopy = needed;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = AXMediaLogLanguageTranslation();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v8;
+    v27 = neededCopy;
     _os_log_impl(&dword_1AE37B000, v11, OS_LOG_TYPE_DEFAULT, "Requesting install of translation asset for languageCode: %@", buf, 0xCu);
   }
 
   v12 = +[AXMLocSupport sharedInstance];
-  v13 = [v12 localeForLanguageCode:v8];
+  v13 = [v12 localeForLanguageCode:neededCopy];
 
   if (v13)
   {
@@ -640,9 +640,9 @@ LABEL_15:
         _os_log_impl(&dword_1AE37B000, v22, OS_LOG_TYPE_DEFAULT, "Locale base language is English. no download required", buf, 2u);
       }
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -650,33 +650,33 @@ LABEL_15:
     {
       v25 = v13;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-      [(AXMLanguageTranslator *)self installOfflineTranslationModelForLocales:v24 fallBackToBaseLanguageIfNeeded:1 forceReinstall:0 progress:v9 completion:v10];
+      [(AXMLanguageTranslator *)self installOfflineTranslationModelForLocales:v24 fallBackToBaseLanguageIfNeeded:1 forceReinstall:0 progress:progressCopy completion:completionCopy];
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    v23 = _AXMMakeError(0, @"No locale produced for language code: %@", v14, v15, v16, v17, v18, v19, v8);
-    (v10)[2](v10, v23);
+    v23 = _AXMMakeError(0, @"No locale produced for language code: %@", v14, v15, v16, v17, v18, v19, neededCopy);
+    (completionCopy)[2](completionCopy, v23);
   }
 }
 
-- (void)translateText:(id)a3 toLocale:(id)a4 respectAllowList:(BOOL)a5 completion:(id)a6
+- (void)translateText:(id)text toLocale:(id)locale respectAllowList:(BOOL)list completion:(id)completion
 {
-  v7 = a5;
+  listCopy = list;
   v51 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v11)
+  textCopy = text;
+  localeCopy = locale;
+  completionCopy = completion;
+  if (localeCopy)
   {
-    if (!v7)
+    if (!listCopy)
     {
-      v13 = v11;
+      v13 = localeCopy;
       goto LABEL_9;
     }
 
-    v13 = [(AXMLanguageTranslator *)self _proposedTranslationLocaleForLocale:v11];
+    v13 = [(AXMLanguageTranslator *)self _proposedTranslationLocaleForLocale:localeCopy];
     if (v13)
     {
 
@@ -704,20 +704,20 @@ LABEL_9:
       [v24 setTaskHint:1];
       [v24 setCensorSpeech:0];
       [v24 setForcedOfflineTranslation:1];
-      v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v10];
+      v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:textCopy];
       [v24 setText:v25];
 
       v26 = AXMediaLogLanguageTranslation();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v21 localeIdentifier];
-        v28 = [v13 localeIdentifier];
+        localeIdentifier = [v21 localeIdentifier];
+        localeIdentifier2 = [v13 localeIdentifier];
         *buf = 138412802;
-        *&buf[4] = v27;
+        *&buf[4] = localeIdentifier;
         *&buf[12] = 2112;
-        *&buf[14] = v28;
+        *&buf[14] = localeIdentifier2;
         *&buf[22] = 2112;
-        v49 = v10;
+        v49 = textCopy;
         _os_log_impl(&dword_1AE37B000, v26, OS_LOG_TYPE_DEFAULT, "Will translate from: '%@' to '%@' : %@", buf, 0x20u);
       }
 
@@ -725,18 +725,18 @@ LABEL_9:
       v42[1] = 3221225472;
       v42[2] = __76__AXMLanguageTranslator_translateText_toLocale_respectAllowList_completion___block_invoke;
       v42[3] = &unk_1E7A1D470;
-      v43 = v12;
+      v43 = completionCopy;
       [v24 setTextTranslationHandler:v42];
-      v29 = [(AXMLanguageTranslator *)self translator];
-      [v29 translate:v24];
+      translator = [(AXMLanguageTranslator *)self translator];
+      [translator translate:v24];
 
-      v11 = v13;
+      localeCopy = v13;
       goto LABEL_14;
     }
 
     v30 = MEMORY[0x1E696AEC0];
-    v31 = [v11 localeIdentifier];
-    v32 = [v30 stringWithFormat:@"No suitable proposed locale for given target: %@", v31];
+    localeIdentifier3 = [localeCopy localeIdentifier];
+    v32 = [v30 stringWithFormat:@"No suitable proposed locale for given target: %@", localeIdentifier3];
 
     v33 = AXMediaLogLanguageTranslation();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -747,7 +747,7 @@ LABEL_9:
     }
 
     v40 = _AXMMakeError(0, @"%@", v34, v35, v36, v37, v38, v39, v32);
-    (*(v12 + 2))(v12, 0, v40);
+    (*(completionCopy + 2))(completionCopy, 0, v40);
   }
 
   else
@@ -759,8 +759,8 @@ LABEL_9:
       _os_log_impl(&dword_1AE37B000, v14, OS_LOG_TYPE_DEFAULT, "Will not perform translation. No target locale was provided", buf, 2u);
     }
 
-    v11 = _AXMMakeError(0, @"No target locale was provided", v15, v16, v17, v18, v19, v20, v41);
-    (*(v12 + 2))(v12, 0, v11);
+    localeCopy = _AXMMakeError(0, @"No target locale was provided", v15, v16, v17, v18, v19, v20, v41);
+    (*(completionCopy + 2))(completionCopy, 0, localeCopy);
   }
 
 LABEL_14:
@@ -816,12 +816,12 @@ void __76__AXMLanguageTranslator_translateText_toLocale_respectAllowList_complet
   }
 }
 
-- (id)translateText:(id)a3 toLocale:(id)a4 respectAllowList:(BOOL)a5 metrics:(id)a6 error:(id *)a7
+- (id)translateText:(id)text toLocale:(id)locale respectAllowList:(BOOL)list metrics:(id)metrics error:(id *)error
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  listCopy = list;
+  textCopy = text;
+  localeCopy = locale;
+  metricsCopy = metrics;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -835,7 +835,7 @@ void __76__AXMLanguageTranslator_translateText_toLocale_respectAllowList_complet
   v32 = __Block_byref_object_dispose__4;
   v33 = 0;
   v15 = dispatch_semaphore_create(0);
-  v16 = [v14 startMeasure:@"Translate text"];
+  v16 = [metricsCopy startMeasure:@"Translate text"];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __79__AXMLanguageTranslator_translateText_toLocale_respectAllowList_metrics_error___block_invoke;
@@ -844,13 +844,13 @@ void __76__AXMLanguageTranslator_translateText_toLocale_respectAllowList_complet
   v27 = &v28;
   v17 = v15;
   v25 = v17;
-  [(AXMLanguageTranslator *)self translateText:v12 toLocale:v13 respectAllowList:v9 completion:&v21];
+  [(AXMLanguageTranslator *)self translateText:textCopy toLocale:localeCopy respectAllowList:listCopy completion:&v21];
   v18 = dispatch_time(0, 2000000000);
   dispatch_semaphore_wait(v17, v18);
   [v16 endMeasurement];
-  if (a7)
+  if (error)
   {
-    *a7 = v29[5];
+    *error = v29[5];
   }
 
   v19 = v35[5];
@@ -893,24 +893,24 @@ void __79__AXMLanguageTranslator_translateText_toLocale_respectAllowList_metrics
   return translator;
 }
 
-- (id)_descriptionForLocales:(id)a3
+- (id)_descriptionForLocales:(id)locales
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXMLanguageTranslator *)self _localeIdentifiersForLocales:a3];
+  v4 = [(AXMLanguageTranslator *)self _localeIdentifiersForLocales:locales];
   v5 = [v4 componentsJoinedByString:@" "];
   v6 = [v3 stringWithFormat:@"[%@]", v5];
 
   return v6;
 }
 
-- (id)_canonicalLocaleForLocale:(id)a3
+- (id)_canonicalLocaleForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [v3 localeIdentifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-  if ([v4 isEqual:v5])
+  localeCopy = locale;
+  localeIdentifier = [localeCopy localeIdentifier];
+  v5 = [localeIdentifier stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  if ([localeIdentifier isEqual:v5])
   {
-    v6 = v3;
+    v6 = localeCopy;
   }
 
   else
@@ -923,14 +923,14 @@ void __79__AXMLanguageTranslator_translateText_toLocale_respectAllowList_metrics
   return v7;
 }
 
-- (id)_canonicalLocalesForLocales:(id)a3
+- (id)_canonicalLocalesForLocales:(id)locales
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__AXMLanguageTranslator__canonicalLocalesForLocales___block_invoke;
   v5[3] = &unk_1E7A1D4E0;
   v5[4] = self;
-  v3 = [a3 ax_flatMappedArrayUsingBlock:v5];
+  v3 = [locales ax_flatMappedArrayUsingBlock:v5];
 
   return v3;
 }

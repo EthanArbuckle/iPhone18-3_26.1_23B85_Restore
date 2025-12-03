@@ -10,15 +10,15 @@
 
 - (BOOL)px_canPerformFeatureLessAction
 {
-  v2 = [a1 creationType];
-  if ([a1 px_isTrip])
+  creationType = [self creationType];
+  if ([self px_isTrip])
   {
     return 0;
   }
 
-  if (v2 == 1)
+  if (creationType == 1)
   {
-    return [a1 _blockablePeopleCount] != 0;
+    return [self _blockablePeopleCount] != 0;
   }
 
   return 1;
@@ -31,24 +31,24 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __47__PHMemory_PhotosUICore___blockablePeopleCount__block_invoke;
   aBlock[3] = &unk_1E773B320;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
-  if ([a1 _supportsBlockingAllVerifiedPeople])
+  if ([self _supportsBlockingAllVerifiedPeople])
   {
-    v3 = [a1 photoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
+    photoLibrary = [self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
     v13[0] = *MEMORY[0x1E6978F38];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [v4 setFetchPropertySets:v5];
+    [librarySpecificFetchOptions setFetchPropertySets:v5];
 
-    [v4 setPersonContext:3];
-    v6 = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
-    [v4 setIncludedDetectionTypes:v6];
+    [librarySpecificFetchOptions setPersonContext:3];
+    px_defaultDetectionTypes = [MEMORY[0x1E6978830] px_defaultDetectionTypes];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:px_defaultDetectionTypes];
 
-    v7 = [MEMORY[0x1E6978980] fetchPersonsForAssetCollection:a1 options:v4];
-    v8 = [v7 fetchedObjects];
-    v9 = [PXPeopleWidgetUtilities verifiedPersonsFromMergeCandidatesForPersons:v8];
+    v7 = [MEMORY[0x1E6978980] fetchPersonsForAssetCollection:self options:librarySpecificFetchOptions];
+    fetchedObjects = [v7 fetchedObjects];
+    v9 = [PXPeopleWidgetUtilities verifiedPersonsFromMergeCandidatesForPersons:fetchedObjects];
 
     v10 = [v9 count];
   }
@@ -75,12 +75,12 @@
   v5 = v2;
   v33 = v5;
   v6 = _Block_copy(aBlock);
-  if ([a1 hasBlockableFeature])
+  if ([self hasBlockableFeature])
   {
-    v7 = [a1 userFeedbackProperties];
-    v8 = [v7 userFeedback];
+    userFeedbackProperties = [self userFeedbackProperties];
+    userFeedback = [userFeedbackProperties userFeedback];
 
-    if (!v8)
+    if (!userFeedback)
     {
       v24 = v4;
       v25 = v5;
@@ -88,9 +88,9 @@
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v23 = a1;
-      v9 = [a1 blockableFeatures];
-      v10 = [v9 countByEnumeratingWithState:&v27 objects:v34 count:16];
+      selfCopy = self;
+      blockableFeatures = [self blockableFeatures];
+      v10 = [blockableFeatures countByEnumeratingWithState:&v27 objects:v34 count:16];
       if (v10)
       {
         v11 = v10;
@@ -106,29 +106,29 @@
           {
             if (*v28 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(blockableFeatures);
             }
 
-            v17 = [*(*(&v27 + 1) + 8 * v16) type];
-            if (v17 <= 511)
+            type = [*(*(&v27 + 1) + 8 * v16) type];
+            if (type <= 511)
             {
-              if (v17 == 16)
+              if (type == 16)
               {
                 v6[2](v6, @"PXBlockMemoryActionTitleThisDay", v15);
               }
 
-              else if (v17 == 32)
+              else if (type == 32)
               {
                 v6[2](v6, @"PXBlockMemoryActionTitleThisHoliday", v26);
               }
             }
 
-            else if (v17 == 512)
+            else if (type == 512)
             {
               v6[2](v6, @"PXBlockMemoryActionTitleThisDateInterval", v14);
             }
 
-            else if (v17 == 4096 || v17 == 0x20000)
+            else if (type == 4096 || type == 0x20000)
             {
               v6[2](v6, @"PXBlockMemoryActionTitleThisPlace", v13);
             }
@@ -137,7 +137,7 @@
           }
 
           while (v11 != v16);
-          v11 = [v9 countByEnumeratingWithState:&v27 objects:v34 count:16];
+          v11 = [blockableFeatures countByEnumeratingWithState:&v27 objects:v34 count:16];
         }
 
         while (v11);
@@ -145,12 +145,12 @@
 
       v4 = v24;
       v5 = v25;
-      a1 = v23;
+      self = selfCopy;
     }
   }
 
-  v18 = [a1 _blockablePeopleCount];
-  if (v18 == 1 || (v19 = v18, ![a1 _supportsBlockingAllVerifiedPeople]))
+  _blockablePeopleCount = [self _blockablePeopleCount];
+  if (_blockablePeopleCount == 1 || (v19 = _blockablePeopleCount, ![self _supportsBlockingAllVerifiedPeople]))
   {
     v20 = @"PXBlockMemoryActionTitleThisPerson";
   }
@@ -186,7 +186,7 @@ LABEL_27:
   v7[2] = __74__PHMemory_PhotosUICore__px_mutatedPhotosGraphPropertiesWithRejectReason___block_invoke;
   v7[3] = &__block_descriptor_40_e29_v16__0__NSMutableDictionary_8l;
   v7[4] = a3;
-  v3 = [a1 px_photosGraphDataByMutatingPropertiesUsingBlock:v7 error:&v6];
+  v3 = [self px_photosGraphDataByMutatingPropertiesUsingBlock:v7 error:&v6];
   v4 = v6;
   if (!v3)
   {
@@ -199,8 +199,8 @@ LABEL_27:
 - (id)px_photosGraphDataByMutatingPropertiesUsingBlock:()PhotosUICore error:
 {
   v6 = a3;
-  v7 = [a1 photosGraphProperties];
-  v8 = [v7 mutableCopy];
+  photosGraphProperties = [self photosGraphProperties];
+  v8 = [photosGraphProperties mutableCopy];
   v9 = v8;
   if (v8)
   {

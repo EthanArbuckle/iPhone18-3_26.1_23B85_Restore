@@ -1,17 +1,17 @@
 @interface CLSSceneTaxonomyHierarchyNode
-- (CLSSceneTaxonomyHierarchyNode)initWithSceneTaxonomyNodeRef:(void *)a3 inSceneTaxonomy:(id)a4 forSceneNetOnly:(BOOL)a5;
+- (CLSSceneTaxonomyHierarchyNode)initWithSceneTaxonomyNodeRef:(void *)ref inSceneTaxonomy:(id)taxonomy forSceneNetOnly:(BOOL)only;
 - (NSSet)localizedSynonyms;
-- (void)traverseChildrenUsingNameBlock:(id)a3;
-- (void)visitChildrenUsingNameBlock:(id)a3;
-- (void)visitParentsUsingNameBlock:(id)a3;
+- (void)traverseChildrenUsingNameBlock:(id)block;
+- (void)visitChildrenUsingNameBlock:(id)block;
+- (void)visitParentsUsingNameBlock:(id)block;
 @end
 
 @implementation CLSSceneTaxonomyHierarchyNode
 
-- (void)visitParentsUsingNameBlock:(id)a3
+- (void)visitParentsUsingNameBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   PFSceneTaxonomyNodeVisitParents();
 }
 
@@ -28,10 +28,10 @@ uint64_t __60__CLSSceneTaxonomyHierarchyNode_visitParentsUsingNameBlock___block_
   return v6;
 }
 
-- (void)visitChildrenUsingNameBlock:(id)a3
+- (void)visitChildrenUsingNameBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   PFSceneTaxonomyNodeVisitChildren();
 }
 
@@ -48,10 +48,10 @@ uint64_t __61__CLSSceneTaxonomyHierarchyNode_visitChildrenUsingNameBlock___block
   return v6;
 }
 
-- (void)traverseChildrenUsingNameBlock:(id)a3
+- (void)traverseChildrenUsingNameBlock:(id)block
 {
-  v4 = a3;
-  v3 = v4;
+  blockCopy = block;
+  v3 = blockCopy;
   PFSceneTaxonomyNodeTraverseChildren();
 }
 
@@ -77,18 +77,18 @@ uint64_t __64__CLSSceneTaxonomyHierarchyNode_traverseChildrenUsingNameBlock___bl
   return v4;
 }
 
-- (CLSSceneTaxonomyHierarchyNode)initWithSceneTaxonomyNodeRef:(void *)a3 inSceneTaxonomy:(id)a4 forSceneNetOnly:(BOOL)a5
+- (CLSSceneTaxonomyHierarchyNode)initWithSceneTaxonomyNodeRef:(void *)ref inSceneTaxonomy:(id)taxonomy forSceneNetOnly:(BOOL)only
 {
-  v9 = a4;
+  taxonomyCopy = taxonomy;
   v13.receiver = self;
   v13.super_class = CLSSceneTaxonomyHierarchyNode;
   v10 = [(CLSSceneTaxonomyHierarchyNode *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_taxonomyNodeRef = a3;
-    objc_storeStrong(&v10->_sceneTaxonomy, a4);
-    v11->_forSceneNetOnly = a5;
+    v10->_taxonomyNodeRef = ref;
+    objc_storeStrong(&v10->_sceneTaxonomy, taxonomy);
+    v11->_forSceneNetOnly = only;
   }
 
   return v11;

@@ -1,14 +1,14 @@
 @interface TUTestState
-- (id)objectForKeyedSubscript:(id)a3;
-- (int)waitWithTimeout:(double)a3;
-- (void)incrementIntegerForKey:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (int)waitWithTimeout:(double)timeout;
+- (void)incrementIntegerForKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 - (void)signal;
 @end
 
 @implementation TUTestState
 
-- (int)waitWithTimeout:(double)a3
+- (int)waitWithTimeout:(double)timeout
 {
   signalCount = self->_signalCount;
   if (signalCount > 0)
@@ -16,7 +16,7 @@
     goto LABEL_4;
   }
 
-  if (CFRunLoopRunEx(a3) == 2)
+  if (CFRunLoopRunEx(timeout) == 2)
   {
     signalCount = self->_signalCount;
 LABEL_4:
@@ -46,51 +46,51 @@ void __21__TUTestState_signal__block_invoke(uint64_t a1)
   CFRunLoopStop(Main);
 }
 
-- (void)incrementIntegerForKey:(id)a3
+- (void)incrementIntegerForKey:(id)key
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
-  v7 = [(TUTestState *)self objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v7 = [(TUTestState *)self objectForKeyedSubscript:keyCopy];
   v6 = [v4 numberWithInteger:{objc_msgSend(v7, "integerValue") + 1}];
-  [(TUTestState *)self setObject:v6 forKeyedSubscript:v5];
+  [(TUTestState *)self setObject:v6 forKeyedSubscript:keyCopy];
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  objects = v7->_objects;
-  if (v11)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objects = selfCopy->_objects;
+  if (objectCopy)
   {
     if (!objects)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v10 = v7->_objects;
-      v7->_objects = v9;
+      v10 = selfCopy->_objects;
+      selfCopy->_objects = v9;
 
-      objects = v7->_objects;
+      objects = selfCopy->_objects;
     }
 
-    [(NSMutableDictionary *)objects setObject:v11 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)objects setObject:objectCopy forKeyedSubscript:subscriptCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)objects removeObjectForKey:v6];
+    [(NSMutableDictionary *)objects removeObjectForKey:subscriptCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_objects objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_objects objectForKeyedSubscript:subscriptCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

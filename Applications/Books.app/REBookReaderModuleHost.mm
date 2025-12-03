@@ -1,18 +1,18 @@
 @interface REBookReaderModuleHost
 - (AEAssetViewControllerDelegate)assetViewControllerDelegate;
 - (BCAppIntentsAssetViewControllerInfo)appIntentsInfo;
-- (BOOL)dismissShouldBegin:(id)a3;
+- (BOOL)dismissShouldBegin:(id)begin;
 - (BOOL)prefersStatusBarHiddenDuringTransition;
 - (BOOL)snapshotDuringLiveResize;
-- (REBookReaderModuleHost)initWithHostEnvironmentProvider:(id)a3 book:(id)a4 annotationProvider:(id)a5 storeController:(id)a6 styleManager:(id)a7 engagementManager:(id)a8;
-- (REBookReaderModuleHost)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (REBookReaderModuleHost)initWithHostEnvironmentProvider:(id)provider book:(id)book annotationProvider:(id)annotationProvider storeController:(id)controller styleManager:(id)manager engagementManager:(id)engagementManager;
+- (REBookReaderModuleHost)initWithNibName:(id)name bundle:(id)bundle;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (id)transitionContentView;
 - (int64_t)pageCountIncludingUpsell;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)assetViewControllerDidCloseAnimated:(BOOL)a3;
+- (void)assetViewControllerDidCloseAnimated:(BOOL)animated;
 - (void)assetViewControllerDidEnterBackground;
-- (void)assetViewControllerDidOpenAnimated:(BOOL)a3;
+- (void)assetViewControllerDidOpenAnimated:(BOOL)animated;
 - (void)assetViewControllerPrepareForReload;
 - (void)assetViewControllerUpdateCloseStateTypeIfNeeded;
 - (void)assetViewControllerUpdateToolbars;
@@ -21,28 +21,28 @@
 - (void)assetViewControllerWillAddView;
 - (void)assetViewControllerWillEnterForeground;
 - (void)assetViewControllerWillOpen;
-- (void)close:(BOOL)a3;
-- (void)didPurchaseWithProductProfile:(id)a3 completion:(id)a4;
+- (void)close:(BOOL)close;
+- (void)didPurchaseWithProductProfile:(id)profile completion:(id)completion;
 - (void)forceRepagination;
-- (void)jumpToBeginningAnimated:(BOOL)a3;
-- (void)open:(BOOL)a3;
-- (void)openToLocation:(id)a3 animated:(BOOL)a4;
-- (void)requestClose:(BOOL)a3;
-- (void)saveStateClosing:(BOOL)a3;
-- (void)saveStateClosing:(BOOL)a3 suspending:(BOOL)a4;
-- (void)setAppAnalyticsAdditionalData:(id)a3;
-- (void)setAppIntentsInfo:(id)a3;
-- (void)setAssetIsPreordered:(id)a3;
-- (void)setAssetViewControllerDelegate:(id)a3;
-- (void)setBookPositionProcessor:(id)a3;
-- (void)setBuyButtonProgress:(float)a3;
-- (void)setContentOpenAnimator:(id)a3;
-- (void)setFinishedForAssetID:(id)a3;
-- (void)setUpSellData:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)jumpToBeginningAnimated:(BOOL)animated;
+- (void)open:(BOOL)open;
+- (void)openToLocation:(id)location animated:(BOOL)animated;
+- (void)requestClose:(BOOL)close;
+- (void)saveStateClosing:(BOOL)closing;
+- (void)saveStateClosing:(BOOL)closing suspending:(BOOL)suspending;
+- (void)setAppAnalyticsAdditionalData:(id)data;
+- (void)setAppIntentsInfo:(id)info;
+- (void)setAssetIsPreordered:(id)preordered;
+- (void)setAssetViewControllerDelegate:(id)delegate;
+- (void)setBookPositionProcessor:(id)processor;
+- (void)setBuyButtonProgress:(float)progress;
+- (void)setContentOpenAnimator:(id)animator;
+- (void)setFinishedForAssetID:(id)d;
+- (void)setUpSellData:(id)data;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation REBookReaderModuleHost
@@ -55,18 +55,18 @@
   return Strong;
 }
 
-- (void)setAssetViewControllerDelegate:(id)a3
+- (void)setAssetViewControllerDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerDelegate.setter();
 }
 
-- (void)setContentOpenAnimator:(id)a3
+- (void)setContentOpenAnimator:(id)animator
 {
   v5 = OBJC_IVAR___REBookReaderModuleHost_contentOpenAnimator;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = animator;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -78,24 +78,24 @@
   return *(self + v3);
 }
 
-- (void)setAppIntentsInfo:(id)a3
+- (void)setAppIntentsInfo:(id)info
 {
   swift_getObjectType();
   v5 = OBJC_IVAR___REBookReaderModuleHost_appIntentsInfo;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = info;
+  infoCopy = info;
+  selfCopy = self;
 
   sub_1007A3004();
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1007A3504();
     swift_unknownObjectRelease();
@@ -104,10 +104,10 @@
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  BookReaderModuleHost.target(forAction:withSender:)(a3, v16, &v17);
+  BookReaderModuleHost.target(forAction:withSender:)(action, v16, &v17);
 
   sub_1000230BC(v16);
   v8 = v18;
@@ -133,7 +133,7 @@
 
 - (BOOL)snapshotDuringLiveResize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005AA0A0();
   v4 = v3;
   if (v3)
@@ -153,132 +153,132 @@
   return v4;
 }
 
-- (void)open:(BOOL)a3
+- (void)open:(BOOL)open
 {
-  v4 = self;
-  BookReaderModuleHost.open(_:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.open(_:)(open);
 }
 
-- (void)openToLocation:(id)a3 animated:(BOOL)a4
+- (void)openToLocation:(id)location animated:(BOOL)animated
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  BookReaderModuleHost.open(toLocation:animated:)(a3, a4);
+  selfCopy = self;
+  BookReaderModuleHost.open(toLocation:animated:)(location, animated);
   swift_unknownObjectRelease();
 }
 
-- (void)jumpToBeginningAnimated:(BOOL)a3
+- (void)jumpToBeginningAnimated:(BOOL)animated
 {
-  v4 = self;
-  BookReaderModuleHost.jumpToBeginning(animated:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.jumpToBeginning(animated:)(animated);
 }
 
-- (void)close:(BOOL)a3
+- (void)close:(BOOL)close
 {
-  v4 = self;
-  BookReaderModuleHost.close(_:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.close(_:)(close);
 }
 
-- (void)saveStateClosing:(BOOL)a3
+- (void)saveStateClosing:(BOOL)closing
 {
-  v4 = self;
-  BookReaderModuleHost.saveStateClosing(_:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.saveStateClosing(_:)(closing);
 }
 
-- (void)saveStateClosing:(BOOL)a3 suspending:(BOOL)a4
+- (void)saveStateClosing:(BOOL)closing suspending:(BOOL)suspending
 {
-  v6 = self;
-  BookReaderModuleHost.saveStateClosing(_:suspending:)(a3, a4);
+  selfCopy = self;
+  BookReaderModuleHost.saveStateClosing(_:suspending:)(closing, suspending);
 }
 
-- (BOOL)dismissShouldBegin:(id)a3
+- (BOOL)dismissShouldBegin:(id)begin
 {
   v3 = *(self + OBJC_IVAR___REBookReaderModuleHost_readerModuleViewController);
   if (v3)
   {
-    return [v3 dismissShouldBegin:a3];
+    return [v3 dismissShouldBegin:begin];
   }
 
   else
   {
-    return [a3 proposedBeginState];
+    return [begin proposedBeginState];
   }
 }
 
 - (void)assetViewControllerUpdateToolbars
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerUpdateToolbars()();
 }
 
 - (void)assetViewControllerUpdateCloseStateTypeIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerUpdateCloseStateTypeIfNeeded()();
 }
 
 - (void)assetViewControllerUpdateToolbarsAfterOpenAnimation
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerUpdateToolbarsAfterOpenAnimation()();
 }
 
 - (void)assetViewControllerUpdateToolbarsForOpenAnimation
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerUpdateToolbarsForOpenAnimation()();
 }
 
 - (void)assetViewControllerWillAddView
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerWillAddView()();
 }
 
 - (void)assetViewControllerPrepareForReload
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerPrepareForReload()();
 }
 
-- (void)setAssetIsPreordered:(id)a3
+- (void)setAssetIsPreordered:(id)preordered
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.isa = a3;
+  preorderedCopy = preordered;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.isa = preordered;
   BookReaderModuleHost.setAssetIsPreordered(_:)(v9);
 }
 
 - (void)assetViewControllerWillOpen
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerWillOpen()();
 }
 
-- (void)assetViewControllerDidOpenAnimated:(BOOL)a3
+- (void)assetViewControllerDidOpenAnimated:(BOOL)animated
 {
-  v4 = self;
-  BookReaderModuleHost.assetViewControllerDidOpen(animated:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.assetViewControllerDidOpen(animated:)(animated);
 }
 
 - (void)assetViewControllerWillEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerWillEnterForeground()();
 }
 
 - (void)assetViewControllerDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   BookReaderModuleHost.assetViewControllerDidEnterBackground()();
 }
 
-- (void)assetViewControllerDidCloseAnimated:(BOOL)a3
+- (void)assetViewControllerDidCloseAnimated:(BOOL)animated
 {
-  v4 = self;
-  BookReaderModuleHost.assetViewControllerDidClose(animated:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.assetViewControllerDidClose(animated:)(animated);
 }
 
 - (int64_t)pageCountIncludingUpsell
@@ -297,95 +297,95 @@
   return [v2 pageCountIncludingUpsell];
 }
 
-- (void)didPurchaseWithProductProfile:(id)a3 completion:(id)a4
+- (void)didPurchaseWithProductProfile:(id)profile completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_unknownObjectRetain();
-  v8 = self;
-  BookReaderModuleHost.didPurchase(withProductProfile:completion:)(a3, sub_1002427EC, v7);
+  selfCopy = self;
+  BookReaderModuleHost.didPurchase(withProductProfile:completion:)(profile, sub_1002427EC, v7);
   swift_unknownObjectRelease();
 }
 
-- (void)setBuyButtonProgress:(float)a3
+- (void)setBuyButtonProgress:(float)progress
 {
-  v4 = self;
-  BookReaderModuleHost.setBuyButtonProgress(_:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.setBuyButtonProgress(_:)(progress);
 }
 
-- (void)requestClose:(BOOL)a3
+- (void)requestClose:(BOOL)close
 {
-  v4 = self;
-  BookReaderModuleHost.requestClose(_:)(a3);
+  selfCopy = self;
+  BookReaderModuleHost.requestClose(_:)(close);
 }
 
-- (void)setBookPositionProcessor:(id)a3
+- (void)setBookPositionProcessor:(id)processor
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  BookReaderModuleHost.bookPositionProcessor.setter(a3);
+  selfCopy = self;
+  BookReaderModuleHost.bookPositionProcessor.setter(processor);
 }
 
-- (REBookReaderModuleHost)initWithHostEnvironmentProvider:(id)a3 book:(id)a4 annotationProvider:(id)a5 storeController:(id)a6 styleManager:(id)a7 engagementManager:(id)a8
+- (REBookReaderModuleHost)initWithHostEnvironmentProvider:(id)provider book:(id)book annotationProvider:(id)annotationProvider storeController:(id)controller styleManager:(id)manager engagementManager:(id)engagementManager
 {
   ObjectType = swift_getObjectType();
   sub_1007A1774();
   swift_unknownObjectRetain();
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  bookCopy = book;
+  annotationProviderCopy = annotationProvider;
+  controllerCopy = controller;
+  managerCopy = manager;
+  engagementManagerCopy = engagementManager;
   v20 = sub_1007A1764();
   v21 = objc_allocWithZone(ObjectType);
-  v22 = sub_1005A76B0(a3, v15, v16, v17, v18, v19, v20);
+  v22 = sub_1005A76B0(provider, bookCopy, annotationProviderCopy, controllerCopy, managerCopy, engagementManagerCopy, v20);
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v22;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  BookReaderModuleHost.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  BookReaderModuleHost.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   ObjectType = swift_getObjectType();
-  v6 = self;
+  selfCopy = self;
   sub_1005A54F0();
-  v7.receiver = v6;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
-  [(REBookReaderModuleHost *)&v7 viewIsAppearing:v3];
-  [(REBookReaderModuleHost *)v6 bc_analyticsVisibilityUpdateSubtree];
+  [(REBookReaderModuleHost *)&v7 viewIsAppearing:appearingCopy];
+  [(REBookReaderModuleHost *)selfCopy bc_analyticsVisibilityUpdateSubtree];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(REBookReaderModuleHost *)&v6 viewDidAppear:v3];
+  [(REBookReaderModuleHost *)&v6 viewDidAppear:appearCopy];
   [v4 bc_analyticsVisibilityUpdateSubtree];
   swift_getObjectType();
-  v5 = [v4 traitCollection];
+  traitCollection = [v4 traitCollection];
   sub_1007A17B4();
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  [(REBookReaderModuleHost *)&v6 viewDidMoveToWindow:a3 shouldAppearOrDisappear:v4];
+  [(REBookReaderModuleHost *)&v6 viewDidMoveToWindow:window shouldAppearOrDisappear:disappearCopy];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -402,7 +402,7 @@
   }
 }
 
-- (REBookReaderModuleHost)initWithNibName:(id)a3 bundle:(id)a4
+- (REBookReaderModuleHost)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -416,34 +416,34 @@
     self = *(self + OBJC_IVAR___REBookReaderModuleHost_readerModuleViewController);
   }
 
-  v2 = [(REBookReaderModuleHost *)self view];
+  view = [(REBookReaderModuleHost *)self view];
 
-  return v2;
+  return view;
 }
 
 - (BOOL)prefersStatusBarHiddenDuringTransition
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BookReaderModuleHost.prefersStatusBarHiddenDuringTransition()();
 
   return v3;
 }
 
-- (void)setUpSellData:(id)a3
+- (void)setUpSellData:(id)data
 {
   v3 = *(self + OBJC_IVAR___REBookReaderModuleHost_readerModuleViewController);
   if (v3)
   {
-    [v3 setUpSellData:a3];
+    [v3 setUpSellData:data];
   }
 }
 
-- (void)setAppAnalyticsAdditionalData:(id)a3
+- (void)setAppAnalyticsAdditionalData:(id)data
 {
   v3 = *(self + OBJC_IVAR___REBookReaderModuleHost_readerModuleViewController);
   if (v3)
   {
-    [v3 setAppAnalyticsAdditionalData:a3];
+    [v3 setAppAnalyticsAdditionalData:data];
   }
 }
 
@@ -456,13 +456,13 @@
   }
 }
 
-- (void)setFinishedForAssetID:(id)a3
+- (void)setFinishedForAssetID:(id)d
 {
   v3 = *(self + OBJC_IVAR___REBookReaderModuleHost_readerModuleViewController);
   if (v3 && ([*(self + OBJC_IVAR___REBookReaderModuleHost_readerModuleViewController) respondsToSelector:"setFinishedForAssetID:"] & 1) != 0)
   {
 
-    [v3 setFinishedForAssetID:a3];
+    [v3 setFinishedForAssetID:d];
   }
 }
 

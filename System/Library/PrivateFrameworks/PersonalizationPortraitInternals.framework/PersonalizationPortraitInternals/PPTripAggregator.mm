@@ -1,30 +1,30 @@
 @interface PPTripAggregator
-+ (id)mergeTripCandidates:(id)a3;
-+ (id)tripCandidatesWithEvents:(id)a3;
-+ (id)tripEventsFromCandidates:(id)a3;
-+ (id)tripEventsWithEvents:(id)a3 from:(id)a4 to:(id)a5;
++ (id)mergeTripCandidates:(id)candidates;
++ (id)tripCandidatesWithEvents:(id)events;
++ (id)tripEventsFromCandidates:(id)candidates;
++ (id)tripEventsWithEvents:(id)events from:(id)from to:(id)to;
 @end
 
 @implementation PPTripAggregator
 
-+ (id)mergeTripCandidates:(id)a3
++ (id)mergeTripCandidates:(id)candidates
 {
-  v3 = a3;
-  v4 = [objc_opt_class() mergeTripCandidates:v3 supportsGroundTransportEvents:0];
+  candidatesCopy = candidates;
+  v4 = [objc_opt_class() mergeTripCandidates:candidatesCopy supportsGroundTransportEvents:0];
 
   return v4;
 }
 
-+ (id)tripEventsFromCandidates:(id)a3
++ (id)tripEventsFromCandidates:(id)candidates
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  candidatesCopy = candidates;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = candidatesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -42,8 +42,8 @@
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 shouldPromoteToTripEvent])
         {
-          v11 = [v10 tripEventFromCandidate];
-          [v4 addObject:v11];
+          tripEventFromCandidate = [v10 tripEventFromCandidate];
+          [v4 addObject:tripEventFromCandidate];
         }
       }
 
@@ -58,21 +58,21 @@
   return v4;
 }
 
-+ (id)tripCandidatesWithEvents:(id)a3
++ (id)tripCandidatesWithEvents:(id)events
 {
-  v3 = a3;
-  v4 = [objc_opt_class() tripCandidatesWithEvents:v3 supportsGroundTransportEvents:0];
+  eventsCopy = events;
+  v4 = [objc_opt_class() tripCandidatesWithEvents:eventsCopy supportsGroundTransportEvents:0];
 
   return v4;
 }
 
-+ (id)tripEventsWithEvents:(id)a3 from:(id)a4 to:(id)a5
++ (id)tripEventsWithEvents:(id)events from:(id)from to:(id)to
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v25 = [a1 tripCandidatesWithEvents:a3];
-  v10 = [a1 tripEventsFromCandidates:?];
+  fromCopy = from;
+  toCopy = to;
+  v25 = [self tripCandidatesWithEvents:events];
+  v10 = [self tripEventsFromCandidates:?];
   v11 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
@@ -94,12 +94,12 @@
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [v17 startDate];
-        [v18 timeIntervalSinceDate:v9];
+        startDate = [v17 startDate];
+        [startDate timeIntervalSinceDate:toCopy];
         if (v19 <= 0.0)
         {
-          v20 = [v17 endDate];
-          [v8 timeIntervalSinceDate:v20];
+          endDate = [v17 endDate];
+          [fromCopy timeIntervalSinceDate:endDate];
           v22 = v21;
 
           if (v22 <= 0.0)

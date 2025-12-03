@@ -1,27 +1,27 @@
 @interface NTKActivityAnalogFaceBundle
 + (id)identifier;
-- (id)_digitalFaceForDevice:(id)a3;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)_digitalFaceForDevice:(id)device;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKActivityAnalogFaceBundle
 
 + (id)identifier
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___NTKActivityAnalogFaceBundle;
   v3 = objc_msgSendSuper2(&v7, "identifier");
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [NSString stringWithFormat:@"%@.%@", v3, v4];
 
   return v5;
 }
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 216;
@@ -32,12 +32,12 @@
     v4 = 16;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -56,9 +56,9 @@
   return v5;
 }
 
-- (id)_digitalFaceForDevice:(id)a3
+- (id)_digitalFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 217;
@@ -69,14 +69,14 @@
     v4 = 17;
   }
 
-  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
   v6 = 0;
   v19 = NTKComplicationSlotTopLeft;
@@ -91,7 +91,7 @@
         break;
       }
 
-      v8 = [(NTKActivityAnalogFaceBundle *)self _digitalFaceForDevice:v4];
+      v8 = [(NTKActivityAnalogFaceBundle *)self _digitalFaceForDevice:deviceCopy];
       if (v8)
       {
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
 
     else
     {
-      v8 = [(NTKActivityAnalogFaceBundle *)self defaultFaceForDevice:v4];
+      v8 = [(NTKActivityAnalogFaceBundle *)self defaultFaceForDevice:deviceCopy];
       if (v6 == 1)
       {
-        v9 = [NTKActivityAnalogDensityEditOption optionWithDensity:3 forDevice:v4];
+        v9 = [NTKActivityAnalogDensityEditOption optionWithDensity:3 forDevice:deviceCopy];
         [v8 selectOption:v9 forCustomEditMode:11 slot:0];
 
         v10 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:9 zOrder:4000];
@@ -125,7 +125,7 @@ LABEL_10:
 
       else
       {
-        v13 = [NTKActivityAnalogDensityEditOption optionWithDensity:1 forDevice:v4];
+        v13 = [NTKActivityAnalogDensityEditOption optionWithDensity:1 forDevice:deviceCopy];
         [v8 selectOption:v13 forCustomEditMode:11 slot:0];
 
         v10 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:9 zOrder:4000];

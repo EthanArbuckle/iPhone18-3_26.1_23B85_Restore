@@ -1,31 +1,31 @@
 @interface SXAnimatedImage
-+ (SXAnimatedImage)animatedImageWithData:(id)a3 scale:(double)a4 size:(CGSize)a5;
-+ (SXAnimatedImage)animatedImageWithURL:(id)a3 scale:(double)a4 type:(int64_t)a5;
++ (SXAnimatedImage)animatedImageWithData:(id)data scale:(double)scale size:(CGSize)size;
++ (SXAnimatedImage)animatedImageWithURL:(id)l scale:(double)scale type:(int64_t)type;
 - (CGSize)imageSize;
-- (SXAnimatedImage)initWithDataProvider:(CGDataProvider *)a3 scale:(double)a4 type:(int64_t)a5 size:(CGSize)a6;
-- (SXAnimatedImage)initWithImageSource:(CGImageSource *)a3 scale:(double)a4 type:(int64_t)a5 size:(CGSize)a6;
+- (SXAnimatedImage)initWithDataProvider:(CGDataProvider *)provider scale:(double)scale type:(int64_t)type size:(CGSize)size;
+- (SXAnimatedImage)initWithImageSource:(CGImageSource *)source scale:(double)scale type:(int64_t)type size:(CGSize)size;
 - (SXAnimatedImageDelegate)delegate;
-- (id)frameAtIndex:(unint64_t)a3 returnNearestPreloaded:(BOOL)a4;
-- (void)animatedImageViewCache:(id)a3 didCacheImageForFrameIndex:(unint64_t)a4;
-- (void)capturePropertiesForType:(int64_t)a3;
+- (id)frameAtIndex:(unint64_t)index returnNearestPreloaded:(BOOL)preloaded;
+- (void)animatedImageViewCache:(id)cache didCacheImageForFrameIndex:(unint64_t)index;
+- (void)capturePropertiesForType:(int64_t)type;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)generateFrames;
 - (void)resumePreloading;
-- (void)setPreloadType:(int64_t)a3 currentFrameIndex:(unint64_t)a4;
+- (void)setPreloadType:(int64_t)type currentFrameIndex:(unint64_t)index;
 - (void)suspendPreloading;
 @end
 
 @implementation SXAnimatedImage
 
-+ (SXAnimatedImage)animatedImageWithURL:(id)a3 scale:(double)a4 type:(int64_t)a5
++ (SXAnimatedImage)animatedImageWithURL:(id)l scale:(double)scale type:(int64_t)type
 {
-  v8 = CGDataProviderCreateWithURL(a3);
+  v8 = CGDataProviderCreateWithURL(l);
   if (v8)
   {
     v9 = v8;
-    v10 = [a1 alloc];
-    v11 = [v10 initWithDataProvider:v9 scale:a5 type:a4 size:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    v10 = [self alloc];
+    v11 = [v10 initWithDataProvider:v9 scale:type type:scale size:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     CGDataProviderRelease(v9);
   }
 
@@ -37,20 +37,20 @@
   return v11;
 }
 
-+ (SXAnimatedImage)animatedImageWithData:(id)a3 scale:(double)a4 size:(CGSize)a5
++ (SXAnimatedImage)animatedImageWithData:(id)data scale:(double)scale size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = CGDataProviderCreateWithCFData(v9);
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  v10 = CGDataProviderCreateWithCFData(dataCopy);
   if (v10)
   {
     v11 = v10;
     v12 = +[SXImageDecodingTools sharedInstance];
-    v13 = [v12 contentTypeForImageData:v9];
+    v13 = [v12 contentTypeForImageData:dataCopy];
     v14 = v13 == *MEMORY[0x1E6963860];
 
-    v15 = [[a1 alloc] initWithDataProvider:v11 scale:v14 type:a4 size:{width, height}];
+    v15 = [[self alloc] initWithDataProvider:v11 scale:v14 type:scale size:{width, height}];
     CGDataProviderRelease(v11);
   }
 
@@ -62,50 +62,50 @@
   return v15;
 }
 
-- (SXAnimatedImage)initWithDataProvider:(CGDataProvider *)a3 scale:(double)a4 type:(int64_t)a5 size:(CGSize)a6
+- (SXAnimatedImage)initWithDataProvider:(CGDataProvider *)provider scale:(double)scale type:(int64_t)type size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = CGImageSourceCreateWithDataProvider(a3, 0);
-  v12 = [(SXAnimatedImage *)self initWithImageSource:v11 scale:a5 type:a4 size:width, height];
+  height = size.height;
+  width = size.width;
+  v11 = CGImageSourceCreateWithDataProvider(provider, 0);
+  height = [(SXAnimatedImage *)self initWithImageSource:v11 scale:type type:scale size:width, height];
   CFRelease(v11);
 
-  return v12;
+  return height;
 }
 
-- (SXAnimatedImage)initWithImageSource:(CGImageSource *)a3 scale:(double)a4 type:(int64_t)a5 size:(CGSize)a6
+- (SXAnimatedImage)initWithImageSource:(CGImageSource *)source scale:(double)scale type:(int64_t)type size:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v18.receiver = self;
   v18.super_class = SXAnimatedImage;
   v11 = [(SXAnimatedImage *)&v18 init];
   if (v11)
   {
-    v11->_imageSource = CFRetain(a3);
-    v11->_imageType = a5;
-    v11->_scale = a4;
-    v12 = [[SXAnimatedImageViewCache alloc] initWithImageSize:width, height];
+    v11->_imageSource = CFRetain(source);
+    v11->_imageType = type;
+    v11->_scale = scale;
+    height = [[SXAnimatedImageViewCache alloc] initWithImageSize:width, height];
     cache = v11->_cache;
-    v11->_cache = v12;
+    v11->_cache = height;
 
     [(SXAnimatedImageViewCache *)v11->_cache setDelegate:v11];
     [(SXAnimatedImage *)v11 capturePropertiesForType:v11->_imageType];
     [(SXAnimatedImage *)v11 generateFrames];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v11 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
 
-    v15 = [(SXAnimatedImage *)v11 cache];
-    [v15 setAnimatedImage:v11];
+    cache = [(SXAnimatedImage *)v11 cache];
+    [cache setAnimatedImage:v11];
 
-    v16 = [(SXAnimatedImage *)v11 cache];
-    [v16 prepareImageForFrameIndex:0];
+    cache2 = [(SXAnimatedImage *)v11 cache];
+    [cache2 prepareImageForFrameIndex:0];
   }
 
   return v11;
 }
 
-- (void)capturePropertiesForType:(int64_t)a3
+- (void)capturePropertiesForType:(int64_t)type
 {
   v5 = 0;
   v6 = *MEMORY[0x1E696DEB0];
@@ -123,7 +123,7 @@
 
   while (!ImageAtIndex);
   v13 = ImageAtIndex;
-  if (a3 == 1)
+  if (type == 1)
   {
     v14 = v6;
   }
@@ -147,7 +147,7 @@
   value = 0;
   if (CFDictionaryGetValueIfPresent(v21, v14, &value))
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v22 = v10;
     }
@@ -192,9 +192,9 @@ LABEL_15:
     do
     {
       v4 = [SXAnimatedImageFrame alloc];
-      v5 = [(SXAnimatedImage *)self imageSource];
-      v6 = [(SXAnimatedImage *)self cache];
-      v7 = [(SXAnimatedImageFrame *)&v4->super.isa initWithImageSource:v5 index:v3 cache:v6 type:[(SXAnimatedImage *)self imageType]];
+      imageSource = [(SXAnimatedImage *)self imageSource];
+      cache = [(SXAnimatedImage *)self cache];
+      v7 = [(SXAnimatedImageFrame *)&v4->super.isa initWithImageSource:imageSource index:v3 cache:cache type:[(SXAnimatedImage *)self imageType]];
 
       [v10 addObject:v7];
       self->_duration = [(SXAnimatedImageFrame *)v7 duration]+ self->_duration;
@@ -210,15 +210,15 @@ LABEL_15:
   self->_frames = v8;
 }
 
-- (id)frameAtIndex:(unint64_t)a3 returnNearestPreloaded:(BOOL)a4
+- (id)frameAtIndex:(unint64_t)index returnNearestPreloaded:(BOOL)preloaded
 {
-  if (a4)
+  if (preloaded)
   {
-    v6 = [(SXAnimatedImage *)self cache];
-    a3 = [v6 nearestCachedFrameIndexForFrameIndex:a3];
+    cache = [(SXAnimatedImage *)self cache];
+    index = [cache nearestCachedFrameIndexForFrameIndex:index];
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
   }
@@ -227,23 +227,23 @@ LABEL_15:
   {
     if ([(SXAnimatedImage *)self preloadType]== 1)
     {
-      v8 = [(SXAnimatedImage *)self cache];
-      v9 = [(SXAnimatedImage *)self numberOfFrames];
-      if (v9 - 1 >= a3 + 3)
+      cache2 = [(SXAnimatedImage *)self cache];
+      numberOfFrames = [(SXAnimatedImage *)self numberOfFrames];
+      if (numberOfFrames - 1 >= index + 3)
       {
-        v10 = a3 + 3;
+        v10 = index + 3;
       }
 
       else
       {
-        v10 = v9 - 1;
+        v10 = numberOfFrames - 1;
       }
 
-      [v8 prepareImageForFrameIndex:v10];
+      [cache2 prepareImageForFrameIndex:v10];
     }
 
-    v11 = [(SXAnimatedImage *)self frames];
-    v7 = [v11 objectAtIndex:a3];
+    frames = [(SXAnimatedImage *)self frames];
+    v7 = [frames objectAtIndex:index];
   }
 
   return v7;
@@ -251,8 +251,8 @@ LABEL_15:
 
 - (void)didReceiveMemoryWarning
 {
-  v2 = [(SXAnimatedImage *)self cache];
-  [v2 prune];
+  cache = [(SXAnimatedImage *)self cache];
+  [cache prune];
 }
 
 - (void)dealloc
@@ -264,39 +264,39 @@ LABEL_15:
     self->_imageSource = 0;
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SXAnimatedImage;
   [(SXAnimatedImage *)&v5 dealloc];
 }
 
-- (void)animatedImageViewCache:(id)a3 didCacheImageForFrameIndex:(unint64_t)a4
+- (void)animatedImageViewCache:(id)cache didCacheImageForFrameIndex:(unint64_t)index
 {
-  v6 = [(SXAnimatedImage *)self delegate];
+  delegate = [(SXAnimatedImage *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SXAnimatedImage *)self delegate];
-    [v8 animatedImage:self madeImageAvailableForFrameAtIndex:a4];
+    delegate2 = [(SXAnimatedImage *)self delegate];
+    [delegate2 animatedImage:self madeImageAvailableForFrameAtIndex:index];
   }
 }
 
-- (void)setPreloadType:(int64_t)a3 currentFrameIndex:(unint64_t)a4
+- (void)setPreloadType:(int64_t)type currentFrameIndex:(unint64_t)index
 {
-  self->_preloadType = a3;
-  if ([(SXAnimatedImage *)self preloadType]== 1 && [(SXAnimatedImage *)self numberOfFrames]> a4)
+  self->_preloadType = type;
+  if ([(SXAnimatedImage *)self preloadType]== 1 && [(SXAnimatedImage *)self numberOfFrames]> index)
   {
     v6 = 0;
     do
     {
-      v7 = a4 + v6;
-      v8 = [(SXAnimatedImage *)self cache];
-      [v8 prepareImageForFrameIndex:a4 + v6];
+      v7 = index + v6;
+      cache = [(SXAnimatedImage *)self cache];
+      [cache prepareImageForFrameIndex:index + v6];
 
-      v9 = [(SXAnimatedImage *)self numberOfFrames];
+      numberOfFrames = [(SXAnimatedImage *)self numberOfFrames];
       if (v6 > 1)
       {
         break;
@@ -305,7 +305,7 @@ LABEL_15:
       ++v6;
     }
 
-    while (v7 + 1 < v9);
+    while (v7 + 1 < numberOfFrames);
   }
 
   if ([(SXAnimatedImage *)self preloadType]== 2)
@@ -315,8 +315,8 @@ LABEL_15:
     v12 = 3;
     do
     {
-      v13 = [(SXAnimatedImage *)self cache];
-      [v13 prepareImageForFrameIndex:v10];
+      cache2 = [(SXAnimatedImage *)self cache];
+      [cache2 prepareImageForFrameIndex:v10];
 
       v10 += v11;
       --v12;
@@ -328,14 +328,14 @@ LABEL_15:
 
 - (void)suspendPreloading
 {
-  v2 = [(SXAnimatedImage *)self cache];
-  [v2 setSuspendPreloading:1];
+  cache = [(SXAnimatedImage *)self cache];
+  [cache setSuspendPreloading:1];
 }
 
 - (void)resumePreloading
 {
-  v2 = [(SXAnimatedImage *)self cache];
-  [v2 setSuspendPreloading:0];
+  cache = [(SXAnimatedImage *)self cache];
+  [cache setSuspendPreloading:0];
 }
 
 - (SXAnimatedImageDelegate)delegate

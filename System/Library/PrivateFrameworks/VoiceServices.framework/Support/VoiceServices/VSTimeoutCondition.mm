@@ -1,7 +1,7 @@
 @interface VSTimeoutCondition
-- (BOOL)_waitForTimeInterval:(double)a3;
+- (BOOL)_waitForTimeInterval:(double)interval;
 - (BOOL)wait;
-- (VSTimeoutCondition)initWithTimeoutValue:(double)a3;
+- (VSTimeoutCondition)initWithTimeoutValue:(double)value;
 - (void)refresh;
 - (void)stop;
 @end
@@ -22,45 +22,45 @@
 
 - (void)stop
 {
-  v3 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v3 lock];
+  refreshTimeoutCondition = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition lock];
 
   self->_shouldStop = 1;
-  v4 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v4 signal];
+  refreshTimeoutCondition2 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition2 signal];
 
-  v5 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v5 unlock];
+  refreshTimeoutCondition3 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition3 unlock];
 }
 
 - (void)refresh
 {
-  v3 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v3 lock];
+  refreshTimeoutCondition = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition lock];
 
-  v4 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v4 signal];
+  refreshTimeoutCondition2 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition2 signal];
 
-  v5 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v5 unlock];
+  refreshTimeoutCondition3 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition3 unlock];
 }
 
-- (BOOL)_waitForTimeInterval:(double)a3
+- (BOOL)_waitForTimeInterval:(double)interval
 {
-  v5 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v5 lock];
+  refreshTimeoutCondition = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition lock];
 
-  v6 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v8 = [v6 waitUntilDate:v7];
+  refreshTimeoutCondition2 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:interval];
+  v8 = [refreshTimeoutCondition2 waitUntilDate:v7];
 
-  v9 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
-  [v9 unlock];
+  refreshTimeoutCondition3 = [(VSTimeoutCondition *)self refreshTimeoutCondition];
+  [refreshTimeoutCondition3 unlock];
 
   return v8;
 }
 
-- (VSTimeoutCondition)initWithTimeoutValue:(double)a3
+- (VSTimeoutCondition)initWithTimeoutValue:(double)value
 {
   v9.receiver = self;
   v9.super_class = VSTimeoutCondition;
@@ -68,7 +68,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_timeoutValue = a3;
+    v4->_timeoutValue = value;
     v6 = objc_alloc_init(MEMORY[0x277CCA928]);
     refreshTimeoutCondition = v5->_refreshTimeoutCondition;
     v5->_refreshTimeoutCondition = v6;

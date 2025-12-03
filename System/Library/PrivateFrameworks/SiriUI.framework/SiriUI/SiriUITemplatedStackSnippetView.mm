@@ -1,28 +1,28 @@
 @interface SiriUITemplatedStackSnippetView
-- (SiriUITemplatedStackSnippetView)initWithFrame:(CGRect)a3;
+- (SiriUITemplatedStackSnippetView)initWithFrame:(CGRect)frame;
 - (SiriUITemplatedStackSnippetViewDataSource)dataSource;
 - (SiriUITemplatedStackSnippetViewDelegate)delegate;
 - (UIEdgeInsets)templatedContentMargins;
 - (double)desiredHeight;
-- (void)_handleTapGesture:(id)a3;
-- (void)_triggerLayoutAnimated:(BOOL)a3 completion:(id)a4;
-- (void)addTemplateSubview:(id)a3;
-- (void)adjustAuxiliaryViewHeight:(double)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_handleTapGesture:(id)gesture;
+- (void)_triggerLayoutAnimated:(BOOL)animated completion:(id)completion;
+- (void)addTemplateSubview:(id)subview;
+- (void)adjustAuxiliaryViewHeight:(double)height animated:(BOOL)animated completion:(id)completion;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)setAuxiliaryView:(id)a3 atIndex:(unint64_t)a4 initialHeight:(double)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)setDataSource:(id)a3;
-- (void)templateSubviewWantsToBeRemovedFromHierarchy:(id)a3;
+- (void)setAuxiliaryView:(id)view atIndex:(unint64_t)index initialHeight:(double)height animated:(BOOL)animated completion:(id)completion;
+- (void)setDataSource:(id)source;
+- (void)templateSubviewWantsToBeRemovedFromHierarchy:(id)hierarchy;
 @end
 
 @implementation SiriUITemplatedStackSnippetView
 
-- (SiriUITemplatedStackSnippetView)initWithFrame:(CGRect)a3
+- (SiriUITemplatedStackSnippetView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  Height = CGRectGetHeight(a3);
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  Height = CGRectGetHeight(frame);
   if (Height >= 44.0)
   {
     v8 = Height;
@@ -63,8 +63,8 @@
     v11->_sashOverlayView = v17;
 
     v19 = v11->_sashOverlayView;
-    v20 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v19 setBackgroundColor:v20];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v19 setBackgroundColor:whiteColor];
 
     [(UIView *)v11->_sashOverlayView setAlpha:0.4];
     v21 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v13, v14, v15, v16}];
@@ -76,8 +76,8 @@
     v11->_sashTitleLabel = v23;
 
     v25 = v11->_sashTitleLabel;
-    v26 = [MEMORY[0x277D75348] siriui_platterTextColor];
-    [(UILabel *)v25 setTextColor:v26];
+    siriui_platterTextColor = [MEMORY[0x277D75348] siriui_platterTextColor];
+    [(UILabel *)v25 setTextColor:siriui_platterTextColor];
 
     v27 = v11->_sashTitleLabel;
     v28 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
@@ -88,8 +88,8 @@
     v11->_navigationTitleLabel = v29;
 
     v31 = v11->_navigationTitleLabel;
-    v32 = [MEMORY[0x277D75348] siriui_platterTextColor];
-    [(UILabel *)v31 setTextColor:v32];
+    siriui_platterTextColor2 = [MEMORY[0x277D75348] siriui_platterTextColor];
+    [(UILabel *)v31 setTextColor:siriui_platterTextColor2];
 
     v33 = v11->_navigationTitleLabel;
     v34 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
@@ -132,9 +132,9 @@
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v9 = [(UILabel *)self->_navigationTitleLabel text];
+  text = [(UILabel *)self->_navigationTitleLabel text];
 
-  if (v9)
+  if (text)
   {
     v31[3] = 24.0;
     [(UILabel *)self->_navigationTitleLabel sizeThatFits:width, height];
@@ -183,8 +183,8 @@
   v29 = 0x3FF0000000000000;
   if ([(NSMutableArray *)self->_keylines count])
   {
-    v14 = [(NSMutableArray *)self->_keylines firstObject];
-    [v14 sizeThatFits:{v23[6], v23[7]}];
+    firstObject = [(NSMutableArray *)self->_keylines firstObject];
+    [firstObject sizeThatFits:{v23[6], v23[7]}];
     v16 = v15;
 
     *(v23 + 7) = v16;
@@ -262,9 +262,9 @@ void __49__SiriUITemplatedStackSnippetView_layoutSubviews__block_invoke(uint64_t
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -276,31 +276,31 @@ void __49__SiriUITemplatedStackSnippetView_layoutSubviews__block_invoke(uint64_t
   }
 }
 
-- (void)setAuxiliaryView:(id)a3 atIndex:(unint64_t)a4 initialHeight:(double)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)setAuxiliaryView:(id)view atIndex:(unint64_t)index initialHeight:(double)height animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a7;
-  if (self->_auxiliaryView != v13)
+  animatedCopy = animated;
+  viewCopy = view;
+  completionCopy = completion;
+  if (self->_auxiliaryView != viewCopy)
   {
     [(NSMutableArray *)self->_stackedSubviews removeObject:?];
     [(UIView *)self->_auxiliaryView removeFromSuperview];
-    self->_auxiliaryViewHeight = a5;
-    objc_storeStrong(&self->_auxiliaryView, a3);
+    self->_auxiliaryViewHeight = height;
+    objc_storeStrong(&self->_auxiliaryView, view);
     if (self->_auxiliaryView)
     {
-      if ([(NSMutableArray *)self->_stackedSubviews count]< a4)
+      if ([(NSMutableArray *)self->_stackedSubviews count]< index)
       {
         v15 = *MEMORY[0x277CEF098];
         if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
         {
-          [SiriUITemplatedStackSnippetView setAuxiliaryView:v15 atIndex:a4 initialHeight:? animated:? completion:?];
+          [SiriUITemplatedStackSnippetView setAuxiliaryView:v15 atIndex:index initialHeight:? animated:? completion:?];
         }
 
-        a4 = [(NSMutableArray *)self->_stackedSubviews count];
+        index = [(NSMutableArray *)self->_stackedSubviews count];
       }
 
-      [(NSMutableArray *)self->_stackedSubviews insertObject:self->_auxiliaryView atIndex:a4];
+      [(NSMutableArray *)self->_stackedSubviews insertObject:self->_auxiliaryView atIndex:index];
       v16 = *MEMORY[0x277CBF3A0];
       v17 = *(MEMORY[0x277CBF3A0] + 8);
       v18 = *(MEMORY[0x277CBF3A0] + 16);
@@ -314,14 +314,14 @@ void __49__SiriUITemplatedStackSnippetView_layoutSubviews__block_invoke(uint64_t
       {
         v21 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v16, v17, v18, v19}];
         [(UIView *)v21 setUserInteractionEnabled:1];
-        v22 = [MEMORY[0x277D75348] clearColor];
-        [(UIView *)v21 setBackgroundColor:v22];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UIView *)v21 setBackgroundColor:clearColor];
 
-        v23 = [(UIView *)v21 layer];
-        [v23 setAllowsHitTesting:1];
+        layer = [(UIView *)v21 layer];
+        [layer setAllowsHitTesting:1];
 
-        v24 = [(UIView *)v21 layer];
-        [v24 setHitTestsAsOpaque:1];
+        layer2 = [(UIView *)v21 layer];
+        [layer2 setHitTestsAsOpaque:1];
 
         [(SiriUITemplatedStackSnippetView *)self addSubview:v21];
         touchInterceptView = self->_touchInterceptView;
@@ -340,26 +340,26 @@ void __49__SiriUITemplatedStackSnippetView_layoutSubviews__block_invoke(uint64_t
       }
     }
 
-    [(SiriUITemplatedStackSnippetView *)self _triggerLayoutAnimated:v8 completion:v14];
+    [(SiriUITemplatedStackSnippetView *)self _triggerLayoutAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)adjustAuxiliaryViewHeight:(double)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)adjustAuxiliaryViewHeight:(double)height animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (self->_auxiliaryViewHeight == a3)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (self->_auxiliaryViewHeight == height)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    self->_auxiliaryViewHeight = a3;
-    [(SiriUITemplatedStackSnippetView *)self _triggerLayoutAnimated:v5 completion:?];
+    self->_auxiliaryViewHeight = height;
+    [(SiriUITemplatedStackSnippetView *)self _triggerLayoutAnimated:animatedCopy completion:?];
   }
 
   MEMORY[0x2821F97C8]();
@@ -416,8 +416,8 @@ void __49__SiriUITemplatedStackSnippetView_layoutSubviews__block_invoke(uint64_t
   sashTitleLabel = self->_sashTitleLabel;
   v7 = objc_loadWeakRetained(&self->_dataSource);
   v8 = [v7 sashTitleForTemplatedStackSnippetView:self];
-  v9 = [v8 uppercaseString];
-  [(UILabel *)sashTitleLabel setText:v9];
+  uppercaseString = [v8 uppercaseString];
+  [(UILabel *)sashTitleLabel setText:uppercaseString];
 
   navigationTitleLabel = self->_navigationTitleLabel;
   v11 = objc_loadWeakRetained(&self->_dataSource);
@@ -450,27 +450,27 @@ void __49__SiriUITemplatedStackSnippetView_layoutSubviews__block_invoke(uint64_t
   [(SiriUITemplatedStackSnippetView *)self setNeedsLayout];
 }
 
-- (void)_triggerLayoutAnimated:(BOOL)a3 completion:(id)a4
+- (void)_triggerLayoutAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  animatedCopy = animated;
+  completionCopy = completion;
+  if (animatedCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__SiriUITemplatedStackSnippetView__triggerLayoutAnimated_completion___block_invoke;
     v7[3] = &unk_279C59D78;
     v7[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:0 delay:v7 usingSpringWithDamping:v6 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:0.5];
+    [MEMORY[0x277D75D18] animateWithDuration:0 delay:v7 usingSpringWithDamping:completionCopy initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:0.5];
   }
 
   else
   {
     [(SiriUITemplatedStackSnippetView *)self setNeedsLayout];
     [(SiriUITemplatedStackSnippetView *)self layoutIfNeeded];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
@@ -483,16 +483,16 @@ uint64_t __69__SiriUITemplatedStackSnippetView__triggerLayoutAnimated_completion
   return [v2 layoutIfNeeded];
 }
 
-- (void)addTemplateSubview:(id)a3
+- (void)addTemplateSubview:(id)subview
 {
-  if (a3)
+  if (subview)
   {
     templateSubviews = self->_templateSubviews;
-    v5 = a3;
-    [(NSMutableSet *)templateSubviews addObject:v5];
-    [(NSMutableArray *)self->_stackedSubviews addObject:v5];
-    [(SiriUITemplatedStackSnippetView *)self addSubview:v5];
-    [v5 setTemplatedSuperview:self];
+    subviewCopy = subview;
+    [(NSMutableSet *)templateSubviews addObject:subviewCopy];
+    [(NSMutableArray *)self->_stackedSubviews addObject:subviewCopy];
+    [(SiriUITemplatedStackSnippetView *)self addSubview:subviewCopy];
+    [subviewCopy setTemplatedSuperview:self];
 
     v6 = [SiriUIKeyline keylineWithKeylineType:2 platterStyling:1];
     [(NSMutableArray *)self->_keylines addObject:v6];
@@ -501,15 +501,15 @@ uint64_t __69__SiriUITemplatedStackSnippetView__triggerLayoutAnimated_completion
   }
 }
 
-- (void)templateSubviewWantsToBeRemovedFromHierarchy:(id)a3
+- (void)templateSubviewWantsToBeRemovedFromHierarchy:(id)hierarchy
 {
   stackedSubviews = self->_stackedSubviews;
-  v5 = a3;
-  v6 = [(NSMutableArray *)stackedSubviews indexOfObject:v5];
-  [(NSMutableSet *)self->_templateSubviews removeObject:v5];
-  [(NSMutableArray *)self->_stackedSubviews removeObject:v5];
-  [v5 removeFromSuperview];
-  [v5 setTemplatedSuperview:0];
+  hierarchyCopy = hierarchy;
+  v6 = [(NSMutableArray *)stackedSubviews indexOfObject:hierarchyCopy];
+  [(NSMutableSet *)self->_templateSubviews removeObject:hierarchyCopy];
+  [(NSMutableArray *)self->_stackedSubviews removeObject:hierarchyCopy];
+  [hierarchyCopy removeFromSuperview];
+  [hierarchyCopy setTemplatedSuperview:0];
 
   v7 = [(NSMutableArray *)self->_keylines objectAtIndex:v6];
   [(NSMutableArray *)self->_keylines removeObject:v7];
@@ -530,10 +530,10 @@ uint64_t __69__SiriUITemplatedStackSnippetView__triggerLayoutAnimated_completion
   return result;
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
-  v4 = [(SiriUITemplatedStackSnippetView *)self delegate];
-  [v4 viewWantsDefaultTapAction:self];
+  delegate = [(SiriUITemplatedStackSnippetView *)self delegate];
+  [delegate viewWantsDefaultTapAction:self];
 }
 
 - (SiriUITemplatedStackSnippetViewDataSource)dataSource

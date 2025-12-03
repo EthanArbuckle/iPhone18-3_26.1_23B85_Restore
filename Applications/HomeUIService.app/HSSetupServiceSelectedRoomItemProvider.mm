@@ -1,7 +1,7 @@
 @interface HSSetupServiceSelectedRoomItemProvider
 - (HSSetupServiceSelectedRoomItemProvider)init;
-- (HSSetupServiceSelectedRoomItemProvider)initWithServiceLikeBuilder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HSSetupServiceSelectedRoomItemProvider)initWithServiceLikeBuilder:(id)builder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
@@ -18,45 +18,45 @@
   return 0;
 }
 
-- (HSSetupServiceSelectedRoomItemProvider)initWithServiceLikeBuilder:(id)a3
+- (HSSetupServiceSelectedRoomItemProvider)initWithServiceLikeBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v8.receiver = self;
   v8.super_class = HSSetupServiceSelectedRoomItemProvider;
   v5 = [(HSSetupServiceSelectedRoomItemProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HSSetupServiceSelectedRoomItemProvider *)v5 setServiceLikeBuilder:v4];
+    [(HSSetupServiceSelectedRoomItemProvider *)v5 setServiceLikeBuilder:builderCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HSSetupServiceSelectedRoomItemProvider *)self serviceLikeBuilder];
-  v6 = [v4 initWithServiceLikeBuilder:v5];
+  serviceLikeBuilder = [(HSSetupServiceSelectedRoomItemProvider *)self serviceLikeBuilder];
+  v6 = [v4 initWithServiceLikeBuilder:serviceLikeBuilder];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HSSetupServiceSelectedRoomItemProvider *)self roomBuilderItem];
-  v4 = [v3 roomBuilder];
-  v5 = [(HSSetupServiceSelectedRoomItemProvider *)self serviceLikeBuilder];
-  v6 = [v5 room];
+  roomBuilderItem = [(HSSetupServiceSelectedRoomItemProvider *)self roomBuilderItem];
+  roomBuilder = [roomBuilderItem roomBuilder];
+  serviceLikeBuilder = [(HSSetupServiceSelectedRoomItemProvider *)self serviceLikeBuilder];
+  room = [serviceLikeBuilder room];
 
-  v7 = [(HSSetupServiceSelectedRoomItemProvider *)self filter];
+  filter = [(HSSetupServiceSelectedRoomItemProvider *)self filter];
 
-  if (v7)
+  if (filter)
   {
-    v8 = [(HSSetupServiceSelectedRoomItemProvider *)self filter];
-    if ((v8)[2](v8, v6))
+    filter2 = [(HSSetupServiceSelectedRoomItemProvider *)self filter];
+    if ((filter2)[2](filter2, room))
     {
-      v9 = v6;
+      v9 = room;
     }
 
     else
@@ -66,12 +66,12 @@
 
     v10 = v9;
 
-    v6 = v10;
+    room = v10;
   }
 
-  if (v4 == v6)
+  if (roomBuilder == room)
   {
-    v11 = [v4 isEqual:v6] ^ 1;
+    v11 = [roomBuilder isEqual:room] ^ 1;
   }
 
   else
@@ -82,21 +82,21 @@
   v12 = +[NSMutableSet set];
   v13 = +[NSMutableSet set];
   v14 = +[NSMutableSet set];
-  if (v6 && (v3 == 0) | v11 & 1)
+  if (room && (roomBuilderItem == 0) | v11 & 1)
   {
-    v15 = [[HFRoomBuilderItem alloc] initWithRoomBuilder:v6];
+    v15 = [[HFRoomBuilderItem alloc] initWithRoomBuilder:room];
     [v12 addObject:v15];
     [(HSSetupServiceSelectedRoomItemProvider *)self setRoomBuilderItem:v15];
   }
 
-  if (v3 && ((v11 ^ 1) & 1) == 0)
+  if (roomBuilderItem && ((v11 ^ 1) & 1) == 0)
   {
-    [v14 addObject:v3];
+    [v14 addObject:roomBuilderItem];
   }
 
-  if (!((v3 == 0) | v11 & 1))
+  if (!((roomBuilderItem == 0) | v11 & 1))
   {
-    [v13 addObject:v3];
+    [v13 addObject:roomBuilderItem];
   }
 
   v16 = [[HFItemProviderReloadResults alloc] initWithAddedItems:v12 removedItems:v14 existingItems:v13];
@@ -107,8 +107,8 @@
 
 - (id)items
 {
-  v2 = [(HSSetupServiceSelectedRoomItemProvider *)self roomBuilderItem];
-  v3 = [NSSet na_setWithSafeObject:v2];
+  roomBuilderItem = [(HSSetupServiceSelectedRoomItemProvider *)self roomBuilderItem];
+  v3 = [NSSet na_setWithSafeObject:roomBuilderItem];
 
   return v3;
 }
@@ -117,8 +117,8 @@
 {
   v5.receiver = self;
   v5.super_class = HSSetupServiceSelectedRoomItemProvider;
-  v2 = [(HSSetupServiceSelectedRoomItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:HFItemProviderInvalidationReasonRoom];
+  invalidationReasons = [(HSSetupServiceSelectedRoomItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:HFItemProviderInvalidationReasonRoom];
 
   return v3;
 }

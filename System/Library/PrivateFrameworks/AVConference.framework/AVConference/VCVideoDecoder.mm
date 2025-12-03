@@ -1,14 +1,14 @@
 @interface VCVideoDecoder
-+ (id)decoderForStreamToken:(int64_t)a3 withConfig:(tagVideoDecoderConfig *)a4;
++ (id)decoderForStreamToken:(int64_t)token withConfig:(tagVideoDecoderConfig *)config;
 + (id)streamTokenDecoderMap;
-+ (void)releaseVideoDecoderForStreamToken:(int64_t)a3;
-- (VCVideoDecoder)initWithConfig:(tagVideoDecoderConfig *)a3;
++ (void)releaseVideoDecoderForStreamToken:(int64_t)token;
+- (VCVideoDecoder)initWithConfig:(tagVideoDecoderConfig *)config;
 - (void)dealloc;
 @end
 
 @implementation VCVideoDecoder
 
-- (VCVideoDecoder)initWithConfig:(tagVideoDecoderConfig *)a3
+- (VCVideoDecoder)initWithConfig:(tagVideoDecoderConfig *)config
 {
   v21 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_streamToken = a3->var0;
+    v4->_streamToken = config->var0;
     v4->_clientCount = 1;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -38,9 +38,9 @@
       }
     }
 
-    if (a3->var5 || a3->var6)
+    if (config->var5 || config->var6)
     {
-      VideoDecoder_Create(&v5->_videoPlayerHandle, a3);
+      VideoDecoder_Create(&v5->_videoPlayerHandle, config);
     }
 
     else
@@ -88,12 +88,12 @@ id __39__VCVideoDecoder_streamTokenDecoderMap__block_invoke()
   return result;
 }
 
-+ (id)decoderForStreamToken:(int64_t)a3 withConfig:(tagVideoDecoderConfig *)a4
++ (id)decoderForStreamToken:(int64_t)token withConfig:(tagVideoDecoderConfig *)config
 {
   v24 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&_lock);
   v6 = +[VCVideoDecoder streamTokenDecoderMap];
-  v7 = [v6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)}];
+  v7 = [v6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)}];
   if (v7)
   {
     v8 = v7;
@@ -113,7 +113,7 @@ id __39__VCVideoDecoder_streamTokenDecoderMap__block_invoke()
         v20 = 2048;
         v21 = v8;
         v22 = 1024;
-        v23 = a3;
+        tokenCopy2 = token;
         v11 = " [%s] %s:%d VCVideoDecoder %p exists for streamToken=%u";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, v11, &v14, 0x2Cu);
@@ -123,8 +123,8 @@ LABEL_8:
 
   else
   {
-    v8 = [[VCVideoDecoder alloc] initWithConfig:a4];
-    [v6 setObject:v8 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)}];
+    v8 = [[VCVideoDecoder alloc] initWithConfig:config];
+    [v6 setObject:v8 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)}];
 
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -141,7 +141,7 @@ LABEL_8:
         v20 = 2048;
         v21 = v8;
         v22 = 1024;
-        v23 = a3;
+        tokenCopy2 = token;
         v11 = " [%s] %s:%d VCVideoDecoder %p created for streamToken=%u";
         goto LABEL_8;
       }
@@ -152,12 +152,12 @@ LABEL_8:
   return v8;
 }
 
-+ (void)releaseVideoDecoderForStreamToken:(int64_t)a3
++ (void)releaseVideoDecoderForStreamToken:(int64_t)token
 {
   v32 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&_lock);
   v4 = +[VCVideoDecoder streamTokenDecoderMap];
-  v5 = [v4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)}];
+  v5 = [v4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)}];
   if (v5)
   {
     v6 = v5;
@@ -166,7 +166,7 @@ LABEL_8:
     *(v5 + 24) = v7;
     if ((v7 < 0) ^ v8 | (v7 == 0))
     {
-      [v4 removeObjectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a3)}];
+      [v4 removeObjectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", token)}];
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
         v9 = VRTraceErrorLogLevelToCSTR();
@@ -182,7 +182,7 @@ LABEL_8:
           v26 = 2048;
           v27 = v6;
           v28 = 1024;
-          v29 = a3;
+          tokenCopy2 = token;
           v11 = " [%s] %s:%d VCVideoDecoder %p released for streamToken=%u";
           v12 = v10;
           v13 = 44;
@@ -211,7 +211,7 @@ LABEL_13:
           v26 = 2048;
           v27 = v6;
           v28 = 1024;
-          v29 = a3;
+          tokenCopy2 = token;
           v30 = 1024;
           v31 = v19;
           v11 = " [%s] %s:%d VCVideoDecoder %p streamToken=%u clientCount=%d";
@@ -229,7 +229,7 @@ LABEL_13:
     v15 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCVideoDecoder *)v14 releaseVideoDecoderForStreamToken:a3, v15];
+      [(VCVideoDecoder *)v14 releaseVideoDecoderForStreamToken:token, v15];
     }
   }
 

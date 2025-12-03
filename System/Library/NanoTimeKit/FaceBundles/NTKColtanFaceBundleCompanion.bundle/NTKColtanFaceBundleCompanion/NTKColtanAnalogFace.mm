@@ -1,34 +1,34 @@
 @interface NTKColtanAnalogFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-+ (id)_richComplicationSlotsForDevice:(id)a3;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
++ (id)_richComplicationSlotsForDevice:(id)device;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)editOptionThatHidesAllComplications;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKColtanAnalogFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKColtanAnalogFace *)self _faceDescriptionKey];
-  v3 = [NTKColtanFaceBundle localizedStringForKey:v2 comment:@"Coltan face description"];
+  _faceDescriptionKey = [(NTKColtanAnalogFace *)self _faceDescriptionKey];
+  v3 = [NTKColtanFaceBundle localizedStringForKey:_faceDescriptionKey comment:@"Coltan face description"];
 
   return v3;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceCategory] == &dword_0 + 1;
-  v5 = [v3 supportsPDRCapability:3049862277];
+  deviceCopy = device;
+  v4 = [deviceCopy deviceCategory] == &dword_0 + 1;
+  v5 = [deviceCopy supportsPDRCapability:3049862277];
 
   return v4 || (v5 & 1) == 0;
 }
@@ -61,10 +61,10 @@
   return v12;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotTopLeft])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotTopLeft])
   {
     v5 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:NTKBundleComplicationNoiseBundleIdentifier appBundleIdentifier:NTKBundleComplicationNoiseAppBundleIdentifier complicationDescriptor:0];
 LABEL_5:
@@ -72,7 +72,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:NTKComplicationSlotBottomLeft])
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottomLeft])
   {
     v5 = [NTKComplication timerComplicationWithDuration:180.0];
     goto LABEL_5;
@@ -95,7 +95,7 @@ LABEL_7:
   return v2;
 }
 
-+ (id)_richComplicationSlotsForDevice:(id)a3
++ (id)_richComplicationSlotsForDevice:(id)device
 {
   v5[0] = NTKComplicationSlotTopLeft;
   v5[1] = NTKComplicationSlotTopRight;
@@ -106,20 +106,20 @@ LABEL_7:
   return v3;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 11)
+  slotCopy = slot;
+  if (mode == 11)
   {
-    v7 = [(NTKColtanAnalogFace *)self device];
-    v8 = [NTKColtanDensityEditOption optionWithDensity:0 forDevice:v7];
+    device = [(NTKColtanAnalogFace *)self device];
+    v8 = [NTKColtanDensityEditOption optionWithDensity:0 forDevice:device];
     goto LABEL_5;
   }
 
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v7 = [(NTKColtanAnalogFace *)self device];
-    v8 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v7];
+    device = [(NTKColtanAnalogFace *)self device];
+    v8 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:device];
 LABEL_5:
     v9 = v8;
 
@@ -132,37 +132,37 @@ LABEL_7:
   return v9;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKColtanAnalogFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKColtanAnalogFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKColtanAnalogFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKColtanAnalogFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKColtanAnalogFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKColtanAnalogFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKColtanAnalogFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKColtanAnalogFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKColtanAnalogFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKColtanAnalogFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKColtanAnalogFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKColtanAnalogFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = NTKAnalogDialShapeEditOption_ptr;
 LABEL_5:
@@ -172,7 +172,7 @@ LABEL_5:
     return v6;
   }
 
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = &off_10250;
     goto LABEL_5;
@@ -183,11 +183,11 @@ LABEL_5:
   return v6;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString();
   }
 
@@ -201,8 +201,8 @@ LABEL_5:
 
 - (id)editOptionThatHidesAllComplications
 {
-  v2 = [(NTKColtanAnalogFace *)self device];
-  v3 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v2];
+  device = [(NTKColtanAnalogFace *)self device];
+  v3 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:device];
 
   return v3;
 }

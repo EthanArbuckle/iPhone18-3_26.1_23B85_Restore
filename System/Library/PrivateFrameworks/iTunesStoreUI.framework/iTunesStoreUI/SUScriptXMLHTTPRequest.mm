@@ -1,37 +1,37 @@
 @interface SUScriptXMLHTTPRequest
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)responseText;
 - (NSString)statusText;
-- (SUScriptXMLHTTPRequest)initWithDelegate:(id)a3;
+- (SUScriptXMLHTTPRequest)initWithDelegate:(id)delegate;
 - (SUScriptXMLHTTPRequestDelegate)delegate;
-- (id)_scriptObjectForFunctionName:(id)a3;
+- (id)_scriptObjectForFunctionName:(id)name;
 - (id)getAllResponseHeaders;
-- (id)getResponseHeader:(id)a3;
+- (id)getResponseHeader:(id)header;
 - (id)scriptAttributeKeys;
 - (unint64_t)readyState;
 - (unint64_t)status;
 - (unint64_t)timeout;
-- (void)_callFunctionWithName:(id)a3 arguments:(id)a4;
-- (void)_setScriptObject:(id)a3 forFunctionName:(id)a4;
+- (void)_callFunctionWithName:(id)name arguments:(id)arguments;
+- (void)_setScriptObject:(id)object forFunctionName:(id)name;
 - (void)abort;
 - (void)dealloc;
-- (void)openWithHTTPMethod:(id)a3 URL:(id)a4 isAsync:(id)a5 username:(id)a6 password:(id)a7;
-- (void)sendWithBodyData:(id)a3;
-- (void)setTimeout:(unint64_t)a3;
+- (void)openWithHTTPMethod:(id)method URL:(id)l isAsync:(id)async username:(id)username password:(id)password;
+- (void)sendWithBodyData:(id)data;
+- (void)setTimeout:(unint64_t)timeout;
 @end
 
 @implementation SUScriptXMLHTTPRequest
 
-- (SUScriptXMLHTTPRequest)initWithDelegate:(id)a3
+- (SUScriptXMLHTTPRequest)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(SUScriptObject *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -74,7 +74,7 @@
 
 - (id)getAllResponseHeaders
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   [(SUScriptObject *)self lock];
   v13[0] = 0;
   v13[1] = v13;
@@ -86,7 +86,7 @@
   v9 = __47__SUScriptXMLHTTPRequest_getAllResponseHeaders__block_invoke;
   v10 = &unk_1E8165010;
   v12 = v13;
-  v5 = v3;
+  v5 = string;
   v11 = v5;
   [(NSDictionary *)responseHeaders enumerateKeysAndObjectsUsingBlock:&v7];
   [(SUScriptObject *)self unlock:v7];
@@ -111,14 +111,14 @@ void __47__SUScriptXMLHTTPRequest_getAllResponseHeaders__block_invoke(uint64_t a
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)getResponseHeader:(id)a3
+- (id)getResponseHeader:(id)header
 {
-  v4 = a3;
+  headerCopy = header;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUScriptObject *)self lock];
-    v5 = [(NSDictionary *)self->_responseHeaders objectForKey:v4];
+    v5 = [(NSDictionary *)self->_responseHeaders objectForKey:headerCopy];
     v6 = [v5 copy];
 
     [(SUScriptObject *)self unlock];
@@ -133,33 +133,33 @@ void __47__SUScriptXMLHTTPRequest_getAllResponseHeaders__block_invoke(uint64_t a
   return v6;
 }
 
-- (void)openWithHTTPMethod:(id)a3 URL:(id)a4 isAsync:(id)a5 username:(id)a6 password:(id)a7
+- (void)openWithHTTPMethod:(id)method URL:(id)l isAsync:(id)async username:(id)username password:(id)password
 {
-  v9 = a3;
-  v10 = a4;
+  methodCopy = method;
+  lCopy = l;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v9 = 0;
+    methodCopy = 0;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass())))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (!methodCopy || (objc_opt_class(), (objc_opt_isKindOfClass())))
   {
-    v18 = [v9 uppercaseString];
+    uppercaseString = [methodCopy uppercaseString];
 
-    if (!v18 || ([v18 isEqualToString:@"GET"] & 1) != 0 || (objc_msgSend(v18, "isEqualToString:", @"POST") & 1) != 0)
+    if (!uppercaseString || ([uppercaseString isEqualToString:@"GET"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"POST") & 1) != 0)
     {
-      v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v10];
+      v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
       v12 = [objc_alloc(MEMORY[0x1E69D4970]) initWithURL:v11];
       requestProperties = self->_requestProperties;
       self->_requestProperties = v12;
 
       [(SSMutableURLRequestProperties *)self->_requestProperties setITunesStoreRequest:0];
-      if (v18)
+      if (uppercaseString)
       {
-        [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPMethod:v18];
+        [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPMethod:uppercaseString];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -183,18 +183,18 @@ void __47__SUScriptXMLHTTPRequest_getAllResponseHeaders__block_invoke(uint64_t a
   else
   {
     [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
-    v18 = v9;
+    uppercaseString = methodCopy;
   }
 }
 
-- (void)sendWithBodyData:(id)a3
+- (void)sendWithBodyData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
-    v4 = 0;
+    dataCopy = 0;
   }
 
   [(SUScriptObject *)self lock];
@@ -212,7 +212,7 @@ void __47__SUScriptXMLHTTPRequest_getAllResponseHeaders__block_invoke(uint64_t a
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v4 dataUsingEncoding:4];
+        v7 = [dataCopy dataUsingEncoding:4];
         [(SSMutableURLRequestProperties *)self->_requestProperties setHTTPBody:v7];
       }
 
@@ -228,8 +228,8 @@ void __47__SUScriptXMLHTTPRequest_getAllResponseHeaders__block_invoke(uint64_t a
       v15 = &unk_1E81659B8;
       objc_copyWeak(&v16, &location);
       [(SUXMLHTTPRequestOperation *)v10 setOutputBlock:&v12];
-      v11 = [MEMORY[0x1E69E4798] mainQueue];
-      [v11 addOperation:self->_operation];
+      mainQueue = [MEMORY[0x1E69E4798] mainQueue];
+      [mainQueue addOperation:self->_operation];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -314,10 +314,10 @@ void __43__SUScriptXMLHTTPRequest_sendWithBodyData___block_invoke(uint64_t a1, u
   return v3;
 }
 
-- (void)setTimeout:(unint64_t)a3
+- (void)setTimeout:(unint64_t)timeout
 {
   [(SUScriptObject *)self lock];
-  self->_timeout = a3;
+  self->_timeout = timeout;
 
   [(SUScriptObject *)self unlock];
 }
@@ -347,52 +347,52 @@ void __43__SUScriptXMLHTTPRequest_sendWithBodyData___block_invoke(uint64_t a1, u
   return timeout;
 }
 
-- (void)_callFunctionWithName:(id)a3 arguments:(id)a4
+- (void)_callFunctionWithName:(id)name arguments:(id)arguments
 {
-  v6 = a4;
-  v7 = a3;
+  argumentsCopy = arguments;
+  nameCopy = name;
   [(SUScriptObject *)self lock];
-  v8 = [(NSMutableDictionary *)self->_functions objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_functions objectForKey:nameCopy];
 
   [(SUScriptObject *)self unlock];
-  [v8 callWithArguments:v6];
+  [v8 callWithArguments:argumentsCopy];
 }
 
-- (id)_scriptObjectForFunctionName:(id)a3
+- (id)_scriptObjectForFunctionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [(SUScriptObject *)self lock];
-  v5 = [(NSMutableDictionary *)self->_functions objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_functions objectForKey:nameCopy];
 
-  v6 = [v5 scriptObject];
+  scriptObject = [v5 scriptObject];
   [(SUScriptObject *)self unlock];
 
-  return v6;
+  return scriptObject;
 }
 
-- (void)_setScriptObject:(id)a3 forFunctionName:(id)a4
+- (void)_setScriptObject:(id)object forFunctionName:(id)name
 {
-  v6 = a3;
-  v11 = a4;
+  objectCopy = object;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
 
     [(SUScriptObject *)self lock];
 LABEL_4:
-    v6 = [(NSMutableDictionary *)self->_functions objectForKey:v11];
-    [v6 setThisObject:0];
-    [(NSMutableDictionary *)self->_functions removeObjectForKey:v11];
+    objectCopy = [(NSMutableDictionary *)self->_functions objectForKey:nameCopy];
+    [objectCopy setThisObject:0];
+    [(NSMutableDictionary *)self->_functions removeObjectForKey:nameCopy];
     goto LABEL_5;
   }
 
   [(SUScriptObject *)self lock];
-  if (!v6)
+  if (!objectCopy)
   {
     goto LABEL_4;
   }
 
-  v7 = [[SUScriptFunction alloc] initWithScriptObject:v6];
+  v7 = [[SUScriptFunction alloc] initWithScriptObject:objectCopy];
   [(SUScriptFunction *)v7 setThisObject:self];
   functions = self->_functions;
   if (!functions)
@@ -404,34 +404,34 @@ LABEL_4:
     functions = self->_functions;
   }
 
-  [(NSMutableDictionary *)functions setObject:v7 forKey:v11];
+  [(NSMutableDictionary *)functions setObject:v7 forKey:nameCopy];
 
 LABEL_5:
   [(SUScriptObject *)self unlock];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
-  v4 = a3;
-  v5 = [__KeyMapping_26 objectForKey:v4];
+  nameCopy = name;
+  v5 = [__KeyMapping_26 objectForKey:nameCopy];
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptXMLHTTPRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForKeyName_, nameCopy);
   }
 
   return v5;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  v5 = SUWebScriptNameForSelector2(a3, &__SelectorMapping_21, 6);
+  v5 = SUWebScriptNameForSelector2(selector, &__SelectorMapping_21, 6);
   if (!v5)
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SUScriptXMLHTTPRequest;
-    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, a3);
+    v5 = objc_msgSendSuper2(&v7, sel_webScriptNameForSelector_, selector);
   }
 
   return v5;
@@ -441,16 +441,16 @@ LABEL_5:
 {
   v5.receiver = self;
   v5.super_class = SUScriptXMLHTTPRequest;
-  v2 = [(SUScriptObject *)&v5 scriptAttributeKeys];
-  v3 = [__KeyMapping_26 allKeys];
-  [v2 addObjectsFromArray:v3];
+  scriptAttributeKeys = [(SUScriptObject *)&v5 scriptAttributeKeys];
+  allKeys = [__KeyMapping_26 allKeys];
+  [scriptAttributeKeys addObjectsFromArray:allKeys];
 
-  return v2;
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_21 = sel_abort;
     *algn_1EBF3AC98 = @"abort";

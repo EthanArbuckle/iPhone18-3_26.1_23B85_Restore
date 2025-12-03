@@ -1,21 +1,21 @@
 @interface VSValueTypeProperty
-+ (id)valueTypePropertyWithName:(id)a3 kind:(unint64_t)a4 allowedClasses:(id)a5 initialValue:(id)a6;
++ (id)valueTypePropertyWithName:(id)name kind:(unint64_t)kind allowedClasses:(id)classes initialValue:(id)value;
 @end
 
 @implementation VSValueTypeProperty
 
-+ (id)valueTypePropertyWithName:(id)a3 kind:(unint64_t)a4 allowedClasses:(id)a5 initialValue:(id)a6
++ (id)valueTypePropertyWithName:(id)name kind:(unint64_t)kind allowedClasses:(id)classes initialValue:(id)value
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = objc_alloc_init(a1);
-  [v13 setName:v12];
+  valueCopy = value;
+  classesCopy = classes;
+  nameCopy = name;
+  v13 = objc_alloc_init(self);
+  [v13 setName:nameCopy];
 
-  [v13 setKind:a4];
-  [v13 setAllowedClasses:v11];
+  [v13 setKind:kind];
+  [v13 setAllowedClasses:classesCopy];
 
-  [v13 setInitialValue:v10];
+  [v13 setInitialValue:valueCopy];
 
   return v13;
 }

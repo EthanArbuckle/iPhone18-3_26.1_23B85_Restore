@@ -1,11 +1,11 @@
 @interface ReminderDragProvider
-+ (id)itemProviderWriterFor:(id)a3;
++ (id)itemProviderWriterFor:(id)for;
 - (_TtC21CalendarUIKitInternal20ReminderDragProvider)init;
 @end
 
 @implementation ReminderDragProvider
 
-+ (id)itemProviderWriterFor:(id)a3
++ (id)itemProviderWriterFor:(id)for
 {
   swift_getObjCClassMetadata();
   v4 = sub_2429B7000();
@@ -16,8 +16,8 @@
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&unk_27ECD7010, &unk_2429B8350) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v16 - v10;
-  v12 = a3;
-  sub_2429A1DB0(v12, v11);
+  forCopy = for;
+  sub_2429A1DB0(forCopy, v11);
   if ((*(v5 + 48))(v11, 1, v4) == 1)
   {
 

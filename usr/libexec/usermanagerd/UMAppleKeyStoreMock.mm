@@ -1,18 +1,18 @@
 @interface UMAppleKeyStoreMock
-- (BOOL)bootstrapVolumeWithMountPoint:(id)a3 user:(unsigned int)a4 error:(id *)a5;
-- (BOOL)changeSecretrForIdentityWithUUID:(id)a3 oldPasscode:(id)a4 newPasscode:(id)a5 existingSession:(unsigned int)a6 isACMCredential:(BOOL)a7 error:(id *)a8;
-- (BOOL)createIdentityWithUUID:(id)a3 passcode:(id)a4 existingSession:(unsigned int)a5 existingSessionPasscode:(id)a6 isACMCredential:(BOOL)a7 error:(id *)a8;
-- (BOOL)deleteIdentity:(id)a3 error:(id *)a4;
-- (BOOL)loadIdentity:(id)a3 intoSession:(unsigned int)a4 error:(id *)a5;
-- (BOOL)loginIdentity:(id)a3 intoSession:(unsigned int)a4 passcode:(id)a5 isACMCredential:(BOOL)a6 error:(id *)a7;
-- (BOOL)unloadIdentityFromSession:(unsigned int)a3 error:(id *)a4;
-- (BOOL)unlockIdentity:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6;
-- (BOOL)unlockIdentityInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6;
-- (BOOL)unmapVolume:(id)a3 error:(id *)a4;
-- (BOOL)verifyIdentityPasswordInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6;
+- (BOOL)bootstrapVolumeWithMountPoint:(id)point user:(unsigned int)user error:(id *)error;
+- (BOOL)changeSecretrForIdentityWithUUID:(id)d oldPasscode:(id)passcode newPasscode:(id)newPasscode existingSession:(unsigned int)session isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)createIdentityWithUUID:(id)d passcode:(id)passcode existingSession:(unsigned int)session existingSessionPasscode:(id)sessionPasscode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)deleteIdentity:(id)identity error:(id *)error;
+- (BOOL)loadIdentity:(id)identity intoSession:(unsigned int)session error:(id *)error;
+- (BOOL)loginIdentity:(id)identity intoSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)unloadIdentityFromSession:(unsigned int)session error:(id *)error;
+- (BOOL)unlockIdentity:(unsigned int)identity passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)unlockIdentityInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
+- (BOOL)unmapVolume:(id)volume error:(id *)error;
+- (BOOL)verifyIdentityPasswordInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error;
 - (UMAppleKeyStoreMock)init;
-- (id)dataUnwrappingDataWithDeviceClassF:(id)a3 error:(id *)a4;
-- (id)dataWrappingDataWithDeviceClassF:(id)a3 error:(id *)a4;
+- (id)dataUnwrappingDataWithDeviceClassF:(id)f error:(id *)error;
+- (id)dataWrappingDataWithDeviceClassF:(id)f error:(id *)error;
 @end
 
 @implementation UMAppleKeyStoreMock
@@ -47,12 +47,12 @@
   return v3;
 }
 
-- (BOOL)bootstrapVolumeWithMountPoint:(id)a3 user:(unsigned int)a4 error:(id *)a5
+- (BOOL)bootstrapVolumeWithMountPoint:(id)point user:(unsigned int)user error:(id *)error
 {
-  v7 = a3;
-  if (a5)
+  pointCopy = point;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   if ([(UMAppleKeyStoreMock *)self ignoreIdentityMethods])
@@ -68,11 +68,11 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     v9 = self->_bootstrapVolumeErrorOverride;
     v8 = 0;
-    *a5 = v9;
+    *error = v9;
   }
 
   else
@@ -85,12 +85,12 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)unmapVolume:(id)a3 error:(id *)a4
+- (BOOL)unmapVolume:(id)volume error:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  volumeCopy = volume;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if ([(UMAppleKeyStoreMock *)self ignoreIdentityMethods])
@@ -102,27 +102,27 @@ LABEL_10:
   {
     if (self)
     {
-      [(NSMutableDictionary *)self->_mappedVolumes setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_mappedVolumes setObject:0 forKeyedSubscript:volumeCopy];
       mappedVolumePersonas = self->_mappedVolumePersonas;
     }
 
     else
     {
-      sub_100089A38(v6);
+      sub_100089A38(volumeCopy);
       mappedVolumePersonas = 0;
     }
 
-    [(NSMutableDictionary *)mappedVolumePersonas setObject:0 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)mappedVolumePersonas setObject:0 forKeyedSubscript:volumeCopy];
 LABEL_12:
     v8 = 1;
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
     v7 = self->_unmapVolumeErrorOverride;
     v8 = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
   else
@@ -135,17 +135,17 @@ LABEL_13:
   return v8;
 }
 
-- (id)dataWrappingDataWithDeviceClassF:(id)a3 error:(id *)a4
+- (id)dataWrappingDataWithDeviceClassF:(id)f error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  fCopy = f;
+  v7 = fCopy;
   if (self && self->_dataWrappingDataErrorOverride)
   {
-    if (a4)
+    if (error)
     {
       v8 = self->_dataWrappingDataErrorOverride;
       v9 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -156,9 +156,9 @@ LABEL_13:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     if (self && self->_dataWrappingDataReturnOverride)
@@ -168,7 +168,7 @@ LABEL_13:
 
     else
     {
-      v10 = sub_100088E34(v6);
+      v10 = sub_100088E34(fCopy);
     }
 
     v9 = v10;
@@ -177,17 +177,17 @@ LABEL_13:
   return v9;
 }
 
-- (id)dataUnwrappingDataWithDeviceClassF:(id)a3 error:(id *)a4
+- (id)dataUnwrappingDataWithDeviceClassF:(id)f error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  fCopy = f;
+  v7 = fCopy;
   if (self && self->_dataUnwrappingDataErrorOverride)
   {
-    if (a4)
+    if (error)
     {
       v8 = self->_dataUnwrappingDataErrorOverride;
       v9 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -198,9 +198,9 @@ LABEL_13:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
     if (self && self->_dataUnwrappingDataReturnOverride)
@@ -210,7 +210,7 @@ LABEL_13:
 
     else
     {
-      v10 = sub_100088EAC(v6);
+      v10 = sub_100088EAC(fCopy);
     }
 
     v9 = v10;
@@ -219,17 +219,17 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)createIdentityWithUUID:(id)a3 passcode:(id)a4 existingSession:(unsigned int)a5 existingSessionPasscode:(id)a6 isACMCredential:(BOOL)a7 error:(id *)a8
+- (BOOL)createIdentityWithUUID:(id)d passcode:(id)passcode existingSession:(unsigned int)session existingSessionPasscode:(id)sessionPasscode isACMCredential:(BOOL)credential error:(id *)error
 {
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     createIdentityWithUUIDErrorOverride = self->_createIdentityWithUUIDErrorOverride;
-    if (!a8)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -238,7 +238,7 @@ LABEL_13:
   else
   {
     createIdentityWithUUIDErrorOverride = 0;
-    if (!a8)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -251,23 +251,23 @@ LABEL_13:
       self = self->_createIdentityWithUUIDErrorOverride;
     }
 
-    *a8 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)deleteIdentity:(id)a3 error:(id *)a4
+- (BOOL)deleteIdentity:(id)identity error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     deleteIdentityErrorOverride = self->_deleteIdentityErrorOverride;
-    if (!a4)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -276,7 +276,7 @@ LABEL_13:
   else
   {
     deleteIdentityErrorOverride = 0;
-    if (!a4)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -289,23 +289,23 @@ LABEL_13:
       self = self->_deleteIdentityErrorOverride;
     }
 
-    *a4 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)changeSecretrForIdentityWithUUID:(id)a3 oldPasscode:(id)a4 newPasscode:(id)a5 existingSession:(unsigned int)a6 isACMCredential:(BOOL)a7 error:(id *)a8
+- (BOOL)changeSecretrForIdentityWithUUID:(id)d oldPasscode:(id)passcode newPasscode:(id)newPasscode existingSession:(unsigned int)session isACMCredential:(BOOL)credential error:(id *)error
 {
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     changeSecretrForIdentityErrorOverride = self->_changeSecretrForIdentityErrorOverride;
-    if (!a8)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -314,7 +314,7 @@ LABEL_13:
   else
   {
     changeSecretrForIdentityErrorOverride = 0;
-    if (!a8)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -327,23 +327,23 @@ LABEL_13:
       self = self->_changeSecretrForIdentityErrorOverride;
     }
 
-    *a8 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)loadIdentity:(id)a3 intoSession:(unsigned int)a4 error:(id *)a5
+- (BOOL)loadIdentity:(id)identity intoSession:(unsigned int)session error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     loadIdentityErrorOverride = self->_loadIdentityErrorOverride;
-    if (!a5)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -352,7 +352,7 @@ LABEL_13:
   else
   {
     loadIdentityErrorOverride = 0;
-    if (!a5)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -365,23 +365,23 @@ LABEL_13:
       self = self->_loadIdentityErrorOverride;
     }
 
-    *a5 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)unloadIdentityFromSession:(unsigned int)a3 error:(id *)a4
+- (BOOL)unloadIdentityFromSession:(unsigned int)session error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     unloadIdentityErrorOverride = self->_unloadIdentityErrorOverride;
-    if (!a4)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -390,7 +390,7 @@ LABEL_13:
   else
   {
     unloadIdentityErrorOverride = 0;
-    if (!a4)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -403,23 +403,23 @@ LABEL_13:
       self = self->_unloadIdentityErrorOverride;
     }
 
-    *a4 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)unlockIdentity:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6
+- (BOOL)unlockIdentity:(unsigned int)identity passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     unlockIdentityErrorOverride = self->_unlockIdentityErrorOverride;
-    if (!a6)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -428,7 +428,7 @@ LABEL_13:
   else
   {
     unlockIdentityErrorOverride = 0;
-    if (!a6)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -441,23 +441,23 @@ LABEL_13:
       self = self->_unlockIdentityErrorOverride;
     }
 
-    *a6 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)unlockIdentityInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6
+- (BOOL)unlockIdentityInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     unlockIdentityErrorOverride = self->_unlockIdentityErrorOverride;
-    if (!a6)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -466,7 +466,7 @@ LABEL_13:
   else
   {
     unlockIdentityErrorOverride = 0;
-    if (!a6)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -479,23 +479,23 @@ LABEL_13:
       self = self->_unlockIdentityErrorOverride;
     }
 
-    *a6 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)verifyIdentityPasswordInSession:(unsigned int)a3 passcode:(id)a4 isACMCredential:(BOOL)a5 error:(id *)a6
+- (BOOL)verifyIdentityPasswordInSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     verifyIdentityPasswordErrorOverride = self->_verifyIdentityPasswordErrorOverride;
-    if (!a6)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -504,7 +504,7 @@ LABEL_13:
   else
   {
     verifyIdentityPasswordErrorOverride = 0;
-    if (!a6)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -517,23 +517,23 @@ LABEL_13:
       self = self->_verifyIdentityPasswordErrorOverride;
     }
 
-    *a6 = self;
+    *error = self;
   }
 
   return sub_100017D50();
 }
 
-- (BOOL)loginIdentity:(id)a3 intoSession:(unsigned int)a4 passcode:(id)a5 isACMCredential:(BOOL)a6 error:(id *)a7
+- (BOOL)loginIdentity:(id)identity intoSession:(unsigned int)session passcode:(id)passcode isACMCredential:(BOOL)credential error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   if (self)
   {
     loginIdentityErrorOverride = self->_loginIdentityErrorOverride;
-    if (!a7)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -542,7 +542,7 @@ LABEL_13:
   else
   {
     loginIdentityErrorOverride = 0;
-    if (!a7)
+    if (!error)
     {
       return sub_100017D50();
     }
@@ -555,7 +555,7 @@ LABEL_13:
       self = self->_loginIdentityErrorOverride;
     }
 
-    *a7 = self;
+    *error = self;
   }
 
   return sub_100017D50();

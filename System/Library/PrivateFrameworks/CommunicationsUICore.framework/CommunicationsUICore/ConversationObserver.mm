@@ -1,16 +1,16 @@
 @interface ConversationObserver
 - (_TtC20CommunicationsUICore20ConversationObserver)init;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation;
 @end
 
 @implementation ConversationObserver
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1C2F0A2D8(v7);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_1C2F0A2D8(conversationCopy);
 }
 
 - (_TtC20CommunicationsUICore20ConversationObserver)init

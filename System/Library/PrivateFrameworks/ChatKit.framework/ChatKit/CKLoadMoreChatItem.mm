@@ -1,15 +1,15 @@
 @interface CKLoadMoreChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)transcriptTextAlignmentInsets;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 @end
 
 @implementation CKLoadMoreChatItem
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  v7 = [CKUIBehavior sharedBehaviors:a3];
+  v7 = [CKUIBehavior sharedBehaviors:environment];
   [v7 topTranscriptSpace];
   v9 = v8;
 
@@ -45,20 +45,20 @@
   return result;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  if (a4)
+  if (insets)
   {
-    a3 = *MEMORY[0x1E69DDCE0];
-    *&a3.height = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = *&a3.height;
+    fits = *MEMORY[0x1E69DDCE0];
+    *&fits.height = *(MEMORY[0x1E69DDCE0] + 16);
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = *&fits.height;
   }
 
-  v4 = [CKPrintController sharedInstance:a3.width];
-  v5 = [v4 isPrinting];
+  v4 = [CKPrintController sharedInstance:fits.width];
+  isPrinting = [v4 isPrinting];
 
-  if (v5)
+  if (isPrinting)
   {
     v6 = *MEMORY[0x1E695F060];
     v7 = *(MEMORY[0x1E695F060] + 8);

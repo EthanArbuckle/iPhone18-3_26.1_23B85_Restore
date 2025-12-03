@@ -1,23 +1,23 @@
 @interface PLAssetsdServiceProxyFactory
-- (PLAssetsdServiceProxyFactory)initWithQueue:(id)a3 proxyCreating:(id)a4 proxyGetter:(SEL)a5;
-- (id)_inq_createServiceProxyWithCallStackSymbols:(id)a3 errorHandler:(id)a4;
+- (PLAssetsdServiceProxyFactory)initWithQueue:(id)queue proxyCreating:(id)creating proxyGetter:(SEL)getter;
+- (id)_inq_createServiceProxyWithCallStackSymbols:(id)symbols errorHandler:(id)handler;
 - (id)_unboostingRemoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)serviceProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_logReplyError:(id)a3 withCallStackSymbols:(id)a4;
-- (void)addBarrierBlock:(id)a3;
-- (void)remoteObjectProxyWithErrorHandler:(id)a3 handler:(id)a4;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)serviceProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_logReplyError:(id)error withCallStackSymbols:(id)symbols;
+- (void)addBarrierBlock:(id)block;
+- (void)remoteObjectProxyWithErrorHandler:(id)handler handler:(id)a4;
 @end
 
 @implementation PLAssetsdServiceProxyFactory
 
-- (void)addBarrierBlock:(id)a3
+- (void)addBarrierBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (objc_opt_respondsToSelector())
   {
-    [(PLXPCProxyCreating *)self->_proxyCreating addBarrierBlock:v4];
+    [(PLXPCProxyCreating *)self->_proxyCreating addBarrierBlock:blockCopy];
   }
 
   else
@@ -34,9 +34,9 @@
 - (id)_unboostingRemoteObjectProxy
 {
   v2 = [(PLAssetsdServiceProxyFactory *)self serviceProxyWithErrorHandler:&__block_literal_global_5751];
-  v3 = [v2 _unboostingRemoteObjectProxy];
+  _unboostingRemoteObjectProxy = [v2 _unboostingRemoteObjectProxy];
 
-  return v3;
+  return _unboostingRemoteObjectProxy;
 }
 
 void __60__PLAssetsdServiceProxyFactory__unboostingRemoteObjectProxy__block_invoke(uint64_t a1, void *a2)
@@ -52,27 +52,27 @@ void __60__PLAssetsdServiceProxyFactory__unboostingRemoteObjectProxy__block_invo
   }
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAssetsdServiceProxyFactory *)self serviceProxyWithErrorHandler:v4];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(PLAssetsdServiceProxyFactory *)self serviceProxyWithErrorHandler:handlerCopy];
+  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAssetsdServiceProxyFactory *)self serviceProxyWithErrorHandler:v4];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(PLAssetsdServiceProxyFactory *)self serviceProxyWithErrorHandler:handlerCopy];
+  v6 = [v5 remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)remoteObjectProxyWithErrorHandler:(id)a3 handler:(id)a4
+- (void)remoteObjectProxyWithErrorHandler:(id)handler handler:(id)a4
 {
-  v6 = a3;
+  handlerCopy = handler;
   v7 = a4;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -80,10 +80,10 @@ void __60__PLAssetsdServiceProxyFactory__unboostingRemoteObjectProxy__block_invo
   block[2] = __74__PLAssetsdServiceProxyFactory_remoteObjectProxyWithErrorHandler_handler___block_invoke;
   block[3] = &unk_1E7930A20;
   block[4] = self;
-  v12 = v6;
+  v12 = handlerCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = handlerCopy;
   dispatch_sync(queue, block);
 }
 
@@ -136,9 +136,9 @@ void __74__PLAssetsdServiceProxyFactory_remoteObjectProxyWithErrorHandler_handle
   }
 }
 
-- (id)serviceProxyWithErrorHandler:(id)a3
+- (id)serviceProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -150,10 +150,10 @@ void __74__PLAssetsdServiceProxyFactory_remoteObjectProxyWithErrorHandler_handle
   block[1] = 3221225472;
   block[2] = __61__PLAssetsdServiceProxyFactory_serviceProxyWithErrorHandler___block_invoke;
   block[3] = &unk_1E79309D0;
-  v10 = v4;
+  v10 = handlerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -173,14 +173,14 @@ void __61__PLAssetsdServiceProxyFactory_serviceProxyWithErrorHandler___block_inv
   }
 }
 
-- (void)_logReplyError:(id)a3 withCallStackSymbols:(id)a4
+- (void)_logReplyError:(id)error withCallStackSymbols:(id)symbols
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  symbolsCopy = symbols;
   v8 = PLGatekeeperXPCGetLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_FAULT);
-  if (v7)
+  if (symbolsCopy)
   {
     if (v9)
     {
@@ -195,11 +195,11 @@ void __61__PLAssetsdServiceProxyFactory_serviceProxyWithErrorHandler___block_inv
       }
 
       v12 = NSStringFromSelector(proxyGetterSelector);
-      v13 = [v7 componentsJoinedByString:@"\n"];
+      v13 = [symbolsCopy componentsJoinedByString:@"\n"];
       v14 = 138543874;
       v15 = v12;
       v16 = 2112;
-      v17 = v6;
+      v17 = errorCopy;
       v18 = 2112;
       v19 = v13;
       _os_log_impl(&dword_1AA9BD000, v8, OS_LOG_TYPE_FAULT, "Unable to get XPC service from assetsd %{public}@: %@, callstack:\n%@", &v14, 0x20u);
@@ -224,17 +224,17 @@ LABEL_12:
     v14 = 138543618;
     v15 = v12;
     v16 = 2112;
-    v17 = v6;
+    v17 = errorCopy;
     _os_log_impl(&dword_1AA9BD000, v8, OS_LOG_TYPE_FAULT, "Unable to get XPC service from assetsd %{public}@: %@@", &v14, 0x16u);
     goto LABEL_12;
   }
 }
 
-- (id)_inq_createServiceProxyWithCallStackSymbols:(id)a3 errorHandler:(id)a4
+- (id)_inq_createServiceProxyWithCallStackSymbols:(id)symbols errorHandler:(id)handler
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  symbolsCopy = symbols;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v47 = 0u;
   v45 = 0u;
@@ -313,7 +313,7 @@ LABEL_12:
     v41[3] = &unk_1E79309A8;
     v41[4] = self;
     v43 = &v54;
-    v42 = v6;
+    v42 = symbolsCopy;
     v22 = MEMORY[0x1AC5925C0](v41);
     [v12 performSelector:v21 withObject:v22];
   }
@@ -321,8 +321,8 @@ LABEL_12:
   v23 = *(*(&v54 + 1) + 40);
   if (v23)
   {
-    v24 = [v23 domain];
-    v25 = [v24 isEqualToString:@"com.apple.photos.error"];
+    domain = [v23 domain];
+    v25 = [domain isEqualToString:@"com.apple.photos.error"];
 
     if (v25)
     {
@@ -356,7 +356,7 @@ LABEL_12:
       v26 = [v32 errorWithDomain:@"com.apple.photos.error" code:41002 userInfo:v35];
     }
 
-    v7[2](v7, v26);
+    handlerCopy[2](handlerCopy, v26);
 
     v27 = 0;
   }
@@ -435,29 +435,29 @@ void __89__PLAssetsdServiceProxyFactory__inq_createServiceProxyWithCallStackSymb
   }
 }
 
-- (PLAssetsdServiceProxyFactory)initWithQueue:(id)a3 proxyCreating:(id)a4 proxyGetter:(SEL)a5
+- (PLAssetsdServiceProxyFactory)initWithQueue:(id)queue proxyCreating:(id)creating proxyGetter:(SEL)getter
 {
-  v9 = a3;
-  v10 = a4;
+  queueCopy = queue;
+  creatingCopy = creating;
   v15.receiver = self;
   v15.super_class = PLAssetsdServiceProxyFactory;
   v11 = [(PLAssetsdServiceProxyFactory *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_queue, a3);
-    if (a5)
+    objc_storeStrong(&v11->_queue, queue);
+    if (getter)
     {
-      v13 = a5;
+      getterCopy = getter;
     }
 
     else
     {
-      v13 = 0;
+      getterCopy = 0;
     }
 
-    v12->_proxyGetterSelector = v13;
-    objc_storeStrong(&v12->_proxyCreating, a4);
+    v12->_proxyGetterSelector = getterCopy;
+    objc_storeStrong(&v12->_proxyCreating, creating);
   }
 
   return v12;

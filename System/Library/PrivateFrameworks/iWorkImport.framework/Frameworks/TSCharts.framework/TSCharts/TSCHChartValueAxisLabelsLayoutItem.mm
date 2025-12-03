@@ -1,34 +1,34 @@
 @interface TSCHChartValueAxisLabelsLayoutItem
-- (CGPoint)axisAnchorForPosition:(int)a3 degrees:(float)a4 inLayoutSize:(CGSize)a5 unrotatedSize:(CGSize)a6 unitSpaceValue:(double)a7;
-- (CGPoint)labelAnchorForPosition:(int)a3 degrees:(float)a4;
-- (TSCHChartValueAxisLabelsLayoutItem)initWithParent:(id)a3;
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4;
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4;
-- (unint64_t)numberOfLabelsForAxis:(id)a3;
+- (CGPoint)axisAnchorForPosition:(int)position degrees:(float)degrees inLayoutSize:(CGSize)size unrotatedSize:(CGSize)unrotatedSize unitSpaceValue:(double)value;
+- (CGPoint)labelAnchorForPosition:(int)position degrees:(float)degrees;
+- (TSCHChartValueAxisLabelsLayoutItem)initWithParent:(id)parent;
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index;
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index;
+- (unint64_t)numberOfLabelsForAxis:(id)axis;
 @end
 
 @implementation TSCHChartValueAxisLabelsLayoutItem
 
-- (TSCHChartValueAxisLabelsLayoutItem)initWithParent:(id)a3
+- (TSCHChartValueAxisLabelsLayoutItem)initWithParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = TSCHChartValueAxisLabelsLayoutItem;
-  return [(TSCHChartLayoutItem *)&v4 initWithParent:a3];
+  return [(TSCHChartLayoutItem *)&v4 initWithParent:parent];
 }
 
-- (unint64_t)numberOfLabelsForAxis:(id)a3
+- (unint64_t)numberOfLabelsForAxis:(id)axis
 {
-  v6 = objc_msgSend_majorGridLocations(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_majorGridLocations(axis, a2, v3, v4, v5);
   v11 = objc_msgSend_count(v6, v7, v8, v9, v10);
 
   return v11;
 }
 
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_majorGridLocations(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, a4);
+  axisCopy = axis;
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, index);
 
   if (v15)
   {
@@ -40,29 +40,29 @@
     v20 = NAN;
   }
 
-  objc_msgSend_unitSpaceValueForDataSpaceValue_(v5, v16, v20, v18, v19);
+  objc_msgSend_unitSpaceValueForDataSpaceValue_(axisCopy, v16, v20, v18, v19);
   v22 = v21;
 
   return v22;
 }
 
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_majorGridLocations(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, a4);
+  axisCopy = axis;
+  v10 = objc_msgSend_majorGridLocations(axisCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(v10, v11, v12, v13, v14, index);
 
-  v20 = objc_msgSend_formattedStringForAxisValue_(v5, v16, v17, v18, v19, v15);
+  v20 = objc_msgSend_formattedStringForAxisValue_(axisCopy, v16, v17, v18, v19, v15);
 
   return v20;
 }
 
-- (CGPoint)axisAnchorForPosition:(int)a3 degrees:(float)a4 inLayoutSize:(CGSize)a5 unrotatedSize:(CGSize)a6 unitSpaceValue:(double)a7
+- (CGPoint)axisAnchorForPosition:(int)position degrees:(float)degrees inLayoutSize:(CGSize)size unrotatedSize:(CGSize)unrotatedSize unitSpaceValue:(double)value
 {
-  height = a6.height;
-  width = a6.width;
+  height = unrotatedSize.height;
+  width = unrotatedSize.width;
   v85 = *MEMORY[0x277D85DE8];
-  v13 = a4 * -0.0174532925;
+  v13 = degrees * -0.0174532925;
   TSURectWithSize();
   v76 = v14;
   v77 = v15;
@@ -74,16 +74,16 @@
   v22 = v21;
   v23 = MEMORY[0x277CBF348];
   v24 = *(MEMORY[0x277CBF348] + 8);
-  *&v20 = a4;
+  *&v20 = degrees;
   v27 = objc_msgSend_snappedLabelAngleInDegree_(self, v25, v20, v21, v26);
-  if (a3 == 4 || a3 == 2)
+  if (position == 4 || position == 2)
   {
     v87.origin.x = v76;
     v87.origin.y = v77;
     v87.size.width = v17;
     v87.size.height = v19;
-    v28 = CGRectGetMinX(v87) + v17 * a7;
-    if (a3 != 4)
+    v28 = CGRectGetMinX(v87) + v17 * value;
+    if (position != 4)
     {
       if (v27 <= 179)
       {
@@ -171,13 +171,13 @@ LABEL_33:
   }
 
   v28 = *v23;
-  if (a3 > 5 || ((1 << a3) & 0x2A) == 0)
+  if (position > 5 || ((1 << position) & 0x2A) == 0)
   {
     goto LABEL_30;
   }
 
   v29 = height * 0.5 * fabs(sin(v13));
-  if (a3 == 5)
+  if (position == 5)
   {
     v30 = v19 * 0.5;
   }
@@ -192,8 +192,8 @@ LABEL_33:
   v88.size.width = v17;
   v88.size.height = v30;
   v32 = CGRectGetMaxY(v88);
-  v35 = v32 - v30 * a7;
-  switch(a3)
+  v35 = v32 - v30 * value;
+  switch(position)
   {
     case 3:
       v42 = objc_msgSend_chart(self, v31, v32, v33, v34);
@@ -330,14 +330,14 @@ LABEL_31:
   return result;
 }
 
-- (CGPoint)labelAnchorForPosition:(int)a3 degrees:(float)a4
+- (CGPoint)labelAnchorForPosition:(int)position degrees:(float)degrees
 {
-  v8 = objc_msgSend_snappedLabelAngleInDegree_(self, a2, *&a4, v4, v5);
+  v8 = objc_msgSend_snappedLabelAngleInDegree_(self, a2, *&degrees, v4, v5);
   v12 = v8;
   v13 = 0.5;
-  if (a3 > 2)
+  if (position > 2)
   {
-    if (a3 == 3)
+    if (position == 3)
     {
       v18 = objc_msgSend_chart(self, v9, 0.5, v10, v11);
       v23 = objc_msgSend_intValueForProperty_defaultValue_(v18, v19, v20, v21, v22, 1075, 0);
@@ -383,7 +383,7 @@ LABEL_31:
         v17 = 1.0;
       }
 
-      if (a3 == 4)
+      if (position == 4)
       {
         v13 = v17;
       }
@@ -419,12 +419,12 @@ LABEL_31:
       v14 = v16;
     }
 
-    if (a3 == 2)
+    if (position == 2)
     {
       v13 = v14;
     }
 
-    if (a3 == 1)
+    if (position == 1)
     {
       v13 = v15;
     }

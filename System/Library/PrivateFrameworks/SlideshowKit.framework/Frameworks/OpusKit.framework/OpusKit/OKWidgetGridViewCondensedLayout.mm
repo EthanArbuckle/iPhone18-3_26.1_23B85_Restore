@@ -1,20 +1,20 @@
 @interface OKWidgetGridViewCondensedLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (BOOL)shouldUpdateVisibleCellLayoutAttributes;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
 - (OKWidgetGridViewCondensedLayout)init;
 - (float)spacingRatio;
-- (id)indexPathsForItemsInRect:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)indexPathsForItemsInRect:(CGRect)rect;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (unint64_t)numberOfRows;
 - (void)dealloc;
 - (void)finalizeAnimatedBoundsChange;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setNumberOfRows:(unint64_t)a3;
-- (void)setSpacingRatio:(float)a3;
+- (void)setNumberOfRows:(unint64_t)rows;
+- (void)setSpacingRatio:(float)ratio;
 @end
 
 @implementation OKWidgetGridViewCondensedLayout
@@ -62,12 +62,12 @@
   return spacingRatio;
 }
 
-- (void)setSpacingRatio:(float)a3
+- (void)setSpacingRatio:(float)ratio
 {
   objc_sync_enter(self);
-  if (self->_spacingRatio != a3)
+  if (self->_spacingRatio != ratio)
   {
-    self->_spacingRatio = a3;
+    self->_spacingRatio = ratio;
     [(OKWidgetGridViewCondensedLayout *)self invalidateLayout];
   }
 
@@ -82,24 +82,24 @@
   return numberOfRows;
 }
 
-- (void)setNumberOfRows:(unint64_t)a3
+- (void)setNumberOfRows:(unint64_t)rows
 {
   objc_sync_enter(self);
-  if (self->_numberOfRows != a3)
+  if (self->_numberOfRows != rows)
   {
-    self->_numberOfRows = a3;
+    self->_numberOfRows = rows;
     [(OKWidgetGridViewCondensedLayout *)self invalidateLayout];
   }
 
   objc_sync_exit(self);
 }
 
-- (id)indexPathsForItemsInRect:(CGRect)a3
+- (id)indexPathsForItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   objc_sync_enter(self);
   v8 = [(NSMutableArray *)self->_attributes count];
   v9 = v8;
@@ -167,7 +167,7 @@
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_15:
-      v24 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v68.origin.x = x;
       v68.origin.y = y;
       v68.size.width = width;
@@ -239,7 +239,7 @@ LABEL_32:
           ;
         }
 
-        [v24 addObject:{objc_msgSend(v29, "indexPath", v31)}];
+        [array addObject:{objc_msgSend(v29, "indexPath", v31)}];
 LABEL_31:
         if (i < 1)
         {
@@ -284,7 +284,7 @@ LABEL_33:
             }
           }
 
-          [v24 addObject:{objc_msgSend(v48, "indexPath", v50)}];
+          [array addObject:{objc_msgSend(v48, "indexPath", v50)}];
 LABEL_48:
           if (++v46 >= v9)
           {
@@ -324,13 +324,13 @@ LABEL_48:
   }
 
 LABEL_14:
-  v24 = 0;
+  array = 0;
 LABEL_49:
   objc_sync_exit(self);
-  return v24;
+  return array;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   objc_sync_enter(self);
   [(NSMutableArray *)self->_attributes removeAllObjects];
@@ -339,7 +339,7 @@ LABEL_49:
   objc_sync_exit(self);
   v5.receiver = self;
   v5.super_class = OKWidgetGridViewCondensedLayout;
-  [(OKWidgetGridViewCondensedLayout *)&v5 invalidateLayoutWithContext:a3];
+  [(OKWidgetGridViewCondensedLayout *)&v5 invalidateLayoutWithContext:context];
 }
 
 - (void)prepareLayout
@@ -368,14 +368,14 @@ LABEL_49:
       v12 = v7;
       while (1)
       {
-        v13 = [objc_msgSend(-[OKWidgetGridViewCondensedLayout collectionView](self collectionView];
+        collectionView = [objc_msgSend(-[OKWidgetGridViewCondensedLayout collectionView](self collectionView];
         width = p_contentSize->width;
         [-[OKWidgetGridViewCondensedLayout collectionView](self "collectionView")];
         p_contentSize->width = v34 + width;
         self->_contentSize.height = v15;
         v16 = malloc_type_calloc(self->_numberOfRows, 4uLL, 0x100004052888210uLL);
         v17 = v16;
-        if (v13 >= 1)
+        if (collectionView >= 1)
         {
           break;
         }
@@ -447,7 +447,7 @@ LABEL_21:
         ++v19;
       }
 
-      while (v13 != v19);
+      while (collectionView != v19);
       v33 = v20;
 LABEL_20:
       free(v17);
@@ -459,22 +459,22 @@ LABEL_22:
   objc_sync_exit(self);
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(OKWidgetGridViewCondensedLayout *)self indexPathsForItemsInRect:x, y, width, height];
+  array = [MEMORY[0x277CBEB18] array];
+  height = [(OKWidgetGridViewCondensedLayout *)self indexPathsForItemsInRect:x, y, width, height];
   v10 = [MEMORY[0x277CBEB58] set];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [height countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = *v19;
@@ -484,7 +484,7 @@ LABEL_22:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(height);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
@@ -497,7 +497,7 @@ LABEL_22:
         v16 = [(OKWidgetGridViewCondensedLayout *)self layoutAttributesForItemAtIndexPath:v14];
         if (v16)
         {
-          [v8 addObject:v16];
+          [array addObject:v16];
         }
 
         else if (*MEMORY[0x277D62808] >= 4)
@@ -506,24 +506,24 @@ LABEL_22:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [height countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 
   objc_sync_exit(self);
-  return v8;
+  return array;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   objc_sync_enter(self);
   v6 = [(NSMutableArray *)self->_attributes count];
-  v7 = [a3 row];
+  v7 = [path row];
   if (v6 > v7)
   {
-    v3 = -[NSMutableArray objectAtIndex:](self->_attributes, "objectAtIndex:", [a3 row]);
+    v3 = -[NSMutableArray objectAtIndex:](self->_attributes, "objectAtIndex:", [path row]);
   }
 
   objc_sync_exit(self);
@@ -570,9 +570,9 @@ LABEL_22:
   return Height != CGRectGetHeight(v5);
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  Height = CGRectGetHeight(a3);
+  Height = CGRectGetHeight(change);
   [-[OKWidgetGridViewCondensedLayout collectionView](self "collectionView")];
   return Height != CGRectGetHeight(v6);
 }
@@ -584,10 +584,10 @@ LABEL_22:
   self->_oldBounds.size = v2;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v37 = *MEMORY[0x277D85DE8];
   if (self->_snappingEnabled)
   {

@@ -1,11 +1,11 @@
 @interface GCGenericDevicePhysicalInputElementModel
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDevicePhysicalInputElementModel)init;
-- (GCGenericDevicePhysicalInputElementModel)initWithCoder:(id)a3;
+- (GCGenericDevicePhysicalInputElementModel)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDevicePhysicalInputElementModel
@@ -17,29 +17,29 @@
   return 0;
 }
 
-- (GCGenericDevicePhysicalInputElementModel)initWithCoder:(id)a3
+- (GCGenericDevicePhysicalInputElementModel)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = GCGenericDevicePhysicalInputElementModel;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCGenericDevicePhysicalInputElementModel *)&v16 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"identifier", v16.receiver, v16.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"identifier", v16.receiver, v16.super_class}];
   identifier = v4->_identifier;
   v4->_identifier = v5;
 
-  v7 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"names"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"names"];
   names = v4->_names;
   v4->_names = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"analog"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"analog"];
   analog = v4->_analog;
   v4->_analog = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"localizedNameKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedNameKey"];
   localizedNameKey = v4->_localizedNameKey;
   v4->_localizedNameKey = v11;
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
 
   symbolName = v4->_symbolName;
   v4->_symbolName = v13;
@@ -47,23 +47,23 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GCGenericDevicePhysicalInputElementModel *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(GCGenericDevicePhysicalInputElementModel *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(GCGenericDevicePhysicalInputElementModel *)self names];
-  [v4 encodeObject:v6 forKey:@"names"];
+  names = [(GCGenericDevicePhysicalInputElementModel *)self names];
+  [coderCopy encodeObject:names forKey:@"names"];
 
-  v7 = [(GCGenericDevicePhysicalInputElementModel *)self isAnalog];
-  [v4 encodeObject:v7 forKey:@"analog"];
+  isAnalog = [(GCGenericDevicePhysicalInputElementModel *)self isAnalog];
+  [coderCopy encodeObject:isAnalog forKey:@"analog"];
 
-  v8 = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
-  [v4 encodeObject:v8 forKey:@"localizedNameKey"];
+  localizedNameKey = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
+  [coderCopy encodeObject:localizedNameKey forKey:@"localizedNameKey"];
 
-  v9 = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
-  [v4 encodeObject:v9 forKey:@"symbolName"];
+  symbolName = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
+  [coderCopy encodeObject:symbolName forKey:@"symbolName"];
 }
 
 - (unint64_t)hash
@@ -73,9 +73,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -86,9 +86,9 @@
     }
 
 LABEL_6:
-    v5 = [(GCGenericDevicePhysicalInputElementModel *)self identifier];
-    v6 = [v4 identifier];
-    if (![v5 isEqual:v6])
+    identifier = [(GCGenericDevicePhysicalInputElementModel *)self identifier];
+    identifier2 = [equalCopy identifier];
+    if (![identifier isEqual:identifier2])
     {
       v15 = 0;
 LABEL_26:
@@ -96,9 +96,9 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v7 = [(GCGenericDevicePhysicalInputElementModel *)self names];
-    v8 = [v4 names];
-    if (![v7 isEqual:v8])
+    names = [(GCGenericDevicePhysicalInputElementModel *)self names];
+    names2 = [equalCopy names];
+    if (![names isEqual:names2])
     {
       v15 = 0;
 LABEL_25:
@@ -106,9 +106,9 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v9 = [(GCGenericDevicePhysicalInputElementModel *)self isAnalog];
-    v10 = [v4 isAnalog];
-    if (![v9 isEqual:v10])
+    isAnalog = [(GCGenericDevicePhysicalInputElementModel *)self isAnalog];
+    isAnalog2 = [equalCopy isAnalog];
+    if (![isAnalog isEqual:isAnalog2])
     {
       v15 = 0;
 LABEL_24:
@@ -116,21 +116,21 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v11 = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
-    v12 = [v4 localizedNameKey];
-    v13 = v12;
-    v26 = v11;
-    if (v11 == v12)
+    localizedNameKey = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
+    localizedNameKey2 = [equalCopy localizedNameKey];
+    v13 = localizedNameKey2;
+    v26 = localizedNameKey;
+    if (localizedNameKey == localizedNameKey2)
     {
-      v25 = v12;
+      v25 = localizedNameKey2;
     }
 
     else
     {
-      v14 = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
-      v23 = [v4 localizedNameKey];
-      v24 = v14;
-      if (![v14 isEqual:?])
+      localizedNameKey3 = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
+      localizedNameKey4 = [equalCopy localizedNameKey];
+      v24 = localizedNameKey3;
+      if (![localizedNameKey3 isEqual:?])
       {
         v15 = 0;
 LABEL_22:
@@ -142,10 +142,10 @@ LABEL_23:
       v25 = v13;
     }
 
-    v16 = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
-    v17 = [v4 symbolName];
-    v18 = v17;
-    if (v16 == v17)
+    symbolName = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
+    symbolName2 = [equalCopy symbolName];
+    v18 = symbolName2;
+    if (symbolName == symbolName2)
     {
 
       v15 = 1;
@@ -153,10 +153,10 @@ LABEL_23:
 
     else
     {
-      v21 = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
-      [v4 symbolName];
-      v19 = v22 = v16;
-      v15 = [v21 isEqual:v19];
+      symbolName3 = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
+      [equalCopy symbolName];
+      v19 = v22 = symbolName;
+      v15 = [symbolName3 isEqual:v19];
     }
 
     v13 = v25;
@@ -185,36 +185,36 @@ LABEL_27:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCGenericDevicePhysicalInputElementModel *)self identifier];
-  v7 = [(GCGenericDevicePhysicalInputElementModel *)self names];
-  v8 = [(GCGenericDevicePhysicalInputElementModel *)self isAnalog];
-  v9 = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
-  v10 = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
-  v11 = [v3 stringWithFormat:@"<%@ %p> {\n\t identifier = %@\n\t names = %@\n\t analog = %@\n\t localizedNameKey = %@\n\t symbolName = %@\n}", v5, self, v6, v7, v8, v9, v10];
+  identifier = [(GCGenericDevicePhysicalInputElementModel *)self identifier];
+  names = [(GCGenericDevicePhysicalInputElementModel *)self names];
+  isAnalog = [(GCGenericDevicePhysicalInputElementModel *)self isAnalog];
+  localizedNameKey = [(GCGenericDevicePhysicalInputElementModel *)self localizedNameKey];
+  symbolName = [(GCGenericDevicePhysicalInputElementModel *)self symbolName];
+  v11 = [v3 stringWithFormat:@"<%@ %p> {\n\t identifier = %@\n\t names = %@\n\t analog = %@\n\t localizedNameKey = %@\n\t symbolName = %@\n}", v5, self, identifier, names, isAnalog, localizedNameKey, symbolName];
 
   return v11;
 }
 
-+ (id)modelWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)modelWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   v23[0] = 0;
-  v7 = [v6 gc_requiredObjectForKey:@"Type" ofClass:objc_opt_class() error:v23];
+  v7 = [representationCopy gc_requiredObjectForKey:@"Type" ofClass:objc_opt_class() error:v23];
   v8 = v23[0];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v19 = MEMORY[0x1E696ABC0];
       v26[0] = *MEMORY[0x1E696A578];
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v27[0] = v20;
       v26[1] = *MEMORY[0x1E696A588];
-      v21 = [v8 localizedFailureReason];
-      v27[1] = v21;
+      localizedFailureReason = [v8 localizedFailureReason];
+      v27[1] = localizedFailureReason;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
-      *a4 = [(NSError *)v19 gc_modelError:v22 userInfo:?];
+      *error = [(NSError *)v19 gc_modelError:v22 userInfo:?];
     }
 
     goto LABEL_15;
@@ -224,41 +224,41 @@ LABEL_27:
   v10 = NSClassFromString(v9);
   if (!v10 || v10 == objc_opt_class() || ([(objc_class *)v10 isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v15 = MEMORY[0x1E696ABC0];
       v24[0] = *MEMORY[0x1E696A578];
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", a1];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", self];
       v25[0] = v16;
       v24[1] = *MEMORY[0x1E696A588];
       v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' is not a valid element type.", v7];
       v25[1] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-      *a4 = [(NSError *)v15 gc_modelError:v18 userInfo:?];
+      *error = [(NSError *)v15 gc_modelError:v18 userInfo:?];
     }
 
 LABEL_15:
-    v12 = 0;
+    build = 0;
     goto LABEL_7;
   }
 
-  v11 = [[v10 alloc] initWithDictionaryRepresentation:v6 error:a4];
+  v11 = [[v10 alloc] initWithDictionaryRepresentation:representationCopy error:error];
 
   if (v11)
   {
-    v12 = [v11 build];
+    build = [v11 build];
     v8 = v11;
 LABEL_7:
 
     goto LABEL_9;
   }
 
-  v12 = 0;
+  build = 0;
 LABEL_9:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return build;
 }
 
 @end

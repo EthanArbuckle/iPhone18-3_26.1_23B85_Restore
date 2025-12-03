@@ -1,22 +1,22 @@
 @interface UITextDraggableGeometrySameViewDropOperationResult
-+ (UITextDraggableGeometrySameViewDropOperationResult)resultWithRange:(id)a3 targetedPreviewProvider:(id)a4;
-- (UITextDraggableGeometrySameViewDropOperationResult)initWithRange:(id)a3 targetedPreviewProvider:(id)a4;
++ (UITextDraggableGeometrySameViewDropOperationResult)resultWithRange:(id)range targetedPreviewProvider:(id)provider;
+- (UITextDraggableGeometrySameViewDropOperationResult)initWithRange:(id)range targetedPreviewProvider:(id)provider;
 @end
 
 @implementation UITextDraggableGeometrySameViewDropOperationResult
 
-- (UITextDraggableGeometrySameViewDropOperationResult)initWithRange:(id)a3 targetedPreviewProvider:(id)a4
+- (UITextDraggableGeometrySameViewDropOperationResult)initWithRange:(id)range targetedPreviewProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  rangeCopy = range;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = UITextDraggableGeometrySameViewDropOperationResult;
   v9 = [(UITextDraggableGeometrySameViewDropOperationResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resultRange, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_resultRange, range);
+    v11 = _Block_copy(providerCopy);
     targetedPreviewProvider = v10->_targetedPreviewProvider;
     v10->_targetedPreviewProvider = v11;
   }
@@ -24,11 +24,11 @@
   return v10;
 }
 
-+ (UITextDraggableGeometrySameViewDropOperationResult)resultWithRange:(id)a3 targetedPreviewProvider:(id)a4
++ (UITextDraggableGeometrySameViewDropOperationResult)resultWithRange:(id)range targetedPreviewProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRange:v7 targetedPreviewProvider:v6];
+  providerCopy = provider;
+  rangeCopy = range;
+  v8 = [[self alloc] initWithRange:rangeCopy targetedPreviewProvider:providerCopy];
 
   return v8;
 }

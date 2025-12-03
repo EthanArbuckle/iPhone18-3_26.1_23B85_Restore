@@ -591,7 +591,7 @@ LABEL_74:
     v92 = 2048;
     v93 = v18;
     v94 = 2048;
-    v95 = self;
+    selfCopy5 = self;
     v20 = _os_log_send_and_compose_impl();
 
     type[0] = OS_LOG_TYPE_ERROR;
@@ -624,7 +624,7 @@ LABEL_74:
           v92 = 2048;
           v93 = v23;
           v94 = 2048;
-          v95 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_181A37000, v21, v22, "%{public}s %{public}s%sOutput handler %s:%p is not null when protocol instance %p is deallocated", buf, 0x3Eu);
         }
       }
@@ -659,7 +659,7 @@ LABEL_74:
             v92 = 2048;
             v93 = v31;
             v94 = 2048;
-            v95 = self;
+            selfCopy5 = self;
             v96 = 2082;
             v97 = v28;
             _os_log_impl(&dword_181A37000, v21, v29, "%{public}s %{public}s%sOutput handler %s:%p is not null when protocol instance %p is deallocated, dumping backtrace:%{public}s", buf, 0x48u);
@@ -772,7 +772,7 @@ LABEL_34:
           v92 = 2048;
           v93 = v56;
           v94 = 2048;
-          v95 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_181A37000, v21, v29, "%{public}s %{public}s%sOutput handler %s:%p is not null when protocol instance %p is deallocated, no backtrace", buf, 0x3Eu);
         }
       }
@@ -803,7 +803,7 @@ LABEL_34:
           v92 = 2048;
           v93 = v37;
           v94 = 2048;
-          v95 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_181A37000, v21, v36, "%{public}s %{public}s%sOutput handler %s:%p is not null when protocol instance %p is deallocated, backtrace limit exceeded", buf, 0x3Eu);
         }
       }

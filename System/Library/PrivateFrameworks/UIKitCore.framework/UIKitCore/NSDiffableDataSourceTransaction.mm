@@ -1,69 +1,69 @@
 @interface NSDiffableDataSourceTransaction
-+ (id)_computeReorderingTransactionWithInitialSnapshot:(id)a3 reorderingUpdate:(id)a4 sectionSnapshotProvider:(id)a5;
-+ (id)applyTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6;
-+ (id)reorderingTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6;
-- (BOOL)_containsItemIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 source:(int64_t)a5 difference:(id)a6 finalSectionSnapshots:(id)a7;
-- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 source:(int64_t)a5 reorderedItemIdentifiers:(id)a6 difference:(id)a7 sectionTransactions:(id)a8;
-- (NSDiffableDataSourceTransaction)transactionWithSectionTransactions:(id)a3;
-- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)a3;
-- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)a3;
++ (id)_computeReorderingTransactionWithInitialSnapshot:(id)snapshot reorderingUpdate:(id)update sectionSnapshotProvider:(id)provider;
++ (id)applyTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions;
++ (id)reorderingTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions;
+- (BOOL)_containsItemIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot source:(int64_t)source difference:(id)difference finalSectionSnapshots:(id)snapshots;
+- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot source:(int64_t)source reorderedItemIdentifiers:(id)identifiers difference:(id)difference sectionTransactions:(id)transactions;
+- (NSDiffableDataSourceTransaction)transactionWithSectionTransactions:(id)transactions;
+- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)section;
+- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)section;
 - (id)_spiCopy;
 - (id)description;
 - (id)finalDataSourceSnapshotter;
-- (id)finalIndexPathForInitialIndexPath:(id)a3;
+- (id)finalIndexPathForInitialIndexPath:(id)path;
 - (id)initialDataSourceSnapshotter;
-- (id)initialIndexPathForFinalIndexPath:(id)a3;
+- (id)initialIndexPathForFinalIndexPath:(id)path;
 - (id)performDiffGeneratingUpdates;
-- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)a3;
+- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)index;
 - (int64_t)finalSectionCount;
-- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)a3;
-- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)a3;
+- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)index;
+- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)index;
 - (int64_t)initialSectionCount;
-- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)a3;
+- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)index;
 @end
 
 @implementation NSDiffableDataSourceTransaction
 
-- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 source:(int64_t)a5 reorderedItemIdentifiers:(id)a6 difference:(id)a7 sectionTransactions:(id)a8
+- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot source:(int64_t)source reorderedItemIdentifiers:(id)identifiers difference:(id)difference sectionTransactions:(id)transactions
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  snapshotCopy = snapshot;
+  finalSnapshotCopy = finalSnapshot;
+  identifiersCopy = identifiers;
+  differenceCopy = difference;
+  transactionsCopy = transactions;
   v23.receiver = self;
   v23.super_class = NSDiffableDataSourceTransaction;
   v18 = [(NSDiffableDataSourceTransaction *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_initialSnapshot, a3);
-    objc_storeStrong(&v19->_finalSnapshot, a4);
-    v19->_source = a5;
-    objc_storeStrong(&v19->_reorderedItemIdentifiers, a6);
-    objc_storeStrong(&v19->_difference, a7);
-    objc_storeStrong(&v19->_sectionTransactions, a8);
+    objc_storeStrong(&v18->_initialSnapshot, snapshot);
+    objc_storeStrong(&v19->_finalSnapshot, finalSnapshot);
+    v19->_source = source;
+    objc_storeStrong(&v19->_reorderedItemIdentifiers, identifiers);
+    objc_storeStrong(&v19->_difference, difference);
+    objc_storeStrong(&v19->_sectionTransactions, transactions);
   }
 
   return v19;
 }
 
-- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 source:(int64_t)a5 difference:(id)a6 finalSectionSnapshots:(id)a7
+- (NSDiffableDataSourceTransaction)initWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot source:(int64_t)source difference:(id)difference finalSectionSnapshots:(id)snapshots
 {
-  v24 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v27 = a4;
-  v25 = a6;
-  v10 = a7;
+  snapshotCopy = snapshot;
+  finalSnapshotCopy = finalSnapshot;
+  differenceCopy = difference;
+  snapshotsCopy = snapshots;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v10 keyEnumerator];
+  obj = [snapshotsCopy keyEnumerator];
   v12 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v12)
   {
@@ -80,7 +80,7 @@
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [v10 objectForKey:{v17, v24}];
+        v18 = [snapshotsCopy objectForKey:{v17, selfCopy}];
         v19 = [NSDiffableDataSourceSectionTransaction alloc];
         v20 = [objc_alloc(MEMORY[0x1E696ADD8]) initWithChanges:v15];
         v21 = [(NSDiffableDataSourceSectionTransaction *)v19 initWithSectionIdentifier:v17 initialSnapshot:v18 finalSnapshot:v18 difference:v20];
@@ -94,46 +94,46 @@
     while (v13);
   }
 
-  v22 = [(NSDiffableDataSourceTransaction *)v24 initWithInitialSnapshot:v28 finalSnapshot:v27 source:a5 reorderedItemIdentifiers:MEMORY[0x1E695E0F0] difference:v25 sectionTransactions:v11];
+  v22 = [(NSDiffableDataSourceTransaction *)selfCopy initWithInitialSnapshot:snapshotCopy finalSnapshot:finalSnapshotCopy source:source reorderedItemIdentifiers:MEMORY[0x1E695E0F0] difference:differenceCopy sectionTransactions:v11];
   return v22;
 }
 
-+ (id)applyTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6
++ (id)applyTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:v12 finalSnapshot:v11 source:0 reorderedItemIdentifiers:MEMORY[0x1E695E0F0] difference:v10 sectionTransactions:v9];
+  transactionsCopy = transactions;
+  differenceCopy = difference;
+  finalSnapshotCopy = finalSnapshot;
+  snapshotCopy = snapshot;
+  v13 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:snapshotCopy finalSnapshot:finalSnapshotCopy source:0 reorderedItemIdentifiers:MEMORY[0x1E695E0F0] difference:differenceCopy sectionTransactions:transactionsCopy];
 
   return v13;
 }
 
-+ (id)reorderingTransactionWithInitialSnapshot:(id)a3 finalSnapshot:(id)a4 difference:(id)a5 sectionTransactions:(id)a6
++ (id)reorderingTransactionWithInitialSnapshot:(id)snapshot finalSnapshot:(id)finalSnapshot difference:(id)difference sectionTransactions:(id)transactions
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v11 insertions];
-  v16 = [v15 count];
-  v17 = [v11 removals];
-  v18 = [v17 count] + v16;
+  differenceCopy = difference;
+  transactionsCopy = transactions;
+  finalSnapshotCopy = finalSnapshot;
+  snapshotCopy = snapshot;
+  insertions = [differenceCopy insertions];
+  v16 = [insertions count];
+  removals = [differenceCopy removals];
+  v18 = [removals count] + v16;
 
   if (v18 >= 3)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"NSDiffableDataSourceTransaction.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"difference.insertions.count + difference.removals.count <= 2"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"difference.insertions.count + difference.removals.count <= 2"}];
   }
 
-  if ([v11 hasChanges] && (objc_msgSend(v11, "insertions"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), objc_msgSend(v11, "removals"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v19, v20 == v22))
+  if ([differenceCopy hasChanges] && (objc_msgSend(differenceCopy, "insertions"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), objc_msgSend(differenceCopy, "removals"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "count"), v21, v19, v20 == v22))
   {
-    v23 = [v11 insertions];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    insertions2 = [differenceCopy insertions];
+    v24 = [insertions2 objectAtIndexedSubscript:0];
 
-    v25 = [v24 object];
-    v30[0] = v25;
+    object = [v24 object];
+    v30[0] = object;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   }
 
@@ -142,7 +142,7 @@
     v26 = MEMORY[0x1E695E0F0];
   }
 
-  v27 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:v14 finalSnapshot:v13 source:1 reorderedItemIdentifiers:v26 difference:v11 sectionTransactions:v12];
+  v27 = [objc_alloc(objc_opt_class()) initWithInitialSnapshot:snapshotCopy finalSnapshot:finalSnapshotCopy source:1 reorderedItemIdentifiers:v26 difference:differenceCopy sectionTransactions:transactionsCopy];
 
   return v27;
 }
@@ -158,26 +158,26 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v16 = 1;
     }
 
     else
     {
-      v6 = v4;
+      v6 = equalCopy;
       source = self->_source;
       if (source == [(NSDiffableDataSourceTransaction *)v6 source]&& (difference = self->_difference, [(NSDiffableDataSourceTransaction *)v6 difference], v9 = objc_claimAutoreleasedReturnValue(), LODWORD(difference) = [(NSOrderedCollectionDifference *)difference isEqual:v9], v9, difference) && (initialSnapshot = self->_initialSnapshot, [(NSDiffableDataSourceTransaction *)v6 initialSnapshot], v11 = objc_claimAutoreleasedReturnValue(), LODWORD(initialSnapshot) = [(NSDiffableDataSourceSnapshot *)initialSnapshot isEqual:v11], v11, initialSnapshot) && (finalSnapshot = self->_finalSnapshot, [(NSDiffableDataSourceTransaction *)v6 finalSnapshot], v13 = objc_claimAutoreleasedReturnValue(), LODWORD(finalSnapshot) = [(NSDiffableDataSourceSnapshot *)finalSnapshot isEqual:v13], v13, finalSnapshot))
       {
         sectionTransactions = self->_sectionTransactions;
-        v15 = [(NSDiffableDataSourceTransaction *)v6 sectionTransactions];
-        v16 = [(NSArray *)sectionTransactions isEqualToArray:v15];
+        sectionTransactions = [(NSDiffableDataSourceTransaction *)v6 sectionTransactions];
+        v16 = [(NSArray *)sectionTransactions isEqualToArray:sectionTransactions];
       }
 
       else
@@ -195,11 +195,11 @@
   return v16;
 }
 
-- (BOOL)_containsItemIdentifier:(id)a3
+- (BOOL)_containsItemIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSDiffableDataSourceSnapshot *)self->_finalSnapshot indexOfItemIdentifier:v4]== 0x7FFFFFFFFFFFFFFFLL)
+  identifierCopy = identifier;
+  if ([(NSDiffableDataSourceSnapshot *)self->_finalSnapshot indexOfItemIdentifier:identifierCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = 0u;
     v15 = 0u;
@@ -219,8 +219,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v12 + 1) + 8 * i) finalSnapshot];
-          v10 = [v9 containsItem:v4];
+          finalSnapshot = [*(*(&v12 + 1) + 8 * i) finalSnapshot];
+          v10 = [finalSnapshot containsItem:identifierCopy];
 
           if (v10)
           {
@@ -258,8 +258,8 @@ LABEL_13:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(NSDiffableDataSourceTransaction *)self sectionTransactions];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  sectionTransactions = [(NSDiffableDataSourceTransaction *)self sectionTransactions];
+  v5 = [sectionTransactions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -270,62 +270,62 @@ LABEL_13:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sectionTransactions);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * i) _spiCopy];
-        [v3 addObject:v9];
+        _spiCopy = [*(*(&v18 + 1) + 8 * i) _spiCopy];
+        [v3 addObject:_spiCopy];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [sectionTransactions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 
   v10 = [_UIDiffableDataSourceTransaction alloc];
-  v11 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v12 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v13 = [(NSDiffableDataSourceTransaction *)self source];
-  v14 = [(NSDiffableDataSourceTransaction *)self reorderedItemIdentifiers];
-  v15 = [(NSDiffableDataSourceTransaction *)self difference];
-  v16 = [(_UIDiffableDataSourceTransaction *)v10 initWithInitialSnapshot:v11 finalSnapshot:v12 source:v13 reorderedItemIdentifiers:v14 difference:v15 sectionTransactions:v3];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  source = [(NSDiffableDataSourceTransaction *)self source];
+  reorderedItemIdentifiers = [(NSDiffableDataSourceTransaction *)self reorderedItemIdentifiers];
+  difference = [(NSDiffableDataSourceTransaction *)self difference];
+  v16 = [(_UIDiffableDataSourceTransaction *)v10 initWithInitialSnapshot:initialSnapshot finalSnapshot:finalSnapshot source:source reorderedItemIdentifiers:reorderedItemIdentifiers difference:difference sectionTransactions:v3];
 
   return v16;
 }
 
-- (NSDiffableDataSourceTransaction)transactionWithSectionTransactions:(id)a3
+- (NSDiffableDataSourceTransaction)transactionWithSectionTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v7 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v8 = [(NSDiffableDataSourceTransaction *)self source];
-  v9 = [(NSDiffableDataSourceTransaction *)self reorderedItemIdentifiers];
-  v10 = [(NSDiffableDataSourceTransaction *)self difference];
-  v11 = [v5 initWithInitialSnapshot:v6 finalSnapshot:v7 source:v8 reorderedItemIdentifiers:v9 difference:v10 sectionTransactions:v4];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  source = [(NSDiffableDataSourceTransaction *)self source];
+  reorderedItemIdentifiers = [(NSDiffableDataSourceTransaction *)self reorderedItemIdentifiers];
+  difference = [(NSDiffableDataSourceTransaction *)self difference];
+  v11 = [v5 initWithInitialSnapshot:initialSnapshot finalSnapshot:finalSnapshot source:source reorderedItemIdentifiers:reorderedItemIdentifiers difference:difference sectionTransactions:transactionsCopy];
 
   return v11;
 }
 
-+ (id)_computeReorderingTransactionWithInitialSnapshot:(id)a3 reorderingUpdate:(id)a4 sectionSnapshotProvider:(id)a5
++ (id)_computeReorderingTransactionWithInitialSnapshot:(id)snapshot reorderingUpdate:(id)update sectionSnapshotProvider:(id)provider
 {
   v81[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  snapshotCopy = snapshot;
+  updateCopy = update;
+  providerCopy = provider;
+  if (snapshotCopy)
   {
-    if (v10)
+    if (updateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_42:
-    v65 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v65 handleFailureInMethod:a2 object:a1 file:@"NSDiffableDataSourceTransaction.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"reorderingUpdate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"reorderingUpdate"}];
 
-    if (v11)
+    if (providerCopy)
     {
       goto LABEL_4;
     }
@@ -333,42 +333,42 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v64 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v64 handleFailureInMethod:a2 object:a1 file:@"NSDiffableDataSourceTransaction.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"initialSnapshot"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"initialSnapshot"}];
 
-  if (!v10)
+  if (!updateCopy)
   {
     goto LABEL_42;
   }
 
 LABEL_3:
-  if (v11)
+  if (providerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_43:
-  v66 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v66 handleFailureInMethod:a2 object:a1 file:@"NSDiffableDataSourceTransaction.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"sectionSnapshotProvider"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:218 description:{@"Invalid parameter not satisfying: %@", @"sectionSnapshotProvider"}];
 
 LABEL_4:
-  v12 = [v10 indexPathBeforeUpdate];
-  v13 = [v10 indexPathAfterUpdate];
-  if ([v12 isEqual:v13])
+  indexPathBeforeUpdate = [updateCopy indexPathBeforeUpdate];
+  indexPathAfterUpdate = [updateCopy indexPathAfterUpdate];
+  if ([indexPathBeforeUpdate isEqual:indexPathAfterUpdate])
   {
     v14 = objc_alloc(MEMORY[0x1E696ADD8]);
     v15 = MEMORY[0x1E695E0F0];
     v16 = [v14 initWithChanges:MEMORY[0x1E695E0F0]];
-    v17 = [NSDiffableDataSourceTransaction applyTransactionWithInitialSnapshot:v9 finalSnapshot:v9 difference:v16 sectionTransactions:v15];
+    computeReorderingTransaction = [NSDiffableDataSourceTransaction applyTransactionWithInitialSnapshot:snapshotCopy finalSnapshot:snapshotCopy difference:v16 sectionTransactions:v15];
 
     goto LABEL_38;
   }
 
-  v75 = [v9 copy];
-  v72 = v10;
-  if (v13)
+  v75 = [snapshotCopy copy];
+  v72 = updateCopy;
+  if (indexPathAfterUpdate)
   {
-    v18 = [v9 identifierForIndexPath:v13];
+    v18 = [snapshotCopy identifierForIndexPath:indexPathAfterUpdate];
   }
 
   else
@@ -376,11 +376,11 @@ LABEL_4:
     v18 = 0;
   }
 
-  v71 = v12;
-  v19 = [v9 identifierForIndexPath:v12];
-  v20 = [v9 sectionIdentifierForSectionContainingItemIdentifier:v19];
+  v71 = indexPathBeforeUpdate;
+  v19 = [snapshotCopy identifierForIndexPath:indexPathBeforeUpdate];
+  v20 = [snapshotCopy sectionIdentifierForSectionContainingItemIdentifier:v19];
   v73 = v20;
-  v74 = v11;
+  v74 = providerCopy;
   v70 = v18;
   if (v18)
   {
@@ -426,22 +426,22 @@ LABEL_22:
 
   else
   {
-    v29 = [v13 section];
-    if ([v13 length] >= 2)
+    section = [indexPathAfterUpdate section];
+    if ([indexPathAfterUpdate length] >= 2)
     {
-      v30 = [v9 sectionIdentifiers];
-      v31 = [v30 count];
+      sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+      v31 = [sectionIdentifiers count];
 
-      if (v29 < v31)
+      if (section < v31)
       {
-        v32 = [v13 item];
-        v33 = [v75 sectionIdentifiers];
-        v25 = [v33 objectAtIndexedSubscript:{objc_msgSend(v13, "section")}];
+        item = [indexPathAfterUpdate item];
+        sectionIdentifiers2 = [v75 sectionIdentifiers];
+        v25 = [sectionIdentifiers2 objectAtIndexedSubscript:{objc_msgSend(indexPathAfterUpdate, "section")}];
 
-        if (v32 > [v9 numberOfItemsInSection:v25])
+        if (item > [snapshotCopy numberOfItemsInSection:v25])
         {
-          v67 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v67 handleFailureInMethod:a2 object:a1 file:@"NSDiffableDataSourceTransaction.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"destinationIndex <= [initialSnapshot numberOfItemsInSection:destinationSectionIdentifier]"}];
+          currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler4 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"destinationIndex <= [initialSnapshot numberOfItemsInSection:destinationSectionIdentifier]"}];
         }
 
         v78 = v19;
@@ -458,7 +458,7 @@ LABEL_22:
 
   v35 = 0;
 LABEL_23:
-  v37 = [v9 indexOfItemIdentifier:v19];
+  v37 = [snapshotCopy indexOfItemIdentifier:v19];
   v38 = [v75 indexOfItemIdentifier:v19];
   v39 = [MEMORY[0x1E696ADD0] changeWithObject:v19 type:1 index:v37 associatedIndex:v38];
   v40 = [MEMORY[0x1E696ADD0] changeWithObject:v19 type:0 index:v38 associatedIndex:v37];
@@ -468,7 +468,7 @@ LABEL_23:
   v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:2];
   v69 = [v41 initWithChanges:v42];
 
-  v43 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v44 = v35;
   if (v73 && v35)
   {
@@ -479,7 +479,7 @@ LABEL_23:
       v47 = v74[2](v74, v73);
       if (v47)
       {
-        v48 = v43;
+        v48 = strongToStrongObjectsMapTable;
         v49 = v47;
         v50 = v73;
 LABEL_35:
@@ -503,7 +503,7 @@ LABEL_35:
   v51 = v46[2](v46, v73);
   if (v51)
   {
-    [v43 setObject:v51 forKey:v73];
+    [strongToStrongObjectsMapTable setObject:v51 forKey:v73];
   }
 
 LABEL_32:
@@ -512,7 +512,7 @@ LABEL_32:
     v47 = v46[2](v46, v44);
     if (v47)
     {
-      v48 = v43;
+      v48 = strongToStrongObjectsMapTable;
       v49 = v47;
       v50 = v44;
       goto LABEL_35;
@@ -522,27 +522,27 @@ LABEL_36:
   }
 
   v52 = [_UIIdentifierDiffer alloc];
-  [v9 state];
+  [snapshotCopy state];
   v68 = v19;
   v54 = v53 = v44;
-  v55 = [v54 identifiers];
-  v56 = [v75 state];
-  v57 = [v56 identifiers];
-  v58 = [(_UIIdentifierDiffer *)&v52->super.isa initWithBeforeIdentifiers:v55 afterIdentifiers:v57 collectionDifference:v69];
+  identifiers = [v54 identifiers];
+  state = [v75 state];
+  identifiers2 = [state identifiers];
+  v58 = [(_UIIdentifierDiffer *)&v52->super.isa initWithBeforeIdentifiers:identifiers afterIdentifiers:identifiers2 collectionDifference:v69];
 
-  v59 = [v9 state];
-  v60 = [v75 state];
-  v61 = [_UIDiffableDataSourceDiffer differWithBeforeDataSourceState:v59 afterDataSourceState:v60 itemIdentifierDiffer:v58];
+  state2 = [snapshotCopy state];
+  state3 = [v75 state];
+  v61 = [_UIDiffableDataSourceDiffer differWithBeforeDataSourceState:state2 afterDataSourceState:state3 itemIdentifierDiffer:v58];
 
-  v62 = [[_UIDiffableDataSourceSectionSnapshotRebaser alloc] initWithInitialSnapshot:v9 finalSnapshot:v75 initialSectionSnapshots:v43 dataSourceDiffer:v61 shouldPerformChildSnapshotMoves:1];
-  v17 = [(_UIDiffableDataSourceSectionSnapshotRebaser *)v62 computeReorderingTransaction];
+  v62 = [[_UIDiffableDataSourceSectionSnapshotRebaser alloc] initWithInitialSnapshot:snapshotCopy finalSnapshot:v75 initialSectionSnapshots:strongToStrongObjectsMapTable dataSourceDiffer:v61 shouldPerformChildSnapshotMoves:1];
+  computeReorderingTransaction = [(_UIDiffableDataSourceSectionSnapshotRebaser *)v62 computeReorderingTransaction];
 
-  v11 = v74;
-  v12 = v71;
-  v10 = v72;
+  providerCopy = v74;
+  indexPathBeforeUpdate = v71;
+  updateCopy = v72;
 LABEL_38:
 
-  return v17;
+  return computeReorderingTransaction;
 }
 
 - (id)initialDataSourceSnapshotter
@@ -611,9 +611,9 @@ uint64_t __61__NSDiffableDataSourceTransaction_finalDataSourceSnapshotter__block
 
 - (id)performDiffGeneratingUpdates
 {
-  v3 = [(NSDiffableDataSourceSnapshot *)self->_initialSnapshot state];
-  v4 = [(NSDiffableDataSourceSnapshot *)self->_finalSnapshot state];
-  v5 = [_UIDiffableDataSourceDiffer differWithBeforeDataSourceState:v3 afterDataSourceState:v4];
+  state = [(NSDiffableDataSourceSnapshot *)self->_initialSnapshot state];
+  state2 = [(NSDiffableDataSourceSnapshot *)self->_finalSnapshot state];
+  v5 = [_UIDiffableDataSourceDiffer differWithBeforeDataSourceState:state afterDataSourceState:state2];
 
   if (v5)
   {
@@ -630,60 +630,60 @@ uint64_t __61__NSDiffableDataSourceTransaction_finalDataSourceSnapshotter__block
   return v6;
 }
 
-- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)a3
+- (int64_t)finalGlobalIndexForInitialGlobalIndex:(int64_t)index
 {
-  v6 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v7 = [v6 numberOfItems];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  numberOfItems = [initialSnapshot numberOfItems];
 
-  if (v7 <= a3)
+  if (numberOfItems <= index)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:356 description:{@"Invalid parameter not satisfying: %@", @"initialGlobalIndex < self.initialSnapshot.numberOfItems"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:356 description:{@"Invalid parameter not satisfying: %@", @"initialGlobalIndex < self.initialSnapshot.numberOfItems"}];
   }
 
-  v8 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v9 = [v8 itemIdentifiers];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  initialSnapshot2 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  itemIdentifiers = [initialSnapshot2 itemIdentifiers];
+  v10 = [itemIdentifiers objectAtIndexedSubscript:index];
 
-  v11 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v12 = [v11 indexOfItemIdentifier:v10];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  v12 = [finalSnapshot indexOfItemIdentifier:v10];
 
   return v12;
 }
 
-- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)a3
+- (int64_t)initialGlobalIndexForFinalGlobalIndex:(int64_t)index
 {
-  v6 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v7 = [v6 numberOfItems];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  numberOfItems = [finalSnapshot numberOfItems];
 
-  if (v7 <= a3)
+  if (numberOfItems <= index)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"finalGlobalIndex < self.finalSnapshot.numberOfItems"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"finalGlobalIndex < self.finalSnapshot.numberOfItems"}];
   }
 
-  v8 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v9 = [v8 itemIdentifiers];
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  finalSnapshot2 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  itemIdentifiers = [finalSnapshot2 itemIdentifiers];
+  v10 = [itemIdentifiers objectAtIndexedSubscript:index];
 
-  v11 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v12 = [v11 indexOfItemIdentifier:v10];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  v12 = [initialSnapshot indexOfItemIdentifier:v10];
 
   return v12;
 }
 
-- (id)finalIndexPathForInitialIndexPath:(id)a3
+- (id)finalIndexPathForInitialIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length] >= 2)
+  pathCopy = path;
+  if ([pathCopy length] >= 2)
   {
-    v6 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-    v7 = [v6 identifierForIndexPath:v4];
+    initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+    v7 = [initialSnapshot identifierForIndexPath:pathCopy];
 
     if (v7)
     {
-      v8 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-      v5 = [v8 indexPathForIdentifier:v7];
+      finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+      v5 = [finalSnapshot indexPathForIdentifier:v7];
     }
 
     else
@@ -700,18 +700,18 @@ uint64_t __61__NSDiffableDataSourceTransaction_finalDataSourceSnapshotter__block
   return v5;
 }
 
-- (id)initialIndexPathForFinalIndexPath:(id)a3
+- (id)initialIndexPathForFinalIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 length] >= 2)
+  pathCopy = path;
+  if ([pathCopy length] >= 2)
   {
-    v6 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-    v7 = [v6 identifierForIndexPath:v4];
+    finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+    v7 = [finalSnapshot identifierForIndexPath:pathCopy];
 
     if (v7)
     {
-      v8 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-      v5 = [v8 indexPathForIdentifier:v7];
+      initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+      v5 = [initialSnapshot indexPathForIdentifier:v7];
     }
 
     else
@@ -728,54 +728,54 @@ uint64_t __61__NSDiffableDataSourceTransaction_finalDataSourceSnapshotter__block
   return v5;
 }
 
-- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)a3
+- (int64_t)finalSectionIndexForInitialSectionIndex:(int64_t)index
 {
-  v6 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 count];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  sectionIdentifiers = [initialSnapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"initialSectionIndex < self.initialSnapshot.sectionIdentifiers.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"initialSectionIndex < self.initialSnapshot.sectionIdentifiers.count"}];
   }
 
-  v9 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v10 = [v9 sectionIdentifiers];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  initialSnapshot2 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  sectionIdentifiers2 = [initialSnapshot2 sectionIdentifiers];
+  v11 = [sectionIdentifiers2 objectAtIndexedSubscript:index];
 
-  v12 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v13 = [v12 indexOfSectionIdentifier:v11];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  v13 = [finalSnapshot indexOfSectionIdentifier:v11];
 
   return v13;
 }
 
-- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)a3
+- (int64_t)initialSectionIndexForFinalSectionIndex:(int64_t)index
 {
-  v6 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 count];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  sectionIdentifiers = [finalSnapshot sectionIdentifiers];
+  v8 = [sectionIdentifiers count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:403 description:{@"Invalid parameter not satisfying: %@", @"finalSectionIndex < self.finalSnapshot.sectionIdentifiers.count"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSDiffableDataSourceTransaction.m" lineNumber:403 description:{@"Invalid parameter not satisfying: %@", @"finalSectionIndex < self.finalSnapshot.sectionIdentifiers.count"}];
   }
 
-  v9 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v10 = [v9 sectionIdentifiers];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  finalSnapshot2 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  sectionIdentifiers2 = [finalSnapshot2 sectionIdentifiers];
+  v11 = [sectionIdentifiers2 objectAtIndexedSubscript:index];
 
-  v12 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v13 = [v12 indexOfSectionIdentifier:v11];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  v13 = [initialSnapshot indexOfSectionIdentifier:v11];
 
   return v13;
 }
 
-- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)a3
+- (_NSRange)initalSectionGlobalItemRangeForSection:(int64_t)section
 {
-  v4 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v5 = [v4 sectionGlobalItemRangeForSection:a3];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  v5 = [initialSnapshot sectionGlobalItemRangeForSection:section];
   v7 = v6;
 
   v8 = v5;
@@ -785,10 +785,10 @@ uint64_t __61__NSDiffableDataSourceTransaction_finalDataSourceSnapshotter__block
   return result;
 }
 
-- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)a3
+- (_NSRange)finalSectionGlobalItemRangeForSection:(int64_t)section
 {
-  v4 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v5 = [v4 sectionGlobalItemRangeForSection:a3];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  v5 = [finalSnapshot sectionGlobalItemRangeForSection:section];
   v7 = v6;
 
   v8 = v5;
@@ -800,18 +800,18 @@ uint64_t __61__NSDiffableDataSourceTransaction_finalDataSourceSnapshotter__block
 
 - (int64_t)initialSectionCount
 {
-  v2 = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
-  v3 = [v2 numberOfSections];
+  initialSnapshot = [(NSDiffableDataSourceTransaction *)self initialSnapshot];
+  numberOfSections = [initialSnapshot numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
 - (int64_t)finalSectionCount
 {
-  v2 = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
-  v3 = [v2 numberOfSections];
+  finalSnapshot = [(NSDiffableDataSourceTransaction *)self finalSnapshot];
+  numberOfSections = [finalSnapshot numberOfSections];
 
-  return v3;
+  return numberOfSections;
 }
 
 @end

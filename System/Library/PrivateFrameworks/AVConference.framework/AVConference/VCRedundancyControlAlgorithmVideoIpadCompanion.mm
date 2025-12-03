@@ -1,28 +1,28 @@
 @interface VCRedundancyControlAlgorithmVideoIpadCompanion
 - (unsigned)computeRedundancyWithBurstyLoss;
 - (unsigned)computeRedundancyWithLossPercentage;
-- (void)updateBurstyLoss:(unsigned int)a3;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)updateBurstyLoss:(unsigned int)loss;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControlAlgorithmVideoIpadCompanion
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
-  if (a3->type == 3)
+  if (statistics->type == 3)
   {
-    self->_packetLossPercentage = a3->var0.network.packetLossPercentage;
-    [(VCRedundancyControlAlgorithmVideoIpadCompanion *)self updateBurstyLoss:a3->var0.baseband.transmittedBytes];
-    v4 = [(VCRedundancyControlAlgorithmVideoIpadCompanion *)self computeRedundancyWithLossPercentage];
-    v5 = [(VCRedundancyControlAlgorithmVideoIpadCompanion *)self computeRedundancyWithBurstyLoss];
-    if (v4 <= v5)
+    self->_packetLossPercentage = statistics->var0.network.packetLossPercentage;
+    [(VCRedundancyControlAlgorithmVideoIpadCompanion *)self updateBurstyLoss:statistics->var0.baseband.transmittedBytes];
+    computeRedundancyWithLossPercentage = [(VCRedundancyControlAlgorithmVideoIpadCompanion *)self computeRedundancyWithLossPercentage];
+    computeRedundancyWithBurstyLoss = [(VCRedundancyControlAlgorithmVideoIpadCompanion *)self computeRedundancyWithBurstyLoss];
+    if (computeRedundancyWithLossPercentage <= computeRedundancyWithBurstyLoss)
     {
-      v6 = v5;
+      v6 = computeRedundancyWithBurstyLoss;
     }
 
     else
     {
-      v6 = v4;
+      v6 = computeRedundancyWithLossPercentage;
     }
 
     self->_redundancyPercentage = v6;
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)updateBurstyLoss:(unsigned int)a3
+- (void)updateBurstyLoss:(unsigned int)loss
 {
-  self->_burstyLoss[self->_burstyLossArrayIndex] = a3;
+  self->_burstyLoss[self->_burstyLossArrayIndex] = loss;
   self->_burstyLossArrayIndex = (self->_burstyLossArrayIndex + 1) % 0x1F4;
   burstyLossArraySize = self->_burstyLossArraySize;
   if (burstyLossArraySize <= 0x1F3)

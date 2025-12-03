@@ -1,14 +1,14 @@
 @interface CUTPowerAssertion
-- (CUTPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4;
+- (CUTPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout;
 - (void)dealloc;
 @end
 
 @implementation CUTPowerAssertion
 
-- (CUTPowerAssertion)initWithIdentifier:(id)a3 timeout:(double)a4
+- (CUTPowerAssertion)initWithIdentifier:(id)identifier timeout:(double)timeout
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = CUTPowerAssertion;
   v7 = [(CUTPowerAssertion *)&v27 init];
@@ -19,14 +19,14 @@
     v7->_internal = v8;
 
     v10 = v7->_internal;
-    if (a4 == 0.0)
+    if (timeout == 0.0)
     {
-      v11 = IOPMAssertionCreateWithName(@"NoIdleSleepAssertion", 0xFFu, v6, v10 + 2);
+      v11 = IOPMAssertionCreateWithName(@"NoIdleSleepAssertion", 0xFFu, identifierCopy, v10 + 2);
     }
 
     else
     {
-      v11 = IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", v6, v6, 0, 0, a4, @"TimeoutActionTurnOff", v10 + 2);
+      v11 = IOPMAssertionCreateWithDescription(@"NoIdleSleepAssertion", identifierCopy, identifierCopy, 0, 0, timeout, @"TimeoutActionTurnOff", v10 + 2);
     }
 
     v12 = v11;
@@ -36,7 +36,7 @@
       v13 = +[CUTLog power];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        sub_1B23310A8(v6, v12, v13);
+        sub_1B23310A8(identifierCopy, v12, v13);
       }
 
       v7 = 0;
@@ -44,22 +44,22 @@
 
     else
     {
-      v14 = [(__CFString *)v6 copy];
+      v14 = [(__CFString *)identifierCopy copy];
       v15 = v7->_internal;
       v16 = v15[2];
       v15[2] = v14;
 
       v17 = objc_autoreleasePoolPush();
-      v18 = [MEMORY[0x1E696AF00] callStackReturnAddresses];
+      callStackReturnAddresses = [MEMORY[0x1E696AF00] callStackReturnAddresses];
       v19 = v7->_internal;
       v20 = v19[3];
-      v19[3] = v18;
+      v19[3] = callStackReturnAddresses;
 
       v21 = +[CUTLog power];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v6;
+        v29 = identifierCopy;
         _os_log_impl(&dword_1B2321000, v21, OS_LOG_TYPE_DEFAULT, "Created power assertion {identifier: %{public}@}", buf, 0xCu);
       }
 

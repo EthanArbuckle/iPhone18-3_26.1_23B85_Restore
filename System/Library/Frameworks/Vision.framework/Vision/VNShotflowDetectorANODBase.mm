@@ -1,22 +1,22 @@
 @interface VNShotflowDetectorANODBase
-- (id)mergeHeadsBoxes:(id)a3;
+- (id)mergeHeadsBoxes:(id)boxes;
 @end
 
 @implementation VNShotflowDetectorANODBase
 
-- (id)mergeHeadsBoxes:(id)a3
+- (id)mergeHeadsBoxes:(id)boxes
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  boxesCopy = boxes;
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_185_11853];
-  v25 = [v24 filteredArrayUsingPredicate:v3];
+  v25 = [boxesCopy filteredArrayUsingPredicate:v3];
 
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_187];
-  v5 = [v24 filteredArrayUsingPredicate:v4];
+  v5 = [boxesCopy filteredArrayUsingPredicate:v4];
 
   v6 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_189];
-  v7 = [v24 filteredArrayUsingPredicate:v6];
+  v7 = [boxesCopy filteredArrayUsingPredicate:v6];
 
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"confidence" ascending:0];
   v27[0] = v8;

@@ -1,29 +1,29 @@
 @interface CPLCloudKitCreateScopeTask
-- (CPLCloudKitCreateScopeTask)initWithController:(id)a3 scope:(id)a4 completionHandler:(id)a5;
+- (CPLCloudKitCreateScopeTask)initWithController:(id)controller scope:(id)scope completionHandler:(id)handler;
 - (id)scope;
 - (void)_clearPartiallyCreatedZoneIfNecessary;
-- (void)_createCKShare:(id)a3 andRootRecord:(id)a4 currentUserID:(id)a5 withCompletionHandler:(id)a6;
-- (void)_createCKShareWithCompletionHandler:(id)a3;
-- (void)_createCollectionShareWithScopeChange:(id)a3 completionHandler:(id)a4;
-- (void)_createLibraryShareWithScopeChange:(id)a3 completionHandler:(id)a4;
-- (void)_createLibraryWithScopeChange:(id)a3 completionHandler:(id)a4;
-- (void)_createMomentShareWithScopeChange:(id)a3 completionHandler:(id)a4;
-- (void)_createZoneWithCompletionHandler:(id)a3;
+- (void)_createCKShare:(id)share andRootRecord:(id)record currentUserID:(id)d withCompletionHandler:(id)handler;
+- (void)_createCKShareWithCompletionHandler:(id)handler;
+- (void)_createCollectionShareWithScopeChange:(id)change completionHandler:(id)handler;
+- (void)_createLibraryShareWithScopeChange:(id)change completionHandler:(id)handler;
+- (void)_createLibraryWithScopeChange:(id)change completionHandler:(id)handler;
+- (void)_createMomentShareWithScopeChange:(id)change completionHandler:(id)handler;
+- (void)_createZoneWithCompletionHandler:(id)handler;
 - (void)_runOperations;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitCreateScopeTask
 
-- (CPLCloudKitCreateScopeTask)initWithController:(id)a3 scope:(id)a4 completionHandler:(id)a5
+- (CPLCloudKitCreateScopeTask)initWithController:(id)controller scope:(id)scope completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = CPLCloudKitCreateScopeTask;
-  v9 = [(CPLCloudKitManageScopeTask *)&v13 initWithController:a3 scope:a4];
+  v9 = [(CPLCloudKitManageScopeTask *)&v13 initWithController:controller scope:scope];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [handlerCopy copy];
     completionHandler = v9->_completionHandler;
     v9->_completionHandler = v10;
   }
@@ -36,17 +36,17 @@
   updatedScope = self->_updatedScope;
   if (updatedScope)
   {
-    v3 = updatedScope;
+    scope = updatedScope;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CPLCloudKitCreateScopeTask;
-    v3 = [(CPLCloudKitManageScopeTask *)&v5 scope];
+    scope = [(CPLCloudKitManageScopeTask *)&v5 scope];
   }
 
-  return v3;
+  return scope;
 }
 
 - (void)_clearPartiallyCreatedZoneIfNecessary
@@ -54,32 +54,32 @@
   identificationToCleanIfNecessary = self->_identificationToCleanIfNecessary;
   if (identificationToCleanIfNecessary && [(CPLCloudKitZoneIdentification *)identificationToCleanIfNecessary supportsZoneDelete])
   {
-    v4 = [(CPLCloudKitZoneIdentification *)self->_identificationToCleanIfNecessary zoneID];
+    zoneID = [(CPLCloudKitZoneIdentification *)self->_identificationToCleanIfNecessary zoneID];
     if ((_CPLSilentLogging & 1) == 0)
     {
       v5 = sub_100003744();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v4;
+        *(&buf + 4) = zoneID;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Will try to delete partially created zone %{public}@", &buf, 0xCu);
       }
     }
 
     v6 = [CPLCloudKitDeleteTransportScopeTask alloc];
-    v7 = [(CPLCloudKitTransportTask *)self controller];
-    v8 = [(CPLCloudKitZoneIdentification *)self->_identificationToCleanIfNecessary cloudKitScope];
-    v9 = [(CPLCloudKitZoneIdentification *)self->_identificationToCleanIfNecessary engineScope];
+    controller = [(CPLCloudKitTransportTask *)self controller];
+    cloudKitScope = [(CPLCloudKitZoneIdentification *)self->_identificationToCleanIfNecessary cloudKitScope];
+    engineScope = [(CPLCloudKitZoneIdentification *)self->_identificationToCleanIfNecessary engineScope];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10019A67C;
     v19[3] = &unk_100272468;
-    v20 = v4;
-    v10 = v4;
-    v11 = [(CPLCloudKitDeleteTransportScopeTask *)v6 initWithController:v7 cloudKitScope:v8 scope:v9 completionHandler:v19];
+    v20 = zoneID;
+    v10 = zoneID;
+    v11 = [(CPLCloudKitDeleteTransportScopeTask *)v6 initWithController:controller cloudKitScope:cloudKitScope scope:engineScope completionHandler:v19];
 
-    v12 = [(CPLCloudKitTransportTask *)self transportGroup];
-    [(CPLCloudKitTransportTask *)v11 setTransportGroup:v12];
+    transportGroup = [(CPLCloudKitTransportTask *)self transportGroup];
+    [(CPLCloudKitTransportTask *)v11 setTransportGroup:transportGroup];
 
     v13 = dispatch_get_global_queue(0, 0);
     v17[0] = _NSConcreteStackBlock;
@@ -123,15 +123,15 @@
 
     if (v6)
     {
-      v8 = [(CPLCloudKitManageScopeTask *)self identification];
-      if ([v8 supportsZoneCreation])
+      identification = [(CPLCloudKitManageScopeTask *)self identification];
+      if ([identification supportsZoneCreation])
       {
         v9[0] = _NSConcreteStackBlock;
         v9[1] = 3221225472;
         v9[2] = sub_100049FFC;
         v9[3] = &unk_100272468;
         v9[4] = self;
-        [v8 validateCreateScopeTask:self completionHandler:v9];
+        [identification validateCreateScopeTask:self completionHandler:v9];
       }
 
       else
@@ -153,28 +153,28 @@
   }
 }
 
-- (void)_createCKShare:(id)a3 andRootRecord:(id)a4 currentUserID:(id)a5 withCompletionHandler:(id)a6
+- (void)_createCKShare:(id)share andRootRecord:(id)record currentUserID:(id)d withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  shareCopy = share;
+  recordCopy = record;
+  dCopy = d;
+  handlerCopy = handler;
   v28 = 0;
   v14 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v28];
   v15 = v28;
   if (v14)
   {
-    if (v11)
+    if (recordCopy)
     {
-      v30[0] = v10;
-      v30[1] = v11;
+      v30[0] = shareCopy;
+      v30[1] = recordCopy;
       v16 = v30;
       v17 = 2;
     }
 
     else
     {
-      v29 = v10;
+      v29 = shareCopy;
       v16 = &v29;
       v17 = 1;
     }
@@ -187,62 +187,62 @@
     v22[3] = &unk_1002744D0;
     v22[4] = self;
     v23 = v18;
-    v27 = v13;
-    v24 = v10;
-    v25 = v12;
-    v26 = v11;
+    v27 = handlerCopy;
+    v24 = shareCopy;
+    v25 = dCopy;
+    v26 = recordCopy;
     v20 = v18;
     [v19 setModifyRecordsCompletionBlock:v22];
-    v21 = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
-    [(CPLCloudKitTransportTask *)self launchOperation:v19 type:CPLCloudKitOperationTypeForScope(v21) withContext:0];
+    cloudKitScope = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
+    [(CPLCloudKitTransportTask *)self launchOperation:v19 type:CPLCloudKitOperationTypeForScope(cloudKitScope) withContext:0];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
   }
 }
 
-- (void)_createCKShareWithCompletionHandler:(id)a3
+- (void)_createCKShareWithCompletionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004ADA0;
   v5[3] = &unk_100274520;
-  v6 = self;
-  v7 = a3;
+  selfCopy = self;
+  handlerCopy = handler;
   v8 = a2;
-  v4 = v7;
-  [(CPLCloudKitTransportTask *)v6 getUserRecordIDFetchIfNecessaryWithCompletionHandler:v5];
+  v4 = handlerCopy;
+  [(CPLCloudKitTransportTask *)selfCopy getUserRecordIDFetchIfNecessaryWithCompletionHandler:v5];
 }
 
-- (void)_createZoneWithCompletionHandler:(id)a3
+- (void)_createZoneWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v23 = 0;
   v5 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v23];
   v6 = v23;
   if (v5)
   {
-    v7 = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
-    v8 = [v7 databaseScope];
-    v9 = [(CPLCloudKitTransportTask *)self controller];
-    v10 = [v7 zoneID];
-    v11 = [v9 shouldIgnoreZoneWithZoneID:v10];
+    cloudKitScope = [(CPLCloudKitManageScopeTask *)self cloudKitScope];
+    databaseScope = [cloudKitScope databaseScope];
+    controller = [(CPLCloudKitTransportTask *)self controller];
+    zoneID = [cloudKitScope zoneID];
+    v11 = [controller shouldIgnoreZoneWithZoneID:zoneID];
 
     if (v11)
     {
-      v12 = [v7 zoneID];
-      v13 = [v12 cpl_zoneName];
-      v14 = [CPLErrors cplErrorWithCode:38 description:@"Zone %@ is not supported by this engine", v13];
+      zoneID2 = [cloudKitScope zoneID];
+      cpl_zoneName = [zoneID2 cpl_zoneName];
+      v14 = [CPLErrors cplErrorWithCode:38 description:@"Zone %@ is not supported by this engine", cpl_zoneName];
 
-      v4[2](v4, v14);
+      handlerCopy[2](handlerCopy, v14);
     }
 
     else
     {
       v15 = [CKModifyRecordZonesOperation alloc];
-      v16 = [v7 zone];
+      v16 = [cloudKitScope zone];
       v24 = v16;
       v17 = [NSArray arrayWithObjects:&v24 count:1];
       v14 = [v15 initWithRecordZonesToSave:v17 recordZoneIDsToDelete:0];
@@ -252,9 +252,9 @@
       v19[2] = sub_10004B4EC;
       v19[3] = &unk_100274570;
       v19[4] = self;
-      v21 = v4;
-      v22 = v8;
-      v18 = v7;
+      v21 = handlerCopy;
+      v22 = databaseScope;
+      v18 = cloudKitScope;
       v20 = v18;
       [v14 setModifyRecordZonesCompletionBlock:v19];
       [(CPLCloudKitTransportTask *)self launchOperation:v14 type:CPLCloudKitOperationTypeForScope(v18) withContext:0];
@@ -263,50 +263,50 @@
 
   else
   {
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 }
 
-- (void)_createMomentShareWithScopeChange:(id)a3 completionHandler:(id)a4
+- (void)_createMomentShareWithScopeChange:(id)change completionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004BB78;
   v5[3] = &unk_1002724D0;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(CPLCloudKitCreateScopeTask *)v6 _createZoneWithCompletionHandler:v5];
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
+  [(CPLCloudKitCreateScopeTask *)selfCopy _createZoneWithCompletionHandler:v5];
 }
 
-- (void)_createLibraryWithScopeChange:(id)a3 completionHandler:(id)a4
+- (void)_createLibraryWithScopeChange:(id)change completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004BC60;
   v8[3] = &unk_1002724D0;
-  v9 = a3;
-  v10 = a4;
-  v6 = v9;
-  v7 = v10;
+  changeCopy = change;
+  handlerCopy = handler;
+  v6 = changeCopy;
+  v7 = handlerCopy;
   [(CPLCloudKitCreateScopeTask *)self _createZoneWithCompletionHandler:v8];
 }
 
-- (void)_createLibraryShareWithScopeChange:(id)a3 completionHandler:(id)a4
+- (void)_createLibraryShareWithScopeChange:(id)change completionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10004BD90;
   v5[3] = &unk_1002724D0;
-  v6 = self;
-  v7 = a4;
-  v4 = v7;
-  [(CPLCloudKitCreateScopeTask *)v6 _createZoneWithCompletionHandler:v5];
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
+  [(CPLCloudKitCreateScopeTask *)selfCopy _createZoneWithCompletionHandler:v5];
 }
 
-- (void)_createCollectionShareWithScopeChange:(id)a3 completionHandler:(id)a4
+- (void)_createCollectionShareWithScopeChange:(id)change completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   if (CPLIsCollectionShareFeatureEnabled())
   {
     v7[0] = _NSConcreteStackBlock;
@@ -314,14 +314,14 @@
     v7[2] = sub_10004BE94;
     v7[3] = &unk_1002724D0;
     v7[4] = self;
-    v8 = v5;
+    v8 = handlerCopy;
     [(CPLCloudKitCreateScopeTask *)self _createZoneWithCompletionHandler:v7];
   }
 
   else
   {
     v6 = [CPLErrors cplErrorWithCode:1002 description:@"Feature is disabled"];
-    (*(v5 + 2))(v5, 0, v6);
+    (*(handlerCopy + 2))(handlerCopy, 0, v6);
   }
 }
 

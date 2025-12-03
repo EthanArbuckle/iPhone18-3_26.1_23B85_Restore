@@ -1,47 +1,47 @@
 @interface ALCMMotionContextMotionState
-- (BOOL)isEqual:(id)a3;
-- (id)confidenceAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)confidenceAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)exitStateAsString:(int)a3;
-- (id)mountedAsString:(int)a3;
-- (id)mountedConfidenceAsString:(int)a3;
-- (id)turnAsString:(int)a3;
-- (id)typeAsString:(int)a3;
-- (int)StringAsConfidence:(id)a3;
-- (int)StringAsExitState:(id)a3;
-- (int)StringAsMounted:(id)a3;
-- (int)StringAsMountedConfidence:(id)a3;
-- (int)StringAsTurn:(id)a3;
-- (int)StringAsType:(id)a3;
+- (id)exitStateAsString:(int)string;
+- (id)mountedAsString:(int)string;
+- (id)mountedConfidenceAsString:(int)string;
+- (id)turnAsString:(int)string;
+- (id)typeAsString:(int)string;
+- (int)StringAsConfidence:(id)confidence;
+- (int)StringAsExitState:(id)state;
+- (int)StringAsMounted:(id)mounted;
+- (int)StringAsMountedConfidence:(id)confidence;
+- (int)StringAsTurn:(id)turn;
+- (int)StringAsType:(id)type;
 - (int)exitState;
 - (int)mounted;
 - (int)mountedConfidence;
 - (int)turn;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExitState:(BOOL)a3;
-- (void)setHasIsMoving:(BOOL)a3;
-- (void)setHasIsVehicular:(BOOL)a3;
-- (void)setHasMounted:(BOOL)a3;
-- (void)setHasMountedConfidence:(BOOL)a3;
-- (void)setHasTurn:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExitState:(BOOL)state;
+- (void)setHasIsMoving:(BOOL)moving;
+- (void)setHasIsVehicular:(BOOL)vehicular;
+- (void)setHasMounted:(BOOL)mounted;
+- (void)setHasMountedConfidence:(BOOL)confidence;
+- (void)setHasTurn:(BOOL)turn;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCMMotionContextMotionState
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 0x4000)
+  if (string >= 0x4000)
   {
-    if (a3 < 462848)
+    if (string < 462848)
     {
-      if (a3 < 196608)
+      if (string < 196608)
       {
-        switch(a3)
+        switch(string)
         {
           case 16384:
             return @"kTypeDrivingMounted";
@@ -52,14 +52,14 @@
         }
       }
 
-      else if (a3 > 327807)
+      else if (string > 327807)
       {
-        if (a3 == 327808)
+        if (string == 327808)
         {
           return @"kTypeCyclingTorso";
         }
 
-        if (a3 == 397312)
+        if (string == 397312)
         {
           return @"kTypeDrivingSeat";
         }
@@ -67,28 +67,28 @@
 
       else
       {
-        if (a3 == 196608)
+        if (string == 196608)
         {
           return @"kTypeCyclingLeg";
         }
 
-        if (a3 == 262272)
+        if (string == 262272)
         {
           return @"kTypeCyclingArm";
         }
       }
     }
 
-    else if (a3 > 720911)
+    else if (string > 720911)
     {
-      if (a3 > 851979)
+      if (string > 851979)
       {
-        if (a3 == 851980)
+        if (string == 851980)
         {
           return @"kTypeSemiStationaryPocket";
         }
 
-        if (a3 == 917516)
+        if (string == 917516)
         {
           return @"kTypeSemiStationaryArm";
         }
@@ -96,26 +96,26 @@
 
       else
       {
-        if (a3 == 720912)
+        if (string == 720912)
         {
           return @"kTypeWalkingLeg";
         }
 
-        if (a3 == 786448)
+        if (string == 786448)
         {
           return @"kTypeWalkingArm";
         }
       }
     }
 
-    else if (a3 > 589887)
+    else if (string > 589887)
     {
-      if (a3 == 589888)
+      if (string == 589888)
       {
         return @"kTypeRunningLeg";
       }
 
-      if (a3 == 655424)
+      if (string == 655424)
       {
         return @"kTypeRunningArm";
       }
@@ -123,23 +123,23 @@
 
     else
     {
-      if (a3 == 462848)
+      if (string == 462848)
       {
         return @"kTypeDrivingArm";
       }
 
-      if (a3 == 528384)
+      if (string == 528384)
       {
         return @"kTypeDrivingStowed";
       }
     }
   }
 
-  else if (a3 <= 63)
+  else if (string <= 63)
   {
-    if (a3 <= 3)
+    if (string <= 3)
     {
-      switch(a3)
+      switch(string)
       {
         case 0:
           return @"kTypeUnknown";
@@ -150,14 +150,14 @@
       }
     }
 
-    else if (a3 > 15)
+    else if (string > 15)
     {
-      if (a3 == 16)
+      if (string == 16)
       {
         return @"kTypeWalking";
       }
 
-      if (a3 == 32)
+      if (string == 32)
       {
         return @"kTypeWalkingSlow";
       }
@@ -165,28 +165,28 @@
 
     else
     {
-      if (a3 == 4)
+      if (string == 4)
       {
         return @"kTypeMoving";
       }
 
-      if (a3 == 12)
+      if (string == 12)
       {
         return @"kTypeSemiStationary";
       }
     }
   }
 
-  else if (a3 > 4095)
+  else if (string > 4095)
   {
-    if (a3 >= 0x2000)
+    if (string >= 0x2000)
     {
-      if (a3 == 0x2000)
+      if (string == 0x2000)
       {
         return @"kTypeVehicularInHand";
       }
 
-      if (a3 == 12288)
+      if (string == 12288)
       {
         return @"kTypeDrivingOther";
       }
@@ -194,26 +194,26 @@
 
     else
     {
-      if (a3 == 4096)
+      if (string == 4096)
       {
         return @"kTypeDriving";
       }
 
-      if (a3 == 4128)
+      if (string == 4128)
       {
         return @"kTypeDrivingOrWalkingSlow";
       }
     }
   }
 
-  else if (a3 > 255)
+  else if (string > 255)
   {
-    if (a3 == 256)
+    if (string == 256)
     {
       return @"kTypeInVehicleFrozen";
     }
 
-    if (a3 == 512)
+    if (string == 512)
     {
       return @"kTypeInVehicleStatic";
     }
@@ -221,171 +221,171 @@
 
   else
   {
-    if (a3 == 64)
+    if (string == 64)
     {
       return @"kTypeRunning";
     }
 
-    if (a3 == 128)
+    if (string == 128)
     {
       return @"kTypeCycling";
     }
   }
 
-  return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+  return [NSString stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  if ([a3 isEqualToString:@"kTypeUnknown"])
+  if ([type isEqualToString:@"kTypeUnknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kTypeFrozen"])
+  if ([type isEqualToString:@"kTypeFrozen"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kTypeStatic"])
+  if ([type isEqualToString:@"kTypeStatic"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kTypeMoving"])
+  if ([type isEqualToString:@"kTypeMoving"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"kTypeSemiStationary"])
+  if ([type isEqualToString:@"kTypeSemiStationary"])
   {
     return 12;
   }
 
-  if ([a3 isEqualToString:@"kTypeWalking"])
+  if ([type isEqualToString:@"kTypeWalking"])
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"kTypeWalkingSlow"])
+  if ([type isEqualToString:@"kTypeWalkingSlow"])
   {
     return 32;
   }
 
-  if ([a3 isEqualToString:@"kTypeRunning"])
+  if ([type isEqualToString:@"kTypeRunning"])
   {
     return 64;
   }
 
-  if ([a3 isEqualToString:@"kTypeCycling"])
+  if ([type isEqualToString:@"kTypeCycling"])
   {
     return 128;
   }
 
-  if ([a3 isEqualToString:@"kTypeInVehicleFrozen"])
+  if ([type isEqualToString:@"kTypeInVehicleFrozen"])
   {
     return 256;
   }
 
-  if ([a3 isEqualToString:@"kTypeInVehicleStatic"])
+  if ([type isEqualToString:@"kTypeInVehicleStatic"])
   {
     return 512;
   }
 
-  if ([a3 isEqualToString:@"kTypeDriving"])
+  if ([type isEqualToString:@"kTypeDriving"])
   {
     return 4096;
   }
 
-  if ([a3 isEqualToString:@"kTypeVehicularInHand"])
+  if ([type isEqualToString:@"kTypeVehicularInHand"])
   {
     return 0x2000;
   }
 
-  if ([a3 isEqualToString:@"kTypeDrivingOther"])
+  if ([type isEqualToString:@"kTypeDrivingOther"])
   {
     return 12288;
   }
 
-  if ([a3 isEqualToString:@"kTypeDrivingMounted"])
+  if ([type isEqualToString:@"kTypeDrivingMounted"])
   {
     return 0x4000;
   }
 
-  if ([a3 isEqualToString:@"kTypeDrivingOrWalkingSlow"])
+  if ([type isEqualToString:@"kTypeDrivingOrWalkingSlow"])
   {
     return 4128;
   }
 
-  v5 = [a3 isEqualToString:@"kTypeCyclingSeat"];
+  v5 = [type isEqualToString:@"kTypeCyclingSeat"];
   result = 65664;
   if ((v5 & 1) == 0)
   {
-    if ([a3 isEqualToString:@"kTypeCyclingChassis"])
+    if ([type isEqualToString:@"kTypeCyclingChassis"])
     {
       v6 = 65664;
       return v6 + 0x10000;
     }
 
-    if ([a3 isEqualToString:@"kTypeCyclingLeg"])
+    if ([type isEqualToString:@"kTypeCyclingLeg"])
     {
       return 196608;
     }
 
-    else if ([a3 isEqualToString:@"kTypeCyclingArm"])
+    else if ([type isEqualToString:@"kTypeCyclingArm"])
     {
       return 262272;
     }
 
-    else if ([a3 isEqualToString:@"kTypeCyclingTorso"])
+    else if ([type isEqualToString:@"kTypeCyclingTorso"])
     {
       return 327808;
     }
 
     else
     {
-      v7 = [a3 isEqualToString:@"kTypeDrivingSeat"];
+      v7 = [type isEqualToString:@"kTypeDrivingSeat"];
       result = 397312;
       if ((v7 & 1) == 0)
       {
-        if ([a3 isEqualToString:@"kTypeDrivingArm"])
+        if ([type isEqualToString:@"kTypeDrivingArm"])
         {
           v6 = 397312;
           return v6 + 0x10000;
         }
 
-        if ([a3 isEqualToString:@"kTypeDrivingStowed"])
+        if ([type isEqualToString:@"kTypeDrivingStowed"])
         {
           return 528384;
         }
 
         else
         {
-          v8 = [a3 isEqualToString:@"kTypeRunningLeg"];
+          v8 = [type isEqualToString:@"kTypeRunningLeg"];
           result = 589888;
           if ((v8 & 1) == 0)
           {
-            if ([a3 isEqualToString:@"kTypeRunningArm"])
+            if ([type isEqualToString:@"kTypeRunningArm"])
             {
               v6 = 589888;
               return v6 + 0x10000;
             }
 
-            v9 = [a3 isEqualToString:@"kTypeWalkingLeg"];
+            v9 = [type isEqualToString:@"kTypeWalkingLeg"];
             result = 720912;
             if ((v9 & 1) == 0)
             {
-              if ([a3 isEqualToString:@"kTypeWalkingArm"])
+              if ([type isEqualToString:@"kTypeWalkingArm"])
               {
                 v6 = 720912;
                 return v6 + 0x10000;
               }
 
-              v10 = [a3 isEqualToString:@"kTypeSemiStationaryPocket"];
+              v10 = [type isEqualToString:@"kTypeSemiStationaryPocket"];
               result = 851980;
               if ((v10 & 1) == 0)
               {
-                if ([a3 isEqualToString:@"kTypeSemiStationaryArm"])
+                if ([type isEqualToString:@"kTypeSemiStationaryArm"])
                 {
                   return 917516;
                 }
@@ -405,32 +405,32 @@
   return result;
 }
 
-- (id)confidenceAsString:(int)a3
+- (id)confidenceAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024569B8 + a3);
+    return *(&off_1024569B8 + string);
   }
 }
 
-- (int)StringAsConfidence:(id)a3
+- (int)StringAsConfidence:(id)confidence
 {
-  if ([a3 isEqualToString:@"kConfidenceLow"])
+  if ([confidence isEqualToString:@"kConfidenceLow"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceMedium"])
+  if ([confidence isEqualToString:@"kConfidenceMedium"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceHigh"])
+  if ([confidence isEqualToString:@"kConfidenceHigh"])
   {
     return 2;
   }
@@ -451,9 +451,9 @@
   }
 }
 
-- (void)setHasMounted:(BOOL)a3
+- (void)setHasMounted:(BOOL)mounted
 {
-  if (a3)
+  if (mounted)
   {
     v3 = 4;
   }
@@ -466,31 +466,31 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)mountedAsString:(int)a3
+- (id)mountedAsString:(int)string
 {
-  if (!a3)
+  if (!string)
   {
     return @"kNotMounted";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"kMounted";
   }
 
-  return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+  return [NSString stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsMounted:(id)a3
+- (int)StringAsMounted:(id)mounted
 {
-  if ([a3 isEqualToString:@"kNotMounted"])
+  if ([mounted isEqualToString:@"kNotMounted"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"kMounted"];
+    return [mounted isEqualToString:@"kMounted"];
   }
 }
 
@@ -507,9 +507,9 @@
   }
 }
 
-- (void)setHasMountedConfidence:(BOOL)a3
+- (void)setHasMountedConfidence:(BOOL)confidence
 {
-  if (a3)
+  if (confidence)
   {
     v3 = 8;
   }
@@ -522,32 +522,32 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)mountedConfidenceAsString:(int)a3
+- (id)mountedConfidenceAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024569B8 + a3);
+    return *(&off_1024569B8 + string);
   }
 }
 
-- (int)StringAsMountedConfidence:(id)a3
+- (int)StringAsMountedConfidence:(id)confidence
 {
-  if ([a3 isEqualToString:@"kConfidenceLow"])
+  if ([confidence isEqualToString:@"kConfidenceLow"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceMedium"])
+  if ([confidence isEqualToString:@"kConfidenceMedium"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kConfidenceHigh"])
+  if ([confidence isEqualToString:@"kConfidenceHigh"])
   {
     return 2;
   }
@@ -568,9 +568,9 @@
   }
 }
 
-- (void)setHasTurn:(BOOL)a3
+- (void)setHasTurn:(BOOL)turn
 {
-  if (a3)
+  if (turn)
   {
     v3 = 16;
   }
@@ -583,32 +583,32 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (id)turnAsString:(int)a3
+- (id)turnAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024569D0 + a3);
+    return *(&off_1024569D0 + string);
   }
 }
 
-- (int)StringAsTurn:(id)a3
+- (int)StringAsTurn:(id)turn
 {
-  if ([a3 isEqualToString:@"kTurnStateUnknown"])
+  if ([turn isEqualToString:@"kTurnStateUnknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kTurnStateStatic"])
+  if ([turn isEqualToString:@"kTurnStateStatic"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kTurnStateTurning"])
+  if ([turn isEqualToString:@"kTurnStateTurning"])
   {
     return 2;
   }
@@ -616,9 +616,9 @@
   return 0;
 }
 
-- (void)setHasIsVehicular:(BOOL)a3
+- (void)setHasIsVehicular:(BOOL)vehicular
 {
-  if (a3)
+  if (vehicular)
   {
     v3 = 64;
   }
@@ -631,9 +631,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsMoving:(BOOL)a3
+- (void)setHasIsMoving:(BOOL)moving
 {
-  if (a3)
+  if (moving)
   {
     v3 = 32;
   }
@@ -659,9 +659,9 @@
   }
 }
 
-- (void)setHasExitState:(BOOL)a3
+- (void)setHasExitState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -674,32 +674,32 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)exitStateAsString:(int)a3
+- (id)exitStateAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_1024569E8 + a3);
+    return *(&off_1024569E8 + string);
   }
 }
 
-- (int)StringAsExitState:(id)a3
+- (int)StringAsExitState:(id)state
 {
-  if ([a3 isEqualToString:@"kNoDetection"])
+  if ([state isEqualToString:@"kNoDetection"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kExitPreheat"])
+  if ([state isEqualToString:@"kExitPreheat"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kExitDetected"])
+  if ([state isEqualToString:@"kExitDetected"])
   {
     return 2;
   }
@@ -1089,7 +1089,7 @@ LABEL_100:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteInt32Field();
@@ -1182,15 +1182,15 @@ LABEL_15:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 9) = self->_type;
-  *(a3 + 4) = self->_confidence;
+  *(to + 9) = self->_type;
+  *(to + 4) = self->_confidence;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 6) = self->_mounted;
-    *(a3 + 44) |= 4u;
+    *(to + 6) = self->_mounted;
+    *(to + 44) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -1209,8 +1209,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_mountedConfidence;
-  *(a3 + 44) |= 8u;
+  *(to + 7) = self->_mountedConfidence;
+  *(to + 44) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1224,8 +1224,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(a3 + 8) = self->_turn;
-  *(a3 + 44) |= 0x10u;
+  *(to + 8) = self->_turn;
+  *(to + 44) |= 0x10u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1239,8 +1239,8 @@ LABEL_5:
   }
 
 LABEL_12:
-  *(a3 + 41) = self->_isVehicular;
-  *(a3 + 44) |= 0x40u;
+  *(to + 41) = self->_isVehicular;
+  *(to + 44) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1254,8 +1254,8 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(a3 + 40) = self->_isMoving;
-  *(a3 + 44) |= 0x20u;
+  *(to + 40) = self->_isMoving;
+  *(to + 44) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1266,23 +1266,23 @@ LABEL_7:
     }
 
 LABEL_15:
-    *(a3 + 1) = self->_startTime;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_startTime;
+    *(to + 44) |= 1u;
     return;
   }
 
 LABEL_14:
-  *(a3 + 5) = self->_exitState;
-  *(a3 + 44) |= 2u;
+  *(to + 5) = self->_exitState;
+  *(to + 44) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_15;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 9) = self->_type;
   *(result + 4) = self->_confidence;
   has = self->_has;
@@ -1381,87 +1381,87 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  if (self->_type != *(a3 + 9) || self->_confidence != *(a3 + 4))
+  if (self->_type != *(equal + 9) || self->_confidence != *(equal + 4))
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 44) & 4) == 0 || self->_mounted != *(a3 + 6))
+    if ((*(equal + 44) & 4) == 0 || self->_mounted != *(equal + 6))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(a3 + 44) & 4) != 0)
+  else if ((*(equal + 44) & 4) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 44) & 8) == 0 || self->_mountedConfidence != *(a3 + 7))
+    if ((*(equal + 44) & 8) == 0 || self->_mountedConfidence != *(equal + 7))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(a3 + 44) & 8) != 0)
+  else if ((*(equal + 44) & 8) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 44) & 0x10) == 0 || self->_turn != *(a3 + 8))
+    if ((*(equal + 44) & 0x10) == 0 || self->_turn != *(equal + 8))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(a3 + 44) & 0x10) != 0)
+  else if ((*(equal + 44) & 0x10) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(a3 + 44) & 0x40) == 0)
+    if ((*(equal + 44) & 0x40) == 0)
     {
       goto LABEL_43;
     }
 
     if (self->_isVehicular)
     {
-      if ((*(a3 + 41) & 1) == 0)
+      if ((*(equal + 41) & 1) == 0)
       {
         goto LABEL_43;
       }
     }
 
-    else if (*(a3 + 41))
+    else if (*(equal + 41))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(a3 + 44) & 0x40) != 0)
+  else if ((*(equal + 44) & 0x40) != 0)
   {
     goto LABEL_43;
   }
 
   if ((*&self->_has & 0x20) == 0)
   {
-    if ((*(a3 + 44) & 0x20) == 0)
+    if ((*(equal + 44) & 0x20) == 0)
     {
       goto LABEL_23;
     }
@@ -1471,14 +1471,14 @@ LABEL_43:
     return v5;
   }
 
-  if ((*(a3 + 44) & 0x20) == 0)
+  if ((*(equal + 44) & 0x20) == 0)
   {
     goto LABEL_43;
   }
 
   if (self->_isMoving)
   {
-    if ((*(a3 + 40) & 1) == 0)
+    if ((*(equal + 40) & 1) == 0)
     {
       goto LABEL_43;
     }
@@ -1486,7 +1486,7 @@ LABEL_43:
     goto LABEL_23;
   }
 
-  if (*(a3 + 40))
+  if (*(equal + 40))
   {
     goto LABEL_43;
   }
@@ -1494,21 +1494,21 @@ LABEL_43:
 LABEL_23:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 44) & 2) == 0 || self->_exitState != *(a3 + 5))
+    if ((*(equal + 44) & 2) == 0 || self->_exitState != *(equal + 5))
     {
       goto LABEL_43;
     }
   }
 
-  else if ((*(a3 + 44) & 2) != 0)
+  else if ((*(equal + 44) & 2) != 0)
   {
     goto LABEL_43;
   }
 
-  LOBYTE(v5) = (*(a3 + 44) & 1) == 0;
+  LOBYTE(v5) = (*(equal + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(a3 + 44) & 1) == 0 || self->_startTime != *(a3 + 1))
+    if ((*(equal + 44) & 1) == 0 || self->_startTime != *(equal + 1))
     {
       goto LABEL_43;
     }
@@ -1604,16 +1604,16 @@ LABEL_10:
   return (2654435761 * self->_confidence) ^ (2654435761 * self->_type) ^ v2 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_type = *(a3 + 9);
-  self->_confidence = *(a3 + 4);
-  v3 = *(a3 + 44);
+  self->_type = *(from + 9);
+  self->_confidence = *(from + 4);
+  v3 = *(from + 44);
   if ((v3 & 4) != 0)
   {
-    self->_mounted = *(a3 + 6);
+    self->_mounted = *(from + 6);
     *&self->_has |= 4u;
-    v3 = *(a3 + 44);
+    v3 = *(from + 44);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -1626,14 +1626,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 8) == 0)
+  else if ((*(from + 44) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_mountedConfidence = *(a3 + 7);
+  self->_mountedConfidence = *(from + 7);
   *&self->_has |= 8u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x10) == 0)
   {
 LABEL_4:
@@ -1646,9 +1646,9 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_turn = *(a3 + 8);
+  self->_turn = *(from + 8);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x40) == 0)
   {
 LABEL_5:
@@ -1661,9 +1661,9 @@ LABEL_5:
   }
 
 LABEL_12:
-  self->_isVehicular = *(a3 + 41);
+  self->_isVehicular = *(from + 41);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 0x20) == 0)
   {
 LABEL_6:
@@ -1676,9 +1676,9 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_isMoving = *(a3 + 40);
+  self->_isMoving = *(from + 40);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 2) == 0)
   {
 LABEL_7:
@@ -1688,15 +1688,15 @@ LABEL_7:
     }
 
 LABEL_15:
-    self->_startTime = *(a3 + 1);
+    self->_startTime = *(from + 1);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_14:
-  self->_exitState = *(a3 + 5);
+  self->_exitState = *(from + 5);
   *&self->_has |= 2u;
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
     goto LABEL_15;
   }

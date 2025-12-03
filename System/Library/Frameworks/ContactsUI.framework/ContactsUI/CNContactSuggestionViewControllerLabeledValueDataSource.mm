@@ -1,5 +1,5 @@
 @interface CNContactSuggestionViewControllerLabeledValueDataSource
-- (CNContactSuggestionViewControllerLabeledValueDataSource)initWithLabeledValue:(id)a3;
+- (CNContactSuggestionViewControllerLabeledValueDataSource)initWithLabeledValue:(id)value;
 - (NSString)appName;
 @end
 
@@ -7,23 +7,23 @@
 
 - (NSString)appName
 {
-  v2 = [(CNContactSuggestionViewControllerLabeledValueDataSource *)self labeledValue];
-  v3 = [v2 valueOrigin];
-  v4 = [v3 localizedApplicationName];
+  labeledValue = [(CNContactSuggestionViewControllerLabeledValueDataSource *)self labeledValue];
+  valueOrigin = [labeledValue valueOrigin];
+  localizedApplicationName = [valueOrigin localizedApplicationName];
 
-  return v4;
+  return localizedApplicationName;
 }
 
-- (CNContactSuggestionViewControllerLabeledValueDataSource)initWithLabeledValue:(id)a3
+- (CNContactSuggestionViewControllerLabeledValueDataSource)initWithLabeledValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = CNContactSuggestionViewControllerLabeledValueDataSource;
   v6 = [(CNContactSuggestionViewControllerLabeledValueDataSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_labeledValue, a3);
+    objc_storeStrong(&v6->_labeledValue, value);
     v8 = v7;
   }
 

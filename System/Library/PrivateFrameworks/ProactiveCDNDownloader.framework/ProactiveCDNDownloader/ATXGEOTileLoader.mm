@@ -1,8 +1,8 @@
 @interface ATXGEOTileLoader
 - (ATXGEOTileLoader)init;
-- (id)tileKeyListForLocation:(id)a3;
-- (void)requestGEOTileDataForLocation:(id)a3 tileDataHandler:(id)a4;
-- (void)requestGEOTileDataForLocation:(id)a3 tileLoader:(id)a4 tileDataHandler:(id)a5;
+- (id)tileKeyListForLocation:(id)location;
+- (void)requestGEOTileDataForLocation:(id)location tileDataHandler:(id)handler;
+- (void)requestGEOTileDataForLocation:(id)location tileLoader:(id)loader tileDataHandler:(id)handler;
 @end
 
 @implementation ATXGEOTileLoader
@@ -16,9 +16,9 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     callbackQueue = v2->_callbackQueue;
     v2->_callbackQueue = v7;
   }
@@ -26,18 +26,18 @@
   return v2;
 }
 
-- (void)requestGEOTileDataForLocation:(id)a3 tileDataHandler:(id)a4
+- (void)requestGEOTileDataForLocation:(id)location tileDataHandler:(id)handler
 {
   v6 = requestGEOTileDataForLocation_tileDataHandler__onceToken;
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  locationCopy = location;
   if (v6 != -1)
   {
     [ATXGEOTileLoader requestGEOTileDataForLocation:tileDataHandler:];
   }
 
-  v9 = [MEMORY[0x277D0EDA8] modernLoader];
-  [(ATXGEOTileLoader *)self requestGEOTileDataForLocation:v8 tileLoader:v9 tileDataHandler:v7];
+  modernLoader = [MEMORY[0x277D0EDA8] modernLoader];
+  [(ATXGEOTileLoader *)self requestGEOTileDataForLocation:locationCopy tileLoader:modernLoader tileDataHandler:handlerCopy];
 }
 
 uint64_t __66__ATXGEOTileLoader_requestGEOTileDataForLocation_tileDataHandler___block_invoke()
@@ -48,12 +48,12 @@ uint64_t __66__ATXGEOTileLoader_requestGEOTileDataForLocation_tileDataHandler___
   return [v0 setMemoryCacheTotalCostLimit:0];
 }
 
-- (void)requestGEOTileDataForLocation:(id)a3 tileLoader:(id)a4 tileDataHandler:(id)a5
+- (void)requestGEOTileDataForLocation:(id)location tileLoader:(id)loader tileDataHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v20 = a4;
-  v19 = a5;
-  v8 = [(ATXGEOTileLoader *)self tileKeyListForLocation:a3];
+  loaderCopy = loader;
+  handlerCopy = handler;
+  v8 = [(ATXGEOTileLoader *)self tileKeyListForLocation:location];
   v9 = dispatch_group_create();
   v24 = 0u;
   v25 = 0u;
@@ -83,9 +83,9 @@ uint64_t __66__ATXGEOTileLoader_requestGEOTileDataForLocation_tileDataHandler___
         v21[1] = 3221225472;
         v21[2] = __77__ATXGEOTileLoader_requestGEOTileDataForLocation_tileLoader_tileDataHandler___block_invoke;
         v21[3] = &unk_279AB6F60;
-        v23 = v19;
+        v23 = handlerCopy;
         v22 = v9;
-        [v20 loadKey:v14 priority:2147483646 forClient:v15 options:3 reason:4 callbackQ:callbackQueue beginNetwork:0 callback:v21];
+        [loaderCopy loadKey:v14 priority:2147483646 forClient:v15 options:3 reason:4 callbackQ:callbackQueue beginNetwork:0 callback:v21];
 
         ++v13;
       }
@@ -144,12 +144,12 @@ void __77__ATXGEOTileLoader_requestGEOTileDataForLocation_tileLoader_tileDataHan
   }
 }
 
-- (id)tileKeyListForLocation:(id)a3
+- (id)tileKeyListForLocation:(id)location
 {
-  v3 = a3;
-  [v3 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v5 = v4;
-  [v3 coordinate];
+  [locationCopy coordinate];
   v7 = v6;
 
   v8.n128_u64[0] = v5;

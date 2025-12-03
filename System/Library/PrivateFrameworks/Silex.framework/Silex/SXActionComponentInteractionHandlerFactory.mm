@@ -1,39 +1,39 @@
 @interface SXActionComponentInteractionHandlerFactory
-- (SXActionComponentInteractionHandlerFactory)initWithActionManager:(id)a3 actionSerializer:(id)a4 analyticsReportingProvider:(id)a5;
-- (id)interactionHandlerForAction:(id)a3;
+- (SXActionComponentInteractionHandlerFactory)initWithActionManager:(id)manager actionSerializer:(id)serializer analyticsReportingProvider:(id)provider;
+- (id)interactionHandlerForAction:(id)action;
 @end
 
 @implementation SXActionComponentInteractionHandlerFactory
 
-- (SXActionComponentInteractionHandlerFactory)initWithActionManager:(id)a3 actionSerializer:(id)a4 analyticsReportingProvider:(id)a5
+- (SXActionComponentInteractionHandlerFactory)initWithActionManager:(id)manager actionSerializer:(id)serializer analyticsReportingProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  serializerCopy = serializer;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = SXActionComponentInteractionHandlerFactory;
   v12 = [(SXActionComponentInteractionHandlerFactory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionManager, a3);
-    objc_storeStrong(&v13->_actionSerializer, a4);
-    objc_storeStrong(&v13->_analyticsReportingProvider, a5);
+    objc_storeStrong(&v12->_actionManager, manager);
+    objc_storeStrong(&v13->_actionSerializer, serializer);
+    objc_storeStrong(&v13->_analyticsReportingProvider, provider);
   }
 
   return v13;
 }
 
-- (id)interactionHandlerForAction:(id)a3
+- (id)interactionHandlerForAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = a3;
+    actionCopy = action;
     v5 = [SXActionComponentInteractionHandler alloc];
-    v6 = [(SXActionComponentInteractionHandlerFactory *)self actionManager];
-    v7 = [(SXActionComponentInteractionHandlerFactory *)self actionSerializer];
-    v8 = [(SXActionComponentInteractionHandlerFactory *)self analyticsReportingProvider];
-    v9 = [(SXActionComponentInteractionHandler *)v5 initWithAction:v4 actionManager:v6 actionSerializer:v7 analyticsReportingProvider:v8];
+    actionManager = [(SXActionComponentInteractionHandlerFactory *)self actionManager];
+    actionSerializer = [(SXActionComponentInteractionHandlerFactory *)self actionSerializer];
+    analyticsReportingProvider = [(SXActionComponentInteractionHandlerFactory *)self analyticsReportingProvider];
+    v9 = [(SXActionComponentInteractionHandler *)v5 initWithAction:actionCopy actionManager:actionManager actionSerializer:actionSerializer analyticsReportingProvider:analyticsReportingProvider];
   }
 
   else

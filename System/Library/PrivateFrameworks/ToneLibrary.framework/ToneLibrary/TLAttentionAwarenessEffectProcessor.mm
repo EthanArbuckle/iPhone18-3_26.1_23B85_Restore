@@ -1,27 +1,27 @@
 @interface TLAttentionAwarenessEffectProcessor
 - ($8F739DADA627152431EF347AE70D5328)effectParameters;
 - (BOOL)start;
-- (TLAttentionAwarenessEffectProcessor)initWithProcessingFormat:(id)a3 framesPerRender:(unsigned int)a4 audioSession:(id)a5 effectParameters:(id)a6;
+- (TLAttentionAwarenessEffectProcessor)initWithProcessingFormat:(id)format framesPerRender:(unsigned int)render audioSession:(id)session effectParameters:(id)parameters;
 - (float)_currentEffectMix;
-- (float)_sanitizeEffectMix:(float)a3;
-- (void)_applyEffectMix:(float)a3;
-- (void)_applyEffectParameters:(id)a3 includingEffectMix:(BOOL)a4;
+- (float)_sanitizeEffectMix:(float)mix;
+- (void)_applyEffectMix:(float)mix;
+- (void)_applyEffectParameters:(id)parameters includingEffectMix:(BOOL)mix;
 - (void)_assertNotRunningOnAccessQueue;
 - (void)_assertRunningOnAccessQueue;
 - (void)dealloc;
-- (void)setEffectParameters:(id)a3 effectMixFadeDuration:(double)a4;
+- (void)setEffectParameters:(id)parameters effectMixFadeDuration:(double)duration;
 - (void)start;
 @end
 
 @implementation TLAttentionAwarenessEffectProcessor
 
-- (TLAttentionAwarenessEffectProcessor)initWithProcessingFormat:(id)a3 framesPerRender:(unsigned int)a4 audioSession:(id)a5 effectParameters:(id)a6
+- (TLAttentionAwarenessEffectProcessor)initWithProcessingFormat:(id)format framesPerRender:(unsigned int)render audioSession:(id)session effectParameters:(id)parameters
 {
-  var2 = a6.var2;
-  v65 = *&a6.var0;
+  var2 = parameters.var2;
+  v65 = *&parameters.var0;
   v81 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v67 = a5;
+  formatCopy = format;
+  sessionCopy = session;
   v76.receiver = self;
   v76.super_class = TLAttentionAwarenessEffectProcessor;
   v9 = [(TLAttentionAwarenessEffectProcessor *)&v76 init];
@@ -30,9 +30,9 @@
     v10 = objc_opt_class();
     v11 = MEMORY[0x1E696AEC0];
     v12 = [MEMORY[0x1E696AAE8] bundleForClass:v10];
-    v13 = [v12 bundleIdentifier];
+    bundleIdentifier = [v12 bundleIdentifier];
     v14 = NSStringFromClass(v10);
-    v15 = [v11 stringWithFormat:@"%@.%@-%@", v13, v14, @"AccessQueue"];
+    v15 = [v11 stringWithFormat:@"%@.%@-%@", bundleIdentifier, v14, @"AccessQueue"];
     accessQueueLabel = v9->_accessQueueLabel;
     v9->_accessQueueLabel = v15;
 
@@ -40,14 +40,14 @@
     accessQueue = v9->_accessQueue;
     v9->_accessQueue = v17;
 
-    objc_storeStrong(&v9->_audioSession, a5);
+    objc_storeStrong(&v9->_audioSession, session);
     v19 = objc_alloc_init(MEMORY[0x1E69583F8]);
     engine = v9->_engine;
     v9->_engine = v19;
 
     v21 = v9->_engine;
     v75 = 0;
-    v22 = [(AVAudioEngine *)v21 enableManualRenderingMode:1 format:v8 maximumFrameCount:a4 error:&v75];
+    v22 = [(AVAudioEngine *)v21 enableManualRenderingMode:1 format:formatCopy maximumFrameCount:render error:&v75];
     v23 = v75;
     if (v23)
     {
@@ -61,9 +61,9 @@
 
     if (v24)
     {
-      v25 = [(AVAudioEngine *)v9->_engine inputNode];
+      inputNode = [(AVAudioEngine *)v9->_engine inputNode];
       inputNode = v9->_inputNode;
-      v9->_inputNode = v25;
+      v9->_inputNode = inputNode;
 
       v27 = objc_alloc_init(MEMORY[0x1E69584C0]);
       lowPassFilter = v9->_lowPassFilter;
@@ -75,15 +75,15 @@
 
       [(AVAudioEngine *)v9->_engine attachNode:v9->_lowPassFilter];
       [(AVAudioEngine *)v9->_engine attachNode:v9->_reverb];
-      [(AVAudioEngine *)v9->_engine connect:v9->_lowPassFilter to:v9->_reverb format:v8];
+      [(AVAudioEngine *)v9->_engine connect:v9->_lowPassFilter to:v9->_reverb format:formatCopy];
       v31 = v9->_engine;
       v32 = v9->_reverb;
-      v33 = [(AVAudioEngine *)v31 mainMixerNode];
-      [(AVAudioEngine *)v31 connect:v32 to:v33 fromBus:0 toBus:1 format:v8];
+      mainMixerNode = [(AVAudioEngine *)v31 mainMixerNode];
+      [(AVAudioEngine *)v31 connect:v32 to:mainMixerNode fromBus:0 toBus:1 format:formatCopy];
 
       v34 = objc_alloc(MEMORY[0x1E69583E0]);
-      v35 = [(AVAudioEngine *)v9->_engine mainMixerNode];
-      v62 = [v34 initWithNode:v35 bus:0];
+      mainMixerNode2 = [(AVAudioEngine *)v9->_engine mainMixerNode];
+      v62 = [v34 initWithNode:mainMixerNode2 bus:0];
 
       v36 = [objc_alloc(MEMORY[0x1E69583E0]) initWithNode:v9->_lowPassFilter bus:0];
       v37 = v9->_engine;
@@ -91,7 +91,7 @@
       v77[0] = v62;
       v77[1] = v36;
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:2];
-      [(AVAudioEngine *)v37 connect:v38 toConnectionPoints:v39 fromBus:0 format:v8];
+      [(AVAudioEngine *)v37 connect:v38 toConnectionPoints:v39 fromBus:0 format:formatCopy];
 
       v66 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v61 = [v66 URLForResource:@"PearlID_Equalizer" withExtension:@"aupreset"];
@@ -109,16 +109,16 @@
         }
       }
 
-      v63 = [(AVAudioUnitEQ *)v9->_lowPassFilter bands];
+      bands = [(AVAudioUnitEQ *)v9->_lowPassFilter bands];
       v43 = TLLogPlayback();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
       {
-        v59 = [(AVAudioUnitEQ *)v9->_lowPassFilter bypass];
-        v60 = [v63 count];
+        bypass = [(AVAudioUnitEQ *)v9->_lowPassFilter bypass];
+        v60 = [bands count];
         *location = 138543874;
         *&location[4] = v9;
         v79 = 1024;
-        *v80 = v59;
+        *v80 = bypass;
         *&v80[4] = 2048;
         *&v80[6] = v60;
         _os_log_debug_impl(&dword_1D9356000, v43, OS_LOG_TYPE_DEBUG, "%{public}@: -init. Equalizer bypass: %{BOOL}d. Number of bands: %lu.", location, 0x1Cu);
@@ -130,7 +130,7 @@
       v72[3] = &unk_1E8579618;
       v44 = v9;
       v73 = v44;
-      [v63 enumerateObjectsUsingBlock:v72];
+      [bands enumerateObjectsUsingBlock:v72];
       v45 = [v66 URLForResource:@"PearlID_Reverb" withExtension:@"aupreset"];
       v46 = v9->_reverb;
       v71 = v41;
@@ -152,15 +152,15 @@
         [TLAttentionAwarenessEffectProcessor initWithProcessingFormat:v44 framesPerRender:&v9->_reverb audioSession:? effectParameters:?];
       }
 
-      v50 = [(AVAudioEngine *)v9->_engine mainMixerNode];
+      mainMixerNode3 = [(AVAudioEngine *)v9->_engine mainMixerNode];
       LODWORD(v51) = 1.0;
-      [v50 setOutputVolume:v51];
+      [mainMixerNode3 setOutputVolume:v51];
 
-      v52 = [objc_alloc(MEMORY[0x1E6958440]) initWithPCMFormat:v8 frameCapacity:a4];
+      v52 = [objc_alloc(MEMORY[0x1E6958440]) initWithPCMFormat:formatCopy frameCapacity:render];
       destinationPCMBuffer = v44->_destinationPCMBuffer;
       v44->_destinationPCMBuffer = v52;
 
-      [(AVAudioPCMBuffer *)v44->_destinationPCMBuffer setFrameLength:a4];
+      [(AVAudioPCMBuffer *)v44->_destinationPCMBuffer setFrameLength:render];
       objc_initWeak(location, v44);
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
@@ -168,7 +168,7 @@
       v69[3] = &unk_1E8579640;
       objc_copyWeak(&v70, location);
       v54 = MEMORY[0x1DA730160](v69);
-      if ([(AVAudioInputNode *)v9->_inputNode setManualRenderingInputPCMFormat:v8 inputBlock:v54])
+      if ([(AVAudioInputNode *)v9->_inputNode setManualRenderingInputPCMFormat:formatCopy inputBlock:v54])
       {
         *&v44->_effectParameters.shouldBypassLowPassFilter = v65;
         v44->_effectParameters.effectMix = var2;
@@ -192,14 +192,14 @@
       v36 = TLLogPlayback();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v57 = [v23 tl_nonRedundantDescription];
-        v58 = [v8 description];
+        tl_nonRedundantDescription = [v23 tl_nonRedundantDescription];
+        v58 = [formatCopy description];
         *location = 138543874;
-        *&location[4] = v57;
+        *&location[4] = tl_nonRedundantDescription;
         v79 = 2114;
         *v80 = v58;
         *&v80[8] = 2048;
-        *&v80[10] = a4;
+        *&v80[10] = render;
         _os_log_error_impl(&dword_1D9356000, v36, OS_LOG_TYPE_ERROR, "Could not switch engine to offline mode, error %{public}@, format = %{public}@, maximumNumberOfFrames = %ld.", location, 0x20u);
       }
 
@@ -311,7 +311,7 @@ uint64_t __55__TLAttentionAwarenessEffectProcessor_effectParameters__block_invok
   return result;
 }
 
-- (void)setEffectParameters:(id)a3 effectMixFadeDuration:(double)a4
+- (void)setEffectParameters:(id)parameters effectMixFadeDuration:(double)duration
 {
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -319,8 +319,8 @@ uint64_t __55__TLAttentionAwarenessEffectProcessor_effectParameters__block_invok
   v5[2] = __81__TLAttentionAwarenessEffectProcessor_setEffectParameters_effectMixFadeDuration___block_invoke;
   v5[3] = &unk_1E8579690;
   v5[4] = self;
-  v6 = a3;
-  *&v5[5] = a4;
+  parametersCopy = parameters;
+  *&v5[5] = duration;
   dispatch_sync(accessQueue, v5);
 }
 
@@ -464,27 +464,27 @@ void __81__TLAttentionAwarenessEffectProcessor_setEffectParameters_effectMixFade
   return v4;
 }
 
-- (void)_applyEffectMix:(float)a3
+- (void)_applyEffectMix:(float)mix
 {
   inputNode = self->_inputNode;
-  v6 = [(AVAudioEngine *)self->_engine mainMixerNode];
-  v12 = [(AVAudioInputNode *)inputNode destinationForMixer:v6 bus:1];
+  mainMixerNode = [(AVAudioEngine *)self->_engine mainMixerNode];
+  v12 = [(AVAudioInputNode *)inputNode destinationForMixer:mainMixerNode bus:1];
 
-  *&v7 = a3;
+  *&v7 = mix;
   [v12 setVolume:v7];
   v8 = self->_inputNode;
-  v9 = [(AVAudioEngine *)self->_engine mainMixerNode];
-  v10 = [(AVAudioInputNode *)v8 destinationForMixer:v9 bus:0];
+  mainMixerNode2 = [(AVAudioEngine *)self->_engine mainMixerNode];
+  v10 = [(AVAudioInputNode *)v8 destinationForMixer:mainMixerNode2 bus:0];
 
-  *&v11 = 1.0 - a3;
+  *&v11 = 1.0 - mix;
   [v10 setVolume:v11];
 }
 
 - (float)_currentEffectMix
 {
   inputNode = self->_inputNode;
-  v3 = [(AVAudioEngine *)self->_engine mainMixerNode];
-  v4 = [(AVAudioInputNode *)inputNode destinationForMixer:v3 bus:1];
+  mainMixerNode = [(AVAudioEngine *)self->_engine mainMixerNode];
+  v4 = [(AVAudioInputNode *)inputNode destinationForMixer:mainMixerNode bus:1];
 
   [v4 volume];
   v6 = v5;
@@ -492,24 +492,24 @@ void __81__TLAttentionAwarenessEffectProcessor_setEffectParameters_effectMixFade
   return v6;
 }
 
-- (float)_sanitizeEffectMix:(float)a3
+- (float)_sanitizeEffectMix:(float)mix
 {
-  v3 = a3;
-  if (v3 < 0.0)
+  mixCopy = mix;
+  if (mixCopy < 0.0)
   {
-    v3 = 0.0;
+    mixCopy = 0.0;
   }
 
-  return fmin(v3, 1.0);
+  return fmin(mixCopy, 1.0);
 }
 
-- (void)_applyEffectParameters:(id)a3 includingEffectMix:(BOOL)a4
+- (void)_applyEffectParameters:(id)parameters includingEffectMix:(BOOL)mix
 {
-  v4 = a4;
-  var2 = a3.var2;
+  mixCopy = mix;
+  var2 = parameters.var2;
   v24 = *MEMORY[0x1E69E9840];
-  var1 = a3.var1;
-  if ([(AVAudioUnitEQ *)self->_lowPassFilter bypass]!= a3.var0)
+  var1 = parameters.var1;
+  if ([(AVAudioUnitEQ *)self->_lowPassFilter bypass]!= parameters.var0)
   {
     [(AVAudioUnitEQ *)self->_lowPassFilter setBypass:?];
   }
@@ -520,8 +520,8 @@ void __81__TLAttentionAwarenessEffectProcessor_setEffectParameters_effectMixFade
     [TLAttentionAwarenessEffectProcessor _applyEffectParameters:? includingEffectMix:?];
   }
 
-  v9 = [(AVAudioSession *)self->_audioSession category];
-  if ([v9 isEqualToString:*MEMORY[0x1E6958080]])
+  category = [(AVAudioSession *)self->_audioSession category];
+  if ([category isEqualToString:*MEMORY[0x1E6958080]])
   {
     if (var1 > 1.0 || (v10 = -20.0, var1 <= 0.875))
     {
@@ -553,7 +553,7 @@ LABEL_31:
   else
   {
     v10 = 0.0;
-    if ([v9 isEqualToString:*MEMORY[0x1E6958030]])
+    if ([category isEqualToString:*MEMORY[0x1E6958030]])
     {
       if (var1 > 1.0 || (v10 = -28.0, var1 <= 0.875))
       {
@@ -592,16 +592,16 @@ LABEL_31:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v18 = 138543874;
-      v19 = self;
+      selfCopy = self;
       v20 = 2048;
       v21 = v10;
       v22 = 2114;
-      v23 = v9;
+      v23 = category;
       _os_log_debug_impl(&dword_1D9356000, v15, OS_LOG_TYPE_DEBUG, "%{public}@: -_applyEffectParameters:. Set low pass filter global gain to %0.2f for audio session category %{public}@.", &v18, 0x20u);
     }
   }
 
-  if (v4)
+  if (mixCopy)
   {
     *&v16 = var2;
     [(TLAttentionAwarenessEffectProcessor *)self _applyEffectMix:v16];
@@ -635,16 +635,16 @@ LABEL_31:
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLAttentionAwarenessEffectProcessor _assertRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 400;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -694,16 +694,16 @@ LABEL_31:
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLAttentionAwarenessEffectProcessor _assertNotRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 408;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -773,7 +773,7 @@ void __81__TLAttentionAwarenessEffectProcessor_setEffectParameters_effectMixFade
 - (void)start
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = [a1 tl_nonRedundantDescription];
+  tl_nonRedundantDescription = [self tl_nonRedundantDescription];
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 

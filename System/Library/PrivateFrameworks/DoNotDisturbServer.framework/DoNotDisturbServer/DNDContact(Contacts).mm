@@ -11,31 +11,31 @@
   v41 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = objc_alloc_init(MEMORY[0x277D05A28]);
-  v5 = [v3 identifier];
-  [v4 setContactIdentifier:v5];
+  identifier = [v3 identifier];
+  [v4 setContactIdentifier:identifier];
 
-  v6 = [v3 givenName];
-  [v4 setFirstName:v6];
+  givenName = [v3 givenName];
+  [v4 setFirstName:givenName];
 
-  v7 = [v3 middleName];
-  [v4 setMiddleName:v7];
+  middleName = [v3 middleName];
+  [v4 setMiddleName:middleName];
 
-  v8 = [v3 familyName];
-  [v4 setLastName:v8];
+  familyName = [v3 familyName];
+  [v4 setLastName:familyName];
 
-  v9 = [v3 nickname];
-  [v4 setNickName:v9];
+  nickname = [v3 nickname];
+  [v4 setNickName:nickname];
 
-  v10 = [v3 organizationName];
-  [v4 setOrganizationName:v10];
+  organizationName = [v3 organizationName];
+  [v4 setOrganizationName:organizationName];
 
   v11 = [MEMORY[0x277CBEB58] set];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = [v3 emailAddresses];
-  v13 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  emailAddresses = [v3 emailAddresses];
+  v13 = [emailAddresses countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v13)
   {
     v14 = v13;
@@ -46,14 +46,14 @@
       {
         if (*v36 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(emailAddresses);
         }
 
-        v17 = [*(*(&v35 + 1) + 8 * i) value];
-        [v11 addObject:v17];
+        value = [*(*(&v35 + 1) + 8 * i) value];
+        [v11 addObject:value];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v14 = [emailAddresses countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v14);
@@ -66,8 +66,8 @@
   v33 = 0u;
   v34 = 0u;
   v30 = v3;
-  v19 = [v3 phoneNumbers];
-  v20 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  phoneNumbers = [v3 phoneNumbers];
+  v20 = [phoneNumbers countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v20)
   {
     v21 = v20;
@@ -78,17 +78,17 @@
       {
         if (*v32 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(phoneNumbers);
         }
 
-        v24 = [*(*(&v31 + 1) + 8 * j) value];
-        v25 = [v24 stringValue];
+        value2 = [*(*(&v31 + 1) + 8 * j) value];
+        stringValue = [value2 stringValue];
 
-        v26 = [MEMORY[0x277D058F0] normalizePhoneNumber:v25];
+        v26 = [MEMORY[0x277D058F0] normalizePhoneNumber:stringValue];
         [v18 addObject:v26];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v21 = [phoneNumbers countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v21);
@@ -117,25 +117,25 @@
 - (id)sanitizedContactWithContactStore:()Contacts withError:
 {
   v6 = a3;
-  v7 = a1;
-  v8 = [MEMORY[0x277D058F0] keysToFetch];
-  v9 = [v7 contactIdentifier];
-  if (!v9)
+  selfCopy = self;
+  keysToFetch = [MEMORY[0x277D058F0] keysToFetch];
+  contactIdentifier = [selfCopy contactIdentifier];
+  if (!contactIdentifier)
   {
     goto LABEL_5;
   }
 
-  v10 = [v7 phoneNumbers];
-  if ([v10 count])
+  phoneNumbers = [selfCopy phoneNumbers];
+  if ([phoneNumbers count])
   {
-    v11 = [v7 emailAddresses];
-    v12 = [v11 count];
+    emailAddresses = [selfCopy emailAddresses];
+    v12 = [emailAddresses count];
 
     if (v12)
     {
-      v9 = 0;
+      contactIdentifier = 0;
 LABEL_5:
-      v13 = v7;
+      v13 = selfCopy;
       goto LABEL_14;
     }
   }
@@ -144,23 +144,23 @@ LABEL_5:
   {
   }
 
-  v14 = [v7 contactIdentifier];
+  contactIdentifier2 = [selfCopy contactIdentifier];
   v19 = 0;
-  v15 = [v6 unifiedContactWithIdentifier:v14 keysToFetch:v8 error:&v19];
-  v9 = v19;
+  v15 = [v6 unifiedContactWithIdentifier:contactIdentifier2 keysToFetch:keysToFetch error:&v19];
+  contactIdentifier = v19;
 
-  v13 = v7;
+  v13 = selfCopy;
   if (v15)
   {
     v13 = [MEMORY[0x277D058F0] contactWithCNContact:v15];
   }
 
-  if (v9)
+  if (contactIdentifier)
   {
     v16 = DNDSLogSettings;
     if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_ERROR))
     {
-      [(DNDContact(Contacts) *)v7 sanitizedContactWithContactStore:v9 withError:v16];
+      [(DNDContact(Contacts) *)selfCopy sanitizedContactWithContactStore:contactIdentifier withError:v16];
       if (!a4)
       {
         goto LABEL_13;
@@ -172,8 +172,8 @@ LABEL_5:
     if (a4)
     {
 LABEL_12:
-      v17 = v9;
-      *a4 = v9;
+      v17 = contactIdentifier;
+      *a4 = contactIdentifier;
     }
   }
 

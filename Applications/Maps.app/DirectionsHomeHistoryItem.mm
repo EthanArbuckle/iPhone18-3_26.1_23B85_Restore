@@ -1,8 +1,8 @@
 @interface DirectionsHomeHistoryItem
 - (AddressBookAddress)homeAddress;
 - (DirectionsHomeHistoryItem)init;
-- (id)entryWithTicket:(id)a3;
-- (void)updateModel:(id)a3;
+- (id)entryWithTicket:(id)ticket;
+- (void)updateModel:(id)model;
 @end
 
 @implementation DirectionsHomeHistoryItem
@@ -10,9 +10,9 @@
 - (AddressBookAddress)homeAddress
 {
   v2 = +[AddressBookManager sharedManager];
-  v3 = [v2 meCardHomeAddress];
+  meCardHomeAddress = [v2 meCardHomeAddress];
 
-  return v3;
+  return meCardHomeAddress;
 }
 
 - (DirectionsHomeHistoryItem)init
@@ -29,57 +29,57 @@
   return v2;
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Home [Address Book label]" value:@"localized string not found" table:0];
-  [v4 setFirstLine:v6];
+  [modelCopy setFirstLine:v6];
 
-  v7 = [(DirectionsHomeHistoryItem *)self homeAddress];
-  v8 = [v7 singleLineAddress];
-  [v4 setSecondLine:v8];
+  homeAddress = [(DirectionsHomeHistoryItem *)self homeAddress];
+  singleLineAddress = [homeAddress singleLineAddress];
+  [modelCopy setSecondLine:singleLineAddress];
 
-  v9 = [(DirectionsHomeHistoryItem *)self homeAddress];
-  v10 = [v9 geocodedMapItem];
-  [v4 setMapItem:v10];
+  homeAddress2 = [(DirectionsHomeHistoryItem *)self homeAddress];
+  geocodedMapItem = [homeAddress2 geocodedMapItem];
+  [modelCopy setMapItem:geocodedMapItem];
 
-  v11 = [v4 mapItem];
-  if (v11)
+  mapItem = [modelCopy mapItem];
+  if (mapItem)
   {
   }
 
   else
   {
-    v12 = [(DirectionsHomeHistoryItem *)self homeAddress];
-    v13 = [v12 geocodingError];
+    homeAddress3 = [(DirectionsHomeHistoryItem *)self homeAddress];
+    geocodingError = [homeAddress3 geocodingError];
 
-    if (!v13)
+    if (!geocodingError)
     {
-      v14 = [(DirectionsHomeHistoryItem *)self homeAddress];
+      homeAddress4 = [(DirectionsHomeHistoryItem *)self homeAddress];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_10080194C;
       v15[3] = &unk_101630438;
-      v16 = v4;
-      [v14 forwardGeocodeAddress:v15];
+      v16 = modelCopy;
+      [homeAddress4 forwardGeocodeAddress:v15];
     }
   }
 
-  [v4 setDebugSubtitle:@"[Home]"];
+  [modelCopy setDebugSubtitle:@"[Home]"];
 }
 
-- (id)entryWithTicket:(id)a3
+- (id)entryWithTicket:(id)ticket
 {
   v4 = [[GEORPSuggestionEntry alloc] initWithType:4];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Home [Address Book label]" value:@"localized string not found" table:0];
   [v4 safeAddDisplayLine:v6];
 
-  v7 = [(DirectionsHomeHistoryItem *)self currentLocation];
-  v8 = [v7 mapItem];
-  v9 = [v8 name];
-  [v4 safeAddDisplayLine:v9];
+  currentLocation = [(DirectionsHomeHistoryItem *)self currentLocation];
+  mapItem = [currentLocation mapItem];
+  name = [mapItem name];
+  [v4 safeAddDisplayLine:name];
 
   return v4;
 }

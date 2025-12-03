@@ -1,5 +1,5 @@
 @interface GEODirectionsRequestConfig
-- (GEODirectionsRequestConfig)initWithRequest:(id)a3 requestPriority:(id)a4;
+- (GEODirectionsRequestConfig)initWithRequest:(id)request requestPriority:(id)priority;
 - (id)additionalHTTPHeaders;
 - (id)additionalStatesForNetworkEvent;
 - (id)additionalURLQueryItems;
@@ -14,23 +14,23 @@
   [v3 setDirectionsDetail:v4];
 
   [v3 setStateType:721];
-  v5 = [(GEODirectionsRequest *)self->_request routeAttributes];
-  v6 = [v5 hasMainTransportType];
+  routeAttributes = [(GEODirectionsRequest *)self->_request routeAttributes];
+  hasMainTransportType = [routeAttributes hasMainTransportType];
 
-  if (v6)
+  if (hasMainTransportType)
   {
-    v7 = [(GEODirectionsRequest *)self->_request routeAttributes];
-    v8 = [v7 mainTransportType];
-    v9 = [v3 directionsDetail];
-    [v9 setTransportType:v8];
+    routeAttributes2 = [(GEODirectionsRequest *)self->_request routeAttributes];
+    mainTransportType = [routeAttributes2 mainTransportType];
+    directionsDetail = [v3 directionsDetail];
+    [directionsDetail setTransportType:mainTransportType];
   }
 
-  v10 = [(GEODirectionsRequest *)self->_request routeAttributes];
-  v11 = [v10 automobileOptions];
-  v12 = [v11 vehicleSpecifications];
-  v13 = [v12 hasEvInfo];
-  v14 = [v3 directionsDetail];
-  [v14 setIsEv:v13];
+  routeAttributes3 = [(GEODirectionsRequest *)self->_request routeAttributes];
+  automobileOptions = [routeAttributes3 automobileOptions];
+  vehicleSpecifications = [automobileOptions vehicleSpecifications];
+  hasEvInfo = [vehicleSpecifications hasEvInfo];
+  directionsDetail2 = [v3 directionsDetail];
+  [directionsDetail2 setIsEv:hasEvInfo];
 
   v17 = v3;
   v15 = [NSArray arrayWithObjects:&v17 count:1];
@@ -75,67 +75,67 @@
 
     v6 = [(__CFString *)v5 stringByAppendingString:v4];
     v7 = [NSURLComponents componentsWithString:v6];
-    v8 = [v7 queryItems];
+    queryItems = [v7 queryItems];
 
-    if (v8)
+    if (queryItems)
     {
-      v9 = [v7 queryItems];
-      v8 = [NSMutableArray arrayWithArray:v9];
+      queryItems2 = [v7 queryItems];
+      queryItems = [NSMutableArray arrayWithArray:queryItems2];
     }
   }
 
   else
   {
-    v8 = 0;
+    queryItems = 0;
   }
 
   v10 = GeoServicesConfig_DirectionsRequestURLQueryItems[1];
   v11 = GEOConfigGetDictionary();
   if ([v11 count])
   {
-    if (!v8)
+    if (!queryItems)
     {
-      v8 = +[NSMutableArray array];
+      queryItems = +[NSMutableArray array];
     }
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100046540;
     v16[3] = &unk_100083550;
-    v8 = v8;
-    v17 = v8;
+    queryItems = queryItems;
+    v17 = queryItems;
     [v11 enumerateKeysAndObjectsUsingBlock:v16];
   }
 
-  if (v8)
+  if (queryItems)
   {
-    v12 = v8;
+    additionalURLQueryItems = queryItems;
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = GEODirectionsRequestConfig;
-    v12 = [(GEODirectionsRequestConfig *)&v15 additionalURLQueryItems];
+    additionalURLQueryItems = [(GEODirectionsRequestConfig *)&v15 additionalURLQueryItems];
   }
 
-  v13 = v12;
+  v13 = additionalURLQueryItems;
 
   return v13;
 }
 
-- (GEODirectionsRequestConfig)initWithRequest:(id)a3 requestPriority:(id)a4
+- (GEODirectionsRequestConfig)initWithRequest:(id)request requestPriority:(id)priority
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  priorityCopy = priority;
   v14.receiver = self;
   v14.super_class = GEODirectionsRequestConfig;
   v9 = [(GEODirectionsRequestConfig *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_request, request);
+    v11 = [priorityCopy copy];
     requestPriority = v10->_requestPriority;
     v10->_requestPriority = v11;
   }

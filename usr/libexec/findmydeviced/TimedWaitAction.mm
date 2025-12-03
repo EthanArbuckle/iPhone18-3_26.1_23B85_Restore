@@ -1,26 +1,26 @@
 @interface TimedWaitAction
-- (BOOL)shouldCancelAction:(id)a3;
-- (BOOL)shouldWaitForAction:(id)a3;
+- (BOOL)shouldCancelAction:(id)action;
+- (BOOL)shouldWaitForAction:(id)action;
 - (NSString)description;
-- (TimedWaitAction)initWithAction:(id)a3 executeAt:(id)a4;
-- (void)runWithCompletion:(id)a3;
+- (TimedWaitAction)initWithAction:(id)action executeAt:(id)at;
+- (void)runWithCompletion:(id)completion;
 - (void)willCancelAction;
 @end
 
 @implementation TimedWaitAction
 
-- (TimedWaitAction)initWithAction:(id)a3 executeAt:(id)a4
+- (TimedWaitAction)initWithAction:(id)action executeAt:(id)at
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  atCopy = at;
   v11.receiver = self;
   v11.super_class = TimedWaitAction;
   v8 = [(TimedWaitAction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(TimedWaitAction *)v8 setEmbeddedAction:v6];
-    [(TimedWaitAction *)v9 setExecutionDate:v7];
+    [(TimedWaitAction *)v8 setEmbeddedAction:actionCopy];
+    [(TimedWaitAction *)v9 setExecutionDate:atCopy];
   }
 
   return v9;
@@ -28,23 +28,23 @@
 
 - (NSString)description
 {
-  v3 = [(TimedWaitAction *)self executionDate];
+  executionDate = [(TimedWaitAction *)self executionDate];
   v4 = +[NSDate date];
-  [v3 timeIntervalSinceDate:v4];
+  [executionDate timeIntervalSinceDate:v4];
   v6 = v5;
 
-  v7 = [(TimedWaitAction *)self embeddedAction];
-  v8 = [NSString stringWithFormat:@"TimedWait(0x%p)-%ld-%@", self, v6, v7];
+  embeddedAction = [(TimedWaitAction *)self embeddedAction];
+  v8 = [NSString stringWithFormat:@"TimedWait(0x%p)-%ld-%@", self, v6, embeddedAction];
 
   return v8;
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TimedWaitAction *)self executionDate];
+  completionCopy = completion;
+  executionDate = [(TimedWaitAction *)self executionDate];
   v6 = +[NSDate date];
-  [v5 timeIntervalSinceDate:v6];
+  [executionDate timeIntervalSinceDate:v6];
   v8 = v7;
 
   v9 = [FMDispatchTimer alloc];
@@ -53,26 +53,26 @@
   v15 = 3221225472;
   v16 = sub_10019C9E4;
   v17 = &unk_1002CD8B0;
-  v18 = self;
-  v19 = v4;
-  v11 = v4;
+  selfCopy = self;
+  v19 = completionCopy;
+  v11 = completionCopy;
   v12 = [v9 initWithQueue:v10 timeout:&v14 completion:v8];
-  [(TimedWaitAction *)self setTimer:v12, v14, v15, v16, v17, v18];
+  [(TimedWaitAction *)self setTimer:v12, v14, v15, v16, v17, selfCopy];
 
-  v13 = [(TimedWaitAction *)self timer];
-  [v13 start];
+  timer = [(TimedWaitAction *)self timer];
+  [timer start];
 }
 
-- (BOOL)shouldCancelAction:(id)a3
+- (BOOL)shouldCancelAction:(id)action
 {
-  v4 = a3;
-  v5 = [(TimedWaitAction *)self embeddedAction];
+  actionCopy = action;
+  embeddedAction = [(TimedWaitAction *)self embeddedAction];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TimedWaitAction *)self embeddedAction];
-    v8 = [v7 shouldCancelAction:v4];
+    embeddedAction2 = [(TimedWaitAction *)self embeddedAction];
+    v8 = [embeddedAction2 shouldCancelAction:actionCopy];
   }
 
   else
@@ -83,16 +83,16 @@
   return v8;
 }
 
-- (BOOL)shouldWaitForAction:(id)a3
+- (BOOL)shouldWaitForAction:(id)action
 {
-  v4 = a3;
-  v5 = [(TimedWaitAction *)self embeddedAction];
+  actionCopy = action;
+  embeddedAction = [(TimedWaitAction *)self embeddedAction];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TimedWaitAction *)self embeddedAction];
-    v8 = [v7 shouldWaitForAction:v4];
+    embeddedAction2 = [(TimedWaitAction *)self embeddedAction];
+    v8 = [embeddedAction2 shouldWaitForAction:actionCopy];
   }
 
   else
@@ -105,17 +105,17 @@
 
 - (void)willCancelAction
 {
-  v3 = [(TimedWaitAction *)self timer];
-  [v3 cancel];
+  timer = [(TimedWaitAction *)self timer];
+  [timer cancel];
 
   [(TimedWaitAction *)self setTimer:0];
-  v4 = [(TimedWaitAction *)self embeddedAction];
+  embeddedAction = [(TimedWaitAction *)self embeddedAction];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(TimedWaitAction *)self embeddedAction];
-    [v6 willCancelAction];
+    embeddedAction2 = [(TimedWaitAction *)self embeddedAction];
+    [embeddedAction2 willCancelAction];
   }
 }
 

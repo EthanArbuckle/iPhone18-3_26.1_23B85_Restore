@@ -1,54 +1,54 @@
 @interface ASSmartMailTask
-- (ASSmartMailTask)initWithMessage:(id)a3 messageID:(id)a4 messageType:(int)a5 originalMessageID:(id)a6 instanceId:(id)a7 originalFolderID:(id)a8 originalLongID:(id)a9 replaceMime:(BOOL)a10;
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
+- (ASSmartMailTask)initWithMessage:(id)message messageID:(id)d messageType:(int)type originalMessageID:(id)iD instanceId:(id)id originalFolderID:(id)folderID originalLongID:(id)longID replaceMime:(BOOL)self0;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
 - (id)command;
 - (id)parameterData;
-- (id)requestBodyStreamOutKnownSize:(int *)a3;
+- (id)requestBodyStreamOutKnownSize:(int *)size;
 - (int)commandCode;
-- (void)handleTopLevelErrorStatus:(id)a3;
+- (void)handleTopLevelErrorStatus:(id)status;
 @end
 
 @implementation ASSmartMailTask
 
-- (ASSmartMailTask)initWithMessage:(id)a3 messageID:(id)a4 messageType:(int)a5 originalMessageID:(id)a6 instanceId:(id)a7 originalFolderID:(id)a8 originalLongID:(id)a9 replaceMime:(BOOL)a10
+- (ASSmartMailTask)initWithMessage:(id)message messageID:(id)d messageType:(int)type originalMessageID:(id)iD instanceId:(id)id originalFolderID:(id)folderID originalLongID:(id)longID replaceMime:(BOOL)self0
 {
-  v23 = a6;
-  v22 = a7;
-  v17 = a8;
-  v18 = a9;
+  iDCopy = iD;
+  idCopy = id;
+  folderIDCopy = folderID;
+  longIDCopy = longID;
   v24.receiver = self;
   v24.super_class = ASSmartMailTask;
-  v19 = [(ASSendMailTask *)&v24 initWithMessage:a3 messageID:a4];
+  v19 = [(ASSendMailTask *)&v24 initWithMessage:message messageID:d];
   v20 = v19;
   if (v19)
   {
-    v19->_messageType = a5;
-    objc_storeStrong(&v19->_originalMessageId, a6);
-    objc_storeStrong(&v20->_instanceId, a7);
-    objc_storeStrong(&v20->_originalFolderId, a8);
-    objc_storeStrong(&v20->_originalLongId, a9);
-    v20->_replaceMime = a10;
+    v19->_messageType = type;
+    objc_storeStrong(&v19->_originalMessageId, iD);
+    objc_storeStrong(&v20->_instanceId, id);
+    objc_storeStrong(&v20->_originalFolderId, folderID);
+    objc_storeStrong(&v20->_originalLongId, longID);
+    v20->_replaceMime = mime;
   }
 
   return v20;
 }
 
-- (id)requestBodyStreamOutKnownSize:(int *)a3
+- (id)requestBodyStreamOutKnownSize:(int *)size
 {
   if (self->_retryWithoutReferences)
   {
     v22.receiver = self;
     v22.super_class = ASSmartMailTask;
-    v5 = [(ASSendMailTask *)&v22 requestBodyStreamOutKnownSize:a3];
+    v5 = [(ASSendMailTask *)&v22 requestBodyStreamOutKnownSize:size];
   }
 
   else
   {
-    v6 = [(ASTask *)self taskManager];
-    v7 = [v6 protocol];
+    taskManager = [(ASTask *)self taskManager];
+    protocol = [taskManager protocol];
 
-    if ([v7 sendEmailInWBXML])
+    if ([protocol sendEmailInWBXML])
     {
       v8 = objc_opt_new();
       [v8 switchToCodePage:21];
@@ -103,10 +103,10 @@
       v18 = objc_opt_new();
       [v18 appendBytes:&v21 length:1];
       [v18 appendBytes:&v21 length:1];
-      if (a3)
+      if (size)
       {
         v19 = [v13 length];
-        *a3 = v16 + [v18 length] + v19;
+        *size = v16 + [v18 length] + v19;
       }
 
       v5 = [[DAConvertCRtoCRLFStream alloc] initWithMIMEData:self->super._mimeMessage preflightData:v13 postflightData:v18 intendToStream:1];
@@ -149,17 +149,17 @@
   {
     v6.receiver = self;
     v6.super_class = ASSmartMailTask;
-    v2 = [(ASSendMailTask *)&v6 parameterData];
+    parameterData = [(ASSendMailTask *)&v6 parameterData];
   }
 
   else
   {
     v5 = 1;
     v4 = 263;
-    v2 = [MEMORY[0x277CBEA90] dataWithBytes:&v4 length:3];
+    parameterData = [MEMORY[0x277CBEA90] dataWithBytes:&v4 length:3];
   }
 
-  return v2;
+  return parameterData;
 }
 
 - (id)command
@@ -170,26 +170,26 @@
     v8 = v3;
     v6.receiver = self;
     v6.super_class = ASSmartMailTask;
-    v4 = [(ASSendMailTask *)&v6 command];
+    command = [(ASSendMailTask *)&v6 command];
   }
 
   else
   {
     if (self->_messageType == 1)
     {
-      v4 = @"SmartReply";
+      command = @"SmartReply";
     }
 
     else
     {
-      v4 = @"SmartForward";
+      command = @"SmartForward";
     }
   }
 
-  return v4;
+  return command;
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
   if (self->_retryWithoutReferences)
   {
@@ -197,12 +197,12 @@
     v11 = v6;
     v9.receiver = self;
     v9.super_class = ASSmartMailTask;
-    return [(ASSendMailTask *)&v9 getTopLevelToken:a3 outStatusCodePage:a4 outStatusToken:a5];
+    return [(ASSendMailTask *)&v9 getTopLevelToken:token outStatusCodePage:page outStatusToken:statusToken];
   }
 
   else
   {
-    *a4 = 21;
+    *page = 21;
     if (self->_messageType == 1)
     {
       v8 = 7;
@@ -213,17 +213,17 @@
       v8 = 6;
     }
 
-    *a3 = v8;
-    *a5 = 18;
+    *token = v8;
+    *statusToken = 18;
     return 1;
   }
 }
 
-- (void)handleTopLevelErrorStatus:(id)a3
+- (void)handleTopLevelErrorStatus:(id)status
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 intValue] == 150 && !-[ASSmartMailTask shouldNotRetry](self, "shouldNotRetry"))
+  statusCopy = status;
+  if ([statusCopy intValue] == 150 && !-[ASSmartMailTask shouldNotRetry](self, "shouldNotRetry"))
   {
     if (self->_retryWithoutReferences)
     {
@@ -235,7 +235,7 @@
     if (os_log_type_enabled(v6, v7))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_24A0AC000, v6, v7, "Our original email has disappeared, resending this email as though it was new. Self = %@", buf, 0xCu);
     }
 
@@ -249,27 +249,27 @@
   {
     v10.receiver = self;
     v10.super_class = ASSmartMailTask;
-    [(ASTask *)&v10 handleTopLevelErrorStatus:v5];
+    [(ASTask *)&v10 handleTopLevelErrorStatus:statusCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (!self->_retryWithoutReferences)
   {
-    v6 = [(ASTask *)self currentlyParsingItem];
+    currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-    if (v6)
+    if (currentlyParsingItem)
     {
 LABEL_4:
-      v7 = [(ASTask *)self currentlyParsingItem];
-      v8 = [(ASTask *)self taskManager];
-      v9 = [v8 account];
-      [v7 parseASParseContext:v4 root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:v9];
+      currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+      taskManager = [(ASTask *)self taskManager];
+      account = [taskManager account];
+      [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:account];
 
       currentlyParsingItem = self->super.super._currentlyParsingItem;
       if (currentlyParsingItem && [(ASItem *)currentlyParsingItem parsingState]>= 2)
@@ -284,21 +284,21 @@ LABEL_22:
 
     if (!self->super.super._haveSwitchedCodePage)
     {
-      if (![v4 hasNumberOfTokensRemaining:2])
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_22;
       }
 
-      if ([v4 currentByte])
+      if ([contextCopy currentByte])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to compose mail code page"];
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSmartMailTask.m", 167, objc_msgSend(v4, "curOffset")];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSmartMailTask.m", 167, objc_msgSend(contextCopy, "curOffset")];
         v15 = DALoggingwithCategory();
         v16 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v15, v16))
         {
           *buf = 134217984;
-          v26 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v15, v16, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -309,21 +309,21 @@ LABEL_22:
         }
 
         *buf = 138412290;
-        v26 = v13;
+        curOffset = v13;
         goto LABEL_36;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      if ([v4 currentByte] != 21)
+      [contextCopy advanceOffsetByAmount:1];
+      if ([contextCopy currentByte] != 21)
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to compose mail code page"];
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSmartMailTask.m", 167, objc_msgSend(v4, "curOffset")];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSmartMailTask.m", 167, objc_msgSend(contextCopy, "curOffset")];
         v20 = DALoggingwithCategory();
         v16 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v20, v16))
         {
           *buf = 134217984;
-          v26 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v20, v16, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -334,12 +334,12 @@ LABEL_22:
         }
 
         *buf = 138412290;
-        v26 = v13;
+        curOffset = v13;
         goto LABEL_36;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      [v4 setCodePage:21];
+      [contextCopy advanceOffsetByAmount:1];
+      [contextCopy setCodePage:21];
       self->super.super._haveSwitchedCodePage = 1;
     }
 
@@ -358,12 +358,12 @@ LABEL_22:
       goto LABEL_12;
     }
 
-    if (![v4 hasNumberOfTokensRemaining:1])
+    if (![contextCopy hasNumberOfTokensRemaining:1])
     {
       goto LABEL_22;
     }
 
-    if (v11 == ([v4 currentByte] & 0x3F))
+    if (v11 == ([contextCopy currentByte] & 0x3F))
     {
       self->super.super._haveParsedCommand = 1;
 LABEL_12:
@@ -384,13 +384,13 @@ LABEL_12:
     }
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected %@ response", v18];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSmartMailTask.m", 174, objc_msgSend(v4, "curOffset")];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASSmartMailTask.m", 174, objc_msgSend(contextCopy, "curOffset")];
     v19 = DALoggingwithCategory();
     v16 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v19, v16))
     {
       *buf = 134217984;
-      v26 = [v4 curOffset];
+      curOffset = [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v19, v16, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -399,16 +399,16 @@ LABEL_12:
     {
 LABEL_37:
 
-      [v4 setParseErrorReason:v14];
+      [contextCopy setParseErrorReason:v14];
 LABEL_38:
-      v21 = [v4 parseErrorReason];
-      v5 = v21 == 0;
+      parseErrorReason = [contextCopy parseErrorReason];
+      v5 = parseErrorReason == 0;
 
       goto LABEL_39;
     }
 
     *buf = 138412290;
-    v26 = v13;
+    curOffset = v13;
 LABEL_36:
     _os_log_impl(&dword_24A0AC000, v17, v16, "failure reason was %@", buf, 0xCu);
     goto LABEL_37;
@@ -416,7 +416,7 @@ LABEL_36:
 
   v24.receiver = self;
   v24.super_class = ASSmartMailTask;
-  v5 = [(ASSendMailTask *)&v24 processContext:v4];
+  v5 = [(ASSendMailTask *)&v24 processContext:contextCopy];
 LABEL_39:
 
   v22 = *MEMORY[0x277D85DE8];

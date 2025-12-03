@@ -1,28 +1,28 @@
 @interface SiriCoordinator
-- (void)siriPresentation:(id)a3 isEnabledDidChange:(BOOL)a4;
-- (void)siriPresentation:(id)a3 requestsDismissalWithOptions:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPresentationWithOptions:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPunchout:(id)a4 withHandler:(id)a5;
+- (void)siriPresentation:(id)presentation isEnabledDidChange:(BOOL)change;
+- (void)siriPresentation:(id)presentation requestsDismissalWithOptions:(id)options withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPresentationWithOptions:(id)options withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPunchout:(id)punchout withHandler:(id)handler;
 @end
 
 @implementation SiriCoordinator
 
-- (void)siriPresentation:(id)a3 requestsPresentationWithOptions:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPresentationWithOptions:(id)options withHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   _Block_copy(v7);
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = self;
-  sub_100036A40(v9, v7);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100036A40(selfCopy, v7);
   _Block_release(v7);
   _Block_release(v7);
   swift_unknownObjectRelease();
 }
 
-- (void)siriPresentation:(id)a3 requestsDismissalWithOptions:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsDismissalWithOptions:(id)options withHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *(&self->super.isa + OBJC_IVAR____TtC12ClarityBoard15SiriCoordinator_presentationController);
@@ -37,27 +37,27 @@
   v12[2] = sub_1000357AC;
   v12[3] = &unk_1002FE570;
   v10 = _Block_copy(v12);
-  v11 = self;
+  selfCopy = self;
 
   [v8 dismissSiri:1 completion:v10];
 
   _Block_release(v10);
 }
 
-- (void)siriPresentation:(id)a3 isEnabledDidChange:(BOOL)a4
+- (void)siriPresentation:(id)presentation isEnabledDidChange:(BOOL)change
 {
-  if (!a4)
+  if (!change)
   {
     swift_getKeyPath();
     swift_getKeyPath();
-    v5 = self;
+    selfCopy = self;
     static Published.subscript.setter();
   }
 }
 
-- (void)siriPresentation:(id)a3 requestsPunchout:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPunchout:(id)punchout withHandler:(id)handler
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(handler);
   (*(v5 + 2))(v5, 0, 0);
 
   _Block_release(v5);

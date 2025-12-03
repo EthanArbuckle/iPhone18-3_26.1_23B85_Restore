@@ -1,5 +1,5 @@
 @interface NSTimeZone
-+ (NSTimeZone)allocWithZone:(_NSZone *)a3;
++ (NSTimeZone)allocWithZone:(_NSZone *)zone;
 + (NSTimeZone)localTimeZone;
 + (NSTimeZone)timeZoneWithAbbreviation:(NSString *)abbreviation;
 + (NSTimeZone)timeZoneWithName:(NSString *)tzName;
@@ -7,7 +7,7 @@
 + (void)resetSystemTimeZone;
 - (BOOL)isDaylightSavingTime;
 - (BOOL)isDaylightSavingTimeForDate:(NSDate *)aDate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToTimeZone:(NSTimeZone *)aTimeZone;
 - (NSData)data;
 - (NSDate)nextDaylightSavingTimeTransition;
@@ -38,9 +38,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSTimeZone *)self name];
+  name = [(NSTimeZone *)self name];
 
-  return CFHash(v2);
+  return CFHash(name);
 }
 
 + (void)resetSystemTimeZone
@@ -52,17 +52,17 @@
 
 - (NSString)description
 {
-  v3 = [(NSTimeZone *)self name];
-  v4 = [(NSTimeZone *)self abbreviation];
-  v5 = [(NSTimeZone *)self secondsFromGMT];
-  v6 = [(NSTimeZone *)self isDaylightSavingTime];
+  name = [(NSTimeZone *)self name];
+  abbreviation = [(NSTimeZone *)self abbreviation];
+  secondsFromGMT = [(NSTimeZone *)self secondsFromGMT];
+  isDaylightSavingTime = [(NSTimeZone *)self isDaylightSavingTime];
   v7 = "";
-  if (v6)
+  if (isDaylightSavingTime)
   {
     v7 = " (Daylight)";
   }
 
-  v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@ (%@) offset %ld%s", v3, v4, v5, v7);
+  v8 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%@ (%@) offset %ld%s", name, abbreviation, secondsFromGMT, v7);
 
   return _CFAutoreleasePoolAddObject(0, v8);
 }
@@ -103,20 +103,20 @@
   return [(NSTimeZone *)self nextDaylightSavingTimeTransitionAfterDate:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (a3)
+  else if (equal)
   {
-    v5 = _NSIsNSTimeZone(a3);
+    v5 = _NSIsNSTimeZone(equal);
     if (v5)
     {
 
-      LOBYTE(v5) = [(NSTimeZone *)self isEqualToTimeZone:a3];
+      LOBYTE(v5) = [(NSTimeZone *)self isEqualToTimeZone:equal];
     }
   }
 
@@ -140,33 +140,33 @@
     return 1;
   }
 
-  v4 = [(NSTimeZone *)self name];
-  v5 = [(NSTimeZone *)aTimeZone name];
+  name = [(NSTimeZone *)self name];
+  name2 = [(NSTimeZone *)aTimeZone name];
   result = 0;
-  if (v4)
+  if (name)
   {
-    if (v5)
+    if (name2)
     {
-      return CFEqual(v4, v5) != 0;
+      return CFEqual(name, name2) != 0;
     }
   }
 
   return result;
 }
 
-+ (NSTimeZone)allocWithZone:(_NSZone *)a3
++ (NSTimeZone)allocWithZone:(_NSZone *)zone
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (NSTimeZone == a1)
+  if (NSTimeZone == self)
   {
     result = &___immutablePlaceholderTimeZone;
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___NSTimeZone;
-    result = objc_msgSendSuper2(&v5, sel_allocWithZone_, a3);
+    result = objc_msgSendSuper2(&v5, sel_allocWithZone_, zone);
   }
 
   v4 = *MEMORY[0x1E69E9840];
@@ -175,14 +175,14 @@
 
 + (NSTimeZone)timeZoneWithName:(NSString *)tzName data:(NSData *)aData
 {
-  v4 = [[a1 alloc] initWithName:tzName data:aData];
+  v4 = [[self alloc] initWithName:tzName data:aData];
 
   return v4;
 }
 
 + (NSTimeZone)timeZoneWithName:(NSString *)tzName
 {
-  v3 = [[a1 alloc] initWithName:tzName];
+  v3 = [[self alloc] initWithName:tzName];
 
   return v3;
 }

@@ -7,18 +7,18 @@
 
 - (id)dp_binaryBytesData
 {
-  v2 = [MEMORY[0x277CBEB28] data];
-  if (![a1 length])
+  data = [MEMORY[0x277CBEB28] data];
+  if (![self length])
   {
 LABEL_8:
-    v6 = [v2 copy];
+    v6 = [data copy];
     goto LABEL_10;
   }
 
   v3 = 0;
   while (1)
   {
-    v4 = [a1 characterAtIndex:v3];
+    v4 = [self characterAtIndex:v3];
     if (v4 == 49)
     {
       v8 = 1;
@@ -34,8 +34,8 @@ LABEL_8:
     v9 = 0;
     v5 = &v9;
 LABEL_7:
-    [v2 appendBytes:v5 length:1];
-    if (++v3 >= [a1 length])
+    [data appendBytes:v5 length:1];
+    if (++v3 >= [self length])
     {
       goto LABEL_8;
     }
@@ -51,7 +51,7 @@ LABEL_10:
 {
   v23 = *MEMORY[0x277D85DE8];
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v4 = objc_opt_new();
   [v4 setNumberStyle:1];
   v20 = 0u;
@@ -59,7 +59,7 @@ LABEL_10:
   v18 = 0u;
   v19 = 0u;
   v5 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@", "}];
-  v6 = [a1 componentsSeparatedByCharactersInSet:v5];
+  v6 = [self componentsSeparatedByCharactersInSet:v5];
 
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
@@ -86,7 +86,7 @@ LABEL_10:
         v12 = v11;
         [v11 floatValue];
         v17 = v13;
-        [v3 appendBytes:&v17 length:4];
+        [data appendBytes:&v17 length:4];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -99,7 +99,7 @@ LABEL_10:
     }
   }
 
-  v14 = [v3 copy];
+  v14 = [data copy];
 LABEL_11:
 
   objc_autoreleasePoolPop(v2);

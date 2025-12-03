@@ -1,10 +1,10 @@
 @interface FCRecordFieldURLProtocol
-+ (BOOL)canHandleURL:(id)a3;
-+ (BOOL)canHandleURLWithComponents:(id)a3;
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4;
-+ (id)URLForRecordID:(id)a3 fieldName:(id)a4;
-+ (void)setupWithArticleDatabase:(id)a3;
++ (BOOL)canHandleURL:(id)l;
++ (BOOL)canHandleURLWithComponents:(id)components;
++ (BOOL)canInitWithRequest:(id)request;
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request;
++ (id)URLForRecordID:(id)d fieldName:(id)name;
++ (void)setupWithArticleDatabase:(id)database;
 + (void)unregister;
 - (void)startLoading;
 - (void)stopLoading;
@@ -12,11 +12,11 @@
 
 @implementation FCRecordFieldURLProtocol
 
-+ (void)setupWithArticleDatabase:(id)a3
++ (void)setupWithArticleDatabase:(id)database
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  databaseCopy = database;
+  if (!databaseCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"record field URL protocol requires a non-nil database"];
     v11 = 136315906;
@@ -51,8 +51,8 @@
     }
   }
 
-  objc_storeWeak(&s_database, v4);
-  [MEMORY[0x1E695AC60] registerClass:a1];
+  objc_storeWeak(&s_database, databaseCopy);
+  [MEMORY[0x1E695AC60] registerClass:self];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -66,15 +66,15 @@
     objc_storeWeak(&s_database, 0);
     v4 = MEMORY[0x1E695AC60];
 
-    [v4 unregisterClass:a1];
+    [v4 unregisterClass:self];
   }
 }
 
-+ (id)URLForRecordID:(id)a3 fieldName:(id)a4
++ (id)URLForRecordID:(id)d fieldName:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&s_database);
   if (WeakRetained)
   {
@@ -101,8 +101,8 @@
     v9 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v9 setScheme:@"https"];
     [v9 setHost:@"news-record"];
-    v10 = [@"/" stringByAppendingString:v5];
-    v11 = [v10 stringByAppendingPathComponent:v6];
+    v10 = [@"/" stringByAppendingString:dCopy];
+    v11 = [v10 stringByAppendingPathComponent:nameCopy];
     [v9 setPath:v11];
 
     v8 = [v9 URL];
@@ -113,46 +113,46 @@
   return v8;
 }
 
-+ (BOOL)canHandleURL:(id)a3
++ (BOOL)canHandleURL:(id)l
 {
-  v3 = [a3 host];
-  v4 = [v3 isEqualToString:@"news-record"];
+  host = [l host];
+  v4 = [host isEqualToString:@"news-record"];
 
   return v4;
 }
 
-+ (BOOL)canHandleURLWithComponents:(id)a3
++ (BOOL)canHandleURLWithComponents:(id)components
 {
-  v3 = [a3 host];
-  v4 = [v3 isEqualToString:@"news-record"];
+  host = [components host];
+  v4 = [host isEqualToString:@"news-record"];
 
   return v4;
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v4 = [a3 URL];
-  LOBYTE(a1) = [a1 canHandleURL:v4];
+  v4 = [request URL];
+  LOBYTE(self) = [self canHandleURL:v4];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request
 {
-  v5 = a4;
-  v6 = [a3 URL];
-  v7 = [v5 URL];
+  requestCopy = request;
+  v6 = [equivalent URL];
+  v7 = [requestCopy URL];
 
-  LOBYTE(v5) = [v6 isEqual:v7];
-  return v5;
+  LOBYTE(requestCopy) = [v6 isEqual:v7];
+  return requestCopy;
 }
 
 - (void)startLoading
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCRecordFieldURLProtocol *)self fetchOperation];
+  fetchOperation = [(FCRecordFieldURLProtocol *)self fetchOperation];
 
-  if (v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (fetchOperation && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"shouldn't have a fetch operation yet"];
     *buf = 136315906;
@@ -166,11 +166,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v4 = [(NSURLProtocol *)self request];
-  v5 = [v4 URL];
+  request = [(NSURLProtocol *)self request];
+  v5 = [request URL];
 
-  v6 = [v5 pathComponents];
-  if ([v6 count] <= 2)
+  pathComponents = [v5 pathComponents];
+  if ([pathComponents count] <= 2)
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -182,12 +182,12 @@
 
   else
   {
-    v7 = [v5 pathComponents];
-    v8 = [v7 objectAtIndexedSubscript:1];
+    pathComponents2 = [v5 pathComponents];
+    v8 = [pathComponents2 objectAtIndexedSubscript:1];
 
     v9 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v8];
-    v10 = [v5 pathComponents];
-    v11 = [v10 objectAtIndexedSubscript:2];
+    pathComponents3 = [v5 pathComponents];
+    v11 = [pathComponents3 objectAtIndexedSubscript:2];
 
     v12 = objc_alloc_init(FCCKContentFetchOperation);
     WeakRetained = objc_loadWeakRetained(&s_database);
@@ -436,13 +436,13 @@ void __40__FCRecordFieldURLProtocol_startLoading__block_invoke_9(uint64_t a1)
 
 - (void)stopLoading
 {
-  v3 = [(FCRecordFieldURLProtocol *)self fetchOperation];
-  v4 = [v3 isFinished];
+  fetchOperation = [(FCRecordFieldURLProtocol *)self fetchOperation];
+  isFinished = [fetchOperation isFinished];
 
-  if ((v4 & 1) == 0)
+  if ((isFinished & 1) == 0)
   {
-    v5 = [(FCRecordFieldURLProtocol *)self fetchOperation];
-    [v5 cancel];
+    fetchOperation2 = [(FCRecordFieldURLProtocol *)self fetchOperation];
+    [fetchOperation2 cancel];
   }
 }
 

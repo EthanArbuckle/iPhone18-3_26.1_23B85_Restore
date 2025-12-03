@@ -1,25 +1,25 @@
 @interface PKIdentityProofingDisplayMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMessage:(id)a3;
-- (PKIdentityProofingDisplayMessage)initWithCIDVUIProofingDisplayMessage:(id)a3;
-- (PKIdentityProofingDisplayMessage)initWithCoder:(id)a3;
-- (PKIdentityProofingDisplayMessage)initWithDictionary:(id)a3;
-- (PKIdentityProofingDisplayMessage)initWithTitle:(id)a3 message:(id)a4 actions:(id)a5;
-- (PKIdentityProofingDisplayMessage)initWithTitle:(id)a3 message:(id)a4 primaryButtonTitle:(id)a5 retryableError:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMessage:(id)message;
+- (PKIdentityProofingDisplayMessage)initWithCIDVUIProofingDisplayMessage:(id)message;
+- (PKIdentityProofingDisplayMessage)initWithCoder:(id)coder;
+- (PKIdentityProofingDisplayMessage)initWithDictionary:(id)dictionary;
+- (PKIdentityProofingDisplayMessage)initWithTitle:(id)title message:(id)message actions:(id)actions;
+- (PKIdentityProofingDisplayMessage)initWithTitle:(id)title message:(id)message primaryButtonTitle:(id)buttonTitle retryableError:(BOOL)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIdentityProofingDisplayMessage
 
-- (PKIdentityProofingDisplayMessage)initWithCoder:(id)a3
+- (PKIdentityProofingDisplayMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actions"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actions"];
 
   if (v5)
   {
@@ -33,50 +33,50 @@
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PKIdentityProofingDisplayMessage *)self initWithTitle:v5 message:v6 actions:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PKIdentityProofingDisplayMessage)initWithCIDVUIProofingDisplayMessage:(id)a3
+- (PKIdentityProofingDisplayMessage)initWithCIDVUIProofingDisplayMessage:(id)message
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (!messageCopy)
   {
     goto LABEL_12;
   }
 
-  v6 = [v4 title];
-  if (!v6)
+  selfCopy = [messageCopy title];
+  if (!selfCopy)
   {
     goto LABEL_13;
   }
 
-  v7 = [v5 message];
+  message = [v5 message];
 
-  if (!v7)
+  if (!message)
   {
 LABEL_12:
-    v6 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v8 = [v5 actions];
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  actions = [v5 actions];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(actions, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = v8;
+  v10 = actions;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -107,35 +107,35 @@ LABEL_12:
     while (v12);
   }
 
-  v18 = [v5 title];
-  v19 = [v5 message];
-  self = [(PKIdentityProofingDisplayMessage *)self initWithTitle:v18 message:v19 actions:v9];
+  title = [v5 title];
+  message2 = [v5 message];
+  self = [(PKIdentityProofingDisplayMessage *)self initWithTitle:title message:message2 actions:v9];
 
-  v6 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v6;
+  return selfCopy;
 }
 
-- (PKIdentityProofingDisplayMessage)initWithTitle:(id)a3 message:(id)a4 actions:(id)a5
+- (PKIdentityProofingDisplayMessage)initWithTitle:(id)title message:(id)message actions:(id)actions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  actionsCopy = actions;
   v19.receiver = self;
   v19.super_class = PKIdentityProofingDisplayMessage;
   v11 = [(PKIdentityProofingDisplayMessage *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [messageCopy copy];
     message = v11->_message;
     v11->_message = v14;
 
-    v16 = [v10 copy];
+    v16 = [actionsCopy copy];
     actions = v11->_actions;
     v11->_actions = v16;
   }
@@ -143,57 +143,57 @@ LABEL_13:
   return v11;
 }
 
-- (PKIdentityProofingDisplayMessage)initWithTitle:(id)a3 message:(id)a4 primaryButtonTitle:(id)a5 retryableError:(BOOL)a6
+- (PKIdentityProofingDisplayMessage)initWithTitle:(id)title message:(id)message primaryButtonTitle:(id)buttonTitle retryableError:(BOOL)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PKIdentityProofingDisplayMessageAction alloc] initWithTitle:v9 actionType:1 actionURL:0];
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  v12 = [[PKIdentityProofingDisplayMessageAction alloc] initWithTitle:buttonTitleCopy actionType:1 actionURL:0];
 
   v16[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v14 = [(PKIdentityProofingDisplayMessage *)self initWithTitle:v11 message:v10 actions:v13];
+  v14 = [(PKIdentityProofingDisplayMessage *)self initWithTitle:titleCopy message:messageCopy actions:v13];
 
   return v14;
 }
 
-- (PKIdentityProofingDisplayMessage)initWithDictionary:(id)a3
+- (PKIdentityProofingDisplayMessage)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v4 = a3;
-    v5 = [v4 PKStringForKey:@"title"];
-    v6 = [v4 PKStringForKey:@"message"];
-    v7 = [v4 PKArrayForKey:@"actions"];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy PKStringForKey:@"title"];
+    v6 = [dictionaryCopy PKStringForKey:@"message"];
+    v7 = [dictionaryCopy PKArrayForKey:@"actions"];
 
-    v8 = 0;
+    selfCopy = 0;
     if (v5 && v6 && v7)
     {
       self = [(PKIdentityProofingDisplayMessage *)self initWithTitle:v5 message:v6 actions:v7];
-      v8 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKIdentityProofingDisplayMessage allocWithZone:?];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
-  v7 = [(NSString *)self->_message copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
+  v7 = [(NSString *)self->_message copyWithZone:zone];
   actions = self->_actions;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__PKIdentityProofingDisplayMessage_copyWithZone___block_invoke;
   v12[3] = &__block_descriptor_40_e48__16__0__PKIdentityProofingDisplayMessageAction_8l;
-  v12[4] = a3;
+  v12[4] = zone;
   v9 = [(NSArray *)actions pk_arrayBySafelyApplyingBlock:v12];
   v10 = [(PKIdentityProofingDisplayMessage *)v5 initWithTitle:v6 message:v7 actions:v9];
 
@@ -217,36 +217,36 @@ id __49__PKIdentityProofingDisplayMessage_copyWithZone___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_message forKey:@"message"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIdentityProofingDisplayMessage *)self isEqualToMessage:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKIdentityProofingDisplayMessage *)self isEqualToMessage:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToMessage:(id)a3
+- (BOOL)isEqualToMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4[1];
+  messageCopy = message;
+  v5 = messageCopy[1];
   v6 = self->_title;
   v7 = v5;
   v8 = v7;
@@ -279,7 +279,7 @@ id __49__PKIdentityProofingDisplayMessage_copyWithZone___block_invoke(uint64_t a
     }
   }
 
-  v11 = v4[2];
+  v11 = messageCopy[2];
   v6 = self->_message;
   v12 = v11;
   v8 = v12;
@@ -306,7 +306,7 @@ LABEL_14:
 
 LABEL_18:
   actions = self->_actions;
-  v17 = v4[3];
+  v17 = messageCopy[3];
   if (actions && v17)
   {
     v14 = [(NSArray *)actions isEqual:?];
@@ -324,11 +324,11 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_title];
-  [v3 safelyAddObject:self->_message];
-  [v3 safelyAddObject:self->_actions];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_title];
+  [array safelyAddObject:self->_message];
+  [array safelyAddObject:self->_actions];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

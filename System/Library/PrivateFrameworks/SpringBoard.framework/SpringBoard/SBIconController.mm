@@ -3,99 +3,99 @@
 + (SBIconController)sharedInstance;
 + (id)sharedInstanceIfExists;
 - (APSubjectMonitorSubscription)appProtectionSubjectMonitorSubscription;
-- (BOOL)_allowsBadgingForApplicationBundleIdentifier:(id)a3;
-- (BOOL)_enableWidgetSuggestionsForIconsInModel:(id)a3 withRootFolder:(id)a4;
-- (BOOL)_isWidgetWithContainerBundleIdentifierValid:(id)a3;
+- (BOOL)_allowsBadgingForApplicationBundleIdentifier:(id)identifier;
+- (BOOL)_enableWidgetSuggestionsForIconsInModel:(id)model withRootFolder:(id)folder;
+- (BOOL)_isWidgetWithContainerBundleIdentifierValid:(id)valid;
 - (BOOL)_tryToPrepareNonDynamicDefaultTodayLayout;
-- (BOOL)allowsBadgingForIcon:(id)a3;
+- (BOOL)allowsBadgingForIcon:(id)icon;
 - (BOOL)canSaveIconState;
-- (BOOL)importIconState:(id)a3;
+- (BOOL)importIconState:(id)state;
 - (BOOL)isEnterpriseMultiUser;
-- (BOOL)isHideSupportedForIcon:(id)a3 inLocation:(id)a4;
-- (BOOL)isIconVisibleForBundleIdentifier:(id)a3;
+- (BOOL)isHideSupportedForIcon:(id)icon inLocation:(id)location;
+- (BOOL)isIconVisibleForBundleIdentifier:(id)identifier;
 - (BOOL)isTodayOverlayPresented;
-- (BOOL)isUninstallOrHideSupportedForIcon:(id)a3 inLocation:(id)a4;
+- (BOOL)isUninstallOrHideSupportedForIcon:(id)icon inLocation:(id)location;
 - (BOOL)isUninstallSupportedForAnyIcon;
-- (BOOL)isUninstallSupportedForIcon:(id)a3;
+- (BOOL)isUninstallSupportedForIcon:(id)icon;
 - (BOOL)resetCategories;
 - (BOOL)resetHomeScreenLayout;
 - (BOOL)shouldAddNewIconsToRootFolder;
 - (SBHIconImageCache)appSwitcherHeaderIconImageCache;
 - (SBHIconImageCache)notificationIconImageCache;
 - (SBHIconImageCache)tableUIIconImageCache;
-- (SBIconController)initWithWindowScene:(id)a3;
+- (SBIconController)initWithWindowScene:(id)scene;
 - (SBTodayViewController)coverSheetTodayViewController;
 - (SBWidgetMetricsServer)widgetMetricsServer;
 - (SBWindowScene)windowScene;
 - (id)_addStateCaptureHandlerForInterestingAppIconLocations;
 - (id)_addStateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled;
 - (id)_addStateCaptureHandlerForRestrictions;
-- (id)_createWidgetIconWithDataSource:(id)a3 gridSize:(id)a4;
-- (id)_createWidgetIconWithDescriptors:(id)a3 gridSize:(id)a4;
-- (id)_createWidgetIconWithKind:(id)a3 extensionBundleIdentifier:(id)a4 gridSize:(id)a5;
+- (id)_createWidgetIconWithDataSource:(id)source gridSize:(id)size;
+- (id)_createWidgetIconWithDescriptors:(id)descriptors gridSize:(id)size;
+- (id)_createWidgetIconWithKind:(id)kind extensionBundleIdentifier:(id)identifier gridSize:(id)size;
 - (id)_currentFolderController;
-- (id)_featureIntroductionItemForWidgetSetupAtLocation:(unint64_t)a3;
-- (id)_focusModeFromDoNotDisturbState:(id)a3;
+- (id)_featureIntroductionItemForWidgetSetupAtLocation:(unint64_t)location;
+- (id)_focusModeFromDoNotDisturbState:(id)state;
 - (id)_mainDisplayHomeScreenController;
 - (id)analyticsClient;
 - (id)applicationController;
 - (id)applicationPlaceholderController;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)displayIDsWithBadgingEnabled;
 - (id)externalDisplaySceneManager;
-- (id)folderNameForDisplayID:(id)a3;
-- (id)iconPathForIconWithDisplayID:(id)a3;
+- (id)folderNameForDisplayID:(id)d;
+- (id)iconPathForIconWithDisplayID:(id)d;
 - (id)libraryCategoryMapProvider;
 - (id)lockScreenManager;
 - (id)mainDisplaySceneManager;
 - (id)mainDisplayWindowScene;
 - (id)policyAggregator;
-- (id)proactiveHomeScreenUsageObserver:(id)a3 intentForWidget:(id)a4 ofIcon:(id)a5;
+- (id)proactiveHomeScreenUsageObserver:(id)observer intentForWidget:(id)widget ofIcon:(id)icon;
 - (id)proactiveOnboardingDefaultStacks;
 - (id)succinctDescription;
-- (id)widgetMetricsProvider:(id)a3 listLayoutProviderForScreenType:(unint64_t)a4;
-- (unint64_t)_foldersInList:(id)a3;
-- (void)_addSmartStackToTodayList:(id)a3 completionHandler:(id)a4;
-- (void)_applicationIconDataSourceDidChange:(id)a3;
-- (void)_backupRestoringDidChange:(id)a3;
-- (void)_bookmarkDidUninstall:(id)a3;
-- (void)_iconModel:(id)a3 wantsToRevealAnyApplicationFromIdentifiers:(id)a4;
-- (void)_iconModelInstalledAppsDidChange:(id)a3;
-- (void)_installedAppsDidChange:(id)a3;
-- (void)_mutateIconListsForInstalledAppsDidChangeWithController:(id)a3 added:(id)a4 modified:(id)a5 removed:(id)a6;
-- (void)_obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler:(id)a3;
+- (id)widgetMetricsProvider:(id)provider listLayoutProviderForScreenType:(unint64_t)type;
+- (unint64_t)_foldersInList:(id)list;
+- (void)_addSmartStackToTodayList:(id)list completionHandler:(id)handler;
+- (void)_applicationIconDataSourceDidChange:(id)change;
+- (void)_backupRestoringDidChange:(id)change;
+- (void)_bookmarkDidUninstall:(id)uninstall;
+- (void)_iconModel:(id)model wantsToRevealAnyApplicationFromIdentifiers:(id)identifiers;
+- (void)_iconModelInstalledAppsDidChange:(id)change;
+- (void)_installedAppsDidChange:(id)change;
+- (void)_mutateIconListsForInstalledAppsDidChangeWithController:(id)controller added:(id)added modified:(id)modified removed:(id)removed;
+- (void)_obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler:(id)handler;
 - (void)_prepareDefaultTodayLayoutIfNecessary;
 - (void)_registerAnalytics;
 - (void)_rootFolderDidChange;
 - (void)_setupWidgetIntroductionIfNecessary;
 - (void)_tryToPrepareDynamicDefaultTodayLayout;
-- (void)_updateDefaultFirstPageWidgetDescriptors:(id)a3 withSizeClass:(id)a4 andGridCellInfoOptions:(unint64_t)a5;
-- (void)_updateEnabledBadgesSetWithSections:(id)a3;
-- (void)_updateFocusModeManagerWithDoNotDisturbState:(id)a3;
+- (void)_updateDefaultFirstPageWidgetDescriptors:(id)descriptors withSizeClass:(id)class andGridCellInfoOptions:(unint64_t)options;
+- (void)_updateEnabledBadgesSetWithSections:(id)sections;
+- (void)_updateFocusModeManagerWithDoNotDisturbState:(id)state;
 - (void)_updateIconModelStore;
 - (void)_updateUninstallingSystemAppsRestricted;
-- (void)addIconControllerObserver:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)applicationRestrictionController:(id)a3 didUpdateVisibleTags:(id)a4 hiddenTags:(id)a5;
-- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)a3;
-- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)a3;
-- (void)configureIconManager:(id)a3;
+- (void)addIconControllerObserver:(id)observer;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)applicationRestrictionController:(id)controller didUpdateVisibleTags:(id)tags hiddenTags:(id)hiddenTags;
+- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)update;
+- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)update;
+- (void)configureIconManager:(id)manager;
 - (void)dealloc;
 - (void)deleteAllWebClips;
 - (void)didSaveIconState;
 - (void)libraryCategoryMapProvider;
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4;
-- (void)observer:(id)a3 noteServerConnectionStateChanged:(BOOL)a4;
-- (void)observer:(id)a3 updateSectionInfo:(id)a4;
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update;
+- (void)observer:(id)observer noteServerConnectionStateChanged:(BOOL)changed;
+- (void)observer:(id)observer updateSectionInfo:(id)info;
 - (void)obtainProactiveSecondPageWidgetSuggestion;
-- (void)proactiveHomeScreenSuggestionProviderDidUpdatePrediction:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)removeIconControllerObserver:(id)a3;
+- (void)proactiveHomeScreenSuggestionProviderDidUpdatePrediction:(id)prediction;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
+- (void)removeIconControllerObserver:(id)observer;
 - (void)runWidgetDiscoverabilityTest;
-- (void)setModel:(id)a3;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)setModel:(id)model;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 - (void)updateRootFolderWithCurrentDoNotDisturbState;
 @end
 
@@ -109,9 +109,9 @@
     v4 = +[SBAppSwitcherModel appSwitcherHeaderIconImageDescriptorName];
     if ([v4 isEqualToString:*MEMORY[0x277D1B240]])
     {
-      v5 = [(SBIconController *)self tableUIIconImageCache];
+      tableUIIconImageCache = [(SBIconController *)self tableUIIconImageCache];
       v6 = self->_appSwitcherHeaderIconImageCache;
-      self->_appSwitcherHeaderIconImageCache = v5;
+      self->_appSwitcherHeaderIconImageCache = tableUIIconImageCache;
     }
 
     else
@@ -160,10 +160,10 @@
     if ([MEMORY[0x277D75128] isRunningInStoreDemoMode])
     {
       v2 = +[SBDefaults externalDefaults];
-      v3 = [v2 demoDefaults];
-      v4 = [v3 shouldLockIconsInStoreDemoMode];
+      demoDefaults = [v2 demoDefaults];
+      shouldLockIconsInStoreDemoMode = [demoDefaults shouldLockIconsInStoreDemoMode];
 
-      v5 = v4 ^ 1;
+      v5 = shouldLockIconsInStoreDemoMode ^ 1;
     }
 
     else
@@ -180,16 +180,16 @@
   return v5 & 1;
 }
 
-- (SBIconController)initWithWindowScene:(id)a3
+- (SBIconController)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v92.receiver = self;
   v92.super_class = SBIconController;
   v5 = [(SBIconController *)&v92 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     v7 = objc_alloc_init(SBPowerLogMetricsAggregator);
     powerLogAggregator = v6->_powerLogAggregator;
     v6->_powerLogAggregator = v7;
@@ -199,38 +199,38 @@
     v6->_accountStoreQueue = SerialWithQoS;
 
     [MEMORY[0x277D660A8] setSignificantTimeChangeNotificationName:@"SBSignificantTimeChangedNotification"];
-    v11 = [(SBIconController *)v6 applicationController];
-    v12 = [v11 restrictionController];
+    applicationController = [(SBIconController *)v6 applicationController];
+    restrictionController = [applicationController restrictionController];
 
-    [v12 beginPostingChanges];
-    v76 = v12;
-    [v12 addObserver:v6];
+    [restrictionController beginPostingChanges];
+    v76 = restrictionController;
+    [restrictionController addObserver:v6];
     [(SBIconController *)v6 _updateIconModelStore];
     if ([(SBIconController *)v6 isUpgradeRestore]&& ![(SBIconController *)v6 isEnterpriseMultiUser])
     {
-      v15 = [(SBIconController *)v6 proactiveOnboardingDefaultStacks];
+      proactiveOnboardingDefaultStacks = [(SBIconController *)v6 proactiveOnboardingDefaultStacks];
       suggestedOnboardingStack = v6->_suggestedOnboardingStack;
-      v6->_suggestedOnboardingStack = v15;
+      v6->_suggestedOnboardingStack = proactiveOnboardingDefaultStacks;
     }
 
     else
     {
       suggestedOnboardingStack = +[SBDefaults localDefaults];
-      v14 = [suggestedOnboardingStack homeScreenDefaults];
-      [v14 setShouldAddDefaultWidgetsToHomeScreen:0];
+      homeScreenDefaults = [suggestedOnboardingStack homeScreenDefaults];
+      [homeScreenDefaults setShouldAddDefaultWidgetsToHomeScreen:0];
     }
 
     v6->_sendITunesNotification = 1;
-    v16 = [SBApp accountStoreController];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v6 selector:sel__installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
-    [v17 addObserver:v6 selector:sel__applicationIconDataSourceDidChange_ name:@"SBApplicationIconDataSourceDidChangeNotification" object:0];
-    [v17 addObserver:v6 selector:sel__primaryAppleAccountDidChange_ name:@"SBAccountStoreManagerPrimaryAppleAccountDidChangeNotification" object:v16];
-    [v17 addObserver:v6 selector:sel__storeAccountDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
+    accountStoreController = [SBApp accountStoreController];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__applicationIconDataSourceDidChange_ name:@"SBApplicationIconDataSourceDidChangeNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__primaryAppleAccountDidChange_ name:@"SBAccountStoreManagerPrimaryAppleAccountDidChangeNotification" object:accountStoreController];
+    [defaultCenter addObserver:v6 selector:sel__storeAccountDidChange_ name:*MEMORY[0x277CB8DB8] object:0];
     v18 = +[SBSyncController sharedInstance];
-    [v17 addObserver:v6 selector:sel__backupRestoringDidChange_ name:@"SBResetOrRestoreStateDidChangeNotification" object:v18];
+    [defaultCenter addObserver:v6 selector:sel__backupRestoringDidChange_ name:@"SBResetOrRestoreStateDidChangeNotification" object:v18];
 
-    [v17 addObserver:v6 selector:sel__bookmarkDidUninstall_ name:*MEMORY[0x277D66750] object:0];
+    [defaultCenter addObserver:v6 selector:sel__bookmarkDidUninstall_ name:*MEMORY[0x277D66750] object:0];
     v19 = objc_alloc_init(MEMORY[0x277D661E8]);
     iconManager = v6->_iconManager;
     v6->_iconManager = v19;
@@ -238,12 +238,12 @@
     [(SBHIconManager *)v6->_iconManager setOwnsIconModel:1];
     [(SBIconController *)v6 configureIconManager:v6->_iconManager];
     v21 = +[SBDefaults localDefaults];
-    v22 = [v21 notificationDefaults];
-    v23 = [v22 displayIDsWithBadgingEnabled];
+    notificationDefaults = [v21 notificationDefaults];
+    displayIDsWithBadgingEnabled = [notificationDefaults displayIDsWithBadgingEnabled];
 
-    if ([v23 count])
+    if ([displayIDsWithBadgingEnabled count])
     {
-      v24 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v23];
+      v24 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:displayIDsWithBadgingEnabled];
       displayIDsWithBadgingEnabled = v6->_displayIDsWithBadgingEnabled;
       v6->_displayIDsWithBadgingEnabled = v24;
     }
@@ -256,26 +256,26 @@
 
     [(BBObserver *)v6->_bbObserver setDelegate:v6];
     [(BBObserver *)v6->_bbObserver setObserverFeed:512];
-    v30 = [MEMORY[0x277D262A0] sharedConnection];
-    [v30 registerObserver:v6];
-    [(SBIconController *)v6 profileConnectionDidReceiveEffectiveSettingsChangedNotification:v30 userInfo:0];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v6];
+    [(SBIconController *)v6 profileConnectionDidReceiveEffectiveSettingsChangedNotification:mEMORY[0x277D262A0] userInfo:0];
     [(SBIconController *)v6 _updateUninstallingSystemAppsRestricted];
-    v31 = [(SBIconController *)v6 widgetMetricsServer];
+    widgetMetricsServer = [(SBIconController *)v6 widgetMetricsServer];
     widgetMetricsServer = v6->_widgetMetricsServer;
-    v6->_widgetMetricsServer = v31;
+    v6->_widgetMetricsServer = widgetMetricsServer;
 
     [(SBHIconModel *)v6->_iconModel setPostsDidAddIconNotification:1];
     [(SBIconController *)v6 _registerAnalytics];
     v33 = [SBProactiveHomeScreenUsageObserver alloc];
-    v34 = [(SBIconController *)v6 iconManager];
-    v35 = [(SBProactiveHomeScreenUsageObserver *)v33 initWithIconManager:v34];
+    iconManager = [(SBIconController *)v6 iconManager];
+    v35 = [(SBProactiveHomeScreenUsageObserver *)v33 initWithIconManager:iconManager];
     proactiveUsageObserver = v6->_proactiveUsageObserver;
     v6->_proactiveUsageObserver = v35;
 
     [(SBProactiveHomeScreenUsageObserver *)v6->_proactiveUsageObserver setDelegate:v6];
     v37 = [SBProactiveHomeScreenSuggestionProvider alloc];
-    v38 = [(SBIconController *)v6 iconManager];
-    v39 = [(SBProactiveHomeScreenSuggestionProvider *)v37 initWithIconManager:v38];
+    iconManager2 = [(SBIconController *)v6 iconManager];
+    v39 = [(SBProactiveHomeScreenSuggestionProvider *)v37 initWithIconManager:iconManager2];
     proactiveSuggestionProvider = v6->_proactiveSuggestionProvider;
     v6->_proactiveSuggestionProvider = v39;
 
@@ -357,21 +357,21 @@
     v6->_runWidgetDiscoverabilityTestRecipe = v59;
 
     [MEMORY[0x277D661A0] registerTestRecipe:v6->_runWidgetDiscoverabilityTestRecipe];
-    v61 = [(SBIconController *)v6 _addStateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled];
+    _addStateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled = [(SBIconController *)v6 _addStateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled];
     stateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled = v6->_stateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled;
-    v6->_stateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled = v61;
+    v6->_stateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled = _addStateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled;
 
-    v63 = [(SBIconController *)v6 _addStateCaptureHandlerForHomeScreenDefaults];
+    _addStateCaptureHandlerForHomeScreenDefaults = [(SBIconController *)v6 _addStateCaptureHandlerForHomeScreenDefaults];
     stateCaptureHandleForHomeScreenDefaults = v6->_stateCaptureHandleForHomeScreenDefaults;
-    v6->_stateCaptureHandleForHomeScreenDefaults = v63;
+    v6->_stateCaptureHandleForHomeScreenDefaults = _addStateCaptureHandlerForHomeScreenDefaults;
 
-    v65 = [(SBIconController *)v6 _addStateCaptureHandlerForInterestingAppIconLocations];
+    _addStateCaptureHandlerForInterestingAppIconLocations = [(SBIconController *)v6 _addStateCaptureHandlerForInterestingAppIconLocations];
     stateCaptureHandleForInterestingAppIconLocations = v6->_stateCaptureHandleForInterestingAppIconLocations;
-    v6->_stateCaptureHandleForInterestingAppIconLocations = v65;
+    v6->_stateCaptureHandleForInterestingAppIconLocations = _addStateCaptureHandlerForInterestingAppIconLocations;
 
-    v67 = [(SBIconController *)v6 _addStateCaptureHandlerForRestrictions];
+    _addStateCaptureHandlerForRestrictions = [(SBIconController *)v6 _addStateCaptureHandlerForRestrictions];
     stateCaptureHandleForRestrictions = v6->_stateCaptureHandleForRestrictions;
-    v6->_stateCaptureHandleForRestrictions = v67;
+    v6->_stateCaptureHandleForRestrictions = _addStateCaptureHandlerForRestrictions;
 
     v69 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:@"com.apple.springboard.SBIconController"];
     dndStateService = v6->_dndStateService;
@@ -384,8 +384,8 @@
     v6->_dndModeConfigurationService = v71;
 
     [(DNDModeConfigurationService *)v6->_dndModeConfigurationService addListener:v6 withCompletionHandler:0];
-    v73 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v74 = [v73 addMonitor:v6 subjectMask:1 subscriptionOptions:1];
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v74 = [subjectMonitorRegistry addMonitor:v6 subjectMask:1 subscriptionOptions:1];
     objc_storeWeak(&v6->_appProtectionSubjectMonitorSubscription, v74);
 
     objc_destroyWeak(&v78);
@@ -451,15 +451,15 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(SBIconController *)self applicationController];
-  v5 = [v4 restrictionController];
-  [v5 removeObserver:self];
+  applicationController = [(SBIconController *)self applicationController];
+  restrictionController = [applicationController restrictionController];
+  [restrictionController removeObserver:self];
 
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  [v6 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   [(BBObserver *)self->_bbObserver invalidate];
   [(BSInvalidatable *)self->_stateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled invalidate];
@@ -479,15 +479,15 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
   override_analyticsClient = self->_override_analyticsClient;
   if (override_analyticsClient)
   {
-    v3 = override_analyticsClient;
+    mEMORY[0x277D65DD0] = override_analyticsClient;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D65DD0] sharedInstance];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
   }
 
-  return v3;
+  return mEMORY[0x277D65DD0];
 }
 
 - (id)applicationController
@@ -548,43 +548,43 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
 
   else
   {
-    v6 = [(SBIconController *)self iconManager];
-    v7 = [v6 widgetMetricsProvider];
-    v8 = [(SBIconController *)self lockScreenManager];
-    v9 = [v8 lockScreenEnvironment];
-    v10 = [v9 widgetMetricsProvider];
+    iconManager = [(SBIconController *)self iconManager];
+    widgetMetricsProvider = [iconManager widgetMetricsProvider];
+    lockScreenManager = [(SBIconController *)self lockScreenManager];
+    lockScreenEnvironment = [lockScreenManager lockScreenEnvironment];
+    widgetMetricsProvider2 = [lockScreenEnvironment widgetMetricsProvider];
     v11 = objc_alloc_init(MEMORY[0x277CEA608]);
     [(SBIconController *)self setAmbientListLayoutProvider:v11];
     v12 = objc_alloc_init(MEMORY[0x277D66340]);
     [v12 setDelegate:self];
     [(SBIconController *)self setAmbientWidgetMetricsProvider:v12];
-    v4 = [[SBWidgetMetricsServer alloc] initWithSystemMetricsProvider:v7 lockScreenMetricsProvider:v10 ambientMetricsProvider:v12];
+    v4 = [[SBWidgetMetricsServer alloc] initWithSystemMetricsProvider:widgetMetricsProvider lockScreenMetricsProvider:widgetMetricsProvider2 ambientMetricsProvider:v12];
   }
 
   return v4;
 }
 
-- (id)widgetMetricsProvider:(id)a3 listLayoutProviderForScreenType:(unint64_t)a4
+- (id)widgetMetricsProvider:(id)provider listLayoutProviderForScreenType:(unint64_t)type
 {
-  v4 = [objc_alloc(MEMORY[0x277CEA608]) initWithScreenType:a4];
+  v4 = [objc_alloc(MEMORY[0x277CEA608]) initWithScreenType:type];
 
   return v4;
 }
 
 - (id)mainDisplayWindowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  return v3;
+  return embeddedDisplayWindowScene;
 }
 
 - (id)mainDisplaySceneManager
 {
   v3 = objc_opt_class();
-  v4 = [(SBIconController *)self mainDisplayWindowScene];
-  v5 = [v4 sceneManager];
-  v6 = SBSafeCast(v3, v5);
+  mainDisplayWindowScene = [(SBIconController *)self mainDisplayWindowScene];
+  sceneManager = [mainDisplayWindowScene sceneManager];
+  v6 = SBSafeCast(v3, sceneManager);
 
   return v6;
 }
@@ -592,9 +592,9 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
 - (id)externalDisplaySceneManager
 {
   v3 = objc_opt_class();
-  v4 = [(SBIconController *)self mainDisplayWindowScene];
-  v5 = [v4 sceneManager];
-  v6 = SBSafeCast(v3, v5);
+  mainDisplayWindowScene = [(SBIconController *)self mainDisplayWindowScene];
+  sceneManager = [mainDisplayWindowScene sceneManager];
+  v6 = SBSafeCast(v3, sceneManager);
 
   return v6;
 }
@@ -604,62 +604,62 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
   override_policyAggregator = self->_override_policyAggregator;
   if (override_policyAggregator)
   {
-    v3 = override_policyAggregator;
+    policyAggregator2 = override_policyAggregator;
   }
 
   else
   {
-    v5 = [(SBIconController *)self mainDisplaySceneManager];
-    v6 = [v5 policyAggregator];
-    v7 = v6;
-    if (v6)
+    mainDisplaySceneManager = [(SBIconController *)self mainDisplaySceneManager];
+    policyAggregator = [mainDisplaySceneManager policyAggregator];
+    v7 = policyAggregator;
+    if (policyAggregator)
     {
-      v3 = v6;
+      policyAggregator2 = policyAggregator;
     }
 
     else
     {
-      v8 = [(SBIconController *)self externalDisplaySceneManager];
-      v3 = [v8 policyAggregator];
+      externalDisplaySceneManager = [(SBIconController *)self externalDisplaySceneManager];
+      policyAggregator2 = [externalDisplaySceneManager policyAggregator];
     }
   }
 
-  return v3;
+  return policyAggregator2;
 }
 
-- (id)folderNameForDisplayID:(id)a3
+- (id)folderNameForDisplayID:(id)d
 {
   iconModel = self->_iconModel;
-  v4 = a3;
-  v5 = [(SBHIconModel *)iconModel rootFolder];
-  v6 = [v5 indexPathForIconWithIdentifier:v4];
+  dCopy = d;
+  rootFolder = [(SBHIconModel *)iconModel rootFolder];
+  v6 = [rootFolder indexPathForIconWithIdentifier:dCopy];
 
-  v7 = [v5 folderContainingIndexPath:v6 relativeIndexPath:0];
+  v7 = [rootFolder folderContainingIndexPath:v6 relativeIndexPath:0];
 
   if (v7)
   {
-    v8 = [v7 displayName];
+    displayName = [v7 displayName];
   }
 
   else
   {
-    v8 = 0;
+    displayName = 0;
   }
 
-  return v8;
+  return displayName;
 }
 
-- (id)iconPathForIconWithDisplayID:(id)a3
+- (id)iconPathForIconWithDisplayID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBHIconModel *)self->_iconModel rootFolder];
-  v6 = [v5 indexPathForIconWithIdentifier:v4];
+  dCopy = d;
+  rootFolder = [(SBHIconModel *)self->_iconModel rootFolder];
+  v6 = [rootFolder indexPathForIconWithIdentifier:dCopy];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v20 = v5;
-    [v5 resolvedComponentsForIndexPath:v6];
+    v20 = rootFolder;
+    [rootFolder resolvedComponentsForIndexPath:v6];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -684,14 +684,14 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
 
           if (isKindOfClass)
           {
-            v16 = [v13 displayName];
-            if (!v16)
+            displayName = [v13 displayName];
+            if (!displayName)
             {
               goto LABEL_12;
             }
 
-            v17 = v16;
-            [v7 addObject:v16];
+            v17 = displayName;
+            [v7 addObject:displayName];
           }
         }
 
@@ -704,7 +704,7 @@ void __40__SBIconController_initWithWindowScene___block_invoke_8(uint64_t a1)
 LABEL_12:
 
     v18 = [v7 copy];
-    v5 = v20;
+    rootFolder = v20;
   }
 
   else
@@ -715,57 +715,57 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)allowsBadgingForIcon:(id)a3
+- (BOOL)allowsBadgingForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [v4 overrideBadgeNumberOrString];
+  iconCopy = icon;
+  overrideBadgeNumberOrString = [iconCopy overrideBadgeNumberOrString];
 
-  if (v5)
+  if (overrideBadgeNumberOrString)
   {
     v6 = 1;
   }
 
   else
   {
-    if ([v4 isApplicationIcon])
+    if ([iconCopy isApplicationIcon])
     {
-      v7 = [v4 applicationBundleID];
+      applicationBundleID = [iconCopy applicationBundleID];
     }
 
-    else if ([v4 isBookmarkIcon])
+    else if ([iconCopy isBookmarkIcon])
     {
-      v8 = [v4 bookmark];
-      v7 = [v8 placeholderBundleIdentifier];
+      bookmark = [iconCopy bookmark];
+      applicationBundleID = [bookmark placeholderBundleIdentifier];
     }
 
     else
     {
-      v7 = 0;
+      applicationBundleID = 0;
     }
 
-    v6 = [(SBIconController *)self _allowsBadgingForApplicationBundleIdentifier:v7];
+    v6 = [(SBIconController *)self _allowsBadgingForApplicationBundleIdentifier:applicationBundleID];
   }
 
   return v6;
 }
 
-- (BOOL)_allowsBadgingForApplicationBundleIdentifier:(id)a3
+- (BOOL)_allowsBadgingForApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBIconController *)self iconManager];
-  v6 = [v5 focusModeManager];
-  v7 = [v6 activeFocusMode];
-  v8 = [v7 showsOnlyAllowedApplicationBadges];
-  v9 = [v7 hidesOnlyDeniedApplicationBadges];
-  if (v4)
+  identifierCopy = identifier;
+  iconManager = [(SBIconController *)self iconManager];
+  focusModeManager = [iconManager focusModeManager];
+  activeFocusMode = [focusModeManager activeFocusMode];
+  showsOnlyAllowedApplicationBadges = [activeFocusMode showsOnlyAllowedApplicationBadges];
+  hidesOnlyDeniedApplicationBadges = [activeFocusMode hidesOnlyDeniedApplicationBadges];
+  if (identifierCopy)
   {
-    v10 = v9;
-    v11 = [(SBIconController *)self displayIDsWithBadgingEnabled];
-    v12 = [v11 containsObject:v4];
-    if (v8)
+    v10 = hidesOnlyDeniedApplicationBadges;
+    displayIDsWithBadgingEnabled = [(SBIconController *)self displayIDsWithBadgingEnabled];
+    v12 = [displayIDsWithBadgingEnabled containsObject:identifierCopy];
+    if (showsOnlyAllowedApplicationBadges)
     {
-      v13 = [v7 allowedApplicationBundleIdentifiers];
-      LOBYTE(v14) = [v13 containsObject:v4];
+      allowedApplicationBundleIdentifiers = [activeFocusMode allowedApplicationBundleIdentifiers];
+      LOBYTE(v14) = [allowedApplicationBundleIdentifiers containsObject:identifierCopy];
     }
 
     else
@@ -777,8 +777,8 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      v13 = [v7 deniedApplicationBundleIdentifiers];
-      v14 = [v13 containsObject:v4] ^ 1;
+      allowedApplicationBundleIdentifiers = [activeFocusMode deniedApplicationBundleIdentifiers];
+      v14 = [allowedApplicationBundleIdentifiers containsObject:identifierCopy] ^ 1;
     }
 
     v12 &= v14;
@@ -786,31 +786,31 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v12 = v8 ^ 1;
+  v12 = showsOnlyAllowedApplicationBadges ^ 1;
 LABEL_9:
 
   return v12;
 }
 
-- (BOOL)isUninstallSupportedForIcon:(id)a3
+- (BOOL)isUninstallSupportedForIcon:(id)icon
 {
-  v4 = a3;
-  if (-[SBIconController isUninstallSupportedForAnyIcon](self, "isUninstallSupportedForAnyIcon") && [v4 isUninstallSupported])
+  iconCopy = icon;
+  if (-[SBIconController isUninstallSupportedForAnyIcon](self, "isUninstallSupportedForAnyIcon") && [iconCopy isUninstallSupported])
   {
-    if ([v4 isApplicationIcon])
+    if ([iconCopy isApplicationIcon])
     {
-      v5 = [v4 application];
-      if ([v5 isSystemApplication] && -[SBIconController isUninstallingSystemAppsRestricted](self, "isUninstallingSystemAppsRestricted"))
+      application = [iconCopy application];
+      if ([application isSystemApplication] && -[SBIconController isUninstallingSystemAppsRestricted](self, "isUninstallingSystemAppsRestricted"))
       {
         v6 = 0;
       }
 
-      else if (v5)
+      else if (application)
       {
-        v8 = [v5 info];
-        v9 = [v8 uninstallCapability];
+        info = [application info];
+        uninstallCapability = [info uninstallCapability];
 
-        if (v9)
+        if (uninstallCapability)
         {
           v6 = -1;
         }
@@ -841,21 +841,21 @@ LABEL_9:
   return v6 & 1;
 }
 
-- (BOOL)isHideSupportedForIcon:(id)a3 inLocation:(id)a4
+- (BOOL)isHideSupportedForIcon:(id)icon inLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  locationCopy = location;
   if ([(SBIconController *)self isAppLibrarySupported]&& (SBIconLocationGroupContainsLocation() & 1) == 0)
   {
-    if ([v6 isApplicationIcon] & 1) != 0 || (objc_msgSend(v6, "isFolderIcon"))
+    if ([iconCopy isApplicationIcon] & 1) != 0 || (objc_msgSend(iconCopy, "isFolderIcon"))
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [(SBIconController *)self iconManager];
-      v8 = [v10 canAddIconToIgnoredList:v6];
+      iconManager = [(SBIconController *)self iconManager];
+      v8 = [iconManager canAddIconToIgnoredList:iconCopy];
     }
   }
 
@@ -867,20 +867,20 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isUninstallOrHideSupportedForIcon:(id)a3 inLocation:(id)a4
+- (BOOL)isUninstallOrHideSupportedForIcon:(id)icon inLocation:(id)location
 {
-  v6 = a3;
-  v7 = [(SBIconController *)self isHideSupportedForIcon:v6 inLocation:a4]|| [(SBIconController *)self isUninstallSupportedForIcon:v6];
+  iconCopy = icon;
+  v7 = [(SBIconController *)self isHideSupportedForIcon:iconCopy inLocation:location]|| [(SBIconController *)self isUninstallSupportedForIcon:iconCopy];
 
   return v7;
 }
 
 - (BOOL)isEnterpriseMultiUser
 {
-  v2 = [SBApp userSessionController];
-  v3 = [v2 isMultiUserSupported];
+  userSessionController = [SBApp userSessionController];
+  isMultiUserSupported = [userSessionController isMultiUserSupported];
 
-  return v3;
+  return isMultiUserSupported;
 }
 
 - (BOOL)resetHomeScreenLayout
@@ -893,8 +893,8 @@ LABEL_9:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -906,7 +906,7 @@ LABEL_9:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -919,26 +919,26 @@ LABEL_9:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 
   [(SBIconController *)self setUserIconStateFileStatus:1];
-  v9 = [(SBIconController *)self iconManager];
-  v10 = [v9 resetIconLayoutWithOptions:1];
+  iconManager = [(SBIconController *)self iconManager];
+  v10 = [iconManager resetIconLayoutWithOptions:1];
   [(SBIconController *)self updateRootFolderWithCurrentDoNotDisturbState];
-  v11 = [(SBIconController *)self rootFolder];
-  v12 = [v11 todayList];
-  [(SBIconController *)self _addSmartStackToTodayList:v12 completionHandler:0];
+  rootFolder = [(SBIconController *)self rootFolder];
+  todayList = [rootFolder todayList];
+  [(SBIconController *)self _addSmartStackToTodayList:todayList completionHandler:0];
 
   if ([(SBIconController *)self isUpgradeRestore]&& ![(SBIconController *)self isEnterpriseMultiUser])
   {
-    [v9 addDefaultWidgetsToHomeScreen];
+    [iconManager addDefaultWidgetsToHomeScreen];
   }
 
-  [v9 removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:1];
+  [iconManager removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:1];
   v13 = [(SBHLibraryCategoryMapProvider *)self->_categoryMapProvider requestLibraryCategoryMapRefreshWithOptions:7 reason:@"SBIconController requested reset home screen layout."];
 
   return v10;
@@ -996,34 +996,34 @@ LABEL_9:
   return notificationIconImageCache;
 }
 
-- (void)_bookmarkDidUninstall:(id)a3
+- (void)_bookmarkDidUninstall:(id)uninstall
 {
   [SBApp noteInstalledWebClipsDidChange];
-  v3 = [MEMORY[0x277CEB358] sharedInstance];
-  [v3 notifyBookmarksDidChange];
+  mEMORY[0x277CEB358] = [MEMORY[0x277CEB358] sharedInstance];
+  [mEMORY[0x277CEB358] notifyBookmarksDidChange];
 }
 
 - (BOOL)shouldAddNewIconsToRootFolder
 {
   v2 = +[SBDefaults localDefaults];
-  v3 = [v2 homeScreenDefaults];
+  homeScreenDefaults = [v2 homeScreenDefaults];
 
-  v4 = [v3 automaticallyAddsNewApplications];
-  if (([v3 automaticallyAddsNewApplicationsExists] & 1) == 0)
+  automaticallyAddsNewApplications = [homeScreenDefaults automaticallyAddsNewApplications];
+  if (([homeScreenDefaults automaticallyAddsNewApplicationsExists] & 1) == 0)
   {
-    v4 &= [v3 pagesHaveEverBeenHidden] ^ 1;
+    automaticallyAddsNewApplications &= [homeScreenDefaults pagesHaveEverBeenHidden] ^ 1;
   }
 
-  return v4;
+  return automaticallyAddsNewApplications;
 }
 
 - (void)deleteAllWebClips
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(SBIconController *)self iconManager];
-  v3 = [v2 iconModel];
-  v4 = [v3 leafIcons];
-  v5 = [v4 bs_filter:&__block_literal_global_204];
+  iconManager = [(SBIconController *)self iconManager];
+  iconModel = [iconManager iconModel];
+  leafIcons = [iconModel leafIcons];
+  v5 = [leafIcons bs_filter:&__block_literal_global_204];
 
   v13 = 0u;
   v14 = 0u;
@@ -1045,7 +1045,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        [v2 uninstallIcon:*(*(&v11 + 1) + 8 * v10++) animate:{0, v11}];
+        [iconManager uninstallIcon:*(*(&v11 + 1) + 8 * v10++) animate:{0, v11}];
       }
 
       while (v8 != v10);
@@ -1058,8 +1058,8 @@ LABEL_9:
 
 - (void)runWidgetDiscoverabilityTest
 {
-  v3 = [(SBIconController *)self iconManager];
-  [v3 removeWidgetIconsFromHomeScreen];
+  iconManager = [(SBIconController *)self iconManager];
+  [iconManager removeWidgetIconsFromHomeScreen];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__SBIconController_runWidgetDiscoverabilityTest__block_invoke;
@@ -1111,22 +1111,22 @@ void __48__SBIconController_runWidgetDiscoverabilityTest__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)importIconState:(id)a3
+- (BOOL)importIconState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
   self->_sendITunesNotification = 0;
-  v4 = [(SBIconModel *)self->_iconModel importState:a3];
+  v4 = [(SBIconModel *)self->_iconModel importState:state];
   if (v4)
   {
-    v5 = [(SBIconController *)self iconManager];
-    [v5 relayout];
+    iconManager = [(SBIconController *)self iconManager];
+    [iconManager relayout];
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+    v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1138,7 +1138,7 @@ void __48__SBIconController_runWidgetDiscoverabilityTest__block_invoke(uint64_t 
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
@@ -1151,7 +1151,7 @@ void __48__SBIconController_runWidgetDiscoverabilityTest__block_invoke(uint64_t 
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -1162,14 +1162,14 @@ void __48__SBIconController_runWidgetDiscoverabilityTest__block_invoke(uint64_t 
   return v4;
 }
 
-- (BOOL)isIconVisibleForBundleIdentifier:(id)a3
+- (BOOL)isIconVisibleForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBIconController *)self iconModel];
-  v6 = [v5 applicationIconForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  iconModel = [(SBIconController *)self iconModel];
+  v6 = [iconModel applicationIconForBundleIdentifier:identifierCopy];
 
-  LOBYTE(v4) = [v5 isIconVisible:v6];
-  return v4;
+  LOBYTE(identifierCopy) = [iconModel isIconVisible:v6];
+  return identifierCopy;
 }
 
 + (SBHIconRepository)sharedIconRepository
@@ -1197,22 +1197,22 @@ void __40__SBIconController_sharedIconRepository__block_invoke()
   [v4 setHiddenTagsThatAffectBookmarkIcons:v5];
 }
 
-- (void)configureIconManager:(id)a3
+- (void)configureIconManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   if (objc_opt_respondsToSelector())
   {
-    [v3 setLimitsWidgetStackPageControlFlashesToSession:1];
+    [managerCopy setLimitsWidgetStackPageControlFlashesToSession:1];
   }
 }
 
 - (id)proactiveOnboardingDefaultStacks
 {
   v10 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CEB450] sharedInstance];
+  mEMORY[0x277CEB450] = [MEMORY[0x277CEB450] sharedInstance];
   v3 = MEMORY[0x277CBEA60];
-  v4 = [v2 fetchWidgetDiscoverabilityStacks];
-  v5 = [v3 arrayWithArray:v4];
+  fetchWidgetDiscoverabilityStacks = [mEMORY[0x277CEB450] fetchWidgetDiscoverabilityStacks];
+  v5 = [v3 arrayWithArray:fetchWidgetDiscoverabilityStacks];
 
   v6 = SBLogWidgetDiscoverability();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1304,27 +1304,27 @@ uint64_t __59__SBIconController__updateUninstallingSystemAppsRestricted__block_i
 - (void)_registerAnalytics
 {
   objc_initWeak(&location, self);
-  v3 = [(SBIconController *)self analyticsClient];
+  analyticsClient = [(SBIconController *)self analyticsClient];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__SBIconController__registerAnalytics__block_invoke;
   v9[3] = &unk_2783AFF50;
   objc_copyWeak(&v10, &location);
-  [v3 registerForQueryName:0 handler:v9];
+  [analyticsClient registerForQueryName:0 handler:v9];
 
-  v4 = [(SBIconController *)self analyticsClient];
+  analyticsClient2 = [(SBIconController *)self analyticsClient];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SBIconController__registerAnalytics__block_invoke_2;
   v7[3] = &unk_2783AFF50;
   objc_copyWeak(&v8, &location);
-  [v4 registerForQueryName:2 handler:v7];
+  [analyticsClient2 registerForQueryName:2 handler:v7];
 
-  v5 = [(SBIconController *)self analyticsClient];
-  [v5 registerForQueryName:3 handler:&__block_literal_global_226];
+  analyticsClient3 = [(SBIconController *)self analyticsClient];
+  [analyticsClient3 registerForQueryName:3 handler:&__block_literal_global_226];
 
-  v6 = [(SBIconController *)self analyticsClient];
-  [v6 registerForQueryName:1 handler:&__block_literal_global_228];
+  analyticsClient4 = [(SBIconController *)self analyticsClient];
+  [analyticsClient4 registerForQueryName:1 handler:&__block_literal_global_228];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -1531,9 +1531,9 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
   *(v7 + 40) = v6;
 }
 
-- (unint64_t)_foldersInList:(id)a3
+- (unint64_t)_foldersInList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -1543,55 +1543,55 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
   v6[2] = __35__SBIconController__foldersInList___block_invoke;
   v6[3] = &unk_2783AFF98;
   v6[4] = &v7;
-  [v3 enumerateFolderIconsUsingBlock:v6];
+  [listCopy enumerateFolderIconsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
 
   return v4;
 }
 
-- (void)_installedAppsDidChange:(id)a3
+- (void)_installedAppsDidChange:(id)change
 {
-  v4 = a3;
-  v14 = [v4 object];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
+  changeCopy = change;
+  object = [changeCopy object];
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
+  userInfo2 = [changeCopy userInfo];
+  v8 = [userInfo2 objectForKey:@"SBInstalledApplicationsRemovedBundleIDs"];
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKey:@"SBInstalledApplicationsReplacedBundleIDs"];
+  userInfo3 = [changeCopy userInfo];
+  v10 = [userInfo3 objectForKey:@"SBInstalledApplicationsReplacedBundleIDs"];
 
-  v11 = [v4 userInfo];
+  userInfo4 = [changeCopy userInfo];
 
-  v12 = [v11 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+  v12 = [userInfo4 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
 
   if ([v6 count] || objc_msgSend(v8, "count") || objc_msgSend(v10, "count") || objc_msgSend(v12, "count"))
   {
-    [(SBIconController *)self _mutateIconListsForInstalledAppsDidChangeWithController:v14 added:v6 modified:v10 removed:v8];
-    v13 = [(SBIconController *)self iconModel];
-    [(SBIconController *)self _iconModelInstalledAppsDidChange:v13];
+    [(SBIconController *)self _mutateIconListsForInstalledAppsDidChangeWithController:object added:v6 modified:v10 removed:v8];
+    iconModel = [(SBIconController *)self iconModel];
+    [(SBIconController *)self _iconModelInstalledAppsDidChange:iconModel];
   }
 }
 
-- (void)_mutateIconListsForInstalledAppsDidChangeWithController:(id)a3 added:(id)a4 modified:(id)a5 removed:(id)a6
+- (void)_mutateIconListsForInstalledAppsDidChangeWithController:(id)controller added:(id)added modified:(id)modified removed:(id)removed
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  addedCopy = added;
+  modifiedCopy = modified;
+  removedCopy = removed;
   if (![(SBIconController *)self _ignoreMutatingIconListsOnApplicationInstall])
   {
     v14 = [MEMORY[0x277CBEB58] set];
-    [v14 unionSet:v11];
-    [v14 unionSet:v12];
+    [v14 unionSet:addedCopy];
+    [v14 unionSet:modifiedCopy];
     v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    if ([v14 count] || objc_msgSend(v13, "count"))
+    if ([v14 count] || objc_msgSend(removedCopy, "count"))
     {
-      v30 = v13;
-      v31 = v12;
+      v30 = removedCopy;
+      v31 = modifiedCopy;
       v38 = 0u;
       v39 = 0u;
       v36 = 0u;
@@ -1613,8 +1613,8 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
             }
 
             v21 = *(*(&v36 + 1) + 8 * i);
-            v22 = [v10 applicationWithBundleIdentifier:v21];
-            if ([v11 containsObject:v21])
+            v22 = [controllerCopy applicationWithBundleIdentifier:v21];
+            if ([addedCopy containsObject:v21])
             {
               [v15 addObject:v22];
               [v22 setRestoringIcon:1];
@@ -1627,13 +1627,13 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
         while (v18);
       }
 
-      v13 = v30;
-      v12 = v31;
+      removedCopy = v30;
+      modifiedCopy = v31;
       v14 = v29;
     }
 
-    v23 = [(SBIconController *)self iconModel];
-    [(SBIconController *)self _iconModel:v23 wantsToRevealAnyApplicationFromIdentifiers:v14];
+    iconModel = [(SBIconController *)self iconModel];
+    [(SBIconController *)self _iconModel:iconModel wantsToRevealAnyApplicationFromIdentifiers:v14];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -1664,16 +1664,16 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
   }
 }
 
-- (void)_iconModelInstalledAppsDidChange:(id)a3
+- (void)_iconModelInstalledAppsDidChange:(id)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1685,37 +1685,37 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 iconModelInstalledAppsDidChange:v4];
+          [v10 iconModelInstalledAppsDidChange:changeCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_iconModel:(id)a3 wantsToRevealAnyApplicationFromIdentifiers:(id)a4
+- (void)_iconModel:(id)model wantsToRevealAnyApplicationFromIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  identifiersCopy = identifiers;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+  v9 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1727,50 +1727,50 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allObjects);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v7 copy];
-          [v13 iconModel:v6 wantsToRevealAnyApplicationFromIdentifiers:v14];
+          v14 = [identifiersCopy copy];
+          [v13 iconModel:modelCopy wantsToRevealAnyApplicationFromIdentifiers:v14];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_backupRestoringDidChange:(id)a3
+- (void)_backupRestoringDidChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(SBIconController *)self iconModel];
+  iconModel = [(SBIconController *)self iconModel];
   v5 = +[SBSyncController sharedInstance];
-  v6 = [v5 isRestoring];
+  isRestoring = [v5 isRestoring];
 
-  [v4 setRestoring:v6];
-  if ((v6 & 1) == 0)
+  [iconModel setRestoring:isRestoring];
+  if ((isRestoring & 1) == 0)
   {
-    v7 = [(SBIconController *)self iconManager];
-    [v7 checkForInvalidWidgets];
+    iconManager = [(SBIconController *)self iconManager];
+    [iconManager checkForInvalidWidgets];
 
-    v8 = [(SBIconController *)self iconManager];
-    [v8 checkForInvalidCustomElements];
+    iconManager2 = [(SBIconController *)self iconManager];
+    [iconManager2 checkForInvalidCustomElements];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+  v10 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1782,20 +1782,20 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 iconModel:v4 backupRestoringStatusDidChange:v6];
+          [v14 iconModel:iconModel backupRestoringStatusDidChange:isRestoring];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -1805,10 +1805,10 @@ void __38__SBIconController__registerAnalytics__block_invoke_7(uint64_t a1)
 - (void)_updateIconModelStore
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 restrictionEnforcedHomeScreenLayout];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  restrictionEnforcedHomeScreenLayout = [mEMORY[0x277D262A0] restrictionEnforcedHomeScreenLayout];
 
-  if (!v4 || (v5 = [[SBIconProfileModelMemoryStore alloc] initWithITunesRepresentation:v4]) == 0)
+  if (!restrictionEnforcedHomeScreenLayout || (v5 = [[SBIconProfileModelMemoryStore alloc] initWithITunesRepresentation:restrictionEnforcedHomeScreenLayout]) == 0)
   {
     if (self->_visibleTags)
     {
@@ -1848,30 +1848,30 @@ LABEL_8:
   }
 
   v8 = v5;
-  v9 = [(SBIconController *)self iconModel];
-  v10 = [(SBHIconModel *)v9 store];
+  iconModel = [(SBIconController *)self iconModel];
+  store = [(SBHIconModel *)iconModel store];
 
   v11 = SBLogWidgetDiscoverability();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBHIconModel *)v9 store];
+    store2 = [(SBHIconModel *)iconModel store];
     v21 = 138412546;
-    v22 = v12;
+    v22 = store2;
     v23 = 2112;
     v24 = v8;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "iconModelStore(%@), store(%@)", &v21, 0x16u);
   }
 
-  if (v10 != v8)
+  if (store != v8)
   {
-    [(SBIconController *)self setHasRestrictedEnforcedLayout:v4 != 0];
+    [(SBIconController *)self setHasRestrictedEnforcedLayout:restrictionEnforcedHomeScreenLayout != 0];
     v13 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [(SBReadOnlyDefaultIconModelStore *)v8 currentIconStateURL];
-      if ([v15 checkResourceIsReachableAndReturnError:0])
+      currentIconStateURL = [(SBReadOnlyDefaultIconModelStore *)v8 currentIconStateURL];
+      if ([currentIconStateURL checkResourceIsReachableAndReturnError:0])
       {
         v16 = 2;
       }
@@ -1891,21 +1891,21 @@ LABEL_8:
     v17 = SBLogWidgetDiscoverability();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(SBIconController *)self userIconStateFileStatus];
+      userIconStateFileStatus = [(SBIconController *)self userIconStateFileStatus];
       v21 = 67109120;
-      LODWORD(v22) = v18;
+      LODWORD(v22) = userIconStateFileStatus;
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Icon state = %d", &v21, 8u);
     }
 
-    if (v9)
+    if (iconModel)
     {
-      [(SBHIconModel *)v9 setStore:v8];
-      if (v4)
+      [(SBHIconModel *)iconModel setStore:v8];
+      if (restrictionEnforcedHomeScreenLayout)
       {
 LABEL_25:
         v19 = +[SBDefaultIconModelStore sharedInstance];
 LABEL_28:
-        [(SBHIconModel *)v9 setTodayListsStore:v19];
+        [(SBHIconModel *)iconModel setTodayListsStore:v19];
 
         goto LABEL_29;
       }
@@ -1913,12 +1913,12 @@ LABEL_28:
 
     else
     {
-      v20 = [objc_opt_class() sharedIconRepository];
-      v9 = [(SBHIconModel *)[SBIconModel alloc] initWithStore:v8 iconRepository:v20];
-      [(SBHIconModel *)v9 setPostsDidAddIconNotification:0];
-      [(SBIconController *)self setModel:v9];
+      sharedIconRepository = [objc_opt_class() sharedIconRepository];
+      iconModel = [(SBHIconModel *)[SBIconModel alloc] initWithStore:v8 iconRepository:sharedIconRepository];
+      [(SBHIconModel *)iconModel setPostsDidAddIconNotification:0];
+      [(SBIconController *)self setModel:iconModel];
 
-      if (v4)
+      if (restrictionEnforcedHomeScreenLayout)
       {
         goto LABEL_25;
       }
@@ -1931,17 +1931,17 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  modelCopy = model;
   p_iconModel = &self->_iconModel;
-  if (self->_iconModel != v5)
+  if (self->_iconModel != modelCopy)
   {
-    v7 = [(SBIconController *)self iconManager];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    iconManager = [(SBIconController *)self iconManager];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277D666F0];
-    [v8 removeObserver:self name:*MEMORY[0x277D666F0] object:self->_iconModel];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D666F0] object:self->_iconModel];
     categoryMapProvider = self->_categoryMapProvider;
     self->_categoryMapProvider = 0;
 
@@ -1951,7 +1951,7 @@ LABEL_29:
       [SBIconController setModel:];
     }
 
-    objc_storeStrong(&self->_iconModel, a3);
+    objc_storeStrong(&self->_iconModel, model);
     iconModel = self->_iconModel;
     v13 = +[SBSyncController sharedInstance];
     -[SBHIconModel setRestoring:](iconModel, "setRestoring:", [v13 isRestoring]);
@@ -1961,11 +1961,11 @@ LABEL_29:
       [SBHIconModel setVisibilityOfIconsWithVisibleTags:"setVisibilityOfIconsWithVisibleTags:hiddenTags:" hiddenTags:?];
     }
 
-    [v7 setIconModel:v5];
-    [v8 addObserver:self selector:sel__iconModelDidLayout_ name:v9 object:self->_iconModel];
-    v14 = [(SBHIconModel *)self->_iconModel rootFolder];
+    [iconManager setIconModel:modelCopy];
+    [defaultCenter addObserver:self selector:sel__iconModelDidLayout_ name:v9 object:self->_iconModel];
+    rootFolder = [(SBHIconModel *)self->_iconModel rootFolder];
 
-    if (v14)
+    if (rootFolder)
     {
       [(SBIconController *)self _rootFolderDidChange];
     }
@@ -1974,51 +1974,51 @@ LABEL_29:
     iconVisibilityService = self->_iconVisibilityService;
     self->_iconVisibilityService = v15;
 
-    [v8 postNotificationName:SBIconControllerIconModelDidChangeNotification object:self];
+    [defaultCenter postNotificationName:SBIconControllerIconModelDidChangeNotification object:self];
     if ([(SBHIconModel *)self->_iconModel hasDesiredIconState])
     {
-      v17 = [(SBHIconModel *)*p_iconModel missingDesiredIconIdentifiers];
+      missingDesiredIconIdentifiers = [(SBHIconModel *)*p_iconModel missingDesiredIconIdentifiers];
       v26 = *MEMORY[0x277D67548];
-      v18 = [v17 allObjects];
-      v27[0] = v18;
+      allObjects = [missingDesiredIconIdentifiers allObjects];
+      v27[0] = allObjects;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
       v20 = MEMORY[0x277D65DD0];
       v21 = v19;
-      v22 = [v20 sharedInstance];
-      [v22 emitEvent:35 withPayload:v21];
+      sharedInstance = [v20 sharedInstance];
+      [sharedInstance emitEvent:35 withPayload:v21];
     }
 
     analyticsEventsController = self->_analyticsEventsController;
     if (analyticsEventsController)
     {
-      [(SBAnalyticsEventsControllerForIconController *)analyticsEventsController updateIconModel:v5];
+      [(SBAnalyticsEventsControllerForIconController *)analyticsEventsController updateIconModel:modelCopy];
     }
 
     else
     {
-      v24 = [[SBAnalyticsEventsControllerForIconController alloc] initWithIconModel:v5];
+      v24 = [[SBAnalyticsEventsControllerForIconController alloc] initWithIconModel:modelCopy];
       v25 = self->_analyticsEventsController;
       self->_analyticsEventsController = v24;
     }
   }
 }
 
-- (void)_addSmartStackToTodayList:(id)a3 completionHandler:(id)a4
+- (void)_addSmartStackToTodayList:(id)list completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [MEMORY[0x277D65ED8] sharedInstance];
+  mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__SBIconController__addSmartStackToTodayList_completionHandler___block_invoke;
   v11[3] = &unk_2783B0010;
-  v9 = v7;
+  v9 = handlerCopy;
   v13 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = listCopy;
   v12 = v10;
-  [v8 performAfterFirstUnlockSinceBootUsingBlock:v11];
+  [mEMORY[0x277D65ED8] performAfterFirstUnlockSinceBootUsingBlock:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2233,18 +2233,18 @@ LABEL_8:
   }
 }
 
-- (void)_obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler:(id)a3
+- (void)_obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D65ED8] sharedInstance];
+  handlerCopy = handler;
+  mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler___block_invoke;
   v7[3] = &unk_2783A98A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performAfterFirstUnlockSinceBootUsingBlock:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [mEMORY[0x277D65ED8] performAfterFirstUnlockSinceBootUsingBlock:v7];
 }
 
 void __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler___block_invoke(uint64_t a1)
@@ -2518,22 +2518,22 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
   return result;
 }
 
-- (void)_updateDefaultFirstPageWidgetDescriptors:(id)a3 withSizeClass:(id)a4 andGridCellInfoOptions:(unint64_t)a5
+- (void)_updateDefaultFirstPageWidgetDescriptors:(id)descriptors withSizeClass:(id)class andGridCellInfoOptions:(unint64_t)options
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBIconController *)self iconManager];
-  [v10 setDefaultFirstPageWidgetDescriptors:v8];
-  [v10 setDefaultFirstPageWidgetSizeClass:v9];
-  v17 = v10;
-  [v10 setGridCellInfoOptionsForInsertingDefaultWidgets:a5];
+  descriptorsCopy = descriptors;
+  classCopy = class;
+  iconManager = [(SBIconController *)self iconManager];
+  [iconManager setDefaultFirstPageWidgetDescriptors:descriptorsCopy];
+  [iconManager setDefaultFirstPageWidgetSizeClass:classCopy];
+  v17 = iconManager;
+  [iconManager setGridCellInfoOptionsForInsertingDefaultWidgets:options];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+  v12 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2545,20 +2545,20 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allObjects);
         }
 
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 updateDefaultFirstPageWidgetDescriptors:v8 withSizeClass:v9 andGridCellInfoOptions:a5];
+          [v16 updateDefaultFirstPageWidgetDescriptors:descriptorsCopy withSizeClass:classCopy andGridCellInfoOptions:options];
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [allObjects countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
@@ -2568,10 +2568,10 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
 - (void)obtainProactiveSecondPageWidgetSuggestion
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v2 = [(SBIconController *)self iconManager];
-  v3 = [v2 widgetExtensionProvider];
+  iconManager = [(SBIconController *)self iconManager];
+  widgetExtensionProvider = [iconManager widgetExtensionProvider];
   v4 = [objc_alloc(MEMORY[0x277D66320]) initWithKind:@"com.apple.tv" extensionBundleIdentifier:@"com.apple.tv.TVWidgetExtension"];
-  v5 = [v3 sbh_descriptorForWidgetIdentifiable:v4];
+  v5 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:v4];
   v6 = v5;
   if (v5)
   {
@@ -2579,25 +2579,25 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
     v10[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    [v2 setDefaultSecondPageWidgetDescriptors:v8];
+    [iconManager setDefaultSecondPageWidgetDescriptors:v8];
 
-    [v2 setDefaultSecondPageWidgetSizeClass:*MEMORY[0x277D66510]];
+    [iconManager setDefaultSecondPageWidgetSizeClass:*MEMORY[0x277D66510]];
   }
 }
 
 - (void)_rootFolderDidChange
 {
-  v9 = [(SBIconController *)self iconModel];
-  v3 = [v9 rootFolder];
-  v4 = [SBApp userSessionController];
-  v5 = [v4 sessionType];
+  iconModel = [(SBIconController *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  userSessionController = [SBApp userSessionController];
+  sessionType = [userSessionController sessionType];
 
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 homeScreenDefaults];
+  homeScreenDefaults = [v6 homeScreenDefaults];
 
-  if ([v7 shouldUpgradeEnableWidgetSuggestions])
+  if ([homeScreenDefaults shouldUpgradeEnableWidgetSuggestions])
   {
-    v8 = v5 == 2;
+    v8 = sessionType == 2;
   }
 
   else
@@ -2605,22 +2605,22 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
     v8 = 1;
   }
 
-  if (!v8 && [(SBIconController *)self _enableWidgetSuggestionsForIconsInModel:v9 withRootFolder:v3])
+  if (!v8 && [(SBIconController *)self _enableWidgetSuggestionsForIconsInModel:iconModel withRootFolder:rootFolder])
   {
-    [v7 setShouldUpgradeEnableWidgetSuggestions:0];
+    [homeScreenDefaults setShouldUpgradeEnableWidgetSuggestions:0];
   }
 
   [(SBIconController *)self _prepareDefaultTodayLayoutIfNecessary];
   [(SBIconController *)self _setupWidgetIntroductionIfNecessary];
   [(SBIconController *)self updateRootFolderWithCurrentDoNotDisturbState];
-  [v3 addFolderObserver:self];
+  [rootFolder addFolderObserver:self];
 }
 
-- (BOOL)_enableWidgetSuggestionsForIconsInModel:(id)a3 withRootFolder:(id)a4
+- (BOOL)_enableWidgetSuggestionsForIconsInModel:(id)model withRootFolder:(id)folder
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  folderCopy = folder;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -2630,7 +2630,7 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
   v11[2] = __75__SBIconController__enableWidgetSuggestionsForIconsInModel_withRootFolder___block_invoke;
   v11[3] = &unk_2783B0088;
   v11[4] = &v12;
-  [v6 enumerateListsWithOptions:1 usingBlock:v11];
+  [folderCopy enumerateListsWithOptions:1 usingBlock:v11];
   if (*(v13 + 24) == 1)
   {
     v7 = SBLogIconController();
@@ -2640,13 +2640,13 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Enabled Widget Suggestions for at least one widget icon; saving icon state...", buf, 2u);
     }
 
-    [v6 markIconStateDirty];
-    v8 = [v5 saveIconStateIfNeeded];
+    [folderCopy markIconStateDirty];
+    saveIconStateIfNeeded = [modelCopy saveIconStateIfNeeded];
     v9 = SBLogIconController();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v17 = v8;
+      v17 = saveIconStateIfNeeded;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Enabled Widget Suggestions for at least one widget icon; icon state saved: %{BOOL}u", buf, 8u);
     }
   }
@@ -2660,11 +2660,11 @@ uint64_t __83__SBIconController__obtainSmartStackForWidgetDiscoverabilityWithCom
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Did not enable Widget Suggestions for any widget icons", buf, 2u);
     }
 
-    LOBYTE(v8) = 1;
+    LOBYTE(saveIconStateIfNeeded) = 1;
   }
 
   _Block_object_dispose(&v12, 8);
-  return v8;
+  return saveIconStateIfNeeded;
 }
 
 uint64_t __75__SBIconController__enableWidgetSuggestionsForIconsInModel_withRootFolder___block_invoke(uint64_t a1, void *a2)
@@ -2698,21 +2698,21 @@ void __75__SBIconController__enableWidgetSuggestionsForIconsInModel_withRootFold
 - (void)_setupWidgetIntroductionIfNecessary
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [SBApp userSessionController];
-  v4 = [v3 sessionType];
+  userSessionController = [SBApp userSessionController];
+  sessionType = [userSessionController sessionType];
 
-  v5 = [(SBIconController *)self userIconStateFileStatus];
-  v6 = [MEMORY[0x277CBEB18] array];
+  userIconStateFileStatus = [(SBIconController *)self userIconStateFileStatus];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [(SBIconController *)self _featureIntroductionItemForWidgetSetupAtLocation:2];
-  [v6 bs_safeAddObject:v7];
-  if (v5 == 2 && v4 != 2)
+  [array bs_safeAddObject:v7];
+  if (userIconStateFileStatus == 2 && sessionType != 2)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NSHashTable *)self->_iconControllerObservers allObjects];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allObjects = [(NSHashTable *)self->_iconControllerObservers allObjects];
+    v9 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2724,33 +2724,33 @@ void __75__SBIconController__enableWidgetSuggestionsForIconsInModel_withRootFold
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v17 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
             v14 = [v13 featureIntroductionItemForWidgetSetupAtLocation:2];
-            [v6 bs_safeAddObject:v14];
+            [array bs_safeAddObject:v14];
           }
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
 
-    if ([v6 count])
+    if ([array count])
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __55__SBIconController__setupWidgetIntroductionIfNecessary__block_invoke;
       v15[3] = &unk_2783A9398;
-      v16 = v6;
+      v16 = array;
       [(SBIconController *)self _obtainSmartStackForWidgetDiscoverabilityWithCompletionHandler:v15];
     }
   }
@@ -2807,12 +2807,12 @@ void __55__SBIconController__setupWidgetIntroductionIfNecessary__block_invoke(ui
   }
 }
 
-- (id)_featureIntroductionItemForWidgetSetupAtLocation:(unint64_t)a3
+- (id)_featureIntroductionItemForWidgetSetupAtLocation:(unint64_t)location
 {
-  v4 = [(SBIconController *)self iconManager];
-  v5 = [v4 featureIntroductionManager];
-  v6 = [v5 featureIntroductionItemAtLocation:a3 withIdentifier:@"SBFeatureIntroductionLocationNone"];
-  if ([v6 shouldSetupFeatureIntroductionAtLocations:a3])
+  iconManager = [(SBIconController *)self iconManager];
+  featureIntroductionManager = [iconManager featureIntroductionManager];
+  v6 = [featureIntroductionManager featureIntroductionItemAtLocation:location withIdentifier:@"SBFeatureIntroductionLocationNone"];
+  if ([v6 shouldSetupFeatureIntroductionAtLocations:location])
   {
     v7 = v6;
   }
@@ -2862,20 +2862,20 @@ uint64_t __57__SBIconController__prepareDefaultTodayLayoutIfNecessary__block_inv
 
 - (BOOL)_tryToPrepareNonDynamicDefaultTodayLayout
 {
-  v3 = [(SBIconController *)self iconManager];
-  v4 = [(SBIconController *)self iconModel];
+  iconManager = [(SBIconController *)self iconManager];
+  iconModel = [(SBIconController *)self iconModel];
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 homeScreenDefaults];
+  homeScreenDefaults = [v5 homeScreenDefaults];
 
-  if ([v6 shouldPrepareDefaultTodayList])
+  if ([homeScreenDefaults shouldPrepareDefaultTodayList])
   {
-    if (![v3 resetTodayLayout] || !objc_msgSend(v4, "saveIconStateIfNeeded"))
+    if (![iconManager resetTodayLayout] || !objc_msgSend(iconModel, "saveIconStateIfNeeded"))
     {
       v7 = 0;
       goto LABEL_7;
     }
 
-    [v6 setShouldPrepareDefaultTodayList:0];
+    [homeScreenDefaults setShouldPrepareDefaultTodayList:0];
   }
 
   v7 = 1;
@@ -2886,22 +2886,22 @@ LABEL_7:
 
 - (void)_tryToPrepareDynamicDefaultTodayLayout
 {
-  v3 = [(SBIconController *)self iconModel];
-  v4 = [v3 rootFolder];
+  iconModel = [(SBIconController *)self iconModel];
+  rootFolder = [iconModel rootFolder];
   v5 = +[SBDefaults localDefaults];
-  v6 = [v5 homeScreenDefaults];
+  homeScreenDefaults = [v5 homeScreenDefaults];
 
-  if ([v6 shouldPrepareStackForDefaultTodayList])
+  if ([homeScreenDefaults shouldPrepareStackForDefaultTodayList])
   {
-    v7 = [v4 todayList];
+    todayList = [rootFolder todayList];
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__SBIconController__tryToPrepareDynamicDefaultTodayLayout__block_invoke;
     v9[3] = &unk_2783B00D8;
-    v10 = v6;
+    v10 = homeScreenDefaults;
     objc_copyWeak(&v12, &location);
-    v8 = v7;
+    v8 = todayList;
     v11 = v8;
     [(SBIconController *)self _addSmartStackToTodayList:v8 completionHandler:v9];
 
@@ -2957,16 +2957,16 @@ uint64_t __58__SBIconController__tryToPrepareDynamicDefaultTodayLayout__block_in
   return result;
 }
 
-- (void)_updateEnabledBadgesSetWithSections:(id)a3
+- (void)_updateEnabledBadgesSetWithSections:(id)sections
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = [MEMORY[0x277CBEB58] set];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v6 = v4;
+  v6 = sectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v7)
   {
@@ -2983,21 +2983,21 @@ uint64_t __58__SBIconController__tryToPrepareDynamicDefaultTodayLayout__block_in
         }
 
         v11 = *(*(&v47 + 1) + 8 * i);
-        v12 = [v11 sectionID];
+        sectionID = [v11 sectionID];
         if (![(SBIconController *)self _badgesAreEnabledForSectionInfo:v11])
         {
-          if (![(NSMutableSet *)self->_displayIDsWithBadgingEnabled containsObject:v12])
+          if (![(NSMutableSet *)self->_displayIDsWithBadgingEnabled containsObject:sectionID])
           {
             goto LABEL_18;
           }
 
-          [(NSMutableSet *)self->_displayIDsWithBadgingEnabled removeObject:v12];
-          [v5 addObject:v12];
+          [(NSMutableSet *)self->_displayIDsWithBadgingEnabled removeObject:sectionID];
+          [v5 addObject:sectionID];
           v15 = SBLogIcon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v37;
-            v56 = v12;
+            v56 = sectionID;
             v16 = v15;
             v17 = "Removing %@ from list of apps with allowed badges";
 LABEL_16:
@@ -3009,7 +3009,7 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        if (v12 && ([(NSMutableSet *)self->_displayIDsWithBadgingEnabled containsObject:v12]& 1) == 0)
+        if (sectionID && ([(NSMutableSet *)self->_displayIDsWithBadgingEnabled containsObject:sectionID]& 1) == 0)
         {
           if (!self->_displayIDsWithBadgingEnabled)
           {
@@ -3018,13 +3018,13 @@ LABEL_17:
             self->_displayIDsWithBadgingEnabled = v13;
           }
 
-          [v5 addObject:v12];
-          [(NSMutableSet *)self->_displayIDsWithBadgingEnabled addObject:v12];
+          [v5 addObject:sectionID];
+          [(NSMutableSet *)self->_displayIDsWithBadgingEnabled addObject:sectionID];
           v15 = SBLogIcon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v37;
-            v56 = v12;
+            v56 = sectionID;
             v16 = v15;
             v17 = "Adding %@ to list of apps with allowed badges";
             goto LABEL_16;
@@ -3108,64 +3108,64 @@ LABEL_18:
     while (v21);
   }
 
-  v31 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v32 = SBIconControllerIconBadgeVisibilityDidChangeNotification;
   v51 = @"SBApplicationBundleIdentifiers";
   v52 = v19;
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-  [v31 postNotificationName:v32 object:self userInfo:v33];
+  [defaultCenter postNotificationName:v32 object:self userInfo:v33];
 
   if ([v19 count])
   {
     v34 = +[SBDefaults localDefaults];
-    v35 = [v34 notificationDefaults];
+    notificationDefaults = [v34 notificationDefaults];
 
-    v36 = [(NSMutableSet *)self->_displayIDsWithBadgingEnabled allObjects];
-    [v35 setDisplayIDsWithBadgingEnabled:v36];
+    allObjects = [(NSMutableSet *)self->_displayIDsWithBadgingEnabled allObjects];
+    [notificationDefaults setDisplayIDsWithBadgingEnabled:allObjects];
   }
 }
 
-- (void)observer:(id)a3 updateSectionInfo:(id)a4
+- (void)observer:(id)observer updateSectionInfo:(id)info
 {
-  v5 = [MEMORY[0x277CBEA60] arrayWithObject:a4];
+  v5 = [MEMORY[0x277CBEA60] arrayWithObject:info];
   [(SBIconController *)self _updateEnabledBadgesSetWithSections:v5];
 }
 
-- (void)observer:(id)a3 noteServerConnectionStateChanged:(BOOL)a4
+- (void)observer:(id)observer noteServerConnectionStateChanged:(BOOL)changed
 {
-  if (a4)
+  if (changed)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __62__SBIconController_observer_noteServerConnectionStateChanged___block_invoke;
     v4[3] = &unk_2783AD2E0;
     v4[4] = self;
-    [a3 getSectionInfoWithCompletion:v4];
+    [observer getSectionInfoWithCompletion:v4];
   }
 }
 
-- (void)_applicationIconDataSourceDidChange:(id)a3
+- (void)_applicationIconDataSourceDidChange:(id)change
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [v4 info];
-  v6 = [v5 isAppClip];
+  object = [change object];
+  info = [object info];
+  isAppClip = [info isAppClip];
 
-  if (v6)
+  if (isAppClip)
   {
-    v7 = [MEMORY[0x277D75D70] appClips];
+    appClips = [MEMORY[0x277D75D70] appClips];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __56__SBIconController__applicationIconDataSourceDidChange___block_invoke;
     v27[3] = &unk_2783B0100;
-    v28 = v4;
-    v8 = [v7 bs_filter:v27];
+    v28 = object;
+    v8 = [appClips bs_filter:v27];
 
-    v9 = [(SBIconController *)self iconModel];
-    if (v9)
+    iconModel = [(SBIconController *)self iconModel];
+    if (iconModel)
     {
       v21 = v8;
-      v22 = v4;
+      v22 = object;
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
@@ -3187,14 +3187,14 @@ LABEL_18:
               objc_enumerationMutation(v10);
             }
 
-            v16 = [*(*(&v23 + 1) + 8 * v15) identifier];
-            v17 = [v9 bookmarkIconForWebClipIdentifier:v16];
+            identifier = [*(*(&v23 + 1) + 8 * v15) identifier];
+            v17 = [iconModel bookmarkIconForWebClipIdentifier:identifier];
 
             if (v17)
             {
-              v18 = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
-              v19 = [v17 bookmark];
-              [v18 postNotificationName:v14 object:v19 userInfo:0];
+              sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
+              bookmark = [v17 bookmark];
+              [sbh_leafIconDataSourceNotificationCenter postNotificationName:v14 object:bookmark userInfo:0];
             }
 
             ++v15;
@@ -3208,14 +3208,14 @@ LABEL_18:
       }
 
       v8 = v21;
-      v4 = v22;
+      object = v22;
     }
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
-    [v20 postNotificationName:*MEMORY[0x277D66730] object:v4 userInfo:0];
+    sbh_leafIconDataSourceNotificationCenter2 = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
+    [sbh_leafIconDataSourceNotificationCenter2 postNotificationName:*MEMORY[0x277D66730] object:object userInfo:0];
   }
 }
 
@@ -3228,10 +3228,10 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
   return v5;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v8 = *MEMORY[0x277D85DE8];
-  self->_allowsUninstall = [a3 effectiveBoolValueForSetting:{*MEMORY[0x277D25D20], a4}] != 2;
+  self->_allowsUninstall = [notification effectiveBoolValueForSetting:{*MEMORY[0x277D25D20], info}] != 2;
   v5 = SBLogIconController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3242,21 +3242,21 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
   }
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MEMORY[0x277D0AB20] sharedInstance];
+  mEMORY[0x277D0AB20] = [MEMORY[0x277D0AB20] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__SBIconController_profileConnectionDidReceiveProfileListChangedNotification_userInfo___block_invoke;
   v7[3] = &unk_2783A8C18;
   v7[4] = self;
   v6 = [MEMORY[0x277D0AB18] eventWithName:@"SBIconController-ProfileListChanged-IconModelSelection" handler:v7];
-  [v5 executeOrAppendEvent:v6];
+  [mEMORY[0x277D0AB20] executeOrAppendEvent:v6];
 }
 
-- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)a3
+- (void)applicationRestrictionControllerWillPostAppVisibilityUpdate:(id)update
 {
-  if ([a3 isAllowlistActiveAndTransient] && !self->_isAppAllowlistActiveAndTransient)
+  if ([update isAllowlistActiveAndTransient] && !self->_isAppAllowlistActiveAndTransient)
   {
     v4 = SBLogIconController();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -3270,24 +3270,24 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
   }
 }
 
-- (void)applicationRestrictionController:(id)a3 didUpdateVisibleTags:(id)a4 hiddenTags:(id)a5
+- (void)applicationRestrictionController:(id)controller didUpdateVisibleTags:(id)tags hiddenTags:(id)hiddenTags
 {
-  v7 = a5;
-  v8 = [a4 copy];
+  hiddenTagsCopy = hiddenTags;
+  v8 = [tags copy];
   visibleTags = self->_visibleTags;
   self->_visibleTags = v8;
 
-  v10 = [v7 copy];
+  v10 = [hiddenTagsCopy copy];
   hiddenTags = self->_hiddenTags;
   self->_hiddenTags = v10;
 
-  v12 = [(SBIconController *)self iconModel];
-  [v12 setVisibilityOfIconsWithVisibleTags:self->_visibleTags hiddenTags:self->_hiddenTags];
+  iconModel = [(SBIconController *)self iconModel];
+  [iconModel setVisibilityOfIconsWithVisibleTags:self->_visibleTags hiddenTags:self->_hiddenTags];
 }
 
-- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)a3
+- (void)applicationRestrictionControllerDidPostAppVisibilityUpdate:(id)update
 {
-  if (([a3 isAllowlistActiveAndTransient] & 1) == 0 && self->_isAppAllowlistActiveAndTransient)
+  if (([update isAllowlistActiveAndTransient] & 1) == 0 && self->_isAppAllowlistActiveAndTransient)
   {
     v4 = SBLogIconController();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -3301,54 +3301,54 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
   }
 }
 
-- (id)_createWidgetIconWithDataSource:(id)a3 gridSize:(id)a4
+- (id)_createWidgetIconWithDataSource:(id)source gridSize:(id)size
 {
   v5 = MEMORY[0x277D66450];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithUniqueLeafIdentifier];
-  [v8 addIconDataSource:v7];
+  sizeCopy = size;
+  sourceCopy = source;
+  initWithUniqueLeafIdentifier = [[v5 alloc] initWithUniqueLeafIdentifier];
+  [initWithUniqueLeafIdentifier addIconDataSource:sourceCopy];
 
-  [v8 setGridSizeClass:v6];
+  [initWithUniqueLeafIdentifier setGridSizeClass:sizeCopy];
 
-  return v8;
+  return initWithUniqueLeafIdentifier;
 }
 
-- (id)_createWidgetIconWithKind:(id)a3 extensionBundleIdentifier:(id)a4 gridSize:(id)a5
+- (id)_createWidgetIconWithKind:(id)kind extensionBundleIdentifier:(id)identifier gridSize:(id)size
 {
   v21 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277D66320];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithKind:v10 extensionBundleIdentifier:v9];
+  sizeCopy = size;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  v11 = [[v7 alloc] initWithKind:kindCopy extensionBundleIdentifier:identifierCopy];
 
   v12 = SBLogWidgets();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 extensionBundleIdentifier];
-    v14 = [v11 uniqueIdentifier];
+    extensionBundleIdentifier = [v11 extensionBundleIdentifier];
+    uniqueIdentifier = [v11 uniqueIdentifier];
     v17 = 138543618;
-    v18 = v13;
+    v18 = extensionBundleIdentifier;
     v19 = 2114;
-    v20 = v14;
+    v20 = uniqueIdentifier;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Widget %{public}@ %{public}@ created from icon controller.", &v17, 0x16u);
   }
 
   v15 = [objc_alloc(MEMORY[0x277D66450]) initWithWidget:v11];
-  [v15 setGridSizeClass:v8];
+  [v15 setGridSizeClass:sizeCopy];
 
   return v15;
 }
 
-- (id)_createWidgetIconWithDescriptors:(id)a3 gridSize:(id)a4
+- (id)_createWidgetIconWithDescriptors:(id)descriptors gridSize:(id)size
 {
   v5 = MEMORY[0x277D66450];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithCHSWidgetDescriptors:v7];
+  sizeCopy = size;
+  descriptorsCopy = descriptors;
+  v8 = [[v5 alloc] initWithCHSWidgetDescriptors:descriptorsCopy];
 
-  [v8 setGridSizeClass:v6];
+  [v8 setGridSizeClass:sizeCopy];
 
   return v8;
 }
@@ -3356,9 +3356,9 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
 - (BOOL)canSaveIconState
 {
   v2 = +[SBSyncController sharedInstance];
-  v3 = [v2 restoreState];
+  restoreState = [v2 restoreState];
 
-  if (v3 == 1)
+  if (restoreState == 1)
   {
     v4 = SBLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3368,7 +3368,7 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
     }
   }
 
-  return v3 != 1;
+  return restoreState != 1;
 }
 
 - (void)didSaveIconState
@@ -3384,50 +3384,50 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
   [(SBProactiveHomeScreenUsageObserver *)proactiveUsageObserver pushCurrentHomeScreenConfiguration];
 }
 
-- (BOOL)_isWidgetWithContainerBundleIdentifierValid:(id)a3
+- (BOOL)_isWidgetWithContainerBundleIdentifierValid:(id)valid
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  validCopy = valid;
   v5 = SBLogWidgetDiscoverability();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412290;
-    v24 = v4;
+    v24 = validCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] applicationIdentifier = %@", &v23, 0xCu);
   }
 
   v6 = +[SBSyncController sharedInstance];
-  v7 = [v6 isRestoring];
+  isRestoring = [v6 isRestoring];
 
-  if ((v7 & 1) == 0)
+  if ((isRestoring & 1) == 0)
   {
-    v9 = [(SBIconController *)self applicationPlaceholderController];
-    v10 = [v9 placeholderForDisplayID:v4];
+    applicationPlaceholderController = [(SBIconController *)self applicationPlaceholderController];
+    v10 = [applicationPlaceholderController placeholderForDisplayID:validCopy];
 
     if (v10)
     {
-      v11 = SBLogWidgetDiscoverability();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      applicationController = SBLogWidgetDiscoverability();
+      if (os_log_type_enabled(applicationController, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v23) = 0;
-        _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] valid placeholder", &v23, 2u);
+        _os_log_impl(&dword_21ED4E000, applicationController, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] valid placeholder", &v23, 2u);
       }
 
       LOBYTE(v8) = 1;
       goto LABEL_29;
     }
 
-    v11 = [(SBIconController *)self applicationController];
+    applicationController = [(SBIconController *)self applicationController];
     v12 = SBLogWidgetDiscoverability();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 allBundleIdentifiers];
+      allBundleIdentifiers = [applicationController allBundleIdentifiers];
       v23 = 138412290;
-      v24 = v13;
+      v24 = allBundleIdentifiers;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] all application bundle identifiers = %@", &v23, 0xCu);
     }
 
-    v14 = [v11 applicationWithBundleIdentifier:v4];
+    v14 = [applicationController applicationWithBundleIdentifier:validCopy];
     v15 = SBLogWidgetDiscoverability();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -3438,19 +3438,19 @@ uint64_t __56__SBIconController__applicationIconDataSourceDidChange___block_invo
 
     if (!v14)
     {
-      v16 = SBLogWidgetDiscoverability();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      info = SBLogWidgetDiscoverability();
+      if (os_log_type_enabled(info, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v23) = 0;
-        _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] not valid application", &v23, 2u);
+        _os_log_impl(&dword_21ED4E000, info, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] not valid application", &v23, 2u);
       }
 
       LOBYTE(v8) = 0;
       goto LABEL_28;
     }
 
-    v16 = [v14 info];
-    if (![v16 isRestricted])
+    info = [v14 info];
+    if (![info isRestricted])
     {
       LOBYTE(v8) = 1;
 LABEL_28:
@@ -3459,9 +3459,9 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v8 = [v4 isEqualToString:@"com.apple.news"];
-    v17 = [MEMORY[0x277D262A0] sharedConnection];
-    v18 = [v17 effectiveBoolValueForSetting:*MEMORY[0x277D25FC0]];
+    v8 = [validCopy isEqualToString:@"com.apple.news"];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v18 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25FC0]];
 
     if (v18 != 1)
     {
@@ -3497,19 +3497,19 @@ LABEL_30:
   return v8;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  subscriptionCopy = subscription;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__SBIconController_appProtectionSubjectsChanged_forSubscription___block_invoke;
   block[3] = &unk_2783A8ED8;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = subscriptionCopy;
+  selfCopy = self;
+  v13 = changedCopy;
+  v8 = changedCopy;
+  v9 = subscriptionCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -3626,19 +3626,19 @@ void *__65__SBIconController_appProtectionSubjectsChanged_forSubscription___bloc
   return v3;
 }
 
-- (void)proactiveHomeScreenSuggestionProviderDidUpdatePrediction:(id)a3
+- (void)proactiveHomeScreenSuggestionProviderDidUpdatePrediction:(id)prediction
 {
-  v5 = [a3 currentPrediction];
-  v4 = [(SBIconController *)self proactiveUsageObserver];
-  [v4 setCurrentPrediction:v5];
+  currentPrediction = [prediction currentPrediction];
+  proactiveUsageObserver = [(SBIconController *)self proactiveUsageObserver];
+  [proactiveUsageObserver setCurrentPrediction:currentPrediction];
 }
 
-- (id)proactiveHomeScreenUsageObserver:(id)a3 intentForWidget:(id)a4 ofIcon:(id)a5
+- (id)proactiveHomeScreenUsageObserver:(id)observer intentForWidget:(id)widget ofIcon:(id)icon
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SBIconController *)self iconManager];
-  v10 = [v9 intentForWidget:v8 ofIcon:v7];
+  iconCopy = icon;
+  widgetCopy = widget;
+  iconManager = [(SBIconController *)self iconManager];
+  v10 = [iconManager intentForWidget:widgetCopy ofIcon:iconCopy];
 
   return v10;
 }
@@ -3667,50 +3667,50 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
-- (void)_updateFocusModeManagerWithDoNotDisturbState:(id)a3
+- (void)_updateFocusModeManagerWithDoNotDisturbState:(id)state
 {
-  v4 = a3;
-  v9 = [(SBIconController *)self iconManager];
-  v5 = [v9 focusModeManager];
-  v6 = [(SBIconController *)self _focusModeFromDoNotDisturbState:v4];
+  stateCopy = state;
+  iconManager = [(SBIconController *)self iconManager];
+  focusModeManager = [iconManager focusModeManager];
+  v6 = [(SBIconController *)self _focusModeFromDoNotDisturbState:stateCopy];
 
-  [v5 setActiveFocusMode:v6];
+  [focusModeManager setActiveFocusMode:v6];
   if ([v6 customizedHomeScreenPagesEnabled])
   {
-    v7 = [(SBIconController *)self mainDisplayWindowScene];
-    v8 = [v7 floatingDockController];
-    [v8 resetRecentsAndSuggestions];
+    mainDisplayWindowScene = [(SBIconController *)self mainDisplayWindowScene];
+    floatingDockController = [mainDisplayWindowScene floatingDockController];
+    [floatingDockController resetRecentsAndSuggestions];
   }
 }
 
-- (id)_focusModeFromDoNotDisturbState:(id)a3
+- (id)_focusModeFromDoNotDisturbState:(id)state
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isActive])
+  stateCopy = state;
+  if ([stateCopy isActive])
   {
-    v5 = [v4 activeModeConfiguration];
-    v6 = [v5 mode];
-    v7 = [v6 identifier];
-    v8 = [v7 UUIDString];
+    activeModeConfiguration = [stateCopy activeModeConfiguration];
+    mode = [activeModeConfiguration mode];
+    identifier = [mode identifier];
+    uUIDString = [identifier UUIDString];
 
-    v9 = [(SBIconController *)self rootFolder];
-    v10 = [objc_alloc(MEMORY[0x277D66198]) initWithIdentifier:v8 folder:v9];
-    v11 = [v6 name];
-    [v10 setName:v11];
+    rootFolder = [(SBIconController *)self rootFolder];
+    v10 = [objc_alloc(MEMORY[0x277D66198]) initWithIdentifier:uUIDString folder:rootFolder];
+    name = [mode name];
+    [v10 setName:name];
 
-    v12 = [v6 symbolImageName];
-    [v10 setSymbol:v12];
+    symbolImageName = [mode symbolImageName];
+    [v10 setSymbol:symbolImageName];
 
-    if ([v6 semanticType] == 1)
+    if ([mode semanticType] == 1)
     {
       [v10 setSleepFocus:1];
     }
 
-    v36 = [v6 tintColorName];
-    v13 = NSSelectorFromString(v36);
-    v42 = v4;
-    v38 = v9;
+    tintColorName = [mode tintColorName];
+    v13 = NSSelectorFromString(tintColorName);
+    v42 = stateCopy;
+    v38 = rootFolder;
     if (objc_opt_respondsToSelector())
     {
       v14 = [MEMORY[0x277D75348] performSelector:v13];
@@ -3718,8 +3718,8 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
 
     else
     {
-      v15 = [MEMORY[0x277D05930] defaultTintColorName];
-      v16 = NSSelectorFromString(v15);
+      defaultTintColorName = [MEMORY[0x277D05930] defaultTintColorName];
+      v16 = NSSelectorFromString(defaultTintColorName);
       if (objc_opt_respondsToSelector())
       {
         v14 = [MEMORY[0x277D75348] performSelector:v16];
@@ -3732,31 +3732,31 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
     }
 
     [v10 setColor:v14];
-    v17 = [v5 configuration];
-    v18 = [v17 hideApplicationBadges];
-    if ([v17 applicationConfigurationType])
+    configuration = [activeModeConfiguration configuration];
+    hideApplicationBadges = [configuration hideApplicationBadges];
+    if ([configuration applicationConfigurationType])
     {
-      if ([v17 applicationConfigurationType] == 1)
+      if ([configuration applicationConfigurationType] == 1)
       {
-        [v10 setHidesOnlyDeniedApplicationBadges:v18 == 2];
+        [v10 setHidesOnlyDeniedApplicationBadges:hideApplicationBadges == 2];
       }
     }
 
     else
     {
-      [v10 setShowsOnlyAllowedApplicationBadges:{v18 == 2, v14, v36, v38, v8}];
+      [v10 setShowsOnlyAllowedApplicationBadges:{hideApplicationBadges == 2, v14, tintColorName, v38, uUIDString}];
     }
 
-    v41 = v5;
+    v41 = activeModeConfiguration;
     v19 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v20 = [v17 allowedApplicationIdentifiers];
-    v21 = [v20 allKeys];
+    allowedApplicationIdentifiers = [configuration allowedApplicationIdentifiers];
+    allKeys = [allowedApplicationIdentifiers allKeys];
 
-    v22 = [v21 countByEnumeratingWithState:&v47 objects:v52 count:16];
+    v22 = [allKeys countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v22)
     {
       v23 = v22;
@@ -3767,14 +3767,14 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
         {
           if (*v48 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allKeys);
           }
 
-          v26 = [*(*(&v47 + 1) + 8 * i) bundleID];
-          [v19 addObject:v26];
+          bundleID = [*(*(&v47 + 1) + 8 * i) bundleID];
+          [v19 addObject:bundleID];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v47 objects:v52 count:16];
+        v23 = [allKeys countByEnumeratingWithState:&v47 objects:v52 count:16];
       }
 
       while (v23);
@@ -3786,8 +3786,8 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v28 = [v17 deniedApplicationIdentifiers];
-    v29 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
+    deniedApplicationIdentifiers = [configuration deniedApplicationIdentifiers];
+    v29 = [deniedApplicationIdentifiers countByEnumeratingWithState:&v43 objects:v51 count:16];
     if (v29)
     {
       v30 = v29;
@@ -3798,21 +3798,21 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
         {
           if (*v44 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(deniedApplicationIdentifiers);
           }
 
-          v33 = [*(*(&v43 + 1) + 8 * j) bundleID];
-          [v27 addObject:v33];
+          bundleID2 = [*(*(&v43 + 1) + 8 * j) bundleID];
+          [v27 addObject:bundleID2];
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v30 = [deniedApplicationIdentifiers countByEnumeratingWithState:&v43 objects:v51 count:16];
       }
 
       while (v30);
     }
 
     [v10 setDeniedApplicationBundleIdentifiers:v27];
-    v4 = v42;
+    stateCopy = v42;
   }
 
   else
@@ -3823,10 +3823,10 @@ void __64__SBIconController_updateRootFolderWithCurrentDoNotDisturbState__block_
   return v10;
 }
 
-- (void)modeConfigurationService:(id)a3 didReceiveAvailableModesUpdate:(id)a4
+- (void)modeConfigurationService:(id)service didReceiveAvailableModesUpdate:(id)update
 {
   v15 = 0;
-  v5 = [a3 availableModesReturningError:{&v15, a4}];
+  v5 = [service availableModesReturningError:{&v15, update}];
   v6 = v15;
   if (v6)
   {
@@ -3910,16 +3910,16 @@ void __76__SBIconController_modeConfigurationService_didReceiveAvailableModesUpd
   }
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__SBIconController_stateService_didReceiveDoNotDisturbStateUpdate___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = updateCopy;
+  selfCopy = self;
+  v6 = updateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -3934,12 +3934,12 @@ void __67__SBIconController_stateService_didReceiveDoNotDisturbStateUpdate___blo
   categoryMapProvider = self->_categoryMapProvider;
   if (!categoryMapProvider)
   {
-    v4 = [(SBIconController *)self iconManager];
-    v5 = [(SBIconController *)self iconModel];
-    v6 = v5;
-    if (v4)
+    iconManager = [(SBIconController *)self iconManager];
+    iconModel = [(SBIconController *)self iconModel];
+    v6 = iconModel;
+    if (iconManager)
     {
-      if (v5)
+      if (iconModel)
       {
 LABEL_4:
         v7 = objc_alloc_init(SBProactiveLibraryCategoryMapProviderSource);
@@ -3970,66 +3970,66 @@ LABEL_5:
   return categoryMapProvider;
 }
 
-- (void)addIconControllerObserver:(id)a3
+- (void)addIconControllerObserver:(id)observer
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v8 = observerCopy;
+  if (!observerCopy)
   {
     [SBIconController addIconControllerObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
   iconControllerObservers = self->_iconControllerObservers;
   if (!iconControllerObservers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_iconControllerObservers;
-    self->_iconControllerObservers = v6;
+    self->_iconControllerObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     iconControllerObservers = self->_iconControllerObservers;
   }
 
-  [(NSHashTable *)iconControllerObservers addObject:v4];
+  [(NSHashTable *)iconControllerObservers addObject:observerCopy];
 }
 
-- (void)removeIconControllerObserver:(id)a3
+- (void)removeIconControllerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (!observerCopy)
   {
     [SBIconController removeIconControllerObserver:];
-    v4 = 0;
+    observerCopy = 0;
   }
 
-  [(NSHashTable *)self->_iconControllerObservers removeObject:v4];
+  [(NSHashTable *)self->_iconControllerObservers removeObject:observerCopy];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(SBIconController *)self iconModel];
-  v6 = [v4 appendObject:v5 withName:@"model"];
+  iconModel = [(SBIconController *)self iconModel];
+  v6 = [v4 appendObject:iconModel withName:@"model"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)_addStateCaptureHandlerForKeyDisplayIDsWithBadgingEnabled
@@ -4284,11 +4284,11 @@ id __64__SBIconController__addStateCaptureHandlerForHomeScreenDefaults__block_in
     +[SBIconController(AXStagingHack) sharedInstance];
   }
 
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 embeddedDisplayWindowScene];
-  v5 = [v4 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  return v5;
+  return iconController;
 }
 
 + (id)sharedInstanceIfExists
@@ -4299,11 +4299,11 @@ id __64__SBIconController__addStateCaptureHandlerForHomeScreenDefaults__block_in
     +[SBIconController(AXStagingHack) sharedInstance];
   }
 
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 embeddedDisplayWindowScene];
-  v5 = [v4 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  return v5;
+  return iconController;
 }
 
 - (BOOL)isTodayOverlayPresented
@@ -4314,10 +4314,10 @@ id __64__SBIconController__addStateCaptureHandlerForHomeScreenDefaults__block_in
     +[SBIconController(AXStagingHack) sharedInstance];
   }
 
-  v4 = [(SBIconController *)self iconManager];
-  v5 = [v4 isOverlayTodayViewVisible];
+  iconManager = [(SBIconController *)self iconManager];
+  isOverlayTodayViewVisible = [iconManager isOverlayTodayViewVisible];
 
-  return v5;
+  return isOverlayTodayViewVisible;
 }
 
 - (id)_currentFolderController
@@ -4328,10 +4328,10 @@ id __64__SBIconController__addStateCaptureHandlerForHomeScreenDefaults__block_in
     +[SBIconController(AXStagingHack) sharedInstance];
   }
 
-  v4 = [(SBIconController *)self _mainDisplayHomeScreenController];
-  v5 = [v4 _currentFolderController];
+  _mainDisplayHomeScreenController = [(SBIconController *)self _mainDisplayHomeScreenController];
+  _currentFolderController = [_mainDisplayHomeScreenController _currentFolderController];
 
-  return v5;
+  return _currentFolderController;
 }
 
 - (SBTodayViewController)coverSheetTodayViewController
@@ -4342,18 +4342,18 @@ id __64__SBIconController__addStateCaptureHandlerForHomeScreenDefaults__block_in
     +[SBIconController(AXStagingHack) sharedInstance];
   }
 
-  v4 = [(SBIconController *)self _mainDisplayHomeScreenController];
-  v5 = [v4 coverSheetTodayViewController];
+  _mainDisplayHomeScreenController = [(SBIconController *)self _mainDisplayHomeScreenController];
+  coverSheetTodayViewController = [_mainDisplayHomeScreenController coverSheetTodayViewController];
 
-  return v5;
+  return coverSheetTodayViewController;
 }
 
 - (id)_mainDisplayHomeScreenController
 {
-  v2 = [(SBIconController *)self mainDisplayWindowScene];
-  v3 = [v2 homeScreenController];
+  mainDisplayWindowScene = [(SBIconController *)self mainDisplayWindowScene];
+  homeScreenController = [mainDisplayWindowScene homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
 void __59__SBIconController__updateUninstallingSystemAppsRestricted__block_invoke_2_cold_1(unsigned __int8 *a1, char a2, os_log_t log)
@@ -4405,7 +4405,7 @@ void __64__SBIconController__addSmartStackToTodayList_completionHandler___block_
 - (void)libraryCategoryMapProvider
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

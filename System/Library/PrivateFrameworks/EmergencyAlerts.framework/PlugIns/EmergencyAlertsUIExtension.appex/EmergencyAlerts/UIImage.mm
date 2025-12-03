@@ -1,14 +1,14 @@
 @interface UIImage
-- (UIImage)imageWithSize:(CGSize)a3;
+- (UIImage)imageWithSize:(CGSize)size;
 @end
 
 @implementation UIImage
 
-- (UIImage)imageWithSize:(CGSize)a3
+- (UIImage)imageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [[UIGraphicsImageRenderer alloc] initWithSize:{a3.width, a3.height}];
+  height = size.height;
+  width = size.width;
+  v6 = [[UIGraphicsImageRenderer alloc] initWithSize:{size.width, size.height}];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100001028;

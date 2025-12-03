@@ -1,16 +1,16 @@
 @interface HypertensivePatternMeasurementListDailyAggregatedDataProvider
 - (_TtC5Heart61HypertensivePatternMeasurementListDailyAggregatedDataProvider)init;
-- (_TtC5Heart61HypertensivePatternMeasurementListDailyAggregatedDataProvider)initWithDisplayType:(id)a3 profile:(id)a4;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(int64_t)a3;
+- (_TtC5Heart61HypertensivePatternMeasurementListDailyAggregatedDataProvider)initWithDisplayType:(id)type profile:(id)profile;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(int64_t)section;
 @end
 
 @implementation HypertensivePatternMeasurementListDailyAggregatedDataProvider
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_29D93A868();
   sub_29D936978();
   sub_29D7F0140(v9);
@@ -30,10 +30,10 @@
   return v7;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
   v3 = qword_2A17B0D68;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -53,11 +53,11 @@
   return [(HypertensivePatternMeasurementListDailyAggregatedDataProvider *)&v3 init];
 }
 
-- (_TtC5Heart61HypertensivePatternMeasurementListDailyAggregatedDataProvider)initWithDisplayType:(id)a3 profile:(id)a4
+- (_TtC5Heart61HypertensivePatternMeasurementListDailyAggregatedDataProvider)initWithDisplayType:(id)type profile:(id)profile
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(WDSampleListStatisticsDataProvider *)&v7 initWithDisplayType:a3 profile:a4];
+  return [(WDSampleListStatisticsDataProvider *)&v7 initWithDisplayType:type profile:profile];
 }
 
 @end

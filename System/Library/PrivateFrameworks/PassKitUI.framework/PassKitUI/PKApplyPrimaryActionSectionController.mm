@@ -1,9 +1,9 @@
 @interface PKApplyPrimaryActionSectionController
 - (id)identifiers;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)listLayoutConfigurationWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_configureContentSection:(id)a3;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)listLayoutConfigurationWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_configureContentSection:(id)section;
 @end
 
 @implementation PKApplyPrimaryActionSectionController
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = v5;
+  v7 = identifierCopy;
   v8 = v7;
   if (v7 == @"primaryAction" || v7 && (v9 = [(__CFString *)v7 isEqualToString:@"primaryAction"], v8, v9))
   {
@@ -31,11 +31,11 @@
   return v6;
 }
 
-- (id)listLayoutConfigurationWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)listLayoutConfigurationWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PKApplyPrimaryActionSectionController;
-  v4 = [(PKApplyCollectionViewSectionController *)&v6 listLayoutConfigurationWithLayoutEnvironment:a3 sectionIdentifier:a4];
+  v4 = [(PKApplyCollectionViewSectionController *)&v6 listLayoutConfigurationWithLayoutEnvironment:environment sectionIdentifier:identifier];
   [v4 setItemSeparatorHandler:&__block_literal_global_153];
 
   return v4;
@@ -52,19 +52,19 @@ id __104__PKApplyPrimaryActionSectionController_listLayoutConfigurationWithLayou
   return v4;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 == @"primaryAction")
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifierCopy == @"primaryAction")
   {
     v9 = 1;
   }
 
-  else if (v7)
+  else if (identifierCopy)
   {
-    v9 = [(__CFString *)v7 isEqualToString:@"primaryAction"];
+    v9 = [(__CFString *)identifierCopy isEqualToString:@"primaryAction"];
   }
 
   else
@@ -74,7 +74,7 @@ id __104__PKApplyPrimaryActionSectionController_listLayoutConfigurationWithLayou
 
   v17.receiver = self;
   v17.super_class = PKApplyPrimaryActionSectionController;
-  v10 = [(PKApplyCollectionViewSectionController *)&v17 layoutWithLayoutEnvironment:v6 sectionIdentifier:v8];
+  v10 = [(PKApplyCollectionViewSectionController *)&v17 layoutWithLayoutEnvironment:environmentCopy sectionIdentifier:v8];
   [v10 contentInsets];
   v13 = v12;
   if (v9)
@@ -93,14 +93,14 @@ id __104__PKApplyPrimaryActionSectionController_listLayoutConfigurationWithLayou
   return v10;
 }
 
-- (void)_configureContentSection:(id)a3
+- (void)_configureContentSection:(id)section
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v5 = [PKApplyPrimaryActionRow alloc];
-  v6 = [(PKApplyCollectionViewSectionController *)self page];
-  v7 = [v6 primaryActionTitle];
-  v8 = [(PKApplyPrimaryActionRow *)v5 initWithTitle:v7];
+  page = [(PKApplyCollectionViewSectionController *)self page];
+  primaryActionTitle = [page primaryActionTitle];
+  v8 = [(PKApplyPrimaryActionRow *)v5 initWithTitle:primaryActionTitle];
 
   [(PKApplyPrimaryActionRow *)v8 setLoading:self->_primaryButtonLoading];
   objc_initWeak(&location, self);
@@ -114,7 +114,7 @@ id __104__PKApplyPrimaryActionSectionController_listLayoutConfigurationWithLayou
   [(PKApplyPrimaryActionRow *)v8 setAction:&v10];
   v18[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:{1, v10, v11, v12, v13}];
-  [v4 appendItems:v9];
+  [sectionCopy appendItems:v9];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v14);

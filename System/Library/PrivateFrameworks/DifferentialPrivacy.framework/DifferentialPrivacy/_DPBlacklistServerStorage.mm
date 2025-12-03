@@ -1,21 +1,21 @@
 @interface _DPBlacklistServerStorage
-- (BOOL)prepareRuntimeBlacklistFolder:(id *)a3;
-- (BOOL)requestLatestBlacklistsSynchronously:(id *)a3 error:(id *)a4 lastRecordModifiedAt:(id *)a5;
+- (BOOL)prepareRuntimeBlacklistFolder:(id *)folder;
+- (BOOL)requestLatestBlacklistsSynchronously:(id *)synchronously error:(id *)error lastRecordModifiedAt:(id *)at;
 - (BOOL)updateRuntimeBlacklistsFromServer;
 - (NSDate)lastUpdateDate;
 - (OS_xpc_object)activity;
 - (_DPBlacklistServerStorage)init;
-- (_DPBlacklistServerStorage)initWithCustomStorePath:(id)a3;
-- (id)_blacklistURLByKeyFrom:(id)a3;
+- (_DPBlacklistServerStorage)initWithCustomStorePath:(id)path;
+- (id)_blacklistURLByKeyFrom:(id)from;
 - (id)_predicateForFetchQuery;
 - (id)_publicDatabaseForBlacklists;
-- (id)_queryOperationFromCursor:(id)a3;
-- (id)saveBlacklistsToRuntimeFolder:(id)a3;
-- (void)_attributeQueryOperation:(id)a3;
-- (void)_executeQueryOperation:(id)a3 onOperationQueue:(id)a4 onCompletion:(id)a5;
-- (void)_requestLatestBlacklists:(id)a3;
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4;
-- (void)setLastUpdateDate:(id)a3;
+- (id)_queryOperationFromCursor:(id)cursor;
+- (id)saveBlacklistsToRuntimeFolder:(id)folder;
+- (void)_attributeQueryOperation:(id)operation;
+- (void)_executeQueryOperation:(id)operation onOperationQueue:(id)queue onCompletion:(id)completion;
+- (void)_requestLatestBlacklists:(id)blacklists;
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database;
+- (void)setLastUpdateDate:(id)date;
 - (void)updateRuntimeBlacklistsFromServer;
 @end
 
@@ -29,16 +29,16 @@
   return v4;
 }
 
-- (_DPBlacklistServerStorage)initWithCustomStorePath:(id)a3
+- (_DPBlacklistServerStorage)initWithCustomStorePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _DPBlacklistServerStorage;
   v6 = [(_DPBlacklistServerStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storePath, a3);
+    objc_storeStrong(&v6->_storePath, path);
   }
 
   return v7;
@@ -49,13 +49,13 @@
   v44 = *MEMORY[0x277D85DE8];
   if (+[_DPDeviceInfo isDataCollectionEnabled])
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     context = objc_autoreleasePoolPush();
     v36 = 0;
     v37 = 0;
     v35 = 0;
-    v5 = [(_DPBlacklistServerStorage *)v4 requestLatestBlacklistsSynchronously:&v37 error:&v36 lastRecordModifiedAt:&v35];
+    v5 = [(_DPBlacklistServerStorage *)selfCopy requestLatestBlacklistsSynchronously:&v37 error:&v36 lastRecordModifiedAt:&v35];
     v6 = v37;
     v7 = v36;
     v8 = v35;
@@ -75,7 +75,7 @@
       }
 
       v34 = 0;
-      v13 = [(_DPBlacklistServerStorage *)v4 prepareRuntimeBlacklistFolder:&v34];
+      v13 = [(_DPBlacklistServerStorage *)selfCopy prepareRuntimeBlacklistFolder:&v34];
       v14 = v34;
       if (v13)
       {
@@ -89,7 +89,7 @@
           _os_log_impl(&dword_22622D000, v15, OS_LOG_TYPE_INFO, "%@: Runtime Blacklists Folder is ready", buf, 0xCu);
         }
 
-        v18 = [(_DPBlacklistServerStorage *)v4 saveBlacklistsToRuntimeFolder:v6];
+        v18 = [(_DPBlacklistServerStorage *)selfCopy saveBlacklistsToRuntimeFolder:v6];
         v19 = +[_DPLog framework];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
@@ -114,7 +114,7 @@
           }
 
           [_DPBlacklist removeBlackListsForKeys:v18];
-          [(_DPBlacklistServerStorage *)v4 setLastUpdateDate:v8];
+          [(_DPBlacklistServerStorage *)selfCopy setLastUpdateDate:v8];
         }
 
         v26 = +[_DPLog framework];
@@ -156,13 +156,13 @@
     }
 
     objc_autoreleasePoolPop(context);
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v4 = +[_DPLog daemon];
-    if (os_log_type_enabled(&v4->super, OS_LOG_TYPE_ERROR))
+    selfCopy = +[_DPLog daemon];
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       [(_DPBlacklistServerStorage *)a2 updateRuntimeBlacklistsFromServer];
     }
@@ -174,7 +174,7 @@
   return v13;
 }
 
-- (BOOL)requestLatestBlacklistsSynchronously:(id *)a3 error:(id *)a4 lastRecordModifiedAt:(id *)a5
+- (BOOL)requestLatestBlacklistsSynchronously:(id *)synchronously error:(id *)error lastRecordModifiedAt:(id *)at
 {
   v55 = *MEMORY[0x277D85DE8];
   v47 = 0;
@@ -214,7 +214,7 @@
   v22 = 3221225472;
   v23 = __93___DPBlacklistServerStorage_requestLatestBlacklistsSynchronously_error_lastRecordModifiedAt___block_invoke;
   v24 = &unk_27858AAC8;
-  v25 = self;
+  selfCopy = self;
   v27 = &v47;
   v28 = &v41;
   v29 = &v35;
@@ -228,8 +228,8 @@
   {
     if (!v48[5])
     {
-      *a3 = v42[5];
-      *a5 = v36[5];
+      *synchronously = v42[5];
+      *at = v36[5];
       v18 = 1;
       goto LABEL_11;
     }
@@ -268,27 +268,27 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)prepareRuntimeBlacklistFolder:(id *)a3
+- (BOOL)prepareRuntimeBlacklistFolder:(id *)folder
 {
-  v4 = [(_DPBlacklistServerStorage *)self storePath];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(a3) = [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:a3];
+  storePath = [(_DPBlacklistServerStorage *)self storePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(folder) = [defaultManager createDirectoryAtPath:storePath withIntermediateDirectories:1 attributes:0 error:folder];
 
-  return a3;
+  return folder;
 }
 
-- (id)saveBlacklistsToRuntimeFolder:(id)a3
+- (id)saveBlacklistsToRuntimeFolder:(id)folder
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v27 = [(_DPBlacklistServerStorage *)self storePath];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  folderCopy = folder;
+  storePath = [(_DPBlacklistServerStorage *)self storePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v25 = [MEMORY[0x277CBEBF8] mutableCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v4;
+  v6 = folderCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v7)
   {
@@ -307,12 +307,12 @@ LABEL_11:
         v11 = [v6 objectForKeyedSubscript:v10];
         v12 = MEMORY[0x277CBEBC0];
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.blacklist", v10];
-        v14 = [v27 stringByAppendingPathComponent:v13];
+        v14 = [storePath stringByAppendingPathComponent:v13];
         v15 = [v12 fileURLWithPath:v14 isDirectory:0];
 
-        [v5 removeItemAtURL:v15 error:0];
+        [defaultManager removeItemAtURL:v15 error:0];
         v28 = 0;
-        LOBYTE(v14) = [v5 moveItemAtURL:v11 toURL:v15 error:&v28];
+        LOBYTE(v14) = [defaultManager moveItemAtURL:v11 toURL:v15 error:&v28];
         v16 = v28;
         v17 = +[_DPLog framework];
         v18 = v17;
@@ -346,7 +346,7 @@ LABEL_11:
           }
         }
 
-        [v5 removeItemAtURL:v11 error:0];
+        [defaultManager removeItemAtURL:v11 error:0];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -360,45 +360,45 @@ LABEL_11:
   return v25;
 }
 
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66___DPBlacklistServerStorage_scheduleMaintenanceWithName_database___block_invoke;
   v7[3] = &unk_27858A930;
   v7[4] = self;
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x22AA7A8C0](v7);
-  v6 = [_DPPeriodicTask taskWithName:v4 period:kSecondsIn24Hours handler:v5 networkingRequired:1];
+  v6 = [_DPPeriodicTask taskWithName:nameCopy period:kSecondsIn24Hours handler:v5 networkingRequired:1];
 
   [_DPPeriodicTaskManager registerTask:v6];
 }
 
 - (NSDate)lastUpdateDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kLastUpdateDateKey"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kLastUpdateDateKey"];
 
   return v3;
 }
 
-- (void)setLastUpdateDate:(id)a3
+- (void)setLastUpdateDate:(id)date
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"kLastUpdateDateKey"];
+  dateCopy = date;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:dateCopy forKey:@"kLastUpdateDateKey"];
 
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v6 synchronize];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 synchronize];
 }
 
-- (void)_requestLatestBlacklists:(id)a3
+- (void)_requestLatestBlacklists:(id)blacklists
 {
-  v4 = a3;
+  blacklistsCopy = blacklists;
   v5 = objc_alloc(MEMORY[0x277CBC578]);
-  v6 = [(_DPBlacklistServerStorage *)self _predicateForFetchQuery];
-  v7 = [v5 initWithRecordType:@"BlacklistRecord" predicate:v6];
+  _predicateForFetchQuery = [(_DPBlacklistServerStorage *)self _predicateForFetchQuery];
+  v7 = [v5 initWithRecordType:@"BlacklistRecord" predicate:_predicateForFetchQuery];
 
   v8 = [objc_alloc(MEMORY[0x277CBC590]) initWithQuery:v7];
   [(_DPBlacklistServerStorage *)self _attributeQueryOperation:v8];
@@ -425,7 +425,7 @@ LABEL_11:
   v12[2] = __54___DPBlacklistServerStorage__requestLatestBlacklists___block_invoke;
   v12[3] = &unk_27858AB10;
   v12[4] = self;
-  v9 = v4;
+  v9 = blacklistsCopy;
   v13 = v9;
   v14 = &v17;
   v15 = v23;
@@ -441,11 +441,11 @@ LABEL_11:
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)_executeQueryOperation:(id)a3 onOperationQueue:(id)a4 onCompletion:(id)a5
+- (void)_executeQueryOperation:(id)operation onOperationQueue:(id)queue onCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  queueCopy = queue;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -458,59 +458,59 @@ LABEL_11:
   v18[3] = &unk_27858AB38;
   v18[4] = self;
   v18[5] = v19;
-  [v8 setRecordMatchedBlock:v18];
+  [operationCopy setRecordMatchedBlock:v18];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __82___DPBlacklistServerStorage__executeQueryOperation_onOperationQueue_onCompletion___block_invoke_36;
   v15 = &unk_27858AB60;
-  v11 = v10;
+  v11 = completionCopy;
   v16 = v11;
   v17 = v19;
-  [v8 setQueryCompletionBlock:&v12];
-  [v9 addOperation:{v8, v12, v13, v14, v15}];
+  [operationCopy setQueryCompletionBlock:&v12];
+  [queueCopy addOperation:{operationCopy, v12, v13, v14, v15}];
 
   _Block_object_dispose(v19, 8);
 }
 
-- (id)_queryOperationFromCursor:(id)a3
+- (id)_queryOperationFromCursor:(id)cursor
 {
   v4 = MEMORY[0x277CBC590];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCursor:v5];
+  cursorCopy = cursor;
+  v6 = [[v4 alloc] initWithCursor:cursorCopy];
 
   [(_DPBlacklistServerStorage *)self _attributeQueryOperation:v6];
 
   return v6;
 }
 
-- (void)_attributeQueryOperation:(id)a3
+- (void)_attributeQueryOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v9 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_activity);
   [v9 setXpcActivity:WeakRetained];
 
   [v9 setPreferAnonymousRequests:1];
   [v9 setDiscretionaryNetworkBehavior:0];
-  [v4 setConfiguration:v9];
-  v6 = [MEMORY[0x277CBC5E8] defaultRecordZone];
-  v7 = [v6 zoneID];
-  [v4 setZoneID:v7];
+  [operationCopy setConfiguration:v9];
+  defaultRecordZone = [MEMORY[0x277CBC5E8] defaultRecordZone];
+  zoneID = [defaultRecordZone zoneID];
+  [operationCopy setZoneID:zoneID];
 
-  v8 = [(_DPBlacklistServerStorage *)self _publicDatabaseForBlacklists];
-  [v4 setDatabase:v8];
+  _publicDatabaseForBlacklists = [(_DPBlacklistServerStorage *)self _publicDatabaseForBlacklists];
+  [operationCopy setDatabase:_publicDatabaseForBlacklists];
 }
 
-- (id)_blacklistURLByKeyFrom:(id)a3
+- (id)_blacklistURLByKeyFrom:(id)from
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fromCopy = from;
   v22 = [MEMORY[0x277CBEC10] mutableCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = v3;
+  v4 = fromCopy;
   v5 = [v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v5)
   {
@@ -530,11 +530,11 @@ LABEL_11:
         v10 = *(*(&v23 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:{@"key", v20}];
         v12 = [v10 objectForKeyedSubscript:@"blacklistAsset"];
-        v13 = [v12 fileURL];
-        v14 = v13;
+        fileURL = [v12 fileURL];
+        v14 = fileURL;
         if (v11)
         {
-          v15 = v13 == 0;
+          v15 = fileURL == 0;
         }
 
         else
@@ -561,7 +561,7 @@ LABEL_11:
 
         else
         {
-          [v22 setObject:v13 forKey:v11];
+          [v22 setObject:fileURL forKey:v11];
         }
       }
 
@@ -579,17 +579,17 @@ LABEL_11:
 - (id)_publicDatabaseForBlacklists
 {
   v2 = [MEMORY[0x277CBC218] containerWithIdentifier:@"com.apple.DPBlacklist"];
-  v3 = [v2 publicCloudDatabase];
+  publicCloudDatabase = [v2 publicCloudDatabase];
 
-  return v3;
+  return publicCloudDatabase;
 }
 
 - (id)_predicateForFetchQuery
 {
-  v2 = [(_DPBlacklistServerStorage *)self lastUpdateDate];
-  if (v2)
+  lastUpdateDate = [(_DPBlacklistServerStorage *)self lastUpdateDate];
+  if (lastUpdateDate)
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"modificationDate > %@", v2];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"modificationDate > %@", lastUpdateDate];
   }
 
   else
@@ -611,7 +611,7 @@ LABEL_11:
 - (void)updateRuntimeBlacklistsFromServer
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_debug_impl(&dword_22622D000, log, OS_LOG_TYPE_DEBUG, "%@: there are new blacklist files in runtime folder - resetting affected blacklists", buf, 0xCu);
 }
 

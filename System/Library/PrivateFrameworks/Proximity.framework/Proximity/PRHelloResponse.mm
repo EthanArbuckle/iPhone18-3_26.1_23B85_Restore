@@ -1,34 +1,34 @@
 @interface PRHelloResponse
-- (BOOL)isEqual:(id)a3;
-- (PRHelloResponse)initWithCoder:(id)a3;
-- (PRHelloResponse)initWithHelloResponse:(const void *)a3;
-- (PRHelloResponse)initWithRoseFirmwareVersion:(id)a3 hsiVersionMajor:(unsigned __int8)a4 hsiVersionMinor:(unsigned __int8)a5 hardwareVersion:(unint64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRHelloResponse)initWithCoder:(id)coder;
+- (PRHelloResponse)initWithHelloResponse:(const void *)response;
+- (PRHelloResponse)initWithRoseFirmwareVersion:(id)version hsiVersionMajor:(unsigned __int8)major hsiVersionMinor:(unsigned __int8)minor hardwareVersion:(unint64_t)hardwareVersion;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRHelloResponse
 
-- (PRHelloResponse)initWithRoseFirmwareVersion:(id)a3 hsiVersionMajor:(unsigned __int8)a4 hsiVersionMinor:(unsigned __int8)a5 hardwareVersion:(unint64_t)a6
+- (PRHelloResponse)initWithRoseFirmwareVersion:(id)version hsiVersionMajor:(unsigned __int8)major hsiVersionMinor:(unsigned __int8)minor hardwareVersion:(unint64_t)hardwareVersion
 {
-  v11 = a3;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = PRHelloResponse;
   v12 = [(PRHelloResponse *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_roseFirmwareVersion, a3);
-    v13->_hsiVersionMajor = a4;
-    v13->_hsiVersionMinor = a5;
-    v13->_hardwareVersion = a6;
+    objc_storeStrong(&v12->_roseFirmwareVersion, version);
+    v13->_hsiVersionMajor = major;
+    v13->_hsiVersionMinor = minor;
+    v13->_hardwareVersion = hardwareVersion;
   }
 
   return v13;
 }
 
-- (PRHelloResponse)initWithHelloResponse:(const void *)a3
+- (PRHelloResponse)initWithHelloResponse:(const void *)response
 {
   v35.receiver = self;
   v35.super_class = PRHelloResponse;
@@ -36,14 +36,14 @@
   if (v4)
   {
     v5 = MEMORY[0x277CCACA8];
-    if (*(a3 + 23) < 0)
+    if (*(response + 23) < 0)
     {
-      std::string::__init_copy_ctor_external(&__p, *a3, *(a3 + 1));
+      std::string::__init_copy_ctor_external(&__p, *response, *(response + 1));
     }
 
     else
     {
-      __p = *a3;
+      __p = *response;
     }
 
     if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
@@ -65,43 +65,43 @@
       operator delete(__p.__r_.__value_.__l.__data_);
     }
 
-    v4->_hsiVersionMajor = *(a3 + 24);
-    v4->_hsiVersionMinor = *(a3 + 25);
-    if (*(a3 + 13) >= 7u)
+    v4->_hsiVersionMajor = *(response + 24);
+    v4->_hsiVersionMinor = *(response + 25);
+    if (*(response + 13) >= 7u)
     {
       v9 = 7;
     }
 
     else
     {
-      v9 = *(a3 + 13);
+      v9 = *(response + 13);
     }
 
     v4->_hardwareVersion = v9;
-    if (*(a3 + 96))
+    if (*(response + 96))
     {
-      LODWORD(__p.__r_.__value_.__l.__data_) = *(a3 + 8);
-      WORD2(__p.__r_.__value_.__r.__words[0]) = *(a3 + 18);
-      if (*(a3 + 63) < 0)
+      LODWORD(__p.__r_.__value_.__l.__data_) = *(response + 8);
+      WORD2(__p.__r_.__value_.__r.__words[0]) = *(response + 18);
+      if (*(response + 63) < 0)
       {
-        std::string::__init_copy_ctor_external(&__p.__r_.__value_.__r.__words[1], *(a3 + 5), *(a3 + 6));
+        std::string::__init_copy_ctor_external(&__p.__r_.__value_.__r.__words[1], *(response + 5), *(response + 6));
       }
 
       else
       {
-        *&__p.__r_.__value_.__r.__words[1] = *(a3 + 40);
-        v32 = *(a3 + 7);
+        *&__p.__r_.__value_.__r.__words[1] = *(response + 40);
+        v32 = *(response + 7);
       }
 
-      v33 = *(a3 + 8);
-      if (*(a3 + 95) < 0)
+      v33 = *(response + 8);
+      if (*(response + 95) < 0)
       {
-        std::string::__init_copy_ctor_external(&v34, *(a3 + 9), *(a3 + 10));
+        std::string::__init_copy_ctor_external(&v34, *(response + 9), *(response + 10));
       }
 
       else
       {
-        v34 = *(a3 + 3);
+        v34 = *(response + 3);
       }
 
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{__p.__r_.__value_.__s.__data_[0], __p.__r_.__value_.__r.__words[0]}];
@@ -167,7 +167,7 @@
       }
     }
 
-    if ((*(a3 + 13) & 0x100000000) != 0)
+    if ((*(response + 13) & 0x100000000) != 0)
     {
       v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
       boardID = v4->_boardID;
@@ -178,61 +178,61 @@
   return v4;
 }
 
-- (PRHelloResponse)initWithCoder:(id)a3
+- (PRHelloResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roseFirmwareVersion"];
-  v6 = -[PRHelloResponse initWithRoseFirmwareVersion:hsiVersionMajor:hsiVersionMinor:hardwareVersion:](self, "initWithRoseFirmwareVersion:hsiVersionMajor:hsiVersionMinor:hardwareVersion:", v5, [v4 decodeIntForKey:@"hsiVersionMajor"], objc_msgSend(v4, "decodeIntForKey:", @"hsiVersionMinor"), objc_msgSend(v4, "decodeIntegerForKey:", @"roseHardwareVersion"));
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roseFirmwareVersion"];
+  v6 = -[PRHelloResponse initWithRoseFirmwareVersion:hsiVersionMajor:hsiVersionMinor:hardwareVersion:](self, "initWithRoseFirmwareVersion:hsiVersionMajor:hsiVersionMinor:hardwareVersion:", v5, [coderCopy decodeIntForKey:@"hsiVersionMajor"], objc_msgSend(coderCopy, "decodeIntForKey:", @"hsiVersionMinor"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"roseHardwareVersion"));
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addlInfoSize"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addlInfoSize"];
   [(PRHelloResponse *)v6 setAddlInfoSize:v7];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"apFirmwareVersion"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"apFirmwareVersion"];
   [(PRHelloResponse *)v6 setApFirmwareVersion:v8];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dspFirmwareVersion"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dspFirmwareVersion"];
   [(PRHelloResponse *)v6 setDspFirmwareVersion:v9];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"target"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"target"];
   [(PRHelloResponse *)v6 setTarget:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calDataVersion"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calDataVersion"];
   [(PRHelloResponse *)v6 setCalDataVersion:v11];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"moduleID"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"moduleID"];
   [(PRHelloResponse *)v6 setModuleID:v12];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modemInitVersion"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modemInitVersion"];
   [(PRHelloResponse *)v6 setModemInitVersion:v13];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"boardID"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"boardID"];
   [(PRHelloResponse *)v6 setBoardID:v14];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extraBytes"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extraBytes"];
   [(PRHelloResponse *)v6 setExtraBytes:v15];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_roseFirmwareVersion forKey:@"roseFirmwareVersion"];
-  [v4 encodeInt:self->_hsiVersionMajor forKey:@"hsiVersionMajor"];
-  [v4 encodeInt:self->_hsiVersionMinor forKey:@"hsiVersionMinor"];
-  [v4 encodeInteger:self->_hardwareVersion forKey:@"roseHardwareVersion"];
-  [v4 encodeObject:self->_addlInfoSize forKey:@"addlInfoSize"];
-  [v4 encodeObject:self->_apFirmwareVersion forKey:@"apFirmwareVersion"];
-  [v4 encodeObject:self->_dspFirmwareVersion forKey:@"dspFirmwareVersion"];
-  [v4 encodeObject:self->_target forKey:@"target"];
-  [v4 encodeObject:self->_calDataVersion forKey:@"calDataVersion"];
-  [v4 encodeObject:self->_moduleID forKey:@"moduleID"];
-  [v4 encodeObject:self->_modemInitVersion forKey:@"modemInitVersion"];
-  [v4 encodeObject:self->_boardID forKey:@"boardID"];
-  [v4 encodeObject:self->_extraBytes forKey:@"extraBytes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_roseFirmwareVersion forKey:@"roseFirmwareVersion"];
+  [coderCopy encodeInt:self->_hsiVersionMajor forKey:@"hsiVersionMajor"];
+  [coderCopy encodeInt:self->_hsiVersionMinor forKey:@"hsiVersionMinor"];
+  [coderCopy encodeInteger:self->_hardwareVersion forKey:@"roseHardwareVersion"];
+  [coderCopy encodeObject:self->_addlInfoSize forKey:@"addlInfoSize"];
+  [coderCopy encodeObject:self->_apFirmwareVersion forKey:@"apFirmwareVersion"];
+  [coderCopy encodeObject:self->_dspFirmwareVersion forKey:@"dspFirmwareVersion"];
+  [coderCopy encodeObject:self->_target forKey:@"target"];
+  [coderCopy encodeObject:self->_calDataVersion forKey:@"calDataVersion"];
+  [coderCopy encodeObject:self->_moduleID forKey:@"moduleID"];
+  [coderCopy encodeObject:self->_modemInitVersion forKey:@"modemInitVersion"];
+  [coderCopy encodeObject:self->_boardID forKey:@"boardID"];
+  [coderCopy encodeObject:self->_extraBytes forKey:@"extraBytes"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PRHelloResponse alloc] initWithRoseFirmwareVersion:self->_roseFirmwareVersion hsiVersionMajor:self->_hsiVersionMajor hsiVersionMinor:self->_hsiVersionMinor hardwareVersion:self->_hardwareVersion];
   [(PRHelloResponse *)v4 setAddlInfoSize:self->_addlInfoSize];
@@ -274,16 +274,16 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 roseFirmwareVersion];
-    v7 = [(PRHelloResponse *)self roseFirmwareVersion];
-    if (![v6 isEqual:v7] || (v8 = objc_msgSend(v5, "hsiVersionMajor"), v8 != -[PRHelloResponse hsiVersionMajor](self, "hsiVersionMajor")) || (v9 = objc_msgSend(v5, "hsiVersionMinor"), v9 != -[PRHelloResponse hsiVersionMinor](self, "hsiVersionMinor")) || (v10 = objc_msgSend(v5, "hardwareVersion"), v10 != -[PRHelloResponse hardwareVersion](self, "hardwareVersion")))
+    v5 = equalCopy;
+    roseFirmwareVersion = [v5 roseFirmwareVersion];
+    roseFirmwareVersion2 = [(PRHelloResponse *)self roseFirmwareVersion];
+    if (![roseFirmwareVersion isEqual:roseFirmwareVersion2] || (v8 = objc_msgSend(v5, "hsiVersionMajor"), v8 != -[PRHelloResponse hsiVersionMajor](self, "hsiVersionMajor")) || (v9 = objc_msgSend(v5, "hsiVersionMinor"), v9 != -[PRHelloResponse hsiVersionMinor](self, "hsiVersionMinor")) || (v10 = objc_msgSend(v5, "hardwareVersion"), v10 != -[PRHelloResponse hardwareVersion](self, "hardwareVersion")))
     {
       v16 = 0;
 LABEL_19:
@@ -291,9 +291,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v11 = [v5 addlInfoSize];
-    v12 = [(PRHelloResponse *)self addlInfoSize];
-    if (![v11 isEqual:v12])
+    addlInfoSize = [v5 addlInfoSize];
+    addlInfoSize2 = [(PRHelloResponse *)self addlInfoSize];
+    if (![addlInfoSize isEqual:addlInfoSize2])
     {
       v16 = 0;
 LABEL_44:
@@ -301,9 +301,9 @@ LABEL_44:
       goto LABEL_19;
     }
 
-    v13 = [v5 apFirmwareVersion];
-    v14 = [(PRHelloResponse *)self apFirmwareVersion];
-    if (![v13 isEqual:v14])
+    apFirmwareVersion = [v5 apFirmwareVersion];
+    apFirmwareVersion2 = [(PRHelloResponse *)self apFirmwareVersion];
+    if (![apFirmwareVersion isEqual:apFirmwareVersion2])
     {
       v16 = 0;
 LABEL_43:
@@ -311,9 +311,9 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v36 = [v5 dspFirmwareVersion];
-    v15 = [(PRHelloResponse *)self dspFirmwareVersion];
-    if (![v36 isEqual:v15])
+    dspFirmwareVersion = [v5 dspFirmwareVersion];
+    dspFirmwareVersion2 = [(PRHelloResponse *)self dspFirmwareVersion];
+    if (![dspFirmwareVersion isEqual:dspFirmwareVersion2])
     {
       v16 = 0;
 LABEL_42:
@@ -321,9 +321,9 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v35 = [v5 target];
-    v34 = [(PRHelloResponse *)self target];
-    if (![v35 isEqual:?])
+    target = [v5 target];
+    target2 = [(PRHelloResponse *)self target];
+    if (![target isEqual:?])
     {
       v16 = 0;
 LABEL_41:
@@ -331,9 +331,9 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v33 = [v5 calDataVersion];
-    v32 = [(PRHelloResponse *)self calDataVersion];
-    if (![v33 isEqual:?])
+    calDataVersion = [v5 calDataVersion];
+    calDataVersion2 = [(PRHelloResponse *)self calDataVersion];
+    if (![calDataVersion isEqual:?])
     {
       v16 = 0;
 LABEL_40:
@@ -341,9 +341,9 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v31 = [v5 moduleID];
-    v30 = [(PRHelloResponse *)self moduleID];
-    if (![v31 isEqual:?])
+    moduleID = [v5 moduleID];
+    moduleID2 = [(PRHelloResponse *)self moduleID];
+    if (![moduleID isEqual:?])
     {
       v16 = 0;
 LABEL_39:
@@ -351,9 +351,9 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v29 = [v5 modemInitVersion];
-    v28 = [(PRHelloResponse *)self modemInitVersion];
-    if (![v29 isEqual:?])
+    modemInitVersion = [v5 modemInitVersion];
+    modemInitVersion2 = [(PRHelloResponse *)self modemInitVersion];
+    if (![modemInitVersion isEqual:?])
     {
       v16 = 0;
 LABEL_38:
@@ -361,12 +361,12 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v27 = [v5 boardID];
-    if (v27 || ([(PRHelloResponse *)self boardID], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
+    boardID = [v5 boardID];
+    if (boardID || ([(PRHelloResponse *)self boardID], (v20 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v26 = [v5 boardID];
-      v25 = [(PRHelloResponse *)self boardID];
-      if (![v26 isEqual:v25])
+      boardID2 = [v5 boardID];
+      boardID3 = [(PRHelloResponse *)self boardID];
+      if (![boardID2 isEqual:boardID3])
       {
         v16 = 0;
         goto LABEL_34;
@@ -381,20 +381,20 @@ LABEL_38:
       v23 = 0;
     }
 
-    v22 = [v5 extraBytes];
-    if (v22 || ([(PRHelloResponse *)self extraBytes], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+    extraBytes = [v5 extraBytes];
+    if (extraBytes || ([(PRHelloResponse *)self extraBytes], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = [v5 extraBytes];
-      v21 = [(PRHelloResponse *)self extraBytes];
-      v16 = [v24 isEqual:v21];
+      extraBytes2 = [v5 extraBytes];
+      extraBytes3 = [(PRHelloResponse *)self extraBytes];
+      v16 = [extraBytes2 isEqual:extraBytes3];
 
-      if (v22)
+      if (extraBytes)
       {
 
         if (!v23)
         {
 LABEL_35:
-          if (!v27)
+          if (!boardID)
           {
           }
 

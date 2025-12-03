@@ -1,26 +1,26 @@
 @interface PKShapeLayerPathState
-- (PKShapeLayerPathState)initWithShapeLayer:(id)a3 reverse:(BOOL)a4;
-- (PKShapeLayerPathState)initWithStrokeStartT0:(double)a3 strokeStartT1:(double)a4 strokeEndT0:(double)a5 strokeEndT1:(double)a6;
-- (double)progressForShapeLayer:(id)a3;
-- (double)strokeEndAtProgress:(double)a3;
-- (double)strokeStartAtProgress:(double)a3;
+- (PKShapeLayerPathState)initWithShapeLayer:(id)layer reverse:(BOOL)reverse;
+- (PKShapeLayerPathState)initWithStrokeStartT0:(double)t0 strokeStartT1:(double)t1 strokeEndT0:(double)endT0 strokeEndT1:(double)endT1;
+- (double)progressForShapeLayer:(id)layer;
+- (double)strokeEndAtProgress:(double)progress;
+- (double)strokeStartAtProgress:(double)progress;
 - (id)description;
 - (void)dealloc;
-- (void)setProgress:(double)a3 onShapeLayer:(id)a4 withAnimationHandler:(id)a5;
+- (void)setProgress:(double)progress onShapeLayer:(id)layer withAnimationHandler:(id)handler;
 @end
 
 @implementation PKShapeLayerPathState
 
-- (PKShapeLayerPathState)initWithShapeLayer:(id)a3 reverse:(BOOL)a4
+- (PKShapeLayerPathState)initWithShapeLayer:(id)layer reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 strokeStart];
+  reverseCopy = reverse;
+  layerCopy = layer;
+  [layerCopy strokeStart];
   v8 = v7;
-  [v6 strokeEnd];
+  [layerCopy strokeEnd];
   v10 = v9;
 
-  if (v4)
+  if (reverseCopy)
   {
     v11 = v10;
   }
@@ -33,17 +33,17 @@
   return [(PKShapeLayerPathState *)self initWithStrokeStartT0:v11 strokeStartT1:v8 strokeEndT0:v11 strokeEndT1:v10];
 }
 
-- (PKShapeLayerPathState)initWithStrokeStartT0:(double)a3 strokeStartT1:(double)a4 strokeEndT0:(double)a5 strokeEndT1:(double)a6
+- (PKShapeLayerPathState)initWithStrokeStartT0:(double)t0 strokeStartT1:(double)t1 strokeEndT0:(double)endT0 strokeEndT1:(double)endT1
 {
   v11.receiver = self;
   v11.super_class = PKShapeLayerPathState;
   result = [(PKShapeLayerPathState *)&v11 init];
   if (result)
   {
-    result->_strokeStartT0 = a3;
-    result->_strokeStartT1 = a4;
-    result->_strokeEndT0 = a5;
-    result->_strokeEndT1 = a6;
+    result->_strokeStartT0 = t0;
+    result->_strokeStartT1 = t1;
+    result->_strokeEndT0 = endT0;
+    result->_strokeEndT1 = endT1;
   }
 
   return result;
@@ -67,17 +67,17 @@
   return v5;
 }
 
-- (double)strokeStartAtProgress:(double)a3
+- (double)strokeStartAtProgress:(double)progress
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v3 = a3;
+    progressCopy = progress;
   }
 
-  if (a3 <= 1.0)
+  if (progress <= 1.0)
   {
-    v4 = v3;
+    v4 = progressCopy;
   }
 
   else
@@ -88,17 +88,17 @@
   return v4 * self->_strokeStartT1 + (1.0 - v4) * self->_strokeStartT0;
 }
 
-- (double)strokeEndAtProgress:(double)a3
+- (double)strokeEndAtProgress:(double)progress
 {
-  v3 = 0.0;
-  if (a3 >= 0.0)
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v3 = a3;
+    progressCopy = progress;
   }
 
-  if (a3 <= 1.0)
+  if (progress <= 1.0)
   {
-    v4 = v3;
+    v4 = progressCopy;
   }
 
   else
@@ -109,19 +109,19 @@
   return v4 * self->_strokeEndT1 + (1.0 - v4) * self->_strokeEndT0;
 }
 
-- (void)setProgress:(double)a3 onShapeLayer:(id)a4 withAnimationHandler:(id)a5
+- (void)setProgress:(double)progress onShapeLayer:(id)layer withAnimationHandler:(id)handler
 {
-  v19 = a4;
-  v8 = a5;
-  v9 = 0.0;
-  if (a3 >= 0.0)
+  layerCopy = layer;
+  handlerCopy = handler;
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v9 = a3;
+    progressCopy = progress;
   }
 
-  if (a3 <= 1.0)
+  if (progress <= 1.0)
   {
-    v10 = v9;
+    v10 = progressCopy;
   }
 
   else
@@ -129,39 +129,39 @@
     v10 = 1.0;
   }
 
-  [v19 strokeStart];
+  [layerCopy strokeStart];
   v12 = v11;
   [(PKShapeLayerPathState *)self strokeStartAtProgress:v10];
   v14 = v13;
-  [v19 strokeEnd];
+  [layerCopy strokeEnd];
   v16 = v15;
   [(PKShapeLayerPathState *)self strokeEndAtProgress:v10];
   v18 = v17;
-  [v19 setStrokeStart:v14];
-  [v19 setStrokeEnd:v18];
-  if (v8)
+  [layerCopy setStrokeStart:v14];
+  [layerCopy setStrokeEnd:v18];
+  if (handlerCopy)
   {
     if (v12 != v14)
     {
-      v8[2](v8, v19, @"strokeStart", v12, v14);
+      handlerCopy[2](handlerCopy, layerCopy, @"strokeStart", v12, v14);
     }
 
     if (v16 != v18)
     {
-      v8[2](v8, v19, @"strokeEnd", v16, v18);
+      handlerCopy[2](handlerCopy, layerCopy, @"strokeEnd", v16, v18);
     }
   }
 }
 
-- (double)progressForShapeLayer:(id)a3
+- (double)progressForShapeLayer:(id)layer
 {
-  v4 = a3;
-  v5 = v4;
+  layerCopy = layer;
+  v5 = layerCopy;
   v6 = 1.0;
   v7 = 1.0;
   if (self->_strokeStartT0 != self->_strokeStartT1)
   {
-    [v4 strokeStart];
+    [layerCopy strokeStart];
     v7 = fmax(fmin((v8 - self->_strokeStartT0) / (self->_strokeStartT1 - self->_strokeStartT0), 1.0), 0.0);
   }
 

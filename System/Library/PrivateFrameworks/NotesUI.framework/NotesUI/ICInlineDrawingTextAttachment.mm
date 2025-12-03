@@ -1,6 +1,6 @@
 @interface ICInlineDrawingTextAttachment
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
 - (ICDrawingHashtagsAndMentionsController)hashtagsAndMentionsController;
 - (ICInlineDrawingChangeCoalescer)changeCoalescer;
 - (NSHashTable)inlineDrawingViews;
@@ -10,14 +10,14 @@
 - (id)attachmentViews;
 - (id)contents;
 - (id)inlineViews;
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5;
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
-- (void)configureHashtagAndMentionsForView:(id)a3;
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container;
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
+- (void)configureHashtagAndMentionsForView:(id)view;
 - (void)detachView;
-- (void)detachView:(id)a3 fromParentView:(id)a4;
-- (void)drawingDataDidChange:(id)a3 view:(id)a4;
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7;
+- (void)detachView:(id)view fromParentView:(id)parentView;
+- (void)drawingDataDidChange:(id)change view:(id)view;
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager;
 - (void)resetZoom;
 @end
 
@@ -30,8 +30,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  v4 = [v3 copy];
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  v4 = [inlineDrawingViews copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -48,8 +48,8 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 superview];
-        [(ICInlineDrawingTextAttachment *)self detachView:v9 fromParentView:v10];
+        superview = [v9 superview];
+        [(ICInlineDrawingTextAttachment *)self detachView:v9 fromParentView:superview];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -61,18 +61,18 @@
 
 - (id)inlineViews
 {
-  v2 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  v3 = [v2 allObjects];
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  allObjects = [inlineDrawingViews allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)attachmentViews
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(inlineDrawingViews, "count")}];
 
   v17 = 0u;
   v18 = 0u;
@@ -117,13 +117,13 @@
 {
   if (!self->_changeCoalescer)
   {
-    v3 = [(ICAbstractTextAttachment *)self attachment];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
 
-    if (v3)
+    if (attachment)
     {
       v4 = [ICInlineDrawingChangeCoalescer alloc];
-      v5 = [(ICAbstractTextAttachment *)self attachment];
-      v6 = [(ICInlineDrawingChangeCoalescer *)v4 initWithAttachment:v5];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      v6 = [(ICInlineDrawingChangeCoalescer *)v4 initWithAttachment:attachment2];
       changeCoalescer = self->_changeCoalescer;
       self->_changeCoalescer = v6;
     }
@@ -138,13 +138,13 @@
 {
   if (!self->_hashtagsAndMentionsController)
   {
-    v3 = [(ICAbstractTextAttachment *)self attachment];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
 
-    if (v3)
+    if (attachment)
     {
       v4 = [ICDrawingHashtagsAndMentionsController alloc];
-      v5 = [(ICAbstractTextAttachment *)self attachment];
-      v6 = [(ICDrawingHashtagsAndMentionsController *)v4 initWithAttachment:v5];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      v6 = [(ICDrawingHashtagsAndMentionsController *)v4 initWithAttachment:attachment2];
       hashtagsAndMentionsController = self->_hashtagsAndMentionsController;
       self->_hashtagsAndMentionsController = v6;
     }
@@ -160,9 +160,9 @@
   inlineDrawingViews = self->_inlineDrawingViews;
   if (!inlineDrawingViews)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v5 = self->_inlineDrawingViews;
-    self->_inlineDrawingViews = v4;
+    self->_inlineDrawingViews = weakObjectsHashTable;
 
     inlineDrawingViews = self->_inlineDrawingViews;
   }
@@ -172,31 +172,31 @@
 
 - (id)contents
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 mergeableData];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  mergeableData = [attachment mergeableData];
 
-  return v3;
+  return mergeableData;
 }
 
 - (id)attachmentAsNSTextAttachment
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 fallbackImageData];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  fallbackImageData = [attachment fallbackImageData];
 
   v4 = objc_alloc(MEMORY[0x1E69DB7F0]);
-  v5 = [MEMORY[0x1E69B7680] fallbackImageUTI];
-  v6 = [v4 initWithData:v3 ofType:v5];
+  fallbackImageUTI = [MEMORY[0x1E69B7680] fallbackImageUTI];
+  v6 = [v4 initWithData:fallbackImageData ofType:fallbackImageUTI];
 
-  v7 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v3];
+  v7 = [MEMORY[0x1E69DCAB8] ic_imageWithData:fallbackImageData];
   [v6 setImage:v7];
 
   return v6;
 }
 
-- (id)printableTextContentForAppearanceType:(unint64_t)a3 traitCollection:(id)a4 textContainer:(id)a5
+- (id)printableTextContentForAppearanceType:(unint64_t)type traitCollection:(id)collection textContainer:(id)container
 {
-  v32 = a4;
-  v30 = a5;
+  collectionCopy = collection;
+  containerCopy = container;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __101__ICInlineDrawingTextAttachment_printableTextContentForAppearanceType_traitCollection_textContainer___block_invoke;
@@ -208,31 +208,31 @@
     v8[2](v8);
   }
 
-  v9 = [(ICAbstractTextAttachment *)self attachment];
-  v10 = [v9 fallbackImageData];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  fallbackImageData = [attachment fallbackImageData];
 
-  if (!v10)
+  if (!fallbackImageData)
   {
     v8[2](v8);
-    v11 = [(ICAbstractTextAttachment *)self attachment];
-    v10 = [v11 fallbackImageData];
+    attachment2 = [(ICAbstractTextAttachment *)self attachment];
+    fallbackImageData = [attachment2 fallbackImageData];
 
-    if (!v10)
+    if (!fallbackImageData)
     {
-      v10 = [MEMORY[0x1E695DEF0] data];
+      fallbackImageData = [MEMORY[0x1E695DEF0] data];
     }
   }
 
   v12 = [ICPrintableTextAttachment alloc];
-  v13 = [MEMORY[0x1E69B7680] fallbackImageUTI];
-  v14 = [(ICPrintableTextAttachment *)v12 initWithData:v10 ofType:v13];
+  fallbackImageUTI = [MEMORY[0x1E69B7680] fallbackImageUTI];
+  v14 = [(ICPrintableTextAttachment *)v12 initWithData:fallbackImageData ofType:fallbackImageUTI];
 
   v15 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v14];
-  v16 = [v10 length];
+  v16 = [fallbackImageData length];
   v17 = MEMORY[0x1E695EFD0];
   if (v16)
   {
-    v18 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v10];
+    v18 = [MEMORY[0x1E69DCAB8] ic_imageWithData:fallbackImageData];
     v19 = v17[1];
     v39 = *v17;
     v40 = v19;
@@ -251,20 +251,20 @@
   *(&v40 + 1) = __Block_byref_object_copy__54;
   *&v41 = __Block_byref_object_dispose__54;
   *(&v41 + 1) = 0;
-  v21 = [(ICAbstractTextAttachment *)self attachment];
-  v22 = [v21 managedObjectContext];
+  attachment3 = [(ICAbstractTextAttachment *)self attachment];
+  managedObjectContext = [attachment3 managedObjectContext];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __101__ICInlineDrawingTextAttachment_printableTextContentForAppearanceType_traitCollection_textContainer___block_invoke_19;
   v35[3] = &unk_1E8468FA8;
   v35[4] = self;
   v35[5] = &v39;
-  [v22 performBlockAndWait:v35];
+  [managedObjectContext performBlockAndWait:v35];
 
-  v23 = [MEMORY[0x1E69B7678] appearanceInfoWithType:a3];
+  v23 = [MEMORY[0x1E69B7678] appearanceInfoWithType:type];
   v24 = MEMORY[0x1E69B76A0];
-  v25 = [(ICAbstractTextAttachment *)self attachment];
-  v26 = [v24 generateImageForAttachment:v25 fromDrawing:*(*(&v39 + 1) + 40) fullResolution:1 appearanceInfo:v23];
+  attachment4 = [(ICAbstractTextAttachment *)self attachment];
+  v26 = [v24 generateImageForAttachment:attachment4 fromDrawing:*(*(&v39 + 1) + 40) fullResolution:1 appearanceInfo:v23];
 
   if (v26)
   {
@@ -307,49 +307,49 @@ void __101__ICInlineDrawingTextAttachment_printableTextContentForAppearanceType_
   *(v4 + 40) = v3;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  locationCopy = location;
+  containerCopy = container;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v30.receiver = self;
     v30.super_class = ICInlineDrawingTextAttachment;
-    v11 = [(ICInlineDrawingTextAttachment *)&v30 viewProviderForParentView:v8 location:v9 textContainer:v10];
-    v12 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-    v13 = [v11 view];
-    v14 = [v12 containsObject:v13];
+    v11 = [(ICInlineDrawingTextAttachment *)&v30 viewProviderForParentView:viewCopy location:locationCopy textContainer:containerCopy];
+    inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+    view = [v11 view];
+    v14 = [inlineDrawingViews containsObject:view];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-      v16 = [v11 view];
-      [v15 addObject:v16];
+      inlineDrawingViews2 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+      view2 = [v11 view];
+      [inlineDrawingViews2 addObject:view2];
 
       objc_initWeak(&location, self);
-      v17 = [v11 view];
+      view3 = [v11 view];
       v24 = MEMORY[0x1E69E9820];
       v25 = 3221225472;
       v26 = __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_textContainer___block_invoke;
       v27 = &unk_1E8469558;
       objc_copyWeak(&v28, &location);
-      [v17 ic_addDidMoveToWindowHandler:&v24];
+      [view3 ic_addDidMoveToWindowHandler:&v24];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(&location);
     }
 
-    v18 = [v8 window];
+    window = [viewCopy window];
 
-    if (v18)
+    if (window)
     {
-      v19 = [v8 window];
-      v20 = [ICInkPaletteController sharedToolPickerForWindow:v19];
+      window2 = [viewCopy window];
+      v20 = [ICInkPaletteController sharedToolPickerForWindow:window2];
 
-      v21 = [v20 isVisible];
-      v22 = [v11 view];
-      [v20 setVisible:v21 forFirstResponder:v22];
+      isVisible = [v20 isVisible];
+      view4 = [v11 view];
+      [v20 setVisible:isVisible forFirstResponder:view4];
     }
   }
 
@@ -368,23 +368,23 @@ void __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_text
   [WeakRetained configureHashtagAndMentionsForView:v3];
 }
 
-- (void)configureHashtagAndMentionsForView:(id)a3
+- (void)configureHashtagAndMentionsForView:(id)view
 {
-  v14 = a3;
+  viewCopy = view;
   objc_opt_class();
   v4 = ICDynamicCast();
-  v5 = [(ICAbstractTextAttachment *)self attachment];
-  [v4 setWantsMentionDetection:{objc_msgSend(v5, "isSharedViaICloud")}];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  [v4 setWantsMentionDetection:{objc_msgSend(attachment, "isSharedViaICloud")}];
 
-  v6 = [(ICAbstractTextAttachment *)self attachment];
-  v7 = [v6 note];
-  [v4 setWantsHashtagDetection:{objc_msgSend(v7, "isPasswordProtected") ^ 1}];
+  attachment2 = [(ICAbstractTextAttachment *)self attachment];
+  note = [attachment2 note];
+  [v4 setWantsHashtagDetection:{objc_msgSend(note, "isPasswordProtected") ^ 1}];
 
-  v8 = [v14 window];
-  if (v8)
+  window = [viewCopy window];
+  if (window)
   {
-    v9 = [(ICInlineDrawingTextAttachment *)self hashtagsAndMentionsController];
-    [v4 setHashtagAndMentionsDelegate:v9];
+    hashtagsAndMentionsController = [(ICInlineDrawingTextAttachment *)self hashtagsAndMentionsController];
+    [v4 setHashtagAndMentionsDelegate:hashtagsAndMentionsController];
   }
 
   else
@@ -392,48 +392,48 @@ void __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_text
     [v4 setHashtagAndMentionsDelegate:0];
   }
 
-  v10 = [v14 window];
+  window2 = [viewCopy window];
 
-  v11 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  v12 = v11;
-  if (v10)
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  inlineDrawingViews2 = inlineDrawingViews;
+  if (window2)
   {
-    v13 = [v11 containsObject:v14];
+    v13 = [inlineDrawingViews containsObject:viewCopy];
 
     if ((v13 & 1) == 0)
     {
       [(ICInlineCanvasTextAttachment *)self updatePaletteVisibility];
     }
 
-    v12 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-    [v12 addObject:v14];
+    inlineDrawingViews2 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+    [inlineDrawingViews2 addObject:viewCopy];
   }
 
   else
   {
-    [v11 removeObject:v14];
+    [inlineDrawingViews removeObject:viewCopy];
   }
 }
 
-- (id)viewProviderForParentView:(id)a3 characterIndex:(unint64_t)a4 layoutManager:(id)a5
+- (id)viewProviderForParentView:(id)view characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  managerCopy = manager;
   if ([MEMORY[0x1E696AF00] isMainThread] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v17.receiver = self;
     v17.super_class = ICInlineDrawingTextAttachment;
-    v10 = [(ICInlineDrawingTextAttachment *)&v17 viewProviderForParentView:v8 characterIndex:a4 layoutManager:v9];
-    v12 = [v8 window];
+    v10 = [(ICInlineDrawingTextAttachment *)&v17 viewProviderForParentView:viewCopy characterIndex:index layoutManager:managerCopy];
+    window = [viewCopy window];
 
-    if (v12)
+    if (window)
     {
-      v13 = [v8 window];
-      v14 = [ICInkPaletteController sharedToolPickerForWindow:v13];
+      window2 = [viewCopy window];
+      v14 = [ICInkPaletteController sharedToolPickerForWindow:window2];
 
-      v15 = [v14 isVisible];
-      v16 = [v10 view];
-      [v14 setVisible:v15 forFirstResponder:v16];
+      isVisible = [v14 isVisible];
+      view = [v10 view];
+      [v14 setVisible:isVisible forFirstResponder:view];
     }
   }
 
@@ -445,26 +445,26 @@ void __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_text
   return v10;
 }
 
-- (void)placeView:(id)a3 withFrame:(CGRect)a4 inParentView:(id)a5 characterIndex:(unint64_t)a6 layoutManager:(id)a7
+- (void)placeView:(id)view withFrame:(CGRect)frame inParentView:(id)parentView characterIndex:(unint64_t)index layoutManager:(id)manager
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
-  v16 = a7;
-  v17 = a5;
-  [(ICInlineDrawingTextAttachment *)self setCachedDrawingViewForPlaceView:v15];
-  [(ICInlineDrawingTextAttachment *)self setCachedControlViewForPlaceView:v17];
-  v18 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  v19 = [v18 containsObject:v15];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  managerCopy = manager;
+  parentViewCopy = parentView;
+  [(ICInlineDrawingTextAttachment *)self setCachedDrawingViewForPlaceView:viewCopy];
+  [(ICInlineDrawingTextAttachment *)self setCachedControlViewForPlaceView:parentViewCopy];
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  v19 = [inlineDrawingViews containsObject:viewCopy];
 
-  v20 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  [v20 addObject:v15];
+  inlineDrawingViews2 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  [inlineDrawingViews2 addObject:viewCopy];
 
   v28.receiver = self;
   v28.super_class = ICInlineDrawingTextAttachment;
-  [(ICInlineDrawingTextAttachment *)&v28 placeView:v15 withFrame:v17 inParentView:a6 characterIndex:v16 layoutManager:x, y, width, height];
+  [(ICInlineDrawingTextAttachment *)&v28 placeView:viewCopy withFrame:parentViewCopy inParentView:index characterIndex:managerCopy layoutManager:x, y, width, height];
 
   if ((v19 & 1) == 0)
   {
@@ -477,20 +477,20 @@ void __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_text
   {
     [(ICAbstractTextAttachment *)self foregroundAlpha];
     [v21 ic_setAlpha:?];
-    v22 = [v21 hashtagAndMentionsDelegate];
-    v23 = [(ICInlineDrawingTextAttachment *)self hashtagsAndMentionsController];
+    hashtagAndMentionsDelegate = [v21 hashtagAndMentionsDelegate];
+    hashtagsAndMentionsController = [(ICInlineDrawingTextAttachment *)self hashtagsAndMentionsController];
 
-    if (v22 != v23)
+    if (hashtagAndMentionsDelegate != hashtagsAndMentionsController)
     {
-      v24 = [(ICAbstractTextAttachment *)self attachment];
-      [v21 setWantsMentionDetection:{objc_msgSend(v24, "isSharedViaICloud")}];
+      attachment = [(ICAbstractTextAttachment *)self attachment];
+      [v21 setWantsMentionDetection:{objc_msgSend(attachment, "isSharedViaICloud")}];
 
-      v25 = [(ICAbstractTextAttachment *)self attachment];
-      v26 = [v25 note];
-      [v21 setWantsHashtagDetection:{objc_msgSend(v26, "isPasswordProtected") ^ 1}];
+      attachment2 = [(ICAbstractTextAttachment *)self attachment];
+      note = [attachment2 note];
+      [v21 setWantsHashtagDetection:{objc_msgSend(note, "isPasswordProtected") ^ 1}];
 
-      v27 = [(ICInlineDrawingTextAttachment *)self hashtagsAndMentionsController];
-      [v21 setHashtagAndMentionsDelegate:v27];
+      hashtagsAndMentionsController2 = [(ICInlineDrawingTextAttachment *)self hashtagsAndMentionsController];
+      [v21 setHashtagAndMentionsDelegate:hashtagsAndMentionsController2];
     }
   }
 
@@ -498,20 +498,20 @@ void __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_text
   [(ICInlineDrawingTextAttachment *)self setCachedControlViewForPlaceView:0];
 }
 
-- (void)detachView:(id)a3 fromParentView:(id)a4
+- (void)detachView:(id)view fromParentView:(id)parentView
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  parentViewCopy = parentView;
   v15.receiver = self;
   v15.super_class = ICInlineDrawingTextAttachment;
-  [(ICBaseTextAttachment *)&v15 detachView:v6 fromParentView:v7];
-  v8 = [(ICInlineDrawingTextAttachment *)self cachedDrawingViewForPlaceView];
-  v9 = v8;
-  if (v8 == v6)
+  [(ICBaseTextAttachment *)&v15 detachView:viewCopy fromParentView:parentViewCopy];
+  cachedDrawingViewForPlaceView = [(ICInlineDrawingTextAttachment *)self cachedDrawingViewForPlaceView];
+  v9 = cachedDrawingViewForPlaceView;
+  if (cachedDrawingViewForPlaceView == viewCopy)
   {
-    v10 = [(ICInlineDrawingTextAttachment *)self cachedControlViewForPlaceView];
+    cachedControlViewForPlaceView = [(ICInlineDrawingTextAttachment *)self cachedControlViewForPlaceView];
 
-    if (v10 == v7)
+    if (cachedControlViewForPlaceView == parentViewCopy)
     {
       goto LABEL_7;
     }
@@ -530,45 +530,45 @@ void __82__ICInlineDrawingTextAttachment_viewProviderForParentView_location_text
   }
 
 LABEL_7:
-  v13 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  [v13 removeObject:v6];
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  [inlineDrawingViews removeObject:viewCopy];
 
   [(ICInlineDrawingChangeCoalescer *)self->_changeCoalescer updateNowIfNecessary];
   changeCoalescer = self->_changeCoalescer;
   self->_changeCoalescer = 0;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  y = a7.y;
-  x = a7.x;
-  height = a6.size.height;
-  width = a6.size.width;
-  v11 = a6.origin.y;
-  v12 = a6.origin.x;
-  v16 = a5;
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
+  containerCopy = container;
   v37.receiver = self;
   v37.super_class = ICInlineDrawingTextAttachment;
-  [(ICBaseTextAttachment *)&v37 attachmentBoundsForAttributes:a3 location:a4 textContainer:v16 proposedLineFragment:v12 position:v11, width, height, x, y];
+  [(ICBaseTextAttachment *)&v37 attachmentBoundsForAttributes:attributes location:location textContainer:containerCopy proposedLineFragment:v12 position:v11, width, height, x, y];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [v16 textLayoutManager];
-  if (v25)
+  textLayoutManager = [containerCopy textLayoutManager];
+  if (textLayoutManager)
   {
   }
 
   else
   {
-    v26 = [v16 layoutManager];
+    layoutManager = [containerCopy layoutManager];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v28 = [(ICAbstractTextAttachment *)self attachment];
-      [v28 bounds];
+      attachment = [(ICAbstractTextAttachment *)self attachment];
+      [attachment bounds];
       v30 = v29;
       v32 = v31;
 
@@ -590,31 +590,31 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
   v34.receiver = self;
   v34.super_class = ICInlineDrawingTextAttachment;
-  v14 = a3;
-  [(ICBaseTextAttachment *)&v34 attachmentBoundsForTextContainer:v14 proposedLineFragment:a6 glyphPosition:v12 characterIndex:v11, width, height, x, y];
+  containerCopy = container;
+  [(ICBaseTextAttachment *)&v34 attachmentBoundsForTextContainer:containerCopy proposedLineFragment:index glyphPosition:v12 characterIndex:v11, width, height, x, y];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v14 layoutManager];
+  layoutManager = [containerCopy layoutManager];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v25 = [(ICAbstractTextAttachment *)self attachment];
-    [v25 bounds];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    [attachment bounds];
     v27 = v26;
     v29 = v28;
 
@@ -642,8 +642,8 @@ LABEL_7:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-  v3 = [v2 copy];
+  inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+  v3 = [inlineDrawingViews copy];
 
   v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
@@ -677,44 +677,44 @@ LABEL_7:
   }
 }
 
-- (void)drawingDataDidChange:(id)a3 view:(id)a4
+- (void)drawingDataDidChange:(id)change view:(id)view
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v35 = a4;
-  v7 = [(ICInlineDrawingTextAttachment *)self fileType];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E6978590]];
+  changeCopy = change;
+  viewCopy = view;
+  fileType = [(ICInlineDrawingTextAttachment *)self fileType];
+  v8 = [fileType isEqualToString:*MEMORY[0x1E6978590]];
 
-  if (v6 && v8)
+  if (changeCopy && v8)
   {
-    v9 = [(ICInlineDrawingTextAttachment *)self changeCoalescer];
-    [v9 drawingDataDidChange:v6];
+    changeCoalescer = [(ICInlineDrawingTextAttachment *)self changeCoalescer];
+    [changeCoalescer drawingDataDidChange:changeCopy];
 
-    v10 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-    if ([v10 count] < 2)
+    inlineDrawingViews = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+    if ([inlineDrawingViews count] < 2)
     {
     }
 
     else
     {
-      v11 = [(ICInlineDrawingTextAttachment *)self isHandlingDrawingDidChange];
+      isHandlingDrawingDidChange = [(ICInlineDrawingTextAttachment *)self isHandlingDrawingDidChange];
 
-      if (!v11)
+      if (!isHandlingDrawingDidChange)
       {
         [(ICInlineDrawingTextAttachment *)self setIsHandlingDrawingDidChange:1];
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v12 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-        v13 = [v12 copy];
+        inlineDrawingViews2 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+        v13 = [inlineDrawingViews2 copy];
 
         v14 = [v13 countByEnumeratingWithState:&v44 objects:v50 count:16];
         if (v14)
         {
           v15 = v14;
-          v33 = self;
-          v34 = v6;
+          selfCopy = self;
+          v34 = changeCopy;
           v16 = 0;
           v17 = *v45;
           do
@@ -731,8 +731,8 @@ LABEL_7:
               v41 = 0u;
               v42 = 0u;
               v43 = 0u;
-              v20 = [v19 gestureRecognizers];
-              v21 = [v20 countByEnumeratingWithState:&v40 objects:v49 count:16];
+              gestureRecognizers = [v19 gestureRecognizers];
+              v21 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v49 count:16];
               if (v21)
               {
                 v22 = v21;
@@ -743,7 +743,7 @@ LABEL_7:
                   {
                     if (*v41 != v23)
                     {
-                      objc_enumerationMutation(v20);
+                      objc_enumerationMutation(gestureRecognizers);
                     }
 
                     v25 = *(*(&v40 + 1) + 8 * j);
@@ -753,7 +753,7 @@ LABEL_7:
                     }
                   }
 
-                  v22 = [v20 countByEnumeratingWithState:&v40 objects:v49 count:16];
+                  v22 = [gestureRecognizers countByEnumeratingWithState:&v40 objects:v49 count:16];
                 }
 
                 while (v22);
@@ -765,8 +765,8 @@ LABEL_7:
 
           while (v15);
 
-          self = v33;
-          v6 = v34;
+          self = selfCopy;
+          changeCopy = v34;
           if (v16)
           {
             goto LABEL_38;
@@ -781,8 +781,8 @@ LABEL_7:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v26 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
-        v27 = [v26 copy];
+        inlineDrawingViews3 = [(ICInlineDrawingTextAttachment *)self inlineDrawingViews];
+        v27 = [inlineDrawingViews3 copy];
 
         v28 = [v27 countByEnumeratingWithState:&v36 objects:v48 count:16];
         if (v28)
@@ -799,9 +799,9 @@ LABEL_7:
               }
 
               v32 = *(*(&v36 + 1) + 8 * k);
-              if (v32 != v35 && [*(*(&v36 + 1) + 8 * k) conformsToProtocol:&unk_1F5091CC8] && (objc_opt_respondsToSelector() & 1) != 0)
+              if (v32 != viewCopy && [*(*(&v36 + 1) + 8 * k) conformsToProtocol:&unk_1F5091CC8] && (objc_opt_respondsToSelector() & 1) != 0)
               {
-                [v32 drawingDataDidChange:v6];
+                [v32 drawingDataDidChange:changeCopy];
               }
             }
 

@@ -1,6 +1,6 @@
 @interface SCDaemon
 + (id)sharedDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSArray)backgroundSystemTasks;
 - (NSArray)notifyDListeners;
 - (SCDaemon)init;
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000013DC;
   block[3] = &unk_1000103F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100015120 != -1)
   {
     dispatch_once(&qword_100015120, block);
@@ -58,51 +58,51 @@
   [(NSXPCListener *)v5 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = sub_100002AF4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received new connection: %@", &v10, 0xCu);
   }
 
   v6 = +[SCDaemonService exportedInterface];
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  v7 = [[SCDaemonClient alloc] initWithConnection:v4];
+  v7 = [[SCDaemonClient alloc] initWithConnection:connectionCopy];
   v8 = [[SCDaemonService alloc] initWithClient:v7];
-  [v4 setExportedObject:v8];
-  [v4 resume];
+  [connectionCopy setExportedObject:v8];
+  [connectionCopy resume];
 
   return 1;
 }
 
 - (void)registerXPCEventHandlers
 {
-  v3 = [(SCDaemon *)self _listenersByEventName];
-  if ([v3 count])
+  _listenersByEventName = [(SCDaemon *)self _listenersByEventName];
+  if ([_listenersByEventName count])
   {
     workQueue = self->_workQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000016BC;
     handler[3] = &unk_100010420;
-    v6 = v3;
+    v6 = _listenersByEventName;
     xpc_set_event_stream_handler("com.apple.notifyd.matching", workQueue, handler);
   }
 }
 
 - (void)registerBackgroundSystemTasks
 {
-  v3 = [(SCDaemon *)self backgroundSystemTasks];
+  backgroundSystemTasks = [(SCDaemon *)self backgroundSystemTasks];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [backgroundSystemTasks countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -114,18 +114,18 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(backgroundSystemTasks);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [(SCDaemon *)self workQueue];
-        [v8 registerForTaskUsingQueue:v9];
+        workQueue = [(SCDaemon *)self workQueue];
+        [v8 registerForTaskUsingQueue:workQueue];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [backgroundSystemTasks countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -154,12 +154,12 @@
         }
 
         v5 = *(*(&v21 + 1) + 8 * i);
-        v6 = [v5 interestedEvents];
+        interestedEvents = [v5 interestedEvents];
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v7 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v7 = [interestedEvents countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v7)
         {
           v8 = v7;
@@ -170,7 +170,7 @@
             {
               if (*v18 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(interestedEvents);
               }
 
               v11 = *(*(&v17 + 1) + 8 * j);
@@ -184,7 +184,7 @@
               [v12 addObject:v5];
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v8 = [interestedEvents countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v8);

@@ -7,21 +7,21 @@
 
 - (id)hmf_dequeue
 {
-  v2 = [a1 objectAtIndex:0];
-  [a1 removeObjectAtIndex:0];
+  v2 = [self objectAtIndex:0];
+  [self removeObjectAtIndex:0];
 
   return v2;
 }
 
 - (id)hmf_maybeDequeue
 {
-  v2 = [a1 count];
-  if (v2)
+  hmf_dequeue = [self count];
+  if (hmf_dequeue)
   {
-    v2 = [a1 hmf_dequeue];
+    hmf_dequeue = [self hmf_dequeue];
   }
 
-  return v2;
+  return hmf_dequeue;
 }
 
 @end

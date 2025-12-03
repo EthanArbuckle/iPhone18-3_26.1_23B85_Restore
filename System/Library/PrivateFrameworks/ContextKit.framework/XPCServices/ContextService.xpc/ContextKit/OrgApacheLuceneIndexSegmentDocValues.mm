@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneIndexSegmentDocValues
 - (OrgApacheLuceneIndexSegmentDocValues)init;
-- (id)getDocValuesProducerWithLong:(int64_t)a3 withOrgApacheLuceneIndexSegmentCommitInfo:(id)a4 withOrgApacheLuceneStoreDirectory:(id)a5 withOrgApacheLuceneIndexFieldInfos:(id)a6;
+- (id)getDocValuesProducerWithLong:(int64_t)long withOrgApacheLuceneIndexSegmentCommitInfo:(id)info withOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexFieldInfos:(id)infos;
 - (void)dealloc;
-- (void)decRefWithJavaUtilList:(id)a3;
+- (void)decRefWithJavaUtilList:(id)list;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentDocValues
 
-- (id)getDocValuesProducerWithLong:(int64_t)a3 withOrgApacheLuceneIndexSegmentCommitInfo:(id)a4 withOrgApacheLuceneStoreDirectory:(id)a5 withOrgApacheLuceneIndexFieldInfos:(id)a6
+- (id)getDocValuesProducerWithLong:(int64_t)long withOrgApacheLuceneIndexSegmentCommitInfo:(id)info withOrgApacheLuceneStoreDirectory:(id)directory withOrgApacheLuceneIndexFieldInfos:(id)infos
 {
   objc_sync_enter(self);
   genDVProducers = self->genDVProducers_;
@@ -16,13 +16,13 @@
     goto LABEL_6;
   }
 
-  v12 = [(JavaUtilMap *)genDVProducers getWithId:JavaLangLong_valueOfWithLong_(a3)];
+  v12 = [(JavaUtilMap *)genDVProducers getWithId:JavaLangLong_valueOfWithLong_(long)];
   v13 = v12;
   if (!v12)
   {
-    v14 = JavaLangLong_valueOfWithLong_(a3);
-    v13 = sub_10001D23C(self, a4, a5, v14, a6);
-    [(JavaUtilMap *)self->genDVProducers_ putWithId:JavaLangLong_valueOfWithLong_(a3) withId:v13];
+    v14 = JavaLangLong_valueOfWithLong_(long);
+    v13 = sub_10001D23C(self, info, directory, v14, infos);
+    [(JavaUtilMap *)self->genDVProducers_ putWithId:JavaLangLong_valueOfWithLong_(long) withId:v13];
     if (v13)
     {
       goto LABEL_5;
@@ -39,19 +39,19 @@ LABEL_5:
   return v15;
 }
 
-- (void)decRefWithJavaUtilList:(id)a3
+- (void)decRefWithJavaUtilList:(id)list
 {
   objc_sync_enter(self);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  if (!a3)
+  if (!list)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [list countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -62,7 +62,7 @@ LABEL_5:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(list);
         }
 
         genDVProducers = self->genDVProducers_;
@@ -82,7 +82,7 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v10 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v10 = [list countByEnumeratingWithState:&v11 objects:v15 count:16];
       v5 = v10;
     }
 

@@ -1,55 +1,55 @@
 @interface PKPaymentRequirementsResponse
 + (id)emptyRequirementsResponse;
-- (PKPaymentRequirementsResponse)initWithData:(id)a3 headers:(id)a4;
-- (PKPaymentRequirementsResponse)initWithProduct:(id)a3;
-- (PKPaymentRequirementsResponse)initWithProvisioningMethodMetadata:(id)a3;
+- (PKPaymentRequirementsResponse)initWithData:(id)data headers:(id)headers;
+- (PKPaymentRequirementsResponse)initWithProduct:(id)product;
+- (PKPaymentRequirementsResponse)initWithProvisioningMethodMetadata:(id)metadata;
 @end
 
 @implementation PKPaymentRequirementsResponse
 
-- (PKPaymentRequirementsResponse)initWithData:(id)a3 headers:(id)a4
+- (PKPaymentRequirementsResponse)initWithData:(id)data headers:(id)headers
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  headersCopy = headers;
   v62.receiver = self;
   v62.super_class = PKPaymentRequirementsResponse;
-  v7 = [(PKWebServiceResponse *)&v62 initWithData:a3 headers:v6];
+  v7 = [(PKWebServiceResponse *)&v62 initWithData:data headers:headersCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(PKWebServiceResponse *)v7 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v7 JSONObject];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v9 objectForKeyedSubscript:@"requirementsStatus"], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([jSONObject objectForKeyedSubscript:@"requirementsStatus"], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      v11 = [v9 objectForKeyedSubscript:@"requirementsStatus"];
+      v11 = [jSONObject objectForKeyedSubscript:@"requirementsStatus"];
       v8->_status = [v11 integerValue];
 
-      v12 = [v9 PKStringForKey:@"nonce"];
+      v12 = [jSONObject PKStringForKey:@"nonce"];
       v13 = [v12 copy];
       nonce = v8->_nonce;
       v8->_nonce = v13;
 
-      v15 = [v6 PKStringForKey:@"x-pod-region"];
+      v15 = [headersCopy PKStringForKey:@"x-pod-region"];
       region = v8->_region;
       v8->_region = v15;
 
       status = v8->_status;
       if (status == 2)
       {
-        v18 = [v9 PKArrayContaining:objc_opt_class() forKey:@"possibleProducts"];
-        if (!v18)
+        array = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"possibleProducts"];
+        if (!array)
         {
           goto LABEL_18;
         }
 
         v51 = v8;
-        obja = v9;
+        obja = jSONObject;
         productIdentifier = [MEMORY[0x1E695DF70] array];
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v38 = v18;
+        v38 = array;
         v39 = [v38 countByEnumeratingWithState:&v54 objects:v67 count:16];
         if (v39)
         {
@@ -85,19 +85,19 @@
         possibleProducts = v51->_possibleProducts;
         v51->_possibleProducts = v45;
 
-        v9 = obja;
+        jSONObject = obja;
       }
 
       else if (status == 1)
       {
-        v49 = v6;
+        v49 = headersCopy;
         v50 = v8;
-        v18 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
         v61 = 0u;
-        obj = [v9 PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
+        obj = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"requiredFields"];
         v19 = [obj countByEnumeratingWithState:&v58 objects:v68 count:16];
         if (v19)
         {
@@ -108,20 +108,20 @@
             v22 = 0;
             do
             {
-              v23 = v18;
+              v23 = array;
               if (*v59 != v21)
               {
                 objc_enumerationMutation(obj);
               }
 
               v24 = *(*(&v58 + 1) + 8 * v22);
-              [v9 PKDictionaryForKey:@"requiredFieldOptions"];
-              v26 = v25 = v9;
+              [jSONObject PKDictionaryForKey:@"requiredFieldOptions"];
+              v26 = v25 = jSONObject;
               v27 = [v26 PKDictionaryForKey:v24];
 
-              v9 = v25;
+              jSONObject = v25;
               v28 = [PKPaymentSetupField paymentSetupFieldWithIdentifier:v24 configuration:v27];
-              v18 = v23;
+              array = v23;
               [v23 safelyAddObject:v28];
 
               ++v22;
@@ -134,22 +134,22 @@
           while (v20);
         }
 
-        v29 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v18];
+        v29 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
         v8 = v50;
         requiredPaymentSetupFields = v50->_requiredPaymentSetupFields;
         v50->_requiredPaymentSetupFields = v29;
 
-        v31 = [v9 PKStringForKey:@"productIdentifier"];
+        v31 = [jSONObject PKStringForKey:@"productIdentifier"];
         productIdentifier = v50->_productIdentifier;
         v50->_productIdentifier = v31;
-        v6 = v49;
+        headersCopy = v49;
       }
 
       else
       {
         v47 = MEMORY[0x1E695DFF8];
-        v18 = [v9 objectForKeyedSubscript:@"learnMoreURL"];
-        v48 = [v47 URLWithString:v18];
+        array = [jSONObject objectForKeyedSubscript:@"learnMoreURL"];
+        v48 = [v47 URLWithString:array];
         productIdentifier = &v8->_learnMoreURL->super;
         v8->_learnMoreURL = v48;
       }
@@ -171,7 +171,7 @@
         _os_log_impl(&dword_1AD337000, productIdentifier, OS_LOG_TYPE_DEFAULT, "Malformed response: expected dictionary and received %{public}@ inside %@", buf, 0x16u);
       }
 
-      v18 = v8;
+      array = v8;
       v8 = 0;
     }
 
@@ -181,9 +181,9 @@ LABEL_18:
   return v8;
 }
 
-- (PKPaymentRequirementsResponse)initWithProduct:(id)a3
+- (PKPaymentRequirementsResponse)initWithProduct:(id)product
 {
-  v4 = a3;
+  productCopy = product;
   v15.receiver = self;
   v15.super_class = PKPaymentRequirementsResponse;
   v5 = [(PKPaymentRequirementsResponse *)&v15 init];
@@ -191,14 +191,14 @@ LABEL_18:
   if (v5)
   {
     v5->_status = 1;
-    v7 = [v4 requiredFields];
-    v8 = [v7 copy];
+    requiredFields = [productCopy requiredFields];
+    v8 = [requiredFields copy];
     requiredPaymentSetupFields = v6->_requiredPaymentSetupFields;
     v6->_requiredPaymentSetupFields = v8;
 
-    v10 = [v4 configuration];
-    v11 = [v10 productIdentifier];
-    v12 = [v11 copy];
+    configuration = [productCopy configuration];
+    productIdentifier = [configuration productIdentifier];
+    v12 = [productIdentifier copy];
     productIdentifier = v6->_productIdentifier;
     v6->_productIdentifier = v12;
   }
@@ -206,9 +206,9 @@ LABEL_18:
   return v6;
 }
 
-- (PKPaymentRequirementsResponse)initWithProvisioningMethodMetadata:(id)a3
+- (PKPaymentRequirementsResponse)initWithProvisioningMethodMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = PKPaymentRequirementsResponse;
   v5 = [(PKPaymentRequirementsResponse *)&v14 init];
@@ -216,13 +216,13 @@ LABEL_18:
   if (v5)
   {
     v5->_status = 1;
-    v7 = [v4 requiredFields];
-    v8 = [v7 copy];
+    requiredFields = [metadataCopy requiredFields];
+    v8 = [requiredFields copy];
     requiredPaymentSetupFields = v6->_requiredPaymentSetupFields;
     v6->_requiredPaymentSetupFields = v8;
 
-    v10 = [v4 productIdentifier];
-    v11 = [v10 copy];
+    productIdentifier = [metadataCopy productIdentifier];
+    v11 = [productIdentifier copy];
     productIdentifier = v6->_productIdentifier;
     v6->_productIdentifier = v11;
   }

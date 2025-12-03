@@ -1,61 +1,61 @@
 @interface SKASubscriptionChanges
 + (id)logger;
 - (BOOL)hasSubscriptionChanges;
-- (SKASubscriptionChanges)initWithStatusUnsubscriptions:(id)a3 presenceUnsubscriptions:(id)a4 statusSubscriptions:(id)a5 presenceSubscriptions:(id)a6;
-- (id)channelsForAction:(unint64_t)a3;
+- (SKASubscriptionChanges)initWithStatusUnsubscriptions:(id)unsubscriptions presenceUnsubscriptions:(id)presenceUnsubscriptions statusSubscriptions:(id)subscriptions presenceSubscriptions:(id)presenceSubscriptions;
+- (id)channelsForAction:(unint64_t)action;
 @end
 
 @implementation SKASubscriptionChanges
 
-- (SKASubscriptionChanges)initWithStatusUnsubscriptions:(id)a3 presenceUnsubscriptions:(id)a4 statusSubscriptions:(id)a5 presenceSubscriptions:(id)a6
+- (SKASubscriptionChanges)initWithStatusUnsubscriptions:(id)unsubscriptions presenceUnsubscriptions:(id)presenceUnsubscriptions statusSubscriptions:(id)subscriptions presenceSubscriptions:(id)presenceSubscriptions
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  unsubscriptionsCopy = unsubscriptions;
+  presenceUnsubscriptionsCopy = presenceUnsubscriptions;
+  subscriptionsCopy = subscriptions;
+  presenceSubscriptionsCopy = presenceSubscriptions;
   v18.receiver = self;
   v18.super_class = SKASubscriptionChanges;
   v15 = [(SKASubscriptionChanges *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_statusUnsubscriptions, a3);
-    objc_storeStrong(&v16->_presenceUnsubscriptions, a4);
-    objc_storeStrong(&v16->_statusSubscriptions, a5);
-    objc_storeStrong(&v16->_presenceSubscriptions, a6);
+    objc_storeStrong(&v15->_statusUnsubscriptions, unsubscriptions);
+    objc_storeStrong(&v16->_presenceUnsubscriptions, presenceUnsubscriptions);
+    objc_storeStrong(&v16->_statusSubscriptions, subscriptions);
+    objc_storeStrong(&v16->_presenceSubscriptions, presenceSubscriptions);
   }
 
   return v16;
 }
 
-- (id)channelsForAction:(unint64_t)a3
+- (id)channelsForAction:(unint64_t)action
 {
-  if (a3 > 1)
+  if (action > 1)
   {
-    if (a3 == 2)
+    if (action == 2)
     {
-      v4 = [(SKASubscriptionChanges *)self statusSubscriptions];
+      statusSubscriptions = [(SKASubscriptionChanges *)self statusSubscriptions];
       goto LABEL_13;
     }
 
-    if (a3 == 3)
+    if (action == 3)
     {
-      v4 = [(SKASubscriptionChanges *)self presenceSubscriptions];
+      statusSubscriptions = [(SKASubscriptionChanges *)self presenceSubscriptions];
       goto LABEL_13;
     }
   }
 
   else
   {
-    if (!a3)
+    if (!action)
     {
-      v4 = [(SKASubscriptionChanges *)self statusUnsubscriptions];
+      statusSubscriptions = [(SKASubscriptionChanges *)self statusUnsubscriptions];
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (action == 1)
     {
-      v4 = [(SKASubscriptionChanges *)self presenceUnsubscriptions];
+      statusSubscriptions = [(SKASubscriptionChanges *)self presenceUnsubscriptions];
       goto LABEL_13;
     }
   }
@@ -63,43 +63,43 @@
   v5 = +[SKASubscriptionChanges logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(SKASubscriptionChanges *)a3 channelsForAction:v5];
+    [(SKASubscriptionChanges *)action channelsForAction:v5];
   }
 
-  v4 = 0;
+  statusSubscriptions = 0;
 LABEL_13:
 
-  return v4;
+  return statusSubscriptions;
 }
 
 - (BOOL)hasSubscriptionChanges
 {
-  v3 = [(SKASubscriptionChanges *)self statusSubscriptions];
-  if ([v3 count])
+  statusSubscriptions = [(SKASubscriptionChanges *)self statusSubscriptions];
+  if ([statusSubscriptions count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SKASubscriptionChanges *)self statusUnsubscriptions];
-    if ([v5 count])
+    statusUnsubscriptions = [(SKASubscriptionChanges *)self statusUnsubscriptions];
+    if ([statusUnsubscriptions count])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(SKASubscriptionChanges *)self presenceSubscriptions];
-      if ([v6 count])
+      presenceSubscriptions = [(SKASubscriptionChanges *)self presenceSubscriptions];
+      if ([presenceSubscriptions count])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(SKASubscriptionChanges *)self presenceUnsubscriptions];
-        v4 = [v7 count] != 0;
+        presenceUnsubscriptions = [(SKASubscriptionChanges *)self presenceUnsubscriptions];
+        v4 = [presenceUnsubscriptions count] != 0;
       }
     }
   }

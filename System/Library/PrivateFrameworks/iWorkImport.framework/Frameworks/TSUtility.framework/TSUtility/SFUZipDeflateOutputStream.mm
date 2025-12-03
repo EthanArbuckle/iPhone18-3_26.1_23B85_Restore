@@ -1,20 +1,20 @@
 @interface SFUZipDeflateOutputStream
-- (SFUZipDeflateOutputStream)initWithOutputStream:(id)a3;
+- (SFUZipDeflateOutputStream)initWithOutputStream:(id)stream;
 - (id)closeLocalStream;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4;
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4;
+- (void)seekToOffset:(int64_t)offset whence:(int)whence;
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size;
 @end
 
 @implementation SFUZipDeflateOutputStream
 
-- (SFUZipDeflateOutputStream)initWithOutputStream:(id)a3
+- (SFUZipDeflateOutputStream)initWithOutputStream:(id)stream
 {
   v4 = [(SFUZipDeflateOutputStream *)self init];
   if (v4)
   {
-    v4->mOutputStream = a3;
+    v4->mOutputStream = stream;
     mOutBuffer = malloc_type_malloc(0x40000uLL, 0x100004077774924uLL);
     v4->mOutBuffer = mOutBuffer;
     if (!mOutBuffer)
@@ -98,12 +98,12 @@
 
 - (void)close
 {
-  v2 = [(SFUZipDeflateOutputStream *)self closeLocalStream];
+  closeLocalStream = [(SFUZipDeflateOutputStream *)self closeLocalStream];
 
-  [v2 close];
+  [closeLocalStream close];
 }
 
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size
 {
   if (!self->mDeflateStream.next_out)
   {
@@ -112,16 +112,16 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (a4 >= 0xFFFFFFFF)
+  if (size >= 0xFFFFFFFF)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUZipDeflateOutputStream writeBuffer:size:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v8, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/sf/SFUZipDeflateOutputStream.m"], 117, 0, "overflow in writeBuffer:size:");
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  self->mDeflateStream.avail_in = a4;
-  self->mDeflateStream.next_in = a3;
-  if (a4)
+  self->mDeflateStream.avail_in = size;
+  self->mDeflateStream.next_in = buffer;
+  if (size)
   {
     while (1)
     {
@@ -147,9 +147,9 @@
   }
 }
 
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4
+- (void)seekToOffset:(int64_t)offset whence:(int)whence
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[SFUZipDeflateOutputStream seekToOffset:whence:]", *&a4}];
+  v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[SFUZipDeflateOutputStream seekToOffset:whence:]", *&whence}];
   +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v4, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/sf/SFUZipDeflateOutputStream.m"], 145, 0, "Not implemented.");
 
   +[TSUAssertionHandler logBacktraceThrottled];

@@ -1,42 +1,42 @@
 @interface INShareETAIntentHandler
 - (_TtC7SiriGeo23INShareETAIntentHandler)init;
-- (void)confirmShareETA:(id)a3 completion:(id)a4;
-- (void)handleShareETA:(id)a3 completion:(id)a4;
-- (void)resolveRecipientsForShareETA:(id)a3 withCompletion:(id)a4;
+- (void)confirmShareETA:(id)a completion:(id)completion;
+- (void)handleShareETA:(id)a completion:(id)completion;
+- (void)resolveRecipientsForShareETA:(id)a withCompletion:(id)completion;
 @end
 
 @implementation INShareETAIntentHandler
 
-- (void)resolveRecipientsForShareETA:(id)a3 withCompletion:(id)a4
+- (void)resolveRecipientsForShareETA:(id)a withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  specialized INShareETAIntentHandler.resolveRecipients(for:with:)(v7, v8, v6);
+  aCopy = a;
+  selfCopy = self;
+  specialized INShareETAIntentHandler.resolveRecipients(for:with:)(aCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)confirmShareETA:(id)a3 completion:(id)a4
+- (void)confirmShareETA:(id)a completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  specialized INShareETAIntentHandler.confirm(intent:completion:)(v8, v6);
+  aCopy = a;
+  selfCopy = self;
+  specialized INShareETAIntentHandler.confirm(intent:completion:)(selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)handleShareETA:(id)a3 completion:(id)a4
+- (void)handleShareETA:(id)a completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  v9 = a3;
-  specialized INShareETAIntentHandler.handleShareETA(intent:completion:)(v9, v8, v8, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned INDeleteParkingLocationIntentResponse) -> (), v7);
+  selfCopy = self;
+  aCopy = a;
+  specialized INShareETAIntentHandler.handleShareETA(intent:completion:)(aCopy, selfCopy, selfCopy, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned INDeleteParkingLocationIntentResponse) -> (), v7);
 }
 
 - (_TtC7SiriGeo23INShareETAIntentHandler)init

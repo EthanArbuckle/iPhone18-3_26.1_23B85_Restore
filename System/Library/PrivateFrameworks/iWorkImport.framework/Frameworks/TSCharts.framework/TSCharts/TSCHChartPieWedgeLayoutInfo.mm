@@ -1,7 +1,7 @@
 @interface TSCHChartPieWedgeLayoutInfo
 - (BOOL)combinedLabelIsOnLeftSide;
 - (BOOL)combinedLabelOutsideWedge;
-- (BOOL)pointOutsidePieChart:(CGPoint)a3;
+- (BOOL)pointOutsidePieChart:(CGPoint)chart;
 - (BOOL)stackLabels;
 - (CGAffineTransform)combinedLabelTransformIntoPieChartCoordinateSpace;
 - (CGPoint)combinedLabelRectBottomLeftCornerInChartCoordinateSpace;
@@ -10,48 +10,48 @@
 - (CGPoint)combinedLabelRectTopLeftCornerInChartCoordinateSpace;
 - (CGPoint)combinedLabelRectTopRightCornerInChartCoordinateSpace;
 - (CGPoint)pointAtLabelInChartCoordinateSpace;
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideBottomYWithStartPoint:(CGPoint)a3;
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideBottomYWithStartPoint:(CGPoint)point;
 - (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleY;
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleYWithStartPoint:(CGPoint)a3;
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideTopYWithStartPoint:(CGPoint)a3;
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideBottomYWithStartPoint:(CGPoint)a3;
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideMiddleYWithStartPoint:(CGPoint)a3;
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideTopYWithStartPoint:(CGPoint)a3;
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleYWithStartPoint:(CGPoint)point;
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideTopYWithStartPoint:(CGPoint)point;
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideBottomYWithStartPoint:(CGPoint)point;
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideMiddleYWithStartPoint:(CGPoint)point;
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideTopYWithStartPoint:(CGPoint)point;
 - (CGPoint)vectorFromWedgeTipToCombinedLabelRect;
 - (CGRect)combinedLabelErasableFrame;
 - (CGRect)combinedLabelErasableFrameInChartCoordinateSpace;
 - (CGRect)combinedLabelRect;
 - (CGRect)combinedLabelRectInChartCoordinateSpace;
-- (TSCHChartPieWedgeLayoutInfo)initWithPieWedgeElement:(id)a3 pieLabels:(id)a4 combinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)a5;
+- (TSCHChartPieWedgeLayoutInfo)initWithPieWedgeElement:(id)element pieLabels:(id)labels combinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)space;
 - (double)combinedLabelDistanceFromWedgeTip;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)enableCalloutLineSetting;
-- (void)concatenateCombinedLabelTransformWithTransform:(CGAffineTransform *)a3;
-- (void)realignPieLabels:(int64_t)a3;
-- (void)setCombinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)a3;
-- (void)updateToUseChartCoordinateSpaceWithChartBodyCenterPoint:(CGPoint)a3;
+- (void)concatenateCombinedLabelTransformWithTransform:(CGAffineTransform *)transform;
+- (void)realignPieLabels:(int64_t)labels;
+- (void)setCombinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)space;
+- (void)updateToUseChartCoordinateSpaceWithChartBodyCenterPoint:(CGPoint)point;
 @end
 
 @implementation TSCHChartPieWedgeLayoutInfo
 
-- (TSCHChartPieWedgeLayoutInfo)initWithPieWedgeElement:(id)a3 pieLabels:(id)a4 combinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)a5
+- (TSCHChartPieWedgeLayoutInfo)initWithPieWedgeElement:(id)element pieLabels:(id)labels combinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)space
 {
-  v9 = a3;
-  v10 = a4;
+  elementCopy = element;
+  labelsCopy = labels;
   v22.receiver = self;
   v22.super_class = TSCHChartPieWedgeLayoutInfo;
   v11 = [(TSCHChartPieWedgeLayoutInfo *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_wedgeElement, a3);
-    v17 = objc_msgSend_copy(v10, v13, v14, v15, v16);
+    objc_storeStrong(&v11->_wedgeElement, element);
+    v17 = objc_msgSend_copy(labelsCopy, v13, v14, v15, v16);
     pieLabels = v12->_pieLabels;
     v12->_pieLabels = v17;
 
-    v19 = *&a5->a;
-    v20 = *&a5->c;
-    *&v12->_combinedLabelTransformIntoPieChartCoordinateSpace.tx = *&a5->tx;
+    v19 = *&space->a;
+    v20 = *&space->c;
+    *&v12->_combinedLabelTransformIntoPieChartCoordinateSpace.tx = *&space->tx;
     *&v12->_combinedLabelTransformIntoPieChartCoordinateSpace.c = v20;
     *&v12->_combinedLabelTransformIntoPieChartCoordinateSpace.a = v19;
   }
@@ -59,10 +59,10 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v16 = objc_msgSend_init(v10, v11, v12, v13, v14);
   if (v16)
   {
@@ -84,11 +84,11 @@
   return v16;
 }
 
-- (void)updateToUseChartCoordinateSpaceWithChartBodyCenterPoint:(CGPoint)a3
+- (void)updateToUseChartCoordinateSpaceWithChartBodyCenterPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_centerPoint(self->_wedgeElement, a2, a3.x, a3.y, v3);
+  y = point.y;
+  x = point.x;
+  objc_msgSend_centerPoint(self->_wedgeElement, a2, point.x, point.y, v3);
   memset(&v14, 0, sizeof(v14));
   CGAffineTransformMakeTranslation(&v14, x - v7, y - v8);
   v13 = v14;
@@ -259,16 +259,16 @@
   return CGRectApplyAffineTransform(v8, &v7);
 }
 
-- (void)concatenateCombinedLabelTransformWithTransform:(CGAffineTransform *)a3
+- (void)concatenateCombinedLabelTransformWithTransform:(CGAffineTransform *)transform
 {
   v4 = *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.c;
   *&t1.a = *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.a;
   *&t1.c = v4;
   *&t1.tx = *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.tx;
-  v5 = *&a3->c;
-  *&v7.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v7.a = *&transform->a;
   *&v7.c = v5;
-  *&v7.tx = *&a3->tx;
+  *&v7.tx = *&transform->tx;
   CGAffineTransformConcat(&v9, &t1, &v7);
   v6 = *&v9.c;
   *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.a = *&v9.a;
@@ -276,9 +276,9 @@
   *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.tx = *&v9.tx;
 }
 
-- (void)realignPieLabels:(int64_t)a3
+- (void)realignPieLabels:(int64_t)labels
 {
-  v4 = self;
+  selfCopy = self;
   v82 = *MEMORY[0x277D85DE8];
   v77 = 0u;
   v78 = 0u;
@@ -306,24 +306,24 @@
         *&v76.a = v74;
         *&v76.c = v73;
         *&v76.tx = v72;
-        if (a3 == 2)
+        if (labels == 2)
         {
           objc_msgSend_rectInCombinedLabelSpace(v16, v11, *&v72, *&v74, v12);
           MaxX = CGRectGetMaxX(v87);
           objc_msgSend_rectInCombinedLabelSpace(v16, v38, MaxX, v39, v40);
           MidY = CGRectGetMidY(v88);
-          objc_msgSend_combinedLabelRect(v4, v42, MidY, v43, v44);
+          objc_msgSend_combinedLabelRect(selfCopy, v42, MidY, v43, v44);
           v45 = CGRectGetMaxX(v89);
-          objc_msgSend_combinedLabelRect(v4, v46, v45, v47, v48);
+          objc_msgSend_combinedLabelRect(selfCopy, v46, v45, v47, v48);
           CGRectGetMidY(v90);
           goto LABEL_12;
         }
 
-        if (a3 == 1)
+        if (labels == 1)
         {
           objc_msgSend_rectInCombinedLabelSpace(v16, v11, *&v72, *&v74, v12);
           TSUCenterOfRect();
-          objc_msgSend_combinedLabelRect(v4, v33, v34, v35, v36);
+          objc_msgSend_combinedLabelRect(selfCopy, v33, v34, v35, v36);
           TSUCenterOfRect();
 LABEL_12:
           TSUSubtractPoints();
@@ -332,21 +332,21 @@ LABEL_12:
           goto LABEL_14;
         }
 
-        if (a3)
+        if (labels)
         {
           v51 = MEMORY[0x277D81150];
           v52 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, *&v72, *&v74, v12, "[TSCHChartPieWedgeLayoutInfo realignPieLabels:]");
           objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v53, v54, v55, v56, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartPieWedgeLayoutInfo.m");
-          v57 = a3;
-          v58 = v4;
+          labelsCopy = labels;
+          v58 = selfCopy;
           v59 = v13;
           v61 = v60 = v14;
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v51, v62, v63, v64, v65, v52, v61, 125, 0, "Invalid TSCHChartPieLabelAlign value. Not realigning pie label.");
 
           v14 = v60;
           v13 = v59;
-          v4 = v58;
-          a3 = v57;
+          selfCopy = v58;
+          labels = labelsCopy;
 
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v66, v67, v68, v69);
         }
@@ -357,9 +357,9 @@ LABEL_12:
           MinX = CGRectGetMinX(v83);
           objc_msgSend_rectInCombinedLabelSpace(v16, v18, MinX, v19, v20);
           v21 = CGRectGetMidY(v84);
-          objc_msgSend_combinedLabelRect(v4, v22, v21, v23, v24);
+          objc_msgSend_combinedLabelRect(selfCopy, v22, v21, v23, v24);
           v25 = CGRectGetMinX(v85);
-          objc_msgSend_combinedLabelRect(v4, v26, v25, v27, v28);
+          objc_msgSend_combinedLabelRect(selfCopy, v26, v25, v27, v28);
           CGRectGetMidY(v86);
           TSUSubtractPoints();
           CGAffineTransformMakeTranslation(&v76, v29, v30);
@@ -426,10 +426,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideMiddleYWithStartPoint:(CGPoint)a3
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideMiddleYWithStartPoint:(CGPoint)point
 {
-  x = a3.x;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = point.x;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   MaxX = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -451,10 +451,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideTopYWithStartPoint:(CGPoint)a3
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideTopYWithStartPoint:(CGPoint)point
 {
-  x = a3.x;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = point.x;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   MaxX = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -476,10 +476,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideBottomYWithStartPoint:(CGPoint)a3
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnFarXSideBottomYWithStartPoint:(CGPoint)point
 {
-  x = a3.x;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = point.x;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   MaxX = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -541,10 +541,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleYWithStartPoint:(CGPoint)a3
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideMiddleYWithStartPoint:(CGPoint)point
 {
-  x = a3.x;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = point.x;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   v5 = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -566,10 +566,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideTopYWithStartPoint:(CGPoint)a3
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideTopYWithStartPoint:(CGPoint)point
 {
-  x = a3.x;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = point.x;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   v5 = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -591,10 +591,10 @@ LABEL_14:
   return result;
 }
 
-- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideBottomYWithStartPoint:(CGPoint)a3
+- (CGPoint)pointAtLabelInChartCoordinateSpaceOnCloseXSideBottomYWithStartPoint:(CGPoint)point
 {
-  x = a3.x;
-  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = point.x;
+  objc_msgSend_combinedLabelRectInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   v5 = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -637,9 +637,9 @@ LABEL_14:
   return v7 <= v11;
 }
 
-- (BOOL)pointOutsidePieChart:(CGPoint)a3
+- (BOOL)pointOutsidePieChart:(CGPoint)chart
 {
-  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self->_wedgeElement, a2, a3.x, a3.y, v3);
+  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self->_wedgeElement, a2, chart.x, chart.y, v3);
   TSUDistance();
   v6 = v5;
   objc_msgSend_radius(self->_wedgeElement, v7, v5, v8, v9);
@@ -715,11 +715,11 @@ LABEL_14:
   return result;
 }
 
-- (void)setCombinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)a3
+- (void)setCombinedLabelTransformIntoPieChartCoordinateSpace:(CGAffineTransform *)space
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.tx = *&a3->tx;
+  v3 = *&space->a;
+  v4 = *&space->c;
+  *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.tx = *&space->tx;
   *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.c = v4;
   *&self->_combinedLabelTransformIntoPieChartCoordinateSpace.a = v3;
 }

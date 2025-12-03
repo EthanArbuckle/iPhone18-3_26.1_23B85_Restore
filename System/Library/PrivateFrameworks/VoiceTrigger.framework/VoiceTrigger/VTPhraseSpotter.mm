@@ -1,88 +1,88 @@
 @interface VTPhraseSpotter
 + (void)initialize;
-- (BOOL)_configureWithConfig:(id)a3 resourcePath:(id)a4;
+- (BOOL)_configureWithConfig:(id)config resourcePath:(id)path;
 - (BOOL)_getSecondChanceEffective;
 - (BOOL)_isDeviceHandheld;
-- (BOOL)_shouldPerformRetrainingWithAnalyzerNDAPI:(id)a3 resourcePath:(id)a4;
+- (BOOL)_shouldPerformRetrainingWithAnalyzerNDAPI:(id)i resourcePath:(id)path;
 - (VTPhraseSpotter)init;
-- (VTPhraseSpotter)initWithConfig:(id)a3 assetDir:(id)a4 runMode:(unint64_t)a5;
-- (VTPhraseSpotter)initWithConfig:(id)a3 resourcePath:(id)a4;
-- (VTPhraseSpotter)initWithHardwareSampleRate:(double)a3;
-- (VTPhraseSpotter)initWithHardwareSampleRate:(double)a3 readyCompletion:(id)a4;
-- (VTPhraseSpotter)initWithLanguageCodeForSATEnrollment:(id)a3;
-- (double)_computeSATScore:(const _ndresult *)a3;
-- (id)_analyzeEvents:(const _ndresult *)a3;
-- (id)_analyzeMakeResult:(const _ndresult *)a3 eventKind:(unsigned __int8)a4 satScore:(double)a5;
-- (id)_capturePathWithPrefix:(id)a3 eventKind:(unsigned __int8)a4;
-- (id)_createVTEventInfoString:(id)a3;
-- (id)_handleTriggerEvent:(const _ndresult *)a3 num_new_samples:(unsigned int)a4 satScore:(double)a5;
-- (id)_randomSubset:(id)a3 numSelected:(unsigned int)a4;
-- (id)_sampleFromSortedArray:(id)a3 numSelected:(unint64_t)a4;
+- (VTPhraseSpotter)initWithConfig:(id)config assetDir:(id)dir runMode:(unint64_t)mode;
+- (VTPhraseSpotter)initWithConfig:(id)config resourcePath:(id)path;
+- (VTPhraseSpotter)initWithHardwareSampleRate:(double)rate;
+- (VTPhraseSpotter)initWithHardwareSampleRate:(double)rate readyCompletion:(id)completion;
+- (VTPhraseSpotter)initWithLanguageCodeForSATEnrollment:(id)enrollment;
+- (double)_computeSATScore:(const _ndresult *)score;
+- (id)_analyzeEvents:(const _ndresult *)events;
+- (id)_analyzeMakeResult:(const _ndresult *)result eventKind:(unsigned __int8)kind satScore:(double)score;
+- (id)_capturePathWithPrefix:(id)prefix eventKind:(unsigned __int8)kind;
+- (id)_createVTEventInfoString:(id)string;
+- (id)_handleTriggerEvent:(const _ndresult *)event num_new_samples:(unsigned int)num_new_samples satScore:(double)score;
+- (id)_randomSubset:(id)subset numSelected:(unsigned int)selected;
+- (id)_sampleFromSortedArray:(id)array numSelected:(unint64_t)selected;
 - (id)_storeTrainingAudioAndMetaInfo;
-- (id)analyze:(AudioBuffer)a3;
-- (id)analyzeBufferList:(AudioBufferList *)a3;
+- (id)analyze:(AudioBuffer)analyze;
+- (id)analyzeBufferList:(AudioBufferList *)list;
 - (id)assetDictionary;
 - (id)getCorealisRTModel;
-- (int64_t)_getNumberOfAudioFilesInDirectory:(id)a3;
+- (int64_t)_getNumberOfAudioFilesInDirectory:(id)directory;
 - (int64_t)isFollowedBySpeech;
-- (unint64_t)_addExtraTime:(double)a3 to:(unint64_t)a4;
-- (unint64_t)_applyExtraTime:(double)a3 to:(unint64_t)a4;
+- (unint64_t)_addExtraTime:(double)time to:(unint64_t)to;
+- (unint64_t)_applyExtraTime:(double)time to:(unint64_t)to;
 - (unint64_t)_getBiometricMatchResult;
-- (unint64_t)_sampleLengthFrom:(unsigned int)a3 To:(unsigned int)a4;
-- (unint64_t)getAdjustedDeviceStartTime:(unint64_t)a3;
-- (void)VTLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)_analyzeResetWithOption:(unsigned __int8)a3;
+- (unint64_t)_sampleLengthFrom:(unsigned int)from To:(unsigned int)to;
+- (unint64_t)getAdjustedDeviceStartTime:(unint64_t)time;
+- (void)VTLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)_analyzeResetWithOption:(unsigned __int8)option;
 - (void)_cancelSecondChance;
 - (void)_commonInit;
-- (void)_createFirstChanceMeta:(const _ndresult *)a3;
+- (void)_createFirstChanceMeta:(const _ndresult *)meta;
 - (void)_firstUnlockedAndSpringBoardStarted;
-- (void)_handleAssetChangeForLanguageCode:(id)a3;
+- (void)_handleAssetChangeForLanguageCode:(id)code;
 - (void)_initDetector;
 - (void)_logCorruptAudio;
-- (void)_logMetaData:(id)a3;
-- (void)_logPrepareProperty:(id)a3;
+- (void)_logMetaData:(id)data;
+- (void)_logPrepareProperty:(id)property;
 - (void)_notifyAssetChangedCallback;
 - (void)_performReadyCompletion;
 - (void)_phraseSpotterEnabledDidChange;
 - (void)_resetCounters;
 - (void)_resetVoiceTriggerDueToRTSTrigger;
-- (void)_safeConfigureWithAnalyzer:(id)a3 path:(id)a4 data:(id)a5 resourcePath:(id)a6;
+- (void)_safeConfigureWithAnalyzer:(id)analyzer path:(id)path data:(id)data resourcePath:(id)resourcePath;
 - (void)_safeReconfig;
 - (void)_setDeviceHandHeld;
 - (void)_setSecondChance;
 - (void)_storeFirstChanceAudio;
 - (void)_voiceTriggerEnabledDidChange;
 - (void)dealloc;
-- (void)didReceiveSiriSessionCancellation:(id)a3;
+- (void)didReceiveSiriSessionCancellation:(id)cancellation;
 - (void)looseTriggerThreshold;
-- (void)notifyAssetChangeWithCallback:(id)a3;
-- (void)prepareWithProperty:(id)a3 readyCompletion:(id)a4;
+- (void)notifyAssetChangeWithCallback:(id)callback;
+- (void)prepareWithProperty:(id)property readyCompletion:(id)completion;
 - (void)requestFoceTrigger;
 - (void)requestSecondChance;
-- (void)setBypass:(BOOL)a3;
+- (void)setBypass:(BOOL)bypass;
 - (void)startAudioCapture;
 - (void)stopAudioCapture;
-- (void)textDependentSpeakerRecognizer:(id)a3 failedWithError:(id)a4;
-- (void)textDependentSpeakerRecognizer:(id)a3 hasSatScore:(float)a4;
+- (void)textDependentSpeakerRecognizer:(id)recognizer failedWithError:(id)error;
+- (void)textDependentSpeakerRecognizer:(id)recognizer hasSatScore:(float)score;
 @end
 
 @implementation VTPhraseSpotter
 
-- (void)textDependentSpeakerRecognizer:(id)a3 failedWithError:(id)a4
+- (void)textDependentSpeakerRecognizer:(id)recognizer failedWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  errorCopy = error;
   v8 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     satDetectionTdSr = self->_satDetectionTdSr;
     v15 = 138543874;
-    *v16 = v6;
+    *v16 = recognizerCopy;
     *&v16[8] = 2114;
     v17 = satDetectionTdSr;
     v18 = 2114;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "TDSR-ERROR:: tdSR: %{public}@, _tdSrForSatDetection:%{public}@, ERROR: %{public}@", &v15, 0x20u);
     v8 = VTLogContextFacilityVoiceTrigger;
   }
@@ -101,7 +101,7 @@
 
   v12 = self->_satDetectionTdSr;
   v13 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v12 == v6)
+  if (v12 == recognizerCopy)
   {
     if (v13)
     {
@@ -120,21 +120,21 @@
   }
 }
 
-- (void)textDependentSpeakerRecognizer:(id)a3 hasSatScore:(float)a4
+- (void)textDependentSpeakerRecognizer:(id)recognizer hasSatScore:(float)score
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  recognizerCopy = recognizer;
   v7 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = recognizerCopy;
     v11 = 2050;
-    v12 = a4;
+    scoreCopy = score;
     _os_log_impl(&dword_223A31000, v7, OS_LOG_TYPE_DEFAULT, "textDependentSpeakerRecognizer:hasSatScore: %{public}@: %{public}f, signalling now", &v9, 0x16u);
   }
 
-  if (self->_satDetectionTdSr == v6)
+  if (self->_satDetectionTdSr == recognizerCopy)
   {
     dispatch_semaphore_signal(self->_satDetectionTdSrSemaphore);
   }
@@ -145,7 +145,7 @@
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v6;
+      v10 = recognizerCopy;
       _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "ERR: textDependentSpeakerRecognizer called for unmanaged TD-SR instance: %{public}@", &v9, 0xCu);
     }
   }
@@ -228,10 +228,10 @@ void __36__VTPhraseSpotter_startAudioCapture__block_invoke(uint64_t a1)
   transcriber = self->_transcriber;
   if (transcriber)
   {
-    v3 = [(VTTranscriber *)transcriber isTriggerFollowedByWords];
+    isTriggerFollowedByWords = [(VTTranscriber *)transcriber isTriggerFollowedByWords];
     v4 = VTLogContextFacilityVoiceTrigger;
     v5 = os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (isTriggerFollowedByWords)
     {
       if (v5)
       {
@@ -298,57 +298,57 @@ void __36__VTPhraseSpotter_startAudioCapture__block_invoke(uint64_t a1)
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 MD5HashString];
+      mD5HashString = [v8 MD5HashString];
     }
 
     else
     {
-      v10 = 0;
+      mD5HashString = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    mD5HashString = 0;
   }
 
   v11 = [[VTAnalyzerNDAPI alloc] initWithConfigPath:v4 resourcePath:v5];
   if (v11)
   {
-    [(VTPhraseSpotter *)self _safeConfigureWithAnalyzer:v11 path:v4 data:v10 resourcePath:v5];
+    [(VTPhraseSpotter *)self _safeConfigureWithAnalyzer:v11 path:v4 data:mD5HashString resourcePath:v5];
   }
 }
 
-- (id)_sampleFromSortedArray:(id)a3 numSelected:(unint64_t)a4
+- (id)_sampleFromSortedArray:(id)array numSelected:(unint64_t)selected
 {
-  v5 = a3;
-  if ([v5 count] <= a4)
+  arrayCopy = array;
+  if ([arrayCopy count] <= selected)
   {
-    v6 = v5;
+    v6 = arrayCopy;
   }
 
-  else if (a4)
+  else if (selected)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
-    v7 = [v5 count];
-    if ([v5 count])
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:selected];
+    v7 = [arrayCopy count];
+    if ([arrayCopy count])
     {
       v8 = 0;
-      v9 = (v7 / a4);
+      v9 = (v7 / selected);
       v10 = 1;
       do
       {
-        v11 = [v5 objectAtIndexedSubscript:v8];
+        v11 = [arrayCopy objectAtIndexedSubscript:v8];
         [v6 addObject:v11];
 
         v8 += v9;
-        if (v8 >= [v5 count])
+        if (v8 >= [arrayCopy count])
         {
           break;
         }
       }
 
-      while (v10++ < a4);
+      while (v10++ < selected);
     }
   }
 
@@ -360,58 +360,58 @@ void __36__VTPhraseSpotter_startAudioCapture__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)_randomSubset:(id)a3 numSelected:(unsigned int)a4
+- (id)_randomSubset:(id)subset numSelected:(unsigned int)selected
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] <= a4)
+  subsetCopy = subset;
+  selectedCopy = selected;
+  if ([subsetCopy count] <= selected)
   {
-    v9 = v5;
+    v9 = subsetCopy;
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x277CBEB18]);
-    v8 = [v5 subarrayWithRange:{0, a4}];
+    v8 = [subsetCopy subarrayWithRange:{0, selected}];
     v9 = [v7 initWithArray:v8];
 
-    if ([v5 count] > a4)
+    if ([subsetCopy count] > selected)
     {
-      v10 = a4 + 1;
+      v10 = selected + 1;
       do
       {
         v11 = arc4random_uniform(v10);
-        if (v11 < a4)
+        if (v11 < selected)
         {
           v12 = v11;
-          v13 = [v5 objectAtIndexedSubscript:v6];
+          v13 = [subsetCopy objectAtIndexedSubscript:selectedCopy];
           [v9 setObject:v13 atIndexedSubscript:v12];
         }
 
-        v6 = v10++;
+        selectedCopy = v10++;
       }
 
-      while ([v5 count] > v6);
+      while ([subsetCopy count] > selectedCopy);
     }
   }
 
   return v9;
 }
 
-- (void)_safeConfigureWithAnalyzer:(id)a3 path:(id)a4 data:(id)a5 resourcePath:(id)a6
+- (void)_safeConfigureWithAnalyzer:(id)analyzer path:(id)path data:(id)data resourcePath:(id)resourcePath
 {
   v151 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  analyzerCopy = analyzer;
+  pathCopy = path;
+  dataCopy = data;
+  resourcePathCopy = resourcePath;
   [VTSpeakerIdUtilities getSATAudioDirectoryForType:1 forLanguageCode:self->_languageCode];
   v129 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   [(VTPhraseSpotter *)self _resetCounters];
   self->_samplerate = 16000;
-  objc_storeStrong(&self->_resourcePath, a6);
-  objc_storeStrong(&self->_configPath, a4);
-  objc_storeStrong(&self->_configData, a5);
+  objc_storeStrong(&self->_resourcePath, resourcePath);
+  objc_storeStrong(&self->_configPath, path);
+  objc_storeStrong(&self->_configData, data);
   v15 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -424,51 +424,51 @@ void __36__VTPhraseSpotter_startAudioCapture__block_invoke(uint64_t a1)
     _os_log_impl(&dword_223A31000, v15, OS_LOG_TYPE_DEFAULT, "::: config version: %{public}@; data: %{public}@", buf, 0x16u);
   }
 
-  [v11 getNDAPITriggerThreshold];
+  [analyzerCopy getNDAPITriggerThreshold];
   self->_ndapiThreshold = v18;
-  [v11 getNDAPISecondChanceThreshold];
+  [analyzerCopy getNDAPISecondChanceThreshold];
   self->_ndapiThresholdSecondChance = v19;
-  [v11 getNDAPILoggingThreshold];
+  [analyzerCopy getNDAPILoggingThreshold];
   self->_ndapiThresholdLogNearMisses = v20;
   *&self->_threshold = *&self->_ndapiThreshold;
   self->_thresholdLogNearMisses = v20;
-  [v11 getCombinedTriggerThreshold];
+  [analyzerCopy getCombinedTriggerThreshold];
   self->_combinedThreshold = v21;
-  [v11 getCombinedSecondChanceThreshold];
+  [analyzerCopy getCombinedSecondChanceThreshold];
   self->_combinedThresholdSecondChance = v22;
-  [v11 getCombinedLoggingThreshold];
+  [analyzerCopy getCombinedLoggingThreshold];
   self->_combinedThresholdLogNearMisses = v23;
-  [v11 getExtraSamplesAtStart];
+  [analyzerCopy getExtraSamplesAtStart];
   self->_extraSamplesAtStart = v24;
-  [v11 getSecondPassTrailingTime];
+  [analyzerCopy getSecondPassTrailingTime];
   self->_secondPassTrailingTime = v25;
-  self->_doSuperVectorSecondaryTest = [v11 getDoSupervectorSecondaryTest];
-  [v11 getThresholdPresuperVector];
+  self->_doSuperVectorSecondaryTest = [analyzerCopy getDoSupervectorSecondaryTest];
+  [analyzerCopy getThresholdPresuperVector];
   self->_thresholdPreSuperVector = v26;
-  v27 = [v11 getUseRecognizer];
-  self->_useRecognizer = v27;
-  if (v27)
+  getUseRecognizer = [analyzerCopy getUseRecognizer];
+  self->_useRecognizer = getUseRecognizer;
+  if (getUseRecognizer)
   {
     if (+[VTUtilities supportPremiumAssets])
     {
       if (!self->_isRunningSATEnrollment)
       {
-        v28 = [v11 getRecognizerConfig];
+        getRecognizerConfig = [analyzerCopy getRecognizerConfig];
         recognizerConfigName = self->_recognizerConfigName;
-        self->_recognizerConfigName = v28;
+        self->_recognizerConfigName = getRecognizerConfig;
 
-        [v11 getRecognizerThresholdOffset];
+        [analyzerCopy getRecognizerThresholdOffset];
         self->_recognizerThresholdOffset = v30;
-        [v11 getRecognizerWaitTime];
+        [analyzerCopy getRecognizerWaitTime];
         self->_recognizerWaitTime = v31;
-        [v11 getRecognizerScoreScaleFactor];
+        [analyzerCopy getRecognizerScoreScaleFactor];
         self->_recognizerScoreScaleFactor = v32;
-        v33 = [v11 getTriggerTokens];
+        getTriggerTokens = [analyzerCopy getTriggerTokens];
         triggerTokens = self->_triggerTokens;
-        self->_triggerTokens = v33;
+        self->_triggerTokens = getTriggerTokens;
 
-        self->_useFallbackThresholdUponTimeout = [v11 getUseFallbackThresholdUponTimeout];
-        self->_useKeywordSpotting = [v11 getUseKeywordSpotting];
+        self->_useFallbackThresholdUponTimeout = [analyzerCopy getUseFallbackThresholdUponTimeout];
+        self->_useKeywordSpotting = [analyzerCopy getUseKeywordSpotting];
         goto LABEL_14;
       }
     }
@@ -505,12 +505,12 @@ LABEL_12:
 LABEL_14:
   if (!self->_isRunningSATEnrollment)
   {
-    self->_isRunningSATDetection = [v11 getDoSAT];
-    [v11 getThresholdSAT];
+    self->_isRunningSATDetection = [analyzerCopy getDoSAT];
+    [analyzerCopy getThresholdSAT];
     self->_thresholdSAT = v40;
-    v41 = [v11 getRetrainNumExplicitUtt];
-    self->_retrainNumExplicitUtt = v41;
-    if (v41 <= 4)
+    getRetrainNumExplicitUtt = [analyzerCopy getRetrainNumExplicitUtt];
+    self->_retrainNumExplicitUtt = getRetrainNumExplicitUtt;
+    if (getRetrainNumExplicitUtt <= 4)
     {
       v42 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
@@ -523,14 +523,14 @@ LABEL_14:
       self->_retrainNumExplicitUtt = 5;
     }
 
-    self->_retrainNumImplicitUtt = [v11 getRetrainNumImplicitUtt];
-    v43 = [v11 getRetrainSamplingPolicy];
+    self->_retrainNumImplicitUtt = [analyzerCopy getRetrainNumImplicitUtt];
+    getRetrainSamplingPolicy = [analyzerCopy getRetrainSamplingPolicy];
     retrainSamplingPolicy = self->_retrainSamplingPolicy;
-    self->_retrainSamplingPolicy = v43;
+    self->_retrainSamplingPolicy = getRetrainSamplingPolicy;
 
-    [v11 getRetrainThresholdTrigger];
+    [analyzerCopy getRetrainThresholdTrigger];
     self->_retrainThresholdTrigger = v45;
-    [v11 getRetrainThresholdSAT];
+    [analyzerCopy getRetrainThresholdSAT];
     self->_retrainThresholdSAT = v46;
     if (self->_isRunningSATEnrollment)
     {
@@ -558,7 +558,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  [VTSpeakerIdUtilities getSpeakerModelPathForType:1 withLanguageCode:self->_languageCode withConfigPath:v12 createDirectory:?];
+  [VTSpeakerIdUtilities getSpeakerModelPathForType:1 withLanguageCode:self->_languageCode withConfigPath:pathCopy createDirectory:?];
   v128 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   v48 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -576,10 +576,10 @@ LABEL_23:
     _os_log_impl(&dword_223A31000, v49, OS_LOG_TYPE_DEFAULT, "SAT training utterances stored in %{public}@", buf, 0xCu);
   }
 
-  v50 = [VTUtilities getAssetHashFromConfigPath:v12];
+  v50 = [VTUtilities getAssetHashFromConfigPath:pathCopy];
   v126 = [VTSpeakerIdUtilities getSATDirectoryForModelType:1 forLanguageCode:self->_languageCode];
   v127 = v50;
-  v51 = [[VTTextDependentSpeakerRecognizer alloc] initWithResourcePath:v14 satDirectory:v126 assetHash:v50 shouldCreateModelDir:0 delegate:self];
+  v51 = [[VTTextDependentSpeakerRecognizer alloc] initWithResourcePath:resourcePathCopy satDirectory:v126 assetHash:v50 shouldCreateModelDir:0 delegate:self];
   satDetectionTdSr = self->_satDetectionTdSr;
   self->_satDetectionTdSr = v51;
 
@@ -595,14 +595,14 @@ LABEL_23:
   v55 = v129;
   if (self->_isRunningSATEnrollment)
   {
-    v56 = [MEMORY[0x277CCAA00] defaultManager];
-    v57 = [v56 fileExistsAtPath:*&v128 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v57 = [defaultManager fileExistsAtPath:*&v128 isDirectory:0];
 
     if (v57)
     {
-      v58 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v140 = 0;
-      [v58 removeItemAtPath:*&v128 error:&v140];
+      [defaultManager2 removeItemAtPath:*&v128 error:&v140];
       v59 = v140;
 
       if (v59)
@@ -621,9 +621,9 @@ LABEL_23:
       }
     }
 
-    v62 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     v139 = 0;
-    v63 = [v62 contentsOfDirectoryAtPath:*&v129 error:&v139];
+    v63 = [defaultManager3 contentsOfDirectoryAtPath:*&v129 error:&v139];
     v64 = v139;
 
     v125 = v63;
@@ -646,10 +646,10 @@ LABEL_23:
 
     else
     {
-      v121 = v14;
-      v122 = v13;
-      v123 = v12;
-      v124 = v11;
+      v121 = resourcePathCopy;
+      v122 = dataCopy;
+      v123 = pathCopy;
+      v124 = analyzerCopy;
       v137 = 0u;
       v138 = 0u;
       v135 = 0u;
@@ -673,9 +673,9 @@ LABEL_23:
             {
               [*&v55 stringByAppendingPathComponent:?];
               v70 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-              v71 = [MEMORY[0x277CCAA00] defaultManager];
+              defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
               v134 = 0;
-              [v71 removeItemAtPath:*&v70 error:&v134];
+              [defaultManager4 removeItemAtPath:*&v70 error:&v134];
               v72 = v134;
 
               if (v72)
@@ -703,15 +703,15 @@ LABEL_23:
         while (v67);
       }
 
-      v12 = v123;
-      v11 = v124;
-      v14 = v121;
-      v13 = v122;
+      pathCopy = v123;
+      analyzerCopy = v124;
+      resourcePathCopy = v121;
+      dataCopy = v122;
       v76 = 0;
     }
   }
 
-  if ([v11 initializeSAT:*&v128])
+  if ([analyzerCopy initializeSAT:*&v128])
   {
     if (self->_isRunningSATDetection)
     {
@@ -732,8 +732,8 @@ LABEL_23:
         v80 = 0;
       }
 
-      v82 = [[VTVoiceProfileRetrainer alloc] initWithAnalyzer:v11 languageCode:self->_languageCode modelType:1 configPath:self->_configPath resourcePath:self->_resourcePath];
-      if (v80 || [(VTPhraseSpotter *)self _shouldPerformRetrainingWithAnalyzerNDAPI:v11 resourcePath:v14])
+      v82 = [[VTVoiceProfileRetrainer alloc] initWithAnalyzer:analyzerCopy languageCode:self->_languageCode modelType:1 configPath:self->_configPath resourcePath:self->_resourcePath];
+      if (v80 || [(VTPhraseSpotter *)self _shouldPerformRetrainingWithAnalyzerNDAPI:analyzerCopy resourcePath:resourcePathCopy])
       {
         if ([(VTVoiceProfileRetrainer *)v82 pruneVoiceProfileIfNecessary])
         {
@@ -746,10 +746,10 @@ LABEL_23:
         }
 
         v84 = +[VTPreferences sharedPreferences];
-        v85 = [v84 voiceTriggerEnabled];
+        voiceTriggerEnabled = [v84 voiceTriggerEnabled];
 
         v86 = VTLogContextFacilityVoiceTrigger;
-        if (v85)
+        if (voiceTriggerEnabled)
         {
           v87 = VTLogContextFacilityVoiceTrigger;
           if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
@@ -774,7 +774,7 @@ LABEL_23:
           v130[2] = __69__VTPhraseSpotter__safeConfigureWithAnalyzer_path_data_resourcePath___block_invoke;
           v130[3] = &unk_2784ED208;
           v130[4] = self;
-          v131 = v14;
+          v131 = resourcePathCopy;
           v132 = v126;
           v133 = v127;
           [(VTVoiceProfileRetrainer *)v82 retrainSATModelWithCompletion:v130];
@@ -787,7 +787,7 @@ LABEL_23:
         }
       }
 
-      if ([v11 getSATVectorCount] <= 0)
+      if ([analyzerCopy getSATVectorCount] <= 0)
       {
         v89 = VTLogContextFacilityVoiceTrigger;
         if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
@@ -851,8 +851,8 @@ LABEL_92:
   self->_isSuperVectorNeeded = isRunningSATDetection || self->_isRunningSATEnrollment || self->_doSuperVectorSecondaryTest;
   if (self->_useRecognizer && self->_recognizerConfigName)
   {
-    v98 = [MEMORY[0x277CCAC38] processInfo];
-    [v98 systemUptime];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     v100 = v99;
 
     [(NSString *)self->_resourcePath stringByAppendingPathComponent:self->_recognizerConfigName];
@@ -869,8 +869,8 @@ LABEL_92:
     transcriber = self->_transcriber;
     self->_transcriber = v103;
 
-    v105 = [MEMORY[0x277CCAC38] processInfo];
-    [v105 systemUptime];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo2 systemUptime];
     v107 = v106;
 
     v108 = VTLogContextFacilityVoiceTrigger;
@@ -900,7 +900,7 @@ LABEL_92:
     self->_analyzer = 0;
   }
 
-  objc_storeStrong(&self->_analyzer, a3);
+  objc_storeStrong(&self->_analyzer, analyzer);
   v112 = +[VTPreferences sharedPreferences];
   v113 = [v112 localizedTriggerPhraseForLanguageCode:self->_languageCode];
   v141 = v113;
@@ -992,48 +992,48 @@ LABEL_7:
   }
 }
 
-- (BOOL)_shouldPerformRetrainingWithAnalyzerNDAPI:(id)a3 resourcePath:(id)a4
+- (BOOL)_shouldPerformRetrainingWithAnalyzerNDAPI:(id)i resourcePath:(id)path
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  iCopy = i;
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:1 forLanguageCode:self->_languageCode];
   v39 = 0;
-  if ([v8 fileExistsAtPath:v9 isDirectory:&v39] & 1) != 0 || (v10 = v39, (v39))
+  if ([defaultManager fileExistsAtPath:v9 isDirectory:&v39] & 1) != 0 || (v10 = v39, (v39))
   {
     v11 = [VTSpeakerIdUtilities getSpeakerModelPathForType:1 withLanguageCode:self->_languageCode withConfigPath:self->_configPath createDirectory:0];
-    if ([v8 fileExistsAtPath:v11 isDirectory:0])
+    if ([defaultManager fileExistsAtPath:v11 isDirectory:0])
     {
       v37 = v11;
-      v12 = v7;
+      v12 = pathCopy;
       v13 = [(VTPhraseSpotter *)self _getNumberOfAudioFilesInDirectory:v9];
-      v14 = [v6 getSATVectorCount];
-      v15 = [v6 getMaximumSpeakerVectors];
+      getSATVectorCount = [iCopy getSATVectorCount];
+      getMaximumSpeakerVectors = [iCopy getMaximumSpeakerVectors];
       v16 = VTLogContextFacilityVoiceTrigger;
-      v38 = v6;
+      v38 = iCopy;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349826;
-        v17 = v15;
+        v17 = getMaximumSpeakerVectors;
         v41 = v13;
         v42 = 2114;
-        v43 = v6;
-        v18 = v14;
+        v43 = iCopy;
+        v18 = getSATVectorCount;
         v44 = 2050;
-        v45 = v14;
+        v45 = getSATVectorCount;
         v46 = 2050;
-        v47 = v15;
+        v47 = getMaximumSpeakerVectors;
         _os_log_impl(&dword_223A31000, v16, OS_LOG_TYPE_DEFAULT, "SV: numAudioFiles: %{public}ld, analyzerNDAPI: %{public}@, numSATSpeakerVectors: %{public}ld, maxSpeakerVectors: %{public}ld", buf, 0x2Au);
       }
 
       else
       {
-        v17 = v15;
-        v18 = v14;
+        v17 = getMaximumSpeakerVectors;
+        v18 = getSATVectorCount;
       }
 
-      v7 = v12;
+      pathCopy = v12;
       if (v13 <= v17 && v13 != v18)
       {
         v25 = VTLogContextFacilityVoiceTrigger;
@@ -1045,11 +1045,11 @@ LABEL_7:
 
         v23 = 1;
         v11 = v37;
-        v6 = v38;
+        iCopy = v38;
         goto LABEL_33;
       }
 
-      if (v13 > v17 && v14 != v15)
+      if (v13 > v17 && getSATVectorCount != getMaximumSpeakerVectors)
       {
         v26 = VTLogContextFacilityVoiceTrigger;
         v11 = v37;
@@ -1060,7 +1060,7 @@ LABEL_7:
         }
 
         v23 = 1;
-        v6 = v38;
+        iCopy = v38;
         goto LABEL_33;
       }
 
@@ -1068,10 +1068,10 @@ LABEL_7:
       if ([VTTextDependentSpeakerRecognizer psrTdAssetExistsAtResourcePath:v12])
       {
         v27 = v18;
-        v28 = [(VTTextDependentSpeakerRecognizer *)self->_satDetectionTdSr tdSATModelFilePath];
-        v29 = [v8 fileExistsAtPath:v28 isDirectory:0];
+        tdSATModelFilePath = [(VTTextDependentSpeakerRecognizer *)self->_satDetectionTdSr tdSATModelFilePath];
+        v29 = [defaultManager fileExistsAtPath:tdSATModelFilePath isDirectory:0];
 
-        v6 = v38;
+        iCopy = v38;
         if ((v29 & 1) == 0)
         {
           v33 = VTLogContextFacilityVoiceTrigger;
@@ -1079,26 +1079,26 @@ LABEL_7:
           {
             satDetectionTdSr = self->_satDetectionTdSr;
             v35 = v33;
-            v36 = [(VTTextDependentSpeakerRecognizer *)satDetectionTdSr tdSATModelFilePath];
+            tdSATModelFilePath2 = [(VTTextDependentSpeakerRecognizer *)satDetectionTdSr tdSATModelFilePath];
             *buf = 138543362;
-            v41 = v36;
+            v41 = tdSATModelFilePath2;
             _os_log_impl(&dword_223A31000, v35, OS_LOG_TYPE_DEFAULT, "Needs Retraining: psrTD SAT file doesnt exist at: %{public}@", buf, 0xCu);
           }
 
           goto LABEL_9;
         }
 
-        v30 = [(VTTextDependentSpeakerRecognizer *)self->_satDetectionTdSr getSATVectorCount];
+        getSATVectorCount2 = [(VTTextDependentSpeakerRecognizer *)self->_satDetectionTdSr getSATVectorCount];
         v31 = VTLogContextFacilityVoiceTrigger;
         if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349056;
-          v41 = v30;
+          v41 = getSATVectorCount2;
           _os_log_impl(&dword_223A31000, v31, OS_LOG_TYPE_DEFAULT, "numPsrTdSpeakerVectors: %{public}ld", buf, 0xCu);
           v31 = VTLogContextFacilityVoiceTrigger;
         }
 
-        if (v30 != v27)
+        if (getSATVectorCount2 != v27)
         {
           if (!os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
@@ -1116,7 +1116,7 @@ LABEL_7:
       else
       {
         v31 = VTLogContextFacilityVoiceTrigger;
-        v6 = v38;
+        iCopy = v38;
       }
 
       v23 = 0;
@@ -1167,18 +1167,18 @@ LABEL_34:
   return v23;
 }
 
-- (int64_t)_getNumberOfAudioFilesInDirectory:(id)a3
+- (int64_t)_getNumberOfAudioFilesInDirectory:(id)directory
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:directoryCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v17[0] = *MEMORY[0x277CBE8E8];
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     v14 = 0;
-    v7 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v6 options:0 error:&v14];
+    v7 = [defaultManager contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v6 options:0 error:&v14];
     v8 = v14;
 
     if (v8)
@@ -1239,30 +1239,30 @@ void __53__VTPhraseSpotter__getNumberOfAudioFilesInDirectory___block_invoke(uint
   }
 }
 
-- (BOOL)_configureWithConfig:(id)a3 resourcePath:(id)a4
+- (BOOL)_configureWithConfig:(id)config resourcePath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  configCopy = config;
+  pathCopy = path;
   v7 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
     v15 = "[VTPhraseSpotter _configureWithConfig:resourcePath:]";
     v16 = 2114;
-    v17 = v5;
+    v17 = configCopy;
     v18 = 2114;
-    v19 = v6;
+    v19 = pathCopy;
     _os_log_impl(&dword_223A31000, v7, OS_LOG_TYPE_DEFAULT, "::: %{public}s config: %{public}@; resources: %{public}@", buf, 0x20u);
   }
 
   kdebug_trace();
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:configCopy];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v5];
+    v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:configCopy];
     v11 = v10;
     if (v10)
     {
@@ -1275,18 +1275,18 @@ void __53__VTPhraseSpotter__getNumberOfAudioFilesInDirectory___block_invoke(uint
   nd_logcontrol("NLogLevelVerbose", v12);
 }
 
-- (void)_handleAssetChangeForLanguageCode:(id)a3
+- (void)_handleAssetChangeForLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   objc_initWeak(&location, self);
   assetChangedQueue = self->_assetChangedQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__VTPhraseSpotter__handleAssetChangeForLanguageCode___block_invoke;
   v7[3] = &unk_2784ED190;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = codeCopy;
+  selfCopy = self;
+  v6 = codeCopy;
   objc_copyWeak(&v10, &location);
   dispatch_async(assetChangedQueue, v7);
   objc_destroyWeak(&v10);
@@ -1629,15 +1629,15 @@ void __37__VTPhraseSpotter_requestFoceTrigger__block_invoke(uint64_t a1)
   [v5 addObject:v6];
 }
 
-- (void)didReceiveSiriSessionCancellation:(id)a3
+- (void)didReceiveSiriSessionCancellation:(id)cancellation
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancellationCopy = cancellation;
   v5 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = v4;
+    v11 = cancellationCopy;
     _os_log_impl(&dword_223A31000, v5, OS_LOG_TYPE_DEFAULT, "::: Received siriSessionCancel Event with reason: %{public}@", buf, 0xCu);
   }
 
@@ -1647,8 +1647,8 @@ void __37__VTPhraseSpotter_requestFoceTrigger__block_invoke(uint64_t a1)
   v8[2] = __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke;
   v8[3] = &unk_2784ED118;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = cancellationCopy;
+  v7 = cancellationCopy;
   dispatch_async(ndetectQueue, v8);
 }
 
@@ -1753,7 +1753,7 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
   }
 }
 
-- (void)setBypass:(BOOL)a3
+- (void)setBypass:(BOOL)bypass
 {
   ndetectQueue = self->_ndetectQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1761,37 +1761,37 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
   v4[2] = __29__VTPhraseSpotter_setBypass___block_invoke;
   v4[3] = &unk_2784ED0F0;
   v4[4] = self;
-  v5 = a3;
+  bypassCopy = bypass;
   dispatch_async(ndetectQueue, v4);
 }
 
-- (void)VTLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)VTLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   notify_post("com.apple.corespeech.voicetriggerassetchange");
-  v7 = v5;
+  v7 = changedCopy;
   v6 = +[VTAggregator sharedAggregator];
   [v6 setLanguageCode:v7];
 
   [(VTPhraseSpotter *)self _handleAssetChangeForLanguageCode:v7];
 }
 
-- (id)_capturePathWithPrefix:(id)a3 eventKind:(unsigned __int8)a4
+- (id)_capturePathWithPrefix:(id)prefix eventKind:(unsigned __int8)kind
 {
-  if ((a4 - 1) > 3u)
+  if ((kind - 1) > 3u)
   {
     v6 = @"-triggered.wav";
   }
 
   else
   {
-    v6 = off_2784ED228[(a4 - 1)];
+    v6 = off_2784ED228[(kind - 1)];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", a3, v6, v4, v5];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", prefix, v6, v4, v5];
 }
 
-- (unint64_t)getAdjustedDeviceStartTime:(unint64_t)a3
+- (unint64_t)getAdjustedDeviceStartTime:(unint64_t)time
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = [(VTPhraseSpotter *)self _applyExtraTime:0.5 to:?];
@@ -1801,7 +1801,7 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
     v7 = 134349568;
     v8 = 0x3FE0000000000000;
     v9 = 2050;
-    v10 = a3;
+    timeCopy = time;
     v11 = 2050;
     v12 = v4;
     _os_log_impl(&dword_223A31000, v5, OS_LOG_TYPE_DEFAULT, "Start audio device %{public}.1fs earlier -- received trigger time %{public}lld and adjusted device start time: %{public}lld", &v7, 0x20u);
@@ -1810,14 +1810,14 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
   return v4;
 }
 
-- (unint64_t)_addExtraTime:(double)a3 to:(unint64_t)a4
+- (unint64_t)_addExtraTime:(double)time to:(unint64_t)to
 {
   info = 0;
   mach_timebase_info(&info);
   if (info.numer)
   {
     LODWORD(v6) = info.denom;
-    v7 = (v6 / info.numer * 1000000000.0 * a3);
+    v7 = (v6 / info.numer * 1000000000.0 * time);
   }
 
   else
@@ -1825,17 +1825,17 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
     v7 = 0;
   }
 
-  return v7 + a4;
+  return v7 + to;
 }
 
-- (unint64_t)_applyExtraTime:(double)a3 to:(unint64_t)a4
+- (unint64_t)_applyExtraTime:(double)time to:(unint64_t)to
 {
   info = 0;
   mach_timebase_info(&info);
   if (info.numer)
   {
     LODWORD(v6) = info.denom;
-    v7 = (v6 / info.numer * 1000000000.0 * a3);
+    v7 = (v6 / info.numer * 1000000000.0 * time);
   }
 
   else
@@ -1843,8 +1843,8 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
     v7 = 0;
   }
 
-  v8 = a4 >= v7;
-  v9 = a4 - v7;
+  v8 = to >= v7;
+  v9 = to - v7;
   if (v8)
   {
     return v9;
@@ -1885,8 +1885,8 @@ void __53__VTPhraseSpotter_didReceiveSiriSessionCancellation___block_invoke(uint
     goto LABEL_10;
   }
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8 isDirectory:0];
 
   if ((v10 & 1) == 0)
   {
@@ -1978,20 +1978,20 @@ LABEL_28:
   return v23;
 }
 
-- (void)_logMetaData:(id)a3
+- (void)_logMetaData:(id)data
 {
   v51[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     lastVoiceTriggerEventInfo = self->_lastVoiceTriggerEventInfo;
     self->_lastVoiceTriggerEventInfo = v6;
 
     v8 = [(VTPhraseSpotter *)self _createVTEventInfoString:v5];
     v9 = [v5 objectForKeyedSubscript:@"isTriggerEvent"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
     if (self->_audioLoggingEnabled)
     {
@@ -2006,7 +2006,7 @@ LABEL_28:
 
       v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v5];
       v50[0] = @"totalSamplesAtTriggerEnd";
-      v35 = v10;
+      v35 = bOOLValue;
       [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_samplecountAtLastTriggerEnd];
       v18 = v37 = v8;
       v51[0] = v18;
@@ -2058,7 +2058,7 @@ LABEL_28:
       v30 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
-        if (v10)
+        if (bOOLValue)
         {
           v31 = @"Trigger Event";
         }
@@ -2132,10 +2132,10 @@ void __32__VTPhraseSpotter__logMetaData___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_createVTEventInfoString:(id)a3
+- (id)_createVTEventInfoString:(id)string
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   if (_createVTEventInfoString__onceToken != -1)
   {
     dispatch_once(&_createVTEventInfoString__onceToken, &__block_literal_global_574);
@@ -2162,12 +2162,12 @@ void __32__VTPhraseSpotter__logMetaData___block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [stringCopy objectForKey:v10];
 
         if (v11)
         {
           v12 = MEMORY[0x277CCACA8];
-          v13 = [v3 objectForKey:v10];
+          v13 = [stringCopy objectForKey:v10];
           v14 = [v12 stringWithFormat:@"\t%@: %@\n", v10, v13, v16];
           [v4 appendString:v14];
         }
@@ -2219,14 +2219,14 @@ void __44__VTPhraseSpotter__createVTEventInfoString___block_invoke()
   _createVTEventInfoString__printingWhiteList = v0;
 }
 
-- (void)_logPrepareProperty:(id)a3
+- (void)_logPrepareProperty:(id)property
 {
   v32[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_audioLoggingEnabled)
+  propertyCopy = property;
+  v5 = propertyCopy;
+  if (propertyCopy && self->_audioLoggingEnabled)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AOPVoiceTriggerData"];
+    v6 = [propertyCopy objectForKeyedSubscript:@"AOPVoiceTriggerData"];
     if (v6)
     {
       v7 = [v5 objectForKeyedSubscript:@"currentHostTime"];
@@ -2238,10 +2238,10 @@ void __44__VTPhraseSpotter__createVTEventInfoString___block_invoke()
         if (v9)
         {
           v10 = [v5 objectForKeyedSubscript:@"currentHostTime"];
-          v11 = [v10 longLongValue];
+          longLongValue = [v10 longLongValue];
 
           v12 = [v6 objectForKeyedSubscript:@"trigger-time"];
-          v13 = [v12 longLongValue];
+          longLongValue2 = [v12 longLongValue];
 
           v31[0] = @"trigger-woke-ap";
           v15 = [v6 objectForKeyedSubscript:?];
@@ -2254,15 +2254,15 @@ void __44__VTPhraseSpotter__createVTEventInfoString___block_invoke()
 
           v32[0] = v18;
           v31[1] = @"trigger-start-time";
-          v14 = (v13 - v11) / 24000.0;
+          v14 = (longLongValue2 - longLongValue) / 24000.0;
           *&v16 = v14;
           v19 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
           v32[1] = v19;
           v31[2] = @"trigger-time";
-          v20 = [MEMORY[0x277CCABB0] numberWithLongLong:v13];
+          v20 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue2];
           v32[2] = v20;
           v31[3] = @"currentHostTime";
-          v21 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
+          v21 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
           v32[3] = v21;
           v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:4];
 
@@ -2315,10 +2315,10 @@ void __39__VTPhraseSpotter__logPrepareProperty___block_invoke(uint64_t a1)
   {
     v3 = VTMakeTimestampedAudioLogFilenameWithPrefixAndSuffix(&stru_28370C9A8, &stru_28370C9A8);
     v4 = [(VTPhraseSpotter *)self _capturePathWithPrefix:v3 eventKind:4];
-    v5 = [(VTCorruptDetector *)self->_corruptDetector getMaxZeroSampleCount];
-    v6 = v5;
+    getMaxZeroSampleCount = [(VTCorruptDetector *)self->_corruptDetector getMaxZeroSampleCount];
+    v6 = getMaxZeroSampleCount;
     v17[0] = @"num-zero-samples";
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:v5];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:getMaxZeroSampleCount];
     v17[1] = @"zero-in-seconds";
     v18[0] = v7;
     *&v8 = v6 / 16000.0;
@@ -2363,27 +2363,27 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
   [v4 writeToFile:v2 atomically:0];
 }
 
-- (id)_analyzeMakeResult:(const _ndresult *)a3 eventKind:(unsigned __int8)a4 satScore:(double)a5
+- (id)_analyzeMakeResult:(const _ndresult *)result eventKind:(unsigned __int8)kind satScore:(double)score
 {
   v120[29] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!result)
   {
     v16 = 0;
     goto LABEL_60;
   }
 
-  v6 = a4;
+  kindCopy = kind;
   +[VTUtilities systemUpTime];
   v10 = v9;
-  var1 = a3->var1;
+  var1 = result->var1;
   samplerate = self->_samplerate;
-  v13 = ((a3->var0 - var1) / samplerate);
-  v14 = ((a3->var0 - a3->var2) / samplerate);
+  v13 = ((result->var0 - var1) / samplerate);
+  v14 = ((result->var0 - result->var2) / samplerate);
   if (self->_audioLoggingEnabled)
   {
     v116 = VTMakeTimestampedAudioLogFilenameWithPrefixAndSuffix(&stru_28370C9A8, &stru_28370C9A8);
     v15 = [VTPhraseSpotter _capturePathWithPrefix:"_capturePathWithPrefix:eventKind:" eventKind:?];
-    var1 = a3->var1;
+    var1 = result->var1;
   }
 
   else
@@ -2396,7 +2396,7 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
   v18 = v10 - v14;
   self->_samplecountAtRealTriggerStart = var1;
   extraSamplesAtStart = self->_extraSamplesAtStart;
-  v20 = a3->var1;
+  v20 = result->var1;
   if (extraSamplesAtStart >= v20)
   {
     v21 = v20;
@@ -2415,11 +2415,11 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
   }
 
   self->_samplecountAtLastTriggerStart = v23;
-  self->_samplecountAtLastTriggerEnd = a3->var2;
-  self->_lastSupervecScore = a5;
+  self->_samplecountAtLastTriggerEnd = result->var2;
+  self->_lastSupervecScore = score;
   v24 = (self->_samplecount - v23) / 16000.0;
   v115 = v15;
-  if (v6 || self->_numFramesFromPreTrigger)
+  if (kindCopy || self->_numFramesFromPreTrigger)
   {
     v113 = 0;
     v114 = 0;
@@ -2442,7 +2442,7 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
     self->_lastDowntime = v89;
   }
 
-  v110 = v6;
+  v110 = kindCopy;
   v25 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:3 forLanguageCode:self->_languageCode];
   v26 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:2 forLanguageCode:self->_languageCode];
   triggerPhrases = self->_triggerPhrases;
@@ -2472,8 +2472,8 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
   v104 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
   v120[6] = v104;
   v119[7] = @"isTriggerEvent";
-  v90 = v6 == 0;
-  v103 = [MEMORY[0x277CCABB0] numberWithInt:v6 == 0];
+  v90 = kindCopy == 0;
+  v103 = [MEMORY[0x277CCABB0] numberWithInt:kindCopy == 0];
   v120[7] = v103;
   v119[8] = @"numFramesFromPreTrigger";
   v102 = [MEMORY[0x277CCABB0] numberWithInt:self->_numFramesFromPreTrigger];
@@ -2588,9 +2588,9 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
       v48 = [(VTPhraseSpotter *)self _sampleLengthFrom:self->_samplecountAtLastTriggerStart To:self->_samplecount];
       audioBuffer = self->_audioBuffer;
       v50 = [(VTAudioCircularBuffer *)audioBuffer sampleCount]- v48;
-      v51 = [(VTAudioCircularBuffer *)self->_audioBuffer sampleCount];
+      sampleCount = [(VTAudioCircularBuffer *)self->_audioBuffer sampleCount];
       v52 = [MEMORY[0x277CBEBC0] URLWithString:v115];
-      [(VTAudioCircularBuffer *)audioBuffer saveRecordingBufferFrom:v50 to:v51 toURL:v52];
+      [(VTAudioCircularBuffer *)audioBuffer saveRecordingBufferFrom:v50 to:sampleCount toURL:v52];
 
       if (self->_isSecondPass)
       {
@@ -2607,7 +2607,7 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
   if (self->_isRunningSATDetection)
   {
     v53 = [v47 mutableCopy];
-    v54 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v54 = [MEMORY[0x277CCABB0] numberWithDouble:score];
     [v53 setObject:v54 forKey:@"satScore"];
 
     v55 = [MEMORY[0x277CCABB0] numberWithDouble:self->_thresholdSAT];
@@ -2619,8 +2619,8 @@ void __35__VTPhraseSpotter__logCorruptAudio__block_invoke(uint64_t a1)
     v57 = [MEMORY[0x277CCABB0] numberWithBool:self->_implicitlyTrained];
     [v53 setObject:v57 forKey:@"satBeingTrained"];
 
-    v58 = [(VTAnalyzerNDAPI *)self->_analyzer getSATVectorCount];
-    v59 = [MEMORY[0x277CCABB0] numberWithInt:v58];
+    getSATVectorCount = [(VTAnalyzerNDAPI *)self->_analyzer getSATVectorCount];
+    v59 = [MEMORY[0x277CCABB0] numberWithInt:getSATVectorCount];
     [v53 setObject:v59 forKey:@"satNumTrainingUtts"];
 
     if (!v110)
@@ -2743,7 +2743,7 @@ LABEL_60:
   return v16;
 }
 
-- (void)_analyzeResetWithOption:(unsigned __int8)a3
+- (void)_analyzeResetWithOption:(unsigned __int8)option
 {
   ndetectQueue = self->_ndetectQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2751,7 +2751,7 @@ LABEL_60:
   v4[2] = __43__VTPhraseSpotter__analyzeResetWithOption___block_invoke;
   v4[3] = &unk_2784ED0F0;
   v4[4] = self;
-  v5 = a3;
+  optionCopy = option;
   dispatch_sync(ndetectQueue, v4);
 }
 
@@ -2786,10 +2786,10 @@ LABEL_6:
   return result;
 }
 
-- (double)_computeSATScore:(const _ndresult *)a3
+- (double)_computeSATScore:(const _ndresult *)score
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(VTAnalyzerNDAPI *)self->_analyzer getSuperVectorWithEndPoint:a3->var2];
+  v4 = [(VTAnalyzerNDAPI *)self->_analyzer getSuperVectorWithEndPoint:score->var2];
   v5 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
   {
@@ -2817,17 +2817,17 @@ LABEL_6:
   return v7;
 }
 
-- (id)_analyzeEvents:(const _ndresult *)a3
+- (id)_analyzeEvents:(const _ndresult *)events
 {
   v98 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!events)
   {
     goto LABEL_13;
   }
 
   samplecount = self->_samplecount;
-  var0 = a3->var0;
-  self->_samplecount = a3->var0;
+  var0 = events->var0;
+  self->_samplecount = events->var0;
   v7 = var0 - samplecount;
   if (var0 >= samplecount)
   {
@@ -2853,7 +2853,7 @@ LABEL_6:
   }
 
   self->_nearMissLogPreDelayTimer = nearMissLogPreDelayTimer - v10;
-  if (a3->var1 < lastEventEnd)
+  if (events->var1 < lastEventEnd)
   {
     v11 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -2862,16 +2862,16 @@ LABEL_6:
       _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "::: Not a new event. Must reset scores", buf, 2u);
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 1;
 LABEL_12:
-    [(VTPhraseSpotter *)v12 _analyzeResetWithOption:v13];
+    [(VTPhraseSpotter *)selfCopy2 _analyzeResetWithOption:v13];
 LABEL_13:
     v14 = 0;
     goto LABEL_14;
   }
 
-  var4 = a3->var4;
+  var4 = events->var4;
   if (self->_isRunningRecognizer)
   {
     [(VTTranscriber *)self->_transcriber triggerConfidence];
@@ -2911,7 +2911,7 @@ LABEL_13:
     }
   }
 
-  if (!self->_isRunningSATEnrollment && a3->var5 && !self->_earlyDetected)
+  if (!self->_isRunningSATEnrollment && events->var5 && !self->_earlyDetected)
   {
     self->_earlyDetected = 1;
     v24 = VTLogContextFacilityVoiceTrigger;
@@ -2926,9 +2926,9 @@ LABEL_13:
     self->_earlyDetectTime = v25;
     self->_earlyDetecFiredMachTime = mach_absolute_time();
     v26 = +[VTPreferences sharedPreferences];
-    v27 = [v26 useSiriActivationSPIForiOS];
+    useSiriActivationSPIForiOS = [v26 useSiriActivationSPIForiOS];
 
-    if (v27)
+    if (useSiriActivationSPIForiOS)
     {
       AFSiriActivationBuiltInMicVoiceTriggerPrewarm();
     }
@@ -2945,17 +2945,17 @@ LABEL_13:
     }
   }
 
-  var1 = a3->var1;
+  var1 = events->var1;
   sampleCountAtFirstChance = self->_sampleCountAtFirstChance;
   self->_isSecondChanceEffective = 0;
   if (var1 >= sampleCountAtFirstChance)
   {
-    v33 = [(VTPhraseSpotter *)self _getSecondChanceEffective];
+    _getSecondChanceEffective = [(VTPhraseSpotter *)self _getSecondChanceEffective];
     threshold = self->_threshold;
     self->_effectiveThreshold = threshold;
     p_effectiveThreshold = &self->_effectiveThreshold;
-    self->_isSecondChanceEffective = v33;
-    if (v33)
+    self->_isSecondChanceEffective = _getSecondChanceEffective;
+    if (_getSecondChanceEffective)
     {
       if (threshold >= self->_thresholdSecondChance)
       {
@@ -2993,7 +2993,7 @@ LABEL_13:
 
     if (self->_isSuperVectorNeeded)
     {
-      v41 = [(VTAnalyzerNDAPI *)self->_analyzer getSuperVectorWithEndPoint:a3->var2];
+      v41 = [(VTAnalyzerNDAPI *)self->_analyzer getSuperVectorWithEndPoint:events->var2];
       v42 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_INFO))
       {
@@ -3017,7 +3017,7 @@ LABEL_13:
           _os_log_impl(&dword_223A31000, v72, OS_LOG_TYPE_DEFAULT, "supervector is not available, cannot proceed", buf, 2u);
         }
 
-        v12 = self;
+        selfCopy2 = self;
         v13 = 0;
         goto LABEL_12;
       }
@@ -3048,8 +3048,8 @@ LABEL_13:
             v47 = VTLogContextFacilityVoiceTrigger;
             if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
             {
-              v48 = a3->var1;
-              var2 = a3->var2;
+              v48 = events->var1;
+              var2 = events->var2;
               *buf = 134349568;
               *v90 = v18;
               *&v90[8] = 1026;
@@ -3059,10 +3059,10 @@ LABEL_13:
               _os_log_impl(&dword_223A31000, v47, OS_LOG_TYPE_DEFAULT, "::: Detected a second chance trigger - 1st of 2 [score: %{public}5.3f]  start: %{public}d end: %{public}d", buf, 0x18u);
             }
 
-            self->_sampleCountAtFirstChance = a3->var2;
+            self->_sampleCountAtFirstChance = events->var2;
             [(VTPhraseSpotter *)self _setSecondChance];
             [(VTPhraseSpotter *)self _storeFirstChanceAudio];
-            [(VTPhraseSpotter *)self _createFirstChanceMeta:a3];
+            [(VTPhraseSpotter *)self _createFirstChanceMeta:events];
           }
 
           [(VTPhraseSpotter *)self _analyzeResetWithOption:0];
@@ -3158,7 +3158,7 @@ LABEL_120:
 LABEL_121:
         if ((v70 & self->_isRunningSATDetection) == 1)
         {
-          v80 = [(VTPhraseSpotter *)self _analyzeMakeResult:a3 eventKind:1 satScore:v52];
+          v80 = [(VTPhraseSpotter *)self _analyzeMakeResult:events eventKind:1 satScore:v52];
 
           if (+[VTUtilities isInternalInstall])
           {
@@ -3175,7 +3175,7 @@ LABEL_121:
           [(VTPhraseSpotter *)self _logMetaData:v80];
           [(VTPhraseSpotter *)self _analyzeResetWithOption:0];
           v14 = v80;
-          self->_lastEventEnd = a3->var2;
+          self->_lastEventEnd = events->var2;
         }
 
         else
@@ -3217,7 +3217,7 @@ LABEL_121:
 
 LABEL_107:
       self->_triggerFireMachTime = mach_absolute_time();
-      v74 = [(VTPhraseSpotter *)self _handleTriggerEvent:a3 num_new_samples:v7 satScore:v52];
+      v74 = [(VTPhraseSpotter *)self _handleTriggerEvent:events num_new_samples:v7 satScore:v52];
       if (self->_isSecondPass && !self->_secondPassTriggered)
       {
         self->_secondPassTriggered = 1;
@@ -3234,11 +3234,11 @@ LABEL_107:
       goto LABEL_121;
     }
 
-    v56 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v57 = dispatch_time(0, 300000000);
     v58 = dispatch_semaphore_wait(self->_satDetectionTdSrSemaphore, v57);
-    v59 = [MEMORY[0x277CBEAA8] date];
-    [v59 timeIntervalSinceDate:v56];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:date];
     v61 = v60 * 1000.0;
     v62 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
@@ -3306,8 +3306,8 @@ LABEL_139:
       v36 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = a3->var1;
-        v38 = a3->var2;
+        v37 = events->var1;
+        v38 = events->var2;
         *buf = 134349568;
         *v90 = v18;
         *&v90[8] = 1026;
@@ -3317,10 +3317,10 @@ LABEL_139:
         _os_log_impl(&dword_223A31000, v36, OS_LOG_TYPE_DEFAULT, "::: Detected a second chance trigger - 1st of 2 [score: %{public}5.3f]  start: %{public}d end: %{public}d", buf, 0x18u);
       }
 
-      self->_sampleCountAtFirstChance = a3->var2;
+      self->_sampleCountAtFirstChance = events->var2;
       [(VTPhraseSpotter *)self _setSecondChance];
       [(VTPhraseSpotter *)self _storeFirstChanceAudio];
-      [(VTPhraseSpotter *)self _createFirstChanceMeta:a3];
+      [(VTPhraseSpotter *)self _createFirstChanceMeta:events];
     }
 
     if (thresholdLogNearMisses >= v18)
@@ -3344,8 +3344,8 @@ LABEL_139:
         goto LABEL_13;
       }
 
-      [(VTPhraseSpotter *)self _computeSATScore:a3];
-      v83 = [(VTPhraseSpotter *)self _analyzeMakeResult:a3 eventKind:2 satScore:?];
+      [(VTPhraseSpotter *)self _computeSATScore:events];
+      v83 = [(VTPhraseSpotter *)self _analyzeMakeResult:events eventKind:2 satScore:?];
       if (+[VTUtilities isInternalInstall])
       {
         v84 = VTLogContextFacilityVoiceTrigger;
@@ -3445,21 +3445,21 @@ void __34__VTPhraseSpotter__analyzeEvents___block_invoke(uint64_t a1, int a2, vo
   }
 }
 
-- (void)_createFirstChanceMeta:(const _ndresult *)a3
+- (void)_createFirstChanceMeta:(const _ndresult *)meta
 {
   v46[20] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (meta)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     firstChanceTriggeredDate = self->_firstChanceTriggeredDate;
-    self->_firstChanceTriggeredDate = v5;
+    self->_firstChanceTriggeredDate = date;
 
     +[VTUtilities systemUpTime];
     v8 = v7;
-    var1 = a3->var1;
+    var1 = meta->var1;
     samplerate = self->_samplerate;
-    v11 = v7 - ((a3->var0 - var1) / samplerate);
-    v12 = v7 - ((a3->var0 - a3->var2) / samplerate);
+    v11 = v7 - ((meta->var0 - var1) / samplerate);
+    v12 = v7 - ((meta->var0 - meta->var2) / samplerate);
     extraSamplesAtStart = self->_extraSamplesAtStart;
     if (extraSamplesAtStart >= var1)
     {
@@ -3730,9 +3730,9 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
 
 - (id)_storeTrainingAudioAndMetaInfo
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v4 stringByAppendingString:@".wav"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [uUIDString stringByAppendingString:@".wav"];
 
   if (self->_audioBuffer)
   {
@@ -3742,9 +3742,9 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
     v8 = [(VTPhraseSpotter *)self _sampleLengthFrom:self->_samplecountAtLastTriggerStart To:self->_samplecount];
     audioBuffer = self->_audioBuffer;
     v10 = [(VTAudioCircularBuffer *)audioBuffer sampleCount]- v8;
-    v11 = [(VTAudioCircularBuffer *)self->_audioBuffer sampleCount];
+    sampleCount = [(VTAudioCircularBuffer *)self->_audioBuffer sampleCount];
     v12 = [MEMORY[0x277CBEBC0] URLWithString:v7];
-    [(VTAudioCircularBuffer *)audioBuffer saveRecordingBufferFrom:v10 to:v11 toURL:v12];
+    [(VTAudioCircularBuffer *)audioBuffer saveRecordingBufferFrom:v10 to:sampleCount toURL:v12];
 
     [VTUtteranceMetadataManager saveUtteranceMetadataForUtterance:v7 isExplicitEnrollment:self->_isRunningSATEnrollment isHandheldEnrollment:[(VTPhraseSpotter *)self _isDeviceHandheld] withBiometricResult:[(VTPhraseSpotter *)self _getBiometricMatchResult]];
   }
@@ -3757,22 +3757,22 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (unint64_t)_sampleLengthFrom:(unsigned int)a3 To:(unsigned int)a4
+- (unint64_t)_sampleLengthFrom:(unsigned int)from To:(unsigned int)to
 {
-  v4 = -a3;
-  if (a3 > a4)
+  v4 = -from;
+  if (from > to)
   {
-    v4 = ~a3;
+    v4 = ~from;
   }
 
-  return v4 + a4;
+  return v4 + to;
 }
 
-- (id)_handleTriggerEvent:(const _ndresult *)a3 num_new_samples:(unsigned int)a4 satScore:(double)a5
+- (id)_handleTriggerEvent:(const _ndresult *)event num_new_samples:(unsigned int)num_new_samples satScore:(double)score
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = [(VTPhraseSpotter *)self _analyzeMakeResult:a3 eventKind:0 satScore:a5];
-  self->_numFramesFromPreTrigger += a4;
+  v8 = [(VTPhraseSpotter *)self _analyzeMakeResult:event eventKind:0 satScore:score];
+  self->_numFramesFromPreTrigger += num_new_samples;
   if (self->_isMaximized)
   {
     kdebug_trace();
@@ -3783,9 +3783,9 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
       v9 = VTLogContextFacilityVoiceTrigger;
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
-        var4 = a3->var4;
-        var1 = a3->var1;
-        var2 = a3->var2;
+        var4 = event->var4;
+        var1 = event->var1;
+        var2 = event->var2;
         v19 = 134349568;
         v20 = var4;
         v21 = 1026;
@@ -3804,17 +3804,17 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
 
     [(VTPhraseSpotter *)self _logMetaData:v8];
     [(VTPhraseSpotter *)self _analyzeResetWithOption:0];
-    self->_lastEventEnd = a3->var2;
+    self->_lastEventEnd = event->var2;
     if (self->_isRunningSATEnrollment)
     {
-      v14 = [(VTPhraseSpotter *)self _storeTrainingAudioAndMetaInfo];
+      _storeTrainingAudioAndMetaInfo = [(VTPhraseSpotter *)self _storeTrainingAudioAndMetaInfo];
     }
 
     else if (self->_isRunningSATDetection && self->_implicitlyTrained)
     {
-      v15 = [(VTPhraseSpotter *)self _storeTrainingAudioAndMetaInfo];
+      _storeTrainingAudioAndMetaInfo2 = [(VTPhraseSpotter *)self _storeTrainingAudioAndMetaInfo];
       lastImplicitlyTrainedAudioFile = self->_lastImplicitlyTrainedAudioFile;
-      self->_lastImplicitlyTrainedAudioFile = v15;
+      self->_lastImplicitlyTrainedAudioFile = _storeTrainingAudioAndMetaInfo2;
 
       notify_post("com.apple.voicetrigger.PHSProfileModified");
     }
@@ -3835,11 +3835,11 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)analyzeBufferList:(AudioBufferList *)a3
+- (id)analyzeBufferList:(AudioBufferList *)list
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  if (!a3)
+  if (!list)
   {
     v16 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
@@ -3853,13 +3853,13 @@ uint64_t __35__VTPhraseSpotter__setSecondChance__block_invoke(uint64_t a1)
 
   if (!+[VTUtilities VTIsHorseman]|| self->_numChannels < 2)
   {
-    v15 = [(VTPhraseSpotter *)self analyze:*&a3->mBuffers[0].mNumberChannels, a3->mBuffers[0].mData];
+    v15 = [(VTPhraseSpotter *)self analyze:*&list->mBuffers[0].mNumberChannels, list->mBuffers[0].mData];
     goto LABEL_22;
   }
 
-  mDataByteSize = a3->mBuffers[0].mDataByteSize;
+  mDataByteSize = list->mBuffers[0].mDataByteSize;
   v7 = [MEMORY[0x277CBEB28] dataWithLength:mDataByteSize];
-  v8 = [v7 mutableBytes];
+  mutableBytes = [v7 mutableBytes];
   numChannels = self->_numChannels;
   v10 = mDataByteSize / numChannels;
   deinterleavedABL = self->_deinterleavedABL;
@@ -3884,7 +3884,7 @@ LABEL_15:
     {
       *(p_mData - 2) = 1;
       *(p_mData - 1) = v10;
-      *p_mData = (v8 + v14 * v12);
+      *p_mData = (mutableBytes + v14 * v12);
       p_mData += 2;
       ++v14;
       --v20;
@@ -3904,8 +3904,8 @@ LABEL_15:
     *(v18 - 1) = v10;
     *(v18 + 2) = 1;
     *(v18 + 3) = v10;
-    *v18 = (v8 + v17 * v12);
-    v18[2] = (v8 + (v17 | 1) * v12);
+    *v18 = (mutableBytes + v17 * v12);
+    v18[2] = (mutableBytes + (v17 | 1) * v12);
     v17 += 2;
     v18 += 4;
     v19 -= 2;
@@ -3918,7 +3918,7 @@ LABEL_15:
   }
 
 LABEL_17:
-  v22 = AudioConverterConvertComplexBuffer(self->_deinterleaver, v12 >> 1, a3, deinterleavedABL);
+  v22 = AudioConverterConvertComplexBuffer(self->_deinterleaver, v12 >> 1, list, deinterleavedABL);
   if (v22)
   {
     v23 = v22;
@@ -3943,16 +3943,16 @@ LABEL_22:
   return v15;
 }
 
-- (id)analyze:(AudioBuffer)a3
+- (id)analyze:(AudioBuffer)analyze
 {
-  mData = a3.mData;
-  v4 = *&a3.mNumberChannels;
+  mData = analyze.mData;
+  v4 = *&analyze.mNumberChannels;
   v67 = *MEMORY[0x277D85DE8];
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 0;
-  v6 = *&a3.mNumberChannels >> 33;
+  v6 = *&analyze.mNumberChannels >> 33;
   v7 = analyze__audioSampleHeartBeat;
   if ((-286331153 * analyze__audioSampleHeartBeat + 143165576) <= 0x11111110)
   {
@@ -4079,8 +4079,8 @@ LABEL_18:
             v25 = [(VTAudioCircularBuffer *)self->_audioBuffer copySamplesFrom:[(VTAudioCircularBuffer *)self->_audioBuffer sampleCount]- [(VTPhraseSpotter *)self _sampleLengthFrom:*(v57[3] + 4) To:*v57[3]] to:[(VTAudioCircularBuffer *)self->_audioBuffer sampleCount] withNumSamplesCopiedIn:v62];
             v26 = self->_transcriber;
             v27 = v25;
-            v28 = [v25 bytes];
-            [(VTTranscriber *)v26 recognizeWavData:v28 length:*v62];
+            bytes = [v25 bytes];
+            [(VTTranscriber *)v26 recognizeWavData:bytes length:*v62];
             self->_isRecognitionResultPending = 1;
             v29 = dispatch_time(0, 500000000);
             v30 = self->_ndetectQueue;
@@ -4711,8 +4711,8 @@ LABEL_6:
     self->_registeredForPhraseSpotterNotification = 0;
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   analyzer = self->_analyzer;
   if (analyzer)
@@ -4873,9 +4873,9 @@ LABEL_3:
   [v19 setLanguageCode:v18];
 
   [(VTPhraseSpotter *)self _handleAssetChangeForLanguageCode:v18];
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   nonceTriggerEvents = self->_nonceTriggerEvents;
-  self->_nonceTriggerEvents = v20;
+  self->_nonceTriggerEvents = array;
 
   v22 = objc_alloc_init(VTCorruptDetector);
   corruptDetector = self->_corruptDetector;
@@ -4901,24 +4901,24 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)notifyAssetChangeWithCallback:(id)a3
+- (void)notifyAssetChangeWithCallback:(id)callback
 {
-  self->_assetChangedCallback = MEMORY[0x223DF24E0](a3, a2);
+  self->_assetChangedCallback = MEMORY[0x223DF24E0](callback, a2);
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)prepareWithProperty:(id)a3 readyCompletion:(id)a4
+- (void)prepareWithProperty:(id)property readyCompletion:(id)completion
 {
   v79 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  completionCopy = completion;
   [(VTPhraseSpotter *)self _commonInit];
   v8 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.mSampleRate) = 138543362;
-    *(&buf.mSampleRate + 4) = v6;
+    *(&buf.mSampleRate + 4) = propertyCopy;
     _os_log_impl(&dword_223A31000, v8, OS_LOG_TYPE_DEFAULT, "preparing VTPhraseSpotter with property: %{public}@", &buf, 0xCu);
   }
 
@@ -4934,9 +4934,9 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
   [(VTTranscriber *)self->_transcriber reset];
   *&self->_threshold = *&self->_ndapiThreshold;
   self->_thresholdLogNearMisses = self->_ndapiThresholdLogNearMisses;
-  if (v6)
+  if (propertyCopy)
   {
-    v9 = [v6 objectForKeyedSubscript:@"isSecondPass"];
+    v9 = [propertyCopy objectForKeyedSubscript:@"isSecondPass"];
     v10 = v9;
     if (v9 && [v9 BOOLValue])
     {
@@ -4955,7 +4955,7 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
           LODWORD(buf.mSampleRate) = 138412546;
           *(&buf.mSampleRate + 4) = v10;
           LOWORD(buf.mFormatFlags) = 2112;
-          *(&buf.mFormatFlags + 2) = v6;
+          *(&buf.mFormatFlags + 2) = propertyCopy;
           _os_log_impl(&dword_223A31000, v14, OS_LOG_TYPE_DEFAULT, "Created _satDetectionTdSrSemaphore: isSecondPass=%@, property: %@", &buf, 0x16u);
         }
       }
@@ -4971,7 +4971,7 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
         [v15 startRecording];
       }
 
-      v16 = [v6 objectForKeyedSubscript:@"AOPVoiceTriggerData"];
+      v16 = [propertyCopy objectForKeyedSubscript:@"AOPVoiceTriggerData"];
       v17 = v16;
       if (v16)
       {
@@ -4996,9 +4996,9 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
           self->_earlyDetectTime = v21;
           self->_earlyDetecFiredMachTime = mach_absolute_time();
           v22 = +[VTPreferences sharedPreferences];
-          v23 = [v22 useSiriActivationSPIForiOS];
+          useSiriActivationSPIForiOS = [v22 useSiriActivationSPIForiOS];
 
-          if (v23)
+          if (useSiriActivationSPIForiOS)
           {
             AFSiriActivationBuiltInMicVoiceTriggerPrewarm();
           }
@@ -5016,7 +5016,7 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
         }
 
         v25 = [v17 objectForKeyedSubscript:@"trigger-time"];
-        v26 = [v6 objectForKeyedSubscript:@"currentHostTime"];
+        v26 = [propertyCopy objectForKeyedSubscript:@"currentHostTime"];
         v27 = v26;
         if (v25)
         {
@@ -5026,14 +5026,14 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
             v28 = -[VTPhraseSpotter _applyExtraTime:to:](self, "_applyExtraTime:to:", [v25 unsignedLongLongValue], 0.5);
             if ([v27 unsignedLongLongValue] > v28)
             {
-              v29 = [v27 unsignedLongLongValue];
+              unsignedLongLongValue = [v27 unsignedLongLongValue];
               info.mSampleRate = 0.0;
               mach_timebase_info(&info);
               if (LODWORD(info.mSampleRate))
               {
                 LODWORD(v30) = HIDWORD(info.mSampleRate);
                 secondPassTrailingTime = self->_secondPassTrailingTime;
-                v32 = secondPassTrailingTime + (v29 - v28) / (v30 / LODWORD(info.mSampleRate) * 1000000000.0);
+                v32 = secondPassTrailingTime + (unsignedLongLongValue - v28) / (v30 / LODWORD(info.mSampleRate) * 1000000000.0);
                 v33 = (v32 * 16000.0);
                 if (v33 >= 1 && self->_secondPassResetTimer > v33)
                 {
@@ -5072,11 +5072,11 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
             {
               v69 = v37;
               v71 = [v36 length];
-              v70 = [v36 bytes];
+              bytes = [v36 bytes];
               LODWORD(buf.mSampleRate) = 67240448;
               HIDWORD(buf.mSampleRate) = v71;
               LOWORD(buf.mFormatID) = 1026;
-              *(&buf.mFormatID + 2) = v70 == 0;
+              *(&buf.mFormatID + 2) = bytes == 0;
               _os_log_error_impl(&dword_223A31000, v69, OS_LOG_TYPE_ERROR, "firstPassOutData is invalid. VoiceTrigger is not able to decode size(%{public}d), isNull(%{public}d)", &buf, 0xEu);
             }
           }
@@ -5101,18 +5101,18 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
     if (+[VTUtilities VTIsHorseman])
     {
       self->_numChannels = 1;
-      v39 = [v6 objectForKeyedSubscript:@"channelCount"];
+      v39 = [propertyCopy objectForKeyedSubscript:@"channelCount"];
       v40 = v39;
       if (v39 && [v39 integerValue] >= 2)
       {
-        v41 = [v40 integerValue];
-        self->_numChannels = v41;
+        integerValue = [v40 integerValue];
+        self->_numChannels = integerValue;
         outAudioConverter = 0;
         buf.mSampleRate = 16000.0;
         *&buf.mFormatID = 0xC6C70636DLL;
-        buf.mBytesPerFrame = 2 * v41;
-        buf.mChannelsPerFrame = v41;
-        buf.mBytesPerPacket = 2 * v41;
+        buf.mBytesPerFrame = 2 * integerValue;
+        buf.mChannelsPerFrame = integerValue;
+        buf.mBytesPerPacket = 2 * integerValue;
         buf.mFramesPerPacket = 1;
         *&buf.mBitsPerChannel = 16;
         *&info.mSampleRate = *&buf.mSampleRate;
@@ -5157,13 +5157,13 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
 
   [(VTCorruptDetector *)self->_corruptDetector reset];
   v48 = +[VTPreferences sharedPreferences];
-  v49 = [v48 audioInjectionFilePath];
+  audioInjectionFilePath = [v48 audioInjectionFilePath];
 
-  if (v49)
+  if (audioInjectionFilePath)
   {
     self->_secondPassResetTimer = 48000;
     audioInjectionIndex = self->_audioInjectionIndex;
-    if (audioInjectionIndex >= [v49 count])
+    if (audioInjectionIndex >= [audioInjectionFilePath count])
     {
       v51 = 0;
       self->_audioInjectionIndex = 0;
@@ -5178,7 +5178,7 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v55 = v54;
-      v56 = [v49 objectAtIndexedSubscript:v51];
+      v56 = [audioInjectionFilePath objectAtIndexedSubscript:v51];
       v57 = self->_audioInjectionIndex;
       LODWORD(buf.mSampleRate) = 138412546;
       *(&buf.mSampleRate + 4) = v56;
@@ -5189,13 +5189,13 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
       v51 = self->_audioInjectionIndex;
     }
 
-    v58 = [v49 objectAtIndexedSubscript:v51];
+    v58 = [audioInjectionFilePath objectAtIndexedSubscript:v51];
     injectedAudioFilePath = self->_injectedAudioFilePath;
     self->_injectedAudioFilePath = v58;
 
     v60 = [VTAudioFileReader alloc];
     v61 = MEMORY[0x277CBEBC0];
-    v62 = [v49 objectAtIndexedSubscript:self->_audioInjectionIndex];
+    v62 = [audioInjectionFilePath objectAtIndexedSubscript:self->_audioInjectionIndex];
     v63 = [v61 URLWithString:v62];
     v64 = [(VTAudioFileReader *)v60 initWithURL:v63];
     audioFileReader = self->_audioFileReader;
@@ -5213,13 +5213,13 @@ void __32__VTPhraseSpotter__initDetector__block_invoke(uint64_t a1, int a2)
     self->_injectedAudioFilePath = 0;
   }
 
-  v66 = MEMORY[0x223DF24E0](v7);
+  v66 = MEMORY[0x223DF24E0](completionCopy);
 
   readyForAnalyze = self->_readyForAnalyze;
   self->_readyForAnalyze = v66;
 
   [(VTPhraseSpotter *)self _performReadyCompletion];
-  v68 = [v6 copy];
+  v68 = [propertyCopy copy];
   [(VTPhraseSpotter *)self _logPrepareProperty:v68];
 }
 
@@ -5269,16 +5269,16 @@ void __55__VTPhraseSpotter_prepareWithProperty_readyCompletion___block_invoke(ui
   }
 }
 
-- (VTPhraseSpotter)initWithConfig:(id)a3 assetDir:(id)a4 runMode:(unint64_t)a5
+- (VTPhraseSpotter)initWithConfig:(id)config assetDir:(id)dir runMode:(unint64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  configCopy = config;
+  dirCopy = dir;
   v10 = +[VTPreferences sharedPreferences];
-  v11 = [v10 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v10 corespeechDaemonEnabled];
 
-  if (v11)
+  if (corespeechDaemonEnabled)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -5290,9 +5290,9 @@ void __55__VTPhraseSpotter_prepareWithProperty_readyCompletion___block_invoke(ui
       languageCode = v13->_languageCode;
       v13->_languageCode = @"XX-XX";
 
-      if (a5 <= 2)
+      if (mode <= 2)
       {
-        *(&v14->super.isa + qword_223B14108[a5]) = 1;
+        *(&v14->super.isa + qword_223B14108[mode]) = 1;
       }
 
       v14->_phraseSpotterEnabled = 1;
@@ -5302,28 +5302,28 @@ void __55__VTPhraseSpotter_prepareWithProperty_readyCompletion___block_invoke(ui
       v14->_configVersion = @"1.0";
 
       objc_storeStrong(&v14->_configLanguageCode, v14->_languageCode);
-      [(VTPhraseSpotter *)v14 _configureWithConfig:v8 resourcePath:v9];
+      [(VTPhraseSpotter *)v14 _configureWithConfig:configCopy resourcePath:dirCopy];
       dispatch_sync(v14->_ndetectQueue, &__block_literal_global_463);
       objc_storeStrong(&_currentSpotter, v14);
     }
 
     self = v14;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (VTPhraseSpotter)initWithConfig:(id)a3 resourcePath:(id)a4
+- (VTPhraseSpotter)initWithConfig:(id)config resourcePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  pathCopy = path;
   v8 = +[VTPreferences sharedPreferences];
-  v9 = [v8 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v8 corespeechDaemonEnabled];
 
-  if (v9)
+  if (corespeechDaemonEnabled)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -5336,25 +5336,25 @@ void __55__VTPhraseSpotter_prepareWithProperty_readyCompletion___block_invoke(ui
       languageCode = v12->_languageCode;
       v12->_languageCode = @"??-??";
 
-      [(VTPhraseSpotter *)v12 _configureWithConfig:v6 resourcePath:v7];
+      [(VTPhraseSpotter *)v12 _configureWithConfig:configCopy resourcePath:pathCopy];
     }
 
     dispatch_sync(v12->_ndetectQueue, &__block_literal_global_6584);
     objc_storeStrong(&_currentSpotter, v12);
     self = v12;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (VTPhraseSpotter)initWithLanguageCodeForSATEnrollment:(id)a3
+- (VTPhraseSpotter)initWithLanguageCodeForSATEnrollment:(id)enrollment
 {
-  v5 = a3;
+  enrollmentCopy = enrollment;
   v6 = +[VTPreferences sharedPreferences];
-  v7 = [v6 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v6 corespeechDaemonEnabled];
 
-  if ((v7 & 1) == 0)
+  if ((corespeechDaemonEnabled & 1) == 0)
   {
     v46.receiver = self;
     v46.super_class = VTPhraseSpotter;
@@ -5365,7 +5365,7 @@ void __55__VTPhraseSpotter_prepareWithProperty_readyCompletion___block_invoke(ui
 LABEL_20:
       objc_storeStrong(&_currentSpotter, v10);
       self = v10;
-      v8 = self;
+      selfCopy = self;
       goto LABEL_21;
     }
 
@@ -5374,7 +5374,7 @@ LABEL_20:
     v9->_phraseSpotterBypassed = 0;
     v9->_externalPhraseSpotterRunning = 0;
     v9->_hardwareSampleRate = 0.0;
-    objc_storeStrong(&v9->_languageCode, a3);
+    objc_storeStrong(&v9->_languageCode, enrollment);
     if (v10->_ndetectQueue)
     {
       if (v10->_assetChangedQueue)
@@ -5389,36 +5389,36 @@ LABEL_6:
 
         if (v14)
         {
-          v15 = [v14 path];
-          v16 = [v15 stringByAppendingPathComponent:@"config.txt"];
-          v17 = [v14 compatibilityVersion];
-          v18 = [v17 stringValue];
+          path = [v14 path];
+          v16 = [path stringByAppendingPathComponent:@"config.txt"];
+          compatibilityVersion = [v14 compatibilityVersion];
+          stringValue = [compatibilityVersion stringValue];
           configVersion = v10->_configVersion;
-          v10->_configVersion = v18;
+          v10->_configVersion = stringValue;
 
           if (v10->_configVersion)
           {
-            v20 = [v14 version];
+            version = [v14 version];
 
-            if (v20)
+            if (version)
             {
               v21 = v10->_configVersion;
-              v22 = [v14 version];
-              v23 = [v22 stringValue];
-              v24 = [(NSString *)v21 stringByAppendingFormat:@".%@", v23];
+              version2 = [v14 version];
+              stringValue2 = [version2 stringValue];
+              v24 = [(NSString *)v21 stringByAppendingFormat:@".%@", stringValue2];
               v25 = v10->_configVersion;
               v10->_configVersion = v24;
             }
 
             if (v10->_configVersion)
             {
-              v26 = [v14 footprint];
+              footprint = [v14 footprint];
 
-              if (v26)
+              if (footprint)
               {
                 v27 = v10->_configVersion;
-                v28 = [v14 footprint];
-                v29 = [(NSString *)v27 stringByAppendingFormat:@".%@", v28];
+                footprint2 = [v14 footprint];
+                v29 = [(NSString *)v27 stringByAppendingFormat:@".%@", footprint2];
                 v30 = v10->_configVersion;
                 v10->_configVersion = v29;
               }
@@ -5429,7 +5429,7 @@ LABEL_6:
           [v31 setAssetString:v10->_configVersion];
 
           objc_storeStrong(&v10->_configLanguageCode, v10->_languageCode);
-          [(VTPhraseSpotter *)v10 _configureWithConfig:v16 resourcePath:v15];
+          [(VTPhraseSpotter *)v10 _configureWithConfig:v16 resourcePath:path];
         }
 
         else
@@ -5481,22 +5481,22 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_21:
 
-  return v8;
+  return selfCopy;
 }
 
-- (VTPhraseSpotter)initWithHardwareSampleRate:(double)a3 readyCompletion:(id)a4
+- (VTPhraseSpotter)initWithHardwareSampleRate:(double)rate readyCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[VTPreferences sharedPreferences];
-  v8 = [v7 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v7 corespeechDaemonEnabled];
 
-  if (v8)
+  if (corespeechDaemonEnabled)
   {
 LABEL_2:
-    v9 = 0;
+    selfCopy2 = 0;
     goto LABEL_16;
   }
 
@@ -5517,7 +5517,7 @@ LABEL_2:
     {
       *buf = 0;
       _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "VoiceTrigger framework not available. Returning nil for VTPhraseSpotter", buf, 2u);
-      v9 = 0;
+      selfCopy2 = 0;
       goto LABEL_16;
     }
 
@@ -5527,12 +5527,12 @@ LABEL_2:
   if (self)
   {
     [(VTPhraseSpotter *)self _initDetector];
-    self->_hardwareSampleRate = a3;
+    self->_hardwareSampleRate = rate;
     [(VTPhraseSpotter *)self _commonInit];
     [(VTPhraseSpotter *)self _configureWithDefaults];
-    if (v6)
+    if (completionCopy)
     {
-      v12 = MEMORY[0x223DF24E0](v6);
+      v12 = MEMORY[0x223DF24E0](completionCopy);
       readyCompletion = self->_readyCompletion;
       self->_readyCompletion = v12;
 
@@ -5546,7 +5546,7 @@ LABEL_2:
       block[1] = 3221225472;
       block[2] = __62__VTPhraseSpotter_initWithHardwareSampleRate_readyCompletion___block_invoke;
       block[3] = &unk_2784ECFF8;
-      v20 = self;
+      selfCopy = self;
       dispatch_sync(ndetectQueue, block);
     }
 
@@ -5565,10 +5565,10 @@ LABEL_2:
   }
 
   self = self;
-  v9 = self;
+  selfCopy2 = self;
 LABEL_16:
 
-  return v9;
+  return selfCopy2;
 }
 
 void __62__VTPhraseSpotter_initWithHardwareSampleRate_readyCompletion___block_invoke(uint64_t a1)
@@ -5578,42 +5578,42 @@ void __62__VTPhraseSpotter_initWithHardwareSampleRate_readyCompletion___block_in
   *(v1 + 32) = 0;
 }
 
-- (VTPhraseSpotter)initWithHardwareSampleRate:(double)a3
+- (VTPhraseSpotter)initWithHardwareSampleRate:(double)rate
 {
   v5 = +[VTPreferences sharedPreferences];
-  v6 = [v5 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v5 corespeechDaemonEnabled];
 
-  if (v6)
+  if (corespeechDaemonEnabled)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    self = [(VTPhraseSpotter *)self initWithHardwareSampleRate:0 readyCompletion:a3];
-    v7 = self;
+    self = [(VTPhraseSpotter *)self initWithHardwareSampleRate:0 readyCompletion:rate];
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (VTPhraseSpotter)init
 {
   v3 = +[VTPreferences sharedPreferences];
-  v4 = [v3 corespeechDaemonEnabled];
+  corespeechDaemonEnabled = [v3 corespeechDaemonEnabled];
 
-  if (v4)
+  if (corespeechDaemonEnabled)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VTPhraseSpotter *)self initWithHardwareSampleRate:16000.0];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (void)initialize

@@ -1,8 +1,8 @@
 @interface MPSNNOptimizerAdam
-- (MPSNNOptimizerAdam)initWithCoder:(id)a3 device:(id)a4;
+- (MPSNNOptimizerAdam)initWithCoder:(id)coder device:(id)device;
 - (MPSNNOptimizerAdam)initWithDevice:(id)device beta1:(double)beta1 beta2:(double)beta2 epsilon:(float)epsilon timeStep:(NSUInteger)timeStep optimizerDescriptor:(MPSNNOptimizerDescriptor *)optimizerDescriptor;
 - (MPSNNOptimizerAdam)initWithDevice:(id)device learningRate:(float)learningRate;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
 - (void)encodeToCommandBuffer:(id)commandBuffer batchNormalizationGradientState:(MPSCNNBatchNormalizationState *)batchNormalizationGradientState batchNormalizationSourceState:(MPSCNNBatchNormalizationState *)batchNormalizationSourceState inputMomentumVectors:(NSArray *)inputMomentumVectors inputVelocityVectors:(NSArray *)inputVelocityVectors maximumVelocityVectors:(NSArray *)maximumVelocityVectors resultState:(MPSCNNNormalizationGammaAndBetaState *)resultState;
@@ -10,7 +10,7 @@
 - (void)encodeToCommandBuffer:(id)commandBuffer convolutionGradientState:(MPSCNNConvolutionGradientState *)convolutionGradientState convolutionSourceState:(MPSCNNConvolutionWeightsAndBiasesState *)convolutionSourceState inputMomentumVectors:(NSArray *)inputMomentumVectors inputVelocityVectors:(NSArray *)inputVelocityVectors maximumVelocityVectors:(NSArray *)maximumVelocityVectors resultState:(MPSCNNConvolutionWeightsAndBiasesState *)resultState;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputGradientMatrix:(MPSMatrix *)inputGradientMatrix inputValuesMatrix:(MPSMatrix *)inputValuesMatrix inputMomentumMatrix:(MPSMatrix *)inputMomentumMatrix inputVelocityMatrix:(MPSMatrix *)inputVelocityMatrix maximumVelocityMatrix:(MPSMatrix *)maximumVelocityMatrix resultValuesMatrix:(MPSMatrix *)resultValuesMatrix;
 - (void)encodeToCommandBuffer:(id)commandBuffer inputGradientVector:(MPSVector *)inputGradientVector inputValuesVector:(MPSVector *)inputValuesVector inputMomentumVector:(MPSVector *)inputMomentumVector inputVelocityVector:(MPSVector *)inputVelocityVector maximumVelocityVector:(MPSVector *)maximumVelocityVector resultValuesVector:(MPSVector *)resultValuesVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNOptimizerAdam
@@ -42,11 +42,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNNOptimizerAdam;
-  result = [(MPSNNOptimizer *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNNOptimizer *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 16) = *&self->_beta1;
@@ -58,24 +58,24 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 1) = 1;
   v29.receiver = self;
   v29.super_class = MPSNNOptimizerAdam;
   [(MPSNNOptimizer *)&v29 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kMPSNNOptimizer.beta1", v6, v7, v8, v9, v10, self->_beta1);
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"kMPSNNOptimizer.beta2", v12, v13, v14, v15, v16, self->_beta2);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kMPSNNOptimizer.beta1", v6, v7, v8, v9, v10, self->_beta1);
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"kMPSNNOptimizer.beta2", v12, v13, v14, v15, v16, self->_beta2);
   *&v17 = self->_epsilon;
-  objc_msgSend_encodeFloat_forKey_(a3, v18, @"kMPSNNOptimizer.epsilon", v19, v20, v21, v22, v23, v17);
-  objc_msgSend_encodeInt64_forKey_(a3, v24, self->_timeStep, @"kMPSNNOptimizer.timeStep", v25, v26, v27, v28);
+  objc_msgSend_encodeFloat_forKey_(coder, v18, @"kMPSNNOptimizer.epsilon", v19, v20, v21, v22, v23, v17);
+  objc_msgSend_encodeInt64_forKey_(coder, v24, self->_timeStep, @"kMPSNNOptimizer.timeStep", v25, v26, v27, v28);
 }
 
-- (MPSNNOptimizerAdam)initWithCoder:(id)a3 device:(id)a4
+- (MPSNNOptimizerAdam)initWithCoder:(id)coder device:(id)device
 {
   v36.receiver = self;
   v36.super_class = MPSNNOptimizerAdam;
-  v5 = [(MPSNNOptimizer *)&v36 initWithCoder:a3 device:a4];
+  v5 = [(MPSNNOptimizer *)&v36 initWithCoder:coder device:device];
   v12 = v5;
   if (!v5)
   {
@@ -84,13 +84,13 @@
 
   if (*(&v5->super.super.super.isa + *MEMORY[0x277CD7358] + 1) << 8 == 256)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"kMPSNNOptimizer.beta1", v7, v8, v9, v10, v11);
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"kMPSNNOptimizer.beta1", v7, v8, v9, v10, v11);
     v12->_beta1 = v13;
-    objc_msgSend_decodeDoubleForKey_(a3, v14, @"kMPSNNOptimizer.beta2", v15, v16, v17, v18, v19);
+    objc_msgSend_decodeDoubleForKey_(coder, v14, @"kMPSNNOptimizer.beta2", v15, v16, v17, v18, v19);
     v12->_beta2 = v20;
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"kMPSNNOptimizer.epsilon", v22, v23, v24, v25, v26);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"kMPSNNOptimizer.epsilon", v22, v23, v24, v25, v26);
     v12->_epsilon = v27;
-    v12->_timeStep = objc_msgSend_decodeInt64ForKey_(a3, v28, @"kMPSNNOptimizer.timeStep", v29, v30, v31, v32, v33);
+    v12->_timeStep = objc_msgSend_decodeInt64ForKey_(coder, v28, @"kMPSNNOptimizer.timeStep", v29, v30, v31, v32, v33);
     return v12;
   }
 
@@ -205,7 +205,7 @@ LABEL_15:
   v110 = objc_alloc(MEMORY[0x277CD7210]);
   v122 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v110, v111, commandBuffer, 0, v112, v113, v114, v115);
   v345 = v122;
-  v346 = self;
+  selfCopy = self;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
   {
     v123 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -385,7 +385,7 @@ LABEL_15:
   }
 
   v334 = maximumVelocityVectors;
-  v336 = self;
+  selfCopy = self;
   objc_msgSend_numberOfWeights(resultState, v43, v44, v45, v46, v47, v48, v49);
   objc_msgSend_numberOfWeights(convolutionSourceState, v86, v87, v88, v89, v90, v91, v92);
   v100 = objc_msgSend_numberOfWeights(resultState, v93, v94, v95, v96, v97, v98, v99);
@@ -407,14 +407,14 @@ LABEL_15:
   v153 = objc_alloc(MEMORY[0x277CD72C8]);
   v161 = objc_msgSend_weights(resultState, v154, v155, v156, v157, v158, v159, v160);
   v167 = objc_msgSend_initWithBuffer_descriptor_(v153, v162, v161, v122, v163, v164, v165, v166);
-  v168 = v336;
-  dispatch_semaphore_wait(v336->_timeStepSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+  v168 = selfCopy;
+  dispatch_semaphore_wait(selfCopy->_timeStepSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v175 = objc_msgSend_objectAtIndexedSubscript_(inputMomentumVectors, v169, 0, v170, v171, v172, v173, v174);
   v188 = objc_msgSend_objectAtIndexedSubscript_(inputVelocityVectors, v176, 0, v177, v178, v179, v180, v181);
   if (v334)
   {
     v189 = objc_msgSend_objectAtIndexedSubscript_(v334, v182, 0, v183, v184, v185, v186, v187);
-    objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(v336, v190, commandBuffer, v137, v152, v175, v188, v189, v167);
+    objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(selfCopy, v190, commandBuffer, v137, v152, v175, v188, v189, v167);
     p_super = &v337->super.super;
     v199 = objc_msgSend_gradientForBiases(v337, v192, v193, v194, v195, v196, v197, v198);
     v207 = inputMomentumVectors;
@@ -426,7 +426,7 @@ LABEL_15:
 
   else
   {
-    objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(v336, v182, commandBuffer, v137, v152, v175, v188, v167);
+    objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(selfCopy, v182, commandBuffer, v137, v152, v175, v188, v167);
     p_super = &v337->super.super;
     v215 = objc_msgSend_gradientForBiases(v337, v208, v209, v210, v211, v212, v213, v214);
     v207 = inputMomentumVectors;
@@ -438,7 +438,7 @@ LABEL_15:
 
   if (objc_msgSend_count(v207, v200, v201, v202, v203, v204, v205, v206) == 2 && objc_msgSend_count(inputVelocityVectors, v216, v217, v218, v219, v220, v221, v222) == 2)
   {
-    --v336->_timeStep;
+    --selfCopy->_timeStep;
     objc_msgSend_numberOfBiases(resultState, v223, v224, v225, v226, v227, v228, v229);
     objc_msgSend_numberOfBiases(convolutionSourceState, v230, v231, v232, v233, v234, v235, v236);
     v244 = objc_msgSend_numberOfBiases(resultState, v237, v238, v239, v240, v241, v242, v243);
@@ -464,14 +464,14 @@ LABEL_15:
     if (v334)
     {
       v332 = objc_msgSend_objectAtIndexedSubscript_(v334, v325, 1, v326, v327, v328, v329, v330);
-      v168 = v336;
-      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(v336, v333, commandBuffer, v281, v296, v318, v331, v332, v311);
+      v168 = selfCopy;
+      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(selfCopy, v333, commandBuffer, v281, v296, v318, v331, v332, v311);
     }
 
     else
     {
-      v168 = v336;
-      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(v336, v325, commandBuffer, v281, v296, v318, v331, v311);
+      v168 = selfCopy;
+      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(selfCopy, v325, commandBuffer, v281, v296, v318, v331, v311);
     }
 
     p_super = &v337->super.super;
@@ -579,7 +579,7 @@ LABEL_23:
   if (maximumVelocityVectors)
   {
     v183 = objc_msgSend_objectAtIndexedSubscript_(maximumVelocityVectors, v176, 0, v177, v178, v179, v180, v181);
-    v184 = self;
+    selfCopy2 = self;
     objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(self, v185, commandBuffer, v130, v146, v169, v182, v183, v161);
     p_super = &v286->super.super;
     v201 = &v132->super.super;
@@ -591,7 +591,7 @@ LABEL_23:
 
   else
   {
-    v184 = self;
+    selfCopy2 = self;
     objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(self, v176, commandBuffer, v130, v146, v169, v182, v161);
     p_super = &v286->super.super;
     v201 = &v132->super.super;
@@ -605,7 +605,7 @@ LABEL_23:
   if (objc_msgSend_count(v162, v194, v195, v196, v197, v198, v199, v200) == 2 && objc_msgSend_count(v288, v210, v211, v212, v213, v214, v215, v216) == 2)
   {
     v217 = p_super;
-    --v184->_timeStep;
+    --selfCopy2->_timeStep;
     v218 = objc_alloc(MEMORY[0x277CD72C8]);
     v226 = objc_msgSend_gradientForBeta(v217, v219, v220, v221, v222, v223, v224, v225);
     v232 = objc_msgSend_initWithBuffer_descriptor_(v218, v227, v226, v115, v228, v229, v230, v231);
@@ -620,19 +620,19 @@ LABEL_23:
     if (v285)
     {
       v283 = objc_msgSend_objectAtIndexedSubscript_(v285, v276, 1, v277, v278, v279, v280, v281);
-      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(v184, v284, commandBuffer, v232, v247, v269, v282, v283, v262);
+      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(selfCopy2, v284, commandBuffer, v232, v247, v269, v282, v283, v262);
     }
 
     else
     {
-      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(v184, v276, commandBuffer, v232, v247, v269, v282, v262);
+      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(selfCopy2, v276, commandBuffer, v232, v247, v269, v282, v262);
     }
 
     p_super = &v286->super.super;
   }
 
 LABEL_22:
-  dispatch_semaphore_signal(v184->_timeStepSemaphore);
+  dispatch_semaphore_signal(selfCopy2->_timeStepSemaphore);
   MPSDecrementReadCount(p_super);
 
   MPSDecrementReadCount(v201);
@@ -724,7 +724,7 @@ LABEL_22:
   if (maximumVelocityVectors)
   {
     v181 = objc_msgSend_objectAtIndexedSubscript_(maximumVelocityVectors, v174, 0, v175, v176, v177, v178, v179);
-    v182 = self;
+    selfCopy2 = self;
     objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(self, v183, commandBuffer, v129, v144, v166, v180, v181, v159);
     if (!objc_msgSend_gradientForBeta(batchNormalizationState, v184, v185, v186, v187, v188, v189, v190))
     {
@@ -734,7 +734,7 @@ LABEL_22:
 
   else
   {
-    v182 = self;
+    selfCopy2 = self;
     objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(self, v174, commandBuffer, v129, v144, v166, v180, v159);
     if (!objc_msgSend_gradientForBeta(batchNormalizationState, v198, v199, v200, v201, v202, v203, v204))
     {
@@ -744,7 +744,7 @@ LABEL_22:
 
   if (objc_msgSend_count(v280, v191, v192, v193, v194, v195, v196, v197) == 2 && objc_msgSend_count(v167, v205, v206, v207, v208, v209, v210, v211) == 2)
   {
-    --v182->_timeStep;
+    --selfCopy2->_timeStep;
     v212 = objc_alloc(MEMORY[0x277CD72C8]);
     v220 = objc_msgSend_gradientForBeta(batchNormalizationState, v213, v214, v215, v216, v217, v218, v219);
     v226 = objc_msgSend_initWithBuffer_descriptor_(v212, v221, v220, v114, v222, v223, v224, v225);
@@ -759,17 +759,17 @@ LABEL_22:
     if (v279)
     {
       v277 = objc_msgSend_objectAtIndexedSubscript_(v279, v270, 1, v271, v272, v273, v274, v275);
-      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(v182, v278, commandBuffer, v226, v241, v263, v276, v277, v256);
+      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_maximumVelocityVector_resultValuesVector_(selfCopy2, v278, commandBuffer, v226, v241, v263, v276, v277, v256);
     }
 
     else
     {
-      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(v182, v270, commandBuffer, v226, v241, v263, v276, v256);
+      objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(selfCopy2, v270, commandBuffer, v226, v241, v263, v276, v256);
     }
   }
 
 LABEL_20:
-  dispatch_semaphore_signal(v182->_timeStepSemaphore);
+  dispatch_semaphore_signal(selfCopy2->_timeStepSemaphore);
 
   MPSDecrementReadCount(&batchNormalizationState->super.super);
 }

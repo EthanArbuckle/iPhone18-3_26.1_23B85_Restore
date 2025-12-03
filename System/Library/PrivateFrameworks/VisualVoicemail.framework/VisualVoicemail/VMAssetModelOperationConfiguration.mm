@@ -1,12 +1,12 @@
 @interface VMAssetModelOperationConfiguration
-- (VMAssetModelOperationConfiguration)initWithAssetModelType:(int64_t)a3 speechTaskHint:(int64_t)a4 language:(id)a5;
+- (VMAssetModelOperationConfiguration)initWithAssetModelType:(int64_t)type speechTaskHint:(int64_t)hint language:(id)language;
 @end
 
 @implementation VMAssetModelOperationConfiguration
 
-- (VMAssetModelOperationConfiguration)initWithAssetModelType:(int64_t)a3 speechTaskHint:(int64_t)a4 language:(id)a5
+- (VMAssetModelOperationConfiguration)initWithAssetModelType:(int64_t)type speechTaskHint:(int64_t)hint language:(id)language
 {
-  v8 = a5;
+  languageCopy = language;
   v9 = vm_vmd_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,19 +20,19 @@
   v11 = v10;
   if (v10)
   {
-    [(VMAssetModelOperationConfiguration *)v10 setAssetModelType:a3];
-    if (a4)
+    [(VMAssetModelOperationConfiguration *)v10 setAssetModelType:type];
+    if (hint)
     {
-      v12 = a4;
+      hintCopy = hint;
     }
 
     else
     {
-      v12 = 1012;
+      hintCopy = 1012;
     }
 
-    [(VMAssetModelOperationConfiguration *)v11 setSpeechTaskHint:v12];
-    [(VMAssetModelOperationConfiguration *)v11 setLanguage:v8];
+    [(VMAssetModelOperationConfiguration *)v11 setSpeechTaskHint:hintCopy];
+    [(VMAssetModelOperationConfiguration *)v11 setLanguage:languageCopy];
   }
 
   return v11;

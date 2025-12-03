@@ -1,20 +1,20 @@
 @interface PLBatteryUIResponseTypeIOSUISOCDrain
 - (id)result;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)run;
 @end
 
 @implementation PLBatteryUIResponseTypeIOSUISOCDrain
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"start"];
+  configureCopy = configure;
+  v5 = [configureCopy objectForKeyedSubscript:@"start"];
   [v5 doubleValue];
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"end"];
+  v8 = [configureCopy objectForKeyedSubscript:@"end"];
   [v8 doubleValue];
   v10 = v9;
 
@@ -25,26 +25,26 @@
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setEnd:v12];
 
   v13 = +[PLUtilities getOverridableMonotonicNow];
-  v14 = [v4 objectForKeyedSubscript:@"isDynamicEnd"];
+  v14 = [configureCopy objectForKeyedSubscript:@"isDynamicEnd"];
   -[PLBatteryUIResponseTypeIOSUISOCDrain setIsDynamicEnd:](self, "setIsDynamicEnd:", [v14 BOOLValue]);
 
-  v15 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self isDynamicEnd];
+  isDynamicEnd = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self isDynamicEnd];
   v16 = 0.0;
-  if (v15)
+  if (isDynamicEnd)
   {
     [v13 timeIntervalSince1970];
     v16 = v10 - v17;
   }
 
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setDynamicEndOffset:v16];
-  v18 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self start];
+  start = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self start];
   v19 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self end];
-  [v18 timeIntervalSince1970];
+  [start timeIntervalSince1970];
   v21 = v20;
   [v19 timeIntervalSince1970];
   v23 = v22;
 
-  v24 = [v4 objectForKeyedSubscript:@"bucket"];
+  v24 = [configureCopy objectForKeyedSubscript:@"bucket"];
   [v24 doubleValue];
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setBucketSize:?];
 
@@ -59,8 +59,8 @@
   }
 
   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"timestamp BETWEEN %f AND %f", v21 + -1800.0, v21 + -1800.0 + v23 - v21 + 1800.0];
-  v28 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self responderService];
-  v29 = [v28 storage];
+  responderService = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self responderService];
+  storage = [responderService storage];
   v34 = v27;
   v35[0] = @"where";
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
@@ -68,7 +68,7 @@
   v36[0] = v30;
   v36[1] = &unk_28714B060;
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
-  v32 = [v29 entriesForKey:v25 withProperties:v31];
+  v32 = [storage entriesForKey:v25 withProperties:v31];
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setUiLevelEntries:v32];
 
   v33 = *MEMORY[0x277D85DE8];
@@ -86,9 +86,9 @@
     }
   }
 
-  v5 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self start];
+  start = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self start];
   v6 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self end];
-  [v5 timeIntervalSince1970];
+  [start timeIntervalSince1970];
   v8 = v7;
   [v6 timeIntervalSince1970];
   v10 = v9 - v8;
@@ -113,22 +113,22 @@
       v66 = [v11 dateByAddingTimeInterval:?];
 
       v17 = v14;
-      v18 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
-      v19 = [v18 count];
+      uiLevelEntries = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
+      v19 = [uiLevelEntries count];
 
       if (v19 <= v14)
       {
         v21 = 0;
-        v23 = 0;
+        intValue = 0;
       }
 
       else
       {
-        v20 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
-        v21 = [v20 objectAtIndexedSubscript:v14];
+        uiLevelEntries2 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
+        v21 = [uiLevelEntries2 objectAtIndexedSubscript:v14];
 
         v22 = [v21 objectForKeyedSubscript:@"Level"];
-        v23 = [v22 intValue];
+        intValue = [v22 intValue];
       }
 
       v24 = 0.0;
@@ -138,8 +138,8 @@
         v24 = v25;
       }
 
-      v26 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
-      v27 = [v26 count];
+      uiLevelEntries3 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
+      v27 = [uiLevelEntries3 count];
 
       if (v27 <= v14)
       {
@@ -154,18 +154,18 @@
         v65 = v13;
         do
         {
-          v61 = v23;
+          v61 = intValue;
           v30 = v14++;
           while (1)
           {
             v31 = v21;
-            v32 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
-            v21 = [v32 objectAtIndexedSubscript:v17];
+            uiLevelEntries4 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
+            v21 = [uiLevelEntries4 objectAtIndexedSubscript:v17];
 
             [v66 timeIntervalSince1970];
             v34 = v33;
-            v35 = [v21 entryDate];
-            [v35 timeIntervalSince1970];
+            entryDate = [v21 entryDate];
+            [entryDate timeIntervalSince1970];
             v37 = v36;
 
             if (v34 < v37)
@@ -178,8 +178,8 @@ LABEL_27:
 
             [v11 timeIntervalSince1970];
             v39 = v38;
-            v40 = [v21 entryDate];
-            [v40 timeIntervalSince1970];
+            entryDate2 = [v21 entryDate];
+            [entryDate2 timeIntervalSince1970];
             v42 = v41;
 
             if (v39 <= v42)
@@ -188,8 +188,8 @@ LABEL_27:
             }
 
             ++v30;
-            v43 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
-            v44 = [v43 count];
+            uiLevelEntries5 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
+            v44 = [uiLevelEntries5 count];
 
             ++v14;
             v17 = v30;
@@ -200,9 +200,9 @@ LABEL_27:
           }
 
           v45 = [v21 objectForKeyedSubscript:@"Level"];
-          v46 = [v45 intValue];
+          intValue2 = [v45 intValue];
 
-          if (v61 > v46)
+          if (v61 > intValue2)
           {
             v47 = [v21 objectForKeyedSubscript:@"Level"];
             v48 = v61 - [v47 intValue];
@@ -210,8 +210,8 @@ LABEL_27:
             v29 = (v48 + v29);
             [v66 timeIntervalSince1970];
             v50 = v49 - v24;
-            v51 = [v21 entryDate];
-            [v51 timeIntervalSince1970];
+            entryDate3 = [v21 entryDate];
+            [entryDate3 timeIntervalSince1970];
             v53 = v52;
 
             if (v50 >= v53)
@@ -228,11 +228,11 @@ LABEL_27:
           }
 
           v55 = [v21 objectForKeyedSubscript:@"Level"];
-          v23 = [v55 intValue];
+          intValue = [v55 intValue];
 
           v17 = v14;
-          v56 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
-          v57 = [v56 count];
+          uiLevelEntries6 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self uiLevelEntries];
+          v57 = [uiLevelEntries6 count];
 
           v58 = v57 > v14;
           v13 = v65;
@@ -261,29 +261,29 @@ LABEL_28:
 - (id)result
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self isDynamicEnd];
+  isDynamicEnd = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self isDynamicEnd];
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setUiLevelEntries:0];
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setDynamicEndOffset:0.0];
   [(PLBatteryUIResponseTypeIOSUISOCDrain *)self setIsDynamicEnd:0];
-  if (v3)
+  if (isDynamicEnd)
   {
     v9[0] = @"FullDay";
-    v4 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self resultArray];
+    resultArray = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self resultArray];
     v9[1] = @"Dynamic";
-    v10[0] = v4;
-    v5 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self dynamicResultArray];
-    v10[1] = v5;
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
+    v10[0] = resultArray;
+    dynamicResultArray = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self dynamicResultArray];
+    v10[1] = dynamicResultArray;
+    resultArray2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
   }
 
   else
   {
-    v6 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self resultArray];
+    resultArray2 = [(PLBatteryUIResponseTypeIOSUISOCDrain *)self resultArray];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return resultArray2;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface _LSDModificationPendingSaveToken
-- (_LSDModificationPendingSaveToken)initWithUUID:(id)a3;
+- (_LSDModificationPendingSaveToken)initWithUUID:(id)d;
 - (id).cxx_construct;
-- (void)saveDidHappen:(BOOL)a3 error:(id)a4;
-- (void)waitForResult:(id)a3;
+- (void)saveDidHappen:(BOOL)happen error:(id)error;
+- (void)waitForResult:(id)result;
 @end
 
 @implementation _LSDModificationPendingSaveToken
 
-- (_LSDModificationPendingSaveToken)initWithUUID:(id)a3
+- (_LSDModificationPendingSaveToken)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = _LSDModificationPendingSaveToken;
   v6 = [(_LSDModificationPendingSaveToken *)&v10 init];
@@ -19,16 +19,16 @@
     waiters = v6->_waiters;
     v6->_waiters = v7;
 
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, d);
   }
 
   return v6;
 }
 
-- (void)waitForResult:(id)a3
+- (void)waitForResult:(id)result
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   os_unfair_lock_lock(&self->_mutex);
   if (self->_saveError.__engaged_)
   {
@@ -41,7 +41,7 @@
       _os_log_impl(&dword_18162D000, v5, OS_LOG_TYPE_DEFAULT, "save for operation %@ is already complete", &v13, 0xCu);
     }
 
-    v4[2](v4, self->_saveError.var0.__val_ == 0);
+    resultCopy[2](resultCopy, self->_saveError.var0.__val_ == 0);
   }
 
   else
@@ -56,7 +56,7 @@
     }
 
     waiters = self->_waiters;
-    v10 = [v4 copy];
+    v10 = [resultCopy copy];
     v11 = MEMORY[0x1865D71B0]();
     [(NSMutableArray *)waiters addObject:v11];
   }
@@ -66,11 +66,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveDidHappen:(BOOL)a3 error:(id)a4
+- (void)saveDidHappen:(BOOL)happen error:(id)error
 {
-  v4 = a3;
+  happenCopy = happen;
   v32 = *MEMORY[0x1E69E9840];
-  v22 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_mutex);
   if (self->_saveError.__engaged_)
   {
@@ -83,15 +83,15 @@
 
   else
   {
-    std::optional<NSError * {__strong}>::operator=[abi:nn200100]<NSError * {__strong}&,void>(&self->_saveError, &v22);
+    std::optional<NSError * {__strong}>::operator=[abi:nn200100]<NSError * {__strong}&,void>(&self->_saveError, &errorCopy);
     v7 = _LSInstallLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = v22;
+      v8 = errorCopy;
       uuid = self->_uuid;
       v10 = [(NSMutableArray *)self->_waiters count];
       *buf = 67109890;
-      v25 = v4;
+      v25 = happenCopy;
       v26 = 2112;
       v27 = v8;
       v28 = 2112;
@@ -121,7 +121,7 @@
             objc_enumerationMutation(v12);
           }
 
-          (*(*(*(&v18 + 1) + 8 * v15) + 16))(*(*(&v18 + 1) + 8 * v15), v22 == 0);
+          (*(*(*(&v18 + 1) + 8 * v15) + 16))(*(*(&v18 + 1) + 8 * v15), errorCopy == 0);
           ++v15;
         }
 

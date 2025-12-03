@@ -1,37 +1,37 @@
 @interface HDSPSleepSessionManager
-- (HDSPSleepSessionManager)initWithEnvironment:(id)a3;
-- (HDSPSleepSessionManager)initWithEnvironment:(id)a3 persistence:(id)a4;
+- (HDSPSleepSessionManager)initWithEnvironment:(id)environment;
+- (HDSPSleepSessionManager)initWithEnvironment:(id)environment persistence:(id)persistence;
 - (HDSPSleepSessionManagerDelegate)delegate;
 - (id)_unprocessedSessions;
-- (id)saveSession:(id)a3;
+- (id)saveSession:(id)session;
 - (void)_locked_savePendingSessions;
 - (void)_waitForFirstUnlock;
-- (void)_withLock:(id)a3;
-- (void)archiveSession:(id)a3;
+- (void)_withLock:(id)lock;
+- (void)archiveSession:(id)session;
 - (void)deviceHasBeenUnlocked;
 - (void)removeSessionDataFile;
 - (void)savePendingSessions;
-- (void)sleepTracker:(id)a3 didEndSession:(id)a4 reason:(unint64_t)a5;
+- (void)sleepTracker:(id)tracker didEndSession:(id)session reason:(unint64_t)reason;
 - (void)startSession;
 - (void)stopSession;
 @end
 
 @implementation HDSPSleepSessionManager
 
-- (HDSPSleepSessionManager)initWithEnvironment:(id)a3
+- (HDSPSleepSessionManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 healthStoreProvider];
-  v6 = [v5 sleepHealthStore];
-  v7 = [(HDSPSleepSessionManager *)self initWithEnvironment:v4 persistence:v6];
+  environmentCopy = environment;
+  healthStoreProvider = [environmentCopy healthStoreProvider];
+  sleepHealthStore = [healthStoreProvider sleepHealthStore];
+  v7 = [(HDSPSleepSessionManager *)self initWithEnvironment:environmentCopy persistence:sleepHealthStore];
 
   return v7;
 }
 
-- (HDSPSleepSessionManager)initWithEnvironment:(id)a3 persistence:(id)a4
+- (HDSPSleepSessionManager)initWithEnvironment:(id)environment persistence:(id)persistence
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  persistenceCopy = persistence;
   v17.receiver = self;
   v17.super_class = HDSPSleepSessionManager;
   v8 = [(HDSPSleepSessionManager *)&v17 init];
@@ -39,27 +39,27 @@
   if (v8)
   {
     v8->_sessionLock._os_unfair_lock_opaque = 0;
-    v10 = [v6 systemMonitor];
-    v11 = [v10 deviceUnlockMonitor];
+    systemMonitor = [environmentCopy systemMonitor];
+    deviceUnlockMonitor = [systemMonitor deviceUnlockMonitor];
     deviceUnlockManager = v9->_deviceUnlockManager;
-    v9->_deviceUnlockManager = v11;
+    v9->_deviceUnlockManager = deviceUnlockMonitor;
 
-    v13 = [v6 fileManager];
+    fileManager = [environmentCopy fileManager];
     fileManager = v9->_fileManager;
-    v9->_fileManager = v13;
+    v9->_fileManager = fileManager;
 
-    objc_storeStrong(&v9->_persistence, a4);
+    objc_storeStrong(&v9->_persistence, persistence);
     v15 = v9;
   }
 
   return v9;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_sessionLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_sessionLock);
 }
@@ -93,13 +93,13 @@
   }
 
   [(HDSPSleepSessionPersistence *)self->_persistence hdsp_stopSession];
-  v5 = [(HDSPSleepSessionManager *)self delegate];
+  delegate = [(HDSPSleepSessionManager *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HDSPSleepSessionManager *)self delegate];
-    [v7 sleepSessionManagerDidFinishSession:self];
+    delegate2 = [(HDSPSleepSessionManager *)self delegate];
+    [delegate2 sleepSessionManagerDidFinishSession:self];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -200,7 +200,7 @@ void __46__HDSPSleepSessionManager_savePendingSessions__block_invoke(uint64_t a1
 - (void)_locked_savePendingSessions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepSessionManager *)self _unprocessedSessions];
+  _unprocessedSessions = [(HDSPSleepSessionManager *)self _unprocessedSessions];
   v4 = HKSPLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,7 +209,7 @@ void __46__HDSPSleepSessionManager_savePendingSessions__block_invoke(uint64_t a1
     *buf = 138543618;
     v14 = v5;
     v15 = 2048;
-    v16 = [v3 count];
+    v16 = [_unprocessedSessions count];
     _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] %ld unprocessed sessions", buf, 0x16u);
   }
 
@@ -218,7 +218,7 @@ void __46__HDSPSleepSessionManager_savePendingSessions__block_invoke(uint64_t a1
   v12[2] = __54__HDSPSleepSessionManager__locked_savePendingSessions__block_invoke;
   v12[3] = &unk_279C7B768;
   v12[4] = self;
-  v7 = [v3 na_map:v12];
+  v7 = [_unprocessedSessions na_map:v12];
   v8 = [MEMORY[0x277D2C900] combineAllFutures:v7];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -367,11 +367,11 @@ uint64_t __54__HDSPSleepSessionManager__locked_savePendingSessions__block_invoke
   return v7;
 }
 
-- (void)archiveSession:(id)a3
+- (void)archiveSession:(id)session
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  sessionCopy = session;
+  if (sessionCopy)
   {
     v5 = HKSPLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -379,16 +379,16 @@ uint64_t __54__HDSPSleepSessionManager__locked_savePendingSessions__block_invoke
       *buf = 138543618;
       v24 = objc_opt_class();
       v25 = 2114;
-      v26 = v4;
+      v26 = sessionCopy;
       v6 = v24;
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] archiveSession: %{public}@", buf, 0x16u);
     }
 
-    v7 = [(HDSPSleepSessionManager *)self _unprocessedSessions];
-    v8 = v7;
-    if (v7)
+    _unprocessedSessions = [(HDSPSleepSessionManager *)self _unprocessedSessions];
+    v8 = _unprocessedSessions;
+    if (_unprocessedSessions)
     {
-      v9 = [v7 mutableCopy];
+      v9 = [_unprocessedSessions mutableCopy];
     }
 
     else
@@ -397,14 +397,14 @@ uint64_t __54__HDSPSleepSessionManager__locked_savePendingSessions__block_invoke
     }
 
     v10 = v9;
-    [v9 addObject:v4];
+    [v9 addObject:sessionCopy];
     v11 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
     [v11 encodeObject:v10 forKey:@"HDSPUnprocessedSessions"];
     [v11 finishEncoding];
-    v12 = [v11 encodedData];
+    encodedData = [v11 encodedData];
     fileManager = self->_fileManager;
     v22 = 0;
-    v14 = [(HKSPFileManager *)fileManager hkspWriteData:v12 toCacheFileWithName:@"SleepSessions.data" error:&v22];
+    v14 = [(HKSPFileManager *)fileManager hkspWriteData:encodedData toCacheFileWithName:@"SleepSessions.data" error:&v22];
     v15 = v22;
     v16 = HKSPLogForCategory();
     v17 = v16;
@@ -439,31 +439,31 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)saveSession:(id)a3
+- (id)saveSession:(id)session
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v31 = objc_opt_class();
     v32 = 2114;
-    v33 = v4;
+    v33 = sessionCopy;
     v6 = v31;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] saveSession %{public}@", buf, 0x16u);
   }
 
-  v7 = [v4 sleepIntervals];
-  if ([v7 count])
+  sleepIntervals = [sessionCopy sleepIntervals];
+  if ([sleepIntervals count])
   {
   }
 
   else
   {
-    v8 = [v4 requiresFirstUnlock];
+    requiresFirstUnlock = [sessionCopy requiresFirstUnlock];
 
-    if ((v8 & 1) == 0)
+    if ((requiresFirstUnlock & 1) == 0)
     {
       v23 = HKSPLogForCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -475,8 +475,8 @@ LABEL_12:
         _os_log_impl(&dword_269B11000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}@] session has nothing to write", buf, 0xCu);
       }
 
-      v26 = [(HDSPSleepSessionManager *)self delegate];
-      [v26 sleepSessionManager:self didSaveSession:v4];
+      delegate = [(HDSPSleepSessionManager *)self delegate];
+      [delegate sleepSessionManager:self didSaveSession:sessionCopy];
 
       goto LABEL_22;
     }
@@ -494,14 +494,14 @@ LABEL_12:
       _os_log_impl(&dword_269B11000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] archiving session for now", buf, 0xCu);
     }
 
-    [(HDSPSleepSessionManager *)self archiveSession:v4];
+    [(HDSPSleepSessionManager *)self archiveSession:sessionCopy];
     [(HDSPSleepSessionManager *)self _waitForFirstUnlock];
 LABEL_22:
-    v22 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_23;
   }
 
-  if ([v4 requiresFirstUnlock] && (-[HDSPSleepSessionManager delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
+  if ([sessionCopy requiresFirstUnlock] && (-[HDSPSleepSessionManager delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_opt_respondsToSelector(), v9, (v10 & 1) != 0))
   {
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -513,8 +513,8 @@ LABEL_22:
       _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] session needs additional processing", buf, 0xCu);
     }
 
-    v14 = [(HDSPSleepSessionManager *)self delegate];
-    v15 = [v14 sleepSessionManager:self requestsProcessedSessionForSession:v4];
+    delegate2 = [(HDSPSleepSessionManager *)self delegate];
+    v15 = [delegate2 sleepSessionManager:self requestsProcessedSessionForSession:sessionCopy];
   }
 
   else
@@ -529,7 +529,7 @@ LABEL_22:
       _os_log_impl(&dword_269B11000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] session is ready to write", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x277D2C900] futureWithResult:v4];
+    v15 = [MEMORY[0x277D2C900] futureWithResult:sessionCopy];
   }
 
   v29[0] = MEMORY[0x277D85DD0];
@@ -537,12 +537,12 @@ LABEL_22:
   v29[2] = __39__HDSPSleepSessionManager_saveSession___block_invoke;
   v29[3] = &unk_279C7B808;
   v29[4] = self;
-  v22 = [v15 flatMap:v29];
+  futureWithNoResult = [v15 flatMap:v29];
 
 LABEL_23:
   v27 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return futureWithNoResult;
 }
 
 id __39__HDSPSleepSessionManager_saveSession___block_invoke(uint64_t a1, void *a2)
@@ -627,25 +627,25 @@ void __39__HDSPSleepSessionManager_saveSession___block_invoke_315(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepTracker:(id)a3 didEndSession:(id)a4 reason:(unint64_t)a5
+- (void)sleepTracker:(id)tracker didEndSession:(id)session reason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  trackerCopy = tracker;
+  sessionCopy = session;
   v9 = HKSPLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v16 = objc_opt_class();
     v17 = 2114;
-    v18 = v8;
+    v18 = sessionCopy;
     v19 = 2114;
-    v20 = v7;
+    v20 = trackerCopy;
     v10 = v16;
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] saving session %{public}@ from %{public}@", buf, 0x20u);
   }
 
-  v11 = [(HDSPSleepSessionManager *)self saveSession:v8];
+  v11 = [(HDSPSleepSessionManager *)self saveSession:sessionCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__HDSPSleepSessionManager_sleepTracker_didEndSession_reason___block_invoke;

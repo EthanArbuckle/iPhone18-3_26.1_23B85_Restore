@@ -1,6 +1,6 @@
 @interface CRLUnknownLayout
 - (Class)repClassOverride;
-- (_TtC8Freeform16CRLUnknownLayout)initWithInfo:(id)a3;
+- (_TtC8Freeform16CRLUnknownLayout)initWithInfo:(id)info;
 @end
 
 @implementation CRLUnknownLayout
@@ -12,12 +12,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC8Freeform16CRLUnknownLayout)initWithInfo:(id)a3
+- (_TtC8Freeform16CRLUnknownLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for CRLUnknownLayout();
   swift_unknownObjectRetain();
-  v4 = [(CRLCanvasLayout *)&v6 initWithInfo:a3];
+  v4 = [(CRLCanvasLayout *)&v6 initWithInfo:info];
   swift_unknownObjectRelease();
   if (v4)
   {

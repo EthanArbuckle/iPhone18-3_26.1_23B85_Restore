@@ -1,14 +1,14 @@
 @interface PaceFormatter
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation PaceFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (a3)
+  if (value)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -17,7 +17,7 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1002E08AC(v10);

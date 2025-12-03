@@ -1,77 +1,77 @@
 @interface AWDSymptomsNetworkAnalyticsRRCConnectedPeriod
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPeriodType:(id)a3;
+- (int)StringAsPeriodType:(id)type;
 - (int)periodType;
 - (unint64_t)hash;
-- (void)addActiveNameDuringPeriod:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnyListener:(BOOL)a3;
-- (void)setHasBackgroundListeners:(BOOL)a3;
-- (void)setHasBytesOut:(BOOL)a3;
-- (void)setHasCountLQMTransitions:(BOOL)a3;
-- (void)setHasEgressDlThroughputBps:(BOOL)a3;
-- (void)setHasEgressLQM:(BOOL)a3;
-- (void)setHasEgressUlThroughputBps:(BOOL)a3;
-- (void)setHasIngressDlThroughputBps:(BOOL)a3;
-- (void)setHasIngressLQM:(BOOL)a3;
-- (void)setHasIngressUlThroughputBps:(BOOL)a3;
-- (void)setHasLastDisconnectedSecs:(BOOL)a3;
-- (void)setHasPacketsIn:(BOOL)a3;
-- (void)setHasPacketsOut:(BOOL)a3;
-- (void)setHasPeriodDurationTCEnabledUsecs:(BOOL)a3;
-- (void)setHasPeriodDurationUsecs:(BOOL)a3;
-- (void)setHasPeriodType:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionBURST:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionDefault:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionDrop:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionFGFacetime:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionFGIMSG:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionKNOWNOTHER:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionLARGE:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionLARGEDL:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionLARGEUL:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionMail:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionMaps:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionMediaserverd:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionMusic:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionNSURLSessiond:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionNews:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionPUSH:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionPodcasts:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionRTCReportingd:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionSIRI:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionSafari:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionStocks:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCAV:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCBK:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCBKSYS:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCCTL:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCOAM:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCRD:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCRV:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCVI:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionTCVO:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionUNKNOWNOTHER:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionUndefined:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionWeather:(BOOL)a3;
-- (void)setHasTcCountFlowDispositionWebkit:(BOOL)a3;
-- (void)setHasTcDampeningSuppressed:(BOOL)a3;
-- (void)setHasTcUpdates:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUniqueActiveAppCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveNameDuringPeriod:(id)period;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnyListener:(BOOL)listener;
+- (void)setHasBackgroundListeners:(BOOL)listeners;
+- (void)setHasBytesOut:(BOOL)out;
+- (void)setHasCountLQMTransitions:(BOOL)transitions;
+- (void)setHasEgressDlThroughputBps:(BOOL)bps;
+- (void)setHasEgressLQM:(BOOL)m;
+- (void)setHasEgressUlThroughputBps:(BOOL)bps;
+- (void)setHasIngressDlThroughputBps:(BOOL)bps;
+- (void)setHasIngressLQM:(BOOL)m;
+- (void)setHasIngressUlThroughputBps:(BOOL)bps;
+- (void)setHasLastDisconnectedSecs:(BOOL)secs;
+- (void)setHasPacketsIn:(BOOL)in;
+- (void)setHasPacketsOut:(BOOL)out;
+- (void)setHasPeriodDurationTCEnabledUsecs:(BOOL)usecs;
+- (void)setHasPeriodDurationUsecs:(BOOL)usecs;
+- (void)setHasPeriodType:(BOOL)type;
+- (void)setHasTcCountFlowDispositionBURST:(BOOL)t;
+- (void)setHasTcCountFlowDispositionDefault:(BOOL)default;
+- (void)setHasTcCountFlowDispositionDrop:(BOOL)drop;
+- (void)setHasTcCountFlowDispositionFGFacetime:(BOOL)facetime;
+- (void)setHasTcCountFlowDispositionFGIMSG:(BOOL)g;
+- (void)setHasTcCountFlowDispositionKNOWNOTHER:(BOOL)r;
+- (void)setHasTcCountFlowDispositionLARGE:(BOOL)e;
+- (void)setHasTcCountFlowDispositionLARGEDL:(BOOL)l;
+- (void)setHasTcCountFlowDispositionLARGEUL:(BOOL)l;
+- (void)setHasTcCountFlowDispositionMail:(BOOL)mail;
+- (void)setHasTcCountFlowDispositionMaps:(BOOL)maps;
+- (void)setHasTcCountFlowDispositionMediaserverd:(BOOL)mediaserverd;
+- (void)setHasTcCountFlowDispositionMusic:(BOOL)music;
+- (void)setHasTcCountFlowDispositionNSURLSessiond:(BOOL)sessiond;
+- (void)setHasTcCountFlowDispositionNews:(BOOL)news;
+- (void)setHasTcCountFlowDispositionPUSH:(BOOL)h;
+- (void)setHasTcCountFlowDispositionPodcasts:(BOOL)podcasts;
+- (void)setHasTcCountFlowDispositionRTCReportingd:(BOOL)reportingd;
+- (void)setHasTcCountFlowDispositionSIRI:(BOOL)i;
+- (void)setHasTcCountFlowDispositionSafari:(BOOL)safari;
+- (void)setHasTcCountFlowDispositionStocks:(BOOL)stocks;
+- (void)setHasTcCountFlowDispositionTCAV:(BOOL)v;
+- (void)setHasTcCountFlowDispositionTCBK:(BOOL)k;
+- (void)setHasTcCountFlowDispositionTCBKSYS:(BOOL)s;
+- (void)setHasTcCountFlowDispositionTCCTL:(BOOL)l;
+- (void)setHasTcCountFlowDispositionTCOAM:(BOOL)m;
+- (void)setHasTcCountFlowDispositionTCRD:(BOOL)d;
+- (void)setHasTcCountFlowDispositionTCRV:(BOOL)v;
+- (void)setHasTcCountFlowDispositionTCVI:(BOOL)i;
+- (void)setHasTcCountFlowDispositionTCVO:(BOOL)o;
+- (void)setHasTcCountFlowDispositionUNKNOWNOTHER:(BOOL)r;
+- (void)setHasTcCountFlowDispositionUndefined:(BOOL)undefined;
+- (void)setHasTcCountFlowDispositionWeather:(BOOL)weather;
+- (void)setHasTcCountFlowDispositionWebkit:(BOOL)webkit;
+- (void)setHasTcDampeningSuppressed:(BOOL)suppressed;
+- (void)setHasTcUpdates:(BOOL)updates;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUniqueActiveAppCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkAnalyticsRRCConnectedPeriod
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
   v3 = 2048;
-  if (!a3)
+  if (!timestamp)
   {
     v3 = 0;
   }
@@ -92,10 +92,10 @@
   }
 }
 
-- (void)setHasPeriodType:(BOOL)a3
+- (void)setHasPeriodType:(BOOL)type
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -103,13 +103,13 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (int)StringAsPeriodType:(id)a3
+- (int)StringAsPeriodType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"ANY"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"ANY"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"BACKGROUND"])
+    if ([typeCopy isEqualToString:@"BACKGROUND"])
     {
       v4 = 2;
     }
@@ -123,10 +123,10 @@
   return v4;
 }
 
-- (void)setHasAnyListener:(BOOL)a3
+- (void)setHasAnyListener:(BOOL)listener
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!listener)
   {
     v3 = 0;
   }
@@ -134,10 +134,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasBackgroundListeners:(BOOL)a3
+- (void)setHasBackgroundListeners:(BOOL)listeners
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!listeners)
   {
     v3 = 0;
   }
@@ -145,10 +145,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasPeriodDurationUsecs:(BOOL)a3
+- (void)setHasPeriodDurationUsecs:(BOOL)usecs
 {
   v3 = 1024;
-  if (!a3)
+  if (!usecs)
   {
     v3 = 0;
   }
@@ -156,10 +156,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasLastDisconnectedSecs:(BOOL)a3
+- (void)setHasLastDisconnectedSecs:(BOOL)secs
 {
   v3 = 64;
-  if (!a3)
+  if (!secs)
   {
     v3 = 0;
   }
@@ -167,10 +167,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasIngressLQM:(BOOL)a3
+- (void)setHasIngressLQM:(BOOL)m
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!m)
   {
     v3 = 0;
   }
@@ -178,10 +178,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasCountLQMTransitions:(BOOL)a3
+- (void)setHasCountLQMTransitions:(BOOL)transitions
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!transitions)
   {
     v3 = 0;
   }
@@ -189,10 +189,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasEgressLQM:(BOOL)a3
+- (void)setHasEgressLQM:(BOOL)m
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!m)
   {
     v3 = 0;
   }
@@ -200,10 +200,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasIngressUlThroughputBps:(BOOL)a3
+- (void)setHasIngressUlThroughputBps:(BOOL)bps
 {
   v3 = 32;
-  if (!a3)
+  if (!bps)
   {
     v3 = 0;
   }
@@ -211,10 +211,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasIngressDlThroughputBps:(BOOL)a3
+- (void)setHasIngressDlThroughputBps:(BOOL)bps
 {
   v3 = 16;
-  if (!a3)
+  if (!bps)
   {
     v3 = 0;
   }
@@ -222,10 +222,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasEgressUlThroughputBps:(BOOL)a3
+- (void)setHasEgressUlThroughputBps:(BOOL)bps
 {
   v3 = 8;
-  if (!a3)
+  if (!bps)
   {
     v3 = 0;
   }
@@ -233,10 +233,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasEgressDlThroughputBps:(BOOL)a3
+- (void)setHasEgressDlThroughputBps:(BOOL)bps
 {
   v3 = 4;
-  if (!a3)
+  if (!bps)
   {
     v3 = 0;
   }
@@ -244,10 +244,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasBytesOut:(BOOL)a3
+- (void)setHasBytesOut:(BOOL)out
 {
   v3 = 2;
-  if (!a3)
+  if (!out)
   {
     v3 = 0;
   }
@@ -255,10 +255,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasPacketsIn:(BOOL)a3
+- (void)setHasPacketsIn:(BOOL)in
 {
   v3 = 128;
-  if (!a3)
+  if (!in)
   {
     v3 = 0;
   }
@@ -266,10 +266,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasPacketsOut:(BOOL)a3
+- (void)setHasPacketsOut:(BOOL)out
 {
   v3 = 256;
-  if (!a3)
+  if (!out)
   {
     v3 = 0;
   }
@@ -277,10 +277,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasUniqueActiveAppCount:(BOOL)a3
+- (void)setHasUniqueActiveAppCount:(BOOL)count
 {
   v3 = 4096;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -288,28 +288,28 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)addActiveNameDuringPeriod:(id)a3
+- (void)addActiveNameDuringPeriod:(id)period
 {
-  v4 = a3;
+  periodCopy = period;
   activeNameDuringPeriods = self->_activeNameDuringPeriods;
-  v8 = v4;
+  v8 = periodCopy;
   if (!activeNameDuringPeriods)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_activeNameDuringPeriods;
     self->_activeNameDuringPeriods = v6;
 
-    v4 = v8;
+    periodCopy = v8;
     activeNameDuringPeriods = self->_activeNameDuringPeriods;
   }
 
-  [(NSMutableArray *)activeNameDuringPeriods addObject:v4];
+  [(NSMutableArray *)activeNameDuringPeriods addObject:periodCopy];
 }
 
-- (void)setHasTcCountFlowDispositionUndefined:(BOOL)a3
+- (void)setHasTcCountFlowDispositionUndefined:(BOOL)undefined
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!undefined)
   {
     v3 = 0;
   }
@@ -317,10 +317,10 @@
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCBKSYS:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCBKSYS:(BOOL)s
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!s)
   {
     v3 = 0;
   }
@@ -328,10 +328,10 @@
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCBK:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCBK:(BOOL)k
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!k)
   {
     v3 = 0;
   }
@@ -339,10 +339,10 @@
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCRD:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCRD:(BOOL)d
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -350,10 +350,10 @@
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCOAM:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCOAM:(BOOL)m
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!m)
   {
     v3 = 0;
   }
@@ -361,10 +361,10 @@
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCAV:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCAV:(BOOL)v
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!v)
   {
     v3 = 0;
   }
@@ -372,10 +372,10 @@
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCRV:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCRV:(BOOL)v
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!v)
   {
     v3 = 0;
   }
@@ -383,10 +383,10 @@
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCVI:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCVI:(BOOL)i
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!i)
   {
     v3 = 0;
   }
@@ -394,10 +394,10 @@
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCVO:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCVO:(BOOL)o
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!o)
   {
     v3 = 0;
   }
@@ -405,10 +405,10 @@
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionTCCTL:(BOOL)a3
+- (void)setHasTcCountFlowDispositionTCCTL:(BOOL)l
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!l)
   {
     v3 = 0;
   }
@@ -416,10 +416,10 @@
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionLARGEUL:(BOOL)a3
+- (void)setHasTcCountFlowDispositionLARGEUL:(BOOL)l
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!l)
   {
     v3 = 0;
   }
@@ -427,10 +427,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionLARGEDL:(BOOL)a3
+- (void)setHasTcCountFlowDispositionLARGEDL:(BOOL)l
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!l)
   {
     v3 = 0;
   }
@@ -438,10 +438,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionLARGE:(BOOL)a3
+- (void)setHasTcCountFlowDispositionLARGE:(BOOL)e
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!e)
   {
     v3 = 0;
   }
@@ -449,10 +449,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionBURST:(BOOL)a3
+- (void)setHasTcCountFlowDispositionBURST:(BOOL)t
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -460,10 +460,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionSIRI:(BOOL)a3
+- (void)setHasTcCountFlowDispositionSIRI:(BOOL)i
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!i)
   {
     v3 = 0;
   }
@@ -471,10 +471,10 @@
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionPUSH:(BOOL)a3
+- (void)setHasTcCountFlowDispositionPUSH:(BOOL)h
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!h)
   {
     v3 = 0;
   }
@@ -482,10 +482,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionKNOWNOTHER:(BOOL)a3
+- (void)setHasTcCountFlowDispositionKNOWNOTHER:(BOOL)r
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!r)
   {
     v3 = 0;
   }
@@ -493,10 +493,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionUNKNOWNOTHER:(BOOL)a3
+- (void)setHasTcCountFlowDispositionUNKNOWNOTHER:(BOOL)r
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!r)
   {
     v3 = 0;
   }
@@ -504,10 +504,10 @@
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionDrop:(BOOL)a3
+- (void)setHasTcCountFlowDispositionDrop:(BOOL)drop
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!drop)
   {
     v3 = 0;
   }
@@ -515,10 +515,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionDefault:(BOOL)a3
+- (void)setHasTcCountFlowDispositionDefault:(BOOL)default
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!default)
   {
     v3 = 0;
   }
@@ -526,10 +526,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionFGFacetime:(BOOL)a3
+- (void)setHasTcCountFlowDispositionFGFacetime:(BOOL)facetime
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!facetime)
   {
     v3 = 0;
   }
@@ -537,10 +537,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionFGIMSG:(BOOL)a3
+- (void)setHasTcCountFlowDispositionFGIMSG:(BOOL)g
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!g)
   {
     v3 = 0;
   }
@@ -548,10 +548,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionMail:(BOOL)a3
+- (void)setHasTcCountFlowDispositionMail:(BOOL)mail
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!mail)
   {
     v3 = 0;
   }
@@ -559,10 +559,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionMaps:(BOOL)a3
+- (void)setHasTcCountFlowDispositionMaps:(BOOL)maps
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!maps)
   {
     v3 = 0;
   }
@@ -570,10 +570,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionMediaserverd:(BOOL)a3
+- (void)setHasTcCountFlowDispositionMediaserverd:(BOOL)mediaserverd
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!mediaserverd)
   {
     v3 = 0;
   }
@@ -581,10 +581,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionMusic:(BOOL)a3
+- (void)setHasTcCountFlowDispositionMusic:(BOOL)music
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!music)
   {
     v3 = 0;
   }
@@ -592,10 +592,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionNSURLSessiond:(BOOL)a3
+- (void)setHasTcCountFlowDispositionNSURLSessiond:(BOOL)sessiond
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!sessiond)
   {
     v3 = 0;
   }
@@ -603,10 +603,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionNews:(BOOL)a3
+- (void)setHasTcCountFlowDispositionNews:(BOOL)news
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!news)
   {
     v3 = 0;
   }
@@ -614,10 +614,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionPodcasts:(BOOL)a3
+- (void)setHasTcCountFlowDispositionPodcasts:(BOOL)podcasts
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!podcasts)
   {
     v3 = 0;
   }
@@ -625,10 +625,10 @@
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionRTCReportingd:(BOOL)a3
+- (void)setHasTcCountFlowDispositionRTCReportingd:(BOOL)reportingd
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!reportingd)
   {
     v3 = 0;
   }
@@ -636,10 +636,10 @@
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionWeather:(BOOL)a3
+- (void)setHasTcCountFlowDispositionWeather:(BOOL)weather
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!weather)
   {
     v3 = 0;
   }
@@ -647,10 +647,10 @@
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionWebkit:(BOOL)a3
+- (void)setHasTcCountFlowDispositionWebkit:(BOOL)webkit
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!webkit)
   {
     v3 = 0;
   }
@@ -658,10 +658,10 @@
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasPeriodDurationTCEnabledUsecs:(BOOL)a3
+- (void)setHasPeriodDurationTCEnabledUsecs:(BOOL)usecs
 {
   v3 = 512;
-  if (!a3)
+  if (!usecs)
   {
     v3 = 0;
   }
@@ -669,10 +669,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasTcUpdates:(BOOL)a3
+- (void)setHasTcUpdates:(BOOL)updates
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!updates)
   {
     v3 = 0;
   }
@@ -680,10 +680,10 @@
   self->_has = (*&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcDampeningSuppressed:(BOOL)a3
+- (void)setHasTcDampeningSuppressed:(BOOL)suppressed
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!suppressed)
   {
     v3 = 0;
   }
@@ -691,10 +691,10 @@
   self->_has = (*&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionSafari:(BOOL)a3
+- (void)setHasTcCountFlowDispositionSafari:(BOOL)safari
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!safari)
   {
     v3 = 0;
   }
@@ -702,10 +702,10 @@
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasTcCountFlowDispositionStocks:(BOOL)a3
+- (void)setHasTcCountFlowDispositionStocks:(BOOL)stocks
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!stocks)
   {
     v3 = 0;
   }
@@ -719,20 +719,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkAnalyticsRRCConnectedPeriod;
   v4 = [(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)&v8 description];
-  v5 = [(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v11 forKey:@"timestamp"];
+    [dictionary setObject:v11 forKey:@"timestamp"];
 
     has = self->_has;
     if ((*&has & 0x40000) == 0)
@@ -768,7 +768,7 @@ LABEL_3:
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_periodType];
   }
 
-  [v3 setObject:v13 forKey:@"periodType"];
+  [dictionary setObject:v13 forKey:@"periodType"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -784,7 +784,7 @@ LABEL_4:
 
 LABEL_105:
   v50 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_anyListener];
-  [v3 setObject:v50 forKey:@"anyListener"];
+  [dictionary setObject:v50 forKey:@"anyListener"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -800,7 +800,7 @@ LABEL_5:
 
 LABEL_106:
   v51 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_backgroundListeners];
-  [v3 setObject:v51 forKey:@"backgroundListeners"];
+  [dictionary setObject:v51 forKey:@"backgroundListeners"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -816,7 +816,7 @@ LABEL_6:
 
 LABEL_107:
   v52 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_periodDurationUsecs];
-  [v3 setObject:v52 forKey:@"periodDurationUsecs"];
+  [dictionary setObject:v52 forKey:@"periodDurationUsecs"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -832,7 +832,7 @@ LABEL_7:
 
 LABEL_108:
   v53 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_lastDisconnectedSecs];
-  [v3 setObject:v53 forKey:@"lastDisconnectedSecs"];
+  [dictionary setObject:v53 forKey:@"lastDisconnectedSecs"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -848,7 +848,7 @@ LABEL_8:
 
 LABEL_109:
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_ingressLQM];
-  [v3 setObject:v54 forKey:@"ingressLQM"];
+  [dictionary setObject:v54 forKey:@"ingressLQM"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -864,7 +864,7 @@ LABEL_9:
 
 LABEL_110:
   v55 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_countLQMTransitions];
-  [v3 setObject:v55 forKey:@"countLQMTransitions"];
+  [dictionary setObject:v55 forKey:@"countLQMTransitions"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -880,7 +880,7 @@ LABEL_10:
 
 LABEL_111:
   v56 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_egressLQM];
-  [v3 setObject:v56 forKey:@"egressLQM"];
+  [dictionary setObject:v56 forKey:@"egressLQM"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -896,7 +896,7 @@ LABEL_11:
 
 LABEL_112:
   v57 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ingressUlThroughputBps];
-  [v3 setObject:v57 forKey:@"ingressUlThroughputBps"];
+  [dictionary setObject:v57 forKey:@"ingressUlThroughputBps"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -912,7 +912,7 @@ LABEL_12:
 
 LABEL_113:
   v58 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ingressDlThroughputBps];
-  [v3 setObject:v58 forKey:@"ingressDlThroughputBps"];
+  [dictionary setObject:v58 forKey:@"ingressDlThroughputBps"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -928,7 +928,7 @@ LABEL_13:
 
 LABEL_114:
   v59 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_egressUlThroughputBps];
-  [v3 setObject:v59 forKey:@"egressUlThroughputBps"];
+  [dictionary setObject:v59 forKey:@"egressUlThroughputBps"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -944,7 +944,7 @@ LABEL_14:
 
 LABEL_115:
   v60 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_egressDlThroughputBps];
-  [v3 setObject:v60 forKey:@"egressDlThroughputBps"];
+  [dictionary setObject:v60 forKey:@"egressDlThroughputBps"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -960,7 +960,7 @@ LABEL_15:
 
 LABEL_116:
   v61 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_bytesIn];
-  [v3 setObject:v61 forKey:@"bytesIn"];
+  [dictionary setObject:v61 forKey:@"bytesIn"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -976,7 +976,7 @@ LABEL_16:
 
 LABEL_117:
   v62 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_bytesOut];
-  [v3 setObject:v62 forKey:@"bytesOut"];
+  [dictionary setObject:v62 forKey:@"bytesOut"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -992,7 +992,7 @@ LABEL_17:
 
 LABEL_118:
   v63 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_packetsIn];
-  [v3 setObject:v63 forKey:@"packetsIn"];
+  [dictionary setObject:v63 forKey:@"packetsIn"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -1008,27 +1008,27 @@ LABEL_18:
 
 LABEL_119:
   v64 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_packetsOut];
-  [v3 setObject:v64 forKey:@"packetsOut"];
+  [dictionary setObject:v64 forKey:@"packetsOut"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_19:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_uniqueActiveAppCount];
-    [v3 setObject:v5 forKey:@"uniqueActiveAppCount"];
+    [dictionary setObject:v5 forKey:@"uniqueActiveAppCount"];
   }
 
 LABEL_20:
   activeNameDuringPeriods = self->_activeNameDuringPeriods;
   if (activeNameDuringPeriods)
   {
-    [v3 setObject:activeNameDuringPeriods forKey:@"activeNameDuringPeriod"];
+    [dictionary setObject:activeNameDuringPeriods forKey:@"activeNameDuringPeriod"];
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x4000000000000) != 0)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionUndefined];
-    [v3 setObject:v14 forKey:@"tcCountFlowDispositionUndefined"];
+    [dictionary setObject:v14 forKey:@"tcCountFlowDispositionUndefined"];
 
     v7 = self->_has;
     if ((*&v7 & 0x40000000000) == 0)
@@ -1049,7 +1049,7 @@ LABEL_24:
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCBKSYS];
-  [v3 setObject:v15 forKey:@"tcCountFlowDisposition_TC_BK_SYS"];
+  [dictionary setObject:v15 forKey:@"tcCountFlowDisposition_TC_BK_SYS"];
 
   v7 = self->_has;
   if ((*&v7 & 0x20000000000) == 0)
@@ -1065,7 +1065,7 @@ LABEL_25:
 
 LABEL_67:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCBK];
-  [v3 setObject:v16 forKey:@"tcCountFlowDisposition_TC_BK"];
+  [dictionary setObject:v16 forKey:@"tcCountFlowDisposition_TC_BK"];
 
   v7 = self->_has;
   if ((*&v7 & 0x200000000000) == 0)
@@ -1081,7 +1081,7 @@ LABEL_26:
 
 LABEL_68:
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCRD];
-  [v3 setObject:v17 forKey:@"tcCountFlowDisposition_TC_RD"];
+  [dictionary setObject:v17 forKey:@"tcCountFlowDisposition_TC_RD"];
 
   v7 = self->_has;
   if ((*&v7 & 0x100000000000) == 0)
@@ -1097,7 +1097,7 @@ LABEL_27:
 
 LABEL_69:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCOAM];
-  [v3 setObject:v18 forKey:@"tcCountFlowDisposition_TC_OAM"];
+  [dictionary setObject:v18 forKey:@"tcCountFlowDisposition_TC_OAM"];
 
   v7 = self->_has;
   if ((*&v7 & 0x10000000000) == 0)
@@ -1113,7 +1113,7 @@ LABEL_28:
 
 LABEL_70:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCAV];
-  [v3 setObject:v19 forKey:@"tcCountFlowDisposition_TC_AV"];
+  [dictionary setObject:v19 forKey:@"tcCountFlowDisposition_TC_AV"];
 
   v7 = self->_has;
   if ((*&v7 & 0x400000000000) == 0)
@@ -1129,7 +1129,7 @@ LABEL_29:
 
 LABEL_71:
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCRV];
-  [v3 setObject:v20 forKey:@"tcCountFlowDisposition_TC_RV"];
+  [dictionary setObject:v20 forKey:@"tcCountFlowDisposition_TC_RV"];
 
   v7 = self->_has;
   if ((*&v7 & 0x800000000000) == 0)
@@ -1145,7 +1145,7 @@ LABEL_30:
 
 LABEL_72:
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCVI];
-  [v3 setObject:v21 forKey:@"tcCountFlowDisposition_TC_VI"];
+  [dictionary setObject:v21 forKey:@"tcCountFlowDisposition_TC_VI"];
 
   v7 = self->_has;
   if ((*&v7 & 0x1000000000000) == 0)
@@ -1161,7 +1161,7 @@ LABEL_31:
 
 LABEL_73:
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCVO];
-  [v3 setObject:v22 forKey:@"tcCountFlowDisposition_TC_VO"];
+  [dictionary setObject:v22 forKey:@"tcCountFlowDisposition_TC_VO"];
 
   v7 = self->_has;
   if ((*&v7 & 0x80000000000) == 0)
@@ -1177,7 +1177,7 @@ LABEL_32:
 
 LABEL_74:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionTCCTL];
-  [v3 setObject:v23 forKey:@"tcCountFlowDisposition_TC_CTL"];
+  [dictionary setObject:v23 forKey:@"tcCountFlowDisposition_TC_CTL"];
 
   v7 = self->_has;
   if ((*&v7 & 0x8000000) == 0)
@@ -1193,7 +1193,7 @@ LABEL_33:
 
 LABEL_75:
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionLARGEUL];
-  [v3 setObject:v24 forKey:@"tcCountFlowDisposition_LARGE_UL"];
+  [dictionary setObject:v24 forKey:@"tcCountFlowDisposition_LARGE_UL"];
 
   v7 = self->_has;
   if ((*&v7 & 0x4000000) == 0)
@@ -1209,7 +1209,7 @@ LABEL_34:
 
 LABEL_76:
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionLARGEDL];
-  [v3 setObject:v25 forKey:@"tcCountFlowDisposition_LARGE_DL"];
+  [dictionary setObject:v25 forKey:@"tcCountFlowDisposition_LARGE_DL"];
 
   v7 = self->_has;
   if ((*&v7 & 0x2000000) == 0)
@@ -1225,7 +1225,7 @@ LABEL_35:
 
 LABEL_77:
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionLARGE];
-  [v3 setObject:v26 forKey:@"tcCountFlowDisposition_LARGE"];
+  [dictionary setObject:v26 forKey:@"tcCountFlowDisposition_LARGE"];
 
   v7 = self->_has;
   if ((*&v7 & 0x80000) == 0)
@@ -1241,7 +1241,7 @@ LABEL_36:
 
 LABEL_78:
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionBURST];
-  [v3 setObject:v27 forKey:@"tcCountFlowDisposition_BURST"];
+  [dictionary setObject:v27 forKey:@"tcCountFlowDisposition_BURST"];
 
   v7 = self->_has;
   if ((*&v7 & 0x2000000000) == 0)
@@ -1257,7 +1257,7 @@ LABEL_37:
 
 LABEL_79:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionSIRI];
-  [v3 setObject:v28 forKey:@"tcCountFlowDisposition_SIRI"];
+  [dictionary setObject:v28 forKey:@"tcCountFlowDisposition_SIRI"];
 
   v7 = self->_has;
   if ((*&v7 & 0x400000000) == 0)
@@ -1273,7 +1273,7 @@ LABEL_38:
 
 LABEL_80:
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionPUSH];
-  [v3 setObject:v29 forKey:@"tcCountFlowDisposition_PUSH"];
+  [dictionary setObject:v29 forKey:@"tcCountFlowDisposition_PUSH"];
 
   v7 = self->_has;
   if ((*&v7 & 0x1000000) == 0)
@@ -1289,7 +1289,7 @@ LABEL_39:
 
 LABEL_81:
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionKNOWNOTHER];
-  [v3 setObject:v30 forKey:@"tcCountFlowDisposition_KNOWN_OTHER"];
+  [dictionary setObject:v30 forKey:@"tcCountFlowDisposition_KNOWN_OTHER"];
 
   v7 = self->_has;
   if ((*&v7 & 0x2000000000000) == 0)
@@ -1305,7 +1305,7 @@ LABEL_40:
 
 LABEL_82:
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionUNKNOWNOTHER];
-  [v3 setObject:v31 forKey:@"tcCountFlowDisposition_UNKNOWN_OTHER"];
+  [dictionary setObject:v31 forKey:@"tcCountFlowDisposition_UNKNOWN_OTHER"];
 
   v7 = self->_has;
   if ((*&v7 & 0x200000) == 0)
@@ -1321,7 +1321,7 @@ LABEL_41:
 
 LABEL_83:
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionDrop];
-  [v3 setObject:v32 forKey:@"tcCountFlowDispositionDrop"];
+  [dictionary setObject:v32 forKey:@"tcCountFlowDispositionDrop"];
 
   v7 = self->_has;
   if ((*&v7 & 0x100000) == 0)
@@ -1337,7 +1337,7 @@ LABEL_42:
 
 LABEL_84:
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionDefault];
-  [v3 setObject:v33 forKey:@"tcCountFlowDispositionDefault"];
+  [dictionary setObject:v33 forKey:@"tcCountFlowDispositionDefault"];
 
   v7 = self->_has;
   if ((*&v7 & 0x400000) == 0)
@@ -1353,7 +1353,7 @@ LABEL_43:
 
 LABEL_85:
   v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionFGFacetime];
-  [v3 setObject:v34 forKey:@"tcCountFlowDispositionFGFacetime"];
+  [dictionary setObject:v34 forKey:@"tcCountFlowDispositionFGFacetime"];
 
   v7 = self->_has;
   if ((*&v7 & 0x800000) == 0)
@@ -1369,7 +1369,7 @@ LABEL_44:
 
 LABEL_86:
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionFGIMSG];
-  [v3 setObject:v35 forKey:@"tcCountFlowDispositionFGIMSG"];
+  [dictionary setObject:v35 forKey:@"tcCountFlowDispositionFGIMSG"];
 
   v7 = self->_has;
   if ((*&v7 & 0x10000000) == 0)
@@ -1385,7 +1385,7 @@ LABEL_45:
 
 LABEL_87:
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionMail];
-  [v3 setObject:v36 forKey:@"tcCountFlowDispositionMail"];
+  [dictionary setObject:v36 forKey:@"tcCountFlowDispositionMail"];
 
   v7 = self->_has;
   if ((*&v7 & 0x20000000) == 0)
@@ -1401,7 +1401,7 @@ LABEL_46:
 
 LABEL_88:
   v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionMaps];
-  [v3 setObject:v37 forKey:@"tcCountFlowDispositionMaps"];
+  [dictionary setObject:v37 forKey:@"tcCountFlowDispositionMaps"];
 
   v7 = self->_has;
   if ((*&v7 & 0x40000000) == 0)
@@ -1417,7 +1417,7 @@ LABEL_47:
 
 LABEL_89:
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionMediaserverd];
-  [v3 setObject:v38 forKey:@"tcCountFlowDispositionMediaserverd"];
+  [dictionary setObject:v38 forKey:@"tcCountFlowDispositionMediaserverd"];
 
   v7 = self->_has;
   if ((*&v7 & 0x80000000) == 0)
@@ -1433,7 +1433,7 @@ LABEL_48:
 
 LABEL_90:
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionMusic];
-  [v3 setObject:v39 forKey:@"tcCountFlowDispositionMusic"];
+  [dictionary setObject:v39 forKey:@"tcCountFlowDispositionMusic"];
 
   v7 = self->_has;
   if ((*&v7 & 0x100000000) == 0)
@@ -1449,7 +1449,7 @@ LABEL_49:
 
 LABEL_91:
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionNSURLSessiond];
-  [v3 setObject:v40 forKey:@"tcCountFlowDispositionNSURLSessiond"];
+  [dictionary setObject:v40 forKey:@"tcCountFlowDispositionNSURLSessiond"];
 
   v7 = self->_has;
   if ((*&v7 & 0x200000000) == 0)
@@ -1465,7 +1465,7 @@ LABEL_50:
 
 LABEL_92:
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionNews];
-  [v3 setObject:v41 forKey:@"tcCountFlowDispositionNews"];
+  [dictionary setObject:v41 forKey:@"tcCountFlowDispositionNews"];
 
   v7 = self->_has;
   if ((*&v7 & 0x800000000) == 0)
@@ -1481,7 +1481,7 @@ LABEL_51:
 
 LABEL_93:
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionPodcasts];
-  [v3 setObject:v42 forKey:@"tcCountFlowDispositionPodcasts"];
+  [dictionary setObject:v42 forKey:@"tcCountFlowDispositionPodcasts"];
 
   v7 = self->_has;
   if ((*&v7 & 0x1000000000) == 0)
@@ -1497,7 +1497,7 @@ LABEL_52:
 
 LABEL_94:
   v43 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionRTCReportingd];
-  [v3 setObject:v43 forKey:@"tcCountFlowDispositionRTCReportingd"];
+  [dictionary setObject:v43 forKey:@"tcCountFlowDispositionRTCReportingd"];
 
   v7 = self->_has;
   if ((*&v7 & 0x8000000000000) == 0)
@@ -1513,7 +1513,7 @@ LABEL_53:
 
 LABEL_95:
   v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionWeather];
-  [v3 setObject:v44 forKey:@"tcCountFlowDispositionWeather"];
+  [dictionary setObject:v44 forKey:@"tcCountFlowDispositionWeather"];
 
   v7 = self->_has;
   if ((*&v7 & 0x10000000000000) == 0)
@@ -1529,7 +1529,7 @@ LABEL_54:
 
 LABEL_96:
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionWebkit];
-  [v3 setObject:v45 forKey:@"tcCountFlowDispositionWebkit"];
+  [dictionary setObject:v45 forKey:@"tcCountFlowDispositionWebkit"];
 
   v7 = self->_has;
   if ((*&v7 & 0x200) == 0)
@@ -1545,7 +1545,7 @@ LABEL_55:
 
 LABEL_97:
   v46 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_periodDurationTCEnabledUsecs];
-  [v3 setObject:v46 forKey:@"periodDurationTCEnabledUsecs"];
+  [dictionary setObject:v46 forKey:@"periodDurationTCEnabledUsecs"];
 
   v7 = self->_has;
   if ((*&v7 & 0x40000000000000) == 0)
@@ -1561,7 +1561,7 @@ LABEL_56:
 
 LABEL_98:
   v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcUpdates];
-  [v3 setObject:v47 forKey:@"tcUpdates"];
+  [dictionary setObject:v47 forKey:@"tcUpdates"];
 
   v7 = self->_has;
   if ((*&v7 & 0x20000000000000) == 0)
@@ -1574,7 +1574,7 @@ LABEL_57:
 
 LABEL_100:
     v49 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionSafari];
-    [v3 setObject:v49 forKey:@"tcCountFlowDispositionSafari"];
+    [dictionary setObject:v49 forKey:@"tcCountFlowDispositionSafari"];
 
     if ((*&self->_has & 0x8000000000) == 0)
     {
@@ -1586,7 +1586,7 @@ LABEL_100:
 
 LABEL_99:
   v48 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcDampeningSuppressed];
-  [v3 setObject:v48 forKey:@"tcDampeningSuppressed"];
+  [dictionary setObject:v48 forKey:@"tcDampeningSuppressed"];
 
   v7 = self->_has;
   if ((*&v7 & 0x4000000000) != 0)
@@ -1599,19 +1599,19 @@ LABEL_58:
   {
 LABEL_59:
     v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_tcCountFlowDispositionStocks];
-    [v3 setObject:v8 forKey:@"tcCountFlowDispositionStocks"];
+    [dictionary setObject:v8 forKey:@"tcCountFlowDispositionStocks"];
   }
 
 LABEL_60:
-  v9 = v3;
+  v9 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
@@ -2449,14 +2449,14 @@ LABEL_65:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x800) != 0)
   {
-    v4[12] = self->_timestamp;
-    v4[36] |= 0x800uLL;
+    toCopy[12] = self->_timestamp;
+    toCopy[36] |= 0x800uLL;
     has = self->_has;
     if ((*&has & 0x40000) == 0)
     {
@@ -2475,8 +2475,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 35) = self->_periodType;
-  v4[36] |= 0x40000uLL;
+  *(toCopy + 35) = self->_periodType;
+  toCopy[36] |= 0x40000uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -2490,8 +2490,8 @@ LABEL_4:
   }
 
 LABEL_67:
-  *(v4 + 30) = self->_anyListener;
-  v4[36] |= 0x2000uLL;
+  *(toCopy + 30) = self->_anyListener;
+  toCopy[36] |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -2505,8 +2505,8 @@ LABEL_5:
   }
 
 LABEL_68:
-  *(v4 + 31) = self->_backgroundListeners;
-  v4[36] |= 0x4000uLL;
+  *(toCopy + 31) = self->_backgroundListeners;
+  toCopy[36] |= 0x4000uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2520,8 +2520,8 @@ LABEL_6:
   }
 
 LABEL_69:
-  v4[11] = self->_periodDurationUsecs;
-  v4[36] |= 0x400uLL;
+  toCopy[11] = self->_periodDurationUsecs;
+  toCopy[36] |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -2535,8 +2535,8 @@ LABEL_7:
   }
 
 LABEL_70:
-  v4[7] = self->_lastDisconnectedSecs;
-  v4[36] |= 0x40uLL;
+  toCopy[7] = self->_lastDisconnectedSecs;
+  toCopy[36] |= 0x40uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2550,8 +2550,8 @@ LABEL_8:
   }
 
 LABEL_71:
-  *(v4 + 34) = self->_ingressLQM;
-  v4[36] |= 0x20000uLL;
+  *(toCopy + 34) = self->_ingressLQM;
+  toCopy[36] |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -2565,8 +2565,8 @@ LABEL_9:
   }
 
 LABEL_72:
-  *(v4 + 32) = self->_countLQMTransitions;
-  v4[36] |= 0x8000uLL;
+  *(toCopy + 32) = self->_countLQMTransitions;
+  toCopy[36] |= 0x8000uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -2580,8 +2580,8 @@ LABEL_10:
   }
 
 LABEL_73:
-  *(v4 + 33) = self->_egressLQM;
-  v4[36] |= 0x10000uLL;
+  *(toCopy + 33) = self->_egressLQM;
+  toCopy[36] |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2595,8 +2595,8 @@ LABEL_11:
   }
 
 LABEL_74:
-  v4[6] = self->_ingressUlThroughputBps;
-  v4[36] |= 0x20uLL;
+  toCopy[6] = self->_ingressUlThroughputBps;
+  toCopy[36] |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2610,8 +2610,8 @@ LABEL_12:
   }
 
 LABEL_75:
-  v4[5] = self->_ingressDlThroughputBps;
-  v4[36] |= 0x10uLL;
+  toCopy[5] = self->_ingressDlThroughputBps;
+  toCopy[36] |= 0x10uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2625,8 +2625,8 @@ LABEL_13:
   }
 
 LABEL_76:
-  v4[4] = self->_egressUlThroughputBps;
-  v4[36] |= 8uLL;
+  toCopy[4] = self->_egressUlThroughputBps;
+  toCopy[36] |= 8uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2640,8 +2640,8 @@ LABEL_14:
   }
 
 LABEL_77:
-  v4[3] = self->_egressDlThroughputBps;
-  v4[36] |= 4uLL;
+  toCopy[3] = self->_egressDlThroughputBps;
+  toCopy[36] |= 4uLL;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2655,8 +2655,8 @@ LABEL_15:
   }
 
 LABEL_78:
-  v4[1] = self->_bytesIn;
-  v4[36] |= 1uLL;
+  toCopy[1] = self->_bytesIn;
+  toCopy[36] |= 1uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2670,8 +2670,8 @@ LABEL_16:
   }
 
 LABEL_79:
-  v4[2] = self->_bytesOut;
-  v4[36] |= 2uLL;
+  toCopy[2] = self->_bytesOut;
+  toCopy[36] |= 2uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -2682,8 +2682,8 @@ LABEL_17:
     }
 
 LABEL_81:
-    v4[9] = self->_packetsOut;
-    v4[36] |= 0x100uLL;
+    toCopy[9] = self->_packetsOut;
+    toCopy[36] |= 0x100uLL;
     if ((*&self->_has & 0x1000) == 0)
     {
       goto LABEL_20;
@@ -2693,8 +2693,8 @@ LABEL_81:
   }
 
 LABEL_80:
-  v4[8] = self->_packetsIn;
-  v4[36] |= 0x80uLL;
+  toCopy[8] = self->_packetsIn;
+  toCopy[36] |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x100) != 0)
   {
@@ -2705,19 +2705,19 @@ LABEL_18:
   if ((*&has & 0x1000) != 0)
   {
 LABEL_19:
-    v4[13] = self->_uniqueActiveAppCount;
-    v4[36] |= 0x1000uLL;
+    toCopy[13] = self->_uniqueActiveAppCount;
+    toCopy[36] |= 0x1000uLL;
   }
 
 LABEL_20:
-  v11 = v4;
+  v11 = toCopy;
   if ([(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)self activeNameDuringPeriodsCount])
   {
     [v11 clearActiveNameDuringPeriods];
-    v6 = [(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)self activeNameDuringPeriodsCount];
-    if (v6)
+    activeNameDuringPeriodsCount = [(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)self activeNameDuringPeriodsCount];
+    if (activeNameDuringPeriodsCount)
     {
-      v7 = v6;
+      v7 = activeNameDuringPeriodsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDSymptomsNetworkAnalyticsRRCConnectedPeriod *)self activeNameDuringPeriodAtIndex:i];
@@ -3271,10 +3271,10 @@ LABEL_61:
 LABEL_62:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x800) != 0)
@@ -3554,7 +3554,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{a3, v18}];
+        v13 = [*(*(&v18 + 1) + 8 * v12) copyWithZone:{zone, v18}];
         [v6 addActiveNameDuringPeriod:v13];
 
         ++v12;
@@ -4116,19 +4116,19 @@ LABEL_65:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_280;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_timestamp != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_timestamp != *(equalCopy + 12))
     {
       goto LABEL_280;
     }
@@ -4141,7 +4141,7 @@ LABEL_65:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_periodType != *(v4 + 35))
+    if ((v6 & 0x40000) == 0 || self->_periodType != *(equalCopy + 35))
     {
       goto LABEL_280;
     }
@@ -4154,7 +4154,7 @@ LABEL_65:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_anyListener != *(v4 + 30))
+    if ((v6 & 0x2000) == 0 || self->_anyListener != *(equalCopy + 30))
     {
       goto LABEL_280;
     }
@@ -4167,7 +4167,7 @@ LABEL_65:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_backgroundListeners != *(v4 + 31))
+    if ((v6 & 0x4000) == 0 || self->_backgroundListeners != *(equalCopy + 31))
     {
       goto LABEL_280;
     }
@@ -4180,7 +4180,7 @@ LABEL_65:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_periodDurationUsecs != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_periodDurationUsecs != *(equalCopy + 11))
     {
       goto LABEL_280;
     }
@@ -4193,7 +4193,7 @@ LABEL_65:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_lastDisconnectedSecs != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_lastDisconnectedSecs != *(equalCopy + 7))
     {
       goto LABEL_280;
     }
@@ -4206,7 +4206,7 @@ LABEL_65:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_ingressLQM != *(v4 + 34))
+    if ((v6 & 0x20000) == 0 || self->_ingressLQM != *(equalCopy + 34))
     {
       goto LABEL_280;
     }
@@ -4219,7 +4219,7 @@ LABEL_65:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_countLQMTransitions != *(v4 + 32))
+    if ((v6 & 0x8000) == 0 || self->_countLQMTransitions != *(equalCopy + 32))
     {
       goto LABEL_280;
     }
@@ -4232,7 +4232,7 @@ LABEL_65:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_egressLQM != *(v4 + 33))
+    if ((v6 & 0x10000) == 0 || self->_egressLQM != *(equalCopy + 33))
     {
       goto LABEL_280;
     }
@@ -4245,7 +4245,7 @@ LABEL_65:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_ingressUlThroughputBps != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_ingressUlThroughputBps != *(equalCopy + 6))
     {
       goto LABEL_280;
     }
@@ -4258,7 +4258,7 @@ LABEL_65:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_ingressDlThroughputBps != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_ingressDlThroughputBps != *(equalCopy + 5))
     {
       goto LABEL_280;
     }
@@ -4271,7 +4271,7 @@ LABEL_65:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_egressUlThroughputBps != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_egressUlThroughputBps != *(equalCopy + 4))
     {
       goto LABEL_280;
     }
@@ -4284,7 +4284,7 @@ LABEL_65:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_egressDlThroughputBps != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_egressDlThroughputBps != *(equalCopy + 3))
     {
       goto LABEL_280;
     }
@@ -4297,7 +4297,7 @@ LABEL_65:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_bytesIn != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_bytesIn != *(equalCopy + 1))
     {
       goto LABEL_280;
     }
@@ -4310,7 +4310,7 @@ LABEL_65:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_bytesOut != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_bytesOut != *(equalCopy + 2))
     {
       goto LABEL_280;
     }
@@ -4323,7 +4323,7 @@ LABEL_65:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_packetsIn != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_packetsIn != *(equalCopy + 8))
     {
       goto LABEL_280;
     }
@@ -4336,7 +4336,7 @@ LABEL_65:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_packetsOut != *(v4 + 9))
+    if ((v6 & 0x100) == 0 || self->_packetsOut != *(equalCopy + 9))
     {
       goto LABEL_280;
     }
@@ -4349,7 +4349,7 @@ LABEL_65:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_uniqueActiveAppCount != *(v4 + 13))
+    if ((v6 & 0x1000) == 0 || self->_uniqueActiveAppCount != *(equalCopy + 13))
     {
       goto LABEL_280;
     }
@@ -4361,7 +4361,7 @@ LABEL_65:
   }
 
   activeNameDuringPeriods = self->_activeNameDuringPeriods;
-  if (activeNameDuringPeriods | *(v4 + 14))
+  if (activeNameDuringPeriods | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)activeNameDuringPeriods isEqual:?])
     {
@@ -4371,10 +4371,10 @@ LABEL_65:
     has = self->_has;
   }
 
-  v8 = *(v4 + 36);
+  v8 = *(equalCopy + 36);
   if ((*&has & 0x4000000000000) != 0)
   {
-    if ((v8 & 0x4000000000000) == 0 || self->_tcCountFlowDispositionUndefined != *(v4 + 67))
+    if ((v8 & 0x4000000000000) == 0 || self->_tcCountFlowDispositionUndefined != *(equalCopy + 67))
     {
       goto LABEL_280;
     }
@@ -4387,7 +4387,7 @@ LABEL_65:
 
   if ((*&has & 0x40000000000) != 0)
   {
-    if ((v8 & 0x40000000000) == 0 || self->_tcCountFlowDispositionTCBKSYS != *(v4 + 59))
+    if ((v8 & 0x40000000000) == 0 || self->_tcCountFlowDispositionTCBKSYS != *(equalCopy + 59))
     {
       goto LABEL_280;
     }
@@ -4400,7 +4400,7 @@ LABEL_65:
 
   if ((*&has & 0x20000000000) != 0)
   {
-    if ((v8 & 0x20000000000) == 0 || self->_tcCountFlowDispositionTCBK != *(v4 + 58))
+    if ((v8 & 0x20000000000) == 0 || self->_tcCountFlowDispositionTCBK != *(equalCopy + 58))
     {
       goto LABEL_280;
     }
@@ -4413,7 +4413,7 @@ LABEL_65:
 
   if ((*&has & 0x200000000000) != 0)
   {
-    if ((v8 & 0x200000000000) == 0 || self->_tcCountFlowDispositionTCRD != *(v4 + 62))
+    if ((v8 & 0x200000000000) == 0 || self->_tcCountFlowDispositionTCRD != *(equalCopy + 62))
     {
       goto LABEL_280;
     }
@@ -4426,7 +4426,7 @@ LABEL_65:
 
   if ((*&has & 0x100000000000) != 0)
   {
-    if ((v8 & 0x100000000000) == 0 || self->_tcCountFlowDispositionTCOAM != *(v4 + 61))
+    if ((v8 & 0x100000000000) == 0 || self->_tcCountFlowDispositionTCOAM != *(equalCopy + 61))
     {
       goto LABEL_280;
     }
@@ -4439,7 +4439,7 @@ LABEL_65:
 
   if ((*&has & 0x10000000000) != 0)
   {
-    if ((v8 & 0x10000000000) == 0 || self->_tcCountFlowDispositionTCAV != *(v4 + 57))
+    if ((v8 & 0x10000000000) == 0 || self->_tcCountFlowDispositionTCAV != *(equalCopy + 57))
     {
       goto LABEL_280;
     }
@@ -4452,7 +4452,7 @@ LABEL_65:
 
   if ((*&has & 0x400000000000) != 0)
   {
-    if ((v8 & 0x400000000000) == 0 || self->_tcCountFlowDispositionTCRV != *(v4 + 63))
+    if ((v8 & 0x400000000000) == 0 || self->_tcCountFlowDispositionTCRV != *(equalCopy + 63))
     {
       goto LABEL_280;
     }
@@ -4465,7 +4465,7 @@ LABEL_65:
 
   if ((*&has & 0x800000000000) != 0)
   {
-    if ((v8 & 0x800000000000) == 0 || self->_tcCountFlowDispositionTCVI != *(v4 + 64))
+    if ((v8 & 0x800000000000) == 0 || self->_tcCountFlowDispositionTCVI != *(equalCopy + 64))
     {
       goto LABEL_280;
     }
@@ -4478,7 +4478,7 @@ LABEL_65:
 
   if ((*&has & 0x1000000000000) != 0)
   {
-    if ((v8 & 0x1000000000000) == 0 || self->_tcCountFlowDispositionTCVO != *(v4 + 65))
+    if ((v8 & 0x1000000000000) == 0 || self->_tcCountFlowDispositionTCVO != *(equalCopy + 65))
     {
       goto LABEL_280;
     }
@@ -4491,7 +4491,7 @@ LABEL_65:
 
   if ((*&has & 0x80000000000) != 0)
   {
-    if ((v8 & 0x80000000000) == 0 || self->_tcCountFlowDispositionTCCTL != *(v4 + 60))
+    if ((v8 & 0x80000000000) == 0 || self->_tcCountFlowDispositionTCCTL != *(equalCopy + 60))
     {
       goto LABEL_280;
     }
@@ -4504,7 +4504,7 @@ LABEL_65:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v8 & 0x8000000) == 0 || self->_tcCountFlowDispositionLARGEUL != *(v4 + 44))
+    if ((v8 & 0x8000000) == 0 || self->_tcCountFlowDispositionLARGEUL != *(equalCopy + 44))
     {
       goto LABEL_280;
     }
@@ -4517,7 +4517,7 @@ LABEL_65:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v8 & 0x4000000) == 0 || self->_tcCountFlowDispositionLARGEDL != *(v4 + 43))
+    if ((v8 & 0x4000000) == 0 || self->_tcCountFlowDispositionLARGEDL != *(equalCopy + 43))
     {
       goto LABEL_280;
     }
@@ -4530,7 +4530,7 @@ LABEL_65:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v8 & 0x2000000) == 0 || self->_tcCountFlowDispositionLARGE != *(v4 + 42))
+    if ((v8 & 0x2000000) == 0 || self->_tcCountFlowDispositionLARGE != *(equalCopy + 42))
     {
       goto LABEL_280;
     }
@@ -4543,7 +4543,7 @@ LABEL_65:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v8 & 0x80000) == 0 || self->_tcCountFlowDispositionBURST != *(v4 + 36))
+    if ((v8 & 0x80000) == 0 || self->_tcCountFlowDispositionBURST != *(equalCopy + 36))
     {
       goto LABEL_280;
     }
@@ -4556,7 +4556,7 @@ LABEL_65:
 
   if ((*&has & 0x2000000000) != 0)
   {
-    if ((v8 & 0x2000000000) == 0 || self->_tcCountFlowDispositionSIRI != *(v4 + 54))
+    if ((v8 & 0x2000000000) == 0 || self->_tcCountFlowDispositionSIRI != *(equalCopy + 54))
     {
       goto LABEL_280;
     }
@@ -4569,7 +4569,7 @@ LABEL_65:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v8 & 0x400000000) == 0 || self->_tcCountFlowDispositionPUSH != *(v4 + 51))
+    if ((v8 & 0x400000000) == 0 || self->_tcCountFlowDispositionPUSH != *(equalCopy + 51))
     {
       goto LABEL_280;
     }
@@ -4582,7 +4582,7 @@ LABEL_65:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v8 & 0x1000000) == 0 || self->_tcCountFlowDispositionKNOWNOTHER != *(v4 + 41))
+    if ((v8 & 0x1000000) == 0 || self->_tcCountFlowDispositionKNOWNOTHER != *(equalCopy + 41))
     {
       goto LABEL_280;
     }
@@ -4595,7 +4595,7 @@ LABEL_65:
 
   if ((*&has & 0x2000000000000) != 0)
   {
-    if ((v8 & 0x2000000000000) == 0 || self->_tcCountFlowDispositionUNKNOWNOTHER != *(v4 + 66))
+    if ((v8 & 0x2000000000000) == 0 || self->_tcCountFlowDispositionUNKNOWNOTHER != *(equalCopy + 66))
     {
       goto LABEL_280;
     }
@@ -4608,7 +4608,7 @@ LABEL_65:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v8 & 0x200000) == 0 || self->_tcCountFlowDispositionDrop != *(v4 + 38))
+    if ((v8 & 0x200000) == 0 || self->_tcCountFlowDispositionDrop != *(equalCopy + 38))
     {
       goto LABEL_280;
     }
@@ -4621,7 +4621,7 @@ LABEL_65:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v8 & 0x100000) == 0 || self->_tcCountFlowDispositionDefault != *(v4 + 37))
+    if ((v8 & 0x100000) == 0 || self->_tcCountFlowDispositionDefault != *(equalCopy + 37))
     {
       goto LABEL_280;
     }
@@ -4634,7 +4634,7 @@ LABEL_65:
 
   if ((*&has & 0x40000000000000) != 0)
   {
-    if ((v8 & 0x40000000000000) == 0 || self->_tcUpdates != *(v4 + 71))
+    if ((v8 & 0x40000000000000) == 0 || self->_tcUpdates != *(equalCopy + 71))
     {
       goto LABEL_280;
     }
@@ -4647,7 +4647,7 @@ LABEL_65:
 
   if ((*&has & 0x20000000000000) != 0)
   {
-    if ((v8 & 0x20000000000000) == 0 || self->_tcDampeningSuppressed != *(v4 + 70))
+    if ((v8 & 0x20000000000000) == 0 || self->_tcDampeningSuppressed != *(equalCopy + 70))
     {
       goto LABEL_280;
     }
@@ -4660,7 +4660,7 @@ LABEL_65:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v8 & 0x400000) == 0 || self->_tcCountFlowDispositionFGFacetime != *(v4 + 39))
+    if ((v8 & 0x400000) == 0 || self->_tcCountFlowDispositionFGFacetime != *(equalCopy + 39))
     {
       goto LABEL_280;
     }
@@ -4673,7 +4673,7 @@ LABEL_65:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v8 & 0x800000) == 0 || self->_tcCountFlowDispositionFGIMSG != *(v4 + 40))
+    if ((v8 & 0x800000) == 0 || self->_tcCountFlowDispositionFGIMSG != *(equalCopy + 40))
     {
       goto LABEL_280;
     }
@@ -4686,7 +4686,7 @@ LABEL_65:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v8 & 0x10000000) == 0 || self->_tcCountFlowDispositionMail != *(v4 + 45))
+    if ((v8 & 0x10000000) == 0 || self->_tcCountFlowDispositionMail != *(equalCopy + 45))
     {
       goto LABEL_280;
     }
@@ -4699,7 +4699,7 @@ LABEL_65:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v8 & 0x20000000) == 0 || self->_tcCountFlowDispositionMaps != *(v4 + 46))
+    if ((v8 & 0x20000000) == 0 || self->_tcCountFlowDispositionMaps != *(equalCopy + 46))
     {
       goto LABEL_280;
     }
@@ -4712,7 +4712,7 @@ LABEL_65:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v8 & 0x40000000) == 0 || self->_tcCountFlowDispositionMediaserverd != *(v4 + 47))
+    if ((v8 & 0x40000000) == 0 || self->_tcCountFlowDispositionMediaserverd != *(equalCopy + 47))
     {
       goto LABEL_280;
     }
@@ -4725,7 +4725,7 @@ LABEL_65:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v8 & 0x80000000) == 0 || self->_tcCountFlowDispositionMusic != *(v4 + 48))
+    if ((v8 & 0x80000000) == 0 || self->_tcCountFlowDispositionMusic != *(equalCopy + 48))
     {
       goto LABEL_280;
     }
@@ -4738,7 +4738,7 @@ LABEL_65:
 
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v8 & 0x100000000) == 0 || self->_tcCountFlowDispositionNSURLSessiond != *(v4 + 49))
+    if ((v8 & 0x100000000) == 0 || self->_tcCountFlowDispositionNSURLSessiond != *(equalCopy + 49))
     {
       goto LABEL_280;
     }
@@ -4751,7 +4751,7 @@ LABEL_65:
 
   if ((*&has & 0x200000000) != 0)
   {
-    if ((v8 & 0x200000000) == 0 || self->_tcCountFlowDispositionNews != *(v4 + 50))
+    if ((v8 & 0x200000000) == 0 || self->_tcCountFlowDispositionNews != *(equalCopy + 50))
     {
       goto LABEL_280;
     }
@@ -4764,7 +4764,7 @@ LABEL_65:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v8 & 0x800000000) == 0 || self->_tcCountFlowDispositionPodcasts != *(v4 + 52))
+    if ((v8 & 0x800000000) == 0 || self->_tcCountFlowDispositionPodcasts != *(equalCopy + 52))
     {
       goto LABEL_280;
     }
@@ -4777,7 +4777,7 @@ LABEL_65:
 
   if ((*&has & 0x1000000000) != 0)
   {
-    if ((v8 & 0x1000000000) == 0 || self->_tcCountFlowDispositionRTCReportingd != *(v4 + 53))
+    if ((v8 & 0x1000000000) == 0 || self->_tcCountFlowDispositionRTCReportingd != *(equalCopy + 53))
     {
       goto LABEL_280;
     }
@@ -4790,7 +4790,7 @@ LABEL_65:
 
   if ((*&has & 0x8000000000000) != 0)
   {
-    if ((v8 & 0x8000000000000) == 0 || self->_tcCountFlowDispositionWeather != *(v4 + 68))
+    if ((v8 & 0x8000000000000) == 0 || self->_tcCountFlowDispositionWeather != *(equalCopy + 68))
     {
       goto LABEL_280;
     }
@@ -4803,7 +4803,7 @@ LABEL_65:
 
   if ((*&has & 0x10000000000000) != 0)
   {
-    if ((v8 & 0x10000000000000) == 0 || self->_tcCountFlowDispositionWebkit != *(v4 + 69))
+    if ((v8 & 0x10000000000000) == 0 || self->_tcCountFlowDispositionWebkit != *(equalCopy + 69))
     {
       goto LABEL_280;
     }
@@ -4816,7 +4816,7 @@ LABEL_65:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v8 & 0x200) == 0 || self->_periodDurationTCEnabledUsecs != *(v4 + 10))
+    if ((v8 & 0x200) == 0 || self->_periodDurationTCEnabledUsecs != *(equalCopy + 10))
     {
       goto LABEL_280;
     }
@@ -4839,7 +4839,7 @@ LABEL_280:
     goto LABEL_281;
   }
 
-  if ((v8 & 0x4000000000) == 0 || self->_tcCountFlowDispositionSafari != *(v4 + 55))
+  if ((v8 & 0x4000000000) == 0 || self->_tcCountFlowDispositionSafari != *(equalCopy + 55))
   {
     goto LABEL_280;
   }
@@ -4847,7 +4847,7 @@ LABEL_280:
 LABEL_275:
   if ((*&has & 0x8000000000) != 0)
   {
-    if ((v8 & 0x8000000000) == 0 || self->_tcCountFlowDispositionStocks != *(v4 + 56))
+    if ((v8 & 0x8000000000) == 0 || self->_tcCountFlowDispositionStocks != *(equalCopy + 56))
     {
       goto LABEL_280;
     }
@@ -5630,17 +5630,17 @@ LABEL_75:
   return v60 ^ v61 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v43 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 36);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x800) != 0)
   {
-    self->_timestamp = *(v4 + 12);
+    self->_timestamp = *(fromCopy + 12);
     *&self->_has |= 0x800uLL;
-    v6 = *(v4 + 36);
+    v6 = *(fromCopy + 36);
     if ((v6 & 0x40000) == 0)
     {
 LABEL_3:
@@ -5658,9 +5658,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_periodType = *(v4 + 35);
+  self->_periodType = *(fromCopy + 35);
   *&self->_has |= 0x40000uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_4:
@@ -5673,9 +5673,9 @@ LABEL_4:
   }
 
 LABEL_68:
-  self->_anyListener = *(v4 + 30);
+  self->_anyListener = *(fromCopy + 30);
   *&self->_has |= 0x2000uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_5:
@@ -5688,9 +5688,9 @@ LABEL_5:
   }
 
 LABEL_69:
-  self->_backgroundListeners = *(v4 + 31);
+  self->_backgroundListeners = *(fromCopy + 31);
   *&self->_has |= 0x4000uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x400) == 0)
   {
 LABEL_6:
@@ -5703,9 +5703,9 @@ LABEL_6:
   }
 
 LABEL_70:
-  self->_periodDurationUsecs = *(v4 + 11);
+  self->_periodDurationUsecs = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x40) == 0)
   {
 LABEL_7:
@@ -5718,9 +5718,9 @@ LABEL_7:
   }
 
 LABEL_71:
-  self->_lastDisconnectedSecs = *(v4 + 7);
+  self->_lastDisconnectedSecs = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_8:
@@ -5733,9 +5733,9 @@ LABEL_8:
   }
 
 LABEL_72:
-  self->_ingressLQM = *(v4 + 34);
+  self->_ingressLQM = *(fromCopy + 34);
   *&self->_has |= 0x20000uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_9:
@@ -5748,9 +5748,9 @@ LABEL_9:
   }
 
 LABEL_73:
-  self->_countLQMTransitions = *(v4 + 32);
+  self->_countLQMTransitions = *(fromCopy + 32);
   *&self->_has |= 0x8000uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x10000) == 0)
   {
 LABEL_10:
@@ -5763,9 +5763,9 @@ LABEL_10:
   }
 
 LABEL_74:
-  self->_egressLQM = *(v4 + 33);
+  self->_egressLQM = *(fromCopy + 33);
   *&self->_has |= 0x10000uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x20) == 0)
   {
 LABEL_11:
@@ -5778,9 +5778,9 @@ LABEL_11:
   }
 
 LABEL_75:
-  self->_ingressUlThroughputBps = *(v4 + 6);
+  self->_ingressUlThroughputBps = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x10) == 0)
   {
 LABEL_12:
@@ -5793,9 +5793,9 @@ LABEL_12:
   }
 
 LABEL_76:
-  self->_ingressDlThroughputBps = *(v4 + 5);
+  self->_ingressDlThroughputBps = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 8) == 0)
   {
 LABEL_13:
@@ -5808,9 +5808,9 @@ LABEL_13:
   }
 
 LABEL_77:
-  self->_egressUlThroughputBps = *(v4 + 4);
+  self->_egressUlThroughputBps = *(fromCopy + 4);
   *&self->_has |= 8uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 4) == 0)
   {
 LABEL_14:
@@ -5823,9 +5823,9 @@ LABEL_14:
   }
 
 LABEL_78:
-  self->_egressDlThroughputBps = *(v4 + 3);
+  self->_egressDlThroughputBps = *(fromCopy + 3);
   *&self->_has |= 4uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 1) == 0)
   {
 LABEL_15:
@@ -5838,9 +5838,9 @@ LABEL_15:
   }
 
 LABEL_79:
-  self->_bytesIn = *(v4 + 1);
+  self->_bytesIn = *(fromCopy + 1);
   *&self->_has |= 1uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 2) == 0)
   {
 LABEL_16:
@@ -5853,9 +5853,9 @@ LABEL_16:
   }
 
 LABEL_80:
-  self->_bytesOut = *(v4 + 2);
+  self->_bytesOut = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x80) == 0)
   {
 LABEL_17:
@@ -5868,9 +5868,9 @@ LABEL_17:
   }
 
 LABEL_81:
-  self->_packetsIn = *(v4 + 8);
+  self->_packetsIn = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v6 = *(v4 + 36);
+  v6 = *(fromCopy + 36);
   if ((v6 & 0x100) == 0)
   {
 LABEL_18:
@@ -5883,12 +5883,12 @@ LABEL_18:
   }
 
 LABEL_82:
-  self->_packetsOut = *(v4 + 9);
+  self->_packetsOut = *(fromCopy + 9);
   *&self->_has |= 0x100uLL;
-  if ((*(v4 + 36) & 0x1000) != 0)
+  if ((*(fromCopy + 36) & 0x1000) != 0)
   {
 LABEL_19:
-    self->_uniqueActiveAppCount = *(v4 + 13);
+    self->_uniqueActiveAppCount = *(fromCopy + 13);
     *&self->_has |= 0x1000uLL;
   }
 
@@ -5897,7 +5897,7 @@ LABEL_20:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 14);
+  v7 = *(fromCopy + 14);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {

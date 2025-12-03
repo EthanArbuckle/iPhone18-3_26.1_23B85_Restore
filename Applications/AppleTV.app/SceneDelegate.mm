@@ -1,12 +1,12 @@
 @interface SceneDelegate
 - (_TtC7AppleTV13SceneDelegate)init;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation SceneDelegate
@@ -15,68 +15,68 @@
 {
   Logger.init(subsystem:category:)();
   v3 = OBJC_IVAR____TtC7AppleTV13SceneDelegate_appDelegate;
-  v4 = [objc_opt_self() sharedApplication];
-  v5 = [v4 delegate];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  delegate = [sharedApplication delegate];
 
-  *(&self->super.isa + v3) = v5;
+  *(&self->super.isa + v3) = delegate;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SceneDelegate();
   return [(SceneDelegate *)&v7 init];
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100002554(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100002554(sceneCopy, optionsCopy);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = self;
-  sub_100003F24(v4);
+  foregroundCopy = foreground;
+  selfCopy = self;
+  sub_100003F24(foregroundCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100003FB4(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100003FB4(activeCopy);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000D000(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_10000D000(activeCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_10000300C(0, &qword_1000232C0, UIOpenURLContext_ptr);
   sub_100003054(&qword_1000232C8, &qword_1000232C0, UIOpenURLContext_ptr);
   v5 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = *((swift_isaMask & self->super.isa) + 0xA0);
-  v7 = self;
+  selfCopy = self;
   v6(v5);
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000EA94(v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_10000EA94(activityCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000D28C(v4);
+  backgroundCopy = background;
+  selfCopy = self;
+  sub_10000D28C(backgroundCopy);
 }
 
 @end

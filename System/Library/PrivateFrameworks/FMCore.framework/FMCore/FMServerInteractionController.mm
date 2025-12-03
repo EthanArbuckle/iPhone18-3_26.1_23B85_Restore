@@ -2,12 +2,12 @@
 - (FMServerInteractionController)init;
 - (NSURLSessionConfiguration)sessionConfiguration;
 - (double)_simulatedLatency;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
 - (void)cancelAllCommands;
 - (void)dealloc;
 - (void)invalidate;
-- (void)processResponseForCommand:(id)a3 callback:(id)a4;
-- (void)sendCommand:(id)a3 completionBlock:(id)a4;
+- (void)processResponseForCommand:(id)command callback:(id)callback;
+- (void)sendCommand:(id)command completionBlock:(id)block;
 @end
 
 @implementation FMServerInteractionController
@@ -56,9 +56,9 @@ void __40__FMServerInteractionController_dealloc__block_invoke(uint64_t a1)
     [(FMServerInteractionController *)v2 setQueue:v6, v12, v13, v14, v15];
 
     v7 = MEMORY[0x277CCAD30];
-    v8 = [(FMServerInteractionController *)v2 sessionConfiguration];
-    v9 = [(FMServerInteractionController *)v2 queue];
-    v10 = [v7 sessionWithConfiguration:v8 delegate:v2 delegateQueue:v9];
+    sessionConfiguration = [(FMServerInteractionController *)v2 sessionConfiguration];
+    queue = [(FMServerInteractionController *)v2 queue];
+    v10 = [v7 sessionWithConfiguration:sessionConfiguration delegate:v2 delegateQueue:queue];
     [(FMServerInteractionController *)v2 setSession:v10];
 
     objc_destroyWeak(&v16);
@@ -105,13 +105,13 @@ void __50__FMServerInteractionController__simulatedLatency__block_invoke()
   sessionConfiguration = self->_sessionConfiguration;
   if (!sessionConfiguration)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v6 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:v5];
-    v7 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    v6 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:bundleIdentifier];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
     v8 = self->_sessionConfiguration;
-    self->_sessionConfiguration = v7;
+    self->_sessionConfiguration = defaultSessionConfiguration;
 
     [(NSURLSessionConfiguration *)self->_sessionConfiguration set_appleIDContext:v6];
     sessionConfiguration = self->_sessionConfiguration;
@@ -120,19 +120,19 @@ void __50__FMServerInteractionController__simulatedLatency__block_invoke()
   return sessionConfiguration;
 }
 
-- (void)sendCommand:(id)a3 completionBlock:(id)a4
+- (void)sendCommand:(id)command completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
+  objc_initWeak(&from, commandCopy);
   dq_inFlightCommands = self->dq_inFlightCommands;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__FMServerInteractionController_sendCommand_completionBlock___block_invoke;
   block[3] = &unk_278FD9B50;
   objc_copyWeak(&v22, &location);
-  v9 = v6;
+  v9 = commandCopy;
   v21 = v9;
   dispatch_sync(dq_inFlightCommands, block);
   v12 = MEMORY[0x277D85DD0];
@@ -140,14 +140,14 @@ void __50__FMServerInteractionController__simulatedLatency__block_invoke()
   v14 = __61__FMServerInteractionController_sendCommand_completionBlock___block_invoke_2;
   v15 = &unk_278FD9C80;
   objc_copyWeak(&v18, &location);
-  v16 = self;
+  selfCopy = self;
   objc_copyWeak(&v19, &from);
-  v10 = v7;
+  v10 = blockCopy;
   v17 = v10;
   [v9 setCompletionBlock:&v12];
-  [v9 setServerInteractionController:{self, v12, v13, v14, v15, v16}];
-  v11 = [(FMServerInteractionController *)self queue];
-  [v11 addOperation:v9];
+  [v9 setServerInteractionController:{self, v12, v13, v14, v15, selfCopy}];
+  queue = [(FMServerInteractionController *)self queue];
+  [queue addOperation:v9];
 
   [(FMServerInteractionController *)self networkActivityStatus:1];
   objc_destroyWeak(&v19);
@@ -235,39 +235,39 @@ void __50__FMServerInteractionController_cancelAllCommands__block_invoke(uint64_
 
 - (void)invalidate
 {
-  v3 = [(FMServerInteractionController *)self session];
-  [v3 invalidateAndCancel];
+  session = [(FMServerInteractionController *)self session];
+  [session invalidateAndCancel];
 
   [(FMServerInteractionController *)self setSession:0];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v7 = LogCategory_Networking();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = sessionCopy;
     v11 = 2112;
-    v12 = v6;
+    v12 = errorCopy;
     _os_log_impl(&dword_24A2EE000, v7, OS_LOG_TYPE_DEFAULT, "session: [%@] didBecomeInvalidWithError: [%@]", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processResponseForCommand:(id)a3 callback:(id)a4
+- (void)processResponseForCommand:(id)command callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
-  if (v7)
+  if (callbackCopy)
   {
-    v7[2](v7);
-    [v6 setCompletionBlock:0];
+    callbackCopy[2](callbackCopy);
+    [commandCopy setCompletionBlock:0];
   }
 
   dq_inFlightCommands = self->dq_inFlightCommands;
@@ -276,8 +276,8 @@ void __50__FMServerInteractionController_cancelAllCommands__block_invoke(uint64_
   block[2] = __68__FMServerInteractionController_processResponseForCommand_callback___block_invoke;
   block[3] = &unk_278FD9B50;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v9 = v6;
+  v11 = commandCopy;
+  v9 = commandCopy;
   dispatch_sync(dq_inFlightCommands, block);
 
   objc_destroyWeak(&v12);

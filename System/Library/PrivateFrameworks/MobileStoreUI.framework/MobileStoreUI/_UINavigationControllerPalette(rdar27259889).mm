@@ -6,15 +6,15 @@
 
 - (void)resetBackgroundConstraints
 {
-  v2 = [a1 _backgroundConstraints];
+  _backgroundConstraints = [self _backgroundConstraints];
 
-  if (v2)
+  if (_backgroundConstraints)
   {
-    v3 = [a1 _backgroundConstraints];
-    v6 = [v3 objectAtIndex:1];
+    _backgroundConstraints2 = [self _backgroundConstraints];
+    v6 = [_backgroundConstraints2 objectAtIndex:1];
 
-    v4 = [a1 _backgroundConstraints];
-    v5 = [v4 objectAtIndex:3];
+    _backgroundConstraints3 = [self _backgroundConstraints];
+    v5 = [_backgroundConstraints3 objectAtIndex:3];
 
     [v6 setConstant:0.0];
     [v5 setConstant:0.0];

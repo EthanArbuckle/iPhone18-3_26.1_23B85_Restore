@@ -1,18 +1,18 @@
 @interface PUVideoTileViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_axApplyCustomAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_axApplyCustomAction:(id)action;
 - (void)_updateImage;
-- (void)setAssetViewModel:(id)a3;
+- (void)setAssetViewModel:(id)model;
 @end
 
 @implementation PUVideoTileViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUVideoTileViewController" hasInstanceMethod:@"videoView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUVideoTileViewController" hasInstanceMethod:@"setAssetViewModel:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PUVideoTileViewController" hasInstanceMethod:@"_updateImage" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUVideoTileViewController" hasInstanceMethod:@"videoView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUVideoTileViewController" hasInstanceMethod:@"setAssetViewModel:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PUVideoTileViewController" hasInstanceMethod:@"_updateImage" withFullSignature:{"v", 0}];
 }
 
 - (void)_updateImage
@@ -23,25 +23,25 @@
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = PUVideoTileViewControllerAccessibility;
-  v4 = a3;
-  [(PUVideoTileViewControllerAccessibility *)&v7 setAssetViewModel:v4];
+  modelCopy = model;
+  [(PUVideoTileViewControllerAccessibility *)&v7 setAssetViewModel:modelCopy];
   v5 = [(PUVideoTileViewControllerAccessibility *)self safeValueForKey:@"videoView", v7.receiver, v7.super_class];
-  v6 = [v4 asset];
+  asset = [modelCopy asset];
 
-  [v5 _accessibilitySetRetainedValue:v6 forKey:@"AXAsset"];
+  [v5 _accessibilitySetRetainedValue:asset forKey:@"AXAsset"];
 }
 
-- (void)_axApplyCustomAction:(id)a3
+- (void)_axApplyCustomAction:(id)action
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(PUVideoTileViewControllerAccessibility *)self _axMainImageView];
-  v6 = [v5 accessibilityCustomActions];
-  v7 = [v6 mutableCopy];
+  actionCopy = action;
+  _axMainImageView = [(PUVideoTileViewControllerAccessibility *)self _axMainImageView];
+  accessibilityCustomActions = [_axMainImageView accessibilityCustomActions];
+  v7 = [accessibilityCustomActions mutableCopy];
 
   if (!v7)
   {
@@ -68,9 +68,9 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) name];
-        v14 = [v4 name];
-        v15 = [v13 isEqualToString:v14];
+        name = [*(*(&v17 + 1) + 8 * v12) name];
+        name2 = [actionCopy name];
+        v15 = [name isEqualToString:name2];
 
         if (v15)
         {
@@ -92,8 +92,8 @@
     }
   }
 
-  [v8 addObject:v4];
-  [v5 setAccessibilityCustomActions:v8];
+  [v8 addObject:actionCopy];
+  [_axMainImageView setAccessibilityCustomActions:v8];
 LABEL_13:
 
   v16 = *MEMORY[0x29EDCA608];

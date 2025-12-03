@@ -1,25 +1,25 @@
 @interface HALSchemaHALClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (HALSchemaHALClientEventMetadata)initWithDictionary:(id)a3;
-- (HALSchemaHALClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HALSchemaHALClientEventMetadata)initWithDictionary:(id)dictionary;
+- (HALSchemaHALClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HALSchemaHALClientEventMetadata
 
-- (HALSchemaHALClientEventMetadata)initWithDictionary:(id)a3
+- (HALSchemaHALClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = HALSchemaHALClientEventMetadata;
   v5 = [(HALSchemaHALClientEventMetadata *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"halId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"halId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(HALSchemaHALClientEventMetadata *)v5 setHalId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (HALSchemaHALClientEventMetadata)initWithJSON:(id)a3
+- (HALSchemaHALClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HALSchemaHALClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HALSchemaHALClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HALSchemaHALClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_halId)
   {
-    v4 = [(HALSchemaHALClientEventMetadata *)self halId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    halId = [(HALSchemaHALClientEventMetadata *)self halId];
+    dictionaryRepresentation = [halId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"halId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"halId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"halId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"halId"];
     }
   }
 
   if (self->_requestId)
   {
-    v7 = [(HALSchemaHALClientEventMetadata *)self requestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    requestId = [(HALSchemaHALClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(HALSchemaHALClientEventMetadata *)self halId];
-  v6 = [v4 halId];
-  if ((v5 != 0) == (v6 == 0))
+  halId = [(HALSchemaHALClientEventMetadata *)self halId];
+  halId2 = [equalCopy halId];
+  if ((halId != 0) == (halId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(HALSchemaHALClientEventMetadata *)self halId];
-  if (v7)
+  halId3 = [(HALSchemaHALClientEventMetadata *)self halId];
+  if (halId3)
   {
-    v8 = v7;
-    v9 = [(HALSchemaHALClientEventMetadata *)self halId];
-    v10 = [v4 halId];
-    v11 = [v9 isEqual:v10];
+    v8 = halId3;
+    halId4 = [(HALSchemaHALClientEventMetadata *)self halId];
+    halId5 = [equalCopy halId];
+    v11 = [halId4 isEqual:halId5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(HALSchemaHALClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) != (v6 == 0))
+  halId = [(HALSchemaHALClientEventMetadata *)self requestId];
+  halId2 = [equalCopy requestId];
+  if ((halId != 0) != (halId2 == 0))
   {
-    v12 = [(HALSchemaHALClientEventMetadata *)self requestId];
-    if (!v12)
+    requestId = [(HALSchemaHALClientEventMetadata *)self requestId];
+    if (!requestId)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(HALSchemaHALClientEventMetadata *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(HALSchemaHALClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(HALSchemaHALClientEventMetadata *)self halId];
+  toCopy = to;
+  halId = [(HALSchemaHALClientEventMetadata *)self halId];
 
-  if (v4)
+  if (halId)
   {
-    v5 = [(HALSchemaHALClientEventMetadata *)self halId];
+    halId2 = [(HALSchemaHALClientEventMetadata *)self halId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(HALSchemaHALClientEventMetadata *)self requestId];
+  requestId = [(HALSchemaHALClientEventMetadata *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(HALSchemaHALClientEventMetadata *)self requestId];
+    requestId2 = [(HALSchemaHALClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = HALSchemaHALClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(HALSchemaHALClientEventMetadata *)self halId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  halId = [(HALSchemaHALClientEventMetadata *)self halId];
+  v7 = [halId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(HALSchemaHALClientEventMetadata *)self deleteHalId];
   }
 
-  v9 = [(HALSchemaHALClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(HALSchemaHALClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(HALSchemaHALClientEventMetadata *)self deleteRequestId];
   }

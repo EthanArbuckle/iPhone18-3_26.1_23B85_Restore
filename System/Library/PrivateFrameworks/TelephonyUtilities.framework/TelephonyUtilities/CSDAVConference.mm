@@ -12,7 +12,7 @@
 - (BOOL)isSendingVideo;
 - (CGSize)remoteVideoPresentationSize;
 - (CSDAVConference)init;
-- (CSDAVConference)initWithFeatureFlags:(id)a3;
+- (CSDAVConference)initWithFeatureFlags:(id)flags;
 - (CSDAVConferenceDelegate)delegate;
 - (NSDate)dateConnected;
 - (NSDate)dateEnded;
@@ -24,70 +24,70 @@
 - (id)_isSendingVideoExpected;
 - (int)deviceRole;
 - (int)state;
-- (int64_t)_endedReasonForDidStopError:(id)a3 error:(id *)a4;
+- (int64_t)_endedReasonForDidStopError:(id)error error:(id *)a4;
 - (int64_t)callID;
 - (int64_t)endedReason;
 - (int64_t)inputAudioPowerSpectrumToken;
 - (int64_t)outputAudioPowerSpectrumToken;
 - (unsigned)remoteVideoPresentationState;
-- (void)_performDelegateCallback:(id)a3;
-- (void)_sendDelegateBytesOfDataUsageChanged:(int64_t)a3;
+- (void)_performDelegateCallback:(id)callback;
+- (void)_sendDelegateBytesOfDataUsageChanged:(int64_t)changed;
 - (void)_sendDelegateConnectionClosed;
-- (void)_sendDelegateEndedWithReason:(int64_t)a3 error:(id)a4;
+- (void)_sendDelegateEndedWithReason:(int64_t)reason error:(id)error;
 - (void)_sendDelegateFinishedPreparing;
-- (void)_sendDelegateInputFrequencyLevelChanged:(id)a3;
-- (void)_sendDelegateInputLevelChanged:(float)a3;
+- (void)_sendDelegateInputFrequencyLevelChanged:(id)changed;
+- (void)_sendDelegateInputLevelChanged:(float)changed;
 - (void)_sendDelegateMutedChanged;
-- (void)_sendDelegateOutputFrequencyLevelChanged:(id)a3;
-- (void)_sendDelegateOutputLevelChanged:(float)a3;
-- (void)_sendDelegateReceivedData:(id)a3 forCallID:(int64_t)a4;
+- (void)_sendDelegateOutputFrequencyLevelChanged:(id)changed;
+- (void)_sendDelegateOutputLevelChanged:(float)changed;
+- (void)_sendDelegateReceivedData:(id)data forCallID:(int64_t)d;
 - (void)_sendDelegateReceivedFirstRemoteFrame;
-- (void)_sendDelegateRemoteMediaStalled:(BOOL)a3;
+- (void)_sendDelegateRemoteMediaStalled:(BOOL)stalled;
 - (void)_sendDelegateRemoteVideoPaused;
 - (void)_sendDelegateSendingAudioChanged;
 - (void)_sendDelegateStarted;
-- (void)_setEndedWithReason:(int64_t)a3 error:(id)a4;
+- (void)_setEndedWithReason:(int64_t)reason error:(id)error;
 - (void)_setUpDidStartTimeout;
 - (void)_stop;
 - (void)cancel;
-- (void)conferenceProvider:(id)a3 didPauseAudio:(BOOL)a4 error:(id)a5;
-- (void)conferenceProvider:(id)a3 didPauseVideo:(BOOL)a4 error:(id)a5;
-- (void)conferenceProvider:(id)a3 didReceiveData:(id)a4 forCallID:(int64_t)a5;
-- (void)conferenceProvider:(id)a3 didStartSession:(BOOL)a4 error:(id)a5;
-- (void)conferenceProvider:(id)a3 didStopWithError:(id)a4 callMetadata:(id)a5;
-- (void)conferenceProvider:(id)a3 remoteMediaStalled:(BOOL)a4;
-- (void)conferenceProvider:(id)a3 remoteVideoPaused:(BOOL)a4;
-- (void)conferenceProvider:(id)a3 updateInputFrequencyLevel:(id)a4;
-- (void)conferenceProvider:(id)a3 updateInputLevel:(float)a4;
-- (void)conferenceProvider:(id)a3 updateOutputFrequencyLevel:(id)a4;
-- (void)conferenceProvider:(id)a3 updateOutputLevel:(float)a4;
-- (void)conferenceProviderReceivedFirstRemoteFrame:(id)a3;
-- (void)connectionClosedForConferenceProvider:(id)a3;
+- (void)conferenceProvider:(id)provider didPauseAudio:(BOOL)audio error:(id)error;
+- (void)conferenceProvider:(id)provider didPauseVideo:(BOOL)video error:(id)error;
+- (void)conferenceProvider:(id)provider didReceiveData:(id)data forCallID:(int64_t)d;
+- (void)conferenceProvider:(id)provider didStartSession:(BOOL)session error:(id)error;
+- (void)conferenceProvider:(id)provider didStopWithError:(id)error callMetadata:(id)metadata;
+- (void)conferenceProvider:(id)provider remoteMediaStalled:(BOOL)stalled;
+- (void)conferenceProvider:(id)provider remoteVideoPaused:(BOOL)paused;
+- (void)conferenceProvider:(id)provider updateInputFrequencyLevel:(id)level;
+- (void)conferenceProvider:(id)provider updateInputLevel:(float)level;
+- (void)conferenceProvider:(id)provider updateOutputFrequencyLevel:(id)level;
+- (void)conferenceProvider:(id)provider updateOutputLevel:(float)level;
+- (void)conferenceProviderReceivedFirstRemoteFrame:(id)frame;
+- (void)connectionClosedForConferenceProvider:(id)provider;
 - (void)dealloc;
-- (void)prepareWithConfiguration:(id)a3;
-- (void)sendData:(id)a3;
-- (void)serverDiedForConferenceProvider:(id)a3;
-- (void)setAudioInjectionAllowed:(BOOL)a3;
-- (void)setCaller:(BOOL)a3;
-- (void)setDateConnected:(id)a3;
-- (void)setDateEnded:(id)a3;
-- (void)setDateStartedConnecting:(id)a3;
-- (void)setDeviceRole:(int)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setRemoteIDSDestinationURI:(id)a3 crossDeviceIdentifier:(id)a4;
-- (void)setRemoteInviteDictionary:(id)a3;
-- (void)setRemoteVideoPresentationSize:(CGSize)a3;
-- (void)setRemoteVideoPresentationState:(unsigned int)a3;
-- (void)setSendingAudio:(BOOL)a3;
-- (void)setSendingAudioData:(BOOL)a3;
-- (void)setSendingVideo:(BOOL)a3;
-- (void)setSendingVideoExpected:(id)a3;
-- (void)setState:(int)a3;
-- (void)startConnectionWithTransport:(id)a3;
-- (void)startedCapturingLocalVideo:(id)a3;
+- (void)prepareWithConfiguration:(id)configuration;
+- (void)sendData:(id)data;
+- (void)serverDiedForConferenceProvider:(id)provider;
+- (void)setAudioInjectionAllowed:(BOOL)allowed;
+- (void)setCaller:(BOOL)caller;
+- (void)setDateConnected:(id)connected;
+- (void)setDateEnded:(id)ended;
+- (void)setDateStartedConnecting:(id)connecting;
+- (void)setDeviceRole:(int)role;
+- (void)setMuted:(BOOL)muted;
+- (void)setRemoteIDSDestinationURI:(id)i crossDeviceIdentifier:(id)identifier;
+- (void)setRemoteInviteDictionary:(id)dictionary;
+- (void)setRemoteVideoPresentationSize:(CGSize)size;
+- (void)setRemoteVideoPresentationState:(unsigned int)state;
+- (void)setSendingAudio:(BOOL)audio;
+- (void)setSendingAudioData:(BOOL)data;
+- (void)setSendingVideo:(BOOL)video;
+- (void)setSendingVideoExpected:(id)expected;
+- (void)setState:(int)state;
+- (void)startConnectionWithTransport:(id)transport;
+- (void)startedCapturingLocalVideo:(id)video;
 - (void)stop;
-- (void)stoppedCapturingLocalVideo:(id)a3;
-- (void)updateCapabilities:(id)a3;
+- (void)stoppedCapturingLocalVideo:(id)video;
+- (void)updateCapabilities:(id)capabilities;
 @end
 
 @implementation CSDAVConference
@@ -100,9 +100,9 @@
   return v4;
 }
 
-- (CSDAVConference)initWithFeatureFlags:(id)a3
+- (CSDAVConference)initWithFeatureFlags:(id)flags
 {
-  v5 = a3;
+  flagsCopy = flags;
   v18.receiver = self;
   v18.super_class = CSDAVConference;
   v6 = [(CSDAVConference *)&v18 init];
@@ -120,14 +120,14 @@
     v6->_queue = v8;
 
     v10 = +[TUCallCenter sharedInstance];
-    v11 = [v10 queue];
+    queue = [v10 queue];
     delegateQueue = v6->_delegateQueue;
-    v6->_delegateQueue = v11;
+    v6->_delegateQueue = queue;
 
     v6->_connectionTimeout = 30.0;
     v6->_remoteVideoPresentationSize = NSZeroSize;
     *&v6->_state = 1;
-    objc_storeStrong(&v6->_featureFlags, a3);
+    objc_storeStrong(&v6->_featureFlags, flags);
     conferenceProviderCreationBlock = v6->_conferenceProviderCreationBlock;
     v6->_conferenceProviderCreationBlock = &stru_100619E08;
 
@@ -156,66 +156,66 @@
 {
   v3 = objc_opt_class();
   state = self->_state;
-  v5 = [(CSDAVConference *)self conferenceProvider];
-  v6 = [NSString stringWithFormat:@"<%@ %p state=%d conference=%@>", v3, self, state, v5];
+  conferenceProvider = [(CSDAVConference *)self conferenceProvider];
+  v6 = [NSString stringWithFormat:@"<%@ %p state=%d conference=%@>", v3, self, state, conferenceProvider];
 
   return v6;
 }
 
-- (void)prepareWithConfiguration:(id)a3
+- (void)prepareWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CSDAVConference *)self queue];
+  configurationCopy = configuration;
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100069120;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)startConnectionWithTransport:(id)a3
+- (void)startConnectionWithTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSDAVConference *)self configuration];
+    configuration = [(CSDAVConference *)self configuration];
     *buf = 138412546;
-    v12 = v4;
+    v12 = transportCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = configuration;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "transport: %@ self.configuration: %@", buf, 0x16u);
   }
 
-  v7 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000698B8;
   v9[3] = &unk_100619D88;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = transportCopy;
+  v8 = transportCopy;
+  dispatch_async(queue, v9);
 }
 
 - (void)stop
 {
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100069CC8;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_stop
 {
-  v3 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   state = self->_state;
   if (state > 3)
@@ -233,13 +233,13 @@
         }
 
         v6 = dispatch_time(0, 1000000000);
-        v7 = [(CSDAVConference *)self queue];
+        queue2 = [(CSDAVConference *)self queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100069F00;
         block[3] = &unk_100619D38;
         block[4] = self;
-        dispatch_after(v6, v7, block);
+        dispatch_after(v6, queue2, block);
       }
 
       else
@@ -247,14 +247,14 @@
         v8 = sub_100004778();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(CSDAVConference *)self conferenceProvider];
+          conferenceProvider = [(CSDAVConference *)self conferenceProvider];
           *buf = 138412290;
-          v13 = v9;
+          v13 = conferenceProvider;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Calling stop on conference %@", buf, 0xCu);
         }
 
-        v10 = [(CSDAVConference *)self conferenceProvider];
-        [v10 stop];
+        conferenceProvider2 = [(CSDAVConference *)self conferenceProvider];
+        [conferenceProvider2 stop];
       }
     }
   }
@@ -268,53 +268,53 @@
 
 - (void)cancel
 {
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006A06C;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
-  v5 = [(CSDAVConference *)self queue];
+  dataCopy = data;
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006A264;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dataCopy;
+  v6 = dataCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)setRemoteIDSDestinationURI:(id)a3 crossDeviceIdentifier:(id)a4
+- (void)setRemoteIDSDestinationURI:(id)i crossDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDAVConference *)self queue];
+  iCopy = i;
+  identifierCopy = identifier;
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006A390;
   block[3] = &unk_100619E58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = iCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = iCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_setEndedWithReason:(int64_t)a3 error:(id)a4
+- (void)_setEndedWithReason:(int64_t)reason error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   [(CSDAVConference *)self setConferenceProvider:0];
   [(CSDAVConference *)self setState:7];
-  [(CSDAVConference *)self setEndedReason:a3];
-  [(CSDAVConference *)self setEndedError:v6];
+  [(CSDAVConference *)self setEndedReason:reason];
+  [(CSDAVConference *)self setEndedError:errorCopy];
 
   endedReason = self->_endedReason;
   endedError = self->_endedError;
@@ -324,18 +324,18 @@
 
 - (int64_t)inputAudioPowerSpectrumToken
 {
-  v2 = [(CSDAVConference *)self conferenceProvider];
-  v3 = [v2 inputAudioPowerSpectrumToken];
+  conferenceProvider = [(CSDAVConference *)self conferenceProvider];
+  inputAudioPowerSpectrumToken = [conferenceProvider inputAudioPowerSpectrumToken];
 
-  return v3;
+  return inputAudioPowerSpectrumToken;
 }
 
 - (int64_t)outputAudioPowerSpectrumToken
 {
-  v2 = [(CSDAVConference *)self conferenceProvider];
-  v3 = [v2 outputAudioPowerSpectrumToken];
+  conferenceProvider = [(CSDAVConference *)self conferenceProvider];
+  outputAudioPowerSpectrumToken = [conferenceProvider outputAudioPowerSpectrumToken];
 
-  return v3;
+  return outputAudioPowerSpectrumToken;
 }
 
 - (NSDictionary)localInviteDictionary
@@ -346,14 +346,14 @@
   v10 = sub_1000285D8;
   v11 = sub_100032884;
   v12 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006A5F0;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -369,14 +369,14 @@
   v10 = sub_1000285D8;
   v11 = sub_100032884;
   v12 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006A720;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -384,18 +384,18 @@
   return v4;
 }
 
-- (void)setRemoteInviteDictionary:(id)a3
+- (void)setRemoteInviteDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CSDAVConference *)self queue];
+  dictionaryCopy = dictionary;
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006A83C;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
+  dispatch_async(queue, v7);
 }
 
 - (int64_t)callID
@@ -404,14 +404,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006AA10;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -420,35 +420,35 @@
 
 - (BOOL)isCaller
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006AB44;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setCaller:(BOOL)a3
+- (void)setCaller:(BOOL)caller
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006AC38;
   v6[3] = &unk_100619EA8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  callerCopy = caller;
+  dispatch_async(queue, v6);
 }
 
 - (NSDate)dateConnected
@@ -459,14 +459,14 @@
   v10 = sub_1000285D8;
   v11 = sub_100032884;
   v12 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006AE48;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -474,17 +474,17 @@
   return v4;
 }
 
-- (void)setDateConnected:(id)a3
+- (void)setDateConnected:(id)connected
 {
-  v8 = a3;
-  v5 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v5);
+  connectedCopy = connected;
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   dateConnected = self->_dateConnected;
   p_dateConnected = &self->_dateConnected;
-  if (dateConnected != v8)
+  if (dateConnected != connectedCopy)
   {
-    objc_storeStrong(p_dateConnected, a3);
+    objc_storeStrong(p_dateConnected, connected);
   }
 }
 
@@ -496,14 +496,14 @@
   v10 = sub_1000285D8;
   v11 = sub_100032884;
   v12 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006AFFC;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -511,17 +511,17 @@
   return v4;
 }
 
-- (void)setDateEnded:(id)a3
+- (void)setDateEnded:(id)ended
 {
-  v8 = a3;
-  v5 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v5);
+  endedCopy = ended;
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   dateEnded = self->_dateEnded;
   p_dateEnded = &self->_dateEnded;
-  if (dateEnded != v8)
+  if (dateEnded != endedCopy)
   {
-    objc_storeStrong(p_dateEnded, a3);
+    objc_storeStrong(p_dateEnded, ended);
   }
 }
 
@@ -533,14 +533,14 @@
   v10 = sub_1000285D8;
   v11 = sub_100032884;
   v12 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006B1B0;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -548,55 +548,55 @@
   return v4;
 }
 
-- (void)setDateStartedConnecting:(id)a3
+- (void)setDateStartedConnecting:(id)connecting
 {
-  v8 = a3;
-  v5 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v5);
+  connectingCopy = connecting;
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   dateStartedConnecting = self->_dateStartedConnecting;
   p_dateStartedConnecting = &self->_dateStartedConnecting;
-  if (dateStartedConnecting != v8)
+  if (dateStartedConnecting != connectingCopy)
   {
-    objc_storeStrong(p_dateStartedConnecting, a3);
+    objc_storeStrong(p_dateStartedConnecting, connecting);
   }
 }
 
 - (int)state
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006B324;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v5 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   p_state = &self->_state;
   state = self->_state;
   v8 = sub_100004778();
   v9 = v8;
-  if (state >= a3)
+  if (state >= state)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_1004713C4(&self->_state, a3, v9);
+      sub_1004713C4(&self->_state, state, v9);
     }
   }
 
@@ -606,14 +606,14 @@
     {
       v10 = *p_state;
       v11[0] = 67109376;
-      v11[1] = a3;
+      v11[1] = state;
       v12 = 1024;
       v13 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "set CSDAVConferenceState to %d from %d", v11, 0xEu);
     }
 
-    *p_state = a3;
-    switch(a3)
+    *p_state = state;
+    switch(state)
     {
       case 7:
         v9 = +[NSDate date];
@@ -639,14 +639,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006B5A4;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -655,23 +655,23 @@
 
 - (BOOL)isMuted
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006B690;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isMuted
@@ -684,66 +684,66 @@
 
   else
   {
-    v6 = [(CSDAVConference *)self conferenceProvider];
-    v7 = [v6 isMicrophoneMuted];
+    conferenceProvider = [(CSDAVConference *)self conferenceProvider];
+    isMicrophoneMuted = [conferenceProvider isMicrophoneMuted];
 
-    return v7;
+    return isMicrophoneMuted;
   }
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006B7F0;
   v6[3] = &unk_100619EA8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  mutedCopy = muted;
+  dispatch_async(queue, v6);
 }
 
-- (void)setAudioInjectionAllowed:(BOOL)a3
+- (void)setAudioInjectionAllowed:(BOOL)allowed
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006BA84;
   v6[3] = &unk_100619EA8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  allowedCopy = allowed;
+  dispatch_async(queue, v6);
 }
 
 - (BOOL)isSendingAudio
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006BCF4;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isSendingAudio
 {
-  v3 = [(CSDAVConference *)self conferenceProvider];
+  conferenceProvider = [(CSDAVConference *)self conferenceProvider];
 
-  if (v3)
+  if (conferenceProvider)
   {
-    v4 = [(CSDAVConference *)self conferenceProvider];
-    v5 = [v4 isAudioPaused] ^ 1;
+    conferenceProvider2 = [(CSDAVConference *)self conferenceProvider];
+    v5 = [conferenceProvider2 isAudioPaused] ^ 1;
   }
 
   else
@@ -754,128 +754,128 @@
   return v5;
 }
 
-- (void)setSendingAudio:(BOOL)a3
+- (void)setSendingAudio:(BOOL)audio
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006BE1C;
   v6[3] = &unk_100619EA8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  audioCopy = audio;
+  dispatch_async(queue, v6);
 }
 
 - (BOOL)isSendingAudioData
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006BFF8;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isSendingAudioData
 {
-  v3 = [(CSDAVConference *)self conferenceProvider];
+  conferenceProvider = [(CSDAVConference *)self conferenceProvider];
 
-  if (!v3)
+  if (!conferenceProvider)
   {
     return 0;
   }
 
-  v4 = [(CSDAVConference *)self conferenceProvider];
-  v5 = [v4 isSendingAudio];
+  conferenceProvider2 = [(CSDAVConference *)self conferenceProvider];
+  isSendingAudio = [conferenceProvider2 isSendingAudio];
 
-  return v5;
+  return isSendingAudio;
 }
 
-- (void)setSendingAudioData:(BOOL)a3
+- (void)setSendingAudioData:(BOOL)data
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006C120;
   v6[3] = &unk_100619EA8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  dataCopy = data;
+  dispatch_async(queue, v6);
 }
 
 - (BOOL)hasReceivedFirstRemoteFrame
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006C2F8;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isSendingVideo
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006C3E4;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isSendingVideo
 {
-  v3 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDAVConference *)self conferenceProvider];
+  conferenceProvider = [(CSDAVConference *)self conferenceProvider];
 
-  if (v4)
+  if (conferenceProvider)
   {
-    v5 = [(CSDAVConference *)self _isSendingVideoExpected];
-    v6 = v5;
-    if (v5)
+    _isSendingVideoExpected = [(CSDAVConference *)self _isSendingVideoExpected];
+    v6 = _isSendingVideoExpected;
+    if (_isSendingVideoExpected)
     {
-      LOBYTE(v7) = [v5 BOOLValue];
+      LOBYTE(v7) = [_isSendingVideoExpected BOOLValue];
     }
 
     else
     {
-      v8 = [(CSDAVConference *)self conferenceProvider];
-      v7 = [v8 isVideoPaused] ^ 1;
+      conferenceProvider2 = [(CSDAVConference *)self conferenceProvider];
+      v7 = [conferenceProvider2 isVideoPaused] ^ 1;
     }
   }
 
@@ -887,16 +887,16 @@
   return v7;
 }
 
-- (void)setSendingVideo:(BOOL)a3
+- (void)setSendingVideo:(BOOL)video
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006C554;
   v6[3] = &unk_100619EA8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  videoCopy = video;
+  dispatch_async(queue, v6);
 }
 
 - (NSNumber)isSendingVideoExpected
@@ -907,14 +907,14 @@
   v10 = sub_1000285D8;
   v11 = sub_100032884;
   v12 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006C930;
   v6[3] = &unk_100619E80;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -924,61 +924,61 @@
 
 - (id)_isSendingVideoExpected
 {
-  v3 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   sendingVideoExpected = self->_sendingVideoExpected;
 
   return sendingVideoExpected;
 }
 
-- (void)setSendingVideoExpected:(id)a3
+- (void)setSendingVideoExpected:(id)expected
 {
-  v8 = a3;
-  v5 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v5);
+  expectedCopy = expected;
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   sendingVideoExpected = self->_sendingVideoExpected;
   p_sendingVideoExpected = &self->_sendingVideoExpected;
   if ((TUObjectsAreEqualOrNil() & 1) == 0)
   {
-    objc_storeStrong(p_sendingVideoExpected, a3);
+    objc_storeStrong(p_sendingVideoExpected, expected);
   }
 }
 
-- (void)updateCapabilities:(id)a3
+- (void)updateCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [(CSDAVConference *)self queue];
+  capabilitiesCopy = capabilities;
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006CAFC;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = capabilitiesCopy;
+  v6 = capabilitiesCopy;
+  dispatch_async(queue, v7);
 }
 
 - (BOOL)isRemoteVideoPaused
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006CD04;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (CGSize)remoteVideoPresentationSize
@@ -988,14 +988,14 @@
   v11 = 0x3010000000;
   v12 = &unk_1004DFFDA;
   v13 = NSZeroSize;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006CE14;
   v8[3] = &unk_100619E80;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v3, v8);
+  dispatch_sync(queue, v8);
 
   v4 = v10[4];
   v5 = v10[5];
@@ -1007,11 +1007,11 @@
   return result;
 }
 
-- (void)setRemoteVideoPresentationSize:(CGSize)a3
+- (void)setRemoteVideoPresentationSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CSDAVConference *)self queue];
+  height = size.height;
+  width = size.width;
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006CEC4;
@@ -1019,133 +1019,133 @@
   block[4] = self;
   *&block[5] = width;
   *&block[6] = height;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 - (unsigned)remoteVideoPresentationState
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006D0E8;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setRemoteVideoPresentationState:(unsigned int)a3
+- (void)setRemoteVideoPresentationState:(unsigned int)state
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006D194;
   v6[3] = &unk_100619EF8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  stateCopy = state;
+  dispatch_async(queue, v6);
 }
 
 - (void)_setUpDidStartTimeout
 {
   [(CSDAVConference *)self connectionTimeout];
   v4 = dispatch_time(0, (v3 * 1000000000.0));
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006D364;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, queue, block);
 }
 
 - (int)deviceRole
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006D4C0;
   v5[3] = &unk_100619E80;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setDeviceRole:(int)a3
+- (void)setDeviceRole:(int)role
 {
-  v5 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006D5C4;
   v6[3] = &unk_100619EF8;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  roleCopy = role;
+  dispatch_async(queue, v6);
 }
 
-- (void)startedCapturingLocalVideo:(id)a3
+- (void)startedCapturingLocalVideo:(id)video
 {
   if (TUAllowLocalVideoRecording())
   {
-    v4 = [(CSDAVConference *)self queue];
+    queue = [(CSDAVConference *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006D7F0;
     block[3] = &unk_100619D38;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)stoppedCapturingLocalVideo:(id)a3
+- (void)stoppedCapturingLocalVideo:(id)video
 {
   if (TUAllowLocalVideoRecording())
   {
-    v4 = [(CSDAVConference *)self queue];
+    queue = [(CSDAVConference *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006D890;
     block[3] = &unk_100619D38;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)_performDelegateCallback:(id)a3
+- (void)_performDelegateCallback:(id)callback
 {
-  block = a3;
-  v4 = [(CSDAVConference *)self queue];
-  dispatch_assert_queue_V2(v4);
+  block = callback;
+  queue = [(CSDAVConference *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDAVConference *)self delegate];
-  if (v5)
+  delegate = [(CSDAVConference *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(CSDAVConference *)self delegateQueue];
+    v6 = delegate;
+    delegateQueue = [(CSDAVConference *)self delegateQueue];
 
-    if (v7)
+    if (delegateQueue)
     {
-      v8 = [(CSDAVConference *)self delegateQueue];
+      delegateQueue2 = [(CSDAVConference *)self delegateQueue];
       v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-      dispatch_async(v8, v9);
+      dispatch_async(delegateQueue2, v9);
     }
   }
 }
@@ -1170,16 +1170,16 @@
   [(CSDAVConference *)self _performDelegateCallback:v2];
 }
 
-- (void)_sendDelegateEndedWithReason:(int64_t)a3 error:(id)a4
+- (void)_sendDelegateEndedWithReason:(int64_t)reason error:(id)error
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006DBA8;
   v7[3] = &unk_100619F20;
-  v8 = a4;
-  v9 = a3;
+  errorCopy = error;
+  reasonCopy = reason;
   v7[4] = self;
-  v6 = v8;
+  v6 = errorCopy;
   [(CSDAVConference *)self _performDelegateCallback:v7];
 }
 
@@ -1233,92 +1233,92 @@
   [(CSDAVConference *)self _performDelegateCallback:v2];
 }
 
-- (void)_sendDelegateRemoteMediaStalled:(BOOL)a3
+- (void)_sendDelegateRemoteMediaStalled:(BOOL)stalled
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10006E0A8;
   v3[3] = &unk_100619EA8;
   v3[4] = self;
-  v4 = a3;
+  stalledCopy = stalled;
   [(CSDAVConference *)self _performDelegateCallback:v3];
 }
 
-- (void)_sendDelegateInputFrequencyLevelChanged:(id)a3
+- (void)_sendDelegateInputFrequencyLevelChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006E1A8;
   v4[3] = &unk_100619D88;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CSDAVConference *)v5 _performDelegateCallback:v4];
+  selfCopy = self;
+  changedCopy = changed;
+  v3 = changedCopy;
+  [(CSDAVConference *)selfCopy _performDelegateCallback:v4];
 }
 
-- (void)_sendDelegateOutputFrequencyLevelChanged:(id)a3
+- (void)_sendDelegateOutputFrequencyLevelChanged:(id)changed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006E2A4;
   v4[3] = &unk_100619D88;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CSDAVConference *)v5 _performDelegateCallback:v4];
+  selfCopy = self;
+  changedCopy = changed;
+  v3 = changedCopy;
+  [(CSDAVConference *)selfCopy _performDelegateCallback:v4];
 }
 
-- (void)_sendDelegateInputLevelChanged:(float)a3
+- (void)_sendDelegateInputLevelChanged:(float)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10006E37C;
   v3[3] = &unk_100619EF8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(CSDAVConference *)self _performDelegateCallback:v3];
 }
 
-- (void)_sendDelegateOutputLevelChanged:(float)a3
+- (void)_sendDelegateOutputLevelChanged:(float)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10006E458;
   v3[3] = &unk_100619EF8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(CSDAVConference *)self _performDelegateCallback:v3];
 }
 
-- (void)_sendDelegateBytesOfDataUsageChanged:(int64_t)a3
+- (void)_sendDelegateBytesOfDataUsageChanged:(int64_t)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10006E530;
   v3[3] = &unk_100619D60;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = changed;
   [(CSDAVConference *)self _performDelegateCallback:v3];
 }
 
-- (void)_sendDelegateReceivedData:(id)a3 forCallID:(int64_t)a4
+- (void)_sendDelegateReceivedData:(id)data forCallID:(int64_t)d
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10006E634;
   v6[3] = &unk_100619F20;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(CSDAVConference *)v7 _performDelegateCallback:v6];
+  selfCopy = self;
+  dataCopy = data;
+  dCopy = d;
+  v5 = dataCopy;
+  [(CSDAVConference *)selfCopy _performDelegateCallback:v6];
 }
 
-- (int64_t)_endedReasonForDidStopError:(id)a3 error:(id *)a4
+- (int64_t)_endedReasonForDidStopError:(id)error error:(id *)a4
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (!errorCopy)
   {
     v9 = 0;
     if (!a4)
@@ -1329,14 +1329,14 @@
     goto LABEL_11;
   }
 
-  v7 = [v5 code];
+  code = [errorCopy code];
   v8 = 1;
-  if (v7 == 32005)
+  if (code == 32005)
   {
     v8 = 7;
   }
 
-  if (v7 == 32003)
+  if (code == 32003)
   {
     v9 = 2;
   }
@@ -1346,20 +1346,20 @@
     v9 = v8;
   }
 
-  if (v7 == 32003)
+  if (code == 32003)
   {
-    v5 = 0;
+    errorCopy = 0;
   }
 
   else
   {
-    v5 = v6;
+    errorCopy = v6;
   }
 
   if (a4)
   {
 LABEL_11:
-    *a4 = v5;
+    *a4 = errorCopy;
   }
 
 LABEL_12:
@@ -1367,53 +1367,53 @@ LABEL_12:
   return v9;
 }
 
-- (void)conferenceProvider:(id)a3 didStartSession:(BOOL)a4 error:(id)a5
+- (void)conferenceProvider:(id)provider didStartSession:(BOOL)session error:(id)error
 {
-  v7 = a5;
-  v8 = [(CSDAVConference *)self queue];
+  errorCopy = error;
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006E7E0;
   block[3] = &unk_100619F48;
-  v12 = a4;
+  sessionCopy = session;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
-  dispatch_async(v8, block);
+  v11 = errorCopy;
+  v9 = errorCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)conferenceProvider:(id)a3 didStopWithError:(id)a4 callMetadata:(id)a5
+- (void)conferenceProvider:(id)provider didStopWithError:(id)error callMetadata:(id)metadata
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDAVConference *)self queue];
+  errorCopy = error;
+  metadataCopy = metadata;
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006EB08;
   block[3] = &unk_100619E58;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = errorCopy;
+  v14 = metadataCopy;
+  selfCopy = self;
+  v10 = metadataCopy;
+  v11 = errorCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)connectionClosedForConferenceProvider:(id)a3
+- (void)connectionClosedForConferenceProvider:(id)provider
 {
-  v4 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006ED84;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)conferenceProvider:(id)a3 updateInputFrequencyLevel:(id)a4
+- (void)conferenceProvider:(id)provider updateInputFrequencyLevel:(id)level
 {
-  v5 = [a4 copy];
-  v6 = [(CSDAVConference *)self queue];
+  v5 = [level copy];
+  queue = [(CSDAVConference *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006EEB0;
@@ -1421,13 +1421,13 @@ LABEL_12:
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
-- (void)conferenceProvider:(id)a3 updateOutputFrequencyLevel:(id)a4
+- (void)conferenceProvider:(id)provider updateOutputFrequencyLevel:(id)level
 {
-  v5 = [a4 copy];
-  v6 = [(CSDAVConference *)self queue];
+  v5 = [level copy];
+  queue = [(CSDAVConference *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10006EF74;
@@ -1435,125 +1435,125 @@ LABEL_12:
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
-- (void)conferenceProvider:(id)a3 updateInputLevel:(float)a4
+- (void)conferenceProvider:(id)provider updateInputLevel:(float)level
 {
-  v6 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006F018;
   v7[3] = &unk_100619EF8;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  levelCopy = level;
+  dispatch_async(queue, v7);
 }
 
-- (void)conferenceProvider:(id)a3 updateOutputLevel:(float)a4
+- (void)conferenceProvider:(id)provider updateOutputLevel:(float)level
 {
-  v6 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006F0C0;
   v7[3] = &unk_100619EF8;
   v7[4] = self;
-  v8 = a4;
-  dispatch_async(v6, v7);
+  levelCopy = level;
+  dispatch_async(queue, v7);
 }
 
-- (void)conferenceProvider:(id)a3 didPauseAudio:(BOOL)a4 error:(id)a5
+- (void)conferenceProvider:(id)provider didPauseAudio:(BOOL)audio error:(id)error
 {
-  v7 = a5;
-  v8 = [(CSDAVConference *)self queue];
+  errorCopy = error;
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006F18C;
   block[3] = &unk_100619F48;
-  v13 = a4;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
-  dispatch_async(v8, block);
+  audioCopy = audio;
+  v11 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)conferenceProvider:(id)a3 didPauseVideo:(BOOL)a4 error:(id)a5
+- (void)conferenceProvider:(id)provider didPauseVideo:(BOOL)video error:(id)error
 {
-  v7 = a5;
-  v8 = [(CSDAVConference *)self queue];
+  errorCopy = error;
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006F308;
   block[3] = &unk_100619F48;
-  v13 = a4;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
-  dispatch_async(v8, block);
+  videoCopy = video;
+  v11 = errorCopy;
+  selfCopy = self;
+  v9 = errorCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)conferenceProviderReceivedFirstRemoteFrame:(id)a3
+- (void)conferenceProviderReceivedFirstRemoteFrame:(id)frame
 {
-  v4 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006F580;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)conferenceProvider:(id)a3 remoteVideoPaused:(BOOL)a4
+- (void)conferenceProvider:(id)provider remoteVideoPaused:(BOOL)paused
 {
-  v6 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006F698;
   v7[3] = &unk_100619EA8;
-  v8 = a4;
+  pausedCopy = paused;
   v7[4] = self;
-  dispatch_async(v6, v7);
+  dispatch_async(queue, v7);
 }
 
-- (void)conferenceProvider:(id)a3 remoteMediaStalled:(BOOL)a4
+- (void)conferenceProvider:(id)provider remoteMediaStalled:(BOOL)stalled
 {
-  v6 = [(CSDAVConference *)self queue];
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006F7EC;
   v7[3] = &unk_100619EA8;
-  v8 = a4;
+  stalledCopy = stalled;
   v7[4] = self;
-  dispatch_async(v6, v7);
+  dispatch_async(queue, v7);
 }
 
-- (void)serverDiedForConferenceProvider:(id)a3
+- (void)serverDiedForConferenceProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(CSDAVConference *)self queue];
+  providerCopy = provider;
+  queue = [(CSDAVConference *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006F954;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providerCopy;
+  selfCopy = self;
+  v6 = providerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)conferenceProvider:(id)a3 didReceiveData:(id)a4 forCallID:(int64_t)a5
+- (void)conferenceProvider:(id)provider didReceiveData:(id)data forCallID:(int64_t)d
 {
-  v7 = [a4 copy];
-  v8 = [(CSDAVConference *)self queue];
+  v7 = [data copy];
+  queue = [(CSDAVConference *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006FA70;
   block[3] = &unk_100619F20;
   block[4] = self;
   v11 = v7;
-  v12 = a5;
+  dCopy = d;
   v9 = v7;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 - (CSDAVConferenceDelegate)delegate

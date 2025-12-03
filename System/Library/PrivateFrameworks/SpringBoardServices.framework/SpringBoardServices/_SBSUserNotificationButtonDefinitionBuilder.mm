@@ -1,7 +1,7 @@
 @interface _SBSUserNotificationButtonDefinitionBuilder
 - (_SBSUserNotificationButtonDefinitionBuilder)init;
 - (id)build;
-- (void)addButtonDefinitionWithTitle:(id)a3 withConfiguration:(id)a4;
+- (void)addButtonDefinitionWithTitle:(id)title withConfiguration:(id)configuration;
 @end
 
 @implementation _SBSUserNotificationButtonDefinitionBuilder
@@ -21,19 +21,19 @@
   return v2;
 }
 
-- (void)addButtonDefinitionWithTitle:(id)a3 withConfiguration:(id)a4
+- (void)addButtonDefinitionWithTitle:(id)title withConfiguration:(id)configuration
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v11)
+  titleCopy = title;
+  configurationCopy = configuration;
+  if (!titleCopy)
   {
     [_SBSUserNotificationButtonDefinitionBuilder addButtonDefinitionWithTitle:a2 withConfiguration:self];
   }
 
-  v8 = [(SBSUserNotificationButtonDefinition *)[SBSMutableUserNotificationButtonDefinition alloc] initWithTitle:v11];
-  if (v7)
+  v8 = [(SBSUserNotificationButtonDefinition *)[SBSMutableUserNotificationButtonDefinition alloc] initWithTitle:titleCopy];
+  if (configurationCopy)
   {
-    v7[2](v7, v8);
+    configurationCopy[2](configurationCopy, v8);
   }
 
   definitions = self->_definitions;
@@ -64,10 +64,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) build];
-        if (v9)
+        build = [*(*(&v11 + 1) + 8 * i) build];
+        if (build)
         {
-          [v3 addObject:v9];
+          [v3 addObject:build];
         }
       }
 

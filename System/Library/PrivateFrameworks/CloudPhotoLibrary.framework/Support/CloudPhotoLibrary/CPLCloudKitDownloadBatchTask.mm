@@ -1,27 +1,27 @@
 @interface CPLCloudKitDownloadBatchTask
-- (CPLCloudKitDownloadBatchTask)initWithController:(id)a3 syncAnchor:(id)a4 scope:(id)a5 transportScopeMapping:(id)a6 currentScopeChange:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9;
-- (id)_partnerScopesNeedingToPullChangesFromZoneIDsWithSyncObligations:(id)a3;
-- (void)_downloadBatchWithCurrentUserID:(id)a3;
-- (void)addPartnerScope:(id)a3 mostCurrentSyncAnchor:(id)a4;
+- (CPLCloudKitDownloadBatchTask)initWithController:(id)controller syncAnchor:(id)anchor scope:(id)scope transportScopeMapping:(id)mapping currentScopeChange:(id)change progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)_partnerScopesNeedingToPullChangesFromZoneIDsWithSyncObligations:(id)obligations;
+- (void)_downloadBatchWithCurrentUserID:(id)d;
+- (void)addPartnerScope:(id)scope mostCurrentSyncAnchor:(id)anchor;
 - (void)runOperations;
-- (void)runWithinSyncSession:(id)a3;
-- (void)sendProgressBatch:(id)a3 updatedScopeChange:(id)a4 updatedFlags:(id)a5 updatedSyncAnchor:(id)a6 zoneIDsWithSyncObligations:(id)a7;
+- (void)runWithinSyncSession:(id)session;
+- (void)sendProgressBatch:(id)batch updatedScopeChange:(id)change updatedFlags:(id)flags updatedSyncAnchor:(id)anchor zoneIDsWithSyncObligations:(id)obligations;
 @end
 
 @implementation CPLCloudKitDownloadBatchTask
 
-- (CPLCloudKitDownloadBatchTask)initWithController:(id)a3 syncAnchor:(id)a4 scope:(id)a5 transportScopeMapping:(id)a6 currentScopeChange:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9
+- (CPLCloudKitDownloadBatchTask)initWithController:(id)controller syncAnchor:(id)anchor scope:(id)scope transportScopeMapping:(id)mapping currentScopeChange:(id)change progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v29 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  controllerCopy = controller;
+  anchorCopy = anchor;
+  scopeCopy = scope;
+  mappingCopy = mapping;
+  changeCopy = change;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v34.receiver = self;
   v34.super_class = CPLCloudKitDownloadBatchTask;
-  v21 = [(CPLCloudKitTransportTask *)&v34 initWithController:v15];
+  v21 = [(CPLCloudKitTransportTask *)&v34 initWithController:controllerCopy];
   if (v21)
   {
     objc_initWeak(&location, v21);
@@ -30,25 +30,25 @@
     v30[2] = sub_10004F7F8;
     v30[3] = &unk_1002747E0;
     objc_copyWeak(&v32, &location);
-    v31 = v20;
+    v31 = completionHandlerCopy;
     v22 = [v30 copy];
     completionHandler = v21->_completionHandler;
     v21->_completionHandler = v22;
 
-    v24 = [v19 copy];
+    v24 = [handlerCopy copy];
     progressHandler = v21->_progressHandler;
     v21->_progressHandler = v24;
 
-    if (v16)
+    if (anchorCopy)
     {
-      v26 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:v16 class:objc_opt_class()];
+      v26 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:anchorCopy class:objc_opt_class()];
       syncAnchor = v21->_syncAnchor;
       v21->_syncAnchor = v26;
     }
 
-    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:v17];
-    objc_storeStrong(&v21->_scope, a5);
-    objc_storeStrong(&v21->_currentScopeChange, a7);
+    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:mappingCopy];
+    objc_storeStrong(&v21->_scope, scope);
+    objc_storeStrong(&v21->_currentScopeChange, change);
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
@@ -57,20 +57,20 @@
   return v21;
 }
 
-- (void)runWithinSyncSession:(id)a3
+- (void)runWithinSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(CPLCloudKitDownloadBatchTask *)self hash];
   kdebug_trace();
   v5.receiver = self;
   v5.super_class = CPLCloudKitDownloadBatchTask;
-  [(CPLCloudKitTransportTask *)&v5 runWithinSyncSession:v4];
+  [(CPLCloudKitTransportTask *)&v5 runWithinSyncSession:sessionCopy];
 }
 
-- (void)addPartnerScope:(id)a3 mostCurrentSyncAnchor:(id)a4
+- (void)addPartnerScope:(id)scope mostCurrentSyncAnchor:(id)anchor
 {
-  v7 = a3;
-  v8 = a4;
+  scopeCopy = scope;
+  anchorCopy = anchor;
   if (!self->_scopesBySupplementalZoneID)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
@@ -82,26 +82,26 @@
     self->_supplementalChangeTokenByZoneID = v11;
   }
 
-  v13 = [v7 scopeIdentifier];
-  v14 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v13];
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  v14 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
   if (!v14)
   {
-    sub_10019BC78(a2, self, v7);
+    sub_10019BC78(a2, self, scopeCopy);
   }
 
-  v15 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:v8 class:objc_opt_class()];
+  v15 = [NSKeyedUnarchiver cpl_safeUnarchiveObjectWithData:anchorCopy class:objc_opt_class()];
   if (v15)
   {
-    v16 = [v14 zoneID];
-    if (!v16)
+    zoneID = [v14 zoneID];
+    if (!zoneID)
     {
-      sub_10019BB00(a2, self, v7);
+      sub_10019BB00(a2, self, scopeCopy);
     }
 
-    v17 = v16;
-    [(NSMutableDictionary *)self->_supplementalChangeTokenByZoneID setObject:v15 forKeyedSubscript:v16];
-    [(NSMutableDictionary *)self->_scopesBySupplementalZoneID setObject:v7 forKeyedSubscript:v17];
+    v17 = zoneID;
+    [(NSMutableDictionary *)self->_supplementalChangeTokenByZoneID setObject:v15 forKeyedSubscript:zoneID];
+    [(NSMutableDictionary *)self->_scopesBySupplementalZoneID setObject:scopeCopy forKeyedSubscript:v17];
   }
 
   else if ((_CPLSilentLogging & 1) == 0)
@@ -110,18 +110,18 @@
   }
 }
 
-- (id)_partnerScopesNeedingToPullChangesFromZoneIDsWithSyncObligations:(id)a3
+- (id)_partnerScopesNeedingToPullChangesFromZoneIDsWithSyncObligations:(id)obligations
 {
-  v4 = a3;
-  if (-[NSMutableDictionary count](self->_supplementalChangeTokenByZoneID, "count") && (v5 = [v4 count]) != 0)
+  obligationsCopy = obligations;
+  if (-[NSMutableDictionary count](self->_supplementalChangeTokenByZoneID, "count") && (v5 = [obligationsCopy count]) != 0)
   {
     v6 = [[NSMutableArray alloc] initWithCapacity:v5];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v4;
-    v7 = v4;
+    v18 = obligationsCopy;
+    v7 = obligationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v8)
     {
@@ -171,7 +171,7 @@
     }
 
     v16 = [v6 copy];
-    v4 = v18;
+    obligationsCopy = v18;
   }
 
   else
@@ -182,17 +182,17 @@
   return v16;
 }
 
-- (void)sendProgressBatch:(id)a3 updatedScopeChange:(id)a4 updatedFlags:(id)a5 updatedSyncAnchor:(id)a6 zoneIDsWithSyncObligations:(id)a7
+- (void)sendProgressBatch:(id)batch updatedScopeChange:(id)change updatedFlags:(id)flags updatedSyncAnchor:(id)anchor zoneIDsWithSyncObligations:(id)obligations
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v14)
+  batchCopy = batch;
+  changeCopy = change;
+  flagsCopy = flags;
+  anchorCopy = anchor;
+  obligationsCopy = obligations;
+  if (anchorCopy)
   {
-    v16 = [NSKeyedArchiver cpl_archivedDataWithRootObject:v14];
-    if (!v12)
+    v16 = [NSKeyedArchiver cpl_archivedDataWithRootObject:anchorCopy];
+    if (!changeCopy)
     {
       goto LABEL_4;
     }
@@ -201,17 +201,17 @@
   }
 
   v16 = 0;
-  if (v12)
+  if (changeCopy)
   {
 LABEL_3:
-    [v19 addRecord:v12];
-    objc_storeStrong(&self->_currentScopeChange, a4);
+    [batchCopy addRecord:changeCopy];
+    objc_storeStrong(&self->_currentScopeChange, change);
   }
 
 LABEL_4:
   progressHandler = self->_progressHandler;
-  v18 = [(CPLCloudKitDownloadBatchTask *)self _partnerScopesNeedingToPullChangesFromZoneIDsWithSyncObligations:v15];
-  progressHandler[2](progressHandler, v19, v13, v16, v18);
+  v18 = [(CPLCloudKitDownloadBatchTask *)self _partnerScopesNeedingToPullChangesFromZoneIDsWithSyncObligations:obligationsCopy];
+  progressHandler[2](progressHandler, batchCopy, flagsCopy, v16, v18);
 }
 
 - (void)runOperations
@@ -224,9 +224,9 @@ LABEL_4:
   [(CPLCloudKitTransportTask *)self getUserRecordIDFetchIfNecessaryWithCompletionHandler:v2];
 }
 
-- (void)_downloadBatchWithCurrentUserID:(id)a3
+- (void)_downloadBatchWithCurrentUserID:(id)d
 {
-  v44 = a3;
+  dCopy = d;
   v93 = 0;
   v4 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v93];
   v43 = v93;
@@ -235,19 +235,19 @@ LABEL_4:
     scope = self->_scope;
     if (scope)
     {
-      v6 = [(CPLEngineScope *)scope scopeIdentifier];
-      v42 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v6];
+      scopeIdentifier = [(CPLEngineScope *)scope scopeIdentifier];
+      v42 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
       if (v42)
       {
-        v39 = [v42 zoneID];
+        zoneID = [v42 zoneID];
         v40 = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
         [v40 setPreviousServerChangeToken:self->_syncAnchor];
         [v40 setResultsLimit:200];
         v7 = [CKFetchRecordZoneChangesOperation alloc];
-        v96 = v39;
+        v96 = zoneID;
         v8 = [NSArray arrayWithObjects:&v96 count:1];
-        v94 = v39;
+        v94 = zoneID;
         v95 = v40;
         v9 = [NSDictionary dictionaryWithObjects:&v95 forKeys:&v94 count:1];
         v10 = [v7 initWithRecordZoneIDs:v8 configurationsByRecordZoneID:v9];
@@ -306,15 +306,15 @@ LABEL_4:
         v78[1] = v78;
         v78[2] = 0x2020000000;
         v79 = 0;
-        v14 = [(CPLCloudKitTransportTask *)self controller];
-        v15 = [v14 zoneIdentificationForCloudKitScope:v42 engineScope:self->_scope];
+        controller = [(CPLCloudKitTransportTask *)self controller];
+        v15 = [controller zoneIdentificationForCloudKitScope:v42 engineScope:self->_scope];
 
-        v16 = [(CPLEngineScope *)self->_scope scopeIdentifier];
+        scopeIdentifier2 = [(CPLEngineScope *)self->_scope scopeIdentifier];
         if (+[CPLCloudKitDownloadBatchTask forceUpdatePrimarySyncStateOnce])
         {
-          v17 = [(CPLCloudKitTransportTask *)self controller];
-          v18 = [v17 mainScopeIdentifier];
-          v19 = [v16 isEqualToString:v18];
+          controller2 = [(CPLCloudKitTransportTask *)self controller];
+          mainScopeIdentifier = [controller2 mainScopeIdentifier];
+          v19 = [scopeIdentifier2 isEqualToString:mainScopeIdentifier];
 
           if (v19)
           {
@@ -323,7 +323,7 @@ LABEL_4:
             v21 = [v15 recordIDWithRecordName:@"PrimarySync-0000-ZS"];
             v22 = [v20 initWithRecordType:@"CPLZoneState" recordID:v21];
 
-            v23 = [v15 updatedScopeChangeFromScopeChange:self->_currentScopeChange currentUserID:v44 withCKRecord:v22];
+            v23 = [v15 updatedScopeChangeFromScopeChange:self->_currentScopeChange currentUserID:dCopy withCKRecord:v22];
             if (v23)
             {
               v24 = objc_alloc_init(CPLChangeBatch);
@@ -341,9 +341,9 @@ LABEL_4:
         v74 = v86;
         v73 = v78;
         v69[4] = self;
-        v25 = v16;
+        v25 = scopeIdentifier2;
         v70 = v25;
-        v26 = v44;
+        v26 = dCopy;
         v71 = v26;
         v27 = v15;
         v72 = v27;
@@ -394,9 +394,9 @@ LABEL_4:
         v53[2] = sub_10019B974;
         v53[3] = &unk_1002748D0;
         v57 = v78;
-        v32 = v39;
+        v32 = zoneID;
         v54 = v32;
-        v55 = self;
+        selfCopy = self;
         v33 = v31;
         v56 = v33;
         [v10 setRecordZoneChangeTokensUpdatedBlock:v53];
@@ -408,7 +408,7 @@ LABEL_4:
         v34 = v32;
         v52 = a2;
         v46 = v34;
-        v47 = self;
+        selfCopy2 = self;
         v35 = v33;
         v48 = v35;
         v50 = v82;

@@ -1,41 +1,41 @@
 @interface SearchUICardSectionCreator
-+ (Class)viewClassForCardSection:(id)a3 horizontal:(BOOL)a4;
-+ (id)cardSectionViewForModel:(id)a3 feedbackDelegate:(id)a4;
++ (Class)viewClassForCardSection:(id)section horizontal:(BOOL)horizontal;
++ (id)cardSectionViewForModel:(id)model feedbackDelegate:(id)delegate;
 @end
 
 @implementation SearchUICardSectionCreator
 
-+ (Class)viewClassForCardSection:(id)a3 horizontal:(BOOL)a4
++ (Class)viewClassForCardSection:(id)section horizontal:(BOOL)horizontal
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  horizontalCopy = horizontal;
+  sectionCopy = section;
+  v6 = sectionCopy;
+  if (horizontalCopy)
   {
-    v7 = [v5 _searchUIHorizontalViewClass];
-    if (!v7)
+    _searchUIHorizontalViewClass = [sectionCopy _searchUIHorizontalViewClass];
+    if (!_searchUIHorizontalViewClass)
     {
-      v7 = [v6 _searchUIViewClass];
+      _searchUIHorizontalViewClass = [v6 _searchUIViewClass];
     }
 
-    v8 = v7;
+    _searchUIViewClass = _searchUIHorizontalViewClass;
   }
 
   else
   {
-    v8 = [v5 _searchUIViewClass];
+    _searchUIViewClass = [sectionCopy _searchUIViewClass];
   }
 
-  v9 = v8;
+  v9 = _searchUIViewClass;
 
   return v9;
 }
 
-+ (id)cardSectionViewForModel:(id)a3 feedbackDelegate:(id)a4
++ (id)cardSectionViewForModel:(id)model feedbackDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_msgSend(v6 "cardSectionViewClass"))];
+  delegateCopy = delegate;
+  modelCopy = model;
+  v7 = [objc_alloc(objc_msgSend(modelCopy "cardSectionViewClass"))];
 
   return v7;
 }

@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (NSURL)urlForFileSystem;
 - (TPFileStorageManager)init;
-- (id)imageWithName:(id)a3;
+- (id)imageWithName:(id)name;
 - (id)urlsForLegacyFileSystem;
-- (void)clearCacheWithCompletion:(id)a3;
+- (void)clearCacheWithCompletion:(id)completion;
 - (void)clearLegacyStorageIfNecessary;
 - (void)dealloc;
-- (void)deleteStorageAtURLs:(id)a3;
-- (void)saveImage:(id)a3 withName:(id)a4;
+- (void)deleteStorageAtURLs:(id)ls;
+- (void)saveImage:(id)image withName:(id)name;
 - (void)urlForFileSystem;
 - (void)urlsForLegacyFileSystem;
 @end
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __38__TPFileStorageManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -43,8 +43,8 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_localeChanged name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_localeChanged name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v2;
@@ -62,9 +62,9 @@ uint64_t __38__TPFileStorageManager_sharedInstance__block_invoke(uint64_t a1)
   urlForFileSystem = self->_urlForFileSystem;
   if (!urlForFileSystem)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v11 = 0;
-    v5 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v11];
+    v5 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v11];
     v6 = v11;
 
     if (v5)
@@ -92,29 +92,29 @@ uint64_t __38__TPFileStorageManager_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TPFileStorageManager;
   [(TPFileStorageManager *)&v4 dealloc];
 }
 
-- (void)saveImage:(id)a3 withName:(id)a4
+- (void)saveImage:(id)image withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPFileStorageManager *)self queue];
+  imageCopy = image;
+  nameCopy = name;
+  queue = [(TPFileStorageManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__TPFileStorageManager_saveImage_withName___block_invoke;
   block[3] = &unk_1E7C0C580;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = nameCopy;
+  v13 = imageCopy;
+  v9 = imageCopy;
+  v10 = nameCopy;
+  dispatch_async(queue, block);
 }
 
 void __43__TPFileStorageManager_saveImage_withName___block_invoke(uint64_t a1)
@@ -161,25 +161,25 @@ void __43__TPFileStorageManager_saveImage_withName___block_invoke(uint64_t a1)
   }
 }
 
-- (id)imageWithName:(id)a3
+- (id)imageWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
   v18 = 0;
-  v5 = [(TPFileStorageManager *)self queue];
+  queue = [(TPFileStorageManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__TPFileStorageManager_imageWithName___block_invoke;
   block[3] = &unk_1E7C0C478;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   v11 = v6;
   v12 = &v13;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v7 = v14[5];
   if (!v7)
@@ -302,18 +302,18 @@ LABEL_13:
   }
 }
 
-- (void)clearCacheWithCompletion:(id)a3
+- (void)clearCacheWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPFileStorageManager *)self queue];
+  completionCopy = completion;
+  queue = [(TPFileStorageManager *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__TPFileStorageManager_clearCacheWithCompletion___block_invoke;
   v7[3] = &unk_1E7C0C048;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_barrier_async(queue, v7);
 }
 
 void __49__TPFileStorageManager_clearCacheWithCompletion___block_invoke(uint64_t a1)
@@ -399,16 +399,16 @@ void __49__TPFileStorageManager_clearCacheWithCompletion___block_invoke(uint64_t
 {
   v30 = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v28 = 0;
-  v4 = [v3 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v28];
+  v4 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:0 error:&v28];
   v5 = v28;
 
   if (v4)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v27 = v5;
-    v7 = [v6 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:&v27];
+    v7 = [defaultManager2 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:&v27];
     v8 = v27;
 
     if (v7)
@@ -435,9 +435,9 @@ void __49__TPFileStorageManager_clearCacheWithCompletion___block_invoke(uint64_t
             }
 
             v13 = *(*(&v23 + 1) + 8 * i);
-            v14 = [v13 pathComponents];
-            v15 = [v14 lastObject];
-            v16 = [v15 hasPrefix:@"TelephonyUI"];
+            pathComponents = [v13 pathComponents];
+            lastObject = [pathComponents lastObject];
+            v16 = [lastObject hasPrefix:@"TelephonyUI"];
 
             if (v16)
             {
@@ -493,24 +493,24 @@ void __49__TPFileStorageManager_clearCacheWithCompletion___block_invoke(uint64_t
       _os_log_impl(&dword_1B4894000, v3, OS_LOG_TYPE_DEFAULT, "clear legacy storage", v5, 2u);
     }
 
-    v4 = [(TPFileStorageManager *)self urlsForLegacyFileSystem];
-    [(TPFileStorageManager *)self deleteStorageAtURLs:v4];
+    urlsForLegacyFileSystem = [(TPFileStorageManager *)self urlsForLegacyFileSystem];
+    [(TPFileStorageManager *)self deleteStorageAtURLs:urlsForLegacyFileSystem];
 
     [(TPFileStorageManager *)self setHasClearedLegacyStorage:1];
   }
 }
 
-- (void)deleteStorageAtURLs:(id)a3
+- (void)deleteStorageAtURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(TPFileStorageManager *)self queue];
+  lsCopy = ls;
+  queue = [(TPFileStorageManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__TPFileStorageManager_deleteStorageAtURLs___block_invoke;
   block[3] = &unk_1E7C0C368;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = lsCopy;
+  v6 = lsCopy;
+  dispatch_async(queue, block);
 }
 
 void __44__TPFileStorageManager_deleteStorageAtURLs___block_invoke(uint64_t a1)

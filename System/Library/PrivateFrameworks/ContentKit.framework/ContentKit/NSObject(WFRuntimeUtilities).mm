@@ -11,7 +11,7 @@
   if (v7)
   {
     outCount = 0;
-    Class = object_getClass(a1);
+    Class = object_getClass(self);
     v9 = class_copyMethodList(Class, &outCount);
     if (outCount)
     {

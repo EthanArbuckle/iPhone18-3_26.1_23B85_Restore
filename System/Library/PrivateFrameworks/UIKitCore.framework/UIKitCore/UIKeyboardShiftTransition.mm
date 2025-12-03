@@ -1,15 +1,15 @@
 @interface UIKeyboardShiftTransition
-- (void)runNonInteractivelyWithCompletion:(id)a3;
+- (void)runNonInteractivelyWithCompletion:(id)completion;
 @end
 
 @implementation UIKeyboardShiftTransition
 
-- (void)runNonInteractivelyWithCompletion:(id)a3
+- (void)runNonInteractivelyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(UIKeyboardShiftTransition *)self nonInteractiveDuration];
   v6 = v5;
-  v9 = v4;
+  v9 = completionCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__UIKeyboardShiftTransition_runNonInteractivelyWithCompletion___block_invoke;
@@ -19,7 +19,7 @@
   v8[1] = 3221225472;
   v8[2] = __63__UIKeyboardShiftTransition_runNonInteractivelyWithCompletion___block_invoke_2;
   v8[3] = &unk_1E70F3608;
-  v7 = v4;
+  v7 = completionCopy;
   [UIView animateWithDuration:50331712 delay:v10 options:v8 animations:v6 completion:0.0];
 }
 

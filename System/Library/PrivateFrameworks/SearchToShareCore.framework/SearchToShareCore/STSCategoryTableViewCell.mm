@@ -1,15 +1,15 @@
 @interface STSCategoryTableViewCell
-- (STSCategoryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (STSCategoryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
 @end
 
 @implementation STSCategoryTableViewCell
 
-- (STSCategoryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (STSCategoryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = STSCategoryTableViewCell;
-  return [(STSCategoryTableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(STSCategoryTableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
 - (void)prepareForReuse

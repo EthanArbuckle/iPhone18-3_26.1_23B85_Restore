@@ -1,13 +1,13 @@
 @interface CLSSummaryClustering
-+ (double)maximumScoreForItems:(id)a3;
-+ (double)meanScoreForItems:(id)a3;
-+ (double)scoreForItems:(id)a3;
++ (double)maximumScoreForItems:(id)items;
++ (double)meanScoreForItems:(id)items;
++ (double)scoreForItems:(id)items;
 - (CLSSummaryClustering)init;
-- (id)_densityClustersWithItems:(id)a3 progressBlock:(id)a4;
-- (id)adaptiveElection:(id)a3 identifiersOfEligibleItems:(id)a4 maximumNumberOfItemsToElect:(unint64_t)a5 debugInfo:(id)a6 progressBlock:(id)a7;
+- (id)_densityClustersWithItems:(id)items progressBlock:(id)block;
+- (id)adaptiveElection:(id)election identifiersOfEligibleItems:(id)items maximumNumberOfItemsToElect:(unint64_t)elect debugInfo:(id)info progressBlock:(id)block;
 - (id)densityClusteringDistanceBlock;
-- (id)densityClustersWithItems:(id)a3 progressBlock:(id)a4;
-- (id)performWithItems:(id)a3 identifiersOfEligibleItems:(id)a4 maximumNumberOfItemsToElect:(unint64_t)a5 debugInfo:(id)a6 progressBlock:(id)a7;
+- (id)densityClustersWithItems:(id)items progressBlock:(id)block;
+- (id)performWithItems:(id)items identifiersOfEligibleItems:(id)eligibleItems maximumNumberOfItemsToElect:(unint64_t)elect debugInfo:(id)info progressBlock:(id)block;
 @end
 
 @implementation CLSSummaryClustering
@@ -63,33 +63,33 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
   return result;
 }
 
-- (id)adaptiveElection:(id)a3 identifiersOfEligibleItems:(id)a4 maximumNumberOfItemsToElect:(unint64_t)a5 debugInfo:(id)a6 progressBlock:(id)a7
+- (id)adaptiveElection:(id)election identifiersOfEligibleItems:(id)items maximumNumberOfItemsToElect:(unint64_t)elect debugInfo:(id)info progressBlock:(id)block
 {
   v147[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v99 = a7;
+  electionCopy = election;
+  itemsCopy = items;
+  infoCopy = info;
+  blockCopy = block;
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"score" ascending:1];
   v147[0] = v14;
   v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"objects.@count" ascending:1];
   v147[1] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:2];
 
-  v100 = v11;
+  v100 = electionCopy;
   v98 = v16;
-  v17 = [v11 sortedArrayUsingDescriptors:v16];
+  v17 = [electionCopy sortedArrayUsingDescriptors:v16];
   v103 = [v17 mutableCopy];
-  [v13 setStage:@"Adaptive Election"];
-  v112 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  [infoCopy setStage:@"Adaptive Election"];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
   obj = v17;
   v107 = [obj countByEnumeratingWithState:&v133 objects:v146 count:16];
-  v109 = self;
-  v102 = v13;
+  selfCopy = self;
+  v102 = infoCopy;
   if (v107)
   {
     v18 = 0;
@@ -104,15 +104,15 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
         }
 
         v110 = *(*(&v133 + 1) + 8 * i);
-        v20 = [v110 objects];
-        v21 = v20;
-        if (v12)
+        objects = [v110 objects];
+        v21 = objects;
+        if (itemsCopy)
         {
           v131 = 0u;
           v132 = 0u;
           v129 = 0u;
           v130 = 0u;
-          v22 = [v20 countByEnumeratingWithState:&v129 objects:v145 count:16];
+          v22 = [objects countByEnumeratingWithState:&v129 objects:v145 count:16];
           if (v22)
           {
             v23 = v22;
@@ -127,8 +127,8 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
                   objc_enumerationMutation(v21);
                 }
 
-                v27 = [*(*(&v129 + 1) + 8 * j) clsIdentifier];
-                v28 = [v12 containsObject:v27];
+                clsIdentifier = [*(*(&v129 + 1) + 8 * j) clsIdentifier];
+                v28 = [itemsCopy containsObject:clsIdentifier];
 
                 v24 += v28;
               }
@@ -147,18 +147,18 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
 
         else
         {
-          v24 = [v20 count];
+          v24 = [objects count];
         }
 
         v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
-        [v112 setObject:v29 forKey:v110];
+        [strongToStrongObjectsMapTable setObject:v29 forKey:v110];
 
         if (v18 <= v24)
         {
           v18 = v24;
         }
 
-        self = v109;
+        self = selfCopy;
       }
 
       v107 = [obj countByEnumeratingWithState:&v133 objects:v146 count:16];
@@ -166,7 +166,7 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
 
     while (v107);
     v30 = v18;
-    v13 = v102;
+    infoCopy = v102;
   }
 
   else
@@ -213,15 +213,15 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
           objc_enumerationMutation(v34);
         }
 
-        v40 = [v112 objectForKey:*(*(&v125 + 1) + 8 * k)];
-        v41 = [v40 unsignedIntegerValue];
+        v40 = [strongToStrongObjectsMapTable objectForKey:*(*(&v125 + 1) + 8 * k)];
+        unsignedIntegerValue = [v40 unsignedIntegerValue];
 
-        if (v109->_enableAdaptiveElectionSmoother)
+        if (selfCopy->_enableAdaptiveElectionSmoother)
         {
-          if (v41)
+          if (unsignedIntegerValue)
           {
-            v42 = adaptiveElectionSmootherMaximumLimit / 1.57079633 * atan(v41 / (adaptiveElectionSmootherMaximumLimit / 1.57079633));
-            if (v42 > v41)
+            v42 = adaptiveElectionSmootherMaximumLimit / 1.57079633 * atan(unsignedIntegerValue / (adaptiveElectionSmootherMaximumLimit / 1.57079633));
+            if (v42 > unsignedIntegerValue)
             {
               __assert_rtn("[CLSSummaryClustering adaptiveElection:identifiersOfEligibleItems:maximumNumberOfItemsToElect:debugInfo:progressBlock:]", "CLSSummaryClustering.m", 416, "numberOfItemsFromThisCluster <= numberOfEligibleItemsInThisCluster");
             }
@@ -235,7 +235,7 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
 
         else
         {
-          v42 = v41;
+          v42 = unsignedIntegerValue;
         }
 
         v38 = v38 + v42;
@@ -254,7 +254,7 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
 
   v108 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v32];
   v43 = v103;
-  v44 = v109;
+  v44 = selfCopy;
   if ([v103 count])
   {
     v45 = 0;
@@ -263,26 +263,26 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
     do
     {
       v48 = [v43 objectAtIndexedSubscript:v45];
-      v49 = [v112 objectForKey:v48];
-      v50 = [v49 unsignedIntegerValue];
+      v49 = [strongToStrongObjectsMapTable objectForKey:v48];
+      unsignedIntegerValue2 = [v49 unsignedIntegerValue];
 
       if (v44->_enableAdaptiveElectionSmoother)
       {
-        if (!v50)
+        if (!unsignedIntegerValue2)
         {
           v51 = 0.0;
           v52 = 0.0;
           goto LABEL_52;
         }
 
-        v51 = v50;
-        v52 = adaptiveElectionSmootherMaximumLimit / 1.57079633 * atan(v50 / (adaptiveElectionSmootherMaximumLimit / 1.57079633));
+        v51 = unsignedIntegerValue2;
+        v52 = adaptiveElectionSmootherMaximumLimit / 1.57079633 * atan(unsignedIntegerValue2 / (adaptiveElectionSmootherMaximumLimit / 1.57079633));
       }
 
       else
       {
-        v51 = v50;
-        v52 = v50;
+        v51 = unsignedIntegerValue2;
+        v52 = unsignedIntegerValue2;
       }
 
       if (v52 > v51)
@@ -292,20 +292,20 @@ uint64_t __67__CLSSummaryClustering_Performance__densityClusteringDistanceBlock_
 
 LABEL_52:
       v111 = v48;
-      v53 = (a5 - v46) * (v52 / (v38 - v47));
+      v53 = (elect - v46) * (v52 / (v38 - v47));
       v54 = v53;
-      if (v50 < v53)
+      if (unsignedIntegerValue2 < v53)
       {
         v55 = +[CLSLogging sharedLogging];
-        v56 = [v55 loggingConnection];
+        loggingConnection = [v55 loggingConnection];
 
-        if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
         {
           *buf = 134218240;
           v141 = v54;
           v142 = 2048;
-          v143 = v50;
-          _os_log_impl(&dword_22F907000, v56, OS_LOG_TYPE_INFO, "Election wants %lu items from cluster that only contains %lu", buf, 0x16u);
+          v143 = unsignedIntegerValue2;
+          _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Election wants %lu items from cluster that only contains %lu", buf, 0x16u);
         }
 
         v53 = v51;
@@ -335,12 +335,12 @@ LABEL_52:
 
       v46 = v46 + v60;
       v61 = v111;
-      if (v46 >= a5 + 1.0 || v45 == [v43 count] - 1 && !objc_msgSend(v108, "count") && objc_msgSend(v43, "count"))
+      if (v46 >= elect + 1.0 || v45 == [v43 count] - 1 && !objc_msgSend(v108, "count") && objc_msgSend(v43, "count"))
       {
-        if (v13)
+        if (infoCopy)
         {
-          v65 = [v43 firstObject];
-          [v13 setState:2 ofCluster:v65 withReason:@"Election Failure"];
+          firstObject = [v43 firstObject];
+          [infoCopy setState:2 ofCluster:firstObject withReason:@"Election Failure"];
         }
 
         [v43 removeObjectAtIndex:0];
@@ -375,12 +375,12 @@ LABEL_52:
                   objc_enumerationMutation(v68);
                 }
 
-                v74 = [v112 objectForKey:*(*(&v121 + 1) + 8 * m)];
-                v75 = [v74 unsignedIntegerValue];
+                v74 = [strongToStrongObjectsMapTable objectForKey:*(*(&v121 + 1) + 8 * m)];
+                unsignedIntegerValue3 = [v74 unsignedIntegerValue];
 
-                if (v71 <= v75)
+                if (v71 <= unsignedIntegerValue3)
                 {
-                  v71 = v75;
+                  v71 = unsignedIntegerValue3;
                 }
               }
 
@@ -389,9 +389,9 @@ LABEL_52:
 
             while (v70);
             v76 = v71;
-            v13 = v102;
+            infoCopy = v102;
             v43 = v103;
-            v44 = v109;
+            v44 = selfCopy;
           }
 
           else
@@ -436,15 +436,15 @@ LABEL_52:
                 objc_enumerationMutation(v62);
               }
 
-              v81 = [v112 objectForKey:*(*(&v117 + 1) + 8 * n)];
-              v82 = [v81 unsignedIntegerValue];
+              v81 = [strongToStrongObjectsMapTable objectForKey:*(*(&v117 + 1) + 8 * n)];
+              unsignedIntegerValue4 = [v81 unsignedIntegerValue];
 
               if (v44->_enableAdaptiveElectionSmoother)
               {
-                if (v82)
+                if (unsignedIntegerValue4)
                 {
-                  v83 = adaptiveElectionSmootherMaximumLimit / 1.57079633 * atan(v82 / (adaptiveElectionSmootherMaximumLimit / 1.57079633));
-                  if (v83 > v82)
+                  v83 = adaptiveElectionSmootherMaximumLimit / 1.57079633 * atan(unsignedIntegerValue4 / (adaptiveElectionSmootherMaximumLimit / 1.57079633));
+                  if (v83 > unsignedIntegerValue4)
                   {
                     __assert_rtn("[CLSSummaryClustering adaptiveElection:identifiersOfEligibleItems:maximumNumberOfItemsToElect:debugInfo:progressBlock:]", "CLSSummaryClustering.m", 504, "numberOfItemsFromOtherCluster <= numberOfEligibleItemsInOtherCluster");
                   }
@@ -458,7 +458,7 @@ LABEL_52:
 
               else
               {
-                v83 = v82;
+                v83 = unsignedIntegerValue4;
               }
 
               v38 = v38 + v83;
@@ -491,14 +491,14 @@ LABEL_52:
           {
             v64 = [[CLSSummaryClusteringItem alloc] initWithCluster:v111 numberOfItemsToElect:v60];
             [v108 addObject:v64];
-            v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Electing %lu items out of %lu", v60, v50];
+            v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Electing %lu items out of %lu", v60, unsignedIntegerValue2];
 
             v63 = 1;
           }
 
           else
           {
-            v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of elected items less than threshold, electing 0 items out of %lu", v50];
+            v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of elected items less than threshold, electing 0 items out of %lu", unsignedIntegerValue2];
             v63 = 2;
           }
         }
@@ -511,7 +511,7 @@ LABEL_52:
 
         v47 = v47 + v52;
         ++v45;
-        [v13 setState:v63 ofCluster:v111 withReason:v62];
+        [infoCopy setState:v63 ofCluster:v111 withReason:v62];
       }
     }
 
@@ -521,27 +521,27 @@ LABEL_52:
   v84 = v108;
   if (![v108 count])
   {
-    v85 = [v34 lastObject];
-    if (v85)
+    lastObject = [v34 lastObject];
+    if (lastObject)
     {
-      v86 = [v112 objectForKey:v85];
-      v87 = [v86 unsignedIntegerValue];
+      v86 = [strongToStrongObjectsMapTable objectForKey:lastObject];
+      unsignedIntegerValue5 = [v86 unsignedIntegerValue];
 
-      if (v87 >= a5)
+      if (unsignedIntegerValue5 >= elect)
       {
-        v88 = a5;
+        electCopy = elect;
       }
 
       else
       {
-        v88 = v87;
+        electCopy = unsignedIntegerValue5;
       }
 
-      v89 = [[CLSSummaryClusteringItem alloc] initWithCluster:v85 numberOfItemsToElect:v88];
+      v89 = [[CLSSummaryClusteringItem alloc] initWithCluster:lastObject numberOfItemsToElect:electCopy];
       [v108 addObject:v89];
     }
 
-    if (v13)
+    if (infoCopy)
     {
       v115 = 0u;
       v116 = 0u;
@@ -562,7 +562,7 @@ LABEL_52:
               objc_enumerationMutation(v90);
             }
 
-            if (*(*(&v113 + 1) + 8 * ii) == v85)
+            if (*(*(&v113 + 1) + 8 * ii) == lastObject)
             {
               v95 = 3;
             }
@@ -572,7 +572,7 @@ LABEL_52:
               v95 = 2;
             }
 
-            [v13 setState:v95 ofCluster:? withReason:?];
+            [infoCopy setState:v95 ofCluster:? withReason:?];
           }
 
           v92 = [v90 countByEnumeratingWithState:&v113 objects:v137 count:16];
@@ -608,24 +608,24 @@ uint64_t __120__CLSSummaryClustering_adaptiveElection_identifiersOfEligibleItems
   return v13;
 }
 
-- (id)performWithItems:(id)a3 identifiersOfEligibleItems:(id)a4 maximumNumberOfItemsToElect:(unint64_t)a5 debugInfo:(id)a6 progressBlock:(id)a7
+- (id)performWithItems:(id)items identifiersOfEligibleItems:(id)eligibleItems maximumNumberOfItemsToElect:(unint64_t)elect debugInfo:(id)info progressBlock:(id)block
 {
   v74 = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v49 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = _Block_copy(v13);
+  itemsCopy = items;
+  eligibleItemsCopy = eligibleItems;
+  infoCopy = info;
+  blockCopy = block;
+  v14 = _Block_copy(blockCopy);
   v15 = v14;
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
   v67 = 0;
-  v51 = v12;
-  v48 = v13;
+  v51 = infoCopy;
+  v48 = blockCopy;
   if (!v14 || (v63 = 0, (*(v14 + 2))(v14, &v63, 0.0), v16 = *(v65 + 24) | v63, *(v65 + 24) = v16, (v16 & 1) == 0))
   {
-    v46 = a5;
+    electCopy = elect;
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __120__CLSSummaryClustering_performWithItems_identifiersOfEligibleItems_maximumNumberOfItemsToElect_debugInfo_progressBlock___block_invoke;
@@ -633,15 +633,15 @@ uint64_t __120__CLSSummaryClustering_adaptiveElection_identifiersOfEligibleItems
     v18 = v15;
     v61 = v18;
     v62 = &v64;
-    v19 = [(CLSSummaryClustering *)self _densityClustersWithItems:v50 progressBlock:v60];
-    if (v12)
+    v19 = [(CLSSummaryClustering *)self _densityClustersWithItems:itemsCopy progressBlock:v60];
+    if (infoCopy)
     {
-      [v12 setAgent:@"Summarizer"];
-      [v12 setStage:@"Density Clustering"];
-      [v12 setClusters:v19 withReason:@"Summarizer"];
+      [infoCopy setAgent:@"Summarizer"];
+      [infoCopy setStage:@"Density Clustering"];
+      [infoCopy setClusters:v19 withReason:@"Summarizer"];
     }
 
-    v47 = self;
+    selfCopy = self;
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
@@ -673,8 +673,8 @@ LABEL_10:
           }
         }
 
-        v25 = [v23 objects];
-        [CLSSummaryClustering scoreForItems:v25];
+        objects = [v23 objects];
+        [CLSSummaryClustering scoreForItems:objects];
         [v23 setScore:?];
 
         if (v20 == ++v22)
@@ -711,13 +711,13 @@ LABEL_10:
         goto LABEL_40;
       }
 
-      v27 = [obj firstObject];
-      v28 = [v27 objects];
-      v29 = [v28 count];
+      firstObject = [obj firstObject];
+      objects2 = [firstObject objects];
+      v29 = [objects2 count];
 
-      if (v29 >= v46)
+      if (v29 >= electCopy)
       {
-        v30 = v46;
+        v30 = electCopy;
       }
 
       else
@@ -725,16 +725,16 @@ LABEL_10:
         v30 = v29;
       }
 
-      v31 = [[CLSSummaryClusteringItem alloc] initWithCluster:v27 numberOfItemsToElect:v30];
+      v31 = [[CLSSummaryClusteringItem alloc] initWithCluster:firstObject numberOfItemsToElect:v30];
       v70 = v31;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
       if (v51)
       {
         v32 = MEMORY[0x277CCACA8];
-        v33 = [v27 objects];
-        v34 = [v32 stringWithFormat:@"Single density cluster, electing %lu items out of %lu", v30, objc_msgSend(v33, "count")];
+        objects3 = [firstObject objects];
+        v34 = [v32 stringWithFormat:@"Single density cluster, electing %lu items out of %lu", v30, objc_msgSend(objects3, "count")];
 
-        [v51 setState:1 ofCluster:v27 withReason:v34];
+        [v51 setState:1 ofCluster:firstObject withReason:v34];
       }
     }
 
@@ -746,7 +746,7 @@ LABEL_10:
       v53[3] = &unk_2788A8AA8;
       v54 = v18;
       v55 = &v64;
-      v26 = [(CLSSummaryClustering *)v47 adaptiveElection:obj identifiersOfEligibleItems:v49 maximumNumberOfItemsToElect:v46 debugInfo:v12 progressBlock:v53];
+      v26 = [(CLSSummaryClustering *)selfCopy adaptiveElection:obj identifiersOfEligibleItems:eligibleItemsCopy maximumNumberOfItemsToElect:electCopy debugInfo:infoCopy progressBlock:v53];
       if (*(v65 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -764,12 +764,12 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v27 = v54;
+      firstObject = v54;
     }
 
     if (v26)
     {
-      v12 = v51;
+      infoCopy = v51;
       if ([v26 count])
       {
         [v51 setUnclusteredItemsState:2 withReason:@"Not Clustered"];
@@ -784,15 +784,15 @@ LABEL_52:
 
     else
     {
-      v12 = v51;
+      infoCopy = v51;
     }
 
 LABEL_40:
-    v35 = [MEMORY[0x277D3AC38] clusterWithObjects:v50];
-    v36 = [v50 count];
-    if (v36 >= v46)
+    v35 = [MEMORY[0x277D3AC38] clusterWithObjects:itemsCopy];
+    v36 = [itemsCopy count];
+    if (v36 >= electCopy)
     {
-      v37 = v46;
+      v37 = electCopy;
     }
 
     else
@@ -804,7 +804,7 @@ LABEL_40:
     v69 = v38;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
 
-    if (v12)
+    if (infoCopy)
     {
       [v51 resetWithReason:@"SummaryClustering didn't find any density cluster"];
       v68 = v35;
@@ -812,8 +812,8 @@ LABEL_40:
       [v51 setClusters:v40 withReason:@"No Density Clusters"];
 
       v41 = MEMORY[0x277CCACA8];
-      v42 = [v35 objects];
-      v43 = [v41 stringWithFormat:@"No density cluster, electing %lu items out of %lu", v37, objc_msgSend(v42, "count")];
+      objects4 = [v35 objects];
+      v43 = [v41 stringWithFormat:@"No density cluster, electing %lu items out of %lu", v37, objc_msgSend(objects4, "count")];
 
       [v51 setState:1 ofCluster:v35 withReason:v43];
     }
@@ -895,12 +895,12 @@ uint64_t __120__CLSSummaryClustering_performWithItems_identifiersOfEligibleItems
   return result;
 }
 
-- (id)_densityClustersWithItems:(id)a3 progressBlock:(id)a4
+- (id)_densityClustersWithItems:(id)items progressBlock:(id)block
 {
   v57 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v37 = a4;
-  v6 = _Block_copy(v37);
+  itemsCopy = items;
+  blockCopy = block;
+  v6 = _Block_copy(blockCopy);
   v7 = v6;
   v51 = 0;
   v52 = &v51;
@@ -908,12 +908,12 @@ uint64_t __120__CLSSummaryClustering_performWithItems_identifiersOfEligibleItems
   v54 = 0;
   if (!v6 || (LOBYTE(v47) = 0, (*(v6 + 2))(v6, &v47, 0.0), v8 = *(v52 + 24) | v47, *(v52 + 24) = v8, (v8 & 1) == 0))
   {
-    v10 = [v38 sortedArrayUsingComparator:{&__block_literal_global_6044, v37}];
-    v11 = [v10 lastObject];
-    v12 = [v11 cls_universalDate];
-    v13 = [v10 firstObject];
-    v14 = [v13 cls_universalDate];
-    [v12 timeIntervalSinceDate:v14];
+    v10 = [itemsCopy sortedArrayUsingComparator:{&__block_literal_global_6044, blockCopy}];
+    lastObject = [v10 lastObject];
+    cls_universalDate = [lastObject cls_universalDate];
+    firstObject = [v10 firstObject];
+    cls_universalDate2 = [firstObject cls_universalDate];
+    [cls_universalDate timeIntervalSinceDate:cls_universalDate2];
     v16 = v15;
 
     if (v16 <= 0.0)
@@ -966,12 +966,12 @@ uint64_t __120__CLSSummaryClustering_performWithItems_identifiersOfEligibleItems
     }
 
     v26 = objc_alloc(MEMORY[0x277D3AC30]);
-    v27 = [(CLSSummaryClustering *)self densityClusteringDistanceBlock];
-    v28 = [v26 initWithDistanceBlock:v27];
+    densityClusteringDistanceBlock = [(CLSSummaryClustering *)self densityClusteringDistanceBlock];
+    v28 = [v26 initWithDistanceBlock:densityClusteringDistanceBlock];
 
     [v28 setMaximumDistance:v21];
     [v28 setMinimumNumberOfObjects:v22];
-    v29 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v47 = 0;
     v30 = [v25 count];
     block[0] = MEMORY[0x277D85DD0];
@@ -985,7 +985,7 @@ uint64_t __120__CLSSummaryClustering_performWithItems_identifiersOfEligibleItems
     v41 = v25;
     v32 = v28;
     v42 = v32;
-    v33 = v29;
+    v33 = array;
     v43 = v33;
     dispatch_apply(v30, 0, block);
     if (*(v52 + 24) == 1)
@@ -1113,13 +1113,13 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
   return v7;
 }
 
-- (id)densityClustersWithItems:(id)a3 progressBlock:(id)a4
+- (id)densityClustersWithItems:(id)items progressBlock:(id)block
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(CLSSummaryClustering *)self _densityClustersWithItems:v6 progressBlock:v7];
+  itemsCopy = items;
+  blockCopy = block;
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [(CLSSummaryClustering *)self _densityClustersWithItems:itemsCopy progressBlock:blockCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1138,8 +1138,8 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) objects];
-        [v8 addObject:v14];
+        objects = [*(*(&v16 + 1) + 8 * i) objects];
+        [array addObject:objects];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1148,7 +1148,7 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
 - (CLSSummaryClustering)init
@@ -1173,15 +1173,15 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
   return result;
 }
 
-+ (double)maximumScoreForItems:(id)a3
++ (double)maximumScoreForItems:(id)items
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1193,7 +1193,7 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [*(*(&v11 + 1) + 8 * i) clsContentScore];
@@ -1203,7 +1203,7 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1217,15 +1217,15 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
   return v7;
 }
 
-+ (double)meanScoreForItems:(id)a3
++ (double)meanScoreForItems:(id)items
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1237,14 +1237,14 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [*(*(&v12 + 1) + 8 * i) clsContentScore];
         v7 = v7 + v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1255,21 +1255,21 @@ uint64_t __64__CLSSummaryClustering__densityClustersWithItems_progressBlock___bl
     v7 = 0.0;
   }
 
-  v10 = [v3 count];
+  v10 = [itemsCopy count];
 
   return v7 / v10;
 }
 
-+ (double)scoreForItems:(id)a3
++ (double)scoreForItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  itemsCopy = items;
+  v4 = [itemsCopy count];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

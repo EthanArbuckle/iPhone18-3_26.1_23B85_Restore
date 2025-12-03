@@ -1,37 +1,37 @@
 @interface HDSyncSampleOriginUtilities
-+ (BOOL)generateStateSyncCodableContributors:(id *)a3 predicate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (BOOL)generateStateSyncCodableDevices:(id *)a3 predicate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (int64_t)ingestContributorSyncObjects:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)ingestSourceSyncObjects:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)generateStateSyncCodableContributors:(id *)contributors predicate:(id)predicate profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (BOOL)generateStateSyncCodableDevices:(id *)devices predicate:(id)predicate profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (int64_t)ingestContributorSyncObjects:(id)objects syncStore:(id)store profile:(id)profile error:(id *)error;
++ (int64_t)ingestSourceSyncObjects:(id)objects syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDSyncSampleOriginUtilities
 
-+ (BOOL)generateStateSyncCodableDevices:(id *)a3 predicate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)generateStateSyncCodableDevices:(id *)devices predicate:(id)predicate profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v11 = a5;
-  v12 = a6;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v13 = MEMORY[0x277CBEB18];
-  v14 = a4;
+  predicateCopy = predicate;
   v15 = objc_alloc_init(v13);
   v16 = +[HDDeviceEntity _propertiesForDevice];
-  v17 = [v12 database];
+  database = [transactionCopy database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __99__HDSyncSampleOriginUtilities_generateStateSyncCodableDevices_predicate_profile_transaction_error___block_invoke;
   v24[3] = &unk_2786172E8;
-  v25 = v11;
-  v26 = v12;
+  v25 = profileCopy;
+  v26 = transactionCopy;
   v18 = v15;
   v27 = v18;
-  v19 = v12;
-  v20 = v11;
-  v21 = [(HDHealthEntity *)HDDeviceEntity enumerateEntitiesForSyncWithProperties:v16 predicate:v14 healthDatabase:v17 error:a7 block:v24];
+  v19 = transactionCopy;
+  v20 = profileCopy;
+  v21 = [(HDHealthEntity *)HDDeviceEntity enumerateEntitiesForSyncWithProperties:v16 predicate:predicateCopy healthDatabase:database error:error block:v24];
 
-  if (a3 && v21)
+  if (devices && v21)
   {
     v22 = v18;
-    *a3 = v18;
+    *devices = v18;
   }
 
   return v21;
@@ -51,30 +51,30 @@ BOOL __99__HDSyncSampleOriginUtilities_generateStateSyncCodableDevices_predicate
   return v9;
 }
 
-+ (int64_t)ingestSourceSyncObjects:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)ingestSourceSyncObjects:(id)objects syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  objectsCopy = objects;
+  storeCopy = store;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __79__HDSyncSampleOriginUtilities_ingestSourceSyncObjects_syncStore_profile_error___block_invoke;
   v18[3] = &__block_descriptor_40_e25__16__0__HDCodableSource_8l;
-  v18[4] = a1;
-  v12 = a5;
-  v13 = [v10 hk_map:v18];
-  v14 = [v12 sourceManager];
+  v18[4] = self;
+  profileCopy = profile;
+  v13 = [objectsCopy hk_map:v18];
+  sourceManager = [profileCopy sourceManager];
 
-  if (v11)
+  if (storeCopy)
   {
-    v15 = [v11 syncProvenance];
+    syncProvenance = [storeCopy syncProvenance];
   }
 
   else
   {
-    v15 = 0;
+    syncProvenance = 0;
   }
 
-  v16 = [v14 createSourcesWithCodables:v13 provenance:v15 error:a6];
+  v16 = [sourceManager createSourcesWithCodables:v13 provenance:syncProvenance error:error];
 
   return v16 ^ 1u;
 }
@@ -120,46 +120,46 @@ id __79__HDSyncSampleOriginUtilities_ingestSourceSyncObjects_syncStore_profile_e
   return v3;
 }
 
-+ (int64_t)ingestContributorSyncObjects:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)ingestContributorSyncObjects:(id)objects syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4)
+  objectsCopy = objects;
+  profileCopy = profile;
+  if (store)
   {
-    a4 = [a4 syncProvenance];
+    store = [store syncProvenance];
   }
 
-  v11 = [[HDInsertCodableContributorsOperation alloc] initWithContributors:v9 provenance:a4];
-  v12 = [(HDJournalableOperation *)v11 performOrJournalWithProfile:v10 error:a6]^ 1;
+  v11 = [[HDInsertCodableContributorsOperation alloc] initWithContributors:objectsCopy provenance:store];
+  v12 = [(HDJournalableOperation *)v11 performOrJournalWithProfile:profileCopy error:error]^ 1;
 
   return v12;
 }
 
-+ (BOOL)generateStateSyncCodableContributors:(id *)a3 predicate:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)generateStateSyncCodableContributors:(id *)contributors predicate:(id)predicate profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v11 = a5;
-  v12 = a6;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v13 = MEMORY[0x277CBEB18];
-  v14 = a4;
+  predicateCopy = predicate;
   v15 = objc_alloc_init(v13);
   v16 = +[HDContributorSyncEntity _orderedProperties];
-  v17 = [v12 database];
+  database = [transactionCopy database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __104__HDSyncSampleOriginUtilities_generateStateSyncCodableContributors_predicate_profile_transaction_error___block_invoke;
   v24[3] = &unk_2786172E8;
-  v25 = v11;
-  v26 = v12;
+  v25 = profileCopy;
+  v26 = transactionCopy;
   v18 = v15;
   v27 = v18;
-  v19 = v12;
-  v20 = v11;
-  v21 = [(HDHealthEntity *)HDContributorEntity enumerateEntitiesForSyncWithProperties:v16 predicate:v14 healthDatabase:v17 error:a7 block:v24];
+  v19 = transactionCopy;
+  v20 = profileCopy;
+  v21 = [(HDHealthEntity *)HDContributorEntity enumerateEntitiesForSyncWithProperties:v16 predicate:predicateCopy healthDatabase:database error:error block:v24];
 
-  if (a3 && v21)
+  if (contributors && v21)
   {
     v22 = v18;
-    *a3 = v18;
+    *contributors = v18;
   }
 
   return v21;

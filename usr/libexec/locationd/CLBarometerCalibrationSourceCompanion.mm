@@ -1,22 +1,22 @@
 @interface CLBarometerCalibrationSourceCompanion
-- (CLBarometerCalibrationSourceCompanion)initWithUniverse:(id)a3 delegate:(id)a4;
+- (CLBarometerCalibrationSourceCompanion)initWithUniverse:(id)universe delegate:(id)delegate;
 - (id).cxx_construct;
-- (void)_writeCompanionStepCountElevation:(NotificationData *)a3;
+- (void)_writeCompanionStepCountElevation:(NotificationData *)elevation;
 - (void)dealloc;
 - (void)disableSource;
 - (void)disableWorkoutSource;
 - (void)enableSource;
 - (void)enableWorkoutSource;
-- (void)onCompanionNotification:(int)a3 data:(NotificationData *)a4;
+- (void)onCompanionNotification:(int)notification data:(NotificationData *)data;
 @end
 
 @implementation CLBarometerCalibrationSourceCompanion
 
-- (CLBarometerCalibrationSourceCompanion)initWithUniverse:(id)a3 delegate:(id)a4
+- (CLBarometerCalibrationSourceCompanion)initWithUniverse:(id)universe delegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CLBarometerCalibrationSourceCompanion;
-  if ([(CLBarometerCalibrationSource *)&v5 initWithUniverse:a3 delegate:a4])
+  if ([(CLBarometerCalibrationSource *)&v5 initWithUniverse:universe delegate:delegate])
   {
     sub_100058FD4();
   }
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)_writeCompanionStepCountElevation:(NotificationData *)a3
+- (void)_writeCompanionStepCountElevation:(NotificationData *)elevation
 {
   Current = CFAbsoluteTimeGetCurrent();
   sub_10152D354(v11);
@@ -144,15 +144,15 @@
   v13 |= 1u;
   *&v11[87] = Current;
   v5 = v12;
-  v6 = *(a3 + 1);
+  v6 = *(elevation + 1);
   *(v12 + 24) |= 1u;
   *(v5 + 8) = v6;
   v7 = v12;
-  v8 = *(a3 + 4);
+  v8 = *(elevation + 4);
   *(v12 + 24) |= 2u;
   *(v7 + 16) = v8;
   v9 = v12;
-  v10 = *(a3 + 5);
+  v10 = *(elevation + 5);
   *(v12 + 24) |= 4u;
   *(v9 + 20) = v10;
   if (qword_102637F48 != -1)
@@ -168,30 +168,30 @@
   sub_101532FA8(v11);
 }
 
-- (void)onCompanionNotification:(int)a3 data:(NotificationData *)a4
+- (void)onCompanionNotification:(int)notification data:(NotificationData *)data
 {
-  switch(a3)
+  switch(notification)
   {
     case 4:
       if (*(&self->super._sourceEnabled + 2))
       {
-        v7 = *(a4 + 9);
-        v24 = *(a4 + 8);
+        v7 = *(data + 9);
+        v24 = *(data + 8);
         v25 = v7;
-        v8 = *(a4 + 11);
-        v26 = *(a4 + 10);
+        v8 = *(data + 11);
+        v26 = *(data + 10);
         v27 = v8;
-        v9 = *(a4 + 5);
-        v20 = *(a4 + 4);
+        v9 = *(data + 5);
+        v20 = *(data + 4);
         v21 = v9;
-        v10 = *(a4 + 7);
-        v22 = *(a4 + 6);
+        v10 = *(data + 7);
+        v22 = *(data + 6);
         v23 = v10;
-        v11 = *(a4 + 1);
-        *buf = *a4;
+        v11 = *(data + 1);
+        *buf = *data;
         *&buf[16] = v11;
-        v12 = *(a4 + 3);
-        *&buf[32] = *(a4 + 2);
+        v12 = *(data + 3);
+        *&buf[32] = *(data + 2);
         v19 = v12;
         [(CLBarometerCalibrationSourceCompanion *)self _writeCompanionStepCountElevation:buf];
       }
@@ -207,9 +207,9 @@
         if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
         {
           Current = CFAbsoluteTimeGetCurrent();
-          v15 = *(a4 + 1);
-          v16 = *(a4 + 4);
-          v17 = *(a4 + 5);
+          v15 = *(data + 1);
+          v16 = *(data + 4);
+          v17 = *(data + 5);
           *buf = 134218752;
           *&buf[4] = Current;
           *&buf[12] = 2048;
@@ -223,7 +223,7 @@
 
         if (sub_10000A100(121, 2))
         {
-          sub_1018BD6CC(a4);
+          sub_1018BD6CC(data);
         }
       }
 

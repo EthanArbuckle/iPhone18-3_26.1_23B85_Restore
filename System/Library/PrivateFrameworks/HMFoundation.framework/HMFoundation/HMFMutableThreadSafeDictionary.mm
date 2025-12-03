@@ -1,35 +1,35 @@
 @interface HMFMutableThreadSafeDictionary
 + (id)threadSafeDictionary;
-- (HMFMutableThreadSafeDictionary)initWithDictionary:(id)a3;
+- (HMFMutableThreadSafeDictionary)initWithDictionary:(id)dictionary;
 - (NSArray)allKeys;
 - (NSArray)allValues;
 - (NSDictionary)rawDictionarySnapshot;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)keyEnumerator;
 - (id)objectEnumerator;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker;
 - (unint64_t)count;
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation HMFMutableThreadSafeDictionary
 
 + (id)threadSafeDictionary
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (HMFMutableThreadSafeDictionary)initWithDictionary:(id)a3
+- (HMFMutableThreadSafeDictionary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = HMFMutableThreadSafeDictionary;
   v5 = [(HMFMutableThreadSafeDictionary *)&v10 init];
@@ -37,7 +37,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 mutableCopy];
+    v7 = [dictionaryCopy mutableCopy];
     dictionary = v6->_dictionary;
     v6->_dictionary = v7;
   }
@@ -56,107 +56,107 @@
 - (NSArray)allKeys
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_dictionary allKeys];
+  allKeys = [(NSMutableDictionary *)self->_dictionary allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
 - (NSArray)allValues
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_dictionary allValues];
+  allValues = [(NSMutableDictionary *)self->_dictionary allValues];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allValues;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:v4];
-  os_unfair_lock_unlock(&self->_lock);
-
-  return v5;
-}
-
-- (id)objectForKeyedSubscript:(id)a3
-{
-  v4 = a3;
-  os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:keyCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)objectsForKeys:(id)a3 notFoundMarker:(id)a4
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v6 = a3;
-  v7 = a4;
+  subscriptCopy = subscript;
   os_unfair_lock_lock_with_options();
-  v8 = [(NSMutableDictionary *)self->_dictionary objectsForKeys:v6 notFoundMarker:v7];
+  v5 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:subscriptCopy];
+  os_unfair_lock_unlock(&self->_lock);
+
+  return v5;
+}
+
+- (id)objectsForKeys:(id)keys notFoundMarker:(id)marker
+{
+  keysCopy = keys;
+  markerCopy = marker;
+  os_unfair_lock_lock_with_options();
+  v8 = [(NSMutableDictionary *)self->_dictionary objectsForKeys:keysCopy notFoundMarker:markerCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v8;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_dictionary setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_dictionary setObject:objectCopy forKey:keyCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v7 = a3;
-  v6 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_dictionary setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_dictionary setObject:objectCopy forKeyedSubscript:subscriptCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_dictionary removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_dictionary removeObjectForKey:keyCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_dictionary removeObjectsForKeys:v4];
+  [(NSMutableDictionary *)self->_dictionary removeObjectsForKeys:keysCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (id)keyEnumerator
 {
-  v2 = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
-  v3 = [v2 keyEnumerator];
+  rawDictionarySnapshot = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
+  keyEnumerator = [rawDictionarySnapshot keyEnumerator];
 
-  return v3;
+  return keyEnumerator;
 }
 
 - (id)objectEnumerator
 {
-  v2 = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
-  v3 = [v2 objectEnumerator];
+  rawDictionarySnapshot = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
+  objectEnumerator = [rawDictionarySnapshot objectEnumerator];
 
-  return v3;
+  return objectEnumerator;
 }
 
-- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateKeysAndObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
-  [v7 enumerateKeysAndObjectsWithOptions:a3 usingBlock:v6];
+  blockCopy = block;
+  rawDictionarySnapshot = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
+  [rawDictionarySnapshot enumerateKeysAndObjectsWithOptions:options usingBlock:blockCopy];
 }
 
 - (NSDictionary)rawDictionarySnapshot
@@ -168,11 +168,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMFMutableThreadSafeDictionary alloc];
-  v5 = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
-  v6 = [(HMFMutableThreadSafeDictionary *)v4 initWithDictionary:v5];
+  rawDictionarySnapshot = [(HMFMutableThreadSafeDictionary *)self rawDictionarySnapshot];
+  v6 = [(HMFMutableThreadSafeDictionary *)v4 initWithDictionary:rawDictionarySnapshot];
 
   return v6;
 }

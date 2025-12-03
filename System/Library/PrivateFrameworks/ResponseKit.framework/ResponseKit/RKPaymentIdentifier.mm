@@ -1,7 +1,7 @@
 @interface RKPaymentIdentifier
 + (id)sharedManager;
-- (id)amountsFromMessage:(id)a3;
-- (id)copyAttributedTokensForText:(id)a3;
+- (id)amountsFromMessage:(id)message;
+- (id)copyAttributedTokensForText:(id)text;
 @end
 
 @implementation RKPaymentIdentifier
@@ -25,9 +25,9 @@ uint64_t __36__RKPaymentIdentifier_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)amountsFromMessage:(id)a3
+- (id)amountsFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
@@ -95,9 +95,9 @@ uint64_t __42__RKPaymentIdentifier_amountsFromMessage___block_invoke(uint64_t a1
   return result;
 }
 
-- (id)copyAttributedTokensForText:(id)a3
+- (id)copyAttributedTokensForText:(id)text
 {
-  v3 = [(RKPaymentIdentifier *)self amountsFromMessage:a3];
+  v3 = [(RKPaymentIdentifier *)self amountsFromMessage:text];
   v4 = v3;
   if (v3 && [v3 count])
   {

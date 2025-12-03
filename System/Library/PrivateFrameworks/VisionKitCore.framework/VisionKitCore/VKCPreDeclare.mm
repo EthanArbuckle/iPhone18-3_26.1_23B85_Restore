@@ -1,15 +1,15 @@
 @interface VKCPreDeclare
-+ (CGRect)cropRectForMatteResult:(id)a3;
++ (CGRect)cropRectForMatteResult:(id)result;
 @end
 
 @implementation VKCPreDeclare
 
-+ (CGRect)cropRectForMatteResult:(id)a3
++ (CGRect)cropRectForMatteResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   if (objc_opt_respondsToSelector())
   {
-    [v3 cropRect];
+    [resultCopy cropRect];
     v5 = v4;
     v7 = v6;
     v9 = v8;

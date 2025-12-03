@@ -1,8 +1,8 @@
 @interface PGPersonTrendsMemoryGenerator
-- (PGPersonTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4;
+- (PGPersonTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations;
 - (id)childOnlyPersonTrends;
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3;
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type;
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation PGPersonTrendsMemoryGenerator
@@ -17,25 +17,25 @@
   return v2;
 }
 
-- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateMomentNodesAndFeatureNodesInGraph:(id)graph usingBlock:(id)block
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PGTrendsMemoryGenerator *)self validSceneFeatureNodesInGraph:v6];
+  graphCopy = graph;
+  blockCopy = block;
+  v8 = [(PGTrendsMemoryGenerator *)self validSceneFeatureNodesInGraph:graphCopy];
   if ([v8 count])
   {
     v9 = MEMORY[0x277D22C90];
     v10 = +[PGGraphMomentNode featureOfMoment];
     v31[0] = v10;
     v11 = +[PGGraphPersonNode filterExcludingMe];
-    v12 = [v11 relation];
-    v31[1] = v12;
+    relation = [v11 relation];
+    v31[1] = relation;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
     v14 = [v9 chain:v13];
 
-    v15 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_2844860F0 includingMe:0 inGraph:v6];
-    v16 = [(PGPersonTrendsMemoryGenerator *)self childOnlyPersonTrends];
+    v15 = [PGGraphPersonNodeCollection personNodesInAgeCategories:&unk_2844860F0 includingMe:0 inGraph:graphCopy];
+    childOnlyPersonTrends = [(PGPersonTrendsMemoryGenerator *)self childOnlyPersonTrends];
     v17 = MEMORY[0x277D22BF8];
     v18 = +[PGGraphFeatureNodeCollection momentOfFeature];
     v19 = [v17 adjacencyWithSources:v8 relation:v18 targetsClass:objc_opt_class()];
@@ -45,13 +45,13 @@
     v24[2] = __87__PGPersonTrendsMemoryGenerator_enumerateMomentNodesAndFeatureNodesInGraph_usingBlock___block_invoke;
     v24[3] = &unk_278884C20;
     v25 = v14;
-    v26 = v16;
+    v26 = childOnlyPersonTrends;
     v27 = v15;
-    v28 = self;
-    v29 = v6;
-    v30 = v7;
+    selfCopy = self;
+    v29 = graphCopy;
+    v30 = blockCopy;
     v20 = v15;
-    v21 = v16;
+    v21 = childOnlyPersonTrends;
     v22 = v14;
     [v19 enumerateTargetsBySourceWithBlock:v24];
   }
@@ -122,34 +122,34 @@ LABEL_5:
   }
 }
 
-- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)a3
+- (unint64_t)memoryCategorySubcategoryForOverTimeType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     result = 16003;
   }
 
   else
   {
-    v3 = a3;
-    if (a3 == 3)
+    typeCopy = type;
+    if (type == 3)
     {
       result = 16004;
     }
 
     else
     {
-      v5 = [(PGMemoryGenerator *)self loggingConnection];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      loggingConnection = [(PGMemoryGenerator *)self loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
         v9 = 138412546;
         v10 = v8;
         v11 = 1024;
-        v12 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
+        v12 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[%@] Returning PHMemoryCategorySubcategoryNone for PGOverTimeMemoryType %d, this should never happen", &v9, 0x12u);
       }
 
       result = 0;
@@ -160,11 +160,11 @@ LABEL_5:
   return result;
 }
 
-- (PGPersonTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)a3 configurations:(id)a4
+- (PGPersonTrendsMemoryGenerator)initWithMemoryGenerationContext:(id)context configurations:(id)configurations
 {
   v9.receiver = self;
   v9.super_class = PGPersonTrendsMemoryGenerator;
-  v4 = [(PGTrendsMemoryGenerator *)&v9 initWithMemoryGenerationContext:a3 configurations:a4];
+  v4 = [(PGTrendsMemoryGenerator *)&v9 initWithMemoryGenerationContext:context configurations:configurations];
   v5 = v4;
   if (v4)
   {

@@ -2,38 +2,38 @@
 + (UIImage)knownSenderHeaderImage;
 + (UIImage)unknownSenderCellImage;
 + (UIImage)unknownSenderHeaderImage;
-+ (id)_headerImageWithSymbolNamed:(id)a3;
-+ (id)groupMemberListFooterTextForPermissionLevel:(int64_t)a3;
-+ (id)invitationDescriptionForOwner:(id)a3;
-+ (id)knownSenderHeaderSubtitleForPermissionLevel:(int64_t)a3;
-+ (id)knownSenderHeaderTitleWithGroupName:(id)a3;
-+ (id)linkPresentationBubbleSubtitleForGroupName:(id)a3 groupOwnerName:(id)a4;
++ (id)_headerImageWithSymbolNamed:(id)named;
++ (id)groupMemberListFooterTextForPermissionLevel:(int64_t)level;
++ (id)invitationDescriptionForOwner:(id)owner;
++ (id)knownSenderHeaderSubtitleForPermissionLevel:(int64_t)level;
++ (id)knownSenderHeaderTitleWithGroupName:(id)name;
++ (id)linkPresentationBubbleSubtitleForGroupName:(id)name groupOwnerName:(id)ownerName;
 @end
 
 @implementation _ASAccountSharingGroupInvitationContent
 
-+ (id)knownSenderHeaderTitleWithGroupName:(id)a3
++ (id)knownSenderHeaderTitleWithGroupName:(id)name
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  nameCopy = name;
   v5 = _WBSLocalizedString();
-  v6 = [v3 localizedStringWithFormat:v5, v4];
+  nameCopy = [v3 localizedStringWithFormat:v5, nameCopy];
 
-  return v6;
+  return nameCopy;
 }
 
-+ (id)_headerImageWithSymbolNamed:(id)a3
++ (id)_headerImageWithSymbolNamed:(id)named
 {
   v3 = MEMORY[0x1E69DCAD8];
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 tintColor];
-  v7 = [v3 configurationWithHierarchicalColor:v6];
+  namedCopy = named;
+  tintColor = [v4 tintColor];
+  v7 = [v3 configurationWithHierarchicalColor:tintColor];
 
   v8 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:48.0];
   v9 = [v7 configurationByApplyingConfiguration:v8];
 
-  v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v5];
+  v10 = [MEMORY[0x1E69DCAB8] _systemImageNamed:namedCopy];
 
   v11 = [v10 imageWithConfiguration:v9];
 
@@ -42,13 +42,13 @@
 
 + (UIImage)knownSenderHeaderImage
 {
-  v3 = [a1 knownSenderHeaderImageName];
-  v4 = [a1 _headerImageWithSymbolNamed:v3];
+  knownSenderHeaderImageName = [self knownSenderHeaderImageName];
+  v4 = [self _headerImageWithSymbolNamed:knownSenderHeaderImageName];
 
   return v4;
 }
 
-+ (id)knownSenderHeaderSubtitleForPermissionLevel:(int64_t)a3
++ (id)knownSenderHeaderSubtitleForPermissionLevel:(int64_t)level
 {
   v4 = _WBSLocalizedString();
 
@@ -57,27 +57,27 @@
 
 + (UIImage)unknownSenderHeaderImage
 {
-  v3 = [a1 unknownSenderImageName];
-  v4 = [a1 _headerImageWithSymbolNamed:v3];
+  unknownSenderImageName = [self unknownSenderImageName];
+  v4 = [self _headerImageWithSymbolNamed:unknownSenderImageName];
 
   return v4;
 }
 
 + (UIImage)unknownSenderCellImage
 {
-  v2 = [a1 unknownSenderImageName];
-  v3 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v2];
+  unknownSenderImageName = [self unknownSenderImageName];
+  v3 = [MEMORY[0x1E69DCAB8] _systemImageNamed:unknownSenderImageName];
   v4 = MEMORY[0x1E69DCAD8];
-  v5 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v6 = [v4 configurationWithHierarchicalColor:v5];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  v6 = [v4 configurationWithHierarchicalColor:systemGrayColor];
   v7 = [v3 imageWithConfiguration:v6];
 
   return v7;
 }
 
-+ (id)groupMemberListFooterTextForPermissionLevel:(int64_t)a3
++ (id)groupMemberListFooterTextForPermissionLevel:(int64_t)level
 {
-  if (a3)
+  if (level)
   {
     v4 = _WBSLocalizedString();
   }
@@ -90,37 +90,37 @@
   return v4;
 }
 
-+ (id)invitationDescriptionForOwner:(id)a3
++ (id)invitationDescriptionForOwner:(id)owner
 {
-  v3 = a3;
-  v4 = [v3 contactDisplayName];
+  ownerCopy = owner;
+  contactDisplayName = [ownerCopy contactDisplayName];
   v5 = MEMORY[0x1E696AEC0];
   v6 = _WBSLocalizedString();
-  v7 = [v3 handle];
+  handle = [ownerCopy handle];
 
-  if (v4)
+  if (contactDisplayName)
   {
-    [v5 localizedStringWithFormat:v6, v4, v7];
+    [v5 localizedStringWithFormat:v6, contactDisplayName, handle];
   }
 
   else
   {
-    [v5 localizedStringWithFormat:v6, v7, v10];
+    [v5 localizedStringWithFormat:v6, handle, v10];
   }
   v8 = ;
 
   return v8;
 }
 
-+ (id)linkPresentationBubbleSubtitleForGroupName:(id)a3 groupOwnerName:(id)a4
++ (id)linkPresentationBubbleSubtitleForGroupName:(id)name groupOwnerName:(id)ownerName
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
+  ownerNameCopy = ownerName;
+  nameCopy = name;
   v8 = _WBSLocalizedString();
-  v9 = [v5 localizedStringWithFormat:v8, v6, v7];
+  nameCopy = [v5 localizedStringWithFormat:v8, ownerNameCopy, nameCopy];
 
-  return v9;
+  return nameCopy;
 }
 
 @end

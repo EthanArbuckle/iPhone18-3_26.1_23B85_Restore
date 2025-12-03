@@ -1,9 +1,9 @@
 @interface CLSIVSNSFWModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSIVSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSIVSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
-- (void)processSignals:(id)a3 intoProcessedSignals:(id)a4;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
+- (void)processSignals:(id)signals intoProcessedSignals:(id)processedSignals;
 - (void)setupVersion61;
 - (void)setupVersion76;
 - (void)setupVersion95;
@@ -43,20 +43,20 @@ void __28__CLSIVSNSFWModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (void)processSignals:(id)a3 intoProcessedSignals:(id)a4
+- (void)processSignals:(id)signals intoProcessedSignals:(id)processedSignals
 {
-  v12 = a4;
-  v6 = [a3 objectForKeyedSubscript:&unk_287051C80];
+  processedSignalsCopy = processedSignals;
+  v6 = [signals objectForKeyedSubscript:&unk_287051C80];
   [v6 doubleValue];
   v8 = v7;
 
-  [v12 setIsRecallinglyNSFWExplicit:{-[CLSSignalNode passesHighRecallWithConfidence:](self->_explicitNode, "passesHighRecallWithConfidence:", v8)}];
-  [v12 setIsNSFWExplicit:{-[CLSSignalNode passesWithConfidence:](self->_explicitNode, "passesWithConfidence:", v8)}];
-  [v12 setIsPreciselyNSFWExplicit:{-[CLSSignalNode passesHighRecallWithConfidence:](self->_explicitNode, "passesHighRecallWithConfidence:", v8)}];
+  [processedSignalsCopy setIsRecallinglyNSFWExplicit:{-[CLSSignalNode passesHighRecallWithConfidence:](self->_explicitNode, "passesHighRecallWithConfidence:", v8)}];
+  [processedSignalsCopy setIsNSFWExplicit:{-[CLSSignalNode passesWithConfidence:](self->_explicitNode, "passesWithConfidence:", v8)}];
+  [processedSignalsCopy setIsPreciselyNSFWExplicit:{-[CLSSignalNode passesHighRecallWithConfidence:](self->_explicitNode, "passesHighRecallWithConfidence:", v8)}];
   version = self->_version;
   if (version <= 0x61)
   {
-    v11 = v12;
+    v11 = processedSignalsCopy;
     if (version <= 0x5E)
     {
       if (version <= 0x4B)
@@ -86,18 +86,18 @@ void __28__CLSIVSNSFWModel_modelInfo__block_invoke(uint64_t a1, void *a2)
     v10 = 0.883;
   }
 
-  [v12 setIsVeryPreciselyIVSNSFWExplicit:v8 >= v10];
-  v11 = v12;
+  [processedSignalsCopy setIsVeryPreciselyIVSNSFWExplicit:v8 >= v10];
+  v11 = processedSignalsCopy;
 LABEL_10:
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  if (a3 <= 2147481849)
+  if (identifier <= 2147481849)
   {
-    if (a3 > 2147481847)
+    if (identifier > 2147481847)
     {
-      if (a3 == 2147481848)
+      if (identifier == 2147481848)
       {
         buttocksNode = self->_buttocksNode;
       }
@@ -110,13 +110,13 @@ LABEL_10:
       goto LABEL_20;
     }
 
-    if (a3 == 2147481846)
+    if (identifier == 2147481846)
     {
       buttocksNode = self->_femaleBreastNode;
       goto LABEL_20;
     }
 
-    if (a3 == 2147481847)
+    if (identifier == 2147481847)
     {
       buttocksNode = self->_maleBreastNode;
       goto LABEL_20;
@@ -125,9 +125,9 @@ LABEL_10:
 
   else
   {
-    if (a3 <= 2147481851)
+    if (identifier <= 2147481851)
     {
-      if (a3 == 2147481850)
+      if (identifier == 2147481850)
       {
         buttocksNode = self->_maleGenitalsNode;
       }
@@ -140,7 +140,7 @@ LABEL_10:
       goto LABEL_20;
     }
 
-    switch(a3)
+    switch(identifier)
     {
       case 0x7FFFF8FCuLL:
         buttocksNode = self->_underwearNode;
@@ -156,10 +156,10 @@ LABEL_20:
     }
   }
 
-  if ([(CLSIVSNSFWModel *)self isResponsibleForSignalIdentifier:a3])
+  if ([(CLSIVSNSFWModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"IVS NSFW - Unknown (%X)", a3];
-    v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"IVS NSFW - Unknown (%X)", identifier];
+    v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -340,7 +340,7 @@ LABEL_21:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSIVSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSIVSNSFWModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -349,19 +349,19 @@ LABEL_21:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x62)
+    if (version < 0x62)
     {
-      if (a3 < 0x5F)
+      if (version < 0x5F)
       {
-        if (a3 < 0x4C)
+        if (version < 0x4C)
         {
-          if (a3 < 0x3D)
+          if (version < 0x3D)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
               v6 = objc_opt_class();
               *buf = 67109378;
-              v11 = a3;
+              versionCopy = version;
               v12 = 2112;
               v13 = v6;
               _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -398,27 +398,27 @@ LABEL_21:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 95;
   v4 = 76;
   v5 = 61;
-  if (a3 < 0x3D)
+  if (version < 0x3D)
   {
     v5 = 0;
   }
 
-  if (a3 <= 0x4B)
+  if (version <= 0x4B)
   {
     v4 = v5;
   }
 
-  if (a3 <= 0x5E)
+  if (version <= 0x5E)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x61)
+  if (version <= 0x61)
   {
     return v3;
   }

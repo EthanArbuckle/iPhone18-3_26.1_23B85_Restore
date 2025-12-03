@@ -1,29 +1,29 @@
 @interface NSPersistentCloudKitContainerEventResult
-- (NSPersistentCloudKitContainerEventResult)initWithResult:(id)a3 ofType:(int64_t)a4;
-- (NSPersistentCloudKitContainerEventResult)initWithSubresults:(id)a3;
+- (NSPersistentCloudKitContainerEventResult)initWithResult:(id)result ofType:(int64_t)type;
+- (NSPersistentCloudKitContainerEventResult)initWithSubresults:(id)subresults;
 - (void)dealloc;
 @end
 
 @implementation NSPersistentCloudKitContainerEventResult
 
-- (NSPersistentCloudKitContainerEventResult)initWithResult:(id)a3 ofType:(int64_t)a4
+- (NSPersistentCloudKitContainerEventResult)initWithResult:(id)result ofType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = NSPersistentCloudKitContainerEventResult;
   v6 = [(NSPersistentCloudKitContainerEventResult *)&v8 init];
   if (v6)
   {
-    v6->_result = a3;
-    v6->_resultType = a4;
+    v6->_result = result;
+    v6->_resultType = type;
   }
 
   return v6;
 }
 
-- (NSPersistentCloudKitContainerEventResult)initWithSubresults:(id)a3
+- (NSPersistentCloudKitContainerEventResult)initWithSubresults:(id)subresults
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3 || ![a3 count])
+  if (!subresults || ![subresults count])
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -47,12 +47,12 @@
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = v7;
-    v7->_resultType = [objc_msgSend(a3 "lastObject")];
+    v7->_resultType = [objc_msgSend(subresults "lastObject")];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [a3 countByEnumeratingWithState:&v26 objects:v33 count:16];
+    v9 = [subresults countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
@@ -64,19 +64,19 @@
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(subresults);
           }
 
           v13 = *(*(&v26 + 1) + 8 * v12);
-          v14 = [v13 resultType];
-          if (v14 == 1)
+          resultType = [v13 resultType];
+          if (resultType == 1)
           {
             v16 = [objc_msgSend(v13 "result")];
             if (v16)
             {
               v17 = v16;
-              v18 = [v8 lastObject];
-              v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v18, "integerValue") + objc_msgSend(v17, "integerValue")}];
+              lastObject = [v8 lastObject];
+              v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(lastObject, "integerValue") + objc_msgSend(v17, "integerValue")}];
               if ([v8 count])
               {
                 [v8 replaceObjectAtIndex:0 withObject:v19];
@@ -89,7 +89,7 @@
             }
           }
 
-          else if (v14)
+          else if (resultType)
           {
             v20 = _PFLogGetLogStream(17);
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -110,10 +110,10 @@
 
           else
           {
-            v15 = [v13 result];
-            if ([v15 count])
+            result = [v13 result];
+            if ([result count])
             {
-              [v8 addObjectsFromArray:v15];
+              [v8 addObjectsFromArray:result];
             }
           }
 
@@ -121,7 +121,7 @@
         }
 
         while (v10 != v12);
-        v22 = [a3 countByEnumeratingWithState:&v26 objects:v33 count:16];
+        v22 = [subresults countByEnumeratingWithState:&v26 objects:v33 count:16];
         v10 = v22;
       }
 

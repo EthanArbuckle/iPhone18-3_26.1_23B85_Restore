@@ -1,12 +1,12 @@
 @interface SFContactImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFContactImage)initWithCoder:(id)a3;
-- (SFContactImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFContactImage)initWithCoder:(id)coder;
+- (SFContactImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFContactImage
@@ -16,35 +16,35 @@
   v10.receiver = self;
   v10.super_class = SFContactImage;
   v3 = [(SFImage *)&v10 hash];
-  v4 = [(SFContactImage *)self contactIdentifiers];
-  v5 = [v4 hash];
+  contactIdentifiers = [(SFContactImage *)self contactIdentifiers];
+  v5 = [contactIdentifiers hash];
   v6 = v5 ^ [(SFContactImage *)self threeDTouchEnabled];
-  v7 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
-  v8 = v6 ^ [v7 hash];
+  appIconBadgeBundleIdentifier = [(SFContactImage *)self appIconBadgeBundleIdentifier];
+  v8 = v6 ^ [appIconBadgeBundleIdentifier hash];
 
   return v8 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFContactImage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFContactImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFContactImage;
-      if ([(SFImage *)&v22 isEqual:v5])
+      if ([(SFImage *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFContactImage *)self contactIdentifiers];
-        v8 = [(SFContactImage *)v6 contactIdentifiers];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        contactIdentifiers = [(SFContactImage *)self contactIdentifiers];
+        contactIdentifiers2 = [(SFContactImage *)v6 contactIdentifiers];
+        if ((contactIdentifiers != 0) == (contactIdentifiers2 == 0))
         {
           v11 = 0;
 LABEL_21:
@@ -52,35 +52,35 @@ LABEL_21:
           goto LABEL_22;
         }
 
-        v9 = [(SFContactImage *)self contactIdentifiers];
-        if (v9)
+        contactIdentifiers3 = [(SFContactImage *)self contactIdentifiers];
+        if (contactIdentifiers3)
         {
-          v10 = [(SFContactImage *)self contactIdentifiers];
-          v3 = [(SFContactImage *)v6 contactIdentifiers];
-          if (![v10 isEqual:v3])
+          contactIdentifiers4 = [(SFContactImage *)self contactIdentifiers];
+          contactIdentifiers5 = [(SFContactImage *)v6 contactIdentifiers];
+          if (![contactIdentifiers4 isEqual:contactIdentifiers5])
           {
             v11 = 0;
             goto LABEL_19;
           }
 
-          v21 = v10;
+          v21 = contactIdentifiers4;
         }
 
-        v12 = [(SFContactImage *)self threeDTouchEnabled];
-        if (v12 == [(SFContactImage *)v6 threeDTouchEnabled])
+        threeDTouchEnabled = [(SFContactImage *)self threeDTouchEnabled];
+        if (threeDTouchEnabled == [(SFContactImage *)v6 threeDTouchEnabled])
         {
-          v13 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
-          v14 = [(SFContactImage *)v6 appIconBadgeBundleIdentifier];
-          v15 = v14;
-          if ((v13 != 0) != (v14 == 0))
+          appIconBadgeBundleIdentifier = [(SFContactImage *)self appIconBadgeBundleIdentifier];
+          appIconBadgeBundleIdentifier2 = [(SFContactImage *)v6 appIconBadgeBundleIdentifier];
+          v15 = appIconBadgeBundleIdentifier2;
+          if ((appIconBadgeBundleIdentifier != 0) != (appIconBadgeBundleIdentifier2 == 0))
           {
-            v16 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
-            if (v16)
+            appIconBadgeBundleIdentifier3 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
+            if (appIconBadgeBundleIdentifier3)
             {
-              v17 = v16;
-              v20 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
-              v19 = [(SFContactImage *)v6 appIconBadgeBundleIdentifier];
-              v11 = [v20 isEqual:v19];
+              v17 = appIconBadgeBundleIdentifier3;
+              appIconBadgeBundleIdentifier4 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
+              appIconBadgeBundleIdentifier5 = [(SFContactImage *)v6 appIconBadgeBundleIdentifier];
+              v11 = [appIconBadgeBundleIdentifier4 isEqual:appIconBadgeBundleIdentifier5];
             }
 
             else
@@ -90,8 +90,8 @@ LABEL_21:
             }
 
 LABEL_18:
-            v10 = v21;
-            if (!v9)
+            contactIdentifiers4 = v21;
+            if (!contactIdentifiers3)
             {
 LABEL_20:
 
@@ -117,18 +117,18 @@ LABEL_22:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFContactImage;
-  v4 = [(SFImage *)&v10 copyWithZone:a3];
-  v5 = [(SFContactImage *)self contactIdentifiers];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v10 copyWithZone:zone];
+  contactIdentifiers = [(SFContactImage *)self contactIdentifiers];
+  v6 = [contactIdentifiers copy];
   [v4 setContactIdentifiers:v6];
 
   [v4 setThreeDTouchEnabled:{-[SFContactImage threeDTouchEnabled](self, "threeDTouchEnabled")}];
-  v7 = [(SFContactImage *)self appIconBadgeBundleIdentifier];
-  v8 = [v7 copy];
+  appIconBadgeBundleIdentifier = [(SFContactImage *)self appIconBadgeBundleIdentifier];
+  v8 = [appIconBadgeBundleIdentifier copy];
   [v4 setAppIconBadgeBundleIdentifier:v8];
 
   return v4;
@@ -137,31 +137,31 @@ LABEL_22:
 - (NSData)jsonData
 {
   v2 = [[_SFPBContactImage alloc] initWithFacade:self];
-  v3 = [(_SFPBContactImage *)v2 jsonData];
+  jsonData = [(_SFPBContactImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBContactImage alloc] initWithFacade:self];
-  v3 = [(_SFPBContactImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBContactImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFContactImage)initWithCoder:(id)a3
+- (SFContactImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -171,17 +171,17 @@ LABEL_22:
   return v7;
 }
 
-- (SFContactImage)initWithProtobuf:(id)a3
+- (SFContactImage)initWithProtobuf:(id)protobuf
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v22.receiver = self;
   v22.super_class = SFContactImage;
   v5 = [(SFContactImage *)&v22 init];
   if (v5)
   {
-    v6 = [v4 contactIdentifiers];
-    if (v6)
+    contactIdentifiers = [protobufCopy contactIdentifiers];
+    if (contactIdentifiers)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -195,8 +195,8 @@ LABEL_22:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v4 contactIdentifiers];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    contactIdentifiers2 = [protobufCopy contactIdentifiers];
+    v9 = [contactIdentifiers2 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -207,7 +207,7 @@ LABEL_22:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(contactIdentifiers2);
           }
 
           if (*(*(&v18 + 1) + 8 * i))
@@ -216,24 +216,24 @@ LABEL_22:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v10 = [contactIdentifiers2 countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v10);
     }
 
     [(SFContactImage *)v5 setContactIdentifiers:v7];
-    if ([v4 threeDTouchEnabled])
+    if ([protobufCopy threeDTouchEnabled])
     {
-      -[SFContactImage setThreeDTouchEnabled:](v5, "setThreeDTouchEnabled:", [v4 threeDTouchEnabled]);
+      -[SFContactImage setThreeDTouchEnabled:](v5, "setThreeDTouchEnabled:", [protobufCopy threeDTouchEnabled]);
     }
 
-    v13 = [v4 appIconBadgeBundleIdentifier];
+    appIconBadgeBundleIdentifier = [protobufCopy appIconBadgeBundleIdentifier];
 
-    if (v13)
+    if (appIconBadgeBundleIdentifier)
     {
-      v14 = [v4 appIconBadgeBundleIdentifier];
-      [(SFContactImage *)v5 setAppIconBadgeBundleIdentifier:v14];
+      appIconBadgeBundleIdentifier2 = [protobufCopy appIconBadgeBundleIdentifier];
+      [(SFContactImage *)v5 setAppIconBadgeBundleIdentifier:appIconBadgeBundleIdentifier2];
     }
 
     v15 = v5;

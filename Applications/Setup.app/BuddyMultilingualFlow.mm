@@ -3,26 +3,26 @@
 - (id)classList;
 - (id)firstItem;
 - (void)_writeOutDictationDefaults;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)injectItemIfNeeded:(id)a3 forClass:(Class)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)injectItemIfNeeded:(id)needed forClass:(Class)class;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyMultilingualFlow
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualFlow *)v34 proximitySetupController];
-  v4 = [(ProximitySetupController *)v3 hasAppliedSettings];
+  objc_storeStrong(location, completion);
+  proximitySetupController = [(BuddyMultilingualFlow *)selfCopy proximitySetupController];
+  hasAppliedSettings = [(ProximitySetupController *)proximitySetupController hasAppliedSettings];
 
-  v32 = v4 & 1;
+  v32 = hasAppliedSettings & 1;
   v31 = +[DMCMultiUserModeUtilities shouldSkipLanguageAndLocaleSetupForNewUsers]& 1;
   v5 = 0;
-  if ((v4 & 1) == 0)
+  if ((hasAppliedSettings & 1) == 0)
   {
     v5 = v31 ^ 1;
   }
@@ -50,28 +50,28 @@
     v22 = +[BuddyMultilingualDataModelProvider instanceForKeyboardSelector];
     v21 = +[BuddyMultilingualDataModelProvider instanceForDictationSelectorExpress];
     v6 = +[BuddyMultilingualDataModelProvider instanceForDictationSelector];
-    [(BuddyMultilingualFlow *)v34 setDictationProvider:v6];
+    [(BuddyMultilingualFlow *)selfCopy setDictationProvider:v6];
 
     v7 = [[BuddyMultilingualDataModelProviderCollection alloc] initWithKeyboardProvider:v22 withDictationProvider:v21];
-    [(BuddyMultilingualFlow *)v34 setProviderCollection:v7];
+    [(BuddyMultilingualFlow *)selfCopy setProviderCollection:v7];
 
     v36[0] = objc_opt_class();
     v36[1] = objc_opt_class();
     v36[2] = objc_opt_class();
     v8 = [NSArray arrayWithObjects:v36 count:3];
-    [(BuddyMultilingualFlow *)v34 setClassList:v8];
+    [(BuddyMultilingualFlow *)selfCopy setClassList:v8];
 
-    v9 = [(BuddyMultilingualFlow *)v34 starter];
+    starter = [(BuddyMultilingualFlow *)selfCopy starter];
     v10 = 0;
-    if ([v9 controllerNeedsToRunForClass:objc_opt_class()])
+    if ([starter controllerNeedsToRunForClass:objc_opt_class()])
     {
       v10 = +[BuddyKeyboardLanguageOrderSelector needsFullscreenPane];
     }
 
     v20 = v10 & 1;
-    v11 = [(BuddyMultilingualFlow *)v34 starter];
+    starter2 = [(BuddyMultilingualFlow *)selfCopy starter];
     v12 = 0;
-    if ([v11 controllerNeedsToRunForClass:objc_opt_class()])
+    if ([starter2 controllerNeedsToRunForClass:objc_opt_class()])
     {
       v12 = +[BuddyDictationLanguageOrderSelector needsFullscreenPane];
     }
@@ -86,7 +86,7 @@
     v18 = v13;
     if ((v13 & 1) == 0)
     {
-      [(BuddyMultilingualFlow *)v34 _writeOutDictationDefaults];
+      [(BuddyMultilingualFlow *)selfCopy _writeOutDictationDefaults];
     }
 
     v17 = objc_alloc_init(NSMutableArray);
@@ -162,29 +162,29 @@
 
 - (id)firstItem
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   v4.receiver = self;
   v4.super_class = BuddyMultilingualFlow;
   location[0] = [(BuddyMultilingualFlow *)&v4 firstItem];
-  [(BuddyMultilingualFlow *)v6 injectItemIfNeeded:location[0] forClass:objc_opt_class()];
+  [(BuddyMultilingualFlow *)selfCopy injectItemIfNeeded:location[0] forClass:objc_opt_class()];
   v2 = location[0];
   objc_storeStrong(location, 0);
   return v2;
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, item);
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(BuddyMultilingualFlow *)v12 providerCollection], v6 = ![(BuddyMultilingualDataModelProviderCollection *)v5 expressFlowDidCustomize], v5, (v6))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(BuddyMultilingualFlow *)selfCopy providerCollection], v6 = ![(BuddyMultilingualDataModelProviderCollection *)v5 expressFlowDidCustomize], v5, (v6))
   {
-    v9.receiver = v12;
+    v9.receiver = selfCopy;
     v9.super_class = BuddyMultilingualFlow;
     [(BuddyMultilingualFlow *)&v9 flowItemDone:location[0] nextItem:0];
     v8 = 1;
@@ -192,8 +192,8 @@
 
   else
   {
-    [(BuddyMultilingualFlow *)v12 injectItemIfNeeded:v10 forClass:objc_opt_class()];
-    v7.receiver = v12;
+    [(BuddyMultilingualFlow *)selfCopy injectItemIfNeeded:v10 forClass:objc_opt_class()];
+    v7.receiver = selfCopy;
     v7.super_class = BuddyMultilingualFlow;
     [(BuddyMultilingualFlow *)&v7 flowItemDone:location[0] nextItem:v10];
     v8 = 0;
@@ -203,27 +203,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)injectItemIfNeeded:(id)a3 forClass:(Class)a4
+- (void)injectItemIfNeeded:(id)needed forClass:(Class)class
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
+  objc_storeStrong(location, needed);
+  classCopy = class;
   if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyMultilingualDataModelInjectable])
   {
     v10 = location[0];
-    if (v11 == objc_opt_class())
+    if (classCopy == objc_opt_class())
     {
-      v5 = [(BuddyMultilingualFlow *)v13 providerCollection];
-      v6 = [(BuddyMultilingualDataModelProviderCollection *)v5 keyboardProvider];
-      [v10 setProvider:v6];
+      providerCollection = [(BuddyMultilingualFlow *)selfCopy providerCollection];
+      keyboardProvider = [(BuddyMultilingualDataModelProviderCollection *)providerCollection keyboardProvider];
+      [v10 setProvider:keyboardProvider];
     }
 
-    else if (v11 == objc_opt_class())
+    else if (classCopy == objc_opt_class())
     {
-      v7 = [(BuddyMultilingualFlow *)v13 dictationProvider];
-      [v10 setProvider:v7];
+      dictationProvider = [(BuddyMultilingualFlow *)selfCopy dictationProvider];
+      [v10 setProvider:dictationProvider];
     }
 
     objc_storeStrong(&v10, 0);
@@ -232,8 +232,8 @@
   else if ([location[0] conformsToProtocol:&OBJC_PROTOCOL___BuddyMultilingualDataModelCollectionInjectable])
   {
     v9 = location[0];
-    v8 = [(BuddyMultilingualFlow *)v13 providerCollection];
-    [v9 setProviderCollection:v8];
+    providerCollection2 = [(BuddyMultilingualFlow *)selfCopy providerCollection];
+    [v9 setProviderCollection:providerCollection2];
 
     objc_storeStrong(&v9, 0);
   }
@@ -246,7 +246,7 @@
   v5[0] = objc_opt_class();
   v5[1] = objc_opt_class();
   v5[2] = objc_opt_class();
-  return [NSArray arrayWithObjects:v5 count:3, a2, a1];
+  return [NSArray arrayWithObjects:v5 count:3, a2, self];
 }
 
 - (void)_writeOutDictationDefaults
@@ -254,8 +254,8 @@
   location[2] = self;
   location[1] = a2;
   location[0] = +[BuddyMultilingualDataModelProvider instanceForDictationSelectorExpress];
-  v2 = [location[0] createDataSourceForPreselectedItems];
-  [BuddyDictationLanguageOrderSelector writePreferredDictationLanguagesToSystem:v2];
+  createDataSourceForPreselectedItems = [location[0] createDataSourceForPreselectedItems];
+  [BuddyDictationLanguageOrderSelector writePreferredDictationLanguagesToSystem:createDataSourceForPreselectedItems];
 
   objc_storeStrong(location, 0);
 }

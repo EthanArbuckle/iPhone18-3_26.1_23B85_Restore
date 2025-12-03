@@ -1,9 +1,9 @@
 @interface PLCloudSharedDeleteAlbumsJob
-+ (void)deleteLocalAlbumForMSASAlbumGUID:(id)a3 inviterAddress:(id)a4;
-+ (void)deleteLocalAlbumsForMSASAlbumGUIDs:(id)a3;
++ (void)deleteLocalAlbumForMSASAlbumGUID:(id)d inviterAddress:(id)address;
++ (void)deleteLocalAlbumsForMSASAlbumGUIDs:(id)ds;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)encodeToXPCObject:(id)object;
 - (void)runDaemonSide;
 @end
 
@@ -12,7 +12,7 @@
 - (void)runDaemonSide
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharedDeleteAlbumsJob runDaemonSide]"];
-  v4 = [objc_opt_class() highPriorityOperationQueue];
+  highPriorityOperationQueue = [objc_opt_class() highPriorityOperationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PLCloudSharedDeleteAlbumsJob_runDaemonSide__block_invoke;
@@ -20,7 +20,7 @@
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  [v4 addOperationWithBlock:v6];
+  [highPriorityOperationQueue addOperationWithBlock:v6];
 }
 
 void __45__PLCloudSharedDeleteAlbumsJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -143,19 +143,19 @@ void __45__PLCloudSharedDeleteAlbumsJob_runDaemonSide__block_invoke_2(uint64_t a
   v8.receiver = self;
   v8.super_class = PLCloudSharedDeleteAlbumsJob;
   v3 = [(PLDaemonJob *)&v8 description];
-  v4 = [(PLCloudSharedDeleteAlbumsJob *)self albumCloudGUIDsToDelete];
-  v5 = [(PLCloudSharedDeleteAlbumsJob *)self inviterAddress];
-  v6 = [v3 stringByAppendingFormat:@" albumCloudGUIDsToDelete %@ inviter %@", v4, v5];
+  albumCloudGUIDsToDelete = [(PLCloudSharedDeleteAlbumsJob *)self albumCloudGUIDsToDelete];
+  inviterAddress = [(PLCloudSharedDeleteAlbumsJob *)self inviterAddress];
+  v6 = [v3 stringByAppendingFormat:@" albumCloudGUIDsToDelete %@ inviter %@", albumCloudGUIDsToDelete, inviterAddress];
 
   return v6;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
-  v6 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = PLCloudSharedDeleteAlbumsJob;
-  v7 = [(PLCloudSharingJob *)&v11 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v11 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
     v8 = PLArrayFromXPCDictionary();
@@ -168,41 +168,41 @@ void __45__PLCloudSharedDeleteAlbumsJob_runDaemonSide__block_invoke_2(uint64_t a
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = PLCloudSharedDeleteAlbumsJob;
-  v4 = a3;
-  [(PLDaemonJob *)&v7 encodeToXPCObject:v4];
+  objectCopy = object;
+  [(PLDaemonJob *)&v7 encodeToXPCObject:objectCopy];
   v5 = [(PLCloudSharedDeleteAlbumsJob *)self albumCloudGUIDsToDelete:v7.receiver];
   PLXPCDictionarySetArray();
 
-  v6 = [(PLCloudSharedDeleteAlbumsJob *)self inviterAddress];
+  inviterAddress = [(PLCloudSharedDeleteAlbumsJob *)self inviterAddress];
   PLXPCDictionarySetString();
 }
 
-+ (void)deleteLocalAlbumForMSASAlbumGUID:(id)a3 inviterAddress:(id)a4
++ (void)deleteLocalAlbumForMSASAlbumGUID:(id)d inviterAddress:(id)address
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  addressCopy = address;
+  dCopy = d;
   v7 = objc_opt_new();
-  v9[0] = v6;
+  v9[0] = dCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
   [v7 setAlbumCloudGUIDsToDelete:v8];
-  [v7 setInviterAddress:v5];
+  [v7 setInviterAddress:addressCopy];
 
   [v7 runAndWaitForMessageToBeSent];
 }
 
-+ (void)deleteLocalAlbumsForMSASAlbumGUIDs:(id)a3
++ (void)deleteLocalAlbumsForMSASAlbumGUIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v3 = objc_opt_new();
-    [v3 setAlbumCloudGUIDsToDelete:v4];
+    [v3 setAlbumCloudGUIDsToDelete:dsCopy];
     [v3 runAndWaitForMessageToBeSent];
   }
 }

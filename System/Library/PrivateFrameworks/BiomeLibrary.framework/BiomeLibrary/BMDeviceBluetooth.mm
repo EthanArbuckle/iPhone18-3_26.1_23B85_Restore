@@ -1,15 +1,15 @@
 @interface BMDeviceBluetooth
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceBluetooth)initWithAddress:(id)a3 name:(id)a4 productID:(id)a5 starting:(id)a6 deviceType:(int)a7 batteryLevelHeadphoneCase:(id)a8 batteryLevelHeadphoneRight:(id)a9 batteryLevelHeadphoneLeft:(id)a10 appleAudioDevice:(id)a11 userWearing:(id)a12 vendorID:(id)a13;
-- (BMDeviceBluetooth)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceBluetooth)initWithAddress:(id)address name:(id)name productID:(id)d starting:(id)starting deviceType:(int)type batteryLevelHeadphoneCase:(id)case batteryLevelHeadphoneRight:(id)right batteryLevelHeadphoneLeft:(id)self0 appleAudioDevice:(id)self1 userWearing:(id)self2 vendorID:(id)self3;
+- (BMDeviceBluetooth)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceBluetooth
@@ -18,9 +18,9 @@
 {
   v3 = objc_opt_new();
   [(BMDeviceBluetooth *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
 + (id)columns
@@ -55,25 +55,25 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceBluetooth *)self address];
-    v7 = [v5 address];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    address = [(BMDeviceBluetooth *)self address];
+    address2 = [v5 address];
+    v8 = address2;
+    if (address == address2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceBluetooth *)self address];
-      v10 = [v5 address];
-      v11 = [v9 isEqual:v10];
+      address3 = [(BMDeviceBluetooth *)self address];
+      address4 = [v5 address];
+      v11 = [address3 isEqual:address4];
 
       if (!v11)
       {
@@ -81,18 +81,18 @@
       }
     }
 
-    v13 = [(BMDeviceBluetooth *)self name];
-    v14 = [v5 name];
-    v15 = v14;
-    if (v13 == v14)
+    name = [(BMDeviceBluetooth *)self name];
+    name2 = [v5 name];
+    v15 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v16 = [(BMDeviceBluetooth *)self name];
-      v17 = [v5 name];
-      v18 = [v16 isEqual:v17];
+      name3 = [(BMDeviceBluetooth *)self name];
+      name4 = [v5 name];
+      v18 = [name3 isEqual:name4];
 
       if (!v18)
       {
@@ -104,8 +104,8 @@
     {
       if (!-[BMDeviceBluetooth hasStarting](self, "hasStarting") && ![v5 hasStarting] || -[BMDeviceBluetooth hasStarting](self, "hasStarting") && objc_msgSend(v5, "hasStarting") && (v20 = -[BMDeviceBluetooth starting](self, "starting"), v20 == objc_msgSend(v5, "starting")))
       {
-        v21 = [(BMDeviceBluetooth *)self deviceType];
-        if (v21 == [v5 deviceType])
+        deviceType = [(BMDeviceBluetooth *)self deviceType];
+        if (deviceType == [v5 deviceType])
         {
           if (!-[BMDeviceBluetooth hasBatteryLevelHeadphoneCase](self, "hasBatteryLevelHeadphoneCase") && ![v5 hasBatteryLevelHeadphoneCase] || -[BMDeviceBluetooth hasBatteryLevelHeadphoneCase](self, "hasBatteryLevelHeadphoneCase") && objc_msgSend(v5, "hasBatteryLevelHeadphoneCase") && (v22 = -[BMDeviceBluetooth batteryLevelHeadphoneCase](self, "batteryLevelHeadphoneCase"), v22 == objc_msgSend(v5, "batteryLevelHeadphoneCase")))
           {
@@ -125,8 +125,8 @@
 
                     if (-[BMDeviceBluetooth hasVendorID](self, "hasVendorID") && [v5 hasVendorID])
                     {
-                      v27 = [(BMDeviceBluetooth *)self vendorID];
-                      v12 = v27 == [v5 vendorID];
+                      vendorID = [(BMDeviceBluetooth *)self vendorID];
+                      v12 = vendorID == [v5 vendorID];
 LABEL_53:
 
                       goto LABEL_54;
@@ -154,8 +154,8 @@ LABEL_54:
 - (id)jsonDictionary
 {
   v40[11] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceBluetooth *)self address];
-  v4 = [(BMDeviceBluetooth *)self name];
+  address = [(BMDeviceBluetooth *)self address];
+  name = [(BMDeviceBluetooth *)self name];
   if ([(BMDeviceBluetooth *)self hasProductID])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceBluetooth productID](self, "productID")}];
@@ -238,104 +238,104 @@ LABEL_54:
   }
 
   v39[0] = @"address";
-  v11 = v3;
-  if (!v3)
+  null = address;
+  if (!address)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v11;
-  v40[0] = v11;
+  v30 = null;
+  v40[0] = null;
   v39[1] = @"name";
-  v12 = v4;
-  if (!v4)
+  null2 = name;
+  if (!name)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v12;
-  v40[1] = v12;
+  v29 = null2;
+  v40[1] = null2;
   v39[2] = @"productID";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v3;
-  v28 = v13;
-  v40[2] = v13;
+  v35 = address;
+  v28 = null3;
+  v40[2] = null3;
   v39[3] = @"starting";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v4;
-  v27 = v14;
-  v40[3] = v14;
+  v34 = name;
+  v27 = null4;
+  v40[3] = null4;
   v39[4] = @"deviceType";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v33 = v5;
-  v26 = v15;
-  v40[4] = v15;
+  v26 = null5;
+  v40[4] = null5;
   v39[5] = @"batteryLevelHeadphoneCase";
-  v16 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v32 = v6;
-  v40[5] = v16;
+  v40[5] = null6;
   v39[6] = @"batteryLevelHeadphoneRight";
-  v17 = v38;
+  null7 = v38;
   if (!v38)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v18 = v7;
-  v40[6] = v17;
+  v40[6] = null7;
   v39[7] = @"batteryLevelHeadphoneLeft";
-  v19 = v37;
+  null8 = v37;
   if (!v37)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v20 = v8;
-  v40[7] = v19;
+  v40[7] = null8;
   v39[8] = @"appleAudioDevice";
-  v21 = v36;
+  null9 = v36;
   if (!v36)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[8] = v21;
+  v40[8] = null9;
   v39[9] = @"userWearing";
-  v22 = v9;
+  null10 = v9;
   if (!v9)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[9] = v22;
+  v40[9] = null10;
   v39[10] = @"vendorID";
-  v23 = v10;
+  null11 = v10;
   if (!v10)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null11 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v40[10] = v23;
+  v40[10] = null11;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:11];
   if (v10)
   {
@@ -415,22 +415,22 @@ LABEL_64:
   return v31;
 }
 
-- (BMDeviceBluetooth)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceBluetooth)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v135[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"address"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"address"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = 0;
 LABEL_4:
-    v8 = [v5 objectForKeyedSubscript:@"name"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v9 = 0;
           v18 = 0;
@@ -438,7 +438,7 @@ LABEL_4:
         }
 
         v104 = v6;
-        v19 = a4;
+        errorCopy = error;
         v20 = objc_alloc(MEMORY[0x1E696ABC0]);
         v21 = *MEMORY[0x1E698F240];
         v132 = *MEMORY[0x1E696A578];
@@ -449,7 +449,7 @@ LABEL_4:
         v10 = v22;
         v9 = 0;
         v18 = 0;
-        *v19 = [v20 initWithDomain:v23 code:2 userInfo:v22];
+        *errorCopy = [v20 initWithDomain:v23 code:2 userInfo:v22];
         v6 = v104;
         goto LABEL_68;
       }
@@ -462,13 +462,13 @@ LABEL_4:
       v9 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"productID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"productID"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v110 = 0;
           v18 = 0;
@@ -477,7 +477,7 @@ LABEL_4:
 
         v111 = objc_alloc(MEMORY[0x1E696ABC0]);
         v105 = v6;
-        v24 = a4;
+        errorCopy2 = error;
         v25 = *MEMORY[0x1E698F240];
         v130 = *MEMORY[0x1E696A578];
         v26 = v9;
@@ -488,11 +488,11 @@ LABEL_4:
         v29 = [v28 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v85, @"productID"];
         v131 = v29;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v131 forKeys:&v130 count:1];
-        a4 = v29;
+        error = v29;
         v31 = [v111 initWithDomain:v25 code:2 userInfo:v30];
         v110 = 0;
         v18 = 0;
-        *v24 = v31;
+        *errorCopy2 = v31;
         v6 = v105;
 LABEL_67:
 
@@ -512,13 +512,13 @@ LABEL_68:
       v11 = v8;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"starting"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"starting"];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v18 = 0;
           v30 = v12;
@@ -526,7 +526,7 @@ LABEL_68:
           goto LABEL_66;
         }
 
-        v96 = a4;
+        errorCopy3 = error;
         v32 = objc_alloc(MEMORY[0x1E696ABC0]);
         v91 = v10;
         v33 = *MEMORY[0x1E698F240];
@@ -543,9 +543,9 @@ LABEL_68:
         v38 = v33;
         v10 = v91;
         v39 = [v32 initWithDomain:v38 code:2 userInfo:v37];
-        a4 = 0;
+        error = 0;
         v18 = 0;
-        *v96 = v39;
+        *errorCopy3 = v39;
         v8 = v11;
         v13 = v37;
 LABEL_65:
@@ -565,12 +565,12 @@ LABEL_66:
       v107 = 0;
     }
 
-    [v5 objectForKeyedSubscript:@"deviceType"];
+    [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     v13 = v8 = v11;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v103 = v6;
-      v14 = a4;
+      errorCopy4 = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -582,12 +582,12 @@ LABEL_66:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v108 = 0;
             v18 = 0;
             v6 = v103;
-            a4 = v107;
+            error = v107;
             v30 = v101;
             goto LABEL_65;
           }
@@ -601,7 +601,7 @@ LABEL_66:
           v79 = [v76 initWithDomain:v77 code:2 userInfo:?];
           v108 = 0;
           v18 = 0;
-          *v14 = v79;
+          *errorCopy4 = v79;
           v40 = v78;
           v6 = v103;
           goto LABEL_101;
@@ -618,8 +618,8 @@ LABEL_66:
       v108 = 0;
     }
 
-    v40 = [v5 objectForKeyedSubscript:@"batteryLevelHeadphoneCase"];
-    v97 = a4;
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"batteryLevelHeadphoneCase"];
+    errorCopy5 = error;
     v102 = v40;
     if (!v40)
     {
@@ -641,7 +641,7 @@ LABEL_66:
       v100 = v9;
       v40 = v40;
 LABEL_43:
-      v41 = [v5 objectForKeyedSubscript:@"batteryLevelHeadphoneRight"];
+      v41 = [dictionaryCopy objectForKeyedSubscript:@"batteryLevelHeadphoneRight"];
       v95 = v40;
       v99 = v41;
       if (!v41 || (v42 = v41, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -655,21 +655,21 @@ LABEL_43:
       {
         v106 = v42;
 LABEL_46:
-        v43 = [v5 objectForKeyedSubscript:@"batteryLevelHeadphoneLeft"];
+        v43 = [dictionaryCopy objectForKeyedSubscript:@"batteryLevelHeadphoneLeft"];
         v90 = v13;
         v93 = v43;
         if (!v43 || (v44 = v43, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v98 = 0;
 LABEL_49:
-          v45 = [v5 objectForKeyedSubscript:@"appleAudioDevice"];
+          v45 = [dictionaryCopy objectForKeyedSubscript:@"appleAudioDevice"];
           v92 = v10;
           if (v45 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v94 = 0;
                 v18 = 0;
@@ -677,7 +677,7 @@ LABEL_49:
                 goto LABEL_61;
               }
 
-              v47 = self;
+              selfCopy4 = self;
               v73 = objc_alloc(MEMORY[0x1E696ABC0]);
               v74 = *MEMORY[0x1E698F240];
               v118 = *MEMORY[0x1E696A578];
@@ -688,7 +688,7 @@ LABEL_49:
               v9 = v100;
               v94 = 0;
               v18 = 0;
-              *v97 = [v73 initWithDomain:v75 code:2 userInfo:v46];
+              *errorCopy5 = [v73 initWithDomain:v75 code:2 userInfo:v46];
               goto LABEL_60;
             }
 
@@ -700,15 +700,15 @@ LABEL_49:
             v94 = 0;
           }
 
-          v46 = [v5 objectForKeyedSubscript:@"userWearing"];
+          v46 = [dictionaryCopy objectForKeyedSubscript:@"userWearing"];
           if (v46 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v47 = self;
+              selfCopy4 = self;
               v9 = v100;
-              if (!v97)
+              if (!errorCopy5)
               {
                 v48 = 0;
                 v18 = 0;
@@ -724,27 +724,27 @@ LABEL_49:
               v82 = [v80 initWithDomain:v81 code:2 userInfo:v49];
               v48 = 0;
               v18 = 0;
-              *v97 = v82;
+              *errorCopy5 = v82;
               goto LABEL_59;
             }
 
-            v47 = self;
+            selfCopy4 = self;
             v48 = v46;
           }
 
           else
           {
-            v47 = self;
+            selfCopy4 = self;
             v48 = 0;
           }
 
-          v49 = [v5 objectForKeyedSubscript:@"vendorID"];
+          v49 = [dictionaryCopy objectForKeyedSubscript:@"vendorID"];
           if (v49 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (v97)
+              if (errorCopy5)
               {
                 v113 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v89 = *MEMORY[0x1E698F240];
@@ -752,7 +752,7 @@ LABEL_49:
                 v83 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"vendorID"];
                 v115 = v83;
                 v84 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
-                *v97 = [v113 initWithDomain:v89 code:2 userInfo:v84];
+                *errorCopy5 = [v113 initWithDomain:v89 code:2 userInfo:v84];
               }
 
               v50 = 0;
@@ -768,20 +768,20 @@ LABEL_49:
             v50 = 0;
           }
 
-          v18 = -[BMDeviceBluetooth initWithAddress:name:productID:starting:deviceType:batteryLevelHeadphoneCase:batteryLevelHeadphoneRight:batteryLevelHeadphoneLeft:appleAudioDevice:userWearing:vendorID:](v47, "initWithAddress:name:productID:starting:deviceType:batteryLevelHeadphoneCase:batteryLevelHeadphoneRight:batteryLevelHeadphoneLeft:appleAudioDevice:userWearing:vendorID:", v109, v100, v110, v107, [v108 intValue], v95, v106, v98, v94, v48, v50);
-          v47 = v18;
+          v18 = -[BMDeviceBluetooth initWithAddress:name:productID:starting:deviceType:batteryLevelHeadphoneCase:batteryLevelHeadphoneRight:batteryLevelHeadphoneLeft:appleAudioDevice:userWearing:vendorID:](selfCopy4, "initWithAddress:name:productID:starting:deviceType:batteryLevelHeadphoneCase:batteryLevelHeadphoneRight:batteryLevelHeadphoneLeft:appleAudioDevice:userWearing:vendorID:", v109, v100, v110, v107, [v108 intValue], v95, v106, v98, v94, v48, v50);
+          selfCopy4 = v18;
 LABEL_59:
 
           v9 = v100;
 LABEL_60:
-          self = v47;
+          self = selfCopy4;
 
           v10 = v92;
           v40 = v95;
 LABEL_61:
 
           v30 = v101;
-          a4 = v107;
+          error = v107;
           v13 = v90;
 LABEL_62:
 
@@ -798,7 +798,7 @@ LABEL_64:
           goto LABEL_49;
         }
 
-        if (a4)
+        if (error)
         {
           v68 = v10;
           v69 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -814,7 +814,7 @@ LABEL_64:
           v9 = v100;
           v98 = 0;
           v18 = 0;
-          *a4 = [v71 initWithDomain:v72 code:2 userInfo:v45];
+          *error = [v71 initWithDomain:v72 code:2 userInfo:v45];
           goto LABEL_61;
         }
 
@@ -823,11 +823,11 @@ LABEL_64:
         v9 = v100;
         v30 = v101;
 LABEL_105:
-        a4 = v107;
+        error = v107;
         goto LABEL_62;
       }
 
-      if (a4)
+      if (error)
       {
         v61 = objc_alloc(MEMORY[0x1E696ABC0]);
         v62 = v10;
@@ -846,7 +846,7 @@ LABEL_105:
         v93 = v66;
         v106 = 0;
         v18 = 0;
-        *v97 = [v61 initWithDomain:v67 code:2 userInfo:?];
+        *errorCopy5 = [v61 initWithDomain:v67 code:2 userInfo:?];
         v30 = v101;
         goto LABEL_105;
       }
@@ -856,11 +856,11 @@ LABEL_105:
       v9 = v100;
       v30 = v101;
 LABEL_103:
-      a4 = v107;
+      error = v107;
       goto LABEL_63;
     }
 
-    if (a4)
+    if (error)
     {
       v53 = objc_alloc(MEMORY[0x1E696ABC0]);
       v54 = v10;
@@ -879,7 +879,7 @@ LABEL_103:
       v99 = v59;
       v40 = 0;
       v18 = 0;
-      *v97 = [v53 initWithDomain:v60 code:2 userInfo:?];
+      *errorCopy5 = [v53 initWithDomain:v60 code:2 userInfo:?];
       v30 = v101;
       goto LABEL_103;
     }
@@ -888,7 +888,7 @@ LABEL_103:
     v18 = 0;
 LABEL_101:
     v30 = v101;
-    a4 = v107;
+    error = v107;
     goto LABEL_64;
   }
 
@@ -899,14 +899,14 @@ LABEL_101:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v7 = 0;
     v18 = 0;
     goto LABEL_70;
   }
 
-  v15 = a4;
+  errorCopy6 = error;
   v16 = objc_alloc(MEMORY[0x1E696ABC0]);
   v17 = *MEMORY[0x1E698F240];
   v134 = *MEMORY[0x1E696A578];
@@ -915,7 +915,7 @@ LABEL_101:
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v135 forKeys:&v134 count:1];
   v7 = 0;
   v18 = 0;
-  *v15 = [v16 initWithDomain:v17 code:2 userInfo:v8];
+  *errorCopy6 = [v16 initWithDomain:v17 code:2 userInfo:v8];
 LABEL_69:
 
 LABEL_70:
@@ -923,9 +923,9 @@ LABEL_70:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if (self->_address)
   {
     PBDataWriterWriteStringField();
@@ -962,39 +962,39 @@ LABEL_70:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = v14;
+  v9 = toCopy;
   if (self->_hasBatteryLevelHeadphoneLeft)
   {
     batteryLevelHeadphoneLeft = self->_batteryLevelHeadphoneLeft;
     PBDataWriterWriteInt32Field();
-    v9 = v14;
+    v9 = toCopy;
   }
 
   if (self->_hasAppleAudioDevice)
   {
     appleAudioDevice = self->_appleAudioDevice;
     PBDataWriterWriteBOOLField();
-    v9 = v14;
+    v9 = toCopy;
   }
 
   if (self->_hasUserWearing)
   {
     userWearing = self->_userWearing;
     PBDataWriterWriteBOOLField();
-    v9 = v14;
+    v9 = toCopy;
   }
 
   if (self->_hasVendorID)
   {
     vendorID = self->_vendorID;
     PBDataWriterWriteUint32Field();
-    v9 = v14;
+    v9 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v81.receiver = self;
   v81.super_class = BMDeviceBluetooth;
   v5 = [(BMEventBase *)&v81 init];
@@ -1003,12 +1003,12 @@ LABEL_70:
     goto LABEL_153;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_151;
       }
@@ -1019,18 +1019,18 @@ LABEL_70:
       while (1)
       {
         v82 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v82 & 0x7F) << v7;
@@ -1048,9 +1048,9 @@ LABEL_70:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_151;
       }
@@ -1101,18 +1101,18 @@ LABEL_116:
           while (1)
           {
             v82 = 0;
-            v61 = [v4 position] + 1;
-            if (v61 >= [v4 position] && (v62 = objc_msgSend(v4, "position") + 1, v62 <= objc_msgSend(v4, "length")))
+            v61 = [fromCopy position] + 1;
+            if (v61 >= [fromCopy position] && (v62 = objc_msgSend(fromCopy, "position") + 1, v62 <= objc_msgSend(fromCopy, "length")))
             {
-              v63 = [v4 data];
-              [v63 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v60 |= (v82 & 0x7F) << v58;
@@ -1130,7 +1130,7 @@ LABEL_116:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -1156,18 +1156,18 @@ LABEL_146:
           while (1)
           {
             v82 = 0;
-            v42 = [v4 position] + 1;
-            if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+            v42 = [fromCopy position] + 1;
+            if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v41 |= (v82 & 0x7F) << v39;
@@ -1185,7 +1185,7 @@ LABEL_146:
             }
           }
 
-          v45 = (v41 != 0) & ~[v4 hasError];
+          v45 = (v41 != 0) & ~[fromCopy hasError];
 LABEL_119:
           v76 = 17;
           goto LABEL_149;
@@ -1202,18 +1202,18 @@ LABEL_119:
         while (1)
         {
           v82 = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (v82 & 0x7F) << v23;
@@ -1229,7 +1229,7 @@ LABEL_119:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v25 > 0x32)
+        if (([fromCopy hasError] & 1) != 0 || v25 > 0x32)
         {
 LABEL_128:
           LODWORD(v25) = 0;
@@ -1239,8 +1239,8 @@ LABEL_128:
       }
 
 LABEL_150:
-      v78 = [v4 position];
-      if (v78 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_151;
       }
@@ -1257,18 +1257,18 @@ LABEL_150:
         while (1)
         {
           v82 = 0;
-          v73 = [v4 position] + 1;
-          if (v73 >= [v4 position] && (v74 = objc_msgSend(v4, "position") + 1, v74 <= objc_msgSend(v4, "length")))
+          v73 = [fromCopy position] + 1;
+          if (v73 >= [fromCopy position] && (v74 = objc_msgSend(fromCopy, "position") + 1, v74 <= objc_msgSend(fromCopy, "length")))
           {
-            v75 = [v4 data];
-            [v75 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v72 |= (v82 & 0x7F) << v70;
@@ -1286,7 +1286,7 @@ LABEL_150:
           }
         }
 
-        v45 = (v72 != 0) & ~[v4 hasError];
+        v45 = (v72 != 0) & ~[fromCopy hasError];
 LABEL_148:
         v76 = 22;
         goto LABEL_149;
@@ -1301,18 +1301,18 @@ LABEL_148:
         while (1)
         {
           v82 = 0;
-          v55 = [v4 position] + 1;
-          if (v55 >= [v4 position] && (v56 = objc_msgSend(v4, "position") + 1, v56 <= objc_msgSend(v4, "length")))
+          v55 = [fromCopy position] + 1;
+          if (v55 >= [fromCopy position] && (v56 = objc_msgSend(fromCopy, "position") + 1, v56 <= objc_msgSend(fromCopy, "length")))
           {
-            v57 = [v4 data];
-            [v57 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v54 |= (v82 & 0x7F) << v52;
@@ -1330,7 +1330,7 @@ LABEL_148:
           }
         }
 
-        v45 = (v54 != 0) & ~[v4 hasError];
+        v45 = (v54 != 0) & ~[fromCopy hasError];
 LABEL_125:
         v76 = 24;
 LABEL_149:
@@ -1350,18 +1350,18 @@ LABEL_149:
       while (1)
       {
         v82 = 0;
-        v33 = [v4 position] + 1;
-        if (v33 >= [v4 position] && (v34 = objc_msgSend(v4, "position") + 1, v34 <= objc_msgSend(v4, "length")))
+        v33 = [fromCopy position] + 1;
+        if (v33 >= [fromCopy position] && (v34 = objc_msgSend(fromCopy, "position") + 1, v34 <= objc_msgSend(fromCopy, "length")))
         {
-          v35 = [v4 data];
-          [v35 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+          data7 = [fromCopy data];
+          [data7 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v32 |= (v82 & 0x7F) << v30;
@@ -1379,7 +1379,7 @@ LABEL_149:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v22 = 0;
       }
@@ -1405,18 +1405,18 @@ LABEL_141:
           while (1)
           {
             v82 = 0;
-            v67 = [v4 position] + 1;
-            if (v67 >= [v4 position] && (v68 = objc_msgSend(v4, "position") + 1, v68 <= objc_msgSend(v4, "length")))
+            v67 = [fromCopy position] + 1;
+            if (v67 >= [fromCopy position] && (v68 = objc_msgSend(fromCopy, "position") + 1, v68 <= objc_msgSend(fromCopy, "length")))
             {
-              v69 = [v4 data];
-              [v69 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v66 |= (v82 & 0x7F) << v64;
@@ -1434,7 +1434,7 @@ LABEL_141:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -1455,18 +1455,18 @@ LABEL_145:
           while (1)
           {
             v82 = 0;
-            v49 = [v4 position] + 1;
-            if (v49 >= [v4 position] && (v50 = objc_msgSend(v4, "position") + 1, v50 <= objc_msgSend(v4, "length")))
+            v49 = [fromCopy position] + 1;
+            if (v49 >= [fromCopy position] && (v50 = objc_msgSend(fromCopy, "position") + 1, v50 <= objc_msgSend(fromCopy, "length")))
             {
-              v51 = [v4 data];
-              [v51 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v48 |= (v82 & 0x7F) << v46;
@@ -1484,7 +1484,7 @@ LABEL_145:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -1505,18 +1505,18 @@ LABEL_123:
           while (1)
           {
             v82 = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v82 range:{objc_msgSend(v4, "position"), 1}];
+              data10 = [fromCopy data];
+              [data10 getBytes:&v82 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v82 & 0x7F) << v16;
@@ -1534,7 +1534,7 @@ LABEL_123:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -1556,7 +1556,7 @@ LABEL_137:
   }
 
 LABEL_151:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_152:
     v79 = 0;
@@ -1574,8 +1574,8 @@ LABEL_153:
 - (NSString)description
 {
   v15 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(BMDeviceBluetooth *)self address];
-  v13 = [(BMDeviceBluetooth *)self name];
+  address = [(BMDeviceBluetooth *)self address];
+  name = [(BMDeviceBluetooth *)self name];
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMDeviceBluetooth productID](self, "productID")}];
   v3 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceBluetooth starting](self, "starting")}];
   v4 = BMDeviceBluetoothDeviceTypeAsString([(BMDeviceBluetooth *)self deviceType]);
@@ -1585,46 +1585,46 @@ LABEL_153:
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceBluetooth appleAudioDevice](self, "appleAudioDevice")}];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMDeviceBluetooth userWearing](self, "userWearing")}];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceBluetooth vendorID](self, "vendorID")}];
-  v16 = [v15 initWithFormat:@"BMDeviceBluetooth with address: %@, name: %@, productID: %@, starting: %@, deviceType: %@, batteryLevelHeadphoneCase: %@, batteryLevelHeadphoneRight: %@, batteryLevelHeadphoneLeft: %@, appleAudioDevice: %@, userWearing: %@, vendorID: %@", v14, v13, v12, v3, v4, v5, v6, v7, v8, v9, v10];
+  v16 = [v15 initWithFormat:@"BMDeviceBluetooth with address: %@, name: %@, productID: %@, starting: %@, deviceType: %@, batteryLevelHeadphoneCase: %@, batteryLevelHeadphoneRight: %@, batteryLevelHeadphoneLeft: %@, appleAudioDevice: %@, userWearing: %@, vendorID: %@", address, name, v12, v3, v4, v5, v6, v7, v8, v9, v10];
 
   return v16;
 }
 
-- (BMDeviceBluetooth)initWithAddress:(id)a3 name:(id)a4 productID:(id)a5 starting:(id)a6 deviceType:(int)a7 batteryLevelHeadphoneCase:(id)a8 batteryLevelHeadphoneRight:(id)a9 batteryLevelHeadphoneLeft:(id)a10 appleAudioDevice:(id)a11 userWearing:(id)a12 vendorID:(id)a13
+- (BMDeviceBluetooth)initWithAddress:(id)address name:(id)name productID:(id)d starting:(id)starting deviceType:(int)type batteryLevelHeadphoneCase:(id)case batteryLevelHeadphoneRight:(id)right batteryLevelHeadphoneLeft:(id)self0 appleAudioDevice:(id)self1 userWearing:(id)self2 vendorID:(id)self3
 {
-  v38 = a3;
-  v35 = a4;
-  v37 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = v19;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
+  addressCopy = address;
+  nameCopy = name;
+  nameCopy2 = name;
+  dCopy = d;
+  startingCopy = starting;
+  caseCopy = case;
+  v21 = startingCopy;
+  rightCopy = right;
+  leftCopy = left;
+  deviceCopy = device;
+  wearingCopy = wearing;
+  iDCopy = iD;
   v39.receiver = self;
   v39.super_class = BMDeviceBluetooth;
   v27 = [(BMEventBase *)&v39 init];
   if (v27)
   {
     v27->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v27->_address, a3);
-    objc_storeStrong(&v27->_name, v35);
-    if (v18)
+    objc_storeStrong(&v27->_address, address);
+    objc_storeStrong(&v27->_name, nameCopy);
+    if (dCopy)
     {
       v27->_hasProductID = 1;
-      v28 = [v18 intValue];
+      intValue = [dCopy intValue];
     }
 
     else
     {
       v27->_hasProductID = 0;
-      v28 = -1;
+      intValue = -1;
     }
 
-    v27->_productID = v28;
+    v27->_productID = intValue;
     if (v21)
     {
       v27->_hasStarting = 1;
@@ -1637,50 +1637,50 @@ LABEL_153:
       v27->_starting = 0;
     }
 
-    v27->_deviceType = a7;
-    if (v20)
+    v27->_deviceType = type;
+    if (caseCopy)
     {
       v27->_hasBatteryLevelHeadphoneCase = 1;
-      v29 = [v20 intValue];
+      intValue2 = [caseCopy intValue];
     }
 
     else
     {
       v27->_hasBatteryLevelHeadphoneCase = 0;
-      v29 = -1;
+      intValue2 = -1;
     }
 
-    v27->_batteryLevelHeadphoneCase = v29;
-    if (v22)
+    v27->_batteryLevelHeadphoneCase = intValue2;
+    if (rightCopy)
     {
       v27->_hasBatteryLevelHeadphoneRight = 1;
-      v30 = [v22 intValue];
+      intValue3 = [rightCopy intValue];
     }
 
     else
     {
       v27->_hasBatteryLevelHeadphoneRight = 0;
-      v30 = -1;
+      intValue3 = -1;
     }
 
-    v27->_batteryLevelHeadphoneRight = v30;
-    if (v23)
+    v27->_batteryLevelHeadphoneRight = intValue3;
+    if (leftCopy)
     {
       v27->_hasBatteryLevelHeadphoneLeft = 1;
-      v31 = [v23 intValue];
+      intValue4 = [leftCopy intValue];
     }
 
     else
     {
       v27->_hasBatteryLevelHeadphoneLeft = 0;
-      v31 = -1;
+      intValue4 = -1;
     }
 
-    v27->_batteryLevelHeadphoneLeft = v31;
-    if (v24)
+    v27->_batteryLevelHeadphoneLeft = intValue4;
+    if (deviceCopy)
     {
       v27->_hasAppleAudioDevice = 1;
-      v27->_appleAudioDevice = [v24 BOOLValue];
+      v27->_appleAudioDevice = [deviceCopy BOOLValue];
     }
 
     else
@@ -1689,10 +1689,10 @@ LABEL_153:
       v27->_appleAudioDevice = 0;
     }
 
-    if (v25)
+    if (wearingCopy)
     {
       v27->_hasUserWearing = 1;
-      v27->_userWearing = [v25 BOOLValue];
+      v27->_userWearing = [wearingCopy BOOLValue];
     }
 
     else
@@ -1701,19 +1701,19 @@ LABEL_153:
       v27->_userWearing = 0;
     }
 
-    if (v26)
+    if (iDCopy)
     {
       v27->_hasVendorID = 1;
-      v32 = [v26 unsignedIntValue];
+      unsignedIntValue = [iDCopy unsignedIntValue];
     }
 
     else
     {
-      v32 = 0;
+      unsignedIntValue = 0;
       v27->_hasVendorID = 0;
     }
 
-    v27->_vendorID = v32;
+    v27->_vendorID = unsignedIntValue;
   }
 
   return v27;
@@ -1751,9 +1751,9 @@ LABEL_153:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1761,8 +1761,8 @@ LABEL_153:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceBluetooth alloc] initByReadFrom:v7];
     v4 = v8;

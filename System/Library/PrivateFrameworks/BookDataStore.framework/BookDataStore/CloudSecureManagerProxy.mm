@@ -1,10 +1,10 @@
 @interface CloudSecureManagerProxy
 + (BCCloudSecureManaging)sharedManager;
-+ (void)setSharedManager:(id)a3;
++ (void)setSharedManager:(id)manager;
 - (_TtC13BookDataStore23CloudSecureManagerProxy)init;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)handleRemoteCKNotification:(id)a3;
-- (void)handleRemoteNotification:(id)a3;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)handleRemoteCKNotification:(id)notification;
+- (void)handleRemoteNotification:(id)notification;
 @end
 
 @implementation CloudSecureManagerProxy
@@ -34,21 +34,21 @@
   return [(CloudSecureManagerProxy *)&v6 init];
 }
 
-- (void)handleRemoteNotification:(id)a3
+- (void)handleRemoteNotification:(id)notification
 {
   v4 = sub_1E470AE3C();
-  v5 = self;
+  selfCopy = self;
   sub_1E46B9CB0(v4);
 }
 
-- (void)handleRemoteCKNotification:(id)a3
+- (void)handleRemoteCKNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E46B9F18(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1E46B9F18(notificationCopy);
 }
 
-+ (void)setSharedManager:(id)a3
++ (void)setSharedManager:(id)manager
 {
   v4 = qword_1EE2AD590;
   swift_unknownObjectRetain();
@@ -58,13 +58,13 @@
   }
 
   swift_beginAccess();
-  qword_1EE2AD5A0 = a3;
+  qword_1EE2AD5A0 = manager;
   swift_unknownObjectRelease();
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -79,13 +79,13 @@
     v12[2] = sub_1E46BA7E4;
     v12[3] = &unk_1F5E65B78;
     v9 = _Block_copy(v12);
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     v7 = *(&self->super.isa + OBJC_IVAR____TtC13BookDataStore23CloudSecureManagerProxy_serviceProxy);
-    v11 = self;
+    selfCopy2 = self;
     v9 = 0;
     v8 = 0;
   }

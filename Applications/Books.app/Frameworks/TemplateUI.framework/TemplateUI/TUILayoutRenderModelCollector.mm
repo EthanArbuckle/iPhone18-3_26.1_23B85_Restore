@@ -4,8 +4,8 @@
 - (id)finalizeImpressions;
 - (id)finalizeLinkEntities;
 - (id)hostingCollectorFinalizeMap;
-- (void)collectWithRoot:(id)a3 options:(unint64_t)a4 entryUUID:(id)a5;
-- (void)hostingCollectorAddProperties:(id)a3 forIdentifier:(id)a4;
+- (void)collectWithRoot:(id)root options:(unint64_t)options entryUUID:(id)d;
+- (void)hostingCollectorAddProperties:(id)properties forIdentifier:(id)identifier;
 @end
 
 @implementation TUILayoutRenderModelCollector
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (void)collectWithRoot:(id)a3 options:(unint64_t)a4 entryUUID:(id)a5
+- (void)collectWithRoot:(id)root options:(unint64_t)options entryUUID:(id)d
 {
-  v6 = a4;
-  v68 = a3;
-  v69 = a5;
-  objc_storeStrong(&self->_root, a3);
+  optionsCopy = options;
+  rootCopy = root;
+  dCopy = d;
+  objc_storeStrong(&self->_root, root);
   sub_7A93C(&self->_stack, self->_stack.__begin_, self->_stack.__end_);
   if (self->_root)
   {
     root = self->_root;
-    v9 = [NSArray arrayWithObjects:&root count:1, v68];
-    [v9 objectEnumerator];
+    rootCopy = [NSArray arrayWithObjects:&root count:1, rootCopy];
+    [rootCopy objectEnumerator];
     *(&v81 + 1) = *&v81 = 0;
     v82[0] = self->_options;
     v10 = *&CGAffineTransformIdentity.c;
@@ -45,18 +45,18 @@
     v11 = *(&v81 + 1);
     sub_7A994(&self->_stack, &v81);
 
-    *(self->_stack.__end_ - 56) = *(self->_stack.__end_ - 56) & 0xFE | v6 & 1;
-    *(self->_stack.__end_ - 56) = *(self->_stack.__end_ - 56) & 0xFD | v6 & 2;
-    *(self->_stack.__end_ - 56) = *(self->_stack.__end_ - 56) & 0xFB | v6 & 4;
+    *(self->_stack.__end_ - 56) = *(self->_stack.__end_ - 56) & 0xFE | optionsCopy & 1;
+    *(self->_stack.__end_ - 56) = *(self->_stack.__end_ - 56) & 0xFD | optionsCopy & 2;
+    *(self->_stack.__end_ - 56) = *(self->_stack.__end_ - 56) & 0xFB | optionsCopy & 4;
     for (i = self->_stack.__end_; self->_stack.__begin_ != i; i = self->_stack.__end_)
     {
-      v13 = [*(i - 8) nextObject];
-      v14 = v13;
+      nextObject = [*(i - 8) nextObject];
+      v14 = nextObject;
       end = self->_stack.__end_;
-      if (v13)
+      if (nextObject)
       {
         LOBYTE(v16) = *(end - 56);
-        if (([v13 hidden] & 1) == 0)
+        if (([nextObject hidden] & 1) == 0)
         {
           if (v16)
           {
@@ -133,7 +133,7 @@ LABEL_24:
               if ((v16 & 4) != 0)
               {
                 v51 = *(self->_stack.__end_ - 9);
-                v52 = v51;
+                collectLinkEntities = v51;
                 if (v51 && ([v51 collectLinkEntitiesForChild:v14] & 1) == 0)
                 {
                   LOBYTE(v16) = v16 & 0xFB;
@@ -142,19 +142,19 @@ LABEL_24:
                 else
                 {
 
-                  v52 = [v14 collectLinkEntities];
-                  if (v52)
+                  collectLinkEntities = [v14 collectLinkEntities];
+                  if (collectLinkEntities)
                   {
                     v53 = [v14 box];
-                    v54 = [v53 identifier];
-                    v55 = [v54 tui_identifierByPrependingUUID:v69];
+                    identifier = [v53 identifier];
+                    v55 = [identifier tui_identifierByPrependingUUID:dCopy];
 
                     v56 = [TUILinkEntityAttributes alloc];
                     [v14 computedNaturalSize];
                     v81 = *&v80.a;
                     *v82 = *&v80.c;
                     *&v82[16] = *&v80.tx;
-                    v57 = [TUILinkEntityAttributes initWithIdentifier:v56 linkEntities:"initWithIdentifier:linkEntities:size:center:transform:" size:v55 center:v52 transform:&v81];
+                    v57 = [TUILinkEntityAttributes initWithIdentifier:v56 linkEntities:"initWithIdentifier:linkEntities:size:center:transform:" size:v55 center:collectLinkEntities transform:&v81];
                     linkEntities = self->_linkEntities;
                     if (!linkEntities)
                     {
@@ -182,15 +182,15 @@ LABEL_24:
                 }
               }
 
-              v62 = [v14 children];
-              v63 = v62;
+              children = [v14 children];
+              v63 = children;
               if (v16 & 6) != 0 || (v16)
               {
-                if ([v62 count])
+                if ([children count])
                 {
-                  v64 = [v63 objectEnumerator];
+                  objectEnumerator = [v63 objectEnumerator];
                   v65 = v14;
-                  v66 = v64;
+                  v66 = objectEnumerator;
                   *&v81 = v65;
                   *(&v81 + 1) = v66;
                   v82[0] = v16;
@@ -206,7 +206,7 @@ LABEL_24:
           }
 
           v42 = *(self->_stack.__end_ - 9);
-          v43 = v42;
+          impressionData = v42;
           if (v42 && ([v42 collectImpressionsForChild:v14] & 1) == 0)
           {
             LOBYTE(v16) = v16 & 0xFD;
@@ -216,16 +216,16 @@ LABEL_24:
           {
 
             v44 = [v14 box];
-            v43 = [v44 impressionData];
+            impressionData = [v44 impressionData];
 
-            if (v43)
+            if (impressionData)
             {
               v45 = [TUIImpressionAttributes alloc];
               [v14 computedNaturalSize];
               v81 = *&v80.a;
               *v82 = *&v80.c;
               *&v82[16] = *&v80.tx;
-              v46 = [TUIImpressionAttributes initWithData:v45 size:"initWithData:size:center:transform:" center:v43 transform:&v81];
+              v46 = [TUIImpressionAttributes initWithData:v45 size:"initWithData:size:center:transform:" center:impressionData transform:&v81];
               impressions = self->_impressions;
               if (!impressions)
               {
@@ -269,10 +269,10 @@ LABEL_42:
   self->_root = 0;
 }
 
-- (void)hostingCollectorAddProperties:(id)a3 forIdentifier:(id)a4
+- (void)hostingCollectorAddProperties:(id)properties forIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
   if (!self->_hostingIdentifiersOrder)
   {
     v7 = objc_opt_new();
@@ -287,8 +287,8 @@ LABEL_42:
     self->_hostingPropertiesMap = v9;
   }
 
-  [(NSMutableArray *)self->_hostingIdentifiersOrder addObject:v6];
-  [(NSMutableDictionary *)self->_hostingPropertiesMap setObject:v11 forKeyedSubscript:v6];
+  [(NSMutableArray *)self->_hostingIdentifiersOrder addObject:identifierCopy];
+  [(NSMutableDictionary *)self->_hostingPropertiesMap setObject:propertiesCopy forKeyedSubscript:identifierCopy];
 }
 
 - (id)hostingCollectorFinalizeMap

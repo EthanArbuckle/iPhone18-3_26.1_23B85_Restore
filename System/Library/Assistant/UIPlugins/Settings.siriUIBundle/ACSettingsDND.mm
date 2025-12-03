@@ -1,8 +1,8 @@
 @interface ACSettingsDND
 - (ACSettingsDND)init;
 - (BOOL)enabled;
-- (void)setEnabled:(BOOL)a3;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation ACSettingsDND
@@ -40,9 +40,9 @@
   return v2;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = DNDDefaultModeIdentifier;
     v5 = [DNDModeAssertionLifetime lifetimeUntilEndOfScheduleWithIdentifier:DNDDefaultScheduleIdentifier];
@@ -71,19 +71,19 @@
   v7 = 0;
   v3 = [(DNDStateService *)dndStateService queryCurrentStateWithError:&v7];
   v4 = v7;
-  v5 = [v3 isActive];
+  isActive = [v3 isActive];
 
   if (v4 && os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
   {
     sub_43A0();
   }
 
-  return v5;
+  return isActive;
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = [(ACSettingsBasicSetting *)self delegate:a3];
+  v5 = [(ACSettingsBasicSetting *)self delegate:service];
   [v5 settingChangedExternally:self];
 }
 

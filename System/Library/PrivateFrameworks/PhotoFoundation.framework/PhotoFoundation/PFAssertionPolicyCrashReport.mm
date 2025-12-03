@@ -1,20 +1,20 @@
 @interface PFAssertionPolicyCrashReport
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation PFAssertionPolicyCrashReport
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v9 = a3;
-  if ([v9 isFatal])
+  assertionCopy = assertion;
+  if ([assertionCopy isFatal])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [v9 prettyMethodName];
-    v5 = [v9 fileName];
-    v6 = [v9 lineNumber];
-    v7 = [v9 message];
-    v8 = [v3 stringWithFormat:@"Assertion failure in %@, %@:%lu\n%@", v4, v5, v6, v7];
+    prettyMethodName = [assertionCopy prettyMethodName];
+    fileName = [assertionCopy fileName];
+    lineNumber = [assertionCopy lineNumber];
+    message = [assertionCopy message];
+    v8 = [v3 stringWithFormat:@"Assertion failure in %@, %@:%lu\n%@", prettyMethodName, fileName, lineNumber, message];
 
     qword_1ECAA3A50 = [v8 UTF8String];
   }

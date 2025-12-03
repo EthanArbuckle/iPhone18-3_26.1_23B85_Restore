@@ -1,16 +1,16 @@
 @interface ICThumbnailService
 + (ICThumbnailService)sharedThumbnailService;
 - (ICThumbnailService)init;
-- (ICThumbnailService)initWithViewContext:(id)a3 workerContext:(id)a4;
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4;
-- (id)thumbnailGeneratorForConfiguration:(id)a3;
-- (id)thumbnailWithConfiguration:(id)a3;
-- (void)attachmentPreviewImagesDidUpdate:(id)a3;
+- (ICThumbnailService)initWithViewContext:(id)context workerContext:(id)workerContext;
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects;
+- (id)thumbnailGeneratorForConfiguration:(id)configuration;
+- (id)thumbnailWithConfiguration:(id)configuration;
+- (void)attachmentPreviewImagesDidUpdate:(id)update;
 - (void)dealloc;
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4;
-- (void)processThumbnailDescriptionResult:(id)a3;
-- (void)thumbnailWithConfiguration:(id)a3 completion:(id)a4;
-- (void)thumbnailsWithConfigurations:(id)a3 completion:(id)a4;
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds;
+- (void)processThumbnailDescriptionResult:(id)result;
+- (void)thumbnailWithConfiguration:(id)configuration completion:(id)completion;
+- (void)thumbnailsWithConfigurations:(id)configurations completion:(id)completion;
 @end
 
 @implementation ICThumbnailService
@@ -36,31 +36,31 @@ uint64_t __44__ICThumbnailService_sharedThumbnailService__block_invoke()
 
 - (ICThumbnailService)init
 {
-  v3 = [MEMORY[0x1E69B7800] sharedContext];
-  v4 = [v3 managedObjectContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  managedObjectContext = [mEMORY[0x1E69B7800] managedObjectContext];
 
-  v5 = [MEMORY[0x1E69B7800] sharedContext];
-  v6 = [v5 workerManagedObjectContext];
+  mEMORY[0x1E69B7800]2 = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800]2 workerManagedObjectContext];
 
-  v7 = [(ICThumbnailService *)self initWithViewContext:v4 workerContext:v6];
+  v7 = [(ICThumbnailService *)self initWithViewContext:managedObjectContext workerContext:workerManagedObjectContext];
   return v7;
 }
 
-- (ICThumbnailService)initWithViewContext:(id)a3 workerContext:(id)a4
+- (ICThumbnailService)initWithViewContext:(id)context workerContext:(id)workerContext
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  workerContextCopy = workerContext;
   v31.receiver = self;
   v31.super_class = ICThumbnailService;
   v9 = [(ICThumbnailService *)&v31 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workerContext, a4);
-    objc_storeStrong(&v10->_viewContext, a3);
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_workerContext, workerContext);
+    objc_storeStrong(&v10->_viewContext, context);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     callbacks = v10->_callbacks;
-    v10->_callbacks = v11;
+    v10->_callbacks = dictionary;
 
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_USER_INITIATED, -1);
@@ -93,8 +93,8 @@ uint64_t __44__ICThumbnailService_sharedThumbnailService__block_invoke()
     managedObjectChangeController = v10->_managedObjectChangeController;
     v10->_managedObjectChangeController = v27;
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v10 selector:sel_attachmentPreviewImagesDidUpdate_ name:*MEMORY[0x1E69B7420] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_attachmentPreviewImagesDidUpdate_ name:*MEMORY[0x1E69B7420] object:0];
   }
 
   return v10;
@@ -102,21 +102,21 @@ uint64_t __44__ICThumbnailService_sharedThumbnailService__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICThumbnailService;
   [(ICThumbnailService *)&v4 dealloc];
 }
 
-- (void)thumbnailWithConfiguration:(id)a3 completion:(id)a4
+- (void)thumbnailWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = [MEMORY[0x1E695DF00] now];
-  v9 = [(ICThumbnailService *)self cache];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  cache = [(ICThumbnailService *)self cache];
+  v10 = [cache objectForKeyedSubscript:configurationCopy];
 
   if (v10)
   {
@@ -124,24 +124,24 @@ uint64_t __44__ICThumbnailService_sharedThumbnailService__block_invoke()
     [v11 timeIntervalSinceDate:v8];
     [v10 setFetchDuration:?];
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v10);
+      completionCopy[2](completionCopy, v10);
     }
   }
 
   else
   {
-    v12 = [(ICThumbnailService *)self backgroundQueue];
+    backgroundQueue = [(ICThumbnailService *)self backgroundQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __60__ICThumbnailService_thumbnailWithConfiguration_completion___block_invoke;
     v13[3] = &unk_1E846E020;
     v13[4] = self;
-    v14 = v6;
-    v16 = v7;
+    v14 = configurationCopy;
+    v16 = completionCopy;
     v15 = v8;
-    dispatch_async(v12, v13);
+    dispatch_async(backgroundQueue, v13);
   }
 }
 
@@ -283,11 +283,11 @@ LABEL_5:
   [*(a1 + 48) processThumbnailDescriptionResult:v7];
 }
 
-- (id)thumbnailWithConfiguration:(id)a3
+- (id)thumbnailWithConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 thumbnailType] == 8 && objc_msgSend(MEMORY[0x1E696AF00], "isMainThread"))
+  configurationCopy = configuration;
+  if ([configurationCopy thumbnailType] == 8 && objc_msgSend(MEMORY[0x1E696AF00], "isMainThread"))
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"![NSThread isMainThread]" functionName:"-[ICThumbnailService thumbnailWithConfiguration:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from main thread"];
   }
@@ -306,15 +306,15 @@ LABEL_5:
   v17 = &v18;
   v6 = v5;
   v16 = v6;
-  [(ICThumbnailService *)self thumbnailWithConfiguration:v4 completion:&v12];
+  [(ICThumbnailService *)self thumbnailWithConfiguration:configurationCopy completion:&v12];
   v7 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v6, v7))
   {
     v8 = os_log_create("com.apple.notes", "Thumbnails");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 associatedObjectIdentifier];
-      [(ICThumbnailService *)v9 thumbnailWithConfiguration:buf, v8];
+      associatedObjectIdentifier = [configurationCopy associatedObjectIdentifier];
+      [(ICThumbnailService *)associatedObjectIdentifier thumbnailWithConfiguration:buf, v8];
     }
   }
 
@@ -332,10 +332,10 @@ void __49__ICThumbnailService_thumbnailWithConfiguration___block_invoke(uint64_t
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)thumbnailsWithConfigurations:(id)a3 completion:(id)a4
+- (void)thumbnailsWithConfigurations:(id)configurations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationsCopy = configurations;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10 = dispatch_queue_create("com.apple.notes.mention-avatar", v9);
@@ -346,12 +346,12 @@ void __49__ICThumbnailService_thumbnailWithConfiguration___block_invoke(uint64_t
   block[2] = __62__ICThumbnailService_thumbnailsWithConfigurations_completion___block_invoke;
   block[3] = &unk_1E8469CB0;
   objc_copyWeak(&v18, &location);
-  v15 = v6;
+  v15 = configurationsCopy;
   v16 = v8;
-  v17 = v7;
-  v11 = v7;
+  v17 = completionCopy;
+  v11 = completionCopy;
   v12 = v8;
-  v13 = v6;
+  v13 = configurationsCopy;
   dispatch_async(v10, block);
 
   objc_destroyWeak(&v18);
@@ -433,15 +433,15 @@ void __62__ICThumbnailService_thumbnailsWithConfigurations_completion___block_in
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)attachmentPreviewImagesDidUpdate:(id)a3
+- (void)attachmentPreviewImagesDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [updateCopy object];
 
   v6 = ICCheckedDynamicCast();
 
-  v7 = [(ICThumbnailService *)self workerContext];
+  workerContext = [(ICThumbnailService *)self workerContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__ICThumbnailService_attachmentPreviewImagesDidUpdate___block_invoke;
@@ -449,7 +449,7 @@ void __62__ICThumbnailService_thumbnailsWithConfigurations_completion___block_in
   v9[4] = self;
   v10 = v6;
   v8 = v6;
-  [v7 performBlock:v9];
+  [workerContext performBlock:v9];
 }
 
 void __55__ICThumbnailService_attachmentPreviewImagesDidUpdate___block_invoke(uint64_t a1)
@@ -473,16 +473,16 @@ void __55__ICThumbnailService_attachmentPreviewImagesDidUpdate___block_invoke(ui
   [v7 invalidateForObjectIdentifiers:v8];
 }
 
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  objectsCopy = objects;
   v5 = [MEMORY[0x1E695DFA8] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -503,17 +503,17 @@ void __55__ICThumbnailService_attachmentPreviewImagesDidUpdate___block_invoke(ui
         if (objc_opt_isKindOfClass())
         {
           v12 = v11;
-          v13 = [v12 changedValues];
-          v14 = [v13 allKeys];
+          changedValues = [v12 changedValues];
+          allKeys = [changedValues allKeys];
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v22[0] = __108__ICThumbnailService_managedObjectContextChangeController_managedObjectIDsToUpdateForUpdatedManagedObjects___block_invoke;
           v22[1] = &unk_1E846E048;
-          v15 = v12;
-          v23 = v15;
-          if ([v14 ic_containsObjectPassingTest:v21])
+          note = v12;
+          v23 = note;
+          if ([allKeys ic_containsObjectPassingTest:v21])
           {
-            [v15 objectID];
+            [note objectID];
             v17 = v16 = v6;
             [v5 ic_addNonNilObject:v17];
 
@@ -533,9 +533,9 @@ void __55__ICThumbnailService_attachmentPreviewImagesDidUpdate___block_invoke(ui
           }
         }
 
-        v15 = [v11 note];
-        v13 = [v15 objectID];
-        [v5 ic_addNonNilObject:v13];
+        note = [v11 note];
+        changedValues = [note objectID];
+        [v5 ic_addNonNilObject:changedValues];
 LABEL_13:
 
         continue;
@@ -562,15 +562,15 @@ uint64_t __108__ICThumbnailService_managedObjectContextChangeController_managedO
   return v5;
 }
 
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds
 {
   v27 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  controllerCopy = controller;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a4;
+  obj = ds;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
@@ -592,7 +592,7 @@ uint64_t __108__ICThumbnailService_managedObjectContextChangeController_managedO
         v19 = __Block_byref_object_copy__74;
         v20 = __Block_byref_object_dispose__74;
         v21 = 0;
-        v10 = [(ICThumbnailService *)self viewContext];
+        viewContext = [(ICThumbnailService *)self viewContext];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __93__ICThumbnailService_managedObjectContextChangeController_performUpdatesForManagedObjectIDs___block_invoke;
@@ -600,13 +600,13 @@ uint64_t __108__ICThumbnailService_managedObjectContextChangeController_managedO
         v15[5] = v9;
         v15[6] = &v16;
         v15[4] = self;
-        [v10 performBlockAndWait:v15];
+        [viewContext performBlockAndWait:v15];
 
         if (v17[5])
         {
-          v11 = [(ICThumbnailService *)self cache];
+          cache = [(ICThumbnailService *)self cache];
           v12 = [MEMORY[0x1E695DFD8] setWithObject:v17[5]];
-          [v11 invalidateForObjectIdentifiers:v12];
+          [cache invalidateForObjectIdentifiers:v12];
         }
 
         _Block_object_dispose(&v16, 8);
@@ -634,39 +634,39 @@ void __93__ICThumbnailService_managedObjectContextChangeController_performUpdate
   *(v5 + 40) = v4;
 }
 
-- (void)processThumbnailDescriptionResult:(id)a3
+- (void)processThumbnailDescriptionResult:(id)result
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 image];
+  resultCopy = result;
+  image = [resultCopy image];
 
-  if (v5)
+  if (image)
   {
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
-      v6 = [v4 configuration];
-      v7 = [v6 prepareThumbnail];
+      configuration = [resultCopy configuration];
+      prepareThumbnail = [configuration prepareThumbnail];
 
-      v8 = [v4 image];
-      v9 = v8;
-      if (v7)
+      image2 = [resultCopy image];
+      v9 = image2;
+      if (prepareThumbnail)
       {
-        v10 = [v4 image];
-        [v10 size];
+        image3 = [resultCopy image];
+        [image3 size];
         v11 = [v9 imageByPreparingThumbnailOfSize:?];
-        [v4 setImage:v11];
+        [resultCopy setImage:v11];
       }
 
       else
       {
-        v10 = [v8 ic_decodeInBackground];
-        [v4 setImage:v10];
+        image3 = [image2 ic_decodeInBackground];
+        [resultCopy setImage:image3];
       }
     }
 
-    v12 = [(ICThumbnailService *)self cache];
-    v13 = [v4 configuration];
-    [v12 setObject:v4 forKeyedSubscript:v13];
+    cache = [(ICThumbnailService *)self cache];
+    configuration2 = [resultCopy configuration];
+    [cache setObject:resultCopy forKeyedSubscript:configuration2];
   }
 
   v28 = 0;
@@ -675,16 +675,16 @@ void __93__ICThumbnailService_managedObjectContextChangeController_performUpdate
   v31 = __Block_byref_object_copy__74;
   v32 = __Block_byref_object_dispose__74;
   v33 = 0;
-  v14 = [(ICThumbnailService *)self schedulingSerialQueue];
+  schedulingSerialQueue = [(ICThumbnailService *)self schedulingSerialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__ICThumbnailService_processThumbnailDescriptionResult___block_invoke;
   block[3] = &unk_1E8469640;
   v27 = &v28;
   block[4] = self;
-  v15 = v4;
+  v15 = resultCopy;
   v26 = v15;
-  dispatch_sync(v14, block);
+  dispatch_sync(schedulingSerialQueue, block);
 
   v23 = 0u;
   v24 = 0u;
@@ -740,16 +740,16 @@ void __56__ICThumbnailService_processThumbnailDescriptionResult___block_invoke(u
   [v10 removeObjectForKey:v9];
 }
 
-- (id)thumbnailGeneratorForConfiguration:(id)a3
+- (id)thumbnailGeneratorForConfiguration:(id)configuration
 {
-  v5 = [a3 thumbnailType];
-  if (v5 <= 4)
+  thumbnailType = [configuration thumbnailType];
+  if (thumbnailType <= 4)
   {
-    if (v5 <= 1)
+    if (thumbnailType <= 1)
     {
-      if (v5)
+      if (thumbnailType)
       {
-        if (v5 != 1)
+        if (thumbnailType != 1)
         {
           goto LABEL_20;
         }
@@ -765,17 +765,17 @@ void __56__ICThumbnailService_processThumbnailDescriptionResult___block_invoke(u
       goto LABEL_18;
     }
 
-    if ((v5 - 2) < 2)
+    if ((thumbnailType - 2) < 2)
     {
       v6 = ICThumbnailGeneratorNoteAttachments;
 LABEL_18:
       v10 = [v6 alloc];
-      v8 = [(ICThumbnailService *)self workerContext];
-      v3 = [v10 initWithManagedObjectContext:v8];
+      workerContext = [(ICThumbnailService *)self workerContext];
+      v3 = [v10 initWithManagedObjectContext:workerContext];
       goto LABEL_19;
     }
 
-    if (v5 != 4)
+    if (thumbnailType != 4)
     {
       goto LABEL_20;
     }
@@ -783,9 +783,9 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  if (v5 > 9)
+  if (thumbnailType > 9)
   {
-    if ((v5 - 10) < 2)
+    if ((thumbnailType - 10) < 2)
     {
       goto LABEL_16;
     }
@@ -793,11 +793,11 @@ LABEL_18:
 
   else
   {
-    if (v5 != 5)
+    if (thumbnailType != 5)
     {
-      if (v5 != 7)
+      if (thumbnailType != 7)
       {
-        if (v5 != 8)
+        if (thumbnailType != 8)
         {
           goto LABEL_20;
         }
@@ -808,9 +808,9 @@ LABEL_18:
 
 LABEL_16:
       v7 = [ICThumbnailGeneratorSystemPaper alloc];
-      v8 = [(ICThumbnailService *)self workerContext];
+      workerContext = [(ICThumbnailService *)self workerContext];
       v9 = +[ICAssetThumbnailCache shared];
-      v3 = [(ICThumbnailGeneratorSystemPaper *)v7 initWithManagedObjectContext:v8 cache:v9];
+      v3 = [(ICThumbnailGeneratorSystemPaper *)v7 initWithManagedObjectContext:workerContext cache:v9];
 
 LABEL_19:
       goto LABEL_20;

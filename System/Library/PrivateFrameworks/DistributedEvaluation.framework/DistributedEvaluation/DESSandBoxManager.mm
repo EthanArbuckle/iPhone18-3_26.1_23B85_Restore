@@ -1,26 +1,26 @@
 @interface DESSandBoxManager
-+ (id)sandboxExtensionsToXPCConnection:(id)a3 fileURLs:(id)a4 requireWrite:(BOOL)a5 outError:(id *)a6;
-- (BOOL)consumeExtensionsWithError:(id *)a3;
-- (DESSandBoxManager)initWithExtensions:(id)a3;
++ (id)sandboxExtensionsToXPCConnection:(id)connection fileURLs:(id)ls requireWrite:(BOOL)write outError:(id *)error;
+- (BOOL)consumeExtensionsWithError:(id *)error;
+- (DESSandBoxManager)initWithExtensions:(id)extensions;
 - (void)dealloc;
 - (void)releaseExtensions;
 @end
 
 @implementation DESSandBoxManager
 
-+ (id)sandboxExtensionsToXPCConnection:(id)a3 fileURLs:(id)a4 requireWrite:(BOOL)a5 outError:(id *)a6
++ (id)sandboxExtensionsToXPCConnection:(id)connection fileURLs:(id)ls requireWrite:(BOOL)write outError:(id *)error
 {
-  v7 = a5;
+  writeCopy = write;
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = v9;
+  lsCopy = ls;
+  v10 = lsCopy;
   v11 = 0;
-  if (a3 && v9)
+  if (connection && lsCopy)
   {
-    v41 = a6;
+    errorCopy = error;
     v47 = 0u;
     v48 = 0u;
-    [a3 auditToken];
+    [connection auditToken];
     v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
     v13 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -39,7 +39,7 @@
       v21 = v20;
       v22 = *v44;
       v23 = MEMORY[0x277D861C0];
-      if (!v7)
+      if (!writeCopy)
       {
         v23 = MEMORY[0x277D861B8];
       }
@@ -69,7 +69,7 @@
               [DESSandBoxManager sandboxExtensionsToXPCConnection:v32 fileURLs:v33 requireWrite:? outError:?];
             }
 
-            if (v41)
+            if (errorCopy)
             {
               v34 = MEMORY[0x277CCA9B8];
               v35 = *MEMORY[0x277CCA450];
@@ -80,7 +80,7 @@
               v37 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
               v50[1] = v37;
               v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
-              *v41 = [v34 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:7001 userInfo:v38];
+              *errorCopy = [v34 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:7001 userInfo:v38];
             }
 
             v11 = 0;
@@ -110,15 +110,15 @@ LABEL_21:
   return v11;
 }
 
-- (DESSandBoxManager)initWithExtensions:(id)a3
+- (DESSandBoxManager)initWithExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   v11.receiver = self;
   v11.super_class = DESSandBoxManager;
   v5 = [(DESSandBoxManager *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [extensionsCopy copy];
     extensions = v5->_extensions;
     v5->_extensions = v6;
 
@@ -138,7 +138,7 @@ LABEL_21:
   [(DESSandBoxManager *)&v3 dealloc];
 }
 
-- (BOOL)consumeExtensionsWithError:(id *)a3
+- (BOOL)consumeExtensionsWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   p_extensions = &self->_extensions;
@@ -180,7 +180,7 @@ LABEL_21:
             [DESSandBoxManager consumeExtensionsWithError:v21];
           }
 
-          if (a3)
+          if (error)
           {
             v22 = MEMORY[0x277CCA9B8];
             v34[0] = *MEMORY[0x277CCA450];
@@ -192,9 +192,9 @@ LABEL_21:
             v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
             v35[1] = v26;
             v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-            *a3 = [v22 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:7000 userInfo:v27];
+            *error = [v22 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:7000 userInfo:v27];
 
-            LOBYTE(a3) = 0;
+            LOBYTE(error) = 0;
           }
 
           goto LABEL_18;
@@ -215,17 +215,17 @@ LABEL_21:
     }
   }
 
-  LOBYTE(a3) = 1;
+  LOBYTE(error) = 1;
 LABEL_18:
 
   v28 = *MEMORY[0x277D85DE8];
-  return a3;
+  return error;
 }
 
 - (void)releaseExtensions
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0_5(&dword_248FF7000, a2, a3, "Releasing consumed sandbox extensions: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

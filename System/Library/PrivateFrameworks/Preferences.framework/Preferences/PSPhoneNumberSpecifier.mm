@@ -1,44 +1,44 @@
 @interface PSPhoneNumberSpecifier
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (void)setProperty:(id)a3 forKey:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (void)setProperty:(id)property forKey:(id)key;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation PSPhoneNumberSpecifier
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"cellObject"])
+  propertyCopy = property;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"cellObject"])
   {
-    v8 = [v6 editableTextField];
-    [v8 setDelegate:self];
+    editableTextField = [propertyCopy editableTextField];
+    [editableTextField setDelegate:self];
   }
 
   v9.receiver = self;
   v9.super_class = PSPhoneNumberSpecifier;
-  [(PSSpecifier *)&v9 setProperty:v6 forKey:v7];
+  [(PSSpecifier *)&v9 setProperty:propertyCopy forKey:keyCopy];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  if (location + length <= [v11 length])
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  if (location + length <= [text length])
   {
-    v35 = v10;
-    v12 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(v11, "length")}];
-    v13 = [v11 length];
+    v35 = stringCopy;
+    v12 = [MEMORY[0x1E696AD60] stringWithCapacity:{objc_msgSend(text, "length")}];
+    v13 = [text length];
     if (v13 - 1 >= 0)
     {
       v14 = v13;
       do
       {
-        v15 = [v11 substringWithRange:{--v14, 1}];
+        v15 = [text substringWithRange:{--v14, 1}];
         if ([@"()- /" rangeOfString:v15] == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v12 insertString:v15 atIndex:0];
@@ -62,8 +62,8 @@
 
     v17 = v16;
     v18 = [v35 length];
-    v19 = [(PSPhoneNumberSpecifier *)self countryCode];
-    v20 = PSPNCreateFormattedStringWithCountry(v17, [v19 lowercaseString]);
+    countryCode = [(PSPhoneNumberSpecifier *)self countryCode];
+    v20 = PSPNCreateFormattedStringWithCountry(v17, [countryCode lowercaseString]);
 
     v21 = 0;
     if ([v17 length])
@@ -107,8 +107,8 @@
         v31 = v30;
         if (v30)
         {
-          v32 = [v30 stringValue];
-          [v27 appendString:v32];
+          stringValue = [v30 stringValue];
+          [v27 appendString:stringValue];
         }
 
         else
@@ -122,27 +122,27 @@
       while (v28 < [v20 length]);
     }
 
-    v11 = v27;
+    text = v27;
 
-    [v9 setText:v11];
-    [v9 setSelectionRange:{v21, 0}];
-    v33 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v33 postNotificationName:*MEMORY[0x1E69DE5C0] object:v9];
+    [fieldCopy setText:text];
+    [fieldCopy setSelectionRange:{v21, 0}];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x1E69DE5C0] object:fieldCopy];
 
-    v10 = v35;
+    stringCopy = v35;
   }
 
   return 0;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [(PSPhoneNumberSpecifier *)self countryCode];
-  v7 = PSPNCreateFormattedStringWithCountry(v5, [v6 lowercaseString]);
+  editingCopy = editing;
+  text = [editingCopy text];
+  countryCode = [(PSPhoneNumberSpecifier *)self countryCode];
+  v7 = PSPNCreateFormattedStringWithCountry(text, [countryCode lowercaseString]);
 
-  [v4 setText:v7];
+  [editingCopy setText:v7];
 }
 
 @end

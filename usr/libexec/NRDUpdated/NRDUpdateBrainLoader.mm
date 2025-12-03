@@ -1,31 +1,31 @@
 @interface NRDUpdateBrainLoader
-+ (id)brainAtPath:(id)a3 delegate:(id)a4 error:(id *)a5;
++ (id)brainAtPath:(id)path delegate:(id)delegate error:(id *)error;
 @end
 
 @implementation NRDUpdateBrainLoader
 
-+ (id)brainAtPath:(id)a3 delegate:(id)a4 error:(id *)a5
++ (id)brainAtPath:(id)path delegate:(id)delegate error:(id *)error
 {
-  if (!load_trust_cache_at_path([objc_msgSend(a3 stringByAppendingPathComponent:{@".TrustCache", "fileSystemRepresentation"}], 0))
+  if (!load_trust_cache_at_path([objc_msgSend(path stringByAppendingPathComponent:{@".TrustCache", "fileSystemRepresentation"}], 0))
   {
-    if (a5)
+    if (error)
     {
       v22 = NSDebugDescriptionErrorKey;
       v23 = @"trust cache load failed";
       v15 = [NSError errorWithDomain:@"NRDUpdateErrorDomain" code:100 userInfo:[NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1]];
 LABEL_16:
       v10 = 0;
-      *a5 = v15;
+      *error = v15;
       return v10;
     }
 
     return 0;
   }
 
-  v8 = [a3 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.xpc", @"com.apple.NRD.UpdateBrainService"}];
+  v8 = [path stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.xpc", @"com.apple.NRD.UpdateBrainService"}];
   if (![+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
   {
-    if (a5)
+    if (error)
     {
       v24 = NSDebugDescriptionErrorKey;
       v25 = @"xpc bundle does not exist";
@@ -57,7 +57,7 @@ LABEL_16:
   v28 = __Block_byref_object_copy__0;
   v29 = __Block_byref_object_dispose__0;
   v30 = 0;
-  v10 = [[NRDUpdateBrainClientImpl alloc] initWithDelegate:a4];
+  v10 = [[NRDUpdateBrainClientImpl alloc] initWithDelegate:delegate];
   v11 = v10;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -75,9 +75,9 @@ LABEL_16:
   v13 = *(*(&buf + 1) + 40);
   if (v13)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v13;
+      *error = v13;
       v13 = *(v12 + 40);
     }
 

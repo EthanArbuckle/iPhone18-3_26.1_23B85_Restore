@@ -1,77 +1,77 @@
 @interface PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (id)_assetsFromAssetCollection;
 - (void)_createRecord;
-- (void)_recordUserConfirmation:(int64_t)a3;
-- (void)_recordVariant:(id)a3;
+- (void)_recordUserConfirmation:(int64_t)confirmation;
+- (void)_recordVariant:(id)variant;
 - (void)performBackgroundTask;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer
 
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_opt_class() localizedTitleForUseCase:1 assetCollectionReference:v8 withInputs:0];
+  targetCopy = target;
+  referenceCopy = reference;
+  v9 = [objc_opt_class() localizedTitleForUseCase:1 assetCollectionReference:referenceCopy withInputs:0];
 
-  v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 style:0 target:v7 action:a5];
+  v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 style:0 target:targetCopy action:action];
 
   return v10;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v5 = [a4 assetCollection];
-  v6 = [v5 photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
-  v8 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v7];
-  v9 = PXLocalizationKeyByAddingMediaSpecificSuffix(@"PXPhotoKitAssetCollectionActionManagerActionTitle_ContentSyndicationRemoveSuggestion_", [v8 count], objc_msgSend(v5, "aggregateMediaType"));
+  assetCollection = [reference assetCollection];
+  photoLibrary = [assetCollection photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  v8 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:assetCollection options:librarySpecificFetchOptions];
+  v9 = PXLocalizationKeyByAddingMediaSpecificSuffix(@"PXPhotoKitAssetCollectionActionManagerActionTitle_ContentSyndicationRemoveSuggestion_", [v8 count], objc_msgSend(assetCollection, "aggregateMediaType"));
   v10 = PXLocalizedStringFromTable(v9, @"PhotosUICore");
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v4 = [a3 assetCollection];
-  v5 = [v4 px_isContentSyndicationAlbum];
+  assetCollection = [reference assetCollection];
+  px_isContentSyndicationAlbum = [assetCollection px_isContentSyndicationAlbum];
 
-  return v5;
+  return px_isContentSyndicationAlbum;
 }
 
-- (void)_recordVariant:(id)a3
+- (void)_recordVariant:(id)variant
 {
-  v5 = a3;
+  variantCopy = variant;
   record = self->_record;
-  v10 = v5;
+  v10 = variantCopy;
   if (!record)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
 
-    v5 = v10;
+    variantCopy = v10;
     record = self->_record;
   }
 
-  v7 = [(PXActionRecord *)record withVariant:v5];
+  v7 = [(PXActionRecord *)record withVariant:variantCopy];
   v8 = self->_record;
   self->_record = v7;
 }
 
-- (void)_recordUserConfirmation:(int64_t)a3
+- (void)_recordUserConfirmation:(int64_t)confirmation
 {
   if (!self->_record)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"_record != nil"}];
   }
 
-  v9 = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
-  v5 = -[PXActionRecord withUserConfirmation:assetCount:](self->_record, "withUserConfirmation:assetCount:", a3, [v9 count]);
+  _assetsFromAssetCollection = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
+  v5 = -[PXActionRecord withUserConfirmation:assetCount:](self->_record, "withUserConfirmation:assetCount:", confirmation, [_assetsFromAssetCollection count]);
   record = self->_record;
   self->_record = v5;
 }
@@ -80,15 +80,15 @@
 {
   if (self->_record)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"_record == nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"_record == nil"}];
   }
 
-  v10 = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
+  _assetsFromAssetCollection = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
   v3 = [PXActionRecord alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = -[PXActionRecord initWithSourceIdentifier:assetCount:](v3, "initWithSourceIdentifier:assetCount:", v5, [v10 count]);
+  v6 = -[PXActionRecord initWithSourceIdentifier:assetCount:](v3, "initWithSourceIdentifier:assetCount:", v5, [_assetsFromAssetCollection count]);
   record = self->_record;
   self->_record = v6;
 }
@@ -96,13 +96,13 @@
 - (id)_assetsFromAssetCollection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v4 = [v3 photoLibrary];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  photoLibrary = [assetCollection photoLibrary];
 
-  v5 = [v4 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v6 = MEMORY[0x1E6978630];
-  v7 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v8 = [v6 fetchAssetsInAssetCollection:v7 options:v5];
+  assetCollection2 = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v8 = [v6 fetchAssetsInAssetCollection:assetCollection2 options:librarySpecificFetchOptions];
 
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
   v16 = 0u;
@@ -139,9 +139,9 @@
 - (void)performBackgroundTask
 {
   v4 = +[PXContentSyndicationSettings sharedInstance];
-  v5 = [v4 preventActualRemoveSuggestionBehavior];
+  preventActualRemoveSuggestionBehavior = [v4 preventActualRemoveSuggestionBehavior];
 
-  if (v5)
+  if (preventActualRemoveSuggestionBehavior)
   {
 
     [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:1 error:0];
@@ -149,19 +149,19 @@
 
   else
   {
-    v6 = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
+    _assetsFromAssetCollection = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
     v7 = self->_record;
     if (!v7)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"record != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"record != nil"}];
     }
 
-    v8 = [(PXDestructiveAssetsAction *)PXDeleteAssetsAction actionWithAssets:v6 record:v7];
+    v8 = [(PXDestructiveAssetsAction *)PXDeleteAssetsAction actionWithAssets:_assetsFromAssetCollection record:v7];
     if (!v8)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"deleteAssetsAction != nil"}];
     }
 
     v12[0] = MEMORY[0x1E69E9820];
@@ -169,8 +169,8 @@
     v12[2] = __99__PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer_performBackgroundTask__block_invoke;
     v12[3] = &unk_1E774B730;
     v12[4] = self;
-    v13 = v6;
-    v9 = v6;
+    v13 = _assetsFromAssetCollection;
+    v9 = _assetsFromAssetCollection;
     [v8 executeWithUndoManager:0 completionHandler:v12];
   }
 }
@@ -266,9 +266,9 @@ LABEL_4:
 {
   [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _createRecord];
   v3 = +[PXContentSyndicationSettings sharedInstance];
-  v4 = [v3 preventActualRemoveSuggestionBehavior];
+  preventActualRemoveSuggestionBehavior = [v3 preventActualRemoveSuggestionBehavior];
 
-  if (v4)
+  if (preventActualRemoveSuggestionBehavior)
   {
     v16 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Remove Suggestion Prevented" message:@"Remove Suggestion is currently disabled via our internal settings (for debugging)." preferredStyle:1];
     v5 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:0];
@@ -287,10 +287,10 @@ LABEL_4:
 
   else
   {
-    v6 = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
+    _assetsFromAssetCollection = [(PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionActionPerformer *)self _assetsFromAssetCollection];
     v19[5] = 0;
     v19[6] = 0;
-    v7 = PXContentSyndicationRemoveConfirmationTitleAndMessageLocalizedStrings(v6);
+    v7 = PXContentSyndicationRemoveConfirmationTitleAndMessageLocalizedStrings(_assetsFromAssetCollection);
     v8 = 0;
     v9 = 0;
     if (v7)

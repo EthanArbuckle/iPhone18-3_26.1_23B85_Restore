@@ -1,5 +1,5 @@
 @interface UVFSPlugin
-- (UVFSPlugin)initWithFSName:(id)a3 andWithError:(id *)a4;
+- (UVFSPlugin)initWithFSName:(id)name andWithError:(id *)error;
 - (int)loadFileSystemDyLib;
 - (void)checkAndUnloadPlugin;
 - (void)takeAReference;
@@ -147,34 +147,34 @@
   return result;
 }
 
-- (UVFSPlugin)initWithFSName:(id)a3 andWithError:(id *)a4
+- (UVFSPlugin)initWithFSName:(id)name andWithError:(id *)error
 {
-  v7 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = UVFSPlugin;
   v8 = [(UVFSPlugin *)&v14 init];
   if (v8)
   {
     v9 = v8;
-    objc_storeStrong(&v8->_fileSystemName, a3);
-    v10 = [(UVFSPlugin *)v9 loadFileSystemDyLib];
-    if (!v10)
+    objc_storeStrong(&v8->_fileSystemName, name);
+    loadFileSystemDyLib = [(UVFSPlugin *)v9 loadFileSystemDyLib];
+    if (!loadFileSystemDyLib)
     {
       ++v9->refcount;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
 
       v12 = 0;
 LABEL_11:
-      *a4 = v12;
+      *error = v12;
       goto LABEL_12;
     }
 
-    v11 = v10;
+    v11 = loadFileSystemDyLib;
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -185,7 +185,7 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = 12;
     goto LABEL_7;

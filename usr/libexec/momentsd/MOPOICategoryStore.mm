@@ -1,28 +1,28 @@
 @interface MOPOICategoryStore
-- (MOPOICategoryStore)initWithPersistenceManager:(id)a3;
-- (MOPOICategoryStore)initWithUniverse:(id)a3;
-- (void)fetchEligiblePOICategoriesWithCompletionHandler:(id)a3;
-- (void)removeExistingPOICategoriesWithCompletionHandler:(id)a3;
-- (void)storeEligiblePOICategories:(id)a3 completionHandler:(id)a4;
+- (MOPOICategoryStore)initWithPersistenceManager:(id)manager;
+- (MOPOICategoryStore)initWithUniverse:(id)universe;
+- (void)fetchEligiblePOICategoriesWithCompletionHandler:(id)handler;
+- (void)removeExistingPOICategoriesWithCompletionHandler:(id)handler;
+- (void)storeEligiblePOICategories:(id)categories completionHandler:(id)handler;
 @end
 
 @implementation MOPOICategoryStore
 
-- (MOPOICategoryStore)initWithUniverse:(id)a3
+- (MOPOICategoryStore)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 getService:v6];
+  v7 = [universeCopy getService:v6];
 
   v8 = [(MOPOICategoryStore *)self initWithPersistenceManager:v7];
   return v8;
 }
 
-- (MOPOICategoryStore)initWithPersistenceManager:(id)a3
+- (MOPOICategoryStore)initWithPersistenceManager:(id)manager
 {
-  v6 = a3;
-  if (v6)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v15.receiver = self;
     v15.super_class = MOPOICategoryStore;
@@ -34,11 +34,11 @@
       queue = v7->_queue;
       v7->_queue = v9;
 
-      objc_storeStrong(&v7->_persistenceManager, a3);
+      objc_storeStrong(&v7->_persistenceManager, manager);
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -52,26 +52,26 @@
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MOPOICategoryStore.m" lineNumber:36 description:@"Invalid parameter not satisfying: persistenceManager"];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)storeEligiblePOICategories:(id)a3 completionHandler:(id)a4
+- (void)storeEligiblePOICategories:(id)categories completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOPOICategoryStore *)self persistenceManager];
+  categoriesCopy = categories;
+  handlerCopy = handler;
+  persistenceManager = [(MOPOICategoryStore *)self persistenceManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __67__MOPOICategoryStore_storeEligiblePOICategories_completionHandler___block_invoke;
   v11[3] = &unk_100338338;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlockAndWait:v11];
+  v12 = categoriesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = categoriesCopy;
+  [persistenceManager performBlockAndWait:v11];
 }
 
 void __67__MOPOICategoryStore_storeEligiblePOICategories_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -177,18 +177,18 @@ void __67__MOPOICategoryStore_storeEligiblePOICategories_completionHandler___blo
   }
 }
 
-- (void)fetchEligiblePOICategoriesWithCompletionHandler:(id)a3
+- (void)fetchEligiblePOICategoriesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(MOPOICategoryStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(MOPOICategoryStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __70__MOPOICategoryStore_fetchEligiblePOICategoriesWithCompletionHandler___block_invoke;
   v8[3] = &unk_100338388;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
-  [v6 performBlockAndWait:v8];
+  v7 = handlerCopy;
+  [persistenceManager performBlockAndWait:v8];
 }
 
 void __70__MOPOICategoryStore_fetchEligiblePOICategoriesWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -266,18 +266,18 @@ void __70__MOPOICategoryStore_fetchEligiblePOICategoriesWithCompletionHandler___
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeExistingPOICategoriesWithCompletionHandler:(id)a3
+- (void)removeExistingPOICategoriesWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(MOPOICategoryStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(MOPOICategoryStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __71__MOPOICategoryStore_removeExistingPOICategoriesWithCompletionHandler___block_invoke;
   v8[3] = &unk_100338388;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
-  [v6 performBlockAndWait:v8];
+  v7 = handlerCopy;
+  [persistenceManager performBlockAndWait:v8];
 }
 
 void __71__MOPOICategoryStore_removeExistingPOICategoriesWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

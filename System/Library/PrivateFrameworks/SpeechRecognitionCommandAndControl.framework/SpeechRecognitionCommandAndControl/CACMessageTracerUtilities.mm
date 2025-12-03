@@ -1,15 +1,15 @@
 @interface CACMessageTracerUtilities
 + (id)sharedCACMessageTracerUtilities;
 - (CACMessageTracerUtilities)init;
-- (id)_mutablePlistCompatibleObjectFromObject:(id)a3;
+- (id)_mutablePlistCompatibleObjectFromObject:(id)object;
 - (id)dictionaryOfNormallyStaticPreferenceValuesForCoreAnalytics;
 - (void)_prepareToSendAudioDataToAppleServers;
-- (void)logCommandWithIdentifier:(id)a3;
+- (void)logCommandWithIdentifier:(id)identifier;
 - (void)removeCachedAudioFile;
-- (void)sendCoreAnalyticsForRecognizedCommandIdentifier:(id)a3 appIdentifier:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)speechRecognitionTaskWasCancelled:(id)a3;
+- (void)sendCoreAnalyticsForRecognizedCommandIdentifier:(id)identifier appIdentifier:(id)appIdentifier;
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition;
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully;
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled;
 @end
 
 @implementation CACMessageTracerUtilities
@@ -50,25 +50,25 @@ uint64_t __60__CACMessageTracerUtilities_sharedCACMessageTracerUtilities__block_
   return v2;
 }
 
-- (void)logCommandWithIdentifier:(id)a3
+- (void)logCommandWithIdentifier:(id)identifier
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CACPreferences sharedPreferences];
   v6 = MEMORY[0x277CCABB0];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v7 = [v6 numberWithDouble:?];
   if (!self->_localeIdentifier)
   {
-    v8 = [v5 bestLocaleIdentifier];
-    [(CACMessageTracerUtilities *)self setLocaleIdentifier:v8];
+    bestLocaleIdentifier = [v5 bestLocaleIdentifier];
+    [(CACMessageTracerUtilities *)self setLocaleIdentifier:bestLocaleIdentifier];
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = v9;
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = dictionary;
+  if (identifierCopy)
   {
-    v11 = v4;
+    v11 = identifierCopy;
   }
 
   else
@@ -76,7 +76,7 @@ uint64_t __60__CACMessageTracerUtilities_sharedCACMessageTracerUtilities__block_
     v11 = &stru_287BD8610;
   }
 
-  [v9 setObject:v11 forKey:@"CommandIdentifier"];
+  [dictionary setObject:v11 forKey:@"CommandIdentifier"];
   if (self->_targetApplicationIdentifier)
   {
     targetApplicationIdentifier = self->_targetApplicationIdentifier;
@@ -103,22 +103,22 @@ uint64_t __60__CACMessageTracerUtilities_sharedCACMessageTracerUtilities__block_
       }
     }
 
-    v16 = [(CACMessageTracerUtilities *)self recognitionProperties];
-    if (v16)
+    recognitionProperties = [(CACMessageTracerUtilities *)self recognitionProperties];
+    if (recognitionProperties)
     {
     }
 
     else
     {
-      v19 = [(CACMessageTracerUtilities *)self dictationProperties];
-      v20 = v19 == 0;
+      dictationProperties = [(CACMessageTracerUtilities *)self dictationProperties];
+      v20 = dictationProperties == 0;
 
       if (v20)
       {
 LABEL_31:
         v28 = MEMORY[0x277CCABB0];
-        v29 = [v5 alwaysShowOverlayType];
-        v30 = [v28 numberWithBool:v29 != 0];
+        alwaysShowOverlayType = [v5 alwaysShowOverlayType];
+        v30 = [v28 numberWithBool:alwaysShowOverlayType != 0];
         [v10 setObject:v30 forKey:@"AlwaysShowOverlayType"];
 
         textAreaIdentifierOrLabel = self->_textAreaIdentifierOrLabel;
@@ -138,12 +138,12 @@ LABEL_31:
     }
 
     v21 = objc_opt_new();
-    v22 = [(CACMessageTracerUtilities *)self recognitionProperties];
+    recognitionProperties2 = [(CACMessageTracerUtilities *)self recognitionProperties];
 
-    if (v22)
+    if (recognitionProperties2)
     {
-      v23 = [(CACMessageTracerUtilities *)self recognitionProperties];
-      v24 = [(CACMessageTracerUtilities *)self _mutablePlistCompatibleObjectFromObject:v23];
+      recognitionProperties3 = [(CACMessageTracerUtilities *)self recognitionProperties];
+      v24 = [(CACMessageTracerUtilities *)self _mutablePlistCompatibleObjectFromObject:recognitionProperties3];
 
       if (v24)
       {
@@ -151,12 +151,12 @@ LABEL_31:
       }
     }
 
-    v25 = [(CACMessageTracerUtilities *)self dictationProperties];
+    dictationProperties2 = [(CACMessageTracerUtilities *)self dictationProperties];
 
-    if (v25)
+    if (dictationProperties2)
     {
-      v26 = [(CACMessageTracerUtilities *)self dictationProperties];
-      v27 = [(CACMessageTracerUtilities *)self _mutablePlistCompatibleObjectFromObject:v26];
+      dictationProperties3 = [(CACMessageTracerUtilities *)self dictationProperties];
+      v27 = [(CACMessageTracerUtilities *)self _mutablePlistCompatibleObjectFromObject:dictationProperties3];
 
       if (v27)
       {
@@ -182,48 +182,48 @@ LABEL_31:
   }
 
 LABEL_35:
-  if ([(__CFString *)v4 length])
+  if ([(__CFString *)identifierCopy length])
   {
-    v33 = self;
-    objc_sync_enter(v33);
-    v34 = [v5 recentCommandEntries];
-    [v34 insertObject:v10 atIndex:0];
-    if ([v34 count] >= 0x65)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    recentCommandEntries = [v5 recentCommandEntries];
+    [recentCommandEntries insertObject:v10 atIndex:0];
+    if ([recentCommandEntries count] >= 0x65)
     {
-      [v34 removeObjectsInRange:{100, objc_msgSend(v34, "count") - 100}];
+      [recentCommandEntries removeObjectsInRange:{100, objc_msgSend(recentCommandEntries, "count") - 100}];
     }
 
-    [v5 setRecentCommandEntries:v34];
+    [v5 setRecentCommandEntries:recentCommandEntries];
 
-    objc_sync_exit(v33);
+    objc_sync_exit(selfCopy);
   }
 
-  if ([(__CFString *)v4 length])
+  if ([(__CFString *)identifierCopy length])
   {
-    v35 = self;
-    objc_sync_enter(v35);
-    v36 = [v5 commandCounts];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    commandCounts = [v5 commandCounts];
     v37 = MEMORY[0x277CCABB0];
-    v38 = [v36 objectForKey:v4];
+    v38 = [commandCounts objectForKey:identifierCopy];
     v39 = [v37 numberWithUnsignedLongLong:{objc_msgSend(v38, "unsignedLongLongValue") + 1}];
-    [v36 setObject:v39 forKey:v4];
+    [commandCounts setObject:v39 forKey:identifierCopy];
 
-    [v5 setCommandCounts:v36];
-    objc_sync_exit(v35);
+    [v5 setCommandCounts:commandCounts];
+    objc_sync_exit(selfCopy2);
   }
 
   if ([(NSString *)self->_targetApplicationIdentifier length])
   {
-    v40 = self;
-    objc_sync_enter(v40);
-    v41 = [v5 targetApplicationCounts];
+    selfCopy3 = self;
+    objc_sync_enter(selfCopy3);
+    targetApplicationCounts = [v5 targetApplicationCounts];
     v42 = MEMORY[0x277CCABB0];
-    v43 = [v41 objectForKey:self->_targetApplicationIdentifier];
+    v43 = [targetApplicationCounts objectForKey:self->_targetApplicationIdentifier];
     v44 = [v42 numberWithUnsignedLongLong:{objc_msgSend(v43, "unsignedLongLongValue") + 1}];
-    [v41 setObject:v44 forKey:self->_targetApplicationIdentifier];
+    [targetApplicationCounts setObject:v44 forKey:self->_targetApplicationIdentifier];
 
-    [v5 setTargetApplicationCounts:v41];
-    objc_sync_exit(v40);
+    [v5 setTargetApplicationCounts:targetApplicationCounts];
+    objc_sync_exit(selfCopy3);
   }
 
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"CACMessageTraceRandomizedCountDown", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log", 0);
@@ -253,9 +253,9 @@ LABEL_48:
     v50 = CFPreferencesCopyAppValue(@"CACLastCommandRecognizedMessageTrace", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
     if (!v50 || (objc_opt_respondsToSelector() & 1) != 0 && ([v7 doubleValue], v52 = v51, objc_msgSend(v50, "doubleValue"), v52 > v53 + 3481.0))
     {
-      [(CACMessageTracerUtilities *)self sendCoreAnalyticsForRecognizedCommandIdentifier:v4 appIdentifier:self->_targetApplicationIdentifier];
-      v54 = [MEMORY[0x277CEF368] sharedPreferences];
-      v55 = [v54 siriDataSharingOptInStatus] == 1;
+      [(CACMessageTracerUtilities *)self sendCoreAnalyticsForRecognizedCommandIdentifier:identifierCopy appIdentifier:self->_targetApplicationIdentifier];
+      mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+      v55 = [mEMORY[0x277CEF368] siriDataSharingOptInStatus] == 1;
 
       if (v55)
       {
@@ -273,12 +273,12 @@ LABEL_48:
   [(CACMessageTracerUtilities *)self setDictationProperties:0];
 }
 
-- (void)sendCoreAnalyticsForRecognizedCommandIdentifier:(id)a3 appIdentifier:(id)a4
+- (void)sendCoreAnalyticsForRecognizedCommandIdentifier:(id)identifier appIdentifier:(id)appIdentifier
 {
   v53 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  identifierCopy = identifier;
+  appIdentifierCopy = appIdentifier;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = +[CACPreferences sharedPreferences];
   v46 = 0u;
   v47 = 0u;
@@ -289,9 +289,9 @@ LABEL_48:
   if (v9)
   {
     v10 = v9;
-    v41 = self;
+    selfCopy = self;
     v42 = v8;
-    v43 = v6;
+    v43 = appIdentifierCopy;
     v11 = @"Custom";
     v12 = *v47;
     v13 = 0.0;
@@ -313,12 +313,12 @@ LABEL_48:
           [v18 objectForKey:@"CustomType"];
           v19 = v10;
           v20 = v12;
-          v21 = v7;
+          v21 = array;
           v23 = v22 = v11;
           v24 = [v17 stringWithFormat:@"Custom_%@", v23];
 
           v11 = v22;
-          v7 = v21;
+          array = v21;
           v12 = v20;
           v10 = v19;
 
@@ -332,8 +332,8 @@ LABEL_48:
           v13 = v26;
         }
 
-        [v7 insertObject:v16 atIndex:0];
-        if ([v7 count] >= 3)
+        [array insertObject:v16 atIndex:0];
+        if ([array count] >= 3)
         {
           v28 = [v15 objectForKey:@"RecordedTime"];
           [v28 doubleValue];
@@ -342,13 +342,13 @@ LABEL_48:
           if (v30 > 60.0)
           {
 
-            v7 = 0;
+            array = 0;
           }
 
           v8 = v42;
-          v6 = v43;
-          self = v41;
-          v27 = v44;
+          appIdentifierCopy = v43;
+          self = selfCopy;
+          v27 = identifierCopy;
 
           goto LABEL_18;
         }
@@ -364,14 +364,14 @@ LABEL_48:
     }
 
     v8 = v42;
-    v6 = v43;
-    self = v41;
+    appIdentifierCopy = v43;
+    self = selfCopy;
   }
 
-  v27 = v44;
+  v27 = identifierCopy;
 LABEL_18:
 
-  v31 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v32 = v27;
   v33 = v32;
   if ([v32 hasPrefix:@"Custom"])
@@ -386,10 +386,10 @@ LABEL_18:
     }
   }
 
-  [v31 setObject:v33 forKey:@"CommandIdentifier"];
-  if (v6)
+  [dictionary setObject:v33 forKey:@"CommandIdentifier"];
+  if (appIdentifierCopy)
   {
-    v37 = v6;
+    v37 = appIdentifierCopy;
   }
 
   else
@@ -397,15 +397,15 @@ LABEL_18:
     v37 = &stru_287BD8610;
   }
 
-  [v31 setObject:v37 forKey:@"AppIdentifier"];
-  if ([v7 count] == 3)
+  [dictionary setObject:v37 forKey:@"AppIdentifier"];
+  if ([array count] == 3)
   {
-    v38 = [v7 componentsJoinedByString:{@", "}];
-    [v31 setObject:v38 forKey:@"RecentCommandTriplet"];
+    v38 = [array componentsJoinedByString:{@", "}];
+    [dictionary setObject:v38 forKey:@"RecentCommandTriplet"];
   }
 
-  v39 = [(CACMessageTracerUtilities *)self dictionaryOfNormallyStaticPreferenceValuesForCoreAnalytics];
-  [v31 addEntriesFromDictionary:v39];
+  dictionaryOfNormallyStaticPreferenceValuesForCoreAnalytics = [(CACMessageTracerUtilities *)self dictionaryOfNormallyStaticPreferenceValuesForCoreAnalytics];
+  [dictionary addEntriesFromDictionary:dictionaryOfNormallyStaticPreferenceValuesForCoreAnalytics];
 
   AnalyticsSendEvent();
   v40 = CACLogGeneral();
@@ -483,8 +483,8 @@ LABEL_18:
   }
 
   v47[0] = @"LocaleIdentifier";
-  v36 = [v37 bestLocaleIdentifier];
-  v48[0] = v36;
+  bestLocaleIdentifier = [v37 bestLocaleIdentifier];
+  v48[0] = bestLocaleIdentifier;
   v47[1] = @"VocabularyEntriesCountLog2Bucket";
   v35 = +[VCVocabularyObjC visibleVocabularyEntriesForActiveLocale];
   v34 = NumberWithLog2BucketForIntegerValue([v35 count]);
@@ -508,8 +508,8 @@ LABEL_18:
   v41 = NumberWithLog2BucketForIntegerValue(v40);
   v48[7] = v41;
   v47[8] = @"ContinousOverlayType";
-  v29 = [v37 alwaysShowOverlayType];
-  v48[8] = v29;
+  alwaysShowOverlayType = [v37 alwaysShowOverlayType];
+  v48[8] = alwaysShowOverlayType;
   v47[9] = @"GridOverlayIsCustomized";
   v28 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v37, "gridOverlayCustomColumnsEnabled") | objc_msgSend(v37, "gridOverlayCustomRowsEnabled")}];
   v48[9] = v28;
@@ -524,12 +524,12 @@ LABEL_18:
   v48[12] = v15;
   v47[13] = @"ShareAudioDataIsEnabled";
   v16 = MEMORY[0x277CCABB0];
-  v17 = [MEMORY[0x277CEF368] sharedPreferences];
-  v18 = [v16 numberWithInt:{objc_msgSend(v17, "siriDataSharingOptInStatus") == 1}];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  v18 = [v16 numberWithInt:{objc_msgSend(mEMORY[0x277CEF368], "siriDataSharingOptInStatus") == 1}];
   v48[13] = v18;
   v47[14] = @"AttentionAwareMode";
-  v19 = [v37 attentionAwareAction];
-  v48[14] = v19;
+  attentionAwareAction = [v37 attentionAwareAction];
+  v48[14] = attentionAwareAction;
   v47[15] = @"VoiceOverIsEnabled";
   v20 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:_AXSVoiceOverTouchEnabled()];
   v48[15] = v20;
@@ -549,18 +549,18 @@ LABEL_18:
 
 - (void)_prepareToSendAudioDataToAppleServers
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 siriDataSharingOptInStatus];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  siriDataSharingOptInStatus = [mEMORY[0x277CEF368] siriDataSharingOptInStatus];
 
   v5 = MEMORY[0x277CBED28];
-  if (v4 != 1)
+  if (siriDataSharingOptInStatus != 1)
   {
     v5 = MEMORY[0x277CBED10];
   }
 
   CFPreferencesSetAppValue(@"SaveUtteranceToFile", *v5, @"com.apple.SpeechRecognitionCore");
   CFPreferencesAppSynchronize(@"com.apple.SpeechRecognitionCore");
-  if (v4 != 1)
+  if (siriDataSharingOptInStatus != 1)
   {
 
     [(CACMessageTracerUtilities *)self removeCachedAudioFile];
@@ -593,78 +593,78 @@ LABEL_18:
     CFRelease(v6);
   }
 
-  v8 = [(__CFURL *)v4 path];
-  v9 = [v8 stringByAppendingPathComponent:@"srcLogAudioFile.wav"];
+  path = [(__CFURL *)v4 path];
+  v9 = [path stringByAppendingPathComponent:@"srcLogAudioFile.wav"];
 
   if ([v9 length])
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    [v10 removeItemAtPath:v9 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:v9 error:0];
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  taskCopy = task;
+  recognitionCopy = recognition;
   v7 = CACLogAudio();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 requestIdentifier];
+    requestIdentifier = [taskCopy requestIdentifier];
     v9 = 138412546;
-    v10 = v8;
+    v10 = requestIdentifier;
     v11 = 2112;
-    v12 = v6;
+    v12 = recognitionCopy;
     _os_log_impl(&dword_26B354000, v7, OS_LOG_TYPE_DEFAULT, "speechRecognitionTask:didFinishRecognition:, task ID: %@, result: %@", &v9, 0x16u);
   }
 }
 
-- (void)speechRecognitionTaskWasCancelled:(id)a3
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  cancelledCopy = cancelled;
   v4 = CACLogAudio();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 requestIdentifier];
+    requestIdentifier = [cancelledCopy requestIdentifier];
     v6 = 138412290;
-    v7 = v5;
+    v7 = requestIdentifier;
     _os_log_impl(&dword_26B354000, v4, OS_LOG_TYPE_DEFAULT, "speechRecognitionTaskWasCancelled:, task ID: %@", &v6, 0xCu);
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully
 {
-  v4 = a4;
+  successfullyCopy = successfully;
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  taskCopy = task;
   v6 = CACLogAudio();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 requestIdentifier];
+    requestIdentifier = [taskCopy requestIdentifier];
     v8 = 138412546;
-    v9 = v7;
+    v9 = requestIdentifier;
     v10 = 1024;
-    v11 = v4;
+    v11 = successfullyCopy;
     _os_log_impl(&dword_26B354000, v6, OS_LOG_TYPE_DEFAULT, "speechRecognitionTask:didFinishSuccessfully:, task ID: %@, successfully: %d", &v8, 0x12u);
   }
 }
 
-- (id)_mutablePlistCompatibleObjectFromObject:(id)a3
+- (id)_mutablePlistCompatibleObjectFromObject:(id)object
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v6 = [v4 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    allKeys = [objectCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v7)
     {
       v8 = v7;
@@ -675,20 +675,20 @@ LABEL_18:
         {
           if (*v26 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v25 + 1) + 8 * i);
-          v12 = [v4 objectForKey:v11];
+          v12 = [objectCopy objectForKey:v11];
           v13 = [(CACMessageTracerUtilities *)self _mutablePlistCompatibleObjectFromObject:v12];
 
           if (v13)
           {
-            [v5 setObject:v13 forKey:v11];
+            [dictionary setObject:v13 forKey:v11];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v8);
@@ -702,13 +702,13 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    dictionary = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v4;
-    v14 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    allKeys = objectCopy;
+    v14 = [allKeys countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v14)
     {
       v15 = v14;
@@ -719,17 +719,17 @@ LABEL_22:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v18 = [(CACMessageTracerUtilities *)self _mutablePlistCompatibleObjectFromObject:*(*(&v21 + 1) + 8 * j), v21];
           if (v18)
           {
-            [v5 addObject:v18];
+            [dictionary addObject:v18];
           }
         }
 
-        v15 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v15 = [allKeys countByEnumeratingWithState:&v21 objects:v29 count:16];
       }
 
       while (v15);
@@ -741,18 +741,18 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v19 = v4;
+    v19 = objectCopy;
   }
 
   else
   {
-    v19 = [v4 description];
+    v19 = [objectCopy description];
   }
 
-  v5 = v19;
+  dictionary = v19;
 LABEL_29:
 
-  return v5;
+  return dictionary;
 }
 
 @end

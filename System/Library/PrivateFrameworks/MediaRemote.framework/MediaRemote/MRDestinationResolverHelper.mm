@@ -1,69 +1,69 @@
 @interface MRDestinationResolverHelper
-- (void)destinationResolver:(id)a3 didFailWithError:(id)a4;
-- (void)destinationResolver:(id)a3 endpointDidChange:(id)a4;
-- (void)destinationResolver:(id)a3 originDidChange:(id)a4;
-- (void)destinationResolver:(id)a3 playerPathDidChange:(id)a4;
-- (void)destinationResolverDestinationDidInvalidate:(id)a3;
+- (void)destinationResolver:(id)resolver didFailWithError:(id)error;
+- (void)destinationResolver:(id)resolver endpointDidChange:(id)change;
+- (void)destinationResolver:(id)resolver originDidChange:(id)change;
+- (void)destinationResolver:(id)resolver playerPathDidChange:(id)change;
+- (void)destinationResolverDestinationDidInvalidate:(id)invalidate;
 @end
 
 @implementation MRDestinationResolverHelper
 
-- (void)destinationResolver:(id)a3 originDidChange:(id)a4
+- (void)destinationResolver:(id)resolver originDidChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
+  resolverCopy = resolver;
+  changeCopy = change;
   callback = self->_callback;
   if (callback && !self->_level)
   {
-    v8 = [v9 destination];
-    callback[2](callback, v8, 0);
+    destination = [resolverCopy destination];
+    callback[2](callback, destination, 0);
   }
 }
 
-- (void)destinationResolver:(id)a3 endpointDidChange:(id)a4
+- (void)destinationResolver:(id)resolver endpointDidChange:(id)change
 {
-  v9 = a3;
-  v6 = a4;
+  resolverCopy = resolver;
+  changeCopy = change;
   callback = self->_callback;
   if (callback && self->_level == 1)
   {
-    v8 = [v9 destination];
-    callback[2](callback, v8, 0);
+    destination = [resolverCopy destination];
+    callback[2](callback, destination, 0);
   }
 }
 
-- (void)destinationResolverDestinationDidInvalidate:(id)a3
+- (void)destinationResolverDestinationDidInvalidate:(id)invalidate
 {
   callback = self->_callback;
   if (callback)
   {
-    v4 = [a3 destination];
-    callback[2](callback, v4, 0);
+    destination = [invalidate destination];
+    callback[2](callback, destination, 0);
   }
 }
 
-- (void)destinationResolver:(id)a3 playerPathDidChange:(id)a4
+- (void)destinationResolver:(id)resolver playerPathDidChange:(id)change
 {
-  v5 = a3;
+  resolverCopy = resolver;
   callback = self->_callback;
   if (callback && (self->_level | 2) == 2)
   {
-    v8 = v5;
-    v7 = [v5 destination];
-    callback[2](callback, v7, 0);
+    v8 = resolverCopy;
+    destination = [resolverCopy destination];
+    callback[2](callback, destination, 0);
 
-    v5 = v8;
+    resolverCopy = v8;
   }
 }
 
-- (void)destinationResolver:(id)a3 didFailWithError:(id)a4
+- (void)destinationResolver:(id)resolver didFailWithError:(id)error
 {
   callback = self->_callback;
   if (callback)
   {
-    v6 = a4;
-    v7 = [a3 destination];
-    callback[2](callback, v7, v6);
+    errorCopy = error;
+    destination = [resolver destination];
+    callback[2](callback, destination, errorCopy);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface PXLocalization
 + (NSString)currentDeviceCanonicalModel;
 + (NSString)openCameraButtonTitleForEmptyPhotoLibrary;
-+ (id)messageForEmptyPhotoLibrary:(id)a3;
++ (id)messageForEmptyPhotoLibrary:(id)library;
 @end
 
 @implementation PXLocalization
@@ -21,17 +21,17 @@
   return v2;
 }
 
-+ (id)messageForEmptyPhotoLibrary:(id)a3
++ (id)messageForEmptyPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v6 = MGGetBoolAnswer();
-  if (!v5)
+  if (!libraryCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXLocalization.m" lineNumber:591 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLocalization.m" lineNumber:591 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary != nil"}];
   }
 
-  if ([v5 isCloudPhotoLibraryEnabled])
+  if ([libraryCopy isCloudPhotoLibraryEnabled])
   {
     v7 = 0;
   }
@@ -59,17 +59,17 @@
 + (NSString)currentDeviceCanonicalModel
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 model];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  model = [currentDevice model];
 
   v4 = @"iPhone";
-  if (([v3 isEqualToString:@"iPhone"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"iPhone Simulator") & 1) == 0)
+  if (([model isEqualToString:@"iPhone"] & 1) == 0 && (objc_msgSend(model, "isEqualToString:", @"iPhone Simulator") & 1) == 0)
   {
     v4 = @"iPad";
-    if (([v3 isEqualToString:@"iPad"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"iPad Simulator") & 1) == 0)
+    if (([model isEqualToString:@"iPad"] & 1) == 0 && (objc_msgSend(model, "isEqualToString:", @"iPad Simulator") & 1) == 0)
     {
       v4 = @"iPod touch";
-      if (([v3 isEqualToString:@"iPod touch"] & 1) == 0)
+      if (([model isEqualToString:@"iPod touch"] & 1) == 0)
       {
         PXAssertGetLog();
       }

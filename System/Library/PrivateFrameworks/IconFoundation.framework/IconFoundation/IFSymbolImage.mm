@@ -3,28 +3,28 @@
 - (CGRect)alignmentRect;
 - (CGRect)contentBounds;
 - (CGSize)size;
-- (IFSymbolImage)initWithNamedVectorGlyph:(id)a3 tintColor:(id)a4;
+- (IFSymbolImage)initWithNamedVectorGlyph:(id)glyph tintColor:(id)color;
 - (void)dealloc;
 @end
 
 @implementation IFSymbolImage
 
-- (IFSymbolImage)initWithNamedVectorGlyph:(id)a3 tintColor:(id)a4
+- (IFSymbolImage)initWithNamedVectorGlyph:(id)glyph tintColor:(id)color
 {
-  v7 = a3;
-  v8 = a4;
+  glyphCopy = glyph;
+  colorCopy = color;
   v30.receiver = self;
   v30.super_class = IFSymbolImage;
-  v9 = [(IFImage *)&v30 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(IFImage *)&v30 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 16, a3);
-    [v7 scale];
+    objc_storeStrong(_init + 16, glyph);
+    [glyphCopy scale];
     v10[7] = v11;
-    if (v8)
+    if (colorCopy)
     {
-      v12 = [v7 imageWithTintColor:{objc_msgSend(v8, "cgColor")}];
+      v12 = [glyphCopy imageWithTintColor:{objc_msgSend(colorCopy, "cgColor")}];
       if (!v12)
       {
         goto LABEL_8;
@@ -33,39 +33,39 @@
 
     else
     {
-      v13 = [v7 image];
-      if (!v13)
+      image = [glyphCopy image];
+      if (!image)
       {
 LABEL_8:
-        [v7 pointSize];
+        [glyphCopy pointSize];
         v10[8] = v16;
-        v10[9] = [v7 glyphSize];
-        v10[10] = [v7 glyphWeight];
-        [v7 referencePointSize];
+        v10[9] = [glyphCopy glyphSize];
+        v10[10] = [glyphCopy glyphWeight];
+        [glyphCopy referencePointSize];
         v10[11] = v17;
-        [v7 fontMatchingScaleFactor];
+        [glyphCopy fontMatchingScaleFactor];
         v10[12] = v18;
-        [v7 baselineOffset];
+        [glyphCopy baselineOffset];
         v10[13] = v19;
-        [v7 baselineOffset];
+        [glyphCopy baselineOffset];
         v10[14] = v20;
-        [v7 alignmentRect];
+        [glyphCopy alignmentRect];
         v10[19] = v21;
         v10[20] = v22;
         v10[21] = v23;
         v10[22] = v24;
-        [v7 contentBounds];
+        [glyphCopy contentBounds];
         v10[23] = v25;
         v10[24] = v26;
         v10[25] = v27;
         v10[26] = v28;
-        *(v10 + 40) = [v7 isFlippable];
-        v10[15] = [v7 layoutDirection];
+        *(v10 + 40) = [glyphCopy isFlippable];
+        v10[15] = [glyphCopy layoutDirection];
         goto LABEL_9;
       }
 
-      v12 = v13;
-      CFRetain(v13);
+      v12 = image;
+      CFRetain(image);
     }
 
     v10[6] = v12;

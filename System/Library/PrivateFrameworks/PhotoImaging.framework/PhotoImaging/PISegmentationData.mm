@@ -5,7 +5,7 @@
 - (PFWallpaperCompoundDeviceConfiguration)layoutConfiguration;
 - (PIParallaxColorAnalysis)colorAnalysis;
 - (PISegmentationData)init;
-- (PISegmentationData)initWithSegmentationItem:(id)a3;
+- (PISegmentationData)initWithSegmentationItem:(id)item;
 - (__CVBuffer)segmentationBuffer;
 - (unint64_t)classification;
 @end
@@ -14,69 +14,69 @@
 
 - (PIParallaxColorAnalysis)colorAnalysis
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 colorAnalysis];
+  item = [(PISegmentationData *)self item];
+  colorAnalysis = [item colorAnalysis];
 
-  return v3;
+  return colorAnalysis;
 }
 
 - (NSDictionary)scores
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 scores];
+  item = [(PISegmentationData *)self item];
+  scores = [item scores];
 
-  return v3;
+  return scores;
 }
 
 - (PFParallaxAssetRegions)regions
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 regions];
+  item = [(PISegmentationData *)self item];
+  regions = [item regions];
 
-  return v3;
+  return regions;
 }
 
 - (PFWallpaperCompoundDeviceConfiguration)layoutConfiguration
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 layoutConfiguration];
+  item = [(PISegmentationData *)self item];
+  layoutConfiguration = [item layoutConfiguration];
 
-  return v3;
+  return layoutConfiguration;
 }
 
 - (unint64_t)classification
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 classification];
+  item = [(PISegmentationData *)self item];
+  classification = [item classification];
 
-  return v3;
+  return classification;
 }
 
 - (PFPosterLayout)originalLayout
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 originalLayout];
+  item = [(PISegmentationData *)self item];
+  originalLayout = [item originalLayout];
 
-  return v3;
+  return originalLayout;
 }
 
 - (__CVBuffer)segmentationBuffer
 {
-  v2 = [(PISegmentationData *)self item];
-  v3 = [v2 segmentationMatte];
-  v4 = [v3 CVPixelBuffer];
+  item = [(PISegmentationData *)self item];
+  segmentationMatte = [item segmentationMatte];
+  cVPixelBuffer = [segmentationMatte CVPixelBuffer];
 
-  return v4;
+  return cVPixelBuffer;
 }
 
-- (PISegmentationData)initWithSegmentationItem:(id)a3
+- (PISegmentationData)initWithSegmentationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = PISegmentationData;
   v5 = [(PISegmentationData *)&v8 init];
   item = v5->_item;
-  v5->_item = v4;
+  v5->_item = itemCopy;
 
   return v5;
 }
@@ -122,8 +122,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -150,8 +150,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

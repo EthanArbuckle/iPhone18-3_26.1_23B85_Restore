@@ -1,41 +1,41 @@
 @interface PGPrerollIndicatorView
 - (CGAffineTransform)_subviewTransform;
-- (CGRect)buttonView:(id)a3 imageRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5;
-- (CGRect)buttonView:(id)a3 titleRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5;
+- (CGRect)buttonView:(id)view imageRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect;
+- (CGRect)buttonView:(id)view titleRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect;
 - (CGSize)labelSize;
 - (NSString)labelText;
-- (PGPrerollIndicatorView)initWithFrame:(CGRect)a3 viewModel:(id)a4;
-- (UIEdgeInsets)buttonView:(id)a3 contentEdgeInsetsForProposedInsets:(UIEdgeInsets)a4;
+- (PGPrerollIndicatorView)initWithFrame:(CGRect)frame viewModel:(id)model;
+- (UIEdgeInsets)buttonView:(id)view contentEdgeInsetsForProposedInsets:(UIEdgeInsets)insets;
 - (double)labelWidth;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_layoutContentTypeLabel;
 - (void)_layoutSkipPrerollButton;
-- (void)buttonViewDidReceiveTouchUpInside:(id)a3;
+- (void)buttonViewDidReceiveTouchUpInside:(id)inside;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLabelText:(id)a3;
-- (void)setTimeRemainingText:(id)a3;
+- (void)setLabelText:(id)text;
+- (void)setTimeRemainingText:(id)text;
 - (void)updateValues;
 @end
 
 @implementation PGPrerollIndicatorView
 
-- (PGPrerollIndicatorView)initWithFrame:(CGRect)a3 viewModel:(id)a4
+- (PGPrerollIndicatorView)initWithFrame:(CGRect)frame viewModel:(id)model
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = PGPrerollIndicatorView;
-  v11 = [(PGPrerollIndicatorView *)&v17 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(PGPrerollIndicatorView *)&v17 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_viewModel, a4);
-    v13 = [v10 values];
-    v12->_wantsGlassBackground = [v13 controlsViewWantsGlassBackground];
+    objc_storeStrong(&height->_viewModel, model);
+    values = [modelCopy values];
+    v12->_wantsGlassBackground = [values controlsViewWantsGlassBackground];
 
     v14 = [[PGDisplayLink alloc] initWithOwner:v12 linkFired:&__block_literal_global_4];
     displayLink = v12->_displayLink;
@@ -58,23 +58,23 @@
 
 - (void)updateValues
 {
-  v18 = [(PGPrerollIndicatorView *)self viewModel];
-  v3 = [v18 values];
-  if (![v3 isPrerollActive])
+  viewModel = [(PGPrerollIndicatorView *)self viewModel];
+  values = [viewModel values];
+  if (![values isPrerollActive])
   {
     v7 = 0;
     goto LABEL_15;
   }
 
-  v4 = [v3 prerollAttributes];
-  v5 = [v4 contentType];
-  if (v5 == 2)
+  prerollAttributes = [values prerollAttributes];
+  contentType = [prerollAttributes contentType];
+  if (contentType == 2)
   {
     v6 = @"SPONSORED_PREROLL_LABEL";
     goto LABEL_7;
   }
 
-  if (v5 == 1)
+  if (contentType == 1)
   {
     v6 = @"AD_PREROLL_LABEL";
 LABEL_7:
@@ -82,40 +82,40 @@ LABEL_7:
     [(PGPrerollIndicatorView *)self setLabelText:v8];
   }
 
-  if ([v18 secondsUntilPrerollSkippable] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([viewModel secondsUntilPrerollSkippable] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [(PGButtonView *)self->_skipPrerollButtonView setHidden:1];
   }
 
   else
   {
-    v9 = [v18 secondsUntilPrerollSkippable];
-    if (v9 < 1)
+    secondsUntilPrerollSkippable = [viewModel secondsUntilPrerollSkippable];
+    if (secondsUntilPrerollSkippable < 1)
     {
       v13 = PGLocalizedString(@"SKIP_PREROLL");
       v15 = &stru_1F394B800;
-      v14 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v10 = v9;
+      v10 = secondsUntilPrerollSkippable;
       v11 = MEMORY[0x1E696AEC0];
       v12 = PGLocalizedString(@"SKIP_PREROLL_IN_N_SECONDS");
       v13 = [v11 stringWithFormat:v12, v10];
 
-      v14 = self;
+      selfCopy2 = self;
       v15 = v13;
     }
 
-    [(PGPrerollIndicatorView *)v14 setTimeRemainingText:v15];
+    [(PGPrerollIndicatorView *)selfCopy2 setTimeRemainingText:v15];
     [(PGButtonView *)self->_skipPrerollButtonView setAccessibilityIdentifier:v13];
     [(PGButtonView *)self->_skipPrerollButtonView setHidden:0];
   }
 
-  v16 = [(PGPrerollIndicatorView *)self contentTypeLabel];
-  v17 = [v3 prerollTintColor];
-  [v16 setBackgroundColor:v17];
+  contentTypeLabel = [(PGPrerollIndicatorView *)self contentTypeLabel];
+  prerollTintColor = [values prerollTintColor];
+  [contentTypeLabel setBackgroundColor:prerollTintColor];
 
   v7 = 10;
 LABEL_15:
@@ -124,25 +124,25 @@ LABEL_15:
 
 - (NSString)labelText
 {
-  v2 = [(PGPrerollIndicatorView *)self contentTypeLabel];
-  v3 = [v2 text];
+  contentTypeLabel = [(PGPrerollIndicatorView *)self contentTypeLabel];
+  text = [contentTypeLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(PGPrerollIndicatorView *)self labelText];
-  v6 = v5;
-  if (v5 == v4)
+  textCopy = text;
+  labelText = [(PGPrerollIndicatorView *)self labelText];
+  v6 = labelText;
+  if (labelText == textCopy)
   {
   }
 
   else
   {
-    v7 = [(PGPrerollIndicatorView *)self labelText];
-    v8 = [v7 isEqualToString:v4];
+    labelText2 = [(PGPrerollIndicatorView *)self labelText];
+    v8 = [labelText2 isEqualToString:textCopy];
 
     if ((v8 & 1) == 0)
     {
@@ -153,18 +153,18 @@ LABEL_15:
         self->_contentTypeLabel = v9;
 
         v11 = self->_contentTypeLabel;
-        v12 = [MEMORY[0x1E69DC888] whiteColor];
-        [(UILabel *)v11 setTextColor:v12];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(UILabel *)v11 setTextColor:whiteColor];
 
         v13 = self->_contentTypeLabel;
         v14 = [MEMORY[0x1E69DB878] systemFontOfSize:13.0 weight:*MEMORY[0x1E69DB980]];
         [(UILabel *)v13 setFont:v14];
 
-        v15 = [(UILabel *)self->_contentTypeLabel layer];
-        [v15 setCornerCurve:*MEMORY[0x1E69796E8]];
+        layer = [(UILabel *)self->_contentTypeLabel layer];
+        [layer setCornerCurve:*MEMORY[0x1E69796E8]];
 
-        v16 = [(UILabel *)self->_contentTypeLabel layer];
-        [v16 setCornerRadius:6.0];
+        layer2 = [(UILabel *)self->_contentTypeLabel layer];
+        [layer2 setCornerRadius:6.0];
 
         [(UILabel *)self->_contentTypeLabel setTextAlignment:1];
         [(UILabel *)self->_contentTypeLabel setClipsToBounds:1];
@@ -176,21 +176,21 @@ LABEL_15:
         }
       }
 
-      v17 = [(PGPrerollIndicatorView *)self contentTypeLabel];
+      contentTypeLabel = [(PGPrerollIndicatorView *)self contentTypeLabel];
       v18 = *(MEMORY[0x1E695EFD0] + 16);
       v24[0] = *MEMORY[0x1E695EFD0];
       v24[1] = v18;
       v24[2] = *(MEMORY[0x1E695EFD0] + 32);
-      [v17 setTransform:v24];
+      [contentTypeLabel setTransform:v24];
 
-      v19 = [(PGPrerollIndicatorView *)self contentTypeLabel];
-      [v19 setText:v4];
+      contentTypeLabel2 = [(PGPrerollIndicatorView *)self contentTypeLabel];
+      [contentTypeLabel2 setText:textCopy];
 
-      v20 = [(PGPrerollIndicatorView *)self contentTypeLabel];
-      [v20 sizeToFit];
+      contentTypeLabel3 = [(PGPrerollIndicatorView *)self contentTypeLabel];
+      [contentTypeLabel3 sizeToFit];
 
-      v21 = [(PGPrerollIndicatorView *)self contentTypeLabel];
-      [v21 frame];
+      contentTypeLabel4 = [(PGPrerollIndicatorView *)self contentTypeLabel];
+      [contentTypeLabel4 frame];
       [(PGPrerollIndicatorView *)self setLabelSize:v22, v23];
 
       [(PGPrerollIndicatorView *)self _layoutContentTypeLabel];
@@ -198,20 +198,20 @@ LABEL_15:
   }
 }
 
-- (void)setTimeRemainingText:(id)a3
+- (void)setTimeRemainingText:(id)text
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PGPrerollIndicatorView *)self timeRemainingText];
-  if ([v4 isEqualToString:v5])
+  textCopy = text;
+  timeRemainingText = [(PGPrerollIndicatorView *)self timeRemainingText];
+  if ([textCopy isEqualToString:timeRemainingText])
   {
   }
 
   else
   {
-    v6 = [(PGPrerollIndicatorView *)self timeRemainingText];
+    timeRemainingText2 = [(PGPrerollIndicatorView *)self timeRemainingText];
 
-    if (v6 != v4)
+    if (timeRemainingText2 != textCopy)
     {
       skipPrerollButtonView = self->_skipPrerollButtonView;
       if (!skipPrerollButtonView)
@@ -239,14 +239,14 @@ LABEL_15:
         v28[0] = v14;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
 
-        v16 = [v12 fontDescriptor];
+        fontDescriptor = [v12 fontDescriptor];
         v17 = *MEMORY[0x1E69DB8C0];
         v24[0] = *MEMORY[0x1E69DB8B0];
         v24[1] = v17;
         v25[0] = v15;
         v25[1] = &unk_1F3959140;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-        v19 = [v16 fontDescriptorByAddingAttributes:v18];
+        v19 = [fontDescriptor fontDescriptorByAddingAttributes:v18];
 
         v20 = [MEMORY[0x1E69DB878] fontWithDescriptor:v19 size:13.0];
 
@@ -260,12 +260,12 @@ LABEL_15:
         skipPrerollButtonView = self->_skipPrerollButtonView;
       }
 
-      [(PGButtonView *)skipPrerollButtonView setText:v4];
+      [(PGButtonView *)skipPrerollButtonView setText:textCopy];
       [(PGButtonView *)self->_skipPrerollButtonView sizeToFit];
-      v21 = [(PGControlsViewModel *)self->_viewModel isPrerollSkippable];
-      [(PGButtonView *)self->_skipPrerollButtonView setEnabled:v21];
+      isPrerollSkippable = [(PGControlsViewModel *)self->_viewModel isPrerollSkippable];
+      [(PGButtonView *)self->_skipPrerollButtonView setEnabled:isPrerollSkippable];
       v22 = self->_skipPrerollButtonView;
-      if (v21)
+      if (isPrerollSkippable)
       {
         [(PGButtonView *)self->_skipPrerollButtonView enabledTintColor];
       }
@@ -282,11 +282,11 @@ LABEL_15:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = PGPrerollIndicatorView;
-  v5 = [(PGPrerollIndicatorView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PGPrerollIndicatorView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -319,19 +319,19 @@ LABEL_15:
   return CGRectGetWidth(*&v2);
 }
 
-- (void)buttonViewDidReceiveTouchUpInside:(id)a3
+- (void)buttonViewDidReceiveTouchUpInside:(id)inside
 {
-  v3 = [(PGPrerollIndicatorView *)self viewModel];
-  [v3 handleSkipPrerollButtonTapped];
+  viewModel = [(PGPrerollIndicatorView *)self viewModel];
+  [viewModel handleSkipPrerollButtonTapped];
 }
 
-- (CGRect)buttonView:(id)a3 imageRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5
+- (CGRect)buttonView:(id)view imageRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  MaxX = CGRectGetMaxX(a4);
+  height = proposedRect.size.height;
+  width = proposedRect.size.width;
+  y = proposedRect.origin.y;
+  x = proposedRect.origin.x;
+  MaxX = CGRectGetMaxX(rect);
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
@@ -347,11 +347,11 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)buttonView:(id)a3 titleRectForContentRect:(CGRect)a4 proposedRect:(CGRect)a5
+- (CGRect)buttonView:(id)view titleRectForContentRect:(CGRect)rect proposedRect:(CGRect)proposedRect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
+  height = proposedRect.size.height;
+  width = proposedRect.size.width;
+  y = proposedRect.origin.y;
   v8 = 6.0;
   result.size.height = height;
   result.size.width = width;
@@ -360,10 +360,10 @@ LABEL_15:
   return result;
 }
 
-- (UIEdgeInsets)buttonView:(id)a3 contentEdgeInsetsForProposedInsets:(UIEdgeInsets)a4
+- (UIEdgeInsets)buttonView:(id)view contentEdgeInsetsForProposedInsets:(UIEdgeInsets)insets
 {
-  v4 = [a3 text];
-  if ([v4 length])
+  text = [view text];
+  if ([text length])
   {
     v5 = 9.0;
   }
@@ -417,8 +417,8 @@ LABEL_15:
   v12[1] = v4;
   v12[2] = *(MEMORY[0x1E695EFD0] + 32);
   [(UILabel *)contentTypeLabel setTransform:v12];
-  v5 = [(PGPrerollIndicatorView *)self contentTypeLabel];
-  [v5 frame];
+  contentTypeLabel = [(PGPrerollIndicatorView *)self contentTypeLabel];
+  [contentTypeLabel frame];
 
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);

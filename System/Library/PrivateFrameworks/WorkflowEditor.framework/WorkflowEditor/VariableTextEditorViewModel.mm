@@ -1,14 +1,14 @@
 @interface VariableTextEditorViewModel
-- (void)slotTextAttachmentNeedsDisplay:(id)a3;
+- (void)slotTextAttachmentNeedsDisplay:(id)display;
 @end
 
 @implementation VariableTextEditorViewModel
 
-- (void)slotTextAttachmentNeedsDisplay:(id)a3
+- (void)slotTextAttachmentNeedsDisplay:(id)display
 {
-  v3 = a3;
+  displayCopy = display;
 
-  sub_2745BBCA4(v3);
+  sub_2745BBCA4(displayCopy);
 }
 
 @end

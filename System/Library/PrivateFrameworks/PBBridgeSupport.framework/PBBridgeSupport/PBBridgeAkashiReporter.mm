@@ -1,13 +1,13 @@
 @interface PBBridgeAkashiReporter
-+ (id)descriptionForSetUpType:(unint64_t)a3;
-+ (void)incrementSetUpEvent:(unint64_t)a3;
++ (id)descriptionForSetUpType:(unint64_t)type;
++ (void)incrementSetUpEvent:(unint64_t)event;
 @end
 
 @implementation PBBridgeAkashiReporter
 
-+ (id)descriptionForSetUpType:(unint64_t)a3
++ (id)descriptionForSetUpType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       v8 = v3;
@@ -77,11 +77,11 @@
   return result;
 }
 
-+ (void)incrementSetUpEvent:(unint64_t)a3
++ (void)incrementSetUpEvent:(unint64_t)event
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"setUpType";
-  v3 = [PBBridgeAkashiReporter descriptionForSetUpType:a3];
+  v3 = [PBBridgeAkashiReporter descriptionForSetUpType:event];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 

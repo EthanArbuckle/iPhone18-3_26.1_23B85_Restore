@@ -1,63 +1,63 @@
 @interface SVXVirtualDeviceManager
-- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)a3;
-- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)a3 hostVirtualDevice:(id)a4;
-- (void)getVirtualDeviceForActivationContext:(id)a3 completion:(id)a4;
-- (void)getVirtualDeviceForInstanceInfo:(id)a3 completion:(id)a4;
+- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)manager;
+- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)manager hostVirtualDevice:(id)device;
+- (void)getVirtualDeviceForActivationContext:(id)context completion:(id)completion;
+- (void)getVirtualDeviceForInstanceInfo:(id)info completion:(id)completion;
 @end
 
 @implementation SVXVirtualDeviceManager
 
-- (void)getVirtualDeviceForInstanceInfo:(id)a3 completion:(id)a4
+- (void)getVirtualDeviceForInstanceInfo:(id)info completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, self->_hostVirtualDevice);
+    (*(completion + 2))(completion, self->_hostVirtualDevice);
   }
 }
 
-- (void)getVirtualDeviceForActivationContext:(id)a3 completion:(id)a4
+- (void)getVirtualDeviceForActivationContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v8 source] == 11)
+    if ([contextCopy source] == 11)
     {
-      v7 = [v8 deviceID];
-      if (v7)
+      deviceID = [contextCopy deviceID];
+      if (deviceID)
       {
       }
     }
 
-    v6[2](v6, self->_hostVirtualDevice);
+    completionCopy[2](completionCopy, self->_hostVirtualDevice);
   }
 }
 
-- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)a3 hostVirtualDevice:(id)a4
+- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)manager hostVirtualDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = SVXVirtualDeviceManager;
   v9 = [(SVXVirtualDeviceManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_remoraVirtualDeviceManager, a3);
-    objc_storeStrong(&v10->_hostVirtualDevice, a4);
+    objc_storeStrong(&v9->_remoraVirtualDeviceManager, manager);
+    objc_storeStrong(&v10->_hostVirtualDevice, device);
   }
 
   return v10;
 }
 
-- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)a3
+- (SVXVirtualDeviceManager)initWithRemoraVirtualDeviceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = [SVXVirtualDevice alloc];
-  v6 = [MEMORY[0x277CEF2C8] defaultContext];
-  v7 = [(SVXVirtualDevice *)v5 initWithInstanceContext:v6];
+  defaultContext = [MEMORY[0x277CEF2C8] defaultContext];
+  v7 = [(SVXVirtualDevice *)v5 initWithInstanceContext:defaultContext];
 
-  v8 = [(SVXVirtualDeviceManager *)self initWithRemoraVirtualDeviceManager:v4 hostVirtualDevice:v7];
+  v8 = [(SVXVirtualDeviceManager *)self initWithRemoraVirtualDeviceManager:managerCopy hostVirtualDevice:v7];
   return v8;
 }
 

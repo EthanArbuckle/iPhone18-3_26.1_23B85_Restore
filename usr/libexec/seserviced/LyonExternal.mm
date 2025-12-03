@@ -1,13 +1,13 @@
 @interface LyonExternal
 + (_TtC10seserviced12LyonExternal)shared;
-- (BOOL)blockRangingForReaderIdentifierWithReaderIdentifier:(id)a3 timeout:(double)a4 error:(id *)a5;
-- (BOOL)unblockRangingForReaderIdentifierWithReaderIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)blockRangingForReaderIdentifierWithReaderIdentifier:(id)identifier timeout:(double)timeout error:(id *)error;
+- (BOOL)unblockRangingForReaderIdentifierWithReaderIdentifier:(id)identifier error:(id *)error;
 - (_TtC10seserviced12LyonExternal)init;
 - (id)getAllEndpoints;
-- (id)getEndpointWithKeyIdentifier:(id)a3;
+- (id)getEndpointWithKeyIdentifier:(id)identifier;
 - (id)getSupportedAliroVersions;
 - (uint64_t)applyLatestAliroProtocolVersions;
-- (void)updatePreArmState:(BOOL)a3 for:(id)a4;
+- (void)updatePreArmState:(BOOL)state for:(id)for;
 @end
 
 @implementation LyonExternal
@@ -39,10 +39,10 @@
   return v2.super.isa;
 }
 
-- (id)getEndpointWithKeyIdentifier:(id)a3
+- (id)getEndpointWithKeyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
@@ -52,21 +52,21 @@
   return v9;
 }
 
-- (BOOL)blockRangingForReaderIdentifierWithReaderIdentifier:(id)a3 timeout:(double)a4 error:(id *)a5
+- (BOOL)blockRangingForReaderIdentifierWithReaderIdentifier:(id)identifier timeout:(double)timeout error:(id *)error
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = self;
-  sub_1002E9528(v7, v9, a4);
+  selfCopy = self;
+  sub_1002E9528(v7, v9, timeout);
 
   return 1;
 }
 
-- (BOOL)unblockRangingForReaderIdentifierWithReaderIdentifier:(id)a3 error:(id *)a4
+- (BOOL)unblockRangingForReaderIdentifierWithReaderIdentifier:(id)identifier error:(id *)error
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_1002E96E4(v5, v7);
 
   return 1;
@@ -79,12 +79,12 @@
   return v2;
 }
 
-- (void)updatePreArmState:(BOOL)a3 for:(id)a4
+- (void)updatePreArmState:(BOOL)state for:(id)for
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = self;
-  sub_1002E9CE8(v4, v6);
+  stateCopy = state;
+  forCopy = for;
+  selfCopy = self;
+  sub_1002E9CE8(stateCopy, forCopy);
 }
 
 - (_TtC10seserviced12LyonExternal)init

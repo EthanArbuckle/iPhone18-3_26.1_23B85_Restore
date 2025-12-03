@@ -1,19 +1,19 @@
 @interface CKReviewLargeUnsyncedConversationsViewController
-- (id)modelObjectAtIndex:(unint64_t)a3;
+- (id)modelObjectAtIndex:(unint64_t)index;
 - (id)navigationBarTitle;
 - (unint64_t)numberOfModelObjects;
 - (void)_populateConversationsIfNeeded;
 - (void)dealloc;
-- (void)deleteModelObjectAndUnderlyingData:(id)a3;
-- (void)didSelectModelObjectAtIndex:(unint64_t)a3;
+- (void)deleteModelObjectAndUnderlyingData:(id)data;
+- (void)didSelectModelObjectAtIndex:(unint64_t)index;
 @end
 
 @implementation CKReviewLargeUnsyncedConversationsViewController
 
 - (void)dealloc
 {
-  v3 = [(CKReviewLargeUnsyncedConversationsViewController *)self daemonConnection];
-  [v3 invalidate];
+  daemonConnection = [(CKReviewLargeUnsyncedConversationsViewController *)self daemonConnection];
+  [daemonConnection invalidate];
 
   [(CKReviewLargeUnsyncedConversationsViewController *)self setDaemonConnection:0];
   v4.receiver = self;
@@ -31,12 +31,12 @@
 
 - (unint64_t)numberOfModelObjects
 {
-  v3 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+  conversations = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
 
-  if (v3)
+  if (conversations)
   {
-    v4 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
-    v5 = [v4 count];
+    conversations2 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+    v5 = [conversations2 count];
 
     return v5;
   }
@@ -48,14 +48,14 @@
   }
 }
 
-- (id)modelObjectAtIndex:(unint64_t)a3
+- (id)modelObjectAtIndex:(unint64_t)index
 {
-  v5 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+  conversations = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
 
-  if (v5)
+  if (conversations)
   {
-    v6 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    conversations2 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+    v7 = [conversations2 objectAtIndexedSubscript:index];
   }
 
   else
@@ -67,37 +67,37 @@
   return v7;
 }
 
-- (void)deleteModelObjectAndUnderlyingData:(id)a3
+- (void)deleteModelObjectAndUnderlyingData:(id)data
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"chat"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"chat"];
   [v5 remove];
 
-  v6 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
-  v9[0] = v4;
+  conversations = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+  v9[0] = dataCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
-  v8 = [v6 arrayByExcludingObjectsInArray:v7];
+  v8 = [conversations arrayByExcludingObjectsInArray:v7];
   [(CKReviewLargeUnsyncedConversationsViewController *)self setConversations:v8];
 }
 
-- (void)didSelectModelObjectAtIndex:(unint64_t)a3
+- (void)didSelectModelObjectAtIndex:(unint64_t)index
 {
-  v5 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  conversations = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+  v6 = [conversations objectAtIndexedSubscript:index];
   v7 = [v6 objectForKeyedSubscript:@"chat"];
 
-  v8 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v9 = [v8 messagesURLWithChat:v7 orHandles:0 withMessageText:0];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  v9 = [mEMORY[0x1E69A5AF8] messagesURLWithChat:v7 orHandles:0 withMessageText:0];
 
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__CKReviewLargeUnsyncedConversationsViewController_didSelectModelObjectAtIndex___block_invoke;
   v11[3] = &unk_1E72EB9C8;
   v11[4] = self;
-  [v10 openURL:v9 withCompletionHandler:v11];
+  [mEMORY[0x1E69DC668] openURL:v9 withCompletionHandler:v11];
 }
 
 void __80__CKReviewLargeUnsyncedConversationsViewController_didSelectModelObjectAtIndex___block_invoke(uint64_t a1)
@@ -110,28 +110,28 @@ void __80__CKReviewLargeUnsyncedConversationsViewController_didSelectModelObject
 
 - (void)_populateConversationsIfNeeded
 {
-  v3 = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
+  conversations = [(CKReviewLargeUnsyncedConversationsViewController *)self conversations];
 
-  if (!v3)
+  if (!conversations)
   {
-    v4 = [(CKReviewLargeUnsyncedConversationsViewController *)self daemonConnection];
+    daemonConnection = [(CKReviewLargeUnsyncedConversationsViewController *)self daemonConnection];
 
-    if (!v4)
+    if (!daemonConnection)
     {
-      v5 = [MEMORY[0x1E69A5B50] sharedController];
+      mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [v5 multiplexedConnectionWithLabel:v7 capabilities:4485383 context:0];
+      v8 = [mEMORY[0x1E69A5B50] multiplexedConnectionWithLabel:v7 capabilities:4485383 context:0];
       [(CKReviewLargeUnsyncedConversationsViewController *)self setDaemonConnection:v8];
     }
 
-    v9 = [(CKReviewLargeUnsyncedConversationsViewController *)self daemonConnection];
+    daemonConnection2 = [(CKReviewLargeUnsyncedConversationsViewController *)self daemonConnection];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__CKReviewLargeUnsyncedConversationsViewController__populateConversationsIfNeeded__block_invoke;
     v10[3] = &unk_1E72EBA18;
     v10[4] = self;
-    [v9 connectWithCompletion:v10];
+    [daemonConnection2 connectWithCompletion:v10];
   }
 }
 

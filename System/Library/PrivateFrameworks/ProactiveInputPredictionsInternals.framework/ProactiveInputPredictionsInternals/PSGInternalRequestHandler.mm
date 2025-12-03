@@ -1,17 +1,17 @@
 @interface PSGInternalRequestHandler
 - (PSGInternalRequestHandler)init;
-- (id)_getWordBoundaryExperimentInfo:(id)a3;
-- (id)_getZKWExperimentInfo:(id)a3;
-- (id)_initWithExperimentResolver:(id)a3;
-- (void)sysdiagnoseInformationWithCompletion:(id)a3;
+- (id)_getWordBoundaryExperimentInfo:(id)info;
+- (id)_getZKWExperimentInfo:(id)info;
+- (id)_initWithExperimentResolver:(id)resolver;
+- (void)sysdiagnoseInformationWithCompletion:(id)completion;
 @end
 
 @implementation PSGInternalRequestHandler
 
-- (void)sysdiagnoseInformationWithCompletion:(id)a3
+- (void)sysdiagnoseInformationWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  completionCopy = completion;
   v17 = objc_opt_new();
   v4 = objc_opt_new();
   [(PSGInternalRequestHandler *)self _getPreferredLanguages];
@@ -63,48 +63,48 @@
   if (v13)
   {
     v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v13 encoding:4];
-    v19[2](v19, v15, v14);
+    completionCopy[2](completionCopy, v15, v14);
   }
 
   else
   {
-    v19[2](v19, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getWordBoundaryExperimentInfo:(id)a3
+- (id)_getWordBoundaryExperimentInfo:(id)info
 {
   v23[6] = *MEMORY[0x277D85DE8];
-  v3 = [(PSGExperimentResolver *)self->_experimentResolver getWordBoundarySuggestionsExperimentConfig:a3 shouldDownloadAssets:0];
+  v3 = [(PSGExperimentResolver *)self->_experimentResolver getWordBoundarySuggestionsExperimentConfig:info shouldDownloadAssets:0];
   v22[0] = @"treatment";
-  v21 = [v3 treatmentName];
-  v23[0] = v21;
+  treatmentName = [v3 treatmentName];
+  v23[0] = treatmentName;
   v22[1] = @"experiment-id";
-  v4 = [v3 experimentIdentifiers];
-  v5 = [v4 experimentId];
-  v23[1] = v5;
+  experimentIdentifiers = [v3 experimentIdentifiers];
+  experimentId = [experimentIdentifiers experimentId];
+  v23[1] = experimentId;
   v22[2] = @"treatment-id";
-  v6 = [v3 experimentIdentifiers];
-  v7 = [v6 treatmentId];
-  v23[2] = v7;
+  experimentIdentifiers2 = [v3 experimentIdentifiers];
+  treatmentId = [experimentIdentifiers2 treatmentId];
+  v23[2] = treatmentId;
   v22[3] = @"ml-enabled";
-  v8 = [v3 isMLModelEnabled];
+  isMLModelEnabled = [v3 isMLModelEnabled];
   v9 = @"NO";
-  if (v8)
+  if (isMLModelEnabled)
   {
     v9 = @"YES";
   }
 
   v23[3] = v9;
   v22[4] = @"model-config";
-  v10 = [v3 inferenceModelConfigPath];
-  v11 = [v10 lastPathComponent];
-  v12 = v11;
-  if (v11)
+  inferenceModelConfigPath = [v3 inferenceModelConfigPath];
+  lastPathComponent = [inferenceModelConfigPath lastPathComponent];
+  v12 = lastPathComponent;
+  if (lastPathComponent)
   {
-    v13 = v11;
+    v13 = lastPathComponent;
   }
 
   else
@@ -114,12 +114,12 @@
 
   v23[4] = v13;
   v22[5] = @"model-file";
-  v14 = [v3 espressoBinFilePath];
-  v15 = [v14 lastPathComponent];
-  v16 = v15;
-  if (v15)
+  espressoBinFilePath = [v3 espressoBinFilePath];
+  lastPathComponent2 = [espressoBinFilePath lastPathComponent];
+  v16 = lastPathComponent2;
+  if (lastPathComponent2)
   {
-    v17 = v15;
+    v17 = lastPathComponent2;
   }
 
   else
@@ -135,37 +135,37 @@
   return v18;
 }
 
-- (id)_getZKWExperimentInfo:(id)a3
+- (id)_getZKWExperimentInfo:(id)info
 {
   v23[6] = *MEMORY[0x277D85DE8];
-  v3 = [(PSGExperimentResolver *)self->_experimentResolver getResponseSuggestionsExperimentConfig:a3 shouldDownloadAssets:0];
+  v3 = [(PSGExperimentResolver *)self->_experimentResolver getResponseSuggestionsExperimentConfig:info shouldDownloadAssets:0];
   v22[0] = @"treatment";
-  v21 = [v3 treatmentName];
-  v23[0] = v21;
+  treatmentName = [v3 treatmentName];
+  v23[0] = treatmentName;
   v22[1] = @"experiment-id";
-  v4 = [v3 experimentIdentifiers];
-  v5 = [v4 experimentId];
-  v23[1] = v5;
+  experimentIdentifiers = [v3 experimentIdentifiers];
+  experimentId = [experimentIdentifiers experimentId];
+  v23[1] = experimentId;
   v22[2] = @"treatment-id";
-  v6 = [v3 experimentIdentifiers];
-  v7 = [v6 treatmentId];
-  v23[2] = v7;
+  experimentIdentifiers2 = [v3 experimentIdentifiers];
+  treatmentId = [experimentIdentifiers2 treatmentId];
+  v23[2] = treatmentId;
   v22[3] = @"ml-enabled";
-  v8 = [v3 isMLModelEnabled];
+  isMLModelEnabled = [v3 isMLModelEnabled];
   v9 = @"NO";
-  if (v8)
+  if (isMLModelEnabled)
   {
     v9 = @"YES";
   }
 
   v23[3] = v9;
   v22[4] = @"model-config";
-  v10 = [v3 inferenceModelConfigPath];
-  v11 = [v10 lastPathComponent];
-  v12 = v11;
-  if (v11)
+  inferenceModelConfigPath = [v3 inferenceModelConfigPath];
+  lastPathComponent = [inferenceModelConfigPath lastPathComponent];
+  v12 = lastPathComponent;
+  if (lastPathComponent)
   {
-    v13 = v11;
+    v13 = lastPathComponent;
   }
 
   else
@@ -175,12 +175,12 @@
 
   v23[4] = v13;
   v22[5] = @"model-file";
-  v14 = [v3 espressoBinFilePath];
-  v15 = [v14 lastPathComponent];
-  v16 = v15;
-  if (v15)
+  espressoBinFilePath = [v3 espressoBinFilePath];
+  lastPathComponent2 = [espressoBinFilePath lastPathComponent];
+  v16 = lastPathComponent2;
+  if (lastPathComponent2)
   {
-    v17 = v15;
+    v17 = lastPathComponent2;
   }
 
   else
@@ -196,16 +196,16 @@
   return v18;
 }
 
-- (id)_initWithExperimentResolver:(id)a3
+- (id)_initWithExperimentResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = PSGInternalRequestHandler;
   v6 = [(PSGInternalRequestHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_experimentResolver, a3);
+    objc_storeStrong(&v6->_experimentResolver, resolver);
   }
 
   return v7;

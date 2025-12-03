@@ -1,29 +1,29 @@
 @interface _RTMap
-- (_RTMap)initWithInput:(id)a3;
-- (id)withBlock:(id)a3;
+- (_RTMap)initWithInput:(id)input;
+- (id)withBlock:(id)block;
 @end
 
 @implementation _RTMap
 
-- (_RTMap)initWithInput:(id)a3
+- (_RTMap)initWithInput:(id)input
 {
-  v5 = a3;
+  inputCopy = input;
   v9.receiver = self;
   v9.super_class = _RTMap;
   v6 = [(_RTMap *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_input, a3);
+    objc_storeStrong(&v6->_input, input);
   }
 
   return v7;
 }
 
-- (id)withBlock:(id)a3
+- (id)withBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSArray count](self->_input, "count")}];
   v13 = 0u;
   v14 = 0u;
@@ -44,7 +44,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = v4[2](v4, *(*(&v13 + 1) + 8 * i));
+        v11 = blockCopy[2](blockCopy, *(*(&v13 + 1) + 8 * i));
         if (v11)
         {
           [v5 addObject:{v11, v13}];

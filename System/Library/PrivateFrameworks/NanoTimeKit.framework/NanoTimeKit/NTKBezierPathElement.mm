@@ -1,26 +1,26 @@
 @interface NTKBezierPathElement
 - (CGPoint)endPoint;
-- (CGPoint)pointOnPathForX:(double)a3;
+- (CGPoint)pointOnPathForX:(double)x;
 - (CGPoint)startPoint;
-- (NTKBezierPathElement)initWithStartPoint:(CGPoint)a3 pathElement:(const CGPathElement *)a4;
+- (NTKBezierPathElement)initWithStartPoint:(CGPoint)point pathElement:(const CGPathElement *)element;
 - (double)computeLength;
-- (unint64_t)numberOfPointsForCGPathElementType:(int)a3;
+- (unint64_t)numberOfPointsForCGPathElementType:(int)type;
 - (void)dealloc;
 @end
 
 @implementation NTKBezierPathElement
 
-- (NTKBezierPathElement)initWithStartPoint:(CGPoint)a3 pathElement:(const CGPathElement *)a4
+- (NTKBezierPathElement)initWithStartPoint:(CGPoint)point pathElement:(const CGPathElement *)element
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v15.receiver = self;
   v15.super_class = NTKBezierPathElement;
   v7 = [(NTKBezierPathElement *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    type = a4->type;
+    type = element->type;
     v10 = [(NTKBezierPathElement *)v7 numberOfPointsForCGPathElementType:type];
     v11 = malloc_type_malloc(16 * (v10 + 1), 0xF0FC0AA0uLL);
     v12 = v11;
@@ -28,7 +28,7 @@
     v11[1] = y;
     if (v10)
     {
-      memcpy(v11 + 2, a4->points, 16 * v10);
+      memcpy(v11 + 2, element->points, 16 * v10);
     }
 
     [(NTKBezierPathElement *)v8 setPoints:v12];
@@ -56,9 +56,9 @@
 
 - (CGPoint)startPoint
 {
-  v2 = [(NTKBezierPathElement *)self points];
-  x = v2->x;
-  y = v2->y;
+  points = [(NTKBezierPathElement *)self points];
+  x = points->x;
+  y = points->y;
   result.y = y;
   result.x = x;
   return result;
@@ -66,8 +66,8 @@
 
 - (CGPoint)endPoint
 {
-  v3 = [(NTKBezierPathElement *)self points];
-  v4 = &v3[[(NTKBezierPathElement *)self pointCount]];
+  points = [(NTKBezierPathElement *)self points];
+  v4 = &points[[(NTKBezierPathElement *)self pointCount]];
   x = v4[-1].x;
   y = v4[-1].y;
   result.y = y;
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (CGPoint)pointOnPathForX:(double)a3
+- (CGPoint)pointOnPathForX:(double)x
 {
   if ([(NTKBezierPathElement *)self type]== 3)
   {
@@ -85,12 +85,12 @@
     [(NTKBezierPathElement *)self endPoint];
     v10 = v9;
     v12 = v11;
-    v13 = [(NTKBezierPathElement *)self points];
-    x = v13[1].x;
-    y = v13[1].y;
-    v16 = [(NTKBezierPathElement *)self points];
-    v18 = NTKComputeCubicBezierYForX(a3, v6, v8, x, y, v16[2].x, v16[2].y, v17, v10, v12);
-    v19 = a3;
+    points = [(NTKBezierPathElement *)self points];
+    x = points[1].x;
+    y = points[1].y;
+    points2 = [(NTKBezierPathElement *)self points];
+    v18 = NTKComputeCubicBezierYForX(x, v6, v8, x, y, points2[2].x, points2[2].y, v17, v10, v12);
+    xCopy = x;
   }
 
   else
@@ -100,34 +100,34 @@
   }
 
   result.y = v18;
-  result.x = v19;
+  result.x = xCopy;
   return result;
 }
 
-- (unint64_t)numberOfPointsForCGPathElementType:(int)a3
+- (unint64_t)numberOfPointsForCGPathElementType:(int)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_22DCE87D0[a3];
+    return qword_22DCE87D0[type];
   }
 }
 
 - (double)computeLength
 {
-  v3 = [(NTKBezierPathElement *)self type];
-  if (v3 == 3)
+  type = [(NTKBezierPathElement *)self type];
+  if (type == 3)
   {
-    v13 = [(NTKBezierPathElement *)self points];
-    x = v13[1].x;
-    y = v13[1].y;
-    v16 = [(NTKBezierPathElement *)self points];
-    v17 = v16[2].x;
-    v18 = v16[2].y;
+    points = [(NTKBezierPathElement *)self points];
+    x = points[1].x;
+    y = points[1].y;
+    points2 = [(NTKBezierPathElement *)self points];
+    v17 = points2[2].x;
+    v18 = points2[2].y;
     [(NTKBezierPathElement *)self startPoint];
     v20 = v19;
     v22 = v21;
@@ -140,18 +140,18 @@
     return NTKComputeCubicBezierLength(v25, v22, v26, y, v27, v18, v24, v23);
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
     [(NTKBezierPathElement *)self startPoint];
     v5 = v4;
     v7 = v6;
-    v8 = [(NTKBezierPathElement *)self endPoint];
+    endPoint = [(NTKBezierPathElement *)self endPoint];
     v9.n128_u64[0] = v11.n128_u64[0];
     v10.n128_u64[0] = v12.n128_u64[0];
     v11.n128_u64[0] = v5;
     v12.n128_u64[0] = v7;
 
-    MEMORY[0x2821DE488](v8, v11, v12, v9, v10);
+    MEMORY[0x2821DE488](endPoint, v11, v12, v9, v10);
   }
 
   else

@@ -1,21 +1,21 @@
 @interface RPStatusDevice
-- (RPStatusDevice)initWithCoder:(id)a3;
-- (RPStatusDevice)initWithDevice:(id)a3;
+- (RPStatusDevice)initWithCoder:(id)coder;
+- (RPStatusDevice)initWithDevice:(id)device;
 - (id)getIdentifier;
 @end
 
 @implementation RPStatusDevice
 
-- (RPStatusDevice)initWithDevice:(id)a3
+- (RPStatusDevice)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = RPStatusDevice;
   v6 = [(RPStatusDevice *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = v7;
   }
 
@@ -24,24 +24,24 @@
 
 - (id)getIdentifier
 {
-  v3 = [(RPEndpoint *)self->_device idsDeviceIdentifier];
-  v4 = v3;
-  if (v3)
+  idsDeviceIdentifier = [(RPEndpoint *)self->_device idsDeviceIdentifier];
+  v4 = idsDeviceIdentifier;
+  if (idsDeviceIdentifier)
   {
-    v5 = v3;
+    identifier = idsDeviceIdentifier;
   }
 
   else
   {
-    v5 = [(RPEndpoint *)self->_device identifier];
+    identifier = [(RPEndpoint *)self->_device identifier];
   }
 
-  v6 = v5;
+  v6 = identifier;
 
   return v6;
 }
 
-- (RPStatusDevice)initWithCoder:(id)a3
+- (RPStatusDevice)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = RPStatusDevice;

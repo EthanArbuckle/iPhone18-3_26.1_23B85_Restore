@@ -22,8 +22,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(SNClassificationResult *)self classifications];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v19 count:16];
+  classifications = [(SNClassificationResult *)self classifications];
+  v6 = [(NSArray *)classifications countByEnumeratingWithState:&v12 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -34,13 +34,13 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(classifications);
         }
 
         -[NSMutableArray addObject:](v4, "addObject:", [*(*(&v12 + 1) + 8 * i) sr_dictionaryRepresentation]);
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v19 count:16];
+      v7 = [(NSArray *)classifications countByEnumeratingWithState:&v12 objects:v19 count:16];
     }
 
     while (v7);

@@ -1,12 +1,12 @@
 @interface IDSQRProtoPluginControlIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoPluginControlIndication
@@ -17,33 +17,33 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoPluginControlIndication;
   v4 = [(IDSQRProtoPluginControlIndication *)&v8 description];
-  v5 = [(IDSQRProtoPluginControlIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoPluginControlIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_pluginOperation];
-  [v3 setObject:v4 forKey:@"plugin_operation"];
+  [dictionary setObject:v4 forKey:@"plugin_operation"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_pluginParticipantId];
-  [v3 setObject:v5 forKey:@"plugin_participant_id"];
+  [dictionary setObject:v5 forKey:@"plugin_participant_id"];
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txnId];
-    [v3 setObject:v6 forKey:@"txn_id"];
+    [dictionary setObject:v6 forKey:@"txn_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteUint64Field();
   if (*&self->_has)
@@ -52,20 +52,20 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 6) = self->_pluginOperation;
-  *(a3 + 1) = self->_pluginParticipantId;
+  *(to + 6) = self->_pluginOperation;
+  *(to + 1) = self->_pluginParticipantId;
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_txnId;
-    *(a3 + 28) |= 1u;
+    *(to + 2) = self->_txnId;
+    *(to + 28) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 6) = self->_pluginOperation;
   *(result + 1) = self->_pluginParticipantId;
   if (*&self->_has)
@@ -77,18 +77,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_pluginOperation != *(v4 + 6) || self->_pluginParticipantId != *(v4 + 1))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_pluginOperation != *(equalCopy + 6) || self->_pluginParticipantId != *(equalCopy + 1))
   {
     goto LABEL_8;
   }
 
-  v5 = (*(v4 + 28) & 1) == 0;
+  v5 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) != 0 && self->_txnId == *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) != 0 && self->_txnId == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_9;
@@ -118,13 +118,13 @@ LABEL_9:
   return (2654435761u * self->_pluginParticipantId) ^ (2654435761 * self->_pluginOperation) ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_pluginOperation = *(a3 + 6);
-  self->_pluginParticipantId = *(a3 + 1);
-  if (*(a3 + 28))
+  self->_pluginOperation = *(from + 6);
+  self->_pluginParticipantId = *(from + 1);
+  if (*(from + 28))
   {
-    self->_txnId = *(a3 + 2);
+    self->_txnId = *(from + 2);
     *&self->_has |= 1u;
   }
 }

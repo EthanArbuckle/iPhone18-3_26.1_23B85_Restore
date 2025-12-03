@@ -1,17 +1,17 @@
 @interface DCNewGoogleMapsLink
-+ (BOOL)isMapsURL:(id)a3;
-+ (id)mapsLinkWithURL:(id)a3;
++ (BOOL)isMapsURL:(id)l;
++ (id)mapsLinkWithURL:(id)l;
 - (BOOL)showsBicycling;
 - (BOOL)showsStreetView;
 - (BOOL)showsTraffic;
 - (BOOL)showsTransit;
-- (DCNewGoogleMapsLink)initWithURL:(id)a3;
+- (DCNewGoogleMapsLink)initWithURL:(id)l;
 - (NSArray)mapsURLComponents;
 - (id)centerLocation;
 - (id)dataString;
 - (id)destinationAddress;
 - (id)latLonZoomString;
-- (id)mapsURLComponentAtIndex:(int64_t)a3;
+- (id)mapsURLComponentAtIndex:(int64_t)index;
 - (id)searchLocation;
 - (id)searchQuery;
 - (id)startAddress;
@@ -28,12 +28,12 @@
 
 @implementation DCNewGoogleMapsLink
 
-+ (id)mapsLinkWithURL:(id)a3
++ (id)mapsLinkWithURL:(id)l
 {
-  v4 = a3;
-  if ([a1 isMapsURL:v4])
+  lCopy = l;
+  if ([self isMapsURL:lCopy])
   {
-    v5 = [[a1 alloc] initWithURL:v4];
+    v5 = [[self alloc] initWithURL:lCopy];
   }
 
   else
@@ -44,21 +44,21 @@
   return v5;
 }
 
-+ (BOOL)isMapsURL:(id)a3
++ (BOOL)isMapsURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 host];
-  v5 = [v4 componentsSeparatedByString:@"."];
+  lCopy = l;
+  host = [lCopy host];
+  v5 = [host componentsSeparatedByString:@"."];
 
   if (([v5 count] - 5) >= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = [v5 objectAtIndex:0];
     v8 = [v5 objectAtIndex:1];
-    v9 = [v3 pathComponents];
-    if ([v9 count] >= 3)
+    pathComponents = [lCopy pathComponents];
+    if ([pathComponents count] >= 3)
     {
-      v10 = [v9 objectAtIndex:1];
-      v11 = [v9 objectAtIndex:2];
+      v10 = [pathComponents objectAtIndex:1];
+      v11 = [pathComponents objectAtIndex:2];
       v6 = [v10 isEqualToString:@"maps"] && ((objc_msgSend(v11, "isEqualToString:", @"dir") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"place") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"search") & 1) != 0 || objc_msgSend(v11, "hasPrefix:", @"@")) && ((objc_msgSend(v7, "isEqualToString:", @"google") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"www") && (objc_msgSend(v8, "isEqualToString:", @"google") & 1) != 0);
     }
 
@@ -78,16 +78,16 @@
 
 - (void)parseMapsData
 {
-  v3 = [(DCNewGoogleMapsLink *)self dataString];
-  if (v3)
+  dataString = [(DCNewGoogleMapsLink *)self dataString];
+  if (dataString)
   {
-    v27 = v3;
-    v4 = [v3 componentsSeparatedByString:@"!"];
+    v27 = dataString;
+    v4 = [dataString componentsSeparatedByString:@"!"];
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"1m%d", 0];
     v6 = [v4 arrayByAddingObject:v5];
 
     v7 = [v6 count];
-    v26 = self;
+    selfCopy = self;
     self->_mapType = 1;
     if (v7 >= 1)
     {
@@ -124,7 +124,7 @@ LABEL_65:
       v16 = v15;
       if (v14 == 109)
       {
-        v17 = [v15 intValue];
+        intValue = [v15 intValue];
         if (v28 == 1)
         {
           v10 = 1;
@@ -132,9 +132,9 @@ LABEL_65:
 
         else
         {
-          if (v28 != 3 || v17 - 1 >= 4)
+          if (v28 != 3 || intValue - 1 >= 4)
           {
-            if (v17 == 1)
+            if (intValue == 1)
             {
               v22 = v28;
             }
@@ -144,7 +144,7 @@ LABEL_65:
               v22 = v10;
             }
 
-            if (v17 == 1)
+            if (intValue == 1)
             {
               v23 = 1;
             }
@@ -166,7 +166,7 @@ LABEL_65:
           v10 = v28;
         }
 
-        v9 = v17;
+        v9 = intValue;
         goto LABEL_64;
       }
 
@@ -182,17 +182,17 @@ LABEL_65:
 
           if ([v15 length])
           {
-            v21 = [v16 intValue];
-            if (v21 == 3)
+            intValue2 = [v16 intValue];
+            if (intValue2 == 3)
             {
               v10 = 3;
-              v26->_mapType = 3;
+              selfCopy->_mapType = 3;
               goto LABEL_64;
             }
 
-            if (v21 == 1)
+            if (intValue2 == 1)
             {
-              v26->_showsStreetView = 1;
+              selfCopy->_showsStreetView = 1;
             }
           }
 
@@ -228,22 +228,22 @@ LABEL_65:
             goto LABEL_63;
           }
 
-          v18 = [v16 intValue];
+          intValue3 = [v16 intValue];
           v10 = 1;
-          if (v18 > 1)
+          if (intValue3 > 1)
           {
-            switch(v18)
+            switch(intValue3)
             {
               case 2:
-                v19 = v26;
+                v19 = selfCopy;
                 v20 = 3;
                 break;
               case 3:
-                v19 = v26;
+                v19 = selfCopy;
                 v20 = 4;
                 break;
               case 4:
-                v19 = v26;
+                v19 = selfCopy;
                 v20 = 5;
                 break;
               default:
@@ -253,16 +253,16 @@ LABEL_65:
             goto LABEL_62;
           }
 
-          if (!v18)
+          if (!intValue3)
           {
             v10 = 1;
-            v26->_directionsMode = 1;
+            selfCopy->_directionsMode = 1;
             goto LABEL_64;
           }
 
-          if (v18 == 1)
+          if (intValue3 == 1)
           {
-            v19 = v26;
+            v19 = selfCopy;
             v20 = 2;
 LABEL_62:
             v19->_directionsMode = v20;
@@ -284,9 +284,9 @@ LABEL_64:
 
       if ([v15 length])
       {
-        v24 = [v16 intValue];
+        intValue4 = [v16 intValue];
         v9 = 1;
-        switch(v24)
+        switch(intValue4)
         {
           case 3:
             v25 = 9;
@@ -297,7 +297,7 @@ LABEL_64:
           case 1:
             v25 = 11;
 LABEL_58:
-            *(&v26->super.super.isa + v25) = 1;
+            *(&selfCopy->super.super.isa + v25) = 1;
             break;
         }
       }
@@ -313,7 +313,7 @@ LABEL_58:
 
 LABEL_68:
 
-    v3 = v27;
+    dataString = v27;
   }
 }
 
@@ -324,8 +324,8 @@ LABEL_68:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DCNewGoogleMapsLink *)self mapsURLComponents];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  mapsURLComponents = [(DCNewGoogleMapsLink *)self mapsURLComponents];
+  v3 = [mapsURLComponents countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -336,7 +336,7 @@ LABEL_68:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(mapsURLComponents);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -347,7 +347,7 @@ LABEL_68:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [mapsURLComponents countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -374,8 +374,8 @@ LABEL_11:
 
 - (void)parseLatLonZoom
 {
-  v3 = [(DCNewGoogleMapsLink *)self latLonZoomString];
-  v4 = [MEMORY[0x277CCAC80] scannerWithString:v3];
+  latLonZoomString = [(DCNewGoogleMapsLink *)self latLonZoomString];
+  v4 = [MEMORY[0x277CCAC80] scannerWithString:latLonZoomString];
   [v4 scanString:@"@" intoString:0];
   v12 = 0;
   [v4 scanUpToString:@" intoString:{", &v12}];
@@ -390,7 +390,7 @@ LABEL_11:
   [(DCNewGoogleMapsLink *)self setLocation:v7];
   v10 = 0;
   [v4 scanInteger:&v10];
-  v8 = [v3 substringWithRange:{objc_msgSend(v4, "scanLocation"), 1}];
+  v8 = [latLonZoomString substringWithRange:{objc_msgSend(v4, "scanLocation"), 1}];
   if ([v8 isEqualToString:@"z"])
   {
     v9 = v10;
@@ -410,10 +410,10 @@ LABEL_6:
 
 - (id)latLonZoomString
 {
-  v3 = [(DCNewGoogleMapsLink *)self linkType];
-  if (v3 <= 3)
+  linkType = [(DCNewGoogleMapsLink *)self linkType];
+  if (linkType <= 3)
   {
-    v4 = [(DCNewGoogleMapsLink *)self mapsURLComponentAtIndex:qword_21E356D80[v3]];
+    v4 = [(DCNewGoogleMapsLink *)self mapsURLComponentAtIndex:qword_21E356D80[linkType]];
   }
 
   return v4;
@@ -421,10 +421,10 @@ LABEL_6:
 
 - (void)parseLinkType
 {
-  v3 = [(DCNewGoogleMapsLink *)self mapsURLComponents];
-  v5 = [v3 firstObject];
+  mapsURLComponents = [(DCNewGoogleMapsLink *)self mapsURLComponents];
+  firstObject = [mapsURLComponents firstObject];
 
-  if ([v5 isEqualToString:@"search"])
+  if ([firstObject isEqualToString:@"search"])
   {
     v4 = 1;
 LABEL_7:
@@ -432,19 +432,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v5 isEqualToString:@"place"])
+  if ([firstObject isEqualToString:@"place"])
   {
     v4 = 2;
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"dir"])
+  if ([firstObject isEqualToString:@"dir"])
   {
     v4 = 3;
     goto LABEL_7;
   }
 
-  if ([v5 hasPrefix:@"@"])
+  if ([firstObject hasPrefix:@"@"])
   {
     v4 = 0;
     goto LABEL_7;
@@ -465,21 +465,21 @@ LABEL_8:
   return self->_linkType;
 }
 
-- (id)mapsURLComponentAtIndex:(int64_t)a3
+- (id)mapsURLComponentAtIndex:(int64_t)index
 {
-  v4 = [(DCNewGoogleMapsLink *)self mapsURLComponents];
-  if ([v4 count] <= a3)
+  mapsURLComponents = [(DCNewGoogleMapsLink *)self mapsURLComponents];
+  if ([mapsURLComponents count] <= index)
   {
-    v6 = 0;
+    stringByRemovingPercentEncoding = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndex:a3];
-    v6 = [v5 stringByRemovingPercentEncoding];
+    v5 = [mapsURLComponents objectAtIndex:index];
+    stringByRemovingPercentEncoding = [v5 stringByRemovingPercentEncoding];
   }
 
-  return v6;
+  return stringByRemovingPercentEncoding;
 }
 
 - (NSArray)mapsURLComponents
@@ -488,9 +488,9 @@ LABEL_8:
   if (!mapsURLComponents)
   {
     v4 = [(DCNewGoogleMapsLink *)self URL];
-    v5 = [v4 pathComponents];
+    pathComponents = [v4 pathComponents];
 
-    v6 = [v5 subarrayWithRange:{2, objc_msgSend(v5, "count") - 2}];
+    v6 = [pathComponents subarrayWithRange:{2, objc_msgSend(pathComponents, "count") - 2}];
     v7 = self->_mapsURLComponents;
     self->_mapsURLComponents = v6;
 
@@ -504,15 +504,15 @@ LABEL_8:
 {
   if ([(DCNewGoogleMapsLink *)self showsStreetView])
   {
-    v3 = [(DCNewGoogleMapsLink *)self location];
+    location = [(DCNewGoogleMapsLink *)self location];
   }
 
   else
   {
-    v3 = 0;
+    location = 0;
   }
 
-  return v3;
+  return location;
 }
 
 - (BOOL)showsBicycling
@@ -634,15 +634,15 @@ LABEL_8:
 {
   if ([(DCNewGoogleMapsLink *)self linkType]== 1)
   {
-    v3 = [(DCNewGoogleMapsLink *)self location];
+    location = [(DCNewGoogleMapsLink *)self location];
   }
 
   else
   {
-    v3 = 0;
+    location = 0;
   }
 
-  return v3;
+  return location;
 }
 
 - (id)searchQuery
@@ -660,14 +660,14 @@ LABEL_8:
   return v3;
 }
 
-- (DCNewGoogleMapsLink)initWithURL:(id)a3
+- (DCNewGoogleMapsLink)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(DCNewGoogleMapsLink *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = v7;
   }
 

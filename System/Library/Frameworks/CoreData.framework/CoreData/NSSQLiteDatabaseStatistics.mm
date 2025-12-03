@@ -1,7 +1,7 @@
 @interface NSSQLiteDatabaseStatistics
-- (NSSQLiteDatabaseStatistics)initWithPageSize:(int64_t)a3;
+- (NSSQLiteDatabaseStatistics)initWithPageSize:(int64_t)size;
 - (id)copy;
-- (id)databaseStatisticsBySubtracting:(id)a3;
+- (id)databaseStatisticsBySubtracting:(id)subtracting;
 - (id)description;
 @end
 
@@ -16,27 +16,27 @@
   return result;
 }
 
-- (NSSQLiteDatabaseStatistics)initWithPageSize:(int64_t)a3
+- (NSSQLiteDatabaseStatistics)initWithPageSize:(int64_t)size
 {
   v5.receiver = self;
   v5.super_class = NSSQLiteDatabaseStatistics;
   result = [(NSSQLiteDatabaseStatistics *)&v5 init];
   if (result)
   {
-    result->_pageSize = a3;
+    result->_pageSize = size;
   }
 
   return result;
 }
 
-- (id)databaseStatisticsBySubtracting:(id)a3
+- (id)databaseStatisticsBySubtracting:(id)subtracting
 {
-  if (a3)
+  if (subtracting)
   {
     v5 = [[NSSQLiteDatabaseStatistics alloc] initWithPageSize:self->_pageSize];
-    v5->_cacheHitPages = self->_cacheHitPages - *(a3 + 1);
-    v5->_cacheMissPages = self->_cacheMissPages - *(a3 + 2);
-    v5->_cacheSpillPages = self->_cacheSpillPages - *(a3 + 3);
+    v5->_cacheHitPages = self->_cacheHitPages - *(subtracting + 1);
+    v5->_cacheMissPages = self->_cacheMissPages - *(subtracting + 2);
+    v5->_cacheSpillPages = self->_cacheSpillPages - *(subtracting + 3);
   }
 
   else

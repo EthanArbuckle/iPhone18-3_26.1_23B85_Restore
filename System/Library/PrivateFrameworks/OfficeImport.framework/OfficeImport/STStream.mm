@@ -1,11 +1,11 @@
 @interface STStream
-- (STStream)initWithCStream:(_Stream *)a3;
+- (STStream)initWithCStream:(_Stream *)stream;
 - (char)readChar8;
 - (double)readFloat64;
 - (float)readFloat32;
 - (id)getInfo;
-- (id)readBytes:(unsigned int)a3;
-- (id)readString16:(unsigned int)a3;
+- (id)readBytes:(unsigned int)bytes;
+- (id)readString16:(unsigned int)string16;
 - (int)readSInt32;
 - (signed)readSInt16;
 - (unint64_t)readUInt64;
@@ -17,26 +17,26 @@
 - (unsigned)readUInt8;
 - (void)close;
 - (void)dealloc;
-- (void)seek:(int)a3 fromOrigin:(int)a4;
-- (void)setClass:(id)a3;
-- (void)writeBool8:(unsigned __int8)a3;
-- (void)writeBytes:(id)a3;
-- (void)writeChar16:(unsigned __int16)a3;
-- (void)writeChar8:(char)a3;
-- (void)writeFloat32:(float)a3;
-- (void)writeFloat64:(double)a3;
-- (void)writeSInt16:(signed __int16)a3;
-- (void)writeSInt32:(int)a3;
-- (void)writeString16:(id)a3;
-- (void)writeString16NoTerminator:(id)a3;
-- (void)writeUInt16:(unsigned __int16)a3;
-- (void)writeUInt32:(unsigned int)a3;
-- (void)writeUInt8:(unsigned __int8)a3;
+- (void)seek:(int)seek fromOrigin:(int)origin;
+- (void)setClass:(id)class;
+- (void)writeBool8:(unsigned __int8)bool8;
+- (void)writeBytes:(id)bytes;
+- (void)writeChar16:(unsigned __int16)char16;
+- (void)writeChar8:(char)char8;
+- (void)writeFloat32:(float)float32;
+- (void)writeFloat64:(double)float64;
+- (void)writeSInt16:(signed __int16)int16;
+- (void)writeSInt32:(int)int32;
+- (void)writeString16:(id)string16;
+- (void)writeString16NoTerminator:(id)terminator;
+- (void)writeUInt16:(unsigned __int16)int16;
+- (void)writeUInt32:(unsigned int)int32;
+- (void)writeUInt8:(unsigned __int8)int8;
 @end
 
 @implementation STStream
 
-- (STStream)initWithCStream:(_Stream *)a3
+- (STStream)initWithCStream:(_Stream *)stream
 {
   v8.receiver = self;
   v8.super_class = STStream;
@@ -44,7 +44,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->m_pCStream = a3;
+    v4->m_pCStream = stream;
     v6 = v4;
   }
 
@@ -78,9 +78,9 @@
   return v2;
 }
 
-- (void)seek:(int)a3 fromOrigin:(int)a4
+- (void)seek:(int)seek fromOrigin:(int)origin
 {
-  if (a4 == 1)
+  if (origin == 1)
   {
     v5 = 1;
   }
@@ -90,7 +90,7 @@
     v5 = 2;
   }
 
-  if (a4)
+  if (origin)
   {
     v6 = v5;
   }
@@ -100,7 +100,7 @@
     v6 = 0;
   }
 
-  v7 = streamSeek(self->m_pCStream, a3, v6);
+  v7 = streamSeek(self->m_pCStream, seek, v6);
 
   [STSStgObject throwIfError:v7];
 }
@@ -112,28 +112,28 @@
   return v3;
 }
 
-- (void)setClass:(id)a3
+- (void)setClass:(id)class
 {
   v4 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [STSStgObject throwIfError:streamSetClass(self->m_pCStream, &v3)];
+  classCopy = class;
+  [STSStgObject throwIfError:streamSetClass(self->m_pCStream, &classCopy)];
 }
 
-- (id)readBytes:(unsigned int)a3
+- (id)readBytes:(unsigned int)bytes
 {
   v10 = 0;
   [STSStgObject throwIfError:streamGetBytesAvailableToRead(self->m_pCStream, &v10)];
-  if (v10 >= a3)
+  if (v10 >= bytes)
   {
-    v5 = a3;
+    bytesCopy = bytes;
   }
 
   else
   {
-    v5 = v10;
+    bytesCopy = v10;
   }
 
-  v9 = v5;
+  v9 = bytesCopy;
   v6 = [MEMORY[0x277CBEB28] dataWithLength:?];
   v7 = v6;
   if (v6)
@@ -225,17 +225,17 @@
   return v3;
 }
 
-- (id)readString16:(unsigned int)a3
+- (id)readString16:(unsigned int)string16
 {
-  v5 = smalloc_typed(a3 + 1, 2uLL, 0x1000040BDFB0063uLL);
+  v5 = smalloc_typed(string16 + 1, 2uLL, 0x1000040BDFB0063uLL);
   if (!v5)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE728] format:@"Structured Storage library memory failure"];
   }
 
-  LODWORD(v16) = a3;
+  LODWORD(v16) = string16;
   [STSStgObject throwIfError:readString16(self->m_pCStream, &v16, v5)];
-  v5[a3] = 0;
+  v5[string16] = 0;
   v6 = smalloc_typed(v16, 2uLL, 0x1000040BDFB0063uLL);
   v7 = v6;
   if (v6)
@@ -280,104 +280,104 @@
   return v14;
 }
 
-- (void)writeBytes:(id)a3
+- (void)writeBytes:(id)bytes
 {
-  v4 = a3;
-  v7 = [v4 length];
+  bytesCopy = bytes;
+  v7 = [bytesCopy length];
   m_pCStream = self->m_pCStream;
-  v6 = [v4 bytes];
+  bytes = [bytesCopy bytes];
 
-  [STSStgObject throwIfError:streamWrite(m_pCStream, v6, &v7)];
+  [STSStgObject throwIfError:streamWrite(m_pCStream, bytes, &v7)];
 }
 
-- (void)writeUInt8:(unsigned __int8)a3
+- (void)writeUInt8:(unsigned __int8)int8
 {
-  v4 = a3;
+  int8Copy = int8;
   v3 = 1;
-  [STSStgObject throwIfError:streamWrite(self->m_pCStream, &v4, &v3)];
+  [STSStgObject throwIfError:streamWrite(self->m_pCStream, &int8Copy, &v3)];
 }
 
-- (void)writeChar8:(char)a3
+- (void)writeChar8:(char)char8
 {
-  v4 = a3;
+  char8Copy = char8;
   v3 = 1;
-  [STSStgObject throwIfError:streamWrite(self->m_pCStream, &v4, &v3)];
+  [STSStgObject throwIfError:streamWrite(self->m_pCStream, &char8Copy, &v3)];
 }
 
-- (void)writeBool8:(unsigned __int8)a3
+- (void)writeBool8:(unsigned __int8)bool8
 {
-  v4 = a3;
+  bool8Copy = bool8;
   v3 = 1;
-  [STSStgObject throwIfError:streamWrite(self->m_pCStream, &v4, &v3)];
+  [STSStgObject throwIfError:streamWrite(self->m_pCStream, &bool8Copy, &v3)];
 }
 
-- (void)writeSInt16:(signed __int16)a3
+- (void)writeSInt16:(signed __int16)int16
 {
-  v3 = writeSInt16(self->m_pCStream, a3);
+  v3 = writeSInt16(self->m_pCStream, int16);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeUInt16:(unsigned __int16)a3
+- (void)writeUInt16:(unsigned __int16)int16
 {
-  v3 = writeSInt16(self->m_pCStream, a3);
+  v3 = writeSInt16(self->m_pCStream, int16);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeSInt32:(int)a3
+- (void)writeSInt32:(int)int32
 {
-  v3 = writeSInt32(self->m_pCStream, *&a3);
+  v3 = writeSInt32(self->m_pCStream, *&int32);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeUInt32:(unsigned int)a3
+- (void)writeUInt32:(unsigned int)int32
 {
-  v3 = writeSInt32(self->m_pCStream, *&a3);
+  v3 = writeSInt32(self->m_pCStream, *&int32);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeFloat32:(float)a3
+- (void)writeFloat32:(float)float32
 {
-  v3 = writeFloat32(self->m_pCStream, a3);
+  v3 = writeFloat32(self->m_pCStream, float32);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeFloat64:(double)a3
+- (void)writeFloat64:(double)float64
 {
-  v3 = writeFloat64(self->m_pCStream, a3);
+  v3 = writeFloat64(self->m_pCStream, float64);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeChar16:(unsigned __int16)a3
+- (void)writeChar16:(unsigned __int16)char16
 {
-  v3 = writeSInt16(self->m_pCStream, a3);
+  v3 = writeSInt16(self->m_pCStream, char16);
 
   [STSStgObject throwIfError:v3];
 }
 
-- (void)writeString16:(id)a3
+- (void)writeString16:(id)string16
 {
-  v4 = a3;
-  v7 = [v4 length] + 1;
+  string16Copy = string16;
+  v7 = [string16Copy length] + 1;
   m_pCStream = self->m_pCStream;
-  v6 = [v4 cWideString];
+  cWideString = [string16Copy cWideString];
 
-  [STSStgObject throwIfError:writeString16(m_pCStream, v6, &v7)];
+  [STSStgObject throwIfError:writeString16(m_pCStream, cWideString, &v7)];
 }
 
-- (void)writeString16NoTerminator:(id)a3
+- (void)writeString16NoTerminator:(id)terminator
 {
-  v4 = a3;
-  v7 = [v4 length];
+  terminatorCopy = terminator;
+  v7 = [terminatorCopy length];
   m_pCStream = self->m_pCStream;
-  v6 = [v4 cWideString];
+  cWideString = [terminatorCopy cWideString];
 
-  [STSStgObject throwIfError:writeString16(m_pCStream, v6, &v7)];
+  [STSStgObject throwIfError:writeString16(m_pCStream, cWideString, &v7)];
 }
 
 @end

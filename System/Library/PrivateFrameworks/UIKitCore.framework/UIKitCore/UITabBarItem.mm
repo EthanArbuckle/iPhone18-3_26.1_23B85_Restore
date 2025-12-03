@@ -2,13 +2,13 @@
 + (id)_appearanceBlindViewClasses;
 - (BOOL)_isSelected;
 - (BOOL)hasTitle;
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4;
-- (CGRect)_sourceRectForPresentationInWindow:(id)a3;
-- (CGRect)frameInView:(id)a3;
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window;
+- (CGRect)_sourceRectForPresentationInWindow:(id)window;
+- (CGRect)frameInView:(id)view;
 - (NSString)description;
 - (SEL)action;
 - (UIEdgeInsets)imageInsets;
-- (UIEdgeInsets)imageInsetsForStyle:(int64_t)a3 state:(int64_t)a4;
+- (UIEdgeInsets)imageInsetsForStyle:(int64_t)style state:(int64_t)state;
 - (UIEdgeInsets)landscapeImagePhoneInsets;
 - (UIEdgeInsets)largeContentSizeImageInsets;
 - (UIImage)_internalLandscapeSelectedImagePhone;
@@ -25,58 +25,58 @@
 - (UITabBarItem)initWithTitle:(NSString *)title image:(UIImage *)image selectedImage:(UIImage *)selectedImage;
 - (UITabBarItem)initWithTitle:(NSString *)title image:(UIImage *)image tag:(NSInteger)tag;
 - (id)_changeObserver;
-- (id)_createViewForTabBar:(id)a3 asProxyView:(BOOL)a4;
+- (id)_createViewForTabBar:(id)bar asProxyView:(BOOL)view;
 - (id)_internalLandscapeTemplateImage;
 - (id)_internalLandscapeTemplateImages;
 - (id)_internalTemplateImage;
-- (id)_internalTemplateImagesForTabBarDisplayStyle:(int64_t)a3;
+- (id)_internalTemplateImagesForTabBarDisplayStyle:(int64_t)style;
 - (id)_nearestViewController;
 - (id)_resolvedSourceItem;
-- (id)_sourceViewForPresentationInWindow:(id)a3;
+- (id)_sourceViewForPresentationInWindow:(id)window;
 - (id)_tabBarButton;
-- (id)badgeForStyle:(int64_t)a3 state:(int64_t)a4;
-- (id)imageForStyle:(int64_t)a3 state:(int64_t)a4;
+- (id)badgeForStyle:(int64_t)style state:(int64_t)state;
+- (id)imageForStyle:(int64_t)style state:(int64_t)state;
 - (id)largeContentSizeImage;
 - (id)target;
-- (id)titleForStyle:(int64_t)a3 state:(int64_t)a4;
-- (id)titleTextAttributesForState:(unint64_t)a3;
+- (id)titleForStyle:(int64_t)style state:(int64_t)state;
+- (id)titleTextAttributesForState:(unint64_t)state;
 - (id)unselectedImage;
 - (int64_t)preferredPlacement;
-- (void)_itemBarAppearanceNeedsUpdate:(id *)a1;
-- (void)_itemViewNeedsUpdate:(uint64_t)a1;
+- (void)_itemBarAppearanceNeedsUpdate:(id *)update;
+- (void)_itemViewNeedsUpdate:(uint64_t)update;
 - (void)_resolveSystemItem;
-- (void)_setInternalLandscapeTemplateImage:(id)a3;
-- (void)_setInternalTemplateImage:(id)a3;
-- (void)_setInternalTitle:(id)a3;
-- (void)_setSelected:(BOOL)a3;
-- (void)_setTabBarButton:(uint64_t)a1;
-- (void)_setTitleTextAttributeValue:(id)a3 forAttributeKey:(id)a4 state:(unint64_t)a5;
+- (void)_setInternalLandscapeTemplateImage:(id)image;
+- (void)_setInternalTemplateImage:(id)image;
+- (void)_setInternalTitle:(id)title;
+- (void)_setSelected:(BOOL)selected;
+- (void)_setTabBarButton:(uint64_t)button;
+- (void)_setTitleTextAttributeValue:(id)value forAttributeKey:(id)key state:(unint64_t)state;
 - (void)_updateView;
-- (void)_updateViewAndPositionItems:(BOOL)a3;
+- (void)_updateViewAndPositionItems:(BOOL)items;
 - (void)_updateViewBadge;
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAction:(SEL)a3;
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAction:(SEL)action;
 - (void)setBadgeColor:(UIColor *)badgeColor;
-- (void)setBadgeOffset:(UIOffset)a3;
+- (void)setBadgeOffset:(UIOffset)offset;
 - (void)setBadgeTextAttributes:(NSDictionary *)textAttributes forState:(UIControlState)state;
 - (void)setBadgeValue:(NSString *)badgeValue;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setFinishedSelectedImage:(UIImage *)selectedImage withFinishedUnselectedImage:(UIImage *)unselectedImage;
-- (void)setImageInsets:(UIEdgeInsets)a3;
-- (void)setLandscapeImagePhone:(id)a3;
-- (void)setLandscapeImagePhoneInsets:(UIEdgeInsets)a3;
-- (void)setLandscapeSelectedImagePhone:(id)a3;
-- (void)setLargeContentSizeImage:(id)a3;
-- (void)setLargeContentSizeImageInsets:(UIEdgeInsets)a3;
+- (void)setImageInsets:(UIEdgeInsets)insets;
+- (void)setLandscapeImagePhone:(id)phone;
+- (void)setLandscapeImagePhoneInsets:(UIEdgeInsets)insets;
+- (void)setLandscapeSelectedImagePhone:(id)phone;
+- (void)setLargeContentSizeImage:(id)image;
+- (void)setLargeContentSizeImageInsets:(UIEdgeInsets)insets;
 - (void)setScrollEdgeAppearance:(UITabBarAppearance *)scrollEdgeAppearance;
 - (void)setSelectedImage:(UIImage *)selectedImage;
-- (void)setSpringLoaded:(BOOL)a3;
+- (void)setSpringLoaded:(BOOL)loaded;
 - (void)setStandardAppearance:(UITabBarAppearance *)standardAppearance;
 - (void)setTitlePositionAdjustment:(UIOffset)titlePositionAdjustment;
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)setUnselectedImage:(id)a3;
-- (void)set_fallbackSourceItem:(uint64_t)a1;
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)setUnselectedImage:(id)image;
+- (void)set_fallbackSourceItem:(uint64_t)item;
 @end
 
 @implementation UITabBarItem
@@ -114,10 +114,10 @@
   selectedImage = self->_selectedImage;
   if (!selectedImage)
   {
-    v4 = [(UITabBarItem *)self _internalTemplateImages];
-    v5 = [v4 lastObject];
+    _internalTemplateImages = [(UITabBarItem *)self _internalTemplateImages];
+    lastObject = [_internalTemplateImages lastObject];
     v6 = self->_selectedImage;
-    self->_selectedImage = v5;
+    self->_selectedImage = lastObject;
 
     selectedImage = self->_selectedImage;
   }
@@ -130,8 +130,8 @@
   view = self->_view;
   if (view)
   {
-    v4 = [(_UITabBarButton *)view _isSelected];
-    if (v4)
+    _isSelected = [(_UITabBarButton *)view _isSelected];
+    if (_isSelected)
     {
       v5 = 1024;
     }
@@ -149,7 +149,7 @@
     return (*&self->_tabBarItemFlags >> 10) & 1;
   }
 
-  return v4;
+  return _isSelected;
 }
 
 - (int64_t)preferredPlacement
@@ -169,28 +169,28 @@
 
 - (void)_resolveSystemItem
 {
-  if ((*(a1 + 248) & 0x20) == 0)
+  if ((*(self + 248) & 0x20) == 0)
   {
     return;
   }
 
-  v3 = [a1 systemItem];
+  systemItem = [self systemItem];
   v4 = 0;
-  if (v3 > 5)
+  if (systemItem > 5)
   {
-    if (v3 > 8)
+    if (systemItem > 8)
     {
-      if (v3 == 9)
+      if (systemItem == 9)
       {
         v5 = _UINSLocalizedStringWithDefaultValue(@"Downloads", @"Downloads");
         v4 = @"square.and.arrow.down.fill";
         goto LABEL_29;
       }
 
-      if (v3 != 10)
+      if (systemItem != 10)
       {
         v5 = 0;
-        if (v3 == 11)
+        if (systemItem == 11)
         {
           v5 = _UINSLocalizedStringWithDefaultValue(@"Most Viewed", @"Most Viewed");
           v4 = @"list.number";
@@ -204,9 +204,9 @@
 
     else
     {
-      if (v3 != 6)
+      if (systemItem != 6)
       {
-        if (v3 == 7)
+        if (systemItem == 7)
         {
           v5 = _UINSLocalizedStringWithDefaultValue(@"Bookmarks", @"Bookmarks");
           v4 = @"book.fill";
@@ -230,15 +230,15 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v3 > 2)
+  if (systemItem > 2)
   {
-    if (v3 == 3)
+    if (systemItem == 3)
     {
       v6 = @"Top Rated";
       goto LABEL_24;
     }
 
-    if (v3 != 4)
+    if (systemItem != 4)
     {
       v5 = _UINSLocalizedStringWithDefaultValue(@"Contacts", @"Contacts");
       v4 = @"person.crop.circle.fill";
@@ -249,16 +249,16 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (v3)
+  if (systemItem)
   {
-    if (v3 == 1)
+    if (systemItem == 1)
     {
       v6 = @"Favorites";
       goto LABEL_24;
     }
 
     v5 = 0;
-    if (v3 == 2)
+    if (systemItem == 2)
     {
       v6 = @"Featured";
 LABEL_24:
@@ -276,20 +276,20 @@ LABEL_24:
 LABEL_29:
   v8 = [UIImage systemImageNamed:v4];
   v9 = v8;
-  v10 = *(a1 + 64);
-  *(a1 + 64) = v5;
+  v10 = *(self + 64);
+  *(self + 64) = v5;
   v11 = v5;
 
-  objc_storeStrong((a1 + 88), v8);
-  v12 = *(a1 + 96);
-  *(a1 + 96) = 0;
+  objc_storeStrong((self + 88), v8);
+  v12 = *(self + 96);
+  *(self + 96) = 0;
 
-  v13 = *(a1 + 152);
-  *(a1 + 152) = v9;
+  v13 = *(self + 152);
+  *(self + 152) = v9;
   v15 = v9;
 
-  v14 = *(a1 + 160);
-  *(a1 + 160) = 0;
+  v14 = *(self + 160);
+  *(self + 160) = 0;
 }
 
 - (id)unselectedImage
@@ -297,11 +297,11 @@ LABEL_29:
   unselectedImage = self->_unselectedImage;
   if (!unselectedImage)
   {
-    v4 = [(UITabBarItem *)self _internalTemplateImages];
-    v5 = [v4 firstObject];
+    _internalTemplateImages = [(UITabBarItem *)self _internalTemplateImages];
+    firstObject = [_internalTemplateImages firstObject];
 
     v6 = self->_unselectedImage;
-    self->_unselectedImage = v5;
+    self->_unselectedImage = firstObject;
 
     unselectedImage = self->_unselectedImage;
   }
@@ -311,10 +311,10 @@ LABEL_29:
 
 - (id)_internalTemplateImage
 {
-  v2 = [(UITabBarItem *)self _internalTemplateImages];
-  v3 = [v2 firstObject];
+  _internalTemplateImages = [(UITabBarItem *)self _internalTemplateImages];
+  firstObject = [_internalTemplateImages firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)_internalLandscapeTemplateImages
@@ -348,21 +348,21 @@ LABEL_29:
 
 - (id)_tabBarButton
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[29];
+    self = self[29];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_internalLandscapeTemplateImage
 {
-  v2 = [(UITabBarItem *)self _internalLandscapeTemplateImages];
-  v3 = [v2 firstObject];
+  _internalLandscapeTemplateImages = [(UITabBarItem *)self _internalLandscapeTemplateImages];
+  firstObject = [_internalLandscapeTemplateImages firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (UIImage)_internalLandscapeSelectedImagePhone
@@ -370,10 +370,10 @@ LABEL_29:
   landscapeSelectedImage = self->_landscapeSelectedImage;
   if (!landscapeSelectedImage)
   {
-    v4 = [(UITabBarItem *)self _internalLandscapeTemplateImages];
-    v5 = [v4 lastObject];
+    _internalLandscapeTemplateImages = [(UITabBarItem *)self _internalLandscapeTemplateImages];
+    lastObject = [_internalLandscapeTemplateImages lastObject];
     v6 = self->_landscapeSelectedImage;
-    self->_landscapeSelectedImage = v5;
+    self->_landscapeSelectedImage = lastObject;
 
     landscapeSelectedImage = self->_landscapeSelectedImage;
   }
@@ -412,12 +412,12 @@ LABEL_29:
 
   if ([(UITabBarItem *)self isSystemItem])
   {
-    v5 = [(UITabBarItem *)self systemItem];
-    if (v5 > 5)
+    systemItem = [(UITabBarItem *)self systemItem];
+    if (systemItem > 5)
     {
-      if (v5 > 8)
+      if (systemItem > 8)
       {
-        switch(v5)
+        switch(systemItem)
         {
           case 9:
             v6 = @" systemItem=Downloads";
@@ -433,12 +433,12 @@ LABEL_29:
         }
       }
 
-      else if (v5 == 6)
+      else if (systemItem == 6)
       {
         v6 = @" systemItem=History";
       }
 
-      else if (v5 == 7)
+      else if (systemItem == 7)
       {
         v6 = @" systemItem=Bookmarks";
       }
@@ -449,14 +449,14 @@ LABEL_29:
       }
     }
 
-    else if (v5 > 2)
+    else if (systemItem > 2)
     {
-      if (v5 == 3)
+      if (systemItem == 3)
       {
         v6 = @" systemItem=TopRated";
       }
 
-      else if (v5 == 4)
+      else if (systemItem == 4)
       {
         v6 = @" systemItem=Recents";
       }
@@ -467,16 +467,16 @@ LABEL_29:
       }
     }
 
-    else if (v5)
+    else if (systemItem)
     {
-      if (v5 == 1)
+      if (systemItem == 1)
       {
         v6 = @" systemItem=Favorites";
       }
 
       else
       {
-        if (v5 != 2)
+        if (systemItem != 2)
         {
           goto LABEL_33;
         }
@@ -534,9 +534,9 @@ LABEL_33:
   return v4;
 }
 
-- (void)_setSelected:(BOOL)a3
+- (void)_setSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     v3 = 1024;
   }
@@ -555,20 +555,20 @@ LABEL_33:
   [(UITabBarItem *)self _itemViewNeedsUpdate:v4];
 }
 
-- (void)_itemViewNeedsUpdate:(uint64_t)a1
+- (void)_itemViewNeedsUpdate:(uint64_t)update
 {
   v3 = a2;
-  if (a1)
+  if (update)
   {
     aBlock = v3;
-    WeakRetained = objc_loadWeakRetained((a1 + 280));
+    WeakRetained = objc_loadWeakRetained((update + 280));
     v5 = _Block_copy(aBlock);
-    v6 = *(a1 + 256);
-    *(a1 + 256) = v5;
+    v6 = *(update + 256);
+    *(update + 256) = v5;
 
     if (WeakRetained)
     {
-      [WeakRetained _tabDataProviderContentDidChange:a1];
+      [WeakRetained _tabDataProviderContentDidChange:update];
     }
 
     else if (aBlock)
@@ -578,11 +578,11 @@ LABEL_33:
 
     else
     {
-      [a1 _updateView];
+      [update _updateView];
     }
 
-    v7 = *(a1 + 256);
-    *(a1 + 256) = 0;
+    v7 = *(update + 256);
+    *(update + 256) = 0;
 
     v3 = aBlock;
   }
@@ -596,11 +596,11 @@ LABEL_33:
   }
 }
 
-- (void)setBadgeOffset:(UIOffset)a3
+- (void)setBadgeOffset:(UIOffset)offset
 {
-  if (a3.horizontal != self->_badgeOffset.horizontal || a3.vertical != self->_badgeOffset.vertical)
+  if (offset.horizontal != self->_badgeOffset.horizontal || offset.vertical != self->_badgeOffset.vertical)
   {
-    self->_badgeOffset = a3;
+    self->_badgeOffset = offset;
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
   }
 }
@@ -736,28 +736,28 @@ LABEL_33:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = UITabBarItem;
-  [(UIBarItem *)&v21 encodeWithCoder:v4];
+  [(UIBarItem *)&v21 encodeWithCoder:coderCopy];
   tabBarItemFlags = self->_tabBarItemFlags;
   LOBYTE(v6) = self->_tabBarItemFlags;
   if ((tabBarItemFlags & 0x20) != 0)
   {
-    [v4 encodeInteger:(tabBarItemFlags >> 6) & 0xF forKey:@"UISystemItem"];
+    [coderCopy encodeInteger:(tabBarItemFlags >> 6) & 0xF forKey:@"UISystemItem"];
     v6 = self->_tabBarItemFlags;
   }
 
   if (v6)
   {
-    [v4 encodeBool:1 forKey:@"UIEnabled"];
+    [coderCopy encodeBool:1 forKey:@"UIEnabled"];
   }
 
   if ([(UIBarItem *)self tag])
   {
-    [v4 encodeInteger:-[UIBarItem tag](self forKey:{"tag"), @"UITag"}];
+    [coderCopy encodeInteger:-[UIBarItem tag](self forKey:{"tag"), @"UITag"}];
   }
 
   if ((tabBarItemFlags & 0x20) == 0)
@@ -765,22 +765,22 @@ LABEL_33:
     title = self->_title;
     if (title)
     {
-      [v4 encodeObject:title forKey:@"UITitle"];
+      [coderCopy encodeObject:title forKey:@"UITitle"];
     }
   }
 
   badgeValue = self->_badgeValue;
   if (badgeValue)
   {
-    [v4 encodeObject:badgeValue forKey:@"UIBadgeValue"];
+    [coderCopy encodeObject:badgeValue forKey:@"UIBadgeValue"];
   }
 
-  v9 = [(UITabBarItem *)self badgeColor];
+  badgeColor = [(UITabBarItem *)self badgeColor];
 
-  if (v9)
+  if (badgeColor)
   {
-    v10 = [(UITabBarItem *)self badgeColor];
-    [v4 encodeObject:v10 forKey:@"UIBadgeColor"];
+    badgeColor2 = [(UITabBarItem *)self badgeColor];
+    [coderCopy encodeObject:badgeColor2 forKey:@"UIBadgeColor"];
   }
 
   if ((tabBarItemFlags & 0x20) == 0)
@@ -788,13 +788,13 @@ LABEL_33:
     templateImage = self->_templateImage;
     if (templateImage)
     {
-      [v4 encodeObject:templateImage forKey:@"UIImage"];
+      [coderCopy encodeObject:templateImage forKey:@"UIImage"];
     }
 
     selectedTemplateImage = self->_selectedTemplateImage;
     if (selectedTemplateImage)
     {
-      [v4 encodeObject:selectedTemplateImage forKey:@"UISelectedTemplateImage"];
+      [coderCopy encodeObject:selectedTemplateImage forKey:@"UISelectedTemplateImage"];
     }
   }
 
@@ -802,7 +802,7 @@ LABEL_33:
   v14 = *&self->_imageInsets.bottom;
   if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v13), vceqzq_f64(v14))))))
   {
-    [v4 encodeUIEdgeInsets:@"UIImageInsets" forKey:{*&v13, *&v14}];
+    [coderCopy encodeUIEdgeInsets:@"UIImageInsets" forKey:{*&v13, *&v14}];
   }
 
   if (dyld_program_sdk_at_least())
@@ -812,13 +812,13 @@ LABEL_33:
       landscapeTemplateImage = self->_landscapeTemplateImage;
       if (landscapeTemplateImage)
       {
-        [v4 encodeObject:landscapeTemplateImage forKey:@"UIImageLandscape"];
+        [coderCopy encodeObject:landscapeTemplateImage forKey:@"UIImageLandscape"];
       }
 
       landscapeSelectedTemplateImage = self->_landscapeSelectedTemplateImage;
       if (landscapeSelectedTemplateImage)
       {
-        [v4 encodeObject:landscapeSelectedTemplateImage forKey:@"UISelectedTemplateImageLandscape"];
+        [coderCopy encodeObject:landscapeSelectedTemplateImage forKey:@"UISelectedTemplateImageLandscape"];
       }
     }
 
@@ -826,19 +826,19 @@ LABEL_33:
     v18 = *&self->_landscapeImageInsets.bottom;
     if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(v17), vceqzq_f64(v18))))))
     {
-      [v4 encodeUIEdgeInsets:@"UIImageInsetsLandscape" forKey:{*&v17, *&v18}];
+      [coderCopy encodeUIEdgeInsets:@"UIImageInsetsLandscape" forKey:{*&v17, *&v18}];
     }
   }
 
   [(UITabBarItem *)self titlePositionAdjustment];
   if (v20 != 0.0 || v19 != 0.0)
   {
-    [v4 encodeUIOffset:@"UITitlePositionAdjustment" forKey:?];
+    [coderCopy encodeUIOffset:@"UITitlePositionAdjustment" forKey:?];
   }
 
   if ([(UITabBarItem *)self isSpringLoaded])
   {
-    [v4 encodeBool:1 forKey:@"UISpringLoaded"];
+    [coderCopy encodeBool:1 forKey:@"UISpringLoaded"];
   }
 }
 
@@ -888,20 +888,20 @@ LABEL_33:
 LABEL_12:
 }
 
-- (void)_itemBarAppearanceNeedsUpdate:(id *)a1
+- (void)_itemBarAppearanceNeedsUpdate:(id *)update
 {
   v4 = a2;
-  if (a1)
+  if (update)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 35);
+    WeakRetained = objc_loadWeakRetained(update + 35);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained _tab:a1 appearanceNeedsUpdate:v4];
+      [WeakRetained _tab:update appearanceNeedsUpdate:v4];
     }
 
     else
     {
-      [a1 appearance:v4 categoriesChanged:-1];
+      [update appearance:v4 categoriesChanged:-1];
     }
   }
 }
@@ -952,9 +952,9 @@ LABEL_12:
 LABEL_12:
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  *&self->_tabBarItemFlags = *&self->_tabBarItemFlags & 0xFFFE | a3;
+  *&self->_tabBarItemFlags = *&self->_tabBarItemFlags & 0xFFFE | enabled;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __27__UITabBarItem_setEnabled___block_invoke;
@@ -963,7 +963,7 @@ LABEL_12:
   [(UITabBarItem *)self _itemViewNeedsUpdate:v3];
 }
 
-- (id)_internalTemplateImagesForTabBarDisplayStyle:(int64_t)a3
+- (id)_internalTemplateImagesForTabBarDisplayStyle:(int64_t)style
 {
   v4 = self->_templateImage;
   if (v4)
@@ -979,34 +979,34 @@ LABEL_12:
   return v5;
 }
 
-- (void)setLandscapeImagePhone:(id)a3
+- (void)setLandscapeImagePhone:(id)phone
 {
-  v4 = a3;
+  phoneCopy = phone;
   if (dyld_program_sdk_at_least())
   {
-    [(UITabBarItem *)self _setInternalLandscapeTemplateImage:v4];
+    [(UITabBarItem *)self _setInternalLandscapeTemplateImage:phoneCopy];
   }
 }
 
-- (void)setImageInsets:(UIEdgeInsets)a3
+- (void)setImageInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_imageInsets.top), vceqq_f64(v4, *&self->_imageInsets.bottom)))) & 1) == 0)
   {
-    self->_imageInsets = a3;
+    self->_imageInsets = insets;
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
   }
 }
 
-- (void)setLandscapeImagePhoneInsets:(UIEdgeInsets)a3
+- (void)setLandscapeImagePhoneInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
   if (dyld_program_sdk_at_least())
   {
     v4.f64[0] = top;
@@ -1029,26 +1029,26 @@ LABEL_12:
 {
   if ((*&self->_tabBarItemFlags & 0x20) != 0)
   {
-    v3 = 0;
+    largeContentSizeImage = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UITabBarItem;
-    v3 = [(UIBarItem *)&v5 largeContentSizeImage];
+    largeContentSizeImage = [(UIBarItem *)&v5 largeContentSizeImage];
   }
 
-  return v3;
+  return largeContentSizeImage;
 }
 
-- (void)setLargeContentSizeImage:(id)a3
+- (void)setLargeContentSizeImage:(id)image
 {
   if ((*&self->_tabBarItemFlags & 0x20) == 0)
   {
     v3.receiver = self;
     v3.super_class = UITabBarItem;
-    [(UIBarItem *)&v3 setLargeContentSizeImage:a3];
+    [(UIBarItem *)&v3 setLargeContentSizeImage:image];
   }
 }
 
@@ -1072,13 +1072,13 @@ LABEL_12:
   return result;
 }
 
-- (void)setLargeContentSizeImageInsets:(UIEdgeInsets)a3
+- (void)setLargeContentSizeImageInsets:(UIEdgeInsets)insets
 {
   if ((*&self->_tabBarItemFlags & 0x20) == 0)
   {
     v3.receiver = self;
     v3.super_class = UITabBarItem;
-    [(UIBarItem *)&v3 setLargeContentSizeImageInsets:a3.top, a3.left, a3.bottom, a3.right];
+    [(UIBarItem *)&v3 setLargeContentSizeImageInsets:insets.top, insets.left, insets.bottom, insets.right];
   }
 }
 
@@ -1128,9 +1128,9 @@ LABEL_9:
 {
   if (self->_selectedTemplateImage != selectedImage)
   {
-    v4 = [(UIImage *)selectedImage _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [(UIImage *)selectedImage _imageThatSuppressesAccessibilityHairlineThickening];
     selectedTemplateImage = self->_selectedTemplateImage;
-    self->_selectedTemplateImage = v4;
+    self->_selectedTemplateImage = _imageThatSuppressesAccessibilityHairlineThickening;
 
     if ((*&self->_tabBarItemFlags & 0x800) == 0)
     {
@@ -1147,10 +1147,10 @@ LABEL_9:
   landscapeSelectedImage = self->_landscapeSelectedImage;
   if (!landscapeSelectedImage)
   {
-    v4 = [(UITabBarItem *)self _internalLandscapeTemplateImages];
-    v5 = [v4 lastObject];
+    _internalLandscapeTemplateImages = [(UITabBarItem *)self _internalLandscapeTemplateImages];
+    lastObject = [_internalLandscapeTemplateImages lastObject];
     v6 = self->_landscapeSelectedImage;
-    self->_landscapeSelectedImage = v5;
+    self->_landscapeSelectedImage = lastObject;
 
     landscapeSelectedImage = self->_landscapeSelectedImage;
   }
@@ -1158,13 +1158,13 @@ LABEL_9:
   return landscapeSelectedImage;
 }
 
-- (void)setLandscapeSelectedImagePhone:(id)a3
+- (void)setLandscapeSelectedImagePhone:(id)phone
 {
-  if (self->_landscapeSelectedTemplateImage != a3)
+  if (self->_landscapeSelectedTemplateImage != phone)
   {
-    v4 = [a3 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [phone _imageThatSuppressesAccessibilityHairlineThickening];
     landscapeSelectedTemplateImage = self->_landscapeSelectedTemplateImage;
-    self->_landscapeSelectedTemplateImage = v4;
+    self->_landscapeSelectedTemplateImage = _imageThatSuppressesAccessibilityHairlineThickening;
 
     if ((*&self->_tabBarItemFlags & 0x800) == 0)
     {
@@ -1246,43 +1246,43 @@ LABEL_11:
 
 - (BOOL)hasTitle
 {
-  v2 = [(UITabBarItem *)self resolvedTitle];
-  v3 = v2 != 0;
+  resolvedTitle = [(UITabBarItem *)self resolvedTitle];
+  v3 = resolvedTitle != 0;
 
   return v3;
 }
 
 - (id)_resolvedSourceItem
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[29] tabBar];
-    v3 = [(UITabBar *)v2 _resolvedPresentationSourceItemForItem:v1];
+    tabBar = [self[29] tabBar];
+    v3 = [(UITabBar *)tabBar _resolvedPresentationSourceItemForItem:selfCopy];
     v4 = v3;
     if (!v3)
     {
-      v5 = [v1[29] _window];
+      _window = [selfCopy[29] _window];
 
       v6 = &OBJC_IVAR___UITabBarItem___fallbackSourceItem;
-      if (v5)
+      if (_window)
       {
         v6 = &OBJC_IVAR___UITabBarItem__view;
       }
 
-      v4 = *(v1 + *v6);
+      v4 = *(selfCopy + *v6);
     }
 
-    v1 = v4;
+    selfCopy = v4;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  attributesCopy = attributes;
   if (!self->_appearanceStorage)
   {
     v8 = objc_alloc_init(_UITabBarItemAppearanceStorage);
@@ -1290,34 +1290,34 @@ LABEL_11:
     self->_appearanceStorage = v8;
   }
 
-  v10 = [v7 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
+  _ui_attributesForDictionaryContainingUIStringDrawingKeys = [attributesCopy _ui_attributesForDictionaryContainingUIStringDrawingKeys];
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0 && a4 != 8)
+  if ((state & 0xFFFFFFFFFFFFFFFDLL) != 0 && state != 8)
   {
-    a4 = 4;
+    state = 4;
   }
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
   v15[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   _UIAppearanceTagObjectForSelector(self, a2, v13);
 
-  v14 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:a4];
-  if (v10 | v14 && ([v10 isEqualToDictionary:v14] & 1) == 0)
+  v14 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:state];
+  if (_ui_attributesForDictionaryContainingUIStringDrawingKeys | v14 && ([_ui_attributesForDictionaryContainingUIStringDrawingKeys isEqualToDictionary:v14] & 1) == 0)
   {
-    [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:v10 forState:a4];
+    [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:_ui_attributesForDictionaryContainingUIStringDrawingKeys forState:state];
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
   }
 }
 
-- (id)titleTextAttributesForState:(unint64_t)a3
+- (id)titleTextAttributesForState:(unint64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0 && a3 != 8)
+  if ((state & 0xFFFFFFFFFFFFFFFDLL) != 0 && state != 8)
   {
-    a3 = 4;
+    state = 4;
   }
 
-  return [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:a3];
+  return [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:state];
 }
 
 - (void)setTitlePositionAdjustment:(UIOffset)titlePositionAdjustment
@@ -1373,9 +1373,9 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v8 = [(_UITabBarItemAppearanceStorage *)appearanceStorage badgeColor];
-  v9 = v8;
-  if (v8 != v4 && ![(UIColor *)v8 isEqual:v4])
+  badgeColor = [(_UITabBarItemAppearanceStorage *)appearanceStorage badgeColor];
+  v9 = badgeColor;
+  if (badgeColor != v4 && ![(UIColor *)badgeColor isEqual:v4])
   {
     [(_UITabBarItemAppearanceStorage *)self->_appearanceStorage setBadgeColor:v4];
   }
@@ -1437,35 +1437,35 @@ void __48__UITabBarItem_setBadgeTextAttributes_forState___block_invoke(uint64_t 
   [v3 _setBadgeTextAttributes:v4 forState:*(a1 + 40)];
 }
 
-- (void)_setTabBarButton:(uint64_t)a1
+- (void)_setTabBarButton:(uint64_t)button
 {
   v5 = a2;
-  if (a1)
+  if (button)
   {
-    v4 = [a1 _isSelected];
-    objc_storeStrong((a1 + 232), a2);
-    [*(a1 + 232) _setSelected:v4];
-    [*(a1 + 232) setSpringLoaded:(*(a1 + 248) >> 1) & 1];
-    [*(a1 + 232) setEnabled:*(a1 + 248) & 1];
+    _isSelected = [button _isSelected];
+    objc_storeStrong((button + 232), a2);
+    [*(button + 232) _setSelected:_isSelected];
+    [*(button + 232) setSpringLoaded:(*(button + 248) >> 1) & 1];
+    [*(button + 232) setEnabled:*(button + 248) & 1];
   }
 }
 
-- (void)setUnselectedImage:(id)a3
+- (void)setUnselectedImage:(id)image
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  imageCopy = image;
+  v6 = imageCopy;
+  if (imageCopy)
   {
-    [(UIImage *)v5 _setRenderingMode:1];
-    v5 = v6;
+    [(UIImage *)imageCopy _setRenderingMode:1];
+    imageCopy = v6;
     *&self->_tabBarItemFlags |= 0x1000u;
   }
 
-  if (self->_unselectedImage != v5)
+  if (self->_unselectedImage != imageCopy)
   {
-    objc_storeStrong(&self->_unselectedImage, a3);
+    objc_storeStrong(&self->_unselectedImage, image);
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
@@ -1476,19 +1476,19 @@ void __48__UITabBarItem_setBadgeTextAttributes_forState___block_invoke(uint64_t 
   return WeakRetained;
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 - (SEL)action
@@ -1504,11 +1504,11 @@ void __48__UITabBarItem_setBadgeTextAttributes_forState___block_invoke(uint64_t 
   }
 }
 
-- (void)_setInternalTitle:(id)a3
+- (void)_setInternalTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -1537,13 +1537,13 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_setInternalTemplateImage:(id)a3
+- (void)_setInternalTemplateImage:(id)image
 {
-  v5 = a3;
-  if (self->_templateImage != v5)
+  imageCopy = image;
+  if (self->_templateImage != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_templateImage, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_templateImage, image);
     tabBarItemFlags = self->_tabBarItemFlags;
     if ((tabBarItemFlags & 0x800) == 0)
     {
@@ -1560,17 +1560,17 @@ LABEL_9:
     }
 
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)_setInternalLandscapeTemplateImage:(id)a3
+- (void)_setInternalLandscapeTemplateImage:(id)image
 {
-  v5 = a3;
-  if (self->_landscapeTemplateImage != v5)
+  imageCopy = image;
+  if (self->_landscapeTemplateImage != imageCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_landscapeTemplateImage, a3);
+    v9 = imageCopy;
+    objc_storeStrong(&self->_landscapeTemplateImage, image);
     tabBarItemFlags = self->_tabBarItemFlags;
     if ((tabBarItemFlags & 0x800) == 0)
     {
@@ -1587,44 +1587,44 @@ LABEL_9:
     }
 
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)_setTitleTextAttributeValue:(id)a3 forAttributeKey:(id)a4 state:(unint64_t)a5
+- (void)_setTitleTextAttributeValue:(id)value forAttributeKey:(id)key state:(unint64_t)state
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:a5];
+  valueCopy = value;
+  keyCopy = key;
+  v9 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:state];
   v10 = [v9 mutableCopy];
 
-  v11 = [v10 objectForKey:v8];
-  if (v12 && !v10)
+  v11 = [v10 objectForKey:keyCopy];
+  if (valueCopy && !v10)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if ([v12 isEqual:v11])
+    if ([valueCopy isEqual:v11])
     {
       goto LABEL_11;
     }
 
 LABEL_8:
-    [v10 setObject:v12 forKey:v8];
+    [v10 setObject:valueCopy forKey:keyCopy];
     goto LABEL_9;
   }
 
-  if (!(v12 | v11) || ([v12 isEqual:v11] & 1) != 0)
+  if (!(valueCopy | v11) || ([valueCopy isEqual:v11] & 1) != 0)
   {
     goto LABEL_11;
   }
 
-  if (v12)
+  if (valueCopy)
   {
     goto LABEL_8;
   }
 
-  [v10 removeObjectForKey:v8];
+  [v10 removeObjectForKey:keyCopy];
 LABEL_9:
-  [(UITabBarItem *)self setTitleTextAttributes:v10 forState:a5];
+  [(UITabBarItem *)self setTitleTextAttributes:v10 forState:state];
   if (self->_view)
   {
     [(UITabBarItem *)self _itemViewNeedsUpdate:?];
@@ -1651,44 +1651,44 @@ LABEL_11:
   return v2;
 }
 
-- (id)_createViewForTabBar:(id)a3 asProxyView:(BOOL)a4
+- (id)_createViewForTabBar:(id)bar asProxyView:(BOOL)view
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  barCopy = bar;
+  v7 = barCopy;
+  if (!view)
   {
     imageStyle = self->__imageStyle;
-    v9 = [v6 _appearanceStorage];
-    v10 = [v9 selectedImageTintColor];
-    v11 = v10;
-    if (v10 || (imageStyle | 2) != 2)
+    _appearanceStorage = [barCopy _appearanceStorage];
+    selectedImageTintColor = [_appearanceStorage selectedImageTintColor];
+    v11 = selectedImageTintColor;
+    if (selectedImageTintColor || (imageStyle | 2) != 2)
     {
-      v12 = v10;
+      _tintColor = selectedImageTintColor;
     }
 
     else
     {
-      v12 = [(UITabBarItem *)self _tintColor];
+      _tintColor = [(UITabBarItem *)self _tintColor];
     }
 
-    v13 = v12;
+    v13 = _tintColor;
   }
 
-  v14 = [(UITabBarItem *)self _internalTitle];
-  v15 = [(UITabBarItem *)self _internalLandscapeTemplateImages];
-  v16 = [v15 firstObject];
+  _internalTitle = [(UITabBarItem *)self _internalTitle];
+  _internalLandscapeTemplateImages = [(UITabBarItem *)self _internalLandscapeTemplateImages];
+  firstObject = [_internalLandscapeTemplateImages firstObject];
 
   v17 = [UITabBarButton alloc];
-  v18 = [(UITabBarItem *)self unselectedImage];
-  v19 = [(UITabBarItem *)self selectedImage];
-  v20 = [(UITabBarItem *)self landscapeSelectedImagePhone];
+  unselectedImage = [(UITabBarItem *)self unselectedImage];
+  selectedImage = [(UITabBarItem *)self selectedImage];
+  landscapeSelectedImagePhone = [(UITabBarItem *)self landscapeSelectedImagePhone];
   [(UITabBarItem *)self imageInsets];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
   [(UITabBarItem *)self landscapeImagePhoneInsets];
-  v33 = [(UITabBarButton *)v17 initWithImage:v18 landscapeImage:v16 selectedImage:v19 landscapeSelectedImage:v20 label:v14 withInsets:v7 landscapeInsets:v22 tabBar:v24, v26, v28, v29, v30, v31, v32];
+  v33 = [(UITabBarButton *)v17 initWithImage:unselectedImage landscapeImage:firstObject selectedImage:selectedImage landscapeSelectedImage:landscapeSelectedImagePhone label:_internalTitle withInsets:v7 landscapeInsets:v22 tabBar:v24, v26, v28, v29, v30, v31, v32];
 
   [(UITabBarItem *)self badgeOffset];
   [(UITabBarButton *)v33 _setBadgeOffset:?];
@@ -1708,12 +1708,12 @@ LABEL_11:
   v42 = objc_getAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey);
   [(UITabBarButton *)v33 _applyTabBarButtonAppearanceStorage:appearanceStorage withTaggedSelectors:v42];
 
-  v43 = [v7 _appearanceStorage];
-  v44 = [v43 selectionIndicatorImage];
+  _appearanceStorage2 = [v7 _appearanceStorage];
+  selectionIndicatorImage = [_appearanceStorage2 selectionIndicatorImage];
 
-  if (v44)
+  if (selectionIndicatorImage)
   {
-    [(UITabBarButton *)v33 _setCustomSelectedIndicatorImage:v44];
+    [(UITabBarButton *)v33 _setCustomSelectedIndicatorImage:selectionIndicatorImage];
   }
 
   [(UIControl *)v33 addTarget:v7 action:sel__buttonDown_ forControlEvents:1];
@@ -1722,7 +1722,7 @@ LABEL_11:
   [(UIControl *)v33 addTarget:v7 action:sel__sendAction_withEvent_ forControlEvents:0x40000000];
   [(UITabBarButton *)v33 setEnabled:[(UITabBarItem *)self isEnabled]];
   -[UITabBarButton _setShowsHighlightedState:](v33, "_setShowsHighlightedState:", [v7 _showsHighlightedState]);
-  if (!a4 && self->_badgeValue)
+  if (!view && self->_badgeValue)
   {
     [(UITabBarButton *)v33 _setBadgeValue:?];
   }
@@ -1733,40 +1733,40 @@ LABEL_11:
   return v33;
 }
 
-- (void)_updateViewAndPositionItems:(BOOL)a3
+- (void)_updateViewAndPositionItems:(BOOL)items
 {
-  v3 = a3;
-  v5 = [(_UITabBarButton *)self->_view tabBar];
-  if (v5)
+  itemsCopy = items;
+  tabBar = [(_UITabBarButton *)self->_view tabBar];
+  if (tabBar)
   {
-    v9 = v5;
+    v9 = tabBar;
     [(_UITabBarButton *)self->_view alpha];
     v7 = v6;
     [v9 _updateTabBarItemView:self];
-    if (v3)
+    if (itemsCopy)
     {
       [v9 _positionAllItems];
     }
 
     [(_UITabBarButton *)self->_view setAlpha:v7];
-    v8 = [v9 selectedItem];
+    selectedItem = [v9 selectedItem];
 
-    if (v8 == self)
+    if (selectedItem == self)
     {
       [(_UITabBarButton *)self->_view _showSelectedIndicator:1 changeSelection:1];
     }
 
     [(UITabBarItem *)self _updateViewBadge];
-    v5 = v9;
+    tabBar = v9;
   }
 }
 
-- (void)setSpringLoaded:(BOOL)a3
+- (void)setSpringLoaded:(BOOL)loaded
 {
   tabBarItemFlags = self->_tabBarItemFlags;
-  if (((((tabBarItemFlags & 2) == 0) ^ a3) & 1) == 0)
+  if (((((tabBarItemFlags & 2) == 0) ^ loaded) & 1) == 0)
   {
-    if (a3)
+    if (loaded)
     {
       v4 = 2;
     }
@@ -1782,14 +1782,14 @@ LABEL_11:
     v5[2] = __32__UITabBarItem_setSpringLoaded___block_invoke;
     v5[3] = &unk_1E70F35E0;
     v5[4] = self;
-    v6 = a3;
+    loadedCopy = loaded;
     [(UITabBarItem *)self _itemViewNeedsUpdate:v5];
   }
 }
 
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v5 = [(_UITabBarButton *)self->_view tabBar:a3];
+  v5 = [(_UITabBarButton *)self->_view tabBar:appearance];
   [v5 _useModernAppearance];
   [(UITabBarItem *)self _setUsesModernAppearance:1];
   if ([(UITabBarItem *)self _isSelected])
@@ -1798,9 +1798,9 @@ LABEL_11:
   }
 }
 
-- (id)titleForStyle:(int64_t)a3 state:(int64_t)a4
+- (id)titleForStyle:(int64_t)style state:(int64_t)state
 {
-  v4 = [(UITabBarItem *)self _internalTitle:a3];
+  v4 = [(UITabBarItem *)self _internalTitle:style];
   if ([v4 length])
   {
     v5 = v4;
@@ -1816,9 +1816,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)badgeForStyle:(int64_t)a3 state:(int64_t)a4
+- (id)badgeForStyle:(int64_t)style state:(int64_t)state
 {
-  badgeValue = [(NSString *)self->_badgeValue length:a3];
+  badgeValue = [(NSString *)self->_badgeValue length:style];
   if (badgeValue)
   {
     badgeValue = self->_badgeValue;
@@ -1827,43 +1827,43 @@ LABEL_11:
   return badgeValue;
 }
 
-- (id)imageForStyle:(int64_t)a3 state:(int64_t)a4
+- (id)imageForStyle:(int64_t)style state:(int64_t)state
 {
-  if (a3 < 2)
+  if (style < 2)
   {
-    v6 = [(UITabBarItem *)self _internalTemplateImages];
+    _internalTemplateImages = [(UITabBarItem *)self _internalTemplateImages];
 LABEL_6:
-    v9 = v6;
-    if (a4 == 2)
+    currentHandler = _internalTemplateImages;
+    if (state == 2)
     {
-      [v6 lastObject];
+      [_internalTemplateImages lastObject];
     }
 
     else
     {
-      [v6 firstObject];
+      [_internalTemplateImages firstObject];
     }
     v10 = ;
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
-    v6 = [(UITabBarItem *)self _internalLandscapeTemplateImages];
+    _internalTemplateImages = [(UITabBarItem *)self _internalLandscapeTemplateImages];
     goto LABEL_6;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"UITabBarItem.m" lineNumber:1069 description:{@"style %li currently unsupported", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarItem.m" lineNumber:1069 description:{@"style %li currently unsupported", style}];
   v10 = 0;
 LABEL_10:
 
   return v10;
 }
 
-- (UIEdgeInsets)imageInsetsForStyle:(int64_t)a3 state:(int64_t)a4
+- (UIEdgeInsets)imageInsetsForStyle:(int64_t)style state:(int64_t)state
 {
-  if (a3 < 2)
+  if (style < 2)
   {
     v5 = 120;
 LABEL_6:
@@ -1875,14 +1875,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v5 = 176;
     goto LABEL_6;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"UITabBarItem.m" lineNumber:1091 description:{@"style %li currently unsupported", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarItem.m" lineNumber:1091 description:{@"style %li currently unsupported", style}];
 
   v10 = 0.0;
   v11 = 0.0;
@@ -1907,19 +1907,19 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (void)set_fallbackSourceItem:(uint64_t)a1
+- (void)set_fallbackSourceItem:(uint64_t)item
 {
-  if (a1)
+  if (item)
   {
-    objc_storeStrong((a1 + 320), a2);
+    objc_storeStrong((item + 320), a2);
   }
 }
 
-- (CGRect)frameInView:(id)a3
+- (CGRect)frameInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
-  [v5 frameInView:v4];
+  viewCopy = view;
+  _resolvedSourceItem = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
+  [_resolvedSourceItem frameInView:viewCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1936,12 +1936,12 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)_frameInCoordinateSpace:(id)a3 window:(id)a4
+- (CGRect)_frameInCoordinateSpace:(id)space window:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
-  [v8 _frameInCoordinateSpace:v7 window:v6];
+  windowCopy = window;
+  spaceCopy = space;
+  _resolvedSourceItem = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
+  [_resolvedSourceItem _frameInCoordinateSpace:spaceCopy window:windowCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1960,26 +1960,26 @@ LABEL_7:
 
 - (id)_nearestViewController
 {
-  v2 = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
-  v3 = [v2 _nearestViewController];
+  _resolvedSourceItem = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
+  _nearestViewController = [_resolvedSourceItem _nearestViewController];
 
-  return v3;
+  return _nearestViewController;
 }
 
-- (id)_sourceViewForPresentationInWindow:(id)a3
+- (id)_sourceViewForPresentationInWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
-  v6 = [v5 _sourceViewForPresentationInWindow:v4];
+  windowCopy = window;
+  _resolvedSourceItem = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
+  v6 = [_resolvedSourceItem _sourceViewForPresentationInWindow:windowCopy];
 
   return v6;
 }
 
-- (CGRect)_sourceRectForPresentationInWindow:(id)a3
+- (CGRect)_sourceRectForPresentationInWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
-  [v5 _sourceRectForPresentationInWindow:v4];
+  windowCopy = window;
+  _resolvedSourceItem = [(UITabBarItem *)&self->super.super.isa _resolvedSourceItem];
+  [_resolvedSourceItem _sourceRectForPresentationInWindow:windowCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;

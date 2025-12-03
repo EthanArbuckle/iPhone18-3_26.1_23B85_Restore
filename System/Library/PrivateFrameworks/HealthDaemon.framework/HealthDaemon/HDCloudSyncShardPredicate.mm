@@ -1,31 +1,31 @@
 @interface HDCloudSyncShardPredicate
-- (BOOL)isEqual:(id)a3;
-- (HDCloudSyncShardPredicate)initWithCodableShardPredicate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDCloudSyncShardPredicate)initWithCodableShardPredicate:(id)predicate;
 - (id)codablePredicate;
 - (id)description;
-- (id)initForShardType:(int)a3 startDate:(id)a4 endDate:(id)a5;
-- (int64_t)compare:(id)a3;
+- (id)initForShardType:(int)type startDate:(id)date endDate:(id)endDate;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation HDCloudSyncShardPredicate
 
-- (id)initForShardType:(int)a3 startDate:(id)a4 endDate:(id)a5
+- (id)initForShardType:(int)type startDate:(id)date endDate:(id)endDate
 {
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   v17.receiver = self;
   v17.super_class = HDCloudSyncShardPredicate;
   v10 = [(HDCloudSyncShardPredicate *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [dateCopy copy];
     startDate = v11->_startDate;
     v11->_startDate = v12;
 
-    v14 = [v9 copy];
+    v14 = [endDateCopy copy];
     endDate = v11->_endDate;
     v11->_endDate = v14;
   }
@@ -33,13 +33,13 @@
   return v11;
 }
 
-- (HDCloudSyncShardPredicate)initWithCodableShardPredicate:(id)a3
+- (HDCloudSyncShardPredicate)initWithCodableShardPredicate:(id)predicate
 {
-  v4 = a3;
-  if ([v4 hasStartDate])
+  predicateCopy = predicate;
+  if ([predicateCopy hasStartDate])
   {
     v5 = MEMORY[0x277CBEAA8];
-    [v4 startDate];
+    [predicateCopy startDate];
     v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -48,10 +48,10 @@
     v6 = 0;
   }
 
-  if ([v4 hasEndDate])
+  if ([predicateCopy hasEndDate])
   {
     v7 = MEMORY[0x277CBEAA8];
-    [v4 endDate];
+    [predicateCopy endDate];
     v8 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -60,7 +60,7 @@
     v8 = 0;
   }
 
-  v9 = -[HDCloudSyncShardPredicate initForShardType:startDate:endDate:](self, "initForShardType:startDate:endDate:", [v4 type], v6, v8);
+  v9 = -[HDCloudSyncShardPredicate initForShardType:startDate:endDate:](self, "initForShardType:startDate:endDate:", [predicateCopy type], v6, v8);
 
   return v9;
 }
@@ -86,29 +86,29 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if (self->_type != v4[2])
+  if (self->_type != equalCopy[2])
   {
     goto LABEL_9;
   }
 
   startDate = self->_startDate;
-  v6 = *(v4 + 2);
+  v6 = *(equalCopy + 2);
   if (startDate != v6 && (!v6 || ![(NSDate *)startDate isEqual:?]))
   {
     goto LABEL_9;
   }
 
   endDate = self->_endDate;
-  v8 = *(v4 + 3);
+  v8 = *(equalCopy + 3);
   if (endDate == v8)
   {
     v9 = 1;
@@ -138,14 +138,14 @@ LABEL_10:
   return v4 ^ [(NSDate *)self->_endDate hash];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HDCloudSyncStore.m" lineNumber:1022 description:{@"Invalid parameter not satisfying: %@", @"[other isKindOfClass:HDCloudSyncShardPredicate.class]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncStore.m" lineNumber:1022 description:{@"Invalid parameter not satisfying: %@", @"[other isKindOfClass:HDCloudSyncShardPredicate.class]"}];
   }
 
   type = self->_type;
@@ -169,8 +169,8 @@ LABEL_10:
     v8 = v7;
   }
 
-  v9 = [v5 type];
-  if (v9 == 2)
+  type = [compareCopy type];
+  if (type == 2)
   {
     v10 = 2;
   }
@@ -180,7 +180,7 @@ LABEL_10:
     v10 = 1;
   }
 
-  if (v9 == 1)
+  if (type == 1)
   {
     v10 = 3;
   }
@@ -199,14 +199,14 @@ LABEL_18:
   }
 
   endDate = self->_endDate;
-  v13 = [v5 endDate];
+  endDate = [compareCopy endDate];
 
   if (endDate)
   {
-    if (v13)
+    if (endDate)
     {
-      v14 = [v5 endDate];
-      v11 = [v14 compare:self->_endDate];
+      endDate2 = [compareCopy endDate];
+      v11 = [endDate2 compare:self->_endDate];
 
       goto LABEL_25;
     }
@@ -214,7 +214,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (v13)
+  if (endDate)
   {
     v11 = -1;
   }

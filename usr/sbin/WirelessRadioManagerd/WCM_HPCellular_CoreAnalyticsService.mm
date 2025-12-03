@@ -1,10 +1,10 @@
 @interface WCM_HPCellular_CoreAnalyticsService
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)singleton;
 - (WCM_HPCellular_CoreAnalyticsService)init;
 - (void)resetHPCellularCoexStatsMetrics;
 - (void)submitHPCellularCoexStats;
-- (void)updateHPCellularCoexStatsWithBtDeviceCount:(unint64_t)a3 a2dpDeviceCount:(unint64_t)a4 escoDeviceCount:(unint64_t)a5 scoDeviceCount:(unint64_t)a6 hidDeviceCount:(unint64_t)a7 leDeviceCount:(unint64_t)a8 leaDeviceCount:(unint64_t)a9 llaDeviceCount:(unint64_t)a10;
+- (void)updateHPCellularCoexStatsWithBtDeviceCount:(unint64_t)count a2dpDeviceCount:(unint64_t)deviceCount escoDeviceCount:(unint64_t)escoDeviceCount scoDeviceCount:(unint64_t)scoDeviceCount hidDeviceCount:(unint64_t)hidDeviceCount leDeviceCount:(unint64_t)leDeviceCount leaDeviceCount:(unint64_t)leaDeviceCount llaDeviceCount:(unint64_t)self0;
 @end
 
 @implementation WCM_HPCellular_CoreAnalyticsService
@@ -14,7 +14,7 @@
   result = qword_1002B7EC0;
   if (!qword_1002B7EC0)
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___WCM_HPCellular_CoreAnalyticsService;
     result = [objc_msgSendSuper2(&v4 allocWithZone:{0), "init"}];
     qword_1002B7EC0 = result;
@@ -23,11 +23,11 @@
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 singleton];
+  singleton = [self singleton];
 
-  return v3;
+  return singleton;
 }
 
 - (WCM_HPCellular_CoreAnalyticsService)init
@@ -46,48 +46,48 @@
   [WCM_Logging logLevel:4 message:@"HPCellularCA: Reset HPCellularCoexStat"];
 }
 
-- (void)updateHPCellularCoexStatsWithBtDeviceCount:(unint64_t)a3 a2dpDeviceCount:(unint64_t)a4 escoDeviceCount:(unint64_t)a5 scoDeviceCount:(unint64_t)a6 hidDeviceCount:(unint64_t)a7 leDeviceCount:(unint64_t)a8 leaDeviceCount:(unint64_t)a9 llaDeviceCount:(unint64_t)a10
+- (void)updateHPCellularCoexStatsWithBtDeviceCount:(unint64_t)count a2dpDeviceCount:(unint64_t)deviceCount escoDeviceCount:(unint64_t)escoDeviceCount scoDeviceCount:(unint64_t)scoDeviceCount hidDeviceCount:(unint64_t)hidDeviceCount leDeviceCount:(unint64_t)leDeviceCount leaDeviceCount:(unint64_t)leaDeviceCount llaDeviceCount:(unint64_t)self0
 {
-  leaMaxDeviceCount = a9;
-  v10 = a10;
+  leaMaxDeviceCount = leaDeviceCount;
+  llaDeviceCountCopy = llaDeviceCount;
   btMaxDeviceCount = self->_btMaxDeviceCount;
   a2dpMaxDeviceCount = self->_a2dpMaxDeviceCount;
-  if (btMaxDeviceCount <= a3)
+  if (btMaxDeviceCount <= count)
   {
-    btMaxDeviceCount = a3;
+    btMaxDeviceCount = count;
   }
 
-  if (a2dpMaxDeviceCount <= a4)
+  if (a2dpMaxDeviceCount <= deviceCount)
   {
-    a2dpMaxDeviceCount = a4;
+    a2dpMaxDeviceCount = deviceCount;
   }
 
   escoMaxDeviceCount = self->_escoMaxDeviceCount;
   scoMaxDeviceCount = self->_scoMaxDeviceCount;
-  if (escoMaxDeviceCount <= a5)
+  if (escoMaxDeviceCount <= escoDeviceCount)
   {
-    escoMaxDeviceCount = a5;
+    escoMaxDeviceCount = escoDeviceCount;
   }
 
-  if (scoMaxDeviceCount <= a6)
+  if (scoMaxDeviceCount <= scoDeviceCount)
   {
-    scoMaxDeviceCount = a6;
+    scoMaxDeviceCount = scoDeviceCount;
   }
 
   hidMaxDeviceCount = self->_hidMaxDeviceCount;
   leMaxDeviceCount = self->_leMaxDeviceCount;
-  if (hidMaxDeviceCount <= a7)
+  if (hidMaxDeviceCount <= hidDeviceCount)
   {
-    hidMaxDeviceCount = a7;
+    hidMaxDeviceCount = hidDeviceCount;
   }
 
-  if (leMaxDeviceCount <= a8)
+  if (leMaxDeviceCount <= leDeviceCount)
   {
-    leMaxDeviceCount = a8;
+    leMaxDeviceCount = leDeviceCount;
   }
 
   llaMaxDeviceCount = self->_llaMaxDeviceCount;
-  if (self->_leaMaxDeviceCount > a9)
+  if (self->_leaMaxDeviceCount > leaDeviceCount)
   {
     leaMaxDeviceCount = self->_leaMaxDeviceCount;
   }
@@ -98,14 +98,14 @@
   self->_scoMaxDeviceCount = scoMaxDeviceCount;
   self->_hidMaxDeviceCount = hidMaxDeviceCount;
   self->_leMaxDeviceCount = leMaxDeviceCount;
-  if (llaMaxDeviceCount > a10)
+  if (llaMaxDeviceCount > llaDeviceCount)
   {
-    v10 = llaMaxDeviceCount;
+    llaDeviceCountCopy = llaMaxDeviceCount;
   }
 
   self->_leaMaxDeviceCount = leaMaxDeviceCount;
-  self->_llaMaxDeviceCount = v10;
-  [WCM_Logging logLevel:4 message:@"HPCellularCA (updateHPCellularCoexStatsWithBtDeviceCount): [btMaxDeviceCount = %d, a2dpMaxDeviceCount = %d, escoMaxDeviceCount = %d, scoMaxDeviceCount = %d, hidMaxDeviceCount = %d, leMaxDeviceCount = %d, leaMaxDeviceCount = %d, llaMaxDeviceCount = %d]", btMaxDeviceCount, a2dpMaxDeviceCount, escoMaxDeviceCount, scoMaxDeviceCount, hidMaxDeviceCount, leMaxDeviceCount, leaMaxDeviceCount, v10];
+  self->_llaMaxDeviceCount = llaDeviceCountCopy;
+  [WCM_Logging logLevel:4 message:@"HPCellularCA (updateHPCellularCoexStatsWithBtDeviceCount): [btMaxDeviceCount = %d, a2dpMaxDeviceCount = %d, escoMaxDeviceCount = %d, scoMaxDeviceCount = %d, hidMaxDeviceCount = %d, leMaxDeviceCount = %d, leaMaxDeviceCount = %d, llaMaxDeviceCount = %d]", btMaxDeviceCount, a2dpMaxDeviceCount, escoMaxDeviceCount, scoMaxDeviceCount, hidMaxDeviceCount, leMaxDeviceCount, leaMaxDeviceCount, llaDeviceCountCopy];
 }
 
 - (void)submitHPCellularCoexStats

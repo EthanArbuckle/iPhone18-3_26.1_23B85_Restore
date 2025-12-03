@@ -3,9 +3,9 @@
 + (id)cellularOutrankPerformance;
 + (id)cellularOutrankPrivateNetwork;
 + (id)cellularOutrankSecurity;
-- (WFCellularOutrankIssue)initWithSubType:(unint64_t)a3;
-- (id)_cellularOutrankSubTypeToString:(unint64_t)a3;
-- (id)_titleForSubType:(unint64_t)a3;
+- (WFCellularOutrankIssue)initWithSubType:(unint64_t)type;
+- (id)_cellularOutrankSubTypeToString:(unint64_t)string;
+- (id)_titleForSubType:(unint64_t)type;
 @end
 
 @implementation WFCellularOutrankIssue
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (WFCellularOutrankIssue)initWithSubType:(unint64_t)a3
+- (WFCellularOutrankIssue)initWithSubType:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = WFCellularOutrankIssue;
@@ -47,12 +47,12 @@
   if (v4)
   {
     v4->_subtitleOnlyIssue = 1;
-    v6 = [(WFCellularOutrankIssue *)v4 _titleForSubType:a3];
+    v6 = [(WFCellularOutrankIssue *)v4 _titleForSubType:type];
     issueShortTitle = v5->_issueShortTitle;
     v5->_issueShortTitle = v6;
 
     objc_storeStrong(&v5->_issueTitle, v5->_issueShortTitle);
-    v8 = [(WFCellularOutrankIssue *)v5 _cellularOutrankSubTypeToString:a3];
+    v8 = [(WFCellularOutrankIssue *)v5 _cellularOutrankSubTypeToString:type];
     typeString = v5->_typeString;
     v5->_typeString = v8;
   }
@@ -60,16 +60,16 @@
   return v5;
 }
 
-- (id)_titleForSubType:(unint64_t)a3
+- (id)_titleForSubType:(unint64_t)type
 {
-  if (a3 - 1 > 7)
+  if (type - 1 > 7)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_279EC5BC0[a3 - 1];
+    v3 = off_279EC5BC0[type - 1];
   }
 
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -78,16 +78,16 @@
   return v5;
 }
 
-- (id)_cellularOutrankSubTypeToString:(unint64_t)a3
+- (id)_cellularOutrankSubTypeToString:(unint64_t)string
 {
-  if (a3 - 1 > 7)
+  if (string - 1 > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_279EC5C00[a3 - 1];
+    return off_279EC5C00[string - 1];
   }
 }
 

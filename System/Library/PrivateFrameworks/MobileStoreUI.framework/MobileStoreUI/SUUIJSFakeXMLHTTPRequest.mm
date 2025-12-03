@@ -2,27 +2,27 @@
 - (IKJSXMLDocument)responseXML;
 - (NSString)responseText;
 - (NSString)statusText;
-- (SUUIJSFakeXMLHTTPRequest)initWithAppContext:(id)a3 data:(id)a4 URLResponse:(id)a5 performanceMetrics:(id)a6;
+- (SUUIJSFakeXMLHTTPRequest)initWithAppContext:(id)context data:(id)data URLResponse:(id)response performanceMetrics:(id)metrics;
 - (id)getAllResponseHeaders;
-- (id)getResponseHeader:(id)a3;
+- (id)getResponseHeader:(id)header;
 @end
 
 @implementation SUUIJSFakeXMLHTTPRequest
 
-- (SUUIJSFakeXMLHTTPRequest)initWithAppContext:(id)a3 data:(id)a4 URLResponse:(id)a5 performanceMetrics:(id)a6
+- (SUUIJSFakeXMLHTTPRequest)initWithAppContext:(id)context data:(id)data URLResponse:(id)response performanceMetrics:(id)metrics
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  responseCopy = response;
+  metricsCopy = metrics;
   v17.receiver = self;
   v17.super_class = SUUIJSFakeXMLHTTPRequest;
-  v14 = [(IKJSObject *)&v17 initWithAppContext:a3];
+  v14 = [(IKJSObject *)&v17 initWithAppContext:context];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_data, a4);
-    objc_storeStrong(&v15->_performanceMetrics, a6);
-    objc_storeStrong(&v15->_response, a5);
+    objc_storeStrong(&v14->_data, data);
+    objc_storeStrong(&v15->_performanceMetrics, metrics);
+    objc_storeStrong(&v15->_response, response);
   }
 
   return v15;
@@ -30,27 +30,27 @@
 
 - (id)getAllResponseHeaders
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(NSHTTPURLResponse *)self->_response allHeaderFields];
+  string = [MEMORY[0x277CCAB68] string];
+  allHeaderFields = [(NSHTTPURLResponse *)self->_response allHeaderFields];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SUUIJSFakeXMLHTTPRequest_getAllResponseHeaders__block_invoke;
   v7[3] = &unk_2798FBFF8;
-  v5 = v3;
+  v5 = string;
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [allHeaderFields enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-- (id)getResponseHeader:(id)a3
+- (id)getResponseHeader:(id)header
 {
-  if (a3)
+  if (header)
   {
     response = self->_response;
-    v4 = a3;
-    v5 = [(NSHTTPURLResponse *)response allHeaderFields];
-    v6 = [v5 objectForKey:v4];
+    headerCopy = header;
+    allHeaderFields = [(NSHTTPURLResponse *)response allHeaderFields];
+    v6 = [allHeaderFields objectForKey:headerCopy];
   }
 
   else
@@ -71,13 +71,13 @@
 - (IKJSXMLDocument)responseXML
 {
   v3 = objc_alloc(NSClassFromString(&cfstr_Ikjsxmldomimpl.isa));
-  v4 = [(IKJSObject *)self appContext];
-  v5 = [v3 initWithAppContext:v4];
+  appContext = [(IKJSObject *)self appContext];
+  v5 = [v3 initWithAppContext:appContext];
 
-  v6 = [v5 createLSInput];
-  [v6 setByteStream:self->_data];
+  createLSInput = [v5 createLSInput];
+  [createLSInput setByteStream:self->_data];
   v7 = [v5 createLSParser:1 :0];
-  v8 = [v7 parse:v6];
+  v8 = [v7 parse:createLSInput];
 
   return v8;
 }
@@ -85,9 +85,9 @@
 - (NSString)statusText
 {
   v2 = MEMORY[0x277CBAB48];
-  v3 = [(NSHTTPURLResponse *)self->_response statusCode];
+  statusCode = [(NSHTTPURLResponse *)self->_response statusCode];
 
-  return [v2 localizedStringForStatusCode:v3];
+  return [v2 localizedStringForStatusCode:statusCode];
 }
 
 @end

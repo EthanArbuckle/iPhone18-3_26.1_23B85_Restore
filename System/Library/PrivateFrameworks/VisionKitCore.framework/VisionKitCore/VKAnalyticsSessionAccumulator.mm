@@ -7,9 +7,9 @@
 - (NSMutableArray)subjectEvents;
 - (NSMutableArray)textEvents;
 - (NSMutableArray)vsEvents;
-- (VKAnalyticsSessionAccumulator)initWithAnalysis:(id)a3 customIdentifier:(id)a4;
+- (VKAnalyticsSessionAccumulator)initWithAnalysis:(id)analysis customIdentifier:(id)identifier;
 - (id)description;
-- (void)addEvent:(id)a3;
+- (void)addEvent:(id)event;
 - (void)calculateAverageSelectedLengthFromTextEvents;
 - (void)calculateDidActivateRegex;
 - (void)calculateDidHighlightAll;
@@ -18,24 +18,24 @@
 
 @implementation VKAnalyticsSessionAccumulator
 
-- (VKAnalyticsSessionAccumulator)initWithAnalysis:(id)a3 customIdentifier:(id)a4
+- (VKAnalyticsSessionAccumulator)initWithAnalysis:(id)analysis customIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  analysisCopy = analysis;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = VKAnalyticsSessionAccumulator;
   v9 = [(VKAnalyticsSessionAccumulator *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_analysis, a3);
+    objc_storeStrong(&v9->_analysis, analysis);
     v11 = [MEMORY[0x1E695DF00] now];
     sessionOpenDate = v10->_sessionOpenDate;
     v10->_sessionOpenDate = v11;
 
-    if (v8)
+    if (identifierCopy)
     {
-      v13 = v8;
+      v13 = identifierCopy;
       bundleIdentifier = v10->_bundleIdentifier;
       v10->_bundleIdentifier = v13;
     }
@@ -43,9 +43,9 @@
     else
     {
       bundleIdentifier = [MEMORY[0x1E696AAE8] mainBundle];
-      v15 = [bundleIdentifier bundleIdentifier];
+      bundleIdentifier = [bundleIdentifier bundleIdentifier];
       v16 = v10->_bundleIdentifier;
-      v10->_bundleIdentifier = v15;
+      v10->_bundleIdentifier = bundleIdentifier;
     }
 
     v10->_isPerformingAutomatedTest = +[VKCInternalSettings isPerformingAutomatedTest];
@@ -54,69 +54,69 @@
   return v10;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 type];
-  if (v4 <= 4)
+  eventCopy = event;
+  type = [eventCopy type];
+  if (type <= 4)
   {
-    switch(v4)
+    switch(type)
     {
       case 2:
-        v5 = [(VKAnalyticsSessionAccumulator *)self textEvents];
-        v6 = [v8 textEvent];
+        textEvents = [(VKAnalyticsSessionAccumulator *)self textEvents];
+        textEvent = [eventCopy textEvent];
         break;
       case 3:
-        v5 = [(VKAnalyticsSessionAccumulator *)self ddEvents];
-        v6 = [v8 ddEvent];
+        textEvents = [(VKAnalyticsSessionAccumulator *)self ddEvents];
+        textEvent = [eventCopy ddEvent];
         break;
       case 4:
-        v5 = [(VKAnalyticsSessionAccumulator *)self mrcEvents];
-        v6 = [v8 mrcEvent];
+        textEvents = [(VKAnalyticsSessionAccumulator *)self mrcEvents];
+        textEvent = [eventCopy mrcEvent];
         break;
       default:
         goto LABEL_18;
     }
   }
 
-  else if (v4 > 6)
+  else if (type > 6)
   {
-    if (v4 == 7)
+    if (type == 7)
     {
-      v5 = [(VKAnalyticsSessionAccumulator *)self subjectEvents];
-      v6 = [v8 subjectEvent];
+      textEvents = [(VKAnalyticsSessionAccumulator *)self subjectEvents];
+      textEvent = [eventCopy subjectEvent];
     }
 
     else
     {
-      if (v4 != 8)
+      if (type != 8)
       {
         goto LABEL_18;
       }
 
-      v5 = [(VKAnalyticsSessionAccumulator *)self interactionEvents];
-      v6 = [v8 interactionEvent];
+      textEvents = [(VKAnalyticsSessionAccumulator *)self interactionEvents];
+      textEvent = [eventCopy interactionEvent];
     }
   }
 
   else
   {
-    if (v4 == 5)
+    if (type == 5)
     {
-      v5 = [(VKAnalyticsSessionAccumulator *)self quickActionEvents];
-      [v8 quickActionEvent];
+      textEvents = [(VKAnalyticsSessionAccumulator *)self quickActionEvents];
+      [eventCopy quickActionEvent];
     }
 
     else
     {
-      v5 = [(VKAnalyticsSessionAccumulator *)self vsEvents];
-      [v8 visualSearchEvent];
+      textEvents = [(VKAnalyticsSessionAccumulator *)self vsEvents];
+      [eventCopy visualSearchEvent];
     }
-    v6 = ;
+    textEvent = ;
   }
 
-  v7 = v6;
-  [v5 addObject:v6];
+  v7 = textEvent;
+  [textEvents addObject:textEvent];
 
 LABEL_18:
 }
@@ -229,12 +229,12 @@ LABEL_18:
 - (void)close
 {
   v3 = [MEMORY[0x1E695DF00] now];
-  v4 = [(VKAnalyticsSessionAccumulator *)self sessionOpenDate];
-  [v3 timeIntervalSinceDate:v4];
+  sessionOpenDate = [(VKAnalyticsSessionAccumulator *)self sessionOpenDate];
+  [v3 timeIntervalSinceDate:sessionOpenDate];
   [(VKAnalyticsSessionAccumulator *)self setSessionDuration:?];
 
-  v5 = [(VKAnalyticsSessionAccumulator *)self analysis];
-  v11 = [v5 imageAnalysisResult];
+  analysis = [(VKAnalyticsSessionAccumulator *)self analysis];
+  imageAnalysisResult = [analysis imageAnalysisResult];
 
   [(VKAnalyticsSessionAccumulator *)self setNumberOfDDEvents:[(NSMutableArray *)self->_ddEvents count]];
   [(VKAnalyticsSessionAccumulator *)self setNumberOfVSEvents:[(NSMutableArray *)self->_vsEvents count]];
@@ -242,18 +242,18 @@ LABEL_18:
   [(VKAnalyticsSessionAccumulator *)self setNumberOfMRCEvents:[(NSMutableArray *)self->_mrcEvents count]];
   [(VKAnalyticsSessionAccumulator *)self setNumberOfQuickActionEvents:[(NSMutableArray *)self->_quickActionEvents count]];
   [(VKAnalyticsSessionAccumulator *)self setNumberOfSubjectEvents:[(NSMutableArray *)self->_subjectEvents count]];
-  v6 = [v11 mrcDataDetectorElements];
-  -[VKAnalyticsSessionAccumulator setNumberOfMRCElements:](self, "setNumberOfMRCElements:", [v6 count]);
+  mrcDataDetectorElements = [imageAnalysisResult mrcDataDetectorElements];
+  -[VKAnalyticsSessionAccumulator setNumberOfMRCElements:](self, "setNumberOfMRCElements:", [mrcDataDetectorElements count]);
 
-  v7 = [v11 visualSearchResult];
-  v8 = [v7 resultItems];
-  -[VKAnalyticsSessionAccumulator setNumberOfVSElements:](self, "setNumberOfVSElements:", [v8 count]);
+  visualSearchResult = [imageAnalysisResult visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
+  -[VKAnalyticsSessionAccumulator setNumberOfVSElements:](self, "setNumberOfVSElements:", [resultItems count]);
 
-  v9 = [v11 dataDetectors];
-  -[VKAnalyticsSessionAccumulator setNumberOfDDElements:](self, "setNumberOfDDElements:", [v9 count]);
+  dataDetectors = [imageAnalysisResult dataDetectors];
+  -[VKAnalyticsSessionAccumulator setNumberOfDDElements:](self, "setNumberOfDDElements:", [dataDetectors count]);
 
-  v10 = [v11 text];
-  -[VKAnalyticsSessionAccumulator setTextLength:](self, "setTextLength:", [v10 length]);
+  text = [imageAnalysisResult text];
+  -[VKAnalyticsSessionAccumulator setTextLength:](self, "setTextLength:", [text length]);
 
   [(VKAnalyticsSessionAccumulator *)self calculateAverageSelectedLengthFromTextEvents];
   [(VKAnalyticsSessionAccumulator *)self calculateDidHighlightAll];
@@ -270,14 +270,14 @@ LABEL_18:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(VKAnalyticsSessionAccumulator *)self textEvents];
+  textEvents = [(VKAnalyticsSessionAccumulator *)self textEvents];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77__VKAnalyticsSessionAccumulator_calculateAverageSelectedLengthFromTextEvents__block_invoke;
   v6[3] = &unk_1E7BE5968;
   v6[4] = &v11;
   v6[5] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [textEvents enumerateObjectsUsingBlock:v6];
 
   [(VKAnalyticsSessionAccumulator *)self setNumberOfSelectionChanges:v8[3]];
   v4 = v8[3];
@@ -308,14 +308,14 @@ void __77__VKAnalyticsSessionAccumulator_calculateAverageSelectedLengthFromTextE
 
 - (void)calculateDidHighlightAll
 {
-  v3 = [(VKAnalyticsSessionAccumulator *)self interactionEvents];
-  -[VKAnalyticsSessionAccumulator setDidActivateHighlightAll:](self, "setDidActivateHighlightAll:", [v3 vk_containsObjectPassingTest:&__block_literal_global_14]);
+  interactionEvents = [(VKAnalyticsSessionAccumulator *)self interactionEvents];
+  -[VKAnalyticsSessionAccumulator setDidActivateHighlightAll:](self, "setDidActivateHighlightAll:", [interactionEvents vk_containsObjectPassingTest:&__block_literal_global_14]);
 }
 
 - (void)calculateDidActivateRegex
 {
-  v3 = [(VKAnalyticsSessionAccumulator *)self interactionEvents];
-  -[VKAnalyticsSessionAccumulator setDidActivateRegex:](self, "setDidActivateRegex:", [v3 vk_containsObjectPassingTest:&__block_literal_global_199]);
+  interactionEvents = [(VKAnalyticsSessionAccumulator *)self interactionEvents];
+  -[VKAnalyticsSessionAccumulator setDidActivateRegex:](self, "setDidActivateRegex:", [interactionEvents vk_containsObjectPassingTest:&__block_literal_global_199]);
 }
 
 - (NSDictionary)coreAnalyticsDictionary
@@ -372,8 +372,8 @@ void __77__VKAnalyticsSessionAccumulator_calculateAverageSelectedLengthFromTextE
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsSessionAccumulator isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v24[15] = v11;
   v23[16] = @"bundleIdentifier";
-  v12 = [(VKAnalyticsSessionAccumulator *)self bundleIdentifier];
-  v24[16] = v12;
+  bundleIdentifier = [(VKAnalyticsSessionAccumulator *)self bundleIdentifier];
+  v24[16] = bundleIdentifier;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:17];
 
   return v13;
@@ -387,23 +387,23 @@ void __77__VKAnalyticsSessionAccumulator_calculateAverageSelectedLengthFromTextE
   v23 = [(VKAnalyticsSessionAccumulator *)&v25 description];
   [(VKAnalyticsSessionAccumulator *)self sessionDuration];
   v4 = v3;
-  v22 = [(VKAnalyticsSessionAccumulator *)self numberOfTextEvents];
-  v21 = [(VKAnalyticsSessionAccumulator *)self numberOfMRCEvents];
-  v20 = [(VKAnalyticsSessionAccumulator *)self numberOfDDEvents];
-  v19 = [(VKAnalyticsSessionAccumulator *)self numberOfVSEvents];
-  v18 = [(VKAnalyticsSessionAccumulator *)self numberOfQuickActionEvents];
-  v17 = [(VKAnalyticsSessionAccumulator *)self numberOfSubjectEvents];
-  v5 = [(VKAnalyticsSessionAccumulator *)self numberOfMRCElements];
-  v6 = [(VKAnalyticsSessionAccumulator *)self numberOfDDElements];
-  v7 = [(VKAnalyticsSessionAccumulator *)self numberOfVSElements];
-  v8 = [(VKAnalyticsSessionAccumulator *)self textLength];
-  v9 = [(VKAnalyticsSessionAccumulator *)self averageTextSelectionLength];
-  v10 = [(VKAnalyticsSessionAccumulator *)self numberOfSelectionChanges];
+  numberOfTextEvents = [(VKAnalyticsSessionAccumulator *)self numberOfTextEvents];
+  numberOfMRCEvents = [(VKAnalyticsSessionAccumulator *)self numberOfMRCEvents];
+  numberOfDDEvents = [(VKAnalyticsSessionAccumulator *)self numberOfDDEvents];
+  numberOfVSEvents = [(VKAnalyticsSessionAccumulator *)self numberOfVSEvents];
+  numberOfQuickActionEvents = [(VKAnalyticsSessionAccumulator *)self numberOfQuickActionEvents];
+  numberOfSubjectEvents = [(VKAnalyticsSessionAccumulator *)self numberOfSubjectEvents];
+  numberOfMRCElements = [(VKAnalyticsSessionAccumulator *)self numberOfMRCElements];
+  numberOfDDElements = [(VKAnalyticsSessionAccumulator *)self numberOfDDElements];
+  numberOfVSElements = [(VKAnalyticsSessionAccumulator *)self numberOfVSElements];
+  textLength = [(VKAnalyticsSessionAccumulator *)self textLength];
+  averageTextSelectionLength = [(VKAnalyticsSessionAccumulator *)self averageTextSelectionLength];
+  numberOfSelectionChanges = [(VKAnalyticsSessionAccumulator *)self numberOfSelectionChanges];
   v11 = VKMUIStringForBool([(VKAnalyticsSessionAccumulator *)self didActivateHighlightAll]);
   v12 = VKMUIStringForBool([(VKAnalyticsSessionAccumulator *)self didActivateRegex]);
   v13 = VKMUIStringForBool([(VKAnalyticsSessionAccumulator *)self isPerformingAutomatedTest]);
-  v14 = [(VKAnalyticsSessionAccumulator *)self bundleIdentifier];
-  v15 = [v24 stringWithFormat:@"%@ \n sessionDuration: %f seconds\n numberOfTextEvents: %lu \n numberOfMRCEvents: %lu \n numberOfDDEvents: %lu \n numberOfVSEvents: %lu \n numberOfQuickActionEvents: %lu \n numberOfSubjectEvents: %lu \n numberOfMRCElements: %lu \n numberOfDDElements: %lu \n numberOfVSElements: %lu \n textLength: %lu \n averageTextSelectionLength: %lu \n numberOfSelectionChanges: %lu \n didActivateHighlightAll: %@ \n didActivateRegexHighlight: %@ \n automatedTest: %@ \n bundleIdentifier: %@ \n ", v23, v4, v22, v21, v20, v19, v18, v17, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14];
+  bundleIdentifier = [(VKAnalyticsSessionAccumulator *)self bundleIdentifier];
+  v15 = [v24 stringWithFormat:@"%@ \n sessionDuration: %f seconds\n numberOfTextEvents: %lu \n numberOfMRCEvents: %lu \n numberOfDDEvents: %lu \n numberOfVSEvents: %lu \n numberOfQuickActionEvents: %lu \n numberOfSubjectEvents: %lu \n numberOfMRCElements: %lu \n numberOfDDElements: %lu \n numberOfVSElements: %lu \n textLength: %lu \n averageTextSelectionLength: %lu \n numberOfSelectionChanges: %lu \n didActivateHighlightAll: %@ \n didActivateRegexHighlight: %@ \n automatedTest: %@ \n bundleIdentifier: %@ \n ", v23, v4, numberOfTextEvents, numberOfMRCEvents, numberOfDDEvents, numberOfVSEvents, numberOfQuickActionEvents, numberOfSubjectEvents, numberOfMRCElements, numberOfDDElements, numberOfVSElements, textLength, averageTextSelectionLength, numberOfSelectionChanges, v11, v12, v13, bundleIdentifier];
 
   return v15;
 }

@@ -30,10 +30,10 @@
 - (BOOL)processHasUserSafetyEntitlements
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
+  entitlementVerifier = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
   v8[0] = @"com.apple.developer.usersafety.client";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v4 = [v2 currentProcessHasArrayWithStringValue:@"analysis" forAnyEntitlement:v3 error:0];
+  v4 = [entitlementVerifier currentProcessHasArrayWithStringValue:@"analysis" forAnyEntitlement:v3 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -50,8 +50,8 @@
 
 - (BOOL)processHasCommunicationFilterEntitlements
 {
-  v2 = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
-  v3 = [v2 currentProcessHasBooleanEntitlement:@"com.apple.private.communicationsfilter" error:0];
+  entitlementVerifier = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
+  v3 = [entitlementVerifier currentProcessHasBooleanEntitlement:@"com.apple.private.communicationsfilter" error:0];
 
   if ((v3 & 1) == 0)
   {
@@ -68,8 +68,8 @@
 
 - (BOOL)processCanReadCommunicationSafetySettings
 {
-  v2 = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
-  v3 = [v2 currentProcessHasArrayWithStringValue:@"com.apple.communicationSafetySettings" forAnyEntitlement:&unk_1F0D4B928 error:0];
+  entitlementVerifier = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
+  v3 = [entitlementVerifier currentProcessHasArrayWithStringValue:@"com.apple.communicationSafetySettings" forAnyEntitlement:&unk_1F0D4B928 error:0];
 
   if ((v3 & 1) == 0)
   {
@@ -86,11 +86,11 @@
 
 - (BOOL)processHasScreentimeEntitlements
 {
-  v3 = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
-  v4 = [v3 currentProcessHasBooleanEntitlement:@"com.apple.private.screentime-communication" error:0];
+  entitlementVerifier = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
+  v4 = [entitlementVerifier currentProcessHasBooleanEntitlement:@"com.apple.private.screentime-communication" error:0];
 
-  v5 = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
-  v6 = v4 & [v5 currentProcessHasArrayWithStringValue:@"com.apple.ScreenTimeAgent.communication" forAnyEntitlement:&unk_1F0D4B910 error:0];
+  entitlementVerifier2 = [(CNSensitiveContentUIEntitlementVerifier *)self entitlementVerifier];
+  v6 = v4 & [entitlementVerifier2 currentProcessHasArrayWithStringValue:@"com.apple.ScreenTimeAgent.communication" forAnyEntitlement:&unk_1F0D4B910 error:0];
 
   if ((v6 & 1) == 0)
   {

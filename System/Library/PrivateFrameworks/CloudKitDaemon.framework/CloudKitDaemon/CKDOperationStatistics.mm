@@ -1,24 +1,24 @@
 @interface CKDOperationStatistics
-+ (id)CKStatusReportForStatistics:(id)a3;
-- (CKDOperationStatistics)initWithOperationClassName:(id)a3;
-- (id)_trimmedError:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_addMetrics:(id)a3 toAggregate:(id)a4;
-- (void)addOperation:(id)a3 cloudKitMetrics:(id)a4 MMCSMetrics:(id)a5;
++ (id)CKStatusReportForStatistics:(id)statistics;
+- (CKDOperationStatistics)initWithOperationClassName:(id)name;
+- (id)_trimmedError:(id)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_addMetrics:(id)metrics toAggregate:(id)aggregate;
+- (void)addOperation:(id)operation cloudKitMetrics:(id)metrics MMCSMetrics:(id)sMetrics;
 @end
 
 @implementation CKDOperationStatistics
 
-- (CKDOperationStatistics)initWithOperationClassName:(id)a3
+- (CKDOperationStatistics)initWithOperationClassName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = CKDOperationStatistics;
   v6 = [(CKDOperationStatistics *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operationClassName, a3);
+    objc_storeStrong(&v6->_operationClassName, name);
     v8 = objc_opt_new();
     recentErrorsByDate = v7->_recentErrorsByDate;
     v7->_recentErrorsByDate = v8;
@@ -31,7 +31,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKDOperationStatistics alloc];
   v7 = objc_msgSend_operationClassName(self, v5, v6);
@@ -58,53 +58,53 @@
   return v9;
 }
 
-- (void)_addMetrics:(id)a3 toAggregate:(id)a4
+- (void)_addMetrics:(id)metrics toAggregate:(id)aggregate
 {
-  v68 = a4;
-  v5 = a3;
-  objc_msgSend_duration(v5, v6, v7);
+  aggregateCopy = aggregate;
+  metricsCopy = metrics;
+  objc_msgSend_duration(metricsCopy, v6, v7);
   v9 = v8;
-  objc_msgSend_duration(v68, v10, v11);
-  objc_msgSend_setDuration_(v68, v13, v14, v9 + v12);
-  objc_msgSend_queueing(v5, v15, v16);
+  objc_msgSend_duration(aggregateCopy, v10, v11);
+  objc_msgSend_setDuration_(aggregateCopy, v13, v14, v9 + v12);
+  objc_msgSend_queueing(metricsCopy, v15, v16);
   v18 = v17;
-  objc_msgSend_queueing(v68, v19, v20);
-  objc_msgSend_setQueueing_(v68, v22, v23, v18 + v21);
-  objc_msgSend_executing(v5, v24, v25);
+  objc_msgSend_queueing(aggregateCopy, v19, v20);
+  objc_msgSend_setQueueing_(aggregateCopy, v22, v23, v18 + v21);
+  objc_msgSend_executing(metricsCopy, v24, v25);
   v27 = v26;
-  objc_msgSend_executing(v68, v28, v29);
-  objc_msgSend_setExecuting_(v68, v31, v32, v27 + v30);
-  v35 = objc_msgSend_bytesUploaded(v5, v33, v34);
-  v38 = objc_msgSend_bytesUploaded(v68, v36, v37);
-  objc_msgSend_setBytesUploaded_(v68, v39, v38 + v35);
-  v42 = objc_msgSend_bytesDownloaded(v5, v40, v41);
-  v45 = objc_msgSend_bytesDownloaded(v68, v43, v44);
-  objc_msgSend_setBytesDownloaded_(v68, v46, v45 + v42);
-  v49 = objc_msgSend_connections(v5, v47, v48);
-  v52 = objc_msgSend_connections(v68, v50, v51);
-  objc_msgSend_setConnections_(v68, v53, v52 + v49);
-  v56 = objc_msgSend_connectionsCreated(v5, v54, v55);
-  v59 = objc_msgSend_connectionsCreated(v68, v57, v58);
-  objc_msgSend_setConnectionsCreated_(v68, v60, v59 + v56);
-  v63 = objc_msgSend_requestCount(v5, v61, v62);
+  objc_msgSend_executing(aggregateCopy, v28, v29);
+  objc_msgSend_setExecuting_(aggregateCopy, v31, v32, v27 + v30);
+  v35 = objc_msgSend_bytesUploaded(metricsCopy, v33, v34);
+  v38 = objc_msgSend_bytesUploaded(aggregateCopy, v36, v37);
+  objc_msgSend_setBytesUploaded_(aggregateCopy, v39, v38 + v35);
+  v42 = objc_msgSend_bytesDownloaded(metricsCopy, v40, v41);
+  v45 = objc_msgSend_bytesDownloaded(aggregateCopy, v43, v44);
+  objc_msgSend_setBytesDownloaded_(aggregateCopy, v46, v45 + v42);
+  v49 = objc_msgSend_connections(metricsCopy, v47, v48);
+  v52 = objc_msgSend_connections(aggregateCopy, v50, v51);
+  objc_msgSend_setConnections_(aggregateCopy, v53, v52 + v49);
+  v56 = objc_msgSend_connectionsCreated(metricsCopy, v54, v55);
+  v59 = objc_msgSend_connectionsCreated(aggregateCopy, v57, v58);
+  objc_msgSend_setConnectionsCreated_(aggregateCopy, v60, v59 + v56);
+  v63 = objc_msgSend_requestCount(metricsCopy, v61, v62);
 
-  v66 = objc_msgSend_requestCount(v68, v64, v65);
-  objc_msgSend_setRequestCount_(v68, v67, v66 + v63);
+  v66 = objc_msgSend_requestCount(aggregateCopy, v64, v65);
+  objc_msgSend_setRequestCount_(aggregateCopy, v67, v66 + v63);
 }
 
-- (id)_trimmedError:(id)a3
+- (id)_trimmedError:(id)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_domain(v4, v5, v6);
+  errorCopy = error;
+  v7 = objc_msgSend_domain(errorCopy, v5, v6);
   if (objc_msgSend_isEqualToString_(v7, v8, *MEMORY[0x277CBBF50]))
   {
-    v11 = objc_msgSend_code(v4, v9, v10);
+    v11 = objc_msgSend_code(errorCopy, v9, v10);
 
     if (v11 == 22)
     {
       v14 = 0;
-      v15 = v4;
+      v15 = errorCopy;
       goto LABEL_21;
     }
   }
@@ -113,12 +113,12 @@
   {
   }
 
-  v16 = objc_msgSend_userInfo(v4, v12, v13);
+  v16 = objc_msgSend_userInfo(errorCopy, v12, v13);
 
-  v19 = v4;
+  v19 = errorCopy;
   if (v16)
   {
-    v20 = objc_msgSend_userInfo(v4, v17, v18);
+    v20 = objc_msgSend_userInfo(errorCopy, v17, v18);
     v23 = objc_msgSend_mutableCopy(v20, v21, v22);
 
     v24 = *MEMORY[0x277CCA7E8];
@@ -136,7 +136,7 @@
 
     if (v33)
     {
-      v71 = v4;
+      v71 = errorCopy;
       v35 = objc_opt_new();
       v69 = v32;
       v70 = v23;
@@ -175,7 +175,7 @@
       v23 = v70;
       objc_msgSend_setObject_forKeyedSubscript_(v70, v52, v35, v69);
 
-      v4 = v71;
+      errorCopy = v71;
     }
 
     objc_msgSend_setObject_forKeyedSubscript_(v23, v34, 0, *MEMORY[0x277CBC130]);
@@ -192,8 +192,8 @@
     }
 
     v59 = objc_alloc(*v58);
-    v62 = objc_msgSend_domain(v4, v60, v61);
-    v65 = objc_msgSend_code(v4, v63, v64);
+    v62 = objc_msgSend_domain(errorCopy, v60, v61);
+    v65 = objc_msgSend_code(errorCopy, v63, v64);
     v19 = objc_msgSend_initWithDomain_code_userInfo_(v59, v66, v62, v65, v23);
   }
 
@@ -206,18 +206,18 @@ LABEL_21:
   return v14;
 }
 
-- (void)addOperation:(id)a3 cloudKitMetrics:(id)a4 MMCSMetrics:(id)a5
+- (void)addOperation:(id)operation cloudKitMetrics:(id)metrics MMCSMetrics:(id)sMetrics
 {
   v78 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  metricsCopy = metrics;
+  sMetricsCopy = sMetrics;
   os_unfair_lock_lock(&unk_280D54E98);
   ++self->_operationCount;
   v13 = objc_msgSend_aggregateCKMetrics(self, v11, v12);
-  objc_msgSend__addMetrics_toAggregate_(self, v14, v9, v13);
+  objc_msgSend__addMetrics_toAggregate_(self, v14, metricsCopy, v13);
 
-  if (v10)
+  if (sMetricsCopy)
   {
     v17 = objc_msgSend_aggregateMMCSMetrics(self, v15, v16);
 
@@ -229,14 +229,14 @@ LABEL_21:
     }
 
     v22 = objc_msgSend_aggregateMMCSMetrics(self, v18, v19);
-    objc_msgSend__addMetrics_toAggregate_(self, v23, v10, v22);
+    objc_msgSend__addMetrics_toAggregate_(self, v23, sMetricsCopy, v22);
   }
 
-  v24 = objc_msgSend_error(v8, v15, v16);
+  v24 = objc_msgSend_error(operationCopy, v15, v16);
 
   if (v24)
   {
-    v27 = objc_msgSend_error(v8, v25, v26);
+    v27 = objc_msgSend_error(operationCopy, v25, v26);
     v29 = objc_msgSend__trimmedError_(self, v28, v27);
 
     if (v29)
@@ -292,7 +292,7 @@ LABEL_21:
         v29 = v72;
       }
 
-      v63 = objc_msgSend_error(v8, v42, v43);
+      v63 = objc_msgSend_error(operationCopy, v42, v43);
       v66 = objc_msgSend_recentErrorsByDate(self, v64, v65);
       v69 = objc_msgSend_date(MEMORY[0x277CBEAA8], v67, v68);
       objc_msgSend_setObject_forKeyedSubscript_(v66, v70, v63, v69);
@@ -304,14 +304,14 @@ LABEL_21:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)CKStatusReportForStatistics:(id)a3
++ (id)CKStatusReportForStatistics:(id)statistics
 {
   v142 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  statisticsCopy = statistics;
   v4 = objc_opt_new();
   os_unfair_lock_lock(&unk_280D54E98);
-  v119 = v3;
-  objc_msgSend_sortedArrayUsingComparator_(v3, v5, &unk_28385D960);
+  v119 = statisticsCopy;
+  objc_msgSend_sortedArrayUsingComparator_(statisticsCopy, v5, &unk_28385D960);
   v136 = 0u;
   v137 = 0u;
   v138 = 0u;

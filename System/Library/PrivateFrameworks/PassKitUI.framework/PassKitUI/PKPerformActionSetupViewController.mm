@@ -1,25 +1,25 @@
 @interface PKPerformActionSetupViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
-- (PKPerformActionSetupViewController)initWithPassIdentifier:(id)a3;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
+- (PKPerformActionSetupViewController)initWithPassIdentifier:(id)identifier;
 - (PKPerformActionSetupViewControllerDelegate)delegate;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4;
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler;
 - (void)dealloc;
 - (void)didCancel;
 - (void)didFinish;
 - (void)loadView;
-- (void)setPresentationStyle:(int64_t)a3;
+- (void)setPresentationStyle:(int64_t)style;
 - (void)updateModalPresentationStyle;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKPerformActionSetupViewController
 
-- (PKPerformActionSetupViewController)initWithPassIdentifier:(id)a3
+- (PKPerformActionSetupViewController)initWithPassIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = PKPerformActionSetupViewController;
   v6 = [(PKPerformActionSetupViewController *)&v14 init];
@@ -27,7 +27,7 @@
   if (v6)
   {
     v6->_explicitPresentationStyle = 0;
-    objc_storeStrong(&v6->_passIdentifier, a3);
+    objc_storeStrong(&v6->_passIdentifier, identifier);
     objc_initWeak(&location, v7);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -72,7 +72,7 @@ void __61__PKPerformActionSetupViewController_initWithPassIdentifier___block_inv
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -82,18 +82,18 @@ void __61__PKPerformActionSetupViewController_initWithPassIdentifier___block_inv
   [(PKPerformActionSetupViewController *)&v6 dealloc];
 }
 
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   [(PKPerformActionSetupViewController *)self addChildViewController:self->_remoteVC];
-  v9 = [(PKRemotePerformActionSetupViewController *)self->_remoteVC view];
-  v10 = [(PKPerformActionSetupViewController *)self view];
-  [v10 addSubview:v9];
-  [v10 setNeedsLayout];
-  [v10 layoutIfNeeded];
-  [v9 setUserInteractionEnabled:0];
+  view = [(PKRemotePerformActionSetupViewController *)self->_remoteVC view];
+  view2 = [(PKPerformActionSetupViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
+  [view setUserInteractionEnabled:0];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKPerformActionSetupViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(PKPerformActionSetupViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
@@ -102,17 +102,17 @@ void __61__PKPerformActionSetupViewController_initWithPassIdentifier___block_inv
   v24[1] = 3221225472;
   v24[2] = __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler___block_invoke;
   v24[3] = &unk_1E8012C28;
-  v12 = v8;
+  v12 = handlerCopy;
   v25 = v12;
   v13 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v24];
   if (v13)
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v15 = [v14 fixedCoordinateSpace];
-    [v15 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v17 = v16;
     v19 = v18;
-    [v14 scale];
+    [mainScreen scale];
     [v13 setDisplayPropertiesWithScreenSize:v17 scale:{v19, v20}];
 
     passIdentifier = self->_passIdentifier;
@@ -165,67 +165,67 @@ uint64_t __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler
   return result;
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  if (self->_presentationStyle != a3 || !self->_explicitPresentationStyle)
+  if (self->_presentationStyle != style || !self->_explicitPresentationStyle)
   {
-    self->_presentationStyle = 2 * (a3 == 2);
+    self->_presentationStyle = 2 * (style == 2);
     self->_explicitPresentationStyle = 1;
     [(PKPerformActionSetupViewController *)self updateModalPresentationStyle];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = PKPerformActionSetupViewController;
-  [(PKPerformActionSetupViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PKPerformActionSetupViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(PKPerformActionSetupViewController *)self updateModalPresentationStyle];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKPerformActionSetupViewController;
-  [(PKPerformActionSetupViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PKPerformActionSetupViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(PKPerformActionSetupViewController *)self updateModalPresentationStyle];
 }
 
 - (void)updateModalPresentationStyle
 {
-  v3 = [(PKPerformActionSetupViewController *)self view];
-  v10 = [v3 window];
+  view = [(PKPerformActionSetupViewController *)self view];
+  window = [view window];
 
-  v4 = v10;
-  if (v10)
+  v4 = window;
+  if (window)
   {
-    v5 = [v10 windowScene];
-    v6 = v5;
-    if (v5)
+    windowScene = [window windowScene];
+    v6 = windowScene;
+    if (windowScene)
     {
-      v7 = [v5 interfaceOrientation];
+      interfaceOrientation = [windowScene interfaceOrientation];
       if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
       {
-        v8 = self;
+        selfCopy3 = self;
         presentationStyle = 16;
       }
 
-      else if ((v7 - 3) >= 2 && self->_explicitPresentationStyle)
+      else if ((interfaceOrientation - 3) >= 2 && self->_explicitPresentationStyle)
       {
         presentationStyle = self->_presentationStyle;
-        v8 = self;
+        selfCopy3 = self;
       }
 
       else
       {
-        v8 = self;
+        selfCopy3 = self;
         presentationStyle = 0;
       }
 
-      [(PKPerformActionSetupViewController *)v8 setModalPresentationStyle:presentationStyle];
+      [(PKPerformActionSetupViewController *)selfCopy3 setModalPresentationStyle:presentationStyle];
     }
 
-    v4 = v10;
+    v4 = window;
   }
 }
 
@@ -243,9 +243,9 @@ uint64_t __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -262,9 +262,9 @@ uint64_t __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler
   v5.receiver = self;
   v5.super_class = PKPerformActionSetupViewController;
   [(PKPerformActionSetupViewController *)&v5 loadView];
-  v3 = [(PKPerformActionSetupViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKPerformActionSetupViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -272,10 +272,10 @@ uint64_t __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler
   v5.receiver = self;
   v5.super_class = PKPerformActionSetupViewController;
   [(PKPerformActionSetupViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKPerformActionSetupViewController *)self view];
-  v4 = [(PKRemotePerformActionSetupViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKPerformActionSetupViewController *)self view];
+  view2 = [(PKRemotePerformActionSetupViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 }
 
 - (void)didCancel
@@ -301,17 +301,17 @@ uint64_t __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler
     }
   }
 
-  v9 = [(PKPerformActionSetupViewController *)self presentingViewController];
-  v10 = v9;
-  if (v9)
+  presentingViewController = [(PKPerformActionSetupViewController *)self presentingViewController];
+  v10 = presentingViewController;
+  if (presentingViewController)
   {
-    [v9 dismissViewControllerAnimated:1 completion:0];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v11 = [(PKPerformActionSetupViewController *)self navigationController];
-    v12 = [v11 popViewControllerAnimated:1];
+    navigationController = [(PKPerformActionSetupViewController *)self navigationController];
+    v12 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -338,17 +338,17 @@ uint64_t __69__PKPerformActionSetupViewController__setRemoteVC_completionHandler
     }
   }
 
-  v9 = [(PKPerformActionSetupViewController *)self presentingViewController];
-  v10 = v9;
-  if (v9)
+  presentingViewController = [(PKPerformActionSetupViewController *)self presentingViewController];
+  v10 = presentingViewController;
+  if (presentingViewController)
   {
-    [v9 dismissViewControllerAnimated:1 completion:0];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v11 = [(PKPerformActionSetupViewController *)self navigationController];
-    v12 = [v11 popViewControllerAnimated:1];
+    navigationController = [(PKPerformActionSetupViewController *)self navigationController];
+    v12 = [navigationController popViewControllerAnimated:1];
   }
 }
 

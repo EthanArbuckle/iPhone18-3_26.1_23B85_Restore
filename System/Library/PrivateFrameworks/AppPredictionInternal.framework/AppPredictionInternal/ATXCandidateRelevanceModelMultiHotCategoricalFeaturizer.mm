@@ -1,12 +1,12 @@
 @interface ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer
 - (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)init;
-- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)a3;
-- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)a3 maxCategoricalFeaturesCount:(unint64_t)a4;
-- (id)categoricalFeatureValuesForContext:(id)a3 candidate:(id)a4;
+- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)counts;
+- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)counts maxCategoricalFeaturesCount:(unint64_t)count;
+- (id)categoricalFeatureValuesForContext:(id)context candidate:(id)candidate;
 - (id)computeFeatureValueNames;
-- (id)featureVectorForContext:(id)a3 candidate:(id)a4;
+- (id)featureVectorForContext:(id)context candidate:(id)candidate;
 - (id)immutableCopy;
-- (void)observeContext:(id)a3 candidate:(id)a4;
+- (void)observeContext:(id)context candidate:(id)candidate;
 @end
 
 @implementation ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer
@@ -19,44 +19,44 @@
   return v4;
 }
 
-- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)a3
+- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)counts
 {
-  v4 = a3;
+  countsCopy = counts;
   v5 = +[ATXCandidateRelevanceModelGlobals sharedInstance];
-  v6 = -[ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer initWithObservedFeatureValueCounts:maxCategoricalFeaturesCount:](self, "initWithObservedFeatureValueCounts:maxCategoricalFeaturesCount:", v4, [v5 maxCategoricalFeaturesCount]);
+  v6 = -[ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer initWithObservedFeatureValueCounts:maxCategoricalFeaturesCount:](self, "initWithObservedFeatureValueCounts:maxCategoricalFeaturesCount:", countsCopy, [v5 maxCategoricalFeaturesCount]);
 
   return v6;
 }
 
-- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)a3 maxCategoricalFeaturesCount:(unint64_t)a4
+- (ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer)initWithObservedFeatureValueCounts:(id)counts maxCategoricalFeaturesCount:(unint64_t)count
 {
-  v7 = a3;
+  countsCopy = counts;
   v11.receiver = self;
   v11.super_class = ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer;
   v8 = [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_observedFeatureValueCounts, a3);
-    v9->_maxCategoricalFeaturesCount = a4;
+    objc_storeStrong(&v8->_observedFeatureValueCounts, counts);
+    v9->_maxCategoricalFeaturesCount = count;
   }
 
   return v9;
 }
 
-- (id)featureVectorForContext:(id)a3 candidate:(id)a4
+- (id)featureVectorForContext:(id)context candidate:(id)candidate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  candidateCopy = candidate;
   v8 = objc_opt_new();
-  v9 = [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)self categoricalFeatureValuesForContext:v6 candidate:v7];
+  v9 = [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)self categoricalFeatureValuesForContext:contextCopy candidate:candidateCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [(ATXImmutableCandidateRelevanceModelFeaturizer *)self featureValueNames];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  featureValueNames = [(ATXImmutableCandidateRelevanceModelFeaturizer *)self featureValueNames];
+  v11 = [featureValueNames countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -67,14 +67,14 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(featureValueNames);
         }
 
         v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "containsObject:", *(*(&v18 + 1) + 8 * i))}];
         [v8 addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [featureValueNames countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -85,10 +85,10 @@
   return v8;
 }
 
-- (void)observeContext:(id)a3 candidate:(id)a4
+- (void)observeContext:(id)context candidate:(id)candidate
 {
   v21 = *MEMORY[0x277D85DE8];
-  [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)self categoricalFeatureValuesForContext:a3 candidate:a4];
+  [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)self categoricalFeatureValuesForContext:context candidate:candidate];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -109,10 +109,10 @@
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_observedFeatureValueCounts objectForKey:v9];
-        v11 = [v10 intValue];
+        intValue = [v10 intValue];
 
         observedFeatureValueCounts = self->_observedFeatureValueCounts;
-        v13 = [MEMORY[0x277CCABB0] numberWithInt:(v11 + 1)];
+        v13 = [MEMORY[0x277CCABB0] numberWithInt:(intValue + 1)];
         [(NSMutableDictionary *)observedFeatureValueCounts setObject:v13 forKey:v9];
       }
 
@@ -125,19 +125,19 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)categoricalFeatureValuesForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValuesForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  result = a4;
+  contextCopy = context;
+  result = candidate;
   __break(1u);
   return result;
 }
 
 - (id)immutableCopy
 {
-  v2 = self;
-  v3 = [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)v2 computeFeatureValueNames];
-  v4 = [(ATXImmutableCandidateRelevanceModelFeaturizer *)v2 initWithFeatureValueNames:v3];
+  selfCopy = self;
+  computeFeatureValueNames = [(ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer *)selfCopy computeFeatureValueNames];
+  v4 = [(ATXImmutableCandidateRelevanceModelFeaturizer *)selfCopy initWithFeatureValueNames:computeFeatureValueNames];
 
   return v4;
 }
@@ -145,13 +145,13 @@
 - (id)computeFeatureValueNames
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_observedFeatureValueCounts allKeys];
+  allKeys = [(NSMutableDictionary *)self->_observedFeatureValueCounts allKeys];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__ATXCandidateRelevanceModelMultiHotCategoricalFeaturizer_computeFeatureValueNames__block_invoke;
   v13[3] = &unk_278598110;
   v13[4] = self;
-  v4 = [v3 sortedArrayUsingComparator:v13];
+  v4 = [allKeys sortedArrayUsingComparator:v13];
 
   if ([v4 count] > self->_maxCategoricalFeaturesCount)
   {

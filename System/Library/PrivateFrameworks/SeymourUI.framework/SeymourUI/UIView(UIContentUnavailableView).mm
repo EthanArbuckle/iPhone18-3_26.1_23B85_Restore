@@ -6,8 +6,8 @@
 
 + (_SMUContentUnavailableView)smu_contentUnavailableView
 {
-  v0 = [MEMORY[0x277D75390] emptyConfiguration];
-  v1 = [(UIContentUnavailableView *)[_SMUContentUnavailableView alloc] initWithConfiguration:v0];
+  emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
+  v1 = [(UIContentUnavailableView *)[_SMUContentUnavailableView alloc] initWithConfiguration:emptyConfiguration];
 
   return v1;
 }

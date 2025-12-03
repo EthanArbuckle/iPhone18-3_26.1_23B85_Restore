@@ -1,56 +1,56 @@
 @interface UIViewAnimationBlockDelegate
-+ (id)animationBlockDelegateWithDuration:(double)a3 options:(unint64_t)a4 start:(id)a5 completion:(id)a6;
-+ (void)setAnimationBlockDelegateWithDuration:(double)a3 options:(unint64_t)a4 start:(id)a5 completion:(id)a6;
++ (id)animationBlockDelegateWithDuration:(double)duration options:(unint64_t)options start:(id)start completion:(id)completion;
++ (void)setAnimationBlockDelegateWithDuration:(double)duration options:(unint64_t)options start:(id)start completion:(id)completion;
 - (UIViewAnimationState)_animationState;
-- (void)_didEndBlockAnimation:(id)a3 finished:(id)a4 context:(void *)a5;
-- (void)_sendDeferredCompletion:(id)a3;
-- (void)_willBeginBlockAnimation:(id)a3 context:(id)a4;
+- (void)_didEndBlockAnimation:(id)animation finished:(id)finished context:(void *)context;
+- (void)_sendDeferredCompletion:(id)completion;
+- (void)_willBeginBlockAnimation:(id)animation context:(id)context;
 @end
 
 @implementation UIViewAnimationBlockDelegate
 
-+ (id)animationBlockDelegateWithDuration:(double)a3 options:(unint64_t)a4 start:(id)a5 completion:(id)a6
++ (id)animationBlockDelegateWithDuration:(double)duration options:(unint64_t)options start:(id)start completion:(id)completion
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
+  startCopy = start;
   v11 = objc_alloc_init(UIViewAnimationBlockDelegate);
-  v11->_allowUserInteraction = (v7 & 2) != 0;
-  v11->_allowsUserInteractionToCutOffEndOfAnimation = (v7 & 0x400) != 0;
-  v11->_allowsHitTesting = (v7 & 0x1000) != 0;
-  v12 = [v10 copy];
+  v11->_allowUserInteraction = (optionsCopy & 2) != 0;
+  v11->_allowsUserInteractionToCutOffEndOfAnimation = (optionsCopy & 0x400) != 0;
+  v11->_allowsHitTesting = (optionsCopy & 0x1000) != 0;
+  v12 = [startCopy copy];
 
   start = v11->_start;
   v11->_start = v12;
 
-  v14 = [v9 copy];
+  v14 = [completionCopy copy];
   completion = v11->_completion;
   v11->_completion = v14;
 
-  v11->_isZeroDuration = a3 <= 0.0;
+  v11->_isZeroDuration = duration <= 0.0;
 
   return v11;
 }
 
-+ (void)setAnimationBlockDelegateWithDuration:(double)a3 options:(unint64_t)a4 start:(id)a5 completion:(id)a6
++ (void)setAnimationBlockDelegateWithDuration:(double)duration options:(unint64_t)options start:(id)start completion:(id)completion
 {
-  v7 = a4;
-  v9 = a6;
-  v10 = a5;
+  optionsCopy = options;
+  completionCopy = completion;
+  startCopy = start;
   v11 = objc_alloc_init(UIViewAnimationBlockDelegate);
-  v11->_allowUserInteraction = (v7 & 2) != 0;
-  v11->_allowsUserInteractionToCutOffEndOfAnimation = (v7 & 0x400) != 0;
-  v11->_allowsHitTesting = (v7 & 0x1000) != 0;
-  v12 = [v10 copy];
+  v11->_allowUserInteraction = (optionsCopy & 2) != 0;
+  v11->_allowsUserInteractionToCutOffEndOfAnimation = (optionsCopy & 0x400) != 0;
+  v11->_allowsHitTesting = (optionsCopy & 0x1000) != 0;
+  v12 = [startCopy copy];
 
   start = v11->_start;
   v11->_start = v12;
 
-  v14 = [v9 copy];
+  v14 = [completionCopy copy];
   completion = v11->_completion;
   v11->_completion = v14;
 
-  v11->_isZeroDuration = a3 <= 0.0;
+  v11->_isZeroDuration = duration <= 0.0;
   v16 = *(__currentViewAnimationState + 32);
   *(__currentViewAnimationState + 32) = v11;
   v18 = v11;
@@ -60,7 +60,7 @@
   *(v17 + 160) = sel__didEndBlockAnimation_finished_context_;
 }
 
-- (void)_willBeginBlockAnimation:(id)a3 context:(id)a4
+- (void)_willBeginBlockAnimation:(id)animation context:(id)context
 {
   self->_didBeginBlockAnimation = 1;
   start = self->_start;
@@ -70,10 +70,10 @@
   }
 }
 
-- (void)_didEndBlockAnimation:(id)a3 finished:(id)a4 context:(void *)a5
+- (void)_didEndBlockAnimation:(id)animation finished:(id)finished context:(void *)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  finishedCopy = finished;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -134,7 +134,7 @@
         }
 
         v18 = _Block_copy(self->_completion);
-        __UIVIEW_IS_EXECUTING_ANIMATION_COMPLETION_BLOCK__([v6 BOOLValue], v18);
+        __UIVIEW_IS_EXECUTING_ANIMATION_COMPLETION_BLOCK__([finishedCopy BOOLValue], v18);
       }
     }
 
@@ -145,7 +145,7 @@
       v19[2] = __71__UIViewAnimationBlockDelegate__didEndBlockAnimation_finished_context___block_invoke;
       v19[3] = &unk_1E70F35B8;
       v19[4] = self;
-      v20 = v6;
+      v20 = finishedCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v19);
     }
 
@@ -153,22 +153,22 @@
     {
       v25 = *MEMORY[0x1E695DA28];
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-      [(UIViewAnimationBlockDelegate *)self performSelector:sel__sendDeferredCompletion_ withObject:v6 afterDelay:v17 inModes:0.0];
+      [(UIViewAnimationBlockDelegate *)self performSelector:sel__sendDeferredCompletion_ withObject:finishedCopy afterDelay:v17 inModes:0.0];
     }
   }
 }
 
-- (void)_sendDeferredCompletion:(id)a3
+- (void)_sendDeferredCompletion:(id)completion
 {
   if (!self->_animationDidStopSent)
   {
     self->_animationDidStopSent = 1;
     completion = self->_completion;
-    v5 = a3;
+    completionCopy = completion;
     v7 = _Block_copy(completion);
-    v6 = [v5 BOOLValue];
+    bOOLValue = [completionCopy BOOLValue];
 
-    __UIVIEW_IS_EXECUTING_ANIMATION_COMPLETION_BLOCK__(v6, v7);
+    __UIVIEW_IS_EXECUTING_ANIMATION_COMPLETION_BLOCK__(bOOLValue, v7);
   }
 }
 

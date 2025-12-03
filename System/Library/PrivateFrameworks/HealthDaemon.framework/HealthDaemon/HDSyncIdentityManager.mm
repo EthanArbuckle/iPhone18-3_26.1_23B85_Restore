@@ -1,35 +1,35 @@
 @interface HDSyncIdentityManager
 + (void)unitTest_resetCachedHardwareIdentifier;
-- (BOOL)enumerateConcreteIdentitiesError:(id *)a3 enumerationHandler:(id)a4;
-- (BOOL)rollCurrentSyncIdentityWithReason:(id)a3 error:(id *)a4;
-- (BOOL)updateIsChild:(BOOL)a3 concreteIdentity:(id)a4 error:(id *)a5;
+- (BOOL)enumerateConcreteIdentitiesError:(id *)error enumerationHandler:(id)handler;
+- (BOOL)rollCurrentSyncIdentityWithReason:(id)reason error:(id *)error;
+- (BOOL)updateIsChild:(BOOL)child concreteIdentity:(id)identity error:(id *)error;
 - (HDConcreteSyncIdentity)currentSyncIdentity;
 - (HDConcreteSyncIdentity)legacySyncIdentity;
 - (HDProfile)profile;
-- (HDSyncIdentityManager)initWithProfile:(id)a3;
+- (HDSyncIdentityManager)initWithProfile:(id)profile;
 - (NSString)description;
-- (id)childIdentitiesForCurrentSyncIdentityWithError:(id *)a3;
-- (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)a3 error:(id *)a4;
-- (id)concreteIdentityForIdentity:(id)a3 shouldCreate:(BOOL)a4 transaction:(id)a5 error:(id *)a6;
-- (id)identityForEntityID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-- (void)profileDidInitialize:(id)a3;
+- (id)childIdentitiesForCurrentSyncIdentityWithError:(id *)error;
+- (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)transaction error:(id *)error;
+- (id)concreteIdentityForIdentity:(id)identity shouldCreate:(BOOL)create transaction:(id)transaction error:(id *)error;
+- (id)identityForEntityID:(int64_t)d transaction:(id)transaction error:(id *)error;
+- (void)profileDidInitialize:(id)initialize;
 @end
 
 @implementation HDSyncIdentityManager
 
-- (HDSyncIdentityManager)initWithProfile:(id)a3
+- (HDSyncIdentityManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HDSyncIdentityManager;
   v5 = [(HDSyncIdentityManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     v8 = v7;
-    [v4 registerProfileInitializedObserver:v6 queue:0];
+    [profileCopy registerProfileInitializedObserver:v6 queue:0];
 
     v9 = [[HDDatabaseValueCache alloc] initWithName:@"sync-identity-to-concrete-sync-identity" cacheScope:1];
     entityByIdentityCache = v6->_entityByIdentityCache;
@@ -48,8 +48,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained profileIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v6];
+  profileIdentifier = [WeakRetained profileIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, profileIdentifier];
 
   return v7;
 }
@@ -61,9 +61,9 @@
   os_unfair_lock_unlock(&self->_lock);
   if (!v4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"HDSyncIdentityManager.m" lineNumber:71 description:{@"Attempt to call %@ prior to first transaction.", v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncIdentityManager.m" lineNumber:71 description:{@"Attempt to call %@ prior to first transaction.", v7}];
   }
 
   return v4;
@@ -76,24 +76,24 @@
   os_unfair_lock_unlock(&self->_lock);
   if (!v4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"HDSyncIdentityManager.m" lineNumber:80 description:{@"Attempt to call %@ prior to first transaction.", v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncIdentityManager.m" lineNumber:80 description:{@"Attempt to call %@ prior to first transaction.", v7}];
   }
 
   return v4;
 }
 
-- (id)concreteIdentityForIdentity:(id)a3 shouldCreate:(BOOL)a4 transaction:(id)a5 error:(id *)a6
+- (id)concreteIdentityForIdentity:(id)identity shouldCreate:(BOOL)create transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (v8 && ([v12 isWriteTransaction] & 1) == 0)
+  createCopy = create;
+  identityCopy = identity;
+  transactionCopy = transaction;
+  v13 = transactionCopy;
+  if (createCopy && ([transactionCopy isWriteTransaction] & 1) == 0)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDSyncIdentityManager.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"transaction.isWriteTransaction"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSyncIdentityManager.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"transaction.isWriteTransaction"}];
   }
 
   entityByIdentityCache = self->_entityByIdentityCache;
@@ -101,10 +101,10 @@
   v19[1] = 3221225472;
   v19[2] = __84__HDSyncIdentityManager_concreteIdentityForIdentity_shouldCreate_transaction_error___block_invoke;
   v19[3] = &unk_27862B650;
-  v20 = v11;
-  v21 = v8;
-  v15 = v11;
-  v16 = [(HDDatabaseValueCache *)entityByIdentityCache fetchObjectForKey:v15 transaction:v13 error:a6 faultHandler:v19];
+  v20 = identityCopy;
+  v21 = createCopy;
+  v15 = identityCopy;
+  v16 = [(HDDatabaseValueCache *)entityByIdentityCache fetchObjectForKey:v15 transaction:v13 error:error faultHandler:v19];
 
   return v16;
 }
@@ -129,18 +129,18 @@ id __84__HDSyncIdentityManager_concreteIdentityForIdentity_shouldCreate_transact
   return v9;
 }
 
-- (id)identityForEntityID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
+- (id)identityForEntityID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
   identityByEntityPersistentIDCache = self->_identityByEntityPersistentIDCache;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = [v8 numberWithLongLong:a3];
+  transactionCopy = transaction;
+  v10 = [v8 numberWithLongLong:d];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__HDSyncIdentityManager_identityForEntityID_transaction_error___block_invoke;
   v13[3] = &__block_descriptor_40_e59___HDConcreteSyncIdentity_24__0__HDDatabaseTransaction_8__16l;
-  v13[4] = a3;
-  v11 = [(HDDatabaseValueCache *)identityByEntityPersistentIDCache fetchObjectForKey:v10 transaction:v9 error:a5 faultHandler:v13];
+  v13[4] = d;
+  v11 = [(HDDatabaseValueCache *)identityByEntityPersistentIDCache fetchObjectForKey:v10 transaction:transactionCopy error:error faultHandler:v13];
 
   return v11;
 }
@@ -154,21 +154,21 @@ id __63__HDSyncIdentityManager_identityForEntityID_transaction_error___block_inv
   return v7;
 }
 
-- (BOOL)enumerateConcreteIdentitiesError:(id *)a3 enumerationHandler:(id)a4
+- (BOOL)enumerateConcreteIdentitiesError:(id *)error enumerationHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HDSyncIdentityManager *)self profile];
-  v8 = [v7 database];
+  handlerCopy = handler;
+  profile = [(HDSyncIdentityManager *)self profile];
+  database = [profile database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__HDSyncIdentityManager_enumerateConcreteIdentitiesError_enumerationHandler___block_invoke;
   v11[3] = &unk_278618368;
   v11[4] = self;
-  v12 = v6;
-  v9 = v6;
-  LOBYTE(a3) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v8 error:a3 block:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a3;
+  return error;
 }
 
 BOOL __77__HDSyncIdentityManager_enumerateConcreteIdentitiesError_enumerationHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -205,22 +205,22 @@ uint64_t __77__HDSyncIdentityManager_enumerateConcreteIdentitiesError_enumeratio
   return v10;
 }
 
-- (BOOL)updateIsChild:(BOOL)a3 concreteIdentity:(id)a4 error:(id *)a5
+- (BOOL)updateIsChild:(BOOL)child concreteIdentity:(id)identity error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDSyncIdentityManager *)self profile];
-  v10 = [v9 database];
+  identityCopy = identity;
+  profile = [(HDSyncIdentityManager *)self profile];
+  database = [profile database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__HDSyncIdentityManager_updateIsChild_concreteIdentity_error___block_invoke;
   v13[3] = &unk_27862B6C0;
-  v16 = a3;
-  v14 = v8;
-  v15 = self;
-  v11 = v8;
-  LOBYTE(a5) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v10 error:a5 block:v13];
+  childCopy = child;
+  v14 = identityCopy;
+  selfCopy = self;
+  v11 = identityCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:error block:v13];
 
-  return a5;
+  return error;
 }
 
 BOOL __62__HDSyncIdentityManager_updateIsChild_concreteIdentity_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -268,25 +268,25 @@ BOOL __62__HDSyncIdentityManager_updateIsChild_concreteIdentity_error___block_in
   return v8 != 0;
 }
 
-- (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)a3 error:(id *)a4
+- (id)childIdentitiesForCurrentSyncIdentityWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__174;
   v17 = __Block_byref_object_dispose__174;
   v18 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v7 = [(HDSyncIdentityManager *)self profile];
-  v8 = [v7 database];
+  profile = [(HDSyncIdentityManager *)self profile];
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__HDSyncIdentityManager_childIdentitiesForCurrentSyncIdentityWithTransaction_error___block_invoke;
   v12[3] = &unk_278618610;
   v12[4] = &v13;
-  LODWORD(a4) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v8 error:a4 block:v12];
+  LODWORD(error) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:error block:v12];
 
-  if (a4)
+  if (error)
   {
     v9 = v14[5];
   }
@@ -370,7 +370,7 @@ LABEL_18:
   return v10;
 }
 
-- (id)childIdentitiesForCurrentSyncIdentityWithError:(id *)a3
+- (id)childIdentitiesForCurrentSyncIdentityWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -378,16 +378,16 @@ LABEL_18:
   v14 = __Block_byref_object_copy__174;
   v15 = __Block_byref_object_dispose__174;
   v16 = objc_alloc_init(MEMORY[0x277CBEA60]);
-  v5 = [(HDSyncIdentityManager *)self profile];
-  v6 = [v5 database];
+  profile = [(HDSyncIdentityManager *)self profile];
+  database = [profile database];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__HDSyncIdentityManager_childIdentitiesForCurrentSyncIdentityWithError___block_invoke;
   v10[3] = &unk_278618610;
   v10[4] = &v11;
-  LODWORD(a3) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v6 error:a3 block:v10];
+  LODWORD(error) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:error block:v10];
 
-  if (a3)
+  if (error)
   {
     v7 = v12[5];
   }
@@ -480,10 +480,10 @@ LABEL_18:
   os_unfair_lock_unlock(&_MergedGlobals_220);
 }
 
-- (BOOL)rollCurrentSyncIdentityWithReason:(id)a3 error:(id *)a4
+- (BOOL)rollCurrentSyncIdentityWithReason:(id)reason error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   v7 = [(HDConcreteSyncIdentity *)self->_currentSyncIdentity copy];
   v18 = 0;
   v19 = &v18;
@@ -496,27 +496,27 @@ LABEL_18:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v6;
+    v27 = reasonCopy;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: sync identity rollover required: %{public}@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained database];
+  database = [WeakRetained database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __65__HDSyncIdentityManager_rollCurrentSyncIdentityWithReason_error___block_invoke;
   v17[3] = &unk_278614110;
   v17[4] = self;
   v17[5] = &v18;
-  v11 = [(HDHealthEntity *)HDSyncIdentityEntity performWriteTransactionWithHealthDatabase:v10 error:a4 block:v17];
+  v11 = [(HDHealthEntity *)HDSyncIdentityEntity performWriteTransactionWithHealthDatabase:database error:error block:v17];
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_profile);
-    v13 = [v12 deviceKeyValueStoreManager];
-    v14 = [v13 replaceOldSyncIdentity:v7 newSyncIdentity:v19[5] error:a4];
+    deviceKeyValueStoreManager = [v12 deviceKeyValueStoreManager];
+    v14 = [deviceKeyValueStoreManager replaceOldSyncIdentity:v7 newSyncIdentity:v19[5] error:error];
   }
 
   else
@@ -602,18 +602,18 @@ BOOL __65__HDSyncIdentityManager_rollCurrentSyncIdentityWithReason_error___block
   return v22;
 }
 
-- (void)profileDidInitialize:(id)a3
+- (void)profileDidInitialize:(id)initialize
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
-  v5 = [v4 database];
+  initializeCopy = initialize;
+  objc_initWeak(&location, initializeCopy);
+  database = [initializeCopy database];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__HDSyncIdentityManager_profileDidInitialize___block_invoke;
   v6[3] = &unk_27862B6E8;
   v6[4] = self;
   objc_copyWeak(&v7, &location);
-  [v5 performInFirstUnprotectedWriteTransaction:v6];
+  [database performInFirstUnprotectedWriteTransaction:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

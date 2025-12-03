@@ -1,13 +1,13 @@
 @interface BWStreamingCVAFilterRendererAnimator
-- ($3BA783FF50B239963188BE194EBFFEBA)simulateNextFrameWithEffectStatus:(int)a3 portraitStability:(float)a4 clientSuppliedSimulatedAperture:(float)a5;
-- (BWStreamingCVAFilterRendererAnimator)initWithEffectStatus:(int)a3 overCaptureEnabled:(BOOL)a4;
-- (uint64_t)_resetSimulatedApertureRampWithEffectStatus:(float)a3 clientSuppliedSimulatedAperture:;
+- ($3BA783FF50B239963188BE194EBFFEBA)simulateNextFrameWithEffectStatus:(int)status portraitStability:(float)stability clientSuppliedSimulatedAperture:(float)aperture;
+- (BWStreamingCVAFilterRendererAnimator)initWithEffectStatus:(int)status overCaptureEnabled:(BOOL)enabled;
+- (uint64_t)_resetSimulatedApertureRampWithEffectStatus:(float)status clientSuppliedSimulatedAperture:;
 - (void)dealloc;
 @end
 
 @implementation BWStreamingCVAFilterRendererAnimator
 
-- (BWStreamingCVAFilterRendererAnimator)initWithEffectStatus:(int)a3 overCaptureEnabled:(BOOL)a4
+- (BWStreamingCVAFilterRendererAnimator)initWithEffectStatus:(int)status overCaptureEnabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = BWStreamingCVAFilterRendererAnimator;
@@ -15,9 +15,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_mostRecentEffectStatus = a3;
+    v6->_mostRecentEffectStatus = status;
     v6->_simulatedApertureRamp = [[BWRamp alloc] initWithName:@"SimulatedApertureRamp"];
-    v7->_overCaptureEnabled = a4;
+    v7->_overCaptureEnabled = enabled;
   }
 
   return v7;
@@ -30,16 +30,16 @@
   [(BWStreamingCVAFilterRendererAnimator *)&v3 dealloc];
 }
 
-- ($3BA783FF50B239963188BE194EBFFEBA)simulateNextFrameWithEffectStatus:(int)a3 portraitStability:(float)a4 clientSuppliedSimulatedAperture:(float)a5
+- ($3BA783FF50B239963188BE194EBFFEBA)simulateNextFrameWithEffectStatus:(int)status portraitStability:(float)stability clientSuppliedSimulatedAperture:(float)aperture
 {
-  if (a3 > 0xE || (v7 = a5, ((1 << a3) & 0x6202) == 0))
+  if (status > 0xE || (v7 = aperture, ((1 << status) & 0x6202) == 0))
   {
     v7 = 1000.0;
   }
 
-  if (self->_mostRecentEffectStatus != a3)
+  if (self->_mostRecentEffectStatus != status)
   {
-    [(BWStreamingCVAFilterRendererAnimator *)self _resetSimulatedApertureRampWithEffectStatus:a3 clientSuppliedSimulatedAperture:a5];
+    [(BWStreamingCVAFilterRendererAnimator *)self _resetSimulatedApertureRampWithEffectStatus:status clientSuppliedSimulatedAperture:aperture];
   }
 
   if ([(BWRamp *)self->_simulatedApertureRamp isRamping])
@@ -50,11 +50,11 @@
 
   self->_currentFrame.simulatedAperture = v7;
   p_currentFrame = &self->_currentFrame;
-  LODWORD(p_currentFrame[1].simulatedAperture) = a3;
+  LODWORD(p_currentFrame[1].simulatedAperture) = status;
   return p_currentFrame;
 }
 
-- (uint64_t)_resetSimulatedApertureRampWithEffectStatus:(float)a3 clientSuppliedSimulatedAperture:
+- (uint64_t)_resetSimulatedApertureRampWithEffectStatus:(float)status clientSuppliedSimulatedAperture:
 {
   if (!result)
   {
@@ -73,7 +73,7 @@
 
     v10 = *(v5 + 16);
     LODWORD(v7) = 16.0;
-    *&v6 = a3;
+    *&v6 = status;
     v9 = 4;
     v11 = 1;
     goto LABEL_11;
@@ -102,7 +102,7 @@
   {
 LABEL_10:
     v10 = *(v5 + 16);
-    *&v7 = a3;
+    *&v7 = status;
     v11 = 2;
 LABEL_11:
 

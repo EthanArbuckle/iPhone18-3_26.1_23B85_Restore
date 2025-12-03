@@ -1,23 +1,23 @@
 @interface CATSendDeviceSessionMessageOperation
-- (CATSendDeviceSessionMessageOperation)initWithDeviceSession:(id)a3 message:(id)a4;
+- (CATSendDeviceSessionMessageOperation)initWithDeviceSession:(id)session message:(id)message;
 - (void)main;
 - (void)sendMessage;
 @end
 
 @implementation CATSendDeviceSessionMessageOperation
 
-- (CATSendDeviceSessionMessageOperation)initWithDeviceSession:(id)a3 message:(id)a4
+- (CATSendDeviceSessionMessageOperation)initWithDeviceSession:(id)session message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = CATSendDeviceSessionMessageOperation;
   v9 = [(CATOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mDeviceSession, a3);
-    objc_storeStrong(&v10->mMessage, a4);
+    objc_storeStrong(&v9->mDeviceSession, session);
+    objc_storeStrong(&v10->mMessage, message);
   }
 
   return v10;
@@ -54,8 +54,8 @@
   else
   {
     mDeviceSession = self->mDeviceSession;
-    v5 = [(CATDictionaryCodable *)self->mMessage dictionaryValue];
-    [(CATSharingDeviceSession *)mDeviceSession sendMessage:v5];
+    dictionaryValue = [(CATDictionaryCodable *)self->mMessage dictionaryValue];
+    [(CATSharingDeviceSession *)mDeviceSession sendMessage:dictionaryValue];
 
     [(CATOperation *)self endOperationWithResultObject:0];
   }

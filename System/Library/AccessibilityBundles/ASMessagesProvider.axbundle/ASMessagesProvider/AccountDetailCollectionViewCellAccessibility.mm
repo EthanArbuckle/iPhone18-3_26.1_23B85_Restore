@@ -1,18 +1,18 @@
 @interface AccountDetailCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AccountDetailCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel"];
-  [v3 validateClass:@"ASMessagesProvider.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASMessagesProvider.AccountDetailCollectionViewCell" hasSwiftField:@"detailLabel" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStoreKit.DynamicTypeLabel"];
+  [validationsCopy validateClass:@"ASMessagesProvider.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.AccountDetailCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASMessagesProvider.AccountDetailCollectionViewCell" hasSwiftField:@"detailLabel" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (id)accessibilityLabel

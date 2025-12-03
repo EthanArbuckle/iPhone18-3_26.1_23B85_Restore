@@ -1,11 +1,11 @@
 @interface JSACopyLinkActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (JSACopyLinkActivity)init;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (UIImage)activityImage;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation JSACopyLinkActivity
@@ -41,25 +41,25 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v4 = sub_845AC();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_61E58(v4);
 
   return v6 & 1;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v4 = sub_845AC();
-  v5 = self;
+  selfCopy = self;
   sub_61154(v4);
 }
 
 - (void)performActivity
 {
-  v2 = self;
+  selfCopy = self;
   sub_614E4();
 }
 

@@ -1,24 +1,24 @@
 @interface AWDWiFiLTEWCI2Counters
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addWci2Counters:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addWci2Counters:(id)counters;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLteTxPowerLimitTimeInMS:(BOOL)a3;
-- (void)setHasTimeSharingWLANIntervalCount:(BOOL)a3;
-- (void)setHasTimeSharingWLANTimeInMS:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasType4DueToTimerExpiryCount:(BOOL)a3;
-- (void)setHasType4HonouredCount:(BOOL)a3;
-- (void)setHasType4HonouredTimeInMS:(BOOL)a3;
-- (void)setHasWlanProtectionFramesDueToLTECoexCount:(BOOL)a3;
-- (void)setHasWlanRxPriCount:(BOOL)a3;
-- (void)setHasWlanRxPriTimeInMS:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasLteTxPowerLimitTimeInMS:(BOOL)s;
+- (void)setHasTimeSharingWLANIntervalCount:(BOOL)count;
+- (void)setHasTimeSharingWLANTimeInMS:(BOOL)s;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasType4DueToTimerExpiryCount:(BOOL)count;
+- (void)setHasType4HonouredCount:(BOOL)count;
+- (void)setHasType4HonouredTimeInMS:(BOOL)s;
+- (void)setHasWlanProtectionFramesDueToLTECoexCount:(BOOL)count;
+- (void)setHasWlanRxPriCount:(BOOL)count;
+- (void)setHasWlanRxPriTimeInMS:(BOOL)s;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiLTEWCI2Counters
@@ -31,9 +31,9 @@
   [(AWDWiFiLTEWCI2Counters *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasWlanRxPriTimeInMS:(BOOL)a3
+- (void)setHasWlanRxPriTimeInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 1024;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasWlanRxPriCount:(BOOL)a3
+- (void)setHasWlanRxPriCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasLteTxPowerLimitTimeInMS:(BOOL)a3
+- (void)setHasLteTxPowerLimitTimeInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 2;
   }
@@ -91,9 +91,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasType4HonouredTimeInMS:(BOOL)a3
+- (void)setHasType4HonouredTimeInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 128;
   }
@@ -106,9 +106,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasType4HonouredCount:(BOOL)a3
+- (void)setHasType4HonouredCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -121,9 +121,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasTimeSharingWLANTimeInMS:(BOOL)a3
+- (void)setHasTimeSharingWLANTimeInMS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 8;
   }
@@ -136,9 +136,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTimeSharingWLANIntervalCount:(BOOL)a3
+- (void)setHasTimeSharingWLANIntervalCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -151,9 +151,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasWlanProtectionFramesDueToLTECoexCount:(BOOL)a3
+- (void)setHasWlanProtectionFramesDueToLTECoexCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -166,9 +166,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasType4DueToTimerExpiryCount:(BOOL)a3
+- (void)setHasType4DueToTimerExpiryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -181,7 +181,7 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)addWci2Counters:(id)a3
+- (void)addWci2Counters:(id)counters
 {
   wci2Counters = self->_wci2Counters;
   if (!wci2Counters)
@@ -190,7 +190,7 @@
     self->_wci2Counters = wci2Counters;
   }
 
-  [(NSMutableArray *)wci2Counters addObject:a3];
+  [(NSMutableArray *)wci2Counters addObject:counters];
 }
 
 - (id)description
@@ -203,11 +203,11 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -226,7 +226,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanRxPriTimeInMS), @"wlanRxPriTimeInMS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanRxPriTimeInMS), @"wlanRxPriTimeInMS"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -240,7 +240,7 @@ LABEL_4:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanRxPriCount), @"wlanRxPriCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanRxPriCount), @"wlanRxPriCount"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -254,7 +254,7 @@ LABEL_5:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lteTxPowerLimitTimeInMS), @"lteTxPowerLimitTimeInMS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lteTxPowerLimitTimeInMS), @"lteTxPowerLimitTimeInMS"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -268,7 +268,7 @@ LABEL_6:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lteTxPowerLimitCount), @"lteTxPowerLimitCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_lteTxPowerLimitCount), @"lteTxPowerLimitCount"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -282,7 +282,7 @@ LABEL_7:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type4HonouredTimeInMS), @"type4HonouredTimeInMS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type4HonouredTimeInMS), @"type4HonouredTimeInMS"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -296,7 +296,7 @@ LABEL_8:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type4HonouredCount), @"type4HonouredCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type4HonouredCount), @"type4HonouredCount"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -310,7 +310,7 @@ LABEL_9:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeSharingWLANTimeInMS), @"timeSharingWLANTimeInMS"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeSharingWLANTimeInMS), @"timeSharingWLANTimeInMS"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -324,7 +324,7 @@ LABEL_10:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeSharingWLANIntervalCount), @"timeSharingWLANIntervalCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timeSharingWLANIntervalCount), @"timeSharingWLANIntervalCount"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -338,11 +338,11 @@ LABEL_11:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanProtectionFramesDueToLTECoexCount), @"wlanProtectionFramesDueToLTECoexCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_wlanProtectionFramesDueToLTECoexCount), @"wlanProtectionFramesDueToLTECoexCount"}];
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_12:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type4DueToTimerExpiryCount), @"type4DueToTimerExpiryCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_type4DueToTimerExpiryCount), @"type4DueToTimerExpiryCount"}];
   }
 
 LABEL_13:
@@ -377,14 +377,14 @@ LABEL_13:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"wci2Counters"];
+    [dictionary setObject:v5 forKey:@"wci2Counters"];
   }
 
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -572,13 +572,13 @@ LABEL_13:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 5) = self->_timestamp;
-    *(a3 + 52) |= 0x10u;
+    *(to + 5) = self->_timestamp;
+    *(to + 52) |= 0x10u;
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -597,8 +597,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 11) = self->_wlanRxPriTimeInMS;
-  *(a3 + 52) |= 0x400u;
+  *(to + 11) = self->_wlanRxPriTimeInMS;
+  *(to + 52) |= 0x400u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -612,8 +612,8 @@ LABEL_4:
   }
 
 LABEL_20:
-  *(a3 + 10) = self->_wlanRxPriCount;
-  *(a3 + 52) |= 0x200u;
+  *(to + 10) = self->_wlanRxPriCount;
+  *(to + 52) |= 0x200u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -627,8 +627,8 @@ LABEL_5:
   }
 
 LABEL_21:
-  *(a3 + 2) = self->_lteTxPowerLimitTimeInMS;
-  *(a3 + 52) |= 2u;
+  *(to + 2) = self->_lteTxPowerLimitTimeInMS;
+  *(to + 52) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -642,8 +642,8 @@ LABEL_6:
   }
 
 LABEL_22:
-  *(a3 + 1) = self->_lteTxPowerLimitCount;
-  *(a3 + 52) |= 1u;
+  *(to + 1) = self->_lteTxPowerLimitCount;
+  *(to + 52) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -657,8 +657,8 @@ LABEL_7:
   }
 
 LABEL_23:
-  *(a3 + 8) = self->_type4HonouredTimeInMS;
-  *(a3 + 52) |= 0x80u;
+  *(to + 8) = self->_type4HonouredTimeInMS;
+  *(to + 52) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -672,8 +672,8 @@ LABEL_8:
   }
 
 LABEL_24:
-  *(a3 + 7) = self->_type4HonouredCount;
-  *(a3 + 52) |= 0x40u;
+  *(to + 7) = self->_type4HonouredCount;
+  *(to + 52) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -687,8 +687,8 @@ LABEL_9:
   }
 
 LABEL_25:
-  *(a3 + 4) = self->_timeSharingWLANTimeInMS;
-  *(a3 + 52) |= 8u;
+  *(to + 4) = self->_timeSharingWLANTimeInMS;
+  *(to + 52) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -699,8 +699,8 @@ LABEL_10:
     }
 
 LABEL_27:
-    *(a3 + 9) = self->_wlanProtectionFramesDueToLTECoexCount;
-    *(a3 + 52) |= 0x100u;
+    *(to + 9) = self->_wlanProtectionFramesDueToLTECoexCount;
+    *(to + 52) |= 0x100u;
     if ((*&self->_has & 0x20) == 0)
     {
       goto LABEL_13;
@@ -710,8 +710,8 @@ LABEL_27:
   }
 
 LABEL_26:
-  *(a3 + 3) = self->_timeSharingWLANIntervalCount;
-  *(a3 + 52) |= 4u;
+  *(to + 3) = self->_timeSharingWLANIntervalCount;
+  *(to + 52) |= 4u;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -722,30 +722,30 @@ LABEL_11:
   if ((has & 0x20) != 0)
   {
 LABEL_12:
-    *(a3 + 6) = self->_type4DueToTimerExpiryCount;
-    *(a3 + 52) |= 0x20u;
+    *(to + 6) = self->_type4DueToTimerExpiryCount;
+    *(to + 52) |= 0x20u;
   }
 
 LABEL_13:
   if ([(AWDWiFiLTEWCI2Counters *)self wci2CountersCount])
   {
-    [a3 clearWci2Counters];
-    v6 = [(AWDWiFiLTEWCI2Counters *)self wci2CountersCount];
-    if (v6)
+    [to clearWci2Counters];
+    wci2CountersCount = [(AWDWiFiLTEWCI2Counters *)self wci2CountersCount];
+    if (wci2CountersCount)
     {
-      v7 = v6;
+      v7 = wci2CountersCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addWci2Counters:{-[AWDWiFiLTEWCI2Counters wci2CountersAtIndex:](self, "wci2CountersAtIndex:", i)}];
+        [to addWci2Counters:{-[AWDWiFiLTEWCI2Counters wci2CountersAtIndex:](self, "wci2CountersAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -919,7 +919,7 @@ LABEL_13:
           objc_enumerationMutation(wci2Counters);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addWci2Counters:v13];
       }
 
@@ -933,16 +933,16 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 52);
+    v7 = *(equal + 52);
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_timestamp != *(a3 + 5))
+      if ((v7 & 0x10) == 0 || self->_timestamp != *(equal + 5))
       {
         goto LABEL_59;
       }
@@ -957,33 +957,33 @@ LABEL_59:
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 52) & 0x400) == 0 || self->_wlanRxPriTimeInMS != *(a3 + 11))
+      if ((*(equal + 52) & 0x400) == 0 || self->_wlanRxPriTimeInMS != *(equal + 11))
       {
         goto LABEL_59;
       }
     }
 
-    else if ((*(a3 + 52) & 0x400) != 0)
+    else if ((*(equal + 52) & 0x400) != 0)
     {
       goto LABEL_59;
     }
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 52) & 0x200) == 0 || self->_wlanRxPriCount != *(a3 + 10))
+      if ((*(equal + 52) & 0x200) == 0 || self->_wlanRxPriCount != *(equal + 10))
       {
         goto LABEL_59;
       }
     }
 
-    else if ((*(a3 + 52) & 0x200) != 0)
+    else if ((*(equal + 52) & 0x200) != 0)
     {
       goto LABEL_59;
     }
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_lteTxPowerLimitTimeInMS != *(a3 + 2))
+      if ((v7 & 2) == 0 || self->_lteTxPowerLimitTimeInMS != *(equal + 2))
       {
         goto LABEL_59;
       }
@@ -996,7 +996,7 @@ LABEL_59:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_lteTxPowerLimitCount != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_lteTxPowerLimitCount != *(equal + 1))
       {
         goto LABEL_59;
       }
@@ -1009,7 +1009,7 @@ LABEL_59:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_type4HonouredTimeInMS != *(a3 + 8))
+      if ((v7 & 0x80) == 0 || self->_type4HonouredTimeInMS != *(equal + 8))
       {
         goto LABEL_59;
       }
@@ -1022,7 +1022,7 @@ LABEL_59:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_type4HonouredCount != *(a3 + 7))
+      if ((v7 & 0x40) == 0 || self->_type4HonouredCount != *(equal + 7))
       {
         goto LABEL_59;
       }
@@ -1035,7 +1035,7 @@ LABEL_59:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_timeSharingWLANTimeInMS != *(a3 + 4))
+      if ((v7 & 8) == 0 || self->_timeSharingWLANTimeInMS != *(equal + 4))
       {
         goto LABEL_59;
       }
@@ -1048,7 +1048,7 @@ LABEL_59:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_timeSharingWLANIntervalCount != *(a3 + 3))
+      if ((v7 & 4) == 0 || self->_timeSharingWLANIntervalCount != *(equal + 3))
       {
         goto LABEL_59;
       }
@@ -1061,20 +1061,20 @@ LABEL_59:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 52) & 0x100) == 0 || self->_wlanProtectionFramesDueToLTECoexCount != *(a3 + 9))
+      if ((*(equal + 52) & 0x100) == 0 || self->_wlanProtectionFramesDueToLTECoexCount != *(equal + 9))
       {
         goto LABEL_59;
       }
     }
 
-    else if ((*(a3 + 52) & 0x100) != 0)
+    else if ((*(equal + 52) & 0x100) != 0)
     {
       goto LABEL_59;
     }
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_type4DueToTimerExpiryCount != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_type4DueToTimerExpiryCount != *(equal + 6))
       {
         goto LABEL_59;
       }
@@ -1086,7 +1086,7 @@ LABEL_59:
     }
 
     wci2Counters = self->_wci2Counters;
-    if (wci2Counters | *(a3 + 12))
+    if (wci2Counters | *(equal + 12))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)wci2Counters isEqual:?];
@@ -1254,15 +1254,15 @@ LABEL_12:
   return v8 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ [(NSMutableArray *)self->_wci2Counters hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 0x10) != 0)
   {
-    self->_timestamp = *(a3 + 5);
+    self->_timestamp = *(from + 5);
     *&self->_has |= 0x10u;
-    v4 = *(a3 + 52);
+    v4 = *(from + 52);
     if ((v4 & 0x400) == 0)
     {
 LABEL_3:
@@ -1275,14 +1275,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 52) & 0x400) == 0)
+  else if ((*(from + 52) & 0x400) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_wlanRxPriTimeInMS = *(a3 + 11);
+  self->_wlanRxPriTimeInMS = *(from + 11);
   *&self->_has |= 0x400u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 0x200) == 0)
   {
 LABEL_4:
@@ -1295,9 +1295,9 @@ LABEL_4:
   }
 
 LABEL_23:
-  self->_wlanRxPriCount = *(a3 + 10);
+  self->_wlanRxPriCount = *(from + 10);
   *&self->_has |= 0x200u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 2) == 0)
   {
 LABEL_5:
@@ -1310,9 +1310,9 @@ LABEL_5:
   }
 
 LABEL_24:
-  self->_lteTxPowerLimitTimeInMS = *(a3 + 2);
+  self->_lteTxPowerLimitTimeInMS = *(from + 2);
   *&self->_has |= 2u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 1) == 0)
   {
 LABEL_6:
@@ -1325,9 +1325,9 @@ LABEL_6:
   }
 
 LABEL_25:
-  self->_lteTxPowerLimitCount = *(a3 + 1);
+  self->_lteTxPowerLimitCount = *(from + 1);
   *&self->_has |= 1u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 0x80) == 0)
   {
 LABEL_7:
@@ -1340,9 +1340,9 @@ LABEL_7:
   }
 
 LABEL_26:
-  self->_type4HonouredTimeInMS = *(a3 + 8);
+  self->_type4HonouredTimeInMS = *(from + 8);
   *&self->_has |= 0x80u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 0x40) == 0)
   {
 LABEL_8:
@@ -1355,9 +1355,9 @@ LABEL_8:
   }
 
 LABEL_27:
-  self->_type4HonouredCount = *(a3 + 7);
+  self->_type4HonouredCount = *(from + 7);
   *&self->_has |= 0x40u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 8) == 0)
   {
 LABEL_9:
@@ -1370,9 +1370,9 @@ LABEL_9:
   }
 
 LABEL_28:
-  self->_timeSharingWLANTimeInMS = *(a3 + 4);
+  self->_timeSharingWLANTimeInMS = *(from + 4);
   *&self->_has |= 8u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 4) == 0)
   {
 LABEL_10:
@@ -1385,9 +1385,9 @@ LABEL_10:
   }
 
 LABEL_29:
-  self->_timeSharingWLANIntervalCount = *(a3 + 3);
+  self->_timeSharingWLANIntervalCount = *(from + 3);
   *&self->_has |= 4u;
-  v4 = *(a3 + 52);
+  v4 = *(from + 52);
   if ((v4 & 0x100) == 0)
   {
 LABEL_11:
@@ -1400,12 +1400,12 @@ LABEL_11:
   }
 
 LABEL_30:
-  self->_wlanProtectionFramesDueToLTECoexCount = *(a3 + 9);
+  self->_wlanProtectionFramesDueToLTECoexCount = *(from + 9);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 52) & 0x20) != 0)
+  if ((*(from + 52) & 0x20) != 0)
   {
 LABEL_12:
-    self->_type4DueToTimerExpiryCount = *(a3 + 6);
+    self->_type4DueToTimerExpiryCount = *(from + 6);
     *&self->_has |= 0x20u;
   }
 
@@ -1414,7 +1414,7 @@ LABEL_13:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 12);
+  v5 = *(from + 12);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

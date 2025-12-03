@@ -1,33 +1,33 @@
 @interface THBookView
-- (THBookView)initWithFrame:(CGRect)a3 expandedLayout:(BOOL)a4;
+- (THBookView)initWithFrame:(CGRect)frame expandedLayout:(BOOL)layout;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)insertSubviewAtBack:(id)a3;
-- (void)setBackgroundColor:(id)a3;
+- (void)insertSubviewAtBack:(id)back;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation THBookView
 
-- (THBookView)initWithFrame:(CGRect)a3 expandedLayout:(BOOL)a4
+- (THBookView)initWithFrame:(CGRect)frame expandedLayout:(BOOL)layout
 {
   v6.receiver = self;
   v6.super_class = THBookView;
-  result = [(THBookView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(THBookView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->mExpandedLayout = a4;
+    result->mExpandedLayout = layout;
   }
 
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = THBookView;
   [(THBookView *)&v6 setBackgroundColor:?];
   effectView = self->_effectView;
-  if (a3)
+  if (color)
   {
     if (effectView)
     {
@@ -47,16 +47,16 @@
   }
 }
 
-- (void)insertSubviewAtBack:(id)a3
+- (void)insertSubviewAtBack:(id)back
 {
   if (self->_effectView)
   {
-    [(THBookView *)self insertSubview:a3 above:?];
+    [(THBookView *)self insertSubview:back above:?];
   }
 
   else
   {
-    [(THBookView *)self insertSubview:a3 atIndex:?];
+    [(THBookView *)self insertSubview:back atIndex:?];
   }
 }
 
@@ -72,19 +72,19 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(THBookView *)self window];
-  if (v3)
+  window = [(THBookView *)self window];
+  if (window)
   {
     v4 = +[TSKKeyboardMonitor sharedKeyboardMonitor];
     if (![v4 rootWindow])
     {
-      [v4 setRootWindow:v3];
+      [v4 setRootWindow:window];
     }
   }
 
-  v5 = [(THBookView *)self bookDelegate];
+  bookDelegate = [(THBookView *)self bookDelegate];
 
-  [(THBookViewDelegate *)v5 bookView:self didMoveToWindow:v3];
+  [(THBookViewDelegate *)bookDelegate bookView:self didMoveToWindow:window];
 }
 
 @end

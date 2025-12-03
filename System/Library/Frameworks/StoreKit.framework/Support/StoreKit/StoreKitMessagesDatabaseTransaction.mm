@@ -1,100 +1,100 @@
 @interface StoreKitMessagesDatabaseTransaction
-- (BOOL)addMessageInfo:(id)a3 withError:(id *)a4;
-- (BOOL)addRevocationInfo:(id)a3;
-- (BOOL)removeMessageInfoForUser:(id)a3 inApp:(id)a4 type:(int64_t)a5 withError:(id *)a6;
-- (BOOL)removeRevocationInfoForUser:(id)a3 inApp:(id)a4;
+- (BOOL)addMessageInfo:(id)info withError:(id *)error;
+- (BOOL)addRevocationInfo:(id)info;
+- (BOOL)removeMessageInfoForUser:(id)user inApp:(id)app type:(int64_t)type withError:(id *)error;
+- (BOOL)removeRevocationInfoForUser:(id)user inApp:(id)app;
 @end
 
 @implementation StoreKitMessagesDatabaseTransaction
 
-- (BOOL)addMessageInfo:(id)a3 withError:(id *)a4
+- (BOOL)addMessageInfo:(id)info withError:(id *)error
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [v5 userID];
-  [v6 setObject:v7 forKeyedSubscript:@"dsid"];
+  userID = [infoCopy userID];
+  [v6 setObject:userID forKeyedSubscript:@"dsid"];
 
-  v8 = [v5 bundleID];
-  [v6 setObject:v8 forKeyedSubscript:@"bundle_id"];
+  bundleID = [infoCopy bundleID];
+  [v6 setObject:bundleID forKeyedSubscript:@"bundle_id"];
 
-  v9 = [v5 status];
-  [v6 setObject:v9 forKeyedSubscript:@"status"];
+  status = [infoCopy status];
+  [v6 setObject:status forKeyedSubscript:@"status"];
 
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 allowDeveloperControl]);
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [infoCopy allowDeveloperControl]);
   [v6 setObject:v10 forKeyedSubscript:@"allow_developer_control"];
 
-  v11 = [v5 type];
-  v12 = [NSNumber numberWithInteger:v11];
+  type = [infoCopy type];
+  v12 = [NSNumber numberWithInteger:type];
   [v6 setObject:v12 forKeyedSubscript:@"message_type"];
 
   v13 = [StoreKitMessagesDatabaseEntity alloc];
-  v14 = [(StoreKitMessagesDatabaseSession *)self connection];
-  v15 = [(SQLiteEntity *)v13 initWithPropertyValues:v6 onConnection:v14];
+  connection = [(StoreKitMessagesDatabaseSession *)self connection];
+  v15 = [(SQLiteEntity *)v13 initWithPropertyValues:v6 onConnection:connection];
 
-  LOBYTE(v14) = [(SQLiteEntity *)v15 existsInDatabase];
-  return v14;
+  LOBYTE(connection) = [(SQLiteEntity *)v15 existsInDatabase];
+  return connection;
 }
 
-- (BOOL)removeMessageInfoForUser:(id)a3 inApp:(id)a4 type:(int64_t)a5 withError:(id *)a6
+- (BOOL)removeMessageInfoForUser:(id)user inApp:(id)app type:(int64_t)type withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [NSNumber numberWithInteger:a5];
-  v13 = [(StoreKitMessagesDatabaseSession *)self connection];
+  userCopy = user;
+  appCopy = app;
+  v12 = [NSNumber numberWithInteger:type];
+  connection = [(StoreKitMessagesDatabaseSession *)self connection];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100059BE4;
   v18[3] = &unk_1003824A0;
-  v19 = v10;
-  v20 = v11;
+  v19 = userCopy;
+  v20 = appCopy;
   v21 = v12;
   v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  LOBYTE(a6) = [v13 executeStatement:@"DELETE FROM storekit_messages WHERE dsid = ? AND bundle_id = ? AND message_type = ?;" error:a6 bindings:v18];
+  v15 = appCopy;
+  v16 = userCopy;
+  LOBYTE(error) = [connection executeStatement:@"DELETE FROM storekit_messages WHERE dsid = ? AND bundle_id = ? AND message_type = ?;" error:error bindings:v18];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)addRevocationInfo:(id)a3
+- (BOOL)addRevocationInfo:(id)info
 {
   v13[0] = @"dsid";
-  v4 = a3;
-  v5 = [v4 userID];
-  v14[0] = v5;
+  infoCopy = info;
+  userID = [infoCopy userID];
+  v14[0] = userID;
   v13[1] = @"bundle_id";
-  v6 = [v4 bundleID];
-  v14[1] = v6;
+  bundleID = [infoCopy bundleID];
+  v14[1] = bundleID;
   v13[2] = @"product_id";
-  v7 = [v4 productID];
+  productID = [infoCopy productID];
 
-  v14[2] = v7;
+  v14[2] = productID;
   v8 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
 
   v9 = [StoreKitRevocationsDatabaseEntity alloc];
-  v10 = [(StoreKitMessagesDatabaseSession *)self connection];
-  v11 = [(SQLiteEntity *)v9 initWithPropertyValues:v8 onConnection:v10];
+  connection = [(StoreKitMessagesDatabaseSession *)self connection];
+  v11 = [(SQLiteEntity *)v9 initWithPropertyValues:v8 onConnection:connection];
 
-  LOBYTE(v10) = [(SQLiteEntity *)v11 existsInDatabase];
-  return v10;
+  LOBYTE(connection) = [(SQLiteEntity *)v11 existsInDatabase];
+  return connection;
 }
 
-- (BOOL)removeRevocationInfoForUser:(id)a3 inApp:(id)a4
+- (BOOL)removeRevocationInfoForUser:(id)user inApp:(id)app
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(StoreKitMessagesDatabaseSession *)self connection];
+  userCopy = user;
+  appCopy = app;
+  connection = [(StoreKitMessagesDatabaseSession *)self connection];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100059E94;
   v12[3] = &unk_10037FAC8;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  LOBYTE(v7) = [v8 executeStatement:@"DELETE FROM storekit_revocations WHERE dsid = ? AND bundle_id = ?;" error:0 bindings:v12];
+  v13 = userCopy;
+  v14 = appCopy;
+  v9 = appCopy;
+  v10 = userCopy;
+  LOBYTE(appCopy) = [connection executeStatement:@"DELETE FROM storekit_revocations WHERE dsid = ? AND bundle_id = ?;" error:0 bindings:v12];
 
-  return v7;
+  return appCopy;
 }
 
 @end

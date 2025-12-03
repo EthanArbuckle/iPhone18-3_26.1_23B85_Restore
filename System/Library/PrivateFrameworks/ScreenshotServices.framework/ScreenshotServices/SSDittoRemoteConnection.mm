@@ -1,12 +1,12 @@
 @interface SSDittoRemoteConnection
 - (SSDittoRemoteConnection)init;
-- (void)_sendAction:(id)a3 completion:(id)a4;
+- (void)_sendAction:(id)action completion:(id)completion;
 - (void)preheatDittoProcess;
-- (void)sendDittoProcessDocumentUpdate:(id)a3;
-- (void)sendDittoProcessEnvironmentDescription:(id)a3 completion:(id)a4;
-- (void)sendDittoProcessImageIdentifierUpdate:(id)a3;
-- (void)sendDittoProcessMetadataUpdate:(id)a3 completion:(id)a4;
-- (void)sendDittoProcessPreheatRequestWithPresentationMode:(unint64_t)a3 completion:(id)a4;
+- (void)sendDittoProcessDocumentUpdate:(id)update;
+- (void)sendDittoProcessEnvironmentDescription:(id)description completion:(id)completion;
+- (void)sendDittoProcessImageIdentifierUpdate:(id)update;
+- (void)sendDittoProcessMetadataUpdate:(id)update completion:(id)completion;
+- (void)sendDittoProcessPreheatRequestWithPresentationMode:(unint64_t)mode completion:(id)completion;
 @end
 
 @implementation SSDittoRemoteConnection
@@ -16,24 +16,24 @@
   v6.receiver = self;
   v6.super_class = SSDittoRemoteConnection;
   v2 = [(SSDittoRemoteConnection *)&v6 init];
-  v3 = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x1E699FB78] serviceWithDefaultShellEndpoint];
   openApplicationService = v2->_openApplicationService;
-  v2->_openApplicationService = v3;
+  v2->_openApplicationService = serviceWithDefaultShellEndpoint;
 
   return v2;
 }
 
-- (void)_sendAction:(id)a3 completion:(id)a4
+- (void)_sendAction:(id)action completion:(id)completion
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E699FB70];
   v8 = *MEMORY[0x1E699F8D0];
-  v18 = a3;
+  actionCopy = action;
   v19[0] = v8;
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a3;
-  v11 = [v9 arrayWithObjects:&v18 count:1];
+  actionCopy2 = action;
+  v11 = [v9 arrayWithObjects:&actionCopy count:1];
   v19[1] = *MEMORY[0x1E699F8E8];
   v20[0] = v11;
   v20[1] = MEMORY[0x1E695E118];
@@ -45,8 +45,8 @@
   v16[1] = 3221225472;
   v16[2] = __50__SSDittoRemoteConnection__sendAction_completion___block_invoke;
   v16[3] = &unk_1E85908D0;
-  v17 = v6;
-  v15 = v6;
+  v17 = completionCopy;
+  v15 = completionCopy;
   [(FBSOpenApplicationService *)openApplicationService openApplication:@"com.apple.ScreenshotServicesService" withOptions:v13 completion:v16];
 }
 
@@ -74,26 +74,26 @@ uint64_t __50__SSDittoRemoteConnection__sendAction_completion___block_invoke(uin
   [(SSDittoRemoteConnection *)self _sendAction:v4];
 }
 
-- (void)sendDittoProcessEnvironmentDescription:(id)a3 completion:(id)a4
+- (void)sendDittoProcessEnvironmentDescription:(id)description completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bsSettings];
+  descriptionCopy = description;
+  completionCopy = completion;
+  bsSettings = [descriptionCopy bsSettings];
   v9 = [SSScreenshotAction alloc];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__SSDittoRemoteConnection_sendDittoProcessEnvironmentDescription_completion___block_invoke;
   v14[3] = &unk_1E8590118;
-  v15 = v7;
-  v10 = v7;
-  v11 = [(SSScreenshotAction *)v9 initWithInfo:v8 timeout:0 forResponseOnQueue:v14 withHandler:5.0];
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = [(SSScreenshotAction *)v9 initWithInfo:bsSettings timeout:0 forResponseOnQueue:v14 withHandler:5.0];
   v12 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 loggableDescription];
+    loggableDescription = [descriptionCopy loggableDescription];
     *buf = 138412290;
-    v17 = v13;
+    v17 = loggableDescription;
     _os_log_impl(&dword_1D9E04000, v12, OS_LOG_TYPE_DEFAULT, "Sending environment description %@", buf, 0xCu);
   }
 
@@ -125,37 +125,37 @@ void __77__SSDittoRemoteConnection_sendDittoProcessEnvironmentDescription_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendDittoProcessImageIdentifierUpdate:(id)a3
+- (void)sendDittoProcessImageIdentifierUpdate:(id)update
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bsSettings];
-  v6 = [[SSImageIdentifierAction alloc] initWithInfo:v5 timeout:0 forResponseOnQueue:0 withHandler:0.0];
+  updateCopy = update;
+  bsSettings = [updateCopy bsSettings];
+  v6 = [[SSImageIdentifierAction alloc] initWithInfo:bsSettings timeout:0 forResponseOnQueue:0 withHandler:0.0];
   v7 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 loggableDescription];
+    loggableDescription = [updateCopy loggableDescription];
     v9 = 138412290;
-    v10 = v8;
+    v10 = loggableDescription;
     _os_log_impl(&dword_1D9E04000, v7, OS_LOG_TYPE_DEFAULT, "Sending image identifier update %@", &v9, 0xCu);
   }
 
   [(SSDittoRemoteConnection *)self _sendAction:v6];
 }
 
-- (void)sendDittoProcessMetadataUpdate:(id)a3 completion:(id)a4
+- (void)sendDittoProcessMetadataUpdate:(id)update completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bsSettings];
-  v9 = [[SSMetadataUpdateAction alloc] initWithInfo:v8 timeout:0 forResponseOnQueue:v7 withHandler:0.0];
+  updateCopy = update;
+  completionCopy = completion;
+  bsSettings = [updateCopy bsSettings];
+  v9 = [[SSMetadataUpdateAction alloc] initWithInfo:bsSettings timeout:0 forResponseOnQueue:completionCopy withHandler:0.0];
   v10 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 loggableDescription];
+    loggableDescription = [updateCopy loggableDescription];
     *buf = 138412290;
-    v16 = v11;
+    v16 = loggableDescription;
     _os_log_impl(&dword_1D9E04000, v10, OS_LOG_TYPE_DEFAULT, "Sending environment metadata update %@", buf, 0xCu);
   }
 
@@ -163,8 +163,8 @@ void __77__SSDittoRemoteConnection_sendDittoProcessEnvironmentDescription_comple
   v13[1] = 3221225472;
   v13[2] = __69__SSDittoRemoteConnection_sendDittoProcessMetadataUpdate_completion___block_invoke;
   v13[3] = &unk_1E8590800;
-  v14 = v7;
-  v12 = v7;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(SSDittoRemoteConnection *)self _sendAction:v9 completion:v13];
 }
 
@@ -182,30 +182,30 @@ uint64_t __69__SSDittoRemoteConnection_sendDittoProcessMetadataUpdate_completion
   return result;
 }
 
-- (void)sendDittoProcessDocumentUpdate:(id)a3
+- (void)sendDittoProcessDocumentUpdate:(id)update
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bsSettings];
-  v6 = [[SSDocumentUpdateAction alloc] initWithInfo:v5 timeout:0 forResponseOnQueue:0 withHandler:0.0];
+  updateCopy = update;
+  bsSettings = [updateCopy bsSettings];
+  v6 = [[SSDocumentUpdateAction alloc] initWithInfo:bsSettings timeout:0 forResponseOnQueue:0 withHandler:0.0];
   v7 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 loggableDescription];
+    loggableDescription = [updateCopy loggableDescription];
     v9 = 138412290;
-    v10 = v8;
+    v10 = loggableDescription;
     _os_log_impl(&dword_1D9E04000, v7, OS_LOG_TYPE_DEFAULT, "Sending environment metadata update %@", &v9, 0xCu);
   }
 
   [(SSDittoRemoteConnection *)self _sendAction:v6];
 }
 
-- (void)sendDittoProcessPreheatRequestWithPresentationMode:(unint64_t)a3 completion:(id)a4
+- (void)sendDittoProcessPreheatRequestWithPresentationMode:(unint64_t)mode completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
   [v7 setObject:v8 forSetting:9];
 
   v9 = [SSPreheatAction alloc];
@@ -213,14 +213,14 @@ uint64_t __69__SSDittoRemoteConnection_sendDittoProcessMetadataUpdate_completion
   v13[1] = 3221225472;
   v13[2] = __89__SSDittoRemoteConnection_sendDittoProcessPreheatRequestWithPresentationMode_completion___block_invoke;
   v13[3] = &unk_1E8590118;
-  v14 = v6;
-  v10 = v6;
+  v14 = completionCopy;
+  v10 = completionCopy;
   v11 = [(SSPreheatAction *)v9 initWithInfo:v7 timeout:0 forResponseOnQueue:v13 withHandler:5.0];
   v12 = os_log_create("com.apple.screenshotservices", "XPC");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_1D9E04000, v12, OS_LOG_TYPE_DEFAULT, "Sending preheating request with presentation mode %td", buf, 0xCu);
   }
 

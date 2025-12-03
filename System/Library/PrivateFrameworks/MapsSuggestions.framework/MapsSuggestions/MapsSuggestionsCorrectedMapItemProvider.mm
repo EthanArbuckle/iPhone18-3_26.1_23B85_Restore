@@ -1,27 +1,27 @@
 @interface MapsSuggestionsCorrectedMapItemProvider
-- (MapsSuggestionsCorrectedMapItemProvider)initWithMeCardReader:(id)a3 handler:(id)a4;
+- (MapsSuggestionsCorrectedMapItemProvider)initWithMeCardReader:(id)reader handler:(id)handler;
 - (NSString)uniqueName;
-- (id)mapItemFormShortcutForCNIdentifier:(id)a3;
+- (id)mapItemFormShortcutForCNIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)meCardReader:(id)a3 didUpdateMeCard:(id)a4;
+- (void)meCardReader:(id)reader didUpdateMeCard:(id)card;
 @end
 
 @implementation MapsSuggestionsCorrectedMapItemProvider
 
-- (MapsSuggestionsCorrectedMapItemProvider)initWithMeCardReader:(id)a3 handler:(id)a4
+- (MapsSuggestionsCorrectedMapItemProvider)initWithMeCardReader:(id)reader handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  readerCopy = reader;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = MapsSuggestionsCorrectedMapItemProvider;
   v9 = [(MapsSuggestionsCorrectedMapItemProvider *)&v17 init];
   if (v9)
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(handlerCopy);
     updateHandler = v9->_updateHandler;
     v9->_updateHandler = v10;
 
-    objc_storeStrong(&v9->_meCardReader, a3);
+    objc_storeStrong(&v9->_meCardReader, reader);
     [(MapsSuggestionsMeCardReader *)v9->_meCardReader registerMeCardObserver:v9];
     objc_initWeak(&location, v9);
     meCardReader = v9->_meCardReader;
@@ -89,48 +89,48 @@ void __72__MapsSuggestionsCorrectedMapItemProvider_initWithMeCardReader_handler_
   [(MapsSuggestionsCorrectedMapItemProvider *)&v3 dealloc];
 }
 
-- (id)mapItemFormShortcutForCNIdentifier:(id)a3
+- (id)mapItemFormShortcutForCNIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MapsSuggestionsMeCard *)v5->_meCard shortcutForCNPostalAddressIdentifier:v4];
-  v7 = [v6 identifier];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(MapsSuggestionsMeCard *)selfCopy->_meCard shortcutForCNPostalAddressIdentifier:identifierCopy];
+  identifier = [v6 identifier];
 
-  if (v7)
+  if (identifier)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(MapsSuggestionsMeCard *)v5->_meCard shortcutsForAll];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
-    if (v9)
+    shortcutsForAll = [(MapsSuggestionsMeCard *)selfCopy->_meCard shortcutsForAll];
+    geoMapItem = [shortcutsForAll countByEnumeratingWithState:&v16 objects:v20 count:16];
+    if (geoMapItem)
     {
       v10 = *v17;
       while (2)
       {
-        for (i = 0; i != v9; i = i + 1)
+        for (i = 0; i != geoMapItem; i = i + 1)
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(shortcutsForAll);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v7 isEqualToString:v13];
+          identifier2 = [v12 identifier];
+          v14 = [identifier isEqualToString:identifier2];
 
           if (v14)
           {
-            v9 = [v12 geoMapItem];
+            geoMapItem = [v12 geoMapItem];
             goto LABEL_12;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
-        if (v9)
+        geoMapItem = [shortcutsForAll countByEnumeratingWithState:&v16 objects:v20 count:16];
+        if (geoMapItem)
         {
           continue;
         }
@@ -144,31 +144,31 @@ LABEL_12:
 
   else
   {
-    v9 = 0;
+    geoMapItem = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v9;
+  return geoMapItem;
 }
 
-- (void)meCardReader:(id)a3 didUpdateMeCard:(id)a4
+- (void)meCardReader:(id)reader didUpdateMeCard:(id)card
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  objc_storeStrong(&v7->_meCard, a4);
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"CorrectedMapItemsUpdated" object:0];
+  readerCopy = reader;
+  cardCopy = card;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_meCard, card);
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CorrectedMapItemsUpdated" object:0];
 
-  updateHandler = v7->_updateHandler;
+  updateHandler = selfCopy->_updateHandler;
   if (updateHandler)
   {
     updateHandler[2]();
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)uniqueName

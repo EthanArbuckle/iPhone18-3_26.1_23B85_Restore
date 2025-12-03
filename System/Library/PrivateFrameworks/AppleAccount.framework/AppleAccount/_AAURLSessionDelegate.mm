@@ -1,60 +1,60 @@
 @interface _AAURLSessionDelegate
 - (NSURLSessionDataDelegate)delegate;
-- (_AAURLSessionDelegate)initWithDelegate:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (_AAURLSessionDelegate)initWithDelegate:(id)delegate;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation _AAURLSessionDelegate
 
-- (_AAURLSessionDelegate)initWithDelegate:(id)a3
+- (_AAURLSessionDelegate)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _AAURLSessionDelegate;
   v5 = [(_AAURLSessionDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained URLSession:v11 dataTask:v8 didReceiveData:v9];
+    [WeakRetained URLSession:sessionCopy dataTask:taskCopy didReceiveData:dataCopy];
   }
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained URLSession:v8 didBecomeInvalidWithError:v6];
+    [WeakRetained URLSession:sessionCopy didBecomeInvalidWithError:errorCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained URLSession:v11 task:v8 didCompleteWithError:v9];
+    [WeakRetained URLSession:sessionCopy task:taskCopy didCompleteWithError:errorCopy];
   }
 }
 

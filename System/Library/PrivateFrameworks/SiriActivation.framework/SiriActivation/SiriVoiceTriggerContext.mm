@@ -7,11 +7,11 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SiriContext *)self contextOverride];
-  v5 = [(SiriContinuityContext *)self speechRequestOptions];
-  v6 = [(SiriContinuityContext *)self requestInfo];
-  v7 = [(SiriContinuityContext *)self userActivity];
-  v8 = [v3 stringWithFormat:@"<SiriVoiceTriggerContext contextOverride:%@, speechRequestOptions:%@, requestInfo:%@, userActivity:%@>", v4, v5, v6, v7];
+  contextOverride = [(SiriContext *)self contextOverride];
+  speechRequestOptions = [(SiriContinuityContext *)self speechRequestOptions];
+  requestInfo = [(SiriContinuityContext *)self requestInfo];
+  userActivity = [(SiriContinuityContext *)self userActivity];
+  v8 = [v3 stringWithFormat:@"<SiriVoiceTriggerContext contextOverride:%@, speechRequestOptions:%@, requestInfo:%@, userActivity:%@>", contextOverride, speechRequestOptions, requestInfo, userActivity];
 
   return v8;
 }

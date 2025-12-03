@@ -2,18 +2,18 @@
 + (BOOL)_bundleIDIsInAllowListForColorCaching;
 + (BOOL)_colorCachingEnabledForProcess;
 + (id)blurGradient;
-+ (id)contactHeaderViewWithContact:(id)a3 allowsPhotoDrops:(BOOL)a4 showingNavBar:(BOOL)a5 monogramOnly:(BOOL)a6 delegate:(id)a7;
-+ (id)descriptorForRequiredKeysForContactFormatter:(id)a3;
++ (id)contactHeaderViewWithContact:(id)contact allowsPhotoDrops:(BOOL)drops showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate;
++ (id)descriptorForRequiredKeysForContactFormatter:(id)formatter;
 + (id)makeBlurGradient;
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5;
-+ (id)sizeAttributesShowingNavBar:(BOOL)a3;
-- (BOOL)canSensitiveContentHelpButtonBlockContact:(id)a3;
-- (BOOL)canSensitiveContentHelpButtonViewHidePhoto:(id)a3;
-- (BOOL)identifierForBackgroundColorIsCurrent:(id)a3;
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only;
++ (id)sizeAttributesShowingNavBar:(BOOL)bar;
+- (BOOL)canSensitiveContentHelpButtonBlockContact:(id)contact;
+- (BOOL)canSensitiveContentHelpButtonViewHidePhoto:(id)photo;
+- (BOOL)identifierForBackgroundColorIsCurrent:(id)current;
 - (BOOL)shouldShowPoster;
 - (BOOL)shouldUseFixedHeight;
-- (CGRect)layerContentsRectForConfiguration:(id)a3;
-- (CNContactHeaderStaticDisplayView)initWithContact:(id)a3 frame:(CGRect)a4 shouldAllowImageDrops:(BOOL)a5 showingNavBar:(BOOL)a6 monogramOnly:(BOOL)a7 delegate:(id)a8;
+- (CGRect)layerContentsRectForConfiguration:(id)configuration;
+- (CNContactHeaderStaticDisplayView)initWithContact:(id)contact frame:(CGRect)frame shouldAllowImageDrops:(BOOL)drops showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate;
 - (double)avatarHeightPhoneLandscape;
 - (double)bottomMargin;
 - (double)height;
@@ -23,13 +23,13 @@
 - (double)staticHeaderPhotoMinHeight;
 - (double)staticHeaderPhotoMinTopMargin;
 - (double)staticHeaderPhotoTopMarginOffset;
-- (id)_headerStringForContacts:(id)a3;
+- (id)_headerStringForContacts:(id)contacts;
 - (id)_importantString;
 - (id)_savedContactActionForGeminiViewForDualSimParity;
 - (id)_unknownContactActionForGeminiView;
-- (id)attributedTaglineForContacts:(id)a3;
+- (id)attributedTaglineForContacts:(id)contacts;
 - (id)descriptorForRequiredKeys;
-- (id)imageDataForColorFetchingIsImageDataOrThumbnail:(BOOL *)a3 bitmapFormat:(id *)a4;
+- (id)imageDataForColorFetchingIsImageDataOrThumbnail:(BOOL *)thumbnail bitmapFormat:(id *)format;
 - (id)nameFont;
 - (unint64_t)avatarStyle;
 - (void)_assignActionToGeminiView;
@@ -38,64 +38,64 @@
 - (void)_updateDowntimeView;
 - (void)_updateImportantLabel;
 - (void)_updatePhotoView;
-- (void)assignImageColorsToAvatarBackgroundView:(id)a3 animated:(BOOL)a4;
-- (void)assignSnapshotImageToPosterView:(id)a3 configuration:(id)a4 contentIsSensitive:(BOOL)a5;
+- (void)assignImageColorsToAvatarBackgroundView:(id)view animated:(BOOL)animated;
+- (void)assignSnapshotImageToPosterView:(id)view configuration:(id)configuration contentIsSensitive:(BOOL)sensitive;
 - (void)calculateLabelSizes;
 - (void)calculateLabelSizesIfNeeded;
-- (void)configureSensitiveContentHelpButtonHidden:(BOOL)a3;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)copy:(id)a3;
+- (void)configureSensitiveContentHelpButtonHidden:(BOOL)hidden;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)copy:(id)copy;
 - (void)createGeminiViewIfNeeded;
 - (void)dealloc;
 - (void)didFinishUsing;
 - (void)didTapSensitiveContentHelpButton;
 - (void)disablePhotoTapGesture;
-- (void)geminiViewDidPickPreferredChannel:(id)a3;
-- (void)handleGeminiViewTouch:(id)a3;
-- (void)handleNameLabelLongPress:(id)a3;
-- (void)handleNameLabelTap:(id)a3;
+- (void)geminiViewDidPickPreferredChannel:(id)channel;
+- (void)handleGeminiViewTouch:(id)touch;
+- (void)handleNameLabelLongPress:(id)press;
+- (void)handleNameLabelTap:(id)tap;
 - (void)layoutSubviews;
-- (void)menuWillHide:(id)a3;
-- (void)notifyDelegateOfUpdatedHiddenSensitiveContent:(BOOL)a3;
-- (void)picker:(id)a3 didPickItem:(id)a4;
-- (void)pickerDidCancel:(id)a3;
-- (void)reloadDataPreservingChanges:(BOOL)a3;
-- (void)sensitiveContentBlurView:(id)a3 wantsToPresentInterventionController:(id)a4;
-- (void)sensitiveContentHelpButtonView:(id)a3 didRequestToBlockContact:(BOOL)a4;
-- (void)sensitiveContentHelpButtonView:(id)a3 didRequestToPresentMenu:(id)a4;
-- (void)sensitiveContentHelpButtonView:(id)a3 didRequestToPresentMoreHelp:(id)a4;
-- (void)setActionsWrapperView:(id)a3;
-- (void)setAvatarStyle:(unint64_t)a3;
+- (void)menuWillHide:(id)hide;
+- (void)notifyDelegateOfUpdatedHiddenSensitiveContent:(BOOL)content;
+- (void)picker:(id)picker didPickItem:(id)item;
+- (void)pickerDidCancel:(id)cancel;
+- (void)reloadDataPreservingChanges:(BOOL)changes;
+- (void)sensitiveContentBlurView:(id)view wantsToPresentInterventionController:(id)controller;
+- (void)sensitiveContentHelpButtonView:(id)view didRequestToBlockContact:(BOOL)contact;
+- (void)sensitiveContentHelpButtonView:(id)view didRequestToPresentMenu:(id)menu;
+- (void)sensitiveContentHelpButtonView:(id)view didRequestToPresentMoreHelp:(id)help;
+- (void)setActionsWrapperView:(id)view;
+- (void)setAvatarStyle:(unint64_t)style;
 - (void)setBlurViewGradient;
 - (void)setDefaultLabelColors;
-- (void)setDowntimeTextAttributes:(id)a3;
-- (void)setGeminiTextAttributes:(id)a3;
-- (void)setImportantMessage:(id)a3;
-- (void)setImportantTextAttributes:(id)a3;
-- (void)setIsDowntimeContact:(BOOL)a3;
-- (void)setIsEmergencyContact:(BOOL)a3;
-- (void)setIsRestrictedContact:(BOOL)a3;
-- (void)setMessage:(id)a3;
-- (void)setNameTextAttributes:(id)a3;
-- (void)setPosterViewHidden:(BOOL)a3;
-- (void)setShouldShowGemini:(BOOL)a3;
+- (void)setDowntimeTextAttributes:(id)attributes;
+- (void)setGeminiTextAttributes:(id)attributes;
+- (void)setImportantMessage:(id)message;
+- (void)setImportantTextAttributes:(id)attributes;
+- (void)setIsDowntimeContact:(BOOL)contact;
+- (void)setIsEmergencyContact:(BOOL)contact;
+- (void)setIsRestrictedContact:(BOOL)contact;
+- (void)setMessage:(id)message;
+- (void)setNameTextAttributes:(id)attributes;
+- (void)setPosterViewHidden:(BOOL)hidden;
+- (void)setShouldShowGemini:(BOOL)gemini;
 - (void)setUpAvatarBackgroundView;
 - (void)setUpPosterView;
-- (void)setUsesBrandedCallFormat:(BOOL)a3;
+- (void)setUsesBrandedCallFormat:(BOOL)format;
 - (void)tintColorDidChange;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)updateAvatarBackgroundViewVisibility;
 - (void)updateConstraints;
 - (void)updateFontSizes;
-- (void)updateGeminiResult:(id)a3;
+- (void)updateGeminiResult:(id)result;
 - (void)updateImageViewVisiblity;
-- (void)updateLabelColorsForImageColors:(id)a3;
-- (void)updateLabelColorsForPosterSnapshot:(id)a3;
-- (void)updatePosterImageViewForScrollOffset:(CGPoint)a3;
+- (void)updateLabelColorsForImageColors:(id)colors;
+- (void)updateLabelColorsForPosterSnapshot:(id)snapshot;
+- (void)updatePosterImageViewForScrollOffset:(CGPoint)offset;
 - (void)updatePosterViewImage;
-- (void)updateSensitiveContentBlurVisibility:(BOOL)a3;
+- (void)updateSensitiveContentBlurVisibility:(BOOL)visibility;
 - (void)updateSizeDependentAttributes;
-- (void)updateWithContacts:(id)a3;
+- (void)updateWithContacts:(id)contacts;
 @end
 
 @implementation CNContactHeaderStaticDisplayView
@@ -105,25 +105,25 @@
   v36[4] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E6979380]);
   [v2 setFrame:{0.0, 0.0, 1.0, 500.0}];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [v3 colorWithAlphaComponent:0.0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v4 = [whiteColor colorWithAlphaComponent:0.0];
   v36[0] = [v4 CGColor];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  v6 = [v5 colorWithAlphaComponent:0.0];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  v6 = [whiteColor2 colorWithAlphaComponent:0.0];
   v36[1] = [v6 CGColor];
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  v8 = [v7 colorWithAlphaComponent:0.1];
+  whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+  v8 = [whiteColor3 colorWithAlphaComponent:0.1];
   v36[2] = [v8 CGColor];
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  v10 = [v9 colorWithAlphaComponent:1.0];
+  whiteColor4 = [MEMORY[0x1E69DC888] whiteColor];
+  v10 = [whiteColor4 colorWithAlphaComponent:1.0];
   v36[3] = [v10 CGColor];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
   [v2 setColors:v11];
 
   [v2 setLocations:&unk_1F0D4B8B0];
-  v12 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v13 = [v12 timeProvider];
-  [v13 timestamp];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider = [currentEnvironment timeProvider];
+  [timeProvider timestamp];
   v15 = v14;
 
   v16 = objc_alloc(MEMORY[0x1E69DCA78]);
@@ -136,9 +136,9 @@
   v20 = v2;
   v31 = v20;
   v21 = [v19 imageWithActions:v30];
-  v22 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v23 = [v22 timeProvider];
-  [v23 timestamp];
+  currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+  timeProvider2 = [currentEnvironment2 timeProvider];
+  [timeProvider2 timestamp];
   v25 = v24;
 
   v26 = CNUILogPosters();
@@ -171,7 +171,7 @@ uint64_t __52__CNContactHeaderStaticDisplayView_makeBlurGradient__block_invoke(u
   block[1] = 3221225472;
   block[2] = __48__CNContactHeaderStaticDisplayView_blurGradient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (blurGradient_cn_once_token_30 != -1)
   {
     dispatch_once(&blurGradient_cn_once_token_30, block);
@@ -193,9 +193,9 @@ uint64_t __48__CNContactHeaderStaticDisplayView_blurGradient__block_invoke(uint6
 
 + (BOOL)_bundleIDIsInAllowListForColorCaching
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [&unk_1F0D4B898 containsObject:v3];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [&unk_1F0D4B898 containsObject:bundleIdentifier];
 
   return v4;
 }
@@ -206,7 +206,7 @@ uint64_t __48__CNContactHeaderStaticDisplayView_blurGradient__block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __66__CNContactHeaderStaticDisplayView__colorCachingEnabledForProcess__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_colorCachingEnabledForProcess_cn_once_token_14 != -1)
   {
     dispatch_once(&_colorCachingEnabledForProcess_cn_once_token_14, block);
@@ -224,9 +224,9 @@ uint64_t __66__CNContactHeaderStaticDisplayView__colorCachingEnabledForProcess__
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)sizeAttributesShowingNavBar:(BOOL)a3
++ (id)sizeAttributesShowingNavBar:(BOOL)bar
 {
-  if (a3)
+  if (bar)
   {
     +[CNContactHeaderViewSizeAttributes staticDisplayAttributesWithNavBar];
   }
@@ -240,34 +240,34 @@ uint64_t __66__CNContactHeaderStaticDisplayView__colorCachingEnabledForProcess__
   return v3;
 }
 
-+ (id)contactHeaderViewWithContact:(id)a3 allowsPhotoDrops:(BOOL)a4 showingNavBar:(BOOL)a5 monogramOnly:(BOOL)a6 delegate:(id)a7
++ (id)contactHeaderViewWithContact:(id)contact allowsPhotoDrops:(BOOL)drops showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = a7;
-  v14 = [sStaticDisplayContactHeaderView delegate];
-  if (v14)
+  onlyCopy = only;
+  barCopy = bar;
+  dropsCopy = drops;
+  contactCopy = contact;
+  delegateCopy = delegate;
+  delegate = [sStaticDisplayContactHeaderView delegate];
+  if (delegate)
   {
 
 LABEL_4:
-    v15 = [a1 alloc];
-    v16 = [v15 initWithContact:v12 frame:v10 shouldAllowImageDrops:v9 showingNavBar:v8 monogramOnly:v13 delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v15 = [self alloc];
+    v16 = [v15 initWithContact:contactCopy frame:dropsCopy shouldAllowImageDrops:barCopy showingNavBar:onlyCopy monogramOnly:delegateCopy delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 LABEL_5:
     v17 = v16;
     goto LABEL_6;
   }
 
-  if ([sStaticDisplayContactHeaderView showMonogramsOnly] != v8)
+  if ([sStaticDisplayContactHeaderView showMonogramsOnly] != onlyCopy)
   {
     goto LABEL_4;
   }
 
   if (!sStaticDisplayContactHeaderView)
   {
-    v19 = [a1 alloc];
-    v20 = [v19 initWithContact:v12 frame:v10 shouldAllowImageDrops:v9 showingNavBar:v8 monogramOnly:v13 delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v19 = [self alloc];
+    v20 = [v19 initWithContact:contactCopy frame:dropsCopy shouldAllowImageDrops:barCopy showingNavBar:onlyCopy monogramOnly:delegateCopy delegate:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v21 = sStaticDisplayContactHeaderView;
     sStaticDisplayContactHeaderView = v20;
 
@@ -276,26 +276,26 @@ LABEL_5:
   }
 
   v17 = sStaticDisplayContactHeaderView;
-  [v17 setDelegate:v13];
+  [v17 setDelegate:delegateCopy];
   [v17 prepareForReuse];
-  [v17 updateForShowingNavBar:v9];
-  [v17 updateWithNewContact:v12];
+  [v17 updateForShowingNavBar:barCopy];
+  [v17 updateWithNewContact:contactCopy];
 LABEL_6:
 
   return v17;
 }
 
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  onlyCopy = only;
+  dropsCopy = drops;
+  actionCopy = action;
   v8 = +[CNUIContactsEnvironment currentEnvironment];
-  v9 = [v8 inProcessContactStore];
+  inProcessContactStore = [v8 inProcessContactStore];
 
   v10 = +[CNUIContactsEnvironment currentEnvironment];
   v11 = v10;
-  if (v5)
+  if (onlyCopy)
   {
     [v10 cachingMonogramRenderer];
   }
@@ -307,24 +307,24 @@ LABEL_6:
   v12 = ;
 
   v13 = [CNContactPhotoView alloc];
-  v14 = [(CNContactPhotoView *)v13 initWithFrame:v7 shouldAllowTakePhotoAction:1 threeDTouchEnabled:v9 contactStore:v6 allowsImageDrops:v12 imageRenderer:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v14 = [(CNContactPhotoView *)v13 initWithFrame:actionCopy shouldAllowTakePhotoAction:1 threeDTouchEnabled:inProcessContactStore contactStore:dropsCopy allowsImageDrops:v12 imageRenderer:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v14;
 }
 
-+ (id)descriptorForRequiredKeysForContactFormatter:(id)a3
++ (id)descriptorForRequiredKeysForContactFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v5 = MEMORY[0x1E695DF70];
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___CNContactHeaderStaticDisplayView;
   v6 = objc_msgSendSuper2(&v13, sel_descriptorForRequiredKeys);
   v7 = [v5 arrayWithObject:v6];
 
-  if (v4)
+  if (formatterCopy)
   {
-    v8 = [v4 descriptorForRequiredKeys];
-    [v7 addObject:v8];
+    descriptorForRequiredKeys = [formatterCopy descriptorForRequiredKeys];
+    [v7 addObject:descriptorForRequiredKeys];
   }
 
   v9 = MEMORY[0x1E695CD58];
@@ -334,90 +334,90 @@ LABEL_6:
   return v11;
 }
 
-- (void)sensitiveContentHelpButtonView:(id)a3 didRequestToBlockContact:(BOOL)a4
+- (void)sensitiveContentHelpButtonView:(id)view didRequestToBlockContact:(BOOL)contact
 {
-  v4 = a4;
-  v6 = [(CNContactHeaderView *)self delegate];
-  [v6 headerView:self didRequestToBlockContact:v4];
+  contactCopy = contact;
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerView:self didRequestToBlockContact:contactCopy];
 }
 
-- (void)notifyDelegateOfUpdatedHiddenSensitiveContent:(BOOL)a3
+- (void)notifyDelegateOfUpdatedHiddenSensitiveContent:(BOOL)content
 {
-  v3 = a3;
-  v5 = [(CNContactHeaderView *)self delegate];
-  [v5 headerView:self didUpdateSensitiveContentOverride:!v3];
+  contentCopy = content;
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerView:self didUpdateSensitiveContentOverride:!contentCopy];
 }
 
-- (void)sensitiveContentHelpButtonView:(id)a3 didRequestToPresentMoreHelp:(id)a4
+- (void)sensitiveContentHelpButtonView:(id)view didRequestToPresentMoreHelp:(id)help
 {
-  v5 = a4;
-  v6 = [(CNContactHeaderView *)self presenterDelegate];
-  [v6 sender:self presentViewController:v5];
+  helpCopy = help;
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  [presenterDelegate sender:self presentViewController:helpCopy];
 }
 
-- (BOOL)canSensitiveContentHelpButtonBlockContact:(id)a3
+- (BOOL)canSensitiveContentHelpButtonBlockContact:(id)contact
 {
-  v3 = self;
-  v4 = [(CNContactHeaderView *)self delegate];
-  LOBYTE(v3) = [v4 isHeaderViewContactBlocked:v3];
+  selfCopy = self;
+  delegate = [(CNContactHeaderView *)self delegate];
+  LOBYTE(selfCopy) = [delegate isHeaderViewContactBlocked:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)canSensitiveContentHelpButtonViewHidePhoto:(id)a3
+- (BOOL)canSensitiveContentHelpButtonViewHidePhoto:(id)photo
 {
-  v3 = [(CNContactHeaderView *)self contacts];
-  v4 = [v3 firstObject];
-  v5 = [v4 overrideSensitiveContent];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
+  overrideSensitiveContent = [firstObject overrideSensitiveContent];
 
-  return v5;
+  return overrideSensitiveContent;
 }
 
-- (void)sensitiveContentHelpButtonView:(id)a3 didRequestToPresentMenu:(id)a4
+- (void)sensitiveContentHelpButtonView:(id)view didRequestToPresentMenu:(id)menu
 {
-  v5 = a4;
-  v6 = [(CNContactHeaderView *)self presenterDelegate];
-  [v6 sender:self presentViewController:v5];
+  menuCopy = menu;
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  [presenterDelegate sender:self presentViewController:menuCopy];
 }
 
-- (void)sensitiveContentBlurView:(id)a3 wantsToPresentInterventionController:(id)a4
+- (void)sensitiveContentBlurView:(id)view wantsToPresentInterventionController:(id)controller
 {
-  v5 = a4;
-  v6 = [(CNContactHeaderView *)self presenterDelegate];
-  [v6 sender:self presentViewController:v5];
+  controllerCopy = controller;
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  [presenterDelegate sender:self presentViewController:controllerCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [(CNContactHeaderStaticDisplayView *)self traitChangeRegistration];
-  [(CNContactHeaderStaticDisplayView *)self unregisterForTraitChanges:v3];
+  traitChangeRegistration = [(CNContactHeaderStaticDisplayView *)self traitChangeRegistration];
+  [(CNContactHeaderStaticDisplayView *)self unregisterForTraitChanges:traitChangeRegistration];
 
   v4.receiver = self;
   v4.super_class = CNContactHeaderStaticDisplayView;
   [(CNContactHeaderView *)&v4 dealloc];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(CNContactHeaderStaticDisplayView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v5 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(CNContactHeaderStaticDisplayView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v7 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v9 = [(CNContactHeaderView *)self contacts];
-    v10 = [v9 firstObject];
-    v11 = [v10 hasBeenPersisted];
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
+    hasBeenPersisted = [firstObject hasBeenPersisted];
 
-    if ((v11 & 1) == 0)
+    if ((hasBeenPersisted & 1) == 0)
     {
-      v12 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-      v13 = [v12 contextMenuInteraction];
-      [v13 dismissMenu];
+      geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+      contextMenuInteraction = [geminiView contextMenuInteraction];
+      [contextMenuInteraction dismissMenu];
 
-      v14 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
-      [v14 updateGeminiIcons];
+      geminiIconProvider = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
+      [geminiIconProvider updateGeminiIcons];
 
       [(CNContactHeaderStaticDisplayView *)self _geminiViewBehaviorForUnknownContact];
     }
@@ -426,102 +426,102 @@ LABEL_6:
   }
 }
 
-- (void)pickerDidCancel:(id)a3
+- (void)pickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(CNContactHeaderView *)self presenterDelegate];
-  [v5 sender:self dismissViewController:v4];
+  cancelCopy = cancel;
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  [presenterDelegate sender:self dismissViewController:cancelCopy];
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v6 setHighlighted:0];
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView setHighlighted:0];
 
   [(CNContactHeaderStaticDisplayView *)self setGeminiPicker:0];
 }
 
-- (void)picker:(id)a3 didPickItem:(id)a4
+- (void)picker:(id)picker didPickItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v8 setNeedsCalculateLayout];
+  itemCopy = item;
+  pickerCopy = picker;
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView setNeedsCalculateLayout];
 
-  v9 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v9 calculateLayoutIfNeeded];
+  geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView2 calculateLayoutIfNeeded];
 
   [(CNContactHeaderView *)self setNeedsLabelSizeCalculation:1];
   [(CNContactHeaderStaticDisplayView *)self setNeedsLayout];
-  v13 = [MEMORY[0x1E695CEB0] channelStringFromSenderIdentity:v6];
+  v13 = [MEMORY[0x1E695CEB0] channelStringFromSenderIdentity:itemCopy];
 
-  v10 = [(CNContactHeaderView *)self delegate];
-  [v10 headerViewDidPickPreferredChannel:v13];
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerViewDidPickPreferredChannel:v13];
 
-  v11 = [(CNContactHeaderView *)self presenterDelegate];
-  [v11 sender:self dismissViewController:v7];
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  [presenterDelegate sender:self dismissViewController:pickerCopy];
 
-  v12 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v12 setHighlighted:0];
+  geminiView3 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView3 setHighlighted:0];
 
   [(CNContactHeaderStaticDisplayView *)self setGeminiPicker:0];
 }
 
-- (void)handleGeminiViewTouch:(id)a3
+- (void)handleGeminiViewTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v4 locationInView:v5];
+  touchCopy = touch;
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [touchCopy locationInView:geminiView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v10 bounds];
+  geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView2 bounds];
   v24.x = v7;
   v24.y = v9;
-  v11 = CGRectContainsPoint(v25, v24);
+  allowsPickerActions2 = CGRectContainsPoint(v25, v24);
 
-  v12 = [v4 state];
-  switch(v12)
+  state = [touchCopy state];
+  switch(state)
   {
     case 4:
       goto LABEL_11;
     case 3:
-      if (!v11)
+      if (!allowsPickerActions2)
       {
 LABEL_12:
-        v22 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-        [v22 setHighlighted:v11];
+        geminiView3 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+        [geminiView3 setHighlighted:allowsPickerActions2];
 
         return;
       }
 
-      v16 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-      v17 = [v16 allowsPickerActions];
+      geminiView4 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+      allowsPickerActions = [geminiView4 allowsPickerActions];
 
-      if (v17)
+      if (allowsPickerActions)
       {
         v18 = [CNGeminiPickerController alloc];
-        v19 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-        v20 = [(CNGeminiPickerController *)v18 initWithGeminiResult:v19];
+        geminiResult = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+        v20 = [(CNGeminiPickerController *)v18 initWithGeminiResult:geminiResult];
 
         [(CNContactHeaderStaticDisplayView *)self setGeminiPicker:v20];
         [(CNGeminiPickerController *)v20 setDelegate:self];
-        v21 = [(CNContactHeaderView *)self presenterDelegate];
-        [v21 sender:self presentViewController:v20];
+        presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+        [presenterDelegate sender:self presentViewController:v20];
       }
 
 LABEL_11:
-      v11 = 0;
+      allowsPickerActions2 = 0;
       goto LABEL_12;
     case 2:
-      if (v11)
+      if (allowsPickerActions2)
       {
-        v13 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-        v11 = [v13 allowsPickerActions];
+        geminiView5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+        allowsPickerActions2 = [geminiView5 allowsPickerActions];
       }
 
-      v14 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-      v15 = [v14 isHighlighted];
+      geminiView6 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+      isHighlighted = [geminiView6 isHighlighted];
 
-      if (v11 != v15)
+      if (allowsPickerActions2 != isHighlighted)
       {
         goto LABEL_12;
       }
@@ -530,33 +530,33 @@ LABEL_11:
   }
 }
 
-- (void)geminiViewDidPickPreferredChannel:(id)a3
+- (void)geminiViewDidPickPreferredChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v5 setNeedsCalculateLayout];
+  channelCopy = channel;
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView setNeedsCalculateLayout];
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v6 calculateLayoutIfNeeded];
+  geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView2 calculateLayoutIfNeeded];
 
   [(CNContactHeaderView *)self setNeedsLabelSizeCalculation:1];
   [(CNContactHeaderStaticDisplayView *)self setNeedsLayout];
-  v7 = [(CNContactHeaderView *)self delegate];
-  [v7 headerViewDidPickPreferredChannel:v4];
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerViewDidPickPreferredChannel:channelCopy];
 }
 
 - (id)_savedContactActionForGeminiViewForDualSimParity
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-  v4 = [v3 availableChannels];
+  geminiResult = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+  availableChannels = [geminiResult availableChannels];
 
-  v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(availableChannels, "count")}];
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v4;
+  obj = availableChannels;
   v32 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v32)
   {
@@ -580,51 +580,51 @@ LABEL_11:
         aBlock[4] = v6;
         v7 = _Block_copy(aBlock);
         v8 = MEMORY[0x1E69DC628];
-        v9 = [v6 localizedLabel];
-        v10 = [v8 actionWithTitle:v9 image:0 identifier:0 handler:v7];
+        localizedLabel = [v6 localizedLabel];
+        v10 = [v8 actionWithTitle:localizedLabel image:0 identifier:0 handler:v7];
 
         v11 = MEMORY[0x1E695CEB0];
-        v12 = [v6 senderIdentity];
-        v13 = [v11 channelStringFromSenderIdentity:v12];
+        senderIdentity = [v6 senderIdentity];
+        v13 = [v11 channelStringFromSenderIdentity:senderIdentity];
 
-        v14 = [(CNContactHeaderStaticDisplayView *)self selectedChannel];
+        selectedChannel = [(CNContactHeaderStaticDisplayView *)self selectedChannel];
 
-        if (v14)
+        if (selectedChannel)
         {
-          v15 = [(CNContactHeaderStaticDisplayView *)self selectedChannel];
-          [v10 setState:{objc_msgSend(v13, "isEqualToString:", v15)}];
+          selectedChannel2 = [(CNContactHeaderStaticDisplayView *)self selectedChannel];
+          [v10 setState:{objc_msgSend(v13, "isEqualToString:", selectedChannel2)}];
         }
 
         else
         {
-          v15 = [v6 senderIdentity];
-          v16 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-          v17 = [v16 channel];
-          v18 = [v17 senderIdentity];
-          [v10 setState:v15 == v18];
+          selectedChannel2 = [v6 senderIdentity];
+          geminiResult2 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+          channel = [geminiResult2 channel];
+          senderIdentity2 = [channel senderIdentity];
+          [v10 setState:selectedChannel2 == senderIdentity2];
         }
 
-        v19 = [v6 senderIdentity];
-        v20 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-        v21 = [v20 channel];
-        v22 = [v21 senderIdentity];
+        senderIdentity3 = [v6 senderIdentity];
+        geminiResult3 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+        channel2 = [geminiResult3 channel];
+        senderIdentity4 = [channel2 senderIdentity];
         v23 = &stru_1F0CE7398;
-        if (v19 == v22)
+        if (senderIdentity3 == senderIdentity4)
         {
-          v34 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-          v35 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-          v33 = [v34 localizedChannelSubtitleForGeminiResult:v35];
+          geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+          geminiResult4 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+          v33 = [geminiView localizedChannelSubtitleForGeminiResult:geminiResult4];
           v23 = v33;
         }
 
         [v10 setSubtitle:v23];
-        if (v19 == v22)
+        if (senderIdentity3 == senderIdentity4)
         {
         }
 
-        v24 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
-        v25 = [v6 channelIdentifier];
-        v26 = [v24 geminiIconForGeminiChannelIdentifier:v25];
+        geminiIconProvider = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
+        channelIdentifier = [v6 channelIdentifier];
+        v26 = [geminiIconProvider geminiIconForGeminiChannelIdentifier:channelIdentifier];
         [v10 setImage:v26];
 
         [v31 addObject:v10];
@@ -661,15 +661,15 @@ void __84__CNContactHeaderStaticDisplayView__savedContactActionForGeminiViewForD
 - (id)_unknownContactActionForGeminiView
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-  v4 = [v3 availableChannels];
+  geminiResult = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+  availableChannels = [geminiResult availableChannels];
 
-  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(availableChannels, "count")}];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = availableChannels;
   v23 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v23)
   {
@@ -693,18 +693,18 @@ void __84__CNContactHeaderStaticDisplayView__savedContactActionForGeminiViewForD
         aBlock[4] = v6;
         v7 = _Block_copy(aBlock);
         v8 = MEMORY[0x1E69DC628];
-        v9 = [v6 localizedLabel];
-        v10 = [v8 actionWithTitle:v9 image:0 identifier:0 handler:v7];
+        localizedLabel = [v6 localizedLabel];
+        v10 = [v8 actionWithTitle:localizedLabel image:0 identifier:0 handler:v7];
 
-        v11 = [v6 senderIdentity];
-        v12 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
-        v13 = [v12 channel];
-        v14 = [v13 senderIdentity];
-        [v10 setState:v11 == v14];
+        senderIdentity = [v6 senderIdentity];
+        geminiResult2 = [(CNContactHeaderStaticDisplayView *)self geminiResult];
+        channel = [geminiResult2 channel];
+        senderIdentity2 = [channel senderIdentity];
+        [v10 setState:senderIdentity == senderIdentity2];
 
-        v15 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
-        v16 = [v6 channelIdentifier];
-        v17 = [v15 geminiIconForGeminiChannelIdentifier:v16];
+        geminiIconProvider = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
+        channelIdentifier = [v6 channelIdentifier];
+        v17 = [geminiIconProvider geminiIconForGeminiChannelIdentifier:channelIdentifier];
         [v10 setImage:v17];
 
         [v22 addObject:v10];
@@ -738,19 +738,19 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
 
 - (void)_geminiViewBehaviorForUnknownContact
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:14];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:14];
 
   if (v5)
   {
-    v9 = [(CNContactHeaderStaticDisplayView *)self _unknownContactActionForGeminiView];
-    v6 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F0CE7398 children:v9];
-    v7 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v7 setMenu:v6];
+    _unknownContactActionForGeminiView = [(CNContactHeaderStaticDisplayView *)self _unknownContactActionForGeminiView];
+    v6 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F0CE7398 children:_unknownContactActionForGeminiView];
+    geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView setMenu:v6];
 
-    v8 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v8 setShowsMenuAsPrimaryAction:1];
+    geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView2 setShowsMenuAsPrimaryAction:1];
   }
 }
 
@@ -758,34 +758,34 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
 {
   if ([(CNContactHeaderView *)self useDualSimParity])
   {
-    v7 = [(CNContactHeaderStaticDisplayView *)self _savedContactActionForGeminiViewForDualSimParity];
+    _savedContactActionForGeminiViewForDualSimParity = [(CNContactHeaderStaticDisplayView *)self _savedContactActionForGeminiViewForDualSimParity];
     v3 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F0CE7398 children:?];
-    v4 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v4 setMenu:v3];
+    geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView setMenu:v3];
 
-    v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v5 setShowsMenuAsPrimaryAction:1];
+    geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView2 setShowsMenuAsPrimaryAction:1];
   }
 
   else
   {
-    v6 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v6 setMenu:0];
+    geminiView3 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView3 setMenu:0];
 
-    v7 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel_handleGeminiViewTouch_];
-    [v7 setMinimumPressDuration:0.001];
-    v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v5 addGestureRecognizer:v7];
+    _savedContactActionForGeminiViewForDualSimParity = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel_handleGeminiViewTouch_];
+    [_savedContactActionForGeminiViewForDualSimParity setMinimumPressDuration:0.001];
+    geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView2 addGestureRecognizer:_savedContactActionForGeminiViewForDualSimParity];
   }
 }
 
 - (void)_assignActionToGeminiView
 {
-  v3 = [(CNContactHeaderView *)self contacts];
-  v4 = [v3 firstObject];
-  v5 = [v4 hasBeenPersisted];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
+  hasBeenPersisted = [firstObject hasBeenPersisted];
 
-  if (v5)
+  if (hasBeenPersisted)
   {
     [(CNContactHeaderStaticDisplayView *)self setSelectedChannel:0];
 
@@ -799,12 +799,12 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
   }
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(CNContactHeaderView *)self isAXSize];
-  v5 = [(CNContactHeaderView *)self nameLabel];
-  v7 = v5;
-  if (v4)
+  isAXSize = [(CNContactHeaderView *)self isAXSize];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  v7 = nameLabel;
+  if (isAXSize)
   {
     v6 = 0;
   }
@@ -814,20 +814,20 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
     v6 = 2;
   }
 
-  [v5 setNumberOfLines:v6];
+  [nameLabel setNumberOfLines:v6];
 }
 
-- (void)menuWillHide:(id)a3
+- (void)menuWillHide:(id)hide
 {
-  v3 = [(CNContactHeaderView *)self nameLabel];
-  [v3 setHighlighted:0];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel setHighlighted:0];
 }
 
-- (void)handleNameLabelLongPress:(id)a3
+- (void)handleNameLabelLongPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   objc_opt_class();
-  v29 = v4;
+  v29 = pressCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v29;
@@ -842,34 +842,34 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
 
   if (v6 && [v6 state] == 1 && -[CNContactHeaderStaticDisplayView becomeFirstResponder](self, "becomeFirstResponder"))
   {
-    v7 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    v8 = [(CNContactHeaderView *)self nameLabel];
-    v9 = [(CNContactHeaderView *)self nameLabel];
-    [v9 bounds];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    nameLabel = [(CNContactHeaderView *)self nameLabel];
+    nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+    [nameLabel2 bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(CNContactHeaderView *)self nameLabel];
-    [v8 textRectForBounds:objc_msgSend(v18 limitedToNumberOfLines:{"numberOfLines"), v11, v13, v15, v17}];
+    nameLabel3 = [(CNContactHeaderView *)self nameLabel];
+    [nameLabel textRectForBounds:objc_msgSend(nameLabel3 limitedToNumberOfLines:{"numberOfLines"), v11, v13, v15, v17}];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
 
-    v27 = [(CNContactHeaderView *)self nameLabel];
-    [v7 showMenuFromView:v27 rect:{v20, v22, v24, v26}];
+    nameLabel4 = [(CNContactHeaderView *)self nameLabel];
+    [mEMORY[0x1E69DCC68] showMenuFromView:nameLabel4 rect:{v20, v22, v24, v26}];
 
-    v28 = [(CNContactHeaderView *)self nameLabel];
-    [v28 setHighlighted:1];
+    nameLabel5 = [(CNContactHeaderView *)self nameLabel];
+    [nameLabel5 setHighlighted:1];
   }
 }
 
-- (void)handleNameLabelTap:(id)a3
+- (void)handleNameLabelTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   objc_opt_class();
-  v10 = v4;
+  v10 = tapCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v10;
@@ -886,13 +886,13 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
   {
     if ([v6 state] == 3)
     {
-      v7 = [(CNContactHeaderView *)self delegate];
+      delegate = [(CNContactHeaderView *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if (v8)
       {
-        v9 = [(CNContactHeaderView *)self delegate];
-        [v9 headerViewDidTapNameLabel:self];
+        delegate2 = [(CNContactHeaderView *)self delegate];
+        [delegate2 headerViewDidTapNameLabel:self];
       }
     }
   }
@@ -900,7 +900,7 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
 
 - (id)_importantString
 {
-  v3 = [(CNContactHeaderStaticDisplayView *)self importantMessage];
+  importantMessage = [(CNContactHeaderStaticDisplayView *)self importantMessage];
   if ([(CNContactHeaderStaticDisplayView *)self isEmergencyContact])
   {
     v4 = CNContactsUIBundle();
@@ -908,7 +908,7 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
 
     if ((*(*MEMORY[0x1E6996570] + 16))())
     {
-      v6 = [v3 stringByAppendingFormat:@"\n%@", v5];
+      v6 = [importantMessage stringByAppendingFormat:@"\n%@", v5];
     }
 
     else
@@ -918,28 +918,28 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
 
     v7 = v6;
 
-    v3 = v7;
+    importantMessage = v7;
   }
 
-  return v3;
+  return importantMessage;
 }
 
-- (id)attributedTaglineForContacts:(id)a3
+- (id)attributedTaglineForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 featureFlags];
-  v8 = [v7 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v8 = [featureFlags isFeatureEnabled:29];
 
   if (v8)
   {
     goto LABEL_41;
   }
 
-  if ([v4 count] != 1)
+  if ([contactsCopy count] != 1)
   {
-    v10 = +[CNNumberFormatting localizedStringWithInteger:](CNNumberFormatting, "localizedStringWithInteger:", [v4 count]);
+    v10 = +[CNNumberFormatting localizedStringWithInteger:](CNNumberFormatting, "localizedStringWithInteger:", [contactsCopy count]);
     v11 = MEMORY[0x1E696AEC0];
     v12 = CNContactsUIBundle();
     v13 = [v12 localizedStringForKey:@"CARD_NAME_GROUP_MEMBERS_COUNT-%@" value:&stru_1F0CE7398 table:@"Localized"];
@@ -950,21 +950,21 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
     goto LABEL_39;
   }
 
-  v9 = [v4 firstObject];
-  if ([v9 contactType] == 1)
+  firstObject = [contactsCopy firstObject];
+  if ([firstObject contactType] == 1)
   {
     if ([(CNContactHeaderStaticDisplayView *)self usesBrandedCallFormat])
     {
-      [v9 organizationName];
+      [firstObject organizationName];
     }
 
     else
     {
-      [v9 personName];
+      [firstObject personName];
     }
-    v19 = ;
+    alternateName2 = ;
     v15 = *MEMORY[0x1E6996570];
-    if (!(*(*MEMORY[0x1E6996570] + 16))(*MEMORY[0x1E6996570], v19))
+    if (!(*(*MEMORY[0x1E6996570] + 16))(*MEMORY[0x1E6996570], alternateName2))
     {
       goto LABEL_38;
     }
@@ -973,66 +973,66 @@ void __70__CNContactHeaderStaticDisplayView__unknownContactActionForGeminiView__
   }
 
   v15 = *MEMORY[0x1E6996570];
-  v16 = [v9 personName];
-  if (((*(v15 + 16))(v15, v16) & 1) == 0)
+  personName = [firstObject personName];
+  if (((*(v15 + 16))(v15, personName) & 1) == 0)
   {
 
 LABEL_14:
-    v19 = [MEMORY[0x1E695CD80] stringFromContact:v9 style:1];
-    if ((*(v15 + 16))(v15, v19))
+    alternateName2 = [MEMORY[0x1E695CD80] stringFromContact:firstObject style:1];
+    if ((*(v15 + 16))(v15, alternateName2))
     {
-      [v5 cnui_appendTaglineString:v19];
+      [v5 cnui_appendTaglineString:alternateName2];
     }
 
-    v20 = [v9 nickname];
-    if ((*(v15 + 16))(v15, v20))
+    nickname = [firstObject nickname];
+    if ((*(v15 + 16))(v15, nickname))
     {
-      v21 = [(CNContactHeaderView *)self delegate];
-      v22 = [v21 isNicknameProhibited];
+      delegate = [(CNContactHeaderView *)self delegate];
+      isNicknameProhibited = [delegate isNicknameProhibited];
 
-      if (v22)
+      if (isNicknameProhibited)
       {
         goto LABEL_20;
       }
 
-      v20 = [v9 nickname];
+      nickname = [firstObject nickname];
       v23 = +[CNUIFontRepository contactCardStaticHeaderNicknameTaglineFont];
-      [v5 cnui_appendTaglineString:v20 withFont:v23];
+      [v5 cnui_appendTaglineString:nickname withFont:v23];
     }
 
 LABEL_20:
-    v24 = [v9 previousFamilyName];
-    v25 = (*(v15 + 16))(v15, v24);
+    previousFamilyName = [firstObject previousFamilyName];
+    v25 = (*(v15 + 16))(v15, previousFamilyName);
 
     if (v25)
     {
-      v26 = [v9 previousFamilyName];
-      [v5 cnui_appendTaglineString:v26];
+      previousFamilyName2 = [firstObject previousFamilyName];
+      [v5 cnui_appendTaglineString:previousFamilyName2];
     }
 
-    v27 = [v9 jobTitle];
-    v28 = (*(v15 + 16))(v15, v27);
+    jobTitle = [firstObject jobTitle];
+    v28 = (*(v15 + 16))(v15, jobTitle);
 
-    v29 = [v9 departmentName];
-    v30 = (*(v15 + 16))(v15, v29);
+    departmentName = [firstObject departmentName];
+    v30 = (*(v15 + 16))(v15, departmentName);
 
     if (v28)
     {
       if (v30)
       {
         v49 = MEMORY[0x1E696AEC0];
-        v31 = [v9 jobTitle];
+        jobTitle2 = [firstObject jobTitle];
         v50 = CNContactsUIBundle();
         v48 = [v50 localizedStringForKey:@"CARD_NAME_JOB_TITLE_DEPARTMENT_SEPARATOR" value:&stru_1F0CE7398 table:@"Localized"];
-        v32 = [v9 departmentName];
-        v33 = [v49 stringWithFormat:@"%@%@%@", v31, v48, v32];
+        departmentName2 = [firstObject departmentName];
+        v33 = [v49 stringWithFormat:@"%@%@%@", jobTitle2, v48, departmentName2];
         [v5 cnui_appendTaglineString:v33];
       }
 
       else
       {
-        v31 = [v9 jobTitle];
-        [v5 cnui_appendTaglineString:v31];
+        jobTitle2 = [firstObject jobTitle];
+        [v5 cnui_appendTaglineString:jobTitle2];
       }
 
       v34 = 0x1E6996000uLL;
@@ -1046,43 +1046,43 @@ LABEL_20:
         goto LABEL_30;
       }
 
-      v31 = [v9 departmentName];
-      [v5 cnui_appendTaglineString:v31];
+      jobTitle2 = [firstObject departmentName];
+      [v5 cnui_appendTaglineString:jobTitle2];
     }
 
 LABEL_30:
-    v35 = [v9 organizationName];
-    v36 = (*(v15 + 16))(v15, v35);
+    organizationName = [firstObject organizationName];
+    v36 = (*(v15 + 16))(v15, organizationName);
 
     if (v36)
     {
-      v37 = [v9 organizationName];
-      [v5 cnui_appendTaglineString:v37];
+      organizationName2 = [firstObject organizationName];
+      [v5 cnui_appendTaglineString:organizationName2];
     }
 
-    v38 = [*(v34 + 1768) currentEnvironment];
-    v39 = [v38 featureFlags];
-    if ([v39 isFeatureEnabled:23] && (objc_msgSend(v9, "isKeyAvailable:", *MEMORY[0x1E695C1C0]) & 1) != 0)
+    currentEnvironment2 = [*(v34 + 1768) currentEnvironment];
+    featureFlags2 = [currentEnvironment2 featureFlags];
+    if ([featureFlags2 isFeatureEnabled:23] && (objc_msgSend(firstObject, "isKeyAvailable:", *MEMORY[0x1E695C1C0]) & 1) != 0)
     {
-      v51 = v19;
+      v51 = alternateName2;
       v40 = *MEMORY[0x1E6996530];
-      v41 = [v9 termsOfAddress];
-      LOBYTE(v40) = (*(v40 + 16))(v40, v41);
+      termsOfAddress = [firstObject termsOfAddress];
+      LOBYTE(v40) = (*(v40 + 16))(v40, termsOfAddress);
 
       if (v40)
       {
-        v19 = v51;
+        alternateName2 = v51;
         goto LABEL_38;
       }
 
       v46 = MEMORY[0x1E696AEE0];
-      v47 = [v9 termsOfAddress];
-      v38 = [v46 localizedDescriptionForAddressingGrammars:v47 uppercased:1];
+      termsOfAddress2 = [firstObject termsOfAddress];
+      currentEnvironment2 = [v46 localizedDescriptionForAddressingGrammars:termsOfAddress2 uppercased:1];
 
-      v19 = v51;
-      if ((*(v15 + 16))(v15, v38))
+      alternateName2 = v51;
+      if ((*(v15 + 16))(v15, currentEnvironment2))
       {
-        [v5 cnui_appendTaglineString:v38 uppercased:0];
+        [v5 cnui_appendTaglineString:currentEnvironment2 uppercased:0];
       }
     }
 
@@ -1093,27 +1093,27 @@ LABEL_30:
     goto LABEL_38;
   }
 
-  v17 = [(CNContactHeaderStaticDisplayView *)self alternateName];
-  v18 = (*(v15 + 16))(v15, v17);
+  alternateName = [(CNContactHeaderStaticDisplayView *)self alternateName];
+  v18 = (*(v15 + 16))(v15, alternateName);
 
   if (!v18)
   {
     goto LABEL_14;
   }
 
-  v19 = [(CNContactHeaderStaticDisplayView *)self alternateName];
+  alternateName2 = [(CNContactHeaderStaticDisplayView *)self alternateName];
 LABEL_12:
-  [v5 cnui_appendTaglineString:v19];
+  [v5 cnui_appendTaglineString:alternateName2];
 LABEL_38:
 
 LABEL_39:
-  v42 = [(CNContactHeaderStaticDisplayView *)self message];
-  v43 = (*(v15 + 16))(v15, v42);
+  message = [(CNContactHeaderStaticDisplayView *)self message];
+  v43 = (*(v15 + 16))(v15, message);
 
   if (v43)
   {
-    v44 = [(CNContactHeaderStaticDisplayView *)self message];
-    [v5 cnui_appendTaglineString:v44];
+    message2 = [(CNContactHeaderStaticDisplayView *)self message];
+    [v5 cnui_appendTaglineString:message2];
   }
 
 LABEL_41:
@@ -1121,39 +1121,39 @@ LABEL_41:
   return v5;
 }
 
-- (id)_headerStringForContacts:(id)a3
+- (id)_headerStringForContacts:(id)contacts
 {
-  v4 = a3;
-  if ([v4 count] == 1)
+  contactsCopy = contacts;
+  if ([contactsCopy count] == 1)
   {
     if ([(CNContactHeaderStaticDisplayView *)self usesBrandedCallFormat])
     {
       v5 = *MEMORY[0x1E6996530];
-      v6 = [v4 firstObject];
-      v7 = [v6 phoneNumbers];
-      LOBYTE(v5) = (*(v5 + 16))(v5, v7);
+      firstObject = [contactsCopy firstObject];
+      phoneNumbers = [firstObject phoneNumbers];
+      LOBYTE(v5) = (*(v5 + 16))(v5, phoneNumbers);
 
       if ((v5 & 1) == 0)
       {
-        v8 = [v4 firstObject];
-        v9 = [v8 phoneNumbers];
-        v10 = [v9 firstObject];
+        firstObject2 = [contactsCopy firstObject];
+        phoneNumbers2 = [firstObject2 phoneNumbers];
+        firstObject3 = [phoneNumbers2 firstObject];
 
-        v11 = [v10 value];
-        v12 = [v11 formattedStringValue];
+        value = [firstObject3 value];
+        formattedStringValue = [value formattedStringValue];
 
         if ((*(*MEMORY[0x1E6996570] + 16))())
         {
-          v13 = v12;
+          v13 = formattedStringValue;
 
           goto LABEL_12;
         }
       }
     }
 
-    v15 = [(CNContactHeaderStaticDisplayView *)self contactFormatter];
-    v16 = [v4 firstObject];
-    v14 = [v15 stringFromContact:v16];
+    contactFormatter = [(CNContactHeaderStaticDisplayView *)self contactFormatter];
+    firstObject4 = [contactsCopy firstObject];
+    v14 = [contactFormatter stringFromContact:firstObject4];
   }
 
   else
@@ -1163,9 +1163,9 @@ LABEL_41:
 
   if (![v14 length])
   {
-    v17 = [(CNContactHeaderStaticDisplayView *)self alternateName];
+    alternateName = [(CNContactHeaderStaticDisplayView *)self alternateName];
 
-    v14 = v17;
+    v14 = alternateName;
   }
 
   v13 = v14;
@@ -1174,19 +1174,19 @@ LABEL_12:
   return v13;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(CNContactHeaderView *)self nameLabel];
-  v4 = [v3 text];
-  v6 = [v4 mutableCopy];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  text = [nameLabel text];
+  v6 = [text mutableCopy];
 
-  v5 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v5 setString:v6];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setString:v6];
 }
 
-- (void)reloadDataPreservingChanges:(BOOL)a3
+- (void)reloadDataPreservingChanges:(BOOL)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v5 = CNUILogContactCard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1196,20 +1196,20 @@ LABEL_12:
 
   v26.receiver = self;
   v26.super_class = CNContactHeaderStaticDisplayView;
-  [(CNContactHeaderView *)&v26 reloadDataPreservingChanges:v3];
+  [(CNContactHeaderView *)&v26 reloadDataPreservingChanges:changesCopy];
   [(CNContactHeaderStaticDisplayView *)self _assignActionToGeminiView];
-  v6 = [(CNContactHeaderView *)self contacts];
-  v7 = [(CNContactHeaderStaticDisplayView *)self _headerStringForContacts:v6];
+  contacts = [(CNContactHeaderView *)self contacts];
+  v7 = [(CNContactHeaderStaticDisplayView *)self _headerStringForContacts:contacts];
 
-  v8 = [(CNContactHeaderView *)self contacts];
-  v9 = [(CNContactHeaderStaticDisplayView *)self attributedTaglineForContacts:v8];
+  contacts2 = [(CNContactHeaderView *)self contacts];
+  v9 = [(CNContactHeaderStaticDisplayView *)self attributedTaglineForContacts:contacts2];
 
-  v10 = [(CNContactHeaderStaticDisplayView *)self _importantString];
+  _importantString = [(CNContactHeaderStaticDisplayView *)self _importantString];
   [(CNContactHeaderStaticDisplayView *)self _updateImportantLabel];
   [(CNContactHeaderStaticDisplayView *)self _updateDowntimeView];
-  v11 = [v9 string];
-  v12 = [(CNContactHeaderStaticDisplayView *)self message];
-  if ([v11 isEqualToString:v12])
+  string = [v9 string];
+  message = [(CNContactHeaderStaticDisplayView *)self message];
+  if ([string isEqualToString:message])
   {
     v13 = [v7 length];
 
@@ -1219,8 +1219,8 @@ LABEL_12:
     }
 
     [v9 string];
-    v12 = v7;
-    v7 = v11 = v9;
+    message = v7;
+    v7 = string = v9;
     v9 = 0;
   }
 
@@ -1231,28 +1231,28 @@ LABEL_7:
     v9 = 0;
   }
 
-  v14 = [(CNContactHeaderView *)self nameLabel];
-  v15 = [v14 text];
-  v16 = v15;
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  text = [nameLabel text];
+  v16 = text;
   if (v7)
   {
-    if (!v15)
+    if (!text)
     {
       goto LABEL_19;
     }
   }
 
-  else if (v15)
+  else if (text)
   {
     goto LABEL_18;
   }
 
-  v17 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-  v18 = [v17 text];
-  v19 = v18;
+  taglineLabel = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  text2 = [taglineLabel text];
+  v19 = text2;
   if (!v9)
   {
-    if (!v18)
+    if (!text2)
     {
       goto LABEL_20;
     }
@@ -1271,18 +1271,18 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v18)
+  if (!text2)
   {
     v20 = 1;
     goto LABEL_23;
   }
 
 LABEL_20:
-  v21 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-  v22 = [v21 text];
-  if (v10)
+  importantLabel = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+  text3 = [importantLabel text];
+  if (_importantString)
   {
-    if (v22)
+    if (text3)
     {
 
       v20 = 0;
@@ -1303,7 +1303,7 @@ LABEL_23:
 
   else
   {
-    v20 = v22 != 0;
+    v20 = text3 != 0;
 
     if (v9)
     {
@@ -1323,14 +1323,14 @@ LABEL_24:
   }
 
 LABEL_28:
-  v23 = [(CNContactHeaderView *)self nameLabel];
-  [v23 setAb_text:v7];
+  nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel2 setAb_text:v7];
 
-  v24 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-  [v24 setAttributedText:v9];
+  taglineLabel2 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  [taglineLabel2 setAttributedText:v9];
 
-  v25 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-  [v25 setAb_text:v10];
+  importantLabel2 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+  [importantLabel2 setAb_text:_importantString];
 
   [(CNContactHeaderStaticDisplayView *)self _updatePhotoView];
   [(CNContactHeaderStaticDisplayView *)self updatePosterViewImage];
@@ -1340,47 +1340,47 @@ LABEL_28:
   [(CNContactHeaderStaticDisplayView *)self setNeedsLayout];
 }
 
-- (void)setUsesBrandedCallFormat:(BOOL)a3
+- (void)setUsesBrandedCallFormat:(BOOL)format
 {
-  if (self->_usesBrandedCallFormat != a3)
+  if (self->_usesBrandedCallFormat != format)
   {
-    self->_usesBrandedCallFormat = a3;
+    self->_usesBrandedCallFormat = format;
     [(CNContactHeaderView *)self setNeedsReload];
   }
 }
 
-- (void)updateGeminiResult:(id)a3
+- (void)updateGeminiResult:(id)result
 {
-  v18 = a3;
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:14];
+  resultCopy = result;
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  firstObject = [featureFlags isFeatureEnabled:14];
 
-  v7 = [(CNContactHeaderStaticDisplayView *)self allowsPickerActions];
-  v8 = v7;
-  if (v6)
+  allowsPickerActions = [(CNContactHeaderStaticDisplayView *)self allowsPickerActions];
+  v8 = allowsPickerActions;
+  if (firstObject)
   {
-    v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v5 setAllowsPickerActions:v8];
+    featureFlags = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [featureFlags setAllowsPickerActions:v8];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (v7)
+  if (allowsPickerActions)
   {
-    v5 = [(CNContactHeaderView *)self contacts];
-    v6 = [v5 firstObject];
-    v9 = [v6 hasBeenPersisted];
+    featureFlags = [(CNContactHeaderView *)self contacts];
+    firstObject = [featureFlags firstObject];
+    hasBeenPersisted = [firstObject hasBeenPersisted];
   }
 
   else
   {
-    v9 = 0;
+    hasBeenPersisted = 0;
   }
 
-  v10 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v10 setAllowsPickerActions:v9];
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView setAllowsPickerActions:hasBeenPersisted];
 
   if (v8)
   {
@@ -1389,37 +1389,37 @@ LABEL_8:
   }
 
 LABEL_9:
-  [(CNContactHeaderStaticDisplayView *)self setGeminiResult:v18];
-  v11 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v11 setGeminiResult:v18];
+  [(CNContactHeaderStaticDisplayView *)self setGeminiResult:resultCopy];
+  geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView2 setGeminiResult:resultCopy];
 
   [(CNContactHeaderView *)self setNeedsLabelSizeCalculation:1];
-  v12 = [(CNContactHeaderView *)self contacts];
-  v13 = [v12 firstObject];
-  v14 = [v13 hasBeenPersisted];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject2 = [contacts firstObject];
+  hasBeenPersisted2 = [firstObject2 hasBeenPersisted];
 
-  if (v14)
+  if (hasBeenPersisted2)
   {
     if ([(CNContactHeaderView *)self useDualSimParity])
     {
       [(CNContactHeaderStaticDisplayView *)self setSelectedChannel:0];
-      v15 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
-      [v15 setGeminiResult:v18];
+      geminiIconProvider = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
+      [geminiIconProvider setGeminiResult:resultCopy];
 
       [(CNContactHeaderStaticDisplayView *)self _geminiViewBehaviorForSavedContact];
     }
 
     else
     {
-      v17 = [(CNContactHeaderStaticDisplayView *)self geminiPicker];
-      [v17 setGeminiResult:v18];
+      geminiPicker = [(CNContactHeaderStaticDisplayView *)self geminiPicker];
+      [geminiPicker setGeminiResult:resultCopy];
     }
   }
 
   else
   {
-    v16 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
-    [v16 setGeminiResult:v18];
+    geminiIconProvider2 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
+    [geminiIconProvider2 setGeminiResult:resultCopy];
 
     [(CNContactHeaderStaticDisplayView *)self _geminiViewBehaviorForUnknownContact];
   }
@@ -1428,22 +1428,22 @@ LABEL_9:
 - (void)_updateDowntimeView
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-  if (v3)
+  downtimeView = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+  if (downtimeView)
   {
-    v4 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    v5 = [v4 isHidden];
+    downtimeView2 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    isHidden = [downtimeView2 isHidden];
   }
 
   else
   {
-    v5 = 1;
+    isHidden = 1;
   }
 
   if ([(CNContactHeaderStaticDisplayView *)self isDowntimeContact]|| [(CNContactHeaderStaticDisplayView *)self isRestrictedContact])
   {
-    v6 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    v7 = v6 == 0;
+    downtimeView3 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    v7 = downtimeView3 == 0;
   }
 
   else
@@ -1470,21 +1470,21 @@ LABEL_12:
     v10 = [(CNContactDowntimeView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CNContactHeaderStaticDisplayView *)self setDowntimeView:v10];
 
-    v11 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    downtimeView4 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    [downtimeView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v22[0] = *MEMORY[0x1E69DDD80];
     v12 = *MEMORY[0x1E69DB650];
     v21[0] = @"ABTextStyleAttributeName";
     v21[1] = v12;
-    v13 = [(CNContactHeaderView *)self contactStyle];
-    v14 = [v13 taglineTextColor];
-    v22[1] = v14;
+    contactStyle = [(CNContactHeaderView *)self contactStyle];
+    taglineTextColor = [contactStyle taglineTextColor];
+    v22[1] = taglineTextColor;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
     [(CNContactHeaderStaticDisplayView *)self setDowntimeTextAttributes:v15];
 
-    v16 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    [(CNContactHeaderStaticDisplayView *)self addSubview:v16];
+    downtimeView5 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    [(CNContactHeaderStaticDisplayView *)self addSubview:downtimeView5];
   }
 
 LABEL_13:
@@ -1498,14 +1498,14 @@ LABEL_13:
     v17 = 0;
   }
 
-  v18 = [(CNContactHeaderStaticDisplayView *)self isRestrictedContact];
-  v19 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-  [v19 setElements:v17 | v18];
+  isRestrictedContact = [(CNContactHeaderStaticDisplayView *)self isRestrictedContact];
+  downtimeView6 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+  [downtimeView6 setElements:v17 | isRestrictedContact];
 
-  v20 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-  [v20 setHidden:v8];
+  downtimeView7 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+  [downtimeView7 setHidden:v8];
 
-  if (v5)
+  if (isHidden)
   {
     [(CNContactHeaderStaticDisplayView *)self setNeedsUpdateConstraints];
   }
@@ -1514,24 +1514,24 @@ LABEL_13:
 - (void)_updateImportantLabel
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-  if (v3)
+  importantLabel = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+  if (importantLabel)
   {
-    v4 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-    v5 = [v4 isHidden];
+    importantLabel2 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+    isHidden = [importantLabel2 isHidden];
   }
 
   else
   {
-    v5 = 1;
+    isHidden = 1;
   }
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self _importantString];
-  if (v6)
+  _importantString = [(CNContactHeaderStaticDisplayView *)self _importantString];
+  if (_importantString)
   {
-    v7 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+    importantLabel3 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
 
-    if (!v7)
+    if (!importantLabel3)
     {
       v8 = *MEMORY[0x1E69DDD80];
       v9 = *MEMORY[0x1E69DB650];
@@ -1547,33 +1547,33 @@ LABEL_13:
       v13 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
       [(CNContactHeaderStaticDisplayView *)self setImportantLabel:v13];
 
-      v14 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+      importantLabel4 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [importantLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v15 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [v15 setTextAlignment:1];
+      importantLabel5 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [importantLabel5 setTextAlignment:1];
 
-      v16 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [v16 setNumberOfLines:0];
+      importantLabel6 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [importantLabel6 setNumberOfLines:0];
 
-      v17 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [v17 _setUseShortcutIntrinsicContentSize:1];
+      importantLabel7 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [importantLabel7 _setUseShortcutIntrinsicContentSize:1];
 
-      v18 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [v18 _cnui_applyContactStyle];
+      importantLabel8 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [importantLabel8 _cnui_applyContactStyle];
 
-      v19 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [(CNContactHeaderStaticDisplayView *)self addSubview:v19];
+      importantLabel9 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [(CNContactHeaderStaticDisplayView *)self addSubview:importantLabel9];
     }
   }
 
-  v20 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-  [v20 setHidden:v6 == 0];
+  importantLabel10 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+  [importantLabel10 setHidden:_importantString == 0];
 
-  v21 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-  LODWORD(v20) = [v21 isHidden];
+  importantLabel11 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+  LODWORD(importantLabel10) = [importantLabel11 isHidden];
 
-  if (v5 != v20)
+  if (isHidden != importantLabel10)
   {
     [(CNContactHeaderStaticDisplayView *)self setNeedsUpdateConstraints];
   }
@@ -1581,91 +1581,91 @@ LABEL_13:
 
 - (void)_updatePhotoView
 {
-  v8 = [(CNContactHeaderView *)self contacts];
-  v6 = v5 <= 1 && (-[CNContactHeaderView contacts](self, "contacts"), v2 = v5 = [v8 count];
-  v7 = [(CNContactHeaderView *)self photoView];
-  [v7 setHidden:v6];
+  contacts = [(CNContactHeaderView *)self contacts];
+  v6 = v5 <= 1 && (-[CNContactHeaderView contacts](self, "contacts"), v2 = v5 = [contacts count];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView setHidden:v6];
 
   if (v5 <= 1)
   {
   }
 }
 
-- (void)setGeminiTextAttributes:(id)a3
+- (void)setGeminiTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_geminiTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_geminiTextAttributes != attributesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_geminiTextAttributes, a3);
-    v6 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v6 setAb_textAttributes:v7];
+    v7 = attributesCopy;
+    objc_storeStrong(&self->_geminiTextAttributes, attributes);
+    geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [geminiView setAb_textAttributes:v7];
 
-    v5 = v7;
+    attributesCopy = v7;
   }
 }
 
-- (void)setDowntimeTextAttributes:(id)a3
+- (void)setDowntimeTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_downtimeTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_downtimeTextAttributes != attributesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_downtimeTextAttributes, a3);
-    v6 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    [v6 setAb_textAttributes:v7];
+    v7 = attributesCopy;
+    objc_storeStrong(&self->_downtimeTextAttributes, attributes);
+    downtimeView = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    [downtimeView setAb_textAttributes:v7];
 
-    v5 = v7;
+    attributesCopy = v7;
   }
 }
 
-- (void)setImportantTextAttributes:(id)a3
+- (void)setImportantTextAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_importantTextAttributes != v5)
+  attributesCopy = attributes;
+  if (self->_importantTextAttributes != attributesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_importantTextAttributes, a3);
-    v6 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-    [v6 setAb_textAttributes:v7];
+    v7 = attributesCopy;
+    objc_storeStrong(&self->_importantTextAttributes, attributes);
+    importantLabel = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+    [importantLabel setAb_textAttributes:v7];
 
-    v5 = v7;
+    attributesCopy = v7;
   }
 }
 
-- (void)setNameTextAttributes:(id)a3
+- (void)setNameTextAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = CNContactHeaderStaticDisplayView;
-  v4 = a3;
-  [(CNContactHeaderView *)&v6 setNameTextAttributes:v4];
+  attributesCopy = attributes;
+  [(CNContactHeaderView *)&v6 setNameTextAttributes:attributesCopy];
   v5 = [(CNContactHeaderView *)self nameLabel:v6.receiver];
-  [v5 setAb_textAttributes:v4];
+  [v5 setAb_textAttributes:attributesCopy];
 }
 
 - (void)didTapSensitiveContentHelpButton
 {
-  v3 = [(CNContactHeaderView *)self delegate];
-  [v3 headerView:self didUpdateSensitiveContentOverride:0];
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerView:self didUpdateSensitiveContentOverride:0];
 }
 
-- (void)configureSensitiveContentHelpButtonHidden:(BOOL)a3
+- (void)configureSensitiveContentHelpButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v25[2] = *MEMORY[0x1E69E9840];
-  v5 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
-  v6 = [v5 shouldShowUIForPosterWithSensitiveContent:!v3 forContact:0];
+  sensitiveContentManager = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
+  v6 = [sensitiveContentManager shouldShowUIForPosterWithSensitiveContent:!hiddenCopy forContact:0];
 
-  v7 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
-  v8 = v7;
+  sensitiveContentHelpButton = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
+  v8 = sensitiveContentHelpButton;
   if (v6)
   {
 
     if (!v8)
     {
       v9 = [CNSensitiveContentHelpButtonView alloc];
-      v10 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
-      v11 = [(CNSensitiveContentHelpButtonView *)v9 initWithManager:v10];
+      sensitiveContentManager2 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
+      v11 = [(CNSensitiveContentHelpButtonView *)v9 initWithManager:sensitiveContentManager2];
       sensitiveContentHelpButton = self->_sensitiveContentHelpButton;
       self->_sensitiveContentHelpButton = v11;
 
@@ -1673,20 +1673,20 @@ LABEL_13:
       [(CNSensitiveContentHelpButtonView *)self->_sensitiveContentHelpButton setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    v13 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
-    [(CNContactHeaderStaticDisplayView *)self addSubview:v13];
+    sensitiveContentHelpButton2 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
+    [(CNContactHeaderStaticDisplayView *)self addSubview:sensitiveContentHelpButton2];
 
     v24 = MEMORY[0x1E696ACD8];
-    v14 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
-    v15 = [v14 bottomAnchor];
-    v16 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-    v17 = [v16 topAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:-10.0];
+    sensitiveContentHelpButton3 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
+    bottomAnchor = [sensitiveContentHelpButton3 bottomAnchor];
+    taglineLabel = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+    topAnchor = [taglineLabel topAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-10.0];
     v25[0] = v18;
-    v19 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
-    v20 = [v19 centerXAnchor];
-    v21 = [(CNContactHeaderStaticDisplayView *)self centerXAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    sensitiveContentHelpButton4 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentHelpButton];
+    centerXAnchor = [sensitiveContentHelpButton4 centerXAnchor];
+    centerXAnchor2 = [(CNContactHeaderStaticDisplayView *)self centerXAnchor];
+    v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v25[1] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [v24 activateConstraints:v23];
@@ -1694,35 +1694,35 @@ LABEL_13:
 
   else
   {
-    [v7 removeFromSuperview];
+    [sensitiveContentHelpButton removeFromSuperview];
 
     [(CNContactHeaderStaticDisplayView *)self setSensitiveContentHelpButton:0];
   }
 }
 
-- (void)updateSensitiveContentBlurVisibility:(BOOL)a3
+- (void)updateSensitiveContentBlurVisibility:(BOOL)visibility
 {
   v47[4] = *MEMORY[0x1E69E9840];
-  [(CNContactHeaderStaticDisplayView *)self configureSensitiveContentHelpButtonHidden:!a3];
-  if (a3)
+  [(CNContactHeaderStaticDisplayView *)self configureSensitiveContentHelpButtonHidden:!visibility];
+  if (visibility)
   {
-    v5 = [(CNContactHeaderView *)self contacts];
-    v6 = [v5 firstObject];
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
 
-    v7 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
-    v8 = [v7 shouldShowUIForPosterWithSensitiveContent:1 forContact:v6];
+    sensitiveContentManager = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
+    v8 = [sensitiveContentManager shouldShowUIForPosterWithSensitiveContent:1 forContact:firstObject];
 
-    v9 = [(CNContactHeaderView *)self posterView];
-    if ([v9 isHidden])
+    posterView = [(CNContactHeaderView *)self posterView];
+    if ([posterView isHidden])
     {
     }
 
     else
     {
-      v11 = [(CNContactHeaderView *)self posterView];
-      v12 = [v11 image];
+      posterView2 = [(CNContactHeaderView *)self posterView];
+      image = [posterView2 image];
 
-      if (v12)
+      if (image)
       {
         v13 = v8;
       }
@@ -1734,66 +1734,66 @@ LABEL_13:
 
       if (v13)
       {
-        v14 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+        sensitiveContentBlurView = [(CNContactHeaderView *)self sensitiveContentBlurView];
 
-        if (!v14)
+        if (!sensitiveContentBlurView)
         {
           v15 = [CNSensitiveContentBlurView alloc];
-          v16 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
-          v17 = [(CNSensitiveContentBlurView *)v15 initWithManager:v16];
+          sensitiveContentManager2 = [(CNContactHeaderStaticDisplayView *)self sensitiveContentManager];
+          v17 = [(CNSensitiveContentBlurView *)v15 initWithManager:sensitiveContentManager2];
           [(CNContactHeaderView *)self setSensitiveContentBlurView:v17];
 
-          v18 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          [v18 setCanRevealContent:1];
+          sensitiveContentBlurView2 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          [sensitiveContentBlurView2 setCanRevealContent:1];
 
-          v19 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          [v19 setDelegate:self];
+          sensitiveContentBlurView3 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          [sensitiveContentBlurView3 setDelegate:self];
 
-          v20 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+          sensitiveContentBlurView4 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          [sensitiveContentBlurView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v21 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          v22 = [(CNContactHeaderView *)self nameLabel];
-          [(CNContactHeaderStaticDisplayView *)self insertSubview:v21 belowSubview:v22];
+          sensitiveContentBlurView5 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          nameLabel = [(CNContactHeaderView *)self nameLabel];
+          [(CNContactHeaderStaticDisplayView *)self insertSubview:sensitiveContentBlurView5 belowSubview:nameLabel];
 
           v37 = MEMORY[0x1E696ACD8];
-          v46 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          v44 = [v46 topAnchor];
-          v45 = [(CNContactHeaderView *)self posterView];
-          v43 = [v45 topAnchor];
-          v42 = [v44 constraintEqualToAnchor:v43];
+          sensitiveContentBlurView6 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          topAnchor = [sensitiveContentBlurView6 topAnchor];
+          posterView3 = [(CNContactHeaderView *)self posterView];
+          topAnchor2 = [posterView3 topAnchor];
+          v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v47[0] = v42;
-          v41 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          v39 = [v41 bottomAnchor];
-          v40 = [(CNContactHeaderView *)self posterView];
-          v38 = [v40 bottomAnchor];
-          v36 = [v39 constraintEqualToAnchor:v38];
+          sensitiveContentBlurView7 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          bottomAnchor = [sensitiveContentBlurView7 bottomAnchor];
+          posterView4 = [(CNContactHeaderView *)self posterView];
+          bottomAnchor2 = [posterView4 bottomAnchor];
+          v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v47[1] = v36;
-          v35 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          v33 = [v35 trailingAnchor];
-          v34 = [(CNContactHeaderView *)self posterView];
-          v23 = [v34 trailingAnchor];
-          v24 = [v33 constraintEqualToAnchor:v23];
+          sensitiveContentBlurView8 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          trailingAnchor = [sensitiveContentBlurView8 trailingAnchor];
+          posterView5 = [(CNContactHeaderView *)self posterView];
+          trailingAnchor2 = [posterView5 trailingAnchor];
+          v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
           v47[2] = v24;
-          v25 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-          v26 = [v25 leadingAnchor];
-          v27 = [(CNContactHeaderView *)self posterView];
-          v28 = [v27 leadingAnchor];
-          v29 = [v26 constraintEqualToAnchor:v28];
+          sensitiveContentBlurView9 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+          leadingAnchor = [sensitiveContentBlurView9 leadingAnchor];
+          posterView6 = [(CNContactHeaderView *)self posterView];
+          leadingAnchor2 = [posterView6 leadingAnchor];
+          v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           v47[3] = v29;
           v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:4];
           [v37 activateConstraints:v30];
         }
 
-        v31 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-        [v31 resetRevealState];
+        sensitiveContentBlurView10 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+        [sensitiveContentBlurView10 resetRevealState];
 
         goto LABEL_15;
       }
     }
 
-    v32 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-    [v32 removeFromSuperview];
+    sensitiveContentBlurView11 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+    [sensitiveContentBlurView11 removeFromSuperview];
 
     [(CNContactHeaderView *)self setSensitiveContentBlurView:0];
 LABEL_15:
@@ -1801,56 +1801,56 @@ LABEL_15:
     return;
   }
 
-  v10 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-  [v10 removeFromSuperview];
+  sensitiveContentBlurView12 = [(CNContactHeaderView *)self sensitiveContentBlurView];
+  [sensitiveContentBlurView12 removeFromSuperview];
 
   [(CNContactHeaderView *)self setSensitiveContentBlurView:0];
 }
 
 - (void)updateSizeDependentAttributes
 {
-  v2 = [MEMORY[0x1E69DCC68] sharedMenuController];
-  if ([v2 isMenuVisible])
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+  if ([mEMORY[0x1E69DCC68] isMenuVisible])
   {
-    [v2 hideMenu];
+    [mEMORY[0x1E69DCC68] hideMenu];
   }
 }
 
 - (void)setBlurViewGradient
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderView *)self contacts];
-  v4 = [v3 firstObject];
-  v5 = [v4 wallpaper];
-  v6 = [v5 wallpaperType];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
+  wallpaper = [firstObject wallpaper];
+  wallpaperType = [wallpaper wallpaperType];
 
-  if (![(CNContactHeaderStaticDisplayView *)self shouldShowPoster]|| (v6 != *MEMORY[0x1E695CCE0] ? (v7 = v6 == *MEMORY[0x1E695CCE8]) : (v7 = 1), v7))
+  if (![(CNContactHeaderStaticDisplayView *)self shouldShowPoster]|| (wallpaperType != *MEMORY[0x1E695CCE0] ? (v7 = wallpaperType == *MEMORY[0x1E695CCE8]) : (v7 = 1), v7))
   {
-    v8 = [(CNContactHeaderView *)self posterView];
-    v9 = [v8 layer];
-    [v9 setFilters:MEMORY[0x1E695E0F0]];
+    posterView = [(CNContactHeaderView *)self posterView];
+    layer = [posterView layer];
+    [layer setFilters:MEMORY[0x1E695E0F0]];
   }
 
   else
   {
-    v10 = [objc_opt_class() blurGradient];
+    blurGradient = [objc_opt_class() blurGradient];
     v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D70]];
-    [v11 setValue:objc_msgSend(v10 forKey:{"CGImage"), @"inputMaskImage"}];
+    [v11 setValue:objc_msgSend(blurGradient forKey:{"CGImage"), @"inputMaskImage"}];
     v12 = MEMORY[0x1E695E118];
     [v11 setValue:MEMORY[0x1E695E118] forKey:@"inputNormalizeEdges"];
     [v11 setValue:v12 forKey:@"inputDither"];
     [v11 setValue:&unk_1F0D4B358 forKey:@"inputRadius"];
     v16[0] = v11;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v14 = [(CNContactHeaderView *)self posterView];
-    v15 = [v14 layer];
-    [v15 setFilters:v13];
+    posterView2 = [(CNContactHeaderView *)self posterView];
+    layer2 = [posterView2 layer];
+    [layer2 setFilters:v13];
   }
 }
 
-- (void)updatePosterImageViewForScrollOffset:(CGPoint)a3
+- (void)updatePosterImageViewForScrollOffset:(CGPoint)offset
 {
-  y = a3.y;
+  y = offset.y;
   if ([(CNContactHeaderStaticDisplayView *)self shouldShowPoster])
   {
     [(CNContactHeaderView *)self posterView];
@@ -1871,8 +1871,8 @@ LABEL_15:
     *&v20.tx = *(MEMORY[0x1E695EFD0] + 32);
     v12 = *&v20.tx;
     [v5 setTransform:&v20];
-    v9 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-    v10 = v9;
+    sensitiveContentBlurView = [(CNContactHeaderView *)self sensitiveContentBlurView];
+    v10 = sensitiveContentBlurView;
     *&v20.a = v14;
     *&v20.c = v13;
     *&v20.tx = v12;
@@ -1894,13 +1894,13 @@ LABEL_15:
     t1 = v18;
     [v6 setTransform:&t1];
     v15 = v18;
-    v9 = [(CNContactHeaderView *)self sensitiveContentBlurView];
-    v10 = v9;
+    sensitiveContentBlurView = [(CNContactHeaderView *)self sensitiveContentBlurView];
+    v10 = sensitiveContentBlurView;
     t1 = v15;
     p_t1 = &t1;
   }
 
-  [v9 setTransform:p_t1];
+  [sensitiveContentBlurView setTransform:p_t1];
 }
 
 - (void)layoutSubviews
@@ -1910,39 +1910,39 @@ LABEL_15:
   [(CNContactHeaderView *)&v25 layoutSubviews];
   [(CNContactHeaderStaticDisplayView *)self calculateLabelSizes];
   [(CNContactHeaderStaticDisplayView *)self setBlurViewGradient];
-  v3 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  [v3 frame];
+  avatarBackgroundView = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  [avatarBackgroundView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  avatarBackgroundGradientLayer = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
+  [avatarBackgroundGradientLayer setFrame:{v5, v7, v9, v11}];
 
   [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMinTopMargin];
   v14 = v13;
-  v15 = [(CNContactHeaderView *)self photoTopConstraint];
-  [v15 constant];
+  photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
+  [photoTopConstraint constant];
   v17 = v16;
 
   if (v17 != v14)
   {
-    v18 = [(CNContactHeaderView *)self photoTopConstraint];
-    [v18 setConstant:v14];
+    photoTopConstraint2 = [(CNContactHeaderView *)self photoTopConstraint];
+    [photoTopConstraint2 setConstant:v14];
   }
 
   if ([(CNContactHeaderView *)self isOrientationPhoneLandscape])
   {
     [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMaxHeight];
     v20 = v19;
-    v21 = [(CNContactHeaderView *)self photoHeightConstraint];
-    [v21 constant];
+    photoHeightConstraint = [(CNContactHeaderView *)self photoHeightConstraint];
+    [photoHeightConstraint constant];
     v23 = v22;
 
     if (v23 != v20)
     {
-      v24 = [(CNContactHeaderView *)self photoHeightConstraint];
-      [v24 setConstant:v20];
+      photoHeightConstraint2 = [(CNContactHeaderView *)self photoHeightConstraint];
+      [photoHeightConstraint2 setConstant:v20];
     }
   }
 }
@@ -1955,12 +1955,12 @@ LABEL_15:
     v4 = v3;
     if (v3 == 0.0)
     {
-      v5 = [(CNContactHeaderStaticDisplayView *)self superview];
+      superview = [(CNContactHeaderStaticDisplayView *)self superview];
 
-      if (v5)
+      if (superview)
       {
-        v6 = [(CNContactHeaderStaticDisplayView *)self superview];
-        [v6 frame];
+        superview2 = [(CNContactHeaderStaticDisplayView *)self superview];
+        [superview2 frame];
         v4 = v7;
       }
     }
@@ -1973,40 +1973,40 @@ LABEL_15:
       [(CNContactHeaderStaticDisplayView *)self layoutMargins];
       v11 = v4 - (v9 + v10);
       [(CNContactHeaderStaticDisplayView *)self updateFontSizes];
-      v12 = [(CNContactHeaderView *)self nameLabel];
-      [v12 sizeThatFits:{v11, 1000.0}];
+      nameLabel = [(CNContactHeaderView *)self nameLabel];
+      [nameLabel sizeThatFits:{v11, 1000.0}];
       v14 = v13;
 
-      v15 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-      [v15 sizeThatFits:{v11, 1000.0}];
+      taglineLabel = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+      [taglineLabel sizeThatFits:{v11, 1000.0}];
       v17 = v16;
 
-      v18 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-      [v18 sizeThatFits:{v11, 1000.0}];
+      importantLabel = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+      [importantLabel sizeThatFits:{v11, 1000.0}];
       v20 = v19;
 
-      v21 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-      v22 = [v21 isHidden];
+      downtimeView = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+      isHidden = [downtimeView isHidden];
       v23 = MEMORY[0x1E695F060];
-      if (v22)
+      if (isHidden)
       {
         v24 = *(MEMORY[0x1E695F060] + 8);
       }
 
       else
       {
-        v25 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-        [v25 sizeThatFits:{v11, 1000.0}];
+        downtimeView2 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+        [downtimeView2 sizeThatFits:{v11, 1000.0}];
         v24 = v26;
       }
 
-      v27 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-      [v27 calculateLayoutIfNeeded];
+      geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+      [geminiView calculateLayoutIfNeeded];
 
       if ([(CNContactHeaderStaticDisplayView *)self shouldShowGemini])
       {
-        v28 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-        [v28 sizeThatFits:{v11, 1000.0}];
+        geminiView2 = [(CNContactHeaderStaticDisplayView *)self geminiView];
+        [geminiView2 sizeThatFits:{v11, 1000.0}];
         v30 = v29;
       }
 
@@ -2016,8 +2016,8 @@ LABEL_15:
       }
 
       v31 = v14 + v17 + v20 + v24 + v30;
-      v32 = [(CNContactHeaderStaticDisplayView *)self _screen];
-      [v32 scale];
+      _screen = [(CNContactHeaderStaticDisplayView *)self _screen];
+      [_screen scale];
       if (v33 == 0.0)
       {
         if (RoundToScale_onceToken != -1)
@@ -2042,8 +2042,8 @@ LABEL_15:
       }
 
       [(CNContactHeaderStaticDisplayView *)self setLabelsHeight:v37];
-      v38 = [(CNContactHeaderView *)self delegate];
-      [v38 headerViewDidUpdateLabelSizes];
+      delegate = [(CNContactHeaderView *)self delegate];
+      [delegate headerViewDidUpdateLabelSizes];
     }
   }
 }
@@ -2058,71 +2058,71 @@ LABEL_15:
 
 - (void)disablePhotoTapGesture
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  [v2 disablePhotoTapGesture];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView disablePhotoTapGesture];
 }
 
-- (void)setIsDowntimeContact:(BOOL)a3
+- (void)setIsDowntimeContact:(BOOL)contact
 {
-  if (self->_isDowntimeContact != a3)
+  if (self->_isDowntimeContact != contact)
   {
-    self->_isDowntimeContact = a3;
+    self->_isDowntimeContact = contact;
     [(CNContactHeaderView *)self setNeedsReload];
   }
 }
 
-- (void)setIsRestrictedContact:(BOOL)a3
+- (void)setIsRestrictedContact:(BOOL)contact
 {
-  if (self->_isRestrictedContact != a3)
+  if (self->_isRestrictedContact != contact)
   {
-    self->_isRestrictedContact = a3;
+    self->_isRestrictedContact = contact;
     [(CNContactHeaderView *)self setNeedsReload];
   }
 }
 
-- (void)setIsEmergencyContact:(BOOL)a3
+- (void)setIsEmergencyContact:(BOOL)contact
 {
-  if (self->_isEmergencyContact != a3)
+  if (self->_isEmergencyContact != contact)
   {
-    self->_isEmergencyContact = a3;
+    self->_isEmergencyContact = contact;
     [(CNContactHeaderView *)self setNeedsReload];
   }
 }
 
-- (void)setImportantMessage:(id)a3
+- (void)setImportantMessage:(id)message
 {
-  v5 = a3;
-  if (self->_importantMessage != v5)
+  messageCopy = message;
+  if (self->_importantMessage != messageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_importantMessage, a3);
+    v6 = messageCopy;
+    objc_storeStrong(&self->_importantMessage, message);
     [(CNContactHeaderView *)self setNeedsReload];
-    v5 = v6;
+    messageCopy = v6;
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
-  if (self->_message != v5)
+  messageCopy = message;
+  if (self->_message != messageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_message, a3);
+    v6 = messageCopy;
+    objc_storeStrong(&self->_message, message);
     [(CNContactHeaderView *)self setNeedsReload];
-    v5 = v6;
+    messageCopy = v6;
   }
 }
 
-- (void)setActionsWrapperView:(id)a3
+- (void)setActionsWrapperView:(id)view
 {
-  v5 = a3;
-  if (self->_actionsWrapperView != v5)
+  viewCopy = view;
+  if (self->_actionsWrapperView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_actionsWrapperView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_actionsWrapperView, view);
     [(CNContactHeaderStaticDisplayView *)self addSubview:v6];
     [(CNContactHeaderStaticDisplayView *)self setNeedsUpdateConstraints];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
@@ -2132,200 +2132,200 @@ LABEL_15:
   v187.receiver = self;
   v187.super_class = CNContactHeaderStaticDisplayView;
   [(CNContactHeaderView *)&v187 updateConstraints];
-  v3 = [(CNContactHeaderView *)self isAXSize];
+  isAXSize = [(CNContactHeaderView *)self isAXSize];
   [(CNContactHeaderStaticDisplayView *)self bottomMargin];
   v5 = v4;
   v6 = MEMORY[0x1E695DF70];
-  v7 = [(CNContactHeaderView *)self activatedConstraints];
-  v8 = [v6 arrayWithArray:v7];
+  activatedConstraints = [(CNContactHeaderView *)self activatedConstraints];
+  v8 = [v6 arrayWithArray:activatedConstraints];
 
   v9 = MEMORY[0x1E696ACD8];
-  v10 = [(CNContactHeaderView *)self photoHeightConstraint];
-  v189[0] = v10;
+  photoHeightConstraint = [(CNContactHeaderView *)self photoHeightConstraint];
+  v189[0] = photoHeightConstraint;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v189 count:1];
   [v9 deactivateConstraints:v11];
 
-  v12 = [(CNContactHeaderView *)self photoHeightConstraint];
-  [v8 removeObject:v12];
+  photoHeightConstraint2 = [(CNContactHeaderView *)self photoHeightConstraint];
+  [v8 removeObject:photoHeightConstraint2];
 
   v13 = MEMORY[0x1E696ACD8];
-  v14 = [(CNContactHeaderView *)self photoTopConstraint];
-  v188 = v14;
+  photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
+  v188 = photoTopConstraint;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v188 count:1];
   [v13 deactivateConstraints:v15];
 
-  v16 = [(CNContactHeaderView *)self photoTopConstraint];
-  [v8 removeObject:v16];
+  photoTopConstraint2 = [(CNContactHeaderView *)self photoTopConstraint];
+  [v8 removeObject:photoTopConstraint2];
 
-  v17 = [(CNContactHeaderView *)self posterView];
-  LOBYTE(v14) = [v17 isHidden];
+  posterView = [(CNContactHeaderView *)self posterView];
+  LOBYTE(photoTopConstraint) = [posterView isHidden];
 
-  if ((v14 & 1) == 0)
+  if ((photoTopConstraint & 1) == 0)
   {
-    v18 = [(CNContactHeaderView *)self posterView];
-    v19 = [v18 topAnchor];
-    v20 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    posterView2 = [(CNContactHeaderView *)self posterView];
+    topAnchor = [posterView2 topAnchor];
+    topAnchor2 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v8 addObject:v21];
 
-    v22 = [(CNContactHeaderView *)self posterView];
-    v23 = [v22 leadingAnchor];
-    v24 = [(CNContactHeaderStaticDisplayView *)self leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    posterView3 = [(CNContactHeaderView *)self posterView];
+    leadingAnchor = [posterView3 leadingAnchor];
+    leadingAnchor2 = [(CNContactHeaderStaticDisplayView *)self leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v8 addObject:v25];
 
-    v26 = [(CNContactHeaderView *)self posterView];
-    v27 = [v26 trailingAnchor];
-    v28 = [(CNContactHeaderStaticDisplayView *)self trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    posterView4 = [(CNContactHeaderView *)self posterView];
+    trailingAnchor = [posterView4 trailingAnchor];
+    trailingAnchor2 = [(CNContactHeaderStaticDisplayView *)self trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v8 addObject:v29];
 
-    v30 = [(CNContactHeaderView *)self posterView];
-    v31 = [v30 bottomAnchor];
-    if (v3)
+    posterView5 = [(CNContactHeaderView *)self posterView];
+    bottomAnchor = [posterView5 bottomAnchor];
+    if (isAXSize)
     {
-      v32 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-      v33 = [v32 topAnchor];
-      v34 = [v31 constraintEqualToAnchor:v33];
+      actionsWrapperView = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+      topAnchor3 = [actionsWrapperView topAnchor];
+      v34 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
       [v8 addObject:v34];
     }
 
     else
     {
-      v32 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32 constant:-v5];
-      [v8 addObject:v33];
+      actionsWrapperView = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
+      topAnchor3 = [bottomAnchor constraintEqualToAnchor:actionsWrapperView constant:-v5];
+      [v8 addObject:topAnchor3];
     }
 
-    v35 = [(CNContactHeaderStaticDisplayView *)self blurView];
-    v36 = [v35 topAnchor];
-    v37 = [(CNContactHeaderView *)self posterView];
-    v38 = [v37 topAnchor];
-    v39 = [v36 constraintEqualToAnchor:v38];
+    blurView = [(CNContactHeaderStaticDisplayView *)self blurView];
+    topAnchor4 = [blurView topAnchor];
+    posterView6 = [(CNContactHeaderView *)self posterView];
+    topAnchor5 = [posterView6 topAnchor];
+    v39 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v8 addObject:v39];
 
-    v40 = [(CNContactHeaderStaticDisplayView *)self blurView];
-    v41 = [v40 bottomAnchor];
-    v42 = [(CNContactHeaderView *)self posterView];
-    v43 = [v42 bottomAnchor];
-    v44 = [v41 constraintEqualToAnchor:v43];
+    blurView2 = [(CNContactHeaderStaticDisplayView *)self blurView];
+    bottomAnchor2 = [blurView2 bottomAnchor];
+    posterView7 = [(CNContactHeaderView *)self posterView];
+    bottomAnchor3 = [posterView7 bottomAnchor];
+    v44 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v8 addObject:v44];
 
-    v45 = [(CNContactHeaderStaticDisplayView *)self blurView];
-    v46 = [v45 leadingAnchor];
-    v47 = [(CNContactHeaderView *)self posterView];
-    v48 = [v47 leadingAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48];
+    blurView3 = [(CNContactHeaderStaticDisplayView *)self blurView];
+    leadingAnchor3 = [blurView3 leadingAnchor];
+    posterView8 = [(CNContactHeaderView *)self posterView];
+    leadingAnchor4 = [posterView8 leadingAnchor];
+    v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v8 addObject:v49];
 
-    v50 = [(CNContactHeaderStaticDisplayView *)self blurView];
-    v51 = [v50 trailingAnchor];
-    v52 = [(CNContactHeaderView *)self posterView];
-    v53 = [v52 trailingAnchor];
-    v54 = [v51 constraintEqualToAnchor:v53];
+    blurView4 = [(CNContactHeaderStaticDisplayView *)self blurView];
+    trailingAnchor3 = [blurView4 trailingAnchor];
+    posterView9 = [(CNContactHeaderView *)self posterView];
+    trailingAnchor4 = [posterView9 trailingAnchor];
+    v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v8 addObject:v54];
   }
 
-  v55 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  v56 = [v55 topAnchor];
-  v57 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
-  v58 = [v56 constraintEqualToAnchor:v57];
+  avatarBackgroundView = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  topAnchor6 = [avatarBackgroundView topAnchor];
+  topAnchor7 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
+  v58 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   [v8 addObject:v58];
 
-  v59 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  v60 = [v59 leadingAnchor];
-  v61 = [(CNContactHeaderStaticDisplayView *)self leadingAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
+  avatarBackgroundView2 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  leadingAnchor5 = [avatarBackgroundView2 leadingAnchor];
+  leadingAnchor6 = [(CNContactHeaderStaticDisplayView *)self leadingAnchor];
+  v62 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v8 addObject:v62];
 
-  v63 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  v64 = [v63 trailingAnchor];
-  v65 = [(CNContactHeaderStaticDisplayView *)self trailingAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  avatarBackgroundView3 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  trailingAnchor5 = [avatarBackgroundView3 trailingAnchor];
+  trailingAnchor6 = [(CNContactHeaderStaticDisplayView *)self trailingAnchor];
+  v66 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v8 addObject:v66];
 
-  v67 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  v68 = [v67 bottomAnchor];
-  v69 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69 constant:-v5];
+  avatarBackgroundView4 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  bottomAnchor4 = [avatarBackgroundView4 bottomAnchor];
+  bottomAnchor5 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
+  v70 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-v5];
   [v8 addObject:v70];
 
-  v71 = [(CNContactHeaderView *)self photoView];
-  v72 = [v71 centerXAnchor];
-  v73 = [(CNContactHeaderStaticDisplayView *)self centerXAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73];
+  photoView = [(CNContactHeaderView *)self photoView];
+  centerXAnchor = [photoView centerXAnchor];
+  centerXAnchor2 = [(CNContactHeaderStaticDisplayView *)self centerXAnchor];
+  v74 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v8 addObject:v74];
 
-  v75 = [(CNContactHeaderView *)self photoView];
-  v76 = [v75 leadingAnchor];
-  v77 = [(CNContactHeaderStaticDisplayView *)self layoutMarginsGuide];
-  v78 = [v77 leadingAnchor];
-  v79 = [v76 constraintGreaterThanOrEqualToAnchor:v78];
+  photoView2 = [(CNContactHeaderView *)self photoView];
+  leadingAnchor7 = [photoView2 leadingAnchor];
+  layoutMarginsGuide = [(CNContactHeaderStaticDisplayView *)self layoutMarginsGuide];
+  leadingAnchor8 = [layoutMarginsGuide leadingAnchor];
+  v79 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
   [v8 addObject:v79];
 
-  v80 = [(CNContactHeaderView *)self photoView];
-  v81 = [v80 trailingAnchor];
-  v82 = [(CNContactHeaderStaticDisplayView *)self layoutMarginsGuide];
-  v83 = [v82 trailingAnchor];
-  v84 = [v81 constraintLessThanOrEqualToAnchor:v83];
+  photoView3 = [(CNContactHeaderView *)self photoView];
+  trailingAnchor7 = [photoView3 trailingAnchor];
+  layoutMarginsGuide2 = [(CNContactHeaderStaticDisplayView *)self layoutMarginsGuide];
+  trailingAnchor8 = [layoutMarginsGuide2 trailingAnchor];
+  v84 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
   [v8 addObject:v84];
 
-  v85 = [(CNContactHeaderView *)self photoView];
-  v86 = [v85 bottomAnchor];
-  v87 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-  v88 = [v87 topAnchor];
+  photoView4 = [(CNContactHeaderView *)self photoView];
+  bottomAnchor6 = [photoView4 bottomAnchor];
+  taglineLabel = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  topAnchor8 = [taglineLabel topAnchor];
   [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMinBottomMargin];
-  v90 = [v86 constraintEqualToAnchor:v88 constant:-v89];
+  v90 = [bottomAnchor6 constraintEqualToAnchor:topAnchor8 constant:-v89];
   [v8 addObject:v90];
 
   [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMaxHeight];
   v92 = v91;
-  LODWORD(v87) = [(CNContactHeaderView *)self isOrientationPhoneLandscape];
-  v93 = [(CNContactHeaderView *)self photoView];
-  v94 = [v93 heightAnchor];
-  v95 = v94;
-  if (v87)
+  LODWORD(taglineLabel) = [(CNContactHeaderView *)self isOrientationPhoneLandscape];
+  photoView5 = [(CNContactHeaderView *)self photoView];
+  heightAnchor = [photoView5 heightAnchor];
+  v95 = heightAnchor;
+  if (taglineLabel)
   {
-    [v94 constraintEqualToConstant:v92];
+    [heightAnchor constraintEqualToConstant:v92];
   }
 
   else
   {
-    [v94 constraintLessThanOrEqualToConstant:v92];
+    [heightAnchor constraintLessThanOrEqualToConstant:v92];
   }
   v96 = ;
   [(CNContactHeaderView *)self setPhotoHeightConstraint:v96];
 
-  v97 = [(CNContactHeaderView *)self photoHeightConstraint];
-  [v8 addObject:v97];
+  photoHeightConstraint3 = [(CNContactHeaderView *)self photoHeightConstraint];
+  [v8 addObject:photoHeightConstraint3];
 
-  v98 = [(CNContactHeaderView *)self photoView];
-  v99 = [v98 topAnchor];
-  v100 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
+  photoView6 = [(CNContactHeaderView *)self photoView];
+  topAnchor9 = [photoView6 topAnchor];
+  topAnchor10 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
   [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMinTopMargin];
-  v101 = [v99 constraintEqualToAnchor:v100 constant:?];
+  v101 = [topAnchor9 constraintEqualToAnchor:topAnchor10 constant:?];
   [(CNContactHeaderView *)self setPhotoTopConstraint:v101];
 
   if ([(CNContactHeaderView *)self isPadRegularHorizontalSize])
   {
-    v102 = [(CNContactHeaderView *)self photoTopConstraint];
+    photoTopConstraint3 = [(CNContactHeaderView *)self photoTopConstraint];
     LODWORD(v103) = 1148829696;
-    [v102 setPriority:v103];
+    [photoTopConstraint3 setPriority:v103];
 
-    v104 = [(CNContactHeaderView *)self photoView];
-    v105 = [v104 topAnchor];
-    v106 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
+    photoView7 = [(CNContactHeaderView *)self photoView];
+    topAnchor11 = [photoView7 topAnchor];
+    topAnchor12 = [(CNContactHeaderStaticDisplayView *)self topAnchor];
     [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMinTopMargin];
-    v107 = [v105 constraintGreaterThanOrEqualToAnchor:v106 constant:?];
+    v107 = [topAnchor11 constraintGreaterThanOrEqualToAnchor:topAnchor12 constant:?];
     [v8 addObject:v107];
   }
 
-  v108 = [(CNContactHeaderView *)self photoTopConstraint];
-  [v8 addObject:v108];
+  photoTopConstraint4 = [(CNContactHeaderView *)self photoTopConstraint];
+  [v8 addObject:photoTopConstraint4];
 
-  v109 = [(CNContactHeaderView *)self photoView];
+  photoView8 = [(CNContactHeaderView *)self photoView];
   LODWORD(v110) = 1132068864;
-  [v109 setContentHuggingPriority:1 forAxis:v110];
+  [photoView8 setContentHuggingPriority:1 forAxis:v110];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2335,34 +2335,34 @@ LABEL_15:
   v111 = v8;
   v186 = v111;
   v112 = _Block_copy(aBlock);
-  v113 = [(CNContactHeaderView *)self nameLabel];
-  v112[2](v112, v113);
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  v112[2](v112, nameLabel);
 
-  v114 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  taglineLabel2 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
   v182 = v112;
-  v112[2](v112, v114);
+  v112[2](v112, taglineLabel2);
 
-  v115 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  taglineLabel3 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
   LODWORD(v116) = 1148846080;
-  [v115 setContentHuggingPriority:1 forAxis:v116];
+  [taglineLabel3 setContentHuggingPriority:1 forAxis:v116];
 
-  v117 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  taglineLabel4 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
   LODWORD(v118) = 1148846080;
-  [v117 setContentCompressionResistancePriority:1 forAxis:v118];
+  [taglineLabel4 setContentCompressionResistancePriority:1 forAxis:v118];
 
-  v119 = [(CNContactHeaderView *)self nameLabel];
+  nameLabel2 = [(CNContactHeaderView *)self nameLabel];
   LODWORD(v120) = 1148846080;
-  [v119 setContentHuggingPriority:1 forAxis:v120];
+  [nameLabel2 setContentHuggingPriority:1 forAxis:v120];
 
-  v121 = [(CNContactHeaderView *)self nameLabel];
+  nameLabel3 = [(CNContactHeaderView *)self nameLabel];
   LODWORD(v122) = 1148846080;
-  [v121 setContentCompressionResistancePriority:1 forAxis:v122];
+  [nameLabel3 setContentCompressionResistancePriority:1 forAxis:v122];
 
-  v123 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-  if (v123)
+  importantLabel = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+  if (importantLabel)
   {
-    v124 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-    v125 = [v124 isHidden] ^ 1;
+    importantLabel2 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+    v125 = [importantLabel2 isHidden] ^ 1;
   }
 
   else
@@ -2370,11 +2370,11 @@ LABEL_15:
     v125 = 0;
   }
 
-  v126 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-  if (v126)
+  downtimeView = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+  if (downtimeView)
   {
-    v127 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    v128 = [v127 isHidden] ^ 1;
+    downtimeView2 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    v128 = [downtimeView2 isHidden] ^ 1;
   }
 
   else
@@ -2382,29 +2382,29 @@ LABEL_15:
     v128 = 0;
   }
 
-  v129 = [(CNContactHeaderStaticDisplayView *)self shouldShowGemini];
-  v130 = [MEMORY[0x1E695DF70] array];
+  shouldShowGemini = [(CNContactHeaderStaticDisplayView *)self shouldShowGemini];
+  array = [MEMORY[0x1E695DF70] array];
   if (v125)
   {
-    v131 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
-    [v130 addObject:v131];
+    importantLabel3 = [(CNContactHeaderStaticDisplayView *)self importantLabel];
+    [array addObject:importantLabel3];
   }
 
   if (v128)
   {
-    v132 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
-    [v130 addObject:v132];
+    downtimeView3 = [(CNContactHeaderStaticDisplayView *)self downtimeView];
+    [array addObject:downtimeView3];
   }
 
-  v133 = v3;
-  if (v129)
+  v133 = isAXSize;
+  if (shouldShowGemini)
   {
-    v134 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-    [v130 addObject:v134];
+    geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+    [array addObject:geminiView];
   }
 
-  v135 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-  v136 = [v135 bottomAnchor];
+  taglineLabel5 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  bottomAnchor7 = [taglineLabel5 bottomAnchor];
 
   v183[0] = MEMORY[0x1E69E9820];
   v183[1] = 3221225472;
@@ -2413,81 +2413,81 @@ LABEL_15:
   v183[4] = self;
   v137 = v111;
   v184 = v137;
-  v138 = [v130 _cn_reduce:v183 initialValue:v136];
-  v139 = [(CNContactHeaderView *)self nameLabel];
-  v140 = [v139 topAnchor];
-  v141 = [v138 constraintEqualToAnchor:v140];
+  v138 = [array _cn_reduce:v183 initialValue:bottomAnchor7];
+  nameLabel4 = [(CNContactHeaderView *)self nameLabel];
+  topAnchor13 = [nameLabel4 topAnchor];
+  v141 = [v138 constraintEqualToAnchor:topAnchor13];
   [v137 addObject:v141];
 
-  v142 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+  actionsWrapperView2 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
 
-  if (v142)
+  if (actionsWrapperView2)
   {
-    v181 = v136;
-    v143 = [(CNContactHeaderStaticDisplayView *)self leadingAnchor];
-    v144 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-    v145 = [v144 leadingAnchor];
-    v146 = [v143 constraintEqualToAnchor:v145];
+    v181 = bottomAnchor7;
+    leadingAnchor9 = [(CNContactHeaderStaticDisplayView *)self leadingAnchor];
+    actionsWrapperView3 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+    leadingAnchor10 = [actionsWrapperView3 leadingAnchor];
+    v146 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     [v137 addObject:v146];
 
-    v147 = [(CNContactHeaderStaticDisplayView *)self trailingAnchor];
-    v148 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-    v149 = [v148 trailingAnchor];
-    v150 = [v147 constraintEqualToAnchor:v149];
+    trailingAnchor9 = [(CNContactHeaderStaticDisplayView *)self trailingAnchor];
+    actionsWrapperView4 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+    trailingAnchor10 = [actionsWrapperView4 trailingAnchor];
+    v150 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     [v137 addObject:v150];
 
-    v151 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+    actionsWrapperView5 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
     LODWORD(v152) = 1148846080;
-    [v151 setContentHuggingPriority:1 forAxis:v152];
+    [actionsWrapperView5 setContentHuggingPriority:1 forAxis:v152];
 
-    v153 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+    actionsWrapperView6 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
     LODWORD(v154) = 1148846080;
-    [v153 setContentCompressionResistancePriority:1 forAxis:v154];
+    [actionsWrapperView6 setContentCompressionResistancePriority:1 forAxis:v154];
 
     if (!v133)
     {
-      v166 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-      v167 = [v166 topAnchor];
-      v168 = [(CNContactHeaderView *)self nameLabel];
-      v169 = [v168 bottomAnchor];
-      v170 = [v167 constraintEqualToAnchor:v169];
+      actionsWrapperView7 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+      topAnchor14 = [actionsWrapperView7 topAnchor];
+      nameLabel5 = [(CNContactHeaderView *)self nameLabel];
+      bottomAnchor8 = [nameLabel5 bottomAnchor];
+      v170 = [topAnchor14 constraintEqualToAnchor:bottomAnchor8];
       [v137 addObject:v170];
 
-      v171 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-      v172 = [v171 bottomAnchor];
-      v173 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
-      v174 = [v172 constraintEqualToAnchor:v173 constant:-v5];
+      actionsWrapperView8 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+      bottomAnchor9 = [actionsWrapperView8 bottomAnchor];
+      bottomAnchor10 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
+      v174 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10 constant:-v5];
 LABEL_32:
       v180 = v174;
       [v137 addObject:v174];
 
-      v136 = v181;
+      bottomAnchor7 = v181;
       goto LABEL_33;
     }
 
-    v155 = [(CNContactHeaderView *)self nameLabel];
-    v156 = [v155 text];
-    if (v156)
+    nameLabel6 = [(CNContactHeaderView *)self nameLabel];
+    text = [nameLabel6 text];
+    if (text)
     {
-      v157 = v156;
-      v158 = [(CNContactHeaderView *)self nameLabel];
-      v159 = [v158 text];
-      v160 = [v159 length];
+      v157 = text;
+      nameLabel7 = [(CNContactHeaderView *)self nameLabel];
+      text2 = [nameLabel7 text];
+      v160 = [text2 length];
 
       if (v160)
       {
-        v161 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-        v162 = [v161 topAnchor];
-        v163 = [(CNContactHeaderView *)self nameLabel];
-        v164 = [v163 bottomAnchor];
-        v165 = [v162 constraintEqualToAnchor:v164 constant:v5];
+        actionsWrapperView9 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+        topAnchor15 = [actionsWrapperView9 topAnchor];
+        nameLabel8 = [(CNContactHeaderView *)self nameLabel];
+        bottomAnchor11 = [nameLabel8 bottomAnchor];
+        v165 = [topAnchor15 constraintEqualToAnchor:bottomAnchor11 constant:v5];
         [v137 addObject:v165];
 
 LABEL_31:
-        v171 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-        v172 = [v171 bottomAnchor];
-        v173 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
-        v174 = [v172 constraintEqualToAnchor:v173];
+        actionsWrapperView8 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+        bottomAnchor9 = [actionsWrapperView8 bottomAnchor];
+        bottomAnchor10 = [(CNContactHeaderStaticDisplayView *)self bottomAnchor];
+        v174 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
         goto LABEL_32;
       }
     }
@@ -2496,15 +2496,15 @@ LABEL_31:
     {
     }
 
-    v175 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-    v176 = [v175 topAnchor];
-    v177 = [(CNContactHeaderView *)self nameLabel];
-    v178 = [v177 topAnchor];
-    v161 = [v176 constraintEqualToAnchor:v178];
+    actionsWrapperView10 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+    topAnchor16 = [actionsWrapperView10 topAnchor];
+    nameLabel9 = [(CNContactHeaderView *)self nameLabel];
+    topAnchor17 = [nameLabel9 topAnchor];
+    actionsWrapperView9 = [topAnchor16 constraintEqualToAnchor:topAnchor17];
 
     LODWORD(v179) = 1132068864;
-    [v161 setPriority:v179];
-    [v137 addObject:v161];
+    [actionsWrapperView9 setPriority:v179];
+    [v137 addObject:actionsWrapperView9];
     goto LABEL_31;
   }
 
@@ -2567,29 +2567,29 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
 {
   if ([(CNContactHeaderView *)self isPadCompactHorizontalSize])
   {
-    v3 = [(CNContactHeaderView *)self sizeAttributes];
-    [v3 photoMinBottomMarginPadCompact];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes photoMinBottomMarginPadCompact];
   }
 
   else if ([(CNContactHeaderView *)self isOrientationPhoneLandscape])
   {
-    v3 = [(CNContactHeaderView *)self sizeAttributes];
-    [v3 photoMinBottomMarginPhoneLandscape];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes photoMinBottomMarginPhoneLandscape];
   }
 
   else
   {
-    v5 = [(CNContactHeaderStaticDisplayView *)self shouldUseFixedHeight];
-    v6 = [(CNContactHeaderView *)self sizeAttributes];
-    v3 = v6;
-    if (v5)
+    shouldUseFixedHeight = [(CNContactHeaderStaticDisplayView *)self shouldUseFixedHeight];
+    sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+    sizeAttributes = sizeAttributes2;
+    if (shouldUseFixedHeight)
     {
-      [v6 photoMinBottomMarginLowQuality];
+      [sizeAttributes2 photoMinBottomMarginLowQuality];
     }
 
     else
     {
-      [v6 photoMinBottomMargin];
+      [sizeAttributes2 photoMinBottomMargin];
     }
   }
 
@@ -2604,12 +2604,12 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
   v4 = v3;
   if (v3 == 0.0)
   {
-    v5 = [(CNContactHeaderStaticDisplayView *)self superview];
+    superview = [(CNContactHeaderStaticDisplayView *)self superview];
 
-    if (v5)
+    if (superview)
     {
-      v6 = [(CNContactHeaderStaticDisplayView *)self superview];
-      [v6 frame];
+      superview2 = [(CNContactHeaderStaticDisplayView *)self superview];
+      [superview2 frame];
       v4 = v7;
     }
   }
@@ -2623,25 +2623,25 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
   v9 = v8;
   [(CNContactHeaderStaticDisplayView *)self layoutMargins];
   v11 = v4 - (v9 + v10);
-  v12 = [(CNContactHeaderView *)self nameLabel];
-  [v12 sizeThatFits:{v11, 3.40282347e38}];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel sizeThatFits:{v11, 3.40282347e38}];
   v14 = v13;
 
-  v15 = [(CNContactHeaderView *)self nameLabel];
-  v16 = [v15 font];
-  [v16 lineHeight];
+  nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+  font = [nameLabel2 font];
+  [font lineHeight];
   v18 = ceil(v17);
 
-  v19 = [(CNContactHeaderView *)self sizeAttributes];
-  v20 = v19;
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  v20 = sizeAttributes;
   if (v14 <= v18)
   {
-    [v19 photoMaxHeightPhoneLandscape];
+    [sizeAttributes photoMaxHeightPhoneLandscape];
   }
 
   else
   {
-    [v19 photoMinHeight];
+    [sizeAttributes photoMinHeight];
   }
 
   v22 = v21;
@@ -2659,8 +2659,8 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
 
   else
   {
-    v5 = [(CNContactHeaderView *)self sizeAttributes];
-    [v5 photoMaxHeight];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes photoMaxHeight];
     v4 = v6;
   }
 
@@ -2668,8 +2668,8 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
   {
     if (![(CNContactHeaderStaticDisplayView *)self shouldShowPoster])
     {
-      v7 = [(CNContactHeaderView *)self sizeAttributes];
-      [v7 photoMaxHeightLowQuality];
+      sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+      [sizeAttributes2 photoMaxHeightLowQuality];
       v9 = v8;
 
       if (v4 >= v9)
@@ -2692,17 +2692,17 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
 
   else
   {
-    v5 = [(CNContactHeaderView *)self isPadCompactHorizontalSize];
-    v6 = [(CNContactHeaderView *)self sizeAttributes];
-    v7 = v6;
-    if (v5)
+    isPadCompactHorizontalSize = [(CNContactHeaderView *)self isPadCompactHorizontalSize];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    v7 = sizeAttributes;
+    if (isPadCompactHorizontalSize)
     {
-      [v6 photoMaxHeightPadCompact];
+      [sizeAttributes photoMaxHeightPadCompact];
     }
 
     else
     {
-      [v6 photoMinHeight];
+      [sizeAttributes photoMinHeight];
     }
 
     v4 = v8;
@@ -2712,8 +2712,8 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
   {
     if (![(CNContactHeaderStaticDisplayView *)self shouldShowPoster])
     {
-      v9 = [(CNContactHeaderView *)self sizeAttributes];
-      [v9 photoMaxHeightLowQuality];
+      sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+      [sizeAttributes2 photoMaxHeightLowQuality];
       v11 = v10;
 
       if (v4 >= v11)
@@ -2735,9 +2735,9 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
 
   else
   {
-    v4 = [(CNContactHeaderView *)self contacts];
-    v5 = [v4 firstObject];
-    v6 = [v5 imageDataAvailable] | v3;
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
+    v6 = [firstObject imageDataAvailable] | v3;
 
     v7 = v6 ^ 1;
   }
@@ -2749,8 +2749,8 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
 {
   if ([(CNContactHeaderView *)self isPadRegularHorizontalSize])
   {
-    v3 = [(CNContactHeaderView *)self sizeAttributes];
-    [v3 photoMinTopMargin];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes photoMinTopMargin];
     v5 = v4;
     goto LABEL_9;
   }
@@ -2759,24 +2759,24 @@ id __53__CNContactHeaderStaticDisplayView_updateConstraints__block_invoke_2(uint
   {
     [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoTopMarginOffset];
     v7 = v6;
-    v3 = [(CNContactHeaderView *)self sizeAttributes];
-    [v3 photoMinTopMarginPadCompact];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes photoMinTopMarginPadCompact];
   }
 
   else
   {
     if ([(CNContactHeaderView *)self isOrientationPhoneLandscape])
     {
-      v3 = [(CNContactHeaderStaticDisplayView *)self superview];
-      [v3 frame];
+      sizeAttributes = [(CNContactHeaderStaticDisplayView *)self superview];
+      [sizeAttributes frame];
       v5 = v9 * 0.1;
       goto LABEL_9;
     }
 
     [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoTopMarginOffset];
     v7 = v10;
-    v3 = [(CNContactHeaderView *)self sizeAttributes];
-    [v3 photoMinTopMargin];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes photoMinTopMargin];
   }
 
   v5 = v7 + v8;
@@ -2793,12 +2793,12 @@ LABEL_9:
 
 - (double)staticHeaderPhotoTopMarginOffset
 {
-  v3 = [(CNContactHeaderView *)self delegate];
-  [v3 navigationBarHeight];
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate navigationBarHeight];
   v5 = v4;
 
-  v6 = [(CNContactHeaderView *)self delegate];
-  [v6 headerViewSafeAreaInsets];
+  delegate2 = [(CNContactHeaderView *)self delegate];
+  [delegate2 headerViewSafeAreaInsets];
   v8 = v7;
 
   return v5 + v8;
@@ -2816,9 +2816,9 @@ LABEL_9:
 - (id)nameFont
 {
   v3 = +[CNUIFontRepository contactCardStaticHeaderDefaultNameFont];
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v6 = [featureFlags isFeatureEnabled:29];
 
   if (v6)
   {
@@ -2827,15 +2827,15 @@ LABEL_9:
 
   else
   {
-    v8 = [(CNContactHeaderView *)self contacts];
-    v9 = [v8 firstObject];
-    v10 = [v9 wallpaper];
-    v11 = [v10 font];
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
+    wallpaper = [firstObject wallpaper];
+    font = [wallpaper font];
 
-    if (v11)
+    if (font)
     {
-      v12 = [v11 fontDescriptor];
-      v13 = [v12 fontDescriptorWithSymbolicTraits:0x8000];
+      fontDescriptor = [font fontDescriptor];
+      v13 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
       v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v13 size:0.0];
     }
@@ -2852,11 +2852,11 @@ LABEL_9:
 - (void)updateFontSizes
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderView *)self isAXSize];
-  v4 = [(CNContactHeaderView *)self nameLabel];
-  [v4 setAdjustsFontSizeToFitWidth:!v3];
+  isAXSize = [(CNContactHeaderView *)self isAXSize];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel setAdjustsFontSizeToFitWidth:!isAXSize];
 
-  if (v3)
+  if (isAXSize)
   {
     v5 = 0.0;
   }
@@ -2866,12 +2866,12 @@ LABEL_9:
     v5 = 0.7;
   }
 
-  v6 = [(CNContactHeaderView *)self nameLabel];
-  [v6 setMinimumScaleFactor:v5];
+  nameLabel2 = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel2 setMinimumScaleFactor:v5];
 
-  v7 = [(CNContactHeaderStaticDisplayView *)self nameFont];
+  nameFont = [(CNContactHeaderStaticDisplayView *)self nameFont];
   v8 = sCurrentNameFont;
-  sCurrentNameFont = v7;
+  sCurrentNameFont = nameFont;
 
   [(CNContactHeaderStaticDisplayView *)self nameFontSize];
   v9 = sCurrentNameFont;
@@ -2902,11 +2902,11 @@ LABEL_9:
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   [self cn_updateDictionaryForKey:@"geminiTextAttributes" withChanges:v17];
 
-  v18 = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
-  [v18 updateGeminiIcons];
+  geminiIconProvider = [(CNContactHeaderStaticDisplayView *)self geminiIconProvider];
+  [geminiIconProvider updateGeminiIcons];
 
-  v19 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v19 setNeedsCalculateLayout];
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView setNeedsCalculateLayout];
 }
 
 - (void)tintColorDidChange
@@ -2914,36 +2914,36 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = CNContactHeaderStaticDisplayView;
   [(CNContactHeaderStaticDisplayView *)&v7 tintColorDidChange];
-  v3 = [(CNContactHeaderStaticDisplayView *)self tintColor];
-  v4 = [(CNContactHeaderView *)self nameLabel];
-  [v4 setHighlightedTextColor:v3];
+  tintColor = [(CNContactHeaderStaticDisplayView *)self tintColor];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [nameLabel setHighlightedTextColor:tintColor];
 
-  v5 = [(CNContactHeaderStaticDisplayView *)self tintColor];
-  v6 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-  [v6 setHighlightedColor:v5];
+  tintColor2 = [(CNContactHeaderStaticDisplayView *)self tintColor];
+  geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+  [geminiView setHighlightedColor:tintColor2];
 }
 
 - (unint64_t)avatarStyle
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  v3 = [v2 avatarView];
-  v4 = [v3 style];
+  photoView = [(CNContactHeaderView *)self photoView];
+  avatarView = [photoView avatarView];
+  style = [avatarView style];
 
-  return v4;
+  return style;
 }
 
-- (void)setAvatarStyle:(unint64_t)a3
+- (void)setAvatarStyle:(unint64_t)style
 {
-  v5 = [(CNContactHeaderView *)self photoView];
-  v4 = [v5 avatarView];
-  [v4 setStyle:a3];
+  photoView = [(CNContactHeaderView *)self photoView];
+  avatarView = [photoView avatarView];
+  [avatarView setStyle:style];
 }
 
 - (BOOL)shouldShowPoster
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   if (v5 & 1) != 0 || -[CNContactHeaderView showMonogramsOnly](self, "showMonogramsOnly") || -[CNContactHeaderView isPad](self, "isPad") || (-[CNContactHeaderView delegate](self, "delegate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isOrientationPhoneLandscape], v6, (v7) || (-[CNContactHeaderView contacts](self, "contacts"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9 != 1))
   {
@@ -2952,37 +2952,37 @@ LABEL_9:
 
   else
   {
-    v10 = [(CNContactHeaderView *)self contacts];
-    v11 = [v10 firstObject];
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
 
     v12 = *MEMORY[0x1E6996540];
-    v13 = [v11 wallpaper];
-    v14 = [v13 posterArchiveData];
-    v15 = (*(v12 + 16))(v12, v14) ^ 1;
+    wallpaper = [firstObject wallpaper];
+    posterArchiveData = [wallpaper posterArchiveData];
+    v15 = (*(v12 + 16))(v12, posterArchiveData) ^ 1;
   }
 
   return v15;
 }
 
-- (void)setShouldShowGemini:(BOOL)a3
+- (void)setShouldShowGemini:(BOOL)gemini
 {
-  if (self->_shouldShowGemini != a3)
+  if (self->_shouldShowGemini != gemini)
   {
-    if (a3)
+    if (gemini)
     {
       [(CNContactHeaderStaticDisplayView *)self createGeminiViewIfNeeded];
-      v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-      [(CNContactHeaderStaticDisplayView *)self addSubview:v5];
+      geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+      [(CNContactHeaderStaticDisplayView *)self addSubview:geminiView];
     }
 
     else
     {
-      v5 = [(CNContactHeaderStaticDisplayView *)self geminiView];
-      [v5 removeFromSuperview];
+      geminiView = [(CNContactHeaderStaticDisplayView *)self geminiView];
+      [geminiView removeFromSuperview];
     }
 
     [(CNContactHeaderView *)self setNeedsLabelSizeCalculation:1];
-    self->_shouldShowGemini = a3;
+    self->_shouldShowGemini = gemini;
 
     [(CNContactHeaderStaticDisplayView *)self setNeedsUpdateConstraints];
   }
@@ -3005,8 +3005,8 @@ LABEL_9:
 
     [(CNContactGeminiView *)self->_geminiView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CNContactGeminiView *)self->_geminiView setUserInteractionEnabled:1];
-    v6 = [(CNContactHeaderStaticDisplayView *)self tintColor];
-    [(CNContactGeminiView *)self->_geminiView setHighlightedColor:v6];
+    tintColor = [(CNContactHeaderStaticDisplayView *)self tintColor];
+    [(CNContactGeminiView *)self->_geminiView setHighlightedColor:tintColor];
 
     v7 = +[CNUIColorRepository contactCardStaticHeaderGeminiTextColor];
     [(CNContactGeminiView *)self->_geminiView setBackgroundColor:v7];
@@ -3022,61 +3022,61 @@ LABEL_9:
   }
 }
 
-- (id)imageDataForColorFetchingIsImageDataOrThumbnail:(BOOL *)a3 bitmapFormat:(id *)a4
+- (id)imageDataForColorFetchingIsImageDataOrThumbnail:(BOOL *)thumbnail bitmapFormat:(id *)format
 {
   MmappedBitmapContext = self;
-  v7 = [(CNContactHeaderView *)self contacts];
-  v8 = [v7 firstObject];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
 
-  if ([v8 isKeyAvailable:*MEMORY[0x1E695C400]])
+  if ([firstObject isKeyAvailable:*MEMORY[0x1E695C400]])
   {
     v9 = *MEMORY[0x1E6996540];
-    v10 = [v8 thumbnailImageData];
-    LOBYTE(v9) = (*(v9 + 16))(v9, v10);
+    thumbnailImageData = [firstObject thumbnailImageData];
+    LOBYTE(v9) = (*(v9 + 16))(v9, thumbnailImageData);
 
     if ((v9 & 1) == 0)
     {
-      v11 = [v8 thumbnailImageData];
+      thumbnailImageData2 = [firstObject thumbnailImageData];
       goto LABEL_11;
     }
   }
 
-  if ([v8 isKeyAvailable:*MEMORY[0x1E695C278]])
+  if ([firstObject isKeyAvailable:*MEMORY[0x1E695C278]])
   {
-    v11 = [v8 imageData];
+    thumbnailImageData2 = [firstObject imageData];
 LABEL_11:
-    v22 = v11;
-    v28 = [MmappedBitmapContext dataForBackgroundColorService:v11];
+    v22 = thumbnailImageData2;
+    v28 = [MmappedBitmapContext dataForBackgroundColorService:thumbnailImageData2];
     LOBYTE(MmappedBitmapContext) = 1;
     goto LABEL_12;
   }
 
-  v12 = [MmappedBitmapContext photoView];
-  v13 = [v12 avatarView];
-  v14 = [v13 displayedImageState];
+  photoView = [MmappedBitmapContext photoView];
+  avatarView = [photoView avatarView];
+  displayedImageState = [avatarView displayedImageState];
 
-  if (v14 == 2)
+  if (displayedImageState == 2)
   {
-    v15 = [MmappedBitmapContext photoView];
-    v16 = [v15 avatarView];
-    v17 = [v16 contentImage];
-    v18 = [v17 CGImage];
+    photoView2 = [MmappedBitmapContext photoView];
+    avatarView2 = [photoView2 avatarView];
+    contentImage = [avatarView2 contentImage];
+    cGImage = [contentImage CGImage];
 
-    Width = CGImageGetWidth(v18);
-    Height = CGImageGetHeight(v18);
-    CGImageGetBitsPerComponent(v18);
+    Width = CGImageGetWidth(cGImage);
+    Height = CGImageGetHeight(cGImage);
+    CGImageGetBitsPerComponent(cGImage);
     MmappedBitmapContext = CNImageUtilsCreateMmappedBitmapContext();
     v31.origin.x = 0.0;
     v31.origin.y = 0.0;
     v31.size.width = Width;
     v31.size.height = Height;
-    CGContextDrawImage(MmappedBitmapContext, v31, v18);
+    CGContextDrawImage(MmappedBitmapContext, v31, cGImage);
     v21 = [objc_alloc(MEMORY[0x1E695CED0]) initWithBitmapContext:MmappedBitmapContext];
     v22 = v21;
-    if (a4)
+    if (format)
     {
       v23 = v21;
-      *a4 = v22;
+      *format = v22;
     }
 
     Data = CGBitmapContextGetData(MmappedBitmapContext);
@@ -3093,7 +3093,7 @@ LABEL_11:
 
 LABEL_12:
 
-    if (!a3)
+    if (!thumbnail)
     {
       goto LABEL_14;
     }
@@ -3103,10 +3103,10 @@ LABEL_12:
 
   v28 = 0;
   LOBYTE(MmappedBitmapContext) = 1;
-  if (a3)
+  if (thumbnail)
   {
 LABEL_13:
-    *a3 = MmappedBitmapContext;
+    *thumbnail = MmappedBitmapContext;
   }
 
 LABEL_14:
@@ -3114,81 +3114,81 @@ LABEL_14:
   return v28;
 }
 
-- (void)assignImageColorsToAvatarBackgroundView:(id)a3 animated:(BOOL)a4
+- (void)assignImageColorsToAvatarBackgroundView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v33 = a3;
-  v6 = [MEMORY[0x1E6996B28] colorArraySize];
-  if ([v33 count] == v6)
+  animatedCopy = animated;
+  viewCopy = view;
+  colorArraySize = [MEMORY[0x1E6996B28] colorArraySize];
+  if ([viewCopy count] == colorArraySize)
   {
-    v7 = v33;
+    v7 = viewCopy;
   }
 
   else
   {
     v8 = MEMORY[0x1E695DEC8];
-    v9 = [v33 firstObject];
-    v10 = v9;
-    if (!v9)
+    firstObject = [viewCopy firstObject];
+    clearColor = firstObject;
+    if (!firstObject)
     {
-      v10 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
     }
 
-    v11 = [v8 _cn_arrayWithObject:v10 count:v6];
+    v11 = [v8 _cn_arrayWithObject:clearColor count:colorArraySize];
 
-    if (!v9)
+    if (!firstObject)
     {
     }
 
-    v4 = 0;
+    animatedCopy = 0;
     v7 = v11;
   }
 
   v34 = v7;
   v12 = [v7 _cn_map:&__block_literal_global_11379];
-  v13 = [v12 _cn_reversed];
+  _cn_reversed = [v12 _cn_reversed];
 
   lastBackgroundColors = self->_lastBackgroundColors;
-  if (lastBackgroundColors != v13 && (!lastBackgroundColors || ![(NSArray *)v13 isEqualToArray:?]))
+  if (lastBackgroundColors != _cn_reversed && (!lastBackgroundColors || ![(NSArray *)_cn_reversed isEqualToArray:?]))
   {
-    objc_storeStrong(&self->_lastBackgroundColors, v13);
-    v15 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
-    [v15 removeAnimationForKey:@"gradientAnimation"];
+    objc_storeStrong(&self->_lastBackgroundColors, _cn_reversed);
+    avatarBackgroundGradientLayer = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
+    [avatarBackgroundGradientLayer removeAnimationForKey:@"gradientAnimation"];
 
-    if (v4 && (-[CNContactHeaderStaticDisplayView avatarBackgroundGradientLayer](self, "avatarBackgroundGradientLayer"), v16 = objc_claimAutoreleasedReturnValue(), [v16 colors], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17))
+    if (animatedCopy && (-[CNContactHeaderStaticDisplayView avatarBackgroundGradientLayer](self, "avatarBackgroundGradientLayer"), v16 = objc_claimAutoreleasedReturnValue(), [v16 colors], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17))
     {
-      v18 = [MEMORY[0x1E6979318] animationWithKeyPath:@"colors"];
-      [v18 setToValue:v13];
-      [v18 setDuration:0.2];
-      [v18 setFillMode:*MEMORY[0x1E69797E8]];
-      [v18 setRemovedOnCompletion:0];
-      v19 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
-      [v19 addAnimation:v18 forKey:@"gradientAnimation"];
+      avatarBackgroundGradientLayer3 = [MEMORY[0x1E6979318] animationWithKeyPath:@"colors"];
+      [avatarBackgroundGradientLayer3 setToValue:_cn_reversed];
+      [avatarBackgroundGradientLayer3 setDuration:0.2];
+      [avatarBackgroundGradientLayer3 setFillMode:*MEMORY[0x1E69797E8]];
+      [avatarBackgroundGradientLayer3 setRemovedOnCompletion:0];
+      avatarBackgroundGradientLayer2 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
+      [avatarBackgroundGradientLayer2 addAnimation:avatarBackgroundGradientLayer3 forKey:@"gradientAnimation"];
     }
 
     else
     {
-      v18 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
-      [v18 setColors:v13];
+      avatarBackgroundGradientLayer3 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
+      [avatarBackgroundGradientLayer3 setColors:_cn_reversed];
     }
 
-    v20 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-    [v20 frame];
+    avatarBackgroundView = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+    [avatarBackgroundView frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
-    [v29 setFrame:{v22, v24, v26, v28}];
+    avatarBackgroundGradientLayer4 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
+    [avatarBackgroundGradientLayer4 setFrame:{v22, v24, v26, v28}];
   }
 
-  v30 = [(CNContactHeaderView *)self delegate];
+  delegate = [(CNContactHeaderView *)self delegate];
   v31 = objc_opt_respondsToSelector();
 
   if (v31)
   {
-    v32 = [(CNContactHeaderView *)self delegate];
-    [v32 headerView:self didSetBackgroundAsGradientColors:v34];
+    delegate2 = [(CNContactHeaderView *)self delegate];
+    [delegate2 headerView:self didSetBackgroundAsGradientColors:v34];
   }
 }
 
@@ -3199,10 +3199,10 @@ uint64_t __85__CNContactHeaderStaticDisplayView_assignImageColorsToAvatarBackgro
   return [v2 CGColor];
 }
 
-- (void)updateLabelColorsForImageColors:(id)a3
+- (void)updateLabelColorsForImageColors:(id)colors
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if ([CNImageDerivedColorBackgroundUtilities backgroundColorsPreferWhiteForegroundText:a3])
+  if ([CNImageDerivedColorBackgroundUtilities backgroundColorsPreferWhiteForegroundText:colors])
   {
     v4 = +[CNUIColorRepository contactCardStaticAvatarHeaderDefaultTextColor];
     +[CNUIColorRepository contactCardStaticHeaderDefaultTaglineTextColor];
@@ -3219,24 +3219,24 @@ uint64_t __85__CNContactHeaderStaticDisplayView_assignImageColorsToAvatarBackgro
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [self cn_updateDictionaryForKey:@"nameTextAttributes" withChanges:v6];
 
-  v7 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-  [v7 setTextColor:v5];
+  taglineLabel = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  [taglineLabel setTextColor:v5];
 
-  v8 = [(CNContactHeaderView *)self delegate];
+  delegate = [(CNContactHeaderView *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CNContactHeaderView *)self delegate];
-    [v10 headerView:self didSetNameLabelColor:v4];
+    delegate2 = [(CNContactHeaderView *)self delegate];
+    [delegate2 headerView:self didSetNameLabelColor:v4];
   }
 }
 
 - (void)updateAvatarBackgroundViewVisibility
 {
-  v3 = [(CNContactHeaderStaticDisplayView *)self shouldShowPoster];
-  v4 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  [v4 setHidden:v3];
+  shouldShowPoster = [(CNContactHeaderStaticDisplayView *)self shouldShowPoster];
+  avatarBackgroundView = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  [avatarBackgroundView setHidden:shouldShowPoster];
 
   if ([(CNContactHeaderView *)self isOrientationPhoneLandscape])
   {
@@ -3248,28 +3248,28 @@ uint64_t __85__CNContactHeaderStaticDisplayView_assignImageColorsToAvatarBackgro
     v5 = 1.0;
   }
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
+  avatarBackgroundGradientLayer = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundGradientLayer];
   *&v7 = v5;
-  [v6 setOpacity:v7];
+  [avatarBackgroundGradientLayer setOpacity:v7];
 
   if (![(CNContactHeaderStaticDisplayView *)self shouldShowPoster])
   {
     [(CNContactHeaderStaticDisplayView *)self setPosterViewHidden:1];
-    v8 = [(CNContactHeaderView *)self contacts];
-    v9 = [v8 firstObject];
-    v10 = [v9 backgroundColors];
-    v11 = [v10 contactImage];
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
+    backgroundColors = [firstObject backgroundColors];
+    contactImage = [backgroundColors contactImage];
 
-    v12 = [(CNContactHeaderView *)self contacts];
-    v13 = [v12 firstObject];
-    v14 = [v13 identifier];
+    contacts2 = [(CNContactHeaderView *)self contacts];
+    firstObject2 = [contacts2 firstObject];
+    identifier = [firstObject2 identifier];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __72__CNContactHeaderStaticDisplayView_updateAvatarBackgroundViewVisibility__block_invoke;
     aBlock[3] = &unk_1E74E2638;
     aBlock[4] = self;
-    v15 = v14;
+    v15 = identifier;
     v24 = v15;
     v16 = _Block_copy(aBlock);
     if ((*(*MEMORY[0x1E6996530] + 16))())
@@ -3281,16 +3281,16 @@ uint64_t __85__CNContactHeaderStaticDisplayView_assignImageColorsToAvatarBackgro
       v19 = (*(*MEMORY[0x1E6996540] + 16))();
       if ((v19 & 1) != 0 || ![(CNContactHeaderStaticDisplayView *)self identifierForBackgroundColorIsCurrent:v15])
       {
-        objc_storeStrong(&self->_lastBackgroundColorsContactIdentifier, v14);
-        v20 = [(CNContactHeaderView *)self backgroundGradientDefaultGrayColors];
-        (*(v16 + 2))(v16, v20, 0, v19 ^ 1u);
+        objc_storeStrong(&self->_lastBackgroundColorsContactIdentifier, identifier);
+        backgroundGradientDefaultGrayColors = [(CNContactHeaderView *)self backgroundGradientDefaultGrayColors];
+        (*(v16 + 2))(v16, backgroundGradientDefaultGrayColors, 0, v19 ^ 1u);
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_lastBackgroundColorsContactIdentifier, v14);
-      (*(v16 + 2))(v16, v11, 0, 1);
+      objc_storeStrong(&self->_lastBackgroundColorsContactIdentifier, identifier);
+      (*(v16 + 2))(v16, contactImage, 0, 1);
     }
   }
 }
@@ -3343,18 +3343,18 @@ void __72__CNContactHeaderStaticDisplayView_updateAvatarBackgroundViewVisibility
   }
 }
 
-- (BOOL)identifierForBackgroundColorIsCurrent:(id)a3
+- (BOOL)identifierForBackgroundColorIsCurrent:(id)current
 {
-  v4 = a3;
+  currentCopy = current;
   lastBackgroundColorsContactIdentifier = self->_lastBackgroundColorsContactIdentifier;
-  if (lastBackgroundColorsContactIdentifier == v4)
+  if (lastBackgroundColorsContactIdentifier == currentCopy)
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (currentCopy)
   {
-    v6 = [(NSString *)lastBackgroundColorsContactIdentifier isEqualToString:v4];
+    v6 = [(NSString *)lastBackgroundColorsContactIdentifier isEqualToString:currentCopy];
   }
 
   else
@@ -3373,37 +3373,37 @@ void __72__CNContactHeaderStaticDisplayView_updateAvatarBackgroundViewVisibility
   [(CNContactHeaderStaticDisplayView *)self addSubview:v10];
   [(CNContactHeaderStaticDisplayView *)self sendSubviewToBack:v10];
   [(CNContactHeaderStaticDisplayView *)self setAvatarBackgroundView:v10];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  v5 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  avatarBackgroundView = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  [avatarBackgroundView setBackgroundColor:clearColor];
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  [v6 setHidden:1];
+  avatarBackgroundView2 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  [avatarBackgroundView2 setHidden:1];
 
-  v7 = [MEMORY[0x1E6979380] layer];
-  v8 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
-  v9 = [v8 layer];
-  [v9 addSublayer:v7];
+  layer = [MEMORY[0x1E6979380] layer];
+  avatarBackgroundView3 = [(CNContactHeaderStaticDisplayView *)self avatarBackgroundView];
+  layer2 = [avatarBackgroundView3 layer];
+  [layer2 addSublayer:layer];
 
-  [(CNContactHeaderStaticDisplayView *)self setAvatarBackgroundGradientLayer:v7];
+  [(CNContactHeaderStaticDisplayView *)self setAvatarBackgroundGradientLayer:layer];
 }
 
-- (CGRect)layerContentsRectForConfiguration:(id)a3
+- (CGRect)layerContentsRectForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:v4];
-  v6 = [(CNContactHeaderStaticDisplayView *)self window];
-  [CNIncomingCallSnapshotViewController horizontalNameLabelBoundingRectForName:&stru_1F0CE7398 window:v6];
+  configurationCopy = configuration;
+  v5 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:configurationCopy];
+  window = [(CNContactHeaderStaticDisplayView *)self window];
+  [CNIncomingCallSnapshotViewController horizontalNameLabelBoundingRectForName:&stru_1F0CE7398 window:window];
   v8 = v7;
   v10 = v9;
 
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v13 = (v8 + v10) * 0.125 / v12;
 
   if ([v5 isEqualToString:*MEMORY[0x1E695CCF0]])
   {
-    v14 = [[CNPhotosPosterConfigurationReader alloc] initWithPosterConfiguration:v4];
+    v14 = [[CNPhotosPosterConfigurationReader alloc] initWithPosterConfiguration:configurationCopy];
     if ([(CNPhotosPosterConfigurationReader *)v14 hasFaceRectInPosterSnapshot])
     {
       [(CNPhotosPosterConfigurationReader *)v14 faceRectInPosterSnapshotPercentFromTop];
@@ -3450,18 +3450,18 @@ LABEL_8:
   return result;
 }
 
-- (void)updateLabelColorsForPosterSnapshot:(id)a3
+- (void)updateLabelColorsForPosterSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6996818] mainThreadScheduler];
+  snapshotCopy = snapshot;
+  mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__CNContactHeaderStaticDisplayView_updateLabelColorsForPosterSnapshot___block_invoke;
   v7[3] = &unk_1E74E77C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
+  [mainThreadScheduler performBlock:v7];
 }
 
 void __71__CNContactHeaderStaticDisplayView_updateLabelColorsForPosterSnapshot___block_invoke(uint64_t a1)
@@ -3471,22 +3471,22 @@ void __71__CNContactHeaderStaticDisplayView_updateLabelColorsForPosterSnapshot__
   [v1 updateLabelColorsForImageColors:v2];
 }
 
-- (void)assignSnapshotImageToPosterView:(id)a3 configuration:(id)a4 contentIsSensitive:(BOOL)a5
+- (void)assignSnapshotImageToPosterView:(id)view configuration:(id)configuration contentIsSensitive:(BOOL)sensitive
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E6996818] mainThreadScheduler];
+  viewCopy = view;
+  configurationCopy = configuration;
+  mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_configuration_contentIsSensitive___block_invoke;
   v13[3] = &unk_1E74E2610;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a5;
-  v11 = v8;
-  v12 = v9;
-  [v10 performBlock:v13];
+  v14 = configurationCopy;
+  v15 = viewCopy;
+  sensitiveCopy = sensitive;
+  v11 = viewCopy;
+  v12 = configurationCopy;
+  [mainThreadScheduler performBlock:v13];
 }
 
 void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_configuration_contentIsSensitive___block_invoke(uint64_t a1)
@@ -3529,20 +3529,20 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
   [(CNContactHeaderStaticDisplayView *)self setPosterViewHidden:v3];
   if ((v3 & 1) == 0)
   {
-    v4 = [(CNContactHeaderView *)self posterView];
-    v5 = [v4 image];
+    posterView = [(CNContactHeaderView *)self posterView];
+    image = [posterView image];
 
-    if (v5)
+    if (image)
     {
-      v6 = [(CNContactHeaderView *)self delegate];
+      delegate = [(CNContactHeaderView *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v10 = [(CNContactHeaderView *)self delegate];
-        v8 = [(CNContactHeaderView *)self posterView];
-        v9 = [v8 image];
-        [v10 headerView:self didSetBackgroundAsPosterSnapshotImage:v9];
+        delegate2 = [(CNContactHeaderView *)self delegate];
+        posterView2 = [(CNContactHeaderView *)self posterView];
+        image2 = [posterView2 image];
+        [delegate2 headerView:self didSetBackgroundAsPosterSnapshotImage:image2];
       }
     }
 
@@ -3554,19 +3554,19 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
   }
 }
 
-- (void)setPosterViewHidden:(BOOL)a3
+- (void)setPosterViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(CNContactHeaderView *)self posterView];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  posterView = [(CNContactHeaderView *)self posterView];
+  [posterView setHidden:hiddenCopy];
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self blurView];
-  [v6 setHidden:v3];
+  blurView = [(CNContactHeaderStaticDisplayView *)self blurView];
+  [blurView setHidden:hiddenCopy];
 
-  if (v3)
+  if (hiddenCopy)
   {
-    v7 = [(CNContactHeaderView *)self posterView];
-    [v7 setImage:0];
+    posterView2 = [(CNContactHeaderView *)self posterView];
+    [posterView2 setImage:0];
 
     [(CNContactHeaderStaticDisplayView *)self updateSensitiveContentBlurVisibility:0];
   }
@@ -3575,10 +3575,10 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
 - (void)updatePosterViewImage
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactHeaderStaticDisplayView *)self shouldShowPoster];
+  shouldShowPoster = [(CNContactHeaderStaticDisplayView *)self shouldShowPoster];
   v4 = CNUILogPosters();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (shouldShowPoster)
   {
     if (v5)
     {
@@ -3586,27 +3586,27 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
       _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "Poster should be shown", buf, 2u);
     }
 
-    v6 = [(CNContactHeaderView *)self posterView];
-    [v6 setHidden:0];
+    posterView = [(CNContactHeaderView *)self posterView];
+    [posterView setHidden:0];
 
-    v7 = [(CNContactHeaderStaticDisplayView *)self blurView];
-    [v7 setHidden:0];
+    blurView = [(CNContactHeaderStaticDisplayView *)self blurView];
+    [blurView setHidden:0];
 
-    v8 = [(CNContactHeaderView *)self contacts];
-    v9 = [v8 firstObject];
+    contacts = [(CNContactHeaderView *)self contacts];
+    firstObject = [contacts firstObject];
 
-    v10 = [v9 identifier];
-    v11 = [(CNContactHeaderStaticDisplayView *)self currentlyDisplayedPosterContactIdentifier];
-    v12 = [v10 isEqualToString:v11];
+    identifier = [firstObject identifier];
+    currentlyDisplayedPosterContactIdentifier = [(CNContactHeaderStaticDisplayView *)self currentlyDisplayedPosterContactIdentifier];
+    v12 = [identifier isEqualToString:currentlyDisplayedPosterContactIdentifier];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(CNContactHeaderView *)self posterView];
-      [v13 setImage:0];
+      posterView2 = [(CNContactHeaderView *)self posterView];
+      [posterView2 setImage:0];
     }
 
-    v14 = [(CNContactHeaderStaticDisplayView *)self cachedPosterConfiguration];
-    v15 = v14 == 0;
+    cachedPosterConfiguration = [(CNContactHeaderStaticDisplayView *)self cachedPosterConfiguration];
+    v15 = cachedPosterConfiguration == 0;
 
     if (v15)
     {
@@ -3617,10 +3617,10 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
         _os_log_impl(&dword_199A75000, v16, OS_LOG_TYPE_DEFAULT, "No cached snapshot, requesting cached configuraiton", buf, 2u);
       }
 
-      v17 = [v9 wallpaper];
-      v18 = [v17 posterArchiveData];
+      wallpaper = [firstObject wallpaper];
+      posterArchiveData = [wallpaper posterArchiveData];
       v55 = 0;
-      v19 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v18 error:&v55];
+      v19 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData error:&v55];
       v20 = v55;
       cachedPosterConfiguration = self->_cachedPosterConfiguration;
       self->_cachedPosterConfiguration = v19;
@@ -3639,34 +3639,34 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
 
       else if (v24)
       {
-        v25 = [v20 localizedDescription];
+        localizedDescription = [v20 localizedDescription];
         *buf = 138412290;
-        v57 = v25;
+        v57 = localizedDescription;
         _os_log_impl(&dword_199A75000, v23, OS_LOG_TYPE_DEFAULT, "Unable to unarchive poster configuration from data, %@", buf, 0xCu);
       }
     }
 
-    v26 = [(CNContactHeaderStaticDisplayView *)self cachedPosterConfiguration];
-    if (!v26)
+    cachedPosterConfiguration2 = [(CNContactHeaderStaticDisplayView *)self cachedPosterConfiguration];
+    if (!cachedPosterConfiguration2)
     {
       goto LABEL_33;
     }
 
-    v27 = [v9 identifier];
-    [(CNContactHeaderStaticDisplayView *)self setCurrentlyDisplayedPosterContactIdentifier:v27];
+    identifier2 = [firstObject identifier];
+    [(CNContactHeaderStaticDisplayView *)self setCurrentlyDisplayedPosterContactIdentifier:identifier2];
 
-    v47 = [[CNPRUISIncomingCallPosterContext alloc] initWithContact:v9 showName:0];
+    v47 = [[CNPRUISIncomingCallPosterContext alloc] initWithContact:firstObject showName:0];
     v28 = [CNPRUISIncomingCallSnapshotDefinition contentsOnlySnapshotDefinitionWithContext:v47 attachmentIdentifiers:0];
-    v48 = [CNPRUISPosterSnapshotRequest requestForConfiguration:v26 definition:v28 interfaceOrientation:1];
+    v48 = [CNPRUISPosterSnapshotRequest requestForConfiguration:cachedPosterConfiguration2 definition:v28 interfaceOrientation:1];
     v29 = objc_alloc_init(CNPRUISPosterSnapshotController);
     v54 = 0;
     v30 = [(CNPRUISPosterSnapshotController *)v29 latestSnapshotBundleForRequest:v48 error:&v54];
     v46 = v54;
     if (v30)
     {
-      v31 = [v28 levelSets];
-      v32 = [v31 firstObject];
-      v33 = [v30 snapshotForLevelSet:v32];
+      levelSets = [v28 levelSets];
+      firstObject2 = [levelSets firstObject];
+      v33 = [v30 snapshotForLevelSet:firstObject2];
 
       v34 = CNUILogPosters();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -3680,18 +3680,18 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
         v35 = CNUILogPosters();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v9 identifier];
-          v45 = [v26 wrappedPosterConfiguration];
-          v42 = [v45 serverUUID];
-          v44 = [v9 wallpaper];
-          v36 = [v44 posterArchiveData];
-          v37 = [v36 length];
+          identifier3 = [firstObject identifier];
+          wrappedPosterConfiguration = [cachedPosterConfiguration2 wrappedPosterConfiguration];
+          serverUUID = [wrappedPosterConfiguration serverUUID];
+          wallpaper2 = [firstObject wallpaper];
+          posterArchiveData2 = [wallpaper2 posterArchiveData];
+          v37 = [posterArchiveData2 length];
           [v33 size];
           v41 = NSStringFromCGSize(v65);
           *buf = 138413058;
-          v57 = v43;
+          v57 = identifier3;
           v58 = 2112;
-          v59 = v42;
+          v59 = serverUUID;
           v60 = 2048;
           v61 = v37;
           v62 = 2112;
@@ -3699,8 +3699,8 @@ void __101__CNContactHeaderStaticDisplayView_assignSnapshotImageToPosterView_con
           _os_log_impl(&dword_199A75000, v35, OS_LOG_TYPE_DEFAULT, "[1] Will assign snapshot image for contact identifier %@. Poster config ID %@. Wallpaper posterArchiveData has length %ld, snapshot image has size %@.", buf, 0x2Au);
         }
 
-        v38 = [v9 wallpaper];
-        -[CNContactHeaderStaticDisplayView assignSnapshotImageToPosterView:configuration:contentIsSensitive:](self, "assignSnapshotImageToPosterView:configuration:contentIsSensitive:", v33, v26, [v38 contentIsSensitive]);
+        wallpaper3 = [firstObject wallpaper];
+        -[CNContactHeaderStaticDisplayView assignSnapshotImageToPosterView:configuration:contentIsSensitive:](self, "assignSnapshotImageToPosterView:configuration:contentIsSensitive:", v33, cachedPosterConfiguration2, [wallpaper3 contentIsSensitive]);
 
         [(CNContactHeaderStaticDisplayView *)self updateLabelColorsForPosterSnapshot:v33];
 LABEL_32:
@@ -3734,8 +3734,8 @@ LABEL_33:
     v49[3] = &unk_1E74E25E8;
     objc_copyWeak(&v53, buf);
     v50 = v28;
-    v51 = v9;
-    v52 = v26;
+    v51 = firstObject;
+    v52 = cachedPosterConfiguration2;
     [(CNPRUISPosterSnapshotController *)v29 executeSnapshotRequest:v48 completion:v49];
 
     objc_destroyWeak(&v53);
@@ -3832,8 +3832,8 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
   v5 = [MEMORY[0x1E69DD248] effectForBlurEffect:v4 style:1];
   v6 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v5];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(CNContactHeaderView *)self nameLabel];
-  [(CNContactHeaderStaticDisplayView *)self insertSubview:v6 belowSubview:v7];
+  nameLabel = [(CNContactHeaderView *)self nameLabel];
+  [(CNContactHeaderStaticDisplayView *)self insertSubview:v6 belowSubview:nameLabel];
 
   [(CNContactHeaderStaticDisplayView *)self setBlurView:v6];
 }
@@ -3848,8 +3848,8 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   [self cn_updateDictionaryForKey:@"nameTextAttributes" withChanges:v5];
 
-  v6 = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
-  [v6 setTextColor:v4];
+  taglineLabel = [(CNContactHeaderStaticDisplayView *)self taglineLabel];
+  [taglineLabel setTextColor:v4];
 }
 
 - (double)height
@@ -3860,7 +3860,7 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
     [(CNContactHeaderStaticDisplayView *)self calculateLabelSizesIfNeeded];
   }
 
-  v4 = [(CNContactHeaderView *)self isAXSize];
+  isAXSize = [(CNContactHeaderView *)self isAXSize];
   [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMinTopMargin];
   v6 = v5;
   [(CNContactHeaderStaticDisplayView *)self staticHeaderPhotoMinHeight];
@@ -3869,12 +3869,12 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
   v10 = v9;
   [(CNContactHeaderStaticDisplayView *)self labelsHeight];
   v12 = v11;
-  v13 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-  [v13 frame];
+  actionsWrapperView = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+  [actionsWrapperView frame];
   v15 = v14;
 
-  v16 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
-  if (v16 == 0 || v4)
+  actionsWrapperView2 = [(CNContactHeaderStaticDisplayView *)self actionsWrapperView];
+  if (actionsWrapperView2 == 0 || isAXSize)
   {
     v17 = 0.0;
   }
@@ -3884,8 +3884,8 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
     v17 = v15;
   }
 
-  v18 = [(CNContactHeaderView *)self sizeAttributes];
-  [v18 headerBottomMargin];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes headerBottomMargin];
   v20 = v19;
 
   return v6 + v8 + v10 + v12 + v17 + v20;
@@ -3893,18 +3893,18 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
 
 - (double)bottomMargin
 {
-  v2 = [(CNContactHeaderView *)self sizeAttributes];
-  [v2 headerBottomMargin];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes headerBottomMargin];
   v4 = v3;
 
   return v4;
 }
 
-- (void)updateWithContacts:(id)a3
+- (void)updateWithContacts:(id)contacts
 {
   v5.receiver = self;
   v5.super_class = CNContactHeaderStaticDisplayView;
-  [(CNContactHeaderView *)&v5 updateWithContacts:a3];
+  [(CNContactHeaderView *)&v5 updateWithContacts:contacts];
   cachedPosterConfiguration = self->_cachedPosterConfiguration;
   self->_cachedPosterConfiguration = 0;
 }
@@ -3918,12 +3918,12 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
   }
 }
 
-- (CNContactHeaderStaticDisplayView)initWithContact:(id)a3 frame:(CGRect)a4 shouldAllowImageDrops:(BOOL)a5 showingNavBar:(BOOL)a6 monogramOnly:(BOOL)a7 delegate:(id)a8
+- (CNContactHeaderStaticDisplayView)initWithContact:(id)contact frame:(CGRect)frame shouldAllowImageDrops:(BOOL)drops showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate
 {
   v45[1] = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = CNContactHeaderStaticDisplayView;
-  v8 = [(CNContactHeaderView *)&v44 initWithContact:a3 frame:0 shouldAllowTakePhotoAction:a5 shouldAllowImageDrops:a6 showingNavBar:a7 monogramOnly:a8 delegate:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v8 = [(CNContactHeaderView *)&v44 initWithContact:contact frame:0 shouldAllowTakePhotoAction:drops shouldAllowImageDrops:bar showingNavBar:only monogramOnly:delegate delegate:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v8 action:sel_handleNameLabelTap_];
@@ -3936,11 +3936,11 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
     v16 = [v11 initWithFrame:{*MEMORY[0x1E695F058], v13, v14, v15}];
     [(CNContactHeaderView *)v8 setNameLabel:v16];
 
-    v17 = [(CNContactHeaderView *)v8 nameLabel];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    nameLabel = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(CNContactHeaderView *)v8 nameLabel];
-    [v18 setTextAlignment:1];
+    nameLabel2 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel2 setTextAlignment:1];
 
     if ([(CNContactHeaderView *)v8 isAXSize])
     {
@@ -3952,27 +3952,27 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
       v19 = 2;
     }
 
-    v20 = [(CNContactHeaderView *)v8 nameLabel];
-    [v20 setNumberOfLines:v19];
+    nameLabel3 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel3 setNumberOfLines:v19];
 
-    v21 = [(CNContactHeaderView *)v8 nameLabel];
-    [v21 setUserInteractionEnabled:1];
+    nameLabel4 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel4 setUserInteractionEnabled:1];
 
-    v22 = [(CNContactHeaderStaticDisplayView *)v8 tintColor];
-    v23 = [(CNContactHeaderView *)v8 nameLabel];
-    [v23 setHighlightedTextColor:v22];
+    tintColor = [(CNContactHeaderStaticDisplayView *)v8 tintColor];
+    nameLabel5 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel5 setHighlightedTextColor:tintColor];
 
-    v24 = [(CNContactHeaderView *)v8 nameLabel];
-    [v24 addGestureRecognizer:v9];
+    nameLabel6 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel6 addGestureRecognizer:v9];
 
-    v25 = [(CNContactHeaderView *)v8 nameLabel];
-    [v25 addGestureRecognizer:v10];
+    nameLabel7 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel7 addGestureRecognizer:v10];
 
-    v26 = [(CNContactHeaderView *)v8 nameLabel];
-    [v26 _cnui_applyContactStyle];
+    nameLabel8 = [(CNContactHeaderView *)v8 nameLabel];
+    [nameLabel8 _cnui_applyContactStyle];
 
-    v27 = [(CNContactHeaderView *)v8 nameLabel];
-    [(CNContactHeaderStaticDisplayView *)v8 addSubview:v27];
+    nameLabel9 = [(CNContactHeaderView *)v8 nameLabel];
+    [(CNContactHeaderStaticDisplayView *)v8 addSubview:nameLabel9];
 
     v28 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v12, v13, v14, v15}];
     taglineLabel = v8->_taglineLabel;
@@ -3982,18 +3982,18 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
     [(UILabel *)v8->_taglineLabel setTextAlignment:1];
     [(UILabel *)v8->_taglineLabel setNumberOfLines:0];
     [(UILabel *)v8->_taglineLabel setLineBreakMode:0];
-    v30 = [(CNContactHeaderView *)v8 contactStyle];
-    v31 = [v30 taglineTextColor];
-    [(UILabel *)v8->_taglineLabel setTextColor:v31];
+    contactStyle = [(CNContactHeaderView *)v8 contactStyle];
+    taglineTextColor = [contactStyle taglineTextColor];
+    [(UILabel *)v8->_taglineLabel setTextColor:taglineTextColor];
 
     [(UILabel *)v8->_taglineLabel _cnui_applyContactStyle];
     [(CNContactHeaderStaticDisplayView *)v8 addSubview:v8->_taglineLabel];
     [(CNContactHeaderStaticDisplayView *)v8 updateFontSizes];
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v8 selector:sel_menuWillHide_ name:*MEMORY[0x1E69DE0E8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_menuWillHide_ name:*MEMORY[0x1E69DE0E8] object:0];
 
-    v33 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v33 addObserver:v8 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
     v8->_allowsPickerActions = 1;
     [(CNContactHeaderStaticDisplayView *)v8 setUpPosterView];
@@ -4024,8 +4024,8 @@ void __57__CNContactHeaderStaticDisplayView_updatePosterViewImage__block_invoke(
 - (id)descriptorForRequiredKeys
 {
   v3 = objc_opt_class();
-  v4 = [(CNContactHeaderStaticDisplayView *)self contactFormatter];
-  v5 = [v3 descriptorForRequiredKeysForContactFormatter:v4];
+  contactFormatter = [(CNContactHeaderStaticDisplayView *)self contactFormatter];
+  v5 = [v3 descriptorForRequiredKeysForContactFormatter:contactFormatter];
 
   return v5;
 }

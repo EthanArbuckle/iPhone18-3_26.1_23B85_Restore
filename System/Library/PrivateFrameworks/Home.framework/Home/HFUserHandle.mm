@@ -1,8 +1,8 @@
 @interface HFUserHandle
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFUserHandle)init;
-- (HFUserHandle)initWithType:(unint64_t)a3 userID:(id)a4;
+- (HFUserHandle)initWithType:(unint64_t)type userID:(id)d;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -11,24 +11,24 @@
 
 - (HFUserHandle)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithType_userID_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFUserHandle.m" lineNumber:18 description:{@"%s is unavailable; use %@ instead", "-[HFUserHandle init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFUserHandle.m" lineNumber:18 description:{@"%s is unavailable; use %@ instead", "-[HFUserHandle init]", v5}];
 
   return 0;
 }
 
-- (HFUserHandle)initWithType:(unint64_t)a3 userID:(id)a4
+- (HFUserHandle)initWithType:(unint64_t)type userID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = HFUserHandle;
   v8 = [(HFUserHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_userID, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_userID, d);
   }
 
   return v9;
@@ -38,12 +38,12 @@
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
   v4 = [v3 appendUnsignedInteger:-[HFUserHandle type](self withName:{"type"), @"type"}];
-  v5 = [(HFUserHandle *)self userID];
-  [v3 appendString:v5 withName:@"userID"];
+  userID = [(HFUserHandle *)self userID];
+  [v3 appendString:userID withName:@"userID"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 + (NAIdentity)na_identity
@@ -78,17 +78,17 @@ uint64_t __27__HFUserHandle_na_identity__block_invoke_2(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }

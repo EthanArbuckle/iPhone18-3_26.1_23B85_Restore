@@ -1,13 +1,13 @@
 @interface CLTOptionParser
 - (CLTOptionParser)init;
-- (CLTOptionParser)initWithArguments:(id)a3;
+- (CLTOptionParser)initWithArguments:(id)arguments;
 - (NSString)versionLine;
 - (id)helpString;
 - (id)parse;
 - (id)usageLine;
 - (id)usageString;
-- (int)parseWithSuccessHandler:(id)a3;
-- (void)addOption:(id)a3;
+- (int)parseWithSuccessHandler:(id)handler;
+- (void)addOption:(id)option;
 - (void)removeAllOptions;
 @end
 
@@ -15,26 +15,26 @@
 
 - (CLTOptionParser)init
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 arguments];
-  v5 = [(CLTOptionParser *)self initWithArguments:v4];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  arguments = [processInfo arguments];
+  v5 = [(CLTOptionParser *)self initWithArguments:arguments];
 
   return v5;
 }
 
-- (CLTOptionParser)initWithArguments:(id)a3
+- (CLTOptionParser)initWithArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   v21.receiver = self;
   v21.super_class = CLTOptionParser;
   v5 = [(CLTOptionParser *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    [(CLTOptionParser *)v5 setInputArguments:v4];
-    v7 = [v4 firstObject];
-    v8 = [v7 lastPathComponent];
-    [(CLTOptionParser *)v6 setToolName:v8];
+    [(CLTOptionParser *)v5 setInputArguments:argumentsCopy];
+    firstObject = [argumentsCopy firstObject];
+    lastPathComponent = [firstObject lastPathComponent];
+    [(CLTOptionParser *)v6 setToolName:lastPathComponent];
 
     [(CLTOptionParser *)v6 setVersionString:@"0.0.1"];
     [(CLTOptionParser *)v6 setUsageOptionsDescription:@"[options]"];
@@ -115,9 +115,9 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
 - (NSString)versionLine
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CLTOptionParser *)self toolName];
-  v5 = [(CLTOptionParser *)self versionString];
-  v6 = [v3 stringWithFormat:@"%@ (v%@) (build time: %s %s)", v4, v5, "Oct 10 2025", "23:45:12"];
+  toolName = [(CLTOptionParser *)self toolName];
+  versionString = [(CLTOptionParser *)self versionString];
+  v6 = [v3 stringWithFormat:@"%@ (v%@) (build time: %s %s)", toolName, versionString, "Oct 10 2025", "23:45:12"];
 
   return v6;
 }
@@ -125,10 +125,10 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
 - (id)helpString
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CLTOptionParser *)self versionLine];
-  v8[0] = v3;
-  v4 = [(CLTOptionParser *)self usageString];
-  v8[1] = v4;
+  versionLine = [(CLTOptionParser *)self versionLine];
+  v8[0] = versionLine;
+  usageString = [(CLTOptionParser *)self usageString];
+  v8[1] = usageString;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
   v6 = [v5 componentsJoinedByString:@"\n"];
 
@@ -138,9 +138,9 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
 - (id)usageLine
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CLTOptionParser *)self toolName];
-  v5 = [(CLTOptionParser *)self usageOptionsDescription];
-  v6 = [v3 stringWithFormat:@"Usage: %@ %@", v4, v5];
+  toolName = [(CLTOptionParser *)self toolName];
+  usageOptionsDescription = [(CLTOptionParser *)self usageOptionsDescription];
+  v6 = [v3 stringWithFormat:@"Usage: %@ %@", toolName, usageOptionsDescription];
 
   return v6;
 }
@@ -148,26 +148,26 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
 - (id)usageString
 {
   v41[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CLTOptionParser *)self usageLine];
-  v41[0] = v3;
+  usageLine = [(CLTOptionParser *)self usageLine];
+  v41[0] = usageLine;
   v41[1] = &stru_28741F8C0;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
   v5 = [v4 mutableCopy];
 
-  v6 = [(CLTOptionParser *)self introductionaryDescription];
+  introductionaryDescription = [(CLTOptionParser *)self introductionaryDescription];
 
-  if (v6)
+  if (introductionaryDescription)
   {
-    v7 = [(CLTOptionParser *)self introductionaryDescription];
-    [v5 addObject:v7];
+    introductionaryDescription2 = [(CLTOptionParser *)self introductionaryDescription];
+    [v5 addObject:introductionaryDescription2];
   }
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = [(CLTOptionParser *)self options];
-  v9 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  options = [(CLTOptionParser *)self options];
+  v9 = [options countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v9)
   {
     v10 = v9;
@@ -179,11 +179,11 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
       {
         if (*v36 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(options);
         }
 
-        v14 = [*(*(&v35 + 1) + 8 * i) lefthandHelp];
-        v15 = [v14 length];
+        lefthandHelp = [*(*(&v35 + 1) + 8 * i) lefthandHelp];
+        v15 = [lefthandHelp length];
 
         if (v12 <= v15)
         {
@@ -191,7 +191,7 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v10 = [options countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v10);
@@ -206,7 +206,7 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v29 = self;
+  selfCopy = self;
   obj = [(CLTOptionParser *)self options];
   v16 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v16)
@@ -225,10 +225,10 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
 
         v21 = *(*(&v31 + 1) + 8 * j);
         v22 = MEMORY[0x277CCACA8];
-        v23 = [v21 lefthandHelp];
-        v24 = [v23 stringByPaddingToLength:v12 withString:@" " startingAtIndex:0];
-        v25 = [v21 righthandHelp];
-        v26 = [v22 stringWithFormat:@" %@  %@", v24, v25];
+        lefthandHelp2 = [v21 lefthandHelp];
+        v24 = [lefthandHelp2 stringByPaddingToLength:v12 withString:@" " startingAtIndex:0];
+        righthandHelp = [v21 righthandHelp];
+        v26 = [v22 stringWithFormat:@" %@  %@", v24, righthandHelp];
 
         v5 = v20;
         [v20 addObject:v26];
@@ -241,9 +241,9 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
   }
 
   [v5 addObject:&stru_28741F8C0];
-  if ([(NSArray *)v29->_additionalHelpLines count])
+  if ([(NSArray *)selfCopy->_additionalHelpLines count])
   {
-    [v5 addObjectsFromArray:v29->_additionalHelpLines];
+    [v5 addObjectsFromArray:selfCopy->_additionalHelpLines];
     [v5 addObject:&stru_28741F8C0];
   }
 
@@ -258,16 +258,16 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
   v3 = objc_opt_new();
   if ([(NSArray *)self->_inputArguments count]== 1 && ![(CLTOptionParser *)self succeedWithoutArguments])
   {
-    v4 = [(CLTOptionParser *)self defaultHelpOption];
-    v5 = [v4 triggerAction];
-    v5[2]();
+    defaultHelpOption = [(CLTOptionParser *)self defaultHelpOption];
+    triggerAction = [defaultHelpOption triggerAction];
+    triggerAction[2]();
   }
 
-  v6 = [(NSArray *)self->_inputArguments objectEnumerator];
-  v7 = [v6 nextObject];
-  v8 = 0;
-  v9 = 0;
-  v49 = self;
+  objectEnumerator = [(NSArray *)self->_inputArguments objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  allObjects = 0;
+  nextObject2 = 0;
+  selfCopy = self;
   while (1)
   {
     while (1)
@@ -276,38 +276,38 @@ void __37__CLTOptionParser_initWithArguments___block_invoke_2(uint64_t a1)
       {
         do
         {
-          v10 = v9;
-          v9 = [v6 nextObject];
+          v10 = nextObject2;
+          nextObject2 = [objectEnumerator nextObject];
 
-          if (!v9)
+          if (!nextObject2)
           {
             goto LABEL_50;
           }
         }
 
-        while (v8 && ([v8 consumeArgument:v9] & 1) != 0);
+        while (allObjects && ([allObjects consumeArgument:nextObject2] & 1) != 0);
 
-        if ([v9 isEqual:@"--"])
+        if ([nextObject2 isEqual:@"--"])
         {
-          v8 = [v6 allObjects];
-          [v3 addObjectsFromArray:v8];
+          allObjects = [objectEnumerator allObjects];
+          [v3 addObjectsFromArray:allObjects];
 LABEL_50:
           v37 = 0;
           goto LABEL_51;
         }
 
-        if ([v9 hasPrefix:@"-"])
+        if ([nextObject2 hasPrefix:@"-"])
         {
           break;
         }
 
-        [v3 addObject:v9];
-        v8 = 0;
+        [v3 addObject:nextObject2];
+        allObjects = 0;
       }
 
-      v11 = [v9 substringFromIndex:1];
+      v11 = [nextObject2 substringFromIndex:1];
       v48 = v11;
-      v45 = v6;
+      v45 = objectEnumerator;
       v46 = v3;
       if ([v11 hasPrefix:@"-"])
       {
@@ -316,8 +316,8 @@ LABEL_50:
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v13 = [(CLTOptionParser *)self options];
-        v14 = [v13 countByEnumeratingWithState:&v55 objects:v60 count:16];
+        options = [(CLTOptionParser *)self options];
+        v14 = [options countByEnumeratingWithState:&v55 objects:v60 count:16];
         if (v14)
         {
           v15 = v14;
@@ -328,21 +328,21 @@ LABEL_50:
             {
               if (*v56 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(options);
               }
 
               v18 = *(*(&v55 + 1) + 8 * i);
-              v19 = [v18 longforms];
-              v20 = [v19 containsObject:v12];
+              longforms = [v18 longforms];
+              v20 = [longforms containsObject:v12];
 
               if (v20)
               {
-                v35 = [v18 triggerAction];
+                triggerAction2 = [v18 triggerAction];
 
-                if (v35)
+                if (triggerAction2)
                 {
-                  v36 = [v18 triggerAction];
-                  v36[2]();
+                  triggerAction3 = [v18 triggerAction];
+                  triggerAction3[2]();
                 }
 
                 [v18 setOccurencies:{objc_msgSend(v18, "occurencies") + 1}];
@@ -352,7 +352,7 @@ LABEL_50:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v55 objects:v60 count:16];
+            v15 = [options countByEnumeratingWithState:&v55 objects:v60 count:16];
             if (v15)
             {
               continue;
@@ -365,7 +365,7 @@ LABEL_50:
           v50 = 0;
 LABEL_40:
           v11 = v48;
-          self = v49;
+          self = selfCopy;
         }
 
         else
@@ -387,8 +387,8 @@ LABEL_40:
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v24 = [(CLTOptionParser *)self options];
-          v25 = [v24 countByEnumeratingWithState:&v51 objects:v59 count:16];
+          options2 = [(CLTOptionParser *)self options];
+          v25 = [options2 countByEnumeratingWithState:&v51 objects:v59 count:16];
           if (v25)
           {
             v26 = v25;
@@ -400,21 +400,21 @@ LABEL_40:
               {
                 if (*v52 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(options2);
                 }
 
                 v29 = *(*(&v51 + 1) + 8 * j);
-                v30 = [v29 shorthands];
-                v31 = [v30 containsObject:v23];
+                shorthands = [v29 shorthands];
+                v31 = [shorthands containsObject:v23];
 
                 if (v31)
                 {
-                  v32 = [v29 triggerAction];
+                  triggerAction4 = [v29 triggerAction];
 
-                  if (v32)
+                  if (triggerAction4)
                   {
-                    v33 = [v29 triggerAction];
-                    v33[2]();
+                    triggerAction5 = [v29 triggerAction];
+                    triggerAction5[2]();
                   }
 
                   [v29 setOccurencies:{objc_msgSend(v29, "occurencies") + 1}];
@@ -423,12 +423,12 @@ LABEL_40:
                   v21 = 1;
                   v50 = v34;
                   v11 = v48;
-                  self = v49;
+                  self = selfCopy;
                   goto LABEL_35;
                 }
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v51 objects:v59 count:16];
+              v26 = [options2 countByEnumeratingWithState:&v51 objects:v59 count:16];
               if (v26)
               {
                 continue;
@@ -438,7 +438,7 @@ LABEL_40:
             }
 
             v11 = v48;
-            self = v49;
+            self = selfCopy;
             v21 = v47;
           }
 
@@ -456,65 +456,65 @@ LABEL_35:
         v50 = 0;
       }
 
-      v8 = v50;
+      allObjects = v50;
       if (!v50 && (v21 & 1) == 0)
       {
         break;
       }
 
-      v6 = v45;
+      objectEnumerator = v45;
       v3 = v46;
     }
 
-    v6 = v45;
+    objectEnumerator = v45;
     v3 = v46;
     if (![(CLTOptionParser *)self succeedWithUnkownFlags])
     {
       break;
     }
 
-    v8 = 0;
+    allObjects = 0;
   }
 
-  v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Option unknown: %@\n", v9];
-  v40 = [v39 UTF8String];
+  v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Option unknown: %@\n", nextObject2];
+  uTF8String = [v39 UTF8String];
   v41 = MEMORY[0x277D85DF8];
-  fputs(v40, *MEMORY[0x277D85DF8]);
+  fputs(uTF8String, *MEMORY[0x277D85DF8]);
 
   v42 = MEMORY[0x277CCACA8];
-  v43 = [(CLTOptionParser *)self usageLine];
-  v44 = [v42 stringWithFormat:@"%@\n", v43];
+  usageLine = [(CLTOptionParser *)self usageLine];
+  v44 = [v42 stringWithFormat:@"%@\n", usageLine];
   fputs([v44 UTF8String], *v41);
 
   v37 = &unk_287426760;
-  v8 = v11;
+  allObjects = v11;
 LABEL_51:
 
   return v37;
 }
 
-- (int)parseWithSuccessHandler:(id)a3
+- (int)parseWithSuccessHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CLTOptionParser *)self parse];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  parse = [(CLTOptionParser *)self parse];
+  v6 = parse;
+  if (parse)
   {
-    v7 = [v5 intValue];
+    intValue = [parse intValue];
   }
 
   else
   {
-    if (!v4)
+    if (!handlerCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    v7 = v4[2](v4);
+    intValue = handlerCopy[2](handlerCopy);
   }
 
-  v8 = v7;
+  v8 = intValue;
 LABEL_6:
 
   return v8;
@@ -522,15 +522,15 @@ LABEL_6:
 
 - (void)removeAllOptions
 {
-  v2 = [(CLTOptionParser *)self options];
-  [v2 removeAllObjects];
+  options = [(CLTOptionParser *)self options];
+  [options removeAllObjects];
 }
 
-- (void)addOption:(id)a3
+- (void)addOption:(id)option
 {
-  v4 = a3;
-  v5 = [(CLTOptionParser *)self options];
-  [v5 addObject:v4];
+  optionCopy = option;
+  options = [(CLTOptionParser *)self options];
+  [options addObject:optionCopy];
 }
 
 @end

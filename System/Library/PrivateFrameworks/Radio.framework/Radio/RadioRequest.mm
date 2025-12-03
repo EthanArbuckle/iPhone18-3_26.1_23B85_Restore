@@ -1,6 +1,6 @@
 @interface RadioRequest
 + (id)defaultURLCache;
-+ (void)loadServiceConfigurationWithCompletionHandler:(id)a3;
++ (void)loadServiceConfigurationWithCompletionHandler:(id)handler;
 - (BOOL)isCachedResponse;
 - (NSDictionary)unparsedResponseDictionary;
 - (RadioRequest)init;
@@ -8,14 +8,14 @@
 - (double)retryInterval;
 - (int64_t)errorCode;
 - (int64_t)status;
-- (void)_loadRadioStoreBagAndAllowRetry:(BOOL)a3 withCompletionHandler:(id)a4;
+- (void)_loadRadioStoreBagAndAllowRetry:(BOOL)retry withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)setCachedResponse:(BOOL)a3;
-- (void)setErrorCode:(int64_t)a3;
-- (void)setRequestContext:(id)a3;
-- (void)setRetryInterval:(double)a3;
-- (void)setStatus:(int64_t)a3;
-- (void)setUnparsedResponseDictionary:(id)a3;
+- (void)setCachedResponse:(BOOL)response;
+- (void)setErrorCode:(int64_t)code;
+- (void)setRequestContext:(id)context;
+- (void)setRetryInterval:(double)interval;
+- (void)setStatus:(int64_t)status;
+- (void)setUnparsedResponseDictionary:(id)dictionary;
 @end
 
 @implementation RadioRequest
@@ -65,17 +65,17 @@ void __31__RadioRequest_defaultURLCache__block_invoke()
   defaultURLCache_sDefaultURLCache = v0;
 }
 
-- (void)_loadRadioStoreBagAndAllowRetry:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)_loadRadioStoreBagAndAllowRetry:(BOOL)retry withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  retryCopy = retry;
+  handlerCopy = handler;
   v7 = objc_alloc_init(RadioLoadStoreBagRequest);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__RadioRequest__loadRadioStoreBagAndAllowRetry_withCompletionHandler___block_invoke;
   v10[3] = &unk_279AEACC8;
-  v12 = v4;
-  if (v4)
+  v12 = retryCopy;
+  if (retryCopy)
   {
     v8 = 0;
   }
@@ -86,8 +86,8 @@ void __31__RadioRequest_defaultURLCache__block_invoke()
   }
 
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(RadioLoadStoreBagRequest *)v7 loadStoreBagWithOptions:v8 completionHandler:v10];
 }
 
@@ -141,17 +141,17 @@ void __70__RadioRequest__loadRadioStoreBagAndAllowRetry_withCompletionHandler___
   return v3;
 }
 
-- (void)setUnparsedResponseDictionary:(id)a3
+- (void)setUnparsedResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__RadioRequest_setUnparsedResponseDictionary___block_invoke;
   v7[3] = &unk_279AEACA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_async(queue, v7);
 }
 
@@ -184,7 +184,7 @@ uint64_t __46__RadioRequest_setUnparsedResponseDictionary___block_invoke(uint64_
   return v3;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -192,11 +192,11 @@ uint64_t __46__RadioRequest_setUnparsedResponseDictionary___block_invoke(uint64_
   v4[2] = __26__RadioRequest_setStatus___block_invoke;
   v4[3] = &unk_279AEAC78;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = status;
   dispatch_async(queue, v4);
 }
 
-- (void)setRetryInterval:(double)a3
+- (void)setRetryInterval:(double)interval
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -204,7 +204,7 @@ uint64_t __46__RadioRequest_setUnparsedResponseDictionary___block_invoke(uint64_
   v4[2] = __33__RadioRequest_setRetryInterval___block_invoke;
   v4[3] = &unk_279AEAC78;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_async(queue, v4);
 }
 
@@ -215,17 +215,17 @@ double __33__RadioRequest_setRetryInterval___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setRequestContext:(id)a3
+- (void)setRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__RadioRequest_setRequestContext___block_invoke;
   v7[3] = &unk_279AEACA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 
@@ -246,7 +246,7 @@ void *__34__RadioRequest_setRequestContext___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setErrorCode:(int64_t)a3
+- (void)setErrorCode:(int64_t)code
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -254,11 +254,11 @@ void *__34__RadioRequest_setRequestContext___block_invoke(uint64_t a1)
   v4[2] = __29__RadioRequest_setErrorCode___block_invoke;
   v4[3] = &unk_279AEAC78;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = code;
   dispatch_async(queue, v4);
 }
 
-- (void)setCachedResponse:(BOOL)a3
+- (void)setCachedResponse:(BOOL)response
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -266,7 +266,7 @@ void *__34__RadioRequest_setRequestContext___block_invoke(uint64_t a1)
   v4[2] = __34__RadioRequest_setCachedResponse___block_invoke;
   v4[3] = &unk_279AEAC50;
   v4[4] = self;
-  v5 = a3;
+  responseCopy = response;
   dispatch_async(queue, v4);
 }
 
@@ -366,16 +366,16 @@ uint64_t __30__RadioRequest_requestContext__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (void)loadServiceConfigurationWithCompletionHandler:(id)a3
++ (void)loadServiceConfigurationWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(RadioLoadStoreBagRequest);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__RadioRequest_loadServiceConfigurationWithCompletionHandler___block_invoke;
   v6[3] = &unk_279AEAC28;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(RadioLoadStoreBagRequest *)v4 loadStoreBagWithOptions:1 completionHandler:v6];
 }
 

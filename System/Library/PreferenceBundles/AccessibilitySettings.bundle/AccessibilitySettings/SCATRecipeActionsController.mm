@@ -4,19 +4,19 @@
 - (id)_insertLongPressController;
 - (id)_rootRecipeEditController;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_handleSelectActionForSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_handleSelectActionForSpecifier:(id)specifier;
 - (void)_removeLongPressController;
-- (void)gestureRecorder:(id)a3 savePoint:(CGPoint)a4;
-- (void)gestureRecorder:(id)a3 saveReplayableGesture:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)gestureRecorder:(id)recorder savePoint:(CGPoint)point;
+- (void)gestureRecorder:(id)recorder saveReplayableGesture:(id)gesture;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATRecipeActionsController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v3)
   {
@@ -28,10 +28,10 @@
     v50 = v4;
     v45 = v6;
     [v4 addObject:v6];
-    if ([(SCATRecipeActionsController *)v2 forLongPress])
+    if ([(SCATRecipeActionsController *)selfCopy forLongPress])
     {
       v7 = AXParameterizedLocalizedString();
-      v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+      v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
       [v4 addObject:v8];
     }
@@ -46,7 +46,7 @@
     v61[5] = AXSwitchRecipeMappingActionExit;
     v61[6] = AXSwitchRecipeMappingActionSelect;
     v11 = [NSArray arrayWithObjects:v61 count:7];
-    if ([(SCATRecipeActionsController *)v2 forLongPress])
+    if ([(SCATRecipeActionsController *)selfCopy forLongPress])
     {
       v12 = [NSPredicate predicateWithBlock:&__block_literal_global_46];
       v13 = [v11 filteredArrayUsingPredicate:v12];
@@ -75,17 +75,17 @@
 
           v18 = *(*(&v55 + 1) + 8 * i);
           v19 = AXSwitchRecipeMappingNameForAction();
-          v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+          v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v20 setProperty:v18 forKey:@"Action"];
           if ([v18 isEqualToString:v10])
           {
-            [(SCATRecipeActionsController *)v2 setGestureActionSpecifier:v20];
+            [(SCATRecipeActionsController *)selfCopy setGestureActionSpecifier:v20];
           }
 
           else if ([v18 isEqualToString:v9])
           {
-            [(SCATRecipeActionsController *)v2 setHoldPointActionSpecifier:v20];
+            [(SCATRecipeActionsController *)selfCopy setHoldPointActionSpecifier:v20];
           }
 
           [v50 addObject:v20];
@@ -110,7 +110,7 @@
       {
         v24 = [NSString stringWithFormat:@"GAME_CONTROL_%d", v23];
         v25 = AXParameterizedLocalizedString();
-        v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+        v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
         v27 = objc_opt_new();
         [v27 setButton:v23];
@@ -142,10 +142,10 @@ LABEL_40:
 
       if (++v23 == 15)
       {
-        v42 = *&v2->AXUISettingsBaseListController_opaque[v46];
-        *&v2->AXUISettingsBaseListController_opaque[v46] = v50;
+        v42 = *&selfCopy->AXUISettingsBaseListController_opaque[v46];
+        *&selfCopy->AXUISettingsBaseListController_opaque[v46] = v50;
 
-        v3 = *&v2->AXUISettingsBaseListController_opaque[v46];
+        v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v46];
         goto LABEL_42;
       }
     }
@@ -165,8 +165,8 @@ LABEL_24:
       v33 = v24;
       v34 = [NSString stringWithFormat:@"%@_JOYSTICK_%@", v24, v32];
       v35 = AXParameterizedLocalizedString();
-      v36 = v2;
-      v37 = [PSSpecifier preferenceSpecifierNamed:v35 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+      v36 = selfCopy;
+      v37 = [PSSpecifier preferenceSpecifierNamed:v35 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
       v38 = objc_opt_new();
       [v38 setButton:v23];
@@ -202,7 +202,7 @@ LABEL_32:
       [v50 addObject:v37];
 
       v31 = v31 + 1;
-      v2 = v36;
+      selfCopy = v36;
       v24 = v33;
       if (v30 == v31)
       {
@@ -228,24 +228,24 @@ LABEL_42:
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v37.receiver = self;
   v37.super_class = SCATRecipeActionsController;
-  v6 = a4;
-  v7 = [(SCATRecipeActionsController *)&v37 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SCATRecipeActionsController *)self specifierForIndexPath:v6];
+  pathCopy = path;
+  v7 = [(SCATRecipeActionsController *)&v37 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SCATRecipeActionsController *)self specifierForIndexPath:pathCopy];
 
-  v9 = [(SCATRecipeActionsController *)self mapping];
-  v10 = [(SCATRecipeActionsController *)self forLongPress];
-  if (v10)
+  mapping = [(SCATRecipeActionsController *)self mapping];
+  forLongPress = [(SCATRecipeActionsController *)self forLongPress];
+  if (forLongPress)
   {
-    [v9 longPressAction];
+    [mapping longPressAction];
   }
 
   else
   {
-    [v9 action];
+    [mapping action];
   }
   v11 = ;
   v12 = [v8 propertyForKey:@"Action"];
@@ -263,37 +263,37 @@ LABEL_42:
   if ([v13 isEqualToString:AXSwitchRecipeMappingGameControlButtonPress])
   {
     v15 = [v8 objectForKeyedSubscript:@"AXGameControlButtonPress"];
-    if (v10)
+    if (forLongPress)
     {
-      [v9 longPressGameControlButtonPress];
+      [mapping longPressGameControlButtonPress];
     }
 
     else
     {
-      [v9 gameControlButtonPress];
+      [mapping gameControlButtonPress];
     }
     v16 = ;
-    v17 = [v15 button];
-    v18 = [v16 button];
-    v14 = v17 == v18;
+    button = [v15 button];
+    button2 = [v16 button];
+    v14 = button == button2;
     if ([v15 button] != &dword_C + 1 && objc_msgSend(v15, "button") != &dword_C + 2)
     {
       goto LABEL_35;
     }
 
     v36 = v7;
-    v19 = [v15 button];
+    button3 = [v15 button];
     v20 = @"RIGHT";
-    if (v19 == &dword_C + 1)
+    if (button3 == &dword_C + 1)
     {
       v20 = @"LEFT";
     }
 
     v21 = [NSString stringWithFormat:@"%@_JOYSTICK", v20];
-    if (v17 == v18)
+    if (button == button2)
     {
-      v22 = [v8 identifier];
-      v23 = [v22 containsString:v21];
+      identifier = [v8 identifier];
+      v23 = [identifier containsString:v21];
 
       [v16 yMagnitude];
       if (v24 <= 0.0)
@@ -327,8 +327,8 @@ LABEL_26:
             v32 = @"_Right";
           }
 
-          v34 = [v8 identifier];
-          v14 = [v34 containsString:v32];
+          identifier2 = [v8 identifier];
+          v14 = [identifier2 containsString:v32];
 
 LABEL_34:
           v7 = v36;
@@ -337,19 +337,19 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v25 = [v8 identifier];
-        v26 = v25;
+        identifier3 = [v8 identifier];
+        v26 = identifier3;
         v27 = @"_Down";
 LABEL_25:
-        v29 = [v25 containsString:v27];
+        v29 = [identifier3 containsString:v27];
 
         goto LABEL_26;
       }
 
       if (v23)
       {
-        v25 = [v8 identifier];
-        v26 = v25;
+        identifier3 = [v8 identifier];
+        v26 = identifier3;
         v27 = @"_Up";
         goto LABEL_25;
       }
@@ -374,13 +374,13 @@ LABEL_36:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = SCATRecipeActionsController;
-  v6 = a4;
-  [(SCATRecipeActionsController *)&v21 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(SCATRecipeActionsController *)self specifierForIndexPath:v6, v21.receiver, v21.super_class];
+  pathCopy = path;
+  [(SCATRecipeActionsController *)&v21 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(SCATRecipeActionsController *)self specifierForIndexPath:pathCopy, v21.receiver, v21.super_class];
 
   v8 = [v7 propertyForKey:@"Action"];
   gestureRecorderNavigationController = self->_gestureRecorderNavigationController;
@@ -418,17 +418,17 @@ LABEL_36:
 
   else
   {
-    v18 = [(SCATRecipeActionsController *)self forLongPress];
-    v19 = [(SCATRecipeActionsController *)self mapping];
-    v20 = v19;
-    if (v18)
+    forLongPress = [(SCATRecipeActionsController *)self forLongPress];
+    mapping = [(SCATRecipeActionsController *)self mapping];
+    v20 = mapping;
+    if (forLongPress)
     {
-      [v19 setLongPressGesture:0];
+      [mapping setLongPressGesture:0];
     }
 
     else
     {
-      [v19 setGesture:0];
+      [mapping setGesture:0];
     }
 
     [(SCATRecipeActionsController *)self _handleSelectActionForSpecifier:v7];
@@ -437,18 +437,18 @@ LABEL_36:
 
 - (BOOL)_isNewMapping
 {
-  v3 = [(SCATRecipeActionsController *)self recipe];
-  v4 = [v3 mappings];
-  v5 = [(SCATRecipeActionsController *)self mapping];
-  v6 = [v4 containsObject:v5];
+  recipe = [(SCATRecipeActionsController *)self recipe];
+  mappings = [recipe mappings];
+  mapping = [(SCATRecipeActionsController *)self mapping];
+  v6 = [mappings containsObject:mapping];
 
   return v6 ^ 1;
 }
 
 - (id)_rootRecipeEditController
 {
-  v2 = [(SCATRecipeActionsController *)self parentController];
-  if (v2)
+  parentController = [(SCATRecipeActionsController *)self parentController];
+  if (parentController)
   {
     do
     {
@@ -458,34 +458,34 @@ LABEL_36:
         break;
       }
 
-      v3 = [v2 parentController];
+      v2ParentController = [parentController parentController];
 
-      v2 = v3;
+      parentController = v2ParentController;
     }
 
-    while (v3);
+    while (v2ParentController);
   }
 
-  return v2;
+  return parentController;
 }
 
 - (BOOL)_popToLongPressController
 {
-  v3 = [(SCATRecipeActionsController *)self _insertLongPressController];
-  if (v3)
+  _insertLongPressController = [(SCATRecipeActionsController *)self _insertLongPressController];
+  if (_insertLongPressController)
   {
-    [(SCATRecipeActionsController *)self popToViewController:v3 animated:1 destinationClass:objc_opt_class()];
+    [(SCATRecipeActionsController *)self popToViewController:_insertLongPressController animated:1 destinationClass:objc_opt_class()];
   }
 
-  return v3 != 0;
+  return _insertLongPressController != 0;
 }
 
 - (id)_insertLongPressController
 {
-  v3 = [(SCATRecipeActionsController *)self rootController];
-  v4 = [v3 viewControllers];
+  rootController = [(SCATRecipeActionsController *)self rootController];
+  viewControllers = [rootController viewControllers];
 
-  v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_357];
+  v5 = [viewControllers indexOfObjectPassingTest:&__block_literal_global_357];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -495,19 +495,19 @@ LABEL_36:
   {
     v7 = v5;
     v6 = objc_alloc_init(SCATRecipeLongPressController);
-    v8 = [(SCATRecipeActionsController *)self recipe];
-    [(SCATRecipeLongPressController *)v6 setRecipe:v8];
+    recipe = [(SCATRecipeActionsController *)self recipe];
+    [(SCATRecipeLongPressController *)v6 setRecipe:recipe];
 
-    v9 = [(SCATRecipeActionsController *)self mapping];
-    [(SCATRecipeLongPressController *)v6 setMapping:v9];
+    mapping = [(SCATRecipeActionsController *)self mapping];
+    [(SCATRecipeLongPressController *)v6 setMapping:mapping];
 
-    v10 = [(SCATRecipeActionsController *)self specifier];
-    [(SCATRecipeLongPressController *)v6 setSpecifier:v10];
+    specifier = [(SCATRecipeActionsController *)self specifier];
+    [(SCATRecipeLongPressController *)v6 setSpecifier:specifier];
 
-    v11 = [v4 mutableCopy];
+    v11 = [viewControllers mutableCopy];
     [v11 insertObject:v6 atIndex:v7 + 1];
-    v12 = [(SCATRecipeActionsController *)self rootController];
-    [v12 setViewControllers:v11 animated:0];
+    rootController2 = [(SCATRecipeActionsController *)self rootController];
+    [rootController2 setViewControllers:v11 animated:0];
   }
 
   return v6;
@@ -524,17 +524,17 @@ BOOL __57__SCATRecipeActionsController__insertLongPressController__block_invoke(
 
 - (void)_removeLongPressController
 {
-  v3 = [(SCATRecipeActionsController *)self rootController];
-  v8 = [v3 viewControllers];
+  rootController = [(SCATRecipeActionsController *)self rootController];
+  viewControllers = [rootController viewControllers];
 
-  v4 = [v8 indexOfObjectPassingTest:&__block_literal_global_359];
+  v4 = [viewControllers indexOfObjectPassingTest:&__block_literal_global_359];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    v6 = [v8 mutableCopy];
+    v6 = [viewControllers mutableCopy];
     [v6 removeObjectAtIndex:v5];
-    v7 = [(SCATRecipeActionsController *)self rootController];
-    [v7 setViewControllers:v6 animated:0];
+    rootController2 = [(SCATRecipeActionsController *)self rootController];
+    [rootController2 setViewControllers:v6 animated:0];
   }
 }
 
@@ -547,27 +547,27 @@ BOOL __57__SCATRecipeActionsController__removeLongPressController__block_invoke(
   return isKindOfClass & 1;
 }
 
-- (void)_handleSelectActionForSpecifier:(id)a3
+- (void)_handleSelectActionForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 assistiveTouchLongPressEnabled];
+  assistiveTouchLongPressEnabled = [v5 assistiveTouchLongPressEnabled];
 
-  v39 = [(SCATRecipeActionsController *)self indexPathForSpecifier:v4];
+  v39 = [(SCATRecipeActionsController *)self indexPathForSpecifier:specifierCopy];
   [(SCATRecipeActionsController *)self updateVisibleCellsWithCheckedSelection:?];
-  v7 = [v4 propertyForKey:@"Action"];
-  v8 = [(SCATRecipeActionsController *)self _isNewMapping];
+  v7 = [specifierCopy propertyForKey:@"Action"];
+  _isNewMapping = [(SCATRecipeActionsController *)self _isNewMapping];
   if ([(SCATRecipeActionsController *)self forLongPress])
   {
-    v9 = [(SCATRecipeActionsController *)self mapping];
-    [v9 setLongPressAction:v7];
+    mapping = [(SCATRecipeActionsController *)self mapping];
+    [mapping setLongPressAction:v7];
     v10 = 0;
     v11 = 0;
   }
 
   else
   {
-    if (v8)
+    if (_isNewMapping)
     {
       v10 = 0;
       v11 = 0;
@@ -575,8 +575,8 @@ BOOL __57__SCATRecipeActionsController__removeLongPressController__block_invoke(
 
     else
     {
-      v12 = [(SCATRecipeActionsController *)self mapping];
-      v13 = [v12 action];
+      mapping2 = [(SCATRecipeActionsController *)self mapping];
+      action = [mapping2 action];
       v14 = AXSwitchRecipeMappingActionAllowsLongPress();
 
       v15 = AXSwitchRecipeMappingActionAllowsLongPress();
@@ -584,57 +584,57 @@ BOOL __57__SCATRecipeActionsController__removeLongPressController__block_invoke(
       v10 = v14 & (v15 ^ 1);
     }
 
-    v9 = [(SCATRecipeActionsController *)self mapping];
-    [v9 setAction:v7];
+    mapping = [(SCATRecipeActionsController *)self mapping];
+    [mapping setAction:v7];
   }
 
-  v16 = [(SCATRecipeActionsController *)self forLongPress];
-  v17 = [v4 objectForKeyedSubscript:@"AXGameControlButtonPress"];
-  v18 = [(SCATRecipeActionsController *)self mapping];
-  v19 = v18;
-  if (v16)
+  forLongPress = [(SCATRecipeActionsController *)self forLongPress];
+  v17 = [specifierCopy objectForKeyedSubscript:@"AXGameControlButtonPress"];
+  mapping3 = [(SCATRecipeActionsController *)self mapping];
+  v19 = mapping3;
+  if (forLongPress)
   {
-    [v18 setLongPressGameControlButtonPress:v17];
+    [mapping3 setLongPressGameControlButtonPress:v17];
   }
 
   else
   {
-    [v18 setGameControlButtonPress:v17];
+    [mapping3 setGameControlButtonPress:v17];
   }
 
-  if (v8)
+  if (_isNewMapping)
   {
-    v20 = [(SCATRecipeActionsController *)self recipe];
-    v21 = [v20 mappings];
-    v22 = [(SCATRecipeActionsController *)self mapping];
-    v23 = [v21 arrayByAddingObject:v22];
+    recipe = [(SCATRecipeActionsController *)self recipe];
+    mappings = [recipe mappings];
+    mapping4 = [(SCATRecipeActionsController *)self mapping];
+    v23 = [mappings arrayByAddingObject:mapping4];
 
     if (!v23)
     {
-      v24 = [(SCATRecipeActionsController *)self mapping];
-      v40 = v24;
+      mapping5 = [(SCATRecipeActionsController *)self mapping];
+      v40 = mapping5;
       v23 = [NSArray arrayWithObjects:&v40 count:1];
     }
 
-    v25 = [(SCATRecipeActionsController *)self recipe];
-    [v25 setMappings:v23];
+    recipe2 = [(SCATRecipeActionsController *)self recipe];
+    [recipe2 setMappings:v23];
 
     v26 = +[AXSettings sharedInstance];
-    v27 = [(SCATRecipeActionsController *)self recipe];
-    [v26 saveRecipe:v27];
+    recipe3 = [(SCATRecipeActionsController *)self recipe];
+    [v26 saveRecipe:recipe3];
 
-    if (v6 && AXSwitchRecipeMappingActionAllowsLongPress())
+    if (assistiveTouchLongPressEnabled && AXSwitchRecipeMappingActionAllowsLongPress())
     {
       v28 = +[AXSettings sharedInstance];
-      v29 = [(SCATRecipeActionsController *)self mapping];
-      v30 = [v29 switchUUID];
-      v31 = [v28 switchForUUID:v30];
+      mapping6 = [(SCATRecipeActionsController *)self mapping];
+      switchUUID = [mapping6 switchUUID];
+      v31 = [v28 switchForUUID:switchUUID];
 
       if ([v31 supportsLongPress])
       {
-        v32 = [(SCATRecipeActionsController *)self _popToLongPressController];
+        _popToLongPressController = [(SCATRecipeActionsController *)self _popToLongPressController];
 
-        if (v32)
+        if (_popToLongPressController)
         {
           goto LABEL_24;
         }
@@ -645,19 +645,19 @@ BOOL __57__SCATRecipeActionsController__removeLongPressController__block_invoke(
       }
     }
 
-    v36 = [(SCATRecipeActionsController *)self _rootRecipeEditController];
-    [(SCATRecipeActionsController *)self popToViewController:v36 animated:1 destinationClass:objc_opt_class()];
+    _rootRecipeEditController = [(SCATRecipeActionsController *)self _rootRecipeEditController];
+    [(SCATRecipeActionsController *)self popToViewController:_rootRecipeEditController animated:1 destinationClass:objc_opt_class()];
 
     goto LABEL_24;
   }
 
   v33 = +[AXSettings sharedInstance];
-  v34 = [(SCATRecipeActionsController *)self recipe];
-  [v33 saveRecipe:v34];
+  recipe4 = [(SCATRecipeActionsController *)self recipe];
+  [v33 saveRecipe:recipe4];
 
   if (v11)
   {
-    v35 = [(SCATRecipeActionsController *)self _insertLongPressController];
+    _insertLongPressController = [(SCATRecipeActionsController *)self _insertLongPressController];
   }
 
   else if (v10)
@@ -679,35 +679,35 @@ LABEL_24:
   }
 }
 
-- (void)gestureRecorder:(id)a3 saveReplayableGesture:(id)a4
+- (void)gestureRecorder:(id)recorder saveReplayableGesture:(id)gesture
 {
-  v5 = a4;
-  v6 = [(SCATRecipeActionsController *)self forLongPress];
-  v7 = [(SCATRecipeActionsController *)self mapping];
-  v8 = v7;
-  if (v6)
+  gestureCopy = gesture;
+  forLongPress = [(SCATRecipeActionsController *)self forLongPress];
+  mapping = [(SCATRecipeActionsController *)self mapping];
+  v8 = mapping;
+  if (forLongPress)
   {
-    [v7 setLongPressGesture:v5];
+    [mapping setLongPressGesture:gestureCopy];
   }
 
   else
   {
-    [v7 setGesture:v5];
+    [mapping setGesture:gestureCopy];
   }
 
-  v9 = [(SCATRecipeActionsController *)self gestureActionSpecifier];
-  [(SCATRecipeActionsController *)self _handleSelectActionForSpecifier:v9];
+  gestureActionSpecifier = [(SCATRecipeActionsController *)self gestureActionSpecifier];
+  [(SCATRecipeActionsController *)self _handleSelectActionForSpecifier:gestureActionSpecifier];
 }
 
-- (void)gestureRecorder:(id)a3 savePoint:(CGPoint)a4
+- (void)gestureRecorder:(id)recorder savePoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(SCATRecipeActionsController *)self mapping];
-  [v7 setHoldPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  mapping = [(SCATRecipeActionsController *)self mapping];
+  [mapping setHoldPoint:{x, y}];
 
-  v8 = [(SCATRecipeActionsController *)self holdPointActionSpecifier];
-  [(SCATRecipeActionsController *)self _handleSelectActionForSpecifier:v8];
+  holdPointActionSpecifier = [(SCATRecipeActionsController *)self holdPointActionSpecifier];
+  [(SCATRecipeActionsController *)self _handleSelectActionForSpecifier:holdPointActionSpecifier];
 }
 
 @end

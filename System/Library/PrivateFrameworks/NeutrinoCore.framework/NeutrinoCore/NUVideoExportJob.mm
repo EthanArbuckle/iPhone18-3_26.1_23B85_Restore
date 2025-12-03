@@ -1,116 +1,116 @@
 @interface NUVideoExportJob
-- (BOOL)render:(id *)a3;
-- (BOOL)renderVideoFrames:(id)a3 videoMetadataSamples:(id)a4 videoSampleSlices:(id)a5 intoPixelBuffer:(__CVBuffer *)a6 time:(id *)a7 colorSpace:(id)a8 playbackDirection:(int64_t)a9 error:(id *)a10;
+- (BOOL)render:(id *)render;
+- (BOOL)renderVideoFrames:(id)frames videoMetadataSamples:(id)samples videoSampleSlices:(id)slices intoPixelBuffer:(__CVBuffer *)buffer time:(id *)time colorSpace:(id)space playbackDirection:(int64_t)direction error:(id *)self0;
 - (BOOL)requiresVideoComposition;
 - (BOOL)wantsRenderNodeCached;
-- (BOOL)writeVideoFrom:(id)a3 toWriter:(id)a4 stillImageTime:(id *)a5 createCustomMetadata:(BOOL)a6 geometryTransform:(id)a7 inputSize:(CGSize)a8 outputSize:(CGSize)a9 error:(id *)a10;
-- (NUVideoExportJob)initWithExportRequest:(id)a3;
-- (NUVideoExportJob)initWithVideoExportRequest:(id)a3;
-- (id)generateVideoComposition:(id *)a3;
-- (id)prepareNodeWithPipelineState:(id)a3 error:(id *)a4;
-- (id)renderNodeWithPipelineState:(id)a3 error:(id *)a4;
-- (id)renderer:(id *)a3;
+- (BOOL)writeVideoFrom:(id)from toWriter:(id)writer stillImageTime:(id *)time createCustomMetadata:(BOOL)metadata geometryTransform:(id)transform inputSize:(CGSize)size outputSize:(CGSize)outputSize error:(id *)self0;
+- (NUVideoExportJob)initWithExportRequest:(id)request;
+- (NUVideoExportJob)initWithVideoExportRequest:(id)request;
+- (id)generateVideoComposition:(id *)composition;
+- (id)prepareNodeWithPipelineState:(id)state error:(id *)error;
+- (id)renderNodeWithPipelineState:(id)state error:(id *)error;
+- (id)renderer:(id *)renderer;
 - (id)result;
 - (id)scalePolicy;
-- (void)updateDigestWithRenderedFrame:(__CVBuffer *)a3;
+- (void)updateDigestWithRenderedFrame:(__CVBuffer *)frame;
 @end
 
 @implementation NUVideoExportJob
 
-- (void)updateDigestWithRenderedFrame:(__CVBuffer *)a3
+- (void)updateDigestWithRenderedFrame:(__CVBuffer *)frame
 {
-  v5 = [(NUVideoExportJob *)self digest];
+  digest = [(NUVideoExportJob *)self digest];
 
-  if (v5)
+  if (digest)
   {
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-    v15 = CVPixelBufferGetWidthOfPlane(a3, 1uLL);
-    v9 = CVPixelBufferGetHeightOfPlane(a3, 1uLL);
-    v10 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
-    CVPixelBufferLockBaseAddress(a3, 0);
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-    for (i = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL); HeightOfPlane; --HeightOfPlane)
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(frame, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(frame, 0);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(frame, 0);
+    v15 = CVPixelBufferGetWidthOfPlane(frame, 1uLL);
+    v9 = CVPixelBufferGetHeightOfPlane(frame, 1uLL);
+    v10 = CVPixelBufferGetBytesPerRowOfPlane(frame, 1uLL);
+    CVPixelBufferLockBaseAddress(frame, 0);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(frame, 0);
+    for (i = CVPixelBufferGetBaseAddressOfPlane(frame, 1uLL); HeightOfPlane; --HeightOfPlane)
     {
-      v13 = [(NUVideoExportJob *)self digest];
-      [v13 addBytes:BaseAddressOfPlane length:WidthOfPlane];
+      digest2 = [(NUVideoExportJob *)self digest];
+      [digest2 addBytes:BaseAddressOfPlane length:WidthOfPlane];
 
       BaseAddressOfPlane += BytesPerRowOfPlane;
     }
 
     for (; v9; --v9)
     {
-      v14 = [(NUVideoExportJob *)self digest];
-      [v14 addBytes:i length:2 * v15];
+      digest3 = [(NUVideoExportJob *)self digest];
+      [digest3 addBytes:i length:2 * v15];
 
       i += v10;
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 0);
+    CVPixelBufferUnlockBaseAddress(frame, 0);
   }
 }
 
-- (BOOL)renderVideoFrames:(id)a3 videoMetadataSamples:(id)a4 videoSampleSlices:(id)a5 intoPixelBuffer:(__CVBuffer *)a6 time:(id *)a7 colorSpace:(id)a8 playbackDirection:(int64_t)a9 error:(id *)a10
+- (BOOL)renderVideoFrames:(id)frames videoMetadataSamples:(id)samples videoSampleSlices:(id)slices intoPixelBuffer:(__CVBuffer *)buffer time:(id *)time colorSpace:(id)space playbackDirection:(int64_t)direction error:(id *)self0
 {
   v16.receiver = self;
   v16.super_class = NUVideoExportJob;
-  v15 = *a7;
-  v12 = [(NURenderJob *)&v16 renderVideoFrames:a3 videoMetadataSamples:a4 videoSampleSlices:a5 intoPixelBuffer:a6 time:&v15 colorSpace:a8 playbackDirection:a9 error:a10];
+  v15 = *time;
+  v12 = [(NURenderJob *)&v16 renderVideoFrames:frames videoMetadataSamples:samples videoSampleSlices:slices intoPixelBuffer:buffer time:&v15 colorSpace:space playbackDirection:direction error:error];
   if (v12)
   {
-    v13 = [(NUVideoExportJob *)self digest];
+    digest = [(NUVideoExportJob *)self digest];
 
-    if (v13)
+    if (digest)
     {
-      [(NUVideoExportJob *)self updateDigestWithRenderedFrame:a6];
+      [(NUVideoExportJob *)self updateDigestWithRenderedFrame:buffer];
     }
   }
 
   return v12;
 }
 
-- (id)renderNodeWithPipelineState:(id)a3 error:(id *)a4
+- (id)renderNodeWithPipelineState:(id)state error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = NUVideoExportJob;
-  v5 = [(NURenderJob *)&v9 renderNodeWithPipelineState:a3 error:a4];
+  v5 = [(NURenderJob *)&v9 renderNodeWithPipelineState:state error:error];
   if ([(NUVideoExportJob *)self wantsRenderNodeCached])
   {
-    v6 = [(NURenderJob *)self request];
-    v7 = [v6 renderContext];
-    [v7 setLastRenderNode:v5];
+    request = [(NURenderJob *)self request];
+    renderContext = [request renderContext];
+    [renderContext setLastRenderNode:v5];
   }
 
   return v5;
 }
 
-- (BOOL)writeVideoFrom:(id)a3 toWriter:(id)a4 stillImageTime:(id *)a5 createCustomMetadata:(BOOL)a6 geometryTransform:(id)a7 inputSize:(CGSize)a8 outputSize:(CGSize)a9 error:(id *)a10
+- (BOOL)writeVideoFrom:(id)from toWriter:(id)writer stillImageTime:(id *)time createCustomMetadata:(BOOL)metadata geometryTransform:(id)transform inputSize:(CGSize)size outputSize:(CGSize)outputSize error:(id *)self0
 {
-  height = a9.height;
-  width = a9.width;
-  v13 = a8.height;
-  v14 = a8.width;
-  v15 = a6;
-  v20 = a7;
-  v21 = a4;
-  v22 = a3;
-  v23 = [(NUVideoExportJob *)self videoExportRequest];
-  v24 = [v23 progress];
-  v28 = *a5;
-  LOBYTE(a10) = [NUVideoUtilities readFromReader:v22 andWriteToWriter:v21 stillImageTime:&v28 createCustomMetadata:v15 geometryTransform:v20 inputSize:v24 outputSize:v14 progress:v13 error:width, height, a10];
+  height = outputSize.height;
+  width = outputSize.width;
+  v13 = size.height;
+  v14 = size.width;
+  metadataCopy = metadata;
+  transformCopy = transform;
+  writerCopy = writer;
+  fromCopy = from;
+  videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+  progress = [videoExportRequest progress];
+  v28 = *time;
+  LOBYTE(error) = [NUVideoUtilities readFromReader:fromCopy andWriteToWriter:writerCopy stillImageTime:&v28 createCustomMetadata:metadataCopy geometryTransform:transformCopy inputSize:progress outputSize:v14 progress:v13 error:width, height, error];
 
-  v25 = [(NURenderJob *)self request];
-  v26 = [v25 renderContext];
-  [v26 setLastRenderNode:0];
+  request = [(NURenderJob *)self request];
+  renderContext = [request renderContext];
+  [renderContext setLastRenderNode:0];
 
-  return a10;
+  return error;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v440 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v260 = NUAssertLogger_3938();
     if (os_log_type_enabled(v260, OS_LOG_TYPE_ERROR))
@@ -131,8 +131,8 @@
         v268 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v269 = MEMORY[0x1E696AF00];
         v270 = v268;
-        v271 = [v269 callStackSymbols];
-        v272 = [v271 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v269 callStackSymbols];
+        v272 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v435 = 138543618;
         *&v435[4] = v268;
         *&v435[12] = 2114;
@@ -143,8 +143,8 @@
 
     else if (v264)
     {
-      v265 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v266 = [v265 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v266 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v435 = 138543362;
       *&v435[4] = v266;
       _os_log_error_impl(&dword_1C0184000, v263, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v435, 0xCu);
@@ -153,48 +153,48 @@
     _NUAssertFailHandler("[NUVideoExportJob render:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoExportJob.m", 240, @"Invalid parameter not satisfying: %s", v273, v274, v275, v276, "error != nil");
   }
 
-  v320 = [(NUVideoExportJob *)self videoExportRequest];
-  v318 = [(NUVideoExportJob *)self videoProperties];
+  videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+  videoProperties = [(NUVideoExportJob *)self videoProperties];
   v3 = objc_alloc(MEMORY[0x1E6987E78]);
-  v4 = [(NURenderJob *)self outputVideo];
+  outputVideo = [(NURenderJob *)self outputVideo];
   v423 = 0;
-  v5 = [v3 initWithAsset:v4 error:&v423];
+  v5 = [v3 initWithAsset:outputVideo error:&v423];
   v6 = v423;
 
   if (!v5)
   {
-    v317 = [(NURenderJob *)self outputVideo];
-    [NUError errorWithCode:1 reason:@"Failed to initialize AVAssetReader" object:v317 underlyingError:v6];
-    *a3 = v9 = 0;
+    outputVideo2 = [(NURenderJob *)self outputVideo];
+    [NUError errorWithCode:1 reason:@"Failed to initialize AVAssetReader" object:outputVideo2 underlyingError:v6];
+    *render = v3083 = 0;
     goto LABEL_128;
   }
 
-  v317 = [v320 destinationURL];
-  v7 = [v317 pathExtension];
-  v314 = NUFileTypeFromExtension(v7);
+  outputVideo2 = [videoExportRequest destinationURL];
+  pathExtension = [outputVideo2 pathExtension];
+  v314 = NUFileTypeFromExtension(pathExtension);
 
   v422 = v6;
-  v319 = [objc_alloc(MEMORY[0x1E6987ED8]) initWithURL:v317 fileType:v314 error:&v422];
+  v319 = [objc_alloc(MEMORY[0x1E6987ED8]) initWithURL:outputVideo2 fileType:v314 error:&v422];
   v312 = v422;
 
   if (!v319)
   {
-    [NUError errorWithCode:1 reason:@"Failed to inialize AVAssetWriter for URL" object:v317 underlyingError:v312];
-    *a3 = v9 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to inialize AVAssetWriter for URL" object:outputVideo2 underlyingError:v312];
+    *render = v3083 = 0;
     goto LABEL_127;
   }
 
-  v8 = [v320 metadata];
-  [v319 setMetadata:v8];
+  metadata = [videoExportRequest metadata];
+  [v319 setMetadata:metadata];
 
-  v344 = [MEMORY[0x1E695DF70] array];
-  v336 = [MEMORY[0x1E695DF70] array];
-  v330 = [MEMORY[0x1E695DF70] array];
-  v328 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   memset(&v421, 0, sizeof(v421));
-  if (v318)
+  if (videoProperties)
   {
-    [v318 livePhotoKeyFrameTime];
+    [videoProperties livePhotoKeyFrameTime];
     flags = v421.flags;
   }
 
@@ -207,10 +207,10 @@
   v419 = 0u;
   v418 = 0u;
   v417 = 0u;
-  v10 = [(NURenderJob *)self outputVideo];
-  v11 = [v10 tracks];
+  outputVideo3 = [(NURenderJob *)self outputVideo];
+  tracks = [outputVideo3 tracks];
 
-  v12 = [v11 countByEnumeratingWithState:&v417 objects:v439 count:16];
+  v12 = [tracks countByEnumeratingWithState:&v417 objects:v439 count:16];
   if (!v12)
   {
     newTimescale = 600;
@@ -232,16 +232,16 @@
     {
       if (*v418 != v13)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(tracks);
       }
 
       v18 = *(*(&v417 + 1) + 8 * v17);
-      v19 = [v18 mediaType];
-      v20 = [v19 isEqualToString:v14];
+      mediaType = [v18 mediaType];
+      v20 = [mediaType isEqualToString:v14];
 
       if (v20)
       {
-        [v344 addObject:v18];
+        [array addObject:v18];
         newTimescale = [v18 naturalTimeScale];
         [v18 estimatedDataRate];
         if (v16 < v21)
@@ -252,31 +252,31 @@
 
       else
       {
-        v22 = [v18 mediaType];
-        v23 = [v22 isEqualToString:v15];
+        mediaType2 = [v18 mediaType];
+        v23 = [mediaType2 isEqualToString:v15];
 
         if (v23)
         {
-          [v336 addObject:v18];
+          [array2 addObject:v18];
           goto LABEL_26;
         }
 
-        v24 = [v18 mediaType];
-        v25 = [v24 isEqualToString:v352];
+        mediaType3 = [v18 mediaType];
+        v25 = [mediaType3 isEqualToString:v352];
 
         if (v25)
         {
-          [v330 addObject:v18];
+          [array3 addObject:v18];
           goto LABEL_26;
         }
 
-        v26 = [v18 mediaType];
-        v27 = [v26 isEqualToString:v337];
+        mediaType4 = [v18 mediaType];
+        v27 = [mediaType4 isEqualToString:v337];
 
         if (!v27)
         {
 LABEL_25:
-          [v328 addObject:v18];
+          [array4 addObject:v18];
           goto LABEL_26;
         }
 
@@ -290,10 +290,10 @@ LABEL_25:
         flags &= !v28;
         if ([NUVideoUtilities isMetadataTrackWithLivePhotoInfo:v18])
         {
-          v29 = [(NURenderJob *)self renderNode];
-          v30 = [v29 canPropagateOriginalLivePhotoMetadataTrack];
+          renderNode = [(NURenderJob *)self renderNode];
+          canPropagateOriginalLivePhotoMetadataTrack = [renderNode canPropagateOriginalLivePhotoMetadataTrack];
 
-          if (v30)
+          if (canPropagateOriginalLivePhotoMetadataTrack)
           {
             goto LABEL_25;
           }
@@ -301,7 +301,7 @@ LABEL_25:
 
         else if ([NUVideoUtilities metadataTrackContainsPortraitVideoData:v18])
         {
-          if ([v320 includeCinematicVideoTracks])
+          if ([videoExportRequest includeCinematicVideoTracks])
           {
             goto LABEL_25;
           }
@@ -309,13 +309,13 @@ LABEL_25:
 
         else if ([NUVideoUtilities metadataTrackContainsCinematicAudioData:v18])
         {
-          if ([v320 includeCinematicVideoTracks])
+          if ([videoExportRequest includeCinematicVideoTracks])
           {
             goto LABEL_25;
           }
         }
 
-        else if (!+[NUVideoUtilities metadataTrackContainsSemanticStyleData:](NUVideoUtilities, "metadataTrackContainsSemanticStyleData:", v18) || [v320 includeSemanticStyleTracks])
+        else if (!+[NUVideoUtilities metadataTrackContainsSemanticStyleData:](NUVideoUtilities, "metadataTrackContainsSemanticStyleData:", v18) || [videoExportRequest includeSemanticStyleTracks])
         {
           goto LABEL_25;
         }
@@ -326,7 +326,7 @@ LABEL_26:
     }
 
     while (v12 != v17);
-    v31 = [v11 countByEnumeratingWithState:&v417 objects:v439 count:16];
+    v31 = [tracks countByEnumeratingWithState:&v417 objects:v439 count:16];
     v12 = v31;
   }
 
@@ -340,28 +340,28 @@ LABEL_44:
     v421 = *v435;
   }
 
-  v313 = [v320 outputSettings];
+  outputSettings = [videoExportRequest outputSettings];
   v32 = *MEMORY[0x1E6987CB0];
-  v33 = [v313 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
+  v33 = [outputSettings objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
   v34 = v33 == 0;
 
   if (v34)
   {
-    +[NUVideoUtilities defaultExportCodecForHDRVideo:](NUVideoUtilities, "defaultExportCodecForHDRVideo:", [v318 isHDR]);
+    +[NUVideoUtilities defaultExportCodecForHDRVideo:](NUVideoUtilities, "defaultExportCodecForHDRVideo:", [videoProperties isHDR]);
   }
 
   else
   {
-    [v313 objectForKeyedSubscript:v32];
+    [outputSettings objectForKeyedSubscript:v32];
   }
   v35 = ;
   v36 = NUTypeCodeFromString(v35);
 
-  v311 = [(NURenderJob *)self outputGeometry];
-  v37 = [v311 scaledSize];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  scaledSize = [outputGeometry scaledSize];
   v308 = v38;
-  v309 = v37;
-  if ((v37 | v38))
+  v309 = scaledSize;
+  if ((scaledSize | v38))
   {
     v277 = NUAssertLogger_3938();
     if (os_log_type_enabled(v277, OS_LOG_TYPE_ERROR))
@@ -382,8 +382,8 @@ LABEL_44:
         v284 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v285 = MEMORY[0x1E696AF00];
         v286 = v284;
-        v287 = [v285 callStackSymbols];
-        v288 = [v287 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v285 callStackSymbols];
+        v288 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v435 = 138543618;
         *&v435[4] = v284;
         *&v435[12] = 2114;
@@ -394,8 +394,8 @@ LABEL_44:
 
     else if (v281)
     {
-      v282 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v283 = [v282 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v283 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *v435 = 138543362;
       *&v435[4] = v283;
       _os_log_error_impl(&dword_1C0184000, v280, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v435, 0xCu);
@@ -409,7 +409,7 @@ LABEL_44:
   if (!v316)
   {
     [NUError unknownError:@"Failed to instantiate assistant for preset" object:v310];
-    *a3 = v9 = 0;
+    *render = v3083 = 0;
     goto LABEL_126;
   }
 
@@ -440,56 +440,56 @@ LABEL_44:
     CFRelease(time.value);
   }
 
-  v307 = [v344 firstObject];
-  ConfigureAssistantTimingFromTrack(v316, v307);
-  v41 = [v307 formatDescriptions];
-  [v316 setSourceVideoFormat:objc_msgSend(v41, "firstObject")];
+  firstObject = [array firstObject];
+  ConfigureAssistantTimingFromTrack(v316, firstObject);
+  formatDescriptions = [firstObject formatDescriptions];
+  [v316 setSourceVideoFormat:objc_msgSend(formatDescriptions, "firstObject")];
 
-  v42 = [(NURenderJob *)self fullSizeGeometry];
-  v43 = [v42 size];
+  fullSizeGeometry = [(NURenderJob *)self fullSizeGeometry];
+  v43 = [fullSizeGeometry size];
   v302 = v44;
   v303 = v43;
 
-  if (v318)
+  if (videoProperties)
   {
-    v45 = [v318 originalSize];
+    originalSize = [videoProperties originalSize];
     v302 = v46;
-    v303 = v45;
+    v303 = originalSize;
   }
 
   v353 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v47 = [(NURenderJob *)self outputVideoComposition];
-  v48 = v47 == 0;
+  outputVideoComposition = [(NURenderJob *)self outputVideoComposition];
+  v48 = outputVideoComposition == 0;
 
   if (v48)
   {
-    v51 = [v307 formatDescriptions];
-    v52 = [v51 firstObject];
+    formatDescriptions2 = [firstObject formatDescriptions];
+    firstObject2 = [formatDescriptions2 firstObject];
 
-    MediaSubType = CMFormatDescriptionGetMediaSubType(v52);
-    v54 = [v311 renderScale];
+    MediaSubType = CMFormatDescriptionGetMediaSubType(firstObject2);
+    renderScale = [outputGeometry renderScale];
     v56 = v55;
-    v57 = [(NURenderJob *)self fullSizeGeometry];
-    if (v57)
+    fullSizeGeometry2 = [(NURenderJob *)self fullSizeGeometry];
+    if (fullSizeGeometry2)
     {
-      v58 = [(NURenderJob *)self fullSizeGeometry];
-      v59 = [v58 renderScale];
+      fullSizeGeometry3 = [(NURenderJob *)self fullSizeGeometry];
+      renderScale2 = [fullSizeGeometry3 renderScale];
       v61 = v60;
     }
 
     else
     {
-      v59 = [(NURenderJob *)self renderScale];
+      renderScale2 = [(NURenderJob *)self renderScale];
       v61 = v91;
     }
 
-    if (NUScaleCompare(v54, v56, v59, v61) || ([v320 bypassOutputSettingsIfNoComposition] & 1) == 0 && ((objc_msgSend(v313, "objectForKeyedSubscript:", v32), (v97 = objc_claimAutoreleasedReturnValue()) != 0) ? (v98 = v36 == MediaSubType) : (v98 = 1), v98 ? (v99 = 0) : (v99 = 1), v97, v99))
+    if (NUScaleCompare(renderScale, v56, renderScale2, v61) || ([videoExportRequest bypassOutputSettingsIfNoComposition] & 1) == 0 && ((objc_msgSend(outputSettings, "objectForKeyedSubscript:", v32), (v97 = objc_claimAutoreleasedReturnValue()) != 0) ? (v98 = v36 == MediaSubType) : (v98 = 1), v98 ? (v99 = 0) : (v99 = 1), v97, v99))
     {
       newTimescalea = +[NUVideoUtilities defaultVideoSettingsForAVAssetReader];
-      v92 = [v316 videoSettings];
-      v93 = [v92 mutableCopy];
+      videoSettings = [v316 videoSettings];
+      v93 = [videoSettings mutableCopy];
 
-      [v93 addEntriesFromDictionary:v313];
+      [v93 addEntriesFromDictionary:outputSettings];
       v94 = [MEMORY[0x1E696AD98] numberWithInteger:v309];
       [v93 setObject:v94 forKeyedSubscript:*MEMORY[0x1E6987E08]];
 
@@ -497,11 +497,11 @@ LABEL_44:
       [v93 setObject:v95 forKeyedSubscript:*MEMORY[0x1E6987D70]];
 
       [v93 removeObjectForKey:*MEMORY[0x1E6987DC8]];
-      if (v318)
+      if (videoProperties)
       {
-        [v318 cleanAperture];
-        v96 = [NUVideoUtilities cleanApertureVideoSettingsFor:v435 scale:v54 videoSize:v56, v309, v308];
-        [v93 setObject:v96 forKeyedSubscript:*MEMORY[0x1E6987C88]];
+        [videoProperties cleanAperture];
+        v308 = [NUVideoUtilities cleanApertureVideoSettingsFor:v435 scale:renderScale videoSize:v56, v309, v308];
+        [v93 setObject:v308 forKeyedSubscript:*MEMORY[0x1E6987C88]];
       }
 
       v340 = v93;
@@ -517,9 +517,9 @@ LABEL_44:
     v398 = 0u;
     v396 = 0u;
     v397 = 0u;
-    v100 = [(NURenderJob *)self outputVideo];
+    outputVideo4 = [(NURenderJob *)self outputVideo];
     v101 = *MEMORY[0x1E6987608];
-    v333 = [v100 tracksWithMediaType:*MEMORY[0x1E6987608]];
+    v333 = [outputVideo4 tracksWithMediaType:*MEMORY[0x1E6987608]];
 
     v102 = [v333 countByEnumeratingWithState:&v396 objects:v434 count:16];
     if (v102)
@@ -539,7 +539,7 @@ LABEL_44:
           [v106 setAlwaysCopiesSampleData:0];
           if (([v5 canAddOutput:v106] & 1) == 0)
           {
-            *a3 = [NUError unknownError:@"Cannot add video track output to asset reader" object:v105];
+            *render = [NUError unknownError:@"Cannot add video track output to asset reader" object:v105];
 
             goto LABEL_122;
           }
@@ -566,14 +566,14 @@ LABEL_44:
           [v105 naturalSize];
           [v107 setNaturalSize:?];
           [v107 setMediaTimeScale:{objc_msgSend(v105, "naturalTimeScale")}];
-          v108 = [v318 trackMetadata];
+          trackMetadata = [videoProperties trackMetadata];
           v109 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v105, "trackID")}];
-          v110 = [v108 objectForKeyedSubscript:v109];
+          v110 = [trackMetadata objectForKeyedSubscript:v109];
           [v107 setMetadata:v110];
 
           if (([v319 canAddInput:v107] & 1) == 0)
           {
-            *a3 = [NUError unknownError:@"Cannot add video track input to asset writer" object:v107];
+            *render = [NUError unknownError:@"Cannot add video track input to asset writer" object:v107];
 
 LABEL_122:
 LABEL_123:
@@ -597,11 +597,11 @@ LABEL_123:
 
   else
   {
-    v49 = [(NURenderJob *)self outputVideoComposition];
-    v50 = v49;
-    if (v49)
+    outputVideoComposition2 = [(NURenderJob *)self outputVideoComposition];
+    v50 = outputVideoComposition2;
+    if (outputVideoComposition2)
     {
-      [v49 frameDuration];
+      [outputVideoComposition2 frameDuration];
     }
 
     else
@@ -614,11 +614,11 @@ LABEL_123:
     *&v435[16] = v415;
     [v316 setSourceVideoMinFrameDuration:v435];
 
-    v62 = [(NURenderJob *)self outputVideoComposition];
-    v63 = v62;
-    if (v62)
+    outputVideoComposition3 = [(NURenderJob *)self outputVideoComposition];
+    v63 = outputVideoComposition3;
+    if (outputVideoComposition3)
     {
-      [v62 frameDuration];
+      [outputVideoComposition3 frameDuration];
     }
 
     else
@@ -631,13 +631,13 @@ LABEL_123:
     *&v435[16] = v413;
     [v316 setSourceVideoAverageFrameDuration:v435];
 
-    v64 = [(NURenderJob *)self outputVideoComposition];
-    v304 = [v64 sourceTrackIDForFrameTiming];
+    outputVideoComposition4 = [(NURenderJob *)self outputVideoComposition];
+    sourceTrackIDForFrameTiming = [outputVideoComposition4 sourceTrackIDForFrameTiming];
 
-    if (v304)
+    if (sourceTrackIDForFrameTiming)
     {
-      v65 = [(NURenderJob *)self outputVideo];
-      v66 = [v65 trackWithTrackID:v304];
+      outputVideo5 = [(NURenderJob *)self outputVideo];
+      v66 = [outputVideo5 trackWithTrackID:sourceTrackIDForFrameTiming];
 
       ConfigureAssistantTimingFromTrack(v316, v66);
     }
@@ -647,8 +647,8 @@ LABEL_123:
     v410 = 0u;
     v409 = 0u;
     v408 = 0u;
-    v68 = [(NURenderJob *)self outputVideoComposition];
-    obj = [v68 instructions];
+    outputVideoComposition5 = [(NURenderJob *)self outputVideoComposition];
+    obj = [outputVideoComposition5 instructions];
 
     v331 = [obj countByEnumeratingWithState:&v408 objects:v438 count:16];
     if (v331)
@@ -672,8 +672,8 @@ LABEL_123:
           v405 = 0u;
           v406 = 0u;
           v407 = 0u;
-          v72 = [v71 requiredSourceTrackIDs];
-          v73 = [v72 countByEnumeratingWithState:&v404 objects:v437 count:16];
+          requiredSourceTrackIDs = [v71 requiredSourceTrackIDs];
+          v73 = [requiredSourceTrackIDs countByEnumeratingWithState:&v404 objects:v437 count:16];
           if (v73)
           {
             v74 = *v405;
@@ -683,13 +683,13 @@ LABEL_123:
               {
                 if (*v405 != v74)
                 {
-                  objc_enumerationMutation(v72);
+                  objc_enumerationMutation(requiredSourceTrackIDs);
                 }
 
                 v76 = MEMORY[0x1E69C0708];
-                v77 = [*(*(&v404 + 1) + 8 * j) intValue];
-                v78 = [v5 asset];
-                v79 = [v76 trackWithTrackID:v77 forAsset:v78];
+                intValue = [*(*(&v404 + 1) + 8 * j) intValue];
+                asset = [v5 asset];
+                v79 = [v76 trackWithTrackID:intValue forAsset:asset];
 
                 if (([v67 containsObject:v79] & 1) == 0)
                 {
@@ -697,7 +697,7 @@ LABEL_123:
                 }
               }
 
-              v73 = [v72 countByEnumeratingWithState:&v404 objects:v437 count:16];
+              v73 = [requiredSourceTrackIDs countByEnumeratingWithState:&v404 objects:v437 count:16];
             }
 
             while (v73);
@@ -714,22 +714,22 @@ LABEL_123:
     }
 
     v332 = [objc_alloc(MEMORY[0x1E6987EB8]) initWithVideoTracks:v67 videoSettings:0];
-    v80 = [(NURenderJob *)self outputVideoComposition];
-    [v332 setVideoComposition:v80];
+    outputVideoComposition6 = [(NURenderJob *)self outputVideoComposition];
+    [v332 setVideoComposition:outputVideoComposition6];
 
     [v332 setAlwaysCopiesSampleData:0];
     if (([v5 canAddOutput:v332] & 1) == 0)
     {
-      *a3 = [NUError unknownError:@"Cannot add video composition output to asset reader" object:v332];
+      *render = [NUError unknownError:@"Cannot add video composition output to asset reader" object:v332];
 
       goto LABEL_123;
     }
 
     [v5 addOutput:v332];
-    v81 = [v316 videoSettings];
-    v339 = [v81 mutableCopy];
+    videoSettings2 = [v316 videoSettings];
+    v339 = [videoSettings2 mutableCopy];
 
-    [v339 addEntriesFromDictionary:v313];
+    [v339 addEntriesFromDictionary:outputSettings];
     v82 = [MEMORY[0x1E696AD98] numberWithInteger:v309];
     [v339 setObject:v82 forKeyedSubscript:*MEMORY[0x1E6987E08]];
 
@@ -737,8 +737,8 @@ LABEL_123:
     [v339 setObject:v83 forKeyedSubscript:*MEMORY[0x1E6987D70]];
 
     [v339 removeObjectForKey:*MEMORY[0x1E6987DC8]];
-    v84 = [v320 colorSpace];
-    LOBYTE(v83) = v84 == 0;
+    colorSpace = [videoExportRequest colorSpace];
+    LOBYTE(v83) = colorSpace == 0;
 
     if (v83)
     {
@@ -747,17 +747,17 @@ LABEL_123:
 
     else
     {
-      v85 = [v320 colorSpace];
-      v86 = [v85 cvPixelBufferAttachments];
+      colorSpace2 = [videoExportRequest colorSpace];
+      cvPixelBufferAttachments = [colorSpace2 cvPixelBufferAttachments];
 
       v87 = objc_opt_new();
-      v88 = [v86 objectForKeyedSubscript:*MEMORY[0x1E6965D88]];
+      v88 = [cvPixelBufferAttachments objectForKeyedSubscript:*MEMORY[0x1E6965D88]];
       [v87 setObject:v88 forKeyedSubscript:*MEMORY[0x1E6987D08]];
 
-      v89 = [v86 objectForKeyedSubscript:*MEMORY[0x1E6965F30]];
+      v89 = [cvPixelBufferAttachments objectForKeyedSubscript:*MEMORY[0x1E6965F30]];
       [v87 setObject:v89 forKeyedSubscript:*MEMORY[0x1E6987DE8]];
 
-      v90 = [v86 objectForKeyedSubscript:*MEMORY[0x1E6965F98]];
+      v90 = [cvPixelBufferAttachments objectForKeyedSubscript:*MEMORY[0x1E6965F98]];
       [v87 setObject:v90 forKeyedSubscript:*MEMORY[0x1E6987E10]];
 
       [v339 setObject:v87 forKeyedSubscript:*MEMORY[0x1E6987D20]];
@@ -790,7 +790,7 @@ LABEL_123:
       }
     }
 
-    v126 = [NUVideoUtilities videoTrackContainsDolbyVisionMetadata:v307];
+    v126 = [NUVideoUtilities videoTrackContainsDolbyVisionMetadata:firstObject];
     v127 = MEMORY[0x1E6983CB0];
     if (!v126)
     {
@@ -805,7 +805,7 @@ LABEL_123:
     [v325 setObject:v299 forKeyedSubscript:*MEMORY[0x1E6983670]];
     [v339 setObject:v325 forKeyedSubscript:v128];
     v403 = 0;
-    obja = [v311 transformWithSourceSpace:@"/Image" destinationSpace:@"/masterSpace" error:&v403];
+    obja = [outputGeometry transformWithSourceSpace:@"/Image" destinationSpace:@"/masterSpace" error:&v403];
     v130 = v403;
     if (!obja)
     {
@@ -823,62 +823,62 @@ LABEL_123:
       }
     }
 
-    v132 = [(NURenderJob *)self fullSizeGeometry];
-    if (v132)
+    fullSizeGeometry4 = [(NURenderJob *)self fullSizeGeometry];
+    if (fullSizeGeometry4)
     {
-      v133 = [(NURenderJob *)self fullSizeGeometry];
-      v134 = [v133 renderScale];
+      fullSizeGeometry5 = [(NURenderJob *)self fullSizeGeometry];
+      renderScale3 = [fullSizeGeometry5 renderScale];
       v136 = v135;
     }
 
     else
     {
-      v134 = [(NURenderJob *)self renderScale];
+      renderScale3 = [(NURenderJob *)self renderScale];
       v136 = v137;
     }
 
-    v138 = [v311 renderScale];
-    v140 = NUScaleDivide(v138, v139, v134, v136);
-    if (v318)
+    renderScale4 = [outputGeometry renderScale];
+    v140 = NUScaleDivide(renderScale4, v139, renderScale3, v136);
+    if (videoProperties)
     {
       v142 = v140;
       v143 = v141;
-      [v318 cleanAperture];
-      v144 = [NUVideoUtilities cleanApertureVideoSettingsFor:v435 scale:v142 videoSize:v143, v309, v308];
-      [v339 setObject:v144 forKeyedSubscript:*MEMORY[0x1E6987C88]];
+      [videoProperties cleanAperture];
+      v3082 = [NUVideoUtilities cleanApertureVideoSettingsFor:v435 scale:v142 videoSize:v143, v309, v308];
+      [v339 setObject:v3082 forKeyedSubscript:*MEMORY[0x1E6987C88]];
     }
 
     v145 = objc_alloc(MEMORY[0x1E6987EE0]);
     v146 = [v145 initWithMediaType:*MEMORY[0x1E6987608] outputSettings:v339];
     [v146 setMediaTimeScale:newTimescale];
-    v147 = [(NUVideoExportJob *)self videoExportRequest];
-    v148 = [v147 applyOrientationAsMetadata];
+    videoExportRequest2 = [(NUVideoExportJob *)self videoExportRequest];
+    applyOrientationAsMetadata = [videoExportRequest2 applyOrientationAsMetadata];
 
-    if (v148)
+    if (applyOrientationAsMetadata)
     {
-      v149 = [v311 orientation];
+      orientation = [outputGeometry orientation];
     }
 
     else
     {
-      v149 = 1;
+      orientation = 1;
     }
 
-    v150 = [v311 size];
-    [NUVideoUtilities preferredTransformFromOrientation:v149 size:v150, v151];
+    v150 = [outputGeometry size];
+    [NUVideoUtilities preferredTransformFromOrientation:orientation size:v150, v151];
     *v435 = v400;
     *&v435[16] = v401;
     v436 = v402;
     [v146 setTransform:v435];
-    v152 = [(NURenderJob *)self outputVideoComposition];
-    [v152 renderSize];
+    outputVideoComposition7 = [(NURenderJob *)self outputVideoComposition];
+    [outputVideoComposition7 renderSize];
     [v146 setNaturalSize:?];
 
-    if (v304)
+    if (sourceTrackIDForFrameTiming)
     {
-      v153 = [v318 trackMetadata];
-      v154 = [MEMORY[0x1E696AD98] numberWithInt:v304];
-      v155 = [v153 objectForKeyedSubscript:v154];
+      trackMetadata2 = [videoProperties trackMetadata];
+      v154 = [MEMORY[0x1E696AD98] numberWithInt:sourceTrackIDForFrameTiming];
+      v155 = [trackMetadata2 objectForKeyedSubscript:v154];
       [v146 setMetadata:v155];
     }
 
@@ -886,13 +886,13 @@ LABEL_123:
     if (v156)
     {
       [v319 addInput:v146];
-      v157 = [MEMORY[0x1E696AD98] numberWithInt:v304];
+      v157 = [MEMORY[0x1E696AD98] numberWithInt:sourceTrackIDForFrameTiming];
       [v353 setObject:v146 forKeyedSubscript:v157];
     }
 
     else
     {
-      *a3 = [NUError unknownError:@"Cannot add video track input to asset writer" object:v146];
+      *render = [NUError unknownError:@"Cannot add video track input to asset writer" object:v146];
     }
 
     if ((v156 & 1) == 0)
@@ -901,14 +901,14 @@ LABEL_123:
     }
   }
 
-  v158 = [(NURenderJob *)self outputAudioMix];
-  if (!v158 || (v159 = [v330 count] == 0, v158, v159))
+  outputAudioMix = [(NURenderJob *)self outputAudioMix];
+  if (!outputAudioMix || (v159 = [array3 count] == 0, outputAudioMix, v159))
   {
     v387 = 0u;
     v388 = 0u;
     v385 = 0u;
     v386 = 0u;
-    v180 = v330;
+    v180 = array3;
     v181 = [v180 countByEnumeratingWithState:&v385 objects:v431 count:16];
     if (!v181)
     {
@@ -939,7 +939,7 @@ LABEL_192:
       [v187 setMarksOutputTrackAsEnabled:{objc_msgSend(v185, "isEnabled")}];
       if (([v319 canAddInput:v187] & 1) == 0)
       {
-        *a3 = [NUError unknownError:@"Cannot add audio track output to asset writer" object:v5];
+        *render = [NUError unknownError:@"Cannot add audio track output to asset writer" object:v5];
 
         goto LABEL_202;
       }
@@ -960,52 +960,52 @@ LABEL_192:
       }
     }
 
-    *a3 = [NUError unknownError:@"Cannot add audio track output to asset reader" object:v5];
+    *render = [NUError unknownError:@"Cannot add audio track output to asset reader" object:v5];
 LABEL_202:
 
     goto LABEL_124;
   }
 
-  v160 = [(NURenderJob *)self outputVideo];
-  newTimescaleb = [NUVideoUtilities cinematicAudioTrackInAsset:v160];
+  outputVideo6 = [(NURenderJob *)self outputVideo];
+  newTimescaleb = [NUVideoUtilities cinematicAudioTrackInAsset:outputVideo6];
 
   if (!newTimescaleb)
   {
-    v326 = [v330 firstObject];
-    v189 = [v326 formatDescriptions];
-    v190 = [v189 firstObject];
+    firstObject3 = [array3 firstObject];
+    formatDescriptions3 = [firstObject3 formatDescriptions];
+    firstObject4 = [formatDescriptions3 firstObject];
 
-    v191 = [objc_alloc(MEMORY[0x1E6987E80]) initWithAudioTracks:v330 audioSettings:0];
-    v192 = [(NURenderJob *)self outputAudioMix];
-    [v191 setAudioMix:v192];
+    v191 = [objc_alloc(MEMORY[0x1E6987E80]) initWithAudioTracks:array3 audioSettings:0];
+    outputAudioMix2 = [(NURenderJob *)self outputAudioMix];
+    [v191 setAudioMix:outputAudioMix2];
 
     [v191 setAlwaysCopiesSampleData:0];
     if ([v5 canAddOutput:v191])
     {
       [v5 addOutput:v191];
-      [v316 setSourceAudioFormat:v190];
-      v193 = [v316 audioSettings];
-      if (v193 || ([NUVideoUtilities assetWriterAudioSettingsForAudioTrackFormatDescription:v190], (v193 = objc_claimAutoreleasedReturnValue()) != 0))
+      [v316 setSourceAudioFormat:firstObject4];
+      audioSettings = [v316 audioSettings];
+      if (audioSettings || ([NUVideoUtilities assetWriterAudioSettingsForAudioTrackFormatDescription:firstObject4], (audioSettings = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v194 = *MEMORY[0x1E69582B0];
-        v195 = [v313 objectForKeyedSubscript:*MEMORY[0x1E69582B0]];
+        v195 = [outputSettings objectForKeyedSubscript:*MEMORY[0x1E69582B0]];
 
         v196 = *MEMORY[0x1E6958348];
-        v197 = [v313 objectForKeyedSubscript:*MEMORY[0x1E6958348]];
+        v197 = [outputSettings objectForKeyedSubscript:*MEMORY[0x1E6958348]];
 
         if (v195 != 0 || v197 != 0)
         {
           v198 = v195 != 0;
-          v199 = [v193 mutableCopy];
+          v199 = [audioSettings mutableCopy];
           if (v198)
           {
-            v200 = [v313 objectForKeyedSubscript:v194];
+            v200 = [outputSettings objectForKeyedSubscript:v194];
             [v199 setObject:v200 forKeyedSubscript:v194];
           }
 
           if (v197)
           {
-            v201 = [v313 objectForKeyedSubscript:v196];
+            v201 = [outputSettings objectForKeyedSubscript:v196];
             [v199 setObject:v201 forKeyedSubscript:v196];
           }
 
@@ -1014,7 +1014,7 @@ LABEL_202:
 
         else
         {
-          v202 = v193;
+          v202 = audioSettings;
         }
 
         v203 = objc_alloc(MEMORY[0x1E6987EE0]);
@@ -1023,13 +1023,13 @@ LABEL_202:
         if (v205)
         {
           [v319 addInput:v204];
-          v206 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v326, "trackID")}];
+          v206 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(firstObject3, "trackID")}];
           [v353 setObject:v204 forKeyedSubscript:v206];
         }
 
         else
         {
-          *a3 = [NUError unknownError:@"Cannot add audio track output to asset writer" object:v5];
+          *render = [NUError unknownError:@"Cannot add audio track output to asset writer" object:v5];
         }
 
         if (v205)
@@ -1043,12 +1043,12 @@ LABEL_313:
         goto LABEL_124;
       }
 
-      *a3 = [NUError unknownError:@"Cannot obtain audio settings for track" object:v326];
+      *render = [NUError unknownError:@"Cannot obtain audio settings for track" object:firstObject3];
     }
 
     else
     {
-      *a3 = [NUError unknownError:@"Cannot add audio mix output to asset reader" object:v191];
+      *render = [NUError unknownError:@"Cannot add audio mix output to asset reader" object:v191];
     }
 
 LABEL_312:
@@ -1056,23 +1056,23 @@ LABEL_312:
     goto LABEL_313;
   }
 
-  if ([v330 count] >= 3)
+  if ([array3 count] >= 3)
   {
     v161 = NULogger();
     if (os_log_type_enabled(v161, OS_LOG_TYPE_ERROR))
     {
-      v267 = [v330 count];
+      v267 = [array3 count];
       *v435 = 134217984;
       *&v435[4] = v267;
       _os_log_error_impl(&dword_1C0184000, v161, OS_LOG_TYPE_ERROR, "Expected 2 audio tracks, got %lu", v435, 0xCu);
     }
   }
 
-  v326 = [MEMORY[0x1E69C0708] associatedTracksOfTypeForTrack:newTimescaleb trackAssociationType:*MEMORY[0x1E6987B08]];
-  v341 = [v326 firstObject];
-  if (!v341)
+  firstObject3 = [MEMORY[0x1E69C0708] associatedTracksOfTypeForTrack:newTimescaleb trackAssociationType:*MEMORY[0x1E6987B08]];
+  v326FirstObject = [firstObject3 firstObject];
+  if (!v326FirstObject)
   {
-    *a3 = [NUError missingError:@"Expected audio fallback track for track" object:newTimescaleb];
+    *render = [NUError missingError:@"Expected audio fallback track for track" object:newTimescaleb];
     goto LABEL_312;
   }
 
@@ -1080,7 +1080,7 @@ LABEL_312:
   v392 = 0u;
   v389 = 0u;
   v390 = 0u;
-  v305 = v330;
+  v305 = array3;
   v162 = [v305 countByEnumeratingWithState:&v389 objects:v433 count:16];
   if (!v162)
   {
@@ -1100,23 +1100,23 @@ LABEL_312:
       }
 
       v164 = *(*(&v389 + 1) + 8 * v163);
-      if (v164 == newTimescaleb || v164 == v341)
+      if (v164 == newTimescaleb || v164 == v326FirstObject)
       {
-        v166 = [NUVideoUtilities assetReaderAudioSettingsForTrackType:v164 == newTimescaleb];
+        newTimescaleb = [NUVideoUtilities assetReaderAudioSettingsForTrackType:v164 == newTimescaleb];
         v167 = objc_alloc(MEMORY[0x1E6987E80]);
         v432 = newTimescaleb;
         v168 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v432 count:1];
-        v169 = [v167 initWithAudioTracks:v168 audioSettings:v166];
+        v169 = [v167 initWithAudioTracks:v168 audioSettings:newTimescaleb];
 
-        v170 = [(NURenderJob *)self outputAudioMix];
-        [v169 setAudioMix:v170];
+        outputAudioMix3 = [(NURenderJob *)self outputAudioMix];
+        [v169 setAudioMix:outputAudioMix3];
 
         [v169 setAlwaysCopiesSampleData:0];
         if ([v5 canAddOutput:v169])
         {
           [v5 addOutput:v169];
-          v171 = [v164 formatDescriptions];
-          v172 = [v171 count] == 0;
+          formatDescriptions4 = [v164 formatDescriptions];
+          v172 = [formatDescriptions4 count] == 0;
 
           if (v172)
           {
@@ -1125,10 +1125,10 @@ LABEL_312:
 
           else
           {
-            v173 = [v164 formatDescriptions];
-            v174 = [v173 firstObject];
+            formatDescriptions5 = [v164 formatDescriptions];
+            firstObject5 = [formatDescriptions5 firstObject];
 
-            StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v174);
+            StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(firstObject5);
             if (StreamBasicDescription)
             {
               v176 = [NUVideoUtilities assetWriterAudioSettingsForTrackWithSampleRate:v164 == newTimescaleb isAmbisonic:StreamBasicDescription->mSampleRate];
@@ -1145,13 +1145,13 @@ LABEL_312:
                 goto LABEL_187;
               }
 
-              *a3 = [NUError unknownError:@"Cannot add audio track output to asset writer" object:v5];
+              *render = [NUError unknownError:@"Cannot add audio track output to asset writer" object:v5];
 
-              v166 = v176;
+              newTimescaleb = v176;
               goto LABEL_311;
             }
 
-            v259 = [NUError errorWithCode:2 reason:@"ASBD: Invalid format description" object:v174];
+            v259 = [NUError errorWithCode:2 reason:@"ASBD: Invalid format description" object:firstObject5];
           }
         }
 
@@ -1160,7 +1160,7 @@ LABEL_312:
           v259 = [NUError unknownError:@"Cannot add audio mix output to asset reader" object:v169];
         }
 
-        *a3 = v259;
+        *render = v259;
 LABEL_311:
 
         goto LABEL_312;
@@ -1174,9 +1174,9 @@ LABEL_311:
       v176 = _NULogger;
       if (os_log_type_enabled(v176, OS_LOG_TYPE_ERROR))
       {
-        v179 = [v164 trackID];
+        trackID = [v164 trackID];
         *v435 = 67109120;
-        *&v435[4] = v179;
+        *&v435[4] = trackID;
         _os_log_error_impl(&dword_1C0184000, v176, OS_LOG_TYPE_ERROR, "Unexpected audio track %d, skipping", v435, 8u);
       }
 
@@ -1204,13 +1204,13 @@ LABEL_189:
   v180 = newTimescaleb;
 LABEL_220:
 
-  if (([v320 includeCinematicVideoTracks] & 1) != 0 || objc_msgSend(v320, "includeSemanticStyleTracks"))
+  if (([videoExportRequest includeCinematicVideoTracks] & 1) != 0 || objc_msgSend(videoExportRequest, "includeSemanticStyleTracks"))
   {
     v383 = 0u;
     v384 = 0u;
     v381 = 0u;
     v382 = 0u;
-    newTimescalec = v336;
+    newTimescalec = array2;
     v207 = [newTimescalec countByEnumeratingWithState:&v381 objects:v430 count:16];
     if (!v207)
     {
@@ -1232,7 +1232,7 @@ LABEL_220:
         [v211 setAlwaysCopiesSampleData:0];
         if (([v5 canAddOutput:v211] & 1) == 0)
         {
-          *a3 = [NUError unknownError:@"Cannot add video track output to asset reader" object:v210];
+          *render = [NUError unknownError:@"Cannot add video track output to asset reader" object:v210];
 
           goto LABEL_302;
         }
@@ -1240,8 +1240,8 @@ LABEL_220:
         [v5 addOutput:v211];
 
         v212 = objc_alloc(MEMORY[0x1E6987EE0]);
-        v213 = [v210 mediaType];
-        v214 = [v212 initWithMediaType:v213 outputSettings:0];
+        mediaType5 = [v210 mediaType];
+        v214 = [v212 initWithMediaType:mediaType5 outputSettings:0];
 
         if (v210)
         {
@@ -1264,11 +1264,11 @@ LABEL_220:
         [v214 setMediaTimeScale:{objc_msgSend(v210, "naturalTimeScale")}];
         if (([v319 canAddInput:v214] & 1) == 0)
         {
-          *a3 = [NUError unknownError:@"Cannot add video track input to asset writer" object:v214];
+          *render = [NUError unknownError:@"Cannot add video track input to asset writer" object:v214];
 
 LABEL_302:
 LABEL_124:
-          v9 = 0;
+          v3083 = 0;
           goto LABEL_125;
         }
 
@@ -1291,7 +1291,7 @@ LABEL_234:
   v377 = 0u;
   v374 = 0u;
   v375 = 0u;
-  newTimescaled = v328;
+  newTimescaled = array4;
   v216 = [newTimescaled countByEnumeratingWithState:&v374 objects:v429 count:16];
   if (!v216)
   {
@@ -1314,7 +1314,7 @@ LABEL_234:
       [v220 setAlwaysCopiesSampleData:0];
       if (([v5 canAddOutput:v220] & 1) == 0)
       {
-        *a3 = [NUError unknownError:@"Cannot add track output to asset reader" object:v5];
+        *render = [NUError unknownError:@"Cannot add track output to asset reader" object:v5];
 LABEL_305:
 
         goto LABEL_124;
@@ -1323,12 +1323,12 @@ LABEL_305:
       [v5 addOutput:v220];
       v221 = SourceFormatHintForTrack(v219);
       v222 = objc_alloc(MEMORY[0x1E6987EE0]);
-      v223 = [v219 mediaType];
-      v224 = [v222 initWithMediaType:v223 outputSettings:0 sourceFormatHint:v221];
+      mediaType6 = [v219 mediaType];
+      v224 = [v222 initWithMediaType:mediaType6 outputSettings:0 sourceFormatHint:v221];
 
       if (([v319 canAddInput:v224] & 1) == 0)
       {
-        *a3 = [NUError unknownError:@"Cannot add track input to asset writer" object:v5];
+        *render = [NUError unknownError:@"Cannot add track input to asset writer" object:v5];
 
         goto LABEL_305;
       }
@@ -1360,10 +1360,10 @@ LABEL_244:
   v373 = 0u;
   v370 = 0u;
   v371 = 0u;
-  v226 = [(NURenderJob *)self outputVideo];
-  v297 = [v226 tracks];
+  outputVideo7 = [(NURenderJob *)self outputVideo];
+  tracks2 = [outputVideo7 tracks];
 
-  v296 = [v297 countByEnumeratingWithState:&v370 objects:v428 count:16];
+  v296 = [tracks2 countByEnumeratingWithState:&v370 objects:v428 count:16];
   if (v296)
   {
     v227 = *v371;
@@ -1376,7 +1376,7 @@ LABEL_244:
         if (*v371 != v227)
         {
           v229 = v228;
-          objc_enumerationMutation(v297);
+          objc_enumerationMutation(tracks2);
           v228 = v229;
         }
 
@@ -1386,8 +1386,8 @@ LABEL_244:
         v367 = 0u;
         v368 = 0u;
         v369 = 0u;
-        v298 = [v230 availableTrackAssociationTypes];
-        v306 = [v298 countByEnumeratingWithState:&v366 objects:v427 count:16];
+        availableTrackAssociationTypes = [v230 availableTrackAssociationTypes];
+        v306 = [availableTrackAssociationTypes countByEnumeratingWithState:&v366 objects:v427 count:16];
         if (v306)
         {
           v301 = *v367;
@@ -1397,7 +1397,7 @@ LABEL_244:
             {
               if (*v367 != v301)
               {
-                objc_enumerationMutation(v298);
+                objc_enumerationMutation(availableTrackAssociationTypes);
               }
 
               v231 = *(*(&v366 + 1) + 8 * m);
@@ -1442,12 +1442,12 @@ LABEL_244:
                       v240 = _NULogger;
                       if (os_log_type_enabled(v240, OS_LOG_TYPE_INFO))
                       {
-                        v241 = [v230 trackID];
-                        v242 = [v235 trackID];
+                        trackID2 = [v230 trackID];
+                        trackID3 = [v235 trackID];
                         *v435 = 67109634;
-                        *&v435[4] = v241;
+                        *&v435[4] = trackID2;
                         *&v435[8] = 1024;
-                        *&v435[10] = v242;
+                        *&v435[10] = trackID3;
                         *&v435[14] = 2112;
                         *&v435[16] = *newTimescalee;
                         _os_log_impl(&dword_1C0184000, v240, OS_LOG_TYPE_INFO, "Missing inputs for track association, skipping (%d <- %d: %@)", v435, 0x18u);
@@ -1462,7 +1462,7 @@ LABEL_244:
               }
             }
 
-            v306 = [v298 countByEnumeratingWithState:&v366 objects:v427 count:16];
+            v306 = [availableTrackAssociationTypes countByEnumeratingWithState:&v366 objects:v427 count:16];
           }
 
           while (v306);
@@ -1473,7 +1473,7 @@ LABEL_244:
       }
 
       while (v295 + 1 != v296);
-      v296 = [v297 countByEnumeratingWithState:&v370 objects:v428 count:16];
+      v296 = [tracks2 countByEnumeratingWithState:&v370 objects:v428 count:16];
       v227 = v294;
     }
 
@@ -1484,8 +1484,8 @@ LABEL_244:
   v361 = 0u;
   v358 = 0u;
   v359 = 0u;
-  v335 = [v318 trackGroups];
-  *newTimescalef = [v335 countByEnumeratingWithState:&v358 objects:v425 count:16];
+  trackGroups = [videoProperties trackGroups];
+  *newTimescalef = [trackGroups countByEnumeratingWithState:&v358 objects:v425 count:16];
   if (*newTimescalef)
   {
     v343 = *v359;
@@ -1496,21 +1496,21 @@ LABEL_244:
       {
         if (*v359 != v343)
         {
-          objc_enumerationMutation(v335);
+          objc_enumerationMutation(trackGroups);
         }
 
         v244 = *(*(&v358 + 1) + 8 * v243);
         v245 = objc_alloc(MEMORY[0x1E695DF70]);
-        v246 = [v244 trackIDs];
-        v247 = [v245 initWithCapacity:{objc_msgSend(v246, "count")}];
+        trackIDs = [v244 trackIDs];
+        v247 = [v245 initWithCapacity:{objc_msgSend(trackIDs, "count")}];
 
         v356 = 0u;
         v357 = 0u;
         v354 = 0u;
         v355 = 0u;
-        v248 = [v244 trackIDs];
+        trackIDs2 = [v244 trackIDs];
         v249 = 0;
-        v250 = [v248 countByEnumeratingWithState:&v354 objects:v424 count:16];
+        v250 = [trackIDs2 countByEnumeratingWithState:&v354 objects:v424 count:16];
         if (v250)
         {
           v251 = *v355;
@@ -1520,7 +1520,7 @@ LABEL_244:
             {
               if (*v355 != v251)
               {
-                objc_enumerationMutation(v248);
+                objc_enumerationMutation(trackIDs2);
               }
 
               v253 = [v353 objectForKeyedSubscript:*(*(&v354 + 1) + 8 * ii)];
@@ -1542,22 +1542,22 @@ LABEL_244:
               }
             }
 
-            v250 = [v248 countByEnumeratingWithState:&v354 objects:v424 count:16];
+            v250 = [trackIDs2 countByEnumeratingWithState:&v354 objects:v424 count:16];
           }
 
           while (v250);
         }
 
         v254 = [v247 count];
-        v255 = [v244 trackIDs];
-        v256 = v254 == [v255 count];
+        trackIDs3 = [v244 trackIDs];
+        v256 = v254 == [trackIDs3 count];
 
         if (v256)
         {
           v257 = [objc_alloc(MEMORY[0x1E6987EF0]) initWithInputs:v247 defaultInput:v249];
           if (([v319 canAddInputGroup:v257] & 1) == 0)
           {
-            *a3 = [NUError unknownError:@"Cannot add input group to asset writer" object:v257];
+            *render = [NUError unknownError:@"Cannot add input group to asset writer" object:v257];
 
             goto LABEL_124;
           }
@@ -1575,9 +1575,9 @@ LABEL_244:
           v257 = _NULogger;
           if (os_log_type_enabled(v257, OS_LOG_TYPE_DEFAULT))
           {
-            v258 = [v244 trackIDs];
+            trackIDs4 = [v244 trackIDs];
             *v435 = 138543362;
-            *&v435[4] = v258;
+            *&v435[4] = trackIDs4;
             _os_log_impl(&dword_1C0184000, v257, OS_LOG_TYPE_DEFAULT, "Missing track group inputs for track group %{public}@, ignored.", v435, 0xCu);
           }
         }
@@ -1586,7 +1586,7 @@ LABEL_244:
       }
 
       while (v243 != *newTimescalef);
-      *newTimescalef = [v335 countByEnumeratingWithState:&v358 objects:v425 count:16];
+      *newTimescalef = [trackGroups countByEnumeratingWithState:&v358 objects:v425 count:16];
       if (*newTimescalef)
       {
         continue;
@@ -1597,7 +1597,7 @@ LABEL_244:
   }
 
   *v435 = v421;
-  v9 = [(NUVideoExportJob *)self writeVideoFrom:v5 toWriter:v319 stillImageTime:v435 createCustomMetadata:flags & 1 geometryTransform:obja inputSize:a3 outputSize:v303 error:v302, v309, v308];
+  v3083 = [(NUVideoExportJob *)self writeVideoFrom:v5 toWriter:v319 stillImageTime:v435 createCustomMetadata:flags & 1 geometryTransform:obja inputSize:render outputSize:v303 error:v302, v309, v308];
 LABEL_125:
 
 LABEL_126:
@@ -1606,49 +1606,49 @@ LABEL_127:
   v6 = v312;
 LABEL_128:
 
-  return v9;
+  return v3083;
 }
 
-- (id)renderer:(id *)a3
+- (id)renderer:(id *)renderer
 {
-  v5 = [(NURenderJob *)self priority];
-  v6 = [v5 isLow];
+  priority = [(NURenderJob *)self priority];
+  isLow = [priority isLow];
 
-  v7 = [(NURenderJob *)self device];
-  v8 = v7;
-  if (v6)
+  device = [(NURenderJob *)self device];
+  v8 = device;
+  if (isLow)
   {
-    [v7 lowPriorityRendererWithoutIntermediateCaching:a3];
+    [device lowPriorityRendererWithoutIntermediateCaching:renderer];
   }
 
   else
   {
-    [v7 rendererWithoutIntermediateCaching:a3];
+    [device rendererWithoutIntermediateCaching:renderer];
   }
   v9 = ;
 
   return v9;
 }
 
-- (id)generateVideoComposition:(id *)a3
+- (id)generateVideoComposition:(id *)composition
 {
   v26 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = NUVideoExportJob;
-  v4 = [(NURenderJob *)&v24 generateVideoComposition:a3];
+  v4 = [(NURenderJob *)&v24 generateVideoComposition:composition];
   if (v4)
   {
     v5 = [NUVideoUtilities deepMutableCopyVideoComposition:v4];
-    v6 = [(NUVideoExportJob *)self videoProperties];
-    [v6 isHDR];
+    videoProperties = [(NUVideoExportJob *)self videoProperties];
+    [videoProperties isHDR];
 
     [v5 setCustomVideoCompositorClass:objc_opt_class()];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v5 instructions];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    instructions = [v5 instructions];
+    v8 = [instructions countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1659,25 +1659,25 @@ LABEL_128:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(instructions);
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [(NURenderJob *)self composition];
-          [v12 setAdjustmentComposition:v13];
+          composition = [(NURenderJob *)self composition];
+          [v12 setAdjustmentComposition:composition];
 
-          v14 = [(NURenderJob *)self request];
-          v15 = [v14 pipelineFilters];
-          [v12 setPipelineFilters:v15];
+          request = [(NURenderJob *)self request];
+          pipelineFilters = [request pipelineFilters];
+          [v12 setPipelineFilters:pipelineFilters];
 
-          v16 = [(NUVideoExportJob *)self videoExportRequest];
-          v17 = [v16 colorSpace];
-          [v12 setColorSpace:v17];
+          videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+          colorSpace = [videoExportRequest colorSpace];
+          [v12 setColorSpace:colorSpace];
 
           [v12 setRenderJob:self];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v9 = [instructions countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v9);
@@ -1697,16 +1697,16 @@ LABEL_128:
 - (BOOL)requiresVideoComposition
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(NUVideoExportJob *)self videoExportRequest];
-  v4 = [(NURenderJob *)self prepareNode];
+  videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+  prepareNode = [(NURenderJob *)self prepareNode];
   v32 = 0;
-  v5 = [v4 videoProperties:&v32];
+  v5 = [prepareNode videoProperties:&v32];
   v6 = v32;
   [(NUVideoExportJob *)self setVideoProperties:v5];
 
-  v7 = [(NUVideoExportJob *)self videoProperties];
+  videoProperties = [(NUVideoExportJob *)self videoProperties];
 
-  if (!v7)
+  if (!videoProperties)
   {
     if (_NULogOnceToken != -1)
     {
@@ -1722,12 +1722,12 @@ LABEL_128:
     }
   }
 
-  v9 = [(NURenderJob *)self outputVideo];
+  outputVideo = [(NURenderJob *)self outputVideo];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v9];
+  v10 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:outputVideo];
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v11)
   {
@@ -1745,8 +1745,8 @@ LABEL_8:
       v15 = *(*(&v28 + 1) + 8 * v14);
       if ([v15 isEnabled])
       {
-        v16 = [v15 segments];
-        v17 = [v16 count];
+        segments = [v15 segments];
+        v17 = [segments count];
 
         if (v17 > 1)
         {
@@ -1768,56 +1768,56 @@ LABEL_8:
   }
 
   v18 = MEMORY[0x1E69C08F0];
-  v19 = [v3 destinationURL];
-  v20 = [v19 pathExtension];
-  v10 = [v18 typeWithFilenameExtension:v20];
+  destinationURL = [videoExportRequest destinationURL];
+  pathExtension = [destinationURL pathExtension];
+  v10 = [v18 typeWithFilenameExtension:pathExtension];
 
   if (![v10 conformsToType:*MEMORY[0x1E6982F80]])
   {
 LABEL_20:
-    v25 = 1;
+    requiresVideoComposition = 1;
     goto LABEL_21;
   }
 
-  if (([v3 applyOrientationAsMetadata] & 1) != 0 || (-[NURenderJob outputGeometry](self, "outputGeometry"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "orientation"), v21, -[NUVideoExportJob videoProperties](self, "videoProperties"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "orientation"), v23, v25 = 1, v22 == 1) && v24 == 1)
+  if (([videoExportRequest applyOrientationAsMetadata] & 1) != 0 || (-[NURenderJob outputGeometry](self, "outputGeometry"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "orientation"), v21, -[NUVideoExportJob videoProperties](self, "videoProperties"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "orientation"), v23, requiresVideoComposition = 1, v22 == 1) && v24 == 1)
   {
     v27.receiver = self;
     v27.super_class = NUVideoExportJob;
-    v25 = [(NURenderJob *)&v27 requiresVideoComposition];
+    requiresVideoComposition = [(NURenderJob *)&v27 requiresVideoComposition];
   }
 
 LABEL_21:
 
-  return v25;
+  return requiresVideoComposition;
 }
 
-- (id)prepareNodeWithPipelineState:(id)a3 error:(id *)a4
+- (id)prepareNodeWithPipelineState:(id)state error:(id *)error
 {
   v16.receiver = self;
   v16.super_class = NUVideoExportJob;
-  v6 = [(NURenderJob *)&v16 prepareNodeWithPipelineState:a3 error:?];
+  v6 = [(NURenderJob *)&v16 prepareNodeWithPipelineState:state error:?];
   if (v6)
   {
-    v7 = [(NUVideoExportJob *)self videoExportRequest];
-    v8 = [v7 applyOrientationAsMetadata];
+    videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+    applyOrientationAsMetadata = [videoExportRequest applyOrientationAsMetadata];
 
-    if (v8)
+    if (applyOrientationAsMetadata)
     {
-      v9 = [v6 outputImageGeometry:a4];
+      v9 = [v6 outputImageGeometry:error];
       v10 = v9;
       if (!v9)
       {
         goto LABEL_11;
       }
 
-      v11 = [v9 orientation];
+      orientation = [v9 orientation];
       v12 = 6;
-      if (v11 != 8)
+      if (orientation != 8)
       {
-        v12 = v11;
+        v12 = orientation;
       }
 
-      if (v11 == 6)
+      if (orientation == 6)
       {
         v13 = 8;
       }
@@ -1843,36 +1843,36 @@ LABEL_11:
 - (id)result
 {
   v3 = objc_alloc_init(_NUVideoExportResult);
-  v4 = [(NUVideoExportJob *)self videoExportRequest];
-  v5 = [v4 destinationURL];
-  [(_NUExportResult *)v3 setDestinationURL:v5];
+  videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+  destinationURL = [videoExportRequest destinationURL];
+  [(_NUExportResult *)v3 setDestinationURL:destinationURL];
 
-  v6 = [(NURenderJob *)self outputGeometry];
-  [(_NUExportResult *)v3 setGeometry:v6];
+  outputGeometry = [(NURenderJob *)self outputGeometry];
+  [(_NUExportResult *)v3 setGeometry:outputGeometry];
 
-  v7 = [(NUVideoExportJob *)self digest];
-  v8 = [v7 stringValue];
-  [(_NUVideoExportResult *)v3 setDigest:v8];
+  digest = [(NUVideoExportJob *)self digest];
+  stringValue = [digest stringValue];
+  [(_NUVideoExportResult *)v3 setDigest:stringValue];
 
   return v3;
 }
 
 - (id)scalePolicy
 {
-  v2 = [(NUVideoExportJob *)self videoExportRequest];
-  v3 = [v2 scalePolicy];
+  videoExportRequest = [(NUVideoExportJob *)self videoExportRequest];
+  scalePolicy = [videoExportRequest scalePolicy];
 
-  return v3;
+  return scalePolicy;
 }
 
 - (BOOL)wantsRenderNodeCached
 {
-  v2 = [(NURenderJob *)self outputVideoComposition];
-  v3 = v2;
-  if (v2)
+  outputVideoComposition = [(NURenderJob *)self outputVideoComposition];
+  v3 = outputVideoComposition;
+  if (outputVideoComposition)
   {
-    v4 = [v2 sourceVideoTrackWindowsForTrackIDs];
-    v5 = [v4 count] != 0;
+    sourceVideoTrackWindowsForTrackIDs = [outputVideoComposition sourceVideoTrackWindowsForTrackIDs];
+    v5 = [sourceVideoTrackWindowsForTrackIDs count] != 0;
   }
 
   else
@@ -1883,10 +1883,10 @@ LABEL_11:
   return v5;
 }
 
-- (NUVideoExportJob)initWithExportRequest:(id)a3
+- (NUVideoExportJob)initWithExportRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_4036);
@@ -1930,8 +1930,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1947,8 +1947,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;
@@ -1964,18 +1964,18 @@ LABEL_14:
   _NUAssertFailHandler("[NUVideoExportJob initWithExportRequest:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoExportJob.m", 90, @"Initializer not available: [%@ %@], use designated initializer instead.", v27, v28, v29, v30, v26);
 }
 
-- (NUVideoExportJob)initWithVideoExportRequest:(id)a3
+- (NUVideoExportJob)initWithVideoExportRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = NUVideoExportJob;
-  v5 = [(NUExportJob *)&v9 initWithExportRequest:v4];
+  v5 = [(NUExportJob *)&v9 initWithExportRequest:requestCopy];
   if (v5)
   {
-    v6 = [v4 composition];
-    [(NURenderJob *)v5 setComposition:v6];
+    composition = [requestCopy composition];
+    [(NURenderJob *)v5 setComposition:composition];
 
-    if ([v4 computeDigest])
+    if ([requestCopy computeDigest])
     {
       v7 = objc_alloc_init(NUDigest);
       [(NUVideoExportJob *)v5 setDigest:v7];

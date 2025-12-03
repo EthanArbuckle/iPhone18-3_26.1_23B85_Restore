@@ -1,30 +1,30 @@
 @interface CSDSharePlayAvailabilityManager
-- (CSDSharePlayAvailabilityManager)initWithMessageProvider:(id)a3 referenceDateProvider:(id)a4 remoteAvailabilityThresholdSeconds:(unint64_t)a5 requestToScreenShareEnabled:(BOOL)a6 relaySupportEnabled:(BOOL)a7;
-- (void)handleWithMessage:(CSDMessagingSharePlayAvailable *)a3 fromHandle:(TUHandle *)a4 sentAtEpochMillis:(unint64_t)a5 completionHandler:(id)a6;
+- (CSDSharePlayAvailabilityManager)initWithMessageProvider:(id)provider referenceDateProvider:(id)dateProvider remoteAvailabilityThresholdSeconds:(unint64_t)seconds requestToScreenShareEnabled:(BOOL)enabled relaySupportEnabled:(BOOL)supportEnabled;
+- (void)handleWithMessage:(CSDMessagingSharePlayAvailable *)message fromHandle:(TUHandle *)handle sentAtEpochMillis:(unint64_t)millis completionHandler:(id)handler;
 @end
 
 @implementation CSDSharePlayAvailabilityManager
 
-- (CSDSharePlayAvailabilityManager)initWithMessageProvider:(id)a3 referenceDateProvider:(id)a4 remoteAvailabilityThresholdSeconds:(unint64_t)a5 requestToScreenShareEnabled:(BOOL)a6 relaySupportEnabled:(BOOL)a7
+- (CSDSharePlayAvailabilityManager)initWithMessageProvider:(id)provider referenceDateProvider:(id)dateProvider remoteAvailabilityThresholdSeconds:(unint64_t)seconds requestToScreenShareEnabled:(BOOL)enabled relaySupportEnabled:(BOOL)supportEnabled
 {
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(dateProvider);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = swift_unknownObjectRetain();
-  return sub_1003A190C(v12, sub_1003A6314, v11, a5, a6, a7);
+  return sub_1003A190C(v12, sub_1003A6314, v11, seconds, enabled, supportEnabled);
 }
 
-- (void)handleWithMessage:(CSDMessagingSharePlayAvailable *)a3 fromHandle:(TUHandle *)a4 sentAtEpochMillis:(unint64_t)a5 completionHandler:(id)a6
+- (void)handleWithMessage:(CSDMessagingSharePlayAvailable *)message fromHandle:(TUHandle *)handle sentAtEpochMillis:(unint64_t)millis completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = message;
+  v11[3] = handle;
+  v11[4] = millis;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
+  messageCopy = message;
+  handleCopy = handle;
 
   sub_10044D610(&unk_100583BA8, v11);
 }

@@ -1,24 +1,24 @@
 @interface WFLinkCalendarCloseScreenAction
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 @end
 
 @implementation WFLinkCalendarCloseScreenAction
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Closes the specified screen.", @"Closes the specified screen.");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Close Screen", @"Close Screen");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

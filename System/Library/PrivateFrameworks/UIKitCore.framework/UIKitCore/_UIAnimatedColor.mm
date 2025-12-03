@@ -1,16 +1,16 @@
 @interface _UIAnimatedColor
 + (CGPatternCallbacks)_patternCallbacks;
-+ (id)animatedColorForParentView:(id)a3;
-- (CGColor)_patternColorForSize:(CGSize)a3;
++ (id)animatedColorForParentView:(id)view;
+- (CGColor)_patternColorForSize:(CGSize)size;
 - (UIView)parentView;
-- (_UIAnimatedColor)initWithBounds:(CGRect)a3 invalidationHandler:(id)a4;
-- (_UIAnimatedColor)initWithParentView:(id)a3;
-- (void)_drawPatternWithContext:(CGContext *)a3;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)_recreatePatternColorForBounds:(CGRect)a3;
+- (_UIAnimatedColor)initWithBounds:(CGRect)bounds invalidationHandler:(id)handler;
+- (_UIAnimatedColor)initWithParentView:(id)view;
+- (void)_drawPatternWithContext:(CGContext *)context;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)_recreatePatternColorForBounds:(CGRect)bounds;
 - (void)dealloc;
-- (void)setAnimating:(BOOL)a3;
-- (void)setProgress:(double)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation _UIAnimatedColor
@@ -27,22 +27,22 @@
   return result;
 }
 
-+ (id)animatedColorForParentView:(id)a3
++ (id)animatedColorForParentView:(id)view
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithParentView:v4];
+  viewCopy = view;
+  v5 = [[self alloc] initWithParentView:viewCopy];
 
   return v5;
 }
 
-- (_UIAnimatedColor)initWithParentView:(id)a3
+- (_UIAnimatedColor)initWithParentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __39___UIAnimatedColor_initWithParentView___block_invoke;
   aBlock[3] = &unk_1E710AF98;
-  v5 = v4;
+  v5 = viewCopy;
   v11 = v5;
   v6 = _Block_copy(aBlock);
   [v5 bounds];
@@ -57,14 +57,14 @@
   return v8;
 }
 
-- (_UIAnimatedColor)initWithBounds:(CGRect)a3 invalidationHandler:(id)a4
+- (_UIAnimatedColor)initWithBounds:(CGRect)bounds invalidationHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v25[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  handlerCopy = handler;
   v24.receiver = self;
   v24.super_class = _UIAnimatedColor;
   v10 = [(_UIAnimatedColor *)&v24 init];
@@ -75,7 +75,7 @@
     v10->_bounds.origin.y = y;
     v10->_bounds.size.width = width;
     v10->_bounds.size.height = height;
-    v12 = [v9 copy];
+    v12 = [handlerCopy copy];
     invalidationHandler = v11->_invalidationHandler;
     v11->_invalidationHandler = v12;
 
@@ -108,32 +108,32 @@
   [(UIView *)WeakRetained _removeGeometryChangeObserver:?];
 
   displayLink = self->_displayLink;
-  v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)displayLink removeFromRunLoop:v5 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)displayLink removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   v6.receiver = self;
   v6.super_class = _UIAnimatedColor;
   [(_UIAnimatedColor *)&v6 dealloc];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (vabdd_f64(self->_progress, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_progress, progress) > 2.22044605e-16)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(UIViewFloatAnimatableProperty *)self->_progressAnimatableProperty setValue:?];
   }
 }
 
-- (CGColor)_patternColorForSize:(CGSize)a3
+- (CGColor)_patternColorForSize:(CGSize)size
 {
-  width = a3.width;
-  if (a3.width < 2.22044605e-16 || a3.height < 2.22044605e-16)
+  width = size.width;
+  if (size.width < 2.22044605e-16 || size.height < 2.22044605e-16)
   {
     return 0;
   }
 
-  height = a3.height;
+  height = size.height;
   v23.origin.x = 0.0;
   v23.origin.y = 0.0;
   v23.size.width = width;
@@ -155,7 +155,7 @@
     memset(&callbacks, 0, sizeof(callbacks));
   }
 
-  v13 = self;
+  selfCopy = self;
   v14 = *(MEMORY[0x1E695EFD0] + 16);
   *&v21.a = *MEMORY[0x1E695EFD0];
   *&v21.c = v14;
@@ -164,7 +164,7 @@
   *&v14 = y;
   v16 = v10;
   v17 = v11;
-  v18 = CGPatternCreate(v13, *(&v14 - 8), &v21, width, height, kCGPatternTilingConstantSpacing, 1, &callbacks);
+  v18 = CGPatternCreate(selfCopy, *(&v14 - 8), &v21, width, height, kCGPatternTilingConstantSpacing, 1, &callbacks);
   Pattern = CGColorSpaceCreatePattern(0);
   v20 = CGColorCreateWithPattern(Pattern, v18, &_patternColorForSize__alpha);
   CGColorSpaceRelease(Pattern);
@@ -172,9 +172,9 @@
   return CFAutorelease(v20);
 }
 
-- (void)_recreatePatternColorForBounds:(CGRect)a3
+- (void)_recreatePatternColorForBounds:(CGRect)bounds
 {
-  if ([(_UIAnimatedColor *)self _patternColorForSize:a3.size.width, a3.size.height])
+  if ([(_UIAnimatedColor *)self _patternColorForSize:bounds.size.width, bounds.size.height])
   {
     [UIColor colorWithCGColor:?];
   }
@@ -188,28 +188,28 @@
   self->_wrappedColor = v4;
 }
 
-- (void)_drawPatternWithContext:(CGContext *)a3
+- (void)_drawPatternWithContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   x = self->_bounds.origin.x;
   y = self->_bounds.origin.y;
   width = self->_bounds.size.width;
   height = self->_bounds.size.height;
   [(UIViewFloatAnimatableProperty *)self->_progressAnimatableProperty presentationValue];
-  [(_UIAnimatedColor *)self drawRect:a3 usingContext:x progress:y, width, height, v9];
+  [(_UIAnimatedColor *)self drawRect:context usingContext:x progress:y, width, height, v9];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  self->_animating = a3;
-  if (a3)
+  self->_animating = animating;
+  if (animating)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentView);
-    v5 = [WeakRetained window];
-    v6 = [v5 screen];
-    v7 = [v6 displayLinkWithTarget:self selector:sel__didFireDisplayLink_];
+    window = [WeakRetained window];
+    screen = [window screen];
+    v7 = [screen displayLinkWithTarget:self selector:sel__didFireDisplayLink_];
 
     if (!v7)
     {
@@ -217,42 +217,42 @@
     }
 
     displayLink = self->_displayLink;
-    v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
     v10 = *MEMORY[0x1E695DA28];
-    [(CADisplayLink *)displayLink removeFromRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
+    [(CADisplayLink *)displayLink removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     v11 = self->_displayLink;
     self->_displayLink = v7;
     v12 = v7;
 
-    v16 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v12 addToRunLoop:v16 forMode:v10];
+    mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v12 addToRunLoop:mainRunLoop2 forMode:v10];
 
-    v13 = v16;
+    v13 = mainRunLoop2;
   }
 
   else
   {
     v14 = self->_displayLink;
-    v15 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v14 removeFromRunLoop:v15 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop3 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v14 removeFromRunLoop:mainRunLoop3 forMode:*MEMORY[0x1E695DA28]];
 
     v13 = self->_displayLink;
     self->_displayLink = 0;
   }
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  if ((a3->var0 & 0x108) != 0)
+  if ((changed->var0 & 0x108) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentView);
     [WeakRetained bounds];
     [(_UIAnimatedColor *)self _recreatePatternColorForBounds:?];
 
     v8 = objc_loadWeakRetained(&self->_parentView);
-    v7 = [v8 window];
-    [(CADisplayLink *)self->_displayLink setPaused:v7 == 0];
+    window = [v8 window];
+    [(CADisplayLink *)self->_displayLink setPaused:window == 0];
   }
 }
 

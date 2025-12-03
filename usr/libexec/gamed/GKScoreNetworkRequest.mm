@@ -1,69 +1,69 @@
 @interface GKScoreNetworkRequest
-- (GKScoreNetworkRequest)initWithScores:(id)a3 bundleID:(id)a4 eligibleChallenges:(id)a5;
-- (GKScoreNetworkRequest)initWithTask:(id)a3;
+- (GKScoreNetworkRequest)initWithScores:(id)scores bundleID:(id)d eligibleChallenges:(id)challenges;
+- (GKScoreNetworkRequest)initWithTask:(id)task;
 - (NSString)description;
-- (id)mergeRequestData:(id)a3 additional:(id)a4;
+- (id)mergeRequestData:(id)data additional:(id)additional;
 - (id)postBody;
 - (id)taskInfo;
 - (int64_t)numberOfRequests;
-- (void)removeFromStore:(id)a3;
-- (void)updateWithTaskInfo:(id)a3;
+- (void)removeFromStore:(id)store;
+- (void)updateWithTaskInfo:(id)info;
 @end
 
 @implementation GKScoreNetworkRequest
 
-- (GKScoreNetworkRequest)initWithTask:(id)a3
+- (GKScoreNetworkRequest)initWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = GKScoreNetworkRequest;
   v5 = [(GKScoreNetworkRequest *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(GKScoreNetworkRequest *)v5 setNsurlTask:v4];
-    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:v4];
+    [(GKScoreNetworkRequest *)v5 setNsurlTask:taskCopy];
+    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
     [(GKScoreNetworkRequest *)v6 updateWithTaskInfo:v7];
   }
 
   return v6;
 }
 
-- (GKScoreNetworkRequest)initWithScores:(id)a3 bundleID:(id)a4 eligibleChallenges:(id)a5
+- (GKScoreNetworkRequest)initWithScores:(id)scores bundleID:(id)d eligibleChallenges:(id)challenges
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  scoresCopy = scores;
+  dCopy = d;
+  challengesCopy = challenges;
   v31.receiver = self;
   v31.super_class = GKScoreNetworkRequest;
   v11 = [(GKScoreNetworkRequest *)&v31 init];
   if (v11)
   {
     v12 = +[NSUUID UUID];
-    v13 = [v12 UUIDString];
-    [(GKScoreNetworkRequest *)v11 setUuid:v13];
+    uUIDString = [v12 UUIDString];
+    [(GKScoreNetworkRequest *)v11 setUuid:uUIDString];
 
     v14 = _localPlayerID();
     [(GKScoreNetworkRequest *)v11 setPlayerID:v14];
 
-    [(GKScoreNetworkRequest *)v11 setBundleID:v9];
+    [(GKScoreNetworkRequest *)v11 setBundleID:dCopy];
     v15 = objc_alloc_init(NSMutableDictionary);
     [(GKScoreNetworkRequest *)v11 setRequestData:v15];
 
     v16 = objc_alloc_init(NSMutableSet);
-    v17 = [(GKScoreNetworkRequest *)v11 requestData];
+    requestData = [(GKScoreNetworkRequest *)v11 requestData];
     v33 = @"RequestDataKey";
     v34 = v16;
     v18 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-    v19 = mergeValuesForKeyWithDictionary(v17, v18);
+    v19 = mergeValuesForKeyWithDictionary(requestData, v18);
     [(GKScoreNetworkRequest *)v11 setRequestData:v19];
 
-    [(GKScoreNetworkRequest *)v11 setChallengeIDs:v10];
+    [(GKScoreNetworkRequest *)v11 setChallengeIDs:challengesCopy];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = v8;
+    v20 = scoresCopy;
     v21 = [v20 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v21)
     {
@@ -79,8 +79,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v27 + 1) + 8 * v24) serverRepresentation];
-          [v16 addObject:v25];
+          serverRepresentation = [*(*(&v27 + 1) + 8 * v24) serverRepresentation];
+          [v16 addObject:serverRepresentation];
 
           v24 = v24 + 1;
         }
@@ -98,8 +98,8 @@
 
 - (int64_t)numberOfRequests
 {
-  v2 = [(GKScoreNetworkRequest *)self requestData];
-  v3 = [v2 objectForKeyedSubscript:@"RequestDataKey"];
+  requestData = [(GKScoreNetworkRequest *)self requestData];
+  v3 = [requestData objectForKeyedSubscript:@"RequestDataKey"];
 
   v4 = [v3 count];
   return v4;
@@ -108,81 +108,81 @@
 - (id)postBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKScoreNetworkRequest *)self requestData];
-  v5 = [v4 objectForKeyedSubscript:@"RequestDataKey"];
+  requestData = [(GKScoreNetworkRequest *)self requestData];
+  v5 = [requestData objectForKeyedSubscript:@"RequestDataKey"];
 
-  v6 = [v5 allObjects];
-  [v3 setObject:v6 forKeyedSubscript:@"scores"];
+  allObjects = [v5 allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"scores"];
 
-  v7 = [(GKScoreNetworkRequest *)self challengeIDs];
-  [v3 setObject:v7 forKeyedSubscript:@"eligible-challenges"];
+  challengeIDs = [(GKScoreNetworkRequest *)self challengeIDs];
+  [v3 setObject:challengeIDs forKeyedSubscript:@"eligible-challenges"];
 
   return v3;
 }
 
-- (void)removeFromStore:(id)a3
+- (void)removeFromStore:(id)store
 {
-  v4 = a3;
-  v5 = [v4 currentTasks];
-  v6 = [(GKScoreNetworkRequest *)self bundleID];
-  [v5 removeObjectForKey:v6];
+  storeCopy = store;
+  currentTasks = [storeCopy currentTasks];
+  bundleID = [(GKScoreNetworkRequest *)self bundleID];
+  [currentTasks removeObjectForKey:bundleID];
 
-  v8 = [v4 pendingRequests];
+  pendingRequests = [storeCopy pendingRequests];
 
-  v7 = [(GKScoreNetworkRequest *)self bundleID];
-  [v8 removeObjectForKey:v7];
+  bundleID2 = [(GKScoreNetworkRequest *)self bundleID];
+  [pendingRequests removeObjectForKey:bundleID2];
 }
 
 - (id)taskInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKScoreNetworkRequest *)self playerID];
-  [v3 setObject:v4 forKeyedSubscript:@"PlayerIDKey"];
+  playerID = [(GKScoreNetworkRequest *)self playerID];
+  [v3 setObject:playerID forKeyedSubscript:@"PlayerIDKey"];
 
-  v5 = [(GKScoreNetworkRequest *)self requestData];
-  v6 = [v5 objectForKeyedSubscript:@"RequestDataKey"];
+  requestData = [(GKScoreNetworkRequest *)self requestData];
+  v6 = [requestData objectForKeyedSubscript:@"RequestDataKey"];
 
-  v7 = [v6 allObjects];
-  [v3 setObject:v7 forKeyedSubscript:@"RequestDataKey"];
+  allObjects = [v6 allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"RequestDataKey"];
 
-  v8 = [objc_opt_class() bagKey];
-  [v3 setObject:v8 forKeyedSubscript:@"BagKeyKey"];
+  bagKey = [objc_opt_class() bagKey];
+  [v3 setObject:bagKey forKeyedSubscript:@"BagKeyKey"];
 
-  v9 = [(GKScoreNetworkRequest *)self uuid];
-  [v3 setObject:v9 forKeyedSubscript:@"UUIDKey"];
+  uuid = [(GKScoreNetworkRequest *)self uuid];
+  [v3 setObject:uuid forKeyedSubscript:@"UUIDKey"];
 
-  v10 = [(GKScoreNetworkRequest *)self bundleID];
-  [v3 setObject:v10 forKeyedSubscript:@"BundleIDKey"];
+  bundleID = [(GKScoreNetworkRequest *)self bundleID];
+  [v3 setObject:bundleID forKeyedSubscript:@"BundleIDKey"];
 
-  v11 = [(GKScoreNetworkRequest *)self challengeIDs];
-  [v3 setObject:v11 forKeyedSubscript:@"challengesIDKey"];
+  challengeIDs = [(GKScoreNetworkRequest *)self challengeIDs];
+  [v3 setObject:challengeIDs forKeyedSubscript:@"challengesIDKey"];
 
   return v3;
 }
 
-- (id)mergeRequestData:(id)a3 additional:(id)a4
+- (id)mergeRequestData:(id)data additional:(id)additional
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  dataCopy = data;
+  additionalCopy = additional;
+  v7 = additionalCopy;
+  if (!(dataCopy | additionalCopy))
   {
     v14 = &__NSDictionary0__struct;
     goto LABEL_13;
   }
 
-  if (!v5)
+  if (!dataCopy)
   {
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!additionalCopy)
   {
-    v15 = v5;
+    v15 = dataCopy;
     goto LABEL_12;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"RequestDataKey"];
+  v8 = [dataCopy objectForKeyedSubscript:@"RequestDataKey"];
 
   if (!v8)
   {
@@ -193,7 +193,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [v5 mutableCopy];
+  v9 = [dataCopy mutableCopy];
   v10 = [v7 objectForKeyedSubscript:@"RequestDataKey"];
   v11 = [v9 objectForKeyedSubscript:@"RequestDataKey"];
   v12 = v11;
@@ -211,45 +211,45 @@ LABEL_13:
   return v14;
 }
 
-- (void)updateWithTaskInfo:(id)a3
+- (void)updateWithTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(GKScoreNetworkRequest *)self setCoalescingAgent:0];
   [(GKScoreNetworkRequest *)self setIssueRequests:0];
-  v5 = [v4 objectForKeyedSubscript:@"UUIDKey"];
+  v5 = [infoCopy objectForKeyedSubscript:@"UUIDKey"];
   [(GKScoreNetworkRequest *)self setUuid:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"PlayerIDKey"];
+  v6 = [infoCopy objectForKeyedSubscript:@"PlayerIDKey"];
   [(GKScoreNetworkRequest *)self setPlayerID:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"BundleIDKey"];
+  v7 = [infoCopy objectForKeyedSubscript:@"BundleIDKey"];
   [(GKScoreNetworkRequest *)self setBundleID:v7];
 
   v8 = objc_alloc_init(NSMutableDictionary);
   [(GKScoreNetworkRequest *)self setRequestData:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"challengesIDKey"];
+  v9 = [infoCopy objectForKeyedSubscript:@"challengesIDKey"];
   [(GKScoreNetworkRequest *)self setChallengeIDs:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"RequestDataKey"];
+  v10 = [infoCopy objectForKeyedSubscript:@"RequestDataKey"];
 
-  v11 = [(GKScoreNetworkRequest *)self requestData];
+  requestData = [(GKScoreNetworkRequest *)self requestData];
   v15 = @"RequestDataKey";
   v12 = [NSMutableSet setWithArray:v10];
   v16 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  v14 = mergeValuesForKeyWithDictionary(v11, v13);
+  v14 = mergeValuesForKeyWithDictionary(requestData, v13);
   [(GKScoreNetworkRequest *)self setRequestData:v14];
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(GKScoreNetworkRequest *)self playerID];
-  v5 = [(GKScoreNetworkRequest *)self requestData];
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 count]);
-  v7 = [(GKScoreNetworkRequest *)self challengeIDs];
-  v8 = [NSString stringWithFormat:@"%@: PlayerID: %@ Scores: %@ challengeIDs: %@", v3, v4, v6, v7];
+  playerID = [(GKScoreNetworkRequest *)self playerID];
+  requestData = [(GKScoreNetworkRequest *)self requestData];
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [requestData count]);
+  challengeIDs = [(GKScoreNetworkRequest *)self challengeIDs];
+  v8 = [NSString stringWithFormat:@"%@: PlayerID: %@ Scores: %@ challengeIDs: %@", v3, playerID, v6, challengeIDs];
 
   return v8;
 }

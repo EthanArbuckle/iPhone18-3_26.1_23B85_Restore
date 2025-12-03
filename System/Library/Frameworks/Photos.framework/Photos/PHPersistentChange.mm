@@ -1,5 +1,5 @@
 @interface PHPersistentChange
-- (PHPersistentChange)initWithChange:(id)a3;
+- (PHPersistentChange)initWithChange:(id)change;
 - (PHPersistentObjectChangeDetails)changeDetailsForObjectType:(PHObjectType)objectType error:(NSError *)error;
 @end
 
@@ -71,17 +71,17 @@ LABEL_16:
   return v13;
 }
 
-- (PHPersistentChange)initWithChange:(id)a3
+- (PHPersistentChange)initWithChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = [(PHPersistentChange *)self init];
   if (v6)
   {
-    v7 = [v5 changeToken];
-    if (v7)
+    changeToken = [changeCopy changeToken];
+    if (changeToken)
     {
-      objc_storeStrong(&v6->_change, a3);
-      objc_storeStrong(&v6->_changeToken, v7);
+      objc_storeStrong(&v6->_change, change);
+      objc_storeStrong(&v6->_changeToken, changeToken);
     }
 
     else

@@ -1,16 +1,16 @@
 @interface CRLStreamDataCompression
-- (BOOL)handleData:(id)a3 isDone:(BOOL)a4;
-- (CRLStreamDataCompression)initWithAlgorithm:(int)a3 operation:(int)a4;
-- (void)setHandler:(id)a3;
+- (BOOL)handleData:(id)data isDone:(BOOL)done;
+- (CRLStreamDataCompression)initWithAlgorithm:(int)algorithm operation:(int)operation;
+- (void)setHandler:(id)handler;
 @end
 
 @implementation CRLStreamDataCompression
 
-- (CRLStreamDataCompression)initWithAlgorithm:(int)a3 operation:(int)a4
+- (CRLStreamDataCompression)initWithAlgorithm:(int)algorithm operation:(int)operation
 {
   v8.receiver = self;
   v8.super_class = CRLStreamDataCompression;
-  v4 = [(CRLStreamCompression *)&v8 initWithAlgorithm:*&a3 operation:*&a4];
+  v4 = [(CRLStreamCompression *)&v8 initWithAlgorithm:*&algorithm operation:*&operation];
   v5 = v4;
   if (v4)
   {
@@ -23,25 +23,25 @@
   return v5;
 }
 
-- (BOOL)handleData:(id)a3 isDone:(BOOL)a4
+- (BOOL)handleData:(id)data isDone:(BOOL)done
 {
-  concat = dispatch_data_create_concat(self->_outputData, a3);
+  concat = dispatch_data_create_concat(self->_outputData, data);
   outputData = self->_outputData;
   self->_outputData = concat;
 
   return 1;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1003921BC;
   v6[3] = &unk_10185AB80;
-  v7 = a3;
+  handlerCopy = handler;
   v5.receiver = self;
   v5.super_class = CRLStreamDataCompression;
-  v4 = v7;
+  v4 = handlerCopy;
   [(CRLStreamCompression *)&v5 setHandler:v6];
 }
 

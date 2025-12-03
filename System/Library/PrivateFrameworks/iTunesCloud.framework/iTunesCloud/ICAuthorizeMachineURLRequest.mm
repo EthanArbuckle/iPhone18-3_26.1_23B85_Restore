@@ -1,23 +1,23 @@
 @interface ICAuthorizeMachineURLRequest
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5;
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler;
 @end
 
 @implementation ICAuthorizeMachineURLRequest
 
-- (void)buildStoreURLRequestWithURLRequest:(id)a3 builderProperties:(id)a4 completionHandler:(id)a5
+- (void)buildStoreURLRequestWithURLRequest:(id)request builderProperties:(id)properties completionHandler:(id)handler
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 DSID];
-  v12 = [v11 unsignedLongLongValue];
+  requestCopy = request;
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  dSID = [propertiesCopy DSID];
+  unsignedLongLongValue = [dSID unsignedLongLongValue];
 
-  if (!v12)
+  if (!unsignedLongLongValue)
   {
     v48 = *MEMORY[0x1E696A278];
-    v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to build URL Request [no DSID in builder properties] - builderProperties=%@", v9];
-    v49 = v34;
+    propertiesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to build URL Request [no DSID in builder properties] - builderProperties=%@", propertiesCopy];
+    v49 = propertiesCopy;
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7400 userInfo:v35];
@@ -39,7 +39,7 @@ LABEL_30:
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v51 = self;
+      selfCopy4 = self;
       v52 = 2114;
       v53 = v16;
       _os_log_impl(&dword_1B4491000, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting context ID failed with error: %{public}@", buf, 0x16u);
@@ -60,7 +60,7 @@ LABEL_30:
 
   v44 = v16;
   v45 = 0;
-  v18 = ICFairPlayCopyKeyBagSyncDataWithContextID(v47, v12, v17, &v45, &v44);
+  v18 = ICFairPlayCopyKeyBagSyncDataWithContextID(v47, unsignedLongLongValue, v17, &v45, &v44);
   v19 = v45;
   v41 = v44;
 
@@ -71,7 +71,7 @@ LABEL_30:
     {
       v21 = self->_keybagPath;
       *buf = 138543874;
-      v51 = self;
+      selfCopy4 = self;
       v52 = 2114;
       v53 = v21;
       v54 = 2114;
@@ -88,7 +88,7 @@ LABEL_26:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v51 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1B4491000, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] Missing kbsync data, failing request.", buf, 0xCu);
     }
 
@@ -100,13 +100,13 @@ LABEL_26:
     goto LABEL_30;
   }
 
-  v40 = v8;
+  v40 = requestCopy;
   v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v23 = v19;
   v24 = v22;
   v39 = v23;
   [v22 setObject:? forKey:?];
-  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
+  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue];
   [v24 setObject:v25 forKey:@"ownerDsid"];
 
   tokenData = self->_tokenData;
@@ -115,20 +115,20 @@ LABEL_26:
     [v24 setObject:tokenData forKey:@"token"];
   }
 
-  v27 = [(ICURLRequest *)self requestContext];
-  v28 = [v27 deviceInfo];
+  requestContext = [(ICURLRequest *)self requestContext];
+  deviceInfo = [requestContext deviceInfo];
 
-  v29 = [v28 deviceGUID];
-  if ([v29 length])
+  deviceGUID = [deviceInfo deviceGUID];
+  if ([deviceGUID length])
   {
-    v30 = [v29 uppercaseString];
-    [v24 setObject:v30 forKey:@"guid"];
+    uppercaseString = [deviceGUID uppercaseString];
+    [v24 setObject:uppercaseString forKey:@"guid"];
   }
 
-  v31 = [v28 deviceName];
-  if (v31)
+  deviceName = [deviceInfo deviceName];
+  if (deviceName)
   {
-    [v24 setObject:v31 forKey:@"machineName"];
+    [v24 setObject:deviceName forKey:@"machineName"];
   }
 
   if ([(NSString *)self->_reason length])
@@ -154,7 +154,7 @@ LABEL_26:
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v51 = self;
+      selfCopy4 = self;
       v52 = 2114;
       v53 = v16;
       _os_log_impl(&dword_1B4491000, v38, OS_LOG_TYPE_DEFAULT, "[%{public}@] Failed to serialize request with error: %{public}@", buf, 0x16u);
@@ -170,23 +170,23 @@ LABEL_26:
 
   if (v33)
   {
-    v8 = v40;
+    requestCopy = v40;
     if (!v16)
     {
       v42.receiver = self;
       v42.super_class = ICAuthorizeMachineURLRequest;
-      [(ICStoreURLRequest *)&v42 buildStoreURLRequestWithURLRequest:v33 builderProperties:v9 completionHandler:v10];
+      [(ICStoreURLRequest *)&v42 buildStoreURLRequestWithURLRequest:v33 builderProperties:propertiesCopy completionHandler:handlerCopy];
       goto LABEL_32;
     }
   }
 
   else
   {
-    v8 = v40;
+    requestCopy = v40;
   }
 
 LABEL_31:
-  v10[2](v10, 0, v16);
+  handlerCopy[2](handlerCopy, 0, v16);
 
 LABEL_32:
 }

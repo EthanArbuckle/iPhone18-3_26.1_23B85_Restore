@@ -1,12 +1,12 @@
 @interface VNFaceLandmarkRegion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)faceBoundingBox;
-- (VNFaceLandmarkRegion)initWithCoder:(id)a3;
-- (VNFaceLandmarkRegion)initWithOriginatingRequestSpecifier:(id)a3 faceBoundingBox:(CGRect)a4 pointCount:(unint64_t)a5;
+- (VNFaceLandmarkRegion)initWithCoder:(id)coder;
+- (VNFaceLandmarkRegion)initWithOriginatingRequestSpecifier:(id)specifier faceBoundingBox:(CGRect)box pointCount:(unint64_t)count;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)requestRevision;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceLandmarkRegion
@@ -25,10 +25,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
@@ -38,7 +38,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(VNFaceLandmarkRegion *)self faceBoundingBox];
       v7 = v6;
       v9 = v8;
@@ -55,9 +55,9 @@
       v23.size.height = v13;
       if (CGRectEqualToRect(v23, v24) && (v18 = [(VNFaceLandmarkRegion *)self pointCount], v18 == [(VNFaceLandmarkRegion *)v5 pointCount]))
       {
-        v19 = [(VNFaceLandmarkRegion *)self originatingRequestSpecifier];
-        v20 = [(VNFaceLandmarkRegion *)v5 originatingRequestSpecifier];
-        v21 = [v19 isEqual:v20];
+        originatingRequestSpecifier = [(VNFaceLandmarkRegion *)self originatingRequestSpecifier];
+        originatingRequestSpecifier2 = [(VNFaceLandmarkRegion *)v5 originatingRequestSpecifier];
+        v21 = [originatingRequestSpecifier isEqual:originatingRequestSpecifier2];
       }
 
       else
@@ -77,7 +77,7 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VNFaceLandmarkRegion *)self pointCount];
+  pointCount = [(VNFaceLandmarkRegion *)self pointCount];
   x = self->_faceBoundingBox.origin.x;
   if (x == 0.0)
   {
@@ -104,7 +104,7 @@
     height = 0.0;
   }
 
-  v10 = *&height ^ __ROR8__(v8, 51) ^ __ROR8__(v3, 51);
+  v10 = *&height ^ __ROR8__(v8, 51) ^ __ROR8__(pointCount, 51);
   return [(VNRequestSpecifier *)self->_originatingRequestSpecifier hash]^ __ROR8__(self->_pointCount ^ __ROR8__(v10, 51), 51);
 }
 
@@ -121,21 +121,21 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:0 forKey:@"VNFaceLandmarkRegion"];
-  [v4 encodeDouble:@"FLMReg_BBX" forKey:self->_faceBoundingBox.origin.x];
-  [v4 encodeDouble:@"FLMReg_BBY" forKey:self->_faceBoundingBox.origin.y];
-  [v4 encodeDouble:@"FLMReg_BBW" forKey:self->_faceBoundingBox.size.width];
-  [v4 encodeDouble:@"FLMReg_BBH" forKey:self->_faceBoundingBox.size.height];
-  [v4 encodeInteger:self->_pointCount forKey:@"FLMReg_PtCnt"];
-  [v4 encodeObject:self->_originatingRequestSpecifier forKey:@"FLMReg_OReq"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:0 forKey:@"VNFaceLandmarkRegion"];
+  [coderCopy encodeDouble:@"FLMReg_BBX" forKey:self->_faceBoundingBox.origin.x];
+  [coderCopy encodeDouble:@"FLMReg_BBY" forKey:self->_faceBoundingBox.origin.y];
+  [coderCopy encodeDouble:@"FLMReg_BBW" forKey:self->_faceBoundingBox.size.width];
+  [coderCopy encodeDouble:@"FLMReg_BBH" forKey:self->_faceBoundingBox.size.height];
+  [coderCopy encodeInteger:self->_pointCount forKey:@"FLMReg_PtCnt"];
+  [coderCopy encodeObject:self->_originatingRequestSpecifier forKey:@"FLMReg_OReq"];
 }
 
-- (VNFaceLandmarkRegion)initWithCoder:(id)a3
+- (VNFaceLandmarkRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = VNFaceLandmarkRegion;
   v5 = [(VNFaceLandmarkRegion *)&v26 init];
@@ -144,32 +144,32 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeInt32ForKey:@"VNFaceLandmarkRegion"];
+  v6 = [coderCopy decodeInt32ForKey:@"VNFaceLandmarkRegion"];
   if (!v6)
   {
-    [v4 decodeDoubleForKey:@"FLMReg_BBX"];
+    [coderCopy decodeDoubleForKey:@"FLMReg_BBX"];
     v5->_faceBoundingBox.origin.x = v11;
-    [v4 decodeDoubleForKey:@"FLMReg_BBY"];
+    [coderCopy decodeDoubleForKey:@"FLMReg_BBY"];
     v5->_faceBoundingBox.origin.y = v12;
-    [v4 decodeDoubleForKey:@"FLMReg_BBW"];
+    [coderCopy decodeDoubleForKey:@"FLMReg_BBW"];
     v5->_faceBoundingBox.size.width = v13;
-    [v4 decodeDoubleForKey:@"FLMReg_BBH"];
+    [coderCopy decodeDoubleForKey:@"FLMReg_BBH"];
     v5->_faceBoundingBox.size.height = v14;
-    v5->_pointCount = [v4 decodeIntegerForKey:@"FLMReg_PtCnt"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FLMReg_OReq"];
+    v5->_pointCount = [coderCopy decodeIntegerForKey:@"FLMReg_PtCnt"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FLMReg_OReq"];
     originatingRequestSpecifier = v5->_originatingRequestSpecifier;
     v5->_originatingRequestSpecifier = v15;
 
     if (!v5->_originatingRequestSpecifier)
     {
-      if (([v4 containsValueForKey:@"FLMReg_Rev"] & 1) == 0)
+      if (([coderCopy containsValueForKey:@"FLMReg_Rev"] & 1) == 0)
       {
         v7 = [VNError errorWithCode:6 message:@"could not decode originating request"];
-        [v4 failWithError:v7];
+        [coderCopy failWithError:v7];
         goto LABEL_5;
       }
 
-      v17 = [v4 decodeIntegerForKey:@"FLMReg_Rev"];
+      v17 = [coderCopy decodeIntegerForKey:@"FLMReg_Rev"];
       v7 = [objc_opt_class() defaultOriginatingRequestClassNameForRequestRevision:v17];
       if (!v7)
       {
@@ -179,7 +179,7 @@
         v23 = [v20 stringWithFormat:@"%@ does not provide a default originating request class", v22];
 
         v24 = [VNError errorForInternalErrorWithLocalizedDescription:v23];
-        [v4 failWithError:v24];
+        [coderCopy failWithError:v24];
 
         goto LABEL_6;
       }
@@ -192,7 +192,7 @@
 
       if (!v5->_originatingRequestSpecifier)
       {
-        [v4 failWithError:v8];
+        [coderCopy failWithError:v8];
         goto LABEL_4;
       }
     }
@@ -203,7 +203,7 @@
 
   v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive VNFaceLandmarkRegion object due to coding version mismatch: Currently supported: %u; encoded: %u", 0, v6];
   v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7];
-  [v4 failWithError:v8];
+  [coderCopy failWithError:v8];
 LABEL_4:
 
 LABEL_5:
@@ -214,13 +214,13 @@ LABEL_7:
   return v9;
 }
 
-- (VNFaceLandmarkRegion)initWithOriginatingRequestSpecifier:(id)a3 faceBoundingBox:(CGRect)a4 pointCount:(unint64_t)a5
+- (VNFaceLandmarkRegion)initWithOriginatingRequestSpecifier:(id)specifier faceBoundingBox:(CGRect)box pointCount:(unint64_t)count
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  specifierCopy = specifier;
   v17.receiver = self;
   v17.super_class = VNFaceLandmarkRegion;
   v13 = [(VNFaceLandmarkRegion *)&v17 init];
@@ -231,8 +231,8 @@ LABEL_7:
     v13->_faceBoundingBox.origin.y = y;
     v13->_faceBoundingBox.size.width = width;
     v13->_faceBoundingBox.size.height = height;
-    v13->_pointCount = a5;
-    objc_storeStrong(&v13->_originatingRequestSpecifier, a3);
+    v13->_pointCount = count;
+    objc_storeStrong(&v13->_originatingRequestSpecifier, specifier);
     v15 = v14;
   }
 
@@ -241,10 +241,10 @@ LABEL_7:
 
 - (unint64_t)requestRevision
 {
-  v2 = [(VNFaceLandmarkRegion *)self originatingRequestSpecifier];
-  v3 = [v2 requestRevision];
+  originatingRequestSpecifier = [(VNFaceLandmarkRegion *)self originatingRequestSpecifier];
+  requestRevision = [originatingRequestSpecifier requestRevision];
 
-  return v3;
+  return requestRevision;
 }
 
 @end

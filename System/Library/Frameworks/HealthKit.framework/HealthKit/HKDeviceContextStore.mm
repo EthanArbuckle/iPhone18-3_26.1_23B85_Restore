@@ -1,25 +1,25 @@
 @interface HKDeviceContextStore
 + (id)serverInterface;
-- (HKDeviceContextStore)initWithHealthStore:(id)a3;
-- (void)fetchEntriesWithCompletion:(id)a3;
-- (void)numberOfDeviceContextsPerDeviceType:(id)a3;
+- (HKDeviceContextStore)initWithHealthStore:(id)store;
+- (void)fetchEntriesWithCompletion:(id)completion;
+- (void)numberOfDeviceContextsPerDeviceType:(id)type;
 @end
 
 @implementation HKDeviceContextStore
 
-- (HKDeviceContextStore)initWithHealthStore:(id)a3
+- (HKDeviceContextStore)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKDeviceContextStore;
   v6 = [(HKDeviceContextStore *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = [HKTaskServerProxyProvider alloc];
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [(HKTaskServerProxyProvider *)v8 initWithHealthStore:v5 taskIdentifier:@"HKDeviceContextStoreServerIdentifier" exportedObject:v7 taskUUID:v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v10 = [(HKTaskServerProxyProvider *)v8 initWithHealthStore:storeCopy taskIdentifier:@"HKDeviceContextStoreServerIdentifier" exportedObject:v7 taskUUID:uUID];
     proxyProvider = v7->_proxyProvider;
     v7->_proxyProvider = v10;
   }
@@ -27,9 +27,9 @@
   return v7;
 }
 
-- (void)fetchEntriesWithCompletion:(id)a3
+- (void)fetchEntriesWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -45,9 +45,9 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)numberOfDeviceContextsPerDeviceType:(id)a3
+- (void)numberOfDeviceContextsPerDeviceType:(id)type
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:type];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;

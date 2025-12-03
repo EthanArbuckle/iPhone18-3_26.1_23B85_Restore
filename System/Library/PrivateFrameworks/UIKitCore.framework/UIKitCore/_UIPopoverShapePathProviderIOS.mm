@@ -1,47 +1,47 @@
 @interface _UIPopoverShapePathProviderIOS
-- (CGPoint)_addArrowCurveToPath:(id)a3 direction:(unint64_t)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8;
-- (CGPoint)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5 leadingEdge:(BOOL)a6 isVertical:(BOOL)a7;
-- (double)_leftAndRightStartYLocationForBounds:(CGRect)a3 pinnedArrowSide:(int64_t)a4 arrowBase:(double)a5 arrowOffset:(double)a6;
-- (double)_upAndDownStartingXLocationForBounds:(CGRect)a3 pinnedArrowSide:(int64_t)a4 arrowBase:(double)a5 arrowOffset:(double)a6;
-- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)a3;
-- (void)_generateBottomArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10;
-- (void)_generateLeftArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10;
-- (void)_generateRightArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10;
-- (void)_generateTopArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10;
+- (CGPoint)_addArrowCurveToPath:(id)path direction:(unint64_t)direction startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side;
+- (CGPoint)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)path startPoint:(CGPoint)point endPoint:(CGPoint)endPoint leadingEdge:(BOOL)edge isVertical:(BOOL)vertical;
+- (double)_leftAndRightStartYLocationForBounds:(CGRect)bounds pinnedArrowSide:(int64_t)side arrowBase:(double)base arrowOffset:(double)offset;
+- (double)_upAndDownStartingXLocationForBounds:(CGRect)bounds pinnedArrowSide:(int64_t)side arrowBase:(double)base arrowOffset:(double)offset;
+- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)parameters;
+- (void)_generateBottomArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0;
+- (void)_generateLeftArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0;
+- (void)_generateRightArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0;
+- (void)_generateTopArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0;
 @end
 
 @implementation _UIPopoverShapePathProviderIOS
 
-- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)a3
+- (id)generatePopoverPathForParameters:(_UIPopoverShapePathParameters *)parameters
 {
   v5 = +[UIBezierPath bezierPath];
-  var1 = a3->var1;
-  x = a3->var2.origin.x;
-  y = a3->var2.origin.y;
-  width = a3->var2.size.width;
-  height = a3->var2.size.height;
-  v10 = a3->var4.minXMaxY.height;
-  v11 = a3->var4.maxXMaxY.height;
-  v12 = a3->var4.maxXMinY.height;
-  v13 = a3->var4.minXMinY.height;
+  var1 = parameters->var1;
+  x = parameters->var2.origin.x;
+  y = parameters->var2.origin.y;
+  width = parameters->var2.size.width;
+  height = parameters->var2.size.height;
+  v10 = parameters->var4.minXMaxY.height;
+  v11 = parameters->var4.maxXMaxY.height;
+  v12 = parameters->var4.maxXMinY.height;
+  v13 = parameters->var4.minXMinY.height;
   [MEMORY[0x1E6979398] cornerCurveExpansionFactor:*MEMORY[0x1E69796E8]];
   v15 = fmin(width, height) * 0.5 / v14;
   v16 = fmin(v13, v15);
   v17 = fmin(v12, v15);
   v18 = fmin(v10, v15);
   v19 = fmin(v11, v15);
-  var0 = a3->var0;
-  if (a3->var0 > 3)
+  var0 = parameters->var0;
+  if (parameters->var0 > 3)
   {
     if (var0 != 4)
     {
       if (var0 == 8)
       {
-        v26 = width - a3->var5;
-        [(_UIPopoverShapePathProviderIOS *)self _leftAndRightStartYLocationForBounds:var1 pinnedArrowSide:x arrowBase:y arrowOffset:v26, height, a3->var6, a3->var3];
+        v26 = width - parameters->var5;
+        [(_UIPopoverShapePathProviderIOS *)self _leftAndRightStartYLocationForBounds:var1 pinnedArrowSide:x arrowBase:y arrowOffset:v26, height, parameters->var6, parameters->var3];
         v28 = v27;
-        var6 = a3->var6;
-        v30 = x + v26 + a3->var5;
+        var6 = parameters->var6;
+        v30 = x + v26 + parameters->var5;
         v53 = v18;
         v54 = v18;
         v55 = v19;
@@ -57,13 +57,13 @@
       goto LABEL_8;
     }
 
-    var5 = a3->var5;
+    var5 = parameters->var5;
     v45 = x + var5;
     v46 = width - var5;
-    [(_UIPopoverShapePathProviderIOS *)self _leftAndRightStartYLocationForBounds:var1 pinnedArrowSide:v45 arrowBase:y arrowOffset:v46, height, a3->var6, a3->var3];
+    [(_UIPopoverShapePathProviderIOS *)self _leftAndRightStartYLocationForBounds:var1 pinnedArrowSide:v45 arrowBase:y arrowOffset:v46, height, parameters->var6, parameters->var3];
     v48 = v47;
-    v49 = a3->var6;
-    v50 = v45 - a3->var5;
+    v49 = parameters->var6;
+    v50 = v45 - parameters->var5;
     v53 = v18;
     v54 = v18;
     v55 = v19;
@@ -81,11 +81,11 @@
     {
       if (var0 == 2)
       {
-        v21 = height - a3->var5;
-        [(_UIPopoverShapePathProviderIOS *)self _upAndDownStartingXLocationForBounds:var1 pinnedArrowSide:x arrowBase:y arrowOffset:width, v21, a3->var6, a3->var3];
+        v21 = height - parameters->var5;
+        [(_UIPopoverShapePathProviderIOS *)self _upAndDownStartingXLocationForBounds:var1 pinnedArrowSide:x arrowBase:y arrowOffset:width, v21, parameters->var6, parameters->var3];
         v23 = v22;
-        v24 = a3->var6;
-        v25 = y + v21 + a3->var5;
+        v24 = parameters->var6;
+        v25 = y + v21 + parameters->var5;
         v53 = v18;
         v54 = v18;
         v55 = v19;
@@ -112,19 +112,19 @@ LABEL_8:
       v35 = [MEMORY[0x1E696B098] valueWithCGSize:{v19, v19}];
       [v31 addObject:v35];
 
-      v36 = [UIBezierPath roundedRectBezierPath:-1 withRoundedCorners:v31 withCornerRadii:x, y, width, height];
+      height = [UIBezierPath roundedRectBezierPath:-1 withRoundedCorners:v31 withCornerRadii:x, y, width, height];
 
-      v5 = v36;
+      v5 = height;
       goto LABEL_11;
     }
 
-    v37 = a3->var5;
+    v37 = parameters->var5;
     v38 = y + v37;
     v39 = height - v37;
-    [(_UIPopoverShapePathProviderIOS *)self _upAndDownStartingXLocationForBounds:var1 pinnedArrowSide:x arrowBase:y + v37 arrowOffset:width, v39, a3->var6, a3->var3];
+    [(_UIPopoverShapePathProviderIOS *)self _upAndDownStartingXLocationForBounds:var1 pinnedArrowSide:x arrowBase:y + v37 arrowOffset:width, v39, parameters->var6, parameters->var3];
     v41 = v40;
-    v42 = a3->var6;
-    v43 = v38 - a3->var5;
+    v42 = parameters->var6;
+    v43 = v38 - parameters->var5;
     v53 = v18;
     v54 = v18;
     v55 = v19;
@@ -141,21 +141,21 @@ LABEL_11:
   return v5;
 }
 
-- (CGPoint)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)a3 startPoint:(CGPoint)a4 endPoint:(CGPoint)a5 leadingEdge:(BOOL)a6 isVertical:(BOOL)a7
+- (CGPoint)_addLineWithSlightTrailingAndLeadingCurveToPath:(id)path startPoint:(CGPoint)point endPoint:(CGPoint)endPoint leadingEdge:(BOOL)edge isVertical:(BOOL)vertical
 {
-  v7 = a7;
-  v8 = a6;
-  y = a5.y;
-  x = a5.x;
-  v11 = a4.y;
-  v12 = a4.x;
-  v13 = (a5.x - a4.x) * 0.5;
-  v14 = (a5.y - a4.y) * 0.5;
-  v15 = a3;
-  v16 = v15;
-  if (v8)
+  verticalCopy = vertical;
+  edgeCopy = edge;
+  y = endPoint.y;
+  x = endPoint.x;
+  v11 = point.y;
+  v12 = point.x;
+  v13 = (endPoint.x - point.x) * 0.5;
+  v14 = (endPoint.y - point.y) * 0.5;
+  pathCopy = path;
+  v16 = pathCopy;
+  if (edgeCopy)
   {
-    if (v7)
+    if (verticalCopy)
     {
       v17 = v12;
     }
@@ -165,7 +165,7 @@ LABEL_11:
       v17 = v12 - v13;
     }
 
-    if (v7)
+    if (verticalCopy)
     {
       v18 = v11 - v14;
     }
@@ -175,7 +175,7 @@ LABEL_11:
       v18 = v11;
     }
 
-    [v15 moveToPoint:{v17, v18, v11 + v14, v12 + v13}];
+    [pathCopy moveToPoint:{v17, v18, v11 + v14, v12 + v13}];
     [v16 addCurveToPoint:v24 controlPoint1:v23 controlPoint2:{v12, v11, v12, v11}];
     [v16 lineToPoint:{x, y}];
   }
@@ -184,7 +184,7 @@ LABEL_11:
   {
     v17 = x - v13;
     v18 = y - v14;
-    if (v7)
+    if (verticalCopy)
     {
       v19 = x;
     }
@@ -194,7 +194,7 @@ LABEL_11:
       v19 = x + v13;
     }
 
-    if (v7)
+    if (verticalCopy)
     {
       v20 = y + v14;
     }
@@ -204,7 +204,7 @@ LABEL_11:
       v20 = y;
     }
 
-    [v15 lineToPoint:{x - v13, y - v14}];
+    [pathCopy lineToPoint:{x - v13, y - v14}];
     [v16 addCurveToPoint:v19 controlPoint1:v20 controlPoint2:{x, y, x, y}];
   }
 
@@ -215,13 +215,13 @@ LABEL_11:
   return result;
 }
 
-- (double)_upAndDownStartingXLocationForBounds:(CGRect)a3 pinnedArrowSide:(int64_t)a4 arrowBase:(double)a5 arrowOffset:(double)a6
+- (double)_upAndDownStartingXLocationForBounds:(CGRect)bounds pinnedArrowSide:(int64_t)side arrowBase:(double)base arrowOffset:(double)offset
 {
-  x = a3.origin.x;
-  v8 = a3.origin.x + a3.size.width - a5;
-  v9 = a3.origin.x + a3.size.width * 0.5 + a6 - a5 * 0.5;
+  x = bounds.origin.x;
+  v8 = bounds.origin.x + bounds.size.width - base;
+  v9 = bounds.origin.x + bounds.size.width * 0.5 + offset - base * 0.5;
   v10 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-  if (a4 == 2)
+  if (side == 2)
   {
     v11 = v8;
   }
@@ -231,7 +231,7 @@ LABEL_11:
     v11 = v9;
   }
 
-  if (a4 == 4)
+  if (side == 4)
   {
     v11 = x;
   }
@@ -244,13 +244,13 @@ LABEL_11:
   return fmax(x, fmin(v11, v8));
 }
 
-- (double)_leftAndRightStartYLocationForBounds:(CGRect)a3 pinnedArrowSide:(int64_t)a4 arrowBase:(double)a5 arrowOffset:(double)a6
+- (double)_leftAndRightStartYLocationForBounds:(CGRect)bounds pinnedArrowSide:(int64_t)side arrowBase:(double)base arrowOffset:(double)offset
 {
-  y = a3.origin.y;
-  v8 = a3.origin.y + a3.size.height - a5;
-  v9 = a3.origin.y + a3.size.height * 0.5 + a6 - a5 * 0.5;
+  y = bounds.origin.y;
+  v8 = bounds.origin.y + bounds.size.height - base;
+  v9 = bounds.origin.y + bounds.size.height * 0.5 + offset - base * 0.5;
   v10 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-  if (a4 == 3)
+  if (side == 3)
   {
     v11 = v8;
   }
@@ -260,7 +260,7 @@ LABEL_11:
     v11 = v9;
   }
 
-  if (a4 == 1)
+  if (side == 1)
   {
     v11 = y;
   }
@@ -273,44 +273,44 @@ LABEL_11:
   return fmax(y, fmin(v11, v8));
 }
 
-- (CGPoint)_addArrowCurveToPath:(id)a3 direction:(unint64_t)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8
+- (CGPoint)_addArrowCurveToPath:(id)path direction:(unint64_t)direction startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side
 {
-  y = a7.y;
-  x = a7.x;
-  v11 = a6.y;
-  v12 = a6.x;
-  v13 = a5.y;
-  v14 = a5.x;
-  v17 = a3;
-  if (a4 > 3)
+  y = peakPoint.y;
+  x = peakPoint.x;
+  v11 = endPoint.y;
+  v12 = endPoint.x;
+  v13 = point.y;
+  v14 = point.x;
+  pathCopy = path;
+  if (direction > 3)
   {
-    if (a4 == 4)
+    if (direction == 4)
     {
       v47 = v11;
       v20 = y + -2.0;
       v24 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-      if (a8 == 1 && v24)
+      if (side == 1 && v24)
       {
-        [v17 moveToPoint:{x + 1.0, y + -2.0}];
+        [pathCopy moveToPoint:{x + 1.0, y + -2.0}];
         v18 = x + 1.0;
       }
 
       else
       {
-        [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:v17 startPoint:1 endPoint:1 leadingEdge:v14 isVertical:v13, x + 1.0, y + -2.0];
+        [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:pathCopy startPoint:1 endPoint:1 leadingEdge:v14 isVertical:v13, x + 1.0, y + -2.0];
         v18 = v41;
         v20 = v42;
       }
 
-      [v17 addCurveToPoint:x + 1.0 controlPoint1:y + 2.0 controlPoint2:{x, y, x, y}];
+      [pathCopy addCurveToPoint:x + 1.0 controlPoint1:y + 2.0 controlPoint2:{x, y, x, y}];
       v43 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-      if (a8 == 3 && v43)
+      if (side == 3 && v43)
       {
         goto LABEL_38;
       }
 
-      v28 = self;
-      v29 = v17;
+      selfCopy4 = self;
+      v29 = pathCopy;
       v30 = x + 1.0;
       v31 = y + 2.0;
       v32 = v12;
@@ -319,35 +319,35 @@ LABEL_11:
 
     else
     {
-      if (a4 != 8)
+      if (direction != 8)
       {
         goto LABEL_12;
       }
 
       v20 = y + 2.0;
       v21 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-      if (a8 == 3 && v21)
+      if (side == 3 && v21)
       {
-        [v17 moveToPoint:{x + -1.0, y + 2.0}];
+        [pathCopy moveToPoint:{x + -1.0, y + 2.0}];
         v18 = x + -1.0;
       }
 
       else
       {
-        [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:v17 startPoint:1 endPoint:1 leadingEdge:v12 isVertical:v11, x + -1.0, y + 2.0];
+        [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:pathCopy startPoint:1 endPoint:1 leadingEdge:v12 isVertical:v11, x + -1.0, y + 2.0];
         v18 = v34;
         v20 = v35;
       }
 
-      [v17 addCurveToPoint:x + -1.0 controlPoint1:y + -2.0 controlPoint2:{x, y, x, y}];
+      [pathCopy addCurveToPoint:x + -1.0 controlPoint1:y + -2.0 controlPoint2:{x, y, x, y}];
       v36 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-      if (a8 == 1 && v36)
+      if (side == 1 && v36)
       {
         goto LABEL_38;
       }
 
-      v28 = self;
-      v29 = v17;
+      selfCopy4 = self;
+      v29 = pathCopy;
       v30 = x + -1.0;
       v31 = y + -2.0;
       v32 = v14;
@@ -358,32 +358,32 @@ LABEL_11:
     goto LABEL_37;
   }
 
-  if (a4 != 1)
+  if (direction != 1)
   {
-    if (a4 == 2)
+    if (direction == 2)
     {
       v46 = v11;
       v18 = x + -2.0;
       v19 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-      if (a8 == 4 && v19)
+      if (side == 4 && v19)
       {
-        [v17 moveToPoint:{x + -2.0, y + -1.0}];
+        [pathCopy moveToPoint:{x + -2.0, y + -1.0}];
         v20 = y + -1.0;
       }
 
       else
       {
-        [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:v17 startPoint:1 endPoint:0 leadingEdge:v14 isVertical:v13, x + -2.0, y + -1.0];
+        [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:pathCopy startPoint:1 endPoint:0 leadingEdge:v14 isVertical:v13, x + -2.0, y + -1.0];
         v18 = v25;
         v20 = v26;
       }
 
-      [v17 addCurveToPoint:x + 2.0 controlPoint1:y + -1.0 controlPoint2:{x, y, x, y}];
+      [pathCopy addCurveToPoint:x + 2.0 controlPoint1:y + -1.0 controlPoint2:{x, y, x, y}];
       v27 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-      if (a8 != 2 || !v27)
+      if (side != 2 || !v27)
       {
-        v28 = self;
-        v29 = v17;
+        selfCopy4 = self;
+        v29 = pathCopy;
         v30 = x + 2.0;
         v31 = y + -1.0;
         v32 = v12;
@@ -391,7 +391,7 @@ LABEL_11:
 LABEL_31:
         v40 = 0;
 LABEL_37:
-        [(_UIPopoverShapePathProviderIOS *)v28 _addLineWithSlightTrailingAndLeadingCurveToPath:v29 startPoint:0 endPoint:v40 leadingEdge:v30 isVertical:v31, v32, v33];
+        [(_UIPopoverShapePathProviderIOS *)selfCopy4 _addLineWithSlightTrailingAndLeadingCurveToPath:v29 startPoint:0 endPoint:v40 leadingEdge:v30 isVertical:v31, v32, v33];
         goto LABEL_38;
       }
 
@@ -407,25 +407,25 @@ LABEL_12:
   v22 = v11;
   v18 = x + 2.0;
   v23 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-  if (a8 == 2 && v23)
+  if (side == 2 && v23)
   {
-    [v17 moveToPoint:{x + 2.0, y + 1.0}];
+    [pathCopy moveToPoint:{x + 2.0, y + 1.0}];
     v20 = y + 1.0;
   }
 
   else
   {
-    [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:v17 startPoint:1 endPoint:0 leadingEdge:v12 isVertical:v22, x + 2.0, y + 1.0];
+    [(_UIPopoverShapePathProviderIOS *)self _addLineWithSlightTrailingAndLeadingCurveToPath:pathCopy startPoint:1 endPoint:0 leadingEdge:v12 isVertical:v22, x + 2.0, y + 1.0];
     v18 = v37;
     v20 = v38;
   }
 
-  [v17 addCurveToPoint:x + -2.0 controlPoint1:y + 1.0 controlPoint2:{x, y, x, y}];
+  [pathCopy addCurveToPoint:x + -2.0 controlPoint1:y + 1.0 controlPoint2:{x, y, x, y}];
   v39 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
-  if (a8 != 4 || !v39)
+  if (side != 4 || !v39)
   {
-    v28 = self;
-    v29 = v17;
+    selfCopy4 = self;
+    v29 = pathCopy;
     v30 = x + -2.0;
     v31 = y + 1.0;
     v32 = v14;
@@ -442,23 +442,23 @@ LABEL_38:
   return result;
 }
 
-- (void)_generateTopArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10
+- (void)_generateTopArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0
 {
-  y = a7.y;
-  x = a7.x;
-  v12 = a6.y;
-  v13 = a6.x;
-  v14 = a5.y;
-  v15 = a5.x;
-  v38 = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  v17 = a4.origin.x;
-  v41 = a3;
+  y = peakPoint.y;
+  x = peakPoint.x;
+  v12 = endPoint.y;
+  v13 = endPoint.x;
+  v14 = point.y;
+  v15 = point.x;
+  v38 = bounds.origin.y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v17 = bounds.origin.x;
+  pathCopy = path;
   v35 = v15;
   v36 = v13;
   v37 = v12;
-  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v15 direction:v14 startPoint:v13 endPoint:v12 peakPoint:a10 pinnedArrowSide:v43];
+  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v15 direction:v14 startPoint:v13 endPoint:v12 peakPoint:base pinnedArrowSide:v43];
   v21 = v19;
   v22 = v20;
   v40 = width;
@@ -480,10 +480,10 @@ LABEL_38:
     v27 = CGRectGetMinY(v45) + *(*&y + 56);
     if (!_UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows())
     {
-      [v41 lineToPoint:{v35, v14}];
+      [pathCopy lineToPoint:{v35, v14}];
     }
 
-    [v41 addCurveToPoint:MinX controlPoint1:v27 controlPoint2:{v17, v38, v17, v38}];
+    [pathCopy addCurveToPoint:MinX controlPoint1:v27 controlPoint2:{v17, v38, v17, v38}];
     v21 = v23;
     v22 = v34;
   }
@@ -491,16 +491,16 @@ LABEL_38:
   else
   {
     v24 = v38;
-    [v41 _addRoundedCornerWithTrueCorner:1 radius:1 corner:v17 clockwise:{v38, *(*&y + 48), *(*&y + 56)}];
+    [pathCopy _addRoundedCornerWithTrueCorner:1 radius:1 corner:v17 clockwise:{v38, *(*&y + 48), *(*&y + 56)}];
     v25 = height;
   }
 
-  [v41 lineToPoint:{v17, v24 + v25 - *(*&y + 56)}];
-  [v41 _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v24 + v25, **&y, *(*&y + 8)}];
+  [pathCopy lineToPoint:{v17, v24 + v25 - *(*&y + 56)}];
+  [pathCopy _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v24 + v25, **&y, *(*&y + 8)}];
   v28 = v17 + width;
-  [v41 lineToPoint:{v17 + v40 - **&y, v24 + v25}];
-  [v41 _addRoundedCornerWithTrueCorner:8 radius:1 corner:v17 + v40 clockwise:{v24 + v25, *(*&y + 16), *(*&y + 24)}];
-  [v41 lineToPoint:{v17 + v40, v24 + *(*&y + 24)}];
+  [pathCopy lineToPoint:{v17 + v40 - **&y, v24 + v25}];
+  [pathCopy _addRoundedCornerWithTrueCorner:8 radius:1 corner:v17 + v40 clockwise:{v24 + v25, *(*&y + 16), *(*&y + 24)}];
+  [pathCopy lineToPoint:{v17 + v40, v24 + *(*&y + 24)}];
   if (*&x == 2)
   {
     v29 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
@@ -534,35 +534,35 @@ LABEL_38:
     v47.size.width = v40;
     v47.size.height = v25;
     MinY = CGRectGetMinY(v47);
-    [v41 addCurveToPoint:v30 controlPoint1:v31 controlPoint2:{MaxX, MinY, MaxX, MinY}];
+    [pathCopy addCurveToPoint:v30 controlPoint1:v31 controlPoint2:{MaxX, MinY, MaxX, MinY}];
   }
 
   else
   {
-    [v41 _addRoundedCornerWithTrueCorner:2 radius:1 corner:v28 clockwise:{v24, *(*&y + 32), *(*&y + 40)}];
-    [v41 lineToPoint:{v21, v22}];
+    [pathCopy _addRoundedCornerWithTrueCorner:2 radius:1 corner:v28 clockwise:{v24, *(*&y + 32), *(*&y + 40)}];
+    [pathCopy lineToPoint:{v21, v22}];
   }
 
-  [v41 closePath];
+  [pathCopy closePath];
 }
 
-- (void)_generateBottomArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10
+- (void)_generateBottomArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0
 {
-  y = a7.y;
-  x = a7.x;
-  v40 = a6.y;
-  height = a4.size.height;
-  v12 = a6.x;
-  v13 = a5.y;
-  v14 = a5.x;
-  width = a4.size.width;
-  v16 = a4.origin.y;
-  v17 = a4.origin.x;
-  v42 = a3;
+  y = peakPoint.y;
+  x = peakPoint.x;
+  v40 = endPoint.y;
+  height = bounds.size.height;
+  v12 = endPoint.x;
+  v13 = point.y;
+  v14 = point.x;
+  width = bounds.size.width;
+  v16 = bounds.origin.y;
+  v17 = bounds.origin.x;
+  pathCopy = path;
   v38 = v14;
   v39 = v13;
   v37 = v12;
-  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v14 direction:v13 startPoint:v12 endPoint:v40 peakPoint:a10 pinnedArrowSide:v44];
+  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v14 direction:v13 startPoint:v12 endPoint:v40 peakPoint:base pinnedArrowSide:v44];
   v21 = v19;
   v22 = v20;
   if (*&x == 2)
@@ -592,10 +592,10 @@ LABEL_38:
     MaxY = CGRectGetMaxY(v49);
     if (!_UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows())
     {
-      [v42 lineToPoint:{v37, v40}];
+      [pathCopy lineToPoint:{v37, v40}];
     }
 
-    [v42 addCurveToPoint:MaxX controlPoint1:v33 controlPoint2:{v24, MaxY, v24, MaxY, *&v33}];
+    [pathCopy addCurveToPoint:MaxX controlPoint1:v33 controlPoint2:{v24, MaxY, v24, MaxY, *&v33}];
     v21 = v35;
     v26 = v17 + width;
     v27 = v16 + height;
@@ -607,14 +607,14 @@ LABEL_38:
     v26 = v17 + width;
     v23 = height;
     v27 = v16 + height;
-    [v42 _addRoundedCornerWithTrueCorner:8 radius:1 corner:v17 + width clockwise:{v16 + height, *(*&y + 16), *(*&y + 24)}];
+    [pathCopy _addRoundedCornerWithTrueCorner:8 radius:1 corner:v17 + width clockwise:{v16 + height, *(*&y + 16), *(*&y + 24)}];
   }
 
-  [v42 lineToPoint:{v26, v16 + *(*&y + 24)}];
-  [v42 _addRoundedCornerWithTrueCorner:2 radius:1 corner:v26 clockwise:{v16, *(*&y + 32), *(*&y + 40)}];
-  [v42 lineToPoint:{v17 + *(*&y + 32) + v45 + 6.0, v16}];
-  [v42 _addRoundedCornerWithTrueCorner:1 radius:1 corner:v17 clockwise:{v16, *(*&y + 48), *(*&y + 56)}];
-  [v42 lineToPoint:{v17, v27 - *(*&y + 56)}];
+  [pathCopy lineToPoint:{v26, v16 + *(*&y + 24)}];
+  [pathCopy _addRoundedCornerWithTrueCorner:2 radius:1 corner:v26 clockwise:{v16, *(*&y + 32), *(*&y + 40)}];
+  [pathCopy lineToPoint:{v17 + *(*&y + 32) + v45 + 6.0, v16}];
+  [pathCopy _addRoundedCornerWithTrueCorner:1 radius:1 corner:v17 clockwise:{v16, *(*&y + 48), *(*&y + 56)}];
+  [pathCopy lineToPoint:{v17, v27 - *(*&y + 56)}];
   if (*&x == 4)
   {
     v28 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
@@ -648,36 +648,36 @@ LABEL_38:
     v51.size.width = width;
     v51.size.height = v23;
     v32 = CGRectGetMaxY(v51);
-    [v42 addCurveToPoint:v29 controlPoint1:v30 controlPoint2:{MinX, v32, MinX, v32}];
+    [pathCopy addCurveToPoint:v29 controlPoint1:v30 controlPoint2:{MinX, v32, MinX, v32}];
   }
 
   else
   {
-    [v42 _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v27, **&y, *(*&y + 8)}];
-    [v42 lineToPoint:{v21, v22}];
+    [pathCopy _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v27, **&y, *(*&y + 8)}];
+    [pathCopy lineToPoint:{v21, v22}];
   }
 
-  [v42 closePath];
+  [pathCopy closePath];
 }
 
-- (void)_generateLeftArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10
+- (void)_generateLeftArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0
 {
-  y = a7.y;
-  x = a7.x;
-  v12 = a6.y;
-  v13 = a6.x;
-  v14 = a5.y;
-  v15 = a5.x;
-  v41 = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  v17 = a4.origin.x;
-  v44 = a3;
+  y = peakPoint.y;
+  x = peakPoint.x;
+  v12 = endPoint.y;
+  v13 = endPoint.x;
+  v14 = point.y;
+  v15 = point.x;
+  v41 = bounds.origin.y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v17 = bounds.origin.x;
+  pathCopy = path;
   v39 = v15;
   v40 = v14;
   v37 = v13;
   v38 = v12;
-  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v15 direction:v14 startPoint:v13 endPoint:v12 peakPoint:a10 pinnedArrowSide:v46];
+  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v15 direction:v14 startPoint:v13 endPoint:v12 peakPoint:base pinnedArrowSide:v46];
   v43 = v20;
   v21 = v19;
   if (*&x == 3)
@@ -708,10 +708,10 @@ LABEL_38:
     v26 = CGRectGetMaxY(v51);
     if (!_UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows())
     {
-      [v44 lineToPoint:{v37, v38}];
+      [pathCopy lineToPoint:{v37, v38}];
     }
 
-    [v44 addCurveToPoint:v35 controlPoint1:MaxY controlPoint2:{MinX, v26, MinX, v26, *&MaxY}];
+    [pathCopy addCurveToPoint:v35 controlPoint1:MaxY controlPoint2:{MinX, v26, MinX, v26, *&MaxY}];
     v27 = v41 + height;
     v28 = v17;
     v21 = v36;
@@ -723,15 +723,15 @@ LABEL_38:
     v23 = v41;
     v22 = height;
     v27 = v41 + height;
-    [v44 _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v41 + height, **&y, *(*&y + 8)}];
+    [pathCopy _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v41 + height, **&y, *(*&y + 8)}];
     v28 = v17;
   }
 
-  [v44 lineToPoint:{v28 + v25 - **&y, v27}];
-  [v44 _addRoundedCornerWithTrueCorner:8 radius:1 corner:v28 + v25 clockwise:{v27, *(*&y + 16), *(*&y + 24)}];
-  [v44 lineToPoint:{v28 + v25, v23 + *(*&y + 24)}];
-  [v44 _addRoundedCornerWithTrueCorner:2 radius:1 corner:v28 + v25 clockwise:{v23, *(*&y + 32), *(*&y + 40)}];
-  [v44 lineToPoint:{v28 + *(*&y + 32) + v47 + 6.0, v23}];
+  [pathCopy lineToPoint:{v28 + v25 - **&y, v27}];
+  [pathCopy _addRoundedCornerWithTrueCorner:8 radius:1 corner:v28 + v25 clockwise:{v27, *(*&y + 16), *(*&y + 24)}];
+  [pathCopy lineToPoint:{v28 + v25, v23 + *(*&y + 24)}];
+  [pathCopy _addRoundedCornerWithTrueCorner:2 radius:1 corner:v28 + v25 clockwise:{v23, *(*&y + 32), *(*&y + 40)}];
+  [pathCopy lineToPoint:{v28 + *(*&y + 32) + v47 + 6.0, v23}];
   if (*&x == 1)
   {
     v29 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
@@ -765,36 +765,36 @@ LABEL_38:
     v53.size.width = v25;
     v53.size.height = v22;
     MinY = CGRectGetMinY(v53);
-    [v44 addCurveToPoint:v30 controlPoint1:v31 controlPoint2:{v32, MinY, v32, MinY}];
+    [pathCopy addCurveToPoint:v30 controlPoint1:v31 controlPoint2:{v32, MinY, v32, MinY}];
   }
 
   else
   {
-    [v44 _addRoundedCornerWithTrueCorner:1 radius:1 corner:v28 clockwise:{v23, *(*&y + 48), *(*&y + 56)}];
-    [v44 lineToPoint:{v43, v21}];
+    [pathCopy _addRoundedCornerWithTrueCorner:1 radius:1 corner:v28 clockwise:{v23, *(*&y + 48), *(*&y + 56)}];
+    [pathCopy lineToPoint:{v43, v21}];
   }
 
-  [v44 closePath];
+  [pathCopy closePath];
 }
 
-- (void)_generateRightArrowShapeInPath:(id)a3 bounds:(CGRect)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 peakPoint:(CGPoint)a7 pinnedArrowSide:(int64_t)a8 cornerRadii:(CACornerRadii *)a9 arrowBase:(double)a10
+- (void)_generateRightArrowShapeInPath:(id)path bounds:(CGRect)bounds startPoint:(CGPoint)point endPoint:(CGPoint)endPoint peakPoint:(CGPoint)peakPoint pinnedArrowSide:(int64_t)side cornerRadii:(CACornerRadii *)radii arrowBase:(double)self0
 {
-  y = a7.y;
-  x = a7.x;
-  v12 = a6.y;
-  v13 = a6.x;
-  v14 = a5.y;
-  v15 = a5.x;
-  v41 = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  v17 = a4.origin.x;
-  v43 = a3;
+  y = peakPoint.y;
+  x = peakPoint.x;
+  v12 = endPoint.y;
+  v13 = endPoint.x;
+  v14 = point.y;
+  v15 = point.x;
+  v41 = bounds.origin.y;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v17 = bounds.origin.x;
+  pathCopy = path;
   v37 = v15;
   v38 = v14;
   v39 = v13;
   v40 = v12;
-  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v15 direction:v14 startPoint:v13 endPoint:v12 peakPoint:a10 pinnedArrowSide:v45];
+  [(_UIPopoverShapePathProviderIOS *)self _addArrowCurveToPath:v15 direction:v14 startPoint:v13 endPoint:v12 peakPoint:base pinnedArrowSide:v45];
   v21 = v19;
   v22 = v20;
   if (*&x == 1)
@@ -825,10 +825,10 @@ LABEL_38:
     v27 = CGRectGetMinY(v50);
     if (!_UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows())
     {
-      [v43 lineToPoint:{v37, v38}];
+      [pathCopy lineToPoint:{v37, v38}];
     }
 
-    [v43 addCurveToPoint:v35 controlPoint1:MinY controlPoint2:{MaxX, v27, MaxX, v27}];
+    [pathCopy addCurveToPoint:v35 controlPoint1:MinY controlPoint2:{MaxX, v27, MaxX, v27}];
     v28 = v17 + width;
     v21 = v23;
     v22 = v36;
@@ -838,15 +838,15 @@ LABEL_38:
   {
     v28 = v17 + width;
     v25 = v41;
-    [v43 _addRoundedCornerWithTrueCorner:2 radius:1 corner:v17 + width clockwise:{v41, *(*&y + 32), *(*&y + 40)}];
+    [pathCopy _addRoundedCornerWithTrueCorner:2 radius:1 corner:v17 + width clockwise:{v41, *(*&y + 32), *(*&y + 40)}];
     v24 = height;
   }
 
-  [v43 lineToPoint:{v17 + *(*&y + 32) + v46 + 6.0, v25}];
-  [v43 _addRoundedCornerWithTrueCorner:1 radius:1 corner:v17 clockwise:{v25, *(*&y + 48), *(*&y + 56)}];
-  [v43 lineToPoint:{v17, v25 + v24 - *(*&y + 56)}];
-  [v43 _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v25 + v24, **&y, *(*&y + 8)}];
-  [v43 lineToPoint:{v28 - **&y, v25 + v24}];
+  [pathCopy lineToPoint:{v17 + *(*&y + 32) + v46 + 6.0, v25}];
+  [pathCopy _addRoundedCornerWithTrueCorner:1 radius:1 corner:v17 clockwise:{v25, *(*&y + 48), *(*&y + 56)}];
+  [pathCopy lineToPoint:{v17, v25 + v24 - *(*&y + 56)}];
+  [pathCopy _addRoundedCornerWithTrueCorner:4 radius:1 corner:v17 clockwise:{v25 + v24, **&y, *(*&y + 8)}];
+  [pathCopy lineToPoint:{v28 - **&y, v25 + v24}];
   if (*&x == 3)
   {
     v29 = _UIPopoverShapeLayerChromeViewWantsCurvedPinnedArrows();
@@ -880,16 +880,16 @@ LABEL_38:
     v52.size.width = width;
     v52.size.height = v24;
     MaxY = CGRectGetMaxY(v52);
-    [v43 addCurveToPoint:v30 controlPoint1:v31 controlPoint2:{v32, MaxY, v32, MaxY}];
+    [pathCopy addCurveToPoint:v30 controlPoint1:v31 controlPoint2:{v32, MaxY, v32, MaxY}];
   }
 
   else
   {
-    [v43 _addRoundedCornerWithTrueCorner:8 radius:1 corner:v28 clockwise:{v25 + v24, *(*&y + 16), *(*&y + 24)}];
-    [v43 lineToPoint:{v21, v22}];
+    [pathCopy _addRoundedCornerWithTrueCorner:8 radius:1 corner:v28 clockwise:{v25 + v24, *(*&y + 16), *(*&y + 24)}];
+    [pathCopy lineToPoint:{v21, v22}];
   }
 
-  [v43 closePath];
+  [pathCopy closePath];
 }
 
 @end

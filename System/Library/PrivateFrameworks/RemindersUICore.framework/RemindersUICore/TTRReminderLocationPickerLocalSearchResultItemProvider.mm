@@ -1,23 +1,23 @@
 @interface TTRReminderLocationPickerLocalSearchResultItemProvider
-- (void)completer:(id)a3 didFailWithError:(id)a4;
-- (void)completerDidUpdateResults:(id)a3;
+- (void)completer:(id)completer didFailWithError:(id)error;
+- (void)completerDidUpdateResults:(id)results;
 @end
 
 @implementation TTRReminderLocationPickerLocalSearchResultItemProvider
 
-- (void)completerDidUpdateResults:(id)a3
+- (void)completerDidUpdateResults:(id)results
 {
-  v4 = a3;
-  v5 = self;
-  TTRReminderLocationPickerLocalSearchResultItemProvider.completerDidUpdateResults(_:)(v4);
+  resultsCopy = results;
+  selfCopy = self;
+  TTRReminderLocationPickerLocalSearchResultItemProvider.completerDidUpdateResults(_:)(resultsCopy);
 }
 
-- (void)completer:(id)a3 didFailWithError:(id)a4
+- (void)completer:(id)completer didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_21D3D3188(v8);
+  completerCopy = completer;
+  errorCopy = error;
+  selfCopy = self;
+  sub_21D3D3188(errorCopy);
 }
 
 @end

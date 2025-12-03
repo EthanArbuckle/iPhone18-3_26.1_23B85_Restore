@@ -1,96 +1,96 @@
 @interface PaymentTransactionAward
-+ (id)_postProcessedAmountForDecimalAmount:(id)a3 currency:(id)a4 exponent:(int64_t)a5;
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3;
++ (id)_postProcessedAmountForDecimalAmount:(id)amount currency:(id)currency exponent:(int64_t)exponent;
++ (id)_predicateForPaymentTransactionPID:(int64_t)d;
 + (id)_propertySettersForPaymentTransactionAward;
-+ (id)insertPaymentTransactionAward:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)insertPaymentTransactionAwards:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)paymentTransactionAwardsInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4;
-+ (void)associateAwardsToPaymentTransactions:(id)a3 inDatabase:(id)a4;
-+ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)updateWithPaymentTransactionAwards:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-- (PaymentTransactionAward)initWithPaymentTransactionAward:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5;
-- (id)_valuesDictionaryForPaymentTransactionAward:(id)a3 forPaymentTransactionPID:(int64_t)a4;
++ (id)insertPaymentTransactionAward:(id)award forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (id)insertPaymentTransactionAwards:(id)awards forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (id)paymentTransactionAwardsInDatabase:(id)database forPaymentTransactionPID:(int64_t)d;
++ (void)associateAwardsToPaymentTransactions:(id)transactions inDatabase:(id)database;
++ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
++ (void)updateWithPaymentTransactionAwards:(id)awards forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
+- (PaymentTransactionAward)initWithPaymentTransactionAward:(id)award forPaymentTransactionPID:(int64_t)d inDatabase:(id)database;
+- (id)_valuesDictionaryForPaymentTransactionAward:(id)award forPaymentTransactionPID:(int64_t)d;
 @end
 
 @implementation PaymentTransactionAward
 
-- (PaymentTransactionAward)initWithPaymentTransactionAward:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
+- (PaymentTransactionAward)initWithPaymentTransactionAward:(id)award forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [(PaymentTransactionAward *)self _valuesDictionaryForPaymentTransactionAward:a3 forPaymentTransactionPID:a4];
-  v10 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:v8];
+  databaseCopy = database;
+  v9 = [(PaymentTransactionAward *)self _valuesDictionaryForPaymentTransactionAward:award forPaymentTransactionPID:d];
+  v10 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (id)insertPaymentTransactionAward:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertPaymentTransactionAward:(id)award forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPaymentTransactionAward:v9 forPaymentTransactionPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  awardCopy = award;
+  v10 = [[self alloc] initWithPaymentTransactionAward:awardCopy forPaymentTransactionPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (id)insertPaymentTransactionAwards:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertPaymentTransactionAwards:(id)awards forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = a3;
+  databaseCopy = database;
+  awardsCopy = awards;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100023A60;
   v13[3] = &unk_10083C970;
   v15 = objc_alloc_init(NSMutableArray);
-  v16 = a4;
-  v14 = v7;
+  dCopy = d;
+  v14 = databaseCopy;
   v9 = v15;
-  v10 = v7;
-  [v8 enumerateObjectsUsingBlock:v13];
+  v10 = databaseCopy;
+  [awardsCopy enumerateObjectsUsingBlock:v13];
 
   v11 = [v9 copy];
 
   return v11;
 }
 
-+ (void)updateWithPaymentTransactionAwards:(id)a3 forPaymentTransactionPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updateWithPaymentTransactionAwards:(id)awards forPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v9 = a3;
-  v7 = a5;
-  if (v9 && [v9 count])
+  awardsCopy = awards;
+  databaseCopy = database;
+  if (awardsCopy && [awardsCopy count])
   {
-    [PaymentTransactionAward deleteEntitiesForPaymentTransactionPID:a4 inDatabase:v7];
-    v8 = [PaymentTransactionAward insertPaymentTransactionAwards:v9 forPaymentTransactionPID:a4 inDatabase:v7];
+    [PaymentTransactionAward deleteEntitiesForPaymentTransactionPID:d inDatabase:databaseCopy];
+    v8 = [PaymentTransactionAward insertPaymentTransactionAwards:awardsCopy forPaymentTransactionPID:d inDatabase:databaseCopy];
   }
 }
 
-+ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPaymentTransactionPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForPaymentTransactionPID:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForPaymentTransactionPID:d];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)paymentTransactionAwardsInDatabase:(id)a3 forPaymentTransactionPID:(int64_t)a4
++ (id)paymentTransactionAwardsInDatabase:(id)database forPaymentTransactionPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPaymentTransactionPID:a4];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPaymentTransactionPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _propertySettersForPaymentTransactionAward];
+  _propertySettersForPaymentTransactionAward = [self _propertySettersForPaymentTransactionAward];
   v10 = objc_alloc_init(NSMutableArray);
-  v11 = [v9 allKeys];
+  allKeys = [_propertySettersForPaymentTransactionAward allKeys];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100023DE8;
   v18[3] = &unk_10083C998;
   v20 = v10;
-  v21 = a1;
-  v19 = v9;
+  selfCopy = self;
+  v19 = _propertySettersForPaymentTransactionAward;
   v12 = v10;
-  v13 = v9;
-  [v8 enumeratePersistentIDsAndProperties:v11 usingBlock:v18];
+  v13 = _propertySettersForPaymentTransactionAward;
+  [v8 enumeratePersistentIDsAndProperties:allKeys usingBlock:v18];
 
   v14 = [NSSortDescriptor sortDescriptorWithKey:@"order" ascending:1];
   v22 = v14;
@@ -102,26 +102,26 @@
   return v16;
 }
 
-+ (void)associateAwardsToPaymentTransactions:(id)a3 inDatabase:(id)a4
++ (void)associateAwardsToPaymentTransactions:(id)transactions inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 allKeys];
-  v9 = [a1 _predicateForPaymentTransactionPIDs:v8];
+  transactionsCopy = transactions;
+  databaseCopy = database;
+  allKeys = [transactionsCopy allKeys];
+  v9 = [self _predicateForPaymentTransactionPIDs:allKeys];
 
   v30 = v9;
-  v31 = v7;
-  v10 = [a1 queryWithDatabase:v7 predicate:v9];
+  v31 = databaseCopy;
+  v10 = [self queryWithDatabase:databaseCopy predicate:v9];
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [a1 _propertySettersForPaymentTransactionAward];
-  v13 = [v12 allKeys];
-  v14 = [v13 arrayByAddingObject:@"payment_transaction_pid"];
+  _propertySettersForPaymentTransactionAward = [self _propertySettersForPaymentTransactionAward];
+  allKeys2 = [_propertySettersForPaymentTransactionAward allKeys];
+  v14 = [allKeys2 arrayByAddingObject:@"payment_transaction_pid"];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1000241DC;
   v36[3] = &unk_10083C998;
-  v39 = a1;
-  v28 = v12;
+  selfCopy = self;
+  v28 = _propertySettersForPaymentTransactionAward;
   v37 = v28;
   v15 = v11;
   v38 = v15;
@@ -148,7 +148,7 @@
         }
 
         v21 = *(*(&v32 + 1) + 8 * i);
-        v22 = [v6 objectForKey:{v21, v28}];
+        v22 = [transactionsCopy objectForKey:{v21, v28}];
         v23 = [v16 objectForKey:v21];
         if (v23)
         {
@@ -169,101 +169,101 @@
   }
 }
 
-+ (id)_predicateForPaymentTransactionPID:(int64_t)a3
++ (id)_predicateForPaymentTransactionPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_transaction_pid" equalToValue:v3];
 
   return v4;
 }
 
-- (id)_valuesDictionaryForPaymentTransactionAward:(id)a3 forPaymentTransactionPID:(int64_t)a4
+- (id)_valuesDictionaryForPaymentTransactionAward:(id)award forPaymentTransactionPID:(int64_t)d
 {
-  v5 = a3;
+  awardCopy = award;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [v5 amount];
-  v8 = [v7 amount];
-  v9 = [v8 exponent];
+  amount = [awardCopy amount];
+  v7Amount = [amount amount];
+  exponent = [v7Amount exponent];
 
-  v10 = [v7 amount];
-  v11 = [v10 currency];
+  v7Amount2 = [amount amount];
+  currency = [v7Amount2 currency];
 
-  LOBYTE(v10) = [v11 isEqualToString:PKNoCurrencyCode];
-  v12 = [v7 amount];
-  v13 = [v12 amount];
-  v14 = v13;
-  if (v10)
+  LOBYTE(v7Amount2) = [currency isEqualToString:PKNoCurrencyCode];
+  v7Amount3 = [amount amount];
+  v12Amount = [v7Amount3 amount];
+  v14 = v12Amount;
+  if (v7Amount2)
   {
-    v15 = [v13 decimalNumberByMultiplyingByPowerOf10:v9];
-    v16 = [v15 longLongValue];
+    v15 = [v12Amount decimalNumberByMultiplyingByPowerOf10:exponent];
+    longLongValue = [v15 longLongValue];
   }
 
   else
   {
-    v16 = PKCurrencyDecimalToStorageInteger();
+    longLongValue = PKCurrencyDecimalToStorageInteger();
   }
 
-  v17 = [NSNumber numberWithLongLong:a4];
+  v17 = [NSNumber numberWithLongLong:d];
   [v6 setObjectOrNull:v17 forKey:@"payment_transaction_pid"];
 
-  v18 = [v5 identifier];
-  [v6 setObjectOrNull:v18 forKey:@"award_identifier"];
+  identifier = [awardCopy identifier];
+  [v6 setObjectOrNull:identifier forKey:@"award_identifier"];
 
-  v19 = [v5 typeString];
-  [v6 setObjectOrNull:v19 forKey:@"award_type"];
+  typeString = [awardCopy typeString];
+  [v6 setObjectOrNull:typeString forKey:@"award_type"];
 
-  v20 = [v5 subtype];
-  [v6 setObjectOrNull:v20 forKey:@"award_subtype"];
+  subtype = [awardCopy subtype];
+  [v6 setObjectOrNull:subtype forKey:@"award_subtype"];
 
-  v21 = [v5 awardDescription];
-  [v6 setObjectOrNull:v21 forKey:@"award_description"];
+  awardDescription = [awardCopy awardDescription];
+  [v6 setObjectOrNull:awardDescription forKey:@"award_description"];
 
-  [v6 setInteger:objc_msgSend(v5 forKey:{"order"), @"award_order"}];
-  v22 = [v5 relevantAccountName];
-  [v6 setObjectOrNull:v22 forKey:@"relevant_account_name"];
+  [v6 setInteger:objc_msgSend(awardCopy forKey:{"order"), @"award_order"}];
+  relevantAccountName = [awardCopy relevantAccountName];
+  [v6 setObjectOrNull:relevantAccountName forKey:@"relevant_account_name"];
 
-  v23 = [v5 localizedAmount];
-  [v6 setObjectOrNull:v23 forKey:@"localized_amount"];
+  localizedAmount = [awardCopy localizedAmount];
+  [v6 setObjectOrNull:localizedAmount forKey:@"localized_amount"];
 
-  [v6 setBool:objc_msgSend(v5 forKey:{"hasDeepLink"), @"has_deep_link"}];
-  [v6 setObjectOrNull:v11 forKey:@"currency"];
-  [v6 setInteger:v9 forKey:@"exponent"];
-  [v6 setLongLong:v16 forKey:@"amount"];
-  [v6 setBool:objc_msgSend(v5 forKey:{"claimExpired"), @"claim_expired"}];
-  [v6 setBool:objc_msgSend(v5 forKey:{"redeemExpired"), @"redeem_expired"}];
-  v24 = [v5 claimExpiryDate];
-  [v6 setObjectOrNull:v24 forKey:@"claim_expiry_date"];
+  [v6 setBool:objc_msgSend(awardCopy forKey:{"hasDeepLink"), @"has_deep_link"}];
+  [v6 setObjectOrNull:currency forKey:@"currency"];
+  [v6 setInteger:exponent forKey:@"exponent"];
+  [v6 setLongLong:longLongValue forKey:@"amount"];
+  [v6 setBool:objc_msgSend(awardCopy forKey:{"claimExpired"), @"claim_expired"}];
+  [v6 setBool:objc_msgSend(awardCopy forKey:{"redeemExpired"), @"redeem_expired"}];
+  claimExpiryDate = [awardCopy claimExpiryDate];
+  [v6 setObjectOrNull:claimExpiryDate forKey:@"claim_expiry_date"];
 
-  v25 = [v5 redeemExpiryDate];
-  [v6 setObjectOrNull:v25 forKey:@"redeem_expiry_date"];
+  redeemExpiryDate = [awardCopy redeemExpiryDate];
+  [v6 setObjectOrNull:redeemExpiryDate forKey:@"redeem_expiry_date"];
 
   v26 = [v6 copy];
 
   return v26;
 }
 
-+ (id)_postProcessedAmountForDecimalAmount:(id)a3 currency:(id)a4 exponent:(int64_t)a5
++ (id)_postProcessedAmountForDecimalAmount:(id)amount currency:(id)currency exponent:(int64_t)exponent
 {
-  v7 = a3;
+  amountCopy = amount;
   v8 = 0;
-  v9 = v7;
-  if (v7 && a4)
+  v9 = amountCopy;
+  if (amountCopy && currency)
   {
     v10 = PKNoCurrencyCode;
-    v11 = a4;
-    if ([v11 isEqualToString:v10])
+    currencyCopy = currency;
+    if ([currencyCopy isEqualToString:v10])
     {
-      v12 = [[NSDecimalNumber alloc] initWithLongLong:{objc_msgSend(v7, "longLongValue")}];
-      v9 = [v12 decimalNumberByMultiplyingByPowerOf10:-a5];
+      v12 = [[NSDecimalNumber alloc] initWithLongLong:{objc_msgSend(amountCopy, "longLongValue")}];
+      v9 = [v12 decimalNumberByMultiplyingByPowerOf10:-exponent];
     }
 
     else
     {
       v9 = PKCurrencyStorageNumberToCurrencyDecimal();
-      v12 = v7;
+      v12 = amountCopy;
     }
 
-    v13 = [[PKCurrencyAmount alloc] initWithAmount:v9 currency:v11 exponent:a5];
+    v13 = [[PKCurrencyAmount alloc] initWithAmount:v9 currency:currencyCopy exponent:exponent];
     if (v13)
     {
       v8 = [[PKTransactionAmount alloc] initWithCurrencyAmount:v13];

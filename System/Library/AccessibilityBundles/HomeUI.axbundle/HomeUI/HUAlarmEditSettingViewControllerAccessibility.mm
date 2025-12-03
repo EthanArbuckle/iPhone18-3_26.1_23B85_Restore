@@ -1,15 +1,15 @@
 @interface HUAlarmEditSettingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HUAlarmEditSettingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUAlarmEditSettingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HUAlarmEditSettingViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUAlarmEditSettingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HUAlarmEditSettingViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

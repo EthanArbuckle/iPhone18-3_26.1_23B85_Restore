@@ -1,25 +1,25 @@
 @interface PGGraphIngestPublicEventsProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestPublicEventsProcessor)initWithGraphBuilder:(id)a3;
-- (void)_enumeratePublicEventsFromMomentNodes:(id)a3 graphUpdate:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6;
-- (void)_insertPublicEventsFromMomentNodes:(id)a3 graphUpdate:(id)a4 progressBlock:(id)a5;
-- (void)deletePerformerNodeWithNoEdgesInGraph:(id)a3;
-- (void)deletePublicEventCategoryWithNoEdgesInGraph:(id)a3;
-- (void)deletePublicEventEdgesWithMomentNodes:(id)a3 inGraph:(id)a4;
-- (void)deletePublicEventNodesWithNoInEdgesInGraph:(id)a3;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestPublicEventsProcessor)initWithGraphBuilder:(id)builder;
+- (void)_enumeratePublicEventsFromMomentNodes:(id)nodes graphUpdate:(id)update progressBlock:(id)block usingBlock:(id)usingBlock;
+- (void)_insertPublicEventsFromMomentNodes:(id)nodes graphUpdate:(id)update progressBlock:(id)block;
+- (void)deletePerformerNodeWithNoEdgesInGraph:(id)graph;
+- (void)deletePublicEventCategoryWithNoEdgesInGraph:(id)graph;
+- (void)deletePublicEventEdgesWithMomentNodes:(id)nodes inGraph:(id)graph;
+- (void)deletePublicEventNodesWithNoInEdgesInGraph:(id)graph;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestPublicEventsProcessor
 
-- (void)_enumeratePublicEventsFromMomentNodes:(id)a3 graphUpdate:(id)a4 progressBlock:(id)a5 usingBlock:(id)a6
+- (void)_enumeratePublicEventsFromMomentNodes:(id)nodes graphUpdate:(id)update progressBlock:(id)block usingBlock:(id)usingBlock
 {
   v113 = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v63 = a4;
-  v10 = a5;
-  v11 = a6;
-  v52 = v10;
+  nodesCopy = nodes;
+  updateCopy = update;
+  blockCopy = block;
+  usingBlockCopy = usingBlock;
+  v52 = blockCopy;
   v101 = 0;
   v102 = &v101;
   v103 = 0x2020000000;
@@ -28,7 +28,7 @@
   v98 = &v97;
   v99 = 0x2020000000;
   v100 = 0;
-  v68 = _Block_copy(v10);
+  v68 = _Block_copy(blockCopy);
   if (v68)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -59,7 +59,7 @@
   *&v111 = buf;
   *(&v111 + 1) = 0x2020000000;
   v112 = 0;
-  v73 = [(PGGraphBuilder *)self->_graphBuilder graph];
+  graph = [(PGGraphBuilder *)self->_graphBuilder graph];
   v14 = MEMORY[0x277D22C80];
   v91[0] = MEMORY[0x277D85DD0];
   v91[1] = 3221225472;
@@ -74,35 +74,35 @@
   v58 = [v14 progressReporterWithProgressBlock:v91];
   v67 = objc_alloc_init(MEMORY[0x277D27778]);
   [v67 setFetchLimit:{objc_msgSend(MEMORY[0x277D27778], "noFetchLimit")}];
-  v15 = [v63 updateType];
-  v16 = v15;
-  if (!v15)
+  updateType = [updateCopy updateType];
+  v16 = updateType;
+  if (!updateType)
   {
-    if ([v63 isResumingFullAnalysis])
+    if ([updateCopy isResumingFullAnalysis])
     {
       goto LABEL_9;
     }
 
 LABEL_12:
-    v18 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v108 = 134217984;
       *v109 = v16;
-      _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "[PublicEvents] enumeratePublicEventsFromMomentNodes - unexpected update type %ld.", v108, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PublicEvents] enumeratePublicEventsFromMomentNodes - unexpected update type %ld.", v108, 0xCu);
     }
 
     v17 = 4;
     goto LABEL_15;
   }
 
-  if (v15 == 1)
+  if (updateType == 1)
   {
     v17 = 3;
     goto LABEL_15;
   }
 
-  if (v15 != 3)
+  if (updateType != 3)
   {
     goto LABEL_12;
   }
@@ -111,21 +111,21 @@ LABEL_9:
   v17 = 1;
 LABEL_15:
   [v67 setJobContext:v17];
-  v57 = [[PGPublicEventCachingFetchRequest alloc] initWithGraph:v73 momentNodeCollection:v62 cachingOptions:v67];
+  v57 = [[PGPublicEventCachingFetchRequest alloc] initWithGraph:graph momentNodeCollection:nodesCopy cachingOptions:v67];
   v56 = [[PGPublicEventCacher alloc] initWithDisambiguator:self->_disambiguator];
-  v19 = [(PGGraphBuilder *)self->_graphBuilder publicEventManager];
+  publicEventManager = [(PGGraphBuilder *)self->_graphBuilder publicEventManager];
   v90 = 0;
-  v54 = [(PGPublicEventCacher *)v56 executeFetchRequest:v57 publicEventManager:v19 progressReporter:v58 error:&v90];
+  v54 = [(PGPublicEventCacher *)v56 executeFetchRequest:v57 publicEventManager:publicEventManager progressReporter:v58 error:&v90];
   v60 = v90;
 
   if (v60)
   {
-    v20 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    loggingConnection2 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *v108 = 138412290;
       *v109 = v60;
-      _os_log_error_impl(&dword_22F0FC000, v20, OS_LOG_TYPE_ERROR, "[PublicEvents] enumeratePublicEventsFromMomentNodes - cacher error: %@", v108, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PublicEvents] enumeratePublicEventsFromMomentNodes - cacher error: %@", v108, 0xCu);
     }
   }
 
@@ -144,21 +144,21 @@ LABEL_15:
 
   else
   {
-    v23 = [v54 momentNodesForConsolidatedAddresses];
-    v64 = [v54 consolidatedAddressesByMomentIdentifier];
-    v75 = [v54 publicEventsByTimeLocationTupleIdentifier];
+    momentNodesForConsolidatedAddresses = [v54 momentNodesForConsolidatedAddresses];
+    consolidatedAddressesByMomentIdentifier = [v54 consolidatedAddressesByMomentIdentifier];
+    publicEventsByTimeLocationTupleIdentifier = [v54 publicEventsByTimeLocationTupleIdentifier];
     v24 = *(v111 + 24);
-    v25 = [v23 count];
-    v72 = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
+    v25 = [momentNodesForConsolidatedAddresses count];
+    serviceManager = [(PGGraphBuilder *)self->_graphBuilder serviceManager];
     v26 = [PGMeaningfulEventProcessorCache alloc];
-    v27 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:v23 graph:v73];
+    v27 = [(MAElementCollection *)[PGGraphMomentNodeCollection alloc] initWithSet:momentNodesForConsolidatedAddresses graph:graph];
     v71 = [(PGMeaningfulEventProcessorCache *)v26 initWithMomentNodes:v27];
 
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    obj = v23;
+    obj = momentNodesForConsolidatedAddresses;
     v28 = [obj countByEnumeratingWithState:&v85 objects:v107 count:16];
     if (v28)
     {
@@ -166,7 +166,7 @@ LABEL_15:
       v59 = *v86;
       *&v29 = 67109378;
       v51 = v29;
-      v70 = self;
+      selfCopy = self;
       while (2)
       {
         v31 = 0;
@@ -182,7 +182,7 @@ LABEL_15:
           v32 = *(*(&v85 + 1) + 8 * v31);
           context = objc_autoreleasePoolPush();
           v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v32, "identifier")}];
-          v34 = [v64 objectForKeyedSubscript:v33];
+          v34 = [consolidatedAddressesByMomentIdentifier objectForKeyedSubscript:v33];
 
           v83 = 0u;
           v84 = 0u;
@@ -205,12 +205,12 @@ LABEL_15:
                 }
 
                 v37 = *(*(&v81 + 1) + 8 * v36);
-                v38 = [v37 timeLocationIdentifier];
-                v39 = [v75 objectForKeyedSubscript:v38];
+                timeLocationIdentifier = [v37 timeLocationIdentifier];
+                v39 = [publicEventsByTimeLocationTupleIdentifier objectForKeyedSubscript:timeLocationIdentifier];
 
                 if ([v39 count])
                 {
-                  v40 = [(PGPublicEventDisambiguator *)self->_disambiguator disambiguateEvents:v39 forTimeLocationTuple:v37 momentNode:v32 graph:v73 meaningfulEventProcessorCache:v71 serviceManager:v72];
+                  v40 = [(PGPublicEventDisambiguator *)self->_disambiguator disambiguateEvents:v39 forTimeLocationTuple:v37 momentNode:v32 graph:graph meaningfulEventProcessorCache:v71 serviceManager:serviceManager];
                   v79 = 0u;
                   v80 = 0u;
                   v77 = 0u;
@@ -229,7 +229,7 @@ LABEL_15:
                           objc_enumerationMutation(v41);
                         }
 
-                        v11[2](v11, v32, *(*(&v77 + 1) + 8 * i), v37);
+                        usingBlockCopy[2](usingBlockCopy, v32, *(*(&v77 + 1) + 8 * i), v37);
                       }
 
                       v42 = [v41 countByEnumeratingWithState:&v77 objects:v105 count:16];
@@ -238,7 +238,7 @@ LABEL_15:
                     while (v42);
                   }
 
-                  self = v70;
+                  self = selfCopy;
                   v35 = v74;
                 }
 
@@ -345,26 +345,26 @@ void __113__PGGraphIngestPublicEventsProcessor__enumeratePublicEventsFromMomentN
   }
 }
 
-- (void)_insertPublicEventsFromMomentNodes:(id)a3 graphUpdate:(id)a4 progressBlock:(id)a5
+- (void)_insertPublicEventsFromMomentNodes:(id)nodes graphUpdate:(id)update progressBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nodesCopy = nodes;
+  updateCopy = update;
+  blockCopy = block;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__38368;
   v15[4] = __Block_byref_object_dispose__38369;
-  v16 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __99__PGGraphIngestPublicEventsProcessor__insertPublicEventsFromMomentNodes_graphUpdate_progressBlock___block_invoke;
   v12[3] = &unk_278883EF0;
   v14 = v15;
   v12[4] = self;
-  v11 = v9;
+  v11 = updateCopy;
   v13 = v11;
-  [(PGGraphIngestPublicEventsProcessor *)self _enumeratePublicEventsFromMomentNodes:v8 graphUpdate:v11 progressBlock:v10 usingBlock:v12];
+  [(PGGraphIngestPublicEventsProcessor *)self _enumeratePublicEventsFromMomentNodes:nodesCopy graphUpdate:v11 progressBlock:blockCopy usingBlock:v12];
 
   _Block_object_dispose(v15, 8);
 }
@@ -424,64 +424,64 @@ LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePerformerNodeWithNoEdgesInGraph:(id)a3
+- (void)deletePerformerNodeWithNoEdgesInGraph:(id)graph
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphPerformerNode filter];
   [v5 setWhereNoInAndOutEdges:1];
-  v6 = [v4 nodeIdentifiersMatchingFilter:v5];
-  v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  v6 = [graphCopy nodeIdentifiersMatchingFilter:v5];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     v10 = 134217984;
     v11 = [v6 count];
-    _os_log_debug_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_DEBUG, "[PublicEvents] Deleted %lu public event performer nodes from the graph", &v10, 0xCu);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "[PublicEvents] Deleted %lu public event performer nodes from the graph", &v10, 0xCu);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277D22C50]);
   [v8 removeNodesForIdentifiers:v6];
-  [v4 executeGraphChangeRequest:v8];
+  [graphCopy executeGraphChangeRequest:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePublicEventCategoryWithNoEdgesInGraph:(id)a3
+- (void)deletePublicEventCategoryWithNoEdgesInGraph:(id)graph
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGGraphNodeCollection *)PGGraphPublicEventCategoryNodeCollection nodesInGraph:v4];
-  v6 = [v5 categories];
-  v7 = [PGGraphPublicEventCategoryNode filterWithCategories:v6];
+  graphCopy = graph;
+  v5 = [(PGGraphNodeCollection *)PGGraphPublicEventCategoryNodeCollection nodesInGraph:graphCopy];
+  categories = [v5 categories];
+  v7 = [PGGraphPublicEventCategoryNode filterWithCategories:categories];
   [v7 setWhereNoInAndOutEdges:1];
-  v8 = [v4 nodeIdentifiersMatchingFilter:v7];
-  v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  v8 = [graphCopy nodeIdentifiersMatchingFilter:v7];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134217984;
     v13 = [v8 count];
-    _os_log_debug_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_DEBUG, "[PublicEvents] Deleted %lu public event category nodes from the graph", &v12, 0xCu);
+    _os_log_debug_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEBUG, "[PublicEvents] Deleted %lu public event category nodes from the graph", &v12, 0xCu);
   }
 
   v10 = objc_alloc_init(MEMORY[0x277D22C50]);
   [v10 removeNodesForIdentifiers:v8];
-  [v4 executeGraphChangeRequest:v10];
+  [graphCopy executeGraphChangeRequest:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePublicEventNodesWithNoInEdgesInGraph:(id)a3
+- (void)deletePublicEventNodesWithNoInEdgesInGraph:(id)graph
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = +[PGGraphPublicEventNode filter];
   [v5 setWhereNoInEdges:1];
-  v6 = [v4 nodeIdentifiersMatchingFilter:v5];
-  v7 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v8 = v7;
+  v6 = [graphCopy nodeIdentifiersMatchingFilter:v5];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v8 = loggingConnection;
   if (v6)
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
     {
       v10 = 134217984;
       v11 = [v6 count];
@@ -490,10 +490,10 @@ LABEL_10:
 
     v8 = objc_alloc_init(MEMORY[0x277D22C50]);
     [v8 removeNodesForIdentifiers:v6];
-    [v4 executeGraphChangeRequest:v8];
+    [graphCopy executeGraphChangeRequest:v8];
   }
 
-  else if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+  else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_FAULT))
   {
     v10 = 138412290;
     v11 = v5;
@@ -503,39 +503,39 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePublicEventEdgesWithMomentNodes:(id)a3 inGraph:(id)a4
+- (void)deletePublicEventEdgesWithMomentNodes:(id)nodes inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C50];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v10 = objc_alloc_init(v5);
-  v8 = [v7 publicEventNodes];
-  v9 = [(PGGraphEdgeCollection *)PGGraphPublicEventEdgeCollection edgesFromNodes:v7 toNodes:v8];
+  publicEventNodes = [nodesCopy publicEventNodes];
+  v9 = [(PGGraphEdgeCollection *)PGGraphPublicEventEdgeCollection edgesFromNodes:nodesCopy toNodes:publicEventNodes];
 
   [v10 removeEdges:v9];
-  [v6 executeGraphChangeRequest:v10];
+  [graphCopy executeGraphChangeRequest:v10];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  blockCopy = block;
   v8 = +[PGUserDefaults isPublicEventsEnabled];
-  v9 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v10 = v9;
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  graph = loggingConnection;
   if (v8)
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_DEFAULT, "[PublicEvents] processor running", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, graph, OS_LOG_TYPE_DEFAULT, "[PublicEvents] processor running", buf, 2u);
     }
 
-    v10 = [(PGGraphBuilder *)self->_graphBuilder graph];
-    v11 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    v12 = os_signpost_id_generate(v11);
-    v13 = v11;
+    graph = [(PGGraphBuilder *)self->_graphBuilder graph];
+    loggingConnection2 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    v12 = os_signpost_id_generate(loggingConnection2);
+    v13 = loggingConnection2;
     v14 = v13;
     if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
@@ -546,30 +546,30 @@ LABEL_10:
     info = 0;
     mach_timebase_info(&info);
     v15 = mach_absolute_time();
-    v16 = [v6 momentNodesToProcessInGraph:v10 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
-    v17 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    v16 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+    loggingConnection3 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_INFO))
     {
       v18 = [v16 count];
       *buf = 134217984;
       v28 = v18;
-      _os_log_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_INFO, "[PublicEvents] processor running with %lu moment nodes", buf, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection3, OS_LOG_TYPE_INFO, "[PublicEvents] processor running with %lu moment nodes", buf, 0xCu);
     }
 
     if ([v16 count])
     {
-      [(PGGraphIngestPublicEventsProcessor *)self deletePublicEventEdgesWithMomentNodes:v16 inGraph:v10];
-      [(PGGraphIngestPublicEventsProcessor *)self _insertPublicEventsFromMomentNodes:v16 graphUpdate:v6 progressBlock:v7];
+      [(PGGraphIngestPublicEventsProcessor *)self deletePublicEventEdgesWithMomentNodes:v16 inGraph:graph];
+      [(PGGraphIngestPublicEventsProcessor *)self _insertPublicEventsFromMomentNodes:v16 graphUpdate:updateCopy progressBlock:blockCopy];
     }
 
-    [(PGGraphIngestPublicEventsProcessor *)self deletePublicEventNodesWithNoInEdgesInGraph:v10];
-    [(PGGraphIngestPublicEventsProcessor *)self deletePublicEventCategoryWithNoEdgesInGraph:v10];
-    [(PGGraphIngestPublicEventsProcessor *)self deletePerformerNodeWithNoEdgesInGraph:v10];
-    v19 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    [(PGGraphIngestPublicEventsProcessor *)self deletePublicEventNodesWithNoInEdgesInGraph:graph];
+    [(PGGraphIngestPublicEventsProcessor *)self deletePublicEventCategoryWithNoEdgesInGraph:graph];
+    [(PGGraphIngestPublicEventsProcessor *)self deletePerformerNodeWithNoEdgesInGraph:graph];
+    loggingConnection4 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    if (os_log_type_enabled(loggingConnection4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v19, OS_LOG_TYPE_DEFAULT, "[PublicEvents] processor finished running", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection4, OS_LOG_TYPE_DEFAULT, "[PublicEvents] processor finished running", buf, 2u);
     }
 
     v20 = mach_absolute_time();
@@ -593,39 +593,39 @@ LABEL_10:
     }
   }
 
-  else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
   {
     *buf = 0;
-    _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "[PublicEvents] processor not running because public event processing is disabled in user defaults", buf, 2u);
+    _os_log_error_impl(&dword_22F0FC000, graph, OS_LOG_TYPE_ERROR, "[PublicEvents] processor not running because public event processing is disabled in user defaults", buf, 2u);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (+[PGUserDefaults isPublicEventsEnabled])
   {
-    if ([v4 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v4, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(v4, "hasMomentsToDelete"))
+    if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert") & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToDelete"))
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [v4 momentUpdateTypes];
-      v5 = ([objc_opt_class() requiredMomentUpdateTypes] & v8) != 0;
+      momentUpdateTypes = [updateCopy momentUpdateTypes];
+      v5 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
     }
   }
 
   else
   {
-    v6 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v9 = 0;
-      _os_log_error_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_ERROR, "[PublicEvents] processor should run check returning NO because public event processing is disabled in user defaults", v9, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PublicEvents] processor should run check returning NO because public event processing is disabled in user defaults", v9, 2u);
     }
 
     v5 = 0;
@@ -634,20 +634,20 @@ LABEL_10:
   return v5;
 }
 
-- (PGGraphIngestPublicEventsProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestPublicEventsProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v14.receiver = self;
   v14.super_class = PGGraphIngestPublicEventsProcessor;
   v6 = [(PGGraphIngestPublicEventsProcessor *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v8 = [PGPublicEventDisambiguator alloc];
-    v9 = [v5 sceneTaxonomy];
-    v10 = [v5 loggingConnection];
-    v11 = [(PGPublicEventDisambiguator *)v8 initWithSceneTaxonomy:v9 loggingConnection:v10];
+    sceneTaxonomy = [builderCopy sceneTaxonomy];
+    loggingConnection = [builderCopy loggingConnection];
+    v11 = [(PGPublicEventDisambiguator *)v8 initWithSceneTaxonomy:sceneTaxonomy loggingConnection:loggingConnection];
     disambiguator = v7->_disambiguator;
     v7->_disambiguator = v11;
   }

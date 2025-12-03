@@ -1,8 +1,8 @@
 @interface PUImportChangeDetailsCollectionViewHelper
-- (PUImportChangeDetailsCollectionViewHelper)initWithCollectionView:(id)a3 dataSourceSettingHandler:(id)a4;
+- (PUImportChangeDetailsCollectionViewHelper)initWithCollectionView:(id)view dataSourceSettingHandler:(id)handler;
 - (UICollectionView)collectionView;
-- (void)applyChangeDetails:(id)a3 forNewDataSource:(id)a4 completionBlock:(id)a5;
-- (void)transitionFromDataSource:(id)a3 toDataSource:(id)a4 changeHistory:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7;
+- (void)applyChangeDetails:(id)details forNewDataSource:(id)source completionBlock:(id)block;
+- (void)transitionFromDataSource:(id)source toDataSource:(id)dataSource changeHistory:(id)history animated:(BOOL)animated completionHandler:(id)handler;
 @end
 
 @implementation PUImportChangeDetailsCollectionViewHelper
@@ -14,28 +14,28 @@
   return WeakRetained;
 }
 
-- (void)applyChangeDetails:(id)a3 forNewDataSource:(id)a4 completionBlock:(id)a5
+- (void)applyChangeDetails:(id)details forNewDataSource:(id)source completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  sourceCopy = source;
+  blockCopy = block;
   v11 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v12 = [(PUImportChangeDetailsCollectionViewHelper *)self collectionView];
+  collectionView = [(PUImportChangeDetailsCollectionViewHelper *)self collectionView];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forNewDataSource_completionBlock___block_invoke;
   v16[3] = &unk_1E7B7F1D0;
   v16[4] = self;
-  v17 = v9;
-  v18 = v8;
+  v17 = sourceCopy;
+  v18 = detailsCopy;
   v19 = v11;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forNewDataSource_completionBlock___block_invoke_3;
   v13[3] = &unk_1E7B80A18;
-  v15 = v10;
+  v15 = blockCopy;
   v14 = v19;
-  [v12 performBatchUpdates:v16 completion:v13];
+  [collectionView performBatchUpdates:v16 completion:v13];
 }
 
 void __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forNewDataSource_completionBlock___block_invoke(uint64_t a1)
@@ -170,17 +170,17 @@ uint64_t __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forN
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)transitionFromDataSource:(id)a3 toDataSource:(id)a4 changeHistory:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)transitionFromDataSource:(id)source toDataSource:(id)dataSource changeHistory:(id)history animated:(BOOL)animated completionHandler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v27 = a5;
-  v14 = a7;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  historyCopy = history;
+  handlerCopy = handler;
   v15 = 0;
-  if (v12 && v13)
+  if (sourceCopy && dataSourceCopy)
   {
-    v15 = [v27 changeDetailsFromDataSourceIdentifier:objc_msgSend(v12 toDataSourceIdentifier:{"identifier"), objc_msgSend(v13, "identifier")}];
+    v15 = [historyCopy changeDetailsFromDataSourceIdentifier:objc_msgSend(sourceCopy toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSourceCopy, "identifier")}];
   }
 
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Applying changes:\n%@", v15];
@@ -199,9 +199,9 @@ uint64_t __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forN
   *&buf[16] = 0x2020000000;
   if (v15 && [v15 count] == 1)
   {
-    v18 = [(PUImportChangeDetailsCollectionViewHelper *)self collectionView];
-    v19 = [v18 window];
-    v20 = v19 != 0;
+    collectionView = [(PUImportChangeDetailsCollectionViewHelper *)self collectionView];
+    window = [collectionView window];
+    v20 = window != 0;
   }
 
   else
@@ -212,7 +212,7 @@ uint64_t __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forN
   v42 = v20;
   if (*(*&buf[8] + 24) == 1 && ([v15 firstObject], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "sectionsWithItemChanges"), v22 = objc_claimAutoreleasedReturnValue(), v34[0] = MEMORY[0x1E69E9820], v34[1] = 3221225472, v34[2] = __124__PUImportChangeDetailsCollectionViewHelper_transitionFromDataSource_toDataSource_changeHistory_animated_completionHandler___block_invoke, v34[3] = &unk_1E7B777D0, v23 = v21, v35 = v23, v36 = buf, objc_msgSend(v22, "enumerateIndexesUsingBlock:", v34), v35, v22, v23, (*(*&buf[8] + 24) & 1) != 0))
   {
-    if (!a6)
+    if (!animated)
     {
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
@@ -222,11 +222,11 @@ uint64_t __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forN
     v28[1] = 3221225472;
     v28[2] = __124__PUImportChangeDetailsCollectionViewHelper_transitionFromDataSource_toDataSource_changeHistory_animated_completionHandler___block_invoke_6;
     v28[3] = &unk_1E7B777F8;
-    v33 = a6;
-    v29 = v12;
-    v30 = v13;
+    animatedCopy = animated;
+    v29 = sourceCopy;
+    v30 = dataSourceCopy;
     v31 = v15;
-    v32 = v14;
+    v32 = handlerCopy;
     [(PUImportChangeDetailsCollectionViewHelper *)self applyChangeDetails:v31 forNewDataSource:v30 completionBlock:v28];
   }
 
@@ -242,15 +242,15 @@ uint64_t __97__PUImportChangeDetailsCollectionViewHelper_applyChangeDetails_forN
       _os_log_impl(&dword_1B36F3000, v24, OS_LOG_TYPE_DEFAULT, "%s: %@", v37, 0x16u);
     }
 
-    v25 = [(PUImportChangeDetailsCollectionViewHelper *)self dataSourceSettingHandler];
-    (v25)[2](v25, v13);
+    dataSourceSettingHandler = [(PUImportChangeDetailsCollectionViewHelper *)self dataSourceSettingHandler];
+    (dataSourceSettingHandler)[2](dataSourceSettingHandler, dataSourceCopy);
 
-    v26 = [(PUImportChangeDetailsCollectionViewHelper *)self collectionView];
-    [v26 reloadData];
+    collectionView2 = [(PUImportChangeDetailsCollectionViewHelper *)self collectionView];
+    [collectionView2 reloadData];
 
-    if (v14)
+    if (handlerCopy)
     {
-      (*(v14 + 2))(v14, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
@@ -327,18 +327,18 @@ void __124__PUImportChangeDetailsCollectionViewHelper_transitionFromDataSource_t
   }
 }
 
-- (PUImportChangeDetailsCollectionViewHelper)initWithCollectionView:(id)a3 dataSourceSettingHandler:(id)a4
+- (PUImportChangeDetailsCollectionViewHelper)initWithCollectionView:(id)view dataSourceSettingHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = PUImportChangeDetailsCollectionViewHelper;
   v8 = [(PUImportChangeDetailsCollectionViewHelper *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_collectionView, v6);
-    v10 = _Block_copy(v7);
+    objc_storeWeak(&v8->_collectionView, viewCopy);
+    v10 = _Block_copy(handlerCopy);
     dataSourceSettingHandler = v9->_dataSourceSettingHandler;
     v9->_dataSourceSettingHandler = v10;
   }

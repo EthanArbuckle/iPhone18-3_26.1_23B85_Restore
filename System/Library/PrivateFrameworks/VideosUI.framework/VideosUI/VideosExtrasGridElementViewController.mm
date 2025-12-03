@@ -1,6 +1,6 @@
 @interface VideosExtrasGridElementViewController
 + (id)_defaultCellStyle;
-+ (id)_fontAttributesForTextStyle:(id)a3;
++ (id)_fontAttributesForTextStyle:(id)style;
 + (id)extraLargeDetailStyle;
 + (id)extraLargeGalleryStyle;
 + (id)extraLargeStackGridStyle;
@@ -18,51 +18,51 @@
 + (id)wideGalleryStyle;
 + (id)wideStackGridStyle;
 - (BOOL)_hasDescriptionText;
-- (BOOL)_sectionIndexIsDescriptionSection:(int64_t)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)_sectionIndexIsDescriptionSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)preferredContentSize;
 - (UICollectionView)collectionView;
-- (UIEdgeInsets)_sectionInsetsForSection:(id)a3;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (VideosExtrasGridElementViewController)initWithViewElement:(id)a3;
+- (UIEdgeInsets)_sectionInsetsForSection:(id)section;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (VideosExtrasGridElementViewController)initWithViewElement:(id)element;
 - (VideosExtrasGridViewControllerStyle)currentStyle;
-- (double)_cellSpacingForSection:(id)a3;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (id)_cellStyleForSection:(id)a3;
-- (id)_lockupForIndexPath:(id)a3;
+- (double)_cellSpacingForSection:(id)section;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (id)_cellStyleForSection:(id)section;
+- (id)_lockupForIndexPath:(id)path;
 - (id)_narrowStyle;
-- (id)_sectionElementForIndex:(unint64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)_sectionElementForIndex:(unint64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)preferredLayoutGuide;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_dynamicTypeDidChange;
 - (void)_prepareLayout;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)loadView;
-- (void)setShelfStyle:(BOOL)a3;
-- (void)setViewElement:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setShelfStyle:(BOOL)style;
+- (void)setViewElement:(id)element;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VideosExtrasGridElementViewController
 
-- (VideosExtrasGridElementViewController)initWithViewElement:(id)a3
+- (VideosExtrasGridElementViewController)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = VideosExtrasGridElementViewController;
   v5 = [(VideosExtrasViewElementViewController *)&v9 initWithViewElement:0];
   v6 = v5;
   if (v5)
   {
-    [(VideosExtrasGridElementViewController *)v5 setViewElement:v4];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    [(VideosExtrasGridElementViewController *)v5 setViewElement:elementCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__dynamicTypeDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v6;
@@ -70,8 +70,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VideosExtrasGridElementViewController;
@@ -86,10 +86,10 @@
   return result;
 }
 
-- (void)setShelfStyle:(BOOL)a3
+- (void)setShelfStyle:(BOOL)style
 {
-  self->_shelfStyle = a3;
-  [(UICollectionViewFlowLayout *)self->_flowLayout setScrollDirection:a3];
+  self->_shelfStyle = style;
+  [(UICollectionViewFlowLayout *)self->_flowLayout setScrollDirection:style];
   [(_VideosExtrasShelfCollectionViewLayout *)self->_flowLayout invalidateLayout];
   collectionView = self->_collectionView;
 
@@ -113,8 +113,8 @@
 
     [(UICollectionView *)self->_collectionView setDelegate:self];
     [(UICollectionView *)self->_collectionView setDataSource:self];
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)self->_collectionView setBackgroundColor:v9];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
     [(UICollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UICollectionView *)self->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"GridCellID"];
@@ -133,19 +133,19 @@
   v8.receiver = self;
   v8.super_class = VideosExtrasGridElementViewController;
   [(VideosExtrasGridElementViewController *)&v8 loadView];
-  v3 = [(VideosExtrasGridElementViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VideosExtrasGridElementViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(VideosExtrasGridElementViewController *)self collectionView];
-  [v3 addSubview:v5];
+  collectionView = [(VideosExtrasGridElementViewController *)self collectionView];
+  [view addSubview:collectionView];
 
-  v6 = [[_VideosExtrasGridHeaderView alloc] initForAutolayout];
+  initForAutolayout = [[_VideosExtrasGridHeaderView alloc] initForAutolayout];
   headerView = self->_headerView;
-  self->_headerView = v6;
+  self->_headerView = initForAutolayout;
 
-  [v3 addSubview:self->_headerView];
+  [view addSubview:self->_headerView];
 }
 
 + (id)keyPathsForValuesAffectingContentScrollView
@@ -163,59 +163,59 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = VideosExtrasGridElementViewController;
-  [(VideosExtrasElementViewController *)&v16 viewWillAppear:a3];
-  v4 = [(VideosExtrasViewElementViewController *)self viewElement];
-  v5 = [v4 header];
+  [(VideosExtrasElementViewController *)&v16 viewWillAppear:appear];
+  viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+  header = [viewElement header];
 
-  v6 = [v5 image];
-  v7 = [v5 title];
-  v8 = [v5 subtitle];
-  v9 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  v10 = [v9 headerStyle];
-  if (v10)
+  image = [header image];
+  title = [header title];
+  subtitle = [header subtitle];
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  headerStyle = [currentStyle headerStyle];
+  if (headerStyle)
   {
-    [(_VideosExtrasGridHeaderView *)self->_headerView configureForImage:v6 title:v7 subtitle:v8 style:v10];
+    [(_VideosExtrasGridHeaderView *)self->_headerView configureForImage:image title:title subtitle:subtitle style:headerStyle];
   }
 
-  v11 = [(VideosExtrasGridElementViewController *)self collectionView];
-  [v11 reloadData];
+  collectionView = [(VideosExtrasGridElementViewController *)self collectionView];
+  [collectionView reloadData];
 
-  v12 = [(VideosExtrasGridElementViewController *)self view];
-  [v12 bringSubviewToFront:self->_headerView];
+  view = [(VideosExtrasGridElementViewController *)self view];
+  [view bringSubviewToFront:self->_headerView];
 
-  v13 = [(VideosExtrasGridElementViewController *)self view];
-  [v13 bringSubviewToFront:self->_titleRule];
+  view2 = [(VideosExtrasGridElementViewController *)self view];
+  [view2 bringSubviewToFront:self->_titleRule];
 
-  v14 = [(VideosExtrasGridElementViewController *)self view];
-  v15 = [(VideosExtrasGridElementViewController *)self collectionView];
-  [v14 bringSubviewToFront:v15];
+  view3 = [(VideosExtrasGridElementViewController *)self view];
+  collectionView2 = [(VideosExtrasGridElementViewController *)self collectionView];
+  [view3 bringSubviewToFront:collectionView2];
 }
 
-- (void)setViewElement:(id)a3
+- (void)setViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [(VideosExtrasViewElementViewController *)self viewElement];
+  elementCopy = element;
+  viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
 
-  if (v5 != v4)
+  if (viewElement != elementCopy)
   {
     v13.receiver = self;
     v13.super_class = VideosExtrasGridElementViewController;
-    [(VideosExtrasViewElementViewController *)&v13 setViewElement:v4];
-    v6 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v7 = [v6 header];
+    [(VideosExtrasViewElementViewController *)&v13 setViewElement:elementCopy];
+    viewElement2 = [(VideosExtrasViewElementViewController *)self viewElement];
+    header = [viewElement2 header];
 
-    v8 = [v7 image];
-    v9 = [v7 title];
-    v10 = [v7 subtitle];
-    v11 = [(VideosExtrasGridElementViewController *)self currentStyle];
-    v12 = [v11 headerStyle];
-    if (v12)
+    image = [header image];
+    title = [header title];
+    subtitle = [header subtitle];
+    currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+    headerStyle = [currentStyle headerStyle];
+    if (headerStyle)
     {
-      [(_VideosExtrasGridHeaderView *)self->_headerView configureForImage:v8 title:v9 subtitle:v10 style:v12];
+      [(_VideosExtrasGridHeaderView *)self->_headerView configureForImage:image title:title subtitle:subtitle style:headerStyle];
     }
 
     objc_opt_class();
@@ -225,19 +225,19 @@
 
 - (BOOL)_hasDescriptionText
 {
-  v2 = [(VideosExtrasViewElementViewController *)self viewElement];
-  v3 = [v2 header];
-  v4 = [v3 descriptionText];
-  v5 = [v4 text];
-  v6 = [v5 length] != 0;
+  viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+  header = [viewElement header];
+  descriptionText = [header descriptionText];
+  text = [descriptionText text];
+  v6 = [text length] != 0;
 
   return v6;
 }
 
-- (BOOL)_sectionIndexIsDescriptionSection:(int64_t)a3
+- (BOOL)_sectionIndexIsDescriptionSection:(int64_t)section
 {
   result = [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
-  if (a3)
+  if (section)
   {
     return 0;
   }
@@ -245,21 +245,21 @@
   return result;
 }
 
-- (id)_lockupForIndexPath:(id)a3
+- (id)_lockupForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
-  v6 = [v4 section] - v5;
-  v7 = [(VideosExtrasViewElementViewController *)self viewElement];
-  v8 = [v7 sections];
-  v9 = [v8 objectAtIndex:v6];
-  v10 = [v9 items];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v4, "row")}];
+  pathCopy = path;
+  _hasDescriptionText = [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
+  v6 = [pathCopy section] - _hasDescriptionText;
+  viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+  sections = [viewElement sections];
+  v9 = [sections objectAtIndex:v6];
+  items = [v9 items];
+  v11 = [items objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   return v11;
 }
 
-- (id)_sectionElementForIndex:(unint64_t)a3
+- (id)_sectionElementForIndex:(unint64_t)index
 {
   if ([(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:?])
   {
@@ -268,22 +268,22 @@
 
   else
   {
-    v6 = a3 - [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
-    v7 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v8 = [v7 sections];
-    v5 = [v8 objectAtIndex:v6];
+    v6 = index - [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
+    viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+    sections = [viewElement sections];
+    v5 = [sections objectAtIndex:v6];
   }
 
   return v5;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  if (-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [v10 section]))
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  if (-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [pathCopy section]))
   {
     if (collectionView_layout_sizeForItemAtIndexPath__onceToken != -1)
     {
@@ -291,18 +291,18 @@
     }
 
     v12 = collectionView_layout_sizeForItemAtIndexPath____textCell;
-    v13 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v14 = [v13 header];
-    v15 = [v14 descriptionText];
-    v16 = [v11 detailTextStyle];
-    [v12 configureForTextElement:v15 style:v16];
+    viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+    header = [viewElement header];
+    descriptionText = [header descriptionText];
+    detailTextStyle = [currentStyle detailTextStyle];
+    [v12 configureForTextElement:descriptionText style:detailTextStyle];
 
-    -[VideosExtrasGridElementViewController collectionView:layout:insetForSectionAtIndex:](self, "collectionView:layout:insetForSectionAtIndex:", v8, v9, [v10 section]);
+    -[VideosExtrasGridElementViewController collectionView:layout:insetForSectionAtIndex:](self, "collectionView:layout:insetForSectionAtIndex:", viewCopy, layoutCopy, [pathCopy section]);
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    [v8 frame];
+    [viewCopy frame];
     [collectionView_layout_sizeForItemAtIndexPath____textCell sizeThatFits:{v25 - v20 - v24, v26 - v18 - v22}];
     v28 = v27;
     v30 = v29;
@@ -310,9 +310,9 @@
 
   else
   {
-    v31 = -[VideosExtrasGridElementViewController _sectionElementForIndex:](self, "_sectionElementForIndex:", [v10 section]);
+    v31 = -[VideosExtrasGridElementViewController _sectionElementForIndex:](self, "_sectionElementForIndex:", [pathCopy section]);
     v32 = [(VideosExtrasGridElementViewController *)self _cellStyleForSection:v31];
-    v33 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:v10];
+    v33 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:pathCopy];
     if (collectionView_layout_sizeForItemAtIndexPath__onceToken_82 != -1)
     {
       [VideosExtrasGridElementViewController collectionView:layout:sizeForItemAtIndexPath:];
@@ -346,10 +346,10 @@ void __86__VideosExtrasGridElementViewController_collectionView_layout_sizeForIt
   collectionView_layout_sizeForItemAtIndexPath____sizeCell = v0;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(VideosExtrasGridElementViewController *)self currentStyle:a3];
-  if ([(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:a5])
+  v7 = [(VideosExtrasGridElementViewController *)self currentStyle:view];
+  if ([(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:index])
   {
     [v7 detailInsets];
     v9 = v8;
@@ -360,7 +360,7 @@ void __86__VideosExtrasGridElementViewController_collectionView_layout_sizeForIt
 
   else
   {
-    v16 = [(VideosExtrasGridElementViewController *)self _sectionElementForIndex:a5];
+    v16 = [(VideosExtrasGridElementViewController *)self _sectionElementForIndex:index];
     [(VideosExtrasGridElementViewController *)self _sectionInsetsForSection:v16];
     v9 = v17;
     v11 = v18;
@@ -379,138 +379,138 @@ void __86__VideosExtrasGridElementViewController_collectionView_layout_sizeForIt
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = [(VideosExtrasGridElementViewController *)self _sectionElementForIndex:a5, a4];
+  layout = [(VideosExtrasGridElementViewController *)self _sectionElementForIndex:index, layout];
 
-  if (!v7)
+  if (!layout)
   {
     return 0.0;
   }
 
-  v8 = [(VideosExtrasGridElementViewController *)self _sectionElementForIndex:a5];
+  v8 = [(VideosExtrasGridElementViewController *)self _sectionElementForIndex:index];
   [(VideosExtrasGridElementViewController *)self _cellSpacingForSection:v8];
   v10 = v9;
 
   return v10;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = [(VideosExtrasViewElementViewController *)self viewElement];
-  v5 = [v4 sections];
-  v6 = [v5 count];
+  viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+  sections = [viewElement sections];
+  v6 = [sections count];
 
   return v6 + [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   if ([(VideosExtrasGridElementViewController *)self _hasDescriptionText])
   {
-    if ([(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:a4])
+    if ([(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:section])
     {
       return 1;
     }
 
-    v7 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v8 = [v7 sections];
-    v9 = v8;
-    v10 = a4 - 1;
+    viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+    sections = [viewElement sections];
+    v9 = sections;
+    sectionCopy = section - 1;
   }
 
   else
   {
-    v7 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v8 = [v7 sections];
-    v9 = v8;
-    v10 = a4;
+    viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+    sections = [viewElement sections];
+    v9 = sections;
+    sectionCopy = section;
   }
 
-  v11 = [v8 objectAtIndex:v10];
-  v12 = [v11 items];
-  v13 = [v12 count];
+  v11 = [sections objectAtIndex:sectionCopy];
+  items = [v11 items];
+  v13 = [items count];
 
   return v13;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  if (-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [v6 section]))
+  pathCopy = path;
+  viewCopy = view;
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  if (-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [pathCopy section]))
   {
-    v9 = [v7 dequeueReusableCellWithReuseIdentifier:@"TextCellID" forIndexPath:v6];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TextCellID" forIndexPath:pathCopy];
 
-    v10 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v11 = [v10 header];
-    v12 = [v11 descriptionText];
+    viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+    header = [viewElement header];
+    descriptionText = [header descriptionText];
 
-    v13 = [v8 detailTextStyle];
-    [v9 configureForTextElement:v12 style:v13];
+    detailTextStyle = [currentStyle detailTextStyle];
+    [v9 configureForTextElement:descriptionText style:detailTextStyle];
   }
 
   else
   {
-    v9 = [v7 dequeueReusableCellWithReuseIdentifier:@"GridCellID" forIndexPath:v6];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"GridCellID" forIndexPath:pathCopy];
 
-    v12 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:v6];
-    v13 = -[VideosExtrasGridElementViewController _sectionElementForIndex:](self, "_sectionElementForIndex:", [v6 section]);
-    v14 = [(VideosExtrasGridElementViewController *)self _cellStyleForSection:v13];
-    [v9 configureForLockup:v12 cellStyle:v14];
+    descriptionText = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:pathCopy];
+    detailTextStyle = -[VideosExtrasGridElementViewController _sectionElementForIndex:](self, "_sectionElementForIndex:", [pathCopy section]);
+    v14 = [(VideosExtrasGridElementViewController *)self _cellStyleForSection:detailTextStyle];
+    [v9 configureForLockup:descriptionText cellStyle:v14];
   }
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  if (!-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [v6 section]))
+  pathCopy = path;
+  if (!-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [pathCopy section]))
   {
-    v5 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:v6];
+    v5 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:pathCopy];
     [v5 dispatchEventOfType:4 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  if (!-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [v6 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (!-[VideosExtrasGridElementViewController _sectionIndexIsDescriptionSection:](self, "_sectionIndexIsDescriptionSection:", [pathCopy section]))
   {
-    v7 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:v6];
-    [v8 deselectItemAtIndexPath:v6 animated:1];
+    v7 = [(VideosExtrasGridElementViewController *)self _lockupForIndexPath:pathCopy];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
     [v7 dispatchEventOfType:2 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = [a3 dequeueReusableSupplementaryViewOfKind:a4 withReuseIdentifier:@"ReusableHeaderID" forIndexPath:v8];
-  LODWORD(a3) = [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
-  v10 = [v8 section];
+  pathCopy = path;
+  v9 = [view dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"ReusableHeaderID" forIndexPath:pathCopy];
+  LODWORD(view) = [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
+  section = [pathCopy section];
 
-  v11 = v10 - a3;
-  v12 = [(VideosExtrasViewElementViewController *)self viewElement];
-  v13 = [v12 sections];
-  v14 = [v13 objectAtIndex:v11];
+  v11 = section - view;
+  viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+  sections = [viewElement sections];
+  v14 = [sections objectAtIndex:v11];
 
-  v15 = [v14 header];
-  v16 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  v17 = [v16 sectionHeaderStyle];
+  header = [v14 header];
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  sectionHeaderStyle = [currentStyle sectionHeaderStyle];
 
-  [v9 configureForHeaderElement:v15 headerStyle:v17];
+  [v9 configureForHeaderElement:header headerStyle:sectionHeaderStyle];
 
   return v9;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   if (collectionView_layout_referenceSizeForHeaderInSection__onceToken != -1)
   {
     [VideosExtrasGridElementViewController collectionView:layout:referenceSizeForHeaderInSection:];
@@ -518,20 +518,20 @@ void __86__VideosExtrasGridElementViewController_collectionView_layout_sizeForIt
 
   v10 = *MEMORY[0x1E695F060];
   v11 = *(MEMORY[0x1E695F060] + 8);
-  if (![(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:a5])
+  if (![(VideosExtrasGridElementViewController *)self _sectionIndexIsDescriptionSection:section])
   {
-    v12 = a5 - [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
-    v13 = [(VideosExtrasViewElementViewController *)self viewElement];
-    v14 = [v13 sections];
-    v15 = [v14 objectAtIndex:v12];
+    v12 = section - [(VideosExtrasGridElementViewController *)self _hasDescriptionText];
+    viewElement = [(VideosExtrasViewElementViewController *)self viewElement];
+    sections = [viewElement sections];
+    v15 = [sections objectAtIndex:v12];
 
-    v16 = [v15 header];
-    if (v16)
+    header = [v15 header];
+    if (header)
     {
-      v17 = [(VideosExtrasGridElementViewController *)self currentStyle];
-      v18 = [v17 sectionHeaderStyle];
+      currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+      sectionHeaderStyle = [currentStyle sectionHeaderStyle];
 
-      [collectionView_layout_referenceSizeForHeaderInSection____sizingView configureForHeaderElement:v16 headerStyle:v18];
+      [collectionView_layout_referenceSizeForHeaderInSection____sizingView configureForHeaderElement:header headerStyle:sectionHeaderStyle];
       [collectionView_layout_referenceSizeForHeaderInSection____sizingView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE098], *(MEMORY[0x1E69DE098] + 8)}];
       v10 = v19;
       v11 = v20;
@@ -554,69 +554,69 @@ void __95__VideosExtrasGridElementViewController_collectionView_layout_reference
 
 - (id)preferredLayoutGuide
 {
-  v3 = [(_VideosExtrasGridHeaderView *)self->_headerView titleLabel];
-  v4 = v3;
-  if (v3)
+  titleLabel = [(_VideosExtrasGridHeaderView *)self->_headerView titleLabel];
+  v4 = titleLabel;
+  if (titleLabel)
   {
-    v5 = v3;
+    view = titleLabel;
   }
 
   else
   {
-    v5 = [(VideosExtrasGridElementViewController *)self view];
+    view = [(VideosExtrasGridElementViewController *)self view];
   }
 
-  v6 = v5;
+  v6 = view;
 
   return v6;
 }
 
-- (id)_cellStyleForSection:(id)a3
+- (id)_cellStyleForSection:(id)section
 {
-  v4 = [a3 style];
-  v5 = [v4 valueForStyle:@"extras-itml-section-content-type"];
+  style = [section style];
+  v5 = [style valueForStyle:@"extras-itml-section-content-type"];
 
-  v6 = [(VideosExtrasGridElementViewController *)self currentStyle];
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([v5 isEqualToString:@"extras-image"])
     {
-      v7 = [v6 imageCellStyle];
+      imageCellStyle = [currentStyle imageCellStyle];
       goto LABEL_8;
     }
 
     if ([v5 isEqualToString:@"extras-video"])
     {
-      v7 = [v6 videoCellStyle];
+      imageCellStyle = [currentStyle videoCellStyle];
       goto LABEL_8;
     }
 
     if ([v5 isEqualToString:@"extras-product"])
     {
-      v7 = [v6 productCellStyle];
+      imageCellStyle = [currentStyle productCellStyle];
 LABEL_8:
-      v8 = v7;
-      if (v7)
+      defaultCellStyle = imageCellStyle;
+      if (imageCellStyle)
       {
         goto LABEL_10;
       }
     }
   }
 
-  v8 = [v6 defaultCellStyle];
+  defaultCellStyle = [currentStyle defaultCellStyle];
 LABEL_10:
 
-  return v8;
+  return defaultCellStyle;
 }
 
-- (UIEdgeInsets)_sectionInsetsForSection:(id)a3
+- (UIEdgeInsets)_sectionInsetsForSection:(id)section
 {
-  v4 = [a3 style];
-  v5 = [v4 valueForStyle:@"extras-itml-section-content-type"];
+  style = [section style];
+  v5 = [style valueForStyle:@"extras-itml-section-content-type"];
 
-  v6 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  [v6 defaultCellSectionInsets];
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  [currentStyle defaultCellSectionInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -626,7 +626,7 @@ LABEL_10:
   {
     if ([v5 isEqualToString:@"extras-image"])
     {
-      [v6 imageCellSectionInsets];
+      [currentStyle imageCellSectionInsets];
 LABEL_8:
       v8 = v15;
       v10 = v16;
@@ -637,13 +637,13 @@ LABEL_8:
 
     if ([v5 isEqualToString:@"extras-video"])
     {
-      [v6 videoCellSectionInsets];
+      [currentStyle videoCellSectionInsets];
       goto LABEL_8;
     }
 
     if ([v5 isEqualToString:@"extras-product"])
     {
-      [v6 productCellSectionInsets];
+      [currentStyle productCellSectionInsets];
       goto LABEL_8;
     }
   }
@@ -661,22 +661,22 @@ LABEL_9:
   return result;
 }
 
-- (double)_cellSpacingForSection:(id)a3
+- (double)_cellSpacingForSection:(id)section
 {
-  v4 = a3;
-  v5 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  [v5 defaultSpacing];
+  sectionCopy = section;
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  [currentStyle defaultSpacing];
   v7 = v6;
-  v8 = [v4 style];
+  style = [sectionCopy style];
 
-  v9 = [v8 valueForStyle:@"extras-itml-section-content-type"];
+  v9 = [style valueForStyle:@"extras-itml-section-content-type"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([v9 isEqualToString:@"extras-image"])
     {
-      [v5 imageSpacing];
+      [currentStyle imageSpacing];
 LABEL_8:
       v7 = v10;
       goto LABEL_9;
@@ -684,13 +684,13 @@ LABEL_8:
 
     if ([v9 isEqualToString:@"extras-video"])
     {
-      [v5 videoSpacing];
+      [currentStyle videoSpacing];
       goto LABEL_8;
     }
 
     if ([v9 isEqualToString:@"extras-product"])
     {
-      [v5 productSpacing];
+      [currentStyle productSpacing];
       goto LABEL_8;
     }
   }
@@ -704,26 +704,26 @@ LABEL_9:
 {
   if ([(VideosExtrasElementViewController *)self isWide])
   {
-    v3 = self->_wideStyle;
+    _narrowStyle = self->_wideStyle;
   }
 
   else
   {
-    v3 = [(VideosExtrasGridElementViewController *)self _narrowStyle];
+    _narrowStyle = [(VideosExtrasGridElementViewController *)self _narrowStyle];
   }
 
-  return v3;
+  return _narrowStyle;
 }
 
 - (id)_narrowStyle
 {
-  v3 = [(VideosExtrasGridElementViewController *)self view];
-  [v3 bounds];
+  view = [(VideosExtrasGridElementViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   if (fabs(v5 + -480.0) < 0.00000011920929)
   {
-    v6 = [(VideosExtrasGridElementViewController *)self smallStyle];
+    smallStyle = [(VideosExtrasGridElementViewController *)self smallStyle];
     goto LABEL_10;
   }
 
@@ -737,39 +737,39 @@ LABEL_9:
     if (fabs(v5 + -736.0) >= 0.00000011920929 && fabs(v5 + -812.0) >= 0.00000011920929)
     {
 LABEL_4:
-      v6 = [(VideosExtrasGridElementViewController *)self mediumStyle];
+      smallStyle = [(VideosExtrasGridElementViewController *)self mediumStyle];
       goto LABEL_10;
     }
 
-    v6 = [(VideosExtrasGridElementViewController *)self extraLargeStyle];
+    smallStyle = [(VideosExtrasGridElementViewController *)self extraLargeStyle];
   }
 
   else
   {
-    v6 = [(VideosExtrasGridElementViewController *)self largeStyle];
+    smallStyle = [(VideosExtrasGridElementViewController *)self largeStyle];
   }
 
 LABEL_10:
 
-  return v6;
+  return smallStyle;
 }
 
 - (void)_dynamicTypeDidChange
 {
   v17 = *MEMORY[0x1E69E9840];
   [(_VideosExtrasGridHeaderView *)self->_headerView invalidateIntrinsicContentSize];
-  v3 = [(VideosExtrasGridElementViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
+  collectionView = [(VideosExtrasGridElementViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  [v4 invalidateLayout];
-  v5 = [(VideosExtrasGridElementViewController *)self collectionView];
-  v6 = [v5 visibleCells];
+  [collectionViewLayout invalidateLayout];
+  collectionView2 = [(VideosExtrasGridElementViewController *)self collectionView];
+  visibleCells = [collectionView2 visibleCells];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = visibleCells;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -801,37 +801,37 @@ LABEL_10:
   v85.receiver = self;
   v85.super_class = VideosExtrasGridElementViewController;
   [(VideosExtrasElementViewController *)&v85 _prepareLayout];
-  v3 = [(VideosExtrasGridElementViewController *)self view];
+  view = [(VideosExtrasGridElementViewController *)self view];
   if (![(VideosExtrasViewElementViewController *)self embedded])
   {
-    v4 = [(VideosExtrasElementViewController *)self backgroundViewController];
-    [v4 setVignetteType:3];
+    backgroundViewController = [(VideosExtrasElementViewController *)self backgroundViewController];
+    [backgroundViewController setVignetteType:3];
   }
 
-  v5 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  v6 = [v5 backgroundColor];
-  [v3 setBackgroundColor:v6];
+  currentStyle = [(VideosExtrasGridElementViewController *)self currentStyle];
+  backgroundColor = [currentStyle backgroundColor];
+  [view setBackgroundColor:backgroundColor];
 
-  v7 = [v5 showsScrollFade];
+  showsScrollFade = [currentStyle showsScrollFade];
   titleRule = self->_titleRule;
   v9 = &OBJC_IVAR___VUITextLayout__numberOfLinesAXSmall;
-  if (v7)
+  if (showsScrollFade)
   {
     if (!titleRule)
     {
-      v10 = [objc_opt_class() _borderView];
+      _borderView = [objc_opt_class() _borderView];
       v11 = self->_titleRule;
-      self->_titleRule = v10;
+      self->_titleRule = _borderView;
 
       [(UIView *)self->_titleRule setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v3 addSubview:self->_titleRule];
+      [view addSubview:self->_titleRule];
     }
 
     if (!self->_titleRuleConstraints)
     {
       v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleRule attribute:4 relatedBy:0 toItem:self->_headerView attribute:4 multiplier:1.0 constant:0.0];
-      v13 = [v5 headerStyle];
-      [v13 insets];
+      headerStyle = [currentStyle headerStyle];
+      [headerStyle insets];
       v15 = v14;
       v17 = v16;
 
@@ -841,11 +841,11 @@ LABEL_10:
       self->_titleRuleConstraints = v19;
     }
 
-    v21 = [(VideosExtrasGridElementViewController *)self view];
-    [v21 addConstraints:self->_titleRuleConstraints];
+    view2 = [(VideosExtrasGridElementViewController *)self view];
+    [view2 addConstraints:self->_titleRuleConstraints];
 
-    v22 = [(VideosExtrasGridElementViewController *)self view];
-    [v22 bringSubviewToFront:self->_titleRule];
+    view3 = [(VideosExtrasGridElementViewController *)self view];
+    [view3 bringSubviewToFront:self->_titleRule];
   }
 
   else
@@ -857,30 +857,30 @@ LABEL_10:
 
     if (self->_titleRuleConstraints)
     {
-      [v3 removeConstraints:?];
+      [view removeConstraints:?];
     }
   }
 
   if (self->_headerViewConstraints)
   {
-    [v3 removeConstraints:?];
+    [view removeConstraints:?];
     headerViewConstraints = self->_headerViewConstraints;
     self->_headerViewConstraints = 0;
   }
 
-  v24 = [(VideosExtrasGridElementViewController *)self currentStyle];
-  v25 = [v24 headerStyle];
+  currentStyle2 = [(VideosExtrasGridElementViewController *)self currentStyle];
+  headerStyle2 = [currentStyle2 headerStyle];
 
-  v26 = [MEMORY[0x1E695DF70] array];
-  v84 = v25;
-  if (v25)
+  array = [MEMORY[0x1E695DF70] array];
+  v84 = headerStyle2;
+  if (headerStyle2)
   {
-    v27 = [(VideosExtrasGridElementViewController *)self view];
-    [v27 addSubview:self->_headerView];
+    view4 = [(VideosExtrasGridElementViewController *)self view];
+    [view4 addSubview:self->_headerView];
 
-    v28 = [(VideosExtrasGridElementViewController *)self currentStyle];
-    v29 = [v28 headerStyle];
-    [v29 insets];
+    currentStyle3 = [(VideosExtrasGridElementViewController *)self currentStyle];
+    headerStyle3 = [currentStyle3 headerStyle];
+    [headerStyle3 insets];
     v31 = v30;
     v33 = v32;
     v35 = v34;
@@ -889,51 +889,51 @@ LABEL_10:
     v38 = MEMORY[0x1E696ACD8];
     headerView = self->_headerView;
     [(VideosExtrasGridElementViewController *)self view];
-    v40 = v83 = v5;
-    v41 = [v40 safeAreaLayoutGuide];
-    v42 = [v38 constraintWithItem:headerView attribute:3 relatedBy:0 toItem:v41 attribute:3 multiplier:1.0 constant:v31];
+    v40 = v83 = currentStyle;
+    safeAreaLayoutGuide = [v40 safeAreaLayoutGuide];
+    v42 = [v38 constraintWithItem:headerView attribute:3 relatedBy:0 toItem:safeAreaLayoutGuide attribute:3 multiplier:1.0 constant:v31];
 
-    v43 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:self->_headerView toView:v3 alongEdges:10 insets:{v31, v33, v35, v37}];
+    v43 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:self->_headerView toView:view alongEdges:10 insets:{v31, v33, v35, v37}];
     v44 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_headerView attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:50.0];
     v45 = MEMORY[0x1E696ACD8];
     [(VideosExtrasGridElementViewController *)self collectionView];
-    v47 = v46 = v3;
+    v47 = v46 = view;
     v48 = [v45 constraintsByAttachingView:v47 toView:v46 alongEdges:14 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
     v49 = MEMORY[0x1E696ACD8];
-    v50 = [(VideosExtrasGridElementViewController *)self collectionView];
-    v51 = [v49 constraintWithItem:v50 attribute:3 relatedBy:0 toItem:self->_headerView attribute:4 multiplier:1.0 constant:v35];
+    collectionView = [(VideosExtrasGridElementViewController *)self collectionView];
+    v51 = [v49 constraintWithItem:collectionView attribute:3 relatedBy:0 toItem:self->_headerView attribute:4 multiplier:1.0 constant:v35];
 
-    [v26 addObject:v42];
-    [v26 addObjectsFromArray:v43];
-    [v26 addObject:v44];
-    [v26 addObjectsFromArray:v48];
-    [v26 addObject:v51];
+    [array addObject:v42];
+    [array addObjectsFromArray:v43];
+    [array addObject:v44];
+    [array addObjectsFromArray:v48];
+    [array addObject:v51];
 
-    v3 = v46;
+    view = v46;
     v9 = &OBJC_IVAR___VUITextLayout__numberOfLinesAXSmall;
 
-    v5 = v83;
+    currentStyle = v83;
   }
 
   else
   {
     [(_VideosExtrasGridHeaderView *)self->_headerView removeFromSuperview];
     v52 = MEMORY[0x1E696ACD8];
-    v53 = [(VideosExtrasGridElementViewController *)self collectionView];
-    v42 = [v52 constraintsByAttachingView:v53 toView:v3 alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    collectionView2 = [(VideosExtrasGridElementViewController *)self collectionView];
+    v42 = [v52 constraintsByAttachingView:collectionView2 toView:view alongEdges:15 insets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
 
-    [v26 addObjectsFromArray:v42];
+    [array addObjectsFromArray:v42];
   }
 
-  objc_storeStrong(&self->_headerViewConstraints, v26);
-  [v3 addConstraints:v26];
-  [v5 collectionViewInsets];
+  objc_storeStrong(&self->_headerViewConstraints, array);
+  [view addConstraints:array];
+  [currentStyle collectionViewInsets];
   v55 = v54;
   v57 = v56;
   v59 = v58;
   v61 = v60;
-  v62 = [(VideosExtrasGridElementViewController *)self parentViewController];
+  parentViewController = [(VideosExtrasGridElementViewController *)self parentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -950,23 +950,23 @@ LABEL_10:
     }
   }
 
-  if ([v5 adjustsContentInsetByBottomNavBar])
+  if ([currentStyle adjustsContentInsetByBottomNavBar])
   {
-    v64 = [(VideosExtrasGridElementViewController *)self navigationController];
+    navigationController = [(VideosExtrasGridElementViewController *)self navigationController];
     v65 = objc_opt_respondsToSelector();
 
     if (v65)
     {
-      v66 = [(VideosExtrasGridElementViewController *)self navigationController];
-      v67 = [v66 mainTemplateViewController];
-      v68 = [v67 view];
-      [v68 bounds];
+      navigationController2 = [(VideosExtrasGridElementViewController *)self navigationController];
+      mainTemplateViewController = [navigationController2 mainTemplateViewController];
+      view5 = [mainTemplateViewController view];
+      [view5 bounds];
       v70 = v69;
 
       if (v70 > v59)
       {
-        v71 = [v67 menuBarView];
-        [v71 bounds];
+        menuBarView = [mainTemplateViewController menuBarView];
+        [menuBarView bounds];
         v73 = v72;
 
         if (v59 < v73)
@@ -978,36 +978,36 @@ LABEL_10:
   }
 
   v74 = MEMORY[0x1E69DDA98];
-  v75 = [*MEMORY[0x1E69DDA98] keyWindow];
-  [v75 safeAreaInsets];
+  keyWindow = [*MEMORY[0x1E69DDA98] keyWindow];
+  [keyWindow safeAreaInsets];
   v77 = v57 + v76;
 
-  v78 = [*v74 keyWindow];
-  [v78 safeAreaInsets];
+  keyWindow2 = [*v74 keyWindow];
+  [keyWindow2 safeAreaInsets];
   v80 = v61 + v79;
 
   v81 = v9[371];
   [*(&self->super.super.super.super.super.isa + v81) setContentInset:{v55, v77, v59, v80}];
   [*(&self->super.super.super.super.super.isa + v81) setContentInsetAdjustmentBehavior:2];
-  v82 = [*(&self->super.super.super.super.super.isa + v81) collectionViewLayout];
-  [v82 invalidateLayout];
+  collectionViewLayout = [*(&self->super.super.super.super.super.isa + v81) collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
-  [v5 defaultSpacing];
+  [currentStyle defaultSpacing];
   [(UICollectionViewFlowLayout *)self->_flowLayout setMinimumInteritemSpacing:?];
-  [v5 cellLineSpacing];
+  [currentStyle cellLineSpacing];
   [(UICollectionViewFlowLayout *)self->_flowLayout setMinimumLineSpacing:?];
 }
 
-+ (id)_fontAttributesForTextStyle:(id)a3
++ (id)_fontAttributesForTextStyle:(id)style
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:a3];
+  v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:style];
   v8[0] = *MEMORY[0x1E69DB8A8];
-  v4 = [v3 familyName];
-  v9[0] = v4;
+  familyName = [v3 familyName];
+  v9[0] = familyName;
   v8[1] = *MEMORY[0x1E69DB8B8];
-  v5 = [v3 fontName];
-  v9[1] = v5;
+  fontName = [v3 fontName];
+  v9[1] = fontName;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
@@ -1020,7 +1020,7 @@ LABEL_10:
   [(VideosExtrasGridCellStyle *)v3 setTitleFirstBaselineHeight:20.0];
   v4 = *MEMORY[0x1E69DDD08];
   [(VideosExtrasGridCellStyle *)v3 setTitleTextStyle:*MEMORY[0x1E69DDD08]];
-  v5 = [a1 _fontAttributesForTextStyle:v4];
+  v5 = [self _fontAttributesForTextStyle:v4];
   [(VideosExtrasGridCellStyle *)v3 setTitleDefaultFontAttributes:v5];
 
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
@@ -1028,7 +1028,7 @@ LABEL_10:
 
   [(VideosExtrasGridCellStyle *)v3 setTextFirstBaselineToBottom:30.0];
   [(VideosExtrasGridCellStyle *)v3 setTextLastBaselineToBottom:10.0];
-  v7 = [a1 _fontAttributesForTextStyle:v4];
+  v7 = [self _fontAttributesForTextStyle:v4];
   [(VideosExtrasGridCellStyle *)v3 setSubtitleDefaultFontAttributes:v7];
 
   v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.4 alpha:1.0];
@@ -1044,25 +1044,25 @@ LABEL_10:
 + (id)wideGalleryStyle
 {
   v3 = objc_alloc_init(VideosExtrasGridViewControllerStyle);
-  v4 = [a1 _defaultCellStyle];
-  [v4 setImageSize:{170.0, 170.0}];
-  [(VideosExtrasGridViewControllerStyle *)v3 setDefaultCellStyle:v4];
-  [(VideosExtrasGridViewControllerStyle *)v3 setImageCellStyle:v4];
-  v5 = [a1 _defaultCellStyle];
-  [v5 setImageSize:{224.0, 126.0}];
-  [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellStyle:v5];
-  v6 = [a1 _defaultCellStyle];
-  [v6 setImageSize:{114.0, 170.0}];
-  [(VideosExtrasGridViewControllerStyle *)v3 setProductCellStyle:v6];
+  _defaultCellStyle = [self _defaultCellStyle];
+  [_defaultCellStyle setImageSize:{170.0, 170.0}];
+  [(VideosExtrasGridViewControllerStyle *)v3 setDefaultCellStyle:_defaultCellStyle];
+  [(VideosExtrasGridViewControllerStyle *)v3 setImageCellStyle:_defaultCellStyle];
+  _defaultCellStyle2 = [self _defaultCellStyle];
+  [_defaultCellStyle2 setImageSize:{224.0, 126.0}];
+  [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellStyle:_defaultCellStyle2];
+  _defaultCellStyle3 = [self _defaultCellStyle];
+  [_defaultCellStyle3 setImageSize:{114.0, 170.0}];
+  [(VideosExtrasGridViewControllerStyle *)v3 setProductCellStyle:_defaultCellStyle3];
   [(VideosExtrasGridViewControllerStyle *)v3 setCollectionViewInsets:280.0, 15.0, 0.0, 15.0];
   v7 = objc_alloc_init(VideosExtrasGridSectionHeaderStyle);
   v8 = *MEMORY[0x1E69DDCF8];
   [(VideosExtrasGridSectionHeaderStyle *)v7 setTextStyle:*MEMORY[0x1E69DDCF8]];
-  v9 = [a1 _fontAttributesForTextStyle:v8];
+  v9 = [self _fontAttributesForTextStyle:v8];
   [(VideosExtrasGridSectionHeaderStyle *)v7 setDefaultFontAttributes:v9];
 
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VideosExtrasGridSectionHeaderStyle *)v7 setTextColor:v10];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(VideosExtrasGridSectionHeaderStyle *)v7 setTextColor:whiteColor];
 
   [(VideosExtrasGridSectionHeaderStyle *)v7 setInsets:0.0, 5.0, 0.0, 5.0];
   [(VideosExtrasGridSectionHeaderStyle *)v7 setTextBaselineDescender:15.0];
@@ -1076,8 +1076,8 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellSectionInsets:0.0, 5.0, 0.0, 5.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setProductCellSectionInsets:0.0, 5.0, 0.0, 5.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setCellLineSpacing:0.0];
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:clearColor];
 
   [(VideosExtrasGridViewControllerStyle *)v3 setShowsScrollFade:0];
   [(VideosExtrasGridViewControllerStyle *)v3 setAdjustsContentInsetByBottomNavBar:1];
@@ -1093,7 +1093,7 @@ LABEL_10:
   [(VideosExtrasGridCellStyle *)v4 setTitleFirstBaselineHeight:20.0];
   v5 = *MEMORY[0x1E69DDD10];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextStyle:*MEMORY[0x1E69DDD10]];
-  v6 = [a1 _fontAttributesForTextStyle:v5];
+  v6 = [self _fontAttributesForTextStyle:v5];
   [(VideosExtrasGridCellStyle *)v4 setTitleDefaultFontAttributes:v6];
   v7 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:v7];
@@ -1117,8 +1117,8 @@ LABEL_10:
   v10 = objc_alloc_init(VideosExtrasGridSectionHeaderStyle);
   [(VideosExtrasGridSectionHeaderStyle *)v10 setTextStyle:*MEMORY[0x1E69DDD80]];
   [(VideosExtrasGridSectionHeaderStyle *)v10 setDefaultFontAttributes:v6];
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VideosExtrasGridSectionHeaderStyle *)v10 setTextColor:v11];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(VideosExtrasGridSectionHeaderStyle *)v10 setTextColor:whiteColor];
 
   [(VideosExtrasGridSectionHeaderStyle *)v10 setInsets:15.0, 15.0, 5.0, 15.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setSectionHeaderStyle:v10];
@@ -1131,8 +1131,8 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setImageCellSectionInsets:0.0, 15.0, 0.0, 15.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellSectionInsets:0.0, 15.0, 0.0, 15.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setProductCellSectionInsets:0.0, 15.0, 0.0, 15.0];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:v12];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:clearColor];
 
   [(VideosExtrasGridViewControllerStyle *)v3 setShowsScrollFade:0];
   [(VideosExtrasGridViewControllerStyle *)v3 setAdjustsContentInsetByBottomNavBar:1];
@@ -1142,51 +1142,51 @@ LABEL_10:
 
 + (id)mediumGalleryStyle
 {
-  v2 = [a1 smallGalleryStyle];
-  [v2 setDefaultSpacing:19.0];
-  [v2 setImageSpacing:19.0];
-  [v2 setVideoSpacing:12.0];
-  [v2 setProductSpacing:19.0];
+  smallGalleryStyle = [self smallGalleryStyle];
+  [smallGalleryStyle setDefaultSpacing:19.0];
+  [smallGalleryStyle setImageSpacing:19.0];
+  [smallGalleryStyle setVideoSpacing:12.0];
+  [smallGalleryStyle setProductSpacing:19.0];
 
-  return v2;
+  return smallGalleryStyle;
 }
 
 + (id)largeGalleryStyle
 {
-  v2 = [a1 smallGalleryStyle];
-  [v2 collectionViewInsets];
-  [v2 setCollectionViewInsets:155.0];
-  [v2 setDefaultSpacing:8.0];
-  [v2 setImageSpacing:8.0];
-  [v2 setVideoSpacing:12.0];
-  [v2 setProductSpacing:8.0];
+  smallGalleryStyle = [self smallGalleryStyle];
+  [smallGalleryStyle collectionViewInsets];
+  [smallGalleryStyle setCollectionViewInsets:155.0];
+  [smallGalleryStyle setDefaultSpacing:8.0];
+  [smallGalleryStyle setImageSpacing:8.0];
+  [smallGalleryStyle setVideoSpacing:12.0];
+  [smallGalleryStyle setProductSpacing:8.0];
 
-  return v2;
+  return smallGalleryStyle;
 }
 
 + (id)extraLargeGalleryStyle
 {
-  v2 = [a1 smallGalleryStyle];
-  [v2 collectionViewInsets];
-  [v2 setCollectionViewInsets:160.0];
-  v3 = [v2 defaultCellStyle];
-  [v3 setImageSize:{160.0, 160.0}];
+  smallGalleryStyle = [self smallGalleryStyle];
+  [smallGalleryStyle collectionViewInsets];
+  [smallGalleryStyle setCollectionViewInsets:160.0];
+  defaultCellStyle = [smallGalleryStyle defaultCellStyle];
+  [defaultCellStyle setImageSize:{160.0, 160.0}];
 
-  v4 = [v2 imageCellStyle];
-  [v4 setImageSize:{160.0, 160.0}];
+  imageCellStyle = [smallGalleryStyle imageCellStyle];
+  [imageCellStyle setImageSize:{160.0, 160.0}];
 
-  v5 = [v2 videoCellStyle];
-  [v5 setImageSize:{160.0, 90.0}];
+  videoCellStyle = [smallGalleryStyle videoCellStyle];
+  [videoCellStyle setImageSize:{160.0, 90.0}];
 
-  v6 = [v2 productCellStyle];
-  [v6 setImageSize:{160.0, 160.0}];
+  productCellStyle = [smallGalleryStyle productCellStyle];
+  [productCellStyle setImageSize:{160.0, 160.0}];
 
-  [v2 setDefaultSpacing:22.0];
-  [v2 setImageSpacing:22.0];
-  [v2 setVideoSpacing:22.0];
-  [v2 setProductSpacing:22.0];
+  [smallGalleryStyle setDefaultSpacing:22.0];
+  [smallGalleryStyle setImageSpacing:22.0];
+  [smallGalleryStyle setVideoSpacing:22.0];
+  [smallGalleryStyle setProductSpacing:22.0];
 
-  return v2;
+  return smallGalleryStyle;
 }
 
 + (id)wideDetailStyle
@@ -1195,7 +1195,7 @@ LABEL_10:
   v4 = objc_alloc_init(VideosExtrasGridCellStyle);
   [(VideosExtrasGridCellStyle *)v4 setImageSize:160.0, 160.0];
   v5 = *MEMORY[0x1E69DDD08];
-  v6 = [a1 _fontAttributesForTextStyle:*MEMORY[0x1E69DDD08]];
+  v6 = [self _fontAttributesForTextStyle:*MEMORY[0x1E69DDD08]];
   [(VideosExtrasGridCellStyle *)v4 setTitleDefaultFontAttributes:v6];
 
   [(VideosExtrasGridCellStyle *)v4 setTitleFirstBaselineHeight:20.0];
@@ -1204,7 +1204,7 @@ LABEL_10:
   [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:v7];
 
   [(VideosExtrasGridCellStyle *)v4 setTextFirstBaselineToBottom:35.0];
-  v8 = [a1 _fontAttributesForTextStyle:v5];
+  v8 = [self _fontAttributesForTextStyle:v5];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleDefaultFontAttributes:v8];
 
   [(VideosExtrasGridCellStyle *)v4 setSubtitleTextStyle:v5];
@@ -1226,16 +1226,16 @@ LABEL_10:
   [(VideosExtrasGridHeaderStyle *)v12 setInsets:15.0, 0.0, 0.0, 0.0];
   v13 = *MEMORY[0x1E69DDD00];
   [(VideosExtrasGridHeaderStyle *)v12 setTitleTextStyle:*MEMORY[0x1E69DDD00]];
-  v14 = [a1 _fontAttributesForTextStyle:v13];
+  v14 = [self _fontAttributesForTextStyle:v13];
   [(VideosExtrasGridHeaderStyle *)v12 setTitleDefaultFontAttributes:v14];
 
-  v15 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VideosExtrasGridHeaderStyle *)v12 setTitleColor:v15];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(VideosExtrasGridHeaderStyle *)v12 setTitleColor:whiteColor];
 
   v16 = *MEMORY[0x1E69DDD80];
   [(VideosExtrasGridHeaderStyle *)v12 setSubtitleTextStyle:*MEMORY[0x1E69DDD80]];
   [(VideosExtrasGridHeaderStyle *)v12 setSubtitleLineHeight:25.0];
-  v17 = [a1 _fontAttributesForTextStyle:v16];
+  v17 = [self _fontAttributesForTextStyle:v16];
   [(VideosExtrasGridHeaderStyle *)v12 setSubtitleDefaultFontAttributes:v17];
 
   v18 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
@@ -1245,7 +1245,7 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setHeaderStyle:v12];
   v19 = *MEMORY[0x1E69DDD28];
   [(VideosExtrasGridViewControllerStyle *)v3 setDetailTextStyle:*MEMORY[0x1E69DDD28]];
-  v20 = [a1 _fontAttributesForTextStyle:v19];
+  v20 = [self _fontAttributesForTextStyle:v19];
   [(VideosExtrasGridViewControllerStyle *)v3 setDetailDefaultFontAttributes:v20];
 
   v21 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.7];
@@ -1254,7 +1254,7 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setDetailInsets:23.0, 10.0, 10.0, 10.0];
   v22 = objc_alloc_init(VideosExtrasGridSectionHeaderStyle);
   [(VideosExtrasGridSectionHeaderStyle *)v22 setTextStyle:v16];
-  v23 = [a1 _fontAttributesForTextStyle:v16];
+  v23 = [self _fontAttributesForTextStyle:v16];
   [(VideosExtrasGridSectionHeaderStyle *)v22 setDefaultFontAttributes:v23];
 
   v24 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
@@ -1271,8 +1271,8 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setImageCellSectionInsets:20.0, 0.0, 0.0, 0.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellSectionInsets:20.0, 0.0, 0.0, 0.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setProductCellSectionInsets:20.0, 0.0, 0.0, 0.0];
-  v25 = [MEMORY[0x1E69DC888] clearColor];
-  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:v25];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:clearColor];
 
   [(VideosExtrasGridViewControllerStyle *)v3 setShowsScrollFade:1];
   [(VideosExtrasGridViewControllerStyle *)v3 setAdjustsContentInsetByBottomNavBar:1];
@@ -1288,10 +1288,10 @@ LABEL_10:
   [(VideosExtrasGridCellStyle *)v4 setTitleFirstBaselineHeight:18.0];
   v5 = *MEMORY[0x1E69DDD10];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextStyle:*MEMORY[0x1E69DDD10]];
-  v6 = [a1 _fontAttributesForTextStyle:v5];
+  v6 = [self _fontAttributesForTextStyle:v5];
   [(VideosExtrasGridCellStyle *)v4 setTitleDefaultFontAttributes:v6];
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:v7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:whiteColor];
 
   [(VideosExtrasGridCellStyle *)v4 setTextFirstBaselineToBottom:30.0];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleDefaultFontAttributes:v6];
@@ -1315,8 +1315,8 @@ LABEL_10:
   [(VideosExtrasGridHeaderStyle *)v11 setTitleTextStyle:*MEMORY[0x1E69DDD00]];
   [(VideosExtrasGridHeaderStyle *)v11 setTitleLineHeight:21.0];
   [(VideosExtrasGridHeaderStyle *)v11 setTitleDefaultFontAttributes:v6];
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VideosExtrasGridHeaderStyle *)v11 setTitleColor:v12];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [(VideosExtrasGridHeaderStyle *)v11 setTitleColor:whiteColor2];
 
   v13 = *MEMORY[0x1E69DDD80];
   [(VideosExtrasGridHeaderStyle *)v11 setSubtitleTextStyle:*MEMORY[0x1E69DDD80]];
@@ -1350,8 +1350,8 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setImageCellSectionInsets:15.0, 46.0, 0.0, 46.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellSectionInsets:15.0, 34.0, 0.0, 34.0];
   [(VideosExtrasGridViewControllerStyle *)v3 setProductCellSectionInsets:15.0, 35.0, 0.0, 35.0];
-  v18 = [MEMORY[0x1E69DC888] blackColor];
-  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:v18];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:blackColor];
 
   [(VideosExtrasGridViewControllerStyle *)v3 setShowsScrollFade:1];
   [(VideosExtrasGridViewControllerStyle *)v3 setAdjustsContentInsetByBottomNavBar:1];
@@ -1361,59 +1361,59 @@ LABEL_10:
 
 + (id)mediumDetailStyle
 {
-  v2 = [a1 smallDetailStyle];
-  [v2 setDetailInsets:{15.0, 78.0, 20.0, 78.0}];
-  v3 = [v2 headerStyle];
-  [v3 setInsets:{15.0, 78.0, 0.0, 78.0}];
+  smallDetailStyle = [self smallDetailStyle];
+  [smallDetailStyle setDetailInsets:{15.0, 78.0, 20.0, 78.0}];
+  headerStyle = [smallDetailStyle headerStyle];
+  [headerStyle setInsets:{15.0, 78.0, 0.0, 78.0}];
 
-  [v2 setDefaultCellSectionInsets:{15.0, 79.0, 0.0, 79.0}];
-  [v2 setImageCellSectionInsets:{15.0, 89.0, 0.0, 89.0}];
-  [v2 setVideoCellSectionInsets:{15.0, 78.0, 0.0, 78.0}];
-  [v2 setProductCellSectionInsets:{15.0, 79.0, 0.0, 79.0}];
+  [smallDetailStyle setDefaultCellSectionInsets:{15.0, 79.0, 0.0, 79.0}];
+  [smallDetailStyle setImageCellSectionInsets:{15.0, 89.0, 0.0, 89.0}];
+  [smallDetailStyle setVideoCellSectionInsets:{15.0, 78.0, 0.0, 78.0}];
+  [smallDetailStyle setProductCellSectionInsets:{15.0, 79.0, 0.0, 79.0}];
 
-  return v2;
+  return smallDetailStyle;
 }
 
 + (id)largeDetailStyle
 {
-  v2 = [a1 mediumDetailStyle];
-  [v2 setDefaultSpacing:14.0];
-  [v2 setImageSpacing:7.0];
-  [v2 setVideoSpacing:28.0];
-  [v2 setProductSpacing:14.0];
+  mediumDetailStyle = [self mediumDetailStyle];
+  [mediumDetailStyle setDefaultSpacing:14.0];
+  [mediumDetailStyle setImageSpacing:7.0];
+  [mediumDetailStyle setVideoSpacing:28.0];
+  [mediumDetailStyle setProductSpacing:14.0];
 
-  return v2;
+  return mediumDetailStyle;
 }
 
 + (id)extraLargeDetailStyle
 {
-  v2 = [a1 smallDetailStyle];
-  v3 = [v2 defaultCellStyle];
-  [v3 setImageSize:{90.0, 90.0}];
+  smallDetailStyle = [self smallDetailStyle];
+  defaultCellStyle = [smallDetailStyle defaultCellStyle];
+  [defaultCellStyle setImageSize:{90.0, 90.0}];
 
-  v4 = [v2 imageCellStyle];
-  [v4 setImageSize:{90.0, 90.0}];
+  imageCellStyle = [smallDetailStyle imageCellStyle];
+  [imageCellStyle setImageSize:{90.0, 90.0}];
 
-  v5 = [v2 videoCellStyle];
-  [v5 setImageSize:{150.0, 84.0}];
+  videoCellStyle = [smallDetailStyle videoCellStyle];
+  [videoCellStyle setImageSize:{150.0, 84.0}];
 
-  v6 = [v2 productCellStyle];
-  [v6 setImageSize:{100.0, 100.0}];
+  productCellStyle = [smallDetailStyle productCellStyle];
+  [productCellStyle setImageSize:{100.0, 100.0}];
 
-  [v2 setDetailInsets:{15.0, 100.0, 20.0, 100.0}];
-  v7 = [v2 headerStyle];
-  [v7 setInsets:{15.0, 100.0, 0.0, 100.0}];
+  [smallDetailStyle setDetailInsets:{15.0, 100.0, 20.0, 100.0}];
+  headerStyle = [smallDetailStyle headerStyle];
+  [headerStyle setInsets:{15.0, 100.0, 0.0, 100.0}];
 
-  [v2 setDefaultCellSectionInsets:{15.0, 107.0, 0.0, 107.0}];
-  [v2 setImageCellSectionInsets:{15.0, 100.0, 0.0, 100.0}];
-  [v2 setVideoCellSectionInsets:{15.0, 107.0, 0.0, 107.0}];
-  [v2 setProductCellSectionInsets:{15.0, 107.0, 0.0, 107.0}];
-  [v2 setDefaultSpacing:7.0];
-  [v2 setImageSpacing:7.0];
-  [v2 setVideoSpacing:7.0];
-  [v2 setProductSpacing:7.0];
+  [smallDetailStyle setDefaultCellSectionInsets:{15.0, 107.0, 0.0, 107.0}];
+  [smallDetailStyle setImageCellSectionInsets:{15.0, 100.0, 0.0, 100.0}];
+  [smallDetailStyle setVideoCellSectionInsets:{15.0, 107.0, 0.0, 107.0}];
+  [smallDetailStyle setProductCellSectionInsets:{15.0, 107.0, 0.0, 107.0}];
+  [smallDetailStyle setDefaultSpacing:7.0];
+  [smallDetailStyle setImageSpacing:7.0];
+  [smallDetailStyle setVideoSpacing:7.0];
+  [smallDetailStyle setProductSpacing:7.0];
 
-  return v2;
+  return smallDetailStyle;
 }
 
 + (id)wideStackGridStyle
@@ -1424,7 +1424,7 @@ LABEL_10:
   [(VideosExtrasGridCellStyle *)v4 setTitleFirstBaselineHeight:20.0];
   v5 = *MEMORY[0x1E69DDD08];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextStyle:*MEMORY[0x1E69DDD08]];
-  v6 = [a1 _fontAttributesForTextStyle:v5];
+  v6 = [self _fontAttributesForTextStyle:v5];
   [(VideosExtrasGridCellStyle *)v4 setTitleDefaultFontAttributes:v6];
   v7 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:v7];
@@ -1471,8 +1471,8 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellSectionInsets:v13, v14, v15, v16];
   [(VideosExtrasGridViewControllerStyle *)v3 setProductCellSectionInsets:v13, v14, v15, v16];
   [(VideosExtrasGridViewControllerStyle *)v3 setCellLineSpacing:0.0];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:v17];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:clearColor];
 
   [(VideosExtrasGridViewControllerStyle *)v3 setShowsScrollFade:0];
   [(VideosExtrasGridViewControllerStyle *)v3 setAdjustsContentInsetByBottomNavBar:0];
@@ -1488,10 +1488,10 @@ LABEL_10:
   [(VideosExtrasGridCellStyle *)v4 setTitleFirstBaselineHeight:20.0];
   v5 = *MEMORY[0x1E69DDD10];
   [(VideosExtrasGridCellStyle *)v4 setTitleTextStyle:*MEMORY[0x1E69DDD10]];
-  v6 = [a1 _fontAttributesForTextStyle:v5];
+  v6 = [self _fontAttributesForTextStyle:v5];
   [(VideosExtrasGridCellStyle *)v4 setTitleDefaultFontAttributes:v6];
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:v7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(VideosExtrasGridCellStyle *)v4 setTitleTextColor:whiteColor];
 
   [(VideosExtrasGridCellStyle *)v4 setTextFirstBaselineToBottom:30.0];
   [(VideosExtrasGridCellStyle *)v4 setSubtitleDefaultFontAttributes:v6];
@@ -1530,8 +1530,8 @@ LABEL_10:
   [(VideosExtrasGridViewControllerStyle *)v3 setImageCellSectionInsets:v13, v14, v15, v16];
   [(VideosExtrasGridViewControllerStyle *)v3 setVideoCellSectionInsets:v13, v14, v15, v16];
   [(VideosExtrasGridViewControllerStyle *)v3 setProductCellSectionInsets:v13, v14, v15, v16];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:v17];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VideosExtrasGridViewControllerStyle *)v3 setBackgroundColor:clearColor];
 
   [(VideosExtrasGridViewControllerStyle *)v3 setShowsScrollFade:0];
   [(VideosExtrasGridViewControllerStyle *)v3 setAdjustsContentInsetByBottomNavBar:0];
@@ -1542,48 +1542,48 @@ LABEL_10:
 
 + (id)mediumStackGridStyle
 {
-  v2 = [a1 smallStackGridStyle];
-  [v2 setDefaultSpacing:25.0];
-  [v2 setImageSpacing:30.0];
-  [v2 setVideoSpacing:30.0];
-  [v2 setProductSpacing:25.0];
+  smallStackGridStyle = [self smallStackGridStyle];
+  [smallStackGridStyle setDefaultSpacing:25.0];
+  [smallStackGridStyle setImageSpacing:30.0];
+  [smallStackGridStyle setVideoSpacing:30.0];
+  [smallStackGridStyle setProductSpacing:25.0];
 
-  return v2;
+  return smallStackGridStyle;
 }
 
 + (id)largeStackGridStyle
 {
-  v2 = [a1 mediumStackGridStyle];
-  v3 = [v2 videoCellStyle];
-  [v3 setImageSize:{150.0, 85.0}];
+  mediumStackGridStyle = [self mediumStackGridStyle];
+  videoCellStyle = [mediumStackGridStyle videoCellStyle];
+  [videoCellStyle setImageSize:{150.0, 85.0}];
 
-  [v2 setImageSpacing:25.0];
-  [v2 setVideoSpacing:25.0];
+  [mediumStackGridStyle setImageSpacing:25.0];
+  [mediumStackGridStyle setVideoSpacing:25.0];
 
-  return v2;
+  return mediumStackGridStyle;
 }
 
 + (id)extraLargeStackGridStyle
 {
-  v2 = [a1 largeStackGridStyle];
-  v3 = [v2 defaultCellStyle];
-  [v3 setImageSize:{160.0, 160.0}];
+  largeStackGridStyle = [self largeStackGridStyle];
+  defaultCellStyle = [largeStackGridStyle defaultCellStyle];
+  [defaultCellStyle setImageSize:{160.0, 160.0}];
 
-  v4 = [v2 imageCellStyle];
-  [v4 setImageSize:{160.0, 160.0}];
+  imageCellStyle = [largeStackGridStyle imageCellStyle];
+  [imageCellStyle setImageSize:{160.0, 160.0}];
 
-  v5 = [v2 videoCellStyle];
-  [v5 setImageSize:{160.0, 90.0}];
+  videoCellStyle = [largeStackGridStyle videoCellStyle];
+  [videoCellStyle setImageSize:{160.0, 90.0}];
 
-  v6 = [v2 productCellStyle];
-  [v6 setImageSize:{106.0, 160.0}];
+  productCellStyle = [largeStackGridStyle productCellStyle];
+  [productCellStyle setImageSize:{106.0, 160.0}];
 
-  [v2 setDefaultSpacing:50.0];
-  [v2 setImageSpacing:50.0];
-  [v2 setVideoSpacing:50.0];
-  [v2 setProductSpacing:30.0];
+  [largeStackGridStyle setDefaultSpacing:50.0];
+  [largeStackGridStyle setImageSpacing:50.0];
+  [largeStackGridStyle setVideoSpacing:50.0];
+  [largeStackGridStyle setProductSpacing:30.0];
 
-  return v2;
+  return largeStackGridStyle;
 }
 
 @end

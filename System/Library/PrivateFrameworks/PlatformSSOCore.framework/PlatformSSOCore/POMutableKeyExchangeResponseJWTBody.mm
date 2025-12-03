@@ -1,50 +1,50 @@
 @interface POMutableKeyExchangeResponseJWTBody
-- (void)addCustomClaims:(id)a3;
-- (void)setExp:(id)a3;
-- (void)setIat:(id)a3;
-- (void)setKey:(id)a3;
-- (void)setKey_context:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setExp:(id)exp;
+- (void)setIat:(id)iat;
+- (void)setKey:(id)key;
+- (void)setKey_context:(id)key_context;
 @end
 
 @implementation POMutableKeyExchangeResponseJWTBody
 
-- (void)setIat:(id)a3
+- (void)setIat:(id)iat
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [iat timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"iat"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"iat"];
 }
 
-- (void)setExp:(id)a3
+- (void)setExp:(id)exp
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [exp timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"exp"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"exp"];
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"key"];
+  keyCopy = key;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:keyCopy forKeyedSubscript:@"key"];
 }
 
-- (void)setKey_context:(id)a3
+- (void)setKey_context:(id)key_context
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"key_context"];
+  key_contextCopy = key_context;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:key_contextCopy forKeyedSubscript:@"key_context"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

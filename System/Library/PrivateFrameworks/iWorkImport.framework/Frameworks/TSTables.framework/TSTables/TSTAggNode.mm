@@ -1,59 +1,59 @@
 @interface TSTAggNode
-- (TSTAggNode)initWithArchive:(const void *)a3 aggregator:(id)a4;
-- (TSTAggNode)initWithFormulaCoord:(TSUCellCoord)a3 groupNode:(id)a4 aggregator:(id)a5;
+- (TSTAggNode)initWithArchive:(const void *)archive aggregator:(id)aggregator;
+- (TSTAggNode)initWithFormulaCoord:(TSUCellCoord)coord groupNode:(id)node aggregator:(id)aggregator;
 - (TSTAggregator)aggregator;
 - (TSTGroupNode)groupNode;
 - (id).cxx_construct;
-- (id)descriptionWithGroupBy:(id)a3;
-- (void)addChild:(id)a3 skipWillModify:(BOOL)a4;
-- (void)clearAggFormulas:(id)a3 inOwner:(const TSKUIDStruct *)a4;
-- (void)encodeToArchive:(void *)a3;
-- (void)enumerateDirectChildren:(id)a3;
-- (void)removeChild:(id)a3 skipWillModify:(BOOL)a4;
-- (void)setAccumulator:(id)a3;
-- (void)unpackAfterUnarchiveForGroupBy:(id)a3;
-- (void)upgradeForNewAggregateTypes:(id)a3 inOwner:(const TSKUIDStruct *)a4;
+- (id)descriptionWithGroupBy:(id)by;
+- (void)addChild:(id)child skipWillModify:(BOOL)modify;
+- (void)clearAggFormulas:(id)formulas inOwner:(const TSKUIDStruct *)owner;
+- (void)encodeToArchive:(void *)archive;
+- (void)enumerateDirectChildren:(id)children;
+- (void)removeChild:(id)child skipWillModify:(BOOL)modify;
+- (void)setAccumulator:(id)accumulator;
+- (void)unpackAfterUnarchiveForGroupBy:(id)by;
+- (void)upgradeForNewAggregateTypes:(id)types inOwner:(const TSKUIDStruct *)owner;
 @end
 
 @implementation TSTAggNode
 
-- (TSTAggNode)initWithFormulaCoord:(TSUCellCoord)a3 groupNode:(id)a4 aggregator:(id)a5
+- (TSTAggNode)initWithFormulaCoord:(TSUCellCoord)coord groupNode:(id)node aggregator:(id)aggregator
 {
-  v20 = a3;
-  v7 = a4;
-  v8 = a5;
+  coordCopy = coord;
+  nodeCopy = node;
+  aggregatorCopy = aggregator;
   v19.receiver = self;
   v19.super_class = TSTAggNode;
   v9 = [(TSTAggNode *)&v19 init];
   if (v9)
   {
-    TSUCellCoord::verifyCoordIsSane(&v20);
-    v9->_formulaCoord = v20;
-    objc_storeWeak(&v9->_groupNode, v7);
-    v10 = objc_storeWeak(&v9->_aggregator, v8);
-    v15 = objc_msgSend_groupBy(v8, v11, v12, v13, v14);
+    TSUCellCoord::verifyCoordIsSane(&coordCopy);
+    v9->_formulaCoord = coordCopy;
+    objc_storeWeak(&v9->_groupNode, nodeCopy);
+    v10 = objc_storeWeak(&v9->_aggregator, aggregatorCopy);
+    v15 = objc_msgSend_groupBy(aggregatorCopy, v11, v12, v13, v14);
     objc_msgSend_setAggNode_forFormulaCoord_(v15, v16, v9, &v9->_formulaCoord, v17);
   }
 
   return v9;
 }
 
-- (void)setAccumulator:(id)a3
+- (void)setAccumulator:(id)accumulator
 {
-  v4 = a3;
+  accumulatorCopy = accumulator;
   WeakRetained = objc_loadWeakRetained(&self->_aggregator);
   objc_msgSend_willModify(WeakRetained, v6, v7, v8, v9);
 
   accumulator = self->_accumulator;
-  self->_accumulator = v4;
+  self->_accumulator = accumulatorCopy;
 }
 
-- (void)addChild:(id)a3 skipWillModify:(BOOL)a4
+- (void)addChild:(id)child skipWillModify:(BOOL)modify
 {
-  v10 = a3;
-  if (v10)
+  childCopy = child;
+  if (childCopy)
   {
-    if (!a4)
+    if (!modify)
     {
       WeakRetained = objc_loadWeakRetained(&self->_aggregator);
       objc_msgSend_willModify(WeakRetained, v12, v13, v14, v15);
@@ -66,38 +66,38 @@
       self->_children = v16;
     }
 
-    v25 = objc_msgSend_formulaCoord(v10, v6, v7, v8, v9);
+    v25 = objc_msgSend_formulaCoord(childCopy, v6, v7, v8, v9);
     if ((TSCECellCoordSet::containsCellCoord(&self->_childrenCoordSet, &v25) & 1) == 0)
     {
-      objc_msgSend_addObject_(self->_children, v18, v10, v19, v20);
-      v25 = objc_msgSend_formulaCoord(v10, v21, v22, v23, v24);
+      objc_msgSend_addObject_(self->_children, v18, childCopy, v19, v20);
+      v25 = objc_msgSend_formulaCoord(childCopy, v21, v22, v23, v24);
       TSCECellCoordSet::addCellCoord(&self->_childrenCoordSet, &v25);
     }
   }
 }
 
-- (void)removeChild:(id)a3 skipWillModify:(BOOL)a4
+- (void)removeChild:(id)child skipWillModify:(BOOL)modify
 {
-  v10 = a3;
-  if (v10)
+  childCopy = child;
+  if (childCopy)
   {
-    if (!a4)
+    if (!modify)
     {
       WeakRetained = objc_loadWeakRetained(&self->_aggregator);
       objc_msgSend_willModify(WeakRetained, v12, v13, v14, v15);
     }
 
-    v19 = objc_msgSend_formulaCoord(v10, v6, v7, v8, v9);
+    v19 = objc_msgSend_formulaCoord(childCopy, v6, v7, v8, v9);
     TSCECellCoordSet::removeCellCoord(&self->_childrenCoordSet, &v19);
-    objc_msgSend_removeObjectIdenticalTo_(self->_children, v16, v10, v17, v18);
+    objc_msgSend_removeObjectIdenticalTo_(self->_children, v16, childCopy, v17, v18);
   }
 }
 
-- (void)clearAggFormulas:(id)a3 inOwner:(const TSKUIDStruct *)a4
+- (void)clearAggFormulas:(id)formulas inOwner:(const TSKUIDStruct *)owner
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  objc_msgSend_removeFormulaAt_inOwner_(v6, v7, &self->_formulaCoord, a4, v8);
+  formulasCopy = formulas;
+  objc_msgSend_removeFormulaAt_inOwner_(formulasCopy, v7, &self->_formulaCoord, owner, v8);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -117,7 +117,7 @@
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_clearAggFormulas_inOwner_(*(*(&v20 + 1) + 8 * v15++), v11, v6, a4, v12, v20);
+        objc_msgSend_clearAggFormulas_inOwner_(*(*(&v20 + 1) + 8 * v15++), v11, formulasCopy, owner, v12, v20);
       }
 
       while (v13 != v15);
@@ -131,10 +131,10 @@
   TSCECellCoordSet::clear(&self->_childrenCoordSet);
 }
 
-- (void)upgradeForNewAggregateTypes:(id)a3 inOwner:(const TSKUIDStruct *)a4
+- (void)upgradeForNewAggregateTypes:(id)types inOwner:(const TSKUIDStruct *)owner
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  typesCopy = types;
   WeakRetained = objc_loadWeakRetained(&self->_aggregator);
   objc_msgSend_willModifyForUpgrade(WeakRetained, v8, v9, v10, v11);
 
@@ -156,7 +156,7 @@
           objc_enumerationMutation(v12);
         }
 
-        objc_msgSend_upgradeForNewAggregateTypes_inOwner_(*(*(&v32 + 1) + 8 * i), v14, v6, a4, v15);
+        objc_msgSend_upgradeForNewAggregateTypes_inOwner_(*(*(&v32 + 1) + 8 * i), v14, typesCopy, owner, v15);
       }
 
       v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v14, &v32, v36, 16);
@@ -166,11 +166,11 @@
   }
 
   formulaCoord = self->_formulaCoord;
-  v31 = *a4;
+  v31 = *owner;
   v23 = objc_opt_new();
-  if (v6)
+  if (typesCopy)
   {
-    objc_msgSend_precedentsOfCell_(v6, v19, &formulaCoord, v21, v22);
+    objc_msgSend_precedentsOfCell_(typesCopy, v19, &formulaCoord, v21, v22);
   }
 
   else
@@ -181,14 +181,14 @@
   v24 = objc_msgSend_referenceSet(v23, v19, v20, v21, v22, *&v29._vptr$TSCEReferenceSet, *&v29._cellRefs.__table_.__bucket_list_, *&v29._cellRefs.__table_.__first_node_.__next_, *&v29._cellRefs.__table_.__max_load_factor_, *&v29._rangeRefs.__tree_.__end_node_.__left_, *&v29._datalessRefs, *&v29._tableUuidRefs, *&v29._spanningRefs, v29._wholeOwnerRefs, formulaCoord, v31, v32);
   TSCEReferenceSet::operator=(v24, &v29);
   TSCEReferenceSet::~TSCEReferenceSet(&v29);
-  objc_msgSend_markCellRefsAsDirty_(v6, v25, v23, v26, v27);
+  objc_msgSend_markCellRefsAsDirty_(typesCopy, v25, v23, v26, v27);
   accumulator = self->_accumulator;
   self->_accumulator = 0;
 }
 
-- (id)descriptionWithGroupBy:(id)a3
+- (id)descriptionWithGroupBy:(id)by
 {
-  objc_msgSend_formulaCoord(self, a2, a3, v3, v4);
+  objc_msgSend_formulaCoord(self, a2, by, v3, v4);
   v5 = MEMORY[0x277CCAB68];
   v6 = objc_opt_class();
   v7 = NSStringFromTSUCellCoord();
@@ -197,10 +197,10 @@
   return v11;
 }
 
-- (void)enumerateDirectChildren:(id)a3
+- (void)enumerateDirectChildren:(id)children
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  childrenCopy = children;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -220,7 +220,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        childrenCopy[2](childrenCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -231,12 +231,12 @@
   }
 }
 
-- (TSTAggNode)initWithArchive:(const void *)a3 aggregator:(id)a4
+- (TSTAggNode)initWithArchive:(const void *)archive aggregator:(id)aggregator
 {
-  v6 = a4;
-  if (*(a3 + 6))
+  aggregatorCopy = aggregator;
+  if (*(archive + 6))
   {
-    v7 = *(a3 + 6);
+    v7 = *(archive + 6);
   }
 
   else
@@ -245,13 +245,13 @@
   }
 
   v8 = sub_2212697C0(v7);
-  v10 = objc_msgSend_initWithFormulaCoord_groupNode_aggregator_(self, v9, v8, 0, v6);
+  v10 = objc_msgSend_initWithFormulaCoord_groupNode_aggregator_(self, v9, v8, 0, aggregatorCopy);
   if (v10)
   {
     v11 = [TSTAccumulator alloc];
-    if (*(a3 + 7))
+    if (*(archive + 7))
     {
-      v15 = objc_msgSend_initWithArchive_(v11, v12, *(a3 + 7), v13, v14);
+      v15 = objc_msgSend_initWithArchive_(v11, v12, *(archive + 7), v13, v14);
     }
 
     else
@@ -262,14 +262,14 @@
     accumulator = v10->_accumulator;
     v10->_accumulator = v15;
 
-    v17 = *(a3 + 8);
+    v17 = *(archive + 8);
     if (v17 >= 1)
     {
       v18 = 8;
       do
       {
         v19 = [TSTAggNode alloc];
-        v22 = objc_msgSend_initWithArchive_aggregator_(v19, v20, *(*(a3 + 5) + v18), v6, v21);
+        v22 = objc_msgSend_initWithArchive_aggregator_(v19, v20, *(*(archive + 5) + v18), aggregatorCopy, v21);
         objc_msgSend_addChild_skipWillModify_(v10, v23, v22, 1, v24);
 
         v18 += 8;
@@ -283,7 +283,7 @@
   return v10;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
   v52 = *MEMORY[0x277D85DE8];
   p_formulaCoord = &self->_formulaCoord;
@@ -299,36 +299,36 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  *(a3 + 4) |= 1u;
-  v21 = *(a3 + 6);
+  *(archive + 4) |= 1u;
+  v21 = *(archive + 6);
   if (!v21)
   {
-    v22 = *(a3 + 1);
+    v22 = *(archive + 1);
     if (v22)
     {
       v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v21 = google::protobuf::Arena::CreateMaybeMessage<TSCE::CellCoordinateArchive>(v22);
-    *(a3 + 6) = v21;
+    *(archive + 6) = v21;
   }
 
   sub_221269820(p_formulaCoord, v21);
   accumulator = self->_accumulator;
   if (accumulator)
   {
-    *(a3 + 4) |= 2u;
-    v27 = *(a3 + 7);
+    *(archive + 4) |= 2u;
+    v27 = *(archive + 7);
     if (!v27)
     {
-      v28 = *(a3 + 1);
+      v28 = *(archive + 1);
       if (v28)
       {
         v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v27 = google::protobuf::Arena::CreateMaybeMessage<TST::AccumulatorArchive>(v28);
-      *(a3 + 7) = v27;
+      *(archive + 7) = v27;
     }
 
     objc_msgSend_saveToArchive_(accumulator, v23, v27, v24, v25);
@@ -353,34 +353,34 @@
         }
 
         v37 = *(*(&v47 + 1) + 8 * i);
-        v38 = *(a3 + 5);
+        v38 = *(archive + 5);
         if (!v38)
         {
           goto LABEL_27;
         }
 
-        v39 = *(a3 + 8);
+        v39 = *(archive + 8);
         v40 = *v38;
         if (v39 < *v38)
         {
-          *(a3 + 8) = v39 + 1;
+          *(archive + 8) = v39 + 1;
           objc_msgSend_encodeToArchive_(v37, v31, *&v38[2 * v39 + 2], v32, v33, v47);
           continue;
         }
 
-        if (v40 == *(a3 + 9))
+        if (v40 == *(archive + 9))
         {
 LABEL_27:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v38 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v38 = *(archive + 5);
           v40 = *v38;
         }
 
         *v38 = v40 + 1;
-        v41 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupByArchive_AggNodeArchive>(*(a3 + 3));
-        v42 = *(a3 + 8);
-        v43 = *(a3 + 5) + 8 * v42;
-        *(a3 + 8) = v42 + 1;
+        v41 = google::protobuf::Arena::CreateMaybeMessage<TST::GroupByArchive_AggNodeArchive>(*(archive + 3));
+        v42 = *(archive + 8);
+        v43 = *(archive + 5) + 8 * v42;
+        *(archive + 8) = v42 + 1;
         *(v43 + 8) = v41;
         objc_msgSend_encodeToArchive_(v37, v44, v41, v45, v46, v47);
       }
@@ -392,10 +392,10 @@ LABEL_27:
   }
 }
 
-- (void)unpackAfterUnarchiveForGroupBy:(id)a3
+- (void)unpackAfterUnarchiveForGroupBy:(id)by
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  byCopy = by;
   WeakRetained = objc_loadWeakRetained(&self->_aggregator);
   v10 = objc_msgSend_groupBy(WeakRetained, v6, v7, v8, v9);
   objc_msgSend_setAggNode_forFormulaCoord_(v10, v11, self, &self->_formulaCoord, v12);
@@ -419,7 +419,7 @@ LABEL_27:
           objc_enumerationMutation(v13);
         }
 
-        objc_msgSend_unpackAfterUnarchiveForGroupBy_(*(*(&v21 + 1) + 8 * v20++), v15, v4, v16, v17, v21);
+        objc_msgSend_unpackAfterUnarchiveForGroupBy_(*(*(&v21 + 1) + 8 * v20++), v15, byCopy, v16, v17, v21);
       }
 
       while (v18 != v20);

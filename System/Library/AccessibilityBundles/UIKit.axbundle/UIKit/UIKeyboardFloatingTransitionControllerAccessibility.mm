@@ -1,20 +1,20 @@
 @interface UIKeyboardFloatingTransitionControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (double)_axAnnounceFloating:(uint64_t)a1;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (double)_axAnnounceFloating:(uint64_t)floating;
 - (void)finalizeTransition;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation UIKeyboardFloatingTransitionControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "d";
   v4 = @"UIKeyboardFloatingTransitionController";
   v5 = "v";
@@ -25,9 +25,9 @@
   objc_storeStrong(v7, v6);
 }
 
-- (double)_axAnnounceFloating:(uint64_t)a1
+- (double)_axAnnounceFloating:(uint64_t)floating
 {
-  if (a1)
+  if (floating)
   {
     notification = *MEMORY[0x29EDC7EA8];
     v6 = 0;
@@ -60,14 +60,14 @@
   return result;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  progressCopy = progress;
   [(UIKeyboardFloatingTransitionControllerAccessibility *)self safeDoubleForKey:@"progress"];
   v11 = v3;
-  v10 = [(UIKeyboardFloatingTransitionControllerAccessibility *)v14 safeBoolForKey:@"startedFromFloating"];
+  v10 = [(UIKeyboardFloatingTransitionControllerAccessibility *)selfCopy safeBoolForKey:@"startedFromFloating"];
   if (v11 >= 0.5 || (v7 = 1, (v10 & 1) == 0))
   {
     v6 = 0;
@@ -80,13 +80,13 @@
   }
 
   v9 = v7 & 1;
-  v8.receiver = v14;
+  v8.receiver = selfCopy;
   v8.super_class = UIKeyboardFloatingTransitionControllerAccessibility;
-  [(UIKeyboardFloatingTransitionControllerAccessibility *)&v8 setProgress:v12];
-  if (v12 >= 0.5 || (v5 = 1, (v10 & 1) == 0))
+  [(UIKeyboardFloatingTransitionControllerAccessibility *)&v8 setProgress:progressCopy];
+  if (progressCopy >= 0.5 || (v5 = 1, (v10 & 1) == 0))
   {
     v4 = 0;
-    if (v12 >= 0.5)
+    if (progressCopy >= 0.5)
     {
       v4 = v10 ^ 1;
     }
@@ -96,22 +96,22 @@
 
   if ((v9 & 1) != (v5 & 1))
   {
-    [(UIKeyboardFloatingTransitionControllerAccessibility *)v14 _axAnnounceFloating:?];
+    [(UIKeyboardFloatingTransitionControllerAccessibility *)selfCopy _axAnnounceFloating:?];
   }
 }
 
 - (void)finalizeTransition
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = UIKeyboardFloatingTransitionControllerAccessibility;
   [(UIKeyboardFloatingTransitionControllerAccessibility *)&v5 finalizeTransition];
-  v2 = -[UIKeyboardFloatingTransitionControllerAccessibility _axAnnounceFloating:](v7, [MEMORY[0x29EDC7B08] isFloating]);
+  v2 = -[UIKeyboardFloatingTransitionControllerAccessibility _axAnnounceFloating:](selfCopy, [MEMORY[0x29EDC7B08] isFloating]);
   notification = *MEMORY[0x29EDC7ED8];
-  v4 = [MEMORY[0x29EDC7B08] sharedInstance];
-  UIAccessibilityPostNotification(notification, v4);
-  MEMORY[0x29EDC9740](v4);
+  mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
+  UIAccessibilityPostNotification(notification, mEMORY[0x29EDC7B08]);
+  MEMORY[0x29EDC9740](mEMORY[0x29EDC7B08]);
 }
 
 @end

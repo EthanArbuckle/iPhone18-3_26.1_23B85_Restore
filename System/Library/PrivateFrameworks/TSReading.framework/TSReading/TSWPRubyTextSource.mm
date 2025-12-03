@@ -1,48 +1,48 @@
 @interface TSWPRubyTextSource
-- (BOOL)adjustRangesByDelta:(int64_t)a3;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3;
-- (TSWPRubyTextSource)initWithSource:(id)a3 subRange:(_NSRange)a4;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)a3 effectiveRange:(_NSRange *)a4 filterDelegate:(id)a5;
-- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)a3 filterDelegate:(id)a4;
+- (BOOL)adjustRangesByDelta:(int64_t)delta;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index;
+- (TSWPRubyTextSource)initWithSource:(id)source subRange:(_NSRange)range;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)attributes effectiveRange:(_NSRange *)range filterDelegate:(id)delegate;
+- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)range filterDelegate:(id)delegate;
 - (id).cxx_construct;
-- (id)attachmentAtCharIndex:(unint64_t)a3;
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3;
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unsigned int)a3 intersectingRange:(_NSRange)a4;
+- (id)attachmentAtCharIndex:(unint64_t)index;
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index;
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index;
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unsigned int)kind intersectingRange:(_NSRange)range;
 - (id)string;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(__CFLocale *)a5 hyphenChar:(unsigned int *)a6;
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3;
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3;
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (unsigned)composedCharacterAtCharIndex:(unint64_t)a3 isSurrogatePair:(BOOL *)a4;
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[19] attributesTable:(id)a5[19] effectiveRange:(_NSRange *)a6;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(__CFLocale *)locale hyphenChar:(unsigned int *)char;
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage;
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage;
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (unsigned)composedCharacterAtCharIndex:(unint64_t)index isSurrogatePair:(BOOL *)pair;
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[19] attributesTable:(id)table[19] effectiveRange:(_NSRange *)range;
 - (void)dealloc;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation TSWPRubyTextSource
 
-- (TSWPRubyTextSource)initWithSource:(id)a3 subRange:(_NSRange)a4
+- (TSWPRubyTextSource)initWithSource:(id)source subRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v57[2] = *MEMORY[0x277D85DE8];
   v45.receiver = self;
   v45.super_class = TSWPRubyTextSource;
   v7 = [(TSWPRubyTextSource *)&v45 init];
   if (v7)
   {
-    v8 = a3;
-    v7->_source = v8;
+    sourceCopy = source;
+    v7->_source = sourceCopy;
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke;
@@ -50,7 +50,7 @@
     v44[5] = location;
     v44[6] = length;
     v44[4] = v7;
-    [(TSWPTextSource *)v8 enumerateSmartFieldsWithAttributeKind:7 inRange:location usingBlock:length, v44];
+    [(TSWPTextSource *)sourceCopy enumerateSmartFieldsWithAttributeKind:7 inRange:location usingBlock:length, v44];
     p_spaceCharIndexes = &v7->_spaceCharIndexes;
     p_end = &v7->_spaceCharIndexes.__end_;
     if (v7->_spaceCharIndexes.__begin_ == v7->_spaceCharIndexes.__end_ && length >= 2)
@@ -58,7 +58,7 @@
       v35 = &v7->_spaceCharIndexes.__end_;
       v36 = &v7->_spaceCharIndexes;
       v38 = length;
-      v39 = a3;
+      sourceCopy2 = source;
       v56 = 0x1000000;
       v57[0] = 0x10000000000;
       *(v57 + 7) = 0;
@@ -78,11 +78,11 @@
       v14 = *MEMORY[0x277D6C3B8];
       do
       {
-        [(TSWPTextSource *)v7->_source attributesAtCharIndex:v13 attributesOfInterest:&v56 attributesTable:&v46 effectiveRange:&v42, v35, v36, v37, v38, v39];
+        [(TSWPTextSource *)v7->_source attributesAtCharIndex:v13 attributesOfInterest:&v56 attributesTable:&v46 effectiveRange:&v42, v35, v36, v37, v38, sourceCopy2];
         v15 = *(&v47 + 1);
         if (*(&v47 + 1))
         {
-          v16 = [*(&v47 + 1) writingDirection];
+          writingDirection = [*(&v47 + 1) writingDirection];
           if ([v15 containsProperty:39])
           {
             [v15 objectForProperty:39];
@@ -91,15 +91,15 @@
 
         else
         {
-          v16 = -1;
+          writingDirection = -1;
         }
 
         objc_opt_class();
         v17 = TSUDynamicCast();
         v18 = v17;
-        if (v16 == -1 && v17)
+        if (writingDirection == -1 && v17)
         {
-          v16 = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:v17] == 2;
+          writingDirection = [MEMORY[0x277CBEAF8] characterDirectionForLanguage:v17] == 2;
         }
 
         v19 = v43 + v42;
@@ -116,7 +116,7 @@
         v20 = v19 - v13;
         v42 = v13;
         v43 = v19 - v13;
-        if (v16 == 1 && v19 > v13)
+        if (writingDirection == 1 && v19 > v13)
         {
           v21 = 0;
           do
@@ -154,15 +154,15 @@
         v13 += v20;
         if (v13 > v12)
         {
-          v27 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRubyTextSource initWithSource:subRange:]"];
-          [v27 handleFailureInFunction:v28 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRubyTextSource.mm"), 125, @"Bad curCharIndex"}];
+          [currentHandler handleFailureInFunction:v28 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRubyTextSource.mm"), 125, @"Bad curCharIndex"}];
         }
       }
 
       while (v13 < v12);
       length = v38;
-      a3 = v39;
+      source = sourceCopy2;
       p_spaceCharIndexes = v36;
       location = v37;
       p_end = v35;
@@ -173,20 +173,20 @@
     v31 = [TSWPRangeMap alloc];
     if (begin == end)
     {
-      v32 = [(TSWPRangeMap *)v31 initWithSubRange:location unmappedPairIndexes:length, p_spaceCharIndexes];
+      p_spaceCharIndexes = [(TSWPRangeMap *)v31 initWithSubRange:location unmappedPairIndexes:length, p_spaceCharIndexes];
     }
 
     else
     {
-      v32 = [(TSWPRangeMap *)v31 initWithSubRange:location unmappedIndexes:length affinity:&v7->_bidiCharIndexes, 1];
+      p_spaceCharIndexes = [(TSWPRangeMap *)v31 initWithSubRange:location unmappedIndexes:length affinity:&v7->_bidiCharIndexes, 1];
       p_end = &v7->_bidiCharIndexes.__end_;
       p_spaceCharIndexes = &v7->_bidiCharIndexes;
     }
 
     v33 = length + *p_end - p_spaceCharIndexes->__begin_;
-    v7->_rangeMap = v32;
+    v7->_rangeMap = p_spaceCharIndexes;
     v7->_length = v33;
-    v7->_storageLength = [a3 storageLength];
+    v7->_storageLength = [source storageLength];
   }
 
   return v7;
@@ -212,23 +212,23 @@ void __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke(void *a1, u
   }
 }
 
-- (unsigned)composedCharacterAtCharIndex:(unint64_t)a3 isSurrogatePair:(BOOL *)a4
+- (unsigned)composedCharacterAtCharIndex:(unint64_t)index isSurrogatePair:(BOOL *)pair
 {
-  *a4 = 0;
+  *pair = 0;
   v7 = [(TSWPTextSource *)self->_source length];
   v8 = 0;
-  if (v7 > a3)
+  if (v7 > index)
   {
     v9 = v7;
-    v8 = [(TSWPTextSource *)self->_source characterAtIndex:a3];
-    v10 = a3 + 1;
-    if (a3 + 1 < v9)
+    v8 = [(TSWPTextSource *)self->_source characterAtIndex:index];
+    v10 = index + 1;
+    if (index + 1 < v9)
     {
-      v11 = [(TSWPTextSource *)self->_source characterAtIndex:a3];
+      v11 = [(TSWPTextSource *)self->_source characterAtIndex:index];
       v12 = [(TSWPTextSource *)self->_source characterAtIndex:v10];
       if ((v11 & 0xFC00) == 0xD800 && (v12 & 0xFC00) == 56320)
       {
-        *a4 = 1;
+        *pair = 1;
         return v12 + (v11 << 10) - 56613888;
       }
     }
@@ -244,26 +244,26 @@ void __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke(void *a1, u
   [(TSWPRubyTextSource *)&v3 dealloc];
 }
 
-- (BOOL)adjustRangesByDelta:(int64_t)a3
+- (BOOL)adjustRangesByDelta:(int64_t)delta
 {
   v5 = [(TSWPTextSource *)self->_source adjustRangesByDelta:?];
-  if (a3)
+  if (delta)
   {
     storageLength = self->_storageLength;
     if (storageLength != [(TSWPTextSource *)self->_source storageLength])
     {
-      v7 = self->_storageLength + a3;
+      v7 = self->_storageLength + delta;
       if (v7 != [(TSWPTextSource *)self->_source storageLength])
       {
-        v8 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRubyTextSource adjustRangesByDelta:]"];
-        [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRubyTextSource.mm"), 187, @"delta mismatch"}];
+        [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRubyTextSource.mm"), 187, @"delta mismatch"}];
       }
 
       self->_storageLength = [(TSWPTextSource *)self->_source storageLength];
       if ((v5 & 1) == 0)
       {
-        [(TSWPRangeMap *)self->_rangeMap adjustByDelta:a3];
+        [(TSWPRangeMap *)self->_rangeMap adjustByDelta:delta];
       }
 
       return 1;
@@ -280,7 +280,7 @@ void __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke(void *a1, u
   v6 = v4;
   if (self->_spaceCharIndexes.__end_ != self->_spaceCharIndexes.__begin_)
   {
-    v7 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     begin = self->_spaceCharIndexes.__begin_;
     end = self->_spaceCharIndexes.__end_;
     if (begin != end)
@@ -312,8 +312,8 @@ void __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke(void *a1, u
           v15 = v11;
         }
 
-        [v7 appendString:{-[TSWPTextSource substringWithRange:](self->_source, "substringWithRange:", v15, v14 - v15)}];
-        [v7 appendFormat:@"%C", 8209];
+        [string appendString:{-[TSWPTextSource substringWithRange:](self->_source, "substringWithRange:", v15, v14 - v15)}];
+        [string appendFormat:@"%C", 8209];
       }
 
       while (begin != end);
@@ -325,7 +325,7 @@ void __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke(void *a1, u
 
   if (self->_bidiCharIndexes.__end_ != self->_bidiCharIndexes.__begin_)
   {
-    v7 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v16 = self->_bidiCharIndexes.__begin_;
     v17 = self->_bidiCharIndexes.__end_;
     if (v16 != v17)
@@ -357,13 +357,13 @@ void __46__TSWPRubyTextSource_initWithSource_subRange___block_invoke(void *a1, u
           v22 = v18;
         }
 
-        [v7 appendString:{-[TSWPTextSource substringWithRange:](self->_source, "substringWithRange:", v22, v21 - v22)}];
-        [v7 appendFormat:@"%C", 8207];
+        [string appendString:{-[TSWPTextSource substringWithRange:](self->_source, "substringWithRange:", v22, v21 - v22)}];
+        [string appendFormat:@"%C", 8207];
       }
 
       while (v16 != v17);
 LABEL_24:
-      if (v7)
+      if (string)
       {
         if (v10 <= v5 + v6)
         {
@@ -385,10 +385,10 @@ LABEL_24:
           v24 = v10;
         }
 
-        [v7 appendString:{-[TSWPTextSource substringWithRange:](self->_source, "substringWithRange:", v24, v23 - v24)}];
+        [string appendString:{-[TSWPTextSource substringWithRange:](self->_source, "substringWithRange:", v24, v23 - v24)}];
       }
 
-      return v7;
+      return string;
     }
 
 LABEL_23:
@@ -411,9 +411,9 @@ LABEL_23:
   }
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  v6 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v6 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
   v7 = v6;
   v9 = v8;
   begin = self->_spaceCharIndexes.__begin_;
@@ -456,10 +456,10 @@ LABEL_23:
         }
 
         v27 = v25 - v26;
-        [(TSWPTextSource *)self->_source getCharacters:a3 range:?];
-        v28 = &a3[v27];
+        [(TSWPTextSource *)self->_source getCharacters:characters range:?];
+        v28 = &characters[v27];
         *v28 = 8207;
-        a3 = v28 + 1;
+        characters = v28 + 1;
         v22 = v13;
       }
 
@@ -496,10 +496,10 @@ LABEL_23:
       }
 
       v18 = v16 - v17;
-      [(TSWPTextSource *)self->_source getCharacters:a3 range:?];
-      v19 = &a3[v18];
+      [(TSWPTextSource *)self->_source getCharacters:characters range:?];
+      v19 = &characters[v18];
       *v19 = 8209;
-      a3 = v19 + 1;
+      characters = v19 + 1;
       v12 = v13;
     }
 
@@ -527,70 +527,70 @@ LABEL_23:
     v31 = v13;
   }
 
-  [(TSWPTextSource *)source getCharacters:a3 range:v31, v30 - v31];
+  [(TSWPTextSource *)source getCharacters:characters range:v31, v30 - v31];
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPTextSource *)source hasColumnBreakAtCharIndex:v4];
 }
 
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPTextSource *)source hasColumnStyleForParagraphBreakAtCharIndex:v4];
 }
 
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[19] attributesTable:(id)a5[19] effectiveRange:(_NSRange *)a6
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[19] attributesTable:(id)table[19] effectiveRange:(_NSRange *)range
 {
   v9 = xmmword_26CA637B0;
-  [(TSWPTextSource *)self->_source attributesAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] attributesOfInterest:a4 attributesTable:a5 effectiveRange:&v9];
-  if (a6)
+  [(TSWPTextSource *)self->_source attributesAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index] attributesOfInterest:interest attributesTable:table effectiveRange:&v9];
+  if (range)
   {
-    a6->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v9];
-    a6->length = v8;
+    range->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v9];
+    range->length = v8;
   }
 }
 
-- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)a3 filterDelegate:(id)a4
+- (double)filteredCoreTextAttributesFontScaleEffectiveRange:(_NSRange *)range filterDelegate:(id)delegate
 {
-  if (!a3)
+  if (!range)
   {
     return 1.0;
   }
 
-  v12 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:a3->location, a3->length];
+  v12 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:range->location, range->length];
   v13 = v7;
-  [(TSWPTextSource *)self->_source filteredCoreTextAttributesFontScaleEffectiveRange:&v12 filterDelegate:a4];
+  [(TSWPTextSource *)self->_source filteredCoreTextAttributesFontScaleEffectiveRange:&v12 filterDelegate:delegate];
   v9 = v8;
-  a3->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v12, v13];
-  a3->length = v10;
+  range->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v12, v13];
+  range->length = v10;
   return v9;
 }
 
-- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)a3 effectiveRange:(_NSRange *)a4 filterDelegate:(id)a5
+- (__CFDictionary)createFilteredCoreTextAttributes:(__CFDictionary *)attributes effectiveRange:(_NSRange *)range filterDelegate:(id)delegate
 {
-  if (a4)
+  if (range)
   {
-    v12 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:a4->location, a4->length];
+    v12 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:range->location, range->length];
     v13 = v9;
-    a3 = [(TSWPTextSource *)self->_source createFilteredCoreTextAttributes:a3 effectiveRange:&v12 filterDelegate:a5];
-    a4->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v12, v13];
-    a4->length = v10;
+    attributes = [(TSWPTextSource *)self->_source createFilteredCoreTextAttributes:attributes effectiveRange:&v12 filterDelegate:delegate];
+    range->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v12, v13];
+    range->length = v10;
   }
 
-  return a3;
+  return attributes;
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
   v13 = xmmword_26CA637B0;
-  v8 = [(TSWPTextSource *)self->_source smartFieldAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:?] attributeKind:*&a4 effectiveRange:&v13];
+  v8 = [(TSWPTextSource *)self->_source smartFieldAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:?] attributeKind:*&kind effectiveRange:&v13];
   length = v13.length;
   location = v13.location;
   if (v8)
@@ -600,72 +600,72 @@ LABEL_23:
     v13.length = length;
   }
 
-  if (a3 < location || a3 - location >= length)
+  if (index < location || index - location >= length)
   {
     v8 = 0;
     v13 = xmmword_26CA637B0;
   }
 
-  if (a5)
+  if (range)
   {
-    *a5 = v13;
+    *range = v13;
   }
 
   return v8;
 }
 
-- (id)smartFieldsWithAttributeKind:(unsigned int)a3 intersectingRange:(_NSRange)a4
+- (id)smartFieldsWithAttributeKind:(unsigned int)kind intersectingRange:(_NSRange)range
 {
-  v4 = *&a3;
+  v4 = *&kind;
   source = self->_source;
-  v7 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:a4.location, a4.length];
+  v7 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:range.location, range.length];
 
   return [(TSWPTextSource *)source smartFieldsWithAttributeKind:v4 intersectingRange:v7, v6];
 }
 
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPTextSource *)source footnoteReferenceAtCharIndex:v4];
 }
 
-- (id)attachmentAtCharIndex:(unint64_t)a3
+- (id)attachmentAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPTextSource *)source attachmentAtCharIndex:v4];
 }
 
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPTextSource *)source attachmentOrFootnoteAtCharIndex:v4];
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v9 = xmmword_26CA637B0;
-  v6 = [(TSWPTextSource *)self->_source paragraphStyleAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] effectiveRange:&v9];
-  if (a4)
+  v6 = [(TSWPTextSource *)self->_source paragraphStyleAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index] effectiveRange:&v9];
+  if (range)
   {
-    a4->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v9];
-    a4->length = v7;
+    range->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v9];
+    range->length = v7;
   }
 
   return v6;
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v12 = xmmword_26CA637B0;
   source = self->_source;
-  v7 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
-  if (a4)
+  v7 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
+  if (range)
   {
     v8 = &v12;
   }
@@ -676,18 +676,18 @@ LABEL_23:
   }
 
   v9 = [(TSWPTextSource *)source characterStyleAtCharIndex:v7 effectiveRange:v8];
-  if (a4)
+  if (range)
   {
-    a4->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v12];
-    a4->length = v10;
+    range->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:v12];
+    range->length = v10;
   }
 
   return v9;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v6 = [(TSWPTextSource *)self->_source wordAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] includePreviousWord:a4];
+  v6 = [(TSWPTextSource *)self->_source wordAtCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index] includePreviousWord:word];
   rangeMap = self->_rangeMap;
 
   v8 = [(TSWPRangeMap *)rangeMap mappedCharRange:v6, v5];
@@ -696,33 +696,33 @@ LABEL_23:
   return result;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index];
 
   return [(TSWPTextSource *)source characterAtIndex:v4];
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(__CFLocale *)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(__CFLocale *)locale hyphenChar:(unsigned int *)char
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v12 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:?];
   v13 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:location, length];
   v15 = v14;
-  v16 = [(TSWPTextSource *)self->_source string];
+  string = [(TSWPTextSource *)self->_source string];
   v21.location = v13;
   v21.length = v15;
-  result = CFStringGetHyphenationLocationBeforeIndex(v16, v12, v21, 0, a5, a6);
+  result = CFStringGetHyphenationLocationBeforeIndex(string, v12, v21, 0, locale, char);
   if (result != -1)
   {
     v18 = result;
-    while (a3 > v18)
+    while (index > v18)
     {
-      if ([(TSWPRubyTextSource *)self characterAtIndex:--a3]== 173)
+      if ([(TSWPRubyTextSource *)self characterAtIndex:--index]== 173)
       {
-        v18 = a3 + 1;
+        v18 = index + 1;
         break;
       }
     }
@@ -735,38 +735,38 @@ LABEL_23:
   return result;
 }
 
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unsigned int)a4 effectiveRange:(_NSRange *)a5
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unsigned int)kind effectiveRange:(_NSRange *)range
 {
-  v7 = [(TSWPTextSource *)self->_source objectAtLocationPriorToMappedCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3] forAttributeKind:*&a4 effectiveRange:a5];
-  if (a5)
+  v7 = [(TSWPTextSource *)self->_source objectAtLocationPriorToMappedCharIndex:[(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:index] forAttributeKind:*&kind effectiveRange:range];
+  if (range)
   {
-    a5->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:a5->location, a5->length];
-    a5->length = v8;
+    range->location = [(TSWPRangeMap *)self->_rangeMap mappedCharRange:range->location, range->length];
+    range->length = v8;
   }
 
   return v7;
 }
 
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage
 {
   source = self->_source;
-  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:a3];
+  v4 = [(TSWPRangeMap *)self->_rangeMap unmappedCharIndex:storage];
 
   return [(TSWPTextSource *)source charIndexMappedToStorage:v4];
 }
 
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage
 {
   rangeMap = self->_rangeMap;
-  v4 = [(TSWPTextSource *)self->_source charIndexMappedFromStorage:a3];
+  v4 = [(TSWPTextSource *)self->_source charIndexMappedFromStorage:storage];
 
   return [(TSWPRangeMap *)rangeMap mappedCharIndex:v4];
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
   source = self->_source;
-  v5 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:a3.location, a3.length];
+  v5 = [(TSWPRangeMap *)self->_rangeMap unmappedCharRange:storage.location, storage.length];
 
   v6 = [(TSWPTextSource *)source charRangeMappedToStorage:v5, v4];
   result.length = v7;
@@ -774,10 +774,10 @@ LABEL_23:
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
   rangeMap = self->_rangeMap;
-  v5 = [(TSWPTextSource *)self->_source charRangeMappedFromStorage:a3.location, a3.length];
+  v5 = [(TSWPTextSource *)self->_source charRangeMappedFromStorage:storage.location, storage.length];
 
   v6 = [(TSWPRangeMap *)rangeMap mappedCharRange:v5, v4];
   result.length = v7;
@@ -785,9 +785,9 @@ LABEL_23:
   return result;
 }
 
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage
 {
-  v4 = [(TSWPRubyTextSource *)self charIndexMappedFromStorage:a3];
+  v4 = [(TSWPRubyTextSource *)self charIndexMappedFromStorage:storage];
 
   return [(TSWPRubyTextSource *)self charIndexMappedToStorage:v4];
 }

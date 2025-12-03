@@ -1,18 +1,18 @@
 @interface AXVoiceOverNotificationVerbosity
-- (AXVoiceOverNotificationVerbosity)initWithCoder:(id)a3;
-- (AXVoiceOverNotificationVerbosity)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_useRingerSwitchWithSpec:(id)a3;
+- (AXVoiceOverNotificationVerbosity)initWithCoder:(id)coder;
+- (AXVoiceOverNotificationVerbosity)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_useRingerSwitchWithSpec:(id)spec;
 - (id)specifiers;
-- (void)_setUseRingerSwitchWithValue:(id)a3 spec:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_setUseRingerSwitchWithValue:(id)value spec:(id)spec;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverNotificationVerbosity
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXVoiceOverNotificationVerbosity.specifiers()();
 
   if (v3)
@@ -28,21 +28,21 @@
   return v4.super.isa;
 }
 
-- (id)_useRingerSwitchWithSpec:(id)a3
+- (id)_useRingerSwitchWithSpec:(id)spec
 {
-  v3 = [objc_opt_self() sharedInstance];
-  [v3 voiceOverUseRingerSwitchToControlNotificationOutput];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  [sharedInstance voiceOverUseRingerSwitchToControlNotificationOutput];
 
   v4 = sub_19C654();
 
   return v4;
 }
 
-- (void)_setUseRingerSwitchWithValue:(id)a3 spec:(id)a4
+- (void)_setUseRingerSwitchWithValue:(id)value spec:(id)spec
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  specCopy = spec;
+  selfCopy = self;
   sub_19C4C4();
   swift_unknownObjectRelease();
   sub_183CD8(v8);
@@ -50,63 +50,63 @@
   __swift_destroy_boxed_opaque_existential_1(v8);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_19AF24();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19AF14();
-  v10 = a3;
-  v11 = self;
-  AXVoiceOverNotificationVerbosity.tableView(_:didSelectRowAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  AXVoiceOverNotificationVerbosity.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_19AF24();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19AF14();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_183D94(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_183D94(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (AXVoiceOverNotificationVerbosity)initWithNibName:(id)a3 bundle:(id)a4
+- (AXVoiceOverNotificationVerbosity)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_19BFE4();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_19BFB4();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for AXVoiceOverNotificationVerbosity();
-  v9 = [(AXVoiceOverNotificationVerbosity *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AXVoiceOverNotificationVerbosity *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (AXVoiceOverNotificationVerbosity)initWithCoder:(id)a3
+- (AXVoiceOverNotificationVerbosity)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for AXVoiceOverNotificationVerbosity();
-  v4 = a3;
-  v5 = [(AXVoiceOverNotificationVerbosity *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AXVoiceOverNotificationVerbosity *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

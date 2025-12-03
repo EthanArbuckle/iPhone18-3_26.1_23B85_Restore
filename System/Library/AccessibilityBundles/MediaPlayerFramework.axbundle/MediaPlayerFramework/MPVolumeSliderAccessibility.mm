@@ -1,6 +1,6 @@
 @interface MPVolumeSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
 - (void)_layoutVolumeWarningView;
 - (void)accessibilityDecrement;
@@ -9,20 +9,20 @@
 
 @implementation MPVolumeSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MPVolumeSlider" hasInstanceVariable:@"_volumeController" withType:"MPVolumeController"];
-  [v3 validateClass:@"MPVolumeController" hasInstanceMethod:@"volumeWarningEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MPVolumeController" hasInstanceMethod:@"EUVolumeLimit" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"MPVolumeController" hasInstanceMethod:@"volumeWarningState" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MPVolumeSlider" hasInstanceVariable:@"_volumeController" withType:"MPVolumeController"];
+  [validationsCopy validateClass:@"MPVolumeController" hasInstanceMethod:@"volumeWarningEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MPVolumeController" hasInstanceMethod:@"EUVolumeLimit" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"MPVolumeController" hasInstanceMethod:@"volumeWarningState" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(MPVolumeSliderAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(MPVolumeSliderAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
     [(MPVolumeSliderAccessibility *)self accessibilityUserDefinedLabel];
   }
@@ -74,11 +74,11 @@
   }
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(MPVolumeSliderAccessibility *)self bounds];
   v12.x = x;
   v12.y = y;
@@ -86,7 +86,7 @@
   {
     v10.receiver = self;
     v10.super_class = MPVolumeSliderAccessibility;
-    v8 = [(MPVolumeSliderAccessibility *)&v10 _accessibilityHitTest:v7 withEvent:x, y];
+    v8 = [(MPVolumeSliderAccessibility *)&v10 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   else
@@ -134,8 +134,8 @@ LABEL_10:
       [(MPVolumeSliderAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"axDidAddEUWarning"];
       if (UIAccessibilityIsVoiceOverRunning())
       {
-        v21 = [MEMORY[0x29EDC5928] sharedAVSystemController];
-        [v21 allowUserToExceedEUVolumeLimit];
+        mEMORY[0x29EDC5928] = [MEMORY[0x29EDC5928] sharedAVSystemController];
+        [mEMORY[0x29EDC5928] allowUserToExceedEUVolumeLimit];
       }
 
       v12 = v20;

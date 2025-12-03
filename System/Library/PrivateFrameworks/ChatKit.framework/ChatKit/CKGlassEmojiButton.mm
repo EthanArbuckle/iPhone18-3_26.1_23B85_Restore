@@ -1,15 +1,15 @@
 @interface CKGlassEmojiButton
 + (CGSize)buttonSize;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKGlassEmojiButton)initWithCoder:(id)a3;
-- (void)animateBlurTo:(double)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKGlassEmojiButton)initWithCoder:(id)coder;
+- (void)animateBlurTo:(double)to;
 - (void)layoutSubviews;
 @end
 
 @implementation CKGlassEmojiButton
 
-- (CKGlassEmojiButton)initWithCoder:(id)a3
+- (CKGlassEmojiButton)initWithCoder:(id)coder
 {
   result = sub_190D58510();
   __break(1u);
@@ -22,12 +22,12 @@
   v4.super_class = type metadata accessor for GlassEmojiButton();
   v2 = v4.receiver;
   [(CKGlassEmojiButton *)&v4 layoutSubviews];
-  v3 = [v2 layer];
+  layer = [v2 layer];
   [v2 bounds];
-  [v3 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 40.0;
   v4 = 40.0;
@@ -45,9 +45,9 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_190D56F10();
     v6 = v5;
@@ -59,21 +59,21 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_190C8DCB0(v4, v6);
 
   return v8 & 1;
 }
 
-- (void)animateBlurTo:(double)a3
+- (void)animateBlurTo:(double)to
 {
-  v6 = self;
-  v3 = [(CKGlassEmojiButton *)v6 layer];
+  selfCopy = self;
+  layer = [(CKGlassEmojiButton *)selfCopy layer];
   v4 = sub_190D51C70();
   v5 = sub_190D56ED0();
-  [v3 setValue:v4 forKeyPath:v5];
+  [layer setValue:v4 forKeyPath:v5];
 
-  [(CKGlassEmojiButton *)v6 setNeedsUpdateConfiguration];
+  [(CKGlassEmojiButton *)selfCopy setNeedsUpdateConfiguration];
 }
 
 @end

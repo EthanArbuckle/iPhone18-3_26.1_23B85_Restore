@@ -1,38 +1,38 @@
 @interface WFMeasure
-- (BOOL)doDNSResolution:(id)a3 timeout:(int64_t)a4;
-- (BOOL)doPing:(id)a3 count:(int64_t)a4 timeout:(int64_t)a5 size:(int64_t)a6 class:(int64_t)a7 minRTT:(int64_t *)a8 maxRTT:(int64_t *)a9 successCount:(int64_t *)a10;
+- (BOOL)doDNSResolution:(id)resolution timeout:(int64_t)timeout;
+- (BOOL)doPing:(id)ping count:(int64_t)count timeout:(int64_t)timeout size:(int64_t)size class:(int64_t)class minRTT:(int64_t *)t maxRTT:(int64_t *)tT successCount:(int64_t *)self0;
 - (BOOL)shouldApsdSampleSiriTCP;
 - (BOOL)shouldApsdSampleSiriTLS;
 - (BOOL)shouldPeriodicSampleSiriTCP;
 - (BOOL)shouldPeriodicSampleSiriTLS;
 - (BOOL)shouldTimeoutSampleSiriTCP;
 - (BOOL)shouldTimeoutSampleSiriTLS;
-- (BOOL)start:(id)a3 withCompletionQueue:(id)a4;
-- (WFMeasure)initWithType:(unint64_t)a3 andReason:(id)a4 prevTestedOptions:(unint64_t)a5 andInterfaceName:(id)a6;
+- (BOOL)start:(id)start withCompletionQueue:(id)queue;
+- (WFMeasure)initWithType:(unint64_t)type andReason:(id)reason prevTestedOptions:(unint64_t)options andInterfaceName:(id)name;
 - (id)description;
 - (int)getTimeoutSampleTrafficClass;
 - (unsigned)getApsdSampleTrafficClass;
 - (unsigned)getPeriodicSampleTrafficClass;
 - (void)abort;
-- (void)dispatchDNSTest:(id)a3;
-- (void)dispatchPingTest:(unint64_t)a3;
-- (void)dispatchSiriTest:(int64_t)a3 trafficClass:(unsigned int)a4;
+- (void)dispatchDNSTest:(id)test;
+- (void)dispatchPingTest:(unint64_t)test;
+- (void)dispatchSiriTest:(int64_t)test trafficClass:(unsigned int)class;
 - (void)dispatchThroughputTest;
 - (void)dispatchULThroughputTest;
 - (void)doThroughputTest;
 - (void)doULThroughputTest;
-- (void)getLazyNSNumberPreference:(id)a3 exists:(id)a4;
-- (void)getLazyNSStringPreference:(id)a3 exists:(id)a4;
+- (void)getLazyNSNumberPreference:(id)preference exists:(id)exists;
+- (void)getLazyNSStringPreference:(id)preference exists:(id)exists;
 - (void)initializePerformanceTest;
 - (void)retrieveNetworkConfigurations;
 @end
 
 @implementation WFMeasure
 
-- (WFMeasure)initWithType:(unint64_t)a3 andReason:(id)a4 prevTestedOptions:(unint64_t)a5 andInterfaceName:(id)a6
+- (WFMeasure)initWithType:(unint64_t)type andReason:(id)reason prevTestedOptions:(unint64_t)options andInterfaceName:(id)name
 {
-  v10 = a4;
-  v11 = a6;
+  reasonCopy = reason;
+  nameCopy = name;
   v36.receiver = self;
   v36.super_class = WFMeasure;
   v12 = [(WFMeasure *)&v36 init];
@@ -46,7 +46,7 @@
   v31 = 0;
   *(v12 + 9) = 0;
   v12[13] = 0;
-  NSLog(&cfstr_SRequestingTes.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", a3, v10, a5, v11);
+  NSLog(&cfstr_SRequestingTes.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", type, reasonCopy, options, nameCopy);
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     NSLog(&cfstr_SFeatureNotEna.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]");
@@ -86,28 +86,28 @@
 
   [v12 setIsInProgress:0];
   [v12 setOptions:0];
-  [v12 setInterfaceName:v11];
-  [v12 setTestReason:v10];
+  [v12 setInterfaceName:nameCopy];
+  [v12 setTestReason:reasonCopy];
   v13 = dispatch_group_create();
   [v12 setDispatchGroup:v13];
 
   [v12 setTclass:700];
-  if ([v10 containsString:@"periodicTestHourly"])
+  if ([reasonCopy containsString:@"periodicTestHourly"])
   {
     v12[9] = 1;
   }
 
-  if ([v10 containsString:@"Siri Timed Out"])
+  if ([reasonCopy containsString:@"Siri Timed Out"])
   {
     v12[10] = 1;
   }
 
-  if ([v10 containsString:@"Apsd Timed Out"])
+  if ([reasonCopy containsString:@"Apsd Timed Out"])
   {
     v12[11] = 1;
   }
 
-  if (a5)
+  if (options)
   {
     NSLog(&cfstr_SBecausePrevte.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]");
     v12[12] = 1;
@@ -125,11 +125,11 @@
 
   if (v12[12] == 1)
   {
-    NSLog(&cfstr_SBecauseIsrete.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", a5);
-    [v12 setOptions:a5];
+    NSLog(&cfstr_SBecauseIsrete.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", options);
+    [v12 setOptions:options];
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0xFFFFFFFFuLL:
       [v12 setOptions:{objc_msgSend(v12, "options") | 1}];
@@ -172,17 +172,17 @@ LABEL_33:
     [v21 getLazyNSNumberPreference:@"test_options" exists:v20];
   }
 
-  NSLog(&cfstr_SWillTestTypeL.isa, "-[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", a3, v10, a5, [v12 options], v11);
+  NSLog(&cfstr_SWillTestTypeL.isa, "-[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", type, reasonCopy, options, [v12 options], nameCopy);
   if ([v12 options])
   {
     [v12 setPublicDNSAddress:@"1.1.1.1"];
     [v12 setTestDNSHostname:@"www.apple.com"];
-    v16 = [[WFMeasureResult alloc] initWithType:a3];
+    v16 = [[WFMeasureResult alloc] initWithType:type];
     [v12 setResult:v16];
 
-    v17 = [v12 options];
-    v18 = [v12 result];
-    [v18 setOptions:v17];
+    options = [v12 options];
+    result = [v12 result];
+    [result setOptions:options];
 
     [v12 retrieveNetworkConfigurations];
     NSLog(&cfstr_SLqmWifi_0.isa, "[WFMeasure initWithType:andReason:prevTestedOptions:andInterfaceName:]", v12);
@@ -255,33 +255,33 @@ uint64_t __71__WFMeasure_initWithType_andReason_prevTestedOptions_andInterfaceNa
   return [v6 setOptions:v5];
 }
 
-- (void)getLazyNSNumberPreference:(id)a3 exists:(id)a4
+- (void)getLazyNSNumberPreference:(id)preference exists:(id)exists
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 persistentDomainForName:@"com.apple.wifipolicy.wfmeasure"];
+  preferenceCopy = preference;
+  existsCopy = exists;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults persistentDomainForName:@"com.apple.wifipolicy.wfmeasure"];
 
-  v8 = [v7 objectForKey:v9];
+  v8 = [v7 objectForKey:preferenceCopy];
   if (v8)
   {
-    NSLog(&cfstr_SFoundPreferen.isa, "[WFMeasure getLazyNSNumberPreference:exists:]", @"com.apple.wifipolicy.wfmeasure", v9);
-    v5[2](v5, v8);
+    NSLog(&cfstr_SFoundPreferen.isa, "[WFMeasure getLazyNSNumberPreference:exists:]", @"com.apple.wifipolicy.wfmeasure", preferenceCopy);
+    existsCopy[2](existsCopy, v8);
   }
 }
 
-- (void)getLazyNSStringPreference:(id)a3 exists:(id)a4
+- (void)getLazyNSStringPreference:(id)preference exists:(id)exists
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v6 persistentDomainForName:@"com.apple.wifipolicy.wfmeasure"];
+  preferenceCopy = preference;
+  existsCopy = exists;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults persistentDomainForName:@"com.apple.wifipolicy.wfmeasure"];
 
-  v8 = [v7 objectForKey:v9];
+  v8 = [v7 objectForKey:preferenceCopy];
   if (v8)
   {
-    NSLog(&cfstr_SFoundPreferen.isa, "[WFMeasure getLazyNSStringPreference:exists:]", @"com.apple.wifipolicy.wfmeasure", v9);
-    v5[2](v5, v8);
+    NSLog(&cfstr_SFoundPreferen.isa, "[WFMeasure getLazyNSStringPreference:exists:]", @"com.apple.wifipolicy.wfmeasure", preferenceCopy);
+    existsCopy[2](existsCopy, v8);
   }
 }
 
@@ -780,9 +780,9 @@ void __38__WFMeasure_getApsdSampleTrafficClass__block_invoke(uint64_t a1, void *
 
   if (v7)
   {
-    v8 = [(WFMeasure *)self gatewayAddress];
-    v9 = [(WFMeasure *)self dnsServers];
-    NSLog(&cfstr_SCriticalNoScd.isa, "[WFMeasure retrieveNetworkConfigurations]", v8, v9);
+    gatewayAddress = [(WFMeasure *)self gatewayAddress];
+    dnsServers = [(WFMeasure *)self dnsServers];
+    NSLog(&cfstr_SCriticalNoScd.isa, "[WFMeasure retrieveNetworkConfigurations]", gatewayAddress, dnsServers);
 
     if (v4)
     {
@@ -795,9 +795,9 @@ void __38__WFMeasure_getApsdSampleTrafficClass__block_invoke(uint64_t a1, void *
   v10 = SCNetworkSetCopyCurrent(v5);
   if (!v10)
   {
-    v24 = [(WFMeasure *)self gatewayAddress];
-    v25 = [(WFMeasure *)self dnsServers];
-    NSLog(&cfstr_SCriticalNoScn_0.isa, "[WFMeasure retrieveNetworkConfigurations]", v24, v25);
+    gatewayAddress2 = [(WFMeasure *)self gatewayAddress];
+    dnsServers2 = [(WFMeasure *)self dnsServers];
+    NSLog(&cfstr_SCriticalNoScn_0.isa, "[WFMeasure retrieveNetworkConfigurations]", gatewayAddress2, dnsServers2);
 
     goto LABEL_26;
   }
@@ -810,9 +810,9 @@ void __38__WFMeasure_getApsdSampleTrafficClass__block_invoke(uint64_t a1, void *
     if (CFArrayGetCount(v12) < 1)
     {
 LABEL_20:
-      v22 = [(WFMeasure *)self gatewayAddress];
-      v23 = [(WFMeasure *)self dnsServers];
-      NSLog(&cfstr_SCriticalNoMat_0.isa, "[WFMeasure retrieveNetworkConfigurations]", v22, v23);
+      gatewayAddress3 = [(WFMeasure *)self gatewayAddress];
+      dnsServers3 = [(WFMeasure *)self dnsServers];
+      NSLog(&cfstr_SCriticalNoMat_0.isa, "[WFMeasure retrieveNetworkConfigurations]", gatewayAddress3, dnsServers3);
     }
 
     else
@@ -831,8 +831,8 @@ LABEL_20:
             if (BSDName)
             {
               v19 = BSDName;
-              v20 = [(WFMeasure *)self interfaceName];
-              v21 = CFStringCompare(v19, v20, 0);
+              interfaceName = [(WFMeasure *)self interfaceName];
+              v21 = CFStringCompare(v19, interfaceName, 0);
 
               if (v21 == kCFCompareEqualTo)
               {
@@ -857,8 +857,8 @@ LABEL_20:
         v32 = SCDynamicStoreKeyCreateNetworkServiceEntity(v3, v30, v29, *MEMORY[0x277CE1688]);
         if (!NetworkServiceEntity)
         {
-          v39 = [(WFMeasure *)self dnsServers];
-          NSLog(&cfstr_SWarningNoDnsS.isa, "[WFMeasure retrieveNetworkConfigurations]", v39);
+          dnsServers4 = [(WFMeasure *)self dnsServers];
+          NSLog(&cfstr_SWarningNoDnsS.isa, "[WFMeasure retrieveNetworkConfigurations]", dnsServers4);
 
           goto LABEL_46;
         }
@@ -866,8 +866,8 @@ LABEL_20:
         v33 = SCDynamicStoreCopyValue(v4, NetworkServiceEntity);
         if (!v33)
         {
-          v40 = [(WFMeasure *)self dnsServers];
-          NSLog(&cfstr_SCriticalNoDns_0.isa, "[WFMeasure retrieveNetworkConfigurations]", NetworkServiceEntity, v40);
+          dnsServers5 = [(WFMeasure *)self dnsServers];
+          NSLog(&cfstr_SCriticalNoDns_0.isa, "[WFMeasure retrieveNetworkConfigurations]", NetworkServiceEntity, dnsServers5);
 
 LABEL_45:
           CFRelease(NetworkServiceEntity);
@@ -900,28 +900,28 @@ LABEL_46:
 
         v34 = v33;
         Value = CFDictionaryGetValue(v33, *MEMORY[0x277CE1710]);
-        v36 = [(WFMeasure *)self dnsServers];
-        v37 = v36;
+        dnsServers6 = [(WFMeasure *)self dnsServers];
+        dnsServers8 = dnsServers6;
         if (Value)
         {
 
-          if (v37)
+          if (dnsServers8)
           {
-            v38 = [(WFMeasure *)self dnsServers];
-            [v38 removeAllObjects];
+            dnsServers7 = [(WFMeasure *)self dnsServers];
+            [dnsServers7 removeAllObjects];
           }
 
           else
           {
-            v38 = [MEMORY[0x277CBEB58] set];
-            [(WFMeasure *)self setDnsServers:v38];
+            dnsServers7 = [MEMORY[0x277CBEB58] set];
+            [(WFMeasure *)self setDnsServers:dnsServers7];
           }
 
           v41 = CFGetTypeID(Value);
           if (v41 == CFArrayGetTypeID())
           {
-            v37 = [(WFMeasure *)self dnsServers];
-            [v37 addObjectsFromArray:Value];
+            dnsServers8 = [(WFMeasure *)self dnsServers];
+            [dnsServers8 addObjectsFromArray:Value];
           }
 
           else
@@ -934,22 +934,22 @@ LABEL_44:
               goto LABEL_45;
             }
 
-            v37 = [(WFMeasure *)self dnsServers];
-            [v37 addObject:Value];
+            dnsServers8 = [(WFMeasure *)self dnsServers];
+            [dnsServers8 addObject:Value];
           }
         }
 
         else
         {
-          NSLog(&cfstr_SCriticalNoDns.isa, "[WFMeasure retrieveNetworkConfigurations]", v34, v36);
+          NSLog(&cfstr_SCriticalNoDns.isa, "[WFMeasure retrieveNetworkConfigurations]", v34, dnsServers6);
         }
 
         goto LABEL_44;
       }
 
-      v22 = [(WFMeasure *)self gatewayAddress];
-      v23 = [(WFMeasure *)self dnsServers];
-      NSLog(&cfstr_SCriticalNoMat.isa, "[WFMeasure retrieveNetworkConfigurations]", v22, v23);
+      gatewayAddress3 = [(WFMeasure *)self gatewayAddress];
+      dnsServers3 = [(WFMeasure *)self dnsServers];
+      NSLog(&cfstr_SCriticalNoMat.isa, "[WFMeasure retrieveNetworkConfigurations]", gatewayAddress3, dnsServers3);
     }
 
 LABEL_22:
@@ -957,9 +957,9 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  v26 = [(WFMeasure *)self gatewayAddress];
-  v27 = [(WFMeasure *)self dnsServers];
-  NSLog(&cfstr_SCriticalNoScn.isa, "[WFMeasure retrieveNetworkConfigurations]", v26, v27);
+  gatewayAddress4 = [(WFMeasure *)self gatewayAddress];
+  dnsServers9 = [(WFMeasure *)self dnsServers];
+  NSLog(&cfstr_SCriticalNoScn.isa, "[WFMeasure retrieveNetworkConfigurations]", gatewayAddress4, dnsServers9);
 
 LABEL_25:
   CFRelease(v11);
@@ -992,19 +992,19 @@ LABEL_8:
   {
     if (objc_opt_class())
     {
-      v3 = [(WFMeasure *)self performanceTest];
+      performanceTest = [(WFMeasure *)self performanceTest];
 
-      if (!v3)
+      if (!performanceTest)
       {
-        v4 = [MEMORY[0x277D2B8B8] defaultConfigurationWiFi];
-        v8 = v4;
-        if (v4)
+        defaultConfigurationWiFi = [MEMORY[0x277D2B8B8] defaultConfigurationWiFi];
+        v8 = defaultConfigurationWiFi;
+        if (defaultConfigurationWiFi)
         {
-          [v4 setDownloadSize:10];
+          [defaultConfigurationWiFi setDownloadSize:10];
           [v8 setUploadSize:10];
-          v5 = [MEMORY[0x277CCAC38] processInfo];
-          v6 = [v5 processName];
-          [v8 setClientName:v6];
+          processInfo = [MEMORY[0x277CCAC38] processInfo];
+          processName = [processInfo processName];
+          [v8 setClientName:processName];
 
           v7 = [MEMORY[0x277D2B8A8] performanceTestWithConfiguration:v8];
           [(WFMeasure *)self setPerformanceTest:v7];
@@ -1033,8 +1033,8 @@ LABEL_8:
 {
   NSLog(&cfstr_SPerformancete_0.isa, "[WFMeasure doThroughputTest]");
   NSLog(&cfstr_SDownloadTaskE_0.isa, "[WFMeasure doThroughputTest]");
-  v2 = [a1 dispatchGroup];
-  dispatch_group_leave(v2);
+  dispatchGroup = [self dispatchGroup];
+  dispatch_group_leave(dispatchGroup);
 }
 
 void __29__WFMeasure_doThroughputTest__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1133,8 +1133,8 @@ void __29__WFMeasure_doThroughputTest__block_invoke_2(uint64_t a1, void *a2, voi
 {
   NSLog(&cfstr_SPerformancete_0.isa, "[WFMeasure doULThroughputTest]");
   NSLog(&cfstr_SUploadTaskExi.isa, "[WFMeasure doULThroughputTest]");
-  v2 = [a1 dispatchGroup];
-  dispatch_group_leave(v2);
+  dispatchGroup = [self dispatchGroup];
+  dispatch_group_leave(dispatchGroup);
 }
 
 void __31__WFMeasure_doULThroughputTest__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1225,31 +1225,31 @@ void __31__WFMeasure_doULThroughputTest__block_invoke_2(uint64_t a1, void *a2, v
 
 - (void)dispatchThroughputTest
 {
-  v3 = [(WFMeasure *)self internalQueue];
+  internalQueue = [(WFMeasure *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__WFMeasure_dispatchThroughputTest__block_invoke;
   block[3] = &unk_2789C6630;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
 - (void)dispatchULThroughputTest
 {
-  v3 = [(WFMeasure *)self internalQueue];
+  internalQueue = [(WFMeasure *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__WFMeasure_dispatchULThroughputTest__block_invoke;
   block[3] = &unk_2789C6630;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
-- (BOOL)doPing:(id)a3 count:(int64_t)a4 timeout:(int64_t)a5 size:(int64_t)a6 class:(int64_t)a7 minRTT:(int64_t *)a8 maxRTT:(int64_t *)a9 successCount:(int64_t *)a10
+- (BOOL)doPing:(id)ping count:(int64_t)count timeout:(int64_t)timeout size:(int64_t)size class:(int64_t)class minRTT:(int64_t *)t maxRTT:(int64_t *)tT successCount:(int64_t *)self0
 {
   v41[3] = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  if (!v39)
+  pingCopy = ping;
+  if (!pingCopy)
   {
     NSLog(&cfstr_SNullAddress.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]");
 LABEL_29:
@@ -1257,31 +1257,31 @@ LABEL_29:
     goto LABEL_23;
   }
 
-  if ((a4 - 0x7FFFFFFF) < 0xFFFFFFFF80000002)
+  if ((count - 0x7FFFFFFF) < 0xFFFFFFFF80000002)
   {
-    NSLog(&cfstr_SInvalidCountD.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", a4);
+    NSLog(&cfstr_SInvalidCountD.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", count);
     goto LABEL_29;
   }
 
-  if ((a5 - 0x7FFFFFFF) < 0xFFFFFFFF80000002)
+  if ((timeout - 0x7FFFFFFF) < 0xFFFFFFFF80000002)
   {
-    NSLog(&cfstr_SInvalidTimeou.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", a5);
+    NSLog(&cfstr_SInvalidTimeou.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", timeout);
     goto LABEL_29;
   }
 
-  if ((a6 - 0x7FFFFFFF) < 0xFFFFFFFF80000002)
+  if ((size - 0x7FFFFFFF) < 0xFFFFFFFF80000002)
   {
-    NSLog(&cfstr_SInvalidSizeD.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", a6);
+    NSLog(&cfstr_SInvalidSizeD.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", size);
     goto LABEL_29;
   }
 
-  if (a7 > 0x7FFFFFFE)
+  if (class > 0x7FFFFFFE)
   {
-    NSLog(&cfstr_SInvalidTraffi.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", a7);
+    NSLog(&cfstr_SInvalidTraffi.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", class);
     goto LABEL_29;
   }
 
-  v32 = a8;
+  tCopy = t;
   v13 = 0;
   v35 = *MEMORY[0x277CBAD10];
   v36 = *MEMORY[0x277CBAD18];
@@ -1289,23 +1289,23 @@ LABEL_29:
   v34 = *MEMORY[0x277CBAD08];
   v14 = 0xFFFFFFFF80000000;
   v15 = 0x7FFFFFFFLL;
-  v31 = a4;
+  countCopy = count;
   do
   {
     v40[0] = v36;
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:timeout];
     v41[0] = v16;
     v41[1] = &unk_2848B9A88;
     v40[1] = v35;
     v40[2] = v34;
-    v17 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v17 = [MEMORY[0x277CCABB0] numberWithInteger:size];
     v41[2] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:3];
 
     v19 = [v18 mutableCopy];
-    if (a7)
+    if (class)
     {
-      v20 = [MEMORY[0x277CCABB0] numberWithInteger:a7];
+      v20 = [MEMORY[0x277CCABB0] numberWithInteger:class];
       [v19 setObject:v20 forKeyedSubscript:v33];
     }
 
@@ -1331,24 +1331,24 @@ LABEL_29:
       v15 = v26;
     }
 
-    --a4;
+    --count;
   }
 
-  while (a4);
-  NSLog(&cfstr_SLqmWifiPingAd.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", v39, v31, a5, a6, a7, v27, v13);
-  if (a9)
+  while (count);
+  NSLog(&cfstr_SLqmWifiPingAd.isa, "[WFMeasure doPing:count:timeout:size:class:minRTT:maxRTT:successCount:]", pingCopy, countCopy, timeout, size, class, v27, v13);
+  if (tT)
   {
-    *a9 = v14;
+    *tT = v14;
   }
 
-  if (v32)
+  if (tCopy)
   {
-    *v32 = v15;
+    *tCopy = v15;
   }
 
-  if (a10)
+  if (successCount)
   {
-    *a10 = v13;
+    *successCount = v13;
   }
 
   v28 = 1;
@@ -1358,30 +1358,30 @@ LABEL_23:
   return v28;
 }
 
-- (void)dispatchPingTest:(unint64_t)a3
+- (void)dispatchPingTest:(unint64_t)test
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithArray:&unk_2848BAD18];
   v6 = [MEMORY[0x277CBEB18] arrayWithArray:&unk_2848BAD30];
   v7 = +[WiFiPolicyNetworkActivityTracing sharedNetworkActivityTracing];
   v8 = v7;
-  if (a3 == 8)
+  if (test == 8)
   {
     v12 = 1;
     [v7 networkActivityStart:6 activate:1];
 
-    v11 = [(WFMeasure *)self publicDNSAddress];
+    publicDNSAddress = [(WFMeasure *)self publicDNSAddress];
     v9 = 5;
   }
 
   else
   {
-    if (a3 == 4)
+    if (test == 4)
     {
       v9 = 5;
       [v7 networkActivityStart:5 activate:1];
 
-      v10 = [(WFMeasure *)self dnsServers];
-      v11 = [v10 anyObject];
+      dnsServers = [(WFMeasure *)self dnsServers];
+      publicDNSAddress = [dnsServers anyObject];
 
       v12 = 3;
     }
@@ -1391,7 +1391,7 @@ LABEL_23:
       v12 = 1;
       [v7 networkActivityStart:4 activate:1];
 
-      v11 = [(WFMeasure *)self gatewayAddress];
+      publicDNSAddress = [(WFMeasure *)self gatewayAddress];
       [v5 addObjectsFromArray:&unk_2848BAD48];
       v9 = 1;
     }
@@ -1406,12 +1406,12 @@ LABEL_23:
   block[3] = &unk_2789C7718;
   v18 = v6;
   v19 = v5;
-  v20 = self;
-  v21 = v11;
+  selfCopy = self;
+  v21 = publicDNSAddress;
   v22 = v12;
   v23 = v9;
-  v24 = a3;
-  v14 = v11;
+  testCopy = test;
+  v14 = publicDNSAddress;
   v15 = v5;
   v16 = v6;
   dispatch_async(v13, block);
@@ -1956,15 +1956,15 @@ LABEL_21:
   dispatch_group_leave(v27);
 }
 
-- (BOOL)doDNSResolution:(id)a3 timeout:(int64_t)a4
+- (BOOL)doDNSResolution:(id)resolution timeout:(int64_t)timeout
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   error.domain = 0;
   *&error.error = 0;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
-  v17 = CFHostCreateWithName(*MEMORY[0x277CBECE8], v4);
+  v17 = CFHostCreateWithName(*MEMORY[0x277CBECE8], resolutionCopy);
   v5 = v15[3];
   if (v5)
   {
@@ -2021,9 +2021,9 @@ void __37__WFMeasure_doDNSResolution_timeout___block_invoke(uint64_t a1)
   CFRelease(v2);
 }
 
-- (void)dispatchDNSTest:(id)a3
+- (void)dispatchDNSTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = +[WiFiPolicyNetworkActivityTracing sharedNetworkActivityTracing];
   [v5 networkActivityStart:7 activate:1];
 
@@ -2033,8 +2033,8 @@ void __37__WFMeasure_doDNSResolution_timeout___block_invoke(uint64_t a1)
   v8[2] = __29__WFMeasure_dispatchDNSTest___block_invoke;
   v8[3] = &unk_2789C6608;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = testCopy;
+  v7 = testCopy;
   dispatch_async(v6, v8);
 }
 
@@ -2121,24 +2121,24 @@ void __29__WFMeasure_dispatchDNSTest___block_invoke_3(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (void)dispatchSiriTest:(int64_t)a3 trafficClass:(unsigned int)a4
+- (void)dispatchSiriTest:(int64_t)test trafficClass:(unsigned int)class
 {
-  if (a3 >= 3)
+  if (test >= 3)
   {
     [WFMeasure dispatchSiriTest:trafficClass:];
   }
 
   v7 = +[WiFiPolicyNetworkActivityTracing sharedNetworkActivityTracing];
-  [v7 networkActivityStart:a3 | 8 activate:1];
+  [v7 networkActivityStart:test | 8 activate:1];
 
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__WFMeasure_dispatchSiriTest_trafficClass___block_invoke;
   block[3] = &unk_2789C7790;
-  v10 = a4;
+  classCopy = class;
   block[4] = self;
-  block[5] = a3;
+  block[5] = test;
   dispatch_async(v8, block);
 }
 
@@ -2458,10 +2458,10 @@ void __43__WFMeasure_dispatchSiriTest_trafficClass___block_invoke_8(uint64_t a1,
   *(*(*(a1 + 40) + 8) + 24) = v3;
 }
 
-- (BOOL)start:(id)a3 withCompletionQueue:(id)a4
+- (BOOL)start:(id)start withCompletionQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  startCopy = start;
+  queueCopy = queue;
   if ([(WFMeasure *)self isInProgress])
   {
     NSLog(&cfstr_SMeasurementAl.isa, "[WFMeasure start:withCompletionQueue:]");
@@ -2469,11 +2469,11 @@ void __43__WFMeasure_dispatchSiriTest_trafficClass___block_invoke_8(uint64_t a1,
 
   else
   {
-    [(WFMeasure *)self setCompletionHandler:v6];
-    [(WFMeasure *)self setCompletionQueue:v7];
-    v8 = [(WFMeasure *)self internalQueue];
+    [(WFMeasure *)self setCompletionHandler:startCopy];
+    [(WFMeasure *)self setCompletionQueue:queueCopy];
+    internalQueue = [(WFMeasure *)self internalQueue];
 
-    if (!v8)
+    if (!internalQueue)
     {
       v9 = dispatch_queue_create("com.apple.wifi.wfmeasure", 0);
       [(WFMeasure *)self setInternalQueue:v9];
@@ -2481,65 +2481,65 @@ void __43__WFMeasure_dispatchSiriTest_trafficClass___block_invoke_8(uint64_t a1,
 
     if (([(WFMeasure *)self options]& 1) != 0)
     {
-      v11 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v11);
+      dispatchGroup = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup);
 
       [(WFMeasure *)self dispatchThroughputTest];
     }
 
     else if (([(WFMeasure *)self options]& 0x100) != 0)
     {
-      v10 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v10);
+      dispatchGroup2 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup2);
 
       [(WFMeasure *)self dispatchULThroughputTest];
     }
 
     if (([(WFMeasure *)self options]& 2) != 0)
     {
-      v12 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v12);
+      dispatchGroup3 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup3);
 
       [(WFMeasure *)self dispatchPingTest:2];
     }
 
     if (([(WFMeasure *)self options]& 4) != 0)
     {
-      v13 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v13);
+      dispatchGroup4 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup4);
 
       [(WFMeasure *)self dispatchPingTest:4];
     }
 
     if (([(WFMeasure *)self options]& 8) != 0)
     {
-      v14 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v14);
+      dispatchGroup5 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup5);
 
       [(WFMeasure *)self dispatchPingTest:8];
     }
 
     if (([(WFMeasure *)self options]& 0x10) != 0)
     {
-      v15 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v15);
+      dispatchGroup6 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup6);
 
-      v16 = [(WFMeasure *)self testDNSHostname];
-      [(WFMeasure *)self dispatchDNSTest:v16];
+      testDNSHostname = [(WFMeasure *)self testDNSHostname];
+      [(WFMeasure *)self dispatchDNSTest:testDNSHostname];
     }
 
     if (([(WFMeasure *)self options]& 0x20) != 0)
     {
-      v17 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v17);
+      dispatchGroup7 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup7);
 
       [(WFMeasure *)self dispatchSiriTest:0 trafficClass:[(WFMeasure *)self tclass]];
     }
 
     if (([(WFMeasure *)self options]& 0x40) != 0)
     {
-      v18 = [(WFMeasure *)self dispatchGroup];
-      dispatch_group_enter(v18);
+      dispatchGroup8 = [(WFMeasure *)self dispatchGroup];
+      dispatch_group_enter(dispatchGroup8);
 
       [(WFMeasure *)self dispatchSiriTest:1 trafficClass:[(WFMeasure *)self tclass]];
     }
@@ -2555,9 +2555,9 @@ void __43__WFMeasure_dispatchSiriTest_trafficClass___block_invoke_8(uint64_t a1,
     [(WFMeasure *)self setIsInProgress:1];
   }
 
-  v20 = [(WFMeasure *)self isInProgress];
+  isInProgress = [(WFMeasure *)self isInProgress];
 
-  return v20;
+  return isInProgress;
 }
 
 void __39__WFMeasure_start_withCompletionQueue___block_invoke(uint64_t a1)
@@ -2838,11 +2838,11 @@ void __39__WFMeasure_start_withCompletionQueue___block_invoke_3(uint64_t a1)
     v4 = @"NO";
   }
 
-  v5 = [(WFMeasure *)self options];
-  v6 = [(WFMeasure *)self interfaceName];
-  v7 = [(WFMeasure *)self gatewayAddress];
-  v8 = [(WFMeasure *)self dnsServers];
-  v9 = [v3 stringWithFormat:@"isInProgress=%@ options=0x%lx interfaceName=%@ gateway=%@ dnsServers=%@", v4, v5, v6, v7, v8];
+  options = [(WFMeasure *)self options];
+  interfaceName = [(WFMeasure *)self interfaceName];
+  gatewayAddress = [(WFMeasure *)self gatewayAddress];
+  dnsServers = [(WFMeasure *)self dnsServers];
+  v9 = [v3 stringWithFormat:@"isInProgress=%@ options=0x%lx interfaceName=%@ gateway=%@ dnsServers=%@", v4, options, interfaceName, gatewayAddress, dnsServers];
 
   return v9;
 }
@@ -2852,8 +2852,8 @@ void __39__WFMeasure_start_withCompletionQueue___block_invoke_3(uint64_t a1)
   v3 = +[WiFiPolicyNetworkActivityTracing sharedNetworkActivityTracing];
   [v3 networkActivityTracingCompleteConnectionsActivities];
 
-  v4 = [(WFMeasure *)self performanceTest];
-  [v4 cancelAllNetworking];
+  performanceTest = [(WFMeasure *)self performanceTest];
+  [performanceTest cancelAllNetworking];
 
   [(WFMeasure *)self setIsInProgress:0];
 }

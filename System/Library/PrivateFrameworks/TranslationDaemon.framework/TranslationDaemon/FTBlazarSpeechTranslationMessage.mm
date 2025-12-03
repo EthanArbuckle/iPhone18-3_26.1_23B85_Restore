@@ -1,10 +1,10 @@
 @interface FTBlazarSpeechTranslationMessage
-+ (Class)session_message_immutableClassForType:(int64_t)a3;
-+ (int64_t)session_message_typeForImmutableObject:(id)a3;
++ (Class)session_message_immutableClassForType:(int64_t)type;
++ (int64_t)session_message_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)session_message;
 - (FTAudioLimitExceeded)session_messageAsFTAudioLimitExceeded;
 - (FTAudioPacket)session_messageAsFTAudioPacket;
-- (FTBlazarSpeechTranslationMessage)initWithFlatbuffData:(id)a3 root:(const BlazarSpeechTranslationMessage *)a4 verify:(BOOL)a5;
+- (FTBlazarSpeechTranslationMessage)initWithFlatbuffData:(id)data root:(const BlazarSpeechTranslationMessage *)root verify:(BOOL)verify;
 - (FTClientSetupInfo)session_messageAsFTClientSetupInfo;
 - (FTFinalBlazarResponse)session_messageAsFTFinalBlazarResponse;
 - (FTFinishAudio)session_messageAsFTFinishAudio;
@@ -23,49 +23,49 @@
 - (FTSpeechTranslationTextToSpeechResponse)session_messageAsFTSpeechTranslationTextToSpeechResponse;
 - (FTStartSpeechTranslationLoggingRequest)session_messageAsFTStartSpeechTranslationLoggingRequest;
 - (FTStartSpeechTranslationRequest)session_messageAsFTStartSpeechTranslationRequest;
-- (Offset<siri::speech::qss_fb::BlazarSpeechTranslationMessage>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::BlazarSpeechTranslationMessage>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)session_message_type;
 @end
 
 @implementation FTBlazarSpeechTranslationMessage
 
-- (FTBlazarSpeechTranslationMessage)initWithFlatbuffData:(id)a3 root:(const BlazarSpeechTranslationMessage *)a4 verify:(BOOL)a5
+- (FTBlazarSpeechTranslationMessage)initWithFlatbuffData:(id)data root:(const BlazarSpeechTranslationMessage *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTBlazarSpeechTranslationMessage;
   v10 = [(FTBlazarSpeechTranslationMessage *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -82,9 +82,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -773,188 +773,188 @@ LABEL_16:
   switch([(FTBlazarSpeechTranslationMessage *)self session_message_type])
   {
     case 1:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationRequest];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationRequest];
       break;
     case 2:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTLanguageDetected];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTLanguageDetected];
       break;
     case 3:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioPacket];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioPacket];
       break;
     case 4:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationAudioPacket];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationAudioPacket];
       break;
     case 5:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinishAudio];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinishAudio];
       break;
     case 6:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSetEndpointerState];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSetEndpointerState];
       break;
     case 7:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTResetServerEndpointer];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTResetServerEndpointer];
       break;
     case 8:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationLoggingRequest];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationLoggingRequest];
       break;
     case 9:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationPartialRecognitionResponse];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationPartialRecognitionResponse];
       break;
     case 10:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationFinalRecognitionResponse];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationFinalRecognitionResponse];
       break;
     case 11:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioLimitExceeded];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioLimitExceeded];
       break;
     case 12:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationMtResponse];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationMtResponse];
       break;
     case 13:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationTextToSpeechResponse];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationTextToSpeechResponse];
       break;
     case 14:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinalBlazarResponse];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinalBlazarResponse];
       break;
     case 15:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionProgress];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionProgress];
       break;
     case 16:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionCandidate];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionCandidate];
       break;
     case 17:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRequestStatsResponse];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRequestStatsResponse];
       break;
     case 18:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTServerEndpointFeatures];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTServerEndpointFeatures];
       break;
     case 19:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTClientSetupInfo];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTClientSetupInfo];
       break;
     case 20:
-      v3 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationServerEndpointFeatures];
+      session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationServerEndpointFeatures];
       break;
     default:
-      v3 = 0;
+      session_messageAsFTStartSpeechTranslationRequest = 0;
       break;
   }
 
-  return v3;
+  return session_messageAsFTStartSpeechTranslationRequest;
 }
 
-+ (Class)session_message_immutableClassForType:(int64_t)a3
++ (Class)session_message_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0x13)
+  if ((type - 1) > 0x13)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B84B0[a3 - 1];
+    v4 = *off_2789B84B0[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)session_message_typeForImmutableObject:(id)a3
++ (int64_t)session_message_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 19;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 20;
   }
@@ -967,13 +967,13 @@ LABEL_16:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::BlazarSpeechTranslationMessage>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::BlazarSpeechTranslationMessage>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTBlazarSpeechTranslationMessage *)self session_message_type];
+  session_message_type = [(FTBlazarSpeechTranslationMessage *)self session_message_type];
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 1)
   {
-    v6 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    session_messageAsFTStartSpeechTranslationRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationRequest];
+    v7 = [session_messageAsFTStartSpeechTranslationRequest addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -985,8 +985,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 2)
   {
-    v9 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTLanguageDetected];
-    v10 = [v9 addObjectToBuffer:a3];
+    session_messageAsFTLanguageDetected = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTLanguageDetected];
+    v10 = [session_messageAsFTLanguageDetected addObjectToBuffer:buffer];
 
     v11 = v10;
   }
@@ -998,8 +998,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 3)
   {
-    v12 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioPacket];
-    v13 = [v12 addObjectToBuffer:a3];
+    session_messageAsFTAudioPacket = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioPacket];
+    v13 = [session_messageAsFTAudioPacket addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -1011,8 +1011,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 4)
   {
-    v15 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationAudioPacket];
-    v16 = [v15 addObjectToBuffer:a3];
+    session_messageAsFTSpeechTranslationAudioPacket = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationAudioPacket];
+    v16 = [session_messageAsFTSpeechTranslationAudioPacket addObjectToBuffer:buffer];
 
     v73 = v16;
   }
@@ -1024,8 +1024,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 5)
   {
-    v17 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinishAudio];
-    v18 = [v17 addObjectToBuffer:a3];
+    session_messageAsFTFinishAudio = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinishAudio];
+    v18 = [session_messageAsFTFinishAudio addObjectToBuffer:buffer];
 
     v72 = v18;
   }
@@ -1037,8 +1037,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 6)
   {
-    v19 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSetEndpointerState];
-    v20 = [v19 addObjectToBuffer:a3];
+    session_messageAsFTSetEndpointerState = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSetEndpointerState];
+    v20 = [session_messageAsFTSetEndpointerState addObjectToBuffer:buffer];
 
     v71 = v20;
   }
@@ -1050,8 +1050,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 7)
   {
-    v21 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTResetServerEndpointer];
-    v22 = [v21 addObjectToBuffer:a3];
+    session_messageAsFTResetServerEndpointer = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTResetServerEndpointer];
+    v22 = [session_messageAsFTResetServerEndpointer addObjectToBuffer:buffer];
 
     v70 = v22;
   }
@@ -1063,8 +1063,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 8)
   {
-    v23 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationLoggingRequest];
-    v24 = [v23 addObjectToBuffer:a3];
+    session_messageAsFTStartSpeechTranslationLoggingRequest = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTStartSpeechTranslationLoggingRequest];
+    v24 = [session_messageAsFTStartSpeechTranslationLoggingRequest addObjectToBuffer:buffer];
 
     v69 = v24;
   }
@@ -1076,8 +1076,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 9)
   {
-    v25 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationPartialRecognitionResponse];
-    v26 = [v25 addObjectToBuffer:a3];
+    session_messageAsFTSpeechTranslationPartialRecognitionResponse = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationPartialRecognitionResponse];
+    v26 = [session_messageAsFTSpeechTranslationPartialRecognitionResponse addObjectToBuffer:buffer];
 
     v68 = v26;
   }
@@ -1089,8 +1089,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 10)
   {
-    v27 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationFinalRecognitionResponse];
-    v28 = [v27 addObjectToBuffer:a3];
+    session_messageAsFTSpeechTranslationFinalRecognitionResponse = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationFinalRecognitionResponse];
+    v28 = [session_messageAsFTSpeechTranslationFinalRecognitionResponse addObjectToBuffer:buffer];
 
     v67 = v28;
   }
@@ -1102,8 +1102,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 11)
   {
-    v29 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioLimitExceeded];
-    v30 = [v29 addObjectToBuffer:a3];
+    session_messageAsFTAudioLimitExceeded = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTAudioLimitExceeded];
+    v30 = [session_messageAsFTAudioLimitExceeded addObjectToBuffer:buffer];
 
     v66 = v30;
   }
@@ -1115,8 +1115,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 12)
   {
-    v31 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationMtResponse];
-    v32 = [v31 addObjectToBuffer:a3];
+    session_messageAsFTSpeechTranslationMtResponse = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationMtResponse];
+    v32 = [session_messageAsFTSpeechTranslationMtResponse addObjectToBuffer:buffer];
 
     v65 = v32;
   }
@@ -1128,8 +1128,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 13)
   {
-    v33 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationTextToSpeechResponse];
-    v34 = [v33 addObjectToBuffer:a3];
+    session_messageAsFTSpeechTranslationTextToSpeechResponse = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationTextToSpeechResponse];
+    v34 = [session_messageAsFTSpeechTranslationTextToSpeechResponse addObjectToBuffer:buffer];
 
     v64 = v34;
   }
@@ -1141,8 +1141,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 14)
   {
-    v35 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinalBlazarResponse];
-    v36 = [v35 addObjectToBuffer:a3];
+    session_messageAsFTFinalBlazarResponse = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTFinalBlazarResponse];
+    v36 = [session_messageAsFTFinalBlazarResponse addObjectToBuffer:buffer];
 
     v63 = v36;
   }
@@ -1154,8 +1154,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 15)
   {
-    v37 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionProgress];
-    LODWORD(v38) = [v37 addObjectToBuffer:a3];
+    session_messageAsFTRecognitionProgress = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionProgress];
+    LODWORD(v38) = [session_messageAsFTRecognitionProgress addObjectToBuffer:buffer];
 
     v38 = v38;
   }
@@ -1167,8 +1167,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 16)
   {
-    v39 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionCandidate];
-    v40 = [v39 addObjectToBuffer:a3];
+    session_messageAsFTRecognitionCandidate = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRecognitionCandidate];
+    v40 = [session_messageAsFTRecognitionCandidate addObjectToBuffer:buffer];
 
     v62 = v40;
   }
@@ -1180,8 +1180,8 @@ LABEL_16:
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 17)
   {
-    v41 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRequestStatsResponse];
-    v42 = [v41 addObjectToBuffer:a3];
+    session_messageAsFTRequestStatsResponse = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTRequestStatsResponse];
+    v42 = [session_messageAsFTRequestStatsResponse addObjectToBuffer:buffer];
 
     v61 = v42;
   }
@@ -1194,8 +1194,8 @@ LABEL_16:
   v43 = v14;
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 18)
   {
-    v44 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTServerEndpointFeatures];
-    v45 = [v44 addObjectToBuffer:a3];
+    session_messageAsFTServerEndpointFeatures = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTServerEndpointFeatures];
+    v45 = [session_messageAsFTServerEndpointFeatures addObjectToBuffer:buffer];
 
     v60 = v45;
   }
@@ -1208,8 +1208,8 @@ LABEL_16:
   v46 = v11;
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 19)
   {
-    v47 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTClientSetupInfo];
-    LODWORD(v48) = [v47 addObjectToBuffer:a3];
+    session_messageAsFTClientSetupInfo = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTClientSetupInfo];
+    LODWORD(v48) = [session_messageAsFTClientSetupInfo addObjectToBuffer:buffer];
 
     v48 = v48;
   }
@@ -1225,7 +1225,7 @@ LABEL_16:
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 20)
   {
     v50 = [(FTBlazarSpeechTranslationMessage *)self session_messageAsFTSpeechTranslationServerEndpointFeatures:v48];
-    v51 = [v50 addObjectToBuffer:a3];
+    v51 = [v50 addObjectToBuffer:buffer];
 
     v52 = v51;
   }
@@ -1235,112 +1235,112 @@ LABEL_16:
     v52 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v54 = *(a3 + 5);
-  v53 = *(a3 + 6);
-  v55 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v54 = *(buffer + 5);
+  v53 = *(buffer + 6);
+  v55 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, session_message_type, 0);
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v49);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v49);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v46);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v46);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v43);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v43);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 4)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v73);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v73);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 5)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v72);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v72);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 6)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v71);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v71);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 7)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v70);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v70);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 8)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v69);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v69);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 9)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v68);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v68);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 10)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v67);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v67);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 11)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v66);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v66);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 12)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v65);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v65);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 13)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v64);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v64);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 14)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v63);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v63);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 15)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v59);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v59);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 16)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v62);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v62);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 17)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v61);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v61);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 18)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v60);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v60);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 19)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v58);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v58);
   }
 
   if ([(FTBlazarSpeechTranslationMessage *)self session_message_type]== 20)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v52);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v52);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v55 - v53 + v54);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v55 - v53 + v54);
 }
 
 - (id)flatbuffData

@@ -1,9 +1,9 @@
 @interface SBFObliterationController
 + (id)sharedInstance;
-- (void)_doObliterateWithType:(__CFString *)a3 eraseDataPlan:(BOOL)a4 showingProgress:(BOOL)a5 options:(id)a6;
+- (void)_doObliterateWithType:(__CFString *)type eraseDataPlan:(BOOL)plan showingProgress:(BOOL)progress options:(id)options;
 - (void)markObliterationStart;
-- (void)obliterateDataPartitionShowingProgress:(BOOL)a3 skipDataObliteration:(BOOL)a4 eraseDataPlan:(BOOL)a5 reason:(id)a6;
-- (void)wipeAndBrickShowingProgress:(BOOL)a3 reason:(id)a4;
+- (void)obliterateDataPartitionShowingProgress:(BOOL)progress skipDataObliteration:(BOOL)obliteration eraseDataPlan:(BOOL)plan reason:(id)reason;
+- (void)wipeAndBrickShowingProgress:(BOOL)progress reason:(id)reason;
 @end
 
 @implementation SBFObliterationController
@@ -30,18 +30,18 @@ uint64_t __43__SBFObliterationController_sharedInstance__block_invoke()
   return kdebug_trace();
 }
 
-- (void)_doObliterateWithType:(__CFString *)a3 eraseDataPlan:(BOOL)a4 showingProgress:(BOOL)a5 options:(id)a6
+- (void)_doObliterateWithType:(__CFString *)type eraseDataPlan:(BOOL)plan showingProgress:(BOOL)progress options:(id)options
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = a6;
-  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v9];
-  [v10 setObject:a3 forKeyedSubscript:*MEMORY[0x1E69B1A90]];
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  progressCopy = progress;
+  planCopy = plan;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:optionsCopy];
+  [v10 setObject:type forKeyedSubscript:*MEMORY[0x1E69B1A90]];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:progressCopy];
   [v10 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69B1A78]];
 
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -66,11 +66,11 @@ uint64_t __43__SBFObliterationController_sharedInstance__block_invoke()
     [SBFObliterationController _doObliterateWithType:eraseDataPlan:showingProgress:options:];
   }
 
-  v16 = v14(*MEMORY[0x1E695E480], v13, _ResetCTServerConnectionCallback, &v31);
+  v16 = v14(*MEMORY[0x1E695E480], bundleIdentifier, _ResetCTServerConnectionCallback, &v31);
 
   if (v16)
   {
-    if (v7)
+    if (planCopy)
     {
       v37 = 0;
       v38 = &v37;
@@ -228,16 +228,16 @@ uint64_t __43__SBFObliterationController_sharedInstance__block_invoke()
   Mobile_Obliterate();
 }
 
-- (void)wipeAndBrickShowingProgress:(BOOL)a3 reason:(id)a4
+- (void)wipeAndBrickShowingProgress:(BOOL)progress reason:(id)reason
 {
-  v4 = a3;
+  progressCopy = progress;
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (reason)
   {
     v9 = *MEMORY[0x1E69B1A88];
-    v10[0] = a4;
+    v10[0] = reason;
     v6 = MEMORY[0x1E695DF20];
-    v7 = a4;
+    reasonCopy = reason;
     v8 = [v6 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   }
 
@@ -246,28 +246,28 @@ uint64_t __43__SBFObliterationController_sharedInstance__block_invoke()
     v8 = 0;
   }
 
-  [(SBFObliterationController *)self _doObliterateWithType:*MEMORY[0x1E69B1AA0] eraseDataPlan:1 showingProgress:v4 options:v8];
+  [(SBFObliterationController *)self _doObliterateWithType:*MEMORY[0x1E69B1AA0] eraseDataPlan:1 showingProgress:progressCopy options:v8];
 }
 
-- (void)obliterateDataPartitionShowingProgress:(BOOL)a3 skipDataObliteration:(BOOL)a4 eraseDataPlan:(BOOL)a5 reason:(id)a6
+- (void)obliterateDataPartitionShowingProgress:(BOOL)progress skipDataObliteration:(BOOL)obliteration eraseDataPlan:(BOOL)plan reason:(id)reason
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v12 = a6;
+  planCopy = plan;
+  obliterationCopy = obliteration;
+  progressCopy = progress;
+  reasonCopy = reason;
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = v10;
-  if (v7)
+  if (obliterationCopy)
   {
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69B1AA8]];
   }
 
-  if (v12)
+  if (reasonCopy)
   {
-    [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69B1A88]];
+    [v11 setObject:reasonCopy forKeyedSubscript:*MEMORY[0x1E69B1A88]];
   }
 
-  [(SBFObliterationController *)self _doObliterateWithType:*MEMORY[0x1E69B1A80] eraseDataPlan:v6 showingProgress:v8 options:v11];
+  [(SBFObliterationController *)self _doObliterateWithType:*MEMORY[0x1E69B1A80] eraseDataPlan:planCopy showingProgress:progressCopy options:v11];
 }
 
 - (void)markObliterationStart

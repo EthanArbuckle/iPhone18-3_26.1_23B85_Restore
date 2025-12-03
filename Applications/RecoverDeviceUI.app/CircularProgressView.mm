@@ -1,19 +1,19 @@
 @interface CircularProgressView
 - (CGSize)size;
-- (CircularProgressView)initWithSize:(CGSize)a3;
+- (CircularProgressView)initWithSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 @end
 
 @implementation CircularProgressView
 
-- (CircularProgressView)initWithSize:(CGSize)a3
+- (CircularProgressView)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v20.receiver = self;
   v20.super_class = CircularProgressView;
-  v5 = [(CircularProgressView *)&v20 initWithFrame:0.0, 0.0, a3.width, a3.height];
+  v5 = [(CircularProgressView *)&v20 initWithFrame:0.0, 0.0, size.width, size.height];
   v6 = v5;
   if (v5)
   {
@@ -56,11 +56,11 @@
     [(CAShapeLayer *)v6->_animatedStrokeLayer setStrokeEnd:0.0];
     [(CAShapeLayer *)v6->_animatedStrokeLayer setLineWidth:5.0];
     [(CAShapeLayer *)v6->_animatedStrokeLayer setLineCap:kCALineCapRound];
-    v17 = [(CircularProgressView *)v6 layer];
-    [v17 addSublayer:v6->_backgroundStrokeLayer];
+    layer = [(CircularProgressView *)v6 layer];
+    [layer addSublayer:v6->_backgroundStrokeLayer];
 
-    v18 = [(CircularProgressView *)v6 layer];
-    [v18 addSublayer:v6->_animatedStrokeLayer];
+    layer2 = [(CircularProgressView *)v6 layer];
+    [layer2 addSublayer:v6->_animatedStrokeLayer];
   }
 
   return v6;
@@ -76,24 +76,24 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CircularProgressView *)self backgroundPercentageLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundPercentageLayer = [(CircularProgressView *)self backgroundPercentageLayer];
+  [backgroundPercentageLayer setFrame:{v4, v6, v8, v10}];
 
   [(CircularProgressView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CircularProgressView *)self backgroundStrokeLayer];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  backgroundStrokeLayer = [(CircularProgressView *)self backgroundStrokeLayer];
+  [backgroundStrokeLayer setFrame:{v13, v15, v17, v19}];
 
   [(CircularProgressView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(CircularProgressView *)self animatedStrokeLayer];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  animatedStrokeLayer = [(CircularProgressView *)self animatedStrokeLayer];
+  [animatedStrokeLayer setFrame:{v22, v24, v26, v28}];
 
   [(CircularProgressView *)self bounds];
   x = v44.origin.x;
@@ -116,32 +116,32 @@
   }
 
   v38 = [UIBezierPath bezierPathWithArcCenter:1 radius:MidX startAngle:MidY endAngle:v37 * 0.5 clockwise:-1.57079633, 4.71238898];
-  v39 = [v38 CGPath];
-  v40 = [(CircularProgressView *)self backgroundStrokeLayer];
-  [v40 setPath:v39];
+  cGPath = [v38 CGPath];
+  backgroundStrokeLayer2 = [(CircularProgressView *)self backgroundStrokeLayer];
+  [backgroundStrokeLayer2 setPath:cGPath];
 
-  v41 = [v38 CGPath];
-  v42 = [(CircularProgressView *)self animatedStrokeLayer];
-  [v42 setPath:v41];
+  cGPath2 = [v38 CGPath];
+  animatedStrokeLayer2 = [(CircularProgressView *)self animatedStrokeLayer];
+  [animatedStrokeLayer2 setPath:cGPath2];
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
-    a3 = 0.0;
+    progress = 0.0;
   }
 
-  v4 = fmin(a3, 1.0);
+  v4 = fmin(progress, 1.0);
   if (v4 != self->_progress)
   {
     self->_progress = v4;
     progress = v4;
-    if (a4)
+    if (animated)
     {
       v7 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-      v8 = [(CircularProgressView *)self animatedStrokeLayer];
-      [v8 strokeEnd];
+      animatedStrokeLayer = [(CircularProgressView *)self animatedStrokeLayer];
+      [animatedStrokeLayer strokeEnd];
       v9 = [NSNumber numberWithDouble:?];
       [v7 setFromValue:v9];
 
@@ -149,18 +149,18 @@
       [v7 setToValue:v10];
 
       [v7 setDuration:2.0];
-      v11 = [(CircularProgressView *)self animatedStrokeLayer];
-      [v11 addAnimation:v7 forKey:@"strokeEnd"];
+      animatedStrokeLayer2 = [(CircularProgressView *)self animatedStrokeLayer];
+      [animatedStrokeLayer2 addAnimation:v7 forKey:@"strokeEnd"];
 
       progress = self->_progress;
     }
 
-    v12 = [(CircularProgressView *)self animatedStrokeLayer];
-    [v12 setStrokeEnd:progress];
+    animatedStrokeLayer3 = [(CircularProgressView *)self animatedStrokeLayer];
+    [animatedStrokeLayer3 setStrokeEnd:progress];
 
     v14 = [NSString stringWithFormat:@"\n%d", (v4 * 100.0)];
-    v13 = [(CircularProgressView *)self backgroundPercentageLayer];
-    [v13 setString:v14];
+    backgroundPercentageLayer = [(CircularProgressView *)self backgroundPercentageLayer];
+    [backgroundPercentageLayer setString:v14];
   }
 }
 

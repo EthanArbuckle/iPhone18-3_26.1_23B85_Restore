@@ -1,20 +1,20 @@
 @interface WFSiriAskEachTimeParameterState
-- (BOOL)isEqual:(id)a3;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFSiriAskEachTimeParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v6 = a5;
+  valueHandlerCopy = valueHandler;
   v7 = objc_opt_new();
-  (*(a5 + 2))(v6, v7, 0);
+  (*(valueHandler + 2))(valueHandlerCopy, v7, 0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

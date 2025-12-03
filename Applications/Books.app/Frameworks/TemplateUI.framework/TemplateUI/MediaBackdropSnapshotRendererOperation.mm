@@ -16,7 +16,7 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_19657C(0, 0, v5, &unk_24E4A8, v7);
 
   sub_19C678();

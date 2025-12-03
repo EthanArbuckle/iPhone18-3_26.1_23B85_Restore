@@ -1,5 +1,5 @@
 @interface PGGraphSocialGroupsDeletion
-- (PGGraphSocialGroupsDeletion)initWithSocialGroupUUIDs:(id)a3;
+- (PGGraphSocialGroupsDeletion)initWithSocialGroupUUIDs:(id)ds;
 - (id)description;
 @end
 
@@ -16,16 +16,16 @@
   return v5;
 }
 
-- (PGGraphSocialGroupsDeletion)initWithSocialGroupUUIDs:(id)a3
+- (PGGraphSocialGroupsDeletion)initWithSocialGroupUUIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = PGGraphSocialGroupsDeletion;
   v6 = [(PGGraphSocialGroupsDeletion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_socialGroupUUIDs, a3);
+    objc_storeStrong(&v6->_socialGroupUUIDs, ds);
   }
 
   return v7;

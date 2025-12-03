@@ -2,14 +2,14 @@
 - (WBSHistoryObjectCache)init;
 - (id).cxx_construct;
 - (id)allItems;
-- (id)itemForID:(int64_t)a3;
-- (id)visitForID:(int64_t)a3;
+- (id)itemForID:(int64_t)d;
+- (id)visitForID:(int64_t)d;
 - (void)_clearNilReferences;
-- (void)changeItemIDs:(id)a3;
-- (void)changeVisitIDs:(id)a3;
+- (void)changeItemIDs:(id)ds;
+- (void)changeVisitIDs:(id)ds;
 - (void)clear;
-- (void)setItem:(id)a3 forID:(int64_t)a4;
-- (void)setVisit:(id)a3 forID:(int64_t)a4;
+- (void)setItem:(id)item forID:(int64_t)d;
+- (void)setVisit:(id)visit forID:(int64_t)d;
 @end
 
 @implementation WBSHistoryObjectCache
@@ -51,10 +51,10 @@
   return v3;
 }
 
-- (id)itemForID:(int64_t)a3
+- (id)itemForID:(int64_t)d
 {
-  v5 = a3;
-  v3 = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::find<long long>(&self->_itemsByDatabaseID.__table_.__bucket_list_.__ptr_, &v5);
+  dCopy = d;
+  v3 = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::find<long long>(&self->_itemsByDatabaseID.__table_.__bucket_list_.__ptr_, &dCopy);
   if (v3)
   {
     v3 = v3[3];
@@ -63,16 +63,16 @@
   return v3;
 }
 
-- (void)setItem:(id)a3 forID:(int64_t)a4
+- (void)setItem:(id)item forID:(int64_t)d
 {
-  v6 = a3;
-  v9[0] = a4;
+  itemCopy = item;
+  v9[0] = d;
   v9[2] = v9;
   v7 = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_itemsByDatabaseID.__table_.__bucket_list_.__ptr_, v9);
   if (v7)
   {
     v8 = v7[3];
-    v7[3] = v6;
+    v7[3] = itemCopy;
   }
 
   else
@@ -81,10 +81,10 @@
   }
 }
 
-- (void)changeItemIDs:(id)a3
+- (void)changeItemIDs:(id)ds
 {
-  v4 = a3;
-  for (i = *([v4 map] + 16); i; i = *i)
+  dsCopy = ds;
+  for (i = *([dsCopy map] + 16); i; i = *i)
   {
     v12 = *(i + 1);
     v6 = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::find<long long>(&self->_itemsByDatabaseID.__table_.__bucket_list_.__ptr_, &v12);
@@ -103,10 +103,10 @@
   }
 }
 
-- (id)visitForID:(int64_t)a3
+- (id)visitForID:(int64_t)d
 {
-  v5 = a3;
-  WeakRetained = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::find<long long>(&self->_weakVisitsByDatabaseID.__table_.__bucket_list_.__ptr_, &v5);
+  dCopy = d;
+  WeakRetained = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::find<long long>(&self->_weakVisitsByDatabaseID.__table_.__bucket_list_.__ptr_, &dCopy);
   if (WeakRetained)
   {
     WeakRetained = objc_loadWeakRetained(WeakRetained + 3);
@@ -115,15 +115,15 @@
   return WeakRetained;
 }
 
-- (void)setVisit:(id)a3 forID:(int64_t)a4
+- (void)setVisit:(id)visit forID:(int64_t)d
 {
-  v6 = a3;
-  v8[0] = a4;
+  visitCopy = visit;
+  v8[0] = d;
   v8[2] = v8;
   v7 = std::__hash_table<std::__hash_value_type<long long,WBSHistoryVisit * {__weak}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryVisit * {__weak}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryVisit * {__weak}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryVisit * {__weak}>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_weakVisitsByDatabaseID.__table_.__bucket_list_.__ptr_, v8);
   if (v7)
   {
-    objc_storeWeak(v7 + 3, v6);
+    objc_storeWeak(v7 + 3, visitCopy);
   }
 
   else
@@ -154,11 +154,11 @@
   }
 }
 
-- (void)changeVisitIDs:(id)a3
+- (void)changeVisitIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   [(WBSHistoryObjectCache *)self _clearNilReferences];
-  for (i = *([v4 map] + 16); i; i = *i)
+  for (i = *([dsCopy map] + 16); i; i = *i)
   {
     v6 = std::__hash_table<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,WBSHistoryItem * {__strong}>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,WBSHistoryItem * {__strong}>>>::find<long long>(&self->_weakVisitsByDatabaseID.__table_.__bucket_list_.__ptr_, i + 2);
     v7 = v6;

@@ -7,22 +7,22 @@
 - (_UIKeyShortcutHUDMenu)menu;
 - (_UIKeyShortcutHUDToolbarViewControllerDelegate)delegate;
 - (id)_collectionViewLayout;
-- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)a3;
-- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)a3;
+- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)path;
+- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)path;
 - (void)_configureCollectionView;
-- (void)_configureSeparatorViewAppearance:(id)a3;
+- (void)_configureSeparatorViewAppearance:(id)appearance;
 - (void)_setupSubviews;
-- (void)categoriesPageControlCurrentPageChanged:(id)a3;
+- (void)categoriesPageControlCurrentPageChanged:(id)changed;
 - (void)didCompleteSearchTransition;
-- (void)flashCategoryAtIndex:(unint64_t)a3 completionHandler:(id)a4;
-- (void)hudWillBecomeHidden:(BOOL)a3;
-- (void)performActionForSelectingCellAtIndexPath:(id)a3;
-- (void)prepareForSearchTransition:(BOOL)a3;
-- (void)searchBar:(id)a3 didUpdateSearchText:(id)a4;
-- (void)searchBarDidPressCancelButton:(id)a3;
-- (void)searchButtonDidPress:(id)a3;
-- (void)selectCategory:(id)a3 withCategoryIndex:(int64_t)a4;
-- (void)setSearching:(BOOL)a3;
+- (void)flashCategoryAtIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)hudWillBecomeHidden:(BOOL)hidden;
+- (void)performActionForSelectingCellAtIndexPath:(id)path;
+- (void)prepareForSearchTransition:(BOOL)transition;
+- (void)searchBar:(id)bar didUpdateSearchText:(id)text;
+- (void)searchBarDidPressCancelButton:(id)button;
+- (void)searchButtonDidPress:(id)press;
+- (void)selectCategory:(id)category withCategoryIndex:(int64_t)index;
+- (void)setSearching:(BOOL)searching;
 - (void)updateScrollingSeparatorViewVisibility;
 - (void)viewDidLoad;
 @end
@@ -44,92 +44,92 @@
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
   [WeakRetained toolbarPlatterCornerRadius];
   v5 = v4;
-  v6 = [(UIViewController *)self view];
-  v7 = [v6 layer];
-  [v7 setCornerRadius:v5];
+  view = [(UIViewController *)self view];
+  layer = [view layer];
+  [layer setCornerRadius:v5];
 
   v8 = *MEMORY[0x1E69796E8];
-  v9 = [(UIViewController *)self view];
-  v10 = [v9 layer];
-  [v10 setCornerCurve:v8];
+  view2 = [(UIViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 setCornerCurve:v8];
 
   v11 = objc_loadWeakRetained(&self->_metrics);
-  v12 = [v11 toolbarPanelCornerMask];
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 layer];
-  [v14 setMaskedCorners:v12];
+  toolbarPanelCornerMask = [v11 toolbarPanelCornerMask];
+  view3 = [(UIViewController *)self view];
+  layer3 = [view3 layer];
+  [layer3 setMaskedCorners:toolbarPanelCornerMask];
 
-  v15 = [(UIViewController *)self view];
-  v16 = [v15 layer];
-  [v16 setMasksToBounds:1];
+  view4 = [(UIViewController *)self view];
+  layer4 = [view4 layer];
+  [layer4 setMasksToBounds:1];
 
   v17 = objc_loadWeakRetained(&self->_metrics);
   [v17 toolbarPanelStrokeWidth];
   v19 = v18;
-  v20 = [(UIViewController *)self view];
-  v21 = [v20 layer];
-  [v21 setBorderWidth:v19];
+  view5 = [(UIViewController *)self view];
+  layer5 = [view5 layer];
+  [layer5 setBorderWidth:v19];
 
   v22 = objc_loadWeakRetained(&self->_metrics);
-  v23 = [v22 platterStrokeColor];
-  v24 = [(UIViewController *)self traitCollection];
-  v25 = [v23 resolvedColorWithTraitCollection:v24];
-  v26 = [v25 CGColor];
-  v27 = [(UIViewController *)self view];
-  v28 = [v27 layer];
-  [v28 setBorderColor:v26];
+  platterStrokeColor = [v22 platterStrokeColor];
+  traitCollection = [(UIViewController *)self traitCollection];
+  v25 = [platterStrokeColor resolvedColorWithTraitCollection:traitCollection];
+  cGColor = [v25 CGColor];
+  view6 = [(UIViewController *)self view];
+  layer6 = [view6 layer];
+  [layer6 setBorderColor:cGColor];
 
   v29 = objc_loadWeakRetained(&self->_metrics);
   [v29 platterZPosition];
   v31 = v30;
-  v32 = [(UIViewController *)self view];
-  v33 = [v32 layer];
-  [v33 setZPosition:v31];
+  view7 = [(UIViewController *)self view];
+  layer7 = [view7 layer];
+  [layer7 setZPosition:v31];
 
   v34 = [UIVisualEffectView alloc];
   v35 = objc_loadWeakRetained(&self->_metrics);
-  v36 = [v35 platterVisualEffect];
-  v37 = [(UIVisualEffectView *)v34 initWithEffect:v36];
+  platterVisualEffect = [v35 platterVisualEffect];
+  v37 = [(UIVisualEffectView *)v34 initWithEffect:platterVisualEffect];
   visualEffectView = self->_visualEffectView;
   self->_visualEffectView = v37;
 
-  v39 = [(UIViewController *)self view];
-  [v39 bounds];
+  view8 = [(UIViewController *)self view];
+  [view8 bounds];
   [(UIView *)self->_visualEffectView setFrame:?];
 
   [(UIView *)self->_visualEffectView setAutoresizingMask:18];
-  v40 = [(UIViewController *)self view];
-  [v40 addSubview:self->_visualEffectView];
+  view9 = [(UIViewController *)self view];
+  [view9 addSubview:self->_visualEffectView];
 
   v41 = objc_opt_new();
   toolbarContentView = self->_toolbarContentView;
   self->_toolbarContentView = v41;
 
   [(UIView *)self->_toolbarContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v43 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  [v43 addSubview:self->_toolbarContentView];
+  contentView = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  [contentView addSubview:self->_toolbarContentView];
 
   v128 = MEMORY[0x1E69977A0];
-  v147 = [(UIView *)self->_toolbarContentView topAnchor];
-  v151 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  v143 = [v151 topAnchor];
-  v140 = [v147 constraintEqualToAnchor:v143];
+  topAnchor = [(UIView *)self->_toolbarContentView topAnchor];
+  contentView2 = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v140 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v162[0] = v140;
-  v134 = [(UIView *)self->_toolbarContentView leadingAnchor];
-  v137 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  v131 = [v137 leadingAnchor];
-  v125 = [v134 constraintEqualToAnchor:v131];
+  leadingAnchor = [(UIView *)self->_toolbarContentView leadingAnchor];
+  contentView3 = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v125 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v162[1] = v125;
-  v122 = [(UIView *)self->_toolbarContentView trailingAnchor];
-  v44 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  v45 = [v44 trailingAnchor];
-  v46 = [v122 constraintEqualToAnchor:v45];
+  trailingAnchor = [(UIView *)self->_toolbarContentView trailingAnchor];
+  contentView4 = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v162[2] = v46;
-  v47 = [(UIView *)self->_toolbarContentView bottomAnchor];
-  v48 = [(UIVisualEffectView *)self->_visualEffectView contentView];
-  v49 = [v48 safeAreaLayoutGuide];
-  v50 = [v49 bottomAnchor];
-  v51 = [v47 constraintEqualToAnchor:v50];
+  bottomAnchor = [(UIView *)self->_toolbarContentView bottomAnchor];
+  contentView5 = [(UIVisualEffectView *)self->_visualEffectView contentView];
+  safeAreaLayoutGuide = [contentView5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v162[3] = v51;
   v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v162 count:4];
   [v128 activateConstraints:v52];
@@ -160,38 +160,38 @@
   [(UIView *)self->_categoriesContentView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_toolbarContentView addSubview:self->_categoriesContentView];
   v123 = MEMORY[0x1E69977A0];
-  v152 = [(UIView *)self->_searchButton leadingAnchor];
-  v148 = [(UIView *)self->_toolbarContentView leadingAnchor];
-  v144 = [v152 constraintEqualToAnchor:v148];
+  leadingAnchor3 = [(UIView *)self->_searchButton leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_toolbarContentView leadingAnchor];
+  v144 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v161[0] = v144;
-  v141 = [(UIView *)self->_searchButton topAnchor];
-  v138 = [(UIView *)self->_toolbarContentView topAnchor];
-  v135 = [v141 constraintEqualToAnchor:v138];
+  topAnchor3 = [(UIView *)self->_searchButton topAnchor];
+  topAnchor4 = [(UIView *)self->_toolbarContentView topAnchor];
+  v135 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v161[1] = v135;
-  v132 = [(UIView *)self->_searchButton bottomAnchor];
-  v129 = [(UIView *)self->_toolbarContentView bottomAnchor];
-  v126 = [v132 constraintEqualToAnchor:v129];
+  bottomAnchor3 = [(UIView *)self->_searchButton bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_toolbarContentView bottomAnchor];
+  v126 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v161[2] = v126;
-  v118 = [(UIView *)self->_searchButton widthAnchor];
+  widthAnchor = [(UIView *)self->_searchButton widthAnchor];
   v120 = objc_loadWeakRetained(&self->_metrics);
   [v120 searchButtonWidth];
-  v117 = [v118 constraintEqualToConstant:?];
+  v117 = [widthAnchor constraintEqualToConstant:?];
   v161[3] = v117;
-  v116 = [(UIView *)self->_categoriesContentView leadingAnchor];
-  v115 = [(UIView *)self->_searchButton trailingAnchor];
-  v114 = [v116 constraintEqualToAnchor:v115];
+  leadingAnchor5 = [(UIView *)self->_categoriesContentView leadingAnchor];
+  trailingAnchor3 = [(UIView *)self->_searchButton trailingAnchor];
+  v114 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3];
   v161[4] = v114;
-  v113 = [(UIView *)self->_categoriesContentView topAnchor];
-  v112 = [(UIView *)self->_toolbarContentView topAnchor];
-  v60 = [v113 constraintEqualToAnchor:v112];
+  topAnchor5 = [(UIView *)self->_categoriesContentView topAnchor];
+  topAnchor6 = [(UIView *)self->_toolbarContentView topAnchor];
+  v60 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v161[5] = v60;
-  v61 = [(UIView *)self->_categoriesContentView bottomAnchor];
-  v62 = [(UIView *)self->_toolbarContentView bottomAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  bottomAnchor5 = [(UIView *)self->_categoriesContentView bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_toolbarContentView bottomAnchor];
+  v63 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v161[6] = v63;
-  v64 = [(UIView *)self->_categoriesContentView trailingAnchor];
-  v65 = [(UIView *)self->_toolbarContentView trailingAnchor];
-  v66 = [v64 constraintEqualToAnchor:v65];
+  trailingAnchor4 = [(UIView *)self->_categoriesContentView trailingAnchor];
+  trailingAnchor5 = [(UIView *)self->_toolbarContentView trailingAnchor];
+  v66 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v161[7] = v66;
   v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v161 count:8];
   [v123 activateConstraints:v67];
@@ -202,8 +202,8 @@
   v72 = v71;
   v74 = v73;
   v76 = v75;
-  v77 = [(_UIKeyShortcutHUDToolbarViewController *)self _collectionViewLayout];
-  v78 = [(UICollectionView *)v68 initWithFrame:v77 collectionViewLayout:v70, v72, v74, v76];
+  _collectionViewLayout = [(_UIKeyShortcutHUDToolbarViewController *)self _collectionViewLayout];
+  v78 = [(UICollectionView *)v68 initWithFrame:_collectionViewLayout collectionViewLayout:v70, v72, v74, v76];
   collectionView = self->_collectionView;
   self->_collectionView = v78;
 
@@ -218,8 +218,8 @@
 
   [(UIControl *)self->_categoriesPageControl addTarget:self action:sel_categoriesPageControlCurrentPageChanged_ forControlEvents:4096];
   v83 = +[UIKeyShortcutHUDMetrics currentMetrics];
-  v84 = [v83 standardHUDTextColor];
-  [(UIPageControl *)self->_categoriesPageControl setCurrentPageIndicatorTintColor:v84];
+  standardHUDTextColor = [v83 standardHUDTextColor];
+  [(UIPageControl *)self->_categoriesPageControl setCurrentPageIndicatorTintColor:standardHUDTextColor];
 
   v85 = +[UIColor tertiaryLabelColor];
   [(UIPageControl *)self->_categoriesPageControl setPageIndicatorTintColor:v85];
@@ -242,34 +242,34 @@
   [(UIView *)self->_scrollingSeparatorView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_categoriesContentView addSubview:self->_scrollingSeparatorView];
   v130 = MEMORY[0x1E69977A0];
-  v153 = [(UIView *)self->_categoriesPageControl centerXAnchor];
-  v149 = [(UIView *)self->_toolbarContentView centerXAnchor];
-  v145 = [v153 constraintEqualToAnchor:v149];
+  centerXAnchor = [(UIView *)self->_categoriesPageControl centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_toolbarContentView centerXAnchor];
+  v145 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v160[0] = v145;
-  v142 = [(UIView *)self->_categoriesPageControl centerYAnchor];
-  v155 = [(UIView *)self->_toolbarContentView centerYAnchor];
-  v139 = [v142 constraintEqualToAnchor:v155];
+  centerYAnchor = [(UIView *)self->_categoriesPageControl centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_toolbarContentView centerYAnchor];
+  v139 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v160[1] = v139;
-  v136 = [(UIView *)self->_scrollingSeparatorView leadingAnchor];
-  v133 = [(UIView *)self->_categoriesContentView leadingAnchor];
-  v127 = [v136 constraintEqualToAnchor:v133];
+  leadingAnchor6 = [(UIView *)self->_scrollingSeparatorView leadingAnchor];
+  leadingAnchor7 = [(UIView *)self->_categoriesContentView leadingAnchor];
+  v127 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v160[2] = v127;
-  v124 = [(UIView *)self->_scrollingSeparatorView topAnchor];
-  v119 = [(UIView *)self->_categoriesContentView topAnchor];
+  topAnchor7 = [(UIView *)self->_scrollingSeparatorView topAnchor];
+  topAnchor8 = [(UIView *)self->_categoriesContentView topAnchor];
   v121 = objc_loadWeakRetained(&self->_metrics);
   [v121 toolbarContentInset];
-  v90 = [v124 constraintEqualToAnchor:v119 constant:?];
+  v90 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:?];
   v160[3] = v90;
-  v91 = [(UIView *)self->_scrollingSeparatorView bottomAnchor];
-  v92 = [(UIView *)self->_categoriesContentView bottomAnchor];
+  bottomAnchor7 = [(UIView *)self->_scrollingSeparatorView bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_categoriesContentView bottomAnchor];
   v93 = objc_loadWeakRetained(&self->_metrics);
   [v93 toolbarContentInset];
-  v95 = [v91 constraintEqualToAnchor:v92 constant:-v94];
+  v95 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-v94];
   v160[4] = v95;
-  v96 = [(UIView *)self->_scrollingSeparatorView widthAnchor];
+  widthAnchor2 = [(UIView *)self->_scrollingSeparatorView widthAnchor];
   v97 = objc_loadWeakRetained(&self->_metrics);
   [v97 separatorWidth];
-  v98 = [v96 constraintEqualToConstant:?];
+  v98 = [widthAnchor2 constraintEqualToConstant:?];
   v160[5] = v98;
   v99 = [MEMORY[0x1E695DEC8] arrayWithObjects:v160 count:6];
   [v130 activateConstraints:v99];
@@ -286,21 +286,21 @@
 
     [(UIView *)self->_categoriesContentView addLayoutGuide:v101];
     v146 = MEMORY[0x1E69977A0];
-    v157 = [v101 leadingAnchor];
-    v156 = [(UIView *)self->_categoriesContentView leadingAnchor];
-    v154 = [v157 constraintEqualToAnchor:v156];
+    leadingAnchor8 = [v101 leadingAnchor];
+    leadingAnchor9 = [(UIView *)self->_categoriesContentView leadingAnchor];
+    v154 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v158[0] = v154;
-    v150 = [v101 topAnchor];
-    v103 = [(UIView *)self->_categoriesContentView topAnchor];
-    v104 = [v150 constraintEqualToAnchor:v103];
+    topAnchor9 = [v101 topAnchor];
+    topAnchor10 = [(UIView *)self->_categoriesContentView topAnchor];
+    v104 = [topAnchor9 constraintEqualToAnchor:topAnchor10];
     v158[1] = v104;
-    v105 = [v101 trailingAnchor];
-    v106 = [(UIView *)self->_categoriesContentView trailingAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106];
+    trailingAnchor6 = [v101 trailingAnchor];
+    trailingAnchor7 = [(UIView *)self->_categoriesContentView trailingAnchor];
+    v107 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v158[2] = v107;
-    v108 = [v101 bottomAnchor];
-    v109 = [(UIView *)self->_categoriesContentView bottomAnchor];
-    v110 = [v108 constraintEqualToAnchor:v109];
+    bottomAnchor9 = [v101 bottomAnchor];
+    bottomAnchor10 = [(UIView *)self->_categoriesContentView bottomAnchor];
+    v110 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
     v158[3] = v110;
     v111 = [MEMORY[0x1E695DEC8] arrayWithObjects:v158 count:4];
     [v146 activateConstraints:v111];
@@ -353,20 +353,20 @@
 
   if (v7)
   {
-    v15 = objc_loadWeakRetained(&self->_menu);
-    v16 = [v15 children];
-    -[UIPageControl setNumberOfPages:](self->_categoriesPageControl, "setNumberOfPages:", [v16 count]);
+    snapshot = objc_loadWeakRetained(&self->_menu);
+    children = [snapshot children];
+    -[UIPageControl setNumberOfPages:](self->_categoriesPageControl, "setNumberOfPages:", [children count]);
   }
 
   else
   {
-    v15 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [v15 appendSectionsWithIdentifiers:&unk_1EFE2E0E0];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [snapshot appendSectionsWithIdentifiers:&unk_1EFE2E0E0];
     v17 = objc_loadWeakRetained(&self->_menu);
-    v18 = [v17 children];
-    [v15 appendItemsWithIdentifiers:v18];
+    children2 = [v17 children];
+    [snapshot appendItemsWithIdentifiers:children2];
 
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v15 animatingDifferences:0];
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:0];
   }
 
   objc_destroyWeak(&v24);
@@ -392,44 +392,44 @@
   return v5;
 }
 
-- (void)performActionForSelectingCellAtIndexPath:(id)a3
+- (void)performActionForSelectingCellAtIndexPath:(id)path
 {
-  v9 = a3;
+  pathCopy = path;
   if (![(_UIKeyShortcutHUDToolbarViewController *)self isSearching]&& ![(_UIKeyShortcutHUDToolbarViewController *)self isPreparingSearchTransition])
   {
-    v4 = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
-    [v4 client:self setCategoryVisibleForCellAtIndexPath:v9];
+    collectionViewManager = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
+    [collectionViewManager client:self setCategoryVisibleForCellAtIndexPath:pathCopy];
 
-    v5 = [(_UIKeyShortcutHUDToolbarViewController *)self menu];
-    v6 = [v5 children];
-    v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v9, "item")}];
+    menu = [(_UIKeyShortcutHUDToolbarViewController *)self menu];
+    children = [menu children];
+    v7 = [children objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    v8 = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
-    [v8 toolbarViewController:self didSelectCategory:v7 categoryIndex:objc_msgSend(v9 animated:{"item"), 1}];
+    delegate = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
+    [delegate toolbarViewController:self didSelectCategory:v7 categoryIndex:objc_msgSend(pathCopy animated:{"item"), 1}];
   }
 }
 
-- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)a3
+- (id)indexPathsForCellsUsingSeparatorAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (v4)
+  if (pathCopy)
   {
-    v6 = [v4 client];
+    client = [pathCopy client];
 
-    if (v6 == self)
+    if (client == self)
     {
-      v7 = [v4 indexPath];
-      v8 = [v7 item];
+      indexPath = [pathCopy indexPath];
+      item = [indexPath item];
 
-      if (v8 >= 1)
+      if (item >= 1)
       {
-        [v5 addObject:v4];
+        [v5 addObject:pathCopy];
         v9 = MEMORY[0x1E696AC88];
-        v10 = [v4 indexPath];
-        v11 = [v10 item] - 1;
-        v12 = [v4 indexPath];
-        v13 = [v9 indexPathForItem:v11 inSection:{objc_msgSend(v12, "section")}];
+        indexPath2 = [pathCopy indexPath];
+        v11 = [indexPath2 item] - 1;
+        indexPath3 = [pathCopy indexPath];
+        v13 = [v9 indexPathForItem:v11 inSection:{objc_msgSend(indexPath3, "section")}];
         v14 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:self indexPath:v13];
 
         [v5 addObject:v14];
@@ -440,37 +440,37 @@
   return v5;
 }
 
-- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)a3
+- (id)indexPathsForSeparatorsUsedByCellAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [MEMORY[0x1E695DFA8] set];
-  if (v4)
+  if (pathCopy)
   {
-    v6 = [v4 client];
+    client = [pathCopy client];
 
-    if (v6 == self)
+    if (client == self)
     {
-      v7 = [v4 indexPath];
-      v8 = [v7 item];
+      indexPath = [pathCopy indexPath];
+      item = [indexPath item];
 
-      if (v8 >= 1)
+      if (item >= 1)
       {
-        [v5 addObject:v4];
+        [v5 addObject:pathCopy];
       }
 
-      v9 = [v4 indexPath];
-      v10 = [v9 item];
+      indexPath2 = [pathCopy indexPath];
+      item2 = [indexPath2 item];
       WeakRetained = objc_loadWeakRetained(&self->_menu);
-      v12 = [WeakRetained children];
-      v13 = [v12 count] - 1;
+      children = [WeakRetained children];
+      v13 = [children count] - 1;
 
-      if (v10 < v13)
+      if (item2 < v13)
       {
         v14 = MEMORY[0x1E696AC88];
-        v15 = [v4 indexPath];
-        v16 = [v15 item];
-        v17 = [v4 indexPath];
-        v18 = [v14 indexPathForItem:v16 + 1 inSection:{objc_msgSend(v17, "section")}];
+        indexPath3 = [pathCopy indexPath];
+        item3 = [indexPath3 item];
+        indexPath4 = [pathCopy indexPath];
+        v18 = [v14 indexPathForItem:item3 + 1 inSection:{objc_msgSend(indexPath4, "section")}];
         v19 = [_UIKeyShortcutHUDIndexPath hudIndexPathWithClient:self indexPath:v18];
 
         [v5 addObject:v19];
@@ -489,61 +489,61 @@
   return v4;
 }
 
-- (void)_configureSeparatorViewAppearance:(id)a3
+- (void)_configureSeparatorViewAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
   [WeakRetained toolbarSeparatorVerticalMargin];
   v7 = v6;
 
-  [v4 setDirectionalLayoutMargins:{v7, 0.0, v7, 0.0}];
+  [appearanceCopy setDirectionalLayoutMargins:{v7, 0.0, v7, 0.0}];
   v8 = objc_loadWeakRetained(&self->_metrics);
-  v9 = [v8 toolbarSeparatorColor];
-  [v4 setSeparatorColor:v9];
+  toolbarSeparatorColor = [v8 toolbarSeparatorColor];
+  [appearanceCopy setSeparatorColor:toolbarSeparatorColor];
 
   v11 = objc_loadWeakRetained(&self->_metrics);
-  v10 = [v11 toolbarSeparatorVisualEffect];
-  [v4 setVisualEffect:v10];
+  toolbarSeparatorVisualEffect = [v11 toolbarSeparatorVisualEffect];
+  [appearanceCopy setVisualEffect:toolbarSeparatorVisualEffect];
 }
 
 - (void)updateScrollingSeparatorViewVisibility
 {
-  v3 = [(_UIKeyShortcutHUDToolbarViewController *)self _shouldHideScrollingSeparatorView];
+  _shouldHideScrollingSeparatorView = [(_UIKeyShortcutHUDToolbarViewController *)self _shouldHideScrollingSeparatorView];
   scrollingSeparatorView = self->_scrollingSeparatorView;
 
-  [(_UIKeyShortcutHUDSeparatorView *)scrollingSeparatorView setSeparatorHidden:v3];
+  [(_UIKeyShortcutHUDSeparatorView *)scrollingSeparatorView setSeparatorHidden:_shouldHideScrollingSeparatorView];
 }
 
 - (BOOL)_shouldHideScrollingSeparatorView
 {
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
-  v4 = [WeakRetained toolbarStylesCategoriesAsPageControl];
+  toolbarStylesCategoriesAsPageControl = [WeakRetained toolbarStylesCategoriesAsPageControl];
 
-  if (v4)
+  if (toolbarStylesCategoriesAsPageControl)
   {
     return 1;
   }
 
-  v6 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
-  v7 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton searchButtonIndexPath];
-  v8 = [v7 indexPath];
-  v9 = [v6 cellForItemAtIndexPath:v8];
+  collectionView = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
+  searchButtonIndexPath = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton searchButtonIndexPath];
+  indexPath = [searchButtonIndexPath indexPath];
+  v9 = [collectionView cellForItemAtIndexPath:indexPath];
 
   if ([v9 isBackgroundVisible])
   {
-    v5 = 1;
+    isBackgroundVisible = 1;
   }
 
   else
   {
     collectionView = self->_collectionView;
-    v11 = [(_UIKeyShortcutHUDToolbarViewController *)self firstCategoryIndexPath];
-    v12 = [v11 indexPath];
-    v13 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v12];
+    firstCategoryIndexPath = [(_UIKeyShortcutHUDToolbarViewController *)self firstCategoryIndexPath];
+    indexPath2 = [firstCategoryIndexPath indexPath];
+    v13 = [(UICollectionView *)collectionView cellForItemAtIndexPath:indexPath2];
 
     if ([v13 isBackgroundVisible] && (-[UIScrollView contentOffset](self->_collectionView, "contentOffset"), v14 < 0.0))
     {
-      v5 = 1;
+      isBackgroundVisible = 1;
       v9 = v13;
     }
 
@@ -555,49 +555,49 @@
       v17 = [(UICollectionView *)self->_collectionView indexPathForItemAtPoint:v16, CGRectGetMidY(v19)];
       v9 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v17];
 
-      v5 = [v9 isBackgroundVisible];
+      isBackgroundVisible = [v9 isBackgroundVisible];
     }
   }
 
-  return v5;
+  return isBackgroundVisible;
 }
 
-- (void)prepareForSearchTransition:(BOOL)a3
+- (void)prepareForSearchTransition:(BOOL)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   [(_UIKeyShortcutHUDToolbarViewController *)self setPreparingSearchTransition:1];
-  [(_UIKeyShortcutHUDSearchButton *)self->_searchButton prepareForSearchTransition:v3];
-  if (!v3)
+  [(_UIKeyShortcutHUDSearchButton *)self->_searchButton prepareForSearchTransition:transitionCopy];
+  if (!transitionCopy)
   {
     [(UIView *)self->_categoriesContentView setUserInteractionEnabled:1];
     WeakRetained = objc_loadWeakRetained(&self->_collectionViewManager);
     [WeakRetained deselectCurrentlySelectedCell];
 
-    v6 = [(_UIKeyShortcutHUDToolbarViewController *)self searchBar];
-    [v6 resignFirstResponder];
+    searchBar = [(_UIKeyShortcutHUDToolbarViewController *)self searchBar];
+    [searchBar resignFirstResponder];
 
     [(_UIKeyShortcutHUDSearchBar *)self->_searchBar setText:0];
     [(UIView *)self->_searchBar setUserInteractionEnabled:0];
     [(UIView *)self->_searchButton setUserInteractionEnabled:1];
     [(UIViewController *)self updateFocusIfNeeded];
-    v7 = [(_UIKeyShortcutHUDSearchBar *)self->_searchBar searchTextField];
+    searchTextField = [(_UIKeyShortcutHUDSearchBar *)self->_searchBar searchTextField];
     if (__UIAccessibilityBroadcastCallback)
     {
-      __UIAccessibilityBroadcastCallback(1001, v7);
+      __UIAccessibilityBroadcastCallback(1001, searchTextField);
     }
   }
 
-  v8 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-  if ([v8 count])
+  indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+  if ([indexPathsForSelectedItems count])
   {
-    v9 = [(UIView *)self->_collectionView effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(UIView *)self->_collectionView effectiveUserInterfaceLayoutDirection];
 
-    if (v9 == UIUserInterfaceLayoutDirectionLeftToRight)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionLeftToRight)
     {
       collectionView = self->_collectionView;
-      v11 = [(UICollectionView *)collectionView indexPathsForSelectedItems];
-      v12 = [v11 firstObject];
-      v13 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v12];
+      indexPathsForSelectedItems2 = [(UICollectionView *)collectionView indexPathsForSelectedItems];
+      firstObject = [indexPathsForSelectedItems2 firstObject];
+      v13 = [(UICollectionView *)collectionView cellForItemAtIndexPath:firstObject];
       objc_storeWeak(&self->_cellForSearchTransition, v13);
 
       goto LABEL_11;
@@ -608,17 +608,17 @@
   {
   }
 
-  v14 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
-  v15 = [v14 indexPathsForSelectedItems];
-  v16 = [v15 count];
+  collectionView = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
+  indexPathsForSelectedItems3 = [collectionView indexPathsForSelectedItems];
+  v16 = [indexPathsForSelectedItems3 count];
 
   if (v16)
   {
-    v17 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
-    v18 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
-    v19 = [v18 indexPathsForSelectedItems];
-    v20 = [v19 firstObject];
-    v21 = [v17 cellForItemAtIndexPath:v20];
+    collectionView2 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
+    collectionView3 = [(_UIKeyShortcutHUDSearchButton *)self->_searchButton collectionView];
+    indexPathsForSelectedItems4 = [collectionView3 indexPathsForSelectedItems];
+    firstObject2 = [indexPathsForSelectedItems4 firstObject];
+    v21 = [collectionView2 cellForItemAtIndexPath:firstObject2];
     objc_storeWeak(&self->_cellForSearchTransition, v21);
   }
 
@@ -631,9 +631,9 @@ LABEL_11:
 
   searchBar = self->_searchBar;
   v25 = objc_loadWeakRetained(&self->_cellForSearchTransition);
-  [(_UIKeyShortcutHUDSearchBar *)searchBar prepareForSearchTransition:v3 usingCell:v25];
+  [(_UIKeyShortcutHUDSearchBar *)searchBar prepareForSearchTransition:transitionCopy usingCell:v25];
 
-  if (v3)
+  if (transitionCopy)
   {
     [(UIView *)self->_searchBar setUserInteractionEnabled:1];
     [(_UIKeyShortcutHUDSearchBar *)self->_searchBar becomeFirstResponder];
@@ -653,16 +653,16 @@ LABEL_11:
   [(_UIKeyShortcutHUDToolbarViewController *)self setPreparingSearchTransition:0];
 }
 
-- (void)setSearching:(BOOL)a3
+- (void)setSearching:(BOOL)searching
 {
-  v3 = a3;
+  searchingCopy = searching;
   [(_UIKeyShortcutHUDSearchButton *)self->_searchButton setSearching:?];
-  [(_UIKeyShortcutHUDSearchBar *)self->_searchBar setSearching:v3];
-  if (self->_searching != v3)
+  [(_UIKeyShortcutHUDSearchBar *)self->_searchBar setSearching:searchingCopy];
+  if (self->_searching != searchingCopy)
   {
-    self->_searching = v3;
+    self->_searching = searchingCopy;
     categoriesContentView = self->_categoriesContentView;
-    if (v3)
+    if (searchingCopy)
     {
 
       [(UIView *)categoriesContentView setAlpha:0.0];
@@ -672,10 +672,10 @@ LABEL_11:
     {
       [(UIView *)categoriesContentView setAlpha:1.0];
       WeakRetained = objc_loadWeakRetained(&self->_cellForSearchTransition);
-      v7 = [WeakRetained superview];
+      superview = [WeakRetained superview];
       collectionView = self->_collectionView;
 
-      if (v7 == collectionView)
+      if (superview == collectionView)
       {
         v9 = self->_collectionView;
         v10 = objc_loadWeakRetained(&self->_cellForSearchTransition);
@@ -684,9 +684,9 @@ LABEL_11:
         [(_UIKeyShortcutHUDToolbarViewController *)self performActionForSelectingCellAtIndexPath:v11];
       }
 
-      v13 = [(_UIKeyShortcutHUDToolbarViewController *)self collectionView];
-      v12 = [v13 collectionViewLayout];
-      [v12 invalidateLayout];
+      collectionView = [(_UIKeyShortcutHUDToolbarViewController *)self collectionView];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
   }
 }
@@ -710,55 +710,55 @@ LABEL_11:
   }
 }
 
-- (void)searchBarDidPressCancelButton:(id)a3
+- (void)searchBarDidPressCancelButton:(id)button
 {
-  v4 = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
-  [v4 toolbarViewControllerDidPressCancelSearchButton:self];
+  delegate = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
+  [delegate toolbarViewControllerDidPressCancelSearchButton:self];
 }
 
-- (void)searchBar:(id)a3 didUpdateSearchText:(id)a4
+- (void)searchBar:(id)bar didUpdateSearchText:(id)text
 {
-  v5 = a4;
-  v6 = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
-  [v6 toolbarViewController:self didUpdateSearchText:v5];
+  textCopy = text;
+  delegate = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
+  [delegate toolbarViewController:self didUpdateSearchText:textCopy];
 }
 
-- (void)searchButtonDidPress:(id)a3
+- (void)searchButtonDidPress:(id)press
 {
-  v4 = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
-  [v4 toolbarViewControllerDidPressSearchButton:self];
+  delegate = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
+  [delegate toolbarViewControllerDidPressSearchButton:self];
 }
 
-- (void)hudWillBecomeHidden:(BOOL)a3
+- (void)hudWillBecomeHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
-    v4 = [(_UIKeyShortcutHUDToolbarViewController *)self visualEffectView];
-    v3 = [v4 contentView];
-    [v3 _setSafeAreaInsetsFrozen:1];
+    visualEffectView = [(_UIKeyShortcutHUDToolbarViewController *)self visualEffectView];
+    contentView = [visualEffectView contentView];
+    [contentView _setSafeAreaInsetsFrozen:1];
   }
 }
 
-- (void)selectCategory:(id)a3 withCategoryIndex:(int64_t)a4
+- (void)selectCategory:(id)category withCategoryIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_metrics);
-  v7 = [WeakRetained toolbarStylesCategoriesAsPageControl];
+  toolbarStylesCategoriesAsPageControl = [WeakRetained toolbarStylesCategoriesAsPageControl];
 
-  if (v7)
+  if (toolbarStylesCategoriesAsPageControl)
   {
     if ([(UIPageControl *)self->_categoriesPageControl interactionState]== UIPageControlInteractionStateNone)
     {
       categoriesPageControl = self->_categoriesPageControl;
 
-      [(UIPageControl *)categoriesPageControl setCurrentPage:a4];
+      [(UIPageControl *)categoriesPageControl setCurrentPage:index];
     }
   }
 
   else
   {
-    v23 = [MEMORY[0x1E696AC88] indexPathForItem:a4 inSection:0];
-    v8 = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
-    [v8 client:self setCategoryVisibleForCellAtIndexPath:v23];
+    v23 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+    collectionViewManager = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
+    [collectionViewManager client:self setCategoryVisibleForCellAtIndexPath:v23];
 
     v9 = [(UICollectionView *)self->_collectionView layoutAttributesForItemAtIndexPath:v23];
     [v9 frame];
@@ -778,43 +778,43 @@ LABEL_11:
     v26.size.height = v17;
     v27 = CGRectInset(v26, v18, 0.0);
     [(UIScrollView *)self->_collectionView scrollRectToVisible:1 animated:v27.origin.x, v27.origin.y, v27.size.width, v27.size.height];
-    v19 = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
-    v20 = [v19 count];
+    indexPathsForSelectedItems = [(UICollectionView *)self->_collectionView indexPathsForSelectedItems];
+    v20 = [indexPathsForSelectedItems count];
 
     if (v20)
     {
-      v21 = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
-      [v21 client:self selectCellAtIndexPath:v23];
+      collectionViewManager2 = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
+      [collectionViewManager2 client:self selectCellAtIndexPath:v23];
     }
   }
 }
 
-- (void)categoriesPageControlCurrentPageChanged:(id)a3
+- (void)categoriesPageControlCurrentPageChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(_UIKeyShortcutHUDToolbarViewController *)self menu];
-  v6 = [v5 children];
-  v10 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "currentPage")}];
+  changedCopy = changed;
+  menu = [(_UIKeyShortcutHUDToolbarViewController *)self menu];
+  children = [menu children];
+  v10 = [children objectAtIndexedSubscript:{objc_msgSend(changedCopy, "currentPage")}];
 
-  v7 = [v4 interactionState] == 1;
-  v8 = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
-  v9 = [v4 currentPage];
+  v7 = [changedCopy interactionState] == 1;
+  delegate = [(_UIKeyShortcutHUDToolbarViewController *)self delegate];
+  currentPage = [changedCopy currentPage];
 
-  [v8 toolbarViewController:self didSelectCategory:v10 categoryIndex:v9 animated:v7];
+  [delegate toolbarViewController:self didSelectCategory:v10 categoryIndex:currentPage animated:v7];
 }
 
-- (void)flashCategoryAtIndex:(unint64_t)a3 completionHandler:(id)a4
+- (void)flashCategoryAtIndex:(unint64_t)index completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
-  v8 = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
+  collectionViewManager = [(_UIKeyShortcutHUDToolbarViewController *)self collectionViewManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81___UIKeyShortcutHUDToolbarViewController_flashCategoryAtIndex_completionHandler___block_invoke;
   v10[3] = &unk_1E70F3608;
-  v11 = v6;
-  v9 = v6;
-  [v8 client:self flashCellIfPossibleAtIndexPath:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [collectionViewManager client:self flashCellIfPossibleAtIndexPath:v7 completionHandler:v10];
 }
 
 - (_UIKeyShortcutHUDToolbarViewControllerDelegate)delegate

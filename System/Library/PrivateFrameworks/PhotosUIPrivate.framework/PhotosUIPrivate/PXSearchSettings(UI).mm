@@ -11,12 +11,12 @@
   {
     if (a5)
     {
-      if (a1 < 1.0)
+      if (self < 1.0)
       {
-        a1 = 1.0;
+        self = 1.0;
       }
 
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"Indexing has been paused for %.0f minute(s).\nRemaining objects count: %ld", *&a1, a4];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"Indexing has been paused for %.0f minute(s).\nRemaining objects count: %ld", *&self, a4];
     }
 
     else
@@ -78,16 +78,16 @@
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:3];
   v49 = [v48 sectionWithRows:v20 title:@"Batched Search Results"];
 
-  v21 = [MEMORY[0x1E69BE670] systemPhotoLibrary];
-  v22 = [v21 assetsdClient];
+  systemPhotoLibrary = [MEMORY[0x1E69BE670] systemPhotoLibrary];
+  assetsdClient = [systemPhotoLibrary assetsdClient];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__PXSearchSettings_UI__settingsControllerModule__block_invoke;
   aBlock[3] = &unk_1E7B7E9F8;
-  v23 = v22;
+  v23 = assetsdClient;
   v59 = v23;
-  v60 = a1;
+  selfCopy = self;
   v24 = _Block_copy(aBlock);
   v25 = MEMORY[0x1E69C65E8];
   v26 = MEMORY[0x1E69C6658];
@@ -119,12 +119,12 @@
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
   v38 = [v36 sectionWithRows:v37 title:@"Index"];
 
-  v39 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v40 addObject:v51];
   [v40 addObject:v38];
   [v40 addObject:v49];
-  [v40 addObject:v39];
+  [v40 addObject:px_restoreDefaultsSection];
   v41 = [MEMORY[0x1E69C6638] moduleWithTitle:@"Search" contents:v40];
 
   return v41;

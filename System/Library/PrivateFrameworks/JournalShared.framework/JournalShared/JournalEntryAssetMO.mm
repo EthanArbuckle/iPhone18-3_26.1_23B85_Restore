@@ -1,21 +1,21 @@
 @interface JournalEntryAssetMO
-- (JournalEntryAssetMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (JournalEntryAssetMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (NSData)assetMetaData;
-- (void)setAssetMetaData:(id)a3;
+- (void)setAssetMetaData:(id)data;
 @end
 
 @implementation JournalEntryAssetMO
 
-- (JournalEntryAssetMO)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (JournalEntryAssetMO)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for JournalEntryAssetMO();
-  return [(JournalEntryAssetMO *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(JournalEntryAssetMO *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (NSData)assetMetaData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = JournalEntryAssetMO.assetMetaData.getter();
   v5 = v4;
 
@@ -34,25 +34,25 @@
   return v6;
 }
 
-- (void)setAssetMetaData:(id)a3
+- (void)setAssetMetaData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_25574EF90();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_25574EF90();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_2556A1FB0(v3, v7);
-  sub_2556A15B8(v3, v7);
+  sub_2556A1FB0(dataCopy, v7);
+  sub_2556A15B8(dataCopy, v7);
 }
 
 @end

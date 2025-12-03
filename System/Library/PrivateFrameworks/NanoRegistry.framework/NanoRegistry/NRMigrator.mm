@@ -1,18 +1,18 @@
 @interface NRMigrator
-+ (id)migrationDataPreRestoreForConsentedDevices:(id)a3;
++ (id)migrationDataPreRestoreForConsentedDevices:(id)devices;
 + (id)sharedMigrator;
-+ (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)a3;
++ (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)devices;
 - (BOOL)migrationIsAvailable;
 - (NSArray)devicesExpectedToBeMigratableAfterRestore;
 - (NSArray)migratableDevices;
 - (NSArray)migratableDevicesRequiringConsent;
 - (id)UDIDUUID;
-- (id)devicesFromMigrationConsentRequestData:(id)a3;
+- (id)devicesFromMigrationConsentRequestData:(id)data;
 - (id)lastMigrationRequestPhoneName;
 - (id)migrationConsentRequestData;
-- (void)beginMigrationWithDevice:(id)a3 passcode:(id)a4 withBlock:(id)a5;
-- (void)beginMigrationWithDevice:(id)a3 withCompletion:(id)a4;
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4;
+- (void)beginMigrationWithDevice:(id)device passcode:(id)passcode withBlock:(id)block;
+- (void)beginMigrationWithDevice:(id)device withCompletion:(id)completion;
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion;
 @end
 
 @implementation NRMigrator
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __28__NRMigrator_sharedMigrator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6F0A58 != -1)
   {
     dispatch_once(&qword_1ED6F0A58, block);
@@ -45,13 +45,13 @@ uint64_t __28__NRMigrator_sharedMigrator__block_invoke(uint64_t a1)
 
 - (id)UDIDUUID
 {
-  if (a1)
+  if (self)
   {
     v1 = MGCopyAnswer();
     v2 = [v1 dataUsingEncoding:4];
-    v3 = [v2 NRSHA256];
+    nRSHA256 = [v2 NRSHA256];
 
-    v4 = [v3 subdataWithRange:{0, 16}];
+    v4 = [nRSHA256 subdataWithRange:{0, 16}];
   }
 
   else
@@ -62,10 +62,10 @@ uint64_t __28__NRMigrator_sharedMigrator__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)devicesFromMigrationConsentRequestData:(id)a3
+- (id)devicesFromMigrationConsentRequestData:(id)data
 {
   v61 = *MEMORY[0x1E69E9840];
-  v43 = a3;
+  dataCopy = data;
   v4 = nr_framework_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -85,10 +85,10 @@ uint64_t __28__NRMigrator_sharedMigrator__block_invoke(uint64_t a1)
   v56 = __Block_byref_object_copy__2;
   v57 = __Block_byref_object_dispose__2;
   v58 = 0;
-  v7 = v43;
-  if (v43)
+  v7 = dataCopy;
+  if (dataCopy)
   {
-    v42 = [[NRPBCompressedData alloc] initWithData:v43];
+    v42 = [[NRPBCompressedData alloc] initWithData:dataCopy];
     if ([(NRPBCompressedData *)v42 compressed])
     {
       v8 = malloc_type_malloc(0x2000uLL, 0x100004077774924uLL);
@@ -100,20 +100,20 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v9 = [(NRPBCompressedData *)v42 possiblyCompressedData];
-      v10 = v9;
-      v11 = [v9 bytes];
-      v12 = [(NRPBCompressedData *)v42 possiblyCompressedData];
-      v13 = compression_decode_buffer(v8, 0x2000uLL, v11, [v12 length], 0, COMPRESSION_ZLIB);
+      possiblyCompressedData = [(NRPBCompressedData *)v42 possiblyCompressedData];
+      v10 = possiblyCompressedData;
+      bytes = [possiblyCompressedData bytes];
+      possiblyCompressedData2 = [(NRPBCompressedData *)v42 possiblyCompressedData];
+      v13 = compression_decode_buffer(v8, 0x2000uLL, bytes, [possiblyCompressedData2 length], 0, COMPRESSION_ZLIB);
 
       if (v13)
       {
-        v41 = [MEMORY[0x1E695DEF0] dataWithBytes:v8 length:v13];
+        possiblyCompressedData3 = [MEMORY[0x1E695DEF0] dataWithBytes:v8 length:v13];
       }
 
       else
       {
-        v41 = 0;
+        possiblyCompressedData3 = 0;
       }
 
       free(v8);
@@ -121,12 +121,12 @@ LABEL_32:
 
     else
     {
-      v41 = [(NRPBCompressedData *)v42 possiblyCompressedData];
+      possiblyCompressedData3 = [(NRPBCompressedData *)v42 possiblyCompressedData];
     }
 
-    if (v41)
+    if (possiblyCompressedData3)
     {
-      v40 = [[NRPBMigrationDevices alloc] initWithData:v41];
+      v40 = [[NRPBMigrationDevices alloc] initWithData:possiblyCompressedData3];
       if (!-[NRPBMigrationDevices hasPhoneUDIDHash](v40, "hasPhoneUDIDHash") || (-[NRPBMigrationDevices phoneUDIDHash](v40, "phoneUDIDHash"), v14 = objc_claimAutoreleasedReturnValue(), -[NRMigrator UDIDUUID](self), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v14 isEqual:v15], v15, v14, (v16 & 1) == 0))
       {
         v44 = objc_opt_new();
@@ -134,12 +134,12 @@ LABEL_32:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v17 = [(NRPBMigrationDevices *)v40 devices];
-        v18 = [v17 countByEnumeratingWithState:&v49 objects:v60 count:16];
+        devices = [(NRPBMigrationDevices *)v40 devices];
+        v18 = [devices countByEnumeratingWithState:&v49 objects:v60 count:16];
         if (v18)
         {
           v19 = *v50;
-          obj = v17;
+          obj = devices;
           do
           {
             for (i = 0; i != v18; ++i)
@@ -153,11 +153,11 @@ LABEL_32:
               v22 = [v21 iD];
               if (v22)
               {
-                v23 = [v21 name];
-                if (v23)
+                name = [v21 name];
+                if (name)
                 {
-                  v24 = [v21 advertisedName];
-                  v25 = v24 == 0;
+                  advertisedName = [v21 advertisedName];
+                  v25 = advertisedName == 0;
 
                   if (!v25)
                   {
@@ -167,14 +167,14 @@ LABEL_32:
                     [v26 getBytes:v59 length:16];
 
                     v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v59];
-                    v28 = [v21 name];
-                    v29 = [v21 advertisedName];
+                    name2 = [v21 name];
+                    advertisedName2 = [v21 advertisedName];
                     v30 = objc_opt_new();
                     v31 = [[NRMutableDeviceProperty alloc] initWithValue:v27];
                     [v30 setObject:v31 forKeyedSubscript:@"pairingID"];
-                    v32 = [[NRMutableDeviceProperty alloc] initWithValue:v28];
+                    v32 = [[NRMutableDeviceProperty alloc] initWithValue:name2];
                     [v30 setObject:v32 forKeyedSubscript:@"name"];
-                    v33 = [[NRMutableDeviceProperty alloc] initWithValue:v29];
+                    v33 = [[NRMutableDeviceProperty alloc] initWithValue:advertisedName2];
                     [v30 setObject:v33 forKeyedSubscript:@"advertisedName"];
                     [v44 setObject:v30 forKeyedSubscript:v27];
                   }
@@ -186,7 +186,7 @@ LABEL_32:
               }
             }
 
-            v17 = obj;
+            devices = obj;
             v18 = [obj countByEnumeratingWithState:&v49 objects:v60 count:16];
           }
 
@@ -261,9 +261,9 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
     }
   }
 
-  v5 = [(NRMigrator *)self devicesExpectedToBeMigratableAfterRestore];
-  v6 = v5;
-  if (self && (v86 = 0u, v87 = 0u, v84 = 0u, v85 = 0u, (v7 = [v5 countByEnumeratingWithState:&v84 objects:buf count:16]) != 0))
+  devicesExpectedToBeMigratableAfterRestore = [(NRMigrator *)self devicesExpectedToBeMigratableAfterRestore];
+  v6 = devicesExpectedToBeMigratableAfterRestore;
+  if (self && (v86 = 0u, v87 = 0u, v84 = 0u, v85 = 0u, (v7 = [devicesExpectedToBeMigratableAfterRestore countByEnumeratingWithState:&v84 objects:buf count:16]) != 0))
   {
     v8 = v7;
     v9 = 0;
@@ -349,8 +349,8 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
     while (v8);
     if (v9)
     {
-      v27 = [(NRMigrator *)self UDIDUUID];
-      [v9 setPhoneUDIDHash:v27];
+      uDIDUUID = [(NRMigrator *)self UDIDUUID];
+      [v9 setPhoneUDIDHash:uDIDUUID];
     }
   }
 
@@ -361,7 +361,7 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
 
   if (!v9)
   {
-    v32 = 0;
+    data5 = 0;
     goto LABEL_73;
   }
 
@@ -384,8 +384,8 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
         v35 = nr_framework_log();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [v31 data];
-          v37 = [v36 length];
+          data = [v31 data];
+          v37 = [data length];
           *buf = v78;
           v91 = v37;
           _os_log_impl(&dword_1E0ADF000, v35, OS_LOG_TYPE_DEFAULT, "%d bytes of protobuf created", buf, 8u);
@@ -393,15 +393,15 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
       }
 
       v38 = objc_opt_new();
-      v39 = [v31 data];
-      v40 = [v39 bytes];
+      data2 = [v31 data];
+      bytes = [data2 bytes];
 
-      v41 = [v31 data];
-      v42 = [v41 length];
+      data3 = [v31 data];
+      v42 = [data3 length];
 
       v43 = malloc_type_malloc(v42, 0x100004077774924uLL);
       v44 = v43;
-      if (v43 && (v45 = compression_encode_buffer(v43, v42, v40, v42, 0, COMPRESSION_ZLIB)) != 0)
+      if (v43 && (v45 = compression_encode_buffer(v43, v42, bytes, v42, 0, COMPRESSION_ZLIB)) != 0)
       {
         v46 = v45;
         v47 = nr_framework_log();
@@ -439,8 +439,8 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
         }
 
         [v38 setCompressed:{0, v78}];
-        v54 = [v31 data];
-        [v38 setPossiblyCompressedData:v54];
+        data4 = [v31 data];
+        [v38 setPossiblyCompressedData:data4];
 
         if (!v44)
         {
@@ -450,20 +450,20 @@ uint64_t __53__NRMigrator_devicesFromMigrationConsentRequestData___block_invoke_
 
       free(v44);
 LABEL_53:
-      v32 = [v38 data];
+      data5 = [v38 data];
 
       goto LABEL_54;
     }
 
-    v32 = 0;
+    data5 = 0;
 LABEL_54:
 
-    if ([v32 length] < 0x201)
+    if ([data5 length] < 0x201)
     {
       break;
     }
 
-    v80 = v32;
+    v80 = data5;
     v55 = v82;
     if (!self)
     {
@@ -474,8 +474,8 @@ LABEL_54:
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v56 = [v31 devices];
-    v57 = [v56 countByEnumeratingWithState:&v84 objects:buf count:16];
+    devices = [v31 devices];
+    v57 = [devices countByEnumeratingWithState:&v84 objects:buf count:16];
     if (!v57)
     {
       goto LABEL_69;
@@ -490,13 +490,13 @@ LABEL_54:
       {
         if (*v85 != v59)
         {
-          objc_enumerationMutation(v56);
+          objc_enumerationMutation(devices);
         }
 
         v61 = *(*(&v84 + 1) + 8 * v60);
-        v62 = [v61 name];
-        v63 = [v62 length];
-        v64 = v62;
+        name = [v61 name];
+        v63 = [name length];
+        v64 = name;
         if (v63 < 0x15)
         {
           goto LABEL_64;
@@ -507,7 +507,7 @@ LABEL_54:
         if (v66)
         {
           v67 = v66;
-          [v62 getCharacters:v66 range:{0, v65}];
+          [name getCharacters:v66 range:{0, v65}];
           v64 = [MEMORY[0x1E696AEC0] stringWithCharacters:v67 length:v65];
 
           free(v67);
@@ -518,7 +518,7 @@ LABEL_64:
         }
 
         v69 = 0;
-        v68 = v62;
+        v68 = name;
 LABEL_65:
 
         [v61 setName:v69];
@@ -526,7 +526,7 @@ LABEL_65:
       }
 
       while (v58 != v60);
-      v70 = [v56 countByEnumeratingWithState:&v84 objects:buf count:16];
+      v70 = [devices countByEnumeratingWithState:&v84 objects:buf count:16];
       v58 = v70;
     }
 
@@ -537,13 +537,13 @@ LABEL_69:
 LABEL_70:
     v30 = v55 + 1;
     v9 = v79;
-    v32 = v80;
+    data5 = v80;
     v29 = v80;
   }
 
   while (v30 != 10);
 LABEL_73:
-  if ([v32 length] > 0x200)
+  if ([data5 length] > 0x200)
   {
     v72 = nr_framework_log();
     v73 = os_log_type_enabled(v72, OS_LOG_TYPE_ERROR);
@@ -553,7 +553,7 @@ LABEL_73:
       v74 = nr_framework_log();
       if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
       {
-        v77 = [v32 length];
+        v77 = [data5 length];
         *buf = 67109376;
         v91 = 512;
         v92 = 2048;
@@ -567,7 +567,7 @@ LABEL_73:
 
   else
   {
-    v71 = v32;
+    v71 = data5;
   }
 
   v75 = *MEMORY[0x1E69E9840];
@@ -577,8 +577,8 @@ LABEL_73:
 
 - (BOOL)migrationIsAvailable
 {
-  v2 = [(NRMigrator *)self migratableDevices];
-  v3 = v2 != 0;
+  migratableDevices = [(NRMigrator *)self migratableDevices];
+  v3 = migratableDevices != 0;
 
   return v3;
 }
@@ -625,14 +625,14 @@ uint64_t __55__NRMigrator_devicesExpectedToBeMigratableAfterRestore__block_invok
 
   v5 = [MEMORY[0x1E695DFA8] setWithArray:v4];
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(NRMigrator *)self migratableDevices];
-  v8 = [v6 setWithArray:v7];
+  migratableDevices = [(NRMigrator *)self migratableDevices];
+  v8 = [v6 setWithArray:migratableDevices];
 
   [v5 minusSet:v8];
-  v9 = [v5 allObjects];
-  if ([v9 count])
+  allObjects = [v5 allObjects];
+  if ([allObjects count])
   {
-    v10 = v9;
+    v10 = allObjects;
   }
 
   else
@@ -725,10 +725,10 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)migrationDataPreRestoreForConsentedDevices:(id)a3
++ (id)migrationDataPreRestoreForConsentedDevices:(id)devices
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = nr_framework_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -738,7 +738,7 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v33 = [v3 count];
+      v33 = [devicesCopy count];
       _os_log_impl(&dword_1E0ADF000, v6, OS_LOG_TYPE_DEFAULT, "Generating pre-restore migration data blob for (%lu) devices", buf, 0xCu);
     }
   }
@@ -748,7 +748,7 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v3;
+  v8 = devicesCopy;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v9)
   {
@@ -763,10 +763,10 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * i) pairingID];
-        v14 = [v13 UUIDString];
+        pairingID = [*(*(&v28 + 1) + 8 * i) pairingID];
+        uUIDString = [pairingID UUIDString];
 
-        [v7 addObject:v14];
+        [v7 addObject:uUIDString];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -824,10 +824,10 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
   return v21;
 }
 
-+ (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)a3
++ (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)devices
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = nr_framework_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -837,15 +837,15 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v51 = [v3 length];
+      v51 = [devicesCopy length];
       _os_log_impl(&dword_1E0ADF000, v6, OS_LOG_TYPE_DEFAULT, "Ingesting post-restore migration data blob of length (%lu bytes)", buf, 0xCu);
     }
   }
 
-  if ([v3 length])
+  if ([devicesCopy length])
   {
     v48 = 0;
-    v7 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:&v48];
+    v7 = [MEMORY[0x1E696AE40] propertyListWithData:devicesCopy options:0 format:0 error:&v48];
     v8 = v48;
     if (v8)
     {
@@ -866,7 +866,7 @@ BOOL __31__NRMigrator_migratableDevices__block_invoke(uint64_t a1, void *a2)
       *buf = 138412546;
       v51 = v8;
       v52 = 2112;
-      v53 = v3;
+      v53 = devicesCopy;
       v34 = "Failed to unserialize with error (%@) pre-restore data : (%@)";
       v35 = v11;
       v36 = 22;
@@ -1074,37 +1074,37 @@ void __64__NRMigrator_ingestPostRestoreMigrationDataForConsentedDevices___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginMigrationWithDevice:(id)a3 passcode:(id)a4 withBlock:(id)a5
+- (void)beginMigrationWithDevice:(id)device passcode:(id)passcode withBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  blockCopy = block;
+  passcodeCopy = passcode;
+  deviceCopy = device;
   v10 = +[NRPairedDeviceRegistry sharedInstance];
-  [v10 beginMigrationWithDevice:v9 passcode:v8 withBlock:v7];
+  [v10 beginMigrationWithDevice:deviceCopy passcode:passcodeCopy withBlock:blockCopy];
 }
 
-- (void)beginMigrationWithDevice:(id)a3 withCompletion:(id)a4
+- (void)beginMigrationWithDevice:(id)device withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
   v7 = +[NRPairedDeviceRegistry sharedInstance];
-  [v7 beginMigrationWithDevice:v6 withCompletion:v5];
+  [v7 beginMigrationWithDevice:deviceCopy withCompletion:completionCopy];
 }
 
 - (id)lastMigrationRequestPhoneName
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 lastMigrationRequestPhoneName];
+  lastMigrationRequestPhoneName = [v2 lastMigrationRequestPhoneName];
 
-  return v3;
+  return lastMigrationRequestPhoneName;
 }
 
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
   v7 = +[NRPairedDeviceRegistry sharedInstance];
-  [v7 isPhoneReadyToMigrateDevice:v6 withCompletion:v5];
+  [v7 isPhoneReadyToMigrateDevice:deviceCopy withCompletion:completionCopy];
 }
 
 @end

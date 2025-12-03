@@ -1,9 +1,9 @@
 @interface INCancelRideIntent
 + (id)intentDescription;
-- (INCancelRideIntent)initWithCoder:(id)a3;
+- (INCancelRideIntent)initWithCoder:(id)coder;
 - (INCancelRideIntent)initWithRideIdentifier:(NSString *)rideIdentifier;
 - (id)_dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation INCancelRideIntent
@@ -13,13 +13,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"rideIdentifier";
   rideIdentifier = self->_rideIdentifier;
-  v3 = rideIdentifier;
+  null = rideIdentifier;
   if (!rideIdentifier)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!rideIdentifier)
   {
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (INCancelRideIntent)initWithCoder:(id)a3
+- (INCancelRideIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rideIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rideIdentifier"];
 
   if (v5)
   {
@@ -50,9 +50,9 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   rideIdentifier = self->_rideIdentifier;
 
   return [v4 initWithRideIdentifier:rideIdentifier];

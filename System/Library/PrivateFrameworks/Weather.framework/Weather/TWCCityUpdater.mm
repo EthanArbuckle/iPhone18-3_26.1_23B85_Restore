@@ -1,13 +1,13 @@
 @interface TWCCityUpdater
 + (id)sharedCityUpdater;
-- (BOOL)isUpdatingCity:(id)a3;
+- (BOOL)isUpdatingCity:(id)city;
 - (NSString)trackingParameter;
 - (TWCCityUpdater)init;
 - (WeatherUpdaterDelegate)delegate;
 - (void)cancel;
-- (void)setTrackingParameter:(id)a3;
-- (void)updateWeatherForCities:(id)a3 withCompletionHandler:(id)a4;
-- (void)updateWeatherForCity:(id)a3;
+- (void)setTrackingParameter:(id)parameter;
+- (void)updateWeatherForCities:(id)cities withCompletionHandler:(id)handler;
+- (void)updateWeatherForCity:(id)city;
 @end
 
 @implementation TWCCityUpdater
@@ -47,49 +47,49 @@ uint64_t __35__TWCCityUpdater_sharedCityUpdater__block_invoke()
   return v2;
 }
 
-- (BOOL)isUpdatingCity:(id)a3
+- (BOOL)isUpdatingCity:(id)city
 {
-  v4 = a3;
-  v5 = [(TWCCityUpdater *)self forecastModelController];
-  v6 = [v5 isCityBeingUpdated:v4];
+  cityCopy = city;
+  forecastModelController = [(TWCCityUpdater *)self forecastModelController];
+  v6 = [forecastModelController isCityBeingUpdated:cityCopy];
 
   return v6;
 }
 
 - (void)cancel
 {
-  v2 = [(TWCCityUpdater *)self forecastModelController];
-  [v2 cancelAllFetchRequests];
+  forecastModelController = [(TWCCityUpdater *)self forecastModelController];
+  [forecastModelController cancelAllFetchRequests];
 }
 
 - (NSString)trackingParameter
 {
-  v2 = [(TWCCityUpdater *)self forecastModelController];
-  v3 = [v2 trackingParameter];
+  forecastModelController = [(TWCCityUpdater *)self forecastModelController];
+  trackingParameter = [forecastModelController trackingParameter];
 
-  return v3;
+  return trackingParameter;
 }
 
-- (void)setTrackingParameter:(id)a3
+- (void)setTrackingParameter:(id)parameter
 {
-  v4 = a3;
-  v5 = [(TWCCityUpdater *)self forecastModelController];
-  [v5 setTrackingParameter:v4];
+  parameterCopy = parameter;
+  forecastModelController = [(TWCCityUpdater *)self forecastModelController];
+  [forecastModelController setTrackingParameter:parameterCopy];
 }
 
-- (void)updateWeatherForCity:(id)a3
+- (void)updateWeatherForCity:(id)city
 {
-  v4 = a3;
+  cityCopy = city;
   objc_initWeak(&location, self);
-  v5 = [(TWCCityUpdater *)self forecastModelController];
+  forecastModelController = [(TWCCityUpdater *)self forecastModelController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__TWCCityUpdater_updateWeatherForCity___block_invoke;
   v7[3] = &unk_279E68818;
-  v6 = v4;
+  v6 = cityCopy;
   v8 = v6;
   objc_copyWeak(&v9, &location);
-  [v5 fetchForecastForCity:v6 completion:v7];
+  [forecastModelController fetchForecastForCity:v6 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -139,25 +139,25 @@ void __39__TWCCityUpdater_updateWeatherForCity___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)updateWeatherForCities:(id)a3 withCompletionHandler:(id)a4
+- (void)updateWeatherForCities:(id)cities withCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  citiesCopy = cities;
+  handlerCopy = handler;
   v8 = WALogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v30 = "[TWCCityUpdater updateWeatherForCities:withCompletionHandler:]";
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
-    v34 = v6;
+    v34 = citiesCopy;
     _os_log_impl(&dword_272ACF000, v8, OS_LOG_TYPE_DEFAULT, "%s self=%@, updating weather for cities: %@ in city updater", buf, 0x20u);
   }
 
-  v9 = [v6 count];
-  if (v7 || v9 > 1)
+  v9 = [citiesCopy count];
+  if (handlerCopy || v9 > 1)
   {
     v11 = dispatch_group_create();
     v27[0] = MEMORY[0x277D85DD0];
@@ -166,12 +166,12 @@ void __39__TWCCityUpdater_updateWeatherForCity___block_invoke_2(uint64_t a1)
     v27[3] = &unk_279E68840;
     v12 = v11;
     v28 = v12;
-    [v6 enumerateObjectsUsingBlock:v27];
-    v13 = [(TWCCityUpdater *)self delegate];
-    objc_initWeak(buf, v13);
+    [citiesCopy enumerateObjectsUsingBlock:v27];
+    delegate = [(TWCCityUpdater *)self delegate];
+    objc_initWeak(buf, delegate);
 
     v14 = objc_opt_new();
-    v15 = [(TWCCityUpdater *)self forecastModelController];
+    forecastModelController = [(TWCCityUpdater *)self forecastModelController];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __63__TWCCityUpdater_updateWeatherForCities_withCompletionHandler___block_invoke_2;
@@ -179,19 +179,19 @@ void __39__TWCCityUpdater_updateWeatherForCity___block_invoke_2(uint64_t a1)
     objc_copyWeak(&v26, buf);
     v16 = v14;
     v24 = v16;
-    v10 = v12;
-    v25 = v10;
-    [v15 fetchForecastForCities:v6 completion:v23];
+    firstObject = v12;
+    v25 = firstObject;
+    [forecastModelController fetchForecastForCities:citiesCopy completion:v23];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__TWCCityUpdater_updateWeatherForCities_withCompletionHandler___block_invoke_6;
     block[3] = &unk_279E688B8;
-    v22 = v7;
+    v22 = handlerCopy;
     v20 = v16;
-    v21 = v6;
+    v21 = citiesCopy;
     v17 = v16;
-    dispatch_group_notify(v10, MEMORY[0x277D85CD0], block);
+    dispatch_group_notify(firstObject, MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -199,8 +199,8 @@ void __39__TWCCityUpdater_updateWeatherForCity___block_invoke_2(uint64_t a1)
 
   else
   {
-    v10 = [v6 firstObject];
-    [(TWCCityUpdater *)self updateWeatherForCity:v10];
+    firstObject = [citiesCopy firstObject];
+    [(TWCCityUpdater *)self updateWeatherForCity:firstObject];
   }
 
   v18 = *MEMORY[0x277D85DE8];

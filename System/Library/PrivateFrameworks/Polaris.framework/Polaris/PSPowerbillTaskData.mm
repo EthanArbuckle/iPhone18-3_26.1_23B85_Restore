@@ -1,17 +1,17 @@
 @interface PSPowerbillTaskData
-- (void)addToCounts:(const thsc_time_cpi *)a3;
+- (void)addToCounts:(const thsc_time_cpi *)counts;
 @end
 
 @implementation PSPowerbillTaskData
 
-- (void)addToCounts:(const thsc_time_cpi *)a3
+- (void)addToCounts:(const thsc_time_cpi *)counts
 {
   v3 = 0;
   v4 = 1;
   do
   {
     v5 = v4;
-    v6 = &a3[v3];
+    v6 = &counts[v3];
     v7 = &self->_counts[v3];
     v8 = *&v7->ttci_instructions;
     *&v7->ttci_user_time_mach = vaddq_s64(*&v7->ttci_user_time_mach, v6[1]);

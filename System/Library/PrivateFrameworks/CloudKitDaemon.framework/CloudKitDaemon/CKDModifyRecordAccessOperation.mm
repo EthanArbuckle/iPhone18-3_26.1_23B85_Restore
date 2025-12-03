@@ -1,33 +1,33 @@
 @interface CKDModifyRecordAccessOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDModifyRecordAccessOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)a3 error:(id *)a4;
+- (CKDModifyRecordAccessOperation)initWithOperationInfo:(id)info container:(id)container;
+- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)record error:(id *)error;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
 - (void)_fetchRecords;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleRecordFetched:(id)a3 recordID:(id)a4 error:(id)a5;
-- (void)_handleRecordSaved:(id)a3 error:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleRecordFetched:(id)fetched recordID:(id)d error:(id)error;
+- (void)_handleRecordSaved:(id)saved error:(id)error;
 - (void)_saveRecords;
 - (void)main;
 @end
 
 @implementation CKDModifyRecordAccessOperation
 
-- (CKDModifyRecordAccessOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDModifyRecordAccessOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v21.receiver = self;
   v21.super_class = CKDModifyRecordAccessOperation;
-  v9 = [(CKDDatabaseOperation *)&v21 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v21 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordIDsToGrant(v6, v7, v8);
+    v10 = objc_msgSend_recordIDsToGrant(infoCopy, v7, v8);
     recordIDsToGrant = v9->_recordIDsToGrant;
     v9->_recordIDsToGrant = v10;
 
-    v14 = objc_msgSend_recordIDsToRevoke(v6, v12, v13);
+    v14 = objc_msgSend_recordIDsToRevoke(infoCopy, v12, v13);
     recordIDsToRevoke = v9->_recordIDsToRevoke;
     v9->_recordIDsToRevoke = v14;
 
@@ -198,14 +198,14 @@ LABEL_8:
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Fetching Records";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Saving Records";
   }
@@ -214,7 +214,7 @@ LABEL_8:
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDModifyRecordAccessOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -222,13 +222,13 @@ LABEL_8:
   return v5;
 }
 
-- (void)_handleRecordSaved:(id)a3 error:(id)a4
+- (void)_handleRecordSaved:(id)saved error:(id)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  savedCopy = saved;
+  errorCopy = error;
   v10 = objc_msgSend_recordIDsToGrant(self, v8, v9);
-  v12 = objc_msgSend_containsObject_(v10, v11, v6);
+  v12 = objc_msgSend_containsObject_(v10, v11, savedCopy);
 
   v13 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
@@ -250,17 +250,17 @@ LABEL_8:
     *buf = 138544130;
     v68 = v51;
     v69 = 2112;
-    v70 = v6;
-    if (!v7)
+    v70 = savedCopy;
+    if (!errorCopy)
     {
       v52 = &stru_28385ED00;
     }
 
     v71 = 2114;
     v72 = v52;
-    if (v7)
+    if (errorCopy)
     {
-      v53 = v7;
+      v53 = errorCopy;
     }
 
     else
@@ -273,7 +273,7 @@ LABEL_8:
     _os_log_debug_impl(&dword_22506F000, v15, OS_LOG_TYPE_DEBUG, "Record for access %{public}@ (%@) was saved%{public}@%@", buf, 0x2Au);
   }
 
-  if (objc_msgSend_code(v7, v16, v17) == 2037 && (v20 = objc_msgSend_numSaveAttempts(self, v18, v19), objc_msgSend_sharedOptions(MEMORY[0x277CBC1D8], v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend_PCSRetryCount(v23, v24, v25), v23, v20 <= v26))
+  if (objc_msgSend_code(errorCopy, v16, v17) == 2037 && (v20 = objc_msgSend_numSaveAttempts(self, v18, v19), objc_msgSend_sharedOptions(MEMORY[0x277CBC1D8], v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend_PCSRetryCount(v23, v24, v25), v23, v20 <= v26))
   {
     if (*v13 != -1)
     {
@@ -292,7 +292,7 @@ LABEL_8:
       *buf = 138543618;
       v68 = v54;
       v69 = 2112;
-      v70 = v6;
+      v70 = savedCopy;
       _os_log_debug_impl(&dword_22506F000, v49, OS_LOG_TYPE_DEBUG, "Oplock failure while trying to %{public}@ access on record %@. Retrying.", buf, 0x16u);
     }
   }
@@ -302,7 +302,7 @@ LABEL_8:
     if (v12)
     {
       v27 = objc_msgSend_recordsToSaveByID(self, v18, v19);
-      v29 = objc_msgSend_objectForKeyedSubscript_(v27, v28, v6);
+      v29 = objc_msgSend_objectForKeyedSubscript_(v27, v28, savedCopy);
 
       v32 = objc_msgSend_encryptedValues(v29, v30, v31);
       v34 = objc_msgSend_objectForKeyedSubscript_(v32, v33, *MEMORY[0x277CBBFD0]);
@@ -318,10 +318,10 @@ LABEL_8:
         block[2] = sub_2251E9AB4;
         block[3] = &unk_278548978;
         block[4] = self;
-        v63 = v6;
+        v63 = savedCopy;
         v64 = v34;
         v65 = v36;
-        v66 = v7;
+        v66 = errorCopy;
         dispatch_async(v42, block);
       }
     }
@@ -337,15 +337,15 @@ LABEL_8:
         v56 = 3221225472;
         v57 = sub_2251E9B3C;
         v58 = &unk_278546990;
-        v59 = self;
-        v60 = v6;
-        v61 = v7;
+        selfCopy = self;
+        v60 = savedCopy;
+        v61 = errorCopy;
         dispatch_async(v46, &v55);
       }
     }
 
-    v47 = objc_msgSend_recordsToSaveByID(self, v43, v44, v55, v56, v57, v58, v59);
-    objc_msgSend_removeObjectForKey_(v47, v48, v6);
+    v47 = objc_msgSend_recordsToSaveByID(self, v43, v44, v55, v56, v57, v58, selfCopy);
+    objc_msgSend_removeObjectForKey_(v47, v48, savedCopy);
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -416,21 +416,21 @@ LABEL_8:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)a3 error:(id *)a4
+- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)record error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = v6;
-  if (!a4)
+  recordCopy = record;
+  v9 = recordCopy;
+  if (!error)
   {
-    if (!v6)
+    if (!recordCopy)
     {
       v10 = 0;
       goto LABEL_24;
     }
 
 LABEL_5:
-    v11 = objc_msgSend_encryptedValues(v6, v7, v8);
+    v11 = objc_msgSend_encryptedValues(recordCopy, v7, v8);
     v13 = objc_msgSend_objectForKeyedSubscript_(v11, v12, *MEMORY[0x277CBBFD0]);
 
     if (v13)
@@ -462,12 +462,12 @@ LABEL_5:
           _os_log_impl(&dword_22506F000, v31, OS_LOG_TYPE_INFO, "Warn: Couldn't deserialize access token protection data on record %@: %@.\nData was %@", buf, 0x20u);
         }
 
-        if (a4)
+        if (error)
         {
           v35 = MEMORY[0x277CBC560];
           v36 = *MEMORY[0x277CBC120];
           v37 = objc_msgSend_recordID(v9, v29, v30);
-          *a4 = objc_msgSend_errorWithDomain_code_error_format_(v35, v38, v36, 5001, v21, @"Couldn't deserialize access token protection data on record %@", v37);
+          *error = objc_msgSend_errorWithDomain_code_error_format_(v35, v38, v36, 5001, v21, @"Couldn't deserialize access token protection data on record %@", v37);
         }
 
         if (v10)
@@ -499,20 +499,20 @@ LABEL_5:
       v47 = v44;
       _os_log_debug_impl(&dword_22506F000, v41, OS_LOG_TYPE_DEBUG, "Record %@ didn't have any access token protection data on it", buf, 0xCu);
 
-      if (a4)
+      if (error)
       {
         goto LABEL_13;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_13:
       v25 = MEMORY[0x277CBC560];
       v26 = *MEMORY[0x277CBC120];
       v21 = objc_msgSend_recordID(v9, v23, v24);
       objc_msgSend_errorWithDomain_code_format_(v25, v27, v26, 5001, @"Record %@ didn't contain any access token protection data", v21);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
 LABEL_22:
 
 LABEL_23:
@@ -523,35 +523,35 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *a4 = 0;
-  if (v6)
+  *error = 0;
+  if (recordCopy)
   {
     goto LABEL_5;
   }
 
   objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v7, *MEMORY[0x277CBC120], 2003, @"Couldn't fetch record from the server");
-  *a4 = v10 = 0;
+  *error = v10 = 0;
 LABEL_24:
 
   v39 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)_handleRecordFetched:(id)a3 recordID:(id)a4 error:(id)a5
+- (void)_handleRecordFetched:(id)fetched recordID:(id)d error:(id)error
 {
   v134 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fetchedCopy = fetched;
+  dCopy = d;
+  errorCopy = error;
   v120 = objc_msgSend_container(self, v11, v12);
-  if (v8)
+  if (fetchedCopy)
   {
-    v15 = objc_msgSend_objectForKeyedSubscript_(v8, v13, *MEMORY[0x277CBC138]);
-    objc_msgSend_setBaseToken_(v8, v16, v15);
+    v15 = objc_msgSend_objectForKeyedSubscript_(fetchedCopy, v13, *MEMORY[0x277CBC138]);
+    objc_msgSend_setBaseToken_(fetchedCopy, v16, v15);
   }
 
   v17 = objc_msgSend_recordIDsToGrant(self, v13, v14);
-  v19 = objc_msgSend_containsObject_(v17, v18, v9);
+  v19 = objc_msgSend_containsObject_(v17, v18, dCopy);
 
   if (v19)
   {
@@ -563,7 +563,7 @@ LABEL_24:
   }
 
   v24 = objc_msgSend_recordIDsToRevoke(self, v20, v21);
-  v26 = objc_msgSend_containsObject_(v24, v25, v9);
+  v26 = objc_msgSend_containsObject_(v24, v25, dCopy);
 
   if (v26)
   {
@@ -578,7 +578,7 @@ LABEL_7:
     v27 = _Block_copy(v22);
     v28 = *MEMORY[0x277CBC878];
     v29 = *MEMORY[0x277CBC880];
-    if (((v10 == 0) & ~(v8 == 0)) == 0)
+    if (((errorCopy == 0) & ~(fetchedCopy == 0)) == 0)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -589,25 +589,25 @@ LABEL_7:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v129 = v9;
+        v129 = dCopy;
         v130 = 2112;
-        v131 = v10;
+        v131 = errorCopy;
         _os_log_debug_impl(&dword_22506F000, v30, OS_LOG_TYPE_DEBUG, "Couldn't fetch record %@ from the server: %@", buf, 0x16u);
-        if (v10)
+        if (errorCopy)
         {
           goto LABEL_13;
         }
       }
 
-      else if (v10)
+      else if (errorCopy)
       {
 LABEL_13:
-        v27[2](v27, v9, v10);
+        v27[2](v27, dCopy, errorCopy);
 
         goto LABEL_85;
       }
 
-      v10 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v31, *MEMORY[0x277CBC120], 2003, @"Couldn't find record %@ on the server", v9);
+      errorCopy = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v31, *MEMORY[0x277CBC120], 2003, @"Couldn't find record %@ on the server", dCopy);
       goto LABEL_13;
     }
 
@@ -626,14 +626,14 @@ LABEL_13:
       }
 
       *buf = 138412546;
-      v129 = v9;
+      v129 = dCopy;
       v130 = 2114;
       v131 = v98;
       _os_log_debug_impl(&dword_22506F000, v32, OS_LOG_TYPE_DEBUG, "Fetched record with ID %@ from the server. Unwrapping access token and %{public}@ access to the record", buf, 0x16u);
     }
 
     v125 = 0;
-    RandomSharingIdentityWithError = objc_msgSend__copyShareProtectionFromRecord_error_(self, v33, v8, &v125);
+    RandomSharingIdentityWithError = objc_msgSend__copyShareProtectionFromRecord_error_(self, v33, fetchedCopy, &v125);
     v35 = v125;
     v38 = v35;
     if (v35 || !RandomSharingIdentityWithError)
@@ -642,10 +642,10 @@ LABEL_13:
       {
         if (!v35)
         {
-          v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 2003, @"Record %@ didn't have an access token so it can't be revoked", v9);
+          v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 2003, @"Record %@ didn't have an access token so it can't be revoked", dCopy);
         }
 
-        v27[2](v27, v9, v38);
+        v27[2](v27, dCopy, v38);
         if (RandomSharingIdentityWithError)
         {
           CFRelease(RandomSharingIdentityWithError);
@@ -668,7 +668,7 @@ LABEL_13:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v129 = v9;
+        v129 = dCopy;
         v130 = 2112;
         v131 = v38;
         _os_log_debug_impl(&dword_22506F000, v50, OS_LOG_TYPE_DEBUG, "Record %@ had no access token on it. Creating a new one. (%@)", buf, 0x16u);
@@ -683,10 +683,10 @@ LABEL_13:
       {
         if (!v38)
         {
-          v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 2003, @"Couldn't create an access token identity for record %@", v9);
+          v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v36, *MEMORY[0x277CBC120], 2003, @"Couldn't create an access token identity for record %@", dCopy);
         }
 
-        v27[2](v27, v9, v38);
+        v27[2](v27, dCopy, v38);
         if (RandomSharingIdentityWithError)
         {
           CFRelease(RandomSharingIdentityWithError);
@@ -698,10 +698,10 @@ LABEL_13:
 
     else if (!v19)
     {
-      v39 = objc_msgSend_encryptedValues(v8, v36, v37);
+      v39 = objc_msgSend_encryptedValues(fetchedCopy, v36, v37);
       objc_msgSend_setObject_forKeyedSubscript_(v39, v40, 0, *MEMORY[0x277CBBFD0]);
 
-      v45 = objc_msgSend_recordPCS(v8, v41, v42);
+      v45 = objc_msgSend_recordPCS(fetchedCopy, v41, v42);
       if (v45)
       {
         v46 = objc_msgSend_pcsManager(v120, v43, v44);
@@ -721,19 +721,19 @@ LABEL_13:
     {
       if (!v38)
       {
-        v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v58, *MEMORY[0x277CBC120], 2003, @"Couldn't create access token data for record %@", v9);
+        v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v58, *MEMORY[0x277CBC120], 2003, @"Couldn't create access token data for record %@", dCopy);
       }
 
-      v27[2](v27, v9, v38);
+      v27[2](v27, dCopy, v38);
       CFRelease(RandomSharingIdentityWithError);
 
       goto LABEL_84;
     }
 
-    v60 = objc_msgSend_encryptedValues(v8, v58, v59);
+    v60 = objc_msgSend_encryptedValues(fetchedCopy, v58, v59);
     objc_msgSend_setObject_forKeyedSubscript_(v60, v61, v57, *MEMORY[0x277CBBFD0]);
 
-    v45 = objc_msgSend_recordPCS(v8, v62, v63);
+    v45 = objc_msgSend_recordPCS(fetchedCopy, v62, v63);
     if (v45)
     {
       v46 = objc_msgSend_pcsManager(v120, v64, v65);
@@ -761,20 +761,20 @@ LABEL_39:
 
           v129 = v70;
           v130 = 2112;
-          v131 = v9;
+          v131 = dCopy;
           v132 = 2112;
           v133 = v38;
           _os_log_impl(&dword_22506F000, v69, OS_LOG_TYPE_INFO, "Warn: Error %{public}@ access to record %@: %@", buf, 0x20u);
         }
 
-        v27[2](v27, v9, v38);
+        v27[2](v27, dCopy, v38);
       }
 
       else
       {
         v73 = objc_msgSend_pcsManager(v120, v67, v68);
-        v76 = objc_msgSend_pcsKeysToRemove(v8, v74, v75);
-        v79 = objc_msgSend_protectionEtag(v8, v77, v78);
+        v76 = objc_msgSend_pcsKeysToRemove(fetchedCopy, v74, v75);
+        v79 = objc_msgSend_protectionEtag(fetchedCopy, v77, v78);
         v81 = objc_msgSend_removePCSKeys_fromPCS_withProtectionEtag_forOperation_(v73, v80, v76, v45, v79, self);
 
         if (v81)
@@ -787,17 +787,17 @@ LABEL_39:
           objc_msgSend_updateCloudKitMetrics_(self, v82, v122);
         }
 
-        v84 = objc_msgSend_protectionData(v8, v82, v83);
+        v84 = objc_msgSend_protectionData(fetchedCopy, v82, v83);
         v86 = objc_msgSend_etagFromPCSData_(CKDPCSManager, v85, v84);
-        objc_msgSend_setPreviousProtectionEtag_(v8, v87, v86);
+        objc_msgSend_setPreviousProtectionEtag_(fetchedCopy, v87, v86);
 
         v90 = objc_msgSend_pcsManager(v120, v88, v89);
         v121 = 0;
         v92 = objc_msgSend_dataFromRecordPCS_error_(v90, v91, v45, &v121);
         v38 = v121;
-        objc_msgSend_setProtectionData_(v8, v93, v92);
+        objc_msgSend_setProtectionData_(fetchedCopy, v93, v92);
 
-        if (v38 || (objc_msgSend_protectionData(v8, v94, v95), v99 = objc_claimAutoreleasedReturnValue(), v100 = v99 == 0, v99, v100))
+        if (v38 || (objc_msgSend_protectionData(fetchedCopy, v94, v95), v99 = objc_claimAutoreleasedReturnValue(), v100 = v99 == 0, v99, v100))
         {
           if (*MEMORY[0x277CBC880] != -1)
           {
@@ -816,19 +816,19 @@ LABEL_39:
 
             v129 = v97;
             v130 = 2112;
-            v131 = v9;
+            v131 = dCopy;
             v132 = 2112;
             v133 = v38;
             _os_log_impl(&dword_22506F000, v96, OS_LOG_TYPE_INFO, "Warn: Error serializing record PCS data for access %{public}@ of record %@: %@", buf, 0x20u);
           }
 
-          v27[2](v27, v9, v38);
+          v27[2](v27, dCopy, v38);
         }
 
         else
         {
           v102 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v101, v19);
-          objc_msgSend_setObject_forKeyedSubscript_(v8, v103, v102, *MEMORY[0x277CBBFC8]);
+          objc_msgSend_setObject_forKeyedSubscript_(fetchedCopy, v103, v102, *MEMORY[0x277CBBFC8]);
 
           if (*MEMORY[0x277CBC880] != -1)
           {
@@ -840,9 +840,9 @@ LABEL_39:
           {
             v114 = v19 ? @"granting" : @"revoking";
             v115 = v104;
-            v118 = objc_msgSend_protectionData(v8, v116, v117);
+            v118 = objc_msgSend_protectionData(fetchedCopy, v116, v117);
             *buf = 138412802;
-            v129 = v9;
+            v129 = dCopy;
             v130 = 2114;
             v131 = v114;
             v132 = 2112;
@@ -867,14 +867,14 @@ LABEL_39:
             *buf = 138543618;
             v129 = v119;
             v130 = 2112;
-            v131 = v9;
+            v131 = dCopy;
             _os_log_debug_impl(&dword_22506F000, v105, OS_LOG_TYPE_DEBUG, "Successfully %{public}@ sharing info to record %@. Preparing to save the record back to the server", buf, 0x16u);
           }
 
           v108 = objc_msgSend_recordsToSaveByID(self, v106, v107);
           objc_sync_enter(v108);
           v111 = objc_msgSend_recordsToSaveByID(self, v109, v110);
-          objc_msgSend_setObject_forKeyedSubscript_(v111, v112, v8, v9);
+          objc_msgSend_setObject_forKeyedSubscript_(v111, v112, fetchedCopy, dCopy);
 
           objc_sync_exit(v108);
           v38 = 0;
@@ -883,7 +883,7 @@ LABEL_39:
 
 LABEL_84:
 
-      v10 = v27;
+      errorCopy = v27;
       goto LABEL_85;
     }
 
@@ -897,12 +897,12 @@ LABEL_54:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v129 = v9;
+      v129 = dCopy;
       _os_log_debug_impl(&dword_22506F000, v71, OS_LOG_TYPE_DEBUG, "Fetched record %@ had no PCS data", buf, 0xCu);
     }
 
-    v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v72, *MEMORY[0x277CBC120], 5001, @"Fetched record %@ had no PCS data", v9);
-    v27[2](v27, v9, v38);
+    v38 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v72, *MEMORY[0x277CBC120], 5001, @"Fetched record %@ had no PCS data", dCopy);
+    v27[2](v27, dCopy, v38);
     CFRelease(RandomSharingIdentityWithError);
     goto LABEL_84;
   }
@@ -916,7 +916,7 @@ LABEL_54:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v129 = v9;
+    v129 = dCopy;
     _os_log_error_impl(&dword_22506F000, v49, OS_LOG_TYPE_ERROR, "Received a record ID that we don't know anything about: %@", buf, 0xCu);
   }
 
@@ -977,7 +977,7 @@ LABEL_85:
     v30 = 138544130;
     v31 = v19;
     v32 = 2048;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
     v35 = v24;
     v36 = 2112;
@@ -1001,10 +1001,10 @@ LABEL_85:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v43 = 0u;
   v44 = 0u;
@@ -1086,7 +1086,7 @@ LABEL_85:
   objc_msgSend_setAccessWasRevokedBlock_(self, v34, 0);
   v36.receiver = self;
   v36.super_class = CKDModifyRecordAccessOperation;
-  [(CKDOperation *)&v36 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v36 _finishOnCallbackQueueWithError:errorCopy];
 
   v35 = *MEMORY[0x277D85DE8];
 }

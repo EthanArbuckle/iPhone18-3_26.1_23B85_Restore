@@ -1,32 +1,32 @@
 @interface VUICollisionSafeIdentifier
-- (BOOL)isEqual:(id)a3;
-- (VUICollisionSafeIdentifier)initWithRootIdentifier:(id)a3 collisionCount:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VUICollisionSafeIdentifier)initWithRootIdentifier:(id)identifier collisionCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation VUICollisionSafeIdentifier
 
-- (VUICollisionSafeIdentifier)initWithRootIdentifier:(id)a3 collisionCount:(unint64_t)a4
+- (VUICollisionSafeIdentifier)initWithRootIdentifier:(id)identifier collisionCount:(unint64_t)count
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = VUICollisionSafeIdentifier;
   v7 = [(VUICollisionSafeIdentifier *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     rootIdentifier = v7->_rootIdentifier;
     v7->_rootIdentifier = v8;
 
-    v7->_collisionCount = a4;
+    v7->_collisionCount = count;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUICollisionSafeIdentifier);
   v5 = [(NSCopying *)self->_rootIdentifier copy];
@@ -39,34 +39,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUICollisionSafeIdentifier *)self collisionCount];
-  v4 = [(VUICollisionSafeIdentifier *)self rootIdentifier];
-  v5 = [v4 hash];
+  collisionCount = [(VUICollisionSafeIdentifier *)self collisionCount];
+  rootIdentifier = [(VUICollisionSafeIdentifier *)self rootIdentifier];
+  v5 = [rootIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ collisionCount;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(VUICollisionSafeIdentifier *)self rootIdentifier];
-        v8 = [(VUICollisionSafeIdentifier *)v6 rootIdentifier];
-        v9 = v7;
-        v10 = v8;
+        rootIdentifier = [(VUICollisionSafeIdentifier *)self rootIdentifier];
+        rootIdentifier2 = [(VUICollisionSafeIdentifier *)v6 rootIdentifier];
+        v9 = rootIdentifier;
+        v10 = rootIdentifier2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -90,8 +90,8 @@ LABEL_14:
           }
         }
 
-        v14 = [(VUICollisionSafeIdentifier *)self collisionCount];
-        v13 = v14 == [(VUICollisionSafeIdentifier *)v6 collisionCount];
+        collisionCount = [(VUICollisionSafeIdentifier *)self collisionCount];
+        v13 = collisionCount == [(VUICollisionSafeIdentifier *)v6 collisionCount];
 LABEL_15:
 
         goto LABEL_16;
@@ -109,8 +109,8 @@ LABEL_16:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(VUICollisionSafeIdentifier *)self rootIdentifier];
-  v5 = [v3 stringWithFormat:@"%@_%lu", v4, -[VUICollisionSafeIdentifier collisionCount](self, "collisionCount")];
+  rootIdentifier = [(VUICollisionSafeIdentifier *)self rootIdentifier];
+  v5 = [v3 stringWithFormat:@"%@_%lu", rootIdentifier, -[VUICollisionSafeIdentifier collisionCount](self, "collisionCount")];
 
   return v5;
 }

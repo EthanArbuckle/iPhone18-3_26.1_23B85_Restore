@@ -1,42 +1,42 @@
 @interface EKObjectID
-+ (EKObjectID)objectIDWithCADObjectID:(id)a3;
-+ (EKObjectID)objectIDWithURL:(id)a3;
-+ (id)EKObjectIDsFromCADObjectIDs:(id)a3;
-+ (id)EKObjectIDsFromData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EKObjectID)initWithCoder:(id)a3;
-- (EKObjectID)initWithDictionaryRepresentation:(id)a3;
-- (EKObjectID)initWithEntityType:(int)a3 rowID:(int)a4 databaseID:(int)a5 temporary:(BOOL)a6;
++ (EKObjectID)objectIDWithCADObjectID:(id)d;
++ (EKObjectID)objectIDWithURL:(id)l;
++ (id)EKObjectIDsFromCADObjectIDs:(id)ds;
++ (id)EKObjectIDsFromData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (EKObjectID)initWithCoder:(id)coder;
+- (EKObjectID)initWithDictionaryRepresentation:(id)representation;
+- (EKObjectID)initWithEntityType:(int)type rowID:(int)d databaseID:(int)iD temporary:(BOOL)temporary;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)stringRepresentation;
 - (NSURL)URIRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EKObjectID
 
-+ (EKObjectID)objectIDWithCADObjectID:(id)a3
++ (EKObjectID)objectIDWithCADObjectID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v5 = a3;
-    v6 = [a1 alloc];
-    v7 = [v5 entityType];
-    v8 = [v5 entityID];
-    if (v8 >= 0)
+    dCopy = d;
+    v6 = [self alloc];
+    entityType = [dCopy entityType];
+    entityID = [dCopy entityID];
+    if (entityID >= 0)
     {
-      v9 = v8;
+      v9 = entityID;
     }
 
     else
     {
-      v9 = -v8;
+      v9 = -entityID;
     }
 
-    v10 = [v5 databaseID];
-    v11 = [v5 isTemporary];
+    databaseID = [dCopy databaseID];
+    isTemporary = [dCopy isTemporary];
 
-    v12 = [v6 initWithEntityType:v7 rowID:v9 databaseID:v10 temporary:v11];
+    v12 = [v6 initWithEntityType:entityType rowID:v9 databaseID:databaseID temporary:isTemporary];
   }
 
   else
@@ -47,19 +47,19 @@
   return v12;
 }
 
-+ (EKObjectID)objectIDWithURL:(id)a3
++ (EKObjectID)objectIDWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [v5 isEqualToString:@"x-apple-eventkit"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v6 = [scheme isEqualToString:@"x-apple-eventkit"];
 
   if (v6)
   {
-    v7 = [v4 host];
-    if ([v7 length])
+    host = [lCopy host];
+    if ([host length])
     {
-      v8 = [v7 intValue];
-      if (v8)
+      intValue = [host intValue];
+      if (intValue)
       {
         goto LABEL_7;
       }
@@ -67,15 +67,15 @@
       v9 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
       {
-        [(EKObjectID *)v4 objectIDWithURL:v9, v7];
+        [(EKObjectID *)lCopy objectIDWithURL:v9, host];
       }
     }
 
-    v8 = 0;
+    intValue = 0;
 LABEL_7:
-    v10 = [v4 path];
-    v11 = [v10 lastPathComponent];
-    if (![v11 length])
+    path = [lCopy path];
+    lastPathComponent = [path lastPathComponent];
+    if (![lastPathComponent length])
     {
       v17 = EKLogHandle;
       if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -87,7 +87,7 @@ LABEL_7:
       goto LABEL_33;
     }
 
-    v12 = [v11 characterAtIndex:0];
+    v12 = [lastPathComponent characterAtIndex:0];
     if (v12 != 112)
     {
       v13 = v12;
@@ -95,13 +95,13 @@ LABEL_7:
       {
         v14 = 1;
 LABEL_20:
-        v19 = [v11 substringFromIndex:1];
-        v20 = [v19 intValue];
+        v19 = [lastPathComponent substringFromIndex:1];
+        intValue2 = [v19 intValue];
 
-        v21 = [v10 pathComponents];
-        if ([v21 count] > 1)
+        pathComponents = [path pathComponents];
+        if ([pathComponents count] > 1)
         {
-          v23 = [v21 objectAtIndex:1];
+          v23 = [pathComponents objectAtIndex:1];
           v27 = v14;
           if (objectIDWithURL__onceToken != -1)
           {
@@ -111,7 +111,7 @@ LABEL_20:
           v24 = [objectIDWithURL__entityNameToEntityTypeMap objectForKeyedSubscript:v23];
           if (v24)
           {
-            v16 = [[a1 alloc] initWithEntityType:objc_msgSend(v24 rowID:"intValue") databaseID:v20 temporary:{v8, v27}];
+            v16 = [[self alloc] initWithEntityType:objc_msgSend(v24 rowID:"intValue") databaseID:intValue2 temporary:{intValue, v27}];
           }
 
           else
@@ -119,7 +119,7 @@ LABEL_20:
             v25 = EKLogHandle;
             if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
             {
-              [(EKObjectID *)v23 objectIDWithURL:v25, v4];
+              [(EKObjectID *)v23 objectIDWithURL:v25, lCopy];
             }
 
             v16 = 0;
@@ -155,7 +155,7 @@ LABEL_33:
   v15 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
-    [(EKObjectID *)v15 objectIDWithURL:v4];
+    [(EKObjectID *)v15 objectIDWithURL:lCopy];
   }
 
   v16 = 0;
@@ -170,71 +170,71 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
   objectIDWithURL__entityNameToEntityTypeMap = &unk_1F1B6B300;
 }
 
-- (EKObjectID)initWithEntityType:(int)a3 rowID:(int)a4 databaseID:(int)a5 temporary:(BOOL)a6
+- (EKObjectID)initWithEntityType:(int)type rowID:(int)d databaseID:(int)iD temporary:(BOOL)temporary
 {
   v11.receiver = self;
   v11.super_class = EKObjectID;
   result = [(EKObjectID *)&v11 init];
   if (result)
   {
-    result->_entityType = a3;
-    result->_rowID = a4;
-    result->_databaseID = a5;
-    result->_temporary = a6;
+    result->_entityType = type;
+    result->_rowID = d;
+    result->_databaseID = iD;
+    result->_temporary = temporary;
   }
 
   return result;
 }
 
-- (EKObjectID)initWithCoder:(id)a3
+- (EKObjectID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = EKObjectID;
   v5 = [(EKObjectID *)&v7 init];
   if (v5)
   {
-    v5->_entityType = [v4 decodeIntForKey:@"entityType"];
-    v5->_rowID = [v4 decodeIntForKey:@"rowID"];
-    v5->_databaseID = [v4 decodeIntForKey:@"dbID"];
-    v5->_temporary = [v4 decodeBoolForKey:@"temporary"];
+    v5->_entityType = [coderCopy decodeIntForKey:@"entityType"];
+    v5->_rowID = [coderCopy decodeIntForKey:@"rowID"];
+    v5->_databaseID = [coderCopy decodeIntForKey:@"dbID"];
+    v5->_temporary = [coderCopy decodeBoolForKey:@"temporary"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt:self->_entityType forKey:@"entityType"];
-  [v5 encodeInt:self->_rowID forKey:@"rowID"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_entityType forKey:@"entityType"];
+  [coderCopy encodeInt:self->_rowID forKey:@"rowID"];
   databaseID = self->_databaseID;
   if (databaseID)
   {
-    [v5 encodeInt:databaseID forKey:@"dbID"];
+    [coderCopy encodeInt:databaseID forKey:@"dbID"];
   }
 
-  [v5 encodeBool:self->_temporary forKey:@"temporary"];
+  [coderCopy encodeBool:self->_temporary forKey:@"temporary"];
 }
 
-- (EKObjectID)initWithDictionaryRepresentation:(id)a3
+- (EKObjectID)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = EKObjectID;
   v5 = [(EKObjectID *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"entityType"];
+    v6 = [representationCopy objectForKey:@"entityType"];
     v5->_entityType = [v6 intValue];
 
-    v7 = [v4 objectForKey:@"rowID"];
+    v7 = [representationCopy objectForKey:@"rowID"];
     v5->_rowID = [v7 intValue];
 
-    v8 = [v4 objectForKey:@"dbID"];
+    v8 = [representationCopy objectForKey:@"dbID"];
     v5->_databaseID = [v8 intValue];
 
-    v9 = [v4 objectForKey:@"temporary"];
+    v9 = [representationCopy objectForKey:@"temporary"];
     v5->_temporary = [v9 BOOLValue];
   }
 
@@ -267,8 +267,8 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
 {
   databaseID = self->_databaseID;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(EKObjectID *)self entityName];
-  v6 = v5;
+  entityName = [(EKObjectID *)self entityName];
+  v6 = entityName;
   v7 = @"p";
   if (self->_temporary)
   {
@@ -278,12 +278,12 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
   rowID = self->_rowID;
   if (databaseID)
   {
-    [v4 stringWithFormat:@"%@://%d/%@/%@%d", @"x-apple-eventkit", databaseID, v5, v7, rowID];
+    [v4 stringWithFormat:@"%@://%d/%@/%@%d", @"x-apple-eventkit", databaseID, entityName, v7, rowID];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%@:///%@/%@%d", @"x-apple-eventkit", v5, v7, rowID, v11];
+    [v4 stringWithFormat:@"%@:///%@/%@%d", @"x-apple-eventkit", entityName, v7, rowID, v11];
   }
   v9 = ;
 
@@ -293,22 +293,22 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
 - (NSURL)URIRepresentation
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(EKObjectID *)self stringRepresentation];
-  v4 = [v2 URLWithString:v3];
+  stringRepresentation = [(EKObjectID *)self stringRepresentation];
+  v4 = [v2 URLWithString:stringRepresentation];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (Class = object_getClass(self), Class == object_getClass(v5)))
+  else if (equalCopy && (Class = object_getClass(self), Class == object_getClass(v5)))
   {
     v8 = v5;
     v7 = self->_entityType == v8->_entityType && self->_rowID == v8->_rowID && self->_temporary == v8->_temporary && self->_databaseID == v8->_databaseID;
@@ -322,18 +322,18 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
   return v7;
 }
 
-+ (id)EKObjectIDsFromCADObjectIDs:(id)a3
++ (id)EKObjectIDsFromCADObjectIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dsCopy = ds;
+  if (dsCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = dsCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -369,15 +369,15 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
   return v4;
 }
 
-+ (id)EKObjectIDsFromData:(id)a3
++ (id)EKObjectIDsFromData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [dataCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -390,11 +390,11 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:v10];
+        v11 = [dataCopy objectForKeyedSubscript:v10];
         v12 = +[EKObjectID EKObjectIDsFromData:databaseID:](EKObjectID, "EKObjectIDsFromData:databaseID:", v11, [v10 intValue]);
         if ([v12 count])
         {
@@ -417,7 +417,7 @@ void __30__EKObjectID_objectIDWithURL___block_invoke()
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [dataCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);

@@ -11,8 +11,8 @@
 
 - (id)wf_actionInterfaceRequest
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"wf_actionInterfaceRequest"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"wf_actionInterfaceRequest"];
 
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -30,8 +30,8 @@
 - (void)wf_setActionInterfaceRequest:()WorkflowEditor
 {
   v10 = a3;
-  v4 = [a1 userInfo];
-  v5 = [v4 mutableCopy];
+  userInfo = [self userInfo];
+  v5 = [userInfo mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -56,13 +56,13 @@
   }
 
   [v8 setObject:v9 forKeyedSubscript:@"wf_actionInterfaceRequest"];
-  [a1 setUserInfo:v8];
+  [self setUserInfo:v8];
 }
 
 - (id)wf_parameterEditingResponse
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"wf_parameterEditingResponse"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"wf_parameterEditingResponse"];
 
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -80,8 +80,8 @@
 - (void)wf_setParameterEditingResponse:()WorkflowEditor
 {
   v10 = a3;
-  v4 = [a1 userInfo];
-  v5 = [v4 mutableCopy];
+  userInfo = [self userInfo];
+  v5 = [userInfo mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -106,13 +106,13 @@
   }
 
   [v8 setObject:v9 forKeyedSubscript:@"wf_parameterEditingResponse"];
-  [a1 setUserInfo:v8];
+  [self setUserInfo:v8];
 }
 
 - (id)wf_parameterEditingRequest
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"wf_parameterEditingRequest"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"wf_parameterEditingRequest"];
 
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -130,8 +130,8 @@
 - (void)wf_setParameterEditingRequest:()WorkflowEditor
 {
   v10 = a3;
-  v4 = [a1 userInfo];
-  v5 = [v4 mutableCopy];
+  userInfo = [self userInfo];
+  v5 = [userInfo mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -156,7 +156,7 @@
   }
 
   [v8 setObject:v9 forKeyedSubscript:@"wf_parameterEditingRequest"];
-  [a1 setUserInfo:v8];
+  [self setUserInfo:v8];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface PhotosViewControllerPresentationDelegate
-- (BOOL)presentPhotosViewControllerWithConfiguration:(id)a3;
+- (BOOL)presentPhotosViewControllerWithConfiguration:(id)configuration;
 - (_TtC12PhotosUICoreP33_128B04DDBCBA4CE932CB50ACF858600440PhotosViewControllerPresentationDelegate)init;
 @end
 
 @implementation PhotosViewControllerPresentationDelegate
 
-- (BOOL)presentPhotosViewControllerWithConfiguration:(id)a3
+- (BOOL)presentPhotosViewControllerWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4134B30(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1A4134B30(configurationCopy);
   LOBYTE(self) = v6;
 
   return self & 1;

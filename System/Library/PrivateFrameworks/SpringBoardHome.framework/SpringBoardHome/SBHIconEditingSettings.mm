@@ -24,8 +24,8 @@
 {
   v54[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C65E8];
-  v3 = [MEMORY[0x1E69C6640] action];
-  v47 = [v2 rowWithTitle:@"Restore Defaults" action:v3];
+  action = [MEMORY[0x1E69C6640] action];
+  v47 = [v2 rowWithTitle:@"Restore Defaults" action:action];
 
   v4 = MEMORY[0x1E69C6638];
   v54[0] = v47;

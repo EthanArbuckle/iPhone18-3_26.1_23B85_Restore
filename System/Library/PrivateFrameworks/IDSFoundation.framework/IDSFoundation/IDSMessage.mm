@@ -1,8 +1,8 @@
 @interface IDSMessage
 - (BOOL)_shouldUseJSONForEncoding;
 - (IDSMessage)init;
-- (id)_objectForKeyFromMadridBag:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_objectForKeyFromMadridBag:(id)bag;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 @end
 
@@ -24,20 +24,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IDSMessage;
-  v4 = [(IDSBaseMessage *)&v9 copyWithZone:a3];
-  v5 = [(IDSMessage *)self wantsDeliveryStatus];
-  [v4 setWantsDeliveryStatus:v5];
+  v4 = [(IDSBaseMessage *)&v9 copyWithZone:zone];
+  wantsDeliveryStatus = [(IDSMessage *)self wantsDeliveryStatus];
+  [v4 setWantsDeliveryStatus:wantsDeliveryStatus];
 
-  v6 = [(IDSMessage *)self deliveryStatusContext];
-  [v4 setDeliveryStatusContext:v6];
+  deliveryStatusContext = [(IDSMessage *)self deliveryStatusContext];
+  [v4 setDeliveryStatusContext:deliveryStatusContext];
 
   [v4 setWantsCertifiedDelivery:{-[IDSMessage wantsCertifiedDelivery](self, "wantsCertifiedDelivery")}];
-  v7 = [(IDSMessage *)self version];
-  [v4 setVersion:v7];
+  version = [(IDSMessage *)self version];
+  [v4 setVersion:version];
 
   return v4;
 }
@@ -46,18 +46,18 @@
 {
   v17.receiver = self;
   v17.super_class = IDSMessage;
-  v3 = [(IDSBaseMessage *)&v17 messageBody];
-  v4 = [v3 mutableCopy];
+  messageBody = [(IDSBaseMessage *)&v17 messageBody];
+  v4 = [messageBody mutableCopy];
 
-  v5 = [(IDSMessage *)self wantsDeliveryStatus];
-  v6 = [v5 intValue];
+  wantsDeliveryStatus = [(IDSMessage *)self wantsDeliveryStatus];
+  intValue = [wantsDeliveryStatus intValue];
 
-  if (v6 >= 1)
+  if (intValue >= 1)
   {
-    v7 = [(IDSMessage *)self wantsDeliveryStatus];
-    if (v7)
+    wantsDeliveryStatus2 = [(IDSMessage *)self wantsDeliveryStatus];
+    if (wantsDeliveryStatus2)
     {
-      CFDictionarySetValue(v4, @"D", v7);
+      CFDictionarySetValue(v4, @"D", wantsDeliveryStatus2);
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -65,10 +65,10 @@
       sub_1A7E121CC();
     }
 
-    v8 = [(IDSMessage *)self deliveryStatusContext];
-    if (v8)
+    deliveryStatusContext = [(IDSMessage *)self deliveryStatusContext];
+    if (deliveryStatusContext)
     {
-      CFDictionarySetValue(v4, @"Dc", v8);
+      CFDictionarySetValue(v4, @"Dc", deliveryStatusContext);
     }
   }
 
@@ -134,13 +134,13 @@
   return v3;
 }
 
-- (id)_objectForKeyFromMadridBag:(id)a3
+- (id)_objectForKeyFromMadridBag:(id)bag
 {
-  v4 = a3;
-  if ([v4 length])
+  bagCopy = bag;
+  if ([bagCopy length])
   {
-    v5 = [(IDSMessage *)self _madridServerBag];
-    v6 = [v5 objectForKey:v4];
+    _madridServerBag = [(IDSMessage *)self _madridServerBag];
+    v6 = [_madridServerBag objectForKey:bagCopy];
   }
 
   else

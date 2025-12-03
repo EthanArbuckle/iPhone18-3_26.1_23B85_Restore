@@ -1,47 +1,47 @@
 @interface GDGraphEvent
-- (GDGraphEvent)initWithEntityIdentifierField:(id)a3 eventTypesField:(id)a4 nameField:(id)a5 dateField:(id)a6 attendeesField:(id)a7 cooccurringEventsField:(id)a8 locationsField:(id)a9 startLocationField:(id)a10 endLocationField:(id)a11 allNameField:(id)a12 allDateField:(id)a13 allStartLocationField:(id)a14 allEndLocationField:(id)a15;
+- (GDGraphEvent)initWithEntityIdentifierField:(id)field eventTypesField:(id)typesField nameField:(id)nameField dateField:(id)dateField attendeesField:(id)attendeesField cooccurringEventsField:(id)eventsField locationsField:(id)locationsField startLocationField:(id)self0 endLocationField:(id)self1 allNameField:(id)self2 allDateField:(id)self3 allStartLocationField:(id)self4 allEndLocationField:(id)self5;
 @end
 
 @implementation GDGraphEvent
 
-- (GDGraphEvent)initWithEntityIdentifierField:(id)a3 eventTypesField:(id)a4 nameField:(id)a5 dateField:(id)a6 attendeesField:(id)a7 cooccurringEventsField:(id)a8 locationsField:(id)a9 startLocationField:(id)a10 endLocationField:(id)a11 allNameField:(id)a12 allDateField:(id)a13 allStartLocationField:(id)a14 allEndLocationField:(id)a15
+- (GDGraphEvent)initWithEntityIdentifierField:(id)field eventTypesField:(id)typesField nameField:(id)nameField dateField:(id)dateField attendeesField:(id)attendeesField cooccurringEventsField:(id)eventsField locationsField:(id)locationsField startLocationField:(id)self0 endLocationField:(id)self1 allNameField:(id)self2 allDateField:(id)self3 allStartLocationField:(id)self4 allEndLocationField:(id)self5
 {
-  v41 = a3;
-  v29 = a4;
-  v40 = a4;
-  v30 = a5;
-  v39 = a5;
-  v31 = a6;
-  v38 = a6;
-  v32 = a7;
-  v37 = a7;
-  v36 = a8;
-  v35 = a9;
-  v34 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
+  fieldCopy = field;
+  typesFieldCopy = typesField;
+  typesFieldCopy2 = typesField;
+  nameFieldCopy = nameField;
+  nameFieldCopy2 = nameField;
+  dateFieldCopy = dateField;
+  dateFieldCopy2 = dateField;
+  attendeesFieldCopy = attendeesField;
+  attendeesFieldCopy2 = attendeesField;
+  eventsFieldCopy = eventsField;
+  locationsFieldCopy = locationsField;
+  locationFieldCopy = locationField;
+  endLocationFieldCopy = endLocationField;
+  allNameFieldCopy = allNameField;
+  allDateFieldCopy = allDateField;
+  startLocationFieldCopy = startLocationField;
+  allEndLocationFieldCopy = allEndLocationField;
   v42.receiver = self;
   v42.super_class = GDGraphEvent;
   v25 = [(GDGraphEvent *)&v42 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_entityIdentifier, a3);
-    objc_storeStrong(&v26->_eventTypes, v29);
-    objc_storeStrong(&v26->_name, v30);
-    objc_storeStrong(&v26->_date, v31);
-    objc_storeStrong(&v26->_attendees, v32);
-    objc_storeStrong(&v26->_cooccurringEvents, a8);
-    objc_storeStrong(&v26->_locations, a9);
-    objc_storeStrong(&v26->_startLocation, a10);
-    objc_storeStrong(&v26->_endLocation, a11);
-    objc_storeStrong(&v26->_allName, a12);
-    objc_storeStrong(&v26->_allDate, a13);
-    objc_storeStrong(&v26->_allStartLocation, a14);
-    objc_storeStrong(&v26->_allEndLocation, a15);
+    objc_storeStrong(&v25->_entityIdentifier, field);
+    objc_storeStrong(&v26->_eventTypes, typesFieldCopy);
+    objc_storeStrong(&v26->_name, nameFieldCopy);
+    objc_storeStrong(&v26->_date, dateFieldCopy);
+    objc_storeStrong(&v26->_attendees, attendeesFieldCopy);
+    objc_storeStrong(&v26->_cooccurringEvents, eventsField);
+    objc_storeStrong(&v26->_locations, locationsField);
+    objc_storeStrong(&v26->_startLocation, locationField);
+    objc_storeStrong(&v26->_endLocation, endLocationField);
+    objc_storeStrong(&v26->_allName, allNameField);
+    objc_storeStrong(&v26->_allDate, allDateField);
+    objc_storeStrong(&v26->_allStartLocation, startLocationField);
+    objc_storeStrong(&v26->_allEndLocation, allEndLocationField);
   }
 
   return v26;

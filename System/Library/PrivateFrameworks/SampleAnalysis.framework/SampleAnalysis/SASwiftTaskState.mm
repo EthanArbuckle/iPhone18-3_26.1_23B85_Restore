@@ -8,13 +8,13 @@
 {
   if (result)
   {
-    v1 = [result threadState];
-    for (i = [v1 leafUserFrame];
+    threadState = [result threadState];
+    for (i = [threadState leafUserFrame];
     {
-      v3 = v1;
-      v1 = i;
+      v3 = threadState;
+      threadState = i;
 
-      v4 = v1 ? v1[4] : 0;
+      v4 = threadState ? threadState[4] : 0;
       v5 = v4;
 
       if (!v5)
@@ -22,9 +22,9 @@
         break;
       }
 
-      if (v1)
+      if (threadState)
       {
-        v6 = v1[4];
+        v6 = threadState[4];
       }
 
       else
@@ -33,9 +33,9 @@
       }
     }
 
-    v7 = [v1 address];
+    address = [threadState address];
 
-    return v7;
+    return address;
   }
 
   return result;

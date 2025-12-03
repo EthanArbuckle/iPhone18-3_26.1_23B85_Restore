@@ -1,32 +1,32 @@
 @interface UIButton
 + (id)_maps_cardButtonCloseButton;
-+ (id)_maps_cardButtonMacCustomButtonWithSystemImageNamed:(id)a3;
++ (id)_maps_cardButtonMacCustomButtonWithSystemImageNamed:(id)named;
 - (BOOL)isTextTruncated;
-- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)a3;
+- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)leading;
 @end
 
 @implementation UIButton
 
-- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)a3
+- (BOOL)isTextTruncatedIgnoringLeading:(BOOL)leading
 {
-  v3 = a3;
-  v4 = [(UIButton *)self titleLabel];
-  LOBYTE(v3) = [v4 isTextTruncatedIgnoringLeading:v3];
+  leadingCopy = leading;
+  titleLabel = [(UIButton *)self titleLabel];
+  LOBYTE(leadingCopy) = [titleLabel isTextTruncatedIgnoringLeading:leadingCopy];
 
-  return v3;
+  return leadingCopy;
 }
 
 - (BOOL)isTextTruncated
 {
-  v2 = [(UIButton *)self titleLabel];
-  v3 = [v2 isTextTruncated];
+  titleLabel = [(UIButton *)self titleLabel];
+  isTextTruncated = [titleLabel isTextTruncated];
 
-  return v3;
+  return isTextTruncated;
 }
 
-+ (id)_maps_cardButtonMacCustomButtonWithSystemImageNamed:(id)a3
++ (id)_maps_cardButtonMacCustomButtonWithSystemImageNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [UIButton buttonWithType:0];
   if (_UISolariumEnabled())
   {
@@ -38,18 +38,18 @@
     v5 = 24.0;
   }
 
-  v6 = [v4 widthAnchor];
-  v7 = [v6 constraintEqualToConstant:v5];
+  widthAnchor = [v4 widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:v5];
   v16[0] = v7;
-  v8 = [v4 heightAnchor];
-  v9 = [v4 widthAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  heightAnchor = [v4 heightAnchor];
+  widthAnchor2 = [v4 widthAnchor];
+  v10 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v16[1] = v10;
   v11 = [NSArray arrayWithObjects:v16 count:2];
   [NSLayoutConstraint activateConstraints:v11];
 
   v12 = [UIImageSymbolConfiguration configurationWithPointSize:6 weight:v5];
-  v13 = [UIImage systemImageNamed:v3 withConfiguration:v12];
+  v13 = [UIImage systemImageNamed:namedCopy withConfiguration:v12];
 
   v14 = [v13 imageWithRenderingMode:2];
 
@@ -65,12 +65,12 @@
     v2 = +[UIButtonConfiguration _glassButtonConfiguration];
     v3 = [UIButton buttonWithConfiguration:v2 primaryAction:0];
 
-    v4 = [v3 widthAnchor];
-    v5 = [v4 constraintEqualToConstant:44.0];
+    widthAnchor = [v3 widthAnchor];
+    v5 = [widthAnchor constraintEqualToConstant:44.0];
     v13[0] = v5;
-    v6 = [v3 heightAnchor];
-    v7 = [v3 widthAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    heightAnchor = [v3 heightAnchor];
+    widthAnchor2 = [v3 widthAnchor];
+    v8 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v13[1] = v8;
     v9 = [NSArray arrayWithObjects:v13 count:2];
     [NSLayoutConstraint activateConstraints:v9];

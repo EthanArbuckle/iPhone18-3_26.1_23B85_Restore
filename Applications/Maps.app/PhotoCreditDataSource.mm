@@ -1,33 +1,33 @@
 @interface PhotoCreditDataSource
-+ (void)registerCellsInCollectionView:(id)a3;
++ (void)registerCellsInCollectionView:(id)view;
 - (PhotoCreditChangesDelegate)photoCreditChangesDelegate;
 - (PhotoCreditDataSource)init;
 - (SupplementaryElementsDataSourceDelegate)privacyDelegate;
-- (double)footerHeightForCollectionView:(id)a3;
+- (double)footerHeightForCollectionView:(id)view;
 - (id)_footerLinkText;
 - (id)_footerText;
 - (id)_photoCreditNameValidationErrorMessage;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)_photoCreditDidUpdate;
 - (void)fetchPhotoCreditPreferences;
 - (void)prepareContent;
 - (void)privacyTextTapped;
-- (void)updatePhotoCreditPreferencesWithCompletion:(id)a3;
+- (void)updatePhotoCreditPreferencesWithCompletion:(id)completion;
 @end
 
 @implementation PhotoCreditDataSource
 
-+ (void)registerCellsInCollectionView:(id)a3
++ (void)registerCellsInCollectionView:(id)view
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___PhotoCreditDataSource;
-  v3 = a3;
-  objc_msgSendSuper2(&v7, "registerCellsInCollectionView:", v3);
+  viewCopy = view;
+  objc_msgSendSuper2(&v7, "registerCellsInCollectionView:", viewCopy);
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:{v6, v7.receiver, v7.super_class}];
+  [viewCopy registerClass:v4 forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:{v6, v7.receiver, v7.super_class}];
 }
 
 - (SupplementaryElementsDataSourceDelegate)privacyDelegate
@@ -58,53 +58,53 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[Photo Credit] Footer string." value:@"localized string not found" table:0];
-  v5 = [(PhotoCreditDataSource *)self _footerLinkText];
-  v6 = [NSString stringWithFormat:v4, v5];
+  _footerLinkText = [(PhotoCreditDataSource *)self _footerLinkText];
+  v6 = [NSString stringWithFormat:v4, _footerLinkText];
 
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = PhotoCreditDataSource;
-  v4 = [(PreferenceValuesDataSource *)&v8 collectionView:a3 cellForItemAtIndexPath:a4];
+  v4 = [(PreferenceValuesDataSource *)&v8 collectionView:view cellForItemAtIndexPath:path];
   v5 = +[UIBackgroundConfiguration listCellConfiguration];
-  v6 = [v5 backgroundColor];
-  [v4 setBackgroundColor:v6];
+  backgroundColor = [v5 backgroundColor];
+  [v4 setBackgroundColor:backgroundColor];
 
   return v4;
 }
 
 - (void)_photoCreditDidUpdate
 {
-  v3 = [(PhotoCreditDataSource *)self photoCreditTextFieldDoesContainText];
-  v4 = [(PhotoCreditDataSource *)self photoCreditChangesDelegate];
-  [v4 updateAppearanceForPhotoCredit:self->_photoCredit photoCreditNameExists:v3];
+  photoCreditTextFieldDoesContainText = [(PhotoCreditDataSource *)self photoCreditTextFieldDoesContainText];
+  photoCreditChangesDelegate = [(PhotoCreditDataSource *)self photoCreditChangesDelegate];
+  [photoCreditChangesDelegate updateAppearanceForPhotoCredit:self->_photoCredit photoCreditNameExists:photoCreditTextFieldDoesContainText];
 }
 
 - (void)privacyTextTapped
 {
-  v2 = [(PhotoCreditDataSource *)self privacyDelegate];
-  [v2 didTapOnPrivacyText];
+  privacyDelegate = [(PhotoCreditDataSource *)self privacyDelegate];
+  [privacyDelegate didTapOnPrivacyText];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100762C4C;
   v31[3] = &unk_1016285B8;
-  v10 = v8;
+  v10 = viewCopy;
   v32 = v10;
-  v11 = v9;
+  v11 = pathCopy;
   v33 = v11;
-  v34 = self;
-  v12 = a4;
+  selfCopy = self;
+  kindCopy = kind;
   v13 = objc_retainBlock(v31);
-  v14 = [v12 isEqualToString:UICollectionElementKindSectionFooter];
+  v14 = [kindCopy isEqualToString:UICollectionElementKindSectionFooter];
 
   if (v14)
   {
@@ -118,12 +118,12 @@
     v30 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
 
     v17 = [NSMutableAttributedString alloc];
-    v18 = [(PhotoCreditDataSource *)self _footerText];
-    v19 = [v17 initWithString:v18 attributes:v30];
+    _footerText = [(PhotoCreditDataSource *)self _footerText];
+    v19 = [v17 initWithString:_footerText attributes:v30];
 
-    v20 = [(PhotoCreditDataSource *)self _footerText];
-    v21 = [(PhotoCreditDataSource *)self _footerLinkText];
-    v22 = [v20 rangeOfString:v21];
+    _footerText2 = [(PhotoCreditDataSource *)self _footerText];
+    _footerLinkText = [(PhotoCreditDataSource *)self _footerLinkText];
+    v22 = [_footerText2 rangeOfString:_footerLinkText];
     v23 = v10;
     v25 = v24;
 
@@ -143,16 +143,16 @@
   return v28;
 }
 
-- (double)footerHeightForCollectionView:(id)a3
+- (double)footerHeightForCollectionView:(id)view
 {
-  [a3 frame];
+  [view frame];
   v5 = v4 + -32.0;
   height = UILayoutFittingExpandedSize.height;
   v7 = [(MapsThemeCollectionReusableView *)[UserProfileSectionFooterView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v8 = [UserProfileSectionFooterViewModel alloc];
   v9 = [NSAttributedString alloc];
-  v10 = [(PhotoCreditDataSource *)self _footerText];
-  v11 = [v9 initWithString:v10];
+  _footerText = [(PhotoCreditDataSource *)self _footerText];
+  v11 = [v9 initWithString:_footerText];
   v12 = [(UserProfileSectionFooterViewModel *)v8 initWithContentString:v11];
 
   [(UserProfileSectionFooterView *)v7 configureWithViewModel:v12];
@@ -206,15 +206,15 @@
   return v11;
 }
 
-- (void)updatePhotoCreditPreferencesWithCompletion:(id)a3
+- (void)updatePhotoCreditPreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_didChangeAttributionPreferences)
   {
-    v6 = [(PhotoCreditDataSource *)self _photoCreditNameValidationErrorMessage];
-    v7 = v6;
-    if (!self->_photoCredit || v6 == 0)
+    _photoCreditNameValidationErrorMessage = [(PhotoCreditDataSource *)self _photoCreditNameValidationErrorMessage];
+    v7 = _photoCreditNameValidationErrorMessage;
+    if (!self->_photoCredit || _photoCreditNameValidationErrorMessage == 0)
     {
       v9 = +[UGCPhotoAttributionPreferencesManager sharedManager];
       photoCredit = self->_photoCredit;
@@ -229,13 +229,13 @@
 
     else
     {
-      v5[2](v5, v6);
+      v5[2](v5, _photoCreditNameValidationErrorMessage);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

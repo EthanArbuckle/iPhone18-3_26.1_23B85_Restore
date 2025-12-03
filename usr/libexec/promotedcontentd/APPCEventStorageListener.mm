@@ -1,7 +1,7 @@
 @interface APPCEventStorageListener
 + (id)sharedInstance;
-- (BOOL)_metricCanBeStored:(id)a3;
-- (void)_storeMetric:(id)a3;
+- (BOOL)_metricCanBeStored:(id)stored;
+- (void)_storeMetric:(id)metric;
 - (void)start;
 @end
 
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_10037BBB8;
   block[3] = &unk_10047E780;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1004EA1E0 != -1)
   {
     dispatch_once(&qword_1004EA1E0, block);
@@ -27,22 +27,22 @@
 - (void)start
 {
   v27 = [APConfigurationMediator configurationForClass:objc_opt_class()];
-  v2 = [v27 supportedPurposes];
-  v3 = v2;
+  supportedPurposes = [v27 supportedPurposes];
+  v3 = supportedPurposes;
   v4 = &off_1004948A8;
-  if (v2)
+  if (supportedPurposes)
   {
-    v4 = v2;
+    v4 = supportedPurposes;
   }
 
   v5 = v4;
 
-  v6 = [v27 supportedBundleIds];
-  v7 = v6;
+  supportedBundleIds = [v27 supportedBundleIds];
+  v7 = supportedBundleIds;
   v8 = &off_1004948C0;
-  if (v6)
+  if (supportedBundleIds)
   {
-    v8 = v6;
+    v8 = supportedBundleIds;
   }
 
   v9 = v8;
@@ -85,8 +85,8 @@
 
         v21 = *(*(&v30 + 1) + 8 * i);
         v22 = +[MetricsModule storage];
-        v23 = [v22 notificationRegistrar];
-        v24 = [v23 registerHandlerForPurpose:objc_msgSend(v21 closure:{"integerValue"), v16}];
+        notificationRegistrar = [v22 notificationRegistrar];
+        v24 = [notificationRegistrar registerHandlerForPurpose:objc_msgSend(v21 closure:{"integerValue"), v16}];
 
         v25 = [NSNumber numberWithInteger:v24];
         [v17 addObject:v25];
@@ -105,14 +105,14 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_metricCanBeStored:(id)a3
+- (BOOL)_metricCanBeStored:(id)stored
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if ([v5 length])
+  storedCopy = stored;
+  bundleIdentifier = [storedCopy bundleIdentifier];
+  if ([bundleIdentifier length])
   {
-    v6 = [(APPCEventStorageListener *)self allowList];
-    v7 = [v6 containsObject:v5];
+    allowList = [(APPCEventStorageListener *)self allowList];
+    v7 = [allowList containsObject:bundleIdentifier];
   }
 
   else
@@ -122,14 +122,14 @@
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [v4 metric];
-      v12 = [v4 contentIdentifier];
+      metric = [storedCopy metric];
+      contentIdentifier = [storedCopy contentIdentifier];
       v14 = 138478339;
       v15 = v9;
       v16 = 2048;
-      v17 = v11;
+      v17 = metric;
       v18 = 2114;
-      v19 = v12;
+      v19 = contentIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{private}@] BundleID is nil for metric %ld for contentIdentifier %{public}@", &v14, 0x20u);
     }
 
@@ -139,15 +139,15 @@
   return v7;
 }
 
-- (void)_storeMetric:(id)a3
+- (void)_storeMetric:(id)metric
 {
-  v7 = a3;
+  metricCopy = metric;
   if ([(APPCEventStorageListener *)self _metricCanBeStored:?])
   {
-    v4 = [(APPCEventStorageListener *)self eventProcessor];
+    eventProcessor = [(APPCEventStorageListener *)self eventProcessor];
     v5 = +[APIDAccountProvider privateUserAccount];
-    v6 = [v5 accountToken];
-    [v4 processMetric:v7 accountToken:v6];
+    accountToken = [v5 accountToken];
+    [eventProcessor processMetric:metricCopy accountToken:accountToken];
   }
 }
 

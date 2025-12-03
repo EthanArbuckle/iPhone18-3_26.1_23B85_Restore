@@ -1,8 +1,8 @@
 @interface WFToolKitContentPropertyPossibleValuesDefinition
 - (Class)contentItemClass;
 - (NSString)propertyName;
-- (void)setContentItemClass:(Class)a3;
-- (void)setPropertyName:(id)a3;
+- (void)setContentItemClass:(Class)class;
+- (void)setPropertyName:(id)name;
 @end
 
 @implementation WFToolKitContentPropertyPossibleValuesDefinition
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (void)setContentItemClass:(Class)a3
+- (void)setContentItemClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (void)setPropertyName:(id)a3
+- (void)setPropertyName:(id)name
 {
   sub_10008A268();
-  v4 = self;
+  selfCopy = self;
   ToolKitHelper.ContentPropertyPossibleValuesDefinition.propertyName.setter();
 }
 

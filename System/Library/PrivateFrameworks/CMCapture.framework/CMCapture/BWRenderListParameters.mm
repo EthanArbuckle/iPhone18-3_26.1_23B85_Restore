@@ -1,12 +1,12 @@
 @interface BWRenderListParameters
-- (BWRenderListParameters)initWithParameterList:(BWRenderListParameterList *)a3;
+- (BWRenderListParameters)initWithParameterList:(BWRenderListParameterList *)list;
 - (NSString)description;
 - (void)dealloc;
 @end
 
 @implementation BWRenderListParameters
 
-- (BWRenderListParameters)initWithParameterList:(BWRenderListParameterList *)a3
+- (BWRenderListParameters)initWithParameterList:(BWRenderListParameterList *)list
 {
   v13.receiver = self;
   v13.super_class = BWRenderListParameters;
@@ -15,10 +15,10 @@
   if (v4)
   {
     v4->_parameterList.slh_first = 0;
-    if (a3)
+    if (list)
     {
-      slh_first = a3->slh_first;
-      if (a3->slh_first)
+      slh_first = list->slh_first;
+      if (list->slh_first)
       {
         v7 = 0;
         do

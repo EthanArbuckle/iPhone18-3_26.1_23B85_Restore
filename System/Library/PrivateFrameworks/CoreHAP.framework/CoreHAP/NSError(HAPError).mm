@@ -16,10 +16,10 @@
 
 - (uint64_t)isHAPOperationDelayed
 {
-  result = [a1 isHAPError];
+  result = [self isHAPError];
   if (result)
   {
-    return [a1 code] == 40;
+    return [self code] == 40;
   }
 
   return result;
@@ -27,8 +27,8 @@
 
 - (uint64_t)isHAPError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"HAPErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"HAPErrorDomain"];
 
   return v2;
 }
@@ -291,22 +291,22 @@
     v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:4];
     if (v11)
     {
-      v18 = [MEMORY[0x277CCA8D8] mainBundle];
-      v19 = [v18 localizedStringForKey:v11 value:&stru_283E79C60 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v19 = [mainBundle localizedStringForKey:v11 value:&stru_283E79C60 table:0];
       [v17 setObject:v19 forKeyedSubscript:*MEMORY[0x277CCA450]];
     }
 
     if (v12)
     {
-      v20 = [MEMORY[0x277CCA8D8] mainBundle];
-      v21 = [v20 localizedStringForKey:v12 value:&stru_283E79C60 table:0];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v21 = [mainBundle2 localizedStringForKey:v12 value:&stru_283E79C60 table:0];
       [v17 setObject:v21 forKeyedSubscript:*MEMORY[0x277CCA470]];
     }
 
     if (v13)
     {
-      v22 = [MEMORY[0x277CCA8D8] mainBundle];
-      v23 = [v22 localizedStringForKey:v13 value:&stru_283E79C60 table:0];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v23 = [mainBundle3 localizedStringForKey:v13 value:&stru_283E79C60 table:0];
       [v17 setObject:v23 forKeyedSubscript:*MEMORY[0x277CCA498]];
     }
 

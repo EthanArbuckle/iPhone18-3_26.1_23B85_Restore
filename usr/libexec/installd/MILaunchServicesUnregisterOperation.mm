@@ -1,42 +1,42 @@
 @interface MILaunchServicesUnregisterOperation
-- (BOOL)isEqual:(id)a3;
-- (MILaunchServicesUnregisterOperation)initWithBundleID:(id)a3 domain:(unint64_t)a4 registrationUUID:(id)a5 serialNumber:(unint64_t)a6;
-- (MILaunchServicesUnregisterOperation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MILaunchServicesUnregisterOperation)initWithBundleID:(id)d domain:(unint64_t)domain registrationUUID:(id)iD serialNumber:(unint64_t)number;
+- (MILaunchServicesUnregisterOperation)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MILaunchServicesUnregisterOperation
 
-- (MILaunchServicesUnregisterOperation)initWithBundleID:(id)a3 domain:(unint64_t)a4 registrationUUID:(id)a5 serialNumber:(unint64_t)a6
+- (MILaunchServicesUnregisterOperation)initWithBundleID:(id)d domain:(unint64_t)domain registrationUUID:(id)iD serialNumber:(unint64_t)number
 {
-  v11 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = MILaunchServicesUnregisterOperation;
-  v12 = [(MILaunchServicesOperation *)&v15 initWithOperationUUID:a5 serialNumber:a6];
+  v12 = [(MILaunchServicesOperation *)&v15 initWithOperationUUID:iD serialNumber:number];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleID, a3);
-    v13->_domain = a4;
+    objc_storeStrong(&v12->_bundleID, d);
+    v13->_domain = domain;
   }
 
   return v13;
 }
 
-- (MILaunchServicesUnregisterOperation)initWithCoder:(id)a3
+- (MILaunchServicesUnregisterOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = MILaunchServicesUnregisterOperation;
-  v5 = [(MILaunchServicesOperation *)&v20 initWithCoder:v4];
+  v5 = [(MILaunchServicesOperation *)&v20 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
   bundleID = v5->_bundleID;
   v5->_bundleID = v6;
 
@@ -47,13 +47,13 @@
     v14 = 42;
 LABEL_7:
     v16 = sub_100010734("[MILaunchServicesUnregisterOperation initWithCoder:]", v14, v12, 186, 0, 0, v13, v8, v18);
-    [v4 failWithError:v16];
+    [coderCopy failWithError:v16];
 
     v11 = 0;
     goto LABEL_8;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   v5->_domain = [v9 unsignedIntegerValue];
 
   domain = v5->_domain;
@@ -75,35 +75,35 @@ LABEL_8:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = MILaunchServicesUnregisterOperation;
-  v4 = a3;
-  [(MILaunchServicesOperation *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(MILaunchServicesOperation *)&v7 encodeWithCoder:coderCopy];
   v5 = [(MILaunchServicesUnregisterOperation *)self bundleID:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleID"];
+  [coderCopy encodeObject:v5 forKey:@"bundleID"];
 
   v6 = [NSNumber numberWithUnsignedInteger:[(MILaunchServicesUnregisterOperation *)self domain]];
-  [v4 encodeObject:v6 forKey:@"domain"];
+  [coderCopy encodeObject:v6 forKey:@"domain"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = MILaunchServicesUnregisterOperation;
-  if ([(MILaunchServicesOperation *)&v12 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(MILaunchServicesOperation *)&v12 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(MILaunchServicesUnregisterOperation *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = sub_100011064(v6, v7);
+    v5 = equalCopy;
+    bundleID = [(MILaunchServicesUnregisterOperation *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = sub_100011064(bundleID, bundleID2);
 
     if (v8)
     {
-      v9 = [v5 domain];
-      v10 = v9 == [(MILaunchServicesUnregisterOperation *)self domain];
+      domain = [v5 domain];
+      v10 = domain == [(MILaunchServicesUnregisterOperation *)self domain];
     }
 
     else
@@ -125,8 +125,8 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = MILaunchServicesUnregisterOperation;
   v3 = [(MILaunchServicesOperation *)&v8 hash];
-  v4 = [(MILaunchServicesUnregisterOperation *)self bundleID];
-  v5 = [v4 hash];
+  bundleID = [(MILaunchServicesUnregisterOperation *)self bundleID];
+  v5 = [bundleID hash];
   v6 = v5 ^ [(MILaunchServicesUnregisterOperation *)self domain];
 
   return v6 ^ v3;
@@ -136,12 +136,12 @@ LABEL_8:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MILaunchServicesOperation *)self operationUUID];
-  v6 = [(MILaunchServicesOperation *)self serialNumber];
-  v7 = [(MILaunchServicesUnregisterOperation *)self bundleID];
+  operationUUID = [(MILaunchServicesOperation *)self operationUUID];
+  serialNumber = [(MILaunchServicesOperation *)self serialNumber];
+  bundleID = [(MILaunchServicesUnregisterOperation *)self bundleID];
   [(MILaunchServicesUnregisterOperation *)self domain];
   v8 = MIStringForInstallationDomain();
-  v9 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@>", v4, v5, v6, v7, v8];
+  v9 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@>", v4, operationUUID, serialNumber, bundleID, v8];
 
   return v9;
 }

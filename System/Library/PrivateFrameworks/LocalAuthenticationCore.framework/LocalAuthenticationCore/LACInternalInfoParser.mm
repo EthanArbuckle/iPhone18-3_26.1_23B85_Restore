@@ -1,7 +1,7 @@
 @interface LACInternalInfoParser
 - (LACAuditToken)callerAuditToken;
 - (LACInternalInfoParser)init;
-- (LACInternalInfoParser)initWithInternalInfo:(id)a3;
+- (LACInternalInfoParser)initWithInternalInfo:(id)info;
 - (NSDictionary)internalInfo;
 - (NSDictionary)options;
 - (NSNumber)userId;
@@ -19,7 +19,7 @@
   return v3.super.isa;
 }
 
-- (LACInternalInfoParser)initWithInternalInfo:(id)a3
+- (LACInternalInfoParser)initWithInternalInfo:(id)info
 {
   *(self + OBJC_IVAR___LACInternalInfoParser_internalInfo) = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v5.receiver = self;
@@ -29,7 +29,7 @@
 
 - (LACAuditToken)callerAuditToken
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACInternalInfoParser.callerAuditToken.getter();
 
   return v3;
@@ -37,7 +37,7 @@
 
 - (NSNumber)userId
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACInternalInfoParser.userId.getter();
 
   return v3;
@@ -45,7 +45,7 @@
 
 - (NSDictionary)options
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACInternalInfoParser.options.getter();
 
   if (v3)
@@ -63,7 +63,7 @@
 
 - (int64_t)policy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LACInternalInfoParser.policy.getter();
 
   return v3;

@@ -1,8 +1,8 @@
 @interface TomatometerTableView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (NSArray)accessibilityItemViews;
-- (double)bottomMarginWithBaselineMargin:(double)a3;
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
+- (double)bottomMarginWithBaselineMargin:(double)margin;
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin;
 - (double)vuiBaselineHeight;
 - (double)vui_baselineOffsetFromBottom;
 - (void)vui_prepareForReuse;
@@ -10,11 +10,11 @@
 
 @implementation TomatometerTableView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  sub_1E39990F0(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E39990F0(only, width);
   v8 = v7;
   v10 = v9;
 
@@ -27,13 +27,13 @@
 
 - (void)vui_prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3999B64();
 }
 
 - (NSArray)accessibilityItemViews
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3999D94();
 
   if (v3)
@@ -45,27 +45,27 @@
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (double)vuiBaselineHeight
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E399A204();
   v4 = v3;
 
   return v4;
 }
 
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
-  v6 = a3;
-  v7 = self;
+  labelCopy = label;
+  selfCopy = self;
   v8 = OUTLINED_FUNCTION_50();
-  sub_1E399A300(v8, a4);
+  sub_1E399A300(v8, margin);
   v10 = v9;
 
   return v10;
@@ -73,17 +73,17 @@
 
 - (double)vui_baselineOffsetFromBottom
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E399A4BC();
   v4 = v3;
 
   return v4;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3
+- (double)bottomMarginWithBaselineMargin:(double)margin
 {
-  v4 = self;
-  sub_1E399A5BC(a3);
+  selfCopy = self;
+  sub_1E399A5BC(margin);
   v6 = v5;
 
   return v6;

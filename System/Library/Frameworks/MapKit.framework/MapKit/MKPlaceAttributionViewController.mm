@@ -4,8 +4,8 @@
 - (void)infoCardThemeChanged;
 - (void)loadView;
 - (void)openURL;
-- (void)setAttributionString:(id)a3;
-- (void)setMapItem:(id)a3;
+- (void)setAttributionString:(id)string;
+- (void)setMapItem:(id)item;
 - (void)updateLogo;
 - (void)viewDidLoad;
 @end
@@ -22,13 +22,13 @@
 - (void)openURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_analyticsDelegate);
-  v4 = [(MKPlaceAttributionViewController *)self mapItem];
-  v5 = [v4 _attribution];
-  v6 = [v5 providerID];
-  v7 = [(MKPlaceAttributionViewController *)self mapItem];
-  v8 = [v7 _attribution];
-  v9 = [v8 providerID];
-  [WeakRetained infoCardAnalyticsDidSelectAction:6023 eventValue:v6 feedbackDelegateSelector:180 actionRichProviderId:v9 classification:0];
+  mapItem = [(MKPlaceAttributionViewController *)self mapItem];
+  _attribution = [mapItem _attribution];
+  providerID = [_attribution providerID];
+  mapItem2 = [(MKPlaceAttributionViewController *)self mapItem];
+  _attribution2 = [mapItem2 _attribution];
+  providerID2 = [_attribution2 providerID];
+  [WeakRetained infoCardAnalyticsDidSelectAction:6023 eventValue:providerID feedbackDelegateSelector:180 actionRichProviderId:providerID2 classification:0];
 
   urlStrings = self->_urlStrings;
   attribution = self->_attribution;
@@ -36,28 +36,28 @@
   [MKAppLaunchController launchAttributionURLs:urlStrings withAttribution:attribution completionHandler:0];
 }
 
-- (void)setAttributionString:(id)a3
+- (void)setAttributionString:(id)string
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   attributionString = self->_attributionString;
-  if (v4)
+  if (stringCopy)
   {
-    if (([(NSAttributedString *)attributionString isEqual:v4]& 1) == 0)
+    if (([(NSAttributedString *)attributionString isEqual:stringCopy]& 1) == 0)
     {
-      v6 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-      v7 = [v6 mutableCopy];
+      defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+      v7 = [defaultParagraphStyle mutableCopy];
 
       [v7 setAlignment:4];
-      v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v4];
+      v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:stringCopy];
       v9 = *MEMORY[0x1E69DB688];
       v18[0] = v7;
       v10 = *MEMORY[0x1E69DB650];
       v17[0] = v9;
       v17[1] = v10;
-      v11 = [(UIViewController *)self mk_theme];
-      v12 = [v11 tintColor];
-      v18[1] = v12;
+      mk_theme = [(UIViewController *)self mk_theme];
+      tintColor = [mk_theme tintColor];
+      v18[1] = tintColor;
       v17[2] = *MEMORY[0x1E69DB648];
       v13 = +[MKPlaceAttributionCell fontForLabel];
       v18[2] = v13;
@@ -80,12 +80,12 @@
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_mapItem != itemCopy)
   {
-    objc_storeStrong(&self->_mapItem, a3);
+    objc_storeStrong(&self->_mapItem, item);
     if (self->_attributionCell)
     {
       [(MKPlaceAttributionViewController *)self updateLogo];
@@ -95,25 +95,25 @@
 
 - (id)infoAttributionString
 {
-  v3 = [(UIViewController *)self mk_theme];
-  v4 = [v3 isDarkTheme];
+  mk_theme = [(UIViewController *)self mk_theme];
+  isDarkTheme = [mk_theme isDarkTheme];
 
-  if (v4)
+  if (isDarkTheme)
   {
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v5 = 0;
+    whiteColor = 0;
   }
 
-  v6 = [(MKPlaceAttributionViewController *)self mapItem];
-  v7 = [(MKPlaceAttributionViewController *)self mapItem];
-  v8 = [v7 _attribution];
+  mapItem = [(MKPlaceAttributionViewController *)self mapItem];
+  mapItem2 = [(MKPlaceAttributionViewController *)self mapItem];
+  _attribution = [mapItem2 _attribution];
   v9 = _MKLocalizedStringFromThisBundle(@"Find out more on %@ ");
   v10 = _MKLocalizedStringFromThisBundle(@"Find out more on %@ ");
-  v11 = [v6 _attributionFor:v8 sourceStringFormat:v9 moreSourceStringFormat:v10 imageTintColor:v5];
+  v11 = [mapItem _attributionFor:_attribution sourceStringFormat:v9 moreSourceStringFormat:v10 imageTintColor:whiteColor];
 
   return v11;
 }
@@ -123,14 +123,14 @@
   v4.receiver = self;
   v4.super_class = MKPlaceAttributionViewController;
   [(UIViewController *)&v4 infoCardThemeChanged];
-  v3 = [(MKPlaceAttributionViewController *)self infoAttributionString];
-  [(MKPlaceAttributionViewController *)self setAttributionString:v3];
+  infoAttributionString = [(MKPlaceAttributionViewController *)self infoAttributionString];
+  [(MKPlaceAttributionViewController *)self setAttributionString:infoAttributionString];
 }
 
 - (void)updateLogo
 {
-  v3 = [(MKPlaceAttributionViewController *)self infoAttributionString];
-  [(MKPlaceAttributionViewController *)self setAttributionString:v3];
+  infoAttributionString = [(MKPlaceAttributionViewController *)self infoAttributionString];
+  [(MKPlaceAttributionViewController *)self setAttributionString:infoAttributionString];
 
   attributionCell = self->_attributionCell;
   attributionString = self->_attributionString;

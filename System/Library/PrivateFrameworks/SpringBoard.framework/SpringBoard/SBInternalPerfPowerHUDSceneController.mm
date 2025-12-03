@@ -1,11 +1,11 @@
 @interface SBInternalPerfPowerHUDSceneController
 + (id)_setupInfo;
 - (FBScene)backlightParticipantScene;
-- (id)_newSceneControllerForWindowScene:(id)a3 sceneRequestOptions:(id)a4 traitsRole:(id)a5 level:(double)a6;
+- (id)_newSceneControllerForWindowScene:(id)scene sceneRequestOptions:(id)options traitsRole:(id)role level:(double)level;
 - (id)scenesForBacklightSession;
 - (void)_configureBacklightEnvironmentSceneProviderIfNecessary;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBInternalPerfPowerHUDSceneController
@@ -31,34 +31,34 @@
 {
   if (!self->_registeredBacklightSceneProvider)
   {
-    v3 = [SBApp backlightEnvironmentSessionProvider];
-    [v3 registerBacklightEnvironmentSceneProvider:self];
+    backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+    [backlightEnvironmentSessionProvider registerBacklightEnvironmentSceneProvider:self];
 
     self->_registeredBacklightSceneProvider = 1;
   }
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v6 = a3;
+  connectCopy = connect;
   WeakRetained = objc_loadWeakRetained(&self->_backlightParticipantScene);
 
   if (!WeakRetained)
   {
-    v5 = [(SBSystemUISceneController *)self _newAppSceneRequestOptionsForWindowScene:v6 withBlueprintOptions:0];
+    v5 = [(SBSystemUISceneController *)self _newAppSceneRequestOptionsForWindowScene:connectCopy withBlueprintOptions:0];
   }
 
   [(SBInternalPerfPowerHUDSceneController *)self _configureBacklightEnvironmentSceneProviderIfNecessary];
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v5.receiver = self;
   v5.super_class = SBInternalPerfPowerHUDSceneController;
-  [(SBSystemUISceneController *)&v5 windowSceneDidDisconnect:a3];
+  [(SBSystemUISceneController *)&v5 windowSceneDidDisconnect:disconnect];
   objc_storeWeak(&self->_backlightParticipantScene, 0);
-  v4 = [SBApp backlightEnvironmentSessionProvider];
-  [v4 unregisterBacklightEnvironmentSceneProvider:self];
+  backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider unregisterBacklightEnvironmentSceneProvider:self];
 
   self->_registeredBacklightSceneProvider = 0;
 }
@@ -86,16 +86,16 @@
   return v3;
 }
 
-- (id)_newSceneControllerForWindowScene:(id)a3 sceneRequestOptions:(id)a4 traitsRole:(id)a5 level:(double)a6
+- (id)_newSceneControllerForWindowScene:(id)scene sceneRequestOptions:(id)options traitsRole:(id)role level:(double)level
 {
   v11.receiver = self;
   v11.super_class = SBInternalPerfPowerHUDSceneController;
-  v7 = [(SBSystemUISceneController *)&v11 _newSceneControllerForWindowScene:a3 sceneRequestOptions:a4 traitsRole:a5 level:a6];
-  v8 = [v7 scene];
-  objc_storeWeak(&self->_backlightParticipantScene, v8);
+  v7 = [(SBSystemUISceneController *)&v11 _newSceneControllerForWindowScene:scene sceneRequestOptions:options traitsRole:role level:level];
+  scene = [v7 scene];
+  objc_storeWeak(&self->_backlightParticipantScene, scene);
 
-  v9 = [SBApp backlightEnvironmentSessionProvider];
-  [v9 invalidateBacklightScenesForProvider:self];
+  backlightEnvironmentSessionProvider = [SBApp backlightEnvironmentSessionProvider];
+  [backlightEnvironmentSessionProvider invalidateBacklightScenesForProvider:self];
 
   return v7;
 }

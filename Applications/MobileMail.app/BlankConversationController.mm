@@ -2,8 +2,8 @@
 + (OS_os_log)log;
 - (BlankConversationController)init;
 - (void)conversationViewDidLoadMessageSuccessfully;
-- (void)conversationViewIsBlankWithReason:(int64_t)a3;
-- (void)conversationViewWebViewCrashedWithReason:(int64_t)a3 isBackgrounded:(BOOL)a4;
+- (void)conversationViewIsBlankWithReason:(int64_t)reason;
+- (void)conversationViewWebViewCrashedWithReason:(int64_t)reason isBackgrounded:(BOOL)backgrounded;
 - (void)conversationViewWebViewDidLoadMessage;
 - (void)reportMetrics;
 @end
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_100048C70;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCDC8 != -1)
   {
     dispatch_once(&qword_1006DCDC8, block);
@@ -59,7 +59,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)conversationViewIsBlankWithReason:(int64_t)a3
+- (void)conversationViewIsBlankWithReason:(int64_t)reason
 {
   os_unfair_lock_lock(&self->_lock);
   [(BlankConversationController *)self setNumberOfLoadAttempts:[(BlankConversationController *)self numberOfLoadAttempts]+ 1];
@@ -75,8 +75,8 @@
   }
 
   v6 = blankConversationViewReasons;
-  v7 = [NSString stringWithFormat:@"Reason_%ld", a3];
-  v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v7];
+  reason = [NSString stringWithFormat:@"Reason_%ld", reason];
+  v8 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:reason];
   v9 = v8;
   v10 = &off_100673D60;
   if (v8)
@@ -87,7 +87,7 @@
   v11 = v10;
 
   v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 integerValue] + 1);
-  [(NSMutableDictionary *)v6 setObject:v12 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)v6 setObject:v12 forKeyedSubscript:reason];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -100,12 +100,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)conversationViewWebViewCrashedWithReason:(int64_t)a3 isBackgrounded:(BOOL)a4
+- (void)conversationViewWebViewCrashedWithReason:(int64_t)reason isBackgrounded:(BOOL)backgrounded
 {
-  v4 = a4;
+  backgroundedCopy = backgrounded;
   os_unfair_lock_lock(&self->_lock);
   [(BlankConversationController *)self setNumberOfWebViewLoads:[(BlankConversationController *)self numberOfWebViewLoads]+ 1];
-  if (v4)
+  if (backgroundedCopy)
   {
     [(BlankConversationController *)self setNumberOfBackgroundWebViewCrashes:[(BlankConversationController *)self numberOfBackgroundWebViewCrashes]+ 1];
   }
@@ -115,7 +115,7 @@
     [(BlankConversationController *)self setNumberOfForegroundWebViewCrashes:[(BlankConversationController *)self numberOfForegroundWebViewCrashes]+ 1];
   }
 
-  v7 = [NSString stringWithFormat:@"Reason_%ld", a3];
+  reason = [NSString stringWithFormat:@"Reason_%ld", reason];
   if (self)
   {
     webViewCrashReasons = self->_webViewCrashReasons;
@@ -127,7 +127,7 @@
   }
 
   v9 = webViewCrashReasons;
-  v10 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)v9 objectForKeyedSubscript:reason];
   v11 = v10;
   v12 = &off_100673D60;
   if (v10)
@@ -138,7 +138,7 @@
   v13 = v12;
 
   v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v13 integerValue] + 1);
-  [(NSMutableDictionary *)v9 setObject:v14 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)v9 setObject:v14 forKeyedSubscript:reason];
 
   os_unfair_lock_unlock(&self->_lock);
 }

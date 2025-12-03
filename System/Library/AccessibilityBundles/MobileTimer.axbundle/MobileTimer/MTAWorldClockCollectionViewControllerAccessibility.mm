@@ -1,30 +1,30 @@
 @interface MTAWorldClockCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)nameForWorldClockCell:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)nameForWorldClockCell:(id)cell;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axModifyCollectionView;
 - (void)_axModifyReorderingGesture;
 - (void)_installReorderingGestureIfNecessary;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)movedItemAtIndexPath:(id)a3 toIndexPath:(id)a4;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)movedItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
 @implementation MTAWorldClockCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAWorldClockCollectionCell"];
-  [v3 validateClass:@"MTAWorldClockView"];
-  [v3 validateClass:@"WorldClockCity"];
-  [v3 validateClass:@"UICollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"worldClockView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MTAWorldClockView" hasInstanceMethod:@"city" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WorldClockCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewController" hasInstanceVariable:@"_reorderingGesture" withType:"UILongPressGestureRecognizer"];
-  [v3 validateClass:@"UICollectionViewController" hasInstanceMethod:@"_installReorderingGestureIfNecessary" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAWorldClockCollectionCell"];
+  [validationsCopy validateClass:@"MTAWorldClockView"];
+  [validationsCopy validateClass:@"WorldClockCity"];
+  [validationsCopy validateClass:@"UICollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"MTAWorldClockCollectionCell" hasInstanceMethod:@"worldClockView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MTAWorldClockView" hasInstanceMethod:@"city" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WorldClockCity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewController" hasInstanceVariable:@"_reorderingGesture" withType:"UILongPressGestureRecognizer"];
+  [validationsCopy validateClass:@"UICollectionViewController" hasInstanceMethod:@"_installReorderingGestureIfNecessary" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -44,12 +44,12 @@
   [(MTAWorldClockCollectionViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (id)nameForWorldClockCell:(id)a3
+- (id)nameForWorldClockCell:(id)cell
 {
-  v3 = a3;
-  if (v3 && (MEMORY[0x29C2E1AE0](@"MTAWorldClockCollectionCell"), (objc_opt_isKindOfClass() & 1) != 0))
+  cellCopy = cell;
+  if (cellCopy && (MEMORY[0x29C2E1AE0](@"MTAWorldClockCollectionCell"), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 safeValueForKey:@"worldClockView"];
+    v4 = [cellCopy safeValueForKey:@"worldClockView"];
     v5 = [v4 safeValueForKey:@"city"];
     objc_opt_class();
     v6 = [v5 safeValueForKey:@"name"];
@@ -64,24 +64,24 @@
   return v7;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v28.receiver = self;
   v28.super_class = MTAWorldClockCollectionViewControllerAccessibility;
-  [(MTAWorldClockCollectionViewControllerAccessibility *)&v28 collectionView:v8 moveItemAtIndexPath:v9 toIndexPath:v10];
-  v11 = [v8 numberOfItemsInSection:{objc_msgSend(v10, "section")}];
+  [(MTAWorldClockCollectionViewControllerAccessibility *)&v28 collectionView:viewCopy moveItemAtIndexPath:pathCopy toIndexPath:indexPathCopy];
+  v11 = [viewCopy numberOfItemsInSection:{objc_msgSend(indexPathCopy, "section")}];
   if (v11 >= 2)
   {
     v12 = v11;
     objc_opt_class();
-    v13 = [v8 cellForItemAtIndexPath:v10];
+    v13 = [viewCopy cellForItemAtIndexPath:indexPathCopy];
     v14 = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
-    v15 = [v8 cellForItemAtIndexPath:v9];
+    v15 = [viewCopy cellForItemAtIndexPath:pathCopy];
     v16 = __UIAccessibilityCastAsClass();
 
     if (!v14 || !v16)
@@ -90,11 +90,11 @@
     }
 
     v17 = [(MTAWorldClockCollectionViewControllerAccessibility *)self nameForWorldClockCell:v14];
-    if ([v10 row] == v12 - 1)
+    if ([indexPathCopy row] == v12 - 1)
     {
       objc_opt_class();
-      v18 = [MEMORY[0x29EDB9FE0] indexPathForRow:objc_msgSend(v10 inSection:{"row") - 1, objc_msgSend(v10, "section")}];
-      v19 = [v8 cellForItemAtIndexPath:v18];
+      v18 = [MEMORY[0x29EDB9FE0] indexPathForRow:objc_msgSend(indexPathCopy inSection:{"row") - 1, objc_msgSend(indexPathCopy, "section")}];
+      v19 = [viewCopy cellForItemAtIndexPath:v18];
       v20 = __UIAccessibilityCastAsClass();
 
       v21 = @"clock.moved.after";
@@ -107,8 +107,8 @@
     else
     {
       objc_opt_class();
-      v22 = [MEMORY[0x29EDB9FE0] indexPathForRow:objc_msgSend(v10 inSection:{"row") + 1, objc_msgSend(v10, "section")}];
-      v23 = [v8 cellForItemAtIndexPath:v22];
+      v22 = [MEMORY[0x29EDB9FE0] indexPathForRow:objc_msgSend(indexPathCopy inSection:{"row") + 1, objc_msgSend(indexPathCopy, "section")}];
+      v23 = [viewCopy cellForItemAtIndexPath:v22];
       v20 = __UIAccessibilityCastAsClass();
 
       v21 = @"clock.moved.before";
@@ -133,12 +133,12 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)movedItemAtIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)movedItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 row];
-  v9 = [v7 row];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v8 = [pathCopy row];
+  v9 = [indexPathCopy row];
   v10 = @"clock.moving.before";
   if (v8 < v9)
   {
@@ -148,7 +148,7 @@ LABEL_11:
   v11 = v10;
   v12 = [(MTAWorldClockCollectionViewControllerAccessibility *)self safeValueForKey:@"collectionView"];
   objc_opt_class();
-  v13 = [v12 cellForItemAtIndexPath:v7];
+  v13 = [v12 cellForItemAtIndexPath:indexPathCopy];
   v14 = __UIAccessibilityCastAsClass();
 
   if (v14)

@@ -1,18 +1,18 @@
 @interface TSWPPhonetics
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)orderedTranscriberIDsForLanguage:(int)a3;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)orderedTranscriberIDsForLanguage:(int)language;
 + (id)sharedDictionary;
 - (TSWPPhonetics)init;
-- (id)pronunciationSuggestionsForBaseText:(id)a3 locale:(id)a4 language:(int)a5;
-- (id)transcriberForBaseText:(id)a3 range:(_NSRange)a4 documentLocale:(id)a5 outLanguageLocale:(id *)a6 outTextLanguageCode:(int *)a7;
+- (id)pronunciationSuggestionsForBaseText:(id)text locale:(id)locale language:(int)language;
+- (id)transcriberForBaseText:(id)text range:(_NSRange)range documentLocale:(id)locale outLanguageLocale:(id *)languageLocale outTextLanguageCode:(int *)code;
 @end
 
 @implementation TSWPPhonetics
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSWPPhonetics;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_276E04BA0;
   block[3] = &unk_27A6F3D70;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A58480 != -1)
   {
     dispatch_once(&qword_280A58480, block);
@@ -34,7 +34,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSWPPhonetics allocWithZone:]");
@@ -76,10 +76,10 @@
   return v2;
 }
 
-+ (id)orderedTranscriberIDsForLanguage:(int)a3
++ (id)orderedTranscriberIDsForLanguage:(int)language
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(language)
   {
     case 0:
       v9[0] = @"Pinyin";
@@ -115,16 +115,16 @@ LABEL_7:
   return v5;
 }
 
-- (id)transcriberForBaseText:(id)a3 range:(_NSRange)a4 documentLocale:(id)a5 outLanguageLocale:(id *)a6 outTextLanguageCode:(int *)a7
+- (id)transcriberForBaseText:(id)text range:(_NSRange)range documentLocale:(id)locale outLanguageLocale:(id *)languageLocale outTextLanguageCode:(int *)code
 {
-  length = a4.length;
-  location = a4.location;
-  v12 = a3;
-  v15 = a5;
-  v67 = a7;
-  if (a7)
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  localeCopy = locale;
+  codeCopy = code;
+  if (code)
   {
-    if (a6)
+    if (languageLocale)
     {
       goto LABEL_3;
     }
@@ -138,7 +138,7 @@ LABEL_7:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v52, v56, v53, v55, 97, 0, "invalid nil value for '%{public}s'", "outTextLanguage");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v57, v58);
-    if (a6)
+    if (languageLocale)
     {
       goto LABEL_3;
     }
@@ -151,15 +151,15 @@ LABEL_7:
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v64, v65);
 LABEL_3:
-  v16 = objc_msgSend_languageCode(v15, v13, v14);
+  v16 = objc_msgSend_languageCode(localeCopy, v13, v14);
   v19 = sub_276D39910(v16, v17, v18);
 
   v70.location = location;
   v70.length = length;
-  v22 = CFStringTokenizerCopyBestStringLanguage(v12, v70);
+  v22 = CFStringTokenizerCopyBestStringLanguage(textCopy, v70);
   if (!v22)
   {
-    v23 = objc_msgSend_substringWithRange_(v12, v20, location, length);
+    v23 = objc_msgSend_substringWithRange_(textCopy, v20, location, length);
     v71.location = location;
     v71.length = length;
     v22 = CFStringTokenizerCopyBestStringLanguage(v23, v71);
@@ -176,7 +176,7 @@ LABEL_3:
 
   if (v19 == 2 && sub_276D39910(v22, v28, v29) != 2)
   {
-    v31 = objc_msgSend_substringWithRange_(v12, v30, location, length);
+    v31 = objc_msgSend_substringWithRange_(textCopy, v30, location, length);
     v34 = objc_msgSend_length(v31, v32, v33);
     v36 = objc_msgSend_linguisticTagsInRange_scheme_options_orthography_tokenRanges_(v31, v35, 0, v34, *MEMORY[0x277CCA400], 4, 0, 0);
     if (objc_msgSend_count(v36, v37, v38))
@@ -199,30 +199,30 @@ LABEL_3:
 
   if (v24 == 7)
   {
-    v47 = v15;
+    v47 = localeCopy;
   }
 
   else
   {
-    v47 = sub_276D39F7C(v24, v15);
+    v47 = sub_276D39F7C(v24, localeCopy);
   }
 
   v48 = v47;
-  *v67 = v24;
-  *a6 = v47;
+  *codeCopy = v24;
+  *languageLocale = v47;
   v50 = objc_msgSend_transcriberWithIdentifier_(self, v49, v27);
 
   return v50;
 }
 
-- (id)pronunciationSuggestionsForBaseText:(id)a3 locale:(id)a4 language:(int)a5
+- (id)pronunciationSuggestionsForBaseText:(id)text locale:(id)locale language:(int)language
 {
-  v5 = *&a5;
+  v5 = *&language;
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  textCopy = text;
+  localeCopy = locale;
   v49 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11);
-  v12 = self;
+  selfCopy = self;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v50 = 0u;
   v51 = 0u;
@@ -244,20 +244,20 @@ LABEL_3:
           objc_enumerationMutation(obj);
         }
 
-        v21 = objc_msgSend_transcriberWithIdentifier_(v12, v17, *(*(&v50 + 1) + 8 * i));
-        v23 = objc_msgSend_transcribeText_withLocale_(v21, v22, v8, v9);
+        v21 = objc_msgSend_transcriberWithIdentifier_(selfCopy, v17, *(*(&v50 + 1) + 8 * i));
+        v23 = objc_msgSend_transcribeText_withLocale_(v21, v22, textCopy, localeCopy);
         if (objc_msgSend_length(v23, v24, v25) && (objc_msgSend_containsObject_(v13, v26, v23) & 1) == 0)
         {
           v55[0] = v21;
           v55[1] = v23;
-          v55[2] = v9;
+          v55[2] = localeCopy;
           v27 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v26, v55, 3);
           objc_msgSend_addObject_(v49, v28, v27);
 
           objc_msgSend_addObject_(v13, v29, v23);
         }
 
-        v30 = objc_msgSend_transcribeText_(v21, v26, v8);
+        v30 = objc_msgSend_transcribeText_(v21, v26, textCopy);
 
         if (objc_msgSend_length(v30, v31, v32) && (objc_msgSend_containsObject_(v13, v33, v30) & 1) == 0)
         {
@@ -266,18 +266,18 @@ LABEL_3:
           v36 = objc_msgSend_romanizationLocale(v21, v34, v35);
           v54[2] = v36;
           objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v37, v54, 3);
-          v38 = v8;
+          v38 = textCopy;
           v39 = v18;
-          v40 = v9;
+          v40 = localeCopy;
           v41 = v19;
-          v43 = v42 = v12;
+          v43 = v42 = selfCopy;
           objc_msgSend_addObject_(v49, v44, v43);
 
-          v12 = v42;
+          selfCopy = v42;
           v19 = v41;
-          v9 = v40;
+          localeCopy = v40;
           v18 = v39;
-          v8 = v38;
+          textCopy = v38;
           v13 = v47;
 
           objc_msgSend_addObject_(v47, v45, v30);

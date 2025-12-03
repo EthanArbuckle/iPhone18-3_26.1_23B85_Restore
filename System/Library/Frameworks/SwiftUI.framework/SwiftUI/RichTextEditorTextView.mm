@@ -1,21 +1,21 @@
 @interface RichTextEditorTextView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (NSDictionary)typingAttributes;
-- (_TtC7SwiftUI22RichTextEditorTextView)initWithCoder:(id)a3;
-- (_TtC7SwiftUI22RichTextEditorTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (id)_attributesForApplyingFormattingModification:(id *)a3 withAttributes:(id)a4 paragraphStyle:(id)a5 forTypingAttributes:(BOOL)a6;
+- (_TtC7SwiftUI22RichTextEditorTextView)initWithCoder:(id)coder;
+- (_TtC7SwiftUI22RichTextEditorTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (id)_attributesForApplyingFormattingModification:(id *)modification withAttributes:(id)attributes paragraphStyle:(id)style forTypingAttributes:(BOOL)typingAttributes;
 - (id)_disabledComponentsForTextFormattingOptions;
-- (void)paste:(id)a3;
-- (void)setTypingAttributes:(id)a3;
+- (void)paste:(id)paste;
+- (void)setTypingAttributes:(id)attributes;
 @end
 
 @implementation RichTextEditorTextView
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  if (a3)
+  if (paste)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -24,7 +24,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   RichTextEditorTextView.paste(_:)(v6);
@@ -60,11 +60,11 @@ LABEL_6:
   return v4.super.isa;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -73,10 +73,10 @@ LABEL_6:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = RichTextEditorTextView.canPerformAction(_:withSender:)(a3, v10);
+  v8 = RichTextEditorTextView.canPerformAction(_:withSender:)(action, v10);
 
   outlined destroy of Any?(v10);
   return v8 & 1;
@@ -87,7 +87,7 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
-  v3 = [(RichTextEditorTextView *)&v6 typingAttributes];
+  typingAttributes = [(RichTextEditorTextView *)&v6 typingAttributes];
   type metadata accessor for NSAttributedStringKey(0);
   _s10Foundation16AttributedStringV5IndexVAESLAAWlTm_5(&lazy protocol witness table cache variable for type NSAttributedStringKey and conformance NSAttributedStringKey, type metadata accessor for NSAttributedStringKey);
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -97,29 +97,29 @@ LABEL_6:
   return v4.super.isa;
 }
 
-- (void)setTypingAttributes:(id)a3
+- (void)setTypingAttributes:(id)attributes
 {
   type metadata accessor for NSAttributedStringKey(0);
   _s10Foundation16AttributedStringV5IndexVAESLAAWlTm_5(&lazy protocol witness table cache variable for type NSAttributedStringKey and conformance NSAttributedStringKey, type metadata accessor for NSAttributedStringKey);
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   RichTextEditorTextView.typingAttributes.setter();
 }
 
-- (id)_attributesForApplyingFormattingModification:(id *)a3 withAttributes:(id)a4 paragraphStyle:(id)a5 forTypingAttributes:(BOOL)a6
+- (id)_attributesForApplyingFormattingModification:(id *)modification withAttributes:(id)attributes paragraphStyle:(id)style forTypingAttributes:(BOOL)typingAttributes
 {
-  v6 = a6;
-  v8 = a4;
-  if (a4)
+  typingAttributesCopy = typingAttributes;
+  attributesCopy = attributes;
+  if (attributes)
   {
     type metadata accessor for NSAttributedStringKey(0);
     _s10Foundation16AttributedStringV5IndexVAESLAAWlTm_5(&lazy protocol witness table cache variable for type NSAttributedStringKey and conformance NSAttributedStringKey, type metadata accessor for NSAttributedStringKey);
-    v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    attributesCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v11 = self;
-  v12 = a5;
-  v13 = RichTextEditorTextView._attributes(forApplying:withAttributes:paragraphStyle:forTypingAttributes:)(a3, v8, a5, v6);
+  selfCopy = self;
+  styleCopy = style;
+  v13 = RichTextEditorTextView._attributes(forApplying:withAttributes:paragraphStyle:forTypingAttributes:)(modification, attributesCopy, style, typingAttributesCopy);
 
   if (v13)
   {
@@ -136,23 +136,23 @@ LABEL_6:
   return v14.super.isa;
 }
 
-- (_TtC7SwiftUI22RichTextEditorTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7SwiftUI22RichTextEditorTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
-  return [(TextEditorTextView *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(TextEditorTextView *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC7SwiftUI22RichTextEditorTextView)initWithCoder:(id)a3
+- (_TtC7SwiftUI22RichTextEditorTextView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(TextEditorTextView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(TextEditorTextView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

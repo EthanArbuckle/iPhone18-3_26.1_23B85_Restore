@@ -1,15 +1,15 @@
 @interface ENRegionServerExposureConfiguration
-- (ENRegionServerExposureConfiguration)initWithCoder:(id)a3;
-- (ENRegionServerExposureConfiguration)initWithServerResponseDictionary:(id)a3;
-- (id)classificationCriteriaForName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ENRegionServerExposureConfiguration)initWithCoder:(id)coder;
+- (ENRegionServerExposureConfiguration)initWithServerResponseDictionary:(id)dictionary;
+- (id)classificationCriteriaForName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionServerExposureConfiguration
 
-- (ENRegionServerExposureConfiguration)initWithServerResponseDictionary:(id)a3
+- (ENRegionServerExposureConfiguration)initWithServerResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -17,7 +17,7 @@
     goto LABEL_25;
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"config"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"config"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -29,7 +29,7 @@
       v48 = v6;
       v52 = 0;
       CFStringGetTypeID();
-      v49 = v4;
+      v49 = dictionaryCopy;
       v47 = CFDictionaryGetTypedValue();
       v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v8 = 12;
@@ -155,7 +155,7 @@
       v44 = v48;
 LABEL_23:
 
-      v4 = v49;
+      dictionaryCopy = v49;
       goto LABEL_24;
     }
 
@@ -180,16 +180,16 @@ void __72__ENRegionServerExposureConfiguration_initWithServerResponseDictionary_
   }
 }
 
-- (id)classificationCriteriaForName:(id)a3
+- (id)classificationCriteriaForName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ENRegionServerExposureConfiguration *)self classificationCriteria];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  classificationCriteria = [(ENRegionServerExposureConfiguration *)self classificationCriteria];
+  v6 = [classificationCriteria countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -199,12 +199,12 @@ void __72__ENRegionServerExposureConfiguration_initWithServerResponseDictionary_
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(classificationCriteria);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 classificationName];
-        v11 = [v10 isEqualToString:v4];
+        classificationName = [v9 classificationName];
+        v11 = [classificationName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -213,7 +213,7 @@ void __72__ENRegionServerExposureConfiguration_initWithServerResponseDictionary_
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [classificationCriteria countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -230,21 +230,21 @@ LABEL_11:
   return v6;
 }
 
-- (ENRegionServerExposureConfiguration)initWithCoder:(id)a3
+- (ENRegionServerExposureConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (![v4 containsValueForKey:@"cfgv"])
+  coderCopy = coder;
+  if (![coderCopy containsValueForKey:@"cfgv"])
   {
     v10 = MEMORY[0x277CBEC10];
 LABEL_5:
-    if ([v4 containsValueForKey:@"clsf"])
+    if ([coderCopy containsValueForKey:@"clsf"])
     {
       v12 = objc_alloc(MEMORY[0x277CBEB98]);
       v13 = objc_opt_class();
-      v11 = [v12 initWithObjects:{v13, objc_opt_class(), 0}];
-      v14 = [v4 decodeObjectOfClasses:v11 forKey:@"clsf"];
+      selfCopy = [v12 initWithObjects:{v13, objc_opt_class(), 0}];
+      v14 = [coderCopy decodeObjectOfClasses:selfCopy forKey:@"clsf"];
 
-      if (!v11)
+      if (!selfCopy)
       {
 LABEL_12:
 
@@ -262,23 +262,23 @@ LABEL_12:
     self = [(ENRegionServerExposureConfiguration *)&v19 init];
     if (self)
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleId"];
       appBundleIdentifier = self->_appBundleIdentifier;
       self->_appBundleIdentifier = v15;
 
       objc_storeStrong(&self->_classificationCriteria, v14);
       objc_storeStrong(&self->_exposureConfigurationValues, v10);
-      self->_enableRecursiveReportType = [v4 decodeBoolForKey:@"enableRecursiveType"];
-      [v4 decodeDoubleForKey:@"privacyParameterInputCandence"];
+      self->_enableRecursiveReportType = [coderCopy decodeBoolForKey:@"enableRecursiveType"];
+      [coderCopy decodeDoubleForKey:@"privacyParameterInputCandence"];
       self->_privacyParameterInputCandenceInterval = v17;
-      self->_matchingRestrictedToRegion = [v4 decodeBoolForKey:@"isMatchingRestrictedRegion"];
+      self->_matchingRestrictedToRegion = [coderCopy decodeBoolForKey:@"isMatchingRestrictedRegion"];
       self = self;
-      v11 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
 
     goto LABEL_12;
@@ -289,29 +289,29 @@ LABEL_12:
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v5 initWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"cfgv"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"cfgv"];
 
   if (v10)
   {
     goto LABEL_5;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appBundleIdentifier = self->_appBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:appBundleIdentifier forKey:@"appBundleId"];
-  [v5 encodeObject:self->_classificationCriteria forKey:@"clsf"];
-  [v5 encodeObject:self->_exposureConfigurationValues forKey:@"cfgv"];
-  [v5 encodeBool:self->_enableRecursiveReportType forKey:@"enableRecursiveType"];
-  [v5 encodeDouble:@"privacyParameterInputCandence" forKey:self->_privacyParameterInputCandenceInterval];
-  [v5 encodeBool:self->_matchingRestrictedToRegion forKey:@"isMatchingRestrictedRegion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"appBundleId"];
+  [coderCopy encodeObject:self->_classificationCriteria forKey:@"clsf"];
+  [coderCopy encodeObject:self->_exposureConfigurationValues forKey:@"cfgv"];
+  [coderCopy encodeBool:self->_enableRecursiveReportType forKey:@"enableRecursiveType"];
+  [coderCopy encodeDouble:@"privacyParameterInputCandence" forKey:self->_privacyParameterInputCandenceInterval];
+  [coderCopy encodeBool:self->_matchingRestrictedToRegion forKey:@"isMatchingRestrictedRegion"];
 }
 
 @end

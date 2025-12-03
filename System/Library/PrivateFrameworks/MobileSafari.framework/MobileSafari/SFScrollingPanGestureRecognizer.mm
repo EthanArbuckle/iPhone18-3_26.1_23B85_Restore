@@ -1,15 +1,15 @@
 @interface SFScrollingPanGestureRecognizer
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3;
-- (SFScrollingPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)_shouldTryToBeginWithEvent:(id)event;
+- (SFScrollingPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation SFScrollingPanGestureRecognizer
 
-- (SFScrollingPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SFScrollingPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = SFScrollingPanGestureRecognizer;
-  v4 = [(SFScrollingPanGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(SFScrollingPanGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -20,14 +20,14 @@
   return v5;
 }
 
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3
+- (BOOL)_shouldTryToBeginWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = SFScrollingPanGestureRecognizer;
-  if ([(SFScrollingPanGestureRecognizer *)&v7 _shouldTryToBeginWithEvent:v4])
+  if ([(SFScrollingPanGestureRecognizer *)&v7 _shouldTryToBeginWithEvent:eventCopy])
   {
-    v5 = [v4 buttonMask] == 0;
+    v5 = [eventCopy buttonMask] == 0;
   }
 
   else

@@ -1,25 +1,25 @@
 @interface SSFilterUtilities
-+ (id)appFilterForResult:(id)a3;
-+ (id)filterForResult:(id)a3;
-+ (id)filtersForResult:(id)a3;
-+ (id)folderScopesFromURLs:(id)a3;
++ (id)appFilterForResult:(id)result;
++ (id)filterForResult:(id)result;
++ (id)filtersForResult:(id)result;
++ (id)folderScopesFromURLs:(id)ls;
 + (id)hiddenFilterBundleIDs;
-+ (id)uttypesFromFilterQueries:(id)a3;
++ (id)uttypesFromFilterQueries:(id)queries;
 @end
 
 @implementation SSFilterUtilities
 
-+ (id)uttypesFromFilterQueries:(id)a3
++ (id)uttypesFromFilterQueries:(id)queries
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  queriesCopy = queries;
   v4 = 0x1E695D000uLL;
   v29 = objc_opt_new();
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v5 = v3;
+  v5 = queriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v6)
   {
@@ -71,8 +71,8 @@
                   }
 
                   v20 = *(*(&v35 + 1) + 8 * i);
-                  v21 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-                  v22 = [v20 stringByTrimmingCharactersInSet:v21];
+                  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+                  v22 = [v20 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
                   if ([v22 hasPrefix:@"kMDItemContentTypeTree=="])
                   {
@@ -164,24 +164,24 @@ void __42__SSFilterUtilities_hiddenFilterBundleIDs__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)appFilterForResult:(id)a3
++ (id)appFilterForResult:(id)result
 {
   v4 = *MEMORY[0x1E6964C38];
-  v5 = a3;
-  v6 = [v5 valueForAttribute:v4 withType:objc_opt_class()];
-  v7 = [v5 contentTypeTree];
-  v8 = [v7 lastObject];
+  resultCopy = result;
+  v6 = [resultCopy valueForAttribute:v4 withType:objc_opt_class()];
+  contentTypeTree = [resultCopy contentTypeTree];
+  lastObject = [contentTypeTree lastObject];
 
-  v9 = [v5 uniformContentType];
+  uniformContentType = [resultCopy uniformContentType];
 
-  if (v9 || !v8)
+  if (uniformContentType || !lastObject)
   {
-    v10 = v9;
+    v10 = uniformContentType;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E6982C40] typeWithIdentifier:v8];
+    v10 = [MEMORY[0x1E6982C40] typeWithIdentifier:lastObject];
   }
 
   v11 = v10;
@@ -191,24 +191,24 @@ void __42__SSFilterUtilities_hiddenFilterBundleIDs__block_invoke()
     v11 = [SSFilesPasteboardResultBuilder typeForURL:v6];
   }
 
-  v12 = [a1 hiddenFilterBundleIDs];
-  [v12 containsObject:0];
+  hiddenFilterBundleIDs = [self hiddenFilterBundleIDs];
+  [hiddenFilterBundleIDs containsObject:0];
 
   return 0;
 }
 
-+ (id)filterForResult:(id)a3
++ (id)filterForResult:(id)result
 {
-  v3 = [a1 filtersForResult:a3];
-  v4 = [v3 firstObject];
+  v3 = [self filtersForResult:result];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)filtersForResult:(id)a3
++ (id)filtersForResult:(id)result
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 appFilterForResult:a3];
+  v3 = [self appFilterForResult:result];
   v4 = v3;
   if (v3)
   {
@@ -226,16 +226,16 @@ void __42__SSFilterUtilities_hiddenFilterBundleIDs__block_invoke()
   return v5;
 }
 
-+ (id)folderScopesFromURLs:(id)a3
++ (id)folderScopesFromURLs:(id)ls
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lsCopy = ls;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = lsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -250,15 +250,15 @@ void __42__SSFilterUtilities_hiddenFilterBundleIDs__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) path];
-        if (([v10 hasSuffix:@"/"] & 1) == 0)
+        path = [*(*(&v14 + 1) + 8 * i) path];
+        if (([path hasSuffix:@"/"] & 1) == 0)
         {
-          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/", v10];
+          v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/", path];
 
-          v10 = v11;
+          path = v11;
         }
 
-        [v4 addObject:v10];
+        [v4 addObject:path];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];

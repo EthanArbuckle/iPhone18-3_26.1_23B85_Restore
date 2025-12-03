@@ -1,14 +1,14 @@
 @interface PXStoryConcreteMutableSaliencyDataSource
 - (PXStoryConcreteMutableSaliencyDataSource)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)rawSaliencyAreasForDisplayAsset:(id)a3;
-- (id)saliencyAreasForDisplayAsset:(id)a3;
-- (void)setSaliencyAreas:(id)a3 rawSaliencyAreas:(id)a4 forDisplayAsset:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)rawSaliencyAreasForDisplayAsset:(id)asset;
+- (id)saliencyAreasForDisplayAsset:(id)asset;
+- (void)setSaliencyAreas:(id)areas rawSaliencyAreas:(id)saliencyAreas forDisplayAsset:(id)asset;
 @end
 
 @implementation PXStoryConcreteMutableSaliencyDataSource
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_PXStoryConcreteSaliencyDataSource alloc];
   saliencyAreasByUUID = self->_saliencyAreasByUUID;
@@ -17,35 +17,35 @@
   return [(_PXStoryConcreteSaliencyDataSource *)v4 initWithSaliencyAreasByUUID:saliencyAreasByUUID rawSaliencyAreasByUUID:rawSaliencyAreasByUUID];
 }
 
-- (id)rawSaliencyAreasForDisplayAsset:(id)a3
+- (id)rawSaliencyAreasForDisplayAsset:(id)asset
 {
   rawSaliencyAreasByUUID = self->_rawSaliencyAreasByUUID;
-  v4 = [a3 uuid];
-  v5 = [(NSMutableDictionary *)rawSaliencyAreasByUUID objectForKeyedSubscript:v4];
+  uuid = [asset uuid];
+  v5 = [(NSMutableDictionary *)rawSaliencyAreasByUUID objectForKeyedSubscript:uuid];
 
   return v5;
 }
 
-- (id)saliencyAreasForDisplayAsset:(id)a3
+- (id)saliencyAreasForDisplayAsset:(id)asset
 {
   saliencyAreasByUUID = self->_saliencyAreasByUUID;
-  v4 = [a3 uuid];
-  v5 = [(NSMutableDictionary *)saliencyAreasByUUID objectForKeyedSubscript:v4];
+  uuid = [asset uuid];
+  v5 = [(NSMutableDictionary *)saliencyAreasByUUID objectForKeyedSubscript:uuid];
 
   return v5;
 }
 
-- (void)setSaliencyAreas:(id)a3 rawSaliencyAreas:(id)a4 forDisplayAsset:(id)a5
+- (void)setSaliencyAreas:(id)areas rawSaliencyAreas:(id)saliencyAreas forDisplayAsset:(id)asset
 {
-  v8 = a4;
-  v9 = a3;
-  v12 = [a5 uuid];
-  v10 = [v9 copy];
+  saliencyAreasCopy = saliencyAreas;
+  areasCopy = areas;
+  uuid = [asset uuid];
+  v10 = [areasCopy copy];
 
-  [(NSMutableDictionary *)self->_saliencyAreasByUUID setObject:v10 forKeyedSubscript:v12];
-  v11 = [v8 copy];
+  [(NSMutableDictionary *)self->_saliencyAreasByUUID setObject:v10 forKeyedSubscript:uuid];
+  v11 = [saliencyAreasCopy copy];
 
-  [(NSMutableDictionary *)self->_rawSaliencyAreasByUUID setObject:v11 forKeyedSubscript:v12];
+  [(NSMutableDictionary *)self->_rawSaliencyAreasByUUID setObject:v11 forKeyedSubscript:uuid];
 }
 
 - (PXStoryConcreteMutableSaliencyDataSource)init

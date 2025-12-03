@@ -1,13 +1,13 @@
 @interface HDClinicalRecordEntity
-+ (id)_clinicalRecordForSampleType:(id)a3 predicate:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_predicateForRecordWithFHIRResourceIdentifier:(id)a3;
-+ (id)attachmentObjectIdentifierForSampleWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)clinicalRecordWithAttachmentObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)existingClinicalRecordCreatedFromResourceWithIdentifier:(id)a3 basePredicate:(id)a4 profile:(id)a5 error:(id *)a6;
++ (id)_clinicalRecordForSampleType:(id)type predicate:(id)predicate profile:(id)profile error:(id *)error;
++ (id)_predicateForRecordWithFHIRResourceIdentifier:(id)identifier;
++ (id)attachmentObjectIdentifierForSampleWithUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (id)clinicalRecordWithAttachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)existingClinicalRecordCreatedFromResourceWithIdentifier:(id)identifier basePredicate:(id)predicate profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)joinClausesForProperty:(id)a3;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)joinClausesForProperty:(id)property;
 @end
 
 @implementation HDClinicalRecordEntity
@@ -28,10 +28,10 @@
   return v4;
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"originalFHIRResource.id"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"originalFHIRResource.id"])
   {
     v5 = MEMORY[0x277D10B50];
     v6 = +[(HDSQLiteSchemaEntity *)HDClinicalRecordEntity];
@@ -42,25 +42,25 @@
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___HDClinicalRecordEntity;
-    v8 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, v4);
+    v8 = objc_msgSendSuper2(&v10, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v8;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
   v47[12] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  databaseCopy = database;
+  dCopy = d;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:a1 file:@"HDClinicalRecordEntity.m" lineNumber:95 description:{@"Subclasses must override %s", "+[HDClinicalRecordEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDClinicalRecordEntity.m" lineNumber:95 description:{@"Subclasses must override %s", "+[HDClinicalRecordEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
   v47[0] = @"data_id";
@@ -76,32 +76,32 @@
   v47[10] = @"original_fhir_resource_rowid";
   v47[11] = @"original_signed_clinical_data_rowid";
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:12];
-  v17 = [v12 metadata];
+  metadata = [objectCopy metadata];
   v18 = *MEMORY[0x277CCE070];
-  v19 = [v17 objectForKeyedSubscript:*MEMORY[0x277CCE070]];
+  v19 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE070]];
 
   if (v19)
   {
-    v20 = [v12 metadata];
-    v21 = [v20 objectForKeyedSubscript:v18];
-    v22 = [v21 longLongValue];
+    metadata2 = [objectCopy metadata];
+    v21 = [metadata2 objectForKeyedSubscript:v18];
+    longLongValue = [v21 longLongValue];
 
-    if (v22)
+    if (longLongValue)
     {
-      v23 = 0;
+      persistentID = 0;
 LABEL_10:
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __88__HDClinicalRecordEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
       v40[3] = &unk_278629B48;
-      v33 = v14;
+      v33 = dCopy;
       v41 = v33;
-      v42 = v12;
-      v43 = v22;
-      v44 = v23;
+      v42 = objectCopy;
+      v43 = longLongValue;
+      v44 = persistentID;
       v45 = a2;
-      v46 = a1;
-      v34 = [a1 insertOrReplaceEntity:1 database:v13 properties:v16 error:a7 bindingHandler:v40];
+      selfCopy = self;
+      v34 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v16 error:error bindingHandler:v40];
       if (v34)
       {
         v35 = v33;
@@ -118,18 +118,18 @@ LABEL_10:
     }
   }
 
-  v24 = [v12 metadata];
+  metadata3 = [objectCopy metadata];
   v25 = *MEMORY[0x277CCE078];
-  v26 = [v24 objectForKeyedSubscript:*MEMORY[0x277CCE078]];
+  v26 = [metadata3 objectForKeyedSubscript:*MEMORY[0x277CCE078]];
 
   if (v26)
   {
     v27 = objc_alloc(MEMORY[0x277CCAD78]);
-    v28 = [v12 metadata];
-    v29 = [v28 objectForKeyedSubscript:v25];
+    metadata4 = [objectCopy metadata];
+    v29 = [metadata4 objectForKeyedSubscript:v25];
     v30 = [v27 initWithUUIDString:v29];
 
-    v31 = [HDOriginalSignedClinicalDataRecordEntity existingEntityWithSyncIdentifier:v30 database:v13 error:a7];
+    v31 = [HDOriginalSignedClinicalDataRecordEntity existingEntityWithSyncIdentifier:v30 database:databaseCopy error:error];
     if (!v31)
     {
 
@@ -137,16 +137,16 @@ LABEL_10:
     }
 
     v32 = v31;
-    v23 = [v31 persistentID];
+    persistentID = [v31 persistentID];
 
-    if (v23)
+    if (persistentID)
     {
-      v22 = 0;
+      longLongValue = 0;
       goto LABEL_10;
     }
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a7 code:118 format:@"No OrignalFHIRResource or OriginalSignedClinicalDataRecord ROWID provided for FK on insert"];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:@"No OrignalFHIRResource or OriginalSignedClinicalDataRecord ROWID provided for FK on insert"];
 LABEL_16:
   v36 = 0;
 LABEL_17:
@@ -214,13 +214,13 @@ void __88__HDClinicalRecordEntity_insertDataObject_withProvenance_inDatabase_per
   [v23 handleFailureInMethod:*(a1 + 64) object:*(a1 + 72) file:@"HDClinicalRecordEntity.m" lineNumber:164 description:@"No OrignalFHIRResource or OriginalSignedClinicalDataRecord ROWID provided for FK on insert"];
 }
 
-+ (id)clinicalRecordWithAttachmentObjectIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)clinicalRecordWithAttachmentObjectIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a4;
+  profileCopy = profile;
   v22 = 0;
   v23 = 0;
   v21 = 0;
-  v9 = [MEMORY[0x277CCD008] componentsFromAttachmentObjectIdentifier:a3 sampleTypeIdentifier:&v23 bundleIdentifier:&v22 FHIRIdentifier:&v21];
+  v9 = [MEMORY[0x277CCD008] componentsFromAttachmentObjectIdentifier:identifier sampleTypeIdentifier:&v23 bundleIdentifier:&v22 FHIRIdentifier:&v21];
   v10 = v23;
   v11 = v22;
   v12 = v21;
@@ -229,11 +229,11 @@ void __88__HDClinicalRecordEntity_insertDataObject_withProvenance_inDatabase_per
     v14 = [MEMORY[0x277CCA9B8] hk_error:2000 description:@"Failed parse attachment objectIdentifier into components"];
     if (v14)
     {
-      if (a5)
+      if (error)
       {
         v18 = v14;
         v17 = 0;
-        *a5 = v14;
+        *error = v14;
       }
 
       else
@@ -256,11 +256,11 @@ void __88__HDClinicalRecordEntity_insertDataObject_withProvenance_inDatabase_per
     v15 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Invalid clinicalType identifier: %@", v10}];
     if (v15)
     {
-      if (a5)
+      if (error)
       {
         v19 = v15;
         v17 = 0;
-        *a5 = v15;
+        *error = v15;
       }
 
       else
@@ -281,7 +281,7 @@ void __88__HDClinicalRecordEntity_insertDataObject_withProvenance_inDatabase_per
     goto LABEL_18;
   }
 
-  v14 = [a1 predicateForObjectsFromLocalSourceWithBundleIdentifier:v11 profile:v8 error:a5];
+  v14 = [self predicateForObjectsFromLocalSourceWithBundleIdentifier:v11 profile:profileCopy error:error];
   if (!v14)
   {
 LABEL_12:
@@ -289,9 +289,9 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v15 = [a1 _predicateForRecordWithFHIRResourceIdentifier:v12];
+  v15 = [self _predicateForRecordWithFHIRResourceIdentifier:v12];
   v16 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v14 otherPredicate:v15];
-  v17 = [a1 _clinicalRecordForSampleType:v13 predicate:v16 profile:v8 error:a5];
+  v17 = [self _clinicalRecordForSampleType:v13 predicate:v16 profile:profileCopy error:error];
 
 LABEL_18:
 LABEL_19:
@@ -299,28 +299,28 @@ LABEL_19:
   return v17;
 }
 
-+ (id)attachmentObjectIdentifierForSampleWithUUID:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (id)attachmentObjectIdentifierForSampleWithUUID:(id)d profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() objectWithUUID:v9 encodingOptions:0 profile:v8 error:a6];
+  profileCopy = profile;
+  dCopy = d;
+  v10 = [objc_opt_class() objectWithUUID:dCopy encodingOptions:0 profile:profileCopy error:error];
 
-  v11 = [v10 attachmentObjectIdentifier];
+  attachmentObjectIdentifier = [v10 attachmentObjectIdentifier];
 
-  return v11;
+  return attachmentObjectIdentifier;
 }
 
-+ (id)existingClinicalRecordCreatedFromResourceWithIdentifier:(id)a3 basePredicate:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)existingClinicalRecordCreatedFromResourceWithIdentifier:(id)identifier basePredicate:(id)predicate profile:(id)profile error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 _predicateForRecordWithFHIRResourceIdentifier:v10];
-  v14 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v11 otherPredicate:v13];
+  identifierCopy = identifier;
+  predicateCopy = predicate;
+  profileCopy = profile;
+  v13 = [self _predicateForRecordWithFHIRResourceIdentifier:identifierCopy];
+  v14 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:predicateCopy otherPredicate:v13];
   v15 = MEMORY[0x277CCD118];
-  v16 = [v10 resourceType];
-  v17 = [v15 sampleTypesForResourceType:v16 error:a6];
+  resourceType = [identifierCopy resourceType];
+  v17 = [v15 sampleTypesForResourceType:resourceType error:error];
 
   if (v17)
   {
@@ -334,8 +334,8 @@ LABEL_19:
     if (v19)
     {
       v20 = v19;
-      v27 = v11;
-      v28 = v10;
+      v27 = predicateCopy;
+      v28 = identifierCopy;
       v21 = *v31;
       while (2)
       {
@@ -346,7 +346,7 @@ LABEL_19:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [a1 _clinicalRecordForSampleType:*(*(&v30 + 1) + 8 * i) predicate:v14 profile:v12 error:a6];
+          v23 = [self _clinicalRecordForSampleType:*(*(&v30 + 1) + 8 * i) predicate:v14 profile:profileCopy error:error];
           if (v23)
           {
             v24 = v23;
@@ -365,8 +365,8 @@ LABEL_19:
 
       v24 = 0;
 LABEL_12:
-      v11 = v27;
-      v10 = v28;
+      predicateCopy = v27;
+      identifierCopy = v28;
     }
 
     else
@@ -387,11 +387,11 @@ LABEL_12:
   return v24;
 }
 
-+ (id)_clinicalRecordForSampleType:(id)a3 predicate:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)_clinicalRecordForSampleType:(id)type predicate:(id)predicate profile:(id)profile error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [HDSampleEntity samplesWithType:v10 profile:a5 encodingOptions:0 predicate:a4 limit:0 anchor:0 error:a6];
+  typeCopy = type;
+  v11 = [HDSampleEntity samplesWithType:typeCopy profile:profile encodingOptions:0 predicate:predicate limit:0 anchor:0 error:error];
   v12 = v11;
   if (v11 && [v11 count])
   {
@@ -402,38 +402,38 @@ LABEL_12:
       if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_FAULT))
       {
         *buf = 138543618;
-        v18 = a1;
+        selfCopy = self;
         v19 = 2114;
-        v20 = v10;
+        v20 = typeCopy;
         _os_log_fault_impl(&dword_228986000, v13, OS_LOG_TYPE_FAULT, "%{public}@ Unexpectedly found more than 1 clinical record for clinical sampleType %{public}@!", buf, 0x16u);
       }
     }
 
-    v14 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return firstObject;
 }
 
-+ (id)_predicateForRecordWithFHIRResourceIdentifier:(id)a3
++ (id)_predicateForRecordWithFHIRResourceIdentifier:(id)identifier
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D10B18];
-  v4 = a3;
-  v5 = [v4 resourceType];
-  v6 = [v3 predicateWithProperty:@"fhir_resource_resource_type" equalToValue:v5];
+  identifierCopy = identifier;
+  resourceType = [identifierCopy resourceType];
+  v6 = [v3 predicateWithProperty:@"fhir_resource_resource_type" equalToValue:resourceType];
 
   v7 = MEMORY[0x277D10B18];
-  v8 = [v4 identifier];
+  identifier = [identifierCopy identifier];
 
-  v9 = [v7 predicateWithProperty:@"fhir_resource_identifier" equalToValue:v8];
+  v9 = [v7 predicateWithProperty:@"fhir_resource_identifier" equalToValue:identifier];
 
   v10 = MEMORY[0x277D10B20];
   v15[0] = v9;
@@ -446,13 +446,13 @@ LABEL_12:
   return v12;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDClinicalRecordEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDClinicalRecordEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

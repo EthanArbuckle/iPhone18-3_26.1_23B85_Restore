@@ -1,8 +1,8 @@
 @interface SKUIResourceRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SKUIResourceRequest)init;
 - (id)_initSKUIResourceRequest;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_initSKUIResourceRequest;
 - (void)init;
@@ -51,14 +51,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SKUIResourceRequest *)self requestIdentifier];
-    v6 = v7 == [v4 requestIdentifier];
+    requestIdentifier = [(SKUIResourceRequest *)self requestIdentifier];
+    v6 = requestIdentifier == [equalCopy requestIdentifier];
   }
 
   else
@@ -69,9 +69,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "_initSKUIResourceRequest"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "_initSKUIResourceRequest"}];
   objc_storeStrong((v4 + 8), self->_cacheKey);
   *(v4 + 16) = self->_requestID;
   return v4;

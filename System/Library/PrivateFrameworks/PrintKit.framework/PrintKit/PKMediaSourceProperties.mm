@@ -9,20 +9,20 @@
 - (id)userCodableDictionary
 {
   v3 = objc_opt_new();
-  v4 = [(PKMediaSourceProperties *)self feedDirection];
-  [v3 setObject:v4 forKeyedSubscript:@"media-source-feed-direction"];
+  feedDirection = [(PKMediaSourceProperties *)self feedDirection];
+  [v3 setObject:feedDirection forKeyedSubscript:@"media-source-feed-direction"];
 
-  v5 = [(PKMediaSourceProperties *)self feedOrientation];
-  [v3 setObject:v5 forKeyedSubscript:@"media-source-feed-orientation"];
+  feedOrientation = [(PKMediaSourceProperties *)self feedOrientation];
+  [v3 setObject:feedOrientation forKeyedSubscript:@"media-source-feed-orientation"];
 
   return v3;
 }
 
 - (NSString)feedDirection
 {
-  v2 = [(PKCollectionSpecialization *)self params];
+  params = [(PKCollectionSpecialization *)self params];
 
-  return Printd_Parameters::_get_FeedDirection(&v2->var0);
+  return Printd_Parameters::_get_FeedDirection(&params->var0);
 }
 
 - (NSNumber)feedOrientation

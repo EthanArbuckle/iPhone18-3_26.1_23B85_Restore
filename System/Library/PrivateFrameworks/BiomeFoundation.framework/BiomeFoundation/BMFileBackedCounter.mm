@@ -1,70 +1,70 @@
 @interface BMFileBackedCounter
-- (BMFileBackedCounter)initWithFilename:(id)a3 protectionClass:(int)a4 directory:(id)a5 domain:(unint64_t)a6 readOnly:(BOOL)a7 error:(id *)a8;
-- (BOOL)_atomicallyWriteFileWithDictionary:(id)a3 error:(id *)a4;
-- (BOOL)incrementCount:(id *)a3 error:(id *)a4;
-- (id)_atomicallyCreateFileWithDictionary:(id)a3 error:(id *)a4;
-- (id)_createFileDictionary:(id *)a3;
-- (id)_decodeFileDictionary:(id)a3 error:(id *)a4;
-- (id)_encodeFileDictionary:(id)a3 error:(id *)a4;
-- (id)_fileUUIDFromFileDictionary:(id)a3;
-- (id)_loadFileDictionary:(id *)a3;
-- (id)_newFileDictionaryWithFileUUID:(id)a3 count:(id)a4 error:(id *)a5;
-- (id)_readableFileDictionary:(id)a3;
+- (BMFileBackedCounter)initWithFilename:(id)filename protectionClass:(int)class directory:(id)directory domain:(unint64_t)domain readOnly:(BOOL)only error:(id *)error;
+- (BOOL)_atomicallyWriteFileWithDictionary:(id)dictionary error:(id *)error;
+- (BOOL)incrementCount:(id *)count error:(id *)error;
+- (id)_atomicallyCreateFileWithDictionary:(id)dictionary error:(id *)error;
+- (id)_createFileDictionary:(id *)dictionary;
+- (id)_decodeFileDictionary:(id)dictionary error:(id *)error;
+- (id)_encodeFileDictionary:(id)dictionary error:(id *)error;
+- (id)_fileUUIDFromFileDictionary:(id)dictionary;
+- (id)_loadFileDictionary:(id *)dictionary;
+- (id)_newFileDictionaryWithFileUUID:(id)d count:(id)count error:(id *)error;
+- (id)_readableFileDictionary:(id)dictionary;
 @end
 
 @implementation BMFileBackedCounter
 
-- (BMFileBackedCounter)initWithFilename:(id)a3 protectionClass:(int)a4 directory:(id)a5 domain:(unint64_t)a6 readOnly:(BOOL)a7 error:(id *)a8
+- (BMFileBackedCounter)initWithFilename:(id)filename protectionClass:(int)class directory:(id)directory domain:(unint64_t)domain readOnly:(BOOL)only error:(id *)error
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
+  filenameCopy = filename;
+  directoryCopy = directory;
   v57.receiver = self;
   v57.super_class = BMFileBackedCounter;
-  v58 = a6;
+  domainCopy = domain;
   v16 = [(BMFileBackedCounter *)&v57 init];
   if (!v16)
   {
     goto LABEL_17;
   }
 
-  if (!v14 || !v15)
+  if (!filenameCopy || !directoryCopy)
   {
     v27 = MEMORY[0x1E696ABC0];
     v67 = *MEMORY[0x1E696A578];
-    v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid {filename: %@, directory: %@}", v14, v15];
-    v68[0] = v28;
+    directoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid {filename: %@, directory: %@}", filenameCopy, directoryCopy];
+    v68[0] = directoryCopy;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v68 forKeys:&v67 count:1];
     v30 = [v27 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:1 userInfo:v29];
-    BMSetError(a8, v30);
+    BMSetError(error, v30);
 
 LABEL_26:
     v44 = 0;
     goto LABEL_27;
   }
 
-  v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 relativeToURL:v15];
-  v18 = [v17 path];
+  v17 = [MEMORY[0x1E695DFF8] fileURLWithPath:filenameCopy relativeToURL:directoryCopy];
+  path = [v17 path];
   filePath = v16->_filePath;
-  v16->_filePath = v18;
+  v16->_filePath = path;
 
   v20 = [(NSString *)v16->_filePath stringByAppendingString:@"-lock"];
   lockFilePath = v16->_lockFilePath;
   v16->_lockFilePath = v20;
 
-  v16->_protectionClass = a4;
-  v16->_domain = a6;
-  v16->_readOnly = a7;
-  v22 = [v15 path];
-  if ([BMPaths pathIsManaged:v22 domain:&v58])
+  v16->_protectionClass = class;
+  v16->_domain = domain;
+  v16->_readOnly = only;
+  path2 = [directoryCopy path];
+  if ([BMPaths pathIsManaged:path2 domain:&domainCopy])
   {
     v23 = +[BMProcess current];
-    v24 = [v23 reliesOnDirectAccessForDomain:v58];
+    v24 = [v23 reliesOnDirectAccessForDomain:domainCopy];
 
     if (!v24)
     {
-      v25 = [v15 path];
-      v26 = [BMFileManager fileManagerWithMediatedAccessToDirectory:v25 useCase:@"__legacy__" domain:v58 user:geteuid()];
+      path3 = [directoryCopy path];
+      v26 = [BMFileManager fileManagerWithMediatedAccessToDirectory:path3 useCase:@"__legacy__" domain:domainCopy user:geteuid()];
       goto LABEL_10;
     }
   }
@@ -73,8 +73,8 @@ LABEL_26:
   {
   }
 
-  v25 = [v15 path];
-  v26 = [BMFileManager fileManagerWithDirectAccessToDirectory:v25 cachingOptions:0];
+  path3 = [directoryCopy path];
+  v26 = [BMFileManager fileManagerWithDirectAccessToDirectory:path3 cachingOptions:0];
 LABEL_10:
   fileManager = v16->_fileManager;
   v16->_fileManager = v26;
@@ -100,7 +100,7 @@ LABEL_10:
 
   else if ([v33 code] != 4 || v16->_readOnly || (v55 = v34, -[BMFileBackedCounter _createFileDictionary:](v16, "_createFileDictionary:", &v55), v32 = objc_claimAutoreleasedReturnValue(), v45 = v55, v34, v34 = v45, !v32))
   {
-    BMSetError(a8, v34);
+    BMSetError(error, v34);
 LABEL_25:
 
     goto LABEL_26;
@@ -123,7 +123,7 @@ LABEL_25:
     v50 = 7;
 LABEL_24:
     v52 = [v49 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:v50 userInfo:v48];
-    BMSetError(a8, v52);
+    BMSetError(error, v52);
 
     goto LABEL_25;
   }
@@ -154,19 +154,19 @@ LABEL_27:
   return v44;
 }
 
-- (id)_fileUUIDFromFileDictionary:(id)a3
+- (id)_fileUUIDFromFileDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKey:@"fileUUID"];
+  v3 = [dictionary objectForKey:@"fileUUID"];
   v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(v3, "bytes")}];
 
   return v4;
 }
 
-- (id)_newFileDictionaryWithFileUUID:(id)a3 count:(id)a4 error:(id *)a5
+- (id)_newFileDictionaryWithFileUUID:(id)d count:(id)count error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  countCopy = count;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -175,14 +175,14 @@ LABEL_27:
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
     v10 = NSStringFromClass(v14);
-    v15 = [v13 stringWithFormat:@"Unexpected fileUUID: %@ (expected %@) file path: %@", v8, v10, self->_filePath];
+    v15 = [v13 stringWithFormat:@"Unexpected fileUUID: %@ (expected %@) file path: %@", dCopy, v10, self->_filePath];
     v30[0] = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v17 = v12;
     v18 = 7;
 LABEL_6:
     v22 = [v17 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:v18 userInfo:v16];
-    BMSetError(a5, v22);
+    BMSetError(error, v22);
 
     v11 = 0;
     goto LABEL_7;
@@ -196,7 +196,7 @@ LABEL_6:
     v20 = MEMORY[0x1E696AEC0];
     v21 = objc_opt_class();
     v10 = NSStringFromClass(v21);
-    v15 = [v20 stringWithFormat:@"Unexpected count: %@ (expected %@) file path: %@", v9, v10, self->_filePath];
+    v15 = [v20 stringWithFormat:@"Unexpected count: %@ (expected %@) file path: %@", countCopy, v10, self->_filePath];
     v28 = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v17 = v19;
@@ -205,10 +205,10 @@ LABEL_6:
   }
 
   v25[0] = @"fileUUID";
-  v10 = BMDataFromNSUUID(v8);
+  v10 = BMDataFromNSUUID(dCopy);
   v25[1] = @"count";
   v26[0] = v10;
-  v26[1] = v9;
+  v26[1] = countCopy;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
 LABEL_7:
 
@@ -216,11 +216,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)_encodeFileDictionary:(id)a3 error:(id *)a4
+- (id)_encodeFileDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v15 = 0;
-  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:200 options:0 error:&v15];
+  v7 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionaryCopy format:200 options:0 error:&v15];
   v8 = v15;
   if ([v7 length])
   {
@@ -231,7 +231,7 @@ LABEL_7:
   else
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to encode dictionary: %@ for counter file at path: %@ error: %@", v6, self->_filePath, v8];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to encode dictionary: %@ for counter file at path: %@ error: %@", dictionaryCopy, self->_filePath, v8];
     [v11 setObject:v12 forKey:*MEMORY[0x1E696A578]];
 
     if (v8)
@@ -247,19 +247,19 @@ LABEL_7:
       [BMFileBackedDictionary _loadDictionaryOrCreate:readOnly:initialDictionary:error:];
     }
 
-    BMSetError(a4, v10);
+    BMSetError(error, v10);
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)_decodeFileDictionary:(id)a3 error:(id *)a4
+- (id)_decodeFileDictionary:(id)dictionary error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v23 = 0;
-  v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:&v23];
+  v7 = [MEMORY[0x1E696AE40] propertyListWithData:dictionaryCopy options:0 format:0 error:&v23];
   v8 = v23;
   if (v7)
   {
@@ -287,14 +287,14 @@ LABEL_7:
       [BMFileBackedDictionary _loadDictionaryOrCreate:readOnly:initialDictionary:error:];
     }
 
-    BMSetError(a4, v10);
+    BMSetError(error, v10);
   }
 
   else
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode prior file-backed counter at path: %@ with data: %@", self->_filePath, v6];
-    [v11 setObject:v12 forKey:*MEMORY[0x1E696A578]];
+    dictionaryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to decode prior file-backed counter at path: %@ with data: %@", self->_filePath, dictionaryCopy];
+    [v11 setObject:dictionaryCopy forKey:*MEMORY[0x1E696A578]];
 
     if (v8)
     {
@@ -309,7 +309,7 @@ LABEL_7:
       [BMFileBackedDictionary _loadDictionaryOrCreate:readOnly:initialDictionary:error:];
     }
 
-    BMSetError(a4, v10);
+    BMSetError(error, v10);
   }
 
   v9 = 0;
@@ -320,24 +320,24 @@ LABEL_13:
   return v9;
 }
 
-- (id)_readableFileDictionary:(id)a3
+- (id)_readableFileDictionary:(id)dictionary
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [(BMFileBackedCounter *)self _fileUUIDFromFileDictionary:v5];
-  v7 = [v6 UUIDString];
-  v8 = [(BMFileBackedCounter *)self _countFromFileDictionary:v5];
+  dictionaryCopy = dictionary;
+  v6 = [(BMFileBackedCounter *)self _fileUUIDFromFileDictionary:dictionaryCopy];
+  uUIDString = [v6 UUIDString];
+  v8 = [(BMFileBackedCounter *)self _countFromFileDictionary:dictionaryCopy];
 
-  v9 = [v4 stringWithFormat:@"{ %@: %@, %@: %@}", @"fileUUID", v7, @"count", v8];
+  v9 = [v4 stringWithFormat:@"{ %@: %@, %@: %@}", @"fileUUID", uUIDString, @"count", v8];
 
   return v9;
 }
 
-- (id)_createFileDictionary:(id *)a3
+- (id)_createFileDictionary:(id *)dictionary
 {
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v11 = 0;
-  v6 = [(BMFileBackedCounter *)self _newFileDictionaryWithFileUUID:v5 count:&unk_1F20EBD40 error:&v11];
+  v6 = [(BMFileBackedCounter *)self _newFileDictionaryWithFileUUID:uUID count:&unk_1F20EBD40 error:&v11];
   v7 = v11;
 
   if (!v6)
@@ -348,15 +348,15 @@ LABEL_13:
       [(BMFileBackedCounter *)v7 _createFileDictionary:?];
     }
 
-    BMSetError(a3, v7);
+    BMSetError(dictionary, v7);
   }
 
-  v9 = [(BMFileBackedCounter *)self _atomicallyCreateFileWithDictionary:v6 error:a3];
+  v9 = [(BMFileBackedCounter *)self _atomicallyCreateFileWithDictionary:v6 error:dictionary];
 
   return v9;
 }
 
-- (id)_loadFileDictionary:(id *)a3
+- (id)_loadFileDictionary:(id *)dictionary
 {
   v31[1] = *MEMORY[0x1E69E9840];
   p_filePath = &self->_filePath;
@@ -372,24 +372,24 @@ LABEL_13:
 
   if (v11)
   {
-    v13 = [(BMFileBackedCounter *)self _decodeFileDictionary:v11 error:a3];
+    v13 = [(BMFileBackedCounter *)self _decodeFileDictionary:v11 error:dictionary];
   }
 
   else
   {
-    v14 = [v12 userInfo];
+    userInfo = [v12 userInfo];
     v15 = *MEMORY[0x1E696AA08];
-    v16 = [v14 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v17 = [v16 code];
+    v16 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    code = [v16 code];
 
-    if (v17 == 2)
+    if (code == 2)
     {
       v18 = MEMORY[0x1E696ABC0];
       v30 = v15;
       v31[0] = v12;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v20 = [v18 errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:4 userInfo:v19];
-      BMSetError(a3, v20);
+      BMSetError(dictionary, v20);
     }
 
     else
@@ -413,7 +413,7 @@ LABEL_13:
       }
 
       v23 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:2 userInfo:v22];
-      BMSetError(a3, v23);
+      BMSetError(dictionary, v23);
     }
 
     v13 = 0;
@@ -424,15 +424,15 @@ LABEL_13:
   return v13;
 }
 
-- (id)_atomicallyCreateFileWithDictionary:(id)a3 error:(id *)a4
+- (id)_atomicallyCreateFileWithDictionary:(id)dictionary error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = __biome_log_for_category(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     filePath = self->_filePath;
-    v9 = [(BMFileBackedCounter *)self _readableFileDictionary:v6];
+    v9 = [(BMFileBackedCounter *)self _readableFileDictionary:dictionaryCopy];
     *buf = 138412546;
     v33 = filePath;
     v34 = 2112;
@@ -440,7 +440,7 @@ LABEL_13:
     _os_log_impl(&dword_1AC15D000, v7, OS_LOG_TYPE_DEFAULT, "Creating new counter file at path: %@ contents: %@", buf, 0x16u);
   }
 
-  v10 = [(BMFileBackedCounter *)self _encodeFileDictionary:v6 error:a4];
+  v10 = [(BMFileBackedCounter *)self _encodeFileDictionary:dictionaryCopy error:error];
   if (!v10)
   {
     v18 = 0;
@@ -456,7 +456,7 @@ LABEL_13:
   v16 = v31;
   if (v15)
   {
-    v17 = v6;
+    v17 = dictionaryCopy;
   }
 
   else
@@ -484,14 +484,14 @@ LABEL_13:
 
       v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:9 userInfo:v26];
 
-      BMSetError(a4, v28);
+      BMSetError(error, v28);
       v29 = __biome_log_for_category(0);
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         [BMFileBackedDictionary _loadDictionaryOrCreate:readOnly:initialDictionary:error:];
       }
 
-      v6 = 0;
+      dictionaryCopy = 0;
       goto LABEL_14;
     }
 
@@ -508,10 +508,10 @@ LABEL_13:
     }
   }
 
-  v6 = v17;
+  dictionaryCopy = v17;
 LABEL_14:
 
-  v18 = v6;
+  v18 = dictionaryCopy;
 LABEL_15:
 
   v24 = *MEMORY[0x1E69E9840];
@@ -519,11 +519,11 @@ LABEL_15:
   return v18;
 }
 
-- (BOOL)_atomicallyWriteFileWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)_atomicallyWriteFileWithDictionary:(id)dictionary error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(BMFileBackedCounter *)self _encodeFileDictionary:v6 error:a4];
+  dictionaryCopy = dictionary;
+  v7 = [(BMFileBackedCounter *)self _encodeFileDictionary:dictionaryCopy error:error];
   if (v7)
   {
     fileManager = self->_fileManager;
@@ -538,7 +538,7 @@ LABEL_15:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v19 = self->_filePath;
-        v20 = [(BMFileBackedCounter *)self _readableFileDictionary:v6];
+        v20 = [(BMFileBackedCounter *)self _readableFileDictionary:dictionaryCopy];
         *buf = 138412546;
         v23 = v19;
         v24 = 2112;
@@ -562,7 +562,7 @@ LABEL_15:
 
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.BiomeFoundation.FileBackedCounter" code:10 userInfo:v13];
 
-      BMSetError(a4, v14);
+      BMSetError(error, v14);
       v16 = __biome_log_for_category(0);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -580,7 +580,7 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)incrementCount:(id *)a3 error:(id *)a4
+- (BOOL)incrementCount:(id *)count error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
   v29 = 0;
@@ -624,13 +624,13 @@ LABEL_15:
   if (v30[5] && !*(v27[0] + 40))
   {
     v22 = 1;
-    if (!a3)
+    if (!count)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    *a3 = v30[5];
+    *count = v30[5];
     goto LABEL_12;
   }
 
@@ -640,12 +640,12 @@ LABEL_11:
     [(BMFileBackedCounter *)v27 incrementCount:v14 error:v15, v16, v17, v18, v19, v20];
   }
 
-  BMSetError(a4, *(v27[0] + 40));
+  BMSetError(error, *(v27[0] + 40));
   v21 = v30[5];
   v30[5] = 0;
 
   v22 = 0;
-  if (a3)
+  if (count)
   {
     goto LABEL_11;
   }

@@ -1,5 +1,5 @@
 @interface PowerInAnalytics
-- (BOOL)_getMutualPowerSourceProperties:(unsigned int)a3 dict:(id)a4;
+- (BOOL)_getMutualPowerSourceProperties:(unsigned int)properties dict:(id)dict;
 - (BOOL)_startEventMonitoring;
 - (PowerInAnalytics)init;
 - (void)_startEventMonitoring;
@@ -47,13 +47,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(PowerInAnalytics *)self queue];
+  queue = [(PowerInAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __25__PowerInAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 void __25__PowerInAnalytics_start__block_invoke(uint64_t a1)
@@ -90,13 +90,13 @@ void __25__PowerInAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(PowerInAnalytics *)self queue];
+  queue = [(PowerInAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __24__PowerInAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 void __24__PowerInAnalytics_stop__block_invoke(uint64_t a1)
@@ -141,9 +141,9 @@ void __24__PowerInAnalytics_stop__block_invoke(uint64_t a1)
 
     [(PowerInAnalytics *)self setMonitoring:1];
     [(PowerInAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(PowerInAnalytics *)self ioNotificationPort];
-    v6 = [(PowerInAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(PowerInAnalytics *)self ioNotificationPort];
+    queue = [(PowerInAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("IOPortFeaturePowerSource");
     v8 = v7;
@@ -206,26 +206,26 @@ LABEL_12:
   }
 }
 
-- (BOOL)_getMutualPowerSourceProperties:(unsigned int)a3 dict:(id)a4
+- (BOOL)_getMutualPowerSourceProperties:(unsigned int)properties dict:(id)dict
 {
-  v6 = a4;
-  if (a3)
+  dictCopy = dict;
+  if (properties)
   {
-    CFProperty = IORegistryEntryCreateCFProperty(a3, @"ParentPortType", kCFAllocatorDefault, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(properties, @"ParentPortType", kCFAllocatorDefault, 0);
     objc_opt_class();
     v8 = castNSObjectToType(CFProperty);
 
     if (v8)
     {
-      [v6 setObject:v8 forKey:@"PortType"];
-      v9 = IORegistryEntryCreateCFProperty(a3, @"ParentPortNumber", kCFAllocatorDefault, 0);
+      [dictCopy setObject:v8 forKey:@"PortType"];
+      v9 = IORegistryEntryCreateCFProperty(properties, @"ParentPortNumber", kCFAllocatorDefault, 0);
       objc_opt_class();
       v10 = castNSObjectToType(v9);
 
       v11 = v10 != 0;
       if (v10)
       {
-        [v6 setObject:v10 forKey:@"PortNumber"];
+        [dictCopy setObject:v10 forKey:@"PortNumber"];
         v12 = IOServiceMatching("IOPort");
         v112[0] = @"PortType";
         v112[1] = @"PortNumber";
@@ -242,7 +242,7 @@ LABEL_12:
 
         v21 = v12;
         MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v21);
-        v104 = self;
+        selfCopy = self;
         if (MatchingService)
         {
           v23 = MatchingService;
@@ -254,7 +254,7 @@ LABEL_12:
           if (v25)
           {
             v26 = v11;
-            [v6 setObject:v25 forKey:@"PortBuiltIn"];
+            [dictCopy setObject:v25 forKey:@"PortBuiltIn"];
           }
 
           else
@@ -274,12 +274,12 @@ LABEL_12:
 
           if (v38)
           {
-            [v6 setObject:v38 forKey:@"ConnectionUUID"];
+            [dictCopy setObject:v38 forKey:@"ConnectionUUID"];
           }
 
           else
           {
-            v39 = [(PowerInAnalytics *)v104 log];
+            v39 = [(PowerInAnalytics *)selfCopy log];
             if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
               [PowerInAnalytics _getMutualPowerSourceProperties:dict:];
@@ -290,7 +290,7 @@ LABEL_12:
           IOObjectRelease(v23);
 
           v10 = v99;
-          self = v104;
+          self = selfCopy;
         }
 
         else
@@ -303,14 +303,14 @@ LABEL_12:
         }
 
         v40 = kCFAllocatorDefault;
-        v41 = IORegistryEntryCreateCFProperty(a3, @"PowerSourceName", kCFAllocatorDefault, 0);
+        v41 = IORegistryEntryCreateCFProperty(properties, @"PowerSourceName", kCFAllocatorDefault, 0);
         objc_opt_class();
         v42 = castNSObjectToType(v41);
 
         v103 = v42;
         if (v42)
         {
-          [v6 setObject:v42 forKey:@"PowerSourceName"];
+          [dictCopy setObject:v42 forKey:@"PowerSourceName"];
         }
 
         else
@@ -322,13 +322,13 @@ LABEL_12:
           }
         }
 
-        v44 = IORegistryEntryCreateCFProperty(a3, @"PowerSourceType", kCFAllocatorDefault, 0);
+        v44 = IORegistryEntryCreateCFProperty(properties, @"PowerSourceType", kCFAllocatorDefault, 0);
         objc_opt_class();
         v45 = castNSObjectToType(v44);
 
         if (v45)
         {
-          [v6 setObject:v45 forKey:@"PowerSourceType"];
+          [dictCopy setObject:v45 forKey:@"PowerSourceType"];
         }
 
         else
@@ -340,7 +340,7 @@ LABEL_12:
           }
         }
 
-        v47 = IORegistryEntryCreateCFProperty(a3, @"PowerSourceOptions", kCFAllocatorDefault, 0);
+        v47 = IORegistryEntryCreateCFProperty(properties, @"PowerSourceOptions", kCFAllocatorDefault, 0);
         v101 = v47;
         v102 = v45;
         if (v47 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -356,11 +356,11 @@ LABEL_12:
           {
             v51 = v49;
             v96 = v11;
-            v98 = v6;
+            v98 = dictCopy;
             v100 = v10;
             v97 = v8;
             v105 = 0;
-            v52 = 0;
+            unsignedIntValue = 0;
             v53 = *v107;
             while (1)
             {
@@ -394,12 +394,12 @@ LABEL_12:
 
                     if (!v61 && v59 != 0)
                     {
-                      if ([v59 unsignedIntegerValue] > v52)
+                      if ([v59 unsignedIntegerValue] > unsignedIntValue)
                       {
                         goto LABEL_53;
                       }
 
-                      if ([v60 unsignedIntegerValue] == v52)
+                      if ([v60 unsignedIntegerValue] == unsignedIntValue)
                       {
                         v50 = &IOIteratorNext_ptr;
                         if ([v58 unsignedIntegerValue] > HIDWORD(v105))
@@ -407,7 +407,7 @@ LABEL_12:
 LABEL_53:
                           LODWORD(v105) = [v57 unsignedIntValue];
                           HIDWORD(v105) = [v58 unsignedIntValue];
-                          v52 = [v60 unsignedIntValue];
+                          unsignedIntValue = [v60 unsignedIntValue];
                         }
                       }
 
@@ -427,9 +427,9 @@ LABEL_53:
               {
                 v63 = v105;
                 v64 = HIDWORD(v105);
-                v65 = v52;
+                v65 = unsignedIntValue;
                 v8 = v97;
-                v6 = v98;
+                dictCopy = v98;
                 v10 = v100;
                 v11 = v96;
                 goto LABEL_65;
@@ -443,14 +443,14 @@ LABEL_53:
 LABEL_65:
 
           v68 = [NSNumber numberWithUnsignedInteger:v63];
-          [v6 setObject:v68 forKey:@"MaxPowerSourceOptionVoltageMV"];
+          [dictCopy setObject:v68 forKey:@"MaxPowerSourceOptionVoltageMV"];
 
           v69 = [NSNumber numberWithUnsignedInteger:v64];
-          [v6 setObject:v69 forKey:@"MaxPowerSourceOptionMaxCurrentMA"];
+          [dictCopy setObject:v69 forKey:@"MaxPowerSourceOptionMaxCurrentMA"];
 
           v66 = [NSNumber numberWithUnsignedInteger:v65];
-          [v6 setObject:v66 forKey:@"MaxPowerSourceOptionMaxPowerMW"];
-          self = v104;
+          [dictCopy setObject:v66 forKey:@"MaxPowerSourceOptionMaxPowerMW"];
+          self = selfCopy;
           v40 = kCFAllocatorDefault;
           v67 = &IOIteratorNext_ptr;
         }
@@ -504,9 +504,9 @@ LABEL_65:
             if ([v84 scanHexInt:buf])
             {
               v85 = [NSNumber numberWithUnsignedInt:*buf];
-              [v6 setObject:v85 forKey:@"AUVDM_VendorID"];
+              [dictCopy setObject:v85 forKey:@"AUVDM_VendorID"];
 
-              v86 = [(PowerInAnalytics *)v104 log];
+              v86 = [(PowerInAnalytics *)selfCopy log];
               if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
               {
                 *v106 = 0;
@@ -526,9 +526,9 @@ LABEL_65:
             if ([v89 scanHexInt:buf])
             {
               v90 = [NSNumber numberWithUnsignedInt:*buf];
-              [v6 setObject:v90 forKey:@"AUVDM_ProductID"];
+              [dictCopy setObject:v90 forKey:@"AUVDM_ProductID"];
 
-              v91 = [(PowerInAnalytics *)v104 log];
+              v91 = [(PowerInAnalytics *)selfCopy log];
               if (os_log_type_enabled(v91, OS_LOG_TYPE_INFO))
               {
                 *v106 = 0;
@@ -545,8 +545,8 @@ LABEL_65:
 
           if (v93 && [v93 length])
           {
-            [v6 setObject:v93 forKey:@"AUVDM_AccessoryName"];
-            v94 = [(PowerInAnalytics *)v104 log];
+            [dictCopy setObject:v93 forKey:@"AUVDM_AccessoryName"];
+            v94 = [(PowerInAnalytics *)selfCopy log];
             if (os_log_type_enabled(v94, OS_LOG_TYPE_INFO))
             {
               *buf = 0;
@@ -600,7 +600,7 @@ LABEL_65:
 
 - (void)_startEventMonitoring
 {
-  v1 = [a1 log];
+  v1 = [self log];
   if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;

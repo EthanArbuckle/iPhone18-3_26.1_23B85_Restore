@@ -7,7 +7,7 @@
 
 - (int64_t)faultCheckResult
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_252045FCC();
 
   return v3;

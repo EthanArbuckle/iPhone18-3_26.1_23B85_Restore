@@ -1,8 +1,8 @@
 @interface LocalParticipantView
 - (_TtC15ConversationKit28LocalParticipantControlsView)controlsView;
-- (void)handleLongPress:(id)a3;
+- (void)handleLongPress:(id)press;
 - (void)layoutSubviews;
-- (void)updateCountdownWith:(int64_t)a3;
+- (void)updateCountdownWith:(int64_t)with;
 @end
 
 @implementation LocalParticipantView
@@ -14,23 +14,23 @@
   return v2;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  LocalParticipantView.handleLongPress(_:)(v4);
+  pressCopy = press;
+  selfCopy = self;
+  LocalParticipantView.handleLongPress(_:)(pressCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   LocalParticipantView.layoutSubviews()();
 }
 
-- (void)updateCountdownWith:(int64_t)a3
+- (void)updateCountdownWith:(int64_t)with
 {
-  v4 = self;
-  LocalParticipantView.updateCountdownWith(_:)(a3);
+  selfCopy = self;
+  LocalParticipantView.updateCountdownWith(_:)(with);
 }
 
 @end

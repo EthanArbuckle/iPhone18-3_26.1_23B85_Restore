@@ -1,72 +1,72 @@
 @interface CLKUIMetalQuadView
-+ (id)allocateDepthTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 sampleCount:(unint64_t)a5;
-+ (id)allocateMsaaTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unint64_t)a5 sampleCount:(unint64_t)a6;
++ (id)allocateDepthTextureWithWidth:(unint64_t)width height:(unint64_t)height sampleCount:(unint64_t)count;
++ (id)allocateMsaaTextureWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unint64_t)format sampleCount:(unint64_t)count;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)clearColor;
-- (BOOL)_displayAndCheckForDrawable:(BOOL)a3 renderDiscontinuity:(BOOL)a4 withCompletion:(id)a5;
-- (BOOL)prewarmWithCompletion:(id)a3;
+- (BOOL)_displayAndCheckForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity withCompletion:(id)completion;
+- (BOOL)prewarmWithCompletion:(id)completion;
 - (CGSize)drawableSize;
-- (CLKUIMetalQuadView)initWithFrame:(CGRect)a3 identifier:(id)a4 options:(unint64_t)a5 colorSpace:(int64_t)a6 asyncRenderQueue:(id)a7;
-- (float)computeAPLAndSnapshot:(id *)a3;
+- (CLKUIMetalQuadView)initWithFrame:(CGRect)frame identifier:(id)identifier options:(unint64_t)options colorSpace:(int64_t)space asyncRenderQueue:(id)queue;
+- (float)computeAPLAndSnapshot:(id *)snapshot;
 - (id)_getDimmingPipelineState;
 - (id)_newRenderPassDescriptor;
-- (id)_snapshotTextureInRect:(CGRect)a3 scale:(double)a4 time:(double)a5 withAdditionalPasses:(id)a6;
-- (id)snapshotInRect:(CGRect)a3 scale:(double)a4 time:(double)a5;
-- (id)snapshotTextureInRect:(CGRect)a3 scale:(double)a4 time:(double)a5;
-- (void)_handleQuadArrayChange:(id)a3;
-- (void)_renderQuads:(id)a3 toScreenWithCommandBuffer:(id)a4 passDescriptor:(id)a5;
+- (id)_snapshotTextureInRect:(CGRect)rect scale:(double)scale time:(double)time withAdditionalPasses:(id)passes;
+- (id)snapshotInRect:(CGRect)rect scale:(double)scale time:(double)time;
+- (id)snapshotTextureInRect:(CGRect)rect scale:(double)scale time:(double)time;
+- (void)_handleQuadArrayChange:(id)change;
+- (void)_renderQuads:(id)quads toScreenWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
 - (void)_updateDrawableSizeIfNecessary;
 - (void)_updateFramebufferOnly;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setClearColor:(id)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setSingleBufferMode:(BOOL)a3;
+- (void)setClearColor:(id)color;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setSingleBufferMode:(BOOL)mode;
 - (void)snapshotAndFreeze;
 @end
 
 @implementation CLKUIMetalQuadView
 
-- (CLKUIMetalQuadView)initWithFrame:(CGRect)a3 identifier:(id)a4 options:(unint64_t)a5 colorSpace:(int64_t)a6 asyncRenderQueue:(id)a7
+- (CLKUIMetalQuadView)initWithFrame:(CGRect)frame identifier:(id)identifier options:(unint64_t)options colorSpace:(int64_t)space asyncRenderQueue:(id)queue
 {
-  v8 = a5;
+  optionsCopy = options;
   v39.receiver = self;
   v39.super_class = CLKUIMetalQuadView;
-  v9 = [(CLKUIQuadView *)&v39 initWithFrame:a4 identifier:a5 options:a7 asyncRenderQueue:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(CLKUIQuadView *)&v39 initWithFrame:identifier identifier:options options:queue asyncRenderQueue:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
-    if ((a6 - 1) > 3)
+    if ((space - 1) > 3)
     {
       v11 = 81;
     }
 
     else
     {
-      v11 = qword_1E4A0AA98[a6 - 1];
+      v11 = qword_1E4A0AA98[space - 1];
     }
 
     v9->_colorPixelFormat = v11;
     v9->_maxAPL = 1.0;
     v9->_aplFilterAmount = 0.0;
-    if ((v8 & 8) != 0)
+    if ((optionsCopy & 8) != 0)
     {
-      v12 = [(CLKUIMetalQuadView *)v9 _msaaCount];
+      _msaaCount = [(CLKUIMetalQuadView *)v9 _msaaCount];
     }
 
     else
     {
-      v12 = 1;
+      _msaaCount = 1;
     }
 
-    v10->_msaaCount = v12;
-    *(v10 + 552) = *(v10 + 552) & 0xFE | v8 & 1;
-    *(v10 + 552) = *(v10 + 552) & 0xF7 | (v8 >> 2) & 8;
-    *(v10 + 552) = *(v10 + 552) & 0xDF | (v8 >> 1) & 0x20;
-    *(v10 + 552) = *(v10 + 552) & 0xBF | (v8 >> 2) & 0x40;
-    *(v10 + 553) = *(v10 + 553) & 0xFE | ((v8 & 0x200) != 0);
-    *(v10 + 552) = v8 & 0x80 | *(v10 + 552) & 0x7F;
-    *(v10 + 552) = *(v10 + 552) & 0xFD | v8 & 2;
-    *(v10 + 552) = *(v10 + 552) & 0xFB | (v8 >> 2) & 4;
+    v10->_msaaCount = _msaaCount;
+    *(v10 + 552) = *(v10 + 552) & 0xFE | optionsCopy & 1;
+    *(v10 + 552) = *(v10 + 552) & 0xF7 | (optionsCopy >> 2) & 8;
+    *(v10 + 552) = *(v10 + 552) & 0xDF | (optionsCopy >> 1) & 0x20;
+    *(v10 + 552) = *(v10 + 552) & 0xBF | (optionsCopy >> 2) & 0x40;
+    *(v10 + 553) = *(v10 + 553) & 0xFE | ((optionsCopy & 0x200) != 0);
+    *(v10 + 552) = optionsCopy & 0x80 | *(v10 + 552) & 0x7F;
+    *(v10 + 552) = *(v10 + 552) & 0xFD | optionsCopy & 2;
+    *(v10 + 552) = *(v10 + 552) & 0xFB | (optionsCopy >> 2) & 4;
     if (*(v10 + 552))
     {
       v13 = objc_opt_new();
@@ -81,16 +81,16 @@
     v17 = objc_alloc_init(MEMORY[0x1E69793F0]);
     if ((*(v10 + 552) & 4) != 0)
     {
-      v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v18 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v21 = v22;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695B530] sharedRenderingContext];
-      v19 = [v18 device];
-      [v19 screenScale];
+      mainScreen = [MEMORY[0x1E695B530] sharedRenderingContext];
+      device = [mainScreen device];
+      [device screenScale];
       v21 = v20;
     }
 
@@ -145,16 +145,16 @@
     v29 = v10->_metalLayer;
     [(CLKUIMetalQuadView *)v10 bounds];
     [(CAMetalLayer *)v29 setFrame:?];
-    v30 = [(CLKUIMetalQuadView *)v10 layer];
-    [v30 addSublayer:v28];
+    layer = [(CLKUIMetalQuadView *)v10 layer];
+    [layer addSublayer:v28];
 
     v31 = +[CLKUIMetalResourceManager sharedCommandQueue];
     commandQueue = v10->_commandQueue;
     v10->_commandQueue = v31;
 
-    v33 = [(CLKUIMetalQuadView *)v10 _newRenderPassDescriptor];
+    _newRenderPassDescriptor = [(CLKUIMetalQuadView *)v10 _newRenderPassDescriptor];
     renderPassDescriptor = v10->_renderPassDescriptor;
-    v10->_renderPassDescriptor = v33;
+    v10->_renderPassDescriptor = _newRenderPassDescriptor;
 
     *(v10 + 552) |= 0x10u;
     v35 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -170,14 +170,14 @@
   return v10;
 }
 
-+ (id)allocateDepthTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 sampleCount:(unint64_t)a5
++ (id)allocateDepthTextureWithWidth:(unint64_t)width height:(unint64_t)height sampleCount:(unint64_t)count
 {
   v5 = 0;
-  if (a3 && a4)
+  if (width && height)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69741C0]);
     v10 = v9;
-    if (a5 >= 2)
+    if (count >= 2)
     {
       v11 = 4;
     }
@@ -189,9 +189,9 @@
 
     [v9 setTextureType:v11];
     [v10 setPixelFormat:252];
-    [v10 setWidth:a3];
-    [v10 setHeight:a4];
-    [v10 setSampleCount:a5];
+    [v10 setWidth:width];
+    [v10 setHeight:height];
+    [v10 setSampleCount:count];
     [v10 setUsage:4];
     [v10 setStorageMode:3];
     v12 = +[CLKUIMetalResourceManager sharedDevice];
@@ -201,19 +201,19 @@
   return v5;
 }
 
-+ (id)allocateMsaaTextureWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unint64_t)a5 sampleCount:(unint64_t)a6
++ (id)allocateMsaaTextureWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unint64_t)format sampleCount:(unint64_t)count
 {
   v6 = 0;
-  if (a4 && a3 && a6 >= 2)
+  if (height && width && count >= 2)
   {
     v11 = objc_alloc_init(MEMORY[0x1E69741C0]);
     [v11 setTextureType:4];
-    [v11 setPixelFormat:a5];
-    [v11 setWidth:a3];
-    [v11 setHeight:a4];
+    [v11 setPixelFormat:format];
+    [v11 setWidth:width];
+    [v11 setHeight:height];
     [v11 setStorageMode:3];
     [v11 setUsage:4];
-    [v11 setSampleCount:a6];
+    [v11 setSampleCount:count];
     [v11 setMipmapLevelCount:1];
     v12 = +[CLKUIMetalResourceManager sharedDevice];
     v6 = [v12 newTextureWithDescriptor:v11];
@@ -244,35 +244,35 @@
   [(UIImageView *)snapshotView setFrame:?];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v6.receiver = self;
   v6.super_class = CLKUIMetalQuadView;
-  if ([(CLKUIMetalQuadView *)&v6 isOpaque]!= a3)
+  if ([(CLKUIMetalQuadView *)&v6 isOpaque]!= opaque)
   {
     v5.receiver = self;
     v5.super_class = CLKUIMetalQuadView;
-    [(CLKUIMetalQuadView *)&v5 setOpaque:v3];
-    [(CAMetalLayer *)self->_metalLayer setOpaque:v3];
+    [(CLKUIMetalQuadView *)&v5 setOpaque:opaqueCopy];
+    [(CAMetalLayer *)self->_metalLayer setOpaque:opaqueCopy];
   }
 }
 
-- (void)setClearColor:(id)a3
+- (void)setClearColor:(id)color
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
-  v7 = [v8 objectAtIndexedSubscript:0];
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
+  v7 = [colorAttachments objectAtIndexedSubscript:0];
   [v7 setClearColor:{var0, var1, var2, var3}];
 }
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)clearColor
 {
-  v2 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
+  v3 = [colorAttachments objectAtIndexedSubscript:0];
   [v3 clearColor];
   v5 = v4;
   v7 = v6;
@@ -290,14 +290,14 @@
   return result;
 }
 
-- (void)_handleQuadArrayChange:(id)a3
+- (void)_handleQuadArrayChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = CLKUIMetalQuadView;
-  [(CLKUIQuadView *)&v6 _handleQuadArrayChange:v4];
+  [(CLKUIQuadView *)&v6 _handleQuadArrayChange:changeCopy];
   quads = self->_quads;
-  self->_quads = v4;
+  self->_quads = changeCopy;
 }
 
 - (void)snapshotAndFreeze
@@ -307,27 +307,27 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E695B4F8] currentDevice];
-  [v11 screenScale];
+  currentDevice = [MEMORY[0x1E695B4F8] currentDevice];
+  [currentDevice screenScale];
   v13 = [(CLKUIMetalQuadView *)self snapshotInRect:v4 scale:v6 time:v8, v10, v12, CACurrentMediaTime()];
 
   [(UIImageView *)self->_snapshotView setImage:v13];
   [(UIImageView *)self->_snapshotView setHidden:0];
 }
 
-- (void)setSingleBufferMode:(BOOL)a3
+- (void)setSingleBufferMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v5.receiver = self;
   v5.super_class = CLKUIMetalQuadView;
   [(CLKUIQuadView *)&v5 setSingleBufferMode:?];
-  if (v3)
+  if (modeCopy)
   {
     [(CAMetalLayer *)self->_metalLayer removeBackBuffers];
   }
 }
 
-- (id)snapshotInRect:(CGRect)a3 scale:(double)a4 time:(double)a5
+- (id)snapshotInRect:(CGRect)rect scale:(double)scale time:(double)time
 {
   v11 = 0;
   v12 = &v11;
@@ -339,9 +339,9 @@
   v7[1] = 3221225472;
   v7[2] = __48__CLKUIMetalQuadView_snapshotInRect_scale_time___block_invoke;
   v7[3] = &unk_1E8762C60;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rectCopy = rect;
+  scaleCopy = scale;
+  timeCopy = time;
   v7[4] = self;
   v7[5] = &v11;
   [(CLKUIQuadView *)self _runOnRenderQueueIfNeeded:v7];
@@ -413,7 +413,7 @@ void __48__CLKUIMetalQuadView_snapshotInRect_scale_time___block_invoke_2(uint64_
   *(v9 + 568) = v8;
 }
 
-- (id)snapshotTextureInRect:(CGRect)a3 scale:(double)a4 time:(double)a5
+- (id)snapshotTextureInRect:(CGRect)rect scale:(double)scale time:(double)time
 {
   v11 = 0;
   v12 = &v11;
@@ -427,9 +427,9 @@ void __48__CLKUIMetalQuadView_snapshotInRect_scale_time___block_invoke_2(uint64_
   v7[3] = &unk_1E8762C88;
   v7[4] = self;
   v7[5] = &v11;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rectCopy = rect;
+  scaleCopy = scale;
+  timeCopy = time;
   [(CLKUIQuadView *)self _runOnRenderQueueIfNeeded:v7];
   v5 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -444,16 +444,16 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_snapshotTextureInRect:(CGRect)a3 scale:(double)a4 time:(double)a5 withAdditionalPasses:(id)a6
+- (id)_snapshotTextureInRect:(CGRect)rect scale:(double)scale time:(double)time withAdditionalPasses:(id)passes
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v55 = *MEMORY[0x1E69E9840];
-  v43 = a6;
-  [(CLKUIQuadView *)self _prerenderForTime:a5];
+  passesCopy = passes;
+  [(CLKUIQuadView *)self _prerenderForTime:time];
   v11 = objc_autoreleasePoolPush();
-  v41 = (height * a4);
-  v42 = (width * a4);
+  v41 = (height * scale);
+  v42 = (width * scale);
   v12 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:self->_colorPixelFormat width:? height:? mipmapped:?];
   [v12 setUsage:5];
   v13 = +[CLKUIMetalResourceManager sharedDevice];
@@ -496,13 +496,13 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
   if ([v15 count])
   {
     v40 = v11;
-    v22 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
     v23 = MEMORY[0x1E696AEC0];
-    v24 = [(CLKUIQuadView *)self debugIdentifier];
-    v25 = [v23 stringWithFormat:@"FaceSnapshot-%@", v24];
+    debugIdentifier = [(CLKUIQuadView *)self debugIdentifier];
+    v25 = [v23 stringWithFormat:@"FaceSnapshot-%@", debugIdentifier];
 
     v39 = v25;
-    [CLKUIMetalResourceManager addCompletedErrorCheckToCommandBuffer:v22 forCase:v25];
+    [CLKUIMetalResourceManager addCompletedErrorCheckToCommandBuffer:commandBuffer forCase:v25];
     [CLKUIMetalResourceManager setSynchronousTextureStreamingEnabled:1];
     v47 = 0u;
     v48 = 0u;
@@ -523,7 +523,7 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
             objc_enumerationMutation(v26);
           }
 
-          [*(*(&v45 + 1) + 8 * j) performOffscreenPassesWithCommandBuffer:v22];
+          [*(*(&v45 + 1) + 8 * j) performOffscreenPassesWithCommandBuffer:commandBuffer];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -533,8 +533,8 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
     }
 
     msaaCount = self->_msaaCount;
-    v32 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
-    v33 = [v32 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
+    v33 = [colorAttachments objectAtIndexedSubscript:0];
     v34 = v33;
     if (msaaCount < 2)
     {
@@ -546,26 +546,26 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
       v35 = [CLKUIMetalQuadView allocateMsaaTextureWithWidth:v42 height:v41 pixelFormat:[(CLKUIMetalQuadView *)self colorPixelFormat] sampleCount:self->_msaaCount];
       [v34 setTexture:v35];
 
-      v32 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
-      v34 = [v32 objectAtIndexedSubscript:0];
+      colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
+      v34 = [colorAttachments objectAtIndexedSubscript:0];
       [v34 setResolveTexture:v44];
     }
 
     if (*(self + 552))
     {
-      v36 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor depthAttachment];
+      depthAttachment = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor depthAttachment];
       v37 = [CLKUIMetalQuadView allocateDepthTextureWithWidth:v42 height:v41 sampleCount:self->_msaaCount];
-      [v36 setTexture:v37];
+      [depthAttachment setTexture:v37];
     }
 
-    [(CLKUIMetalQuadView *)self _renderQuads:v26 toScreenWithCommandBuffer:v22 passDescriptor:self->_renderPassDescriptor];
-    if (v43)
+    [(CLKUIMetalQuadView *)self _renderQuads:v26 toScreenWithCommandBuffer:commandBuffer passDescriptor:self->_renderPassDescriptor];
+    if (passesCopy)
     {
-      v43[2]();
+      passesCopy[2]();
     }
 
-    [v22 commit];
-    [v22 waitUntilCompleted];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
 
     v11 = v40;
   }
@@ -575,9 +575,9 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
   return v44;
 }
 
-- (BOOL)prewarmWithCompletion:(id)a3
+- (BOOL)prewarmWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -587,7 +587,7 @@ uint64_t __55__CLKUIMetalQuadView_snapshotTextureInRect_scale_time___block_invok
   v7[2] = __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke;
   v7[3] = &unk_1E8762CD8;
   v7[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v8 = v5;
   v9 = &v10;
   [(CLKUIQuadView *)self _runOnRenderQueueIfNeeded:v7];
@@ -733,19 +733,19 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_renderQuads:(id)a3 toScreenWithCommandBuffer:(id)a4 passDescriptor:(id)a5
+- (void)_renderQuads:(id)quads toScreenWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  quadsCopy = quads;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
   if ((*(self + 552) & 8) != 0)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v18 = [quadsCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v18)
     {
       v19 = v18;
@@ -757,14 +757,14 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
         {
           if (*v27 != v20)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(quadsCopy);
           }
 
-          [*(*(&v26 + 1) + 8 * v21++) renderWithCommandBuffer:v9 passDescriptor:v10];
+          [*(*(&v26 + 1) + 8 * v21++) renderWithCommandBuffer:bufferCopy passDescriptor:descriptorCopy];
         }
 
         while (v19 != v21);
-        v19 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v19 = [quadsCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v19);
@@ -773,7 +773,7 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [v9 renderCommandEncoderWithDescriptor:v10];
+    v11 = [bufferCopy renderCommandEncoderWithDescriptor:descriptorCopy];
     v12 = v11;
     if (*(self + 552))
     {
@@ -784,7 +784,7 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v8;
+    v13 = quadsCopy;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v14)
     {
@@ -814,12 +814,12 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_displayAndCheckForDrawable:(BOOL)a3 renderDiscontinuity:(BOOL)a4 withCompletion:(id)a5
+- (BOOL)_displayAndCheckForDrawable:(BOOL)drawable renderDiscontinuity:(BOOL)discontinuity withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  discontinuityCopy = discontinuity;
+  drawableCopy = drawable;
   v106 = *MEMORY[0x1E69E9840];
-  v70 = a5;
+  completionCopy = completion;
   context = objc_autoreleasePoolPush();
   [(CLKUIMetalQuadView *)self _updateDrawableSizeIfNecessary];
   v8 = CACurrentMediaTime();
@@ -857,22 +857,22 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
 
   if ([v9 count])
   {
-    v15 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(CLKUIQuadView *)self debugIdentifier];
-    v66 = [v16 stringWithFormat:@"FaceDisplay-%@", v17];
+    debugIdentifier = [(CLKUIQuadView *)self debugIdentifier];
+    v66 = [v16 stringWithFormat:@"FaceDisplay-%@", debugIdentifier];
 
-    [CLKUIMetalResourceManager addCompletedErrorCheckToCommandBuffer:v15 forCase:v66];
+    [CLKUIMetalResourceManager addCompletedErrorCheckToCommandBuffer:commandBuffer forCase:v66];
     [(UIImageView *)self->_snapshotView setHidden:1];
     [(UIImageView *)self->_snapshotView setImage:0];
-    if (v70)
+    if (completionCopy)
     {
       v96[0] = MEMORY[0x1E69E9820];
       v96[1] = 3221225472;
       v96[2] = __85__CLKUIMetalQuadView__displayAndCheckForDrawable_renderDiscontinuity_withCompletion___block_invoke;
       v96[3] = &unk_1E8762CB0;
-      v97 = v70;
-      [v15 addScheduledHandler:v96];
+      v97 = completionCopy;
+      [commandBuffer addScheduledHandler:v96];
     }
 
     if ([(CLKUIQuadView *)self singleBufferMode])
@@ -883,12 +883,12 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
       v94[2] = __85__CLKUIMetalQuadView__displayAndCheckForDrawable_renderDiscontinuity_withCompletion___block_invoke_2;
       v94[3] = &unk_1E8762D00;
       objc_copyWeak(&v95, location);
-      [v15 addCompletedHandler:v94];
+      [commandBuffer addCompletedHandler:v94];
       objc_destroyWeak(&v95);
       objc_destroyWeak(location);
     }
 
-    [CLKUIMetalResourceManager setSynchronousTextureStreamingEnabled:v5];
+    [CLKUIMetalResourceManager setSynchronousTextureStreamingEnabled:discontinuityCopy];
     v92 = 0u;
     v93 = 0u;
     v90 = 0u;
@@ -907,7 +907,7 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
             objc_enumerationMutation(v18);
           }
 
-          [*(*(&v90 + 1) + 8 * j) performOffscreenPassesWithCommandBuffer:v15];
+          [*(*(&v90 + 1) + 8 * j) performOffscreenPassesWithCommandBuffer:commandBuffer];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v90 objects:v104 count:16];
@@ -916,7 +916,7 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
       while (v19);
     }
 
-    if (v6 && (*(self + 552) & 2) == 0 && ([(CAMetalLayer *)self->_metalLayer isDrawableAvailable]& 1) == 0)
+    if (drawableCopy && (*(self + 552) & 2) == 0 && ([(CAMetalLayer *)self->_metalLayer isDrawableAvailable]& 1) == 0)
     {
       v55 = _CLKUILoggingObjectForDomain(0, "CLKUILoggingDomainMetalQuadView");
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -924,13 +924,13 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
         [CLKUIMetalQuadView _displayAndCheckForDrawable:v55 renderDiscontinuity:? withCompletion:?];
       }
 
-      [v15 commit];
+      [commandBuffer commit];
       v88 = 0u;
       v89 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v22 = v18;
-      v56 = [v22 countByEnumeratingWithState:&v86 objects:v103 count:16];
+      date = v18;
+      v56 = [date countByEnumeratingWithState:&v86 objects:v103 count:16];
       if (v56)
       {
         v57 = *v87;
@@ -940,13 +940,13 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
           {
             if (*v87 != v57)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(date);
             }
 
             [*(*(&v86 + 1) + 8 * k) renderFailedForReason:0];
           }
 
-          v56 = [v22 countByEnumeratingWithState:&v86 objects:v103 count:16];
+          v56 = [date countByEnumeratingWithState:&v86 objects:v103 count:16];
         }
 
         while (v56);
@@ -956,10 +956,10 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
       goto LABEL_75;
     }
 
-    v22 = [MEMORY[0x1E695DF00] date];
-    v69 = [(CAMetalLayer *)self->_metalLayer nextDrawable];
-    v65 = [MEMORY[0x1E695DF00] date];
-    [v65 timeIntervalSinceDate:v22];
+    date = [MEMORY[0x1E695DF00] date];
+    nextDrawable = [(CAMetalLayer *)self->_metalLayer nextDrawable];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:date];
     if (v23 <= 1.0)
     {
       if (v23 <= 0.0333333333)
@@ -984,8 +984,8 @@ void __44__CLKUIMetalQuadView_prewarmWithCompletion___block_invoke(uint64_t a1)
     }
 
 LABEL_34:
-    v67 = v69 != 0;
-    if (!v69)
+    v67 = nextDrawable != 0;
+    if (!nextDrawable)
     {
       v28 = _CLKUILoggingObjectForDomain(0, "CLKUILoggingDomainMetalQuadView");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -993,7 +993,7 @@ LABEL_34:
         [CLKUIMetalQuadView _displayAndCheckForDrawable:v28 renderDiscontinuity:? withCompletion:?];
       }
 
-      [v15 commit];
+      [commandBuffer commit];
       v84 = 0u;
       v85 = 0u;
       v82 = 0u;
@@ -1024,50 +1024,50 @@ LABEL_34:
       goto LABEL_74;
     }
 
-    v25 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
-    v26 = [v25 objectAtIndexedSubscript:0];
+    colorAttachments = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor colorAttachments];
+    v26 = [colorAttachments objectAtIndexedSubscript:0];
 
     if (self->_msaaCount < 2)
     {
-      v27 = [v69 texture];
-      [v26 setTexture:v27];
+      texture = [nextDrawable texture];
+      [v26 setTexture:texture];
     }
 
     else
     {
       [v26 setTexture:self->_msaaTexture];
-      v27 = [v69 texture];
-      [v26 setResolveTexture:v27];
+      texture = [nextDrawable texture];
+      [v26 setResolveTexture:texture];
     }
 
     if (*(self + 552))
     {
-      v32 = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor depthAttachment];
-      v33 = [v32 texture];
-      v34 = v33 == self->_depthTexture;
+      depthAttachment = [(MTLRenderPassDescriptor *)self->_renderPassDescriptor depthAttachment];
+      texture2 = [depthAttachment texture];
+      v34 = texture2 == self->_depthTexture;
 
       if (!v34)
       {
-        [v32 setTexture:self->_depthTexture];
+        [depthAttachment setTexture:self->_depthTexture];
       }
     }
 
-    [(CLKUIMetalQuadView *)self _renderQuads:v18 toScreenWithCommandBuffer:v15 passDescriptor:self->_renderPassDescriptor];
+    [(CLKUIMetalQuadView *)self _renderQuads:v18 toScreenWithCommandBuffer:commandBuffer passDescriptor:self->_renderPassDescriptor];
     if ([(CLKUIMetalQuadView *)self _shouldApplyAPLFilter])
     {
       v35 = self->_aplPipelineState;
-      v36 = [v69 texture];
+      texture3 = [nextDrawable texture];
       v81 = v35;
-      v63 = _CLKUIComputeTextureAPL(v36, v15, &v81);
+      v63 = _CLKUIComputeTextureAPL(texture3, commandBuffer, &v81);
       v37 = v81;
 
       aplPipelineState = self->_aplPipelineState;
       self->_aplPipelineState = v37;
       v62 = v37;
 
-      v64 = [(CLKUIMetalQuadView *)self _getDimmingPipelineState];
-      v39 = [v15 computeCommandEncoder];
-      [v39 setComputePipelineState:v64];
+      _getDimmingPipelineState = [(CLKUIMetalQuadView *)self _getDimmingPipelineState];
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      [computeCommandEncoder setComputePipelineState:_getDimmingPipelineState];
       v79 = 0u;
       v80 = 0u;
       v77 = 0u;
@@ -1085,32 +1085,32 @@ LABEL_34:
       *&v77 = v45;
       DWORD2(v78) = v46;
       *&v78 = v47;
-      [v39 setBytes:location length:80 atIndex:2];
-      [v39 setBuffer:v63 offset:0 atIndex:1];
-      v48 = [v69 texture];
-      [v39 setTexture:v48 atIndex:0];
+      [computeCommandEncoder setBytes:location length:80 atIndex:2];
+      [computeCommandEncoder setBuffer:v63 offset:0 atIndex:1];
+      texture4 = [nextDrawable texture];
+      [computeCommandEncoder setTexture:texture4 atIndex:0];
 
-      v49 = [v64 threadExecutionWidth];
-      v61 = [v64 maxTotalThreadsPerThreadgroup];
-      v50 = [v69 texture];
-      v60 = [v50 width];
-      v51 = [v69 texture];
+      threadExecutionWidth = [_getDimmingPipelineState threadExecutionWidth];
+      maxTotalThreadsPerThreadgroup = [_getDimmingPipelineState maxTotalThreadsPerThreadgroup];
+      texture5 = [nextDrawable texture];
+      width = [texture5 width];
+      texture6 = [nextDrawable texture];
 
-      LODWORD(v48) = [v51 height];
-      v75[0] = (v49 + v60 - 1) / v49;
-      v75[1] = (v61 / v49 + v48 - 1) / (v61 / v49);
+      LODWORD(texture4) = [texture6 height];
+      v75[0] = (threadExecutionWidth + width - 1) / threadExecutionWidth;
+      v75[1] = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + texture4 - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
       v75[2] = 1;
-      v74[0] = v49;
-      v74[1] = v61 / v49;
+      v74[0] = threadExecutionWidth;
+      v74[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
       v74[2] = 1;
-      [v39 dispatchThreadgroups:v75 threadsPerThreadgroup:v74];
-      [v39 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v75 threadsPerThreadgroup:v74];
+      [computeCommandEncoder endEncoding];
     }
 
     if ((*(self + 552) & 2) == 0)
     {
-      [v15 presentDrawable:v69];
-      [v15 commit];
+      [commandBuffer presentDrawable:nextDrawable];
+      [commandBuffer commit];
 LABEL_74:
 
 LABEL_75:
@@ -1121,15 +1121,15 @@ LABEL_75:
     aBlock[1] = 3221225472;
     aBlock[2] = __85__CLKUIMetalQuadView__displayAndCheckForDrawable_renderDiscontinuity_withCompletion___block_invoke_36;
     aBlock[3] = &unk_1E8762A30;
-    v52 = v15;
+    v52 = commandBuffer;
     v72 = v52;
-    v73 = v69;
+    v73 = nextDrawable;
     v53 = _Block_copy(aBlock);
     [v52 commit];
-    v54 = [MEMORY[0x1E6979518] currentPhase];
-    if (v54)
+    currentPhase = [MEMORY[0x1E6979518] currentPhase];
+    if (currentPhase)
     {
-      if (v54 == 1)
+      if (currentPhase == 1)
       {
         v53[2](v53);
 LABEL_73:
@@ -1147,7 +1147,7 @@ LABEL_73:
     goto LABEL_73;
   }
 
-  v70[2]();
+  completionCopy[2]();
   v67 = 0;
 LABEL_76:
 
@@ -1218,7 +1218,7 @@ uint64_t __85__CLKUIMetalQuadView__displayAndCheckForDrawable_renderDiscontinuit
   [(CAMetalLayer *)metalLayer setTextureUsage:v6];
 }
 
-- (float)computeAPLAndSnapshot:(id *)a3
+- (float)computeAPLAndSnapshot:(id *)snapshot
 {
   v12 = 0;
   v13 = &v12;
@@ -1243,7 +1243,7 @@ uint64_t __85__CLKUIMetalQuadView__displayAndCheckForDrawable_renderDiscontinuit
   v7[4] = self;
   v7[5] = v10;
   v7[7] = &v12;
-  v7[8] = a3;
+  v7[8] = snapshot;
   v7[6] = v8;
   [(CLKUIQuadView *)self _runOnRenderQueueIfNeeded:v7];
   v5 = v13[6];
@@ -1321,9 +1321,9 @@ void __44__CLKUIMetalQuadView_computeAPLAndSnapshot___block_invoke_2(uint64_t a1
 
 - (id)_newRenderPassDescriptor
 {
-  v3 = [MEMORY[0x1E6974128] renderPassDescriptor];
-  v4 = [v3 colorAttachments];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  renderPassDescriptor = [MEMORY[0x1E6974128] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v5 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v5 setLoadAction:2];
   [v5 setClearColor:{0.0, 0.0, 0.0, 0.0}];
@@ -1340,13 +1340,13 @@ void __44__CLKUIMetalQuadView_computeAPLAndSnapshot___block_invoke_2(uint64_t a1
   [v5 setStoreAction:v6];
   if (*(self + 552))
   {
-    v7 = [v3 depthAttachment];
-    [v7 setLoadAction:2];
-    [v7 setClearDepth:1.0];
-    [v7 setStoreAction:0];
+    depthAttachment = [renderPassDescriptor depthAttachment];
+    [depthAttachment setLoadAction:2];
+    [depthAttachment setClearDepth:1.0];
+    [depthAttachment setStoreAction:0];
   }
 
-  return v3;
+  return renderPassDescriptor;
 }
 
 - (CGSize)drawableSize
@@ -1365,16 +1365,16 @@ void __44__CLKUIMetalQuadView_computeAPLAndSnapshot___block_invoke_2(uint64_t a1
     v3 = self->_metalLayer;
     if ((*(self + 552) & 4) != 0)
     {
-      v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v4 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v7 = v8;
     }
 
     else
     {
-      v4 = [MEMORY[0x1E695B530] sharedRenderingContext];
-      v5 = [v4 device];
-      [v5 screenScale];
+      mainScreen = [MEMORY[0x1E695B530] sharedRenderingContext];
+      device = [mainScreen device];
+      [device screenScale];
       v7 = v6;
     }
 

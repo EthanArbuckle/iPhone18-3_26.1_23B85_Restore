@@ -1,20 +1,20 @@
 @interface RTPersistenceCloudDeletionEnforcer
-- (BOOL)applyTombstonesToEntityWithName:(id)a3 identifiers:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)performBatchDeleteOfEntityWithName:(id)a3 identifiers:(id)a4 context:(id)a5 error:(id *)a6;
-- (BOOL)processRequestsSinceReferenceDate:(id)a3 context:(id)a4 error:(id *)a5;
+- (BOOL)applyTombstonesToEntityWithName:(id)name identifiers:(id)identifiers context:(id)context error:(id *)error;
+- (BOOL)performBatchDeleteOfEntityWithName:(id)name identifiers:(id)identifiers context:(id)context error:(id *)error;
+- (BOOL)processRequestsSinceReferenceDate:(id)date context:(id)context error:(id *)error;
 @end
 
 @implementation RTPersistenceCloudDeletionEnforcer
 
-- (BOOL)processRequestsSinceReferenceDate:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)processRequestsSinceReferenceDate:(id)date context:(id)context error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  dateCopy = date;
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v9 options] & 2) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([contextCopy options] & 2) == 0)
     {
       v16 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"This opertion requires a context with RTPersistenceContextOptionsAllowTombstones." userInfo:0];
       objc_exception_throw(v16);
@@ -30,15 +30,15 @@
     v17[1] = 3221225472;
     v17[2] = __86__RTPersistenceCloudDeletionEnforcer_processRequestsSinceReferenceDate_context_error___block_invoke;
     v17[3] = &unk_2788C4EF0;
-    v18 = v8;
-    v20 = self;
+    v18 = dateCopy;
+    selfCopy = self;
     p_buf = &buf;
-    v19 = v9;
+    v19 = contextCopy;
     [v19 performBlockAndWait:v17];
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
 
     v10 = *(*(&buf + 1) + 40) == 0;
@@ -59,10 +59,10 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "%@", &buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v14 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     v10 = 0;
@@ -274,13 +274,13 @@ void __86__RTPersistenceCloudDeletionEnforcer_processRequestsSinceReferenceDate_
   }
 }
 
-- (BOOL)performBatchDeleteOfEntityWithName:(id)a3 identifiers:(id)a4 context:(id)a5 error:(id *)a6
+- (BOOL)performBatchDeleteOfEntityWithName:(id)name identifiers:(id)identifiers context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (!nameCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -289,12 +289,12 @@ void __86__RTPersistenceCloudDeletionEnforcer_processRequestsSinceReferenceDate_
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entityName", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"entityName";
 LABEL_15:
       _RTErrorInvalidParameterCreate(v16);
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_18;
     }
 
@@ -303,7 +303,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (!v12)
+  if (!contextCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -312,7 +312,7 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"context";
       goto LABEL_15;
@@ -321,7 +321,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v11 count])
+  if ([identifiersCopy count])
   {
     *buf = 0;
     v26 = buf;
@@ -333,16 +333,16 @@ LABEL_16:
     v19[1] = 3221225472;
     v19[2] = __99__RTPersistenceCloudDeletionEnforcer_performBatchDeleteOfEntityWithName_identifiers_context_error___block_invoke;
     v19[3] = &unk_2788CB638;
-    v20 = v10;
-    v21 = v11;
+    v20 = nameCopy;
+    v21 = identifiersCopy;
     v23 = buf;
     v24 = a2;
     v22 = v13;
     [v22 performBlockAndWait:v19];
 
-    if (a6)
+    if (error)
     {
-      *a6 = *(v26 + 5);
+      *error = *(v26 + 5);
     }
 
     v14 = *(v26 + 5) == 0;
@@ -396,13 +396,13 @@ void __99__RTPersistenceCloudDeletionEnforcer_performBatchDeleteOfEntityWithName
   *(v11 + 40) = v7;
 }
 
-- (BOOL)applyTombstonesToEntityWithName:(id)a3 identifiers:(id)a4 context:(id)a5 error:(id *)a6
+- (BOOL)applyTombstonesToEntityWithName:(id)name identifiers:(id)identifiers context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!v10)
+  nameCopy = name;
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  v13 = contextCopy;
+  if (!nameCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -411,12 +411,12 @@ void __99__RTPersistenceCloudDeletionEnforcer_performBatchDeleteOfEntityWithName
       _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: entityName", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"entityName";
 LABEL_15:
       _RTErrorInvalidParameterCreate(v16);
-      *a6 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_18;
     }
 
@@ -425,7 +425,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (!v12)
+  if (!contextCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -434,7 +434,7 @@ LABEL_16:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: context", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v16 = @"context";
       goto LABEL_15;
@@ -443,7 +443,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if ([v11 count])
+  if ([identifiersCopy count])
   {
     *buf = 0;
     v26 = buf;
@@ -455,16 +455,16 @@ LABEL_16:
     v19[1] = 3221225472;
     v19[2] = __96__RTPersistenceCloudDeletionEnforcer_applyTombstonesToEntityWithName_identifiers_context_error___block_invoke;
     v19[3] = &unk_2788CB638;
-    v20 = v10;
-    v21 = v11;
+    v20 = nameCopy;
+    v21 = identifiersCopy;
     v23 = buf;
     v24 = a2;
     v22 = v13;
     [v22 performBlockAndWait:v19];
 
-    if (a6)
+    if (error)
     {
-      *a6 = *(v26 + 5);
+      *error = *(v26 + 5);
     }
 
     v14 = *(v26 + 5) == 0;

@@ -1,63 +1,63 @@
 @interface CAMStageLightAnimator
-- ($9C403407A5B624E1CD2E2AFE16A3B680)_gradientGeometryForState:(SEL)a3;
-- ($C12B4627ED62839D2AEBF862580BED8F)_circleGeometryForState:(SEL)a3;
+- ($9C403407A5B624E1CD2E2AFE16A3B680)_gradientGeometryForState:(SEL)state;
+- ($C12B4627ED62839D2AEBF862580BED8F)_circleGeometryForState:(SEL)state;
 - ($C12B4627ED62839D2AEBF862580BED8F)_currentCircleGeometry;
 - ($DD7213A072135978BB9F7CBA3523336B)_currentGradientProperties;
-- ($DD7213A072135978BB9F7CBA3523336B)_gradientPropertiesForGeometry:(SEL)a3;
-- (CAMStageLightAnimator)initWithGradientLayer:(id)a3 circleLayer:(id)a4;
+- ($DD7213A072135978BB9F7CBA3523336B)_gradientPropertiesForGeometry:(SEL)geometry;
+- (CAMStageLightAnimator)initWithGradientLayer:(id)layer circleLayer:(id)circleLayer;
 - (CGRect)circleBaseFrame;
 - (void)_animateAppearing;
 - (void)_animateBounceIfNeeded;
-- (void)_animateCircleColorWithDuration:(double)a3 timing:(id)a4;
-- (void)_animateCircleFromGeometry:(id *)a3 toGeometry:(id *)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7 completion:(id)a8;
-- (void)_animateCircleGeometry:(id *)a3 count:(unint64_t)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7 completion:(id)a8;
-- (void)_animateCircleToGeometry:(id *)a3 duration:(double)a4 timing:(id)a5 completion:(id)a6;
-- (void)_animateGradientFromProperties:(id *)a3 toProperties:(id *)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7;
-- (void)_animateGradientProperties:(id *)a3 count:(unint64_t)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7;
-- (void)_animateGradientToProperties:(id *)a3 duration:(double)a4 timing:(id)a5;
+- (void)_animateCircleColorWithDuration:(double)duration timing:(id)timing;
+- (void)_animateCircleFromGeometry:(id *)geometry toGeometry:(id *)toGeometry duration:(double)duration timing:(id)timing repeats:(BOOL)repeats completion:(id)completion;
+- (void)_animateCircleGeometry:(id *)geometry count:(unint64_t)count duration:(double)duration timing:(id)timing repeats:(BOOL)repeats completion:(id)completion;
+- (void)_animateCircleToGeometry:(id *)geometry duration:(double)duration timing:(id)timing completion:(id)completion;
+- (void)_animateGradientFromProperties:(id *)properties toProperties:(id *)toProperties duration:(double)duration timing:(id)timing repeats:(BOOL)repeats;
+- (void)_animateGradientProperties:(id *)properties count:(unint64_t)count duration:(double)duration timing:(id)timing repeats:(BOOL)repeats;
+- (void)_animateGradientToProperties:(id *)properties duration:(double)duration timing:(id)timing;
 - (void)_animateHidden;
-- (void)_animateSearchingIfNeededFromState:(unint64_t)a3;
+- (void)_animateSearchingIfNeededFromState:(unint64_t)state;
 - (void)_didFinishAppearing;
-- (void)setCircleBaseFrame:(CGRect)a3 animated:(BOOL)a4;
-- (void)setState:(unint64_t)a3;
+- (void)setCircleBaseFrame:(CGRect)frame animated:(BOOL)animated;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation CAMStageLightAnimator
 
-- (CAMStageLightAnimator)initWithGradientLayer:(id)a3 circleLayer:(id)a4
+- (CAMStageLightAnimator)initWithGradientLayer:(id)layer circleLayer:(id)circleLayer
 {
-  v7 = a3;
-  v8 = a4;
+  layerCopy = layer;
+  circleLayerCopy = circleLayer;
   v12.receiver = self;
   v12.super_class = CAMStageLightAnimator;
   v9 = [(CAMStageLightAnimator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_gradientLayer, a3);
-    objc_storeStrong(&v10->_circleLayer, a4);
+    objc_storeStrong(&v9->_gradientLayer, layer);
+    objc_storeStrong(&v10->_circleLayer, circleLayer);
   }
 
   return v10;
 }
 
-- (void)setCircleBaseFrame:(CGRect)a3 animated:(BOOL)a4
+- (void)setCircleBaseFrame:(CGRect)frame animated:(BOOL)animated
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_circleBaseFrame))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(frame, self->_circleBaseFrame))
   {
     self->_circleBaseFrame.origin.x = x;
     self->_circleBaseFrame.origin.y = y;
     self->_circleBaseFrame.size.width = width;
     self->_circleBaseFrame.size.height = height;
-    v10 = [(CAMStageLightAnimator *)self state];
-    v11 = v10;
-    if (!v10 || v10 == 2)
+    state = [(CAMStageLightAnimator *)self state];
+    v11 = state;
+    if (!state || state == 2)
     {
-      [(CAMStageLightAnimator *)self _circleGeometryForState:v10];
+      [(CAMStageLightAnimator *)self _circleGeometryForState:state];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -66,7 +66,7 @@
       v22 = 0u;
       v23 = 0u;
       [(CAMStageLightAnimator *)self _gradientPropertiesForGeometry:?];
-      if (v11 != 0 && a4)
+      if (v11 != 0 && animated)
       {
         v18 = 0.5;
       }
@@ -85,7 +85,7 @@
       [(CAMStageLightAnimator *)self _animateCircleColorWithDuration:v19 timing:v18];
     }
 
-    else if (v10 == 1)
+    else if (state == 1)
     {
 
       [(CAMStageLightAnimator *)self _animateAppearing];
@@ -93,20 +93,20 @@
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
     return;
   }
 
-  self->_state = a3;
-  if (a3)
+  self->_state = state;
+  if (state)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         return;
       }
@@ -171,26 +171,26 @@ LABEL_18:
 - (void)_didFinishAppearing
 {
   [(CAMStageLightAnimator *)self _setAppearingAnimationCount:[(CAMStageLightAnimator *)self _appearingAnimationCount]- 1];
-  v3 = [(CAMStageLightAnimator *)self state];
-  if (v3 == 2)
+  state = [(CAMStageLightAnimator *)self state];
+  if (state == 2)
   {
 
     [(CAMStageLightAnimator *)self _animateBounceIfNeeded];
   }
 
-  else if (v3 == 1)
+  else if (state == 1)
   {
 
     [(CAMStageLightAnimator *)self _animateSearchingIfNeededFromState:0];
   }
 }
 
-- (void)_animateSearchingIfNeededFromState:(unint64_t)a3
+- (void)_animateSearchingIfNeededFromState:(unint64_t)state
 {
   if (![(CAMStageLightAnimator *)self _isAppearing])
   {
-    v5 = a3 == 2;
-    if (a3 == 2)
+    v5 = state == 2;
+    if (state == 2)
     {
       v6 = 2;
     }
@@ -311,11 +311,11 @@ LABEL_18:
   [(CAMStageLightAnimator *)self _animateCircleColorWithDuration:v12 timing:0.5];
 }
 
-- ($9C403407A5B624E1CD2E2AFE16A3B680)_gradientGeometryForState:(SEL)a3
+- ($9C403407A5B624E1CD2E2AFE16A3B680)_gradientGeometryForState:(SEL)state
 {
   [(CAMStageLightAnimator *)self _circleGeometryForState:?];
-  v6 = [(CAMStageLightAnimator *)self gradientLayer];
-  [v6 bounds];
+  gradientLayer = [(CAMStageLightAnimator *)self gradientLayer];
+  [gradientLayer bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -335,21 +335,21 @@ LABEL_18:
   return result;
 }
 
-- ($C12B4627ED62839D2AEBF862580BED8F)_circleGeometryForState:(SEL)a3
+- ($C12B4627ED62839D2AEBF862580BED8F)_circleGeometryForState:(SEL)state
 {
   [(CAMStageLightAnimator *)self circleBaseFrame];
   [(CAMStageLightAnimator *)self _circleLineWidth];
   return UIRectGetCenter();
 }
 
-- ($DD7213A072135978BB9F7CBA3523336B)_gradientPropertiesForGeometry:(SEL)a3
+- ($DD7213A072135978BB9F7CBA3523336B)_gradientPropertiesForGeometry:(SEL)geometry
 {
   v8 = v7;
   v9 = v6;
   v10 = v5;
   v11 = v4;
-  v13 = [(CAMStageLightAnimator *)self gradientLayer];
-  [v13 bounds];
+  gradientLayer = [(CAMStageLightAnimator *)self gradientLayer];
+  [gradientLayer bounds];
   v15 = v14;
   v17 = v16;
 
@@ -363,20 +363,20 @@ LABEL_18:
 
 - ($C12B4627ED62839D2AEBF862580BED8F)_currentCircleGeometry
 {
-  v4 = [(CAMStageLightAnimator *)self circleLayer];
-  v5 = [v4 presentationLayer];
-  v6 = v5;
-  if (v5)
+  circleLayer = [(CAMStageLightAnimator *)self circleLayer];
+  presentationLayer = [circleLayer presentationLayer];
+  v6 = presentationLayer;
+  if (presentationLayer)
   {
-    v7 = v5;
+    circleLayer2 = presentationLayer;
   }
 
   else
   {
-    v7 = [(CAMStageLightAnimator *)self circleLayer];
+    circleLayer2 = [(CAMStageLightAnimator *)self circleLayer];
   }
 
-  v8 = v7;
+  v8 = circleLayer2;
 
   CGPathGetBoundingBox([v8 path]);
   UIRectGetCenter();
@@ -386,29 +386,29 @@ LABEL_18:
 
 - ($DD7213A072135978BB9F7CBA3523336B)_currentGradientProperties
 {
-  v16 = [(CAMStageLightAnimator *)self gradientLayer];
-  v4 = [v16 presentationLayer];
-  if (v4)
+  gradientLayer = [(CAMStageLightAnimator *)self gradientLayer];
+  presentationLayer = [gradientLayer presentationLayer];
+  if (presentationLayer)
   {
-    v5 = v4;
+    v5 = presentationLayer;
   }
 
   else
   {
-    v5 = v16;
+    v5 = gradientLayer;
   }
 
   v6 = v5;
 
-  v7 = [v6 locations];
-  if ([v7 count] < 2)
+  locations = [v6 locations];
+  if ([locations count] < 2)
   {
     v10 = 0.99;
   }
 
   else
   {
-    v8 = [v7 objectAtIndexedSubscript:1];
+    v8 = [locations objectAtIndexedSubscript:1];
     [v8 floatValue];
     v10 = v9;
   }
@@ -424,48 +424,48 @@ LABEL_18:
   return result;
 }
 
-- (void)_animateGradientToProperties:(id *)a3 duration:(double)a4 timing:(id)a5
+- (void)_animateGradientToProperties:(id *)properties duration:(double)duration timing:(id)timing
 {
   v16 = 0;
   v14 = 0u;
   v15 = 0u;
-  v8 = a5;
+  timingCopy = timing;
   [(CAMStageLightAnimator *)self _currentGradientProperties];
   v12[0] = v14;
   v12[1] = v15;
   v13 = v16;
-  var1 = a3->var1;
-  v10[0] = a3->var0;
+  var1 = properties->var1;
+  v10[0] = properties->var0;
   v10[1] = var1;
-  var2 = a3->var2;
-  [(CAMStageLightAnimator *)self _animateGradientFromProperties:v12 toProperties:v10 duration:v8 timing:0 repeats:a4];
+  var2 = properties->var2;
+  [(CAMStageLightAnimator *)self _animateGradientFromProperties:v12 toProperties:v10 duration:timingCopy timing:0 repeats:duration];
 }
 
-- (void)_animateGradientFromProperties:(id *)a3 toProperties:(id *)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7
+- (void)_animateGradientFromProperties:(id *)properties toProperties:(id *)toProperties duration:(double)duration timing:(id)timing repeats:(BOOL)repeats
 {
   v14 = *MEMORY[0x1E69E9840];
-  var1 = a3->var1;
-  v9[0] = a3->var0;
+  var1 = properties->var1;
+  v9[0] = properties->var0;
   v9[1] = var1;
-  v8 = a4->var1;
-  var0 = a4->var0;
-  var2 = a3->var2;
+  v8 = toProperties->var1;
+  var0 = toProperties->var0;
+  var2 = properties->var2;
   v12 = v8;
-  v13 = a4->var2;
-  [(CAMStageLightAnimator *)self _animateGradientProperties:v9 count:2 duration:a6 timing:a7 repeats:a5];
+  v13 = toProperties->var2;
+  [(CAMStageLightAnimator *)self _animateGradientProperties:v9 count:2 duration:timing timing:repeats repeats:duration];
 }
 
-- (void)_animateGradientProperties:(id *)a3 count:(unint64_t)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7
+- (void)_animateGradientProperties:(id *)properties count:(unint64_t)count duration:(double)duration timing:(id)timing repeats:(BOOL)repeats
 {
-  v39 = a7;
+  repeatsCopy = repeats;
   v47[3] = *MEMORY[0x1E69E9840];
-  v41 = a6;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  if (a4)
+  timingCopy = timing;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  v11 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  if (count)
   {
-    p_var1 = &a3->var1;
+    p_var1 = &properties->var1;
     do
     {
       x = p_var1->x;
@@ -490,16 +490,16 @@ LABEL_18:
       v11 = v20;
 
       p_var1 = (p_var1 + 40);
-      --a4;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  v23 = [(CAMStageLightAnimator *)self gradientLayer];
-  if (a5 > 0.0)
+  gradientLayer = [(CAMStageLightAnimator *)self gradientLayer];
+  if (duration > 0.0)
   {
-    if (v39)
+    if (repeatsCopy)
     {
       v24 = INFINITY;
     }
@@ -510,30 +510,30 @@ LABEL_18:
     }
 
     v25 = [MEMORY[0x1E6979390] animationWithKeyPath:@"locations"];
-    [v25 setTimingFunction:v41];
-    [v25 setDuration:a5];
+    [v25 setTimingFunction:timingCopy];
+    [v25 setDuration:duration];
     [v25 setValues:v12];
     *&v26 = v24;
     [v25 setRepeatCount:v26];
-    [v25 setAutoreverses:v39];
-    [v23 addAnimation:v25 forKey:@"visibleLocations"];
+    [v25 setAutoreverses:repeatsCopy];
+    [gradientLayer addAnimation:v25 forKey:@"visibleLocations"];
     v27 = [MEMORY[0x1E6979390] animationWithKeyPath:@"endPoint"];
-    [v27 setTimingFunction:v41];
-    [v27 setDuration:a5];
+    [v27 setTimingFunction:timingCopy];
+    [v27 setDuration:duration];
     [v27 setValues:v11];
     *&v28 = v24;
     [v27 setRepeatCount:v28];
-    [v27 setAutoreverses:v39];
-    [v23 addAnimation:v27 forKey:@"visibleEndPoint"];
+    [v27 setAutoreverses:repeatsCopy];
+    [gradientLayer addAnimation:v27 forKey:@"visibleEndPoint"];
     [MEMORY[0x1E6979390] animationWithKeyPath:@"startPoint"];
     v30 = v29 = v10;
-    [v30 setTimingFunction:v41];
-    [v30 setDuration:a5];
+    [v30 setTimingFunction:timingCopy];
+    [v30 setDuration:duration];
     [v30 setValues:v29];
     *&v31 = v24;
     [v30 setRepeatCount:v31];
-    [v30 setAutoreverses:v39];
-    [v23 addAnimation:v30 forKey:@"visibleStartPoint"];
+    [v30 setAutoreverses:repeatsCopy];
+    [gradientLayer addAnimation:v30 forKey:@"visibleStartPoint"];
 
     v10 = v29;
   }
@@ -543,7 +543,7 @@ LABEL_18:
   v42[1] = 3221225472;
   v42[2] = __82__CAMStageLightAnimator__animateGradientProperties_count_duration_timing_repeats___block_invoke;
   v42[3] = &unk_1E76F8230;
-  v43 = v23;
+  v43 = gradientLayer;
   v44 = v10;
   v45 = v11;
   v46 = v12;
@@ -552,7 +552,7 @@ LABEL_18:
   v35 = v33;
   v36 = v34;
   v37 = v10;
-  v38 = v23;
+  v38 = gradientLayer;
   [v32 performWithoutAnimation:v42];
 }
 
@@ -570,35 +570,35 @@ void __82__CAMStageLightAnimator__animateGradientProperties_count_duration_timin
   [a1[4] setLocations:v4];
 }
 
-- (void)_animateCircleToGeometry:(id *)a3 duration:(double)a4 timing:(id)a5 completion:(id)a6
+- (void)_animateCircleToGeometry:(id *)geometry duration:(double)duration timing:(id)timing completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  timingCopy = timing;
+  geometryCopy = geometry;
   [(CAMStageLightAnimator *)self _currentCircleGeometry];
-  [CAMStageLightAnimator _animateCircleFromGeometry:"_animateCircleFromGeometry:toGeometry:duration:timing:repeats:completion:" toGeometry:v9 duration:0 timing:v8 repeats:? completion:?];
+  [CAMStageLightAnimator _animateCircleFromGeometry:"_animateCircleFromGeometry:toGeometry:duration:timing:repeats:completion:" toGeometry:geometryCopy duration:0 timing:timingCopy repeats:? completion:?];
 }
 
-- (void)_animateCircleFromGeometry:(id *)a3 toGeometry:(id *)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7 completion:(id)a8
+- (void)_animateCircleFromGeometry:(id *)geometry toGeometry:(id *)toGeometry duration:(double)duration timing:(id)timing repeats:(BOOL)repeats completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v14 = a5;
+  durationCopy = duration;
   v15 = v8;
   v16 = v9;
   v17 = v10;
   v18 = v11;
   v19 = v12;
-  [(CAMStageLightAnimator *)self _animateCircleGeometry:&v14 count:2 duration:a3 timing:a4 repeats:a6 completion:v13];
+  [(CAMStageLightAnimator *)self _animateCircleGeometry:&durationCopy count:2 duration:geometry timing:toGeometry repeats:timing completion:v13];
 }
 
-- (void)_animateCircleGeometry:(id *)a3 count:(unint64_t)a4 duration:(double)a5 timing:(id)a6 repeats:(BOOL)a7 completion:(id)a8
+- (void)_animateCircleGeometry:(id *)geometry count:(unint64_t)count duration:(double)duration timing:(id)timing repeats:(BOOL)repeats completion:(id)completion
 {
-  v9 = a7;
-  v14 = a6;
-  v15 = a8;
-  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4];
-  if (a4)
+  repeatsCopy = repeats;
+  timingCopy = timing;
+  completionCopy = completion;
+  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
+  if (count)
   {
-    p_y = &a3->var1.y;
+    p_y = &geometry->var1.y;
     do
     {
       p_y += 3;
@@ -606,16 +606,16 @@ void __82__CAMStageLightAnimator__animateGradientProperties_count_duration_timin
       v18 = CGPathCreateWithEllipseInRect(v27, 0);
       [v16 addObject:v18];
       CGPathRelease(v18);
-      --a4;
+      --count;
     }
 
-    while (a4);
+    while (count);
   }
 
-  v19 = [(CAMStageLightAnimator *)self circleLayer];
-  if (a5 > 0.0)
+  circleLayer = [(CAMStageLightAnimator *)self circleLayer];
+  if (duration > 0.0)
   {
-    if (v9)
+    if (repeatsCopy)
     {
       v20 = INFINITY;
     }
@@ -630,21 +630,21 @@ void __82__CAMStageLightAnimator__animateGradientProperties_count_duration_timin
     v25[1] = 3221225472;
     v25[2] = __89__CAMStageLightAnimator__animateCircleGeometry_count_duration_timing_repeats_completion___block_invoke;
     v25[3] = &unk_1E76F97A0;
-    v26 = v15;
+    v26 = completionCopy;
     [(CAMAnimationDelegate *)v21 setCompletion:v25];
     v22 = [MEMORY[0x1E6979390] animationWithKeyPath:@"path"];
-    [v22 setTimingFunction:v14];
-    [v22 setDuration:a5];
+    [v22 setTimingFunction:timingCopy];
+    [v22 setDuration:duration];
     [v22 setValues:v16];
     *&v23 = v20;
     [v22 setRepeatCount:v23];
-    [v22 setAutoreverses:v9];
+    [v22 setAutoreverses:repeatsCopy];
     [v22 setDelegate:v21];
-    [v19 addAnimation:v22 forKey:@"circlePaths"];
+    [circleLayer addAnimation:v22 forKey:@"circlePaths"];
   }
 
-  v24 = [v16 lastObject];
-  [v19 setPath:v24];
+  lastObject = [v16 lastObject];
+  [circleLayer setPath:lastObject];
 }
 
 uint64_t __89__CAMStageLightAnimator__animateCircleGeometry_count_duration_timing_repeats_completion___block_invoke(uint64_t a1)
@@ -658,56 +658,56 @@ uint64_t __89__CAMStageLightAnimator__animateCircleGeometry_count_duration_timin
   return result;
 }
 
-- (void)_animateCircleColorWithDuration:(double)a3 timing:(id)a4
+- (void)_animateCircleColorWithDuration:(double)duration timing:(id)timing
 {
-  v16 = a4;
-  v6 = [(CAMStageLightAnimator *)self circleLayer];
-  v7 = [(CAMStageLightAnimator *)self state];
-  if (v7 >= 2)
+  timingCopy = timing;
+  circleLayer = [(CAMStageLightAnimator *)self circleLayer];
+  state = [(CAMStageLightAnimator *)self state];
+  if (state >= 2)
   {
-    if (v7 != 2)
+    if (state != 2)
     {
-      v10 = 0;
+      cGColor = 0;
       goto LABEL_7;
     }
 
-    v8 = CAMYellowColor();
+    whiteColor = CAMYellowColor();
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v9 = v8;
-  v10 = [v8 CGColor];
+  v9 = whiteColor;
+  cGColor = [whiteColor CGColor];
 
 LABEL_7:
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
-    v11 = [v6 presentationLayer];
-    v12 = v11;
-    if (v11)
+    presentationLayer = [circleLayer presentationLayer];
+    v12 = presentationLayer;
+    if (presentationLayer)
     {
-      v13 = v11;
+      v13 = presentationLayer;
     }
 
     else
     {
-      v13 = v6;
+      v13 = circleLayer;
     }
 
     v14 = v13;
 
     v15 = [MEMORY[0x1E6979318] animationWithKeyPath:@"fillColor"];
     [v15 setFromValue:{objc_msgSend(v14, "fillColor")}];
-    [v15 setToValue:v10];
-    [v15 setDuration:a3];
-    [v15 setTimingFunction:v16];
-    [v6 addAnimation:v15 forKey:@"activeFillColor"];
+    [v15 setToValue:cGColor];
+    [v15 setDuration:duration];
+    [v15 setTimingFunction:timingCopy];
+    [circleLayer addAnimation:v15 forKey:@"activeFillColor"];
   }
 
-  [v6 setFillColor:v10];
+  [circleLayer setFillColor:cGColor];
 }
 
 - (CGRect)circleBaseFrame

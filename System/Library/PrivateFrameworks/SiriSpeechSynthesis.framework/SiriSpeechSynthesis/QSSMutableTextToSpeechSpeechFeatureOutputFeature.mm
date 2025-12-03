@@ -5,21 +5,21 @@
 - (float)end_time;
 - (float)energy;
 - (float)pitch;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBegin_time:(float)a3;
-- (void)setDuration:(float)a3;
-- (void)setEnd_time:(float)a3;
-- (void)setEnergy:(float)a3;
-- (void)setPhone_name:(id)a3;
-- (void)setPitch:(float)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBegin_time:(float)begin_time;
+- (void)setDuration:(float)duration;
+- (void)setEnd_time:(float)end_time;
+- (void)setEnergy:(float)energy;
+- (void)setPhone_name:(id)phone_name;
+- (void)setPitch:(float)pitch;
 @end
 
 @implementation QSSMutableTextToSpeechSpeechFeatureOutputFeature
 
-- (void)setEnergy:(float)a3
+- (void)setEnergy:(float)energy
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = energy;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -33,10 +33,10 @@
   return v4;
 }
 
-- (void)setPitch:(float)a3
+- (void)setPitch:(float)pitch
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = pitch;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -50,10 +50,10 @@
   return v4;
 }
 
-- (void)setDuration:(float)a3
+- (void)setDuration:(float)duration
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = duration;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)setEnd_time:(float)a3
+- (void)setEnd_time:(float)end_time
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = end_time;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -84,10 +84,10 @@
   return v4;
 }
 
-- (void)setBegin_time:(float)a3
+- (void)setBegin_time:(float)begin_time
 {
   v5 = objc_alloc(MEMORY[0x277CCABB0]);
-  *&v6 = a3;
+  *&v6 = begin_time;
   v7 = [v5 initWithFloat:v6];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
@@ -101,15 +101,15 @@
   return v4;
 }
 
-- (void)setPhone_name:(id)a3
+- (void)setPhone_name:(id)phone_name
 {
-  v4 = [a3 copy];
+  v4 = [phone_name copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -124,9 +124,9 @@
   v2 = [(QSSMutableTextToSpeechSpeechFeatureOutputFeature *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

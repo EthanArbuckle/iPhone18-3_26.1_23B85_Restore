@@ -1,42 +1,42 @@
 @interface TabGroupPickerViewController
-- (BOOL)_shouldShowCheckmarkForTabGroup:(id)a3;
-- (TabGroupPickerViewController)initWithTabGroupProvider:(id)a3;
-- (id)_checkmarkAccessoryForTabGroup:(id)a3;
-- (id)_moreButtonAccessoryForTabGroup:(id)a3 inCell:(id)a4;
-- (id)_swipeActionsConfigurationForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (void)_enumerateTabGroupSectionsWithBlock:(id)a3;
+- (BOOL)_shouldShowCheckmarkForTabGroup:(id)group;
+- (TabGroupPickerViewController)initWithTabGroupProvider:(id)provider;
+- (id)_checkmarkAccessoryForTabGroup:(id)group;
+- (id)_moreButtonAccessoryForTabGroup:(id)group inCell:(id)cell;
+- (id)_swipeActionsConfigurationForIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (void)_enumerateTabGroupSectionsWithBlock:(id)block;
 - (void)_reloadData;
 - (void)_reloadDataIfNeeded;
 - (void)_removeDataUnrelatedToTabGroups;
 - (void)_updateTitle;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)doneButtonTapped;
 - (void)loadView;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)setNeedsReloadData;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TabGroupPickerViewController
 
-- (TabGroupPickerViewController)initWithTabGroupProvider:(id)a3
+- (TabGroupPickerViewController)initWithTabGroupProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = TabGroupPickerViewController;
   v5 = [(TabGroupPickerViewController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tabGroupProvider, v4);
-    [v4 registerTabGroupManagerObserver:v6];
+    objc_storeWeak(&v5->_tabGroupProvider, providerCopy);
+    [providerCopy registerTabGroupManagerObserver:v6];
     v7 = v6;
   }
 
@@ -51,8 +51,8 @@
   v3 = [objc_alloc(MEMORY[0x277D75290]) initWithAppearance:2];
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v3 setBackgroundColor:clearColor];
   }
 
   objc_initWeak(&location, self);
@@ -72,8 +72,8 @@
   objc_copyWeak(&v17, &location);
   v7 = [v5 initWithSectionProvider:&v12];
   v8 = objc_alloc(MEMORY[0x277D752A0]);
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v10 = [v8 initWithFrame:v7 collectionViewLayout:?];
   collectionView = self->_collectionView;
   self->_collectionView = v10;
@@ -163,12 +163,12 @@ id __40__TabGroupPickerViewController_loadView__block_invoke_2(uint64_t a1, uint
   v52.super_class = TabGroupPickerViewController;
   [(TabGroupPickerViewController *)&v52 viewDidLoad];
   [(TabGroupPickerViewController *)self _updateTitle];
-  v3 = [(TabGroupPickerViewController *)self editButtonItem];
-  [v3 setAccessibilityIdentifier:@"EditButton"];
+  editButtonItem = [(TabGroupPickerViewController *)self editButtonItem];
+  [editButtonItem setAccessibilityIdentifier:@"EditButton"];
 
-  v4 = [(TabGroupPickerViewController *)self editButtonItem];
-  v5 = [(TabGroupPickerViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  editButtonItem2 = [(TabGroupPickerViewController *)self editButtonItem];
+  navigationItem = [(TabGroupPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:editButtonItem2];
 
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_doneButtonTapped];
   doneButton = self->_doneButton;
@@ -176,8 +176,8 @@ id __40__TabGroupPickerViewController_loadView__block_invoke_2(uint64_t a1, uint
 
   [(UIBarButtonItem *)self->_doneButton setAccessibilityIdentifier:@"DoneButton"];
   v8 = self->_doneButton;
-  v9 = [(TabGroupPickerViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(TabGroupPickerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   objc_initWeak(&location, self);
   v10 = MEMORY[0x277D752B0];
@@ -575,11 +575,11 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = TabGroupPickerViewController;
-  [(TabGroupPickerViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(TabGroupPickerViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(TabGroupPickerViewController *)self _reloadData];
 }
 
@@ -591,11 +591,11 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
   [(TabGroupPickerViewController *)self _reloadDataIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = TabGroupPickerViewController;
-  [(TabGroupPickerViewController *)&v5 viewWillDisappear:a3];
+  [(TabGroupPickerViewController *)&v5 viewWillDisappear:disappear];
   willDisappear = self->_willDisappear;
   if (willDisappear)
   {
@@ -603,13 +603,13 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v10.receiver = self;
   v10.super_class = TabGroupPickerViewController;
-  [(TabGroupPickerViewController *)&v10 setEditing:a3 animated:a4];
-  if (v4)
+  [(TabGroupPickerViewController *)&v10 setEditing:editing animated:animated];
+  if (editingCopy)
   {
     doneButton = 0;
     v7 = @"DoneButton";
@@ -621,14 +621,14 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
     v7 = @"EditButton";
   }
 
-  v8 = [(TabGroupPickerViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:doneButton];
+  navigationItem = [(TabGroupPickerViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:doneButton];
 
-  v9 = [(TabGroupPickerViewController *)self editButtonItem];
-  [v9 setAccessibilityIdentifier:v7];
+  editButtonItem = [(TabGroupPickerViewController *)self editButtonItem];
+  [editButtonItem setAccessibilityIdentifier:v7];
 
-  [(UICollectionView *)self->_collectionView setEditing:v4];
-  if (v4)
+  [(UICollectionView *)self->_collectionView setEditing:editingCopy];
+  if (editingCopy)
   {
     [(TabGroupPickerViewController *)self _removeDataUnrelatedToTabGroups];
   }
@@ -641,22 +641,22 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
 
 - (void)_removeDataUnrelatedToTabGroups
 {
-  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  [v3 deleteSectionsWithIdentifiers:&unk_2827FC538];
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v3 animatingDifferences:1];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  [snapshot deleteSectionsWithIdentifiers:&unk_2827FC538];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:1];
 }
 
 - (void)doneButtonTapped
 {
-  v2 = [(TabGroupPickerViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(TabGroupPickerViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)setNeedsReloadData
 {
   self->_needsReloadData = !self->_isReordering;
-  v2 = [(TabGroupPickerViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(TabGroupPickerViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)_reloadDataIfNeeded
@@ -685,13 +685,13 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
       [(TabGroupPickerViewController *)self _updateTitle];
       [v4 appendSectionsWithIdentifiers:&unk_2827FC550];
       v5 = MEMORY[0x277CBEB18];
-      v6 = [WeakRetained unnamedTabGroup];
-      v7 = [v5 arrayWithObject:v6];
+      unnamedTabGroup = [WeakRetained unnamedTabGroup];
+      v7 = [v5 arrayWithObject:unnamedTabGroup];
 
-      v8 = [WeakRetained namedTabGroups];
-      [v7 addObjectsFromArray:v8];
+      namedTabGroups = [WeakRetained namedTabGroups];
+      [v7 addObjectsFromArray:namedTabGroups];
 
-      v9 = [WeakRetained privateTabGroupIfAvailable];
+      privateTabGroupIfAvailable = [WeakRetained privateTabGroupIfAvailable];
       if (!-[UICollectionView isEditing](self->_collectionView, "isEditing") && [WeakRetained hasMultipleProfiles])
       {
         v21[0] = @"Profile Switcher";
@@ -703,18 +703,18 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
         [v4 reconfigureItemsWithIdentifiers:v11];
       }
 
-      v12 = [WeakRetained hasMultipleProfiles];
+      hasMultipleProfiles = [WeakRetained hasMultipleProfiles];
       [v4 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&unk_2827FBF20];
-      if (v12)
+      if (hasMultipleProfiles)
       {
         [v4 reloadItemsWithIdentifiers:v7];
-        if (v9)
+        if (privateTabGroupIfAvailable)
         {
-          v19 = v9;
+          v19 = privateTabGroupIfAvailable;
           v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
           [v4 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:&unk_2827FBF68];
 
-          v18 = v9;
+          v18 = privateTabGroupIfAvailable;
           v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
           [v4 reloadItemsWithIdentifiers:v14];
         }
@@ -722,9 +722,9 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
 
       else
       {
-        if (v9)
+        if (privateTabGroupIfAvailable)
         {
-          v17 = v9;
+          v17 = privateTabGroupIfAvailable;
           v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
           [v4 appendItemsWithIdentifiers:v15 intoSectionWithIdentifier:&unk_2827FBF20];
         }
@@ -735,9 +735,9 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
       if (![(UICollectionView *)self->_collectionView isEditing])
       {
         [v4 appendItemsWithIdentifiers:&unk_2827FC568 intoSectionWithIdentifier:&unk_2827FBF38];
-        v16 = [WeakRetained moveLocalTabsToNewGroupTitle];
+        moveLocalTabsToNewGroupTitle = [WeakRetained moveLocalTabsToNewGroupTitle];
 
-        if (v16)
+        if (moveLocalTabsToNewGroupTitle)
         {
           [v4 appendItemsWithIdentifiers:&unk_2827FC580 intoSectionWithIdentifier:&unk_2827FBF38];
           [v4 reconfigureItemsWithIdentifiers:&unk_2827FC580];
@@ -749,9 +749,9 @@ void __43__TabGroupPickerViewController_viewDidLoad__block_invoke_7(uint64_t a1,
   }
 }
 
-- (void)_enumerateTabGroupSectionsWithBlock:(id)a3
+- (void)_enumerateTabGroupSectionsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   v13 = 1000;
   v6 = 1;
@@ -780,7 +780,7 @@ LABEL_6:
     v10 = [MEMORY[0x277CCAA70] indexPathForItem:v9 inSection:v5];
     v11 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v10];
     v15 = 0;
-    v4[2](v4, v11, v10, &v15);
+    blockCopy[2](blockCopy, v11, v10, &v15);
     v12 = v15;
 
     if (v12)
@@ -797,19 +797,19 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)_shouldShowCheckmarkForTabGroup:(id)a3
+- (BOOL)_shouldShowCheckmarkForTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-  v6 = [WeakRetained activeTabGroupOrTabGroupVisibleInSwitcher];
-  v7 = [v4 isEqual:v6];
+  activeTabGroupOrTabGroupVisibleInSwitcher = [WeakRetained activeTabGroupOrTabGroupVisibleInSwitcher];
+  v7 = [groupCopy isEqual:activeTabGroupOrTabGroupVisibleInSwitcher];
 
   return v7;
 }
 
-- (id)_checkmarkAccessoryForTabGroup:(id)a3
+- (id)_checkmarkAccessoryForTabGroup:(id)group
 {
-  if ([(TabGroupPickerViewController *)self _shouldShowCheckmarkForTabGroup:a3])
+  if ([(TabGroupPickerViewController *)self _shouldShowCheckmarkForTabGroup:group])
   {
     v3 = objc_alloc_init(MEMORY[0x277D75248]);
     [v3 setDisplayedState:2];
@@ -823,45 +823,45 @@ LABEL_7:
   return v3;
 }
 
-- (id)_moreButtonAccessoryForTabGroup:(id)a3 inCell:(id)a4
+- (id)_moreButtonAccessoryForTabGroup:(id)group inCell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isPrivateBrowsing] && (+[Application sharedApplication](Application, "sharedApplication"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isPrivateBrowsingLocked"), v8, (v9 & 1) != 0) || (objc_msgSend(v6, "isNamed") & 1) == 0 && !objc_msgSend(v6, "hasTextForPasteboard"))
+  groupCopy = group;
+  cellCopy = cell;
+  if ([groupCopy isPrivateBrowsing] && (+[Application sharedApplication](Application, "sharedApplication"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isPrivateBrowsingLocked"), v8, (v9 & 1) != 0) || (objc_msgSend(groupCopy, "isNamed") & 1) == 0 && !objc_msgSend(groupCopy, "hasTextForPasteboard"))
   {
     v22 = 0;
   }
 
   else
   {
-    v10 = [v7 moreButton];
+    moreButton = [cellCopy moreButton];
 
-    if (!v10)
+    if (!moreButton)
     {
-      v11 = [MEMORY[0x277D75230] plainButtonConfiguration];
-      v12 = [MEMORY[0x277D75348] clearColor];
-      v13 = [v11 background];
-      [v13 setBackgroundColor:v12];
+      plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      background = [plainButtonConfiguration background];
+      [background setBackgroundColor:clearColor];
 
       v14 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:2];
-      [v11 setPreferredSymbolConfigurationForImage:v14];
+      [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v14];
 
       v15 = [MEMORY[0x277D755B8] systemImageNamed:@"ellipsis.circle"];
-      [v11 setImage:v15];
+      [plainButtonConfiguration setImage:v15];
 
-      v16 = [MEMORY[0x277D75220] buttonWithConfiguration:v11 primaryAction:0];
+      v16 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
       [v16 setShowsMenuAsPrimaryAction:1];
-      [v7 setMoreButton:v16];
+      [cellCopy setMoreButton:v16];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-    v18 = [WeakRetained menuForTabGroup:v6 variant:2];
-    v19 = [v7 moreButton];
-    [v19 setMenu:v18];
+    v18 = [WeakRetained menuForTabGroup:groupCopy variant:2];
+    moreButton2 = [cellCopy moreButton];
+    [moreButton2 setMenu:v18];
 
     v20 = objc_alloc(MEMORY[0x277D75250]);
-    v21 = [v7 moreButton];
-    v22 = [v20 initWithCustomView:v21 placement:1];
+    moreButton3 = [cellCopy moreButton];
+    v22 = [v20 initWithCustomView:moreButton3 placement:1];
 
     [v22 setDisplayedState:1];
   }
@@ -869,17 +869,17 @@ LABEL_7:
   return v22;
 }
 
-- (id)_swipeActionsConfigurationForIndexPath:(id)a3
+- (id)_swipeActionsConfigurationForIndexPath:(id)path
 {
-  v4 = a3;
-  if ([v4 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v4];
+    v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
     if ([v6 isNamed])
     {
       WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
@@ -902,9 +902,9 @@ LABEL_7:
   {
     v3 = MEMORY[0x277CCACA8];
     v4 = _WBSLocalizedString();
-    v5 = [WeakRetained activeProfile];
-    v6 = [v5 title];
-    v7 = [v3 stringWithFormat:v4, v6];
+    activeProfile = [WeakRetained activeProfile];
+    title = [activeProfile title];
+    v7 = [v3 stringWithFormat:v4, title];
     [(TabGroupPickerViewController *)self setTitle:v7];
   }
 
@@ -915,13 +915,13 @@ LABEL_7:
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  v6 = a4;
-  if ([v6 section] <= 1)
+  pathCopy = path;
+  if ([pathCopy section] <= 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-    v9 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+    v9 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
     v7 = [WeakRetained contextMenuConfigurationForTabGroup:v9 variant:1];
   }
 
@@ -933,21 +933,21 @@ LABEL_7:
   return v7;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v7 = a6;
+  proposedIndexPathCopy = proposedIndexPath;
   WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-  v9 = [WeakRetained namedTabGroups];
-  v10 = [v9 count];
+  namedTabGroups = [WeakRetained namedTabGroups];
+  v10 = [namedTabGroups count];
 
-  if ([v7 section] <= 0 && objc_msgSend(v7, "row") <= 0)
+  if ([proposedIndexPathCopy section] <= 0 && objc_msgSend(proposedIndexPathCopy, "row") <= 0)
   {
     v11 = MEMORY[0x277CCAA70];
     v12 = 1;
     goto LABEL_6;
   }
 
-  if ([v7 section] > 0 || objc_msgSend(v7, "row") > v10)
+  if ([proposedIndexPathCopy section] > 0 || objc_msgSend(proposedIndexPathCopy, "row") > v10)
   {
     v11 = MEMORY[0x277CCAA70];
     v12 = v10;
@@ -956,51 +956,51 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = v7;
+  v13 = proposedIndexPathCopy;
 LABEL_7:
   v14 = v13;
 
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
-  v9 = [v7 section];
-  if (v9 >= 2)
+  section = [pathCopy section];
+  if (section >= 2)
   {
-    if (v9 == 2)
+    if (section == 2)
     {
-      v14 = [v7 row] == 1;
+      v14 = [pathCopy row] == 1;
       v15 = MEMORY[0x277D85DD0];
       v16 = 3221225472;
       v17 = __72__TabGroupPickerViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
       v18 = &unk_2781D7F90;
-      v19 = self;
-      v20 = v7;
+      selfCopy = self;
+      v20 = pathCopy;
       [WeakRetained createTabGroupFromExistingTabs:v14 completionHandler:&v15];
     }
   }
 
   else
   {
-    v10 = [(TabGroupPickerViewController *)self presentingViewController];
-    [v10 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(TabGroupPickerViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-    v11 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v7];
-    v12 = [MEMORY[0x277D499B8] sharedLogger];
-    [v12 didSwitchToTabGroupFromLocation:4];
+    v11 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didSwitchToTabGroupFromLocation:4];
 
     if (([WeakRetained scrollTabSwitcherToTabGroupIfShowing:v11] & 1) == 0)
     {
-      v13 = [v11 uuid];
-      [WeakRetained setActiveTabGroupUUID:v13];
+      uuid = [v11 uuid];
+      [WeakRetained setActiveTabGroupUUID:uuid];
     }
   }
 
-  [v6 deselectItemAtIndexPath:v7 animated:{1, v15, v16, v17, v18, v19}];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:{1, v15, v16, v17, v18, selfCopy}];
 }
 
 void __72__TabGroupPickerViewController_collectionView_didSelectItemAtIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -1017,18 +1017,18 @@ void __72__TabGroupPickerViewController_collectionView_didSelectItemAtIndexPath_
   [v5 didCreateTabGroupFromLocation:4 prepopulatedWithTabs:v4];
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  if ((-[TabGroupPickerViewController isEditing](self, "isEditing") & 1) != 0 || [v6 section])
+  pathCopy = path;
+  if ((-[TabGroupPickerViewController isEditing](self, "isEditing") & 1) != 0 || [pathCopy section])
   {
     v7 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v9 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+    v9 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
     if ([v9 isNamed])
     {
       v10 = [MEMORY[0x277D75470] _sf_itemWithTabGroup:v9];
@@ -1045,17 +1045,17 @@ void __72__TabGroupPickerViewController_collectionView_didSelectItemAtIndexPath_
   return v7;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v6 = a5;
-  if ([v6 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
+    v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
     if ([v8 isNamed])
     {
       v7 = 3;

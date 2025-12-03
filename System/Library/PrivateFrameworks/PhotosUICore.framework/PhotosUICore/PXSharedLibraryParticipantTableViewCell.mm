@@ -1,53 +1,53 @@
 @interface PXSharedLibraryParticipantTableViewCell
-- (PXSharedLibraryParticipantTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PXSharedLibraryParticipantTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateAddressLabel;
 - (void)_updateAvatarView;
 - (void)_updateLocalizedNameLabel;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXSharedLibraryParticipantTableViewCell
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXSharedLibraryParticipantTableCellModelObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSharedLibraryParticipantTableCellModelObservationContext == context)
   {
-    v9 = v8;
-    if (v6)
+    v9 = observableCopy;
+    if (changeCopy)
     {
       [(PXSharedLibraryParticipantTableViewCell *)self _updateAvatarView];
-      v8 = v9;
+      observableCopy = v9;
     }
 
-    if ((v6 & 0xC) != 0)
+    if ((changeCopy & 0xC) != 0)
     {
       [(PXSharedLibraryParticipantTableViewCell *)self _updateLocalizedNameLabel];
-      v8 = v9;
+      observableCopy = v9;
     }
 
-    if ((v6 & 8) != 0)
+    if ((changeCopy & 8) != 0)
     {
       [(PXSharedLibraryParticipantTableViewCell *)self _updateAddressLabel];
-      v8 = v9;
+      observableCopy = v9;
     }
   }
 }
 
 - (void)_updateAddressLabel
 {
-  v3 = [(PXSharedLibraryParticipantTableCellModel *)self->_cellModel address];
-  [(UILabel *)self->_addressLabel setText:v3];
+  address = [(PXSharedLibraryParticipantTableCellModel *)self->_cellModel address];
+  [(UILabel *)self->_addressLabel setText:address];
 
   [(PXSharedLibraryParticipantTableViewCell *)self setNeedsLayout];
 }
 
 - (void)_updateLocalizedNameLabel
 {
-  v3 = [(PXSharedLibraryParticipantTableCellModel *)self->_cellModel name];
-  [(UILabel *)self->_localizedNameLabel setText:v3];
+  name = [(PXSharedLibraryParticipantTableCellModel *)self->_cellModel name];
+  [(UILabel *)self->_localizedNameLabel setText:name];
 
   [(PXSharedLibraryParticipantTableViewCell *)self setNeedsLayout];
 }
@@ -60,16 +60,16 @@
     customAvatarImageView = self->_customAvatarImageView;
     self->_customAvatarImageView = v3;
 
-    v5 = [MEMORY[0x1E69DC888] lightGrayColor];
-    [(PXRoundImageView *)self->_customAvatarImageView setBackgroundColor:v5];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    [(PXRoundImageView *)self->_customAvatarImageView setBackgroundColor:lightGrayColor];
 
     [(PXRoundImageView *)self->_customAvatarImageView setAccessibilityIgnoresInvertColors:1];
-    v6 = [(PXSharedLibraryParticipantTableViewCell *)self contentView];
-    [v6 addSubview:self->_customAvatarImageView];
+    contentView = [(PXSharedLibraryParticipantTableViewCell *)self contentView];
+    [contentView addSubview:self->_customAvatarImageView];
   }
 
-  v7 = [(PXSharedLibraryParticipantTableCellModel *)self->_cellModel image];
-  [(PXRoundImageView *)self->_customAvatarImageView setImage:v7];
+  image = [(PXSharedLibraryParticipantTableCellModel *)self->_cellModel image];
+  [(PXRoundImageView *)self->_customAvatarImageView setImage:image];
 
   [(PXSharedLibraryParticipantTableViewCell *)self setNeedsLayout];
 }
@@ -79,8 +79,8 @@
   v52.receiver = self;
   v52.super_class = PXSharedLibraryParticipantTableViewCell;
   [(PXSharedLibraryParticipantTableViewCell *)&v52 layoutSubviews];
-  v3 = [(PXSharedLibraryParticipantTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PXSharedLibraryParticipantTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -119,8 +119,8 @@
     v55.size.width = width;
     v55.size.height = width;
     v26 = CGRectGetMinX(v55) - v15;
-    v27 = [(PXSharedLibraryParticipantTableViewCell *)self contentView];
-    [v27 frame];
+    contentView2 = [(PXSharedLibraryParticipantTableViewCell *)self contentView];
+    [contentView2 frame];
     v29 = v26 - v28;
 
     height = width;
@@ -144,11 +144,11 @@
   }
 
   [(PXRoundImageView *)self->_customAvatarImageView setFrame:x, y, width, height];
-  v32 = [(UILabel *)*p_localizedNameLabel text];
-  v33 = [v32 length];
+  text = [(UILabel *)*p_localizedNameLabel text];
+  v33 = [text length];
 
-  v34 = [(UILabel *)*p_addressLabel text];
-  v35 = [v34 length] != 0;
+  text2 = [(UILabel *)*p_addressLabel text];
+  v35 = [text2 length] != 0;
 
   v36 = fmin(v51, v29);
   v37 = fmin(v50, v29);
@@ -200,11 +200,11 @@ LABEL_15:
   [(UILabel *)*p_localizedNameLabel setFrame:v38, MaxY, v36, v42];
 }
 
-- (PXSharedLibraryParticipantTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PXSharedLibraryParticipantTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = PXSharedLibraryParticipantTableViewCell;
-  v4 = [(PXSharedLibraryParticipantTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PXSharedLibraryParticipantTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(PXSharedLibraryParticipantTableCellModel);

@@ -2,61 +2,61 @@
 + (id)sharedScreenshotManager;
 + (void)_createTemporarySavingQueue;
 - (BOOL)_areAnyScreenshotsActive;
-- (BOOL)_screenshotIsBeingRemoved:(id)a3;
-- (BOOL)_screenshotIsBeingSaved:(id)a3;
-- (BOOL)_screenshotIsGoingAway:(id)a3;
-- (BOOL)processEnvironmentElementMetadataUpdate:(id)a3;
-- (BOOL)shouldCaptureDocumentForMetadataUpdate:(id)a3;
+- (BOOL)_screenshotIsBeingRemoved:(id)removed;
+- (BOOL)_screenshotIsBeingSaved:(id)saved;
+- (BOOL)_screenshotIsGoingAway:(id)away;
+- (BOOL)processEnvironmentElementMetadataUpdate:(id)update;
+- (BOOL)shouldCaptureDocumentForMetadataUpdate:(id)update;
 - (NSArray)environmentDescriptionIdentifiersBeingTracked;
 - (SSSScreenshotManager)init;
-- (id)_screenshotWithEnvironmentDescriptionIdentifier:(id)a3;
-- (id)_screenshotWithEnvironmentElementWithIdentifier:(id)a3;
-- (id)createScreenshotWithEnvironmentDescription:(id)a3;
+- (id)_screenshotWithEnvironmentDescriptionIdentifier:(id)identifier;
+- (id)_screenshotWithEnvironmentElementWithIdentifier:(id)identifier;
+- (id)createScreenshotWithEnvironmentDescription:(id)description;
 - (id)description;
-- (void)_reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:(id)a3;
+- (void)_reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:(id)identifier;
 - (void)_trackingChanged;
-- (void)addImageIdentifierUpdateObserver:(id)a3;
-- (void)beginVIAnalysisForEnvironmentDescription:(id)a3;
+- (void)addImageIdentifierUpdateObserver:(id)observer;
+- (void)beginVIAnalysisForEnvironmentDescription:(id)description;
 - (void)dealloc;
-- (void)performIfNoScreenshotsAreActive:(id)a3;
-- (void)processEnvironmentElementDocumentUpdate:(id)a3;
-- (void)processImageIdentifierUpdate:(id)a3;
-- (void)removeScreenshot:(id)a3 deleteOptions:(unint64_t)a4;
-- (void)removeTemporaryScreenshotLocation:(id)a3 deleteOptions:(unint64_t)a4;
-- (void)saveEditsToScreenshotIfNecessary:(id)a3 inTransition:(BOOL)a4;
-- (void)saveScreenshotsToTemporaryLocation:(id)a3 completion:(id)a4;
-- (void)screenshotEnteredDragSession:(id)a3;
-- (void)screenshotLeftDragSession:(id)a3;
-- (void)userInterfaceBecameInterestedInScreenshot:(id)a3;
-- (void)userInterfaceStoppedBeingInterestedInScreenshot:(id)a3;
-- (void)userInterfaceWillStopBeingInterestedInScreenshot:(id)a3;
+- (void)performIfNoScreenshotsAreActive:(id)active;
+- (void)processEnvironmentElementDocumentUpdate:(id)update;
+- (void)processImageIdentifierUpdate:(id)update;
+- (void)removeScreenshot:(id)screenshot deleteOptions:(unint64_t)options;
+- (void)removeTemporaryScreenshotLocation:(id)location deleteOptions:(unint64_t)options;
+- (void)saveEditsToScreenshotIfNecessary:(id)necessary inTransition:(BOOL)transition;
+- (void)saveScreenshotsToTemporaryLocation:(id)location completion:(id)completion;
+- (void)screenshotEnteredDragSession:(id)session;
+- (void)screenshotLeftDragSession:(id)session;
+- (void)userInterfaceBecameInterestedInScreenshot:(id)screenshot;
+- (void)userInterfaceStoppedBeingInterestedInScreenshot:(id)screenshot;
+- (void)userInterfaceWillStopBeingInterestedInScreenshot:(id)screenshot;
 @end
 
 @implementation SSSScreenshotManager
 
-- (id)createScreenshotWithEnvironmentDescription:(id)a3
+- (id)createScreenshotWithEnvironmentDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [(NSMutableArray *)self->_screenshots count];
   if (!v5)
   {
     +[VKCImageAnalyzer prewarmSoftLinkingIfNecessary];
     if (_SSVisualIntelligenceV2Enabled())
     {
-      [(SSSScreenshotManager *)self beginVIAnalysisForEnvironmentDescription:v4];
+      [(SSSScreenshotManager *)self beginVIAnalysisForEnvironmentDescription:descriptionCopy];
     }
   }
 
-  v6 = [[SSSScreenshot alloc] initWithEnvironmentDescription:v4];
+  v6 = [[SSSScreenshot alloc] initWithEnvironmentDescription:descriptionCopy];
   [(SSSScreenshot *)v6 setIsInitialScreenshot:v5 == 0];
   [(NSMutableArray *)self->_screenshots addObject:v6];
 
   return v6;
 }
 
-- (void)beginVIAnalysisForEnvironmentDescription:(id)a3
+- (void)beginVIAnalysisForEnvironmentDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = _SSSignpostLog();
   if (os_signpost_enabled(v4))
   {
@@ -78,10 +78,10 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Beginning Environment VI Analysis", buf, 2u);
   }
 
-  v7 = [v3 imageSurface];
-  v8 = [v7 backingSurface];
+  imageSurface = [descriptionCopy imageSurface];
+  backingSurface = [imageSurface backingSurface];
   *buf = 0;
-  CVPixelBufferCreateWithIOSurface(0, v8, 0, buf);
+  CVPixelBufferCreateWithIOSurface(0, backingSurface, 0, buf);
   if (*buf)
   {
     v9 = objc_alloc_init(VKCImageAnalyzer);
@@ -92,15 +92,15 @@
     v13 = [NSNumber numberWithBool:_SSVisualLookUpInScreenshotsEnabled()];
     [v12 setIsScreenshotsVLUAuthorized:v13];
 
-    v14 = [v3 currentApplicationBundleID];
-    [v12 setEnvironmentBundleIdentifier:v14];
+    currentApplicationBundleID = [descriptionCopy currentApplicationBundleID];
+    [v12 setEnvironmentBundleIdentifier:currentApplicationBundleID];
 
     [v11 setViConfiguration:v12];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100013170;
     v16[3] = &unk_1000BA3C0;
-    v17 = v3;
+    v17 = descriptionCopy;
     v18 = v9;
     v15 = v9;
     [v15 processRequest:v11 progressHandler:0 completionHandler:v16];
@@ -116,9 +116,9 @@
   }
 }
 
-- (id)_screenshotWithEnvironmentDescriptionIdentifier:(id)a3
+- (id)_screenshotWithEnvironmentDescriptionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -138,9 +138,9 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 environmentDescription];
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        environmentDescription = [v9 environmentDescription];
+        identifier = [environmentDescription identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -164,9 +164,9 @@ LABEL_11:
   return v6;
 }
 
-- (id)_screenshotWithEnvironmentElementWithIdentifier:(id)a3
+- (id)_screenshotWithEnvironmentElementWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -188,13 +188,13 @@ LABEL_11:
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        v9 = [v8 environmentDescription];
+        environmentDescription = [v8 environmentDescription];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v9 elements];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        elements = [environmentDescription elements];
+        v11 = [elements countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v11)
         {
           v12 = v11;
@@ -205,11 +205,11 @@ LABEL_11:
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(elements);
               }
 
-              v15 = [*(*(&v22 + 1) + 8 * j) identifier];
-              v16 = [v15 isEqualToString:v4];
+              identifier = [*(*(&v22 + 1) + 8 * j) identifier];
+              v16 = [identifier isEqualToString:identifierCopy];
 
               if (v16)
               {
@@ -220,7 +220,7 @@ LABEL_11:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v12 = [elements countByEnumeratingWithState:&v22 objects:v30 count:16];
             if (v12)
             {
               continue;
@@ -251,27 +251,27 @@ LABEL_19:
   return v17;
 }
 
-- (void)processImageIdentifierUpdate:(id)a3
+- (void)processImageIdentifierUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 environmentDescriptionIdentifier];
-  v6 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentDescriptionIdentifier:v5];
+  updateCopy = update;
+  environmentDescriptionIdentifier = [updateCopy environmentDescriptionIdentifier];
+  v6 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentDescriptionIdentifier:environmentDescriptionIdentifier];
 
   if (v6)
   {
-    if ([v4 success])
+    if ([updateCopy success])
     {
-      v7 = [v4 imageIdentifier];
-      v8 = [v6 imageProvider];
-      [v8 processImageIdentifier:v7];
+      imageIdentifier = [updateCopy imageIdentifier];
+      imageProvider = [v6 imageProvider];
+      [imageProvider processImageIdentifier:imageIdentifier];
     }
 
     else
     {
-      v7 = os_log_create("com.apple.screenshotservices", "XPC");
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      imageIdentifier = os_log_create("com.apple.screenshotservices", "XPC");
+      if (os_log_type_enabled(imageIdentifier, OS_LOG_TYPE_ERROR))
       {
-        sub_1000740D4(v4);
+        sub_1000740D4(updateCopy);
       }
     }
 
@@ -312,15 +312,15 @@ LABEL_19:
     v9 = os_log_create("com.apple.screenshotservices", "XPC");
     if (os_log_type_enabled(&v9->super.super, OS_LOG_TYPE_ERROR))
     {
-      sub_100074158(v4);
+      sub_100074158(updateCopy);
     }
   }
 }
 
-- (BOOL)shouldCaptureDocumentForMetadataUpdate:(id)a3
+- (BOOL)shouldCaptureDocumentForMetadataUpdate:(id)update
 {
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
     v5 = +[NSMutableArray array];
     v21 = 0u;
@@ -355,24 +355,24 @@ LABEL_19:
       while (v8);
     }
 
-    v12 = [v4 environmentElementIdentifier];
-    v13 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentElementWithIdentifier:v12];
+    environmentElementIdentifier = [updateCopy environmentElementIdentifier];
+    v13 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentElementWithIdentifier:environmentElementIdentifier];
 
     v14 = [(SSSScreenshotManager *)self _screenshotIsBeingRemoved:v13];
     v15 = [v5 indexOfObject:v13];
-    v16 = [v4 metadata];
-    if (v16)
+    metadata = [updateCopy metadata];
+    if (metadata)
     {
-      v17 = [v4 metadata];
-      v18 = [v17 canGenerateDocument];
+      metadata2 = [updateCopy metadata];
+      canGenerateDocument = [metadata2 canGenerateDocument];
     }
 
     else
     {
-      v18 = 0;
+      canGenerateDocument = 0;
     }
 
-    v19 = (v15 == 0) & (v14 ^ 1) & v18;
+    v19 = (v15 == 0) & (v14 ^ 1) & canGenerateDocument;
   }
 
   else
@@ -383,11 +383,11 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)processEnvironmentElementMetadataUpdate:(id)a3
+- (BOOL)processEnvironmentElementMetadataUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 environmentElementIdentifier];
-  v6 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentElementWithIdentifier:v5];
+  updateCopy = update;
+  environmentElementIdentifier = [updateCopy environmentElementIdentifier];
+  v6 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentElementWithIdentifier:environmentElementIdentifier];
 
   if (v6)
   {
@@ -395,13 +395,13 @@ LABEL_19:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v6 environmentDescription];
-    v8 = [v7 elements];
+    environmentDescription = [v6 environmentDescription];
+    elements = [environmentDescription elements];
 
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v9 = [elements countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v9)
     {
-      v20 = self;
+      selfCopy = self;
       v10 = *v22;
       while (2)
       {
@@ -409,32 +409,32 @@ LABEL_19:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(elements);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v4 environmentElementIdentifier];
-          v15 = [v13 isEqualToString:v14];
+          identifier = [v12 identifier];
+          environmentElementIdentifier2 = [updateCopy environmentElementIdentifier];
+          v15 = [identifier isEqualToString:environmentElementIdentifier2];
 
           if (v15)
           {
-            v16 = [v4 metadata];
-            [v12 setMetadata:v16];
+            metadata = [updateCopy metadata];
+            [v12 setMetadata:metadata];
 
-            v9 = [(SSSScreenshotManager *)v20 shouldCaptureDocumentForMetadataUpdate:v4];
+            v9 = [(SSSScreenshotManager *)selfCopy shouldCaptureDocumentForMetadataUpdate:updateCopy];
             [v6 setIsPDFRequested:v9];
             v25 = @"screenshot";
             v26 = v6;
             v17 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
             v18 = +[NSNotificationCenter defaultCenter];
-            [v18 postNotificationName:@"SSSScreenshotManagerDidProcessMetadataUpdate" object:v20 userInfo:v17];
+            [v18 postNotificationName:@"SSSScreenshotManagerDidProcessMetadataUpdate" object:selfCopy userInfo:v17];
 
             goto LABEL_15;
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v9 = [elements countByEnumeratingWithState:&v21 objects:v27 count:16];
         if (v9)
         {
           continue;
@@ -450,22 +450,22 @@ LABEL_19:
     v17 = os_log_create("com.apple.screenshotservices", "XPC");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_1000741DC(v4);
+      sub_1000741DC(updateCopy);
     }
 
     LOBYTE(v9) = 0;
-    v8 = v17;
+    elements = v17;
 LABEL_15:
   }
 
   return v9;
 }
 
-- (void)processEnvironmentElementDocumentUpdate:(id)a3
+- (void)processEnvironmentElementDocumentUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 environmentElementIdentifier];
-  v6 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentElementWithIdentifier:v5];
+  updateCopy = update;
+  environmentElementIdentifier = [updateCopy environmentElementIdentifier];
+  v6 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentElementWithIdentifier:environmentElementIdentifier];
 
   if (v6)
   {
@@ -473,14 +473,14 @@ LABEL_15:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v6 environmentDescription];
-    v8 = [v7 elements];
+    environmentDescription = [v6 environmentDescription];
+    elements = [environmentDescription elements];
 
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    v9 = [elements countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
-      v20 = self;
+      selfCopy = self;
       v11 = *v22;
       while (2)
       {
@@ -488,31 +488,31 @@ LABEL_15:
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(elements);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 identifier];
-          v15 = [v4 environmentElementIdentifier];
-          v16 = [v14 isEqualToString:v15];
+          identifier = [v13 identifier];
+          environmentElementIdentifier2 = [updateCopy environmentElementIdentifier];
+          v16 = [identifier isEqualToString:environmentElementIdentifier2];
 
           if (v16)
           {
-            v17 = [v4 document];
-            [v13 setDocument:v17];
+            document = [updateCopy document];
+            [v13 setDocument:document];
 
             [v6 _harvestPDFIfNecessary];
             v25 = @"screenshot";
             v26 = v6;
             v18 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
             v19 = +[NSNotificationCenter defaultCenter];
-            [v19 postNotificationName:@"SSSScreenshotManagerDidProcessDocumentUpdate" object:v20 userInfo:v18];
+            [v19 postNotificationName:@"SSSScreenshotManagerDidProcessDocumentUpdate" object:selfCopy userInfo:v18];
 
             goto LABEL_15;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v10 = [elements countByEnumeratingWithState:&v21 objects:v27 count:16];
         if (v10)
         {
           continue;
@@ -528,18 +528,18 @@ LABEL_15:
     v18 = os_log_create("com.apple.screenshotservices", "XPC");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_100074260(v4);
+      sub_100074260(updateCopy);
     }
 
-    v8 = v18;
+    elements = v18;
 LABEL_15:
   }
 }
 
-- (void)addImageIdentifierUpdateObserver:(id)a3
+- (void)addImageIdentifierUpdateObserver:(id)observer
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_imageIdentifierUpdateObservers addObject:v4];
+  observerCopy = observer;
+  [(NSMutableArray *)self->_imageIdentifierUpdateObservers addObject:observerCopy];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -560,11 +560,11 @@ LABEL_15:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 identifier];
+        identifier = [v10 identifier];
 
-        if (v11)
+        if (identifier)
         {
-          [v4 screenshotReceivedImageIdentifierUpdate:v10];
+          [observerCopy screenshotReceivedImageIdentifierUpdate:v10];
         }
       }
 
@@ -575,35 +575,35 @@ LABEL_15:
   }
 }
 
-- (void)saveEditsToScreenshotIfNecessary:(id)a3 inTransition:(BOOL)a4
+- (void)saveEditsToScreenshotIfNecessary:(id)necessary inTransition:(BOOL)transition
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 hasUnsavedImageEdits])
+  transitionCopy = transition;
+  necessaryCopy = necessary;
+  if ([necessaryCopy hasUnsavedImageEdits])
   {
     v7 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 environmentDescription];
-      v9 = [v8 loggableDescription];
+      environmentDescription = [necessaryCopy environmentDescription];
+      loggableDescription = [environmentDescription loggableDescription];
       *buf = 138412290;
-      v32 = v9;
+      v32 = loggableDescription;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Saving edits to screenshot image with environment description %@", buf, 0xCu);
     }
 
     v10 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 loggableDescription];
+      loggableDescription2 = [necessaryCopy loggableDescription];
       *buf = 138412290;
-      v32 = v11;
+      v32 = loggableDescription2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Screenshot edits saved: %@", buf, 0xCu);
     }
 
     environmentDescriptionIdentifiersBeingSaved = self->_environmentDescriptionIdentifiersBeingSaved;
-    v13 = [v6 environmentDescription];
-    v14 = [v13 identifier];
-    [(NSMutableArray *)environmentDescriptionIdentifiersBeingSaved addObject:v14];
+    environmentDescription2 = [necessaryCopy environmentDescription];
+    identifier = [environmentDescription2 identifier];
+    [(NSMutableArray *)environmentDescriptionIdentifiersBeingSaved addObject:identifier];
 
     [(SSSScreenshotManager *)self _trackingChanged];
     v15 = +[SSScreenshotAssetManager sharedAssetManager];
@@ -611,39 +611,39 @@ LABEL_15:
     v28[1] = 3221225472;
     v28[2] = sub_1000143B8;
     v28[3] = &unk_1000BA3E8;
-    v29 = v6;
-    v30 = self;
-    [v15 recordEditsToPersistable:v29 inTransition:v4 withCompletionBlock:v28];
+    v29 = necessaryCopy;
+    selfCopy = self;
+    [v15 recordEditsToPersistable:v29 inTransition:transitionCopy withCompletionBlock:v28];
   }
 
-  if ([v6 hasUnsavedPDFEdits])
+  if ([necessaryCopy hasUnsavedPDFEdits])
   {
-    v16 = [v6 pdfData];
-    if (!v16 || ![v6 canAutosaveToFiles])
+    pdfData = [necessaryCopy pdfData];
+    if (!pdfData || ![necessaryCopy canAutosaveToFiles])
     {
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v17 = [v6 isSavingForMode:1];
+    v17 = [necessaryCopy isSavingForMode:1];
 
     if ((v17 & 1) == 0)
     {
       v18 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v6 environmentDescription];
-        v20 = [v19 loggableDescription];
+        environmentDescription3 = [necessaryCopy environmentDescription];
+        loggableDescription3 = [environmentDescription3 loggableDescription];
         *buf = 138412290;
-        v32 = v20;
+        v32 = loggableDescription3;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Saving edits to screenshot pdf with environment description %@", buf, 0xCu);
       }
 
       v21 = self->_environmentDescriptionIdentifiersBeingSaved;
-      v22 = [v6 environmentDescription];
-      v23 = [v22 identifier];
-      [(NSMutableArray *)v21 addObject:v23];
+      environmentDescription4 = [necessaryCopy environmentDescription];
+      identifier2 = [environmentDescription4 identifier];
+      [(NSMutableArray *)v21 addObject:identifier2];
 
       [(SSSScreenshotManager *)self _trackingChanged];
       v24 = +[SSScreenshotAssetManager sharedAssetManager];
@@ -651,11 +651,11 @@ LABEL_14:
       v25[1] = 3221225472;
       v25[2] = sub_100014614;
       v25[3] = &unk_1000BA3E8;
-      v26 = v6;
-      v27 = self;
+      v26 = necessaryCopy;
+      selfCopy2 = self;
       [v24 recordEditsToPersistableForPDF:v26 withCompletionBlock:v25];
 
-      v16 = v26;
+      pdfData = v26;
       goto LABEL_14;
     }
   }
@@ -663,12 +663,12 @@ LABEL_14:
 LABEL_15:
 }
 
-- (BOOL)_screenshotIsBeingSaved:(id)a3
+- (BOOL)_screenshotIsBeingSaved:(id)saved
 {
   environmentDescriptionIdentifiersBeingSaved = self->_environmentDescriptionIdentifiersBeingSaved;
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
-  LOBYTE(environmentDescriptionIdentifiersBeingSaved) = [(NSMutableArray *)environmentDescriptionIdentifiersBeingSaved containsObject:v5];
+  environmentDescription = [saved environmentDescription];
+  identifier = [environmentDescription identifier];
+  LOBYTE(environmentDescriptionIdentifiersBeingSaved) = [(NSMutableArray *)environmentDescriptionIdentifiersBeingSaved containsObject:identifier];
 
   return environmentDescriptionIdentifiersBeingSaved;
 }
@@ -681,61 +681,61 @@ LABEL_15:
   }
 }
 
-- (void)saveScreenshotsToTemporaryLocation:(id)a3 completion:(id)a4
+- (void)saveScreenshotsToTemporaryLocation:(id)location completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  locationCopy = location;
+  completionCopy = completion;
   [objc_opt_class() _createTemporarySavingQueue];
   v7 = qword_1000D49F0;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100014A14;
   v10[3] = &unk_1000BA0F8;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = locationCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = locationCopy;
   dispatch_async(v7, v10);
 }
 
-- (void)removeScreenshot:(id)a3 deleteOptions:(unint64_t)a4
+- (void)removeScreenshot:(id)screenshot deleteOptions:(unint64_t)options
 {
-  v6 = a3;
-  if (([(NSMutableArray *)self->_screenshots containsObject:v6]& 1) == 0)
+  screenshotCopy = screenshot;
+  if (([(NSMutableArray *)self->_screenshots containsObject:screenshotCopy]& 1) == 0)
   {
     v7 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100074398(v6);
+      sub_100074398(screenshotCopy);
     }
   }
 
-  v8 = [v6 environmentDescription];
-  v9 = [v8 identifier];
+  environmentDescription = [screenshotCopy environmentDescription];
+  identifier = [environmentDescription identifier];
 
-  [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved addObject:v9];
+  [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved addObject:identifier];
   [(SSSScreenshotManager *)self _trackingChanged];
   v10 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 environmentDescription];
-    v12 = [v11 loggableDescription];
+    environmentDescription2 = [screenshotCopy environmentDescription];
+    loggableDescription = [environmentDescription2 loggableDescription];
     *buf = 134218242;
-    v39 = v6;
+    v39 = screenshotCopy;
     v40 = 2112;
-    v41 = v12;
+    v41 = loggableDescription;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing screenshot: %p, with environment description %@", buf, 0x16u);
   }
 
-  [v6 setIsDeleted:1];
+  [screenshotCopy setIsDeleted:1];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_100015414;
   v35[3] = &unk_1000BA4D0;
   v35[4] = self;
-  v13 = v9;
+  v13 = identifier;
   v36 = v13;
-  v14 = v6;
+  v14 = screenshotCopy;
   v37 = v14;
   v15 = objc_retainBlock(v35);
   v16 = dispatch_time(0, 2000000000);
@@ -751,72 +751,72 @@ LABEL_15:
   v34 = v18;
   v19 = v13;
   dispatch_after(v16, &_dispatch_main_q, block);
-  v20 = [v17 imageProvider];
+  imageProvider = [v17 imageProvider];
   v21 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v39 = v20;
+    v39 = imageProvider;
     v40 = 2048;
     v41 = v17;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Retain image provider: %p, for screenshot: %p", buf, 0x16u);
   }
 
-  [(NSMutableSet *)self->_imageProvidersPerformingDeletion addObject:v20];
+  [(NSMutableSet *)self->_imageProvidersPerformingDeletion addObject:imageProvider];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100015694;
   v25[3] = &unk_1000BA570;
   v29 = v18;
-  v30 = a4;
+  optionsCopy = options;
   v26 = v17;
-  v27 = v20;
-  v28 = self;
-  v22 = v20;
+  v27 = imageProvider;
+  selfCopy = self;
+  v22 = imageProvider;
   v23 = v18;
   v24 = v17;
   [v22 scheduleDeletionBlock:v25];
 }
 
-- (void)removeTemporaryScreenshotLocation:(id)a3 deleteOptions:(unint64_t)a4
+- (void)removeTemporaryScreenshotLocation:(id)location deleteOptions:(unint64_t)options
 {
-  v6 = a3;
-  if (([(NSMutableArray *)self->_screenshots containsObject:v6]& 1) == 0)
+  locationCopy = location;
+  if (([(NSMutableArray *)self->_screenshots containsObject:locationCopy]& 1) == 0)
   {
     v7 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100074398(v6);
+      sub_100074398(locationCopy);
     }
   }
 
-  v8 = [v6 imageProvider];
+  imageProvider = [locationCopy imageProvider];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100015B18;
   v10[3] = &unk_1000BA1B8;
-  v11 = v6;
-  v12 = a4;
-  v9 = v6;
-  [v8 scheduleDeletionBlock:v10];
+  v11 = locationCopy;
+  optionsCopy = options;
+  v9 = locationCopy;
+  [imageProvider scheduleDeletionBlock:v10];
 }
 
-- (BOOL)_screenshotIsGoingAway:(id)a3
+- (BOOL)_screenshotIsGoingAway:(id)away
 {
   environmentDescriptionIdentifiersGoingAway = self->_environmentDescriptionIdentifiersGoingAway;
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
-  LOBYTE(environmentDescriptionIdentifiersGoingAway) = [(NSMutableArray *)environmentDescriptionIdentifiersGoingAway containsObject:v5];
+  environmentDescription = [away environmentDescription];
+  identifier = [environmentDescription identifier];
+  LOBYTE(environmentDescriptionIdentifiersGoingAway) = [(NSMutableArray *)environmentDescriptionIdentifiersGoingAway containsObject:identifier];
 
   return environmentDescriptionIdentifiersGoingAway;
 }
 
-- (BOOL)_screenshotIsBeingRemoved:(id)a3
+- (BOOL)_screenshotIsBeingRemoved:(id)removed
 {
   environmentDescriptionIdentifiersBeingRemoved = self->_environmentDescriptionIdentifiersBeingRemoved;
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
-  LOBYTE(environmentDescriptionIdentifiersBeingRemoved) = [(NSMutableArray *)environmentDescriptionIdentifiersBeingRemoved containsObject:v5];
+  environmentDescription = [removed environmentDescription];
+  identifier = [environmentDescription identifier];
+  LOBYTE(environmentDescriptionIdentifiersBeingRemoved) = [(NSMutableArray *)environmentDescriptionIdentifiersBeingRemoved containsObject:identifier];
 
   return environmentDescriptionIdentifiersBeingRemoved;
 }
@@ -858,73 +858,73 @@ LABEL_15:
   return v3 > 0;
 }
 
-- (void)userInterfaceBecameInterestedInScreenshot:(id)a3
+- (void)userInterfaceBecameInterestedInScreenshot:(id)screenshot
 {
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
+  environmentDescription = [screenshot environmentDescription];
+  identifier = [environmentDescription identifier];
 
-  [(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn addObject:v5];
+  [(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn addObject:identifier];
   [(SSSScreenshotManager *)self _trackingChanged];
 }
 
-- (void)userInterfaceWillStopBeingInterestedInScreenshot:(id)a3
+- (void)userInterfaceWillStopBeingInterestedInScreenshot:(id)screenshot
 {
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
+  environmentDescription = [screenshot environmentDescription];
+  identifier = [environmentDescription identifier];
 
-  [(NSMutableArray *)self->_environmentDescriptionIdentifiersGoingAway addObject:v5];
+  [(NSMutableArray *)self->_environmentDescriptionIdentifiersGoingAway addObject:identifier];
 }
 
-- (void)userInterfaceStoppedBeingInterestedInScreenshot:(id)a3
+- (void)userInterfaceStoppedBeingInterestedInScreenshot:(id)screenshot
 {
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
+  environmentDescription = [screenshot environmentDescription];
+  identifier = [environmentDescription identifier];
 
-  [(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn removeObject:v5];
-  [(SSSScreenshotManager *)self _reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:v5];
+  [(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn removeObject:identifier];
+  [(SSSScreenshotManager *)self _reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:identifier];
 }
 
-- (void)screenshotEnteredDragSession:(id)a3
+- (void)screenshotEnteredDragSession:(id)session
 {
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
+  environmentDescription = [session environmentDescription];
+  identifier = [environmentDescription identifier];
 
-  [(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession addObject:v5];
+  [(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession addObject:identifier];
   [(SSSScreenshotManager *)self _trackingChanged];
 }
 
-- (void)screenshotLeftDragSession:(id)a3
+- (void)screenshotLeftDragSession:(id)session
 {
-  v4 = [a3 environmentDescription];
-  v5 = [v4 identifier];
+  environmentDescription = [session environmentDescription];
+  identifier = [environmentDescription identifier];
 
-  [(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession removeObject:v5];
-  [(SSSScreenshotManager *)self _reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:v5];
+  [(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession removeObject:identifier];
+  [(SSSScreenshotManager *)self _reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:identifier];
 }
 
-- (void)performIfNoScreenshotsAreActive:(id)a3
+- (void)performIfNoScreenshotsAreActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   if (![(SSSScreenshotManager *)self _areAnyScreenshotsActive])
   {
-    v4[2]();
+    activeCopy[2]();
   }
 }
 
-- (void)_reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:(id)a3
+- (void)_reevaluateTrackingForScreenshotWithEnvironmentDescriptionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentDescriptionIdentifier:v4];
-  v6 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn containsObject:v4];
-  v7 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession containsObject:v4];
-  v8 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingSaved containsObject:v4];
-  v9 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved containsObject:v4];
+  identifierCopy = identifier;
+  v5 = [(SSSScreenshotManager *)self _screenshotWithEnvironmentDescriptionIdentifier:identifierCopy];
+  v6 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn containsObject:identifierCopy];
+  v7 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession containsObject:identifierCopy];
+  v8 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingSaved containsObject:identifierCopy];
+  v9 = [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved containsObject:identifierCopy];
   v10 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 loggableDescription];
+    loggableDescription = [v5 loggableDescription];
     v18 = 138413314;
-    v19 = v11;
+    v19 = loggableDescription;
     v20 = 1024;
     *v21 = v6;
     *&v21[4] = 1024;
@@ -936,24 +936,24 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Revaluate tracking screenshot with environment description %@, hasEnvironmentDescriptionIdentifiersUIIsInterestedIn: %{BOOL}d, hasEnvironmentDescriptionIdentifiersInActiveDragSession: %{BOOL}d, hasEnvironmentDescriptionIdentifiersBeingSaved: %{BOOL}d, hasEnvironmentDescriptionIdentifiersBeingRemoved: %{BOOL}d", &v18, 0x24u);
   }
 
-  if (([(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn containsObject:v4]& 1) == 0 && ([(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession containsObject:v4]& 1) == 0 && ([(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingSaved containsObject:v4]& 1) == 0 && ([(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved containsObject:v4]& 1) == 0)
+  if (([(NSMutableArray *)self->_environmentDescriptionIdentifiersUIIsInterestedIn containsObject:identifierCopy]& 1) == 0 && ([(NSMutableArray *)self->_environmentDescriptionIdentifiersInActiveDragSession containsObject:identifierCopy]& 1) == 0 && ([(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingSaved containsObject:identifierCopy]& 1) == 0 && ([(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved containsObject:identifierCopy]& 1) == 0)
   {
     v12 = os_log_create("com.apple.screenshotservices", "ScreenshotManager");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v5 loggableDescription];
+      loggableDescription2 = [v5 loggableDescription];
       v14 = [(NSMutableArray *)self->_screenshots count];
       v18 = 138412546;
-      v19 = v13;
+      v19 = loggableDescription2;
       v20 = 2048;
       *v21 = v14;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Stop tracking screenshot with environment description %@, screenshots count: %ld", &v18, 0x16u);
     }
 
-    v15 = [v5 identifier];
-    [(NSMutableArray *)self->_environmentDescriptionIdentifiersGoingAway removeObject:v15];
-    [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved removeObject:v15];
-    [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingSaved removeObject:v15];
+    identifier = [v5 identifier];
+    [(NSMutableArray *)self->_environmentDescriptionIdentifiersGoingAway removeObject:identifier];
+    [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingRemoved removeObject:identifier];
+    [(NSMutableArray *)self->_environmentDescriptionIdentifiersBeingSaved removeObject:identifier];
     [(NSMutableArray *)self->_screenshots removeObject:v5];
     if (![(NSMutableArray *)self->_screenshots count])
     {
@@ -1071,9 +1071,9 @@ LABEL_15:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) environmentDescription];
-        v10 = [v9 identifier];
-        [v3 addObject:v10];
+        environmentDescription = [*(*(&v12 + 1) + 8 * i) environmentDescription];
+        identifier = [environmentDescription identifier];
+        [v3 addObject:identifier];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1091,7 +1091,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_100016864;
   block[3] = &unk_1000B9FE0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000D4A08 != -1)
   {
     dispatch_once(&qword_1000D4A08, block);
@@ -1108,7 +1108,7 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "dealloc - SSSScreenshotManager: %p", buf, 0xCu);
   }
 

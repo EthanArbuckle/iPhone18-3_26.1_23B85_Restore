@@ -1,7 +1,7 @@
 @interface AVExecutionEnvironment
 + (id)currentPlatformIdentifier;
 + (id)sharedExecutionEnvironment;
-+ (void)setPlatformIdentifier:(id)a3 forQueue:(id)a4;
++ (void)setPlatformIdentifier:(id)identifier forQueue:(id)queue;
 - (NSString)platformIdentifier;
 @end
 
@@ -42,11 +42,11 @@ AVExecutionEnvironment *__52__AVExecutionEnvironment_sharedExecutionEnvironment_
   return result;
 }
 
-+ (void)setPlatformIdentifier:(id)a3 forQueue:(id)a4
++ (void)setPlatformIdentifier:(id)identifier forQueue:(id)queue
 {
-  v5 = a3;
+  identifierCopy = identifier;
 
-  dispatch_queue_set_specific(a4, @"AVExecutionEnvironmentCurrentPlatformIdentifierKey", v5, AVExecutionEnvironmentReleaseObject);
+  dispatch_queue_set_specific(queue, @"AVExecutionEnvironmentCurrentPlatformIdentifierKey", identifierCopy, AVExecutionEnvironmentReleaseObject);
 }
 
 @end

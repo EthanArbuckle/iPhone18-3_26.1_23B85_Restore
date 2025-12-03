@@ -1,24 +1,24 @@
 @interface PXMenuBuilder
-+ (id)_menuWithConfiguration:(id)a3;
-+ (id)defaultStoryActionsMenuWithViewModel:(id)a3;
-+ (id)defaultStoryThumbnailActionsMenuWithModel:(id)a3 isFavorite:(BOOL)a4;
-+ (id)menuWithTitle:(id)a3 options:(unint64_t)a4 deferredConfiguration:(id)a5;
++ (id)_menuWithConfiguration:(id)configuration;
++ (id)defaultStoryActionsMenuWithViewModel:(id)model;
++ (id)defaultStoryThumbnailActionsMenuWithModel:(id)model isFavorite:(BOOL)favorite;
++ (id)menuWithTitle:(id)title options:(unint64_t)options deferredConfiguration:(id)configuration;
 - (PXMenuBuilder)init;
-- (void)_addMenuItem:(id)a3;
-- (void)addActionsMenuDurationSectionWithStoryViewModel:(id)a3;
-- (void)addItemWithTitle:(id)a3 systemImageName:(id)a4 state:(int64_t)a5 options:(unint64_t)a6 handler:(id)a7;
-- (void)addItemWithTitle:(id)a3 systemImageName:(id)a4 submenuConfiguration:(id)a5;
-- (void)addSectionWithConfiguration:(id)a3;
-- (void)addSectionWithMenu:(id)a3;
+- (void)_addMenuItem:(id)item;
+- (void)addActionsMenuDurationSectionWithStoryViewModel:(id)model;
+- (void)addItemWithTitle:(id)title systemImageName:(id)name state:(int64_t)state options:(unint64_t)options handler:(id)handler;
+- (void)addItemWithTitle:(id)title systemImageName:(id)name submenuConfiguration:(id)configuration;
+- (void)addSectionWithConfiguration:(id)configuration;
+- (void)addSectionWithMenu:(id)menu;
 @end
 
 @implementation PXMenuBuilder
 
-- (void)addActionsMenuDurationSectionWithStoryViewModel:(id)a3
+- (void)addActionsMenuDurationSectionWithStoryViewModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A486D7B0(v4, &v8);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1A486D7B0(modelCopy, &v8);
   if (v9)
   {
     sub_1A3C34460(&v8, v10);
@@ -36,14 +36,14 @@
   }
 }
 
-+ (id)defaultStoryThumbnailActionsMenuWithModel:(id)a3 isFavorite:(BOOL)a4
++ (id)defaultStoryThumbnailActionsMenuWithModel:(id)model isFavorite:(BOOL)favorite
 {
-  v7 = a3;
+  modelCopy = model;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__PXMenuBuilder_PXStoryViewModel__defaultStoryThumbnailActionsMenuWithModel_isFavorite___block_invoke;
   aBlock[3] = &unk_1E7736108;
-  v8 = v7;
+  v8 = modelCopy;
   v30 = v8;
   v9 = _Block_copy(aBlock);
   v27[0] = MEMORY[0x1E69E9820];
@@ -53,22 +53,22 @@
   v10 = v9;
   v28 = v10;
   v11 = _Block_copy(v27);
-  v12 = [v8 layoutSpec];
+  layoutSpec = [v8 layoutSpec];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __88__PXMenuBuilder_PXStoryViewModel__defaultStoryThumbnailActionsMenuWithModel_isFavorite___block_invoke_4;
   v19[3] = &unk_1E77361A8;
-  v26 = a4;
-  v20 = v12;
+  favoriteCopy = favorite;
+  v20 = layoutSpec;
   v21 = v8;
   v24 = a2;
-  v25 = a1;
+  selfCopy = self;
   v22 = v11;
   v23 = v10;
   v13 = v10;
   v14 = v8;
   v15 = v11;
-  v16 = v12;
+  v16 = layoutSpec;
   v17 = [PXMenuBuilder menuWithDeferredConfiguration:v19];
 
   return v17;
@@ -322,26 +322,26 @@ LABEL_15:
   }
 }
 
-+ (id)defaultStoryActionsMenuWithViewModel:(id)a3
++ (id)defaultStoryActionsMenuWithViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = +[PXStorySettings sharedInstance];
-  v5 = [v4 useCommonActionInfrastructureForActionMenu];
+  useCommonActionInfrastructureForActionMenu = [v4 useCommonActionInfrastructureForActionMenu];
 
-  if (v5)
+  if (useCommonActionInfrastructureForActionMenu)
   {
-    v6 = [v3 makeDefaultActionsMenu];
+    makeDefaultActionsMenu = [modelCopy makeDefaultActionsMenu];
   }
 
   else
   {
     v7 = +[PXStorySettings sharedInstance];
-    v27 = [v3 viewLayoutSpec];
+    viewLayoutSpec = [modelCopy viewLayoutSpec];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __72__PXMenuBuilder_PXStoryViewModel__defaultStoryActionsMenuWithViewModel___block_invoke;
     aBlock[3] = &unk_1E7735FC8;
-    v8 = v3;
+    v8 = modelCopy;
     v45 = v8;
     v9 = _Block_copy(aBlock);
     v42[0] = MEMORY[0x1E69E9820];
@@ -351,30 +351,30 @@ LABEL_15:
     v10 = v9;
     v43 = v10;
     v11 = _Block_copy(v42);
-    v12 = [v8 mainModel];
-    v13 = [v12 recipeManager];
-    v14 = [v8 mainConfiguration];
-    v15 = [v14 assetCollection];
-    v16 = [v15 px_canContainPotentiallySensitiveContent];
+    mainModel = [v8 mainModel];
+    recipeManager = [mainModel recipeManager];
+    mainConfiguration = [v8 mainConfiguration];
+    assetCollection = [mainConfiguration assetCollection];
+    px_canContainPotentiallySensitiveContent = [assetCollection px_canContainPotentiallySensitiveContent];
 
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __72__PXMenuBuilder_PXStoryViewModel__defaultStoryActionsMenuWithViewModel___block_invoke_4;
     v33[3] = &unk_1E77360B8;
     v17 = v8;
-    v41 = v16;
+    v41 = px_canContainPotentiallySensitiveContent;
     v34 = v17;
-    v35 = v12;
-    v36 = v27;
-    v37 = v13;
+    v35 = mainModel;
+    v36 = viewLayoutSpec;
+    v37 = recipeManager;
     v38 = v7;
     v39 = v11;
     v40 = v10;
     v18 = v10;
     v28 = v7;
-    v19 = v13;
-    v20 = v27;
-    v21 = v12;
+    v19 = recipeManager;
+    v20 = viewLayoutSpec;
+    v21 = mainModel;
     v22 = v11;
     v23 = [PXMenuBuilder menuWithDeferredConfiguration:v33];
     v31[0] = MEMORY[0x1E69E9820];
@@ -389,10 +389,10 @@ LABEL_15:
     v29[2] = __72__PXMenuBuilder_PXStoryViewModel__defaultStoryActionsMenuWithViewModel___block_invoke_11;
     v29[3] = &unk_1E774C648;
     v30 = v24;
-    v6 = [v25 onClose:v29];
+    makeDefaultActionsMenu = [v25 onClose:v29];
   }
 
-  return v6;
+  return makeDefaultActionsMenu;
 }
 
 id __72__PXMenuBuilder_PXStoryViewModel__defaultStoryActionsMenuWithViewModel___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -708,38 +708,38 @@ void __72__PXMenuBuilder_PXStoryViewModel__defaultStoryActionsMenuWithViewModel_
   [v8 performActionForChromeActionMenuItem:a1[5] withValue:a1[6] sender:v7 presentationSource:v6];
 }
 
-- (void)_addMenuItem:(id)a3
+- (void)_addMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PXMenuBuilder *)self menuItems];
-  [v5 addObject:v4];
+  itemCopy = item;
+  menuItems = [(PXMenuBuilder *)self menuItems];
+  [menuItems addObject:itemCopy];
 }
 
-- (void)addItemWithTitle:(id)a3 systemImageName:(id)a4 submenuConfiguration:(id)a5
+- (void)addItemWithTitle:(id)title systemImageName:(id)name submenuConfiguration:(id)configuration
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4)
+  titleCopy = title;
+  configurationCopy = configuration;
+  if (name)
   {
-    a4 = [MEMORY[0x1E69DCAB8] systemImageNamed:a4];
+    name = [MEMORY[0x1E69DCAB8] systemImageNamed:name];
   }
 
   v9 = objc_alloc_init(PXMenuBuilder);
-  v8[2](v8, v9);
+  configurationCopy[2](configurationCopy, v9);
   v10 = MEMORY[0x1E69DCC60];
-  v11 = [(PXMenuBuilder *)v9 menuItems];
-  v12 = [v10 menuWithTitle:v13 image:a4 identifier:0 options:0 children:v11];
+  menuItems = [(PXMenuBuilder *)v9 menuItems];
+  v12 = [v10 menuWithTitle:titleCopy image:name identifier:0 options:0 children:menuItems];
   [(PXMenuBuilder *)self _addMenuItem:v12];
 }
 
-- (void)addItemWithTitle:(id)a3 systemImageName:(id)a4 state:(int64_t)a5 options:(unint64_t)a6 handler:(id)a7
+- (void)addItemWithTitle:(id)title systemImageName:(id)name state:(int64_t)state options:(unint64_t)options handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
-  if (v11)
+  titleCopy = title;
+  nameCopy = name;
+  handlerCopy = handler;
+  if (nameCopy)
   {
-    v13 = [MEMORY[0x1E69DCAB8] px_systemImageNamed:v11];
+    v13 = [MEMORY[0x1E69DCAB8] px_systemImageNamed:nameCopy];
   }
 
   else
@@ -752,23 +752,23 @@ void __72__PXMenuBuilder_PXStoryViewModel__defaultStoryActionsMenuWithViewModel_
   v24[1] = 3221225472;
   v24[2] = __72__PXMenuBuilder_addItemWithTitle_systemImageName_state_options_handler___block_invoke;
   v24[3] = &unk_1E7742C90;
-  v15 = v12;
+  v15 = handlerCopy;
   v25 = v15;
-  v16 = [v14 actionWithTitle:v10 image:v13 identifier:0 handler:v24];
-  v17 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v18 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v17];
+  v16 = [v14 actionWithTitle:titleCopy image:v13 identifier:0 handler:v24];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v18 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:px_deprecated_appPhotoLibrary];
 
-  v19 = [v18 hasPreview];
+  hasPreview = [v18 hasPreview];
   v20 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_FilterMenu_Shared");
-  v21 = [v10 isEqualToString:v20];
+  v21 = [titleCopy isEqualToString:v20];
 
-  if (v19 && v21)
+  if (hasPreview && v21)
   {
     PXSharedLibraryUpdateActionTitleForPreview(v16);
   }
 
-  [v16 setAttributes:(a6 >> 2) & 1 | (2 * (a6 & 1))];
-  if (a5 <= 2)
+  [v16 setAttributes:(options >> 2) & 1 | (2 * (options & 1))];
+  if (state <= 2)
   {
     [v16 setState:?];
   }
@@ -786,23 +786,23 @@ void __72__PXMenuBuilder_addItemWithTitle_systemImageName_state_options_handler_
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)addSectionWithMenu:(id)a3
+- (void)addSectionWithMenu:(id)menu
 {
   v4 = MEMORY[0x1E69DCC60];
-  v6 = [a3 children];
-  v5 = [v4 menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:v6];
+  children = [menu children];
+  v5 = [v4 menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:children];
   [(PXMenuBuilder *)self _addMenuItem:v5];
 }
 
-- (void)addSectionWithConfiguration:(id)a3
+- (void)addSectionWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9 = objc_alloc_init(PXMenuBuilder);
-  v4[2](v4, v9);
+  configurationCopy[2](configurationCopy, v9);
 
   v5 = MEMORY[0x1E69DCC60];
-  v6 = [(PXMenuBuilder *)v9 menuItems];
-  v7 = [v6 copy];
+  menuItems = [(PXMenuBuilder *)v9 menuItems];
+  v7 = [menuItems copy];
   v8 = [v5 menuWithTitle:&stru_1F1741150 image:0 identifier:0 options:1 children:v7];
   [(PXMenuBuilder *)self _addMenuItem:v8];
 }
@@ -822,36 +822,36 @@ void __72__PXMenuBuilder_addItemWithTitle_systemImageName_state_options_handler_
   return v2;
 }
 
-+ (id)_menuWithConfiguration:(id)a3
++ (id)_menuWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = objc_alloc_init(PXMenuBuilder);
-  v3[2](v3, v4);
+  configurationCopy[2](configurationCopy, v4);
 
   v5 = MEMORY[0x1E69DCC60];
-  v6 = [(PXMenuBuilder *)v4 menuItems];
-  v7 = [v5 menuWithChildren:v6];
+  menuItems = [(PXMenuBuilder *)v4 menuItems];
+  v7 = [v5 menuWithChildren:menuItems];
 
   return v7;
 }
 
-+ (id)menuWithTitle:(id)a3 options:(unint64_t)a4 deferredConfiguration:(id)a5
++ (id)menuWithTitle:(id)title options:(unint64_t)options deferredConfiguration:(id)configuration
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  configurationCopy = configuration;
   v8 = MEMORY[0x1E69DCC60];
   v9 = MEMORY[0x1E69DC928];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__PXMenuBuilder_menuWithTitle_options_deferredConfiguration___block_invoke;
   v16[3] = &unk_1E7739040;
-  v17 = v7;
-  v10 = v7;
-  v11 = a3;
+  v17 = configurationCopy;
+  v10 = configurationCopy;
+  titleCopy = title;
   v12 = [v9 elementWithProvider:v16];
   v18[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v14 = [v8 menuWithTitle:v11 image:0 identifier:0 options:a4 children:v13];
+  v14 = [v8 menuWithTitle:titleCopy image:0 identifier:0 options:options children:v13];
 
   return v14;
 }

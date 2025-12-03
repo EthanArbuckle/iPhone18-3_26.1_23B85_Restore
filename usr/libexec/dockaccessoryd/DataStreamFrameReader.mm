@@ -5,7 +5,7 @@
 - (unint64_t)_getCurrentFrameSize;
 - (unint64_t)bytesNeededForCurrentFrame;
 - (void)_readFrameHeaderIfPossible;
-- (void)pushFrameData:(id)a3;
+- (void)pushFrameData:(id)data;
 - (void)reset;
 @end
 
@@ -59,10 +59,10 @@
     return 4 - size;
   }
 
-  v7 = [(DataStreamFrameReader *)self _getCurrentFrameSize];
-  if (v7 >= v6)
+  _getCurrentFrameSize = [(DataStreamFrameReader *)self _getCurrentFrameSize];
+  if (_getCurrentFrameSize >= v6)
   {
-    return v7 - v6;
+    return _getCurrentFrameSize - v6;
   }
 
   else
@@ -71,9 +71,9 @@
   }
 }
 
-- (void)pushFrameData:(id)a3
+- (void)pushFrameData:(id)data
 {
-  data2 = a3;
+  data2 = data;
   if (![(DataStreamFrameReader *)self hasFailed])
   {
     partialFrame = self->_partialFrame;
@@ -133,19 +133,19 @@
 {
   if ([(DataStreamFrameReader *)self hasCompleteFrame])
   {
-    v3 = [(DataStreamFrameReader *)self _getCurrentFrameSize];
-    subrange = dispatch_data_create_subrange(self->_partialFrame, 0, v3);
+    _getCurrentFrameSize = [(DataStreamFrameReader *)self _getCurrentFrameSize];
+    subrange = dispatch_data_create_subrange(self->_partialFrame, 0, _getCurrentFrameSize);
     partialFrame = self->_partialFrame;
     size = dispatch_data_get_size(partialFrame);
-    v7 = size - v3;
-    if (size == v3)
+    v7 = size - _getCurrentFrameSize;
+    if (size == _getCurrentFrameSize)
     {
       [(DataStreamFrameReader *)self reset];
     }
 
     else
     {
-      v8 = dispatch_data_create_subrange(partialFrame, v3, v7);
+      v8 = dispatch_data_create_subrange(partialFrame, _getCurrentFrameSize, v7);
       [(DataStreamFrameReader *)self reset];
       [(DataStreamFrameReader *)self pushFrameData:v8];
     }

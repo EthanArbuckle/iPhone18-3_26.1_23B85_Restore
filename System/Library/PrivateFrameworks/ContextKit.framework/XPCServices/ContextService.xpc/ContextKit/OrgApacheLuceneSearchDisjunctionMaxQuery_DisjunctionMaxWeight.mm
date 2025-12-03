@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchDisjunctionMaxQuery_DisjunctionMaxWeight
 - (float)getValueForNormalization;
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
-- (void)extractTermsWithJavaUtilSet:(id)a3;
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4;
+- (void)extractTermsWithJavaUtilSet:(id)set;
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat;
 @end
 
 @implementation OrgApacheLuceneSearchDisjunctionMaxQuery_DisjunctionMaxWeight
 
-- (void)extractTermsWithJavaUtilSet:(id)a3
+- (void)extractTermsWithJavaUtilSet:(id)set
 {
   v10 = 0u;
   v11 = 0u;
@@ -41,7 +41,7 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        [v9 extractTermsWithJavaUtilSet:{a3, v10}];
+        [v9 extractTermsWithJavaUtilSet:{set, v10}];
       }
 
       v6 = [(JavaUtilArrayList *)weights countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -108,7 +108,7 @@ LABEL_13:
   return v13 * (v13 * (v8 + (((v7 - v8) * *(&self->this$0_->disjuncts_ + 1)) * *(&self->this$0_->disjuncts_ + 1))));
 }
 
-- (void)normalizeWithFloat:(float)a3 withFloat:(float)a4
+- (void)normalizeWithFloat:(float)float withFloat:(float)withFloat
 {
   [(OrgApacheLuceneSearchQuery *)self->this$0_ getBoost];
   v8 = v7;
@@ -127,7 +127,7 @@ LABEL_11:
   if (v10)
   {
     v13 = v10;
-    v14 = v8 * a4;
+    v14 = v8 * withFloat;
     v15 = *v19;
     do
     {
@@ -144,7 +144,7 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        *&v11 = a3;
+        *&v11 = float;
         *&v12 = v14;
         [v17 normalizeWithFloat:v11 withFloat:{v12, v18}];
       }
@@ -156,7 +156,7 @@ LABEL_11:
   }
 }
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   v5 = new_JavaUtilArrayList_init();
   v15 = 0u;
@@ -191,7 +191,7 @@ LABEL_16:
           goto LABEL_16;
         }
 
-        v13 = [v12 scorerWithOrgApacheLuceneIndexLeafReaderContext:{a3, v15}];
+        v13 = [v12 scorerWithOrgApacheLuceneIndexLeafReaderContext:{context, v15}];
         if (v13)
         {
           [(JavaUtilArrayList *)v7 addWithId:v13];

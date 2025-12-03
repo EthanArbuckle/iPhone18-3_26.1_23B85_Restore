@@ -1,41 +1,41 @@
 @interface TRIRetargetAllTask
-+ (id)parseFromData:(id)a3;
++ (id)parseFromData:(id)data;
 + (id)task;
-+ (id)taskWithTaskAttribution:(id)a3;
-- (TRIRetargetAllTask)initWithCoder:(id)a3;
-- (TRIRetargetAllTask)initWithTaskAttribution:(id)a3;
++ (id)taskWithTaskAttribution:(id)attribution;
+- (TRIRetargetAllTask)initWithCoder:(id)coder;
+- (TRIRetargetAllTask)initWithTaskAttribution:(id)attribution;
 - (id)_asPersistedTask;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIRetargetAllTask
 
-+ (id)taskWithTaskAttribution:(id)a3
++ (id)taskWithTaskAttribution:(id)attribution
 {
-  v3 = a3;
-  v4 = [[TRIRetargetAllTask alloc] initWithTaskAttribution:v3];
+  attributionCopy = attribution;
+  v4 = [[TRIRetargetAllTask alloc] initWithTaskAttribution:attributionCopy];
 
   return v4;
 }
 
-- (TRIRetargetAllTask)initWithTaskAttribution:(id)a3
+- (TRIRetargetAllTask)initWithTaskAttribution:(id)attribution
 {
-  v5 = a3;
+  attributionCopy = attribution;
   v14.receiver = self;
   v14.super_class = TRIRetargetAllTask;
   v6 = [(TRIRetargetAllTask *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_taskAttribution, a3);
+    objc_storeStrong(&v6->_taskAttribution, attribution);
     if (!v7->_taskAttribution)
     {
-      v8 = [MEMORY[0x277D737A8] callerBundleId];
+      callerBundleId = [MEMORY[0x277D737A8] callerBundleId];
       v9 = [TRITaskAttributionInternalInsecure alloc];
-      v10 = [MEMORY[0x277D736A0] inexpensiveOptions];
-      v11 = [(TRITaskAttributionInternalInsecure *)v9 initWithTeamIdentifier:0 triCloudKitContainer:1 applicationBundleIdentifier:v8 networkOptions:v10];
+      inexpensiveOptions = [MEMORY[0x277D736A0] inexpensiveOptions];
+      v11 = [(TRITaskAttributionInternalInsecure *)v9 initWithTeamIdentifier:0 triCloudKitContainer:1 applicationBundleIdentifier:callerBundleId networkOptions:inexpensiveOptions];
       taskAttribution = v7->_taskAttribution;
       v7->_taskAttribution = v11;
     }
@@ -51,15 +51,15 @@
   return v2;
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   v8 = objc_opt_new();
   v9 = objc_autoreleasePoolPush();
   v10 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{&unk_287FC4D80, &unk_287FC4D98, &unk_287FC4DB0, 0}];
   objc_autoreleasePoolPop(v9);
-  v11 = [v6 experimentDatabase];
+  experimentDatabase = [contextCopy experimentDatabase];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __52__TRIRetargetAllTask_runUsingContext_withTaskQueue___block_invoke;
@@ -67,8 +67,8 @@
   v24[4] = self;
   v12 = v8;
   v25 = v12;
-  v13 = [v11 enumerateExperimentRecordsMatchingStatuses:v10 block:v24];
-  v14 = [v6 rolloutDatabase];
+  v13 = [experimentDatabase enumerateExperimentRecordsMatchingStatuses:v10 block:v24];
+  rolloutDatabase = [contextCopy rolloutDatabase];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __52__TRIRetargetAllTask_runUsingContext_withTaskQueue___block_invoke_40;
@@ -76,7 +76,7 @@
   v22[4] = self;
   v15 = v12;
   v23 = v15;
-  v16 = [v14 enumerateActiveRecordsUsingTransaction:0 block:v22];
+  v16 = [rolloutDatabase enumerateActiveRecordsUsingTransaction:0 block:v22];
   v17 = 3;
   if (v13 && v16)
   {
@@ -84,9 +84,9 @@
     v17 = 2;
   }
 
-  [TRISystemConfiguration updateSystemInfoUsingContext:v6];
-  v18 = [(TRIRetargetAllTask *)self nextTasks];
-  v19 = [v18 copy];
+  [TRISystemConfiguration updateSystemInfoUsingContext:contextCopy];
+  nextTasks = [(TRIRetargetAllTask *)self nextTasks];
+  v19 = [nextTasks copy];
   v20 = [TRITaskRunResult resultWithRunStatus:v17 reportResultToServer:1 nextTasks:v19 earliestRetryDate:0];
 
   return v20;
@@ -149,33 +149,33 @@ void __52__TRIRetargetAllTask_runUsingContext_withTaskQueue___block_invoke_40(ui
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v4];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
   return v3;
 }
 
 - (id)serialize
 {
-  v4 = [(TRIRetargetAllTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRIRetargetAllTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRIRetargetAllTask.m" lineNumber:133 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRetargetAllTask.m" lineNumber:133 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v17 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v4 = [(TRIPBMessage *)TRIRetargetAllPersistedTask parseFromData:a3 error:&v14];
+  v4 = [(TRIPBMessage *)TRIRetargetAllPersistedTask parseFromData:data error:&v14];
   v5 = v14;
   if (!v4)
   {
@@ -197,8 +197,8 @@ LABEL_7:
 
   if ([v4 hasTaskAttribution])
   {
-    v6 = [v4 taskAttribution];
-    v7 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v6];
+    taskAttribution = [v4 taskAttribution];
+    v7 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
     if (!v7)
     {
@@ -223,7 +223,7 @@ LABEL_14:
     v7 = 0;
   }
 
-  v11 = [[a1 alloc] initWithTaskAttribution:v7];
+  v11 = [[self alloc] initWithTaskAttribution:v7];
 LABEL_10:
 
   v12 = *MEMORY[0x277D85DE8];
@@ -231,15 +231,15 @@ LABEL_10:
   return v11;
 }
 
-- (TRIRetargetAllTask)initWithCoder:(id)a3
+- (TRIRetargetAllTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRIRetargetAllTask;
   v5 = [(TRIRetargetAllTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -259,18 +259,18 @@ LABEL_10:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIRetargetAllTask.m" lineNumber:159 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRetargetAllTask.m" lineNumber:159 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRIRetargetAllTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRIRetargetAllTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

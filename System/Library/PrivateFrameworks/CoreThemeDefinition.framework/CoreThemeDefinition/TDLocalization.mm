@@ -1,8 +1,8 @@
 @interface TDLocalization
 - (NSString)name;
 - (unsigned)identifier;
-- (void)setIdentifier:(unsigned __int16)a3;
-- (void)setName:(id)a3;
+- (void)setIdentifier:(unsigned __int16)identifier;
+- (void)setName:(id)name;
 @end
 
 @implementation TDLocalization
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   [(TDLocalization *)self willChangeValueForKey:@"name"];
 
-  self->_name = [a3 copy];
+  self->_name = [name copy];
 
   [(TDLocalization *)self didChangeValueForKey:@"name"];
 }
@@ -32,10 +32,10 @@
   return identifier;
 }
 
-- (void)setIdentifier:(unsigned __int16)a3
+- (void)setIdentifier:(unsigned __int16)identifier
 {
   [(TDLocalization *)self willChangeValueForKey:@"identifier"];
-  self->_identifier = a3;
+  self->_identifier = identifier;
 
   [(TDLocalization *)self didChangeValueForKey:@"identifier"];
 }

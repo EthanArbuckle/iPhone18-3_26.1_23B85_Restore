@@ -1,15 +1,15 @@
 @interface CKNotification
 + (CKNotification)notificationFromRemoteNotificationDictionary:(NSDictionary *)notificationDictionary;
-+ (id)_realNotificationFromRemoteNotificationDictionary:(id)a3;
++ (id)_realNotificationFromRemoteNotificationDictionary:(id)dictionary;
 + (void)initialize;
 - (CKNotification)init;
-- (CKNotification)initWithCoder:(id)a3;
-- (CKNotification)initWithRemoteNotificationDictionary:(id)a3;
+- (CKNotification)initWithCoder:(id)coder;
+- (CKNotification)initWithRemoteNotificationDictionary:(id)dictionary;
 - (NSString)containerIdentifier;
 - (id)CKPropertiesDescription;
 - (id)initInternal;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContainerIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContainerIdentifier:(id)identifier;
 @end
 
 @implementation CKNotification
@@ -22,7 +22,7 @@
   v7[1] = objc_opt_class();
   v7[2] = objc_opt_class();
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v4, v7, 3);
-  sub_1886CEE50(a1, v3, v5, 0, 0);
+  sub_1886CEE50(self, v3, v5, 0, 0);
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -46,7 +46,7 @@
 + (CKNotification)notificationFromRemoteNotificationDictionary:(NSDictionary *)notificationDictionary
 {
   v4 = objc_msgSend_copy(notificationDictionary, a2, notificationDictionary);
-  v6 = objc_msgSend__realNotificationFromRemoteNotificationDictionary_(a1, v5, v4);
+  v6 = objc_msgSend__realNotificationFromRemoteNotificationDictionary_(self, v5, v4);
 
   return v6;
 }
@@ -157,210 +157,210 @@
   return v6;
 }
 
-- (void)setContainerIdentifier:(id)a3
+- (void)setContainerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [CKContainerID alloc];
   v14 = objc_msgSend_containerID(self, v6, v7);
   v10 = objc_msgSend_environment(v14, v8, v9);
-  v12 = objc_msgSend_initWithContainerIdentifier_environment_(v5, v11, v4, v10);
+  v12 = objc_msgSend_initWithContainerIdentifier_environment_(v5, v11, identifierCopy, v10);
 
   objc_msgSend_setContainerID_(self, v13, v12);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v100 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_notificationType(self, v5, v6);
-  objc_msgSend_encodeInt64_forKey_(v100, v8, v7, @"Type");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v8, v7, @"Type");
   v11 = objc_msgSend_notificationID(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v100, v12, v11, @"ID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"ID");
 
   v15 = objc_msgSend_containerID(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v100, v16, v15, @"containerID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"containerID");
 
   v19 = objc_msgSend_subscriptionOwnerUserRecordID(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v100, v20, v19, @"subscriptionOwnerUserRecordID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"subscriptionOwnerUserRecordID");
 
   isPruned = objc_msgSend_isPruned(self, v21, v22);
-  objc_msgSend_encodeBool_forKey_(v100, v24, isPruned, @"IsPruned");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v24, isPruned, @"IsPruned");
   v27 = objc_msgSend_subscriptionID(self, v25, v26);
-  objc_msgSend_encodeObject_forKey_(v100, v28, v27, @"SubscriptionID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"SubscriptionID");
 
   v31 = objc_msgSend_testServerName(self, v29, v30);
   v32 = NSStringFromSelector(sel_testServerName);
-  objc_msgSend_encodeObject_forKey_(v100, v33, v31, v32);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v33, v31, v32);
 
   v36 = objc_msgSend_testServerURL(self, v34, v35);
   v37 = NSStringFromSelector(sel_testServerURL);
-  objc_msgSend_encodeObject_forKey_(v100, v38, v36, v37);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v38, v36, v37);
 
   v41 = objc_msgSend_testDeviceID(self, v39, v40);
   v42 = NSStringFromSelector(sel_testDeviceID);
-  objc_msgSend_encodeObject_forKey_(v100, v43, v41, v42);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v43, v41, v42);
 
   v46 = objc_msgSend_alertBody(self, v44, v45);
-  objc_msgSend_encodeObject_forKey_(v100, v47, v46, @"AlertBody");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v47, v46, @"AlertBody");
 
   v50 = objc_msgSend_alertLocalizationKey(self, v48, v49);
-  objc_msgSend_encodeObject_forKey_(v100, v51, v50, @"AlertLocalizationKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v51, v50, @"AlertLocalizationKey");
 
   v54 = objc_msgSend_alertLocalizationArgs(self, v52, v53);
-  objc_msgSend_encodeObject_forKey_(v100, v55, v54, @"AlertLocalizationArgs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v55, v54, @"AlertLocalizationArgs");
 
   v58 = objc_msgSend_title(self, v56, v57);
-  objc_msgSend_encodeObject_forKey_(v100, v59, v58, @"Title");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v59, v58, @"Title");
 
   v62 = objc_msgSend_titleLocalizationKey(self, v60, v61);
-  objc_msgSend_encodeObject_forKey_(v100, v63, v62, @"TitleLocalizationKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v63, v62, @"TitleLocalizationKey");
 
   v66 = objc_msgSend_titleLocalizationArgs(self, v64, v65);
-  objc_msgSend_encodeObject_forKey_(v100, v67, v66, @"TitleLocalizationArgs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v67, v66, @"TitleLocalizationArgs");
 
   v70 = objc_msgSend_subtitle(self, v68, v69);
-  objc_msgSend_encodeObject_forKey_(v100, v71, v70, @"Subtitle");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v71, v70, @"Subtitle");
 
   v74 = objc_msgSend_subtitleLocalizationKey(self, v72, v73);
-  objc_msgSend_encodeObject_forKey_(v100, v75, v74, @"SubtitleLocalizationKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v75, v74, @"SubtitleLocalizationKey");
 
   v78 = objc_msgSend_subtitleLocalizationArgs(self, v76, v77);
-  objc_msgSend_encodeObject_forKey_(v100, v79, v78, @"SubtitleLocalizationArgs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v79, v78, @"SubtitleLocalizationArgs");
 
   v82 = objc_msgSend_alertActionLocalizationKey(self, v80, v81);
-  objc_msgSend_encodeObject_forKey_(v100, v83, v82, @"AlertActionLocalizationKey");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v83, v82, @"AlertActionLocalizationKey");
 
   v86 = objc_msgSend_alertLaunchImage(self, v84, v85);
-  objc_msgSend_encodeObject_forKey_(v100, v87, v86, @"LaunchImage");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v87, v86, @"LaunchImage");
 
   v90 = objc_msgSend_badge(self, v88, v89);
-  objc_msgSend_encodeObject_forKey_(v100, v91, v90, @"Badge");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v91, v90, @"Badge");
 
   v94 = objc_msgSend_soundName(self, v92, v93);
-  objc_msgSend_encodeObject_forKey_(v100, v95, v94, @"SoundName");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v95, v94, @"SoundName");
 
   v98 = objc_msgSend_category(self, v96, v97);
-  objc_msgSend_encodeObject_forKey_(v100, v99, v98, @"Category");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v99, v98, @"Category");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKNotification)initWithCoder:(id)a3
+- (CKNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v97.receiver = self;
   v97.super_class = CKNotification;
   v5 = [(CKNotification *)&v97 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_notificationType = objc_msgSend_decodeInt64ForKey_(v4, v7, @"Type");
+    v5->_notificationType = objc_msgSend_decodeInt64ForKey_(coderCopy, v7, @"Type");
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"ID");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"ID");
     notificationID = v5->_notificationID;
     v5->_notificationID = v10;
 
     v12 = objc_opt_class();
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v12, @"containerID");
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v12, @"containerID");
     containerID = v5->_containerID;
     v5->_containerID = v14;
 
     v16 = objc_opt_class();
-    v18 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v17, v16, @"subscriptionOwnerUserRecordID");
+    v18 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v17, v16, @"subscriptionOwnerUserRecordID");
     subscriptionOwnerUserRecordID = v5->_subscriptionOwnerUserRecordID;
     v5->_subscriptionOwnerUserRecordID = v18;
 
-    v5->_isPruned = objc_msgSend_decodeBoolForKey_(v4, v20, @"IsPruned");
+    v5->_isPruned = objc_msgSend_decodeBoolForKey_(coderCopy, v20, @"IsPruned");
     v21 = objc_opt_class();
-    v23 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v22, v21, @"SubscriptionID");
+    v23 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v22, v21, @"SubscriptionID");
     subscriptionID = v5->_subscriptionID;
     v5->_subscriptionID = v23;
 
     v25 = objc_opt_class();
     v26 = NSStringFromSelector(sel_testServerName);
-    v28 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v25, v26);
+    v28 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v27, v25, v26);
     testServerName = v5->_testServerName;
     v5->_testServerName = v28;
 
     v30 = objc_opt_class();
     v31 = NSStringFromSelector(sel_testServerURL);
-    v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v30, v31);
+    v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v30, v31);
     testServerURL = v5->_testServerURL;
     v5->_testServerURL = v33;
 
     v35 = objc_opt_class();
     v36 = NSStringFromSelector(sel_testDeviceID);
-    v38 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v37, v35, v36);
+    v38 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v37, v35, v36);
     testDeviceID = v5->_testDeviceID;
     v5->_testDeviceID = v38;
 
     v40 = objc_opt_class();
-    v42 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v41, v40, @"AlertBody");
+    v42 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v41, v40, @"AlertBody");
     alertBody = v5->_alertBody;
     v5->_alertBody = v42;
 
     v44 = objc_opt_class();
-    v46 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v45, v44, @"AlertLocalizationKey");
+    v46 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v45, v44, @"AlertLocalizationKey");
     alertLocalizationKey = v5->_alertLocalizationKey;
     v5->_alertLocalizationKey = v46;
 
     v48 = CKAcceptableValueClasses();
-    v50 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v49, v48, @"AlertLocalizationArgs");
+    v50 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v49, v48, @"AlertLocalizationArgs");
     alertLocalizationArgs = v5->_alertLocalizationArgs;
     v5->_alertLocalizationArgs = v50;
 
     v52 = objc_opt_class();
-    v54 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v53, v52, @"Title");
+    v54 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v53, v52, @"Title");
     title = v5->_title;
     v5->_title = v54;
 
     v56 = objc_opt_class();
-    v58 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v57, v56, @"TitleLocalizationKey");
+    v58 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v57, v56, @"TitleLocalizationKey");
     titleLocalizationKey = v5->_titleLocalizationKey;
     v5->_titleLocalizationKey = v58;
 
     v60 = CKAcceptableValueClasses();
-    v62 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v61, v60, @"TitleLocalizationArgs");
+    v62 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v61, v60, @"TitleLocalizationArgs");
     titleLocalizationArgs = v5->_titleLocalizationArgs;
     v5->_titleLocalizationArgs = v62;
 
     v64 = objc_opt_class();
-    v66 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v65, v64, @"Subtitle");
+    v66 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v65, v64, @"Subtitle");
     subtitle = v5->_subtitle;
     v5->_subtitle = v66;
 
     v68 = objc_opt_class();
-    v70 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v69, v68, @"SubtitleLocalizationKey");
+    v70 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v69, v68, @"SubtitleLocalizationKey");
     subtitleLocalizationKey = v5->_subtitleLocalizationKey;
     v5->_subtitleLocalizationKey = v70;
 
     v72 = CKAcceptableValueClasses();
-    v74 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v73, v72, @"SubtitleLocalizationArgs");
+    v74 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v73, v72, @"SubtitleLocalizationArgs");
     subtitleLocalizationArgs = v5->_subtitleLocalizationArgs;
     v5->_subtitleLocalizationArgs = v74;
 
     v76 = objc_opt_class();
-    v78 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v77, v76, @"AlertActionLocalizationKey");
+    v78 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v77, v76, @"AlertActionLocalizationKey");
     alertActionLocalizationKey = v5->_alertActionLocalizationKey;
     v5->_alertActionLocalizationKey = v78;
 
     v80 = objc_opt_class();
-    v82 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v81, v80, @"LaunchImage");
+    v82 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v81, v80, @"LaunchImage");
     alertLaunchImage = v5->_alertLaunchImage;
     v5->_alertLaunchImage = v82;
 
     v84 = objc_opt_class();
-    v86 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v85, v84, @"Badge");
+    v86 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v85, v84, @"Badge");
     badge = v5->_badge;
     v5->_badge = v86;
 
     v88 = objc_opt_class();
-    v90 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v89, v88, @"SoundName");
+    v90 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v89, v88, @"SoundName");
     soundName = v5->_soundName;
     v5->_soundName = v90;
 
     v92 = objc_opt_class();
-    v94 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v93, v92, @"Category");
+    v94 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v93, v92, @"Category");
     category = v5->_category;
     v5->_category = v94;
 
@@ -370,11 +370,11 @@
   return v5;
 }
 
-+ (id)_realNotificationFromRemoteNotificationDictionary:(id)a3
++ (id)_realNotificationFromRemoteNotificationDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_objectForKeyedSubscript_(v3, v5, @"ck");
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"ck");
   if (!v6)
   {
     v11 = 0;
@@ -414,15 +414,15 @@ LABEL_10:
 
 LABEL_11:
   v16 = [v4 alloc];
-  v11 = objc_msgSend_initWithRemoteNotificationDictionary_(v16, v17, v3);
+  v11 = objc_msgSend_initWithRemoteNotificationDictionary_(v16, v17, dictionaryCopy);
 LABEL_12:
 
   return v11;
 }
 
-- (CKNotification)initWithRemoteNotificationDictionary:(id)a3
+- (CKNotification)initWithRemoteNotificationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v95.receiver = self;
   v95.super_class = CKNotification;
   v5 = [(CKNotification *)&v95 init];
@@ -430,7 +430,7 @@ LABEL_12:
   if (v5)
   {
     objc_msgSend_setNotificationType_(v5, v6, 0);
-    v9 = objc_msgSend_objectForKeyedSubscript_(v4, v8, @"ck");
+    v9 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v8, @"ck");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -487,7 +487,7 @@ LABEL_12:
       }
     }
 
-    v36 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"aps");
+    v36 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"aps");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -614,7 +614,7 @@ LABEL_12:
       }
     }
 
-    v74 = objc_msgSend_objectForKeyedSubscript_(v4, v37, @"ckt");
+    v74 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v37, @"ckt");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

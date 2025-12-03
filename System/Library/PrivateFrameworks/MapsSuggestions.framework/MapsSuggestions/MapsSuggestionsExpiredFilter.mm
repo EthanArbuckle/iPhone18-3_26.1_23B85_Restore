@@ -1,22 +1,22 @@
 @interface MapsSuggestionsExpiredFilter
-- (BOOL)shouldKeepEntry:(id)a3;
+- (BOOL)shouldKeepEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsExpiredFilter
 
-- (BOOL)shouldKeepEntry:(id)a3
+- (BOOL)shouldKeepEntry:(id)entry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (entryCopy)
   {
-    v5 = [v3 expires];
+    expires = [entryCopy expires];
 
-    if (v5)
+    if (expires)
     {
-      v6 = [v4 expires];
-      v7 = MapsSuggestionsIsInThePast(v6);
+      expires2 = [v4 expires];
+      v7 = MapsSuggestionsIsInThePast(expires2);
 
       v8 = !v7;
     }

@@ -6,24 +6,24 @@
 - (NSString)stringValue;
 - (NSString)xmlString;
 - (RUIXMLElement)init;
-- (RUIXMLElement)initWithName:(id)a3;
-- (RUIXMLElement)initWithName:(id)a3 attributes:(id)a4;
+- (RUIXMLElement)initWithName:(id)name;
+- (RUIXMLElement)initWithName:(id)name attributes:(id)attributes;
 - (RUIXMLElement)parent;
-- (void)appendChild:(id)a3;
-- (void)appendChildren:(id)a3;
-- (void)setAttributes:(id)a3;
-- (void)setAttributtes:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)traverseWithDelegate:(id)a3;
+- (void)appendChild:(id)child;
+- (void)appendChildren:(id)children;
+- (void)setAttributes:(id)attributes;
+- (void)setAttributtes:(id)attributtes;
+- (void)setStringValue:(id)value;
+- (void)traverseWithDelegate:(id)delegate;
 @end
 
 @implementation RUIXMLElement
 
-- (void)traverseWithDelegate:(id)a3
+- (void)traverseWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  RUIXMLElement.traverse(withDelegate:)(a3);
+  selfCopy = self;
+  RUIXMLElement.traverse(withDelegate:)(delegate);
   swift_unknownObjectRelease();
 }
 
@@ -37,8 +37,8 @@
 
 - (NSDictionary)attributtes
 {
-  v2 = self;
-  v3 = [(RUIXMLElement *)v2 attributes];
+  selfCopy = self;
+  attributes = [(RUIXMLElement *)selfCopy attributes];
   sub_21BA87BCC();
 
   v4 = sub_21BA87BBC();
@@ -46,13 +46,13 @@
   return v4;
 }
 
-- (void)setAttributtes:(id)a3
+- (void)setAttributtes:(id)attributtes
 {
   sub_21BA87BCC();
-  v5 = self;
+  selfCopy = self;
   v4 = sub_21BA87BBC();
 
-  [(RUIXMLElement *)v5 setAttributes:v4];
+  [(RUIXMLElement *)selfCopy setAttributes:v4];
 }
 
 - (NSDictionary)attributes
@@ -64,7 +64,7 @@
   return v2;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v4 = sub_21BA87BCC();
   v5 = OBJC_IVAR___RUIXMLElement_attributes;
@@ -98,9 +98,9 @@
   return v3;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v4 = sub_21BA87CBC();
     v6 = v5;
@@ -128,18 +128,18 @@
   return v3;
 }
 
-- (RUIXMLElement)initWithName:(id)a3
+- (RUIXMLElement)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   sub_21BA48270(MEMORY[0x277D84F90]);
   v5 = sub_21BA87BBC();
 
-  v6 = [(RUIXMLElement *)self initWithName:v4 attributes:v5];
+  v6 = [(RUIXMLElement *)self initWithName:nameCopy attributes:v5];
 
   return v6;
 }
 
-- (RUIXMLElement)initWithName:(id)a3 attributes:(id)a4
+- (RUIXMLElement)initWithName:(id)name attributes:(id)attributes
 {
   v5 = sub_21BA87CBC();
   v7 = v6;
@@ -158,19 +158,19 @@
   return [(RUIXMLElement *)&v12 init];
 }
 
-- (void)appendChildren:(id)a3
+- (void)appendChildren:(id)children
 {
   type metadata accessor for RUIXMLElement(self);
   v4 = sub_21BA87F0C();
-  v5 = self;
+  selfCopy = self;
   RUIXMLElement.appendChildren(_:)(v4);
 }
 
-- (void)appendChild:(id)a3
+- (void)appendChild:(id)child
 {
-  v4 = a3;
-  v5 = self;
-  RUIXMLElement.appendChild(_:)(v4);
+  childCopy = child;
+  selfCopy = self;
+  RUIXMLElement.appendChild(_:)(childCopy);
 }
 
 - (RUIXMLElement)init
@@ -182,8 +182,8 @@
 
 - (NSString)xmlString
 {
-  v2 = self;
-  sub_21BA64A9C(v2);
+  selfCopy = self;
+  sub_21BA64A9C(selfCopy);
 
   v3 = sub_21BA87C8C();
 

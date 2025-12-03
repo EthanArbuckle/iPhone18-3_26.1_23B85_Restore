@@ -1,14 +1,14 @@
 @interface ADImageDimensions
-+ (id)imageDimensionsWithWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)imageDimensionsWithWidth:(unint64_t)width height:(unint64_t)height;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ADImageDimensions
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -18,12 +18,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ADImageDimensions *)self width];
-      if (v6 == [(ADImageDimensions *)v5 width])
+      v5 = equalCopy;
+      width = [(ADImageDimensions *)self width];
+      if (width == [(ADImageDimensions *)v5 width])
       {
-        v7 = [(ADImageDimensions *)self height];
-        v8 = v7 == [(ADImageDimensions *)v5 height];
+        height = [(ADImageDimensions *)self height];
+        v8 = height == [(ADImageDimensions *)v5 height];
       }
 
       else
@@ -41,11 +41,11 @@
   return v8;
 }
 
-+ (id)imageDimensionsWithWidth:(unint64_t)a3 height:(unint64_t)a4
++ (id)imageDimensionsWithWidth:(unint64_t)width height:(unint64_t)height
 {
   v6 = objc_alloc_init(ADImageDimensions);
-  [(ADImageDimensions *)v6 setWidth:a3];
-  [(ADImageDimensions *)v6 setHeight:a4];
+  [(ADImageDimensions *)v6 setWidth:width];
+  [(ADImageDimensions *)v6 setHeight:height];
 
   return v6;
 }

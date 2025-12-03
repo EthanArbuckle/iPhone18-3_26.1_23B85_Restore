@@ -2,7 +2,7 @@
 - (CGRect)videoRect;
 - (ETMessageVideoCompositor)init;
 - (void)dealloc;
-- (void)startVideoCompositionRequest:(id)a3;
+- (void)startVideoCompositionRequest:(id)request;
 @end
 
 @implementation ETMessageVideoCompositor
@@ -52,24 +52,24 @@
   [(ETMessageVideoCompositor *)&v4 dealloc];
 }
 
-- (void)startVideoCompositionRequest:(id)a3
+- (void)startVideoCompositionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 sourceFrameByTrackID:self->_videoTrackID];
+  requestCopy = request;
+  v5 = [requestCopy sourceFrameByTrackID:self->_videoTrackID];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 renderContext];
-    v8 = [v7 newPixelBuffer];
+    renderContext = [requestCopy renderContext];
+    newPixelBuffer = [renderContext newPixelBuffer];
 
-    if (v8)
+    if (newPixelBuffer)
     {
-      CVBufferSetAttachment(v8, kCVImageBufferICCProfileKey, self->_colorProfileData, kCVAttachmentMode_ShouldPropagate);
-      if (!CVPixelBufferLockBaseAddress(v8, 0))
+      CVBufferSetAttachment(newPixelBuffer, kCVImageBufferICCProfileKey, self->_colorProfileData, kCVAttachmentMode_ShouldPropagate);
+      if (!CVPixelBufferLockBaseAddress(newPixelBuffer, 0))
       {
-        if (v4)
+        if (requestCopy)
         {
-          [v4 compositionTime];
+          [requestCopy compositionTime];
         }
 
         else
@@ -78,12 +78,12 @@
         }
 
         Seconds = CMTimeGetSeconds(time);
-        Width = CVPixelBufferGetWidth(v8);
-        Height = CVPixelBufferGetHeight(v8);
+        Width = CVPixelBufferGetWidth(newPixelBuffer);
+        Height = CVPixelBufferGetHeight(newPixelBuffer);
         v12 = Width;
         v13 = Height;
-        BytesPerRow = CVPixelBufferGetBytesPerRow(v8);
-        BaseAddress = CVPixelBufferGetBaseAddress(v8);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(newPixelBuffer);
+        BaseAddress = CVPixelBufferGetBaseAddress(newPixelBuffer);
         v16 = CGBitmapContextCreate(BaseAddress, Width, Height, 8uLL, BytesPerRow, self->_colorspace, 0x2002u);
         v17 = [CIContext contextWithCGContext:v16 options:0];
         v18 = [CIImage imageWithCVPixelBuffer:v6];
@@ -159,12 +159,12 @@
           while (v31);
         }
 
-        CVPixelBufferUnlockBaseAddress(v8, 0);
+        CVPixelBufferUnlockBaseAddress(newPixelBuffer, 0);
         CGContextRelease(v16);
       }
 
-      [v4 finishWithComposedVideoFrame:{v8, v36}];
-      CFRelease(v8);
+      [requestCopy finishWithComposedVideoFrame:{newPixelBuffer, v36}];
+      CFRelease(newPixelBuffer);
     }
   }
 }

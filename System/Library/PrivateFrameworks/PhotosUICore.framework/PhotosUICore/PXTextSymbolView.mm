@@ -1,20 +1,20 @@
 @interface PXTextSymbolView
 - (PXTextSymbolView)init;
-- (PXTextSymbolView)initWithSymbol:(id)a3;
+- (PXTextSymbolView)initWithSymbol:(id)symbol;
 - (void)layoutSubviews;
-- (void)setSymbol:(id)a3;
+- (void)setSymbol:(id)symbol;
 @end
 
 @implementation PXTextSymbolView
 
-- (void)setSymbol:(id)a3
+- (void)setSymbol:(id)symbol
 {
-  if (a3)
+  if (symbol)
   {
-    [(UILabel *)self->_label setText:a3];
+    [(UILabel *)self->_label setText:symbol];
   }
 
-  [(PXTextSymbolView *)self setHidden:a3 == 0];
+  [(PXTextSymbolView *)self setHidden:symbol == 0];
 }
 
 - (void)layoutSubviews
@@ -30,14 +30,14 @@
   [(UILabel *)label setFont:v4];
 }
 
-- (PXTextSymbolView)initWithSymbol:(id)a3
+- (PXTextSymbolView)initWithSymbol:(id)symbol
 {
-  v4 = a3;
+  symbolCopy = symbol;
   v5 = [(PXTextSymbolView *)self init];
   v6 = v5;
   if (v5)
   {
-    [(PXTextSymbolView *)v5 setSymbol:v4];
+    [(PXTextSymbolView *)v5 setSymbol:symbolCopy];
   }
 
   return v6;

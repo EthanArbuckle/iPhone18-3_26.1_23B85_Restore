@@ -1,6 +1,6 @@
 @interface CAMMachineReadableCodeLoggingController
 - (CAMMachineReadableCodeLoggingController)init;
-- (void)logMachineReadableCodeResult:(id)a3 isOfSignificantSize:(BOOL)a4;
+- (void)logMachineReadableCodeResult:(id)result isOfSignificantSize:(BOOL)size;
 - (void)logMachineReadableCodeResultDuringInactiveAppState;
 - (void)resetLoggingState;
 @end
@@ -32,14 +32,14 @@
   }
 }
 
-- (void)logMachineReadableCodeResult:(id)a3 isOfSignificantSize:(BOOL)a4
+- (void)logMachineReadableCodeResult:(id)result isOfSignificantSize:(BOOL)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CAMMachineReadableCodeLoggingController *)self _seenMachineReadableObjectOfAcceptableSize];
-  v8 = [(CAMMachineReadableCodeLoggingController *)self _seenMachineReadableObjectOfUnacceptableSize];
-  if (v4 && !v7)
+  resultCopy = result;
+  _seenMachineReadableObjectOfAcceptableSize = [(CAMMachineReadableCodeLoggingController *)self _seenMachineReadableObjectOfAcceptableSize];
+  _seenMachineReadableObjectOfUnacceptableSize = [(CAMMachineReadableCodeLoggingController *)self _seenMachineReadableObjectOfUnacceptableSize];
+  if (sizeCopy && !_seenMachineReadableObjectOfAcceptableSize)
   {
     v9 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -51,16 +51,16 @@
     [(CAMMachineReadableCodeLoggingController *)self _setSeenMachineReadableObjectOfAcceptableSize:1];
   }
 
-  if (!v4 && !v8)
+  if (!sizeCopy && !_seenMachineReadableObjectOfUnacceptableSize)
   {
     v10 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 underlyingMachineReadableCodeObject];
-      [v11 bounds];
+      underlyingMachineReadableCodeObject = [resultCopy underlyingMachineReadableCodeObject];
+      [underlyingMachineReadableCodeObject bounds];
       v13 = v12;
-      v14 = [v6 underlyingMachineReadableCodeObject];
-      [v14 bounds];
+      underlyingMachineReadableCodeObject2 = [resultCopy underlyingMachineReadableCodeObject];
+      [underlyingMachineReadableCodeObject2 bounds];
       v16 = 134218240;
       v17 = v13;
       v18 = 2048;

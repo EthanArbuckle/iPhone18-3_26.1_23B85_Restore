@@ -1,22 +1,22 @@
 @interface PGFeatureTransformerHelper
-+ (BOOL)validParameters:(id)a3 ofTypes:(id)a4;
++ (BOOL)validParameters:(id)parameters ofTypes:(id)types;
 @end
 
 @implementation PGFeatureTransformerHelper
 
-+ (BOOL)validParameters:(id)a3 ofTypes:(id)a4
++ (BOOL)validParameters:(id)parameters ofTypes:(id)types
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (v7 = [v5 count], v7 == objc_msgSend(v6, "count")))
+  parametersCopy = parameters;
+  typesCopy = types;
+  if (parametersCopy && (v7 = [parametersCopy count], v7 == objc_msgSend(typesCopy, "count")))
   {
-    if ([v5 count])
+    if ([parametersCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:v8];
-        [v6 objectAtIndexedSubscript:v8];
+        v9 = [parametersCopy objectAtIndexedSubscript:v8];
+        [typesCopy objectAtIndexedSubscript:v8];
         isKindOfClass = objc_opt_isKindOfClass();
 
         if ((isKindOfClass & 1) == 0)
@@ -27,7 +27,7 @@
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [parametersCopy count]);
     }
 
     else

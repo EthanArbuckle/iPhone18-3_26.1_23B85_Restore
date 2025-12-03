@@ -1,20 +1,20 @@
 @interface QLPreviewItemStore
-- (BOOL)hasLoadedItemsMatching:(id)a3;
+- (BOOL)hasLoadedItemsMatching:(id)matching;
 - (QLPreviewItemProvider)itemProvider;
 - (QLPreviewItemStore)init;
-- (QLPreviewItemStore)initWithItemsOfDirectoryAtURL:(id)a3;
-- (QLPreviewItemStore)initWithPreviewItems:(id)a3;
+- (QLPreviewItemStore)initWithItemsOfDirectoryAtURL:(id)l;
+- (QLPreviewItemStore)initWithPreviewItems:(id)items;
 - (QLPreviewItemStoreDelegate)delegate;
 - (_NSRange)possibleRange;
-- (id)loadedItemsMatching:(id)a3;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)indexOfPreviewItem:(id)a3;
+- (id)loadedItemsMatching:(id)matching;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)indexOfPreviewItem:(id)item;
 - (void)clearCache;
 - (void)clearItems;
 - (void)dealloc;
-- (void)previewItemAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)reloadWithNumberOfPreviewItems:(unint64_t)a3;
-- (void)resolvedPreviewItemAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4;
+- (void)previewItemAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
+- (void)reloadWithNumberOfPreviewItems:(unint64_t)items;
+- (void)resolvedPreviewItemAtIndex:(unint64_t)index withCompletionHandler:(id)handler;
 @end
 
 @implementation QLPreviewItemStore
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (QLPreviewItemStore)initWithPreviewItems:(id)a3
+- (QLPreviewItemStore)initWithPreviewItems:(id)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v21.receiver = self;
   v21.super_class = QLPreviewItemStore;
   v5 = [(QLPreviewItemStore *)&v21 init];
@@ -45,7 +45,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v8)
   {
@@ -85,20 +85,20 @@
   return v5;
 }
 
-- (QLPreviewItemStore)initWithItemsOfDirectoryAtURL:(id)a3
+- (QLPreviewItemStore)initWithItemsOfDirectoryAtURL:(id)l
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v31.receiver = self;
   v31.super_class = QLPreviewItemStore;
   v23 = [(QLPreviewItemStore *)&v31 init];
-  v24 = v4;
-  v5 = [v4 url];
-  v21 = [v5 startAccessingSecurityScopedResource];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [MEMORY[0x277CBEA60] array];
-  v22 = v6;
-  v8 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:v7 options:22 errorHandler:&__block_literal_global_3];
+  v24 = lCopy;
+  v5 = [lCopy url];
+  startAccessingSecurityScopedResource = [v5 startAccessingSecurityScopedResource];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEA60] array];
+  v22 = defaultManager;
+  v8 = [defaultManager enumeratorAtURL:v5 includingPropertiesForKeys:array options:22 errorHandler:&__block_literal_global_3];
 
   v25 = objc_opt_new();
   v27 = 0u;
@@ -129,8 +129,8 @@
 
         v15 = [MEMORY[0x277CC6438] wrapperWithSecurityScopedURL:v13];
         v16 = [objc_alloc(MEMORY[0x277D43F58]) initWithURLSandboxWrapper:v15];
-        v17 = [v13 relativePath];
-        [v16 setRelativePath:v17];
+        relativePath = [v13 relativePath];
+        [v16 setRelativePath:relativePath];
 
         if ([QLPreviewController canPreviewItem:v16])
         {
@@ -144,7 +144,7 @@
     while (v10);
   }
 
-  if (v21)
+  if (startAccessingSecurityScopedResource)
   {
     [v5 stopAccessingSecurityScopedResource];
   }
@@ -191,17 +191,17 @@ uint64_t __52__QLPreviewItemStore_initWithItemsOfDirectoryAtURL___block_invoke_3
   return v7;
 }
 
-- (void)reloadWithNumberOfPreviewItems:(unint64_t)a3
+- (void)reloadWithNumberOfPreviewItems:(unint64_t)items
 {
   self->_possibleRange.location = 0;
-  self->_possibleRange.length = a3;
+  self->_possibleRange.length = items;
   [(QLPreviewItemStore *)self clearCache];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = QLPreviewItemStore;
@@ -279,9 +279,9 @@ uint64_t __52__QLPreviewItemStore_initWithItemsOfDirectoryAtURL___block_invoke_3
       while (v6);
     }
 
-    v9 = [MEMORY[0x277CCAC18] strongObjectsPointerArray];
+    strongObjectsPointerArray = [MEMORY[0x277CCAC18] strongObjectsPointerArray];
     cache = self->_cache;
-    self->_cache = v9;
+    self->_cache = strongObjectsPointerArray;
 
     [(NSPointerArray *)self->_cache setCount:[(QLPreviewItemStore *)self numberOfItems]];
     v11 = *MEMORY[0x277D85DE8];
@@ -295,9 +295,9 @@ uint64_t __52__QLPreviewItemStore_initWithItemsOfDirectoryAtURL___block_invoke_3
   }
 }
 
-- (BOOL)hasLoadedItemsMatching:(id)a3
+- (BOOL)hasLoadedItemsMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_itemProvider);
 
@@ -311,8 +311,8 @@ uint64_t __52__QLPreviewItemStore_initWithItemsOfDirectoryAtURL___block_invoke_3
       v9 = v8;
       if (v8)
       {
-        v10 = [v8 item];
-        v11 = v4[2](v4, v10);
+        item = [v8 item];
+        v11 = matchingCopy[2](matchingCopy, item);
 
         if (v11)
         {
@@ -340,9 +340,9 @@ LABEL_7:
   return v12;
 }
 
-- (id)loadedItemsMatching:(id)a3
+- (id)loadedItemsMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_itemProvider);
 
@@ -359,13 +359,13 @@ LABEL_7:
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 item];
-          v12 = v4[2](v4, v11);
+          item = [v9 item];
+          v12 = matchingCopy[2](matchingCopy, item);
 
           if (v12)
           {
-            v13 = [v10 item];
-            [v6 addObject:v13];
+            item2 = [v10 item];
+            [v6 addObject:item2];
           }
         }
 
@@ -387,19 +387,19 @@ LABEL_7:
   return v14;
 }
 
-- (void)previewItemAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)previewItemAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_itemProvider);
-  if (WeakRetained && (v8 = WeakRetained, v9 = [(QLPreviewItemStore *)self possibleRange], v11 = v10, v8, a3 >= v9) && a3 - v9 < v11)
+  if (WeakRetained && (v8 = WeakRetained, v9 = [(QLPreviewItemStore *)self possibleRange], v11 = v10, v8, index >= v9) && index - v9 < v11)
   {
-    v12 = v6;
+    v12 = handlerCopy;
     QLRunInMainThread();
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -518,16 +518,16 @@ uint64_t __63__QLPreviewItemStore_previewItemAtIndex_withCompletionHandler___blo
   return [v25 setItem:v24];
 }
 
-- (void)resolvedPreviewItemAtIndex:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)resolvedPreviewItemAtIndex:(unint64_t)index withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__QLPreviewItemStore_resolvedPreviewItemAtIndex_withCompletionHandler___block_invoke;
   v8[3] = &unk_278B57C58;
-  v9 = v6;
-  v7 = v6;
-  [(QLPreviewItemStore *)self previewItemAtIndex:a3 withCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(QLPreviewItemStore *)self previewItemAtIndex:index withCompletionHandler:v8];
 }
 
 void __71__QLPreviewItemStore_resolvedPreviewItemAtIndex_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -572,16 +572,16 @@ void __71__QLPreviewItemStore_resolvedPreviewItemAtIndex_withCompletionHandler__
   (*(*(a1 + 40) + 16))();
 }
 
-- (int64_t)indexOfPreviewItem:(id)a3
+- (int64_t)indexOfPreviewItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(QLPreviewItemStore *)self numberOfItems])
   {
     v5 = 0;
     while (1)
     {
       v6 = [-[NSPointerArray pointerAtIndex:](self->_cache pointerAtIndex:{v5), "item"}];
-      v7 = [v4 isEqual:v6];
+      v7 = [itemCopy isEqual:v6];
 
       if (v7)
       {
@@ -604,9 +604,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v6 = a3;
+  controllerCopy = controller;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -621,7 +621,7 @@ LABEL_5:
   v14 = &v15;
   v8 = v7;
   v13 = v8;
-  [(QLPreviewItemStore *)self previewItemAtIndex:a4 withCompletionHandler:v12];
+  [(QLPreviewItemStore *)self previewItemAtIndex:index withCompletionHandler:v12];
   v9 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v8, v9);
   v10 = v16[5];

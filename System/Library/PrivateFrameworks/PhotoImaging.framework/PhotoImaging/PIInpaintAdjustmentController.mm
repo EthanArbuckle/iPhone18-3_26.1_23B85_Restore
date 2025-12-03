@@ -1,23 +1,23 @@
 @interface PIInpaintAdjustmentController
-- (BOOL)_maskArray:(id)a3 hasSourceWithIdentifier:(id)a4;
-- (BOOL)appendRemovalOperationWithMasks:(id)a3 exclusionMasks:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)deltaFromComposition:(id)a3;
+- (BOOL)_maskArray:(id)array hasSourceWithIdentifier:(id)identifier;
+- (BOOL)appendRemovalOperationWithMasks:(id)masks exclusionMasks:(id)exclusionMasks options:(unint64_t)options error:(id *)error;
+- (id)deltaFromComposition:(id)composition;
 - (unint64_t)operationCount;
-- (void)appendCloneStroke:(id)a3 sourceOffset:(CGPoint)a4 repairEdges:(BOOL)a5;
-- (void)appendOperation:(id)a3;
-- (void)appendStroke:(id)a3 exclusionMasks:(id)a4 options:(unint64_t)a5;
-- (void)applyDelta:(id)a3;
+- (void)appendCloneStroke:(id)stroke sourceOffset:(CGPoint)offset repairEdges:(BOOL)edges;
+- (void)appendOperation:(id)operation;
+- (void)appendStroke:(id)stroke exclusionMasks:(id)masks options:(unint64_t)options;
+- (void)applyDelta:(id)delta;
 - (void)initializeAdjustment;
 @end
 
 @implementation PIInpaintAdjustmentController
 
-- (BOOL)appendRemovalOperationWithMasks:(id)a3 exclusionMasks:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)appendRemovalOperationWithMasks:(id)masks exclusionMasks:(id)exclusionMasks options:(unint64_t)options error:(id *)error
 {
   v98 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (!a6)
+  masksCopy = masks;
+  exclusionMasksCopy = exclusionMasks;
+  if (!error)
   {
     v63 = NUAssertLogger_10117();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -39,8 +39,8 @@
         v71 = dispatch_get_specific(*v65);
         v72 = MEMORY[0x1E696AF00];
         v73 = v71;
-        v74 = [v72 callStackSymbols];
-        v75 = [v74 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v72 callStackSymbols];
+        v75 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v71;
         *&buf[12] = 2114;
@@ -51,8 +51,8 @@
 
     else if (v68)
     {
-      v69 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v70 = [v69 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v70 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v70;
       _os_log_error_impl(&dword_1C7694000, v67, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -61,16 +61,16 @@
     _NUAssertFailHandler();
   }
 
-  v12 = v11;
-  v84 = self;
-  v13 = [(PIAdjustmentController *)self containingComposition];
-  v14 = v13;
-  if (v13)
+  v12 = exclusionMasksCopy;
+  selfCopy = self;
+  containingComposition = [(PIAdjustmentController *)self containingComposition];
+  v14 = containingComposition;
+  if (containingComposition)
   {
-    v15 = [v13 objectForKeyedSubscript:@"inpaintMasks"];
+    v15 = [containingComposition objectForKeyedSubscript:@"inpaintMasks"];
     v16 = [v15 mutableCopy];
     v17 = v16;
-    v77 = a5;
+    optionsCopy = options;
     v78 = v14;
     if (v16)
     {
@@ -84,23 +84,23 @@
 
     v20 = v18;
 
-    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
+    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(masksCopy, "count")}];
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v79 = v10;
-    v22 = v10;
+    v79 = masksCopy;
+    v22 = masksCopy;
     v23 = [v22 countByEnumeratingWithState:&v89 objects:v97 count:16];
     v80 = v12;
     v81 = v21;
     if (v23)
     {
       v24 = v23;
-      v76 = a6;
+      errorCopy = error;
       v25 = 0;
       v82 = *v90;
-      v26 = v84;
+      v26 = selfCopy;
       while (2)
       {
         for (i = 0; i != v24; ++i)
@@ -111,24 +111,24 @@
           }
 
           v28 = *(*(&v89 + 1) + 8 * i);
-          v29 = [v28 identifier];
-          v30 = [(PIInpaintAdjustmentController *)v26 _maskArray:v20 hasSourceWithIdentifier:v29];
+          identifier = [v28 identifier];
+          v30 = [(PIInpaintAdjustmentController *)v26 _maskArray:v20 hasSourceWithIdentifier:identifier];
 
           if (v30)
           {
             v40 = MEMORY[0x1E69B3A48];
-            v41 = [v28 identifier];
-            [v40 invalidError:@"Composition already has a mask with identifier" object:v41];
-            *v76 = v19 = 0;
-            v10 = v79;
+            identifier2 = [v28 identifier];
+            [v40 invalidError:@"Composition already has a mask with identifier" object:identifier2];
+            *errorCopy = v19 = 0;
+            masksCopy = v79;
             v12 = v80;
             v14 = v78;
             goto LABEL_38;
           }
 
           v31 = objc_alloc(MEMORY[0x1E69B3B58]);
-          v32 = [v28 buffer];
-          v33 = [v28 identifier];
+          buffer = [v28 buffer];
+          identifier3 = [v28 identifier];
           if (v28)
           {
             [v28 extent];
@@ -139,18 +139,18 @@
             memset(buf, 0, 32);
           }
 
-          v34 = [v28 scale];
-          v36 = [v31 initWithImageBuffer:v32 identifier:v33 extent:buf scale:{v34, v35}];
+          scale = [v28 scale];
+          v36 = [v31 initWithImageBuffer:buffer identifier:identifier3 extent:buf scale:{scale, v35}];
 
           [v20 addObject:v36];
-          v37 = [v28 identifier];
-          [v21 addObject:v37];
+          identifier4 = [v28 identifier];
+          [v21 addObject:identifier4];
 
-          v38 = [v28 identifier];
-          LOBYTE(v37) = [PIObjectRemoval maskIdentifierIsDeclutter:v38];
+          identifier5 = [v28 identifier];
+          LOBYTE(identifier4) = [PIObjectRemoval maskIdentifierIsDeclutter:identifier5];
 
-          v25 |= v37;
-          v26 = v84;
+          v25 |= identifier4;
+          v26 = selfCopy;
         }
 
         v24 = [v22 countByEnumeratingWithState:&v89 objects:v97 count:16];
@@ -175,7 +175,7 @@
     else
     {
       v83 = @"ObjectRemoval";
-      v26 = v84;
+      v26 = selfCopy;
     }
 
     v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
@@ -199,14 +199,14 @@
           }
 
           v47 = *(*(&v85 + 1) + 8 * j);
-          v48 = [v47 identifier];
-          v49 = [(PIInpaintAdjustmentController *)v26 _maskArray:v20 hasSourceWithIdentifier:v48];
+          identifier6 = [v47 identifier];
+          v49 = [(PIInpaintAdjustmentController *)v26 _maskArray:v20 hasSourceWithIdentifier:identifier6];
 
           if (!v49)
           {
             v50 = objc_alloc(MEMORY[0x1E69B3B58]);
-            v51 = [v47 buffer];
-            v52 = [v47 identifier];
+            buffer2 = [v47 buffer];
+            identifier7 = [v47 identifier];
             if (v47)
             {
               [v47 extent];
@@ -217,15 +217,15 @@
               memset(buf, 0, 32);
             }
 
-            v53 = [v47 scale];
-            v55 = [v50 initWithImageBuffer:v51 identifier:v52 extent:buf scale:{v53, v54}];
+            scale2 = [v47 scale];
+            v55 = [v50 initWithImageBuffer:buffer2 identifier:identifier7 extent:buf scale:{scale2, v54}];
 
             [v20 addObject:v55];
-            v26 = v84;
+            v26 = selfCopy;
           }
 
-          v56 = [v47 identifier];
-          [v22 addObject:v56];
+          identifier8 = [v47 identifier];
+          [v22 addObject:identifier8];
         }
 
         v44 = [v42 countByEnumeratingWithState:&v85 objects:v95 count:16];
@@ -245,21 +245,21 @@
     v93[3] = @"options";
     v57 = MEMORY[0x1E696AD98];
     v58 = v83;
-    v59 = [v57 numberWithUnsignedInteger:v77];
+    v59 = [v57 numberWithUnsignedInteger:optionsCopy];
     v94[3] = v59;
-    v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:4];
+    identifier2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:4];
 
     if ([v22 count])
     {
-      v60 = [v41 mutableCopy];
+      v60 = [identifier2 mutableCopy];
       [v60 setObject:v22 forKeyedSubscript:@"exclusionMaskIdentifiers"];
       v61 = [v60 copy];
 
-      v41 = v61;
+      identifier2 = v61;
     }
 
-    v10 = v79;
-    [(PIInpaintAdjustmentController *)v84 appendOperation:v41];
+    masksCopy = v79;
+    [(PIInpaintAdjustmentController *)selfCopy appendOperation:identifier2];
     v19 = 1;
     v12 = v80;
 LABEL_38:
@@ -268,22 +268,22 @@ LABEL_38:
   else
   {
     [MEMORY[0x1E69B3A48] invalidError:@"Internal composition not set" object:0];
-    *a6 = v19 = 0;
+    *error = v19 = 0;
   }
 
   return v19;
 }
 
-- (BOOL)_maskArray:(id)a3 hasSourceWithIdentifier:(id)a4
+- (BOOL)_maskArray:(id)array hasSourceWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -297,8 +297,8 @@ LABEL_38:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) maskIdentifier];
-        v12 = [v11 isEqualToString:v6];
+        maskIdentifier = [*(*(&v14 + 1) + 8 * i) maskIdentifier];
+        v12 = [maskIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -322,13 +322,13 @@ LABEL_11:
   return v8;
 }
 
-- (void)appendCloneStroke:(id)a3 sourceOffset:(CGPoint)a4 repairEdges:(BOOL)a5
+- (void)appendCloneStroke:(id)stroke sourceOffset:(CGPoint)offset repairEdges:(BOOL)edges
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  edgesCopy = edges;
+  y = offset.y;
+  x = offset.x;
   v17[2] = *MEMORY[0x1E69E9840];
-  v9 = [MEMORY[0x1E69B3980] dictionaryFromBrushStroke:a3];
+  v9 = [MEMORY[0x1E69B3980] dictionaryFromBrushStroke:stroke];
   v10 = [v9 mutableCopy];
 
   v11 = kRepairModeClone;
@@ -343,7 +343,7 @@ LABEL_11:
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   [v10 setObject:v14 forKeyedSubscript:@"sourceOffset"];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:edgesCopy];
   [v10 setObject:v15 forKeyedSubscript:@"repairEdges"];
 
   [v10 setObject:0 forKeyedSubscript:@"clipRect"];
@@ -351,23 +351,23 @@ LABEL_11:
   [(PIInpaintAdjustmentController *)self appendOperation:v10];
 }
 
-- (void)appendStroke:(id)a3 exclusionMasks:(id)a4 options:(unint64_t)a5
+- (void)appendStroke:(id)stroke exclusionMasks:(id)masks options:(unint64_t)options
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [MEMORY[0x1E69B3980] dictionaryFromBrushStroke:a3];
+  masksCopy = masks;
+  v9 = [MEMORY[0x1E69B3980] dictionaryFromBrushStroke:stroke];
   v10 = [v9 mutableCopy];
 
   [v10 setObject:@"RepairML" forKeyedSubscript:@"mode"];
   [v10 setObject:0 forKeyedSubscript:@"clipRect"];
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   [v10 setObject:v11 forKeyedSubscript:@"options"];
 
-  if ([v8 count])
+  if ([masksCopy count])
   {
     v34 = v10;
-    v33 = [(PIAdjustmentController *)self containingComposition];
-    v12 = [v33 objectForKeyedSubscript:@"inpaintMasks"];
+    containingComposition = [(PIAdjustmentController *)self containingComposition];
+    v12 = [containingComposition objectForKeyedSubscript:@"inpaintMasks"];
     v13 = [v12 mutableCopy];
     v14 = v13;
     if (v13)
@@ -382,13 +382,13 @@ LABEL_11:
 
     v16 = v15;
 
-    v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(masksCopy, "count")}];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v35 = v8;
-    obj = v8;
+    v35 = masksCopy;
+    obj = masksCopy;
     v18 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v18)
     {
@@ -404,15 +404,15 @@ LABEL_11:
           }
 
           v22 = *(*(&v38 + 1) + 8 * i);
-          v23 = [v22 identifier];
-          v24 = [(PIInpaintAdjustmentController *)self _maskArray:v16 hasSourceWithIdentifier:v23];
+          identifier = [v22 identifier];
+          v24 = [(PIInpaintAdjustmentController *)self _maskArray:v16 hasSourceWithIdentifier:identifier];
 
           if (!v24)
           {
-            v25 = self;
+            selfCopy = self;
             v26 = objc_alloc(MEMORY[0x1E69B3B58]);
-            v27 = [v22 buffer];
-            v28 = [v22 identifier];
+            buffer = [v22 buffer];
+            identifier2 = [v22 identifier];
             if (v22)
             {
               [v22 extent];
@@ -423,15 +423,15 @@ LABEL_11:
               memset(v37, 0, sizeof(v37));
             }
 
-            v29 = [v22 scale];
-            v31 = [v26 initWithImageBuffer:v27 identifier:v28 extent:v37 scale:{v29, v30}];
+            scale = [v22 scale];
+            v31 = [v26 initWithImageBuffer:buffer identifier:identifier2 extent:v37 scale:{scale, v30}];
 
             [v16 addObject:v31];
-            self = v25;
+            self = selfCopy;
           }
 
-          v32 = [v22 identifier];
-          [v17 addObject:v32];
+          identifier3 = [v22 identifier];
+          [v17 addObject:identifier3];
         }
 
         v19 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -440,38 +440,38 @@ LABEL_11:
       while (v19);
     }
 
-    [v33 setObject:v16 forKeyedSubscript:@"inpaintMasks"];
+    [containingComposition setObject:v16 forKeyedSubscript:@"inpaintMasks"];
     v10 = v34;
     [v34 setObject:v17 forKeyedSubscript:@"exclusionMaskIdentifiers"];
 
-    v8 = v35;
+    masksCopy = v35;
   }
 
   [(PIInpaintAdjustmentController *)self appendOperation:v10];
 }
 
-- (void)appendOperation:(id)a3
+- (void)appendOperation:(id)operation
 {
-  v8 = a3;
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [v4 objectForKeyedSubscript:@"operations"];
+  operationCopy = operation;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  array = [adjustment objectForKeyedSubscript:@"operations"];
 
-  if (!v5)
+  if (!array)
   {
-    v5 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     [(PIInpaintAdjustmentController *)self initializeAdjustment];
   }
 
-  v6 = [v5 arrayByAddingObject:v8];
+  v6 = [array arrayByAddingObject:operationCopy];
 
-  v7 = [(PIAdjustmentController *)self adjustment];
-  [v7 setObject:v6 forKeyedSubscript:@"operations"];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
+  [adjustment2 setObject:v6 forKeyedSubscript:@"operations"];
 }
 
 - (unint64_t)operationCount
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"operations"];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"operations"];
 
   v4 = [v3 count];
   return v4;
@@ -479,45 +479,45 @@ LABEL_11:
 
 - (void)initializeAdjustment
 {
-  v3 = [(PIAdjustmentController *)self adjustment];
-  [v3 setObject:&unk_1F471EC88 forKeyedSubscript:@"version"];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:&unk_1F471EC88 forKeyedSubscript:@"version"];
 
   v12 = +[PIModelCatalog shared];
-  v4 = [v12 cleanupVersion];
-  v5 = [(PIAdjustmentController *)self adjustment];
-  [v5 setObject:v4 forKeyedSubscript:@"cleanupVersion"];
+  cleanupVersion = [v12 cleanupVersion];
+  adjustment2 = [(PIAdjustmentController *)self adjustment];
+  [adjustment2 setObject:cleanupVersion forKeyedSubscript:@"cleanupVersion"];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [v12 segmentationModelVersion];
-  [v6 setObject:v7 forKeyedSubscript:@"segmentationVersion"];
+  segmentationModelVersion = [v12 segmentationModelVersion];
+  [v6 setObject:segmentationModelVersion forKeyedSubscript:@"segmentationVersion"];
 
-  v8 = [v12 inpaintModelVersion];
-  [v6 setObject:v8 forKeyedSubscript:@"inpaintVersion"];
+  inpaintModelVersion = [v12 inpaintModelVersion];
+  [v6 setObject:inpaintModelVersion forKeyedSubscript:@"inpaintVersion"];
 
-  v9 = [v12 refinementModelVersion];
-  [v6 setObject:v9 forKeyedSubscript:@"refinementVersion"];
+  refinementModelVersion = [v12 refinementModelVersion];
+  [v6 setObject:refinementModelVersion forKeyedSubscript:@"refinementVersion"];
 
   if ([v6 count])
   {
-    v10 = [(PIAdjustmentController *)self adjustment];
-    [v10 setObject:v6 forKeyedSubscript:@"modelVersionInfo"];
+    adjustment3 = [(PIAdjustmentController *)self adjustment];
+    [adjustment3 setObject:v6 forKeyedSubscript:@"modelVersionInfo"];
   }
 
-  v11 = [(PIAdjustmentController *)self adjustment];
-  [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enabled"];
+  adjustment4 = [(PIAdjustmentController *)self adjustment];
+  [adjustment4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enabled"];
 }
 
-- (void)applyDelta:(id)a3
+- (void)applyDelta:(id)delta
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 masks];
-  v6 = [v5 count];
+  deltaCopy = delta;
+  masks = [deltaCopy masks];
+  v6 = [masks count];
 
   if (v6)
   {
-    v7 = [(PIAdjustmentController *)self containingComposition];
-    v8 = [v7 objectForKeyedSubscript:@"inpaintMasks"];
+    containingComposition = [(PIAdjustmentController *)self containingComposition];
+    v8 = [containingComposition objectForKeyedSubscript:@"inpaintMasks"];
     v9 = v8;
     v10 = MEMORY[0x1E695E0F0];
     if (v8)
@@ -527,18 +527,18 @@ LABEL_11:
 
     v11 = v10;
 
-    v12 = [v4 masks];
-    v13 = [v11 arrayByAddingObjectsFromArray:v12];
+    masks2 = [deltaCopy masks];
+    v13 = [v11 arrayByAddingObjectsFromArray:masks2];
 
-    [v7 setObject:v13 forKeyedSubscript:@"inpaintMasks"];
+    [containingComposition setObject:v13 forKeyedSubscript:@"inpaintMasks"];
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = [v4 operations];
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  operations = [deltaCopy operations];
+  v15 = [operations countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {
     v16 = v15;
@@ -550,33 +550,33 @@ LABEL_11:
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(operations);
         }
 
         [(PIInpaintAdjustmentController *)self appendOperation:*(*(&v19 + 1) + 8 * v18++)];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v16 = [operations countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v16);
   }
 }
 
-- (id)deltaFromComposition:(id)a3
+- (id)deltaFromComposition:(id)composition
 {
-  v4 = a3;
-  v5 = [(PIAdjustmentController *)self adjustment];
-  v6 = [v5 objectForKeyedSubscript:@"operations"];
+  compositionCopy = composition;
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v6 = [adjustment objectForKeyedSubscript:@"operations"];
 
-  v7 = [(PIAdjustmentController *)self containingComposition];
-  v8 = [v7 objectForKeyedSubscript:@"inpaintMasks"];
+  containingComposition = [(PIAdjustmentController *)self containingComposition];
+  v8 = [containingComposition objectForKeyedSubscript:@"inpaintMasks"];
 
-  v9 = [v4 objectForKeyedSubscript:@"inpaint"];
+  v9 = [compositionCopy objectForKeyedSubscript:@"inpaint"];
   v10 = [v9 objectForKeyedSubscript:@"operations"];
 
-  v11 = [v4 objectForKeyedSubscript:@"inpaintMasks"];
+  v11 = [compositionCopy objectForKeyedSubscript:@"inpaintMasks"];
 
   v12 = [v6 count];
   if (v12 <= [v10 count])

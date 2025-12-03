@@ -3,21 +3,21 @@
 - (id)_findTableView;
 - (id)_progressView;
 - (void)_createProgressViewIfNeeded;
-- (void)_setProgressViewHidden:(BOOL)a3;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
+- (void)_setProgressViewHidden:(BOOL)hidden;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setObservingProgress:(id)a3;
-- (void)setSelectionAction:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setObservingProgress:(id)progress;
+- (void)setSelectionAction:(id)action;
 @end
 
 @implementation MapsDebugActionTableRow
 
-- (void)setSelectionAction:(id)a3
+- (void)setSelectionAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
     objc_initWeak(&location, self);
     v6[0] = _NSConcreteStackBlock;
@@ -25,7 +25,7 @@
     v6[2] = sub_100A83628;
     v6[3] = &unk_101660648;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = actionCopy;
     v5.receiver = self;
     v5.super_class = MapsDebugActionTableRow;
     [(MapsDebugTableRow *)&v5 setSelectionAction:v6];
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_observingProgress == a4)
+  if (self->_observingProgress == object)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -58,39 +58,39 @@
   {
     v6.receiver = self;
     v6.super_class = MapsDebugActionTableRow;
-    [MapsDebugActionTableRow observeValueForKeyPath:"observeValueForKeyPath:ofObject:change:context:" ofObject:a3 change:? context:?];
+    [MapsDebugActionTableRow observeValueForKeyPath:"observeValueForKeyPath:ofObject:change:context:" ofObject:path change:? context:?];
   }
 }
 
 - (id)_progressView
 {
-  v3 = [(MapsDebugTableRow *)self currentCell];
+  currentCell = [(MapsDebugTableRow *)self currentCell];
 
-  if (v3)
+  if (currentCell)
   {
-    v4 = [(MapsDebugTableRow *)self currentCell];
-    v5 = [v4 accessoryView];
+    currentCell2 = [(MapsDebugTableRow *)self currentCell];
+    accessoryView = [currentCell2 accessoryView];
   }
 
   else
   {
-    v5 = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    accessoryView = [(MapsDebugTableRow *)self currentCollectionViewCell];
 
-    if (!v5)
+    if (!accessoryView)
     {
       goto LABEL_6;
     }
 
-    v4 = [(MapsDebugTableRow *)self currentCollectionViewCell];
-    v6 = [v4 trailingAccessoryConfigurations];
-    v7 = [v6 firstObject];
+    currentCell2 = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    trailingAccessoryConfigurations = [currentCell2 trailingAccessoryConfigurations];
+    firstObject = [trailingAccessoryConfigurations firstObject];
 
-    v5 = [v7 customView];
+    accessoryView = [firstObject customView];
   }
 
 LABEL_6:
 
-  return v5;
+  return accessoryView;
 }
 
 - (BOOL)_showingProgressView
@@ -98,22 +98,22 @@ LABEL_6:
   result = 0;
   if (self->_progressView)
   {
-    v3 = [(MapsDebugTableRow *)self currentCell];
-    if (v3)
+    currentCell = [(MapsDebugTableRow *)self currentCell];
+    if (currentCell)
     {
-      v4 = v3;
-      v5 = [(MapsDebugTableRow *)self currentCell];
-      v6 = [v5 accessoryView];
+      v4 = currentCell;
+      currentCell2 = [(MapsDebugTableRow *)self currentCell];
+      accessoryView = [currentCell2 accessoryView];
       progressView = self->_progressView;
 
-      if (v6 == progressView)
+      if (accessoryView == progressView)
       {
         return 1;
       }
     }
 
-    v8 = [(MapsDebugTableRow *)self currentCollectionViewCell];
-    if (v8)
+    currentCollectionViewCell = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    if (currentCollectionViewCell)
     {
       progressViewAccessory = self->_progressViewAccessory;
 
@@ -137,17 +137,17 @@ LABEL_6:
   }
 }
 
-- (void)_setProgressViewHidden:(BOOL)a3
+- (void)_setProgressViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(MapsDebugActionTableRow *)self _showingProgressView];
-  if (v3 && v5)
+  hiddenCopy = hidden;
+  _showingProgressView = [(MapsDebugActionTableRow *)self _showingProgressView];
+  if (hiddenCopy && _showingProgressView)
   {
-    v6 = [(MapsDebugTableRow *)self currentCell];
-    [v6 setAccessoryView:0];
+    currentCell = [(MapsDebugTableRow *)self currentCell];
+    [currentCell setAccessoryView:0];
 
-    v16 = [(MapsDebugTableRow *)self currentCollectionViewCell];
-    [v16 setTrailingAccessoryConfigurations:&__NSArray0__struct];
+    currentCollectionViewCell = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    [currentCollectionViewCell setTrailingAccessoryConfigurations:&__NSArray0__struct];
     progressViewAccessory = self->_progressViewAccessory;
     self->_progressViewAccessory = 0;
 
@@ -156,25 +156,25 @@ LABEL_8:
     return;
   }
 
-  if ((v5 | v3))
+  if ((_showingProgressView | hiddenCopy))
   {
     return;
   }
 
   [(MapsDebugActionTableRow *)self _createProgressViewIfNeeded];
-  v8 = [(MapsDebugTableRow *)self currentCell];
+  currentCell2 = [(MapsDebugTableRow *)self currentCell];
 
-  if (v8)
+  if (currentCell2)
   {
     progressView = self->_progressView;
-    v16 = [(MapsDebugTableRow *)self currentCell];
-    [v16 setAccessoryView:progressView];
+    currentCollectionViewCell = [(MapsDebugTableRow *)self currentCell];
+    [currentCollectionViewCell setAccessoryView:progressView];
     goto LABEL_8;
   }
 
-  v10 = [(MapsDebugTableRow *)self currentCollectionViewCell];
+  currentCollectionViewCell2 = [(MapsDebugTableRow *)self currentCollectionViewCell];
 
-  if (v10)
+  if (currentCollectionViewCell2)
   {
     v11 = [[_UICellAccessoryConfigurationCustomView alloc] initWithCustomView:self->_progressView];
     [v11 setMaintainsFixedSize:1];
@@ -182,18 +182,18 @@ LABEL_8:
     self->_progressViewAccessory = v11;
     v13 = v11;
 
-    v14 = [(MapsDebugTableRow *)self currentCollectionViewCell];
+    currentCollectionViewCell3 = [(MapsDebugTableRow *)self currentCollectionViewCell];
     v17 = v13;
     v15 = [NSArray arrayWithObjects:&v17 count:1];
 
-    [v14 setTrailingAccessoryConfigurations:v15];
+    [currentCollectionViewCell3 setTrailingAccessoryConfigurations:v15];
   }
 }
 
 - (id)_findTableView
 {
-  v2 = [(MapsDebugTableRow *)self currentCell];
-  if (v2)
+  currentCell = [(MapsDebugTableRow *)self currentCell];
+  if (currentCell)
   {
     do
     {
@@ -203,20 +203,20 @@ LABEL_8:
         break;
       }
 
-      v3 = [v2 superview];
+      superview = [currentCell superview];
 
-      v2 = v3;
+      currentCell = superview;
     }
 
-    while (v3);
+    while (superview);
   }
 
-  return v2;
+  return currentCell;
 }
 
-- (void)setObservingProgress:(id)a3
+- (void)setObservingProgress:(id)progress
 {
-  v8 = a3;
+  progressCopy = progress;
   observingProgress = self->_observingProgress;
   if (observingProgress)
   {
@@ -225,7 +225,7 @@ LABEL_8:
     [(NSProgress *)self->_observingProgress removeObserver:self forKeyPath:@"isCancelled"];
   }
 
-  objc_storeStrong(&self->_observingProgress, a3);
+  objc_storeStrong(&self->_observingProgress, progress);
   v6 = self->_observingProgress;
   if (v6)
   {
@@ -243,16 +243,16 @@ LABEL_8:
   [(MapsDebugActionTableRow *)self _setProgressViewHidden:v7];
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = MapsDebugActionTableRow;
-  [(MapsDebugTableRow *)&v10 configureCollectionViewCell:v4];
-  v5 = v4;
-  v6 = [v5 contentConfiguration];
-  v7 = [(MapsDebugTableRow *)self selectionAction];
-  if (v7)
+  [(MapsDebugTableRow *)&v10 configureCollectionViewCell:cellCopy];
+  v5 = cellCopy;
+  contentConfiguration = [v5 contentConfiguration];
+  selectionAction = [(MapsDebugTableRow *)self selectionAction];
+  if (selectionAction)
   {
     +[UIColor _maps_keyColor];
   }
@@ -263,33 +263,33 @@ LABEL_8:
   }
   v8 = ;
 
-  if (v6)
+  if (contentConfiguration)
   {
-    v9 = [v6 textProperties];
-    [v9 setColor:v8];
+    textProperties = [contentConfiguration textProperties];
+    [textProperties setColor:v8];
   }
 
   else
   {
-    v9 = [v5 textLabel];
-    [v9 setTextColor:v8];
+    textProperties = [v5 textLabel];
+    [textProperties setTextColor:v8];
   }
 
-  [v5 setContentConfiguration:v6];
+  [v5 setContentConfiguration:contentConfiguration];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = MapsDebugActionTableRow;
-  [(MapsDebugTableRow *)&v11 configureCell:v4];
-  v5 = [v4 contentConfiguration];
-  v6 = [(MapsDebugActionTableRow *)self isDestructive];
-  v7 = [(MapsDebugTableRow *)self selectionAction];
-  if (v6)
+  [(MapsDebugTableRow *)&v11 configureCell:cellCopy];
+  contentConfiguration = [cellCopy contentConfiguration];
+  isDestructive = [(MapsDebugActionTableRow *)self isDestructive];
+  selectionAction = [(MapsDebugTableRow *)self selectionAction];
+  if (isDestructive)
   {
-    if (v7)
+    if (selectionAction)
     {
       +[UIColor systemRedColor];
     }
@@ -300,7 +300,7 @@ LABEL_8:
     }
   }
 
-  else if (v7)
+  else if (selectionAction)
   {
     +[UIColor _maps_keyColor];
   }
@@ -311,10 +311,10 @@ LABEL_8:
   }
   v8 = ;
   v9 = v8;
-  v10 = [v5 textProperties];
-  [v10 setColor:v9];
+  textProperties = [contentConfiguration textProperties];
+  [textProperties setColor:v9];
 
-  [v4 setContentConfiguration:v5];
+  [cellCopy setContentConfiguration:contentConfiguration];
 }
 
 - (void)dealloc

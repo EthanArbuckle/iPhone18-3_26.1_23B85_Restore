@@ -1,79 +1,79 @@
 @interface NTKSolarFaceView
 - (BOOL)_canEnterInteractiveMode;
-- (BOOL)_solarPathRequiresUpdateForChangedLocation:(id)a3;
-- (CGPoint)_pointOnSolarPathForPercentage:(double)a3;
-- (NTKSolarFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_percentageForWaypoint:(int64_t)a3;
+- (BOOL)_solarPathRequiresUpdateForChangedLocation:(id)location;
+- (CGPoint)_pointOnSolarPathForPercentage:(double)percentage;
+- (NTKSolarFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_percentageForWaypoint:(int64_t)waypoint;
 - (double)_solarDiskRestPercentage;
 - (id)_createSolarBezierPath;
 - (id)_createWaypointView;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_waypointLabelTextForPercentage:(double)a3;
-- (int64_t)_waypointBetweenPreviousOffset:(double)a3 currentOffset:(double)a4;
-- (int64_t)_waypointForPercentage:(double)a3 withSmallThreshold:(double)a4 largeThreshold:(double)a5;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_waypointLabelTextForPercentage:(double)percentage;
+- (int64_t)_waypointBetweenPreviousOffset:(double)offset currentOffset:(double)currentOffset;
+- (int64_t)_waypointForPercentage:(double)percentage withSmallThreshold:(double)threshold largeThreshold:(double)largeThreshold;
 - (void)_adjustUIForBoundsChange;
-- (void)_animateSolarDiskToRestPercentageIfNeededForViewMode:(int64_t)a3;
+- (void)_animateSolarDiskToRestPercentageIfNeededForViewMode:(int64_t)mode;
 - (void)_applyDataMode;
 - (void)_applyShowContentForUnadornedSnapshot;
 - (void)_asyncUpdateLocale;
 - (void)_buttonPressTimerFired;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterSettingViewMode:(int64_t)a3;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_cleanupAfterSettingViewMode:(int64_t)mode;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_disableCrown;
 - (void)_enableCrown;
-- (void)_handleViewModeTapGesture:(id)a3;
-- (void)_interpolateFromViewMode:(int64_t)a3 toViewMode:(int64_t)a4 progress:(double)a5;
+- (void)_handleViewModeTapGesture:(id)gesture;
+- (void)_interpolateFromViewMode:(int64_t)mode toViewMode:(int64_t)viewMode progress:(double)progress;
 - (void)_layoutForegroundContainerView;
-- (void)_layoutHorizonForViewMode:(int64_t)a3;
+- (void)_layoutHorizonForViewMode:(int64_t)mode;
 - (void)_layoutLegacyDateComplication;
-- (void)_layoutSolarDiskViewForViewMode:(int64_t)a3;
-- (void)_layoutSolarPathAndContainerForViewMode:(int64_t)a3;
+- (void)_layoutSolarDiskViewForViewMode:(int64_t)mode;
+- (void)_layoutSolarPathAndContainerForViewMode:(int64_t)mode;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForEditing;
-- (void)_prepareForSettingViewMode:(int64_t)a3;
-- (void)_setSolarBezierPath:(id)a3 animated:(BOOL)a4;
+- (void)_prepareForSettingViewMode:(int64_t)mode;
+- (void)_setSolarBezierPath:(id)path animated:(BOOL)animated;
 - (void)_setupViews;
-- (void)_sharedLocationManagerUpdatedLocation:(id)a3 error:(id)a4;
-- (void)_solarDiskPercentageChanged:(double)a3;
+- (void)_sharedLocationManagerUpdatedLocation:(id)location error:(id)error;
+- (void)_solarDiskPercentageChanged:(double)changed;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
-- (void)_timeZoneChanged:(id)a3;
-- (void)_transitionToViewMode:(int64_t)a3;
+- (void)_timeZoneChanged:(id)changed;
+- (void)_transitionToViewMode:(int64_t)mode;
 - (void)_unloadSnapshotContentViews;
 - (void)_unloadViews;
 - (void)_updateColorCurves;
-- (void)_updateComplicationColorWithPercentage:(double)a3;
+- (void)_updateComplicationColorWithPercentage:(double)percentage;
 - (void)_updateLocale;
 - (void)_updateSolarDiskHaloViewPosition;
-- (void)_updateSolarHaloWithPercentage:(double)a3;
-- (void)_updateSolarHorizonGradientAlphaWithPercentage:(double)a3;
-- (void)_updateSolarHorizonGradientAlphaWithSolarDiskCenter:(CGPoint)a3;
-- (void)_updateSolarHorizonGradientColorWithPercentage:(double)a3;
-- (void)_updateSolarPathForChangedDate:(id)a3 animated:(BOOL)a4;
-- (void)_updateSolarPathForChangedLocation:(id)a3;
-- (void)_updateTimeScrubbingContentForViewMode:(int64_t)a3;
+- (void)_updateSolarHaloWithPercentage:(double)percentage;
+- (void)_updateSolarHorizonGradientAlphaWithPercentage:(double)percentage;
+- (void)_updateSolarHorizonGradientAlphaWithSolarDiskCenter:(CGPoint)center;
+- (void)_updateSolarHorizonGradientColorWithPercentage:(double)percentage;
+- (void)_updateSolarPathForChangedDate:(id)date animated:(BOOL)animated;
+- (void)_updateSolarPathForChangedLocation:(id)location;
+- (void)_updateTimeScrubbingContentForViewMode:(int64_t)mode;
 - (void)_updateWaypoints;
 - (void)_wheelDelayTimerFired;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKSolarFaceView
 
-- (NTKSolarFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSolarFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKSolarFaceView;
-  v9 = [(NTKSolarFaceView *)&v13 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKSolarFaceView *)&v13 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKDigitialUtilitarianFaceViewComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKDigitialUtilitarianFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     faceViewComplicationFactory = v9->_faceViewComplicationFactory;
     v9->_faceViewComplicationFactory = v10;
   }
@@ -110,20 +110,20 @@
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 addObserver:self selector:"_timeZoneChanged:" name:NSSystemTimeZoneDidChangeNotification object:0];
     [v5 addObserver:self selector:"_asyncUpdateLocale" name:NSCurrentLocaleDidChangeNotification object:0];
-    v6 = [(NTKSolarFaceView *)self device];
-    v7 = [v6 pdrDeviceVersion];
+    device = [(NTKSolarFaceView *)self device];
+    pdrDeviceVersion = [device pdrDeviceVersion];
 
-    if (HIWORD(v7) <= 4u)
+    if (HIWORD(pdrDeviceVersion) <= 4u)
     {
       v8 = [NTKDateComplication complicationWithDateStyle:8];
       v9 = [NTKDateComplicationLabel alloc];
-      v10 = [(NTKSolarFaceView *)self device];
-      v11 = [v9 initWithSizeStyle:1 accentType:1 forDevice:v10];
+      device2 = [(NTKSolarFaceView *)self device];
+      v11 = [v9 initWithSizeStyle:1 accentType:1 forDevice:device2];
       dateComplicationLabel = self->_dateComplicationLabel;
       self->_dateComplicationLabel = v11;
 
-      v13 = [(NTKSolarFaceView *)self device];
-      sub_9538(v13, v23);
+      device3 = [(NTKSolarFaceView *)self device];
+      sub_9538(device3, v23);
       v14 = v23[0];
 
       v15 = [CLKFont systemFontOfSize:v14];
@@ -145,8 +145,8 @@
       [(NTKDateComplicationLabel *)self->_dateComplicationLabel setOverrideDateStyle:v18];
       [(NTKSolarFaceView *)self addSubview:self->_dateComplicationLabel];
       v19 = self->_dateComplicationLabel;
-      v20 = [(NTKSolarFaceView *)self device];
-      v21 = [NTKComplicationController DEPRECATEDControllerForComplication:v8 withLegacyDisplay:v19 forDevice:v20];
+      device4 = [(NTKSolarFaceView *)self device];
+      v21 = [NTKComplicationController DEPRECATEDControllerForComplication:v8 withLegacyDisplay:v19 forDevice:device4];
       dateComplicationController = self->_dateComplicationController;
       self->_dateComplicationController = v21;
 
@@ -173,10 +173,10 @@
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 removeObserver:self name:NSSystemTimeZoneDidChangeNotification object:0];
     [v4 removeObserver:self name:NSCurrentLocaleDidChangeNotification object:0];
-    v5 = [(NTKSolarFaceView *)self device];
-    v6 = [v5 pdrDeviceVersion];
+    device = [(NTKSolarFaceView *)self device];
+    pdrDeviceVersion = [device pdrDeviceVersion];
 
-    if (HIWORD(v6) <= 4u)
+    if (HIWORD(pdrDeviceVersion) <= 4u)
     {
       [(NTKDateComplicationLabel *)self->_dateComplicationLabel removeFromSuperview];
       dateComplicationLabel = self->_dateComplicationLabel;
@@ -195,10 +195,10 @@
 - (void)_setupViews
 {
   [(NTKSolarFaceView *)self setClipsToBounds:1];
-  v101 = [(NTKSolarFaceView *)self foregroundContainerView];
+  foregroundContainerView = [(NTKSolarFaceView *)self foregroundContainerView];
   v3 = [NTKSolarTimeModel alloc];
-  v4 = [(NTKSolarFaceView *)self currentDisplayDate];
-  v5 = [v3 initWithReferenceDate:v4 referenceLocation:0];
+  currentDisplayDate = [(NTKSolarFaceView *)self currentDisplayDate];
+  v5 = [v3 initWithReferenceDate:currentDisplayDate referenceLocation:0];
   solarTimeModel = self->_solarTimeModel;
   self->_solarTimeModel = v5;
 
@@ -223,22 +223,22 @@
 
   [(NTKSolarFaceView *)self _updateWaypoints];
   self->_solarDiskOverridePercentage = -1.0;
-  v14 = [(NTKSolarFaceView *)self device];
-  sub_9538(v14, v106);
+  device = [(NTKSolarFaceView *)self device];
+  sub_9538(device, v106);
   v15 = v106[0];
 
   v16 = [CLKFont systemFontOfSize:v15 weight:UIFontWeightSemibold];
-  v17 = [v16 CLKFontWithMonospacedNumbers];
-  v18 = [v17 CLKFontWithAlternativePunctuation];
+  cLKFontWithMonospacedNumbers = [v16 CLKFontWithMonospacedNumbers];
+  cLKFontWithAlternativePunctuation = [cLKFontWithMonospacedNumbers CLKFontWithAlternativePunctuation];
 
-  v99 = v18;
-  [v18 lineHeight];
+  v99 = cLKFontWithAlternativePunctuation;
+  [cLKFontWithAlternativePunctuation lineHeight];
   self->_labelFontLineHeight = v19;
   v20 = +[UIColor blackColor];
   [(NTKSolarFaceView *)self setBackgroundColor:v20];
 
-  v21 = [(NTKSolarFaceView *)self layer];
-  [v21 setAllowsGroupBlending:0];
+  layer = [(NTKSolarFaceView *)self layer];
+  [layer setAllowsGroupBlending:0];
 
   v22 = +[NSMutableSet set];
   animatingReasons = self->_animatingReasons;
@@ -254,8 +254,8 @@
   v31 = +[UIColor blackColor];
   [(UIView *)v30 setBackgroundColor:v31];
 
-  v32 = [(NTKSolarFaceView *)self contentView];
-  [v32 addSubview:self->_solarContentView];
+  contentView = [(NTKSolarFaceView *)self contentView];
+  [contentView addSubview:self->_solarContentView];
 
   v33 = [UIView alloc];
   y = CGRectZero.origin.y;
@@ -267,11 +267,11 @@
 
   [(UIView *)self->_solarPathObjectContainerView setOpaque:0];
   [(UIView *)self->_solarPathObjectContainerView setAlpha:0.75];
-  v39 = [(UIView *)self->_solarPathObjectContainerView layer];
-  [v39 setAllowsGroupOpacity:1];
+  layer2 = [(UIView *)self->_solarPathObjectContainerView layer];
+  [layer2 setAllowsGroupOpacity:1];
 
-  v40 = [(UIView *)self->_solarPathObjectContainerView layer];
-  [v40 setCompositingFilter:kCAFilterScreenBlendMode];
+  layer3 = [(UIView *)self->_solarPathObjectContainerView layer];
+  [layer3 setCompositingFilter:kCAFilterScreenBlendMode];
 
   [(UIView *)self->_solarContentView addSubview:self->_solarPathObjectContainerView];
   v41 = [[NTKBezierPathView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -285,11 +285,11 @@
   [(UIView *)self->_solarPathObjectContainerView addSubview:self->_solarBezierPathView];
   *(self + 368) |= 2u;
   v45 = [NTKSolarDiskView alloc];
-  v46 = [(NTKSolarFaceView *)self device];
-  sub_9538(v46, v104);
+  device2 = [(NTKSolarFaceView *)self device];
+  sub_9538(device2, v104);
   v47 = v105;
-  v48 = [(NTKSolarFaceView *)self device];
-  v49 = [(NTKSolarDiskView *)v45 initWithSize:v48 forDevice:v47];
+  device3 = [(NTKSolarFaceView *)self device];
+  v49 = [(NTKSolarDiskView *)v45 initWithSize:device3 forDevice:v47];
   solarDiskView = self->_solarDiskView;
   self->_solarDiskView = v49;
 
@@ -303,8 +303,8 @@
   solarDiskHaloMaskView = self->_solarDiskHaloMaskView;
   self->_solarDiskHaloMaskView = v53;
 
-  v55 = [(UIView *)self->_solarDiskHaloMaskView layer];
-  [v55 setCompositingFilter:kCAFilterSourceIn];
+  layer4 = [(UIView *)self->_solarDiskHaloMaskView layer];
+  [layer4 setCompositingFilter:kCAFilterSourceIn];
 
   [(UIImageView *)self->_solarDiskHaloView addSubview:self->_solarDiskHaloMaskView];
   v56 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -319,12 +319,12 @@
 
   [(UILabel *)self->_waypointLabel setTextAlignment:1];
   [(UILabel *)self->_waypointLabel setAdjustsFontSizeToFitWidth:1];
-  [(UILabel *)self->_waypointLabel setFont:v18];
+  [(UILabel *)self->_waypointLabel setFont:cLKFontWithAlternativePunctuation];
   v60 = self->_waypointLabel;
   v61 = +[UIColor whiteColor];
   [(UILabel *)v60 setTextColor:v61];
 
-  [v101 addSubview:self->_waypointLabel];
+  [foregroundContainerView addSubview:self->_waypointLabel];
   [(NTKSolarFaceView *)self _updateColorCurves];
   v62 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   horizonView = self->_horizonView;
@@ -346,8 +346,8 @@
   v70 = [NSArray arrayWithObjects:v107 count:3];
   [v66 setColors:v70];
 
-  v71 = [(NTKSolarFaceView *)self device];
-  sub_9538(v71, v102);
+  device4 = [(NTKSolarFaceView *)self device];
+  sub_9538(device4, v102);
   [v66 setFrame:{0.0, 0.0, 0.5, v103}];
 
   [v66 bounds];
@@ -372,8 +372,8 @@
   horizonGradientContainerView = self->_horizonGradientContainerView;
   self->_horizonGradientContainerView = v79;
 
-  v81 = [(UIView *)self->_horizonGradientContainerView layer];
-  [v81 setCompositingFilter:kCAFilterColorDodgeBlendMode];
+  layer5 = [(UIView *)self->_horizonGradientContainerView layer];
+  [layer5 setCompositingFilter:kCAFilterColorDodgeBlendMode];
 
   [(UIView *)self->_horizonGradientContainerView addSubview:self->_horizonGradientView];
   [(UIView *)self->_solarContentView addSubview:self->_horizonGradientContainerView];
@@ -401,7 +401,7 @@
   v91 = +[UIColor whiteColor];
   [(UILabel *)v90 setTextColor:v91];
 
-  [v101 addSubview:self->_overrideDateLabel];
+  [foregroundContainerView addSubview:self->_overrideDateLabel];
   v92 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   scrubLabel = self->_scrubLabel;
   self->_scrubLabel = v92;
@@ -412,7 +412,7 @@
   v95 = +[UIColor whiteColor];
   [(UILabel *)v94 setTextColor:v95];
 
-  [v101 addSubview:self->_scrubLabel];
+  [foregroundContainerView addSubview:self->_scrubLabel];
   [(NTKSolarFaceView *)self _solarDiskRestPercentage];
   v97 = v96;
   [(NTKSolarFaceView *)self _updateSolarHaloWithPercentage:?];
@@ -450,8 +450,8 @@
   [(UILabel *)self->_overrideDateLabel removeFromSuperview];
   [(UILabel *)self->_scrubLabel removeFromSuperview];
   [(UIView *)self->_solarContentView removeFromSuperview];
-  v6 = [(NSDictionary *)self->_waypointViews allValues];
-  [v6 makeObjectsPerformSelector:"removeFromSuperview"];
+  allValues = [(NSDictionary *)self->_waypointViews allValues];
+  [allValues makeObjectsPerformSelector:"removeFromSuperview"];
 
   horizonGradientView = self->_horizonGradientView;
   self->_horizonGradientView = 0;
@@ -492,8 +492,8 @@
 
 - (void)_applyShowContentForUnadornedSnapshot
 {
-  v3 = [(NTKSolarFaceView *)self timeView];
-  [v3 setHidden:{-[NTKSolarFaceView showContentForUnadornedSnapshot](self, "showContentForUnadornedSnapshot")}];
+  timeView = [(NTKSolarFaceView *)self timeView];
+  [timeView setHidden:{-[NTKSolarFaceView showContentForUnadornedSnapshot](self, "showContentForUnadornedSnapshot")}];
 }
 
 - (void)layoutSubviews
@@ -507,33 +507,33 @@
     [(UIView *)self->_solarContentView setBounds:?];
     if ((*(self + 368) & 2) != 0)
     {
-      v3 = [(NTKSolarFaceView *)self _createSolarBezierPath];
-      [(NTKSolarFaceView *)self _setSolarBezierPath:v3 animated:0];
+      _createSolarBezierPath = [(NTKSolarFaceView *)self _createSolarBezierPath];
+      [(NTKSolarFaceView *)self _setSolarBezierPath:_createSolarBezierPath animated:0];
 
       *(self + 368) &= ~2u;
     }
 
-    v4 = [(NTKSolarFaceView *)self viewMode];
+    viewMode = [(NTKSolarFaceView *)self viewMode];
     [(NTKSolarFaceView *)self _layoutLegacyDateComplication];
-    [(NTKSolarFaceView *)self _layoutHorizonForViewMode:v4];
-    [(NTKSolarFaceView *)self _layoutSolarPathAndContainerForViewMode:v4];
-    [(NTKSolarFaceView *)self _layoutSolarDiskViewForViewMode:v4];
+    [(NTKSolarFaceView *)self _layoutHorizonForViewMode:viewMode];
+    [(NTKSolarFaceView *)self _layoutSolarPathAndContainerForViewMode:viewMode];
+    [(NTKSolarFaceView *)self _layoutSolarDiskViewForViewMode:viewMode];
     [(NTKSolarFaceView *)self _updateWaypointLabelForCrownMovement];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   digitalTimeLabelDefaultStyle = self->_digitalTimeLabelDefaultStyle;
   self->_digitalTimeLabelDefaultStyle = 0;
-  v5 = a3;
+  changeCopy = change;
 
   digitalTimeLabelSmallInUpperRightCornerStyle = self->_digitalTimeLabelSmallInUpperRightCornerStyle;
   self->_digitalTimeLabelSmallInUpperRightCornerStyle = 0;
 
   v7.receiver = self;
   v7.super_class = NTKSolarFaceView;
-  [(NTKSolarFaceView *)&v7 traitCollectionDidChange:v5];
+  [(NTKSolarFaceView *)&v7 traitCollectionDidChange:changeCopy];
 }
 
 - (void)_enableCrown
@@ -571,17 +571,17 @@
   _objc_release_x1();
 }
 
-- (void)_updateTimeScrubbingContentForViewMode:(int64_t)a3
+- (void)_updateTimeScrubbingContentForViewMode:(int64_t)mode
 {
-  v5 = [(NTKSolarFaceView *)self _isAnimating];
-  if (a3 == 2 && (v5 & 1) == 0)
+  _isAnimating = [(NTKSolarFaceView *)self _isAnimating];
+  if (mode == 2 && (_isAnimating & 1) == 0)
   {
     [(NTKSolarFaceView *)self _solarDiskRestPercentage];
     v7 = v6;
     v38 = +[NSCalendar currentCalendar];
     [(NTKSolarTimeModel *)self->_solarTimeModel effectiveSolarDayLength];
     v9 = v7 * v8;
-    v10 = [(NTKSolarTimeModel *)self->_solarTimeModel startDateForReferenceDate];
+    startDateForReferenceDate = [(NTKSolarTimeModel *)self->_solarTimeModel startDateForReferenceDate];
     v11 = NTKRoundDateDownToNearestMinute();
 
     v12 = +[NTKDate faceDate];
@@ -612,10 +612,10 @@
       v18 = v20;
     }
 
-    v21 = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory foregroundColor];
+    foregroundColor = [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory foregroundColor];
     v36 = v18;
     [(UILabel *)self->_overrideDateLabel setText:v18];
-    [(UILabel *)self->_overrideDateLabel setTextColor:v21];
+    [(UILabel *)self->_overrideDateLabel setTextColor:foregroundColor];
     [(UILabel *)self->_overrideDateLabel sizeToFit];
     scrubLabel = self->_scrubLabel;
     v37 = v13;
@@ -658,9 +658,9 @@
     v32 = [NSString stringWithFormat:@"%@%@%@", v31, v29, v25];
 
     [(UILabel *)scrubLabel setText:v32];
-    [(UILabel *)self->_scrubLabel setTextColor:v21];
+    [(UILabel *)self->_scrubLabel setTextColor:foregroundColor];
     [(UILabel *)self->_scrubLabel sizeToFit];
-    [(UILabel *)self->_waypointLabel setTextColor:v21];
+    [(UILabel *)self->_waypointLabel setTextColor:foregroundColor];
     [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodForDate:v15];
     v34 = fmin(fmax(v33, 0.0), 1.0);
     [(NTKSolarFaceView *)self _solarDiskPercentageChanged:v34];
@@ -708,10 +708,10 @@
     return;
   }
 
-  v3 = [(NTKSolarFaceView *)self dataMode];
-  if (v3 <= 2)
+  dataMode = [(NTKSolarFaceView *)self dataMode];
+  if (dataMode <= 2)
   {
-    if (v3 == (&dword_0 + 1))
+    if (dataMode == (&dword_0 + 1))
     {
 LABEL_17:
       [(NTKSolarFaceView *)self _setViewMode:0 animated:0];
@@ -720,7 +720,7 @@ LABEL_17:
       return;
     }
 
-    if (v3 != (&dword_0 + 2))
+    if (dataMode != (&dword_0 + 2))
     {
       return;
     }
@@ -728,11 +728,11 @@ LABEL_17:
 
   else
   {
-    if (v3 != (&dword_0 + 3))
+    if (dataMode != (&dword_0 + 3))
     {
-      if (v3 != (&dword_4 + 1))
+      if (dataMode != (&dword_4 + 1))
       {
-        if (v3 == &dword_4)
+        if (dataMode == &dword_4)
         {
           [(NTKSolarFaceView *)self _solarDiskRestPercentage];
 
@@ -753,18 +753,18 @@ LABEL_17:
   [(NTKSolarFaceView *)self _stopClockUpdates];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = NTKSolarFaceView;
-  [(NTKSolarFaceView *)&v10 setOverrideDate:v6 duration:a4];
+  [(NTKSolarFaceView *)&v10 setOverrideDate:dateCopy duration:duration];
   if (*(self + 368))
   {
     currentSolarDiskPercentage = self->_currentSolarDiskPercentage;
-    if (v6)
+    if (dateCopy)
     {
-      [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodInCurrentSolarDayForDate:v6];
+      [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodInCurrentSolarDayForDate:dateCopy];
     }
 
     else
@@ -773,7 +773,7 @@ LABEL_17:
     }
 
     v9 = v8;
-    if (a4 <= 0.0)
+    if (duration <= 0.0)
     {
       if (![(NTKSolarFaceView *)self _isAnimating])
       {
@@ -788,29 +788,29 @@ LABEL_17:
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  v4 = [(NTKSolarFaceView *)self timeView];
-  [v4 setTimeOffset:a3];
+  timeView = [(NTKSolarFaceView *)self timeView];
+  [timeView setTimeOffset:offset];
 }
 
-- (void)_sharedLocationManagerUpdatedLocation:(id)a3 error:(id)a4
+- (void)_sharedLocationManagerUpdatedLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  errorCopy = error;
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138478083;
-    v13 = v6;
+    v13 = locationCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Solar _sharedLocationManagerUpdatedLocation with location:%{private}@ and error:%@", &v12, 0x16u);
   }
 
   if (self->_usingInitialLocation)
   {
-    if (!v6)
+    if (!locationCopy)
     {
       goto LABEL_12;
     }
@@ -818,11 +818,11 @@ LABEL_17:
     self->_usingInitialLocation = 0;
   }
 
-  *(self + 368) = *(self + 368) & 0xFB | (4 * (v6 != 0));
-  [(NTKSolarTimeModel *)self->_solarTimeModel setUsePlaceholderData:v6 == 0];
-  if (!v6 || ([(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation], (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (v10 = v9, v11 = [(NTKSolarFaceView *)self _solarPathRequiresUpdateForChangedLocation:v6], v10, v11))
+  *(self + 368) = *(self + 368) & 0xFB | (4 * (locationCopy != 0));
+  [(NTKSolarTimeModel *)self->_solarTimeModel setUsePlaceholderData:locationCopy == 0];
+  if (!locationCopy || ([(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation], (v9 = objc_claimAutoreleasedReturnValue()) == 0) || (v10 = v9, v11 = [(NTKSolarFaceView *)self _solarPathRequiresUpdateForChangedLocation:locationCopy], v10, v11))
   {
-    [(NTKSolarFaceView *)self _updateSolarPathForChangedLocation:v6];
+    [(NTKSolarFaceView *)self _updateSolarPathForChangedLocation:locationCopy];
     [(NTKSolarFaceView *)self setNeedsLayout];
   }
 
@@ -834,18 +834,18 @@ LABEL_17:
 LABEL_12:
 }
 
-- (BOOL)_solarPathRequiresUpdateForChangedLocation:(id)a3
+- (BOOL)_solarPathRequiresUpdateForChangedLocation:(id)location
 {
   solarTimeModel = self->_solarTimeModel;
-  v4 = a3;
-  v5 = [(NTKSolarTimeModel *)solarTimeModel referenceLocation];
-  [v5 distanceFromLocation:v4];
+  locationCopy = location;
+  referenceLocation = [(NTKSolarTimeModel *)solarTimeModel referenceLocation];
+  [referenceLocation distanceFromLocation:locationCopy];
   v7 = v6;
 
   return v7 >= 250000.0;
 }
 
-- (void)_timeZoneChanged:(id)a3
+- (void)_timeZoneChanged:(id)changed
 {
   v4 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -896,18 +896,18 @@ LABEL_12:
   [(NSDateFormatter *)self->_overrideDateFormatter setLocalizedDateFormatFromTemplate:v5];
 }
 
-- (void)_handleViewModeTapGesture:(id)a3
+- (void)_handleViewModeTapGesture:(id)gesture
 {
-  if ([a3 state] == &dword_0 + 3 && !-[NTKSolarFaceView _isAnimating](self, "_isAnimating"))
+  if ([gesture state] == &dword_0 + 3 && !-[NTKSolarFaceView _isAnimating](self, "_isAnimating"))
   {
-    v4 = [(NTKSolarFaceView *)self viewMode];
-    if (v4 == &dword_0 + 2)
+    viewMode = [(NTKSolarFaceView *)self viewMode];
+    if (viewMode == &dword_0 + 2)
     {
 
       [(NTKSolarFaceView *)self _setViewMode:0 animated:1];
     }
 
-    else if (!v4)
+    else if (!viewMode)
     {
       [(NTKSolarFaceView *)self _setViewMode:2 animated:1];
 
@@ -922,8 +922,8 @@ LABEL_12:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSDictionary *)self->_waypoints allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSDictionary *)self->_waypoints allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -935,7 +935,7 @@ LABEL_12:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -953,17 +953,17 @@ LABEL_12:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (double)_percentageForWaypoint:(int64_t)a3
+- (double)_percentageForWaypoint:(int64_t)waypoint
 {
   waypoints = self->_waypoints;
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:waypoint];
   v5 = [(NSDictionary *)waypoints objectForKeyedSubscript:v4];
   [v5 percentageThroughPeriodForWaypointDate];
   v7 = v6;
@@ -971,10 +971,10 @@ LABEL_12:
   return v7;
 }
 
-- (int64_t)_waypointForPercentage:(double)a3 withSmallThreshold:(double)a4 largeThreshold:(double)a5
+- (int64_t)_waypointForPercentage:(double)percentage withSmallThreshold:(double)threshold largeThreshold:(double)largeThreshold
 {
-  v6 = 1.0 - a3;
-  if (a3 < a4 || v6 < a4)
+  v6 = 1.0 - percentage;
+  if (percentage < threshold || v6 < threshold)
   {
     return 6;
   }
@@ -983,8 +983,8 @@ LABEL_12:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [(NSDictionary *)self->_waypoints allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  allKeys = [(NSDictionary *)self->_waypoints allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v13)
   {
     v14 = v13;
@@ -996,106 +996,106 @@ LABEL_12:
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
-        v8 = [*(*(&v27 + 1) + 8 * v16) integerValue];
-        [(NTKSolarFaceView *)self _percentageForWaypoint:v8];
-        if (v8 == 5)
+        integerValue = [*(*(&v27 + 1) + 8 * v16) integerValue];
+        [(NTKSolarFaceView *)self _percentageForWaypoint:integerValue];
+        if (integerValue == 5)
         {
-          v18 = a5;
-        }
-
-        else
-        {
-          v18 = a4;
-        }
-
-        if (v8 == 4)
-        {
-          v19 = a5;
+          thresholdCopy3 = largeThreshold;
         }
 
         else
         {
-          v19 = a4;
+          thresholdCopy3 = threshold;
         }
 
-        if (v8 == 4)
+        if (integerValue == 4)
         {
-          v18 = a4;
-        }
-
-        if (v8 == 3)
-        {
-          v19 = a5;
-          v20 = a5;
+          largeThresholdCopy3 = largeThreshold;
         }
 
         else
         {
-          v20 = v18;
+          largeThresholdCopy3 = threshold;
         }
 
-        if (v8 == 2)
+        if (integerValue == 4)
         {
-          v21 = a5;
+          thresholdCopy3 = threshold;
         }
 
-        else
+        if (integerValue == 3)
         {
-          v21 = a4;
-        }
-
-        if (v8 == 1)
-        {
-          v22 = a5;
+          largeThresholdCopy3 = largeThreshold;
+          largeThresholdCopy4 = largeThreshold;
         }
 
         else
         {
-          v22 = a4;
+          largeThresholdCopy4 = thresholdCopy3;
         }
 
-        if (v8 == 1)
+        if (integerValue == 2)
         {
-          v23 = a4;
-        }
-
-        else
-        {
-          v23 = v21;
-        }
-
-        if (v8 <= 2)
-        {
-          v24 = v22;
+          thresholdCopy4 = largeThreshold;
         }
 
         else
         {
-          v24 = v19;
+          thresholdCopy4 = threshold;
         }
 
-        if (v8 <= 2)
+        if (integerValue == 1)
         {
-          v25 = v23;
+          thresholdCopy5 = largeThreshold;
         }
 
         else
         {
-          v25 = v20;
+          thresholdCopy5 = threshold;
         }
 
-        if (v17 <= a3)
+        if (integerValue == 1)
         {
-          if (a3 - v17 <= v25)
+          thresholdCopy6 = threshold;
+        }
+
+        else
+        {
+          thresholdCopy6 = thresholdCopy4;
+        }
+
+        if (integerValue <= 2)
+        {
+          v24 = thresholdCopy5;
+        }
+
+        else
+        {
+          v24 = largeThresholdCopy3;
+        }
+
+        if (integerValue <= 2)
+        {
+          v25 = thresholdCopy6;
+        }
+
+        else
+        {
+          v25 = largeThresholdCopy4;
+        }
+
+        if (v17 <= percentage)
+        {
+          if (percentage - v17 <= v25)
           {
             goto LABEL_45;
           }
         }
 
-        else if (v17 - a3 <= v24)
+        else if (v17 - percentage <= v24)
         {
           goto LABEL_45;
         }
@@ -1104,26 +1104,26 @@ LABEL_12:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v14);
   }
 
-  v8 = -1;
+  integerValue = -1;
 LABEL_45:
 
-  return v8;
+  return integerValue;
 }
 
-- (int64_t)_waypointBetweenPreviousOffset:(double)a3 currentOffset:(double)a4
+- (int64_t)_waypointBetweenPreviousOffset:(double)offset currentOffset:(double)currentOffset
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(NSDictionary *)self->_waypoints allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [(NSDictionary *)self->_waypoints allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1134,31 +1134,31 @@ LABEL_3:
     {
       if (*v18 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
-      v12 = [*(*(&v17 + 1) + 8 * v11) integerValue];
-      [(NTKSolarFaceView *)self _percentageForWaypoint:v12];
-      v14 = v13 <= a3;
-      if (v13 >= a4)
+      integerValue = [*(*(&v17 + 1) + 8 * v11) integerValue];
+      [(NTKSolarFaceView *)self _percentageForWaypoint:integerValue];
+      v14 = v13 <= offset;
+      if (v13 >= currentOffset)
       {
         v14 = 1;
       }
 
-      v15 = v13 <= a4;
-      if (v13 >= a3)
+      v15 = v13 <= currentOffset;
+      if (v13 >= offset)
       {
         v15 = 1;
       }
 
-      if ((!v14 || !v15) && v12 != -1)
+      if ((!v14 || !v15) && integerValue != -1)
       {
         break;
       }
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -1172,27 +1172,27 @@ LABEL_3:
   else
   {
 LABEL_14:
-    v12 = -1;
+    integerValue = -1;
   }
 
-  return v12;
+  return integerValue;
 }
 
-- (id)_waypointLabelTextForPercentage:(double)a3
+- (id)_waypointLabelTextForPercentage:(double)percentage
 {
-  v5 = [(NTKSolarFaceView *)self _waypointForPercentage:a3 withSmallThreshold:0.0005 largeThreshold:0.0005];
+  v5 = [(NTKSolarFaceView *)self _waypointForPercentage:percentage withSmallThreshold:0.0005 largeThreshold:0.0005];
   if (v5 == -1)
   {
-    if (a3 <= 0.5)
+    if (percentage <= 0.5)
     {
       [(NTKSolarFaceView *)self _percentageForWaypoint:1];
       v17 = v16;
       [(NTKSolarFaceView *)self _percentageForWaypoint:2];
       if (v17 != NTKSolarWaypointInvalidPercentage && v18 != NTKSolarWaypointInvalidPercentage)
       {
-        if (v17 <= a3)
+        if (v17 <= percentage)
         {
-          if (v17 < a3 && v18 > a3)
+          if (v17 < percentage && v18 > percentage)
           {
             v6 = @"SOLAR_TWILIGHT_MORNING";
             v7 = @"The time between dawn and sunrise";
@@ -1213,12 +1213,12 @@ LABEL_14:
       [(NTKSolarFaceView *)self _percentageForWaypoint:5];
       if (v9 != NTKSolarWaypointInvalidPercentage && v10 != NTKSolarWaypointInvalidPercentage)
       {
-        if (v9 > a3)
+        if (v9 > percentage)
         {
           goto LABEL_18;
         }
 
-        if (v9 < a3 && v10 > a3)
+        if (v9 < percentage && v10 > percentage)
         {
           v6 = @"SOLAR_TWILIGHT_EVENING";
           v7 = @"The time between sunset and dusk";
@@ -1229,7 +1229,7 @@ LABEL_14:
       }
     }
 
-    [(NTKSolarPath *)self->_solarPath altitudeAtPercentage:a3];
+    [(NTKSolarPath *)self->_solarPath altitudeAtPercentage:percentage];
     if (v20 >= 0.0)
     {
 LABEL_18:
@@ -1249,7 +1249,7 @@ LABEL_20:
     waypoints = self->_waypoints;
     v13 = [NSNumber numberWithInteger:v5];
     v14 = [(NSDictionary *)waypoints objectForKeyedSubscript:v13];
-    v15 = [v14 localizedName];
+    localizedName = [v14 localizedName];
 
     goto LABEL_22;
   }
@@ -1257,10 +1257,10 @@ LABEL_20:
   v6 = @"SOLAR_SOLAR_MIDNIGHT";
   v7 = @"Solar Midnight";
 LABEL_21:
-  v15 = [NTKSolarFaceBundle localizedStringForKey:v6 comment:v7];
+  localizedName = [NTKSolarFaceBundle localizedStringForKey:v6 comment:v7];
 LABEL_22:
 
-  return v15;
+  return localizedName;
 }
 
 - (void)_updateColorCurves
@@ -1395,8 +1395,8 @@ LABEL_22:
   v163 = 0u;
   v161 = 0u;
   memset(v160, 0, sizeof(v160));
-  v82 = [(NTKSolarFaceView *)self device];
-  sub_9538(v82, v160);
+  device = [(NTKSolarFaceView *)self device];
+  sub_9538(device, v160);
 
   v83 = v161;
   v84 = v162;
@@ -1484,17 +1484,17 @@ LABEL_22:
   self->_postNoonComplicationColorCurve = v137;
 }
 
-- (void)_updateSolarHaloWithPercentage:(double)a3
+- (void)_updateSolarHaloWithPercentage:(double)percentage
 {
   [(NTKSolarPath *)self->_solarPath altitudeAtPercentage:?];
-  v6 = sub_6B24(self->_preNoonSolarDiskColorCurve, self->_postNoonSolarDiskColorCurve, a3, v5);
+  v6 = sub_6B24(self->_preNoonSolarDiskColorCurve, self->_postNoonSolarDiskColorCurve, percentage, v5);
   [(UIView *)self->_solarDiskHaloMaskView setBackgroundColor:v6];
   [(UIView *)self->_horizonView frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:a3];
+  [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:percentage];
   v16 = v15;
   v29.origin.x = v8;
   v29.origin.y = v10;
@@ -1504,8 +1504,8 @@ LABEL_22:
   v18 = MinY - v16;
   [(UIView *)self->_belowHorizonView frame];
   v19 = vabdd_f64(MinY, v16) / (CGRectGetHeight(v30) * 0.9);
-  v20 = [(NTKSolarFaceView *)self device];
-  sub_9538(v20, v27);
+  device = [(NTKSolarFaceView *)self device];
+  sub_9538(device, v27);
   v21 = v28;
 
   v22 = 1.0 - v19;
@@ -1536,16 +1536,16 @@ LABEL_22:
   [(UIImageView *)self->_solarDiskHaloView setAlpha:v23];
 }
 
-- (void)_updateSolarHorizonGradientAlphaWithPercentage:(double)a3
+- (void)_updateSolarHorizonGradientAlphaWithPercentage:(double)percentage
 {
-  [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:a3];
+  [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:percentage];
 
   [(NTKSolarFaceView *)self _updateSolarHorizonGradientAlphaWithSolarDiskCenter:?];
 }
 
-- (void)_updateSolarHorizonGradientAlphaWithSolarDiskCenter:(CGPoint)a3
+- (void)_updateSolarHorizonGradientAlphaWithSolarDiskCenter:(CGPoint)center
 {
-  y = a3.y;
+  y = center.y;
   [(UIView *)self->_horizonView frame];
   MinY = CGRectGetMinY(v10);
   v6 = 20.0;
@@ -1560,21 +1560,21 @@ LABEL_22:
   [(UIView *)horizonGradientContainerView setAlpha:v7];
 }
 
-- (void)_updateSolarHorizonGradientColorWithPercentage:(double)a3
+- (void)_updateSolarHorizonGradientColorWithPercentage:(double)percentage
 {
   [(NTKSolarPath *)self->_solarPath altitudeAtPercentage:?];
   v6 = v5;
-  v15 = sub_6B24(self->_preNoonHorizonGradientColorCurve, self->_postNoonHorizonGradientColorCurve, a3, v5);
+  v15 = sub_6B24(self->_preNoonHorizonGradientColorCurve, self->_postNoonHorizonGradientColorCurve, percentage, v5);
   postNoonHorizonHeightCurve = self->_postNoonHorizonHeightCurve;
   v8 = self->_preNoonHorizonHeightCurve;
   v9 = postNoonHorizonHeightCurve;
   v10 = v9;
-  if (a3 <= 0.25)
+  if (percentage <= 0.25)
   {
     v9 = v8;
   }
 
-  else if (a3 < 0.75)
+  else if (percentage < 0.75)
   {
     [(NTKFloatCurve *)v8 floatValueForFraction:v6];
     [(NTKFloatCurve *)v10 floatValueForFraction:v6];
@@ -1585,47 +1585,47 @@ LABEL_22:
   [(NTKFloatCurve *)v9 floatValueForFraction:v6];
 LABEL_6:
 
-  v11 = [(NTKSolarFaceView *)self device];
+  device = [(NTKSolarFaceView *)self device];
   CLKFloorForDevice();
 
   [(UIImageView *)self->_horizonGradientView frame];
   [(UIImageView *)self->_horizonGradientView setFrame:?];
-  v12 = [(UIImageView *)self->_horizonGradientView layer];
-  [v12 displayIfNeeded];
+  layer = [(UIImageView *)self->_horizonGradientView layer];
+  [layer displayIfNeeded];
 
-  v13 = [(UIImageView *)self->_horizonGradientView layer];
+  layer2 = [(UIImageView *)self->_horizonGradientView layer];
   v14 = v15;
-  [v13 setContentsMultiplyColor:{objc_msgSend(v15, "CGColor")}];
+  [layer2 setContentsMultiplyColor:{objc_msgSend(v15, "CGColor")}];
 }
 
-- (void)_updateComplicationColorWithPercentage:(double)a3
+- (void)_updateComplicationColorWithPercentage:(double)percentage
 {
   [(NTKSolarPath *)self->_solarPath altitudeAtPercentage:?];
-  v6 = sub_6B24(self->_preNoonComplicationColorCurve, self->_postNoonComplicationColorCurve, a3, v5);
+  v6 = sub_6B24(self->_preNoonComplicationColorCurve, self->_postNoonComplicationColorCurve, percentage, v5);
   [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory setForegroundColor:v6 faceView:self];
 }
 
 - (double)_solarDiskRestPercentage
 {
   solarTimeModel = self->_solarTimeModel;
-  v3 = [(NTKSolarFaceView *)self currentDisplayDate];
-  [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodInCurrentSolarDayForDate:v3];
+  currentDisplayDate = [(NTKSolarFaceView *)self currentDisplayDate];
+  [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodInCurrentSolarDayForDate:currentDisplayDate];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_solarDiskPercentageChanged:(double)a3
+- (void)_solarDiskPercentageChanged:(double)changed
 {
   [(NTKSolarFaceView *)self _updateSolarHaloWithPercentage:?];
-  [(NTKSolarFaceView *)self _updateSolarHorizonGradientColorWithPercentage:a3];
-  [(NTKSolarFaceView *)self _updateComplicationColorWithPercentage:a3];
-  [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:a3];
+  [(NTKSolarFaceView *)self _updateSolarHorizonGradientColorWithPercentage:changed];
+  [(NTKSolarFaceView *)self _updateComplicationColorWithPercentage:changed];
+  [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:changed];
   v6 = v5;
   v8 = v7;
   [(NTKSolarFaceView *)self _updateSolarHorizonGradientAlphaWithSolarDiskCenter:?];
   [(NTKSolarDiskView *)self->_solarDiskView setCenter:v6, v8];
-  self->_currentSolarDiskPercentage = a3;
+  self->_currentSolarDiskPercentage = changed;
 
   [(NTKSolarFaceView *)self _updateSolarDiskHaloViewPosition];
 }
@@ -1702,9 +1702,9 @@ LABEL_5:
   [(UIImageView *)self->_solarDiskHaloView setCenter:v13, v15];
 }
 
-- (void)_animateSolarDiskToRestPercentageIfNeededForViewMode:(int64_t)a3
+- (void)_animateSolarDiskToRestPercentageIfNeededForViewMode:(int64_t)mode
 {
-  if (a3 != 2)
+  if (mode != 2)
   {
     solarDiskOverridePercentage = self->_solarDiskOverridePercentage;
     if (solarDiskOverridePercentage != -1.0)
@@ -1718,13 +1718,13 @@ LABEL_5:
 
 - (id)_createWaypointView
 {
-  v2 = [(NTKSolarFaceView *)self device];
-  sub_9538(v2, v8);
+  device = [(NTKSolarFaceView *)self device];
+  sub_9538(device, v8);
   v3 = v9;
 
   v4 = [[UIView alloc] initWithFrame:{0.0, 0.0, v3, v3}];
-  v5 = [v4 layer];
-  [v5 setCornerRadius:v3 * 0.5];
+  layer = [v4 layer];
+  [layer setCornerRadius:v3 * 0.5];
 
   v6 = +[UIColor grayColor];
   [v4 setBackgroundColor:v6];
@@ -1734,10 +1734,10 @@ LABEL_5:
   return v4;
 }
 
-- (CGPoint)_pointOnSolarPathForPercentage:(double)a3
+- (CGPoint)_pointOnSolarPathForPercentage:(double)percentage
 {
-  v4 = [(NTKBezierPathView *)self->_solarBezierPathView pointModel];
-  [v4 pointOnPathForHorizontalPercentage:a3];
+  pointModel = [(NTKBezierPathView *)self->_solarBezierPathView pointModel];
+  [pointModel pointOnPathForHorizontalPercentage:percentage];
   v6 = v5;
   v8 = v7;
 
@@ -1748,48 +1748,48 @@ LABEL_5:
   return result;
 }
 
-- (void)_updateSolarPathForChangedLocation:(id)a3
+- (void)_updateSolarPathForChangedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = locationCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Solar _updateSolarPathForChangedLocation with location:%@", &v8, 0xCu);
   }
 
-  v6 = [(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation];
-  [(NTKSolarTimeModel *)self->_solarTimeModel setReferenceLocation:v4];
+  referenceLocation = [(NTKSolarTimeModel *)self->_solarTimeModel referenceLocation];
+  [(NTKSolarTimeModel *)self->_solarTimeModel setReferenceLocation:locationCopy];
   [(NTKSolarFaceView *)self _updateWaypoints];
-  v7 = [(NTKSolarFaceView *)self _createSolarBezierPath];
-  [(NTKSolarFaceView *)self _setSolarBezierPath:v7 animated:v6 != 0];
+  _createSolarBezierPath = [(NTKSolarFaceView *)self _createSolarBezierPath];
+  [(NTKSolarFaceView *)self _setSolarBezierPath:_createSolarBezierPath animated:referenceLocation != 0];
 }
 
-- (void)_updateSolarPathForChangedDate:(id)a3 animated:(BOOL)a4
+- (void)_updateSolarPathForChangedDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  dateCopy = date;
   v7 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.a) = 138412290;
-    *(&buf.a + 4) = v6;
+    *(&buf.a + 4) = dateCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Solar _updateSolarPathForChangedDate with date:%@", &buf, 0xCu);
   }
 
-  v8 = [(NTKSolarTimeModel *)self->_solarTimeModel includesDate:v6];
-  v9 = [(NTKSolarFaceView *)self viewMode];
-  v10 = [(NTKSolarTimeModel *)self->_solarTimeModel endDateForReferenceDate];
-  [v10 timeIntervalSinceDate:v6];
+  v8 = [(NTKSolarTimeModel *)self->_solarTimeModel includesDate:dateCopy];
+  viewMode = [(NTKSolarFaceView *)self viewMode];
+  endDateForReferenceDate = [(NTKSolarTimeModel *)self->_solarTimeModel endDateForReferenceDate];
+  [endDateForReferenceDate timeIntervalSinceDate:dateCopy];
   v12 = v11;
 
-  [(NTKSolarTimeModel *)self->_solarTimeModel updateModelWithDate:v6];
+  [(NTKSolarTimeModel *)self->_solarTimeModel updateModelWithDate:dateCopy];
   if (v8)
   {
-    if (v9 != &dword_0 + 2)
+    if (viewMode != &dword_0 + 2)
     {
-      [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodForDate:v6];
+      [(NTKSolarTimeModel *)self->_solarTimeModel percentageThroughPeriodForDate:dateCopy];
       [(NTKSolarFaceView *)self _solarDiskPercentageChanged:?];
     }
   }
@@ -1797,7 +1797,7 @@ LABEL_5:
   else
   {
     [(NTKSolarFaceView *)self _updateWaypoints];
-    if (v9 == &dword_0 + 2)
+    if (viewMode == &dword_0 + 2)
     {
       *(self + 368) &= ~8u;
     }
@@ -1808,16 +1808,16 @@ LABEL_5:
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(NTKBezierPathView *)self->_solarBezierPathView path];
+    path = [(NTKBezierPathView *)self->_solarBezierPathView path];
     v22 = [[NTKBezierPathView alloc] initWithFrame:{v14, v16, v18, v20}];
-    [v22 setPath:v21];
+    [v22 setPath:path];
     v23 = +[UIColor whiteColor];
     v24 = [v23 colorWithAlphaComponent:0.5];
     [v22 setPathColor:v24];
 
     [(NTKBezierPathView *)self->_solarBezierPathView addSubview:v22];
-    v25 = [(NTKSolarFaceView *)self _createSolarBezierPath];
-    [(NTKSolarFaceView *)self _setSolarBezierPath:v25 animated:0];
+    _createSolarBezierPath = [(NTKSolarFaceView *)self _createSolarBezierPath];
+    [(NTKSolarFaceView *)self _setSolarBezierPath:_createSolarBezierPath animated:0];
 
     [(UIView *)self->_horizonView bounds];
     CGRectGetWidth(v42);
@@ -1864,9 +1864,9 @@ LABEL_5:
     v37 = v28;
     v32 = v30;
     v35 = v32;
-    v36 = v6;
+    v36 = dateCopy;
     v33 = objc_retainBlock(v34);
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:0 delay:v31 options:v33 animations:0.5 completion:0.0];
     }
@@ -1890,14 +1890,14 @@ LABEL_5:
   *&v26.a = *&CGAffineTransformIdentity.a;
   *&v26.c = v11;
   *&v26.tx = *&CGAffineTransformIdentity.tx;
-  v12 = [(NTKSolarFaceView *)self device];
+  device = [(NTKSolarFaceView *)self device];
   NTKDigitalTimeLabelDefaultFrameBottom();
   v14 = v13;
 
   v15 = v14 + 10.0;
   v16 = self->_labelFontLineHeight + 4.0;
-  v17 = [(NTKSolarFaceView *)self device];
-  sub_9538(v17, v24);
+  device2 = [(NTKSolarFaceView *)self device];
+  sub_9538(device2, v24);
   v18 = v25;
 
   CGAffineTransformMakeTranslation(&v26, 0.0, v15);
@@ -1906,29 +1906,29 @@ LABEL_5:
   solarPath = self->_solarPath;
   self->_solarPath = v19;
 
-  v21 = [(NTKSolarPath *)self->_solarPath bezierPath];
+  bezierPath = [(NTKSolarPath *)self->_solarPath bezierPath];
   v23 = v26;
-  [v21 applyTransform:&v23];
+  [bezierPath applyTransform:&v23];
 
-  return v21;
+  return bezierPath;
 }
 
-- (void)_setSolarBezierPath:(id)a3 animated:(BOOL)a4
+- (void)_setSolarBezierPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_waypointViews allValues];
-  [v7 makeObjectsPerformSelector:"removeFromSuperview"];
+  animatedCopy = animated;
+  pathCopy = path;
+  allValues = [(NSDictionary *)self->_waypointViews allValues];
+  [allValues makeObjectsPerformSelector:"removeFromSuperview"];
 
   waypointViews = self->_waypointViews;
   self->_waypointViews = 0;
 
   solarBezierPathView = self->_solarBezierPathView;
   v27 = 144;
-  v28 = v6;
-  if (v4)
+  v28 = pathCopy;
+  if (animatedCopy)
   {
-    [(NTKBezierPathView *)solarBezierPathView animateToPath:v6 duration:0 curve:0.5];
+    [(NTKBezierPathView *)solarBezierPathView animateToPath:pathCopy duration:0 curve:0.5];
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_7EE8;
@@ -1939,7 +1939,7 @@ LABEL_5:
 
   else
   {
-    [(NTKBezierPathView *)solarBezierPathView setPath:v6];
+    [(NTKBezierPathView *)solarBezierPathView setPath:pathCopy];
   }
 
   v10 = objc_opt_new();
@@ -1947,8 +1947,8 @@ LABEL_5:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [(NSDictionary *)self->_waypoints allValues];
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  allValues2 = [(NSDictionary *)self->_waypoints allValues];
+  v12 = [allValues2 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1960,7 +1960,7 @@ LABEL_5:
       {
         if (*v30 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues2);
         }
 
         v17 = *(*(&v29 + 1) + 8 * i);
@@ -1968,21 +1968,21 @@ LABEL_5:
         if (v18 != v15)
         {
           solarTimeModel = self->_solarTimeModel;
-          v20 = [v17 waypointDate];
-          [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:v20];
+          waypointDate = [v17 waypointDate];
+          [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:waypointDate];
           v22 = v21;
 
-          v23 = [(NTKSolarFaceView *)self _createWaypointView];
+          _createWaypointView = [(NTKSolarFaceView *)self _createWaypointView];
           [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:v22];
-          [v23 setCenter:?];
+          [_createWaypointView setCenter:?];
           v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v17 type]);
-          [v10 setObject:v23 forKeyedSubscript:v24];
+          [v10 setObject:_createWaypointView forKeyedSubscript:v24];
 
-          [(UIView *)self->_solarPathObjectContainerView insertSubview:v23 aboveSubview:self->_solarBezierPathView];
+          [(UIView *)self->_solarPathObjectContainerView insertSubview:_createWaypointView aboveSubview:self->_solarBezierPathView];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v13 = [allValues2 countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v13);
@@ -1993,12 +1993,12 @@ LABEL_5:
   *&self->NTKDigitalFaceView_opaque[v27] = v25;
 }
 
-- (void)_transitionToViewMode:(int64_t)a3
+- (void)_transitionToViewMode:(int64_t)mode
 {
   [(NTKSolarFaceView *)self _layoutHorizonForViewMode:?];
-  [(NTKSolarFaceView *)self _layoutSolarPathAndContainerForViewMode:a3];
+  [(NTKSolarFaceView *)self _layoutSolarPathAndContainerForViewMode:mode];
 
-  [(NTKSolarFaceView *)self _layoutSolarDiskViewForViewMode:a3];
+  [(NTKSolarFaceView *)self _layoutSolarDiskViewForViewMode:mode];
 }
 
 - (BOOL)_canEnterInteractiveMode
@@ -2011,7 +2011,7 @@ LABEL_5:
   return [(NTKSolarFaceView *)self _shouldHandleHardwareEvents];
 }
 
-- (void)_interpolateFromViewMode:(int64_t)a3 toViewMode:(int64_t)a4 progress:(double)a5
+- (void)_interpolateFromViewMode:(int64_t)mode toViewMode:(int64_t)viewMode progress:(double)progress
 {
   CLKInterpolateBetweenFloatsClipped();
   v7 = v6;
@@ -2024,8 +2024,8 @@ LABEL_5:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(NSDictionary *)self->_waypointViews allValues];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  allValues = [(NSDictionary *)self->_waypointViews allValues];
+  v9 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2037,7 +2037,7 @@ LABEL_5:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
@@ -2048,7 +2048,7 @@ LABEL_5:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
     }
 
     while (v10);
@@ -2058,20 +2058,20 @@ LABEL_5:
   [(NTKDigitialUtilitarianFaceViewComplicationFactory *)self->_faceViewComplicationFactory setAlpha:self faceView:?];
 }
 
-- (void)_prepareForSettingViewMode:(int64_t)a3
+- (void)_prepareForSettingViewMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     [(NTKSolarFaceView *)self _updateWaypointLabelForCrownMovement];
   }
 }
 
-- (void)_cleanupAfterSettingViewMode:(int64_t)a3
+- (void)_cleanupAfterSettingViewMode:(int64_t)mode
 {
-  [(UITapGestureRecognizer *)self->_viewModeTapGesture setEnabled:a3 != 1];
+  [(UITapGestureRecognizer *)self->_viewModeTapGesture setEnabled:mode != 1];
   if (NTKStarbearEnabled())
   {
-    if (a3 != 2)
+    if (mode != 2)
     {
 LABEL_3:
       [(NTKSolarFaceView *)self _disableCrown];
@@ -2079,14 +2079,14 @@ LABEL_3:
     }
   }
 
-  else if ((a3 | 2) != 2)
+  else if ((mode | 2) != 2)
   {
     goto LABEL_3;
   }
 
   [(NTKSolarFaceView *)self _enableCrown];
 LABEL_6:
-  if (a3 != 2)
+  if (mode != 2)
   {
     self->_solarDiskOverridePercentage = -1.0;
   }
@@ -2096,10 +2096,10 @@ LABEL_6:
 
 - (void)_layoutLegacyDateComplication
 {
-  v3 = [(NTKSolarFaceView *)self device];
-  v4 = [v3 pdrDeviceVersion];
+  device = [(NTKSolarFaceView *)self device];
+  pdrDeviceVersion = [device pdrDeviceVersion];
 
-  if (HIWORD(v4) <= 4u)
+  if (HIWORD(pdrDeviceVersion) <= 4u)
   {
     if (!self->_dateComplicationLayoutRule)
     {
@@ -2108,15 +2108,15 @@ LABEL_6:
       v8 = v7;
       v10 = v9;
       v12 = v11;
-      v13 = [(NTKSolarFaceView *)self device];
-      v14 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v13 forDevice:v6, v8, v10, v12];
+      device2 = [(NTKSolarFaceView *)self device];
+      v14 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:device2 forDevice:v6, v8, v10, v12];
 
-      v15 = [v14 layoutRule];
-      [v15 setHorizontalLayout:0];
+      layoutRule = [v14 layoutRule];
+      [layoutRule setHorizontalLayout:0];
 
-      v16 = [v14 layoutRule];
+      layoutRule2 = [v14 layoutRule];
       dateComplicationLayoutRule = self->_dateComplicationLayoutRule;
-      self->_dateComplicationLayoutRule = v16;
+      self->_dateComplicationLayoutRule = layoutRule2;
     }
 
     [(NTKDateComplicationLabel *)self->_dateComplicationLabel sizeToFit];
@@ -2132,7 +2132,7 @@ LABEL_6:
   }
 }
 
-- (void)_layoutHorizonForViewMode:(int64_t)a3
+- (void)_layoutHorizonForViewMode:(int64_t)mode
 {
   [(NTKSolarFaceView *)self bounds];
   x = v43.origin.x;
@@ -2150,7 +2150,7 @@ LABEL_6:
   v45.size.width = width;
   v45.size.height = height;
   v11 = CGRectGetWidth(v45);
-  if (a3 > 2)
+  if (mode > 2)
   {
     v18 = MidY + -0.5;
     goto LABEL_9;
@@ -2182,8 +2182,8 @@ LABEL_6:
     v17 = v12;
   }
 
-  v20 = [v17 waypointDate];
-  [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:v20];
+  waypointDate = [v17 waypointDate];
+  [(NTKSolarTimeModel *)solarTimeModel percentageThroughPeriodForDate:waypointDate];
   v22 = v21;
 
   [(NTKSolarFaceView *)self _pointOnSolarPathForPercentage:v22];
@@ -2236,7 +2236,7 @@ LABEL_9:
   [(UIView *)belowHorizonView setFrame:0.0, MaxY, v35, v34];
 }
 
-- (void)_layoutSolarPathAndContainerForViewMode:(int64_t)a3
+- (void)_layoutSolarPathAndContainerForViewMode:(int64_t)mode
 {
   solarPathObjectContainerView = self->_solarPathObjectContainerView;
   [(NTKSolarFaceView *)self bounds];
@@ -2244,7 +2244,7 @@ LABEL_9:
   solarBezierPathView = self->_solarBezierPathView;
   [(NTKSolarFaceView *)self bounds];
   [(NTKBezierPathView *)solarBezierPathView setFrame:?];
-  if (a3 <= 2)
+  if (mode <= 2)
   {
     v7 = self->_solarBezierPathView;
     v8 = *&CGAffineTransformIdentity.c;
@@ -2255,12 +2255,12 @@ LABEL_9:
   }
 }
 
-- (void)_layoutSolarDiskViewForViewMode:(int64_t)a3
+- (void)_layoutSolarDiskViewForViewMode:(int64_t)mode
 {
   solarDiskView = self->_solarDiskView;
   [(UIView *)self->_horizonView frame];
   [(NTKSolarDiskView *)solarDiskView setHorizonLine:CGRectGetMinY(v9)];
-  if (a3 == 1)
+  if (mode == 1)
   {
     if ([(NTKSolarFaceView *)self _isAnimating])
     {
@@ -2272,7 +2272,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (!a3 && (![(NTKSolarFaceView *)self _isAnimating]|| self->_previousViewMode == 3))
+  if (!mode && (![(NTKSolarFaceView *)self _isAnimating]|| self->_previousViewMode == 3))
   {
     v6 = self->_solarDiskView;
     [(NTKSolarFaceView *)self _solarDiskRestPercentage];
@@ -2305,17 +2305,17 @@ LABEL_9:
   [(UILabel *)self->_overrideDateLabel frame];
   v13 = v12;
   [(UILabel *)self->_overrideDateLabel setText:*&recta.origin.y];
-  v14 = [(NTKSolarFaceView *)self device];
-  sub_9538(v14, v33);
+  device = [(NTKSolarFaceView *)self device];
+  sub_9538(device, v33);
   v15 = v34;
 
-  v16 = [(NTKSolarFaceView *)self device];
-  sub_9538(v16, &recta.size);
+  device2 = [(NTKSolarFaceView *)self device];
+  sub_9538(device2, &recta.size);
   v17 = v32;
 
   v18 = self->_overrideDateLabel;
-  v19 = [(NTKSolarFaceView *)self timeView];
-  [v19 frame];
+  timeView = [(NTKSolarFaceView *)self timeView];
+  [timeView frame];
   [(UILabel *)v18 setFrame:v17, v15, CGRectGetMinX(v36) - v17 + -8.0, v13];
 
   [(UILabel *)self->_scrubLabel setFrame:v17, v9 - v13 - v15, v7 - v17 * 2.0, v13];
@@ -2325,13 +2325,13 @@ LABEL_9:
   v37.size.width = v7;
   v37.size.height = v9;
   CGRectGetWidth(v37);
-  v21 = [(NTKBezierPathView *)self->_solarBezierPathView path];
-  [v21 bounds];
+  path = [(NTKBezierPathView *)self->_solarBezierPathView path];
+  [path bounds];
   CGRectGetMinY(v38);
   [(NTKSolarDiskView *)self->_solarDiskView bounds];
   CGRectGetHeight(v39);
 
-  v22 = [(NTKSolarFaceView *)self device];
+  device3 = [(NTKSolarFaceView *)self device];
   CLKRectCenteredYInRectForDevice();
   v24 = v23;
   v26 = v25;
@@ -2361,8 +2361,8 @@ LABEL_9:
 {
   if (*(self + 368))
   {
-    v3 = [(NTKSolarFaceView *)self _createSolarBezierPath];
-    [(NTKSolarFaceView *)self _setSolarBezierPath:v3 animated:0];
+    _createSolarBezierPath = [(NTKSolarFaceView *)self _createSolarBezierPath];
+    [(NTKSolarFaceView *)self _setSolarBezierPath:_createSolarBezierPath animated:0];
 
     [(NTKSolarFaceView *)self _layoutHorizonForViewMode:[(NTKSolarFaceView *)self viewMode]];
     [(NTKSolarFaceView *)self _layoutSolarPathAndContainerForViewMode:[(NTKSolarFaceView *)self viewMode]];
@@ -2373,44 +2373,44 @@ LABEL_9:
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   solarContentView = self->_solarContentView;
   CLKInterpolateBetweenFloatsClipped();
   [(UIView *)solarContentView setAlpha:?];
-  v7 = [(NTKSolarFaceView *)self timeView];
+  timeView = [(NTKSolarFaceView *)self timeView];
   CLKInterpolateBetweenFloatsClipped();
-  [v7 setAlpha:?];
+  [timeView setAlpha:?];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   solarContentView = self->_solarContentView;
   v6 = NTKEditModeBackgroundContentAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     v6 = 1.0;
   }
 
   [(UIView *)solarContentView setAlpha:v6];
-  v7 = [(NTKSolarFaceView *)self timeView];
-  v9 = v7;
+  timeView = [(NTKSolarFaceView *)self timeView];
+  v9 = timeView;
   v8 = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     v8 = 1.0;
   }
 
-  [v7 setAlpha:v8];
+  [timeView setAlpha:v8];
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (a3 > 1)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (mode > 1)
   {
     p_digitalTimeLabelSmallInUpperRightCornerStyle = &self->_digitalTimeLabelSmallInUpperRightCornerStyle;
     digitalTimeLabelSmallInUpperRightCornerStyle = self->_digitalTimeLabelSmallInUpperRightCornerStyle;
@@ -2419,8 +2419,8 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v17 = [(NTKSolarFaceView *)self device];
-    sub_9538(v17, v21);
+    device = [(NTKSolarFaceView *)self device];
+    sub_9538(device, v21);
     v18 = v22;
 
     if (v18 > 0.0)
@@ -2436,10 +2436,10 @@ LABEL_9:
       height = v25.size.height;
     }
 
-    v11 = [(NTKSolarFaceView *)self device];
-    v19 = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:v11 weight:x forDevice:y, width, height, UIFontWeightSemibold];
-    v14 = *p_digitalTimeLabelSmallInUpperRightCornerStyle;
-    *p_digitalTimeLabelSmallInUpperRightCornerStyle = v19;
+    device2 = [(NTKSolarFaceView *)self device];
+    uIFontWeightSemibold = [NTKDigitalTimeLabelStyle smallInUpperRightCornerStyleForBounds:device2 weight:x forDevice:y, width, height, UIFontWeightSemibold];
+    device3 = *p_digitalTimeLabelSmallInUpperRightCornerStyle;
+    *p_digitalTimeLabelSmallInUpperRightCornerStyle = uIFontWeightSemibold;
   }
 
   else
@@ -2451,11 +2451,11 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v11 = [(NTKSolarFaceView *)self device];
+    device2 = [(NTKSolarFaceView *)self device];
     NTKDigitalTimeLabelStyleWideRightSideMargin();
     v13 = v12;
-    v14 = [(NTKSolarFaceView *)self device];
-    v15 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v14 applyAdvanceFudge:x forDevice:y, width, height, v13];
+    device3 = [(NTKSolarFaceView *)self device];
+    v15 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:device3 applyAdvanceFudge:x forDevice:y, width, height, v13];
     v16 = *p_digitalTimeLabelSmallInUpperRightCornerStyle;
     *p_digitalTimeLabelSmallInUpperRightCornerStyle = v15;
   }

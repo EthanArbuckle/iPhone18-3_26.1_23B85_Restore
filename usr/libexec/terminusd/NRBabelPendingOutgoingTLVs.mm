@@ -1,12 +1,12 @@
 @interface NRBabelPendingOutgoingTLVs
-- (NRBabelPendingOutgoingTLVs)initWithInterval:(unsigned __int16)a3;
+- (NRBabelPendingOutgoingTLVs)initWithInterval:(unsigned __int16)interval;
 @end
 
 @implementation NRBabelPendingOutgoingTLVs
 
-- (NRBabelPendingOutgoingTLVs)initWithInterval:(unsigned __int16)a3
+- (NRBabelPendingOutgoingTLVs)initWithInterval:(unsigned __int16)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   v15.receiver = self;
   v15.super_class = NRBabelPendingOutgoingTLVs;
   v4 = [(NRBabelPendingOutgoingTLVs *)&v15 init];
@@ -33,8 +33,8 @@
 
   v5 = v4;
   +[NSDate timeIntervalSinceReferenceDate];
-  v5->_minTime = v6 + ((429496730 * (9 * v3)) >> 32) * 0.01;
-  v5->_maxTime = v6 + v3 * 0.01;
+  v5->_minTime = v6 + ((429496730 * (9 * intervalCopy)) >> 32) * 0.01;
+  v5->_maxTime = v6 + intervalCopy * 0.01;
   v7 = objc_alloc_init(NSMutableArray);
   tlvs = v5->_tlvs;
   v5->_tlvs = v7;

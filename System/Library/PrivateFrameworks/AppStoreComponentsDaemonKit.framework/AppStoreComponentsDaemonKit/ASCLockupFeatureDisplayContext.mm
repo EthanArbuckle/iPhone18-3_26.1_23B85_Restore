@@ -1,23 +1,23 @@
 @interface ASCLockupFeatureDisplayContext
-- (ASCLockupFeatureDisplayContext)initWithCoder:(id)a3;
-- (ASCLockupFeatureDisplayContext)initWithDisplayContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureDisplayContext)initWithCoder:(id)coder;
+- (ASCLockupFeatureDisplayContext)initWithDisplayContext:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureDisplayContext
 
-- (ASCLockupFeatureDisplayContext)initWithDisplayContext:(id)a3
+- (ASCLockupFeatureDisplayContext)initWithDisplayContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ASCLockupFeatureDisplayContext;
   v5 = [(ASCLockupFeatureDisplayContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     displayContext = v5->_displayContext;
     v5->_displayContext = v6;
   }
@@ -25,36 +25,36 @@
   return v5;
 }
 
-- (ASCLockupFeatureDisplayContext)initWithCoder:(id)a3
+- (ASCLockupFeatureDisplayContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayContext"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayContext"];
 
   v6 = [(ASCLockupFeatureDisplayContext *)self initWithDisplayContext:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureDisplayContext *)self displayContext];
-  [v4 encodeObject:v5 forKey:@"displayContext"];
+  coderCopy = coder;
+  displayContext = [(ASCLockupFeatureDisplayContext *)self displayContext];
+  [coderCopy encodeObject:displayContext forKey:@"displayContext"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureDisplayContext *)self displayContext];
-  [(ASCHasher *)v3 combineObject:v4];
+  displayContext = [(ASCLockupFeatureDisplayContext *)self displayContext];
+  [(ASCHasher *)v3 combineObject:displayContext];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -62,7 +62,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -85,17 +85,17 @@
 
     if (v8)
     {
-      v9 = [(ASCLockupFeatureDisplayContext *)self displayContext];
-      v10 = [(ASCLockupFeatureDisplayContext *)v8 displayContext];
-      v11 = v10;
-      if (v9 && v10)
+      displayContext = [(ASCLockupFeatureDisplayContext *)self displayContext];
+      displayContext2 = [(ASCLockupFeatureDisplayContext *)v8 displayContext];
+      v11 = displayContext2;
+      if (displayContext && displayContext2)
       {
-        v7 = [v9 isEqual:v10];
+        v7 = [displayContext isEqual:displayContext2];
       }
 
       else
       {
-        v7 = v9 == v10;
+        v7 = displayContext == displayContext2;
       }
     }
 
@@ -111,12 +111,12 @@
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureDisplayContext *)self displayContext];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"displayContext"];
+  displayContext = [(ASCLockupFeatureDisplayContext *)self displayContext];
+  [(ASCDescriber *)v3 addObject:displayContext withName:@"displayContext"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

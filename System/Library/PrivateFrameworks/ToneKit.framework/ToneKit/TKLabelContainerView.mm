@@ -1,64 +1,64 @@
 @interface TKLabelContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TKLabelContainerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TKLabelContainerView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)labelPaddingInsets;
 - (UIOffset)labelShadowOffset;
 - (void)layoutSubviews;
-- (void)setLabelFont:(id)a3;
-- (void)setLabelPaddingInsets:(UIEdgeInsets)a3;
-- (void)setLabelText:(id)a3;
+- (void)setLabelFont:(id)font;
+- (void)setLabelPaddingInsets:(UIEdgeInsets)insets;
+- (void)setLabelText:(id)text;
 @end
 
 @implementation TKLabelContainerView
 
-- (TKLabelContainerView)initWithFrame:(CGRect)a3
+- (TKLabelContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TKLabelContainerView;
-  v3 = [(TKLabelContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TKLabelContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(TKLabelContainerView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TKLabelContainerView *)v3 setBackgroundColor:clearColor];
     v5 = objc_alloc(MEMORY[0x277D756B8]);
     v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     label = v3->_label;
     v3->_label = v6;
 
-    [(UILabel *)v3->_label setBackgroundColor:v4];
+    [(UILabel *)v3->_label setBackgroundColor:clearColor];
     [(TKLabelContainerView *)v3 addSubview:v3->_label];
   }
 
   return v3;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_label text];
+  textCopy = text;
+  text = [(UILabel *)self->_label text];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = textCopy;
+  if (text != textCopy)
   {
-    [(UILabel *)self->_label setText:v6];
+    [(UILabel *)self->_label setText:textCopy];
     [(UILabel *)self->_label sizeToFit];
     [(TKLabelContainerView *)self setNeedsLayout];
-    v5 = v6;
+    v5 = textCopy;
   }
 }
 
-- (void)setLabelFont:(id)a3
+- (void)setLabelFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_label font];
+  fontCopy = font;
+  font = [(UILabel *)self->_label font];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = fontCopy;
+  if (font != fontCopy)
   {
-    [(UILabel *)self->_label setFont:v6];
+    [(UILabel *)self->_label setFont:fontCopy];
     [(UILabel *)self->_label sizeToFit];
     [(TKLabelContainerView *)self setNeedsLayout];
-    v5 = v6;
+    v5 = fontCopy;
   }
 }
 
@@ -70,23 +70,23 @@
   return result;
 }
 
-- (void)setLabelPaddingInsets:(UIEdgeInsets)a3
+- (void)setLabelPaddingInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_labelPaddingInsets.top, v3), vceqq_f64(*&self->_labelPaddingInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_labelPaddingInsets = a3;
+    self->_labelPaddingInsets = insets;
     [(TKLabelContainerView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(TKLabelContainerView *)self labelPaddingInsets:a3.width];
+  width = fits.width;
+  [(TKLabelContainerView *)self labelPaddingInsets:fits.width];
   v6 = v5;
   v8 = v7;
   [(UILabel *)self->_label frame];

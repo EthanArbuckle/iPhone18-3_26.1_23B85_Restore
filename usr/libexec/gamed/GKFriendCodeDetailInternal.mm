@@ -1,26 +1,26 @@
 @interface GKFriendCodeDetailInternal
-- (id)initWithFriendCodeDetail:(id)a3;
+- (id)initWithFriendCodeDetail:(id)detail;
 @end
 
 @implementation GKFriendCodeDetailInternal
 
-- (id)initWithFriendCodeDetail:(id)a3
+- (id)initWithFriendCodeDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   v16.receiver = self;
   v16.super_class = GKFriendCodeDetailInternal;
   v5 = [(GKFriendCodeDetailInternal *)&v16 init];
   if (v5)
   {
-    v6 = [v4 creatorPlayerId];
-    [(GKFriendCodeDetailInternal *)v5 setCreatorPlayerID:v6];
+    creatorPlayerId = [detailCopy creatorPlayerId];
+    [(GKFriendCodeDetailInternal *)v5 setCreatorPlayerID:creatorPlayerId];
 
-    v7 = [v4 friendCodeState];
-    v8 = [&off_100383168 objectForKeyedSubscript:v7];
+    friendCodeState = [detailCopy friendCodeState];
+    v8 = [&off_100383168 objectForKeyedSubscript:friendCodeState];
 
     if (v8)
     {
-      v9 = [&off_100383168 objectForKeyedSubscript:v7];
+      v9 = [&off_100383168 objectForKeyedSubscript:friendCodeState];
       -[GKFriendCodeDetailInternal setFriendCodeState:](v5, "setFriendCodeState:", [v9 integerValue]);
     }
 
@@ -29,18 +29,18 @@
       [(GKFriendCodeDetailInternal *)v5 setFriendCodeState:5];
     }
 
-    v10 = [v4 numUses];
-    -[GKFriendCodeDetailInternal setFriendCodeUsageCount:](v5, "setFriendCodeUsageCount:", [v10 integerValue]);
+    numUses = [detailCopy numUses];
+    -[GKFriendCodeDetailInternal setFriendCodeUsageCount:](v5, "setFriendCodeUsageCount:", [numUses integerValue]);
 
-    v11 = [v4 friendCode];
-    [(GKFriendCodeDetailInternal *)v5 setFriendCode:v11];
+    friendCode = [detailCopy friendCode];
+    [(GKFriendCodeDetailInternal *)v5 setFriendCode:friendCode];
 
-    v12 = [v4 alreadyUsedPlayerIds];
+    alreadyUsedPlayerIds = [detailCopy alreadyUsedPlayerIds];
 
-    if (v12)
+    if (alreadyUsedPlayerIds)
     {
-      v13 = [v4 alreadyUsedPlayerIds];
-      v14 = [v13 componentsSeparatedByString:{@", "}];
+      alreadyUsedPlayerIds2 = [detailCopy alreadyUsedPlayerIds];
+      v14 = [alreadyUsedPlayerIds2 componentsSeparatedByString:{@", "}];
       [(GKFriendCodeDetailInternal *)v5 setAlreadyUsedPlayerIDs:v14];
     }
   }

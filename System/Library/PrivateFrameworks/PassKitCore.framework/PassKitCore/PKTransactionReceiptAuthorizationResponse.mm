@@ -1,27 +1,27 @@
 @interface PKTransactionReceiptAuthorizationResponse
-- (PKTransactionReceiptAuthorizationResponse)initWithData:(id)a3;
+- (PKTransactionReceiptAuthorizationResponse)initWithData:(id)data;
 @end
 
 @implementation PKTransactionReceiptAuthorizationResponse
 
-- (PKTransactionReceiptAuthorizationResponse)initWithData:(id)a3
+- (PKTransactionReceiptAuthorizationResponse)initWithData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = PKTransactionReceiptAuthorizationResponse;
-  v3 = [(PKWebServiceResponse *)&v17 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v17 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"authToken"];
+      v6 = [jSONObject PKStringForKey:@"authToken"];
       authorizationToken = v4->_authorizationToken;
       v4->_authorizationToken = v6;
 
-      v8 = [v5 PKStringForKey:@"signature"];
+      v8 = [jSONObject PKStringForKey:@"signature"];
       v9 = v8;
       if (!v8)
       {
@@ -30,9 +30,9 @@ LABEL_9:
         return v4;
       }
 
-      v10 = [(PKTransactionReceiptAuthorizationResponse *)v8 pk_decodeURLBase64];
+      pk_decodeURLBase64 = [(PKTransactionReceiptAuthorizationResponse *)v8 pk_decodeURLBase64];
       p_super = &v4->_signature->super;
-      v4->_signature = v10;
+      v4->_signature = pk_decodeURLBase64;
     }
 
     else

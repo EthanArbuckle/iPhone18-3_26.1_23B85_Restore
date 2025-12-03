@@ -1,9 +1,9 @@
 @interface VFFuture
-+ (id)_join:(id)a3 ignoreFailures:(BOOL)a4;
-+ (id)futureWithError:(id)a3;
-+ (id)futureWithResult:(id)a3;
++ (id)_join:(id)_join ignoreFailures:(BOOL)failures;
++ (id)futureWithError:(id)error;
++ (id)futureWithResult:(id)result;
 + (id)nullFuture;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)tryCancel;
@@ -14,63 +14,63 @@
 - (id)BOOLErrorCompletionHandlerAdapter;
 - (id)completionHandlerAdapter;
 - (id)errorOnlyCompletionHandlerAdapter;
-- (id)result:(id *)a3;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultIfAvailable:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (void)_addCompletionBlock:(id)a3;
-- (void)_finishWithFuture:(id)a3;
+- (id)result:(id *)result;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultIfAvailable:(id *)available;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (void)_addCompletionBlock:(id)block;
+- (void)_finishWithFuture:(id)future;
 - (void)_flushCompletionBlocks;
-- (void)addFailureBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
+- (void)addFailureBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
 @end
 
 @implementation VFFuture
 
 + (id)nullFuture
 {
-  v3 = [MEMORY[0x277CBEB68] null];
-  v4 = [a1 futureWithResult:v3];
+  null = [MEMORY[0x277CBEB68] null];
+  v4 = [self futureWithResult:null];
 
   return v4;
 }
 
-+ (id)futureWithResult:(id)a3
++ (id)futureWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[VFPromise promise];
-  [v4 finishWithResult:v3];
+  [v4 finishWithResult:resultCopy];
 
-  v5 = [v4 future];
+  future = [v4 future];
 
-  return v5;
+  return future;
 }
 
-+ (id)futureWithError:(id)a3
++ (id)futureWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[VFPromise promise];
-  [v4 finishWithError:v3];
+  [v4 finishWithError:errorCopy];
 
-  v5 = [v4 future];
+  future = [v4 future];
 
-  return v5;
+  return future;
 }
 
-+ (id)_join:(id)a3 ignoreFailures:(BOOL)a4
++ (id)_join:(id)_join ignoreFailures:(BOOL)failures
 {
-  v5 = a3;
-  if ([v5 count])
+  _joinCopy = _join;
+  if ([_joinCopy count])
   {
     v6 = +[VFPromise promise];
-    v7 = [v5 count];
+    v7 = [_joinCopy count];
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
     if (v7)
     {
       for (i = 0; i != v7; ++i)
       {
-        v10 = [MEMORY[0x277CBEB68] null];
-        [v8 setObject:v10 atIndexedSubscript:i];
+        null = [MEMORY[0x277CBEB68] null];
+        [v8 setObject:null atIndexedSubscript:i];
       }
     }
 
@@ -85,11 +85,11 @@
     v32 = v13;
     v14 = v8;
     v33 = v14;
-    v35 = a4;
+    failuresCopy = failures;
     v15 = v6;
     v34 = v15;
     v16 = v12;
-    [v5 enumerateObjectsUsingBlock:v30];
+    [_joinCopy enumerateObjectsUsingBlock:v30];
     v17 = dispatch_get_global_queue(21, 0);
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
@@ -103,15 +103,15 @@
     v20 = v13;
     dispatch_group_notify(v16, v17, &v23);
 
-    v21 = [v19 future];
+    future = [v19 future];
   }
 
   else
   {
-    v21 = [VFFuture futureWithResult:MEMORY[0x277CBEBF8]];
+    future = [VFFuture futureWithResult:MEMORY[0x277CBEBF8]];
   }
 
-  return v21;
+  return future;
 }
 
 void __33__VFFuture__join_ignoreFailures___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -192,55 +192,55 @@ uint64_t __33__VFFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
   return v2;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
-  v5 = [MEMORY[0x277CBEAA8] distantFuture];
-  v6 = [(VFFuture *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v6 = [(VFFuture *)self resultBeforeDate:distantFuture error:result];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(VFFuture *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(VFFuture *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (id)resultIfAvailable:(id *)a3
+- (id)resultIfAvailable:(id *)available
 {
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
-  v6 = [(VFFuture *)self resultBeforeDate:v5 error:a3];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v6 = [(VFFuture *)self resultBeforeDate:distantPast error:available];
 
   return v6;
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCACC8] isMainThread];
-  if (v7)
+  dateCopy = date;
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
+  if (isMainThread)
   {
-    v8 = [(VFFuture *)self delegate];
-    [v8 didStartBlockingMainThreadForFuture:self];
+    delegate = [(VFFuture *)self delegate];
+    [delegate didStartBlockingMainThreadForFuture:self];
 
-    if (![(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:v6])
+    if (![(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:dateCopy])
     {
-      v9 = [(VFFuture *)self delegate];
-      [v9 didFinishBlockingMainThreadForFuture:self];
+      delegate2 = [(VFFuture *)self delegate];
+      [delegate2 didFinishBlockingMainThreadForFuture:self];
 
       goto LABEL_10;
     }
   }
 
-  else if (![(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:v6])
+  else if (![(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:dateCopy])
   {
 LABEL_10:
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"VFFutureErrorDomain" code:1000000 userInfo:0];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -254,16 +254,16 @@ LABEL_10:
   v10 = self->_result;
   v11 = self->_error;
   [(NSConditionLock *)self->_stateLock unlock];
-  if (v7)
+  if (isMainThread)
   {
-    v12 = [(VFFuture *)self delegate];
-    [v12 didFinishBlockingMainThreadForFuture:self];
+    delegate3 = [(VFFuture *)self delegate];
+    [delegate3 didFinishBlockingMainThreadForFuture:self];
   }
 
-  if (a4)
+  if (error)
   {
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_13:
@@ -274,9 +274,9 @@ LABEL_13:
 - (BOOL)isFinished
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(VFFuture *)self _nts_isFinished];
+  _nts_isFinished = [(VFFuture *)self _nts_isFinished];
   [(NSConditionLock *)self->_stateLock unlock];
-  return v3;
+  return _nts_isFinished;
 }
 
 - (BOOL)isCancelled
@@ -284,8 +284,8 @@ LABEL_13:
   [(NSConditionLock *)self->_stateLock lock];
   if ([(VFFuture *)self _nts_isFinished])
   {
-    v3 = [(NSError *)self->_error domain];
-    if ([v3 isEqualToString:*MEMORY[0x277CCA050]])
+    domain = [(NSError *)self->_error domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA050]])
     {
       v4 = [(NSError *)self->_error code]== 3072;
     }
@@ -318,21 +318,21 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(NSConditionLock *)self->_stateLock lock];
-  v9 = [(VFFuture *)self _nts_isFinished];
-  if (v9)
+  _nts_isFinished = [(VFFuture *)self _nts_isFinished];
+  if (_nts_isFinished)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
 
   else
   {
-    objc_storeStrong(&self->_result, a3);
-    v10 = [v8 copy];
+    objc_storeStrong(&self->_result, result);
+    v10 = [errorCopy copy];
     error = self->_error;
     self->_error = v10;
 
@@ -340,24 +340,24 @@ LABEL_13:
     [(VFFuture *)self _flushCompletionBlocks];
   }
 
-  return !v9;
+  return !_nts_isFinished;
 }
 
-- (void)_finishWithFuture:(id)a3
+- (void)_finishWithFuture:(id)future
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__VFFuture__finishWithFuture___block_invoke;
   v6[3] = &unk_279E35918;
   v6[4] = self;
-  v4 = a3;
-  [v4 addSuccessBlock:v6];
+  futureCopy = future;
+  [futureCopy addSuccessBlock:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __30__VFFuture__finishWithFuture___block_invoke_2;
   v5[3] = &unk_279E33C08;
   v5[4] = self;
-  [v4 addFailureBlock:v5];
+  [futureCopy addFailureBlock:v5];
 }
 
 - (id)completionHandlerAdapter
@@ -464,12 +464,12 @@ void __38__VFFuture_firstResultObserverAdapter__block_invoke_2(uint64_t a1)
 
 - (VFObserver)resultsObserverAdapter
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __34__VFFuture_resultsObserverAdapter__block_invoke;
   v10[3] = &unk_279E35918;
-  v11 = v3;
+  v11 = array;
   v7[4] = self;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -487,15 +487,15 @@ void __38__VFFuture_firstResultObserverAdapter__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__VFFuture_addSuccessBlock___block_invoke;
   v7[3] = &unk_279E35990;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x2743C3100](v7);
   [(VFFuture *)self _addCompletionBlock:v6];
 }
@@ -510,15 +510,15 @@ uint64_t __28__VFFuture_addSuccessBlock___block_invoke(uint64_t result, uint64_t
   return result;
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__VFFuture_addFailureBlock___block_invoke;
   v7[3] = &unk_279E35990;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = MEMORY[0x2743C3100](v7);
   [(VFFuture *)self _addCompletionBlock:v6];
 }
@@ -533,20 +533,20 @@ uint64_t __28__VFFuture_addFailureBlock___block_invoke(uint64_t result, uint64_t
   return result;
 }
 
-- (void)_addCompletionBlock:(id)a3
+- (void)_addCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSConditionLock *)self->_stateLock lock];
   if ([(VFFuture *)self _nts_isFinished])
   {
     [(NSConditionLock *)self->_stateLock unlock];
-    v6[2](v6, self->_result, self->_error);
+    blockCopy[2](blockCopy, self->_result, self->_error);
   }
 
   else
   {
     completionBlocks = self->_completionBlocks;
-    v5 = MEMORY[0x2743C3100](v6);
+    v5 = MEMORY[0x2743C3100](blockCopy);
     [(NSMutableArray *)completionBlocks addObject:v5];
 
     [(NSConditionLock *)self->_stateLock unlock];

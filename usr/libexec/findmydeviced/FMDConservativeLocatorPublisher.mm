@@ -1,10 +1,10 @@
 @interface FMDConservativeLocatorPublisher
 - (FMDConservativeLocatorPublisher)init;
 - (void)_cancelPublishTimer;
-- (void)_publishResultLocation:(id)a3 reason:(int64_t)a4;
+- (void)_publishResultLocation:(id)location reason:(int64_t)reason;
 - (void)flushLocations;
-- (void)startPublishingWithBlock:(id)a3;
-- (void)updatedLocations:(id)a3 reason:(int64_t)a4;
+- (void)startPublishingWithBlock:(id)block;
+- (void)updatedLocations:(id)locations reason:(int64_t)reason;
 @end
 
 @implementation FMDConservativeLocatorPublisher
@@ -28,35 +28,35 @@
   return v3;
 }
 
-- (void)startPublishingWithBlock:(id)a3
+- (void)startPublishingWithBlock:(id)block
 {
-  [(FMDConservativeLocatorPublisher *)self setPublishingBlock:a3];
+  [(FMDConservativeLocatorPublisher *)self setPublishingBlock:block];
   [(FMDConservativeLocatorPublisher *)self setStartedPublishing:1];
-  v4 = [(FMDConservativeLocatorPublisher *)self startThreshold];
-  [(FMDConservativeLocatorPublisher *)self setCurrentThreshold:v4];
+  startThreshold = [(FMDConservativeLocatorPublisher *)self startThreshold];
+  [(FMDConservativeLocatorPublisher *)self setCurrentThreshold:startThreshold];
 
   v5 = +[NSDate date];
   [(FMDConservativeLocatorPublisher *)self setLaunchDate:v5];
 }
 
-- (void)updatedLocations:(id)a3 reason:(int64_t)a4
+- (void)updatedLocations:(id)locations reason:(int64_t)reason
 {
-  v5 = a3;
+  locationsCopy = locations;
   if (![(FMDConservativeLocatorPublisher *)self startedPublishing])
   {
-    v6 = sub_10017D9A8();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    lastObject = sub_10017D9A8();
+    if (os_log_type_enabled(lastObject, OS_LOG_TYPE_ERROR))
     {
-      sub_10022F784(v6);
+      sub_10022F784(lastObject);
     }
 
     goto LABEL_12;
   }
 
-  if ([v5 count])
+  if ([locationsCopy count])
   {
-    v6 = [v5 lastObject];
-    if (!v6)
+    lastObject = [locationsCopy lastObject];
+    if (!lastObject)
     {
 LABEL_12:
 
@@ -66,11 +66,11 @@ LABEL_12:
     v7 = sub_10017D9A8();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10022F7C8(self, v6, v7);
+      sub_10022F7C8(self, lastObject, v7);
     }
 
-    v8 = [v6 horizontalAccuracy];
-    [v8 doubleValue];
+    horizontalAccuracy = [lastObject horizontalAccuracy];
+    [horizontalAccuracy doubleValue];
     v10 = v9 < 0.0;
 
     if (v10)
@@ -78,11 +78,11 @@ LABEL_12:
       v11 = sub_10017D9A8();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(FMDConservativeLocatorPublisher *)self fm_logID];
-        v13 = [v6 horizontalAccuracy];
-        [v13 doubleValue];
+        fm_logID = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        horizontalAccuracy2 = [lastObject horizontalAccuracy];
+        [horizontalAccuracy2 doubleValue];
         *buf = 138412546;
-        v133 = v12;
+        v133 = fm_logID;
         v134 = 2048;
         v135 = v14;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Location has a -ve horizontalAccuracy (%.2f). Not using it", buf, 0x16u);
@@ -93,8 +93,8 @@ LABEL_56:
       goto LABEL_12;
     }
 
-    v15 = [v6 horizontalAccuracy];
-    [v15 doubleValue];
+    horizontalAccuracy3 = [lastObject horizontalAccuracy];
+    [horizontalAccuracy3 doubleValue];
     v17 = v16;
     [(NSNumber *)self->_startThreshold doubleValue];
     v19 = v17 > v18;
@@ -104,33 +104,33 @@ LABEL_56:
       v11 = sub_10017D9A8();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(FMDConservativeLocatorPublisher *)self fm_logID];
-        v21 = [v6 horizontalAccuracy];
-        [v21 doubleValue];
+        fm_logID2 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        horizontalAccuracy4 = [lastObject horizontalAccuracy];
+        [horizontalAccuracy4 doubleValue];
         v23 = v22;
         [(NSNumber *)self->_startThreshold doubleValue];
         *buf = 138412802;
-        v133 = v20;
+        v133 = fm_logID2;
         v134 = 2048;
         v135 = v23;
         v136 = 2048;
-        v137 = v24;
+        longValue = v24;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Location has a horizontalAccuracy of %.2f > start threshold %.2f. Not using it", buf, 0x20u);
       }
 
       goto LABEL_56;
     }
 
-    v25 = [v6 timestamp];
-    [v25 timeIntervalSinceReferenceDate];
+    timestamp = [lastObject timestamp];
+    [timestamp timeIntervalSinceReferenceDate];
     v27 = v26;
 
-    v28 = [(FMDConservativeLocatorPublisher *)self launchDate];
-    [v28 timeIntervalSinceReferenceDate];
+    launchDate = [(FMDConservativeLocatorPublisher *)self launchDate];
+    [launchDate timeIntervalSinceReferenceDate];
     v30 = v29;
 
-    v31 = [(FMDConservativeLocatorPublisher *)self cachedLocationValidityTimeInterval];
-    [v31 doubleValue];
+    cachedLocationValidityTimeInterval = [(FMDConservativeLocatorPublisher *)self cachedLocationValidityTimeInterval];
+    [cachedLocationValidityTimeInterval doubleValue];
     v33 = v32;
 
     if (v27 <= v30 - v33)
@@ -138,9 +138,9 @@ LABEL_56:
       v11 = sub_10017D9A8();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID3 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         *buf = 138412290;
-        v133 = v61;
+        v133 = fm_logID3;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Location is really old. Waiting for a newer one", buf, 0xCu);
       }
 
@@ -152,10 +152,10 @@ LABEL_56:
       v34 = sub_10017D9A8();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID4 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         [(NSNumber *)self->_cachedLocationValidityTimeInterval doubleValue];
         *buf = 138412546;
-        v133 = v35;
+        v133 = fm_logID4;
         v134 = 2048;
         v135 = v36;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%@ Location is an old cached one but not older than %.0f seconds before the start of this cycle. Considering it for later use", buf, 0x16u);
@@ -166,8 +166,8 @@ LABEL_56:
       goto LABEL_23;
     }
 
-    v62 = [v6 horizontalAccuracy];
-    [v62 doubleValue];
+    horizontalAccuracy5 = [lastObject horizontalAccuracy];
+    [horizontalAccuracy5 doubleValue];
     v64 = v63;
     [(NSNumber *)self->_endThreshold doubleValue];
     v66 = v64 > v65;
@@ -177,10 +177,10 @@ LABEL_56:
       v90 = sub_10017D9A8();
       if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
       {
-        v91 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID5 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         [(NSNumber *)self->_endThreshold doubleValue];
         *buf = 138412546;
-        v133 = v91;
+        v133 = fm_logID5;
         v134 = 2048;
         v135 = v92;
         _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, "%@ Location has accuracy below the end threshold %f. Publishing it immediately & finishing the locate cycle", buf, 0x16u);
@@ -188,12 +188,12 @@ LABEL_56:
 
       [(FMDConservativeLocatorPublisher *)self setStartedPublishing:0];
       [(FMDConservativeLocatorPublisher *)self _cancelPublishTimer];
-      [(FMDConservativeLocatorPublisher *)self _publishResultLocation:v6 reason:3];
+      [(FMDConservativeLocatorPublisher *)self _publishResultLocation:lastObject reason:3];
       goto LABEL_12;
     }
 
-    v67 = [v6 horizontalAccuracy];
-    [v67 doubleValue];
+    horizontalAccuracy6 = [lastObject horizontalAccuracy];
+    [horizontalAccuracy6 doubleValue];
     v69 = v68;
     [(NSNumber *)self->_currentThreshold doubleValue];
     v71 = v69 < v70;
@@ -203,16 +203,16 @@ LABEL_56:
       v72 = sub_10017D9A8();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
       {
-        v73 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID6 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         [(NSNumber *)self->_currentThreshold doubleValue];
         v75 = v74;
-        v76 = [(FMDConservativeLocatorPublisher *)self publishTimeInterval];
+        publishTimeInterval = [(FMDConservativeLocatorPublisher *)self publishTimeInterval];
         *buf = 138412802;
-        v133 = v73;
+        v133 = fm_logID6;
         v134 = 2048;
         v135 = v75;
         v136 = 2048;
-        v137 = [v76 longValue];
+        longValue = [publishTimeInterval longValue];
         _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "%@ Location has accuracy within current publish threshold of %.2f. Publishing it within the next %ld seconds", buf, 0x20u);
       }
 
@@ -228,8 +228,8 @@ LABEL_56:
 
         [(NSNumber *)self->_currentThreshold doubleValue];
         v83 = v82;
-        v84 = [v6 horizontalAccuracy];
-        [v84 doubleValue];
+        horizontalAccuracy7 = [lastObject horizontalAccuracy];
+        [horizontalAccuracy7 doubleValue];
         v86 = v83 < v85;
       }
 
@@ -237,10 +237,10 @@ LABEL_56:
       v87 = sub_10017D9A8();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
       {
-        v88 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID7 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         [(NSNumber *)self->_currentThreshold doubleValue];
         *buf = 138412546;
-        v133 = v88;
+        v133 = fm_logID7;
         v134 = 2048;
         v135 = v89;
         _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "%@ New publish threshold is %.2f", buf, 0x16u);
@@ -256,11 +256,11 @@ LABEL_56:
       v37 = 0;
     }
 
-    v94 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-    if (!v94)
+    lastLocation = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    if (!lastLocation)
     {
-      v95 = [v6 horizontalAccuracy];
-      [v95 doubleValue];
+      horizontalAccuracy8 = [lastObject horizontalAccuracy];
+      [horizontalAccuracy8 doubleValue];
       v97 = v96;
       [(NSNumber *)self->_startThreshold doubleValue];
       v99 = v97 > v98;
@@ -270,16 +270,16 @@ LABEL_56:
         goto LABEL_65;
       }
 
-      v94 = sub_10017D9A8();
-      if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
+      lastLocation = sub_10017D9A8();
+      if (os_log_type_enabled(lastLocation, OS_LOG_TYPE_DEFAULT))
       {
-        v100 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID8 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         [(NSNumber *)self->_startThreshold doubleValue];
         *buf = 138412546;
-        v133 = v100;
+        v133 = fm_logID8;
         v134 = 2048;
         v135 = v101;
-        _os_log_impl(&_mh_execute_header, v94, OS_LOG_TYPE_DEFAULT, "%@ This is the first location with accuracy below the start threshold %.2f. Publishing it immediately", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, lastLocation, OS_LOG_TYPE_DEFAULT, "%@ This is the first location with accuracy below the start threshold %.2f. Publishing it immediately", buf, 0x16u);
       }
 
       v38 = 2;
@@ -287,66 +287,66 @@ LABEL_56:
     }
 
 LABEL_65:
-    v102 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    lastLocation2 = [(FMDConservativeLocatorPublisher *)self lastLocation];
 
-    if (!v102)
+    if (!lastLocation2)
     {
       goto LABEL_24;
     }
 
-    if (![v6 locationType])
+    if (![lastObject locationType])
     {
       goto LABEL_24;
     }
 
-    v103 = [v6 locationType];
-    v104 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-    LOBYTE(v103) = v103 == [v104 locationType];
+    locationType = [lastObject locationType];
+    lastLocation3 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    LOBYTE(locationType) = locationType == [lastLocation3 locationType];
 
-    if (v103)
+    if (locationType)
     {
       goto LABEL_24;
     }
 
     v105 = [CLLocation alloc];
-    v106 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-    v107 = [v106 latitude];
-    [v107 doubleValue];
+    lastLocation4 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    latitude = [lastLocation4 latitude];
+    [latitude doubleValue];
     v109 = v108;
-    v110 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-    v111 = [v110 longitude];
-    [v111 doubleValue];
+    lastLocation5 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    longitude = [lastLocation5 longitude];
+    [longitude doubleValue];
     v34 = [v105 initWithLatitude:v109 longitude:v112];
 
     v113 = [CLLocation alloc];
-    v114 = [v6 latitude];
-    [v114 doubleValue];
+    latitude2 = [lastObject latitude];
+    [latitude2 doubleValue];
     v116 = v115;
-    v117 = [v6 longitude];
-    [v117 doubleValue];
+    longitude2 = [lastObject longitude];
+    [longitude2 doubleValue];
     v119 = [v113 initWithLatitude:v116 longitude:v118];
 
     [v34 distanceFromLocation:v119];
     v121 = v120;
-    v122 = [(FMDConservativeLocatorPublisher *)self minimumDistance];
-    [v122 doubleValue];
-    LOBYTE(v117) = v121 < v123;
+    minimumDistance = [(FMDConservativeLocatorPublisher *)self minimumDistance];
+    [minimumDistance doubleValue];
+    LOBYTE(longitude2) = v121 < v123;
 
-    if ((v117 & 1) == 0)
+    if ((longitude2 & 1) == 0)
     {
       v124 = sub_10017D9A8();
       if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
       {
-        v125 = [(FMDConservativeLocatorPublisher *)self fm_logID];
-        v126 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-        v127 = [v126 locationType];
-        v128 = [v6 locationType];
+        fm_logID9 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        lastLocation6 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+        locationType2 = [lastLocation6 locationType];
+        locationType3 = [lastObject locationType];
         *buf = 138413058;
-        v133 = v125;
+        v133 = fm_logID9;
         v134 = 2048;
-        v135 = v127;
+        v135 = locationType2;
         v136 = 2048;
-        v137 = v128;
+        longValue = locationType3;
         v138 = 2048;
         v139 = v121;
         _os_log_impl(&_mh_execute_header, v124, OS_LOG_TYPE_DEFAULT, "%@ Location type changed from %ld to %ld with distance traveled %.2lf. Publishing it immediately", buf, 0x2Au);
@@ -358,18 +358,18 @@ LABEL_65:
 
 LABEL_23:
 LABEL_24:
-    v39 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-    if (!v39)
+    lastLocation7 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    if (!lastLocation7)
     {
       goto LABEL_26;
     }
 
-    v40 = [v6 horizontalAccuracy];
-    [v40 doubleValue];
+    horizontalAccuracy9 = [lastObject horizontalAccuracy];
+    [horizontalAccuracy9 doubleValue];
     v42 = v41;
-    v43 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-    v44 = [v43 horizontalAccuracy];
-    [v44 doubleValue];
+    lastLocation8 = [(FMDConservativeLocatorPublisher *)self lastLocation];
+    horizontalAccuracy10 = [lastLocation8 horizontalAccuracy];
+    [horizontalAccuracy10 doubleValue];
     v46 = v42 > v45;
 
     if (!v46)
@@ -378,13 +378,13 @@ LABEL_26:
       v47 = sub_10017D9A8();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+        fm_logID10 = [(FMDConservativeLocatorPublisher *)self fm_logID];
         *buf = 138412290;
-        v133 = v48;
+        v133 = fm_logID10;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "%@ Storing this location as the best last known location in this locate cycle", buf, 0xCu);
       }
 
-      [(FMDConservativeLocatorPublisher *)self setLastLocation:v6];
+      [(FMDConservativeLocatorPublisher *)self setLastLocation:lastObject];
     }
 
     if (v38)
@@ -392,18 +392,18 @@ LABEL_26:
       if (v38 == 1)
       {
         [(FMDConservativeLocatorPublisher *)self _cancelPublishTimer];
-        v49 = [(FMDConservativeLocatorPublisher *)self nextPublishTimerFireDate];
-        if (!v49)
+        nextPublishTimerFireDate = [(FMDConservativeLocatorPublisher *)self nextPublishTimerFireDate];
+        if (!nextPublishTimerFireDate)
         {
-          v50 = [(FMDConservativeLocatorPublisher *)self publishTimeInterval];
-          [v50 doubleValue];
+          publishTimeInterval2 = [(FMDConservativeLocatorPublisher *)self publishTimeInterval];
+          [publishTimeInterval2 doubleValue];
           v52 = v51;
 
-          v49 = [NSDate dateWithTimeIntervalSinceNow:v52];
-          [(FMDConservativeLocatorPublisher *)self setNextPublishTimerFireDate:v49];
+          nextPublishTimerFireDate = [NSDate dateWithTimeIntervalSinceNow:v52];
+          [(FMDConservativeLocatorPublisher *)self setNextPublishTimerFireDate:nextPublishTimerFireDate];
         }
 
-        [v49 timeIntervalSinceNow];
+        [nextPublishTimerFireDate timeIntervalSinceNow];
         if (v53 >= 0.0)
         {
           v54 = v53;
@@ -417,9 +417,9 @@ LABEL_26:
         v55 = sub_10017D9A8();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
         {
-          v56 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+          fm_logID11 = [(FMDConservativeLocatorPublisher *)self fm_logID];
           *buf = 138412546;
-          v133 = v56;
+          v133 = fm_logID11;
           v134 = 2048;
           v135 = v54;
           _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%@ Scheduling the location to be published in %ld seconds", buf, 0x16u);
@@ -433,14 +433,14 @@ LABEL_26:
         v129[2] = sub_1001E1968;
         v129[3] = &unk_1002D1368;
         objc_copyWeak(v131, buf);
-        v6 = v6;
-        v130 = v6;
+        lastObject = lastObject;
+        v130 = lastObject;
         v131[1] = v37;
         v59 = [v57 initWithQueue:&_dispatch_main_q timeout:v129 completion:v54];
         [(FMDConservativeLocatorPublisher *)self setPublishTimer:v59];
 
-        v60 = [(FMDConservativeLocatorPublisher *)self publishTimer];
-        [v60 start];
+        publishTimer = [(FMDConservativeLocatorPublisher *)self publishTimer];
+        [publishTimer start];
 
         objc_destroyWeak(v131);
         objc_destroyWeak(buf);
@@ -449,7 +449,7 @@ LABEL_26:
       else
       {
         [(FMDConservativeLocatorPublisher *)self _cancelPublishTimer];
-        [(FMDConservativeLocatorPublisher *)self _publishResultLocation:v6 reason:v37];
+        [(FMDConservativeLocatorPublisher *)self _publishResultLocation:lastObject reason:v37];
       }
 
       goto LABEL_12;
@@ -458,9 +458,9 @@ LABEL_26:
     v11 = sub_10017D9A8();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v93 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+      fm_logID12 = [(FMDConservativeLocatorPublisher *)self fm_logID];
       *buf = 138412290;
-      v133 = v93;
+      v133 = fm_logID12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ Not publishing this location", buf, 0xCu);
     }
 
@@ -473,21 +473,21 @@ LABEL_13:
 - (void)flushLocations
 {
   [(FMDConservativeLocatorPublisher *)self _cancelPublishTimer];
-  v5 = [(FMDConservativeLocatorPublisher *)self lastLocation];
-  if (v5)
+  lastLocation = [(FMDConservativeLocatorPublisher *)self lastLocation];
+  if (lastLocation)
   {
-    v3 = [(FMDConservativeLocatorPublisher *)self lastPublishedLocation];
-    if (v5 == v3)
+    lastPublishedLocation = [(FMDConservativeLocatorPublisher *)self lastPublishedLocation];
+    if (lastLocation == lastPublishedLocation)
     {
     }
 
     else
     {
-      v4 = [(FMDConservativeLocatorPublisher *)self startedPublishing];
+      startedPublishing = [(FMDConservativeLocatorPublisher *)self startedPublishing];
 
-      if (v4)
+      if (startedPublishing)
       {
-        [(FMDConservativeLocatorPublisher *)self _publishResultLocation:v5 reason:5];
+        [(FMDConservativeLocatorPublisher *)self _publishResultLocation:lastLocation reason:5];
         [(FMDConservativeLocatorPublisher *)self setLastLocation:0];
       }
     }
@@ -496,38 +496,38 @@ LABEL_13:
   [(FMDConservativeLocatorPublisher *)self setStartedPublishing:0];
 }
 
-- (void)_publishResultLocation:(id)a3 reason:(int64_t)a4
+- (void)_publishResultLocation:(id)location reason:(int64_t)reason
 {
-  v6 = a3;
+  locationCopy = location;
   v7 = sub_10017D9A8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(FMDConservativeLocatorPublisher *)self fm_logID];
+    fm_logID = [(FMDConservativeLocatorPublisher *)self fm_logID];
     v11 = 138412546;
-    v12 = v8;
+    v12 = fm_logID;
     v13 = 2048;
-    v14 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ Publishing the location to the server for reason %li", &v11, 0x16u);
   }
 
   [(FMDConservativeLocatorPublisher *)self _cancelPublishTimer];
-  [(FMDConservativeLocatorPublisher *)self setLastPublishedLocation:v6];
-  v9 = [(FMDConservativeLocatorPublisher *)self publishingBlock];
-  v10 = v9;
-  if (v9)
+  [(FMDConservativeLocatorPublisher *)self setLastPublishedLocation:locationCopy];
+  publishingBlock = [(FMDConservativeLocatorPublisher *)self publishingBlock];
+  v10 = publishingBlock;
+  if (publishingBlock)
   {
-    (*(v9 + 16))(v9, 0, v6, a4);
+    (*(publishingBlock + 16))(publishingBlock, 0, locationCopy, reason);
   }
 }
 
 - (void)_cancelPublishTimer
 {
-  v3 = [(FMDConservativeLocatorPublisher *)self publishTimer];
+  publishTimer = [(FMDConservativeLocatorPublisher *)self publishTimer];
 
-  if (v3)
+  if (publishTimer)
   {
-    v4 = [(FMDConservativeLocatorPublisher *)self publishTimer];
-    [v4 cancel];
+    publishTimer2 = [(FMDConservativeLocatorPublisher *)self publishTimer];
+    [publishTimer2 cancel];
 
     [(FMDConservativeLocatorPublisher *)self setPublishTimer:0];
 

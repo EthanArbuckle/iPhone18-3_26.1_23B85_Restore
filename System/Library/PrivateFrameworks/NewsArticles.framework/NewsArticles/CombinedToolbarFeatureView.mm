@@ -1,13 +1,13 @@
 @interface CombinedToolbarFeatureView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithCoder:(id)a3;
-- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithCoder:(id)coder;
+- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CombinedToolbarFeatureView
 
-- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithCoder:(id)a3
+- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC12NewsArticles26CombinedToolbarFeatureView_coverModel);
   *v3 = 0u;
@@ -22,18 +22,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7BA9650();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles26CombinedToolbarFeatureView_coverModel))
   {
     v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles26CombinedToolbarFeatureView_issueCoverButton);
     if (v3)
     {
-      v4 = self;
+      selfCopy = self;
       v5 = v3;
       [v5 frame];
       Height = CGRectGetHeight(v10);
@@ -58,7 +58,7 @@
   return result;
 }
 
-- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithFrame:(CGRect)a3
+- (_TtC12NewsArticles26CombinedToolbarFeatureView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

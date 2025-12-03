@@ -1,7 +1,7 @@
 @interface CHDMarker
 - (CHDMarker)init;
 - (id)description;
-- (void)setGraphicProperties:(id)a3;
+- (void)setGraphicProperties:(id)properties;
 @end
 
 @implementation CHDMarker
@@ -19,16 +19,16 @@
   return result;
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 

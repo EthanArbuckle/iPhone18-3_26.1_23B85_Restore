@@ -1,23 +1,23 @@
 @interface CTConnectionPair
-- (BOOL)sendData:(id)a3 usingConnection:(int64_t)a4 completion:(id)a5;
+- (BOOL)sendData:(id)data usingConnection:(int64_t)connection completion:(id)completion;
 - (BOOL)start;
-- (CTConnectionPair)initWithQueue:(id)a3 delegate:(id)a4 endpoint1:(id)a5 parameters1:(id)a6 endpoint2:(id)a7 parameter2:(id)a8;
-- (void)connectionStateChanged:(int)a3 connectionId:(int64_t)a4;
+- (CTConnectionPair)initWithQueue:(id)queue delegate:(id)delegate endpoint1:(id)endpoint1 parameters1:(id)parameters1 endpoint2:(id)endpoint2 parameter2:(id)parameter2;
+- (void)connectionStateChanged:(int)changed connectionId:(int64_t)id;
 - (void)dealloc;
-- (void)receiveData:(int64_t)a3;
-- (void)updatePairState:(int64_t)a3;
+- (void)receiveData:(int64_t)data;
+- (void)updatePairState:(int64_t)state;
 @end
 
 @implementation CTConnectionPair
 
-- (CTConnectionPair)initWithQueue:(id)a3 delegate:(id)a4 endpoint1:(id)a5 parameters1:(id)a6 endpoint2:(id)a7 parameter2:(id)a8
+- (CTConnectionPair)initWithQueue:(id)queue delegate:(id)delegate endpoint1:(id)endpoint1 parameters1:(id)parameters1 endpoint2:(id)endpoint2 parameter2:(id)parameter2
 {
-  v26 = a3;
-  v15 = a4;
-  v25 = a5;
-  v24 = a6;
-  v16 = a7;
-  v17 = a8;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  endpoint1Copy = endpoint1;
+  parameters1Copy = parameters1;
+  endpoint2Copy = endpoint2;
+  parameter2Copy = parameter2;
   v27.receiver = self;
   v27.super_class = CTConnectionPair;
   v18 = [(CTConnectionPair *)&v27 init];
@@ -40,20 +40,20 @@ LABEL_7:
   }
 
   v18->fStarted = 0;
-  objc_storeStrong(&v18->fQueue, a3);
-  objc_storeWeak(&v18->fDelegate, v15);
+  objc_storeStrong(&v18->fQueue, queue);
+  objc_storeWeak(&v18->fDelegate, delegateCopy);
   fConnection1 = v18->fConnection1;
   v18->fConnectionPairState = 0;
   v18->fConnection1 = 0;
 
-  objc_storeStrong(&v18->fEndpoint1, a5);
-  objc_storeStrong(&v18->fParameters1, a6);
+  objc_storeStrong(&v18->fEndpoint1, endpoint1);
+  objc_storeStrong(&v18->fParameters1, parameters1);
   v18->fConnectionState1 = 0;
   fConnection2 = v18->fConnection2;
   v18->fConnection2 = 0;
 
-  objc_storeStrong(&v18->fEndpoint2, a7);
-  objc_storeStrong(&v18->fParameters2, a8);
+  objc_storeStrong(&v18->fEndpoint2, endpoint2);
+  objc_storeStrong(&v18->fParameters2, parameter2);
   v18->fConnectionState2 = 0;
   v21 = v18;
 LABEL_8:
@@ -61,13 +61,13 @@ LABEL_8:
   return v21;
 }
 
-- (void)receiveData:(int64_t)a3
+- (void)receiveData:(int64_t)data
 {
   dispatch_assert_queue_V2(self->fQueue);
   v5 = self->fQueue;
   objc_initWeak(&location, self);
   v6 = 72;
-  if (!a3)
+  if (!data)
   {
     v6 = 40;
   }
@@ -77,7 +77,7 @@ LABEL_8:
   v9[1] = 3221225472;
   v9[2] = __32__CTConnectionPair_receiveData___block_invoke;
   v9[3] = &unk_1E6A47230;
-  v11[1] = a3;
+  v11[1] = data;
   v8 = v5;
   v10 = v8;
   objc_copyWeak(v11, &location);
@@ -124,13 +124,13 @@ void __32__CTConnectionPair_receiveData___block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)updatePairState:(int64_t)a3
+- (void)updatePairState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->fQueue);
-  if (self->fConnectionPairState != a3)
+  if (self->fConnectionPairState != state)
   {
-    self->fConnectionPairState = a3;
-    if (a3 == 2)
+    self->fConnectionPairState = state;
+    if (state == 2)
     {
       nw_connection_cancel(self->fConnection1);
       nw_connection_cancel(self->fConnection2);
@@ -141,21 +141,21 @@ void __32__CTConnectionPair_receiveData___block_invoke(uint64_t a1, void *a2, vo
       self->fConnection2 = 0;
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
       [(CTConnectionPair *)self receiveData:0];
       [(CTConnectionPair *)self receiveData:1];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->fDelegate);
-    [WeakRetained connectionPairStateChanged:a3];
+    [WeakRetained connectionPairStateChanged:state];
   }
 }
 
-- (void)connectionStateChanged:(int)a3 connectionId:(int64_t)a4
+- (void)connectionStateChanged:(int)changed connectionId:(int64_t)id
 {
   dispatch_assert_queue_V2(self->fQueue);
-  if (a4 == 1)
+  if (id == 1)
   {
     p_fConnectionState2 = &self->fConnectionState2;
     fConnectionState2 = self->fConnectionState2;
@@ -163,7 +163,7 @@ void __32__CTConnectionPair_receiveData___block_invoke(uint64_t a1, void *a2, vo
 
   else
   {
-    if (a4)
+    if (id)
     {
       goto LABEL_7;
     }
@@ -172,12 +172,12 @@ void __32__CTConnectionPair_receiveData___block_invoke(uint64_t a1, void *a2, vo
     fConnectionState2 = self->fConnectionState1;
   }
 
-  if (fConnectionState2 == a3)
+  if (fConnectionState2 == changed)
   {
     return;
   }
 
-  *p_fConnectionState2 = a3;
+  *p_fConnectionState2 = changed;
 LABEL_7:
   fConnectionState1 = self->fConnectionState1;
   if ((fConnectionState1 & 0xFFFFFFFE) == 4 || (self->fConnectionState2 & 0xFFFFFFFE) == 4)
@@ -293,14 +293,14 @@ void __25__CTConnectionPair_start__block_invoke_54(uint64_t a1, uint64_t a2, voi
   }
 }
 
-- (BOOL)sendData:(id)a3 usingConnection:(int64_t)a4 completion:(id)a5
+- (BOOL)sendData:(id)data usingConnection:(int64_t)connection completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->fQueue);
   if (self->fConnection1 && self->fConnection2 && self->fConnectionPairState == 1)
   {
-    if (a4)
+    if (connection)
     {
       fConnection2 = self->fConnection2;
     }
@@ -310,8 +310,8 @@ void __25__CTConnectionPair_start__block_invoke_54(uint64_t a1, uint64_t a2, voi
       fConnection2 = self->fConnection1;
     }
 
-    v11 = dispatch_data_create([v8 bytes], objc_msgSend(v8, "length"), 0, 0);
-    nw_connection_send(fConnection2, v11, *MEMORY[0x1E6977E88], 1, v9);
+    v11 = dispatch_data_create([dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, 0);
+    nw_connection_send(fConnection2, v11, *MEMORY[0x1E6977E88], 1, completionCopy);
 
     v12 = 1;
   }

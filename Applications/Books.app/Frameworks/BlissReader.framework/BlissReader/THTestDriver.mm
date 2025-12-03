@@ -1,32 +1,32 @@
 @interface THTestDriver
-+ (BOOL)closeBookWithBookController:(id)a3;
-+ (BOOL)goToFirstChapterWithController:(id)a3;
-+ (BOOL)turnPageWithBookController:(id)a3 direction:(int)a4;
-+ (id)validateController:(id)a3;
++ (BOOL)closeBookWithBookController:(id)controller;
++ (BOOL)goToFirstChapterWithController:(id)controller;
++ (BOOL)turnPageWithBookController:(id)controller direction:(int)direction;
++ (id)validateController:(id)controller;
 @end
 
 @implementation THTestDriver
 
-+ (id)validateController:(id)a3
++ (id)validateController:(id)controller
 {
   objc_opt_class();
 
   return BUDynamicCast();
 }
 
-+ (BOOL)turnPageWithBookController:(id)a3 direction:(int)a4
++ (BOOL)turnPageWithBookController:(id)controller direction:(int)direction
 {
-  v5 = [a1 validateController:a3];
-  if (v5)
+  documentViewController = [self validateController:controller];
+  if (documentViewController)
   {
-    v6 = v5;
-    v5 = [v5 documentViewController];
-    if (v5)
+    v6 = documentViewController;
+    documentViewController = [documentViewController documentViewController];
+    if (documentViewController)
     {
-      v5 = [objc_msgSend(v6 "documentViewController")];
-      if (v5)
+      documentViewController = [objc_msgSend(v6 "documentViewController")];
+      if (documentViewController)
       {
-        if (a4 < 0)
+        if (direction < 0)
         {
           v7 = block;
           block[0] = _NSConcreteStackBlock;
@@ -46,17 +46,17 @@
         v7[3] = &unk_45AE00;
         v7[4] = v6;
         dispatch_async(&_dispatch_main_q, v7);
-        LOBYTE(v5) = 1;
+        LOBYTE(documentViewController) = 1;
       }
     }
   }
 
-  return v5;
+  return documentViewController;
 }
 
-+ (BOOL)closeBookWithBookController:(id)a3
++ (BOOL)closeBookWithBookController:(id)controller
 {
-  v3 = [a1 validateController:a3];
+  v3 = [self validateController:controller];
   v4 = v3;
   if (v3)
   {
@@ -71,9 +71,9 @@
   return v4 != 0;
 }
 
-+ (BOOL)goToFirstChapterWithController:(id)a3
++ (BOOL)goToFirstChapterWithController:(id)controller
 {
-  v3 = [a1 validateController:a3];
+  v3 = [self validateController:controller];
   if (v3)
   {
     v4 = v3;

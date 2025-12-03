@@ -1,23 +1,23 @@
 @interface HKMedicalRecordsStore
 + (id)taskIdentifier;
-- (HKMedicalRecordsStore)initWithHealthStore:(id)a3;
-- (void)fetchMedicalRecordsForClinicalRecords:(id)a3 completion:(id)a4;
+- (HKMedicalRecordsStore)initWithHealthStore:(id)store;
+- (void)fetchMedicalRecordsForClinicalRecords:(id)records completion:(id)completion;
 @end
 
 @implementation HKMedicalRecordsStore
 
-- (HKMedicalRecordsStore)initWithHealthStore:(id)a3
+- (HKMedicalRecordsStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKMedicalRecordsStore;
   v5 = [(HKMedicalRecordsStore *)&v13 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -36,12 +36,12 @@
   return NSStringFromClass(v2);
 }
 
-- (void)fetchMedicalRecordsForClinicalRecords:(id)a3 completion:(id)a4
+- (void)fetchMedicalRecordsForClinicalRecords:(id)records completion:(id)completion
 {
   proxyProvider = self->_proxyProvider;
-  v7 = a3;
-  v8 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:a4];
-  v9 = [v7 hk_map:&__block_literal_global_35];
+  recordsCopy = records;
+  v8 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:completion];
+  v9 = [recordsCopy hk_map:&__block_literal_global_35];
 
   v10 = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];

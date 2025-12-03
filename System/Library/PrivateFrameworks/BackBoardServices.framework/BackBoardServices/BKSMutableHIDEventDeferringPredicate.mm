@@ -1,9 +1,9 @@
 @interface BKSMutableHIDEventDeferringPredicate
 - (BKSMutableHIDEventDeferringPredicate)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDisplay:(id)a3;
-- (void)setEnvironment:(id)a3;
-- (void)setToken:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDisplay:(id)display;
+- (void)setEnvironment:(id)environment;
+- (void)setToken:(id)token;
 @end
 
 @implementation BKSMutableHIDEventDeferringPredicate
@@ -25,7 +25,7 @@
       v15 = 2114;
       v16 = v12;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BKSHIDEventDeferringPredicate.m";
       v21 = 1024;
@@ -48,9 +48,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [BKSHIDEventDeferringPredicate allocWithZone:a3];
+  v4 = [BKSHIDEventDeferringPredicate allocWithZone:zone];
   environment = self->super._environment;
   display = self->super._display;
   token = self->super._token;
@@ -58,23 +58,23 @@
   return [(BKSHIDEventDeferringPredicate *)v4 _initWithEnvironment:environment display:display token:token];
 }
 
-- (void)setToken:(id)a3
+- (void)setToken:(id)token
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [tokenCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"token", v10, v12];
@@ -89,7 +89,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDEventDeferringPredicate.m";
         v26 = 1024;
@@ -106,30 +106,30 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [tokenCopy copy];
   token = self->super._token;
   self->super._token = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDisplay:(id)a3
+- (void)setDisplay:(id)display
 {
   v30 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (v17)
+  displayCopy = display;
+  if (displayCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v17 classForCoder];
-      if (!v9)
+      classForCoder = [displayCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"display", v10, v12];
@@ -144,7 +144,7 @@
         v20 = 2114;
         v21 = v16;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BKSHIDEventDeferringPredicate.m";
         v26 = 1024;
@@ -161,18 +161,18 @@
     }
   }
 
-  v5 = [v17 copy];
+  v5 = [displayCopy copy];
   display = self->super._display;
   self->super._display = v5;
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  if (!v24)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = objc_opt_class();
@@ -189,7 +189,7 @@
       v27 = 2114;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringPredicate.m";
       v33 = 1024;
@@ -209,13 +209,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v24 classForCoder];
-    if (!v16)
+    classForCoder = [environmentCopy classForCoder];
+    if (!classForCoder)
     {
-      v16 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v17 = NSStringFromClass(v16);
+    v17 = NSStringFromClass(classForCoder);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v15 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"environment", v17, v19];
@@ -230,7 +230,7 @@
       v27 = 2114;
       v28 = v23;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringPredicate.m";
       v33 = 1024;
@@ -246,7 +246,7 @@
     JUMPOUT(0x186384190);
   }
 
-  v5 = [v24 copy];
+  v5 = [environmentCopy copy];
   environment = self->super._environment;
   self->super._environment = v5;
 

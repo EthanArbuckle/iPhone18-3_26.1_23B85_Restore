@@ -9,13 +9,13 @@
 
 - (id)idsDestination
 {
-  v1 = [a1 handleString];
-  if ([v1 ska_appearsToBeEmail])
+  handleString = [self handleString];
+  if ([handleString ska_appearsToBeEmail])
   {
-    v2 = MEMORY[0x223D77450](v1);
+    v2 = MEMORY[0x223D77450](handleString);
   }
 
-  else if (MEMORY[0x223D774B0](v1))
+  else if (MEMORY[0x223D774B0](handleString))
   {
     v2 = IDSCopyIDForPseudonymID();
   }
@@ -33,8 +33,8 @@
 - (id)idsURI
 {
   v2 = objc_alloc(MEMORY[0x277D18A48]);
-  v3 = [a1 handleString];
-  v4 = [v2 initWithUnprefixedURI:v3];
+  handleString = [self handleString];
+  v4 = [v2 initWithUnprefixedURI:handleString];
 
   return v4;
 }
@@ -42,28 +42,28 @@
 - (id)normalizedHandleString
 {
   v2 = objc_alloc(MEMORY[0x277D18A48]);
-  v3 = [a1 handleString];
-  v4 = [v2 initWithUnprefixedURI:v3];
+  handleString = [self handleString];
+  v4 = [v2 initWithUnprefixedURI:handleString];
 
-  v5 = [v4 unprefixedURI];
+  unprefixedURI = [v4 unprefixedURI];
 
-  return v5;
+  return unprefixedURI;
 }
 
 - (uint64_t)isNormalizedEqualToHandle:()StatusKitAgent
 {
-  if (a3 == a1)
+  if (a3 == self)
   {
     return 1;
   }
 
   v4 = a3;
-  v5 = [a1 normalizedHandleString];
-  v6 = [v4 normalizedHandleString];
+  normalizedHandleString = [self normalizedHandleString];
+  normalizedHandleString2 = [v4 normalizedHandleString];
 
-  if (v5 | v6)
+  if (normalizedHandleString | normalizedHandleString2)
   {
-    v7 = [v5 isEqualToString:v6];
+    v7 = [normalizedHandleString isEqualToString:normalizedHandleString2];
   }
 
   else

@@ -1,36 +1,36 @@
 @interface LoadExternalDownloadManifestOperation
-- (BOOL)_handlePublicResponseForOperation:(id)a3 error:(id *)a4;
-- (BOOL)_runForPublicFormatWithURLRequest:(id)a3 error:(id *)a4;
-- (BOOL)_runForPurchaseFormatWithURLRequest:(id)a3 error:(id *)a4;
-- (BOOL)_showConfirmationPromptForManifest:(id)a3 response:(id)a4;
+- (BOOL)_handlePublicResponseForOperation:(id)operation error:(id *)error;
+- (BOOL)_runForPublicFormatWithURLRequest:(id)request error:(id *)error;
+- (BOOL)_runForPurchaseFormatWithURLRequest:(id)request error:(id *)error;
+- (BOOL)_showConfirmationPromptForManifest:(id)manifest response:(id)response;
 - (BOOL)shouldHideUserPrompts;
 - (ExternalDownloadManifest)manifest;
-- (LoadExternalDownloadManifestOperation)initWithRequest:(id)a3;
+- (LoadExternalDownloadManifestOperation)initWithRequest:(id)request;
 - (NSURLRequest)URLRequest;
 - (SSDownloadManifestResponse)manifestResponse;
 - (int64_t)manifestFormat;
-- (void)_processValidDownloads:(id)a3;
-- (void)_showDialogForError:(id)a3;
+- (void)_processValidDownloads:(id)downloads;
+- (void)_showDialogForError:(id)error;
 - (void)run;
-- (void)setManifestFormat:(int64_t)a3;
-- (void)setShouldHideUserPrompts:(BOOL)a3;
-- (void)setURLRequest:(id)a3;
+- (void)setManifestFormat:(int64_t)format;
+- (void)setShouldHideUserPrompts:(BOOL)prompts;
+- (void)setURLRequest:(id)request;
 @end
 
 @implementation LoadExternalDownloadManifestOperation
 
-- (LoadExternalDownloadManifestOperation)initWithRequest:(id)a3
+- (LoadExternalDownloadManifestOperation)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = LoadExternalDownloadManifestOperation;
   v5 = [(LoadExternalDownloadManifestOperation *)&v10 init];
   if (v5)
   {
-    v5->_manifestFormat = [v4 manifestFormat];
-    v5->_shouldHideUserPrompts = [v4 shouldHideUserPrompts];
-    v6 = [v4 URLRequest];
-    v7 = [v6 copy];
+    v5->_manifestFormat = [requestCopy manifestFormat];
+    v5->_shouldHideUserPrompts = [requestCopy shouldHideUserPrompts];
+    uRLRequest = [requestCopy URLRequest];
+    v7 = [uRLRequest copy];
     urlRequest = v5->_urlRequest;
     v5->_urlRequest = v7;
   }
@@ -106,29 +106,29 @@
   return v13;
 }
 
-- (void)setManifestFormat:(int64_t)a3
+- (void)setManifestFormat:(int64_t)format
 {
   [(LoadExternalDownloadManifestOperation *)self lock];
-  self->_manifestFormat = a3;
+  self->_manifestFormat = format;
 
   [(LoadExternalDownloadManifestOperation *)self unlock];
 }
 
-- (void)setShouldHideUserPrompts:(BOOL)a3
+- (void)setShouldHideUserPrompts:(BOOL)prompts
 {
   [(LoadExternalDownloadManifestOperation *)self lock];
-  self->_shouldHideUserPrompts = a3;
+  self->_shouldHideUserPrompts = prompts;
 
   [(LoadExternalDownloadManifestOperation *)self unlock];
 }
 
-- (void)setURLRequest:(id)a3
+- (void)setURLRequest:(id)request
 {
-  v6 = a3;
+  requestCopy = request;
   [(LoadExternalDownloadManifestOperation *)self lock];
-  if (self->_urlRequest != v6)
+  if (self->_urlRequest != requestCopy)
   {
-    v4 = [(NSURLRequest *)v6 copy];
+    v4 = [(NSURLRequest *)requestCopy copy];
     urlRequest = self->_urlRequest;
     self->_urlRequest = v4;
   }
@@ -155,8 +155,8 @@
 
 - (void)run
 {
-  v3 = [(LoadExternalDownloadManifestOperation *)self URLRequest];
-  v4 = [v3 URL];
+  uRLRequest = [(LoadExternalDownloadManifestOperation *)self URLRequest];
+  v4 = [uRLRequest URL];
 
   v5 = +[SSLogConfig sharedDaemonConfig];
   v6 = v5;
@@ -167,19 +167,19 @@
       v6 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v6 shouldLog];
+    shouldLog = [v6 shouldLog];
     if ([v6 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 &= 2u;
     }
@@ -201,9 +201,9 @@ LABEL_27:
         goto LABEL_44;
       }
 
-      v17 = [NSString stringWithCString:v19 encoding:4, &v39, v34];
+      oSLogObject = [NSString stringWithCString:v19 encoding:4, &v39, v34];
       free(v19);
-      v33 = v17;
+      v33 = oSLogObject;
       SSFileLog();
     }
 
@@ -215,19 +215,19 @@ LABEL_27:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog2 = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog2 | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog2;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v8 &= 2u;
   }
@@ -242,16 +242,16 @@ LABEL_27:
   v39 = 138412546;
   v40 = v10;
   v41 = 2048;
-  v42 = [(LoadExternalDownloadManifestOperation *)self manifestFormat];
+  manifestFormat = [(LoadExternalDownloadManifestOperation *)self manifestFormat];
   LODWORD(v34) = 22;
   v33 = &v39;
   v12 = _os_log_send_and_compose_impl();
 
   if (v12)
   {
-    v9 = [NSString stringWithCString:v12 encoding:4, &v39, v34];
+    oSLogObject2 = [NSString stringWithCString:v12 encoding:4, &v39, v34];
     free(v12);
-    v33 = v9;
+    v33 = oSLogObject2;
     SSFileLog();
 LABEL_12:
   }
@@ -259,7 +259,7 @@ LABEL_12:
   if ([(LoadExternalDownloadManifestOperation *)self manifestFormat]== 1)
   {
     v38 = 0;
-    v13 = [(LoadExternalDownloadManifestOperation *)self _runForPurchaseFormatWithURLRequest:v3 error:&v38];
+    v13 = [(LoadExternalDownloadManifestOperation *)self _runForPurchaseFormatWithURLRequest:uRLRequest error:&v38];
     v14 = v38;
     if ((v13 & 1) == 0)
     {
@@ -267,11 +267,11 @@ LABEL_12:
     }
 
 LABEL_29:
-    v36 = [(LoadExternalDownloadManifestOperation *)self manifest];
-    v21 = [v36 validDownloads];
-    if ([v21 count])
+    manifest = [(LoadExternalDownloadManifestOperation *)self manifest];
+    validDownloads = [manifest validDownloads];
+    if ([validDownloads count])
     {
-      [(LoadExternalDownloadManifestOperation *)self _processValidDownloads:v21];
+      [(LoadExternalDownloadManifestOperation *)self _processValidDownloads:validDownloads];
     }
 
     v22 = +[SSLogConfig sharedDaemonConfig];
@@ -280,19 +280,19 @@ LABEL_29:
       v22 = +[SSLogConfig sharedConfig];
     }
 
-    v23 = [v22 shouldLog];
+    shouldLog3 = [v22 shouldLog];
     if ([v22 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog3 | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog3;
     }
 
-    v25 = [v22 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v22 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v26 = v24;
     }
@@ -306,13 +306,13 @@ LABEL_29:
     {
       v27 = objc_opt_class();
       v35 = v27;
-      v28 = [v21 count];
-      v29 = [v36 invalidDownloads];
-      v30 = [v29 count];
+      v28 = [validDownloads count];
+      invalidDownloads = [manifest invalidDownloads];
+      v30 = [invalidDownloads count];
       v39 = 138412802;
       v40 = v27;
       v41 = 2048;
-      v42 = v28;
+      manifestFormat = v28;
       v43 = 2048;
       v44 = v30;
       LODWORD(v34) = 32;
@@ -327,9 +327,9 @@ LABEL_43:
         goto LABEL_47;
       }
 
-      v25 = [NSString stringWithCString:v31 encoding:4, &v39, v34];
+      oSLogObject3 = [NSString stringWithCString:v31 encoding:4, &v39, v34];
       free(v31);
-      v33 = v25;
+      v33 = oSLogObject3;
       SSFileLog();
     }
 
@@ -337,7 +337,7 @@ LABEL_43:
   }
 
   v37 = 0;
-  v20 = [(LoadExternalDownloadManifestOperation *)self _runForPublicFormatWithURLRequest:v3 error:&v37];
+  v20 = [(LoadExternalDownloadManifestOperation *)self _runForPublicFormatWithURLRequest:uRLRequest error:&v37];
   v14 = v37;
   if (v20)
   {
@@ -356,13 +356,13 @@ LABEL_47:
   [(LoadExternalDownloadManifestOperation *)self setError:v14];
 }
 
-- (BOOL)_handlePublicResponseForOperation:(id)a3 error:(id *)a4
+- (BOOL)_handlePublicResponseForOperation:(id)operation error:(id *)error
 {
-  v6 = a3;
+  operationCopy = operation;
   v7 = [ExternalDownloadManifest alloc];
-  v8 = [v6 dataProvider];
-  v9 = [v8 output];
-  v10 = [(ExternalDownloadManifest *)v7 initWithPropertyList:v9];
+  dataProvider = [operationCopy dataProvider];
+  output = [dataProvider output];
+  v10 = [(ExternalDownloadManifest *)v7 initWithPropertyList:output];
 
   if (!v10)
   {
@@ -372,19 +372,19 @@ LABEL_47:
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
+    shouldLog = [v19 shouldLog];
     if ([v19 shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog;
     }
 
-    v22 = [v19 OSLogObject];
-    if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v19 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v21 &= 2u;
     }
@@ -405,7 +405,7 @@ LABEL_19:
         goto LABEL_32;
       }
 
-      v22 = [NSString stringWithCString:v24 encoding:4, &v33, v32, v33];
+      oSLogObject = [NSString stringWithCString:v24 encoding:4, &v33, v32, v33];
       free(v24);
       SSFileLog();
     }
@@ -415,13 +415,13 @@ LABEL_19:
 
   if (![(LoadExternalDownloadManifestOperation *)self shouldHideUserPrompts])
   {
-    v11 = [(ExternalDownloadManifest *)v10 validDownloads];
-    v12 = [v11 count];
+    validDownloads = [(ExternalDownloadManifest *)v10 validDownloads];
+    v12 = [validDownloads count];
 
     if (v12)
     {
-      v13 = [v6 response];
-      v14 = [(LoadExternalDownloadManifestOperation *)self _showConfirmationPromptForManifest:v10 response:v13];
+      response = [operationCopy response];
+      v14 = [(LoadExternalDownloadManifestOperation *)self _showConfirmationPromptForManifest:v10 response:response];
 
       if ((v14 & 1) == 0)
       {
@@ -431,19 +431,19 @@ LABEL_19:
           v26 = +[SSLogConfig sharedConfig];
         }
 
-        v27 = [v26 shouldLog];
+        shouldLog2 = [v26 shouldLog];
         if ([v26 shouldLogToDisk])
         {
-          v28 = v27 | 2;
+          v28 = shouldLog2 | 2;
         }
 
         else
         {
-          v28 = v27;
+          v28 = shouldLog2;
         }
 
-        v29 = [v26 OSLogObject];
-        if (!os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+        oSLogObject2 = [v26 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
         {
           v28 &= 2u;
         }
@@ -464,7 +464,7 @@ LABEL_31:
 LABEL_32:
             v15 = v25;
             v16 = 0;
-            if (!a4)
+            if (!error)
             {
               goto LABEL_7;
             }
@@ -472,7 +472,7 @@ LABEL_32:
             goto LABEL_6;
           }
 
-          v29 = [NSString stringWithCString:v31 encoding:4, &v33, v32, v33];
+          oSLogObject2 = [NSString stringWithCString:v31 encoding:4, &v33, v32, v33];
           free(v31);
           SSFileLog();
         }
@@ -487,11 +487,11 @@ LABEL_32:
   [(LoadExternalDownloadManifestOperation *)self unlock];
   v15 = 0;
   v16 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_6:
     v17 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_7:
@@ -499,28 +499,28 @@ LABEL_7:
   return v16;
 }
 
-- (void)_processValidDownloads:(id)a3
+- (void)_processValidDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v7 &= 2u;
   }
@@ -532,7 +532,7 @@ LABEL_7:
     v27 = 138412546;
     v28 = v9;
     v29 = 2048;
-    v30 = [v4 count];
+    v30 = [downloadsCopy count];
     LODWORD(v22) = 22;
     v21 = &v27;
     v11 = _os_log_send_and_compose_impl();
@@ -542,21 +542,21 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    v8 = [NSString stringWithCString:v11 encoding:4, &v27, v22];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, &v27, v22];
     free(v11);
-    v21 = v8;
+    v21 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
-  v12 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
-  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  v12 = [[NSMutableOrderedSet alloc] initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
+  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(downloadsCopy, "count")}];
   v14 = +[DownloadsDatabase downloadsDatabase];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000FBB10;
   v23[3] = &unk_100328C60;
-  v15 = v4;
+  v15 = downloadsCopy;
   v24 = v15;
   v16 = v12;
   v25 = v16;
@@ -580,15 +580,15 @@ LABEL_12:
   }
 }
 
-- (BOOL)_runForPublicFormatWithURLRequest:(id)a3 error:(id *)a4
+- (BOOL)_runForPublicFormatWithURLRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = objc_alloc_init(ISURLOperation);
   [v7 _setUsesPrivateCookieStore:0];
   v8 = objc_alloc_init(DaemonProtocolDataProvider);
   [(DaemonProtocolDataProvider *)v8 setShouldProcessProtocol:0];
   [v7 setDataProvider:v8];
-  v9 = [[SSMutableURLRequestProperties alloc] initWithURLRequest:v6];
+  v9 = [[SSMutableURLRequestProperties alloc] initWithURLRequest:requestCopy];
   [v9 setRequiresExtendedValidationCertificates:0];
   [v9 setRequiresHTTPS:1];
   [v9 setRequiresExternal:1];
@@ -606,26 +606,26 @@ LABEL_12:
     goto LABEL_28;
   }
 
-  v32 = a4;
+  errorCopy = error;
   v15 = +[SSLogConfig sharedDaemonConfig];
   if (!v15)
   {
     v15 = +[SSLogConfig sharedConfig];
   }
 
-  v16 = [v15 shouldLog];
+  shouldLog = [v15 shouldLog];
   if ([v15 shouldLogToDisk])
   {
-    v17 = v16 | 2;
+    v17 = shouldLog | 2;
   }
 
   else
   {
-    v17 = v16;
+    v17 = shouldLog;
   }
 
-  v18 = [v15 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v17;
   }
@@ -652,9 +652,9 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    v18 = [NSString stringWithCString:v22 encoding:4, &v35, v31];
+    oSLogObject = [NSString stringWithCString:v22 encoding:4, &v35, v31];
     free(v22);
-    v30 = v18;
+    v30 = oSLogObject;
     SSFileLog();
   }
 
@@ -662,8 +662,8 @@ LABEL_15:
   if (!ISErrorIsEqual())
   {
     v13 = 0;
-    a4 = v32;
-    if (!v32)
+    error = errorCopy;
+    if (!errorCopy)
     {
       goto LABEL_30;
     }
@@ -677,21 +677,21 @@ LABEL_15:
     v14 = +[SSLogConfig sharedConfig];
   }
 
-  v23 = [v14 shouldLog];
+  shouldLog2 = [v14 shouldLog];
   if ([v14 shouldLogToDisk])
   {
-    v23 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  v24 = [v14 OSLogObject];
-  if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
-    v25 = v23;
+    v25 = shouldLog2;
   }
 
   else
   {
-    v25 = v23 & 2;
+    v25 = shouldLog2 & 2;
   }
 
   if (!v25)
@@ -699,7 +699,7 @@ LABEL_15:
     goto LABEL_26;
   }
 
-  v26 = [v6 URL];
+  v26 = [requestCopy URL];
   v35 = 138412290;
   v36 = v26;
   LODWORD(v31) = 12;
@@ -707,21 +707,21 @@ LABEL_15:
 
   if (v27)
   {
-    v24 = [NSString stringWithCString:v27 encoding:4, &v35, v31];
+    oSLogObject2 = [NSString stringWithCString:v27 encoding:4, &v35, v31];
     free(v27);
     SSFileLog();
 LABEL_26:
   }
 
   v13 = 0;
-  a4 = v32;
+  error = errorCopy;
 LABEL_28:
 
-  if (a4)
+  if (error)
   {
 LABEL_29:
     v28 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_30:
@@ -729,10 +729,10 @@ LABEL_30:
   return v13;
 }
 
-- (BOOL)_runForPurchaseFormatWithURLRequest:(id)a3 error:(id *)a4
+- (BOOL)_runForPurchaseFormatWithURLRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [[SSMutableURLRequestProperties alloc] initWithURLRequest:v6];
+  requestCopy = request;
+  v7 = [[SSMutableURLRequestProperties alloc] initWithURLRequest:requestCopy];
   v8 = [[LoadDownloadQueueOperation alloc] initWithRequestProperties:v7];
   [(LoadDownloadQueueOperation *)v8 setNeedsAuthentication:0];
   [(LoadDownloadQueueOperation *)v8 setReason:1];
@@ -746,18 +746,18 @@ LABEL_30:
     v43 = v10;
     v44 = v9;
     v46 = v7;
-    v47 = a4;
-    v48 = v6;
+    errorCopy = error;
+    v48 = requestCopy;
     v12 = objc_alloc_init(NSMutableArray);
     v45 = v8;
-    v13 = [(LoadDownloadQueueOperation *)v8 downloads];
+    downloads = [(LoadDownloadQueueOperation *)v8 downloads];
     v14 = objc_alloc_init(NSMutableArray);
     v15 = objc_alloc_init(NSMutableOrderedSet);
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v16 = v13;
+    v16 = downloads;
     v52 = v16;
     v54 = [v16 countByEnumeratingWithState:&v59 objects:v65 count:16];
     if (v54)
@@ -776,7 +776,7 @@ LABEL_30:
           }
 
           v18 = *(*(&v59 + 1) + 8 * i);
-          v19 = [v18 kind];
+          kind = [v18 kind];
           IsBookToShimKind = SSDownloadKindIsBookToShimKind();
 
           if (IsBookToShimKind)
@@ -791,12 +791,12 @@ LABEL_30:
             v22 = v21;
             if (v21)
             {
-              v23 = [(Download *)v21 assets];
+              assets = [(Download *)v21 assets];
               v55 = 0u;
               v56 = 0u;
               v57 = 0u;
               v58 = 0u;
-              v24 = [v23 countByEnumeratingWithState:&v55 objects:v64 count:16];
+              v24 = [assets countByEnumeratingWithState:&v55 objects:v64 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -807,7 +807,7 @@ LABEL_30:
                   {
                     if (*v56 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(assets);
                     }
 
                     v28 = *(*(&v55 + 1) + 8 * j);
@@ -815,7 +815,7 @@ LABEL_30:
                     [v28 setValue:v29 forProperty:@"is_external"];
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v55 objects:v64 count:16];
+                  v25 = [assets countByEnumeratingWithState:&v55 objects:v64 count:16];
                 }
 
                 while (v25);
@@ -858,8 +858,8 @@ LABEL_30:
     self->_manifest = v32;
 
     [(LoadExternalDownloadManifestOperation *)self unlock];
-    a4 = v47;
-    v6 = v48;
+    error = errorCopy;
+    requestCopy = v48;
     v8 = v45;
     v7 = v46;
     v9 = v44;
@@ -873,21 +873,21 @@ LABEL_30:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v34 = [v12 shouldLog];
+  shouldLog = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v34 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v35 = [v12 OSLogObject];
-  if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v34 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v34)
+  if (!shouldLog)
   {
-    v52 = v35;
+    v52 = oSLogObject;
 LABEL_36:
 
     goto LABEL_37;
@@ -911,41 +911,41 @@ LABEL_36:
 
 LABEL_37:
 
-  if (a4)
+  if (error)
   {
     v40 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9;
 }
 
-- (BOOL)_showConfirmationPromptForManifest:(id)a3 response:(id)a4
+- (BOOL)_showConfirmationPromptForManifest:(id)manifest response:(id)response
 {
-  v6 = a3;
-  v7 = [a4 URL];
+  manifestCopy = manifest;
+  v7 = [response URL];
   if (v7)
   {
     v8 = v7;
     goto LABEL_4;
   }
 
-  v9 = [(LoadExternalDownloadManifestOperation *)self URLRequest];
-  v8 = [v9 URL];
+  uRLRequest = [(LoadExternalDownloadManifestOperation *)self URLRequest];
+  v8 = [uRLRequest URL];
 
   if (v8)
   {
 LABEL_4:
-    v10 = [v8 host];
-    if ([v10 length] >= 0x1F5)
+    host = [v8 host];
+    if ([host length] >= 0x1F5)
     {
-      v11 = [v10 substringToIndex:500];
+      v11 = [host substringToIndex:500];
 
-      v10 = v11;
+      host = v11;
     }
 
-    v12 = [v6 validDownloads];
-    v13 = [v12 count];
+    validDownloads = [manifestCopy validDownloads];
+    v13 = [validDownloads count];
     v14 = v13;
     if (v13 < 2)
     {
@@ -954,7 +954,7 @@ LABEL_4:
         goto LABEL_20;
       }
 
-      v16 = [v12 objectAtIndex:0];
+      v16 = [validDownloads objectAtIndex:0];
       v17 = [v16 valueForProperty:@"title"];
       if ([v17 length])
       {
@@ -968,7 +968,7 @@ LABEL_4:
         v20 = [NSString alloc];
         v21 = [NSBundle bundleForClass:objc_opt_class()];
         v22 = [v21 localizedStringForKey:@"CONFIRM_MANIFEST_DOWNLOAD_SPECIFIC_%@_%@" value:&stru_10033CC30 table:0];
-        v23 = [v20 initWithFormat:v22, v10, v17];
+        v23 = [v20 initWithFormat:v22, host, v17];
       }
 
       else
@@ -976,7 +976,7 @@ LABEL_4:
         v25 = [NSString alloc];
         v21 = [NSBundle bundleForClass:objc_opt_class()];
         v22 = [v21 localizedStringForKey:@"CONFIRM_MANIFEST_DOWNLOAD_GENERIC_%@" value:&stru_10033CC30 table:0];
-        v23 = [v25 initWithFormat:v22, v10, v37];
+        v23 = [v25 initWithFormat:v22, host, v37];
       }
 
       v18 = v23;
@@ -987,16 +987,16 @@ LABEL_4:
       v15 = [NSString alloc];
       v16 = [NSBundle bundleForClass:objc_opt_class()];
       v17 = [v16 localizedStringForKey:@"CONFIRM_MANIFEST_DOWNLOADS_%@_%ld" value:&stru_10033CC30 table:0];
-      v18 = [v15 initWithFormat:v17, v10, v14];
+      v18 = [v15 initWithFormat:v17, host, v14];
     }
 
     if (v18)
     {
-      v41 = v12;
-      v42 = v6;
+      v41 = validDownloads;
+      v42 = manifestCopy;
       v40 = v18;
       v38 = [[ISDialog alloc] initWithTitle:v18 message:0];
-      v39 = self;
+      selfCopy = self;
       v26 = [NSBundle bundleForClass:objc_opt_class()];
       v27 = [v26 localizedStringForKey:@"CONFIRM_MANIFEST_CANCEL" value:&stru_10033CC30 table:0];
       v28 = [ISDialogButton buttonWithTitle:v27];
@@ -1008,12 +1008,12 @@ LABEL_4:
       [v38 setButtons:v32];
       v33 = objc_alloc_init(ISDialogOperation);
       [v33 setDialog:v38];
-      if ([(LoadExternalDownloadManifestOperation *)v39 runSubOperation:v33 returningError:0])
+      if ([(LoadExternalDownloadManifestOperation *)selfCopy runSubOperation:v33 returningError:0])
       {
-        v34 = [v33 selectedButton];
-        if (v34)
+        selectedButton = [v33 selectedButton];
+        if (selectedButton)
         {
-          v24 = [v32 indexOfObjectIdenticalTo:v34] == 1;
+          v24 = [v32 indexOfObjectIdenticalTo:selectedButton] == 1;
         }
 
         else
@@ -1021,18 +1021,18 @@ LABEL_4:
           v24 = 0;
         }
 
-        v6 = v42;
+        manifestCopy = v42;
         v35 = v40;
       }
 
       else
       {
         v24 = 0;
-        v6 = v42;
+        manifestCopy = v42;
         v35 = v40;
       }
 
-      v12 = v41;
+      validDownloads = v41;
       goto LABEL_25;
     }
 
@@ -1049,28 +1049,28 @@ LABEL_26:
   return v24;
 }
 
-- (void)_showDialogForError:(id)a3
+- (void)_showDialogForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v9 = v7;
   }
@@ -1083,7 +1083,7 @@ LABEL_26:
   if (v9)
   {
     v26 = 138412290;
-    v27 = v4;
+    v27 = errorCopy;
     LODWORD(v25) = 12;
     v24 = &v26;
     v10 = _os_log_send_and_compose_impl();
@@ -1093,24 +1093,24 @@ LABEL_26:
       goto LABEL_13;
     }
 
-    v8 = [NSString stringWithCString:v10 encoding:4, &v26, v25];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v26, v25];
     free(v10);
-    v24 = v8;
+    v24 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_13:
-  v11 = [(LoadExternalDownloadManifestOperation *)self URLRequest];
-  v12 = [v11 URL];
+  uRLRequest = [(LoadExternalDownloadManifestOperation *)self URLRequest];
+  v12 = [uRLRequest URL];
 
   if (v12)
   {
-    v13 = [v12 host];
-    if ([v13 length] >= 0x1F5)
+    host = [v12 host];
+    if ([host length] >= 0x1F5)
     {
-      v14 = [v13 substringToIndex:500];
+      v14 = [host substringToIndex:500];
 
-      v13 = v14;
+      host = v14;
     }
 
     IsEqual = ISErrorIsEqual();
@@ -1127,7 +1127,7 @@ LABEL_13:
     }
 
     v19 = [v16 localizedStringForKey:v18 value:&stru_10033CC30 table:{0, v24}];
-    v20 = [NSString stringWithFormat:v19, v13];
+    v20 = [NSString stringWithFormat:v19, host];
 
     v21 = [[ISDialog alloc] initWithTitle:v20 message:0];
     v22 = +[ISOperationQueue mainQueue];

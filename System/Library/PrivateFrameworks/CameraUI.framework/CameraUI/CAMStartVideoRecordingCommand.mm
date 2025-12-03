@@ -1,39 +1,39 @@
 @interface CAMStartVideoRecordingCommand
-- (CAMStartVideoRecordingCommand)initWithCoder:(id)a3;
-- (CAMStartVideoRecordingCommand)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)_videoOrientationForCaptureOrientation:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMStartVideoRecordingCommand)initWithCoder:(id)coder;
+- (CAMStartVideoRecordingCommand)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)_videoOrientationForCaptureOrientation:(int64_t)orientation;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMStartVideoRecordingCommand
 
-- (CAMStartVideoRecordingCommand)initWithRequest:(id)a3
+- (CAMStartVideoRecordingCommand)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = CAMStartVideoRecordingCommand;
   v6 = [(CAMCaptureCommand *)&v10 initWithSubcommands:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__request, a3);
+    objc_storeStrong(&v6->__request, request);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (CAMStartVideoRecordingCommand)initWithCoder:(id)a3
+- (CAMStartVideoRecordingCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CAMStartVideoRecordingCommand;
-  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMStartVideoRecordingCommandRequest"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMStartVideoRecordingCommandRequest"];
     request = v5->__request;
     v5->__request = v6;
 
@@ -43,90 +43,90 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CAMStartVideoRecordingCommand *)self _request];
-  [v4 encodeObject:v5 forKey:@"CAMStartVideoRecordingCommandRequest"];
+  coderCopy = coder;
+  _request = [(CAMStartVideoRecordingCommand *)self _request];
+  [coderCopy encodeObject:_request forKey:@"CAMStartVideoRecordingCommandRequest"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CAMStartVideoRecordingCommand;
-  v4 = [(CAMCaptureCommand *)&v9 copyWithZone:a3];
-  v5 = [(CAMStartVideoRecordingCommand *)self _request];
-  v6 = [v5 copy];
+  v4 = [(CAMCaptureCommand *)&v9 copyWithZone:zone];
+  _request = [(CAMStartVideoRecordingCommand *)self _request];
+  v6 = [_request copy];
   v7 = v4[3];
   v4[3] = v6;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMStartVideoRecordingCommand *)self _request];
-  v6 = [v5 localDestinationURL];
-  v7 = [v6 path];
+  contextCopy = context;
+  _request = [(CAMStartVideoRecordingCommand *)self _request];
+  localDestinationURL = [_request localDestinationURL];
+  path = [localDestinationURL path];
 
-  if (!v7)
+  if (!path)
   {
     v8 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CAMStartVideoRecordingCommand *)v6 executeWithContext:v8];
+      [(CAMStartVideoRecordingCommand *)localDestinationURL executeWithContext:v8];
     }
   }
 
-  v9 = [v4 currentMovieFileOutput];
-  v10 = [v9 connectionWithMediaType:*MEMORY[0x1E6987608]];
-  v11 = [v5 captureOrientation];
-  [v10 setVideoOrientation:{-[CAMStartVideoRecordingCommand _videoOrientationForCaptureOrientation:](self, "_videoOrientationForCaptureOrientation:", v11)}];
-  v23 = [MEMORY[0x1E695DF00] date];
-  v22 = +[CAMPersistenceController clientVideoMetadataForRequest:withCreationDate:isEV0ForHDR:livePhotoIdentifierOverride:slomoPlayback:](CAMPersistenceController, "clientVideoMetadataForRequest:withCreationDate:isEV0ForHDR:livePhotoIdentifierOverride:slomoPlayback:", v5, v23, 0, 0, [v5 captureMode] == 2);
-  [v9 setMetadata:?];
-  [v5 maximumRecordedDuration];
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
+  v10 = [currentMovieFileOutput connectionWithMediaType:*MEMORY[0x1E6987608]];
+  captureOrientation = [_request captureOrientation];
+  [v10 setVideoOrientation:{-[CAMStartVideoRecordingCommand _videoOrientationForCaptureOrientation:](self, "_videoOrientationForCaptureOrientation:", captureOrientation)}];
+  date = [MEMORY[0x1E695DF00] date];
+  v22 = +[CAMPersistenceController clientVideoMetadataForRequest:withCreationDate:isEV0ForHDR:livePhotoIdentifierOverride:slomoPlayback:](CAMPersistenceController, "clientVideoMetadataForRequest:withCreationDate:isEV0ForHDR:livePhotoIdentifierOverride:slomoPlayback:", _request, date, 0, 0, [_request captureMode] == 2);
+  [currentMovieFileOutput setMetadata:?];
+  [_request maximumRecordedDuration];
   if (v12 > 0.0)
   {
     CMTimeMake(&v26, v12, 1);
-    [v9 setMaxRecordedDuration:&v26];
+    [currentMovieFileOutput setMaxRecordedDuration:&v26];
   }
 
-  v13 = [v5 maximumRecordedFileSize];
-  if (v13 >= 1)
+  maximumRecordedFileSize = [_request maximumRecordedFileSize];
+  if (maximumRecordedFileSize >= 1)
   {
-    [v9 setMaxRecordedFileSize:v13];
+    [currentMovieFileOutput setMaxRecordedFileSize:maximumRecordedFileSize];
   }
 
-  [v9 setMinFreeDiskSpaceLimit:{objc_msgSend(v5, "remainingDiskUsageThreshold")}];
-  [v9 setSendsLastVideoPreviewFrame:{objc_msgSend(v5, "shouldGenerateVideoPreviewImage")}];
-  v14 = [v5 videoEncodingBehavior];
-  v15 = [v9 availableVideoCodecTypes];
-  v16 = [CAMCaptureEncodingUtilities selectVideoCodecFromAvailableCodecs:v15 withBehavior:v14];
+  [currentMovieFileOutput setMinFreeDiskSpaceLimit:{objc_msgSend(_request, "remainingDiskUsageThreshold")}];
+  [currentMovieFileOutput setSendsLastVideoPreviewFrame:{objc_msgSend(_request, "shouldGenerateVideoPreviewImage")}];
+  videoEncodingBehavior = [_request videoEncodingBehavior];
+  availableVideoCodecTypes = [currentMovieFileOutput availableVideoCodecTypes];
+  v16 = [CAMCaptureEncodingUtilities selectVideoCodecFromAvailableCodecs:availableVideoCodecTypes withBehavior:videoEncodingBehavior];
   v17 = v16;
   if (v16)
   {
     v24 = *MEMORY[0x1E6987CB0];
     v25 = v16;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v9 setOutputSettings:v18 forConnection:v10];
+    [currentMovieFileOutput setOutputSettings:v18 forConnection:v10];
   }
 
-  [v4 registerVideoCaptureRequest:v5];
-  [v4 updateControlEnablementForRecording:1 mode:objc_msgSend(v5 devicePosition:"captureMode") depthSuggestionEnabled:{objc_msgSend(v5, "captureDevicePosition"), 0}];
-  [v4 updateLensSelectorForRecording:1 mode:objc_msgSend(v5 devicePosition:{"captureMode"), objc_msgSend(v5, "captureDevicePosition")}];
-  v19 = [v4 currentRecordingDelegate];
-  [v9 startRecordingToOutputFileURL:v6 recordingDelegate:v19];
-  if (v11 >= 5)
+  [contextCopy registerVideoCaptureRequest:_request];
+  [contextCopy updateControlEnablementForRecording:1 mode:objc_msgSend(_request devicePosition:"captureMode") depthSuggestionEnabled:{objc_msgSend(_request, "captureDevicePosition"), 0}];
+  [contextCopy updateLensSelectorForRecording:1 mode:objc_msgSend(_request devicePosition:{"captureMode"), objc_msgSend(_request, "captureDevicePosition")}];
+  currentRecordingDelegate = [contextCopy currentRecordingDelegate];
+  [currentMovieFileOutput startRecordingToOutputFileURL:localDestinationURL recordingDelegate:currentRecordingDelegate];
+  if (captureOrientation >= 5)
   {
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", v11];
+    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected:%ld", captureOrientation];
   }
 
   else
   {
-    v20 = off_1E76FB388[v11];
+    v20 = off_1E76FB388[captureOrientation];
   }
 
   v21 = os_log_create("com.apple.camera", "Capture");
@@ -135,21 +135,21 @@
     LODWORD(v26.value) = 138543618;
     *(&v26.value + 4) = v20;
     LOWORD(v26.flags) = 2114;
-    *(&v26.flags + 2) = v6;
+    *(&v26.flags + 2) = localDestinationURL;
     _os_log_impl(&dword_1A3640000, v21, OS_LOG_TYPE_DEFAULT, "startRecordingToOutputFileURL: (%{public}@) url=%{public}@", &v26, 0x16u);
   }
 }
 
-- (int64_t)_videoOrientationForCaptureOrientation:(int64_t)a3
+- (int64_t)_videoOrientationForCaptureOrientation:(int64_t)orientation
 {
-  if ((a3 - 2) >= 3)
+  if ((orientation - 2) >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 

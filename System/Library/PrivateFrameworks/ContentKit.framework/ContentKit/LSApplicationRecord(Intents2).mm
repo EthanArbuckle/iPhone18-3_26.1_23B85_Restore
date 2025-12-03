@@ -7,23 +7,23 @@
 - (id)in2_supportedIntents
 {
   v35 = *MEMORY[0x277D85DE8];
-  v2 = [a1 applicationExtensionRecords];
-  v3 = [v2 allObjects];
-  v4 = [v3 if_objectsPassingTest:&__block_literal_global_198_14399];
+  applicationExtensionRecords = [self applicationExtensionRecords];
+  allObjects = [applicationExtensionRecords allObjects];
+  v4 = [allObjects if_objectsPassingTest:&__block_literal_global_198_14399];
   v5 = [v4 mutableCopy];
 
-  v6 = [a1 bundleIdentifier];
-  LOBYTE(v3) = [v6 hasPrefix:*MEMORY[0x277CD38C0]];
+  bundleIdentifier = [self bundleIdentifier];
+  LOBYTE(allObjects) = [bundleIdentifier hasPrefix:*MEMORY[0x277CD38C0]];
 
-  if (v3)
+  if (allObjects)
   {
     v7 = @"com.apple.WorkflowKit.ShortcutsIntents";
   }
 
   else
   {
-    v8 = [a1 bundleIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.mobiletimer"];
+    bundleIdentifier2 = [self bundleIdentifier];
+    v9 = [bundleIdentifier2 isEqualToString:@"com.apple.mobiletimer"];
 
     if (!v9)
     {
@@ -38,7 +38,7 @@
 
 LABEL_6:
   v29 = [MEMORY[0x277CBEB58] set];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -60,15 +60,15 @@ LABEL_6:
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
-        v19 = [v18 if_extensionAttributesDictionary];
-        v20 = [v19 objectForKeyedSubscript:v16];
+        if_extensionAttributesDictionary = [v18 if_extensionAttributesDictionary];
+        v20 = [if_extensionAttributesDictionary objectForKeyedSubscript:v16];
         if ([v20 count])
         {
-          v21 = [v18 extensionPointRecord];
-          v22 = [v21 identifier];
+          extensionPointRecord = [v18 extensionPointRecord];
+          identifier = [extensionPointRecord identifier];
 
           v23 = [MEMORY[0x277CBEB98] setWithArray:v20];
-          [v11 setObject:v23 forKeyedSubscript:v22];
+          [dictionary setObject:v23 forKeyedSubscript:identifier];
 
           [v29 addObjectsFromArray:v20];
         }
@@ -81,8 +81,8 @@ LABEL_6:
   }
 
   v24 = MEMORY[0x277CBEB58];
-  v25 = [v28 supportedIntents];
-  v26 = [v24 setWithArray:v25];
+  supportedIntents = [v28 supportedIntents];
+  v26 = [v24 setWithArray:supportedIntents];
 
   [v26 unionSet:v29];
 

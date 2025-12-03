@@ -1,63 +1,63 @@
 @interface UIDocumentViewControllerLaunchOptions
-+ (id)createDocumentActionWithIntent:(id)a3;
++ (id)createDocumentActionWithIntent:(id)intent;
 - (BOOL)_isDocumentViewControllerConsideredRootViewController;
 - (UIView)documentTargetView;
 - (id)_documentUnavailableConfiguration;
 - (id)defaultBrowserViewController;
-- (id)initWithDocumentViewController:(void *)a1;
+- (id)initWithDocumentViewController:(void *)controller;
 - (void)_dismissBrowserViewController;
 - (void)_documentCloseStateDidChange;
 - (void)_documentDidChange;
 - (void)_documentProgressStateDidChange;
-- (void)_prepareBrowserViewController:(id)a3;
-- (void)_presentAlertForDocumentAtURL:(id)a3 error:(id)a4 isImport:(BOOL)a5;
+- (void)_prepareBrowserViewController:(id)controller;
+- (void)_presentAlertForDocumentAtURL:(id)l error:(id)error isImport:(BOOL)import;
 - (void)_presentBrowserViewController;
-- (void)_replaceDocumentWithDocumentAtURL:(id)a3 isImport:(BOOL)a4;
+- (void)_replaceDocumentWithDocumentAtURL:(id)l isImport:(BOOL)import;
 - (void)_setNeedsUpdateDocumentUnavailableConfiguration;
-- (void)_setOverridePasteActionUTTypes:(id)a3;
-- (void)_setPrimaryMenu:(id)a3;
-- (void)_setSecondaryMenu:(id)a3;
-- (void)_setTintColor:(id)a3;
-- (void)documentLandingBrowser:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentLandingBrowser:(id)a3 didRequestDocumentCreationWithHandler:(id)a4;
-- (void)documentLandingBrowserDidEndDocumentCreation:(id)a3 importedURL:(id)a4 canceled:(BOOL)a5 error:(id)a6;
-- (void)documentLandingBrowserWillStartDocumentCreation:(id)a3;
-- (void)setBackground:(id)a3;
-- (void)setBackgroundAccessoryView:(id)a3;
-- (void)setBrowserViewController:(id)a3;
-- (void)setDocumentTargetView:(id)a3;
-- (void)setForegroundAccessoryView:(id)a3;
-- (void)setPrimaryAction:(id)a3;
-- (void)setSecondaryAction:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_setOverridePasteActionUTTypes:(id)types;
+- (void)_setPrimaryMenu:(id)menu;
+- (void)_setSecondaryMenu:(id)menu;
+- (void)_setTintColor:(id)color;
+- (void)documentLandingBrowser:(id)browser didPickDocumentsAtURLs:(id)ls;
+- (void)documentLandingBrowser:(id)browser didRequestDocumentCreationWithHandler:(id)handler;
+- (void)documentLandingBrowserDidEndDocumentCreation:(id)creation importedURL:(id)l canceled:(BOOL)canceled error:(id)error;
+- (void)documentLandingBrowserWillStartDocumentCreation:(id)creation;
+- (void)setBackground:(id)background;
+- (void)setBackgroundAccessoryView:(id)view;
+- (void)setBrowserViewController:(id)controller;
+- (void)setDocumentTargetView:(id)view;
+- (void)setForegroundAccessoryView:(id)view;
+- (void)setPrimaryAction:(id)action;
+- (void)setSecondaryAction:(id)action;
+- (void)setTitle:(id)title;
 @end
 
 @implementation UIDocumentViewControllerLaunchOptions
 
-- (id)initWithDocumentViewController:(void *)a1
+- (id)initWithDocumentViewController:(void *)controller
 {
-  if (!a1)
+  if (!controller)
   {
     return 0;
   }
 
-  v17.receiver = a1;
+  v17.receiver = controller;
   v17.super_class = UIDocumentViewControllerLaunchOptions;
   v3 = objc_msgSendSuper2(&v17, sel_init);
   v4 = v3;
   if (v3)
   {
     objc_storeWeak(v3 + 18, a2);
-    v5 = [(UIDocumentViewControllerLaunchOptions *)v4 defaultBrowserViewController];
+    defaultBrowserViewController = [(UIDocumentViewControllerLaunchOptions *)v4 defaultBrowserViewController];
     v6 = v4[7];
-    v4[7] = v5;
+    v4[7] = defaultBrowserViewController;
 
-    v7 = [UIApp _localizedApplicationName];
+    _localizedApplicationName = [UIApp _localizedApplicationName];
     v8 = v4[8];
-    v4[8] = v7;
+    v4[8] = _localizedApplicationName;
 
-    v9 = [(UIDocumentViewControllerLaunchOptions *)v4 defaultBrowserViewController];
-    if ([v9 allowsDocumentCreation])
+    defaultBrowserViewController2 = [(UIDocumentViewControllerLaunchOptions *)v4 defaultBrowserViewController];
+    if ([defaultBrowserViewController2 allowsDocumentCreation])
     {
       v10 = [UIDocumentViewControllerLaunchOptions createDocumentActionWithIntent:@"UIDocumentCreationIntentDefault"];
     }
@@ -84,17 +84,17 @@
 
 - (id)defaultBrowserViewController
 {
-  v2 = a1 + 14;
-  v3 = a1[14];
+  v2 = self + 14;
+  v3 = self[14];
   if (!v3)
   {
     v4 = +[_UIApplicationInfoParser mainBundleInfoParser];
-    v5 = [v4 viewerRoleDocumentUTTypes];
+    viewerRoleDocumentUTTypes = [v4 viewerRoleDocumentUTTypes];
 
     v6 = +[_UIApplicationInfoParser mainBundleInfoParser];
-    v7 = [v6 editorRoleDocumentUTTypes];
+    editorRoleDocumentUTTypes = [v6 editorRoleDocumentUTTypes];
 
-    v8 = [v5 arrayByAddingObjectsFromArray:v7];
+    v8 = [viewerRoleDocumentUTTypes arrayByAddingObjectsFromArray:editorRoleDocumentUTTypes];
     v13 = 0;
     v14 = &v13;
     v15 = 0x2050000000;
@@ -114,32 +114,32 @@
     v10 = v9;
     _Block_object_dispose(&v13, 8);
     v3 = [[v9 alloc] initForOpeningContentTypes:v8];
-    [v3 setAllowsDocumentCreation:{objc_msgSend(v7, "count") != 0}];
-    [a1 _prepareBrowserViewController:v3];
+    [v3 setAllowsDocumentCreation:{objc_msgSend(editorRoleDocumentUTTypes, "count") != 0}];
+    [self _prepareBrowserViewController:v3];
     objc_storeStrong(v2, v3);
   }
 
   return v3;
 }
 
-- (void)setBrowserViewController:(id)a3
+- (void)setBrowserViewController:(id)controller
 {
   browserViewController = self->_browserViewController;
   p_browserViewController = &self->_browserViewController;
-  if (browserViewController != a3)
+  if (browserViewController != controller)
   {
-    objc_storeStrong(p_browserViewController, a3);
-    [(UIDocumentViewControllerLaunchOptions *)self _prepareBrowserViewController:a3];
+    objc_storeStrong(p_browserViewController, controller);
+    [(UIDocumentViewControllerLaunchOptions *)self _prepareBrowserViewController:controller];
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    v5 = [a3 copy];
+    v5 = [title copy];
     title = self->_title;
     self->_title = v5;
 
@@ -147,11 +147,11 @@
   }
 }
 
-- (void)setPrimaryAction:(id)a3
+- (void)setPrimaryAction:(id)action
 {
-  if (self->_primaryAction != a3)
+  if (self->_primaryAction != action)
   {
-    v5 = [a3 copy];
+    v5 = [action copy];
     primaryAction = self->_primaryAction;
     self->_primaryAction = v5;
 
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)setSecondaryAction:(id)a3
+- (void)setSecondaryAction:(id)action
 {
-  if (self->_secondaryAction != a3)
+  if (self->_secondaryAction != action)
   {
-    v5 = [a3 copy];
+    v5 = [action copy];
     secondaryAction = self->_secondaryAction;
     self->_secondaryAction = v5;
 
@@ -171,13 +171,13 @@
   }
 }
 
-- (void)setDocumentTargetView:(id)a3
+- (void)setDocumentTargetView:(id)view
 {
   documentTargetView = self->_documentTargetView;
   p_documentTargetView = &self->_documentTargetView;
-  if (documentTargetView != a3)
+  if (documentTargetView != view)
   {
-    objc_storeStrong(p_documentTargetView, a3);
+    objc_storeStrong(p_documentTargetView, view);
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 
@@ -188,94 +188,94 @@
 {
   if ((*&self->_flags & 2) != 0)
   {
-    v3 = self->_documentTargetView;
+    viewIfLoaded = self->_documentTargetView;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->__documentViewController);
-    v3 = [WeakRetained viewIfLoaded];
+    viewIfLoaded = [WeakRetained viewIfLoaded];
   }
 
-  return v3;
+  return viewIfLoaded;
 }
 
-- (void)setBackground:(id)a3
+- (void)setBackground:(id)background
 {
   p_background = &self->_background;
-  if (([(UIBackgroundConfiguration *)self->_background _isEqualToConfiguration:a3]& 1) == 0)
+  if (([(UIBackgroundConfiguration *)self->_background _isEqualToConfiguration:background]& 1) == 0)
   {
-    objc_storeStrong(p_background, a3);
+    objc_storeStrong(p_background, background);
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)setForegroundAccessoryView:(id)a3
+- (void)setForegroundAccessoryView:(id)view
 {
   foregroundAccessoryView = self->_foregroundAccessoryView;
   p_foregroundAccessoryView = &self->_foregroundAccessoryView;
-  if (foregroundAccessoryView != a3)
+  if (foregroundAccessoryView != view)
   {
-    objc_storeStrong(p_foregroundAccessoryView, a3);
+    objc_storeStrong(p_foregroundAccessoryView, view);
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)setBackgroundAccessoryView:(id)a3
+- (void)setBackgroundAccessoryView:(id)view
 {
   backgroundAccessoryView = self->_backgroundAccessoryView;
   p_backgroundAccessoryView = &self->_backgroundAccessoryView;
-  if (backgroundAccessoryView != a3)
+  if (backgroundAccessoryView != view)
   {
-    objc_storeStrong(p_backgroundAccessoryView, a3);
+    objc_storeStrong(p_backgroundAccessoryView, view);
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
   tintColor = self->_tintColor;
   p_tintColor = &self->_tintColor;
-  if (tintColor != a3)
+  if (tintColor != color)
   {
-    objc_storeStrong(p_tintColor, a3);
+    objc_storeStrong(p_tintColor, color);
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)_setPrimaryMenu:(id)a3
+- (void)_setPrimaryMenu:(id)menu
 {
   primaryMenu = self->_primaryMenu;
   p_primaryMenu = &self->_primaryMenu;
-  if (primaryMenu != a3)
+  if (primaryMenu != menu)
   {
-    objc_storeStrong(p_primaryMenu, a3);
+    objc_storeStrong(p_primaryMenu, menu);
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)_setSecondaryMenu:(id)a3
+- (void)_setSecondaryMenu:(id)menu
 {
   secondaryMenu = self->_secondaryMenu;
   p_secondaryMenu = &self->_secondaryMenu;
-  if (secondaryMenu != a3)
+  if (secondaryMenu != menu)
   {
-    objc_storeStrong(p_secondaryMenu, a3);
+    objc_storeStrong(p_secondaryMenu, menu);
 
     [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
-- (void)_setOverridePasteActionUTTypes:(id)a3
+- (void)_setOverridePasteActionUTTypes:(id)types
 {
-  if (self->_overridePasteActionUTTypes != a3)
+  if (self->_overridePasteActionUTTypes != types)
   {
-    v5 = [a3 copy];
+    v5 = [types copy];
     overridePasteActionUTTypes = self->_overridePasteActionUTTypes;
     self->_overridePasteActionUTTypes = v5;
 
@@ -283,16 +283,16 @@
   }
 }
 
-+ (id)createDocumentActionWithIntent:(id)a3
++ (id)createDocumentActionWithIntent:(id)intent
 {
-  if (![a3 length])
+  if (![intent length])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:200 description:@"UIDocumentCreationIntent should have a non-zero length"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:200 description:@"UIDocumentCreationIntent should have a non-zero length"];
   }
 
   v6 = _UILocalizedString(@"com.apple.documents.create.action", @"The title of the button that creates a new document.", @"Create Document");
-  v7 = [@"com.apple.documents.action.create.document." stringByAppendingString:a3];
+  v7 = [@"com.apple.documents.action.create.document." stringByAppendingString:intent];
   v8 = [UIAction actionWithTitle:v6 image:0 identifier:v7 handler:&__block_literal_global_617];
 
   return v8;
@@ -305,48 +305,48 @@
     self = objc_loadWeakRetained(&self->__documentViewController);
   }
 
-  v2 = self;
+  selfCopy = self;
   [(UIDocumentViewController *)self _setNeedsUpdateDocumentUnavailableConfiguration];
 }
 
 - (void)_documentDidChange
 {
-  if (a1)
+  if (self)
   {
-    v9 = a1[7];
+    v9 = self[7];
     if ([v9 isViewLoaded])
     {
       [v9 _endTransitionCoordinatorSession];
     }
 
-    WeakRetained = objc_loadWeakRetained(a1 + 18);
-    v3 = [WeakRetained document];
+    WeakRetained = objc_loadWeakRetained(self + 18);
+    document = [WeakRetained document];
 
-    if (v3)
+    if (document)
     {
-      v4 = [v3 fileURL];
-      objc_storeStrong(a1 + 15, v4);
+      fileURL = [document fileURL];
+      objc_storeStrong(self + 15, fileURL);
       if ([v9 isViewLoaded])
       {
-        [v9 _beginTransitionCoordinatorSessionForDocumentURL:v4];
+        [v9 _beginTransitionCoordinatorSessionForDocumentURL:fileURL];
       }
 
-      if ((_UIDocumentViewControllerWantsUIPDocumentLanding() & 1) == 0 && ([v3 documentState] & 1) == 0)
+      if ((_UIDocumentViewControllerWantsUIPDocumentLanding() & 1) == 0 && ([document documentState] & 1) == 0)
       {
-        [a1 _dismissBrowserViewController];
+        [self _dismissBrowserViewController];
       }
     }
 
-    v5 = a1[16];
+    v5 = self[16];
     if (v5)
     {
-      v6 = [v3 fileURL];
-      v7 = [v6 isEqual:v5];
+      fileURL2 = [document fileURL];
+      v7 = [fileURL2 isEqual:v5];
 
       if ((v7 & 1) == 0)
       {
-        v8 = a1[16];
-        a1[16] = 0;
+        v8 = self[16];
+        self[16] = 0;
       }
     }
   }
@@ -354,65 +354,65 @@
 
 - (void)_documentCloseStateDidChange
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 18);
-    v3 = [WeakRetained document];
+    WeakRetained = objc_loadWeakRetained(self + 18);
+    document = [WeakRetained document];
 
-    if ((_UIDocumentViewControllerWantsUIPDocumentLanding() & 1) == 0 && ([v3 documentState] & 1) == 0)
+    if ((_UIDocumentViewControllerWantsUIPDocumentLanding() & 1) == 0 && ([document documentState] & 1) == 0)
     {
-      [a1 _dismissBrowserViewController];
+      [self _dismissBrowserViewController];
     }
 
-    [a1 _setNeedsUpdateDocumentUnavailableConfiguration];
+    [self _setNeedsUpdateDocumentUnavailableConfiguration];
   }
 }
 
 - (void)_documentProgressStateDidChange
 {
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 56);
+    v7 = *(self + 56);
     if ([v7 isViewLoaded])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 144));
-      v3 = [WeakRetained document];
+      WeakRetained = objc_loadWeakRetained((self + 144));
+      document = [WeakRetained document];
 
-      v4 = [v3 fileURL];
-      v5 = [v7 transitionControllerForDocumentAtURL:v4];
+      fileURL = [document fileURL];
+      v5 = [v7 transitionControllerForDocumentAtURL:fileURL];
 
-      v6 = [v3 progress];
-      [v5 setLoadingProgress:v6];
+      progress = [document progress];
+      [v5 setLoadingProgress:progress];
     }
   }
 }
 
-- (void)documentLandingBrowser:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentLandingBrowser:(id)browser didPickDocumentsAtURLs:(id)ls
 {
-  v6 = [a3 delegate];
+  delegate = [browser delegate];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
   {
-    v8 = [a4 firstObject];
-    [(UIDocumentViewControllerLaunchOptions *)self _replaceDocumentWithDocumentAtURL:v8 isImport:0];
+    firstObject = [ls firstObject];
+    [(UIDocumentViewControllerLaunchOptions *)self _replaceDocumentWithDocumentAtURL:firstObject isImport:0];
   }
 }
 
-- (void)documentLandingBrowser:(id)a3 didRequestDocumentCreationWithHandler:(id)a4
+- (void)documentLandingBrowser:(id)browser didRequestDocumentCreationWithHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v7 = [a3 contentTypesForRecentDocuments];
+  contentTypesForRecentDocuments = [browser contentTypesForRecentDocuments];
   v8 = MEMORY[0x1E695DFD8];
   v9 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v10 = [v9 editorRoleDocumentUTTypes];
-  v11 = [v8 setWithArray:v10];
+  editorRoleDocumentUTTypes = [v9 editorRoleDocumentUTTypes];
+  v11 = [v8 setWithArray:editorRoleDocumentUTTypes];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v12 = v7;
+  v12 = contentTypesForRecentDocuments;
   v13 = [v12 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (!v13)
   {
@@ -442,7 +442,7 @@ LABEL_22:
       }
     }
 
-    (*(a4 + 2))(a4, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
     goto LABEL_24;
   }
 
@@ -483,17 +483,17 @@ LABEL_3:
   }
 
   v19 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v20 = [v19 utTypeToDocumentClassMap];
+  utTypeToDocumentClassMap = [v19 utTypeToDocumentClassMap];
 
-  v21 = [v20 objectForKeyedSubscript:v18];
+  v21 = [utTypeToDocumentClassMap objectForKeyedSubscript:v18];
   if (!v21 || ([v21 isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:307 description:{@"Expected UIDocument subclass for %@. Received: %@", v18, v21}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:307 description:{@"Expected UIDocument subclass for %@. Received: %@", v18, v21}];
   }
 
-  v22 = [a3 activeDocumentCreationIntent];
-  v23 = [v22 isEqualToString:@"UIDocumentCreationIntentDefault"];
+  activeDocumentCreationIntent = [browser activeDocumentCreationIntent];
+  v23 = [activeDocumentCreationIntent isEqualToString:@"UIDocumentCreationIntentDefault"];
 
   if ((v23 & 1) == 0)
   {
@@ -501,20 +501,20 @@ LABEL_3:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = v24;
-      v26 = [a3 activeDocumentCreationIntent];
+      activeDocumentCreationIntent2 = [browser activeDocumentCreationIntent];
       *buf = 138412546;
       v47 = @"UIDocumentCreationIntentDefault";
       v48 = 2112;
-      v49 = v26;
+      v49 = activeDocumentCreationIntent2;
       _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "UIDocumentBrowserViewController requested the creation of a document with an app-defined intent. Falling back to creating a document for %@. To control the document created for %@, implement [UIDocumentBrowserViewControllerDelegate documentBrowser:didRequestDocumentCreationWithHandler:].", buf, 0x16u);
     }
   }
 
-  v27 = [MEMORY[0x1E696AC08] defaultManager];
-  v28 = [v27 temporaryDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
 
   v29 = _UILocalizedString(@"com.apple.documents.untitled.document", @"The default title of a new document.", @"Untitled");
-  v30 = [v28 URLByAppendingPathComponent:v29 conformingToType:v18];
+  v30 = [temporaryDirectory URLByAppendingPathComponent:v29 conformingToType:v18];
 
   v31 = [[v21 alloc] initWithFileURL:v30];
   v38[0] = MEMORY[0x1E69E9820];
@@ -522,7 +522,7 @@ LABEL_3:
   v38[2] = __102__UIDocumentViewControllerLaunchOptions_documentLandingBrowser_didRequestDocumentCreationWithHandler___block_invoke;
   v38[3] = &unk_1E7105F98;
   v40 = v30;
-  v41 = a4;
+  handlerCopy = handler;
   v39 = v31;
   v32 = v30;
   v33 = v31;
@@ -568,66 +568,66 @@ uint64_t __102__UIDocumentViewControllerLaunchOptions_documentLandingBrowser_did
   }
 }
 
-- (void)documentLandingBrowserWillStartDocumentCreation:(id)a3
+- (void)documentLandingBrowserWillStartDocumentCreation:(id)creation
 {
   flags = self->_flags;
   if ((flags & 4) != 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:345 description:@"UIKit internal inconsistency: attempted to begin document creation session whilst an existing session is active"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:345 description:@"UIKit internal inconsistency: attempted to begin document creation session whilst an existing session is active"];
 
     flags = self->_flags;
   }
 
   *&self->_flags = flags | 4;
-  v6 = [a3 activeDocumentCreationIntent];
-  objc_storeStrong(&self->_documentCreationIntent, v6);
+  activeDocumentCreationIntent = [creation activeDocumentCreationIntent];
+  objc_storeStrong(&self->_documentCreationIntent, activeDocumentCreationIntent);
 
   [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
 }
 
-- (void)documentLandingBrowserDidEndDocumentCreation:(id)a3 importedURL:(id)a4 canceled:(BOOL)a5 error:(id)a6
+- (void)documentLandingBrowserDidEndDocumentCreation:(id)creation importedURL:(id)l canceled:(BOOL)canceled error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
   *&self->_flags &= ~4u;
-  if (a6)
+  if (error)
   {
     v10 = *(__UILogGetCategoryCachedImpl("UIDocument", &documentLandingBrowserDidEndDocumentCreation_importedURL_canceled_error____s_category) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = a6;
+      errorCopy = error;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Failed to create document. Error: %@", &v15, 0xCu);
     }
 
-    v11 = [a3 delegate];
+    delegate = [creation delegate];
     v12 = objc_opt_respondsToSelector();
 
     if ((v12 & 1) == 0)
     {
-      [(UIDocumentViewControllerLaunchOptions *)self _presentAlertForDocumentAtURL:a4 error:a6 isImport:1];
+      [(UIDocumentViewControllerLaunchOptions *)self _presentAlertForDocumentAtURL:l error:error isImport:1];
     }
   }
 
-  objc_storeStrong(&self->_createdDocumentURL, a4);
+  objc_storeStrong(&self->_createdDocumentURL, l);
   [(UIDocumentViewControllerLaunchOptions *)self _setNeedsUpdateDocumentUnavailableConfiguration];
-  if (a4)
+  if (l)
   {
-    v13 = [a3 delegate];
+    delegate2 = [creation delegate];
     v14 = objc_opt_respondsToSelector();
 
     if ((v14 & 1) == 0)
     {
-      [(UIDocumentViewControllerLaunchOptions *)self _replaceDocumentWithDocumentAtURL:a4 isImport:1];
+      [(UIDocumentViewControllerLaunchOptions *)self _replaceDocumentWithDocumentAtURL:l isImport:1];
     }
   }
 }
 
-- (void)_replaceDocumentWithDocumentAtURL:(id)a3 isImport:(BOOL)a4
+- (void)_replaceDocumentWithDocumentAtURL:(id)l isImport:(BOOL)import
 {
-  v4 = a4;
+  importCopy = import;
   v10 = 0;
-  v7 = [UIDocument _documentWithContentsOfFileURL:a3 error:&v10];
+  v7 = [UIDocument _documentWithContentsOfFileURL:l error:&v10];
   v8 = v10;
   if (v7)
   {
@@ -646,27 +646,27 @@ uint64_t __102__UIDocumentViewControllerLaunchOptions_documentLandingBrowser_did
 
   else
   {
-    [(UIDocumentViewControllerLaunchOptions *)self _presentAlertForDocumentAtURL:a3 error:v8 isImport:v4];
+    [(UIDocumentViewControllerLaunchOptions *)self _presentAlertForDocumentAtURL:l error:v8 isImport:importCopy];
   }
 }
 
-- (void)_presentAlertForDocumentAtURL:(id)a3 error:(id)a4 isImport:(BOOL)a5
+- (void)_presentAlertForDocumentAtURL:(id)l error:(id)error isImport:(BOOL)import
 {
-  v5 = a5;
-  v7 = a3;
-  if (a3)
+  importCopy = import;
+  lCopy = l;
+  if (l)
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v7 path];
-    v7 = [v9 displayNameAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [lCopy path];
+    lCopy = [defaultManager displayNameAtPath:path];
   }
 
-  if (v5)
+  if (importCopy)
   {
     v31 = _UILocalizedString(@"com.apple.documents.error.import.title", @"The title of an alert presented when a document could not be imported.", @"Unable to Import Document");
-    if (v7)
+    if (lCopy)
     {
-      _UILocalizedFormat(@"com.apple.documents.error.import.message", @"The message of an alert presented when a document could not be imported.", @"The document “%@” could not be imported.", v11, v12, v13, v14, v15, v7);
+      _UILocalizedFormat(@"com.apple.documents.error.import.message", @"The message of an alert presented when a document could not be imported.", @"The document “%@” could not be imported.", v11, v12, v13, v14, v15, lCopy);
       v21 = LABEL_8:;
       goto LABEL_10;
     }
@@ -675,28 +675,28 @@ uint64_t __102__UIDocumentViewControllerLaunchOptions_documentLandingBrowser_did
   else
   {
     v31 = _UILocalizedString(@"com.apple.documents.error.open.title", @"The title of an alert presented when a document could not be opened.", @"Unable to Open Document");
-    if (v7)
+    if (lCopy)
     {
-      _UILocalizedFormat(@"com.apple.documents.error.open.message", @"The message of an alert presented when a document could not be opened.", @"The document “%@” could not be opened.", v16, v17, v18, v19, v20, v7);
+      _UILocalizedFormat(@"com.apple.documents.error.open.message", @"The message of an alert presented when a document could not be opened.", @"The document “%@” could not be opened.", v16, v17, v18, v19, v20, lCopy);
       goto LABEL_8;
     }
   }
 
   v21 = 0;
 LABEL_10:
-  v22 = [a4 localizedFailureReason];
-  v23 = v22;
-  if (v22)
+  localizedFailureReason = [error localizedFailureReason];
+  v23 = localizedFailureReason;
+  if (localizedFailureReason)
   {
-    v24 = v22;
+    localizedDescription = localizedFailureReason;
   }
 
   else
   {
-    v24 = [a4 localizedDescription];
+    localizedDescription = [error localizedDescription];
   }
 
-  v25 = v24;
+  v25 = localizedDescription;
 
   if (v21 && [v25 length])
   {
@@ -725,65 +725,65 @@ LABEL_10:
 
 - (id)_documentUnavailableConfiguration
 {
-  if (!a1)
+  if (!self)
   {
     v4 = 0;
     goto LABEL_34;
   }
 
   v2 = [_UIDocumentUnavailableConfiguration alloc];
-  v3 = [a1 browserViewController];
-  v4 = [(_UIDocumentUnavailableConfiguration *)v2 initWithBrowserViewController:v3];
+  browserViewController = [self browserViewController];
+  v4 = [(_UIDocumentUnavailableConfiguration *)v2 initWithBrowserViewController:browserViewController];
 
-  v6 = [a1 title];
+  title = [self title];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v5, v6, 80);
+    objc_setProperty_nonatomic_copy(v4, v5, title, 80);
   }
 
-  v8 = [a1 primaryAction];
+  primaryAction = [self primaryAction];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v7, v8, 88);
+    objc_setProperty_nonatomic_copy(v4, v7, primaryAction, 88);
   }
 
-  v10 = [a1 secondaryAction];
+  secondaryAction = [self secondaryAction];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v9, v10, 96);
+    objc_setProperty_nonatomic_copy(v4, v9, secondaryAction, 96);
   }
 
-  v11 = [a1 documentTargetView];
-  [(UITabBarControllerSidebar *)v4 set_activeTransaction:v11];
+  documentTargetView = [self documentTargetView];
+  [(UITabBarControllerSidebar *)v4 set_activeTransaction:documentTargetView];
 
-  v12 = [a1 background];
-  [(_UISplitViewControllerAdaptiveColumn *)v4 setTogglePrimaryEdgeBarButtonItem:v12];
+  background = [self background];
+  [(_UISplitViewControllerAdaptiveColumn *)v4 setTogglePrimaryEdgeBarButtonItem:background];
 
-  v13 = [a1 foregroundAccessoryView];
-  [(_UISplitViewControllerAdaptiveColumn *)v4 setToggleSecondaryEdgeBarButtonItem:v13];
+  foregroundAccessoryView = [self foregroundAccessoryView];
+  [(_UISplitViewControllerAdaptiveColumn *)v4 setToggleSecondaryEdgeBarButtonItem:foregroundAccessoryView];
 
-  v14 = [a1 backgroundAccessoryView];
-  [(_UISplitViewControllerAdaptiveColumn *)v4 setToggleSecondaryOnlyBarButtonItem:v14];
+  backgroundAccessoryView = [self backgroundAccessoryView];
+  [(_UISplitViewControllerAdaptiveColumn *)v4 setToggleSecondaryOnlyBarButtonItem:backgroundAccessoryView];
 
-  v15 = [a1 _tintColor];
-  [(_UIDocumentUnavailableConfiguration *)v4 set_tintColor:v15];
+  _tintColor = [self _tintColor];
+  [(_UIDocumentUnavailableConfiguration *)v4 set_tintColor:_tintColor];
 
-  v17 = [a1 _primaryMenu];
+  _primaryMenu = [self _primaryMenu];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v16, v17, 16);
+    objc_setProperty_nonatomic_copy(v4, v16, _primaryMenu, 16);
   }
 
-  v19 = [a1 _secondaryMenu];
+  _secondaryMenu = [self _secondaryMenu];
   if (v4)
   {
-    objc_setProperty_nonatomic_copy(v4, v18, v19, 24);
+    objc_setProperty_nonatomic_copy(v4, v18, _secondaryMenu, 24);
   }
 
-  if (![*(a1 + 48) count])
+  if (![*(self + 48) count])
   {
     v28 = +[_UIApplicationInfoParser mainBundleInfoParser];
-    v21 = [v28 editorRoleDocumentUTTypes];
+    editorRoleDocumentUTTypes = [v28 editorRoleDocumentUTTypes];
 
     if (!v4)
     {
@@ -793,22 +793,22 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v21 = *(a1 + 48);
+  editorRoleDocumentUTTypes = *(self + 48);
   if (v4)
   {
 LABEL_14:
-    objc_setProperty_nonatomic_copy(v4, v20, v21, 32);
+    objc_setProperty_nonatomic_copy(v4, v20, editorRoleDocumentUTTypes, 32);
   }
 
 LABEL_15:
 
   [(UIBackgroundConfiguration *)v4 _setBackgroundColor:?];
-  WeakRetained = objc_loadWeakRetained((a1 + 144));
-  v23 = [WeakRetained document];
+  WeakRetained = objc_loadWeakRetained((self + 144));
+  document = [WeakRetained document];
 
-  if (v23)
+  if (document)
   {
-    if ([v23 documentState])
+    if ([document documentState])
     {
       v24 = 9;
     }
@@ -818,8 +818,8 @@ LABEL_15:
       v24 = 1;
     }
 
-    v25 = [v23 fileURL];
-    v26 = [v25 isEqual:*(a1 + 128)];
+    fileURL = [document fileURL];
+    v26 = [fileURL isEqual:*(self + 128)];
 
     if (v26)
     {
@@ -837,7 +837,7 @@ LABEL_15:
     v27 = 0;
   }
 
-  v29 = *(a1 + 8);
+  v29 = *(self + 8);
 
   if (v4)
   {
@@ -847,7 +847,7 @@ LABEL_15:
   [(_UICollectionLayoutListAttributes *)v4 setSeparatorVisualEffect:?];
   if (_UIDocumentViewControllerWantsUIPDocumentLanding())
   {
-    v30 = objc_loadWeakRetained((a1 + 144));
+    v30 = objc_loadWeakRetained((self + 144));
     if (v30)
     {
       v31 = (v30[992] & 1) == 0;
@@ -882,99 +882,99 @@ LABEL_34:
   return v4;
 }
 
-- (void)_prepareBrowserViewController:(id)a3
+- (void)_prepareBrowserViewController:(id)controller
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 documentLandingPresenter];
+  documentLandingPresenter = [controller documentLandingPresenter];
 
-  if (v6)
+  if (documentLandingPresenter)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    v14 = [a3 documentLandingPresenter];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:476 description:{@"Attempted to set browser view controller that is already associated with another launch options instance. Browser view controller: %@; Existing launch options: %@", a3, v14}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    documentLandingPresenter2 = [controller documentLandingPresenter];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentViewControllerLaunchOptions.m" lineNumber:476 description:{@"Attempted to set browser view controller that is already associated with another launch options instance. Browser view controller: %@; Existing launch options: %@", controller, documentLandingPresenter2}];
   }
 
-  [a3 setDocumentLandingPresenter:self];
+  [controller setDocumentLandingPresenter:self];
   if (_UIDocumentViewControllerWantsUIPDocumentLanding())
   {
     if (objc_opt_respondsToSelector())
     {
 
-      [a3 _didAttachToDocumentLaunchOptionsForUseInUIPDocumentLanding];
+      [controller _didAttachToDocumentLaunchOptionsForUseInUIPDocumentLanding];
     }
   }
 
   else
   {
-    v7 = [a3 configuration];
-    [v7 setForPickingDocuments:1];
+    configuration = [controller configuration];
+    [configuration setForPickingDocuments:1];
 
-    v8 = [a3 configuration];
-    [v8 setShouldHideCatalystHostWindow:0];
+    configuration2 = [controller configuration];
+    [configuration2 setShouldHideCatalystHostWindow:0];
 
-    v9 = [a3 additionalTrailingNavigationBarButtonItems];
+    additionalTrailingNavigationBarButtonItems = [controller additionalTrailingNavigationBarButtonItems];
     v10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:sel__dismissBrowserViewController];
     v15[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-    v12 = [v9 arrayByAddingObjectsFromArray:v11];
-    [a3 setAdditionalTrailingNavigationBarButtonItems:v12];
+    v12 = [additionalTrailingNavigationBarButtonItems arrayByAddingObjectsFromArray:v11];
+    [controller setAdditionalTrailingNavigationBarButtonItems:v12];
   }
 }
 
 - (void)_presentBrowserViewController
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1 browserViewController];
-    v2 = [v4 presentingViewController];
+    browserViewController = [self browserViewController];
+    presentingViewController = [browserViewController presentingViewController];
 
-    if (!v2)
+    if (!presentingViewController)
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 18);
-      [WeakRetained presentViewController:v4 animated:1 completion:0];
+      WeakRetained = objc_loadWeakRetained(self + 18);
+      [WeakRetained presentViewController:browserViewController animated:1 completion:0];
     }
   }
 }
 
 - (void)_dismissBrowserViewController
 {
-  v5 = [(UIDocumentViewControllerLaunchOptions *)self browserViewController];
-  v2 = [v5 presentingViewController];
+  browserViewController = [(UIDocumentViewControllerLaunchOptions *)self browserViewController];
+  presentingViewController = [browserViewController presentingViewController];
 
-  if (v2)
+  if (presentingViewController)
   {
-    [v5 dismissViewControllerAnimated:1 completion:0];
-    v3 = [v5 activePresentationController];
-    [v3 _sendDismissalsAsNeeded];
+    [browserViewController dismissViewControllerAnimated:1 completion:0];
+    activePresentationController = [browserViewController activePresentationController];
+    [activePresentationController _sendDismissalsAsNeeded];
   }
 
-  [v5 dismissViewControllerAnimated:1 completion:0];
-  v4 = [v5 activePresentationController];
-  [v4 _sendDismissalsAsNeeded];
+  [browserViewController dismissViewControllerAnimated:1 completion:0];
+  activePresentationController2 = [browserViewController activePresentationController];
+  [activePresentationController2 _sendDismissalsAsNeeded];
 }
 
 - (BOOL)_isDocumentViewControllerConsideredRootViewController
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 144));
-  v2 = [WeakRetained _window];
-  v3 = [v2 rootViewController];
+  WeakRetained = objc_loadWeakRetained((self + 144));
+  _window = [WeakRetained _window];
+  rootViewController = [_window rootViewController];
 
-  if (v3 != WeakRetained)
+  if (rootViewController != WeakRetained)
   {
-    v4 = [WeakRetained navigationController];
-    v5 = [v2 rootViewController];
-    v6 = v5;
-    if (v5 == v4)
+    navigationController = [WeakRetained navigationController];
+    rootViewController2 = [_window rootViewController];
+    v6 = rootViewController2;
+    if (rootViewController2 == navigationController)
     {
-      v8 = [v4 viewControllers];
-      v9 = [v8 firstObject];
+      viewControllers = [navigationController viewControllers];
+      firstObject = [viewControllers firstObject];
 
-      if (v9 == WeakRetained)
+      if (firstObject == WeakRetained)
       {
         v7 = 1;
 LABEL_11:
@@ -987,12 +987,12 @@ LABEL_11:
     {
     }
 
-    v10 = [WeakRetained parentViewController];
-    v11 = [v2 rootViewController];
-    if (v11 == v10)
+    parentViewController = [WeakRetained parentViewController];
+    rootViewController3 = [_window rootViewController];
+    if (rootViewController3 == parentViewController)
     {
-      v12 = [v10 childViewControllers];
-      v7 = [v12 count] == 1;
+      childViewControllers = [parentViewController childViewControllers];
+      v7 = [childViewControllers count] == 1;
     }
 
     else

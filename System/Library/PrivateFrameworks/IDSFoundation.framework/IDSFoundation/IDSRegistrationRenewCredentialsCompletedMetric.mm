@@ -1,5 +1,5 @@
 @interface IDSRegistrationRenewCredentialsCompletedMetric
-- (IDSRegistrationRenewCredentialsCompletedMetric)initWithRenewResult:(int64_t)a3 errorDomain:(id)a4 errorCode:(int64_t)a5;
+- (IDSRegistrationRenewCredentialsCompletedMetric)initWithRenewResult:(int64_t)result errorDomain:(id)domain errorCode:(int64_t)code;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -14,10 +14,10 @@
     CFDictionarySetValue(v3, @"renewResult", v4);
   }
 
-  v5 = [(IDSRegistrationRenewCredentialsCompletedMetric *)self errorDomain];
-  if (v5)
+  errorDomain = [(IDSRegistrationRenewCredentialsCompletedMetric *)self errorDomain];
+  if (errorDomain)
   {
-    CFDictionarySetValue(v3, @"errorDomain", v5);
+    CFDictionarySetValue(v3, @"errorDomain", errorDomain);
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSRegistrationRenewCredentialsCompletedMetric errorCode](self, "errorCode")}];
@@ -29,18 +29,18 @@
   return v3;
 }
 
-- (IDSRegistrationRenewCredentialsCompletedMetric)initWithRenewResult:(int64_t)a3 errorDomain:(id)a4 errorCode:(int64_t)a5
+- (IDSRegistrationRenewCredentialsCompletedMetric)initWithRenewResult:(int64_t)result errorDomain:(id)domain errorCode:(int64_t)code
 {
-  v9 = a4;
+  domainCopy = domain;
   v13.receiver = self;
   v13.super_class = IDSRegistrationRenewCredentialsCompletedMetric;
   v10 = [(IDSRegistrationRenewCredentialsCompletedMetric *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_renewResult = a3;
-    objc_storeStrong(&v10->_errorDomain, a4);
-    v11->_errorCode = a5;
+    v10->_renewResult = result;
+    objc_storeStrong(&v10->_errorDomain, domain);
+    v11->_errorCode = code;
   }
 
   return v11;

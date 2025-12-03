@@ -1,7 +1,7 @@
 @interface UIWebDefaultDateTimePicker
-- (UIWebDefaultDateTimePicker)initWithDOMHTMLInputElement:(id)a3 datePickerMode:(int64_t)a4;
-- (id)_sanitizeInputValueForFormatter:(id)a3;
-- (int64_t)_timeZoneOffsetFromGMT:(id)a3;
+- (UIWebDefaultDateTimePicker)initWithDOMHTMLInputElement:(id)element datePickerMode:(int64_t)mode;
+- (id)_sanitizeInputValueForFormatter:(id)formatter;
+- (int64_t)_timeZoneOffsetFromGMT:(id)t;
 - (void)_dateChanged;
 - (void)_dateChangedSetAsNumber;
 - (void)_dateChangedSetAsString;
@@ -11,23 +11,23 @@
 
 @implementation UIWebDefaultDateTimePicker
 
-- (int64_t)_timeZoneOffsetFromGMT:(id)a3
+- (int64_t)_timeZoneOffsetFromGMT:(id)t
 {
   if (!self->_shouldRemoveTimeZoneInformation)
   {
     return 0;
   }
 
-  v5 = [(UIDatePicker *)self->_datePicker timeZone];
+  timeZone = [(UIDatePicker *)self->_datePicker timeZone];
 
-  return [(NSTimeZone *)v5 secondsFromGMTForDate:a3];
+  return [(NSTimeZone *)timeZone secondsFromGMTForDate:t];
 }
 
 - (void)_dateChangedSetAsNumber
 {
-  v3 = [(UIDatePicker *)self->_datePicker date];
-  [(NSDate *)v3 timeIntervalSince1970];
-  v5 = (v4 + [(UIWebDefaultDateTimePicker *)self _timeZoneOffsetFromGMT:v3]) * 1000.0;
+  date = [(UIDatePicker *)self->_datePicker date];
+  [(NSDate *)date timeIntervalSince1970];
+  v5 = (v4 + [(UIWebDefaultDateTimePicker *)self _timeZoneOffsetFromGMT:date]) * 1000.0;
   WebThreadLock();
   inputElement = self->_inputElement;
 
@@ -36,13 +36,13 @@
 
 - (void)_dateChangedSetAsString
 {
-  v3 = [(UIDatePicker *)self->_datePicker date];
+  date = [(UIDatePicker *)self->_datePicker date];
   v6 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:@"en_US_POSIX"];
   v4 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v4 setTimeZone:{-[UIDatePicker timeZone](self->_datePicker, "timeZone")}];
   [v4 setDateFormat:self->_formatString];
   [v4 setLocale:v6];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:date];
   WebThreadLock();
   [(DOMHTMLInputElement *)self->_inputElement setValueWithChangeEvent:v5];
 }
@@ -60,7 +60,7 @@
   }
 }
 
-- (UIWebDefaultDateTimePicker)initWithDOMHTMLInputElement:(id)a3 datePickerMode:(int64_t)a4
+- (UIWebDefaultDateTimePicker)initWithDOMHTMLInputElement:(id)element datePickerMode:(int64_t)mode
 {
   v13.receiver = self;
   v13.super_class = UIWebDefaultDateTimePicker;
@@ -71,11 +71,11 @@
     return v7;
   }
 
-  [(UIWebDefaultDateTimePicker *)v6 set_inputElement:a3];
-  v8 = [(DOMHTMLInputElement *)v7->_inputElement type];
+  [(UIWebDefaultDateTimePicker *)v6 set_inputElement:element];
+  type = [(DOMHTMLInputElement *)v7->_inputElement type];
   *&v7->_shouldRemoveTimeZoneInformation = 0;
   v7->_formatString = 0;
-  if ([(NSString *)v8 isEqualToString:@"date"])
+  if ([(NSString *)type isEqualToString:@"date"])
   {
     v9 = @"yyyy-MM-dd";
 LABEL_6:
@@ -83,13 +83,13 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([(NSString *)v8 isEqualToString:@"month"])
+  if ([(NSString *)type isEqualToString:@"month"])
   {
     v9 = @"yyyy-MM";
     goto LABEL_6;
   }
 
-  if ([(NSString *)v8 isEqualToString:@"time"])
+  if ([(NSString *)type isEqualToString:@"time"])
   {
     v7->_formatString = @"HH:mm";
     v7->_isTimeInput = 1;
@@ -97,7 +97,7 @@ LABEL_6:
 
   else
   {
-    v7->_shouldRemoveTimeZoneInformation = [(NSString *)v8 isEqualToString:@"datetime-local"];
+    v7->_shouldRemoveTimeZoneInformation = [(NSString *)type isEqualToString:@"datetime-local"];
   }
 
 LABEL_7:
@@ -112,7 +112,7 @@ LABEL_7:
   }
 
   [(UIWebDefaultDateTimePicker *)v7 set_datePicker:[[UIDatePicker alloc] initWithFrame:0.0, 0.0, v10, v11]];
-  [(UIDatePicker *)v7->_datePicker setDatePickerMode:a4];
+  [(UIDatePicker *)v7->_datePicker setDatePickerMode:mode];
   [(UIView *)v7->_datePicker setHidden:0];
   [(UIControl *)v7->_datePicker addTarget:v7 action:sel__dateChangeHandler_ forControlEvents:4096];
   return v7;
@@ -128,39 +128,39 @@ LABEL_7:
   [(UIWebDefaultDateTimePicker *)&v3 dealloc];
 }
 
-- (id)_sanitizeInputValueForFormatter:(id)a3
+- (id)_sanitizeInputValueForFormatter:(id)formatter
 {
   if (!self->_isTimeInput)
   {
-    return a3;
+    return formatter;
   }
 
   v4 = [@"HH:mm" length];
 
-  return [a3 substringToIndex:v4];
+  return [formatter substringToIndex:v4];
 }
 
 - (void)controlBeginEditing
 {
   -[UIDatePicker setTimeZone:](self->_datePicker, "setTimeZone:", [MEMORY[0x1E695DFE8] localTimeZone]);
-  v3 = [(DOMHTMLInputElement *)self->_inputElement value];
-  if ([(NSString *)v3 length])
+  value = [(DOMHTMLInputElement *)self->_inputElement value];
+  if ([(NSString *)value length])
   {
     if (self->_formatString)
     {
-      v4 = [(UIWebDefaultDateTimePicker *)self _sanitizeInputValueForFormatter:v3];
+      v4 = [(UIWebDefaultDateTimePicker *)self _sanitizeInputValueForFormatter:value];
       v5 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:@"en_US_POSIX"];
       v12 = objc_alloc_init(MEMORY[0x1E696AB78]);
       [v12 setTimeZone:{-[UIDatePicker timeZone](self->_datePicker, "timeZone")}];
       [v12 setDateFormat:self->_formatString];
       [v12 setLocale:v5];
-      v6 = [v12 dateFromString:v4];
-      if (!v6)
+      date = [v12 dateFromString:v4];
+      if (!date)
       {
-        v6 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
       }
 
-      [(UIDatePicker *)self->_datePicker setDate:v6];
+      [(UIDatePicker *)self->_datePicker setDate:date];
     }
 
     else

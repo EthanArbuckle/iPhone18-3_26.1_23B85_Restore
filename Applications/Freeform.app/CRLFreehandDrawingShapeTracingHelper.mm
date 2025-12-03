@@ -1,17 +1,17 @@
 @interface CRLFreehandDrawingShapeTracingHelper
 + (id)diskNonEmptyKernel;
-+ (id)unscaledOutlinePathFromFreehandDrawingShapeLayouts:(id)a3 scaledOutset:(double)a4 viewScale:(double)a5;
++ (id)unscaledOutlinePathFromFreehandDrawingShapeLayouts:(id)layouts scaledOutset:(double)outset viewScale:(double)scale;
 @end
 
 @implementation CRLFreehandDrawingShapeTracingHelper
 
-+ (id)unscaledOutlinePathFromFreehandDrawingShapeLayouts:(id)a3 scaledOutset:(double)a4 viewScale:(double)a5
++ (id)unscaledOutlinePathFromFreehandDrawingShapeLayouts:(id)layouts scaledOutset:(double)outset viewScale:(double)scale
 {
-  v7 = a3;
+  layoutsCopy = layouts;
   v8 = +[CRLCapabilities currentCapabilities];
-  v9 = [v8 isMetalCapable];
+  isMetalCapable = [v8 isMetalCapable];
 
-  if (v9)
+  if (isMetalCapable)
   {
     v10 = +[NSMutableArray array];
     v11 = +[NSMutableDictionary dictionary];
@@ -24,19 +24,19 @@
     v132 = 0u;
     v133 = 0u;
     v134 = 0u;
-    v105 = v7;
-    obj = v7;
+    v105 = layoutsCopy;
+    obj = layoutsCopy;
     v16 = [obj countByEnumeratingWithState:&v131 objects:v140 count:16];
     v106 = v11;
-    v103 = a4 / a5;
-    v104 = a5;
+    v103 = outset / scale;
+    scaleCopy = scale;
     if (v16)
     {
       v17 = v16;
       v114 = *v132;
-      v18 = -(a4 / a5);
-      v19 = 2.0 / a5 + 2.0 / a5;
-      if (a5 <= 0.0)
+      v18 = -(outset / scale);
+      v19 = 2.0 / scale + 2.0 / scale;
+      if (scale <= 0.0)
       {
         v19 = 4.0;
       }
@@ -60,19 +60,19 @@
             [v21 pureTransformInRoot];
           }
 
-          v22 = [v21 pathSource];
-          v23 = [v22 bezierPath];
-          v24 = [v23 copy];
+          pathSource = [v21 pathSource];
+          bezierPath = [pathSource bezierPath];
+          v24 = [bezierPath copy];
 
           buf = v130;
           [v24 transformUsingAffineTransform:&buf];
-          v25 = [v21 shapeInfo];
-          LOBYTE(v23) = [v25 isTreatedAsFillForFreehandDrawing];
+          shapeInfo = [v21 shapeInfo];
+          LOBYTE(bezierPath) = [shapeInfo isTreatedAsFillForFreehandDrawing];
 
-          if ((v23 & 1) != 0 || (v26 = a4, a4 == 0.0) && (([v24 length], v27 < 10.0) || (objc_msgSend(v21, "stroke"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "width"), v30 = v29, v28, v30 < 2.0)))
+          if ((bezierPath & 1) != 0 || (v26 = outset, outset == 0.0) && (([v24 length], v27 < 10.0) || (objc_msgSend(v21, "stroke"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "width"), v30 = v29, v28, v30 < 2.0)))
           {
-            v31 = [v21 stroke];
-            [v31 width];
+            stroke = [v21 stroke];
+            [stroke width];
             v33 = v32;
 
             if (v33 < 2.0)
@@ -119,8 +119,8 @@
 
           else
           {
-            v37 = [v21 pencilKitStrokes];
-            if (!v37)
+            pencilKitStrokes = [v21 pencilKitStrokes];
+            if (!pencilKitStrokes)
             {
               v38 = +[CRLAssertionHandler _atomicIncrementAssertCount];
               if (qword_101AD5A10 != -1)
@@ -170,7 +170,7 @@
             v129 = 0u;
             v126 = 0u;
             v127 = 0u;
-            v43 = v37;
+            v43 = pencilKitStrokes;
             v44 = [v43 countByEnumeratingWithState:&v126 objects:v138 count:16];
             if (v44)
             {
@@ -235,7 +235,7 @@
       }
 
       v54 = off_1019EDA68;
-      v7 = v105;
+      layoutsCopy = v105;
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
         sub_101343438(v54, obj, v53);
@@ -268,7 +268,7 @@
         height = CGRectZero.size.height;
       }
 
-      v58 = [CRLBezierPath bezierPathWithRect:x, y, width, height];
+      height = [CRLBezierPath bezierPathWithRect:x, y, width, height];
       v59 = v106;
     }
 
@@ -300,8 +300,8 @@
       v124 = 0u;
       v121 = 0u;
       v122 = 0u;
-      v109 = [v11 allValues];
-      v67 = [v109 countByEnumeratingWithState:&v121 objects:v137 count:16];
+      allValues = [v11 allValues];
+      v67 = [allValues countByEnumeratingWithState:&v121 objects:v137 count:16];
       v115 = v66;
       if (v67)
       {
@@ -313,7 +313,7 @@
           {
             if (*v122 != obja)
             {
-              objc_enumerationMutation(v109);
+              objc_enumerationMutation(allValues);
             }
 
             v70 = *(*(&v121 + 1) + 8 * j);
@@ -328,7 +328,7 @@
             -[CRLBrushStroke paintPath:wantsInteriorStroke:inContext:useFastDrawing:parameterized:shouldReverseDrawOrder:](v76, "paintPath:wantsInteriorStroke:inContext:useFastDrawing:parameterized:shouldReverseDrawOrder:", [v70 CGPath], 0, v115, 0, 0, 0);
           }
 
-          v68 = [v109 countByEnumeratingWithState:&v121 objects:v137 count:16];
+          v68 = [allValues countByEnumeratingWithState:&v121 objects:v137 count:16];
         }
 
         while (v68);
@@ -361,9 +361,9 @@
             v86 = +[CRLStrokePattern solidPattern];
             v87 = [(CRLStroke *)v82 initWithColor:v83 width:1 cap:1 join:v86 pattern:v85];
 
-            v88 = [v81 CGPath];
+            cGPath = [v81 CGPath];
             v66 = v115;
-            [(CRLStroke *)v87 paintPath:v88 inContext:v115];
+            [(CRLStroke *)v87 paintPath:cGPath inContext:v115];
           }
 
           v78 = [objb countByEnumeratingWithState:&v117 objects:v136 count:16];
@@ -374,30 +374,30 @@
 
       Image = CGBitmapContextCreateImage(v66);
       CGContextRelease(v66);
-      if (a4 > 0.0)
+      if (outset > 0.0)
       {
         v90 = [CIImage imageWithCGImage:Image];
-        if (v104 >= 1.0)
+        if (scaleCopy >= 1.0)
         {
-          v92 = a4;
-          v93 = v103;
+          outsetCopy2 = outset;
+          outsetCopy3 = v103;
         }
 
         else
         {
           memset(&buf, 0, sizeof(buf));
-          CGAffineTransformMakeScale(&buf, v104, v104);
+          CGAffineTransformMakeScale(&buf, scaleCopy, scaleCopy);
           v125 = buf;
           v91 = [v90 imageByApplyingTransform:&v125 highQualityDownsample:0];
 
           v90 = v91;
-          v92 = a4;
-          v93 = a4;
+          outsetCopy2 = outset;
+          outsetCopy3 = outset;
         }
 
         v94 = +[CRLFreehandDrawingShapeTracingHelper diskNonEmptyKernel];
         v135[0] = v90;
-        v95 = [NSNumber numberWithDouble:v93];
+        v95 = [NSNumber numberWithDouble:outsetCopy3];
         v135[1] = v95;
         v135[2] = &off_1018E3040;
         v96 = [NSArray arrayWithObjects:v135 count:3];
@@ -406,15 +406,15 @@
         v116[1] = 3221225472;
         v116[2] = sub_10028B824;
         v116[3] = &unk_10184F850;
-        *&v116[4] = v92;
+        *&v116[4] = outsetCopy2;
         v97 = objc_retainBlock(v116);
         [v90 extent];
         v98 = [v94 applyWithExtent:v97 roiCallback:v96 arguments:?];
 
-        if (v104 < 1.0)
+        if (scaleCopy < 1.0)
         {
           memset(&buf, 0, sizeof(buf));
-          CGAffineTransformMakeScale(&buf, 1.0 / v104, 1.0 / v104);
+          CGAffineTransformMakeScale(&buf, 1.0 / scaleCopy, 1.0 / scaleCopy);
           v125 = buf;
           v99 = [v98 imageByApplyingTransform:&v125 highQualityDownsample:0];
 
@@ -434,18 +434,18 @@
       v125 = v130;
       CGAffineTransformInvert(&buf, &v125);
       [v102 transformUsingAffineTransform:&buf];
-      v58 = [CRLBezierPath exteriorOfBezierPath:v102];
+      height = [CRLBezierPath exteriorOfBezierPath:v102];
 
-      v7 = v105;
+      layoutsCopy = v105;
     }
   }
 
   else
   {
-    v58 = [CRLBezierPath bezierPathWithRect:0.0, 0.0, 1.0, 1.0];
+    height = [CRLBezierPath bezierPathWithRect:0.0, 0.0, 1.0, 1.0];
   }
 
-  return v58;
+  return height;
 }
 
 + (id)diskNonEmptyKernel

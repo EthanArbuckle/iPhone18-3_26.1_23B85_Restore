@@ -1,25 +1,25 @@
 @interface VUILibraryCollectionViewCell
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setTopSeparatorView:(id)a3;
-- (void)setViewController:(id)a3;
+- (void)setTopSeparatorView:(id)view;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation VUILibraryCollectionViewCell
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_viewController != v5)
+  controllerCopy = controller;
+  if (self->_viewController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_viewController, a3);
-    v6 = [(VUILibraryCollectionViewCell *)self contentView];
-    v7 = [(UIViewController *)self->_viewController view];
-    [v6 addSubview:v7];
+    v8 = controllerCopy;
+    objc_storeStrong(&self->_viewController, controller);
+    contentView = [(VUILibraryCollectionViewCell *)self contentView];
+    view = [(UIViewController *)self->_viewController view];
+    [contentView addSubview:view];
 
     [(VUILibraryCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    controllerCopy = v8;
   }
 }
 
@@ -31,28 +31,28 @@
   viewController = self->_viewController;
   self->_viewController = 0;
 
-  v4 = [(VUILibraryCollectionViewCell *)self contentView];
-  v5 = [v4 subviews];
-  [v5 makeObjectsPerformSelector:sel_removeFromSuperview];
+  contentView = [(VUILibraryCollectionViewCell *)self contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 }
 
-- (void)setTopSeparatorView:(id)a3
+- (void)setTopSeparatorView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   topSeparatorView = self->_topSeparatorView;
-  if (topSeparatorView != v5)
+  if (topSeparatorView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUISeparatorView *)topSeparatorView removeFromSuperview];
-    objc_storeStrong(&self->_topSeparatorView, a3);
+    objc_storeStrong(&self->_topSeparatorView, view);
     if (self->_topSeparatorView)
     {
-      v7 = [(VUILibraryCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_topSeparatorView];
+      contentView = [(VUILibraryCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_topSeparatorView];
     }
 
     [(VUILibraryCollectionViewCell *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
@@ -64,8 +64,8 @@
   [MEMORY[0x1E69DD2E8] vui_padding];
   v4 = v3;
   v6 = v5;
-  v7 = [(VUILibraryCollectionViewCell *)self contentView];
-  [v7 bounds];
+  contentView = [(VUILibraryCollectionViewCell *)self contentView];
+  [contentView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -82,8 +82,8 @@
     [(VUISeparatorView *)self->_topSeparatorView setFrame:v4, 0.0, v17, v18];
   }
 
-  v19 = [(UIViewController *)self->_viewController view];
-  [v19 setFrame:{v9, v11, v13, v15}];
+  view = [(UIViewController *)self->_viewController view];
+  [view setFrame:{v9, v11, v13, v15}];
 }
 
 @end

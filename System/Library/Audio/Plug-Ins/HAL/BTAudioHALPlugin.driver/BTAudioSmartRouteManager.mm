@@ -1,7 +1,7 @@
 @interface BTAudioSmartRouteManager
 + (id)sharedInstance;
 - (BTAudioSmartRouteManager)init;
-- (id)unRegisterDevice:(id)a3;
+- (id)unRegisterDevice:(id)device;
 - (void)dealloc;
 @end
 
@@ -37,18 +37,18 @@
   return result;
 }
 
-- (id)unRegisterDevice:(id)a3
+- (id)unRegisterDevice:(id)device
 {
   v5 = [(NSMutableDictionary *)self->_btAudioDeviceDict objectForKey:?];
   if (v5)
   {
     v6 = v5;
-    [(NSMutableDictionary *)self->_btAudioDeviceDict removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_btAudioDeviceDict removeObjectForKey:device];
     v7 = qword_D84F8;
     if (os_log_type_enabled(qword_D84F8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = a3;
+      deviceCopy = device;
       v11 = 1024;
       v12 = [v6 retainCount];
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Release Smart Route Manager Entry for %@ %d", &v9, 0x12u);

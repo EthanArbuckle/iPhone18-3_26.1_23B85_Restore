@@ -2,15 +2,15 @@
 + (id)_readExistingPostCleanupRecord;
 + (id)logCategory;
 + (id)resetConfigPostCleanupFileLocation;
-+ (id)sqlFileListToRemove:(id)a3 fromRootDirectory:(id)a4;
-+ (void)cleanupInvalidUserDefaults:(id)a3;
-+ (void)deleteFilesInsideDirectory:(id)a3 excludingFiles:(id)a4 shouldSkipDirectories:(BOOL)a5 usingFileManager:(id)a6;
++ (id)sqlFileListToRemove:(id)remove fromRootDirectory:(id)directory;
++ (void)cleanupInvalidUserDefaults:(id)defaults;
++ (void)deleteFilesInsideDirectory:(id)directory excludingFiles:(id)files shouldSkipDirectories:(BOOL)directories usingFileManager:(id)manager;
 + (void)performAnyPostCleanupStepsIfNecessary;
-+ (void)performIndividualCleanupTasks:(unint64_t)a3 onRootDirectory:(id)a4;
-+ (void)performResetConfigPostCleanupSteps:(unint64_t)a3 dueToReason:(unint64_t)a4;
-+ (void)removeFilesAtLocation:(id)a3;
-+ (void)removeFilesAtLocation:(id)a3 usingFileManager:(id)a4;
-+ (void)writePostCleanupRecordWithReason:(unint64_t)a3 steps:(unint64_t)a4;
++ (void)performIndividualCleanupTasks:(unint64_t)tasks onRootDirectory:(id)directory;
++ (void)performResetConfigPostCleanupSteps:(unint64_t)steps dueToReason:(unint64_t)reason;
++ (void)removeFilesAtLocation:(id)location;
++ (void)removeFilesAtLocation:(id)location usingFileManager:(id)manager;
++ (void)writePostCleanupRecordWithReason:(unint64_t)reason steps:(unint64_t)steps;
 @end
 
 @implementation HMDResetConfigPostCleanup
@@ -48,7 +48,7 @@ void __40__HMDResetConfigPostCleanup_logCategory__block_invoke()
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -67,14 +67,14 @@ void __40__HMDResetConfigPostCleanup_logCategory__block_invoke()
   return v5;
 }
 
-+ (void)deleteFilesInsideDirectory:(id)a3 excludingFiles:(id)a4 shouldSkipDirectories:(BOOL)a5 usingFileManager:(id)a6
++ (void)deleteFilesInsideDirectory:(id)directory excludingFiles:(id)files shouldSkipDirectories:(BOOL)directories usingFileManager:(id)manager
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  directoryCopy = directory;
+  filesCopy = files;
+  managerCopy = manager;
   v13 = objc_autoreleasePoolPush();
-  v14 = a1;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -82,14 +82,14 @@ void __40__HMDResetConfigPostCleanup_logCategory__block_invoke()
     *buf = 138543618;
     v39 = v16;
     v40 = 2112;
-    v41 = v10;
+    v41 = directoryCopy;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Going to delete all the files inside directory: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
+  v17 = [MEMORY[0x277CBEBC0] fileURLWithPath:directoryCopy];
   v18 = +[HMDDemoModeManagerDataSource defaultDataSource];
-  v19 = [v18 isDemoModeV2EnabledAndActive];
+  isDemoModeV2EnabledAndActive = [v18 isDemoModeV2EnabledAndActive];
 
   v20 = demoModeV2ConfigPath;
   if (!v20)
@@ -106,10 +106,10 @@ void __40__HMDResetConfigPostCleanup_logCategory__block_invoke()
   aBlock[1] = 3221225472;
   aBlock[2] = __110__HMDResetConfigPostCleanup_deleteFilesInsideDirectory_excludingFiles_shouldSkipDirectories_usingFileManager___block_invoke;
   aBlock[3] = &unk_2786887C0;
-  v36 = v19;
+  v36 = isDemoModeV2EnabledAndActive;
   v34 = v20;
-  v35 = v11;
-  v21 = v11;
+  v35 = filesCopy;
+  v21 = filesCopy;
   v22 = v20;
   v23 = _Block_copy(aBlock);
   v24 = *MEMORY[0x277CBE868];
@@ -121,10 +121,10 @@ void __40__HMDResetConfigPostCleanup_logCategory__block_invoke()
   v28[2] = __110__HMDResetConfigPostCleanup_deleteFilesInsideDirectory_excludingFiles_shouldSkipDirectories_usingFileManager___block_invoke_2;
   v28[3] = &unk_2786887E8;
   v30 = v23;
-  v31 = v14;
-  v32 = a5;
-  v29 = v12;
-  v26 = v12;
+  v31 = selfCopy;
+  directoriesCopy = directories;
+  v29 = managerCopy;
+  v26 = managerCopy;
   [v26 enumerateItemsAtURL:v17 includingPropertiesForKeys:v25 usingBlock:v28];
 
   v27 = *MEMORY[0x277D85DE8];
@@ -215,17 +215,17 @@ void __110__HMDResetConfigPostCleanup_deleteFilesInsideDirectory_excludingFiles_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeFilesAtLocation:(id)a3 usingFileManager:(id)a4
++ (void)removeFilesAtLocation:(id)location usingFileManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__HMDResetConfigPostCleanup_removeFilesAtLocation_usingFileManager___block_invoke;
   v8[3] = &unk_278688798;
-  v9 = v6;
-  v10 = a1;
-  v7 = v6;
-  [a3 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
+  v9 = managerCopy;
+  selfCopy = self;
+  v7 = managerCopy;
+  [location hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
 }
 
 void __68__HMDResetConfigPostCleanup_removeFilesAtLocation_usingFileManager___block_invoke(uint64_t a1, void *a2)
@@ -289,25 +289,25 @@ void __68__HMDResetConfigPostCleanup_removeFilesAtLocation_usingFileManager___bl
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removeFilesAtLocation:(id)a3
++ (void)removeFilesAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = objc_alloc_init(HMDFileManager);
-  [a1 removeFilesAtLocation:v4 usingFileManager:v5];
+  [self removeFilesAtLocation:locationCopy usingFileManager:v5];
 }
 
-+ (void)cleanupInvalidUserDefaults:(id)a3
++ (void)cleanupInvalidUserDefaults:(id)defaults
 {
-  v3 = a3;
-  v4 = [v3 dictionaryRepresentation];
-  v5 = [v4 allKeys];
+  defaultsCopy = defaults;
+  dictionaryRepresentation = [defaultsCopy dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__HMDResetConfigPostCleanup_cleanupInvalidUserDefaults___block_invoke;
   v7[3] = &unk_278688770;
-  v8 = v3;
-  v6 = v3;
-  [v5 na_each:v7];
+  v8 = defaultsCopy;
+  v6 = defaultsCopy;
+  [allKeys na_each:v7];
 }
 
 void __56__HMDResetConfigPostCleanup_cleanupInvalidUserDefaults___block_invoke(uint64_t a1, void *a2)
@@ -319,46 +319,46 @@ void __56__HMDResetConfigPostCleanup_cleanupInvalidUserDefaults___block_invoke(u
   }
 }
 
-+ (id)sqlFileListToRemove:(id)a3 fromRootDirectory:(id)a4
++ (id)sqlFileListToRemove:(id)remove fromRootDirectory:(id)directory
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = a3;
-  v7 = [v5 fileURLWithPath:a4];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v6];
-  v10 = [v7 URLByAppendingPathComponent:v9];
-  [v8 addObject:v10];
+  removeCopy = remove;
+  v7 = [v5 fileURLWithPath:directory];
+  array = [MEMORY[0x277CBEB18] array];
+  removeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", removeCopy];
+  v10 = [v7 URLByAppendingPathComponent:removeCopy];
+  [array addObject:v10];
 
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-shm", v6];
-  v12 = [v7 URLByAppendingPathComponent:v11];
-  [v8 addObject:v12];
+  removeCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-shm", removeCopy];
+  v12 = [v7 URLByAppendingPathComponent:removeCopy2];
+  [array addObject:v12];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", v6];
+  removeCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-wal", removeCopy];
 
-  v14 = [v7 URLByAppendingPathComponent:v13];
-  [v8 addObject:v14];
+  v14 = [v7 URLByAppendingPathComponent:removeCopy3];
+  [array addObject:v14];
 
-  v15 = [v8 copy];
+  v15 = [array copy];
 
   return v15;
 }
 
-+ (void)performIndividualCleanupTasks:(unint64_t)a3 onRootDirectory:(id)a4
++ (void)performIndividualCleanupTasks:(unint64_t)tasks onRootDirectory:(id)directory
 {
-  v4 = a3;
+  tasksCopy = tasks;
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  directoryCopy = directory;
   v7 = [MEMORY[0x277CBEB58] set];
-  if ((v4 & 2) != 0)
+  if ((tasksCopy & 2) != 0)
   {
     v16 = [HMDCoreData storeNameForConfiguration:@"core.sqlite"];
-    v17 = [a1 sqlFileListToRemove:v16 fromRootDirectory:v6];
+    v17 = [self sqlFileListToRemove:v16 fromRootDirectory:directoryCopy];
     [v7 addObjectsFromArray:v17];
 
-    if ((v4 & 4) == 0)
+    if ((tasksCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v4 & 8) == 0)
+      if ((tasksCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -367,19 +367,19 @@ LABEL_3:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((tasksCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
   v18 = [HMDCoreData storeNameForConfiguration:@"core-cloudkit.sqlite"];
-  v19 = [a1 sqlFileListToRemove:v18 fromRootDirectory:v6];
+  v19 = [self sqlFileListToRemove:v18 fromRootDirectory:directoryCopy];
   [v7 addObjectsFromArray:v19];
 
-  if ((v4 & 8) == 0)
+  if ((tasksCopy & 8) == 0)
   {
 LABEL_4:
-    if ((v4 & 0x10) == 0)
+    if ((tasksCopy & 0x10) == 0)
     {
       goto LABEL_5;
     }
@@ -389,13 +389,13 @@ LABEL_4:
 
 LABEL_14:
   v20 = [HMDCoreData storeNameForConfiguration:@"core-local.sqlite"];
-  v21 = [a1 sqlFileListToRemove:v20 fromRootDirectory:v6];
+  v21 = [self sqlFileListToRemove:v20 fromRootDirectory:directoryCopy];
   [v7 addObjectsFromArray:v21];
 
-  if ((v4 & 0x10) == 0)
+  if ((tasksCopy & 0x10) == 0)
   {
 LABEL_5:
-    if ((v4 & 0x100) == 0)
+    if ((tasksCopy & 0x100) == 0)
     {
       goto LABEL_6;
     }
@@ -405,13 +405,13 @@ LABEL_5:
 
 LABEL_15:
   v22 = [HMDCoreData storeNameForConfiguration:@"core-cloudkit-shared.sqlite"];
-  v23 = [a1 sqlFileListToRemove:v22 fromRootDirectory:v6];
+  v23 = [self sqlFileListToRemove:v22 fromRootDirectory:directoryCopy];
   [v7 addObjectsFromArray:v23];
 
-  if ((v4 & 0x100) == 0)
+  if ((tasksCopy & 0x100) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x20) == 0)
+    if ((tasksCopy & 0x20) == 0)
     {
       goto LABEL_7;
     }
@@ -420,13 +420,13 @@ LABEL_6:
   }
 
 LABEL_16:
-  v24 = [a1 sqlFileListToRemove:@"core-client.sqlite" fromRootDirectory:v6];
+  v24 = [self sqlFileListToRemove:@"core-client.sqlite" fromRootDirectory:directoryCopy];
   [v7 addObjectsFromArray:v24];
 
-  if ((v4 & 0x20) == 0)
+  if ((tasksCopy & 0x20) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x40) == 0)
+    if ((tasksCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -435,22 +435,22 @@ LABEL_7:
   }
 
 LABEL_17:
-  v25 = [a1 sqlFileListToRemove:@"datastore.sqlite" fromRootDirectory:v6];
+  v25 = [self sqlFileListToRemove:@"datastore.sqlite" fromRootDirectory:directoryCopy];
   [v7 addObjectsFromArray:v25];
 
-  if ((v4 & 0x40) != 0)
+  if ((tasksCopy & 0x40) != 0)
   {
 LABEL_8:
-    v8 = [a1 sqlFileListToRemove:@"datastore.sqlite" fromRootDirectory:v6];
+    v8 = [self sqlFileListToRemove:@"datastore.sqlite" fromRootDirectory:directoryCopy];
     [v7 addObjectsFromArray:v8];
 
-    v9 = [a1 sqlFileListToRemove:@"datastore3.sqlite" fromRootDirectory:v6];
+    v9 = [self sqlFileListToRemove:@"datastore3.sqlite" fromRootDirectory:directoryCopy];
     [v7 addObjectsFromArray:v9];
   }
 
 LABEL_9:
   v10 = objc_autoreleasePoolPush();
-  v11 = a1;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -464,32 +464,32 @@ LABEL_9:
 
   objc_autoreleasePoolPop(v10);
   v14 = [v7 copy];
-  [v11 removeFilesAtLocation:v14];
+  [selfCopy removeFilesAtLocation:v14];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)performResetConfigPostCleanupSteps:(unint64_t)a3 dueToReason:(unint64_t)a4
++ (void)performResetConfigPostCleanupSteps:(unint64_t)steps dueToReason:(unint64_t)reason
 {
   v33 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
-  if (a3 != 1 && a4)
+  if (steps != 1 && reason)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = HMDResetConfigPostCleanupStepsToString(a3);
-      if (a4 - 1 > 9)
+      v12 = HMDResetConfigPostCleanupStepsToString(steps);
+      if (reason - 1 > 9)
       {
         v13 = @"Unknown";
       }
 
       else
       {
-        v13 = off_278688808[a4 - 1];
+        v13 = off_278688808[reason - 1];
       }
 
       v18 = v13;
@@ -504,53 +504,53 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v7);
     v19 = determineHomeKitDaemonRootStorePath();
-    if (a3 == 512)
+    if (steps == 512)
     {
       v24 = +[HMDDemoModeManagerDataSource defaultDataSource];
-      v25 = [v24 isDemoModeV2EnabledAndActive];
+      isDemoModeV2EnabledAndActive = [v24 isDemoModeV2EnabledAndActive];
 
-      if (v25)
+      if (isDemoModeV2EnabledAndActive)
       {
         +[HMDDemoModeManagerFactory saveDemoModeConfiguration];
         goto LABEL_20;
       }
     }
 
-    else if (a3 == -1)
+    else if (steps == -1)
     {
-      v20 = [v8 filesToExcludeFromHomedDirectory];
-      [v8 deleteFilesInsideDirectory:v19 excludingFiles:v20 shouldSkipDirectories:1];
+      filesToExcludeFromHomedDirectory = [selfCopy filesToExcludeFromHomedDirectory];
+      [selfCopy deleteFilesInsideDirectory:v19 excludingFiles:filesToExcludeFromHomedDirectory shouldSkipDirectories:1];
 
       v21 = HMHomeKitCacheDirectory();
-      v22 = [v8 filesToExcludeFromCacheDirectory];
-      [v8 deleteFilesInsideDirectory:v21 excludingFiles:v22 shouldSkipDirectories:1];
+      filesToExcludeFromCacheDirectory = [selfCopy filesToExcludeFromCacheDirectory];
+      [selfCopy deleteFilesInsideDirectory:v21 excludingFiles:filesToExcludeFromCacheDirectory shouldSkipDirectories:1];
 
       v23 = HMCacheSubdirectoryWithRelativePath();
-      [v8 deleteFilesInsideDirectory:v23 excludingFiles:0 shouldSkipDirectories:0];
+      [selfCopy deleteFilesInsideDirectory:v23 excludingFiles:0 shouldSkipDirectories:0];
 
 LABEL_20:
       goto LABEL_21;
     }
 
-    [v8 performIndividualCleanupTasks:a3 onRootDirectory:v19];
+    [selfCopy performIndividualCleanupTasks:steps onRootDirectory:v19];
     goto LABEL_20;
   }
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v14 = HMFGetLogIdentifier();
-    if (a4 - 1 > 9)
+    if (reason - 1 > 9)
     {
       v15 = @"Unknown";
     }
 
     else
     {
-      v15 = off_278688808[a4 - 1];
+      v15 = off_278688808[reason - 1];
     }
 
     v16 = v15;
-    v17 = HMDResetConfigPostCleanupStepsToString(a3);
+    v17 = HMDResetConfigPostCleanupStepsToString(steps);
     v27 = 138543874;
     v28 = v14;
     v29 = 2112;
@@ -568,20 +568,20 @@ LABEL_21:
 + (void)performAnyPostCleanupStepsIfNecessary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [a1 cleanupInvalidUserDefaults:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [self cleanupInvalidUserDefaults:standardUserDefaults];
 
-  v4 = [a1 resetConfigPostCleanupFileLocation];
-  if (v4)
+  resetConfigPostCleanupFileLocation = [self resetConfigPostCleanupFileLocation];
+  if (resetConfigPostCleanupFileLocation)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [resetConfigPostCleanupFileLocation path];
+    v7 = [defaultManager fileExistsAtPath:path];
 
     if (v7)
     {
-      v8 = [a1 _readExistingPostCleanupRecord];
-      v9 = [v8 objectForKeyedSubscript:@"RST.POST.CleanUP.reason"];
+      _readExistingPostCleanupRecord = [self _readExistingPostCleanupRecord];
+      v9 = [_readExistingPostCleanupRecord objectForKeyedSubscript:@"RST.POST.CleanUP.reason"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -595,7 +595,7 @@ LABEL_21:
 
       v11 = v10;
 
-      v12 = [v8 objectForKeyedSubscript:@"RST.PST.CleanUP.steps"];
+      v12 = [_readExistingPostCleanupRecord objectForKeyedSubscript:@"RST.PST.CleanUP.steps"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -611,10 +611,10 @@ LABEL_21:
 
       if (v11 && v14)
       {
-        [a1 performResetConfigPostCleanupSteps:objc_msgSend(v14 dueToReason:{"unsignedLongValue"), objc_msgSend(v11, "unsignedIntValue")}];
-        v21 = v4;
+        [self performResetConfigPostCleanupSteps:objc_msgSend(v14 dueToReason:{"unsignedLongValue"), objc_msgSend(v11, "unsignedIntValue")}];
+        v21 = resetConfigPostCleanupFileLocation;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
-        [a1 removeFilesAtLocation:v15];
+        [self removeFilesAtLocation:v15];
 
         if (isFirstLaunchAfterBoot_onceToken != -1)
         {
@@ -625,7 +625,7 @@ LABEL_21:
       else
       {
         v16 = objc_autoreleasePoolPush();
-        v17 = a1;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
@@ -647,13 +647,13 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)writePostCleanupRecordWithReason:(unint64_t)a3 steps:(unint64_t)a4
++ (void)writePostCleanupRecordWithReason:(unint64_t)reason steps:(unint64_t)steps
 {
   v54 = *MEMORY[0x277D85DE8];
-  if (a3 && a4 != 1)
+  if (reason && steps != 1)
   {
-    v7 = [a1 _readExistingPostCleanupRecord];
-    v8 = [v7 mutableCopy];
+    _readExistingPostCleanupRecord = [self _readExistingPostCleanupRecord];
+    v8 = [_readExistingPostCleanupRecord mutableCopy];
 
     v9 = [(__CFString *)v8 objectForKeyedSubscript:@"RST.PST.CleanUP.steps"];
     objc_opt_class();
@@ -672,7 +672,7 @@ LABEL_21:
     if (v11)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = a1;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -687,18 +687,18 @@ LABEL_21:
       objc_autoreleasePoolPop(v12);
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[__CFString unsignedLongValue](v11, "unsignedLongValue") | a4}];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[__CFString unsignedLongValue](v11, "unsignedLongValue") | steps}];
     [(__CFString *)v8 setObject:v16 forKeyedSubscript:@"RST.PST.CleanUP.steps"];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
     [(__CFString *)v8 setObject:v17 forKeyedSubscript:@"RST.POST.CleanUP.reason"];
 
-    v18 = [a1 resetConfigPostCleanupFileLocation];
+    resetConfigPostCleanupFileLocation = [self resetConfigPostCleanupFileLocation];
     v19 = objc_autoreleasePoolPush();
-    v20 = a1;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     v22 = v21;
-    if (!v18)
+    if (!resetConfigPostCleanupFileLocation)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -720,7 +720,7 @@ LABEL_21:
       v48 = 2112;
       v49 = v8;
       v50 = 2112;
-      v51 = v18;
+      v51 = resetConfigPostCleanupFileLocation;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Going to write reset config cleanup record : [%@] -> [%@]", &v46, 0x20u);
     }
 
@@ -728,11 +728,11 @@ LABEL_21:
     v24 = encodeRootObject();
     if (v24)
     {
-      v25 = [(__CFString *)v18 path];
-      v26 = [(__CFString *)v24 writeToFile:v25 atomically:1];
+      path = [(__CFString *)resetConfigPostCleanupFileLocation path];
+      v26 = [(__CFString *)v24 writeToFile:path atomically:1];
 
       v27 = objc_autoreleasePoolPush();
-      v28 = v20;
+      v28 = selfCopy2;
       v29 = HMFGetOSLogHandle();
       v30 = v29;
       if (v26)
@@ -747,7 +747,7 @@ LABEL_21:
           v50 = 2112;
           v51 = v24;
           v52 = 2112;
-          v53 = v18;
+          v53 = resetConfigPostCleanupFileLocation;
           v32 = "%{public}@Successfully written reset config post cleanup record on disk : %@, %@, %@";
           v33 = v30;
           v34 = OS_LOG_TYPE_DEFAULT;
@@ -765,7 +765,7 @@ LABEL_30:
         v48 = 2112;
         v49 = v24;
         v50 = 2112;
-        v51 = v18;
+        v51 = resetConfigPostCleanupFileLocation;
         v32 = "%{public}@Unable to write reset config post cleanup record [%@] to location : %@";
         v33 = v30;
         v34 = OS_LOG_TYPE_ERROR;
@@ -777,7 +777,7 @@ LABEL_30:
     else
     {
       v27 = objc_autoreleasePoolPush();
-      v44 = v20;
+      v44 = selfCopy2;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -785,7 +785,7 @@ LABEL_30:
         v46 = 138543618;
         v47 = v31;
         v48 = 2112;
-        v49 = v18;
+        v49 = resetConfigPostCleanupFileLocation;
         v32 = "%{public}@Unable to write reset config cleanup record at location : %@";
         v33 = v30;
         v34 = OS_LOG_TYPE_ERROR;
@@ -801,23 +801,23 @@ LABEL_32:
   }
 
   v36 = objc_autoreleasePoolPush();
-  v37 = a1;
+  selfCopy3 = self;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
     v39 = HMFGetLogIdentifier();
-    if (a3 - 1 > 9)
+    if (reason - 1 > 9)
     {
       v40 = @"Unknown";
     }
 
     else
     {
-      v40 = off_278688808[a3 - 1];
+      v40 = off_278688808[reason - 1];
     }
 
     v42 = v40;
-    v43 = HMDResetConfigPostCleanupStepsToString(a4);
+    v43 = HMDResetConfigPostCleanupStepsToString(steps);
     v46 = 138543874;
     v47 = v39;
     v48 = 2112;
@@ -835,12 +835,12 @@ LABEL_33:
 + (id)_readExistingPostCleanupRecord
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAC0] dictionary];
-  v4 = [a1 resetConfigPostCleanupFileLocation];
-  if (v4 && ([MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "path"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, (v7 & 1) != 0))
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  resetConfigPostCleanupFileLocation = [self resetConfigPostCleanupFileLocation];
+  if (resetConfigPostCleanupFileLocation && ([MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(resetConfigPostCleanupFileLocation, "path"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, (v7 & 1) != 0))
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -848,15 +848,15 @@ LABEL_33:
       *buf = 138543618;
       v51 = v11;
       v52 = 2112;
-      v53 = v4;
+      v53 = resetConfigPostCleanupFileLocation;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Found reset config post cleanup record on disk at %@. Going to read it.", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
     v12 = MEMORY[0x277CBEA90];
-    v13 = [v4 path];
+    path = [resetConfigPostCleanupFileLocation path];
     v47 = 0;
-    v14 = [v12 dataWithContentsOfFile:v13 options:2 error:&v47];
+    v14 = [v12 dataWithContentsOfFile:path options:2 error:&v47];
     v15 = v47;
 
     if (v14)
@@ -895,7 +895,7 @@ LABEL_33:
         if (!v26)
         {
           v29 = objc_autoreleasePoolPush();
-          v30 = v9;
+          v30 = selfCopy;
           v31 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
@@ -911,7 +911,7 @@ LABEL_33:
           }
 
           objc_autoreleasePoolPop(v29);
-          v25 = v3;
+          v25 = dictionary;
         }
 
         v33 = v25;
@@ -920,7 +920,7 @@ LABEL_33:
       else
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = v9;
+        v39 = selfCopy;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -933,7 +933,7 @@ LABEL_33:
         }
 
         objc_autoreleasePoolPop(v38);
-        v33 = v3;
+        v33 = dictionary;
       }
 
       v15 = v45;
@@ -942,7 +942,7 @@ LABEL_33:
     else
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = v9;
+      v35 = selfCopy;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -955,13 +955,13 @@ LABEL_33:
       }
 
       objc_autoreleasePoolPop(v34);
-      v33 = v3;
+      v33 = dictionary;
     }
   }
 
   else
   {
-    v33 = v3;
+    v33 = dictionary;
   }
 
   v42 = *MEMORY[0x277D85DE8];

@@ -5,37 +5,37 @@
 - (NSNumber)accountIdentifier;
 - (NSString)actionName;
 - (NSString)userAgent;
-- (SSMachineDataRequest)initWithURLResponse:(id)a3;
-- (SSMachineDataRequest)initWithXPCEncoding:(id)a3;
+- (SSMachineDataRequest)initWithURLResponse:(id)response;
+- (SSMachineDataRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (int64_t)protocolVersion;
-- (void)setAccountIdentifier:(id)a3;
-- (void)setActionData:(id)a3;
-- (void)setActionName:(id)a3;
-- (void)setAllowsBootstrapCellularData:(BOOL)a3;
-- (void)setProtocolVersion:(int64_t)a3;
-- (void)setUserAgent:(id)a3;
-- (void)setWaitsForPurchaseOperations:(BOOL)a3;
-- (void)startWithCompletionBlock:(id)a3;
-- (void)startWithDetailedCompletionBlock:(id)a3;
+- (void)setAccountIdentifier:(id)identifier;
+- (void)setActionData:(id)data;
+- (void)setActionName:(id)name;
+- (void)setAllowsBootstrapCellularData:(BOOL)data;
+- (void)setProtocolVersion:(int64_t)version;
+- (void)setUserAgent:(id)agent;
+- (void)setWaitsForPurchaseOperations:(BOOL)operations;
+- (void)startWithCompletionBlock:(id)block;
+- (void)startWithDetailedCompletionBlock:(id)block;
 @end
 
 @implementation SSMachineDataRequest
 
-- (SSMachineDataRequest)initWithURLResponse:(id)a3
+- (SSMachineDataRequest)initWithURLResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v17.receiver = self;
   v17.super_class = SSMachineDataRequest;
   v5 = [(SSRequest *)&v17 init];
   if (v5)
   {
-    v6 = [v4 allHeaderFields];
-    v7 = HeaderValueForKey(v6, @"X-Apple-MD-Action");
+    allHeaderFields = [responseCopy allHeaderFields];
+    v7 = HeaderValueForKey(allHeaderFields, @"X-Apple-MD-Action");
     v8 = @"X-Apple-MD-Data";
     if (![v7 length])
     {
-      v9 = HeaderValueForKey(v6, @"X-Apple-AMD-Action");
+      v9 = HeaderValueForKey(allHeaderFields, @"X-Apple-AMD-Action");
 
       v10 = @"X-Apple-AMD-Data";
       v5->_protocolVersion = 1;
@@ -45,7 +45,7 @@
 
     if ([v7 length])
     {
-      v11 = HeaderValueForKey(v6, v8);
+      v11 = HeaderValueForKey(allHeaderFields, v8);
       if ([v11 length])
       {
         v12 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v11 options:0];
@@ -172,17 +172,17 @@
   return v3;
 }
 
-- (void)setAccountIdentifier:(id)a3
+- (void)setAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__SSMachineDataRequest_setAccountIdentifier___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -199,17 +199,17 @@ void __45__SSMachineDataRequest_setAccountIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setActionData:(id)a3
+- (void)setActionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__SSMachineDataRequest_setActionData___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -226,17 +226,17 @@ void __38__SSMachineDataRequest_setActionData___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setActionName:(id)a3
+- (void)setActionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__SSMachineDataRequest_setActionName___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -253,7 +253,7 @@ void __38__SSMachineDataRequest_setActionName___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAllowsBootstrapCellularData:(BOOL)a3
+- (void)setAllowsBootstrapCellularData:(BOOL)data
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -261,11 +261,11 @@ void __38__SSMachineDataRequest_setActionName___block_invoke(uint64_t a1)
   v4[2] = __55__SSMachineDataRequest_setAllowsBootstrapCellularData___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  dataCopy = data;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setProtocolVersion:(int64_t)a3
+- (void)setProtocolVersion:(int64_t)version
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -273,21 +273,21 @@ void __38__SSMachineDataRequest_setActionName___block_invoke(uint64_t a1)
   v4[2] = __43__SSMachineDataRequest_setProtocolVersion___block_invoke;
   v4[3] = &unk_1E84ADDB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = version;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
-  v4 = a3;
+  agentCopy = agent;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__SSMachineDataRequest_setUserAgent___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = agentCopy;
+  v6 = agentCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -304,7 +304,7 @@ void __37__SSMachineDataRequest_setUserAgent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setWaitsForPurchaseOperations:(BOOL)a3
+- (void)setWaitsForPurchaseOperations:(BOOL)operations
 {
   dispatchQueue = self->super._dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -312,7 +312,7 @@ void __37__SSMachineDataRequest_setUserAgent___block_invoke(uint64_t a1)
   v4[2] = __54__SSMachineDataRequest_setWaitsForPurchaseOperations___block_invoke;
   v4[3] = &unk_1E84AD070;
   v4[4] = self;
-  v5 = a3;
+  operationsCopy = operations;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -357,15 +357,15 @@ void __37__SSMachineDataRequest_setUserAgent___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__SSMachineDataRequest_startWithCompletionBlock___block_invoke;
   v6[3] = &unk_1E84B2878;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSMachineDataRequest *)self startWithDetailedCompletionBlock:v6];
 }
 
@@ -380,24 +380,24 @@ uint64_t __49__SSMachineDataRequest_startWithCompletionBlock___block_invoke(uint
   return result;
 }
 
-- (void)startWithDetailedCompletionBlock:(id)a3
+- (void)startWithDetailedCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = SSViTunesStoreFramework();
   v6 = [objc_alloc(SSVWeakLinkedClassForString(&cfstr_Ismachinedataa.isa v5))];
-  v7 = [(SSMachineDataRequest *)self userAgent];
+  userAgent = [(SSMachineDataRequest *)self userAgent];
 
-  if (v7)
+  if (userAgent)
   {
-    v8 = [(SSMachineDataRequest *)self userAgent];
-    [v6 setUserAgent:v8];
+    userAgent2 = [(SSMachineDataRequest *)self userAgent];
+    [v6 setUserAgent:userAgent2];
   }
 
   else
   {
-    v8 = +[SSDevice currentDevice];
-    v9 = [v8 userAgent];
-    [v6 setUserAgent:v9];
+    userAgent2 = +[SSDevice currentDevice];
+    v8UserAgent = [userAgent2 userAgent];
+    [v6 setUserAgent:v8UserAgent];
   }
 
   objc_initWeak(&location, v6);
@@ -406,14 +406,14 @@ uint64_t __49__SSMachineDataRequest_startWithCompletionBlock___block_invoke(uint
   v16 = __57__SSMachineDataRequest_startWithDetailedCompletionBlock___block_invoke;
   v17 = &unk_1E84AED80;
   objc_copyWeak(&v20, &location);
-  v10 = v4;
-  v18 = self;
+  v10 = blockCopy;
+  selfCopy = self;
   v19 = v10;
   [v6 setCompletionBlock:&v14];
   v11 = SSViTunesStoreFramework();
   v12 = SSVWeakLinkedClassForString(&cfstr_Isoperationque.isa, v11);
-  v13 = [v12 mainQueue];
-  [v13 addOperation:v6];
+  mainQueue = [v12 mainQueue];
+  [mainQueue addOperation:v6];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -433,11 +433,11 @@ void __57__SSMachineDataRequest_startWithDetailedCompletionBlock___block_invoke(
   [*(a1 + 32) _shutdownRequest];
 }
 
-- (SSMachineDataRequest)initWithXPCEncoding:(id)a3
+- (SSMachineDataRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v20.receiver = self;
     v20.super_class = SSMachineDataRequest;
@@ -489,7 +489,7 @@ void __57__SSMachineDataRequest_startWithDetailedCompletionBlock___block_invoke(
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 

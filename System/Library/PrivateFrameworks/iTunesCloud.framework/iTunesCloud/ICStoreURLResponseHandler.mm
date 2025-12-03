@@ -1,18 +1,18 @@
 @interface ICStoreURLResponseHandler
-+ (void)_updateDefaultStorefrontIdentifier:(id)a3 usingIdentityStore:(id)a4;
-- (BOOL)_isAuthenticationError:(id)a3;
-- (void)_verifyMescalSignatureForResponse:(id)a3 toRequest:(id)a4 completionHandler:(id)a5;
-- (void)processCompletedResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
-- (void)processInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5;
++ (void)_updateDefaultStorefrontIdentifier:(id)identifier usingIdentityStore:(id)store;
+- (BOOL)_isAuthenticationError:(id)error;
+- (void)_verifyMescalSignatureForResponse:(id)response toRequest:(id)request completionHandler:(id)handler;
+- (void)processCompletedResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
+- (void)processInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler;
 @end
 
 @implementation ICStoreURLResponseHandler
 
-- (BOOL)_isAuthenticationError:(id)a3
+- (BOOL)_isAuthenticationError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"ICStoreServerError"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"ICStoreServerError"];
 
   if (!v5)
   {
@@ -20,11 +20,11 @@
     goto LABEL_12;
   }
 
-  v6 = [v3 code];
+  code = [errorCopy code];
   v7 = 0;
-  if (v6 > 2033)
+  if (code > 2033)
   {
-    if (((v6 - 2034) > 0x26 || ((1 << (v6 + 14)) & 0x7000001001) == 0) && v6 != 510005)
+    if (((code - 2034) > 0x26 || ((1 << (code + 14)) & 0x7000001001) == 0) && code != 510005)
     {
       goto LABEL_12;
     }
@@ -34,7 +34,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ((v6 - 1001) <= 3 && v6 != 1002 || v6 == 2002)
+  if ((code - 1001) <= 3 && code != 1002 || code == 2002)
   {
     goto LABEL_11;
   }
@@ -44,25 +44,25 @@ LABEL_12:
   return v7;
 }
 
-- (void)_verifyMescalSignatureForResponse:(id)a3 toRequest:(id)a4 completionHandler:(id)a5
+- (void)_verifyMescalSignatureForResponse:(id)response toRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 storeRequestContext];
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
+  storeRequestContext = [requestCopy storeRequestContext];
   v11 = +[ICURLBagProvider sharedBagProvider];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __91__ICStoreURLResponseHandler__verifyMescalSignatureForResponse_toRequest_completionHandler___block_invoke;
   v16[3] = &unk_1E7BF9768;
-  v17 = v7;
-  v18 = v8;
-  v19 = v10;
-  v20 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v7;
+  v17 = responseCopy;
+  v18 = requestCopy;
+  v19 = storeRequestContext;
+  v20 = handlerCopy;
+  v12 = storeRequestContext;
+  v13 = handlerCopy;
+  v14 = requestCopy;
+  v15 = responseCopy;
   [v11 getBagForRequestContext:v12 withCompletionHandler:v16];
 }
 
@@ -329,24 +329,24 @@ LABEL_6:
 LABEL_57:
 }
 
-- (void)processCompletedResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)processCompletedResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__ICStoreURLResponseHandler_processCompletedResponse_toRequest_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7BF9710;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
+  v16 = requestCopy;
+  v17 = responseCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
   v14.receiver = self;
   v14.super_class = ICStoreURLResponseHandler;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v11 = handlerCopy;
+  v12 = responseCopy;
+  v13 = requestCopy;
   [(ICURLResponseHandler *)&v14 processCompletedResponse:v12 toRequest:v13 withCompletionHandler:v15];
 }
 
@@ -793,23 +793,23 @@ void __86__ICStoreURLResponseHandler_processCompletedResponse_toRequest_withComp
   (*(a1[6] + 16))();
 }
 
-- (void)processInitialResponse:(id)a3 toRequest:(id)a4 withCompletionHandler:(id)a5
+- (void)processInitialResponse:(id)response toRequest:(id)request withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__ICStoreURLResponseHandler_processInitialResponse_toRequest_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7BF9658;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
+  v16 = requestCopy;
+  v17 = responseCopy;
+  v18 = handlerCopy;
   v14.receiver = self;
   v14.super_class = ICStoreURLResponseHandler;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v11 = handlerCopy;
+  v12 = responseCopy;
+  v13 = requestCopy;
   [(ICURLResponseHandler *)&v14 processInitialResponse:v12 toRequest:v13 withCompletionHandler:v15];
 }
 
@@ -1028,16 +1028,16 @@ void __84__ICStoreURLResponseHandler_processInitialResponse_toRequest_withComple
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)_updateDefaultStorefrontIdentifier:(id)a3 usingIdentityStore:(id)a4
++ (void)_updateDefaultStorefrontIdentifier:(id)identifier usingIdentityStore:(id)store
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __83__ICStoreURLResponseHandler__updateDefaultStorefrontIdentifier_usingIdentityStore___block_invoke;
   v7[3] = &unk_1E7BF9738;
-  v8 = v5;
-  v6 = v5;
-  [a4 updatePropertiesForLocalStoreAccountUsingBlock:v7 completionHandler:0];
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  [store updatePropertiesForLocalStoreAccountUsingBlock:v7 completionHandler:0];
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface OITSUDateFormatter
-+ (id)datePortionOfDateTimeFormatString:(id)a3;
-+ (id)defaultDateTimeFormatForLocale:(id)a3;
-+ (id)p_supportedDateFormatMatchingFormat:(id)a3 locale:(id)a4;
-+ (id)p_supportedTimeFormatMatchingFormat:(id)a3 locale:(id)a4;
-+ (id)supportedDateFormatsForLocale:(id)a3;
-+ (id)supportedTimeFormatsForLocale:(id)a3;
-+ (id)timePortionOfDateTimeFormatString:(id)a3;
-+ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)a3;
++ (id)datePortionOfDateTimeFormatString:(id)string;
++ (id)defaultDateTimeFormatForLocale:(id)locale;
++ (id)p_supportedDateFormatMatchingFormat:(id)format locale:(id)locale;
++ (id)p_supportedTimeFormatMatchingFormat:(id)format locale:(id)locale;
++ (id)supportedDateFormatsForLocale:(id)locale;
++ (id)supportedTimeFormatsForLocale:(id)locale;
++ (id)timePortionOfDateTimeFormatString:(id)string;
++ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)string;
 - (OITSUDateFormatter)init;
-- (OITSUDateFormatter)initWithLocale:(id)a3;
+- (OITSUDateFormatter)initWithLocale:(id)locale;
 - (void)dealloc;
 @end
 
 @implementation OITSUDateFormatter
 
-+ (id)defaultDateTimeFormatForLocale:(id)a3
++ (id)defaultDateTimeFormatForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [v3 localeSpecificStorageForKey:@"TSUDateFormatter_defaultDateTimeFormat"];
+  localeCopy = locale;
+  v4 = [localeCopy localeSpecificStorageForKey:@"TSUDateFormatter_defaultDateTimeFormat"];
   if (!v4)
   {
     v5 = objc_opt_class();
     objc_sync_enter(v5);
-    v4 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterMediumStyle, kCFDateFormatterShortStyle, v3);
-    [v3 setLocaleSpecificStorage:v4 forKey:@"TSUDateFormatter_defaultDateTimeFormat"];
+    v4 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterMediumStyle, kCFDateFormatterShortStyle, localeCopy);
+    [localeCopy setLocaleSpecificStorage:v4 forKey:@"TSUDateFormatter_defaultDateTimeFormat"];
     objc_sync_exit(v5);
   }
 
   return v4;
 }
 
-+ (id)supportedDateFormatsForLocale:(id)a3
++ (id)supportedDateFormatsForLocale:(id)locale
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 localeSpecificStorageForKey:@"TSUDateFormatter_supportedDateFormats"];
+  localeCopy = locale;
+  v4 = [localeCopy localeSpecificStorageForKey:@"TSUDateFormatter_supportedDateFormats"];
   if (!v4)
   {
     obj = objc_opt_class();
     objc_sync_enter(obj);
-    v26 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterShortStyle, kCFDateFormatterNoStyle, v3);
-    v25 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterMediumStyle, kCFDateFormatterNoStyle, v3);
-    v24 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterLongStyle, kCFDateFormatterNoStyle, v3);
-    v5 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterFullStyle, kCFDateFormatterNoStyle, v3);
-    v6 = [v3 locale];
-    v7 = TSUDateFormatterCopyDateTimeFormatInfoDictionaryForLocale(v6);
+    v26 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterShortStyle, kCFDateFormatterNoStyle, localeCopy);
+    v25 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterMediumStyle, kCFDateFormatterNoStyle, localeCopy);
+    v24 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterLongStyle, kCFDateFormatterNoStyle, localeCopy);
+    v5 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterFullStyle, kCFDateFormatterNoStyle, localeCopy);
+    locale = [localeCopy locale];
+    v7 = TSUDateFormatterCopyDateTimeFormatInfoDictionaryForLocale(locale);
 
     v8 = [v7 objectForKey:@"DisplayedDateFormats"];
     v9 = [v8 mutableCopy];
@@ -70,7 +70,7 @@
             objc_enumerationMutation(v12);
           }
 
-          v16 = TSUDateFormatterStringFromDateWithFormat(v11, *(*(&v27 + 1) + 8 * i), v3);
+          v16 = TSUDateFormatterStringFromDateWithFormat(v11, *(*(&v27 + 1) + 8 * i), localeCopy);
           [v10 addObject:v16];
         }
 
@@ -80,10 +80,10 @@
       while (v13);
     }
 
-    v17 = TSUDateFormatterStringFromDateWithFormat(v11, v26, v3);
-    v18 = TSUDateFormatterStringFromDateWithFormat(v11, v25, v3);
-    v19 = TSUDateFormatterStringFromDateWithFormat(v11, v24, v3);
-    v20 = TSUDateFormatterStringFromDateWithFormat(v11, v5, v3);
+    v17 = TSUDateFormatterStringFromDateWithFormat(v11, v26, localeCopy);
+    v18 = TSUDateFormatterStringFromDateWithFormat(v11, v25, localeCopy);
+    v19 = TSUDateFormatterStringFromDateWithFormat(v11, v24, localeCopy);
+    v20 = TSUDateFormatterStringFromDateWithFormat(v11, v5, localeCopy);
     if (([v10 containsObject:v17] & 1) == 0)
     {
       [v10 addObject:v17];
@@ -109,7 +109,7 @@
     }
 
     v4 = [v12 copy];
-    [v3 setLocaleSpecificStorage:v4 forKey:@"TSUDateFormatter_supportedDateFormats"];
+    [localeCopy setLocaleSpecificStorage:v4 forKey:@"TSUDateFormatter_supportedDateFormats"];
 
     objc_sync_exit(obj);
   }
@@ -117,18 +117,18 @@
   return v4;
 }
 
-+ (id)p_supportedDateFormatMatchingFormat:(id)a3 locale:(id)a4
++ (id)p_supportedDateFormatMatchingFormat:(id)format locale:(id)locale
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  formatCopy = format;
+  localeCopy = locale;
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
-  v8 = TSUDateFormatterStringFromDateWithFormat(v7, v5, v6);
+  v8 = TSUDateFormatterStringFromDateWithFormat(v7, formatCopy, localeCopy);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [OITSUDateFormatter supportedDateFormatsForLocale:v6, 0];
+  v9 = [OITSUDateFormatter supportedDateFormatsForLocale:localeCopy, 0];
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -144,7 +144,7 @@
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = TSUDateFormatterStringFromDateWithFormat(v7, v14, v6);
+        v15 = TSUDateFormatterStringFromDateWithFormat(v7, v14, localeCopy);
         if ([v15 isEqualToString:v8])
         {
           v16 = v14;
@@ -163,25 +163,25 @@
     }
   }
 
-  v16 = v5;
+  v16 = formatCopy;
 LABEL_11:
 
   return v16;
 }
 
-+ (id)supportedTimeFormatsForLocale:(id)a3
++ (id)supportedTimeFormatsForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [v3 localeSpecificStorageForKey:@"TSUDateFormatter_supportedTimeFormats"];
+  localeCopy = locale;
+  v4 = [localeCopy localeSpecificStorageForKey:@"TSUDateFormatter_supportedTimeFormats"];
   if (!v4)
   {
     v5 = objc_opt_class();
     objc_sync_enter(v5);
     obj = v5;
-    v6 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterNoStyle, kCFDateFormatterShortStyle, v3);
-    v7 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterNoStyle, kCFDateFormatterMediumStyle, v3);
-    v8 = [v3 locale];
-    v9 = TSUDateFormatterCopyDateTimeFormatInfoDictionaryForLocale(v8);
+    v6 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterNoStyle, kCFDateFormatterShortStyle, localeCopy);
+    v7 = TSUDateFormatterCopyFormatStringForDateAndTimeStyles(kCFDateFormatterNoStyle, kCFDateFormatterMediumStyle, localeCopy);
+    locale = [localeCopy locale];
+    v9 = TSUDateFormatterCopyDateTimeFormatInfoDictionaryForLocale(locale);
 
     v21 = v9;
     v10 = [v9 objectForKey:@"DisplayedTimeFormats"];
@@ -252,7 +252,7 @@ LABEL_11:
     }
 
     v4 = [v11 copy];
-    [v3 setLocaleSpecificStorage:v4 forKey:@"TSUDateFormatter_supportedTimeFormats"];
+    [localeCopy setLocaleSpecificStorage:v4 forKey:@"TSUDateFormatter_supportedTimeFormats"];
 
     objc_sync_exit(obj);
   }
@@ -260,18 +260,18 @@ LABEL_11:
   return v4;
 }
 
-+ (id)p_supportedTimeFormatMatchingFormat:(id)a3 locale:(id)a4
++ (id)p_supportedTimeFormatMatchingFormat:(id)format locale:(id)locale
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  formatCopy = format;
+  localeCopy = locale;
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
-  v8 = TSUDateFormatterStringFromDateWithFormat(v7, v5, v6);
+  v8 = TSUDateFormatterStringFromDateWithFormat(v7, formatCopy, localeCopy);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [OITSUDateFormatter supportedTimeFormatsForLocale:v6, 0];
+  v9 = [OITSUDateFormatter supportedTimeFormatsForLocale:localeCopy, 0];
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -287,7 +287,7 @@ LABEL_11:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = TSUDateFormatterStringFromDateWithFormat(v7, v14, v6);
+        v15 = TSUDateFormatterStringFromDateWithFormat(v7, v14, localeCopy);
         if ([v15 isEqualToString:v8])
         {
           v16 = v14;
@@ -306,21 +306,21 @@ LABEL_11:
     }
   }
 
-  v16 = v5;
+  v16 = formatCopy;
 LABEL_11:
 
   return v16;
 }
 
-+ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)a3
++ (unint64_t)p_DateTimeSplitLocationInFormatString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [MEMORY[0x277CCAC80] scannerWithString:v3];
+  stringCopy = string;
+  scanLocation5 = [stringCopy length];
+  v5 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
   [v5 setCharactersToBeSkipped:0];
   v6 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"'hHmsSakKZ"];
-  v7 = [v5 scanLocation];
-  if (v7 >= [v3 length])
+  scanLocation = [v5 scanLocation];
+  if (scanLocation >= [stringCopy length])
   {
     v9 = 0;
   }
@@ -334,15 +334,15 @@ LABEL_11:
       [v5 scanUpToCharactersFromSet:v6 intoString:&v21];
       v9 = v21;
 
-      v10 = [v5 scanLocation];
-      if (v10 >= [v3 length] || objc_msgSend(v3, "characterAtIndex:", objc_msgSend(v5, "scanLocation")) != 39)
+      scanLocation2 = [v5 scanLocation];
+      if (scanLocation2 >= [stringCopy length] || objc_msgSend(stringCopy, "characterAtIndex:", objc_msgSend(v5, "scanLocation")) != 39)
       {
         break;
       }
 
-      v11 = [v5 scanLocation];
+      scanLocation3 = [v5 scanLocation];
       v12 = [v5 scanLocation] + 1;
-      if (v12 >= [v3 length])
+      if (v12 >= [stringCopy length])
       {
         goto LABEL_14;
       }
@@ -353,26 +353,26 @@ LABEL_11:
       v8 = v20;
 
       v13 = [v5 scanLocation] + 1;
-      v14 = [v3 length];
+      v14 = [stringCopy length];
       v15 = [v5 scanLocation] + 1;
       if (v13 >= v14)
       {
-        if (v15 == [v3 length])
+        if (v15 == [stringCopy length])
         {
           goto LABEL_10;
         }
 
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[OITSUDateFormatter p_DateTimeSplitLocationInFormatString:]"];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUDateFormatter.m"];
-        [OITSUAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:1007 isFatal:0 description:"Unmatched single quote found in format string %{public}@", v3];
+        [OITSUAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:1007 isFatal:0 description:"Unmatched single quote found in format string %{public}@", stringCopy];
 
         +[OITSUAssertionHandler logBacktraceThrottled];
-        v15 = v11 + 1;
+        v15 = scanLocation3 + 1;
       }
 
       [v5 setScanLocation:v15];
-      v18 = [v5 scanLocation];
-      if (v18 >= [v3 length])
+      scanLocation4 = [v5 scanLocation];
+      if (scanLocation4 >= [stringCopy length])
       {
 LABEL_10:
         v9 = v8;
@@ -380,57 +380,57 @@ LABEL_10:
       }
     }
 
-    v4 = [v5 scanLocation];
+    scanLocation5 = [v5 scanLocation];
   }
 
 LABEL_14:
 
-  return v4;
+  return scanLocation5;
 }
 
-+ (id)datePortionOfDateTimeFormatString:(id)a3
++ (id)datePortionOfDateTimeFormatString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 substringToIndex:{objc_msgSend(a1, "p_DateTimeSplitLocationInFormatString:", v4)}];
+  stringCopy = string;
+  v5 = [stringCopy substringToIndex:{objc_msgSend(self, "p_DateTimeSplitLocationInFormatString:", stringCopy)}];
 
-  v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v7 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v7;
 }
 
-+ (id)timePortionOfDateTimeFormatString:(id)a3
++ (id)timePortionOfDateTimeFormatString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 p_DateTimeSplitLocationInFormatString:v4];
-  if (v5 >= [v4 length])
+  stringCopy = string;
+  v5 = [self p_DateTimeSplitLocationInFormatString:stringCopy];
+  if (v5 >= [stringCopy length])
   {
     v8 = &stru_286EE1130;
   }
 
   else
   {
-    v6 = [v4 substringFromIndex:v5];
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v8 = [v6 stringByTrimmingCharactersInSet:v7];
+    v6 = [stringCopy substringFromIndex:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v8 = [v6 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   return v8;
 }
 
-- (OITSUDateFormatter)initWithLocale:(id)a3
+- (OITSUDateFormatter)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v19.receiver = self;
   v19.super_class = OITSUDateFormatter;
   v5 = [(OITSUDateFormatter *)&v19 init];
   if (v5)
   {
-    v6 = [v4 gregorianCalendarLocale];
-    UsingHarmonizedSymbols = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, v6, kCFDateFormatterMediumStyle, kCFDateFormatterNoStyle);
+    gregorianCalendarLocale = [localeCopy gregorianCalendarLocale];
+    UsingHarmonizedSymbols = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, gregorianCalendarLocale, kCFDateFormatterMediumStyle, kCFDateFormatterNoStyle);
 
-    v8 = [v4 gregorianCalendarLocale];
-    v9 = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, v8, kCFDateFormatterNoStyle, kCFDateFormatterShortStyle);
+    gregorianCalendarLocale2 = [localeCopy gregorianCalendarLocale];
+    v9 = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, gregorianCalendarLocale2, kCFDateFormatterNoStyle, kCFDateFormatterShortStyle);
 
     v10 = CFDateFormatterGetFormat(UsingHarmonizedSymbols);
     dateOnlyFormatString = v5->_dateOnlyFormatString;
@@ -440,8 +440,8 @@ LABEL_14:
     timeOnlyFormatString = v5->_timeOnlyFormatString;
     v5->_timeOnlyFormatString = v12;
 
-    v14 = [v4 gregorianCalendarLocale];
-    v5->_fullDateFormatter = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, v14, kCFDateFormatterFullStyle, kCFDateFormatterFullStyle);
+    gregorianCalendarLocale3 = [localeCopy gregorianCalendarLocale];
+    v5->_fullDateFormatter = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, gregorianCalendarLocale3, kCFDateFormatterFullStyle, kCFDateFormatterFullStyle);
 
     fullDateFormatter = v5->_fullDateFormatter;
     v16 = *MEMORY[0x277CBEDF8];

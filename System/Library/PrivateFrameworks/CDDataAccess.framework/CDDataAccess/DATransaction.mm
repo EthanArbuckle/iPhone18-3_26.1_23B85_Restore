@@ -1,6 +1,6 @@
 @interface DATransaction
 - (DATransaction)init;
-- (DATransaction)initWithLabel:(id)a3;
+- (DATransaction)initWithLabel:(id)label;
 - (void)dealloc;
 @end
 
@@ -16,9 +16,9 @@
   v5 = *(MEMORY[0x277CF3AF0] + 5);
   if (os_log_type_enabled(v4, v5))
   {
-    v6 = [(DATransaction *)self transactionId];
+    transactionId = [(DATransaction *)self transactionId];
     *buf = 138412290;
-    v10 = v6;
+    v10 = transactionId;
     _os_log_impl(&dword_24244C000, v4, v5, "DATransaction exiting, ID: %@", buf, 0xCu);
   }
 
@@ -35,9 +35,9 @@
   v2 = [(DATransaction *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCACA8] da_newGUID];
+    da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
     transactionId = v2->_transactionId;
-    v2->_transactionId = v3;
+    v2->_transactionId = da_newGUID;
 
     objc_storeStrong(&v2->_label, v2->_transactionId);
     v5 = +[DATransactionMonitor sharedTransactionMonitor];
@@ -47,14 +47,14 @@
   return v2;
 }
 
-- (DATransaction)initWithLabel:(id)a3
+- (DATransaction)initWithLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v6 = [(DATransaction *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_label, a3);
+    objc_storeStrong(&v6->_label, label);
   }
 
   return v7;

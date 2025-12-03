@@ -1,19 +1,19 @@
 @interface PKPeerPaymentCredential
-- (BOOL)_isEqualToCredential:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isEqualToCredential:(id)credential;
+- (BOOL)isEqual:(id)equal;
 - (NSString)pendingPaymentSenderName;
-- (PKPeerPaymentCredential)initWithPeerPaymentAccount:(id)a3;
+- (PKPeerPaymentCredential)initWithPeerPaymentAccount:(id)account;
 - (id)activationMethods;
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3;
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment;
 - (unint64_t)hash;
 @end
 
 @implementation PKPeerPaymentCredential
 
-- (PKPeerPaymentCredential)initWithPeerPaymentAccount:(id)a3
+- (PKPeerPaymentCredential)initWithPeerPaymentAccount:(id)account
 {
-  v5 = a3;
-  if (v5)
+  accountCopy = account;
+  if (accountCopy)
   {
     v9.receiver = self;
     v9.super_class = PKPeerPaymentCredential;
@@ -21,7 +21,7 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_account, a3);
+      objc_storeStrong(&v6->_account, account);
       [(PKPaymentCredential *)v7 setCardType:1];
     }
   }
@@ -35,10 +35,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -46,22 +46,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPeerPaymentCredential *)self _isEqualToCredential:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKPeerPaymentCredential *)self _isEqualToCredential:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToCredential:(id)a3
+- (BOOL)_isEqualToCredential:(id)credential
 {
   account = self->_account;
-  v4 = a3;
-  v5 = [(PKPeerPaymentAccount *)account associatedPassSerialNumber];
-  v6 = [v4 account];
+  credentialCopy = credential;
+  associatedPassSerialNumber = [(PKPeerPaymentAccount *)account associatedPassSerialNumber];
+  account = [credentialCopy account];
 
-  v7 = [v6 associatedPassSerialNumber];
-  v8 = v5;
-  v9 = v7;
+  associatedPassSerialNumber2 = [account associatedPassSerialNumber];
+  v8 = associatedPassSerialNumber;
+  v9 = associatedPassSerialNumber2;
   v10 = v9;
   if (v8 == v9)
   {
@@ -96,22 +96,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKPeerPaymentAccount *)self->_account associatedPassSerialNumber];
-  [v3 safelyAddObject:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  associatedPassSerialNumber = [(PKPeerPaymentAccount *)self->_account associatedPassSerialNumber];
+  [array safelyAddObject:associatedPassSerialNumber];
 
-  v5 = PKCombinedHash(17, v3);
+  v5 = PKCombinedHash(17, array);
   return v5;
 }
 
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment
 {
-  v3 = [(PKPeerPaymentAccount *)self->_account currentBalance];
-  v4 = [v3 amount];
-  if (v4 && ([MEMORY[0x1E696AB90] notANumber], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqual:", v5), v5, (v6 & 1) == 0))
+  currentBalance = [(PKPeerPaymentAccount *)self->_account currentBalance];
+  amount = [currentBalance amount];
+  if (amount && ([MEMORY[0x1E696AB90] notANumber], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(amount, "isEqual:", v5), v5, (v6 & 1) == 0))
   {
-    v8 = [v3 minimalFormattedStringValue];
-    v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentOnF.isa, &stru_1F2281668.isa, v8);
+    minimalFormattedStringValue = [currentBalance minimalFormattedStringValue];
+    v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentOnF.isa, &stru_1F2281668.isa, minimalFormattedStringValue);
   }
 
   else

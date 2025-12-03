@@ -1,51 +1,51 @@
 @interface HPSEngravingService
 - (BOOL)isEngravingSupported;
-- (HPSEngravingService)initWithDevice:(id)a3;
-- (void)getEngravedCaseView:(id)a3;
+- (HPSEngravingService)initWithDevice:(id)device;
+- (void)getEngravedCaseView:(id)view;
 @end
 
 @implementation HPSEngravingService
 
 - (BOOL)isEngravingSupported
 {
-  v2 = [(BTSDevice *)self->_device classicDevice];
-  v3 = [v2 productId];
+  classicDevice = [(BTSDevice *)self->_device classicDevice];
+  productId = [classicDevice productId];
 
-  return ((v3 - 8212) < 0x11) & (0x114A1u >> (v3 - 20));
+  return ((productId - 8212) < 0x11) & (0x114A1u >> (productId - 20));
 }
 
-- (HPSEngravingService)initWithDevice:(id)a3
+- (HPSEngravingService)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = HPSEngravingService;
   v6 = [(HPSEngravingService *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [(BTSDevice *)v7->_device classicDevice];
-    v9 = [v8 address];
+    objc_storeStrong(&v6->_device, device);
+    classicDevice = [(BTSDevice *)v7->_device classicDevice];
+    address = [classicDevice address];
     engravingData = v7->_engravingData;
-    v7->_engravingData = v9;
+    v7->_engravingData = address;
   }
 
   return v7;
 }
 
-- (void)getEngravedCaseView:(id)a3
+- (void)getEngravedCaseView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   engravingData = self->_engravingData;
-  v6 = [(BTSDevice *)self->_device classicDevice];
-  v7 = [v6 productId];
+  classicDevice = [(BTSDevice *)self->_device classicDevice];
+  productId = [classicDevice productId];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__HPSEngravingService_getEngravedCaseView___block_invoke;
   v9[3] = &unk_2796ADB48;
-  v10 = v4;
-  v8 = v4;
-  [_TtC16HeadphoneConfigs20HPSCaseEngravingView getEngravedCaseImage:engravingData productID:v7 completionHandler:v9];
+  v10 = viewCopy;
+  v8 = viewCopy;
+  [_TtC16HeadphoneConfigs20HPSCaseEngravingView getEngravedCaseImage:engravingData productID:productId completionHandler:v9];
 }
 
 void __43__HPSEngravingService_getEngravedCaseView___block_invoke(uint64_t a1, void *a2)

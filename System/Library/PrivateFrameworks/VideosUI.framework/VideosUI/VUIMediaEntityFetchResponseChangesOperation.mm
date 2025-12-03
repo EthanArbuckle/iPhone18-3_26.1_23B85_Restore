@@ -1,12 +1,12 @@
 @interface VUIMediaEntityFetchResponseChangesOperation
-+ (id)_changeSetFromCurrentMediaEntities:(id)a3 toLatestMediaEntities:(id)a4;
++ (id)_changeSetFromCurrentMediaEntities:(id)entities toLatestMediaEntities:(id)mediaEntities;
 - (VUIMediaEntityFetchResponseChangesOperation)init;
-- (VUIMediaEntityFetchResponseChangesOperation)initWithLatestFetchResponses:(id)a3 currentFetchResponses:(id)a4;
-- (id)_groupingChangeSetWithCurrentGrouping:(id)a3 latestGrouping:(id)a4;
-- (id)_groupingChangeSetWithLatestFetchResponse:(id)a3 currentFetchResponse:(id)a4;
-- (id)_mediaEntitiesChangeSetWithLatestFetchResponse:(id)a3 currentFetchResponse:(id)a4;
+- (VUIMediaEntityFetchResponseChangesOperation)initWithLatestFetchResponses:(id)responses currentFetchResponses:(id)fetchResponses;
+- (id)_groupingChangeSetWithCurrentGrouping:(id)grouping latestGrouping:(id)latestGrouping;
+- (id)_groupingChangeSetWithLatestFetchResponse:(id)response currentFetchResponse:(id)fetchResponse;
+- (id)_mediaEntitiesChangeSetWithLatestFetchResponse:(id)response currentFetchResponse:(id)fetchResponse;
 - (void)_preloadMediaEntityMetadata;
-- (void)_preloadMetadataForFetchResponse:(id)a3;
+- (void)_preloadMetadataForFetchResponse:(id)response;
 - (void)executionDidBegin;
 @end
 
@@ -22,13 +22,13 @@
   return 0;
 }
 
-- (VUIMediaEntityFetchResponseChangesOperation)initWithLatestFetchResponses:(id)a3 currentFetchResponses:(id)a4
+- (VUIMediaEntityFetchResponseChangesOperation)initWithLatestFetchResponses:(id)responses currentFetchResponses:(id)fetchResponses
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  responsesCopy = responses;
+  fetchResponsesCopy = fetchResponses;
+  v8 = fetchResponsesCopy;
   v9 = MEMORY[0x1E695D940];
-  if (!v6)
+  if (!responsesCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"latestFetchResponses"}];
     if (v8)
@@ -41,13 +41,13 @@ LABEL_10:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!fetchResponsesCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (![v6 count] || (v10 = objc_msgSend(v6, "count"), v10 != objc_msgSend(v8, "count")))
+  if (![responsesCopy count] || (v10 = objc_msgSend(responsesCopy, "count"), v10 != objc_msgSend(v8, "count")))
   {
     [MEMORY[0x1E695DF30] raise:*v9 format:@"The fetch responses arrays parameters must be non empty and contain the same number of response objects"];
   }
@@ -57,7 +57,7 @@ LABEL_3:
   v11 = [(VUIMediaEntityFetchResponseChangesOperation *)&v17 init];
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [responsesCopy copy];
     latestFetchResponses = v11->_latestFetchResponses;
     v11->_latestFetchResponses = v12;
 
@@ -75,17 +75,17 @@ LABEL_3:
   if (([(VUIMediaEntityFetchResponseChangesOperation *)self isCancelled]& 1) == 0)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v4 = [(VUIMediaEntityFetchResponseChangesOperation *)self currentFetchResponses];
+    currentFetchResponses = [(VUIMediaEntityFetchResponseChangesOperation *)self currentFetchResponses];
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __64__VUIMediaEntityFetchResponseChangesOperation_executionDidBegin__block_invoke;
     v9 = &unk_1E8734BB8;
-    v10 = self;
+    selfCopy = self;
     v11 = v3;
     v5 = v3;
-    [v4 enumerateObjectsUsingBlock:&v6];
+    [currentFetchResponses enumerateObjectsUsingBlock:&v6];
 
-    [(VUIMediaEntityFetchResponseChangesOperation *)self setFetchResponseChanges:v5, v6, v7, v8, v9, v10];
+    [(VUIMediaEntityFetchResponseChangesOperation *)self setFetchResponseChanges:v5, v6, v7, v8, v9, selfCopy];
   }
 
   [(VUIAsynchronousOperation *)self finishExecutionIfPossible];
@@ -108,13 +108,13 @@ void __64__VUIMediaEntityFetchResponseChangesOperation_executionDidBegin__block_
 
 - (void)_preloadMediaEntityMetadata
 {
-  v3 = [(VUIMediaEntityFetchResponseChangesOperation *)self currentFetchResponses];
+  currentFetchResponses = [(VUIMediaEntityFetchResponseChangesOperation *)self currentFetchResponses];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__VUIMediaEntityFetchResponseChangesOperation__preloadMediaEntityMetadata__block_invoke;
   v4[3] = &unk_1E8734BE0;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [currentFetchResponses enumerateObjectsUsingBlock:v4];
 }
 
 void __74__VUIMediaEntityFetchResponseChangesOperation__preloadMediaEntityMetadata__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -126,10 +126,10 @@ void __74__VUIMediaEntityFetchResponseChangesOperation__preloadMediaEntityMetada
   [*(a1 + 32) _preloadMetadataForFetchResponse:v6];
 }
 
-- (void)_preloadMetadataForFetchResponse:(id)a3
+- (void)_preloadMetadataForFetchResponse:(id)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  [a3 mediaEntities];
+  [response mediaEntities];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -169,44 +169,44 @@ LABEL_3:
   }
 }
 
-- (id)_mediaEntitiesChangeSetWithLatestFetchResponse:(id)a3 currentFetchResponse:(id)a4
+- (id)_mediaEntitiesChangeSetWithLatestFetchResponse:(id)response currentFetchResponse:(id)fetchResponse
 {
-  v5 = a3;
-  v6 = [a4 mediaEntities];
-  v7 = [v5 mediaEntities];
+  responseCopy = response;
+  mediaEntities = [fetchResponse mediaEntities];
+  mediaEntities2 = [responseCopy mediaEntities];
 
-  v8 = [objc_opt_class() _changeSetFromCurrentMediaEntities:v6 toLatestMediaEntities:v7];
+  v8 = [objc_opt_class() _changeSetFromCurrentMediaEntities:mediaEntities toLatestMediaEntities:mediaEntities2];
 
   return v8;
 }
 
-- (id)_groupingChangeSetWithLatestFetchResponse:(id)a3 currentFetchResponse:(id)a4
+- (id)_groupingChangeSetWithLatestFetchResponse:(id)response currentFetchResponse:(id)fetchResponse
 {
-  v6 = a4;
-  v7 = [a3 grouping];
-  v8 = [v6 grouping];
+  fetchResponseCopy = fetchResponse;
+  grouping = [response grouping];
+  grouping2 = [fetchResponseCopy grouping];
 
   v9 = 0;
-  if (v8 && v7)
+  if (grouping2 && grouping)
   {
-    v9 = [(VUIMediaEntityFetchResponseChangesOperation *)self _groupingChangeSetWithCurrentGrouping:v8 latestGrouping:v7];
+    v9 = [(VUIMediaEntityFetchResponseChangesOperation *)self _groupingChangeSetWithCurrentGrouping:grouping2 latestGrouping:grouping];
   }
 
   return v9;
 }
 
-- (id)_groupingChangeSetWithCurrentGrouping:(id)a3 latestGrouping:(id)a4
+- (id)_groupingChangeSetWithCurrentGrouping:(id)grouping latestGrouping:(id)latestGrouping
 {
   v6 = MEMORY[0x1E69DF6B0];
-  v7 = a4;
-  v8 = a3;
+  latestGroupingCopy = latestGrouping;
+  groupingCopy = grouping;
   v9 = objc_alloc_init(v6);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __100__VUIMediaEntityFetchResponseChangesOperation__groupingChangeSetWithCurrentGrouping_latestGrouping___block_invoke_2;
   v12[3] = &unk_1E8734C28;
   v12[4] = self;
-  v10 = [v9 changeSetFromObjects:v8 toObjects:v7 identifierBlock:&__block_literal_global_123 updateChangeSetBlock:v12];
+  v10 = [v9 changeSetFromObjects:groupingCopy toObjects:latestGroupingCopy identifierBlock:&__block_literal_global_123 updateChangeSetBlock:v12];
 
   return v10;
 }
@@ -225,13 +225,13 @@ id __100__VUIMediaEntityFetchResponseChangesOperation__groupingChangeSetWithCurr
   return v9;
 }
 
-+ (id)_changeSetFromCurrentMediaEntities:(id)a3 toLatestMediaEntities:(id)a4
++ (id)_changeSetFromCurrentMediaEntities:(id)entities toLatestMediaEntities:(id)mediaEntities
 {
   v5 = MEMORY[0x1E69DF6B0];
-  v6 = a4;
-  v7 = a3;
+  mediaEntitiesCopy = mediaEntities;
+  entitiesCopy = entities;
   v8 = objc_alloc_init(v5);
-  v9 = [v8 changeSetFromObjects:v7 toObjects:v6 identifierBlock:&__block_literal_global_21_0 isEqualBlock:&__block_literal_global_24_1];
+  v9 = [v8 changeSetFromObjects:entitiesCopy toObjects:mediaEntitiesCopy identifierBlock:&__block_literal_global_21_0 isEqualBlock:&__block_literal_global_24_1];
 
   return v9;
 }

@@ -2,37 +2,37 @@
 + ($1FF454C5B48E436092D281DABF654916)badge;
 + (CGSize)preferredWindowMinSize;
 + (id)defaultPNGName;
-- (BOOL)handleUserActivityContinuation:(id)a3;
-- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3 isEditing:(BOOL)a4;
+- (BOOL)handleUserActivityContinuation:(id)continuation;
+- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category isEditing:(BOOL)editing;
 - (UINavigationController)recentsNavigationController;
 - (_TtC10CallsAppUI21RecentsViewController)recentsViewController;
-- (void)didPresentSearchController:(id)a3;
-- (void)didPressSearchButton:(id)a3 unformattedNumber:(id)a4;
-- (void)didSelectSuggestedSearchWithToken:(id)a3;
-- (void)handleURL:(id)a3;
-- (void)keyPadSearchFor:(id)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5;
+- (void)didPresentSearchController:(id)controller;
+- (void)didPressSearchButton:(id)button unformattedNumber:(id)number;
+- (void)didSelectSuggestedSearchWithToken:(id)token;
+- (void)handleURL:(id)l;
+- (void)keyPadSearchFor:(id)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler;
 - (void)makeSearchBarActive;
-- (void)presentCallHistoryDetailsWithUniqueId:(NSString *)a3 completion:(id)a4;
-- (void)presentContactsSearchFor:(id)a3;
-- (void)presentVoicemailDetailsWithUUID:(NSUUID *)a3 completion:(id)a4;
+- (void)presentCallHistoryDetailsWithUniqueId:(NSString *)id completion:(id)completion;
+- (void)presentContactsSearchFor:(id)for;
+- (void)presentVoicemailDetailsWithUUID:(NSUUID *)d completion:(id)completion;
 - (void)searchControllerBeginDragging;
-- (void)setRecentsViewController:(id)a3;
-- (void)showDetailsForCallWithUniqueID:(id)a3 searchText:(id)a4;
-- (void)startSearchingForText:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)setRecentsViewController:(id)controller;
+- (void)showDetailsForCallWithUniqueID:(id)d searchText:(id)text;
+- (void)startSearchingForText:(id)text completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation PhoneRecentsViewController
 
-- (void)startSearchingForText:(id)a3 completion:(id)a4
+- (void)startSearchingForText:(id)text completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = v6;
-  if (a3)
+  if (text)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v9;
+    text = v9;
     if (v7)
     {
 LABEL_3:
@@ -54,12 +54,12 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v11 = self;
-  PhoneRecentsViewController.startSearching(for:completion:)(v8, a3, v7, v10);
+  selfCopy = self;
+  PhoneRecentsViewController.startSearching(for:completion:)(v8, text, v7, v10);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v7);
 }
 
-- (void)showDetailsForCallWithUniqueID:(id)a3 searchText:(id)a4
+- (void)showDetailsForCallWithUniqueID:(id)d searchText:(id)text
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -71,19 +71,19 @@ LABEL_6:
   v12[2] = v11;
   v12[3] = v5;
   v12[4] = v7;
-  v13 = self;
+  selfCopy = self;
 
   PhoneRecentsViewController.startSearching(for:completion:)(v8, v10, closure #1 in PhoneRecentsViewController.showDetailsForCall(uniqueID:searchText:)partial apply, v12);
 }
 
-- (void)didSelectSuggestedSearchWithToken:(id)a3
+- (void)didSelectSuggestedSearchWithToken:(id)token
 {
-  v4 = a3;
-  v5 = self;
-  PhoneRecentsViewController.didSelectSuggestedSearch(token:)(v4);
+  tokenCopy = token;
+  selfCopy = self;
+  PhoneRecentsViewController.didSelectSuggestedSearch(token:)(tokenCopy);
 }
 
-- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3 isEditing:(BOOL)a4
+- (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category isEditing:(BOOL)editing
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -98,26 +98,26 @@ LABEL_6:
 
 - (void)searchControllerBeginDragging
 {
-  v4 = self;
+  selfCopy = self;
   v2 = PhoneRecentsViewController.searchController.getter();
-  v3 = [v2 searchBar];
+  searchBar = [v2 searchBar];
 
-  [v3 resignFirstResponder];
+  [searchBar resignFirstResponder];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v3 = a3;
-  [v3 setShowsSearchResultsController:1];
+  controllerCopy = controller;
+  [controllerCopy setShowsSearchResultsController:1];
   type metadata accessor for TPTipsHelper();
   dispatch thunk of static TPTipsHelper.donateEventSearchedCallHistory()();
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  PhoneRecentsViewController.didPresentSearchController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  PhoneRecentsViewController.didPresentSearchController(_:)(controllerCopy);
 }
 
 - (_TtC10CallsAppUI21RecentsViewController)recentsViewController
@@ -127,13 +127,13 @@ LABEL_6:
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setRecentsViewController:(id)a3
+- (void)setRecentsViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC11MobilePhone26PhoneRecentsViewController_recentsViewController;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
 - (UINavigationController)recentsNavigationController
@@ -143,9 +143,9 @@ LABEL_6:
   result = *(&self->super.super.super.super.super.isa + v3);
   if (result)
   {
-    v5 = [(UINavigationController *)result navigationController];
+    navigationController = [(UINavigationController *)result navigationController];
 
-    return v5;
+    return navigationController;
   }
 
   else
@@ -158,8 +158,8 @@ LABEL_6:
 
 + (CGSize)preferredWindowMinSize
 {
-  v2 = [objc_opt_self() currentDevice];
-  [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  [currentDevice userInterfaceIdiom];
 
   preferredKeyPadSize(idiom:)();
   v4 = v3 + 50.0;
@@ -169,33 +169,33 @@ LABEL_6:
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  PhoneRecentsViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  PhoneRecentsViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   PhoneRecentsViewController.handle(_:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)presentVoicemailDetailsWithUUID:(NSUUID *)a3 completion:(id)a4
+- (void)presentVoicemailDetailsWithUUID:(NSUUID *)d completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -210,19 +210,19 @@ LABEL_6:
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_50Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dCopy = d;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_55Tu, v14);
 }
 
-- (void)presentCallHistoryDetailsWithUniqueId:(NSString *)a3 completion:(id)a4
+- (void)presentCallHistoryDetailsWithUniqueId:(NSString *)id completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = id;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -237,8 +237,8 @@ LABEL_6:
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTATu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  idCopy = id;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTATu, v14);
 }
 
@@ -249,7 +249,7 @@ LABEL_6:
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     RecentsViewController.makeSearchActive()();
   }
@@ -260,30 +260,30 @@ LABEL_6:
   }
 }
 
-- (void)presentContactsSearchFor:(id)a3
+- (void)presentContactsSearchFor:(id)for
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   PhoneRecentsViewController.presentSearchForNumber(_:)(v8);
 }
 
-- (void)didPressSearchButton:(id)a3 unformattedNumber:(id)a4
+- (void)didPressSearchButton:(id)button unformattedNumber:(id)number
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9._countAndFlagsBits = v5;
   v9._object = v7;
   PhoneRecentsViewController.presentSearchForNumber(_:)(v9);
 }
 
-- (void)keyPadSearchFor:(id)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5
+- (void)keyPadSearchFor:(id)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = _Block_copy(a5);
+  resultCopy = result;
+  v7 = _Block_copy(handler);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   if (v7)
@@ -298,8 +298,8 @@ LABEL_6:
     v11 = 0;
   }
 
-  v12 = self;
-  PhoneRecentsViewController.keyPadSearch(for:shouldRefreshResult:completionHandler:)(v8, v10, v5, v7, v11);
+  selfCopy = self;
+  PhoneRecentsViewController.keyPadSearch(for:shouldRefreshResult:completionHandler:)(v8, v10, resultCopy, v7, v11);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v7);
 }
 
@@ -310,15 +310,15 @@ LABEL_6:
   return v2;
 }
 
-- (BOOL)handleUserActivityContinuation:(id)a3
+- (BOOL)handleUserActivityContinuation:(id)continuation
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  v8.value.super.isa = v3;
-  LOBYTE(v3) = PhoneRecentsViewController.handleUserActivityContinuation(_:)(v8);
+  continuationCopy = continuation;
+  continuationCopy2 = continuation;
+  selfCopy = self;
+  v8.value.super.isa = continuationCopy;
+  LOBYTE(continuationCopy) = PhoneRecentsViewController.handleUserActivityContinuation(_:)(v8);
 
-  return v3 & 1;
+  return continuationCopy & 1;
 }
 
 + ($1FF454C5B48E436092D281DABF654916)badge

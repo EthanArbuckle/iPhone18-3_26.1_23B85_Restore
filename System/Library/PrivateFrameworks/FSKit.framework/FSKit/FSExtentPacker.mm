@@ -1,24 +1,24 @@
 @interface FSExtentPacker
-- (BOOL)packExtentWithResource:(id)a3 type:(int64_t)a4 logicalOffset:(int64_t)a5 physicalOffset:(int64_t)a6 length:(unint64_t)a7;
-- (FSExtentPacker)initWithLength:(unint64_t)a3;
+- (BOOL)packExtentWithResource:(id)resource type:(int64_t)type logicalOffset:(int64_t)offset physicalOffset:(int64_t)physicalOffset length:(unint64_t)length;
+- (FSExtentPacker)initWithLength:(unint64_t)length;
 - (id)extentDataByExtentsPacked;
 @end
 
 @implementation FSExtentPacker
 
-- (BOOL)packExtentWithResource:(id)a3 type:(int64_t)a4 logicalOffset:(int64_t)a5 physicalOffset:(int64_t)a6 length:(unint64_t)a7
+- (BOOL)packExtentWithResource:(id)resource type:(int64_t)type logicalOffset:(int64_t)offset physicalOffset:(int64_t)physicalOffset length:(unint64_t)length
 {
-  v7 = a7;
+  lengthCopy = length;
   v27 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = self;
-  objc_sync_enter(v13);
-  bytesPacked = v13->_bytesPacked;
-  v15 = [(NSMutableData *)v13->_buffer length];
+  resourceCopy = resource;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bytesPacked = selfCopy->_bytesPacked;
+  v15 = [(NSMutableData *)selfCopy->_buffer length];
   v16 = bytesPacked + 24;
   if (bytesPacked + 24 > v15)
   {
-    v13->_outOfSpace = 1;
+    selfCopy->_outOfSpace = 1;
     v22 = fskit_std_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -30,11 +30,11 @@
 
   else
   {
-    v17 = [(NSMutableData *)v13->_buffer mutableBytes];
-    extentsPacked = v13->_extentsPacked;
-    v19 = [v12 fileDescriptor];
-    v20 = v17 + 24 * extentsPacked;
-    if (a4)
+    mutableBytes = [(NSMutableData *)selfCopy->_buffer mutableBytes];
+    extentsPacked = selfCopy->_extentsPacked;
+    fileDescriptor = [resourceCopy fileDescriptor];
+    v20 = mutableBytes + 24 * extentsPacked;
+    if (type)
     {
       v21 = 0x2000000;
     }
@@ -44,28 +44,28 @@
       v21 = 0x1000000;
     }
 
-    *v20 = v21 & 0xFF000000 | v19 & 0xFFFFFF;
-    *(v20 + 4) = v7;
-    *(v20 + 8) = a6;
-    *(v20 + 16) = a5;
-    ++v13->_extentsPacked;
-    v13->_bytesPacked += 24;
+    *v20 = v21 & 0xFF000000 | fileDescriptor & 0xFFFFFF;
+    *(v20 + 4) = lengthCopy;
+    *(v20 + 8) = physicalOffset;
+    *(v20 + 16) = offset;
+    ++selfCopy->_extentsPacked;
+    selfCopy->_bytesPacked += 24;
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   v23 = *MEMORY[0x277D85DE8];
   return v16 <= v15;
 }
 
-- (FSExtentPacker)initWithLength:(unint64_t)a3
+- (FSExtentPacker)initWithLength:(unint64_t)length
 {
   v8.receiver = self;
   v8.super_class = FSExtentPacker;
   v4 = [(FSExtentPacker *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a3];
+    v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:length];
     buffer = v4->_buffer;
     v4->_buffer = v5;
 
@@ -79,8 +79,8 @@
 - (id)extentDataByExtentsPacked
 {
   v2 = 24 * self->_extentsPacked;
-  v3 = [(FSExtentPacker *)self extentData];
-  v4 = [v3 subdataWithRange:{0, v2}];
+  extentData = [(FSExtentPacker *)self extentData];
+  v4 = [extentData subdataWithRange:{0, v2}];
 
   return v4;
 }

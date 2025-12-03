@@ -1,26 +1,26 @@
 @interface HUDynamicStateAnimationApplier
 - (BOOL)start;
 - (HUAnimationSettings)animationSettings;
-- (HUDynamicStateAnimationApplier)initWithAnimationSettings:(id)a3 initialProgress:(double)a4 progressInputBlock:(id)a5;
-- (double)effectiveInputProgressForBlock:(id)a3;
-- (void)updateProgress:(double)a3;
+- (HUDynamicStateAnimationApplier)initWithAnimationSettings:(id)settings initialProgress:(double)progress progressInputBlock:(id)block;
+- (double)effectiveInputProgressForBlock:(id)block;
+- (void)updateProgress:(double)progress;
 @end
 
 @implementation HUDynamicStateAnimationApplier
 
-- (HUDynamicStateAnimationApplier)initWithAnimationSettings:(id)a3 initialProgress:(double)a4 progressInputBlock:(id)a5
+- (HUDynamicStateAnimationApplier)initWithAnimationSettings:(id)settings initialProgress:(double)progress progressInputBlock:(id)block
 {
-  v8 = a3;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = HUDynamicStateAnimationApplier;
-  v9 = [(HUDisplayLinkApplier *)&v13 initWithProgressInputBlock:a5];
+  v9 = [(HUDisplayLinkApplier *)&v13 initWithProgressInputBlock:block];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [settingsCopy copy];
     animationSettings = v9->_animationSettings;
     v9->_animationSettings = v10;
 
-    v9->_initialProgress = a4;
+    v9->_initialProgress = progress;
   }
 
   return v9;
@@ -37,26 +37,26 @@
 {
   v5.receiver = self;
   v5.super_class = HUDynamicStateAnimationApplier;
-  v3 = [(HUDisplayLinkApplier *)&v5 start];
-  if (v3)
+  start = [(HUDisplayLinkApplier *)&v5 start];
+  if (start)
   {
     [(HUDynamicStateAnimationApplier *)self setLastTargetChangeTime:CACurrentMediaTime()];
   }
 
-  return v3;
+  return start;
 }
 
-- (void)updateProgress:(double)a3
+- (void)updateProgress:(double)progress
 {
   [(HUDynamicStateAnimationApplier *)self setHasUpdatedProgress:1];
   v5.receiver = self;
   v5.super_class = HUDynamicStateAnimationApplier;
-  [(HUApplier *)&v5 updateProgress:a3];
+  [(HUApplier *)&v5 updateProgress:progress];
 }
 
-- (double)effectiveInputProgressForBlock:(id)a3
+- (double)effectiveInputProgressForBlock:(id)block
 {
-  v4 = (*(a3 + 2))(a3, a2);
+  v4 = (*(block + 2))(block, a2);
   if ([(HUDynamicStateAnimationApplier *)self hasUpdatedProgress])
   {
     [(HUDynamicStateAnimationApplier *)self targetProgress];
@@ -79,8 +79,8 @@
       v19[4] = self;
       *&v19[5] = v4;
       v8 = _Block_copy(v19);
-      v9 = [(HUDynamicStateAnimationApplier *)self animationSettings];
-      [v9 durationWithSpeed];
+      animationSettings = [(HUDynamicStateAnimationApplier *)self animationSettings];
+      [animationSettings durationWithSpeed];
       v11 = v7 * v10;
 
       v12 = CACurrentMediaTime();
@@ -88,8 +88,8 @@
       v14 = (v12 - v13) / v11;
       v8[2](v8, v14);
       [(HUDynamicStateAnimationApplier *)self setPreInterpolatedProgress:?];
-      v15 = [(HUDynamicStateAnimationApplier *)self animationSettings];
-      [v15 interpolatedProgressForProgress:v14];
+      animationSettings2 = [(HUDynamicStateAnimationApplier *)self animationSettings];
+      [animationSettings2 interpolatedProgressForProgress:v14];
       v17 = v16;
 
       v4 = (v8[2])(v8, v17);

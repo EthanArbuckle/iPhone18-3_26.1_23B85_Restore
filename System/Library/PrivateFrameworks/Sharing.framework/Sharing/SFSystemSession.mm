@@ -2,20 +2,20 @@
 - (SFSystemSession)init;
 - (void)_cleanup;
 - (void)_processRequests;
-- (void)_processRequestsWithError:(id)a3;
+- (void)_processRequestsWithError:(id)error;
 - (void)_run;
 - (void)_runPairVerifyStart;
 - (void)_runSFSessionStart;
 - (void)activate;
-- (void)getProfilesResponse:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)getProfilesWithCompletion:(id)a3;
-- (void)getSystemInfoWithCompletion:(id)a3;
-- (void)installProfileResponse:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)installProfileWithData:(id)a3 completion:(id)a4;
-- (void)installProfileWithURL:(id)a3 completion:(id)a4;
+- (void)getProfilesResponse:(id)response error:(id)error completion:(id)completion;
+- (void)getProfilesWithCompletion:(id)completion;
+- (void)getSystemInfoWithCompletion:(id)completion;
+- (void)installProfileResponse:(id)response error:(id)error completion:(id)completion;
+- (void)installProfileWithData:(id)data completion:(id)completion;
+- (void)installProfileWithURL:(id)l completion:(id)completion;
 - (void)invalidate;
-- (void)rebootSystemWithCompletion:(id)a3;
-- (void)removeProfileWithIdentifier:(id)a3 completion:(id)a4;
+- (void)rebootSystemWithCompletion:(id)completion;
+- (void)removeProfileWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SFSystemSession
@@ -367,19 +367,19 @@ void __38__SFSystemSession__runPairVerifyStart__block_invoke(uint64_t a1, void *
   p_currentRequest = &self->_currentRequest;
   if (!self->_currentRequest)
   {
-    v4 = [(NSMutableArray *)self->_requests firstObject];
-    if (v4)
+    firstObject = [(NSMutableArray *)self->_requests firstObject];
+    if (firstObject)
     {
-      objc_storeStrong(p_currentRequest, v4);
+      objc_storeStrong(p_currentRequest, firstObject);
       [(NSMutableArray *)self->_requests removeObjectAtIndex:0];
       sfSession = self->_sfSession;
-      v6 = [v4 requestID];
-      v7 = [v4 options];
-      v8 = [v4 request];
-      v9 = v8;
-      if (v8)
+      requestID = [firstObject requestID];
+      options = [firstObject options];
+      request = [firstObject request];
+      v9 = request;
+      if (request)
       {
-        v10 = v8;
+        v10 = request;
       }
 
       else
@@ -391,9 +391,9 @@ void __38__SFSystemSession__runPairVerifyStart__block_invoke(uint64_t a1, void *
       v11[1] = 3221225472;
       v11[2] = __35__SFSystemSession__processRequests__block_invoke;
       v11[3] = &unk_1E7891360;
-      v12 = v4;
-      v13 = self;
-      [(SFSession *)sfSession sendRequestID:v6 options:v7 request:v10 responseHandler:v11];
+      v12 = firstObject;
+      selfCopy = self;
+      [(SFSession *)sfSession sendRequestID:requestID options:options request:v10 responseHandler:v11];
     }
   }
 }
@@ -419,10 +419,10 @@ uint64_t __35__SFSystemSession__processRequests__block_invoke(uint64_t a1, void 
   return [v12 _run];
 }
 
-- (void)_processRequestsWithError:(id)a3
+- (void)_processRequestsWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -443,8 +443,8 @@ uint64_t __35__SFSystemSession__processRequests__block_invoke(uint64_t a1, void 
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) responseHandler];
-        (v10)[2](v10, v4, 0, 0);
+        responseHandler = [*(*(&v12 + 1) + 8 * v9) responseHandler];
+        (responseHandler)[2](responseHandler, errorCopy, 0, 0);
 
         ++v9;
       }
@@ -460,9 +460,9 @@ uint64_t __35__SFSystemSession__processRequests__block_invoke(uint64_t a1, void 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSystemInfoWithCompletion:(id)a3
+- (void)getSystemInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_SFSystemSession <= 30 && (gLogCategory_SFSystemSession != -1 || _LogCategory_Initialize()))
   {
     [SFSystemSession getSystemInfoWithCompletion:];
@@ -479,8 +479,8 @@ uint64_t __35__SFSystemSession__processRequests__block_invoke(uint64_t a1, void 
   v11[1] = 3221225472;
   v11[2] = __47__SFSystemSession_getSystemInfoWithCompletion___block_invoke;
   v11[3] = &unk_1E7890D78;
-  v12 = v4;
-  v6 = v4;
+  v12 = completionCopy;
+  v6 = completionCopy;
   [(SFSessionRequestInfo *)v5 setResponseHandler:v11];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -501,9 +501,9 @@ uint64_t __47__SFSystemSession_getSystemInfoWithCompletion___block_invoke_2(uint
   return [v2 _run];
 }
 
-- (void)getProfilesWithCompletion:(id)a3
+- (void)getProfilesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_SFSystemSession <= 30 && (gLogCategory_SFSystemSession != -1 || _LogCategory_Initialize()))
   {
     [SFSystemSession getProfilesWithCompletion:];
@@ -516,8 +516,8 @@ uint64_t __47__SFSystemSession_getSystemInfoWithCompletion___block_invoke_2(uint
   v11[2] = __45__SFSystemSession_getProfilesWithCompletion___block_invoke;
   v11[3] = &unk_1E788C728;
   v11[4] = self;
-  v12 = v4;
-  v6 = v4;
+  v12 = completionCopy;
+  v6 = completionCopy;
   [(SFSessionRequestInfo *)v5 setResponseHandler:v11];
   dispatchQueue = self->_dispatchQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -538,14 +538,14 @@ uint64_t __45__SFSystemSession_getProfilesWithCompletion___block_invoke_2(uint64
   return [v2 _run];
 }
 
-- (void)getProfilesResponse:(id)a3 error:(id)a4 completion:(id)a5
+- (void)getProfilesResponse:(id)response error:(id)error completion:(id)completion
 {
-  v11 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (a4)
+  responseCopy = response;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (error)
   {
-    (*(v7 + 2))(v7, 0, a4);
+    (*(completionCopy + 2))(completionCopy, 0, error);
   }
 
   else
@@ -565,11 +565,11 @@ uint64_t __45__SFSystemSession_getProfilesWithCompletion___block_invoke_2(uint64
   }
 }
 
-- (void)installProfileWithData:(id)a3 completion:(id)a4
+- (void)installProfileWithData:(id)data completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v23 = 0;
   v8 = NSDataCompress();
   v9 = 0;
@@ -577,7 +577,7 @@ uint64_t __45__SFSystemSession_getProfilesWithCompletion___block_invoke_2(uint64
   {
     if (gLogCategory_SFSystemSession <= 30 && (gLogCategory_SFSystemSession != -1 || _LogCategory_Initialize()))
     {
-      [SFSystemSession installProfileWithData:v6 completion:v8];
+      [SFSystemSession installProfileWithData:dataCopy completion:v8];
     }
 
     v10 = objc_alloc_init(SFSessionRequestInfo);
@@ -592,7 +592,7 @@ uint64_t __45__SFSystemSession_getProfilesWithCompletion___block_invoke_2(uint64
     v18[2] = __53__SFSystemSession_installProfileWithData_completion___block_invoke_2;
     v18[3] = &unk_1E788C728;
     v18[4] = self;
-    v19 = v7;
+    v19 = completionCopy;
     [(SFSessionRequestInfo *)v10 setResponseHandler:v18];
     dispatchQueue = self->_dispatchQueue;
     v16[0] = MEMORY[0x1E69E9820];
@@ -612,7 +612,7 @@ uint64_t __45__SFSystemSession_getProfilesWithCompletion___block_invoke_2(uint64
     block[1] = 3221225472;
     block[2] = __53__SFSystemSession_installProfileWithData_completion___block_invoke;
     block[3] = &unk_1E788B318;
-    v22 = v7;
+    v22 = completionCopy;
     v21 = v9;
     dispatch_async(v14, block);
 
@@ -630,15 +630,15 @@ uint64_t __53__SFSystemSession_installProfileWithData_completion___block_invoke_
   return [v2 _run];
 }
 
-- (void)installProfileWithURL:(id)a3 completion:(id)a4
+- (void)installProfileWithURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13 = 0;
-  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:0 error:&v13];
+  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:0 error:&v13];
   v8 = v13;
   if (v7)
   {
-    [(SFSystemSession *)self installProfileWithData:v7 completion:v6];
+    [(SFSystemSession *)self installProfileWithData:v7 completion:completionCopy];
   }
 
   else
@@ -648,20 +648,20 @@ uint64_t __53__SFSystemSession_installProfileWithData_completion___block_invoke_
     block[1] = 3221225472;
     block[2] = __52__SFSystemSession_installProfileWithURL_completion___block_invoke;
     block[3] = &unk_1E788B318;
-    v12 = v6;
+    v12 = completionCopy;
     v11 = v8;
     dispatch_async(dispatchQueue, block);
   }
 }
 
-- (void)installProfileResponse:(id)a3 error:(id)a4 completion:(id)a5
+- (void)installProfileResponse:(id)response error:(id)error completion:(id)completion
 {
-  v11 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (a4)
+  responseCopy = response;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (error)
   {
-    (*(v7 + 2))(v7, 0, a4);
+    (*(completionCopy + 2))(completionCopy, 0, error);
   }
 
   else
@@ -681,11 +681,11 @@ uint64_t __53__SFSystemSession_installProfileWithData_completion___block_invoke_
   }
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeProfileWithIdentifier:(id)identifier completion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (gLogCategory_SFSystemSession <= 30 && (gLogCategory_SFSystemSession != -1 || _LogCategory_Initialize()))
   {
     [SFSystemSession removeProfileWithIdentifier:completion:];
@@ -694,7 +694,7 @@ uint64_t __53__SFSystemSession_installProfileWithData_completion___block_invoke_
   v8 = objc_alloc_init(SFSessionRequestInfo);
   [(SFSessionRequestInfo *)v8 setRequestID:@"_profileRemove"];
   v18 = @"id";
-  v19[0] = v6;
+  v19[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   [(SFSessionRequestInfo *)v8 setRequest:v9];
 
@@ -702,8 +702,8 @@ uint64_t __53__SFSystemSession_installProfileWithData_completion___block_invoke_
   v16[1] = 3221225472;
   v16[2] = __58__SFSystemSession_removeProfileWithIdentifier_completion___block_invoke;
   v16[3] = &unk_1E7890D78;
-  v17 = v7;
-  v10 = v7;
+  v17 = completionCopy;
+  v10 = completionCopy;
   [(SFSessionRequestInfo *)v8 setResponseHandler:v16];
   dispatchQueue = self->_dispatchQueue;
   v14[0] = MEMORY[0x1E69E9820];
@@ -726,9 +726,9 @@ uint64_t __58__SFSystemSession_removeProfileWithIdentifier_completion___block_in
   return [v2 _run];
 }
 
-- (void)rebootSystemWithCompletion:(id)a3
+- (void)rebootSystemWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (gLogCategory_SFSystemSession <= 30 && (gLogCategory_SFSystemSession != -1 || _LogCategory_Initialize()))
   {
     [SFSystemSession rebootSystemWithCompletion:];
@@ -741,8 +741,8 @@ uint64_t __58__SFSystemSession_removeProfileWithIdentifier_completion___block_in
   v9[1] = 3221225472;
   v9[2] = __46__SFSystemSession_rebootSystemWithCompletion___block_invoke;
   v9[3] = &unk_1E7890D78;
-  v10 = v4;
-  v6 = v4;
+  v10 = completionCopy;
+  v6 = completionCopy;
   [(SFSessionRequestInfo *)v5 setResponseHandler:v9];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];

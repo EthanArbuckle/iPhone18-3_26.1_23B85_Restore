@@ -1,26 +1,26 @@
 @interface UIKeyboardHiddenViewController
 - (BOOL)shouldPresentAsPopover;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (UIKeyboardHiddenViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (UIKeyboardHiddenViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_localAuthenticationUIDismissed;
 - (void)_localAuthenticationUIPresented;
 - (void)_sceneDidChange;
 - (void)dealloc;
-- (void)passwordViewControllerDidFinish:(id)a3;
-- (void)presentAutofillVCWithAnimation:(BOOL)a3;
-- (void)presentSelfWithAnimation:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)passwordViewControllerDidFinish:(id)finish;
+- (void)presentAutofillVCWithAnimation:(BOOL)animation;
+- (void)presentSelfWithAnimation:(BOOL)animation;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation UIKeyboardHiddenViewController
 
-- (UIKeyboardHiddenViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIKeyboardHiddenViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = UIKeyboardHiddenViewController;
-  v4 = [(UIViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -61,18 +61,18 @@
   [(UIViewController *)&v7 dealloc];
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIPresentationController *)[UIKeyboardVCPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [(UIPresentationController *)[UIKeyboardVCPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_presentedAutofill)
   {
     if (![UIApp isSuspended] || (+[UIKeyboardSceneDelegate activeKeyboardSceneDelegate](UIKeyboardSceneDelegate, "activeKeyboardSceneDelegate"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "containerWindow"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_isHostedInAnotherProcess"), v6, v5, v7))
@@ -87,23 +87,23 @@
     }
   }
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel__deviceWillLock_ name:@"UIApplicationProtectedDataWillBecomeUnavailable" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__deviceWillLock_ name:@"UIApplicationProtectedDataWillBecomeUnavailable" object:0];
 
   v12.receiver = self;
   v12.super_class = UIKeyboardHiddenViewController;
-  [(UIViewController *)&v12 viewWillAppear:v3];
+  [(UIViewController *)&v12 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"UIApplicationProtectedDataWillBecomeUnavailable" object:0];
+  disappearCopy = disappear;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationProtectedDataWillBecomeUnavailable" object:0];
 
   v6.receiver = self;
   v6.super_class = UIKeyboardHiddenViewController;
-  [(UIViewController *)&v6 viewWillDisappear:v3];
+  [(UIViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (void)_localAuthenticationUIPresented
@@ -148,12 +148,12 @@ void __65__UIKeyboardHiddenViewController__localAuthenticationUIDismissed__block
   [v3 _restoreInputViewsWithId:v2 animated:1];
 }
 
-- (void)passwordViewControllerDidFinish:(id)a3
+- (void)passwordViewControllerDidFinish:(id)finish
 {
   v4 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:0];
-  v5 = [v4 rootViewController];
+  rootViewController = [v4 rootViewController];
 
-  [v5 setDontDismissKeyboardOnScrolling:0];
+  [rootViewController setDontDismissKeyboardOnScrolling:0];
   if (self->_presentedAutofill)
   {
     v6 = +[UIPeripheralHost activeInstance];
@@ -191,24 +191,24 @@ void __66__UIKeyboardHiddenViewController_passwordViewControllerDidFinish___bloc
   }
 
   v2 = +[UIWindow _applicationKeyWindow];
-  v3 = [v2 traitCollection];
-  v4 = [v3 horizontalSizeClass] != 1;
+  traitCollection = [v2 traitCollection];
+  v4 = [traitCollection horizontalSizeClass] != 1;
 
   return v4;
 }
 
-- (void)presentSelfWithAnimation:(BOOL)a3
+- (void)presentSelfWithAnimation:(BOOL)animation
 {
   [(UIViewController *)self setTransitioningDelegate:self];
   v5 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:0];
-  v6 = [v5 rootViewController];
+  rootViewController = [v5 rootViewController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__UIKeyboardHiddenViewController_presentSelfWithAnimation___block_invoke;
   v7[3] = &unk_1E70F35E0;
   v7[4] = self;
-  v8 = a3;
-  [v6 presentViewController:self animated:0 completion:v7];
+  animationCopy = animation;
+  [rootViewController presentViewController:self animated:0 completion:v7];
 }
 
 uint64_t __59__UIKeyboardHiddenViewController_presentSelfWithAnimation___block_invoke(uint64_t a1)
@@ -238,23 +238,23 @@ uint64_t __59__UIKeyboardHiddenViewController_presentSelfWithAnimation___block_i
   return [v8 presentAutofillVCWithAnimation:v9];
 }
 
-- (void)presentAutofillVCWithAnimation:(BOOL)a3
+- (void)presentAutofillVCWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v5 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:0];
-  v6 = [v5 rootViewController];
+  rootViewController = [v5 rootViewController];
 
-  [v6 setDontDismissKeyboardOnScrolling:1];
+  [rootViewController setDontDismissKeyboardOnScrolling:1];
   [(_SFPasswordViewController *)self->_autofillVC setModalPresentationStyle:3];
   [(UIViewController *)self setDefinesPresentationContext:1];
-  [(UIKeyboardHiddenViewController *)self presentViewController:v3];
+  [(UIKeyboardHiddenViewController *)self presentViewController:animationCopy];
 }
 
 - (void)_sceneDidChange
 {
-  v3 = [(UIViewController *)self presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
     if (!self->_processingSceneDidChange)
     {
@@ -285,15 +285,15 @@ uint64_t __49__UIKeyboardHiddenViewController__sceneDidChange__block_invoke(uint
   return result;
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
   if ([(UIKeyboardHiddenViewController *)self shouldPresentAsPopover])
   {
-    v8 = [(UIViewController *)self presentationController];
-    [v8 sizeForChildContentContainer:v7 withParentContainerSize:{width, height}];
+    presentationController = [(UIViewController *)self presentationController];
+    [presentationController sizeForChildContentContainer:containerCopy withParentContainerSize:{width, height}];
     v10 = v9;
     v12 = v11;
   }
@@ -302,7 +302,7 @@ uint64_t __49__UIKeyboardHiddenViewController__sceneDidChange__block_invoke(uint
   {
     v17.receiver = self;
     v17.super_class = UIKeyboardHiddenViewController;
-    [(UIViewController *)&v17 sizeForChildContentContainer:v7 withParentContainerSize:width, height];
+    [(UIViewController *)&v17 sizeForChildContentContainer:containerCopy withParentContainerSize:width, height];
     v10 = v13;
     v12 = v14;
   }

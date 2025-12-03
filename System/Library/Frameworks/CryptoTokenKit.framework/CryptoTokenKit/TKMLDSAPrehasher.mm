@@ -1,18 +1,18 @@
 @interface TKMLDSAPrehasher
-+ (id)prehashDataWithMessageData:(id)a3 publicKey:(id)a4 context:(id)a5;
++ (id)prehashDataWithMessageData:(id)data publicKey:(id)key context:(id)context;
 @end
 
 @implementation TKMLDSAPrehasher
 
-+ (id)prehashDataWithMessageData:(id)a3 publicKey:(id)a4 context:(id)a5
++ (id)prehashDataWithMessageData:(id)data publicKey:(id)key context:(id)context
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 && [v8 length])
+  dataCopy = data;
+  keyCopy = key;
+  contextCopy = context;
+  if (keyCopy && [keyCopy length])
   {
-    v10 = [v8 length];
+    v10 = [keyCopy length];
     ccmldsa65();
     if (v10 == ccmldsa_pubkey_nbytes_params())
     {
@@ -20,15 +20,15 @@
       goto LABEL_7;
     }
 
-    v11 = [v8 length];
+    v11 = [keyCopy length];
     ccmldsa87();
     if (v11 == ccmldsa_pubkey_nbytes_params())
     {
       ccmldsa87();
 LABEL_7:
       ccmldsa_sizeof_pub_ctx();
-      [v8 length];
-      [v8 bytes];
+      [keyCopy length];
+      [keyCopy bytes];
       if (ccmldsa_import_pubkey())
       {
         v12 = 0;
@@ -37,15 +37,15 @@ LABEL_7:
       else
       {
         v13 = ccmldsa_hash_nbytes_ctx();
-        [v7 bytes];
-        [v7 length];
+        [dataCopy bytes];
+        [dataCopy length];
         v14 = [MEMORY[0x1E695DF88] dataWithLength:v13];
         [v14 mutableBytes];
-        if (v9)
+        if (contextCopy)
         {
-          [v9 bytes];
+          [contextCopy bytes];
           v19[0] = v19;
-          [v9 length];
+          [contextCopy length];
           v15 = ccmldsa_prehash_with_context();
         }
 

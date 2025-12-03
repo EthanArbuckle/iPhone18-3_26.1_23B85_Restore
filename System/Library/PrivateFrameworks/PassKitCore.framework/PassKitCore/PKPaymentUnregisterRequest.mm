@@ -1,28 +1,28 @@
 @interface PKPaymentUnregisterRequest
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 companionSerialNumber:(id)a5 appleAccountInformation:(id)a6;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier companionSerialNumber:(id)number appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentUnregisterRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 companionSerialNumber:(id)a5 appleAccountInformation:(id)a6
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier companionSerialNumber:(id)number appleAccountInformation:(id)information
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v10 = a5;
+  numberCopy = number;
   v19[0] = @"devices";
-  v19[1] = a4;
+  v19[1] = identifier;
   v11 = MEMORY[0x1E695DEC8];
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
   v15 = [v11 arrayWithObjects:v19 count:2];
 
-  v16 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:v15 queryParameters:0 appleAccountInformation:v12];
+  v16 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v15 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v16 setHTTPMethod:@"DELETE"];
   [v16 setCachePolicy:1];
-  if (v10)
+  if (numberCopy)
   {
-    [v16 setValue:v10 forHTTPHeaderField:@"X-Companion-Serial-Number"];
+    [v16 setValue:numberCopy forHTTPHeaderField:@"X-Companion-Serial-Number"];
   }
 
   v17 = [v16 copy];

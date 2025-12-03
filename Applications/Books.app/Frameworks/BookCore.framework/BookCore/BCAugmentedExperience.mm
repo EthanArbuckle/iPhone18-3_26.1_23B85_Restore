@@ -8,8 +8,8 @@
 {
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"BCAugmentedExperience\n"];
-  v4 = [(BCAugmentedExperience *)self location];
-  [v3 appendFormat:@"    location  . . . . . . . . : %@\n", v4];
+  location = [(BCAugmentedExperience *)self location];
+  [v3 appendFormat:@"    location  . . . . . . . . : %@\n", location];
 
   [(BCAugmentedExperience *)self delay];
   [v3 appendFormat:@"    delay . . . . . . . . . . : %f\n", v5];
@@ -36,8 +36,8 @@
   }
 
   [v3 appendFormat:@"    skipToast . . . . . . . . : %@\n", v7];
-  v8 = [(BCAugmentedExperience *)self presenter];
-  [v3 appendFormat:@"    presenter . . . . . . . . : %@", v8];
+  presenter = [(BCAugmentedExperience *)self presenter];
+  [v3 appendFormat:@"    presenter . . . . . . . . : %@", presenter];
 
   return v3;
 }

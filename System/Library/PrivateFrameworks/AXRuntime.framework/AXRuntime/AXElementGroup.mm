@@ -1,115 +1,115 @@
 @interface AXElementGroup
-+ (AXElementGroup)groupWithElements:(id)a3 label:(id)a4;
-+ (AXElementGroup)groupWithGenerator:(id)a3;
-- (AXElementGroup)initWithElements:(id)a3 label:(id)a4;
-- (AXElementGroup)initWithGenerator:(id)a3;
++ (AXElementGroup)groupWithElements:(id)elements label:(id)label;
++ (AXElementGroup)groupWithGenerator:(id)generator;
+- (AXElementGroup)initWithElements:(id)elements label:(id)label;
+- (AXElementGroup)initWithGenerator:(id)generator;
 - (AXElementGroupGenerator)generator;
 - (BOOL)containsNativeFocusElement;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frame;
 - (id)_debugBriefDescription;
 - (id)_debugDescriptionForScanningBehaviorTraits;
 - (id)_debugDescriptionForTraits;
-- (id)_debugFullDescriptionWithIndent:(id)a3;
-- (id)_leafAXElementWithPosition:(int64_t)a3;
-- (id)_siblingOfChild:(id)a3 inDirection:(BOOL)a4 didWrap:(BOOL *)a5;
-- (id)ancestorPassingTest:(id)a3;
-- (id)childrenPassingTest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descendantsPassingTest:(id)a3;
-- (id)firstChildMatchingItem:(id)a3;
-- (id)firstChildPassingTest:(id)a3;
-- (id)firstDescendantMatchingItem:(id)a3;
-- (id)firstDescendantPassingTest:(id)a3;
-- (id)groupByAppendingGroupable:(id)a3;
-- (id)groupByPrependingGroupable:(id)a3;
-- (id)groupByRemovingGroupable:(id)a3;
-- (id)groupByReplacingGroupable:(id)a3 withGroupable:(id)a4;
+- (id)_debugFullDescriptionWithIndent:(id)indent;
+- (id)_leafAXElementWithPosition:(int64_t)position;
+- (id)_siblingOfChild:(id)child inDirection:(BOOL)direction didWrap:(BOOL *)wrap;
+- (id)ancestorPassingTest:(id)test;
+- (id)childrenPassingTest:(id)test;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descendantsPassingTest:(id)test;
+- (id)firstChildMatchingItem:(id)item;
+- (id)firstChildPassingTest:(id)test;
+- (id)firstDescendantMatchingItem:(id)item;
+- (id)firstDescendantPassingTest:(id)test;
+- (id)groupByAppendingGroupable:(id)groupable;
+- (id)groupByPrependingGroupable:(id)groupable;
+- (id)groupByRemovingGroupable:(id)groupable;
+- (id)groupByReplacingGroupable:(id)groupable withGroupable:(id)withGroupable;
 - (id)highestAncestorGroup;
 - (id)keyboardContainerRows;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)indexOfObject:(id)a3;
+- (unint64_t)indexOfObject:(id)object;
 - (unint64_t)numberOfElements;
-- (void)_commonInitWithElements:(id)a3 label:(id)a4 generator:(id)a5;
+- (void)_commonInitWithElements:(id)elements label:(id)label generator:(id)generator;
 - (void)_generateGroupsIfNeeded;
-- (void)_notifyGroupObserversDidTransferStateToGroup:(id)a3;
-- (void)_notifyGroupObserversWillTransferStateToGroup:(id)a3;
-- (void)_transferStateToGroup:(id)a3;
+- (void)_notifyGroupObserversDidTransferStateToGroup:(id)group;
+- (void)_notifyGroupObserversWillTransferStateToGroup:(id)group;
+- (void)_transferStateToGroup:(id)group;
 - (void)dealloc;
-- (void)enumerateLeafDescendantsUsingBlock:(id)a3;
-- (void)registerGroupObserver:(id)a3;
+- (void)enumerateLeafDescendantsUsingBlock:(id)block;
+- (void)registerGroupObserver:(id)observer;
 - (void)unregisterAllGroupObservers;
-- (void)unregisterGroupObserver:(id)a3;
+- (void)unregisterGroupObserver:(id)observer;
 @end
 
 @implementation AXElementGroup
 
-+ (AXElementGroup)groupWithElements:(id)a3 label:(id)a4
++ (AXElementGroup)groupWithElements:(id)elements label:(id)label
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithElements:v6 label:v5];
+  labelCopy = label;
+  elementsCopy = elements;
+  v7 = [objc_alloc(objc_opt_class()) initWithElements:elementsCopy label:labelCopy];
 
   return v7;
 }
 
-+ (AXElementGroup)groupWithGenerator:(id)a3
++ (AXElementGroup)groupWithGenerator:(id)generator
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithGenerator:v3];
+  generatorCopy = generator;
+  v4 = [objc_alloc(objc_opt_class()) initWithGenerator:generatorCopy];
 
   return v4;
 }
 
-- (AXElementGroup)initWithElements:(id)a3 label:(id)a4
+- (AXElementGroup)initWithElements:(id)elements label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  elementsCopy = elements;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = AXElementGroup;
   v8 = [(AXElementGroup *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AXElementGroup *)v8 _commonInitWithElements:v6 label:v7 generator:0];
+    [(AXElementGroup *)v8 _commonInitWithElements:elementsCopy label:labelCopy generator:0];
   }
 
   return v9;
 }
 
-- (AXElementGroup)initWithGenerator:(id)a3
+- (AXElementGroup)initWithGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v8.receiver = self;
   v8.super_class = AXElementGroup;
   v5 = [(AXElementGroup *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AXElementGroup *)v5 _commonInitWithElements:0 label:0 generator:v4];
+    [(AXElementGroup *)v5 _commonInitWithElements:0 label:0 generator:generatorCopy];
   }
 
   return v6;
 }
 
-- (void)_commonInitWithElements:(id)a3 label:(id)a4 generator:(id)a5
+- (void)_commonInitWithElements:(id)elements label:(id)label generator:(id)generator
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-  [(AXElementGroup *)self setGroupObservers:v11];
+  elementsCopy = elements;
+  labelCopy = label;
+  generatorCopy = generator;
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  [(AXElementGroup *)self setGroupObservers:weakObjectsHashTable];
 
-  if (v10)
+  if (generatorCopy)
   {
-    [(AXElementGroup *)self setGenerator:v10];
+    [(AXElementGroup *)self setGenerator:generatorCopy];
   }
 
   else
   {
-    v12 = [v8 copy];
+    v12 = [elementsCopy copy];
     elementStore = self->_elementStore;
     self->_elementStore = v12;
 
@@ -143,7 +143,7 @@
       while (v16);
     }
 
-    v19 = [v9 copy];
+    v19 = [labelCopy copy];
     label = self->_label;
     self->_label = v19;
   }
@@ -173,9 +173,9 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 parentGroup];
+        parentGroup = [v8 parentGroup];
 
-        if (v9 == self)
+        if (parentGroup == self)
         {
           [v8 setParentGroup:0];
         }
@@ -192,15 +192,15 @@
   [(AXElementGroup *)&v10 dealloc];
 }
 
-- (id)groupByPrependingGroupable:(id)a3
+- (id)groupByPrependingGroupable:(id)groupable
 {
-  if (a3)
+  if (groupable)
   {
-    v4 = [MEMORY[0x1E695DF70] arrayWithObject:?];
-    [v4 addObjectsFromArray:self];
+    label2 = [MEMORY[0x1E695DF70] arrayWithObject:?];
+    [label2 addObjectsFromArray:self];
     v5 = objc_opt_class();
-    v6 = [(AXElementGroup *)self label];
-    v7 = [v5 groupWithElements:v4 label:v6];
+    label = [(AXElementGroup *)self label];
+    v7 = [v5 groupWithElements:label2 label:label];
 
     [(AXElementGroup *)self _transferStateToGroup:v7];
   }
@@ -208,23 +208,23 @@
   else
   {
     v8 = objc_opt_class();
-    v4 = [(AXElementGroup *)self label];
-    v7 = [v8 groupWithElements:self label:v4];
+    label2 = [(AXElementGroup *)self label];
+    v7 = [v8 groupWithElements:self label:label2];
   }
 
   return v7;
 }
 
-- (id)groupByAppendingGroupable:(id)a3
+- (id)groupByAppendingGroupable:(id)groupable
 {
-  v4 = a3;
-  if (v4)
+  groupableCopy = groupable;
+  if (groupableCopy)
   {
-    v5 = [(NSArray *)self->_elementStore mutableCopy];
-    [v5 addObject:v4];
+    label2 = [(NSArray *)self->_elementStore mutableCopy];
+    [label2 addObject:groupableCopy];
     v6 = objc_opt_class();
-    v7 = [(AXElementGroup *)self label];
-    v8 = [v6 groupWithElements:v5 label:v7];
+    label = [(AXElementGroup *)self label];
+    v8 = [v6 groupWithElements:label2 label:label];
 
     [(AXElementGroup *)self _transferStateToGroup:v8];
   }
@@ -232,52 +232,52 @@
   else
   {
     v9 = objc_opt_class();
-    v5 = [(AXElementGroup *)self label];
-    v8 = [v9 groupWithElements:self label:v5];
+    label2 = [(AXElementGroup *)self label];
+    v8 = [v9 groupWithElements:self label:label2];
   }
 
   return v8;
 }
 
-- (id)groupByRemovingGroupable:(id)a3
+- (id)groupByRemovingGroupable:(id)groupable
 {
   elementStore = self->_elementStore;
-  v5 = a3;
+  groupableCopy = groupable;
   v6 = [(NSArray *)elementStore mutableCopy];
-  [v6 removeObject:v5];
+  [v6 removeObject:groupableCopy];
 
   v7 = objc_opt_class();
-  v8 = [(AXElementGroup *)self label];
-  v9 = [v7 groupWithElements:v6 label:v8];
+  label = [(AXElementGroup *)self label];
+  v9 = [v7 groupWithElements:v6 label:label];
 
   [(AXElementGroup *)self _transferStateToGroup:v9];
 
   return v9;
 }
 
-- (id)groupByReplacingGroupable:(id)a3 withGroupable:(id)a4
+- (id)groupByReplacingGroupable:(id)groupable withGroupable:(id)withGroupable
 {
-  v6 = a4;
+  withGroupableCopy = withGroupable;
   elementStore = self->_elementStore;
-  v8 = a3;
+  groupableCopy = groupable;
   v9 = [(NSArray *)elementStore mutableCopy];
-  v10 = [v9 indexOfObject:v8];
+  v10 = [v9 indexOfObject:groupableCopy];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v9 replaceObjectAtIndex:v10 withObject:v6];
+    [v9 replaceObjectAtIndex:v10 withObject:withGroupableCopy];
   }
 
   v11 = objc_opt_class();
-  v12 = [(AXElementGroup *)self label];
-  v13 = [v11 groupWithElements:v9 label:v12];
+  label = [(AXElementGroup *)self label];
+  v13 = [v11 groupWithElements:v9 label:label];
 
   [(AXElementGroup *)self _transferStateToGroup:v13];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   elementStore = self->_elementStore;
   v5 = objc_alloc(objc_opt_class());
@@ -289,35 +289,35 @@
 
   else
   {
-    v8 = [(AXElementGroup *)self generator];
-    v7 = [v6 initWithGenerator:v8];
+    generator = [(AXElementGroup *)self generator];
+    v7 = [v6 initWithGenerator:generator];
   }
 
   [(AXElementGroup *)self _transferStateToGroup:v7];
   return v7;
 }
 
-- (void)_transferStateToGroup:(id)a3
+- (void)_transferStateToGroup:(id)group
 {
-  v6 = a3;
-  [(AXElementGroup *)self _notifyGroupObserversWillTransferStateToGroup:v6];
-  [v6 setGroupTraits:{-[AXElementGroup groupTraits](self, "groupTraits")}];
-  [v6 setUserDefinedScanningBehaviorTraits:{-[AXElementGroup userDefinedScanningBehaviorTraits](self, "userDefinedScanningBehaviorTraits")}];
-  v4 = [(AXElementGroup *)self elementCommunity];
-  [v6 setElementCommunity:v4];
+  groupCopy = group;
+  [(AXElementGroup *)self _notifyGroupObserversWillTransferStateToGroup:groupCopy];
+  [groupCopy setGroupTraits:{-[AXElementGroup groupTraits](self, "groupTraits")}];
+  [groupCopy setUserDefinedScanningBehaviorTraits:{-[AXElementGroup userDefinedScanningBehaviorTraits](self, "userDefinedScanningBehaviorTraits")}];
+  elementCommunity = [(AXElementGroup *)self elementCommunity];
+  [groupCopy setElementCommunity:elementCommunity];
 
-  v5 = [(AXElementGroup *)self identifier];
-  [v6 setIdentifier:v5];
+  identifier = [(AXElementGroup *)self identifier];
+  [groupCopy setIdentifier:identifier];
 
-  [(AXElementGroup *)self _notifyGroupObserversDidTransferStateToGroup:v6];
+  [(AXElementGroup *)self _notifyGroupObserversDidTransferStateToGroup:groupCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = AXElementGroup;
-  if ([(AXElementGroup *)&v9 isEqual:v4])
+  if ([(AXElementGroup *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -327,9 +327,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AXElementGroup *)self identifier];
-      v7 = [v4 identifier];
-      v5 = [v6 isEqualToString:v7];
+      identifier = [(AXElementGroup *)self identifier];
+      identifier2 = [equalCopy identifier];
+      v5 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -349,17 +349,17 @@
   return [(NSArray *)elementStore count];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   [(AXElementGroup *)self _generateGroupsIfNeeded];
   elementStore = self->_elementStore;
 
-  return [(NSArray *)elementStore objectAtIndex:a3];
+  return [(NSArray *)elementStore objectAtIndex:index];
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(AXElementGroup *)self _generateGroupsIfNeeded];
   if ([(NSArray *)self->_elementStore count])
   {
@@ -368,7 +368,7 @@
     {
       v6 = [(NSArray *)self->_elementStore objectAtIndex:v5];
 
-      if (v6 == v4)
+      if (v6 == objectCopy)
       {
         break;
       }
@@ -392,32 +392,32 @@ LABEL_5:
 - (CGRect)frame
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(AXElementGroup *)self elementCommunity];
-  if (v3)
+  elementCommunity = [(AXElementGroup *)self elementCommunity];
+  if (elementCommunity)
   {
-    v4 = v3;
-    v5 = [(AXElementGroup *)self elementCommunity];
-    if ([v5 isSpringBoard])
+    v4 = elementCommunity;
+    elementCommunity2 = [(AXElementGroup *)self elementCommunity];
+    if ([elementCommunity2 isSpringBoard])
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v6 = [(AXElementGroup *)self elementCommunity];
-    v7 = [v6 application];
-    if ([v7 isAXUIServer])
+    elementCommunity3 = [(AXElementGroup *)self elementCommunity];
+    application = [elementCommunity3 application];
+    if ([application isAXUIServer])
     {
 
       goto LABEL_5;
     }
 
-    v25 = [(AXElementGroup *)self isKeyboardContainer];
+    isKeyboardContainer = [(AXElementGroup *)self isKeyboardContainer];
 
-    if (!v25)
+    if (!isKeyboardContainer)
     {
-      v12 = [(AXElementGroup *)self elementCommunity];
-      [(AXElementGroup *)v12 frame];
+      selfCopy = [(AXElementGroup *)self elementCommunity];
+      [(AXElementGroup *)selfCopy frame];
       x = v26;
       y = v27;
       width = v28;
@@ -435,8 +435,8 @@ LABEL_6:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = self;
-  v13 = [(AXElementGroup *)v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  selfCopy = self;
+  v13 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v13)
   {
     v14 = v13;
@@ -448,7 +448,7 @@ LABEL_6:
       {
         if (*v31 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(selfCopy);
         }
 
         [*(*(&v30 + 1) + 8 * v16) frame];
@@ -469,7 +469,7 @@ LABEL_6:
       }
 
       while (v14 != v16);
-      v14 = [(AXElementGroup *)v12 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v14 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v14);
@@ -490,21 +490,21 @@ LABEL_13:
 
 - (id)highestAncestorGroup
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
-    v4 = v2;
+    parentGroup = selfCopy;
+    v4 = selfCopy;
     do
     {
-      v5 = v3;
+      v5 = parentGroup;
 
-      v3 = [(AXElementGroup *)v5 parentGroup];
+      parentGroup = [(AXElementGroup *)v5 parentGroup];
 
       v4 = v5;
     }
 
-    while (v3);
+    while (parentGroup);
   }
 
   else
@@ -520,21 +520,21 @@ LABEL_13:
   v22 = *MEMORY[0x1E69E9840];
   if (!self->_elementStore)
   {
-    v3 = [(AXElementGroup *)self generator];
+    generator = [(AXElementGroup *)self generator];
 
-    if (v3)
+    if (generator)
     {
-      v4 = [(AXElementGroup *)self generator];
+      generator2 = [(AXElementGroup *)self generator];
       v5 = objc_opt_respondsToSelector();
 
       if (v5)
       {
-        v6 = [(AXElementGroup *)self generator];
-        [v6 willGenerateElements:self];
+        generator3 = [(AXElementGroup *)self generator];
+        [generator3 willGenerateElements:self];
       }
 
-      v7 = [(AXElementGroup *)self generator];
-      v8 = [v7 generateElementsForGroup:self];
+      generator4 = [(AXElementGroup *)self generator];
+      v8 = [generator4 generateElementsForGroup:self];
 
       objc_storeStrong(&self->_elementStore, v8);
       v19 = 0u;
@@ -567,33 +567,33 @@ LABEL_13:
         while (v11);
       }
 
-      v14 = [(AXElementGroup *)self generator];
+      generator5 = [(AXElementGroup *)self generator];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [(AXElementGroup *)self generator];
-        [v16 didGenerateElements:self];
+        generator6 = [(AXElementGroup *)self generator];
+        [generator6 didGenerateElements:self];
       }
     }
   }
 }
 
-- (id)_siblingOfChild:(id)a3 inDirection:(BOOL)a4 didWrap:(BOOL *)a5
+- (id)_siblingOfChild:(id)child inDirection:(BOOL)direction didWrap:(BOOL *)wrap
 {
-  v6 = a4;
-  v8 = [(AXElementGroup *)self indexOfObject:a3];
+  directionCopy = direction;
+  v8 = [(AXElementGroup *)self indexOfObject:child];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
     v10 = 0;
-    if (!a5)
+    if (!wrap)
     {
       goto LABEL_17;
     }
 
 LABEL_16:
-    *a5 = v10;
+    *wrap = v10;
     goto LABEL_17;
   }
 
@@ -615,8 +615,8 @@ LABEL_16:
     v14 = v11 + 1;
   }
 
-  v15 = !v6;
-  if (v6)
+  v15 = !directionCopy;
+  if (directionCopy)
   {
     v10 = v11 + 1 == v12;
   }
@@ -637,7 +637,7 @@ LABEL_16:
   }
 
   v9 = [(AXElementGroup *)self objectAtIndex:v16];
-  if (a5)
+  if (wrap)
   {
     goto LABEL_16;
   }
@@ -647,18 +647,18 @@ LABEL_17:
   return v9;
 }
 
-- (id)firstChildMatchingItem:(id)a3
+- (id)firstChildMatchingItem:(id)item
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = self;
-    v6 = [(AXElementGroup *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    selfCopy = self;
+    v6 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = *v11;
@@ -668,17 +668,17 @@ LABEL_17:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(selfCopy);
           }
 
-          if ([v4 isEqual:{*(*(&v10 + 1) + 8 * i), v10}])
+          if ([itemCopy isEqual:{*(*(&v10 + 1) + 8 * i), v10}])
           {
-            v6 = v4;
+            v6 = itemCopy;
             goto LABEL_12;
           }
         }
 
-        v6 = [(AXElementGroup *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           continue;
@@ -699,18 +699,18 @@ LABEL_12:
   return v6;
 }
 
-- (id)firstChildPassingTest:(id)a3
+- (id)firstChildPassingTest:(id)test
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  testCopy = test;
+  if (testCopy)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = self;
-    v6 = [(AXElementGroup *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    selfCopy = self;
+    v6 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -720,18 +720,18 @@ LABEL_12:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(selfCopy);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if (v4[2](v4, v9))
+          if (testCopy[2](testCopy, v9))
           {
             v6 = v9;
             goto LABEL_12;
           }
         }
 
-        v6 = [(AXElementGroup *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -752,19 +752,19 @@ LABEL_12:
   return v6;
 }
 
-- (id)childrenPassingTest:(id)a3
+- (id)childrenPassingTest:(id)test
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  testCopy = test;
+  if (testCopy)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = self;
-    v7 = [(AXElementGroup *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    selfCopy = self;
+    v7 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -775,25 +775,25 @@ LABEL_12:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if (v4[2](v4, v11))
+          if (testCopy[2](testCopy, v11))
           {
-            [v5 addObject:{v11, v14}];
+            [array addObject:{v11, v14}];
           }
         }
 
-        v8 = [(AXElementGroup *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
     }
 
-    if ([v5 count])
+    if ([array count])
     {
-      v12 = v5;
+      v12 = array;
     }
 
     else
@@ -810,62 +810,62 @@ LABEL_12:
   return v12;
 }
 
-- (id)firstDescendantMatchingItem:(id)a3
+- (id)firstDescendantMatchingItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithArray:self];
     v6 = v5;
     while ([v5 count])
     {
-      v7 = [v6 firstObject];
-      [v6 removeObject:v7];
-      if ([v4 isEqual:v7])
+      firstObject = [v6 firstObject];
+      [v6 removeObject:firstObject];
+      if ([itemCopy isEqual:firstObject])
       {
         goto LABEL_9;
       }
 
-      if ([v7 isGroup])
+      if ([firstObject isGroup])
       {
-        [v6 addObjectsFromArray:v7];
+        [v6 addObjectsFromArray:firstObject];
       }
 
       v5 = v6;
     }
 
-    v7 = 0;
+    firstObject = 0;
 LABEL_9:
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)firstDescendantPassingTest:(id)a3
+- (id)firstDescendantPassingTest:(id)test
 {
-  v4 = a3;
-  if (v4)
+  testCopy = test;
+  if (testCopy)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithArray:self];
     if ([v5 count])
     {
       while (1)
       {
-        v6 = [v5 firstObject];
-        [v5 removeObject:v6];
-        if (v4[2](v4, v6))
+        firstObject = [v5 firstObject];
+        [v5 removeObject:firstObject];
+        if (testCopy[2](testCopy, firstObject))
         {
           break;
         }
 
-        if ([v6 isGroup])
+        if ([firstObject isGroup])
         {
-          [v5 addObjectsFromArray:v6];
+          [v5 addObjectsFromArray:firstObject];
         }
 
         if (![v5 count])
@@ -878,43 +878,43 @@ LABEL_9:
     else
     {
 LABEL_7:
-      v6 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (id)descendantsPassingTest:(id)a3
+- (id)descendantsPassingTest:(id)test
 {
-  v4 = a3;
-  if (v4)
+  testCopy = test;
+  if (testCopy)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6 = [MEMORY[0x1E695DF70] arrayWithArray:self];
     while ([v6 count])
     {
-      v7 = [v6 firstObject];
-      [v6 removeObject:v7];
-      if (v4[2](v4, v7))
+      firstObject = [v6 firstObject];
+      [v6 removeObject:firstObject];
+      if (testCopy[2](testCopy, firstObject))
       {
-        [v5 addObject:v7];
+        [array addObject:firstObject];
       }
 
-      if ([v7 isGroup])
+      if ([firstObject isGroup])
       {
-        [v6 addObjectsFromArray:v7];
+        [v6 addObjectsFromArray:firstObject];
       }
     }
 
-    if ([v5 count])
+    if ([array count])
     {
-      v8 = v5;
+      v8 = array;
     }
 
     else
@@ -931,48 +931,48 @@ LABEL_7:
   return v8;
 }
 
-- (id)ancestorPassingTest:(id)a3
+- (id)ancestorPassingTest:(id)test
 {
-  v4 = a3;
-  if (v4)
+  testCopy = test;
+  if (testCopy)
   {
-    v5 = self;
-    if (v5)
+    selfCopy = self;
+    if (selfCopy)
     {
       do
       {
-        if (v4[2](v4, v5))
+        if (testCopy[2](testCopy, selfCopy))
         {
           break;
         }
 
-        v6 = [(AXElementGroup *)v5 parentGroup];
+        parentGroup = [(AXElementGroup *)selfCopy parentGroup];
 
-        v5 = v6;
+        selfCopy = parentGroup;
       }
 
-      while (v6);
+      while (parentGroup);
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)enumerateLeafDescendantsUsingBlock:(id)a3
+- (void)enumerateLeafDescendantsUsingBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = self;
-  v6 = [(AXElementGroup *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v6 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -983,22 +983,22 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 isGroup])
         {
-          [v10 enumerateLeafDescendantsUsingBlock:v4];
+          [v10 enumerateLeafDescendantsUsingBlock:blockCopy];
         }
 
         else
         {
-          v4[2](v4, v10);
+          blockCopy[2](blockCopy, v10);
         }
       }
 
-      v7 = [(AXElementGroup *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1052,8 +1052,8 @@ uint64_t __39__AXElementGroup_keyboardContainerRows__block_invoke(uint64_t a1, v
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = self;
-  v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1065,24 +1065,24 @@ uint64_t __39__AXElementGroup_keyboardContainerRows__block_invoke(uint64_t a1, v
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 isGroup])
         {
-          v9 = [v8 numberOfElements];
+          numberOfElements = [v8 numberOfElements];
         }
 
         else
         {
-          v9 = 1;
+          numberOfElements = 1;
         }
 
-        v5 += v9;
+        v5 += numberOfElements;
       }
 
-      v4 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -1115,13 +1115,13 @@ uint64_t __43__AXElementGroup_descendantWithNativeFocus__block_invoke(uint64_t a
 
 - (BOOL)containsNativeFocusElement
 {
-  v2 = [(AXElementGroup *)self descendantWithNativeFocus];
-  v3 = v2 != 0;
+  descendantWithNativeFocus = [(AXElementGroup *)self descendantWithNativeFocus];
+  v3 = descendantWithNativeFocus != 0;
 
   return v3;
 }
 
-- (id)_leafAXElementWithPosition:(int64_t)a3
+- (id)_leafAXElementWithPosition:(int64_t)position
 {
   v6 = 0;
   v7 = &v6;
@@ -1134,7 +1134,7 @@ uint64_t __43__AXElementGroup_descendantWithNativeFocus__block_invoke(uint64_t a
   v5[2] = __45__AXElementGroup__leafAXElementWithPosition___block_invoke;
   v5[3] = &unk_1E80D4818;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = position;
   [(AXElementGroup *)self enumerateLeafDescendantsUsingBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -1217,36 +1217,36 @@ LABEL_16:
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerGroupObserver:(id)a3
+- (void)registerGroupObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXElementGroup *)self groupObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  groupObservers = [(AXElementGroup *)self groupObservers];
+  [groupObservers addObject:observerCopy];
 }
 
-- (void)unregisterGroupObserver:(id)a3
+- (void)unregisterGroupObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXElementGroup *)self groupObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  groupObservers = [(AXElementGroup *)self groupObservers];
+  [groupObservers removeObject:observerCopy];
 }
 
 - (void)unregisterAllGroupObservers
 {
-  v2 = [(AXElementGroup *)self groupObservers];
-  [v2 removeAllObjects];
+  groupObservers = [(AXElementGroup *)self groupObservers];
+  [groupObservers removeAllObjects];
 }
 
-- (void)_notifyGroupObserversWillTransferStateToGroup:(id)a3
+- (void)_notifyGroupObserversWillTransferStateToGroup:(id)group
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXElementGroup *)self groupObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  groupObservers = [(AXElementGroup *)self groupObservers];
+  v6 = [groupObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1258,36 +1258,36 @@ LABEL_16:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 group:self willTransferStateToGroup:v4];
+          [v10 group:self willTransferStateToGroup:groupCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [groupObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyGroupObserversDidTransferStateToGroup:(id)a3
+- (void)_notifyGroupObserversDidTransferStateToGroup:(id)group
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AXElementGroup *)self groupObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  groupObservers = [(AXElementGroup *)self groupObservers];
+  v6 = [groupObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1299,20 +1299,20 @@ LABEL_16:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(groupObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 group:self didTransferStateToGroup:v4];
+          [v10 group:self didTransferStateToGroup:groupCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [groupObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1332,11 +1332,11 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v4 = [(AXElementGroup *)self scatScanningBehaviorTraits];
-  v5 = v4;
-  if ((v4 & 2) == 0)
+  scatScanningBehaviorTraits = [(AXElementGroup *)self scatScanningBehaviorTraits];
+  v5 = scatScanningBehaviorTraits;
+  if ((scatScanningBehaviorTraits & 2) == 0)
   {
-    if ((v4 & 1) == 0)
+    if ((scatScanningBehaviorTraits & 1) == 0)
     {
       goto LABEL_6;
     }
@@ -1385,88 +1385,88 @@ LABEL_9:
 
 - (id)_debugDescriptionForTraits
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (([(AXElementGroup *)self groupTraits]& 1) != 0)
   {
-    [v3 appendString:@" <Keyboard> "];
+    [string appendString:@" <Keyboard> "];
   }
 
   if (([(AXElementGroup *)self groupTraits]& 2) != 0)
   {
-    [v3 appendString:@" <Keyboard Row> "];
+    [string appendString:@" <Keyboard Row> "];
   }
 
   if (([(AXElementGroup *)self groupTraits]& 0x20) != 0)
   {
-    [v3 appendString:@" <Fixed Subgroups> "];
+    [string appendString:@" <Fixed Subgroups> "];
   }
 
   if (([(AXElementGroup *)self groupTraits]& 0x40) != 0)
   {
-    [v3 appendString:@" <Resists Being Grouped> "];
+    [string appendString:@" <Resists Being Grouped> "];
   }
 
   if (([(AXElementGroup *)self groupTraits]& 0x10) != 0)
   {
-    [v3 appendString:@" <Unsplittable> "];
+    [string appendString:@" <Unsplittable> "];
   }
 
   if (([(AXElementGroup *)self groupTraits]& 0x100) != 0)
   {
-    [v3 appendString:@" <Grouped> "];
+    [string appendString:@" <Grouped> "];
   }
 
   if (([(AXElementGroup *)self groupTraits]& 0x80) != 0)
   {
-    [v3 appendString:@" <Ungrouped> "];
+    [string appendString:@" <Ungrouped> "];
   }
 
-  return v3;
+  return string;
 }
 
 - (id)_debugBriefDescription
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AXElementGroup count](self, "count")}];
-  v5 = [(AXElementGroup *)self identifier];
-  v6 = [v3 stringWithFormat:@"AXElementGroup<%p>. %@ items. Identifier: %@.", self, v4, v5];
+  identifier = [(AXElementGroup *)self identifier];
+  v6 = [v3 stringWithFormat:@"AXElementGroup<%p>. %@ items. Identifier: %@.", self, v4, identifier];
 
-  v7 = [(AXElementGroup *)self _debugDescriptionForTraits];
-  [v6 appendString:v7];
+  _debugDescriptionForTraits = [(AXElementGroup *)self _debugDescriptionForTraits];
+  [v6 appendString:_debugDescriptionForTraits];
 
-  v8 = [(AXElementGroup *)self _debugDescriptionForScanningBehaviorTraits];
-  [v6 appendString:v8];
+  _debugDescriptionForScanningBehaviorTraits = [(AXElementGroup *)self _debugDescriptionForScanningBehaviorTraits];
+  [v6 appendString:_debugDescriptionForScanningBehaviorTraits];
 
   return v6;
 }
 
-- (id)_debugFullDescriptionWithIndent:(id)a3
+- (id)_debugFullDescriptionWithIndent:(id)indent
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  indentCopy = indent;
   v5 = MEMORY[0x1E696AD60];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AXElementGroup count](self, "count")}];
-  v7 = [(AXElementGroup *)self label];
-  v8 = [(AXElementGroup *)self identifier];
-  v9 = [v5 stringWithFormat:@"AXElementGroup<%p>. %@ items. Label: %@. Identifier: %@.", self, v6, v7, v8];
+  label = [(AXElementGroup *)self label];
+  identifier = [(AXElementGroup *)self identifier];
+  v9 = [v5 stringWithFormat:@"AXElementGroup<%p>. %@ items. Label: %@. Identifier: %@.", self, v6, label, identifier];
 
   if ([(AXElementGroup *)self count])
   {
-    v10 = [(AXElementGroup *)self _debugDescriptionForTraits];
-    [v9 appendString:v10];
+    _debugDescriptionForTraits = [(AXElementGroup *)self _debugDescriptionForTraits];
+    [v9 appendString:_debugDescriptionForTraits];
 
-    v11 = [(AXElementGroup *)self _debugDescriptionForScanningBehaviorTraits];
-    [v9 appendString:v11];
+    _debugDescriptionForScanningBehaviorTraits = [(AXElementGroup *)self _debugDescriptionForScanningBehaviorTraits];
+    [v9 appendString:_debugDescriptionForScanningBehaviorTraits];
 
     [v9 appendFormat:@" Children:\n"];
-    v12 = [v4 stringByAppendingString:@" "];
+    v12 = [indentCopy stringByAppendingString:@" "];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = self;
-    v14 = [(AXElementGroup *)v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    selfCopy = self;
+    v14 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1477,7 +1477,7 @@ LABEL_9:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(selfCopy);
           }
 
           v18 = *(*(&v21 + 1) + 8 * i);
@@ -1494,7 +1494,7 @@ LABEL_9:
           }
         }
 
-        v15 = [(AXElementGroup *)v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v15 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v15);
@@ -1503,7 +1503,7 @@ LABEL_9:
 
   else
   {
-    v12 = v4;
+    v12 = indentCopy;
   }
 
   return v9;

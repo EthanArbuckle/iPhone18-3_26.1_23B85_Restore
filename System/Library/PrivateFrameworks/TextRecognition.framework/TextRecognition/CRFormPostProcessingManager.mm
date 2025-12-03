@@ -1,16 +1,16 @@
 @interface CRFormPostProcessingManager
 + (id)postProcessingManagerWithDefaultSequence;
-+ (void)enumerateAllFieldsInFields:(id)a3 block:(id)a4;
-+ (void)enumerateContourBasedDetectedFields:(id)a3 block:(id)a4;
-+ (void)enumerateDetectedFields:(id)a3 block:(id)a4;
-+ (void)enumerateExternalFields:(id)a3 block:(id)a4;
-+ (void)enumerateFieldsInFields:(id)a3 filter:(id)a4 block:(id)a5;
-+ (void)enumerateTextBasedDetectedFields:(id)a3 block:(id)a4;
-+ (void)logFieldStatistics:(id)a3;
-- (CRFormPostProcessingManager)initWithSequence:(id)a3;
-- (CRFormPostProcessingManager)initWithStep:(id)a3;
-- (id)process:(id)a3 document:(id)a4 options:(id)a5;
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6;
++ (void)enumerateAllFieldsInFields:(id)fields block:(id)block;
++ (void)enumerateContourBasedDetectedFields:(id)fields block:(id)block;
++ (void)enumerateDetectedFields:(id)fields block:(id)block;
++ (void)enumerateExternalFields:(id)fields block:(id)block;
++ (void)enumerateFieldsInFields:(id)fields filter:(id)filter block:(id)block;
++ (void)enumerateTextBasedDetectedFields:(id)fields block:(id)block;
++ (void)logFieldStatistics:(id)statistics;
+- (CRFormPostProcessingManager)initWithSequence:(id)sequence;
+- (CRFormPostProcessingManager)initWithStep:(id)step;
+- (id)process:(id)process document:(id)document options:(id)options;
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options;
 @end
 
 @implementation CRFormPostProcessingManager
@@ -23,45 +23,45 @@
   return v2;
 }
 
-- (CRFormPostProcessingManager)initWithStep:(id)a3
+- (CRFormPostProcessingManager)initWithStep:(id)step
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8[0] = v4;
+  stepCopy = step;
+  v8[0] = stepCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v6 = [(CRFormPostProcessingManager *)self initWithSequence:v5];
 
   return v6;
 }
 
-- (CRFormPostProcessingManager)initWithSequence:(id)a3
+- (CRFormPostProcessingManager)initWithSequence:(id)sequence
 {
-  v5 = a3;
+  sequenceCopy = sequence;
   v9.receiver = self;
   v9.super_class = CRFormPostProcessingManager;
   v6 = [(CRFormPostProcessingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sequence, a3);
+    objc_storeStrong(&v6->_sequence, sequence);
   }
 
   return v7;
 }
 
-+ (void)logFieldStatistics:(id)a3
++ (void)logFieldStatistics:(id)statistics
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  statisticsCopy = statistics;
+  array = [MEMORY[0x1E695DF70] array];
   v5 = objc_opt_class();
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__CRFormPostProcessingManager_logFieldStatistics___block_invoke_2;
   v9[3] = &unk_1E7BC2048;
-  v6 = v4;
+  v6 = array;
   v10 = v6;
-  [v5 enumerateFieldsInFields:v3 filter:&__block_literal_global_1 block:v9];
+  [v5 enumerateFieldsInFields:statisticsCopy filter:&__block_literal_global_1 block:v9];
   v7 = CROSLogForCategory(6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -102,25 +102,25 @@ void __50__CRFormPostProcessingManager_logFieldStatistics___block_invoke_2(uint6
   [*(a1 + 32) setObject:v9 atIndexedSubscript:{objc_msgSend(v3, "fieldSource")}];
 }
 
-- (id)process:(id)a3 document:(id)a4 options:(id)a5
+- (id)process:(id)process document:(id)document options:(id)options
 {
-  v5 = [(CRFormPostProcessingManager *)self process:a3 externalFields:MEMORY[0x1E695E0F0] document:a4 options:a5];
+  v5 = [(CRFormPostProcessingManager *)self process:process externalFields:MEMORY[0x1E695E0F0] document:document options:options];
 
   return v5;
 }
 
-- (id)process:(id)a3 externalFields:(id)a4 document:(id)a5 options:(id)a6
+- (id)process:(id)process externalFields:(id)fields document:(id)document options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  processCopy = process;
+  fieldsCopy = fields;
+  documentCopy = document;
+  optionsCopy = options;
   v14 = CROSLogForCategory(6);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v29 = [v10 count];
+    v29 = [processCopy count];
     _os_log_impl(&dword_1B40D2000, v14, OS_LOG_TYPE_DEBUG, "CRFormPostProcessorStep running with %ld fields.", buf, 0xCu);
   }
 
@@ -136,7 +136,7 @@ void __50__CRFormPostProcessingManager_logFieldStatistics___block_invoke_2(uint6
     do
     {
       v18 = 0;
-      v19 = v10;
+      v19 = processCopy;
       do
       {
         if (*v24 != v17)
@@ -144,10 +144,10 @@ void __50__CRFormPostProcessingManager_logFieldStatistics___block_invoke_2(uint6
           objc_enumerationMutation(v15);
         }
 
-        v10 = [*(*(&v23 + 1) + 8 * v18) process:v19 externalFields:v11 document:v12 options:{v13, v23}];
+        processCopy = [*(*(&v23 + 1) + 8 * v18) process:v19 externalFields:fieldsCopy document:documentCopy options:{optionsCopy, v23}];
 
         ++v18;
-        v19 = v10;
+        v19 = processCopy;
       }
 
       while (v16 != v18);
@@ -160,40 +160,40 @@ void __50__CRFormPostProcessingManager_logFieldStatistics___block_invoke_2(uint6
   v20 = CROSLogForCategory(6);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [v10 count];
+    v21 = [processCopy count];
     *buf = 134217984;
     v29 = v21;
     _os_log_impl(&dword_1B40D2000, v20, OS_LOG_TYPE_DEBUG, "CRFormPostProcessorStep completed with %ld fields.", buf, 0xCu);
   }
 
-  return v10;
+  return processCopy;
 }
 
-+ (void)enumerateAllFieldsInFields:(id)a3 block:(id)a4
++ (void)enumerateAllFieldsInFields:(id)fields block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__CRFormPostProcessingManager_enumerateAllFieldsInFields_block___block_invoke;
   v7[3] = &unk_1E7BC2070;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [fields enumerateObjectsUsingBlock:v7];
 }
 
-+ (void)enumerateFieldsInFields:(id)a3 filter:(id)a4 block:(id)a5
++ (void)enumerateFieldsInFields:(id)fields filter:(id)filter block:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  filterCopy = filter;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__CRFormPostProcessingManager_enumerateFieldsInFields_filter_block___block_invoke;
   v11[3] = &unk_1E7BC2098;
-  v12 = v7;
-  v13 = v8;
-  v9 = v8;
-  v10 = v7;
-  [a3 enumerateObjectsUsingBlock:v11];
+  v12 = filterCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = filterCopy;
+  [fields enumerateObjectsUsingBlock:v11];
 }
 
 void __68__CRFormPostProcessingManager_enumerateFieldsInFields_filter_block___block_invoke(uint64_t a1, void *a2)
@@ -205,32 +205,32 @@ void __68__CRFormPostProcessingManager_enumerateFieldsInFields_filter_block___bl
   }
 }
 
-+ (void)enumerateDetectedFields:(id)a3 block:(id)a4
++ (void)enumerateDetectedFields:(id)fields block:(id)block
 {
-  v6 = a3;
-  v5 = a4;
-  [objc_opt_class() enumerateFieldsInFields:v6 filter:&__block_literal_global_130 block:v5];
+  fieldsCopy = fields;
+  blockCopy = block;
+  [objc_opt_class() enumerateFieldsInFields:fieldsCopy filter:&__block_literal_global_130 block:blockCopy];
 }
 
-+ (void)enumerateContourBasedDetectedFields:(id)a3 block:(id)a4
++ (void)enumerateContourBasedDetectedFields:(id)fields block:(id)block
 {
-  v6 = a3;
-  v5 = a4;
-  [objc_opt_class() enumerateFieldsInFields:v6 filter:&__block_literal_global_132 block:v5];
+  fieldsCopy = fields;
+  blockCopy = block;
+  [objc_opt_class() enumerateFieldsInFields:fieldsCopy filter:&__block_literal_global_132 block:blockCopy];
 }
 
-+ (void)enumerateTextBasedDetectedFields:(id)a3 block:(id)a4
++ (void)enumerateTextBasedDetectedFields:(id)fields block:(id)block
 {
-  v6 = a3;
-  v5 = a4;
-  [objc_opt_class() enumerateFieldsInFields:v6 filter:&__block_literal_global_134 block:v5];
+  fieldsCopy = fields;
+  blockCopy = block;
+  [objc_opt_class() enumerateFieldsInFields:fieldsCopy filter:&__block_literal_global_134 block:blockCopy];
 }
 
-+ (void)enumerateExternalFields:(id)a3 block:(id)a4
++ (void)enumerateExternalFields:(id)fields block:(id)block
 {
-  v6 = a3;
-  v5 = a4;
-  [objc_opt_class() enumerateFieldsInFields:v6 filter:&__block_literal_global_136 block:v5];
+  fieldsCopy = fields;
+  blockCopy = block;
+  [objc_opt_class() enumerateFieldsInFields:fieldsCopy filter:&__block_literal_global_136 block:blockCopy];
 }
 
 BOOL __61__CRFormPostProcessingManager_enumerateExternalFields_block___block_invoke(uint64_t a1, void *a2)

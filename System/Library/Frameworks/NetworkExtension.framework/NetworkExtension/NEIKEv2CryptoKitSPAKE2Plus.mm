@@ -1,7 +1,7 @@
 @interface NEIKEv2CryptoKitSPAKE2Plus
-+ (id)createForInitiator:(BOOL)a3 seed:(id)a4 initiatorID:(id)a5 responderID:(id)a6 salt:(id)a7 context:(id)a8 error:(id *)a9;
++ (id)createForInitiator:(BOOL)initiator seed:(id)seed initiatorID:(id)d responderID:(id)iD salt:(id)salt context:(id)context error:(id *)error;
 - (NEIKEv2CryptoKitSPAKE2Plus)init;
-- (NEIKEv2CryptoKitSPAKE2Plus)initWithKeyShare:(id)a3;
+- (NEIKEv2CryptoKitSPAKE2Plus)initWithKeyShare:(id)share;
 - (NSData)keyShare;
 @end
 
@@ -18,14 +18,14 @@
   return v4;
 }
 
-+ (id)createForInitiator:(BOOL)a3 seed:(id)a4 initiatorID:(id)a5 responderID:(id)a6 salt:(id)a7 context:(id)a8 error:(id *)a9
++ (id)createForInitiator:(BOOL)initiator seed:(id)seed initiatorID:(id)d responderID:(id)iD salt:(id)salt context:(id)context error:(id *)error
 {
-  v35 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  initiatorCopy = initiator;
+  seedCopy = seed;
+  dCopy = d;
+  iDCopy = iD;
+  saltCopy = salt;
+  contextCopy = context;
   v34 = sub_1BAA3969C();
   v19 = v18;
 
@@ -42,7 +42,7 @@
   v29 = sub_1BAA3969C();
   v31 = v30;
 
-  v36 = sub_1BA849CCC(v35, v34, v19, v20, v22, v23, v25, v26, v28, v29, v31);
+  v36 = sub_1BA849CCC(initiatorCopy, v34, v19, v20, v22, v23, v25, v26, v28, v29, v31);
   sub_1BA84724C(v29, v31);
   sub_1BA84724C(v26, v33);
   sub_1BA84724C(v23, v25);
@@ -52,9 +52,9 @@
   return v36;
 }
 
-- (NEIKEv2CryptoKitSPAKE2Plus)initWithKeyShare:(id)a3
+- (NEIKEv2CryptoKitSPAKE2Plus)initWithKeyShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
   v5 = sub_1BAA3969C();
   v7 = v6;
 

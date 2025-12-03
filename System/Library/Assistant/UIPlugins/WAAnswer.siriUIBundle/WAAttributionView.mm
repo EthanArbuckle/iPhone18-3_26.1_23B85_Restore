@@ -1,6 +1,6 @@
 @interface WAAttributionView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (WAAttributionView)initWithFrame:(CGRect)a3;
+- (WAAttributionView)initWithFrame:(CGRect)frame;
 - (WAAttributionViewDelegate)delegate;
 - (void)attributionButtonTapped;
 - (void)layoutSubviews;
@@ -8,11 +8,11 @@
 
 @implementation WAAttributionView
 
-- (WAAttributionView)initWithFrame:(CGRect)a3
+- (WAAttributionView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = WAAttributionView;
-  v3 = [(WAAttributionView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WAAttributionView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
@@ -69,8 +69,8 @@
 
 - (void)attributionButtonTapped
 {
-  v3 = [(WAAttributionView *)self delegate];
-  [v3 attributionViewTapped:self];
+  delegate = [(WAAttributionView *)self delegate];
+  [delegate attributionViewTapped:self];
 }
 
 - (WAAttributionViewDelegate)delegate

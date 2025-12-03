@@ -1,13 +1,13 @@
 @interface ViewServiceHelper
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ViewServiceHelper)init;
 - (void)handleStatusBarTap;
-- (void)pauseResumeResponse:(id)a3;
-- (void)pidNotification:(id)a3;
+- (void)pauseResumeResponse:(id)response;
+- (void)pidNotification:(id)notification;
 - (void)requestUserInfo;
 - (void)run;
 - (void)sendSessionInfoToClient;
-- (void)termsAndConditionsResponse:(id)a3;
+- (void)termsAndConditionsResponse:(id)response;
 @end
 
 @implementation ViewServiceHelper
@@ -43,11 +43,11 @@
   dispatch_async(v3, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(buf.val[0]) = 0;
@@ -55,9 +55,9 @@
   }
 
   memset(&buf, 0, sizeof(buf));
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   token = buf;
@@ -98,30 +98,30 @@ LABEL_24:
           }
 
           v17 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2884B6798];
-          [v7 setExportedInterface:v17];
+          [connectionCopy setExportedInterface:v17];
 
-          [v7 setExportedObject:self];
+          [connectionCopy setExportedObject:self];
           v18 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2884B6B68];
-          [v7 setRemoteObjectInterface:v18];
+          [connectionCopy setRemoteObjectInterface:v18];
 
-          v19 = self;
-          objc_sync_enter(v19);
+          selfCopy = self;
+          objc_sync_enter(selfCopy);
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(token.val[0]) = 0;
             _os_log_impl(&dword_275BBF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "adding connection", &token, 2u);
           }
 
-          v20 = [(ViewServiceHelper *)v19 connections];
+          connections = [(ViewServiceHelper *)selfCopy connections];
           v27[0] = @"NSXPCConnection";
           v27[1] = @"bundleIdentifier";
-          v28[0] = v7;
+          v28[0] = connectionCopy;
           v28[1] = &stru_2884B5B68;
           v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
-          [v20 addObject:v21];
+          [connections addObject:v21];
 
-          objc_sync_exit(v19);
-          [v7 resume];
+          objc_sync_exit(selfCopy);
+          [connectionCopy resume];
           v22 = 1;
           goto LABEL_33;
         }
@@ -207,13 +207,13 @@ LABEL_33:
   }
 
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v4 = [(ViewServiceHelper *)self delegate];
+  delegate = [(ViewServiceHelper *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ViewServiceHelper *)self delegate];
-    [v6 performSelector:sel_sessionState_ withObject:v3];
+    delegate2 = [(ViewServiceHelper *)self delegate];
+    [delegate2 performSelector:sel_sessionState_ withObject:v3];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -277,38 +277,38 @@ LABEL_33:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)termsAndConditionsResponse:(id)a3
+- (void)termsAndConditionsResponse:(id)response
 {
-  v8 = a3;
-  v4 = [v8 description];
+  responseCopy = response;
+  v4 = [responseCopy description];
   syslog(5, "termsAndConditionsResponse %s", [v4 UTF8String]);
 
-  v5 = [(ViewServiceHelper *)self delegate];
+  delegate = [(ViewServiceHelper *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ViewServiceHelper *)self delegate];
-    [v7 performSelector:sel_termsAndConditionsResult_ withObject:v8];
+    delegate2 = [(ViewServiceHelper *)self delegate];
+    [delegate2 performSelector:sel_termsAndConditionsResult_ withObject:responseCopy];
   }
 }
 
-- (void)pauseResumeResponse:(id)a3
+- (void)pauseResumeResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&dword_275BBF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "pauseResumeResponse", buf, 2u);
   }
 
-  v5 = [(ViewServiceHelper *)self delegate];
+  delegate = [(ViewServiceHelper *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ViewServiceHelper *)self delegate];
-    [v7 performSelector:sel_pauseResumeResult_ withObject:v4];
+    delegate2 = [(ViewServiceHelper *)self delegate];
+    [delegate2 performSelector:sel_pauseResumeResult_ withObject:responseCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -318,16 +318,16 @@ LABEL_33:
   }
 }
 
-- (void)pidNotification:(id)a3
+- (void)pidNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ViewServiceHelper *)self delegate];
+  notificationCopy = notification;
+  delegate = [(ViewServiceHelper *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ViewServiceHelper *)self delegate];
-    [v7 performSelector:sel_pidNotification_ withObject:v4];
+    delegate2 = [(ViewServiceHelper *)self delegate];
+    [delegate2 performSelector:sel_pidNotification_ withObject:notificationCopy];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -339,13 +339,13 @@ LABEL_33:
 
 - (void)requestUserInfo
 {
-  v3 = [(ViewServiceHelper *)self delegate];
+  delegate = [(ViewServiceHelper *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ViewServiceHelper *)self delegate];
-    [v5 performSelector:sel_requestUserInfo withObject:0];
+    delegate2 = [(ViewServiceHelper *)self delegate];
+    [delegate2 performSelector:sel_requestUserInfo withObject:0];
   }
 
   [(ViewServiceHelper *)self sendSessionInfoToClient];

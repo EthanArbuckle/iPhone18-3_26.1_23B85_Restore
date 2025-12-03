@@ -49,9 +49,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v6 intValue];
-  *(v18 + 6) = v7;
-  if ((v7 & 0x80000000) != 0)
+  intValue = [v6 intValue];
+  *(v18 + 6) = intValue;
+  if ((intValue & 0x80000000) != 0)
   {
     goto LABEL_5;
   }

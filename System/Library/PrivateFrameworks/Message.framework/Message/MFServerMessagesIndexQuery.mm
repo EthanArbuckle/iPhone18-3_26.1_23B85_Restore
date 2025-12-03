@@ -1,6 +1,6 @@
 @interface MFServerMessagesIndexQuery
 - (CSSuggestion)suggestion;
-- (MFServerMessagesIndexQuery)initWithSuggestion:(id)a3 accountID:(id)a4 mailboxes:(id)a5 limit:(int64_t)a6;
+- (MFServerMessagesIndexQuery)initWithSuggestion:(id)suggestion accountID:(id)d mailboxes:(id)mailboxes limit:(int64_t)limit;
 - (NSArray)mailboxURLs;
 - (NSString)accountID;
 - (int64_t)limit;
@@ -50,19 +50,19 @@
   return v5;
 }
 
-- (MFServerMessagesIndexQuery)initWithSuggestion:(id)a3 accountID:(id)a4 mailboxes:(id)a5 limit:(int64_t)a6
+- (MFServerMessagesIndexQuery)initWithSuggestion:(id)suggestion accountID:(id)d mailboxes:(id)mailboxes limit:(int64_t)limit
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
+  MEMORY[0x1E69E5928](suggestion);
+  MEMORY[0x1E69E5928](d);
+  MEMORY[0x1E69E5928](mailboxes);
   v9 = sub_1B0E44AD8();
   v10 = v6;
   sub_1B0E42E68();
   v7 = sub_1B0E451B8();
-  v15 = sub_1B0903580(a3, v9, v10, v7, a6);
-  MEMORY[0x1E69E5920](a5);
-  MEMORY[0x1E69E5920](a4);
+  v15 = sub_1B0903580(suggestion, v9, v10, v7, limit);
+  MEMORY[0x1E69E5920](mailboxes);
+  MEMORY[0x1E69E5920](d);
   return v15;
 }
 

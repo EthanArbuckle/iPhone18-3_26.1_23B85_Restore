@@ -1,143 +1,143 @@
 @interface BiometricKitXPCServerPearl
 + (BOOL)platformProvidesPSD3;
 + (BOOL)platformProvidesPlCl;
-+ (id)getSHA384FromData:(id)a3;
-+ (unsigned)getDeviceTreeProperty:(id)a3 fromPath:(id)a4;
-+ (void)reportPearlHardwarePass:(BOOL)a3 fallbackAction:(id)a4;
-+ (void)reportPearlInterlock:(BOOL)a3;
++ (id)getSHA384FromData:(id)data;
++ (unsigned)getDeviceTreeProperty:(id)property fromPath:(id)path;
++ (void)reportPearlHardwarePass:(BOOL)pass fallbackAction:(id)action;
++ (void)reportPearlInterlock:(BOOL)interlock;
 + (void)reportPearlIssue;
 - ($1AB5FA073B851C12C2339EC22442E995)deviceGravity;
 - ($1AB5FA073B851C12C2339EC22442E995)deviceRotationRate;
 - ($1AB5FA073B851C12C2339EC22442E995)deviceUserAcceleration;
-- (BOOL)cameraIndicatorControlAllowedForClient:(id)a3;
+- (BOOL)cameraIndicatorControlAllowedForClient:(id)client;
 - (BOOL)hasFDREntitlement;
-- (BOOL)hasManifestEntitlement:(unsigned int)a3;
+- (BOOL)hasManifestEntitlement:(unsigned int)entitlement;
 - (BOOL)unwrapBrunorEncryptionKey;
 - (BiometricKitXPCServerPearl)init;
-- (id)classStringForEnum:(unsigned __int16)a3;
+- (id)classStringForEnum:(unsigned __int16)enum;
 - (id)createEnrollOperation;
 - (id)createMatchOperation;
 - (id)createPresenceDetectOperation;
-- (id)detailsForFaceDetectInfo:(id *)a3;
+- (id)detailsForFaceDetectInfo:(id *)info;
 - (id)deviceAttitude;
-- (id)filenameForSavageCertType:(id)a3;
+- (id)filenameForSavageCertType:(id)type;
 - (id)getDisplayTrustStatusAttempt;
-- (id)getFDRClassFromFile:(id)a3;
+- (id)getFDRClassFromFile:(id)file;
 - (id)getProjectorSerialNumberIOReg;
 - (id)getProjectorSerialNumberIORegAttempt;
 - (id)getRomeoSerialNumberFDR;
-- (int)cancelWithClient:(id)a3;
-- (int)completeEnrollmentWithClient:(id)a3;
-- (int)enableMatchAutoRetry:(BOOL)a3 withClient:(id)a4;
+- (int)cancelWithClient:(id)client;
+- (int)completeEnrollmentWithClient:(id)client;
+- (int)enableMatchAutoRetry:(BOOL)retry withClient:(id)client;
 - (int)getCommProtocolVersion;
-- (int)getPeriocularMatchStateForUser:(unsigned int)a3 state:(int64_t *)a4 withClient:(id)a5;
-- (int)getSPRLInfo:(id *)a3;
-- (int)getSensorFamily:(unsigned __int8 *)a3;
+- (int)getPeriocularMatchStateForUser:(unsigned int)user state:(int64_t *)state withClient:(id)client;
+- (int)getSPRLInfo:(id *)info;
+- (int)getSensorFamily:(unsigned __int8 *)family;
 - (int)initAutoBugCapture;
-- (int)initMatchOperation:(id)a3 filter:(id)a4 options:(id)a5 client:(id)a6;
-- (int)initPresenceDetectOperation:(id)a3 options:(id)a4 client:(id)a5;
+- (int)initMatchOperation:(id)operation filter:(id)filter options:(id)options client:(id)client;
+- (int)initPresenceDetectOperation:(id)operation options:(id)options client:(id)client;
 - (int)initSecureFaceDetect;
-- (int)initializeEngineWithOptions:(unsigned __int16)a3;
-- (int)isPeriocularEnrollmentSupported:(BOOL *)a3 withClient:(id)a4;
-- (int)loadCatacombForComponent:(id)a3;
+- (int)initializeEngineWithOptions:(unsigned __int16)options;
+- (int)isPeriocularEnrollmentSupported:(BOOL *)supported withClient:(id)client;
+- (int)loadCatacombForComponent:(id)component;
 - (int)loadDCNKernels;
-- (int)loadFDRClassCommand:(int)a3 withClass:(unsigned __int16)a4 withData:(id)a5 isAlternative:(BOOL)a6;
-- (int)loadPCECalibrationOverride:(id)a3;
+- (int)loadFDRClassCommand:(int)command withClass:(unsigned __int16)class withData:(id)data isAlternative:(BOOL)alternative;
+- (int)loadPCECalibrationOverride:(id)override;
 - (int)loadSavageFWCertificate;
 - (int)performCancelCommand;
-- (int)performCommand:(unsigned __int16)a3 version:(unsigned __int16)a4 inValue:(unsigned __int16)a5 inData:(const void *)a6 inSize:(unint64_t)a7 outData:(char *)a8 outSize:(unint64_t *)a9;
-- (int)performCompleteSaveCatacombCommand:(id)a3 outBuffer:(id)a4;
-- (int)performConfirmSaveCatacombCommand:(id)a3;
+- (int)performCommand:(unsigned __int16)command version:(unsigned __int16)version inValue:(unsigned __int16)value inData:(const void *)data inSize:(unint64_t)size outData:(char *)outData outSize:(unint64_t *)outSize;
+- (int)performCompleteSaveCatacombCommand:(id)command outBuffer:(id)buffer;
+- (int)performConfirmSaveCatacombCommand:(id)command;
 - (int)performDropUnlockTokenCommand;
-- (int)performEnrollCommand:(id)a3;
-- (int)performForceBioLockoutCommand:(unsigned int)a3;
-- (int)performGetBiometrickitdInfoCommand:(id *)a3;
-- (int)performGetCatacombHashCommand:(unsigned int)a3 outHash:(id *)a4;
-- (int)performGetCatacombStateCommand:(id)a3;
-- (int)performGetCatacombUUIDCommand:(unsigned int)a3 outUUID:(id *)a4;
-- (int)performGetDeviceHardwareStateCommand:(unsigned int *)a3;
-- (int)performGetFreeIdentityCountCommand:(unsigned int)a3 outCount:(unsigned int *)a4;
-- (int)performGetIdentitiesListCommand:(unsigned int)a3 outBuffer:(id)a4;
-- (int)performGetLastMatchEventCommand:(id *)a3;
-- (int)performGetProtectedConfigCommand:(unsigned int)a3 outSetCfg:(id *)a4 outEffectiveCfg:(id *)a5;
-- (int)performGetSKSLockStateCommand:(unsigned int)a3 outState:(unsigned int *)a4;
-- (int)performGetSystemProtectedConfigCommand:(id *)a3;
-- (int)performGetTemplatesValidityCommand:(unsigned int)a3 isValid:(BOOL *)a4;
-- (int)performLoadCatacombCommand:(id)a3 inData:(id)a4;
-- (int)performMatchCommand:(id)a3;
-- (int)performNoCatacombCommand:(unsigned int)a3;
-- (int)performPrepareSaveCatacombCommand:(id)a3 outDataSize:(unsigned int *)a4;
-- (int)performPresenceDetectCommand:(id)a3 restart:(BOOL)a4;
-- (int)performRemoveIdentityCommand:(id *)a3;
-- (int)performRemoveUserDataCommand:(unsigned int)a3;
-- (int)performRequestMaxIdentityCountCommand:(unsigned int *)a3;
-- (int)performRequestMessageDataCommand:(unint64_t)a3 size:(unint64_t)a4 outData:(id *)a5;
-- (int)performSetProtectedConfigCommand:(unsigned int)a3 cfg:(id)a4 authData:(id *)a5;
-- (int)performSetSystemProtectedConfigCommand:(id)a3 authData:(id *)a4;
-- (int)prewarmCamera:(unint64_t)a3 withClient:(id)a4;
-- (int)queryGuadalupeSerialNumberFDR:(id *)a3;
-- (int)queryIdentityMigrationFailureForUser:(unsigned int)a3 failed:(BOOL *)a4 clear:(BOOL)a5 withClient:(id)a6;
-- (int)queryPeriocularMigrationState:(BOOL *)a3 clear:(BOOL)a4;
-- (int)removeIdentity:(id)a3 withOptions:(id)a4 withClient:(id)a5;
-- (int)removePeriocularTemplatesWithOptions:(id)a3 withClient:(id)a4;
+- (int)performEnrollCommand:(id)command;
+- (int)performForceBioLockoutCommand:(unsigned int)command;
+- (int)performGetBiometrickitdInfoCommand:(id *)command;
+- (int)performGetCatacombHashCommand:(unsigned int)command outHash:(id *)hash;
+- (int)performGetCatacombStateCommand:(id)command;
+- (int)performGetCatacombUUIDCommand:(unsigned int)command outUUID:(id *)d;
+- (int)performGetDeviceHardwareStateCommand:(unsigned int *)command;
+- (int)performGetFreeIdentityCountCommand:(unsigned int)command outCount:(unsigned int *)count;
+- (int)performGetIdentitiesListCommand:(unsigned int)command outBuffer:(id)buffer;
+- (int)performGetLastMatchEventCommand:(id *)command;
+- (int)performGetProtectedConfigCommand:(unsigned int)command outSetCfg:(id *)cfg outEffectiveCfg:(id *)effectiveCfg;
+- (int)performGetSKSLockStateCommand:(unsigned int)command outState:(unsigned int *)state;
+- (int)performGetSystemProtectedConfigCommand:(id *)command;
+- (int)performGetTemplatesValidityCommand:(unsigned int)command isValid:(BOOL *)valid;
+- (int)performLoadCatacombCommand:(id)command inData:(id)data;
+- (int)performMatchCommand:(id)command;
+- (int)performNoCatacombCommand:(unsigned int)command;
+- (int)performPrepareSaveCatacombCommand:(id)command outDataSize:(unsigned int *)size;
+- (int)performPresenceDetectCommand:(id)command restart:(BOOL)restart;
+- (int)performRemoveIdentityCommand:(id *)command;
+- (int)performRemoveUserDataCommand:(unsigned int)command;
+- (int)performRequestMaxIdentityCountCommand:(unsigned int *)command;
+- (int)performRequestMessageDataCommand:(unint64_t)command size:(unint64_t)size outData:(id *)data;
+- (int)performSetProtectedConfigCommand:(unsigned int)command cfg:(id)cfg authData:(id *)data;
+- (int)performSetSystemProtectedConfigCommand:(id)command authData:(id *)data;
+- (int)prewarmCamera:(unint64_t)camera withClient:(id)client;
+- (int)queryGuadalupeSerialNumberFDR:(id *)r;
+- (int)queryIdentityMigrationFailureForUser:(unsigned int)user failed:(BOOL *)failed clear:(BOOL)clear withClient:(id)client;
+- (int)queryPeriocularMigrationState:(BOOL *)state clear:(BOOL)clear;
+- (int)removeIdentity:(id)identity withOptions:(id)options withClient:(id)client;
+- (int)removePeriocularTemplatesWithOptions:(id)options withClient:(id)client;
 - (int)restoreAndSyncTemplates;
 - (int)saveTemplateListAfterTemplateUpdate;
-- (int)sendDCNKernelsCheckResult:(int)a3;
-- (int)sendDisplayCheckResult:(int)a3;
-- (int)sendFDRDataCheckResult:(int)a3;
-- (int)sendRomeoSNCheckResult:(int)a3;
-- (int)sendSavageFWCertCheckResult:(int)a3;
-- (int)sendSelfCheckResult:(id *)a3;
-- (int)setTemplate:(id)a3 forIdentity:(id)a4 withClient:(id)a5;
-- (int)startNewMatchAttemptWithClient:(id)a3;
+- (int)sendDCNKernelsCheckResult:(int)result;
+- (int)sendDisplayCheckResult:(int)result;
+- (int)sendFDRDataCheckResult:(int)result;
+- (int)sendRomeoSNCheckResult:(int)result;
+- (int)sendSavageFWCertCheckResult:(int)result;
+- (int)sendSelfCheckResult:(id *)result;
+- (int)setTemplate:(id)template forIdentity:(id)identity withClient:(id)client;
+- (int)startNewMatchAttemptWithClient:(id)client;
 - (int)startSecureFaceDetect;
-- (int)suspendEnrollment:(BOOL)a3 withClient:(id)a4;
+- (int)suspendEnrollment:(BOOL)enrollment withClient:(id)client;
 - (int)unwrapBrunorEncryptionKey;
-- (int)updateIdentity:(id)a3 withOptions:(id)a4 withClient:(id)a5;
+- (int)updateIdentity:(id)identity withOptions:(id)options withClient:(id)client;
 - (int)updatePropertiesOfIdentities;
 - (int)verifyDisplayTrust;
 - (int)verifyGuadalupeSerialNumberAgainstFDR;
 - (int)verifyProjectorSerialNumber;
 - (int)verifyRomeoSerialNumberAgainstFDR;
-- (int64_t)getDeviceStateWithClient:(id)a3;
+- (int64_t)getDeviceStateWithClient:(id)client;
 - (uint64_t)startSecureFaceDetect;
 - (unint64_t)deviceOrientation;
-- (void)analyticsKernelMessage:(id)a3;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5;
+- (void)analyticsKernelMessage:(id)message;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection;
 - (void)checkBioLogConsent;
 - (void)clearSecureFaceDetectContext;
 - (void)dealloc;
 - (void)deinitSecureFaceDetect;
-- (void)donateBiomeEvent:(id)a3;
-- (void)enrollFeedback:(id)a3 withTimestamp:(unint64_t)a4;
-- (void)enrollResult:(id)a3 withTimestamp:(unint64_t)a4;
-- (void)enrollUpdate:(id)a3 withTimestamp:(unint64_t)a4;
-- (void)faceDetectMessage:(unsigned int)a3 info:(id *)a4 fromSecureFD:(BOOL)a5;
+- (void)donateBiomeEvent:(id)event;
+- (void)enrollFeedback:(id)feedback withTimestamp:(unint64_t)timestamp;
+- (void)enrollResult:(id)result withTimestamp:(unint64_t)timestamp;
+- (void)enrollUpdate:(id)update withTimestamp:(unint64_t)timestamp;
+- (void)faceDetectMessage:(unsigned int)message info:(id *)info fromSecureFD:(BOOL)d;
 - (void)firstUnlockCallback;
 - (void)getCommProtocolVersion;
 - (void)getProjectorSerialNumberIORegAttempt;
 - (void)getRomeoSerialNumberFDR;
-- (void)handleSharedMemoryTransfer:(unsigned int)a3 withHeader:(id)a4 data:(id)a5;
+- (void)handleSharedMemoryTransfer:(unsigned int)transfer withHeader:(id)header data:(id)data;
 - (void)init;
 - (void)initAutoBugCapture;
 - (void)initSecureFaceDetect;
 - (void)loadCalibrationData;
 - (void)loadDCNKernels;
 - (void)loadSavageFWCertificate;
-- (void)logKernelMessage:(id)a3;
-- (void)logRemoveIdentity:(id)a3 withClient:(id)a4;
-- (void)logSequenceDebugWithContext:(id *)a3;
-- (void)matchEventMessage:(id *)a3;
-- (void)matchResult:(id)a3 withTimestamp:(unint64_t)a4;
+- (void)logKernelMessage:(id)message;
+- (void)logRemoveIdentity:(id)identity withClient:(id)client;
+- (void)logSequenceDebugWithContext:(id *)context;
+- (void)matchEventMessage:(id *)message;
+- (void)matchResult:(id)result withTimestamp:(unint64_t)timestamp;
 - (void)performCancelCommand;
 - (void)performDropUnlockTokenCommand;
-- (void)processMetadataObjects:(id)a3;
+- (void)processMetadataObjects:(id)objects;
 - (void)processSecureFaceDetectRequestMessage;
-- (void)registerForLiftToWakeNotifications:(BOOL)a3;
+- (void)registerForLiftToWakeNotifications:(BOOL)notifications;
 - (void)restoreAndSyncTemplates;
 - (void)saveTemplateListAfterTemplateUpdate;
-- (void)secureFaceDetectRequestMessage:(id *)a3;
-- (void)serviceMatch:(unsigned int)a3;
+- (void)secureFaceDetectRequestMessage:(id *)message;
+- (void)serviceMatch:(unsigned int)match;
 - (void)stopSecureFaceDetect;
 - (void)unwrapBrunorEncryptionKey;
 - (void)updateAutoRetryMode;
@@ -150,7 +150,7 @@
 - (void)verifyGuadalupeSerialNumberAgainstFDR;
 - (void)verifyProjectorSerialNumber;
 - (void)verifyRomeoSerialNumberAgainstFDR;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture;
 @end
 
 @implementation BiometricKitXPCServerPearl
@@ -338,7 +338,7 @@ void __48__BiometricKitXPCServerPearl_updateLoggingState__block_invoke_3(uint64_
     }
 
     v4[321] = MGGetBoolAnswer();
-    v70 = [MEMORY[0x29EDBFD50] sharedInstance];
+    mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
     v81[0] = @"autoRetryMode";
     v81[1] = @"combinedSequenceMode";
     v82[0] = &unk_2A1E03630;
@@ -388,7 +388,7 @@ void __48__BiometricKitXPCServerPearl_updateLoggingState__block_invoke_3(uint64_
     v81[18] = @"SuppressPearlIssuePopup";
     v82[18] = v7;
     v14 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v82 forKeys:v81 count:19];
-    [v70 registerDefaults:v14];
+    [mEMORY[0x29EDBFD50] registerDefaults:v14];
 
     v15 = [MEMORY[0x29EDB8DF8] dataWithLength:*MEMORY[0x29EDCA6D0]];
     v16 = *(v4 + 65);
@@ -525,8 +525,8 @@ void __48__BiometricKitXPCServerPearl_updateLoggingState__block_invoke_3(uint64_
         *(v4 + 44) = v46;
 
         v48 = *(v4 + 44);
-        v49 = [v4 biometricABC];
-        [v48 setPearlAbc:v49];
+        biometricABC = [v4 biometricABC];
+        [v48 setPearlAbc:biometricABC];
 
         [*(v4 + 44) setSecureFaceDetectSupported:v4[532]];
       }
@@ -711,13 +711,13 @@ void __34__BiometricKitXPCServerPearl_init__block_invoke_2()
 - (int)initAutoBugCapture
 {
   v3 = [PearlAutoBugCapture alloc];
-  v4 = [(BiometricKitXPCServer *)self biometricABCDispatchQueue];
-  v5 = [(BiometricAutoBugCapture *)v3 initWithDomain:@"FaceID" process:@"biometrickitd" dispatchQueue:v4];
+  biometricABCDispatchQueue = [(BiometricKitXPCServer *)self biometricABCDispatchQueue];
+  v5 = [(BiometricAutoBugCapture *)v3 initWithDomain:@"FaceID" process:@"biometrickitd" dispatchQueue:biometricABCDispatchQueue];
   [(BiometricKitXPCServer *)self setBiometricABC:v5];
 
-  v6 = [(BiometricKitXPCServer *)self biometricABC];
+  biometricABC = [(BiometricKitXPCServer *)self biometricABC];
 
-  if (v6)
+  if (biometricABC)
   {
     return 0;
   }
@@ -776,7 +776,7 @@ void __34__BiometricKitXPCServerPearl_init__block_invoke_2()
   [(BiometricKitXPCServer *)&v10 dealloc];
 }
 
-- (void)serviceMatch:(unsigned int)a3
+- (void)serviceMatch:(unsigned int)match
 {
   v43 = *MEMORY[0x29EDCA608];
   v28 = os_transaction_create();
@@ -793,12 +793,12 @@ void __34__BiometricKitXPCServerPearl_init__block_invoke_2()
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v34) = a3;
+    LODWORD(v34) = match;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEFAULT, "serviceMatch: %u\n", buf, 8u);
   }
 
   context = objc_autoreleasePoolPush();
-  v6 = IOIteratorNext(a3);
+  v6 = IOIteratorNext(match);
   if (v6)
   {
     v8 = MEMORY[0x29EDCA5F8];
@@ -896,8 +896,8 @@ void __34__BiometricKitXPCServerPearl_init__block_invoke_2()
         if ([(BiometricKitXPCServer *)self isClassCFileAccessible])
         {
           [(BiometricKitXPCServer *)self setCatacombFileAccessed:1];
-          v13 = [(BiometricKitXPCServerPearl *)self restoreAndSyncTemplates];
-          if (!v13)
+          restoreAndSyncTemplates = [(BiometricKitXPCServerPearl *)self restoreAndSyncTemplates];
+          if (!restoreAndSyncTemplates)
           {
             goto LABEL_23;
           }
@@ -911,7 +911,7 @@ void __34__BiometricKitXPCServerPearl_init__block_invoke_2()
           *buf = v27;
           v34 = "err == 0 ";
           v35 = 2048;
-          v36 = v13;
+          v36 = restoreAndSyncTemplates;
           v37 = 2080;
           v38 = &unk_296D32C0B;
           v39 = 2080;
@@ -974,14 +974,14 @@ LABEL_23:
         _os_log_impl(&dword_296CA4000, v18, OS_LOG_TYPE_DEFAULT, "serviceMatch: initialized\n", buf, 2u);
       }
 
-      v6 = IOIteratorNext(a3);
+      v6 = IOIteratorNext(match);
     }
 
     while (v6);
   }
 
-  v23 = [MEMORY[0x29EDBFD50] sharedInstance];
-  [v23 synchronize];
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+  [mEMORY[0x29EDBFD50] synchronize];
 
   [(BiometricKitXPCServerPearl *)self updateLoggingState];
   [(BiometricKitXPCServerPearl *)self updateAutoRetryMode];
@@ -1161,8 +1161,8 @@ void __75__BiometricKitXPCServerPearl_serviceStatus_version_ordinal_data_timesta
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEBUG, "updateCoachingHintsEnabled\n", buf, 2u);
   }
 
-  v5 = [MEMORY[0x29EDBFD50] sharedInstance];
-  LOBYTE(self->_sigTERMDispatchSource) = [v5 BOOLForKey:@"coachingHintsEnabled"];
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+  LOBYTE(self->_sigTERMDispatchSource) = [mEMORY[0x29EDBFD50] BOOLForKey:@"coachingHintsEnabled"];
 
   if (__osLogTrace)
   {
@@ -1319,21 +1319,21 @@ void __48__BiometricKitXPCServerPearl_updateLoggingState__block_invoke_5(uint64_
   kSpringBoardBundleIdentifier_block_invoke_motionTransaction = 0;
 }
 
-- (void)handleSharedMemoryTransfer:(unsigned int)a3 withHeader:(id)a4 data:(id)a5
+- (void)handleSharedMemoryTransfer:(unsigned int)transfer withHeader:(id)header data:(id)data
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3 == 2)
+  headerCopy = header;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (transfer == 2)
   {
     pearlDeviceState = self->_pearlDeviceState;
-    v11 = [v8 firstObject];
-    [pearlDeviceState logFrameDebug:v12 withBuffer:v11];
+    firstObject = [dataCopy firstObject];
+    [pearlDeviceState logFrameDebug:headerCopy withBuffer:firstObject];
   }
 
-  else if (a3 == 1)
+  else if (transfer == 1)
   {
-    [self->_pearlDeviceState logCameraFrame:v12 withBuffers:v8];
+    [self->_pearlDeviceState logCameraFrame:headerCopy withBuffers:dataCopy];
   }
 }
 
@@ -1556,10 +1556,10 @@ __n128 __43__BiometricKitXPCServerPearl_deviceGravity__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)logKernelMessage:(id)a3
+- (void)logKernelMessage:(id)message
 {
   v46 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x29EDCA988];
   if (__osLog)
   {
@@ -1574,11 +1574,11 @@ __n128 __43__BiometricKitXPCServerPearl_deviceGravity__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = messageCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "logKernelMessage: %@\n", buf, 0xCu);
   }
 
-  if ([v4 length] < 0x23)
+  if ([messageCopy length] < 0x23)
   {
     if (__osLog)
     {
@@ -1599,26 +1599,26 @@ __n128 __43__BiometricKitXPCServerPearl_deviceGravity__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [v4 bytes];
-    v8 = v7;
-    v9 = *v7;
-    if (*v7 <= 2)
+    bytes = [messageCopy bytes];
+    v8 = bytes;
+    v9 = *bytes;
+    if (*bytes <= 2)
     {
       if (!v9)
       {
         pearlDeviceState = self->_pearlDeviceState;
-        v11 = [MEMORY[0x29EDB8DA0] dataWithBytes:v7 + 35 length:*(v7 + 31)];
-        [pearlDeviceState logData:v11 withContext:v8 + 1];
+        identities = [MEMORY[0x29EDB8DA0] dataWithBytes:bytes + 35 length:*(bytes + 31)];
+        [pearlDeviceState logData:identities withContext:v8 + 1];
         goto LABEL_24;
       }
 
       if (v9 == 2)
       {
         v17 = self->_pearlDeviceState;
-        v11 = [MEMORY[0x29EDB8DA0] dataWithBytes:v7 + 35 length:*(v7 + 31)];
+        identities = [MEMORY[0x29EDB8DA0] dataWithBytes:bytes + 35 length:*(bytes + 31)];
         v12 = v8 + 1;
         v13 = v17;
-        v14 = v11;
+        v14 = identities;
         v15 = 0;
         goto LABEL_20;
       }
@@ -1629,8 +1629,8 @@ __n128 __43__BiometricKitXPCServerPearl_deviceGravity__block_invoke(uint64_t a1)
       switch(v9)
       {
         case 3:
-          v11 = [(BiometricKitXPCServer *)self identities];
-          v18 = [(BiometricKitXPCServerPearl *)self deviceAttitude];
+          identities = [(BiometricKitXPCServer *)self identities];
+          deviceAttitude = [(BiometricKitXPCServerPearl *)self deviceAttitude];
           [(BiometricKitXPCServerPearl *)self deviceRotationRate];
           v20 = v19;
           v22 = v21;
@@ -1641,11 +1641,11 @@ __n128 __43__BiometricKitXPCServerPearl_deviceGravity__block_invoke(uint64_t a1)
           v28 = v27;
           v30 = v29;
           *buf = [(BiometricKitXPCServerPearl *)self deviceOrientation];
-          [v18 roll];
+          [deviceAttitude roll];
           *&buf[8] = v31;
-          [v18 yaw];
+          [deviceAttitude yaw];
           *&buf[24] = v32;
-          [v18 pitch];
+          [deviceAttitude pitch];
           *&buf[16] = v33;
           *&buf[32] = v20;
           *&buf[40] = v22;
@@ -1658,31 +1658,31 @@ __n128 __43__BiometricKitXPCServerPearl_deviceGravity__block_invoke(uint64_t a1)
           v45 = v30;
           v34 = self->_pearlDeviceState;
           v35 = [MEMORY[0x29EDB8DA0] dataWithBytes:v8 + 35 length:*(v8 + 31)];
-          [v34 logSequenceInfo:v35 withContext:v8 + 1 orientation:buf identities:v11];
+          [v34 logSequenceInfo:v35 withContext:v8 + 1 orientation:buf identities:identities];
 
           [(BiometricKitXPCServerPearl *)self logSequenceDebugWithContext:v8 + 1];
           goto LABEL_24;
         case 8:
           memset(&buf[12], 0, 67);
-          *buf = *(v7 + 1);
-          *&buf[8] = *(v7 + 14);
-          *&buf[10] = *(v7 + 6);
-          buf[14] = *(v7 + 30);
-          buf[15] = *(v7 + 14);
-          v36 = *(v7 + 5);
-          *&buf[23] = *(v7 + 27);
+          *buf = *(bytes + 1);
+          *&buf[8] = *(bytes + 14);
+          *&buf[10] = *(bytes + 6);
+          buf[14] = *(bytes + 30);
+          buf[15] = *(bytes + 14);
+          v36 = *(bytes + 5);
+          *&buf[23] = *(bytes + 27);
           *&buf[16] = v36;
           v37 = self->_pearlDeviceState;
-          v38 = [MEMORY[0x29EDB8DA0] dataWithBytes:v7 + 35 length:*(v7 + 31)];
+          v38 = [MEMORY[0x29EDB8DA0] dataWithBytes:bytes + 35 length:*(bytes + 31)];
           [v37 logCameraFrame:buf sensorRawData:0 metaData:v38];
 
           goto LABEL_25;
         case 10:
           v10 = self->_pearlDeviceState;
-          v11 = [MEMORY[0x29EDB8DA0] dataWithBytes:v7 + 35 length:*(v7 + 31)];
+          identities = [MEMORY[0x29EDB8DA0] dataWithBytes:bytes + 35 length:*(bytes + 31)];
           v12 = v8 + 1;
           v13 = v10;
-          v14 = v11;
+          v14 = identities;
           v15 = 1;
 LABEL_20:
           [v13 logTemplateList:v14 withContext:v12 isPO:v15];
@@ -1692,7 +1692,7 @@ LABEL_24:
       }
     }
 
-    NSLog(&cfstr_BiologWarningU.isa, *v7, *(v7 + 31));
+    NSLog(&cfstr_BiologWarningU.isa, *bytes, *(bytes + 31));
   }
 
 LABEL_25:
@@ -1715,10 +1715,10 @@ LABEL_25:
   v41 = *MEMORY[0x29EDCA608];
 }
 
-- (void)analyticsKernelMessage:(id)a3
+- (void)analyticsKernelMessage:(id)message
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  messageCopy = message;
   v5 = MEMORY[0x29EDCA988];
   if (__osLog)
   {
@@ -1733,29 +1733,29 @@ LABEL_25:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v17 = 67109120;
-    v18 = v4 != 0;
+    v18 = messageCopy != 0;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "analyticsKernelMessage: %d\n", &v17, 8u);
   }
 
-  v7 = [(BiometricKitXPCServerPearl *)self deviceOrientation];
-  if ([v4 length] > 0x22)
+  deviceOrientation = [(BiometricKitXPCServerPearl *)self deviceOrientation];
+  if ([messageCopy length] > 0x22)
   {
-    v8 = [v4 bytes];
-    v9 = [MEMORY[0x29EDB8DA0] dataWithBytesNoCopy:v8 + 35 length:*(v8 + 31) freeWhenDone:0];
-    v10 = *v8;
-    if (*v8 <= 1002)
+    bytes = [messageCopy bytes];
+    v9 = [MEMORY[0x29EDB8DA0] dataWithBytesNoCopy:bytes + 35 length:*(bytes + 31) freeWhenDone:0];
+    v10 = *bytes;
+    if (*bytes <= 1002)
     {
       if (v10 == 1001)
       {
-        v11 = [(BiometricKitXPCServer *)self identities];
-        [*&self->_logSequenceDebug sendMatchEventAnalytics:v9 orientation:v7 identities:v11];
+        identities = [(BiometricKitXPCServer *)self identities];
+        [*&self->_logSequenceDebug sendMatchEventAnalytics:v9 orientation:deviceOrientation identities:identities];
 
         goto LABEL_24;
       }
 
       if (v10 == 1002)
       {
-        [*&self->_logSequenceDebug sendEnrollEventAnalytics:v9 orientation:v7];
+        [*&self->_logSequenceDebug sendEnrollEventAnalytics:v9 orientation:deviceOrientation];
         goto LABEL_23;
       }
     }
@@ -1765,10 +1765,10 @@ LABEL_25:
       switch(v10)
       {
         case 1003:
-          [*&self->_logSequenceDebug sendFaceDetectEventAnalytics:v9 fromMatch:0 orientation:v7];
+          [*&self->_logSequenceDebug sendFaceDetectEventAnalytics:v9 fromMatch:0 orientation:deviceOrientation];
           goto LABEL_23;
         case 1004:
-          [*&self->_logSequenceDebug sendPasscodeChallengeEventAnalytics:v9 orientation:v7];
+          [*&self->_logSequenceDebug sendPasscodeChallengeEventAnalytics:v9 orientation:deviceOrientation];
           goto LABEL_23;
         case 1005:
           [*&self->_logSequenceDebug sendBioLockoutEventAnalytics:v9];
@@ -1790,8 +1790,8 @@ LABEL_23:
 
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = *v8;
-      v14 = *(v8 + 31);
+      v13 = *bytes;
+      v14 = *(bytes + 31);
       v17 = 67109376;
       v18 = v13;
       v19 = 1024;
@@ -1823,9 +1823,9 @@ LABEL_24:
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)registerForLiftToWakeNotifications:(BOOL)a3
+- (void)registerForLiftToWakeNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   v13 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
@@ -1841,15 +1841,15 @@ LABEL_24:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v12[0] = 67109120;
-    v12[1] = v3;
+    v12[1] = notificationsCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "registerForLiftToWakeNotifications: %d\n", v12, 8u);
   }
 
-  if (v3 && [MEMORY[0x29EDB93E0] isWakeGestureAvailable])
+  if (notificationsCopy && [MEMORY[0x29EDB93E0] isWakeGestureAvailable])
   {
-    v7 = [MEMORY[0x29EDB93E0] sharedManager];
+    mEMORY[0x29EDB93E0] = [MEMORY[0x29EDB93E0] sharedManager];
     analyticsDispatchQueue = self->_analyticsDispatchQueue;
-    self->_analyticsDispatchQueue = v7;
+    self->_analyticsDispatchQueue = mEMORY[0x29EDB93E0];
 
     [(OS_dispatch_queue *)self->_analyticsDispatchQueue setDelegate:self];
     [(OS_dispatch_queue *)self->_analyticsDispatchQueue startWakeGestureUpdates];
@@ -1882,19 +1882,19 @@ LABEL_24:
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture
 {
   v16 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  if (a4 == 1)
+  managerCopy = manager;
+  if (gesture == 1)
   {
-    v7 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-    objc_sync_enter(v7);
-    v8 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-    v9 = [v8 firstObject];
-    v10 = [v9 type];
+    activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+    objc_sync_enter(activeBioOpsQueue);
+    activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+    firstObject = [activeBioOpsQueue2 firstObject];
+    type = [firstObject type];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(activeBioOpsQueue);
     v11 = MEMORY[0x29EDCA988];
     if (__osLog)
     {
@@ -1909,11 +1909,11 @@ LABEL_24:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v15[0] = 67109120;
-      v15[1] = v10 == 2;
+      v15[1] = type == 2;
       _os_log_impl(&dword_296CA4000, v12, OS_LOG_TYPE_DEBUG, "wakeGestureManager:didUpdateWakeGesture: CMWakeGestureStateDetected, matchRunning = %u\n", v15, 8u);
     }
 
-    if (v10 == 2)
+    if (type == 2)
     {
       if (__osLog)
       {
@@ -1941,10 +1941,10 @@ LABEL_24:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)donateBiomeEvent:(id)a3
+- (void)donateBiomeEvent:(id)event
 {
   v12 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  eventCopy = event;
   if (__osLogTrace)
   {
     v4 = __osLogTrace;
@@ -1958,7 +1958,7 @@ LABEL_24:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v11 = v3;
+    v11 = eventCopy;
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEBUG, "donateBiomeEvent: %@\n", buf, 0xCu);
   }
 
@@ -1967,8 +1967,8 @@ LABEL_24:
   block[1] = 3221225472;
   block[2] = __47__BiometricKitXPCServerPearl_donateBiomeEvent___block_invoke;
   block[3] = &unk_29EE54570;
-  v9 = v3;
-  v6 = v3;
+  v9 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(v5, block);
 
   v7 = *MEMORY[0x29EDCA608];
@@ -1987,10 +1987,10 @@ void __47__BiometricKitXPCServerPearl_donateBiomeEvent___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)enrollResult:(id)a3 withTimestamp:(unint64_t)a4
+- (void)enrollResult:(id)result withTimestamp:(unint64_t)timestamp
 {
   v28 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  resultCopy = result;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -2005,58 +2005,58 @@ void __47__BiometricKitXPCServerPearl_donateBiomeEvent___block_invoke(uint64_t a
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    *&buf[4] = v6;
+    *&buf[4] = resultCopy;
     v24 = 2112;
-    v25 = v6;
+    v25 = resultCopy;
     v26 = 2048;
-    v27 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "enrollResult:withTimestamp: %p(%@) %llu\n", buf, 0x20u);
   }
 
-  if ([v6 length] <= 0x19)
+  if ([resultCopy length] <= 0x19)
   {
     [BiometricKitXPCServerPearl enrollResult:withTimestamp:];
     goto LABEL_35;
   }
 
-  v9 = v6;
-  v10 = [v6 bytes];
-  if (*(v10 + 24))
+  v9 = resultCopy;
+  bytes = [resultCopy bytes];
+  if (*(bytes + 24))
   {
-    v11 = [(BiometricKitXPCServer *)self getIdentityObject:v10];
-    if (!v11)
+    biometricKitIdentity = [(BiometricKitXPCServer *)self getIdentityObject:bytes];
+    if (!biometricKitIdentity)
     {
       [BiometricKitXPCServerPearl enrollResult:withTimestamp:];
 LABEL_35:
-      v18 = v22;
-      v11 = *buf;
+      client = v22;
+      biometricKitIdentity = *buf;
       goto LABEL_28;
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x29EDBFD58] biometricKitIdentity];
-    v12 = [objc_alloc(MEMORY[0x29EDBA140]) initWithUUIDBytes:v10 + 1];
-    [v11 setUuid:v12];
+    biometricKitIdentity = [MEMORY[0x29EDBFD58] biometricKitIdentity];
+    v12 = [objc_alloc(MEMORY[0x29EDBA140]) initWithUUIDBytes:bytes + 1];
+    [biometricKitIdentity setUuid:v12];
 
-    [v11 setType:4];
-    [v11 setUserID:*v10];
-    [v11 setAttribute:0];
-    [v11 setEntity:0];
-    v13 = [MEMORY[0x29EDB8DB0] date];
-    [v11 setCreationTime:v13];
+    [biometricKitIdentity setType:4];
+    [biometricKitIdentity setUserID:*bytes];
+    [biometricKitIdentity setAttribute:0];
+    [biometricKitIdentity setEntity:0];
+    date = [MEMORY[0x29EDB8DB0] date];
+    [biometricKitIdentity setCreationTime:date];
 
-    [(BiometricKitXPCServer *)self addIdentityObject:v11];
+    [(BiometricKitXPCServer *)self addIdentityObject:biometricKitIdentity];
   }
 
-  [v11 setFlags:v10[5]];
-  if (*(v10 + 24))
+  [biometricKitIdentity setFlags:bytes[5]];
+  if (*(bytes + 24))
   {
     [(BiometricKitXPCServerPearl *)self updatePropertiesOfIdentities];
   }
 
-  if (*(v10 + 25))
+  if (*(bytes + 25))
   {
     v14 = &unk_2A1E039A8;
   }
@@ -2067,31 +2067,31 @@ LABEL_35:
   }
 
   [(BiometricKitXPCServer *)self saveCatacomb];
-  if (v11)
+  if (biometricKitIdentity)
   {
     [(BiometricKitXPCServer *)self setGracePeriod:0];
-    if (!*(v10 + 24))
+    if (!*(bytes + 24))
     {
       [(BiometricKitXPCServerPearl *)self donateBiomeEvent:@"com.apple.faceid.enrolled"];
     }
   }
 
   [(BiometricKitXPCServer *)self updateEnrollmentChangedNotification:1];
-  v15 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v15);
-  v16 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  v17 = [v16 firstObject];
-  v18 = [v17 client];
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
+  activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  firstObject = [activeBioOpsQueue2 firstObject];
+  client = [firstObject client];
 
-  objc_sync_exit(v15);
-  if (v18 && [v18 delegateRegistered] && (objc_msgSend(v18, "clientAppIsBackground") & 1) == 0)
+  objc_sync_exit(activeBioOpsQueue);
+  if (client && [client delegateRegistered] && (objc_msgSend(client, "clientAppIsBackground") & 1) == 0)
   {
-    [v18 enrollResult:v11 details:v14];
+    [client enrollResult:biometricKitIdentity details:v14];
     v19 = (__osLog ? __osLog : v7);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v18;
+      *&buf[4] = client;
       _os_log_impl(&dword_296CA4000, v19, OS_LOG_TYPE_DEFAULT, "sending enroll result to %@\n", buf, 0xCu);
     }
   }
@@ -2111,17 +2111,17 @@ LABEL_28:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v18;
+    *&buf[4] = client;
     _os_log_impl(&dword_296CA4000, v20, OS_LOG_TYPE_DEBUG, "enrollResult:withTimestamp: -> void (_ %@)\n", buf, 0xCu);
   }
 
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)enrollUpdate:(id)a3 withTimestamp:(unint64_t)a4
+- (void)enrollUpdate:(id)update withTimestamp:(unint64_t)timestamp
 {
   v31 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  updateCopy = update;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -2136,40 +2136,40 @@ LABEL_28:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    *&buf[4] = v6;
+    *&buf[4] = updateCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = updateCopy;
     v29 = 2048;
-    v30 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "enrollUpdate:withTimestamp: %p(%@) %llu\n", buf, 0x20u);
   }
 
-  if (!v6)
+  if (!updateCopy)
   {
     [BiometricKitXPCServerPearl enrollUpdate:withTimestamp:];
 LABEL_33:
-    v22 = v27;
+    client = v27;
     v18 = *buf;
     goto LABEL_22;
   }
 
-  v9 = [v6 length];
+  v9 = [updateCopy length];
   if (v9 <= 0x4F)
   {
     [BiometricKitXPCServerPearl enrollUpdate:withTimestamp:];
     goto LABEL_33;
   }
 
-  v10 = v6;
-  v11 = [v6 bytes];
-  v12 = v11;
-  if (!v11)
+  v10 = updateCopy;
+  bytes = [updateCopy bytes];
+  v12 = bytes;
+  if (!bytes)
   {
     [BiometricKitXPCServerPearl enrollUpdate:withTimestamp:];
     goto LABEL_33;
   }
 
-  v13 = *(v11 + 78) * *(v11 + 76);
+  v13 = *(bytes + 78) * *(bytes + 76);
   if (v9 < v13 + 80)
   {
     [BiometricKitXPCServerPearl enrollUpdate:withTimestamp:];
@@ -2197,14 +2197,14 @@ LABEL_33:
   v18 = [MEMORY[0x29EDB8DA0] dataWithBytes:v15 length:v13 + 50];
   if (v18)
   {
-    v19 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-    objc_sync_enter(v19);
-    v20 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-    v21 = [v20 firstObject];
-    v22 = [v21 client];
+    activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+    objc_sync_enter(activeBioOpsQueue);
+    activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+    firstObject = [activeBioOpsQueue2 firstObject];
+    client = [firstObject client];
 
-    objc_sync_exit(v19);
-    if (v22 && [v22 delegateRegistered] && (objc_msgSend(v22, "clientAppIsBackground") & 1) == 0)
+    objc_sync_exit(activeBioOpsQueue);
+    if (client && [client delegateRegistered] && (objc_msgSend(client, "clientAppIsBackground") & 1) == 0)
     {
       if (__osLog)
       {
@@ -2222,18 +2222,18 @@ LABEL_33:
         *buf = 67109378;
         *&buf[4] = v24;
         *&buf[8] = 2112;
-        *&buf[10] = v22;
+        *&buf[10] = client;
         _os_log_impl(&dword_296CA4000, v23, OS_LOG_TYPE_DEFAULT, "sending enroll update (progress = %d) to %@\n", buf, 0x12u);
       }
 
-      [v22 enrollUpdate:v18];
+      [client enrollUpdate:v18];
     }
   }
 
   else
   {
     [BiometricKitXPCServerPearl enrollUpdate:withTimestamp:];
-    v22 = *buf;
+    client = *buf;
   }
 
   free(v15);
@@ -2251,17 +2251,17 @@ LABEL_22:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v22;
+    *&buf[4] = client;
     _os_log_impl(&dword_296CA4000, v25, OS_LOG_TYPE_DEBUG, "enrollUpdate:withTimestamp: -> void (_ %@)\n", buf, 0xCu);
   }
 
   v26 = *MEMORY[0x29EDCA608];
 }
 
-- (void)enrollFeedback:(id)a3 withTimestamp:(unint64_t)a4
+- (void)enrollFeedback:(id)feedback withTimestamp:(unint64_t)timestamp
 {
   v24 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  feedbackCopy = feedback;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -2276,52 +2276,52 @@ LABEL_22:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    *&buf[4] = v6;
+    *&buf[4] = feedbackCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = feedbackCopy;
     v22 = 2048;
-    v23 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "enrollFeedback:withTimestamp: %p(%@) %llu\n", buf, 0x20u);
   }
 
-  if (!v6)
+  if (!feedbackCopy)
   {
     [BiometricKitXPCServerPearl enrollFeedback:withTimestamp:];
 LABEL_29:
     v11 = v20;
-    v15 = *buf;
+    client = *buf;
     goto LABEL_19;
   }
 
-  if ([v6 length] <= 0x2B)
+  if ([feedbackCopy length] <= 0x2B)
   {
     [BiometricKitXPCServerPearl enrollFeedback:withTimestamp:];
     goto LABEL_29;
   }
 
-  v9 = v6;
-  v10 = [v6 bytes];
-  if (!v10)
+  v9 = feedbackCopy;
+  bytes = [feedbackCopy bytes];
+  if (!bytes)
   {
     [BiometricKitXPCServerPearl enrollFeedback:withTimestamp:];
     goto LABEL_29;
   }
 
-  v11 = [MEMORY[0x29EDB8DA0] dataWithBytes:v10 + 2 length:42];
+  v11 = [MEMORY[0x29EDB8DA0] dataWithBytes:bytes + 2 length:42];
   if (!v11)
   {
     [BiometricKitXPCServerPearl enrollFeedback:withTimestamp:];
     goto LABEL_29;
   }
 
-  v12 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v12);
-  v13 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  v14 = [v13 firstObject];
-  v15 = [v14 client];
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
+  activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  firstObject = [activeBioOpsQueue2 firstObject];
+  client = [firstObject client];
 
-  objc_sync_exit(v12);
-  if (v15 && [v15 delegateRegistered] && (objc_msgSend(v15, "clientAppIsBackground") & 1) == 0)
+  objc_sync_exit(activeBioOpsQueue);
+  if (client && [client delegateRegistered] && (objc_msgSend(client, "clientAppIsBackground") & 1) == 0)
   {
     if (__osLog)
     {
@@ -2335,15 +2335,15 @@ LABEL_29:
 
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = *(v10 + 3);
+      v17 = *(bytes + 3);
       *buf = 67109378;
       *&buf[4] = v17;
       *&buf[8] = 2112;
-      *&buf[10] = v15;
+      *&buf[10] = client;
       _os_log_impl(&dword_296CA4000, v16, OS_LOG_TYPE_DEFAULT, "sending enroll feedback (feedback = %d) to %@\n", buf, 0x12u);
     }
 
-    [v15 enrollFeedback:v11];
+    [client enrollFeedback:v11];
   }
 
 LABEL_19:
@@ -2360,17 +2360,17 @@ LABEL_19:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v15;
+    *&buf[4] = client;
     _os_log_impl(&dword_296CA4000, v18, OS_LOG_TYPE_DEBUG, "enrollFeedback:withTimestamp: -> void (_ %@)\n", buf, 0xCu);
   }
 
   v19 = *MEMORY[0x29EDCA608];
 }
 
-- (void)matchResult:(id)a3 withTimestamp:(unint64_t)a4
+- (void)matchResult:(id)result withTimestamp:(unint64_t)timestamp
 {
   v62 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  resultCopy = result;
   if (__osLogTrace)
   {
     v7 = __osLogTrace;
@@ -2384,80 +2384,80 @@ LABEL_19:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    *&buf[4] = v6;
+    *&buf[4] = resultCopy;
     *&buf[12] = 2112;
-    *v60 = v6;
+    *v60 = resultCopy;
     *&v60[8] = 2048;
-    v61 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_296CA4000, v7, OS_LOG_TYPE_DEBUG, "matchResult:withTimestamp: %p(%@) %llu\n", buf, 0x20u);
   }
 
-  v8 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v56[0] = 0;
-  if (!v6)
+  if (!resultCopy)
   {
     [BiometricKitXPCServerPearl matchResult:withTimestamp:];
 LABEL_94:
     v16 = v57;
-    v51 = v56[1];
+    client = v56[1];
     v19 = *buf;
     goto LABEL_84;
   }
 
-  if ([v6 length] <= 0x27)
+  if ([resultCopy length] <= 0x27)
   {
     [BiometricKitXPCServerPearl matchResult:withTimestamp:];
     goto LABEL_94;
   }
 
-  v9 = v6;
-  v10 = [v6 bytes];
+  v9 = resultCopy;
+  bytes = [resultCopy bytes];
   if (isInternalBuild())
   {
-    v11 = *(v10 + 23);
+    v11 = *(bytes + 23);
     BKLogCode();
   }
 
-  v12 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v12);
-  v13 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  v14 = [v13 firstObject];
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
+  activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  firstObject = [activeBioOpsQueue2 firstObject];
 
-  v15 = [v14 type];
-  if (v15 == 2)
+  type = [firstObject type];
+  if (type == 2)
   {
-    v16 = v14;
-    v51 = [v16 client];
+    v16 = firstObject;
+    client = [v16 client];
   }
 
   else
   {
     [BiometricKitXPCServerPearl matchResult:withTimestamp:];
-    v51 = v57;
+    client = v57;
     v16 = *buf;
   }
 
-  objc_sync_exit(v12);
-  if (v15 != 2)
+  objc_sync_exit(activeBioOpsQueue);
+  if (type != 2)
   {
 LABEL_83:
     v19 = 0;
     goto LABEL_84;
   }
 
-  if ((*(v10 + 23) & 0x10) != 0)
+  if ((*(bytes + 23) & 0x10) != 0)
   {
     v17 = [MEMORY[0x29EDBA070] numberWithBool:1];
-    [v8 setObject:v17 forKeyedSubscript:@"BKMatchDetailPreArm"];
+    [dictionary setObject:v17 forKeyedSubscript:@"BKMatchDetailPreArm"];
   }
 
-  v18 = (v10 + 3);
-  if (*(v10 + 3) == -1)
+  v18 = (bytes + 3);
+  if (*(bytes + 3) == -1)
   {
     goto LABEL_24;
   }
 
-  v19 = [(BiometricKitXPCServer *)self getIdentityObject:v10 + 3];
+  v19 = [(BiometricKitXPCServer *)self getIdentityObject:bytes + 3];
   if ([v19 userID] != *v18)
   {
     [BiometricKitXPCServerPearl matchResult:withTimestamp:];
@@ -2467,15 +2467,15 @@ LABEL_83:
   if (!v19)
   {
 LABEL_24:
-    v25 = [(BiometricKitXPCServer *)self identities];
-    v26 = [v25 firstObject];
+    identities = [(BiometricKitXPCServer *)self identities];
+    firstObject2 = [identities firstObject];
 
-    if (v26)
+    if (firstObject2)
     {
-      v27 = [v26 userID];
-      if (v27 != -1)
+      userID = [firstObject2 userID];
+      if (userID != -1)
       {
-        [(BiometricKitXPCServerPearl *)self getBioLockoutState:v56 forUser:v27 withClient:0];
+        [(BiometricKitXPCServerPearl *)self getBioLockoutState:v56 forUser:userID withClient:0];
         if ((v56[0] & 0x40) != 0)
         {
           v56[0] = v56[0] & 0xFFFFFFFFFFFFFFBBLL | 4;
@@ -2483,13 +2483,13 @@ LABEL_24:
       }
     }
 
-    v28 = [MEMORY[0x29EDBA070] numberWithInteger:{v56[0], v27}];
-    [v8 setObject:v28 forKeyedSubscript:@"BKMatchDetailLockoutState"];
+    v28 = [MEMORY[0x29EDBA070] numberWithInteger:{v56[0], userID}];
+    [dictionary setObject:v28 forKeyedSubscript:@"BKMatchDetailLockoutState"];
 
-    if (LOBYTE(self->_sigTERMDispatchSource) == 1 && *(v10 + 35))
+    if (LOBYTE(self->_sigTERMDispatchSource) == 1 && *(bytes + 35))
     {
       v29 = [MEMORY[0x29EDBA070] numberWithInteger:?];
-      [v8 setObject:v29 forKeyedSubscript:@"BKMatchDetailFaceDetectFeedback"];
+      [dictionary setObject:v29 forKeyedSubscript:@"BKMatchDetailFaceDetectFeedback"];
     }
 
     v24 = 0;
@@ -2499,23 +2499,23 @@ LABEL_24:
 
   -[BiometricKitXPCServerPearl getBioLockoutState:forUser:withClient:](self, "getBioLockoutState:forUser:withClient:", v56, [v19 userID], 0);
   v20 = [MEMORY[0x29EDBA070] numberWithInteger:v56[0]];
-  [v8 setObject:v20 forKeyedSubscript:@"BKMatchDetailLockoutState"];
+  [dictionary setObject:v20 forKeyedSubscript:@"BKMatchDetailLockoutState"];
 
-  v21 = *(v10 + 23);
+  v21 = *(bytes + 23);
   if ((v21 & 0x20) != 0)
   {
     v22 = [MEMORY[0x29EDBA070] numberWithBool:1];
-    [v8 setObject:v22 forKeyedSubscript:@"BKMatchDetailUnlocked"];
+    [dictionary setObject:v22 forKeyedSubscript:@"BKMatchDetailUnlocked"];
 
-    v21 = *(v10 + 23);
+    v21 = *(bytes + 23);
   }
 
   if ((v21 & 0x40) != 0)
   {
     v23 = [MEMORY[0x29EDBA070] numberWithBool:1];
-    [v8 setObject:v23 forKeyedSubscript:@"BKMatchDetailCredentialAdded"];
+    [dictionary setObject:v23 forKeyedSubscript:@"BKMatchDetailCredentialAdded"];
 
-    v21 = *(v10 + 23);
+    v21 = *(bytes + 23);
   }
 
   if ((v21 & 0x200) == 0)
@@ -2524,16 +2524,16 @@ LABEL_24:
     goto LABEL_34;
   }
 
-  v26 = [MEMORY[0x29EDBA070] numberWithBool:1];
-  [v8 setObject:v26 forKeyedSubscript:@"BKMatchDetailResultIgnored"];
+  firstObject2 = [MEMORY[0x29EDBA070] numberWithBool:1];
+  [dictionary setObject:firstObject2 forKeyedSubscript:@"BKMatchDetailResultIgnored"];
   v24 = 1;
 LABEL_33:
 
 LABEL_34:
-  v30 = [MEMORY[0x29EDBA070] numberWithInteger:*(v10 + 27)];
-  [v8 setObject:v30 forKeyedSubscript:@"BKMatchDetailPOMatchState"];
+  v30 = [MEMORY[0x29EDBA070] numberWithInteger:*(bytes + 27)];
+  [dictionary setObject:v30 forKeyedSubscript:@"BKMatchDetailPOMatchState"];
 
-  v31 = *(v10 + 23);
+  v31 = *(bytes + 23);
   if (__osLog)
   {
     v32 = __osLog;
@@ -2551,13 +2551,13 @@ LABEL_34:
     {
       v40 = *v18;
       v41 = v32;
-      v42 = [v19 uuid];
+      uuid = [v19 uuid];
       *buf = 67109634;
       *&buf[4] = v24;
       *&buf[8] = 1024;
       *&buf[10] = v40;
       *v60 = 2112;
-      *&v60[2] = v42;
+      *&v60[2] = uuid;
       _os_log_impl(&dword_296CA4000, v41, OS_LOG_TYPE_DEFAULT, "Passcode Challenge match result: %d [%d:%@]\n", buf, 0x18u);
     }
   }
@@ -2570,16 +2570,16 @@ LABEL_34:
       _os_log_impl(&dword_296CA4000, v32, OS_LOG_TYPE_DEFAULT, "about to send match result\n", buf, 2u);
     }
 
-    if (v51 && [v51 delegateRegistered] && (objc_msgSend(v51, "clientAppIsBackground") & 1) == 0)
+    if (client && [client delegateRegistered] && (objc_msgSend(client, "clientAppIsBackground") & 1) == 0)
     {
-      [v51 matchResult:v19 details:v8];
+      [client matchResult:v19 details:dictionary];
       v34 = (__osLog ? __osLog : MEMORY[0x29EDCA988]);
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
         *&buf[4] = v19;
         *&buf[12] = 2112;
-        *v60 = v51;
+        *v60 = client;
         _os_log_impl(&dword_296CA4000, v34, OS_LOG_TYPE_DEFAULT, "sending match result %@ to %@\n", buf, 0x16u);
       }
     }
@@ -2604,11 +2604,11 @@ LABEL_34:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         v36 = v35;
-        v37 = [v16 forUnlock];
-        v38 = *(v10 + 31);
-        v39 = *(v10 + 39);
+        forUnlock = [v16 forUnlock];
+        v38 = *(bytes + 31);
+        v39 = *(bytes + 39);
         *buf = 67109632;
-        *&buf[4] = v37;
+        *&buf[4] = forUnlock;
         *&buf[8] = 1024;
         *&buf[10] = v38;
         *v60 = 1024;
@@ -2618,7 +2618,7 @@ LABEL_34:
 
       if (!v19)
       {
-        if ([v16 forUnlock] && *(v10 + 31) && *(v10 + 39))
+        if ([v16 forUnlock] && *(bytes + 31) && *(bytes + 39))
         {
           if ([v16 userID] == -1)
           {
@@ -2715,7 +2715,7 @@ LABEL_84:
   v50 = *MEMORY[0x29EDCA608];
 }
 
-- (void)matchEventMessage:(id *)a3
+- (void)matchEventMessage:(id *)message
 {
   v31 = *MEMORY[0x29EDCA608];
   v4 = MEMORY[0x29EDCA988];
@@ -2731,10 +2731,10 @@ LABEL_84:
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (a3)
+    if (message)
     {
-      var1 = a3->var1;
-      var0 = a3->var0;
+      var1 = message->var1;
+      var0 = message->var0;
     }
 
     else
@@ -2744,7 +2744,7 @@ LABEL_84:
     }
 
     *buf = 134218496;
-    v26 = a3;
+    messageCopy = message;
     v27 = 1024;
     v28 = var1;
     v29 = 2048;
@@ -2752,14 +2752,14 @@ LABEL_84:
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEFAULT, "matchEventMessage: %p (r=%u, ts=%llu)\n", buf, 0x1Cu);
   }
 
-  if (a3)
+  if (message)
   {
-    v8 = [(BiometricKitXPCServer *)self allClients];
+    allClients = [(BiometricKitXPCServer *)self allClients];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [allClients countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (!v9)
     {
       goto LABEL_22;
@@ -2773,23 +2773,23 @@ LABEL_84:
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allClients);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 clientInfo];
-        v15 = [v14 objectForKeyedSubscript:@"BKClientType"];
+        clientInfo = [v13 clientInfo];
+        v15 = [clientInfo objectForKeyedSubscript:@"BKClientType"];
         if ([v15 integerValue] == 2)
         {
-          v16 = [v13 delegateRegistered];
+          delegateRegistered = [v13 delegateRegistered];
 
-          if (!v16)
+          if (!delegateRegistered)
           {
             continue;
           }
 
-          v14 = [(BiometricKitXPCServer *)self createMatchEventDictionary:a3];
-          [v13 statusMessage:500 details:v14];
+          clientInfo = [(BiometricKitXPCServer *)self createMatchEventDictionary:message];
+          [v13 statusMessage:500 details:clientInfo];
         }
 
         else
@@ -2797,7 +2797,7 @@ LABEL_84:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [allClients countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (!v10)
       {
 LABEL_22:
@@ -2829,7 +2829,7 @@ LABEL_23:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (id)detailsForFaceDetectInfo:(id *)a3
+- (id)detailsForFaceDetectInfo:(id *)info
 {
   v41 = *MEMORY[0x29EDCA608];
   if (__osLog)
@@ -2845,24 +2845,24 @@ LABEL_23:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v40 = a3;
+    infoCopy = info;
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEBUG, "faceInfo:%p\n", buf, 0xCu);
   }
 
-  if (a3)
+  if (info)
   {
-    LODWORD(v5) = *(&a3->var5 + 1);
-    v7 = *(&a3->var6 + 1);
-    v8 = *(&a3->var7 + 1);
-    LOWORD(v6) = *(&a3->var2 + 1);
+    LODWORD(v5) = *(&info->var5 + 1);
+    v7 = *(&info->var6 + 1);
+    v8 = *(&info->var7 + 1);
+    LOWORD(v6) = *(&info->var2 + 1);
     v9 = v6;
-    v10 = *(&a3->var4 + 1);
-    v11 = *(&a3->var3 + 1);
-    v12 = *(&a3->var8 + 1);
-    v13 = *(&a3->var9 + 1);
-    v14 = *(&a3->var10 + 1);
-    v15 = *(&a3->var11 + 2);
-    LOBYTE(a3) = BYTE1(a3->var11);
+    v10 = *(&info->var4 + 1);
+    v11 = *(&info->var3 + 1);
+    v12 = *(&info->var8 + 1);
+    v13 = *(&info->var9 + 1);
+    v14 = *(&info->var10 + 1);
+    v15 = *(&info->var11 + 2);
+    LOBYTE(info) = BYTE1(info->var11);
   }
 
   else
@@ -2912,7 +2912,7 @@ LABEL_23:
   v27 = [MEMORY[0x29EDBA070] numberWithFloat:v26];
   v38[8] = v27;
   v37[9] = @"BKStatusDetailFaceOcclusionState";
-  v28 = [MEMORY[0x29EDBA070] numberWithBool:a3 & 1];
+  v28 = [MEMORY[0x29EDBA070] numberWithBool:info & 1];
   v38[9] = v28;
   v37[10] = @"BKStatusDetailFaceOcclusionScore";
   LODWORD(v29) = v15;
@@ -2933,7 +2933,7 @@ LABEL_23:
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v40 = v31;
+    infoCopy = v31;
     _os_log_impl(&dword_296CA4000, v32, OS_LOG_TYPE_DEBUG, "details:%@\n", buf, 0xCu);
   }
 
@@ -2942,40 +2942,40 @@ LABEL_23:
   return v31;
 }
 
-- (void)faceDetectMessage:(unsigned int)a3 info:(id *)a4 fromSecureFD:(BOOL)a5
+- (void)faceDetectMessage:(unsigned int)message info:(id *)info fromSecureFD:(BOOL)d
 {
-  v5 = a5;
+  dCopy = d;
   v61 = *MEMORY[0x29EDCA608];
-  v7 = [MEMORY[0x29EDB8DE8] array];
-  v43 = [MEMORY[0x29EDB8DE8] array];
-  v42 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
+  array3 = [MEMORY[0x29EDB8DE8] array];
   obj = [(BiometricKitXPCServer *)self bioOpsQueue];
   objc_sync_enter(obj);
-  v40 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v40);
-  v8 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  v9 = [v8 count];
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
+  activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  v9 = [activeBioOpsQueue2 count];
   v10 = v9 != 0;
 
   if (v9)
   {
-    v11 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-    [v7 addObjectsFromArray:v11];
+    activeBioOpsQueue3 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+    [array addObjectsFromArray:activeBioOpsQueue3];
   }
 
-  v12 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  [v7 addObjectsFromArray:v12];
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  [array addObjectsFromArray:bioOpsQueue];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v44 = v7;
+  v44 = array;
   v13 = [v44 countByEnumeratingWithState:&v51 objects:v60 count:16];
   if (v13)
   {
     v14 = *v52;
-    v15 = !v5;
+    v15 = !dCopy;
     do
     {
       for (i = 0; i != v13; ++i)
@@ -3000,10 +3000,10 @@ LABEL_23:
         {
           v19 = v17;
           v20 = v19;
-          if (a4->var0 && ([v19 continuous] & 1) == 0)
+          if (info->var0 && ([v19 continuous] & 1) == 0)
           {
             v21 = [v20 checked] ^ 1;
-            if (a3 == 63)
+            if (message == 63)
             {
               v21 = 1;
             }
@@ -3011,9 +3011,9 @@ LABEL_23:
             v18 &= v21;
           }
 
-          v22 = [v20 motionDetect];
+          motionDetect = [v20 motionDetect];
 
-          v18 &= v22 ^ 1;
+          v18 &= motionDetect ^ 1;
         }
 
         if (v10 || (v18 & 1) == 0)
@@ -3031,31 +3031,31 @@ LABEL_23:
             goto LABEL_24;
           }
 
-          v23 = [v17 client];
-          v24 = [v23 delegateRegistered];
+          client = [v17 client];
+          delegateRegistered = [client delegateRegistered];
 
-          if (!v24)
+          if (!delegateRegistered)
           {
             goto LABEL_24;
           }
         }
 
-        v25 = [v17 client];
-        v26 = [(BiometricKitXPCServerPearl *)self detailsForFaceDetectInfo:a4];
-        [v25 statusMessage:a3 details:v26];
+        client2 = [v17 client];
+        v26 = [(BiometricKitXPCServerPearl *)self detailsForFaceDetectInfo:info];
+        [client2 statusMessage:message details:v26];
 
-        v27 = [v17 client];
-        [v43 addObject:v27];
+        client3 = [v17 client];
+        [array2 addObject:client3];
 
 LABEL_24:
         if (v18 && [v17 type] == 3)
         {
           v28 = v17;
           [v28 setChecked:1];
-          v29 = [v28 continuous];
-          if (a3 == 63)
+          continuous = [v28 continuous];
+          if (message == 63)
           {
-            v30 = v29;
+            v30 = continuous;
           }
 
           else
@@ -3070,7 +3070,7 @@ LABEL_24:
 
           if (([v28 timeouted] & 1) != 0 || objc_msgSend(v28, "finished"))
           {
-            [v42 insertObject:v28 atIndex:0];
+            [array3 insertObject:v28 atIndex:0];
           }
         }
 
@@ -3087,7 +3087,7 @@ LABEL_24:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v31 = v42;
+  v31 = array3;
   v32 = [v31 countByEnumeratingWithState:&v47 objects:v59 count:16];
   if (v32)
   {
@@ -3101,8 +3101,8 @@ LABEL_24:
           objc_enumerationMutation(v31);
         }
 
-        v35 = [*(*(&v47 + 1) + 8 * j) client];
-        [(BiometricKitXPCServerPearl *)self cancelWithClient:v35];
+        client4 = [*(*(&v47 + 1) + 8 * j) client];
+        [(BiometricKitXPCServerPearl *)self cancelWithClient:client4];
       }
 
       v32 = [v31 countByEnumeratingWithState:&v47 objects:v59 count:16];
@@ -3111,7 +3111,7 @@ LABEL_24:
     while (v32);
   }
 
-  objc_sync_exit(v40);
+  objc_sync_exit(activeBioOpsQueue);
   objc_sync_exit(obj);
 
   if (__osLog)
@@ -3127,9 +3127,9 @@ LABEL_24:
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     v37 = v36;
-    v38 = [v43 componentsJoinedByString:{@", "}];
+    v38 = [array2 componentsJoinedByString:{@", "}];
     *buf = 67109378;
-    v56 = a3;
+    messageCopy = message;
     v57 = 2112;
     v58 = v38;
     _os_log_impl(&dword_296CA4000, v37, OS_LOG_TYPE_DEFAULT, "sending status message %u to %@\n", buf, 0x12u);
@@ -3138,11 +3138,11 @@ LABEL_24:
   v39 = *MEMORY[0x29EDCA608];
 }
 
-- (int)performCommand:(unsigned __int16)a3 version:(unsigned __int16)a4 inValue:(unsigned __int16)a5 inData:(const void *)a6 inSize:(unint64_t)a7 outData:(char *)a8 outSize:(unint64_t *)a9
+- (int)performCommand:(unsigned __int16)command version:(unsigned __int16)version inValue:(unsigned __int16)value inData:(const void *)data inSize:(unint64_t)size outData:(char *)outData outSize:(unint64_t *)outSize
 {
-  v27 = a4;
-  v28 = a5;
-  v11 = a3;
+  versionCopy = version;
+  valueCopy = value;
+  commandCopy = command;
   v45 = *MEMORY[0x29EDCA608];
   if (__osLog)
   {
@@ -3157,26 +3157,26 @@ LABEL_24:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67110656;
-    *&buf[4] = v11;
+    *&buf[4] = commandCopy;
     v33 = 1024;
-    v34 = v27;
+    v34 = versionCopy;
     v35 = 1024;
-    v36 = v28;
+    v36 = valueCopy;
     v37 = 2048;
-    v38 = a6;
+    dataCopy = data;
     v39 = 2048;
-    v40 = a7;
+    sizeCopy = size;
     v41 = 2048;
-    v42 = a8;
+    outDataCopy = outData;
     v43 = 2048;
-    v44 = a9;
+    outSizeCopy = outSize;
     _os_log_impl(&dword_296CA4000, v13, OS_LOG_TYPE_DEBUG, "performCommand:version:inValue:inData:inSize:outData:outSize: %u %u %u %p %lu %p %p\n", buf, 0x3Cu);
   }
 
   v26 = os_transaction_create();
   outputStructCnt = 0;
-  v14 = a7 + 8;
-  if (a7 >= 0xFFFFFFFFFFFFFFF8)
+  v14 = size + 8;
+  if (size >= 0xFFFFFFFFFFFFFFF8)
   {
     [BiometricKitXPCServerPearl performCommand:&v31 version:buf inValue:? inData:? inSize:? outData:? outSize:?];
     v21 = v31;
@@ -3189,34 +3189,34 @@ LABEL_24:
   if (v14 > [*&self->_coachingHintsEnabled length] || (self->_performCommandBufferData & 1) != 0)
   {
     v16 = 0;
-    v17 = 0;
+    mutableBytes = 0;
   }
 
   else
   {
     v16 = 1;
     LOBYTE(self->_performCommandBufferData) = 1;
-    v17 = [*&self->_coachingHintsEnabled mutableBytes];
+    mutableBytes = [*&self->_coachingHintsEnabled mutableBytes];
   }
 
   objc_sync_exit(v15);
 
-  if (v17)
+  if (mutableBytes)
   {
     v18 = 0;
 LABEL_14:
-    *v17 = 21072;
-    v17[1] = v11;
-    v17[2] = v27;
-    v17[3] = v28;
-    if (a6 && a7)
+    *mutableBytes = 21072;
+    mutableBytes[1] = commandCopy;
+    mutableBytes[2] = versionCopy;
+    mutableBytes[3] = valueCopy;
+    if (data && size)
     {
-      memcpy(v17 + 4, a6, a7);
+      memcpy(mutableBytes + 4, data, size);
     }
 
-    if (a9)
+    if (outSize)
     {
-      v20 = *a9;
+      v20 = *outSize;
     }
 
     else
@@ -3225,10 +3225,10 @@ LABEL_14:
     }
 
     outputStructCnt = v20;
-    v21 = IOConnectCallStructMethod(HIDWORD(self->_driverNotifyQueue), 0, v17, v14, a8, &outputStructCnt);
-    if (a9)
+    v21 = IOConnectCallStructMethod(HIDWORD(self->_driverNotifyQueue), 0, mutableBytes, v14, outData, &outputStructCnt);
+    if (outSize)
     {
-      *a9 = outputStructCnt;
+      *outSize = outputStructCnt;
       if ((v16 & 1) == 0)
       {
         goto LABEL_25;
@@ -3249,10 +3249,10 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v18 = [MEMORY[0x29EDB8DF8] dataWithLength:a7 + 8];
+  v18 = [MEMORY[0x29EDB8DF8] dataWithLength:size + 8];
   v19 = v18;
-  v17 = [v18 mutableBytes];
-  if (v17)
+  mutableBytes = [v18 mutableBytes];
+  if (mutableBytes)
   {
     goto LABEL_14;
   }
@@ -3366,7 +3366,7 @@ LABEL_14:
   return v6;
 }
 
-- (int)getSPRLInfo:(id *)a3
+- (int)getSPRLInfo:(id *)info
 {
   v16 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -3383,13 +3383,13 @@ LABEL_14:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = info;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "getSPRLInfo: %p\n", buf, 0xCu);
   }
 
   v12 = 0;
   *buf = 4;
-  if (a3)
+  if (info)
   {
     if ([(BiometricKitXPCServerPearl *)self performCommand:37 inValue:0 inData:0 inSize:0 outData:&v12 outSize:buf])
     {
@@ -3400,7 +3400,7 @@ LABEL_14:
     {
       if (*buf == 4)
       {
-        *a3 = v12;
+        *info = v12;
         if (__osLogTrace)
         {
           v7 = __osLogTrace;
@@ -3456,15 +3456,15 @@ LABEL_15:
 
 - (int)restoreAndSyncTemplates
 {
-  v2 = self;
+  selfCopy = self;
   v56 = *MEMORY[0x29EDCA608];
-  v3 = [(BiometricKitXPCServer *)self catacombLock];
-  [v3 lock];
+  catacombLock = [(BiometricKitXPCServer *)self catacombLock];
+  [catacombLock lock];
 
-  v48.receiver = v2;
+  v48.receiver = selfCopy;
   v48.super_class = BiometricKitXPCServerPearl;
-  v4 = [(BiometricKitXPCServer *)&v48 restoreAndSyncTemplates];
-  if (v4)
+  restoreAndSyncTemplates = [(BiometricKitXPCServer *)&v48 restoreAndSyncTemplates];
+  if (restoreAndSyncTemplates)
   {
     [BiometricKitXPCServerPearl restoreAndSyncTemplates];
     goto LABEL_29;
@@ -3474,11 +3474,11 @@ LABEL_15:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v5 = [(BiometricKitXPCServer *)v2 catacombStateCache];
-  v6 = [v5 cachedComponents];
+  catacombStateCache = [(BiometricKitXPCServer *)selfCopy catacombStateCache];
+  cachedComponents = [catacombStateCache cachedComponents];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v44 objects:v55 count:16];
+  obj = cachedComponents;
+  v7 = [cachedComponents countByEnumeratingWithState:&v44 objects:v55 count:16];
   if (!v7)
   {
     goto LABEL_28;
@@ -3491,7 +3491,7 @@ LABEL_15:
   v37 = *v45;
   v38 = *MEMORY[0x29EDB9E78];
   v36 = *MEMORY[0x29EDB9E80];
-  v41 = v2;
+  v41 = selfCopy;
   do
   {
     v12 = 0;
@@ -3504,14 +3504,14 @@ LABEL_15:
       }
 
       v13 = *(*(&v44 + 1) + 8 * v12);
-      v14 = [(BiometricKitXPCServer *)v2 catacomb];
-      v15 = [v14 catacombDir];
-      v16 = [(BiometricKitXPCServer *)v2 catacombFileNameForComponent:v13];
-      v17 = [v15 stringByAppendingPathComponent:v16];
+      catacomb = [(BiometricKitXPCServer *)selfCopy catacomb];
+      catacombDir = [catacomb catacombDir];
+      v16 = [(BiometricKitXPCServer *)selfCopy catacombFileNameForComponent:v13];
+      v17 = [catacombDir stringByAppendingPathComponent:v16];
 
-      v18 = [MEMORY[0x29EDB9FB8] defaultManager];
+      defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
       v43 = 0;
-      v19 = [v18 attributesOfItemAtPath:v17 error:&v43];
+      v19 = [defaultManager attributesOfItemAtPath:v17 error:&v43];
       v20 = v43;
 
       if (v19)
@@ -3522,7 +3522,7 @@ LABEL_15:
         if (v22)
         {
           v23 = v19;
-          v2 = v41;
+          selfCopy = v41;
           goto LABEL_26;
         }
 
@@ -3530,9 +3530,9 @@ LABEL_15:
         v50 = v11;
         v23 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
 
-        v25 = [MEMORY[0x29EDB9FB8] defaultManager];
+        defaultManager2 = [MEMORY[0x29EDB9FB8] defaultManager];
         v42 = v20;
-        v26 = [v25 setAttributes:v23 ofItemAtPath:v17 error:&v42];
+        v26 = [defaultManager2 setAttributes:v23 ofItemAtPath:v17 error:&v42];
         v27 = v42;
 
         if (__osLog)
@@ -3547,7 +3547,7 @@ LABEL_15:
 
         if (v26)
         {
-          v2 = v41;
+          selfCopy = v41;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
@@ -3562,7 +3562,7 @@ LABEL_15:
 
         else
         {
-          v2 = v41;
+          selfCopy = v41;
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
@@ -3618,19 +3618,19 @@ LABEL_26:
   while (v8);
 LABEL_28:
 
-  v4 = 0;
+  restoreAndSyncTemplates = 0;
 LABEL_29:
-  v33 = [(BiometricKitXPCServer *)v2 catacombLock];
-  [v33 unlock];
+  catacombLock2 = [(BiometricKitXPCServer *)selfCopy catacombLock];
+  [catacombLock2 unlock];
 
   v34 = *MEMORY[0x29EDCA608];
-  return v4;
+  return restoreAndSyncTemplates;
 }
 
-- (int)loadCatacombForComponent:(id)a3
+- (int)loadCatacombForComponent:(id)component
 {
-  v4 = a3;
-  if (!v4)
+  componentCopy = component;
+  if (!componentCopy)
   {
     [BiometricKitXPCServerPearl loadCatacombForComponent:];
 LABEL_9:
@@ -3640,13 +3640,13 @@ LABEL_9:
 
   v10.receiver = self;
   v10.super_class = BiometricKitXPCServerPearl;
-  if ([(BiometricKitXPCServer *)&v10 loadCatacombForComponent:v4])
+  if ([(BiometricKitXPCServer *)&v10 loadCatacombForComponent:componentCopy])
   {
     [BiometricKitXPCServerPearl loadCatacombForComponent:];
     goto LABEL_9;
   }
 
-  if ([v4 isUserComponent])
+  if ([componentCopy isUserComponent])
   {
     v5 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x29EDCA5F8];
@@ -3654,7 +3654,7 @@ LABEL_9:
     block[2] = __55__BiometricKitXPCServerPearl_loadCatacombForComponent___block_invoke;
     block[3] = &unk_29EE546F8;
     block[4] = self;
-    v9 = v4;
+    v9 = componentCopy;
     dispatch_async(v5, block);
   }
 
@@ -3704,13 +3704,13 @@ void __55__BiometricKitXPCServerPearl_loadCatacombForComponent___block_invoke(ui
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEBUG, "saveTemplateListAfterTemplateUpdate\n", buf, 2u);
   }
 
-  v5 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v5);
-  v6 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  v7 = [v6 firstObject];
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
+  activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  firstObject = [activeBioOpsQueue2 firstObject];
 
-  objc_sync_exit(v5);
-  if (v7 && ([v7 type] == 2 || objc_msgSend(v7, "type") == 1))
+  objc_sync_exit(activeBioOpsQueue);
+  if (firstObject && ([firstObject type] == 2 || objc_msgSend(firstObject, "type") == 1))
   {
     if (__osLog)
     {
@@ -3725,9 +3725,9 @@ void __55__BiometricKitXPCServerPearl_loadCatacombForComponent___block_invoke(ui
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v7 type];
+      type = [firstObject type];
       *buf = 67109120;
-      v18 = v10;
+      v18 = type;
       _os_log_impl(&dword_296CA4000, v9, OS_LOG_TYPE_DEFAULT, "saveTemplateListAfterTemplateUpdate : save skipped (activeOperation=%u)\n", buf, 8u);
     }
 
@@ -3809,13 +3809,13 @@ LABEL_27:
   v17.super_class = BiometricKitXPCServerPearl;
   if (![(BiometricKitXPCServer *)&v17 updatePropertiesOfIdentities])
   {
-    v5 = [(BiometricKitXPCServer *)self identitiesCount];
-    if (!v5)
+    identitiesCount = [(BiometricKitXPCServer *)self identitiesCount];
+    if (!identitiesCount)
     {
       goto LABEL_15;
     }
 
-    v6 = [MEMORY[0x29EDB8DF8] dataWithLength:24 * v5];
+    v6 = [MEMORY[0x29EDB8DF8] dataWithLength:24 * identitiesCount];
     v16 = [v6 length];
     if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 68, 0, 0, 0, [v6 mutableBytes], &v16))
     {
@@ -3828,10 +3828,10 @@ LABEL_27:
       v8 = v16 / 0x18;
       if (!(v16 % 0x18))
       {
-        v9 = [v6 mutableBytes];
+        mutableBytes = [v6 mutableBytes];
         if (v7 >= 0x18)
         {
-          v10 = v9;
+          v10 = mutableBytes;
           while (1)
           {
             v11 = [(BiometricKitXPCServer *)self getIdentityObject:v10];
@@ -3892,10 +3892,10 @@ LABEL_16:
   return v13;
 }
 
-- (int)performGetIdentitiesListCommand:(unsigned int)a3 outBuffer:(id)a4
+- (int)performGetIdentitiesListCommand:(unsigned int)command outBuffer:(id)buffer
 {
   v18 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  bufferCopy = buffer;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -3910,17 +3910,17 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = v6;
+    *&buf[4] = bufferCopy;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performGetIdentitiesListCommand: %p\n", buf, 0xCu);
   }
 
-  v14 = 0;
+  commandCopy = 0;
   *buf = 0;
-  if (v6)
+  if (bufferCopy)
   {
-    v14 = a3;
-    *buf = [v6 length];
-    if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 20, 0, &v14, 4, [v6 bytes], buf))
+    commandCopy = command;
+    *buf = [bufferCopy length];
+    if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 20, 0, &commandCopy, 4, [bufferCopy bytes], buf))
     {
       [BiometricKitXPCServerPearl performGetIdentitiesListCommand:outBuffer:];
     }
@@ -3929,7 +3929,7 @@ LABEL_16:
     {
       if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * *buf, 2) < 0xCCCCCCCCCCCCCCDuLL)
       {
-        [v6 setLength:?];
+        [bufferCopy setLength:?];
         if (__osLogTrace)
         {
           v9 = __osLogTrace;
@@ -3984,10 +3984,10 @@ LABEL_15:
   return v10;
 }
 
-- (int)performGetCatacombStateCommand:(id)a3
+- (int)performGetCatacombStateCommand:(id)command
 {
   v15 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  commandCopy = command;
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -4002,15 +4002,15 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = v4;
+    *&buf[4] = commandCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performGetCatacombStateCommand: %p\n", buf, 0xCu);
   }
 
   *buf = 0;
-  if (v4)
+  if (commandCopy)
   {
-    *buf = [v4 length];
-    if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 14, 0, 0, 0, [v4 bytes], buf))
+    *buf = [commandCopy length];
+    if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 14, 0, 0, 0, [commandCopy bytes], buf))
     {
       [BiometricKitXPCServerPearl performGetCatacombStateCommand:];
     }
@@ -4019,7 +4019,7 @@ LABEL_15:
     {
       if ((buf[0] & 7) == 0)
       {
-        [v4 setLength:?];
+        [commandCopy setLength:?];
         if (__osLogTrace)
         {
           v7 = __osLogTrace;
@@ -4074,7 +4074,7 @@ LABEL_15:
   return v8;
 }
 
-- (int)performGetTemplatesValidityCommand:(unsigned int)a3 isValid:(BOOL *)a4
+- (int)performGetTemplatesValidityCommand:(unsigned int)command isValid:(BOOL *)valid
 {
   v20 = *MEMORY[0x29EDCA608];
   v7 = MEMORY[0x29EDCA988];
@@ -4091,16 +4091,16 @@ LABEL_15:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     v18 = 2048;
-    v19 = a4;
+    validCopy = valid;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performGetTemplatesValidityCommand: %d %p\n", buf, 0x12u);
   }
 
   v13 = 0;
   *buf = 1;
-  v14 = a3;
-  v9 = [(BiometricKitXPCServerPearl *)self performCommand:66 inValue:0 inData:&v14 inSize:4 outData:&v13 outSize:buf];
+  commandCopy = command;
+  v9 = [(BiometricKitXPCServerPearl *)self performCommand:66 inValue:0 inData:&commandCopy inSize:4 outData:&v13 outSize:buf];
   if (v9)
   {
     [BiometricKitXPCServerPearl performGetTemplatesValidityCommand:isValid:];
@@ -4110,9 +4110,9 @@ LABEL_15:
   {
     if (*buf == 1)
     {
-      if (a4)
+      if (valid)
       {
-        *a4 = v13 != 0;
+        *valid = v13 != 0;
       }
     }
 
@@ -4143,7 +4143,7 @@ LABEL_15:
   return v9;
 }
 
-- (int)performRemoveIdentityCommand:(id *)a3
+- (int)performRemoveIdentityCommand:(id *)command
 {
   v16 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -4160,16 +4160,16 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performRemoveIdentityCommand: %p\n", buf, 0xCu);
   }
 
   memset(buf, 0, sizeof(buf));
   v15 = 0;
-  if (a3)
+  if (command)
   {
-    *buf = *&a3->var0;
-    v15 = *&a3->var1[12];
+    *buf = *&command->var0;
+    v15 = *&command->var1[12];
     if ([(BiometricKitXPCServerPearl *)self performCommand:21 inValue:0 inData:buf inSize:20 outData:0 outSize:0])
     {
       [BiometricKitXPCServerPearl performRemoveIdentityCommand:];
@@ -4232,7 +4232,7 @@ LABEL_15:
   return v8;
 }
 
-- (int)performGetBiometrickitdInfoCommand:(id *)a3
+- (int)performGetBiometrickitdInfoCommand:(id *)command
 {
   v16 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -4249,7 +4249,7 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performGetBiometrickitdInfoCommand: %p\n", buf, 0xCu);
   }
 
@@ -4257,7 +4257,7 @@ LABEL_15:
   *&buf[8] = 0;
   *&buf[15] = 0;
   v12 = 23;
-  if (a3)
+  if (command)
   {
     if ([(BiometricKitXPCServerPearl *)self performCommand:13 inValue:0 inData:0 inSize:0 outData:buf outSize:&v12])
     {
@@ -4268,8 +4268,8 @@ LABEL_15:
     {
       if (v12 == 23)
       {
-        *&a3->var0 = *buf;
-        *(&a3->var2 + 7) = *&buf[15];
+        *&command->var0 = *buf;
+        *(&command->var2 + 7) = *&buf[15];
         if (__osLogTrace)
         {
           v7 = __osLogTrace;
@@ -4323,7 +4323,7 @@ LABEL_15:
   return v8;
 }
 
-- (int)performRemoveUserDataCommand:(unsigned int)a3
+- (int)performRemoveUserDataCommand:(unsigned int)command
 {
   v14 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -4340,12 +4340,12 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v13 = a3;
+    commandCopy = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performRemoveUserDataCommand: %d\n", buf, 8u);
   }
 
-  v11 = a3;
-  v7 = [(BiometricKitXPCServerPearl *)self performCommand:22 inValue:0 inData:&v11 inSize:4 outData:0 outSize:0];
+  commandCopy2 = command;
+  v7 = [(BiometricKitXPCServerPearl *)self performCommand:22 inValue:0 inData:&commandCopy2 inSize:4 outData:0 outSize:0];
   if (v7)
   {
     [BiometricKitXPCServerPearl performRemoveUserDataCommand:];
@@ -4366,7 +4366,7 @@ LABEL_15:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109120;
-      v13 = 0;
+      commandCopy = 0;
       _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performRemoveUserDataCommand: -> %d\n", buf, 8u);
     }
   }
@@ -4375,10 +4375,10 @@ LABEL_15:
   return v7;
 }
 
-- (int)performPrepareSaveCatacombCommand:(id)a3 outDataSize:(unsigned int *)a4
+- (int)performPrepareSaveCatacombCommand:(id)command outDataSize:(unsigned int *)size
 {
   v20 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  commandCopy = command;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -4393,17 +4393,17 @@ LABEL_15:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = commandCopy;
     v18 = 2048;
-    v19 = a4;
+    sizeCopy = size;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performPrepareSaveCatacombCommand:outDataSize: %@, %p\n", buf, 0x16u);
   }
 
   v14 = 0;
   *buf = 4;
-  if (v6)
+  if (commandCopy)
   {
-    HIDWORD(v14) = [v6 userID];
+    HIDWORD(v14) = [commandCopy userID];
     if ([(BiometricKitXPCServerPearl *)self performCommand:15 inValue:0 inData:&v14 + 4 inSize:4 outData:&v14 outSize:buf])
     {
       [BiometricKitXPCServerPearl performPrepareSaveCatacombCommand:outDataSize:];
@@ -4413,9 +4413,9 @@ LABEL_15:
     {
       if (*buf == 4)
       {
-        if (a4)
+        if (size)
         {
-          *a4 = v14;
+          *size = v14;
         }
 
         if (__osLogTrace)
@@ -4472,11 +4472,11 @@ LABEL_17:
   return v10;
 }
 
-- (int)performCompleteSaveCatacombCommand:(id)a3 outBuffer:(id)a4
+- (int)performCompleteSaveCatacombCommand:(id)command outBuffer:(id)buffer
 {
   v21 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  bufferCopy = buffer;
   v8 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -4491,23 +4491,23 @@ LABEL_17:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = commandCopy;
     v19 = 2048;
-    v20 = v7;
+    v20 = bufferCopy;
     _os_log_impl(&dword_296CA4000, v9, OS_LOG_TYPE_DEBUG, "performCompleteSaveCatacombCommand:outBuffer: %@, %p\n", buf, 0x16u);
   }
 
-  v15 = 0;
+  userID = 0;
   *buf = 0;
-  if (v6)
+  if (commandCopy)
   {
-    if (v7)
+    if (bufferCopy)
     {
-      v15 = [v6 userID];
-      *buf = [v7 length];
-      if (!-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 16, 0, &v15, 4, [v7 bytes], buf))
+      userID = [commandCopy userID];
+      *buf = [bufferCopy length];
+      if (!-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 16, 0, &userID, 4, [bufferCopy bytes], buf))
       {
-        [v7 setLength:*buf];
+        [bufferCopy setLength:*buf];
         if (__osLogTrace)
         {
           v10 = __osLogTrace;
@@ -4567,10 +4567,10 @@ LABEL_15:
   return v11;
 }
 
-- (int)performConfirmSaveCatacombCommand:(id)a3
+- (int)performConfirmSaveCatacombCommand:(id)command
 {
   v15 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  commandCopy = command;
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -4585,15 +4585,15 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = commandCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performConfirmSaveCatacombCommand: %@\n", buf, 0xCu);
   }
 
-  v12 = 0;
-  if (v4)
+  userID = 0;
+  if (commandCopy)
   {
-    v12 = [v4 userID];
-    if (![(BiometricKitXPCServerPearl *)self performCommand:17 inValue:0 inData:&v12 inSize:4 outData:0 outSize:0])
+    userID = [commandCopy userID];
+    if (![(BiometricKitXPCServerPearl *)self performCommand:17 inValue:0 inData:&userID inSize:4 outData:0 outSize:0])
     {
       if (__osLogTrace)
       {
@@ -4648,7 +4648,7 @@ LABEL_14:
   return v8;
 }
 
-- (int)performNoCatacombCommand:(unsigned int)a3
+- (int)performNoCatacombCommand:(unsigned int)command
 {
   v14 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -4665,12 +4665,12 @@ LABEL_14:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v13 = a3;
+    commandCopy = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performNoCatacombCommand: %d\n", buf, 8u);
   }
 
-  v11 = a3;
-  v7 = [(BiometricKitXPCServerPearl *)self performCommand:19 inValue:0 inData:&v11 inSize:4 outData:0 outSize:0];
+  commandCopy2 = command;
+  v7 = [(BiometricKitXPCServerPearl *)self performCommand:19 inValue:0 inData:&commandCopy2 inSize:4 outData:0 outSize:0];
   if (v7)
   {
     [BiometricKitXPCServerPearl performNoCatacombCommand:];
@@ -4691,7 +4691,7 @@ LABEL_14:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109120;
-      v13 = 0;
+      commandCopy = 0;
       _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performNoCatacombCommand: -> %d\n", buf, 8u);
     }
   }
@@ -4700,11 +4700,11 @@ LABEL_14:
   return v7;
 }
 
-- (int)performLoadCatacombCommand:(id)a3 inData:(id)a4
+- (int)performLoadCatacombCommand:(id)command inData:(id)data
 {
   v25 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  dataCopy = data;
   v8 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -4720,17 +4720,17 @@ LABEL_14:
   {
     v10 = v9;
     v19 = 138412802;
-    v20 = v6;
+    v20 = commandCopy;
     v21 = 2048;
-    v22 = v7;
+    v22 = dataCopy;
     v23 = 2048;
-    v24 = [v7 length];
+    v24 = [dataCopy length];
     _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEBUG, "performLoadCatacombCommand:inData: %@, %p[%lu]\n", &v19, 0x20u);
   }
 
-  if (v6)
+  if (commandCopy)
   {
-    v11 = -[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 18, 0, [v7 bytes], objc_msgSend(v7, "length"), 0, 0);
+    v11 = -[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 18, 0, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, 0);
     v12 = 0;
     if (!v11)
     {
@@ -4793,7 +4793,7 @@ LABEL_19:
   return v13;
 }
 
-- (int)performRequestMaxIdentityCountCommand:(unsigned int *)a3
+- (int)performRequestMaxIdentityCountCommand:(unsigned int *)command
 {
   v16 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -4810,7 +4810,7 @@ LABEL_19:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performRequestMaxIdentityCountCommand: %p\n", buf, 0xCu);
   }
 
@@ -4825,9 +4825,9 @@ LABEL_19:
   {
     if (*buf == 4)
     {
-      if (a3)
+      if (command)
       {
-        *a3 = v12;
+        *command = v12;
       }
 
       if (__osLogTrace)
@@ -4877,7 +4877,7 @@ LABEL_16:
   return v8;
 }
 
-- (int)performGetFreeIdentityCountCommand:(unsigned int)a3 outCount:(unsigned int *)a4
+- (int)performGetFreeIdentityCountCommand:(unsigned int)command outCount:(unsigned int *)count
 {
   v20 = *MEMORY[0x29EDCA608];
   v7 = MEMORY[0x29EDCA988];
@@ -4894,16 +4894,16 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     v18 = 2048;
-    v19 = a4;
+    countCopy = count;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performRequestMaxIdentityCountCommand: %d, %p\n", buf, 0x12u);
   }
 
   v13 = 0;
-  v14 = a3;
+  commandCopy = command;
   *buf = 4;
-  v9 = [(BiometricKitXPCServerPearl *)self performCommand:12 inValue:0 inData:&v14 inSize:4 outData:&v13 outSize:buf];
+  v9 = [(BiometricKitXPCServerPearl *)self performCommand:12 inValue:0 inData:&commandCopy inSize:4 outData:&v13 outSize:buf];
   if (v9)
   {
     [BiometricKitXPCServerPearl performGetFreeIdentityCountCommand:outCount:];
@@ -4913,9 +4913,9 @@ LABEL_16:
   {
     if (*buf == 4)
     {
-      if (a4)
+      if (count)
       {
-        *a4 = v13;
+        *count = v13;
       }
     }
 
@@ -4946,7 +4946,7 @@ LABEL_16:
   return v9;
 }
 
-- (int)performGetCatacombUUIDCommand:(unsigned int)a3 outUUID:(id *)a4
+- (int)performGetCatacombUUIDCommand:(unsigned int)command outUUID:(id *)d
 {
   v19[2] = *MEMORY[0x29EDCA608];
   v7 = MEMORY[0x29EDCA988];
@@ -4963,17 +4963,17 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     LOWORD(v19[0]) = 2048;
-    *(v19 + 2) = a4;
+    *(v19 + 2) = d;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performGetCatacombUUIDCommand: %d, %p\n", buf, 0x12u);
   }
 
   *buf = 0;
   v19[0] = 0;
   v14 = 16;
-  v15 = a3;
-  if ([(BiometricKitXPCServerPearl *)self performCommand:24 inValue:0 inData:&v15 inSize:4 outData:buf outSize:&v14])
+  commandCopy = command;
+  if ([(BiometricKitXPCServerPearl *)self performCommand:24 inValue:0 inData:&commandCopy inSize:4 outData:buf outSize:&v14])
   {
     [BiometricKitXPCServerPearl performGetCatacombUUIDCommand:outUUID:];
   }
@@ -4982,9 +4982,9 @@ LABEL_16:
   {
     if (v14 == 16)
     {
-      if (a4)
+      if (d)
       {
-        *a4 = [objc_alloc(MEMORY[0x29EDBA140]) initWithUUIDBytes:buf];
+        *d = [objc_alloc(MEMORY[0x29EDBA140]) initWithUUIDBytes:buf];
       }
 
       if (__osLogTrace)
@@ -5034,7 +5034,7 @@ LABEL_16:
   return v10;
 }
 
-- (int)performGetCatacombHashCommand:(unsigned int)a3 outHash:(id *)a4
+- (int)performGetCatacombHashCommand:(unsigned int)command outHash:(id *)hash
 {
   v20 = *MEMORY[0x29EDCA608];
   v7 = MEMORY[0x29EDCA988];
@@ -5051,16 +5051,16 @@ LABEL_16:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109376;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     *&buf[8] = 2048;
-    *&buf[10] = a4;
+    *&buf[10] = hash;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performGetCatacombHashCommand: %d, %p\n", buf, 0x12u);
   }
 
   memset(buf, 0, 33);
   v15 = 33;
-  v16 = a3;
-  if ([(BiometricKitXPCServerPearl *)self performCommand:25 inValue:0 inData:&v16 inSize:4 outData:buf outSize:&v15])
+  commandCopy = command;
+  if ([(BiometricKitXPCServerPearl *)self performCommand:25 inValue:0 inData:&commandCopy inSize:4 outData:buf outSize:&v15])
   {
     [BiometricKitXPCServerPearl performGetCatacombHashCommand:outHash:];
   }
@@ -5069,7 +5069,7 @@ LABEL_16:
   {
     if (v15 == 33)
     {
-      if (a4)
+      if (hash)
       {
         if (buf[0])
         {
@@ -5081,7 +5081,7 @@ LABEL_16:
           v9 = 0;
         }
 
-        *a4 = v9;
+        *hash = v9;
       }
 
       if (__osLogTrace)
@@ -5181,7 +5181,7 @@ LABEL_19:
   return v5;
 }
 
-- (int)performForceBioLockoutCommand:(unsigned int)a3
+- (int)performForceBioLockoutCommand:(unsigned int)command
 {
   v14 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -5198,12 +5198,12 @@ LABEL_19:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v13 = a3;
+    commandCopy = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performForceBioLockoutCommand: %d\n", buf, 8u);
   }
 
-  v11 = a3;
-  v7 = [(BiometricKitXPCServerPearl *)self performCommand:40 inValue:0 inData:&v11 inSize:4 outData:0 outSize:0];
+  commandCopy2 = command;
+  v7 = [(BiometricKitXPCServerPearl *)self performCommand:40 inValue:0 inData:&commandCopy2 inSize:4 outData:0 outSize:0];
   if (v7)
   {
     [BiometricKitXPCServerPearl performForceBioLockoutCommand:];
@@ -5224,7 +5224,7 @@ LABEL_19:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109120;
-      v13 = 0;
+      commandCopy = 0;
       _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performForceBioLockoutCommand -> %d\n", buf, 8u);
     }
   }
@@ -5233,7 +5233,7 @@ LABEL_19:
   return v7;
 }
 
-- (int)performGetSKSLockStateCommand:(unsigned int)a3 outState:(unsigned int *)a4
+- (int)performGetSKSLockStateCommand:(unsigned int)command outState:(unsigned int *)state
 {
   v19 = *MEMORY[0x29EDCA608];
   v7 = MEMORY[0x29EDCA988];
@@ -5250,14 +5250,14 @@ LABEL_19:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performGetSKSLockStateCommand: %d\n", buf, 8u);
   }
 
   v14 = 0;
-  v15 = a3;
+  commandCopy = command;
   *buf = 4;
-  if ([(BiometricKitXPCServerPearl *)self performCommand:41 inValue:0 inData:&v15 inSize:4 outData:&v14 outSize:buf])
+  if ([(BiometricKitXPCServerPearl *)self performCommand:41 inValue:0 inData:&commandCopy inSize:4 outData:&v14 outSize:buf])
   {
     [BiometricKitXPCServerPearl performGetSKSLockStateCommand:outState:];
   }
@@ -5266,9 +5266,9 @@ LABEL_19:
   {
     if (*buf == 4)
     {
-      if (a4)
+      if (state)
       {
-        *a4 = v14;
+        *state = v14;
       }
 
       if (__osLogTrace)
@@ -5318,7 +5318,7 @@ LABEL_16:
   return v10;
 }
 
-- (int)performGetLastMatchEventCommand:(id *)a3
+- (int)performGetLastMatchEventCommand:(id *)command
 {
   v16 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -5335,7 +5335,7 @@ LABEL_16:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performGetLastMatchEventCommand: %p\n", buf, 0xCu);
   }
 
@@ -5353,10 +5353,10 @@ LABEL_16:
   {
     if (v12 == 29)
     {
-      if (a3)
+      if (command)
       {
-        *&a3->var0 = *buf;
-        *(&a3->var2.var0 + 1) = *&buf[13];
+        *&command->var0 = *buf;
+        *(&command->var2.var0 + 1) = *&buf[13];
       }
 
       if (__osLogTrace)
@@ -5406,7 +5406,7 @@ LABEL_16:
   return v8;
 }
 
-- (int)performGetDeviceHardwareStateCommand:(unsigned int *)a3
+- (int)performGetDeviceHardwareStateCommand:(unsigned int *)command
 {
   v17 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -5423,7 +5423,7 @@ LABEL_16:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performGetDeviceHardwareStateCommand: %p\n", buf, 0xCu);
   }
 
@@ -5443,7 +5443,7 @@ LABEL_16:
   {
     if (v13 == 8)
     {
-      if (a3)
+      if (command)
       {
         if (*buf)
         {
@@ -5455,7 +5455,7 @@ LABEL_16:
           v7 = 2;
         }
 
-        *a3 = v7;
+        *command = v7;
       }
 
       if (__osLogTrace)
@@ -5505,7 +5505,7 @@ LABEL_20:
   return v9;
 }
 
-- (int)performGetProtectedConfigCommand:(unsigned int)a3 outSetCfg:(id *)a4 outEffectiveCfg:(id *)a5
+- (int)performGetProtectedConfigCommand:(unsigned int)command outSetCfg:(id *)cfg outEffectiveCfg:(id *)effectiveCfg
 {
   v28 = *MEMORY[0x29EDCA608];
   v9 = MEMORY[0x29EDCA988];
@@ -5522,19 +5522,19 @@ LABEL_20:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109632;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     *&buf[8] = 2048;
-    *&buf[10] = a4;
+    *&buf[10] = cfg;
     *&buf[18] = 2048;
-    *&buf[20] = a5;
+    *&buf[20] = effectiveCfg;
     _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEBUG, "performGetProtectedConfigCommand: %d %p %p\n", buf, 0x1Cu);
   }
 
   v27 = 0u;
   memset(buf, 0, sizeof(buf));
   v22 = 48;
-  v23 = a3;
-  if ([(BiometricKitXPCServerPearl *)self performCommand:26 inValue:0 inData:&v23 inSize:4 outData:buf outSize:&v22])
+  commandCopy = command;
+  if ([(BiometricKitXPCServerPearl *)self performCommand:26 inValue:0 inData:&commandCopy inSize:4 outData:buf outSize:&v22])
   {
     [BiometricKitXPCServerPearl performGetProtectedConfigCommand:outSetCfg:outEffectiveCfg:];
     goto LABEL_25;
@@ -5546,7 +5546,7 @@ LABEL_20:
     goto LABEL_14;
   }
 
-  if (a4)
+  if (cfg)
   {
     v11 = objc_alloc_init(MEMORY[0x29EDBFD80]);
     if (!v11)
@@ -5563,10 +5563,10 @@ LABEL_20:
     [v12 setAttentionDetectionEnabled:*&buf[16]];
     [v12 setPeriocularMatchEnabled:*&buf[20]];
     v13 = v12;
-    *a4 = v12;
+    *cfg = v12;
   }
 
-  if (!a5)
+  if (!effectiveCfg)
   {
 LABEL_14:
     if (__osLogTrace)
@@ -5601,7 +5601,7 @@ LABEL_14:
     [v15 setAttentionDetectionEnabled:DWORD2(v27)];
     [v15 setPeriocularMatchEnabled:HIDWORD(v27)];
     v16 = v15;
-    *a5 = v15;
+    *effectiveCfg = v15;
 
     goto LABEL_14;
   }
@@ -5631,7 +5631,7 @@ LABEL_20:
   return v18;
 }
 
-- (int)performGetSystemProtectedConfigCommand:(id *)a3
+- (int)performGetSystemProtectedConfigCommand:(id *)command
 {
   v21 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -5648,7 +5648,7 @@ LABEL_20:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "performGetSystemProtectedConfigCommand: %p\n", buf, 0xCu);
   }
 
@@ -5669,7 +5669,7 @@ LABEL_20:
       goto LABEL_11;
     }
 
-    if (!a3)
+    if (!command)
     {
 LABEL_11:
       if (__osLogTrace)
@@ -5706,7 +5706,7 @@ LABEL_11:
       [v8 setPasscodeInputLifespan:v20];
       [v8 setPeriocularMatchEnabled:DWORD2(v19)];
       v9 = v8;
-      *a3 = v8;
+      *command = v8;
 
       goto LABEL_11;
     }
@@ -5737,10 +5737,10 @@ LABEL_17:
   return v11;
 }
 
-- (int)performSetProtectedConfigCommand:(unsigned int)a3 cfg:(id)a4 authData:(id *)a5
+- (int)performSetProtectedConfigCommand:(unsigned int)command cfg:(id)cfg authData:(id *)data
 {
   v23 = *MEMORY[0x29EDCA608];
-  v8 = a4;
+  cfgCopy = cfg;
   v9 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -5755,37 +5755,37 @@ LABEL_17:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109632;
-    LODWORD(v18) = a3;
+    LODWORD(v18) = command;
     WORD2(v18) = 2048;
-    *(&v18 + 6) = v8;
+    *(&v18 + 6) = cfgCopy;
     HIWORD(v18) = 2048;
-    v19 = a5;
+    dataCopy = data;
     _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEBUG, "performSetProtectedConfigCommand: %d %p %p\n", buf, 0x1Cu);
   }
 
   v22 = 0;
   v21 = 0u;
   v20 = 0u;
-  *buf = a3;
+  *buf = command;
   *&v18 = -1;
   *(&v18 + 1) = -1;
-  v19 = -1;
-  if (v8)
+  dataCopy = -1;
+  if (cfgCopy)
   {
-    LODWORD(v18) = [v8 unlockEnabled];
-    DWORD1(v18) = [v8 identificationEnabled];
-    DWORD2(v18) = [v8 loginEnabled];
-    HIDWORD(v18) = [v8 applePayEnabled];
-    LODWORD(v19) = [v8 attentionDetectionEnabled];
-    HIDWORD(v19) = [v8 periocularMatchEnabled];
+    LODWORD(v18) = [cfgCopy unlockEnabled];
+    DWORD1(v18) = [cfgCopy identificationEnabled];
+    DWORD2(v18) = [cfgCopy loginEnabled];
+    HIDWORD(v18) = [cfgCopy applePayEnabled];
+    LODWORD(dataCopy) = [cfgCopy attentionDetectionEnabled];
+    HIDWORD(dataCopy) = [cfgCopy periocularMatchEnabled];
   }
 
-  if (a5)
+  if (data)
   {
-    v11 = *&a5->var2[8];
-    v20 = *&a5->var0;
+    v11 = *&data->var2[8];
+    v20 = *&data->var0;
     v21 = v11;
-    v22 = *&a5->var2[24];
+    v22 = *&data->var2[24];
   }
 
   v12 = [(BiometricKitXPCServerPearl *)self performCommand:27 inValue:0 inData:buf inSize:68 outData:0 outSize:0];
@@ -5796,7 +5796,7 @@ LABEL_17:
 
   else
   {
-    if (v8 && [v8 periocularMatchEnabled] == 1)
+    if (cfgCopy && [cfgCopy periocularMatchEnabled] == 1)
     {
       [(BiometricKitXPCServerPearl *)self donateBiomeEvent:@"com.apple.faceid.matching-with-mask.enabled"];
     }
@@ -5823,10 +5823,10 @@ LABEL_17:
   return v12;
 }
 
-- (int)performSetSystemProtectedConfigCommand:(id)a3 authData:(id *)a4
+- (int)performSetSystemProtectedConfigCommand:(id)command authData:(id *)data
 {
   v21 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  commandCopy = command;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -5841,9 +5841,9 @@ LABEL_17:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    *&buf[4] = v6;
+    *&buf[4] = commandCopy;
     *&buf[12] = 2048;
-    *&buf[14] = a4;
+    *&buf[14] = data;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "performSetSystemProtectedConfigCommand: %p %p\n", buf, 0x16u);
   }
 
@@ -5854,25 +5854,25 @@ LABEL_17:
   *(&v9 + 1) = -1;
   *buf = v9;
   *&buf[16] = v9;
-  v17 = -1;
-  if (v6)
+  passcodeInputLifespan = -1;
+  if (commandCopy)
   {
-    *&buf[8] = [v6 biometryEnabled];
-    *&buf[12] = [v6 unlockEnabled];
-    *&buf[16] = [v6 identificationEnabled];
-    *&buf[20] = [v6 loginEnabled];
-    *buf = [v6 unlockTokenMaxLifetime];
-    *&buf[28] = [v6 bioMatchLifespan];
-    v17 = [v6 passcodeInputLifespan];
-    *&buf[24] = [v6 periocularMatchEnabled];
+    *&buf[8] = [commandCopy biometryEnabled];
+    *&buf[12] = [commandCopy unlockEnabled];
+    *&buf[16] = [commandCopy identificationEnabled];
+    *&buf[20] = [commandCopy loginEnabled];
+    *buf = [commandCopy unlockTokenMaxLifetime];
+    *&buf[28] = [commandCopy bioMatchLifespan];
+    passcodeInputLifespan = [commandCopy passcodeInputLifespan];
+    *&buf[24] = [commandCopy periocularMatchEnabled];
   }
 
-  if (a4)
+  if (data)
   {
-    v10 = *&a4->var2[8];
-    v18 = *&a4->var0;
+    v10 = *&data->var2[8];
+    v18 = *&data->var0;
     v19 = v10;
-    v20 = *&a4->var2[24];
+    v20 = *&data->var2[24];
   }
 
   v11 = [(BiometricKitXPCServerPearl *)self performCommand:29 inValue:0 inData:buf inSize:76 outData:0 outSize:0];
@@ -5905,7 +5905,7 @@ LABEL_17:
   return v11;
 }
 
-- (int)performRequestMessageDataCommand:(unint64_t)a3 size:(unint64_t)a4 outData:(id *)a5
+- (int)performRequestMessageDataCommand:(unint64_t)command size:(unint64_t)size outData:(id *)data
 {
   v27 = *MEMORY[0x29EDCA608];
   v9 = MEMORY[0x29EDCA988];
@@ -5922,31 +5922,31 @@ LABEL_17:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
-    *&buf[4] = a3;
+    *&buf[4] = command;
     v23 = 2048;
-    v24 = a4;
+    sizeCopy = size;
     v25 = 2048;
-    v26 = a5;
+    dataCopy = data;
     _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEBUG, "performRequestMessageDataCommand:size:outData: 0x%llx %zu %p\n", buf, 0x20u);
   }
 
-  *buf = a3;
-  v19 = a4;
-  v11 = [MEMORY[0x29EDB8DF8] dataWithLength:a4];
+  *buf = command;
+  sizeCopy2 = size;
+  v11 = [MEMORY[0x29EDB8DF8] dataWithLength:size];
   v12 = v11;
   if (v11)
   {
-    if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 7, 0, buf, 8, [v11 mutableBytes], &v19))
+    if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 7, 0, buf, 8, [v11 mutableBytes], &sizeCopy2))
     {
       [BiometricKitXPCServerPearl performRequestMessageDataCommand:size:outData:];
     }
 
     else
     {
-      if (v19 == a4)
+      if (sizeCopy2 == size)
       {
         v13 = v12;
-        *a5 = v12;
+        *data = v12;
         if (__osLogTrace)
         {
           v14 = __osLogTrace;
@@ -6001,9 +6001,9 @@ LABEL_15:
   return v15;
 }
 
-- (int)initializeEngineWithOptions:(unsigned __int16)a3
+- (int)initializeEngineWithOptions:(unsigned __int16)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v14 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
@@ -6019,11 +6019,11 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v13 = v3;
+    v13 = optionsCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "initializeEngineWithOptions:0x%04x\n", buf, 8u);
   }
 
-  v11 = v3;
+  v11 = optionsCopy;
   v7 = [(BiometricKitXPCServerPearl *)self performCommand:8 inValue:0 inData:&v11 inSize:2 outData:0 outSize:0];
   if (v7)
   {
@@ -6054,15 +6054,15 @@ LABEL_15:
   return v7;
 }
 
-+ (void)reportPearlHardwarePass:(BOOL)a3 fallbackAction:(id)a4
++ (void)reportPearlHardwarePass:(BOOL)pass fallbackAction:(id)action
 {
-  v4 = a3;
+  passCopy = pass;
   v19 = *MEMORY[0x29EDCA608];
-  v5 = a4;
-  v6 = [MEMORY[0x29EDBFD50] sharedInstance];
-  v7 = [v6 BOOLForKey:@"SuppressPearlIssuePopup"];
+  actionCopy = action;
+  mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+  v7 = [mEMORY[0x29EDBFD50] BOOLForKey:@"SuppressPearlIssuePopup"];
 
-  v8 = v7 | v4;
+  v8 = v7 | passCopy;
   if (reportPearlHardwarePass_fallbackAction__alreadyReported != 1 || reportPearlHardwarePass_fallbackAction__lastHardwarePass != v8)
   {
     if (__osLog)
@@ -6092,7 +6092,7 @@ LABEL_15:
     v12[2] = __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___block_invoke;
     v12[3] = &unk_29EE54748;
     v14 = v8;
-    v13 = v5;
+    v13 = actionCopy;
     dispatch_async(v10, v12);
   }
 
@@ -6134,9 +6134,9 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
   }
 }
 
-+ (void)reportPearlInterlock:(BOOL)a3
++ (void)reportPearlInterlock:(BOOL)interlock
 {
-  v3 = a3;
+  interlockCopy = interlock;
   v11 = *MEMORY[0x29EDCA608];
   if (__osLogTrace)
   {
@@ -6151,7 +6151,7 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v10 = v3;
+    v10 = interlockCopy;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "reportPearlInterlock: %d\n", buf, 8u);
   }
 
@@ -6159,9 +6159,9 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
   v7[1] = 3221225472;
   v7[2] = __51__BiometricKitXPCServerPearl_reportPearlInterlock___block_invoke;
   v7[3] = &__block_descriptor_33_e5_v8__0l;
-  v8 = v3;
-  [a1 reportPearlHardwarePass:!v3 fallbackAction:v7];
-  if (!v3)
+  v8 = interlockCopy;
+  [self reportPearlHardwarePass:!interlockCopy fallbackAction:v7];
+  if (!interlockCopy)
   {
     [MEMORY[0x29EDBFD70] displayPearlInterlockIssueNotification:0];
   }
@@ -6187,19 +6187,19 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
     _os_log_impl(&dword_296CA4000, v3, OS_LOG_TYPE_DEBUG, "reportPearlIssue\n", v4, 2u);
   }
 
-  [a1 reportPearlHardwarePass:0 fallbackAction:&__block_literal_global_492];
+  [self reportPearlHardwarePass:0 fallbackAction:&__block_literal_global_492];
 }
 
-+ (unsigned)getDeviceTreeProperty:(id)a3 fromPath:(id)a4
++ (unsigned)getDeviceTreeProperty:(id)property fromPath:(id)path
 {
-  v5 = a3;
+  propertyCopy = property;
   v6 = *MEMORY[0x29EDBB118];
-  v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%s%s", "IODeviceTree", objc_msgSend(a4, "UTF8String")];
+  v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%s%s", "IODeviceTree", objc_msgSend(path, "UTF8String")];
   v8 = IORegistryEntryFromPath(v6, [v7 UTF8String]);
 
   if (v8)
   {
-    CFProperty = IORegistryEntryCreateCFProperty(v8, v5, *MEMORY[0x29EDB8ED8], 0);
+    CFProperty = IORegistryEntryCreateCFProperty(v8, propertyCopy, *MEMORY[0x29EDB8ED8], 0);
     if (CFProperty)
     {
       v10 = CFProperty;
@@ -6222,15 +6222,15 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
   return v11;
 }
 
-+ (id)getSHA384FromData:(id)a3
++ (id)getSHA384FromData:(id)data
 {
   v9 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     ccsha384_di();
-    [v3 length];
-    [v3 bytes];
+    [dataCopy length];
+    [dataCopy bytes];
     ccdigest();
     v4 = [MEMORY[0x29EDB8DA0] dataWithBytes:v8 length:48];
   }
@@ -6246,7 +6246,7 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
   return v4;
 }
 
-- (int)getSensorFamily:(unsigned __int8 *)a3
+- (int)getSensorFamily:(unsigned __int8 *)family
 {
   v16 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -6266,13 +6266,13 @@ void __69__BiometricKitXPCServerPearl_reportPearlHardwarePass_fallbackAction___b
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "getSensorFamily\n", buf, 2u);
   }
 
-  if (a3)
+  if (family)
   {
     v7 = getSensorFamily__sensorFamily;
     if (getSensorFamily__sensorFamily)
     {
 LABEL_13:
-      *a3 = v7;
+      *family = v7;
       if (__osLogTrace)
       {
         v8 = __osLogTrace;
@@ -6363,7 +6363,7 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = __50__BiometricKitXPCServerPearl_platformProvidesPlCl__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (platformProvidesPlCl_onceToken != -1)
   {
     dispatch_once(&platformProvidesPlCl_onceToken, block);
@@ -6437,7 +6437,7 @@ LABEL_17:
   block[1] = 3221225472;
   block[2] = __50__BiometricKitXPCServerPearl_platformProvidesPSD3__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (platformProvidesPSD3_onceToken != -1)
   {
     dispatch_once(&platformProvidesPSD3_onceToken, block);
@@ -6524,18 +6524,18 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  v7 = [objc_opt_class() getChipID];
-  if (v7 <= 33041)
+  getChipID = [objc_opt_class() getChipID];
+  if (getChipID <= 33041)
   {
-    if (v7 <= 33024)
+    if (getChipID <= 33024)
     {
-      if (v7 == 32807)
+      if (getChipID == 32807)
       {
         v8 = @"/System/Library/Pearl/DCNKernels/DCNKernels_H11_iPad.bin";
         goto LABEL_34;
       }
 
-      if (v7 == 32816)
+      if (getChipID == 32816)
       {
         v8 = @"/System/Library/Pearl/DCNKernels/DCNKernels_H12_iPhone.bin";
         goto LABEL_34;
@@ -6544,7 +6544,7 @@ LABEL_47:
 
     else
     {
-      switch(v7)
+      switch(getChipID)
       {
         case 33025:
           v8 = @"/System/Library/Pearl/DCNKernels/DCNKernels_H13_iPhone.bin";
@@ -6563,9 +6563,9 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (v7 > 33073)
+  if (getChipID > 33073)
   {
-    switch(v7)
+    switch(getChipID)
     {
       case 33074:
         v8 = @"/System/Library/Pearl/DCNKernels/DCNKernels_H16_iPad.bin";
@@ -6581,19 +6581,19 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (v7 == 33042)
+  if (getChipID == 33042)
   {
     v8 = @"/System/Library/Pearl/DCNKernels/DCNKernels_H14_iPad.bin";
     goto LABEL_34;
   }
 
-  if (v7 == 33056)
+  if (getChipID == 33056)
   {
     v8 = @"/System/Library/Pearl/DCNKernels/DCNKernels_H15_iPhone.bin";
     goto LABEL_34;
   }
 
-  if (v7 != 33072)
+  if (getChipID != 33072)
   {
     goto LABEL_33;
   }
@@ -6803,11 +6803,11 @@ LABEL_8:
   }
 
   mach_absolute_time();
-  v5 = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIORegAttempt];
-  if (v5)
+  getProjectorSerialNumberIORegAttempt = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIORegAttempt];
+  if (getProjectorSerialNumberIORegAttempt)
   {
 LABEL_9:
-    v6 = v5;
+    v6 = getProjectorSerialNumberIORegAttempt;
   }
 
   else
@@ -6821,8 +6821,8 @@ LABEL_9:
       }
 
       sleep(1u);
-      v5 = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIORegAttempt];
-      if (v5)
+      getProjectorSerialNumberIORegAttempt = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIORegAttempt];
+      if (getProjectorSerialNumberIORegAttempt)
       {
         goto LABEL_9;
       }
@@ -6873,14 +6873,14 @@ LABEL_9:
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEBUG, "getRomeoSerialNumberFDR\n", buf, 2u);
   }
 
-  v5 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (isInternalBuild())
   {
-    [v5 setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"APTicketAllowUntrusted"];
+    [dictionary setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"APTicketAllowUntrusted"];
   }
 
   v19 = 0;
-  v6 = [(BiometricKitXPCServerPearl *)self getFDRClassFromFDR:13 withOptions:v5 withError:&v19];
+  v6 = [(BiometricKitXPCServerPearl *)self getFDRClassFromFDR:13 withOptions:dictionary withError:&v19];
   v7 = v19;
   if (!v6)
   {
@@ -6902,7 +6902,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v8 = [v6 bytes];
+  bytes = [v6 bytes];
   v9 = malloc_type_malloc(0x12uLL, 0x57DB8BB0uLL);
   if (__osLog)
   {
@@ -6923,19 +6923,19 @@ LABEL_32:
   v11 = v9;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = *(v8 + 129);
+    v12 = *(bytes + 129);
     *buf = 67109120;
     *&buf[4] = v12;
     _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEFAULT, "OTP Version: %d\n", buf, 8u);
   }
 
   v13 = 101;
-  if (*(v8 + 129) > 4u)
+  if (*(bytes + 129) > 4u)
   {
     v13 = 175;
   }
 
-  if (getSensorSerialNumStringUT(v11, 0x12uLL, v8 + v13))
+  if (getSensorSerialNumStringUT(v11, 0x12uLL, bytes + v13))
   {
     [BiometricKitXPCServerPearl getRomeoSerialNumberFDR];
     v14 = *buf;
@@ -6991,10 +6991,10 @@ LABEL_22:
     _os_log_impl(&dword_296CA4000, v4, OS_LOG_TYPE_DEBUG, "verifyRomeoSerialNumberAgainstFDR\n", &v13, 2u);
   }
 
-  v5 = [(BiometricKitXPCServerPearl *)self getRomeoSerialNumberFDR];
-  v6 = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIOReg];
-  v7 = v6;
-  if (v5)
+  getRomeoSerialNumberFDR = [(BiometricKitXPCServerPearl *)self getRomeoSerialNumberFDR];
+  getProjectorSerialNumberIOReg = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIOReg];
+  v7 = getProjectorSerialNumberIOReg;
+  if (getRomeoSerialNumberFDR)
   {
     if (__osLog)
     {
@@ -7006,18 +7006,18 @@ LABEL_22:
       v8 = v3;
     }
 
-    if (v6)
+    if (getProjectorSerialNumberIOReg)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412546;
-        v14 = v5;
+        v14 = getRomeoSerialNumberFDR;
         v15 = 2112;
         v16 = v7;
         _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEFAULT, "Romeo serial: FDR: %@, IOReg: %@\n", &v13, 0x16u);
       }
 
-      if ([v5 isEqualToString:v7])
+      if ([getRomeoSerialNumberFDR isEqualToString:v7])
       {
         if (__osLogTrace)
         {
@@ -7073,7 +7073,7 @@ LABEL_20:
   return v10;
 }
 
-- (int)queryGuadalupeSerialNumberFDR:(id *)a3
+- (int)queryGuadalupeSerialNumberFDR:(id *)r
 {
   v25 = *MEMORY[0x29EDCA608];
   v5 = MEMORY[0x29EDCA988];
@@ -7093,14 +7093,14 @@ LABEL_20:
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "queryGuadalupeSerialNumberFDR\n", buf, 2u);
   }
 
-  v7 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (isInternalBuild())
   {
-    [v7 setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"APTicketAllowUntrusted"];
+    [dictionary setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"APTicketAllowUntrusted"];
   }
 
   v20 = 0;
-  v8 = [(BiometricKitXPCServerPearl *)self getFDRClassFromFDR:13 withOptions:v7 withError:&v20];
+  v8 = [(BiometricKitXPCServerPearl *)self getFDRClassFromFDR:13 withOptions:dictionary withError:&v20];
   v9 = v20;
   if (v8)
   {
@@ -7113,7 +7113,7 @@ LABEL_20:
 
       else
       {
-        v10 = [v8 bytes];
+        bytes = [v8 bytes];
         if (__osLog)
         {
           v11 = __osLog;
@@ -7126,13 +7126,13 @@ LABEL_20:
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = *v10;
+          v12 = *bytes;
           *buf = 67109120;
           v22 = v12;
           _os_log_impl(&dword_296CA4000, v11, OS_LOG_TYPE_DEFAULT, "pwcl version: %d\n", buf, 8u);
         }
 
-        if (*v10 < 3u)
+        if (*bytes < 3u)
         {
           v14 = 0;
           goto LABEL_21;
@@ -7145,11 +7145,11 @@ LABEL_20:
 
         else
         {
-          v13 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:v10 + 4];
+          v13 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:bytes + 4];
           if (v13)
           {
             v14 = v13;
-            *a3 = v13;
+            *r = v13;
 LABEL_21:
             if (__osLogTrace)
             {
@@ -7273,8 +7273,8 @@ LABEL_16:
       goto LABEL_22;
     }
 
-    v8 = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIOReg];
-    v9 = v8;
+    getProjectorSerialNumberIOReg = [(BiometricKitXPCServerPearl *)self getProjectorSerialNumberIOReg];
+    v9 = getProjectorSerialNumberIOReg;
     if (__osLog)
     {
       v10 = __osLog;
@@ -7285,7 +7285,7 @@ LABEL_16:
       v10 = v3;
     }
 
-    if (v8)
+    if (getProjectorSerialNumberIOReg)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -7393,15 +7393,15 @@ LABEL_22:
       if (v7 && (v9 = [v7 rangeOfString:@"pearl-skip-projector-checks"], v10) && (v11 = v10 + v9 + 1, v11 < objc_msgSend(v8, "length")))
       {
         v12 = [v8 substringWithRange:{v11, 1}];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
       }
 
       else
       {
-        v13 = 0;
+        bOOLValue = 0;
       }
 
-      if (isInternalBuild() && (v13 & 1) != 0)
+      if (isInternalBuild() && (bOOLValue & 1) != 0)
       {
         if (__osLog)
         {
@@ -7433,8 +7433,8 @@ LABEL_35:
       isInternalBuild();
     }
 
-    v14 = [objc_opt_class() getChipID];
-    if ((v14 - 33056) <= 0x30 && ((1 << (v14 - 32)) & 0x1000500050001) != 0 || v14 == 33040)
+    getChipID = [objc_opt_class() getChipID];
+    if ((getChipID - 33056) <= 0x30 && ((1 << (getChipID - 32)) & 0x1000500050001) != 0 || getChipID == 33040)
     {
       if (![(BiometricKitXPCServerPearl *)self verifyGuadalupeSerialNumberAgainstFDR])
       {
@@ -7549,7 +7549,7 @@ LABEL_52:
   return v2;
 }
 
-- (BOOL)hasManifestEntitlement:(unsigned int)a3
+- (BOOL)hasManifestEntitlement:(unsigned int)entitlement
 {
   v75 = *MEMORY[0x29EDCA608];
   v4 = MEMORY[0x29EDCA988];
@@ -7566,7 +7566,7 @@ LABEL_52:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = entitlement;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "hasManifestEntitlement: 0x%x\n", buf, 8u);
   }
 
@@ -7600,8 +7600,8 @@ LABEL_52:
   v38 = 0u;
   v39 = 0u;
   *buf = 0u;
-  v6 = [MEMORY[0x29EDC5808] sharedDataAccessor];
-  v7 = [v6 copyPathForPersonalizedData:2 error:0];
+  mEMORY[0x29EDC5808] = [MEMORY[0x29EDC5808] sharedDataAccessor];
+  v7 = [mEMORY[0x29EDC5808] copyPathForPersonalizedData:2 error:0];
 
   if (!v7)
   {
@@ -7708,7 +7708,7 @@ LABEL_46:
 
       else
       {
-        BooleanFromSection = Img4DecodeGetBooleanFromSection(buf, 0, a3, &v32);
+        BooleanFromSection = Img4DecodeGetBooleanFromSection(buf, 0, entitlement, &v32);
         if (BooleanFromSection)
         {
           v29 = BooleanFromSection;
@@ -7986,9 +7986,9 @@ LABEL_18:
   return 0;
 }
 
-- (int)sendSelfCheckResult:(id *)a3
+- (int)sendSelfCheckResult:(id *)result
 {
-  v3 = [(BiometricKitXPCServerPearl *)self performCommand:44 inValue:0 inData:a3 inSize:28 outData:0 outSize:0];
+  v3 = [(BiometricKitXPCServerPearl *)self performCommand:44 inValue:0 inData:result inSize:28 outData:0 outSize:0];
   if (v3)
   {
     [BiometricKitXPCServerPearl sendSelfCheckResult:];
@@ -7997,7 +7997,7 @@ LABEL_18:
   return v3;
 }
 
-- (int)sendSavageFWCertCheckResult:(int)a3
+- (int)sendSavageFWCertCheckResult:(int)result
 {
   v14 = *MEMORY[0x29EDCA608];
   if (__osLogTrace)
@@ -8013,7 +8013,7 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 67109120;
-    v10 = a3;
+    resultCopy2 = result;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "sendSavageFWCertCheckResult, passed: %d\n", &v9, 8u);
   }
 
@@ -8021,7 +8021,7 @@ LABEL_18:
   v12 = -1;
   v9 = -1;
   v13 = -1;
-  v10 = a3;
+  resultCopy2 = result;
   v6 = [(BiometricKitXPCServerPearl *)self sendSelfCheckResult:&v9];
   if (v6)
   {
@@ -8032,7 +8032,7 @@ LABEL_18:
   return v6;
 }
 
-- (int)sendFDRDataCheckResult:(int)a3
+- (int)sendFDRDataCheckResult:(int)result
 {
   v14 = *MEMORY[0x29EDCA608];
   if (__osLogTrace)
@@ -8048,7 +8048,7 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v9) = 67109120;
-    HIDWORD(v9) = a3;
+    HIDWORD(v9) = result;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "sendFDRDataCheckResult, passed: %d\n", &v9, 8u);
   }
 
@@ -8056,7 +8056,7 @@ LABEL_18:
   v12 = -1;
   v9 = -1;
   v13 = -1;
-  v10 = a3;
+  resultCopy = result;
   v6 = [(BiometricKitXPCServerPearl *)self sendSelfCheckResult:&v9];
   if (v6)
   {
@@ -8067,7 +8067,7 @@ LABEL_18:
   return v6;
 }
 
-- (int)sendRomeoSNCheckResult:(int)a3
+- (int)sendRomeoSNCheckResult:(int)result
 {
   v14 = *MEMORY[0x29EDCA608];
   if (__osLogTrace)
@@ -8083,7 +8083,7 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v9) = 67109120;
-    HIDWORD(v9) = a3;
+    HIDWORD(v9) = result;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "sendRomeoSNCheckResult, passed: %d\n", &v9, 8u);
   }
 
@@ -8091,7 +8091,7 @@ LABEL_18:
   v12 = -1;
   v9 = -1;
   v13 = -1;
-  v11 = a3;
+  resultCopy = result;
   v6 = [(BiometricKitXPCServerPearl *)self sendSelfCheckResult:&v9];
   if (v6)
   {
@@ -8102,7 +8102,7 @@ LABEL_18:
   return v6;
 }
 
-- (int)sendDCNKernelsCheckResult:(int)a3
+- (int)sendDCNKernelsCheckResult:(int)result
 {
   v13 = *MEMORY[0x29EDCA608];
   if (__osLogTrace)
@@ -8118,7 +8118,7 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v9[0]) = 67109120;
-    HIDWORD(v9[0]) = a3;
+    HIDWORD(v9[0]) = result;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "sendDCNKernelsCheckResult, passed: %d\n", v9, 8u);
   }
 
@@ -8126,7 +8126,7 @@ LABEL_18:
   v11 = -1;
   v9[0] = -1;
   v12 = -1;
-  v10 = a3;
+  resultCopy = result;
   v6 = [(BiometricKitXPCServerPearl *)self sendSelfCheckResult:v9];
   if (v6)
   {
@@ -8137,7 +8137,7 @@ LABEL_18:
   return v6;
 }
 
-- (int)sendDisplayCheckResult:(int)a3
+- (int)sendDisplayCheckResult:(int)result
 {
   v13 = *MEMORY[0x29EDCA608];
   if (__osLogTrace)
@@ -8153,14 +8153,14 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(v9[0]) = 67109120;
-    HIDWORD(v9[0]) = a3;
+    HIDWORD(v9[0]) = result;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEBUG, "sendDisplayCheckResult, passed: %d\n", v9, 8u);
   }
 
   v9[1] = -1;
   v10 = -1;
   v9[0] = -1;
-  v11 = a3;
+  resultCopy = result;
   v12 = -1;
   v6 = [(BiometricKitXPCServerPearl *)self sendSelfCheckResult:v9];
   if (v6)
@@ -8172,33 +8172,33 @@ LABEL_18:
   return v6;
 }
 
-- (id)classStringForEnum:(unsigned __int16)a3
+- (id)classStringForEnum:(unsigned __int16)enum
 {
-  if (a3 > 0x12u)
+  if (enum > 0x12u)
   {
     return 0;
   }
 
   else
   {
-    return off_29EE54888[a3];
+    return off_29EE54888[enum];
   }
 }
 
-- (int)loadFDRClassCommand:(int)a3 withClass:(unsigned __int16)a4 withData:(id)a5 isAlternative:(BOOL)a6
+- (int)loadFDRClassCommand:(int)command withClass:(unsigned __int16)class withData:(id)data isAlternative:(BOOL)alternative
 {
-  v8 = a3;
-  v10 = a5;
-  v11 = [v10 length] + 9;
+  commandCopy = command;
+  dataCopy = data;
+  v11 = [dataCopy length] + 9;
   v12 = malloc_type_malloc(v11, 0xC606EA9CuLL);
   if (v12)
   {
     v13 = v12;
-    *v12 = v8;
-    *(v12 + 1) = a4;
-    v12[4] = a6;
-    *(v12 + 5) = [v10 length];
-    memcpy(v13 + 9, [v10 bytes], objc_msgSend(v10, "length"));
+    *v12 = commandCopy;
+    *(v12 + 1) = class;
+    v12[4] = alternative;
+    *(v12 + 5) = [dataCopy length];
+    memcpy(v13 + 9, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     v14 = [(BiometricKitXPCServerPearl *)self performCommand:36 inValue:0 inData:v13 inSize:v11 outData:0 outSize:0];
     if (v14)
     {
@@ -8217,10 +8217,10 @@ LABEL_18:
   return v14;
 }
 
-- (id)getFDRClassFromFile:(id)a3
+- (id)getFDRClassFromFile:(id)file
 {
   v11 = *MEMORY[0x29EDCA608];
-  v3 = [(BiometricKitXPCServerPearl *)self pathForAlternateFDRClass:a3];
+  v3 = [(BiometricKitXPCServerPearl *)self pathForAlternateFDRClass:file];
   v4 = [MEMORY[0x29EDB8DA0] dataWithContentsOfFile:v3];
   v5 = v4;
   if (__osLog)
@@ -8253,10 +8253,10 @@ LABEL_18:
   return v5;
 }
 
-- (int)loadPCECalibrationOverride:(id)a3
+- (int)loadPCECalibrationOverride:(id)override
 {
   v14 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  overrideCopy = override;
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -8274,9 +8274,9 @@ LABEL_18:
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "loadPCECalibrationOverride\n", &v12, 2u);
   }
 
-  if (v4)
+  if (overrideCopy)
   {
-    if (!-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 34, 0, [v4 bytes], objc_msgSend(v4, "length"), 0, 0))
+    if (!-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 34, 0, [overrideCopy bytes], objc_msgSend(overrideCopy, "length"), 0, 0))
     {
       if (__osLogTrace)
       {
@@ -8394,7 +8394,7 @@ LABEL_32:
   v19 = 0;
   v6 = 1000000;
   v20 = v4;
-  v7 = [v4 bytes];
+  bytes = [v4 bytes];
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -8433,7 +8433,7 @@ LABEL_32:
       usleep(v6);
     }
 
-    v14 = [(BiometricKitXPCServerPearl *)self performCommand:81 inValue:0 inData:v7 inSize:92 outData:0 outSize:0, v19];
+    v14 = [(BiometricKitXPCServerPearl *)self performCommand:81 inValue:0 inData:bytes inSize:92 outData:0 outSize:0, v19];
     v11 = v14;
     if (v14 == 264)
     {
@@ -8519,10 +8519,10 @@ LABEL_44:
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (id)filenameForSavageCertType:(id)a3
+- (id)filenameForSavageCertType:(id)type
 {
   v22 = *MEMORY[0x29EDCA608];
-  v3 = [a3 unsignedIntValue] - 1;
+  v3 = [type unsignedIntValue] - 1;
   if (v3 >= 6)
   {
     if (__osLog)
@@ -8557,8 +8557,8 @@ LABEL_44:
   else
   {
     v4 = off_29EE54920[v3];
-    v5 = [MEMORY[0x29EDC5808] sharedDataAccessor];
-    v6 = [v5 copyPathForPersonalizedData:0 error:0];
+    mEMORY[0x29EDC5808] = [MEMORY[0x29EDC5808] sharedDataAccessor];
+    v6 = [mEMORY[0x29EDC5808] copyPathForPersonalizedData:0 error:0];
 
     if (v6)
     {
@@ -8773,14 +8773,14 @@ LABEL_44:
   return v5;
 }
 
-- (BOOL)cameraIndicatorControlAllowedForClient:(id)a3
+- (BOOL)cameraIndicatorControlAllowedForClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   if (isInternalBuild() && MGGetBoolAnswer())
   {
-    v4 = [v3 exportedObject];
-    v5 = [v4 connection];
-    v6 = [v5 valueForEntitlement:@"com.apple.private.biometrickit.camera-indicator-control"];
+    exportedObject = [clientCopy exportedObject];
+    connection = [exportedObject connection];
+    v6 = [connection valueForEntitlement:@"com.apple.private.biometrickit.camera-indicator-control"];
     v7 = v6 != 0;
   }
 
@@ -8799,14 +8799,14 @@ LABEL_44:
   return v2;
 }
 
-- (int)performEnrollCommand:(id)a3
+- (int)performEnrollCommand:(id)command
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = v4;
+  commandCopy = command;
+  v5 = commandCopy;
   v23 = 0;
   v22 = 0;
-  if (!v4)
+  if (!commandCopy)
   {
     [BiometricKitXPCServerPearl performEnrollCommand:];
 LABEL_9:
@@ -8814,20 +8814,20 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v15[0] = [v4 processedFlags];
+  v15[0] = [commandCopy processedFlags];
   v15[1] = [v5 userID];
   v15[2] = [v5 enrollmentType];
-  v6 = [v5 augmentedIdentity];
-  v7 = *(v6 + 16);
-  v16 = *v6;
+  augmentedIdentity = [v5 augmentedIdentity];
+  v7 = *(augmentedIdentity + 16);
+  v16 = *augmentedIdentity;
   v17 = v7;
-  v8 = [v5 authData];
-  v9 = *(v8 + 32);
-  v10 = *(v8 + 16);
-  v18 = *v8;
+  authData = [v5 authData];
+  v9 = *(authData + 32);
+  v10 = *(authData + 16);
+  v18 = *authData;
   v19 = v10;
   v20 = v9;
-  v21 = [v5 periocularGlassesRequirement];
+  periocularGlassesRequirement = [v5 periocularGlassesRequirement];
   if ([(BiometricKitXPCServerPearl *)self performCommand:3 inValue:0 inData:v15 inSize:76 outData:0 outSize:0])
   {
     [BiometricKitXPCServerPearl performEnrollCommand:];
@@ -8854,17 +8854,17 @@ LABEL_6:
   return v2;
 }
 
-- (int)initMatchOperation:(id)a3 filter:(id)a4 options:(id)a5 client:(id)a6
+- (int)initMatchOperation:(id)operation filter:(id)filter options:(id)options client:(id)client
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  operationCopy = operation;
+  filterCopy = filter;
+  optionsCopy = options;
+  clientCopy = client;
   v23 = 0;
   v22 = 0;
   v21 = 0;
   v20 = 0;
-  if (!v10)
+  if (!operationCopy)
   {
     [BiometricKitXPCServerPearl initMatchOperation:filter:options:client:];
     goto LABEL_37;
@@ -8872,13 +8872,13 @@ LABEL_6:
 
   v19.receiver = self;
   v19.super_class = BiometricKitXPCServerPearl;
-  if ([(BiometricKitXPCServer *)&v19 initMatchOperation:v10 filter:v11 options:v12 client:v13])
+  if ([(BiometricKitXPCServer *)&v19 initMatchOperation:operationCopy filter:filterCopy options:optionsCopy client:clientCopy])
   {
     [BiometricKitXPCServerPearl initMatchOperation:filter:options:client:];
     goto LABEL_37;
   }
 
-  if (v12)
+  if (optionsCopy)
   {
     if (dictionaryGetBool())
     {
@@ -8899,7 +8899,7 @@ LABEL_6:
     {
       if (HIBYTE(v22) == 1)
       {
-        v14 = [v12 objectForKeyedSubscript:@"BKOptionMatchPreAugmentationCheckIdentity"];
+        v14 = [optionsCopy objectForKeyedSubscript:@"BKOptionMatchPreAugmentationCheckIdentity"];
         if (v14)
         {
           objc_opt_class();
@@ -8910,10 +8910,10 @@ LABEL_6:
             goto LABEL_28;
           }
 
-          v15 = [v14 userID];
-          *[v10 preAugmentationCheckIdentity] = v15;
-          v16 = [v14 uuid];
-          [v16 getUUIDBytes:{objc_msgSend(v10, "preAugmentationCheckIdentity") + 4}];
+          userID = [v14 userID];
+          *[operationCopy preAugmentationCheckIdentity] = userID;
+          uuid = [v14 uuid];
+          [uuid getUUIDBytes:{objc_msgSend(operationCopy, "preAugmentationCheckIdentity") + 4}];
         }
       }
 
@@ -8944,39 +8944,39 @@ LABEL_37:
   }
 
 LABEL_15:
-  [v10 setLongTimeout:HIBYTE(v23)];
-  [v10 setAutoRetry:v23];
-  [v10 setPreAugmentationCheck:HIBYTE(v22)];
-  [v10 setFullFaceOnly:v22];
-  [v10 setTrigger:v21];
+  [operationCopy setLongTimeout:HIBYTE(v23)];
+  [operationCopy setAutoRetry:v23];
+  [operationCopy setPreAugmentationCheck:HIBYTE(v22)];
+  [operationCopy setFullFaceOnly:v22];
+  [operationCopy setTrigger:v21];
   if (HIBYTE(v23) == 1)
   {
-    [v10 setProcessedFlags:{objc_msgSend(v10, "processedFlags") | 0x800}];
+    [operationCopy setProcessedFlags:{objc_msgSend(operationCopy, "processedFlags") | 0x800}];
   }
 
   if (v23 == 1)
   {
-    [v10 setProcessedFlags:{objc_msgSend(v10, "processedFlags") | 0x1000}];
+    [operationCopy setProcessedFlags:{objc_msgSend(operationCopy, "processedFlags") | 0x1000}];
   }
 
   if (HIBYTE(v22) == 1)
   {
-    [v10 setProcessedFlags:{objc_msgSend(v10, "processedFlags") | 0x8000}];
+    [operationCopy setProcessedFlags:{objc_msgSend(operationCopy, "processedFlags") | 0x8000}];
   }
 
   if (v22 == 1)
   {
-    [v10 setProcessedFlags:{objc_msgSend(v10, "processedFlags") | 0x10000}];
+    [operationCopy setProcessedFlags:{objc_msgSend(operationCopy, "processedFlags") | 0x10000}];
   }
 
   if (v20 == 1)
   {
-    [v10 setProcessedFlags:{objc_msgSend(v10, "processedFlags") | 0x40000}];
+    [operationCopy setProcessedFlags:{objc_msgSend(operationCopy, "processedFlags") | 0x40000}];
   }
 
-  if ([(BiometricKitXPCServerPearl *)self cameraIndicatorControlAllowedForClient:v13])
+  if ([(BiometricKitXPCServerPearl *)self cameraIndicatorControlAllowedForClient:clientCopy])
   {
-    [v10 activateCameraIndicator];
+    [operationCopy activateCameraIndicator];
   }
 
   v17 = 0;
@@ -8985,10 +8985,10 @@ LABEL_28:
   return v17;
 }
 
-- (void)processMetadataObjects:(id)a3
+- (void)processMetadataObjects:(id)objects
 {
   v97 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  objectsCopy = objects;
   if (__osLog)
   {
     v5 = __osLog;
@@ -9002,17 +9002,17 @@ LABEL_28:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v85 = v4;
+    *v85 = objectsCopy;
     _os_log_impl(&dword_296CA4000, v5, OS_LOG_TYPE_DEFAULT, "processMetadataObjects:%@\n", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x29EDB8DB0] date];
+  date = [MEMORY[0x29EDB8DB0] date];
   memset(v83, 0, 42);
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v7 = v4;
+  v7 = objectsCopy;
   v8 = [v7 countByEnumeratingWithState:&v79 objects:v96 count:16];
   if (!v8)
   {
@@ -9027,7 +9027,7 @@ LABEL_131:
   }
 
   v9 = v8;
-  v69 = v6;
+  v69 = date;
   v73 = 0;
   v76 = 0;
   v10 = *v80;
@@ -9047,23 +9047,23 @@ LABEL_131:
       }
 
       v14 = *(*(&v79 + 1) + 8 * v13);
-      v15 = [v14 type];
+      type = [v14 type];
 
-      if (v15 != v11)
+      if (type != v11)
       {
-        v16 = [v14 type];
+        type2 = [v14 type];
 
-        if (v16 != v12)
+        if (type2 != v12)
         {
-          v17 = [v14 type];
+          type3 = [v14 type];
 
-          if (v17 == v77)
+          if (type3 == v77)
           {
             v41 = v14;
-            v42 = [v41 eyeReliefStatus];
-            if ((v42 - 1) < 5)
+            eyeReliefStatus = [v41 eyeReliefStatus];
+            if ((eyeReliefStatus - 1) < 5)
             {
-              v43 = v42;
+              v43 = eyeReliefStatus;
             }
 
             else
@@ -9081,22 +9081,22 @@ LABEL_131:
             goto LABEL_95;
           }
 
-          v18 = [v14 type];
+          type4 = [v14 type];
 
-          if (v18 == v75 && HIDWORD(self->_secureFaceDetectRequestMessage.loggingSequenceId.nanotime) == 2 && (self->_secureFaceDetectRequestMessage.loggingSequenceId.number & 8) != 0)
+          if (type4 == v75 && HIDWORD(self->_secureFaceDetectRequestMessage.loggingSequenceId.nanotime) == 2 && (self->_secureFaceDetectRequestMessage.loggingSequenceId.number & 8) != 0)
           {
             v19 = v14;
-            v20 = [v19 detectedMotion];
-            if (v20)
+            detectedMotion = [v19 detectedMotion];
+            if (detectedMotion)
             {
-              if (v20 == 2)
+              if (detectedMotion == 2)
               {
                 LODWORD(v73) = 2;
               }
 
               else
               {
-                if (v20 == 1)
+                if (detectedMotion == 1)
                 {
                   v73 = 0x100000001;
                   goto LABEL_95;
@@ -9115,9 +9115,9 @@ LABEL_131:
                 if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
                 {
                   v55 = v54;
-                  v56 = [v19 detectedMotion];
+                  detectedMotion2 = [v19 detectedMotion];
                   *buf = 134217984;
-                  *v85 = v56;
+                  *v85 = detectedMotion2;
                   _os_log_impl(&dword_296CA4000, v55, OS_LOG_TYPE_ERROR, "Unknown value of 'detectedMotion': %lu\n", buf, 0xCu);
                 }
               }
@@ -9154,9 +9154,9 @@ LABEL_131:
           {
             if ([v23 hasOccludedFeatures])
             {
-              v27 = [v23 occludedFeatures];
-              buf[0] = v27;
-              if (BYTE4(self->_secureFaceDetectRequestDispatchSource) != v27)
+              occludedFeatures = [v23 occludedFeatures];
+              buf[0] = occludedFeatures;
+              if (BYTE4(self->_secureFaceDetectRequestDispatchSource) != occludedFeatures)
               {
                 v28 = [MEMORY[0x29EDB8DA0] dataWithBytes:buf length:1];
                 [(BiometricKitXPCServerPearl *)self statusMessage:1071 withData:v28 timestamp:0];
@@ -9307,10 +9307,10 @@ LABEL_65:
 
         if ([v23 hasOrientation])
         {
-          v50 = [v23 orientation];
-          if ((v50 - 1) < 4)
+          orientation = [v23 orientation];
+          if ((orientation - 1) < 4)
           {
-            v51 = v50;
+            v51 = orientation;
           }
 
           else
@@ -9408,7 +9408,7 @@ LABEL_96:
   v65 = v76;
   if ((v76 & 1) == 0)
   {
-    v6 = v69;
+    date = v69;
     if ((v73 & 0x100000000) != 0)
     {
       v65 = 0;
@@ -9418,7 +9418,7 @@ LABEL_96:
     goto LABEL_119;
   }
 
-  v6 = v69;
+  date = v69;
   if ((*(&self->_secureFaceDetectRequestMessage.loggingSequenceId.type + 3) & 1) == 0)
   {
     *(&self->_secureFaceDetectRequestMessage.loggingSequenceId.type + 3) = 1;
@@ -9469,18 +9469,18 @@ LABEL_129:
   [(BiometricKitXPCServerPearl *)self motionDetectMessage:1076 info:0 state:v73];
 LABEL_132:
   *(&self->_secureFaceDetectRequestMessage.loggingSequenceId.type + 2) = [v7 count] == 0;
-  [self->_pearlDeviceState logSecureFrameMeta:v7 timestamp:v6];
+  [self->_pearlDeviceState logSecureFrameMeta:v7 timestamp:date];
   [*&self->_logSequenceDebug analyzeSecureFrameMeta:v7 faceDetected:v65 & 1];
 
   v68 = *MEMORY[0x29EDCA608];
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects fromConnection:(id)connection
 {
   v21 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  objectsCopy = objects;
+  connectionCopy = connection;
   kdebug_trace();
   if (__osLog)
   {
@@ -9495,25 +9495,25 @@ LABEL_132:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412802;
-    v16 = v8;
+    v16 = outputCopy;
     v17 = 2112;
-    v18 = v9;
+    v18 = objectsCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = connectionCopy;
     _os_log_impl(&dword_296CA4000, v11, OS_LOG_TYPE_DEFAULT, "AVC delegate: captureOutput:%@ didOutputMetadataObjects:%@ fromConnection:%@\n", &v15, 0x20u);
   }
 
   [(OS_dispatch_queue *)self->_avcStartStopQueue lock];
   if (*&self->_performCommandBufferInUse)
   {
-    [(BiometricKitXPCServerPearl *)self processMetadataObjects:v9];
+    [(BiometricKitXPCServerPearl *)self processMetadataObjects:objectsCopy];
     captureOutput_didOutputMetadataObjects_fromConnection__unexpectedCallsCount = 0;
   }
 
   else if ((captureOutput_didOutputMetadataObjects_fromConnection__abcEventSent & 1) == 0 && ++captureOutput_didOutputMetadataObjects_fromConnection__unexpectedCallsCount >= 0x32)
   {
-    v12 = [(BiometricKitXPCServer *)self biometricABC];
-    v13 = [v12 sendAutoBugCaptureEvent:8];
+    biometricABC = [(BiometricKitXPCServer *)self biometricABC];
+    v13 = [biometricABC sendAutoBugCaptureEvent:8];
 
     if ((v13 & 1) == 0)
     {
@@ -9683,9 +9683,9 @@ LABEL_27:
 
 LABEL_28:
   [(AVCaptureMetadataOutput *)self->_avcOutput commitConfiguration];
-  v23 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   avcSession = self->_avcSession;
-  self->_avcSession = v23;
+  self->_avcSession = array;
 
   if (self->_avcSession)
   {
@@ -9697,7 +9697,7 @@ LABEL_28:
     objc_copyWeak(&v48, buf);
     v47[4] = self;
     v25 = MEMORY[0x29C262C70](v47);
-    v26 = [MEMORY[0x29EDBA068] defaultCenter];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
     v27 = *MEMORY[0x29EDBD570];
     v28 = self->_avcOutput;
     v45[0] = MEMORY[0x29EDCA5F8];
@@ -9706,23 +9706,23 @@ LABEL_28:
     v45[3] = &unk_29EE54800;
     v29 = v25;
     v46 = v29;
-    v30 = [v26 addObserverForName:v27 object:v28 queue:0 usingBlock:v45];
+    v30 = [defaultCenter addObserverForName:v27 object:v28 queue:0 usingBlock:v45];
 
     [(AVCaptureSession *)self->_avcSession addObject:v30];
-    v31 = [MEMORY[0x29EDBA068] defaultCenter];
-    v32 = [v31 addObserverForName:*MEMORY[0x29EDBD558] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_849];
+    defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+    v32 = [defaultCenter2 addObserverForName:*MEMORY[0x29EDBD558] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_849];
 
     [(AVCaptureSession *)self->_avcSession addObject:v32];
-    v33 = [MEMORY[0x29EDBA068] defaultCenter];
-    v34 = [v33 addObserverForName:*MEMORY[0x29EDBD560] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_852];
+    defaultCenter3 = [MEMORY[0x29EDBA068] defaultCenter];
+    v34 = [defaultCenter3 addObserverForName:*MEMORY[0x29EDBD560] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_852];
 
     [(AVCaptureSession *)self->_avcSession addObject:v34];
-    v35 = [MEMORY[0x29EDBA068] defaultCenter];
-    v36 = [v35 addObserverForName:*MEMORY[0x29EDBD578] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_855];
+    defaultCenter4 = [MEMORY[0x29EDBA068] defaultCenter];
+    v36 = [defaultCenter4 addObserverForName:*MEMORY[0x29EDBD578] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_855];
 
     [(AVCaptureSession *)self->_avcSession addObject:v36];
-    v37 = [MEMORY[0x29EDBA068] defaultCenter];
-    v38 = [v37 addObserverForName:*MEMORY[0x29EDBD568] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_858];
+    defaultCenter5 = [MEMORY[0x29EDBA068] defaultCenter];
+    v38 = [defaultCenter5 addObserverForName:*MEMORY[0x29EDBD568] object:self->_avcOutput queue:0 usingBlock:&__block_literal_global_858];
 
     [(AVCaptureSession *)self->_avcSession addObject:v38];
     objc_destroyWeak(&v48);
@@ -9971,8 +9971,8 @@ void __50__BiometricKitXPCServerPearl_initSecureFaceDetect__block_invoke_856()
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [MEMORY[0x29EDBA068] defaultCenter];
-        [v10 removeObserver:v9];
+        defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+        [defaultCenter removeObserver:v9];
       }
 
       v6 = [(AVCaptureSession *)v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
@@ -10187,8 +10187,8 @@ void __50__BiometricKitXPCServerPearl_stopSecureFaceDetect__block_invoke(uint64_
   }
 
   [(OS_dispatch_queue *)self->_avcStartStopQueue lock];
-  v5 = [(BiometricKitXPCServerPearl *)self initSecureFaceDetect];
-  if (v5)
+  initSecureFaceDetect = [(BiometricKitXPCServerPearl *)self initSecureFaceDetect];
+  if (initSecureFaceDetect)
   {
     [BiometricKitXPCServerPearl startSecureFaceDetect];
   }
@@ -10246,12 +10246,12 @@ void __50__BiometricKitXPCServerPearl_stopSecureFaceDetect__block_invoke(uint64_
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v24) = v5;
+    LODWORD(v24) = initSecureFaceDetect;
     _os_log_impl(&dword_296CA4000, v12, OS_LOG_TYPE_DEFAULT, "startSecureFaceDetect: -> %d\n", buf, 8u);
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v5;
+  return initSecureFaceDetect;
 }
 
 void __51__BiometricKitXPCServerPearl_startSecureFaceDetect__block_invoke(uint64_t a1)
@@ -10524,10 +10524,10 @@ LABEL_24:
 
     else
     {
-      v15 = [(BiometricKitXPCServerPearl *)self startSecureFaceDetect];
-      if (v15)
+      startSecureFaceDetect = [(BiometricKitXPCServerPearl *)self startSecureFaceDetect];
+      if (startSecureFaceDetect)
       {
-        v16 = v15;
+        v16 = startSecureFaceDetect;
         if (__osLog)
         {
           v17 = __osLog;
@@ -10588,15 +10588,15 @@ LABEL_24:
   [(NSRecursiveLock *)avcLock unlock];
 }
 
-- (void)secureFaceDetectRequestMessage:(id *)a3
+- (void)secureFaceDetectRequestMessage:(id *)message
 {
   v18 = *MEMORY[0x29EDCA608];
-  if (a3)
+  if (message)
   {
-    if (a3->var2)
+    if (message->var2)
     {
-      var0 = a3->var0;
-      var1 = a3->var1;
+      var0 = message->var0;
+      var1 = message->var1;
       kdebug_trace();
       if (__osLog)
       {
@@ -10610,9 +10610,9 @@ LABEL_24:
 
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = a3->var0;
-        v9 = a3->var1;
-        var2 = a3->var2;
+        v8 = message->var0;
+        v9 = message->var1;
+        var2 = message->var2;
         v13[0] = 67109632;
         v13[1] = v8;
         v14 = 1024;
@@ -10625,8 +10625,8 @@ LABEL_24:
       if (BYTE4(self->_performCommandBufferData))
       {
         [(NSRecursiveLock *)self->_avcLock lock];
-        v11 = *(&a3->var2 + 7);
-        *(&self->_secureFaceDetectRequestMessageLock + 1) = *&a3->var0;
+        v11 = *(&message->var2 + 7);
+        *(&self->_secureFaceDetectRequestMessageLock + 1) = *&message->var0;
         *&self->_secureFaceDetectRequestMessage.request = v11;
         LOBYTE(self->_secureFaceDetectRequestMessageLock) = 1;
         dispatch_source_merge_data(*&self->_secureFaceDetectRequestMessage.sessionID, 1uLL);
@@ -10653,12 +10653,12 @@ LABEL_24:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (int)performMatchCommand:(id)a3
+- (int)performMatchCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = [MEMORY[0x29EDB8DF8] dataWithLength:76];
   v6 = v5;
-  if (!v4)
+  if (!commandCopy)
   {
     [BiometricKitXPCServerPearl performMatchCommand:];
 LABEL_23:
@@ -10666,30 +10666,30 @@ LABEL_23:
     goto LABEL_18;
   }
 
-  v7 = [v5 mutableBytes];
-  if (!v7)
+  mutableBytes = [v5 mutableBytes];
+  if (!mutableBytes)
   {
     [BiometricKitXPCServerPearl performMatchCommand:];
     goto LABEL_23;
   }
 
-  v8 = v7;
-  *v7 = [v4 processedFlags];
-  v8[1] = [v4 userID];
-  *(v8 + 8) = [v4 trigger];
-  v9 = [(BiometricKitXPCServerPearl *)self deviceOrientation];
-  if (BYTE4(self->_performCommandBufferData) == 1 && [v4 longTimeout] && v9 == 5)
+  v8 = mutableBytes;
+  *mutableBytes = [commandCopy processedFlags];
+  v8[1] = [commandCopy userID];
+  *(v8 + 8) = [commandCopy trigger];
+  deviceOrientation = [(BiometricKitXPCServerPearl *)self deviceOrientation];
+  if (BYTE4(self->_performCommandBufferData) == 1 && [commandCopy longTimeout] && deviceOrientation == 5)
   {
     *(v8 + 9) = 1;
   }
 
-  v10 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v9];
+  v10 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:deviceOrientation];
   [self->_pearlDeviceState setInitialDeviceOrientation:v10];
 
-  if ([v4 forCredentialSet])
+  if ([commandCopy forCredentialSet])
   {
-    v11 = [v4 acmContext];
-    v12 = [v11 length];
+    acmContext = [commandCopy acmContext];
+    v12 = [acmContext length];
 
     if (v12 >= 0x21)
     {
@@ -10697,39 +10697,39 @@ LABEL_23:
       goto LABEL_23;
     }
 
-    v13 = [v4 acmContext];
-    v8[8] = [v13 length];
+    acmContext2 = [commandCopy acmContext];
+    v8[8] = [acmContext2 length];
 
-    v14 = [v4 acmContext];
-    v15 = [v4 acmContext];
-    [v14 getBytes:v8 + 9 length:{objc_msgSend(v15, "length")}];
+    acmContext3 = [commandCopy acmContext];
+    acmContext4 = [commandCopy acmContext];
+    [acmContext3 getBytes:v8 + 9 length:{objc_msgSend(acmContext4, "length")}];
   }
 
-  else if ([v4 noBioLockout])
+  else if ([commandCopy noBioLockout])
   {
-    v8[8] = [v4 noBioLockoutUserID];
-    v16 = [v4 noBioLockoutAuthData];
-    v17 = *(v16 + 32);
-    v18 = *(v16 + 16);
-    *(v8 + 9) = *v16;
+    v8[8] = [commandCopy noBioLockoutUserID];
+    noBioLockoutAuthData = [commandCopy noBioLockoutAuthData];
+    v17 = *(noBioLockoutAuthData + 32);
+    v18 = *(noBioLockoutAuthData + 16);
+    *(v8 + 9) = *noBioLockoutAuthData;
     *(v8 + 13) = v18;
     *(v8 + 17) = v17;
   }
 
-  if ([v4 preAugmentationCheck])
+  if ([commandCopy preAugmentationCheck])
   {
-    v19 = [v4 preAugmentationCheckIdentity];
-    v20 = *(v19 + 16);
-    *(v8 + 10) = *v19;
+    preAugmentationCheckIdentity = [commandCopy preAugmentationCheckIdentity];
+    v20 = *(preAugmentationCheckIdentity + 16);
+    *(v8 + 10) = *preAugmentationCheckIdentity;
     *(v8 + 26) = v20;
   }
 
-  v21 = [v4 selectedIdentitiesBlob];
+  selectedIdentitiesBlob = [commandCopy selectedIdentitiesBlob];
 
-  if (v21)
+  if (selectedIdentitiesBlob)
   {
-    v22 = [v4 selectedIdentitiesBlob];
-    [v6 appendData:v22];
+    selectedIdentitiesBlob2 = [commandCopy selectedIdentitiesBlob];
+    [v6 appendData:selectedIdentitiesBlob2];
   }
 
   if (-[BiometricKitXPCServerPearl performCommand:inValue:inData:inSize:outData:outSize:](self, "performCommand:inValue:inData:inSize:outData:outSize:", 4, 0, [v6 bytes], objc_msgSend(v6, "length"), 0, 0))
@@ -10749,8 +10749,8 @@ LABEL_18:
 {
   if (isInternalBuild() && (BYTE1(self->_log) & 1) == 0)
   {
-    v3 = [MEMORY[0x29EDBFD50] sharedInstance];
-    if (([v3 BOOLForKey:@"oldBioLogPurgedAfterUpdate"] & 1) == 0)
+    mEMORY[0x29EDBFD50] = [MEMORY[0x29EDBFD50] sharedInstance];
+    if (([mEMORY[0x29EDBFD50] BOOLForKey:@"oldBioLogPurgedAfterUpdate"] & 1) == 0)
     {
       v4 = MEMORY[0x29EDCA988];
       if (__osLog)
@@ -10770,10 +10770,10 @@ LABEL_18:
       }
 
       +[BioLog removeBioLogAsync];
-      [v3 setBool:1 forKey:@"framesRawLoggingDisabled"];
-      [v3 setBool:1 forKey:@"oldBioLogPurgedAfterUpdate"];
-      [v3 setBool:1 forKey:@"bioLogMatchFailureSettingsPrompt"];
-      [v3 synchronize];
+      [mEMORY[0x29EDBFD50] setBool:1 forKey:@"framesRawLoggingDisabled"];
+      [mEMORY[0x29EDBFD50] setBool:1 forKey:@"oldBioLogPurgedAfterUpdate"];
+      [mEMORY[0x29EDBFD50] setBool:1 forKey:@"bioLogMatchFailureSettingsPrompt"];
+      [mEMORY[0x29EDBFD50] synchronize];
       [(BiometricKitXPCServerPearl *)self updateLoggingState];
       if (__osLog)
       {
@@ -10794,17 +10794,17 @@ LABEL_18:
   }
 }
 
-- (int)initPresenceDetectOperation:(id)a3 options:(id)a4 client:(id)a5
+- (int)initPresenceDetectOperation:(id)operation options:(id)options client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  optionsCopy = options;
+  clientCopy = client;
   v32 = 0.0;
   v31 = 0;
   v30 = 0;
   v29 = 0;
   v11 = mach_continuous_time();
-  if (!v8)
+  if (!operationCopy)
   {
     [BiometricKitXPCServerPearl initPresenceDetectOperation:options:client:];
     goto LABEL_36;
@@ -10813,13 +10813,13 @@ LABEL_18:
   v12 = v11;
   v28.receiver = self;
   v28.super_class = BiometricKitXPCServerPearl;
-  if ([(BiometricKitXPCServer *)&v28 initPresenceDetectOperation:v8 options:v9 client:v10])
+  if ([(BiometricKitXPCServer *)&v28 initPresenceDetectOperation:operationCopy options:optionsCopy client:clientCopy])
   {
     [BiometricKitXPCServerPearl initPresenceDetectOperation:options:client:];
     goto LABEL_36;
   }
 
-  if (v9)
+  if (optionsCopy)
   {
     if (dictionaryGetDouble())
     {
@@ -10910,16 +10910,16 @@ LABEL_36:
     v15 = v14;
   }
 
-  [v8 setPriority:{0x8000000000000000, v13}];
-  [v8 setContinuous:v29 == 1];
-  [v8 setEndTime:v15];
-  [v8 setHighPriority:HIBYTE(v31)];
-  [v8 setEyeRelief:v31];
-  [v8 setMotionDetect:v30];
+  [operationCopy setPriority:{0x8000000000000000, v13}];
+  [operationCopy setContinuous:v29 == 1];
+  [operationCopy setEndTime:v15];
+  [operationCopy setHighPriority:HIBYTE(v31)];
+  [operationCopy setEyeRelief:v31];
+  [operationCopy setMotionDetect:v30];
   if (v32 >= 0.0)
   {
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v8);
+    objc_initWeak(&from, operationCopy);
     v16 = MEMORY[0x29EDB8E68];
     v17 = v32;
     v23[0] = MEMORY[0x29EDCA5F8];
@@ -10929,11 +10929,11 @@ LABEL_36:
     objc_copyWeak(&v24, &location);
     objc_copyWeak(&v25, &from);
     v18 = [v16 timerWithTimeInterval:0 repeats:v23 block:v17];
-    [v8 setTimer:v18];
+    [operationCopy setTimer:v18];
 
-    v19 = [MEMORY[0x29EDB8E48] mainRunLoop];
-    v20 = [v8 timer];
-    [v19 addTimer:v20 forMode:*MEMORY[0x29EDB8CC0]];
+    mainRunLoop = [MEMORY[0x29EDB8E48] mainRunLoop];
+    timer = [operationCopy timer];
+    [mainRunLoop addTimer:timer forMode:*MEMORY[0x29EDB8CC0]];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v24);
@@ -10974,21 +10974,21 @@ void __73__BiometricKitXPCServerPearl_initPresenceDetectOperation_options_client
   }
 }
 
-- (int)performPresenceDetectCommand:(id)a3 restart:(BOOL)a4
+- (int)performPresenceDetectCommand:(id)command restart:(BOOL)restart
 {
-  v4 = a4;
+  restartCopy = restart;
   v44 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  commandCopy = command;
   v42 = 0;
   v41 = 0;
   v7 = mach_continuous_time();
   obj = [(BiometricKitXPCServer *)self bioOpsQueue];
   objc_sync_enter(obj);
-  v35 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v35);
-  v8 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  v9 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  v10 = [v8 arrayByAddingObjectsFromArray:v9];
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
+  activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  v10 = [activeBioOpsQueue2 arrayByAddingObjectsFromArray:bioOpsQueue];
   v11 = [MEMORY[0x29EDBA0A8] predicateWithBlock:&__block_literal_global_898];
   v12 = [v10 filteredArrayUsingPredicate:v11];
 
@@ -11009,9 +11009,9 @@ void __73__BiometricKitXPCServerPearl_initPresenceDetectOperation_options_client
   v16 = v12;
   v17 = [v16 countByEnumeratingWithState:&v37 objects:v43 count:16];
   v31 = v14;
-  v32 = v4;
-  v33 = self;
-  v34 = v6;
+  v32 = restartCopy;
+  selfCopy = self;
+  v34 = commandCopy;
   if (!v17)
   {
     v22 = -1;
@@ -11033,10 +11033,10 @@ void __73__BiometricKitXPCServerPearl_initPresenceDetectOperation_options_client
       }
 
       v24 = *(*(&v37 + 1) + 8 * i);
-      v25 = [v24 endTime];
-      if (v22 >= v25)
+      endTime = [v24 endTime];
+      if (v22 >= endTime)
       {
-        v22 = v25;
+        v22 = endTime;
       }
 
       if (v20)
@@ -11114,7 +11114,7 @@ LABEL_24:
   while (v17);
 LABEL_30:
 
-  objc_sync_exit(v35);
+  objc_sync_exit(activeBioOpsQueue);
   objc_sync_exit(obj);
 
   if (v22 <= v7)
@@ -11138,7 +11138,7 @@ LABEL_30:
     v42 = 1;
   }
 
-  v28 = [(BiometricKitXPCServerPearl *)v33 performCommand:5 inValue:0 inData:&v41 inSize:9 outData:0 outSize:0];
+  v28 = [(BiometricKitXPCServerPearl *)selfCopy performCommand:5 inValue:0 inData:&v41 inSize:9 outData:0 outSize:0];
   if (v28)
   {
     [BiometricKitXPCServerPearl performPresenceDetectCommand:restart:];
@@ -11178,20 +11178,20 @@ LABEL_4:
   return v3;
 }
 
-- (int)cancelWithClient:(id)a3
+- (int)cancelWithClient:(id)client
 {
   v32 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  objc_sync_enter(v5);
-  v6 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-  objc_sync_enter(v6);
+  clientCopy = client;
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  objc_sync_enter(bioOpsQueue);
+  activeBioOpsQueue = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+  objc_sync_enter(activeBioOpsQueue);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  bioOpsQueue2 = [(BiometricKitXPCServer *)self bioOpsQueue];
+  v8 = [bioOpsQueue2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v8)
   {
     v9 = *v28;
@@ -11201,13 +11201,13 @@ LABEL_4:
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(bioOpsQueue2);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 client];
-        v13 = v12;
-        if (v12 == v4)
+        client = [v11 client];
+        v13 = client;
+        if (client == clientCopy)
         {
           v14 = [v11 type] == 3;
 
@@ -11223,7 +11223,7 @@ LABEL_4:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v8 = [bioOpsQueue2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
         continue;
@@ -11237,7 +11237,7 @@ LABEL_13:
 
   v26.receiver = self;
   v26.super_class = BiometricKitXPCServerPearl;
-  v15 = [(BiometricKitXPCServer *)&v26 cancelWithClient:v4];
+  v15 = [(BiometricKitXPCServer *)&v26 cancelWithClient:clientCopy];
   if (v15)
   {
     [BiometricKitXPCServerPearl cancelWithClient:];
@@ -11246,38 +11246,38 @@ LABEL_13:
 
   if (v8)
   {
-    v16 = [(BiometricKitXPCServer *)self runningBioOp];
-    if ([v16 type] != 3)
+    runningBioOp = [(BiometricKitXPCServer *)self runningBioOp];
+    if ([runningBioOp type] != 3)
     {
 LABEL_23:
 
       goto LABEL_26;
     }
 
-    v17 = [(BiometricKitXPCServer *)self runningBioOp];
-    if ([v17 status] != 2)
+    runningBioOp2 = [(BiometricKitXPCServer *)self runningBioOp];
+    if ([runningBioOp2 status] != 2)
     {
 
       goto LABEL_26;
     }
 
-    v18 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
-    v19 = [v18 count] == 1;
+    activeBioOpsQueue2 = [(BiometricKitXPCServer *)self activeBioOpsQueue];
+    v19 = [activeBioOpsQueue2 count] == 1;
 
     if (v19)
     {
-      v16 = [(BiometricKitXPCServer *)self runningBioOp];
-      if (![v16 checked] || (objc_msgSend(v16, "finished") & 1) == 0 && (objc_msgSend(v16, "timeouted") & 1) == 0)
+      runningBioOp = [(BiometricKitXPCServer *)self runningBioOp];
+      if (![runningBioOp checked] || (objc_msgSend(runningBioOp, "finished") & 1) == 0 && (objc_msgSend(runningBioOp, "timeouted") & 1) == 0)
       {
-        v20 = [(BiometricKitXPCServer *)self runningBioOp];
-        v21 = [(BiometricKitXPCServerPearl *)self performPresenceDetectCommand:v20 restart:1];
+        runningBioOp3 = [(BiometricKitXPCServer *)self runningBioOp];
+        v21 = [(BiometricKitXPCServerPearl *)self performPresenceDetectCommand:runningBioOp3 restart:1];
 
         if (v21)
         {
           [BiometricKitXPCServerPearl cancelWithClient:];
-          v24 = [(BiometricKitXPCServer *)self runningBioOp];
-          v25 = [v24 client];
-          [(BiometricKitXPCServerPearl *)self cancelWithClient:v25];
+          runningBioOp4 = [(BiometricKitXPCServer *)self runningBioOp];
+          client2 = [runningBioOp4 client];
+          [(BiometricKitXPCServerPearl *)self cancelWithClient:client2];
         }
       }
 
@@ -11286,19 +11286,19 @@ LABEL_23:
   }
 
 LABEL_26:
-  objc_sync_exit(v6);
+  objc_sync_exit(activeBioOpsQueue);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(bioOpsQueue);
   v22 = *MEMORY[0x29EDCA608];
   return v15;
 }
 
-- (int)updateIdentity:(id)a3 withOptions:(id)a4 withClient:(id)a5
+- (int)updateIdentity:(id)identity withOptions:(id)options withClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 type] != 4)
+  identityCopy = identity;
+  optionsCopy = options;
+  clientCopy = client;
+  if ([identityCopy type] != 4)
   {
     [BiometricKitXPCServerPearl updateIdentity:withOptions:withClient:];
 LABEL_7:
@@ -11308,7 +11308,7 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = BiometricKitXPCServerPearl;
-  if ([(BiometricKitXPCServer *)&v13 updateIdentity:v8 withOptions:v9 withClient:v10])
+  if ([(BiometricKitXPCServer *)&v13 updateIdentity:identityCopy withOptions:optionsCopy withClient:clientCopy])
   {
     [BiometricKitXPCServerPearl updateIdentity:withOptions:withClient:];
     goto LABEL_7;
@@ -11320,7 +11320,7 @@ LABEL_4:
   return v11;
 }
 
-- (void)logRemoveIdentity:(id)a3 withClient:(id)a4
+- (void)logRemoveIdentity:(id)identity withClient:(id)client
 {
   v42 = *MEMORY[0x29EDCA608];
   if (BYTE1(self->_loggingDispatchQueue) == 1)
@@ -11328,8 +11328,8 @@ LABEL_4:
     v30 = 0;
     v31 = 0;
     v29 = 8;
-    v6 = a4;
-    v7 = a3;
+    clientCopy = client;
+    identityCopy = identity;
     v8 = [(BiometricKitXPCServerPearl *)self performCommand:61 inValue:1 inData:0 inSize:0 outData:&v30 outSize:&v29];
     if (v8)
     {
@@ -11478,8 +11478,8 @@ LABEL_10:
                 {
                   v19 = [MEMORY[0x29EDB8DA0] dataWithBytesNoCopy:v17 length:v31 freeWhenDone:1];
 LABEL_76:
-                  [self->_pearlDeviceState logRemoveIdentity:v7 withTemplateListData:v13 templateSize:v9 client:v6 isPO:0];
-                  [self->_pearlDeviceState logRemoveIdentity:v7 withTemplateListData:v19 templateSize:v15 client:v6 isPO:1];
+                  [self->_pearlDeviceState logRemoveIdentity:identityCopy withTemplateListData:v13 templateSize:v9 client:clientCopy isPO:0];
+                  [self->_pearlDeviceState logRemoveIdentity:identityCopy withTemplateListData:v19 templateSize:v15 client:clientCopy isPO:1];
 
                   goto LABEL_77;
                 }
@@ -11698,13 +11698,13 @@ LABEL_77:
   v28 = *MEMORY[0x29EDCA608];
 }
 
-- (int)removeIdentity:(id)a3 withOptions:(id)a4 withClient:(id)a5
+- (int)removeIdentity:(id)identity withOptions:(id)options withClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  identityCopy = identity;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = BiometricKitXPCServerPearl;
-  v10 = [(BiometricKitXPCServer *)&v12 removeIdentity:v8 withOptions:a4 withClient:v9];
+  v10 = [(BiometricKitXPCServer *)&v12 removeIdentity:identityCopy withOptions:options withClient:clientCopy];
   if (v10)
   {
     [BiometricKitXPCServerPearl removeIdentity:withOptions:withClient:];
@@ -11712,16 +11712,16 @@ LABEL_77:
 
   else
   {
-    [(BiometricKitXPCServerPearl *)self logRemoveIdentity:v8 withClient:v9];
+    [(BiometricKitXPCServerPearl *)self logRemoveIdentity:identityCopy withClient:clientCopy];
   }
 
   return v10;
 }
 
-- (int64_t)getDeviceStateWithClient:(id)a3
+- (int64_t)getDeviceStateWithClient:(id)client
 {
   v13 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  clientCopy = client;
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -11736,7 +11736,7 @@ LABEL_77:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = clientCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "getDeviceStateWithClient: %@\n", &v11, 0xCu);
   }
 
@@ -11762,10 +11762,10 @@ LABEL_77:
   return v7;
 }
 
-- (int)startNewMatchAttemptWithClient:(id)a3
+- (int)startNewMatchAttemptWithClient:(id)client
 {
   v19 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  clientCopy = client;
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -11780,15 +11780,15 @@ LABEL_77:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = clientCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "startNewMatchAttemptWithClient: %@\n", &v17, 0xCu);
   }
 
-  v7 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  objc_sync_enter(v7);
-  v8 = [(BiometricKitXPCServer *)self runningBioOp];
-  v9 = [v8 client];
-  v10 = v9 == v4;
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  objc_sync_enter(bioOpsQueue);
+  runningBioOp = [(BiometricKitXPCServer *)self runningBioOp];
+  client = [runningBioOp client];
+  v10 = client == clientCopy;
 
   if (v10)
   {
@@ -11808,7 +11808,7 @@ LABEL_77:
 
   v11 = v17;
 LABEL_9:
-  objc_sync_exit(v7);
+  objc_sync_exit(bioOpsQueue);
 
   if (__osLogTrace)
   {
@@ -11846,10 +11846,10 @@ LABEL_17:
   return 0;
 }
 
-- (int)completeEnrollmentWithClient:(id)a3
+- (int)completeEnrollmentWithClient:(id)client
 {
   v18 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  clientCopy = client;
   v5 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -11864,21 +11864,21 @@ LABEL_17:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = clientCopy;
     _os_log_impl(&dword_296CA4000, v6, OS_LOG_TYPE_DEBUG, "completeEnrollmentWithClient: %@\n", &v16, 0xCu);
   }
 
-  v7 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  objc_sync_enter(v7);
-  v8 = [(BiometricKitXPCServer *)self runningBioOp];
-  v9 = [v8 client];
-  v10 = v9 == v4;
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  objc_sync_enter(bioOpsQueue);
+  runningBioOp = [(BiometricKitXPCServer *)self runningBioOp];
+  client = [runningBioOp client];
+  v10 = client == clientCopy;
 
   if (v10)
   {
     if (![(BiometricKitXPCServerPearl *)self performCommand:42 inValue:0 inData:0 inSize:0 outData:0 outSize:0])
     {
-      objc_sync_exit(v7);
+      objc_sync_exit(bioOpsQueue);
 
       if (__osLogTrace)
       {
@@ -11910,7 +11910,7 @@ LABEL_17:
   }
 
   v12 = v16;
-  objc_sync_exit(v7);
+  objc_sync_exit(bioOpsQueue);
 
   if (__osLogTrace)
   {
@@ -11935,12 +11935,12 @@ LABEL_14:
   return v12;
 }
 
-- (int)setTemplate:(id)a3 forIdentity:(id)a4 withClient:(id)a5
+- (int)setTemplate:(id)template forIdentity:(id)identity withClient:(id)client
 {
   v30 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  templateCopy = template;
+  identityCopy = identity;
+  clientCopy = client;
   v11 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -11956,15 +11956,15 @@ LABEL_14:
   {
     v13 = v12;
     v24 = 134218498;
-    v25 = [v8 length];
+    v25 = [templateCopy length];
     v26 = 2112;
-    v27 = v9;
+    v27 = identityCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = clientCopy;
     _os_log_impl(&dword_296CA4000, v13, OS_LOG_TYPE_DEBUG, "setTemplate: [%ld] %@ %@\n", &v24, 0x20u);
   }
 
-  if (!v8)
+  if (!templateCopy)
   {
     [BiometricKitXPCServerPearl setTemplate:forIdentity:withClient:];
 LABEL_22:
@@ -11972,19 +11972,19 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v9)
+  if (!identityCopy)
   {
     [BiometricKitXPCServerPearl setTemplate:forIdentity:withClient:];
     goto LABEL_22;
   }
 
-  if (-[BiometricKitXPCServer checkCatacombForUser:](self, "checkCatacombForUser:", [v9 userID]))
+  if (-[BiometricKitXPCServer checkCatacombForUser:](self, "checkCatacombForUser:", [identityCopy userID]))
   {
     [BiometricKitXPCServerPearl setTemplate:forIdentity:withClient:];
     goto LABEL_22;
   }
 
-  v14 = [v8 length];
+  v14 = [templateCopy length];
   v15 = malloc_type_malloc(v14 + 24, 0x1000040504FFAC1uLL);
   if (!v15)
   {
@@ -11993,12 +11993,12 @@ LABEL_22:
   }
 
   v16 = v15;
-  *v15 = [v9 userID];
-  v17 = [v9 uuid];
-  [v17 getUUIDBytes:v16 + 1];
+  *v15 = [identityCopy userID];
+  uuid = [identityCopy uuid];
+  [uuid getUUIDBytes:v16 + 1];
 
   v16[5] = v14;
-  memcpy(v16 + 6, [v8 bytes], v14);
+  memcpy(v16 + 6, [templateCopy bytes], v14);
   v18 = [(BiometricKitXPCServerPearl *)self performCommand:49 inValue:0 inData:v16 inSize:v14 + 24 outData:0 outSize:0];
   if (!v18)
   {
@@ -12051,10 +12051,10 @@ LABEL_17:
   return v20;
 }
 
-- (int)isPeriocularEnrollmentSupported:(BOOL *)a3 withClient:(id)a4
+- (int)isPeriocularEnrollmentSupported:(BOOL *)supported withClient:(id)client
 {
   *&v17[5] = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  clientCopy = client;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12069,19 +12069,19 @@ LABEL_17:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *v17 = v6;
+    *v17 = clientCopy;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "isPeriocularEnrollmentSupported: %@\n", buf, 0xCu);
   }
 
   v15 = 0;
   v14 = 1;
-  if (a3)
+  if (supported)
   {
     if (![(BiometricKitXPCServerPearl *)self performCommand:67 inValue:0 inData:0 inSize:0 outData:&v15 outSize:&v14])
     {
       if (v14 == 1)
       {
-        *a3 = v15 != 0;
+        *supported = v15 != 0;
       }
 
       else
@@ -12146,10 +12146,10 @@ LABEL_16:
   return v10;
 }
 
-- (int)getPeriocularMatchStateForUser:(unsigned int)a3 state:(int64_t *)a4 withClient:(id)a5
+- (int)getPeriocularMatchStateForUser:(unsigned int)user state:(int64_t *)state withClient:(id)client
 {
   v23 = *MEMORY[0x29EDCA608];
-  v8 = a5;
+  clientCopy = client;
   v9 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12164,22 +12164,22 @@ LABEL_16:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109378;
-    v20 = a3;
+    userCopy = user;
     v21 = 2112;
-    v22 = v8;
+    v22 = clientCopy;
     _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEBUG, "getPeriocularMatchStateForUser: %u %@\n", buf, 0x12u);
   }
 
   v17 = 0;
-  v18 = a3;
+  userCopy2 = user;
   v16 = 4;
-  if (a4)
+  if (state)
   {
-    if (![(BiometricKitXPCServerPearl *)self performCommand:69 inValue:0 inData:&v18 inSize:4 outData:&v17 outSize:&v16])
+    if (![(BiometricKitXPCServerPearl *)self performCommand:69 inValue:0 inData:&userCopy2 inSize:4 outData:&v17 outSize:&v16])
     {
       if (v16 == 4)
       {
-        *a4 = v17;
+        *state = v17;
       }
 
       else
@@ -12200,7 +12200,7 @@ LABEL_16:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109376;
-        v20 = 0;
+        userCopy = 0;
         v21 = 1024;
         LODWORD(v22) = v17;
         _os_log_impl(&dword_296CA4000, v11, OS_LOG_TYPE_DEBUG, "getPeriocularMatchStateForUser: -> (%{errno}d), state=0x%x\n", buf, 0xEu);
@@ -12232,7 +12232,7 @@ LABEL_16:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 67109376;
-    v20 = v12;
+    userCopy = v12;
     v21 = 1024;
     LODWORD(v22) = v17;
     _os_log_impl(&dword_296CA4000, v15, OS_LOG_TYPE_ERROR, "getPeriocularMatchStateForUser: -> (%{errno}d), state=0x%x\n", buf, 0xEu);
@@ -12244,11 +12244,11 @@ LABEL_16:
   return v12;
 }
 
-- (int)removePeriocularTemplatesWithOptions:(id)a3 withClient:(id)a4
+- (int)removePeriocularTemplatesWithOptions:(id)options withClient:(id)client
 {
   v37 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  clientCopy = client;
   v8 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12263,22 +12263,22 @@ LABEL_16:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = optionsCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = clientCopy;
     _os_log_impl(&dword_296CA4000, v9, OS_LOG_TYPE_DEBUG, "removePeriocularTemplatesWithOptions: %@ %@\n", buf, 0x16u);
   }
 
   v35 = 0;
   *&v36 = 0;
   *(&v36 + 6) = 0;
-  if (!v6)
+  if (!optionsCopy)
   {
     [BiometricKitXPCServerPearl removePeriocularTemplatesWithOptions:withClient:];
     goto LABEL_54;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"BKRemovePOTemplatesIdentityUserID"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"BKRemovePOTemplatesIdentityUserID"];
   if (!v10)
   {
     [BiometricKitXPCServerPearl removePeriocularTemplatesWithOptions:withClient:];
@@ -12293,15 +12293,15 @@ LABEL_16:
     goto LABEL_54;
   }
 
-  v12 = [v11 unsignedIntValue];
-  if (v12 == -1)
+  unsignedIntValue = [v11 unsignedIntValue];
+  if (unsignedIntValue == -1)
   {
     [(BiometricKitXPCServerPearl *)v11 removePeriocularTemplatesWithOptions:buf withClient:&v31 + 4];
     goto LABEL_54;
   }
 
-  v13 = v12;
-  v14 = [v6 objectForKeyedSubscript:@"BKRemovePOTemplatesIdentityUUID"];
+  v13 = unsignedIntValue;
+  v14 = [optionsCopy objectForKeyedSubscript:@"BKRemovePOTemplatesIdentityUUID"];
 
   if (v14)
   {
@@ -12315,14 +12315,14 @@ LABEL_16:
     v15 = v14;
   }
 
-  v16 = [v6 objectForKeyedSubscript:@"BKRemovePOTemplatesRemoveAll"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"BKRemovePOTemplatesRemoveAll"];
 
   if (v16)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
       goto LABEL_17;
     }
 
@@ -12334,13 +12334,13 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  v20 = 0;
+  bOOLValue = 0;
 LABEL_17:
   LODWORD(v35) = v13;
   if (v14)
   {
     [v14 getUUIDBytes:&v35 + 4];
-    if (!v20)
+    if (!bOOLValue)
     {
       goto LABEL_20;
     }
@@ -12349,7 +12349,7 @@ LABEL_17:
   }
 
   BYTE12(v36) = 1;
-  if (v20)
+  if (bOOLValue)
   {
 LABEL_19:
     BYTE13(v36) = 1;
@@ -12390,10 +12390,10 @@ LABEL_51:
     goto LABEL_55;
   }
 
-  v22 = [(BiometricKitXPCServerPearl *)self updatePropertiesOfIdentities];
-  if (v22)
+  updatePropertiesOfIdentities = [(BiometricKitXPCServerPearl *)self updatePropertiesOfIdentities];
+  if (updatePropertiesOfIdentities)
   {
-    v25 = v22;
+    v25 = updatePropertiesOfIdentities;
     if (__osLog)
     {
       v28 = __osLog;
@@ -12422,8 +12422,8 @@ LABEL_51:
     goto LABEL_51;
   }
 
-  v23 = [(BiometricKitXPCServer *)self saveCatacomb];
-  if (!v23)
+  saveCatacomb = [(BiometricKitXPCServer *)self saveCatacomb];
+  if (!saveCatacomb)
   {
     if (__osLogTrace)
     {
@@ -12446,7 +12446,7 @@ LABEL_51:
     goto LABEL_29;
   }
 
-  v25 = v23;
+  v25 = saveCatacomb;
   if (__osLog)
   {
     v28 = __osLog;
@@ -12496,13 +12496,13 @@ LABEL_29:
   return v25;
 }
 
-- (int)queryPeriocularMigrationState:(BOOL *)a3 clear:(BOOL)a4
+- (int)queryPeriocularMigrationState:(BOOL *)state clear:(BOOL)clear
 {
   v9 = 0;
   v7 = 0;
   v6 = 1;
   v8 = 1;
-  v10 = a4;
+  clearCopy = clear;
   if ([(BiometricKitXPCServerPearl *)self performCommand:57 inValue:0 inData:&v8 inSize:6 outData:&v7 outSize:&v6])
   {
     [BiometricKitXPCServerPearl queryPeriocularMigrationState:clear:];
@@ -12516,19 +12516,19 @@ LABEL_29:
   }
 
   result = 0;
-  if (a3)
+  if (state)
   {
-    *a3 = v7 != 0;
+    *state = v7 != 0;
   }
 
   return result;
 }
 
-- (int)suspendEnrollment:(BOOL)a3 withClient:(id)a4
+- (int)suspendEnrollment:(BOOL)enrollment withClient:(id)client
 {
-  v4 = a3;
+  enrollmentCopy = enrollment;
   v24 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  clientCopy = client;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12543,22 +12543,22 @@ LABEL_29:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109378;
-    v21 = v4;
+    v21 = enrollmentCopy;
     v22 = 2112;
-    v23 = v6;
+    v23 = clientCopy;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "suspendEnrollment: %u %@\n", buf, 0x12u);
   }
 
   v19 = 0;
-  v9 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  objc_sync_enter(v9);
-  v10 = [(BiometricKitXPCServer *)self runningBioOp];
-  v11 = [v10 client];
-  v12 = v11 == v6;
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  objc_sync_enter(bioOpsQueue);
+  runningBioOp = [(BiometricKitXPCServer *)self runningBioOp];
+  client = [runningBioOp client];
+  v12 = client == clientCopy;
 
   if (v12)
   {
-    v19 = v4;
+    v19 = enrollmentCopy;
     if (![(BiometricKitXPCServerPearl *)self performCommand:48 inValue:0 inData:&v19 inSize:1 outData:0 outSize:0])
     {
       v13 = 0;
@@ -12575,7 +12575,7 @@ LABEL_29:
 
   v13 = *buf;
 LABEL_9:
-  objc_sync_exit(v9);
+  objc_sync_exit(bioOpsQueue);
 
   if (__osLogTrace)
   {
@@ -12613,11 +12613,11 @@ LABEL_17:
   return v13;
 }
 
-- (int)queryIdentityMigrationFailureForUser:(unsigned int)a3 failed:(BOOL *)a4 clear:(BOOL)a5 withClient:(id)a6
+- (int)queryIdentityMigrationFailureForUser:(unsigned int)user failed:(BOOL *)failed clear:(BOOL)clear withClient:(id)client
 {
-  v6 = a5;
+  clearCopy = clear;
   v29 = *MEMORY[0x29EDCA608];
-  v10 = a6;
+  clientCopy = client;
   v11 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12632,13 +12632,13 @@ LABEL_17:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109890;
-    *&buf[4] = a3;
+    *&buf[4] = user;
     v23 = 2048;
-    v24 = a4;
+    failedCopy = failed;
     v25 = 1024;
-    v26 = v6;
+    v26 = clearCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = clientCopy;
     _os_log_impl(&dword_296CA4000, v12, OS_LOG_TYPE_DEBUG, "queryIdentityMigrationFailureForUser: %u %p %u %@\n", buf, 0x22u);
   }
 
@@ -12647,8 +12647,8 @@ LABEL_17:
   *buf = 1;
   if ([(BiometricKitXPCServer *)self isClassCFileAccessible])
   {
-    *(v19 + 1) = a3;
-    BYTE1(v19[1]) = v6;
+    *(v19 + 1) = user;
+    BYTE1(v19[1]) = clearCopy;
     if ([(BiometricKitXPCServerPearl *)self performCommand:57 inValue:0 inData:v19 inSize:6 outData:&v18 outSize:buf])
     {
       [BiometricKitXPCServerPearl queryIdentityMigrationFailureForUser:failed:clear:withClient:];
@@ -12658,14 +12658,14 @@ LABEL_17:
     {
       if (*buf == 1)
       {
-        if (v6)
+        if (clearCopy)
         {
           [(BiometricKitXPCServer *)self saveCatacomb];
         }
 
-        if (a4)
+        if (failed)
         {
-          *a4 = v18 != 0;
+          *failed = v18 != 0;
         }
 
         if (__osLogTrace)
@@ -12722,11 +12722,11 @@ LABEL_19:
   return v14;
 }
 
-- (int)enableMatchAutoRetry:(BOOL)a3 withClient:(id)a4
+- (int)enableMatchAutoRetry:(BOOL)retry withClient:(id)client
 {
-  v4 = a3;
+  retryCopy = retry;
   v26 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  clientCopy = client;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12741,18 +12741,18 @@ LABEL_19:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109378;
-    v23 = v4;
+    v23 = retryCopy;
     v24 = 2112;
-    v25 = v6;
+    v25 = clientCopy;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "enableMatchAutoRetry: %u %@\n", buf, 0x12u);
   }
 
-  v20 = v4;
-  v9 = [(BiometricKitXPCServer *)self bioOpsQueue];
-  objc_sync_enter(v9);
-  v10 = [(BiometricKitXPCServer *)self runningBioOp];
-  v11 = [v10 client];
-  v12 = v11 == v6;
+  v20 = retryCopy;
+  bioOpsQueue = [(BiometricKitXPCServer *)self bioOpsQueue];
+  objc_sync_enter(bioOpsQueue);
+  runningBioOp = [(BiometricKitXPCServer *)self runningBioOp];
+  client = [runningBioOp client];
+  v12 = client == clientCopy;
 
   if (v12)
   {
@@ -12775,7 +12775,7 @@ LABEL_19:
   v15 = v21;
   v14 = *buf;
 LABEL_9:
-  objc_sync_exit(v9);
+  objc_sync_exit(bioOpsQueue);
 
   if (v14)
   {
@@ -12820,10 +12820,10 @@ LABEL_9:
   return v14;
 }
 
-- (int)prewarmCamera:(unint64_t)a3 withClient:(id)a4
+- (int)prewarmCamera:(unint64_t)camera withClient:(id)client
 {
   v17 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  clientCopy = client;
   v7 = MEMORY[0x29EDCA988];
   if (__osLogTrace)
   {
@@ -12838,13 +12838,13 @@ LABEL_9:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v13 = 134218242;
-    v14 = a3;
+    cameraCopy = camera;
     v15 = 2112;
-    v16 = v6;
+    v16 = clientCopy;
     _os_log_impl(&dword_296CA4000, v8, OS_LOG_TYPE_DEBUG, "prewarmCamera: %lu %@\n", &v13, 0x16u);
   }
 
-  v9 = [(BiometricKitXPCServerPearl *)self performCommand:43 inValue:a3 inData:0 inSize:0 outData:0 outSize:0];
+  v9 = [(BiometricKitXPCServerPearl *)self performCommand:43 inValue:camera inData:0 inSize:0 outData:0 outSize:0];
   if (v9)
   {
     [BiometricKitXPCServerPearl prewarmCamera:withClient:];
@@ -12865,7 +12865,7 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v13 = 67109120;
-      LODWORD(v14) = 0;
+      LODWORD(cameraCopy) = 0;
       _os_log_impl(&dword_296CA4000, v10, OS_LOG_TYPE_DEBUG, "prewarmCamera: -> (%{errno}d)\n", &v13, 8u);
     }
   }
@@ -12874,19 +12874,19 @@ LABEL_9:
   return v9;
 }
 
-- (void)logSequenceDebugWithContext:(id *)a3
+- (void)logSequenceDebugWithContext:(id *)context
 {
   v47 = *MEMORY[0x29EDCA608];
   v6 = MEMORY[0x29EDCA988];
   v7 = OUTLINED_FUNCTION_40(__osLogTrace);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    OUTLINED_FUNCTION_49(&dword_296CA4000, v8, v9, "logSequenceDebugWithContext:\n", v10, v11, v12, v13, v32, v33, v34, v35, v36, v37, v38, v39, 0);
+    OUTLINED_FUNCTION_49(&dword_296CA4000, v8, v9, "logSequenceDebugWithContext:\n", v10, v11, v12, v13, v32, v33, v34, v35, selfCopy, v37, v38, v39, 0);
   }
 
   v38 = 0;
   v39 = 0;
-  if (LOBYTE(self->_loggingDispatchQueue) == 1 && a3->var1)
+  if (LOBYTE(self->_loggingDispatchQueue) == 1 && context->var1)
   {
     v14 = MEMORY[0x29C262290](HIDWORD(self->_driverNotifyQueue), 2, *MEMORY[0x29EDCA6B0], &v39, &v38, 4097);
     if (v14)
@@ -12914,14 +12914,14 @@ LABEL_9:
       v33 = 3221225472;
       v34 = __58__BiometricKitXPCServerPearl_logSequenceDebugWithContext___block_invoke;
       v35 = &unk_29EE546A8;
-      v36 = self;
+      selfCopy = self;
       v37 = v39;
       v16 = MEMORY[0x29C262C70](&v32);
       v17 = objc_alloc(MEMORY[0x29EDB8DA0]);
       v18 = [v17 initWithBytesNoCopy:v39 length:v38 deallocator:v16];
       if (v18)
       {
-        [self->_pearlDeviceState logSequenceDebug:v18 withContext:a3];
+        [self->_pearlDeviceState logSequenceDebug:v18 withContext:context];
       }
 
       else
@@ -12959,7 +12959,7 @@ LABEL_9:
   v19 = OUTLINED_FUNCTION_40(__osLogTrace);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    OUTLINED_FUNCTION_49(&dword_296CA4000, v20, v21, "logSequenceDebugWithContext: -> void\n", v22, v23, v24, v25, v32, v33, v34, v35, v36, v37, v38, v39, 0);
+    OUTLINED_FUNCTION_49(&dword_296CA4000, v20, v21, "logSequenceDebugWithContext: -> void\n", v22, v23, v24, v25, v32, v33, v34, v35, selfCopy, v37, v38, v39, 0);
   }
 
   v26 = *MEMORY[0x29EDCA608];

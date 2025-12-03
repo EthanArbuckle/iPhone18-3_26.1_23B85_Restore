@@ -1,59 +1,59 @@
 @interface NSUserDefaults
-+ (id)AUDeveloperSettingsObjectWithKey:(id)a3;
-+ (void)AUDeveloperSettingsSetObject:(id)a3 withKey:(id)a4;
-+ (void)AUDeveloperSettingsUpdateAccessory:(id)a3 withKey:(id)a4;
++ (id)AUDeveloperSettingsObjectWithKey:(id)key;
++ (void)AUDeveloperSettingsSetObject:(id)object withKey:(id)key;
++ (void)AUDeveloperSettingsUpdateAccessory:(id)accessory withKey:(id)key;
 @end
 
 @implementation NSUserDefaults
 
-+ (void)AUDeveloperSettingsSetObject:(id)a3 withKey:(id)a4
++ (void)AUDeveloperSettingsSetObject:(id)object withKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  objectCopy = object;
   if (getuid() == 278)
   {
     v7 = [NSUserDefaults alloc];
     v8 = sub_100006788(1);
-    v10 = [v7 initWithSuiteName:v8];
+    remoteObject = [v7 initWithSuiteName:v8];
 
-    [v10 setObject:v6 forKey:v5];
+    [remoteObject setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
     v9 = +[AUHelperInstance sharedInstance];
-    v10 = [v9 remoteObject];
+    remoteObject = [v9 remoteObject];
 
-    [v10 userPreferenceSetObject:v6 forSuite:1 withKey:v5];
+    [remoteObject userPreferenceSetObject:objectCopy forSuite:1 withKey:keyCopy];
   }
 }
 
-+ (void)AUDeveloperSettingsUpdateAccessory:(id)a3 withKey:(id)a4
++ (void)AUDeveloperSettingsUpdateAccessory:(id)accessory withKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  accessoryCopy = accessory;
   v7 = +[AUHelperInstance sharedInstance];
-  v8 = [v7 remoteObject];
+  remoteObject = [v7 remoteObject];
 
-  [v8 userPreferenceUpdateAccessorySettings:v6 withKey:v5];
+  [remoteObject userPreferenceUpdateAccessorySettings:accessoryCopy withKey:keyCopy];
 }
 
-+ (id)AUDeveloperSettingsObjectWithKey:(id)a3
++ (id)AUDeveloperSettingsObjectWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (getuid() == 278)
   {
     v4 = [NSUserDefaults alloc];
     v5 = sub_100006788(1);
-    v6 = [v4 initWithSuiteName:v5];
+    remoteObject = [v4 initWithSuiteName:v5];
 
-    v7 = [v6 objectForKey:v3];
+    v7 = [remoteObject objectForKey:keyCopy];
   }
 
   else
   {
     v8 = +[AUHelperInstance sharedInstance];
-    v6 = [v8 remoteObject];
+    remoteObject = [v8 remoteObject];
 
     v11 = 0;
     v12 = &v11;
@@ -66,7 +66,7 @@
     v10[2] = sub_10000418C;
     v10[3] = &unk_100081010;
     v10[4] = &v11;
-    [v6 userPreferenceObjectForSuite:1 withKey:v3 withReply:v10];
+    [remoteObject userPreferenceObjectForSuite:1 withKey:keyCopy withReply:v10];
     v7 = v12[5];
     _Block_object_dispose(&v11, 8);
   }

@@ -20,7 +20,7 @@
 
 - (Class)Any
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
 
   v3 = v1(v2);
 
@@ -39,7 +39,7 @@
 
 - (uint64_t)Any
 {
-  v2 = *(a1 + 32);
+  v2 = *(self + 32);
   if (a2)
   {
     v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

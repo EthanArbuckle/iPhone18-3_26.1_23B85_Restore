@@ -1,12 +1,12 @@
 @interface NetworkPerformanceDiagnosticViewController
-- (NetworkPerformanceDiagnosticViewController)initWithCoder:(id)a3;
-- (NetworkPerformanceDiagnosticViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NetworkPerformanceDiagnosticViewController)initWithCoder:(id)coder;
+- (NetworkPerformanceDiagnosticViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)cancel;
 - (void)presentSwiftUIView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation NetworkPerformanceDiagnosticViewController
@@ -27,18 +27,18 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_10000A17C(v9);
   sub_10000AD50(v9, v7);
   v11 = objc_allocWithZone(sub_10000239C(&qword_100031BD8, qword_100023160));
   v12 = sub_1000204E4();
   [v12 setModalInPresentation:1];
-  [(NetworkPerformanceDiagnosticViewController *)v10 presentViewController:v12 animated:1 completion:0];
+  [(NetworkPerformanceDiagnosticViewController *)selfCopy presentViewController:v12 animated:1 completion:0];
 
   sub_10000D120(v9);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   sub_100020914();
   sub_100020904();
@@ -48,8 +48,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_10000BCE4(a3);
+  selfCopy = self;
+  sub_10000BCE4(appear);
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -65,7 +65,7 @@
   return 2;
 }
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   sub_100020914();
   sub_100020904();
@@ -75,7 +75,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (inputs)
   {
     type metadata accessor for NetworkPerformanceDiagnosticInputs();
     v6 = swift_dynamicCastClass();
@@ -114,16 +114,16 @@
   v7 = sub_100020944();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   sub_100020914();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_100020904();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_10000FEDC(0, 0, v6, &unk_100023158, v10);
 }
 
-- (NetworkPerformanceDiagnosticViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NetworkPerformanceDiagnosticViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_100020914();
   sub_100020904();
@@ -133,28 +133,28 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_100020874();
     *&self->DKDiagnosticViewController_opaque[OBJC_IVAR___NetworkPerformanceDiagnosticViewController_inputs] = 0;
-    v7 = a4;
-    a3 = sub_100020854();
+    bundleCopy = bundle;
+    name = sub_100020854();
   }
 
   else
   {
     *&self->DKDiagnosticViewController_opaque[OBJC_IVAR___NetworkPerformanceDiagnosticViewController_inputs] = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for NetworkPerformanceDiagnosticViewController();
-  v9 = [(NetworkPerformanceDiagnosticViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(NetworkPerformanceDiagnosticViewController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }
 
-- (NetworkPerformanceDiagnosticViewController)initWithCoder:(id)a3
+- (NetworkPerformanceDiagnosticViewController)initWithCoder:(id)coder
 {
   sub_100020914();
   sub_100020904();
@@ -167,8 +167,8 @@
   *&self->DKDiagnosticViewController_opaque[OBJC_IVAR___NetworkPerformanceDiagnosticViewController_inputs] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for NetworkPerformanceDiagnosticViewController();
-  v5 = a3;
-  v6 = [(NetworkPerformanceDiagnosticViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(NetworkPerformanceDiagnosticViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

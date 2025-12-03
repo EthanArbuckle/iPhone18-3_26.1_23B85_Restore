@@ -1,17 +1,17 @@
 @interface MCMContainerIdentity
-+ (id)containerIdentityFromPlist:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContainerIdentity:(id)a3;
++ (id)containerIdentityFromPlist:(id)plist userIdentityCache:(id)cache error:(unint64_t *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContainerIdentity:(id)identity;
 - (BOOL)transient;
 - (MCMContainerIdentity)init;
-- (MCMContainerIdentity)initWithLibsystemContainer:(container_object_s *)a3 defaultUserIdentity:(id)a4 userIdentityCache:(id)a5 error:(unint64_t *)a6;
-- (MCMContainerIdentity)initWithVersion1PlistDictionary:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5;
+- (MCMContainerIdentity)initWithLibsystemContainer:(container_object_s *)container defaultUserIdentity:(id)identity userIdentityCache:(id)cache error:(unint64_t *)error;
+- (MCMContainerIdentity)initWithVersion1PlistDictionary:(id)dictionary userIdentityCache:(id)cache error:(unint64_t *)error;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)containerIdentity;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)identityByChangingTransient:(BOOL)a3;
-- (id)identityByChangingUserIdentity:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)identityByChangingTransient:(BOOL)transient;
+- (id)identityByChangingUserIdentity:(id)identity;
 - (id)nontransientContainerIdentity;
 - (id)plist;
 - (id)transientContainerIdentity;
@@ -28,47 +28,47 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(MCMContainerIdentityMinimal *)self userIdentity];
-  v7 = [(MCMContainerIdentityMinimal *)self identifier];
-  v8 = [v7 copyWithZone:a3];
-  v9 = [(MCMContainerIdentityMinimal *)self containerConfig];
-  v10 = [(MCMContainerIdentityMinimal *)self platform];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  userIdentity = [(MCMContainerIdentityMinimal *)self userIdentity];
+  identifier = [(MCMContainerIdentityMinimal *)self identifier];
+  v8 = [identifier copyWithZone:zone];
+  containerConfig = [(MCMContainerIdentityMinimal *)self containerConfig];
+  platform = [(MCMContainerIdentityMinimal *)self platform];
   transient = self->_transient;
-  v12 = [(MCMContainerIdentityMinimal *)self userIdentityCache];
-  v13 = [v5 initWithUserIdentity:v6 identifier:v8 containerConfig:v9 platform:v10 transient:transient userIdentityCache:v12 error:0];
+  userIdentityCache = [(MCMContainerIdentityMinimal *)self userIdentityCache];
+  v13 = [v5 initWithUserIdentity:userIdentity identifier:v8 containerConfig:containerConfig platform:platform transient:transient userIdentityCache:userIdentityCache error:0];
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self == v4;
+  equalCopy = equal;
+  v5 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MCMContainerIdentity *)self isEqualToContainerIdentity:v4];
+    v5 = [(MCMContainerIdentity *)self isEqualToContainerIdentity:equalCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (BOOL)isEqualToContainerIdentity:(id)a3
+- (BOOL)isEqualToContainerIdentity:(id)identity
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v8.receiver = self;
   v8.super_class = MCMContainerIdentity;
-  if ([(MCMContainerIdentityMinimal *)&v8 isEqualToContainerIdentity:v4])
+  if ([(MCMContainerIdentityMinimal *)&v8 isEqualToContainerIdentity:identityCopy])
   {
-    v5 = self->_transient == v4[48];
+    v5 = self->_transient == identityCopy[48];
   }
 
   else
@@ -222,27 +222,27 @@ id __35__MCMContainerIdentity_description__block_invoke(uint64_t a1, int a2)
   return self;
 }
 
-- (id)identityByChangingUserIdentity:(id)a3
+- (id)identityByChangingUserIdentity:(id)identity
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMContainerIdentityMinimal *)self identifier];
-  v6 = [(MCMContainerIdentityMinimal *)self containerConfig];
-  v7 = [(MCMContainerIdentityMinimal *)self platform];
-  v8 = [(MCMContainerIdentity *)self transient];
-  v9 = [(MCMContainerIdentityMinimal *)self userIdentityCache];
-  v10 = [MCMContainerIdentity containerIdentityWithUserIdentity:v4 identifier:v5 containerConfig:v6 platform:v7 transient:v8 userIdentityCache:v9 error:0];
+  identityCopy = identity;
+  identifier = [(MCMContainerIdentityMinimal *)self identifier];
+  containerConfig = [(MCMContainerIdentityMinimal *)self containerConfig];
+  platform = [(MCMContainerIdentityMinimal *)self platform];
+  transient = [(MCMContainerIdentity *)self transient];
+  userIdentityCache = [(MCMContainerIdentityMinimal *)self userIdentityCache];
+  v10 = [MCMContainerIdentity containerIdentityWithUserIdentity:identityCopy identifier:identifier containerConfig:containerConfig platform:platform transient:transient userIdentityCache:userIdentityCache error:0];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (id)identityByChangingTransient:(BOOL)a3
+- (id)identityByChangingTransient:(BOOL)transient
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = [(MCMContainerIdentity *)self copy];
-  v4[48] = a3;
+  v4[48] = transient;
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
@@ -251,60 +251,60 @@ id __35__MCMContainerIdentity_description__block_invoke(uint64_t a1, int a2)
 - (id)nontransientContainerIdentity
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  if ([(MCMContainerIdentity *)v2 transient])
+  selfCopy = self;
+  if ([(MCMContainerIdentity *)selfCopy transient])
   {
     v3 = objc_alloc(objc_opt_class());
-    v4 = [(MCMContainerIdentityMinimal *)v2 userIdentity];
-    v5 = [(MCMContainerIdentityMinimal *)v2 identifier];
-    v6 = [(MCMContainerIdentityMinimal *)v2 containerConfig];
-    v7 = [(MCMContainerIdentityMinimal *)v2 platform];
-    v8 = [(MCMContainerIdentityMinimal *)v2 userIdentityCache];
-    v9 = [v3 initWithUserIdentity:v4 identifier:v5 containerConfig:v6 platform:v7 transient:0 userIdentityCache:v8 error:0];
+    userIdentity = [(MCMContainerIdentityMinimal *)selfCopy userIdentity];
+    identifier = [(MCMContainerIdentityMinimal *)selfCopy identifier];
+    containerConfig = [(MCMContainerIdentityMinimal *)selfCopy containerConfig];
+    platform = [(MCMContainerIdentityMinimal *)selfCopy platform];
+    userIdentityCache = [(MCMContainerIdentityMinimal *)selfCopy userIdentityCache];
+    v9 = [v3 initWithUserIdentity:userIdentity identifier:identifier containerConfig:containerConfig platform:platform transient:0 userIdentityCache:userIdentityCache error:0];
 
-    v2 = v9;
+    selfCopy = v9;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)transientContainerIdentity
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  if (![(MCMContainerIdentity *)v2 transient])
+  selfCopy = self;
+  if (![(MCMContainerIdentity *)selfCopy transient])
   {
     v3 = objc_alloc(objc_opt_class());
-    v4 = [(MCMContainerIdentityMinimal *)v2 userIdentity];
-    v5 = [(MCMContainerIdentityMinimal *)v2 identifier];
-    v6 = [(MCMContainerIdentityMinimal *)v2 containerConfig];
-    v7 = [(MCMContainerIdentityMinimal *)v2 platform];
-    v8 = [(MCMContainerIdentityMinimal *)v2 userIdentityCache];
-    v9 = [v3 initWithUserIdentity:v4 identifier:v5 containerConfig:v6 platform:v7 transient:1 userIdentityCache:v8 error:0];
+    userIdentity = [(MCMContainerIdentityMinimal *)selfCopy userIdentity];
+    identifier = [(MCMContainerIdentityMinimal *)selfCopy identifier];
+    containerConfig = [(MCMContainerIdentityMinimal *)selfCopy containerConfig];
+    platform = [(MCMContainerIdentityMinimal *)selfCopy platform];
+    userIdentityCache = [(MCMContainerIdentityMinimal *)selfCopy userIdentityCache];
+    v9 = [v3 initWithUserIdentity:userIdentity identifier:identifier containerConfig:containerConfig platform:platform transient:1 userIdentityCache:userIdentityCache error:0];
 
-    v2 = v9;
+    selfCopy = v9;
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return selfCopy;
 }
 
-- (MCMContainerIdentity)initWithVersion1PlistDictionary:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5
+- (MCMContainerIdentity)initWithVersion1PlistDictionary:(id)dictionary userIdentityCache:(id)cache error:(unint64_t *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  cacheCopy = cache;
   v20[0] = 1;
   v19.receiver = self;
   v19.super_class = MCMContainerIdentity;
-  v10 = [(MCMContainerIdentityMinimal *)&v19 initWithVersion1PlistDictionary:v8 userIdentityCache:v9 error:v20];
+  v10 = [(MCMContainerIdentityMinimal *)&v19 initWithVersion1PlistDictionary:dictionaryCopy userIdentityCache:cacheCopy error:v20];
   if (!v10)
   {
     v16 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -312,28 +312,28 @@ id __35__MCMContainerIdentity_description__block_invoke(uint64_t a1, int a2)
     goto LABEL_9;
   }
 
-  v11 = [v8 objectForKeyedSubscript:@"transient"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"transient"];
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v12 = 0;
+    bOOLValue = 0;
   }
 
-  v13 = [(MCMContainerIdentityMinimal *)v10 userIdentity];
-  v14 = [(MCMContainerIdentityMinimal *)v10 identifier];
-  v15 = [(MCMContainerIdentityMinimal *)v10 containerConfig];
-  v16 = [(MCMContainerIdentity *)v10 initWithUserIdentity:v13 identifier:v14 containerConfig:v15 platform:[(MCMContainerIdentityMinimal *)v10 platform] transient:v12 userIdentityCache:v9 error:v20];
+  userIdentity = [(MCMContainerIdentityMinimal *)v10 userIdentity];
+  identifier = [(MCMContainerIdentityMinimal *)v10 identifier];
+  containerConfig = [(MCMContainerIdentityMinimal *)v10 containerConfig];
+  v16 = [(MCMContainerIdentity *)v10 initWithUserIdentity:userIdentity identifier:identifier containerConfig:containerConfig platform:[(MCMContainerIdentityMinimal *)v10 platform] transient:bOOLValue userIdentityCache:cacheCopy error:v20];
 
-  if (a5)
+  if (error)
   {
 LABEL_9:
     if (!v16)
     {
-      *a5 = v20[0];
+      *error = v20[0];
     }
   }
 
@@ -348,8 +348,8 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = MCMContainerIdentity;
-  v3 = [(MCMContainerIdentityMinimal *)&v9 plist];
-  v4 = [v3 mutableCopy];
+  plist = [(MCMContainerIdentityMinimal *)&v9 plist];
+  v4 = [plist mutableCopy];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[MCMContainerIdentity transient](self, "transient")}];
   [v4 setObject:v5 forKeyedSubscript:@"transient"];
@@ -360,7 +360,7 @@ LABEL_11:
   return v6;
 }
 
-- (MCMContainerIdentity)initWithLibsystemContainer:(container_object_s *)a3 defaultUserIdentity:(id)a4 userIdentityCache:(id)a5 error:(unint64_t *)a6
+- (MCMContainerIdentity)initWithLibsystemContainer:(container_object_s *)container defaultUserIdentity:(id)identity userIdentityCache:(id)cache error:(unint64_t *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = 1;
@@ -374,9 +374,9 @@ LABEL_11:
     v7->_transient = v11;
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = v12;
+    *error = v12;
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -397,12 +397,12 @@ LABEL_11:
   return 0;
 }
 
-+ (id)containerIdentityFromPlist:(id)a3 userIdentityCache:(id)a4 error:(unint64_t *)a5
++ (id)containerIdentityFromPlist:(id)plist userIdentityCache:(id)cache error:(unint64_t *)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithPlist:v9 userIdentityCache:v8 error:a5];
+  cacheCopy = cache;
+  plistCopy = plist;
+  v10 = [[self alloc] initWithPlist:plistCopy userIdentityCache:cacheCopy error:error];
 
   v11 = *MEMORY[0x1E69E9840];
 

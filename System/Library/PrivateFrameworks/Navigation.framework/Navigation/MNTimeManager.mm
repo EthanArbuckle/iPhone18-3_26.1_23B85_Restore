@@ -4,8 +4,8 @@
 + (id)sharedManager;
 - (MNTimeManager)init;
 - (void)_resetToDefaultProvider;
-- (void)registerObserver:(id)a3;
-- (void)setProvider:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)setProvider:(id)provider;
 @end
 
 @implementation MNTimeManager
@@ -13,8 +13,8 @@
 + (double)currentTime
 {
   v2 = +[MNTimeManager sharedManager];
-  v3 = [v2 provider];
-  [v3 currentTime];
+  provider = [v2 provider];
+  [provider currentTime];
   v5 = v4;
 
   return v5;
@@ -44,12 +44,12 @@
   }
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v5 = a3;
-  if (v5)
+  providerCopy = provider;
+  if (providerCopy)
   {
-    objc_storeStrong(&self->_provider, a3);
+    objc_storeStrong(&self->_provider, provider);
   }
 
   else
@@ -60,11 +60,11 @@
   [(GEOObserverHashTable *)self->_timeManagerObservers timeManagerDidChangeProvider:self];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   timeManagerObservers = self->_timeManagerObservers;
-  v10 = v4;
+  v10 = observerCopy;
   if (!timeManagerObservers)
   {
     v6 = objc_alloc(MEMORY[0x1E69A22D8]);
@@ -73,11 +73,11 @@
     v9 = self->_timeManagerObservers;
     self->_timeManagerObservers = v8;
 
-    v4 = v10;
+    observerCopy = v10;
     timeManagerObservers = self->_timeManagerObservers;
   }
 
-  [(GEOObserverHashTable *)timeManagerObservers registerObserver:v4];
+  [(GEOObserverHashTable *)timeManagerObservers registerObserver:observerCopy];
 }
 
 - (MNTimeManager)init
@@ -97,7 +97,7 @@
 + (NSDate)currentDate
 {
   v2 = MEMORY[0x1E695DF00];
-  [a1 currentTime];
+  [self currentTime];
 
   return [v2 dateWithTimeIntervalSinceReferenceDate:?];
 }

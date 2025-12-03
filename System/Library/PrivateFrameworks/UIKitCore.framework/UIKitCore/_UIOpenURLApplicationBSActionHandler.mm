@@ -1,16 +1,16 @@
 @interface _UIOpenURLApplicationBSActionHandler
-- (id)_respondToApplicationActions:(id)a3 fromTransitionContext:(id)a4;
+- (id)_respondToApplicationActions:(id)actions fromTransitionContext:(id)context;
 @end
 
 @implementation _UIOpenURLApplicationBSActionHandler
 
-- (id)_respondToApplicationActions:(id)a3 fromTransitionContext:(id)a4
+- (id)_respondToApplicationActions:(id)actions fromTransitionContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v18 = v5;
-  v7 = [v5 objectsPassingTest:&__block_literal_global_736];
+  actionsCopy = actions;
+  contextCopy = context;
+  v18 = actionsCopy;
+  v7 = [actionsCopy objectsPassingTest:&__block_literal_global_736];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -39,23 +39,23 @@
         else
         {
           [UIApp _setHandlingURL:objc_msgSend(v13 url:{"isInternalUIKitURL") ^ 1, v13}];
-          v14 = [v6 originatingProcess];
-          if (!v14)
+          originatingProcess = [contextCopy originatingProcess];
+          if (!originatingProcess)
           {
-            v14 = [v12 workspaceOriginatingProcess];
+            originatingProcess = [v12 workspaceOriginatingProcess];
           }
 
-          if ([v6 isUISubclass])
+          if ([contextCopy isUISubclass])
           {
-            v15 = [v6 payload];
+            payload = [contextCopy payload];
           }
 
           else
           {
-            v15 = 0;
+            payload = 0;
           }
 
-          [UIApp _applicationOpenURLAction:v12 payload:v15 origin:v14];
+          [UIApp _applicationOpenURLAction:v12 payload:payload origin:originatingProcess];
           [UIApp _setHandlingURL:0 url:0];
         }
       }

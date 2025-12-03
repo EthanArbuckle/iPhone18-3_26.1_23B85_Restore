@@ -1,12 +1,12 @@
 @interface PreferencesDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation PreferencesDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -14,8 +14,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received a connection com.apple.corerepair.intentControl !", v15, 2u);
   }
 
-  v6 = [v4 valueForEntitlement:off_100016580];
-  v7 = [v4 valueForEntitlement:off_1000165A0];
+  v6 = [connectionCopy valueForEntitlement:off_100016580];
+  v7 = [connectionCopy valueForEntitlement:off_1000165A0];
   v8 = v7;
   if (v6)
   {
@@ -40,7 +40,7 @@
 LABEL_17:
 
 LABEL_18:
-    [v4 invalidate];
+    [connectionCopy invalidate];
     v13 = 0;
     goto LABEL_14;
   }
@@ -58,11 +58,11 @@ LABEL_18:
   }
 
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreRepairBootIntentProtocol];
-  [v4 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
   v12 = objc_opt_new();
-  [v4 setExportedObject:v12];
-  [v4 resume];
+  [connectionCopy setExportedObject:v12];
+  [connectionCopy resume];
 
   v13 = 1;
 LABEL_14:

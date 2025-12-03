@@ -5,13 +5,13 @@
 - (BOOL)statusIsSuitableForVerticalLayout;
 - (CGRect)frame;
 - (CGRect)tightFrame;
-- (CGSize)sizeThatFitsIn:(CGSize)a3;
+- (CGSize)sizeThatFitsIn:(CGSize)in;
 - (NSNumber)maximumTextWidth;
 - (NSString)displayNameText;
 - (NSString)statusText;
 - (PRIncomingCallTextViewAdapter)init;
-- (PRIncomingCallTextViewAdapter)initWithContact:(id)a3 status:(id)a4 callIsActive:(BOOL)a5;
-- (PRIncomingCallTextViewAdapter)initWithName:(id)a3 status:(id)a4 callIsActive:(BOOL)a5;
+- (PRIncomingCallTextViewAdapter)initWithContact:(id)contact status:(id)status callIsActive:(BOOL)active;
+- (PRIncomingCallTextViewAdapter)initWithName:(id)name status:(id)status callIsActive:(BOOL)active;
 - (UIColor)textColor;
 - (UIFont)emphasizedNameFont;
 - (UIFont)secondaryNameFont;
@@ -20,45 +20,45 @@
 - (unint64_t)layout;
 - (unint64_t)preferredAlignment;
 - (unint64_t)preferredLayout;
-- (void)overrideTitleLayoutWith:(unint64_t)a3;
-- (void)posterAppearanceDidChange:(id)a3;
+- (void)overrideTitleLayoutWith:(unint64_t)with;
+- (void)posterAppearanceDidChange:(id)change;
 - (void)removeTitleLayoutOverride;
-- (void)setDisplayNameText:(id)a3;
-- (void)setEmphasizedNameFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMarqueeRunning:(BOOL)a3;
-- (void)setMaximumTextWidth:(id)a3;
-- (void)setPreferredAlignment:(unint64_t)a3;
-- (void)setPreferredLayout:(unint64_t)a3;
-- (void)setSecondaryNameFont:(id)a3;
-- (void)setStatusFont:(id)a3;
-- (void)setStatusIsHidden:(BOOL)a3;
-- (void)setStatusText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextFontUsingDefaultFontSizes:(id)a3;
-- (void)transitionCallToActiveStateAnimated:(BOOL)a3;
+- (void)setDisplayNameText:(id)text;
+- (void)setEmphasizedNameFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setMarqueeRunning:(BOOL)running;
+- (void)setMaximumTextWidth:(id)width;
+- (void)setPreferredAlignment:(unint64_t)alignment;
+- (void)setPreferredLayout:(unint64_t)layout;
+- (void)setSecondaryNameFont:(id)font;
+- (void)setStatusFont:(id)font;
+- (void)setStatusIsHidden:(BOOL)hidden;
+- (void)setStatusText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setTextFontUsingDefaultFontSizes:(id)sizes;
+- (void)transitionCallToActiveStateAnimated:(BOOL)animated;
 @end
 
 @implementation PRIncomingCallTextViewAdapter
 
 - (BOOL)statusIsHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.statusIsHidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setStatusIsHidden:(BOOL)a3
+- (void)setStatusIsHidden:(BOOL)hidden
 {
-  v4 = self;
+  selfCopy = self;
 
   v5 = sub_1A8BC142C(v8);
   v7 = v6;
   memmove(__dst, v6, 0x91uLL);
   if (sub_1A8AADFA8(__dst) != 1)
   {
-    v7[32] = a3;
+    v7[32] = hidden;
   }
 
   (v5)(v8, 0);
@@ -67,12 +67,12 @@
 - (CGRect)frame
 {
   v2 = *(&self->super.isa + OBJC_IVAR___PRIncomingCallTextViewAdapter_hostingController);
-  v3 = self;
-  v4 = [v2 view];
-  if (v4)
+  selfCopy = self;
+  view = [v2 view];
+  if (view)
   {
-    v9 = v4;
-    [v4 frame];
+    v9 = view;
+    [view frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -96,19 +96,19 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selfCopy = self;
   IncomingCallTextViewAdapter.frame.setter(x, y, width, height);
 }
 
 - (CGRect)tightFrame
 {
-  v2 = self;
+  selfCopy = self;
   IncomingCallTextViewAdapter.tightFrame.getter();
   v4 = v3;
   v6 = v5;
@@ -128,37 +128,37 @@
 
 - (unint64_t)preferredAlignment
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.preferredAlignment.getter();
 
   return v3;
 }
 
-- (void)setPreferredAlignment:(unint64_t)a3
+- (void)setPreferredAlignment:(unint64_t)alignment
 {
-  v4 = self;
-  IncomingCallTextViewAdapter.preferredAlignment.setter(a3);
+  selfCopy = self;
+  IncomingCallTextViewAdapter.preferredAlignment.setter(alignment);
 }
 
 - (unint64_t)preferredLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.preferredLayout.getter();
 
   return v3;
 }
 
-- (void)setPreferredLayout:(unint64_t)a3
+- (void)setPreferredLayout:(unint64_t)layout
 {
-  v4 = self;
-  IncomingCallTextViewAdapter.preferredLayout.setter(a3);
+  selfCopy = self;
+  IncomingCallTextViewAdapter.preferredLayout.setter(layout);
 }
 
 - (UIColor)textColor
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
 
   sub_1A8BDDC74();
 
@@ -182,61 +182,61 @@
   return v5;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  IncomingCallTextViewAdapter.textColor.setter(v4);
+  colorCopy = color;
+  selfCopy = self;
+  IncomingCallTextViewAdapter.textColor.setter(colorCopy);
 }
 
 - (UIFont)emphasizedNameFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.emphasizedNameFont.getter();
 
   return v3;
 }
 
-- (void)setEmphasizedNameFont:(id)a3
+- (void)setEmphasizedNameFont:(id)font
 {
-  v4 = a3;
-  v5 = self;
-  IncomingCallTextViewAdapter.emphasizedNameFont.setter(v4);
+  fontCopy = font;
+  selfCopy = self;
+  IncomingCallTextViewAdapter.emphasizedNameFont.setter(fontCopy);
 }
 
 - (UIFont)secondaryNameFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.secondaryNameFont.getter();
 
   return v3;
 }
 
-- (void)setSecondaryNameFont:(id)a3
+- (void)setSecondaryNameFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  IncomingCallTextViewAdapter.secondaryNameFont.setter(a3);
+  fontCopy = font;
+  selfCopy = self;
+  IncomingCallTextViewAdapter.secondaryNameFont.setter(font);
 }
 
 - (UIFont)statusFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.statusFont.getter();
 
   return v3;
 }
 
-- (void)setStatusFont:(id)a3
+- (void)setStatusFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  IncomingCallTextViewAdapter.statusFont.setter(a3);
+  fontCopy = font;
+  selfCopy = self;
+  IncomingCallTextViewAdapter.statusFont.setter(font);
 }
 
 - (NSString)displayNameText
 {
-  v2 = self;
+  selfCopy = self;
   IncomingCallTextViewAdapter.displayNameText.getter();
 
   v3 = sub_1A8BDE104();
@@ -244,17 +244,17 @@
   return v3;
 }
 
-- (void)setDisplayNameText:(id)a3
+- (void)setDisplayNameText:(id)text
 {
   v4 = sub_1A8BDE134();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   IncomingCallTextViewAdapter.displayNameText.setter(v4, v6);
 }
 
 - (NSString)statusText
 {
-  v2 = self;
+  selfCopy = self;
   IncomingCallTextViewAdapter.statusText.getter();
   v4 = v3;
 
@@ -271,9 +271,9 @@
   return v5;
 }
 
-- (void)setStatusText:(id)a3
+- (void)setStatusText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_1A8BDE134();
     v6 = v5;
@@ -285,14 +285,14 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
 
   sub_1A8BC2A28(v4, v6);
 }
 
 - (unint64_t)alignment
 {
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_1A8BC222C();
 
@@ -304,7 +304,7 @@
   v3 = sub_1A8BDDF84();
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v9 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v6 = self;
+  selfCopy = self;
 
   sub_1A8BC25F4(v5);
 
@@ -315,7 +315,7 @@
 
 - (BOOL)displayNameIsSuitableForVerticalLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.displayNameIsSuitableForVerticalLayout.getter();
 
   return v3 & 1;
@@ -323,13 +323,13 @@
 
 - (BOOL)statusIsSuitableForVerticalLayout
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.statusIsSuitableForVerticalLayout.getter();
 
   return v3 & 1;
 }
 
-- (void)setMarqueeRunning:(BOOL)a3
+- (void)setMarqueeRunning:(BOOL)running
 {
   swift_getKeyPath();
   swift_getKeyPath();
@@ -339,19 +339,19 @@
 
 - (NSNumber)maximumTextWidth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IncomingCallTextViewAdapter.maximumTextWidth.getter();
 
   return v3;
 }
 
-- (void)setMaximumTextWidth:(id)a3
+- (void)setMaximumTextWidth:(id)width
 {
-  if (a3)
+  if (width)
   {
-    v4 = self;
-    v5 = a3;
-    [v5 doubleValue];
+    selfCopy = self;
+    widthCopy = width;
+    [widthCopy doubleValue];
     swift_getKeyPath();
     swift_getKeyPath();
 
@@ -363,24 +363,24 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
 
   sub_1A8BDDC74();
 
   memcpy(v5, __src, 0x12BuLL);
   memcpy(__src, v5, 0x12BuLL);
-  LOBYTE(v3) = sub_1A8BAECD4(__src) == 1;
+  LOBYTE(selfCopy) = sub_1A8BAECD4(__src) == 1;
   sub_1A8AAD988(__src);
   sub_1A8BAECE0(v5);
-  return v3;
+  return selfCopy;
 }
 
-- (PRIncomingCallTextViewAdapter)initWithName:(id)a3 status:(id)a4 callIsActive:(BOOL)a5
+- (PRIncomingCallTextViewAdapter)initWithName:(id)name status:(id)status callIsActive:(BOOL)active
 {
-  v5 = a5;
+  activeCopy = active;
   ObjectType = swift_getObjectType();
   v8 = sub_1A8BDE134();
-  if (a4)
+  if (status)
   {
     v10 = v8;
     v11 = v9;
@@ -396,7 +396,7 @@
     v14 = 0;
   }
 
-  v15 = sub_1A8BC3778(v8, v9, v12, v14, v5);
+  v15 = sub_1A8BC3778(v8, v9, v12, v14, activeCopy);
   v16 = objc_allocWithZone(ObjectType);
   v17 = sub_1A8BBECF0(v15);
   swift_getObjectType();
@@ -404,13 +404,13 @@
   return v17;
 }
 
-- (PRIncomingCallTextViewAdapter)initWithContact:(id)a3 status:(id)a4 callIsActive:(BOOL)a5
+- (PRIncomingCallTextViewAdapter)initWithContact:(id)contact status:(id)status callIsActive:(BOOL)active
 {
-  v5 = a5;
+  activeCopy = active;
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (status)
   {
-    a4 = sub_1A8BDE134();
+    status = sub_1A8BDE134();
     v10 = v9;
   }
 
@@ -419,8 +419,8 @@
     v10 = 0;
   }
 
-  v11 = a3;
-  v12 = sub_1A8BC4030(v11, a4, v10, v5);
+  contactCopy = contact;
+  v12 = sub_1A8BC4030(contactCopy, status, v10, activeCopy);
   v13 = objc_allocWithZone(ObjectType);
   v14 = sub_1A8BBECF0(v12);
 
@@ -437,35 +437,35 @@
   return result;
 }
 
-- (void)setTextFontUsingDefaultFontSizes:(id)a3
+- (void)setTextFontUsingDefaultFontSizes:(id)sizes
 {
-  v4 = a3;
-  v5 = self;
-  IncomingCallTextViewAdapter.setTextFontUsingDefaultFontSizes(newFont:)(v4);
+  sizesCopy = sizes;
+  selfCopy = self;
+  IncomingCallTextViewAdapter.setTextFontUsingDefaultFontSizes(newFont:)(sizesCopy);
 }
 
-- (void)transitionCallToActiveStateAnimated:(BOOL)a3
+- (void)transitionCallToActiveStateAnimated:(BOOL)animated
 {
-  v4 = self;
-  IncomingCallTextViewAdapter.transitionCallToActiveState(animated:)(a3);
+  selfCopy = self;
+  IncomingCallTextViewAdapter.transitionCallToActiveState(animated:)(animated);
 }
 
-- (void)overrideTitleLayoutWith:(unint64_t)a3
+- (void)overrideTitleLayoutWith:(unint64_t)with
 {
-  v4 = self;
-  IncomingCallTextViewAdapter.overrideTitleLayout(with:)(a3);
+  selfCopy = self;
+  IncomingCallTextViewAdapter.overrideTitleLayout(with:)(with);
 }
 
 - (void)removeTitleLayoutOverride
 {
-  v2 = self;
+  selfCopy = self;
   IncomingCallTextViewAdapter.removeTitleLayoutOverride()();
 }
 
-- (CGSize)sizeThatFitsIn:(CGSize)a3
+- (CGSize)sizeThatFitsIn:(CGSize)in
 {
   v3 = *(&self->super.isa + OBJC_IVAR___PRIncomingCallTextViewAdapter_hostingController);
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
   sub_1A8BDDE04();
   v7 = v6;
@@ -478,23 +478,23 @@
   return result;
 }
 
-- (void)posterAppearanceDidChange:(id)a3
+- (void)posterAppearanceDidChange:(id)change
 {
-  v4 = a3;
-  v8 = self;
-  v5 = [v4 font];
-  IncomingCallTextViewAdapter.setTextFontUsingDefaultFontSizes(newFont:)(v5);
+  changeCopy = change;
+  selfCopy = self;
+  font = [changeCopy font];
+  IncomingCallTextViewAdapter.setTextFontUsingDefaultFontSizes(newFont:)(font);
 
-  v6 = [v4 labelColor];
-  v7 = [v6 color];
+  labelColor = [changeCopy labelColor];
+  color = [labelColor color];
 
-  if (v7)
+  if (color)
   {
-    IncomingCallTextViewAdapter.textColor.setter(v7);
+    IncomingCallTextViewAdapter.textColor.setter(color);
   }
 
-  IncomingCallTextViewAdapter.preferredAlignment.setter([v4 preferredTitleAlignment]);
-  IncomingCallTextViewAdapter.preferredLayout.setter([v4 preferredTitleLayout]);
+  IncomingCallTextViewAdapter.preferredAlignment.setter([changeCopy preferredTitleAlignment]);
+  IncomingCallTextViewAdapter.preferredLayout.setter([changeCopy preferredTitleLayout]);
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface PKBillPaymentSuggestedAmount
-+ (id)roundingAmount:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKBillPaymentSuggestedAmount)initWithAmount:(id)a3 category:(unint64_t)a4;
++ (id)roundingAmount:(id)amount;
+- (BOOL)isEqual:(id)equal;
+- (PKBillPaymentSuggestedAmount)initWithAmount:(id)amount category:(unint64_t)category;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation PKBillPaymentSuggestedAmount
 
-- (PKBillPaymentSuggestedAmount)initWithAmount:(id)a3 category:(unint64_t)a4
+- (PKBillPaymentSuggestedAmount)initWithAmount:(id)amount category:(unint64_t)category
 {
-  v6 = a3;
+  amountCopy = amount;
   v11.receiver = self;
   v11.super_class = PKBillPaymentSuggestedAmount;
   v7 = [(PKBillPaymentSuggestedAmount *)&v11 init];
   if (v7)
   {
-    v8 = [PKBillPaymentSuggestedAmount roundingAmount:v6];
+    v8 = [PKBillPaymentSuggestedAmount roundingAmount:amountCopy];
     amount = v7->_amount;
     v7->_amount = v8;
 
-    v7->_category = a4;
+    v7->_category = category;
   }
 
   return v7;
 }
 
-+ (id)roundingAmount:(id)a3
++ (id)roundingAmount:(id)amount
 {
   v3 = MEMORY[0x1E696AB98];
-  v4 = a3;
+  amountCopy = amount;
   v5 = [v3 decimalNumberHandlerWithRoundingMode:0 scale:2 raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
-  v6 = [v4 decimalNumberByRoundingAccordingToBehavior:v5];
+  v6 = [amountCopy decimalNumberByRoundingAccordingToBehavior:v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     amount = self->_amount;
-    v6 = v4[4];
+    v6 = equalCopy[4];
     if (amount && v6)
     {
       v7 = [(NSDecimalNumber *)amount isEqual:?];
@@ -64,11 +64,11 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   amount = self->_amount;
-  v4 = [a3 amount];
-  v5 = [(NSDecimalNumber *)amount compare:v4];
+  amount = [compare amount];
+  v5 = [(NSDecimalNumber *)amount compare:amount];
 
   return v5;
 }

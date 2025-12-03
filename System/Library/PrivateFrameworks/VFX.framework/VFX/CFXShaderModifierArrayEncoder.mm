@@ -1,9 +1,9 @@
 @interface CFXShaderModifierArrayEncoder
-+ (id)shaderModifierArrayEncoderWithArray:(id)a3;
-- (CFXShaderModifierArrayEncoder)initWithArray:(id)a3;
-- (CFXShaderModifierArrayEncoder)initWithCoder:(id)a3;
++ (id)shaderModifierArrayEncoderWithArray:(id)array;
+- (CFXShaderModifierArrayEncoder)initWithArray:(id)array;
+- (CFXShaderModifierArrayEncoder)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CFXShaderModifierArrayEncoder
@@ -15,32 +15,32 @@
   [(CFXShaderModifierArrayEncoder *)&v3 dealloc];
 }
 
-+ (id)shaderModifierArrayEncoderWithArray:(id)a3
++ (id)shaderModifierArrayEncoderWithArray:(id)array
 {
-  v4 = [a1 alloc];
-  v7 = objc_msgSend_initWithArray_(v4, v5, a3, v6);
+  v4 = [self alloc];
+  v7 = objc_msgSend_initWithArray_(v4, v5, array, v6);
 
   return v7;
 }
 
-- (CFXShaderModifierArrayEncoder)initWithArray:(id)a3
+- (CFXShaderModifierArrayEncoder)initWithArray:(id)array
 {
   v6.receiver = self;
   v6.super_class = CFXShaderModifierArrayEncoder;
   v4 = [(CFXShaderModifierArrayEncoder *)&v6 init];
   if (v4)
   {
-    v4->_shaderModifiers = a3;
+    v4->_shaderModifiers = array;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF70];
-  v7 = objc_msgSend_count(self->_shaderModifiers, a2, a3, v3);
+  v7 = objc_msgSend_count(self->_shaderModifiers, a2, coder, v3);
   v10 = objc_msgSend_arrayWithCapacity_(v6, v8, v7, v9);
   v22 = 0u;
   v23 = 0u;
@@ -74,10 +74,10 @@
     while (v16);
   }
 
-  objc_msgSend_encodeObject_forKey_(a3, v14, v10, @"modifiers");
+  objc_msgSend_encodeObject_forKey_(coder, v14, v10, @"modifiers");
 }
 
-- (CFXShaderModifierArrayEncoder)initWithCoder:(id)a3
+- (CFXShaderModifierArrayEncoder)initWithCoder:(id)coder
 {
   v39[2] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
@@ -90,7 +90,7 @@
     v39[1] = objc_opt_class();
     v7 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v6, v39, 2);
     v10 = objc_msgSend_setWithArray_(v5, v8, v7, v9);
-    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v11, v10, @"modifiers");
+    v12 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v11, v10, @"modifiers");
     v13 = MEMORY[0x1E695DF70];
     v17 = objc_msgSend_count(v12, v14, v15, v16);
     v20 = objc_msgSend_arrayWithCapacity_(v13, v18, v17, v19);

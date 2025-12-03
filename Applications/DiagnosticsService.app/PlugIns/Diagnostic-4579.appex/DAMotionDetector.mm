@@ -1,21 +1,21 @@
 @interface DAMotionDetector
-- (DAMotionDetector)initWithThreshold:(id)a3;
+- (DAMotionDetector)initWithThreshold:(id)threshold;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation DAMotionDetector
 
-- (DAMotionDetector)initWithThreshold:(id)a3
+- (DAMotionDetector)initWithThreshold:(id)threshold
 {
-  v5 = a3;
+  thresholdCopy = threshold;
   v9.receiver = self;
   v9.super_class = DAMotionDetector;
   v6 = [(DAMotionDetector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_threshold, a3);
+    objc_storeStrong(&v6->_threshold, threshold);
   }
 
   return v7;
@@ -54,15 +54,15 @@
   v3 = objc_alloc_init(CMMotionManager);
   [(DAMotionDetector *)self setMotionManager:v3];
 
-  v4 = [(DAMotionDetector *)self motionManager];
-  v5 = [v4 isAccelerometerAvailable];
+  motionManager = [(DAMotionDetector *)self motionManager];
+  isAccelerometerAvailable = [motionManager isAccelerometerAvailable];
 
-  if (v5)
+  if (isAccelerometerAvailable)
   {
-    v6 = [(DAMotionDetector *)self motionManager];
-    [v6 setAccelerometerUpdateInterval:0.01];
+    motionManager2 = [(DAMotionDetector *)self motionManager];
+    [motionManager2 setAccelerometerUpdateInterval:0.01];
 
-    v7 = [(DAMotionDetector *)self motionManager];
+    motionManager3 = [(DAMotionDetector *)self motionManager];
     v8 = objc_alloc_init(NSOperationQueue);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -76,7 +76,7 @@
     v9[5] = v12;
     v9[10] = v13;
     v9[11] = v16;
-    [v7 startAccelerometerUpdatesToQueue:v8 withHandler:v9];
+    [motionManager3 startAccelerometerUpdatesToQueue:v8 withHandler:v9];
   }
 
   _Block_object_dispose(v10, 8);
@@ -90,17 +90,17 @@
 
 - (void)stop
 {
-  v3 = [(DAMotionDetector *)self motionManager];
+  motionManager = [(DAMotionDetector *)self motionManager];
 
-  if (v3)
+  if (motionManager)
   {
-    v4 = [(DAMotionDetector *)self motionManager];
-    v5 = [v4 isAccelerometerActive];
+    motionManager2 = [(DAMotionDetector *)self motionManager];
+    isAccelerometerActive = [motionManager2 isAccelerometerActive];
 
-    if (v5)
+    if (isAccelerometerActive)
     {
-      v6 = [(DAMotionDetector *)self motionManager];
-      [v6 stopAccelerometerUpdates];
+      motionManager3 = [(DAMotionDetector *)self motionManager];
+      [motionManager3 stopAccelerometerUpdates];
     }
 
     [(DAMotionDetector *)self setMotionManager:0];

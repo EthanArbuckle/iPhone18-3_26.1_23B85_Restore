@@ -1,27 +1,27 @@
 @interface PLSearchIndexSceneTaxonomy
 - (id)dogSceneIDs;
-- (void)enumerateKeywordAndSynonymsForScenes:(id)a3 includeDogScenes:(BOOL)a4 usingBlock:(id)a5;
+- (void)enumerateKeywordAndSynonymsForScenes:(id)scenes includeDogScenes:(BOOL)dogScenes usingBlock:(id)block;
 @end
 
 @implementation PLSearchIndexSceneTaxonomy
 
-- (void)enumerateKeywordAndSynonymsForScenes:(id)a3 includeDogScenes:(BOOL)a4 usingBlock:(id)a5
+- (void)enumerateKeywordAndSynonymsForScenes:(id)scenes includeDogScenes:(BOOL)dogScenes usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = MEMORY[0x1E696AD50];
-  v10 = a3;
+  scenesCopy = scenes;
   v11 = objc_alloc_init(v9);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__PLSearchIndexSceneTaxonomy_enumerateKeywordAndSynonymsForScenes_includeDogScenes_usingBlock___block_invoke;
   v14[3] = &unk_1E7567C58;
-  v17 = a4;
+  dogScenesCopy = dogScenes;
   v14[4] = self;
   v15 = v11;
-  v16 = v8;
-  v12 = v8;
+  v16 = blockCopy;
+  v12 = blockCopy;
   v13 = v11;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [scenesCopy enumerateObjectsUsingBlock:v14];
 }
 
 void __95__PLSearchIndexSceneTaxonomy_enumerateKeywordAndSynonymsForScenes_includeDogScenes_usingBlock___block_invoke(uint64_t a1, void *a2)

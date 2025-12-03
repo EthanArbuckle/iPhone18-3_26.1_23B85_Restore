@@ -6,7 +6,7 @@
 
 + (id)allowedClasses
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___WTUIBSCompatibleAttributedString;
   v2 = objc_msgSendSuper2(&v10, sel_allowedClasses);
   v3 = MEMORY[0x1E695DFD8];

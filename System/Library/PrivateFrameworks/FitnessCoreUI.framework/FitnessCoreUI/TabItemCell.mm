@@ -1,19 +1,19 @@
 @interface TabItemCell
 - (_NSRange)accessibilityColumnRange;
 - (_NSRange)accessibilityRowRange;
-- (_TtC13FitnessCoreUI11TabItemCell)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI11TabItemCell)initWithFrame:(CGRect)a3;
+- (_TtC13FitnessCoreUI11TabItemCell)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI11TabItemCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation TabItemCell
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -24,19 +24,19 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for TabItemCell();
-  v5 = self;
-  [(TabItemCell *)&v8 setHighlighted:v3];
-  if (![(TabItemCell *)v5 isHighlighted:v8.receiver]|| (v6 = [(TabItemCell *)v5 isSelected], v7 = 0.75, v6))
+  selfCopy = self;
+  [(TabItemCell *)&v8 setHighlighted:highlightedCopy];
+  if (![(TabItemCell *)selfCopy isHighlighted:v8.receiver]|| (v6 = [(TabItemCell *)selfCopy isSelected], v7 = 0.75, v6))
   {
     v7 = 1.0;
   }
 
-  [(TabItemCell *)v5 setAlpha:v7];
+  [(TabItemCell *)selfCopy setAlpha:v7];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -47,17 +47,17 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for TabItemCell();
-  v5 = self;
-  [(TabItemCell *)&v6 setSelected:v3];
-  sub_20C3B4B38([(TabItemCell *)v5 isSelected:v6.receiver]);
+  selfCopy = self;
+  [(TabItemCell *)&v6 setSelected:selectedCopy];
+  sub_20C3B4B38([(TabItemCell *)selfCopy isSelected:v6.receiver]);
 }
 
-- (_TtC13FitnessCoreUI11TabItemCell)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI11TabItemCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -71,7 +71,7 @@
   return v7;
 }
 
-- (_TtC13FitnessCoreUI11TabItemCell)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI11TabItemCell)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -81,7 +81,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   _s13FitnessCoreUI11TabItemCellC5coderACSgSo7NSCoderC_tcfc_0();
 }
 
@@ -97,10 +97,10 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for TabItemCell();
-  v3 = self;
+  selfCopy = self;
   [(TabItemCell *)&v4 layoutSubviews];
-  [(TabItemCell *)v3 bounds:v4.receiver];
-  [(TabItemCell *)v3 _setContinuousCornerRadius:CGRectGetHeight(v5) * 0.5];
+  [(TabItemCell *)selfCopy bounds:v4.receiver];
+  [(TabItemCell *)selfCopy _setContinuousCornerRadius:CGRectGetHeight(v5) * 0.5];
 }
 
 - (void)prepareForReuse
@@ -113,7 +113,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20C3B409C();
 }
 

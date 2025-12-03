@@ -1,62 +1,62 @@
 @interface PLIngestJobCameraMetadata
 + (BOOL)faceObservationIngestDisabled;
 + (BOOL)facePrintIngestDisabled;
-- (PLIngestJobCameraMetadata)initWithCameraMetadataPath:(id)a3;
+- (PLIngestJobCameraMetadata)initWithCameraMetadataPath:(id)path;
 - (void)_ingestCameraMetadata;
-- (void)applyCameraMetadataToAsset:(id)a3;
+- (void)applyCameraMetadataToAsset:(id)asset;
 - (void)deserializeCameraMetadata;
-- (void)setCameraMetadata:(id)a3;
+- (void)setCameraMetadata:(id)metadata;
 @end
 
 @implementation PLIngestJobCameraMetadata
 
-- (void)applyCameraMetadataToAsset:(id)a3
+- (void)applyCameraMetadataToAsset:(id)asset
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   [(PLIngestJobCameraMetadata *)self deserializeCameraMetadata];
-  v5 = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
+  saliencyObservation = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
 
-  if (v5)
+  if (saliencyObservation)
   {
     if (!CGRectIsEmpty(self->_acceptableCropRect))
     {
-      [v4 setPackedAcceptableCropRect:PLCombineToInt64()];
+      [assetCopy setPackedAcceptableCropRect:PLCombineToInt64()];
     }
 
     if (!CGRectIsEmpty(self->_preferredCropRect))
     {
-      [v4 setPackedPreferredCropRect:PLCombineToInt64()];
+      [assetCopy setPackedPreferredCropRect:PLCombineToInt64()];
     }
   }
 
-  v62 = [v4 managedObjectContext];
+  managedObjectContext = [assetCopy managedObjectContext];
   if (self->_imageAestheticsObservation)
   {
-    v6 = [v4 computedAttributes];
-    if (!v6)
+    computedAttributes = [assetCopy computedAttributes];
+    if (!computedAttributes)
     {
       v7 = +[PLComputedAssetAttributes entityName];
-      v6 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, v62, 0);
+      computedAttributes = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v7, managedObjectContext, 0);
 
-      [v4 setComputedAttributes:v6];
-      [v6 setPropertiesFromImageAestheticsObservation:self->_imageAestheticsObservation];
+      [assetCopy setComputedAttributes:computedAttributes];
+      [computedAttributes setPropertiesFromImageAestheticsObservation:self->_imageAestheticsObservation];
     }
 
     [(VNImageAestheticsObservation *)self->_imageAestheticsObservation aestheticScore];
-    [v4 setOverallAestheticScore:?];
+    [assetCopy setOverallAestheticScore:?];
   }
 
   if (self->_sceneprintData)
   {
-    v8 = [v4 additionalAttributes];
-    [v8 setSceneprintWithData:self->_sceneprintData];
+    additionalAttributes = [assetCopy additionalAttributes];
+    [additionalAttributes setSceneprintWithData:self->_sceneprintData];
   }
 
   junkImageClassificationObservations = self->_junkImageClassificationObservations;
   if (junkImageClassificationObservations)
   {
-    v61 = v4;
+    v61 = assetCopy;
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -80,15 +80,15 @@
           [v15 confidence];
           if (v16 >= 0.01)
           {
-            v17 = [v15 identifier];
-            v18 = [PLSceneClassification PLJunkSceneClassificationIDForLabel:v17];
+            identifier = [v15 identifier];
+            v18 = [PLSceneClassification PLJunkSceneClassificationIDForLabel:identifier];
 
             if (v18)
             {
-              v19 = [v62 photoLibrary];
-              v20 = [v18 intValue];
+              photoLibrary = [managedObjectContext photoLibrary];
+              intValue = [v18 intValue];
               [v15 confidence];
-              v22 = [PLSceneClassification insertIntoPhotoLibrary:v19 asset:v61 sceneIdentifier:v20 confidence:0 packedBoundingBoxRect:0 startTime:0 duration:v21 classificationType:0.0 thumbnailIdentifier:0.0];
+              v22 = [PLSceneClassification insertIntoPhotoLibrary:photoLibrary asset:v61 sceneIdentifier:intValue confidence:0 packedBoundingBoxRect:0 startTime:0 duration:v21 classificationType:0.0 thumbnailIdentifier:0.0];
             }
           }
         }
@@ -99,27 +99,27 @@
       while (v12);
     }
 
-    v4 = v61;
-    v23 = [v61 additionalAttributes];
-    [v23 setSceneAnalysisVersion:*MEMORY[0x1E69C0C38]];
+    assetCopy = v61;
+    additionalAttributes2 = [v61 additionalAttributes];
+    [additionalAttributes2 setSceneAnalysisVersion:*MEMORY[0x1E69C0C38]];
 
-    v24 = [v61 additionalAttributes];
-    v25 = [v61 adjustmentTimestamp];
-    if (v25)
+    additionalAttributes3 = [v61 additionalAttributes];
+    adjustmentTimestamp = [v61 adjustmentTimestamp];
+    if (adjustmentTimestamp)
     {
-      [v24 setSceneAnalysisTimestamp:v25];
+      [additionalAttributes3 setSceneAnalysisTimestamp:adjustmentTimestamp];
     }
 
     else
     {
-      v26 = [v61 dateCreated];
-      [v24 setSceneAnalysisTimestamp:v26];
+      dateCreated = [v61 dateCreated];
+      [additionalAttributes3 setSceneAnalysisTimestamp:dateCreated];
     }
 
     v68 = 1;
-    v27 = [v61 additionalAttributes];
+    additionalAttributes4 = [v61 additionalAttributes];
     v28 = [MEMORY[0x1E695DEF0] dataWithBytes:&v68 length:1];
-    [v27 setDistanceIdentity:v28];
+    [additionalAttributes4 setDistanceIdentity:v28];
   }
 
   smartCamInfo = self->_smartCamInfo;
@@ -129,45 +129,45 @@
     v31 = [v30 objectForKeyedSubscript:*MEMORY[0x1E69911E8]];
     if (v31)
     {
-      v32 = [v62 photoLibrary];
+      photoLibrary2 = [managedObjectContext photoLibrary];
       [v31 doubleValue];
-      v33 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:v32 sceneIdentifier:v4 confidence:2147482063 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
+      v33 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:photoLibrary2 sceneIdentifier:assetCopy confidence:2147482063 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
     }
 
     v34 = [v30 objectForKeyedSubscript:*MEMORY[0x1E6991230]];
 
     if (v34)
     {
-      v35 = [v62 photoLibrary];
+      photoLibrary3 = [managedObjectContext photoLibrary];
       [v34 doubleValue];
-      v36 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:v35 sceneIdentifier:v4 confidence:2147482079 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
+      v36 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:photoLibrary3 sceneIdentifier:assetCopy confidence:2147482079 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
     }
 
     v37 = [v30 objectForKeyedSubscript:*MEMORY[0x1E6991218]];
 
     if (v37)
     {
-      v38 = [v62 photoLibrary];
+      photoLibrary4 = [managedObjectContext photoLibrary];
       [v37 doubleValue];
-      v39 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:v38 sceneIdentifier:v4 confidence:2147482095 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
+      v39 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:photoLibrary4 sceneIdentifier:assetCopy confidence:2147482095 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
     }
 
     v40 = [v30 objectForKeyedSubscript:*MEMORY[0x1E69911D8]];
 
     if (v40)
     {
-      v41 = [v62 photoLibrary];
+      photoLibrary5 = [managedObjectContext photoLibrary];
       [v40 doubleValue];
-      v42 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:v41 sceneIdentifier:v4 confidence:2147482111 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
+      v42 = [PLSceneClassification insertIntoPhotoLibrary:"insertIntoPhotoLibrary:asset:sceneIdentifier:confidence:packedBoundingBoxRect:startTime:duration:classificationType:thumbnailIdentifier:" asset:photoLibrary5 sceneIdentifier:assetCopy confidence:2147482111 packedBoundingBoxRect:0 startTime:0 duration:0 classificationType:? thumbnailIdentifier:?];
     }
 
     v43 = [(NSDictionary *)self->_smartCamInfo objectForKeyedSubscript:*MEMORY[0x1E69869E8]];
-    v44 = [v43 BOOLValue];
+    bOOLValue = [v43 BOOLValue];
 
-    if (v44)
+    if (bOOLValue)
     {
-      v45 = [v4 additionalAttributes];
-      [v45 setSceneAnalysisIsFromPreview:1];
+      additionalAttributes5 = [assetCopy additionalAttributes];
+      [additionalAttributes5 setSceneAnalysisIsFromPreview:1];
     }
   }
 
@@ -176,7 +176,7 @@
   {
     if (sharedLibraryMode == 4)
     {
-      v47 = self;
+      selfCopy2 = self;
       v49 = 3;
       v48 = 1;
       goto LABEL_49;
@@ -184,7 +184,7 @@
 
     if (sharedLibraryMode == 5)
     {
-      PLLibraryScopeAssetSetCameraRejectedState(1, v4);
+      PLLibraryScopeAssetSetCameraRejectedState(1, assetCopy);
     }
   }
 
@@ -192,11 +192,11 @@
   {
     if ((sharedLibraryMode - 1) < 2)
     {
-      v47 = self;
+      selfCopy2 = self;
       v48 = 0;
       v49 = 2;
 LABEL_49:
-      v50 = [PLLibraryScope activeLibraryScopeInManagedObjectContext:v62];
+      v50 = [PLLibraryScope activeLibraryScopeInManagedObjectContext:managedObjectContext];
       v51 = v50;
       if (v50)
       {
@@ -205,54 +205,54 @@ LABEL_49:
           v49 = 2;
         }
 
-        PLLibraryScopeAssetSetSuggestedByClientType(v49, v4);
-        PLLibraryScopeAssetSetAddToSharedZoneState(1, v4);
-        [v4 setLibraryScopeWithCurrentUserAsContributor:v51];
+        PLLibraryScopeAssetSetSuggestedByClientType(v49, assetCopy);
+        PLLibraryScopeAssetSetAddToSharedZoneState(1, assetCopy);
+        [assetCopy setLibraryScopeWithCurrentUserAsContributor:v51];
       }
 
-      self = v47;
+      self = selfCopy2;
       goto LABEL_55;
     }
 
     if (sharedLibraryMode == 3)
     {
-      PLLibraryScopeAssetSetUserManuallyRejectedState(1, v4);
+      PLLibraryScopeAssetSetUserManuallyRejectedState(1, assetCopy);
     }
   }
 
 LABEL_55:
-  v52 = [(PFCameraMetadata *)self->_cameraMetadata faceObservations];
-  if ([v52 count] && (objc_msgSend(objc_opt_class(), "faceObservationIngestDisabled") & 1) == 0)
+  faceObservations = [(PFCameraMetadata *)self->_cameraMetadata faceObservations];
+  if ([faceObservations count] && (objc_msgSend(objc_opt_class(), "faceObservationIngestDisabled") & 1) == 0)
   {
-    v53 = [(PFCameraMetadata *)self->_cameraMetadata torsoprints];
-    v54 = [v53 count];
-    v55 = v4;
-    if (v54 >= [v52 count])
+    torsoprints = [(PFCameraMetadata *)self->_cameraMetadata torsoprints];
+    v54 = [torsoprints count];
+    v55 = assetCopy;
+    if (v54 >= [faceObservations count])
     {
-      v58 = [objc_opt_class() facePrintIngestDisabled];
-      v56 = self;
-      v57 = v58 ^ 1;
+      facePrintIngestDisabled = [objc_opt_class() facePrintIngestDisabled];
+      selfCopy4 = self;
+      v57 = facePrintIngestDisabled ^ 1;
     }
 
     else
     {
-      v56 = self;
+      selfCopy4 = self;
       v57 = 0;
     }
 
-    v59 = [(PFCameraMetadata *)v56->_cameraMetadata faceObservations];
+    faceObservations2 = [(PFCameraMetadata *)selfCopy4->_cameraMetadata faceObservations];
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __56__PLIngestJobCameraMetadata_applyCameraMetadataToAsset___block_invoke;
     v63[3] = &unk_1E7564D30;
-    v64 = v62;
+    v64 = managedObjectContext;
     v67 = v57;
     v65 = v55;
-    v66 = v53;
-    v60 = v53;
-    [v59 enumerateObjectsUsingBlock:v63];
+    v66 = torsoprints;
+    v60 = torsoprints;
+    [faceObservations2 enumerateObjectsUsingBlock:v63];
 
-    v4 = v55;
+    assetCopy = v55;
   }
 }
 
@@ -354,35 +354,35 @@ void __56__PLIngestJobCameraMetadata_applyCameraMetadataToAsset___block_invoke(u
 - (void)_ingestCameraMetadata
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
+  saliencyObservation = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
 
-  if (v3)
+  if (saliencyObservation)
   {
-    v4 = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
-    [v4 narrowedBoundingBox];
+    saliencyObservation2 = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
+    [saliencyObservation2 narrowedBoundingBox];
     self->_acceptableCropRect.origin.x = v5;
     self->_acceptableCropRect.origin.y = v6;
     self->_acceptableCropRect.size.width = v7;
     self->_acceptableCropRect.size.height = v8;
 
-    v9 = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
-    [v9 boundingBox];
+    saliencyObservation3 = [(PFCameraMetadata *)self->_cameraMetadata saliencyObservation];
+    [saliencyObservation3 boundingBox];
     self->_preferredCropRect.origin.x = v10;
     self->_preferredCropRect.origin.y = v11;
     self->_preferredCropRect.size.width = v12;
     self->_preferredCropRect.size.height = v13;
   }
 
-  v14 = [(PFCameraMetadata *)self->_cameraMetadata imageAestheticsObservation];
+  imageAestheticsObservation = [(PFCameraMetadata *)self->_cameraMetadata imageAestheticsObservation];
   imageAestheticsObservation = self->_imageAestheticsObservation;
-  self->_imageAestheticsObservation = v14;
+  self->_imageAestheticsObservation = imageAestheticsObservation;
 
-  v16 = [(PFCameraMetadata *)self->_cameraMetadata scenePrintObservation];
-  v17 = [v16 sceneprints];
-  v18 = [v17 firstObject];
+  scenePrintObservation = [(PFCameraMetadata *)self->_cameraMetadata scenePrintObservation];
+  sceneprints = [scenePrintObservation sceneprints];
+  firstObject = [sceneprints firstObject];
 
   v30 = 0;
-  v19 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v30];
+  v19 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:firstObject requiringSecureCoding:1 error:&v30];
   v20 = v30;
   sceneprintData = self->_sceneprintData;
   self->_sceneprintData = v19;
@@ -392,26 +392,26 @@ void __56__PLIngestJobCameraMetadata_applyCameraMetadataToAsset___block_invoke(u
     v22 = PLAssetImportGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v18 lengthInBytes];
+      lengthInBytes = [firstObject lengthInBytes];
       *buf = 134218242;
-      v32 = v23;
+      v32 = lengthInBytes;
       v33 = 2112;
       v34 = v20;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "Error serializing sceneprintData (length=%lu): %@", buf, 0x16u);
     }
   }
 
-  v24 = [(PFCameraMetadata *)self->_cameraMetadata junkImageClassificationObservations];
+  junkImageClassificationObservations = [(PFCameraMetadata *)self->_cameraMetadata junkImageClassificationObservations];
   junkImageClassificationObservations = self->_junkImageClassificationObservations;
-  self->_junkImageClassificationObservations = v24;
+  self->_junkImageClassificationObservations = junkImageClassificationObservations;
 
-  v26 = [(PFCameraMetadata *)self->_cameraMetadata smartCamInfo];
+  smartCamInfo = [(PFCameraMetadata *)self->_cameraMetadata smartCamInfo];
   smartCamInfo = self->_smartCamInfo;
-  self->_smartCamInfo = v26;
+  self->_smartCamInfo = smartCamInfo;
 
-  v28 = [(PFCameraMetadata *)self->_cameraMetadata contactIDsInProximity];
+  contactIDsInProximity = [(PFCameraMetadata *)self->_cameraMetadata contactIDsInProximity];
   contactIDsInProximity = self->_contactIDsInProximity;
-  self->_contactIDsInProximity = v28;
+  self->_contactIDsInProximity = contactIDsInProximity;
 
   self->_sharedLibraryMode = [(PFCameraMetadata *)self->_cameraMetadata sharedLibraryMode];
 }
@@ -479,23 +479,23 @@ void __56__PLIngestJobCameraMetadata_applyCameraMetadataToAsset___block_invoke(u
   }
 }
 
-- (void)setCameraMetadata:(id)a3
+- (void)setCameraMetadata:(id)metadata
 {
-  objc_storeStrong(&self->_cameraMetadata, a3);
+  objc_storeStrong(&self->_cameraMetadata, metadata);
 
   [(PLIngestJobCameraMetadata *)self _ingestCameraMetadata];
 }
 
-- (PLIngestJobCameraMetadata)initWithCameraMetadataPath:(id)a3
+- (PLIngestJobCameraMetadata)initWithCameraMetadataPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = PLIngestJobCameraMetadata;
   v6 = [(PLIngestJobCameraMetadata *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cameraMetadataPath, a3);
+    objc_storeStrong(&v6->_cameraMetadataPath, path);
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 16);
     v7->_preferredCropRect.origin = *MEMORY[0x1E695F058];

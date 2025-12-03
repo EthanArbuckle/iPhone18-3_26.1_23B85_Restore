@@ -6,19 +6,19 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(OBTintInheritingImageViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v3 = v2;
-  if (v2)
+  isAccessibilityUserDefinedElement = [(OBTintInheritingImageViewAccessibility *)self isAccessibilityUserDefinedElement];
+  v3 = isAccessibilityUserDefinedElement;
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [isAccessibilityUserDefinedElement BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

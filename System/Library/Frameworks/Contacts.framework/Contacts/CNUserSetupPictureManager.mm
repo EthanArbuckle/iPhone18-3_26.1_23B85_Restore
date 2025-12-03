@@ -33,14 +33,14 @@ uint64_t __32__CNUserSetupPictureManager_log__block_invoke()
 
 + (id)userSetupPictureData
 {
-  if (![a1 hasUserSetupPictureData])
+  if (![self hasUserSetupPictureData])
   {
 LABEL_10:
     v9 = 0;
     goto LABEL_15;
   }
 
-  if (([a1 userSetupPictureDataIsFresh] & 1) == 0)
+  if (([self userSetupPictureDataIsFresh] & 1) == 0)
   {
     v10 = [objc_opt_class() log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -49,14 +49,14 @@ LABEL_10:
       _os_log_impl(&dword_1954A0000, v10, OS_LOG_TYPE_DEFAULT, "Setup user picture data is outdated. Removing.", buf, 2u);
     }
 
-    [a1 clearUserSetupPictureData];
+    [self clearUserSetupPictureData];
     goto LABEL_10;
   }
 
   v3 = MEMORY[0x1E695DEF0];
-  v4 = [a1 userSetupPictureFilePath];
+  userSetupPictureFilePath = [self userSetupPictureFilePath];
   v19 = 0;
-  v5 = [v3 dataWithContentsOfFile:v4 options:0 error:&v19];
+  v5 = [v3 dataWithContentsOfFile:userSetupPictureFilePath options:0 error:&v19];
   v6 = v19;
 
   v7 = [objc_opt_class() log];
@@ -79,7 +79,7 @@ LABEL_10:
       [(CNUserSetupPictureManager *)v6 userSetupPictureData:v8];
     }
 
-    [a1 clearUserSetupPictureData];
+    [self clearUserSetupPictureData];
     v9 = 0;
   }
 
@@ -90,9 +90,9 @@ LABEL_15:
 
 + (BOOL)hasUserSetupPictureData
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [a1 userSetupPictureFilePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  userSetupPictureFilePath = [self userSetupPictureFilePath];
+  v5 = [defaultManager fileExistsAtPath:userSetupPictureFilePath];
 
   return v5;
 }
@@ -103,7 +103,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = __53__CNUserSetupPictureManager_userSetupPictureFilePath__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userSetupPictureFilePath_cn_once_token_4 != -1)
   {
     dispatch_once(&userSetupPictureFilePath_cn_once_token_4, block);
@@ -144,33 +144,33 @@ void __49__CNUserSetupPictureManager_userSetupPicturePath__block_invoke()
 
 + (BOOL)userSetupPictureDataIsFresh
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [a1 userSetupPictureFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  userSetupPictureFilePath = [self userSetupPictureFilePath];
   v18 = 0;
-  v5 = [v3 attributesOfItemAtPath:v4 error:&v18];
+  v5 = [defaultManager attributesOfItemAtPath:userSetupPictureFilePath error:&v18];
   v6 = v18;
 
   if (!v5)
   {
-    v7 = [objc_opt_class() log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    fileCreationDate = [objc_opt_class() log];
+    if (os_log_type_enabled(fileCreationDate, OS_LOG_TYPE_ERROR))
     {
-      [(CNUserSetupPictureManager *)v6 userSetupPictureDataIsFresh:v7];
+      [(CNUserSetupPictureManager *)v6 userSetupPictureDataIsFresh:fileCreationDate];
     }
 
     goto LABEL_6;
   }
 
-  v7 = [v5 fileCreationDate];
-  if (!v7)
+  fileCreationDate = [v5 fileCreationDate];
+  if (!fileCreationDate)
   {
 LABEL_6:
     v10 = 1;
     goto LABEL_7;
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  [v8 timeIntervalSinceDate:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:fileCreationDate];
   v10 = v9 < 604800.0;
 
 LABEL_7:
@@ -179,10 +179,10 @@ LABEL_7:
 
 + (BOOL)clearUserSetupPictureData
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [a1 userSetupPicturePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  userSetupPicturePath = [self userSetupPicturePath];
   v15 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v15];
+  v5 = [defaultManager removeItemAtPath:userSetupPicturePath error:&v15];
   v6 = v15;
 
   if (v6)

@@ -1,37 +1,37 @@
 @interface HKEADFFileParser
-- (HKEADFFileParser)initWithData:(id)a3;
-- (id)newBuilderWithStartDate:(id)a3;
-- (id)payloadInRange:(_NSRange)a3;
-- (void)_enumerateHeadersWithHandler:(id)a3;
-- (void)enumerateChannelsWithHandler:(id)a3;
+- (HKEADFFileParser)initWithData:(id)data;
+- (id)newBuilderWithStartDate:(id)date;
+- (id)payloadInRange:(_NSRange)range;
+- (void)_enumerateHeadersWithHandler:(id)handler;
+- (void)enumerateChannelsWithHandler:(id)handler;
 @end
 
 @implementation HKEADFFileParser
 
-- (HKEADFFileParser)initWithData:(id)a3
+- (HKEADFFileParser)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HKEADFFileParser;
   v6 = [(HKEADFFileParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;
 }
 
-- (void)_enumerateHeadersWithHandler:(id)a3
+- (void)_enumerateHeadersWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = 0;
   do
   {
     v7 = v6 + 12;
-    v8 = [(HKEADFFileParser *)self data];
-    v9 = [v8 length];
+    data = [(HKEADFFileParser *)self data];
+    v9 = [data length];
 
     if (v6 + 12 > v9)
     {
@@ -40,29 +40,29 @@
 
     v14 = 0;
     v13 = 0;
-    v10 = [(HKEADFFileParser *)self data];
-    [v10 getBytes:&v13 range:{v6, 12}];
+    data2 = [(HKEADFFileParser *)self data];
+    [data2 getBytes:&v13 range:{v6, 12}];
 
     v11 = HIDWORD(v13);
     v12 = 0;
     v3 = v3 & 0xFFFFFFFF00000000 | v14;
-    v5[2](v5, v13, v3, v7, 4 * HIDWORD(v13), &v12);
+    handlerCopy[2](handlerCopy, v13, v3, v7, 4 * HIDWORD(v13), &v12);
     v6 = v7 + 4 * v11;
   }
 
   while (v12 != 1);
 }
 
-- (void)enumerateChannelsWithHandler:(id)a3
+- (void)enumerateChannelsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__HKEADFFileParser_enumerateChannelsWithHandler___block_invoke;
   v6[3] = &unk_1E7381808;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(HKEADFFileParser *)self _enumerateHeadersWithHandler:v6];
 }
 
@@ -83,20 +83,20 @@ void __49__HKEADFFileParser_enumerateChannelsWithHandler___block_invoke(uint64_t
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)payloadInRange:(_NSRange)a3
+- (id)payloadInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(HKEADFFileParser *)self data];
-  v6 = [v5 subdataWithRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  data = [(HKEADFFileParser *)self data];
+  v6 = [data subdataWithRange:{location, length}];
 
   return v6;
 }
 
-- (id)newBuilderWithStartDate:(id)a3
+- (id)newBuilderWithStartDate:(id)date
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -124,7 +124,7 @@ void __49__HKEADFFileParser_enumerateChannelsWithHandler___block_invoke(uint64_t
     v8 = (&v15[-1] - ((4 * (v6 >> 2) + 15) & 0xFFFFFFFFFFFFFFF0));
     [v23[5] getBytes:v8 length:v6 & 0xFFFFFFFFFFFFFFFCLL];
     v9 = [HKElectrocardiogramBuilder alloc];
-    v10 = [(HKElectrocardiogramBuilder *)v9 initWithStartDate:v4 frequency:v17[5]];
+    v10 = [(HKElectrocardiogramBuilder *)v9 initWithStartDate:dateCopy frequency:v17[5]];
     if (v6 >= 4)
     {
       do

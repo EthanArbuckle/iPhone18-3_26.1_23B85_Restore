@@ -1,18 +1,18 @@
 @interface SBSwitcherModifierTimelineEntry
-- (SBSwitcherModifierTimelineEntry)initWithEventSnapshot:(id)a3 responseSnapshot:(id)a4 stackSnapshotAfterEvent:(id)a5;
+- (SBSwitcherModifierTimelineEntry)initWithEventSnapshot:(id)snapshot responseSnapshot:(id)responseSnapshot stackSnapshotAfterEvent:(id)event;
 @end
 
 @implementation SBSwitcherModifierTimelineEntry
 
-- (SBSwitcherModifierTimelineEntry)initWithEventSnapshot:(id)a3 responseSnapshot:(id)a4 stackSnapshotAfterEvent:(id)a5
+- (SBSwitcherModifierTimelineEntry)initWithEventSnapshot:(id)snapshot responseSnapshot:(id)responseSnapshot stackSnapshotAfterEvent:(id)event
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  snapshotCopy = snapshot;
+  responseSnapshotCopy = responseSnapshot;
+  eventCopy = event;
+  v12 = eventCopy;
+  if (snapshotCopy)
   {
-    if (v11)
+    if (eventCopy)
     {
       goto LABEL_3;
     }
@@ -35,9 +35,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_eventSnapshot, a3);
-    objc_storeStrong(&v14->_responseSnapshot, a4);
-    objc_storeStrong(&v14->_stackSnapshotAfterEvent, a5);
+    objc_storeStrong(&v13->_eventSnapshot, snapshot);
+    objc_storeStrong(&v14->_responseSnapshot, responseSnapshot);
+    objc_storeStrong(&v14->_stackSnapshotAfterEvent, event);
   }
 
   return v14;

@@ -1,21 +1,21 @@
 @interface PKRulerView
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setRulerLayer:(uint64_t)a1;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setRulerLayer:(uint64_t)layer;
 @end
 
 @implementation PKRulerView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_rulerLayer;
   }
 
-  if ([(PKRulerView *)self viewPointInRuler:a4, a3.x, a3.y])
+  if ([(PKRulerView *)self viewPointInRuler:event, test.x, test.y])
   {
-    v5 = v4;
+    v5 = selfCopy;
   }
 
   else
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (void)setRulerLayer:(uint64_t)a1
+- (void)setRulerLayer:(uint64_t)layer
 {
-  if (a1)
+  if (layer)
   {
-    objc_storeStrong((a1 + 416), a2);
+    objc_storeStrong((layer + 416), a2);
   }
 }
 

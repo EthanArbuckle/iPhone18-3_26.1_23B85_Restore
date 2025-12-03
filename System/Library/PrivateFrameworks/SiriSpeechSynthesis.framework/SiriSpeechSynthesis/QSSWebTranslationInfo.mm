@@ -1,8 +1,8 @@
 @interface QSSWebTranslationInfo
 - (NSArray)spans;
 - (NSString)text;
-- (Offset<siri::speech::schema_fb::WebTranslationInfo>)addObjectToBuffer:(void *)a3;
-- (QSSWebTranslationInfo)initWithFlatbuffData:(id)a3 root:(const WebTranslationInfo *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::WebTranslationInfo>)addObjectToBuffer:(void *)buffer;
+- (QSSWebTranslationInfo)initWithFlatbuffData:(id)data root:(const WebTranslationInfo *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -37,30 +37,30 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::WebTranslationInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::WebTranslationInfo>)addObjectToBuffer:(void *)buffer
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSWebTranslationInfo *)self text];
-  v6 = v5;
-  if (!v5)
+  text = [(QSSWebTranslationInfo *)self text];
+  v6 = text;
+  if (!text)
   {
-    v5 = &stru_2879AE8E0;
+    text = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)text UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   memset(&v29, 0, sizeof(v29));
-  v10 = [(QSSWebTranslationInfo *)self spans];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v29, [v10 count]);
+  spans = [(QSSWebTranslationInfo *)self spans];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v29, [spans count]);
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = [(QSSWebTranslationInfo *)self spans];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  spans2 = [(QSSWebTranslationInfo *)self spans];
+  v12 = [spans2 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v12)
   {
     v13 = *v26;
@@ -70,14 +70,14 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(spans2);
         }
 
-        v24 = [*(*(&v25 + 1) + 8 * i) addObjectToBuffer:a3];
+        v24 = [*(*(&v25 + 1) + 8 * i) addObjectToBuffer:buffer];
         std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v29, &v24);
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v12 = [spans2 countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v12);
@@ -94,15 +94,15 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
     v16 = v29.__begin_;
   }
 
-  v17 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(a3, v16, v29.__end_ - v29.__begin_);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v18 = *(a3 + 8);
-  v19 = *(a3 + 12);
-  v20 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, v17);
-  v21.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v18 - v19 + v20);
+  v17 = flatbuffers::FlatBufferBuilder::CreateVector<flatbuffers::String>(buffer, v16, v29.__end_ - v29.__begin_);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v18 = *(buffer + 8);
+  v19 = *(buffer + 12);
+  v20 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, v17);
+  v21.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v18 - v19 + v20);
   if (begin)
   {
     operator delete(begin);
@@ -114,10 +114,10 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
 
 - (NSArray)spans
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"spans"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"spans"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -134,7 +134,7 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
           do
           {
             v11 = [[QSSSpan alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -145,10 +145,10 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"spans"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"spans"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSString)text
@@ -174,42 +174,42 @@ flatbuffers::DetachedBuffer *__37__QSSWebTranslationInfo_flatbuffData__block_inv
   return v6;
 }
 
-- (QSSWebTranslationInfo)initWithFlatbuffData:(id)a3 root:(const WebTranslationInfo *)a4 verify:(BOOL)a5
+- (QSSWebTranslationInfo)initWithFlatbuffData:(id)data root:(const WebTranslationInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSWebTranslationInfo;
   v10 = [(QSSWebTranslationInfo *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -231,9 +231,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

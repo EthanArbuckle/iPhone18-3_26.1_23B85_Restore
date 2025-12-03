@@ -1,22 +1,22 @@
 @interface CTXPCGetTransferTypeRequest
 + (id)allowedClassesForArguments;
-- (CTXPCGetTransferTypeRequest)initWithPlan:(id)a3 remoteEid:(id)a4;
+- (CTXPCGetTransferTypeRequest)initWithPlan:(id)plan remoteEid:(id)eid;
 - (id)plan;
 - (id)remoteEid;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCGetTransferTypeRequest
 
-- (CTXPCGetTransferTypeRequest)initWithPlan:(id)a3 remoteEid:(id)a4
+- (CTXPCGetTransferTypeRequest)initWithPlan:(id)plan remoteEid:(id)eid
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  planCopy = plan;
+  eidCopy = eid;
   v13[0] = @"plan";
   v13[1] = @"remoteEID";
-  v14[0] = v6;
-  v14[1] = v7;
+  v14[0] = planCopy;
+  v14[1] = eidCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   v12.receiver = self;
   v12.super_class = CTXPCGetTransferTypeRequest;
@@ -26,19 +26,19 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCGetTransferTypeRequest *)self plan];
-  v9 = [(CTXPCGetTransferTypeRequest *)self remoteEid];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  plan = [(CTXPCGetTransferTypeRequest *)self plan];
+  remoteEid = [(CTXPCGetTransferTypeRequest *)self remoteEid];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__CTXPCGetTransferTypeRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A45F50;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 getTransferType:v8 remoteEid:v9 completion:v11];
+  [handlerCopy getTransferType:plan remoteEid:remoteEid completion:v11];
 }
 
 void __75__CTXPCGetTransferTypeRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -50,7 +50,7 @@ void __75__CTXPCGetTransferTypeRequest_performRequestWithHandler_completionHandl
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCGetTransferTypeRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -65,8 +65,8 @@ void __75__CTXPCGetTransferTypeRequest_performRequestWithHandler_completionHandl
 
 - (id)plan
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"plan"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"plan"];
   v4 = CTThrowingCastIfClass<CTPlan>(v3);
 
   return v4;
@@ -74,8 +74,8 @@ void __75__CTXPCGetTransferTypeRequest_performRequestWithHandler_completionHandl
 
 - (id)remoteEid
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"remoteEID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"remoteEID"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

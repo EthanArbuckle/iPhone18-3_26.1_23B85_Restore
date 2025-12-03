@@ -1,40 +1,40 @@
 @interface IDSPersistentMigratingPersister
 - (BOOL)isAvailable;
-- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)a3 destinationPersister:(id)a4;
-- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)a3 destinationPersister:(id)a4 userDefaults:(id)a5;
+- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)persister destinationPersister:(id)destinationPersister;
+- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)persister destinationPersister:(id)destinationPersister userDefaults:(id)defaults;
 - (NSString)description;
 - (id)data;
 - (void)purgeData;
-- (void)saveData:(id)a3 allowBackup:(BOOL)a4;
+- (void)saveData:(id)data allowBackup:(BOOL)backup;
 @end
 
 @implementation IDSPersistentMigratingPersister
 
-- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)a3 destinationPersister:(id)a4
+- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)persister destinationPersister:(id)destinationPersister
 {
-  v6 = a4;
-  v7 = a3;
+  destinationPersisterCopy = destinationPersister;
+  persisterCopy = persister;
   v8 = +[IMUserDefaults sharedDefaults];
-  v9 = [(IDSPersistentMigratingPersister *)self initWithOriginPersister:v7 destinationPersister:v6 userDefaults:v8];
+  v9 = [(IDSPersistentMigratingPersister *)self initWithOriginPersister:persisterCopy destinationPersister:destinationPersisterCopy userDefaults:v8];
 
   return v9;
 }
 
-- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)a3 destinationPersister:(id)a4 userDefaults:(id)a5
+- (IDSPersistentMigratingPersister)initWithOriginPersister:(id)persister destinationPersister:(id)destinationPersister userDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  persisterCopy = persister;
+  destinationPersisterCopy = destinationPersister;
+  defaultsCopy = defaults;
   v20.receiver = self;
   v20.super_class = IDSPersistentMigratingPersister;
   v11 = [(IDSPersistentMigratingPersister *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_userDefaults, a5);
-    objc_storeStrong(&v12->_destinationPersister, a4);
-    v13 = [v9 identifier];
-    v14 = [NSString stringWithFormat:@"persister-migration-%@", v13];
+    objc_storeStrong(&v11->_userDefaults, defaults);
+    objc_storeStrong(&v12->_destinationPersister, destinationPersister);
+    identifier = [destinationPersisterCopy identifier];
+    v14 = [NSString stringWithFormat:@"persister-migration-%@", identifier];
     migrationDefaultKey = v12->_migrationDefaultKey;
     v12->_migrationDefaultKey = v14;
 
@@ -48,7 +48,7 @@
 
     else
     {
-      v18 = v8;
+      v18 = persisterCopy;
       originPersister = v12->_originPersister;
       v12->_originPersister = v18;
     }
@@ -88,24 +88,24 @@
       v3 = 24;
     }
 
-    v4 = [*(&self->super.isa + v3) data];
+    data = [*(&self->super.isa + v3) data];
   }
 
   else
   {
-    v4 = 0;
+    data = 0;
   }
 
-  return v4;
+  return data;
 }
 
-- (void)saveData:(id)a3 allowBackup:(BOOL)a4
+- (void)saveData:(id)data allowBackup:(BOOL)backup
 {
-  v4 = a4;
-  v8 = a3;
+  backupCopy = backup;
+  dataCopy = data;
   if ([(IDSPersistentMigratingPersister *)self isAvailable])
   {
-    [(IDSPersistentMapPersister *)self->_destinationPersister saveData:v8 allowBackup:v4];
+    [(IDSPersistentMapPersister *)self->_destinationPersister saveData:dataCopy allowBackup:backupCopy];
     if (!self->_migrated)
     {
       [(IDSPersistentMapPersister *)self->_originPersister purgeData];
@@ -137,7 +137,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Tried to purge before available -- returning {self: %@}", buf, 0xCu);
     }
 

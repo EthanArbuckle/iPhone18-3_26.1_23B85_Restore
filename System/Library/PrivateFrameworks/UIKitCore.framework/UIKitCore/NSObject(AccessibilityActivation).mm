@@ -8,8 +8,8 @@
 
 - (void)_keyboardActivate
 {
-  v2 = [a1 _keyboardActivateEventDown:1];
-  v3 = [a1 _keyboardActivateEventDown:0];
+  v2 = [self _keyboardActivateEventDown:1];
+  v3 = [self _keyboardActivateEventDown:0];
   [UIApp _enqueueHIDEvent:v2];
   CFRelease(v2);
   v4 = dispatch_time(0, 50000000);
@@ -23,12 +23,12 @@
 
 - (uint64_t)_keyboardActivateEventDown:()AccessibilityActivation
 {
-  [a1 accessibilityActivationPoint];
+  [self accessibilityActivationPoint];
   mach_absolute_time();
   DigitizerEvent = IOHIDEventCreateDigitizerEvent();
   DigitizerFingerEventWithQuality = IOHIDEventCreateDigitizerFingerEventWithQuality();
   IOHIDEventAppendEvent();
-  [a1 _accessibilityGetContextID];
+  [self _accessibilityGetContextID];
   BKSHIDEventSetDigitizerInfo();
   CFRelease(DigitizerFingerEventWithQuality);
   return DigitizerEvent;
@@ -36,7 +36,7 @@
 
 - (uint64_t)_accessibilityGetContextID
 {
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v2 = [a1 _accessibilityWindow]) == 0)
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v2 = [self _accessibilityWindow]) == 0)
   {
     v2 = [objc_msgSend(objc_opt_self() "mainScreen")];
   }

@@ -1,19 +1,19 @@
 @interface CCDEnrollmentRetrieveCloudConfigurationOperation
-- (BOOL)_convertCloudConfigDictionary:(id)a3 toManagedConfiguration:(id *)a4;
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4;
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5;
-- (void)_setEnrolledDeviceRequirementsIfNeededForCloudConfigurationDictionary:(id)a3;
-- (void)_setLockdownCloudConfigAvailableKeyIfNeededWithError:(id)a3;
+- (BOOL)_convertCloudConfigDictionary:(id)dictionary toManagedConfiguration:(id *)configuration;
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data;
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error;
+- (void)_setEnrolledDeviceRequirementsIfNeededForCloudConfigurationDictionary:(id)dictionary;
+- (void)_setLockdownCloudConfigAvailableKeyIfNeededWithError:(id)error;
 @end
 
 @implementation CCDEnrollmentRetrieveCloudConfigurationOperation
 
-- (id)errorForStatusCode:(int64_t)a3 responseData:(id)a4
+- (id)errorForStatusCode:(int64_t)code responseData:(id)data
 {
-  v6 = a4;
-  if (a3 == 401)
+  dataCopy = data;
+  if (code == 401)
   {
-    v8 = [CCDError cloudConfigErrorInResponse:v6];
+    v8 = [CCDError cloudConfigErrorInResponse:dataCopy];
     v9 = v8;
     if (v8)
     {
@@ -28,9 +28,9 @@
     v7 = v10;
   }
 
-  else if (a3 == 400)
+  else if (code == 400)
   {
-    v7 = [CCDError cloudConfigErrorInResponse:v6];
+    v7 = [CCDError cloudConfigErrorInResponse:dataCopy];
     [(CCDEnrollmentRetrieveCloudConfigurationOperation *)self _setLockdownCloudConfigAvailableKeyIfNeededWithError:v7];
   }
 
@@ -42,11 +42,11 @@
   return v7;
 }
 
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error
 {
-  v8 = a4;
-  v9 = [CCDFeatures depResponseDataFromData:a3];
-  v10 = [CCDFeatures depResponseContentTypeFromContentType:v8];
+  typeCopy = type;
+  v9 = [CCDFeatures depResponseDataFromData:data];
+  v10 = [CCDFeatures depResponseContentTypeFromContentType:typeCopy];
 
   if (![v10 containsString:@"text/plain"])
   {
@@ -117,9 +117,9 @@
       }
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = +[CCDError badFormatError];
+      *error = +[CCDError badFormatError];
     }
 
     goto LABEL_19;
@@ -134,16 +134,16 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Got 200 response with error: %@", buf, 0xCu);
   }
 
-  v13 = [v11 domain];
-  if (![v13 isEqualToString:@"MCCloudConfigurationErrorDomain"] || objc_msgSend(v11, "code") == 33024 || objc_msgSend(v11, "code") == 33025)
+  domain = [v11 domain];
+  if (![domain isEqualToString:@"MCCloudConfigurationErrorDomain"] || objc_msgSend(v11, "code") == 33024 || objc_msgSend(v11, "code") == 33025)
   {
 
     goto LABEL_8;
   }
 
-  v26 = [v11 code];
+  code = [v11 code];
 
-  if (v26 == 33017)
+  if (code == 33017)
   {
 LABEL_8:
     v14 = *(DEPLogObjects() + 8);
@@ -157,7 +157,7 @@ LABEL_8:
     goto LABEL_19;
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_19:
     v20 = 0;
@@ -166,34 +166,34 @@ LABEL_19:
 
   v27 = v11;
   v20 = 0;
-  *a5 = v11;
+  *error = v11;
 LABEL_20:
 
   return v20;
 }
 
-- (BOOL)_convertCloudConfigDictionary:(id)a3 toManagedConfiguration:(id *)a4
+- (BOOL)_convertCloudConfigDictionary:(id)dictionary toManagedConfiguration:(id *)configuration
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [CCDValidation validateCloudConfiguration:v6 withResultDictionary:v7];
+  v8 = [CCDValidation validateCloudConfiguration:dictionaryCopy withResultDictionary:v7];
 
   if (v8)
   {
     [(CCDEnrollmentRetrieveCloudConfigurationOperation *)self _setEnrolledDeviceRequirementsIfNeededForCloudConfigurationDictionary:v7];
-    if (a4)
+    if (configuration)
     {
       v9 = v7;
-      *a4 = v7;
+      *configuration = v7;
     }
   }
 
   return v8;
 }
 
-- (void)_setEnrolledDeviceRequirementsIfNeededForCloudConfigurationDictionary:(id)a3
+- (void)_setEnrolledDeviceRequirementsIfNeededForCloudConfigurationDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = *(DEPLogObjects() + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -201,31 +201,31 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Enrolled devices require supervision and enrollment should be mandatory. Setting supervision and mandatory keys.", v7, 2u);
   }
 
-  [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IsSupervised"];
-  [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IsMandatory"];
-  v5 = [v3 objectForKeyedSubscript:@"IsMultiUser"];
-  v6 = [v5 BOOLValue];
+  [dictionaryCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"IsSupervised"];
+  [dictionaryCopy setObject:&__kCFBooleanTrue forKeyedSubscript:@"IsMandatory"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"IsMultiUser"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    [v3 removeObjectForKey:@"MAIDHasCredential"];
-    [v3 removeObjectForKey:@"MAIDUsername"];
+    [dictionaryCopy removeObjectForKey:@"MAIDHasCredential"];
+    [dictionaryCopy removeObjectForKey:@"MAIDUsername"];
   }
 }
 
-- (void)_setLockdownCloudConfigAvailableKeyIfNeededWithError:(id)a3
+- (void)_setLockdownCloudConfigAvailableKeyIfNeededWithError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v5 = v3;
-    v4 = [v3 code] == 33005;
-    v3 = v5;
+    v5 = errorCopy;
+    v4 = [errorCopy code] == 33005;
+    errorCopy = v5;
     if (v4)
     {
       CFPreferencesSetAppValue(@"LockdownCloudConfigurationAvailable", kCFBooleanFalse, @"com.apple.managedconfiguration.notbackedup");
       CFPreferencesAppSynchronize(@"com.apple.managedconfiguration.notbackedup");
-      v3 = v5;
+      errorCopy = v5;
     }
   }
 }

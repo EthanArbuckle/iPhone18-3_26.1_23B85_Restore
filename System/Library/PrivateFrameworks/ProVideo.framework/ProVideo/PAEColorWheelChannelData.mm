@@ -1,71 +1,71 @@
 @interface PAEColorWheelChannelData
-+ (id)channelDataWithRadius:(double)a3 theta:(double)a4 saturation:(double)a5 light:(double)a6;
-- (BOOL)isEqual:(id)a3;
-- (PAEColorWheelChannelData)initWithCoder:(id)a3;
-- (PAEColorWheelChannelData)initWithRadius:(double)a3 theta:(double)a4 saturation:(double)a5 light:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)channelDataWithRadius:(double)radius theta:(double)theta saturation:(double)saturation light:(double)light;
+- (BOOL)isEqual:(id)equal;
+- (PAEColorWheelChannelData)initWithCoder:(id)coder;
+- (PAEColorWheelChannelData)initWithRadius:(double)radius theta:(double)theta saturation:(double)saturation light:(double)light;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)interpolateBetween:(id)between withWeight:(float)weight;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
-- (void)setLight:(double)a3;
-- (void)setSaturation:(double)a3;
+- (void)setLight:(double)light;
+- (void)setSaturation:(double)saturation;
 @end
 
 @implementation PAEColorWheelChannelData
 
-- (PAEColorWheelChannelData)initWithRadius:(double)a3 theta:(double)a4 saturation:(double)a5 light:(double)a6
+- (PAEColorWheelChannelData)initWithRadius:(double)radius theta:(double)theta saturation:(double)saturation light:(double)light
 {
   v11.receiver = self;
   v11.super_class = PAEColorWheelChannelData;
   result = [(PAEColorWheelChannelData *)&v11 init];
   if (result)
   {
-    result->_value.r = fmax(a3, 0.0);
-    result->_value.t = a4;
-    result->_value.sat = fmax(a5, 0.0);
-    result->_value.e = a6;
+    result->_value.r = fmax(radius, 0.0);
+    result->_value.t = theta;
+    result->_value.sat = fmax(saturation, 0.0);
+    result->_value.e = light;
   }
 
   return result;
 }
 
-+ (id)channelDataWithRadius:(double)a3 theta:(double)a4 saturation:(double)a5 light:(double)a6
++ (id)channelDataWithRadius:(double)radius theta:(double)theta saturation:(double)saturation light:(double)light
 {
-  v6 = [[a1 alloc] initWithRadius:a3 theta:a4 saturation:a5 light:a6];
+  v6 = [[self alloc] initWithRadius:radius theta:theta saturation:saturation light:light];
 
   return v6;
 }
 
-- (void)setSaturation:(double)a3
+- (void)setSaturation:(double)saturation
 {
-  v3 = 5.0;
-  if (a3 <= 5.0)
+  saturationCopy = 5.0;
+  if (saturation <= 5.0)
   {
-    v3 = a3;
+    saturationCopy = saturation;
   }
 
-  v4 = a3 < 0.0;
+  v4 = saturation < 0.0;
   v5 = 0.0;
   if (!v4)
   {
-    v5 = v3;
+    v5 = saturationCopy;
   }
 
   self->_value.sat = v5;
 }
 
-- (void)setLight:(double)a3
+- (void)setLight:(double)light
 {
-  v3 = 5.5;
-  if (a3 <= 5.5)
+  lightCopy = 5.5;
+  if (light <= 5.5)
   {
-    v3 = a3;
+    lightCopy = light;
   }
 
-  if (a3 >= -5.5)
+  if (light >= -5.5)
   {
-    v4 = v3;
+    v4 = lightCopy;
   }
 
   else
@@ -85,55 +85,55 @@
   *&self->_value.sat = _Q0;
 }
 
-- (PAEColorWheelChannelData)initWithCoder:(id)a3
+- (PAEColorWheelChannelData)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = PAEColorWheelChannelData;
   v4 = [(PAEColorWheelChannelData *)&v10 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"radius"];
+    [coder decodeDoubleForKey:@"radius"];
     v4->_value.r = v5;
-    [a3 decodeDoubleForKey:@"theta"];
+    [coder decodeDoubleForKey:@"theta"];
     v4->_value.t = v6;
-    [a3 decodeDoubleForKey:@"saturation"];
+    [coder decodeDoubleForKey:@"saturation"];
     v4->_value.sat = v7;
-    [a3 decodeDoubleForKey:@"light"];
+    [coder decodeDoubleForKey:@"light"];
     v4->_value.e = v8;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(PAEColorWheelChannelData *)self radius];
   if (v5 != 0.0)
   {
-    [a3 encodeDouble:@"radius" forKey:?];
+    [coder encodeDouble:@"radius" forKey:?];
   }
 
   [(PAEColorWheelChannelData *)self theta];
   if (v6 != 0.0)
   {
-    [a3 encodeDouble:@"theta" forKey:?];
+    [coder encodeDouble:@"theta" forKey:?];
   }
 
   [(PAEColorWheelChannelData *)self saturation];
   if (v7 != 0.0)
   {
-    [a3 encodeDouble:@"saturation" forKey:?];
+    [coder encodeDouble:@"saturation" forKey:?];
   }
 
   [(PAEColorWheelChannelData *)self light];
   if (v8 != 0.0)
   {
 
-    [a3 encodeDouble:@"light" forKey:?];
+    [coder encodeDouble:@"light" forKey:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -161,7 +161,7 @@
   return [v3 stringWithFormat:@"<%@: %p> radius=%f, theta=%f, saturation=%f, light=%f", v5, self, v7, v9, v11, v12];
 }
 
-- (id)interpolateBetween:(id)a3 withWeight:(float)a4
+- (id)interpolateBetween:(id)between withWeight:(float)weight
 {
   [(PAEColorWheelChannelData *)self saturation];
   v7 = v6;
@@ -171,13 +171,13 @@
   v81 = v10;
   [(PAEColorWheelChannelData *)self theta];
   v12 = v11;
-  [a3 saturation];
+  [between saturation];
   v14 = v13;
-  [a3 light];
+  [between light];
   v16 = v15;
-  [a3 radius];
+  [between radius];
   v80 = v17;
-  [a3 theta];
+  [between theta];
   v19 = v12 * 0.159154943;
   v20.i64[0] = __PAIR64__(1.0, LODWORD(v19));
   v20.i64[1] = COERCE_UNSIGNED_INT(0.5);
@@ -279,7 +279,7 @@ LABEL_25:
 
   *&v24.i32[2] = (1.0 + 1.0) * 0.5;
 LABEL_28:
-  v31.f32[1] = a4;
+  v31.f32[1] = weight;
   v32 = v18 * 0.159154943;
   v33.i64[0] = __PAIR64__(1.0, LODWORD(v32));
   v33.i64[1] = COERCE_UNSIGNED_INT(0.5);
@@ -318,7 +318,7 @@ LABEL_33:
     v35 = *v33.i32 - *v33.i32;
   }
 
-  v31.f32[0] = 1.0 - a4;
+  v31.f32[0] = 1.0 - weight;
   v36 = vcvtq_f64_f32(v31);
   v37 = (1.0 + 1.0) * 0.5;
   v38 = v37;
@@ -505,11 +505,11 @@ LABEL_83:
   return [PAEColorWheelChannelData channelDataWithRadius:v77 theta:v75 saturation:v74 light:v73];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   [(PAEColorWheelChannelData *)self saturation];
   v6 = v5;
-  [a3 saturation];
+  [equal saturation];
   if (v6 != v7)
   {
     return 0;
@@ -517,7 +517,7 @@ LABEL_83:
 
   [(PAEColorWheelChannelData *)self light];
   v9 = v8;
-  [a3 light];
+  [equal light];
   if (v9 != v10)
   {
     return 0;
@@ -525,7 +525,7 @@ LABEL_83:
 
   [(PAEColorWheelChannelData *)self radius];
   v12 = v11;
-  [a3 radius];
+  [equal radius];
   if (v12 != v13)
   {
     return 0;
@@ -533,7 +533,7 @@ LABEL_83:
 
   [(PAEColorWheelChannelData *)self theta];
   v16 = v15;
-  [a3 theta];
+  [equal theta];
   return v16 == v17;
 }
 

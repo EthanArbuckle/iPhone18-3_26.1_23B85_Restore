@@ -35,9 +35,9 @@
 
 - (BOOL)keyboardPlaysSounds
 {
-  v3 = [(NSUserDefaults *)self->_soundDefaults dictionaryRepresentation];
-  v4 = [v3 allKeys];
-  v5 = [v4 containsObject:@"keyboard"];
+  dictionaryRepresentation = [(NSUserDefaults *)self->_soundDefaults dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v5 = [allKeys containsObject:@"keyboard"];
 
   if (!v5)
   {

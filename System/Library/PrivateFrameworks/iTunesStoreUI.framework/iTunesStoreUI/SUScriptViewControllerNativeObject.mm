@@ -1,10 +1,10 @@
 @interface SUScriptViewControllerNativeObject
-- (void)_loadPassbookPassWithURL:(id)a3;
+- (void)_loadPassbookPassWithURL:(id)l;
 - (void)_reloadVisibility;
 - (void)dealloc;
 - (void)destroyNativeObject;
-- (void)passbookLoaderDidFinish:(id)a3;
-- (void)setScriptObject:(id)a3;
+- (void)passbookLoaderDidFinish:(id)finish;
+- (void)setScriptObject:(id)object;
 - (void)setupNativeObject;
 @end
 
@@ -28,12 +28,12 @@
   [(SUScriptNativeObject *)&v3 destroyNativeObject];
 }
 
-- (void)setScriptObject:(id)a3
+- (void)setScriptObject:(id)object
 {
   v5.receiver = self;
   v5.super_class = SUScriptViewControllerNativeObject;
   [(SUScriptNativeObject *)&v5 setScriptObject:?];
-  if (a3)
+  if (object)
   {
     [-[SUScriptViewControllerNativeObject mainThreadProxy](self "mainThreadProxy")];
   }
@@ -41,7 +41,7 @@
 
 - (void)setupNativeObject
 {
-  v3 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
   [(SUScriptViewControllerNativeObject *)self _reloadVisibility];
   v4.receiver = self;
@@ -49,7 +49,7 @@
   [(SUScriptNativeObject *)&v4 setupNativeObject];
 }
 
-- (void)passbookLoaderDidFinish:(id)a3
+- (void)passbookLoaderDidFinish:(id)finish
 {
   for (i = [(SUScriptNativeObject *)self scriptObject]; ; i = [(SUScriptObject *)v6 parentScriptObject])
   {
@@ -66,7 +66,7 @@
   }
 
   passbookLoader = self->_passbookLoader;
-  if (passbookLoader == a3)
+  if (passbookLoader == finish)
   {
     [(SUUIPassbookLoader *)passbookLoader setDelegate:0];
 
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)_loadPassbookPassWithURL:(id)a3
+- (void)_loadPassbookPassWithURL:(id)l
 {
   passbookLoader = self->_passbookLoader;
   if (!passbookLoader)
@@ -88,20 +88,20 @@
     passbookLoader = self->_passbookLoader;
   }
 
-  [(SUUIPassbookLoader *)passbookLoader loadPassWithURL:a3];
+  [(SUUIPassbookLoader *)passbookLoader loadPassWithURL:l];
 }
 
 - (void)_reloadVisibility
 {
-  v3 = [(SUScriptNativeObject *)self object];
-  if ([v3 parentViewController])
+  object = [(SUScriptNativeObject *)self object];
+  if ([object parentViewController])
   {
     v4 = 1;
   }
 
-  else if ([v3 isViewLoaded])
+  else if ([object isViewLoaded])
   {
-    v4 = [objc_msgSend(v3 "view")] != 0;
+    v4 = [objc_msgSend(object "view")] != 0;
   }
 
   else
@@ -109,9 +109,9 @@
     v4 = 0;
   }
 
-  v5 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v5 setVisible:v4];
+  [(SUScriptObject *)scriptObject setVisible:v4];
 }
 
 @end

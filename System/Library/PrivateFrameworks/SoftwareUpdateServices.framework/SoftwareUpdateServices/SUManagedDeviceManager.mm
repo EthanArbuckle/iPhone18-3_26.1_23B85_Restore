@@ -5,14 +5,14 @@
 - (BOOL)isDelayingUpdates;
 - (BOOL)isManagedByMDM;
 - (SUManagedDeviceManager)init;
-- (unint64_t)MCPathToSUMDMPath:(int64_t)a3;
+- (unint64_t)MCPathToSUMDMPath:(int64_t)path;
 - (unint64_t)delayPeriodInDays;
 - (unint64_t)softwareUpdatePathRestriction;
 - (void)dealloc;
 - (void)profileChanged;
 - (void)refreshAssetAudience;
 - (void)registerProfileChangeListener;
-- (void)setAssetAudience:(id)a3;
+- (void)setAssetAudience:(id)audience;
 - (void)unregisterProfileChangeListener;
 @end
 
@@ -30,9 +30,9 @@
     v2->_workQueue = v3;
 
     v5 = +[SUState currentState];
-    v6 = [v5 lastAssetAudience];
+    lastAssetAudience = [v5 lastAssetAudience];
     assetAudience = v2->_assetAudience;
-    v2->_assetAudience = v6;
+    v2->_assetAudience = lastAssetAudience;
 
     v2->_notifyToken = 0;
     [(SUManagedDeviceManager *)v2 registerProfileChangeListener];
@@ -73,52 +73,52 @@ uint64_t __40__SUManagedDeviceManager_sharedInstance__block_invoke()
 
 - (BOOL)isManagedByMDM
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isSupervised];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isSupervised = [mEMORY[0x277D262A0] isSupervised];
 
-  return v3;
+  return isSupervised;
 }
 
 - (BOOL)isDelayingUpdates
 {
-  v2 = [(SUManagedDeviceManager *)self isManagedByMDM];
-  if (v2)
+  isManagedByMDM = [(SUManagedDeviceManager *)self isManagedByMDM];
+  if (isManagedByMDM)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    v4 = [v3 isSoftwareUpdateResisted];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isSoftwareUpdateResisted = [mEMORY[0x277D262A0] isSoftwareUpdateResisted];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isManagedByMDM) = isSoftwareUpdateResisted;
   }
 
-  return v2;
+  return isManagedByMDM;
 }
 
 - (BOOL)allowSplat
 {
-  v2 = [(SUManagedDeviceManager *)self isManagedByMDM];
-  if (v2)
+  isManagedByMDM = [(SUManagedDeviceManager *)self isManagedByMDM];
+  if (isManagedByMDM)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    v4 = [v3 isRapidSecurityResponseInstallationAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isRapidSecurityResponseInstallationAllowed = [mEMORY[0x277D262A0] isRapidSecurityResponseInstallationAllowed];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isManagedByMDM) = isRapidSecurityResponseInstallationAllowed;
   }
 
-  return v2;
+  return isManagedByMDM;
 }
 
 - (BOOL)allowSplatRollback
 {
-  v2 = [(SUManagedDeviceManager *)self isManagedByMDM];
-  if (v2)
+  isManagedByMDM = [(SUManagedDeviceManager *)self isManagedByMDM];
+  if (isManagedByMDM)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
-    v4 = [v3 isRapidSecurityResponseRemovalAllowed];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isRapidSecurityResponseRemovalAllowed = [mEMORY[0x277D262A0] isRapidSecurityResponseRemovalAllowed];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isManagedByMDM) = isRapidSecurityResponseRemovalAllowed;
   }
 
-  return v2;
+  return isManagedByMDM;
 }
 
 - (unint64_t)delayPeriodInDays
@@ -128,10 +128,10 @@ uint64_t __40__SUManagedDeviceManager_sharedInstance__block_invoke()
     return 0;
   }
 
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 enforcedSoftwareUpdateDelayInDays];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  enforcedSoftwareUpdateDelayInDays = [mEMORY[0x277D262A0] enforcedSoftwareUpdateDelayInDays];
 
-  return v3;
+  return enforcedSoftwareUpdateDelayInDays;
 }
 
 - (unint64_t)softwareUpdatePathRestriction
@@ -141,22 +141,22 @@ uint64_t __40__SUManagedDeviceManager_sharedInstance__block_invoke()
     return 3;
   }
 
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 softwareUpdatePath];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  softwareUpdatePath = [mEMORY[0x277D262A0] softwareUpdatePath];
 
-  return [(SUManagedDeviceManager *)self MCPathToSUMDMPath:v4];
+  return [(SUManagedDeviceManager *)self MCPathToSUMDMPath:softwareUpdatePath];
 }
 
 - (void)registerProfileChangeListener
 {
-  v3 = [*MEMORY[0x277D26148] UTF8String];
+  uTF8String = [*MEMORY[0x277D26148] UTF8String];
   v4 = +[SUUtility mainWorkQueue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __55__SUManagedDeviceManager_registerProfileChangeListener__block_invoke;
   handler[3] = &unk_279CABC58;
   handler[4] = self;
-  notify_register_dispatch(v3, &self->_notifyToken, v4, handler);
+  notify_register_dispatch(uTF8String, &self->_notifyToken, v4, handler);
 }
 
 uint64_t __55__SUManagedDeviceManager_registerProfileChangeListener__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -196,17 +196,17 @@ void __40__SUManagedDeviceManager_profileChanged__block_invoke(uint64_t a1)
   [v1 setAssetAudience:v2];
 }
 
-- (void)setAssetAudience:(id)a3
+- (void)setAssetAudience:(id)audience
 {
-  v4 = a3;
+  audienceCopy = audience;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SUManagedDeviceManager_setAssetAudience___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audienceCopy;
+  v6 = audienceCopy;
   dispatch_sync(workQueue, v7);
 }
 
@@ -234,16 +234,16 @@ void __43__SUManagedDeviceManager_setAssetAudience___block_invoke(uint64_t a1)
   [(SUManagedDeviceManager *)self setAssetAudience:v3];
 }
 
-- (unint64_t)MCPathToSUMDMPath:(int64_t)a3
+- (unint64_t)MCPathToSUMDMPath:(int64_t)path
 {
-  if (a3 == 2)
+  if (path == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return path == 1;
   }
 }
 

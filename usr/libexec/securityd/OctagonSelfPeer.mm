@@ -1,7 +1,7 @@
 @interface OctagonSelfPeer
-- (BOOL)matchesPeer:(id)a3;
+- (BOOL)matchesPeer:(id)peer;
 - (NSString)description;
-- (OctagonSelfPeer)initWithPeerID:(id)a3 signingIdentity:(id)a4 encryptionIdentity:(id)a5;
+- (OctagonSelfPeer)initWithPeerID:(id)d signingIdentity:(id)identity encryptionIdentity:(id)encryptionIdentity;
 - (_SFECKeyPair)encryptionKey;
 - (_SFECKeyPair)signingKey;
 - (_SFECPublicKey)publicEncryptionKey;
@@ -10,16 +10,16 @@
 
 @implementation OctagonSelfPeer
 
-- (BOOL)matchesPeer:(id)a3
+- (BOOL)matchesPeer:(id)peer
 {
-  v4 = [a3 peerID];
-  v5 = [(OctagonSelfPeer *)self peerID];
-  v6 = v5 | v4;
+  peerID = [peer peerID];
+  peerID2 = [(OctagonSelfPeer *)self peerID];
+  v6 = peerID2 | peerID;
 
   if (v6)
   {
-    v8 = [(OctagonSelfPeer *)self peerID];
-    v7 = [v8 isEqualToString:v4];
+    peerID3 = [(OctagonSelfPeer *)self peerID];
+    v7 = [peerID3 isEqualToString:peerID];
   }
 
   else
@@ -32,58 +32,58 @@
 
 - (_SFECKeyPair)signingKey
 {
-  v2 = [(OctagonSelfPeer *)self signingIdentity];
-  v3 = [v2 keyPair];
+  signingIdentity = [(OctagonSelfPeer *)self signingIdentity];
+  keyPair = [signingIdentity keyPair];
 
-  return v3;
+  return keyPair;
 }
 
 - (_SFECKeyPair)encryptionKey
 {
-  v2 = [(OctagonSelfPeer *)self encryptionIdentity];
-  v3 = [v2 keyPair];
+  encryptionIdentity = [(OctagonSelfPeer *)self encryptionIdentity];
+  keyPair = [encryptionIdentity keyPair];
 
-  return v3;
+  return keyPair;
 }
 
 - (_SFECPublicKey)publicSigningKey
 {
-  v2 = [(OctagonSelfPeer *)self signingIdentity];
-  v3 = [v2 publicKey];
+  signingIdentity = [(OctagonSelfPeer *)self signingIdentity];
+  publicKey = [signingIdentity publicKey];
 
-  return v3;
+  return publicKey;
 }
 
 - (_SFECPublicKey)publicEncryptionKey
 {
-  v2 = [(OctagonSelfPeer *)self encryptionIdentity];
-  v3 = [v2 publicKey];
+  encryptionIdentity = [(OctagonSelfPeer *)self encryptionIdentity];
+  publicKey = [encryptionIdentity publicKey];
 
-  return v3;
+  return publicKey;
 }
 
 - (NSString)description
 {
-  v2 = [(OctagonSelfPeer *)self peerID];
-  v3 = [NSString stringWithFormat:@"<OctagonSelfPeer: %@>", v2];
+  peerID = [(OctagonSelfPeer *)self peerID];
+  v3 = [NSString stringWithFormat:@"<OctagonSelfPeer: %@>", peerID];
 
   return v3;
 }
 
-- (OctagonSelfPeer)initWithPeerID:(id)a3 signingIdentity:(id)a4 encryptionIdentity:(id)a5
+- (OctagonSelfPeer)initWithPeerID:(id)d signingIdentity:(id)identity encryptionIdentity:(id)encryptionIdentity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  identityCopy = identity;
+  encryptionIdentityCopy = encryptionIdentity;
   v15.receiver = self;
   v15.super_class = OctagonSelfPeer;
   v12 = [(OctagonSelfPeer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_peerID, a3);
-    objc_storeStrong(&v13->_signingIdentity, a4);
-    objc_storeStrong(&v13->_encryptionIdentity, a5);
+    objc_storeStrong(&v12->_peerID, d);
+    objc_storeStrong(&v13->_signingIdentity, identity);
+    objc_storeStrong(&v13->_encryptionIdentity, encryptionIdentity);
   }
 
   return v13;

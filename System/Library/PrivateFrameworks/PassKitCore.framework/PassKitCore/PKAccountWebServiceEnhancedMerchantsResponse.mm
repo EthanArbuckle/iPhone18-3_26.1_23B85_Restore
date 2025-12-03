@@ -1,40 +1,40 @@
 @interface PKAccountWebServiceEnhancedMerchantsResponse
-- (PKAccountWebServiceEnhancedMerchantsResponse)initWithData:(id)a3;
+- (PKAccountWebServiceEnhancedMerchantsResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceEnhancedMerchantsResponse
 
-- (PKAccountWebServiceEnhancedMerchantsResponse)initWithData:(id)a3
+- (PKAccountWebServiceEnhancedMerchantsResponse)initWithData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = PKAccountWebServiceEnhancedMerchantsResponse;
-  v3 = [(PKWebServiceResponse *)&v23 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v23 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 objectForKey:@"merchants"];
+    v6 = [jSONObject objectForKey:@"merchants"];
     v7 = [v6 pk_arrayBySafelyApplyingBlock:&__block_literal_global_775_0];
     merchants = v4->_merchants;
     v4->_merchants = v7;
 
-    v9 = [v5 objectForKey:@"orderings"];
+    v9 = [jSONObject objectForKey:@"orderings"];
     v10 = [v9 pk_arrayBySafelyApplyingBlock:&__block_literal_global_778];
     orderings = v4->_orderings;
     v4->_orderings = v10;
 
-    v12 = [v5 PKDateForKey:@"lastAddedDate"];
+    v12 = [jSONObject PKDateForKey:@"lastAddedDate"];
     lastAddedDate = v4->_lastAddedDate;
     v4->_lastAddedDate = v12;
 
-    v14 = [v5 PKNumberForKey:@"minRefreshPeriod"];
+    v14 = [jSONObject PKNumberForKey:@"minRefreshPeriod"];
     minRefreshPeriod = v4->_minRefreshPeriod;
     v4->_minRefreshPeriod = v14;
 

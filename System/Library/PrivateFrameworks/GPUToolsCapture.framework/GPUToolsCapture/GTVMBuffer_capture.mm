@@ -1,19 +1,19 @@
 @interface GTVMBuffer_capture
-- (GTVMBuffer_capture)initWithCapacity:(unint64_t)a3;
-- (GTVMBuffer_capture)initWithLength:(unint64_t)a3;
-- (GTVMBuffer_capture)initWithVMBuffer:(VMBuffer *)a3;
-- (id)subdataWithRange:(_NSRange)a3;
+- (GTVMBuffer_capture)initWithCapacity:(unint64_t)capacity;
+- (GTVMBuffer_capture)initWithLength:(unint64_t)length;
+- (GTVMBuffer_capture)initWithVMBuffer:(VMBuffer *)buffer;
+- (id)subdataWithRange:(_NSRange)range;
 - (void)dealloc;
-- (void)setLength:(unint64_t)a3;
+- (void)setLength:(unint64_t)length;
 @end
 
 @implementation GTVMBuffer_capture
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(GTVMBuffer_capture *)self length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [(GTVMBuffer_capture *)self length])
   {
     return 0;
   }
@@ -23,12 +23,12 @@
   return v7;
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
   vmBuffer = self->_vmBuffer;
-  if (vmBuffer->var1 < a3)
+  if (vmBuffer->var1 < length)
   {
-    GPUTools::VMBuffer::resize(vmBuffer, a3);
+    GPUTools::VMBuffer::resize(vmBuffer, length);
     vmBuffer = self->_vmBuffer;
   }
 
@@ -38,7 +38,7 @@
   v9 = -var5;
   v10 = (v8 & v9) - vmBuffer->var0;
   vmBuffer->var3 = v10;
-  vmBuffer->var4 = v10 + ((v7 + a3) & v9);
+  vmBuffer->var4 = v10 + ((v7 + length) & v9);
 }
 
 - (void)dealloc
@@ -54,7 +54,7 @@
   [(GTVMBuffer_capture *)&v2 dealloc];
 }
 
-- (GTVMBuffer_capture)initWithLength:(unint64_t)a3
+- (GTVMBuffer_capture)initWithLength:(unint64_t)length
 {
   v4.receiver = self;
   v4.super_class = GTVMBuffer_capture;
@@ -66,7 +66,7 @@
   return 0;
 }
 
-- (GTVMBuffer_capture)initWithCapacity:(unint64_t)a3
+- (GTVMBuffer_capture)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = GTVMBuffer_capture;
@@ -78,9 +78,9 @@
   return 0;
 }
 
-- (GTVMBuffer_capture)initWithVMBuffer:(VMBuffer *)a3
+- (GTVMBuffer_capture)initWithVMBuffer:(VMBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     __assert_rtn("[GTVMBuffer initWithVMBuffer:]", ", 0, "vmBuffer"");
   }
@@ -90,7 +90,7 @@
   result = [(GTVMBuffer_capture *)&v5 init];
   if (result)
   {
-    result->_vmBuffer = a3;
+    result->_vmBuffer = buffer;
   }
 
   return result;

@@ -1,16 +1,16 @@
 @interface JavaLangFloat
-+ (BOOL)isInfiniteWithFloat:(float)a3;
-+ (BOOL)isNaNWithFloat:(float)a3;
-+ (float)intBitsToFloatWithInt:(int)a3;
-+ (int)floatToRawIntBitsWithFloat:(float)a3;
++ (BOOL)isInfiniteWithFloat:(float)float;
++ (BOOL)isNaNWithFloat:(float)float;
++ (float)intBitsToFloatWithInt:(int)int;
++ (int)floatToRawIntBitsWithFloat:(float)float;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInfinite;
 - (BOOL)isNaN;
-- (JavaLangFloat)initWithDouble:(double)a3;
-- (JavaLangFloat)initWithNSString:(id)a3;
+- (JavaLangFloat)initWithDouble:(double)double;
+- (JavaLangFloat)initWithNSString:(id)string;
 - (char)charValue;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int)intValue;
 - (int64_t)longLongValue;
 - (signed)shortValue;
@@ -18,24 +18,24 @@
 
 @implementation JavaLangFloat
 
-- (JavaLangFloat)initWithDouble:(double)a3
+- (JavaLangFloat)initWithDouble:(double)double
 {
-  v3 = a3;
-  self->value_ = v3;
+  doubleCopy = double;
+  self->value_ = doubleCopy;
   return self;
 }
 
-- (JavaLangFloat)initWithNSString:(id)a3
+- (JavaLangFloat)initWithNSString:(id)string
 {
-  JavaLangFloat_parseFloatWithNSString_(a3);
+  JavaLangFloat_parseFloatWithNSString_(string);
   self->value_ = v4;
   return self;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -46,7 +46,7 @@
   }
 
   value = self->value_;
-  v6 = *(a3 + 2);
+  v6 = *(id + 2);
 
   return JavaLangFloat_compareWithFloat_withFloat_(value, v6);
 }
@@ -73,7 +73,7 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -83,7 +83,7 @@
 
   v5 = JavaLangFloat_floatToIntBitsWithFloat_(self->value_);
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -93,27 +93,27 @@
     JreThrowClassCastException();
   }
 
-  return v5 == JavaLangFloat_floatToIntBitsWithFloat_(*(a3 + 2));
+  return v5 == JavaLangFloat_floatToIntBitsWithFloat_(*(equal + 2));
 }
 
-+ (int)floatToRawIntBitsWithFloat:(float)a3
++ (int)floatToRawIntBitsWithFloat:(float)float
 {
   if ((atomic_load_explicit(JavaLangFloat__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025EE68();
   }
 
-  return LODWORD(a3);
+  return LODWORD(float);
 }
 
-+ (float)intBitsToFloatWithInt:(int)a3
++ (float)intBitsToFloatWithInt:(int)int
 {
   if ((atomic_load_explicit(JavaLangFloat__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025EE68();
   }
 
-  return *&a3;
+  return *&int;
 }
 
 - (int)intValue
@@ -151,14 +151,14 @@
   return fabsf(value) == INFINITY;
 }
 
-+ (BOOL)isInfiniteWithFloat:(float)a3
++ (BOOL)isInfiniteWithFloat:(float)float
 {
   if ((atomic_load_explicit(JavaLangFloat__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10025EE68();
   }
 
-  return fabsf(a3) == INFINITY;
+  return fabsf(float) == INFINITY;
 }
 
 - (BOOL)isNaN
@@ -172,7 +172,7 @@
   return 0;
 }
 
-+ (BOOL)isNaNWithFloat:(float)a3
++ (BOOL)isNaNWithFloat:(float)float
 {
   if ((atomic_load_explicit(JavaLangFloat__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -226,7 +226,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSClass_arrayType(+[IOSClass floatClass](IOSClass "floatClass")];
     objc_opt_class();

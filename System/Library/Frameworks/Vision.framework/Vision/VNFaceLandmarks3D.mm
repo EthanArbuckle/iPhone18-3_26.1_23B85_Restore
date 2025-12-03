@@ -10,11 +10,11 @@
 - (VNFaceLandmarkRegion3D)outerLips;
 - (VNFaceLandmarkRegion3D)rightEye;
 - (VNFaceLandmarkRegion3D)rightEyebrow;
-- (VNFaceLandmarks3D)initWithCoder:(id)a3;
-- (VNFaceLandmarks3D)initWithOriginatingRequestSpecifier:(id)a3 pointsData:(id)a4 pointCount:(unint64_t)a5 userFacingBBox:(CGRect)a6 alignedBBox:(_Geometry2D_rect2D_)a7 landmarkScore:(float)a8;
-- (void)_createPointArray:(const int *)a3 count:(unint64_t)a4;
+- (VNFaceLandmarks3D)initWithCoder:(id)coder;
+- (VNFaceLandmarks3D)initWithOriginatingRequestSpecifier:(id)specifier pointsData:(id)data pointCount:(unint64_t)count userFacingBBox:(CGRect)box alignedBBox:(_Geometry2D_rect2D_)bBox landmarkScore:(float)score;
+- (void)_createPointArray:(const int *)array count:(unint64_t)count;
 - (void)_initLocks;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNFaceLandmarks3D
@@ -26,9 +26,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6051290 count:6];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:6 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:6 pointCount:?];
     innerLips = self->_innerLips;
     self->_innerLips = v6;
   }
@@ -46,9 +46,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6051230 count:10];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:10 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:10 pointCount:?];
     outerLips = self->_outerLips;
     self->_outerLips = v6;
   }
@@ -66,9 +66,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A60512F0 count:9];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:9 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:9 pointCount:?];
     medianLine = self->_medianLine;
     self->_medianLine = v6;
   }
@@ -86,9 +86,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6050E10 count:3];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:3 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:3 pointCount:?];
     noseCrest = self->_noseCrest;
     self->_noseCrest = v6;
   }
@@ -106,9 +106,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6050E70 count:9];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:9 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:9 pointCount:?];
     nose = self->_nose;
     self->_nose = v6;
   }
@@ -126,9 +126,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A60510B0 count:4];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:4 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:4 pointCount:?];
     rightEyebrow = self->_rightEyebrow;
     self->_rightEyebrow = v6;
   }
@@ -146,9 +146,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6050F30 count:4];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:4 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:4 pointCount:?];
     leftEyebrow = self->_leftEyebrow;
     self->_leftEyebrow = v6;
   }
@@ -166,9 +166,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6051110 count:8];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:8 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:8 pointCount:?];
     rightEye = self->_rightEye;
     self->_rightEye = v6;
   }
@@ -186,9 +186,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6050F90 count:8];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:8 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:8 pointCount:?];
     leftEye = self->_leftEye;
     self->_leftEye = v6;
   }
@@ -206,9 +206,9 @@
   {
     v3 = [(VNFaceLandmarks3D *)self _createPointArray:&unk_1A6050D50 count:11];
     v4 = [VNFaceLandmarkRegion3D alloc];
-    v5 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:v5 faceBoundingBox:v3 points:11 pointCount:?];
+    v6 = [(VNFaceLandmarkRegion3D *)v4 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v3 points:11 pointCount:?];
     faceContour = self->_faceContour;
     self->_faceContour = v6;
   }
@@ -230,20 +230,20 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v5 = [(VNFaceLandmarks *)self pointCount];
+  pointCount = [(VNFaceLandmarks *)self pointCount];
   v6 = +[VNFaceGeometryEstimator allLandmarksPointsIndexes];
   v13 = 0;
   v14 = 0;
   v15 = 0;
   std::vector<int>::__init_with_size[abi:ne200100]<int *,int *>(&v13, *v6, v6[1], (v6[1] - *v6) >> 2);
   v7 = v13;
-  if (v5 == (v14 - v13) >> 2)
+  if (pointCount == (v14 - v13) >> 2)
   {
-    v8 = [(VNFaceLandmarks3D *)self _createPointArray:v13 count:v5];
+    v8 = [(VNFaceLandmarks3D *)self _createPointArray:v13 count:pointCount];
     v9 = [VNFaceLandmarkRegion3D alloc];
-    v10 = [(VNFaceLandmarks *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNFaceLandmarks *)self originatingRequestSpecifier];
     [(VNFaceLandmarks *)self userFacingBBox];
-    v11 = [(VNFaceLandmarkRegion3D *)v9 initWithOriginatingRequestSpecifier:v10 faceBoundingBox:v8 points:v5 pointCount:?];
+    v11 = [(VNFaceLandmarkRegion3D *)v9 initWithOriginatingRequestSpecifier:originatingRequestSpecifier faceBoundingBox:v8 points:pointCount pointCount:?];
     allPoints = self->_allPoints;
     self->_allPoints = v11;
 
@@ -267,27 +267,27 @@ LABEL_3:
   return v3;
 }
 
-- (void)_createPointArray:(const int *)a3 count:(unint64_t)a4
+- (void)_createPointArray:(const int *)array count:(unint64_t)count
 {
-  v5 = a3;
-  [VNError VNAssert:a3 != 0 log:@"pointIndices must not be nullptr"];
-  v7 = malloc_type_calloc(0x10uLL, a4, 0x75B554B0uLL);
-  v8 = [(VNFaceLandmarks *)self pointsData];
-  v9 = [v8 bytes];
+  arrayCopy = array;
+  [VNError VNAssert:array != 0 log:@"pointIndices must not be nullptr"];
+  v7 = malloc_type_calloc(0x10uLL, count, 0x75B554B0uLL);
+  pointsData = [(VNFaceLandmarks *)self pointsData];
+  bytes = [pointsData bytes];
 
-  v10 = [(VNFaceLandmarks *)self pointCount];
-  if (a4)
+  pointCount = [(VNFaceLandmarks *)self pointCount];
+  if (count)
   {
     for (i = v7; ; i += 2)
     {
-      v13 = *v5++;
+      v13 = *arrayCopy++;
       v12 = v13;
-      if (v10 <= v13)
+      if (pointCount <= v13)
       {
         break;
       }
 
-      v14 = (v9 + 12 * v12);
+      v14 = (bytes + 12 * v12);
       v15 = i[1];
       LODWORD(v16) = *v14;
       *i = *v14;
@@ -296,7 +296,7 @@ LABEL_3:
       *i = v16;
       *(i + 2) = v14[2];
       *i = v16;
-      if (!--a4)
+      if (!--count)
       {
         return v7;
       }
@@ -309,13 +309,13 @@ LABEL_3:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNFaceLandmarks3D;
-  [(VNFaceLandmarks *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:0 forKey:@"VNFaceLandmarks3D"];
+  [(VNFaceLandmarks *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:0 forKey:@"VNFaceLandmarks3D"];
 }
 
 - (void)_initLocks
@@ -333,20 +333,20 @@ LABEL_3:
   self->_innerLipsLock._os_unfair_lock_opaque = 0;
 }
 
-- (VNFaceLandmarks3D)initWithCoder:(id)a3
+- (VNFaceLandmarks3D)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = VNFaceLandmarks3D;
-  v5 = [(VNFaceLandmarks *)&v10 initWithCoder:v4];
+  v5 = [(VNFaceLandmarks *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeInt32ForKey:@"VNFaceLandmarks3D"];
+    v6 = [coderCopy decodeInt32ForKey:@"VNFaceLandmarks3D"];
     if (v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to unarchive VNFaceLandmarks3D object due to coding version mismatch: Currently supported: %u; encoded: %u", 0, v6];
       v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7];
-      [v4 failWithError:v8];
+      [coderCopy failWithError:v8];
 
       v5 = 0;
     }
@@ -360,25 +360,25 @@ LABEL_3:
   return v5;
 }
 
-- (VNFaceLandmarks3D)initWithOriginatingRequestSpecifier:(id)a3 pointsData:(id)a4 pointCount:(unint64_t)a5 userFacingBBox:(CGRect)a6 alignedBBox:(_Geometry2D_rect2D_)a7 landmarkScore:(float)a8
+- (VNFaceLandmarks3D)initWithOriginatingRequestSpecifier:(id)specifier pointsData:(id)data pointCount:(unint64_t)count userFacingBBox:(CGRect)box alignedBBox:(_Geometry2D_rect2D_)bBox landmarkScore:(float)score
 {
-  width = a7.size.width;
-  height = a7.size.height;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v11 = a6.size.height;
-  v12 = a6.size.width;
-  v13 = a6.origin.y;
-  v14 = a6.origin.x;
-  v18 = a3;
-  v19 = a4;
+  width = bBox.size.width;
+  height = bBox.size.height;
+  y = bBox.origin.y;
+  x = bBox.origin.x;
+  v11 = box.size.height;
+  v12 = box.size.width;
+  v13 = box.origin.y;
+  v14 = box.origin.x;
+  specifierCopy = specifier;
+  dataCopy = data;
   v30.receiver = self;
   v30.super_class = VNFaceLandmarks3D;
   *&v20 = x;
   *&v21 = y;
   *&v22 = height;
   *&v23 = width;
-  v24 = [(VNFaceLandmarks *)&v30 initWithOriginatingRequestSpecifier:v18 pointsData:v19 pointCount:a5 userFacingBBox:v14 alignedBBox:v13 landmarkScore:v12, v11, v20, v21, v22, v23, LODWORD(a8)];
+  v24 = [(VNFaceLandmarks *)&v30 initWithOriginatingRequestSpecifier:specifierCopy pointsData:dataCopy pointCount:count userFacingBBox:v14 alignedBBox:v13 landmarkScore:v12, v11, v20, v21, v22, v23, LODWORD(score)];
   v25 = v24;
   if (v24)
   {

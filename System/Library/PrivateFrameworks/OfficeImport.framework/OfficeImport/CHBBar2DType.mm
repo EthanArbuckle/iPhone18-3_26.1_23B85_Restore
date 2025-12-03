@@ -1,35 +1,35 @@
 @interface CHBBar2DType
-+ (id)chdChartTypeWithState:(id)a3;
-+ (void)readWithState:(id)a3 chartType:(id)a4;
++ (id)chdChartTypeWithState:(id)state;
++ (void)readWithState:(id)state chartType:(id)type;
 @end
 
 @implementation CHBBar2DType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [CHDBar2DType alloc];
-  v5 = [v3 chart];
-  v6 = [(CHDBar2DType *)v4 initWithChart:v5];
+  chart = [stateCopy chart];
+  v6 = [(CHDBar2DType *)v4 initWithChart:chart];
 
-  [CHBBar2DType readWithState:v3 chartType:v6];
+  [CHBBar2DType readWithState:stateCopy chartType:v6];
 
   return v6;
 }
 
-+ (void)readWithState:(id)a3 chartType:(id)a4
++ (void)readWithState:(id)state chartType:(id)type
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 xlCurrentPlot];
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  typeCopy = type;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  v7 = xlCurrentPlot;
+  if (xlCurrentPlot)
   {
-    [v5 setOverlap:*(v6 + 160)];
-    [v5 setGapWidth:*(v7 + 162)];
-    [v5 setColumn:XlChartBar::isTranspose((v7 + 144)) ^ 1];
+    [typeCopy setOverlap:*(xlCurrentPlot + 160)];
+    [typeCopy setGapWidth:*(v7 + 162)];
+    [typeCopy setColumn:XlChartBar::isTranspose((v7 + 144)) ^ 1];
     isStacked = XlChartBar::isStacked((v7 + 144));
-    [CHBChartTypeWithGrouping setGrouping:v5 stacked:isStacked categoryPercentage:XlChartBar::isCategoryPercentage((v7 + 144))];
+    [CHBChartTypeWithGrouping setGrouping:typeCopy stacked:isStacked categoryPercentage:XlChartBar::isCategoryPercentage((v7 + 144))];
   }
 }
 

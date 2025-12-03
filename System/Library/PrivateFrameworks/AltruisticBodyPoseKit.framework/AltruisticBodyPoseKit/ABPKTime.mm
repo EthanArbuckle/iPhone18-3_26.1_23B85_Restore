@@ -1,5 +1,5 @@
 @interface ABPKTime
-+ (double)machAbsoluteTimeToSeconds:(unint64_t)a3;
++ (double)machAbsoluteTimeToSeconds:(unint64_t)seconds;
 + (double)nowInSeconds;
 @end
 
@@ -13,13 +13,13 @@
   return result;
 }
 
-+ (double)machAbsoluteTimeToSeconds:(unint64_t)a3
++ (double)machAbsoluteTimeToSeconds:(unint64_t)seconds
 {
   info = 0;
   mach_timebase_info(&info);
   LODWORD(v5) = info.denom;
   LODWORD(v4) = info.numer;
-  return v4 / (v5 * 1000000000.0) * a3;
+  return v4 / (v5 * 1000000000.0) * seconds;
 }
 
 @end

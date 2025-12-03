@@ -1,8 +1,8 @@
 @interface MTREnergyEVSEClusterEnableChargingParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTREnergyEVSEClusterEnableChargingParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterEnableChargingParams);
-  v5 = [(MTREnergyEVSEClusterEnableChargingParams *)self chargingEnabledUntil];
-  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setChargingEnabledUntil:v5];
+  chargingEnabledUntil = [(MTREnergyEVSEClusterEnableChargingParams *)self chargingEnabledUntil];
+  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setChargingEnabledUntil:chargingEnabledUntil];
 
-  v6 = [(MTREnergyEVSEClusterEnableChargingParams *)self minimumChargeCurrent];
-  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setMinimumChargeCurrent:v6];
+  minimumChargeCurrent = [(MTREnergyEVSEClusterEnableChargingParams *)self minimumChargeCurrent];
+  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setMinimumChargeCurrent:minimumChargeCurrent];
 
-  v7 = [(MTREnergyEVSEClusterEnableChargingParams *)self maximumChargeCurrent];
-  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setMaximumChargeCurrent:v7];
+  maximumChargeCurrent = [(MTREnergyEVSEClusterEnableChargingParams *)self maximumChargeCurrent];
+  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setMaximumChargeCurrent:maximumChargeCurrent];
 
-  v8 = [(MTREnergyEVSEClusterEnableChargingParams *)self timedInvokeTimeoutMs];
-  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTREnergyEVSEClusterEnableChargingParams *)self timedInvokeTimeoutMs];
+  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTREnergyEVSEClusterEnableChargingParams *)self serverSideProcessingTimeout];
-  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTREnergyEVSEClusterEnableChargingParams *)self serverSideProcessingTimeout];
+  [(MTREnergyEVSEClusterEnableChargingParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,30 +66,30 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  LOBYTE(v25) = 0;
+  LOBYTE(unsignedIntValue) = 0;
   v26 = 0;
-  v27 = 0;
-  v28 = 0;
+  longLongValue = 0;
+  longLongValue2 = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTREnergyEVSEClusterEnableChargingParams *)self chargingEnabledUntil];
+  chargingEnabledUntil = [(MTREnergyEVSEClusterEnableChargingParams *)self chargingEnabledUntil];
 
-  if (v5)
+  if (chargingEnabledUntil)
   {
-    v25 = 0;
+    unsignedIntValue = 0;
     v26 = 1;
-    v6 = [(MTREnergyEVSEClusterEnableChargingParams *)self chargingEnabledUntil];
-    v25 = [v6 unsignedIntValue];
+    chargingEnabledUntil2 = [(MTREnergyEVSEClusterEnableChargingParams *)self chargingEnabledUntil];
+    unsignedIntValue = [chargingEnabledUntil2 unsignedIntValue];
   }
 
-  v7 = [(MTREnergyEVSEClusterEnableChargingParams *)self minimumChargeCurrent];
-  v27 = [v7 longLongValue];
+  minimumChargeCurrent = [(MTREnergyEVSEClusterEnableChargingParams *)self minimumChargeCurrent];
+  longLongValue = [minimumChargeCurrent longLongValue];
 
-  v8 = [(MTREnergyEVSEClusterEnableChargingParams *)self maximumChargeCurrent];
-  v28 = [v8 longLongValue];
+  maximumChargeCurrent = [(MTREnergyEVSEClusterEnableChargingParams *)self maximumChargeCurrent];
+  longLongValue2 = [maximumChargeCurrent longLongValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
   if (v22)
@@ -101,7 +101,7 @@
     v21 = 0;
     sub_238EA16C4(&v18, &v22, 0);
     sub_2393C7BF0(v17, &v18, 0xFFFFFFFF);
-    v9 = sub_238F163C4(&v25, v17, 0x100uLL);
+    v9 = sub_238F163C4(&unsignedIntValue, v17, 0x100uLL);
     v11 = v9;
     if (v9 || (v9 = sub_238DD2EFC(v17, &v22), v11 = v9, v9))
     {
@@ -110,8 +110,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -139,19 +139,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTREnergyEVSEClusterEnableChargingParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -162,7 +162,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x463500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

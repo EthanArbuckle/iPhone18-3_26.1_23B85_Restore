@@ -1,24 +1,24 @@
 @interface ObserverUpdate
 - (ObserverUpdate)init;
-- (ObserverUpdate)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ObserverUpdate)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ObserverUpdate
 
-- (ObserverUpdate)initWithCoder:(id)a3
+- (ObserverUpdate)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = specialized Service.ObserverUpdate.init(coder:)(v3);
+  coderCopy = coder;
+  v4 = specialized Service.ObserverUpdate.init(coder:)(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  Service.ObserverUpdate.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  Service.ObserverUpdate.encode(with:)(coderCopy);
 }
 
 - (ObserverUpdate)init

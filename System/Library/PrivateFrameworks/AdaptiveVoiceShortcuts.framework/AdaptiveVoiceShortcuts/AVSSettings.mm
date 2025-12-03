@@ -8,19 +8,19 @@
 
 + (BOOL)avsFeatureEnabled
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 isAdaptiveVoiceShortcutsEnabled];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  isAdaptiveVoiceShortcutsEnabled = [sharedInstance isAdaptiveVoiceShortcutsEnabled];
 
-  return v3;
+  return isAdaptiveVoiceShortcutsEnabled;
 }
 
 + (BOOL)shouldHideAudioDonationPrompt
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_23E82EA5C();
-  v4 = [v2 BOOLForKey_];
+  bOOLForKey_ = [standardUserDefaults BOOLForKey_];
 
-  return v4;
+  return bOOLForKey_;
 }
 
 - (AVSSettings)init

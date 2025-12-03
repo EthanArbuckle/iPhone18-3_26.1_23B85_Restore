@@ -8,107 +8,107 @@
 - (id)_intents_encodeWithJSONEncoder:()INJSONSerialization codableDescription:
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v5 setObject:v6 forKey:@"coordinate"];
+  [dictionary setObject:v6 forKey:@"coordinate"];
   v7 = MEMORY[0x1E696AD98];
-  [a1 coordinate];
+  [self coordinate];
   v8 = [v7 numberWithDouble:?];
   v9 = [v4 encodeObject:v8];
-  [v5 setValue:v9 forKeyPath:@"coordinate.latitude"];
+  [dictionary setValue:v9 forKeyPath:@"coordinate.latitude"];
 
   v10 = MEMORY[0x1E696AD98];
-  [a1 coordinate];
+  [self coordinate];
   v12 = [v10 numberWithDouble:v11];
   v13 = [v4 encodeObject:v12];
-  [v5 setValue:v13 forKeyPath:@"coordinate.longitude"];
+  [dictionary setValue:v13 forKeyPath:@"coordinate.longitude"];
 
-  [a1 altitude];
+  [self altitude];
   if (v14 < 0.0)
   {
-    [v5 if_setObjectIfNonNil:0 forKey:@"altitude"];
+    [dictionary if_setObjectIfNonNil:0 forKey:@"altitude"];
   }
 
   else
   {
     v15 = MEMORY[0x1E696AD98];
-    [a1 altitude];
+    [self altitude];
     v16 = [v15 numberWithDouble:?];
     v17 = [v4 encodeObject:v16];
-    [v5 if_setObjectIfNonNil:v17 forKey:@"altitude"];
+    [dictionary if_setObjectIfNonNil:v17 forKey:@"altitude"];
   }
 
-  [a1 horizontalAccuracy];
+  [self horizontalAccuracy];
   if (v18 < 0.0)
   {
-    [v5 if_setObjectIfNonNil:0 forKey:@"horizontalAccuracy"];
+    [dictionary if_setObjectIfNonNil:0 forKey:@"horizontalAccuracy"];
   }
 
   else
   {
     v19 = MEMORY[0x1E696AD98];
-    [a1 horizontalAccuracy];
+    [self horizontalAccuracy];
     v20 = [v19 numberWithDouble:?];
     v21 = [v4 encodeObject:v20];
-    [v5 if_setObjectIfNonNil:v21 forKey:@"horizontalAccuracy"];
+    [dictionary if_setObjectIfNonNil:v21 forKey:@"horizontalAccuracy"];
   }
 
-  [a1 verticalAccuracy];
+  [self verticalAccuracy];
   if (v22 < 0.0)
   {
-    [v5 if_setObjectIfNonNil:0 forKey:@"verticalAccuracy"];
+    [dictionary if_setObjectIfNonNil:0 forKey:@"verticalAccuracy"];
   }
 
   else
   {
     v23 = MEMORY[0x1E696AD98];
-    [a1 verticalAccuracy];
+    [self verticalAccuracy];
     v24 = [v23 numberWithDouble:?];
     v25 = [v4 encodeObject:v24];
-    [v5 if_setObjectIfNonNil:v25 forKey:@"verticalAccuracy"];
+    [dictionary if_setObjectIfNonNil:v25 forKey:@"verticalAccuracy"];
   }
 
-  [a1 course];
+  [self course];
   if (v26 < 0.0)
   {
-    [v5 if_setObjectIfNonNil:0 forKey:@"course"];
+    [dictionary if_setObjectIfNonNil:0 forKey:@"course"];
   }
 
   else
   {
     v27 = MEMORY[0x1E696AD98];
-    [a1 course];
+    [self course];
     v28 = [v27 numberWithDouble:?];
     v29 = [v4 encodeObject:v28];
-    [v5 if_setObjectIfNonNil:v29 forKey:@"course"];
+    [dictionary if_setObjectIfNonNil:v29 forKey:@"course"];
   }
 
-  [a1 speed];
+  [self speed];
   if (v30 < 0.0)
   {
-    [v5 if_setObjectIfNonNil:0 forKey:@"speed"];
+    [dictionary if_setObjectIfNonNil:0 forKey:@"speed"];
   }
 
   else
   {
     v31 = MEMORY[0x1E696AD98];
-    [a1 speed];
+    [self speed];
     v32 = [v31 numberWithDouble:?];
     v33 = [v4 encodeObject:v32];
-    [v5 if_setObjectIfNonNil:v33 forKey:@"speed"];
+    [dictionary if_setObjectIfNonNil:v33 forKey:@"speed"];
   }
 
-  v34 = [v4 _storedConfiguration];
-  v35 = [v34 locationIncludesTimestamp];
+  _storedConfiguration = [v4 _storedConfiguration];
+  locationIncludesTimestamp = [_storedConfiguration locationIncludesTimestamp];
 
-  if (v35)
+  if (locationIncludesTimestamp)
   {
-    v36 = [a1 timestamp];
-    v37 = [v4 encodeObject:v36];
-    [v5 if_setObjectIfNonNil:v37 forKey:@"timestamp"];
+    timestamp = [self timestamp];
+    v37 = [v4 encodeObject:timestamp];
+    [dictionary if_setObjectIfNonNil:v37 forKey:@"timestamp"];
   }
 
-  return v5;
+  return dictionary;
 }
 
 + (id)_intents_decodeWithJSONDecoder:()INJSONSerialization codableDescription:from:

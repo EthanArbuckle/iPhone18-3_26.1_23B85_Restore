@@ -4,26 +4,26 @@
 - (NSCoreDataCoreSpotlightDelegate)init;
 - (NSCoreDataCoreSpotlightDelegate)initForStoreWithDescription:(NSPersistentStoreDescription *)description coordinator:(NSPersistentStoreCoordinator *)psc;
 - (NSString)domainIdentifier;
-- (id)_importObjectsUpdatedSinceTransaction:(void *)a1;
-- (id)indexedPropertyNamesByEntityNameUsingModel:(id)a3;
+- (id)_importObjectsUpdatedSinceTransaction:(void *)transaction;
+- (id)indexedPropertyNamesByEntityNameUsingModel:(id)model;
 - (uint64_t)_asyncContextBlock:(uint64_t)result;
-- (uint64_t)_clientStateForSpotlightIndex:(uint64_t)a1;
+- (uint64_t)_clientStateForSpotlightIndex:(uint64_t)index;
 - (uint64_t)_context;
 - (uint64_t)_doFullReimport;
 - (void)_catchUpToCurrentTransaction;
 - (void)_initializePersistentStore;
-- (void)_resetSpotlightIndexWithCompletionHandler:(void *)a1;
+- (void)_resetSpotlightIndexWithCompletionHandler:(void *)handler;
 - (void)_searchableItemForObject:(void *)result;
-- (void)_updateSpotlightIndexClientState:(uint64_t)a3 historyToken:(int)a4 updatedSpotlight:;
-- (void)_updateSpotlightIndexFromBatchResult:(uint64_t)a1;
-- (void)_updateSpotlightIndexFromSaveRequest:(uint64_t)a1;
+- (void)_updateSpotlightIndexClientState:(uint64_t)state historyToken:(int)token updatedSpotlight:;
+- (void)_updateSpotlightIndexFromBatchResult:(uint64_t)result;
+- (void)_updateSpotlightIndexFromSaveRequest:(uint64_t)request;
 - (void)createClientSearchableIndex;
 - (void)dealloc;
 - (void)deleteSpotlightIndexWithCompletionHandler:(void *)completionHandler;
 - (void)indexSearchableItemsToCurrentHistoryToken;
 - (void)searchableIndex:(CSSearchableIndex *)searchableIndex reindexAllSearchableItemsWithAcknowledgementHandler:(void *)acknowledgementHandler;
 - (void)searchableIndex:(CSSearchableIndex *)searchableIndex reindexSearchableItemsWithIdentifiers:(NSArray *)identifiers acknowledgementHandler:(void *)acknowledgementHandler;
-- (void)setIndexURL:(id)a3;
+- (void)setIndexURL:(id)l;
 - (void)startSpotlightIndexing;
 - (void)stopSpotlightIndexing;
 @end
@@ -34,7 +34,7 @@
 {
   objc_opt_self();
   objc_opt_class();
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _CoreData_SpotlightDebug = [_PFRoutines integerValueForOverride:?];
   }
@@ -65,13 +65,13 @@
 - (void)startSpotlightIndexing
 {
   [(NSCoreDataCoreSpotlightDelegate *)self _context];
-  v3 = [(NSCoreDataCoreSpotlightDelegate *)self _context];
+  _context = [(NSCoreDataCoreSpotlightDelegate *)self _context];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__NSCoreDataCoreSpotlightDelegate_startSpotlightIndexing__block_invoke;
   v4[3] = &unk_1E6EC16F0;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [_context performBlock:v4];
 }
 
 void __43__NSCoreDataCoreSpotlightDelegate__context__block_invoke(uint64_t a1)
@@ -518,7 +518,7 @@ LABEL_84:
 - (void)_initializePersistentStore
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (_CoreData_SpotlightDebug >= 1)
     {
@@ -531,9 +531,9 @@ LABEL_84:
           LogStream = _PFLogGetLogStream(1);
           if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
           {
-            v4 = *(a1 + 24);
+            v4 = *(self + 24);
             *buf = 134218754;
-            v12 = a1;
+            selfCopy2 = self;
             v13 = 2080;
             v14 = "[NSCoreDataCoreSpotlightDelegate _initializePersistentStore]";
             v15 = 1024;
@@ -549,9 +549,9 @@ LABEL_84:
           v5 = _PFLogGetLogStream(4);
           if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
           {
-            v6 = *(a1 + 24);
+            v6 = *(self + 24);
             *buf = 134218754;
-            v12 = a1;
+            selfCopy2 = self;
             v13 = 2080;
             v14 = "[NSCoreDataCoreSpotlightDelegate _initializePersistentStore]";
             v15 = 1024;
@@ -573,7 +573,7 @@ LABEL_84:
         v7 = 4;
       }
 
-      _NSCoreDataLog_console(v7, "CoreData+CoreSpotlight <%p>: %s(%d): NSCoreDataCoreSpotlightDelegate initializing support for store with identifier %@", a1, "[NSCoreDataCoreSpotlightDelegate _initializePersistentStore]", 1308, *(a1 + 24));
+      _NSCoreDataLog_console(v7, "CoreData+CoreSpotlight <%p>: %s(%d): NSCoreDataCoreSpotlightDelegate initializing support for store with identifier %@", self, "[NSCoreDataCoreSpotlightDelegate _initializePersistentStore]", 1308, *(self + 24));
       objc_autoreleasePoolPop(v2);
     }
 
@@ -582,7 +582,7 @@ LABEL_84:
     block[1] = 3221225472;
     block[2] = __61__NSCoreDataCoreSpotlightDelegate__initializePersistentStore__block_invoke;
     block[3] = &unk_1E6EC16F0;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(global_queue, block);
   }
 
@@ -797,25 +797,25 @@ LABEL_38:
 
 - (void)createClientSearchableIndex
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  [(NSCoreDataCoreSpotlightDelegate *)a1 _context];
-  v2 = *(a1 + 80);
+  [(NSCoreDataCoreSpotlightDelegate *)self _context];
+  v2 = *(self + 80);
   if (v2)
   {
-    v3 = [*(a1 + 112) createPrivateSearchableIndexWithPath:{objc_msgSend(v2, "path")}];
+    v3 = [*(self + 112) createPrivateSearchableIndexWithPath:{objc_msgSend(v2, "path")}];
   }
 
   else
   {
-    v4 = *(a1 + 112);
-    v6 = *(a1 + 56);
-    v5 = *(a1 + 64);
-    v7 = *(a1 + 48);
-    if (*(a1 + 73) == 1)
+    v4 = *(self + 112);
+    v6 = *(self + 56);
+    v5 = *(self + 64);
+    v7 = *(self + 48);
+    if (*(self + 73) == 1)
     {
       v3 = [v4 createPrivateSearchableIndexWithName:v7 protectionClass:v5 bundleIdentifier:v6];
     }
@@ -827,7 +827,7 @@ LABEL_38:
   }
 
   v8 = v3;
-  [v3 setIndexDelegate:a1];
+  [v3 setIndexDelegate:self];
   return v8;
 }
 
@@ -841,7 +841,7 @@ uint64_t __58__NSCoreDataCoreSpotlightDelegate__initialImportCompleted__block_in
 - (void)_catchUpToCurrentTransaction
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v11 = 0;
     v12 = &v11;
@@ -849,14 +849,14 @@ uint64_t __58__NSCoreDataCoreSpotlightDelegate__initialImportCompleted__block_in
     v14 = __Block_byref_object_copy__10;
     v15 = __Block_byref_object_dispose__10;
     v16 = 0;
-    v2 = [(NSCoreDataCoreSpotlightDelegate *)a1 _context];
+    _context = [(NSCoreDataCoreSpotlightDelegate *)self _context];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __63__NSCoreDataCoreSpotlightDelegate__catchUpToCurrentTransaction__block_invoke;
     v10[3] = &unk_1E6EC1330;
-    v10[4] = a1;
+    v10[4] = self;
     v10[5] = &v11;
-    [v2 performBlockAndWait:v10];
+    [_context performBlockAndWait:v10];
     if (_CoreData_SpotlightDebug >= 1)
     {
       v3 = objc_autoreleasePoolPush();
@@ -870,7 +870,7 @@ uint64_t __58__NSCoreDataCoreSpotlightDelegate__initialImportCompleted__block_in
           {
             v5 = v12[5];
             *buf = 134218754;
-            v18 = a1;
+            selfCopy2 = self;
             v19 = 2080;
             v20 = "[NSCoreDataCoreSpotlightDelegate _catchUpToCurrentTransaction]";
             v21 = 1024;
@@ -888,7 +888,7 @@ uint64_t __58__NSCoreDataCoreSpotlightDelegate__initialImportCompleted__block_in
           {
             v7 = v12[5];
             *buf = 134218754;
-            v18 = a1;
+            selfCopy2 = self;
             v19 = 2080;
             v20 = "[NSCoreDataCoreSpotlightDelegate _catchUpToCurrentTransaction]";
             v21 = 1024;
@@ -910,11 +910,11 @@ uint64_t __58__NSCoreDataCoreSpotlightDelegate__initialImportCompleted__block_in
         v8 = 4;
       }
 
-      _NSCoreDataLog_console(v8, "CoreData+CoreSpotlight <%p>: %s(%d): Catching up Spotlight index since transaction, %@", a1, "[NSCoreDataCoreSpotlightDelegate _catchUpToCurrentTransaction]", 1232, v12[5]);
+      _NSCoreDataLog_console(v8, "CoreData+CoreSpotlight <%p>: %s(%d): Catching up Spotlight index since transaction, %@", self, "[NSCoreDataCoreSpotlightDelegate _catchUpToCurrentTransaction]", 1232, v12[5]);
       objc_autoreleasePoolPop(v3);
     }
 
-    [(NSCoreDataCoreSpotlightDelegate *)a1 _importObjectsUpdatedSinceTransaction:?];
+    [(NSCoreDataCoreSpotlightDelegate *)self _importObjectsUpdatedSinceTransaction:?];
 
     _Block_object_dispose(&v11, 8);
   }
@@ -1204,15 +1204,15 @@ LABEL_10:
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   [(NSCoreDataCoreSpotlightDelegate *)self _context];
   v6 = [objc_alloc(getCoreSpotlightCSSearchableItemAttributeSetClass()) initWithItemContentType:@"public.item"];
-  v7 = [(NSManagedObject *)object entity];
-  v8 = [(NSEntityDescription *)v7 coreSpotlightDisplayNameExpression];
-  if (v8)
+  entity = [(NSManagedObject *)object entity];
+  coreSpotlightDisplayNameExpression = [(NSEntityDescription *)entity coreSpotlightDisplayNameExpression];
+  if (coreSpotlightDisplayNameExpression)
   {
     v21 = v5;
-    [v6 setDisplayName:{-[NSExpression expressionValueWithObject:context:](v8, "expressionValueWithObject:context:", object, objc_msgSend(MEMORY[0x1E695DF90], "dictionary"))}];
-    if (v7)
+    [v6 setDisplayName:{-[NSExpression expressionValueWithObject:context:](coreSpotlightDisplayNameExpression, "expressionValueWithObject:context:", object, objc_msgSend(MEMORY[0x1E695DF90], "dictionary"))}];
+    if (entity)
     {
-      propertyRanges = v7->_propertyRanges;
+      propertyRanges = entity->_propertyRanges;
     }
 
     else
@@ -1220,8 +1220,8 @@ LABEL_10:
       propertyRanges = 0;
     }
 
-    v11 = [(NSDictionary *)[(NSEntityDescription *)v7 propertiesByName] values];
-    v12 = _kvcPropertysPublicGetters(v7);
+    values = [(NSDictionary *)[(NSEntityDescription *)entity propertiesByName] values];
+    v12 = _kvcPropertysPublicGetters(entity);
     location = propertyRanges[3].location;
     length = propertyRanges[3].length;
     if (location < length + location)
@@ -1229,7 +1229,7 @@ LABEL_10:
       v15 = v12;
       do
       {
-        v16 = *(v11 + 8 * location);
+        v16 = *(values + 8 * location);
         if ([v16 isIndexedBySpotlight])
         {
           Property = _PF_Handler_Public_GetProperty(object, location, 0, *(v15 + 8 * location));
@@ -1486,15 +1486,15 @@ LABEL_21:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSpotlightIndexFromSaveRequest:(uint64_t)a1
+- (void)_updateSpotlightIndexFromSaveRequest:(uint64_t)request
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (request)
   {
-    v3 = atomic_load((a1 + 72));
+    v3 = atomic_load((request + 72));
     if (v3)
     {
-      if (atomic_fetch_add_explicit((a1 + 88), 1u, memory_order_relaxed))
+      if (atomic_fetch_add_explicit((request + 88), 1u, memory_order_relaxed))
       {
         if (_CoreData_SpotlightDebug >= 1)
         {
@@ -1508,13 +1508,13 @@ LABEL_21:
               if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218754;
-                v21 = a1;
+                requestCopy4 = request;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]";
                 v24 = 1024;
                 v25 = 486;
                 v26 = 1024;
-                v27 = [a1 _indexerThrottle];
+                _indexerThrottle = [request _indexerThrottle];
                 _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).\n", buf, 0x22u);
               }
             }
@@ -1525,27 +1525,27 @@ LABEL_21:
               if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218754;
-                v21 = a1;
+                requestCopy4 = request;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]";
                 v24 = 1024;
                 v25 = 486;
                 v26 = 1024;
-                v27 = [a1 _indexerThrottle];
+                _indexerThrottle = [request _indexerThrottle];
                 _os_log_impl(&dword_18565F000, v9, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).\n", buf, 0x22u);
               }
             }
           }
 
           v10 = _pflogging_catastrophic_mode;
-          v11 = [a1 _indexerThrottle];
+          _indexerThrottle2 = [request _indexerThrottle];
           v12 = 4;
           if (v10)
           {
             v12 = 1;
           }
 
-          _NSCoreDataLog_console(v12, "CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).", a1, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]", 486, v11);
+          _NSCoreDataLog_console(v12, "CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).", request, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]", 486, _indexerThrottle2);
           objc_autoreleasePoolPop(v4);
         }
       }
@@ -1564,13 +1564,13 @@ LABEL_21:
               if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218754;
-                v21 = a1;
+                requestCopy4 = request;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]";
                 v24 = 1024;
                 v25 = 462;
                 v26 = 1024;
-                v27 = [a1 _indexerThrottle];
+                _indexerThrottle = [request _indexerThrottle];
                 _os_log_error_impl(&dword_18565F000, v8, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).\n", buf, 0x22u);
               }
             }
@@ -1581,27 +1581,27 @@ LABEL_21:
               if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218754;
-                v21 = a1;
+                requestCopy4 = request;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]";
                 v24 = 1024;
                 v25 = 462;
                 v26 = 1024;
-                v27 = [a1 _indexerThrottle];
+                _indexerThrottle = [request _indexerThrottle];
                 _os_log_impl(&dword_18565F000, v13, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).\n", buf, 0x22u);
               }
             }
           }
 
           v14 = _pflogging_catastrophic_mode;
-          v15 = [a1 _indexerThrottle];
+          _indexerThrottle3 = [request _indexerThrottle];
           v16 = 4;
           if (v14)
           {
             v16 = 1;
           }
 
-          _NSCoreDataLog_console(v16, "CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).", a1, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]", 462, v15);
+          _NSCoreDataLog_console(v16, "CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).", request, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromSaveRequest:]", 462, _indexerThrottle3);
           objc_autoreleasePoolPop(v7);
         }
 
@@ -1610,9 +1610,9 @@ LABEL_21:
         v18[2] = __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest___block_invoke;
         v18[3] = &unk_1E6EC1D80;
         v19 = 1;
-        v18[4] = a1;
+        v18[4] = request;
         v18[5] = a2;
-        [(NSCoreDataCoreSpotlightDelegate *)a1 _asyncContextBlock:v18];
+        [(NSCoreDataCoreSpotlightDelegate *)request _asyncContextBlock:v18];
       }
     }
   }
@@ -1763,15 +1763,15 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSpotlightIndexFromBatchResult:(uint64_t)a1
+- (void)_updateSpotlightIndexFromBatchResult:(uint64_t)result
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (result)
   {
-    v3 = atomic_load((a1 + 72));
+    v3 = atomic_load((result + 72));
     if (v3)
     {
-      if (atomic_fetch_add_explicit((a1 + 88), 1u, memory_order_relaxed))
+      if (atomic_fetch_add_explicit((result + 88), 1u, memory_order_relaxed))
       {
         if (_CoreData_SpotlightDebug >= 1)
         {
@@ -1785,13 +1785,13 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
               if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134218754;
-                v21 = a1;
+                resultCopy4 = result;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]";
                 v24 = 1024;
                 v25 = 521;
                 v26 = 1024;
-                v27 = [a1 _indexerThrottle];
+                _indexerThrottle = [result _indexerThrottle];
                 _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).\n", buf, 0x22u);
               }
             }
@@ -1802,27 +1802,27 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
               if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218754;
-                v21 = a1;
+                resultCopy4 = result;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]";
                 v24 = 1024;
                 v25 = 521;
                 v26 = 1024;
-                v27 = [a1 _indexerThrottle];
+                _indexerThrottle = [result _indexerThrottle];
                 _os_log_impl(&dword_18565F000, v10, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).\n", buf, 0x22u);
               }
             }
           }
 
           v11 = _pflogging_catastrophic_mode;
-          v12 = [a1 _indexerThrottle];
+          _indexerThrottle2 = [result _indexerThrottle];
           v13 = 4;
           if (v11)
           {
             v13 = 1;
           }
 
-          _NSCoreDataLog_console(v13, "CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).", a1, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]", 521, v12);
+          _NSCoreDataLog_console(v13, "CoreData+CoreSpotlight <%p>: %s(%d): Dropping duplicate indexing request (%d).", result, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]", 521, _indexerThrottle2);
           objc_autoreleasePoolPop(v4);
         }
       }
@@ -1840,15 +1840,15 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
               v8 = _PFLogGetLogStream(1);
               if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
               {
-                v9 = *(a1 + 88);
+                v9 = *(result + 88);
                 *buf = 134218754;
-                v21 = a1;
+                resultCopy4 = result;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]";
                 v24 = 1024;
                 v25 = 497;
                 v26 = 1024;
-                v27 = v9;
+                _indexerThrottle = v9;
                 _os_log_error_impl(&dword_18565F000, v8, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).\n", buf, 0x22u);
               }
             }
@@ -1858,15 +1858,15 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
               v14 = _PFLogGetLogStream(4);
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
               {
-                v15 = *(a1 + 88);
+                v15 = *(result + 88);
                 *buf = 134218754;
-                v21 = a1;
+                resultCopy4 = result;
                 v22 = 2080;
                 v23 = "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]";
                 v24 = 1024;
                 v25 = 497;
                 v26 = 1024;
-                v27 = v15;
+                _indexerThrottle = v15;
                 _os_log_impl(&dword_18565F000, v14, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).\n", buf, 0x22u);
               }
             }
@@ -1882,7 +1882,7 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
             v16 = 4;
           }
 
-          _NSCoreDataLog_console(v16, "CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).", a1, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]", 497, *(a1 + 88));
+          _NSCoreDataLog_console(v16, "CoreData+CoreSpotlight <%p>: %s(%d): Allowing indexing request (%d).", result, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexFromBatchResult:]", 497, *(result + 88));
           objc_autoreleasePoolPop(v7);
         }
 
@@ -1891,9 +1891,9 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromSaveRequest_
         v18[2] = __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult___block_invoke;
         v18[3] = &unk_1E6EC1D80;
         v19 = 1;
-        v18[4] = a1;
+        v18[4] = result;
         v18[5] = a2;
-        [(NSCoreDataCoreSpotlightDelegate *)a1 _asyncContextBlock:v18];
+        [(NSCoreDataCoreSpotlightDelegate *)result _asyncContextBlock:v18];
       }
     }
   }
@@ -2044,18 +2044,18 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult_
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_clientStateForSpotlightIndex:(uint64_t)a1
+- (uint64_t)_clientStateForSpotlightIndex:(uint64_t)index
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!index)
   {
     v5 = 0;
     goto LABEL_40;
   }
 
-  v4 = [*(a1 + 8) persistentStoreForIdentifier:*(a1 + 24)];
+  v4 = [*(index + 8) persistentStoreForIdentifier:*(index + 24)];
   v5 = 0;
-  v6 = atomic_load((a1 + 72));
+  v6 = atomic_load((index + 72));
   if (a2)
   {
     if ((v6 & 1) != 0 && v4 != 0)
@@ -2066,7 +2066,7 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult_
       v24 = __Block_byref_object_copy__10;
       v25 = __Block_byref_object_dispose__10;
       v26 = 0;
-      objc_sync_enter(a1);
+      objc_sync_enter(index);
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3052000000;
@@ -2084,7 +2084,7 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult_
       dispatch_semaphore_wait(*(*&buf[8] + 40), 0xFFFFFFFFFFFFFFFFLL);
       dispatch_release(*(*&buf[8] + 40));
       _Block_object_dispose(buf, 8);
-      objc_sync_exit(a1);
+      objc_sync_exit(index);
       if ([v22[5] length])
       {
         v27 = 0;
@@ -2101,7 +2101,7 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult_
               if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
               {
                 *buf = 134219010;
-                *&buf[4] = a1;
+                *&buf[4] = index;
                 *&buf[12] = 2080;
                 *&buf[14] = "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]";
                 *&buf[22] = 1024;
@@ -2120,7 +2120,7 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult_
               if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134219010;
-                *&buf[4] = a1;
+                *&buf[4] = index;
                 *&buf[12] = 2080;
                 *&buf[14] = "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]";
                 *&buf[22] = 1024;
@@ -2144,7 +2144,7 @@ void __72__NSCoreDataCoreSpotlightDelegate__updateSpotlightIndexFromBatchResult_
             v11 = 4;
           }
 
-          _NSCoreDataLog_console(v11, "CoreData+CoreSpotlight <%p>: %s(%d): Unable to decode CoreSpotlight token for %@, doing full reimport (error: %@)", a1, "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]", 1199, a2, v27);
+          _NSCoreDataLog_console(v11, "CoreData+CoreSpotlight <%p>: %s(%d): Unable to decode CoreSpotlight token for %@, doing full reimport (error: %@)", index, "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]", 1199, a2, v27);
           objc_autoreleasePoolPop(v8);
         }
 
@@ -2191,7 +2191,7 @@ LABEL_27:
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
               *buf = 134219010;
-              *&buf[4] = a1;
+              *&buf[4] = index;
               *&buf[12] = 2080;
               *&buf[14] = "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]";
               *&buf[22] = 1024;
@@ -2210,7 +2210,7 @@ LABEL_27:
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134219010;
-              *&buf[4] = a1;
+              *&buf[4] = index;
               *&buf[12] = 2080;
               *&buf[14] = "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]";
               *&buf[22] = 1024;
@@ -2234,7 +2234,7 @@ LABEL_27:
           v17 = 4;
         }
 
-        _NSCoreDataLog_console(v17, "CoreData+CoreSpotlight <%p>: %s(%d): Fetched client state, %@, for index, %@", a1, "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]", 1214, v5, a2);
+        _NSCoreDataLog_console(v17, "CoreData+CoreSpotlight <%p>: %s(%d): Fetched client state, %@, for index, %@", index, "[NSCoreDataCoreSpotlightDelegate _clientStateForSpotlightIndex:]", 1214, v5, a2);
         objc_autoreleasePoolPop(v14);
       }
 
@@ -2539,7 +2539,7 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSpotlightIndexClientState:(uint64_t)a3 historyToken:(int)a4 updatedSpotlight:
+- (void)_updateSpotlightIndexClientState:(uint64_t)state historyToken:(int)token updatedSpotlight:
 {
   v47 = *MEMORY[0x1E69E9840];
   if (result)
@@ -2564,17 +2564,17 @@ LABEL_10:
     v34 = __Block_byref_object_copy__10;
     v35 = __Block_byref_object_dispose__10;
     v36 = 0;
-    if (a3)
+    if (state)
     {
-      v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v36];
+      data = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:state requiringSecureCoding:1 error:&v36];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DEF0] data];
+      data = [MEMORY[0x1E695DEF0] data];
     }
 
-    v12 = v11;
+    v12 = data;
     if (!v32[5])
     {
       if (_CoreData_SpotlightDebug >= 1)
@@ -2595,7 +2595,7 @@ LABEL_10:
               v43 = 1024;
               v44 = 1125;
               v45 = 2112;
-              v46 = a3;
+              stateCopy4 = state;
               _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Persisting token to index client state, %@\n", buf, 0x26u);
             }
           }
@@ -2612,7 +2612,7 @@ LABEL_10:
               v43 = 1024;
               v44 = 1125;
               v45 = 2112;
-              v46 = a3;
+              stateCopy4 = state;
               _os_log_impl(&dword_18565F000, v18, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Persisting token to index client state, %@\n", buf, 0x26u);
             }
           }
@@ -2628,7 +2628,7 @@ LABEL_10:
           v19 = 4;
         }
 
-        _NSCoreDataLog_console(v19, "CoreData+CoreSpotlight <%p>: %s(%d): Persisting token to index client state, %@", v7, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexClientState:historyToken:updatedSpotlight:]", 1125, a3);
+        _NSCoreDataLog_console(v19, "CoreData+CoreSpotlight <%p>: %s(%d): Persisting token to index client state, %@", v7, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexClientState:historyToken:updatedSpotlight:]", 1125, state);
         objc_autoreleasePoolPop(v16);
       }
 
@@ -2661,7 +2661,7 @@ LABEL_10:
               v43 = 1024;
               v44 = 1147;
               v45 = 2112;
-              v46 = a3;
+              stateCopy4 = state;
               _os_log_error_impl(&dword_18565F000, v22, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Persisted token to index client state, %@\n", buf, 0x26u);
             }
           }
@@ -2678,7 +2678,7 @@ LABEL_10:
               v43 = 1024;
               v44 = 1147;
               v45 = 2112;
-              v46 = a3;
+              stateCopy4 = state;
               _os_log_impl(&dword_18565F000, v23, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Persisted token to index client state, %@\n", buf, 0x26u);
             }
           }
@@ -2694,20 +2694,20 @@ LABEL_10:
           v24 = 4;
         }
 
-        _NSCoreDataLog_console(v24, "CoreData+CoreSpotlight <%p>: %s(%d): Persisted token to index client state, %@", v7, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexClientState:historyToken:updatedSpotlight:]", 1147, a3);
+        _NSCoreDataLog_console(v24, "CoreData+CoreSpotlight <%p>: %s(%d): Persisted token to index client state, %@", v7, "[NSCoreDataCoreSpotlightDelegate _updateSpotlightIndexClientState:historyToken:updatedSpotlight:]", 1147, state);
         objc_autoreleasePoolPop(v21);
       }
 
       v25 = v32;
-      if (a3 && !v32[5] && a4)
+      if (state && !v32[5] && token)
       {
-        v26 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v27 = *(v7 + 3);
         v37[0] = @"NSStoreUUID";
         v37[1] = @"historyToken";
         v38[0] = v27;
-        v38[1] = a3;
-        [v26 postNotificationName:@"NSCoreDataCoreSpotlightDelegateIndexDidUpdateNotification" object:v7 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v38, v37, 2)}];
+        v38[1] = state;
+        [defaultCenter postNotificationName:@"NSCoreDataCoreSpotlightDelegateIndexDidUpdateNotification" object:v7 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v38, v37, 2)}];
         v25 = v32;
       }
 
@@ -2862,33 +2862,33 @@ LABEL_9:
     }
 
     [(NSCoreDataCoreSpotlightDelegate *)v1 _context];
-    v6 = [(NSCoreDataCoreSpotlightDelegate *)v1 _context];
+    _context = [(NSCoreDataCoreSpotlightDelegate *)v1 _context];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50__NSCoreDataCoreSpotlightDelegate__doFullReimport__block_invoke;
     v8[3] = &unk_1E6EC16F0;
     v8[4] = v1;
-    result = [v6 performBlockAndWait:v8];
+    result = [_context performBlockAndWait:v8];
   }
 
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)_resetSpotlightIndexWithCompletionHandler:(void *)a1
+- (void)_resetSpotlightIndexWithCompletionHandler:(void *)handler
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!handler)
   {
     goto LABEL_4;
   }
 
-  v4 = [(NSCoreDataCoreSpotlightDelegate *)a1 createClientSearchableIndex];
-  if (v4)
+  createClientSearchableIndex = [(NSCoreDataCoreSpotlightDelegate *)handler createClientSearchableIndex];
+  if (createClientSearchableIndex)
   {
-    v5 = v4;
-    [(NSCoreDataCoreSpotlightDelegate *)a1 _updateSpotlightIndexClientState:v4 historyToken:0 updatedSpotlight:0];
-    v9[0] = a1[5];
+    v5 = createClientSearchableIndex;
+    [(NSCoreDataCoreSpotlightDelegate *)handler _updateSpotlightIndexClientState:createClientSearchableIndex historyToken:0 updatedSpotlight:0];
+    v9[0] = handler[5];
     [v5 deleteSearchableItemsWithDomainIdentifiers:objc_msgSend(MEMORY[0x1E695DEC8] completionHandler:{"arrayWithObjects:count:", v9, 1), a2}];
 
 LABEL_4:
@@ -2907,11 +2907,11 @@ LABEL_4:
   v7(a2, 0);
 }
 
-- (id)_importObjectsUpdatedSinceTransaction:(void *)a1
+- (id)_importObjectsUpdatedSinceTransaction:(void *)transaction
 {
-  v2 = a1;
+  transactionCopy = transaction;
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (transaction)
   {
     v13 = 0;
     v14 = &v13;
@@ -2925,23 +2925,23 @@ LABEL_4:
     v10 = __Block_byref_object_copy__10;
     v11 = __Block_byref_object_dispose__10;
     v12 = 0;
-    v3 = [(NSCoreDataCoreSpotlightDelegate *)v2 _context];
+    _context = [(NSCoreDataCoreSpotlightDelegate *)transactionCopy _context];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __73__NSCoreDataCoreSpotlightDelegate__importObjectsUpdatedSinceTransaction___block_invoke;
     v6[3] = &unk_1E6EC1EB8;
-    v6[4] = v2;
+    v6[4] = transactionCopy;
     v6[5] = &v13;
     v6[6] = &v7;
-    [v3 performBlockAndWait:v6];
+    [_context performBlockAndWait:v6];
 
-    v2 = v8[5];
+    transactionCopy = v8[5];
     _Block_object_dispose(&v7, 8);
     _Block_object_dispose(&v13, 8);
   }
 
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return transactionCopy;
 }
 
 void __73__NSCoreDataCoreSpotlightDelegate__importObjectsUpdatedSinceTransaction___block_invoke(uint64_t *a1)
@@ -5465,15 +5465,15 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)indexedPropertyNamesByEntityNameUsingModel:(id)a3
+- (id)indexedPropertyNamesByEntityNameUsingModel:(id)model
 {
   v49 = *MEMORY[0x1E69E9840];
-  v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "entities"), "count")}];
+  v29 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(objc_msgSend(model, "entities"), "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = [a3 entities];
+  obj = [model entities];
   v4 = [obj countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v4)
   {
@@ -5501,8 +5501,8 @@ LABEL_10:
           v40 = 0u;
           v41 = 0u;
           v32 = v8;
-          v10 = [v8 properties];
-          v11 = [v10 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          properties = [v8 properties];
+          v11 = [properties countByEnumeratingWithState:&v38 objects:v47 count:16];
           if (!v11)
           {
             goto LABEL_31;
@@ -5516,18 +5516,18 @@ LABEL_10:
             {
               if (*v39 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(properties);
               }
 
               v15 = *(*(&v38 + 1) + 8 * i);
               if ([v15 _propertyType] == 7)
               {
-                v16 = [v15 _flattenedElements];
+                _flattenedElements = [v15 _flattenedElements];
                 v34 = 0u;
                 v35 = 0u;
                 v36 = 0u;
                 v37 = 0u;
-                v17 = [v16 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                v17 = [_flattenedElements countByEnumeratingWithState:&v34 objects:v46 count:16];
                 if (v17)
                 {
                   v18 = v17;
@@ -5538,7 +5538,7 @@ LABEL_10:
                     {
                       if (*v35 != v19)
                       {
-                        objc_enumerationMutation(v16);
+                        objc_enumerationMutation(_flattenedElements);
                       }
 
                       v21 = *(*(&v34 + 1) + 8 * j);
@@ -5548,7 +5548,7 @@ LABEL_10:
                       }
                     }
 
-                    v18 = [v16 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                    v18 = [_flattenedElements countByEnumeratingWithState:&v34 objects:v46 count:16];
                   }
 
                   while (v18);
@@ -5557,33 +5557,33 @@ LABEL_10:
 
               else
               {
-                v22 = [v15 _propertyType];
-                v23 = [v15 isIndexedBySpotlight];
-                if (v22 == 2)
+                _propertyType = [v15 _propertyType];
+                isIndexedBySpotlight = [v15 isIndexedBySpotlight];
+                if (_propertyType == 2)
                 {
-                  if (!v23)
+                  if (!isIndexedBySpotlight)
                   {
                     continue;
                   }
 
-                  v24 = [v15 _qualifiedName];
+                  _qualifiedName = [v15 _qualifiedName];
                 }
 
                 else
                 {
-                  if (!v23)
+                  if (!isIndexedBySpotlight)
                   {
                     continue;
                   }
 
-                  v24 = [v15 name];
+                  _qualifiedName = [v15 name];
                 }
 
-                [v9 addObject:v24];
+                [v9 addObject:_qualifiedName];
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v38 objects:v47 count:16];
+            v12 = [properties countByEnumeratingWithState:&v38 objects:v47 count:16];
             if (!v12)
             {
 LABEL_31:
@@ -5616,13 +5616,13 @@ LABEL_31:
 - (void)stopSpotlightIndexing
 {
   [(NSCoreDataCoreSpotlightDelegate *)self _context];
-  v3 = [(NSCoreDataCoreSpotlightDelegate *)self _context];
+  _context = [(NSCoreDataCoreSpotlightDelegate *)self _context];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __56__NSCoreDataCoreSpotlightDelegate_stopSpotlightIndexing__block_invoke;
   v4[3] = &unk_1E6EC16F0;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [_context performBlock:v4];
 }
 
 uint64_t __56__NSCoreDataCoreSpotlightDelegate_stopSpotlightIndexing__block_invoke(uint64_t a1)
@@ -5722,7 +5722,7 @@ uint64_t __56__NSCoreDataCoreSpotlightDelegate_stopSpotlightIndexing__block_invo
   }
 }
 
-- (void)setIndexURL:(id)a3
+- (void)setIndexURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
   if (_CoreData_SpotlightDebug >= 1)
@@ -5737,13 +5737,13 @@ uint64_t __56__NSCoreDataCoreSpotlightDelegate_stopSpotlightIndexing__block_invo
         if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218754;
-          v13 = self;
+          selfCopy2 = self;
           v14 = 2080;
           v15 = "[NSCoreDataCoreSpotlightDelegate(CoreDataSPI) setIndexURL:]";
           v16 = 1024;
           v17 = 1530;
           v18 = 2112;
-          v19 = a3;
+          lCopy2 = l;
           _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: CoreData+CoreSpotlight <%p>: %s(%d): Setting alternative index URL %@\n", buf, 0x26u);
         }
       }
@@ -5754,13 +5754,13 @@ uint64_t __56__NSCoreDataCoreSpotlightDelegate_stopSpotlightIndexing__block_invo
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218754;
-          v13 = self;
+          selfCopy2 = self;
           v14 = 2080;
           v15 = "[NSCoreDataCoreSpotlightDelegate(CoreDataSPI) setIndexURL:]";
           v16 = 1024;
           v17 = 1530;
           v18 = 2112;
-          v19 = a3;
+          lCopy2 = l;
           _os_log_impl(&dword_18565F000, v7, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: CoreData+CoreSpotlight <%p>: %s(%d): Setting alternative index URL %@\n", buf, 0x26u);
         }
       }
@@ -5776,15 +5776,15 @@ uint64_t __56__NSCoreDataCoreSpotlightDelegate_stopSpotlightIndexing__block_invo
       v8 = 4;
     }
 
-    _NSCoreDataLog_console(v8, "CoreData+CoreSpotlight <%p>: %s(%d): Setting alternative index URL %@", self, "[NSCoreDataCoreSpotlightDelegate(CoreDataSPI) setIndexURL:]", 1530, a3);
+    _NSCoreDataLog_console(v8, "CoreData+CoreSpotlight <%p>: %s(%d): Setting alternative index URL %@", self, "[NSCoreDataCoreSpotlightDelegate(CoreDataSPI) setIndexURL:]", 1530, l);
     objc_autoreleasePoolPop(v5);
   }
 
-  v9 = [a3 standardizedURL];
-  if (self->_indexURL != v9)
+  standardizedURL = [l standardizedURL];
+  if (self->_indexURL != standardizedURL)
   {
-    v10 = v9;
-    if ([objc_msgSend(a3 "absoluteString")])
+    v10 = standardizedURL;
+    if ([objc_msgSend(l "absoluteString")])
     {
 
       self->_indexURL = [(NSURL *)v10 copy];

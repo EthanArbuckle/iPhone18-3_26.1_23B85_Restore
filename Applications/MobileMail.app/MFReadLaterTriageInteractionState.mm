@@ -1,6 +1,6 @@
 @interface MFReadLaterTriageInteractionState
-+ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithDate:(id)a3;
-+ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithMessageListItems:(id)a3;
++ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithDate:(id)date;
++ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithMessageListItems:(id)items;
 + (id)removeDateState;
 - (BOOL)hasReadLater;
 - (BOOL)isCancelled;
@@ -8,31 +8,31 @@
 - (BOOL)isRemoveDate;
 - (BOOL)shouldPresentCustomDatePicker;
 - (NSDate)date;
-- (void)didSelectCustomDate:(id)a3;
-- (void)perform:(int64_t)a3;
+- (void)didSelectCustomDate:(id)date;
+- (void)perform:(int64_t)perform;
 - (void)removeDate;
 @end
 
 @implementation MFReadLaterTriageInteractionState
 
-+ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithMessageListItems:(id)a3
++ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithMessageListItems:(id)items
 {
   swift_getObjCClassMetadata();
-  _objc_retain(a3);
+  _objc_retain(items);
   sub_10025C9B0(&unk_1006D7220);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
   v6 = sub_1003CAD54(v4);
 
-  _objc_release(a3);
+  _objc_release(items);
 
   return v6;
 }
 
-+ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithDate:(id)a3
++ (_TtC10MobileMail33MFReadLaterTriageInteractionState)stateWithDate:(id)date
 {
-  v9 = a1;
-  v17 = a3;
+  selfCopy = self;
+  dateCopy = date;
   swift_getObjCClassMetadata();
   v10 = type metadata accessor for Date();
   v11 = *(v10 - 8);
@@ -41,13 +41,13 @@
   __chkstk_darwin(v10);
   v14 = &v6 - v13;
   v15 = (*(*(sub_10025C9B0(&qword_1006D8740) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v3 = __chkstk_darwin(v17);
+  v3 = __chkstk_darwin(dateCopy);
   v16 = &v6 - v15;
   _objc_retain(v3);
-  if (v17)
+  if (dateCopy)
   {
-    v8 = v17;
-    v7 = v17;
+    v8 = dateCopy;
+    v7 = dateCopy;
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v11 + 32))(v16, v14, v10);
     (*(v11 + 56))(v16, 0, 1, v10);
@@ -118,14 +118,14 @@
 
 - (NSDate)date
 {
-  v9 = self;
+  selfCopy = self;
   v3 = sub_10025C9B0(&qword_1006D8740);
   v8 = (*(*(v3 - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin(v3);
   v10 = &isa - v8;
   _objc_retain(self);
   sub_1003CC4D8(v10);
-  _objc_release(v9);
+  _objc_release(selfCopy);
   v11 = type metadata accessor for Date();
   v12 = *(v11 - 8);
   v13 = v11 - 8;
@@ -146,30 +146,30 @@
   return v4;
 }
 
-- (void)perform:(int64_t)a3
+- (void)perform:(int64_t)perform
 {
   _objc_retain(self);
-  sub_1003CD460(a3);
+  sub_1003CD460(perform);
   _objc_release(self);
 }
 
-- (void)didSelectCustomDate:(id)a3
+- (void)didSelectCustomDate:(id)date
 {
-  v12 = self;
-  v11 = a3;
+  selfCopy = self;
+  dateCopy = date;
   v10 = type metadata accessor for Date();
   v7 = *(v10 - 8);
   v8 = v10 - 8;
   v6 = (*(v7 + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  v4 = __chkstk_darwin(v11);
+  v4 = __chkstk_darwin(dateCopy);
   v9 = &v5 - v6;
   _objc_retain(v4);
   _objc_retain(self);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1003CE220(v9);
   (*(v7 + 8))(v9, v10);
-  _objc_release(v11);
-  _objc_release(v12);
+  _objc_release(dateCopy);
+  _objc_release(selfCopy);
 }
 
 - (void)removeDate

@@ -1,47 +1,47 @@
 @interface PocketAPI
-+ (id)pkt_hashForConsumerKey:(id)a3 accessToken:(id)a4;
++ (id)pkt_hashForConsumerKey:(id)key accessToken:(id)token;
 + (id)sharedAPI;
-- (BOOL)handleOpenURL:(id)a3;
+- (BOOL)handleOpenURL:(id)l;
 - (BOOL)isLoggedIn;
 - (NSString)URLScheme;
 - (PocketAPI)init;
-- (id)pkt_actionDictionaryWithName:(id)a3 parameters:(id)a4;
+- (id)pkt_actionDictionaryWithName:(id)name parameters:(id)parameters;
 - (id)pkt_deviceName;
 - (id)pkt_deviceOSVersion;
 - (id)pkt_loadCurrentLoginFromDefaults;
 - (id)pkt_userAgent;
-- (id)saveOperationWithURL:(id)a3 handler:(id)a4;
-- (id)saveOperationWithURL:(id)a3 title:(id)a4 handler:(id)a5;
-- (id)saveOperationWithURL:(id)a3 title:(id)a4 tweetID:(id)a5 delegate:(id)a6;
-- (id)saveOperationWithURL:(id)a3 title:(id)a4 tweetID:(id)a5 handler:(id)a6;
+- (id)saveOperationWithURL:(id)l handler:(id)handler;
+- (id)saveOperationWithURL:(id)l title:(id)title handler:(id)handler;
+- (id)saveOperationWithURL:(id)l title:(id)title tweetID:(id)d delegate:(id)delegate;
+- (id)saveOperationWithURL:(id)l title:(id)title tweetID:(id)d handler:(id)handler;
 - (unint64_t)appID;
 - (void)dealloc;
-- (void)loginWithDelegate:(id)a3;
-- (void)loginWithHandler:(id)a3;
+- (void)loginWithDelegate:(id)delegate;
+- (void)loginWithHandler:(id)handler;
 - (void)logout;
-- (void)pkt_loggedInWithUsername:(id)a3 token:(id)a4;
-- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)a3 password:(id)a4 delegate:(id)a5;
-- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)a3 password:(id)a4 handler:(id)a5;
+- (void)pkt_loggedInWithUsername:(id)username token:(id)token;
+- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)username password:(id)password delegate:(id)delegate;
+- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)username password:(id)password handler:(id)handler;
 - (void)pkt_saveCurrentLoginToDefaults;
-- (void)pkt_setKeychainValue:(id)a3 forKey:(id)a4 serviceName:(id)a5;
-- (void)saveURL:(id)a3 delegate:(id)a4;
-- (void)saveURL:(id)a3 handler:(id)a4;
-- (void)saveURL:(id)a3 withTitle:(id)a4 delegate:(id)a5;
-- (void)saveURL:(id)a3 withTitle:(id)a4 handler:(id)a5;
-- (void)saveURL:(id)a3 withTitle:(id)a4 tweetID:(id)a5 delegate:(id)a6;
-- (void)saveURL:(id)a3 withTitle:(id)a4 tweetID:(id)a5 handler:(id)a6;
-- (void)setConsumerKey:(id)a3;
-- (void)setOperationQueue:(id)a3;
-- (void)setURLScheme:(id)a3;
+- (void)pkt_setKeychainValue:(id)value forKey:(id)key serviceName:(id)name;
+- (void)saveURL:(id)l delegate:(id)delegate;
+- (void)saveURL:(id)l handler:(id)handler;
+- (void)saveURL:(id)l withTitle:(id)title delegate:(id)delegate;
+- (void)saveURL:(id)l withTitle:(id)title handler:(id)handler;
+- (void)saveURL:(id)l withTitle:(id)title tweetID:(id)d delegate:(id)delegate;
+- (void)saveURL:(id)l withTitle:(id)title tweetID:(id)d handler:(id)handler;
+- (void)setConsumerKey:(id)key;
+- (void)setOperationQueue:(id)queue;
+- (void)setURLScheme:(id)scheme;
 @end
 
 @implementation PocketAPI
 
 - (id)pkt_deviceOSVersion
 {
-  v2 = [MEMORY[0x277D79F18] currentDevice];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
 
-  return [v2 systemVersion];
+  return [currentDevice systemVersion];
 }
 
 - (id)pkt_deviceName
@@ -170,8 +170,8 @@
     }
 
     v6 = [v4 objectForKey:@"CFBundleVersion"];
-    v7 = [(PocketAPI *)self pkt_deviceName];
-    v8 = [(PocketAPI *)self pkt_deviceOSVersion];
+    pkt_deviceName = [(PocketAPI *)self pkt_deviceName];
+    pkt_deviceOSVersion = [(PocketAPI *)self pkt_deviceOSVersion];
     v9 = [objc_msgSend(MEMORY[0x277D79F18] "currentDevice")];
     v10 = [objc_msgSend(MEMORY[0x277D79F18] "currentDevice")];
     v11 = @"Mobile";
@@ -211,9 +211,9 @@
       v15 = &stru_2850323E8;
     }
 
-    if (v8)
+    if (pkt_deviceOSVersion)
     {
-      v16 = v8;
+      v16 = pkt_deviceOSVersion;
     }
 
     else
@@ -221,9 +221,9 @@
       v16 = &stru_2850323E8;
     }
 
-    if (v7)
+    if (pkt_deviceName)
     {
-      v12 = v7;
+      v12 = pkt_deviceName;
     }
 
     result = [objc_msgSend(MEMORY[0x277CBEA60] arrayWithObjects:{@"PocketSDK:1.0.2", v13, v14, v15, v16, @"Apple", v12, v11, @"App Store", 0), "componentsJoinedByString:", @";"}];
@@ -233,41 +233,41 @@
   return result;
 }
 
-- (id)pkt_actionDictionaryWithName:(id)a3 parameters:(id)a4
+- (id)pkt_actionDictionaryWithName:(id)name parameters:(id)parameters
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a4];
-  [v5 setObject:a3 forKey:@"action"];
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:parameters];
+  [v5 setObject:name forKey:@"action"];
   v6 = MEMORY[0x277CCABB0];
   [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
   [v5 setObject:objc_msgSend(v6 forKey:{"numberWithInteger:", v7), @"time"}];
   return v5;
 }
 
-- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)a3 password:(id)a4 handler:(id)a5
+- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)username password:(id)password handler:(id)handler
 {
-  v8 = [PocketAPIBlockDelegate delegateWithLoginHandler:a5];
+  v8 = [PocketAPIBlockDelegate delegateWithLoginHandler:handler];
 
-  [(PocketAPI *)self pkt_migrateAccountToAccessTokenWithUsername:a3 password:a4 delegate:v8];
+  [(PocketAPI *)self pkt_migrateAccountToAccessTokenWithUsername:username password:password delegate:v8];
 }
 
-- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)a3 password:(id)a4 delegate:(id)a5
+- (void)pkt_migrateAccountToAccessTokenWithUsername:(id)username password:(id)password delegate:(id)delegate
 {
   v13 = objc_alloc_init(PocketAPIOperation);
   [(PocketAPIOperation *)v13 setAPI:self];
-  [(PocketAPIOperation *)v13 setDelegate:a5];
+  [(PocketAPIOperation *)v13 setDelegate:delegate];
   [(PocketAPIOperation *)v13 setDomain:10];
   [(PocketAPIOperation *)v13 setHTTPMethod:1];
   [(PocketAPIOperation *)v13 setAPIMethod:@"authorize"];
   v9 = [objc_msgSend(MEMORY[0x277CBEAF8] "preferredLanguages")];
-  v10 = [MEMORY[0x277CBEAF8] currentLocale];
-  v11 = [v10 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v11 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
   v12 = [objc_msgSend(MEMORY[0x277CBEBB0] "systemTimeZone")];
-  -[PocketAPIOperation setArguments:](v13, "setArguments:", [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a3, @"username", a4, @"password", @"credentials", @"grant_type", v9, @"locale", v11, @"country", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%i", v12 / 60), @"timezone", 0}]);
+  -[PocketAPIOperation setArguments:](v13, "setArguments:", [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{username, @"username", password, @"password", @"credentials", @"grant_type", v9, @"locale", v11, @"country", objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%i", v12 / 60), @"timezone", 0}]);
   [(NSOperationQueue *)self->operationQueue addOperation:v13];
 }
 
@@ -316,70 +316,70 @@
   [(PocketAPI *)self didChangeValueForKey:@"username"];
 }
 
-- (void)pkt_loggedInWithUsername:(id)a3 token:(id)a4
+- (void)pkt_loggedInWithUsername:(id)username token:(id)token
 {
   [(PocketAPI *)self willChangeValueForKey:@"username"];
   [(PocketAPI *)self willChangeValueForKey:@"isLoggedIn"];
-  [(PocketAPI *)self pkt_setKeychainValue:a3 forKey:@"username"];
-  [(PocketAPI *)self pkt_setKeychainValue:a4 forKey:@"token"];
-  -[PocketAPI pkt_setKeychainValue:forKey:](self, "pkt_setKeychainValue:forKey:", [objc_opt_class() pkt_hashForConsumerKey:-[PocketAPI consumerKey](self accessToken:{"consumerKey"), a4}], @"tokenDigest");
+  [(PocketAPI *)self pkt_setKeychainValue:username forKey:@"username"];
+  [(PocketAPI *)self pkt_setKeychainValue:token forKey:@"token"];
+  -[PocketAPI pkt_setKeychainValue:forKey:](self, "pkt_setKeychainValue:forKey:", [objc_opt_class() pkt_hashForConsumerKey:-[PocketAPI consumerKey](self accessToken:{"consumerKey"), token}], @"tokenDigest");
   [(PocketAPI *)self didChangeValueForKey:@"isLoggedIn"];
 
   [(PocketAPI *)self didChangeValueForKey:@"username"];
 }
 
-- (id)saveOperationWithURL:(id)a3 title:(id)a4 tweetID:(id)a5 handler:(id)a6
+- (id)saveOperationWithURL:(id)l title:(id)title tweetID:(id)d handler:(id)handler
 {
-  v10 = [PocketAPIBlockDelegate delegateWithSaveHandler:a6];
+  v10 = [PocketAPIBlockDelegate delegateWithSaveHandler:handler];
 
-  return [(PocketAPI *)self saveOperationWithURL:a3 title:a4 tweetID:a5 delegate:v10];
+  return [(PocketAPI *)self saveOperationWithURL:l title:title tweetID:d delegate:v10];
 }
 
-- (id)saveOperationWithURL:(id)a3 title:(id)a4 handler:(id)a5
+- (id)saveOperationWithURL:(id)l title:(id)title handler:(id)handler
 {
-  v8 = [PocketAPIBlockDelegate delegateWithSaveHandler:a5];
+  v8 = [PocketAPIBlockDelegate delegateWithSaveHandler:handler];
 
-  return [(PocketAPI *)self saveOperationWithURL:a3 title:a4 delegate:v8];
+  return [(PocketAPI *)self saveOperationWithURL:l title:title delegate:v8];
 }
 
-- (id)saveOperationWithURL:(id)a3 handler:(id)a4
+- (id)saveOperationWithURL:(id)l handler:(id)handler
 {
-  v6 = [PocketAPIBlockDelegate delegateWithSaveHandler:a4];
+  v6 = [PocketAPIBlockDelegate delegateWithSaveHandler:handler];
 
-  return [(PocketAPI *)self saveOperationWithURL:a3 delegate:v6];
+  return [(PocketAPI *)self saveOperationWithURL:l delegate:v6];
 }
 
-- (void)saveURL:(id)a3 withTitle:(id)a4 tweetID:(id)a5 handler:(id)a6
+- (void)saveURL:(id)l withTitle:(id)title tweetID:(id)d handler:(id)handler
 {
-  v10 = [PocketAPIBlockDelegate delegateWithSaveHandler:a6];
+  v10 = [PocketAPIBlockDelegate delegateWithSaveHandler:handler];
 
-  [(PocketAPI *)self saveURL:a3 withTitle:a4 tweetID:a5 delegate:v10];
+  [(PocketAPI *)self saveURL:l withTitle:title tweetID:d delegate:v10];
 }
 
-- (void)saveURL:(id)a3 withTitle:(id)a4 handler:(id)a5
+- (void)saveURL:(id)l withTitle:(id)title handler:(id)handler
 {
-  v8 = [PocketAPIBlockDelegate delegateWithSaveHandler:a5];
+  v8 = [PocketAPIBlockDelegate delegateWithSaveHandler:handler];
 
-  [(PocketAPI *)self saveURL:a3 withTitle:a4 delegate:v8];
+  [(PocketAPI *)self saveURL:l withTitle:title delegate:v8];
 }
 
-- (void)saveURL:(id)a3 handler:(id)a4
+- (void)saveURL:(id)l handler:(id)handler
 {
-  v6 = [PocketAPIBlockDelegate delegateWithSaveHandler:a4];
+  v6 = [PocketAPIBlockDelegate delegateWithSaveHandler:handler];
 
-  [(PocketAPI *)self saveURL:a3 delegate:v6];
+  [(PocketAPI *)self saveURL:l delegate:v6];
 }
 
-- (void)loginWithHandler:(id)a3
+- (void)loginWithHandler:(id)handler
 {
-  v4 = [PocketAPIBlockDelegate delegateWithLoginHandler:a3];
+  v4 = [PocketAPIBlockDelegate delegateWithLoginHandler:handler];
 
   [(PocketAPI *)self loginWithDelegate:v4];
 }
 
-- (id)saveOperationWithURL:(id)a3 title:(id)a4 tweetID:(id)a5 delegate:(id)a6
+- (id)saveOperationWithURL:(id)l title:(id)title tweetID:(id)d delegate:(id)delegate
 {
-  if (!a3 || ![a3 absoluteString])
+  if (!l || ![l absoluteString])
   {
     return 0;
   }
@@ -387,52 +387,52 @@
   v11 = MEMORY[0x277CCABB0];
   [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
   v13 = [v11 numberWithInteger:v12];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  [v14 setObject:v13 forKey:@"time"];
-  [v14 setObject:objc_msgSend(a3 forKey:{"absoluteString"), @"url"}];
-  if (a4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v13 forKey:@"time"];
+  [dictionary setObject:objc_msgSend(l forKey:{"absoluteString"), @"url"}];
+  if (title)
   {
-    [v14 setObject:a4 forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
-  if (a5 && ([a5 isEqualToString:&stru_2850323E8] & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", @"0") & 1) == 0)
+  if (d && ([d isEqualToString:&stru_2850323E8] & 1) == 0 && (objc_msgSend(d, "isEqualToString:", @"0") & 1) == 0)
   {
-    [v14 setObject:a5 forKey:@"ref_id"];
+    [dictionary setObject:d forKey:@"ref_id"];
   }
 
-  v15 = [v14 copy];
+  v15 = [dictionary copy];
 
-  return [(PocketAPI *)self methodOperationWithAPIMethod:@"add" forHTTPMethod:1 arguments:v15 delegate:a6];
+  return [(PocketAPI *)self methodOperationWithAPIMethod:@"add" forHTTPMethod:1 arguments:v15 delegate:delegate];
 }
 
-- (void)saveURL:(id)a3 withTitle:(id)a4 tweetID:(id)a5 delegate:(id)a6
+- (void)saveURL:(id)l withTitle:(id)title tweetID:(id)d delegate:(id)delegate
 {
   operationQueue = self->operationQueue;
-  v7 = [(PocketAPI *)self saveOperationWithURL:a3 title:a4 tweetID:a5 delegate:a6];
+  v7 = [(PocketAPI *)self saveOperationWithURL:l title:title tweetID:d delegate:delegate];
 
   [(NSOperationQueue *)operationQueue addOperation:v7];
 }
 
-- (void)saveURL:(id)a3 withTitle:(id)a4 delegate:(id)a5
+- (void)saveURL:(id)l withTitle:(id)title delegate:(id)delegate
 {
   operationQueue = self->operationQueue;
-  v6 = [(PocketAPI *)self saveOperationWithURL:a3 title:a4 delegate:a5];
+  v6 = [(PocketAPI *)self saveOperationWithURL:l title:title delegate:delegate];
 
   [(NSOperationQueue *)operationQueue addOperation:v6];
 }
 
-- (void)saveURL:(id)a3 delegate:(id)a4
+- (void)saveURL:(id)l delegate:(id)delegate
 {
   operationQueue = self->operationQueue;
-  v5 = [(PocketAPI *)self saveOperationWithURL:a3 delegate:a4];
+  v5 = [(PocketAPI *)self saveOperationWithURL:l delegate:delegate];
 
   [(NSOperationQueue *)operationQueue addOperation:v5];
 }
 
-- (void)loginWithDelegate:(id)a3
+- (void)loginWithDelegate:(id)delegate
 {
   v5 = self->currentLogin;
-  v6 = [[PocketAPILogin alloc] initWithAPI:self delegate:a3];
+  v6 = [[PocketAPILogin alloc] initWithAPI:self delegate:delegate];
   self->currentLogin = v6;
   [(PocketAPILogin *)v6 fetchRequestToken];
 
@@ -441,17 +441,17 @@
 
 - (BOOL)isLoggedIn
 {
-  v3 = [(PocketAPI *)self username];
-  v4 = [(PocketAPI *)self pkt_getToken];
+  username = [(PocketAPI *)self username];
+  pkt_getToken = [(PocketAPI *)self pkt_getToken];
   LOBYTE(v5) = 0;
-  if (v3)
+  if (username)
   {
-    if (v4)
+    if (pkt_getToken)
     {
-      v5 = [(NSString *)v3 length];
+      v5 = [(NSString *)username length];
       if (v5)
       {
-        LOBYTE(v5) = [v4 length] != 0;
+        LOBYTE(v5) = [pkt_getToken length] != 0;
       }
     }
   }
@@ -493,14 +493,14 @@
   return [v6 integerValue];
 }
 
-- (BOOL)handleOpenURL:(id)a3
+- (BOOL)handleOpenURL:(id)l
 {
-  v5 = [objc_msgSend(a3 "scheme")];
+  v5 = [objc_msgSend(l "scheme")];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAC0] pkt_dictionaryByParsingURLEncodedFormString:{objc_msgSend(a3, "query")}];
+    v6 = [MEMORY[0x277CBEAC0] pkt_dictionaryByParsingURLEncodedFormString:{objc_msgSend(l, "query")}];
     currentLogin = self->currentLogin;
-    if ([objc_msgSend(a3 "path")] && objc_msgSend(v6, "objectForKey:", @"code"))
+    if ([objc_msgSend(l "path")] && objc_msgSend(v6, "objectForKey:", @"code"))
     {
       v8 = [v6 objectForKey:@"code"];
       currentLogin = [[PocketAPILogin alloc] initWithAPI:self delegate:0];
@@ -537,21 +537,21 @@
   [(PocketAPI *)&v3 dealloc];
 }
 
-- (void)setOperationQueue:(id)a3
+- (void)setOperationQueue:(id)queue
 {
   if (self->consumerKey)
   {
     NSLog(&cfstr_ErrorPocketapi.isa, a2);
   }
 
-  self->operationQueue = a3;
+  self->operationQueue = queue;
 }
 
-- (void)setURLScheme:(id)a3
+- (void)setURLScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
 
-  self->URLScheme = a3;
+  self->URLScheme = scheme;
 }
 
 - (NSString)URLScheme
@@ -567,12 +567,12 @@
   }
 }
 
-- (void)setConsumerKey:(id)a3
+- (void)setConsumerKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
 
-  self->consumerKey = a3;
-  if (a3 && !self->URLScheme)
+  self->consumerKey = key;
+  if (key && !self->URLScheme)
   {
     [(PocketAPI *)self setURLScheme:[(PocketAPI *)self URLScheme]];
   }
@@ -602,10 +602,10 @@
   return v2;
 }
 
-+ (id)pkt_hashForConsumerKey:(id)a3 accessToken:(id)a4
++ (id)pkt_hashForConsumerKey:(id)key accessToken:(id)token
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", a3, a4), "dataUsingEncoding:", 4];
+  v4 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", key, token), "dataUsingEncoding:", 4];
   CC_SHA1([v4 bytes], objc_msgSend(v4, "length"), md);
   v5 = [MEMORY[0x277CCAB68] stringWithCapacity:20];
   for (i = 0; i != 20; ++i)
@@ -619,27 +619,27 @@
 
 + (id)sharedAPI
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (!sSharedAPI)
   {
-    sSharedAPI = [a1 alloc];
+    sSharedAPI = [self alloc];
     [sSharedAPI init];
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return sSharedAPI;
 }
 
-- (void)pkt_setKeychainValue:(id)a3 forKey:(id)a4 serviceName:(id)a5
+- (void)pkt_setKeychainValue:(id)value forKey:(id)key serviceName:(id)name
 {
-  if (a3)
+  if (value)
   {
-    [PocketAPIKeychainUtils storeUsername:a4 andPassword:a3 forServiceName:a5 updateExisting:1 error:0];
+    [PocketAPIKeychainUtils storeUsername:key andPassword:value forServiceName:name updateExisting:1 error:0];
   }
 
   else
   {
-    [PocketAPIKeychainUtils deleteItemForUsername:a4 andServiceName:a5 error:0];
+    [PocketAPIKeychainUtils deleteItemForUsername:key andServiceName:name error:0];
   }
 }
 

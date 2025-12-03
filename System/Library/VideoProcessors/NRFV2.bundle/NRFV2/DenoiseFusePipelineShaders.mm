@@ -1,12 +1,12 @@
 @interface DenoiseFusePipelineShaders
-- (DenoiseFusePipelineShaders)initWithMetal:(id)a3;
+- (DenoiseFusePipelineShaders)initWithMetal:(id)metal;
 @end
 
 @implementation DenoiseFusePipelineShaders
 
-- (DenoiseFusePipelineShaders)initWithMetal:(id)a3
+- (DenoiseFusePipelineShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v17.receiver = self;
   v17.super_class = DenoiseFusePipelineShaders;
   v6 = [(DenoiseFusePipelineShaders *)&v17 init];
@@ -15,7 +15,7 @@
     goto LABEL_5;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"kernelPickRandomSamples", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"kernelPickRandomSamples", 0);
   pickRandomSamples = v6->_pickRandomSamples;
   v6->_pickRandomSamples = v7;
 
@@ -27,7 +27,7 @@ LABEL_10:
     goto LABEL_6;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"adjustEvmPyramidColor", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v9, @"adjustEvmPyramidColor", 0);
   adjustEvmPyramidColor = v6->_adjustEvmPyramidColor;
   v6->_adjustEvmPyramidColor = v10;
 
@@ -37,7 +37,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v13 = objc_msgSend_computePipelineStateFor_constants_(v4, v12, @"stationaryDownsampleForInference", 0);
+  v13 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v12, @"stationaryDownsampleForInference", 0);
   downsampleInference = v6->_downsampleInference;
   v6->_downsampleInference = v13;
 

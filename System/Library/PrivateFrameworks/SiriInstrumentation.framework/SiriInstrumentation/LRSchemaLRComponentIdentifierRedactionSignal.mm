@@ -1,26 +1,26 @@
 @interface LRSchemaLRComponentIdentifierRedactionSignal
-- (BOOL)isEqual:(id)a3;
-- (LRSchemaLRComponentIdentifierRedactionSignal)initWithDictionary:(id)a3;
-- (LRSchemaLRComponentIdentifierRedactionSignal)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LRSchemaLRComponentIdentifierRedactionSignal)initWithDictionary:(id)dictionary;
+- (LRSchemaLRComponentIdentifierRedactionSignal)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LRSchemaLRComponentIdentifierRedactionSignal
 
-- (LRSchemaLRComponentIdentifierRedactionSignal)initWithDictionary:(id)a3
+- (LRSchemaLRComponentIdentifierRedactionSignal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = LRSchemaLRComponentIdentifierRedactionSignal;
   v5 = [(LRSchemaLRComponentIdentifierRedactionSignal *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"componentId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"componentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(LRSchemaLRComponentIdentifierRedactionSignal *)v5 setComponentId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"redactConnectedEvents"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"redactConnectedEvents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (LRSchemaLRComponentIdentifierRedactionSignal)initWithJSON:(id)a3
+- (LRSchemaLRComponentIdentifierRedactionSignal)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LRSchemaLRComponentIdentifierRedactionSignal *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LRSchemaLRComponentIdentifierRedactionSignal *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_componentId)
   {
-    v4 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    componentId = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
+    dictionaryRepresentation = [componentId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"componentId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"componentId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"componentId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"componentId"];
     }
   }
 
   if (*(&self->_redactConnectedEvents + 1))
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[LRSchemaLRComponentIdentifierRedactionSignal redactConnectedEvents](self, "redactConnectedEvents")}];
-    [v3 setObject:v7 forKeyedSubscript:@"redactConnectedEvents"];
+    [dictionary setObject:v7 forKeyedSubscript:@"redactConnectedEvents"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
-  v6 = [v4 componentId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  componentId = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
+  componentId2 = [equalCopy componentId];
+  v7 = componentId2;
+  if ((componentId != 0) == (componentId2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
-  if (v8)
+  componentId3 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
+  if (componentId3)
   {
-    v9 = v8;
-    v10 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
-    v11 = [v4 componentId];
-    v12 = [v10 isEqual:v11];
+    v9 = componentId3;
+    componentId4 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
+    componentId5 = [equalCopy componentId];
+    v12 = [componentId4 isEqual:componentId5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if (*(&self->_redactConnectedEvents + 1) != (v4[17] & 1))
+  if (*(&self->_redactConnectedEvents + 1) != (equalCopy[17] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*(&self->_redactConnectedEvents + 1))
   {
     redactConnectedEvents = self->_redactConnectedEvents;
-    if (redactConnectedEvents != [v4 redactConnectedEvents])
+    if (redactConnectedEvents != [equalCopy redactConnectedEvents])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
+  toCopy = to;
+  componentId = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
 
-  if (v4)
+  if (componentId)
   {
-    v5 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
+    componentId2 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = LRSchemaLRComponentIdentifierRedactionSignal;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(LRSchemaLRComponentIdentifierRedactionSignal *)self componentId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(LRSchemaLRComponentIdentifierRedactionSignal *)self deleteComponentId];
   }

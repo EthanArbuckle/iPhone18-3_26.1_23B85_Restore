@@ -2,27 +2,27 @@
 + (BOOL)batteryDataUnavailable;
 + (BOOL)inDemoMode;
 + (BOOL)isBatteryUnverified;
-+ (BOOL)isBatteryUnverifiedWithStatus:(int)a3 state:(int)a4;
++ (BOOL)isBatteryUnverifiedWithStatus:(int)status state:(int)state;
 + (BOOL)isQMaxUnknown;
 + (double)getMaxWidthOfYAxisLabels;
-+ (double)millisecondsFromMachTime:(unint64_t)a3;
++ (double)millisecondsFromMachTime:(unint64_t)time;
 + (id)containerPath;
 + (id)getAuthData;
 + (id)getBatteryData;
 + (id)get_log_handle_bhui;
 + (id)get_log_handle_bui;
 + (id)get_log_handle_bui_graph;
-+ (id)localizedStringWithHour:(int)a3;
-+ (id)localizedStringWithPercentage:(double)a3;
-+ (id)overrideBatteryData:(id)a3 withPath:(id)a4;
-+ (id)snapshotFromIOEntry:(unsigned int)a3;
++ (id)localizedStringWithHour:(int)hour;
++ (id)localizedStringWithPercentage:(double)percentage;
++ (id)overrideBatteryData:(id)data withPath:(id)path;
++ (id)snapshotFromIOEntry:(unsigned int)entry;
 + (int)genuineBatteryStatus;
 + (int)getBatteryHealthServiceFlags;
 + (int)getBatteryHealthServiceState;
-+ (int)getBatteryMaximumCapacityPercentWithError:(id *)a3;
++ (int)getBatteryMaximumCapacityPercentWithError:(id *)error;
 + (int)getManagementState;
-+ (int)getManagementStateWithSync:(BOOL)a3;
-+ (void)valueForDefaultKey:(id)a3;
++ (int)getManagementStateWithSync:(BOOL)sync;
++ (void)valueForDefaultKey:(id)key;
 @end
 
 @implementation BatteryUIResourceClass
@@ -64,8 +64,8 @@
         sub_114AAC(v4);
       }
 
-      v6 = [v4 intValue];
-      return v6;
+      intValue = [v4 intValue];
+      return intValue;
     }
   }
 
@@ -75,15 +75,15 @@
   {
     v11 = [v8 objectAtIndexedSubscript:0];
     v12 = [v11 objectForKeyedSubscript:@"Battery Service State"];
-    v6 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v6 = -1;
+    intValue = -1;
   }
 
-  return v6;
+  return intValue;
 }
 
 + (int)getBatteryHealthServiceFlags
@@ -101,8 +101,8 @@
         sub_114B24(v4);
       }
 
-      v6 = [v4 intValue];
-      return v6;
+      intValue = [v4 intValue];
+      return intValue;
     }
   }
 
@@ -112,21 +112,21 @@
   {
     v11 = [v8 objectAtIndexedSubscript:0];
     v12 = [v11 objectForKeyedSubscript:@"Battery Service Flags"];
-    v6 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v6 = 256;
+    intValue = 256;
   }
 
-  return v6;
+  return intValue;
 }
 
 + (BOOL)isQMaxUnknown
 {
-  v3 = [a1 getBatteryHealthServiceState];
-  v4 = [a1 getBatteryHealthServiceFlags];
+  getBatteryHealthServiceState = [self getBatteryHealthServiceState];
+  getBatteryHealthServiceFlags = [self getBatteryHealthServiceFlags];
   v5 = +[BatteryUIResourceClass get_log_handle_bhui];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -138,13 +138,13 @@
     sub_114C0C();
   }
 
-  v6 = v4 & 0x2000;
+  v6 = getBatteryHealthServiceFlags & 0x2000;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_114C7C();
   }
 
-  v8 = v3 == -1 && v6 != 0;
+  v8 = getBatteryHealthServiceState == -1 && v6 != 0;
 
   return v8;
 }
@@ -157,11 +157,11 @@
   return [BatteryUIResourceClass isBatteryUnverifiedWithStatus:v2 state:v3];
 }
 
-+ (BOOL)isBatteryUnverifiedWithStatus:(int)a3 state:(int)a4
++ (BOOL)isBatteryUnverifiedWithStatus:(int)status state:(int)state
 {
-  if (a3)
+  if (status)
   {
-    v4 = a4 == 5;
+    v4 = state == 5;
   }
 
   else
@@ -169,11 +169,11 @@
     v4 = 0;
   }
 
-  v6 = v4 || a4 == 12;
-  return a3 == 2 || v6;
+  v6 = v4 || state == 12;
+  return status == 2 || v6;
 }
 
-+ (int)getBatteryMaximumCapacityPercentWithError:(id *)a3
++ (int)getBatteryMaximumCapacityPercentWithError:(id *)error
 {
   v4 = IOPSCopyPowerSourcesByType();
   v5 = v4;
@@ -181,14 +181,14 @@
   {
     v8 = [v5 objectAtIndexedSubscript:0];
     v9 = [v8 objectForKeyedSubscript:@"Maximum Capacity Percent"];
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:@"noBatteryData" code:-1 userInfo:0];
+      *error = [NSError errorWithDomain:@"noBatteryData" code:-1 userInfo:0];
     }
 
     v11 = +[BatteryUIResourceClass get_log_handle_bhui];
@@ -197,10 +197,10 @@
       sub_114CF4();
     }
 
-    v10 = -1;
+    intValue = -1;
   }
 
-  return v10;
+  return intValue;
 }
 
 + (int)genuineBatteryStatus
@@ -215,9 +215,9 @@
   if (v2 && ([v2 objectForKey:@"isTrustedForUI"], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v3 objectForKey:@"isTrustedForUI"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = 1;
     }
@@ -282,33 +282,33 @@ LABEL_13:
   return v7;
 }
 
-+ (id)snapshotFromIOEntry:(unsigned int)a3
++ (id)snapshotFromIOEntry:(unsigned int)entry
 {
   properties = 0;
-  IORegistryEntryCreateCFProperties(a3, &properties, 0, 0);
+  IORegistryEntryCreateCFProperties(entry, &properties, 0, 0);
   v3 = properties;
 
   return v3;
 }
 
-+ (double)millisecondsFromMachTime:(unint64_t)a3
++ (double)millisecondsFromMachTime:(unint64_t)time
 {
   if (qword_187C98 != -1)
   {
     sub_114D30();
   }
 
-  return *&qword_187CA0 * a3 / 1000000.0;
+  return *&qword_187CA0 * time / 1000000.0;
 }
 
-+ (id)overrideBatteryData:(id)a3 withPath:(id)a4
++ (id)overrideBatteryData:(id)data withPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  pathCopy = path;
+  if (pathCopy)
   {
     v7 = +[BatteryUIResourceClass get_log_handle_bhui];
-    v8 = [NSDictionary dictionaryWithContentsOfFile:v6];
+    v8 = [NSDictionary dictionaryWithContentsOfFile:pathCopy];
     v9 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
     if (v8)
     {
@@ -317,7 +317,7 @@ LABEL_13:
         sub_114D44();
       }
 
-      v10 = [v5 mutableCopy];
+      v10 = [dataCopy mutableCopy];
       v11 = [v8 objectForKey:@"Serial"];
       v12 = v11;
       if (v11)
@@ -343,13 +343,13 @@ LABEL_13:
         sub_114DB8();
       }
 
-      v13 = v5;
+      v13 = dataCopy;
     }
   }
 
   else
   {
-    v13 = v5;
+    v13 = dataCopy;
   }
 
   return v13;
@@ -443,25 +443,25 @@ LABEL_13:
   return v3;
 }
 
-+ (id)localizedStringWithPercentage:(double)a3
++ (id)localizedStringWithPercentage:(double)percentage
 {
-  v3 = [NSNumber numberWithDouble:a3 / 100.0];
+  v3 = [NSNumber numberWithDouble:percentage / 100.0];
   v4 = [NSNumberFormatter localizedStringFromNumber:v3 numberStyle:3];
 
   return v4;
 }
 
-+ (id)localizedStringWithHour:(int)a3
++ (id)localizedStringWithHour:(int)hour
 {
   if (qword_187CD8 != -1)
   {
     sub_114E68();
   }
 
-  v4 = [qword_187CE0 stringFromTimeInterval:a3 * 3600.0];
-  v5 = [v4 capitalizedString];
+  v4 = [qword_187CE0 stringFromTimeInterval:hour * 3600.0];
+  capitalizedString = [v4 capitalizedString];
 
-  return v5;
+  return capitalizedString;
 }
 
 + (double)getMaxWidthOfYAxisLabels
@@ -483,9 +483,9 @@ LABEL_13:
   return v7;
 }
 
-+ (int)getManagementStateWithSync:(BOOL)a3
++ (int)getManagementStateWithSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = +[BatteryUIResourceClass get_log_handle_bhui];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -494,7 +494,7 @@ LABEL_13:
 
   state64 = 0;
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
-  if (v3)
+  if (syncCopy)
   {
     if (v5)
     {
@@ -549,9 +549,9 @@ LABEL_24:
     }
 
     v7 = v6;
-    v8 = [v6 intValue];
-    v9 = v8;
-    state64 = v8;
+    intValue = [v6 intValue];
+    v9 = intValue;
+    state64 = intValue;
   }
 
   if (v9 - 1 > 2)
@@ -592,9 +592,9 @@ LABEL_25:
   return result;
 }
 
-+ (void)valueForDefaultKey:(id)a3
++ (void)valueForDefaultKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   +[BatteryUIResourceClass containerPath];
   v4 = _CFPreferencesCopyValueWithContainer();
 

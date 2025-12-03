@@ -1,8 +1,8 @@
 @interface HRConceptTitleTableHeaderView
-- (HRConceptTitleTableHeaderView)initWithCoder:(id)a3;
-- (HRConceptTitleTableHeaderView)initWithFrame:(CGRect)a3;
+- (HRConceptTitleTableHeaderView)initWithCoder:(id)coder;
+- (HRConceptTitleTableHeaderView)initWithFrame:(CGRect)frame;
 - (NSString)title;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation HRConceptTitleTableHeaderView
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1D139016C();
     v6 = v5;
@@ -43,17 +43,17 @@
   swift_beginAccess();
   *v7 = v4;
   v7[1] = v6;
-  v8 = self;
+  selfCopy = self;
 
   sub_1D1386274();
 }
 
-- (HRConceptTitleTableHeaderView)initWithFrame:(CGRect)a3
+- (HRConceptTitleTableHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR___HRConceptTitleTableHeaderView_titleLabel;
   *(self + v8) = sub_1D1385EB8();
   v9 = (self + OBJC_IVAR___HRConceptTitleTableHeaderView_title);
@@ -62,17 +62,17 @@
   v9[1] = 0;
   v16.receiver = self;
   v16.super_class = v10;
-  v11 = [(HRConceptTitleTableHeaderView *)&v16 initWithFrame:x, y, width, height];
+  height = [(HRConceptTitleTableHeaderView *)&v16 initWithFrame:x, y, width, height];
   v12 = OBJC_IVAR___HRConceptTitleTableHeaderView_titleLabel;
-  v13 = *(v11 + OBJC_IVAR___HRConceptTitleTableHeaderView_titleLabel);
-  v14 = v11;
+  v13 = *(height + OBJC_IVAR___HRConceptTitleTableHeaderView_titleLabel);
+  v14 = height;
   [(HRConceptTitleTableHeaderView *)v14 addSubview:v13];
-  [*(v11 + v12) hk:v14 alignConstraintsWithView:?];
+  [*(height + v12) hk:v14 alignConstraintsWithView:?];
 
   return v14;
 }
 
-- (HRConceptTitleTableHeaderView)initWithCoder:(id)a3
+- (HRConceptTitleTableHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___HRConceptTitleTableHeaderView_titleLabel;
   *(self + v4) = sub_1D1385EB8();

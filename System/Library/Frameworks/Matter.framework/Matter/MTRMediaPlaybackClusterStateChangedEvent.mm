@@ -1,6 +1,6 @@
 @interface MTRMediaPlaybackClusterStateChangedEvent
 - (MTRMediaPlaybackClusterStateChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -46,35 +46,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMediaPlaybackClusterStateChangedEvent);
-  v5 = [(MTRMediaPlaybackClusterStateChangedEvent *)self currentState];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setCurrentState:v5];
+  currentState = [(MTRMediaPlaybackClusterStateChangedEvent *)self currentState];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setCurrentState:currentState];
 
-  v6 = [(MTRMediaPlaybackClusterStateChangedEvent *)self startTime];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setStartTime:v6];
+  startTime = [(MTRMediaPlaybackClusterStateChangedEvent *)self startTime];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setStartTime:startTime];
 
-  v7 = [(MTRMediaPlaybackClusterStateChangedEvent *)self duration];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setDuration:v7];
+  duration = [(MTRMediaPlaybackClusterStateChangedEvent *)self duration];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setDuration:duration];
 
-  v8 = [(MTRMediaPlaybackClusterStateChangedEvent *)self sampledPosition];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setSampledPosition:v8];
+  sampledPosition = [(MTRMediaPlaybackClusterStateChangedEvent *)self sampledPosition];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setSampledPosition:sampledPosition];
 
-  v9 = [(MTRMediaPlaybackClusterStateChangedEvent *)self playbackSpeed];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setPlaybackSpeed:v9];
+  playbackSpeed = [(MTRMediaPlaybackClusterStateChangedEvent *)self playbackSpeed];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setPlaybackSpeed:playbackSpeed];
 
-  v10 = [(MTRMediaPlaybackClusterStateChangedEvent *)self seekRangeEnd];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setSeekRangeEnd:v10];
+  seekRangeEnd = [(MTRMediaPlaybackClusterStateChangedEvent *)self seekRangeEnd];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setSeekRangeEnd:seekRangeEnd];
 
-  v11 = [(MTRMediaPlaybackClusterStateChangedEvent *)self seekRangeStart];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setSeekRangeStart:v11];
+  seekRangeStart = [(MTRMediaPlaybackClusterStateChangedEvent *)self seekRangeStart];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setSeekRangeStart:seekRangeStart];
 
-  v12 = [(MTRMediaPlaybackClusterStateChangedEvent *)self data];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setData:v12];
+  data = [(MTRMediaPlaybackClusterStateChangedEvent *)self data];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setData:data];
 
-  v13 = [(MTRMediaPlaybackClusterStateChangedEvent *)self audioAdvanceUnmuted];
-  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setAudioAdvanceUnmuted:v13];
+  audioAdvanceUnmuted = [(MTRMediaPlaybackClusterStateChangedEvent *)self audioAdvanceUnmuted];
+  [(MTRMediaPlaybackClusterStateChangedEvent *)v4 setAudioAdvanceUnmuted:audioAdvanceUnmuted];
 
   return v4;
 }

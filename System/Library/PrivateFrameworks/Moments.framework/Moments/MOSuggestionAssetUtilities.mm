@@ -1,21 +1,21 @@
 @interface MOSuggestionAssetUtilities
-+ (id)imageFromURL:(id)a3;
-+ (id)unwrappeCombinedWorkoutObjectFrom:(id)a3;
-+ (id)unwrappedContactPhotoFrom:(id)a3;
-+ (id)unwrappedMediaItemFrom:(id)a3;
-+ (id)unwrappedMotionActivityFrom:(id)a3;
-+ (id)unwrappedStateOfMindFrom:(id)a3;
-+ (id)unwrappedWorkoutObjectFrom:(id)a3;
++ (id)imageFromURL:(id)l;
++ (id)unwrappeCombinedWorkoutObjectFrom:(id)from;
++ (id)unwrappedContactPhotoFrom:(id)from;
++ (id)unwrappedMediaItemFrom:(id)from;
++ (id)unwrappedMotionActivityFrom:(id)from;
++ (id)unwrappedStateOfMindFrom:(id)from;
++ (id)unwrappedWorkoutObjectFrom:(id)from;
 @end
 
 @implementation MOSuggestionAssetUtilities
 
-+ (id)imageFromURL:(id)a3
++ (id)imageFromURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3];
+    v4 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
     if (v4)
     {
       v5 = [MEMORY[0x277D755B8] imageWithData:v4];
@@ -31,7 +31,7 @@
         v8 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [MOSuggestionAssetUtilities imageFromURL:v3];
+          [MOSuggestionAssetUtilities imageFromURL:lCopy];
         }
 
         v7 = 0;
@@ -43,7 +43,7 @@
       v6 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [MOSuggestionAssetUtilities imageFromURL:v3];
+        [MOSuggestionAssetUtilities imageFromURL:lCopy];
       }
 
       v7 = 0;
@@ -64,26 +64,26 @@
   return v7;
 }
 
-+ (id)unwrappedMotionActivityFrom:(id)a3
++ (id)unwrappedMotionActivityFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = v4;
-  if (v4)
+  fromCopy = from;
+  content = [fromCopy content];
+  v5 = content;
+  if (content)
   {
-    v6 = [v4 constructedImage];
-    if (v6)
+    constructedImage = [content constructedImage];
+    if (constructedImage)
     {
       v7 = [MOSuggestionAsset alloc];
-      v8 = [v3 assetType];
-      v9 = [(MOSuggestionAsset *)v7 init:v6 type:v8 contentClassType:objc_opt_class()];
+      assetType = [fromCopy assetType];
+      v9 = [(MOSuggestionAsset *)v7 init:constructedImage type:assetType contentClassType:objc_opt_class()];
 
-      v10 = [v3 identifier];
-      [v9 addIdentifier:v10];
+      identifier = [fromCopy identifier];
+      [v9 addIdentifier:identifier];
 
-      v11 = [v3 metadata];
-      [v9 addMetadata:v11];
+      metadata = [fromCopy metadata];
+      [v9 addMetadata:metadata];
 
       v12 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -109,8 +109,8 @@
 
   else
   {
-    v6 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    constructedImage = _mo_log_facility_get_os_log(MOLogFacilityUIService);
+    if (os_log_type_enabled(constructedImage, OS_LOG_TYPE_ERROR))
     {
       +[MOSuggestionAssetUtilities unwrappedMotionActivityFrom:];
     }
@@ -123,44 +123,44 @@
   return v9;
 }
 
-+ (id)unwrappedMediaItemFrom:(id)a3
++ (id)unwrappedMediaItemFrom:(id)from
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = v4;
-  if (v4 && ([v4 imageURL], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  fromCopy = from;
+  content = [fromCopy content];
+  v5 = content;
+  if (content && ([content imageURL], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 imageURL];
-    v8 = [MOSuggestionAssetUtilities imageFromURL:v7];
+    imageURL = [v5 imageURL];
+    v8 = [MOSuggestionAssetUtilities imageFromURL:imageURL];
 
     if (v8)
     {
       v27 = [MOSuggestionAssetMediaItem alloc];
-      v9 = [v5 title];
-      v10 = [v5 albumTitle];
-      v11 = [v5 artistName];
-      v12 = [v5 trackIdentifier];
-      v13 = [v5 previewURL];
-      v14 = [v5 mediaType];
-      v15 = [v5 bgColor];
-      v16 = -[MOSuggestionAssetMediaItem initTitle:albumTitle:artistName:albumArt:trackIdentifier:previewURL:mediaType:imageURL:bgColor:bgColorVariant:](v27, "initTitle:albumTitle:artistName:albumArt:trackIdentifier:previewURL:mediaType:imageURL:bgColor:bgColorVariant:", v9, v10, v11, v8, v12, v13, v14, 0, v15, [v5 bgColorVariant]);
+      title = [v5 title];
+      albumTitle = [v5 albumTitle];
+      artistName = [v5 artistName];
+      trackIdentifier = [v5 trackIdentifier];
+      previewURL = [v5 previewURL];
+      mediaType = [v5 mediaType];
+      bgColor = [v5 bgColor];
+      v16 = -[MOSuggestionAssetMediaItem initTitle:albumTitle:artistName:albumArt:trackIdentifier:previewURL:mediaType:imageURL:bgColor:bgColorVariant:](v27, "initTitle:albumTitle:artistName:albumArt:trackIdentifier:previewURL:mediaType:imageURL:bgColor:bgColorVariant:", title, albumTitle, artistName, v8, trackIdentifier, previewURL, mediaType, 0, bgColor, [v5 bgColorVariant]);
 
       v17 = [MOSuggestionAsset alloc];
-      v18 = [v3 assetType];
-      v19 = [(MOSuggestionAsset *)v17 init:v16 type:v18 contentClassType:objc_opt_class()];
+      assetType = [fromCopy assetType];
+      v19 = [(MOSuggestionAsset *)v17 init:v16 type:assetType contentClassType:objc_opt_class()];
 
-      v20 = [v3 identifier];
-      [v19 addIdentifier:v20];
+      identifier = [fromCopy identifier];
+      [v19 addIdentifier:identifier];
 
-      v21 = [v3 metadata];
-      [v19 addMetadata:v21];
+      metadata = [fromCopy metadata];
+      [v19 addMetadata:metadata];
 
       v22 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v5 imageURL];
-        v24 = [v23 debugDescription];
+        imageURL2 = [v5 imageURL];
+        v24 = [imageURL2 debugDescription];
         *buf = 138412290;
         v29 = v24;
         _os_log_impl(&dword_22D8C5000, v22, OS_LOG_TYPE_DEFAULT, "Unwrapping successful, mediaArtURL=%@", buf, 0xCu);
@@ -195,30 +195,30 @@
   return v19;
 }
 
-+ (id)unwrappeCombinedWorkoutObjectFrom:(id)a3
++ (id)unwrappeCombinedWorkoutObjectFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  if (v4)
+  fromCopy = from;
+  content = [fromCopy content];
+  if (content)
   {
-    v5 = [MOSuggestionAssetUtilities imageFromURL:v4];
+    v5 = [MOSuggestionAssetUtilities imageFromURL:content];
     if (v5)
     {
       v6 = [MOSuggestionAsset alloc];
-      v7 = [v3 assetType];
-      v8 = [(MOSuggestionAsset *)v6 init:v5 type:v7 contentClassType:objc_opt_class()];
+      assetType = [fromCopy assetType];
+      v8 = [(MOSuggestionAsset *)v6 init:v5 type:assetType contentClassType:objc_opt_class()];
 
-      v9 = [v3 identifier];
-      [v8 addIdentifier:v9];
+      identifier = [fromCopy identifier];
+      [v8 addIdentifier:identifier];
 
-      v10 = [v3 metadata];
-      [v8 addMetadata:v10];
+      metadata = [fromCopy metadata];
+      [v8 addMetadata:metadata];
 
       v11 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 debugDescription];
+        v12 = [content debugDescription];
         v15 = 138412290;
         v16 = v12;
         _os_log_impl(&dword_22D8C5000, v11, OS_LOG_TYPE_DEFAULT, "Unwrapping successful, url=%@", &v15, 0xCu);
@@ -230,7 +230,7 @@
       v11 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [MOSuggestionAssetUtilities unwrappeCombinedWorkoutObjectFrom:v4];
+        [MOSuggestionAssetUtilities unwrappeCombinedWorkoutObjectFrom:content];
       }
 
       v8 = 0;
@@ -253,14 +253,14 @@
   return v8;
 }
 
-+ (id)unwrappedWorkoutObjectFrom:(id)a3
++ (id)unwrappedWorkoutObjectFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = [v4 route];
+  fromCopy = from;
+  content = [fromCopy content];
+  route = [content route];
 
-  if (v5)
+  if (route)
   {
     v6 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -269,36 +269,36 @@
       _os_log_impl(&dword_22D8C5000, v6, OS_LOG_TYPE_DEFAULT, "Route Only Pass Through", &v25, 2u);
     }
 
-    v7 = v3;
+    v7 = fromCopy;
   }
 
-  else if (v4 && ([v4 iconURL], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  else if (content && ([content iconURL], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v4 iconURL];
-    v10 = [MOSuggestionAssetUtilities imageFromURL:v9];
+    iconURL = [content iconURL];
+    v10 = [MOSuggestionAssetUtilities imageFromURL:iconURL];
 
     if (v10)
     {
       v11 = [MOSuggestionAssetWorkout alloc];
-      v12 = [v4 activityRings];
-      v13 = [v4 route];
-      v14 = [(MOSuggestionAssetWorkout *)v11 init:v12 route:v13 icon:v10];
+      activityRings = [content activityRings];
+      route2 = [content route];
+      v14 = [(MOSuggestionAssetWorkout *)v11 init:activityRings route:route2 icon:v10];
 
       v15 = [MOSuggestionAsset alloc];
-      v16 = [v3 assetType];
-      v7 = [(MOSuggestionAsset *)v15 init:v14 type:v16 contentClassType:objc_opt_class()];
+      assetType = [fromCopy assetType];
+      v7 = [(MOSuggestionAsset *)v15 init:v14 type:assetType contentClassType:objc_opt_class()];
 
-      v17 = [v3 identifier];
-      [v7 addIdentifier:v17];
+      identifier = [fromCopy identifier];
+      [v7 addIdentifier:identifier];
 
-      v18 = [v3 metadata];
-      [v7 addMetadata:v18];
+      metadata = [fromCopy metadata];
+      [v7 addMetadata:metadata];
 
       v19 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v4 iconURL];
-        v21 = [v20 debugDescription];
+        iconURL2 = [content iconURL];
+        v21 = [iconURL2 debugDescription];
         v25 = 138412290;
         v26 = v21;
         _os_log_impl(&dword_22D8C5000, v19, OS_LOG_TYPE_DEFAULT, "Unwrapping successful, iconURL=%@", &v25, 0xCu);
@@ -333,30 +333,30 @@
   return v7;
 }
 
-+ (id)unwrappedContactPhotoFrom:(id)a3
++ (id)unwrappedContactPhotoFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  if (v4)
+  fromCopy = from;
+  content = [fromCopy content];
+  if (content)
   {
-    v5 = [MOSuggestionAssetUtilities imageFromURL:v4];
+    v5 = [MOSuggestionAssetUtilities imageFromURL:content];
     if (v5)
     {
       v6 = [MOSuggestionAsset alloc];
-      v7 = [v3 assetType];
-      v8 = [(MOSuggestionAsset *)v6 init:v5 type:v7 contentClassType:objc_opt_class()];
+      assetType = [fromCopy assetType];
+      v8 = [(MOSuggestionAsset *)v6 init:v5 type:assetType contentClassType:objc_opt_class()];
 
-      v9 = [v3 identifier];
-      [v8 addIdentifier:v9];
+      identifier = [fromCopy identifier];
+      [v8 addIdentifier:identifier];
 
-      v10 = [v3 metadata];
-      [v8 addMetadata:v10];
+      metadata = [fromCopy metadata];
+      [v8 addMetadata:metadata];
 
       v11 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v4 debugDescription];
+        v12 = [content debugDescription];
         v15 = 138412290;
         v16 = v12;
         _os_log_impl(&dword_22D8C5000, v11, OS_LOG_TYPE_DEFAULT, "Unwrapping successful, photoUrl=%@", &v15, 0xCu);
@@ -368,7 +368,7 @@
       v11 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [MOSuggestionAssetUtilities unwrappedContactPhotoFrom:v4];
+        [MOSuggestionAssetUtilities unwrappedContactPhotoFrom:content];
       }
 
       v8 = 0;
@@ -391,26 +391,26 @@
   return v8;
 }
 
-+ (id)unwrappedStateOfMindFrom:(id)a3
++ (id)unwrappedStateOfMindFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 content];
-  v5 = v4;
-  if (v4)
+  fromCopy = from;
+  content = [fromCopy content];
+  v5 = content;
+  if (content)
   {
-    v6 = [v4 constructedImage];
-    if (v6)
+    constructedImage = [content constructedImage];
+    if (constructedImage)
     {
       v7 = [MOSuggestionAsset alloc];
-      v8 = [v3 assetType];
-      v9 = [(MOSuggestionAsset *)v7 init:v6 type:v8 contentClassType:objc_opt_class()];
+      assetType = [fromCopy assetType];
+      v9 = [(MOSuggestionAsset *)v7 init:constructedImage type:assetType contentClassType:objc_opt_class()];
 
-      v10 = [v3 identifier];
-      [v9 addIdentifier:v10];
+      identifier = [fromCopy identifier];
+      [v9 addIdentifier:identifier];
 
-      v11 = [v3 metadata];
-      [v9 addMetadata:v11];
+      metadata = [fromCopy metadata];
+      [v9 addMetadata:metadata];
 
       v12 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -436,8 +436,8 @@
 
   else
   {
-    v6 = _mo_log_facility_get_os_log(MOLogFacilityUIService);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    constructedImage = _mo_log_facility_get_os_log(MOLogFacilityUIService);
+    if (os_log_type_enabled(constructedImage, OS_LOG_TYPE_ERROR))
     {
       +[MOSuggestionAssetUtilities unwrappedMotionActivityFrom:];
     }

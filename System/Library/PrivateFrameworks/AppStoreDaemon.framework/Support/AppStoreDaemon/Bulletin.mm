@@ -1,5 +1,5 @@
 @interface Bulletin
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (Bulletin)init;
 @end
 
@@ -17,27 +17,27 @@
     v2->_creationDate = v3;
 
     v5 = +[NSUUID UUID];
-    v6 = [v5 UUIDString];
+    uUIDString = [v5 UUIDString];
     recordID = v2->_recordID;
-    v2->_recordID = v6;
+    v2->_recordID = uUIDString;
   }
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     if (self)
     {
       recordID = self->_recordID;
-      if (v4)
+      if (equalCopy)
       {
 LABEL_5:
-        v8 = v4[7];
+        v8 = equalCopy[7];
 LABEL_6:
         v9 = recordID;
         v6 = [(NSString *)v9 isEqualToString:v8];
@@ -49,7 +49,7 @@ LABEL_6:
     else
     {
       recordID = 0;
-      if (v4)
+      if (equalCopy)
       {
         goto LABEL_5;
       }

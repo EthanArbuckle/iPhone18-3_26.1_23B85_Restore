@@ -1,44 +1,44 @@
 @interface _UIKeyboardAnimatorAnimationStyleController
-- (_UIKeyboardAnimatorAnimationStyleController)initWithAnimator:(id)a3;
-- (id)prepareAnimationWithHost:(id)a3 startPlacement:(id)a4 endPlacement:(id)a5;
-- (void)completeAnimationWithHost:(id)a3 context:(id)a4;
+- (_UIKeyboardAnimatorAnimationStyleController)initWithAnimator:(id)animator;
+- (id)prepareAnimationWithHost:(id)host startPlacement:(id)placement endPlacement:(id)endPlacement;
+- (void)completeAnimationWithHost:(id)host context:(id)context;
 @end
 
 @implementation _UIKeyboardAnimatorAnimationStyleController
 
-- (_UIKeyboardAnimatorAnimationStyleController)initWithAnimator:(id)a3
+- (_UIKeyboardAnimatorAnimationStyleController)initWithAnimator:(id)animator
 {
-  v5 = a3;
+  animatorCopy = animator;
   v9.receiver = self;
   v9.super_class = _UIKeyboardAnimatorAnimationStyleController;
   v6 = [(_UIKeyboardAnimatorAnimationStyleController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animator, a3);
+    objc_storeStrong(&v6->_animator, animator);
   }
 
   return v7;
 }
 
-- (id)prepareAnimationWithHost:(id)a3 startPlacement:(id)a4 endPlacement:(id)a5
+- (id)prepareAnimationWithHost:(id)host startPlacement:(id)placement endPlacement:(id)endPlacement
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_UIKeyboardAnimatorAnimationStyleControllerContext alloc] initWithHost:v10 startPlacement:v9 endPlacement:v8];
+  endPlacementCopy = endPlacement;
+  placementCopy = placement;
+  hostCopy = host;
+  v11 = [[_UIKeyboardAnimatorAnimationStyleControllerContext alloc] initWithHost:hostCopy startPlacement:placementCopy endPlacement:endPlacementCopy];
 
   [(_UIKeyboardAnimator *)self->_animator prepareForAnimationWithState:v11];
 
   return v11;
 }
 
-- (void)completeAnimationWithHost:(id)a3 context:(id)a4
+- (void)completeAnimationWithHost:(id)host context:(id)context
 {
   animator = self->_animator;
-  v5 = a4;
-  [(_UIKeyboardAnimator *)animator completeAnimationWithState:v5];
-  [v5 complete];
+  contextCopy = context;
+  [(_UIKeyboardAnimator *)animator completeAnimationWithState:contextCopy];
+  [contextCopy complete];
 }
 
 @end

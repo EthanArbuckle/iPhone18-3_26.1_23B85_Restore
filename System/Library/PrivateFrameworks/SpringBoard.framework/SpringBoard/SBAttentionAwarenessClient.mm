@@ -2,17 +2,17 @@
 - (AWAttentionAwarenessConfiguration)configuration;
 - (SBAttentionAwarenessClient)init;
 - (SBAttentionAwarenessClientDelegate)delegate;
-- (void)_handleAttentionAwarenessEvent:(id)a3;
+- (void)_handleAttentionAwarenessEvent:(id)event;
 - (void)_resetAttentionLostTimeout;
 - (void)_resume;
 - (void)_suspend;
 - (void)identifier;
 - (void)invalidate;
-- (void)setAttentionAwarenessClient:(uint64_t)a1;
-- (void)setConfiguration:(id)a3 shouldReset:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIdentifier:(void *)a1;
-- (void)setQueue:(uint64_t)a1;
+- (void)setAttentionAwarenessClient:(uint64_t)client;
+- (void)setConfiguration:(id)configuration shouldReset:(BOOL)reset;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIdentifier:(void *)identifier;
+- (void)setQueue:(uint64_t)queue;
 @end
 
 @implementation SBAttentionAwarenessClient
@@ -227,12 +227,12 @@ void __40__SBAttentionAwarenessClient_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3)
+    self->_enabled = enabled;
+    if (enabled)
     {
       [(SBAttentionAwarenessClient *)self _resume];
     }
@@ -266,29 +266,29 @@ void __40__SBAttentionAwarenessClient_invalidate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setConfiguration:(id)a3 shouldReset:(BOOL)a4
+- (void)setConfiguration:(id)configuration shouldReset:(BOOL)reset
 {
-  v6 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__SBAttentionAwarenessClient_setConfiguration_shouldReset___block_invoke;
   block[3] = &unk_2783A97D8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = configurationCopy;
+  resetCopy = reset;
+  v8 = configurationCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_handleAttentionAwarenessEvent:(id)a3
+- (void)_handleAttentionAwarenessEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([v4 eventMask])
+  if ([eventCopy eventMask])
   {
     v7 = objc_opt_class();
-    v8 = v4;
+    v8 = eventCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -338,7 +338,7 @@ void __40__SBAttentionAwarenessClient_invalidate__block_invoke(uint64_t a1)
 
       if (v17)
       {
-        v18 = [v17 unsignedIntegerValue];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
       }
 
       else
@@ -349,11 +349,11 @@ void __40__SBAttentionAwarenessClient_invalidate__block_invoke(uint64_t a1)
           [SBAttentionAwarenessClient _handleAttentionAwarenessEvent:v10];
         }
 
-        v18 = 0;
+        unsignedIntegerValue = 0;
       }
 
-      v20 = [v10 associatedObject];
-      [WeakRetained client:self attentionLostTimeoutDidExpire:v18 forConfigurationGeneration:v20 withAssociatedObject:v12];
+      associatedObject = [v10 associatedObject];
+      [WeakRetained client:self attentionLostTimeoutDidExpire:unsignedIntegerValue forConfigurationGeneration:associatedObject withAssociatedObject:v12];
     }
 
     else
@@ -374,7 +374,7 @@ void __40__SBAttentionAwarenessClient_invalidate__block_invoke(uint64_t a1)
       [SBAttentionAwarenessClient _handleAttentionAwarenessEvent:];
     }
 
-    [WeakRetained clientDidResetForUserAttention:self withEvent:v4];
+    [WeakRetained clientDidResetForUserAttention:self withEvent:eventCopy];
   }
 }
 
@@ -406,37 +406,37 @@ uint64_t __59__SBAttentionAwarenessClient_setConfiguration_shouldReset___block_i
   return [v9 setConfiguration:v8 shouldReset:v10];
 }
 
-- (void)setIdentifier:(void *)a1
+- (void)setIdentifier:(void *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    OUTLINED_FUNCTION_4_10(a1, newValue);
+    OUTLINED_FUNCTION_4_10(identifier, newValue);
   }
 }
 
 - (void)identifier
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_3_22(a1, a2);
+    return OUTLINED_FUNCTION_3_22(self, a2);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setAttentionAwarenessClient:(uint64_t)a1
+- (void)setAttentionAwarenessClient:(uint64_t)client
 {
-  if (a1)
+  if (client)
   {
-    OUTLINED_FUNCTION_7_0(a1, a2);
+    OUTLINED_FUNCTION_7_0(client, a2);
   }
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    OUTLINED_FUNCTION_6_7(a1, a2);
+    OUTLINED_FUNCTION_6_7(queue, a2);
   }
 }
 

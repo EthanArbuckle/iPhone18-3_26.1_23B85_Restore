@@ -1,19 +1,19 @@
 @interface SHEventSignalScheduler
-- (void)sendEventSignal:(id)a3;
+- (void)sendEventSignal:(id)signal;
 @end
 
 @implementation SHEventSignalScheduler
 
-- (void)sendEventSignal:(id)a3
+- (void)sendEventSignal:(id)signal
 {
-  v3 = a3;
+  signalCopy = signal;
   v4 = BiomeLibrary();
-  v5 = [v4 Discoverability];
-  v6 = [v5 Signals];
-  v7 = [v6 source];
+  discoverability = [v4 Discoverability];
+  signals = [discoverability Signals];
+  source = [signals source];
 
-  v8 = [[BMDiscoverabilitySignals alloc] initWithContentIdentifier:v3 context:0 osBuild:0 userInfo:0];
-  [v7 sendEvent:v8];
+  v8 = [[BMDiscoverabilitySignals alloc] initWithContentIdentifier:signalCopy context:0 osBuild:0 userInfo:0];
+  [source sendEvent:v8];
   v9 = sh_log_object();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {

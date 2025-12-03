@@ -1,20 +1,20 @@
 @interface WBSCharacterSetReplacementsContainer
-- (BOOL)isEqual:(id)a3;
-- (WBSCharacterSetReplacementsContainer)initWithReplacementStringsToCharacterSets:(id)a3;
-- (void)enumerateCharacterSetReplacementStringPairsUsingBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSCharacterSetReplacementsContainer)initWithReplacementStringsToCharacterSets:(id)sets;
+- (void)enumerateCharacterSetReplacementStringPairsUsingBlock:(id)block;
 @end
 
 @implementation WBSCharacterSetReplacementsContainer
 
-- (WBSCharacterSetReplacementsContainer)initWithReplacementStringsToCharacterSets:(id)a3
+- (WBSCharacterSetReplacementsContainer)initWithReplacementStringsToCharacterSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   v17.receiver = self;
   v17.super_class = WBSCharacterSetReplacementsContainer;
   v5 = [(WBSCharacterSetReplacementsContainer *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [setsCopy copy];
     replacementStringsToCharacterSets = v5->_replacementStringsToCharacterSets;
     v5->_replacementStringsToCharacterSets = v6;
 
@@ -44,23 +44,23 @@ void __82__WBSCharacterSetReplacementsContainer_initWithReplacementStringsToChar
   [*(a1 + 32) formUnionWithCharacterSet:v4];
 }
 
-- (void)enumerateCharacterSetReplacementStringPairsUsingBlock:(id)a3
+- (void)enumerateCharacterSetReplacementStringPairsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   replacementStringsToCharacterSets = self->_replacementStringsToCharacterSets;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__WBSCharacterSetReplacementsContainer_enumerateCharacterSetReplacementStringPairsUsingBlock___block_invoke;
   v7[3] = &unk_1E7CF3C08;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)replacementStringsToCharacterSets enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -70,7 +70,7 @@ void __82__WBSCharacterSetReplacementsContainer_initWithReplacementStringsToChar
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSDictionary *)self->_replacementStringsToCharacterSets isEqual:v4->_replacementStringsToCharacterSets];
+      v5 = [(NSDictionary *)self->_replacementStringsToCharacterSets isEqual:equalCopy->_replacementStringsToCharacterSets];
     }
 
     else

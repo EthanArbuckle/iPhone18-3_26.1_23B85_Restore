@@ -1,15 +1,15 @@
 @interface IEFlowTester
-+ (id)getTestList:(id)a3;
-+ (id)getTestList:(id)a3 flowId:(id)a4;
-+ (id)runAllTests:(id)a3;
-+ (id)runFileTests:(id)a3;
++ (id)getTestList:(id)list;
++ (id)getTestList:(id)list flowId:(id)id;
++ (id)runAllTests:(id)tests;
++ (id)runFileTests:(id)tests;
 @end
 
 @implementation IEFlowTester
 
-+ (id)runAllTests:(id)a3
++ (id)runAllTests:(id)tests
 {
-  IE_GetTemplateDirFromBundle(a3, v10);
+  IE_GetTemplateDirFromBundle(tests, v10);
   v3 = v11;
   if ((v11 & 0x80u) != 0)
   {
@@ -52,13 +52,13 @@
   return v4;
 }
 
-+ (id)runFileTests:(id)a3
++ (id)runFileTests:(id)tests
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  testsCopy = tests;
+  v4 = testsCopy;
+  if (testsCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [testsCopy UTF8String]);
     siri::intelligence::FindTemplateDir(&__p, v9);
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -92,11 +92,11 @@
   return v6;
 }
 
-+ (id)getTestList:(id)a3 flowId:(id)a4
++ (id)getTestList:(id)list flowId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
-  IE_GetTemplateDirFromBundle(v5, v36);
+  listCopy = list;
+  idCopy = id;
+  IE_GetTemplateDirFromBundle(listCopy, v36);
   v7 = v37;
   if ((v37 & 0x80u) != 0)
   {
@@ -105,19 +105,19 @@
 
   if (v7)
   {
-    v21 = v5;
+    v21 = listCopy;
     v8 = objc_opt_new();
-    if (v6)
+    if (idCopy)
     {
-      v9 = [v6 UTF8String];
+      uTF8String = [idCopy UTF8String];
     }
 
     else
     {
-      v9 = "";
+      uTF8String = "";
     }
 
-    std::string::basic_string[abi:ne200100]<0>(&v34, v9);
+    std::string::basic_string[abi:ne200100]<0>(&v34, uTF8String);
     memset(v33, 0, sizeof(v33));
     siri::intelligence::TestSuite::LoadTests(v33, v36);
     v30 = 0;
@@ -229,7 +229,7 @@
       operator delete(v34);
     }
 
-    v5 = v21;
+    listCopy = v21;
   }
 
   else
@@ -245,13 +245,13 @@
   return v10;
 }
 
-+ (id)getTestList:(id)a3
++ (id)getTestList:(id)list
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  listCopy = list;
+  v4 = listCopy;
+  if (listCopy)
   {
-    std::string::basic_string[abi:ne200100]<0>(&__p, [v3 UTF8String]);
+    std::string::basic_string[abi:ne200100]<0>(&__p, [listCopy UTF8String]);
     siri::intelligence::FindTemplateDir(&__p, v10);
     if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -266,8 +266,8 @@
 
     if (v5)
     {
-      v6 = [v4 UTF8String];
-      std::string::basic_string[abi:ne200100]<0>(&__p, v6);
+      uTF8String = [v4 UTF8String];
+      std::string::basic_string[abi:ne200100]<0>(&__p, uTF8String);
       siri::intelligence::Configuration::GetFlowIdFromPath(&__p);
     }
 

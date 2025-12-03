@@ -1,74 +1,74 @@
 @interface WBSBrowsingAssistantResult
 - (NSArray)allResults;
-- (WBSBrowsingAssistantResult)initWithURL:(id)a3 contentOptions:(unint64_t)a4;
-- (id)_extractDisclaimerFromResult:(id)a3;
-- (id)_extractSummaryFromResult:(id)a3;
+- (WBSBrowsingAssistantResult)initWithURL:(id)l contentOptions:(unint64_t)options;
+- (id)_extractDisclaimerFromResult:(id)result;
+- (id)_extractSummaryFromResult:(id)result;
 - (void)_clearAllRemoteContent;
 - (void)_clearSummaryAndTableOfContents;
-- (void)_setUpTableOfContentsDataUsingResult:(id)a3;
-- (void)_setUpWithContentOptions:(unint64_t)a3;
-- (void)updateForRemoteContentWithOptions:(unint64_t)a3;
-- (void)updateWithSearchResults:(id)a3;
+- (void)_setUpTableOfContentsDataUsingResult:(id)result;
+- (void)_setUpWithContentOptions:(unint64_t)options;
+- (void)updateForRemoteContentWithOptions:(unint64_t)options;
+- (void)updateWithSearchResults:(id)results;
 @end
 
 @implementation WBSBrowsingAssistantResult
 
-- (WBSBrowsingAssistantResult)initWithURL:(id)a3 contentOptions:(unint64_t)a4
+- (WBSBrowsingAssistantResult)initWithURL:(id)l contentOptions:(unint64_t)options
 {
-  v6 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = WBSBrowsingAssistantResult;
   v7 = [(WBSBrowsingAssistantResult *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [lCopy copy];
     pageURL = v7->_pageURL;
     v7->_pageURL = v8;
 
-    [(WBSBrowsingAssistantResult *)v7 _setUpWithContentOptions:a4];
+    [(WBSBrowsingAssistantResult *)v7 _setUpWithContentOptions:options];
     v10 = v7;
   }
 
   return v7;
 }
 
-- (void)_setUpWithContentOptions:(unint64_t)a3
+- (void)_setUpWithContentOptions:(unint64_t)options
 {
   [(WBSBrowsingAssistantResult *)self updateForLocalContentWithOptions:?];
 
-  [(WBSBrowsingAssistantResult *)self updateForRemoteContentWithOptions:a3];
+  [(WBSBrowsingAssistantResult *)self updateForRemoteContentWithOptions:options];
 }
 
-- (void)updateForRemoteContentWithOptions:(unint64_t)a3
+- (void)updateForRemoteContentWithOptions:(unint64_t)options
 {
-  v3 = a3;
-  [(WBSBrowsingAssistantResult *)self _updateContentOptions:a3 inMask:31];
-  if ((v3 & 0x1F) != 0)
+  optionsCopy = options;
+  [(WBSBrowsingAssistantResult *)self _updateContentOptions:options inMask:31];
+  if ((optionsCopy & 0x1F) != 0)
   {
     self->_remoteContentState = 2;
   }
 }
 
-- (id)_extractSummaryFromResult:(id)a3
+- (id)_extractSummaryFromResult:(id)result
 {
-  v4 = [a3 inlineCard];
-  v5 = [v4 cardSections];
-  v6 = [v5 firstObject];
+  inlineCard = [result inlineCard];
+  cardSections = [inlineCard cardSections];
+  firstObject = [cardSections firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 text];
-    v8 = [v7 text_elements];
-    v9 = [v8 firstObject];
+    text = [firstObject text];
+    text_elements = [text text_elements];
+    firstObject2 = [text_elements firstObject];
 
-    v10 = [v9 formatted_text];
-    v11 = [v10 firstObject];
+    formatted_text = [firstObject2 formatted_text];
+    firstObject3 = [formatted_text firstObject];
 
-    if (v11 && ([v11 text], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
+    if (firstObject3 && ([firstObject3 text], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
     {
-      v14 = [v11 text];
-      v15 = [v14 copy];
+      text2 = [firstObject3 text];
+      v15 = [text2 copy];
     }
 
     else
@@ -89,7 +89,7 @@
     v16 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [(WBSBrowsingAssistantResult *)self _extractSummaryFromResult:v16, v6];
+      [(WBSBrowsingAssistantResult *)self _extractSummaryFromResult:v16, firstObject];
     }
 
     [(WBSBrowsingAssistantResult *)self _clearSummaryAndTableOfContents];
@@ -99,25 +99,25 @@
   return v15;
 }
 
-- (id)_extractDisclaimerFromResult:(id)a3
+- (id)_extractDisclaimerFromResult:(id)result
 {
-  v4 = [a3 inlineCard];
-  v5 = [v4 cardSections];
-  v6 = [v5 safari_firstObjectPassingTest:&__block_literal_global_101];
+  inlineCard = [result inlineCard];
+  cardSections = [inlineCard cardSections];
+  v6 = [cardSections safari_firstObjectPassingTest:&__block_literal_global_101];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 text];
-    v9 = [v8 text_elements];
-    v10 = [v9 firstObject];
+    text = [v6 text];
+    text_elements = [text text_elements];
+    firstObject = [text_elements firstObject];
 
-    v11 = [v10 formatted_text];
-    v12 = [v11 firstObject];
+    formatted_text = [firstObject formatted_text];
+    firstObject2 = [formatted_text firstObject];
 
-    if (v12 && ([v12 text], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v14))
+    if (firstObject2 && ([firstObject2 text], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v14))
     {
-      v15 = [v12 text];
-      v16 = [v15 copy];
+      text2 = [firstObject2 text];
+      v16 = [text2 copy];
     }
 
     else
@@ -149,16 +149,16 @@ uint64_t __59__WBSBrowsingAssistantResult__extractDisclaimerFromResult___block_i
   return isKindOfClass & 1;
 }
 
-- (void)_setUpTableOfContentsDataUsingResult:(id)a3
+- (void)_setUpTableOfContentsDataUsingResult:(id)result
 {
-  v4 = [a3 inlineCard];
-  v5 = [v4 cardSections];
-  v6 = [v5 lastObject];
+  inlineCard = [result inlineCard];
+  cardSections = [inlineCard cardSections];
+  lastObject = [cardSections lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_tableOfContentsType = [v6 tableOfContentsType];
+    self->_tableOfContentsType = [lastObject tableOfContentsType];
     tableOfContentsTitles = self->_tableOfContentsTitles;
     v8 = MEMORY[0x1E695E0F0];
     self->_tableOfContentsTitles = MEMORY[0x1E695E0F0];
@@ -169,13 +169,13 @@ uint64_t __59__WBSBrowsingAssistantResult__extractDisclaimerFromResult___block_i
     tableOfContentsTrailingText = self->_tableOfContentsTrailingText;
     self->_tableOfContentsTrailingText = v8;
 
-    v11 = [v6 tableOfContentsItems];
+    tableOfContentsItems = [lastObject tableOfContentsItems];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67__WBSBrowsingAssistantResult__setUpTableOfContentsDataUsingResult___block_invoke;
     v12[3] = &unk_1E7FCA640;
     v12[4] = self;
-    [v11 enumerateObjectsUsingBlock:v12];
+    [tableOfContentsItems enumerateObjectsUsingBlock:v12];
   }
 }
 
@@ -237,12 +237,12 @@ void __67__WBSBrowsingAssistantResult__setUpTableOfContentsDataUsingResult___blo
   *(v21 + 80) = v20;
 }
 
-- (void)updateWithSearchResults:(id)a3
+- (void)updateWithSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   self->_remoteContentState = 4;
-  v12 = v4;
-  if ([v4 count])
+  v12 = resultsCopy;
+  if ([resultsCopy count])
   {
     v5 = [v12 safari_firstObjectPassingTest:&__block_literal_global_13_1];
     if (v5)
@@ -320,12 +320,12 @@ uint64_t __54__WBSBrowsingAssistantResult_updateWithSearchResults___block_invoke
 
 - (NSArray)allResults
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [(NSArray *)v3 safari_addObjectUnlessNil:self->_summaryResult];
-  [(NSArray *)v3 safari_addObjectsFromArrayUnlessNil:self->_entityResults];
-  if ([(NSArray *)v3 count])
+  array = [MEMORY[0x1E695DF70] array];
+  [(NSArray *)array safari_addObjectUnlessNil:self->_summaryResult];
+  [(NSArray *)array safari_addObjectsFromArrayUnlessNil:self->_entityResults];
+  if ([(NSArray *)array count])
   {
-    v4 = v3;
+    v4 = array;
   }
 
   else

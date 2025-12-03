@@ -24,7 +24,7 @@
   v14 = v13;
   v16 = v14;
   v17 = v18;
-  [a1 enumerateAttribute:v12 inRange:a4 options:a5 usingBlock:{a6, v15}];
+  [self enumerateAttribute:v12 inRange:a4 options:a5 usingBlock:{a6, v15}];
 
   _Block_object_dispose(v18, 8);
 }
@@ -37,19 +37,19 @@
   {
     v14 = a4 + ((a5 - 1) & (a6 << 62 >> 63));
     v23 = 0;
-    v15 = [a1 length];
+    v15 = [self length];
     while (1)
     {
       v21 = 0;
       v22 = 0;
       if ((a6 & 0x100000) != 0)
       {
-        [a1 attribute:v12 atIndex:v14 effectiveRange:&v21];
+        [self attribute:v12 atIndex:v14 effectiveRange:&v21];
       }
 
       else
       {
-        [a1 attribute:v12 atIndex:v14 longestEffectiveRange:&v21 inRange:{0, v15}];
+        [self attribute:v12 atIndex:v14 longestEffectiveRange:&v21 inRange:{0, v15}];
       }
       v16 = ;
       v13[2](v13, v16, v21, v22, &v23);
@@ -70,7 +70,7 @@
 
       else
       {
-        v17 = [a1 length];
+        v17 = [self length];
         v18 = v17 - v15 + v21 + v22;
         v19 = a5 - v15 + v17;
         v20 = v17 == v15;
@@ -101,8 +101,8 @@
 
 - (id)itk_attributedStringByReplacingNewlineCharactersWithWhiteSpace
 {
-  v2 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v3 = [a1 itk_attributedStringByReplacingCharactersInSet:v2 withString:@" "];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v3 = [self itk_attributedStringByReplacingCharactersInSet:newlineCharacterSet withString:@" "];
 
   return v3;
 }
@@ -111,25 +111,25 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = a1;
-  v9 = [v8 string];
-  v10 = [v9 rangeOfCharacterFromSet:v6];
+  selfCopy = self;
+  string = [selfCopy string];
+  v10 = [string rangeOfCharacterFromSet:v6];
 
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v8 mutableCopy];
-    v12 = [v11 string];
-    v13 = [v12 rangeOfCharacterFromSet:v6];
+    v11 = [selfCopy mutableCopy];
+    string2 = [v11 string];
+    v13 = [string2 rangeOfCharacterFromSet:v6];
     v15 = v14;
 
     while (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v11 replaceCharactersInRange:v13 withString:{v15, v7}];
-      v16 = [v11 string];
-      v17 = [v16 length] - v13;
+      string3 = [v11 string];
+      v17 = [string3 length] - v13;
 
-      v18 = [v11 string];
-      v13 = [v18 rangeOfCharacterFromSet:v6 options:2 range:{v13, v17}];
+      string4 = [v11 string];
+      v13 = [string4 rangeOfCharacterFromSet:v6 options:2 range:{v13, v17}];
       v15 = v19;
     }
 
@@ -137,11 +137,11 @@
     {
       v20 = [v11 copy];
 
-      v8 = v20;
+      selfCopy = v20;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

@@ -9,7 +9,7 @@
 
 - (int64_t)deviceType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001063D4();
 
   return v3;
@@ -17,7 +17,7 @@
 
 - (BOOL)inStoreDemoMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100106734();
 
   return v3 & 1;
@@ -25,7 +25,7 @@
 
 - (NSDictionary)options
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001067D4();
 
   v3.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
@@ -35,7 +35,7 @@
 
 - (NSString)storeId
 {
-  v2 = self;
+  selfCopy = self;
   sub_100106BD8();
   v4 = v3;
 

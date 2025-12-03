@@ -1,16 +1,16 @@
 @interface _NSAttributeRun
-- (_NSAttributeRun)initWithTextStorage:(id)a3 range:(_NSRange)a4;
+- (_NSAttributeRun)initWithTextStorage:(id)storage range:(_NSRange)range;
 - (_NSRange)range;
 - (void)dealloc;
-- (void)restoreAttributesOfTextStorage:(id)a3;
+- (void)restoreAttributesOfTextStorage:(id)storage;
 @end
 
 @implementation _NSAttributeRun
 
-- (_NSAttributeRun)initWithTextStorage:(id)a3 range:(_NSRange)a4
+- (_NSAttributeRun)initWithTextStorage:(id)storage range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v15 = 0;
   v16 = 0;
   v14.receiver = self;
@@ -27,7 +27,7 @@
       v9 = location;
       do
       {
-        v10 = [a3 attributesAtIndex:v9 longestEffectiveRange:&v15 inRange:{location, length}];
+        v10 = [storage attributesAtIndex:v9 longestEffectiveRange:&v15 inRange:{location, length}];
         v11 = [_NSAttributes alloc];
         v12 = [(_NSAttributes *)v11 initWithAttributes:v10 range:v15, v16];
         [(NSMutableArray *)v8->_attributesArray addObject:v12];
@@ -50,19 +50,19 @@
   [(_NSAttributeRun *)&v3 dealloc];
 }
 
-- (void)restoreAttributesOfTextStorage:(id)a3
+- (void)restoreAttributesOfTextStorage:(id)storage
 {
   v5 = [(NSMutableArray *)self->_attributesArray count];
-  [a3 beginEditing];
+  [storage beginEditing];
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      [-[NSMutableArray objectAtIndex:](self->_attributesArray objectAtIndex:{i), "setAttributesInTextStorage:", a3}];
+      [-[NSMutableArray objectAtIndex:](self->_attributesArray objectAtIndex:{i), "setAttributesInTextStorage:", storage}];
     }
   }
 
-  [a3 endEditing];
+  [storage endEditing];
 }
 
 - (_NSRange)range

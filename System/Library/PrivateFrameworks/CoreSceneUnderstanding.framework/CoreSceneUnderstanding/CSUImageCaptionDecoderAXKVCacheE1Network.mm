@@ -1,5 +1,5 @@
 @interface CSUImageCaptionDecoderAXKVCacheE1Network
-- (BOOL)loadDecoderNetworkfromConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)loadDecoderNetworkfromConfiguration:(id)configuration error:(id *)error;
 - (EspressoTensor)inputTokens;
 - (ModelOutput)predict;
 - (id).cxx_construct;
@@ -13,17 +13,17 @@
 - (vector<float,)positionInput;
 - (vector<float,)scaleInput;
 - (vector<float,)wordProbs;
-- (void)buildNetworkForSequenceLength:(unint64_t)a3 error:(id *)a4;
-- (void)copyInputContextIDs:(const void *)a3 EncoderFeatures:(const void *)a4 KVCache:(const void *)a5 MaskPosition:(unint64_t)a6;
-- (void)copyInputState:(const void *)a3;
+- (void)buildNetworkForSequenceLength:(unint64_t)length error:(id *)error;
+- (void)copyInputContextIDs:(const void *)ds EncoderFeatures:(const void *)features KVCache:(const void *)cache MaskPosition:(unint64_t)position;
+- (void)copyInputState:(const void *)state;
 @end
 
 @implementation CSUImageCaptionDecoderAXKVCacheE1Network
 
-- (BOOL)loadDecoderNetworkfromConfiguration:(id)a3 error:(id *)a4
+- (BOOL)loadDecoderNetworkfromConfiguration:(id)configuration error:(id *)error
 {
-  v4 = a3;
-  v9 = objc_msgSend_decoderNetworkPath(v4, v5, v6, v7, v8);
+  configurationCopy = configuration;
+  v9 = objc_msgSend_decoderNetworkPath(configurationCopy, v5, v6, v7, v8);
   v10 = v9;
   v15 = objc_msgSend_UTF8String(v10, v11, v12, v13, v14);
   v16 = strlen(v15);
@@ -40,7 +40,7 @@
 
       *(&__dst + v17) = 0;
 
-      objc_msgSend_espressoExecutionEngine(v4, v18, v19, v20, v21);
+      objc_msgSend_espressoExecutionEngine(configurationCopy, v18, v19, v20, v21);
       operator new();
     }
 
@@ -50,7 +50,7 @@
   sub_1AC060A04();
 }
 
-- (void)buildNetworkForSequenceLength:(unint64_t)a3 error:(id *)a4
+- (void)buildNetworkForSequenceLength:(unint64_t)length error:(id *)error
 {
   v5 = *MEMORY[0x1E69E9840];
   v4 = *(*(self->_decoderNet.__ptr_ + 1) + 24);
@@ -58,7 +58,7 @@
   operator new();
 }
 
-- (void)copyInputContextIDs:(const void *)a3 EncoderFeatures:(const void *)a4 KVCache:(const void *)a5 MaskPosition:(unint64_t)a6
+- (void)copyInputContextIDs:(const void *)ds EncoderFeatures:(const void *)features KVCache:(const void *)cache MaskPosition:(unint64_t)position
 {
   memset(v32, 0, sizeof(v32));
   v33 = 1065353216;
@@ -67,14 +67,14 @@
   v29[0] = __p;
   v10 = sub_1AC0CF398(v32, __p);
   v11 = v10;
-  *(v10 + 12) = *(a4 + 2);
-  if (v10 + 5 != a4)
+  *(v10 + 12) = *(features + 2);
+  if (v10 + 5 != features)
   {
-    sub_1AC06A3B8(v10 + 7, *(a4 + 2), *(a4 + 3), (*(a4 + 3) - *(a4 + 2)) >> 3);
+    sub_1AC06A3B8(v10 + 7, *(features + 2), *(features + 3), (*(features + 3) - *(features + 2)) >> 3);
   }
 
-  v13 = *(a4 + 5);
-  v12 = *(a4 + 6);
+  v13 = *(features + 5);
+  v12 = *(features + 6);
   if (v12)
   {
     atomic_fetch_add_explicit(v12 + 1, 1uLL, memory_order_relaxed);
@@ -90,8 +90,8 @@
     if ((v31 & 0x80000000) == 0)
     {
 LABEL_8:
-      v15 = a6 + 1;
-      if (a6 == -1)
+      v15 = position + 1;
+      if (position == -1)
       {
         goto LABEL_9;
       }
@@ -106,19 +106,19 @@ LABEL_8:
   }
 
   operator delete(*__p);
-  v15 = a6 + 1;
-  if (a6 == -1)
+  v15 = position + 1;
+  if (position == -1)
   {
 LABEL_9:
     MEMORY[0] = 0;
-    v16 = *a3;
-    if (*(a3 + 1) == *a3)
+    v16 = *ds;
+    if (*(ds + 1) == *ds)
     {
       goto LABEL_21;
     }
 
-    v17 = v16 + a6;
-    v18 = 4 * a6 - 4;
+    v17 = v16 + position;
+    v18 = 4 * position - 4;
     if (v18 >= 0x1C)
     {
       v21 = (v18 >> 2) + 1;
@@ -154,7 +154,7 @@ LABEL_21:
     else
     {
       v19 = 4;
-      v20 = *a3;
+      v20 = *ds;
     }
 
     do
@@ -177,9 +177,9 @@ LABEL_13:
   sub_1AC060AAC();
 }
 
-- (void)copyInputState:(const void *)a3
+- (void)copyInputState:(const void *)state
 {
-  if (!*a3)
+  if (!*state)
   {
     v46 = sub_1AC090E50();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
@@ -191,7 +191,7 @@ LABEL_13:
     return;
   }
 
-  sub_1AC0CB4A4(&v58, *a3);
+  sub_1AC0CB4A4(&v58, *state);
   v4 = v59;
   if (!v59)
   {

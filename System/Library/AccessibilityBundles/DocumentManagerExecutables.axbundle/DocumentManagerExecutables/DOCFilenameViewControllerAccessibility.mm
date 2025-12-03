@@ -1,18 +1,18 @@
 @interface DOCFilenameViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation DOCFilenameViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCFilenameViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCFilenameViewController" hasInstanceMethod:@"filenameView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCFilenameViewController" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCFilenameView" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCFilenameViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCFilenameViewController" hasInstanceMethod:@"filenameView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCFilenameViewController" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCFilenameView" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

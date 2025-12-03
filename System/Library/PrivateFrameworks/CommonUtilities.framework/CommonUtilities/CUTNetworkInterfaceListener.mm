@@ -1,13 +1,13 @@
 @interface CUTNetworkInterfaceListener
 + (id)sharedInstance;
 - (CUTNetworkInterfaceListener)init;
-- (void)_handleNetworkChange:(id)a3;
-- (void)_notifyDelegatesOfAddressChange:(id)a3 isIPv6:(BOOL)a4;
-- (void)_notifyDelegatesOfCellChange:(int)a3;
-- (void)_notifyDelegatesOfWifiChange:(int)a3;
-- (void)addDelegate:(id)a3;
+- (void)_handleNetworkChange:(id)change;
+- (void)_notifyDelegatesOfAddressChange:(id)change isIPv6:(BOOL)pv6;
+- (void)_notifyDelegatesOfCellChange:(int)change;
+- (void)_notifyDelegatesOfWifiChange:(int)change;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation CUTNetworkInterfaceListener
@@ -86,14 +86,14 @@
   [(CUTNetworkInterfaceListener *)&v3 dealloc];
 }
 
-- (void)_handleNetworkChange:(id)a3
+- (void)_handleNetworkChange:(id)change
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = change;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
@@ -164,7 +164,7 @@ LABEL_12:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDelegatesOfWifiChange:(int)a3
+- (void)_notifyDelegatesOfWifiChange:(int)change
 {
   delegateQueue = self->_delegateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -172,11 +172,11 @@ LABEL_12:
   v4[2] = sub_1B232664C;
   v4[3] = &unk_1E7B20D20;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(delegateQueue, v4);
 }
 
-- (void)_notifyDelegatesOfCellChange:(int)a3
+- (void)_notifyDelegatesOfCellChange:(int)change
 {
   delegateQueue = self->_delegateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -184,50 +184,50 @@ LABEL_12:
   v4[2] = sub_1B2326800;
   v4[3] = &unk_1E7B20D20;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(delegateQueue, v4);
 }
 
-- (void)_notifyDelegatesOfAddressChange:(id)a3 isIPv6:(BOOL)a4
+- (void)_notifyDelegatesOfAddressChange:(id)change isIPv6:(BOOL)pv6
 {
-  v6 = a3;
+  changeCopy = change;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1B23269E4;
   block[3] = &unk_1E7B20D48;
-  v11 = a4;
+  pv6Copy = pv6;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = changeCopy;
+  v8 = changeCopy;
   dispatch_async(delegateQueue, block);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1B2326BF8;
   v7[3] = &unk_1E7B20D70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateQueue, v7);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1B2326D14;
   v7[3] = &unk_1E7B20D70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(delegateQueue, v7);
 }
 

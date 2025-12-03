@@ -1,23 +1,23 @@
 @interface PUSlideshowViewModel
-- (PUSlideshowViewModel)initWithAssetCollection:(id)a3;
+- (PUSlideshowViewModel)initWithAssetCollection:(id)collection;
 - (id)currentChange;
 - (void)dealloc;
 - (void)dismissSlideshowIfLocked;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)registerChangeObserver:(id)a3;
-- (void)setCurrentState:(int64_t)a3;
-- (void)setWantsChromeVisible:(BOOL)a3 changeReason:(int64_t)a4;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)registerChangeObserver:(id)observer;
+- (void)setCurrentState:(int64_t)state;
+- (void)setWantsChromeVisible:(BOOL)visible changeReason:(int64_t)reason;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PUSlideshowViewModel
 
 - (void)dismissSlideshowIfLocked
 {
-  v3 = [(PUSlideshowViewModel *)self privacyController];
-  v4 = [v3 isLocked];
+  privacyController = [(PUSlideshowViewModel *)self privacyController];
+  isLocked = [privacyController isLocked];
 
-  if (v4)
+  if (isLocked)
   {
     v5 = PLContentPrivacyUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -35,20 +35,20 @@
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PrivacyControllerObservationContext_82779 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PrivacyControllerObservationContext_82779 != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUSlideshowViewModel.m" lineNumber:113 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUSlideshowViewModel.m" lineNumber:113 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v12, &location);
@@ -64,47 +64,47 @@ void __53__PUSlideshowViewModel_observable_didChange_context___block_invoke(uint
   [WeakRetained dismissSlideshowIfLocked];
 }
 
-- (void)setWantsChromeVisible:(BOOL)a3 changeReason:(int64_t)a4
+- (void)setWantsChromeVisible:(BOOL)visible changeReason:(int64_t)reason
 {
-  if (self->_wantsChromeVisible != a3)
+  if (self->_wantsChromeVisible != visible)
   {
-    self->_wantsChromeVisible = a3;
-    v5 = [(PUSlideshowViewModel *)self currentChange];
-    [v5 _setWantsChromeVisibleDidChange:1];
+    self->_wantsChromeVisible = visible;
+    currentChange = [(PUSlideshowViewModel *)self currentChange];
+    [currentChange _setWantsChromeVisibleDidChange:1];
   }
 }
 
-- (void)setCurrentState:(int64_t)a3
+- (void)setCurrentState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
-    v4 = [(PUSlideshowViewModel *)self currentChange];
-    [v4 _setCurrentStateDidChange:1];
+    self->_currentState = state;
+    currentChange = [(PUSlideshowViewModel *)self currentChange];
+    [currentChange _setCurrentStateDidChange:1];
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUSlideshowViewModel;
-  [(PUViewModel *)&v3 unregisterChangeObserver:a3];
+  [(PUViewModel *)&v3 unregisterChangeObserver:observer];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUSlideshowViewModel;
-  [(PUViewModel *)&v3 registerChangeObserver:a3];
+  [(PUViewModel *)&v3 registerChangeObserver:observer];
 }
 
 - (id)currentChange
 {
   v4.receiver = self;
   v4.super_class = PUSlideshowViewModel;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
 - (void)dealloc
@@ -115,15 +115,15 @@ void __53__PUSlideshowViewModel_observable_didChange_context___block_invoke(uint
   [(PUSlideshowViewModel *)&v3 dealloc];
 }
 
-- (PUSlideshowViewModel)initWithAssetCollection:(id)a3
+- (PUSlideshowViewModel)initWithAssetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = PUSlideshowViewModel;
   v5 = [(PUViewModel *)&v11 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69C33E8] privacyControllerForCollection:v4];
+    v6 = [MEMORY[0x1E69C33E8] privacyControllerForCollection:collectionCopy];
     privacyController = v5->_privacyController;
     v5->_privacyController = v6;
 

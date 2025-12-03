@@ -1,41 +1,41 @@
 @interface NLXSchemaCDMClientSetupFailed
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMClientSetupFailed)initWithDictionary:(id)a3;
-- (NLXSchemaCDMClientSetupFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMClientSetupFailed)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMClientSetupFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasErrorCode:(BOOL)a3;
-- (void)setHasErrorDomain:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasErrorCode:(BOOL)code;
+- (void)setHasErrorDomain:(BOOL)domain;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMClientSetupFailed
 
-- (NLXSchemaCDMClientSetupFailed)initWithDictionary:(id)a3
+- (NLXSchemaCDMClientSetupFailed)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NLXSchemaCDMClientSetupFailed;
   v5 = [(NLXSchemaCDMClientSetupFailed *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMClientSetupFailed setReason:](v5, "setReason:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"errorDomain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"errorDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLXSchemaCDMClientSetupFailed setErrorDomain:](v5, "setErrorDomain:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMClientSetupFailed)initWithJSON:(id)a3
+- (NLXSchemaCDMClientSetupFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMClientSetupFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMClientSetupFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMClientSetupFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[NLXSchemaCDMClientSetupFailed errorCode](self, "errorCode")}];
-    [v3 setObject:v5 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorCode"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -112,7 +112,7 @@ LABEL_12:
         v10 = off_1E78DB7C0[v9];
       }
 
-      [v3 setObject:v10 forKeyedSubscript:@"reason"];
+      [dictionary setObject:v10 forKeyedSubscript:@"reason"];
       goto LABEL_16;
     }
   }
@@ -122,14 +122,14 @@ LABEL_12:
     goto LABEL_3;
   }
 
-  v6 = [(NLXSchemaCDMClientSetupFailed *)self errorDomain];
+  errorDomain = [(NLXSchemaCDMClientSetupFailed *)self errorDomain];
   v7 = @"CDMCLIENTSETUPERRORDOMAIN_UNKNOWN";
-  if (v6 == 1)
+  if (errorDomain == 1)
   {
     v7 = @"CDMCLIENTSETUPERRORDOMAIN_FOUNDATION_CLIENT";
   }
 
-  if (v6 == 2)
+  if (errorDomain == 2)
   {
     v8 = @"CDMCLIENTSETUPERRORDOMAIN_SERVICE_CENTER";
   }
@@ -139,16 +139,16 @@ LABEL_12:
     v8 = v7;
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"errorDomain"];
+  [dictionary setObject:v8 forKeyedSubscript:@"errorDomain"];
   if (*&self->_has)
   {
     goto LABEL_12;
   }
 
 LABEL_16:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -191,16 +191,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -209,13 +209,13 @@ LABEL_4:
   if (*&has)
   {
     reason = self->_reason;
-    if (reason != [v4 reason])
+    if (reason != [equalCopy reason])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -227,10 +227,10 @@ LABEL_4:
   if (v8)
   {
     errorDomain = self->_errorDomain;
-    if (errorDomain == [v4 errorDomain])
+    if (errorDomain == [equalCopy errorDomain])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_10;
     }
 
@@ -249,7 +249,7 @@ LABEL_10:
   if (v10)
   {
     errorCode = self->_errorCode;
-    if (errorCode != [v4 errorCode])
+    if (errorCode != [equalCopy errorCode])
     {
       goto LABEL_14;
     }
@@ -261,15 +261,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -289,20 +289,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasErrorCode:(BOOL)a3
+- (void)setHasErrorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -315,9 +315,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasErrorDomain:(BOOL)a3
+- (void)setHasErrorDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2;
   }

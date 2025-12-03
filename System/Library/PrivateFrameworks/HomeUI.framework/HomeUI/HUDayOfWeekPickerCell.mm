@@ -1,45 +1,45 @@
 @interface HUDayOfWeekPickerCell
-- (HUDayOfWeekPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUDayOfWeekPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUDayOfWeekPickerCellDelegate)delegate;
 - (void)_setupConstraints;
-- (void)_toggleWeekdayButton:(id)a3;
+- (void)_toggleWeekdayButton:(id)button;
 - (void)_updateSelectedDays;
-- (void)setSelectedRecurrences:(id)a3;
+- (void)setSelectedRecurrences:(id)recurrences;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUDayOfWeekPickerCell
 
-- (HUDayOfWeekPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUDayOfWeekPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v23.receiver = self;
   v23.super_class = HUDayOfWeekPickerCell;
-  v4 = [(HUDayOfWeekPickerCell *)&v23 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUDayOfWeekPickerCell *)&v23 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D75A68]);
     [(HUDayOfWeekPickerCell *)v4 setButtonStackView:v5];
 
-    v6 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonStackView = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
+    [buttonStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
-    [v7 setSpacing:14.0];
+    buttonStackView2 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
+    [buttonStackView2 setSpacing:14.0];
 
-    v8 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
-    [v8 setDistribution:1];
+    buttonStackView3 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
+    [buttonStackView3 setDistribution:1];
 
-    v9 = [(HUDayOfWeekPickerCell *)v4 contentView];
-    v10 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
-    [v9 addSubview:v10];
+    contentView = [(HUDayOfWeekPickerCell *)v4 contentView];
+    buttonStackView4 = [(HUDayOfWeekPickerCell *)v4 buttonStackView];
+    [contentView addSubview:buttonStackView4];
 
     v11 = objc_opt_new();
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [v12 veryShortWeekdaySymbols];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    veryShortWeekdaySymbols = [currentCalendar veryShortWeekdaySymbols];
 
-    v14 = [MEMORY[0x277CBEA80] currentCalendar];
-    v15 = [v14 firstWeekday];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    firstWeekday = [currentCalendar2 firstWeekday];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -47,10 +47,10 @@
     v19[3] = &unk_277DB71F8;
     v16 = v4;
     v21 = v11;
-    v22 = v15;
+    v22 = firstWeekday;
     v20 = v16;
     v17 = v11;
-    [v13 enumerateObjectsUsingBlock:v19];
+    [veryShortWeekdaySymbols enumerateObjectsUsingBlock:v19];
     [(HUDayOfWeekPickerCell *)v16 setButtons:v17];
     [(HUDayOfWeekPickerCell *)v16 _setupConstraints];
     [(HUDayOfWeekPickerCell *)v16 _updateSelectedDays];
@@ -92,11 +92,11 @@ void __55__HUDayOfWeekPickerCell_initWithStyle_reuseIdentifier___block_invoke(ui
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = HUDayOfWeekPickerCell;
-  [(HUDayOfWeekPickerCell *)&v4 traitCollectionDidChange:a3];
+  [(HUDayOfWeekPickerCell *)&v4 traitCollectionDidChange:change];
   [(HUDayOfWeekPickerCell *)self _updateSelectedDays];
 }
 
@@ -108,10 +108,10 @@ void __55__HUDayOfWeekPickerCell_initWithStyle_reuseIdentifier___block_invoke(ui
   [(HUDayOfWeekPickerCell *)self _updateSelectedDays];
 }
 
-- (void)setSelectedRecurrences:(id)a3
+- (void)setSelectedRecurrences:(id)recurrences
 {
-  v4 = a3;
-  if ([(NSSet *)v4 na_any:&__block_literal_global])
+  recurrencesCopy = recurrences;
+  if ([(NSSet *)recurrencesCopy na_any:&__block_literal_global])
   {
     v13[0] = 0;
     v13[1] = v13;
@@ -119,8 +119,8 @@ void __55__HUDayOfWeekPickerCell_initWithStyle_reuseIdentifier___block_invoke(ui
     v13[3] = 1;
     v5 = MEMORY[0x277CBEB98];
     v6 = MEMORY[0x277CBEA60];
-    v7 = [(HUDayOfWeekPickerCell *)self buttons];
-    v8 = [v7 count];
+    buttons = [(HUDayOfWeekPickerCell *)self buttons];
+    v8 = [buttons count];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __48__HUDayOfWeekPickerCell_setSelectedRecurrences___block_invoke_2;
@@ -130,11 +130,11 @@ void __55__HUDayOfWeekPickerCell_initWithStyle_reuseIdentifier___block_invoke(ui
     v10 = [v5 setWithArray:v9];
 
     _Block_object_dispose(v13, 8);
-    v4 = v10;
+    recurrencesCopy = v10;
   }
 
   selectedRecurrences = self->_selectedRecurrences;
-  self->_selectedRecurrences = v4;
+  self->_selectedRecurrences = recurrencesCopy;
 
   [(HUDayOfWeekPickerCell *)self _updateSelectedDays];
 }
@@ -150,8 +150,8 @@ id __48__HUDayOfWeekPickerCell_setSelectedRecurrences___block_invoke_2(uint64_t 
 - (void)_updateSelectedDays
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HUDayOfWeekPickerCell *)self selectedRecurrences];
-  v4 = [v3 na_map:&__block_literal_global_20];
+  selectedRecurrences = [(HUDayOfWeekPickerCell *)self selectedRecurrences];
+  v4 = [selectedRecurrences na_map:&__block_literal_global_20];
 
   v19 = 0u;
   v20 = 0u;
@@ -176,8 +176,8 @@ id __48__HUDayOfWeekPickerCell_setSelectedRecurrences___block_invoke_2(uint64_t 
         v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "tag")}];
         [v9 setSelected:{objc_msgSend(v4, "containsObject:", v10)}];
 
-        v11 = [(HUDayOfWeekPickerCell *)self traitCollection];
-        if ([v11 userInterfaceStyle] == 2)
+        traitCollection = [(HUDayOfWeekPickerCell *)self traitCollection];
+        if ([traitCollection userInterfaceStyle] == 2)
         {
           [MEMORY[0x277D75348] colorWithWhite:0.15 alpha:1.0];
         }
@@ -190,16 +190,16 @@ id __48__HUDayOfWeekPickerCell_setSelectedRecurrences___block_invoke_2(uint64_t 
 
         if ([v9 isSelected])
         {
-          v13 = v12;
+          tintColor = v12;
         }
 
         else
         {
-          v13 = [(HUDayOfWeekPickerCell *)self tintColor];
+          tintColor = [(HUDayOfWeekPickerCell *)self tintColor];
         }
 
-        v14 = v13;
-        [v9 setTitleColor:v13 forState:0];
+        v14 = tintColor;
+        [v9 setTitleColor:tintColor forState:0];
         if ([v9 isSelected])
         {
           [(HUDayOfWeekPickerCell *)self tintColor];
@@ -236,24 +236,24 @@ id __44__HUDayOfWeekPickerCell__updateSelectedDays__block_invoke(uint64_t a1, vo
   return v3;
 }
 
-- (void)_toggleWeekdayButton:(id)a3
+- (void)_toggleWeekdayButton:(id)button
 {
-  v4 = a3;
-  if ([v4 tag] <= 0)
+  buttonCopy = button;
+  if ([buttonCopy tag] <= 0)
   {
-    NSLog(&cfstr_ButtonTagWasNo.isa, v4);
+    NSLog(&cfstr_ButtonTagWasNo.isa, buttonCopy);
   }
 
   else
   {
-    v5 = [v4 tag];
-    v6 = [v4 isSelected];
+    v5 = [buttonCopy tag];
+    isSelected = [buttonCopy isSelected];
     v7 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v7 setWeekday:v5];
-    v8 = [(HUDayOfWeekPickerCell *)self selectedRecurrences];
-    v9 = [v8 mutableCopy];
+    selectedRecurrences = [(HUDayOfWeekPickerCell *)self selectedRecurrences];
+    v9 = [selectedRecurrences mutableCopy];
 
-    if (v6)
+    if (isSelected)
     {
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -275,22 +275,22 @@ id __44__HUDayOfWeekPickerCell__updateSelectedDays__block_invoke(uint64_t a1, vo
     }
 
     [(HUDayOfWeekPickerCell *)self setSelectedRecurrences:v9];
-    v11 = [(HUDayOfWeekPickerCell *)self delegate];
-    v12 = [(HUDayOfWeekPickerCell *)self selectedRecurrences];
-    [v11 dayOfWeekPickerCell:self didChangeSelectedRecurrences:v12];
+    delegate = [(HUDayOfWeekPickerCell *)self delegate];
+    selectedRecurrences2 = [(HUDayOfWeekPickerCell *)self selectedRecurrences];
+    [delegate dayOfWeekPickerCell:self didChangeSelectedRecurrences:selectedRecurrences2];
   }
 }
 
 - (void)_setupConstraints
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [(HUDayOfWeekPickerCell *)self buttons];
-  v5 = [v4 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  buttons = [(HUDayOfWeekPickerCell *)self buttons];
+  v5 = [buttons countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v5)
   {
     v6 = v5;
@@ -301,61 +301,61 @@ id __44__HUDayOfWeekPickerCell__updateSelectedDays__block_invoke(uint64_t a1, vo
       {
         if (*v41 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttons);
         }
 
         v9 = *(*(&v40 + 1) + 8 * i);
-        v10 = [v9 widthAnchor];
-        v11 = [v10 constraintEqualToConstant:48.0];
+        widthAnchor = [v9 widthAnchor];
+        v11 = [widthAnchor constraintEqualToConstant:48.0];
 
         LODWORD(v12) = 1144733696;
         [v11 setPriority:v12];
-        [v3 addObject:v11];
-        v13 = [v9 heightAnchor];
-        v14 = [v9 widthAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
-        [v3 addObject:v15];
+        [array addObject:v11];
+        heightAnchor = [v9 heightAnchor];
+        widthAnchor2 = [v9 widthAnchor];
+        v15 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
+        [array addObject:v15];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v6 = [buttons countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v6);
   }
 
-  v16 = [(HUDayOfWeekPickerCell *)self buttonStackView];
-  v17 = [v16 topAnchor];
-  v18 = [(HUDayOfWeekPickerCell *)self contentView];
-  v19 = [v18 layoutMarginsGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20];
-  [v3 addObject:v21];
+  buttonStackView = [(HUDayOfWeekPickerCell *)self buttonStackView];
+  topAnchor = [buttonStackView topAnchor];
+  contentView = [(HUDayOfWeekPickerCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v21];
 
-  v22 = [(HUDayOfWeekPickerCell *)self buttonStackView];
-  v23 = [v22 bottomAnchor];
-  v24 = [(HUDayOfWeekPickerCell *)self contentView];
-  v25 = [v24 layoutMarginsGuide];
-  v26 = [v25 bottomAnchor];
-  v27 = [v23 constraintEqualToAnchor:v26];
-  [v3 addObject:v27];
+  buttonStackView2 = [(HUDayOfWeekPickerCell *)self buttonStackView];
+  bottomAnchor = [buttonStackView2 bottomAnchor];
+  contentView2 = [(HUDayOfWeekPickerCell *)self contentView];
+  layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v27];
 
-  v28 = [(HUDayOfWeekPickerCell *)self buttonStackView];
-  v29 = [v28 leadingAnchor];
-  v30 = [(HUDayOfWeekPickerCell *)self contentView];
-  v31 = [v30 layoutMarginsGuide];
-  v32 = [v31 leadingAnchor];
-  v33 = [v29 constraintEqualToAnchor:v32];
-  [v3 addObject:v33];
+  buttonStackView3 = [(HUDayOfWeekPickerCell *)self buttonStackView];
+  leadingAnchor = [buttonStackView3 leadingAnchor];
+  contentView3 = [(HUDayOfWeekPickerCell *)self contentView];
+  layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v33];
 
-  v34 = [(HUDayOfWeekPickerCell *)self buttonStackView];
-  v35 = [v34 trailingAnchor];
-  v36 = [(HUDayOfWeekPickerCell *)self contentView];
-  v37 = [v36 layoutMarginsGuide];
-  v38 = [v37 trailingAnchor];
-  v39 = [v35 constraintEqualToAnchor:v38];
-  [v3 addObject:v39];
+  buttonStackView4 = [(HUDayOfWeekPickerCell *)self buttonStackView];
+  trailingAnchor = [buttonStackView4 trailingAnchor];
+  contentView4 = [(HUDayOfWeekPickerCell *)self contentView];
+  layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v39];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v3];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (HUDayOfWeekPickerCellDelegate)delegate

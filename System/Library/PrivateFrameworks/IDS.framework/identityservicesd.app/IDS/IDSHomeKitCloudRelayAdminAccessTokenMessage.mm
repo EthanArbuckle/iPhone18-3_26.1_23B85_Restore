@@ -1,37 +1,37 @@
 @interface IDSHomeKitCloudRelayAdminAccessTokenMessage
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSHomeKitCloudRelayAdminAccessTokenMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = IDSHomeKitCloudRelayAdminAccessTokenMessage;
-  v4 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)&v13 copyWithZone:a3];
-  v5 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self subService];
-  [v4 setSubService:v5];
+  v4 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)&v13 copyWithZone:zone];
+  subService = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self subService];
+  [v4 setSubService:subService];
 
-  v6 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self serviceUserID];
-  [v4 setServiceUserID:v6];
+  serviceUserID = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self serviceUserID];
+  [v4 setServiceUserID:serviceUserID];
 
-  v7 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self accessoryID];
-  [v4 setAccessoryID:v7];
+  accessoryID = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self accessoryID];
+  [v4 setAccessoryID:accessoryID];
 
-  v8 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self pairingToken];
-  [v4 setPairingToken:v8];
+  pairingToken = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self pairingToken];
+  [v4 setPairingToken:pairingToken];
 
-  v9 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self responseAccessoryID];
-  [v4 setAccessoryID:v9];
+  responseAccessoryID = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self responseAccessoryID];
+  [v4 setAccessoryID:responseAccessoryID];
 
-  v10 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self responseAdminAcccessToken];
-  [v4 setResponseAdminAcccessToken:v10];
+  responseAdminAcccessToken = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self responseAdminAcccessToken];
+  [v4 setResponseAdminAcccessToken:responseAdminAcccessToken];
 
-  v11 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self responseExpiry];
-  [v4 setResponseExpiry:v11];
+  responseExpiry = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self responseExpiry];
+  [v4 setResponseExpiry:responseExpiry];
 
   return v4;
 }
@@ -40,18 +40,18 @@
 {
   v8.receiver = self;
   v8.super_class = IDSHomeKitCloudRelayAdminAccessTokenMessage;
-  v3 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)&v8 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)&v8 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self subService];
-  if (v5)
+  subService = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self subService];
+  if (subService)
   {
-    CFDictionarySetValue(Mutable, @"x-id-sub-service", v5);
+    CFDictionarySetValue(Mutable, @"x-id-sub-service", subService);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -59,10 +59,10 @@
     sub_10092BEB0();
   }
 
-  v6 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self serviceUserID];
-  if (v6)
+  serviceUserID = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self serviceUserID];
+  if (serviceUserID)
   {
-    CFDictionarySetValue(Mutable, @"x-service-user-id", v6);
+    CFDictionarySetValue(Mutable, @"x-service-user-id", serviceUserID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -76,10 +76,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self accessoryID];
-  if (v4)
+  accessoryID = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self accessoryID];
+  if (accessoryID)
   {
-    CFDictionarySetValue(v3, @"accessory-id", v4);
+    CFDictionarySetValue(v3, @"accessory-id", accessoryID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -87,10 +87,10 @@
     sub_10092BFC0();
   }
 
-  v5 = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self pairingToken];
-  if (v5)
+  pairingToken = [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self pairingToken];
+  if (pairingToken)
   {
-    CFDictionarySetValue(v3, @"pairing-token", v5);
+    CFDictionarySetValue(v3, @"pairing-token", pairingToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -101,22 +101,22 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v7 = a3;
-  v4 = [v7 _stringForKey:@"accessory-id"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy _stringForKey:@"accessory-id"];
   if (v4)
   {
     [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self setResponseAccessoryID:v4];
   }
 
-  v5 = [v7 _dataForKey:@"access-token"];
+  v5 = [dictionaryCopy _dataForKey:@"access-token"];
   if (v5)
   {
     [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self setResponseAdminAcccessToken:v5];
   }
 
-  v6 = [v7 _numberForKey:@"expiry"];
+  v6 = [dictionaryCopy _numberForKey:@"expiry"];
   if (v6)
   {
     [(IDSHomeKitCloudRelayAdminAccessTokenMessage *)self setResponseExpiry:v6];

@@ -32,16 +32,16 @@
   }
 
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 outputVoice];
+  outputVoice = [v4 outputVoice];
 
   v6 = [SiriTTSSynthesisVoice alloc];
-  v7 = [v5 languageCode];
-  v8 = [v5 name];
-  v9 = [v6 initWithLanguage:v7 name:v8];
+  languageCode = [outputVoice languageCode];
+  name = [outputVoice name];
+  v9 = [v6 initWithLanguage:languageCode name:name];
 
   v10 = [SiriTTSSpeechRequest alloc];
-  v11 = [(ICSDowntimeAnnouncement *)self text];
-  v12 = [v10 initWithText:v11 voice:v9];
+  text = [(ICSDowntimeAnnouncement *)self text];
+  v12 = [v10 initWithText:text voice:v9];
 
   [(ICSDowntimeAnnouncement *)self setSpeechRequest:v12];
   [(ICSAnnouncement *)self delay];
@@ -58,9 +58,9 @@
 
 - (void)stop
 {
-  v4 = [(ICSDowntimeAnnouncement *)self speechSynthesizer];
-  v3 = [(ICSDowntimeAnnouncement *)self speechRequest];
-  [v4 cancelWithRequest:v3];
+  speechSynthesizer = [(ICSDowntimeAnnouncement *)self speechSynthesizer];
+  speechRequest = [(ICSDowntimeAnnouncement *)self speechRequest];
+  [speechSynthesizer cancelWithRequest:speechRequest];
 }
 
 - (id)text

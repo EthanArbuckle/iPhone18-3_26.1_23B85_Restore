@@ -1,25 +1,25 @@
 @interface _UIKeyboardChangedInformationWithManualFence
-+ (void)pushFence:(id)a3;
++ (void)pushFence:(id)fence;
 @end
 
 @implementation _UIKeyboardChangedInformationWithManualFence
 
-+ (void)pushFence:(id)a3
++ (void)pushFence:(id)fence
 {
-  v3 = a3;
+  fenceCopy = fence;
   v4 = _fenceList;
-  v7 = v3;
+  v7 = fenceCopy;
   if (!_fenceList)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = _fenceList;
-    _fenceList = v5;
+    _fenceList = array;
 
-    v3 = v7;
+    fenceCopy = v7;
     v4 = _fenceList;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:fenceCopy];
 }
 
 @end

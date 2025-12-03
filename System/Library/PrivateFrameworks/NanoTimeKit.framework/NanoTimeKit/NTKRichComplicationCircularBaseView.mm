@@ -1,46 +1,46 @@
 @interface NTKRichComplicationCircularBaseView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-+ (CGAffineTransform)transformForState:(SEL)a3;
-+ (double)centerLabelLargeFontSizeForDevice:(id)a3;
-+ (double)centerLabelSmallFontSizeForDevice:(id)a3;
-+ (double)smallLabelLargeFontSizeForDevice:(id)a3;
-+ (double)smallLabelSmallFontSizeForDevice:(id)a3;
-+ (id)keylineImageWithFilled:(BOOL)a3 wide:(BOOL)a4 expanded:(BOOL)a5 forDevice:(id)a6;
-+ (id)keylineViewForDevice:(id)a3 wide:(BOOL)a4 expanded:(BOOL)a5;
-+ (id)layoutRuleForState:(int64_t)a3 viewCenterInFaceBounds:(CGPoint)a4 position:(int64_t)a5 editingAdjustment:(int64_t)a6 wide:(BOOL)a7 forDevice:(id)a8;
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3;
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8;
++ (BOOL)handlesComplicationTemplate:(id)template;
++ (CGAffineTransform)transformForState:(SEL)state;
++ (double)centerLabelLargeFontSizeForDevice:(id)device;
++ (double)centerLabelSmallFontSizeForDevice:(id)device;
++ (double)smallLabelLargeFontSizeForDevice:(id)device;
++ (double)smallLabelSmallFontSizeForDevice:(id)device;
++ (id)keylineImageWithFilled:(BOOL)filled wide:(BOOL)wide expanded:(BOOL)expanded forDevice:(id)device;
++ (id)keylineViewForDevice:(id)device wide:(BOOL)wide expanded:(BOOL)expanded;
++ (id)layoutRuleForState:(int64_t)state viewCenterInFaceBounds:(CGPoint)bounds position:(int64_t)position editingAdjustment:(int64_t)adjustment wide:(BOOL)wide forDevice:(id)device;
++ (id)viewWithLegacyComplicationType:(unint64_t)type;
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction;
 - (NTKRichComplicationCircularBaseView)init;
-- (NTKRichComplicationCircularBaseView)initWithFamily:(int64_t)a3;
+- (NTKRichComplicationCircularBaseView)initWithFamily:(int64_t)family;
 - (double)_contentDiameter;
 - (id)_createAndAddColoringLabel;
-- (unint64_t)_adjustFontSizeForLabel:(id)a3 fontWeight:(double)a4 possibleMaxWidths:(id)a5 possibleFontSizes:(id)a6;
-- (void)_setEditingTransitionFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5 type:(int64_t)a6;
-- (void)_setWhistlerAnalogEditingTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5;
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4;
+- (unint64_t)_adjustFontSizeForLabel:(id)label fontWeight:(double)weight possibleMaxWidths:(id)widths possibleFontSizes:(id)sizes;
+- (void)_setEditingTransitionFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position type:(int64_t)type;
+- (void)_setWhistlerAnalogEditingTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position;
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction;
 - (void)_updatePlatterColor;
 - (void)layoutSubviews;
 - (void)makeBackgroundTransparent;
-- (void)setAccentedAlternateBackground:(BOOL)a3;
-- (void)setPlatterColor:(id)a3;
-- (void)setPlatterVisualEffect:(id)a3;
+- (void)setAccentedAlternateBackground:(BOOL)background;
+- (void)setPlatterColor:(id)color;
+- (void)setPlatterVisualEffect:(id)effect;
 @end
 
 @implementation NTKRichComplicationCircularBaseView
 
-+ (void)updateCustomDataAnimationFromEarlierView:(id)a3 laterView:(id)a4 isForward:(BOOL)a5 animationType:(unint64_t)a6 animationDuration:(double)a7 animationFraction:(float)a8
++ (void)updateCustomDataAnimationFromEarlierView:(id)view laterView:(id)laterView isForward:(BOOL)forward animationType:(unint64_t)type animationDuration:(double)duration animationFraction:(float)fraction
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
+  forwardCopy = forward;
+  viewCopy = view;
+  laterViewCopy = laterView;
   memset(&v28, 0, sizeof(v28));
-  if (a6 == 1)
+  if (type == 1)
   {
     v16 = *(MEMORY[0x277CBF2C0] + 16);
     *&v28.a = *MEMORY[0x277CBF2C0];
     *&v28.c = v16;
     *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (v9)
+    if (forwardCopy)
     {
 LABEL_5:
       v13 = MEMORY[0x277CBF2C0];
@@ -50,19 +50,19 @@ LABEL_5:
       *&v27.tx = *(MEMORY[0x277CBF2C0] + 32);
       v26 = v28;
       v25 = v28;
-      v15 = v12;
+      v15 = laterViewCopy;
       goto LABEL_8;
     }
   }
 
   else
   {
-    if (!a6)
+    if (!type)
     {
       CGAffineTransformMakeScale(&v28, 0.9, 0.9);
     }
 
-    if (v9)
+    if (forwardCopy)
     {
       goto LABEL_5;
     }
@@ -77,14 +77,14 @@ LABEL_5:
   *&v25.c = v17;
   *&v25.tx = *&v26.tx;
   v13 = &v28;
-  v15 = v11;
+  v15 = viewCopy;
 LABEL_8:
   v18 = *&v13->c;
   v22 = *&v13->a;
   v23 = v18;
   v24 = *&v13->tx;
   v19 = v15;
-  if (a6 == 1)
+  if (type == 1)
   {
     CDTemplicateComplicationShouldPerformFullFade();
   }
@@ -92,31 +92,31 @@ LABEL_8:
   CLKCompressFraction();
   CLKCompressFraction();
   CLKInterpolateBetweenFloatsClipped();
-  [v11 setAlpha:?];
+  [viewCopy setAlpha:?];
   CLKInterpolateBetweenTransform();
   v21[0] = v21[1];
-  [v11 setTransform:v21];
+  [viewCopy setTransform:v21];
   CLKInterpolateBetweenFloatsClipped();
-  [v12 setAlpha:?];
+  [laterViewCopy setAlpha:?];
   v21[0] = v26;
   CLKInterpolateBetweenTransform();
   v21[0] = v20;
-  [v12 setTransform:v21];
+  [laterViewCopy setTransform:v21];
 }
 
-+ (id)keylineImageWithFilled:(BOOL)a3 wide:(BOOL)a4 expanded:(BOOL)a5 forDevice:(id)a6
++ (id)keylineImageWithFilled:(BOOL)filled wide:(BOOL)wide expanded:(BOOL)expanded forDevice:(id)device
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = a6;
+  expandedCopy = expanded;
+  wideCopy = wide;
+  filledCopy = filled;
+  deviceCopy = device;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expanded_forDevice___block_invoke_2;
   aBlock[3] = &unk_278784D00;
-  v20 = v9;
+  v20 = deviceCopy;
   v21 = &__block_literal_global_126;
-  v10 = v9;
+  v10 = deviceCopy;
   v11 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -125,7 +125,7 @@ LABEL_8:
   v18 = v11;
   v12 = v11;
   v13 = __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expanded_forDevice___block_invoke_5(v17, v10);
-  v14 = __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expanded_forDevice___block_invoke(v13, v8, v7, v6);
+  v14 = __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expanded_forDevice___block_invoke(v13, filledCopy, wideCopy, expandedCopy);
   v15 = [v13 objectForKeyedSubscript:v14];
 
   return v15;
@@ -278,9 +278,9 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   return v2;
 }
 
-+ (id)keylineViewForDevice:(id)a3 wide:(BOOL)a4 expanded:(BOOL)a5
++ (id)keylineViewForDevice:(id)device wide:(BOOL)wide expanded:(BOOL)expanded
 {
-  v5 = [a1 keylineImageWithFilled:0 wide:a4 expanded:a5 forDevice:a3];
+  v5 = [self keylineImageWithFilled:0 wide:wide expanded:expanded forDevice:device];
   v6 = v5;
   if (v5)
   {
@@ -295,17 +295,17 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   return v7;
 }
 
-+ (id)layoutRuleForState:(int64_t)a3 viewCenterInFaceBounds:(CGPoint)a4 position:(int64_t)a5 editingAdjustment:(int64_t)a6 wide:(BOOL)a7 forDevice:(id)a8
++ (id)layoutRuleForState:(int64_t)state viewCenterInFaceBounds:(CGPoint)bounds position:(int64_t)position editingAdjustment:(int64_t)adjustment wide:(BOOL)wide forDevice:(id)device
 {
-  v8 = a7;
-  y = a4.y;
-  x = a4.x;
-  v15 = a8;
+  wideCopy = wide;
+  y = bounds.y;
+  x = bounds.x;
+  deviceCopy = device;
   v37 = 0;
   memset(v36, 0, sizeof(v36));
-  ___LayoutConstants_block_invoke_52(v15, v36);
-  v16 = NTKWhistlerSubdialComplicationDiameter(v15);
-  if (v8)
+  ___LayoutConstants_block_invoke_52(deviceCopy, v36);
+  v16 = NTKWhistlerSubdialComplicationDiameter(deviceCopy);
+  if (wideCopy)
   {
     v17 = v16 * 1.4;
   }
@@ -317,7 +317,7 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
 
   v18 = x - v17 * 0.5;
   v19 = y - v16 * 0.5;
-  if (a6 == 1)
+  if (adjustment == 1)
   {
     v20 = -1.9;
   }
@@ -328,29 +328,29 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   }
 
   v21 = -1.0;
-  if (a6 != 1)
+  if (adjustment != 1)
   {
     v21 = 1.0;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    if (a5 > 1)
+    if (position > 1)
     {
-      if (a5 == 2)
+      if (position == 2)
       {
         v19 = v19 - v21 * *v36;
       }
 
-      else if (a5 == 3)
+      else if (position == 3)
       {
         v19 = v19 + v20 * *v36;
       }
     }
 
-    else if (a5)
+    else if (position)
     {
-      if (a5 == 1)
+      if (position == 1)
       {
         v18 = v18 - v21 * *v36;
       }
@@ -370,11 +370,11 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   v23 = *(MEMORY[0x277D768C8] + 8);
   v26 = *(MEMORY[0x277D768C8] + 16);
   v25 = *(MEMORY[0x277D768C8] + 24);
-  if (a6)
+  if (adjustment)
   {
-    if (a6 == 1)
+    if (adjustment == 1)
     {
-      v27 = [a1 keylineImageWithFilled:0 wide:v8 expanded:1 forDevice:v15];
+      v27 = [self keylineImageWithFilled:0 wide:wideCopy expanded:1 forDevice:deviceCopy];
       [v27 size];
       v25 = (v28 - v17) * 0.5;
       [v27 size];
@@ -387,18 +387,18 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
 
   else
   {
-    [a1 transformForState:a3];
+    [self transformForState:state];
   }
 
   v32[0] = v33;
   v32[1] = v34;
   v32[2] = v35;
-  v30 = [NTKComplicationLayoutRule layoutRuleForDevice:v15 withReferenceFrame:3 horizontalLayout:3 verticalLayout:0 keylinePadding:v32 clip:v18 editingTransform:v19, v17, v16, v24, v23, v26, v25];
+  v30 = [NTKComplicationLayoutRule layoutRuleForDevice:deviceCopy withReferenceFrame:3 horizontalLayout:3 verticalLayout:0 keylinePadding:v32 clip:v18 editingTransform:v19, v17, v16, v24, v23, v26, v25];
 
   return v30;
 }
 
-+ (CGAffineTransform)transformForState:(SEL)a3
++ (CGAffineTransform)transformForState:(SEL)state
 {
   if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
@@ -413,9 +413,9 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   return result;
 }
 
-+ (id)viewWithLegacyComplicationType:(unint64_t)a3
++ (id)viewWithLegacyComplicationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
@@ -429,55 +429,55 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   return v3;
 }
 
-+ (double)centerLabelLargeFontSizeForDevice:(id)a3
++ (double)centerLabelLargeFontSizeForDevice:(id)device
 {
   v7 = 0;
   v5 = 0u;
   v6 = 0u;
   v4 = 0u;
-  ___LayoutConstants_block_invoke_52(a3, &v4);
+  ___LayoutConstants_block_invoke_52(device, &v4);
   return *(&v5 + 1);
 }
 
-+ (double)centerLabelSmallFontSizeForDevice:(id)a3
++ (double)centerLabelSmallFontSizeForDevice:(id)device
 {
   v6 = 0;
   v5 = 0u;
   memset(v4, 0, sizeof(v4));
-  ___LayoutConstants_block_invoke_52(a3, v4);
+  ___LayoutConstants_block_invoke_52(device, v4);
   return *&v5;
 }
 
-+ (double)smallLabelLargeFontSizeForDevice:(id)a3
++ (double)smallLabelLargeFontSizeForDevice:(id)device
 {
   v6 = 0;
   v5 = 0u;
   memset(v4, 0, sizeof(v4));
-  ___LayoutConstants_block_invoke_52(a3, v4);
+  ___LayoutConstants_block_invoke_52(device, v4);
   return *(&v5 + 1);
 }
 
-+ (double)smallLabelSmallFontSizeForDevice:(id)a3
++ (double)smallLabelSmallFontSizeForDevice:(id)device
 {
   v5 = 0.0;
   memset(v4, 0, sizeof(v4));
-  ___LayoutConstants_block_invoke_52(a3, v4);
+  ___LayoutConstants_block_invoke_52(device, v4);
   return v5;
 }
 
-- (NTKRichComplicationCircularBaseView)initWithFamily:(int64_t)a3
+- (NTKRichComplicationCircularBaseView)initWithFamily:(int64_t)family
 {
   v13.receiver = self;
   v13.super_class = NTKRichComplicationCircularBaseView;
-  v3 = [(CDRichComplicationView *)&v13 initWithFamily:a3];
+  v3 = [(CDRichComplicationView *)&v13 initWithFamily:family];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(NTKRichComplicationCircularBaseView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(NTKRichComplicationCircularBaseView *)v3 setBackgroundColor:clearColor];
 
-    v5 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     platterColor = v3->_platterColor;
-    v3->_platterColor = v5;
+    v3->_platterColor = blackColor;
 
     v7 = objc_alloc_init(MEMORY[0x277D75D18]);
     framingView = v3->_framingView;
@@ -489,8 +489,8 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
     contentView = v3->_contentView;
     v3->_contentView = v9;
 
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v3->_contentView setBackgroundColor:v11];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v3->_contentView setBackgroundColor:clearColor2];
 
     [(UIView *)v3->_framingView addSubview:v3->_contentView];
   }
@@ -516,19 +516,19 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   [(NTKRichComplicationCircularBaseView *)self bounds];
   [(NTKRichComplicationCircularBaseView *)self bounds];
   [(NTKRichComplicationCircularBaseView *)self bounds];
-  v3 = [(CDRichComplicationView *)self device];
+  device = [(CDRichComplicationView *)self device];
   CLKRectCenteredXInRectForDevice();
   [(UIView *)self->_framingView setFrame:?];
 
   [(NTKRichComplicationCircularBaseView *)self bounds];
   v5 = v4 * 0.5;
-  v6 = [(UIView *)self->_framingView layer];
-  [v6 setCornerRadius:v5];
+  layer = [(UIView *)self->_framingView layer];
+  [layer setCornerRadius:v5];
 
   [(UIView *)self->_framingView bounds];
   [(NTKRichComplicationCircularBaseView *)self _contentDiameter];
   v8 = v7;
-  v9 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKSizeCenteredInRectForDevice();
   v11 = v10;
   v13 = v12;
@@ -539,38 +539,38 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   v30 = 0u;
   v31 = 0u;
   v29 = 0u;
-  v18 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_52(v18, &v29);
+  device3 = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_52(device3, &v29);
 
   *&v28.a = v26;
   *&v28.c = v25;
   *&v28.tx = v24;
   [(UIView *)self->_contentView setTransform:&v28];
   [(UIView *)self->_contentView setFrame:v11, v13, v15, v17];
-  v19 = [(UIView *)self->_contentView layer];
-  [v19 setCornerRadius:v8 * 0.5];
+  layer2 = [(UIView *)self->_contentView layer];
+  [layer2 setCornerRadius:v8 * 0.5];
 
   v20 = *MEMORY[0x277CBF348];
   v21 = *(MEMORY[0x277CBF348] + 8);
-  v22 = [(NTKRichComplicationCircularBaseView *)self position];
-  if (v22 > 1)
+  position = [(NTKRichComplicationCircularBaseView *)self position];
+  if (position > 1)
   {
-    if (v22 == 2)
+    if (position == 2)
     {
       v21 = -*&v30;
       v20 = 0.0;
     }
 
-    else if (v22 == 3)
+    else if (position == 3)
     {
       v20 = 0.0;
       v21 = *&v30;
     }
   }
 
-  else if (v22)
+  else if (position)
   {
-    if (v22 == 1)
+    if (position == 1)
     {
       v20 = -*&v30;
       v21 = 0.0;
@@ -599,35 +599,35 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
 
 - (void)makeBackgroundTransparent
 {
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)self->_framingView setBackgroundColor:v3];
-  [(UIView *)self->_contentView setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)self->_framingView setBackgroundColor:clearColor];
+  [(UIView *)self->_contentView setBackgroundColor:clearColor];
 }
 
-- (void)setPlatterColor:(id)a3
+- (void)setPlatterColor:(id)color
 {
-  objc_storeStrong(&self->_platterColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_platterColor, color);
+  colorCopy = color;
   [(UIView *)self->_framingView setBackgroundColor:self->_platterColor];
 }
 
-- (void)setPlatterVisualEffect:(id)a3
+- (void)setPlatterVisualEffect:(id)effect
 {
-  v13 = a3;
+  effectCopy = effect;
   if (([(UIVisualEffect *)self->_platterVisualEffect isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_platterVisualEffect, a3);
+    objc_storeStrong(&self->_platterVisualEffect, effect);
     platterVisualEffectView = self->_platterVisualEffectView;
-    if (v13)
+    if (effectCopy)
     {
       if (platterVisualEffectView)
       {
-        [(UIVisualEffectView *)platterVisualEffectView setEffect:v13];
+        [(UIVisualEffectView *)platterVisualEffectView setEffect:effectCopy];
       }
 
       else
       {
-        v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v13];
+        v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:effectCopy];
         v8 = self->_platterVisualEffectView;
         self->_platterVisualEffectView = v7;
 
@@ -635,11 +635,11 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
         [(NTKRichComplicationCircularBaseView *)self bounds];
         [(UIVisualEffectView *)v9 setBounds:?];
         [(UIVisualEffectView *)self->_platterVisualEffectView setAutoresizingMask:18];
-        v10 = [(CDRichComplicationView *)self device];
-        v11 = NTKWhistlerSubdialComplicationDiameter(v10);
+        device = [(CDRichComplicationView *)self device];
+        v11 = NTKWhistlerSubdialComplicationDiameter(device);
 
-        v12 = [(UIVisualEffectView *)self->_platterVisualEffectView layer];
-        [v12 setCornerRadius:v11 * 0.5];
+        layer = [(UIVisualEffectView *)self->_platterVisualEffectView layer];
+        [layer setCornerRadius:v11 * 0.5];
 
         [(UIVisualEffectView *)self->_platterVisualEffectView setClipsToBounds:1];
         [(NTKRichComplicationCircularBaseView *)self insertSubview:self->_platterVisualEffectView belowSubview:self->_framingView];
@@ -655,37 +655,37 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   }
 }
 
-- (void)setAccentedAlternateBackground:(BOOL)a3
+- (void)setAccentedAlternateBackground:(BOOL)background
 {
-  if (self->_accentedAlternateBackground != a3)
+  if (self->_accentedAlternateBackground != background)
   {
-    self->_accentedAlternateBackground = a3;
+    self->_accentedAlternateBackground = background;
     [(NTKRichComplicationCircularBaseView *)self _updatePlatterColor];
   }
 }
 
-- (void)_setEditingTransitionFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5 type:(int64_t)a6
+- (void)_setEditingTransitionFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position type:(int64_t)type
 {
-  if (!a6)
+  if (!type)
   {
-    [(NTKRichComplicationCircularBaseView *)self _setWhistlerAnalogEditingTransitonFraction:a4 direction:a5 position:a3];
+    [(NTKRichComplicationCircularBaseView *)self _setWhistlerAnalogEditingTransitonFraction:direction direction:position position:fraction];
   }
 }
 
-- (void)_setWhistlerAnalogEditingTransitonFraction:(double)a3 direction:(int64_t)a4 position:(int64_t)a5
+- (void)_setWhistlerAnalogEditingTransitonFraction:(double)fraction direction:(int64_t)direction position:(int64_t)position
 {
-  v7 = fmin(fmax(a3, 0.0), 0.5);
+  v7 = fmin(fmax(fraction, 0.0), 0.5);
   v8 = v7 + v7;
-  if (a5)
+  if (position)
   {
     v8 = 0.0;
   }
 
-  v9 = [(CDRichComplicationView *)self device:a4];
+  v9 = [(CDRichComplicationView *)self device:direction];
   ___LayoutConstants_block_invoke_52(v9, &v11);
 
   CLKInterpolateBetweenFloatsClipped();
-  if (a5 == 1)
+  if (position == 1)
   {
     v10 = -v10;
   }
@@ -701,8 +701,8 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   [v3 setUsesLegibility:0];
   [v3 setUppercase:1];
   [v3 setAlpha:1.0];
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setColor:v4];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v3 setColor:whiteColor];
 
   [v3 setUsesTextProviderTintColoring:1];
   objc_initWeak(&location, self);
@@ -719,8 +719,8 @@ id __86__NTKRichComplicationCircularBaseView_keylineImageWithFilled_wide_expande
   objc_copyWeak(&v8, &location);
   [v3 setNeedsResizeHandler:v7];
   [v3 setFilterProvider:self];
-  v5 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v5 addSubview:v3];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView addSubview:v3];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -751,53 +751,53 @@ void __65__NTKRichComplicationCircularBaseView__createAndAddColoringLabel__block
   [v1 complicationDisplayNeedsResize:WeakRetained];
 }
 
-- (unint64_t)_adjustFontSizeForLabel:(id)a3 fontWeight:(double)a4 possibleMaxWidths:(id)a5 possibleFontSizes:(id)a6
+- (unint64_t)_adjustFontSizeForLabel:(id)label fontWeight:(double)weight possibleMaxWidths:(id)widths possibleFontSizes:(id)sizes
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 count];
-  if (v13 != [v12 count])
+  labelCopy = label;
+  widthsCopy = widths;
+  sizesCopy = sizes;
+  v13 = [widthsCopy count];
+  if (v13 != [sizesCopy count])
   {
     [NTKRichComplicationCircularBaseView _adjustFontSizeForLabel:fontWeight:possibleMaxWidths:possibleFontSizes:];
   }
 
-  if (![v12 count])
+  if (![sizesCopy count])
   {
     [NTKRichComplicationCircularBaseView _adjustFontSizeForLabel:fontWeight:possibleMaxWidths:possibleFontSizes:];
   }
 
-  if ([v11 count])
+  if ([widthsCopy count])
   {
     v14 = 0;
     v15 = 0;
     do
     {
-      v16 = [v11 objectAtIndexedSubscript:v15];
+      v16 = [widthsCopy objectAtIndexedSubscript:v15];
       [v16 floatValue];
       v18 = v17;
 
-      v19 = [v12 objectAtIndexedSubscript:v15];
+      v19 = [sizesCopy objectAtIndexedSubscript:v15];
       [v19 floatValue];
       v21 = v20;
 
-      v22 = [(CDRichComplicationView *)self fontDescriptor];
+      fontDescriptor = [(CDRichComplicationView *)self fontDescriptor];
       v23 = MEMORY[0x277CBBB08];
-      if (v22)
+      if (fontDescriptor)
       {
         [(CDRichComplicationView *)self fontSizeFactor];
-        [v23 fontWithDescriptor:v22 size:v24 * v21];
+        [v23 fontWithDescriptor:fontDescriptor size:v24 * v21];
       }
 
       else
       {
-        [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v21 design:a4];
+        [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v21 design:weight];
       }
       v25 = ;
       v26 = v18;
-      v27 = [v25 CLKFontWithAlternativePunctuation];
+      cLKFontWithAlternativePunctuation = [v25 CLKFontWithAlternativePunctuation];
 
-      [v10 widthForMaxWidth:v27 withFont:v26];
+      [labelCopy widthForMaxWidth:cLKFontWithAlternativePunctuation withFont:v26];
       v29 = v28;
 
       if (v29 <= v26)
@@ -806,26 +806,26 @@ void __65__NTKRichComplicationCircularBaseView__createAndAddColoringLabel__block
       }
 
       ++v15;
-      v14 = v27;
+      v14 = cLKFontWithAlternativePunctuation;
     }
 
-    while (v15 < [v11 count]);
+    while (v15 < [widthsCopy count]);
   }
 
   else
   {
     v15 = 0;
-    v27 = 0;
+    cLKFontWithAlternativePunctuation = 0;
     v26 = 0.0;
   }
 
-  [v10 setMaxWidth:v26];
-  [v10 setFont:v27];
-  [v10 sizeToFit];
-  [v10 frame];
+  [labelCopy setMaxWidth:v26];
+  [labelCopy setFont:cLKFontWithAlternativePunctuation];
+  [labelCopy sizeToFit];
+  [labelCopy frame];
   if (v30 > v26)
   {
-    [v10 setFrame:?];
+    [labelCopy setFrame:?];
   }
 
   return v15;
@@ -833,9 +833,9 @@ void __65__NTKRichComplicationCircularBaseView__createAndAddColoringLabel__block
 
 - (double)_contentDiameter
 {
-  v3 = [(CDRichComplicationView *)self family];
-  v4 = [(CDRichComplicationView *)self device];
-  if (v3 == 12)
+  family = [(CDRichComplicationView *)self family];
+  device = [(CDRichComplicationView *)self device];
+  if (family == 12)
   {
     NTKGraphicExtraLargeComplicationContentDiameter();
   }
@@ -850,7 +850,7 @@ void __65__NTKRichComplicationCircularBaseView__createAndAddColoringLabel__block
   return v6;
 }
 
-- (void)_transitToHighlightState:(BOOL)a3 fraction:(double)a4
+- (void)_transitToHighlightState:(BOOL)state fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   CGAffineTransformMakeScale(&v7, v5, v5);
@@ -862,8 +862,8 @@ void __65__NTKRichComplicationCircularBaseView__createAndAddColoringLabel__block
 {
   if ([(CDRichComplicationTemplateView *)self templateWantsPlatter])
   {
-    v3 = [(CDRichComplicationView *)self filterProvider];
-    v5 = [v3 colorForView:self accented:self->_accentedAlternateBackground];
+    filterProvider = [(CDRichComplicationView *)self filterProvider];
+    v5 = [filterProvider colorForView:self accented:self->_accentedAlternateBackground];
 
     if (v5)
     {
@@ -873,12 +873,12 @@ void __65__NTKRichComplicationCircularBaseView__createAndAddColoringLabel__block
     CLKUIDefaultComplicationBackgroundColor();
   }
 
-  v6 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:v4];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [contentView setBackgroundColor:clearColor];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

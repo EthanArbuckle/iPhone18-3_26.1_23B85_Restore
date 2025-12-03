@@ -1,55 +1,55 @@
 @interface PKAuxiliaryPassInformationDataSource
-- (BOOL)_isDynamicSection:(int64_t)a3;
-- (BOOL)isListLayoutForSection:(unint64_t)a3;
-- (PKAuxiliaryPassInformationDataSource)initWithItem:(id)a3 forPass:(id)a4;
+- (BOOL)_isDynamicSection:(int64_t)section;
+- (BOOL)isListLayoutForSection:(unint64_t)section;
+- (PKAuxiliaryPassInformationDataSource)initWithItem:(id)item forPass:(id)pass;
 - (id)_headerItem;
-- (id)footerTextItemForSection:(unint64_t)a3;
-- (id)itemAtIndexPath:(id)a3;
+- (id)footerTextItemForSection:(unint64_t)section;
+- (id)itemAtIndexPath:(id)path;
 - (id)navigationBarTitle;
-- (id)titleForSection:(unint64_t)a3;
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3;
+- (id)titleForSection:(unint64_t)section;
+- (unint64_t)numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)numberOfSections;
-- (void)_loadMerchantForPassUniqueID:(id)a3;
+- (void)_loadMerchantForPassUniqueID:(id)d;
 - (void)_notifyContentLoadedIfNecessary;
-- (void)setDataSourceDelegate:(id)a3;
+- (void)setDataSourceDelegate:(id)delegate;
 @end
 
 @implementation PKAuxiliaryPassInformationDataSource
 
-- (PKAuxiliaryPassInformationDataSource)initWithItem:(id)a3 forPass:(id)a4
+- (PKAuxiliaryPassInformationDataSource)initWithItem:(id)item forPass:(id)pass
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  passCopy = pass;
   v15.receiver = self;
   v15.super_class = PKAuxiliaryPassInformationDataSource;
   v9 = [(PKAuxiliaryPassInformationDataSource *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_item, a3);
+    objc_storeStrong(&v9->_item, item);
     v11 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
     headerIndexPath = v10->_headerIndexPath;
     v10->_headerIndexPath = v11;
 
     v10->_contentIsLoaded = 0;
-    v13 = [v8 uniqueID];
-    [(PKAuxiliaryPassInformationDataSource *)v10 _loadMerchantForPassUniqueID:v13];
+    uniqueID = [passCopy uniqueID];
+    [(PKAuxiliaryPassInformationDataSource *)v10 _loadMerchantForPassUniqueID:uniqueID];
   }
 
   return v10;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
   if ([(PKAuxiliaryPassInformationDataSource *)self _isDynamicSection:?])
   {
-    v5 = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
-    v6 = [v5 objectAtIndex:(a3 + -1.0)];
-    v7 = [v6 header];
+    sections = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
+    v6 = [sections objectAtIndex:(section + -1.0)];
+    header = [v6 header];
 
-    if (v7)
+    if (header)
     {
-      v8 = [PKDashboardHeaderTextItem itemWithHeaderText:v7];
+      v8 = [PKDashboardHeaderTextItem itemWithHeaderText:header];
       [v8 setStyle:3];
     }
 
@@ -67,17 +67,17 @@
   return v8;
 }
 
-- (id)footerTextItemForSection:(unint64_t)a3
+- (id)footerTextItemForSection:(unint64_t)section
 {
   if ([(PKAuxiliaryPassInformationDataSource *)self _isDynamicSection:?])
   {
-    v5 = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
-    v6 = [v5 objectAtIndex:(a3 + -1.0)];
-    v7 = [v6 footer];
+    sections = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
+    v6 = [sections objectAtIndex:(section + -1.0)];
+    footer = [v6 footer];
 
-    if (v7)
+    if (footer)
     {
-      v8 = [PKDashboardFooterTextItem itemWithFooterText:v7];
+      v8 = [PKDashboardFooterTextItem itemWithFooterText:footer];
     }
 
     else
@@ -99,8 +99,8 @@
   merchant = self->_merchant;
   if (self->_contentIsLoaded)
   {
-    v4 = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
-    v5 = [v4 count] + 2;
+    sections = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
+    v5 = [sections count] + 2;
 
     if (!merchant)
     {
@@ -121,9 +121,9 @@ LABEL_5:
   return v5;
 }
 
-- (unint64_t)numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)numberOfItemsInSection:(unint64_t)section
 {
-  if (!a3)
+  if (!section)
   {
     return 1;
   }
@@ -138,36 +138,36 @@ LABEL_5:
     return 0;
   }
 
-  v5 = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
-  v6 = [v5 objectAtIndex:(a3 + -1.0)];
-  v7 = [v6 rows];
-  v8 = [v7 count];
+  sections = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
+  v6 = [sections objectAtIndex:(section + -1.0)];
+  rows = [v6 rows];
+  v8 = [rows count];
 
   return v8;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section)
   {
-    v6 = v5;
-    if ([(PKAuxiliaryPassInformationDataSource *)self _isDynamicSection:v5])
+    v6 = section;
+    if ([(PKAuxiliaryPassInformationDataSource *)self _isDynamicSection:section])
     {
-      v7 = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
-      v8 = [v7 objectAtIndex:(v6 + -1.0)];
-      v9 = [v8 rows];
-      v10 = [v9 objectAtIndex:{objc_msgSend(v4, "row")}];
+      sections = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
+      v8 = [sections objectAtIndex:(v6 + -1.0)];
+      rows = [v8 rows];
+      v10 = [rows objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      v11 = objc_alloc_init(PKDashboardTextActionItem);
+      _headerItem = objc_alloc_init(PKDashboardTextActionItem);
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v12 = [(PKPassAuxiliaryPassInformationItem *)self->_item fields];
-      v13 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      fields = [(PKPassAuxiliaryPassInformationItem *)self->_item fields];
+      v13 = [fields countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v13)
       {
         v14 = v13;
@@ -178,7 +178,7 @@ LABEL_5:
           {
             if (*v41 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(fields);
             }
 
             v17 = *(*(&v40 + 1) + 8 * i);
@@ -188,25 +188,25 @@ LABEL_5:
             if (v19)
             {
               v39 = 0;
-              v20 = [v17 labelImage];
-              v21 = +[PKDashboardTextActionItem colorForSemanticColor:hasTintColor:](PKDashboardTextActionItem, "colorForSemanticColor:hasTintColor:", [v20 tintColor], &v39);
-              v38 = v20;
-              v22 = [PKDashboardTextActionItem imageForPassFieldImage:v20 hasTintColor:v39];
-              v33 = [v17 value];
-              v23 = [v17 valueImage];
-              v36 = +[PKDashboardTextActionItem colorForSemanticColor:hasTintColor:](PKDashboardTextActionItem, "colorForSemanticColor:hasTintColor:", [v23 tintColor], &v39);
-              v37 = v23;
-              v35 = [PKDashboardTextActionItem imageForPassFieldImage:v23 hasTintColor:v39];
-              v24 = [v17 accessoryImage];
-              v34 = +[PKDashboardTextActionItem colorForSemanticColor:hasTintColor:](PKDashboardTextActionItem, "colorForSemanticColor:hasTintColor:", [v24 tintColor], &v39);
-              v25 = [PKDashboardTextActionItem imageForPassFieldImage:v24 hasTintColor:v39];
-              v26 = [v17 label];
-              [(PKDashboardTextActionItem *)v11 setTitle:v26];
+              labelImage = [v17 labelImage];
+              v21 = +[PKDashboardTextActionItem colorForSemanticColor:hasTintColor:](PKDashboardTextActionItem, "colorForSemanticColor:hasTintColor:", [labelImage tintColor], &v39);
+              v38 = labelImage;
+              v22 = [PKDashboardTextActionItem imageForPassFieldImage:labelImage hasTintColor:v39];
+              value = [v17 value];
+              valueImage = [v17 valueImage];
+              v36 = +[PKDashboardTextActionItem colorForSemanticColor:hasTintColor:](PKDashboardTextActionItem, "colorForSemanticColor:hasTintColor:", [valueImage tintColor], &v39);
+              v37 = valueImage;
+              v35 = [PKDashboardTextActionItem imageForPassFieldImage:valueImage hasTintColor:v39];
+              accessoryImage = [v17 accessoryImage];
+              v34 = +[PKDashboardTextActionItem colorForSemanticColor:hasTintColor:](PKDashboardTextActionItem, "colorForSemanticColor:hasTintColor:", [accessoryImage tintColor], &v39);
+              v25 = [PKDashboardTextActionItem imageForPassFieldImage:accessoryImage hasTintColor:v39];
+              label = [v17 label];
+              [(PKDashboardTextActionItem *)_headerItem setTitle:label];
 
-              [(PKDashboardTextActionItem *)v11 setTitleImage:v22];
+              [(PKDashboardTextActionItem *)_headerItem setTitleImage:v22];
               v27 = v21;
-              [(PKDashboardTextActionItem *)v11 setTitleColor:v21];
-              v28 = v33;
+              [(PKDashboardTextActionItem *)_headerItem setTitleColor:v21];
+              v28 = value;
               v29 = v28;
               if (v28)
               {
@@ -228,18 +228,18 @@ LABEL_5:
                 v31 = 0;
               }
 
-              [(PKDashboardTextActionItem *)v11 setSubtitle:v31];
-              [(PKDashboardTextActionItem *)v11 setSubtitleImage:v35];
-              [(PKDashboardTextActionItem *)v11 setSubtitleColor:v36];
-              [(PKDashboardTextActionItem *)v11 setAccessoryImage:v25];
-              [(PKDashboardTextActionItem *)v11 setAccessoryColor:v34];
-              [(PKDashboardTextActionItem *)v11 setLayoutStyle:1];
+              [(PKDashboardTextActionItem *)_headerItem setSubtitle:v31];
+              [(PKDashboardTextActionItem *)_headerItem setSubtitleImage:v35];
+              [(PKDashboardTextActionItem *)_headerItem setSubtitleColor:v36];
+              [(PKDashboardTextActionItem *)_headerItem setAccessoryImage:v25];
+              [(PKDashboardTextActionItem *)_headerItem setAccessoryColor:v34];
+              [(PKDashboardTextActionItem *)_headerItem setLayoutStyle:1];
 
               goto LABEL_22;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v40 objects:v44 count:16];
+          v14 = [fields countByEnumeratingWithState:&v40 objects:v44 count:16];
           if (v14)
           {
             continue;
@@ -254,27 +254,27 @@ LABEL_22:
 
     else if (self->_merchant)
     {
-      v11 = objc_alloc_init(PKDashboardTransactionMapItem);
-      [(PKDashboardTextActionItem *)v11 setMerchant:self->_merchant];
+      _headerItem = objc_alloc_init(PKDashboardTransactionMapItem);
+      [(PKDashboardTextActionItem *)_headerItem setMerchant:self->_merchant];
     }
 
     else
     {
-      v11 = 0;
+      _headerItem = 0;
     }
   }
 
   else
   {
-    v11 = [(PKAuxiliaryPassInformationDataSource *)self _headerItem];
+    _headerItem = [(PKAuxiliaryPassInformationDataSource *)self _headerItem];
   }
 
-  return v11;
+  return _headerItem;
 }
 
-- (BOOL)isListLayoutForSection:(unint64_t)a3
+- (BOOL)isListLayoutForSection:(unint64_t)section
 {
-  if (a3)
+  if (section)
   {
     return ![(PKAuxiliaryPassInformationDataSource *)self _isDynamicSection:?];
   }
@@ -285,52 +285,52 @@ LABEL_22:
   }
 }
 
-- (void)setDataSourceDelegate:(id)a3
+- (void)setDataSourceDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   if (self->_contentIsLoaded)
   {
-    [v4 contentIsLoaded];
+    [delegateCopy contentIsLoaded];
   }
 }
 
 - (id)navigationBarTitle
 {
-  v3 = [(PKMerchant *)self->_merchant displayName];
-  v4 = v3;
-  if (v3)
+  displayName = [(PKMerchant *)self->_merchant displayName];
+  v4 = displayName;
+  if (displayName)
   {
-    v5 = v3;
+    title = displayName;
   }
 
   else
   {
-    v5 = [(PKPassAuxiliaryPassInformationItem *)self->_item title];
+    title = [(PKPassAuxiliaryPassInformationItem *)self->_item title];
   }
 
-  v6 = v5;
+  v6 = title;
 
   if ([(PKMerchant *)self->_merchant useDisplayNameIgnoringBrand])
   {
-    v7 = [(PKMerchant *)self->_merchant displayNameIgnoringBrand];
+    displayNameIgnoringBrand = [(PKMerchant *)self->_merchant displayNameIgnoringBrand];
 
-    v6 = v7;
+    v6 = displayNameIgnoringBrand;
   }
 
   return v6;
 }
 
-- (BOOL)_isDynamicSection:(int64_t)a3
+- (BOOL)_isDynamicSection:(int64_t)section
 {
-  if (a3 < 1)
+  if (section < 1)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
-  v5 = [v4 count] + 1.0 > v3;
+  sectionCopy = section;
+  sections = [(PKPassAuxiliaryPassInformationItem *)self->_item sections];
+  v5 = [sections count] + 1.0 > sectionCopy;
 
   return v5;
 }
@@ -347,8 +347,8 @@ LABEL_22:
 
   else
   {
-    v5 = [(PKPassAuxiliaryPassInformationItem *)self->_item title];
-    [(PKTransactionHistoryHeaderItem *)v4 setTitle:v5];
+    title = [(PKPassAuxiliaryPassInformationItem *)self->_item title];
+    [(PKTransactionHistoryHeaderItem *)v4 setTitle:title];
 
     [(PKTransactionHistoryHeaderItem *)v4 setCategory:[(PKPassAuxiliaryPassInformationItem *)self->_item merchantCategory]];
   }
@@ -356,21 +356,21 @@ LABEL_22:
   return v4;
 }
 
-- (void)_loadMerchantForPassUniqueID:(id)a3
+- (void)_loadMerchantForPassUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKPassAuxiliaryPassInformationItem *)self->_item mapsURL];
+  dCopy = d;
+  mapsURL = [(PKPassAuxiliaryPassInformationItem *)self->_item mapsURL];
 
-  if (v5)
+  if (mapsURL)
   {
-    v6 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     item = self->_item;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __69__PKAuxiliaryPassInformationDataSource__loadMerchantForPassUniqueID___block_invoke;
     v8[3] = &unk_1E8017F98;
     v8[4] = self;
-    [v6 merchantForPassUniqueIdentifier:v4 withAuxiliaryPassInformationItem:item completion:v8];
+    [paymentService merchantForPassUniqueIdentifier:dCopy withAuxiliaryPassInformationItem:item completion:v8];
   }
 
   else if (!self->_contentIsLoaded)

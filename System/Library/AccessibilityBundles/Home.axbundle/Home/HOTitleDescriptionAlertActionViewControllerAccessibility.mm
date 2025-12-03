@@ -1,25 +1,25 @@
 @interface HOTitleDescriptionAlertActionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (HOTitleDescriptionAlertActionViewControllerAccessibility)initWithTitle:(id)a3 titleColor:(id)a4 description:(id)a5 descriptionColor:(id)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (HOTitleDescriptionAlertActionViewControllerAccessibility)initWithTitle:(id)title titleColor:(id)color description:(id)description descriptionColor:(id)descriptionColor;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HOTitleDescriptionAlertActionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HOTitleDescriptionAlertActionViewController" hasInstanceVariable:@"_titleDescriptionView" withType:"HOTitleDescriptionView"];
-  [v3 validateClass:@"HOTitleDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HOTitleDescriptionView" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HOTitleDescriptionAlertActionViewController" hasInstanceMethod:@"initWithTitle:titleColor:description:descriptionColor:" withFullSignature:{"@", "@", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HOTitleDescriptionAlertActionViewController" hasInstanceVariable:@"_titleDescriptionView" withType:"HOTitleDescriptionView"];
+  [validationsCopy validateClass:@"HOTitleDescriptionView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HOTitleDescriptionView" hasInstanceMethod:@"descriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HOTitleDescriptionAlertActionViewController" hasInstanceMethod:@"initWithTitle:titleColor:description:descriptionColor:" withFullSignature:{"@", "@", "@", "@", "@", 0}];
 }
 
-- (HOTitleDescriptionAlertActionViewControllerAccessibility)initWithTitle:(id)a3 titleColor:(id)a4 description:(id)a5 descriptionColor:(id)a6
+- (HOTitleDescriptionAlertActionViewControllerAccessibility)initWithTitle:(id)title titleColor:(id)color description:(id)description descriptionColor:(id)descriptionColor
 {
   v9.receiver = self;
   v9.super_class = HOTitleDescriptionAlertActionViewControllerAccessibility;
-  v6 = [(HOTitleDescriptionAlertActionViewControllerAccessibility *)&v9 initWithTitle:a3 titleColor:a4 description:a5 descriptionColor:a6];
+  v6 = [(HOTitleDescriptionAlertActionViewControllerAccessibility *)&v9 initWithTitle:title titleColor:color description:description descriptionColor:descriptionColor];
   v7 = v6;
   if (v6)
   {

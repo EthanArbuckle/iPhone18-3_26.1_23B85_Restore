@@ -1,22 +1,22 @@
 @interface BGNonRepeatingSystemTaskRequest
-- (BGNonRepeatingSystemTaskRequest)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BGNonRepeatingSystemTaskRequest)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BGNonRepeatingSystemTaskRequest
 
-- (BGNonRepeatingSystemTaskRequest)initWithIdentifier:(id)a3
+- (BGNonRepeatingSystemTaskRequest)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = BGNonRepeatingSystemTaskRequest;
-  return [(BGSystemTaskRequest *)&v4 initWithIdentifier:a3];
+  return [(BGSystemTaskRequest *)&v4 initWithIdentifier:identifier];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = BGNonRepeatingSystemTaskRequest;
-  v4 = [(BGSystemTaskRequest *)&v6 copyWithZone:a3];
+  v4 = [(BGSystemTaskRequest *)&v6 copyWithZone:zone];
   [(BGNonRepeatingSystemTaskRequest *)self scheduleAfter];
   [v4 setScheduleAfter:?];
   [(BGNonRepeatingSystemTaskRequest *)self trySchedulingBefore];

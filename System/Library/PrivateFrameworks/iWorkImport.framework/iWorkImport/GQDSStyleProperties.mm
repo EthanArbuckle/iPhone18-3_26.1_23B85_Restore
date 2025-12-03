@@ -1,10 +1,10 @@
 @interface GQDSStyleProperties
-+ (int)propertyFromString:(const char *)a3;
++ (int)propertyFromString:(const char *)string;
 @end
 
 @implementation GQDSStyleProperties
 
-+ (int)propertyFromString:(const char *)a3
++ (int)propertyFromString:(const char *)string
 {
   v4 = qword_A40D8;
   if (!qword_A40D8)
@@ -346,13 +346,13 @@
     v4 = qword_A40D8;
   }
 
-  LODWORD(v6) = CFDictionaryGetValue(v4, a3);
+  LODWORD(v6) = CFDictionaryGetValue(v4, string);
   if (!v6)
   {
-    v6 = xmlStrstr(a3, "Series_");
+    v6 = xmlStrstr(string, "Series_");
     if (v6)
     {
-      LODWORD(v6) = atoi(a3 + 7) + 0x10000;
+      LODWORD(v6) = atoi(string + 7) + 0x10000;
     }
   }
 

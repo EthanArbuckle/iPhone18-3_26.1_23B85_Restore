@@ -1,31 +1,31 @@
 @interface STSDiffieHellmanParameter
-- (BOOL)isEqual:(id)a3;
-- (STSDiffieHellmanParameter)initWithCoder:(id)a3;
-- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)a3 key:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (STSDiffieHellmanParameter)initWithCoder:(id)coder;
+- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)group key:(id)key;
 - (id)asData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSDiffieHellmanParameter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   publicKeyGroup = self->_publicKeyGroup;
-  v5 = a3;
-  [v5 encodeInteger:publicKeyGroup forKey:@"publicKeyGroup"];
-  [v5 encodeObject:self->_publicKey forKey:@"publicKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:publicKeyGroup forKey:@"publicKeyGroup"];
+  [coderCopy encodeObject:self->_publicKey forKey:@"publicKey"];
 }
 
-- (STSDiffieHellmanParameter)initWithCoder:(id)a3
+- (STSDiffieHellmanParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STSDiffieHellmanParameter;
   v5 = [(STSDiffieHellmanParameter *)&v9 init];
   if (v5)
   {
-    v5->_publicKeyGroup = [v4 decodeIntegerForKey:@"publicKeyGroup"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dhInfo"];
+    v5->_publicKeyGroup = [coderCopy decodeIntegerForKey:@"publicKeyGroup"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dhInfo"];
     publicKey = v5->_publicKey;
     v5->_publicKey = v6;
   }
@@ -33,16 +33,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     publicKeyGroup = self->_publicKeyGroup;
@@ -51,8 +51,8 @@
       publicKey = self->_publicKey;
       if (publicKey)
       {
-        v12 = [(STSDiffieHellmanParameter *)v6 publicKey];
-        v13 = [(NSData *)publicKey isEqualToData:v12];
+        publicKey = [(STSDiffieHellmanParameter *)v6 publicKey];
+        v13 = [(NSData *)publicKey isEqualToData:publicKey];
       }
 
       else
@@ -75,17 +75,17 @@
   return v13 & 1;
 }
 
-- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)a3 key:(id)a4
+- (STSDiffieHellmanParameter)initWithKeyGroup:(unint64_t)group key:(id)key
 {
-  v7 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = STSDiffieHellmanParameter;
   v8 = [(STSDiffieHellmanParameter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_publicKeyGroup = a3;
-    objc_storeStrong(&v8->_publicKey, a4);
+    v8->_publicKeyGroup = group;
+    objc_storeStrong(&v8->_publicKey, key);
   }
 
   return v9;

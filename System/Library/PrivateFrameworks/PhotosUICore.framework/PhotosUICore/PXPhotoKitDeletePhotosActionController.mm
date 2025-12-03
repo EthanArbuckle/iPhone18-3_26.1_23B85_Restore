@@ -1,24 +1,24 @@
 @interface PXPhotoKitDeletePhotosActionController
-+ (id)suffixForAssets:(id)a3;
-+ (id)warningStringForAssets:(id)a3 isDeleting:(BOOL)a4;
-+ (void)assetTypeCountsForAssets:(id)a3 photosCount:(int64_t *)a4 videosCount:(int64_t *)a5 othersCount:(int64_t *)a6;
-- (PXPhotoKitDeletePhotosActionController)initWithAction:(int64_t)a3 assets:(id)a4 undoManager:(id)a5 delegate:(id)a6;
++ (id)suffixForAssets:(id)assets;
++ (id)warningStringForAssets:(id)assets isDeleting:(BOOL)deleting;
++ (void)assetTypeCountsForAssets:(id)assets photosCount:(int64_t *)count videosCount:(int64_t *)videosCount othersCount:(int64_t *)othersCount;
+- (PXPhotoKitDeletePhotosActionController)initWithAction:(int64_t)action assets:(id)assets undoManager:(id)manager delegate:(id)delegate;
 - (PXPhotoKitDeletePhotosActionControllerDelegate)delegate;
-- (void)_dismissConfirmationViewController:(id)a3;
+- (void)_dismissConfirmationViewController:(id)controller;
 - (void)_ensureMainAlertController;
 - (void)_ensureOneTimeConfirmationAlertController;
-- (void)_handleFinalConfirmation:(int64_t)a3;
-- (void)_handleMainAlertConfirmation:(int64_t)a3;
+- (void)_handleFinalConfirmation:(int64_t)confirmation;
+- (void)_handleMainAlertConfirmation:(int64_t)confirmation;
 - (void)_handleOneTimeAlertConfirmed;
-- (void)_recordUserConfirmation:(int64_t)a3;
-- (void)_recordVariant:(id)a3;
-- (void)_runDestructiveActionWithCompletion:(id)a3;
+- (void)_recordUserConfirmation:(int64_t)confirmation;
+- (void)_recordVariant:(id)variant;
+- (void)_runDestructiveActionWithCompletion:(id)completion;
 - (void)_showOnetimeConfirmation;
-- (void)appWasBackgrounded:(id)a3;
+- (void)appWasBackgrounded:(id)backgrounded;
 - (void)beginObservingAppBackgroundingEvents;
-- (void)getConfirmationMessage:(id *)a3 destructiveButtonTitle:(id *)a4 cancelButtonTitle:(id *)a5 isDestructiveBehavior:(BOOL *)a6;
-- (void)performWithWillDeleteHandler:(id)a3 completionHandler:(id)a4;
-- (void)ppt_performDeleteWithoutUserConfirmationWithCompletionHandler:(id)a3;
+- (void)getConfirmationMessage:(id *)message destructiveButtonTitle:(id *)title cancelButtonTitle:(id *)buttonTitle isDestructiveBehavior:(BOOL *)behavior;
+- (void)performWithWillDeleteHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)ppt_performDeleteWithoutUserConfirmationWithCompletionHandler:(id)handler;
 - (void)stopObservingAppBackgroundEvents;
 @end
 
@@ -31,24 +31,24 @@
   return WeakRetained;
 }
 
-- (void)appWasBackgrounded:(id)a3
+- (void)appWasBackgrounded:(id)backgrounded
 {
-  v4 = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
+  _oneTimeConfirmationAlertController = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
 
-  if (v4)
+  if (_oneTimeConfirmationAlertController)
   {
-    v5 = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
-    [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:v5];
+    _oneTimeConfirmationAlertController2 = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
+    [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:_oneTimeConfirmationAlertController2];
 
     [(PXPhotoKitDeletePhotosActionController *)self _setOneTimeConfirmationAlertController:0];
   }
 
-  v6 = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
+  _mainAlertController = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
 
-  if (v6)
+  if (_mainAlertController)
   {
-    v7 = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
-    [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:v7];
+    _mainAlertController2 = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
+    [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:_mainAlertController2];
 
     [(PXPhotoKitDeletePhotosActionController *)self _setMainAlertController:0];
   }
@@ -58,27 +58,27 @@
 
 - (void)stopObservingAppBackgroundEvents
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
 }
 
 - (void)beginObservingAppBackgroundingEvents
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_appWasBackgrounded_ name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_appWasBackgrounded_ name:*MEMORY[0x1E69DDAC8] object:0];
 }
 
-- (void)getConfirmationMessage:(id *)a3 destructiveButtonTitle:(id *)a4 cancelButtonTitle:(id *)a5 isDestructiveBehavior:(BOOL *)a6
+- (void)getConfirmationMessage:(id *)message destructiveButtonTitle:(id *)title cancelButtonTitle:(id *)buttonTitle isDestructiveBehavior:(BOOL *)behavior
 {
   v89 = *MEMORY[0x1E69E9840];
-  v9 = [(PXPhotoKitDeletePhotosActionController *)self _plAssets];
-  v62 = [v9 count];
+  _plAssets = [(PXPhotoKitDeletePhotosActionController *)self _plAssets];
+  v62 = [_plAssets count];
   v71 = v62;
   v10 = PLSuffixForItems();
-  v11 = [v9 firstObject];
+  firstObject = [_plAssets firstObject];
   v12 = objc_alloc(MEMORY[0x1E69BE898]);
-  v13 = [v11 photoLibrary];
-  v66 = [v12 initWithPhotoLibrary:v13];
+  photoLibrary = [firstObject photoLibrary];
+  v66 = [v12 initWithPhotoLibrary:photoLibrary];
 
   v14 = 0;
   v15 = 0;
@@ -104,21 +104,21 @@
       goto LABEL_23;
     }
 
-    v60 = v11;
-    v20 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
-    v21 = PXContentSyndicationAssetCount(v20);
-    if (v21 == [v20 count])
+    v60 = firstObject;
+    _assets = [(PXPhotoKitDeletePhotosActionController *)self _assets];
+    v21 = PXContentSyndicationAssetCount(_assets);
+    if (v21 == [_assets count])
     {
       v70[1] = 0;
       v70[2] = 0;
-      v22 = PXContentSyndicationRemoveConfirmationTitleAndMessageLocalizedStrings(v20);
+      v22 = PXContentSyndicationRemoveConfirmationTitleAndMessageLocalizedStrings(_assets);
       v19 = 0;
       v15 = 0;
       if (v22)
       {
 LABEL_16:
 
-        v11 = v60;
+        firstObject = v60;
         if (!v19)
         {
           goto LABEL_6;
@@ -136,7 +136,7 @@ LABEL_16:
 
     v69 = v19;
     v70[0] = v15;
-    [v66 getDeletionWarningTitle:0 message:v70 buttonTitle:&v69 forAssets:v9 syndicationAssetCount:v21 clientName:0 style:0];
+    [v66 getDeletionWarningTitle:0 message:v70 buttonTitle:&v69 forAssets:_plAssets syndicationAssetCount:v21 clientName:0 style:0];
     v23 = v70[0];
 
     v24 = v69;
@@ -168,20 +168,20 @@ LABEL_16:
     v14 = 0;
     v18 = @"EXPUNGE_BUTTON_TITLE_";
 LABEL_23:
-    [v66 getAvalancheDeleteWarning:0 actualDeletionCount:&v71 forAssets:v9];
+    [v66 getAvalancheDeleteWarning:0 actualDeletionCount:&v71 forAssets:_plAssets];
     v29 = v71;
     v63 = v17;
     if (v14 && !v71)
     {
       v56 = v18;
       v57 = v10;
-      v59 = a6;
-      v61 = v11;
-      v58 = a5;
-      v30 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
-      v31 = [(PXPhotoKitDeletePhotosActionController *)self _plAssets];
-      v32 = v30;
-      v33 = v31;
+      behaviorCopy = behavior;
+      v61 = firstObject;
+      buttonTitleCopy = buttonTitle;
+      _assets2 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
+      _plAssets2 = [(PXPhotoKitDeletePhotosActionController *)self _plAssets];
+      v32 = _assets2;
+      v33 = _plAssets2;
       v34 = [MEMORY[0x1E695DFA8] set];
       v76 = 0u;
       v77 = 0u;
@@ -202,10 +202,10 @@ LABEL_23:
               objc_enumerationMutation(v35);
             }
 
-            v40 = [*(*(&v76 + 1) + 8 * i) uuid];
-            if (v40)
+            uuid = [*(*(&v76 + 1) + 8 * i) uuid];
+            if (uuid)
             {
-              [v34 addObject:v40];
+              [v34 addObject:uuid];
             }
           }
 
@@ -234,10 +234,10 @@ LABEL_23:
               objc_enumerationMutation(v41);
             }
 
-            v46 = [*(*(&v72 + 1) + 8 * j) pl_uuid];
-            if (v46 && [v34 containsObject:v46])
+            pl_uuid = [*(*(&v72 + 1) + 8 * j) pl_uuid];
+            if (pl_uuid && [v34 containsObject:pl_uuid])
             {
-              [v34 removeObject:v46];
+              [v34 removeObject:pl_uuid];
             }
           }
 
@@ -247,16 +247,16 @@ LABEL_23:
         while (v43);
       }
 
-      v47 = [v34 allObjects];
+      allObjects = [v34 allObjects];
 
       v48 = PLUIGetLog();
       v10 = v57;
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
-        v49 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
-        v50 = [v49 count];
-        v51 = [(PXPhotoKitDeletePhotosActionController *)self _plAssets];
-        v52 = [v51 count];
+        _assets3 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
+        v50 = [_assets3 count];
+        _plAssets3 = [(PXPhotoKitDeletePhotosActionController *)self _plAssets];
+        v52 = [_plAssets3 count];
         *buf = 134218754;
         v82 = v62;
         v83 = 2048;
@@ -264,14 +264,14 @@ LABEL_23:
         v85 = 2048;
         v86 = v52;
         v87 = 2112;
-        v88 = v47;
+        v88 = allObjects;
         _os_log_impl(&dword_1A3C1C000, v48, OS_LOG_TYPE_ERROR, "Invalid recover assets state. previousDeletionCount: %ld, assetsCount: %lu, plAssetsCount: %lu, missingUUIDs: %@", buf, 0x2Au);
       }
 
       v29 = v71;
-      a5 = v58;
-      a6 = v59;
-      v11 = v61;
+      buttonTitle = buttonTitleCopy;
+      behavior = behaviorCopy;
+      firstObject = v61;
       v18 = v56;
     }
 
@@ -286,10 +286,10 @@ LABEL_23:
 
     v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v18, v10];
     v19 = PLLocalizedFrameworkString();
-    v26 = a3;
-    v25 = a4;
+    messageCopy2 = message;
+    titleCopy2 = title;
 
-    if (a3)
+    if (message)
     {
       goto LABEL_51;
     }
@@ -305,7 +305,7 @@ LABEL_23:
 
   v67 = 0;
   v68 = 0;
-  [v66 getExpungeWarningMessage:&v68 buttonTitle:&v67 forAssets:v9];
+  [v66 getExpungeWarningMessage:&v68 buttonTitle:&v67 forAssets:_plAssets];
   v15 = v68;
   v19 = v67;
   if (!v19)
@@ -320,54 +320,54 @@ LABEL_6:
 
 LABEL_17:
   v63 = 1;
-  v26 = a3;
-  v25 = a4;
-  if (a3)
+  messageCopy2 = message;
+  titleCopy2 = title;
+  if (message)
   {
 LABEL_51:
     v54 = v15;
-    *v26 = v15;
+    *messageCopy2 = v15;
   }
 
 LABEL_52:
-  if (v25)
+  if (titleCopy2)
   {
     v55 = v19;
-    *v25 = v19;
+    *titleCopy2 = v19;
   }
 
-  if (a5)
+  if (buttonTitle)
   {
-    *a5 = PLLocalizedFrameworkString();
+    *buttonTitle = PLLocalizedFrameworkString();
   }
 
-  if (a6)
+  if (behavior)
   {
-    *a6 = v63;
+    *behavior = v63;
   }
 }
 
-- (void)_dismissConfirmationViewController:(id)a3
+- (void)_dismissConfirmationViewController:(id)controller
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isBeingDismissed])
+  controllerCopy = controller;
+  if ([controllerCopy isBeingDismissed])
   {
-    v5 = PLUIGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    delegate = PLUIGetLog();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
-      _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_INFO, "Confirmation view controller %@ is already being dismissed.", &v7, 0xCu);
+      v8 = controllerCopy;
+      _os_log_impl(&dword_1A3C1C000, delegate, OS_LOG_TYPE_INFO, "Confirmation view controller %@ is already being dismissed.", &v7, 0xCu);
     }
   }
 
   else
   {
-    v5 = [(PXPhotoKitDeletePhotosActionController *)self delegate];
+    delegate = [(PXPhotoKitDeletePhotosActionController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 deletePhotosActionController:self dismissConfirmationViewController:v4];
+      [delegate deletePhotosActionController:self dismissConfirmationViewController:controllerCopy];
     }
 
     else
@@ -376,7 +376,7 @@ LABEL_52:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138412290;
-        v8 = v5;
+        v8 = delegate;
         _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Delegate %@ does not support dismissing confirmation view controllers.", &v7, 0xCu);
       }
     }
@@ -385,23 +385,23 @@ LABEL_52:
 
 - (void)_handleOneTimeAlertConfirmed
 {
-  v3 = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
-  [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:v3];
+  _oneTimeConfirmationAlertController = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
+  [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:_oneTimeConfirmationAlertController];
 
   [(PXPhotoKitDeletePhotosActionController *)self _setOneTimeConfirmationAlertController:0];
   PLCPLRecordDidNotifyDeleteBehaviorForCurrentAccount();
-  v4 = [(PXActionRecord *)self->_record userConfirmation];
+  userConfirmation = [(PXActionRecord *)self->_record userConfirmation];
 
-  [(PXPhotoKitDeletePhotosActionController *)self _handleFinalConfirmation:v4];
+  [(PXPhotoKitDeletePhotosActionController *)self _handleFinalConfirmation:userConfirmation];
 }
 
-- (void)_handleMainAlertConfirmation:(int64_t)a3
+- (void)_handleMainAlertConfirmation:(int64_t)confirmation
 {
   v15 = *MEMORY[0x1E69E9840];
   [(PXPhotoKitDeletePhotosActionController *)self _recordUserConfirmation:?];
-  v5 = (a3 < 5) & (0x1Au >> a3);
-  v6 = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
-  [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:v6];
+  v5 = (confirmation < 5) & (0x1Au >> confirmation);
+  _mainAlertController = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
+  [(PXPhotoKitDeletePhotosActionController *)self _dismissConfirmationViewController:_mainAlertController];
 
   [(PXPhotoKitDeletePhotosActionController *)self _setMainAlertController:0];
   if (v5 == 1 && self->_action <= 1uLL && (-[PXPhotoKitDeletePhotosActionController _plAssets](self, "_plAssets"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 indexOfObjectPassingTest:&__block_literal_global_242], v7, v8 != 0x7FFFFFFFFFFFFFFFLL) && PLCPLShouldNotifyDeleteBehaviorForCurrentAccount())
@@ -433,23 +433,23 @@ LABEL_52:
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "[PXPhotoKitDeletePhotosActionController] Handling Final User Decision Should Delete: %@.", &v13, 0xCu);
     }
 
-    [(PXPhotoKitDeletePhotosActionController *)self _handleFinalConfirmation:a3];
+    [(PXPhotoKitDeletePhotosActionController *)self _handleFinalConfirmation:confirmation];
   }
 }
 
 - (void)_showOnetimeConfirmation
 {
   [(PXPhotoKitDeletePhotosActionController *)self _ensureOneTimeConfirmationAlertController];
-  v4 = [(PXPhotoKitDeletePhotosActionController *)self delegate];
-  v3 = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
-  [v4 deletePhotosActionController:self presentConfirmationViewController:v3];
+  delegate = [(PXPhotoKitDeletePhotosActionController *)self delegate];
+  _oneTimeConfirmationAlertController = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
+  [delegate deletePhotosActionController:self presentConfirmationViewController:_oneTimeConfirmationAlertController];
 }
 
 - (void)_ensureOneTimeConfirmationAlertController
 {
-  v3 = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
+  _oneTimeConfirmationAlertController = [(PXPhotoKitDeletePhotosActionController *)self _oneTimeConfirmationAlertController];
 
-  if (!v3)
+  if (!_oneTimeConfirmationAlertController)
   {
     v4 = PLLocalizedFrameworkString();
     v5 = PLLocalizedFrameworkString();
@@ -481,9 +481,9 @@ void __83__PXPhotoKitDeletePhotosActionController__ensureOneTimeConfirmationAler
 
 - (void)_ensureMainAlertController
 {
-  v3 = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
+  _mainAlertController = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
 
-  if (!v3)
+  if (!_mainAlertController)
   {
     v31[0] = 0;
     v29 = 0;
@@ -494,13 +494,13 @@ void __83__PXPhotoKitDeletePhotosActionController__ensureOneTimeConfirmationAler
     v22 = v29;
     v5 = v28;
     objc_initWeak(&location, self);
-    v6 = [(PXPhotoKitDeletePhotosActionController *)self delegate];
+    delegate = [(PXPhotoKitDeletePhotosActionController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(PXPhotoKitDeletePhotosActionController *)self delegate];
-      v9 = [v8 preferredAlertControllerStyleForDeletePhotosActionController:self];
+      delegate2 = [(PXPhotoKitDeletePhotosActionController *)self delegate];
+      v9 = [delegate2 preferredAlertControllerStyleForDeletePhotosActionController:self];
     }
 
     else
@@ -508,14 +508,14 @@ void __83__PXPhotoKitDeletePhotosActionController__ensureOneTimeConfirmationAler
       v9 = 0;
     }
 
-    v10 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
-    v11 = [v10 firstObject];
-    v12 = [v11 isCloudSharedAsset];
+    _assets = [(PXPhotoKitDeletePhotosActionController *)self _assets];
+    firstObject = [_assets firstObject];
+    isCloudSharedAsset = [firstObject isCloudSharedAsset];
 
-    if (v12)
+    if (isCloudSharedAsset)
     {
       v13 = [MEMORY[0x1E696AD60] stringWithString:@"PXSharedAlbumsDeleteAssetWarningTitle"];
-      v14 = [PXPhotoKitDeletePhotosActionController suffixForAssets:v10];
+      v14 = [PXPhotoKitDeletePhotosActionController suffixForAssets:_assets];
       [v13 appendFormat:@"%@", v14];
 
       v15 = v4;
@@ -586,20 +586,20 @@ void __68__PXPhotoKitDeletePhotosActionController__ensureMainAlertController__bl
   [WeakRetained _handleMainAlertConfirmation:2];
 }
 
-- (void)_runDestructiveActionWithCompletion:(id)a3
+- (void)_runDestructiveActionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_record;
-  v6 = [(PXActionRecord *)v5 userConfirmation];
-  if (v6 <= 4 && ((0x1Au >> v6) & 1) != 0)
+  userConfirmation = [(PXActionRecord *)v5 userConfirmation];
+  if (userConfirmation <= 4 && ((0x1Au >> userConfirmation) & 1) != 0)
   {
-    v7 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
+    _assets = [(PXPhotoKitDeletePhotosActionController *)self _assets];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __78__PXPhotoKitDeletePhotosActionController__runDestructiveActionWithCompletion___block_invoke_2;
     aBlock[3] = &unk_1E77383F8;
     aBlock[4] = self;
-    v8 = v7;
+    v8 = _assets;
     v25 = v8;
     v9 = _Block_copy(aBlock);
     action = self->_action;
@@ -614,7 +614,7 @@ void __68__PXPhotoKitDeletePhotosActionController__ensureMainAlertController__bl
         v21[3] = &unk_1E773A9D8;
         v12 = &v22;
         v22 = &__block_literal_global_203_100582;
-        v23 = v4;
+        v23 = completionCopy;
         v9[2](v9, v11, v21);
         v13 = v23;
         goto LABEL_10;
@@ -628,7 +628,7 @@ void __68__PXPhotoKitDeletePhotosActionController__ensureMainAlertController__bl
         v14[2] = __78__PXPhotoKitDeletePhotosActionController__runDestructiveActionWithCompletion___block_invoke_4;
         v14[3] = &unk_1E7747648;
         v12 = &v15;
-        v15 = v4;
+        v15 = completionCopy;
         v9[2](v9, v11, v14);
         goto LABEL_14;
       }
@@ -644,7 +644,7 @@ void __68__PXPhotoKitDeletePhotosActionController__ensureMainAlertController__bl
         v16[2] = __78__PXPhotoKitDeletePhotosActionController__runDestructiveActionWithCompletion___block_invoke_3_213;
         v16[3] = &unk_1E7747648;
         v12 = &v17;
-        v17 = v4;
+        v17 = completionCopy;
         v9[2](v9, v11, v16);
         goto LABEL_14;
       }
@@ -658,7 +658,7 @@ void __68__PXPhotoKitDeletePhotosActionController__ensureMainAlertController__bl
         v18[3] = &unk_1E773A9D8;
         v12 = &v19;
         v19 = &__block_literal_global_203_100582;
-        v20 = v4;
+        v20 = completionCopy;
         v9[2](v9, v11, v18);
         v13 = v20;
 LABEL_10:
@@ -670,7 +670,7 @@ LABEL_14:
     goto LABEL_16;
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_16:
 }
 
@@ -752,7 +752,7 @@ void __78__PXPhotoKitDeletePhotosActionController__runDestructiveActionWithCompl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleFinalConfirmation:(int64_t)a3
+- (void)_handleFinalConfirmation:(int64_t)confirmation
 {
   [(PXPhotoKitDeletePhotosActionController *)self _recordUserConfirmation:?];
   v5 = objc_initWeak(&location, self);
@@ -765,7 +765,7 @@ void __78__PXPhotoKitDeletePhotosActionController__runDestructiveActionWithCompl
   v9[4] = self;
   v6 = _Block_copy(v9);
   v7 = v6;
-  if (a3 <= 4 && ((0x1Au >> a3) & 1) != 0)
+  if (confirmation <= 4 && ((0x1Au >> confirmation) & 1) != 0)
   {
     willDeleteHandler = self->_willDeleteHandler;
     if (willDeleteHandler)
@@ -802,61 +802,61 @@ void __67__PXPhotoKitDeletePhotosActionController__handleFinalConfirmation___blo
   *(v6 + 16) = 0;
 }
 
-- (void)ppt_performDeleteWithoutUserConfirmationWithCompletionHandler:(id)a3
+- (void)ppt_performDeleteWithoutUserConfirmationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v4 = &__block_literal_global_100593;
+    handlerCopy = &__block_literal_global_100593;
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   [(PXPhotoKitDeletePhotosActionController *)self _recordVariant:@"ppt"];
   [(PXPhotoKitDeletePhotosActionController *)self _recordUserConfirmation:3];
   [(PXPhotoKitDeletePhotosActionController *)self _runDestructiveActionWithCompletion:v5];
 }
 
-- (void)_recordVariant:(id)a3
+- (void)_recordVariant:(id)variant
 {
-  v4 = [(PXActionRecord *)self->_record withVariant:a3];
+  v4 = [(PXActionRecord *)self->_record withVariant:variant];
   record = self->_record;
   self->_record = v4;
 }
 
-- (void)_recordUserConfirmation:(int64_t)a3
+- (void)_recordUserConfirmation:(int64_t)confirmation
 {
   record = self->_record;
-  v8 = [(PXPhotoKitDeletePhotosActionController *)self _assets];
-  v6 = -[PXActionRecord withUserConfirmation:assetCount:](record, "withUserConfirmation:assetCount:", a3, [v8 count]);
+  _assets = [(PXPhotoKitDeletePhotosActionController *)self _assets];
+  v6 = -[PXActionRecord withUserConfirmation:assetCount:](record, "withUserConfirmation:assetCount:", confirmation, [_assets count]);
   v7 = self->_record;
   self->_record = v6;
 }
 
-- (void)performWithWillDeleteHandler:(id)a3 completionHandler:(id)a4
+- (void)performWithWillDeleteHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v7 = a3;
-  v8 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (self->_completionHandler)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeletePhotosActionController.m" lineNumber:70 description:{@"Completion handler for %@ should be nil here", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeletePhotosActionController.m" lineNumber:70 description:{@"Completion handler for %@ should be nil here", self}];
   }
 
   if (self->_willDeleteHandler)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeletePhotosActionController.m" lineNumber:71 description:{@"Delete completion handler for %@ should be nil here", self}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotoKitDeletePhotosActionController.m" lineNumber:71 description:{@"Delete completion handler for %@ should be nil here", self}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_completionHandler___block_invoke;
   aBlock[3] = &unk_1E7740890;
-  v9 = v8;
+  v9 = completionHandlerCopy;
   aBlock[4] = self;
   v20 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [v7 copy];
+  v11 = [handlerCopy copy];
   willDeleteHandler = self->_willDeleteHandler;
   self->_willDeleteHandler = v11;
 
@@ -873,9 +873,9 @@ void __67__PXPhotoKitDeletePhotosActionController__handleFinalConfirmation___blo
   else
   {
     [(PXPhotoKitDeletePhotosActionController *)self _ensureMainAlertController];
-    v15 = [(PXPhotoKitDeletePhotosActionController *)self delegate];
-    v16 = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
-    [v15 deletePhotosActionController:self presentConfirmationViewController:v16];
+    delegate = [(PXPhotoKitDeletePhotosActionController *)self delegate];
+    _mainAlertController = [(PXPhotoKitDeletePhotosActionController *)self _mainAlertController];
+    [delegate deletePhotosActionController:self presentConfirmationViewController:_mainAlertController];
   }
 }
 
@@ -890,22 +890,22 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
   return [*(a1 + 32) description];
 }
 
-- (PXPhotoKitDeletePhotosActionController)initWithAction:(int64_t)a3 assets:(id)a4 undoManager:(id)a5 delegate:(id)a6
+- (PXPhotoKitDeletePhotosActionController)initWithAction:(int64_t)action assets:(id)assets undoManager:(id)manager delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetsCopy = assets;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = PXPhotoKitDeletePhotosActionController;
   v14 = [(PXPhotoKitDeletePhotosActionController *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    v14->_action = a3;
-    objc_storeStrong(&v14->_undoManager, a5);
-    objc_storeWeak(&v15->_delegate, v13);
-    objc_storeStrong(&v15->__assets, a4);
-    v16 = [MEMORY[0x1E6978630] pl_managedAssetsForAssets:v11];
+    v14->_action = action;
+    objc_storeStrong(&v14->_undoManager, manager);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v15->__assets, assets);
+    v16 = [MEMORY[0x1E6978630] pl_managedAssetsForAssets:assetsCopy];
     plAssets = v15->__plAssets;
     v15->__plAssets = v16;
 
@@ -920,14 +920,14 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
   return v15;
 }
 
-+ (id)suffixForAssets:(id)a3
++ (id)suffixForAssets:(id)assets
 {
-  v3 = a3;
-  v4 = [v3 count];
+  assetsCopy = assets;
+  v4 = [assetsCopy count];
   v10 = 0;
   v11 = 0;
   v9 = 0;
-  [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:v3 photosCount:&v11 videosCount:&v10 othersCount:&v9];
+  [PXPhotoKitDeletePhotosActionController assetTypeCountsForAssets:assetsCopy photosCount:&v11 videosCount:&v10 othersCount:&v9];
 
   if (v11 == v4)
   {
@@ -963,22 +963,22 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
   return v7;
 }
 
-+ (id)warningStringForAssets:(id)a3 isDeleting:(BOOL)a4
++ (id)warningStringForAssets:(id)assets isDeleting:(BOOL)deleting
 {
-  if (a4)
+  if (deleting)
   {
     v4 = MEMORY[0x1E696AD60];
-    v5 = a3;
-    v6 = [v4 stringWithString:@"PXPhotoKitUnifiedDestructiveActionPerformer"];
-    v7 = [PXPhotoKitDeletePhotosActionController suffixForAssets:v5];
+    assetsCopy = assets;
+    assetsCopy2 = [v4 stringWithString:@"PXPhotoKitUnifiedDestructiveActionPerformer"];
+    v7 = [PXPhotoKitDeletePhotosActionController suffixForAssets:assetsCopy];
 
-    [v6 appendFormat:@"%@", v7];
-    PXLocalizedStringFromTable(v6, @"PhotosUICore");
+    [assetsCopy2 appendFormat:@"%@", v7];
+    PXLocalizedStringFromTable(assetsCopy2, @"PhotosUICore");
   }
 
   else
   {
-    v6 = a3;
+    assetsCopy2 = assets;
     PLLocalizedStringForAction();
   }
   v8 = ;
@@ -986,15 +986,15 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
   return v8;
 }
 
-+ (void)assetTypeCountsForAssets:(id)a3 photosCount:(int64_t *)a4 videosCount:(int64_t *)a5 othersCount:(int64_t *)a6
++ (void)assetTypeCountsForAssets:(id)assets photosCount:(int64_t *)count videosCount:(int64_t *)videosCount othersCount:(int64_t *)othersCount
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  assetsCopy = assets;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [assetsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1008,7 +1008,7 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
@@ -1028,11 +1028,11 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [assetsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
-    if (a4)
+    if (count)
     {
       goto LABEL_14;
     }
@@ -1043,21 +1043,21 @@ id __89__PXPhotoKitDeletePhotosActionController_performWithWillDeleteHandler_com
     v11 = 0;
     v12 = 0;
     v13 = 0;
-    if (a4)
+    if (count)
     {
 LABEL_14:
-      *a4 = v13;
+      *count = v13;
     }
   }
 
-  if (a5)
+  if (videosCount)
   {
-    *a5 = v11;
+    *videosCount = v11;
   }
 
-  if (a6)
+  if (othersCount)
   {
-    *a6 = v12;
+    *othersCount = v12;
   }
 }
 

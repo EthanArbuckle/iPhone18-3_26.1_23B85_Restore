@@ -1,63 +1,63 @@
 @interface STAskForTimeRequestReceivedUserNotificationContext
-- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)a3 childName:(id)a4 childDSID:(id)a5 requestedResourceName:(id)a6;
-- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)a3 familyMember:(id)a4 requestedResourceName:(id)a5;
-- (STAskForTimeRequestReceivedUserNotificationContext)initWithCoder:(id)a3;
-- (void)_fetchAndWriteFamilyPhotoURLIfNeeded:(id)a3;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)identifier childName:(id)name childDSID:(id)d requestedResourceName:(id)resourceName;
+- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)identifier familyMember:(id)member requestedResourceName:(id)name;
+- (STAskForTimeRequestReceivedUserNotificationContext)initWithCoder:(id)coder;
+- (void)_fetchAndWriteFamilyPhotoURLIfNeeded:(id)needed;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STAskForTimeRequestReceivedUserNotificationContext
 
-- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)a3 childName:(id)a4 childDSID:(id)a5 requestedResourceName:(id)a6
+- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)identifier childName:(id)name childDSID:(id)d requestedResourceName:(id)resourceName
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  resourceNameCopy = resourceName;
   v18.receiver = self;
   v18.super_class = STAskForTimeRequestReceivedUserNotificationContext;
-  v14 = [(STUserNotificationContext *)&v18 initWithIdentifier:a3];
+  v14 = [(STUserNotificationContext *)&v18 initWithIdentifier:identifier];
   if (v14)
   {
-    v19[0] = v11;
-    v19[1] = v13;
+    v19[0] = nameCopy;
+    v19[1] = resourceNameCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     [(STUserNotificationContext *)v14 setLocalizedUserNotificationBodyArguments:v15];
 
-    objc_storeStrong(&v14->_childDSID, a5);
-    objc_storeStrong(&v14->_childName, a4);
+    objc_storeStrong(&v14->_childDSID, d);
+    objc_storeStrong(&v14->_childName, name);
   }
 
   v16 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)a3 familyMember:(id)a4 requestedResourceName:(id)a5
+- (STAskForTimeRequestReceivedUserNotificationContext)initWithAskForTimeRequestIdentifier:(id)identifier familyMember:(id)member requestedResourceName:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 firstName];
-  v12 = [v9 dsid];
+  nameCopy = name;
+  memberCopy = member;
+  identifierCopy = identifier;
+  firstName = [memberCopy firstName];
+  dsid = [memberCopy dsid];
 
-  v13 = [(STAskForTimeRequestReceivedUserNotificationContext *)self initWithAskForTimeRequestIdentifier:v10 childName:v11 childDSID:v12 requestedResourceName:v8];
+  v13 = [(STAskForTimeRequestReceivedUserNotificationContext *)self initWithAskForTimeRequestIdentifier:identifierCopy childName:firstName childDSID:dsid requestedResourceName:nameCopy];
   return v13;
 }
 
-- (STAskForTimeRequestReceivedUserNotificationContext)initWithCoder:(id)a3
+- (STAskForTimeRequestReceivedUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = STAskForTimeRequestReceivedUserNotificationContext;
-  v5 = [(STUserNotificationContext *)&v11 initWithCoder:v4];
+  v5 = [(STUserNotificationContext *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childDSID"];
     childDSID = v5->_childDSID;
     v5->_childDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"childName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"childName"];
     childName = v5->_childName;
     v5->_childName = v8;
   }
@@ -65,31 +65,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STAskForTimeRequestReceivedUserNotificationContext;
-  v4 = a3;
-  [(STUserNotificationContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_childDSID forKey:{@"childDSID", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_childName forKey:@"childName"];
+  coderCopy = coder;
+  [(STUserNotificationContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_childDSID forKey:{@"childDSID", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_childName forKey:@"childName"];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __103__STAskForTimeRequestReceivedUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STAskForTimeRequestReceivedUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 
@@ -180,20 +180,20 @@ uint64_t __103__STAskForTimeRequestReceivedUserNotificationContext_customizeNoti
   return result;
 }
 
-- (void)_fetchAndWriteFamilyPhotoURLIfNeeded:(id)a3
+- (void)_fetchAndWriteFamilyPhotoURLIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(STAskForTimeRequestReceivedUserNotificationContext *)self childDSID];
-  if (v5)
+  neededCopy = needed;
+  childDSID = [(STAskForTimeRequestReceivedUserNotificationContext *)self childDSID];
+  if (childDSID)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"remotemanagement-%@", v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"remotemanagement-%@", childDSID];
     v7 = +[STLocations familyPhotosCacheDirectory];
     v8 = [v7 URLByAppendingPathComponent:v6 isDirectory:0];
     v9 = [v8 URLByAppendingPathExtension:@"png"];
 
     if ([v9 checkResourceIsReachableAndReturnError:0])
     {
-      v4[2](v4, v9);
+      neededCopy[2](neededCopy, v9);
     }
 
     else
@@ -204,14 +204,14 @@ uint64_t __103__STAskForTimeRequestReceivedUserNotificationContext_customizeNoti
         [STAskForTimeRequestReceivedUserNotificationContext _fetchAndWriteFamilyPhotoURLIfNeeded:];
       }
 
-      v11 = [objc_alloc(MEMORY[0x1E699C078]) initWithFamilyMemberDSID:v5 size:1 localFallback:1];
+      v11 = [objc_alloc(MEMORY[0x1E699C078]) initWithFamilyMemberDSID:childDSID size:1 localFallback:1];
       [v11 setBackgroundType:1];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __91__STAskForTimeRequestReceivedUserNotificationContext__fetchAndWriteFamilyPhotoURLIfNeeded___block_invoke;
       v12[3] = &unk_1E7CE6D80;
-      v13 = v5;
-      v16 = v4;
+      v13 = childDSID;
+      v16 = neededCopy;
       v14 = v7;
       v15 = v9;
       [v11 startRequestWithCompletionHandler:v12];
@@ -220,7 +220,7 @@ uint64_t __103__STAskForTimeRequestReceivedUserNotificationContext_customizeNoti
 
   else
   {
-    v4[2](v4, 0);
+    neededCopy[2](neededCopy, 0);
   }
 }
 

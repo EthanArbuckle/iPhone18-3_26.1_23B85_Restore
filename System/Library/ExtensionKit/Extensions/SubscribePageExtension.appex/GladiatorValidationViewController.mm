@@ -1,14 +1,14 @@
 @interface GladiatorValidationViewController
-- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GladiatorValidationViewController
 
-- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithCoder:(id)coder
 {
   v4 = sub_100744DB4();
   v5 = *(v4 - 8);
@@ -27,44 +27,44 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1007417F4();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100261A04(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100261A04(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1007417F4();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100261E58();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithStyle:(int64_t)a3
+- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension33GladiatorValidationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,7 +1,7 @@
 @interface FigCapturePointCloudDataSinkPipeline
-- (id)_buildPointCloudDataSinkPipelineWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(_OWORD *)a5 clientAuditToken:(uint64_t)a6 delegate:;
+- (id)_buildPointCloudDataSinkPipelineWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(_OWORD *)graph clientAuditToken:(uint64_t)token delegate:;
 - (void)dealloc;
-- (void)initWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(uint64_t)a5 name:(_OWORD *)a6 clientAuditToken:(uint64_t)a7 delegate:;
+- (void)initWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(uint64_t)graph name:(_OWORD *)name clientAuditToken:(uint64_t)token delegate:;
 @end
 
 @implementation FigCapturePointCloudDataSinkPipeline
@@ -13,23 +13,23 @@
   [(FigCaptureRemoteQueueSinkPipeline *)&v3 dealloc];
 }
 
-- (void)initWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(uint64_t)a5 name:(_OWORD *)a6 clientAuditToken:(uint64_t)a7 delegate:
+- (void)initWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(uint64_t)graph name:(_OWORD *)name clientAuditToken:(uint64_t)token delegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = FigCapturePointCloudDataSinkPipeline;
-  v12 = objc_msgSendSuper2(&v16, sel_initWithGraph_name_sinkID_, a4, a5, [objc_msgSend(a2 "sinkConfiguration")]);
+  v12 = objc_msgSendSuper2(&v16, sel_initWithGraph_name_sinkID_, output, graph, [objc_msgSend(a2 "sinkConfiguration")]);
   if (v12)
   {
     v12[7] = [objc_msgSend(a2 "sourceConfiguration")];
-    v14 = a6[1];
-    v15[0] = *a6;
+    v14 = name[1];
+    v15[0] = *name;
     v15[1] = v14;
-    if ([(FigCapturePointCloudDataSinkPipeline *)v12 _buildPointCloudDataSinkPipelineWithConfiguration:a2 sourceOutput:a3 graph:a4 clientAuditToken:v15 delegate:a7])
+    if ([(FigCapturePointCloudDataSinkPipeline *)v12 _buildPointCloudDataSinkPipelineWithConfiguration:a2 sourceOutput:configuration graph:output clientAuditToken:v15 delegate:token])
     {
       fig_log_get_emitter();
       FigDebugAssert3();
@@ -41,7 +41,7 @@
   return v12;
 }
 
-- (id)_buildPointCloudDataSinkPipelineWithConfiguration:(uint64_t)a3 sourceOutput:(void *)a4 graph:(_OWORD *)a5 clientAuditToken:(uint64_t)a6 delegate:
+- (id)_buildPointCloudDataSinkPipelineWithConfiguration:(uint64_t)configuration sourceOutput:(void *)output graph:(_OWORD *)graph clientAuditToken:(uint64_t)token delegate:
 {
   if (result)
   {
@@ -51,13 +51,13 @@
     v19.super_class = FigCapturePointCloudDataSinkPipeline;
     objc_msgSendSuper2(&v19, sel_setUpstreamOutput_);
     v12 = [BWRemoteQueueSinkNode alloc];
-    v13 = [v11 sinkID];
-    v14 = a5[1];
-    v18[0] = *a5;
+    sinkID = [v11 sinkID];
+    v14 = graph[1];
+    v18[0] = *graph;
     v18[1] = v14;
-    v15 = [(BWRemoteQueueSinkNode *)v12 initWithMediaType:1885564004 clientAuditToken:v18 sinkID:v13 cameraInfoByPortType:0];
+    v15 = [(BWRemoteQueueSinkNode *)v12 initWithMediaType:1885564004 clientAuditToken:v18 sinkID:sinkID cameraInfoByPortType:0];
     [(BWNode *)v15 setName:@"Point Cloud Data Remote Queue Sink"];
-    [(BWRemoteQueueSinkNode *)v15 setDelegate:a6];
+    [(BWRemoteQueueSinkNode *)v15 setDelegate:token];
     -[BWRemoteQueueSinkNode setDiscardsLateSampleBuffers:](v15, "setDiscardsLateSampleBuffers:", [objc_msgSend(a2 "pointCloudDataSinkConfiguration")]);
     -[BWRemoteQueueSinkNode setClientVideoRetainedBufferCount:](v15, "setClientVideoRetainedBufferCount:", [a2 retainedBufferCount]);
     v17.receiver = v11;
@@ -67,11 +67,11 @@
       v16.receiver = v11;
       v16.super_class = FigCapturePointCloudDataSinkPipeline;
       objc_msgSendSuper2(&v16, sel_setSinkNode_, v15);
-      if ([a4 connectOutput:a3 toInput:-[BWNode input](v15 pipelineStage:{"input"), 0}])
+      if ([output connectOutput:configuration toInput:-[BWNode input](v15 pipelineStage:{"input"), 0}])
       {
-        if ([a4 deferredNodePrepareSupported] && (objc_msgSend(objc_msgSend(a2, "sinkConfiguration"), "deferredStartEnabled") & 1) == 0)
+        if ([output deferredNodePrepareSupported] && (objc_msgSend(objc_msgSend(a2, "sinkConfiguration"), "deferredStartEnabled") & 1) == 0)
         {
-          [a4 enableDeferredPrepareForNodesNotInPathOfSinkNode:v15];
+          [output enableDeferredPrepareForNodesNotInPathOfSinkNode:v15];
         }
 
         goto LABEL_7;

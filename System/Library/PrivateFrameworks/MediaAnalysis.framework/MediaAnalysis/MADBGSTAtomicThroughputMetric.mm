@@ -1,50 +1,50 @@
 @interface MADBGSTAtomicThroughputMetric
-+ (id)metricForTask:(unint64_t)a3 subCategory:(id)a4 startsKey:(id)a5 durationKey:(id)a6 BGSystemTask:(id)a7;
-- (BOOL)updateWithSessionLog:(id)a3;
-- (MADBGSTAtomicThroughputMetric)initWithTask:(unint64_t)a3 subCategory:(id)a4 startsKey:(id)a5 durationKey:(id)a6 BGSystemTask:(id)a7;
++ (id)metricForTask:(unint64_t)task subCategory:(id)category startsKey:(id)key durationKey:(id)durationKey BGSystemTask:(id)systemTask;
+- (BOOL)updateWithSessionLog:(id)log;
+- (MADBGSTAtomicThroughputMetric)initWithTask:(unint64_t)task subCategory:(id)category startsKey:(id)key durationKey:(id)durationKey BGSystemTask:(id)systemTask;
 @end
 
 @implementation MADBGSTAtomicThroughputMetric
 
-- (MADBGSTAtomicThroughputMetric)initWithTask:(unint64_t)a3 subCategory:(id)a4 startsKey:(id)a5 durationKey:(id)a6 BGSystemTask:(id)a7
+- (MADBGSTAtomicThroughputMetric)initWithTask:(unint64_t)task subCategory:(id)category startsKey:(id)key durationKey:(id)durationKey BGSystemTask:(id)systemTask
 {
-  v10 = a4;
-  v11 = a7;
+  categoryCopy = category;
+  systemTaskCopy = systemTask;
   v18.receiver = self;
   v18.super_class = MADBGSTAtomicThroughputMetric;
-  v12 = [(MADBGSTThroughputMetric *)&v18 initWithTask:a3 subCategory:v10 keys:0 BGSystemTask:v11];
+  v12 = [(MADBGSTThroughputMetric *)&v18 initWithTask:task subCategory:categoryCopy keys:0 BGSystemTask:systemTaskCopy];
   v13 = v12;
   if (v12)
   {
-    [(MADBGSTThroughputMetric *)v12 setTaskID:a3];
-    [(MADBGSTThroughputMetric *)v13 setSystemTask:v11];
-    v14 = MADTaskIdentifierForBackgroundTask(a3);
-    v15 = [NSString stringWithFormat:@"%@.%@", v14, v10];
+    [(MADBGSTThroughputMetric *)v12 setTaskID:task];
+    [(MADBGSTThroughputMetric *)v13 setSystemTask:systemTaskCopy];
+    v14 = MADTaskIdentifierForBackgroundTask(task);
+    categoryCopy = [NSString stringWithFormat:@"%@.%@", v14, categoryCopy];
 
-    v16 = throughputMetricForTask(v15);
+    v16 = throughputMetricForTask(categoryCopy);
     [(MADBGSTThroughputMetric *)v13 setMetric:v16];
   }
 
   return v13;
 }
 
-+ (id)metricForTask:(unint64_t)a3 subCategory:(id)a4 startsKey:(id)a5 durationKey:(id)a6 BGSystemTask:(id)a7
++ (id)metricForTask:(unint64_t)task subCategory:(id)category startsKey:(id)key durationKey:(id)durationKey BGSystemTask:(id)systemTask
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [[a1 alloc] initWithTask:a3 subCategory:v15 startsKey:v14 durationKey:v13 BGSystemTask:v12];
+  systemTaskCopy = systemTask;
+  durationKeyCopy = durationKey;
+  keyCopy = key;
+  categoryCopy = category;
+  v16 = [[self alloc] initWithTask:task subCategory:categoryCopy startsKey:keyCopy durationKey:durationKeyCopy BGSystemTask:systemTaskCopy];
 
   return v16;
 }
 
-- (BOOL)updateWithSessionLog:(id)a3
+- (BOOL)updateWithSessionLog:(id)log
 {
-  v4 = a3;
-  v5 = [(MADBGSTThroughputMetric *)self systemTask];
+  logCopy = log;
+  systemTask = [(MADBGSTThroughputMetric *)self systemTask];
 
-  if (!v5)
+  if (!systemTask)
   {
     if (MediaAnalysisLogLevel() >= 7)
     {
@@ -59,8 +59,8 @@
     goto LABEL_21;
   }
 
-  v6 = [(MADBGSTThroughputMetric *)self sessionLogKey];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  sessionLogKey = [(MADBGSTThroughputMetric *)self sessionLogKey];
+  v7 = [logCopy objectForKeyedSubscript:sessionLogKey];
 
   if (!v7)
   {
@@ -75,31 +75,31 @@
       goto LABEL_21;
     }
 
-    v16 = [(MADBGSTThroughputMetric *)self sessionLogKey];
-    v24 = [(MADBGSTThroughputMetric *)self subcategory];
+    sessionLogKey2 = [(MADBGSTThroughputMetric *)self sessionLogKey];
+    subcategory = [(MADBGSTThroughputMetric *)self subcategory];
     *buf = 138412546;
-    v33 = v16;
+    v33 = sessionLogKey2;
     v34 = 2112;
-    v35 = v24;
+    v35 = subcategory;
     v25 = "[MADBGSTThroughputMetric] No key %@ in current session log. No throughput for metric %@";
     v26 = v23;
     v27 = 22;
     goto LABEL_19;
   }
 
-  v8 = [(MADBGSTThroughputMetric *)self sessionLogKey];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  sessionLogKey3 = [(MADBGSTThroughputMetric *)self sessionLogKey];
+  v9 = [logCopy objectForKeyedSubscript:sessionLogKey3];
   v10 = [v9 objectForKeyedSubscript:self->_startsKey];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  if (![(MADBGSTThroughputMetric *)self isRegistered]&& v11)
+  if (![(MADBGSTThroughputMetric *)self isRegistered]&& unsignedIntegerValue)
   {
-    v12 = [(MADBGSTThroughputMetric *)self systemTask];
-    v13 = [(MADBGSTThroughputMetric *)self metric];
+    systemTask2 = [(MADBGSTThroughputMetric *)self systemTask];
+    metric = [(MADBGSTThroughputMetric *)self metric];
     v14 = +[NSDate now];
     v31 = 0;
-    v15 = [v12 registerThroughputTrackingFor:v13 withStartTime:v14 error:&v31];
-    v16 = v31;
+    v15 = [systemTask2 registerThroughputTrackingFor:metric withStartTime:v14 error:&v31];
+    sessionLogKey2 = v31;
 
     if (v15)
     {
@@ -115,9 +115,9 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v24 = [(MADBGSTThroughputMetric *)self metric];
+    subcategory = [(MADBGSTThroughputMetric *)self metric];
     *buf = 138412290;
-    v33 = v24;
+    v33 = subcategory;
     v25 = "[MADBGSTThroughputMetric] Unable to register throughput reporting for %@";
     v26 = v28;
     v27 = 12;
@@ -135,23 +135,23 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v17 = [(MADBGSTThroughputMetric *)self sessionLogKey];
-  v18 = [v4 objectForKeyedSubscript:v17];
+  sessionLogKey4 = [(MADBGSTThroughputMetric *)self sessionLogKey];
+  v18 = [logCopy objectForKeyedSubscript:sessionLogKey4];
   v19 = [v18 objectForKeyedSubscript:self->_durationKey];
 
-  v20 = [(MADBGSTThroughputMetric *)self metric];
-  v21 = v20;
+  metric2 = [(MADBGSTThroughputMetric *)self metric];
+  v21 = metric2;
   if (v19)
   {
-    [v20 addItemCount:{-[MADBGSTThroughputMetric count](self, "count") - v11}];
+    [metric2 addItemCount:{-[MADBGSTThroughputMetric count](self, "count") - unsignedIntegerValue}];
 
-    [(MADBGSTThroughputMetric *)self setCount:v11];
+    [(MADBGSTThroughputMetric *)self setCount:unsignedIntegerValue];
     [(MADBGSTThroughputMetric *)self flush];
   }
 
   else
   {
-    [v20 addItemCount:0];
+    [metric2 addItemCount:0];
   }
 
   v29 = 1;

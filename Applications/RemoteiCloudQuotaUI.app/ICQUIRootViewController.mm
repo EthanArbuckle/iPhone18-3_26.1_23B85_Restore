@@ -2,11 +2,11 @@
 - (void)_dismissAndExit;
 - (void)_fetchDefaultOfferAndLaunchUpgradeFlow;
 - (void)_handleFallback;
-- (void)_launchUpgradeFlowWithOffer:(id)a3 icqLink:(id)a4;
+- (void)_launchUpgradeFlowWithOffer:(id)offer icqLink:(id)link;
 - (void)loadView;
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 - (void)viewDidLoad;
 @end
 
@@ -24,8 +24,8 @@
   v19.super_class = ICQUIRootViewController;
   [(ICQUIRootViewController *)&v19 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(ICQUIRootViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(ICQUIRootViewController *)self view];
+  [view setBackgroundColor:v3];
 
   remoteContext = self->_remoteContext;
   v6 = _ICQGetLogSystem();
@@ -38,21 +38,21 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Remote context found. Proceeding to launch the upgrade flow.", v18, 2u);
     }
 
-    v8 = [(ICQRemoteContext *)self->_remoteContext offer];
-    v9 = [v8 bundleIdentifier];
-    v10 = [v9 isEqualToString:ICQBundleId];
+    offer = [(ICQRemoteContext *)self->_remoteContext offer];
+    bundleIdentifier = [offer bundleIdentifier];
+    v10 = [bundleIdentifier isEqualToString:ICQBundleId];
 
-    v11 = [v8 serverUIURL];
-    if (v11)
+    serverUIURL = [offer serverUIURL];
+    if (serverUIURL)
     {
       v12 = 0;
     }
 
     else
     {
-      v13 = [(ICQRemoteContext *)self->_remoteContext link];
-      v14 = [v13 actionURL];
-      v12 = v14 == 0;
+      link = [(ICQRemoteContext *)self->_remoteContext link];
+      actionURL = [link actionURL];
+      v12 = actionURL == 0;
     }
 
     if ((v10 | v12))
@@ -68,9 +68,9 @@
 
     else
     {
-      v16 = [(ICQRemoteContext *)self->_remoteContext offer];
-      v17 = [(ICQRemoteContext *)self->_remoteContext link];
-      [(ICQUIRootViewController *)self _launchUpgradeFlowWithOffer:v16 icqLink:v17];
+      offer2 = [(ICQRemoteContext *)self->_remoteContext offer];
+      link2 = [(ICQRemoteContext *)self->_remoteContext link];
+      [(ICQUIRootViewController *)self _launchUpgradeFlowWithOffer:offer2 icqLink:link2];
     }
   }
 
@@ -85,10 +85,10 @@
   }
 }
 
-- (void)_launchUpgradeFlowWithOffer:(id)a3 icqLink:(id)a4
+- (void)_launchUpgradeFlowWithOffer:(id)offer icqLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
+  offerCopy = offer;
+  linkCopy = link;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   flowManager = self->_flowManager;
   v9 = _ICQGetLogSystem();
@@ -110,32 +110,32 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Presenting upgrade flow within hidden app.", buf, 2u);
     }
 
-    v11 = [[ICQUpgradeFlowManager alloc] initWithOffer:v6];
+    v11 = [[ICQUpgradeFlowManager alloc] initWithOffer:offerCopy];
     v12 = self->_flowManager;
     self->_flowManager = v11;
 
     [(ICQUpgradeFlowManager *)self->_flowManager setDelegate:self];
-    v13 = [(ICQRemoteContext *)self->_remoteContext flowOptionsData];
-    v14 = [ICQUpgradeFlowOptions flowOptionsFromData:v13];
+    flowOptionsData = [(ICQRemoteContext *)self->_remoteContext flowOptionsData];
+    v14 = [ICQUpgradeFlowOptions flowOptionsFromData:flowOptionsData];
     [(ICQUpgradeFlowManager *)self->_flowManager setFlowOptions:v14];
 
-    [(ICQUpgradeFlowManager *)self->_flowManager setIcqLink:v7];
-    v15 = [(ICQRemoteContext *)self->_remoteContext presentingSceneIdentifier];
+    [(ICQUpgradeFlowManager *)self->_flowManager setIcqLink:linkCopy];
+    presentingSceneIdentifier = [(ICQRemoteContext *)self->_remoteContext presentingSceneIdentifier];
 
     v16 = _ICQGetLogSystem();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v15)
+    if (presentingSceneIdentifier)
     {
       if (v17)
       {
-        v18 = [(ICQRemoteContext *)self->_remoteContext presentingSceneIdentifier];
+        presentingSceneIdentifier2 = [(ICQRemoteContext *)self->_remoteContext presentingSceneIdentifier];
         *buf = 138412290;
-        v23 = v18;
+        v23 = presentingSceneIdentifier2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Setting OOP parent/host's app sceneIdentifier: %@", buf, 0xCu);
       }
 
-      v19 = [(ICQRemoteContext *)self->_remoteContext presentingSceneIdentifier];
-      [(ICQUpgradeFlowManager *)self->_flowManager setPresentingSceneIdentifier:v19];
+      presentingSceneIdentifier3 = [(ICQRemoteContext *)self->_remoteContext presentingSceneIdentifier];
+      [(ICQUpgradeFlowManager *)self->_flowManager setPresentingSceneIdentifier:presentingSceneIdentifier3];
     }
 
     else
@@ -172,23 +172,23 @@
 
 - (void)_handleFallback
 {
-  v2 = [(ICQRemoteContext *)self->_remoteContext offer];
+  offer = [(ICQRemoteContext *)self->_remoteContext offer];
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v2 context];
+    context = [offer context];
     v12 = 138412290;
-    v13 = v4;
+    v13 = context;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Failed to launch upgrade flow with context = %@", &v12, 0xCu);
   }
 
-  v5 = [v2 context];
-  v6 = [NSURL URLWithString:v5];
+  context2 = [offer context];
+  v6 = [NSURL URLWithString:context2];
 
-  v7 = [v6 icq_isICQLaunchURL];
+  icq_isICQLaunchURL = [v6 icq_isICQLaunchURL];
   v8 = _ICQGetLogSystem();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (icq_isICQLaunchURL)
   {
     if (v9)
     {
@@ -216,7 +216,7 @@
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -253,7 +253,7 @@ LABEL_8:
   [(ICQUIRootViewController *)self _dismissFlowWithSuccess:0];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -282,17 +282,17 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Upgrade flow has been completed.", &v14, 2u);
   }
 
-  v8 = [(ICQUpgradeFlowManager *)self->_flowManager offer];
-  v9 = [v8 isPremiumOffer];
+  offer = [(ICQUpgradeFlowManager *)self->_flowManager offer];
+  isPremiumOffer = [offer isPremiumOffer];
 
-  v10 = [(ICQUpgradeFlowManager *)self->_flowManager offer];
-  v11 = [v10 isDefaultOffer];
+  offer2 = [(ICQUpgradeFlowManager *)self->_flowManager offer];
+  isDefaultOffer = [offer2 isDefaultOffer];
 
-  if ((v11 & 1) == 0)
+  if ((isDefaultOffer & 1) == 0)
   {
     v12 = _ICQGetLogSystem();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (isPremiumOffer)
     {
       if (v13)
       {
@@ -322,7 +322,7 @@ LABEL_16:
   [(ICQUIRootViewController *)self _dismissFlowWithSuccess:1];
 }
 
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

@@ -1,7 +1,7 @@
 @interface BuddyMigrationSourceEraseController
 - (BFFFlowItemDelegate)delegate;
 - (BuddyMigrationSourceEraseController)init;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation BuddyMigrationSourceEraseController
@@ -17,8 +17,8 @@
   if (location)
   {
     v2 = objc_alloc(sub_10016940C());
-    v3 = [sub_100169520() setupAssistantConfiguration];
-    v4 = [v2 initWithConfiguration:v3];
+    setupAssistantConfiguration = [sub_100169520() setupAssistantConfiguration];
+    v4 = [v2 initWithConfiguration:setupAssistantConfiguration];
     v5 = *(location + 2);
     *(location + 2) = v4;
 
@@ -47,21 +47,21 @@
   return v6;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMigrationSourceEraseController *)v12 eraseFlow];
+  objc_storeStrong(location, completion);
+  eraseFlow = [(BuddyMigrationSourceEraseController *)selfCopy eraseFlow];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100169818;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
-  [(DKEraseFlow *)v3 prepareFlow:&v4];
+  [(DKEraseFlow *)eraseFlow prepareFlow:&v4];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v9, 0);

@@ -1,32 +1,32 @@
 @interface POPrebootDeviceConfiguration
-- (POPrebootDeviceConfiguration)initWithCoder:(id)a3;
-- (POPrebootDeviceConfiguration)initWithData:(id)a3;
-- (POPrebootDeviceConfiguration)initWithDictionary:(id)a3;
+- (POPrebootDeviceConfiguration)initWithCoder:(id)coder;
+- (POPrebootDeviceConfiguration)initWithData:(id)data;
+- (POPrebootDeviceConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)dictionaryRepresentationForDisplay:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEncryptionKeyData:(id)a3;
+- (id)dictionaryRepresentationForDisplay:(BOOL)display;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEncryptionKeyData:(id)data;
 @end
 
 @implementation POPrebootDeviceConfiguration
 
-- (void)setEncryptionKeyData:(id)a3
+- (void)setEncryptionKeyData:(id)data
 {
-  objc_storeStrong(&self->_encryptionKeyData, a3);
-  v7 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  objc_storeStrong(&self->_encryptionKeyData, data);
+  dataCopy = data;
+  date = [MEMORY[0x277CBEAA8] date];
   encryptionKeySaveDate = self->_encryptionKeySaveDate;
-  self->_encryptionKeySaveDate = v5;
+  self->_encryptionKeySaveDate = date;
 }
 
-- (id)dictionaryRepresentationForDisplay:(BOOL)a3
+- (id)dictionaryRepresentationForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v5 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v5 setFormatOptions:1907];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   encryptionKeyData = self->_encryptionKeyData;
-  if (v3)
+  if (displayCopy)
   {
     [(NSData *)encryptionKeyData psso_sha256HashString];
   }
@@ -39,7 +39,7 @@
   v9 = NSStringFromSelector(sel_encryptionKeyData);
   [v6 setObject:v8 forKeyedSubscript:v9];
 
-  if (v3)
+  if (displayCopy)
   {
     [v5 stringFromDate:self->_encryptionKeySaveDate];
   }
@@ -54,8 +54,8 @@
   v12 = NSStringFromSelector(sel_encryptionKeySaveDate);
   [v6 setObject:v11 forKeyedSubscript:v12];
 
-  v13 = [MEMORY[0x277CBEAA8] date];
-  v14 = [v5 stringFromDate:v13];
+  date = [MEMORY[0x277CBEAA8] date];
+  v14 = [v5 stringFromDate:date];
   [v6 setObject:v14 forKeyedSubscript:@"created"];
 
   return v6;
@@ -73,20 +73,20 @@ id __61__POPrebootDeviceConfiguration_dataRepresentationForDisplay___block_invok
   return v1;
 }
 
-- (POPrebootDeviceConfiguration)initWithDictionary:(id)a3
+- (POPrebootDeviceConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(POPrebootDeviceConfiguration *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_encryptionKeyData);
-    v7 = [v4 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:v6];
 
     if (v7)
     {
       v8 = objc_alloc(MEMORY[0x277CBEA90]);
       v9 = NSStringFromSelector(sel_encryptionKeyData);
-      v10 = [v4 objectForKeyedSubscript:v9];
+      v10 = [dictionaryCopy objectForKeyedSubscript:v9];
       v11 = [v8 psso_initWithBase64URLEncodedString:v10];
 
       encryptionKeyData = v5->_encryptionKeyData;
@@ -94,12 +94,12 @@ id __61__POPrebootDeviceConfiguration_dataRepresentationForDisplay___block_invok
     }
 
     v13 = NSStringFromSelector(sel_encryptionKeySaveDate);
-    v14 = [v4 objectForKeyedSubscript:v13];
+    v14 = [dictionaryCopy objectForKeyedSubscript:v13];
 
     if (v14)
     {
       v15 = NSStringFromSelector(sel_encryptionKeySaveDate);
-      v16 = [v4 objectForKeyedSubscript:v15];
+      v16 = [dictionaryCopy objectForKeyedSubscript:v15];
 
       v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v16, "intValue")}];
       encryptionKeySaveDate = v5->_encryptionKeySaveDate;
@@ -110,23 +110,23 @@ id __61__POPrebootDeviceConfiguration_dataRepresentationForDisplay___block_invok
   return v5;
 }
 
-- (POPrebootDeviceConfiguration)initWithData:(id)a3
+- (POPrebootDeviceConfiguration)initWithData:(id)data
 {
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v8];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v8];
   if (v8)
   {
     v5 = __45__POPrebootDeviceConfiguration_initWithData___block_invoke();
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POPrebootDeviceConfiguration *)self initWithDictionary:v4];
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 id __45__POPrebootDeviceConfiguration_initWithData___block_invoke()
@@ -144,29 +144,29 @@ id __45__POPrebootDeviceConfiguration_initWithData___block_invoke()
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(POPrebootDeviceConfiguration *)self dataRepresentation];
-  v5 = [v3 initWithData:v4 encoding:4];
+  dataRepresentation = [(POPrebootDeviceConfiguration *)self dataRepresentation];
+  v5 = [v3 initWithData:dataRepresentation encoding:4];
 
   return v5;
 }
 
-- (POPrebootDeviceConfiguration)initWithCoder:(id)a3
+- (POPrebootDeviceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(POPrebootDeviceConfiguration *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(POPrebootDeviceConfiguration *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(POPrebootDeviceConfiguration *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 - (void)dataRepresentationForDisplay:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

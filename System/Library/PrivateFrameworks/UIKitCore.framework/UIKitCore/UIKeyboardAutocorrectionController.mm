@@ -8,13 +8,13 @@
 - (TIKeyboardCandidate)autocorrection;
 - (UIKeyboardAutocorrectionController)init;
 - (UIKeyboardAutocorrectionControllerDelegate)delegate;
-- (id)storedListForCandidate:(id)a3;
-- (void)_notifyObserversOfUpdatedAutocorrectionList:(uint64_t)a1;
-- (void)_setAutocorrectionList:(int)a3 notifyObservers:;
-- (void)clearAutocorrectionAndNotifyObservers:(BOOL)a3;
-- (void)requestAutocorrectionWithExecutionContext:(id)a3;
+- (id)storedListForCandidate:(id)candidate;
+- (void)_notifyObserversOfUpdatedAutocorrectionList:(uint64_t)list;
+- (void)_setAutocorrectionList:(int)list notifyObservers:;
+- (void)clearAutocorrectionAndNotifyObservers:(BOOL)observers;
+- (void)requestAutocorrectionWithExecutionContext:(id)context;
 - (void)setNeedsAutocorrection;
-- (void)setTextSuggestionList:(id)a3;
+- (void)setTextSuggestionList:(id)list;
 - (void)updateAfterShiftStateChange;
 @end
 
@@ -26,9 +26,9 @@
   {
     if ([(UIKeyboardAutocorrectionController *)self requestedAutocorrection])
     {
-      v3 = [(UIKeyboardAutocorrectionController *)self delegate];
-      v4 = [v3 taskQueue];
-      [v4 waitUntilAllTasksAreFinished];
+      delegate = [(UIKeyboardAutocorrectionController *)self delegate];
+      taskQueue = [delegate taskQueue];
+      [taskQueue waitUntilAllTasksAreFinished];
     }
 
     else
@@ -38,14 +38,14 @@
         dispatch_once(&qword_1ED49F3D0, &__block_literal_global_380);
       }
 
-      v3 = [(UIKeyboardAutocorrectionController *)self delegate];
-      v4 = [v3 taskQueue];
+      delegate = [(UIKeyboardAutocorrectionController *)self delegate];
+      taskQueue = [delegate taskQueue];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke_3;
       v7[3] = &unk_1E70FD058;
       v7[4] = self;
-      [v4 performTask:v7 breadcrumb:_MergedGlobals_1191];
+      [taskQueue performTask:v7 breadcrumb:_MergedGlobals_1191];
     }
   }
 
@@ -56,41 +56,41 @@
 
 - (TIKeyboardCandidate)autocorrection
 {
-  v3 = [(UIKeyboardAutocorrectionController *)self autocorrectionList];
-  v4 = [v3 shouldAcceptTopCandidate];
+  autocorrectionList = [(UIKeyboardAutocorrectionController *)self autocorrectionList];
+  shouldAcceptTopCandidate = [autocorrectionList shouldAcceptTopCandidate];
 
-  if (v4)
+  if (shouldAcceptTopCandidate)
   {
-    v5 = [(UIKeyboardAutocorrectionController *)self autocorrectionList];
-    v6 = [v5 candidates];
-    v7 = [v6 firstObject];
+    autocorrectionList2 = [(UIKeyboardAutocorrectionController *)self autocorrectionList];
+    candidates = [autocorrectionList2 candidates];
+    firstObject = [candidates firstObject];
 
-    v8 = [v7 candidate];
-    if ([v8 length])
+    candidate = [firstObject candidate];
+    if ([candidate length])
     {
 LABEL_3:
 
       goto LABEL_5;
     }
 
-    v10 = [v7 slotID];
+    slotID = [firstObject slotID];
 
-    if (!v10)
+    if (!slotID)
     {
-      v8 = v7;
-      v7 = 0;
+      candidate = firstObject;
+      firstObject = 0;
       goto LABEL_3;
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
 LABEL_5:
 
-  return v7;
+  return firstObject;
 }
 
 - (UIKeyboardAutocorrectionController)init
@@ -100,14 +100,14 @@ LABEL_5:
   v2 = [(UIKeyboardAutocorrectionController *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     autocorrectionObservers = v2->_autocorrectionObservers;
-    v2->_autocorrectionObservers = v3;
+    v2->_autocorrectionObservers = weakObjectsHashTable;
 
     v2->_maximumNumberOfCandidates = 3;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     recentCandidates = v2->_recentCandidates;
-    v2->_recentCandidates = v5;
+    v2->_recentCandidates = dictionary;
   }
 
   return v2;
@@ -151,15 +151,15 @@ LABEL_5:
         dispatch_once(&qword_1ED49F3E0, &__block_literal_global_12_5);
       }
 
-      v7 = [(UIKeyboardAutocorrectionController *)self delegate];
-      v8 = [v7 taskQueue];
+      delegate = [(UIKeyboardAutocorrectionController *)self delegate];
+      taskQueue = [delegate taskQueue];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __60__UIKeyboardAutocorrectionController_setNeedsAutocorrection__block_invoke_3;
       v9[3] = &unk_1E70FDAE0;
       v9[4] = self;
       v9[5] = v3;
-      [v8 addDeferredTask:v9 breadcrumb:qword_1ED49F3D8];
+      [taskQueue addDeferredTask:v9 breadcrumb:qword_1ED49F3D8];
     }
   }
 }
@@ -223,17 +223,17 @@ void __60__UIKeyboardAutocorrectionController_setNeedsAutocorrection__block_invo
   [v3 returnExecutionToParent];
 }
 
-- (void)_notifyObserversOfUpdatedAutocorrectionList:(uint64_t)a1
+- (void)_notifyObserversOfUpdatedAutocorrectionList:(uint64_t)list
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (list)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [*(a1 + 48) copy];
+    v4 = [*(list + 48) copy];
     v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
@@ -249,7 +249,7 @@ void __60__UIKeyboardAutocorrectionController_setNeedsAutocorrection__block_invo
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) autocorrectionController:a1 didUpdateAutocorrectionList:v3];
+          [*(*(&v9 + 1) + 8 * v8++) autocorrectionController:list didUpdateAutocorrectionList:v3];
         }
 
         while (v6 != v8);
@@ -265,15 +265,15 @@ void __60__UIKeyboardAutocorrectionController_setNeedsAutocorrection__block_invo
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(TIAutocorrectionList *)self->_autocorrectionList inlineCompletions];
+    inlineCompletions = [(TIAutocorrectionList *)self->_autocorrectionList inlineCompletions];
   }
 
   else
   {
-    v3 = 0;
+    inlineCompletions = 0;
   }
 
-  return v3;
+  return inlineCompletions;
 }
 
 void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
@@ -287,23 +287,23 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
 {
   v3 = +[UIKeyboard isInHardwareKeyboardMode];
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _showsScribbleIconsInAssistantView];
+  _showsScribbleIconsInAssistantView = [v4 _showsScribbleIconsInAssistantView];
 
   v6 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v7 = [v6 systemInputAssistantViewController];
-  v8 = [v7 assistantBarStyle];
+  systemInputAssistantViewController = [v6 systemInputAssistantViewController];
+  assistantBarStyle = [systemInputAssistantViewController assistantBarStyle];
 
-  v9 = [(UIKeyboardAutocorrectionController *)self delegate];
-  v10 = [v9 isPredictionViewControllerVisible];
+  delegate = [(UIKeyboardAutocorrectionController *)self delegate];
+  isPredictionViewControllerVisible = [delegate isPredictionViewControllerVisible];
 
   if (+[UIKeyboardImpl isSplit])
   {
     v11 = 1;
   }
 
-  else if ((v3 | v5))
+  else if ((v3 | _showsScribbleIconsInAssistantView))
   {
-    v11 = ((v8 - 2) < 3) | v10 ^ 1;
+    v11 = ((assistantBarStyle - 2) < 3) | isPredictionViewControllerVisible ^ 1;
   }
 
   else
@@ -314,42 +314,42 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
   return v11 & 1;
 }
 
-- (void)_setAutocorrectionList:(int)a3 notifyObservers:
+- (void)_setAutocorrectionList:(int)list notifyObservers:
 {
   v5 = a2;
   obj = v5;
-  if (a1)
+  if (self)
   {
-    *(a1 + 17) = 0;
-    v6 = [v5 predictions];
-    v7 = _filteredCandidates(v6, &__block_literal_global_93_1);
+    *(self + 17) = 0;
+    predictions = [v5 predictions];
+    v7 = _filteredCandidates(predictions, &__block_literal_global_93_1);
 
     if ([v7 count])
     {
-      if ([a1 _divertSmartPredictionsToTextChoicesAssistant])
+      if ([self _divertSmartPredictionsToTextChoicesAssistant])
       {
         v8 = obj;
-        v9 = [v8 predictions];
-        v10 = [v9 count];
+        predictions2 = [v8 predictions];
+        v10 = [predictions2 count];
 
         if (v10)
         {
-          v11 = [v8 predictions];
-          v12 = _filteredCandidates(v11, &__block_literal_global_96_2);
+          predictions3 = [v8 predictions];
+          v12 = _filteredCandidates(predictions3, &__block_literal_global_96_2);
 
           obj = v8;
           v13 = [v12 count];
-          v14 = [obj predictions];
-          v15 = [v14 count];
+          predictions4 = [obj predictions];
+          v15 = [predictions4 count];
 
           if (v13 < v15)
           {
             v16 = MEMORY[0x1E69D9570];
-            v17 = [obj corrections];
-            v18 = [obj emojiList];
-            v19 = [obj inlineCompletions];
-            v20 = [obj proactiveTriggers];
-            v21 = [v16 listWithCorrections:v17 predictions:v12 emojiList:v18 inlineCompletionList:v19 proactiveTriggers:v20];
+            corrections = [obj corrections];
+            emojiList = [obj emojiList];
+            inlineCompletions = [obj inlineCompletions];
+            proactiveTriggers = [obj proactiveTriggers];
+            v21 = [v16 listWithCorrections:corrections predictions:v12 emojiList:emojiList inlineCompletionList:inlineCompletions proactiveTriggers:proactiveTriggers];
 
             obj = v21;
           }
@@ -360,38 +360,38 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
           obj = v8;
         }
 
-        v24 = [a1 delegate];
-        v25 = [v24 _textChoicesAssistant];
-        [v25 showChoicesForCandidates:v7];
+        delegate = [self delegate];
+        _textChoicesAssistant = [delegate _textChoicesAssistant];
+        [_textChoicesAssistant showChoicesForCandidates:v7];
       }
 
       else
       {
-        v22 = [a1 delegate];
-        v23 = [v22 _textChoicesAssistant];
-        [v23 dismissIfPresented];
+        delegate2 = [self delegate];
+        _textChoicesAssistant2 = [delegate2 _textChoicesAssistant];
+        [_textChoicesAssistant2 dismissIfPresented];
 
-        v24 = [a1 delegate];
-        v25 = [v24 _textChoicesAssistant];
-        [v25 clearSecureCandidateHashes];
+        delegate = [self delegate];
+        _textChoicesAssistant = [delegate _textChoicesAssistant];
+        [_textChoicesAssistant clearSecureCandidateHashes];
       }
     }
 
-    if (*(a1 + 24) != obj)
+    if (*(self + 24) != obj)
     {
-      objc_storeStrong((a1 + 24), obj);
-      if (a3)
+      objc_storeStrong((self + 24), obj);
+      if (list)
       {
-        [(UIKeyboardAutocorrectionController *)a1 _notifyObserversOfUpdatedAutocorrectionList:?];
+        [(UIKeyboardAutocorrectionController *)self _notifyObserversOfUpdatedAutocorrectionList:?];
       }
     }
   }
 }
 
-- (void)setTextSuggestionList:(id)a3
+- (void)setTextSuggestionList:(id)list
 {
-  v5 = a3;
-  objc_storeStrong(&self->_textSuggestionList, a3);
+  listCopy = list;
+  objc_storeStrong(&self->_textSuggestionList, list);
   if (self->_textSuggestionList)
   {
     [(UIKeyboardAutocorrectionController *)self setAutocorrectionList:?];
@@ -403,14 +403,14 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
   }
 }
 
-- (void)clearAutocorrectionAndNotifyObservers:(BOOL)a3
+- (void)clearAutocorrectionAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v15 = *MEMORY[0x1E69E9840];
   if (![(UIKeyboardAutocorrectionController *)self hasAutofillCandidates])
   {
     [(UIKeyboardAutocorrectionController *)self _setAutocorrectionList:0 notifyObservers:?];
-    if (v3)
+    if (observersCopy)
     {
       if (self)
       {
@@ -453,9 +453,9 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_needsAutocorrection)
   {
-    v3 = [(TIAutocorrectionList *)self->_autocorrectionList corrections];
-    v4 = [v3 autocorrection];
-    v5 = __65__UIKeyboardAutocorrectionController_updateAfterShiftStateChange__block_invoke(v4);
+    corrections = [(TIAutocorrectionList *)self->_autocorrectionList corrections];
+    autocorrection = [corrections autocorrection];
+    v5 = __65__UIKeyboardAutocorrectionController_updateAfterShiftStateChange__block_invoke(autocorrection);
 
     if (v5)
     {
@@ -469,8 +469,8 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v6 = [(TIAutocorrectionList *)self->_autocorrectionList candidates];
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      candidates = [(TIAutocorrectionList *)self->_autocorrectionList candidates];
+      v7 = [candidates countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = v7;
@@ -481,7 +481,7 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
           {
             if (*v12 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(candidates);
             }
 
             if (__65__UIKeyboardAutocorrectionController_updateAfterShiftStateChange__block_invoke(*(*(&v11 + 1) + 8 * i)))
@@ -491,7 +491,7 @@ void __56__UIKeyboardAutocorrectionController_autocorrectionList__block_invoke()
             }
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v8 = [candidates countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v8)
           {
             continue;
@@ -525,12 +525,12 @@ uint64_t __65__UIKeyboardAutocorrectionController_updateAfterShiftStateChange__b
 
 - (BOOL)hasTextSuggestionCandidates
 {
-  v2 = [(UIKeyboardAutocorrectionController *)self textSuggestionList];
-  v3 = v2;
-  if (v2)
+  textSuggestionList = [(UIKeyboardAutocorrectionController *)self textSuggestionList];
+  v3 = textSuggestionList;
+  if (textSuggestionList)
   {
-    v4 = [v2 predictions];
-    v5 = [v4 count] != 0;
+    predictions = [textSuggestionList predictions];
+    v5 = [predictions count] != 0;
   }
 
   else
@@ -543,17 +543,17 @@ uint64_t __65__UIKeyboardAutocorrectionController_updateAfterShiftStateChange__b
 
 - (BOOL)isSmartReplyCandidates
 {
-  v2 = [(UIKeyboardAutocorrectionController *)self autocorrectionList];
-  v3 = [v2 corrections];
-  v4 = [v3 autocorrection];
-  if (v4)
+  autocorrectionList = [(UIKeyboardAutocorrectionController *)self autocorrectionList];
+  corrections = [autocorrectionList corrections];
+  autocorrection = [corrections autocorrection];
+  if (autocorrection)
   {
   }
 
   else
   {
-    v6 = [v2 candidates];
-    v7 = [v6 count];
+    candidates = [autocorrectionList candidates];
+    v7 = [candidates count];
 
     if (v7)
     {
@@ -561,13 +561,13 @@ uint64_t __65__UIKeyboardAutocorrectionController_updateAfterShiftStateChange__b
       v12 = &v11;
       v13 = 0x2020000000;
       v14 = 1;
-      v8 = [v2 candidates];
+      candidates2 = [autocorrectionList candidates];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __60__UIKeyboardAutocorrectionController_isSmartReplyCandidates__block_invoke;
       v10[3] = &unk_1E70FDE20;
       v10[4] = &v11;
-      [v8 enumerateObjectsUsingBlock:v10];
+      [candidates2 enumerateObjectsUsingBlock:v10];
 
       v5 = *(v12 + 24);
       _Block_object_dispose(&v11, 8);
@@ -589,29 +589,29 @@ uint64_t __60__UIKeyboardAutocorrectionController_isSmartReplyCandidates__block_
   return result;
 }
 
-- (void)requestAutocorrectionWithExecutionContext:(id)a3
+- (void)requestAutocorrectionWithExecutionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (self)
   {
     self->_requestedAutocorrection = 1;
   }
 
-  v5 = [(UIKeyboardAutocorrectionController *)self delegate];
-  if (v5)
+  delegate = [(UIKeyboardAutocorrectionController *)self delegate];
+  if (delegate)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __80__UIKeyboardAutocorrectionController_requestAutocorrectionWithExecutionContext___block_invoke;
     v7[3] = &unk_1E70FD058;
     v7[4] = self;
-    v6 = [v4 childWithContinuation:v7];
-    [v5 generateAutocorrectionWithExecutionContext:v6];
+    v6 = [contextCopy childWithContinuation:v7];
+    [delegate generateAutocorrectionWithExecutionContext:v6];
   }
 
   else
   {
-    [v4 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
@@ -626,15 +626,15 @@ uint64_t __80__UIKeyboardAutocorrectionController_requestAutocorrectionWithExecu
   return [a2 returnExecutionToParent];
 }
 
-- (id)storedListForCandidate:(id)a3
+- (id)storedListForCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   v5 = self->_autocorrectionList;
   if (!v5)
   {
     if (+[UIKeyboard usesInputSystemUI])
     {
-      v5 = [MEMORY[0x1E69D9570] listWithAutocorrection:v4];
+      v5 = [MEMORY[0x1E69D9570] listWithAutocorrection:candidateCopy];
     }
 
     else

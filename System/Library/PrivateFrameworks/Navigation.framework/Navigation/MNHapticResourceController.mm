@@ -1,5 +1,5 @@
 @interface MNHapticResourceController
-- (BOOL)playHapticSound:(unint64_t)a3 andReport:(id *)a4;
+- (BOOL)playHapticSound:(unint64_t)sound andReport:(id *)report;
 - (BOOL)triggerVibration;
 - (MNHapticControllerDelegate)delegate;
 - (void)stopVibrating;
@@ -14,22 +14,22 @@
   return WeakRetained;
 }
 
-- (BOOL)playHapticSound:(unint64_t)a3 andReport:(id *)a4
+- (BOOL)playHapticSound:(unint64_t)sound andReport:(id *)report
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 >= 3)
+  if (sound >= 3)
   {
-    if (a4)
+    if (report)
     {
       v10 = MEMORY[0x1E696ABC0];
       v11 = @"MNAudioSystemError";
-      *a4 = [v10 errorWithDomain:@"MNAudioSystemError" code:3500 userInfo:0];
+      *report = [v10 errorWithDomain:@"MNAudioSystemError" code:3500 userInfo:0];
     }
   }
 
   else
   {
-    if (a3 == 2)
+    if (sound == 2)
     {
       v6 = 1415;
     }
@@ -39,7 +39,7 @@
       v6 = 1417;
     }
 
-    if (a3 == 1)
+    if (sound == 1)
     {
       v7 = 1414;
     }
@@ -53,7 +53,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v16 = a3;
+      soundCopy = sound;
       v17 = 1024;
       v18 = v7;
       _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_INFO, "ⓗ Starting haptic playback for id %lu (system id %u)", buf, 0x12u);
@@ -65,11 +65,11 @@
     v14[2] = __56__MNHapticResourceController_playHapticSound_andReport___block_invoke;
     v14[3] = &unk_1E8430A10;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = sound;
     AudioServicesPlaySystemSoundWithCompletion(v7, v14);
   }
 
-  result = a3 < 3;
+  result = sound < 3;
   v13 = *MEMORY[0x1E69E9840];
   return result;
 }

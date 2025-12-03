@@ -1,6 +1,6 @@
 @interface ClassKitContextBuilder
 - (_TtC8Podcasts22ClassKitContextBuilder)init;
-- (id)createContextForIdentifier:(id)a3 parentContext:(id)a4 parentIdentifierPath:(id)a5;
+- (id)createContextForIdentifier:(id)identifier parentContext:(id)context parentIdentifierPath:(id)path;
 @end
 
 @implementation ClassKitContextBuilder
@@ -16,13 +16,13 @@
   return v4;
 }
 
-- (id)createContextForIdentifier:(id)a3 parentContext:(id)a4 parentIdentifierPath:(id)a5
+- (id)createContextForIdentifier:(id)identifier parentContext:(id)context parentIdentifierPath:(id)path
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
-  v12 = self;
+  contextCopy = context;
+  selfCopy = self;
   v13 = sub_10035AC04(v7, v9, v10);
 
   return v13;

@@ -1,12 +1,12 @@
 @interface IMViewControllerOneToOneTransitionContext
-- (CGRect)finalFrameForViewController:(id)a3;
+- (CGRect)finalFrameForViewController:(id)controller;
 - (CGRect)fromEndFrame;
 - (CGRect)fromStartFrame;
-- (CGRect)initialFrameForViewController:(id)a3;
+- (CGRect)initialFrameForViewController:(id)controller;
 - (CGRect)toEndFrame;
 - (CGRect)toStartFrame;
-- (id)viewControllerForKey:(id)a3;
-- (id)viewForKey:(id)a3;
+- (id)viewControllerForKey:(id)key;
+- (id)viewForKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -23,65 +23,65 @@
   [(IMViewControllerTransitionContext *)&v3 dealloc];
 }
 
-- (id)viewControllerForKey:(id)a3
+- (id)viewControllerForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (UITransitionContextToViewControllerKey == v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (UITransitionContextToViewControllerKey == keyCopy)
   {
-    v7 = [(IMViewControllerOneToOneTransitionContext *)self toViewController];
+    toViewController = [(IMViewControllerOneToOneTransitionContext *)self toViewController];
   }
 
   else
   {
-    if (UITransitionContextFromViewControllerKey != v4)
+    if (UITransitionContextFromViewControllerKey != keyCopy)
     {
       v6 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(IMViewControllerOneToOneTransitionContext *)self fromViewController];
+    toViewController = [(IMViewControllerOneToOneTransitionContext *)self fromViewController];
   }
 
-  v6 = v7;
+  v6 = toViewController;
 LABEL_7:
 
   return v6;
 }
 
-- (id)viewForKey:(id)a3
+- (id)viewForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (UITransitionContextFromViewKey == v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (UITransitionContextFromViewKey == keyCopy)
   {
-    v7 = [(IMViewControllerOneToOneTransitionContext *)self fromViewController];
+    fromViewController = [(IMViewControllerOneToOneTransitionContext *)self fromViewController];
   }
 
   else
   {
-    if (UITransitionContextToViewKey != v4)
+    if (UITransitionContextToViewKey != keyCopy)
     {
-      v6 = 0;
+      view = 0;
       goto LABEL_7;
     }
 
-    v7 = [(IMViewControllerOneToOneTransitionContext *)self toViewController];
+    fromViewController = [(IMViewControllerOneToOneTransitionContext *)self toViewController];
   }
 
-  v8 = v7;
-  v6 = [v7 view];
+  v8 = fromViewController;
+  view = [fromViewController view];
 
 LABEL_7:
 
-  return v6;
+  return view;
 }
 
-- (CGRect)initialFrameForViewController:(id)a3
+- (CGRect)initialFrameForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_toViewController == v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (self->_toViewController == controllerCopy)
   {
     [(IMViewControllerOneToOneTransitionContext *)self toStartFrame];
 LABEL_6:
@@ -92,7 +92,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (self->_fromViewController == v4)
+  if (self->_fromViewController == controllerCopy)
   {
     [(IMViewControllerOneToOneTransitionContext *)self fromStartFrame];
     goto LABEL_6;
@@ -115,11 +115,11 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)finalFrameForViewController:(id)a3
+- (CGRect)finalFrameForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_toViewController == v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (self->_toViewController == controllerCopy)
   {
     [(IMViewControllerOneToOneTransitionContext *)self toEndFrame];
 LABEL_6:
@@ -130,7 +130,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (self->_fromViewController == v4)
+  if (self->_fromViewController == controllerCopy)
   {
     [(IMViewControllerOneToOneTransitionContext *)self fromEndFrame];
     goto LABEL_6;

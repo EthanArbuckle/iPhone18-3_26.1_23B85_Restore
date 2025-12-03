@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeParticipantSummaryInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -31,14 +31,14 @@ void __75__GKLeaderboardChallengeParticipantSummaryInternal_secureCodedPropertyK
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeParticipantSummaryInternal);
-  v5 = [v3 objectForKeyedSubscript:@"player-id"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"player-id"];
   [(GKLeaderboardChallengeParticipantSummaryInternal *)v4 setPlayerID:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"rank"];
+  v6 = [fragmentCopy objectForKeyedSubscript:@"rank"];
 
   [(GKLeaderboardChallengeParticipantSummaryInternal *)v4 setRank:v6];
 

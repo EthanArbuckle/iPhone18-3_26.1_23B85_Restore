@@ -1,16 +1,16 @@
 @interface SafariImportSuccessViewController
-- (SafariImportSuccessViewController)initWithImportedItems:(id)a3;
+- (SafariImportSuccessViewController)initWithImportedItems:(id)items;
 - (SafariImportSuccessViewControllerDelegate)delegate;
 - (void)viewDidLoad;
 @end
 
 @implementation SafariImportSuccessViewController
 
-- (SafariImportSuccessViewController)initWithImportedItems:(id)a3
+- (SafariImportSuccessViewController)initWithImportedItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v6 = _WBSLocalizedString();
-  v7 = [WBSBrowsingDataImportController localizedSuccessStringForImportedItems:v5];
+  v7 = [WBSBrowsingDataImportController localizedSuccessStringForImportedItems:itemsCopy];
   if (!v7)
   {
     v8 = _WBSLocalizedString();
@@ -32,15 +32,15 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_importedItems, a3);
-    v13 = [(SafariImportSuccessViewController *)v12 navigationItem];
-    [v13 setHidesBackButton:1];
+    objc_storeStrong(&v11->_importedItems, items);
+    navigationItem = [(SafariImportSuccessViewController *)v12 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
-    v14 = [(SafariImportExportSheetController *)v12 detailLabel];
-    [v14 setAccessibilityIdentifier:@"ImportSuccessDetails"];
+    detailLabel = [(SafariImportExportSheetController *)v12 detailLabel];
+    [detailLabel setAccessibilityIdentifier:@"ImportSuccessDetails"];
 
-    v15 = [(SafariImportExportSheetController *)v12 button];
-    [v15 setAccessibilityIdentifier:@"DoneButton"];
+    button = [(SafariImportExportSheetController *)v12 button];
+    [button setAccessibilityIdentifier:@"DoneButton"];
 
     v16 = v12;
   }
@@ -77,9 +77,9 @@ void __59__SafariImportSuccessViewController_initWithImportedItems___block_invok
   {
     [v4 setNumberOfItemsSuccessfullyImported:{objc_msgSend(v5, "numberOfItemsSuccessfullyImported") + objc_msgSend(v4, "numberOfItemsSuccessfullyImported")}];
     [v4 setNumberOfItemsFailedToImport:{objc_msgSend(v6, "numberOfItemsFailedToImport") + objc_msgSend(v4, "numberOfItemsFailedToImport")}];
-    v7 = [v4 extensionLockupViews];
-    v8 = [v6 extensionLockupViews];
-    v9 = [v7 arrayByAddingObjectsFromArray:v8];
+    extensionLockupViews = [v4 extensionLockupViews];
+    extensionLockupViews2 = [v6 extensionLockupViews];
+    v9 = [extensionLockupViews arrayByAddingObjectsFromArray:extensionLockupViews2];
     [v4 setExtensionLockupViews:v9];
   }
 
@@ -97,14 +97,14 @@ void __59__SafariImportSuccessViewController_initWithImportedItems___block_invok
     }
 
     v12 = [(SafariImportConflictViewContainer *)v10 initWithPasswordsImportedData:v3 extensionsImportedData:v11];
-    v13 = [(SafariImportExportSheetController *)self stackView];
-    [v13 addArrangedSubview:v12];
+    stackView = [(SafariImportExportSheetController *)self stackView];
+    [stackView addArrangedSubview:v12];
 
-    v14 = [(SafariImportConflictViewContainer *)v12 widthAnchor];
-    v15 = [(SafariImportExportSheetController *)self stackView];
-    v16 = [v15 layoutMarginsGuide];
-    v17 = [v16 widthAnchor];
-    v18 = [v14 constraintEqualToAnchor:v17];
+    widthAnchor = [(SafariImportConflictViewContainer *)v12 widthAnchor];
+    stackView2 = [(SafariImportExportSheetController *)self stackView];
+    layoutMarginsGuide = [stackView2 layoutMarginsGuide];
+    widthAnchor2 = [layoutMarginsGuide widthAnchor];
+    v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v18 setActive:1];
   }
 }

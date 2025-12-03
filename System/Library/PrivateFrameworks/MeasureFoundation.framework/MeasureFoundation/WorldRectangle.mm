@@ -1,7 +1,7 @@
 @interface WorldRectangle
 - (_TtC17MeasureFoundation14WorldRectangle)init;
 - (int64_t)state;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation WorldRectangle
@@ -10,7 +10,7 @@
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC17MeasureFoundation13MeasureObject__state);
   v3 = *(v2 + 24);
-  v4 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock(v3);
   swift_beginAccess();
@@ -20,10 +20,10 @@
   return v5;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = self;
-  WorldRectangle.state.setter(a3);
+  selfCopy = self;
+  WorldRectangle.state.setter(state);
 }
 
 - (_TtC17MeasureFoundation14WorldRectangle)init

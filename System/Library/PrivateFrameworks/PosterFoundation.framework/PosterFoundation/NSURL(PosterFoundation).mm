@@ -59,11 +59,11 @@
 {
   v4 = a3;
   v5 = PFTemporaryDirectoryCreatingIfItDoesntExistWithSubdirectoryNamed(0);
-  v6 = [a1 pf_directoryURLWithContainerPath:v5 basenamePrefix:v4];
+  v6 = [self pf_directoryURLWithContainerPath:v5 basenamePrefix:v4];
 
-  v7 = [v6 URLByResolvingSymlinksInPath];
+  uRLByResolvingSymlinksInPath = [v6 URLByResolvingSymlinksInPath];
 
-  return v7;
+  return uRLByResolvingSymlinksInPath;
 }
 
 + (id)pf_directoryURLWithContainerPath:()PosterFoundation basenamePrefix:
@@ -183,8 +183,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v44 = [v42 unsignedLongLongValue];
-    v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unexpected mkdtemp result with errno=%i (%s) : freeSpace=%llu : template(%p)=%@ result=%p", v30, __strerrbuf, v44, v16, v14, v17];
+    unsignedLongLongValue = [v42 unsignedLongLongValue];
+    v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unexpected mkdtemp result with errno=%i (%s) : freeSpace=%llu : template(%p)=%@ result=%p", v30, __strerrbuf, unsignedLongLongValue, v16, v14, v17];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       +[NSURL(PosterFoundation) pf_directoryURLWithContainerPath:basenamePrefix:];
@@ -263,9 +263,9 @@ LABEL_40:
     [NSURL(PosterFoundation) pf_posterPathIdentifierURLProviderURL:a2 type:? posterUUID:?];
   }
 
-  v12 = [a1 pf_posterPathTypeURLForProviderURL:v9 type:a4];
-  v13 = [v11 UUIDString];
-  v14 = [v12 URLByAppendingPathComponent:v13 isDirectory:1];
+  v12 = [self pf_posterPathTypeURLForProviderURL:v9 type:a4];
+  uUIDString = [v11 UUIDString];
+  v14 = [v12 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
   return v14;
 }
@@ -280,7 +280,7 @@ LABEL_40:
   }
 
   v11 = v10;
-  v12 = [a1 pf_posterPathIdentifierURLProviderURL:v9 type:a4 posterUUID:v10];
+  v12 = [self pf_posterPathIdentifierURLProviderURL:v9 type:a4 posterUUID:v10];
   v13 = [v12 URLByAppendingPathComponent:@"versions" isDirectory:1];
 
   return v13;
@@ -296,8 +296,8 @@ LABEL_40:
   }
 
   v13 = v12;
-  v14 = [a1 pf_posterPathVersionsURLForProviderURL:v11 type:a4 posterUUID:v12];
-  v15 = [a1 pf_posterPathInstanceURLForVersionsURL:v14 version:a6];
+  v14 = [self pf_posterPathVersionsURLForProviderURL:v11 type:a4 posterUUID:v12];
+  v15 = [self pf_posterPathInstanceURLForVersionsURL:v14 version:a6];
 
   return v15;
 }
@@ -326,8 +326,8 @@ LABEL_40:
   }
 
   v13 = v12;
-  v14 = [a1 pf_posterPathInstanceURLForProviderURL:v11 type:a4 posterUUID:v12 version:a6];
-  v15 = [a1 pf_posterPathContentsURLForInstanceURL:v14];
+  v14 = [self pf_posterPathInstanceURLForProviderURL:v11 type:a4 posterUUID:v12 version:a6];
+  v15 = [self pf_posterPathContentsURLForInstanceURL:v14];
 
   return v15;
 }
@@ -383,7 +383,7 @@ LABEL_40:
   }
 
   v8 = v7;
-  v9 = [a1 pf_posterPathSupplementContainerURLForInstanceURL:v7];
+  v9 = [self pf_posterPathSupplementContainerURLForInstanceURL:v7];
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a4];
   v11 = [v9 URLByAppendingPathComponent:v10];
 
@@ -490,14 +490,14 @@ LABEL_40:
 
 - (id)pf_loadFromPlistWithError:()PosterFoundation
 {
-  if (([a1 isFileURL] & 1) == 0)
+  if (([self isFileURL] & 1) == 0)
   {
-    [(NSURL(PosterFoundation) *)a2 pf_loadFromPlistWithError:a1];
+    [(NSURL(PosterFoundation) *)a2 pf_loadFromPlistWithError:self];
   }
 
   v6 = objc_autoreleasePoolPush();
   v17 = 0;
-  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a1 options:1 error:&v17];
+  v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:self options:1 error:&v17];
   v8 = v17;
   v9 = v8;
   if (v7)
@@ -543,9 +543,9 @@ LABEL_40:
   }
 
   v8 = v7;
-  if (([a1 isFileURL] & 1) == 0)
+  if (([self isFileURL] & 1) == 0)
   {
-    [NSURL(PosterFoundation) pf_storeToPlist:a2 error:a1];
+    [NSURL(PosterFoundation) pf_storeToPlist:a2 error:self];
   }
 
   v9 = objc_autoreleasePoolPush();
@@ -566,7 +566,7 @@ LABEL_40:
   if (v10)
   {
     v24 = 0;
-    v14 = [v10 writeToURL:a1 options:268435457 error:&v24];
+    v14 = [v10 writeToURL:self options:268435457 error:&v24];
     v15 = v24;
     v16 = PFLogPosterContents();
     v17 = v16;
@@ -585,12 +585,12 @@ LABEL_40:
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [a1 lastPathComponent];
-        v20 = [a1 URLByDeletingLastPathComponent];
+        lastPathComponent = [self lastPathComponent];
+        uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
         *buf = 138412546;
-        v27 = v19;
+        v27 = lastPathComponent;
         v28 = 2112;
-        v29 = v20;
+        v29 = uRLByDeletingLastPathComponent;
         _os_log_impl(&dword_1C269D000, v17, OS_LOG_TYPE_DEFAULT, "saved '%@'': (path=%@)", buf, 0x16u);
       }
 
@@ -618,7 +618,7 @@ LABEL_40:
 - (uint64_t)pf_isDirectory
 {
   v4 = 0;
-  [a1 getResourceValue:&v4 forKey:*MEMORY[0x1E695DB20] error:0];
+  [self getResourceValue:&v4 forKey:*MEMORY[0x1E695DB20] error:0];
   v1 = v4;
   v2 = [v1 isEqual:*MEMORY[0x1E695DB18]];
 
@@ -628,14 +628,14 @@ LABEL_40:
 - (uint64_t)pf_isWritable
 {
   v2 = 0;
-  [a1 getResourceValue:&v2 forKey:*MEMORY[0x1E695DBF0] error:0];
+  [self getResourceValue:&v2 forKey:*MEMORY[0x1E695DBF0] error:0];
   return [v2 BOOLValue];
 }
 
 - (uint64_t)pf_isReadable
 {
   v2 = 0;
-  [a1 getResourceValue:&v2 forKey:*MEMORY[0x1E695DBB0] error:0];
+  [self getResourceValue:&v2 forKey:*MEMORY[0x1E695DBB0] error:0];
   return [v2 BOOLValue];
 }
 
@@ -644,7 +644,7 @@ LABEL_40:
   v4 = 0u;
   v5 = 0u;
   v3 = 0u;
-  fsctl([a1 fileSystemRepresentation], 0x40304A6DuLL, &v3, 0);
+  fsctl([self fileSystemRepresentation], 0x40304A6DuLL, &v3, 0);
   return (~v3 & 0xE00) == 0 || v4 != 0;
 }
 
@@ -654,14 +654,14 @@ LABEL_40:
   v8 = a4;
   if (a3)
   {
-    v9 = [a1 fileSystemRepresentation];
-    if (![a1 pf_isDirectory])
+    fileSystemRepresentation = [self fileSystemRepresentation];
+    if (![self pf_isDirectory])
     {
       goto LABEL_9;
     }
 
     memset(v48, 0, sizeof(v48));
-    fsctl(v9, 0x40184A03uLL, v48, 0);
+    fsctl(fileSystemRepresentation, 0x40184A03uLL, v48, 0);
     if (LODWORD(v48[0]) == 1)
     {
       goto LABEL_9;
@@ -685,7 +685,7 @@ LABEL_40:
     v32 = 0u;
     *&buf[8] = 0u;
     *buf = 0x100000001;
-    v10 = fsctl(v9, 0xC1104A71uLL, buf, 0);
+    v10 = fsctl(fileSystemRepresentation, 0xC1104A71uLL, buf, 0);
     if (v10)
     {
       if (a5)
@@ -694,8 +694,8 @@ LABEL_40:
         v12 = *MEMORY[0x1E696A798];
         v13 = v10;
         v29 = *MEMORY[0x1E696A368];
-        v14 = [a1 path];
-        v30 = v14;
+        path = [self path];
+        v30 = path;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         *a5 = [v11 errorWithDomain:v12 code:v13 userInfo:v15];
       }
@@ -715,7 +715,7 @@ LABEL_9:
         *&v48[2] = 1000000000 * v17;
       }
 
-      v18 = fsctl(v9, 0xC0304A6FuLL, v48, 0);
+      v18 = fsctl(fileSystemRepresentation, 0xC0304A6FuLL, v48, 0);
       v16 = v18 == 0;
       if (v18)
       {
@@ -724,7 +724,7 @@ LABEL_9:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2112;
           *&buf[14] = v8;
           *&buf[22] = 1024;
@@ -736,8 +736,8 @@ LABEL_9:
         {
           v21 = MEMORY[0x1E696ABC0];
           v22 = *MEMORY[0x1E696A798];
-          v23 = [a1 path];
-          v28 = v23;
+          path2 = [self path];
+          v28 = path2;
           v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
           *a5 = [v21 errorWithDomain:v22 code:v19 userInfo:v24];
         }
@@ -747,7 +747,7 @@ LABEL_9:
 
   else
   {
-    v16 = [a1 pf_unmarkAsPurgableWithError:a5];
+    v16 = [self pf_unmarkAsPurgableWithError:a5];
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -758,7 +758,7 @@ LABEL_9:
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v5 = fsctl([a1 fileSystemRepresentation], 0xC0084A44uLL, &v13, 0);
+  v5 = fsctl([self fileSystemRepresentation], 0xC0084A44uLL, &v13, 0);
   if (v5)
   {
     v6 = PFLogCommon();
@@ -772,8 +772,8 @@ LABEL_9:
       v7 = MEMORY[0x1E696ABC0];
       v8 = *MEMORY[0x1E696A798];
       v14 = *MEMORY[0x1E696A368];
-      v9 = [a1 path];
-      v15[0] = v9;
+      path = [self path];
+      v15[0] = path;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
       *a3 = [v7 errorWithDomain:v8 code:v5 userInfo:v10];
     }
@@ -786,14 +786,14 @@ LABEL_9:
 
 - (uint64_t)pf_markPurgableInOneHourWithError:()PosterFoundation
 {
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v6 setHour:1];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v5 dateByAddingComponents:v6 toDate:v7 options:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [currentCalendar dateByAddingComponents:v6 toDate:date options:0];
 
   v14 = 0;
-  v9 = [a1 pf_setPurgable:1 afterDate:v8 error:&v14];
+  v9 = [self pf_setPurgable:1 afterDate:v8 error:&v14];
   v10 = v14;
   if (v10)
   {
@@ -815,12 +815,12 @@ LABEL_9:
 
 - (uint64_t)pf_fileURLExists:()PosterFoundation
 {
-  result = [a1 isFileURL];
+  result = [self isFileURL];
   if (result)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [a1 path];
-    v8 = [v6 fileExistsAtPath:v7 isDirectory:a3];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [self path];
+    v8 = [defaultManager fileExistsAtPath:path isDirectory:a3];
 
     return v8;
   }
@@ -831,14 +831,14 @@ LABEL_9:
 - (uint64_t)pf_isExcludedFromBackup
 {
   v2 = 0;
-  [a1 getResourceValue:&v2 forKey:*MEMORY[0x1E695DB80] error:0];
+  [self getResourceValue:&v2 forKey:*MEMORY[0x1E695DB80] error:0];
   return [v2 BOOLValue];
 }
 
 - (uint64_t)pf_setExcludedFromBackup:()PosterFoundation error:
 {
   v6 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  v7 = [a1 setResourceValue:v6 forKey:*MEMORY[0x1E695DB80] error:a4];
+  v7 = [self setResourceValue:v6 forKey:*MEMORY[0x1E695DB80] error:a4];
 
   return v7;
 }
@@ -846,12 +846,12 @@ LABEL_9:
 - (BOOL)pf_allowSuspendWithOpenFileHandle
 {
   value = 0;
-  v1 = [a1 fileSystemRepresentation];
-  v2 = getxattr(v1, "com.apple.runningboard.can-suspend-locked", 0, 0, 0, 0);
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  v2 = getxattr(fileSystemRepresentation, "com.apple.runningboard.can-suspend-locked", 0, 0, 0, 0);
   result = 0;
   if (v2 == 1)
   {
-    getxattr(v1, "com.apple.runningboard.can-suspend-locked", &value, 1uLL, 0, 0);
+    getxattr(fileSystemRepresentation, "com.apple.runningboard.can-suspend-locked", &value, 1uLL, 0, 0);
     return value != 0;
   }
 
@@ -862,15 +862,15 @@ LABEL_9:
 {
   v16[1] = *MEMORY[0x1E69E9840];
   value = a3 << 31 >> 31;
-  v6 = setxattr([a1 fileSystemRepresentation], "com.apple.runningboard.can-suspend-locked", &value, 1uLL, 0, 0);
+  v6 = setxattr([self fileSystemRepresentation], "com.apple.runningboard.can-suspend-locked", &value, 1uLL, 0, 0);
   v7 = v6;
   if (a4 && v6)
   {
     v8 = MEMORY[0x1E696ABC0];
     v9 = *MEMORY[0x1E696A798];
     v15 = *MEMORY[0x1E696A990];
-    v10 = [a1 path];
-    v16[0] = v10;
+    path = [self path];
+    v16[0] = path;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     *a4 = [v8 errorWithDomain:v9 code:v7 userInfo:v11];
   }
@@ -883,7 +883,7 @@ LABEL_9:
 - (id)pf_fileResourceIdentifierWithError:()PosterFoundation
 {
   v8 = 0;
-  v3 = [a1 getResourceValue:&v8 forKey:*MEMORY[0x1E695DB00] error:a3];
+  v3 = [self getResourceValue:&v8 forKey:*MEMORY[0x1E695DB00] error:a3];
   v4 = v8;
   v5 = v4;
   v6 = 0;
@@ -898,7 +898,7 @@ LABEL_9:
 - (uint64_t)pf_isUnderlyingFileSystemResourceEqualToURL:()PosterFoundation
 {
   v4 = a3;
-  v5 = [a1 pf_fileResourceIdentifierWithError:0];
+  v5 = [self pf_fileResourceIdentifierWithError:0];
   v6 = [v4 pf_fileResourceIdentifierWithError:0];
 
   v7 = BSEqualObjects();

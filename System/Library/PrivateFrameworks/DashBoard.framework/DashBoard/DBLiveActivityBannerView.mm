@@ -1,11 +1,11 @@
 @interface DBLiveActivityBannerView
-+ (BOOL)dataIsActivityDescriptor:(id)a3;
++ (BOOL)dataIsActivityDescriptor:(id)descriptor;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
 - (UIViewController)viewController;
 - (_TtC9DashBoard24DBLiveActivityBannerView)init;
-- (_TtC9DashBoard24DBLiveActivityBannerView)initWithIdentifier:(id)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5;
-- (void)ensureContentWithCompletion:(id)a3;
+- (_TtC9DashBoard24DBLiveActivityBannerView)initWithIdentifier:(id)identifier minSize:(CGSize)size maxSize:(CGSize)maxSize;
+- (void)ensureContentWithCompletion:(id)completion;
 @end
 
 @implementation DBLiveActivityBannerView
@@ -33,7 +33,7 @@
   MEMORY[0x28223BE20](v3);
   v6 = &v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v7 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x70);
-  v8 = self;
+  selfCopy = self;
   v7();
   sub_2483812A0();
 
@@ -43,7 +43,7 @@
   return v9;
 }
 
-- (_TtC9DashBoard24DBLiveActivityBannerView)initWithIdentifier:(id)a3 minSize:(CGSize)a4 maxSize:(CGSize)a5
+- (_TtC9DashBoard24DBLiveActivityBannerView)initWithIdentifier:(id)identifier minSize:(CGSize)size maxSize:(CGSize)maxSize
 {
   v5 = sub_2483812C0();
   MEMORY[0x28223BE20](v5);
@@ -53,13 +53,13 @@
   return sub_24829D4A8(v7);
 }
 
-- (void)ensureContentWithCompletion:(id)a3
+- (void)ensureContentWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x88);
-  v10 = self;
+  selfCopy = self;
   v7 = v6();
   sub_248297394();
   v8 = sub_248383E50();
@@ -73,13 +73,13 @@
 - (UIViewController)viewController
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-+ (BOOL)dataIsActivityDescriptor:(id)a3
++ (BOOL)dataIsActivityDescriptor:(id)descriptor
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE936F0);
   MEMORY[0x28223BE20](v4 - 8);
@@ -92,7 +92,7 @@
   v13 = 1;
   v12(v6, 1, 1, v10);
   sub_24829D8AC(&unk_27EE916B0);
-  v14 = a3;
+  descriptorCopy = descriptor;
   sub_248384610();
 
   v15 = (*(v11 + 48))(v6, 1, v10);

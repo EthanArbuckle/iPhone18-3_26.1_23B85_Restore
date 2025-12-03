@@ -7,10 +7,10 @@
 
 - (void)setDefaultValues
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setUsesCardStyle:1];
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setCardWidth:375.0];
@@ -23,36 +23,36 @@
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setFullScreenHomeScreenScale:0.96];
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setFullScreenHomeScreenAlpha:0.4];
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setFullScreenDarkeningTintAlpha:0.32];
-    v5 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v5 setDefaultValues];
+    zoomAnimationSettings = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings setDefaultValues];
 
-    v6 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v6 setDampingRatio:1.1];
+    zoomAnimationSettings2 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings2 setDampingRatio:1.1];
 
-    v7 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v7 setResponse:0.25];
+    zoomAnimationSettings3 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings3 setResponse:0.25];
 
-    v8 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v8 setRetargetImpulse:0.016];
+    zoomAnimationSettings4 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings4 setRetargetImpulse:0.016];
 
-    v9 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v9 setDefaultValues];
+    fadeOutAnimationSettings = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings setDefaultValues];
 
-    v10 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v10 setDampingRatio:1.1];
+    fadeOutAnimationSettings2 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings2 setDampingRatio:1.1];
 
-    v11 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v11 setResponse:0.18];
+    fadeOutAnimationSettings3 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings3 setResponse:0.18];
 
-    v12 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v12 setRetargetImpulse:0.016];
+    fadeOutAnimationSettings4 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings4 setRetargetImpulse:0.016];
     v13 = 0.06;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
 
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setUsesCardStyle:0];
     UIRoundToScale();
@@ -67,23 +67,23 @@
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setFullScreenHomeScreenScale:0.9];
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setFullScreenHomeScreenAlpha:0.4];
     [(SBHPeopleWidgetPersonDetailInteractionSettings *)self setFullScreenDarkeningTintAlpha:0.6];
-    v15 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v15 setDefaultValues];
+    zoomAnimationSettings5 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings5 setDefaultValues];
 
-    v16 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v16 setDampingRatio:0.9];
+    zoomAnimationSettings6 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings6 setDampingRatio:0.9];
 
-    v17 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
-    [v17 setResponse:0.5];
+    zoomAnimationSettings7 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self zoomAnimationSettings];
+    [zoomAnimationSettings7 setResponse:0.5];
 
-    v18 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v18 setDefaultValues];
+    fadeOutAnimationSettings5 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings5 setDefaultValues];
 
-    v19 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v19 setDampingRatio:1.0];
+    fadeOutAnimationSettings6 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings6 setDampingRatio:1.0];
 
-    v12 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
-    [v12 setResponse:0.2];
+    fadeOutAnimationSettings4 = [(SBHPeopleWidgetPersonDetailInteractionSettings *)self fadeOutAnimationSettings];
+    [fadeOutAnimationSettings4 setResponse:0.2];
     v13 = 0.1;
   }
 
@@ -159,8 +159,8 @@
   v43 = [v42 sectionWithRows:v11];
 
   v12 = MEMORY[0x1E69C65E8];
-  v13 = [MEMORY[0x1E69C6640] action];
-  v14 = [v12 rowWithTitle:@"Restore Defaults" action:v13];
+  action = [MEMORY[0x1E69C6640] action];
+  v14 = [v12 rowWithTitle:@"Restore Defaults" action:action];
 
   v15 = MEMORY[0x1E69C6638];
   v58 = v14;

@@ -1,35 +1,35 @@
 @interface NTKPrideWeaveFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
-- (id)prideFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
+- (id)prideFacesForDevice:(id)device;
 @end
 
 @implementation NTKPrideWeaveFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKPrideWeaveFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKPrideWeaveFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:4094027452])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:4094027452])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKPrideWeaveFaceBundle *)self prideFacesForDevice:v4];
+    v6 = [(NTKPrideWeaveFaceBundle *)self prideFacesForDevice:deviceCopy];
     +[NSMutableArray array];
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
@@ -44,19 +44,19 @@
   return v5;
 }
 
-- (id)prideFacesForDevice:(id)a3
+- (id)prideFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([(objc_class *)[(NTKPrideWeaveFaceBundle *)self faceClass] isRestrictedForDevice:v4]& 1) != 0)
+  deviceCopy = device;
+  if (([(objc_class *)[(NTKPrideWeaveFaceBundle *)self faceClass] isRestrictedForDevice:deviceCopy]& 1) != 0)
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [objc_opt_class() identifier];
-    v7 = [objc_opt_class() analyticsIdentifier];
-    v8 = [NTKPrideWeaveFace bundledFaceWithIdentifier:v6 analyticsIdentifier:v7 forDevice:v4 initCustomization:0];
+    identifier = [objc_opt_class() identifier];
+    analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+    v8 = [NTKPrideWeaveFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
     v9 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:14 zOrder:6000];
     v25[0] = v9;
@@ -65,14 +65,14 @@
     v11 = [NSArray arrayWithObjects:v25 count:2];
     [v8 setCurationPlacements:v11];
 
-    v12 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v4];
+    v12 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:deviceCopy];
     [v8 selectOption:v12 forCustomEditMode:12 slot:0];
 
-    v13 = [objc_opt_class() identifier];
-    v14 = [objc_opt_class() analyticsIdentifier];
-    v15 = [NTKPrideWeaveFace bundledFaceWithIdentifier:v13 analyticsIdentifier:v14 forDevice:v4 initCustomization:0];
+    identifier2 = [objc_opt_class() identifier];
+    analyticsIdentifier2 = [objc_opt_class() analyticsIdentifier];
+    v15 = [NTKPrideWeaveFace bundledFaceWithIdentifier:identifier2 analyticsIdentifier:analyticsIdentifier2 forDevice:deviceCopy initCustomization:0];
 
-    v16 = [NTKAnalogDialShapeEditOption optionWithShape:0 forDevice:v4];
+    v16 = [NTKAnalogDialShapeEditOption optionWithShape:0 forDevice:deviceCopy];
     [v15 selectOption:v16 forCustomEditMode:12 slot:0];
 
     v17 = [NTKFaceCurationPlacementValue placementWithWatchOS12Group:14 zOrder:4000];
@@ -92,7 +92,7 @@
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -107,7 +107,7 @@
   return v3;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_258A8;
   v6 = &off_258C0;
@@ -116,12 +116,12 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
-    v5 = [(NTKPrideWeaveFaceBundle *)self prideFacesForDevice:v4];
+    v5 = [(NTKPrideWeaveFaceBundle *)self prideFacesForDevice:deviceCopy];
     v6 = +[NSMutableArray array];
     v15 = 0u;
     v16 = 0u;
@@ -142,8 +142,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) face];
-          [v6 addObject:v12];
+          face = [*(*(&v15 + 1) + 8 * i) face];
+          [v6 addObject:face];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];

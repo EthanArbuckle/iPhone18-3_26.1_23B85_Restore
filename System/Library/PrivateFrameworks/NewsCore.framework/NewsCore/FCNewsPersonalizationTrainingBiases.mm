@@ -1,15 +1,15 @@
 @interface FCNewsPersonalizationTrainingBiases
-+ (id)identifiersForEventType:(id)a3 feedType:(id)a4 groupType:(id)a5;
-- (FCNewsPersonalizationTrainingBiases)initWithBiases:(id)a3;
-- (double)biasForEventType:(id)a3 feedType:(id)a4 groupType:(id)a5;
++ (id)identifiersForEventType:(id)type feedType:(id)feedType groupType:(id)groupType;
+- (FCNewsPersonalizationTrainingBiases)initWithBiases:(id)biases;
+- (double)biasForEventType:(id)type feedType:(id)feedType groupType:(id)groupType;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationTrainingBiases
 
-- (FCNewsPersonalizationTrainingBiases)initWithBiases:(id)a3
+- (FCNewsPersonalizationTrainingBiases)initWithBiases:(id)biases
 {
-  v4 = a3;
+  biasesCopy = biases;
   v12.receiver = self;
   v12.super_class = FCNewsPersonalizationTrainingBiases;
   v5 = [(FCNewsPersonalizationTrainingBiases *)&v12 init];
@@ -20,7 +20,7 @@
     v10[1] = 3221225472;
     v10[2] = __54__FCNewsPersonalizationTrainingBiases_initWithBiases___block_invoke;
     v10[3] = &unk_1E7C36EC8;
-    v11 = v4;
+    v11 = biasesCopy;
     v7 = [v6 fc_dictionary:v10];
     biases = v5->_biases;
     v5->_biases = v7;
@@ -55,26 +55,26 @@ void __54__FCNewsPersonalizationTrainingBiases_initWithBiases___block_invoke_2(u
   }
 }
 
-+ (id)identifiersForEventType:(id)a3 feedType:(id)a4 groupType:(id)a5
++ (id)identifiersForEventType:(id)type feedType:(id)feedType groupType:(id)groupType
 {
   v21[7] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [FCNewsPersonalizationTrainingBias identifierForEventType:v9 feedType:v8 groupType:v7];
-  v11 = [FCNewsPersonalizationTrainingBias identifierForEventType:v9 feedType:0 groupType:v7, v10];
+  groupTypeCopy = groupType;
+  feedTypeCopy = feedType;
+  typeCopy = type;
+  v10 = [FCNewsPersonalizationTrainingBias identifierForEventType:typeCopy feedType:feedTypeCopy groupType:groupTypeCopy];
+  v11 = [FCNewsPersonalizationTrainingBias identifierForEventType:typeCopy feedType:0 groupType:groupTypeCopy, v10];
   v21[1] = v11;
-  v12 = [FCNewsPersonalizationTrainingBias identifierForEventType:v9 feedType:v8 groupType:0];
+  v12 = [FCNewsPersonalizationTrainingBias identifierForEventType:typeCopy feedType:feedTypeCopy groupType:0];
   v21[2] = v12;
-  v13 = [FCNewsPersonalizationTrainingBias identifierForEventType:0 feedType:v8 groupType:v7];
+  v13 = [FCNewsPersonalizationTrainingBias identifierForEventType:0 feedType:feedTypeCopy groupType:groupTypeCopy];
   v21[3] = v13;
-  v14 = [FCNewsPersonalizationTrainingBias identifierForEventType:v9 feedType:0 groupType:0];
+  v14 = [FCNewsPersonalizationTrainingBias identifierForEventType:typeCopy feedType:0 groupType:0];
 
   v21[4] = v14;
-  v15 = [FCNewsPersonalizationTrainingBias identifierForEventType:0 feedType:v8 groupType:0];
+  v15 = [FCNewsPersonalizationTrainingBias identifierForEventType:0 feedType:feedTypeCopy groupType:0];
 
   v21[5] = v15;
-  v16 = [FCNewsPersonalizationTrainingBias identifierForEventType:0 feedType:0 groupType:v7];
+  v16 = [FCNewsPersonalizationTrainingBias identifierForEventType:0 feedType:0 groupType:groupTypeCopy];
 
   v21[6] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:7];
@@ -103,14 +103,14 @@ void *__82__FCNewsPersonalizationTrainingBiases_identifiersForEventType_feedType
   return v3;
 }
 
-- (double)biasForEventType:(id)a3 feedType:(id)a4 groupType:(id)a5
+- (double)biasForEventType:(id)type feedType:(id)feedType groupType:(id)groupType
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FCNewsPersonalizationTrainingBiases *)self biases];
-  v12 = [v11 count];
+  typeCopy = type;
+  feedTypeCopy = feedType;
+  groupTypeCopy = groupType;
+  biases = [(FCNewsPersonalizationTrainingBiases *)self biases];
+  v12 = [biases count];
 
   if (v12)
   {
@@ -118,7 +118,7 @@ void *__82__FCNewsPersonalizationTrainingBiases_identifiersForEventType_feedType
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [FCNewsPersonalizationTrainingBiases identifiersForEventType:v8 feedType:v9 groupType:v10, 0];
+    v13 = [FCNewsPersonalizationTrainingBiases identifiersForEventType:typeCopy feedType:feedTypeCopy groupType:groupTypeCopy, 0];
     v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
     v15 = 1.0;
     if (v14)
@@ -135,8 +135,8 @@ void *__82__FCNewsPersonalizationTrainingBiases_identifiersForEventType_feedType
           }
 
           v19 = *(*(&v25 + 1) + 8 * i);
-          v20 = [(FCNewsPersonalizationTrainingBiases *)self biases];
-          v21 = [v20 objectForKeyedSubscript:v19];
+          biases2 = [(FCNewsPersonalizationTrainingBiases *)self biases];
+          v21 = [biases2 objectForKeyedSubscript:v19];
 
           if (v21)
           {
@@ -172,8 +172,8 @@ LABEL_12:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsPersonalizationTrainingBiases *)self biases];
-  [v3 appendFormat:@"; biases: %@", v4];
+  biases = [(FCNewsPersonalizationTrainingBiases *)self biases];
+  [v3 appendFormat:@"; biases: %@", biases];
 
   [v3 appendString:@">"];
 

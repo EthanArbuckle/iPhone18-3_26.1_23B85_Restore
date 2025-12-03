@@ -1,14 +1,14 @@
 @interface HUResidentDeviceStatusBannerItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUResidentDeviceStatusBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
   if ([v5 BOOLValue])
   {
 
@@ -24,9 +24,9 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [MEMORY[0x277D14CE8] isPressDemoModeEnabled];
+  isPressDemoModeEnabled = [MEMORY[0x277D14CE8] isPressDemoModeEnabled];
 
-  if (v6)
+  if (isPressDemoModeEnabled)
   {
     goto LABEL_4;
   }
@@ -36,8 +36,8 @@ LABEL_4:
   v14[1] = 3221225472;
   v14[2] = __64__HUResidentDeviceStatusBannerItem__subclass_updateWithOptions___block_invoke;
   v14[3] = &unk_277DB8200;
-  v15 = v4;
-  v16 = self;
+  v15 = optionsCopy;
+  selfCopy = self;
   v11 = [v12 futureWithBlock:v14];
   v9 = v15;
 LABEL_6:

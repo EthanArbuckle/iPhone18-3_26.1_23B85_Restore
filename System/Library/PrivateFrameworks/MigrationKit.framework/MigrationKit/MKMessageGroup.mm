@@ -11,12 +11,12 @@
   v2 = [(MKMessageGroup *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCACA8] generatedRoomNameForGroupChat];
-    [(MKMessageGroup *)v2 setRoomName:v3];
+    generatedRoomNameForGroupChat = [MEMORY[0x277CCACA8] generatedRoomNameForGroupChat];
+    [(MKMessageGroup *)v2 setRoomName:generatedRoomNameForGroupChat];
 
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
-    [(MKMessageGroup *)v2 setID:v5];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(MKMessageGroup *)v2 setID:uUIDString];
   }
 
   return v2;

@@ -1,26 +1,26 @@
 @interface _UISearchSuggestionItemGroup
-- (_UISearchSuggestionItemGroup)initWithHeaderTitle:(id)a3 headerAction:(id)a4 suggestionItems:(id)a5;
+- (_UISearchSuggestionItemGroup)initWithHeaderTitle:(id)title headerAction:(id)action suggestionItems:(id)items;
 - (id)description;
 @end
 
 @implementation _UISearchSuggestionItemGroup
 
-- (_UISearchSuggestionItemGroup)initWithHeaderTitle:(id)a3 headerAction:(id)a4 suggestionItems:(id)a5
+- (_UISearchSuggestionItemGroup)initWithHeaderTitle:(id)title headerAction:(id)action suggestionItems:(id)items
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  actionCopy = action;
+  itemsCopy = items;
   v17.receiver = self;
   v17.super_class = _UISearchSuggestionItemGroup;
   v11 = [(_UISearchSuggestionItemGroup *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     headerTitle = v11->_headerTitle;
     v11->_headerTitle = v12;
 
-    objc_storeStrong(&v11->_headerAction, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_headerAction, action);
+    v14 = [itemsCopy copy];
     suggestionItems = v11->_suggestionItems;
     v11->_suggestionItems = v14;
   }

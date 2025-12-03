@@ -7,7 +7,7 @@
 
 - (NSArray)attachments
 {
-  v2 = self;
+  selfCopy = self;
 
   specialized _arrayForceCast<A, B>(_:)(v3);
 

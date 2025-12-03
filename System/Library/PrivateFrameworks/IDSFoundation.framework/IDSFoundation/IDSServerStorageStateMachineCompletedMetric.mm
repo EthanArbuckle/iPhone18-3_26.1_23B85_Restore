@@ -1,5 +1,5 @@
 @interface IDSServerStorageStateMachineCompletedMetric
-- (IDSServerStorageStateMachineCompletedMetric)initWithService:(id)a3 linkType:(int64_t)a4 wasPrimary:(BOOL)a5 timeTaken:(double)a6 messagesProcessed:(int64_t)a7 roundsProcessed:(int64_t)a8 serverTimeoutCount:(int64_t)a9 clientTimeoutCount:(int64_t)a10 terminationReason:(int64_t)a11 storageCheckVersion:(id)a12;
+- (IDSServerStorageStateMachineCompletedMetric)initWithService:(id)service linkType:(int64_t)type wasPrimary:(BOOL)primary timeTaken:(double)taken messagesProcessed:(int64_t)processed roundsProcessed:(int64_t)roundsProcessed serverTimeoutCount:(int64_t)count clientTimeoutCount:(int64_t)self0 terminationReason:(int64_t)self1 storageCheckVersion:(id)self2;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSServerStorageStateMachineCompletedMetric *)self service];
-  if (v4)
+  service = [(IDSServerStorageStateMachineCompletedMetric *)self service];
+  if (service)
   {
-    CFDictionarySetValue(v3, @"service", v4);
+    CFDictionarySetValue(v3, @"service", service);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSServerStorageStateMachineCompletedMetric linkType](self, "linkType")}];
@@ -64,35 +64,35 @@
     CFDictionarySetValue(v3, @"terminationReason", v13);
   }
 
-  v14 = [(IDSServerStorageStateMachineCompletedMetric *)self storageCheckVersion];
-  if (v14)
+  storageCheckVersion = [(IDSServerStorageStateMachineCompletedMetric *)self storageCheckVersion];
+  if (storageCheckVersion)
   {
-    CFDictionarySetValue(v3, @"storageCheckVersion", v14);
+    CFDictionarySetValue(v3, @"storageCheckVersion", storageCheckVersion);
   }
 
   return v3;
 }
 
-- (IDSServerStorageStateMachineCompletedMetric)initWithService:(id)a3 linkType:(int64_t)a4 wasPrimary:(BOOL)a5 timeTaken:(double)a6 messagesProcessed:(int64_t)a7 roundsProcessed:(int64_t)a8 serverTimeoutCount:(int64_t)a9 clientTimeoutCount:(int64_t)a10 terminationReason:(int64_t)a11 storageCheckVersion:(id)a12
+- (IDSServerStorageStateMachineCompletedMetric)initWithService:(id)service linkType:(int64_t)type wasPrimary:(BOOL)primary timeTaken:(double)taken messagesProcessed:(int64_t)processed roundsProcessed:(int64_t)roundsProcessed serverTimeoutCount:(int64_t)count clientTimeoutCount:(int64_t)self0 terminationReason:(int64_t)self1 storageCheckVersion:(id)self2
 {
-  v20 = a3;
-  v21 = a12;
+  serviceCopy = service;
+  versionCopy = version;
   v25.receiver = self;
   v25.super_class = IDSServerStorageStateMachineCompletedMetric;
   v22 = [(IDSServerStorageStateMachineCompletedMetric *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_service, a3);
-    v23->_linkType = a4;
-    v23->_wasPrimary = a5;
-    v23->_timeTaken = a6;
-    v23->_messagesProcessed = a7;
-    v23->_roundsProcessed = a8;
-    v23->_serverTimeoutCount = a9;
-    v23->_clientTimeoutCount = a10;
-    v23->_terminationReason = a11;
-    objc_storeStrong(&v23->_storageCheckVersion, a12);
+    objc_storeStrong(&v22->_service, service);
+    v23->_linkType = type;
+    v23->_wasPrimary = primary;
+    v23->_timeTaken = taken;
+    v23->_messagesProcessed = processed;
+    v23->_roundsProcessed = roundsProcessed;
+    v23->_serverTimeoutCount = count;
+    v23->_clientTimeoutCount = timeoutCount;
+    v23->_terminationReason = reason;
+    objc_storeStrong(&v23->_storageCheckVersion, version);
   }
 
   return v23;

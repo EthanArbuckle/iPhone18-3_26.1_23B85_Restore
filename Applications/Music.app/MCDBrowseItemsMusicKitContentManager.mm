@@ -7,14 +7,14 @@
 - (id)_modelRequest
 {
   v3 = objc_alloc_init(MPModelStoreBrowseRoomRequest);
-  v4 = [(MCDFuseContentManager *)self dataSource];
+  dataSource = [(MCDFuseContentManager *)self dataSource];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MCDFuseContentManager *)self dataSource];
-    v7 = [v6 parentSection];
-    [v3 configureWithParentSection:v7];
+    dataSource2 = [(MCDFuseContentManager *)self dataSource];
+    parentSection = [dataSource2 parentSection];
+    [v3 configureWithParentSection:parentSection];
   }
 
   [v3 setClientIdentifier:MCDMusicCarPlayBundleIdentifier];

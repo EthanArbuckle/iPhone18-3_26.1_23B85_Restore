@@ -1,55 +1,55 @@
 @interface WBSMobileAssetController
 - (NSDate)lastUpdateDate;
-- (WBSMobileAssetController)initWithMobileAssetType:(id)a3 updateDateDefaultsKey:(id)a4 updateInterval:(double)a5 minimumDelay:(double)a6;
-- (WBSMobileAssetController)initWithMobileAssetType:(id)a3 updateInterval:(double)a4 minimumDelay:(double)a5;
+- (WBSMobileAssetController)initWithMobileAssetType:(id)type updateDateDefaultsKey:(id)key updateInterval:(double)interval minimumDelay:(double)delay;
+- (WBSMobileAssetController)initWithMobileAssetType:(id)type updateInterval:(double)interval minimumDelay:(double)delay;
 - (WBSMobileAssetControllerDelegate)delegate;
-- (void)_downloadIfNecessary:(id)a3;
-- (void)_queryAssets:(id)a3;
-- (void)_queryBackgroundImageAsset:(id)a3 retryCount:(int64_t)a4 completionHandler:(id)a5;
-- (void)_queryMostRecentAsset:(id)a3;
+- (void)_downloadIfNecessary:(id)necessary;
+- (void)_queryAssets:(id)assets;
+- (void)_queryBackgroundImageAsset:(id)asset retryCount:(int64_t)count completionHandler:(id)handler;
+- (void)_queryMostRecentAsset:(id)asset;
 - (void)_update;
-- (void)_updateCatalog:(id)a3;
-- (void)downloadMobileAssetBackgroundImage:(id)a3 completionHandler:(id)a4;
-- (void)queryURL:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setLastUpdateDate:(id)a3;
+- (void)_updateCatalog:(id)catalog;
+- (void)downloadMobileAssetBackgroundImage:(id)image completionHandler:(id)handler;
+- (void)queryURL:(id)l;
+- (void)setDelegate:(id)delegate;
+- (void)setLastUpdateDate:(id)date;
 @end
 
 @implementation WBSMobileAssetController
 
 - (NSDate)lastUpdateDate
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 safari_dateForKey:self->_updateDateDefaultsKey];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults safari_dateForKey:self->_updateDateDefaultsKey];
 
   return v4;
 }
 
-- (WBSMobileAssetController)initWithMobileAssetType:(id)a3 updateDateDefaultsKey:(id)a4 updateInterval:(double)a5 minimumDelay:(double)a6
+- (WBSMobileAssetController)initWithMobileAssetType:(id)type updateDateDefaultsKey:(id)key updateInterval:(double)interval minimumDelay:(double)delay
 {
-  v11 = a3;
-  v12 = a4;
+  typeCopy = type;
+  keyCopy = key;
   v25.receiver = self;
   v25.super_class = WBSMobileAssetController;
   v13 = [(WBSMobileAssetController *)&v25 init];
   if (v13)
   {
     objc_initWeak(&location, v13);
-    objc_storeStrong(&v13->_assetType, a3);
-    objc_storeStrong(&v13->_updateDateDefaultsKey, a4);
-    v13->_updateInterval = a5;
+    objc_storeStrong(&v13->_assetType, type);
+    objc_storeStrong(&v13->_updateDateDefaultsKey, key);
+    v13->_updateInterval = interval;
     v14 = dispatch_queue_create("com.apple.SafariSharedUI.WBSMobileAssetController.internalQueue", 0);
     internalQueue = v13->_internalQueue;
     v13->_internalQueue = v14;
 
     v16 = objc_alloc(MEMORY[0x1E69C8FD0]);
-    v17 = [(WBSMobileAssetController *)v13 lastUpdateDate];
+    lastUpdateDate = [(WBSMobileAssetController *)v13 lastUpdateDate];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __102__WBSMobileAssetController_initWithMobileAssetType_updateDateDefaultsKey_updateInterval_minimumDelay___block_invoke;
     v22[3] = &unk_1E8283A38;
     objc_copyWeak(&v23, &location);
-    v18 = [v16 initWithInterval:v17 minimumDelay:v22 lastFireDate:a5 block:a6];
+    v18 = [v16 initWithInterval:lastUpdateDate minimumDelay:v22 lastFireDate:interval block:delay];
     scheduler = v13->_scheduler;
     v13->_scheduler = v18;
 
@@ -67,26 +67,26 @@ void __102__WBSMobileAssetController_initWithMobileAssetType_updateDateDefaultsK
   [WeakRetained _update];
 }
 
-- (WBSMobileAssetController)initWithMobileAssetType:(id)a3 updateInterval:(double)a4 minimumDelay:(double)a5
+- (WBSMobileAssetController)initWithMobileAssetType:(id)type updateInterval:(double)interval minimumDelay:(double)delay
 {
-  v8 = a3;
-  v9 = [v8 stringByAppendingString:@".UpdateDate"];
-  v10 = [(WBSMobileAssetController *)self initWithMobileAssetType:v8 updateDateDefaultsKey:v9 updateInterval:a4 minimumDelay:a5];
+  typeCopy = type;
+  v9 = [typeCopy stringByAppendingString:@".UpdateDate"];
+  v10 = [(WBSMobileAssetController *)self initWithMobileAssetType:typeCopy updateDateDefaultsKey:v9 updateInterval:interval minimumDelay:delay];
 
   return v10;
 }
 
-- (void)downloadMobileAssetBackgroundImage:(id)a3 completionHandler:(id)a4
+- (void)downloadMobileAssetBackgroundImage:(id)image completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__WBSMobileAssetController_downloadMobileAssetBackgroundImage_completionHandler___block_invoke;
   v8[3] = &unk_1E8286230;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(WBSMobileAssetController *)self _queryBackgroundImageAsset:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WBSMobileAssetController *)self _queryBackgroundImageAsset:image completionHandler:v8];
 }
 
 void __81__WBSMobileAssetController_downloadMobileAssetBackgroundImage_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -156,25 +156,25 @@ uint64_t __81__WBSMobileAssetController_downloadMobileAssetBackgroundImage_compl
   return v9();
 }
 
-- (void)_queryBackgroundImageAsset:(id)a3 retryCount:(int64_t)a4 completionHandler:(id)a5
+- (void)_queryBackgroundImageAsset:(id)asset retryCount:(int64_t)count completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   v10 = [objc_alloc(getMAAssetQueryClass()) initWithType:self->_assetType];
-  [v10 addKeyValuePair:@"FileName" with:v8];
+  [v10 addKeyValuePair:@"FileName" with:assetCopy];
   [v10 addKeyValuePair:@"IsBackgroundImageThumbnailV1" with:@"NO"];
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__WBSMobileAssetController__queryBackgroundImageAsset_retryCount_completionHandler___block_invoke;
   v14[3] = &unk_1E82862A0;
-  v19[1] = a4;
+  v19[1] = count;
   objc_copyWeak(v19, &location);
-  v11 = v8;
+  v11 = assetCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = handlerCopy;
   v18 = v12;
-  v16 = self;
+  selfCopy = self;
   v13 = v10;
   v17 = v13;
   [v13 queryMetaDataWithError:v14];
@@ -276,17 +276,17 @@ void __36__WBSMobileAssetController_delegate__block_invoke(uint64_t a1)
   *(v3 + 40) = WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__WBSMobileAssetController_setDelegate___block_invoke;
   v7[3] = &unk_1E82834A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -330,12 +330,12 @@ void __40__WBSMobileAssetController_setDelegate___block_invoke_2(uint64_t a1, vo
   }
 }
 
-- (void)setLastUpdateDate:(id)a3
+- (void)setLastUpdateDate:(id)date
 {
   v4 = MEMORY[0x1E695E000];
-  v5 = a3;
-  v6 = [v4 standardUserDefaults];
-  [v6 safari_setDate:v5 forKey:self->_updateDateDefaultsKey];
+  dateCopy = date;
+  standardUserDefaults = [v4 standardUserDefaults];
+  [standardUserDefaults safari_setDate:dateCopy forKey:self->_updateDateDefaultsKey];
 }
 
 - (void)_update
@@ -401,9 +401,9 @@ void __35__WBSMobileAssetController__update__block_invoke_3(uint64_t a1, void *a
   }
 }
 
-- (void)_updateCatalog:(id)a3
+- (void)_updateCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = objc_alloc_init(getMADownloadOptionsClass());
   [v5 setDiscretionary:0];
   [v5 setAllowsCellularAccess:1];
@@ -434,8 +434,8 @@ void __35__WBSMobileAssetController__update__block_invoke_3(uint64_t a1, void *a
   v10[2] = __43__WBSMobileAssetController__updateCatalog___block_invoke;
   v10[3] = &unk_1E8286318;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = catalogCopy;
+  v9 = catalogCopy;
   [v6 startCatalogDownload:assetType options:v5 then:v10];
 }
 
@@ -456,9 +456,9 @@ uint64_t __43__WBSMobileAssetController__updateCatalog___block_invoke(uint64_t a
   return v9();
 }
 
-- (void)_queryAssets:(id)a3
+- (void)_queryAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v5 = [objc_alloc(getMAAssetQueryClass()) initWithType:self->_assetType];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -471,8 +471,8 @@ uint64_t __43__WBSMobileAssetController__updateCatalog___block_invoke(uint64_t a
   v9[2] = __41__WBSMobileAssetController__queryAssets___block_invoke;
   v9[3] = &unk_1E8286318;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = assetsCopy;
+  v7 = assetsCopy;
   v8 = v5;
   [v8 queryMetaData:v9];
 }
@@ -500,15 +500,15 @@ uint64_t __41__WBSMobileAssetController__queryAssets___block_invoke_2(uint64_t a
   return v11;
 }
 
-- (void)queryURL:(id)a3
+- (void)queryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__WBSMobileAssetController_queryURL___block_invoke;
   v6[3] = &unk_1E8286340;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   [(WBSMobileAssetController *)self _queryMostRecentAsset:v6];
 }
 
@@ -530,16 +530,16 @@ void __37__WBSMobileAssetController_queryURL___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_queryMostRecentAsset:(id)a3
+- (void)_queryMostRecentAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__WBSMobileAssetController__queryMostRecentAsset___block_invoke;
   v6[3] = &unk_1E8286230;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = assetCopy;
+  v5 = assetCopy;
   [(WBSMobileAssetController *)self _queryAssets:v6];
 }
 
@@ -605,16 +605,16 @@ void __50__WBSMobileAssetController__queryMostRecentAsset___block_invoke(uint64_
 LABEL_13:
 }
 
-- (void)_downloadIfNecessary:(id)a3
+- (void)_downloadIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__WBSMobileAssetController__downloadIfNecessary___block_invoke;
   v6[3] = &unk_1E8286230;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = necessaryCopy;
+  v5 = necessaryCopy;
   [(WBSMobileAssetController *)self _queryAssets:v6];
 }
 

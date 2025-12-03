@@ -1,14 +1,14 @@
 @interface CUIPSDLayerEffectBevelEmboss
-- (BOOL)updateLayerEffectPreset:(id)a3 error:(id *)a4;
+- (BOOL)updateLayerEffectPreset:(id)preset error:(id *)error;
 - (CUIPSDLayerEffectBevelEmboss)init;
-- (CUIPSDLayerEffectBevelEmboss)initWithEffectFromPreset:(id)a3 atIndex:(unsigned int)a4;
+- (CUIPSDLayerEffectBevelEmboss)initWithEffectFromPreset:(id)preset atIndex:(unsigned int)index;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CUIPSDLayerEffectBevelEmboss
 
-- (BOOL)updateLayerEffectPreset:(id)a3 error:(id *)a4
+- (BOOL)updateLayerEffectPreset:(id)preset error:(id *)error
 {
   if (![(CUIPSDLayerEffectBevelEmboss *)self highlightColor]|| ![(CUIPSDLayerEffectBevelEmboss *)self shadowColor])
   {
@@ -30,9 +30,9 @@
 LABEL_12:
     v25 = [NSError errorWithDomain:v22 code:-1 userInfo:[NSDictionary dictionaryWithObjects:v23 forKeys:v24 count:1]];
     v17 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v25;
+      *error = v25;
     }
 
     return v17;
@@ -46,11 +46,11 @@ LABEL_12:
   v11 = rint(*v10 * 255.0);
   v12 = rint(v10[1] * 255.0);
   v13 = rint(v10[2] * 255.0);
-  v14 = [(CUIPSDLayerEffectBevelEmboss *)self blurSize];
-  v15 = [(CUIPSDLayerEffectBevelEmboss *)self softenSize];
-  v16 = [(CUIPSDLayerEffectBevelEmboss *)self direction];
+  blurSize = [(CUIPSDLayerEffectBevelEmboss *)self blurSize];
+  softenSize = [(CUIPSDLayerEffectBevelEmboss *)self softenSize];
+  direction = [(CUIPSDLayerEffectBevelEmboss *)self direction];
   v17 = 1;
-  if (v16 == 1231953952)
+  if (direction == 1231953952)
   {
     [(CUIPSDLayerEffectBevelEmboss *)self highlightOpacity];
     v19 = v27;
@@ -60,7 +60,7 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if (v16 == 1333097504)
+  if (direction == 1333097504)
   {
     [(CUIPSDLayerEffectBevelEmboss *)self highlightOpacity];
     v19 = v18;
@@ -68,23 +68,23 @@ LABEL_12:
     v21 = v20;
     LODWORD(v29) = 0;
 LABEL_16:
-    [a3 addBevelEmbossWithHighlightColorRed:v30 green:v8 blue:v9 opacity:v11 shadowColorRed:v12 green:v13 blue:v19 opacity:v21 blur:__PAIR64__(v15 soften:v14) bevelStyle:v29];
+    [preset addBevelEmbossWithHighlightColorRed:v30 green:v8 blue:v9 opacity:v11 shadowColorRed:v12 green:v13 blue:v19 opacity:v21 blur:__PAIR64__(softenSize soften:blurSize) bevelStyle:v29];
   }
 
   return v17;
 }
 
-- (CUIPSDLayerEffectBevelEmboss)initWithEffectFromPreset:(id)a3 atIndex:(unsigned int)a4
+- (CUIPSDLayerEffectBevelEmboss)initWithEffectFromPreset:(id)preset atIndex:(unsigned int)index
 {
   v8.receiver = self;
   v8.super_class = CUIPSDLayerEffectBevelEmboss;
   v6 = [(CUIPSDLayerEffectBevelEmboss *)&v8 init];
-  -[CUIPSDLayerEffectBevelEmboss setBlurSize:](v6, "setBlurSize:", [a3 valueForParameter:4 inEffectAtIndex:a4]);
-  -[CUIPSDLayerEffectBevelEmboss setSoftenSize:](v6, "setSoftenSize:", [a3 valueForParameter:8 inEffectAtIndex:a4]);
-  -[CUIPSDLayerEffectBevelEmboss setHighlightColor:](v6, "setHighlightColor:", -[CUIPSDLayerEffectComponent _colorFromShapeEffectValue:](v6, "_colorFromShapeEffectValue:", [a3 valueForParameter:0 inEffectAtIndex:a4]));
-  -[CUIPSDLayerEffectBevelEmboss setHighlightOpacity:](v6, "setHighlightOpacity:", COERCE_DOUBLE([a3 valueForParameter:2 inEffectAtIndex:a4]));
-  -[CUIPSDLayerEffectBevelEmboss setShadowColor:](v6, "setShadowColor:", -[CUIPSDLayerEffectComponent _colorFromShapeEffectValue:](v6, "_colorFromShapeEffectValue:", [a3 valueForParameter:1 inEffectAtIndex:a4]));
-  -[CUIPSDLayerEffectBevelEmboss setShadowOpacity:](v6, "setShadowOpacity:", COERCE_DOUBLE([a3 valueForParameter:3 inEffectAtIndex:a4]));
+  -[CUIPSDLayerEffectBevelEmboss setBlurSize:](v6, "setBlurSize:", [preset valueForParameter:4 inEffectAtIndex:index]);
+  -[CUIPSDLayerEffectBevelEmboss setSoftenSize:](v6, "setSoftenSize:", [preset valueForParameter:8 inEffectAtIndex:index]);
+  -[CUIPSDLayerEffectBevelEmboss setHighlightColor:](v6, "setHighlightColor:", -[CUIPSDLayerEffectComponent _colorFromShapeEffectValue:](v6, "_colorFromShapeEffectValue:", [preset valueForParameter:0 inEffectAtIndex:index]));
+  -[CUIPSDLayerEffectBevelEmboss setHighlightOpacity:](v6, "setHighlightOpacity:", COERCE_DOUBLE([preset valueForParameter:2 inEffectAtIndex:index]));
+  -[CUIPSDLayerEffectBevelEmboss setShadowColor:](v6, "setShadowColor:", -[CUIPSDLayerEffectComponent _colorFromShapeEffectValue:](v6, "_colorFromShapeEffectValue:", [preset valueForParameter:1 inEffectAtIndex:index]));
+  -[CUIPSDLayerEffectBevelEmboss setShadowOpacity:](v6, "setShadowOpacity:", COERCE_DOUBLE([preset valueForParameter:3 inEffectAtIndex:index]));
   [(CUIPSDLayerEffectBevelEmboss *)v6 setHighlightBlendMode:0];
   [(CUIPSDLayerEffectBevelEmboss *)v6 setShadowBlendMode:0];
   [(CUIPSDLayerEffectBevelEmboss *)v6 setAngle:90];

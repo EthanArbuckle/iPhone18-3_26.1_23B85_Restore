@@ -1,6 +1,6 @@
 @interface AssetExportController
 - (AssetExportController)init;
-- (void)finalizeAssetWithComposition:(id)a3 completionBlock:(id)a4;
+- (void)finalizeAssetWithComposition:(id)composition completionBlock:(id)block;
 @end
 
 @implementation AssetExportController
@@ -19,20 +19,20 @@
   return v3;
 }
 
-- (void)finalizeAssetWithComposition:(id)a3 completionBlock:(id)a4
+- (void)finalizeAssetWithComposition:(id)composition completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 decomposedFragments];
-  v9 = [v8 count];
+  compositionCopy = composition;
+  blockCopy = block;
+  decomposedFragments = [compositionCopy decomposedFragments];
+  v9 = [decomposedFragments count];
 
   if (v9)
   {
-    v10 = [v6 composedAVURL];
+    composedAVURL = [compositionCopy composedAVURL];
     v11 = OSLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      sub_100034A90(v10, v11);
+      sub_100034A90(composedAVURL, v11);
     }
 
     v17[0] = _NSConcreteStackBlock;
@@ -40,9 +40,9 @@
     v17[2] = sub_100007850;
     v17[3] = &unk_100055480;
     v17[4] = self;
-    v18 = v7;
-    v12 = v7;
-    [RCComposition rcs_composeToFinalDestination:v6 completionBlock:v17];
+    v18 = blockCopy;
+    v12 = blockCopy;
+    [RCComposition rcs_composeToFinalDestination:compositionCopy completionBlock:v17];
   }
 
   else
@@ -52,9 +52,9 @@
     v14[1] = 3221225472;
     v14[2] = sub_100007958;
     v14[3] = &unk_1000554A8;
-    v16 = v7;
-    v15 = v6;
-    v10 = v7;
+    v16 = blockCopy;
+    v15 = compositionCopy;
+    composedAVURL = blockCopy;
     dispatch_async(completionQueue, v14);
 
     v12 = v16;

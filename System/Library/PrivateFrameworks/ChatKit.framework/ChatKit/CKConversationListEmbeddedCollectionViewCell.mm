@@ -1,29 +1,29 @@
 @interface CKConversationListEmbeddedCollectionViewCell
 + (Class)embeddedTableViewCellClass;
-- (BOOL)conversationListCellCanShowFooter:(id)a3;
-- (BOOL)conversationListCellCanShowPriorityLabelInCurrentFilterMode:(id)a3;
+- (BOOL)conversationListCellCanShowFooter:(id)footer;
+- (BOOL)conversationListCellCanShowPriorityLabelInCurrentFilterMode:(id)mode;
 - (BOOL)shouldShowFooter;
-- (CKConversationListEmbeddedCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CKConversationListEmbeddedCollectionViewCell)initWithFrame:(CGRect)frame;
 - (CKConversationListEmbeddedCollectionViewCellDelegate)embeddedCellDelegate;
-- (id)_leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)a3 usingState:(id)a4;
-- (id)_multiselectCellAccessoryConfigurationUsingState:(id)a3;
+- (id)_leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)mode usingState:(id)state;
+- (id)_multiselectCellAccessoryConfigurationUsingState:(id)state;
 - (id)configurationState;
 - (id)insertCellAccessoryConfiguration;
-- (id)leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)a3;
+- (id)leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)mode;
 - (id)multiselectCellAccessoryConfiguration;
 - (id)pinButton;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (id)trailingEditingAccessoryConfigurationsForEditingMode:(unint64_t)a3;
-- (void)conversationListCellDidPressAccept:(id)a3;
-- (void)conversationListCellDidPressAddToContacts:(id)a3;
-- (void)conversationListCellDidPressDelete:(id)a3;
-- (void)forwardStateToEmbeddedCell:(id)a3;
-- (void)pinButtonTapped:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (id)trailingEditingAccessoryConfigurationsForEditingMode:(unint64_t)mode;
+- (void)conversationListCellDidPressAccept:(id)accept;
+- (void)conversationListCellDidPressAddToContacts:(id)contacts;
+- (void)conversationListCellDidPressDelete:(id)delete;
+- (void)forwardStateToEmbeddedCell:(id)cell;
+- (void)pinButtonTapped:(id)tapped;
 - (void)prepareForReuse;
-- (void)setCellLayout:(id)a3;
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setLinkInteractions:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setCellLayout:(id)layout;
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated;
+- (void)setLinkInteractions:(id)interactions;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CKConversationListEmbeddedCollectionViewCell
@@ -32,37 +32,37 @@
 {
   v5.receiver = self;
   v5.super_class = CKConversationListEmbeddedCollectionViewCell;
-  v2 = [(CKConversationListEmbeddedCollectionViewCell *)&v5 configurationState];
+  configurationState = [(CKConversationListEmbeddedCollectionViewCell *)&v5 configurationState];
   v3 = +[CKUIBehavior sharedBehaviors];
-  [v3 modifyConversationCellStateForDrop:v2];
+  [v3 modifyConversationCellStateForDrop:configurationState];
 
-  return v2;
+  return configurationState;
 }
 
 - (BOOL)shouldShowFooter
 {
-  v3 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  v4 = v3;
-  if (v3 && ([v3 currentFilterModeForCell:self] - 1) >= 2)
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  v4 = embeddedCellDelegate;
+  if (embeddedCellDelegate && ([embeddedCellDelegate currentFilterModeForCell:self] - 1) >= 2)
   {
-    v6 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    if (embeddedTableViewCell && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v6 shouldShowFooter];
+      shouldShowFooter = [embeddedTableViewCell shouldShowFooter];
     }
 
     else
     {
-      v5 = 0;
+      shouldShowFooter = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    shouldShowFooter = 0;
   }
 
-  return v5;
+  return shouldShowFooter;
 }
 
 - (CKConversationListEmbeddedCollectionViewCellDelegate)embeddedCellDelegate
@@ -87,56 +87,56 @@
   objc_exception_throw(v10);
 }
 
-- (CKConversationListEmbeddedCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKConversationListEmbeddedCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKConversationListEmbeddedCollectionViewCell;
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(CKConversationListEmbeddedCollectionViewCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKConversationListEmbeddedCollectionViewCell *)v4 contentView];
+    contentView = [(CKConversationListEmbeddedCollectionViewCell *)v4 contentView];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [(CKConversationListEmbeddedCollectionViewCell *)a2 initWithFrame:v5, v6];
+      [(CKConversationListEmbeddedCollectionViewCell *)a2 initWithFrame:v5, contentView];
     }
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [contentView setBackgroundColor:clearColor];
 
-    [v6 setSelectionStyle:0];
+    [contentView setSelectionStyle:0];
     [(CKConversationListEmbeddedCollectionViewCell *)v5 setFocusEffect:0];
     if (objc_opt_respondsToSelector())
     {
-      [v6 setIntroductionsDelegate:v5];
+      [contentView setIntroductionsDelegate:v5];
     }
 
-    [(CKConversationListEmbeddedCollectionViewCell *)v5 setEmbeddedTableViewCell:v6];
+    [(CKConversationListEmbeddedCollectionViewCell *)v5 setEmbeddedTableViewCell:contentView];
   }
 
   return v5;
 }
 
-- (void)setCellLayout:(id)a3
+- (void)setCellLayout:(id)layout
 {
-  v11 = a3;
-  objc_storeStrong(&self->_cellLayout, a3);
-  v6 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+  layoutCopy = layout;
+  objc_storeStrong(&self->_cellLayout, layout);
+  embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
+    cellLayout = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
 
-    if (!v8)
+    if (!cellLayout)
     {
       [(CKConversationListEmbeddedCollectionViewCell *)self setCellLayout:a2];
     }
 
-    v9 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
-    v10 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-    [v10 setCellLayout:v9];
+    cellLayout2 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
+    embeddedTableViewCell2 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    [embeddedTableViewCell2 setCellLayout:cellLayout2];
 
     [(CKConversationListEmbeddedCollectionViewCell *)self setNeedsLayout];
   }
@@ -147,38 +147,38 @@
   v4.receiver = self;
   v4.super_class = CKConversationListEmbeddedCollectionViewCell;
   [(CKConversationListEmbeddedCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-  [v3 prepareForReuse];
+  embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+  [embeddedTableViewCell prepareForReuse];
 }
 
-- (void)forwardStateToEmbeddedCell:(id)a3
+- (void)forwardStateToEmbeddedCell:(id)cell
 {
-  v7 = a3;
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+  cellCopy = cell;
+  embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-    [v6 updateWithForwardedConfigurationState:v7];
+    embeddedTableViewCell2 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    [embeddedTableViewCell2 updateWithForwardedConfigurationState:cellCopy];
   }
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v21 = a3;
-  v4 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
-  v5 = [v4 updatedConfigurationForState:v21];
+  stateCopy = state;
+  listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+  v5 = [listCellConfiguration updatedConfigurationForState:stateCopy];
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  [v6 modifyConversationCellStateForDrop:v21];
+  [v6 modifyConversationCellStateForDrop:stateCopy];
 
-  [(CKConversationListEmbeddedCollectionViewCell *)self forwardStateToEmbeddedCell:v21];
-  v7 = [v5 updatedConfigurationForState:v21];
+  [(CKConversationListEmbeddedCollectionViewCell *)self forwardStateToEmbeddedCell:stateCopy];
+  v7 = [v5 updatedConfigurationForState:stateCopy];
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [(CKConversationListEmbeddedCollectionViewCell *)self traitCollection];
-  if ([v8 useSelectedAppearanceForConversationCellState:v21 traitCollection:v9])
+  traitCollection = [(CKConversationListEmbeddedCollectionViewCell *)self traitCollection];
+  if ([v8 useSelectedAppearanceForConversationCellState:stateCopy traitCollection:traitCollection])
   {
     v10 = [(CKConversationListEmbeddedCollectionViewCell *)self editingMode]!= 2;
   }
@@ -188,80 +188,80 @@
     v10 = 0;
   }
 
-  v11 = [v21 cellDropState];
-  if (v10 || v11 == 2)
+  cellDropState = [stateCopy cellDropState];
+  if (v10 || cellDropState == 2)
   {
     v15 = +[CKUIBehavior sharedBehaviors];
-    v16 = [v15 theme];
-    v17 = [v16 conversationListSelectedCellColor];
-    if (v17)
+    theme = [v15 theme];
+    conversationListSelectedCellColor = [theme conversationListSelectedCellColor];
+    if (conversationListSelectedCellColor)
     {
       v18 = +[CKUIBehavior sharedBehaviors];
-      v19 = [v18 theme];
-      v14 = [v19 conversationListSelectedCellColor];
+      theme2 = [v18 theme];
+      conversationListSelectedCellColor2 = [theme2 conversationListSelectedCellColor];
     }
 
     else
     {
-      v14 = [v7 backgroundColor];
+      conversationListSelectedCellColor2 = [v7 backgroundColor];
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isConversationListRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isConversationListRefreshEnabled = [mEMORY[0x1E69A8070] isConversationListRefreshEnabled];
 
-    if (v13)
+    if (isConversationListRefreshEnabled)
     {
       goto LABEL_13;
     }
 
-    v14 = [MEMORY[0x1E69DC888] clearColor];
+    conversationListSelectedCellColor2 = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  [v7 setBackgroundColor:v14];
+  [v7 setBackgroundColor:conversationListSelectedCellColor2];
 
 LABEL_13:
-  v20 = [(CKConversationListEmbeddedCollectionViewCell *)self _leadingEditingAccessoryConfigurationsForEditingMode:self->_editingMode usingState:v21];
+  v20 = [(CKConversationListEmbeddedCollectionViewCell *)self _leadingEditingAccessoryConfigurationsForEditingMode:self->_editingMode usingState:stateCopy];
   [(CKConversationListEmbeddedCollectionViewCell *)self setLeadingEditingAccessoryConfigurations:v20];
 
   [(CKConversationListEmbeddedCollectionViewCell *)self setBackgroundConfiguration:v7];
 }
 
-- (void)conversationListCellDidPressDelete:(id)a3
+- (void)conversationListCellDidPressDelete:(id)delete
 {
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  [v4 deleteButtonTappedForCell:self];
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  [embeddedCellDelegate deleteButtonTappedForCell:self];
 }
 
-- (void)conversationListCellDidPressAccept:(id)a3
+- (void)conversationListCellDidPressAccept:(id)accept
 {
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  [v4 acceptButtonTappedForCell:self];
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  [embeddedCellDelegate acceptButtonTappedForCell:self];
 }
 
-- (void)conversationListCellDidPressAddToContacts:(id)a3
+- (void)conversationListCellDidPressAddToContacts:(id)contacts
 {
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  [v4 addToContactsButtonTappedForCell:self];
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  [embeddedCellDelegate addToContactsButtonTappedForCell:self];
 }
 
-- (BOOL)conversationListCellCanShowFooter:(id)a3
+- (BOOL)conversationListCellCanShowFooter:(id)footer
 {
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self configurationState];
-  v5 = [v4 isSelected];
+  configurationState = [(CKConversationListEmbeddedCollectionViewCell *)self configurationState];
+  isSelected = [configurationState isSelected];
 
-  if (v5)
+  if (isSelected)
   {
     return 0;
   }
 
-  v7 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  v8 = v7;
-  if (v7)
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  v8 = embeddedCellDelegate;
+  if (embeddedCellDelegate)
   {
-    v6 = ([v7 currentFilterModeForCell:self] - 3) < 0xFFFFFFFFFFFFFFFELL;
+    v6 = ([embeddedCellDelegate currentFilterModeForCell:self] - 3) < 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
@@ -272,13 +272,13 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)conversationListCellCanShowPriorityLabelInCurrentFilterMode:(id)a3
+- (BOOL)conversationListCellCanShowPriorityLabelInCurrentFilterMode:(id)mode
 {
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  v5 = v4;
-  if (v4)
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  v5 = embeddedCellDelegate;
+  if (embeddedCellDelegate)
   {
-    v6 = [v4 currentFilterModeForCell:self] == 2;
+    v6 = [embeddedCellDelegate currentFilterModeForCell:self] == 2;
   }
 
   else
@@ -289,16 +289,16 @@ LABEL_13:
   return v6;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v5 = a3;
-  [v5 frame];
+  attributesCopy = attributes;
+  [attributesCopy frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v14 = +[CKUIBehavior sharedBehaviors];
-  v15 = [v14 conversationListCellUsesLargeTextLayout];
+  conversationListCellUsesLargeTextLayout = [v14 conversationListCellUsesLargeTextLayout];
 
   v35.origin.x = v7;
   v35.origin.y = v9;
@@ -306,46 +306,46 @@ LABEL_13:
   v35.size.height = v13;
   Width = CGRectGetWidth(v35);
   v17 = *(MEMORY[0x1E69DE090] + 8);
-  if (v15)
+  if (conversationListCellUsesLargeTextLayout)
   {
-    v18 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-    [v18 layoutIfNeeded];
+    embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    [embeddedTableViewCell layoutIfNeeded];
 
-    v19 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-    [v19 systemLayoutSizeFittingSize:{Width, v17}];
+    embeddedTableViewCell2 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    [embeddedTableViewCell2 systemLayoutSizeFittingSize:{Width, v17}];
     v21 = v20;
   }
 
   else
   {
-    v22 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
+    cellLayout = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
 
-    if (!v22)
+    if (!cellLayout)
     {
       [(CKConversationListEmbeddedCollectionViewCell *)self preferredLayoutAttributesFittingAttributes:a2];
     }
 
-    v23 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
-    v24 = [(CKConversationListEmbeddedCollectionViewCell *)self traitCollection];
-    [v24 displayScale];
-    [v23 cellHeightForDisplayScale:?];
+    cellLayout2 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
+    traitCollection = [(CKConversationListEmbeddedCollectionViewCell *)self traitCollection];
+    [traitCollection displayScale];
+    [cellLayout2 cellHeightForDisplayScale:?];
     v21 = v25;
 
-    v19 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+    embeddedTableViewCell2 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [(CKConversationListEmbeddedCollectionViewCell *)self shouldShowFooter])
     {
-      v26 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-      v27 = [v26 footer];
+      embeddedTableViewCell3 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+      footer = [embeddedTableViewCell3 footer];
 
-      if (!v27)
+      if (!footer)
       {
         goto LABEL_10;
       }
 
-      v19 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-      v28 = [v19 footer];
-      [v28 sizeThatFits:{Width, v17}];
+      embeddedTableViewCell2 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+      footer2 = [embeddedTableViewCell2 footer];
+      [footer2 sizeThatFits:{Width, v17}];
       v30 = v29;
 
       v31 = +[CKUIBehavior sharedBehaviors];
@@ -355,27 +355,27 @@ LABEL_13:
   }
 
 LABEL_10:
-  [v5 setFrame:{v7, v9, v11, v21}];
+  [attributesCopy setFrame:{v7, v9, v11, v21}];
 
-  return v5;
+  return attributesCopy;
 }
 
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  if (self->_editingMode != a3 && [(CKConversationListEmbeddedCollectionViewCell *)self shouldShowFooter])
+  animatedCopy = animated;
+  if (self->_editingMode != mode && [(CKConversationListEmbeddedCollectionViewCell *)self shouldShowFooter])
   {
-    v7 = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
-    [v7 invalidate];
+    cellLayout = [(CKConversationListEmbeddedCollectionViewCell *)self cellLayout];
+    [cellLayout invalidate];
   }
 
-  self->_editingMode = a3;
+  self->_editingMode = mode;
   [(CKConversationListEmbeddedCollectionViewCell *)self directionalLayoutMargins];
   v10 = v9;
   v12 = v11;
-  if (a3 >= 2)
+  if (mode >= 2)
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       +[CKConversationListStandardCell leadingLayoutMargin];
       v8 = v13;
@@ -388,22 +388,22 @@ LABEL_10:
   }
 
   [(CKConversationListEmbeddedCollectionViewCell *)self setDirectionalLayoutMargins:v10, v8, v12];
-  v14 = [(CKConversationListEmbeddedCollectionViewCell *)self leadingEditingAccessoryConfigurationsForEditingMode:a3];
+  v14 = [(CKConversationListEmbeddedCollectionViewCell *)self leadingEditingAccessoryConfigurationsForEditingMode:mode];
   [(CKConversationListEmbeddedCollectionViewCell *)self setLeadingEditingAccessoryConfigurations:v14];
 
-  v15 = [(CKConversationListEmbeddedCollectionViewCell *)self trailingEditingAccessoryConfigurationsForEditingMode:a3];
+  v15 = [(CKConversationListEmbeddedCollectionViewCell *)self trailingEditingAccessoryConfigurationsForEditingMode:mode];
   [(CKConversationListEmbeddedCollectionViewCell *)self setTrailingEditingAccessoryConfigurations:v15];
 
-  v16 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
-  [v16 setEditing:a3 != 0 animated:v4];
+  embeddedTableViewCell = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedTableViewCell];
+  [embeddedTableViewCell setEditing:mode != 0 animated:animatedCopy];
 }
 
-- (id)_multiselectCellAccessoryConfigurationUsingState:(id)a3
+- (id)_multiselectCellAccessoryConfigurationUsingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [(CKConversationListEmbeddedCollectionViewCell *)self traitCollection];
-  v7 = [v5 useSelectedAppearanceForConversationCellState:v4 traitCollection:v6];
+  traitCollection = [(CKConversationListEmbeddedCollectionViewCell *)self traitCollection];
+  v7 = [v5 useSelectedAppearanceForConversationCellState:stateCopy traitCollection:traitCollection];
 
   if (v7)
   {
@@ -416,16 +416,16 @@ LABEL_10:
   }
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 conversationListMultiSelectAccessoryUsesDefaultStyling];
+  conversationListMultiSelectAccessoryUsesDefaultStyling = [v9 conversationListMultiSelectAccessoryUsesDefaultStyling];
 
   v11 = objc_alloc_init(MEMORY[0x1E69DD3C8]);
-  if (!v8 && (v10 & 1) == 0)
+  if (!v8 && (conversationListMultiSelectAccessoryUsesDefaultStyling & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v11 setBackgroundColor:v12];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v11 setBackgroundColor:systemBlueColor];
 
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    [v11 setTintColor:v13];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v11 setTintColor:whiteColor];
   }
 
   return v11;
@@ -433,39 +433,39 @@ LABEL_10:
 
 - (id)multiselectCellAccessoryConfiguration
 {
-  v3 = [(CKConversationListEmbeddedCollectionViewCell *)self configurationState];
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self _multiselectCellAccessoryConfigurationUsingState:v3];
+  configurationState = [(CKConversationListEmbeddedCollectionViewCell *)self configurationState];
+  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self _multiselectCellAccessoryConfigurationUsingState:configurationState];
 
   return v4;
 }
 
 - (id)insertCellAccessoryConfiguration
 {
-  v2 = [(CKConversationListEmbeddedCollectionViewCell *)self pinButton];
-  [v2 layoutIfNeeded];
-  v3 = [objc_alloc(MEMORY[0x1E69DD3C0]) initWithCustomView:v2];
+  pinButton = [(CKConversationListEmbeddedCollectionViewCell *)self pinButton];
+  [pinButton layoutIfNeeded];
+  v3 = [objc_alloc(MEMORY[0x1E69DD3C0]) initWithCustomView:pinButton];
   [v3 setMaintainsFixedSize:1];
 
   return v3;
 }
 
-- (id)_leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)a3 usingState:(id)a4
+- (id)_leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)mode usingState:(id)state
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3 == 2)
+  stateCopy = state;
+  if (mode == 2)
   {
     v7 = MEMORY[0x1E695E0F0];
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
-    v8 = [(CKConversationListEmbeddedCollectionViewCell *)self _multiselectCellAccessoryConfigurationUsingState:v6];
+    v8 = [(CKConversationListEmbeddedCollectionViewCell *)self _multiselectCellAccessoryConfigurationUsingState:stateCopy];
     v10[0] = v8;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 
-  else if (a3)
+  else if (mode)
   {
     v7 = 0;
   }
@@ -478,33 +478,33 @@ LABEL_10:
   return v7;
 }
 
-- (id)leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)a3
+- (id)leadingEditingAccessoryConfigurationsForEditingMode:(unint64_t)mode
 {
-  v5 = [(CKConversationListEmbeddedCollectionViewCell *)self configurationState];
-  v6 = [(CKConversationListEmbeddedCollectionViewCell *)self _leadingEditingAccessoryConfigurationsForEditingMode:a3 usingState:v5];
+  configurationState = [(CKConversationListEmbeddedCollectionViewCell *)self configurationState];
+  v6 = [(CKConversationListEmbeddedCollectionViewCell *)self _leadingEditingAccessoryConfigurationsForEditingMode:mode usingState:configurationState];
 
   return v6;
 }
 
-- (id)trailingEditingAccessoryConfigurationsForEditingMode:(unint64_t)a3
+- (id)trailingEditingAccessoryConfigurationsForEditingMode:(unint64_t)mode
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (mode == 2)
   {
-    v5 = [(CKConversationListEmbeddedCollectionViewCell *)self insertCellAccessoryConfiguration];
-    v7[0] = v5;
+    insertCellAccessoryConfiguration = [(CKConversationListEmbeddedCollectionViewCell *)self insertCellAccessoryConfiguration];
+    v7[0] = insertCellAccessoryConfiguration;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
   else
   {
     v3 = MEMORY[0x1E695E0F0];
-    if (a3)
+    if (mode)
     {
       v3 = 0;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
       v4 = MEMORY[0x1E695E0F0];
     }
@@ -522,28 +522,28 @@ LABEL_10:
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DCAD8];
-  v4 = [MEMORY[0x1E69DC888] systemWhiteColor];
-  v18[0] = v4;
-  v5 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v18[1] = v5;
+  systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+  v18[0] = systemWhiteColor;
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  v18[1] = systemYellowColor;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v7 = [v3 configurationWithPaletteColors:v6];
 
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"pin.circle.fill" withConfiguration:v7];
   v9 = [v8 imageWithRenderingMode:2];
 
-  v10 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  [v10 setImage:v9];
-  [v10 setImageContentMode:2];
-  v11 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v11 setBackground:v10];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  [clearConfiguration setImage:v9];
+  [clearConfiguration setImageContentMode:2];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setBackground:clearConfiguration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __57__CKConversationListEmbeddedCollectionViewCell_pinButton__block_invoke;
   v17[3] = &unk_1E72EC060;
   v17[4] = self;
   v12 = [MEMORY[0x1E69DC628] actionWithHandler:v17];
-  v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v11 primaryAction:v12];
+  v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v12];
   v14 = +[CKUIBehavior sharedBehaviors];
   if ([v14 isAccessibilityPreferredContentSizeCategory])
   {
@@ -560,16 +560,16 @@ LABEL_10:
   return v13;
 }
 
-- (void)pinButtonTapped:(id)a3
+- (void)pinButtonTapped:(id)tapped
 {
-  v4 = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
-  [v4 pinButtonTappedForCell:self];
+  embeddedCellDelegate = [(CKConversationListEmbeddedCollectionViewCell *)self embeddedCellDelegate];
+  [embeddedCellDelegate pinButtonTappedForCell:self];
 }
 
-- (void)setLinkInteractions:(id)a3
+- (void)setLinkInteractions:(id)interactions
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interactionsCopy = interactions;
   linkInteractions = self->_linkInteractions;
   if (linkInteractions)
   {
@@ -604,7 +604,7 @@ LABEL_10:
     }
   }
 
-  v11 = [v4 copy];
+  v11 = [interactionsCopy copy];
   v12 = self->_linkInteractions;
   self->_linkInteractions = v11;
 

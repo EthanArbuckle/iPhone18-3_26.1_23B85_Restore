@@ -1,39 +1,39 @@
 @interface BMSiriCompanionContextAppMetadata
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriCompanionContextAppMetadata)initWithAppBundleId:(id)a3 mediaCategories:(id)a4 subscriptionStatus:(id)a5 localizedAppName:(id)a6;
-- (BMSiriCompanionContextAppMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriCompanionContextAppMetadata)initWithAppBundleId:(id)id mediaCategories:(id)categories subscriptionStatus:(id)status localizedAppName:(id)name;
+- (BMSiriCompanionContextAppMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_mediaCategoriesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriCompanionContextAppMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
-    v7 = [v5 appBundleId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    appBundleId = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
+    appBundleId2 = [v5 appBundleId];
+    v8 = appBundleId2;
+    if (appBundleId == appBundleId2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
-      v10 = [v5 appBundleId];
-      v11 = [v9 isEqual:v10];
+      appBundleId3 = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
+      appBundleId4 = [v5 appBundleId];
+      v11 = [appBundleId3 isEqual:appBundleId4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
-    v14 = [v5 mediaCategories];
-    v15 = v14;
-    if (v13 == v14)
+    mediaCategories = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
+    mediaCategories2 = [v5 mediaCategories];
+    v15 = mediaCategories2;
+    if (mediaCategories == mediaCategories2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
-      v17 = [v5 mediaCategories];
-      v18 = [v16 isEqual:v17];
+      mediaCategories3 = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
+      mediaCategories4 = [v5 mediaCategories];
+      v18 = [mediaCategories3 isEqual:mediaCategories4];
 
       if (!v18)
       {
@@ -62,18 +62,18 @@
 
     if (!-[BMSiriCompanionContextAppMetadata hasSubscriptionStatus](self, "hasSubscriptionStatus") && ![v5 hasSubscriptionStatus] || -[BMSiriCompanionContextAppMetadata hasSubscriptionStatus](self, "hasSubscriptionStatus") && objc_msgSend(v5, "hasSubscriptionStatus") && (v19 = -[BMSiriCompanionContextAppMetadata subscriptionStatus](self, "subscriptionStatus"), v19 == objc_msgSend(v5, "subscriptionStatus")))
     {
-      v20 = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
-      v21 = [v5 localizedAppName];
-      if (v20 == v21)
+      localizedAppName = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
+      localizedAppName2 = [v5 localizedAppName];
+      if (localizedAppName == localizedAppName2)
       {
         v12 = 1;
       }
 
       else
       {
-        v22 = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
-        v23 = [v5 localizedAppName];
-        v12 = [v22 isEqual:v23];
+        localizedAppName3 = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
+        localizedAppName4 = [v5 localizedAppName];
+        v12 = [localizedAppName3 isEqual:localizedAppName4];
       }
 
       goto LABEL_19;
@@ -95,8 +95,8 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
-  v4 = [(BMSiriCompanionContextAppMetadata *)self _mediaCategoriesJSONArray];
+  appBundleId = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
+  _mediaCategoriesJSONArray = [(BMSiriCompanionContextAppMetadata *)self _mediaCategoriesJSONArray];
   if ([(BMSiriCompanionContextAppMetadata *)self hasSubscriptionStatus])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriCompanionContextAppMetadata subscriptionStatus](self, "subscriptionStatus")}];
@@ -107,41 +107,41 @@ LABEL_20:
     v5 = 0;
   }
 
-  v6 = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
+  localizedAppName = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
   v14[0] = @"appBundleId";
-  v7 = v3;
-  if (!v3)
+  null = appBundleId;
+  if (!appBundleId)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"mediaCategories";
-  v8 = v4;
-  if (!v4)
+  null2 = _mediaCategoriesJSONArray;
+  if (!_mediaCategoriesJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"subscriptionStatus";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"localizedAppName";
-  v10 = v6;
-  if (!v6)
+  null4 = localizedAppName;
+  if (!localizedAppName)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (localizedAppName)
   {
     if (v5)
     {
@@ -155,14 +155,14 @@ LABEL_20:
     if (v5)
     {
 LABEL_14:
-      if (v4)
+      if (_mediaCategoriesJSONArray)
       {
         goto LABEL_15;
       }
 
 LABEL_21:
 
-      if (v3)
+      if (appBundleId)
       {
         goto LABEL_16;
       }
@@ -171,13 +171,13 @@ LABEL_21:
     }
   }
 
-  if (!v4)
+  if (!_mediaCategoriesJSONArray)
   {
     goto LABEL_21;
   }
 
 LABEL_15:
-  if (v3)
+  if (appBundleId)
   {
     goto LABEL_16;
   }
@@ -198,8 +198,8 @@ LABEL_16:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mediaCategories = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
+  v5 = [mediaCategories countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -210,13 +210,13 @@ LABEL_16:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mediaCategories);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [mediaCategories countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -227,17 +227,17 @@ LABEL_16:
   return v3;
 }
 
-- (BMSiriCompanionContextAppMetadata)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriCompanionContextAppMetadata)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"appBundleId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"appBundleId"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v28 = objc_alloc(MEMORY[0x1E696ABC0]);
         v29 = *MEMORY[0x1E698F240];
@@ -247,7 +247,7 @@ LABEL_16:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v64 forKeys:&v63 count:1];
         v25 = 0;
         v27 = 0;
-        *a4 = [v28 initWithDomain:v29 code:2 userInfo:v11];
+        *error = [v28 initWithDomain:v29 code:2 userInfo:v11];
         goto LABEL_44;
       }
 
@@ -264,15 +264,15 @@ LABEL_16:
     v46 = 0;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"mediaCategories"];
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v10 = [v8 isEqual:v9];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"mediaCategories"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [v8 isEqual:null];
 
-  v45 = a4;
+  errorCopy = error;
   if (v10)
   {
     v43 = v7;
-    v47 = self;
+    selfCopy2 = self;
 
     v8 = 0;
   }
@@ -284,7 +284,7 @@ LABEL_16:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -292,7 +292,7 @@ LABEL_16:
           v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"mediaCategories"];
           v62 = v11;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-          v18 = v32 = a4;
+          v18 = v32 = error;
           v33 = [v30 initWithDomain:v31 code:2 userInfo:v18];
           v27 = 0;
           *v32 = v33;
@@ -307,7 +307,7 @@ LABEL_16:
     }
 
     v43 = v7;
-    v47 = self;
+    selfCopy2 = self;
   }
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
@@ -337,7 +337,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v45)
+        if (errorCopy)
         {
           v19 = objc_alloc(MEMORY[0x1E696ABC0]);
           v20 = *MEMORY[0x1E698F240];
@@ -353,7 +353,7 @@ LABEL_27:
           v26 = [v19 initWithDomain:v20 code:2 userInfo:v24];
           v27 = 0;
           v7 = v43;
-          *v45 = v26;
+          *errorCopy = v26;
           v18 = v8;
           goto LABEL_41;
         }
@@ -362,7 +362,7 @@ LABEL_28:
         v27 = 0;
         v18 = v8;
         v25 = v46;
-        self = v47;
+        self = selfCopy2;
         v7 = v43;
         goto LABEL_43;
       }
@@ -370,7 +370,7 @@ LABEL_28:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v45)
+        if (errorCopy)
         {
           v19 = objc_alloc(MEMORY[0x1E696ABC0]);
           v20 = *MEMORY[0x1E698F240];
@@ -400,7 +400,7 @@ LABEL_28:
 
 LABEL_18:
 
-  v17 = [v6 objectForKeyedSubscript:@"subscriptionStatus"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionStatus"];
   if (!v17)
   {
     v18 = 0;
@@ -414,7 +414,7 @@ LABEL_18:
   {
     v18 = 0;
 LABEL_36:
-    v34 = [v6 objectForKeyedSubscript:@"localizedAppName"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"localizedAppName"];
     if (!v34 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v24 = 0;
@@ -428,13 +428,13 @@ LABEL_36:
     {
       v24 = v34;
 LABEL_39:
-      v27 = [(BMSiriCompanionContextAppMetadata *)v47 initWithAppBundleId:v25 mediaCategories:v11 subscriptionStatus:v18 localizedAppName:v24];
-      v47 = v27;
+      v27 = [(BMSiriCompanionContextAppMetadata *)selfCopy2 initWithAppBundleId:v25 mediaCategories:v11 subscriptionStatus:v18 localizedAppName:v24];
+      selfCopy2 = v27;
     }
 
     else
     {
-      if (v45)
+      if (errorCopy)
       {
         v44 = objc_alloc(MEMORY[0x1E696ABC0]);
         v42 = *MEMORY[0x1E698F240];
@@ -442,7 +442,7 @@ LABEL_39:
         v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"localizedAppName"];
         v53 = v39;
         v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-        *v45 = [v44 initWithDomain:v42 code:2 userInfo:v40];
+        *errorCopy = [v44 initWithDomain:v42 code:2 userInfo:v40];
       }
 
       v24 = 0;
@@ -452,7 +452,7 @@ LABEL_39:
 LABEL_40:
 
 LABEL_41:
-    self = v47;
+    self = selfCopy2;
   }
 
   else
@@ -464,7 +464,7 @@ LABEL_41:
       goto LABEL_36;
     }
 
-    if (v45)
+    if (errorCopy)
     {
       v41 = objc_alloc(MEMORY[0x1E696ABC0]);
       v37 = *MEMORY[0x1E698F240];
@@ -475,7 +475,7 @@ LABEL_41:
       v38 = [v41 initWithDomain:v37 code:2 userInfo:v34];
       v18 = 0;
       v27 = 0;
-      *v45 = v38;
+      *errorCopy = v38;
       v25 = v46;
       goto LABEL_40;
     }
@@ -483,7 +483,7 @@ LABEL_41:
     v18 = 0;
     v27 = 0;
     v25 = v46;
-    self = v47;
+    self = selfCopy2;
   }
 
 LABEL_43:
@@ -500,15 +500,15 @@ LABEL_46:
 {
   v3 = objc_opt_new();
   [(BMSiriCompanionContextAppMetadata *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_appBundleId)
   {
     PBDataWriterWriteStringField();
@@ -560,9 +560,9 @@ LABEL_46:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMSiriCompanionContextAppMetadata;
   v5 = [(BMEventBase *)&v35 init];
@@ -572,12 +572,12 @@ LABEL_46:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -588,18 +588,18 @@ LABEL_46:
       while (1)
       {
         v36 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v36 & 0x7F) << v8;
@@ -617,9 +617,9 @@ LABEL_46:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -636,18 +636,18 @@ LABEL_16:
           while (1)
           {
             v36 = 0;
-            v25 = [v4 position] + 1;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 1;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v27 = [v4 data];
-              [v27 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v24 |= (v36 & 0x7F) << v22;
@@ -665,7 +665,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v28 = 0;
           }
@@ -724,18 +724,18 @@ LABEL_48:
       }
 
 LABEL_43:
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v30 = [v6 copy];
   mediaCategories = v5->_mediaCategories;
   v5->_mediaCategories = v30;
 
-  v32 = [v4 hasError];
-  if (v32)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_45:
     v33 = 0;
@@ -753,43 +753,43 @@ LABEL_46:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
-  v5 = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
+  appBundleId = [(BMSiriCompanionContextAppMetadata *)self appBundleId];
+  mediaCategories = [(BMSiriCompanionContextAppMetadata *)self mediaCategories];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriCompanionContextAppMetadata subscriptionStatus](self, "subscriptionStatus")}];
-  v7 = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
-  v8 = [v3 initWithFormat:@"BMSiriCompanionContextAppMetadata with appBundleId: %@, mediaCategories: %@, subscriptionStatus: %@, localizedAppName: %@", v4, v5, v6, v7];
+  localizedAppName = [(BMSiriCompanionContextAppMetadata *)self localizedAppName];
+  v8 = [v3 initWithFormat:@"BMSiriCompanionContextAppMetadata with appBundleId: %@, mediaCategories: %@, subscriptionStatus: %@, localizedAppName: %@", appBundleId, mediaCategories, v6, localizedAppName];
 
   return v8;
 }
 
-- (BMSiriCompanionContextAppMetadata)initWithAppBundleId:(id)a3 mediaCategories:(id)a4 subscriptionStatus:(id)a5 localizedAppName:(id)a6
+- (BMSiriCompanionContextAppMetadata)initWithAppBundleId:(id)id mediaCategories:(id)categories subscriptionStatus:(id)status localizedAppName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  idCopy = id;
+  categoriesCopy = categories;
+  statusCopy = status;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = BMSiriCompanionContextAppMetadata;
   v15 = [(BMEventBase *)&v18 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_appBundleId, a3);
-    objc_storeStrong(&v15->_mediaCategories, a4);
-    if (v13)
+    objc_storeStrong(&v15->_appBundleId, id);
+    objc_storeStrong(&v15->_mediaCategories, categories);
+    if (statusCopy)
     {
       v15->_hasSubscriptionStatus = 1;
-      v16 = [v13 intValue];
+      intValue = [statusCopy intValue];
     }
 
     else
     {
       v15->_hasSubscriptionStatus = 0;
-      v16 = -1;
+      intValue = -1;
     }
 
-    v15->_subscriptionStatus = v16;
-    objc_storeStrong(&v15->_localizedAppName, a6);
+    v15->_subscriptionStatus = intValue;
+    objc_storeStrong(&v15->_localizedAppName, name);
   }
 
   return v15;
@@ -840,9 +840,9 @@ id __44__BMSiriCompanionContextAppMetadata_columns__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -850,8 +850,8 @@ id __44__BMSiriCompanionContextAppMetadata_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriCompanionContextAppMetadata alloc] initByReadFrom:v7];
     v4 = v8;

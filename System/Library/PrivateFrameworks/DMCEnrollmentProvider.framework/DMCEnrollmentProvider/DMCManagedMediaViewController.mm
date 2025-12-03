@@ -1,46 +1,46 @@
 @interface DMCManagedMediaViewController
-- (DMCManagedMediaViewController)initWithProfileViewModel:(id)a3 managedApp:(id)a4;
-- (DMCManagedMediaViewController)initWithProfileViewModel:(id)a3 managedBook:(id)a4;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_profileChanged:(id)a3;
-- (void)_reloadTable:(id)a3;
+- (DMCManagedMediaViewController)initWithProfileViewModel:(id)model managedApp:(id)app;
+- (DMCManagedMediaViewController)initWithProfileViewModel:(id)model managedBook:(id)book;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_profileChanged:(id)changed;
+- (void)_reloadTable:(id)table;
 - (void)_setup;
 - (void)dealloc;
 @end
 
 @implementation DMCManagedMediaViewController
 
-- (DMCManagedMediaViewController)initWithProfileViewModel:(id)a3 managedApp:(id)a4
+- (DMCManagedMediaViewController)initWithProfileViewModel:(id)model managedApp:(id)app
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  appCopy = app;
   v12.receiver = self;
   v12.super_class = DMCManagedMediaViewController;
   v9 = [(DMCProfileTableViewController *)&v12 initWithStyle:2];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_app, a4);
-    objc_storeStrong(&v10->_profileViewModel, a3);
+    objc_storeStrong(&v9->_app, app);
+    objc_storeStrong(&v10->_profileViewModel, model);
     [(DMCManagedMediaViewController *)v10 _setup];
   }
 
   return v10;
 }
 
-- (DMCManagedMediaViewController)initWithProfileViewModel:(id)a3 managedBook:(id)a4
+- (DMCManagedMediaViewController)initWithProfileViewModel:(id)model managedBook:(id)book
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  bookCopy = book;
   v12.receiver = self;
   v12.super_class = DMCManagedMediaViewController;
   v9 = [(DMCProfileTableViewController *)&v12 initWithStyle:2];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_book, a4);
-    objc_storeStrong(&v10->_profileViewModel, a3);
+    objc_storeStrong(&v9->_book, book);
+    objc_storeStrong(&v10->_profileViewModel, model);
     [(DMCManagedMediaViewController *)v10 _setup];
   }
 
@@ -52,93 +52,93 @@
   v13.receiver = self;
   v13.super_class = DMCManagedMediaViewController;
   [(DMCProfileTableViewController *)&v13 updateExtendedLayoutIncludesOpaqueBars];
-  v4 = [(DMCManagedMediaViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIManagedMediaSummaryCell"];
+  tableView = [(DMCManagedMediaViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIManagedMediaSummaryCell"];
 
-  v5 = [(DMCManagedMediaViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIManagedMediaDetailsCell"];
+  tableView2 = [(DMCManagedMediaViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"MCUIManagedMediaDetailsCell"];
 
   v12.receiver = self;
   v12.super_class = DMCManagedMediaViewController;
   [(DMCProfileTableViewController *)&v12 reloadTableOnContentSizeCategoryChange];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__profileChanged_ name:@"kMCUIProfileDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__profileChanged_ name:@"kMCUIProfileDidChangeNotification" object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__reloadTable_ name:@"kMCUIBridgeIconLoadedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__reloadTable_ name:@"kMCUIBridgeIconLoadedNotification" object:0];
 
   v8 = [(DMCManagedMediaViewController *)self app];
-  v9 = [v8 name];
-  v10 = v9;
-  if (!v9)
+  name = [v8 name];
+  friendlyName = name;
+  if (!name)
   {
-    v2 = [(DMCManagedMediaViewController *)self book];
-    v10 = [v2 friendlyName];
+    book = [(DMCManagedMediaViewController *)self book];
+    friendlyName = [book friendlyName];
   }
 
-  v11 = [(DMCManagedMediaViewController *)self navigationItem];
-  [v11 setTitle:v10];
+  navigationItem = [(DMCManagedMediaViewController *)self navigationItem];
+  [navigationItem setTitle:friendlyName];
 
-  if (!v9)
+  if (!name)
   {
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DMCManagedMediaViewController;
   [(DMCProfileTableViewController *)&v4 dealloc];
 }
 
-- (void)_profileChanged:(id)a3
+- (void)_profileChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = [(DMCManagedMediaViewController *)self app];
   if (v5)
   {
-    v6 = [v4 userInfo];
-    if (v6)
+    userInfo = [changedCopy userInfo];
+    if (userInfo)
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKeyedSubscript:@"kMCUIManagedAppsDidChange"];
-      v9 = [v8 BOOLValue];
+      userInfo2 = [changedCopy userInfo];
+      v8 = [userInfo2 objectForKeyedSubscript:@"kMCUIManagedAppsDidChange"];
+      bOOLValue = [v8 BOOLValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  v10 = [(DMCManagedMediaViewController *)self book];
-  if (v10)
+  book = [(DMCManagedMediaViewController *)self book];
+  if (book)
   {
-    v11 = [v4 userInfo];
-    if (v11)
+    userInfo3 = [changedCopy userInfo];
+    if (userInfo3)
     {
-      v12 = [v4 userInfo];
-      v13 = [v12 objectForKeyedSubscript:@"kMCUIManagedBooksDidChange"];
-      v14 = [v13 BOOLValue];
+      userInfo4 = [changedCopy userInfo];
+      v13 = [userInfo4 objectForKeyedSubscript:@"kMCUIManagedBooksDidChange"];
+      bOOLValue2 = [v13 BOOLValue];
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue2 = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    bOOLValue2 = 0;
   }
 
   objc_initWeak(&location, self);
@@ -147,8 +147,8 @@
   block[2] = __49__DMCManagedMediaViewController__profileChanged___block_invoke;
   block[3] = &unk_278EE7E50;
   objc_copyWeak(&v16, &location);
-  v17 = v9;
-  v18 = v14;
+  v17 = bOOLValue;
+  v18 = bOOLValue2;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -201,7 +201,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_reloadTable:(id)a3
+- (void)_reloadTable:(id)table
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -227,20 +227,20 @@ void __46__DMCManagedMediaViewController__reloadTable___block_invoke(uint64_t a1
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v4 = [(DMCManagedMediaViewController *)self tableView:a3];
+  v4 = [(DMCManagedMediaViewController *)self tableView:view];
   [v4 rowHeight];
   v6 = v5;
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 row])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy row])
   {
     v8 = @"MCUIManagedMediaDetailsCell";
   }
@@ -250,27 +250,27 @@ void __46__DMCManagedMediaViewController__reloadTable___block_invoke(uint64_t a1
     v8 = @"MCUIManagedMediaSummaryCell";
   }
 
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
   v10 = [(DMCManagedMediaViewController *)self app];
 
   if (v10)
   {
-    v11 = [(DMCManagedMediaViewController *)self app];
-    [v9 setManagedApp:v11];
+    book2 = [(DMCManagedMediaViewController *)self app];
+    [v9 setManagedApp:book2];
   }
 
   else
   {
-    v12 = [(DMCManagedMediaViewController *)self book];
+    book = [(DMCManagedMediaViewController *)self book];
 
-    if (!v12)
+    if (!book)
     {
       goto LABEL_9;
     }
 
-    v11 = [(DMCManagedMediaViewController *)self book];
-    [v9 setManagedBook:v11];
+    book2 = [(DMCManagedMediaViewController *)self book];
+    [v9 setManagedBook:book2];
   }
 
 LABEL_9:

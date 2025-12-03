@@ -1,11 +1,11 @@
 @interface JavaNetInetSocketAddress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)getHostName;
 - (id)getHostString;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
 @end
 
 @implementation JavaNetInetSocketAddress
@@ -56,9 +56,9 @@
   return JreStrcat("$CI", a2, v2, v3, v4, v5, v6, v7, hostname);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -70,7 +70,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_16;
   }
@@ -80,13 +80,13 @@
     JreThrowClassCastException();
   }
 
-  if (self->port_ != *(a3 + 6))
+  if (self->port_ != *(equal + 6))
   {
     return 0;
   }
 
   addr = self->addr_;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (!addr)
   {
     if (v6)
@@ -97,7 +97,7 @@
     addr = self->hostname_;
     if (addr)
     {
-      v6 = *(a3 + 2);
+      v6 = *(equal + 2);
       goto LABEL_7;
     }
 
@@ -125,14 +125,14 @@ LABEL_7:
   return (self->port_ + [(JavaNetInetAddress *)addr hash]);
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
 }
 
 - (void)dealloc

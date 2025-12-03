@@ -1,25 +1,25 @@
 @interface WDDisplayTypeAddDataViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)valueFieldManualEntryItem;
 @end
 
 @implementation WDDisplayTypeAddDataViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WDDisplayTypeAddDataViewController" hasInstanceVariable:@"_unitController" withType:"HKUnitPreferenceController"];
-  [v3 validateClass:@"WDDisplayTypeAddDataViewController" hasInstanceMethod:@"valueFieldManualEntryItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WDUnitPreferenceViewController" hasInstanceVariable:@"_unitController" withType:"HKUnitPreferenceController"];
-  [v3 validateClass:@"WDDisplayTypeAddDataViewController" hasInstanceVariable:@"_displayType" withType:"HKDisplayType"];
-  [v3 validateClass:@"HKDisplayType" hasInstanceMethod:@"objectType" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WDDisplayTypeAddDataViewController" hasInstanceVariable:@"_unitController" withType:"HKUnitPreferenceController"];
+  [validationsCopy validateClass:@"WDDisplayTypeAddDataViewController" hasInstanceMethod:@"valueFieldManualEntryItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WDUnitPreferenceViewController" hasInstanceVariable:@"_unitController" withType:"HKUnitPreferenceController"];
+  [validationsCopy validateClass:@"WDDisplayTypeAddDataViewController" hasInstanceVariable:@"_displayType" withType:"HKDisplayType"];
+  [validationsCopy validateClass:@"HKDisplayType" hasInstanceMethod:@"objectType" withFullSignature:{"@", 0}];
 }
 
 - (id)valueFieldManualEntryItem
 {
   v23.receiver = self;
   v23.super_class = WDDisplayTypeAddDataViewControllerAccessibility;
-  v3 = [(WDDisplayTypeAddDataViewControllerAccessibility *)&v23 valueFieldManualEntryItem];
+  valueFieldManualEntryItem = [(WDDisplayTypeAddDataViewControllerAccessibility *)&v23 valueFieldManualEntryItem];
   LOBYTE(v16) = 0;
   v4 = [(WDDisplayTypeAddDataViewControllerAccessibility *)self safeValueForKey:@"_displayType"];
   v5 = __UIAccessibilitySafeClass();
@@ -53,9 +53,9 @@
     abort();
   }
 
-  [v3 setAccessibilityLabel:{v13, v15, 3221225472, __76__WDDisplayTypeAddDataViewControllerAccessibility_valueFieldManualEntryItem__block_invoke, &unk_29F2C2E78}];
+  [valueFieldManualEntryItem setAccessibilityLabel:{v13, v15, 3221225472, __76__WDDisplayTypeAddDataViewControllerAccessibility_valueFieldManualEntryItem__block_invoke, &unk_29F2C2E78}];
 
-  return v3;
+  return valueFieldManualEntryItem;
 }
 
 uint64_t __76__WDDisplayTypeAddDataViewControllerAccessibility_valueFieldManualEntryItem__block_invoke(uint64_t a1)

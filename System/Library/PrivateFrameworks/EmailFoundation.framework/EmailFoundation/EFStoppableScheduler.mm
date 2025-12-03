@@ -1,18 +1,18 @@
 @interface EFStoppableScheduler
-+ (id)assertableSchedulerWithScheduler:(id)a3;
-+ (id)suspendableSchedulerWithScheduler:(id)a3;
-- (EFStoppableScheduler)initWithScheduler:(id)a3;
-- (id)afterDelay:(double)a3 performBlock:(id)a4;
-- (id)performCancelableBlock:(id)a3;
-- (id)performWithObject:(id)a3;
-- (void)_addCancelationToken:(id)a3;
++ (id)assertableSchedulerWithScheduler:(id)scheduler;
++ (id)suspendableSchedulerWithScheduler:(id)scheduler;
+- (EFStoppableScheduler)initWithScheduler:(id)scheduler;
+- (id)afterDelay:(double)delay performBlock:(id)block;
+- (id)performCancelableBlock:(id)block;
+- (id)performWithObject:(id)object;
+- (void)_addCancelationToken:(id)token;
 - (void)_cancelAllTokens;
-- (void)_removeCancelationToken:(id)a3;
+- (void)_removeCancelationToken:(id)token;
 - (void)dealloc;
-- (void)performBlock:(id)a3;
-- (void)performSyncBarrierBlock:(id)a3;
-- (void)performSyncBlock:(id)a3;
-- (void)performVoucherPreservingBlock:(id)a3;
+- (void)performBlock:(id)block;
+- (void)performSyncBarrierBlock:(id)block;
+- (void)performSyncBlock:(id)block;
+- (void)performVoucherPreservingBlock:(id)block;
 - (void)resume;
 - (void)stopAndWait;
 - (void)suspend;
@@ -28,16 +28,16 @@
   [(EFStoppableScheduler *)&v4 dealloc];
 }
 
-- (EFStoppableScheduler)initWithScheduler:(id)a3
+- (EFStoppableScheduler)initWithScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v13.receiver = self;
   v13.super_class = EFStoppableScheduler;
   v5 = [(EFStoppableScheduler *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    v7 = EFAtomicObjectSetIfNil(&v5->_scheduler.cfObject, v4);
+    v7 = EFAtomicObjectSetIfNil(&v5->_scheduler.cfObject, schedulerCopy);
     v8 = [EFLocked alloc];
     v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v10 = [(EFLocked *)v8 initWithObject:v9];
@@ -48,25 +48,25 @@
   return v6;
 }
 
-+ (id)assertableSchedulerWithScheduler:(id)a3
++ (id)assertableSchedulerWithScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScheduler:v4];
+  schedulerCopy = scheduler;
+  v5 = [[self alloc] initWithScheduler:schedulerCopy];
 
   return v5;
 }
 
-+ (id)suspendableSchedulerWithScheduler:(id)a3
++ (id)suspendableSchedulerWithScheduler:(id)scheduler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithScheduler:v4];
+  schedulerCopy = scheduler;
+  v5 = [[self alloc] initWithScheduler:schedulerCopy];
 
   return v5;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4
+- (id)afterDelay:(double)delay performBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_alloc_init(EFManualCancelationToken);
   [(EFStoppableScheduler *)self _addCancelationToken:v7];
   objc_initWeak(&location, self);
@@ -78,9 +78,9 @@
   objc_copyWeak(&v20, &location);
   v9 = v7;
   v18 = v9;
-  v10 = v6;
+  v10 = blockCopy;
   v19 = v10;
-  v11 = [v8 afterDelay:&v14 performBlock:a3];
+  v11 = [v8 afterDelay:&v14 performBlock:delay];
 
   if (v11)
   {
@@ -110,16 +110,16 @@ void __48__EFStoppableScheduler_afterDelay_performBlock___block_invoke(uint64_t 
   }
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = EFAtomicObjectLoad(&self->_scheduler);
-  [v4 performBlock:v5];
+  [v4 performBlock:blockCopy];
 }
 
-- (id)performCancelableBlock:(id)a3
+- (id)performCancelableBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(EFManualCancelationToken);
   [(EFStoppableScheduler *)self _addCancelationToken:v5];
   objc_initWeak(&location, self);
@@ -131,7 +131,7 @@ void __48__EFStoppableScheduler_afterDelay_performBlock___block_invoke(uint64_t 
   objc_copyWeak(&v18, &location);
   v7 = v5;
   v16 = v7;
-  v8 = v4;
+  v8 = blockCopy;
   v17 = v8;
   v9 = [v6 performCancelableBlock:&v12];
 
@@ -164,32 +164,32 @@ void __47__EFStoppableScheduler_performCancelableBlock___block_invoke(uint64_t a
   }
 }
 
-- (void)performSyncBlock:(id)a3
+- (void)performSyncBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = EFAtomicObjectLoad(&self->_scheduler);
-  [v4 performSyncBlock:v5];
+  [v4 performSyncBlock:blockCopy];
 }
 
-- (void)performSyncBarrierBlock:(id)a3
+- (void)performSyncBarrierBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = EFAtomicObjectLoad(&self->_scheduler);
-  [v4 performSyncBarrierBlock:v5];
+  [v4 performSyncBarrierBlock:blockCopy];
 }
 
-- (void)performVoucherPreservingBlock:(id)a3
+- (void)performVoucherPreservingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = EFAtomicObjectLoad(&self->_scheduler);
-  [v4 performVoucherPreservingBlock:v5];
+  [v4 performVoucherPreservingBlock:blockCopy];
 }
 
-- (id)performWithObject:(id)a3
+- (id)performWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = EFAtomicObjectLoad(&self->_scheduler);
-  v6 = [v5 performWithObject:v4];
+  v6 = [v5 performWithObject:objectCopy];
 
   return v6;
 }
@@ -213,15 +213,15 @@ void __47__EFStoppableScheduler_performCancelableBlock___block_invoke(uint64_t a
   [v3 performSyncBarrierBlock:&__block_literal_global_39];
 }
 
-- (void)_addCancelationToken:(id)a3
+- (void)_addCancelationToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   tokens = self->_tokens;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __45__EFStoppableScheduler__addCancelationToken___block_invoke;
   v12[3] = &unk_1E824A1A0;
-  v6 = v4;
+  v6 = tokenCopy;
   v13 = v6;
   [(EFLocked *)tokens performWhileLocked:v12];
   objc_initWeak(&location, self);
@@ -246,16 +246,16 @@ void __45__EFStoppableScheduler__addCancelationToken___block_invoke_2(uint64_t a
   [WeakRetained _removeCancelationToken:v2];
 }
 
-- (void)_removeCancelationToken:(id)a3
+- (void)_removeCancelationToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   tokens = self->_tokens;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__EFStoppableScheduler__removeCancelationToken___block_invoke;
   v7[3] = &unk_1E824A1A0;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   [(EFLocked *)tokens performWhileLocked:v7];
 }
 

@@ -7,7 +7,7 @@
 
 - (id)TR_compressedGzipData
 {
-  v1 = TRCopyGzippedDataForData(a1);
+  v1 = TRCopyGzippedDataForData(self);
 
   return v1;
 }

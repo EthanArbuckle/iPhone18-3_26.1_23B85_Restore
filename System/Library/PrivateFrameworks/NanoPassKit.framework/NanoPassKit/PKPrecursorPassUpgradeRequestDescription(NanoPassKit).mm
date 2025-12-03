@@ -9,34 +9,34 @@
 
 - (id)npk_localizedActionText
 {
-  v1 = [a1 _primaryAction];
-  v2 = [v1 localizedActionText];
+  _primaryAction = [self _primaryAction];
+  localizedActionText = [_primaryAction localizedActionText];
 
-  return v2;
+  return localizedActionText;
 }
 
 - (uint64_t)npk_actionType
 {
-  v1 = [a1 _primaryAction];
-  v2 = [v1 actionType];
+  _primaryAction = [self _primaryAction];
+  actionType = [_primaryAction actionType];
 
-  return v2;
+  return actionType;
 }
 
 - (id)npk_actionURL
 {
-  v1 = [a1 _primaryAction];
-  v2 = [v1 actionURL];
+  _primaryAction = [self _primaryAction];
+  actionURL = [_primaryAction actionURL];
 
-  return v2;
+  return actionURL;
 }
 
 - (id)_primaryAction
 {
-  v1 = [a1 actions];
-  v2 = [v1 firstObject];
+  actions = [self actions];
+  firstObject = [actions firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 @end

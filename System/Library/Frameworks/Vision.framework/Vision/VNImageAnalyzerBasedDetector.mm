@@ -1,21 +1,21 @@
 @interface VNImageAnalyzerBasedDetector
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)sceneLabelsFilePathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)segmentationLabelsFilePathForConfiguration:(id)a3 error:(id *)a4;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error;
++ (id)sceneLabelsFilePathForConfiguration:(id)configuration error:(id *)error;
++ (id)segmentationLabelsFilePathForConfiguration:(id)configuration error:(id *)error;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (CGSize)inputImageSize;
 - (id).cxx_construct;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7;
-- (id)observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:(void *)a3 identifierAcceptingBlock:(id)a4 operationPointsProvider:(id)a5 originatingRequestSpecifier:(id)a6 qosClass:(unsigned int)a7 error:(id *)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)supportedClassificationIdentifiersAcceptedByBlock:(id)a3 error:(id *)a4;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error;
+- (id)observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:(void *)analyzer identifierAcceptingBlock:(id)block operationPointsProvider:(id)provider originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)supportedClassificationIdentifiersAcceptedByBlock:(id)block error:(id *)error;
 - (uint64_t)_validateProvidesSceneLabelsAndReturnError:(uint64_t)result;
 @end
 
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __69__VNImageAnalyzerBasedDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNImageAnalyzerBasedDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNImageAnalyzerBasedDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -52,28 +52,28 @@ void __69__VNImageAnalyzerBasedDetector_configurationOptionKeysForDetectorKey__b
   +[VNImageAnalyzerBasedDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v7)
   {
     v13 = 0;
     goto LABEL_13;
   }
 
-  v8 = [a1 modelPathForConfiguration:v6 error:a4];
+  v8 = [self modelPathForConfiguration:optionsCopy error:error];
   if (v8)
   {
-    v9 = [a1 inputImageBlobNameForConfiguration:v6];
+    v9 = [self inputImageBlobNameForConfiguration:optionsCopy];
     if (v9)
     {
       v15 = 0;
       v16 = 0;
-      if ([VNEspressoHelpers getWidth:&v16 height:&v15 ofBlobNamed:v9 forNetworkModelFileWithPath:v8 error:a4])
+      if ([VNEspressoHelpers getWidth:&v16 height:&v15 ofBlobNamed:v9 forNetworkModelFileWithPath:v8 error:error])
       {
-        v10 = [a1 analysisPixelFormatTypeForConfiguration:v6];
+        v10 = [self analysisPixelFormatTypeForConfiguration:optionsCopy];
         v11 = [VNSupportedImageSize alloc];
         v12 = [(VNSupportedImageSize *)v11 initWithIdealFormat:v10 width:v16 height:v15 orientation:1 aspectRatioHandling:0 orientationAgnostic:0];
         v17[0] = v12;
@@ -84,10 +84,10 @@ LABEL_11:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [VNError errorForUnsupportedRequestSpecifier:v7];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_11;
     }
 
@@ -103,18 +103,18 @@ LABEL_13:
   return v13;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -123,31 +123,31 @@ LABEL_13:
   return v3;
 }
 
-+ (id)segmentationLabelsFilePathForConfiguration:(id)a3 error:(id *)a4
++ (id)segmentationLabelsFilePathForConfiguration:(id)configuration error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-+ (id)sceneLabelsFilePathForConfiguration:(id)a3 error:(id *)a4
++ (id)sceneLabelsFilePathForConfiguration:(id)configuration error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-+ (id)modelPathForConfiguration:(id)a3 error:(id *)a4
++ (id)modelPathForConfiguration:(id)configuration error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForUnimplementedMethod:a2 ofObject:a1];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
@@ -160,10 +160,10 @@ LABEL_13:
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  v13 = a5;
-  v14 = [(VNImageAnalyzerBasedDetector *)self analysisTypesForProcessOptions:v13];
+  optionsCopy = options;
+  v14 = [(VNImageAnalyzerBasedDetector *)self analysisTypesForProcessOptions:optionsCopy];
   if (!self)
   {
 LABEL_21:
@@ -172,16 +172,16 @@ LABEL_21:
   }
 
   v15 = v14;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   if (PixelFormatType <= 1094862673)
   {
     if (PixelFormatType != 8 && PixelFormatType != 32)
     {
 LABEL_19:
-      if (a8)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"the image processing type is unknown"];
-        *a8 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_16;
       }
 
@@ -194,8 +194,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  vision::mod::ImageAnalyzer::analyzeUsingCVPixelBuffer(self->_imageAnalyzer.__ptr_, v15, a4);
-  v17 = [VNValidationUtilities originatingRequestSpecifierInOptions:v13 error:a8];
+  vision::mod::ImageAnalyzer::analyzeUsingCVPixelBuffer(self->_imageAnalyzer.__ptr_, v15, buffer);
+  v17 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v17)
   {
     v26 = 0;
@@ -210,11 +210,11 @@ LABEL_19:
     aBlock[3] = &unk_1E77B2578;
     v24 = &v26;
     aBlock[4] = self;
-    v22 = v13;
+    v22 = optionsCopy;
     v23 = v17;
-    v25 = a6;
+    classCopy = class;
     v18 = _Block_copy(aBlock);
-    if (VNExecuteBlock(v18, a8))
+    if (VNExecuteBlock(v18, error))
     {
       v19 = v27[5];
     }
@@ -247,28 +247,28 @@ BOOL __130__VNImageAnalyzerBasedDetector_processRegionOfInterest_croppedPixelBuf
   return *(*(*(a1 + 56) + 8) + 40) != 0;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
   if (v19)
   {
-    v21 = [v19 width];
-    v22 = [v20 height];
+    width = [v19 width];
+    height = [v20 height];
     v42 = 0;
-    v23 = v17;
-    if (self && [VNValidationUtilities getNSUIntegerValue:&v42 forKey:@"VNDetectorProcessOption_ImageCropAndScaleOption" inOptions:v23 withDefaultValue:[(VNImageAnalyzerBasedDetector *)self defaultImageCropAndScaleOption] error:a8])
+    v23 = optionsCopy;
+    if (self && [VNValidationUtilities getNSUIntegerValue:&v42 forKey:@"VNDetectorProcessOption_ImageCropAndScaleOption" inOptions:v23 withDefaultValue:[(VNImageAnalyzerBasedDetector *)self defaultImageCropAndScaleOption] error:error])
     {
-      v24 = v21;
-      v25 = v22;
-      v26 = width * v21;
-      v27 = height * v22;
+      v24 = width;
+      v25 = height;
+      v26 = width * width;
+      v27 = height * height;
       if (!self->_networkUsesAnisotropicScaling && v42 == 2)
       {
         v42 = 0;
@@ -282,12 +282,12 @@ BOOL __130__VNImageAnalyzerBasedDetector_processRegionOfInterest_croppedPixelBuf
 
       if (v26 >= v27)
       {
-        v29 = height * v22;
+        v29 = height * height;
       }
 
       else
       {
-        v29 = width * v21;
+        v29 = width * width;
       }
 
       v30 = v29;
@@ -308,20 +308,20 @@ BOOL __130__VNImageAnalyzerBasedDetector_processRegionOfInterest_croppedPixelBuf
           v28 = v28 / v31;
         }
 
-        VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, v28);
+        VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v28);
       }
 
       v32 = objc_opt_class();
-      v33 = [(VNDetector *)self configurationOptions];
-      v34 = [v32 analysisPixelFormatTypeForConfiguration:v33];
+      configurationOptions = [(VNDetector *)self configurationOptions];
+      v34 = [v32 analysisPixelFormatTypeForConfiguration:configurationOptions];
 
       [v23 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
       v35 = self->_networkRequiredInputImageSize.width;
       v36 = self->_networkRequiredInputImageSize.height;
       v41 = 0;
-      v37 = [v20 cropAndScaleBufferWithWidth:v35 height:v36 cropRect:v34 format:v42 imageCropAndScaleOption:v23 options:a8 error:x * v24 calculatedNormalizedOriginOffset:y * v25 calculatedScaleX:v26 calculatedScaleY:v27 pixelBufferRepsCacheKey:{0, 0, 0, &v41}];
+      v37 = [v20 cropAndScaleBufferWithWidth:v35 height:v36 cropRect:v34 format:v42 imageCropAndScaleOption:v23 options:error error:x * v24 calculatedNormalizedOriginOffset:y * v25 calculatedScaleX:v26 calculatedScaleY:v27 pixelBufferRepsCacheKey:{0, 0, 0, &v41}];
       v38 = v41;
-      *a7 = v37;
+      *buffer = v37;
       v39 = v37 != 0;
       if (v37)
       {
@@ -346,37 +346,37 @@ BOOL __130__VNImageAnalyzerBasedDetector_processRegionOfInterest_croppedPixelBuf
   return v39;
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = *&a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a8;
-  if ([(VNImageAnalyzerBasedDetector *)self analysisTypesForProcessOptions:v17])
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v15 = *&class;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  if ([(VNImageAnalyzerBasedDetector *)self analysisTypesForProcessOptions:optionsCopy])
   {
     v22.receiver = self;
     v22.super_class = VNImageAnalyzerBasedDetector;
-    v20 = [(VNDetector *)&v22 internalProcessUsingQualityOfServiceClass:v15 options:v17 regionOfInterest:v18 warningRecorder:a7 error:v19 progressHandler:x, y, width, height];
+    height = [(VNDetector *)&v22 internalProcessUsingQualityOfServiceClass:v15 options:optionsCopy regionOfInterest:recorderCopy warningRecorder:error error:handlerCopy progressHandler:x, y, width, height];
   }
 
   else
   {
-    v20 = MEMORY[0x1E695E0F0];
+    height = MEMORY[0x1E695E0F0];
   }
 
-  return v20;
+  return height;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = VNImageAnalyzerBasedDetector;
-  v7 = [(VNDetector *)&v19 completeInitializationForSession:v6 error:a4];
+  v7 = [(VNDetector *)&v19 completeInitializationForSession:sessionCopy error:error];
   if (self)
   {
     v8 = v7;
@@ -389,17 +389,17 @@ BOOL __130__VNImageAnalyzerBasedDetector_processRegionOfInterest_croppedPixelBuf
 
   if (v8)
   {
-    v9 = [(VNDetector *)self configurationOptions];
+    configurationOptions = [(VNDetector *)self configurationOptions];
     v10 = objc_opt_class();
-    v11 = [v10 modelPathForConfiguration:v9 error:a4];
+    v11 = [v10 modelPathForConfiguration:configurationOptions error:error];
     if (!v11)
     {
       goto LABEL_18;
     }
 
-    if ([v10 providesSceneLabelsForConfiguration:v9])
+    if ([v10 providesSceneLabelsForConfiguration:configurationOptions])
     {
-      v12 = [v10 sceneLabelsFilePathForConfiguration:v9 error:a4];
+      v12 = [v10 sceneLabelsFilePathForConfiguration:configurationOptions error:error];
       if (!v12)
       {
         goto LABEL_18;
@@ -411,9 +411,9 @@ BOOL __130__VNImageAnalyzerBasedDetector_processRegionOfInterest_croppedPixelBuf
       v12 = 0;
     }
 
-    if ([v10 providesSegmentationLabelsForConfiguration:v9])
+    if ([v10 providesSegmentationLabelsForConfiguration:configurationOptions])
     {
-      v13 = [v10 segmentationLabelsFilePathForConfiguration:v9 error:a4];
+      v13 = [v10 segmentationLabelsFilePathForConfiguration:configurationOptions error:error];
       if (!v13)
       {
 LABEL_17:
@@ -429,13 +429,13 @@ LABEL_18:
     }
 
     vision::mod::ImageAnalyzer_Options::ImageAnalyzer_Options(&__str);
-    if ([(VNImageAnalyzerBasedDetector *)self configureImageAnalyzerOptions:&__str error:a4])
+    if ([(VNImageAnalyzerBasedDetector *)self configureImageAnalyzerOptions:&__str error:error])
     {
       v21 = 8576;
-      v14 = [v11 UTF8String];
-      v15 = [v12 UTF8String];
-      v16 = [v13 UTF8String];
-      vision::mod::ImageAnalyzer::createImageAnalyzer(&v20, &v21, v14, v15, 0, v16, 0, 0, &__str, v18, v19.receiver);
+      uTF8String = [v11 UTF8String];
+      uTF8String2 = [v12 UTF8String];
+      uTF8String3 = [v13 UTF8String];
+      vision::mod::ImageAnalyzer::createImageAnalyzer(&v20, &v21, uTF8String, uTF8String2, 0, uTF8String3, 0, 0, &__str, v18, v19.receiver);
     }
 
     vision::mod::ImageAnalyzer_Options::~ImageAnalyzer_Options(&__str);
@@ -448,12 +448,12 @@ LABEL_19:
   return 0;
 }
 
-- (id)observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:(void *)a3 identifierAcceptingBlock:(id)a4 operationPointsProvider:(id)a5 originatingRequestSpecifier:(id)a6 qosClass:(unsigned int)a7 error:(id *)a8
+- (id)observationsForSceneLabelsFromLastAnalysisOfImageAnalyzer:(void *)analyzer identifierAcceptingBlock:(id)block operationPointsProvider:(id)provider originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v37 = a6;
-  if (([(VNImageAnalyzerBasedDetector *)self _validateProvidesSceneLabelsAndReturnError:a8]& 1) == 0)
+  blockCopy = block;
+  providerCopy = provider;
+  specifierCopy = specifier;
+  if (([(VNImageAnalyzerBasedDetector *)self _validateProvidesSceneLabelsAndReturnError:error]& 1) == 0)
   {
     v17 = 0;
     goto LABEL_31;
@@ -462,7 +462,7 @@ LABEL_19:
   *v41 = 0u;
   *v42 = 0u;
   v43 = 1065353216;
-  vision::mod::ImageAnalyzer::getSceneLabelsConfidences(__p, 0.0, a3);
+  vision::mod::ImageAnalyzer::getSceneLabelsConfidences(__p, 0.0, analyzer);
   std::__hash_table<std::__hash_value_type<std::string,float>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,float>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,float>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,float>>>::__move_assign(v41, __p);
   std::__hash_table<std::__hash_value_type<std::string,float>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,float>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,float>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,float>>>::__deallocate_node(__p[2]);
   v15 = __p[0];
@@ -472,17 +472,17 @@ LABEL_19:
     operator delete(v15);
   }
 
-  if (!v14)
+  if (!providerCopy)
   {
     v16 = 0;
     goto LABEL_9;
   }
 
-  v16 = [v14 operationPointsAndReturnError:a8];
+  v16 = [providerCopy operationPointsAndReturnError:error];
   if (v16)
   {
 LABEL_9:
-    v36 = v14;
+    v36 = providerCopy;
     v18 = objc_alloc(MEMORY[0x1E695DF70]);
     v19 = [v18 initWithCapacity:v42[1]];
     v35 = objc_autoreleasePoolPush();
@@ -500,7 +500,7 @@ LABEL_9:
         }
 
         v24 = [v22 initWithUTF8String:{v23, v35}];
-        if (_isAcceptableRecognizedObjectIdentifier(v24, v13))
+        if (_isAcceptableRecognizedObjectIdentifier(v24, blockCopy))
         {
           if (v16)
           {
@@ -527,7 +527,7 @@ LABEL_9:
 
           v28 = [VNClassificationObservation alloc];
           LODWORD(v29) = *(v20 + 10);
-          v30 = [(VNClassificationObservation *)v28 initWithOriginatingRequestSpecifier:v37 identifier:v24 confidence:v26 classificationMetrics:v29];
+          v30 = [(VNClassificationObservation *)v28 initWithOriginatingRequestSpecifier:specifierCopy identifier:v24 confidence:v26 classificationMetrics:v29];
           if (v30)
           {
             [v19 addObject:v30];
@@ -562,7 +562,7 @@ LABEL_25:
       v17 = 0;
     }
 
-    v14 = v36;
+    providerCopy = v36;
     goto LABEL_29;
   }
 
@@ -587,8 +587,8 @@ LABEL_31:
   {
     v3 = result;
     v4 = objc_opt_class();
-    v5 = [v3 configurationOptions];
-    LOBYTE(v4) = [v4 providesSceneLabelsForConfiguration:v5];
+    configurationOptions = [v3 configurationOptions];
+    LOBYTE(v4) = [v4 providesSceneLabelsForConfiguration:configurationOptions];
 
     if (v4)
     {
@@ -614,10 +614,10 @@ LABEL_31:
   return result;
 }
 
-- (id)supportedClassificationIdentifiersAcceptedByBlock:(id)a3 error:(id *)a4
+- (id)supportedClassificationIdentifiersAcceptedByBlock:(id)block error:(id *)error
 {
-  v6 = a3;
-  if (([(VNImageAnalyzerBasedDetector *)self _validateProvidesSceneLabelsAndReturnError:a4]& 1) != 0)
+  blockCopy = block;
+  if (([(VNImageAnalyzerBasedDetector *)self _validateProvidesSceneLabelsAndReturnError:error]& 1) != 0)
   {
     cachedSupportedClassificationIdentifiers = self->_cachedSupportedClassificationIdentifiers;
     if (!cachedSupportedClassificationIdentifiers)
@@ -642,7 +642,7 @@ LABEL_31:
             }
 
             v15 = [v13 initWithUTF8String:v14];
-            if (_isAcceptableRecognizedObjectIdentifier(v15, v6))
+            if (_isAcceptableRecognizedObjectIdentifier(v15, blockCopy))
             {
               [v10 addObject:v15];
             }
@@ -674,34 +674,34 @@ LABEL_31:
   return v18;
 }
 
-- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)a3 processOptions:(id)a4 originatingRequestSpecifier:(id)a5 qosClass:(unsigned int)a6 error:(id *)a7
+- (id)observationsForLastAnalysisOfImageAnalyzer:(void *)analyzer processOptions:(id)options originatingRequestSpecifier:(id)specifier qosClass:(unsigned int)class error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = [VNError errorForUnimplementedMethod:a2 ofObject:self, a5, *&a6];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self, specifier, *&class];
   }
 
   return 0;
 }
 
-- (BOOL)configureImageAnalyzerOptions:(void *)a3 error:(id *)a4
+- (BOOL)configureImageAnalyzerOptions:(void *)options error:(id *)error
 {
-  v6 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+  v6 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
   if (v6)
   {
-    v7 = [(VNDetector *)self configurationOptions];
+    configurationOptions = [(VNDetector *)self configurationOptions];
     v8 = objc_opt_class();
-    *(a3 + 9) = [VNEspressoHelpers espressoDeviceIDForComputeDevice:v6];
-    *(a3 + 8) = [VNEspressoHelpers espressoStorageTypeForComputeDevice:v6];
-    *(a3 + 6) = [VNEspressoHelpers espressoEngineForComputeDevice:v6];
-    *(a3 + 7) = 0;
-    *(a3 + 385) = 1;
-    v9 = [v8 modelPathForConfiguration:v7 error:0];
-    v10 = [v9 lastPathComponent];
-    v11 = [v10 stringByDeletingPathExtension];
-    std::string::__assign_external(a3, [v11 UTF8String]);
+    *(options + 9) = [VNEspressoHelpers espressoDeviceIDForComputeDevice:v6];
+    *(options + 8) = [VNEspressoHelpers espressoStorageTypeForComputeDevice:v6];
+    *(options + 6) = [VNEspressoHelpers espressoEngineForComputeDevice:v6];
+    *(options + 7) = 0;
+    *(options + 385) = 1;
+    v9 = [v8 modelPathForConfiguration:configurationOptions error:0];
+    lastPathComponent = [v9 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    std::string::__assign_external(options, [stringByDeletingPathExtension UTF8String]);
 
-    v12 = [v8 analysisPixelFormatTypeForConfiguration:v7];
+    v12 = [v8 analysisPixelFormatTypeForConfiguration:configurationOptions];
     if (v12 <= 1094862673)
     {
       if (v12 == 8)
@@ -730,9 +730,9 @@ LABEL_31:
         case 1094862674:
           v13 = 16;
 LABEL_14:
-          *(a3 + 10) = v13;
-          v14 = [v8 inputImageBlobNameForConfiguration:v7];
-          std::string::__assign_external(a3 + 2, [v14 UTF8String]);
+          *(options + 10) = v13;
+          v14 = [v8 inputImageBlobNameForConfiguration:configurationOptions];
+          std::string::__assign_external(options + 2, [v14 UTF8String]);
 
           goto LABEL_15;
       }

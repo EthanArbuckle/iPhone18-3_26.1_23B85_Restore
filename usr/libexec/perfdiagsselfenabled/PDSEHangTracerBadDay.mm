@@ -11,16 +11,16 @@
   if (_os_feature_enabled_impl())
   {
     v2 = +[HTPrefs sharedPrefs];
-    v3 = [v2 badDayEnablementForPreviousDays];
+    badDayEnablementForPreviousDays = [v2 badDayEnablementForPreviousDays];
 
     v4 = +[HTPrefs sharedPrefs];
-    v5 = [v4 badDayEnablementForHangDurationMSec];
+    badDayEnablementForHangDurationMSec = [v4 badDayEnablementForHangDurationMSec];
 
     v6 = +[HTPrefs sharedPrefs];
-    v7 = [v6 badDayEnablementForLogCount];
+    badDayEnablementForLogCount = [v6 badDayEnablementForLogCount];
 
     v8 = +[HTPrefs sharedPrefs];
-    v9 = [v8 badDayEnablementMinimumBreakDurationDays];
+    badDayEnablementMinimumBreakDurationDays = [v8 badDayEnablementMinimumBreakDurationDays];
 
     v10 = +[HTPrefs sharedPrefs];
     [v10 badDaySecondsBetweenLastEnablementAndReferenceDate];
@@ -31,15 +31,15 @@
     v46[2] = sub_100001C90;
     v46[3] = &unk_100018440;
     *&v46[4] = v12;
-    v46[5] = v5;
-    v47 = v7;
-    v48 = v9;
+    v46[5] = badDayEnablementForHangDurationMSec;
+    v47 = badDayEnablementForLogCount;
+    v48 = badDayEnablementMinimumBreakDurationDays;
     v13 = objc_retainBlock(v46);
     +[NSDate timeIntervalSinceReferenceDate];
     v15 = v14;
     v16 = v14 - v12;
     [objc_opt_class() timeoutDurationSec];
-    if (v16 < v17 || v16 >= v17 + v9 * 86400.0)
+    if (v16 < v17 || v16 >= v17 + badDayEnablementMinimumBreakDurationDays * 86400.0)
     {
       if (v16 >= v17)
       {
@@ -49,8 +49,8 @@
         {
           CFPreferencesSetValue(@"BadDaySecondsBetweenLastEvaluationAndReferenceDate", [NSNumber numberWithDouble:v15], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
           CFPreferencesSynchronize(@"com.apple.da", @"mobile", kCFPreferencesAnyHost);
-          v24 = v3;
-          v25 = v5 / 1000.0;
+          v24 = badDayEnablementForPreviousDays;
+          v25 = badDayEnablementForHangDurationMSec / 1000.0;
           v26 = [[NSCountedSet alloc] initWithCapacity:0];
           v27 = [NSDate dateWithTimeIntervalSinceNow:v24 * -86400.0];
           v28 = +[NSDate date];
@@ -68,8 +68,8 @@
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v29 = [v22 objectEnumerator];
-          v30 = [v29 countByEnumeratingWithState:&v39 objects:v49 count:16];
+          objectEnumerator = [v22 objectEnumerator];
+          v30 = [objectEnumerator countByEnumeratingWithState:&v39 objects:v49 count:16];
           if (v30)
           {
             v31 = v30;
@@ -81,7 +81,7 @@
               {
                 if (*v40 != v33)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
                 v35 = *(*(&v39 + 1) + 8 * i);
@@ -90,7 +90,7 @@
                   v32 += [v22 countForObject:v35];
                 }
 
-                if (v32 >= v7)
+                if (v32 >= badDayEnablementForLogCount)
                 {
                   v36 = sub_10000B598();
                   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
@@ -106,7 +106,7 @@
                 }
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v39 objects:v49 count:16];
+              v31 = [objectEnumerator countByEnumeratingWithState:&v39 objects:v49 count:16];
               if (v31)
               {
                 continue;
@@ -186,18 +186,18 @@ LABEL_32:
   +[NSDate timeIntervalSinceReferenceDate];
   CFPreferencesSetValue(@"BadDaySecondsBetweenLastEnablementAndReferenceDate", [NSNumber numberWithDouble:?], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
   v3 = +[HTPrefs sharedPrefs];
-  v4 = [v3 isInternal];
+  isInternal = [v3 isInternal];
 
-  if (v4)
+  if (isInternal)
   {
-    v5 = [a1 prefixForDefaults];
-    v6 = sub_100000F10(@"HangTracerEnabled", v5);
+    prefixForDefaults = [self prefixForDefaults];
+    v6 = sub_100000F10(@"HangTracerEnabled", prefixForDefaults);
     CFPreferencesSetValue(v6, kCFBooleanTrue, @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
 
     v7 = sub_10000B598();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000C1A8(a1, @"HangTracerEnabled", v7);
+      sub_10000C1A8(self, @"HangTracerEnabled", v7);
     }
 
     CFPreferencesSynchronize(@"com.apple.da", @"mobile", kCFPreferencesAnyHost);
@@ -231,15 +231,15 @@ LABEL_32:
           }
 
           v13 = *(*(&v22 + 1) + 8 * v12);
-          v14 = [a1 prefixForDefaults];
-          v15 = sub_100000F10(v13, v14);
+          prefixForDefaults2 = [self prefixForDefaults];
+          v15 = sub_100000F10(v13, prefixForDefaults2);
           CFPreferencesSetValue(v15, [NSNumber numberWithInt:0], @"com.apple.da", @"mobile", kCFPreferencesAnyHost);
 
           v16 = sub_10000B598();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
-            v17 = [a1 prefixForDefaults];
-            v18 = sub_100000F10(v13, v17);
+            prefixForDefaults3 = [self prefixForDefaults];
+            v18 = sub_100000F10(v13, prefixForDefaults3);
             *buf = v19;
             v27 = v18;
             _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "PDSE: set setting %@ to 0 for bad day log collection", buf, 0xCu);
@@ -255,7 +255,7 @@ LABEL_32:
       while (v10);
     }
 
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = &OBJC_METACLASS___PDSEHangTracerBadDay;
     objc_msgSendSuper2(&v21, "writeEnablementSettings");
   }
@@ -264,9 +264,9 @@ LABEL_32:
 + (double)timeoutDurationSec
 {
   v2 = +[HTPrefs sharedPrefs];
-  v3 = [v2 badDayEnablementDurationDays];
+  badDayEnablementDurationDays = [v2 badDayEnablementDurationDays];
 
-  return v3 * 86400.0 + 43200.0;
+  return badDayEnablementDurationDays * 86400.0 + 43200.0;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface OU3DObjectMerger
 - (vector<OUBox3d,)crossClassNMS:(OU3DObjectMerger *)self;
-- (vector<OUBox3d,)mergeCabinets:(OU3DObjectMerger *)self iou_mat:(SEL)a3;
+- (vector<OUBox3d,)mergeCabinets:(OU3DObjectMerger *)self iou_mat:(SEL)iou_mat;
 - (vector<OUBox3d,)mergeOtherObjects:(OU3DObjectMerger *)self;
 - (vector<OUBox3d,)removeLowHeightStairObjects:(OU3DObjectMerger *)self;
 @end
 
 @implementation OU3DObjectMerger
 
-- (vector<OUBox3d,)mergeCabinets:(OU3DObjectMerger *)self iou_mat:(SEL)a3
+- (vector<OUBox3d,)mergeCabinets:(OU3DObjectMerger *)self iou_mat:(SEL)iou_mat
 {
   v263[2] = *MEMORY[0x277D85DE8];
   v7 = @"Cabinet";
@@ -597,8 +597,8 @@ LABEL_85:
     v241 = 0u;
     v242 = 0u;
     centroidSizeAngleToBox3d(v229, 0, &v241);
-    v119 = [MEMORY[0x277CCAD78] UUID];
-    OUBox3d::OUBox3d(__p, &v241, &OU3DObjectTypeCabinet, v119, &v230, @"online", 1.0);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    OUBox3d::OUBox3d(__p, &v241, &OU3DObjectTypeCabinet, uUID, &v230, @"online", 1.0);
     end = retstr->__end_;
     if (end >= retstr->__cap_)
     {
@@ -1270,8 +1270,8 @@ LABEL_182:
     {
       v41 = **v40;
       v42 = *a4;
-      v43 = [MEMORY[0x277CCAD78] UUID];
-      OUBox3d::OUBox3d(&__p, &v197, (v42 + 224 * v41 + 128), v43, v196, @"online", 1.0);
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      OUBox3d::OUBox3d(&__p, &v197, (v42 + 224 * v41 + 128), uUID, v196, @"online", 1.0);
       v44 = v174;
       if (v174 >= v175)
       {
@@ -1420,8 +1420,8 @@ LABEL_182:
           box3dToCentroidSizeAngle(v196, &v192);
           v69 = **v40;
           v70 = *a4;
-          v71 = [MEMORY[0x277CCAD78] UUID];
-          OUBox3d::OUBox3d(&__p, v196, (v70 + 224 * v69 + 128), v71, &__src, @"online", 1.0);
+          uUID2 = [MEMORY[0x277CCAD78] UUID];
+          OUBox3d::OUBox3d(&__p, v196, (v70 + 224 * v69 + 128), uUID2, &__src, @"online", 1.0);
           v72 = v158;
           if (v158 >= v159)
           {

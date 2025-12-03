@@ -7,7 +7,7 @@
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   GlassContainerTransitionPTSettings.setDefaultValues()();
 }
 

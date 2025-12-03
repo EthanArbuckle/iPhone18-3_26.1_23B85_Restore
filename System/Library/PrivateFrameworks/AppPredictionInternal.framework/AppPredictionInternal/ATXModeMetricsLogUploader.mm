@@ -1,19 +1,19 @@
 @interface ATXModeMetricsLogUploader
-- (void)uploadFocusLogsToCoreAnalyticsWithActivity:(id)a3 contactStore:(id)a4;
-- (void)uploadNotificationLogsToCoreAnalyticsWithTask:(id)a3 contactStore:(id)a4;
+- (void)uploadFocusLogsToCoreAnalyticsWithActivity:(id)activity contactStore:(id)store;
+- (void)uploadNotificationLogsToCoreAnalyticsWithTask:(id)task contactStore:(id)store;
 @end
 
 @implementation ATXModeMetricsLogUploader
 
-- (void)uploadFocusLogsToCoreAnalyticsWithActivity:(id)a3 contactStore:(id)a4
+- (void)uploadFocusLogsToCoreAnalyticsWithActivity:(id)activity contactStore:(id)store
 {
   v154 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 didDefer];
+  activityCopy = activity;
+  storeCopy = store;
+  didDefer = [activityCopy didDefer];
   v8 = __atxlog_handle_metrics();
   v9 = v8;
-  if (!v7)
+  if (!didDefer)
   {
     v12 = os_signpost_id_generate(v8);
 
@@ -38,7 +38,7 @@
 
     v19 = objc_autoreleasePoolPush();
     v20 = objc_opt_new();
-    [v20 logAppSessionMetricsWithXPCActivity:v5];
+    [v20 logAppSessionMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v19);
     v21 = __atxlog_handle_metrics();
@@ -49,10 +49,10 @@
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v22, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.SessionMetrics", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v23 = [v5 didDefer];
+    didDefer2 = [activityCopy didDefer];
     v9 = __atxlog_handle_metrics();
     v24 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v23)
+    if (didDefer2)
     {
       if (!v24)
       {
@@ -86,7 +86,7 @@ LABEL_76:
 
     v29 = objc_autoreleasePoolPush();
     v30 = objc_opt_new();
-    [v30 uploadLogsToCoreAnalyticsWithXPCActivity:v5];
+    [v30 uploadLogsToCoreAnalyticsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v29);
     v31 = __atxlog_handle_metrics();
@@ -97,10 +97,10 @@ LABEL_76:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v32, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.TransitionMetrics", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v33 = [v5 didDefer];
+    didDefer3 = [activityCopy didDefer];
     v9 = __atxlog_handle_metrics();
     v34 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v33)
+    if (didDefer3)
     {
       if (!v34)
       {
@@ -129,7 +129,7 @@ LABEL_76:
 
     v39 = objc_autoreleasePoolPush();
     v40 = objc_opt_new();
-    [v40 logModeConfigurationsWithXPCActivity:v5];
+    [v40 logModeConfigurationsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v39);
     v41 = __atxlog_handle_metrics();
@@ -140,10 +140,10 @@ LABEL_76:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v42, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.ModeConfigurations", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v43 = [v5 didDefer];
+    didDefer4 = [activityCopy didDefer];
     v9 = __atxlog_handle_metrics();
     v44 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v43)
+    if (didDefer4)
     {
       if (!v44)
       {
@@ -172,7 +172,7 @@ LABEL_76:
 
     v49 = objc_autoreleasePoolPush();
     v50 = objc_opt_new();
-    [v50 logNotificationAdjacentSuggestionMetricsWithXPCActivity:v5];
+    [v50 logNotificationAdjacentSuggestionMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v49);
     v51 = __atxlog_handle_metrics();
@@ -193,7 +193,7 @@ LABEL_76:
 
     v55 = objc_autoreleasePoolPush();
     v56 = objc_opt_new();
-    [v56 logDigestOnboardingSuggestionMetricsWithXPCActivity:v5];
+    [v56 logDigestOnboardingSuggestionMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v55);
     v57 = __atxlog_handle_metrics();
@@ -214,7 +214,7 @@ LABEL_76:
 
     v61 = objc_autoreleasePoolPush();
     v62 = objc_opt_new();
-    [v62 logDigestOnboardingMetricsWithXPCActivity:v5];
+    [v62 logDigestOnboardingMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v61);
     v63 = __atxlog_handle_metrics();
@@ -235,7 +235,7 @@ LABEL_76:
 
     v67 = objc_autoreleasePoolPush();
     v68 = objc_opt_new();
-    [v68 logDigestOnboardingAppSelectionMetricsWithXPCActivity:v5];
+    [v68 logDigestOnboardingAppSelectionMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v67);
     v69 = __atxlog_handle_metrics();
@@ -246,10 +246,10 @@ LABEL_76:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v70, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.OnboardingAppSelectionMetrics", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v71 = [v5 didDefer];
+    didDefer5 = [activityCopy didDefer];
     v9 = __atxlog_handle_metrics();
     v72 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v71)
+    if (didDefer5)
     {
       if (!v72)
       {
@@ -278,7 +278,7 @@ LABEL_76:
 
     v77 = objc_autoreleasePoolPush();
     v78 = objc_opt_new();
-    [v78 logDeviceUsageWithXPCActivity:v5];
+    [v78 logDeviceUsageWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v77);
     v79 = __atxlog_handle_metrics();
@@ -289,10 +289,10 @@ LABEL_76:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v80, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.DeviceUsage", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v81 = [v5 didDefer];
+    didDefer6 = [activityCopy didDefer];
     v9 = __atxlog_handle_metrics();
     v82 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v81)
+    if (didDefer6)
     {
       if (!v82)
       {
@@ -321,7 +321,7 @@ LABEL_76:
 
     v89 = objc_autoreleasePoolPush();
     v90 = objc_opt_new();
-    [v90 logMetricsWithXPCActivity:v5];
+    [v90 logMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v89);
     v91 = __atxlog_handle_metrics();
@@ -352,7 +352,7 @@ LABEL_76:
 
     v98 = objc_autoreleasePoolPush();
     v99 = objc_opt_new();
-    [v99 logMetricsWithXPCActivity:v5];
+    [v99 logMetricsWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v98);
     v100 = __atxlog_handle_metrics();
@@ -456,10 +456,10 @@ LABEL_76:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v128, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.ModeSetupPredictionMetrics", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v129 = [v5 didDefer];
+    didDefer7 = [activityCopy didDefer];
     v9 = __atxlog_handle_metrics();
     v130 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-    if (v129)
+    if (didDefer7)
     {
       if (!v130)
       {
@@ -494,8 +494,8 @@ LABEL_76:
 
     v9 = objc_opt_new();
     v136 = objc_autoreleasePoolPush();
-    v137 = [[ATXModeConfigurationUIFlowMetricLogger alloc] initWithFocusModeSignalsLogger:v9 contactStore:v6];
-    [(ATXModeConfigurationUIFlowMetricLogger *)v137 logModeConfigurationUIFlowMetricWithXPCActivity:v5];
+    v137 = [[ATXModeConfigurationUIFlowMetricLogger alloc] initWithFocusModeSignalsLogger:v9 contactStore:storeCopy];
+    [(ATXModeConfigurationUIFlowMetricLogger *)v137 logModeConfigurationUIFlowMetricWithXPCActivity:activityCopy];
 
     objc_autoreleasePoolPop(v136);
     v138 = __atxlog_handle_metrics();
@@ -506,10 +506,10 @@ LABEL_76:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v139, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.UIFlow", " enableTelemetry=YES ", &v152, 2u);
     }
 
-    v140 = [v5 didDefer];
+    didDefer8 = [activityCopy didDefer];
     v141 = __atxlog_handle_metrics();
     v142 = os_log_type_enabled(v141, OS_LOG_TYPE_INFO);
-    if (v140)
+    if (didDefer8)
     {
       if (v142)
       {
@@ -542,7 +542,7 @@ LABEL_144:
       }
 
       v147 = objc_autoreleasePoolPush();
-      [v9 logFocusModeWidgetSignalsWithXPCActivity:v5];
+      [v9 logFocusModeWidgetSignalsWithXPCActivity:activityCopy];
       objc_autoreleasePoolPop(v147);
       v148 = __atxlog_handle_metrics();
       v149 = v148;
@@ -552,7 +552,7 @@ LABEL_144:
         _os_signpost_emit_with_name_impl(&dword_2263AA000, v149, OS_SIGNPOST_INTERVAL_END, v12, "FocusMetricsLogging.WidgetSignals", " enableTelemetry=YES ", &v152, 2u);
       }
 
-      if (![v5 didDefer])
+      if (![activityCopy didDefer])
       {
         goto LABEL_79;
       }
@@ -583,15 +583,15 @@ LABEL_79:
   v84 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uploadNotificationLogsToCoreAnalyticsWithTask:(id)a3 contactStore:(id)a4
+- (void)uploadNotificationLogsToCoreAnalyticsWithTask:(id)task contactStore:(id)store
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 didDefer];
+  taskCopy = task;
+  storeCopy = store;
+  didDefer = [taskCopy didDefer];
   v8 = __atxlog_handle_metrics();
   v9 = v8;
-  if (v7)
+  if (didDefer)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -626,8 +626,8 @@ LABEL_4:
     }
 
     v18 = objc_autoreleasePoolPush();
-    v19 = [[ATXNotificationTelemetryLogger alloc] initWithContactStore:v6];
-    [(ATXNotificationTelemetryLogger *)v19 logNotificationMetricsWithTask:v5];
+    v19 = [[ATXNotificationTelemetryLogger alloc] initWithContactStore:storeCopy];
+    [(ATXNotificationTelemetryLogger *)v19 logNotificationMetricsWithTask:taskCopy];
 
     objc_autoreleasePoolPop(v18);
     v20 = __atxlog_handle_metrics();
@@ -638,10 +638,10 @@ LABEL_4:
       _os_signpost_emit_with_name_impl(&dword_2263AA000, v21, OS_SIGNPOST_INTERVAL_END, v11, "FocusMetricsLogging.NotificationTelemetry", " enableTelemetry=YES ", &v37, 2u);
     }
 
-    v22 = [v5 didDefer];
+    didDefer2 = [taskCopy didDefer];
     v23 = __atxlog_handle_metrics();
     v9 = v23;
-    if (v22)
+    if (didDefer2)
     {
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -685,10 +685,10 @@ LABEL_4:
         _os_signpost_emit_with_name_impl(&dword_2263AA000, v33, OS_SIGNPOST_INTERVAL_END, v11, "FocusMetricsLogging.NotificationSettings", " enableTelemetry=YES ", &v37, 2u);
       }
 
-      v34 = [v5 setDone];
+      setDone = [taskCopy setDone];
       v35 = __atxlog_handle_metrics();
       v9 = v35;
-      if (v34)
+      if (setDone)
       {
         if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {

@@ -1,6 +1,6 @@
 @interface CRLTableRowColumnAdderKnobTracker
 - (_TtC8Freeform33CRLTableRowColumnAdderKnobTracker)init;
-- (_TtC8Freeform33CRLTableRowColumnAdderKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (_TtC8Freeform33CRLTableRowColumnAdderKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (void)endMovingKnob;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)endMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_1012255A8();
 }
 
-- (_TtC8Freeform33CRLTableRowColumnAdderKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (_TtC8Freeform33CRLTableRowColumnAdderKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

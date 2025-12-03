@@ -1,6 +1,6 @@
 @interface PKPaymentTransactionTableCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPaymentTransactionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPaymentTransactionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)additionalInsets;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
@@ -8,19 +8,19 @@
 
 @implementation PKPaymentTransactionTableCell
 
-- (PKPaymentTransactionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKPaymentTransactionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = PKPaymentTransactionTableCell;
-  v4 = [(PKPaymentTransactionTableCell *)&v9 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PKPaymentTransactionTableCell *)&v9 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(PKPaymentTransactionView);
     transactionView = v4->_transactionView;
     v4->_transactionView = v5;
 
-    v7 = [(PKPaymentTransactionTableCell *)v4 contentView];
-    [v7 addSubview:v4->_transactionView];
+    contentView = [(PKPaymentTransactionTableCell *)v4 contentView];
+    [contentView addSubview:v4->_transactionView];
 
     [(PKPaymentTransactionTableCell *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9D38]];
   }
@@ -28,9 +28,9 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPaymentTransactionView *)self->_transactionView sizeThatFits:a3.width, a3.height];
+  [(PKPaymentTransactionView *)self->_transactionView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -41,8 +41,8 @@
   v12.receiver = self;
   v12.super_class = PKPaymentTransactionTableCell;
   [(PKPaymentTransactionTableCell *)&v12 layoutSubviews];
-  v3 = [(PKPaymentTransactionTableCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKPaymentTransactionTableCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

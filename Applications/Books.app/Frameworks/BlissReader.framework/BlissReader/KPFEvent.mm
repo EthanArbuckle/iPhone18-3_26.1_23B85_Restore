@@ -1,26 +1,26 @@
 @interface KPFEvent
 - (BOOL)isAutomatic;
 - (BOOL)isMoviePlaying;
-- (CATransform3D)p_transformFromArray:(SEL)a3;
-- (CGAffineTransform)p_affineTransformFromArray:(SEL)a3;
-- (CGRect)p_rectFromDictionary:(id)a3;
-- (KPFEvent)initWithDictionary:(id)a3;
+- (CATransform3D)p_transformFromArray:(SEL)array;
+- (CGAffineTransform)p_affineTransformFromArray:(SEL)array;
+- (CGRect)p_rectFromDictionary:(id)dictionary;
+- (KPFEvent)initWithDictionary:(id)dictionary;
 - (id)accessibilityArray;
-- (id)hyperlinkAtLocation:(CGPoint)a3;
+- (id)hyperlinkAtLocation:(CGPoint)location;
 - (id)hyperlinksRectArray;
-- (id)p_animationKeyPathForAction:(id)a3;
-- (id)p_propertyValueFromDictionary:(id)a3 forLayer:(id)a4 forAction:(id)a5;
-- (id)p_timingFunctionFromString:(id)a3 forActionDictionary:(id)a4;
-- (void)animateEventWithSession:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (id)p_animationKeyPathForAction:(id)action;
+- (id)p_propertyValueFromDictionary:(id)dictionary forLayer:(id)layer forAction:(id)action;
+- (id)p_timingFunctionFromString:(id)string forActionDictionary:(id)dictionary;
+- (void)animateEventWithSession:(id)session;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)p_addAnimationFromAnimationDict:(id)a3 forLayer:(id)a4 withTextureName:(id)a5;
-- (void)p_addPerspectiveTransform:(id)a3;
+- (void)p_addAnimationFromAnimationDict:(id)dict forLayer:(id)layer withTextureName:(id)name;
+- (void)p_addPerspectiveTransform:(id)transform;
 - (void)p_glAnimationEndCallback;
-- (void)p_movieEndCallback:(id)a3;
-- (void)p_setupAndAnimateGLAnimationsFromPluginArray:(id)a3 withEffect:(id)a4 session:(id)a5;
+- (void)p_movieEndCallback:(id)callback;
+- (void)p_setupAndAnimateGLAnimationsFromPluginArray:(id)array withEffect:(id)effect session:(id)session;
 - (void)pauseMoviePlayback;
-- (void)renderEventWithSession:(id)a3;
+- (void)renderEventWithSession:(id)session;
 - (void)stopAllAnimations;
 - (void)stopMoviePlayback;
 - (void)tearDown;
@@ -28,14 +28,14 @@
 
 @implementation KPFEvent
 
-- (KPFEvent)initWithDictionary:(id)a3
+- (KPFEvent)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = KPFEvent;
   v4 = [(KPFEvent *)&v6 init];
   if (v4)
   {
-    v4->mEventDictionary = a3;
+    v4->mEventDictionary = dictionary;
     v4->_animationDelegate = [[KPFEventAnimationDelegate alloc] initWithEvent:v4];
   }
 
@@ -51,30 +51,30 @@
   [(KPFEvent *)&v3 dealloc];
 }
 
-- (void)renderEventWithSession:(id)a3
+- (void)renderEventWithSession:(id)session
 {
-  v3 = a3;
-  v5 = [a3 KPFDocument];
+  sessionCopy = session;
+  kPFDocument = [session KPFDocument];
   v6 = CACurrentMediaTime();
 
   self->mLayers = objc_alloc_init(TSUNoCopyDictionary);
   self->mCanvasIDMap = objc_alloc_init(TSUNoCopyDictionary);
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  [objc_msgSend(v3 "showLayer")];
+  [objc_msgSend(sessionCopy "showLayer")];
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
   obj = [(KPFEvent *)self p_initialStatesArray];
-  v82 = self;
-  v83 = v3;
+  selfCopy = self;
+  v83 = sessionCopy;
   v86 = [obj countByEnumeratingWithState:&v115 objects:v121 count:16];
   if (v86)
   {
     v85 = *v116;
     y = CGPointZero.y;
-    v81 = v5;
+    v81 = kPFDocument;
     do
     {
       v8 = 0;
@@ -111,10 +111,10 @@
         v114[1] = 3221225472;
         v114[2] = sub_10D340;
         v114[3] = &unk_45D998;
-        v114[4] = v5;
+        v114[4] = kPFDocument;
         v114[5] = v10;
         [(THImageLayer *)v11 setImageProviderBlock:v114 setLayerBounds:0 maxSize:0 outNativeSize:1.79769313e308, 1.79769313e308];
-        [v5 textureSizeForName:v10];
+        [kPFDocument textureSizeForName:v10];
         [(THImageLayer *)v11 setBounds:CGPointZero.x, y, v19, v20];
         v90 = v10;
         [(THImageLayer *)v11 setName:v10];
@@ -166,19 +166,19 @@
           }
         }
 
-        [objc_msgSend(v3 "showLayer")];
+        [objc_msgSend(sessionCopy "showLayer")];
         v89 = v11;
         [(TSUNoCopyDictionary *)self->mLayers setObject:v11 forKey:v90];
         if (!self->mMovie)
         {
-          if ([v5 movieURLForTextureName:v90])
+          if ([kPFDocument movieURLForTextureName:v90])
           {
             v112 = 0u;
             v113 = 0u;
             v110 = 0u;
             v111 = 0u;
-            v40 = [(KPFEvent *)self p_animationsArray];
-            v41 = [v40 countByEnumeratingWithState:&v110 objects:v120 count:16];
+            p_animationsArray = [(KPFEvent *)self p_animationsArray];
+            v41 = [p_animationsArray countByEnumeratingWithState:&v110 objects:v120 count:16];
             if (v41)
             {
               v42 = v41;
@@ -190,7 +190,7 @@
                 {
                   if (*v111 != v44)
                   {
-                    objc_enumerationMutation(v40);
+                    objc_enumerationMutation(p_animationsArray);
                   }
 
                   v46 = *(*(&v110 + 1) + 8 * i);
@@ -201,26 +201,26 @@
                   }
                 }
 
-                v42 = [v40 countByEnumeratingWithState:&v110 objects:v120 count:16];
+                v42 = [p_animationsArray countByEnumeratingWithState:&v110 objects:v120 count:16];
               }
 
               while (v42);
-              self = v82;
-              v3 = v83;
-              v5 = v81;
+              self = selfCopy;
+              sessionCopy = v83;
+              kPFDocument = v81;
               if (v43)
               {
                 v48 = [v81 newMovieForTextureName:v90];
-                v82->mMovie = v48;
+                selfCopy->mMovie = v48;
                 if (v48)
                 {
-                  v49 = [(KPFMovie *)v48 playerLayer];
+                  playerLayer = [(KPFMovie *)v48 playerLayer];
                   [v81 textureSizeForName:v90];
-                  [(AVPlayerLayer *)v49 setBounds:0.0, 0.0, v50, v51];
-                  [(AVPlayerLayer *)v49 setPosition:CGPointZero.x, y];
-                  [(AVPlayerLayer *)v49 setHidden:1];
+                  [(AVPlayerLayer *)playerLayer setBounds:0.0, 0.0, v50, v51];
+                  [(AVPlayerLayer *)playerLayer setPosition:CGPointZero.x, y];
+                  [(AVPlayerLayer *)playerLayer setHidden:1];
                   [(THImageLayer *)v89 zPosition];
-                  [(AVPlayerLayer *)v49 setZPosition:?];
+                  [(AVPlayerLayer *)playerLayer setZPosition:?];
                   if (v89)
                   {
                     [(THImageLayer *)v89 transform];
@@ -242,9 +242,9 @@
                   v103 = v109;
                   v98 = v104;
                   v99 = v105;
-                  [(AVPlayerLayer *)v49 setTransform:&v98];
-                  [(AVPlayerLayer *)v49 setValue:v89 forKey:@"textureLayer"];
-                  [(THImageLayer *)v89 setValue:v49 forKey:@"movieLayer"];
+                  [(AVPlayerLayer *)playerLayer setTransform:&v98];
+                  [(AVPlayerLayer *)playerLayer setValue:v89 forKey:@"textureLayer"];
+                  [(THImageLayer *)v89 setValue:playerLayer forKey:@"movieLayer"];
                   [objc_msgSend(v83 "showLayer")];
                 }
               }
@@ -273,8 +273,8 @@
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v53 = [(TSUNoCopyDictionary *)self->mLayers allValues];
-  v54 = [v53 countByEnumeratingWithState:&v94 objects:v119 count:16];
+  allValues = [(TSUNoCopyDictionary *)self->mLayers allValues];
+  v54 = [allValues countByEnumeratingWithState:&v94 objects:v119 count:16];
   if (v54)
   {
     v55 = v54;
@@ -285,7 +285,7 @@
       {
         if (*v95 != v56)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(allValues);
         }
 
         v58 = *(*(&v94 + 1) + 8 * j);
@@ -358,14 +358,14 @@
         [v79 setAffineTransform:&v93];
       }
 
-      v55 = [v53 countByEnumeratingWithState:&v94 objects:v119 count:16];
+      v55 = [allValues countByEnumeratingWithState:&v94 objects:v119 count:16];
     }
 
     while (v55);
   }
 
   +[CATransaction commit];
-  v82->mAnimationsStarted = 0;
+  selfCopy->mAnimationsStarted = 0;
   if ([v83 isDebuggingEnabled])
   {
     v80 = CACurrentMediaTime();
@@ -373,7 +373,7 @@
   }
 }
 
-- (void)p_movieEndCallback:(id)a3
+- (void)p_movieEndCallback:(id)callback
 {
   if (!self->mAnimationsStarted)
   {
@@ -398,15 +398,15 @@
   }
 }
 
-- (void)p_addAnimationFromAnimationDict:(id)a3 forLayer:(id)a4 withTextureName:(id)a5
+- (void)p_addAnimationFromAnimationDict:(id)dict forLayer:(id)layer withTextureName:(id)name
 {
-  if (a4)
+  if (layer)
   {
     v30 = +[NSMutableArray array];
-    v9 = [a3 objectForKey:@"actions"];
+    v9 = [dict objectForKey:@"actions"];
     if (!v9)
     {
-      v9 = [a3 objectForKey:@"noPluginActions"];
+      v9 = [dict objectForKey:@"noPluginActions"];
     }
 
     v33 = 0u;
@@ -417,7 +417,7 @@
     if (v10)
     {
       v11 = v10;
-      v28 = a3;
+      dictCopy = dict;
       v12 = 0;
       v13 = 0;
       v14 = *v32;
@@ -433,7 +433,7 @@
 
           v16 = *(*(&v31 + 1) + 8 * i);
           v17 = [v16 objectForKey:@"texture"];
-          if (!a5 || [v17 isEqualToString:a5])
+          if (!name || [v17 isEqualToString:name])
           {
             v18 = [v16 objectForKey:@"action"];
             v19 = v18;
@@ -452,8 +452,8 @@
             [(CABasicAnimation *)v20 setBeginTime:v21];
             [objc_msgSend(v16 objectForKey:{@"duration", "floatValue"}];
             [(CABasicAnimation *)v20 setDuration:v22];
-            -[CABasicAnimation setFromValue:](v20, "setFromValue:", -[KPFEvent p_propertyValueFromDictionary:forLayer:forAction:](self, "p_propertyValueFromDictionary:forLayer:forAction:", [v16 objectForKey:@"from"], a4, v19));
-            -[CABasicAnimation setToValue:](v20, "setToValue:", -[KPFEvent p_propertyValueFromDictionary:forLayer:forAction:](self, "p_propertyValueFromDictionary:forLayer:forAction:", [v16 objectForKey:@"to"], a4, v19));
+            -[CABasicAnimation setFromValue:](v20, "setFromValue:", -[KPFEvent p_propertyValueFromDictionary:forLayer:forAction:](self, "p_propertyValueFromDictionary:forLayer:forAction:", [v16 objectForKey:@"from"], layer, v19));
+            -[CABasicAnimation setToValue:](v20, "setToValue:", -[KPFEvent p_propertyValueFromDictionary:forLayer:forAction:](self, "p_propertyValueFromDictionary:forLayer:forAction:", [v16 objectForKey:@"to"], layer, v19));
             -[CABasicAnimation setTimingFunction:](v20, "setTimingFunction:", -[KPFEvent p_timingFunctionFromString:forActionDictionary:](self, "p_timingFunctionFromString:forActionDictionary:", [v16 objectForKey:@"timingFunction"], v16));
             [(CABasicAnimation *)v20 setFillMode:kCAFillModeForwards];
             [v30 addObject:v20];
@@ -469,34 +469,34 @@
       {
         if (v13)
         {
-          [(KPFEvent *)self p_addPerspectiveTransform:a4];
+          [(KPFEvent *)self p_addPerspectiveTransform:layer];
         }
 
-        [objc_msgSend(v28 objectForKey:{@"beginTime", "floatValue"}];
+        [objc_msgSend(dictCopy objectForKey:{@"beginTime", "floatValue"}];
         v24 = v23;
         v25 = +[CAAnimationGroup animation];
         [v25 setAnimations:v30];
-        [objc_msgSend(v28 objectForKey:{@"duration", "floatValue"}];
+        [objc_msgSend(dictCopy objectForKey:{@"duration", "floatValue"}];
         [v25 setDuration:v24 + v26];
         [v25 setDelegate:self->_animationDelegate];
         [v25 setRemovedOnCompletion:0];
         [v25 setFillMode:kCAFillModeForwards];
-        [v25 setValue:a4 forKey:@"layer"];
-        v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%@-%@", [v28 objectForKey:@"effect"], objc_msgSend(v28, "objectForKey:", @"beginTime"), objc_msgSend(v28, "objectForKey:", @"duration"));
-        if (![a4 animationForKey:v27])
+        [v25 setValue:layer forKey:@"layer"];
+        v27 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@-%@-%@", [dictCopy objectForKey:@"effect"], objc_msgSend(dictCopy, "objectForKey:", @"beginTime"), objc_msgSend(dictCopy, "objectForKey:", @"duration"));
+        if (![layer animationForKey:v27])
         {
           ++self->mAnimationsStarted;
         }
 
-        [a4 addAnimation:v25 forKey:v27];
+        [layer addAnimation:v25 forKey:v27];
       }
     }
   }
 }
 
-- (void)p_setupAndAnimateGLAnimationsFromPluginArray:(id)a3 withEffect:(id)a4 session:(id)a5
+- (void)p_setupAndAnimateGLAnimationsFromPluginArray:(id)array withEffect:(id)effect session:(id)session
 {
-  v6 = [objc_msgSend(a5 "animationRegistry")];
+  v6 = [objc_msgSend(session "animationRegistry")];
   if (v6)
   {
     v7 = v6;
@@ -504,7 +504,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v8 = [array countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v8)
     {
       v9 = v8;
@@ -515,7 +515,7 @@
         {
           if (*v28 != v23)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(array);
           }
 
           v11 = *(*(&v27 + 1) + 8 * i);
@@ -527,15 +527,15 @@
           [v26 setObject:v15 forKey:@"KNTransitionAttributesDirection"];
           if ([v7 conformsToProtocol:&OBJC_PROTOCOL___KNAnimationPluginArchiving])
           {
-            v16 = [v7 supportedTypes];
+            supportedTypes = [v7 supportedTypes];
             v25 = 0;
-            [v7 upgradeAttributes:&v26 animationName:0 warning:&v25 type:objc_msgSend(objc_msgSend(v16 isFromClassic:"objectAtIndex:" version:{0), "integerValue"), 1, 90000000000}];
+            [v7 upgradeAttributes:&v26 animationName:0 warning:&v25 type:objc_msgSend(objc_msgSend(supportedTypes isFromClassic:"objectAtIndex:" version:{0), "integerValue"), 1, 90000000000}];
           }
 
           v17 = [KPFMTLTransitionRenderer alloc];
           v18 = [objc_msgSend(v26 valueForKey:{@"KNTransitionAttributesDirection", "unsignedIntegerValue"}];
           [v13 doubleValue];
-          v19 = [(KPFMTLTransitionRenderer *)v17 initWithEffectClass:v7 direction:v18 duration:a5 session:?];
+          v19 = [(KPFMTLTransitionRenderer *)v17 initWithEffectClass:v7 direction:v18 duration:session session:?];
           self->mRenderer = v19;
           [(KPFMTLTransitionRenderer *)v19 registerForTransitionEndCallback:"p_glAnimationEndCallback" target:self];
           ++self->mAnimationsStarted;
@@ -544,7 +544,7 @@
           [(KPFMTLTransitionRenderer *)mRenderer animateWithDelay:v21];
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v9 = [array countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v9);
@@ -552,7 +552,7 @@
   }
 }
 
-- (void)animateEventWithSession:(id)a3
+- (void)animateEventWithSession:(id)session
 {
   if (!self->mLayers)
   {
@@ -615,9 +615,9 @@
         if (mTextures && v13)
         {
           v16 = v14;
-          if ([objc_msgSend(a3 "animationRegistry")] && objc_msgSend(v16, "isEqualToString:", @"transition"))
+          if ([objc_msgSend(session "animationRegistry")] && objc_msgSend(v16, "isEqualToString:", @"transition"))
           {
-            [(KPFEvent *)self p_setupAndAnimateGLAnimationsFromPluginArray:v13 withEffect:v10 session:a3];
+            [(KPFEvent *)self p_setupAndAnimateGLAnimationsFromPluginArray:v13 withEffect:v10 session:session];
             continue;
           }
 
@@ -697,8 +697,8 @@ LABEL_34:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(TSUNoCopyDictionary *)self->mLayers allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(TSUNoCopyDictionary *)self->mLayers allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -710,7 +710,7 @@ LABEL_34:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) removeAllAnimations];
@@ -718,7 +718,7 @@ LABEL_34:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -763,8 +763,8 @@ LABEL_34:
 
 - (id)hyperlinksRectArray
 {
-  v3 = [(KPFEvent *)self p_hyperlinksArray];
-  if (![v3 count])
+  p_hyperlinksArray = [(KPFEvent *)self p_hyperlinksArray];
+  if (![p_hyperlinksArray count])
   {
     return 0;
   }
@@ -774,8 +774,8 @@ LABEL_34:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v3 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [p_hyperlinksArray reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -786,14 +786,14 @@ LABEL_34:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         -[KPFEvent p_rectFromDictionary:](self, "p_rectFromDictionary:", [*(*(&v11 + 1) + 8 * i) objectForKey:@"targetRectangle"]);
         [v4 addObject:{+[NSValue valueWithCGRect:](NSValue, "valueWithCGRect:")}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -802,10 +802,10 @@ LABEL_34:
   return v4;
 }
 
-- (id)hyperlinkAtLocation:(CGPoint)a3
+- (id)hyperlinkAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -907,8 +907,8 @@ LABEL_34:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(TSUNoCopyDictionary *)self->mLayers allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(TSUNoCopyDictionary *)self->mLayers allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -920,7 +920,7 @@ LABEL_34:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) removeAllAnimations];
@@ -928,7 +928,7 @@ LABEL_34:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -938,15 +938,15 @@ LABEL_34:
   self->mMovie = 0;
 }
 
-- (CGRect)p_rectFromDictionary:(id)a3
+- (CGRect)p_rectFromDictionary:(id)dictionary
 {
-  [objc_msgSend(a3 objectForKey:{@"x", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"x", "floatValue"}];
   v5 = v4;
-  [objc_msgSend(a3 objectForKey:{@"y", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"y", "floatValue"}];
   v7 = v6;
-  [objc_msgSend(a3 objectForKey:{@"width", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"width", "floatValue"}];
   v9 = v8;
-  [objc_msgSend(a3 objectForKey:{@"height", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"height", "floatValue"}];
   v11 = v10;
   v12 = v5;
   v13 = v7;
@@ -958,23 +958,23 @@ LABEL_34:
   return result;
 }
 
-- (id)p_propertyValueFromDictionary:(id)a3 forLayer:(id)a4 forAction:(id)a5
+- (id)p_propertyValueFromDictionary:(id)dictionary forLayer:(id)layer forAction:(id)action
 {
-  if (([a5 isEqualToString:@"transform.rotation.x"] & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"transform.rotation.y") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"transform.rotation.z") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"transform.scale.x") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"transform.scale.y") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"transform.scale.z") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"transform.scale") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"hidden") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"zPosition") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"anchorPointZ") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"zOrderHint") & 1) != 0 || (objc_msgSend(a5, "isEqualToString:", @"isPlaying") & 1) != 0 || objc_msgSend(a5, "isEqualToString:", @"translation.z"))
+  if (([action isEqualToString:@"transform.rotation.x"] & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"transform.rotation.y") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"transform.rotation.z") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"transform.scale.x") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"transform.scale.y") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"transform.scale.z") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"transform.scale") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"hidden") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"zPosition") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"anchorPointZ") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"zOrderHint") & 1) != 0 || (objc_msgSend(action, "isEqualToString:", @"isPlaying") & 1) != 0 || objc_msgSend(action, "isEqualToString:", @"translation.z"))
   {
 
-    return [a3 objectForKey:@"scalar"];
+    return [dictionary objectForKey:@"scalar"];
   }
 
-  if ([a5 isEqualToString:@"transform.translation.x"])
+  if ([action isEqualToString:@"transform.translation.x"])
   {
-    [a4 frame];
+    [layer frame];
     v11 = v10;
-    [a4 frame];
+    [layer frame];
     v13 = v12 * 0.5;
 LABEL_21:
     v16 = v11 + v13;
-    [objc_msgSend(a3 objectForKey:{@"scalar", "floatValue"}];
+    [objc_msgSend(dictionary objectForKey:{@"scalar", "floatValue"}];
     v18 = v16 + v17;
     *&v18 = v18;
 LABEL_22:
@@ -982,31 +982,31 @@ LABEL_22:
     return [NSNumber numberWithFloat:v18];
   }
 
-  if ([a5 isEqualToString:@"transform.translation.y"])
+  if ([action isEqualToString:@"transform.translation.y"])
   {
-    [a4 frame];
+    [layer frame];
     v11 = v14;
-    [a4 frame];
+    [layer frame];
     v13 = v15 * 0.5;
     goto LABEL_21;
   }
 
-  if (([a5 isEqualToString:@"opacity"] & 1) != 0 || objc_msgSend(a5, "isEqualToString:", @"opacityMultiplier"))
+  if (([action isEqualToString:@"opacity"] & 1) != 0 || objc_msgSend(action, "isEqualToString:", @"opacityMultiplier"))
   {
-    [a4 opacity];
+    [layer opacity];
     v20 = v19;
-    [objc_msgSend(a3 objectForKey:{@"scalar", "floatValue"}];
+    [objc_msgSend(dictionary objectForKey:{@"scalar", "floatValue"}];
     *&v18 = v20 * *&v18;
     goto LABEL_22;
   }
 
-  if ([a5 isEqualToString:@"translationEmphasis"])
+  if ([action isEqualToString:@"translationEmphasis"])
   {
-    v21 = [a3 objectForKey:@"translationEmphasis"];
-    [a4 position];
+    v21 = [dictionary objectForKey:@"translationEmphasis"];
+    [layer position];
     v23 = v22;
     v25 = v24;
-    v26 = [a4 valueForKey:@"addtionalInitialTranslation"];
+    v26 = [layer valueForKey:@"addtionalInitialTranslation"];
     if (v26)
     {
       [v26 CGPointValue];
@@ -1024,35 +1024,35 @@ LABEL_32:
     return [NSValue valueWithCGPoint:v33, v32];
   }
 
-  if ([a5 isEqualToString:@"rotationEmphasis"])
+  if ([action isEqualToString:@"rotationEmphasis"])
   {
-    v34 = [a3 objectForKey:@"rotationEmphasis"];
+    v34 = [dictionary objectForKey:@"rotationEmphasis"];
     v35 = 6;
   }
 
   else
   {
-    if (![a5 isEqualToString:@"scaleEmphasis"])
+    if (![action isEqualToString:@"scaleEmphasis"])
     {
-      if (([a5 isEqualToString:@"transform.translation"] & 1) != 0 || objc_msgSend(a5, "isEqualToString:", @"anchorPoint"))
+      if (([action isEqualToString:@"transform.translation"] & 1) != 0 || objc_msgSend(action, "isEqualToString:", @"anchorPoint"))
       {
-        [objc_msgSend(a3 objectForKey:{@"pointX", "floatValue"}];
+        [objc_msgSend(dictionary objectForKey:{@"pointX", "floatValue"}];
         v37 = v36;
-        [objc_msgSend(a3 objectForKey:{@"pointY", "floatValue"}];
+        [objc_msgSend(dictionary objectForKey:{@"pointY", "floatValue"}];
         v32 = v38;
       }
 
       else
       {
-        if (![a5 isEqualToString:@"position"])
+        if (![action isEqualToString:@"position"])
         {
-          if (![a5 isEqualToString:@"transform"])
+          if (![action isEqualToString:@"transform"])
           {
             return 0;
           }
 
           memset(&v49, 0, sizeof(v49));
-          v45 = [a3 objectForKey:@"transform"];
+          v45 = [dictionary objectForKey:@"transform"];
           if (self)
           {
             [(KPFEvent *)self p_transformFromArray:v45];
@@ -1063,9 +1063,9 @@ LABEL_32:
             memset(&v49, 0, sizeof(v49));
           }
 
-          if (a4)
+          if (layer)
           {
-            [a4 transform];
+            [layer transform];
           }
 
           else
@@ -1079,13 +1079,13 @@ LABEL_32:
           return [NSValue valueWithCATransform3D:&v48];
         }
 
-        [objc_msgSend(a3 objectForKey:{@"pointX", "floatValue"}];
+        [objc_msgSend(dictionary objectForKey:{@"pointX", "floatValue"}];
         v40 = v39;
-        [a4 position];
+        [layer position];
         v37 = v41 + v40;
-        [objc_msgSend(a3 objectForKey:{@"pointY", "floatValue"}];
+        [objc_msgSend(dictionary objectForKey:{@"pointY", "floatValue"}];
         v43 = v42;
-        [a4 position];
+        [layer position];
         v32 = v44 + v43;
       }
 
@@ -1093,16 +1093,16 @@ LABEL_32:
       goto LABEL_32;
     }
 
-    v34 = [a3 objectForKey:@"scaleEmphasis"];
+    v34 = [dictionary objectForKey:@"scaleEmphasis"];
     v35 = 3;
   }
 
   return [v34 objectAtIndex:v35];
 }
 
-- (id)p_timingFunctionFromString:(id)a3 forActionDictionary:(id)a4
+- (id)p_timingFunctionFromString:(id)string forActionDictionary:(id)dictionary
 {
-  if ([a3 isEqualToString:@"easeOut"])
+  if ([string isEqualToString:@"easeOut"])
   {
     v6 = &kCAMediaTimingFunctionEaseOut;
 LABEL_14:
@@ -1111,37 +1111,37 @@ LABEL_14:
     return [CAMediaTimingFunction functionWithName:v18];
   }
 
-  if ([a3 isEqualToString:@"easeIn"])
+  if ([string isEqualToString:@"easeIn"])
   {
     v6 = &kCAMediaTimingFunctionEaseIn;
     goto LABEL_14;
   }
 
-  if ([a3 isEqualToString:@"easeInEaseOut"])
+  if ([string isEqualToString:@"easeInEaseOut"])
   {
     v6 = &kCAMediaTimingFunctionEaseInEaseOut;
     goto LABEL_14;
   }
 
-  if ([a3 isEqualToString:@"linear"])
+  if ([string isEqualToString:@"linear"])
   {
     v6 = &kCAMediaTimingFunctionLinear;
     goto LABEL_14;
   }
 
-  if (![a3 isEqualToString:@"custom"])
+  if (![string isEqualToString:@"custom"])
   {
     v6 = &kCAMediaTimingFunctionDefault;
     goto LABEL_14;
   }
 
-  [objc_msgSend(a4 objectForKey:{@"timingControlPoint1x", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"timingControlPoint1x", "floatValue"}];
   v8 = v7;
-  [objc_msgSend(a4 objectForKey:{@"timingControlPoint1y", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"timingControlPoint1y", "floatValue"}];
   v10 = v9;
-  [objc_msgSend(a4 objectForKey:{@"timingControlPoint2x", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"timingControlPoint2x", "floatValue"}];
   v12 = v11;
-  [objc_msgSend(a4 objectForKey:{@"timingControlPoint2y", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"timingControlPoint2y", "floatValue"}];
   LODWORD(v13) = LODWORD(v14);
   LODWORD(v14) = v8;
   LODWORD(v15) = v10;
@@ -1150,7 +1150,7 @@ LABEL_14:
   return [CAMediaTimingFunction functionWithControlPoints:v14];
 }
 
-- (CGAffineTransform)p_affineTransformFromArray:(SEL)a3
+- (CGAffineTransform)p_affineTransformFromArray:(SEL)array
 {
   [objc_msgSend(a4 objectAtIndex:{0), "floatValue"}];
   v7 = v6;
@@ -1172,7 +1172,7 @@ LABEL_14:
   return result;
 }
 
-- (CATransform3D)p_transformFromArray:(SEL)a3
+- (CATransform3D)p_transformFromArray:(SEL)array
 {
   v5 = *&CATransform3DIdentity.m33;
   *&retstr->m31 = *&CATransform3DIdentity.m31;
@@ -1229,42 +1229,42 @@ LABEL_14:
   return self;
 }
 
-- (id)p_animationKeyPathForAction:(id)a3
+- (id)p_animationKeyPathForAction:(id)action
 {
-  if ([a3 isEqualToString:@"opacityMultiplier"])
+  if ([action isEqualToString:@"opacityMultiplier"])
   {
     return @"opacity";
   }
 
-  if ([a3 isEqualToString:@"translationEmphasis"])
+  if ([action isEqualToString:@"translationEmphasis"])
   {
     return @"position";
   }
 
-  if ([a3 isEqualToString:@"zOrderHint"])
+  if ([action isEqualToString:@"zOrderHint"])
   {
     return @"zPosition";
   }
 
-  if ([a3 isEqualToString:@"rotationEmphasis"])
+  if ([action isEqualToString:@"rotationEmphasis"])
   {
     return @"transform.rotation.z";
   }
 
-  if ([a3 isEqualToString:@"scaleEmphasis"])
+  if ([action isEqualToString:@"scaleEmphasis"])
   {
     return @"transform.scale.xy";
   }
 
-  return a3;
+  return action;
 }
 
-- (void)p_addPerspectiveTransform:(id)a3
+- (void)p_addPerspectiveTransform:(id)transform
 {
-  v4 = [a3 superlayer];
-  v5 = a3;
+  superlayer = [transform superlayer];
+  transformCopy = transform;
   v6 = objc_alloc_init(CALayer);
-  [v4 bounds];
+  [superlayer bounds];
   [v6 setFrame:?];
   v19 = 0u;
   v20 = 0u;
@@ -1280,9 +1280,9 @@ LABEL_14:
   }
 
   v7 = tan(0.174532925);
-  [v4 bounds];
+  [superlayer bounds];
   v9 = v8;
-  [v4 bounds];
+  [superlayer bounds];
   if (v9 >= v10)
   {
     v11 = v10;
@@ -1303,16 +1303,16 @@ LABEL_14:
   v12[2] = v15;
   v12[3] = v16;
   [v6 setSublayerTransform:v12];
-  [a3 zPosition];
+  [transform zPosition];
   [v6 setZPosition:?];
-  [v4 insertSublayer:v6 above:a3];
-  [a3 removeFromSuperlayer];
-  [v6 addSublayer:v5];
+  [superlayer insertSublayer:v6 above:transform];
+  [transform removeFromSuperlayer];
+  [v6 addSublayer:transformCopy];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     mAnimationsStarted = self->mAnimationsStarted;
     if (!mAnimationsStarted || (v6 = mAnimationsStarted - 1, (self->mAnimationsStarted = v6) == 0))

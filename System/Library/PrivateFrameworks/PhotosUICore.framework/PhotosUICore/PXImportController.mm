@@ -1,48 +1,48 @@
 @interface PXImportController
-+ (id)assetsForModels:(id)a3;
-+ (id)importFilesAtURLs:(id)a3 photoLibrary:(id)a4 collection:(id)a5 checkDuplicates:(BOOL)a6 referenced:(BOOL)a7 delegate:(id)a8 completionHandler:(id)a9;
++ (id)assetsForModels:(id)models;
++ (id)importFilesAtURLs:(id)ls photoLibrary:(id)library collection:(id)collection checkDuplicates:(BOOL)duplicates referenced:(BOOL)referenced delegate:(id)delegate completionHandler:(id)handler;
 + (id)importOperationQueue;
-+ (id)itemsConstrainedByAvailableDiskSpaceFromItems:(id)a3 additionalBytesRequired:(int64_t *)a4;
-+ (int64_t)diskSpaceRequiredToImportItems:(id)a3;
-+ (void)favoriteAssetsFromImportResults:(id)a3 photoLibrary:(id)a4;
++ (id)itemsConstrainedByAvailableDiskSpaceFromItems:(id)items additionalBytesRequired:(int64_t *)required;
++ (int64_t)diskSpaceRequiredToImportItems:(id)items;
++ (void)favoriteAssetsFromImportResults:(id)results photoLibrary:(id)library;
 - (PXImportController)init;
-- (PXImportController)initWithImportSource:(id)a3 photoLibrary:(id)a4 imageFormat:(unsigned __int16)a5 dateOrder:(int64_t)a6;
+- (PXImportController)initWithImportSource:(id)source photoLibrary:(id)library imageFormat:(unsigned __int16)format dateOrder:(int64_t)order;
 - (PXImportControllerTopLevelCompletionDelegate)importCompletionDelegate;
-- (id)createDataSourceManagerWithLogIdentifier:(id)a3;
-- (id)pauseChangeDeliveryForImportAssetsDataSourceManager:(id)a3 withTimeout:(double)a4 identifier:(id)a5;
+- (id)createDataSourceManagerWithLogIdentifier:(id)identifier;
+- (id)pauseChangeDeliveryForImportAssetsDataSourceManager:(id)manager withTimeout:(double)timeout identifier:(id)identifier;
 - (id)selectedItems;
-- (id)viewModelMapForImportAssetsDataSourceManager:(id)a3;
-- (void)adoptImportSource:(id)a3;
+- (id)viewModelMapForImportAssetsDataSourceManager:(id)manager;
+- (void)adoptImportSource:(id)source;
 - (void)assetLoadingPowerAssertionTimerFired;
-- (void)capabilitiesDidChangeForImportSource:(id)a3;
-- (void)completedImportRecord:(id)a3;
+- (void)capabilitiesDidChangeForImportSource:(id)source;
+- (void)completedImportRecord:(id)record;
 - (void)dealloc;
-- (void)deleteItems:(id)a3 withCompletionHandler:(id)a4;
-- (void)deselectItem:(id)a3;
+- (void)deleteItems:(id)items withCompletionHandler:(id)handler;
+- (void)deselectItem:(id)item;
 - (void)finishDeletingItems;
-- (void)finishImportingWithResults:(id)a3;
+- (void)finishImportingWithResults:(id)results;
 - (void)handleImportSourceModifiedAssets;
-- (void)importItems:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)importSource:(id)a3 didAddAssets:(id)a4;
-- (void)importSource:(id)a3 didRemoveAssets:(id)a4;
+- (void)importItems:(id)items configuration:(id)configuration completion:(id)completion;
+- (void)importSource:(id)source didAddAssets:(id)assets;
+- (void)importSource:(id)source didRemoveAssets:(id)assets;
 - (void)loadAssets;
-- (void)nameDidChangeForImportSource:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performChanges:(id)a3;
-- (void)removeDataSourceManager:(id)a3;
+- (void)nameDidChangeForImportSource:(id)source;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)removeDataSourceManager:(id)manager;
 - (void)restartTimedAssetsLoadingPowerAssertion;
-- (void)resumeChangeDeliveryAndBackgroundLoadingForImportAssetsDataSourceManager:(id)a3 token:(id)a4;
-- (void)selectItem:(id)a3;
-- (void)setAlreadyImportedItemsSelectable:(BOOL)a3;
-- (void)setDeletingAssets:(BOOL)a3;
-- (void)setHasLoadedInitialBatchOfAssets:(BOOL)a3;
-- (void)setImportingAssets:(BOOL)a3;
-- (void)setLoadingContent:(BOOL)a3;
-- (void)setLoadingInitialBatchOfAssets:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 forItems:(id)a4;
-- (void)setUserRequiredToTrustHostOnSourceDevice:(BOOL)a3;
-- (void)startInitialBatchOfAssetsTimerWithTimeout:(double)a3;
+- (void)resumeChangeDeliveryAndBackgroundLoadingForImportAssetsDataSourceManager:(id)manager token:(id)token;
+- (void)selectItem:(id)item;
+- (void)setAlreadyImportedItemsSelectable:(BOOL)selectable;
+- (void)setDeletingAssets:(BOOL)assets;
+- (void)setHasLoadedInitialBatchOfAssets:(BOOL)assets;
+- (void)setImportingAssets:(BOOL)assets;
+- (void)setLoadingContent:(BOOL)content;
+- (void)setLoadingInitialBatchOfAssets:(BOOL)assets;
+- (void)setSelected:(BOOL)selected forItems:(id)items;
+- (void)setUserRequiredToTrustHostOnSourceDevice:(BOOL)device;
+- (void)startInitialBatchOfAssetsTimerWithTimeout:(double)timeout;
 - (void)stopImport;
 - (void)stopTimedAssetsLoadingPowerAssertion;
 @end
@@ -56,31 +56,31 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  if ((a4 & 1) != 0 && PXImportControllerSelectionManagerObserverContext == a5)
+  if ((change & 1) != 0 && PXImportControllerSelectionManagerObserverContext == context)
   {
-    v6 = [(PXImportController *)self selectionManager];
-    v7 = [v6 selectionSnapshot];
+    selectionManager = [(PXImportController *)self selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
 
-    v8 = [v7 dataSource];
-    v9 = [v7 selectedIndexPaths];
+    dataSource = [selectionSnapshot dataSource];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
     v10 = objc_opt_new();
-    if ([v9 count] >= 1)
+    if ([selectedIndexPaths count] >= 1)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __51__PXImportController_observable_didChange_context___block_invoke;
       v25[3] = &unk_1E7743210;
-      v26 = v8;
+      v26 = dataSource;
       v27 = v10;
-      v28 = v7;
-      [v9 enumerateItemIndexPathsUsingBlock:v25];
+      v28 = selectionSnapshot;
+      [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v25];
     }
 
-    v19 = v9;
-    v20 = v8;
+    v19 = selectedIndexPaths;
+    v20 = dataSource;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -113,7 +113,7 @@
       while (v13);
     }
 
-    [(PXImportController *)self setLastSelectionSnapshot:v7];
+    [(PXImportController *)self setLastSelectionSnapshot:selectionSnapshot];
     v17 = [v10 copy];
     lastSelectedModels = self->_lastSelectedModels;
     self->_lastSelectedModels = v17;
@@ -174,29 +174,29 @@ void __51__PXImportController_observable_didChange_context___block_invoke(uint64
     _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_INFO, "%s", &v8, 0xCu);
   }
 
-  v4 = [(PXImportController *)self assetLoadingPowerAssertionTimer];
-  v5 = [v4 isValid];
+  assetLoadingPowerAssertionTimer = [(PXImportController *)self assetLoadingPowerAssertionTimer];
+  isValid = [assetLoadingPowerAssertionTimer isValid];
 
-  if (v5)
+  if (isValid)
   {
-    v6 = [(PXImportController *)self assetLoadingPowerAssertionTimer];
-    [v6 invalidate];
+    assetLoadingPowerAssertionTimer2 = [(PXImportController *)self assetLoadingPowerAssertionTimer];
+    [assetLoadingPowerAssertionTimer2 invalidate];
 
     [(PXImportController *)self setAssetLoadingPowerAssertionTimer:0];
-    v7 = [(PXImportController *)self powerController];
-    [v7 removePowerAssertionForIdentifier:-[PXImportController loadAssetsPowerAssertionIdentifier](self withReason:"loadAssetsPowerAssertionIdentifier") completion:{4, 0}];
+    powerController = [(PXImportController *)self powerController];
+    [powerController removePowerAssertionForIdentifier:-[PXImportController loadAssetsPowerAssertionIdentifier](self withReason:"loadAssetsPowerAssertionIdentifier") completion:{4, 0}];
   }
 }
 
 - (void)restartTimedAssetsLoadingPowerAssertion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PXImportController *)self assetLoadingPowerAssertionTimer];
-  v4 = [v3 isValid];
+  assetLoadingPowerAssertionTimer = [(PXImportController *)self assetLoadingPowerAssertionTimer];
+  isValid = [assetLoadingPowerAssertionTimer isValid];
 
   v5 = _importControllerLog();
   v6 = v5;
-  if (v4)
+  if (isValid)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -207,8 +207,8 @@ void __51__PXImportController_observable_didChange_context___block_invoke(uint64
       _os_log_debug_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "%s: Timer already running, resetting timeout to %.0f seconds.", buf, 0x16u);
     }
 
-    v7 = [(PXImportController *)self assetLoadingPowerAssertionTimer];
-    [v7 invalidate];
+    assetLoadingPowerAssertionTimer2 = [(PXImportController *)self assetLoadingPowerAssertionTimer];
+    [assetLoadingPowerAssertionTimer2 invalidate];
   }
 
   else
@@ -222,8 +222,8 @@ void __51__PXImportController_observable_didChange_context___block_invoke(uint64
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_INFO, "%s: Timer not running, taking assets-loading power assertion and starting timer for %.0f seconds.", buf, 0x16u);
     }
 
-    v7 = [(PXImportController *)self powerController];
-    [v7 addPowerAssertionForIdentifier:-[PXImportController loadAssetsPowerAssertionIdentifier](self withReason:"loadAssetsPowerAssertionIdentifier") completion:{4, 0}];
+    assetLoadingPowerAssertionTimer2 = [(PXImportController *)self powerController];
+    [assetLoadingPowerAssertionTimer2 addPowerAssertionForIdentifier:-[PXImportController loadAssetsPowerAssertionIdentifier](self withReason:"loadAssetsPowerAssertionIdentifier") completion:{4, 0}];
   }
 
   v8 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel_assetLoadingPowerAssertionTimerFired selector:0 userInfo:0 repeats:10.0];
@@ -312,13 +312,13 @@ void __41__PXImportController_sendActionProgress___block_invoke(uint64_t a1)
   [v11 postNotificationName:@"PXImportControllerProgressNotification" object:*(a1 + 32) userInfo:v10];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = v10;
-  if (PXImportProgressObservationContext == a6)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (PXImportProgressObservationContext == context)
   {
-    [v10 fractionCompleted];
+    [objectCopy fractionCompleted];
     [(PXImportController *)self sendActionProgress:?];
   }
 
@@ -326,19 +326,19 @@ void __41__PXImportController_sendActionProgress___block_invoke(uint64_t a1)
   {
     v12.receiver = self;
     v12.super_class = PXImportController;
-    [(PXImportController *)&v12 observeValueForKeyPath:a3 ofObject:v10 change:a5 context:a6];
+    [(PXImportController *)&v12 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
-- (void)setAlreadyImportedItemsSelectable:(BOOL)a3
+- (void)setAlreadyImportedItemsSelectable:(BOOL)selectable
 {
-  if (self->_alreadyImportedItemsSelectable != a3)
+  if (self->_alreadyImportedItemsSelectable != selectable)
   {
-    self->_alreadyImportedItemsSelectable = a3;
-    v4 = [(PXImportController *)self selectionManager];
-    v5 = [v4 selectionSnapshot];
+    self->_alreadyImportedItemsSelectable = selectable;
+    selectionManager = [(PXImportController *)self selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
 
-    v6 = [v5 dataSource];
+    dataSource = [selectionSnapshot dataSource];
     if (self->_alreadyImportedItemsSelectable)
     {
       alreadyImportedItemsSelectable = 1;
@@ -347,11 +347,11 @@ void __41__PXImportController_sendActionProgress___block_invoke(uint64_t a1)
     else
     {
       v8 = +[PXImportItemViewModel alreadyImportedGroupIdentifier];
-      v9 = [v6 assetCollectionForIdentifier:v8];
+      v9 = [dataSource assetCollectionForIdentifier:v8];
       if (v9)
       {
-        v10 = [v6 sectionForAssetCollection:v9];
-        v11 = [v5 selectedIndexPaths];
+        v10 = [dataSource sectionForAssetCollection:v9];
+        selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
         v12 = objc_alloc_init(off_1E77217C8);
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
@@ -360,30 +360,30 @@ void __41__PXImportController_sendActionProgress___block_invoke(uint64_t a1)
         v23 = v10;
         v13 = v12;
         v22 = v13;
-        [v11 enumerateAllIndexPathsUsingBlock:v21];
-        v14 = [(PXImportController *)self selectionManager];
+        [selectedIndexPaths enumerateAllIndexPathsUsingBlock:v21];
+        selectionManager2 = [(PXImportController *)self selectionManager];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __56__PXImportController_setAlreadyImportedItemsSelectable___block_invoke_2;
         v19[3] = &unk_1E7744008;
         v20 = v13;
         v15 = v13;
-        [v14 performChanges:v19];
+        [selectionManager2 performChanges:v19];
       }
 
       alreadyImportedItemsSelectable = self->_alreadyImportedItemsSelectable;
     }
 
-    v16 = [(PXImportController *)self dataSourceManager];
-    [v16 setAlreadyImportedItemsSelectable:alreadyImportedItemsSelectable];
+    dataSourceManager = [(PXImportController *)self dataSourceManager];
+    [dataSourceManager setAlreadyImportedItemsSelectable:alreadyImportedItemsSelectable];
 
-    v17 = [(PXImportController *)self otherDataSourceManagersQueue];
+    otherDataSourceManagersQueue = [(PXImportController *)self otherDataSourceManagersQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __56__PXImportController_setAlreadyImportedItemsSelectable___block_invoke_3;
     v18[3] = &unk_1E774C648;
     v18[4] = self;
-    dispatch_sync(v17, v18);
+    dispatch_sync(otherDataSourceManagersQueue, v18);
   }
 }
 
@@ -440,25 +440,25 @@ void __56__PXImportController_setAlreadyImportedItemsSelectable___block_invoke_3
 - (id)selectedItems
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(PXImportController *)self selectionManager];
-  v4 = [v3 selectionSnapshot];
+  selectionManager = [(PXImportController *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v5 = [v4 selectedIndexPaths];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__187529;
   v17 = __Block_byref_object_dispose__187530;
-  v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v6 = [v4 dataSource];
+  v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(selectedIndexPaths, "count")}];
+  dataSource = [selectionSnapshot dataSource];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __35__PXImportController_selectedItems__block_invoke;
   v10[3] = &unk_1E77414E8;
-  v7 = v6;
+  v7 = dataSource;
   v11 = v7;
   v12 = &v13;
-  [v5 enumerateAllIndexPathsUsingBlock:v10];
+  [selectedIndexPaths enumerateAllIndexPathsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -476,48 +476,48 @@ void __35__PXImportController_selectedItems__block_invoke(uint64_t a1, _OWORD *a
   [*(*(*(a1 + 40) + 8) + 40) addObject:v5];
 }
 
-- (void)deselectItem:(id)a3
+- (void)deselectItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(PXImportController *)self selectionManager];
-  v6 = [v5 selectionSnapshot];
+  selectionManager = [(PXImportController *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v7 = [v6 dataSource];
-  v8 = v7;
+  dataSource = [selectionSnapshot dataSource];
+  v8 = dataSource;
   v18 = 0u;
   v19 = 0u;
-  if (v7)
+  if (dataSource)
   {
-    [v7 itemIndexPathForItem:v4];
+    [dataSource itemIndexPathForItem:itemCopy];
   }
 
   *buf = v18;
   *&buf[16] = v19;
-  if ([v6 isIndexPathSelected:buf])
+  if ([selectionSnapshot isIndexPathSelected:buf])
   {
-    v9 = [(PXImportController *)self selectionManager];
+    selectionManager2 = [(PXImportController *)self selectionManager];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __35__PXImportController_deselectItem___block_invoke;
     v15[3] = &__block_descriptor_64_e37_v16__0___PXMutableSelectionManager__8l;
     v16 = v18;
     v17 = v19;
-    [v9 performChanges:v15];
+    [selectionManager2 performChanges:v15];
 
-    v10 = [(PXImportController *)self selectionManager];
-    v11 = [v10 selectionSnapshot];
+    selectionManager3 = [(PXImportController *)self selectionManager];
+    selectionSnapshot2 = [selectionManager3 selectionSnapshot];
 
     v12 = _importControllerLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v11 selectedIndexPaths];
-      v14 = [v13 count];
+      selectedIndexPaths = [selectionSnapshot2 selectedIndexPaths];
+      v14 = [selectedIndexPaths count];
       *buf = 136315650;
       *&buf[4] = "[PXImportController deselectItem:]";
       *&buf[12] = 2112;
-      *&buf[14] = v4;
+      *&buf[14] = itemCopy;
       *&buf[22] = 2048;
       *&buf[24] = v14;
       _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_INFO, "%s: %@ (selected count %lu)", buf, 0x20u);
@@ -533,50 +533,50 @@ uint64_t __35__PXImportController_deselectItem___block_invoke(uint64_t a1, void 
   return [a2 setSelectedState:0 forIndexPath:v4];
 }
 
-- (void)selectItem:(id)a3
+- (void)selectItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if ([v4 isSelectable])
+  if ([itemCopy isSelectable])
   {
-    v5 = [(PXImportController *)self selectionManager];
-    v6 = [v5 selectionSnapshot];
+    selectionManager = [(PXImportController *)self selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
 
-    v7 = [v6 dataSource];
-    v8 = v7;
+    dataSource = [selectionSnapshot dataSource];
+    v8 = dataSource;
     v18 = 0u;
     v19 = 0u;
-    if (v7)
+    if (dataSource)
     {
-      [v7 itemIndexPathForItem:v4];
+      [dataSource itemIndexPathForItem:itemCopy];
     }
 
     *buf = v18;
     *&buf[16] = v19;
-    if (([v6 isIndexPathSelected:buf] & 1) == 0)
+    if (([selectionSnapshot isIndexPathSelected:buf] & 1) == 0)
     {
-      v9 = [(PXImportController *)self selectionManager];
+      selectionManager2 = [(PXImportController *)self selectionManager];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __33__PXImportController_selectItem___block_invoke;
       v15[3] = &__block_descriptor_64_e37_v16__0___PXMutableSelectionManager__8l;
       v16 = v18;
       v17 = v19;
-      [v9 performChanges:v15];
+      [selectionManager2 performChanges:v15];
 
-      v10 = [(PXImportController *)self selectionManager];
-      v11 = [v10 selectionSnapshot];
+      selectionManager3 = [(PXImportController *)self selectionManager];
+      selectionSnapshot2 = [selectionManager3 selectionSnapshot];
 
       v12 = _importControllerLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v11 selectedIndexPaths];
-        v14 = [v13 count];
+        selectedIndexPaths = [selectionSnapshot2 selectedIndexPaths];
+        v14 = [selectedIndexPaths count];
         *buf = 136315650;
         *&buf[4] = "[PXImportController selectItem:]";
         *&buf[12] = 2112;
-        *&buf[14] = v4;
+        *&buf[14] = itemCopy;
         *&buf[22] = 2048;
         *&buf[24] = v14;
         _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_INFO, "%s: %@ (selected count %lu)", buf, 0x20u);
@@ -593,24 +593,24 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
   return [a2 setSelectedState:1 forIndexPath:v4];
 }
 
-- (void)setSelected:(BOOL)a3 forItems:(id)a4
+- (void)setSelected:(BOOL)selected forItems:(id)items
 {
-  v4 = a3;
+  selectedCopy = selected;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  itemsCopy = items;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(PXImportController *)self selectionManager];
-  v8 = [v7 selectionSnapshot];
+  selectionManager = [(PXImportController *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v9 = [v8 dataSource];
-  v10 = [v8 selectedIndexPaths];
-  v11 = [v10 mutableCopy];
+  dataSource = [selectionSnapshot dataSource];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v11 = [selectedIndexPaths mutableCopy];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = v6;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v13)
   {
@@ -627,14 +627,14 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
 
         v17 = *(*(&v29 + 1) + 8 * i);
         memset(buf, 0, 32);
-        if (v9)
+        if (dataSource)
         {
-          [v9 itemIndexPathForItem:v17];
+          [dataSource itemIndexPathForItem:v17];
         }
 
         v28[0] = *buf;
         v28[1] = *&buf[16];
-        if (v4)
+        if (selectedCopy)
         {
           [v11 addIndexPath:v28];
         }
@@ -651,28 +651,28 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
     while (v14);
   }
 
-  v18 = [(PXImportController *)self selectionManager];
+  selectionManager2 = [(PXImportController *)self selectionManager];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __43__PXImportController_setSelected_forItems___block_invoke;
   v26[3] = &unk_1E7744008;
   v27 = v11;
   v19 = v11;
-  [v18 performChanges:v26];
+  [selectionManager2 performChanges:v26];
 
-  v20 = [(PXImportController *)self selectionManager];
-  v21 = [v20 selectionSnapshot];
+  selectionManager3 = [(PXImportController *)self selectionManager];
+  selectionSnapshot2 = [selectionManager3 selectionSnapshot];
 
   v22 = _importControllerLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = [v12 count];
-    v24 = [v21 selectedIndexPaths];
-    v25 = [v24 count];
+    selectedIndexPaths2 = [selectionSnapshot2 selectedIndexPaths];
+    v25 = [selectedIndexPaths2 count];
     *buf = 136315906;
     *&buf[4] = "[PXImportController setSelected:forItems:]";
     *&buf[12] = 1024;
-    *&buf[14] = v4;
+    *&buf[14] = selectedCopy;
     *&buf[18] = 2048;
     *&buf[20] = v23;
     *&buf[28] = 2048;
@@ -683,31 +683,31 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
 
 - (void)finishDeletingItems
 {
-  v8 = [(PXImportController *)self deleteAction];
-  v3 = [v8 didSucceed];
-  v4 = [v8 error];
-  v5 = [(PXImportController *)self deleteCompletionHandler];
-  v6 = [v5 copy];
+  deleteAction = [(PXImportController *)self deleteAction];
+  didSucceed = [deleteAction didSucceed];
+  error = [deleteAction error];
+  deleteCompletionHandler = [(PXImportController *)self deleteCompletionHandler];
+  v6 = [deleteCompletionHandler copy];
 
   [(PXImportController *)self setDeleteCompletionHandler:0];
   [(PXImportController *)self setDeleteAction:0];
   [(PXImportController *)self performChanges:&__block_literal_global_331];
-  v7 = [(PXImportController *)self powerController];
-  [v7 removePowerAssertionForIdentifier:-[PXImportController deleteAssetsPowerAssertionIdentifier](self withReason:"deleteAssetsPowerAssertionIdentifier") completion:{2, 0}];
+  powerController = [(PXImportController *)self powerController];
+  [powerController removePowerAssertionForIdentifier:-[PXImportController deleteAssetsPowerAssertionIdentifier](self withReason:"deleteAssetsPowerAssertionIdentifier") completion:{2, 0}];
 
   if (v6)
   {
-    (v6)[2](v6, v3, v4);
+    (v6)[2](v6, didSucceed, error);
   }
 
   [(PXImportMediaLoadingCoordinator *)self->_mediaLoadingCoordinator setPaused:0];
 }
 
-- (void)deleteItems:(id)a3 withCompletionHandler:(id)a4
+- (void)deleteItems:(id)items withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v9 = _importControllerLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -716,19 +716,19 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v10 = [(PXImportController *)self deleteAction];
-  v11 = v10 == 0;
+  deleteAction = [(PXImportController *)self deleteAction];
+  v11 = deleteAction == 0;
 
   if (!v11)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:809 description:@"Attempted to delete import items while another delete is in progress"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:809 description:@"Attempted to delete import items while another delete is in progress"];
   }
 
-  v12 = [PXImportItemViewModel importAssetsFromModels:v7];
+  v12 = [PXImportItemViewModel importAssetsFromModels:itemsCopy];
   v13 = [[PXImportDeleteAction alloc] initWithAssets:v12];
   [(PXImportDeleteAction *)v13 setImportController:self];
-  [(PXImportController *)self setDeleteCompletionHandler:v8];
+  [(PXImportController *)self setDeleteCompletionHandler:handlerCopy];
   objc_initWeak(buf, self);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -742,7 +742,7 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = v7;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v15)
   {
@@ -767,11 +767,11 @@ uint64_t __33__PXImportController_selectItem___block_invoke(uint64_t a1, void *a
     while (v15);
   }
 
-  v18 = [(PXImportController *)self powerController];
-  [v18 addPowerAssertionForIdentifier:-[PXImportController deleteAssetsPowerAssertionIdentifier](self withReason:"deleteAssetsPowerAssertionIdentifier") completion:{2, 0}];
+  powerController = [(PXImportController *)self powerController];
+  [powerController addPowerAssertionForIdentifier:-[PXImportController deleteAssetsPowerAssertionIdentifier](self withReason:"deleteAssetsPowerAssertionIdentifier") completion:{2, 0}];
 
-  v19 = [objc_opt_class() importOperationQueue];
-  [v19 addOperation:v13];
+  importOperationQueue = [objc_opt_class() importOperationQueue];
+  [importOperationQueue addOperation:v13];
 
   [(PXImportMediaLoadingCoordinator *)self->_mediaLoadingCoordinator setPaused:1];
   objc_destroyWeak(&v26);
@@ -804,28 +804,28 @@ void __56__PXImportController_deleteItems_withCompletionHandler___block_invoke_3
   [WeakRetained finishDeletingItems];
 }
 
-- (void)setDeletingAssets:(BOOL)a3
+- (void)setDeletingAssets:(BOOL)assets
 {
-  if (self->_deletingAssets != a3)
+  if (self->_deletingAssets != assets)
   {
-    self->_deletingAssets = a3;
+    self->_deletingAssets = assets;
     [(PXImportController *)self signalChange:4];
   }
 }
 
-- (void)completedImportRecord:(id)a3
+- (void)completedImportRecord:(id)record
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordCopy = record;
   v5 = _importDataLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 importAsset];
-    v7 = [v6 fileName];
+    importAsset = [recordCopy importAsset];
+    fileName = [importAsset fileName];
     *buf = 136315394;
     v12 = "[PXImportController completedImportRecord:]";
     v13 = 2112;
-    v14 = v7;
+    v14 = fileName;
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_INFO, "%s: import complete for %@", buf, 0x16u);
   }
 
@@ -834,8 +834,8 @@ void __56__PXImportController_deleteItems_withCompletionHandler___block_invoke_3
   v9[2] = __44__PXImportController_completedImportRecord___block_invoke;
   v9[3] = &unk_1E774C620;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = recordCopy;
+  v8 = recordCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v9);
 }
 
@@ -930,10 +930,10 @@ void __44__PXImportController_completedImportRecord___block_invoke_321(uint64_t 
   [v4 setState:2];
 }
 
-- (void)finishImportingWithResults:(id)a3
+- (void)finishImportingWithResults:(id)results
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   v5 = _importControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -949,25 +949,25 @@ void __44__PXImportController_completedImportRecord___block_invoke_321(uint64_t 
   }
 
   [(PXImportController *)self stopObservingImportProgress];
-  v6 = [(PXImportController *)self importSessionInfo];
-  [v6 setImportComplete:1];
+  importSessionInfo = [(PXImportController *)self importSessionInfo];
+  [importSessionInfo setImportComplete:1];
 
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [(PXImportController *)self importSessionInfo];
-  [v8 setEndDate:v7];
+  date = [MEMORY[0x1E695DF00] date];
+  importSessionInfo2 = [(PXImportController *)self importSessionInfo];
+  [importSessionInfo2 setEndDate:date];
 
   v9 = MEMORY[0x1E695DFA8];
-  v10 = [(PXImportController *)self importSessionInfo];
-  v11 = [v10 itemsToImport];
-  v12 = [v9 setWithCapacity:{objc_msgSend(v11, "count")}];
+  importSessionInfo3 = [(PXImportController *)self importSessionInfo];
+  itemsToImport = [importSessionInfo3 itemsToImport];
+  v12 = [v9 setWithCapacity:{objc_msgSend(itemsToImport, "count")}];
 
-  v13 = [(PXImportController *)self importSessionInfo];
-  v14 = [v13 errorItems];
-  [v12 addObjectsFromArray:v14];
+  importSessionInfo4 = [(PXImportController *)self importSessionInfo];
+  errorItems = [importSessionInfo4 errorItems];
+  [v12 addObjectsFromArray:errorItems];
 
-  v15 = [(PXImportController *)self importSessionInfo];
-  v16 = [v15 importedItems];
-  [v12 addObjectsFromArray:v16];
+  importSessionInfo5 = [(PXImportController *)self importSessionInfo];
+  importedItems = [importSessionInfo5 importedItems];
+  [v12 addObjectsFromArray:importedItems];
 
   v42 = 0u;
   v43 = 0u;
@@ -999,9 +999,9 @@ void __44__PXImportController_completedImportRecord___block_invoke_321(uint64_t 
   }
 
   v21 = MEMORY[0x1E695DFA8];
-  v22 = [(PXImportController *)self importSessionInfo];
-  v23 = [v22 itemsToImport];
-  v24 = [v21 setWithArray:v23];
+  importSessionInfo6 = [(PXImportController *)self importSessionInfo];
+  itemsToImport2 = [importSessionInfo6 itemsToImport];
+  v24 = [v21 setWithArray:itemsToImport2];
 
   [v24 minusSet:v17];
   if ([v24 count])
@@ -1036,28 +1036,28 @@ void __44__PXImportController_completedImportRecord___block_invoke_321(uint64_t 
     }
   }
 
-  v29 = [(PXImportController *)self importCompletionHandler];
-  v30 = [(PXImportController *)self importSessionInfo];
+  importCompletionHandler = [(PXImportController *)self importCompletionHandler];
+  importSessionInfo7 = [(PXImportController *)self importSessionInfo];
   [(PXImportController *)self setImportCompletionHandler:0];
   [(PXImportController *)self setImportSessionInfo:0];
   [(PXImportController *)self setImportProgress:0];
   [(PXImportController *)self performChanges:&__block_literal_global_318];
-  if (v29)
+  if (importCompletionHandler)
   {
-    (v29)[2](v29, v30, v4);
+    (importCompletionHandler)[2](importCompletionHandler, importSessionInfo7, resultsCopy);
   }
 
   objc_initWeak(buf, self);
-  v31 = [(PXImportController *)self importCompletionDelegate];
+  importCompletionDelegate = [(PXImportController *)self importCompletionDelegate];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __49__PXImportController_finishImportingWithResults___block_invoke_3;
   v34[3] = &unk_1E774C318;
   objc_copyWeak(&v35, buf);
-  [v31 importController:self didCompleteImportWithImportSession:v30 results:v4 completion:v34];
+  [importCompletionDelegate importController:self didCompleteImportWithImportSession:importSessionInfo7 results:resultsCopy completion:v34];
 
-  v32 = [(PXImportController *)self mediaLoadingCoordinator];
-  [v32 setPaused:0];
+  mediaLoadingCoordinator = [(PXImportController *)self mediaLoadingCoordinator];
+  [mediaLoadingCoordinator setPaused:0];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(buf);
@@ -1084,45 +1084,45 @@ void __49__PXImportController_finishImportingWithResults___block_invoke_3(uint64
 
   if (![(PXImportController *)self isImportingAssets])
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:685 description:@"Attempted to stop import while there was no active import."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:685 description:@"Attempted to stop import while there was no active import."];
   }
 
   [(PXImportSessionInfo *)self->_importSessionInfo setImportStopped:1];
-  v5 = [(PXImportController *)self importProgress];
-  [v5 cancel];
+  importProgress = [(PXImportController *)self importProgress];
+  [importProgress cancel];
 
-  v6 = [(PXImportController *)self mediaLoadingCoordinator];
-  [v6 setPaused:0];
+  mediaLoadingCoordinator = [(PXImportController *)self mediaLoadingCoordinator];
+  [mediaLoadingCoordinator setPaused:0];
 }
 
-- (void)importItems:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)importItems:(id)items configuration:(id)configuration completion:(id)completion
 {
   v49 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v35 = a4;
-  v34 = a5;
+  itemsCopy = items;
+  configurationCopy = configuration;
+  completionCopy = completion;
   val = self;
-  v10 = [(PXImportController *)self importSessionInfo];
+  importSessionInfo = [(PXImportController *)self importSessionInfo];
 
-  if (v10)
+  if (importSessionInfo)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:629 description:{@"%s: There is an import already in progress.", "-[PXImportController importItems:configuration:completion:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:629 description:{@"%s: There is an import already in progress.", "-[PXImportController importItems:configuration:completion:]"}];
   }
 
-  v11 = [(PXImportController *)self importProgress];
+  importProgress = [(PXImportController *)self importProgress];
 
-  if (v11)
+  if (importProgress)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:630 description:{@"%s: Import progress should be nil when import is started.", "-[PXImportController importItems:configuration:completion:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:630 description:{@"%s: Import progress should be nil when import is started.", "-[PXImportController importItems:configuration:completion:]"}];
   }
 
-  if (![v9 count])
+  if (![itemsCopy count])
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:631 description:{@"%s: There are no items to import.", "-[PXImportController importItems:configuration:completion:]"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:631 description:{@"%s: There are no items to import.", "-[PXImportController importItems:configuration:completion:]"}];
   }
 
   v12 = _importControllerLog();
@@ -1136,19 +1136,19 @@ void __49__PXImportController_finishImportingWithResults___block_invoke_3(uint64
   v13 = objc_alloc_init(PXImportSessionInfo);
   [(PXImportController *)self setImportSessionInfo:v13];
 
-  v14 = [MEMORY[0x1E695DF00] date];
-  v15 = [(PXImportController *)self importSessionInfo];
-  [v15 setStartDate:v14];
+  date = [MEMORY[0x1E695DF00] date];
+  importSessionInfo2 = [(PXImportController *)self importSessionInfo];
+  [importSessionInfo2 setStartDate:date];
 
-  v16 = [(PXImportController *)self importSessionInfo];
-  [v16 setItemsToImport:v9];
+  importSessionInfo3 = [(PXImportController *)self importSessionInfo];
+  [importSessionInfo3 setItemsToImport:itemsCopy];
 
-  v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v18 = v9;
+  v18 = itemsCopy;
   v19 = [v18 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v19)
   {
@@ -1164,10 +1164,10 @@ void __49__PXImportController_finishImportingWithResults___block_invoke_3(uint64
 
         v22 = *(*(&v40 + 1) + 8 * i);
         [v22 performChanges:&__block_literal_global_306_187571];
-        v23 = [v22 importAsset];
-        if (v23)
+        importAsset = [v22 importAsset];
+        if (importAsset)
         {
-          [v17 addObject:v23];
+          [v17 addObject:importAsset];
         }
 
         else
@@ -1190,11 +1190,11 @@ void __49__PXImportController_finishImportingWithResults___block_invoke_3(uint64
     while (v19);
   }
 
-  [(PXImportController *)val setImportCompletionHandler:v34];
-  if (v35)
+  [(PXImportController *)val setImportCompletionHandler:completionCopy];
+  if (configurationCopy)
   {
     v25 = objc_alloc_init(MEMORY[0x1E6978888]);
-    v35[2](v35, v25);
+    configurationCopy[2](configurationCopy, v25);
   }
 
   else
@@ -1202,21 +1202,21 @@ void __49__PXImportController_finishImportingWithResults___block_invoke_3(uint64
     v25 = 0;
   }
 
-  v26 = [(PXImportController *)val powerController];
-  [v26 addPowerAssertionForIdentifier:-[PXImportController importAssetsPowerAssertionIdentifier](val withReason:"importAssetsPowerAssertionIdentifier") completion:{1, 0}];
+  powerController = [(PXImportController *)val powerController];
+  [powerController addPowerAssertionForIdentifier:-[PXImportController importAssetsPowerAssertionIdentifier](val withReason:"importAssetsPowerAssertionIdentifier") completion:{1, 0}];
 
   [(PXImportMediaLoadingCoordinator *)val->_mediaLoadingCoordinator setPaused:1];
   objc_initWeak(buf, val);
-  v27 = [MEMORY[0x1E6978878] sharedInstance];
-  v28 = [(PXImportController *)val importSource];
-  v29 = [(PXImportController *)val photoLibrary];
+  mEMORY[0x1E6978878] = [MEMORY[0x1E6978878] sharedInstance];
+  importSource = [(PXImportController *)val importSource];
+  photoLibrary = [(PXImportController *)val photoLibrary];
   v39 = 0;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __59__PXImportController_importItems_configuration_completion___block_invoke_307;
   v37[3] = &unk_1E7741498;
   objc_copyWeak(&v38, buf);
-  [v27 importAssets:v17 fromImportSource:v28 intoLibrary:v29 withOptions:v25 progress:&v39 delegate:val performanceDelegate:0 atEnd:v37];
+  [mEMORY[0x1E6978878] importAssets:v17 fromImportSource:importSource intoLibrary:photoLibrary withOptions:v25 progress:&v39 delegate:val performanceDelegate:0 atEnd:v37];
   v30 = v39;
 
   [(PXImportController *)val setImportProgress:v30];
@@ -1251,57 +1251,57 @@ void __59__PXImportController_importItems_configuration_completion___block_invok
   [WeakRetained finishImportingWithResults:*(a1 + 32)];
 }
 
-- (void)setImportingAssets:(BOOL)a3
+- (void)setImportingAssets:(BOOL)assets
 {
-  if (self->_importingAssets != a3)
+  if (self->_importingAssets != assets)
   {
-    self->_importingAssets = a3;
+    self->_importingAssets = assets;
     [(PXImportController *)self signalChange:2];
   }
 }
 
-- (void)setUserRequiredToTrustHostOnSourceDevice:(BOOL)a3
+- (void)setUserRequiredToTrustHostOnSourceDevice:(BOOL)device
 {
-  if (self->_userRequiredToTrustHostOnSourceDevice != a3)
+  if (self->_userRequiredToTrustHostOnSourceDevice != device)
   {
-    self->_userRequiredToTrustHostOnSourceDevice = a3;
+    self->_userRequiredToTrustHostOnSourceDevice = device;
     [(PXImportController *)self signalChange:8];
   }
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoadingForImportAssetsDataSourceManager:(id)a3 token:(id)a4
+- (void)resumeChangeDeliveryAndBackgroundLoadingForImportAssetsDataSourceManager:(id)manager token:(id)token
 {
-  v5 = a4;
-  v6 = [(PXImportController *)self photoLibrary];
-  [v6 px_endPausingChanges:v5];
+  tokenCopy = token;
+  photoLibrary = [(PXImportController *)self photoLibrary];
+  [photoLibrary px_endPausingChanges:tokenCopy];
 }
 
-- (id)pauseChangeDeliveryForImportAssetsDataSourceManager:(id)a3 withTimeout:(double)a4 identifier:(id)a5
+- (id)pauseChangeDeliveryForImportAssetsDataSourceManager:(id)manager withTimeout:(double)timeout identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = [(PXImportController *)self photoLibrary];
-  v9 = [v8 px_beginPausingChangesWithTimeout:v7 identifier:a4];
+  identifierCopy = identifier;
+  photoLibrary = [(PXImportController *)self photoLibrary];
+  v9 = [photoLibrary px_beginPausingChangesWithTimeout:identifierCopy identifier:timeout];
 
   return v9;
 }
 
-- (id)viewModelMapForImportAssetsDataSourceManager:(id)a3
+- (id)viewModelMapForImportAssetsDataSourceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__187529;
   v13 = __Block_byref_object_dispose__187530;
   v14 = 0;
-  v5 = [(PXImportController *)self sharedViewModelsUpdateQueue];
+  sharedViewModelsUpdateQueue = [(PXImportController *)self sharedViewModelsUpdateQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__PXImportController_viewModelMapForImportAssetsDataSourceManager___block_invoke;
   v8[3] = &unk_1E7749A28;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v5, v8);
+  dispatch_sync(sharedViewModelsUpdateQueue, v8);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1318,18 +1318,18 @@ void __67__PXImportController_viewModelMapForImportAssetsDataSourceManager___blo
   *(v3 + 40) = v2;
 }
 
-- (void)removeDataSourceManager:(id)a3
+- (void)removeDataSourceManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PXImportController *)self otherDataSourceManagersQueue];
+  managerCopy = manager;
+  otherDataSourceManagersQueue = [(PXImportController *)self otherDataSourceManagersQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PXImportController_removeDataSourceManager___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = managerCopy;
+  selfCopy = self;
+  v6 = managerCopy;
+  dispatch_sync(otherDataSourceManagersQueue, v7);
 }
 
 void __46__PXImportController_removeDataSourceManager___block_invoke(uint64_t a1)
@@ -1358,14 +1358,14 @@ LABEL_7:
   [v9 removeObject:*(a1 + 32)];
 }
 
-- (id)createDataSourceManagerWithLogIdentifier:(id)a3
+- (id)createDataSourceManagerWithLogIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [PXImportAssetsDataSourceManager alloc];
-  v6 = [(PXImportController *)self dataSourceManager];
-  v7 = [(PXImportAssetsDataSourceManager *)v5 initWithAssetsFromDataSourceManager:v6 delegate:self logIdentifier:v4];
+  dataSourceManager = [(PXImportController *)self dataSourceManager];
+  v7 = [(PXImportAssetsDataSourceManager *)v5 initWithAssetsFromDataSourceManager:dataSourceManager delegate:self logIdentifier:identifierCopy];
 
-  v8 = [(PXImportController *)self otherDataSourceManagersQueue];
+  otherDataSourceManagersQueue = [(PXImportController *)self otherDataSourceManagersQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_invoke;
@@ -1373,7 +1373,7 @@ LABEL_7:
   v13[4] = self;
   v9 = v7;
   v14 = v9;
-  dispatch_sync(v8, v13);
+  dispatch_sync(otherDataSourceManagersQueue, v13);
 
   v10 = v14;
   v11 = v9;
@@ -1387,7 +1387,7 @@ void __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_i
   [v2 addObject:*(a1 + 40)];
 }
 
-- (void)nameDidChangeForImportSource:(id)a3
+- (void)nameDidChangeForImportSource:(id)source
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1397,7 +1397,7 @@ void __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_i
   [(PXImportController *)self performChangesOnMainQueue:v3];
 }
 
-- (void)capabilitiesDidChangeForImportSource:(id)a3
+- (void)capabilitiesDidChangeForImportSource:(id)source
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1407,14 +1407,14 @@ void __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_i
   [(PXImportController *)self performChangesOnMainQueue:v3];
 }
 
-- (void)importSource:(id)a3 didRemoveAssets:(id)a4
+- (void)importSource:(id)source didRemoveAssets:(id)assets
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  assetsCopy = assets;
   v6 = +[PXImportSettings sharedInstance];
-  v7 = [v6 simulateEmptyImportSource];
+  simulateEmptyImportSource = [v6 simulateEmptyImportSource];
 
-  if ((v7 & 1) == 0)
+  if ((simulateEmptyImportSource & 1) == 0)
   {
     v8 = _importDataLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1422,21 +1422,21 @@ void __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_i
       *buf = 136315394;
       v42 = "[PXImportController importSource:didRemoveAssets:]";
       v43 = 2048;
-      v44 = [v5 count];
+      v44 = [assetsCopy count];
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "%s: Did remove %tu assets", buf, 0x16u);
     }
 
-    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-    v26 = self;
-    v10 = [(PXImportController *)self dataSourceManager];
-    v11 = [v10 dataSource];
+    v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(assetsCopy, "count")}];
+    selfCopy = self;
+    dataSourceManager = [(PXImportController *)self dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v27 = v5;
-    v12 = v5;
+    v27 = assetsCopy;
+    v12 = assetsCopy;
     v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v13)
     {
@@ -1452,8 +1452,8 @@ void __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_i
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v36 + 1) + 8 * v16) uuid];
-          v18 = [v11 itemForImportAssetUuid:v17];
+          uuid = [*(*(&v36 + 1) + 8 * v16) uuid];
+          v18 = [dataSource itemForImportAssetUuid:uuid];
 
           if (v18)
           {
@@ -1481,47 +1481,47 @@ void __63__PXImportController_createDataSourceManagerWithLogIdentifier___block_i
       while (v14);
     }
 
-    [(PXImportController *)v26 handleImportSourceModifiedAssets];
+    [(PXImportController *)selfCopy handleImportSourceModifiedAssets];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__PXImportController_importSource_didRemoveAssets___block_invoke;
     block[3] = &unk_1E774C620;
     v20 = v9;
     v34 = v20;
-    v35 = v26;
+    v35 = selfCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    v21 = [(PXImportController *)v26 dataSourceManager];
-    [v21 removeAssets:v12];
+    dataSourceManager2 = [(PXImportController *)selfCopy dataSourceManager];
+    [dataSourceManager2 removeAssets:v12];
 
-    v22 = [(PXImportController *)v26 otherDataSourceManagersQueue];
+    otherDataSourceManagersQueue = [(PXImportController *)selfCopy otherDataSourceManagersQueue];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __51__PXImportController_importSource_didRemoveAssets___block_invoke_2;
     v31[3] = &unk_1E774C620;
-    v31[4] = v26;
+    v31[4] = selfCopy;
     v23 = v12;
     v32 = v23;
-    dispatch_sync(v22, v31);
+    dispatch_sync(otherDataSourceManagersQueue, v31);
 
-    v24 = [(PXImportController *)v26 sharedViewModelsUpdateQueue];
+    sharedViewModelsUpdateQueue = [(PXImportController *)selfCopy sharedViewModelsUpdateQueue];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __51__PXImportController_importSource_didRemoveAssets___block_invoke_3;
     v28[3] = &unk_1E774C620;
     v29 = v23;
-    v30 = v26;
-    dispatch_sync(v24, v28);
+    v30 = selfCopy;
+    dispatch_sync(sharedViewModelsUpdateQueue, v28);
 
     if ([v20 count])
     {
-      v25 = [(PXImportController *)v26 deleteAction];
-      [v25 didRemoveAssets:v20];
+      deleteAction = [(PXImportController *)selfCopy deleteAction];
+      [deleteAction didRemoveAssets:v20];
     }
 
-    [(PXImportController *)v26 restartTimedAssetsLoadingPowerAssertion];
-    [(PXImportController *)v26 performChangesOnMainQueue:&__block_literal_global_282_187598];
+    [(PXImportController *)selfCopy restartTimedAssetsLoadingPowerAssertion];
+    [(PXImportController *)selfCopy performChangesOnMainQueue:&__block_literal_global_282_187598];
 
-    v5 = v27;
+    assetsCopy = v27;
   }
 }
 
@@ -1632,36 +1632,36 @@ void __51__PXImportController_importSource_didRemoveAssets___block_invoke_3(uint
   }
 }
 
-- (void)importSource:(id)a3 didAddAssets:(id)a4
+- (void)importSource:(id)source didAddAssets:(id)assets
 {
-  v5 = a4;
+  assetsCopy = assets;
   v6 = +[PXImportSettings sharedInstance];
-  v7 = [v6 simulateEmptyImportSource];
+  simulateEmptyImportSource = [v6 simulateEmptyImportSource];
 
-  if ((v7 & 1) == 0)
+  if ((simulateEmptyImportSource & 1) == 0)
   {
-    v8 = [(PXImportController *)self sharedViewModelsUpdateQueue];
+    sharedViewModelsUpdateQueue = [(PXImportController *)self sharedViewModelsUpdateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__PXImportController_importSource_didAddAssets___block_invoke;
     block[3] = &unk_1E774C620;
-    v9 = v5;
+    v9 = assetsCopy;
     v19 = v9;
-    v20 = self;
-    dispatch_sync(v8, block);
+    selfCopy = self;
+    dispatch_sync(sharedViewModelsUpdateQueue, block);
 
     [(PXImportController *)self handleImportSourceModifiedAssets];
-    v10 = [(PXImportController *)self dataSourceManager];
-    [v10 addAssets:v9];
+    dataSourceManager = [(PXImportController *)self dataSourceManager];
+    [dataSourceManager addAssets:v9];
 
-    v11 = [(PXImportController *)self otherDataSourceManagersQueue];
+    otherDataSourceManagersQueue = [(PXImportController *)self otherDataSourceManagersQueue];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __48__PXImportController_importSource_didAddAssets___block_invoke_2;
     v15 = &unk_1E774C620;
-    v16 = self;
+    selfCopy2 = self;
     v17 = v9;
-    dispatch_sync(v11, &v12);
+    dispatch_sync(otherDataSourceManagersQueue, &v12);
 
     [(PXImportController *)self restartTimedAssetsLoadingPowerAssertion:v12];
     [(PXImportController *)self performChangesOnMainQueue:&__block_literal_global_280_187600];
@@ -1749,15 +1749,15 @@ void __48__PXImportController_importSource_didAddAssets___block_invoke_2(uint64_
   }
 }
 
-- (void)startInitialBatchOfAssetsTimerWithTimeout:(double)a3
+- (void)startInitialBatchOfAssetsTimerWithTimeout:(double)timeout
 {
-  v5 = [(PXImportController *)self initialBatchOfAssetsTimer];
-  v6 = [v5 isValid];
+  initialBatchOfAssetsTimer = [(PXImportController *)self initialBatchOfAssetsTimer];
+  isValid = [initialBatchOfAssetsTimer isValid];
 
-  if (v6)
+  if (isValid)
   {
-    v7 = [(PXImportController *)self initialBatchOfAssetsTimer];
-    [v7 invalidate];
+    initialBatchOfAssetsTimer2 = [(PXImportController *)self initialBatchOfAssetsTimer];
+    [initialBatchOfAssetsTimer2 invalidate];
   }
 
   objc_initWeak(&location, self);
@@ -1767,7 +1767,7 @@ void __48__PXImportController_importSource_didAddAssets___block_invoke_2(uint64_
   v12 = __64__PXImportController_startInitialBatchOfAssetsTimerWithTimeout___block_invoke;
   v13 = &unk_1E7747228;
   objc_copyWeak(&v14, &location);
-  v9 = [v8 scheduledTimerWithTimeInterval:0 repeats:&v10 block:a3];
+  v9 = [v8 scheduledTimerWithTimeInterval:0 repeats:&v10 block:timeout];
   [(PXImportController *)self setInitialBatchOfAssetsTimer:v9, v10, v11, v12, v13];
 
   objc_destroyWeak(&v14);
@@ -1827,13 +1827,13 @@ uint64_t __54__PXImportController_handleImportSourceModifiedAssets__block_invoke
 - (void)loadAssets
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [(PXImportController *)self importSource];
+  importSource = [(PXImportController *)self importSource];
 
-  if (!v4)
+  if (!importSource)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = NSStringFromSelector(sel_adoptImportSource_);
-    [v20 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:345 description:{@"%@ was asked to load assets with a nil import source. Call %@ first to set an import source.", self, v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:345 description:{@"%@ was asked to load assets with a nil import source. Call %@ first to set an import source.", self, v21}];
   }
 
   v5 = _importControllerLog();
@@ -1847,9 +1847,9 @@ uint64_t __54__PXImportController_handleImportSourceModifiedAssets__block_invoke
   if (![(PXImportController *)self hasLoadedAssets])
   {
     [(PXImportController *)self performChangesOnMainQueue:&__block_literal_global_264_187610];
-    v6 = [(PXImportController *)self dateOrder];
+    dateOrder = [(PXImportController *)self dateOrder];
     v7 = +[PXImportSettings sharedInstance];
-    v8 = [v7 assetEnumerationBehavior];
+    assetEnumerationBehavior = [v7 assetEnumerationBehavior];
 
     objc_initWeak(buf, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -1860,13 +1860,13 @@ uint64_t __54__PXImportController_handleImportSourceModifiedAssets__block_invoke
     aBlock[4] = self;
     v9 = _Block_copy(aBlock);
     +[PXImportSettings sharedInstance];
-    if (v8)
+    if (assetEnumerationBehavior)
       v10 = {;
-      v11 = [v10 assetEnumerationBatchSize];
+      assetEnumerationBatchSize = [v10 assetEnumerationBatchSize];
 
       importSource = self->_importSource;
-      v13 = [(PXImportController *)self photoLibrary];
-      v14 = [(PHImportSource *)importSource loadAssetsForLibrary:v13 allowDuplicates:0 order:v6 batchSize:v11 atEnd:v9];
+      photoLibrary = [(PXImportController *)self photoLibrary];
+      v14 = [(PHImportSource *)importSource loadAssetsForLibrary:photoLibrary allowDuplicates:0 order:dateOrder batchSize:assetEnumerationBatchSize atEnd:v9];
     }
 
     else
@@ -1875,8 +1875,8 @@ uint64_t __54__PXImportController_handleImportSourceModifiedAssets__block_invoke
       v17 = v16;
 
       v18 = self->_importSource;
-      v13 = [(PXImportController *)self photoLibrary];
-      v19 = [(PHImportSource *)v18 loadAssetsForLibrary:v13 allowDuplicates:0 order:v6 batchInterval:v9 atEnd:v17];
+      photoLibrary = [(PXImportController *)self photoLibrary];
+      v19 = [(PHImportSource *)v18 loadAssetsForLibrary:photoLibrary allowDuplicates:0 order:dateOrder batchInterval:v9 atEnd:v17];
     }
 
     objc_destroyWeak(&v23);
@@ -1965,36 +1965,36 @@ void __32__PXImportController_loadAssets__block_invoke(uint64_t a1, void *a2)
   [v2 setLoadingInitialBatchOfAssets:1];
 }
 
-- (void)setLoadingInitialBatchOfAssets:(BOOL)a3
+- (void)setLoadingInitialBatchOfAssets:(BOOL)assets
 {
-  if (self->_loadingInitialBatchOfAssets != a3)
+  if (self->_loadingInitialBatchOfAssets != assets)
   {
-    self->_loadingInitialBatchOfAssets = a3;
+    self->_loadingInitialBatchOfAssets = assets;
     [(PXImportController *)self signalChange:32];
   }
 }
 
-- (void)setHasLoadedInitialBatchOfAssets:(BOOL)a3
+- (void)setHasLoadedInitialBatchOfAssets:(BOOL)assets
 {
-  if (self->_hasLoadedInitialBatchOfAssets != a3)
+  if (self->_hasLoadedInitialBatchOfAssets != assets)
   {
-    self->_hasLoadedInitialBatchOfAssets = a3;
+    self->_hasLoadedInitialBatchOfAssets = assets;
     [(PXImportController *)self signalChange:16];
   }
 }
 
-- (void)setLoadingContent:(BOOL)a3
+- (void)setLoadingContent:(BOOL)content
 {
-  if (self->_loadingContent != a3)
+  if (self->_loadingContent != content)
   {
-    self->_loadingContent = a3;
+    self->_loadingContent = content;
     [(PXImportController *)self signalChange:1];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     v5 = "[PXImportController performChanges:]";
@@ -2003,7 +2003,7 @@ void __32__PXImportController_loadAssets__block_invoke(uint64_t a1, void *a2)
 
   v6.receiver = self;
   v6.super_class = PXImportController;
-  [(PXImportController *)&v6 performChanges:v4, v5];
+  [(PXImportController *)&v6 performChanges:changesCopy, v5];
 }
 
 - (void)dealloc
@@ -2048,47 +2048,47 @@ void __30__PXImportController_shutdown__block_invoke_2(uint64_t a1, void *a2)
   [v2 setLoadingInitialBatchOfAssets:0];
 }
 
-- (void)adoptImportSource:(id)a3
+- (void)adoptImportSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   importSource = self->_importSource;
-  if (importSource != v5)
+  if (importSource != sourceCopy)
   {
-    v8 = v5;
+    v8 = sourceCopy;
     [(PHImportSource *)importSource removeImportSourceObserver:self];
-    objc_storeStrong(&self->_importSource, a3);
-    v7 = [(PHImportSource *)v8 assets];
-    [(PXImportController *)self importSource:v8 didAddAssets:v7];
+    objc_storeStrong(&self->_importSource, source);
+    assets = [(PHImportSource *)v8 assets];
+    [(PXImportController *)self importSource:v8 didAddAssets:assets];
 
     [(PHImportSource *)v8 addImportSourceObserver:self];
-    v5 = v8;
+    sourceCopy = v8;
   }
 }
 
 - (PXImportController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:152 description:{@"%s is not available as initializer", "-[PXImportController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXImportController.m" lineNumber:152 description:{@"%s is not available as initializer", "-[PXImportController init]"}];
 
   abort();
 }
 
-- (PXImportController)initWithImportSource:(id)a3 photoLibrary:(id)a4 imageFormat:(unsigned __int16)a5 dateOrder:(int64_t)a6
+- (PXImportController)initWithImportSource:(id)source photoLibrary:(id)library imageFormat:(unsigned __int16)format dateOrder:(int64_t)order
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
+  formatCopy = format;
+  sourceCopy = source;
+  libraryCopy = library;
   v45.receiver = self;
   v45.super_class = PXImportController;
   v13 = [(PXImportController *)&v45 init];
   v14 = v13;
   if (v13)
   {
-    v13->_dateOrder = a6;
-    objc_storeStrong(&v13->_importSource, a3);
+    v13->_dateOrder = order;
+    objc_storeStrong(&v13->_importSource, source);
     [(PHImportSource *)v14->_importSource addImportSourceObserver:v14];
-    objc_storeStrong(&v14->_photoLibrary, a4);
-    v14->_imageFormat = v7;
+    objc_storeStrong(&v14->_photoLibrary, library);
+    v14->_imageFormat = formatCopy;
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
     sharedViewModelsById = v14->_sharedViewModelsById;
     v14->_sharedViewModelsById = v15;
@@ -2128,7 +2128,7 @@ void __30__PXImportController_shutdown__block_invoke_2(uint64_t a1, void *a2)
     v14->_selectionManager = v36;
 
     [(PXSectionedSelectionManager *)v14->_selectionManager registerChangeObserver:v14 context:PXImportControllerSelectionManagerObserverContext];
-    v38 = [[PXImportMediaProvider alloc] initWithImageFormat:v7];
+    v38 = [[PXImportMediaProvider alloc] initWithImageFormat:formatCopy];
     importMediaProvider = v14->_importMediaProvider;
     v14->_importMediaProvider = v38;
 
@@ -2147,27 +2147,27 @@ void __30__PXImportController_shutdown__block_invoke_2(uint64_t a1, void *a2)
   return v14;
 }
 
-+ (id)importFilesAtURLs:(id)a3 photoLibrary:(id)a4 collection:(id)a5 checkDuplicates:(BOOL)a6 referenced:(BOOL)a7 delegate:(id)a8 completionHandler:(id)a9
++ (id)importFilesAtURLs:(id)ls photoLibrary:(id)library collection:(id)collection checkDuplicates:(BOOL)duplicates referenced:(BOOL)referenced delegate:(id)delegate completionHandler:(id)handler
 {
-  v10 = a7;
-  v11 = a6;
-  v15 = a4;
-  v16 = a9;
-  v17 = a8;
-  v18 = a5;
-  v19 = a3;
-  v20 = [v18 px_isFavoritesSmartAlbum];
+  referencedCopy = referenced;
+  duplicatesCopy = duplicates;
+  libraryCopy = library;
+  handlerCopy = handler;
+  delegateCopy = delegate;
+  collectionCopy = collection;
+  lsCopy = ls;
+  px_isFavoritesSmartAlbum = [collectionCopy px_isFavoritesSmartAlbum];
   v21 = objc_alloc_init(MEMORY[0x1E6978888]);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v20)
+  if (px_isFavoritesSmartAlbum)
   {
     v23 = 0;
   }
 
   else
   {
-    v23 = v18;
+    v23 = collectionCopy;
   }
 
   if (isKindOfClass)
@@ -2184,7 +2184,7 @@ void __30__PXImportController_shutdown__block_invoke_2(uint64_t a1, void *a2)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = v18;
+    v25 = collectionCopy;
   }
 
   else
@@ -2194,23 +2194,23 @@ void __30__PXImportController_shutdown__block_invoke_2(uint64_t a1, void *a2)
 
   [v21 setDestinationFolder:v25];
 
-  v26 = [v21 destinationFolder];
-  [v21 setPreserveFolderStructure:v26 != 0];
+  destinationFolder = [v21 destinationFolder];
+  [v21 setPreserveFolderStructure:destinationFolder != 0];
 
-  [v21 setAllowDuplicates:!v11];
-  [v21 setShouldImportAsReferenced:v10];
-  v27 = [MEMORY[0x1E6978878] sharedInstance];
+  [v21 setAllowDuplicates:!duplicatesCopy];
+  [v21 setShouldImportAsReferenced:referencedCopy];
+  mEMORY[0x1E6978878] = [MEMORY[0x1E6978878] sharedInstance];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __118__PXImportController_importFilesAtURLs_photoLibrary_collection_checkDuplicates_referenced_delegate_completionHandler___block_invoke;
   v32[3] = &unk_1E7741400;
-  v36 = v20;
-  v34 = v16;
-  v35 = a1;
-  v33 = v15;
-  v28 = v16;
-  v29 = v15;
-  v30 = [v27 importUrls:v19 intoLibrary:v29 withOptions:v21 delegate:v17 performanceDelegate:0 atEnd:v32];
+  v36 = px_isFavoritesSmartAlbum;
+  v34 = handlerCopy;
+  selfCopy = self;
+  v33 = libraryCopy;
+  v28 = handlerCopy;
+  v29 = libraryCopy;
+  v30 = [mEMORY[0x1E6978878] importUrls:lsCopy intoLibrary:v29 withOptions:v21 delegate:delegateCopy performanceDelegate:0 atEnd:v32];
 
   return v30;
 }
@@ -2232,10 +2232,10 @@ void __118__PXImportController_importFilesAtURLs_photoLibrary_collection_checkDu
   }
 }
 
-+ (void)favoriteAssetsFromImportResults:(id)a3 photoLibrary:(id)a4
++ (void)favoriteAssetsFromImportResults:(id)results photoLibrary:(id)library
 {
-  v5 = a4;
-  [a3 importRecords];
+  libraryCopy = library;
+  [results importRecords];
   objc_claimAutoreleasedReturnValue();
   PXMap();
 }
@@ -2293,26 +2293,26 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
   }
 }
 
-+ (id)itemsConstrainedByAvailableDiskSpaceFromItems:(id)a3 additionalBytesRequired:(int64_t *)a4
++ (id)itemsConstrainedByAvailableDiskSpaceFromItems:(id)items additionalBytesRequired:(int64_t *)required
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-  v7 = [v6 path];
+  itemsCopy = items;
+  systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+  path = [systemPhotoLibraryURL path];
 
-  v8 = [MEMORY[0x1E69BF208] diskSpaceAvailableForPath:v7];
+  v8 = [MEMORY[0x1E69BF208] diskSpaceAvailableForPath:path];
   v28 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v5;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v43 count:16];
   if (v10)
   {
     v11 = v10;
-    v26 = a4;
-    v27 = v7;
+    requiredCopy = required;
+    v27 = path;
     v12 = 0;
     v13 = 0;
     v14 = *v30;
@@ -2326,15 +2326,15 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        v17 = [v16 importAsset];
-        v18 = [v17 approximateBytesRequiredToImport];
+        importAsset = [v16 importAsset];
+        approximateBytesRequiredToImport = [importAsset approximateBytesRequiredToImport];
 
-        if (!v18)
+        if (!approximateBytesRequiredToImport)
         {
           _PFAssertContinueHandler();
         }
 
-        v13 += v18;
+        v13 += approximateBytesRequiredToImport;
         v19 = v13 + 0x200000;
         if (v13 + 0x200000 >= v8)
         {
@@ -2362,8 +2362,8 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
       v20 = 0;
     }
 
-    a4 = v26;
-    v7 = v27;
+    required = requiredCopy;
+    path = v27;
   }
 
   else
@@ -2373,12 +2373,12 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
     v19 = 0x200000;
   }
 
-  *a4 = v20;
+  *required = v20;
   v21 = _importControllerLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
     v23 = [v9 count];
-    v24 = *a4;
+    v24 = *required;
     v25 = [v28 count];
     *buf = 134219008;
     v34 = v23;
@@ -2396,15 +2396,15 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
   return v28;
 }
 
-+ (int64_t)diskSpaceRequiredToImportItems:(id)a3
++ (int64_t)diskSpaceRequiredToImportItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2416,21 +2416,21 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) importAsset];
-        v10 = [v9 approximateBytesRequiredToImport];
+        importAsset = [*(*(&v13 + 1) + 8 * i) importAsset];
+        approximateBytesRequiredToImport = [importAsset approximateBytesRequiredToImport];
 
-        if (!v10)
+        if (!approximateBytesRequiredToImport)
         {
           _PFAssertContinueHandler();
         }
 
-        v6 += v10;
+        v6 += approximateBytesRequiredToImport;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [itemsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -2445,16 +2445,16 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
   return v11;
 }
 
-+ (id)assetsForModels:(id)a3
++ (id)assetsForModels:(id)models
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  modelsCopy = models;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(modelsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = modelsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -2469,10 +2469,10 @@ void __67__PXImportController_favoriteAssetsFromImportResults_photoLibrary___blo
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) importAsset];
-        if (v10)
+        importAsset = [*(*(&v12 + 1) + 8 * i) importAsset];
+        if (importAsset)
         {
-          [v4 addObject:v10];
+          [v4 addObject:importAsset];
         }
       }
 

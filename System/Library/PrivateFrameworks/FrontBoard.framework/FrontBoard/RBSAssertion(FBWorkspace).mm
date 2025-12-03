@@ -7,19 +7,19 @@
 
 - (uint64_t)fb_workspaceState
 {
-  v1 = objc_getAssociatedObject(a1, &__FBWorkspaceState);
+  v1 = objc_getAssociatedObject(self, &__FBWorkspaceState);
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 unsignedIntValue];
+    unsignedIntValue = [v1 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (void)fb_setWorkspaceState:()FBWorkspace
@@ -35,7 +35,7 @@
   }
 
   v6 = v5;
-  objc_setAssociatedObject(a1, &__FBWorkspaceState, v5, 1);
+  objc_setAssociatedObject(self, &__FBWorkspaceState, v5, 1);
 }
 
 @end

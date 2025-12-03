@@ -1,7 +1,7 @@
 @interface AUVDMAnalytics
 - (AUVDMAnalytics)init;
 - (BOOL)_startEventMonitoring;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_startEventMonitoring;
 - (void)_stopEventMonitoring;
 - (void)start;
@@ -47,13 +47,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(AUVDMAnalytics *)self queue];
+  queue = [(AUVDMAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __23__AUVDMAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __23__AUVDMAnalytics_start__block_invoke(uint64_t a1)
@@ -90,13 +90,13 @@ void __23__AUVDMAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(AUVDMAnalytics *)self queue];
+  queue = [(AUVDMAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __22__AUVDMAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __22__AUVDMAnalytics_stop__block_invoke(uint64_t a1)
@@ -141,9 +141,9 @@ void __22__AUVDMAnalytics_stop__block_invoke(uint64_t a1)
 
     [(AUVDMAnalytics *)self setMonitoring:1];
     [(AUVDMAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(AUVDMAnalytics *)self ioNotificationPort];
-    v6 = [(AUVDMAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(AUVDMAnalytics *)self ioNotificationPort];
+    queue = [(AUVDMAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("IOPortTransportProtocolAppleUVDM");
     v8 = [(AUVDMAnalytics *)self log];
@@ -205,12 +205,12 @@ LABEL_12:
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
-  if (a3)
+  if (matched)
   {
     memset(name, 0, 128);
-    IORegistryEntryGetName(a3, name);
+    IORegistryEntryGetName(matched, name);
     v5 = [(AUVDMAnalytics *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -232,7 +232,7 @@ LABEL_12:
       goto LABEL_100;
     }
 
-    if (!IOObjectConformsTo(a3, "IOPortTransportProtocolAppleUVDM"))
+    if (!IOObjectConformsTo(matched, "IOPortTransportProtocolAppleUVDM"))
     {
       v18 = [(AUVDMAnalytics *)self log];
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -606,10 +606,10 @@ LABEL_100:
 
 - (void)_startEventMonitoring
 {
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(self, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;
-    OUTLINED_FUNCTION_4(&dword_0, a1, v2, "IOServiceMatching failed", v3);
+    OUTLINED_FUNCTION_4(&dword_0, self, v2, "IOServiceMatching failed", v3);
   }
 }
 

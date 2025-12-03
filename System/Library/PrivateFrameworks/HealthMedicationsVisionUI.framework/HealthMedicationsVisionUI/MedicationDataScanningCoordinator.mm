@@ -1,12 +1,12 @@
 @interface MedicationDataScanningCoordinator
-- (void)pulseTimerFiredWithTimer:(id)a3;
+- (void)pulseTimerFiredWithTimer:(id)timer;
 @end
 
 @implementation MedicationDataScanningCoordinator
 
-- (void)pulseTimerFiredWithTimer:(id)a3
+- (void)pulseTimerFiredWithTimer:(id)timer
 {
-  v3 = a3;
+  timerCopy = timer;
 
   sub_2518EECC4();
 }

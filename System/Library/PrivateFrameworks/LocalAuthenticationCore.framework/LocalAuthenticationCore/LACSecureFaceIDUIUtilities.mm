@@ -27,22 +27,22 @@ uint64_t __44__LACSecureFaceIDUIUtilities_sharedInstance__block_invoke()
 
 - (BOOL)isActive
 {
-  v3 = [(LACSecureFaceIDUIUtilities *)self isEnabled];
-  if (v3)
+  isEnabled = [(LACSecureFaceIDUIUtilities *)self isEnabled];
+  if (isEnabled)
   {
 
-    LOBYTE(v3) = [(LACSecureFaceIDUIUtilities *)self isSupported];
+    LOBYTE(isEnabled) = [(LACSecureFaceIDUIUtilities *)self isSupported];
   }
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)isEnabled
 {
   v2 = +[LACFlags sharedInstance];
-  v3 = [v2 featureFlagSecureUIEnabled];
+  featureFlagSecureUIEnabled = [v2 featureFlagSecureUIEnabled];
 
-  return v3;
+  return featureFlagSecureUIEnabled;
 }
 
 @end

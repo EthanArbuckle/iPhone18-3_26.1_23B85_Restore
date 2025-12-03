@@ -1,6 +1,6 @@
 @interface CKAutomaticTranslationIndicatorChatItem
 - (BOOL)languagesAreDownloading;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKAutomaticTranslationIndicatorChatItem)init;
 - (Class)cellClass;
 - (IMAutomaticTranslationIndicatorChatItem)imAutomaticTranslationIndicatorChatItem;
@@ -8,8 +8,8 @@
 - (NSAttributedString)titleAttributedText;
 - (NSLocale)localizedTranslationLanguage;
 - (id)incomingTranslationButtonText;
-- (id)incomingTranslationTranscriptTextFor:(id)a3;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)incomingTranslationTranscriptTextFor:(id)for;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadButtonTitleText;
 - (id)loadTranscriptText;
 - (id)translationEnabledButtonText;
@@ -20,22 +20,22 @@
 
 - (NSAttributedString)buttonAttributedText
 {
-  v2 = [(CKAutomaticTranslationIndicatorChatItem *)self loadButtonTitleText];
+  loadButtonTitleText = [(CKAutomaticTranslationIndicatorChatItem *)self loadButtonTitleText];
 
-  return v2;
+  return loadButtonTitleText;
 }
 
 - (NSAttributedString)titleAttributedText
 {
-  v2 = [(CKAutomaticTranslationIndicatorChatItem *)self loadTranscriptText];
+  loadTranscriptText = [(CKAutomaticTranslationIndicatorChatItem *)self loadTranscriptText];
 
-  return v2;
+  return loadTranscriptText;
 }
 
 - (IMAutomaticTranslationIndicatorChatItem)imAutomaticTranslationIndicatorChatItem
 {
-  v2 = self;
-  result = [(CKChatItem *)v2 IMChatItem];
+  selfCopy = self;
+  result = [(CKChatItem *)selfCopy IMChatItem];
   if (result)
   {
 
@@ -60,13 +60,13 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EAD5D9E0);
   v10 = sub_190D57180();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_190B1E714(a4, v10);
+  environmentCopy = environment;
+  selfCopy = self;
+  v13 = sub_190B1E714(index, v10);
 
   return v13;
 }
@@ -77,11 +77,11 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(CKAutomaticTranslationIndicatorChatItem *)v7 imAutomaticTranslationIndicatorChatItem];
-  v9 = [(IMAutomaticTranslationIndicatorChatItem *)v8 translationLanguageCode];
+  selfCopy = self;
+  imAutomaticTranslationIndicatorChatItem = [(CKAutomaticTranslationIndicatorChatItem *)selfCopy imAutomaticTranslationIndicatorChatItem];
+  translationLanguageCode = [(IMAutomaticTranslationIndicatorChatItem *)imAutomaticTranslationIndicatorChatItem translationLanguageCode];
 
-  if (v9)
+  if (translationLanguageCode)
   {
     sub_190D56F10();
 
@@ -101,7 +101,7 @@
 
 - (id)loadTranscriptText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKAutomaticTranslationIndicatorChatItem.loadTranscriptText()();
 
   return v3;
@@ -109,17 +109,17 @@
 
 - (id)loadButtonTitleText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190B1D1F8();
 
   return v3;
 }
 
-- (id)incomingTranslationTranscriptTextFor:(id)a3
+- (id)incomingTranslationTranscriptTextFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B1E920(v4);
+  forCopy = for;
+  selfCopy = self;
+  sub_190B1E920(forCopy);
 
   v6 = sub_190D56ED0();
 
@@ -128,7 +128,7 @@
 
 - (id)translationEnabledTranscriptText
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B1D4B0();
   v4 = v3;
 
@@ -174,11 +174,11 @@
 
 - (BOOL)languagesAreDownloading
 {
-  v2 = self;
-  v3 = [(CKAutomaticTranslationIndicatorChatItem *)v2 imAutomaticTranslationIndicatorChatItem];
-  v4 = [(IMAutomaticTranslationIndicatorChatItem *)v3 translationLanguageStatus];
+  selfCopy = self;
+  imAutomaticTranslationIndicatorChatItem = [(CKAutomaticTranslationIndicatorChatItem *)selfCopy imAutomaticTranslationIndicatorChatItem];
+  translationLanguageStatus = [(IMAutomaticTranslationIndicatorChatItem *)imAutomaticTranslationIndicatorChatItem translationLanguageStatus];
 
-  if (v4 == 2)
+  if (translationLanguageStatus == 2)
   {
 
     return 1;
@@ -186,27 +186,27 @@
 
   else
   {
-    v6 = [(CKAutomaticTranslationIndicatorChatItem *)v2 imAutomaticTranslationIndicatorChatItem];
-    v7 = [(IMAutomaticTranslationIndicatorChatItem *)v6 userTranslationLanguageStatus];
+    imAutomaticTranslationIndicatorChatItem2 = [(CKAutomaticTranslationIndicatorChatItem *)selfCopy imAutomaticTranslationIndicatorChatItem];
+    userTranslationLanguageStatus = [(IMAutomaticTranslationIndicatorChatItem *)imAutomaticTranslationIndicatorChatItem2 userTranslationLanguageStatus];
 
-    return v7 == 2;
+    return userTranslationLanguageStatus == 2;
   }
 }
 
 - (id)translationEnabledButtonText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190B1D86C();
 
   return v3;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  CKAutomaticTranslationIndicatorChatItem.loadSizeThatFits(_:textAlignmentInsets:)(a4, width, height);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  CKAutomaticTranslationIndicatorChatItem.loadSizeThatFits(_:textAlignmentInsets:)(insets, width, height);
   v9 = v8;
 
   v10 = 0.0;

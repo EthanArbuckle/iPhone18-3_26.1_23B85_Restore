@@ -1,6 +1,6 @@
 @interface SNDSPGraph
-- (BOOL)preflight:(int64_t)a3 outputFrameCount:(int64_t *)a4 error:(id *)a5;
-- (BOOL)processInputBufferList:(AudioBufferList *)a3 inputFrameCount:(unsigned int)a4 atSourcePosition:(int64_t)a5 to:(AudioBufferList *)a6 outputFrameCapacity:(unsigned int)a7 outputFrameCount:(unsigned int *)a8 atDestinationPosition:(int64_t *)a9 error:(id *)a10;
+- (BOOL)preflight:(int64_t)preflight outputFrameCount:(int64_t *)count error:(id *)error;
+- (BOOL)processInputBufferList:(AudioBufferList *)list inputFrameCount:(unsigned int)count atSourcePosition:(int64_t)position to:(AudioBufferList *)to outputFrameCapacity:(unsigned int)capacity outputFrameCount:(unsigned int *)frameCount atDestinationPosition:(int64_t *)destinationPosition error:(id *)self0;
 - (SNDSPGraph)init;
 - (id).cxx_construct;
 @end
@@ -16,7 +16,7 @@
   return 0;
 }
 
-- (BOOL)preflight:(int64_t)a3 outputFrameCount:(int64_t *)a4 error:(id *)a5
+- (BOOL)preflight:(int64_t)preflight outputFrameCount:(int64_t *)count error:(id *)error
 {
   if (DSPGraph::Graph::numInputs(self->_graph.__ptr_) >= 2)
   {
@@ -28,17 +28,17 @@
     __assert_rtn("[SNDSPGraph preflight:outputFrameCount:error:]", "SNDSPGraph.mm", 272, "_graph->numOutputs() <= 1");
   }
 
-  if (!a4)
+  if (!count)
   {
     __assert_rtn("[SNDSPGraph preflight:outputFrameCount:error:]", "SNDSPGraph.mm", 273, "outputFrameCount");
   }
 
   DSPGraph::Graph::preflight();
-  *a4 = 0;
+  *count = 0;
   return 1;
 }
 
-- (BOOL)processInputBufferList:(AudioBufferList *)a3 inputFrameCount:(unsigned int)a4 atSourcePosition:(int64_t)a5 to:(AudioBufferList *)a6 outputFrameCapacity:(unsigned int)a7 outputFrameCount:(unsigned int *)a8 atDestinationPosition:(int64_t *)a9 error:(id *)a10
+- (BOOL)processInputBufferList:(AudioBufferList *)list inputFrameCount:(unsigned int)count atSourcePosition:(int64_t)position to:(AudioBufferList *)to outputFrameCapacity:(unsigned int)capacity outputFrameCount:(unsigned int *)frameCount atDestinationPosition:(int64_t *)destinationPosition error:(id *)self0
 {
   if (DSPGraph::Graph::numInputs(self->_graph.__ptr_) >= 2)
   {
@@ -50,14 +50,14 @@
     __assert_rtn("[SNDSPGraph processInputBufferList:inputFrameCount:atSourcePosition:to:outputFrameCapacity:outputFrameCount:atDestinationPosition:error:]", "SNDSPGraph.mm", 318, "_graph->numOutputs() <= 1");
   }
 
-  if (!a9)
+  if (!destinationPosition)
   {
     __assert_rtn("[SNDSPGraph processInputBufferList:inputFrameCount:atSourcePosition:to:outputFrameCapacity:outputFrameCount:atDestinationPosition:error:]", "SNDSPGraph.mm", 319, "destinationFramePosition");
   }
 
   DSPGraph::Graph::processMultiple();
-  *a8 = a7;
-  *a9 = 0.0;
+  *frameCount = capacity;
+  *destinationPosition = 0.0;
   return 1;
 }
 

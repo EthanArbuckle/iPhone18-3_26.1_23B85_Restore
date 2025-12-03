@@ -1,19 +1,19 @@
 @interface EmbeddedDataSourceCollectionViewCell
-- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)prepareForReuse;
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 @end
 
 @implementation EmbeddedDataSourceCollectionViewCell
 
-- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell_eventHandlerSink) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell_collectionViewController) = 0;
@@ -27,7 +27,7 @@
   return [(EmbeddedDataSourceCollectionViewCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI36EmbeddedDataSourceCollectionViewCell_eventHandlerSink) = 0;
@@ -61,17 +61,17 @@
   sub_1B9F44760(v5, sub_1B9F7B6F8);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA44A174(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1BA44A174(attributesCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
   sub_1B9F12538();
   v7 = v6;

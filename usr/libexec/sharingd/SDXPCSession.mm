@@ -1,6 +1,6 @@
 @interface SDXPCSession
 + (id)sharedSession;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SDXPCSession)init;
 - (void)start;
 - (void)stop;
@@ -71,10 +71,10 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [[SDConnectionManager alloc] initWithXPCConnection:v5];
+  connectionCopy = connection;
+  v6 = [[SDConnectionManager alloc] initWithXPCConnection:connectionCopy];
 
   [(NSMutableArray *)self->_connections addObject:v6];
   [(SDConnectionManager *)v6 setDelegate:self];

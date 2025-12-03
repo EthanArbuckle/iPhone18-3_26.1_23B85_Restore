@@ -9,13 +9,13 @@
 
 - (void)stopTime
 {
-  v3 = [(WPDStat *)self lastTime];
+  lastTime = [(WPDStat *)self lastTime];
 
-  if (v3)
+  if (lastTime)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v4 = [(WPDStat *)self lastTime];
-    [v8 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastTime2 = [(WPDStat *)self lastTime];
+    [date timeIntervalSinceDate:lastTime2];
     v6 = v5;
     [(WPDStat *)self currentTime];
     [(WPDStat *)self setCurrentTime:v6 + v7];
@@ -26,12 +26,12 @@
 
 - (void)startTime
 {
-  v3 = [(WPDStat *)self lastTime];
+  lastTime = [(WPDStat *)self lastTime];
 
-  if (!v3)
+  if (!lastTime)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(WPDStat *)self setLastTime:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(WPDStat *)self setLastTime:date];
   }
 }
 
@@ -52,19 +52,19 @@
 
 - (void)calculateTimeUpdate
 {
-  v3 = [(WPDStat *)self lastTime];
+  lastTime = [(WPDStat *)self lastTime];
 
-  if (v3)
+  if (lastTime)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v4 = [(WPDStat *)self lastTime];
-    [v9 timeIntervalSinceDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    lastTime2 = [(WPDStat *)self lastTime];
+    [date timeIntervalSinceDate:lastTime2];
     v6 = v5;
     [(WPDStat *)self currentTime];
     [(WPDStat *)self setCurrentTime:v6 + v7];
 
-    v8 = [MEMORY[0x277CBEAA8] date];
-    [(WPDStat *)self setLastTime:v8];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(WPDStat *)self setLastTime:date2];
   }
 }
 

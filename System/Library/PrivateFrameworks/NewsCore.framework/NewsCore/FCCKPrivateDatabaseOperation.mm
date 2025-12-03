@@ -1,8 +1,8 @@
 @interface FCCKPrivateDatabaseOperation
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
 - (BOOL)validateOperation;
 - (FCCKPrivateDatabaseOperation)init;
-- (void)runChildCKOperation:(id)a3 destination:(int64_t)a4;
+- (void)runChildCKOperation:(id)operation destination:(int64_t)destination;
 @end
 
 @implementation FCCKPrivateDatabaseOperation
@@ -26,10 +26,10 @@
   v17 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = FCCKPrivateDatabaseOperation;
-  v3 = [(FCOperation *)&v8 validateOperation];
-  v4 = [(FCCKPrivateDatabaseOperation *)self database];
+  validateOperation = [(FCOperation *)&v8 validateOperation];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!database && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"can't execute a private database operation without a database"];
     *buf = 136315906;
@@ -43,9 +43,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (v4)
+  if (database)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -57,36 +57,36 @@
   return result;
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (![v6 fc_hasIdentityStillSyncingError])
+  errorCopy = error;
+  if (![errorCopy fc_hasIdentityStillSyncingError])
   {
-    if ([v6 fc_hasCKIdentityLostError])
+    if ([errorCopy fc_hasCKIdentityLostError])
     {
-      v10 = [(FCCKPrivateDatabaseOperation *)self identityLossResponse];
-      if (v10 == 2)
+      identityLossResponse = [(FCCKPrivateDatabaseOperation *)self identityLossResponse];
+      if (identityLossResponse == 2)
       {
-        v19 = [v6 fc_zoneIDsWithIdentityLossError];
+        fc_zoneIDsWithIdentityLossError = [errorCopy fc_zoneIDsWithIdentityLossError];
         v23 = FCOperationLog;
         if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
         {
           v24 = v23;
-          v25 = [(FCOperation *)self shortOperationDescription];
+          shortOperationDescription = [(FCOperation *)self shortOperationDescription];
           *buf = 138543618;
-          v37 = v25;
+          v37 = shortOperationDescription;
           v38 = 2114;
-          v39 = v19;
+          v39 = fc_zoneIDsWithIdentityLossError;
           _os_log_impl(&dword_1B63EF000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ encountered identity loss error, will delete zones: %{public}@", buf, 0x16u);
         }
 
         v26 = objc_alloc_init(FCOperationExternalSignal);
         v21 = objc_alloc_init(FCCKPrivateDeleteRecordZonesOperation);
-        v27 = [(FCCKPrivateDatabaseOperation *)self database];
-        [(FCCKPrivateDatabaseOperation *)v21 setDatabase:v27];
+        database = [(FCCKPrivateDatabaseOperation *)self database];
+        [(FCCKPrivateDatabaseOperation *)v21 setDatabase:database];
 
-        [(FCCKPrivateDeleteRecordZonesOperation *)v21 setRecordZoneIDsToDelete:v19];
+        [(FCCKPrivateDeleteRecordZonesOperation *)v21 setRecordZoneIDsToDelete:fc_zoneIDsWithIdentityLossError];
         v9 = 1;
         [(FCCKPrivateDeleteRecordZonesOperation *)v21 setSecureDatabaseOnly:1];
         [(FCCKPrivateDatabaseOperation *)v21 setSkipPreflight:1];
@@ -101,22 +101,22 @@
         [(FCOperation *)self associateChildOperation:v21];
         [(FCOperation *)v21 start];
         v29 = v28;
-        *a4 = v28;
+        *after = v28;
       }
 
       else
       {
-        if (v10 != 1)
+        if (identityLossResponse != 1)
         {
-          if (!v10)
+          if (!identityLossResponse)
           {
             v11 = FCOperationLog;
             if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
             {
               v12 = v11;
-              v13 = [(FCOperation *)self shortOperationDescription];
+              shortOperationDescription2 = [(FCOperation *)self shortOperationDescription];
               *buf = 138543362;
-              v37 = v13;
+              v37 = shortOperationDescription2;
               _os_log_impl(&dword_1B63EF000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ encountered identity loss error, will ignore", buf, 0xCu);
             }
           }
@@ -128,21 +128,21 @@
         if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
         {
           v16 = v15;
-          v17 = [(FCOperation *)self shortOperationDescription];
+          shortOperationDescription3 = [(FCOperation *)self shortOperationDescription];
           *buf = 138543362;
-          v37 = v17;
+          v37 = shortOperationDescription3;
           _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ encountered identity loss error, will rebuild database", buf, 0xCu);
         }
 
         v18 = objc_alloc_init(FCOperationExternalSignal);
-        v19 = objc_alloc_init(FCCKSecureDatabaseResetOperation);
-        v20 = [(FCCKPrivateDatabaseOperation *)self database];
-        [(FCCKSecureDatabaseResetOperation *)v19 setDatabase:v20];
+        fc_zoneIDsWithIdentityLossError = objc_alloc_init(FCCKSecureDatabaseResetOperation);
+        database2 = [(FCCKPrivateDatabaseOperation *)self database];
+        [(FCCKSecureDatabaseResetOperation *)fc_zoneIDsWithIdentityLossError setDatabase:database2];
 
         v9 = 1;
-        [(FCCKSecureDatabaseResetOperation *)v19 setDeleteZones:1];
-        [(FCCKSecureDatabaseResetOperation *)v19 setRestoreSecureSentinel:1];
-        [(FCCKSecureDatabaseResetOperation *)v19 setRestoreZoneContents:1];
+        [(FCCKSecureDatabaseResetOperation *)fc_zoneIDsWithIdentityLossError setDeleteZones:1];
+        [(FCCKSecureDatabaseResetOperation *)fc_zoneIDsWithIdentityLossError setRestoreSecureSentinel:1];
+        [(FCCKSecureDatabaseResetOperation *)fc_zoneIDsWithIdentityLossError setRestoreZoneContents:1];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __61__FCCKPrivateDatabaseOperation_canRetryWithError_retryAfter___block_invoke;
@@ -150,17 +150,17 @@
         v34[4] = self;
         v35 = v18;
         v21 = v18;
-        [(FCCKSecureDatabaseResetOperation *)v19 setResetCompletionHandler:v34];
-        [(FCOperation *)self associateChildOperation:v19];
-        [(FCOperation *)v19 start];
+        [(FCCKSecureDatabaseResetOperation *)fc_zoneIDsWithIdentityLossError setResetCompletionHandler:v34];
+        [(FCOperation *)self associateChildOperation:fc_zoneIDsWithIdentityLossError];
+        [(FCOperation *)fc_zoneIDsWithIdentityLossError start];
         v22 = v21;
-        *a4 = v21;
+        *after = v21;
       }
 
       goto LABEL_20;
     }
 
-    if ([v6 fc_hasXPCInterruptedOrInvalidError])
+    if ([errorCopy fc_hasXPCInterruptedOrInvalidError])
     {
       v14 = [FCOperationDelayedRetrySignal alloc];
       CKRetryAfterSecondsForError();
@@ -176,7 +176,7 @@ LABEL_12:
   v7 = [FCOperationNotificationRetrySignal alloc];
   v8 = [(FCOperationNotificationRetrySignal *)v7 initWithNotificationName:*MEMORY[0x1E695B770] timeout:30.0];
 LABEL_3:
-  *a4 = v8;
+  *after = v8;
   v9 = 1;
 LABEL_20:
 
@@ -199,24 +199,24 @@ uint64_t __61__FCCKPrivateDatabaseOperation_canRetryWithError_retryAfter___block
   return [v7 triggerWithRetry:a2 == 0];
 }
 
-- (void)runChildCKOperation:(id)a3 destination:(int64_t)a4
+- (void)runChildCKOperation:(id)operation destination:(int64_t)destination
 {
-  v6 = a3;
-  [(FCOperation *)self associateChildOperation:v6];
-  v7 = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
-  v8 = [(FCCKPrivateDatabaseOperation *)self database];
-  v9 = v8;
-  if (v7)
+  operationCopy = operation;
+  [(FCOperation *)self associateChildOperation:operationCopy];
+  skipPreflight = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  v9 = database;
+  if (skipPreflight)
   {
-    if (v8)
+    if (database)
     {
-      [(FCCKPrivateDatabase *)v8 _addCKOperation:v6 destination:a4];
+      [(FCCKPrivateDatabase *)database _addCKOperation:operationCopy destination:destination];
     }
   }
 
   else
   {
-    [(FCCKPrivateDatabase *)v8 addCKOperation:v6 destination:a4];
+    [(FCCKPrivateDatabase *)database addCKOperation:operationCopy destination:destination];
   }
 }
 

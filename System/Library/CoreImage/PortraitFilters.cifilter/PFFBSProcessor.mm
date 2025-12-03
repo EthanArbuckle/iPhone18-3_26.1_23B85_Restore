@@ -1,23 +1,23 @@
 @interface PFFBSProcessor
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation PFFBSProcessor
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3 >= 3)
+  if (index >= 3)
   {
     sub_49D48();
   }
 
-  return **(&off_74D28 + a3);
+  return **(&off_74D28 + index);
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v5 = [a4 objectForKeyedSubscript:{@"fullROI", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"fullROI", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;

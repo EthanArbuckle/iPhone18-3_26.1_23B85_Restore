@@ -16,17 +16,17 @@
 
 - (void)createFoldersIfNecessary
 {
-  v2 = [(VVDataMigrator *)self accountDir];
-  v3 = [v2 path];
+  accountDir = [(VVDataMigrator *)self accountDir];
+  path = [accountDir path];
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:path];
 
   if ((v5 & 1) == 0)
   {
     v6 = +[NSFileManager defaultManager];
     v10 = 0;
-    v7 = [v6 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+    v7 = [v6 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v10];
     v8 = v10;
 
     if ((v7 & 1) == 0 && v8)
@@ -34,7 +34,7 @@
       v9 = vm_vmd_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10009E334(v3, v8, v9);
+        sub_10009E334(path, v8, v9);
       }
     }
   }
@@ -44,22 +44,22 @@
 {
   v3 = sub_10008546C();
   v4 = [v3 URLByAppendingPathComponent:@"com.apple.voicemail.imap.parameters.plist"];
-  v5 = [v4 path];
+  path = [v4 path];
 
-  v6 = [(VVDataMigrator *)self accountDir];
-  v7 = [v6 URLByAppendingPathComponent:@"com.apple.voicemail.imap.parameters.plist"];
-  v8 = [v7 path];
+  accountDir = [(VVDataMigrator *)self accountDir];
+  v7 = [accountDir URLByAppendingPathComponent:@"com.apple.voicemail.imap.parameters.plist"];
+  path2 = [v7 path];
 
   v9 = +[NSFileManager defaultManager];
-  LODWORD(v6) = [v9 fileExistsAtPath:v8];
+  LODWORD(accountDir) = [v9 fileExistsAtPath:path2];
 
-  if (v6)
+  if (accountDir)
   {
     v10 = vm_vmd_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v8;
+      *&buf[4] = path2;
       v11 = "Determined that file exists at destination path: %@, skipping migration";
 LABEL_16:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v11, buf, 0xCu);
@@ -70,7 +70,7 @@ LABEL_16:
   }
 
   v12 = +[NSFileManager defaultManager];
-  v13 = [v12 fileExistsAtPath:v5];
+  v13 = [v12 fileExistsAtPath:path];
 
   v10 = vm_vmd_log();
   v14 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -79,11 +79,11 @@ LABEL_16:
     if (v14)
     {
       *buf = 138412290;
-      *&buf[4] = v5;
+      *&buf[4] = path;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Determined that file exists at fromFilePath: %@", buf, 0xCu);
     }
 
-    v10 = [[NSDictionary alloc] initWithContentsOfFile:v5];
+    v10 = [[NSDictionary alloc] initWithContentsOfFile:path];
     v52 = [v10 objectForKeyedSubscript:@"AccountSettings"];
     v15 = [v52 objectForKeyedSubscript:@"name"];
     v16 = *(&INIT_DECOMPOSED_PHONE_NUMBER + 1);
@@ -92,9 +92,9 @@ LABEL_16:
     v17 = *(&INIT_DECOMPOSED_PHONE_NUMBER + 3);
     *numBytes = *(&INIT_DECOMPOSED_PHONE_NUMBER + 2);
     *v65 = v17;
-    v18 = [(VVDataMigrator *)self normalizedPhoneNumber];
-    [v18 cStringUsingEncoding:1];
-    v19 = [(VVDataMigrator *)self isoCountryCode];
+    normalizedPhoneNumber = [(VVDataMigrator *)self normalizedPhoneNumber];
+    [normalizedPhoneNumber cStringUsingEncoding:1];
+    isoCountryCode = [(VVDataMigrator *)self isoCountryCode];
     PNDecomposeForCountry();
 
     v20 = CFStringCreateWithBytes(kCFAllocatorDefault, numBytes[0], LODWORD(numBytes[1]), 0x8000100u, 0);
@@ -116,11 +116,11 @@ LABEL_16:
       v27 = vm_vmd_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v33 = [(VVDataMigrator *)self normalizedPhoneNumber];
+        normalizedPhoneNumber2 = [(VVDataMigrator *)self normalizedPhoneNumber];
         *v56 = 138412802;
-        v57 = v5;
+        v57 = path;
         v58 = 2112;
-        v59 = v33;
+        v59 = normalizedPhoneNumber2;
         v60 = 2112;
         v61 = v53;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Determined that this is not the account we want to migrate: %@, searchHint:%@, userName: %@", v56, 0x20u);
@@ -130,8 +130,8 @@ LABEL_16:
     }
 
     v47 = v22;
-    v24 = [[NSURL alloc] initFileURLWithPath:v5];
-    v25 = [[NSURL alloc] initFileURLWithPath:v8];
+    v24 = [[NSURL alloc] initFileURLWithPath:path];
+    v25 = [[NSURL alloc] initFileURLWithPath:path2];
     v26 = +[NSFileManager defaultManager];
     v55 = 0;
     v50 = v25;
@@ -177,8 +177,8 @@ LABEL_21:
     v34 = sub_10008546C();
     v35 = [v34 URLByAppendingPathComponent:@"Checkpoint.plist"];
 
-    v36 = [(VVDataMigrator *)self accountDir];
-    v37 = [v36 URLByAppendingPathComponent:@"Checkpoint.plist"];
+    accountDir2 = [(VVDataMigrator *)self accountDir];
+    v37 = [accountDir2 URLByAppendingPathComponent:@"Checkpoint.plist"];
 
     v38 = +[NSFileManager defaultManager];
     v54 = 0;
@@ -234,7 +234,7 @@ LABEL_32:
   if (v14)
   {
     *buf = 138412290;
-    *&buf[4] = v5;
+    *&buf[4] = path;
     v11 = "Determined that file does not exist at filePath, skipping migration: %@";
     goto LABEL_16;
   }

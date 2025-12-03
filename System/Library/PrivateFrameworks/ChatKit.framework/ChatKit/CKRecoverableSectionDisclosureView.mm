@@ -1,13 +1,13 @@
 @interface CKRecoverableSectionDisclosureView
 + (id)reuseIdentifier;
-- (CKRecoverableSectionDisclosureView)initWithFrame:(CGRect)a3;
+- (CKRecoverableSectionDisclosureView)initWithFrame:(CGRect)frame;
 - (UITextView)disclosureView;
-- (id)_disclosureAttributedText:(id)a3;
+- (id)_disclosureAttributedText:(id)text;
 - (id)_junkFilteringDisclosureAttributedText;
 - (id)_recentlyDeletedDisclosureAttributedText;
 - (void)configureForJunkFiltering;
 - (void)configureForRecentlyDeleted;
-- (void)configureWithString:(id)a3;
+- (void)configureWithString:(id)string;
 @end
 
 @implementation CKRecoverableSectionDisclosureView
@@ -19,12 +19,12 @@
   return NSStringFromClass(v2);
 }
 
-- (CKRecoverableSectionDisclosureView)initWithFrame:(CGRect)a3
+- (CKRecoverableSectionDisclosureView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v35[4] = *MEMORY[0x1E69E9840];
   v34.receiver = self;
   v34.super_class = CKRecoverableSectionDisclosureView;
@@ -32,36 +32,36 @@
   v8 = v7;
   if (v7)
   {
-    v9 = [(CKRecoverableSectionDisclosureView *)v7 disclosureView];
-    [(CKRecoverableSectionDisclosureView *)v8 addSubview:v9];
+    disclosureView = [(CKRecoverableSectionDisclosureView *)v7 disclosureView];
+    [(CKRecoverableSectionDisclosureView *)v8 addSubview:disclosureView];
 
-    v10 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
-    [v10 setFrame:{x, y, width, height}];
+    disclosureView2 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
+    [disclosureView2 setFrame:{x, y, width, height}];
 
     v24 = MEMORY[0x1E696ACD8];
-    v33 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
-    v31 = [v33 leadingAnchor];
-    v32 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
-    v30 = [v32 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    disclosureView3 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
+    leadingAnchor = [disclosureView3 leadingAnchor];
+    layoutMarginsGuide = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[0] = v29;
-    v28 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
-    v26 = [v28 trailingAnchor];
-    v27 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
-    v25 = [v27 trailingAnchor];
-    v23 = [v26 constraintEqualToAnchor:v25];
+    disclosureView4 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
+    trailingAnchor = [disclosureView4 trailingAnchor];
+    layoutMarginsGuide2 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[1] = v23;
-    v22 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
-    v21 = [v22 topAnchor];
-    v11 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
-    v12 = [v11 topAnchor];
-    v13 = [v21 constraintEqualToAnchor:v12];
+    disclosureView5 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
+    topAnchor = [disclosureView5 topAnchor];
+    layoutMarginsGuide3 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[2] = v13;
-    v14 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
-    v15 = [v14 bottomAnchor];
-    v16 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
-    v17 = [v16 bottomAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17 constant:-10.0];
+    disclosureView6 = [(CKRecoverableSectionDisclosureView *)v8 disclosureView];
+    bottomAnchor = [disclosureView6 bottomAnchor];
+    layoutMarginsGuide4 = [(CKRecoverableSectionDisclosureView *)v8 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     v35[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:4];
     [v24 activateConstraints:v19];
@@ -82,15 +82,15 @@
     [(UITextView *)v5 setEditable:0];
     [(UITextView *)v5 setSelectable:1];
     [(UITextView *)v5 setUserInteractionEnabled:1];
-    v6 = [(UITextView *)v5 textDragInteraction];
-    [v6 setEnabled:0];
+    textDragInteraction = [(UITextView *)v5 textDragInteraction];
+    [textDragInteraction setEnabled:0];
 
     [(UITextView *)v5 setClipsToBounds:0];
     [(UITextView *)v5 setAdjustsFontForContentSizeCategory:1];
     [(UITextView *)v5 setBackgroundColor:0];
     [(UITextView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(UITextView *)v5 textContainer];
-    [v7 setLineBreakMode:0];
+    textContainer = [(UITextView *)v5 textContainer];
+    [textContainer setLineBreakMode:0];
 
     v8 = self->_disclosureView;
     self->_disclosureView = v5;
@@ -101,18 +101,18 @@
   return disclosureView;
 }
 
-- (id)_disclosureAttributedText:(id)a3
+- (id)_disclosureAttributedText:(id)text
 {
   v3 = MEMORY[0x1E696AD40];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  textCopy = text;
+  v5 = [[v3 alloc] initWithString:textCopy];
 
   v6 = objc_opt_new();
   [v6 setAlignment:1];
   [v6 setLineBreakStrategy:2];
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   [v5 addAttribute:*MEMORY[0x1E69DB688] value:v6 range:{0, objc_msgSend(v5, "length")}];
-  [v5 addAttribute:*MEMORY[0x1E69DB650] value:v7 range:{0, objc_msgSend(v5, "length")}];
+  [v5 addAttribute:*MEMORY[0x1E69DB650] value:secondaryLabelColor range:{0, objc_msgSend(v5, "length")}];
   v8 = *MEMORY[0x1E69DB648];
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [v5 addAttribute:v8 value:v9 range:{0, objc_msgSend(v5, "length")}];
@@ -120,11 +120,11 @@
   return v5;
 }
 
-- (void)configureWithString:(id)a3
+- (void)configureWithString:(id)string
 {
-  v5 = [(CKRecoverableSectionDisclosureView *)self _disclosureAttributedText:a3];
-  v4 = [(CKRecoverableSectionDisclosureView *)self disclosureView];
-  [v4 setAttributedText:v5];
+  v5 = [(CKRecoverableSectionDisclosureView *)self _disclosureAttributedText:string];
+  disclosureView = [(CKRecoverableSectionDisclosureView *)self disclosureView];
+  [disclosureView setAttributedText:v5];
 
   [(CKRecoverableSectionDisclosureView *)self invalidateIntrinsicContentSize];
 }
@@ -149,18 +149,18 @@
 
 - (void)configureForRecentlyDeleted
 {
-  v3 = [(CKRecoverableSectionDisclosureView *)self _recentlyDeletedDisclosureAttributedText];
-  v4 = [(CKRecoverableSectionDisclosureView *)self disclosureView];
-  [v4 setAttributedText:v3];
+  _recentlyDeletedDisclosureAttributedText = [(CKRecoverableSectionDisclosureView *)self _recentlyDeletedDisclosureAttributedText];
+  disclosureView = [(CKRecoverableSectionDisclosureView *)self disclosureView];
+  [disclosureView setAttributedText:_recentlyDeletedDisclosureAttributedText];
 
   [(CKRecoverableSectionDisclosureView *)self invalidateIntrinsicContentSize];
 }
 
 - (void)configureForJunkFiltering
 {
-  v3 = [(CKRecoverableSectionDisclosureView *)self _junkFilteringDisclosureAttributedText];
-  v4 = [(CKRecoverableSectionDisclosureView *)self disclosureView];
-  [v4 setAttributedText:v3];
+  _junkFilteringDisclosureAttributedText = [(CKRecoverableSectionDisclosureView *)self _junkFilteringDisclosureAttributedText];
+  disclosureView = [(CKRecoverableSectionDisclosureView *)self disclosureView];
+  [disclosureView setAttributedText:_junkFilteringDisclosureAttributedText];
 
   [(CKRecoverableSectionDisclosureView *)self invalidateIntrinsicContentSize];
 }

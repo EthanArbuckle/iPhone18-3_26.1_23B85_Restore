@@ -1,27 +1,27 @@
 @interface EGStillImageDCNode
-- (EGStillImageDCNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 addConfigurationInput:(BOOL)a6 processIDC:(BOOL)a7 processGDC:(BOOL)a8 deepZoomEnabled:(BOOL)a9 inputImageBufferType:(unint64_t)a10 portType:(id)a11 delegate:(id)a12;
+- (EGStillImageDCNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration addConfigurationInput:(BOOL)input processIDC:(BOOL)c processGDC:(BOOL)dC deepZoomEnabled:(BOOL)enabled inputImageBufferType:(unint64_t)self0 portType:(id)self1 delegate:(id)self2;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageDCNode
 
-- (EGStillImageDCNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 addConfigurationInput:(BOOL)a6 processIDC:(BOOL)a7 processGDC:(BOOL)a8 deepZoomEnabled:(BOOL)a9 inputImageBufferType:(unint64_t)a10 portType:(id)a11 delegate:(id)a12
+- (EGStillImageDCNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration addConfigurationInput:(BOOL)input processIDC:(BOOL)c processGDC:(BOOL)dC deepZoomEnabled:(BOOL)enabled inputImageBufferType:(unint64_t)self0 portType:(id)self1 delegate:(id)self2
 {
-  v14 = a6;
+  inputCopy = input;
   v24.receiver = self;
   v24.super_class = EGStillImageDCNode;
-  v17 = [(EGStillImageProcessorControllerDelegateNode *)&v24 initWithName:a3 delegate:a12];
+  v17 = [(EGStillImageProcessorControllerDelegateNode *)&v24 initWithName:name delegate:delegate];
   if (v17)
   {
-    v17->_stillImageSettings = a4;
-    v17->_nodeConfiguration = a5;
-    v17->_processIDC = a7;
-    v17->_processGDC = a8;
-    v17->_deepZoomEnabled = a9;
-    v17->_inputImageBufferType = a10;
-    v17->_portType = a11;
+    v17->_stillImageSettings = settings;
+    v17->_nodeConfiguration = configuration;
+    v17->_processIDC = c;
+    v17->_processGDC = dC;
+    v17->_deepZoomEnabled = enabled;
+    v17->_inputImageBufferType = type;
+    v17->_portType = portType;
     v18 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v19 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v17->_processorInput = v19;
@@ -29,7 +29,7 @@
     v20 = +[EGStillImageProcessorControllerDelegateNode newSbufInput];
     v17->_sbufInput = v20;
     [(EGInputGroup *)v18 installInput:v20];
-    if (v14)
+    if (inputCopy)
     {
       v21 = [[EGInput alloc] initWithName:@"configuration"];
       v17->_configurationInput = v21;
@@ -52,10 +52,10 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
-  if (!v6 || (v7 = v6, (v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](-[EGStillImageDCNode processorInput](self, "processorInput"), "name")), "processorController"}]) == 0))
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
+  if (!v6 || (v7 = v6, (v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](-[EGStillImageDCNode processorInput](self, "processorInput"), "name")), "processorController"}]) == 0))
   {
     v12 = 4294954516;
 LABEL_14:
@@ -72,7 +72,7 @@ LABEL_14:
   configurationInput = self->_configurationInput;
   if (configurationInput)
   {
-    BWPhotonicEngineUtilitiesSetDistortionCorrectionParametersOnDCInput(v13, [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](configurationInput, "name")), "dictionary"}]);
+    BWPhotonicEngineUtilitiesSetDistortionCorrectionParametersOnDCInput(v13, [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](configurationInput, "name")), "dictionary"}]);
   }
 
   v11 = [(BWIntelligentDistortionCorrectionProcessorInput *)v8 enqueueInputForProcessing:v13 delegate:self];
@@ -86,22 +86,22 @@ LABEL_14:
   [(BWIntelligentDistortionCorrectionProcessorInput *)v13 addImage:v7 imageBufferType:self->_inputImageBufferType];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!buffer)
   {
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_7:
-    [EGStillImageDCNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageDCNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)self->_sbufOutput emitPayload:v8];
 }
 

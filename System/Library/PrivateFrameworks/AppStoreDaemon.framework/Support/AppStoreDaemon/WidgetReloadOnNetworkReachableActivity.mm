@@ -1,8 +1,8 @@
 @interface WidgetReloadOnNetworkReachableActivity
 + (_TtC9appstored38WidgetReloadOnNetworkReachableActivity)sharedActivity;
 - (_TtC9appstored38WidgetReloadOnNetworkReachableActivity)init;
-- (void)bootstrapWithCompletionHandler:(id)a3;
-- (void)scheduleWithEndpoint:(id)a3 parameters:(id)a4;
+- (void)bootstrapWithCompletionHandler:(id)handler;
+- (void)scheduleWithEndpoint:(id)endpoint parameters:(id)parameters;
 @end
 
 @implementation WidgetReloadOnNetworkReachableActivity
@@ -17,12 +17,12 @@
   return v2;
 }
 
-- (void)bootstrapWithCompletionHandler:(id)a3
+- (void)bootstrapWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -42,12 +42,12 @@
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
-- (void)scheduleWithEndpoint:(id)a3 parameters:(id)a4
+- (void)scheduleWithEndpoint:(id)endpoint parameters:(id)parameters
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
 
-  sub_100109908(a3, a4);
+  sub_100109908(endpoint, parameters);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

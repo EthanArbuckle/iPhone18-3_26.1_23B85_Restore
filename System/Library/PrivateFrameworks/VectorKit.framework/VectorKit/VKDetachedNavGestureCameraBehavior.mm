@@ -1,18 +1,18 @@
 @interface VKDetachedNavGestureCameraBehavior
-- (VKDetachedNavGestureCameraBehavior)initWithNavCameraController:(id)a3;
-- (void)beginPitch:(CGPoint)a3;
+- (VKDetachedNavGestureCameraBehavior)initWithNavCameraController:(id)controller;
+- (void)beginPitch:(CGPoint)pitch;
 - (void)dealloc;
-- (void)tapZoom:(CGPoint)a3 levels:(double)a4 completionHandler:(id)a5;
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4;
-- (void)updatePitch:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitch:(CGPoint)a3 translation:(double)a4;
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4;
-- (void)updateZoom:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
+- (void)tapZoom:(CGPoint)zoom levels:(double)levels completionHandler:(id)handler;
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point;
+- (void)updatePitch:(CGPoint)pitch degrees:(double)degrees;
+- (void)updatePitch:(CGPoint)pitch translation:(double)translation;
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point;
+- (void)updateZoom:(CGPoint)zoom oldFactor:(double)factor newFactor:(double)newFactor;
 @end
 
 @implementation VKDetachedNavGestureCameraBehavior
 
-- (void)updatePitch:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitch:(CGPoint)pitch degrees:(double)degrees
 {
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   if (WeakRetained)
@@ -95,7 +95,7 @@
         v23 = 0.0;
       }
 
-      v24 = a4 * 0.0174532925;
+      v24 = degrees * 0.0174532925;
       v25 = 0.0698131701;
       v26 = rubberBandOffsetForOffset(v24, v20, v23, 0.0698131701);
 
@@ -149,7 +149,7 @@
   }
 }
 
-- (void)updatePitch:(CGPoint)a3 translation:(double)a4
+- (void)updatePitch:(CGPoint)pitch translation:(double)translation
 {
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   if (WeakRetained)
@@ -233,7 +233,7 @@
         v24 = 0.0;
       }
 
-      v25 = value - a4;
+      v25 = value - translation;
       v26 = 0.0698131701;
       v27 = rubberBandOffsetForOffset(v25, v21, v24, 0.0698131701);
 
@@ -287,7 +287,7 @@
   }
 }
 
-- (void)beginPitch:(CGPoint)a3
+- (void)beginPitch:(CGPoint)pitch
 {
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   if (WeakRetained)
@@ -323,10 +323,10 @@
   }
 }
 
-- (void)updateRotate:(double)a3 atScreenPoint:(CGPoint)a4
+- (void)updateRotate:(double)rotate atScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   if (WeakRetained)
   {
@@ -340,7 +340,7 @@
     if (v107)
     {
       v10 = objc_loadWeakRetained(&self->super._cameraController);
-      v11 = [v10 mapDataAccess];
+      mapDataAccess = [v10 mapDataAccess];
 
       v12 = objc_loadWeakRetained(&self->super._cameraController);
       v13 = v12;
@@ -372,17 +372,17 @@
       }
 
       v17 = objc_loadWeakRetained(&self->_navCameraController);
-      v18 = [v17 canvas];
-      [v18 size];
+      canvas = [v17 canvas];
+      [canvas size];
       v20 = v19;
       v21 = objc_loadWeakRetained(&self->_navCameraController);
-      v22 = [v21 canvas];
-      [v22 size];
+      canvas2 = [v21 canvas];
+      [canvas2 size];
       v23.f64[0] = v20 * x;
       v23.f64[1] = v24 * (1.0 - y);
       v89 = v23;
 
-      md::MapDataAccess::groundCoordinateForScreenPoint(&v97, v11, &v100, 0, 0, v89);
+      md::MapDataAccess::groundCoordinateForScreenPoint(&v97, mapDataAccess, &v100, 0, 0, v89);
       v25 = v97;
       v26 = v99;
       if (v97 != -3.14159265 || v98 != -3.14159265 || v99 != 0.0)
@@ -392,14 +392,14 @@
         v96[2] = v99;
         v28 = v87;
         v27 = v88;
-        if (*(v11 + 8) != 1)
+        if (*(mapDataAccess + 8) != 1)
         {
           v112 = 0uLL;
           v113 = 0.0;
-          LODWORD(v29) = *(v11 + 9);
+          LODWORD(v29) = *(mapDataAccess + 9);
           if ((LODWORD(v29) - 1) >= 3)
           {
-            if (!*(v11 + 9))
+            if (!*(mapDataAccess + 9))
             {
               __xc = v98;
               gdc::CameraFrame<geo::Radians,double>::toLookAtMercator(&v107, &v100);
@@ -452,13 +452,13 @@
             v124 = v90;
             v125 = v29;
             geo::Coordinate3D<geo::Radians,double>::Coordinate3D<double>(&v112, &v124);
-            LOBYTE(v29) = *(v11 + 9);
+            LOBYTE(v29) = *(mapDataAccess + 9);
           }
 
           *&v124 = md::MapDataAccess::upForCoordinate(LOBYTE(v29), v96);
           *(&v124 + 1) = v48;
           v125 = v49;
-          v50 = a3 * 0.5;
+          v50 = rotate * 0.5;
           v51 = sin(v50);
           for (i = 0; i != 24; i += 8)
           {
@@ -565,7 +565,7 @@
           v109 = 0u;
           v107 = v112;
           v108 = v113;
-          gdc::ViewDataAccess::rigidTransformForFrame(&v122, **(v11 + 16), &v107);
+          gdc::ViewDataAccess::rigidTransformForFrame(&v122, **(mapDataAccess + 16), &v107);
           geo::RigidTransform<double,double>::inverse(&v124, &v122);
           v81 = gm::Quaternion<double>::operator*(&v126, &v127);
           v83 = atan2(-v81, v82);
@@ -605,12 +605,12 @@
   }
 }
 
-- (void)updatePan:(CGPoint)a3 lastScreenPoint:(CGPoint)a4
+- (void)updatePan:(CGPoint)pan lastScreenPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = point.y;
+  x = point.x;
+  v6 = pan.y;
+  v7 = pan.x;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   if (WeakRetained)
   {
@@ -624,7 +624,7 @@
     if (v63 != 0.0)
     {
       v11 = objc_loadWeakRetained(&self->super._cameraController);
-      v12 = [v11 mapDataAccess];
+      mapDataAccess = [v11 mapDataAccess];
 
       v13 = COERCE_DOUBLE(objc_loadWeakRetained(&self->super._cameraController));
       v14 = v13;
@@ -669,35 +669,35 @@
       v62 = v21;
       v60 = 0;
       v22 = objc_loadWeakRetained(&self->_navCameraController);
-      v23 = [v22 canvas];
-      [v23 size];
+      canvas = [v22 canvas];
+      [canvas size];
       v25 = v24;
       v26 = objc_loadWeakRetained(&self->_navCameraController);
-      v27 = [v26 canvas];
-      [v27 size];
+      canvas2 = [v26 canvas];
+      [canvas2 size];
       v28.f64[0] = v25 * v7;
       v28.f64[1] = v29 * (1.0 - v6);
       v45 = v28;
 
-      md::MapDataAccess::groundCoordinateForScreenPoint(&v53, v12, &v56, 0, 0, v45);
+      md::MapDataAccess::groundCoordinateForScreenPoint(&v53, mapDataAccess, &v56, 0, 0, v45);
       v30 = objc_loadWeakRetained(&self->_navCameraController);
-      v31 = [v30 canvas];
-      [v31 size];
+      canvas3 = [v30 canvas];
+      [canvas3 size];
       v33 = v32;
       v34 = objc_loadWeakRetained(&self->_navCameraController);
-      v35 = [v34 canvas];
-      [v35 size];
+      canvas4 = [v34 canvas];
+      [canvas4 size];
       v36.f64[0] = v33 * x;
       v36.f64[1] = v37 * (1.0 - y);
       v46 = v36;
 
-      md::MapDataAccess::groundCoordinateForScreenPoint(&v50, v12, &v56, 0, 0, v46);
+      md::MapDataAccess::groundCoordinateForScreenPoint(&v50, mapDataAccess, &v56, 0, 0, v46);
       if ((v53 != -3.14159265 || v54 != -3.14159265 || v55 != 0.0) && (v50 != -3.14159265 || v51 != -3.14159265 || v52 != 0.0))
       {
         v63 = fmax(fmin((v18 + v50 - v53) * 57.2957795, 75.0), -75.0) * 0.0174532925;
         v38 = fmod(v51 - v54 + v47 + 3.14159265, 6.28318531);
         v64 = fmod(v38 + 6.28318531, 6.28318531) + -3.14159265;
-        v39 = md::MapDataAccess::heightAtCoordinate(v12, &v63);
+        v39 = md::MapDataAccess::heightAtCoordinate(mapDataAccess, &v63);
         if ((v40 & 0x100) != 0)
         {
           v41 = v39;
@@ -732,10 +732,10 @@
   }
 }
 
-- (void)updateZoom:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updateZoom:(CGPoint)zoom oldFactor:(double)factor newFactor:(double)newFactor
 {
-  y = a3.y;
-  x = a3.x;
+  y = zoom.y;
+  x = zoom.x;
   WeakRetained = objc_loadWeakRetained(&self->super._cameraController);
   if (WeakRetained)
   {
@@ -749,7 +749,7 @@
     if (v67)
     {
       v12 = objc_loadWeakRetained(&self->super._cameraController);
-      v13 = [v12 mapDataAccess];
+      mapDataAccess = [v12 mapDataAccess];
 
       v14 = COERCE_DOUBLE(objc_loadWeakRetained(&self->super._cameraController));
       v15 = v14;
@@ -780,17 +780,17 @@
       }
 
       v18 = objc_loadWeakRetained(&self->_navCameraController);
-      v19 = [v18 canvas];
-      [v19 size];
+      canvas = [v18 canvas];
+      [canvas size];
       v21 = v20;
       v22 = objc_loadWeakRetained(&self->_navCameraController);
-      v23 = [v22 canvas];
-      [v23 size];
+      canvas2 = [v22 canvas];
+      [canvas2 size];
       v24.f64[0] = v21 * x;
       v24.f64[1] = v25 * (1.0 - y);
       v60 = v24;
 
-      md::MapDataAccess::groundCoordinateForScreenPoint(&v64, v13, &v67, 0, 0, v60);
+      md::MapDataAccess::groundCoordinateForScreenPoint(&v64, mapDataAccess, &v67, 0, 0, v60);
       if (v64 != -3.14159265 || v65 != -3.14159265 || v66 != 0.0)
       {
         v26 = objc_loadWeakRetained(&self->_navCameraController);
@@ -801,11 +801,11 @@
         [v29 maxZoomHeight];
         v31 = v30;
 
-        v32 = 1.0 - 1.0 / a4;
+        v32 = 1.0 - 1.0 / factor;
         v33 = v32;
         v34 = 1.0 / (1.0 - v32);
         v57 = v64;
-        v35 = 1.0 - 1.0 / a5;
+        v35 = 1.0 - 1.0 / newFactor;
         v36 = fmod((*(&v59 + 1) - v65 * v32) * v34 + 3.14159265 + (v65 - (*(&v59 + 1) - v65 * v32) * v34) * v35, 6.28318531);
         v37 = fmod(v36 + 6.28318531, 6.28318531);
         v38 = objc_loadWeakRetained(&self->_navCameraController);
@@ -856,28 +856,28 @@
         if (v61 >= *(&v58 + 1) == v49 < v44)
         {
           v53 = objc_loadWeakRetained(&self->_navCameraController);
-          v54 = [v53 cameraDelegate];
-          [v54 mapLayerCanZoomInDidChange:v49 < v44];
+          cameraDelegate = [v53 cameraDelegate];
+          [cameraDelegate mapLayerCanZoomInDidChange:v49 < v44];
         }
 
         if (v31 <= *(&v58 + 1) == v52 > v44)
         {
           v55 = objc_loadWeakRetained(&self->_navCameraController);
-          v56 = [v55 cameraDelegate];
-          [v56 mapLayerCanZoomOutDidChange:v52 > v44];
+          cameraDelegate2 = [v55 cameraDelegate];
+          [cameraDelegate2 mapLayerCanZoomOutDidChange:v52 > v44];
         }
       }
     }
   }
 }
 
-- (void)tapZoom:(CGPoint)a3 levels:(double)a4 completionHandler:(id)a5
+- (void)tapZoom:(CGPoint)zoom levels:(double)levels completionHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  y = zoom.y;
+  x = zoom.x;
+  handlerCopy = handler;
   startZoomScale = self->_startZoomScale;
-  v11 = exp2(a4);
+  v11 = exp2(levels);
   WeakRetained = objc_loadWeakRetained(&self->_navCameraController);
   [WeakRetained minZoomScale];
   v14 = v13;
@@ -912,7 +912,7 @@
   v25 = 3221225472;
   v26 = __71__VKDetachedNavGestureCameraBehavior_tapZoom_levels_completionHandler___block_invoke_2;
   v27 = &unk_1E7B3D578;
-  v22 = v9;
+  v22 = handlerCopy;
   v28 = v22;
   [(VKAnimation *)self->_tapZoomAnimation setCompletionHandler:&v24];
   v23 = objc_loadWeakRetained(&self->_navCameraController);
@@ -961,16 +961,16 @@ uint64_t __71__VKDetachedNavGestureCameraBehavior_tapZoom_levels_completionHandl
   [(VKDetachedNavGestureCameraBehavior *)&v4 dealloc];
 }
 
-- (VKDetachedNavGestureCameraBehavior)initWithNavCameraController:(id)a3
+- (VKDetachedNavGestureCameraBehavior)initWithNavCameraController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = VKDetachedNavGestureCameraBehavior;
-  v5 = [(VKGestureCameraBehavior *)&v8 initWithCameraController:v4];
+  v5 = [(VKGestureCameraBehavior *)&v8 initWithCameraController:controllerCopy];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_navCameraController, v4);
+    objc_storeWeak(&v5->_navCameraController, controllerCopy);
     v6->super._notifyCameraStateChanges = 1;
     v6->_startZoomScale = 1.0;
     v6->_startPitch._value = 0.0;

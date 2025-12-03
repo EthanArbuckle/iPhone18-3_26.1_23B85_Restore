@@ -1,20 +1,20 @@
 @interface HDSHSleepApneaNotificationUITriggerObserver
-- (HDSHSleepApneaNotificationUITriggerObserver)initWithProfile:(id)a3;
+- (HDSHSleepApneaNotificationUITriggerObserver)initWithProfile:(id)profile;
 - (void)dealloc;
 @end
 
 @implementation HDSHSleepApneaNotificationUITriggerObserver
 
-- (HDSHSleepApneaNotificationUITriggerObserver)initWithProfile:(id)a3
+- (HDSHSleepApneaNotificationUITriggerObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDSHSleepApneaNotificationUITriggerObserver;
   v5 = [(HDSHSleepApneaNotificationUITriggerObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     [(HDSHSleepApneaNotificationUITriggerObserver *)v6 _registerUITriggers];
   }
 

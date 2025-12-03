@@ -3,18 +3,18 @@
 - (BKAlternateSystemAppManager)init;
 - (BOOL)isBlockingSystemApp;
 - (NSString)alternateSystemAppBundleIdentifier;
-- (void)_queue_cleanUpAfterAlternativeSystemApp:(id)a3;
-- (void)_setBlockingSystemApp:(BOOL)a3;
-- (void)blockSystemAppForAlternateSystemAppWithCompletion:(id)a3;
-- (void)openAlternateSystemApp:(id)a3 options:(id)a4 withResult:(id)a5 andExitBlock:(id)a6;
-- (void)terminateAlternateSystemApp:(id)a3 forReason:(int)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7;
+- (void)_queue_cleanUpAfterAlternativeSystemApp:(id)app;
+- (void)_setBlockingSystemApp:(BOOL)app;
+- (void)blockSystemAppForAlternateSystemAppWithCompletion:(id)completion;
+- (void)openAlternateSystemApp:(id)app options:(id)options withResult:(id)result andExitBlock:(id)block;
+- (void)terminateAlternateSystemApp:(id)app forReason:(int)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion;
 - (void)terminateAnyAlternateSystemApp;
-- (void)unblockSystemAppForAlternateSystemAppWithCompletion:(id)a3;
+- (void)unblockSystemAppForAlternateSystemAppWithCompletion:(id)completion;
 @end
 
 @implementation BKAlternateSystemAppManager
 
-- (void)_setBlockingSystemApp:(BOOL)a3
+- (void)_setBlockingSystemApp:(BOOL)app
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -22,23 +22,23 @@
   v4[2] = sub_10005543C;
   v4[3] = &unk_1000FCD90;
   v4[4] = self;
-  v5 = a3;
+  appCopy = app;
   dispatch_sync(queue, v4);
 }
 
-- (void)_queue_cleanUpAfterAlternativeSystemApp:(id)a3
+- (void)_queue_cleanUpAfterAlternativeSystemApp:(id)app
 {
-  v4 = a3;
-  v5 = [(BKAlternateSystemAppManager *)self alternateSystemApp];
+  appCopy = app;
+  alternateSystemApp = [(BKAlternateSystemAppManager *)self alternateSystemApp];
 
   v6 = BKLogAlternateSystemApp();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
-  if (v5 == v4)
+  if (alternateSystemApp == appCopy)
   {
     if (v7)
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = appCopy;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[Manager] clean up: %{public}@", &v9, 0xCu);
     }
 
@@ -51,7 +51,7 @@
     {
       alternateSystemApp = self->_alternateSystemApp;
       v9 = 138543618;
-      v10 = v4;
+      v10 = appCopy;
       v11 = 2114;
       v12 = alternateSystemApp;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[Manager] clean up: %{public}@, but expected %{public}@", &v9, 0x16u);
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)unblockSystemAppForAlternateSystemAppWithCompletion:(id)a3
+- (void)unblockSystemAppForAlternateSystemAppWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -73,9 +73,9 @@
   [v6 unblockSystemApp];
 
   [(BKAlternateSystemAppManager *)self _setBlockingSystemApp:0];
-  if (v4)
+  if (completionCopy)
   {
-    dispatch_async(self->_queue, v4);
+    dispatch_async(self->_queue, completionCopy);
   }
 }
 
@@ -96,20 +96,20 @@
   }
 }
 
-- (void)terminateAlternateSystemApp:(id)a3 forReason:(int)a4 andReport:(BOOL)a5 withDescription:(id)a6 completion:(id)a7
+- (void)terminateAlternateSystemApp:(id)app forReason:(int)reason andReport:(BOOL)report withDescription:(id)description completion:(id)completion
 {
-  v9 = a3;
-  v10 = a7;
-  if ([(NSString *)self->_openBundleId isEqualToString:v9])
+  appCopy = app;
+  completionCopy = completion;
+  if ([(NSString *)self->_openBundleId isEqualToString:appCopy])
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100055804;
     block[3] = &unk_1000FC468;
-    v14 = v9;
-    v15 = self;
-    v16 = v10;
+    v14 = appCopy;
+    selfCopy = self;
+    v16 = completionCopy;
     dispatch_async(queue, block);
     [(BKAlternateSystemAppManager *)self setOpenBundleId:0];
     v12 = +[BKSystemShellSentinel sharedInstance];
@@ -117,32 +117,32 @@
   }
 }
 
-- (void)openAlternateSystemApp:(id)a3 options:(id)a4 withResult:(id)a5 andExitBlock:(id)a6
+- (void)openAlternateSystemApp:(id)app options:(id)options withResult:(id)result andExitBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  appCopy = app;
+  optionsCopy = options;
+  resultCopy = result;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000559E8;
   block[3] = &unk_1000FB980;
-  v20 = v10;
-  v21 = v11;
-  v22 = self;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = appCopy;
+  v21 = optionsCopy;
+  selfCopy = self;
+  v23 = resultCopy;
+  v24 = blockCopy;
+  v15 = blockCopy;
+  v16 = resultCopy;
+  v17 = optionsCopy;
+  v18 = appCopy;
   dispatch_async(queue, block);
 }
 
-- (void)blockSystemAppForAlternateSystemAppWithCompletion:(id)a3
+- (void)blockSystemAppForAlternateSystemAppWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = BKLogAlternateSystemApp();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -154,9 +154,9 @@
   v6 = +[BKSystemShellSentinel sharedInstance];
   [v6 blockSystemApp];
 
-  if (v4)
+  if (completionCopy)
   {
-    dispatch_async(self->_queue, v4);
+    dispatch_async(self->_queue, completionCopy);
   }
 }
 

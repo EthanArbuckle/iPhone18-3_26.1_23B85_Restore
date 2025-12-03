@@ -1,15 +1,15 @@
 @interface AFDeviceContextHistoryConfiguration
-+ (id)newWithBuilder:(id)a3;
-- (AFDeviceContextHistoryConfiguration)initWithBuilder:(id)a3;
-- (AFDeviceContextHistoryConfiguration)initWithCoder:(id)a3;
-- (AFDeviceContextHistoryConfiguration)initWithDictionaryRepresentation:(id)a3;
-- (AFDeviceContextHistoryConfiguration)initWithKeepsHistory:(BOOL)a3 historyBufferSize:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFDeviceContextHistoryConfiguration)initWithBuilder:(id)builder;
+- (AFDeviceContextHistoryConfiguration)initWithCoder:(id)coder;
+- (AFDeviceContextHistoryConfiguration)initWithDictionaryRepresentation:(id)representation;
+- (AFDeviceContextHistoryConfiguration)initWithKeepsHistory:(BOOL)history historyBufferSize:(unint64_t)size;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDeviceContextHistoryConfiguration
@@ -28,12 +28,12 @@
   return v6;
 }
 
-- (AFDeviceContextHistoryConfiguration)initWithDictionaryRepresentation:(id)a3
+- (AFDeviceContextHistoryConfiguration)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"keepsHistory"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"keepsHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,8 +45,8 @@
       v6 = 0;
     }
 
-    v8 = [v6 BOOLValue];
-    v9 = [v4 objectForKey:@"historyBufferSize"];
+    bOOLValue = [v6 BOOLValue];
+    v9 = [representationCopy objectForKey:@"historyBufferSize"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -59,48 +59,48 @@
       v10 = 0;
     }
 
-    v11 = [v10 unsignedIntegerValue];
-    self = [(AFDeviceContextHistoryConfiguration *)self initWithKeepsHistory:v8 historyBufferSize:v11];
-    v7 = self;
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    self = [(AFDeviceContextHistoryConfiguration *)self initWithKeepsHistory:bOOLValue historyBufferSize:unsignedIntegerValue];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   keepsHistory = self->_keepsHistory;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:keepsHistory];
-  [v6 encodeObject:v7 forKey:@"AFDeviceContextHistoryConfiguration::keepsHistory"];
+  [coderCopy encodeObject:v7 forKey:@"AFDeviceContextHistoryConfiguration::keepsHistory"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_historyBufferSize];
-  [v6 encodeObject:v8 forKey:@"AFDeviceContextHistoryConfiguration::historyBufferSize"];
+  [coderCopy encodeObject:v8 forKey:@"AFDeviceContextHistoryConfiguration::historyBufferSize"];
 }
 
-- (AFDeviceContextHistoryConfiguration)initWithCoder:(id)a3
+- (AFDeviceContextHistoryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceContextHistoryConfiguration::keepsHistory"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceContextHistoryConfiguration::keepsHistory"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceContextHistoryConfiguration::historyBufferSize"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFDeviceContextHistoryConfiguration::historyBufferSize"];
 
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return [(AFDeviceContextHistoryConfiguration *)self initWithKeepsHistory:v6 historyBufferSize:v8];
+  return [(AFDeviceContextHistoryConfiguration *)self initWithKeepsHistory:bOOLValue historyBufferSize:unsignedIntegerValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -110,7 +110,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       keepsHistory = self->_keepsHistory;
       if (keepsHistory == [(AFDeviceContextHistoryConfiguration *)v5 keepsHistory])
       {
@@ -143,7 +143,7 @@
   return v6 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v10.receiver = self;
@@ -161,14 +161,14 @@
   return v8;
 }
 
-- (AFDeviceContextHistoryConfiguration)initWithKeepsHistory:(BOOL)a3 historyBufferSize:(unint64_t)a4
+- (AFDeviceContextHistoryConfiguration)initWithKeepsHistory:(BOOL)history historyBufferSize:(unint64_t)size
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78__AFDeviceContextHistoryConfiguration_initWithKeepsHistory_historyBufferSize___block_invoke;
   v5[3] = &__block_descriptor_41_e55_v16__0___AFDeviceContextHistoryConfigurationMutating__8l;
-  v6 = a3;
-  v5[4] = a4;
+  historyCopy = history;
+  v5[4] = size;
   return [(AFDeviceContextHistoryConfiguration *)self initWithBuilder:v5];
 }
 
@@ -180,17 +180,17 @@ void __78__AFDeviceContextHistoryConfiguration_initWithKeepsHistory_historyBuffe
   [v4 setHistoryBufferSize:*(a1 + 32)];
 }
 
-- (AFDeviceContextHistoryConfiguration)initWithBuilder:(id)a3
+- (AFDeviceContextHistoryConfiguration)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFDeviceContextHistoryConfiguration;
   v5 = [(AFDeviceContextHistoryConfiguration *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFDeviceContextHistoryConfigurationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFDeviceContextHistoryConfigurationMutation *)v7 isDirty])
     {
       v6->_keepsHistory = [(_AFDeviceContextHistoryConfigurationMutation *)v7 getKeepsHistory];
@@ -201,21 +201,21 @@ void __78__AFDeviceContextHistoryConfiguration_initWithKeepsHistory_historyBuffe
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFDeviceContextHistoryConfigurationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFDeviceContextHistoryConfigurationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFDeviceContextHistoryConfiguration);

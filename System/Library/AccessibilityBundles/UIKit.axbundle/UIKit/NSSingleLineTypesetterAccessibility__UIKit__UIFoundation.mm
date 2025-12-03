@@ -1,18 +1,18 @@
 @interface NSSingleLineTypesetterAccessibility__UIKit__UIFoundation
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)createRenderingContextForCharacterRange:(_NSRange)a3 typesetterBehavior:(int64_t)a4 usesScreenFonts:(BOOL)a5 hasStrongRight:(BOOL)a6 syncDirection:(BOOL)a7 mirrorsTextAlignment:(BOOL)a8 maximumWidth:(double)a9;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)createRenderingContextForCharacterRange:(_NSRange)range typesetterBehavior:(int64_t)behavior usesScreenFonts:(BOOL)fonts hasStrongRight:(BOOL)right syncDirection:(BOOL)direction mirrorsTextAlignment:(BOOL)alignment maximumWidth:(double)width;
 @end
 
 @implementation NSSingleLineTypesetterAccessibility__UIKit__UIFoundation
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"NSSingleLineTypesetter";
   v5 = "@";
   [location[0] validateClass:"{_NSRange=QQ}" hasInstanceMethod:"q" withFullSignature:{"B", "B", "B", "B", "d", 0}];
@@ -22,36 +22,36 @@
   objc_storeStrong(v7, v6);
 }
 
-- (id)createRenderingContextForCharacterRange:(_NSRange)a3 typesetterBehavior:(int64_t)a4 usesScreenFonts:(BOOL)a5 hasStrongRight:(BOOL)a6 syncDirection:(BOOL)a7 mirrorsTextAlignment:(BOOL)a8 maximumWidth:(double)a9
+- (id)createRenderingContextForCharacterRange:(_NSRange)range typesetterBehavior:(int64_t)behavior usesScreenFonts:(BOOL)fonts hasStrongRight:(BOOL)right syncDirection:(BOOL)direction mirrorsTextAlignment:(BOOL)alignment maximumWidth:(double)width
 {
-  v26 = a3;
-  v25 = self;
+  rangeCopy = range;
+  selfCopy = self;
   v24 = a2;
-  v23 = a4;
-  v22 = a5;
-  v21 = a6;
-  v20 = a7;
-  v19 = a8;
-  v18[1] = *&a9;
+  behaviorCopy = behavior;
+  fontsCopy = fonts;
+  rightCopy = right;
+  directionCopy = direction;
+  alignmentCopy = alignment;
+  v18[1] = *&width;
   v17.receiver = self;
   v17.super_class = NSSingleLineTypesetterAccessibility__UIKit__UIFoundation;
-  v18[0] = [(NSSingleLineTypesetterAccessibility__UIKit__UIFoundation *)&v17 createRenderingContextForCharacterRange:a3.location typesetterBehavior:a3.length usesScreenFonts:a4 hasStrongRight:a5 syncDirection:a6 mirrorsTextAlignment:a7 maximumWidth:a9, a8];
+  v18[0] = [(NSSingleLineTypesetterAccessibility__UIKit__UIFoundation *)&v17 createRenderingContextForCharacterRange:range.location typesetterBehavior:range.length usesScreenFonts:behavior hasStrongRight:fonts syncDirection:right mirrorsTextAlignment:direction maximumWidth:width, alignment];
   v15 = 0;
   objc_opt_class();
-  v12 = [(NSSingleLineTypesetterAccessibility__UIKit__UIFoundation *)v25 safeValueForKey:@"attributedString"];
+  v12 = [(NSSingleLineTypesetterAccessibility__UIKit__UIFoundation *)selfCopy safeValueForKey:@"attributedString"];
   v14 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v12);
   v13 = MEMORY[0x29EDC9748](v14);
   objc_storeStrong(&v14, 0);
-  v16 = [v13 string];
+  string = [v13 string];
   *&v9 = MEMORY[0x29EDC9740](v13).n128_u64[0];
-  if ([v16 length])
+  if ([string length])
   {
-    [v18[0] _accessibilitySetRetainedValue:v16 forKey:@"AXStringToBeRenderedByContext"];
+    [v18[0] _accessibilitySetRetainedValue:string forKey:@"AXStringToBeRenderedByContext"];
   }
 
   v11 = MEMORY[0x29EDC9748](v18[0]);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&string, 0);
   objc_storeStrong(v18, 0);
 
   return v11;

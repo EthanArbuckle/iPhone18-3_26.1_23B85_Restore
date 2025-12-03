@@ -1,24 +1,24 @@
 @interface UIKeyboardEmojiVariantDivider
 - (CGSize)intrinsicContentSize;
-- (UIKeyboardEmojiVariantDivider)initWithFrame:(CGRect)a3;
-- (void)setRenderConfig:(id)a3;
+- (UIKeyboardEmojiVariantDivider)initWithFrame:(CGRect)frame;
+- (void)setRenderConfig:(id)config;
 @end
 
 @implementation UIKeyboardEmojiVariantDivider
 
-- (UIKeyboardEmojiVariantDivider)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiVariantDivider)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = UIKeyboardEmojiVariantDivider;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIView alloc] initWithFrame:3.0, 0.0, 1.0, 38.0];
     backgroundView = v3->_backgroundView;
     v3->_backgroundView = v4;
 
-    v6 = [(UIView *)v3->_backgroundView layer];
-    [v6 setCornerRadius:6.0];
+    layer = [(UIView *)v3->_backgroundView layer];
+    [layer setCornerRadius:6.0];
 
     v7 = +[UIColor separatorColor];
     [(UIView *)v3->_backgroundView setBackgroundColor:v7];
@@ -29,9 +29,9 @@
   return v3;
 }
 
-- (void)setRenderConfig:(id)a3
+- (void)setRenderConfig:(id)config
 {
-  if ([a3 lightKeyboard])
+  if ([config lightKeyboard])
   {
     UIKeyboardGetLightCandidateSeparatorColor();
   }

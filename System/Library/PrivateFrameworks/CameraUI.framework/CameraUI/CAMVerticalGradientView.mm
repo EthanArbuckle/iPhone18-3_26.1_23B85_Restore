@@ -1,28 +1,28 @@
 @interface CAMVerticalGradientView
-- (CAMVerticalGradientView)initWithFrame:(CGRect)a3;
-- (id)_verticalGradientImageWithSize:(CGSize)a3;
+- (CAMVerticalGradientView)initWithFrame:(CGRect)frame;
+- (id)_verticalGradientImageWithSize:(CGSize)size;
 - (void)_updateGradient;
 - (void)layoutSubviews;
-- (void)setGradientAscending:(BOOL)a3;
-- (void)setGradientColor:(id)a3;
-- (void)setGradientHeight:(double)a3 animated:(BOOL)a4;
-- (void)setGradientVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setGradientAscending:(BOOL)ascending;
+- (void)setGradientColor:(id)color;
+- (void)setGradientHeight:(double)height animated:(BOOL)animated;
+- (void)setGradientVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation CAMVerticalGradientView
 
-- (CAMVerticalGradientView)initWithFrame:(CGRect)a3
+- (CAMVerticalGradientView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CAMVerticalGradientView;
-  v3 = [(CAMVerticalGradientView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMVerticalGradientView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_gradientAscending = 1;
-    v5 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     gradientColor = v4->_gradientColor;
-    v4->_gradientColor = v5;
+    v4->_gradientColor = blackColor;
 
     [(CAMVerticalGradientView *)v4 _updateGradient];
     [(CAMVerticalGradientView *)v4 setClipsToBounds:1];
@@ -34,10 +34,10 @@
 
 - (void)_updateGradient
 {
-  v8 = [(CAMVerticalGradientView *)self _gradientImageView];
-  if (v8)
+  _gradientImageView = [(CAMVerticalGradientView *)self _gradientImageView];
+  if (_gradientImageView)
   {
-    [v8 removeFromSuperview];
+    [_gradientImageView removeFromSuperview];
   }
 
   v3 = [(CAMVerticalGradientView *)self _verticalGradientImageWithSize:1.0, 100.0];
@@ -46,8 +46,8 @@
   [(CAMVerticalGradientView *)self addSubview:v5];
   [(CAMVerticalGradientView *)self set_gradientImageView:v5];
   v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v7 = [(CAMVerticalGradientView *)self gradientColor];
-  [v6 setBackgroundColor:v7];
+  gradientColor = [(CAMVerticalGradientView *)self gradientColor];
+  [v6 setBackgroundColor:gradientColor];
 
   [(CAMVerticalGradientView *)self addSubview:v6];
   [(CAMVerticalGradientView *)self set_fillView:v6];
@@ -79,8 +79,8 @@
     y = v32.origin.y;
     width = v32.size.width;
     height = v32.size.height;
-    v17 = [(CAMVerticalGradientView *)self _gradientImageView];
-    [v17 setFrame:{x, y, width, height}];
+    _gradientImageView = [(CAMVerticalGradientView *)self _gradientImageView];
+    [_gradientImageView setFrame:{x, y, width, height}];
 
     v18 = v10 - v11;
   }
@@ -96,8 +96,8 @@
     v20 = v34.origin.y;
     v21 = v34.size.width;
     v22 = v34.size.height;
-    v23 = [(CAMVerticalGradientView *)self _gradientImageView];
-    [v23 setFrame:{v19, v20, v21, v22}];
+    _gradientImageView2 = [(CAMVerticalGradientView *)self _gradientImageView];
+    [_gradientImageView2 setFrame:{v19, v20, v21, v22}];
 
     v18 = -(v10 - v11);
   }
@@ -115,19 +115,19 @@
   [recta setFrame:{v24, v25, v26, v27}];
 }
 
-- (id)_verticalGradientImageWithSize:(CGSize)a3
+- (id)_verticalGradientImageWithSize:(CGSize)size
 {
-  height = a3.height;
+  height = size.height;
   v20[2] = *MEMORY[0x1E69E9840];
-  UIGraphicsBeginImageContextWithOptions(a3, 0, 0.0);
+  UIGraphicsBeginImageContextWithOptions(size, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   if ([(CAMVerticalGradientView *)self gradientAscending])
   {
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    v20[0] = [v7 CGColor];
-    v8 = [(CAMVerticalGradientView *)self gradientColor];
-    v20[1] = [v8 CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v20[0] = [clearColor CGColor];
+    gradientColor = [(CAMVerticalGradientView *)self gradientColor];
+    v20[1] = [gradientColor CGColor];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
 
     v19 = 0x3FD51EB851EB851FLL;
@@ -137,10 +137,10 @@
 
   else
   {
-    v12 = [(CAMVerticalGradientView *)self gradientColor];
-    v18[0] = [v12 CGColor];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    v18[1] = [v13 CGColor];
+    gradientColor2 = [(CAMVerticalGradientView *)self gradientColor];
+    v18[0] = [gradientColor2 CGColor];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    v18[1] = [clearColor2 CGColor];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
 
     locations = 0.0;
@@ -163,22 +163,22 @@
   return v15;
 }
 
-- (void)setGradientHeight:(double)a3 animated:(BOOL)a4
+- (void)setGradientHeight:(double)height animated:(BOOL)animated
 {
-  if (self->_gradientHeight != a3)
+  if (self->_gradientHeight != height)
   {
     v9[7] = v4;
     v9[8] = v5;
-    v6 = a4;
-    self->_gradientHeight = a3;
-    if (a4)
+    animatedCopy = animated;
+    self->_gradientHeight = height;
+    if (animated)
     {
       [(CAMVerticalGradientView *)self layoutIfNeeded];
     }
 
     [(CAMVerticalGradientView *)self setNeedsLayout];
     v8 = 0.25;
-    if (!v6)
+    if (!animatedCopy)
     {
       v8 = 0.0;
     }
@@ -192,22 +192,22 @@
   }
 }
 
-- (void)setGradientVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setGradientVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_gradientVisible != a3)
+  if (self->_gradientVisible != visible)
   {
     v9[7] = v4;
     v9[8] = v5;
-    v6 = a4;
-    self->_gradientVisible = a3;
-    if (a4)
+    animatedCopy = animated;
+    self->_gradientVisible = visible;
+    if (animated)
     {
       [(CAMVerticalGradientView *)self layoutIfNeeded];
     }
 
     [(CAMVerticalGradientView *)self setNeedsLayout];
     v8 = 0.25;
-    if (!v6)
+    if (!animatedCopy)
     {
       v8 = 0.0;
     }
@@ -221,24 +221,24 @@
   }
 }
 
-- (void)setGradientAscending:(BOOL)a3
+- (void)setGradientAscending:(BOOL)ascending
 {
-  if (self->_gradientAscending != a3)
+  if (self->_gradientAscending != ascending)
   {
-    self->_gradientAscending = a3;
+    self->_gradientAscending = ascending;
     [(CAMVerticalGradientView *)self _updateGradient];
   }
 }
 
-- (void)setGradientColor:(id)a3
+- (void)setGradientColor:(id)color
 {
-  v5 = a3;
-  if (self->_gradientColor != v5)
+  colorCopy = color;
+  if (self->_gradientColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_gradientColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_gradientColor, color);
     [(CAMVerticalGradientView *)self _updateGradient];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 

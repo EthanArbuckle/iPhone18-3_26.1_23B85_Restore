@@ -1,38 +1,38 @@
 @interface BMDataCollectorTelemetry
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDataCollectorTelemetry)initWithBundleId:(id)a3 uploadTelemetry:(id)a4 processingTelemetry:(id)a5 deviceContext:(id)a6;
-- (BMDataCollectorTelemetry)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMDataCollectorTelemetry)initWithBundleId:(id)id uploadTelemetry:(id)telemetry processingTelemetry:(id)processingTelemetry deviceContext:(id)context;
+- (BMDataCollectorTelemetry)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDataCollectorTelemetry
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDataCollectorTelemetry *)self bundleId];
-    v7 = [v5 bundleId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bundleId = [(BMDataCollectorTelemetry *)self bundleId];
+    bundleId2 = [v5 bundleId];
+    v8 = bundleId2;
+    if (bundleId == bundleId2)
     {
     }
 
     else
     {
-      v9 = [(BMDataCollectorTelemetry *)self bundleId];
-      v10 = [v5 bundleId];
-      v11 = [v9 isEqual:v10];
+      bundleId3 = [(BMDataCollectorTelemetry *)self bundleId];
+      bundleId4 = [v5 bundleId];
+      v11 = [bundleId3 isEqual:bundleId4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMDataCollectorTelemetry *)self uploadTelemetry];
-    v14 = [v5 uploadTelemetry];
-    v15 = v14;
-    if (v13 == v14)
+    uploadTelemetry = [(BMDataCollectorTelemetry *)self uploadTelemetry];
+    uploadTelemetry2 = [v5 uploadTelemetry];
+    v15 = uploadTelemetry2;
+    if (uploadTelemetry == uploadTelemetry2)
     {
     }
 
     else
     {
-      v16 = [(BMDataCollectorTelemetry *)self uploadTelemetry];
-      v17 = [v5 uploadTelemetry];
-      v18 = [v16 isEqual:v17];
+      uploadTelemetry3 = [(BMDataCollectorTelemetry *)self uploadTelemetry];
+      uploadTelemetry4 = [v5 uploadTelemetry];
+      v18 = [uploadTelemetry3 isEqual:uploadTelemetry4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMDataCollectorTelemetry *)self processingTelemetry];
-    v20 = [v5 processingTelemetry];
-    v21 = v20;
-    if (v19 == v20)
+    processingTelemetry = [(BMDataCollectorTelemetry *)self processingTelemetry];
+    processingTelemetry2 = [v5 processingTelemetry];
+    v21 = processingTelemetry2;
+    if (processingTelemetry == processingTelemetry2)
     {
     }
 
     else
     {
-      v22 = [(BMDataCollectorTelemetry *)self processingTelemetry];
-      v23 = [v5 processingTelemetry];
-      v24 = [v22 isEqual:v23];
+      processingTelemetry3 = [(BMDataCollectorTelemetry *)self processingTelemetry];
+      processingTelemetry4 = [v5 processingTelemetry];
+      v24 = [processingTelemetry3 isEqual:processingTelemetry4];
 
       if (!v24)
       {
@@ -82,18 +82,18 @@ LABEL_19:
       }
     }
 
-    v25 = [(BMDataCollectorTelemetry *)self deviceContext];
-    v26 = [v5 deviceContext];
-    if (v25 == v26)
+    deviceContext = [(BMDataCollectorTelemetry *)self deviceContext];
+    deviceContext2 = [v5 deviceContext];
+    if (deviceContext == deviceContext2)
     {
       v12 = 1;
     }
 
     else
     {
-      v27 = [(BMDataCollectorTelemetry *)self deviceContext];
-      v28 = [v5 deviceContext];
-      v12 = [v27 isEqual:v28];
+      deviceContext3 = [(BMDataCollectorTelemetry *)self deviceContext];
+      deviceContext4 = [v5 deviceContext];
+      v12 = [deviceContext3 isEqual:deviceContext4];
     }
 
     goto LABEL_19;
@@ -108,52 +108,52 @@ LABEL_20:
 - (id)jsonDictionary
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDataCollectorTelemetry *)self bundleId];
-  v4 = [(BMDataCollectorTelemetry *)self uploadTelemetry];
-  v5 = [v4 jsonDictionary];
+  bundleId = [(BMDataCollectorTelemetry *)self bundleId];
+  uploadTelemetry = [(BMDataCollectorTelemetry *)self uploadTelemetry];
+  jsonDictionary = [uploadTelemetry jsonDictionary];
 
-  v6 = [(BMDataCollectorTelemetry *)self processingTelemetry];
-  v7 = [v6 jsonDictionary];
+  processingTelemetry = [(BMDataCollectorTelemetry *)self processingTelemetry];
+  jsonDictionary2 = [processingTelemetry jsonDictionary];
 
-  v8 = [(BMDataCollectorTelemetry *)self deviceContext];
-  v9 = [v8 jsonDictionary];
+  deviceContext = [(BMDataCollectorTelemetry *)self deviceContext];
+  jsonDictionary3 = [deviceContext jsonDictionary];
 
   v17[0] = @"bundleId";
-  v10 = v3;
-  if (!v3)
+  null = bundleId;
+  if (!bundleId)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v10;
+  v18[0] = null;
   v17[1] = @"uploadTelemetry";
-  v11 = v5;
-  if (!v5)
+  null2 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v11;
+  v18[1] = null2;
   v17[2] = @"processingTelemetry";
-  v12 = v7;
-  if (!v7)
+  null3 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v12;
+  v18[2] = null3;
   v17[3] = @"deviceContext";
-  v13 = v9;
-  if (!v9)
+  null4 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v13;
+  v18[3] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
-  if (v9)
+  if (jsonDictionary3)
   {
-    if (v7)
+    if (jsonDictionary2)
     {
       goto LABEL_11;
     }
@@ -162,17 +162,17 @@ LABEL_20:
   else
   {
 
-    if (v7)
+    if (jsonDictionary2)
     {
 LABEL_11:
-      if (v5)
+      if (jsonDictionary)
       {
         goto LABEL_12;
       }
 
 LABEL_18:
 
-      if (v3)
+      if (bundleId)
       {
         goto LABEL_13;
       }
@@ -181,13 +181,13 @@ LABEL_18:
     }
   }
 
-  if (!v5)
+  if (!jsonDictionary)
   {
     goto LABEL_18;
   }
 
 LABEL_12:
-  if (v3)
+  if (bundleId)
   {
     goto LABEL_13;
   }
@@ -200,21 +200,21 @@ LABEL_13:
   return v14;
 }
 
-- (BMDataCollectorTelemetry)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDataCollectorTelemetry)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"bundleId"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v7 = 0;
         v15 = 0;
-        v14 = self;
+        selfCopy6 = self;
         goto LABEL_48;
       }
 
@@ -226,7 +226,7 @@ LABEL_13:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
       v7 = 0;
       v15 = 0;
-      *a4 = [v19 initWithDomain:v20 code:2 userInfo:v9];
+      *error = [v19 initWithDomain:v20 code:2 userInfo:v9];
       goto LABEL_35;
     }
 
@@ -238,22 +238,22 @@ LABEL_13:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"uploadTelemetry"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"uploadTelemetry"];
   if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = 0;
 LABEL_7:
-    v10 = [v5 objectForKeyedSubscript:@"processingTelemetry"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"processingTelemetry"];
     v32 = v7;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v15 = 0;
-          v14 = self;
+          selfCopy6 = self;
           goto LABEL_45;
         }
 
@@ -264,7 +264,7 @@ LABEL_7:
         v40 = v11;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v15 = 0;
-        *a4 = [v29 initWithDomain:v26 code:2 userInfo:v12];
+        *error = [v29 initWithDomain:v26 code:2 userInfo:v12];
         goto LABEL_43;
       }
 
@@ -274,16 +274,16 @@ LABEL_7:
       v18 = v35;
       if (v18)
       {
-        if (a4)
+        if (error)
         {
           v18 = v18;
-          *a4 = v18;
+          *error = v18;
         }
 
 LABEL_42:
         v15 = 0;
 LABEL_43:
-        v14 = self;
+        selfCopy6 = self;
         goto LABEL_44;
       }
     }
@@ -293,13 +293,13 @@ LABEL_43:
       v11 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"deviceContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceContext"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v13 = 0;
 LABEL_13:
-      v14 = [(BMDataCollectorTelemetry *)self initWithBundleId:v32 uploadTelemetry:v9 processingTelemetry:v11 deviceContext:v13];
-      v15 = v14;
+      selfCopy6 = [(BMDataCollectorTelemetry *)self initWithBundleId:v32 uploadTelemetry:v9 processingTelemetry:v11 deviceContext:v13];
+      v15 = selfCopy6;
 LABEL_41:
 
 LABEL_44:
@@ -323,19 +323,19 @@ LABEL_45:
         goto LABEL_13;
       }
 
-      if (a4)
+      if (error)
       {
         v22 = v22;
-        *a4 = v22;
+        *error = v22;
       }
 
 LABEL_40:
       v15 = 0;
-      v14 = self;
+      selfCopy6 = self;
       goto LABEL_41;
     }
 
-    if (a4)
+    if (error)
     {
       v31 = objc_alloc(MEMORY[0x1E696ABC0]);
       v30 = *MEMORY[0x1E698F240];
@@ -343,7 +343,7 @@ LABEL_40:
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"deviceContext"];
       v38 = v13;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      *a4 = [v31 initWithDomain:v30 code:2 userInfo:v21];
+      *error = [v31 initWithDomain:v30 code:2 userInfo:v21];
       goto LABEL_40;
     }
 
@@ -363,10 +363,10 @@ LABEL_40:
       goto LABEL_7;
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     v15 = 0;
@@ -374,10 +374,10 @@ LABEL_40:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v15 = 0;
-      v14 = self;
+      selfCopy6 = self;
       goto LABEL_47;
     }
 
@@ -387,14 +387,14 @@ LABEL_40:
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"uploadTelemetry"];
     v42 = v9;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-    *a4 = [v23 initWithDomain:v24 code:2 userInfo:v25];
+    *error = [v23 initWithDomain:v24 code:2 userInfo:v25];
 
     v15 = 0;
     v16 = v8;
   }
 
 LABEL_35:
-  v14 = self;
+  selfCopy6 = self;
 LABEL_46:
 
   v8 = v16;
@@ -409,14 +409,14 @@ LABEL_48:
 {
   v3 = objc_opt_new();
   [(BMDataCollectorTelemetry *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
@@ -425,28 +425,28 @@ LABEL_48:
   if (self->_uploadTelemetry)
   {
     PBDataWriterPlaceMark();
-    [(BMDataCollectorTelemetryUploadTelemetry *)self->_uploadTelemetry writeTo:v4];
+    [(BMDataCollectorTelemetryUploadTelemetry *)self->_uploadTelemetry writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_processingTelemetry)
   {
     PBDataWriterPlaceMark();
-    [(BMDataCollectorTelemetryProcessingTelemetry *)self->_processingTelemetry writeTo:v4];
+    [(BMDataCollectorTelemetryProcessingTelemetry *)self->_processingTelemetry writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_deviceContext)
   {
     PBDataWriterPlaceMark();
-    [(BMDataCollectorTelemetryDeviceContext *)self->_deviceContext writeTo:v4];
+    [(BMDataCollectorTelemetryDeviceContext *)self->_deviceContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMDataCollectorTelemetry;
   v5 = [(BMEventBase *)&v24 init];
@@ -455,12 +455,12 @@ LABEL_48:
     goto LABEL_39;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_37;
       }
@@ -471,18 +471,18 @@ LABEL_48:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v25 & 0x7F) << v7;
@@ -499,9 +499,9 @@ LABEL_48:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_37;
       }
@@ -526,7 +526,7 @@ LABEL_16:
           goto LABEL_38;
         }
 
-        v16 = [[BMDataCollectorTelemetryUploadTelemetry alloc] initByReadFrom:v4];
+        v16 = [[BMDataCollectorTelemetryUploadTelemetry alloc] initByReadFrom:fromCopy];
         if (!v16)
         {
           goto LABEL_38;
@@ -546,8 +546,8 @@ LABEL_35:
       v5->_bundleId = v18;
 
 LABEL_36:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_37;
       }
@@ -562,7 +562,7 @@ LABEL_36:
         goto LABEL_38;
       }
 
-      v16 = [[BMDataCollectorTelemetryProcessingTelemetry alloc] initByReadFrom:v4];
+      v16 = [[BMDataCollectorTelemetryProcessingTelemetry alloc] initByReadFrom:fromCopy];
       if (!v16)
       {
         goto LABEL_38;
@@ -591,7 +591,7 @@ LABEL_29:
         goto LABEL_38;
       }
 
-      v16 = [[BMDataCollectorTelemetryDeviceContext alloc] initByReadFrom:v4];
+      v16 = [[BMDataCollectorTelemetryDeviceContext alloc] initByReadFrom:fromCopy];
       if (!v16)
       {
         goto LABEL_38;
@@ -604,7 +604,7 @@ LABEL_29:
   }
 
 LABEL_37:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_38:
     v22 = 0;
@@ -622,31 +622,31 @@ LABEL_39:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDataCollectorTelemetry *)self bundleId];
-  v5 = [(BMDataCollectorTelemetry *)self uploadTelemetry];
-  v6 = [(BMDataCollectorTelemetry *)self processingTelemetry];
-  v7 = [(BMDataCollectorTelemetry *)self deviceContext];
-  v8 = [v3 initWithFormat:@"BMDataCollectorTelemetry with bundleId: %@, uploadTelemetry: %@, processingTelemetry: %@, deviceContext: %@", v4, v5, v6, v7];
+  bundleId = [(BMDataCollectorTelemetry *)self bundleId];
+  uploadTelemetry = [(BMDataCollectorTelemetry *)self uploadTelemetry];
+  processingTelemetry = [(BMDataCollectorTelemetry *)self processingTelemetry];
+  deviceContext = [(BMDataCollectorTelemetry *)self deviceContext];
+  v8 = [v3 initWithFormat:@"BMDataCollectorTelemetry with bundleId: %@, uploadTelemetry: %@, processingTelemetry: %@, deviceContext: %@", bundleId, uploadTelemetry, processingTelemetry, deviceContext];
 
   return v8;
 }
 
-- (BMDataCollectorTelemetry)initWithBundleId:(id)a3 uploadTelemetry:(id)a4 processingTelemetry:(id)a5 deviceContext:(id)a6
+- (BMDataCollectorTelemetry)initWithBundleId:(id)id uploadTelemetry:(id)telemetry processingTelemetry:(id)processingTelemetry deviceContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  idCopy = id;
+  telemetryCopy = telemetry;
+  processingTelemetryCopy = processingTelemetry;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = BMDataCollectorTelemetry;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_bundleId, a3);
-    objc_storeStrong(&v15->_uploadTelemetry, a4);
-    objc_storeStrong(&v15->_processingTelemetry, a5);
-    objc_storeStrong(&v15->_deviceContext, a6);
+    objc_storeStrong(&v15->_bundleId, id);
+    objc_storeStrong(&v15->_uploadTelemetry, telemetry);
+    objc_storeStrong(&v15->_processingTelemetry, processingTelemetry);
+    objc_storeStrong(&v15->_deviceContext, context);
   }
 
   return v15;
@@ -718,9 +718,9 @@ id __35__BMDataCollectorTelemetry_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -728,8 +728,8 @@ id __35__BMDataCollectorTelemetry_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDataCollectorTelemetry alloc] initByReadFrom:v7];
     v4 = v8;

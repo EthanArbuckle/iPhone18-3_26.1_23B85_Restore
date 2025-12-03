@@ -1,17 +1,17 @@
 @interface SearchUIPersonHeaderViewController
 + (id)downtimeBadgeStyleSettings;
 - (BOOL)userIsUnavailable;
-- (SearchUIPersonHeaderViewController)initWithDowntimeButton:(BOOL)a3;
+- (SearchUIPersonHeaderViewController)initWithDowntimeButton:(BOOL)button;
 - (id)STUserID;
-- (id)actionsViewConfigurationWithDowntimeButton:(BOOL)a3;
+- (id)actionsViewConfigurationWithDowntimeButton:(BOOL)button;
 - (void)dealloc;
-- (void)groupIdentityDidUpdate:(id)a3;
-- (void)handleConfirmDowntimeToggleFor:(id)a3;
-- (void)handleErrorResultFromDowntimeToggleFor:(id)a3 withError:(id)a4;
+- (void)groupIdentityDidUpdate:(id)update;
+- (void)handleConfirmDowntimeToggleFor:(id)for;
+- (void)handleErrorResultFromDowntimeToggleFor:(id)for withError:(id)error;
 - (void)setupDowntimeStatusSubscription;
-- (void)updateDowntimeBadgeForceRecheck:(BOOL)a3;
+- (void)updateDowntimeBadgeForceRecheck:(BOOL)recheck;
 - (void)updateSubscriptions;
-- (void)updateWithContact:(id)a3 isActualContact:(BOOL)a4;
+- (void)updateWithContact:(id)contact isActualContact:(BOOL)actualContact;
 - (void)viewDidLoad;
 @end
 
@@ -20,19 +20,19 @@
 + (id)downtimeBadgeStyleSettings
 {
   v2 = objc_alloc(MEMORY[0x1E695D0E8]);
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [MEMORY[0x1E69DC888] systemIndigoColor];
-  v5 = [v2 initWithPosition:0 color:v3 backgroundColor:v4 cropStyle:0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  systemIndigoColor = [MEMORY[0x1E69DC888] systemIndigoColor];
+  v5 = [v2 initWithPosition:0 color:whiteColor backgroundColor:systemIndigoColor cropStyle:0];
 
   [v5 setContentMode:4];
 
   return v5;
 }
 
-- (void)handleErrorResultFromDowntimeToggleFor:(id)a3 withError:(id)a4
+- (void)handleErrorResultFromDowntimeToggleFor:(id)for withError:(id)error
 {
-  v6 = a4;
-  v7 = [(SearchUIPersonHeaderViewController *)self contactNameFor:a3];
+  errorCopy = error;
+  v7 = [(SearchUIPersonHeaderViewController *)self contactNameFor:for];
   v8 = [SearchUIUtilities localizedStringForKey:@"DOWNTIME_TOGGLE_ERROR_TITLE"];
   v9 = MEMORY[0x1E696AEC0];
   v10 = [SearchUIUtilities localizedStringForKey:@"DOWNTIME_TOGGLE_ERROR_MESSAGE_FORMAT"];
@@ -41,7 +41,7 @@
   v12 = SearchUIGeneralLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [SearchUIPersonHeaderViewController handleErrorResultFromDowntimeToggleFor:v6 withError:v12];
+    [SearchUIPersonHeaderViewController handleErrorResultFromDowntimeToggleFor:errorCopy withError:v12];
   }
 
   v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v8 message:v11 preferredStyle:1];
@@ -54,14 +54,14 @@
   [(SearchUIPersonHeaderViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)handleConfirmDowntimeToggleFor:(id)a3
+- (void)handleConfirmDowntimeToggleFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = +[SearchUIDowntimeManager sharedManager];
-  v6 = [(SearchUIPersonHeaderViewController *)self STUserID];
-  v7 = [v5 statusForSTUserID:v6 forceRecheck:1];
+  sTUserID = [(SearchUIPersonHeaderViewController *)self STUserID];
+  v7 = [v5 statusForSTUserID:sTUserID forceRecheck:1];
 
-  v8 = [(SearchUIPersonHeaderViewController *)self contactNameFor:v4];
+  v8 = [(SearchUIPersonHeaderViewController *)self contactNameFor:forCopy];
   v9 = v7 > 0;
   if (v7 <= 0)
   {
@@ -97,8 +97,8 @@
   v24[2] = __69__SearchUIPersonHeaderViewController_handleConfirmDowntimeToggleFor___block_invoke;
   v24[3] = &unk_1E85B3538;
   v24[4] = self;
-  v25 = v4;
-  v19 = v4;
+  v25 = forCopy;
+  v19 = forCopy;
   v20 = [v18 actionWithTitle:v12 style:2 * v9 handler:v24];
   [v17 addAction:v20];
   [v17 setPreferredAction:v20];
@@ -136,16 +136,16 @@ uint64_t __69__SearchUIPersonHeaderViewController_handleConfirmDowntimeToggleFor
   return [v3 updateDowntimeBadgeForceRecheck:1];
 }
 
-- (id)actionsViewConfigurationWithDowntimeButton:(BOOL)a3
+- (id)actionsViewConfigurationWithDowntimeButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if (actionsViewConfigurationWithDowntimeButton__onceToken != -1)
   {
     [SearchUIPersonHeaderViewController actionsViewConfigurationWithDowntimeButton:];
   }
 
   objc_initWeak(&location, self);
-  if (v3)
+  if (buttonCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -235,16 +235,16 @@ void __81__SearchUIPersonHeaderViewController_actionsViewConfigurationWithDownti
   [v7 performCommand:v1 triggerEvent:2 environment:0];
 }
 
-- (SearchUIPersonHeaderViewController)initWithDowntimeButton:(BOOL)a3
+- (SearchUIPersonHeaderViewController)initWithDowntimeButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v5 = objc_alloc(MEMORY[0x1E695D158]);
   v6 = [v5 initGroupWithName:0 photo:0 contacts:MEMORY[0x1E695E0F0]];
-  v7 = [(SearchUIPersonHeaderViewController *)self actionsViewConfigurationWithDowntimeButton:v3];
+  v7 = [(SearchUIPersonHeaderViewController *)self actionsViewConfigurationWithDowntimeButton:buttonCopy];
   v8 = MEMORY[0x1E695D0E0];
   v9 = +[SearchUIContactCache sharedCache];
-  v10 = [v9 contactStore];
-  v11 = [v8 settingsWithContactStore:v10 cacheSize:0 threeDTouchEnabled:1];
+  contactStore = [v9 contactStore];
+  v11 = [v8 settingsWithContactStore:contactStore cacheSize:0 threeDTouchEnabled:1];
   v14.receiver = self;
   v14.super_class = SearchUIPersonHeaderViewController;
   v12 = [(CNGroupIdentityHeaderViewController *)&v14 initWithGroupIdentity:v6 actionsViewConfiguration:v7 avatarViewControllerSettings:v11];
@@ -259,10 +259,10 @@ void __81__SearchUIPersonHeaderViewController_actionsViewConfigurationWithDownti
 
 - (id)STUserID
 {
-  v2 = [(CNGroupIdentityHeaderViewController *)self group];
-  v3 = [v2 contacts];
-  v4 = [v3 firstObject];
-  v5 = [SearchUIDowntimeManager screenTimeUserIDForContact:v4];
+  group = [(CNGroupIdentityHeaderViewController *)self group];
+  contacts = [group contacts];
+  firstObject = [contacts firstObject];
+  v5 = [SearchUIDowntimeManager screenTimeUserIDForContact:firstObject];
 
   return v5;
 }
@@ -277,27 +277,27 @@ void __81__SearchUIPersonHeaderViewController_actionsViewConfigurationWithDownti
   v4 = [v3 initWithStatusTypeIdentifier:*MEMORY[0x1E698E210]];
   [(SearchUIPersonHeaderViewController *)self setSubscriptionService:v4];
 
-  v5 = [(SearchUIPersonHeaderViewController *)self subscriptionService];
-  [v5 addDelegate:self queue:MEMORY[0x1E69E96A0]];
+  subscriptionService = [(SearchUIPersonHeaderViewController *)self subscriptionService];
+  [subscriptionService addDelegate:self queue:MEMORY[0x1E69E96A0]];
 
   [(SearchUIPersonHeaderViewController *)self updateSubscriptions];
 }
 
-- (void)groupIdentityDidUpdate:(id)a3
+- (void)groupIdentityDidUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = SearchUIPersonHeaderViewController;
-  [(CNGroupIdentityHeaderViewController *)&v4 groupIdentityDidUpdate:a3];
+  [(CNGroupIdentityHeaderViewController *)&v4 groupIdentityDidUpdate:update];
   [(SearchUIPersonHeaderViewController *)self updateDowntimeBadge];
   [(SearchUIPersonHeaderViewController *)self updateSubscriptions];
 }
 
-- (void)updateWithContact:(id)a3 isActualContact:(BOOL)a4
+- (void)updateWithContact:(id)contact isActualContact:(BOOL)actualContact
 {
-  LODWORD(v4) = a4;
+  LODWORD(v4) = actualContact;
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  contactCopy = contact;
+  if (contactCopy)
   {
     v7 = 1.0;
   }
@@ -307,11 +307,11 @@ void __81__SearchUIPersonHeaderViewController_actionsViewConfigurationWithDownti
     v7 = 0.0;
   }
 
-  v8 = [(SearchUIPersonHeaderViewController *)self view];
-  [v8 setAlpha:v7];
+  view = [(SearchUIPersonHeaderViewController *)self view];
+  [view setAlpha:v7];
 
-  v9 = v6;
-  if (v6)
+  v9 = contactCopy;
+  if (contactCopy)
   {
     v4 = v4;
   }
@@ -323,11 +323,11 @@ void __81__SearchUIPersonHeaderViewController_actionsViewConfigurationWithDownti
     v4 = 0;
   }
 
-  v10 = [(SearchUIPersonHeaderViewController *)self openContactAction];
-  [v10 setShouldOverrideEnabledState:v4];
+  openContactAction = [(SearchUIPersonHeaderViewController *)self openContactAction];
+  [openContactAction setShouldOverrideEnabledState:v4];
 
-  v11 = [(SearchUIPersonHeaderViewController *)self openContactAction];
-  [v11 setOverrideEnabledState:v4];
+  openContactAction2 = [(SearchUIPersonHeaderViewController *)self openContactAction];
+  [openContactAction2 setOverrideEnabledState:v4];
 
   v12 = objc_alloc(MEMORY[0x1E695D158]);
   v15[0] = v9;
@@ -440,8 +440,8 @@ void __57__SearchUIPersonHeaderViewController_updateSubscriptions__block_invoke_
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SearchUIPersonHeaderViewController *)self statusSubcriptions];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  statusSubcriptions = [(SearchUIPersonHeaderViewController *)self statusSubcriptions];
+  v3 = [statusSubcriptions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -451,11 +451,11 @@ void __57__SearchUIPersonHeaderViewController_updateSubscriptions__block_invoke_
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(statusSubcriptions);
         }
 
-        v6 = [*(*(&v10 + 1) + 8 * i) currentStatus];
-        v7 = [objc_alloc(MEMORY[0x1E698E218]) initWithPublishedStatus:v6];
+        currentStatus = [*(*(&v10 + 1) + 8 * i) currentStatus];
+        v7 = [objc_alloc(MEMORY[0x1E698E218]) initWithPublishedStatus:currentStatus];
         v8 = v7;
         if (v7 && ([v7 isAvailable] & 1) == 0)
         {
@@ -465,7 +465,7 @@ void __57__SearchUIPersonHeaderViewController_updateSubscriptions__block_invoke_
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [statusSubcriptions countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -480,17 +480,17 @@ LABEL_12:
   return v3;
 }
 
-- (void)updateDowntimeBadgeForceRecheck:(BOOL)a3
+- (void)updateDowntimeBadgeForceRecheck:(BOOL)recheck
 {
-  v5 = [(SearchUIPersonHeaderViewController *)self STUserID];
+  sTUserID = [(SearchUIPersonHeaderViewController *)self STUserID];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__SearchUIPersonHeaderViewController_updateDowntimeBadgeForceRecheck___block_invoke;
   v7[3] = &unk_1E85B24F0;
-  v8 = v5;
-  v9 = self;
-  v10 = a3;
-  v6 = v5;
+  v8 = sTUserID;
+  selfCopy = self;
+  recheckCopy = recheck;
+  v6 = sTUserID;
   [SearchUIUtilities dispatchMainIfNecessary:v7];
 }
 
@@ -535,9 +535,9 @@ LABEL_7:
 
 - (void)setupDowntimeStatusSubscription
 {
-  v3 = [(SearchUIPersonHeaderViewController *)self downtimeStatusObserver];
+  downtimeStatusObserver = [(SearchUIPersonHeaderViewController *)self downtimeStatusObserver];
 
-  if (!v3)
+  if (!downtimeStatusObserver)
   {
     objc_initWeak(&location, self);
     v4 = +[SearchUIDowntimeManager sharedManager];
@@ -572,8 +572,8 @@ void __69__SearchUIPersonHeaderViewController_setupDowntimeStatusSubscription__b
 - (void)dealloc
 {
   v3 = +[SearchUIDowntimeManager sharedManager];
-  v4 = [(SearchUIPersonHeaderViewController *)self downtimeStatusObserver];
-  [v3 removeObserver:v4];
+  downtimeStatusObserver = [(SearchUIPersonHeaderViewController *)self downtimeStatusObserver];
+  [v3 removeObserver:downtimeStatusObserver];
 
   downtimeStatusObserver = self->_downtimeStatusObserver;
   self->_downtimeStatusObserver = 0;

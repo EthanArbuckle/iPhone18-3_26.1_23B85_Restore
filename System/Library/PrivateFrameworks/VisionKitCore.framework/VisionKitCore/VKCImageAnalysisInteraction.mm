@@ -1,5 +1,5 @@
 @interface VKCImageAnalysisInteraction
-+ (void)_quickActionResultForDocumentObservation:(id)a3 queue:(id)a4 completionHandler:(id)a5;
++ (void)_quickActionResultForDocumentObservation:(id)observation queue:(id)queue completionHandler:(id)handler;
 - ($58EB755F713D70195D081A2438463C76)videoPreviewTimeRange;
 - (BOOL)_highlightSelectableItems;
 - (BOOL)_inhibitSubjectDimmingAndLiftView;
@@ -7,23 +7,23 @@
 - (BOOL)_isShowingTranslationOverlay;
 - (BOOL)_isVIHosted;
 - (BOOL)_photosInfoSingleTapSubjectModeEnabled;
-- (BOOL)_showVSResultForItem:(id)a3;
-- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)a3;
+- (BOOL)_showVSResultForItem:(id)item;
+- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)point;
 - (BOOL)actionInfoLayoutUpdatesSuspended;
 - (BOOL)actionInfoLiveTextButtonDisabled;
 - (BOOL)actionInfoQuickActionsDisabled;
 - (BOOL)actionInfoVisualSearchCornerViewDisabled;
 - (BOOL)allowLongPressForDataDetectorsInTextMode;
 - (BOOL)analysisButtonPrefersDarkGlyphWhenSelected;
-- (BOOL)analysisContainsTextAtPoint:(CGPoint)a3;
-- (BOOL)baseOverlayView:(id)a3 shouldBeginInteractionAtPoint:(CGPoint)a4 withTypes:(unint64_t)a5;
-- (BOOL)baseOverlayView:(id)a3 shouldHandleShareWithRanges:(id)a4 boundingRect:(CGRect)a5 selectedText:(id)a6 selectedAttributedText:(id)a7;
-- (BOOL)baseOverlayView:(id)a3 shouldShowLookupForItemFromCallout:(id)a4;
-- (BOOL)dataDetectorExistsAtPoint:(CGPoint)a3;
+- (BOOL)analysisContainsTextAtPoint:(CGPoint)point;
+- (BOOL)baseOverlayView:(id)view shouldBeginInteractionAtPoint:(CGPoint)point withTypes:(unint64_t)types;
+- (BOOL)baseOverlayView:(id)view shouldHandleShareWithRanges:(id)ranges boundingRect:(CGRect)rect selectedText:(id)text selectedAttributedText:(id)attributedText;
+- (BOOL)baseOverlayView:(id)view shouldShowLookupForItemFromCallout:(id)callout;
+- (BOOL)dataDetectorExistsAtPoint:(CGPoint)point;
 - (BOOL)hasActiveTextSelection;
-- (BOOL)imageSubjectExistsAtPoint:(CGPoint)a3;
-- (BOOL)interactableItemExistsAtPoint:(CGPoint)a3;
-- (BOOL)isBaseOverlayViewShowingLivePhoto:(id)a3 delegateHasImplementation:(BOOL *)a4;
+- (BOOL)imageSubjectExistsAtPoint:(CGPoint)point;
+- (BOOL)interactableItemExistsAtPoint:(CGPoint)point;
+- (BOOL)isBaseOverlayViewShowingLivePhoto:(id)photo delegateHasImplementation:(BOOL *)implementation;
 - (BOOL)isDraggingVisualIntelligenceSheet;
 - (BOOL)isSubjectAnalysisComplete;
 - (BOOL)isSubjectHighlightAvailable;
@@ -31,14 +31,14 @@
 - (BOOL)subjectHighlightActive;
 - (BOOL)subjectInteractionInProgress;
 - (BOOL)subjectViewUserInteractionDisabled;
-- (BOOL)textExistsAtPoint:(CGPoint)a3;
-- (BOOL)topLevelImplementsContentsRectDelegateForBaseView:(id)a3;
+- (BOOL)textExistsAtPoint:(CGPoint)point;
+- (BOOL)topLevelImplementsContentsRectDelegateForBaseView:(id)view;
 - (BOOL)usesLightDimmingViewInLightMode;
-- (BOOL)visualSearchExistsAtPoint:(CGPoint)a3;
+- (BOOL)visualSearchExistsAtPoint:(CGPoint)point;
 - (BOOL)wantsAutomaticContentsRectCalculation;
 - (CGRect)contentsRect;
-- (CGRect)contentsRectForImageRecognitionBaseView:(id)a3;
-- (CGRect)imageSubjectBoundsWithIndexes:(id)a3;
+- (CGRect)contentsRectForImageRecognitionBaseView:(id)view;
+- (CGRect)imageSubjectBoundsWithIndexes:(id)indexes;
 - (CGRect)subjectFrame;
 - (CGRect)videoPreviewNormalizedCropRect;
 - (NSArray)_actionInfoButtons;
@@ -59,7 +59,7 @@
 - (UIView)viewForObservingContentMode;
 - (VKCActionInfoView)actionInfoView;
 - (VKCImageAnalysisInteraction)init;
-- (VKCImageAnalysisInteraction)initWithInteractionOptions:(unint64_t)a3;
+- (VKCImageAnalysisInteraction)initWithInteractionOptions:(unint64_t)options;
 - (VKCImageAnalysisInteractionDelegate)_viHostDelegate;
 - (VKCImageAnalysisInteractionDelegate)delegate;
 - (VKCVisualSearchCornerView)actionInfoCornerButtonView;
@@ -72,135 +72,135 @@
 - (id)_filteredNormalizedRectangleQuads;
 - (id)_filteredRectangleQuads;
 - (id)_rawRectangleObservations;
-- (id)baseOverlayView:(id)a3 updateAttributedStringForCopy:(id)a4;
-- (id)baseOverlayView:(id)a3 updateStringForCopy:(id)a4;
+- (id)baseOverlayView:(id)view updateAttributedStringForCopy:(id)copy;
+- (id)baseOverlayView:(id)view updateStringForCopy:(id)copy;
 - (id)createAnalysisButton;
 - (id)customLayoutActionInfoView;
 - (id)generatePlistsForScalingAndAlignment;
 - (id)generateSubjectImage;
-- (id)imageForImageSnapshotForBaseView:(id)a3;
-- (id)imageSubjectPathWithIndexes:(id)a3;
+- (id)imageForImageSnapshotForBaseView:(id)view;
+- (id)imageSubjectPathWithIndexes:(id)indexes;
 - (id)omnibarContainerView;
 - (id)presentingViewControllerForFeedbackProvider;
 - (id)presentingViewControllerForImageAnalysisInteraction;
-- (id)previewForDataDetectorElementView:(id)a3;
+- (id)previewForDataDetectorElementView:(id)view;
 - (id)resultItems;
-- (id)subjectIndexAtPoint:(CGPoint)a3;
-- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)a3;
-- (id)videoPreviewSubjectMatteForImage:(id)a3 atCompositionTime:(id *)a4;
-- (id)viewForImageSnapshotForBaseView:(id)a3;
+- (id)subjectIndexAtPoint:(CGPoint)point;
+- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)time;
+- (id)videoPreviewSubjectMatteForImage:(id)image atCompositionTime:(id *)time;
+- (id)viewForImageSnapshotForBaseView:(id)view;
 - (unint64_t)activeInteractionTypes;
 - (unint64_t)dataDetectorTypes;
 - (unint64_t)deriveCurrentAutomaticState;
-- (void)_addAsyncMRCElement:(id)a3;
+- (void)_addAsyncMRCElement:(id)element;
 - (void)_automaticallyShowVisualSearchResultsIfApplicable;
 - (void)_copyAllToClipboard;
 - (void)_highlightFilteredRectangleQuads;
 - (void)_highlightRectangleObservations;
 - (void)_provideFeedback;
-- (void)_setActiveInteractionTypes:(unint64_t)a3 updateAutomaticState:(BOOL)a4;
+- (void)_setActiveInteractionTypes:(unint64_t)types updateAutomaticState:(BOOL)state;
 - (void)_test_activateTranslationOverlay;
-- (void)aAAnalysisButtonPressed:(id)a3;
-- (void)addEventToAnalyticsSession:(id)a3;
-- (void)addMetadataToVSFeedbackItem:(id)a3;
-- (void)analysisDidUpdate:(id)a3;
-- (void)baseOverlayView:(id)a3 analyticsEventDidOccur:(id)a4;
-- (void)baseOverlayView:(id)a3 didFinishTransitionToNormalizedVisibleRect:(CGRect)a4;
-- (void)baseOverlayView:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4;
-- (void)baseOverlayView:(id)a3 didUpdateToNormalizedVisibleRect:(CGRect)a4;
-- (void)baseOverlayView:(id)a3 livePhotoShouldPlay:(BOOL)a4;
-- (void)baseOverlayView:(id)a3 prepareForCalloutAction:(SEL)a4 completion:(id)a5;
-- (void)baseOverlayViewDidBeginSubjectAnalysis:(id)a3;
-- (void)baseOverlayViewDidCompleteSubjectAnalysis:(id)a3;
-- (void)baseOverlayViewDidRequestButtonStateUpdate:(id)a3;
-- (void)baseOverlayViewDismissVisualSearchController:(id)a3;
-- (void)baseOverlayViewSubjectInteractionInProgressDidChange:(id)a3;
+- (void)aAAnalysisButtonPressed:(id)pressed;
+- (void)addEventToAnalyticsSession:(id)session;
+- (void)addMetadataToVSFeedbackItem:(id)item;
+- (void)analysisDidUpdate:(id)update;
+- (void)baseOverlayView:(id)view analyticsEventDidOccur:(id)occur;
+- (void)baseOverlayView:(id)view didFinishTransitionToNormalizedVisibleRect:(CGRect)rect;
+- (void)baseOverlayView:(id)view didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box;
+- (void)baseOverlayView:(id)view didUpdateToNormalizedVisibleRect:(CGRect)rect;
+- (void)baseOverlayView:(id)view livePhotoShouldPlay:(BOOL)play;
+- (void)baseOverlayView:(id)view prepareForCalloutAction:(SEL)action completion:(id)completion;
+- (void)baseOverlayViewDidBeginSubjectAnalysis:(id)analysis;
+- (void)baseOverlayViewDidCompleteSubjectAnalysis:(id)analysis;
+- (void)baseOverlayViewDidRequestButtonStateUpdate:(id)update;
+- (void)baseOverlayViewDismissVisualSearchController:(id)controller;
+- (void)baseOverlayViewSubjectInteractionInProgressDidChange:(id)change;
 - (void)beginImageSubjectAnalysisIfNecessary;
-- (void)beginImageSubjectAnalysisIfNecessaryWithCompletion:(id)a3;
+- (void)beginImageSubjectAnalysisIfNecessaryWithCompletion:(id)completion;
 - (void)beginImageSubjectAnalysisWithDelayIfNecessary;
 - (void)beginNewAnalyticsSessionIfNecessary;
-- (void)clearMatchedHighlightsIfNecessaryAnimated:(BOOL)a3;
+- (void)clearMatchedHighlightsIfNecessaryAnimated:(BOOL)animated;
 - (void)closeAndSendCurrentAnalyticsSession;
 - (void)commonInit;
-- (void)configureButtonsForState:(unint64_t)a3 updateActiveTypes:(BOOL)a4;
-- (void)configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:(BOOL)a3;
-- (void)createStickerImageAtIndexSet:(id)a3 completion:(id)a4;
-- (void)createStickerRepresentationsAtIndexSet:(id)a3 completion:(id)a4;
-- (void)createStickerRepresentationsAtIndexSet:(id)a3 type:(unint64_t)a4 stickerIDs:(id)a5 progress:(id)a6 completion:(id)a7;
+- (void)configureButtonsForState:(unint64_t)state updateActiveTypes:(BOOL)types;
+- (void)configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:(BOOL)types;
+- (void)createStickerImageAtIndexSet:(id)set completion:(id)completion;
+- (void)createStickerRepresentationsAtIndexSet:(id)set completion:(id)completion;
+- (void)createStickerRepresentationsAtIndexSet:(id)set type:(unint64_t)type stickerIDs:(id)ds progress:(id)progress completion:(id)completion;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)dismissVisualIntelligenceSheetIfNecessary;
-- (void)generateTextualVisualSearchResultForQueryInfo:(id)a3 completionHandler:(id)a4;
-- (void)generateVisualSearchResultForItems:(id)a3 queryID:(unint64_t)a4 completionHandler:(id)a5;
-- (void)hasActiveTextSelectionDidChangeForBaseOverlayView:(id)a3;
-- (void)highlightMatchesForString:(id)a3 animated:(BOOL)a4;
-- (void)highlightMatchesForStrings:(id)a3 animated:(BOOL)a4;
-- (void)highlightSelectableItemsDidChangeForBaseOverlayView:(id)a3;
-- (void)highlightSubjectAtIndexSet:(id)a3 showCallout:(BOOL)a4 showBurst:(BOOL)a5 burstPoint:(CGPoint)a6 animated:(BOOL)a7;
-- (void)loadImageSubjectIfAvailableWithCompletion:(id)a3;
-- (void)loadImageSubjectWithIndexes:(id)a3 completion:(id)a4;
+- (void)generateTextualVisualSearchResultForQueryInfo:(id)info completionHandler:(id)handler;
+- (void)generateVisualSearchResultForItems:(id)items queryID:(unint64_t)d completionHandler:(id)handler;
+- (void)hasActiveTextSelectionDidChangeForBaseOverlayView:(id)view;
+- (void)highlightMatchesForString:(id)string animated:(BOOL)animated;
+- (void)highlightMatchesForStrings:(id)strings animated:(BOOL)animated;
+- (void)highlightSelectableItemsDidChangeForBaseOverlayView:(id)view;
+- (void)highlightSubjectAtIndexSet:(id)set showCallout:(BOOL)callout showBurst:(BOOL)burst burstPoint:(CGPoint)point animated:(BOOL)animated;
+- (void)loadImageSubjectIfAvailableWithCompletion:(id)completion;
+- (void)loadImageSubjectWithIndexes:(id)indexes completion:(id)completion;
 - (void)logButtonsVisibleStatus;
-- (void)navOrToolbarVisibilityDidChange:(id)a3;
-- (void)navOrToolbarVisibilityWillChange:(id)a3;
+- (void)navOrToolbarVisibilityDidChange:(id)change;
+- (void)navOrToolbarVisibilityWillChange:(id)change;
 - (void)openInfoPaneForTopItem;
 - (void)presentVisualIntelligenceSheet;
-- (void)quickActionProcessingCompleteForBaseOverlayView:(id)a3;
+- (void)quickActionProcessingCompleteForBaseOverlayView:(id)view;
 - (void)resetCustomLayoutActionInfoView;
 - (void)resetSelection;
-- (void)scrollViewDidZoomToUnitRect:(CGRect)a3;
-- (void)sendAAButtonPressedDelegateCallbackIfNecessaryForSender:(id)a3;
-- (void)sendAnalyticsEventWithType:(int64_t)a3 source:(int64_t)a4 analysisButtonActive:(BOOL)a5;
-- (void)setActionInfoCustomFont:(id)a3;
-- (void)setActionInfoEdgeInsets:(UIEdgeInsets)a3;
-- (void)setActionInfoLayoutUpdatesSuspended:(BOOL)a3;
-- (void)setActionInfoLiveTextButtonDisabled:(BOOL)a3;
-- (void)setActionInfoQuickActionsDisabled:(BOOL)a3;
-- (void)setActionInfoViewHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setActionInfoVisualSearchCornerViewDisabled:(BOOL)a3;
-- (void)setActiveInteractionTypes:(unint64_t)a3;
-- (void)setActiveSubjectIndexSet:(id)a3;
-- (void)setAllowLongPressForDataDetectorsInTextMode:(BOOL)a3;
-- (void)setAnalysis:(id)a3;
-- (void)setAnalysisButtonPrefersDarkGlyphWhenSelected:(BOOL)a3;
-- (void)setButtonsVisible:(BOOL)a3;
-- (void)setDataDetectorTypes:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setForceAnalysisBarButtonItemEnabled:(BOOL)a3;
-- (void)setHighlightSelectableItems:(BOOL)a3;
-- (void)setPreferredQuickActionButtonHeight:(double)a3;
-- (void)setQuickActionConfigurationUpdateHandler:(id)a3;
-- (void)setSelectedRanges:(id)a3;
-- (void)setSubjectHighlightActive:(BOOL)a3;
-- (void)setSubjectViewUserInteractionDisabled:(BOOL)a3;
-- (void)setUsesLightDimmingViewInLightMode:(BOOL)a3;
-- (void)setView:(id)a3;
-- (void)setViewForObservingContentMode:(id)a3;
-- (void)setWantsAutomaticContentsRectCalculation:(BOOL)a3;
-- (void)setWantsTranslucentActionInfoButtons:(BOOL)a3;
-- (void)set_customAnalyticsIdentifier:(id)a3;
-- (void)set_highlightSelectableItems:(BOOL)a3;
-- (void)set_inhibitSubjectDimmingAndLiftView:(BOOL)a3;
-- (void)set_isPublicAPI:(BOOL)a3;
-- (void)set_isShowingTranslationOverlay:(BOOL)a3;
-- (void)set_isVIHosted:(BOOL)a3;
-- (void)set_manuallyManagesActionInfoButtons:(BOOL)a3;
-- (void)set_photosImageForRemoveBackground:(id)a3;
-- (void)set_photosInfoSingleTapSubjectModeEnabled:(BOOL)a3;
-- (void)showVisualSearchForResultItem:(id)a3;
-- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)a3 userFeedbackPayload:(id)a4 sfReportData:(id)a5;
-- (void)textSelectionDidChangeForBaseOverlayView:(id)a3;
-- (void)triggerTapToRadar:(id)a3;
+- (void)scrollViewDidZoomToUnitRect:(CGRect)rect;
+- (void)sendAAButtonPressedDelegateCallbackIfNecessaryForSender:(id)sender;
+- (void)sendAnalyticsEventWithType:(int64_t)type source:(int64_t)source analysisButtonActive:(BOOL)active;
+- (void)setActionInfoCustomFont:(id)font;
+- (void)setActionInfoEdgeInsets:(UIEdgeInsets)insets;
+- (void)setActionInfoLayoutUpdatesSuspended:(BOOL)suspended;
+- (void)setActionInfoLiveTextButtonDisabled:(BOOL)disabled;
+- (void)setActionInfoQuickActionsDisabled:(BOOL)disabled;
+- (void)setActionInfoViewHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setActionInfoVisualSearchCornerViewDisabled:(BOOL)disabled;
+- (void)setActiveInteractionTypes:(unint64_t)types;
+- (void)setActiveSubjectIndexSet:(id)set;
+- (void)setAllowLongPressForDataDetectorsInTextMode:(BOOL)mode;
+- (void)setAnalysis:(id)analysis;
+- (void)setAnalysisButtonPrefersDarkGlyphWhenSelected:(BOOL)selected;
+- (void)setButtonsVisible:(BOOL)visible;
+- (void)setDataDetectorTypes:(unint64_t)types;
+- (void)setDelegate:(id)delegate;
+- (void)setForceAnalysisBarButtonItemEnabled:(BOOL)enabled;
+- (void)setHighlightSelectableItems:(BOOL)items;
+- (void)setPreferredQuickActionButtonHeight:(double)height;
+- (void)setQuickActionConfigurationUpdateHandler:(id)handler;
+- (void)setSelectedRanges:(id)ranges;
+- (void)setSubjectHighlightActive:(BOOL)active;
+- (void)setSubjectViewUserInteractionDisabled:(BOOL)disabled;
+- (void)setUsesLightDimmingViewInLightMode:(BOOL)mode;
+- (void)setView:(id)view;
+- (void)setViewForObservingContentMode:(id)mode;
+- (void)setWantsAutomaticContentsRectCalculation:(BOOL)calculation;
+- (void)setWantsTranslucentActionInfoButtons:(BOOL)buttons;
+- (void)set_customAnalyticsIdentifier:(id)identifier;
+- (void)set_highlightSelectableItems:(BOOL)items;
+- (void)set_inhibitSubjectDimmingAndLiftView:(BOOL)view;
+- (void)set_isPublicAPI:(BOOL)i;
+- (void)set_isShowingTranslationOverlay:(BOOL)overlay;
+- (void)set_isVIHosted:(BOOL)hosted;
+- (void)set_manuallyManagesActionInfoButtons:(BOOL)buttons;
+- (void)set_photosImageForRemoveBackground:(id)background;
+- (void)set_photosInfoSingleTapSubjectModeEnabled:(BOOL)enabled;
+- (void)showVisualSearchForResultItem:(id)item;
+- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data;
+- (void)textSelectionDidChangeForBaseOverlayView:(id)view;
+- (void)triggerTapToRadar:(id)radar;
 - (void)updateActionInfoLayout;
 - (void)updateContentsRect;
-- (void)updateForAnalyticsVisualSearchEventIfNecessary:(id)a3;
-- (void)videoPreviewAvailableForBaseOverlayView:(id)a3;
-- (void)visualIntelligenceDidRequestVluEnabled:(BOOL)a3 forBaseOverlayView:(id)a4;
-- (void)visualIntelligenceSheetIsDraggingDidChange:(BOOL)a3 forBaseOverlayView:(id)a4;
-- (void)visualIntelligenceSheetPresentedDidChangeForBaseOverlayView:(id)a3;
-- (void)visualSearchCornerView:(id)a3 analyticsEventDidOccur:(id)a4;
-- (void)visualSearchCornerView:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4;
-- (void)visualSearchCornerViewDidDismissVisualSearchController:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)updateForAnalyticsVisualSearchEventIfNecessary:(id)necessary;
+- (void)videoPreviewAvailableForBaseOverlayView:(id)view;
+- (void)visualIntelligenceDidRequestVluEnabled:(BOOL)enabled forBaseOverlayView:(id)view;
+- (void)visualIntelligenceSheetIsDraggingDidChange:(BOOL)change forBaseOverlayView:(id)view;
+- (void)visualIntelligenceSheetPresentedDidChangeForBaseOverlayView:(id)view;
+- (void)visualSearchCornerView:(id)view analyticsEventDidOccur:(id)occur;
+- (void)visualSearchCornerView:(id)view didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box;
+- (void)visualSearchCornerViewDidDismissVisualSearchController:(id)controller;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation VKCImageAnalysisInteraction
@@ -208,17 +208,17 @@
 - (id)resultItems
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v21 = [(VKCImageAnalysisInteraction *)self analysis];
-  v20 = [v21 imageAnalysisResult];
-  v4 = [v20 visualSearchResult];
-  v5 = [v4 resultItems];
+  array = [MEMORY[0x1E695DF70] array];
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
+  imageAnalysisResult = [analysis imageAnalysisResult];
+  visualSearchResult = [imageAnalysisResult visualSearchResult];
+  resultItems = [visualSearchResult resultItems];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = resultItems;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -234,19 +234,19 @@
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 domainInfo];
-        v12 = [v11 displayLabel];
+        domainInfo = [v10 domainInfo];
+        displayLabel = [domainInfo displayLabel];
 
-        v13 = [v10 domainInfo];
-        v14 = [v13 displayMessage];
+        domainInfo2 = [v10 domainInfo];
+        displayMessage = [domainInfo2 displayMessage];
 
         v15 = [VKImageAnalysisInteractionResultInfo alloc];
-        v16 = [v10 domainInfo];
-        v17 = [v16 glyphName];
+        domainInfo3 = [v10 domainInfo];
+        glyphName = [domainInfo3 glyphName];
         [v10 normalizedBoundingBox];
-        v18 = [(VKImageAnalysisInteractionResultInfo *)v15 initWithDisplayLabel:v12 displayMessage:v14 glyphName:v17 rect:?];
+        v18 = [(VKImageAnalysisInteractionResultInfo *)v15 initWithDisplayLabel:displayLabel displayMessage:displayMessage glyphName:glyphName rect:?];
 
-        [v3 addObject:v18];
+        [array addObject:v18];
       }
 
       v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -255,15 +255,15 @@
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)dealloc
 {
   [(VKCImageAnalysisInteraction *)self setViewForObservingContentMode:0];
   [(VKCImageAnalysisInteraction *)self closeAndSendCurrentAnalyticsSession];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VKCImageAnalysisInteraction;
@@ -274,8 +274,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(VKCImageAnalysisInteraction *)self analysis];
-  v6 = [v3 stringWithFormat:@"<%@ %p> id: %d", v4, self, objc_msgSend(v5, "analysisRequestID")];
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
+  v6 = [v3 stringWithFormat:@"<%@ %p> id: %d", v4, self, objc_msgSend(analysis, "analysisRequestID")];
 
   return v6;
 }
@@ -297,13 +297,13 @@
   return v2;
 }
 
-- (VKCImageAnalysisInteraction)initWithInteractionOptions:(unint64_t)a3
+- (VKCImageAnalysisInteraction)initWithInteractionOptions:(unint64_t)options
 {
   v4 = [(VKCImageAnalysisInteraction *)self init];
   v5 = v4;
   if (v4)
   {
-    [(VKCImageAnalysisBaseView *)v4->_baseView useInteractionOptions:a3];
+    [(VKCImageAnalysisBaseView *)v4->_baseView useInteractionOptions:options];
   }
 
   return v5;
@@ -311,23 +311,23 @@
 
 - (void)commonInit
 {
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [v12 setWantsAutomaticContentsRectCalculation:1];
-  [v12 setDataDetectorTypes:-1];
-  [v12 setDelegate:self];
-  [v12 setLoggingParentObject:self];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setTranslatesAutoresizingMaskIntoConstraints:1];
+  [baseView setWantsAutomaticContentsRectCalculation:1];
+  [baseView setDataDetectorTypes:-1];
+  [baseView setDelegate:self];
+  [baseView setLoggingParentObject:self];
   v3 = objc_alloc_init(VKCVisualSearchCornerView);
   [(VKCImageAnalysisInteraction *)self setVisualSearchCornerButtonView:v3];
 
-  v4 = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
-  v5 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-  [v5 set_customAnalyticsIdentifier:v4];
+  _customAnalyticsIdentifier = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
+  visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+  [visualSearchCornerButtonView set_customAnalyticsIdentifier:_customAnalyticsIdentifier];
 
-  v6 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-  [v6 setDelegate:self];
+  visualSearchCornerButtonView2 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+  [visualSearchCornerButtonView2 setDelegate:self];
 
-  [v12 setDidAddVisualSearchCornerView:1];
+  [baseView setDidAddVisualSearchCornerView:1];
   [(VKCImageAnalysisInteraction *)self setAnalysisButtonRequiresVisibleContentGating:1];
   v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_triggerTapToRadar_];
   [v7 setNumberOfTapsRequired:2];
@@ -338,29 +338,29 @@
   analyticsProcessor = self->_analyticsProcessor;
   self->_analyticsProcessor = v8;
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
 
-  [v10 addObserver:self selector:sel_navOrToolbarVisibilityDidChange_ name:*MEMORY[0x1E69DEA10] object:0];
-  [v10 addObserver:self selector:sel_navOrToolbarVisibilityWillChange_ name:*MEMORY[0x1E69DEA18] object:0];
-  [v10 addObserver:self selector:sel_navOrToolbarVisibilityDidChange_ name:*MEMORY[0x1E69DEA00] object:0];
-  [v10 addObserver:self selector:sel_navOrToolbarVisibilityWillChange_ name:*MEMORY[0x1E69DEA08] object:0];
+  [defaultCenter addObserver:self selector:sel_navOrToolbarVisibilityDidChange_ name:*MEMORY[0x1E69DEA10] object:0];
+  [defaultCenter addObserver:self selector:sel_navOrToolbarVisibilityWillChange_ name:*MEMORY[0x1E69DEA18] object:0];
+  [defaultCenter addObserver:self selector:sel_navOrToolbarVisibilityDidChange_ name:*MEMORY[0x1E69DEA00] object:0];
+  [defaultCenter addObserver:self selector:sel_navOrToolbarVisibilityWillChange_ name:*MEMORY[0x1E69DEA08] object:0];
   [(VKCImageAnalysisInteraction *)self setActionInfoViewHidden:1 animated:0];
   [(VKCImageAnalysisInteraction *)self setDeriveQuickActionsVisibilityFromState:1];
   [(VKCImageAnalysisInteraction *)self setWantsTranslucentActionInfoButtons:1];
 }
 
-- (void)navOrToolbarVisibilityWillChange:(id)a3
+- (void)navOrToolbarVisibilityWillChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self view];
+  changeCopy = change;
+  view = [(VKCImageAnalysisInteraction *)self view];
   v6 = objc_opt_class();
-  v7 = [v4 object];
+  object = [changeCopy object];
 
-  v8 = VKDynamicCast(v6, v7);
-  v9 = [v8 view];
-  v10 = [v5 vk_isDescendantOfView:v9];
+  v8 = VKDynamicCast(v6, object);
+  view2 = [v8 view];
+  v10 = [view vk_isDescendantOfView:view2];
 
   if (v10)
   {
@@ -379,88 +379,88 @@ void __64__VKCImageAnalysisInteraction_navOrToolbarVisibilityWillChange___block_
   [v1 updateNormalizedVisibleRectIfNecessary];
 }
 
-- (void)navOrToolbarVisibilityDidChange:(id)a3
+- (void)navOrToolbarVisibilityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self view];
+  changeCopy = change;
+  view = [(VKCImageAnalysisInteraction *)self view];
   v6 = objc_opt_class();
-  v7 = [v4 object];
+  object = [changeCopy object];
 
-  v8 = VKDynamicCast(v6, v7);
-  v9 = [v8 view];
-  v10 = [v5 vk_isDescendantOfView:v9];
+  v8 = VKDynamicCast(v6, object);
+  view2 = [v8 view];
+  v10 = [view vk_isDescendantOfView:view2];
 
   if (v10)
   {
-    v11 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v11 updateNormalizedVisibleRectIfNecessary];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView updateNormalizedVisibleRectIfNecessary];
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
-    v5 = [(VKCImageAnalysisInteraction *)self view];
-    [v5 removeGestureRecognizer:self->_feedbackGestureRecognizer];
+    view = [(VKCImageAnalysisInteraction *)self view];
+    [view removeGestureRecognizer:self->_feedbackGestureRecognizer];
 
     v7 = +[VKImageAnalyzerMadInterface sharedInterface];
-    v6 = [(VKCImageAnalysisInteraction *)self baseView];
-    LOBYTE(v5) = [v6 activeInteractionTypes];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    LOBYTE(view) = [baseView activeInteractionTypes];
 
-    if ((v5 & 4) != 0)
+    if ((view & 4) != 0)
     {
       [v7 didLeaveVisualSearchHints];
     }
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = viewCopy;
     _os_log_impl(&dword_1B4335000, v5, OS_LOG_TYPE_DEFAULT, "Interaction %@ did move to view: %@", &v9, 0x16u);
   }
 
-  [(VKCImageAnalysisInteraction *)self setView:v4];
-  v6 = [(VKCImageAnalysisInteraction *)self baseView];
-  if (v4)
+  [(VKCImageAnalysisInteraction *)self setView:viewCopy];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  if (viewCopy)
   {
-    [v4 bounds];
-    [v6 setFrame:?];
-    [v6 setAutoresizingMask:18];
-    v7 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v4 addSubview:v7];
+    [viewCopy bounds];
+    [baseView setFrame:?];
+    [baseView setAutoresizingMask:18];
+    baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+    [viewCopy addSubview:baseView2];
 
-    [(VKCImageAnalysisInteraction *)self setViewForObservingContentMode:v4];
-    [v6 configureForCurrentActiveInteractionTypes];
-    [v6 updateCurrentDisplayedViewContentsRect];
-    [v4 addGestureRecognizer:self->_feedbackGestureRecognizer];
+    [(VKCImageAnalysisInteraction *)self setViewForObservingContentMode:viewCopy];
+    [baseView configureForCurrentActiveInteractionTypes];
+    [baseView updateCurrentDisplayedViewContentsRect];
+    [viewCopy addGestureRecognizer:self->_feedbackGestureRecognizer];
   }
 
   else
   {
-    v8 = [(VKCImageAnalysisInteraction *)self visualSearchCornerView];
-    [v8 removeFromSuperview];
+    visualSearchCornerView = [(VKCImageAnalysisInteraction *)self visualSearchCornerView];
+    [visualSearchCornerView removeFromSuperview];
 
     [(VKCImageAnalysisInteraction *)self setViewForObservingContentMode:0];
-    [v6 resetSelection];
-    [v6 resignFirstResponder];
-    [v6 removeFromSuperview];
+    [baseView resetSelection];
+    [baseView resignFirstResponder];
+    [baseView removeFromSuperview];
   }
 }
 
 - (CGRect)contentsRect
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 contentsRect];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView contentsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -477,14 +477,14 @@ void __64__VKCImageAnalysisInteraction_navOrToolbarVisibilityWillChange___block_
   return result;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  objc_storeWeak(&self->_view, v5);
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v5;
+    v4 = viewCopy;
   }
 
   else
@@ -495,39 +495,39 @@ void __64__VKCImageAnalysisInteraction_navOrToolbarVisibilityWillChange___block_
   [(VKCImageAnalysisInteraction *)self setViewForObservingContentMode:v4];
 }
 
-- (void)setViewForObservingContentMode:(id)a3
+- (void)setViewForObservingContentMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 setViewForObservingContentMode:v4];
+  modeCopy = mode;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setViewForObservingContentMode:modeCopy];
 }
 
 - (UIView)viewForObservingContentMode
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viewForObservingContentMode];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viewForObservingContentMode = [baseView viewForObservingContentMode];
 
-  return v3;
+  return viewForObservingContentMode;
 }
 
-- (void)setAllowLongPressForDataDetectorsInTextMode:(BOOL)a3
+- (void)setAllowLongPressForDataDetectorsInTextMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setLongPressDataDetectorsInTextMode:v3];
+  modeCopy = mode;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setLongPressDataDetectorsInTextMode:modeCopy];
 }
 
 - (BOOL)allowLongPressForDataDetectorsInTextMode
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 longPressDataDetectorsInTextMode];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  longPressDataDetectorsInTextMode = [baseView longPressDataDetectorsInTextMode];
 
-  return v3;
+  return longPressDataDetectorsInTextMode;
 }
 
-- (void)setAnalysis:(id)a3
+- (void)setAnalysis:(id)analysis
 {
-  v5 = a3;
+  analysisCopy = analysis;
   v6 = _VKSignpostLog();
   if (os_signpost_enabled(v6))
   {
@@ -543,36 +543,36 @@ void __64__VKCImageAnalysisInteraction_navOrToolbarVisibilityWillChange___block_
   }
 
   p_analysis = &self->_analysis;
-  if (self->_analysis != v5)
+  if (self->_analysis != analysisCopy)
   {
     [(VKCImageAnalysisInteraction *)self setIsSettingAnalysis:1];
     [(VKCImageAnalysisInteraction *)self setDidLogAnalysisButtonVisible:0];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     analysis = self->_analysis;
     if (analysis)
     {
-      v11 = [(VKImageAnalysis *)analysis imageAnalysisResult];
-      [v9 removeObserver:self name:@"VKAnalysisDidUpdateNotification" object:v11];
+      imageAnalysisResult = [(VKImageAnalysis *)analysis imageAnalysisResult];
+      [defaultCenter removeObserver:self name:@"VKAnalysisDidUpdateNotification" object:imageAnalysisResult];
     }
 
-    objc_storeStrong(&self->_analysis, a3);
+    objc_storeStrong(&self->_analysis, analysis);
     if (*p_analysis)
     {
-      v12 = [(VKImageAnalysis *)*p_analysis imageAnalysisResult];
-      [v9 addObserver:self selector:sel_analysisDidUpdate_ name:@"VKAnalysisDidUpdateNotification" object:v12];
+      imageAnalysisResult2 = [(VKImageAnalysis *)*p_analysis imageAnalysisResult];
+      [defaultCenter addObserver:self selector:sel_analysisDidUpdate_ name:@"VKAnalysisDidUpdateNotification" object:imageAnalysisResult2];
     }
 
     [(VKCImageAnalysisInteraction *)self closeAndSendCurrentAnalyticsSession];
     [(VKCImageAnalysisInteraction *)self clearMatchedHighlightsIfNecessaryAnimated:0];
-    v13 = [(VKImageAnalysis *)v5 imageAnalysisResult];
-    v14 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v14 setAnalysisResult:v13];
+    imageAnalysisResult3 = [(VKImageAnalysis *)analysisCopy imageAnalysisResult];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView setAnalysisResult:imageAnalysisResult3];
 
-    v15 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-    [v15 setAnalysis:v5];
+    visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+    [visualSearchCornerButtonView setAnalysis:analysisCopy];
 
-    v16 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
-    [v16 setAnalysis:v5];
+    actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+    [actionInfoCornerButtonViewIfExists setAnalysis:analysisCopy];
 
     [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:0];
     [(VKCImageAnalysisInteraction *)self setDidToggleAAButton:0];
@@ -589,60 +589,60 @@ void __64__VKCImageAnalysisInteraction_navOrToolbarVisibilityWillChange___block_
 
 - (NSString)text
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 text];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  text = [baseView text];
 
-  return v3;
+  return text;
 }
 
 - (NSString)selectedText
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 selectedText];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  selectedText = [baseView selectedText];
 
-  return v3;
+  return selectedText;
 }
 
 - (NSAttributedString)selectedAttributedText
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 selectedAttributedText];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  selectedAttributedText = [baseView selectedAttributedText];
 
-  return v3;
+  return selectedAttributedText;
 }
 
 - (NSArray)selectedRanges
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 selectedRanges];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  selectedRanges = [baseView selectedRanges];
 
-  return v3;
+  return selectedRanges;
 }
 
-- (void)setSelectedRanges:(id)a3
+- (void)setSelectedRanges:(id)ranges
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 setSelectedRanges:v4];
+  rangesCopy = ranges;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setSelectedRanges:rangesCopy];
 }
 
-- (void)setActiveInteractionTypes:(unint64_t)a3
+- (void)setActiveInteractionTypes:(unint64_t)types
 {
-  if ([(VKCImageAnalysisInteraction *)self activeInteractionTypes]!= a3)
+  if ([(VKCImageAnalysisInteraction *)self activeInteractionTypes]!= types)
   {
-    [(VKCImageAnalysisInteraction *)self setInteractionTypesSetByClient:a3];
+    [(VKCImageAnalysisInteraction *)self setInteractionTypesSetByClient:types];
 
-    [(VKCImageAnalysisInteraction *)self _setActiveInteractionTypes:a3 updateAutomaticState:1];
+    [(VKCImageAnalysisInteraction *)self _setActiveInteractionTypes:types updateAutomaticState:1];
   }
 }
 
-- (void)_setActiveInteractionTypes:(unint64_t)a3 updateAutomaticState:(BOOL)a4
+- (void)_setActiveInteractionTypes:(unint64_t)types updateAutomaticState:(BOOL)state
 {
-  v4 = a4;
-  v5 = a3;
-  if ((a3 & 0x10) != 0 && (!+[VKCGMAvailability supportsVI](VKCGMAvailability, "supportsVI") || +[VKCInternalSettings disableVisualIntelligence]))
+  stateCopy = state;
+  typesCopy = types;
+  if ((types & 0x10) != 0 && (!+[VKCGMAvailability supportsVI](VKCGMAvailability, "supportsVI") || +[VKCInternalSettings disableVisualIntelligence]))
   {
-    v5 &= ~0x10uLL;
+    typesCopy &= ~0x10uLL;
     v7 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -653,23 +653,23 @@ void __64__VKCImageAnalysisInteraction_navOrToolbarVisibilityWillChange___block_
   if (![(VKCImageAnalysisInteraction *)self isUpdatingActiveTypes])
   {
     [(VKCImageAnalysisInteraction *)self setIsUpdatingActiveTypes:1];
-    v8 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v8 setActiveInteractionTypes:v5];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView setActiveInteractionTypes:typesCopy];
 
-    v9 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-    [v9 setHidden:(v5 & 4) == 0];
+    visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+    [visualSearchCornerButtonView setHidden:(typesCopy & 4) == 0];
 
-    v10 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
-    [v10 setHidden:(v5 & 4) == 0];
+    actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+    [actionInfoCornerButtonViewIfExists setHidden:(typesCopy & 4) == 0];
 
-    if (v5)
+    if (typesCopy)
     {
-      if (!v4)
+      if (!stateCopy)
       {
 LABEL_11:
         [(VKCImageAnalysisInteraction *)self _automaticallyShowVisualSearchResultsIfApplicable];
-        v11 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-        [v11 updateLayoutIfNecessary];
+        actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+        [actionInfoViewIfExists updateLayoutIfNecessary];
 
         [(VKCImageAnalysisInteraction *)self setSubjectHighlightActive:0];
         [(VKCImageAnalysisInteraction *)self setIsUpdatingActiveTypes:0];
@@ -681,7 +681,7 @@ LABEL_11:
     else
     {
       [(VKCImageAnalysisInteraction *)self set_highlightSelectableItems:0];
-      if (!v4)
+      if (!stateCopy)
       {
         goto LABEL_11;
       }
@@ -694,14 +694,14 @@ LABEL_11:
 
 - (void)_automaticallyShowVisualSearchResultsIfApplicable
 {
-  v3 = [(VKCImageAnalysisInteraction *)self baseView];
-  v4 = [v3 activeInteractionTypes];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  activeInteractionTypes = [baseView activeInteractionTypes];
 
-  if ((v4 & 4) != 0 && [(VKCImageAnalysisInteraction *)self automaticallyShowVisualSearchResults])
+  if ((activeInteractionTypes & 4) != 0 && [(VKCImageAnalysisInteraction *)self automaticallyShowVisualSearchResults])
   {
-    v5 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+    actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
 
-    if (v5)
+    if (actionInfoCornerButtonViewIfExists)
     {
       [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
     }
@@ -713,126 +713,126 @@ LABEL_11:
     v6 = ;
     [v6 automaticallyShowVisualSearchResultsIfApplicable];
 
-    v7 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v7 automaticallyShowVisualSearchResultsIfApplicable];
+    baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView2 automaticallyShowVisualSearchResultsIfApplicable];
   }
 }
 
 - (unint64_t)activeInteractionTypes
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 activeInteractionTypes];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  activeInteractionTypes = [baseView activeInteractionTypes];
 
-  return v3;
+  return activeInteractionTypes;
 }
 
 - (unint64_t)dataDetectorTypes
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 dataDetectorTypes];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  dataDetectorTypes = [baseView dataDetectorTypes];
 
-  return v3;
+  return dataDetectorTypes;
 }
 
-- (void)setDataDetectorTypes:(unint64_t)a3
+- (void)setDataDetectorTypes:(unint64_t)types
 {
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setDataDetectorTypes:a3];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setDataDetectorTypes:types];
 }
 
-- (void)setWantsAutomaticContentsRectCalculation:(BOOL)a3
+- (void)setWantsAutomaticContentsRectCalculation:(BOOL)calculation
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setWantsAutomaticContentsRectCalculation:v3];
+  calculationCopy = calculation;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setWantsAutomaticContentsRectCalculation:calculationCopy];
 }
 
 - (BOOL)wantsAutomaticContentsRectCalculation
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 wantsAutomaticContentsRectCalculation];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  wantsAutomaticContentsRectCalculation = [baseView wantsAutomaticContentsRectCalculation];
 
-  return v3;
+  return wantsAutomaticContentsRectCalculation;
 }
 
 - (BOOL)hasActiveTextSelection
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 hasActiveTextSelection];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  hasActiveTextSelection = [baseView hasActiveTextSelection];
 
-  return v3;
+  return hasActiveTextSelection;
 }
 
-- (void)set_highlightSelectableItems:(BOOL)a3
+- (void)set_highlightSelectableItems:(BOOL)items
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setHighlightSelectableItems:v3];
+  itemsCopy = items;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setHighlightSelectableItems:itemsCopy];
 }
 
 - (BOOL)subjectViewUserInteractionDisabled
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 subjectViewUserInteractionDisabled];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  subjectViewUserInteractionDisabled = [baseView subjectViewUserInteractionDisabled];
 
-  return v3;
+  return subjectViewUserInteractionDisabled;
 }
 
-- (void)setSubjectViewUserInteractionDisabled:(BOOL)a3
+- (void)setSubjectViewUserInteractionDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setSubjectViewUserInteractionDisabled:v3];
+  disabledCopy = disabled;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setSubjectViewUserInteractionDisabled:disabledCopy];
 }
 
 - (BOOL)_highlightSelectableItems
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 highlightSelectableItems];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  highlightSelectableItems = [baseView highlightSelectableItems];
 
-  return v3;
+  return highlightSelectableItems;
 }
 
-- (void)setHighlightSelectableItems:(BOOL)a3
+- (void)setHighlightSelectableItems:(BOOL)items
 {
-  v3 = a3;
-  if ([(VKCImageAnalysisInteraction *)self _highlightSelectableItems]!= a3)
+  itemsCopy = items;
+  if ([(VKCImageAnalysisInteraction *)self _highlightSelectableItems]!= items)
   {
-    [(VKCImageAnalysisInteraction *)self set_highlightSelectableItems:v3];
+    [(VKCImageAnalysisInteraction *)self set_highlightSelectableItems:itemsCopy];
 
     [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:1];
   }
 }
 
-- (void)setSubjectHighlightActive:(BOOL)a3
+- (void)setSubjectHighlightActive:(BOOL)active
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setSubjectHighlightActive:v3];
+  activeCopy = active;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setSubjectHighlightActive:activeCopy];
 }
 
-- (void)highlightSubjectAtIndexSet:(id)a3 showCallout:(BOOL)a4 showBurst:(BOOL)a5 burstPoint:(CGPoint)a6 animated:(BOOL)a7
+- (void)highlightSubjectAtIndexSet:(id)set showCallout:(BOOL)callout showBurst:(BOOL)burst burstPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v7 = a7;
-  y = a6.y;
-  x = a6.x;
-  v10 = a5;
-  v11 = a4;
-  v13 = a3;
-  v14 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v14 highlightSubjectAtIndexSet:v13 showCallout:v11 showBurst:v10 burstPoint:v7 animated:{x, y}];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  burstCopy = burst;
+  calloutCopy = callout;
+  setCopy = set;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView highlightSubjectAtIndexSet:setCopy showCallout:calloutCopy showBurst:burstCopy burstPoint:animatedCopy animated:{x, y}];
 }
 
-- (void)createStickerImageAtIndexSet:(id)a3 completion:(id)a4
+- (void)createStickerImageAtIndexSet:(id)set completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion___block_invoke;
   v8[3] = &unk_1E7BE5378;
-  v9 = v6;
-  v7 = v6;
-  [(VKCImageAnalysisInteraction *)self loadImageSubjectWithIndexes:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(VKCImageAnalysisInteraction *)self loadImageSubjectWithIndexes:set completion:v8];
 }
 
 void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion___block_invoke(uint64_t a1, void *a2)
@@ -845,57 +845,57 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
   (*(v2 + 16))(v2, v4);
 }
 
-- (void)createStickerRepresentationsAtIndexSet:(id)a3 completion:(id)a4
+- (void)createStickerRepresentationsAtIndexSet:(id)set completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VKCImageAnalysisInteraction *)self baseView];
+  completionCopy = completion;
+  setCopy = set;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__VKCImageAnalysisInteraction_createStickerRepresentationsAtIndexSet_completion___block_invoke;
   v10[3] = &unk_1E7BE55E8;
-  v11 = v6;
-  v9 = v6;
-  [v8 createStickerRepresentationsAtIndexSet:v7 type:7 stickerIDs:MEMORY[0x1E695E0F0] progress:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [baseView createStickerRepresentationsAtIndexSet:setCopy type:7 stickerIDs:MEMORY[0x1E695E0F0] progress:0 completion:v10];
 }
 
-- (void)createStickerRepresentationsAtIndexSet:(id)a3 type:(unint64_t)a4 stickerIDs:(id)a5 progress:(id)a6 completion:(id)a7
+- (void)createStickerRepresentationsAtIndexSet:(id)set type:(unint64_t)type stickerIDs:(id)ds progress:(id)progress completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v16 createStickerRepresentationsAtIndexSet:v15 type:a4 stickerIDs:v14 progress:v13 completion:v12];
+  completionCopy = completion;
+  progressCopy = progress;
+  dsCopy = ds;
+  setCopy = set;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView createStickerRepresentationsAtIndexSet:setCopy type:type stickerIDs:dsCopy progress:progressCopy completion:completionCopy];
 }
 
-- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)a3
+- (id)videoPreviewSubjectMatteAtCompositionTime:(id *)time
 {
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  v7 = *a3;
-  v5 = [v4 videoPreviewSubjectMatteAtCompositionTime:&v7];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  v7 = *time;
+  v5 = [baseView videoPreviewSubjectMatteAtCompositionTime:&v7];
 
   return v5;
 }
 
-- (id)videoPreviewSubjectMatteForImage:(id)a3 atCompositionTime:(id *)a4
+- (id)videoPreviewSubjectMatteForImage:(id)image atCompositionTime:(id *)time
 {
-  v6 = a3;
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  v10 = *a4;
-  v8 = [v7 videoPreviewSubjectMatteForImage:v6 atCompositionTime:&v10];
+  imageCopy = image;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  v10 = *time;
+  v8 = [baseView videoPreviewSubjectMatteForImage:imageCopy atCompositionTime:&v10];
 
   return v8;
 }
 
 - ($58EB755F713D70195D081A2438463C76)videoPreviewTimeRange
 {
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  if (v4)
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  if (baseView)
   {
-    v6 = v4;
-    [v4 videoPreviewTimeRange];
-    v4 = v6;
+    v6 = baseView;
+    [baseView videoPreviewTimeRange];
+    baseView = v6;
   }
 
   else
@@ -910,8 +910,8 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
 
 - (CGRect)videoPreviewNormalizedCropRect
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 videoPreviewNormalizedCropRect];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView videoPreviewNormalizedCropRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -930,64 +930,64 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
 
 - (BOOL)subjectHighlightActive
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 subjectHighlightActive];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  subjectHighlightActive = [baseView subjectHighlightActive];
 
-  return v3;
+  return subjectHighlightActive;
 }
 
 - (BOOL)subjectInteractionInProgress
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 subjectInteractionInProgress];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  subjectInteractionInProgress = [baseView subjectInteractionInProgress];
 
-  return v3;
+  return subjectInteractionInProgress;
 }
 
-- (void)setActiveSubjectIndexSet:(id)a3
+- (void)setActiveSubjectIndexSet:(id)set
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 setActiveSubjectIndexSet:v4];
+  setCopy = set;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setActiveSubjectIndexSet:setCopy];
 }
 
-- (void)set_isPublicAPI:(BOOL)a3
+- (void)set_isPublicAPI:(BOOL)i
 {
-  v3 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 setIsPublicAPI:v3];
+  iCopy = i;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setIsPublicAPI:iCopy];
 
-  v6 = [(VKCImageAnalysisInteraction *)self analyticsProcessor];
-  [v6 setIsPublicAPI:v3];
+  analyticsProcessor = [(VKCImageAnalysisInteraction *)self analyticsProcessor];
+  [analyticsProcessor setIsPublicAPI:iCopy];
 }
 
 - (BOOL)_isPublicAPI
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 isPublicAPI];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  isPublicAPI = [baseView isPublicAPI];
 
-  return v3;
+  return isPublicAPI;
 }
 
-- (void)set_isVIHosted:(BOOL)a3
+- (void)set_isVIHosted:(BOOL)hosted
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setIsVIHosted:v3];
+  hostedCopy = hosted;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setIsVIHosted:hostedCopy];
 }
 
 - (BOOL)_isVIHosted
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 isVIHosted];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  isVIHosted = [baseView isVIHosted];
 
-  return v3;
+  return isVIHosted;
 }
 
 - (CGRect)subjectFrame
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 subjectFrame];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView subjectFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1006,144 +1006,144 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
 
 - (BOOL)isSubjectHighlightAvailable
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 isSubjectHighlightAvailable];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  isSubjectHighlightAvailable = [baseView isSubjectHighlightAvailable];
 
-  return v3;
+  return isSubjectHighlightAvailable;
 }
 
 - (BOOL)isSubjectAnalysisComplete
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 isSubjectAnalysisComplete];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  isSubjectAnalysisComplete = [baseView isSubjectAnalysisComplete];
 
-  return v3;
+  return isSubjectAnalysisComplete;
 }
 
 - (NSIndexSet)allSubjectIndexes
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 allSubjectsIndexSet];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  allSubjectsIndexSet = [baseView allSubjectsIndexSet];
 
-  return v3;
+  return allSubjectsIndexSet;
 }
 
 - (NSIndexSet)selectedSubjectIndexes
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 activeSubjectIndexSet];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  activeSubjectIndexSet = [baseView activeSubjectIndexSet];
 
-  return v3;
+  return activeSubjectIndexSet;
 }
 
 - (id)generateSubjectImage
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 generateSubjectImage];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  generateSubjectImage = [baseView generateSubjectImage];
 
-  return v3;
+  return generateSubjectImage;
 }
 
 - (BOOL)_photosInfoSingleTapSubjectModeEnabled
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 _photosInfoSingleTapSubjectModeEnabled];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  _photosInfoSingleTapSubjectModeEnabled = [baseView _photosInfoSingleTapSubjectModeEnabled];
 
-  return v3;
+  return _photosInfoSingleTapSubjectModeEnabled;
 }
 
-- (void)set_photosInfoSingleTapSubjectModeEnabled:(BOOL)a3
+- (void)set_photosInfoSingleTapSubjectModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 set_photosInfoSingleTapSubjectModeEnabled:v3];
+  enabledCopy = enabled;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView set_photosInfoSingleTapSubjectModeEnabled:enabledCopy];
 }
 
 - (BOOL)_inhibitSubjectDimmingAndLiftView
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 inhibitSubjectDimmingAndLiftView];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  inhibitSubjectDimmingAndLiftView = [baseView inhibitSubjectDimmingAndLiftView];
 
-  return v3;
+  return inhibitSubjectDimmingAndLiftView;
 }
 
-- (void)set_inhibitSubjectDimmingAndLiftView:(BOOL)a3
+- (void)set_inhibitSubjectDimmingAndLiftView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setInhibitSubjectDimmingAndLiftView:v3];
+  viewCopy = view;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setInhibitSubjectDimmingAndLiftView:viewCopy];
 }
 
-- (void)loadImageSubjectIfAvailableWithCompletion:(id)a3
+- (void)loadImageSubjectIfAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 loadImageSubjectIfAvailableWithCompletion:v4];
+  completionCopy = completion;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView loadImageSubjectIfAvailableWithCompletion:completionCopy];
 }
 
-- (void)set_photosImageForRemoveBackground:(id)a3
+- (void)set_photosImageForRemoveBackground:(id)background
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 setCustomImageForRemoveBackground:v4];
+  backgroundCopy = background;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setCustomImageForRemoveBackground:backgroundCopy];
 }
 
 - (UIImage)_photosImageForRemoveBackground
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 customImageForRemoveBackground];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  customImageForRemoveBackground = [baseView customImageForRemoveBackground];
 
-  return v3;
+  return customImageForRemoveBackground;
 }
 
 - (BOOL)usesLightDimmingViewInLightMode
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 usesLightDimmingViewInLightMode];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  usesLightDimmingViewInLightMode = [baseView usesLightDimmingViewInLightMode];
 
-  return v3;
+  return usesLightDimmingViewInLightMode;
 }
 
-- (void)setUsesLightDimmingViewInLightMode:(BOOL)a3
+- (void)setUsesLightDimmingViewInLightMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setUsesLightDimmingViewInLightMode:v3];
+  modeCopy = mode;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setUsesLightDimmingViewInLightMode:modeCopy];
 }
 
-- (void)set_customAnalyticsIdentifier:(id)a3
+- (void)set_customAnalyticsIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 setCustomAnalyticsIdentifier:v4];
+  identifierCopy = identifier;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setCustomAnalyticsIdentifier:identifierCopy];
 
-  v6 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-  [v6 set_customAnalyticsIdentifier:v4];
+  visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+  [visualSearchCornerButtonView set_customAnalyticsIdentifier:identifierCopy];
 
-  v7 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
-  [v7 set_customAnalyticsIdentifier:v4];
+  actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+  [actionInfoCornerButtonViewIfExists set_customAnalyticsIdentifier:identifierCopy];
 }
 
 - (NSString)_customAnalyticsIdentifier
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 customAnalyticsIdentifier];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  customAnalyticsIdentifier = [baseView customAnalyticsIdentifier];
 
-  return v3;
+  return customAnalyticsIdentifier;
 }
 
-- (void)setButtonsVisible:(BOOL)a3
+- (void)setButtonsVisible:(BOOL)visible
 {
-  if (self->_buttonsVisible != a3)
+  if (self->_buttonsVisible != visible)
   {
-    self->_buttonsVisible = a3;
-    v5 = [(VKCImageAnalysisInteraction *)self delegate];
+    self->_buttonsVisible = visible;
+    delegate = [(VKCImageAnalysisInteraction *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(VKCImageAnalysisInteraction *)self delegate];
-      [v7 imageAnalysisInteraction:self liveTextButtonDidChangeToVisible:self->_buttonsVisible];
+      delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+      [delegate2 imageAnalysisInteraction:self liveTextButtonDidChangeToVisible:self->_buttonsVisible];
     }
 
     [(VKCImageAnalysisInteraction *)self logButtonsVisibleStatus];
@@ -1160,202 +1160,202 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
     v5 = 138412546;
     v6 = v4;
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "Analysis button is visible: %@, %@ ", &v5, 0x16u);
   }
 
   [(VKCImageAnalysisInteraction *)self setDidLogAnalysisButtonVisible:1];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   if (![(VKCImageAnalysisInteraction *)self wantsAutomaticContentsRectCalculation])
   {
-    v4 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v4 updateCurrentDisplayedViewContentsRect];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView updateCurrentDisplayedViewContentsRect];
   }
 }
 
-- (BOOL)interactableItemExistsAtPoint:(CGPoint)a3
+- (BOOL)interactableItemExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  LOBYTE(v6) = [v12 containsInteractiveItemAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  LOBYTE(view) = [baseView2 containsInteractiveItemAtPoint:{v9, v11}];
 
-  return v6;
+  return view;
 }
 
-- (BOOL)textExistsAtPoint:(CGPoint)a3
+- (BOOL)textExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  LOBYTE(v6) = [v12 containsTextAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  LOBYTE(view) = [baseView2 containsTextAtPoint:{v9, v11}];
 
-  return v6;
+  return view;
 }
 
-- (BOOL)dataDetectorExistsAtPoint:(CGPoint)a3
+- (BOOL)dataDetectorExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  v13 = [v12 dataDetectorTypeAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  v13 = [baseView2 dataDetectorTypeAtPoint:{v9, v11}];
 
   return v13 != 0;
 }
 
-- (BOOL)visualSearchExistsAtPoint:(CGPoint)a3
+- (BOOL)visualSearchExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  LOBYTE(v6) = [v12 containsVisualSearchItemAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  LOBYTE(view) = [baseView2 containsVisualSearchItemAtPoint:{v9, v11}];
 
-  return v6;
+  return view;
 }
 
-- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)a3
+- (BOOL)actionInfoItemExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  LOBYTE(v6) = [v12 containsActionInfoItemAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  LOBYTE(view) = [baseView2 containsActionInfoItemAtPoint:{v9, v11}];
 
-  return v6;
+  return view;
 }
 
-- (BOOL)analysisContainsTextAtPoint:(CGPoint)a3
+- (BOOL)analysisContainsTextAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  LOBYTE(v6) = [v12 analysisContainsTextAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  LOBYTE(view) = [baseView2 analysisContainsTextAtPoint:{v9, v11}];
 
-  return v6;
+  return view;
 }
 
-- (BOOL)imageSubjectExistsAtPoint:(CGPoint)a3
+- (BOOL)imageSubjectExistsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  LOBYTE(v6) = [v12 containsImageSubjectAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  LOBYTE(view) = [baseView2 containsImageSubjectAtPoint:{v9, v11}];
 
-  return v6;
+  return view;
 }
 
-- (id)subjectIndexAtPoint:(CGPoint)a3
+- (id)subjectIndexAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageAnalysisInteraction *)self view];
-  v7 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v6 convertPoint:v7 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [view convertPoint:baseView toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  v13 = [v12 indexOfSubjectAtPoint:{v9, v11}];
+  baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+  v13 = [baseView2 indexOfSubjectAtPoint:{v9, v11}];
 
   return v13;
 }
 
 - (void)resetSelection
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 resetSelection];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView resetSelection];
 }
 
 - (void)updateContentsRect
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 updateCurrentDisplayedViewContentsRect];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView updateCurrentDisplayedViewContentsRect];
 }
 
 - (void)beginImageSubjectAnalysisIfNecessary
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 beginImageSubjectAnalysisIfNecessary];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView beginImageSubjectAnalysisIfNecessary];
 }
 
 - (void)beginImageSubjectAnalysisWithDelayIfNecessary
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 beginImageSubjectAnalysisWithDelayIfNecessary];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView beginImageSubjectAnalysisWithDelayIfNecessary];
 }
 
-- (void)beginImageSubjectAnalysisIfNecessaryWithCompletion:(id)a3
+- (void)beginImageSubjectAnalysisIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 beginImageSubjectAnalysisIfNecessaryWithCompletion:v4];
+  completionCopy = completion;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView beginImageSubjectAnalysisIfNecessaryWithCompletion:completionCopy];
 }
 
-- (void)loadImageSubjectWithIndexes:(id)a3 completion:(id)a4
+- (void)loadImageSubjectWithIndexes:(id)indexes completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v8 loadImageSubjectWithIndexes:v7 completion:v6];
+  completionCopy = completion;
+  indexesCopy = indexes;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView loadImageSubjectWithIndexes:indexesCopy completion:completionCopy];
 }
 
-- (id)imageSubjectPathWithIndexes:(id)a3
+- (id)imageSubjectPathWithIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  v6 = [v5 imageSubjectPathWithIndexes:v4];
+  indexesCopy = indexes;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  v6 = [baseView imageSubjectPathWithIndexes:indexesCopy];
 
   return v6;
 }
 
-- (CGRect)imageSubjectBoundsWithIndexes:(id)a3
+- (CGRect)imageSubjectBoundsWithIndexes:(id)indexes
 {
-  v3 = [(VKCImageAnalysisInteraction *)self imageSubjectPathWithIndexes:a3];
+  v3 = [(VKCImageAnalysisInteraction *)self imageSubjectPathWithIndexes:indexes];
   v4 = v3;
   if (v3)
   {
@@ -1385,25 +1385,25 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
   return result;
 }
 
-- (void)setForceAnalysisBarButtonItemEnabled:(BOOL)a3
+- (void)setForceAnalysisBarButtonItemEnabled:(BOOL)enabled
 {
-  if (self->_forceAnalysisBarButtonItemEnabled != a3)
+  if (self->_forceAnalysisBarButtonItemEnabled != enabled)
   {
-    self->_forceAnalysisBarButtonItemEnabled = a3;
+    self->_forceAnalysisBarButtonItemEnabled = enabled;
     [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:0];
   }
 }
 
-- (BOOL)_showVSResultForItem:(id)a3
+- (BOOL)_showVSResultForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_class();
-  v6 = VKCheckedDynamicCast(v5, v4);
+  v6 = VKCheckedDynamicCast(v5, itemCopy);
 
   if (v6)
   {
-    v7 = [(VKCImageAnalysisInteraction *)self baseView];
-    v8 = [v7 presentVisualSearchForItem:v6];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    v8 = [baseView presentVisualSearchForItem:v6];
   }
 
   else
@@ -1414,112 +1414,112 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
   return v8;
 }
 
-- (void)set_isShowingTranslationOverlay:(BOOL)a3
+- (void)set_isShowingTranslationOverlay:(BOOL)overlay
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 setIsShowingTranslation:v3];
+  overlayCopy = overlay;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView setIsShowingTranslation:overlayCopy];
 }
 
 - (BOOL)_isShowingTranslationOverlay
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 isShowingTranslation];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  isShowingTranslation = [baseView isShowingTranslation];
 
-  return v3;
+  return isShowingTranslation;
 }
 
 - (NSArray)visualSearchResultItems
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 visualSearchResultItems];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  visualSearchResultItems = [baseView visualSearchResultItems];
 
-  return v3;
+  return visualSearchResultItems;
 }
 
-- (void)showVisualSearchForResultItem:(id)a3
+- (void)showVisualSearchForResultItem:(id)item
 {
-  v6 = a3;
-  if (([v6 isVisualIntelligenceItem] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isVisualIntelligenceItem] & 1) == 0)
   {
-    v4 = [(VKCImageAnalysisInteraction *)self baseView];
-    v5 = [v6 item];
-    [v4 presentVisualSearchForItem:v5];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    item = [itemCopy item];
+    [baseView presentVisualSearchForItem:item];
   }
 }
 
 - (void)presentVisualIntelligenceSheet
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viCoordinator];
-  v4 = [v3 overlayView];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viCoordinator = [baseView viCoordinator];
+  overlayView = [viCoordinator overlayView];
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 setIsSheetPresented:1];
+    [overlayView setIsSheetPresented:1];
   }
 }
 
 - (void)dismissVisualIntelligenceSheetIfNecessary
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viCoordinatorIfExists];
-  v4 = [v3 overlayView];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viCoordinatorIfExists = [baseView viCoordinatorIfExists];
+  overlayView = [viCoordinatorIfExists overlayView];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 isSheetPresented])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [overlayView isSheetPresented])
   {
-    [v4 setIsSheetPresented:0];
+    [overlayView setIsSheetPresented:0];
   }
 }
 
 - (BOOL)isVisualIntelligenceSheetVisible
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viCoordinatorIfExists];
-  v4 = [v3 overlayView];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viCoordinatorIfExists = [baseView viCoordinatorIfExists];
+  overlayView = [viCoordinatorIfExists overlayView];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 isSheetPresented];
+    isSheetPresented = [overlayView isSheetPresented];
   }
 
   else
   {
-    v5 = 0;
+    isSheetPresented = 0;
   }
 
-  return v5;
+  return isSheetPresented;
 }
 
 - (BOOL)isDraggingVisualIntelligenceSheet
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viCoordinatorIfExists];
-  v4 = [v3 overlayView];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viCoordinatorIfExists = [baseView viCoordinatorIfExists];
+  overlayView = [viCoordinatorIfExists overlayView];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 isDraggingSheet];
+    isDraggingSheet = [overlayView isDraggingSheet];
   }
 
   else
   {
-    v5 = 0;
+    isDraggingSheet = 0;
   }
 
-  return v5;
+  return isDraggingSheet;
 }
 
 - (double)currentVisualIntelligenceSheetProgress
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viCoordinatorIfExists];
-  v4 = [v3 overlayView];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viCoordinatorIfExists = [baseView viCoordinatorIfExists];
+  overlayView = [viCoordinatorIfExists overlayView];
 
   v5 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v4 currentSheetProgress];
+    [overlayView currentSheetProgress];
     v5 = v6;
   }
 
@@ -1528,17 +1528,17 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
 
 - (void)openInfoPaneForTopItem
 {
-  v3 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v3 showTopVisualSearchResult];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView showTopVisualSearchResult];
 
-  v4 = [(VKCImageAnalysisInteraction *)self visualSearchResultItems];
-  v5 = [v4 firstObject];
-  v6 = [v5 item];
-  [v6 setCurrentInvocationType:5];
+  visualSearchResultItems = [(VKCImageAnalysisInteraction *)self visualSearchResultItems];
+  firstObject = [visualSearchResultItems firstObject];
+  item = [firstObject item];
+  [item setCurrentInvocationType:5];
 
-  v7 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+  actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
 
-  if (v7)
+  if (actionInfoCornerButtonViewIfExists)
   {
     [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
   }
@@ -1551,19 +1551,19 @@ void __71__VKCImageAnalysisInteraction_createStickerImageAtIndexSet_completion__
   [v8 showVisualSearchResultView];
 }
 
-- (void)_addAsyncMRCElement:(id)a3
+- (void)_addAsyncMRCElement:(id)element
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self analysis];
+  elementCopy = element;
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__VKCImageAnalysisInteraction__addAsyncMRCElement___block_invoke;
   v7[3] = &unk_1E7BE5610;
   objc_copyWeak(&v9, &location);
-  v6 = v5;
+  v6 = analysis;
   v8 = v6;
-  [VKCImageAnalyzer processMRCInfo:v4 completionHandler:v7];
+  [VKCImageAnalyzer processMRCInfo:elementCopy completionHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1603,44 +1603,44 @@ void __51__VKCImageAnalysisInteraction__addAsyncMRCElement___block_invoke_2(uint
 
 - (id)_createQuickActionInfos
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  v3 = [v2 allQuickActions];
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  allQuickActions = [actionInfoView allQuickActions];
 
-  v4 = [VKCDataDetectorInfo quickActionInfosFromQuickActions:v3];
+  v4 = [VKCDataDetectorInfo quickActionInfosFromQuickActions:allQuickActions];
 
   return v4;
 }
 
 - (void)_copyAllToClipboard
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 copyAllToClipboard];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView copyAllToClipboard];
 }
 
-- (void)setActionInfoViewHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setActionInfoViewHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_actionInfoViewHidden != a3)
+  if (self->_actionInfoViewHidden != hidden)
   {
     v13 = v4;
     v14 = v5;
-    v6 = a4;
-    self->_actionInfoViewHidden = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_actionInfoViewHidden = hidden;
+    if (hidden)
     {
-      v8 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+      actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
     }
 
     else
     {
-      v8 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-      v9 = [(VKCImageAnalysisInteraction *)self baseView];
-      [v9 updateNormalizedVisibleRectIfNecessary];
+      actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoView];
+      baseView = [(VKCImageAnalysisInteraction *)self baseView];
+      [baseView updateNormalizedVisibleRectIfNecessary];
 
       if (vk_imageAnalysisSupportedAndSettingsSwitchEnabled())
       {
         v10 = 0;
 LABEL_10:
-        [v8 vk_setHidden:v10 animated:v6];
+        [actionInfoViewIfExists vk_setHidden:v10 animated:animatedCopy];
 
         return;
       }
@@ -1660,87 +1660,87 @@ LABEL_10:
 
 - (BOOL)actionInfoLiveTextButtonDisabled
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-  v3 = v2;
-  if (v2)
+  actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+  v3 = actionInfoViewIfExists;
+  if (actionInfoViewIfExists)
   {
-    v4 = [v2 liveTextButtonDisabled];
+    liveTextButtonDisabled = [actionInfoViewIfExists liveTextButtonDisabled];
   }
 
   else
   {
-    v4 = 0;
+    liveTextButtonDisabled = 0;
   }
 
-  return v4;
+  return liveTextButtonDisabled;
 }
 
-- (void)setActionInfoLiveTextButtonDisabled:(BOOL)a3
+- (void)setActionInfoLiveTextButtonDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v4 setLiveTextButtonDisabled:v3];
+  disabledCopy = disabled;
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView setLiveTextButtonDisabled:disabledCopy];
 }
 
 - (BOOL)actionInfoVisualSearchCornerViewDisabled
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-  v3 = v2;
-  if (v2)
+  actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+  v3 = actionInfoViewIfExists;
+  if (actionInfoViewIfExists)
   {
-    v4 = [v2 visualSearchCornerViewDisabled];
+    visualSearchCornerViewDisabled = [actionInfoViewIfExists visualSearchCornerViewDisabled];
   }
 
   else
   {
-    v4 = 0;
+    visualSearchCornerViewDisabled = 0;
   }
 
-  return v4;
+  return visualSearchCornerViewDisabled;
 }
 
-- (void)setActionInfoVisualSearchCornerViewDisabled:(BOOL)a3
+- (void)setActionInfoVisualSearchCornerViewDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v4 setVisualSearchCornerViewDisabled:v3];
+  disabledCopy = disabled;
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView setVisualSearchCornerViewDisabled:disabledCopy];
 }
 
 - (BOOL)actionInfoQuickActionsDisabled
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-  v3 = v2;
-  if (v2)
+  actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+  v3 = actionInfoViewIfExists;
+  if (actionInfoViewIfExists)
   {
-    v4 = [v2 quickActionsDisabled];
+    quickActionsDisabled = [actionInfoViewIfExists quickActionsDisabled];
   }
 
   else
   {
-    v4 = 0;
+    quickActionsDisabled = 0;
   }
 
-  return v4;
+  return quickActionsDisabled;
 }
 
-- (void)setActionInfoQuickActionsDisabled:(BOOL)a3
+- (void)setActionInfoQuickActionsDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v4 setQuickActionsDisabled:v3];
+  disabledCopy = disabled;
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView setQuickActionsDisabled:disabledCopy];
 }
 
-- (void)setActionInfoLayoutUpdatesSuspended:(BOOL)a3
+- (void)setActionInfoLayoutUpdatesSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v4 setLayoutUpdatesSuspended:v3];
+  suspendedCopy = suspended;
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView setLayoutUpdatesSuspended:suspendedCopy];
 }
 
 - (UIEdgeInsets)actionInfoEdgeInsets
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v2 edgeInsets];
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView edgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1757,32 +1757,32 @@ LABEL_10:
   return result;
 }
 
-- (void)setActionInfoEdgeInsets:(UIEdgeInsets)a3
+- (void)setActionInfoEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v7 setEdgeInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView setEdgeInsets:{top, left, bottom, right}];
 }
 
-- (void)setPreferredQuickActionButtonHeight:(double)a3
+- (void)setPreferredQuickActionButtonHeight:(double)height
 {
-  if (self->_preferredQuickActionButtonHeight != a3)
+  if (self->_preferredQuickActionButtonHeight != height)
   {
-    self->_preferredQuickActionButtonHeight = a3;
-    v4 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-    [v4 setPreferredQuickActionButtonHeight:a3];
+    self->_preferredQuickActionButtonHeight = height;
+    actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+    [actionInfoViewIfExists setPreferredQuickActionButtonHeight:height];
   }
 }
 
-- (void)setActionInfoCustomFont:(id)a3
+- (void)setActionInfoCustomFont:(id)font
 {
-  v5 = a3;
-  if (self->_actionInfoCustomFont != v5)
+  fontCopy = font;
+  if (self->_actionInfoCustomFont != fontCopy)
   {
-    objc_storeStrong(&self->_actionInfoCustomFont, a3);
+    objc_storeStrong(&self->_actionInfoCustomFont, font);
     if (self->_actionInfoCustomFont)
     {
       objc_initWeak(&location, self);
@@ -1794,8 +1794,8 @@ LABEL_10:
       [(VKCImageAnalysisInteraction *)self setQuickActionConfigurationUpdateHandler:&v11];
       actionInfoCustomFont = self->_actionInfoCustomFont;
       v7 = [(VKCImageAnalysisInteraction *)self actionInfoView:v11];
-      v8 = [v7 liveTextButton];
-      [v8 setCustomSymbolFont:actionInfoCustomFont];
+      liveTextButton = [v7 liveTextButton];
+      [liveTextButton setCustomSymbolFont:actionInfoCustomFont];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -1804,9 +1804,9 @@ LABEL_10:
     else
     {
       [(VKCImageAnalysisInteraction *)self setQuickActionConfigurationUpdateHandler:0];
-      v9 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-      v10 = [v9 liveTextButton];
-      [v10 setCustomSymbolFont:0];
+      actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+      liveTextButton2 = [actionInfoView liveTextButton];
+      [liveTextButton2 setCustomSymbolFont:0];
     }
   }
 }
@@ -1848,12 +1848,12 @@ id __55__VKCImageAnalysisInteraction_setActionInfoCustomFont___block_invoke_2(ui
   return v3;
 }
 
-- (void)setQuickActionConfigurationUpdateHandler:(id)a3
+- (void)setQuickActionConfigurationUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   quickActionConfigurationUpdateHandler = self->_quickActionConfigurationUpdateHandler;
-  v10 = v4;
-  v6 = _Block_copy(v4);
+  v10 = handlerCopy;
+  v6 = _Block_copy(handlerCopy);
   LOBYTE(quickActionConfigurationUpdateHandler) = [quickActionConfigurationUpdateHandler isEqual:v6];
 
   if ((quickActionConfigurationUpdateHandler & 1) == 0)
@@ -1862,56 +1862,56 @@ id __55__VKCImageAnalysisInteraction_setActionInfoCustomFont___block_invoke_2(ui
     v8 = self->_quickActionConfigurationUpdateHandler;
     self->_quickActionConfigurationUpdateHandler = v7;
 
-    v9 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-    [v9 setQuickActionConfigurationUpdateHandler:v10];
+    actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+    [actionInfoViewIfExists setQuickActionConfigurationUpdateHandler:v10];
   }
 }
 
 - (BOOL)actionInfoLayoutUpdatesSuspended
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  v3 = [v2 layoutUpdatesSuspended];
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  layoutUpdatesSuspended = [actionInfoView layoutUpdatesSuspended];
 
-  return v3;
+  return layoutUpdatesSuspended;
 }
 
 - (void)updateActionInfoLayout
 {
-  v2 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-  [v2 updateLayoutIfNecessary];
+  actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+  [actionInfoViewIfExists updateLayoutIfNecessary];
 }
 
 - (NSArray)textGesturesForFailureRequirements
 {
   v3 = objc_opt_class();
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  v5 = [v4 textSelectionView];
-  v6 = VKDynamicCast(v3, v5);
-  v7 = [v6 gesturesForFailureRequirements];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  textSelectionView = [baseView textSelectionView];
+  v6 = VKDynamicCast(v3, textSelectionView);
+  gesturesForFailureRequirements = [v6 gesturesForFailureRequirements];
 
-  return v7;
+  return gesturesForFailureRequirements;
 }
 
 - (id)customLayoutActionInfoView
 {
-  v3 = [(VKCImageAnalysisInteraction *)self actionInfoContainer];
+  actionInfoContainer = [(VKCImageAnalysisInteraction *)self actionInfoContainer];
 
-  if (!v3)
+  if (!actionInfoContainer)
   {
     v4 = objc_alloc_init(VKCActionInfoContainer);
     [(VKCImageAnalysisInteraction *)self setActionInfoContainer:v4];
-    v5 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-    [v5 setAutomaticVisualRectLayoutDisabled:1];
-    v6 = [v5 superview];
-    v7 = [(VKCImageAnalysisInteraction *)self baseView];
+    actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+    [actionInfoView setAutomaticVisualRectLayoutDisabled:1];
+    superview = [actionInfoView superview];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
 
-    if (v6 == v7)
+    if (superview == baseView)
     {
-      [v5 removeFromSuperview];
+      [actionInfoView removeFromSuperview];
     }
 
     [(VKCImageAnalysisInteraction *)self setActionInfoViewHidden:0 animated:0];
-    [(VKCActionInfoContainer *)v4 setActionInfoView:v5];
+    [(VKCActionInfoContainer *)v4 setActionInfoView:actionInfoView];
     [(VKCActionInfoContainer *)v4 setCurrentType:1];
   }
 
@@ -1921,22 +1921,22 @@ id __55__VKCImageAnalysisInteraction_setActionInfoCustomFont___block_invoke_2(ui
 - (void)resetCustomLayoutActionInfoView
 {
   [(VKCActionInfoContainer *)self->_actionInfoContainer setCurrentType:1];
-  v3 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v3 setAutomaticVisualRectLayoutDisabled:0];
+  actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [actionInfoView setAutomaticVisualRectLayoutDisabled:0];
 
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  v4 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-  [v5 addSubview:v4];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  actionInfoView2 = [(VKCImageAnalysisInteraction *)self actionInfoView];
+  [baseView addSubview:actionInfoView2];
 }
 
-- (void)setWantsTranslucentActionInfoButtons:(BOOL)a3
+- (void)setWantsTranslucentActionInfoButtons:(BOOL)buttons
 {
-  if (self->_wantsTranslucentActionInfoButtons != a3)
+  if (self->_wantsTranslucentActionInfoButtons != buttons)
   {
-    v4 = a3;
-    self->_wantsTranslucentActionInfoButtons = a3;
-    v5 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-    [v5 setWantsTranslucentActionInfoButtons:v4];
+    buttonsCopy = buttons;
+    self->_wantsTranslucentActionInfoButtons = buttons;
+    actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+    [actionInfoViewIfExists setWantsTranslucentActionInfoButtons:buttonsCopy];
   }
 }
 
@@ -1944,47 +1944,47 @@ id __55__VKCImageAnalysisInteraction_setActionInfoCustomFont___block_invoke_2(ui
 {
   if (!self->_actionButtons)
   {
-    v3 = [(VKCImageAnalysisInteraction *)self baseView];
-    v4 = [v3 quickActions];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    quickActions = [baseView quickActions];
     actionButtons = self->_actionButtons;
-    self->_actionButtons = v4;
+    self->_actionButtons = quickActions;
   }
 
-  v6 = [(VKCImageAnalysisInteraction *)self actionButtons];
-  v7 = [v6 copy];
+  actionButtons = [(VKCImageAnalysisInteraction *)self actionButtons];
+  v7 = [actionButtons copy];
 
   return v7;
 }
 
 - (id)omnibarContainerView
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 viCoordinator];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  viCoordinator = [baseView viCoordinator];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 omnibarContainerView];
+    omnibarContainerView = [viCoordinator omnibarContainerView];
   }
 
   else
   {
-    v4 = 0;
+    omnibarContainerView = 0;
   }
 
-  return v4;
+  return omnibarContainerView;
 }
 
-- (void)analysisDidUpdate:(id)a3
+- (void)analysisDidUpdate:(id)update
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"updatedTypes"];
-  v6 = [v5 integerValue];
+  userInfo = [update userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"updatedTypes"];
+  integerValue = [v5 integerValue];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__VKCImageAnalysisInteraction_analysisDidUpdate___block_invoke;
   v7[3] = &__block_descriptor_40_e37_v16__0__VKCImageAnalysisInteraction_8l;
-  v7[4] = v6;
+  v7[4] = integerValue;
   vk_performBlockOnMainThreadWithStrongSelf(self, v7);
 }
 
@@ -2024,23 +2024,23 @@ void __49__VKCImageAnalysisInteraction_analysisDidUpdate___block_invoke(uint64_t
   }
 }
 
-- (id)previewForDataDetectorElementView:(id)a3
+- (id)previewForDataDetectorElementView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  v5 = [(VKCImageAnalysisInteraction *)self viewForImageSnapshotForBaseView:v4];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  v5 = [(VKCImageAnalysisInteraction *)self viewForImageSnapshotForBaseView:baseView];
 
   return v5;
 }
 
-- (BOOL)topLevelImplementsContentsRectDelegateForBaseView:(id)a3
+- (BOOL)topLevelImplementsContentsRectDelegateForBaseView:(id)view
 {
-  v3 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (id)viewForImageSnapshotForBaseView:(id)a3
+- (id)viewForImageSnapshotForBaseView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2048,18 +2048,18 @@ void __49__VKCImageAnalysisInteraction_analysisDidUpdate___block_invoke(uint64_t
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 contentViewForImageAnalysisInteraction:self];
+    view = [v6 contentViewForImageAnalysisInteraction:self];
   }
 
   else
   {
-    v7 = [(VKCImageAnalysisInteraction *)self view];
+    view = [(VKCImageAnalysisInteraction *)self view];
   }
 
-  return v7;
+  return view;
 }
 
-- (id)imageForImageSnapshotForBaseView:(id)a3
+- (id)imageForImageSnapshotForBaseView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2078,10 +2078,10 @@ void __49__VKCImageAnalysisInteraction_analysisDidUpdate___block_invoke(uint64_t
   return v7;
 }
 
-- (CGRect)contentsRectForImageRecognitionBaseView:(id)a3
+- (CGRect)contentsRectForImageRecognitionBaseView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
-  [v4 contentsRectForImageAnalysisInteraction:self];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
+  [delegate contentsRectForImageAnalysisInteraction:self];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2098,12 +2098,12 @@ void __49__VKCImageAnalysisInteraction_analysisDidUpdate___block_invoke(uint64_t
   return result;
 }
 
-- (BOOL)baseOverlayView:(id)a3 shouldBeginInteractionAtPoint:(CGPoint)a4 withTypes:(unint64_t)a5
+- (BOOL)baseOverlayView:(id)view shouldBeginInteractionAtPoint:(CGPoint)point withTypes:(unint64_t)types
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = [(VKCImageAnalysisInteraction *)self activeInteractionTypes]& a5;
-  if ((a5 & 2) != 0 && ([(VKCImageAnalysisInteraction *)self activeInteractionTypes]& 1) != 0)
+  y = point.y;
+  x = point.x;
+  v9 = [(VKCImageAnalysisInteraction *)self activeInteractionTypes]& types;
+  if ((types & 2) != 0 && ([(VKCImageAnalysisInteraction *)self activeInteractionTypes]& 1) != 0)
   {
     if ([(VKCImageAnalysisInteraction *)self allowLongPressForDataDetectorsInTextMode]|| v9)
     {
@@ -2119,7 +2119,7 @@ void __49__VKCImageAnalysisInteraction_analysisDidUpdate___block_invoke(uint64_t
   }
 
 LABEL_4:
-  v10 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if ((v11 & 1) == 0)
@@ -2127,13 +2127,13 @@ LABEL_4:
     return 1;
   }
 
-  v12 = [(VKCImageAnalysisInteraction *)self delegate];
-  v13 = [v12 imageAnalysisInteraction:self shouldBeginAtPoint:a5 forAnalysisType:{x, y}];
+  delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+  v13 = [delegate2 imageAnalysisInteraction:self shouldBeginAtPoint:types forAnalysisType:{x, y}];
 
   return v13;
 }
 
-- (void)textSelectionDidChangeForBaseOverlayView:(id)a3
+- (void)textSelectionDidChangeForBaseOverlayView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2145,7 +2145,7 @@ LABEL_4:
   }
 }
 
-- (void)baseOverlayViewSubjectInteractionInProgressDidChange:(id)a3
+- (void)baseOverlayViewSubjectInteractionInProgressDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -2157,45 +2157,45 @@ LABEL_4:
   }
 }
 
-- (void)baseOverlayView:(id)a3 analyticsEventDidOccur:(id)a4
+- (void)baseOverlayView:(id)view analyticsEventDidOccur:(id)occur
 {
-  v6 = a4;
-  [(VKCImageAnalysisInteraction *)self updateForAnalyticsVisualSearchEventIfNecessary:v6];
-  v5 = [(VKCImageAnalysisInteraction *)self _analyticsDelegate];
-  [v5 _visionKitAnalyticsEventDidOccur:v6 interaction:self];
+  occurCopy = occur;
+  [(VKCImageAnalysisInteraction *)self updateForAnalyticsVisualSearchEventIfNecessary:occurCopy];
+  _analyticsDelegate = [(VKCImageAnalysisInteraction *)self _analyticsDelegate];
+  [_analyticsDelegate _visionKitAnalyticsEventDidOccur:occurCopy interaction:self];
 
-  [(VKCImageAnalysisInteraction *)self addEventToAnalyticsSession:v6];
+  [(VKCImageAnalysisInteraction *)self addEventToAnalyticsSession:occurCopy];
 }
 
-- (void)visualSearchCornerView:(id)a3 analyticsEventDidOccur:(id)a4
+- (void)visualSearchCornerView:(id)view analyticsEventDidOccur:(id)occur
 {
-  v6 = a4;
-  [(VKCImageAnalysisInteraction *)self updateForAnalyticsVisualSearchEventIfNecessary:v6];
-  v5 = [(VKCImageAnalysisInteraction *)self _analyticsDelegate];
-  [v5 _visionKitAnalyticsEventDidOccur:v6 interaction:self];
+  occurCopy = occur;
+  [(VKCImageAnalysisInteraction *)self updateForAnalyticsVisualSearchEventIfNecessary:occurCopy];
+  _analyticsDelegate = [(VKCImageAnalysisInteraction *)self _analyticsDelegate];
+  [_analyticsDelegate _visionKitAnalyticsEventDidOccur:occurCopy interaction:self];
 
-  [(VKCImageAnalysisInteraction *)self addEventToAnalyticsSession:v6];
+  [(VKCImageAnalysisInteraction *)self addEventToAnalyticsSession:occurCopy];
 }
 
-- (void)updateForAnalyticsVisualSearchEventIfNecessary:(id)a3
+- (void)updateForAnalyticsVisualSearchEventIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = objc_opt_class();
-  v10 = VKDynamicCast(v5, v4);
+  v10 = VKDynamicCast(v5, necessaryCopy);
 
   v6 = v10;
   if (v10)
   {
-    v7 = [v10 eventType];
-    if (v7 == 2)
+    eventType = [v10 eventType];
+    if (eventType == 2)
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 1;
     }
 
     else
     {
-      if (v7 == 1)
+      if (eventType == 1)
       {
         [v10 setDidInteractWithResultItem:{-[VKCImageAnalysisInteraction didInteractWithVisualSearchItem](self, "didInteractWithVisualSearchItem")}];
 LABEL_9:
@@ -2204,70 +2204,70 @@ LABEL_9:
       }
 
       v6 = v10;
-      if (v7)
+      if (eventType)
       {
         goto LABEL_10;
       }
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
     }
 
-    [(VKCImageAnalysisInteraction *)v8 setDidInteractWithVisualSearchItem:v9];
+    [(VKCImageAnalysisInteraction *)selfCopy2 setDidInteractWithVisualSearchItem:v9];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (id)baseOverlayView:(id)a3 updateStringForCopy:(id)a4
+- (id)baseOverlayView:(id)view updateStringForCopy:(id)copy
 {
-  v5 = a4;
-  v6 = [(VKCImageAnalysisInteraction *)self delegate];
+  copyCopy = copy;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = v5;
+  v8 = copyCopy;
   if (v7)
   {
-    v9 = [(VKCImageAnalysisInteraction *)self delegate];
-    v8 = [v9 imageAnalysisInteraction:self updateStringForCopy:v5];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    v8 = [delegate2 imageAnalysisInteraction:self updateStringForCopy:copyCopy];
   }
 
   return v8;
 }
 
-- (id)baseOverlayView:(id)a3 updateAttributedStringForCopy:(id)a4
+- (id)baseOverlayView:(id)view updateAttributedStringForCopy:(id)copy
 {
-  v5 = a4;
-  v6 = [(VKCImageAnalysisInteraction *)self delegate];
+  copyCopy = copy;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  v8 = v5;
+  v8 = copyCopy;
   if (v7)
   {
-    v9 = [(VKCImageAnalysisInteraction *)self delegate];
-    v8 = [v9 imageAnalysisInteraction:self updateAttributedStringForCopy:v5];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    v8 = [delegate2 imageAnalysisInteraction:self updateAttributedStringForCopy:copyCopy];
   }
 
   return v8;
 }
 
-- (BOOL)baseOverlayView:(id)a3 shouldHandleShareWithRanges:(id)a4 boundingRect:(CGRect)a5 selectedText:(id)a6 selectedAttributedText:(id)a7
+- (BOOL)baseOverlayView:(id)view shouldHandleShareWithRanges:(id)ranges boundingRect:(CGRect)rect selectedText:(id)text selectedAttributedText:(id)attributedText
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(VKCImageAnalysisInteraction *)self delegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  rangesCopy = ranges;
+  textCopy = text;
+  attributedTextCopy = attributedText;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v18 = objc_opt_respondsToSelector();
 
   if (v18)
   {
-    v19 = [(VKCImageAnalysisInteraction *)self delegate];
-    v20 = [v19 imageAnalysisInteraction:self shouldHandleShareWithRanges:v14 boundingRect:v15 selectedText:v16 selectedAttributedText:{x, y, width, height}];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    v20 = [delegate2 imageAnalysisInteraction:self shouldHandleShareWithRanges:rangesCopy boundingRect:textCopy selectedText:attributedTextCopy selectedAttributedText:{x, y, width, height}];
   }
 
   else
@@ -2278,33 +2278,33 @@ LABEL_10:
   return v20;
 }
 
-- (void)baseOverlayView:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4
+- (void)baseOverlayView:(id)view didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(VKCImageAnalysisInteraction *)self delegate];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v11 imageAnalysisInteraction:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteraction:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
   }
 }
 
-- (void)baseOverlayView:(id)a3 didUpdateToNormalizedVisibleRect:(CGRect)a4
+- (void)baseOverlayView:(id)view didUpdateToNormalizedVisibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-  [v9 setNormalizedVisibleRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+  [visualSearchCornerButtonView setNormalizedVisibleRect:{x, y, width, height}];
 
-  v10 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
-  [v10 setNormalizedVisibleRect:{x, y, width, height}];
+  actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+  [actionInfoCornerButtonViewIfExists setNormalizedVisibleRect:{x, y, width, height}];
 
   if (![(VKCImageAnalysisInteraction *)self isUpdatingActiveTypes])
   {
@@ -2313,36 +2313,36 @@ LABEL_10:
   }
 }
 
-- (void)baseOverlayView:(id)a3 didFinishTransitionToNormalizedVisibleRect:(CGRect)a4
+- (void)baseOverlayView:(id)view didFinishTransitionToNormalizedVisibleRect:(CGRect)rect
 {
-  if (![(VKCImageAnalysisInteraction *)self didToggleAAButton:a3])
+  if (![(VKCImageAnalysisInteraction *)self didToggleAAButton:view])
   {
 
     [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:0];
   }
 }
 
-- (void)baseOverlayView:(id)a3 prepareForCalloutAction:(SEL)a4 completion:(id)a5
+- (void)baseOverlayView:(id)view prepareForCalloutAction:(SEL)action completion:(id)completion
 {
-  v10 = a5;
-  v7 = [(VKCImageAnalysisInteraction *)self delegate];
+  completionCopy = completion;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v9 imageAnalysisInteraction:self prepareForCalloutAction:a4 competion:v10];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteraction:self prepareForCalloutAction:action competion:completionCopy];
   }
 
   else
   {
-    v10[2]();
+    completionCopy[2]();
   }
 }
 
-- (BOOL)isBaseOverlayViewShowingLivePhoto:(id)a3 delegateHasImplementation:(BOOL *)a4
+- (BOOL)isBaseOverlayViewShowingLivePhoto:(id)photo delegateHasImplementation:(BOOL *)implementation
 {
-  v6 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
@@ -2350,36 +2350,36 @@ LABEL_10:
     return 0;
   }
 
-  *a4 = 1;
-  v8 = [(VKCImageAnalysisInteraction *)self delegate];
-  v9 = [v8 isShowingLivePhotoForImageAnalysisInteraction:self];
+  *implementation = 1;
+  delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+  v9 = [delegate2 isShowingLivePhotoForImageAnalysisInteraction:self];
 
   return v9;
 }
 
-- (void)baseOverlayView:(id)a3 livePhotoShouldPlay:(BOOL)a4
+- (void)baseOverlayView:(id)view livePhotoShouldPlay:(BOOL)play
 {
-  v4 = a4;
-  v6 = [(VKCImageAnalysisInteraction *)self delegate];
+  playCopy = play;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v8 imageAnalysisInteraction:self livePhotoShouldPlay:v4];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteraction:self livePhotoShouldPlay:playCopy];
   }
 }
 
-- (BOOL)baseOverlayView:(id)a3 shouldShowLookupForItemFromCallout:(id)a4
+- (BOOL)baseOverlayView:(id)view shouldShowLookupForItemFromCallout:(id)callout
 {
-  v5 = a4;
-  v6 = [(VKCImageAnalysisInteraction *)self delegate];
+  calloutCopy = callout;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VKCImageAnalysisInteraction *)self delegate];
-    v9 = [v8 imageAnalysisInteraction:self shouldShowLookupForItemFromCallout:v5];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    v9 = [delegate2 imageAnalysisInteraction:self shouldShowLookupForItemFromCallout:calloutCopy];
   }
 
   else
@@ -2390,126 +2390,126 @@ LABEL_10:
   return v9;
 }
 
-- (void)baseOverlayViewDidCompleteSubjectAnalysis:(id)a3
+- (void)baseOverlayViewDidCompleteSubjectAnalysis:(id)analysis
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 imageAnalysisInteractionDidCompleteSubjectAnalysis:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteractionDidCompleteSubjectAnalysis:self];
   }
 }
 
-- (void)baseOverlayViewDidBeginSubjectAnalysis:(id)a3
+- (void)baseOverlayViewDidBeginSubjectAnalysis:(id)analysis
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 imageAnalysisInteractionDidBeginSubjectAnalysis:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteractionDidBeginSubjectAnalysis:self];
   }
 }
 
-- (void)hasActiveTextSelectionDidChangeForBaseOverlayView:(id)a3
+- (void)hasActiveTextSelectionDidChangeForBaseOverlayView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 hasActiveTextSelectionDidChangeForImageAnalysisInteraction:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 hasActiveTextSelectionDidChangeForImageAnalysisInteraction:self];
   }
 }
 
-- (void)baseOverlayViewDidRequestButtonStateUpdate:(id)a3
+- (void)baseOverlayViewDidRequestButtonStateUpdate:(id)update
 {
-  v7 = a3;
+  updateCopy = update;
   [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:1];
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 imageAnalysisInteraction:self didRequestLiveTextButtonSelectedState:{objc_msgSend(v7, "highlightSelectableItems")}];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteraction:self didRequestLiveTextButtonSelectedState:{objc_msgSend(updateCopy, "highlightSelectableItems")}];
   }
 }
 
-- (void)highlightSelectableItemsDidChangeForBaseOverlayView:(id)a3
+- (void)highlightSelectableItemsDidChangeForBaseOverlayView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 imageAnalysisInteraction:self highlightSelectedItemsValueDidChange:{-[VKCImageAnalysisInteraction highlightSelectableItems](self, "highlightSelectableItems")}];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteraction:self highlightSelectedItemsValueDidChange:{-[VKCImageAnalysisInteraction highlightSelectableItems](self, "highlightSelectableItems")}];
   }
 }
 
-- (void)visualSearchCornerView:(id)a3 didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)a4
+- (void)visualSearchCornerView:(id)view didTapVisualSearchIndicatorWithNormalizedBoundingBox:(CGRect)box
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(VKCImageAnalysisInteraction *)self delegate];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v11 imageAnalysisInteraction:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteraction:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{x, y, width, height}];
   }
 }
 
-- (void)baseOverlayViewDismissVisualSearchController:(id)a3
+- (void)baseOverlayViewDismissVisualSearchController:(id)controller
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 imageAnalysisInteractionDidDismissVisualSearchController:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteractionDidDismissVisualSearchController:self];
   }
 }
 
-- (void)visualSearchCornerViewDidDismissVisualSearchController:(id)a3
+- (void)visualSearchCornerViewDidDismissVisualSearchController:(id)controller
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 imageAnalysisInteractionDidDismissVisualSearchController:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 imageAnalysisInteractionDidDismissVisualSearchController:self];
   }
 }
 
-- (void)generateVisualSearchResultForItems:(id)a3 queryID:(unint64_t)a4 completionHandler:(id)a5
+- (void)generateVisualSearchResultForItems:(id)items queryID:(unint64_t)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  itemsCopy = items;
   v10 = +[VKImageAnalyzerMadInterface sharedInterface];
-  v11 = [(VKImageAnalysis *)self->_analysis imageAnalysisResult];
-  v12 = [v11 request];
+  imageAnalysisResult = [(VKImageAnalysis *)self->_analysis imageAnalysisResult];
+  request = [imageAnalysisResult request];
   analysis = self->_analysis;
-  v14 = [(VKImageAnalysis *)analysis imageAnalysisResult];
-  v15 = [v14 visualSearchResult];
-  v16 = [v15 payload];
+  imageAnalysisResult2 = [(VKImageAnalysis *)analysis imageAnalysisResult];
+  visualSearchResult = [imageAnalysisResult2 visualSearchResult];
+  payload = [visualSearchResult payload];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __92__VKCImageAnalysisInteraction_generateVisualSearchResultForItems_queryID_completionHandler___block_invoke;
   v18[3] = &unk_1E7BE56A8;
-  v19 = v8;
-  v17 = v8;
-  [v10 generateVisualSearchResultForRequest:v12 analysis:analysis items:v9 payload:v16 queryID:a4 completionHandler:v18];
+  v19 = handlerCopy;
+  v17 = handlerCopy;
+  [v10 generateVisualSearchResultForRequest:request analysis:analysis items:itemsCopy payload:payload queryID:d completionHandler:v18];
 }
 
 void __92__VKCImageAnalysisInteraction_generateVisualSearchResultForItems_queryID_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -2522,48 +2522,48 @@ void __92__VKCImageAnalysisInteraction_generateVisualSearchResultForItems_queryI
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generateTextualVisualSearchResultForQueryInfo:(id)a3 completionHandler:(id)a4
+- (void)generateTextualVisualSearchResultForQueryInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  infoCopy = info;
   v8 = +[VKImageAnalyzerMadInterface sharedInterface];
-  v9 = [(VKCImageAnalysisInteraction *)self analysis];
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __95__VKCImageAnalysisInteraction_generateTextualVisualSearchResultForQueryInfo_completionHandler___block_invoke;
   v11[3] = &unk_1E7BE4A90;
-  v12 = v6;
-  v10 = v6;
-  [v8 generateTextualVisualSearchResultForAnalysis:v9 queryInfo:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [v8 generateTextualVisualSearchResultForAnalysis:analysis queryInfo:infoCopy completionHandler:v11];
 }
 
-- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)a3 userFeedbackPayload:(id)a4 sfReportData:(id)a5
+- (void)submitVisualSearchUserFeedbackForReportIdentifier:(id)identifier userFeedbackPayload:(id)payload sfReportData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dataCopy = data;
+  payloadCopy = payload;
+  identifierCopy = identifier;
   v13 = +[VKImageAnalyzerMadInterface sharedInterface];
-  v11 = [(VKImageAnalysis *)self->_analysis imageAnalysisResult];
-  v12 = [v11 request];
-  [v13 submitVisualIntelligenceUserFeedbackForRequest:v12 reportIdentifier:v10 userFeedbackPayload:v9 sfReportData:v8];
+  imageAnalysisResult = [(VKImageAnalysis *)self->_analysis imageAnalysisResult];
+  request = [imageAnalysisResult request];
+  [v13 submitVisualIntelligenceUserFeedbackForRequest:request reportIdentifier:identifierCopy userFeedbackPayload:payloadCopy sfReportData:dataCopy];
 }
 
-- (void)addMetadataToVSFeedbackItem:(id)a3
+- (void)addMetadataToVSFeedbackItem:(id)item
 {
-  v4 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v5 addMetadataToVSFeedbackItem:v4];
+  itemCopy = item;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView addMetadataToVSFeedbackItem:itemCopy];
 }
 
 - (id)presentingViewControllerForImageAnalysisInteraction
 {
-  v3 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VKCImageAnalysisInteraction *)self delegate];
-    v6 = [v5 presentingViewControllerForImageAnalysisInteraction:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    v6 = [delegate2 presentingViewControllerForImageAnalysisInteraction:self];
   }
 
   else
@@ -2574,90 +2574,90 @@ void __92__VKCImageAnalysisInteraction_generateVisualSearchResultForItems_queryI
   return v6;
 }
 
-- (void)videoPreviewAvailableForBaseOverlayView:(id)a3
+- (void)videoPreviewAvailableForBaseOverlayView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 videoPreviewAvailableForImageAnalysisInteraction:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 videoPreviewAvailableForImageAnalysisInteraction:self];
   }
 }
 
-- (void)quickActionProcessingCompleteForBaseOverlayView:(id)a3
+- (void)quickActionProcessingCompleteForBaseOverlayView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 quickActionProcessingCompleteForImageAnalysisInteraction:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 quickActionProcessingCompleteForImageAnalysisInteraction:self];
   }
 }
 
-- (void)visualIntelligenceSheetPresentedDidChangeForBaseOverlayView:(id)a3
+- (void)visualIntelligenceSheetPresentedDidChangeForBaseOverlayView:(id)view
 {
-  v4 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v6 isVisualIntelligenceSheetPresentedDidChangeForImageAnalysisInteraction:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate2 isVisualIntelligenceSheetPresentedDidChangeForImageAnalysisInteraction:self];
   }
 }
 
-- (void)visualIntelligenceDidRequestVluEnabled:(BOOL)a3 forBaseOverlayView:(id)a4
+- (void)visualIntelligenceDidRequestVluEnabled:(BOOL)enabled forBaseOverlayView:(id)view
 {
-  v4 = a3;
-  v6 = [(VKCImageAnalysisInteraction *)self delegate:a3];
+  enabledCopy = enabled;
+  v6 = [(VKCImageAnalysisInteraction *)self delegate:enabled];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v8 imageAnalysisInteraction:self visualIntelligenceVluEnabledDidChange:v4];
+    delegate = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate imageAnalysisInteraction:self visualIntelligenceVluEnabledDidChange:enabledCopy];
   }
 }
 
-- (void)visualIntelligenceSheetIsDraggingDidChange:(BOOL)a3 forBaseOverlayView:(id)a4
+- (void)visualIntelligenceSheetIsDraggingDidChange:(BOOL)change forBaseOverlayView:(id)view
 {
-  v4 = a3;
-  v6 = [(VKCImageAnalysisInteraction *)self delegate:a3];
+  changeCopy = change;
+  v6 = [(VKCImageAnalysisInteraction *)self delegate:change];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VKCImageAnalysisInteraction *)self delegate];
-    [v8 imageAnalysisInteraction:self isDraggingVisualIntelligenceSheetDidChange:v4];
+    delegate = [(VKCImageAnalysisInteraction *)self delegate];
+    [delegate imageAnalysisInteraction:self isDraggingVisualIntelligenceSheetDidChange:changeCopy];
   }
 }
 
 - (id)_filteredNormalizedRectangleQuads
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 filteredNormalizedRectangleQuads];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  filteredNormalizedRectangleQuads = [baseView filteredNormalizedRectangleQuads];
 
-  return v3;
+  return filteredNormalizedRectangleQuads;
 }
 
 - (id)_filteredRectangleQuads
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 filteredRectangleQuads];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  filteredRectangleQuads = [baseView filteredRectangleQuads];
 
-  return v3;
+  return filteredRectangleQuads;
 }
 
 - (id)_rawRectangleObservations
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  v3 = [v2 rawRectangleObservations];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  rawRectangleObservations = [baseView rawRectangleObservations];
 
-  return v3;
+  return rawRectangleObservations;
 }
 
 - (void)_highlightRectangleObservations
@@ -2667,9 +2667,9 @@ void __92__VKCImageAnalysisInteraction_generateVisualSearchResultForItems_queryI
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(VKCImageAnalysisInteraction *)self view];
-  v12 = [(VKCImageAnalysisInteraction *)self baseView];
-  v13 = [v12 rawRectangleObservations];
+  view = [(VKCImageAnalysisInteraction *)self view];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  rawRectangleObservations = [baseView rawRectangleObservations];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__VKCImageAnalysisInteraction__highlightRectangleObservations__block_invoke;
@@ -2678,10 +2678,10 @@ void __92__VKCImageAnalysisInteraction_generateVisualSearchResultForItems_queryI
   v19 = v6;
   v20 = v8;
   v21 = v10;
-  v16 = v11;
-  v17 = self;
-  v14 = v11;
-  [v13 enumerateObjectsUsingBlock:v15];
+  v16 = view;
+  selfCopy = self;
+  v14 = view;
+  [rawRectangleObservations enumerateObjectsUsingBlock:v15];
 }
 
 void __62__VKCImageAnalysisInteraction__highlightRectangleObservations__block_invoke(uint64_t a1, void *a2)
@@ -2695,64 +2695,64 @@ void __62__VKCImageAnalysisInteraction__highlightRectangleObservations__block_in
 
 - (void)_highlightFilteredRectangleQuads
 {
-  v3 = [(VKCImageAnalysisInteraction *)self view];
-  v4 = [(VKCImageAnalysisInteraction *)self _filteredRectangleQuads];
+  view = [(VKCImageAnalysisInteraction *)self view];
+  _filteredRectangleQuads = [(VKCImageAnalysisInteraction *)self _filteredRectangleQuads];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__VKCImageAnalysisInteraction__highlightFilteredRectangleQuads__block_invoke;
   v6[3] = &unk_1E7BE4640;
-  v7 = v3;
-  v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v6];
+  v7 = view;
+  v5 = view;
+  [_filteredRectangleQuads enumerateObjectsUsingBlock:v6];
 }
 
-- (void)highlightMatchesForString:(id)a3 animated:(BOOL)a4
+- (void)highlightMatchesForString:(id)string animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v9[1] = *MEMORY[0x1E69E9840];
-  v6 = &stru_1F2C04538;
-  if (a3)
+  stringCopy = &stru_1F2C04538;
+  if (string)
   {
-    v6 = a3;
+    stringCopy = string;
   }
 
-  v7 = v6;
+  v7 = stringCopy;
   v9[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
-  [(VKCImageAnalysisInteraction *)self highlightMatchesForStrings:v8 animated:v4];
+  [(VKCImageAnalysisInteraction *)self highlightMatchesForStrings:v8 animated:animatedCopy];
 }
 
-- (void)highlightMatchesForStrings:(id)a3 animated:(BOOL)a4
+- (void)highlightMatchesForStrings:(id)strings animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  if ([v8 count])
+  animatedCopy = animated;
+  stringsCopy = strings;
+  if ([stringsCopy count])
   {
-    v6 = [v8 componentsJoinedByString:@" "];
-    v7 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v7 highlightMatchesWithString:v6 animated:1];
+    baseView2 = [stringsCopy componentsJoinedByString:@" "];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView highlightMatchesWithString:baseView2 animated:1];
 
     [(VKCImageAnalysisInteraction *)self sendAnalyticsEventWithType:3 source:0 analysisButtonActive:0];
   }
 
   else
   {
-    v6 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v6 clearStringHighlightsAnimated:v4];
+    baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView2 clearStringHighlightsAnimated:animatedCopy];
   }
 }
 
-- (void)clearMatchedHighlightsIfNecessaryAnimated:(BOOL)a3
+- (void)clearMatchedHighlightsIfNecessaryAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v4 clearStringHighlightsAnimated:v3];
+  animatedCopy = animated;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView clearStringHighlightsAnimated:animatedCopy];
 }
 
-- (void)triggerTapToRadar:(id)a3
+- (void)triggerTapToRadar:(id)radar
 {
-  if ([a3 state] == 3)
+  if ([radar state] == 3)
   {
 
     [(VKCImageAnalysisInteraction *)self _provideFeedback];
@@ -2791,16 +2791,16 @@ void __47__VKCImageAnalysisInteraction_feedbackActivity__block_invoke(uint64_t a
 
 - (void)_provideFeedback
 {
-  v3 = [(VKCImageAnalysisInteraction *)self analysis];
-  v4 = [v3 feedbackProvider];
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
+  feedbackProvider = [analysis feedbackProvider];
 
-  if (v4)
+  if (feedbackProvider)
   {
-    v5 = [(VKCImageAnalysisInteraction *)self delegate];
+    delegate = [(VKCImageAnalysisInteraction *)self delegate];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 feedbackTypeForImageAnalysisInteraction:self];
+      v7 = [delegate feedbackTypeForImageAnalysisInteraction:self];
     }
 
     else
@@ -2810,7 +2810,7 @@ void __47__VKCImageAnalysisInteraction_feedbackActivity__block_invoke(uint64_t a
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v5 feedbackOptionsForImageAnalysisInteraction:self];
+      v8 = [delegate feedbackOptionsForImageAnalysisInteraction:self];
     }
 
     else
@@ -2820,7 +2820,7 @@ void __47__VKCImageAnalysisInteraction_feedbackActivity__block_invoke(uint64_t a
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v5 feedbackMetadataForImageAnalysisInteraction:self];
+      v9 = [delegate feedbackMetadataForImageAnalysisInteraction:self];
     }
 
     else
@@ -2830,22 +2830,22 @@ void __47__VKCImageAnalysisInteraction_feedbackActivity__block_invoke(uint64_t a
 
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v5 promisedFeedbackAttachementsForImageAnalysisInteraction:self];
+      v10 = [delegate promisedFeedbackAttachementsForImageAnalysisInteraction:self];
       [v6 addObjectsFromArray:v10];
     }
 
-    v11 = [(VKCImageAnalysisInteraction *)self analysis];
-    [v4 setImageAnalysis:v11];
+    analysis2 = [(VKCImageAnalysisInteraction *)self analysis];
+    [feedbackProvider setImageAnalysis:analysis2];
 
     objc_initWeak(&location, self);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke;
     v13[3] = &unk_1E7BE56F8;
-    v12 = v5;
+    v12 = delegate;
     v14 = v12;
     objc_copyWeak(&v15, &location);
-    [v4 provideFeedbackWithType:v7 options:v8 metadata:v9 promisedAttachments:v6 userResponseHandler:v13];
+    [feedbackProvider provideFeedbackWithType:v7 options:v8 metadata:v9 promisedAttachments:v6 userResponseHandler:v13];
     objc_destroyWeak(&v15);
 
     objc_destroyWeak(&location);
@@ -2897,13 +2897,13 @@ void __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke(uint64_t a
 
 - (id)presentingViewControllerForFeedbackProvider
 {
-  v3 = [(VKCImageAnalysisInteraction *)self delegate];
+  delegate = [(VKCImageAnalysisInteraction *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(VKCImageAnalysisInteraction *)self delegate];
-    v6 = [v5 presentingViewControllerForImageAnalysisInteraction:self];
+    delegate2 = [(VKCImageAnalysisInteraction *)self delegate];
+    v6 = [delegate2 presentingViewControllerForImageAnalysisInteraction:self];
   }
 
   else
@@ -2914,20 +2914,20 @@ void __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke(uint64_t a
   return v6;
 }
 
-- (void)scrollViewDidZoomToUnitRect:(CGRect)a3
+- (void)scrollViewDidZoomToUnitRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v8 scrollViewDidZoomToUnitRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView scrollViewDidZoomToUnitRect:{x, y, width, height}];
 
-  v9 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-  [v9 setNormalizedVisibleRect:{x, y, width, height}];
+  visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+  [visualSearchCornerButtonView setNormalizedVisibleRect:{x, y, width, height}];
 
-  v10 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
-  [v10 setNormalizedVisibleRect:{x, y, width, height}];
+  actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+  [actionInfoCornerButtonViewIfExists setNormalizedVisibleRect:{x, y, width, height}];
 }
 
 - (VKImageAnalysisBarButtonItem)analysisBarButtonItem
@@ -2951,9 +2951,9 @@ void __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke(uint64_t a
   analysisButton = self->_analysisButton;
   if (!analysisButton)
   {
-    v4 = [(VKCImageAnalysisInteraction *)self createAnalysisButton];
+    createAnalysisButton = [(VKCImageAnalysisInteraction *)self createAnalysisButton];
     v5 = self->_analysisButton;
-    self->_analysisButton = v4;
+    self->_analysisButton = createAnalysisButton;
 
     [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:0];
     analysisButton = self->_analysisButton;
@@ -2967,9 +2967,9 @@ void __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke(uint64_t a
   actionInfoAnalysisButton = self->_actionInfoAnalysisButton;
   if (!actionInfoAnalysisButton)
   {
-    v4 = [(VKCImageAnalysisInteraction *)self createAnalysisButton];
+    createAnalysisButton = [(VKCImageAnalysisInteraction *)self createAnalysisButton];
     v5 = self->_actionInfoAnalysisButton;
-    self->_actionInfoAnalysisButton = v4;
+    self->_actionInfoAnalysisButton = createAnalysisButton;
 
     [(VKCImageAnalysisInteraction *)self configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:0];
     actionInfoAnalysisButton = self->_actionInfoAnalysisButton;
@@ -2986,55 +2986,55 @@ void __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke(uint64_t a
   [v3 setGlyphConfiguration:1];
   [v3 setMode:1];
   [v3 setSupportsDynamicType:1];
-  v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [v3 setTintColor:v4];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [v3 setTintColor:systemBlueColor];
 
   [v3 setAlpha:0.0];
 
   return v3;
 }
 
-- (void)setAnalysisButtonPrefersDarkGlyphWhenSelected:(BOOL)a3
+- (void)setAnalysisButtonPrefersDarkGlyphWhenSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5 = objc_opt_class();
-  v6 = [(VKCImageAnalysisInteraction *)self analysisButton];
-  v7 = VKCheckedDynamicCast(v5, v6);
-  [v7 setPrefersDarkGlyphWhenSelected:v3];
+  analysisButton = [(VKCImageAnalysisInteraction *)self analysisButton];
+  v7 = VKCheckedDynamicCast(v5, analysisButton);
+  [v7 setPrefersDarkGlyphWhenSelected:selectedCopy];
 
-  v8 = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists];
-  [v8 setPrefersDarkGlyphWhenSelected:v3];
+  actionInfoAnalysisButtonIfExists = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists];
+  [actionInfoAnalysisButtonIfExists setPrefersDarkGlyphWhenSelected:selectedCopy];
 }
 
 - (BOOL)analysisButtonPrefersDarkGlyphWhenSelected
 {
   v3 = objc_opt_class();
-  v4 = [(VKCImageAnalysisInteraction *)self analysisButton];
-  v5 = VKCheckedDynamicCast(v3, v4);
-  v6 = [v5 prefersDarkGlyphWhenSelected];
+  analysisButton = [(VKCImageAnalysisInteraction *)self analysisButton];
+  v5 = VKCheckedDynamicCast(v3, analysisButton);
+  prefersDarkGlyphWhenSelected = [v5 prefersDarkGlyphWhenSelected];
 
-  return v6;
+  return prefersDarkGlyphWhenSelected;
 }
 
-- (void)aAAnalysisButtonPressed:(id)a3
+- (void)aAAnalysisButtonPressed:(id)pressed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v5, OS_LOG_TYPE_DEFAULT, "Live Text Button Pressed: %@", &v11, 0xCu);
   }
 
-  v6 = [(VKCImageAnalysisInteraction *)self deriveCurrentAutomaticState];
+  deriveCurrentAutomaticState = [(VKCImageAnalysisInteraction *)self deriveCurrentAutomaticState];
   if ([(VKCImageAnalysisInteraction *)self _isPublicAPI]&& ![(VKCImageAnalysisInteraction *)self _isInPublicAutomaticMode])
   {
     if ([(VKCImageAnalysisInteraction *)self _isPublicAPI])
     {
-      v7 = v6 - 1;
-      if (v6 - 1 < 4)
+      v7 = deriveCurrentAutomaticState - 1;
+      if (deriveCurrentAutomaticState - 1 < 4)
       {
         v8 = &unk_1B4428488;
         goto LABEL_11;
@@ -3044,27 +3044,27 @@ void __47__VKCImageAnalysisInteraction__provideFeedback__block_invoke(uint64_t a
 
   else
   {
-    v7 = v6 - 1;
-    if (v6 - 1 < 6 && ((0x27u >> v7) & 1) != 0)
+    v7 = deriveCurrentAutomaticState - 1;
+    if (deriveCurrentAutomaticState - 1 < 6 && ((0x27u >> v7) & 1) != 0)
     {
       v8 = &unk_1B4428458;
 LABEL_11:
-      v6 = v8[v7];
+      deriveCurrentAutomaticState = v8[v7];
     }
   }
 
   [(VKCImageAnalysisInteraction *)self setDidToggleAAButton:1];
-  [(VKCImageAnalysisInteraction *)self configureButtonsForState:v6 updateActiveTypes:1];
-  [(VKCImageAnalysisInteraction *)self sendAAButtonPressedDelegateCallbackIfNecessaryForSender:v4];
-  if (self->_analysisButton == v4)
+  [(VKCImageAnalysisInteraction *)self configureButtonsForState:deriveCurrentAutomaticState updateActiveTypes:1];
+  [(VKCImageAnalysisInteraction *)self sendAAButtonPressedDelegateCallbackIfNecessaryForSender:pressedCopy];
+  if (self->_analysisButton == pressedCopy)
   {
     v10 = 4;
   }
 
   else
   {
-    v9 = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists];
-    if (v9 == v4)
+    actionInfoAnalysisButtonIfExists = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists];
+    if (actionInfoAnalysisButtonIfExists == pressedCopy)
     {
       v10 = 4;
     }
@@ -3078,11 +3078,11 @@ LABEL_11:
   [(VKCImageAnalysisInteraction *)self sendAnalyticsEventWithType:0 source:v10 analysisButtonActive:[(VKCImageAnalysisInteraction *)self _highlightSelectableItems]];
 }
 
-- (void)sendAAButtonPressedDelegateCallbackIfNecessaryForSender:(id)a3
+- (void)sendAAButtonPressedDelegateCallbackIfNecessaryForSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = objc_opt_class();
-  v15 = VKCheckedDynamicCast(v5, v4);
+  v15 = VKCheckedDynamicCast(v5, senderCopy);
 
   if (v15 == self->_analysisButton || ([(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists], v6 = objc_claimAutoreleasedReturnValue(), v6, v15 == v6))
   {
@@ -3102,8 +3102,8 @@ LABEL_11:
   analysisBarButtonItem = self->_analysisBarButtonItem;
   if (analysisBarButtonItem)
   {
-    v8 = [(VKImageAnalysisBarButtonItem *)analysisBarButtonItem customView];
-    v9 = [(VKImageAnalysisButton *)v15 isDescendantOfView:v8];
+    customView = [(VKImageAnalysisBarButtonItem *)analysisBarButtonItem customView];
+    v9 = [(VKImageAnalysisButton *)v15 isDescendantOfView:customView];
 
     if (v9)
     {
@@ -3131,23 +3131,23 @@ LABEL_10:
     v5 = self->_actionInfoCornerButtonView;
     self->_actionInfoCornerButtonView = v4;
 
-    v6 = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
-    [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView set_customAnalyticsIdentifier:v6];
+    _customAnalyticsIdentifier = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
+    [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView set_customAnalyticsIdentifier:_customAnalyticsIdentifier];
 
-    v7 = [(VKCImageAnalysisInteraction *)self analysis];
-    [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView setAnalysis:v7];
+    analysis = [(VKCImageAnalysisInteraction *)self analysis];
+    [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView setAnalysis:analysis];
 
     [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView setDelegate:self];
-    v8 = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
-    [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView set_customAnalyticsIdentifier:v8];
+    _customAnalyticsIdentifier2 = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
+    [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView set_customAnalyticsIdentifier:_customAnalyticsIdentifier2];
 
-    v9 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v9 normalizedVisibleRect];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView normalizedVisibleRect];
     [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView setNormalizedVisibleRect:?];
 
     [(VKCVisualSearchCornerView *)self->_actionInfoCornerButtonView setHidden:([(VKCImageAnalysisInteraction *)self activeInteractionTypes]& 4) == 0];
-    v10 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v10 setDidAddVisualSearchCornerView:1];
+    baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView2 setDidAddVisualSearchCornerView:1];
 
     actionInfoCornerButtonView = self->_actionInfoCornerButtonView;
   }
@@ -3155,20 +3155,20 @@ LABEL_10:
   return actionInfoCornerButtonView;
 }
 
-- (void)set_manuallyManagesActionInfoButtons:(BOOL)a3
+- (void)set_manuallyManagesActionInfoButtons:(BOOL)buttons
 {
-  self->__manuallyManagesActionInfoButtons = a3;
-  if (a3)
+  self->__manuallyManagesActionInfoButtons = buttons;
+  if (buttons)
   {
-    v5 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-    [v5 setQuickActions:MEMORY[0x1E695E0F0]];
+    actionInfoView = [(VKCImageAnalysisInteraction *)self actionInfoView];
+    [actionInfoView setQuickActions:MEMORY[0x1E695E0F0]];
   }
 
   else
   {
-    v5 = [(VKCImageAnalysisInteraction *)self actionButtons];
-    v4 = [(VKCImageAnalysisInteraction *)self actionInfoView];
-    [v4 setQuickActions:v5];
+    actionInfoView = [(VKCImageAnalysisInteraction *)self actionButtons];
+    actionInfoView2 = [(VKCImageAnalysisInteraction *)self actionInfoView];
+    [actionInfoView2 setQuickActions:actionInfoView];
   }
 }
 
@@ -3178,27 +3178,27 @@ LABEL_10:
   if (!actionInfoView)
   {
     v4 = [VKCActionInfoView alloc];
-    v5 = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButton];
+    actionInfoAnalysisButton = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButton];
     v6 = objc_opt_class();
-    v7 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonView];
-    v8 = VKCheckedDynamicCast(v6, v7);
-    v9 = [(VKCActionInfoView *)v4 initWithLiveTextButton:v5 cornerView:v8];
+    actionInfoCornerButtonView = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonView];
+    v8 = VKCheckedDynamicCast(v6, actionInfoCornerButtonView);
+    v9 = [(VKCActionInfoView *)v4 initWithLiveTextButton:actionInfoAnalysisButton cornerView:v8];
     v10 = self->_actionInfoView;
     self->_actionInfoView = v9;
 
     [(VKCImageAnalysisInteraction *)self preferredQuickActionButtonHeight];
     [(VKCActionInfoView *)self->_actionInfoView setPreferredQuickActionButtonHeight:?];
-    v11 = [(VKCImageAnalysisInteraction *)self quickActionConfigurationUpdateHandler];
-    [(VKCActionInfoView *)self->_actionInfoView setQuickActionConfigurationUpdateHandler:v11];
+    quickActionConfigurationUpdateHandler = [(VKCImageAnalysisInteraction *)self quickActionConfigurationUpdateHandler];
+    [(VKCActionInfoView *)self->_actionInfoView setQuickActionConfigurationUpdateHandler:quickActionConfigurationUpdateHandler];
 
     v12 = self->_actionInfoView;
-    v13 = [(VKCImageAnalysisInteraction *)self baseView];
-    [v13 setActionInfoView:v12];
+    baseView = [(VKCImageAnalysisInteraction *)self baseView];
+    [baseView setActionInfoView:v12];
 
-    v14 = [(VKCImageAnalysisInteraction *)self baseView];
-    v15 = [v14 quickActions];
+    baseView2 = [(VKCImageAnalysisInteraction *)self baseView];
+    quickActions = [baseView2 quickActions];
     actionButtons = self->_actionButtons;
-    self->_actionButtons = v15;
+    self->_actionButtons = quickActions;
 
     if (!self->__manuallyManagesActionInfoButtons)
     {
@@ -3214,27 +3214,27 @@ LABEL_10:
   return actionInfoView;
 }
 
-- (void)configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:(BOOL)a3
+- (void)configureForCurrentDerivedAutomaticStateWithUpdateActiveTypes:(BOOL)types
 {
-  v3 = a3;
-  v5 = [(VKCImageAnalysisInteraction *)self deriveCurrentAutomaticState];
+  typesCopy = types;
+  deriveCurrentAutomaticState = [(VKCImageAnalysisInteraction *)self deriveCurrentAutomaticState];
 
-  [(VKCImageAnalysisInteraction *)self configureButtonsForState:v5 updateActiveTypes:v3];
+  [(VKCImageAnalysisInteraction *)self configureButtonsForState:deriveCurrentAutomaticState updateActiveTypes:typesCopy];
 }
 
 - (unint64_t)deriveCurrentAutomaticState
 {
-  v3 = [(VKCImageAnalysisInteraction *)self _isPublicAPI];
-  v4 = [(VKCImageAnalysisInteraction *)self _isInPublicAutomaticMode];
-  v5 = [(VKCImageAnalysisInteraction *)self _highlightSelectableItems];
-  v6 = [(VKCImageAnalysisInteraction *)self analysis];
-  v7 = [(VKCImageAnalysisInteraction *)self activeInteractionTypes];
+  _isPublicAPI = [(VKCImageAnalysisInteraction *)self _isPublicAPI];
+  _isInPublicAutomaticMode = [(VKCImageAnalysisInteraction *)self _isInPublicAutomaticMode];
+  _highlightSelectableItems = [(VKCImageAnalysisInteraction *)self _highlightSelectableItems];
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
+  activeInteractionTypes = [(VKCImageAnalysisInteraction *)self activeInteractionTypes];
   v8 = 0;
-  if (v6 && v7)
+  if (analysis && activeInteractionTypes)
   {
-    if (v4 || !v3)
+    if (_isInPublicAutomaticMode || !_isPublicAPI)
     {
-      if ((v7 & 4) != 0)
+      if ((activeInteractionTypes & 4) != 0)
       {
         v8 = 6;
       }
@@ -3242,16 +3242,16 @@ LABEL_10:
       else
       {
         v8 = 2;
-        if ((!v3 || !v4 || !v5) && (v3 || !v5))
+        if ((!_isPublicAPI || !_isInPublicAutomaticMode || !_highlightSelectableItems) && (_isPublicAPI || !_highlightSelectableItems))
         {
-          if (v7 == 3)
+          if (activeInteractionTypes == 3)
           {
             v8 = 1;
           }
 
           else
           {
-            v8 = ((v7 << 63) >> 63) & 3;
+            v8 = ((activeInteractionTypes << 63) >> 63) & 3;
           }
         }
       }
@@ -3259,17 +3259,17 @@ LABEL_10:
 
     else
     {
-      v9 = v7 & 0xFFFFFFFFFFFFFFF7;
+      v9 = activeInteractionTypes & 0xFFFFFFFFFFFFFFF7;
       v10 = 5;
       v11 = 3;
-      if (v5)
+      if (_highlightSelectableItems)
       {
         v11 = 4;
       }
 
-      v12 = ((v7 << 61) >> 63) & 6;
+      v12 = ((activeInteractionTypes << 61) >> 63) & 6;
       v13 = 1;
-      if (v5)
+      if (_highlightSelectableItems)
       {
         v13 = 2;
       }
@@ -3299,23 +3299,23 @@ LABEL_10:
   return v8;
 }
 
-- (void)configureButtonsForState:(unint64_t)a3 updateActiveTypes:(BOOL)a4
+- (void)configureButtonsForState:(unint64_t)state updateActiveTypes:(BOOL)types
 {
-  v4 = a4;
-  v7 = [(VKCImageAnalysisInteraction *)self analysis];
+  typesCopy = types;
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
   v45 = self->_analysisButton;
-  v8 = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists];
+  actionInfoAnalysisButtonIfExists = [(VKCImageAnalysisInteraction *)self actionInfoAnalysisButtonIfExists];
   v46 = self->_analysisBarButtonItem;
-  v9 = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
-  v10 = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
-  v11 = [v7 hasResultsForAnalysisTypes:2];
-  v12 = [v7 hasResultsForAnalysisTypes:1];
-  v13 = v11 | [v7 hasResultsForAnalysisTypes:4];
-  v14 = [(VKCImageAnalysisInteraction *)self baseView];
-  v15 = v14;
-  if (v14)
+  visualSearchCornerButtonView = [(VKCImageAnalysisInteraction *)self visualSearchCornerButtonView];
+  actionInfoCornerButtonViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoCornerButtonViewIfExists];
+  v11 = [analysis hasResultsForAnalysisTypes:2];
+  v12 = [analysis hasResultsForAnalysisTypes:1];
+  v13 = v11 | [analysis hasResultsForAnalysisTypes:4];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  v15 = baseView;
+  if (baseView)
   {
-    [v14 visibleTextAreaInfo];
+    [baseView visibleTextAreaInfo];
     v16 = *&v67 * 100.0;
   }
 
@@ -3348,34 +3348,34 @@ LABEL_10:
   {
     if ([(VKCImageAnalysisInteraction *)self _isPublicAPI])
     {
-      v20 = [(VKCImageAnalysisInteraction *)self _isInPublicAutomaticMode];
+      _isInPublicAutomaticMode = [(VKCImageAnalysisInteraction *)self _isInPublicAutomaticMode];
     }
 
     else
     {
-      v20 = 1;
+      _isInPublicAutomaticMode = 1;
     }
   }
 
   else
   {
-    v20 = 0;
+    _isInPublicAutomaticMode = 0;
   }
 
   v21 = 0.0;
-  v49 = v7;
-  v48 = v4;
-  v47 = v8;
-  if (a3 <= 2)
+  v49 = analysis;
+  v48 = typesCopy;
+  v47 = actionInfoAnalysisButtonIfExists;
+  if (state <= 2)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         v22 = 0;
 LABEL_37:
-        v31 = v10;
-        v43 = v20;
+        v31 = actionInfoCornerButtonViewIfExists;
+        v43 = _isInPublicAutomaticMode;
         v26 = 0;
         v23 = 0;
         v27 = 0;
@@ -3390,14 +3390,14 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      if (a3 == 2)
+      if (state == 2)
       {
-        v20 = 0;
+        _isInPublicAutomaticMode = 0;
         v22 = 1;
         goto LABEL_37;
       }
 
-      v43 = v20;
+      v43 = _isInPublicAutomaticMode;
       v23 = 0;
       v25 = 0;
       LOBYTE(v22) = 0;
@@ -3415,16 +3415,16 @@ LABEL_37:
     v41 = 0;
     v27 = 0;
 LABEL_41:
-    v31 = v10;
+    v31 = actionInfoCornerButtonViewIfExists;
     goto LABEL_42;
   }
 
-  if (a3 > 4)
+  if (state > 4)
   {
     v28 = 2;
     v29 = 4;
-    v30 = a3 != 6 && v20;
-    if (a3 != 6)
+    v30 = state != 6 && _isInPublicAutomaticMode;
+    if (state != 6)
     {
       v29 = 0;
     }
@@ -3432,14 +3432,14 @@ LABEL_41:
     v23 = 0;
     v25 = 0;
     LOBYTE(v22) = 0;
-    if (a3 == 5)
+    if (state == 5)
     {
       v30 = 0;
     }
 
     v43 = v30;
     v44 = 0;
-    if (a3 != 5)
+    if (state != 5)
     {
       v28 = v29;
     }
@@ -3449,9 +3449,9 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
-    v43 = v20;
+    v43 = _isInPublicAutomaticMode;
     LOBYTE(v22) = 0;
     v44 = 0;
     v26 = 0;
@@ -3475,7 +3475,7 @@ LABEL_41:
     v27 = 1;
   }
 
-  v31 = v10;
+  v31 = actionInfoCornerButtonViewIfExists;
   if (v24)
   {
 LABEL_38:
@@ -3501,10 +3501,10 @@ LABEL_42:
   v64 = v23;
   v65 = v32;
   v57 = v34;
-  v58 = v9;
+  v58 = visualSearchCornerButtonView;
   v66 = v48;
   v59 = v31;
-  v60 = self;
+  selfCopy = self;
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __74__VKCImageAnalysisInteraction_configureButtonsForState_updateActiveTypes___block_invoke_2;
@@ -3515,7 +3515,7 @@ LABEL_42:
   v52 = v56;
   v36 = v56;
   v37 = v31;
-  v38 = v9;
+  v38 = visualSearchCornerButtonView;
   [v33 animateWithDuration:v54 animations:v50 completion:0.15];
   if (v48)
   {
@@ -3536,8 +3536,8 @@ LABEL_42:
   [(VKCImageAnalysisInteraction *)self setButtonsVisible:v23];
   if ([(VKCImageAnalysisInteraction *)self deriveQuickActionsVisibilityFromState])
   {
-    v40 = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
-    [v40 set_quickActionsHidden:v42 | v44 ^ 1];
+    actionInfoViewIfExists = [(VKCImageAnalysisInteraction *)self actionInfoViewIfExists];
+    [actionInfoViewIfExists set_quickActionsHidden:v42 | v44 ^ 1];
   }
 
   [(VKImageAnalysisButton *)v35 setMode:0];
@@ -3587,15 +3587,15 @@ uint64_t __74__VKCImageAnalysisInteraction_configureButtonsForState_updateActive
   return [v2 setHidden:v3];
 }
 
-- (void)sendAnalyticsEventWithType:(int64_t)a3 source:(int64_t)a4 analysisButtonActive:(BOOL)a5
+- (void)sendAnalyticsEventWithType:(int64_t)type source:(int64_t)source analysisButtonActive:(BOOL)active
 {
-  v5 = a5;
+  activeCopy = active;
   v9 = [VKAnalyticsInteractionEvent alloc];
-  v10 = [(VKCImageAnalysisInteraction *)self analysis];
-  v11 = [v10 imageAnalysisResult];
-  v12 = [(VKCImageAnalysisInteraction *)self activeInteractionTypes];
-  v13 = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
-  v15 = [(VKAnalyticsInteractionEvent *)v9 initWithEventType:a3 analysis:v11 source:a4 interactionTypes:v12 buttonActive:v5 customIdentifier:v13];
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
+  imageAnalysisResult = [analysis imageAnalysisResult];
+  activeInteractionTypes = [(VKCImageAnalysisInteraction *)self activeInteractionTypes];
+  _customAnalyticsIdentifier = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
+  v15 = [(VKAnalyticsInteractionEvent *)v9 initWithEventType:type analysis:imageAnalysisResult source:source interactionTypes:activeInteractionTypes buttonActive:activeCopy customIdentifier:_customAnalyticsIdentifier];
 
   if ([(VKCImageAnalysisInteraction *)self activeInteractionTypes])
   {
@@ -3607,21 +3607,21 @@ uint64_t __74__VKCImageAnalysisInteraction_configureButtonsForState_updateActive
     [(VKCImageAnalysisInteraction *)self closeAndSendCurrentAnalyticsSession];
   }
 
-  v14 = [(VKCImageAnalysisInteraction *)self _analyticsDelegate];
-  [v14 _visionKitAnalyticsEventDidOccur:v15 interaction:self];
+  _analyticsDelegate = [(VKCImageAnalysisInteraction *)self _analyticsDelegate];
+  [_analyticsDelegate _visionKitAnalyticsEventDidOccur:v15 interaction:self];
 }
 
-- (void)addEventToAnalyticsSession:(id)a3
+- (void)addEventToAnalyticsSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (![(VKCImageAnalysisInteraction *)self isSettingAnalysis])
   {
-    v5 = [(VKCImageAnalysisInteraction *)self analyticsProcessor];
-    [v5 processAndSendEvent:v4];
+    analyticsProcessor = [(VKCImageAnalysisInteraction *)self analyticsProcessor];
+    [analyticsProcessor processAndSendEvent:sessionCopy];
 
     [(VKCImageAnalysisInteraction *)self beginNewAnalyticsSessionIfNecessary];
-    v6 = [(VKCImageAnalysisInteraction *)self analyticsSession];
-    [v6 addEvent:v4];
+    analyticsSession = [(VKCImageAnalysisInteraction *)self analyticsSession];
+    [analyticsSession addEvent:sessionCopy];
 
     v7 = ([(VKCImageAnalysisInteraction *)self analyticsTimeoutIndex]+ 1);
     [(VKCImageAnalysisInteraction *)self setAnalyticsTimeoutIndex:v7];
@@ -3656,22 +3656,22 @@ void __58__VKCImageAnalysisInteraction_addEventToAnalyticsSession___block_invoke
 
 - (void)beginNewAnalyticsSessionIfNecessary
 {
-  v3 = [(VKCImageAnalysisInteraction *)self analysis];
-  if (v3)
+  analysis = [(VKCImageAnalysisInteraction *)self analysis];
+  if (analysis)
   {
-    v4 = v3;
-    v5 = [(VKCImageAnalysisInteraction *)self activeInteractionTypes];
+    v4 = analysis;
+    activeInteractionTypes = [(VKCImageAnalysisInteraction *)self activeInteractionTypes];
 
-    if (v5)
+    if (activeInteractionTypes)
     {
-      v6 = [(VKCImageAnalysisInteraction *)self analyticsSession];
+      analyticsSession = [(VKCImageAnalysisInteraction *)self analyticsSession];
 
-      if (!v6)
+      if (!analyticsSession)
       {
         v7 = [VKAnalyticsSessionAccumulator alloc];
-        v8 = [(VKCImageAnalysisInteraction *)self analysis];
-        v9 = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
-        v10 = [(VKAnalyticsSessionAccumulator *)v7 initWithAnalysis:v8 customIdentifier:v9];
+        analysis2 = [(VKCImageAnalysisInteraction *)self analysis];
+        _customAnalyticsIdentifier = [(VKCImageAnalysisInteraction *)self _customAnalyticsIdentifier];
+        v10 = [(VKAnalyticsSessionAccumulator *)v7 initWithAnalysis:analysis2 customIdentifier:_customAnalyticsIdentifier];
         [(VKCImageAnalysisInteraction *)self setAnalyticsSession:v10];
 
         v11 = [(VKCImageAnalysisInteraction *)self analyticsTimeoutIndex]+ 1;
@@ -3684,28 +3684,28 @@ void __58__VKCImageAnalysisInteraction_addEventToAnalyticsSession___block_invoke
 
 - (void)closeAndSendCurrentAnalyticsSession
 {
-  v3 = [(VKCImageAnalysisInteraction *)self analyticsSession];
-  if (v3)
+  analyticsSession = [(VKCImageAnalysisInteraction *)self analyticsSession];
+  if (analyticsSession)
   {
-    v5 = v3;
-    [v3 close];
-    v4 = [(VKCImageAnalysisInteraction *)self analyticsProcessor];
-    [v4 processAndSendSession:v5];
+    v5 = analyticsSession;
+    [analyticsSession close];
+    analyticsProcessor = [(VKCImageAnalysisInteraction *)self analyticsProcessor];
+    [analyticsProcessor processAndSendSession:v5];
 
     [(VKCImageAnalysisInteraction *)self setAnalyticsTimeoutIndex:[(VKCImageAnalysisInteraction *)self analyticsTimeoutIndex]+ 1];
     [(VKCImageAnalysisInteraction *)self setAnalyticsSession:0];
-    v3 = v5;
+    analyticsSession = v5;
   }
 }
 
-+ (void)_quickActionResultForDocumentObservation:(id)a3 queue:(id)a4 completionHandler:(id)a5
++ (void)_quickActionResultForDocumentObservation:(id)observation queue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  observationCopy = observation;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!queueCopy)
   {
-    v8 = MEMORY[0x1E69E96A0];
+    queueCopy = MEMORY[0x1E69E96A0];
     v10 = MEMORY[0x1E69E96A0];
   }
 
@@ -3713,12 +3713,12 @@ void __58__VKCImageAnalysisInteraction_addEventToAnalyticsSession___block_invoke
   block[1] = 3221225472;
   block[2] = __96__VKCImageAnalysisInteraction__quickActionResultForDocumentObservation_queue_completionHandler___block_invoke;
   block[3] = &unk_1E7BE50D8;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = observationCopy;
+  v16 = queueCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = queueCopy;
+  v13 = observationCopy;
   dispatch_async(v12, block);
 }
 
@@ -3766,8 +3766,8 @@ void __96__VKCImageAnalysisInteraction__quickActionResultForDocumentObservation_
 
 - (void)_test_activateTranslationOverlay
 {
-  v2 = [(VKCImageAnalysisInteraction *)self baseView];
-  [v2 test_activateTranslationOverlay];
+  baseView = [(VKCImageAnalysisInteraction *)self baseView];
+  [baseView test_activateTranslationOverlay];
 }
 
 - (VKCImageAnalysisInteractionDelegate)delegate
@@ -3802,8 +3802,8 @@ void __96__VKCImageAnalysisInteraction__quickActionResultForDocumentObservation_
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:15];
-  v4 = [(VKCImageAnalysisInteraction *)self view];
-  [v4 bounds];
+  view = [(VKCImageAnalysisInteraction *)self view];
+  [view bounds];
   v7 = [VKCMockHelper plistFromSize:v5, v6];
   [v3 setObject:v7 forKeyedSubscript:VKCMockResultLayoutBoundsKey];
 
@@ -3825,26 +3825,26 @@ void __96__VKCImageAnalysisInteraction__quickActionResultForDocumentObservation_
           objc_enumerationMutation(&unk_1F2C39270);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * i) integerValue];
-        v13 = v12;
-        if (v12 > 0xC)
+        integerValue = [*(*(&v21 + 1) + 8 * i) integerValue];
+        v13 = integerValue;
+        if (integerValue > 0xC)
         {
           v14 = 0;
         }
 
         else
         {
-          v14 = off_1E7BE7868[v12];
+          v14 = off_1E7BE7868[integerValue];
         }
 
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v14];
-        v16 = [(VKCImageAnalysisInteraction *)self view];
-        [v16 setContentMode:v13];
+        view2 = [(VKCImageAnalysisInteraction *)self view];
+        [view2 setContentMode:v13];
 
-        v17 = [(VKCImageAnalysisInteraction *)self baseView];
-        v18 = [v17 textSelectionView];
-        v19 = [v18 quadsForAllWordsForCurrentLayout];
-        [v3 setObject:v19 forKeyedSubscript:v15];
+        baseView = [(VKCImageAnalysisInteraction *)self baseView];
+        textSelectionView = [baseView textSelectionView];
+        quadsForAllWordsForCurrentLayout = [textSelectionView quadsForAllWordsForCurrentLayout];
+        [v3 setObject:quadsForAllWordsForCurrentLayout forKeyedSubscript:v15];
       }
 
       v9 = [&unk_1F2C39270 countByEnumeratingWithState:&v21 objects:v25 count:16];

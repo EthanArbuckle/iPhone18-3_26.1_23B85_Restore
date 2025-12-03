@@ -36,7 +36,7 @@
   }
 
   v4 = +[BMStreams discoverabilitySignal];
-  v5 = [v4 source];
+  source = [v4 source];
   v6 = [BMDiscoverabilitySignalEvent alloc];
   if ([(BRKSettings *)self->_settings isEnabled])
   {
@@ -49,7 +49,7 @@
   }
 
   v8 = [v6 initWithIdentifier:@"com.apple.health.handwashing" bundleID:@"com.apple.brook" context:v7];
-  [v5 sendEvent:v8];
+  [source sendEvent:v8];
   v9 = [BMDiscoverabilitySignalEvent alloc];
   if ([(BRKSettings *)self->_settings areRemindersEnabled])
   {
@@ -62,7 +62,7 @@
   }
 
   v11 = [v9 initWithIdentifier:@"com.apple.health.handwashing.home-reminders" bundleID:@"com.apple.brook" context:v10];
-  [v5 sendEvent:v11];
+  [source sendEvent:v11];
 }
 
 @end

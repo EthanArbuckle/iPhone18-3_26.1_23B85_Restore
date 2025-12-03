@@ -1,57 +1,57 @@
 @interface BMReadMessageEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMReadMessageEvent)initWithIDSHandle:(id)a3;
-- (BMReadMessageEvent)initWithProto:(id)a3;
-- (BMReadMessageEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMReadMessageEvent)initWithIDSHandle:(id)handle;
+- (BMReadMessageEvent)initWithProto:(id)proto;
+- (BMReadMessageEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
-- (id)initMarkUnreadWithIDSHandle:(id)a3;
+- (id)initMarkUnreadWithIDSHandle:(id)handle;
 - (id)proto;
 @end
 
 @implementation BMReadMessageEvent
 
-- (BMReadMessageEvent)initWithIDSHandle:(id)a3
+- (BMReadMessageEvent)initWithIDSHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = BMReadMessageEvent;
   v6 = [(BMEventBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsHandle, a3);
+    objc_storeStrong(&v6->_idsHandle, handle);
     v7->_markedUnread = 0;
   }
 
   return v7;
 }
 
-- (id)initMarkUnreadWithIDSHandle:(id)a3
+- (id)initMarkUnreadWithIDSHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = BMReadMessageEvent;
   v6 = [(BMEventBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsHandle, a3);
+    objc_storeStrong(&v6->_idsHandle, handle);
     v7->_markedUnread = 1;
   }
 
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [BMReadMessageEvent eventWithData:a4 dataVersion:v7];
+      [BMReadMessageEvent eventWithData:version dataVersion:v7];
     }
 
     v8 = 0;
@@ -59,7 +59,7 @@
 
   else
   {
-    v8 = [[a1 alloc] initWithProtoData:v6];
+    v8 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   return v8;
@@ -67,19 +67,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMReadMessageEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMReadMessageEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMReadMessageEvent)initWithProto:(id)a3
+- (BMReadMessageEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_8:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -95,51 +95,51 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [v5 markedUnread];
-  v7 = [v5 idsHandle];
-  if (v6)
+  v5 = protoCopy;
+  markedUnread = [v5 markedUnread];
+  idsHandle = [v5 idsHandle];
+  if (markedUnread)
   {
-    v8 = [(BMReadMessageEvent *)self initMarkUnreadWithIDSHandle:v7];
+    v8 = [(BMReadMessageEvent *)self initMarkUnreadWithIDSHandle:idsHandle];
   }
 
   else
   {
-    v8 = [(BMReadMessageEvent *)self initWithIDSHandle:v7];
+    v8 = [(BMReadMessageEvent *)self initWithIDSHandle:idsHandle];
   }
 
   self = v8;
 
-  v10 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMReadMessageEvent)initWithProtoData:(id)a3
+- (BMReadMessageEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBReadMessageEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBReadMessageEvent alloc] initWithData:dataCopy];
 
     self = [(BMReadMessageEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMReadMessageEvent *)self idsHandle];
-  v5 = [v4 mutableCopy];
+  idsHandle = [(BMReadMessageEvent *)self idsHandle];
+  v5 = [idsHandle mutableCopy];
   [v3 setIdsHandle:v5];
 
   [v3 setMarkedUnread:{-[BMReadMessageEvent markedUnread](self, "markedUnread")}];
@@ -147,16 +147,16 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     idsHandle = self->_idsHandle;
-    v7 = [v5 idsHandle];
-    if ([(NSString *)idsHandle isEqual:v7])
+    idsHandle = [v5 idsHandle];
+    if ([(NSString *)idsHandle isEqual:idsHandle])
     {
       markedUnread = self->_markedUnread;
       v9 = markedUnread == [v5 markedUnread];

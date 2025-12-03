@@ -1,18 +1,18 @@
 @interface NTKBundleComplicationFaceMigrator
 + (id)sharedInstance;
 - (NTKBundleComplicationFaceMigrator)init;
-- (NTKBundleComplicationFaceMigrator)initWithMigrationProvider:(id)a3;
-- (void)_enumerateMigratableComplicationsOnFace:(id)a3 withBlock:(id)a4;
-- (void)_migrateFace:(id)a3 slot:(id)a4 complication:(id)a5 completion:(id)a6;
-- (void)migrateFace:(id)a3 completion:(id)a4;
-- (void)migrateFaces:(id)a3 completion:(id)a4;
+- (NTKBundleComplicationFaceMigrator)initWithMigrationProvider:(id)provider;
+- (void)_enumerateMigratableComplicationsOnFace:(id)face withBlock:(id)block;
+- (void)_migrateFace:(id)face slot:(id)slot complication:(id)complication completion:(id)completion;
+- (void)migrateFace:(id)face completion:(id)completion;
+- (void)migrateFaces:(id)faces completion:(id)completion;
 @end
 
 @implementation NTKBundleComplicationFaceMigrator
 
-- (NTKBundleComplicationFaceMigrator)initWithMigrationProvider:(id)a3
+- (NTKBundleComplicationFaceMigrator)initWithMigrationProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = NTKBundleComplicationFaceMigrator;
   v6 = [(NTKBundleComplicationFaceMigrator *)&v10 init];
@@ -22,7 +22,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_migrationProvider, a3);
+    objc_storeStrong(&v6->_migrationProvider, provider);
   }
 
   return v6;
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __51__NTKBundleComplicationFaceMigrator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_8 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_8, block);
@@ -60,17 +60,17 @@ void __51__NTKBundleComplicationFaceMigrator_sharedInstance__block_invoke(uint64
   sharedInstance_instance = v1;
 }
 
-- (void)migrateFace:(id)a3 completion:(id)a4
+- (void)migrateFace:(id)face completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  faceCopy = face;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   v9 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = faceCopy;
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "NTKBundleComplicationFaceMigrator: Migrating face %@", &buf, 0xCu);
   }
 
@@ -89,8 +89,8 @@ void __51__NTKBundleComplicationFaceMigrator_sharedInstance__block_invoke(uint64
   v20[3] = &unk_278780E68;
   v10 = v8;
   v21 = v10;
-  v22 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = faceCopy;
   v23 = v11;
   p_buf = &buf;
   v25 = v26;
@@ -103,8 +103,8 @@ void __51__NTKBundleComplicationFaceMigrator_sharedInstance__block_invoke(uint64
   v18 = &buf;
   v19 = v26;
   v16 = v11;
-  v17 = v7;
-  v13 = v7;
+  v17 = completionCopy;
+  v13 = completionCopy;
   v14 = v11;
   dispatch_group_notify(v10, queue, block);
 
@@ -163,20 +163,20 @@ uint64_t __60__NTKBundleComplicationFaceMigrator_migrateFace_completion___block_
   return (*(a1[5] + 16))();
 }
 
-- (void)migrateFaces:(id)a3 completion:(id)a4
+- (void)migrateFaces:(id)faces completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD78] UUID];
+  facesCopy = faces;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v9 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 UUIDString];
+    uUIDString = [uUID UUIDString];
     *buf = 138412546;
-    v22 = v10;
+    v22 = uUIDString;
     v23 = 2048;
-    v24 = [v6 count];
+    v24 = [facesCopy count];
     _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "NTKBundleComplicationFaceMigrator: Starting face batch migration %@ with %lu faces", buf, 0x16u);
   }
 
@@ -186,17 +186,17 @@ uint64_t __60__NTKBundleComplicationFaceMigrator_migrateFace_completion___block_
   v17[2] = __61__NTKBundleComplicationFaceMigrator_migrateFaces_completion___block_invoke;
   v17[3] = &unk_278780EE0;
   v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v12 = v8;
+  selfCopy = self;
+  v20 = uUID;
+  v12 = uUID;
   v13 = v11;
-  [v6 enumerateObjectsUsingBlock:v17];
+  [facesCopy enumerateObjectsUsingBlock:v17];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__NTKBundleComplicationFaceMigrator_migrateFaces_completion___block_invoke_8;
   v15[3] = &unk_27877E960;
-  v16 = v7;
-  v14 = v7;
+  v16 = completionCopy;
+  v14 = completionCopy;
   dispatch_group_notify(v13, MEMORY[0x277D85CD0], v15);
 }
 
@@ -234,19 +234,19 @@ void __61__NTKBundleComplicationFaceMigrator_migrateFaces_completion___block_inv
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)_enumerateMigratableComplicationsOnFace:(id)a3 withBlock:(id)a4
+- (void)_enumerateMigratableComplicationsOnFace:(id)face withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  faceCopy = face;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __87__NTKBundleComplicationFaceMigrator__enumerateMigratableComplicationsOnFace_withBlock___block_invoke;
   v10[3] = &unk_278780F08;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = faceCopy;
+  selfCopy = self;
+  v13 = blockCopy;
+  v8 = blockCopy;
+  v9 = faceCopy;
   [v9 enumerateComplicationSlotsWithBlock:v10];
 }
 
@@ -268,26 +268,26 @@ void __87__NTKBundleComplicationFaceMigrator__enumerateMigratableComplicationsOn
   }
 }
 
-- (void)_migrateFace:(id)a3 slot:(id)a4 complication:(id)a5 completion:(id)a6
+- (void)_migrateFace:(id)face slot:(id)slot complication:(id)complication completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 device];
-  v15 = [v14 supportsWidgetMigration];
+  faceCopy = face;
+  slotCopy = slot;
+  complicationCopy = complication;
+  completionCopy = completion;
+  device = [faceCopy device];
+  supportsWidgetMigration = [device supportsWidgetMigration];
 
-  if (v15)
+  if (supportsWidgetMigration)
   {
-    v16 = [v10 rankedComplicationFamiliesForSlot:v11];
-    v17 = [v12 complicationType];
-    v18 = [v10 device];
-    v19 = [NTKWidgetComplicationMigrationDefines hasMigratedComplicationType:v17 forDevice:v18];
+    v16 = [faceCopy rankedComplicationFamiliesForSlot:slotCopy];
+    complicationType = [complicationCopy complicationType];
+    device2 = [faceCopy device];
+    v19 = [NTKWidgetComplicationMigrationDefines hasMigratedComplicationType:complicationType forDevice:device2];
 
     if (v19)
     {
-      v31 = self;
+      selfCopy = self;
       v32 = v16;
       v41 = 0u;
       v42 = 0u;
@@ -309,26 +309,26 @@ void __87__NTKBundleComplicationFaceMigrator__enumerateMigratableComplicationsOn
               objc_enumerationMutation(v20);
             }
 
-            v25 = +[NTKWidgetComplicationMigrationDefines migrateComplication:forFamily:](NTKWidgetComplicationMigrationDefines, "migrateComplication:forFamily:", v12, [*(*(&v39 + 1) + 8 * v24) integerValue]);
+            v25 = +[NTKWidgetComplicationMigrationDefines migrateComplication:forFamily:](NTKWidgetComplicationMigrationDefines, "migrateComplication:forFamily:", complicationCopy, [*(*(&v39 + 1) + 8 * v24) integerValue]);
             if (v25)
             {
               v29 = v25;
-              [v10 setComplication:v25 forSlot:v11];
+              [faceCopy setComplication:v25 forSlot:slotCopy];
               v30 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
               if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138413058;
-                v44 = v10;
+                v44 = faceCopy;
                 v45 = 2112;
-                v46 = v11;
+                v46 = slotCopy;
                 v47 = 2112;
-                v48 = v12;
+                v48 = complicationCopy;
                 v49 = 2112;
                 v50 = v29;
                 _os_log_impl(&dword_22D9C5000, v30, OS_LOG_TYPE_DEFAULT, "NTKBundleComplicationFaceMigrator: Performed defined migration on face %@ slot %@ of %@ to %@", buf, 0x2Au);
               }
 
-              v13[2](v13, 1, 0);
+              completionCopy[2](completionCopy, 1, 0);
               v16 = v32;
               goto LABEL_17;
             }
@@ -347,12 +347,12 @@ void __87__NTKBundleComplicationFaceMigrator__enumerateMigratableComplicationsOn
         }
       }
 
-      self = v31;
+      self = selfCopy;
       v16 = v32;
     }
 
-    v26 = [v10 device];
-    v27 = [NTKBundleComplicationMigrationFallbackRequest requestWithComplication:v12 families:v16 device:v26];
+    device3 = [faceCopy device];
+    v27 = [NTKBundleComplicationMigrationFallbackRequest requestWithComplication:complicationCopy families:v16 device:device3];
 
     migrationProvider = self->_migrationProvider;
     v33[0] = MEMORY[0x277D85DD0];
@@ -360,10 +360,10 @@ void __87__NTKBundleComplicationFaceMigrator__enumerateMigratableComplicationsOn
     v33[2] = __79__NTKBundleComplicationFaceMigrator__migrateFace_slot_complication_completion___block_invoke;
     v33[3] = &unk_278780F58;
     v34 = v27;
-    v38 = v13;
-    v35 = v10;
-    v36 = v11;
-    v37 = v12;
+    v38 = completionCopy;
+    v35 = faceCopy;
+    v36 = slotCopy;
+    v37 = complicationCopy;
     v20 = v27;
     [(NTKBundleComplicationMigrationProvider *)migrationProvider serviceRequest:v20 completion:v33];
 
@@ -373,7 +373,7 @@ LABEL_17:
 
   else
   {
-    v13[2](v13, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 

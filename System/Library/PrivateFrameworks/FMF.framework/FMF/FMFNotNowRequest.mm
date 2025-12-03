@@ -1,87 +1,87 @@
 @interface FMFNotNowRequest
-+ (id)notNowRequestToHandles:(id)a3 fromHandle:(id)a4;
-- (FMFNotNowRequest)initWithCoder:(id)a3;
-- (FMFNotNowRequest)initWithFromHandle:(id)a3 toHandle:(id)a4 requestId:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)notNowRequestToHandles:(id)handles fromHandle:(id)handle;
+- (FMFNotNowRequest)initWithCoder:(id)coder;
+- (FMFNotNowRequest)initWithFromHandle:(id)handle toHandle:(id)toHandle requestId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMFNotNowRequest
 
-- (FMFNotNowRequest)initWithFromHandle:(id)a3 toHandle:(id)a4 requestId:(id)a5
+- (FMFNotNowRequest)initWithFromHandle:(id)handle toHandle:(id)toHandle requestId:(id)id
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  toHandleCopy = toHandle;
+  idCopy = id;
+  handleCopy = handle;
   v11 = objc_alloc_init(objc_opt_class());
 
-  [(FMFNotNowRequest *)v11 setFromHandle:v10];
-  if (v8)
+  [(FMFNotNowRequest *)v11 setFromHandle:handleCopy];
+  if (toHandleCopy)
   {
-    v12 = [MEMORY[0x277CBEB98] setWithObject:v8];
+    v12 = [MEMORY[0x277CBEB98] setWithObject:toHandleCopy];
     [(FMFNotNowRequest *)v11 setToHandles:v12];
   }
 
-  [(FMFNotNowRequest *)v11 setRequestId:v9];
+  [(FMFNotNowRequest *)v11 setRequestId:idCopy];
 
   return v11;
 }
 
-+ (id)notNowRequestToHandles:(id)a3 fromHandle:(id)a4
++ (id)notNowRequestToHandles:(id)handles fromHandle:(id)handle
 {
-  v5 = a4;
-  v6 = a3;
+  handleCopy = handle;
+  handlesCopy = handles;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 setToHandles:v6];
+  [v7 setToHandles:handlesCopy];
 
-  [v7 setFromHandle:v5];
+  [v7 setFromHandle:handleCopy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(FMFNotNowRequest *)self requestId];
-  [v4 setRequestId:v5];
+  requestId = [(FMFNotNowRequest *)self requestId];
+  [v4 setRequestId:requestId];
 
-  v6 = [(FMFNotNowRequest *)self fromHandle];
-  [v4 setFromHandle:v6];
+  fromHandle = [(FMFNotNowRequest *)self fromHandle];
+  [v4 setFromHandle:fromHandle];
 
-  v7 = [(FMFNotNowRequest *)self toHandles];
-  [v4 setToHandles:v7];
+  toHandles = [(FMFNotNowRequest *)self toHandles];
+  [v4 setToHandles:toHandles];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMFNotNowRequest *)self requestId];
-  [v4 encodeObject:v5 forKey:@"requestId"];
+  coderCopy = coder;
+  requestId = [(FMFNotNowRequest *)self requestId];
+  [coderCopy encodeObject:requestId forKey:@"requestId"];
 
-  v6 = [(FMFNotNowRequest *)self fromHandle];
-  [v4 encodeObject:v6 forKey:@"fromHandle"];
+  fromHandle = [(FMFNotNowRequest *)self fromHandle];
+  [coderCopy encodeObject:fromHandle forKey:@"fromHandle"];
 
-  v7 = [(FMFNotNowRequest *)self toHandles];
-  [v4 encodeObject:v7 forKey:@"toHandles"];
+  toHandles = [(FMFNotNowRequest *)self toHandles];
+  [coderCopy encodeObject:toHandles forKey:@"toHandles"];
 }
 
-- (FMFNotNowRequest)initWithCoder:(id)a3
+- (FMFNotNowRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestId"];
   [(FMFNotNowRequest *)v5 setRequestId:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fromHandle"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fromHandle"];
   [(FMFNotNowRequest *)v5 setFromHandle:v7];
 
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"toHandles"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"toHandles"];
 
   [(FMFNotNowRequest *)v5 setToHandles:v11];
   return v5;
@@ -91,8 +91,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(FMFNotNowRequest *)self fromHandle];
-  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, v5];
+  fromHandle = [(FMFNotNowRequest *)self fromHandle];
+  v6 = [v3 stringWithFormat:@"<%@ %p [%@]>", v4, self, fromHandle];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface BKSTerminationAssertionObserverManager
 - (BKSTerminationAssertionObserverManager)init;
-- (BOOL)hasTerminationAssertionForBundleID:(id)a3;
-- (unint64_t)efficacyForBundleID:(id)a3;
+- (BOOL)hasTerminationAssertionForBundleID:(id)d;
+- (unint64_t)efficacyForBundleID:(id)d;
 - (void)_createMonitor;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BKSTerminationAssertionObserverManager
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   observers = self->_observers;
   if (!observers)
@@ -46,15 +46,15 @@
     observers = self->_observers;
   }
 
-  [(NSMutableSet *)observers addObject:v7];
+  [(NSMutableSet *)observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_observers removeObject:v4];
+  [(NSMutableSet *)self->_observers removeObject:observerCopy];
 
   if (![(NSMutableSet *)self->_observers count])
   {
@@ -65,9 +65,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (unint64_t)efficacyForBundleID:(id)a3
+- (unint64_t)efficacyForBundleID:(id)d
 {
-  if ([(BKSTerminationAssertionObserverManager *)self hasTerminationAssertionForBundleID:a3])
+  if ([(BKSTerminationAssertionObserverManager *)self hasTerminationAssertionForBundleID:d])
   {
     return 3;
   }
@@ -78,24 +78,24 @@
   }
 }
 
-- (BOOL)hasTerminationAssertionForBundleID:(id)a3
+- (BOOL)hasTerminationAssertionForBundleID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   if (self->_monitorIsReady)
   {
-    LOBYTE(v5) = [(NSMutableSet *)self->_launchPreventedBundleIDs containsObject:v4];
+    LOBYTE(v5) = [(NSMutableSet *)self->_launchPreventedBundleIDs containsObject:dCopy];
   }
 
   else
   {
     v6 = objc_alloc(MEMORY[0x277D46F48]);
-    v7 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:v4 jobLabel:v4 auid:geteuid() platform:6];
+    v7 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:dCopy jobLabel:dCopy auid:geteuid() platform:6];
     v8 = [v6 initWithIdentity:v7];
 
-    v9 = [MEMORY[0x277D46E20] sharedInstance];
-    v10 = [v9 preventLaunchPredicatesWithError:0];
+    mEMORY[0x277D46E20] = [MEMORY[0x277D46E20] sharedInstance];
+    v10 = [mEMORY[0x277D46E20] preventLaunchPredicatesWithError:0];
 
     v18 = 0u;
     v19 = 0u;

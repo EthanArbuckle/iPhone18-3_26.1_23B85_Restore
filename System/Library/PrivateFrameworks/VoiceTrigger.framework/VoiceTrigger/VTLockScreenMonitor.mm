@@ -1,12 +1,12 @@
 @interface VTLockScreenMonitor
 + (id)sharedInstance;
 - (VTLockScreenMonitor)init;
-- (id)lockScreenStateDescription:(unsigned __int8)a3;
+- (id)lockScreenStateDescription:(unsigned __int8)description;
 - (unsigned)_checkLockScreenState;
-- (void)_didReceiveLockScreenStateChanged:(unsigned __int8)a3;
-- (void)_didReceiveLockScreenStateChangedInQueue:(unsigned __int8)a3;
-- (void)_notifyObserver:(id)a3 withLockScreenState:(unsigned __int8)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveLockScreenStateChanged:(unsigned __int8)changed;
+- (void)_didReceiveLockScreenStateChangedInQueue:(unsigned __int8)queue;
+- (void)_notifyObserver:(id)observer withLockScreenState:(unsigned __int8)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -39,49 +39,49 @@
   return v4;
 }
 
-- (void)_notifyObserver:(id)a3 withLockScreenState:(unsigned __int8)a4
+- (void)_notifyObserver:(id)observer withLockScreenState:(unsigned __int8)state
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  stateCopy = state;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTLockScreenMonitor:self receivedLockScreenStateChanged:v4];
+    [observerCopy VTLockScreenMonitor:self receivedLockScreenStateChanged:stateCopy];
   }
 }
 
-- (void)_didReceiveLockScreenStateChanged:(unsigned __int8)a3
+- (void)_didReceiveLockScreenStateChanged:(unsigned __int8)changed
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __57__VTLockScreenMonitor__didReceiveLockScreenStateChanged___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(VTEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveLockScreenStateChangedInQueue:(unsigned __int8)a3
+- (void)_didReceiveLockScreenStateChangedInQueue:(unsigned __int8)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __64__VTLockScreenMonitor__didReceiveLockScreenStateChangedInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
-- (id)lockScreenStateDescription:(unsigned __int8)a3
+- (id)lockScreenStateDescription:(unsigned __int8)description
 {
-  if (a3 > 3u)
+  if (description > 3u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2784ECBC0[a3];
+    return off_2784ECBC0[description];
   }
 }
 
@@ -101,9 +101,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -111,7 +111,7 @@
     handler[2] = __49__VTLockScreenMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.mobile.keybagd.lock_status", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.mobile.keybagd.lock_status", &self->_notifyToken, queueCopy, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

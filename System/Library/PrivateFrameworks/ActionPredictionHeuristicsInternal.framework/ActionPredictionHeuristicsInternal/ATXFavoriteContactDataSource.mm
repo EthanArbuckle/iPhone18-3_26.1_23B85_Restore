@@ -1,30 +1,30 @@
 @interface ATXFavoriteContactDataSource
-+ (id)_entryToDict:(id)a3 device:(id)a4;
-- (ATXFavoriteContactDataSource)initWithDevice:(id)a3;
-- (void)favoritesWithContacts:(id)a3 callback:(id)a4;
++ (id)_entryToDict:(id)dict device:(id)device;
+- (ATXFavoriteContactDataSource)initWithDevice:(id)device;
+- (void)favoritesWithContacts:(id)contacts callback:(id)callback;
 @end
 
 @implementation ATXFavoriteContactDataSource
 
-- (ATXFavoriteContactDataSource)initWithDevice:(id)a3
+- (ATXFavoriteContactDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXFavoriteContactDataSource;
   v6 = [(ATXFavoriteContactDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)favoritesWithContacts:(id)a3 callback:(id)a4
+- (void)favoritesWithContacts:(id)contacts callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA368))
   {
     v13 = 0;
@@ -38,18 +38,18 @@
     v9[1] = 3221225472;
     v9[2] = __63__ATXFavoriteContactDataSource_favoritesWithContacts_callback___block_invoke;
     v9[3] = &unk_278C3D488;
-    v10 = v6;
-    v11 = self;
+    v10 = contactsCopy;
+    selfCopy = self;
     v12 = &v13;
     [(ATXHeuristicDevice *)device accessFavoriteContacts:v9];
-    v7[2](v7, v14[5], 0);
+    callbackCopy[2](callbackCopy, v14[5], 0);
 
     _Block_object_dispose(&v13, 8);
   }
 
   else
   {
-    v7[2](v7, MEMORY[0x277CBEBF8], 0);
+    callbackCopy[2](callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 
@@ -153,33 +153,33 @@ void __63__ATXFavoriteContactDataSource_favoritesWithContacts_callback___block_i
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_entryToDict:(id)a3 device:(id)a4
++ (id)_entryToDict:(id)dict device:(id)device
 {
-  v5 = a4;
-  v6 = a3;
+  deviceCopy = device;
+  dictCopy = dict;
   v7 = objc_opt_new();
-  v8 = [v5 wrap:v6];
+  v8 = [deviceCopy wrap:dictCopy];
   [v7 setObject:v8 forKeyedSubscript:@"CNFavoritesEntry"];
 
-  v9 = [v6 name];
-  [v7 setObject:v9 forKeyedSubscript:@"name"];
+  name = [dictCopy name];
+  [v7 setObject:name forKeyedSubscript:@"name"];
 
-  v10 = [v6 value];
-  [v7 setObject:v10 forKeyedSubscript:@"handle"];
+  value = [dictCopy value];
+  [v7 setObject:value forKeyedSubscript:@"handle"];
 
-  v11 = [v6 actionType];
-  [v7 setObject:v11 forKeyedSubscript:@"actionType"];
+  actionType = [dictCopy actionType];
+  [v7 setObject:actionType forKeyedSubscript:@"actionType"];
 
-  v12 = [v6 bundleIdentifier];
-  [v7 setObject:v12 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [dictCopy bundleIdentifier];
+  [v7 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
-  v13 = [v6 contactProperty];
+  contactProperty = [dictCopy contactProperty];
 
-  v14 = [v13 contact];
+  contact = [contactProperty contact];
 
-  if (v14)
+  if (contact)
   {
-    v15 = [v5 dictContactForCNContact:v14];
+    v15 = [deviceCopy dictContactForCNContact:contact];
     [v7 setObject:v15 forKeyedSubscript:@"contact"];
   }
 

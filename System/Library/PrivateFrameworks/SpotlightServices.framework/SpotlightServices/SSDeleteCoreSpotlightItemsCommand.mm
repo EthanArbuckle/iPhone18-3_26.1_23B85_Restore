@@ -1,96 +1,96 @@
 @interface SSDeleteCoreSpotlightItemsCommand
-- (BOOL)isEqual:(id)a3;
-- (SSDeleteCoreSpotlightItemsCommand)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SSDeleteCoreSpotlightItemsCommand)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSDeleteCoreSpotlightItemsCommand
 
-- (SSDeleteCoreSpotlightItemsCommand)initWithCoder:(id)a3
+- (SSDeleteCoreSpotlightItemsCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSDeleteCoreSpotlightItemsCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [objc_alloc(MEMORY[0x1E69CA5E8]) initWithData:v6];
   v8 = [objc_alloc(MEMORY[0x1E69C9F88]) initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 domainIdentifiers];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setDomainIdentifiers:v9];
+    domainIdentifiers = [v8 domainIdentifiers];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setDomainIdentifiers:domainIdentifiers];
 
-    v10 = [v8 itemIdentifiers];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setItemIdentifiers:v10];
+    itemIdentifiers = [v8 itemIdentifiers];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setItemIdentifiers:itemIdentifiers];
 
-    v11 = [v8 commandDetail];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setCommandDetail:v11];
+    commandDetail = [v8 commandDetail];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [v8 normalizedTopic];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [v8 normalizedTopic];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [v8 backendData];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setBackendData:v13];
+    backendData = [v8 backendData];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setBackendData:backendData];
 
-    v14 = [v8 commandReference];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setCommandReference:v14];
+    commandReference = [v8 commandReference];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setCommandReference:commandReference];
 
-    v15 = [v8 filesToDelete];
-    [(SSDeleteCoreSpotlightItemsCommand *)v5 setFilesToDelete:v15];
+    filesToDelete = [v8 filesToDelete];
+    [(SSDeleteCoreSpotlightItemsCommand *)v5 setFilesToDelete:filesToDelete];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SSDeleteCoreSpotlightItemsCommand;
-  [(SSDeleteCoreSpotlightItemsCommand *)&v3 encodeWithCoder:a3];
+  [(SSDeleteCoreSpotlightItemsCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SSDeleteCoreSpotlightItemsCommand;
-  v4 = [(SSDeleteCoreSpotlightItemsCommand *)&v12 copyWithZone:a3];
-  v5 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
-  v6 = [v5 copy];
+  v4 = [(SSDeleteCoreSpotlightItemsCommand *)&v12 copyWithZone:zone];
+  domainIdentifiers = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
+  v6 = [domainIdentifiers copy];
   [v4 setDomainIdentifiers:v6];
 
-  v7 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
-  v8 = [v7 copy];
+  itemIdentifiers = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
+  v8 = [itemIdentifiers copy];
   [v4 setItemIdentifiers:v8];
 
-  v9 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
-  v10 = [v9 copy];
+  filesToDelete = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
+  v10 = [filesToDelete copy];
   [v4 setFilesToDelete:v10];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SSDeleteCoreSpotlightItemsCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SSDeleteCoreSpotlightItemsCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v32.receiver = self;
       v32.super_class = SSDeleteCoreSpotlightItemsCommand;
-      if ([(SSDeleteCoreSpotlightItemsCommand *)&v32 isEqual:v5])
+      if ([(SSDeleteCoreSpotlightItemsCommand *)&v32 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
-        v8 = [(SSDeleteCoreSpotlightItemsCommand *)v6 domainIdentifiers];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        domainIdentifiers = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
+        domainIdentifiers2 = [(SSDeleteCoreSpotlightItemsCommand *)v6 domainIdentifiers];
+        if ((domainIdentifiers != 0) == (domainIdentifiers2 == 0))
         {
           v11 = 0;
 LABEL_31:
@@ -98,63 +98,63 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v9 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
-        if (v9)
+        domainIdentifiers3 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
+        if (domainIdentifiers3)
         {
-          v3 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
-          v10 = [(SSDeleteCoreSpotlightItemsCommand *)v6 domainIdentifiers];
-          if (![v3 isEqual:v10])
+          domainIdentifiers4 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
+          domainIdentifiers5 = [(SSDeleteCoreSpotlightItemsCommand *)v6 domainIdentifiers];
+          if (![domainIdentifiers4 isEqual:domainIdentifiers5])
           {
             v11 = 0;
             goto LABEL_29;
           }
 
-          v31 = v10;
+          v31 = domainIdentifiers5;
         }
 
-        v12 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
-        v13 = [(SSDeleteCoreSpotlightItemsCommand *)v6 itemIdentifiers];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        itemIdentifiers = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
+        itemIdentifiers2 = [(SSDeleteCoreSpotlightItemsCommand *)v6 itemIdentifiers];
+        v14 = itemIdentifiers2;
+        if ((itemIdentifiers != 0) == (itemIdentifiers2 == 0))
         {
 
           v11 = 0;
           goto LABEL_28;
         }
 
-        v15 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
-        if (v15)
+        itemIdentifiers3 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
+        if (itemIdentifiers3)
         {
-          v25 = v12;
-          v16 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
-          v27 = [(SSDeleteCoreSpotlightItemsCommand *)v6 itemIdentifiers];
-          v28 = v16;
-          if (![v16 isEqual:?])
+          v25 = itemIdentifiers;
+          itemIdentifiers4 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
+          itemIdentifiers5 = [(SSDeleteCoreSpotlightItemsCommand *)v6 itemIdentifiers];
+          v28 = itemIdentifiers4;
+          if (![itemIdentifiers4 isEqual:?])
           {
             v11 = 0;
-            v12 = v25;
+            itemIdentifiers = v25;
             goto LABEL_26;
           }
 
-          v29 = v15;
-          v30 = v3;
-          v12 = v25;
+          v29 = itemIdentifiers3;
+          v30 = domainIdentifiers4;
+          itemIdentifiers = v25;
         }
 
         else
         {
           v29 = 0;
-          v30 = v3;
+          v30 = domainIdentifiers4;
         }
 
-        v17 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
-        v18 = [(SSDeleteCoreSpotlightItemsCommand *)v6 filesToDelete];
-        if ((v17 != 0) == (v18 == 0))
+        filesToDelete = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
+        filesToDelete2 = [(SSDeleteCoreSpotlightItemsCommand *)v6 filesToDelete];
+        if ((filesToDelete != 0) == (filesToDelete2 == 0))
         {
 
           v11 = 0;
-          v15 = v29;
-          v3 = v30;
+          itemIdentifiers3 = v29;
+          domainIdentifiers4 = v30;
           if (!v29)
           {
             goto LABEL_27;
@@ -163,16 +163,16 @@ LABEL_31:
 
         else
         {
-          v24 = v17;
-          v26 = v18;
-          v19 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
-          v15 = v29;
-          if (v19)
+          v24 = filesToDelete;
+          v26 = filesToDelete2;
+          filesToDelete3 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
+          itemIdentifiers3 = v29;
+          if (filesToDelete3)
           {
-            v23 = v19;
-            v22 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
-            v20 = [(SSDeleteCoreSpotlightItemsCommand *)v6 filesToDelete];
-            v11 = [v22 isEqual:?];
+            v23 = filesToDelete3;
+            filesToDelete4 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
+            filesToDelete5 = [(SSDeleteCoreSpotlightItemsCommand *)v6 filesToDelete];
+            v11 = [filesToDelete4 isEqual:?];
           }
 
           else
@@ -181,7 +181,7 @@ LABEL_31:
             v11 = 1;
           }
 
-          v3 = v30;
+          domainIdentifiers4 = v30;
           if (!v29)
           {
             goto LABEL_27;
@@ -192,8 +192,8 @@ LABEL_26:
 
 LABEL_27:
 LABEL_28:
-        v10 = v31;
-        if (!v9)
+        domainIdentifiers5 = v31;
+        if (!domainIdentifiers3)
         {
 LABEL_30:
 
@@ -219,12 +219,12 @@ LABEL_32:
   v11.receiver = self;
   v11.super_class = SSDeleteCoreSpotlightItemsCommand;
   v3 = [(SSDeleteCoreSpotlightItemsCommand *)&v11 hash];
-  v4 = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
-  v5 = [v4 hash];
-  v6 = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
-  v9 = v7 ^ [v8 hash];
+  domainIdentifiers = [(SSDeleteCoreSpotlightItemsCommand *)self domainIdentifiers];
+  v5 = [domainIdentifiers hash];
+  itemIdentifiers = [(SSDeleteCoreSpotlightItemsCommand *)self itemIdentifiers];
+  v7 = v5 ^ [itemIdentifiers hash];
+  filesToDelete = [(SSDeleteCoreSpotlightItemsCommand *)self filesToDelete];
+  v9 = v7 ^ [filesToDelete hash];
 
   return v9 ^ v3;
 }

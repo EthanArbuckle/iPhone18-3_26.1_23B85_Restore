@@ -1,16 +1,16 @@
 @interface PKSpendingSummaryFetcherRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PKSpendingSummaryFetcherRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKSpendingSummaryFetcherRequest allocWithZone:](PKSpendingSummaryFetcherRequest init];
-  v6 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_startDate copyWithZone:zone];
   startDate = v5->_startDate;
   v5->_startDate = v6;
 
@@ -30,13 +30,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     startDate = self->_startDate;
     v7 = v5[2];
     if (startDate && v7)

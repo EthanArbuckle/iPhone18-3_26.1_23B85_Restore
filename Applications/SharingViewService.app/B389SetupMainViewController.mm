@@ -1,49 +1,49 @@
 @interface B389SetupMainViewController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)b389NFCPromptUpdateConfiguration:(id)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didLosePeripheral:(id)a4 forType:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)setResponseHandler:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)b389NFCPromptUpdateConfiguration:(id)configuration;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didLosePeripheral:(id)peripheral forType:(id)type;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)setResponseHandler:(id)handler;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation B389SetupMainViewController
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100037D20();
 
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100037E28(a3);
+  selfCopy = self;
+  sub_100037E28(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100038C00(a3);
+  selfCopy = self;
+  sub_100038C00(disappear);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -56,15 +56,15 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_10003A1D8(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10003A1D8(context, v6, v7);
   sub_100012050(v6);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     sub_1000122EC(0, &qword_1001BC220);
     sub_1000670A4();
@@ -76,11 +76,11 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_10003B6A0(v4);
 }
 
-- (void)dismiss:(int)a3
+- (void)dismiss:(int)dismiss
 {
   v5 = sub_100005DCC(&qword_1001BA7B0);
   __chkstk_darwin(v5 - 8);
@@ -95,14 +95,14 @@
 
   v10 = type metadata accessor for URL();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
-  v11 = self;
-  sub_10003BFDC(a3, v7, 0, 0, 391);
+  selfCopy = self;
+  sub_10003BFDC(dismiss, v7, 0, 0, 391);
   sub_10001259C(v7, &qword_1001BA7B0);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -115,101 +115,101 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_10003E34C(a3, v6, v7);
+  selfCopy = self;
+  sub_10003E34C(animated, v6, v7);
   sub_100012050(v6);
 }
 
-- (void)setResponseHandler:(id)a3
+- (void)setResponseHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10003FAE0(sub_100066BC0, v5);
 }
 
-- (void)b389NFCPromptUpdateConfiguration:(id)a3
+- (void)b389NFCPromptUpdateConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = self;
-  sub_10003FE28(a3);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_10003FE28(configuration);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_100051D80(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_100051D80(stateCopy);
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100062554(v7);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  sub_100062554(peripheralCopy);
 }
 
-- (void)centralManager:(id)a3 didLosePeripheral:(id)a4 forType:(id)a5
+- (void)centralManager:(id)manager didLosePeripheral:(id)peripheral forType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100063390(v9, v10);
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  typeCopy = type;
+  selfCopy = self;
+  sub_100063390(peripheralCopy, typeCopy);
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1000636C0(a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1000636C0(pairing, error);
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100063A2C(a4);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  sub_100063A2C(pairing);
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_100064208(a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
+  selfCopy = self;
+  sub_100064208(pairing, type);
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_1000521F4(v6, a4);
+  peripheralCopy = peripheral;
+  selfCopy = self;
+  servicesCopy = services;
+  sub_1000521F4(peripheralCopy, services);
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_100064D88(v8);
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100064D88(peripheralCopy);
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_1000653BC(v8, v9);
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1000653BC(peripheralCopy, characteristicCopy);
 }
 
 @end

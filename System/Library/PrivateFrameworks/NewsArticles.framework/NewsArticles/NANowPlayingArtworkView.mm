@@ -1,19 +1,19 @@
 @interface NANowPlayingArtworkView
 - (CGSize)artworkSize;
-- (CGSize)artworkSizeForTitleViewWidth:(double)a3;
+- (CGSize)artworkSizeForTitleViewWidth:(double)width;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (NANowPlayingArtworkView)initWithFrame:(CGRect)a3;
+- (NANowPlayingArtworkView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setTrackImage:(id)a3 animated:(BOOL)a4;
+- (void)setTrackImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation NANowPlayingArtworkView
 
-- (NANowPlayingArtworkView)initWithFrame:(CGRect)a3
+- (NANowPlayingArtworkView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = NANowPlayingArtworkView;
-  v3 = [(NANowPlayingArtworkView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NANowPlayingArtworkView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,8 +52,8 @@ id __41__NANowPlayingArtworkView_initWithFrame___block_invoke(uint64_t a1)
   Width = CGRectGetWidth(v7);
   [(NANowPlayingArtworkView *)self bounds];
   Height = CGRectGetHeight(v8);
-  v5 = [(NANowPlayingArtworkView *)self trackImageView];
-  [v5 setFrame:{0.0, 0.0, Width, Height}];
+  trackImageView = [(NANowPlayingArtworkView *)self trackImageView];
+  [trackImageView setFrame:{0.0, 0.0, Width, Height}];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -63,11 +63,11 @@ id __41__NANowPlayingArtworkView_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTrackImage:(id)a3 animated:(BOOL)a4
+- (void)setTrackImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (animatedCopy)
   {
     v7 = 0.25;
   }
@@ -78,15 +78,15 @@ id __41__NANowPlayingArtworkView_initWithFrame___block_invoke(uint64_t a1)
   }
 
   v8 = MEMORY[0x1E69DD250];
-  v9 = [(NANowPlayingArtworkView *)self trackImageView];
+  trackImageView = [(NANowPlayingArtworkView *)self trackImageView];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__NANowPlayingArtworkView_setTrackImage_animated___block_invoke;
   v11[3] = &unk_1E84EA210;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v8 transitionWithView:v9 duration:5242880 options:v11 animations:0 completion:v7];
+  v12 = imageCopy;
+  v10 = imageCopy;
+  [v8 transitionWithView:trackImageView duration:5242880 options:v11 animations:0 completion:v7];
 }
 
 void __50__NANowPlayingArtworkView_setTrackImage_animated___block_invoke(uint64_t a1)
@@ -98,8 +98,8 @@ void __50__NANowPlayingArtworkView_setTrackImage_animated___block_invoke(uint64_
 
 - (CGSize)artworkSize
 {
-  v2 = [(NANowPlayingArtworkView *)self trackImageView];
-  [v2 bounds];
+  trackImageView = [(NANowPlayingArtworkView *)self trackImageView];
+  [trackImageView bounds];
   v4 = v3;
   v6 = v5;
 
@@ -110,10 +110,10 @@ void __50__NANowPlayingArtworkView_setTrackImage_animated___block_invoke(uint64_
   return result;
 }
 
-- (CGSize)artworkSizeForTitleViewWidth:(double)a3
+- (CGSize)artworkSizeForTitleViewWidth:(double)width
 {
-  result.height = a3;
-  result.width = a3;
+  result.height = width;
+  result.width = width;
   return result;
 }
 

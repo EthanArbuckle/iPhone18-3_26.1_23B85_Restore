@@ -1,24 +1,24 @@
 @interface NSBlockExpression
-- (NSBlockExpression)initWithType:(unint64_t)a3 block:(id)a4 arguments:(id)a5;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (NSBlockExpression)initWithType:(unint64_t)type block:(id)block arguments:(id)arguments;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)expressionValueWithObject:(id)object context:(id)context;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)dealloc;
 @end
 
 @implementation NSBlockExpression
 
-- (NSBlockExpression)initWithType:(unint64_t)a3 block:(id)a4 arguments:(id)a5
+- (NSBlockExpression)initWithType:(unint64_t)type block:(id)block arguments:(id)arguments
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = NSBlockExpression;
-  v7 = [(NSExpression *)&v9 initWithExpressionType:a3];
+  v7 = [(NSExpression *)&v9 initWithExpressionType:type];
   if (v7)
   {
-    v7->_block = [a4 copy];
-    v7->_arguments = [a5 copy];
+    v7->_block = [block copy];
+    v7->_arguments = [arguments copy];
   }
 
   return v7;
@@ -35,17 +35,17 @@
   [(NSBlockExpression *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NSBlockExpression alloc];
-  v5 = [(NSBlockExpression *)self expressionType];
+  expressionType = [(NSBlockExpression *)self expressionType];
   block = self->_block;
   arguments = self->_arguments;
 
-  return [(NSBlockExpression *)v4 initWithType:v5 block:block arguments:arguments];
+  return [(NSBlockExpression *)v4 initWithType:expressionType block:block arguments:arguments];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
   if (![(NSExpression *)self _allowsEvaluation])
@@ -73,7 +73,7 @@
           objc_enumerationMutation(arguments);
         }
 
-        [v8 addObject:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "expressionValueWithObject:context:", a3, a4)}];
+        [v8 addObject:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "expressionValueWithObject:context:", object, context)}];
       }
 
       v10 = [(NSArray *)arguments countByEnumeratingWithState:&v16 objects:v15 count:16];
@@ -92,10 +92,10 @@
   return v13;
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
@@ -120,7 +120,7 @@
           objc_enumerationMutation(arguments);
         }
 
-        [v5 addObject:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "_expressionWithSubstitutionVariables:", a3)}];
+        [v5 addObject:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "_expressionWithSubstitutionVariables:", variables)}];
       }
 
       v8 = [(NSArray *)arguments countByEnumeratingWithState:&v14 objects:v13 count:16];
@@ -134,22 +134,22 @@
   return v11;
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
 
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(NSBlockExpression *)self arguments];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    arguments = [(NSBlockExpression *)self arguments];
+    v8 = [arguments countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v8)
     {
       v9 = v8;
@@ -160,21 +160,21 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(arguments);
           }
 
-          [*(*(&v13 + 1) + 8 * i) acceptVisitor:a3 flags:a4];
+          [*(*(&v13 + 1) + 8 * i) acceptVisitor:visitor flags:flags];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v9 = [arguments countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v9);
     }
 
-    if ((a4 & 4) == 0)
+    if ((flags & 4) == 0)
     {
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }

@@ -1,20 +1,20 @@
 @interface _PASHistogramData
 - (_PASHistogramData)init;
-- (_PASHistogramData)initWithCoder:(id)a3;
-- (float)entropyWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4;
-- (float)lookupSmoothedWithBucketCount:(unsigned __int16)a3 distanceScale:(float)a4 weightScale:(float)a5 a:(unsigned __int16)a6 b:(unsigned __int16)a7;
-- (float)lookupUnsmoothedA:(unsigned __int16)a3 b:(unsigned __int16)a4;
+- (_PASHistogramData)initWithCoder:(id)coder;
+- (float)entropyWhereA:(unsigned __int16)a b:(unsigned __int16)b;
+- (float)lookupSmoothedWithBucketCount:(unsigned __int16)count distanceScale:(float)scale weightScale:(float)weightScale a:(unsigned __int16)a b:(unsigned __int16)b;
+- (float)lookupUnsmoothedA:(unsigned __int16)a b:(unsigned __int16)b;
 - (id).cxx_construct;
 - (id)aSet;
 - (id)bSet;
-- (int)countWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4;
-- (void)add:(float)a3 a:(unsigned __int16)a4 b:(unsigned __int16)a5;
+- (int)countWhereA:(unsigned __int16)a b:(unsigned __int16)b;
+- (void)add:(float)add a:(unsigned __int16)a b:(unsigned __int16)b;
 - (void)clear;
-- (void)decayByFactor:(float)a3;
-- (void)decayWithHalfLifeInDays:(float)a3;
-- (void)deleteWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerate:(id)a3;
+- (void)decayByFactor:(float)factor;
+- (void)decayWithHalfLifeInDays:(float)days;
+- (void)deleteWhereA:(unsigned __int16)a b:(unsigned __int16)b;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerate:(id)enumerate;
 @end
 
 @implementation _PASHistogramData
@@ -29,17 +29,17 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
-  [v8 encodeInt32:*(*ptr + 24) forKey:@"count"];
+  [coderCopy encodeInt32:*(*ptr + 24) forKey:@"count"];
   v5 = *ptr;
   if (*(*ptr + 24))
   {
     v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:**ptr length:4 * *(*ptr + 24)];
-    [v8 encodeObject:v6 forKey:@"scores"];
+    [coderCopy encodeObject:v6 forKey:@"scores"];
 
     v5 = *ptr;
   }
@@ -47,22 +47,22 @@
   if (v5[7])
   {
     v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:*(*ptr + 32) length:4 * *(*ptr + 56)];
-    [v8 encodeObject:v7 forKey:@"abs"];
+    [coderCopy encodeObject:v7 forKey:@"abs"];
   }
 
   pthread_mutex_unlock((ptr + 8));
 }
 
-- (_PASHistogramData)initWithCoder:(id)a3
+- (_PASHistogramData)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(_PASHistogramData *)self init];
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
     ptr = v6->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 1));
-    v9 = [v5 decodeInt32ForKey:@"count"];
+    v9 = [coderCopy decodeInt32ForKey:@"count"];
     if (!v9)
     {
 LABEL_15:
@@ -74,7 +74,7 @@ LABEL_15:
     v10 = v9;
     _ZN12_GLOBAL__N_110SimdVectorIDv8_ffE6resizeEm(*ptr, v9);
     _ZN12_GLOBAL__N_110SimdVectorIDv8_ijE6resizeEm((*ptr + 4), v10);
-    v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"scores"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scores"];
     if ([v11 length] == 4 * v10)
     {
       if (!v11)
@@ -85,13 +85,13 @@ LABEL_15:
 
     else
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v6 file:@"_PASHistogramData.mm" lineNumber:515 description:{@"Invalid parameter not satisfying: %@", @"data.length == count * sizeof(sp->scores[0])"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"_PASHistogramData.mm" lineNumber:515 description:{@"Invalid parameter not satisfying: %@", @"data.length == count * sizeof(sp->scores[0])"}];
 
       if (!v11)
       {
 LABEL_6:
-        v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"abs"];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"abs"];
 
         if ([v12 length] == 4 * v10)
         {
@@ -122,8 +122,8 @@ LABEL_9:
 
         else
         {
-          v19 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v19 handleFailureInMethod:a2 object:v6 file:@"_PASHistogramData.mm" lineNumber:520 description:{@"Invalid parameter not satisfying: %@", @"data.length == count * sizeof(sp->abs[0])"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:a2 object:v6 file:@"_PASHistogramData.mm" lineNumber:520 description:{@"Invalid parameter not satisfying: %@", @"data.length == count * sizeof(sp->abs[0])"}];
 
           if (!v12)
           {
@@ -197,15 +197,15 @@ LABEL_16:
   return v9;
 }
 
-- (void)decayWithHalfLifeInDays:(float)a3
+- (void)decayWithHalfLifeInDays:(float)days
 {
-  v4 = exp2(-1.0 / a3);
+  v4 = exp2(-1.0 / days);
   *&v4 = v4;
 
   [(_PASHistogramData *)self decayByFactor:v4];
 }
 
-- (void)decayByFactor:(float)a3
+- (void)decayByFactor:(float)factor
 {
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
@@ -223,8 +223,8 @@ LABEL_16:
       do
       {
         v6 = (v4 + 32 * v5);
-        v7 = vmulq_n_f32(v6[1], a3);
-        *v6 = vmulq_n_f32(*v6, a3);
+        v7 = vmulq_n_f32(v6[1], factor);
+        *v6 = vmulq_n_f32(*v6, factor);
         v6[1] = v7;
         ++v5;
         v4 = **ptr;
@@ -237,9 +237,9 @@ LABEL_16:
   }
 }
 
-- (void)deleteWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (void)deleteWhereA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  if ((a4 & a3) == 0xFFFF)
+  if ((b & a) == 0xFFFF)
   {
 
     [(_PASHistogramData *)self clear];
@@ -247,8 +247,8 @@ LABEL_16:
 
   else
   {
-    v4 = a4;
-    v5 = a3;
+    bCopy = b;
+    aCopy = a;
     ptr = self->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 8));
     v7 = *ptr;
@@ -268,8 +268,8 @@ LABEL_16:
         do
         {
           v12 = *(v11 + 4 * v9);
-          v14 = v4 == 0xFFFF || v4 == *(v11 + 4 * v9);
-          v15 = HIWORD(v12) == v5 || v5 == 0xFFFF;
+          v14 = bCopy == 0xFFFF || bCopy == *(v11 + 4 * v9);
+          v15 = HIWORD(v12) == aCopy || aCopy == 0xFFFF;
           if (!v15 || !v14)
           {
             *(v11 + 4 * v10) = v12;
@@ -289,9 +289,9 @@ LABEL_16:
   }
 }
 
-- (int)countWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (int)countWhereA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  if ((a4 & a3) == 0xFFFF)
+  if ((b & a) == 0xFFFF)
   {
     ptr = self->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 8));
@@ -300,7 +300,7 @@ LABEL_16:
     return v5;
   }
 
-  if (a3 == 0xFFFF)
+  if (a == 0xFFFF)
   {
     v12 = 0;
     v13 = &v12;
@@ -310,7 +310,7 @@ LABEL_16:
     v10[1] = 3221225472;
     v10[2] = __35___PASHistogramData_countWhereA_b___block_invoke;
     v10[3] = &unk_1E77F1C08;
-    v11 = a4;
+    bCopy = b;
     v10[4] = &v12;
     [(_PASHistogramData *)self enumerate:v10];
 LABEL_8:
@@ -319,7 +319,7 @@ LABEL_8:
     return v5;
   }
 
-  if (a4 == 0xFFFF)
+  if (b == 0xFFFF)
   {
     v12 = 0;
     v13 = &v12;
@@ -329,7 +329,7 @@ LABEL_8:
     v8[1] = 3221225472;
     v8[2] = __35___PASHistogramData_countWhereA_b___block_invoke_2;
     v8[3] = &unk_1E77F1C08;
-    v9 = a3;
+    aCopy = a;
     v8[4] = &v12;
     [(_PASHistogramData *)self enumerate:v8];
     goto LABEL_8;
@@ -339,9 +339,9 @@ LABEL_8:
   return v4 > 0.0;
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
-  v11 = a3;
+  enumerateCopy = enumerate;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v5 = *ptr;
@@ -356,7 +356,7 @@ LABEL_8:
       if (*(*v5 + 4 * v7) > 0.0)
       {
         v9 = *(*(v5 + 32) + 4 * v7);
-        (*(v11 + 2))(v11, HIWORD(v9), v9);
+        (*(enumerateCopy + 2))(enumerateCopy, HIWORD(v9), v9);
         v5 = *ptr;
       }
 
@@ -370,28 +370,28 @@ LABEL_8:
   pthread_mutex_unlock((ptr + 8));
 }
 
-- (float)entropyWhereA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (float)entropyWhereA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  v4 = a4;
-  v5 = a3;
+  bCopy = b;
+  aCopy = a;
   ptr = self->_guardedData.__ptr_;
   v10 = ptr;
   pthread_mutex_lock((ptr + 8));
-  entropy(&v10, v5, v4);
+  entropy(&v10, aCopy, bCopy);
   v8 = v7;
   pthread_mutex_unlock((ptr + 8));
   return v8;
 }
 
-- (float)lookupSmoothedWithBucketCount:(unsigned __int16)a3 distanceScale:(float)a4 weightScale:(float)a5 a:(unsigned __int16)a6 b:(unsigned __int16)a7
+- (float)lookupSmoothedWithBucketCount:(unsigned __int16)count distanceScale:(float)scale weightScale:(float)weightScale a:(unsigned __int16)a b:(unsigned __int16)b
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a3;
-  if (a7 == 0xFFFF)
+  bCopy = b;
+  aCopy = a;
+  countCopy = count;
+  if (b == 0xFFFF)
   {
-    v50 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v50 handleFailureInMethod:a2 object:self file:@"_PASHistogramData.mm" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"b != SUMALL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASHistogramData.mm" lineNumber:317 description:{@"Invalid parameter not satisfying: %@", @"b != SUMALL"}];
   }
 
   ptr = self->_guardedData.__ptr_;
@@ -409,10 +409,10 @@ LABEL_8:
   {
     v16 = 0;
     v17 = v15 >> 5;
-    v18 = vdupq_n_s32((v8 << 16) | 0xFFFFu);
-    v19 = vdupq_n_s32(v7);
-    v20 = vdupq_n_s32(v10);
-    v21 = 1.0 / a5;
+    v18 = vdupq_n_s32((aCopy << 16) | 0xFFFFu);
+    v19 = vdupq_n_s32(bCopy);
+    v20 = vdupq_n_s32(countCopy);
+    v21 = 1.0 / weightScale;
     v22 = 0uLL;
     v23.i64[0] = -1;
     v23.i64[1] = -1;
@@ -433,8 +433,8 @@ LABEL_8:
       v38 = (v13 + 32 * v16);
       v39 = vabdq_s32(vandq_s8(v35, v26), v19);
       v40 = vabdq_s32(vandq_s8(v34, v26), v19);
-      v41 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v20, v40), v40)), a4);
-      v42 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v20, v39), v39)), a4);
+      v41 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v20, v40), v40)), scale);
+      v42 = vmulq_n_f32(vcvtq_f32_s32(vminq_s32(vsubq_s32(v20, v39), v39)), scale);
       v43 = vmulq_n_f32(vmlaq_f32(_Q7, v41, v41), v21);
       v44 = vmulq_n_f32(vmlaq_f32(_Q7, v42, v42), v21);
       v45 = vrecpeq_f32(v44);
@@ -460,10 +460,10 @@ LABEL_8:
   return result;
 }
 
-- (float)lookupUnsmoothedA:(unsigned __int16)a3 b:(unsigned __int16)a4
+- (float)lookupUnsmoothedA:(unsigned __int16)a b:(unsigned __int16)b
 {
-  v4 = a4;
-  v5 = a3;
+  bCopy = b;
+  aCopy = a;
   ptr = self->_guardedData.__ptr_;
   pthread_mutex_lock((ptr + 8));
   v7 = **ptr;
@@ -472,7 +472,7 @@ LABEL_8:
   {
     v9 = v8 >> 5;
     v10 = *(*ptr + 32);
-    v11 = vdupq_n_s32(v4 | (v5 << 16));
+    v11 = vdupq_n_s32(bCopy | (aCopy << 16));
     if (v9 <= 1)
     {
       v9 = 1;
@@ -521,12 +521,12 @@ LABEL_8:
   return result;
 }
 
-- (void)add:(float)a3 a:(unsigned __int16)a4 b:(unsigned __int16)a5
+- (void)add:(float)add a:(unsigned __int16)a b:(unsigned __int16)b
 {
-  if ((LODWORD(a3) & 0x7FFFFFFFu) <= 0x7F7FFFFF)
+  if ((LODWORD(add) & 0x7FFFFFFFu) <= 0x7F7FFFFF)
   {
-    v6 = a5;
-    v7 = a4;
+    bCopy = b;
+    aCopy = a;
     ptr = self->_guardedData.__ptr_;
     pthread_mutex_lock((ptr + 8));
     v9 = *ptr;
@@ -541,7 +541,7 @@ LABEL_8:
       if (v10)
       {
         v11 = 0;
-        while (*(v9[4] + 4 * v11) != (v6 | (v7 << 16)))
+        while (*(v9[4] + 4 * v11) != (bCopy | (aCopy << 16)))
         {
           if (v10 == ++v11)
           {
@@ -549,21 +549,21 @@ LABEL_8:
           }
         }
 
-        *(*v9 + 4 * v11) = fmaxf(*(*v9 + 4 * v11) + a3, 0.0);
+        *(*v9 + 4 * v11) = fmaxf(*(*v9 + 4 * v11) + add, 0.0);
       }
 
       else
       {
 LABEL_7:
-        if (a3 >= 0.0)
+        if (add >= 0.0)
         {
           v12 = v9[3];
           _ZN12_GLOBAL__N_110SimdVectorIDv8_ffE6resizeEm(*ptr, v12 + 1);
-          *(*v9 + 4 * v12) = fmaxf(a3, 0.0);
+          *(*v9 + 4 * v12) = fmaxf(add, 0.0);
           v13 = *ptr;
           v14 = *(*ptr + 56);
           _ZN12_GLOBAL__N_110SimdVectorIDv8_ijE6resizeEm(*ptr + 32, v14 + 1);
-          *(*(v13 + 32) + 4 * v14) = v6 | (v7 << 16);
+          *(*(v13 + 32) + 4 * v14) = bCopy | (aCopy << 16);
         }
       }
 

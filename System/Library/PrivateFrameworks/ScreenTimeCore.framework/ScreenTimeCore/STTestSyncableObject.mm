@@ -1,32 +1,32 @@
 @interface STTestSyncableObject
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
 - (id)computeUniqueIdentifier;
 - (id)dictionaryRepresentation;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 @end
 
 @implementation STTestSyncableObject
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"identifier"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"identifier"])
   {
     [(STUniquedManagedObject *)self updateUniqueIdentifier];
   }
 
   v5.receiver = self;
   v5.super_class = STTestSyncableObject;
-  [(STTestSyncableObject *)&v5 didChangeValueForKey:v4];
+  [(STTestSyncableObject *)&v5 didChangeValueForKey:keyCopy];
 }
 
 - (id)computeUniqueIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [objc_opt_class() serializableClassName];
-  v5 = [(STTestSyncableObject *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@:%@", v4, v5];
+  serializableClassName = [objc_opt_class() serializableClassName];
+  identifier = [(STTestSyncableObject *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@:%@", serializableClassName, identifier];
 
   return v6;
 }
@@ -35,8 +35,8 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(STTestSyncableObject *)self subobjects];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  subobjects = [(STTestSyncableObject *)self subobjects];
+  v5 = [v3 initWithCapacity:{objc_msgSend(subobjects, "count")}];
 
   v24 = 0u;
   v25 = 0u;
@@ -59,9 +59,9 @@
 
         v10 = *(*(&v22 + 1) + 8 * i);
         v26[0] = @"identifier";
-        v11 = [v10 identifier];
+        identifier = [v10 identifier];
         v26[1] = @"active";
-        v27[0] = v11;
+        v27[0] = identifier;
         v12 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v10, "active")}];
         v27[1] = v12;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
@@ -76,30 +76,30 @@
 
   v21.receiver = self;
   v21.super_class = STTestSyncableObject;
-  v14 = [(STUniquedManagedObject *)&v21 dictionaryRepresentation];
+  dictionaryRepresentation = [(STUniquedManagedObject *)&v21 dictionaryRepresentation];
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[STTestSyncableObject enabled](self, "enabled")}];
-  [v14 setObject:v15 forKeyedSubscript:@"enabled"];
+  [dictionaryRepresentation setObject:v15 forKeyedSubscript:@"enabled"];
 
-  v16 = [(STTestSyncableObject *)self identifier];
-  [v14 setObject:v16 forKeyedSubscript:@"identifier"];
+  identifier2 = [(STTestSyncableObject *)self identifier];
+  [dictionaryRepresentation setObject:identifier2 forKeyedSubscript:@"identifier"];
 
-  [v14 setObject:v5 forKeyedSubscript:@"subobjects"];
-  v17 = [v14 copy];
+  [dictionaryRepresentation setObject:v5 forKeyedSubscript:@"subobjects"];
+  v17 = [dictionaryRepresentation copy];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"enabled"];
-  v24 = self;
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"enabled"];
+  selfCopy = self;
   -[STTestSyncableObject setEnabled:](self, "setEnabled:", [v5 BOOLValue]);
 
-  [v4 objectForKeyedSubscript:@"subobjects"];
+  [representationCopy objectForKeyedSubscript:@"subobjects"];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -108,7 +108,7 @@
   if (v6)
   {
     v7 = v6;
-    v22 = v4;
+    v22 = representationCopy;
     v8 = 0;
     v25 = *v28;
     do
@@ -125,7 +125,7 @@
         v11 = *(*(&v27 + 1) + 8 * v9);
         v12 = [v11 objectForKeyedSubscript:@"identifier"];
         v13 = [v11 objectForKeyedSubscript:@"active"];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
         v15 = +[STTestSyncableSubObject fetchRequest];
         v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"identifier", v12];
@@ -135,12 +135,12 @@
         v17 = [v15 execute:&v26];
         v8 = v26;
 
-        v18 = [v17 firstObject];
-        v19 = v18;
-        if (v18)
+        firstObject = [v17 firstObject];
+        v19 = firstObject;
+        if (firstObject)
         {
-          [v18 setActive:v14];
-          [v19 setRoot:v24];
+          [firstObject setActive:bOOLValue];
+          [v19 setRoot:selfCopy];
         }
 
         ++v9;
@@ -153,40 +153,40 @@
 
     while (v7);
 
-    v4 = v22;
+    representationCopy = v22;
   }
 
   v20 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-+ (id)fetchOrCreateWithDictionaryRepresentation:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)fetchOrCreateWithDictionaryRepresentation:(id)representation inContext:(id)context error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
-  v9 = [v8 objectForKeyedSubscript:@"identifier"];
-  v10 = [a1 fetchRequest];
+  representationCopy = representation;
+  contextCopy = context;
+  v9 = [representationCopy objectForKeyedSubscript:@"identifier"];
+  fetchRequest = [self fetchRequest];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"identifier", v9];
-  [v10 setPredicate:v11];
+  [fetchRequest setPredicate:v11];
 
-  v12 = [v10 execute:a5];
+  v12 = [fetchRequest execute:error];
   if (v12)
   {
-    v27 = v10;
+    v27 = fetchRequest;
     v28 = v9;
     v26 = v12;
-    v30 = [v12 firstObject];
-    if (!v30)
+    firstObject = [v12 firstObject];
+    if (!firstObject)
     {
-      v13 = [[STTestSyncableObject alloc] initWithContext:v31];
-      v14 = [v8 objectForKeyedSubscript:@"identifier"];
-      v30 = v13;
+      v13 = [[STTestSyncableObject alloc] initWithContext:contextCopy];
+      v14 = [representationCopy objectForKeyedSubscript:@"identifier"];
+      firstObject = v13;
       [(STTestSyncableObject *)v13 setIdentifier:v14];
     }
 
-    v29 = v8;
-    [v8 objectForKeyedSubscript:@"subobjects"];
+    v29 = representationCopy;
+    [representationCopy objectForKeyedSubscript:@"subobjects"];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -210,13 +210,13 @@
           v21 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"identifier", v19];
           [v20 setPredicate:v21];
 
-          v22 = [v20 execute:a5];
-          v23 = [v22 firstObject];
-          if (!v23)
+          v22 = [v20 execute:error];
+          firstObject2 = [v22 firstObject];
+          if (!firstObject2)
           {
-            v23 = [[STTestSyncableSubObject alloc] initWithContext:v31];
-            [(STTestSyncableSubObject *)v23 setIdentifier:v19];
-            [(STTestSyncableSubObject *)v23 setRoot:v30];
+            firstObject2 = [[STTestSyncableSubObject alloc] initWithContext:contextCopy];
+            [(STTestSyncableSubObject *)firstObject2 setIdentifier:v19];
+            [(STTestSyncableSubObject *)firstObject2 setRoot:firstObject];
           }
         }
 
@@ -227,19 +227,19 @@
     }
 
     v9 = v28;
-    v8 = v29;
+    representationCopy = v29;
     v12 = v26;
-    v10 = v27;
+    fetchRequest = v27;
   }
 
   else
   {
-    v30 = 0;
+    firstObject = 0;
   }
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v30;
+  return firstObject;
 }
 
 @end

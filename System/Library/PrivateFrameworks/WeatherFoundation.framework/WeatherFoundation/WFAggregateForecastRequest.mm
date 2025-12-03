@@ -1,20 +1,20 @@
 @interface WFAggregateForecastRequest
-- (WFAggregateForecastRequest)initWithLocation:(id)a3 completionHandler:(id)a4;
+- (WFAggregateForecastRequest)initWithLocation:(id)location completionHandler:(id)handler;
 - (void)cleanup;
 - (void)handleCancellation;
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4;
-- (void)handleResponse:(id)a3;
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier;
+- (void)handleResponse:(id)response;
 @end
 
 @implementation WFAggregateForecastRequest
 
-- (WFAggregateForecastRequest)initWithLocation:(id)a3 completionHandler:(id)a4
+- (WFAggregateForecastRequest)initWithLocation:(id)location completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = 0;
-  if (v6 && v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  selfCopy = 0;
+  if (locationCopy && handlerCopy)
   {
     v13.receiver = self;
     v13.super_class = WFAggregateForecastRequest;
@@ -22,56 +22,56 @@
     v11 = v10;
     if (v10)
     {
-      [(WFAggregateForecastRequest *)v10 setLocation:v6];
+      [(WFAggregateForecastRequest *)v10 setLocation:locationCopy];
       [(WFAggregateForecastRequest *)v11 setCompletionHandler:v8];
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(WFAggregateForecastRequest *)self completionHandler];
+  responseCopy = response;
+  completionHandler = [(WFAggregateForecastRequest *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(WFAggregateForecastRequest *)self completionHandler];
-    v7 = [v4 forecasts];
-    v8 = [v4 error];
-    (v6)[2](v6, v7, v8);
+    completionHandler2 = [(WFAggregateForecastRequest *)self completionHandler];
+    forecasts = [responseCopy forecasts];
+    error = [responseCopy error];
+    (completionHandler2)[2](completionHandler2, forecasts, error);
   }
 
   v9.receiver = self;
   v9.super_class = WFAggregateForecastRequest;
-  [(WFTask *)&v9 handleResponse:v4];
+  [(WFTask *)&v9 handleResponse:responseCopy];
 }
 
-- (void)handleError:(id)a3 forResponseIdentifier:(id)a4
+- (void)handleError:(id)error forResponseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFAggregateForecastRequest *)self completionHandler];
-  (v8)[2](v8, 0, v7);
+  identifierCopy = identifier;
+  errorCopy = error;
+  completionHandler = [(WFAggregateForecastRequest *)self completionHandler];
+  (completionHandler)[2](completionHandler, 0, errorCopy);
 
   v9.receiver = self;
   v9.super_class = WFAggregateForecastRequest;
-  [(WFTask *)&v9 handleError:v7 forResponseIdentifier:v6];
+  [(WFTask *)&v9 handleError:errorCopy forResponseIdentifier:identifierCopy];
 }
 
 - (void)handleCancellation
 {
-  v3 = [(WFAggregateForecastRequest *)self completionHandler];
+  completionHandler = [(WFAggregateForecastRequest *)self completionHandler];
 
-  if (v3)
+  if (completionHandler)
   {
-    v4 = [(WFAggregateForecastRequest *)self completionHandler];
+    completionHandler2 = [(WFAggregateForecastRequest *)self completionHandler];
     v5 = [MEMORY[0x277CCA9B8] wf_errorWithCode:13];
-    (v4)[2](v4, 0, v5);
+    (completionHandler2)[2](completionHandler2, 0, v5);
   }
 
   v6.receiver = self;

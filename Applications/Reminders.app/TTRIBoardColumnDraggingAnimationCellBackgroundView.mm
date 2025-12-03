@@ -1,6 +1,6 @@
 @interface TTRIBoardColumnDraggingAnimationCellBackgroundView
 + (Class)layerClass;
-- (_TtC9Reminders50TTRIBoardColumnDraggingAnimationCellBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC9Reminders50TTRIBoardColumnDraggingAnimationCellBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -28,12 +28,12 @@
   sub_1002FCC88();
 }
 
-- (_TtC9Reminders50TTRIBoardColumnDraggingAnimationCellBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC9Reminders50TTRIBoardColumnDraggingAnimationCellBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.isa + OBJC_IVAR____TtC9Reminders50TTRIBoardColumnDraggingAnimationCellBackgroundView_fill);
   *v9 = 0;

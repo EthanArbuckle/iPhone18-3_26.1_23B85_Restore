@@ -1,34 +1,34 @@
 @interface VGDataCoordinator
-- (BOOL)shouldUnpairVehicle:(id)a3;
+- (BOOL)shouldUnpairVehicle:(id)vehicle;
 - (NSArray)unpairedVehicles;
-- (VGDataCoordinator)initWithApplicationFinder:(id)a3 externalAccessory:(id)a4 delegate:(id)a5;
-- (id)_applicationForVehicle:(id)a3;
-- (id)_applicationRecordForVehicle:(id)a3;
-- (id)_oemAppForChargeStreamForVehicle:(id)a3;
-- (id)_vehicleStateProviderForVehicle:(id)a3;
+- (VGDataCoordinator)initWithApplicationFinder:(id)finder externalAccessory:(id)accessory delegate:(id)delegate;
+- (id)_applicationForVehicle:(id)vehicle;
+- (id)_applicationRecordForVehicle:(id)vehicle;
+- (id)_oemAppForChargeStreamForVehicle:(id)vehicle;
+- (id)_vehicleStateProviderForVehicle:(id)vehicle;
 - (id)deviceIdentifier;
-- (unint64_t)_indexOfVehicleInUnpairedVehicles:(id)a3;
-- (void)OEMAppsUpdated:(id)a3;
+- (unint64_t)_indexOfVehicleInUnpairedVehicles:(id)vehicles;
+- (void)OEMAppsUpdated:(id)updated;
 - (void)_invalidateRefreshTimer;
-- (void)_loadAllOEMVehiclesForApps:(id)a3 completion:(id)a4;
+- (void)_loadAllOEMVehiclesForApps:(id)apps completion:(id)completion;
 - (void)_loadIapVehicles;
 - (void)_refreshStateForTrackedVehicles;
 - (void)_removeUnpairedIapVehicleIfNeeded;
-- (void)_saveOnboardingInfoForVehicle:(id)a3;
+- (void)_saveOnboardingInfoForVehicle:(id)vehicle;
 - (void)_setupTimerIfNeeded;
-- (void)_startChargeStreamForVehicle:(id)a3;
-- (void)_stopChargeStreamForVehicle:(id)a3;
-- (void)_updateGarageWithVehicle:(id)a3 syncAcrossDevices:(BOOL)a4;
-- (void)_updateStateOfChargeForVehicle:(id)a3 syncAcrossDevices:(BOOL)a4 completion:(id)a5;
-- (void)accessoryUpdatedWithVehicle:(id)a3;
+- (void)_startChargeStreamForVehicle:(id)vehicle;
+- (void)_stopChargeStreamForVehicle:(id)vehicle;
+- (void)_updateGarageWithVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices;
+- (void)_updateStateOfChargeForVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices completion:(id)completion;
+- (void)accessoryUpdatedWithVehicle:(id)vehicle;
 - (void)dealloc;
 - (void)endAllContinuousUpdates;
-- (void)finishOnboardingVehicle:(id)a3;
+- (void)finishOnboardingVehicle:(id)vehicle;
 - (void)forceFetchAllVehicles;
-- (void)getLatestStateOfVehicle:(id)a3 withReply:(id)a4;
-- (void)startContinuousUpdatesForVehicle:(id)a3;
-- (void)unpairVehicle:(id)a3;
-- (void)vehicleStateUpdated:(id)a3;
+- (void)getLatestStateOfVehicle:(id)vehicle withReply:(id)reply;
+- (void)startContinuousUpdatesForVehicle:(id)vehicle;
+- (void)unpairVehicle:(id)vehicle;
+- (void)vehicleStateUpdated:(id)updated;
 @end
 
 @implementation VGDataCoordinator
@@ -108,11 +108,11 @@ uint64_t __37__VGDataCoordinator_unpairedVehicles__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)getLatestStateOfVehicle:(id)a3 withReply:(id)a4
+- (void)getLatestStateOfVehicle:(id)vehicle withReply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = WeakRetained;
   if (!WeakRetained)
@@ -130,8 +130,8 @@ uint64_t __37__VGDataCoordinator_unpairedVehicles__block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  v10 = [WeakRetained vehicles];
-  v11 = [v10 containsObject:v6];
+  vehicles = [WeakRetained vehicles];
+  v11 = [vehicles containsObject:vehicleCopy];
 
   if ((v11 & 1) == 0)
   {
@@ -154,16 +154,16 @@ uint64_t __37__VGDataCoordinator_unpairedVehicles__block_invoke(uint64_t a1)
       v22 = VGGetAssertLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [MEMORY[0x277CCACC8] callStackSymbols];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
         *location = 138412290;
-        *&location[4] = v23;
+        *&location[4] = callStackSymbols;
         _os_log_impl(&dword_270EC1000, v22, OS_LOG_TYPE_ERROR, "%@", location, 0xCu);
       }
     }
   }
 
-  v12 = [v9 vehicles];
-  v13 = [v12 containsObject:v6];
+  vehicles2 = [v9 vehicles];
+  v13 = [vehicles2 containsObject:vehicleCopy];
 
   if ((v13 & 1) == 0)
   {
@@ -181,7 +181,7 @@ uint64_t __37__VGDataCoordinator_unpairedVehicles__block_invoke(uint64_t a1)
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v15 = [v17 errorWithDomain:v18 code:-10 userInfo:v19];
 
-    v7[2](v7, v6, v15);
+    replyCopy[2](replyCopy, vehicleCopy, v15);
 LABEL_10:
 
     goto LABEL_11;
@@ -194,8 +194,8 @@ LABEL_10:
   block[2] = __55__VGDataCoordinator_getLatestStateOfVehicle_withReply___block_invoke;
   block[3] = &unk_279E26CD0;
   objc_copyWeak(&v27, location);
-  v25 = v6;
-  v26 = v7;
+  v25 = vehicleCopy;
+  v26 = replyCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v27);
@@ -357,9 +357,9 @@ void __55__VGDataCoordinator_getLatestStateOfVehicle_withReply___block_invoke_96
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)OEMAppsUpdated:(id)a3
+- (void)OEMAppsUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -367,8 +367,8 @@ void __55__VGDataCoordinator_getLatestStateOfVehicle_withReply___block_invoke_96
   block[2] = __36__VGDataCoordinator_OEMAppsUpdated___block_invoke;
   block[3] = &unk_279E26F20;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
@@ -840,9 +840,9 @@ void __36__VGDataCoordinator_OEMAppsUpdated___block_invoke_87(uint64_t a1)
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 iapIdentifier];
+        iapIdentifier = [v8 iapIdentifier];
 
-        if (v9)
+        if (iapIdentifier)
         {
           v10 = VGGetDataCoordinatorLog();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -894,10 +894,10 @@ void __54__VGDataCoordinator__removeUnpairedIapVehicleIfNeeded__block_invoke(uin
   [WeakRetained dataCoordinator:v2 didUpdateUnpairedVehicles:v3];
 }
 
-- (void)accessoryUpdatedWithVehicle:(id)a3
+- (void)accessoryUpdatedWithVehicle:(id)vehicle
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  vehicleCopy = vehicle;
   v6 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -914,8 +914,8 @@ void __54__VGDataCoordinator__removeUnpairedIapVehicleIfNeeded__block_invoke(uin
   v11[2] = __49__VGDataCoordinator_accessoryUpdatedWithVehicle___block_invoke;
   v11[3] = &unk_279E26F20;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
+  v12 = vehicleCopy;
+  v9 = vehicleCopy;
   dispatch_async(workQueue, v11);
 
   objc_destroyWeak(&v13);
@@ -1083,9 +1083,9 @@ LABEL_35:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)vehicleStateUpdated:(id)a3
+- (void)vehicleStateUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1093,8 +1093,8 @@ LABEL_35:
   block[2] = __41__VGDataCoordinator_vehicleStateUpdated___block_invoke;
   block[3] = &unk_279E26F20;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
@@ -1260,64 +1260,64 @@ uint64_t __41__VGDataCoordinator_vehicleStateUpdated___block_invoke_85(uint64_t 
   return v8;
 }
 
-- (void)_stopChargeStreamForVehicle:(id)a3
+- (void)_stopChargeStreamForVehicle:(id)vehicle
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VGDataCoordinator *)self _oemAppForChargeStreamForVehicle:v4];
+  vehicleCopy = vehicle;
+  v5 = [(VGDataCoordinator *)self _oemAppForChargeStreamForVehicle:vehicleCopy];
   if (v5)
   {
     v6 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = vehicleCopy;
       _os_log_impl(&dword_270EC1000, v6, OS_LOG_TYPE_INFO, "Will stop charge stream for vehicle: %@.", &v8, 0xCu);
     }
 
-    [v5 stopSendingChargeUpdatesForVehicle:v4];
+    [v5 stopSendingChargeUpdatesForVehicle:vehicleCopy];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startChargeStreamForVehicle:(id)a3
+- (void)_startChargeStreamForVehicle:(id)vehicle
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VGDataCoordinator *)self _oemAppForChargeStreamForVehicle:v4];
+  vehicleCopy = vehicle;
+  v5 = [(VGDataCoordinator *)self _oemAppForChargeStreamForVehicle:vehicleCopy];
   if (v5)
   {
     v6 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = vehicleCopy;
       _os_log_impl(&dword_270EC1000, v6, OS_LOG_TYPE_INFO, "Will start charge stream for vehicle: %@.", &v8, 0xCu);
     }
 
     [v5 setChargeStreamingDelegate:self];
-    [v5 startSendingChargeUpdatesForVehicle:v4];
+    [v5 startSendingChargeUpdatesForVehicle:vehicleCopy];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_oemAppForChargeStreamForVehicle:(id)a3
+- (id)_oemAppForChargeStreamForVehicle:(id)vehicle
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 siriIntentsIdentifier];
+  vehicleCopy = vehicle;
+  siriIntentsIdentifier = [vehicleCopy siriIntentsIdentifier];
 
-  if (v5)
+  if (siriIntentsIdentifier)
   {
     if (GEOConfigGetBOOL())
     {
-      v6 = [(VGDataCoordinator *)self _applicationForVehicle:v4];
+      v6 = [(VGDataCoordinator *)self _applicationForVehicle:vehicleCopy];
       if (v6)
       {
         v7 = v6;
-        v5 = v7;
+        siriIntentsIdentifier = v7;
 LABEL_11:
 
         goto LABEL_12;
@@ -1327,7 +1327,7 @@ LABEL_11:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = vehicleCopy;
         _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_ERROR, "Couldn't modify charge stream for vehicle: %@. Underlying app was not found.", &v11, 0xCu);
       }
 
@@ -1344,7 +1344,7 @@ LABEL_11:
       }
     }
 
-    v5 = 0;
+    siriIntentsIdentifier = 0;
     goto LABEL_11;
   }
 
@@ -1352,21 +1352,21 @@ LABEL_12:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return siriIntentsIdentifier;
 }
 
-- (void)_loadAllOEMVehiclesForApps:(id)a3 completion:(id)a4
+- (void)_loadAllOEMVehiclesForApps:(id)apps completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  appsCopy = apps;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   objc_initWeak(&location, self);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v6;
+  obj = appsCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v36 count:16];
   if (v8)
   {
@@ -1384,9 +1384,9 @@ LABEL_12:
         v12 = VGGetDataCoordinatorLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [v11 identifier];
+          identifier = [v11 identifier];
           *buf = 138412290;
-          v35 = v13;
+          v35 = identifier;
           _os_log_impl(&dword_270EC1000, v12, OS_LOG_TYPE_INFO, "Requesting list of vehicles for %@", buf, 0xCu);
         }
 
@@ -1425,8 +1425,8 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __59__VGDataCoordinator__loadAllOEMVehiclesForApps_completion___block_invoke_2;
   block[3] = &unk_279E26840;
-  v24 = v21;
-  v19 = v21;
+  v24 = completionCopy;
+  v19 = completionCopy;
   dispatch_group_notify(v7, workQueue, block);
 
   objc_destroyWeak(&location);
@@ -1622,10 +1622,10 @@ BOOL __41__VGDataCoordinator__unpairedOEMVehicles__block_invoke(uint64_t a1, voi
   return v4;
 }
 
-- (id)_applicationForVehicle:(id)a3
+- (id)_applicationForVehicle:(id)vehicle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1645,9 +1645,9 @@ BOOL __41__VGDataCoordinator__unpairedOEMVehicles__block_invoke(uint64_t a1, voi
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v4 pairedAppIdentifier];
-        v12 = [v10 isEqualToString:v11];
+        identifier = [v9 identifier];
+        pairedAppIdentifier = [vehicleCopy pairedAppIdentifier];
+        v12 = [identifier isEqualToString:pairedAppIdentifier];
 
         if (v12)
         {
@@ -1928,11 +1928,11 @@ void __44__VGDataCoordinator_endAllContinuousUpdates__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startContinuousUpdatesForVehicle:(id)a3
+- (void)startContinuousUpdatesForVehicle:(id)vehicle
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  vehicleCopy = vehicle;
+  if (vehicleCopy)
   {
     objc_initWeak(location, self);
     workQueue = self->_workQueue;
@@ -1941,7 +1941,7 @@ void __44__VGDataCoordinator_endAllContinuousUpdates__block_invoke(uint64_t a1)
     v8[2] = __54__VGDataCoordinator_startContinuousUpdatesForVehicle___block_invoke;
     v8[3] = &unk_279E26F20;
     objc_copyWeak(&v10, location);
-    v9 = v4;
+    v9 = vehicleCopy;
     dispatch_async(workQueue, v8);
 
     objc_destroyWeak(&v10);
@@ -1998,11 +1998,11 @@ void __54__VGDataCoordinator_startContinuousUpdatesForVehicle___block_invoke(uin
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unpairVehicle:(id)a3
+- (void)unpairVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 iapIdentifier];
-  if (v5 && (v6 = v5, [v4 pairedAppIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  vehicleCopy = vehicle;
+  iapIdentifier = [vehicleCopy iapIdentifier];
+  if (iapIdentifier && (v6 = iapIdentifier, [vehicleCopy pairedAppIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v13 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -2016,8 +2016,8 @@ void __54__VGDataCoordinator_startContinuousUpdatesForVehicle___block_invoke(uin
 
   else
   {
-    v8 = [v4 siriIntentsIdentifier];
-    if (v8 && (v9 = v8, [v4 pairedAppIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+    siriIntentsIdentifier = [vehicleCopy siriIntentsIdentifier];
+    if (siriIntentsIdentifier && (v9 = siriIntentsIdentifier, [vehicleCopy pairedAppIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
     {
       objc_initWeak(location, self);
       workQueue = self->_workQueue;
@@ -2026,7 +2026,7 @@ void __54__VGDataCoordinator_startContinuousUpdatesForVehicle___block_invoke(uin
       v14[2] = __35__VGDataCoordinator_unpairVehicle___block_invoke;
       v14[3] = &unk_279E26F20;
       objc_copyWeak(&v16, location);
-      v15 = v4;
+      v15 = vehicleCopy;
       dispatch_async(workQueue, v14);
 
       objc_destroyWeak(&v16);
@@ -2202,23 +2202,23 @@ uint64_t __35__VGDataCoordinator_unpairVehicle___block_invoke_72(uint64_t a1, vo
   return v10;
 }
 
-- (void)_saveOnboardingInfoForVehicle:(id)a3
+- (void)_saveOnboardingInfoForVehicle:(id)vehicle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 pairedAppIdentifier];
+  vehicleCopy = vehicle;
+  pairedAppIdentifier = [vehicleCopy pairedAppIdentifier];
 
-  if (!v5)
+  if (!pairedAppIdentifier)
   {
-    v10 = [v4 headUnitIdentifier];
-    if ([v10 length])
+    headUnitIdentifier = [vehicleCopy headUnitIdentifier];
+    if ([headUnitIdentifier length])
     {
     }
 
     else
     {
-      v12 = [v4 headUnitBluetoothIdentifier];
-      v13 = [v12 length];
+      headUnitBluetoothIdentifier = [vehicleCopy headUnitBluetoothIdentifier];
+      v13 = [headUnitBluetoothIdentifier length];
 
       if (!v13)
       {
@@ -2229,7 +2229,7 @@ uint64_t __35__VGDataCoordinator_unpairVehicle___block_invoke_72(uint64_t a1, vo
         }
 
         v18 = 138412290;
-        v19 = v4;
+        v19 = vehicleCopy;
         v14 = "No application associated with vehicle: %@";
         v15 = v7;
         v16 = OS_LOG_TYPE_ERROR;
@@ -2244,7 +2244,7 @@ uint64_t __35__VGDataCoordinator_unpairVehicle___block_invoke_72(uint64_t a1, vo
     }
 
     v18 = 138412290;
-    v19 = v4;
+    v19 = vehicleCopy;
     v14 = "No matching application for vehicle: %@";
     v15 = v7;
     v16 = OS_LOG_TYPE_INFO;
@@ -2253,15 +2253,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [(VGDataCoordinator *)self _applicationRecordForVehicle:v4];
+  v6 = [(VGDataCoordinator *)self _applicationRecordForVehicle:vehicleCopy];
   if (v6)
   {
     v7 = v6;
-    v8 = [(VGDataCoordinator *)self deviceIdentifier];
-    [v4 setPairedAppInstallDeviceIdentifier:v8];
+    deviceIdentifier = [(VGDataCoordinator *)self deviceIdentifier];
+    [vehicleCopy setPairedAppInstallDeviceIdentifier:deviceIdentifier];
 
-    v9 = [v7 installSessionIdentifier];
-    [v4 setPairedAppInstallSessionIdentifier:v9];
+    installSessionIdentifier = [v7 installSessionIdentifier];
+    [vehicleCopy setPairedAppInstallSessionIdentifier:installSessionIdentifier];
   }
 
   else
@@ -2270,7 +2270,7 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = vehicleCopy;
       _os_log_impl(&dword_270EC1000, v11, OS_LOG_TYPE_ERROR, "Ignoring, OEM Application not installed for vehicle: %@", &v18, 0xCu);
     }
 
@@ -2282,16 +2282,16 @@ LABEL_13:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_applicationRecordForVehicle:(id)a3
+- (id)_applicationRecordForVehicle:(id)vehicle
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = [v3 alloc];
-  v6 = [v4 pairedAppIdentifier];
+  pairedAppIdentifier = [vehicleCopy pairedAppIdentifier];
 
   v12 = 0;
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v12];
+  v7 = [v5 initWithBundleIdentifier:pairedAppIdentifier allowPlaceholder:0 error:&v12];
   v8 = v12;
 
   if (!v7)
@@ -2310,13 +2310,13 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)shouldUnpairVehicle:(id)a3
+- (BOOL)shouldUnpairVehicle:(id)vehicle
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 pairedAppIdentifier];
+  vehicleCopy = vehicle;
+  pairedAppIdentifier = [vehicleCopy pairedAppIdentifier];
 
-  if (!v5)
+  if (!pairedAppIdentifier)
   {
     v10 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -2328,21 +2328,21 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v6 = [(VGDataCoordinator *)self deviceIdentifier];
-  v7 = [v4 pairedAppInstallDeviceIdentifier];
-  v8 = [v6 isEqual:v7];
+  deviceIdentifier = [(VGDataCoordinator *)self deviceIdentifier];
+  pairedAppInstallDeviceIdentifier = [vehicleCopy pairedAppInstallDeviceIdentifier];
+  v8 = [deviceIdentifier isEqual:pairedAppInstallDeviceIdentifier];
 
   if ((v8 & 1) == 0)
   {
     v10 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v20 = [v4 pairedAppInstallDeviceIdentifier];
-      v21 = [(VGDataCoordinator *)self deviceIdentifier];
+      pairedAppInstallDeviceIdentifier2 = [vehicleCopy pairedAppInstallDeviceIdentifier];
+      deviceIdentifier2 = [(VGDataCoordinator *)self deviceIdentifier];
       v24 = 138412546;
-      v25 = v20;
+      v25 = pairedAppInstallDeviceIdentifier2;
       v26 = 2112;
-      v27 = v21;
+      v27 = deviceIdentifier2;
       _os_log_impl(&dword_270EC1000, v10, OS_LOG_TYPE_INFO, "shouldUnpairVehicle: this is not the primary device. vehicle.deviceId: %@, self.deviceId: %@ -> NO", &v24, 0x16u);
     }
 
@@ -2351,20 +2351,20 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v9 = [(VGDataCoordinator *)self _applicationRecordForVehicle:v4];
+  v9 = [(VGDataCoordinator *)self _applicationRecordForVehicle:vehicleCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 installSessionIdentifier];
-    v12 = [v4 pairedAppInstallSessionIdentifier];
-    v13 = [v11 isEqual:v12];
+    installSessionIdentifier = [v9 installSessionIdentifier];
+    pairedAppInstallSessionIdentifier = [vehicleCopy pairedAppInstallSessionIdentifier];
+    v13 = [installSessionIdentifier isEqual:pairedAppInstallSessionIdentifier];
     v14 = v13 ^ 1;
 
     v15 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v4 pairedAppInstallSessionIdentifier];
-      v17 = [v10 installSessionIdentifier];
+      pairedAppInstallSessionIdentifier2 = [vehicleCopy pairedAppInstallSessionIdentifier];
+      installSessionIdentifier2 = [v10 installSessionIdentifier];
       v18 = @"YES";
       if (v13)
       {
@@ -2373,9 +2373,9 @@ LABEL_12:
 
       v19 = v18;
       v24 = 138412802;
-      v25 = v16;
+      v25 = pairedAppInstallSessionIdentifier2;
       v26 = 2112;
-      v27 = v17;
+      v27 = installSessionIdentifier2;
       v28 = 2112;
       v29 = v19;
       _os_log_impl(&dword_270EC1000, v15, OS_LOG_TYPE_INFO, "shouldUnpairVehicle: this is a primary device, the OEM app is installed, vehicle.installId: %@, oemApp.installId: %@ -> %@", &v24, 0x20u);
@@ -2398,9 +2398,9 @@ LABEL_16:
   return v14;
 }
 
-- (void)finishOnboardingVehicle:(id)a3
+- (void)finishOnboardingVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -2408,9 +2408,9 @@ LABEL_16:
   v7[2] = __45__VGDataCoordinator_finishOnboardingVehicle___block_invoke;
   v7[3] = &unk_279E26D98;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = vehicleCopy;
+  selfCopy = self;
+  v6 = vehicleCopy;
   dispatch_sync(workQueue, v7);
 
   objc_destroyWeak(&v10);
@@ -2573,23 +2573,23 @@ void __45__VGDataCoordinator_finishOnboardingVehicle___block_invoke_70(uint64_t 
   [WeakRetained dataCoordinator:v2 didUpdateUnpairedVehicles:v3];
 }
 
-- (id)_vehicleStateProviderForVehicle:(id)a3
+- (id)_vehicleStateProviderForVehicle:(id)vehicle
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = VGGetDataCoordinatorLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [vehicleCopy identifier];
     accessory = self->_accessory;
     v24 = 138412546;
-    v25 = v6;
+    v25 = identifier;
     v26 = 2112;
     v27 = accessory;
     _os_log_impl(&dword_270EC1000, v5, OS_LOG_TYPE_DEFAULT, "Querying vehicle state provider for vehicle: %@ with accessory: %@", &v24, 0x16u);
   }
 
-  v8 = [(VGExternalAccessory *)self->_accessory isConnectedToVehicle:v4];
+  v8 = [(VGExternalAccessory *)self->_accessory isConnectedToVehicle:vehicleCopy];
   v9 = VGGetDataCoordinatorLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -2605,7 +2605,7 @@ void __45__VGDataCoordinator_finishOnboardingVehicle___block_invoke_70(uint64_t 
 
   else
   {
-    v10 = [(VGDataCoordinator *)self _applicationForVehicle:v4];
+    v10 = [(VGDataCoordinator *)self _applicationForVehicle:vehicleCopy];
   }
 
   v11 = v10;
@@ -2641,9 +2641,9 @@ void __45__VGDataCoordinator_finishOnboardingVehicle___block_invoke_70(uint64_t 
         v22 = VGGetAssertLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           v24 = 138412290;
-          v25 = v23;
+          v25 = callStackSymbols;
           _os_log_impl(&dword_270EC1000, v22, OS_LOG_TYPE_ERROR, "%@", &v24, 0xCu);
 
           v13 = &selRef_virtualGarageForceFetchAllVehicles;
@@ -2661,9 +2661,9 @@ void __45__VGDataCoordinator_finishOnboardingVehicle___block_invoke_70(uint64_t 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
-      v16 = NSStringFromClass(v18);
+      identifier2 = NSStringFromClass(v18);
       v24 = 138412290;
-      v25 = v16;
+      v25 = identifier2;
       v17 = "vehicleStateProvider: %@ does not conform to VGVehicleStateProviding";
       goto LABEL_18;
     }
@@ -2674,9 +2674,9 @@ void __45__VGDataCoordinator_finishOnboardingVehicle___block_invoke_70(uint64_t 
     v15 = VGGetDataCoordinatorLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v4 identifier];
+      identifier2 = [vehicleCopy identifier];
       v24 = 138412290;
-      v25 = v16;
+      v25 = identifier2;
       v17 = "vehicleStateProvider: failed to get vehicle state provider for vehicle: %@";
 LABEL_18:
       _os_log_impl(&dword_270EC1000, v15, OS_LOG_TYPE_ERROR, v17, &v24, 0xCu);
@@ -2691,37 +2691,37 @@ LABEL_20:
   return v14;
 }
 
-- (unint64_t)_indexOfVehicleInUnpairedVehicles:(id)a3
+- (unint64_t)_indexOfVehicleInUnpairedVehicles:(id)vehicles
 {
-  v4 = a3;
+  vehiclesCopy = vehicles;
   unpairedVehicles = self->_unpairedVehicles;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__VGDataCoordinator__indexOfVehicleInUnpairedVehicles___block_invoke;
   v9[3] = &unk_279E26A38;
-  v10 = v4;
-  v6 = v4;
+  v10 = vehiclesCopy;
+  v6 = vehiclesCopy;
   v7 = [(NSMutableArray *)unpairedVehicles indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (void)_updateStateOfChargeForVehicle:(id)a3 syncAcrossDevices:(BOOL)a4 completion:(id)a5
+- (void)_updateStateOfChargeForVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5)
+  vehicleCopy = vehicle;
+  if (completion)
   {
-    v9 = a5;
+    completionCopy = completion;
   }
 
   else
   {
-    v9 = &__block_literal_global_17;
+    completionCopy = &__block_literal_global_17;
   }
 
-  v10 = MEMORY[0x2743B8310](v9);
-  v11 = [(VGDataCoordinator *)self _vehicleStateProviderForVehicle:v8];
+  v10 = MEMORY[0x2743B8310](completionCopy);
+  v11 = [(VGDataCoordinator *)self _vehicleStateProviderForVehicle:vehicleCopy];
   v12 = VGGetDataCoordinatorLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -2730,7 +2730,7 @@ LABEL_20:
     *buf = 138412546;
     v24 = v14;
     v25 = 2112;
-    v26 = v8;
+    v26 = vehicleCopy;
     _os_log_impl(&dword_270EC1000, v12, OS_LOG_TYPE_INFO, "Will update SoC using %@ for vehicle: %@.", buf, 0x16u);
   }
 
@@ -2742,10 +2742,10 @@ LABEL_20:
     v17[2] = __81__VGDataCoordinator__updateStateOfChargeForVehicle_syncAcrossDevices_completion___block_invoke_18;
     v17[3] = &unk_279E267A0;
     objc_copyWeak(&v21, buf);
-    v18 = v8;
+    v18 = vehicleCopy;
     v20 = v10;
     v19 = v11;
-    v22 = a4;
+    devicesCopy = devices;
     [v19 getStateOfChargeForVehicle:v18 completion:v17];
 
     objc_destroyWeak(&v21);
@@ -2758,7 +2758,7 @@ LABEL_20:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v8;
+      v24 = vehicleCopy;
       _os_log_impl(&dword_270EC1000, v15, OS_LOG_TYPE_INFO, "Couldn't update SoC for vehicle: %@, because there was no source.", buf, 0xCu);
     }
 
@@ -2871,10 +2871,10 @@ void __81__VGDataCoordinator__updateStateOfChargeForVehicle_syncAcrossDevices_co
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateGarageWithVehicle:(id)a3 syncAcrossDevices:(BOOL)a4
+- (void)_updateGarageWithVehicle:(id)vehicle syncAcrossDevices:(BOOL)devices
 {
   v99 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  vehicleCopy = vehicle;
   v8 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2884,7 +2884,7 @@ void __81__VGDataCoordinator__updateStateOfChargeForVehicle_syncAcrossDevices_co
     _os_log_impl(&dword_270EC1000, v8, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  if (v7)
+  if (vehicleCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = WeakRetained;
@@ -2900,13 +2900,13 @@ void __81__VGDataCoordinator__updateStateOfChargeForVehicle_syncAcrossDevices_co
         _os_log_impl(&dword_270EC1000, v17, OS_LOG_TYPE_ERROR, "strongDelegate went away in %s line %d", buf, 0x12u);
       }
 
-      v14 = v7;
+      v14 = vehicleCopy;
       goto LABEL_29;
     }
 
-    v86 = v7;
-    v12 = [WeakRetained vehicles];
-    v13 = [VGVehicleDeduper actionForAddingNewVehicle:&v86 withExistingGarageVehicles:v12 andUnpairedVehicles:self->_unpairedVehicles];
+    v86 = vehicleCopy;
+    vehicles = [WeakRetained vehicles];
+    v13 = [VGVehicleDeduper actionForAddingNewVehicle:&v86 withExistingGarageVehicles:vehicles andUnpairedVehicles:self->_unpairedVehicles];
     v14 = v86;
 
     if (v13 <= 1)
@@ -2939,10 +2939,10 @@ void __81__VGDataCoordinator__updateStateOfChargeForVehicle_syncAcrossDevices_co
         block[2] = __64__VGDataCoordinator__updateGarageWithVehicle_syncAcrossDevices___block_invoke;
         block[3] = &unk_279E26728;
         v82 = v11;
-        v83 = self;
+        selfCopy = self;
         v14 = v14;
         v84 = v14;
-        v85 = a4;
+        devicesCopy = devices;
         dispatch_async(delegateQueue, block);
 
         v17 = v82;
@@ -2974,7 +2974,7 @@ LABEL_30:
         v73[2] = __64__VGDataCoordinator__updateGarageWithVehicle_syncAcrossDevices___block_invoke_15;
         v73[3] = &unk_279E26750;
         v74 = v11;
-        v75 = self;
+        selfCopy2 = self;
         v76 = v26;
         v17 = v26;
         dispatch_async(v27, v73);
@@ -2983,7 +2983,7 @@ LABEL_30:
         goto LABEL_28;
       }
 
-      v47 = self;
+      selfCopy3 = self;
       v48 = VGGetAssertLog();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
@@ -3003,9 +3003,9 @@ LABEL_30:
         v49 = VGGetAssertLog();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
-          v50 = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           *buf = 138412290;
-          v92 = v50;
+          v92 = callStackSymbols;
           _os_log_impl(&dword_270EC1000, v49, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -3016,7 +3016,7 @@ LABEL_30:
         goto LABEL_29;
       }
 
-      v70 = v47->_unpairedVehicles;
+      v70 = selfCopy3->_unpairedVehicles;
       if (v70)
       {
         if ([(NSMutableArray *)v70 count])
@@ -3123,7 +3123,7 @@ LABEL_30:
         v77[2] = __64__VGDataCoordinator__updateGarageWithVehicle_syncAcrossDevices___block_invoke_13;
         v77[3] = &unk_279E26750;
         v78 = v11;
-        v79 = self;
+        selfCopy4 = self;
         v80 = v22;
         v17 = v22;
         dispatch_async(v23, v77);
@@ -3135,7 +3135,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v29 = self;
+      selfCopy5 = self;
       v30 = VGGetAssertLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -3155,9 +3155,9 @@ LABEL_29:
         v31 = VGGetAssertLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
           *buf = 138412290;
-          v92 = v32;
+          v92 = callStackSymbols2;
           _os_log_impl(&dword_270EC1000, v31, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -3168,7 +3168,7 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      v69 = v29->_unpairedVehicles;
+      v69 = selfCopy5->_unpairedVehicles;
       if (v69)
       {
         if ([(NSMutableArray *)v69 count])
@@ -3327,11 +3327,11 @@ void __42__VGDataCoordinator_forceFetchAllVehicles__block_invoke_10()
   deviceIdentifier = self->_deviceIdentifier;
   if (!deviceIdentifier)
   {
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v5 = [v4 deviceIdentifierForVendor];
-    v6 = [v5 UUIDString];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    deviceIdentifierForVendor = [defaultWorkspace deviceIdentifierForVendor];
+    uUIDString = [deviceIdentifierForVendor UUIDString];
 
-    if (!v6)
+    if (!uUIDString)
     {
       v11 = VGGetAssertLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3352,9 +3352,9 @@ void __42__VGDataCoordinator_forceFetchAllVehicles__block_invoke_10()
         v12 = VGGetAssertLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v13 = [MEMORY[0x277CCACC8] callStackSymbols];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
           v14 = 138412290;
-          v15 = v13;
+          v15 = callStackSymbols;
           _os_log_impl(&dword_270EC1000, v12, OS_LOG_TYPE_ERROR, "%@", &v14, 0xCu);
         }
       }
@@ -3364,12 +3364,12 @@ void __42__VGDataCoordinator_forceFetchAllVehicles__block_invoke_10()
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = uUIDString;
       _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_DEFAULT, "loaded device identifier as: %@", &v14, 0xCu);
     }
 
     v8 = self->_deviceIdentifier;
-    self->_deviceIdentifier = v6;
+    self->_deviceIdentifier = uUIDString;
 
     deviceIdentifier = self->_deviceIdentifier;
   }
@@ -3387,11 +3387,11 @@ void __42__VGDataCoordinator_forceFetchAllVehicles__block_invoke_10()
   [(VGDataCoordinator *)&v3 dealloc];
 }
 
-- (VGDataCoordinator)initWithApplicationFinder:(id)a3 externalAccessory:(id)a4 delegate:(id)a5
+- (VGDataCoordinator)initWithApplicationFinder:(id)finder externalAccessory:(id)accessory delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  finderCopy = finder;
+  accessoryCopy = accessory;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = VGDataCoordinator;
   v12 = [(VGDataCoordinator *)&v24 init];
@@ -3407,19 +3407,19 @@ void __42__VGDataCoordinator_forceFetchAllVehicles__block_invoke_10()
     delegateQueue = v12->_delegateQueue;
     v12->_delegateQueue = v17;
 
-    objc_storeWeak(&v12->_delegate, v11);
-    v19 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    array = [MEMORY[0x277CBEB18] array];
     unpairedVehicles = v12->_unpairedVehicles;
-    v12->_unpairedVehicles = v19;
+    v12->_unpairedVehicles = array;
 
     v21 = [MEMORY[0x277CBEB58] set];
     observedVehicles = v12->_observedVehicles;
     v12->_observedVehicles = v21;
 
-    objc_storeStrong(&v12->_applicationFinder, a3);
+    objc_storeStrong(&v12->_applicationFinder, finder);
     [(VGOEMApplicationFinding *)v12->_applicationFinder setDelegate:v12];
     [(VGOEMApplicationFinding *)v12->_applicationFinder findOEMApplications];
-    objc_storeStrong(&v12->_accessory, a4);
+    objc_storeStrong(&v12->_accessory, accessory);
     [(VGExternalAccessory *)v12->_accessory setAccessoryUpdateDelegate:v12];
     [(VGDataCoordinator *)v12 _loadIapVehicles];
   }

@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite
-- (BOOL)isEqual:(id)a3;
-- (OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite)rewriteWithOrgApacheLuceneSearchQueryArray:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite)rewriteWithOrgApacheLuceneSearchQueryArray:(id)array;
 @end
 
 @implementation OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite
 
-- (OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite)rewriteWithOrgApacheLuceneSearchQueryArray:(id)a3
+- (OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite)rewriteWithOrgApacheLuceneSearchQueryArray:(id)array
 {
-  v4 = JavaUtilArrays_asListWithNSObjectArray_(a3);
+  v4 = JavaUtilArrays_asListWithNSObjectArray_(array);
   initWithJavaUtilCollection_withFloat = new_OrgApacheLuceneSearchDisjunctionMaxQuery_initWithJavaUtilCollection_withFloat_(v4, self->tieBreakerMultiplier_);
 
   return initWithJavaUtilCollection_withFloat;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  v5 = [(OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneSearchBlendedTermQuery_DisjunctionMaxRewrite *)self getClass];
+  if (getClass != [equal getClass])
   {
     return 0;
   }
@@ -32,7 +32,7 @@
     JreThrowClassCastException();
   }
 
-  return self->tieBreakerMultiplier_ == *(a3 + 2);
+  return self->tieBreakerMultiplier_ == *(equal + 2);
 }
 
 @end

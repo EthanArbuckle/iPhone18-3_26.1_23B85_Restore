@@ -2,16 +2,16 @@
 - (BOOL)isEnabled;
 - (BOOL)isHighlighted;
 - (CGPoint)contentOffset;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation PaddedShapeButton
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7E40440(&selRef_isEnabled);
 
   return v3 & 1;
@@ -19,7 +19,7 @@
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7E40440(&selRef_isHighlighted);
 
   return v3 & 1;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1D7FBCF38(width, height);
   v8 = v7;
 
@@ -48,16 +48,16 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_1D7FBD068(a3);
+  selfCopy = self;
+  sub_1D7FBD068(highlighted);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1D7FBD244(a3);
+  selfCopy = self;
+  sub_1D7FBD244(enabled);
 }
 
 @end

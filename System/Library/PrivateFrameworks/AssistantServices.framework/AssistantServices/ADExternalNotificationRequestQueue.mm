@@ -1,20 +1,20 @@
 @interface ADExternalNotificationRequestQueue
 - (ADExternalNotificationRequestQueue)init;
-- (BOOL)_isAnnounceNotificationRequest:(id)a3 equalToRequest:(id)a4;
-- (BOOL)removeAnnouncementRequest:(id)a3;
-- (id)_identifierForNotificationRequest:(id)a3;
+- (BOOL)_isAnnounceNotificationRequest:(id)request equalToRequest:(id)toRequest;
+- (BOOL)removeAnnouncementRequest:(id)request;
+- (id)_identifierForNotificationRequest:(id)request;
 - (id)_lastRequestIdentifierInQueue;
 - (id)nextAnnouncementRequest;
-- (id)notificationRequestForNotificationIdentifierInAnnouncementQueue:(id)a3;
+- (id)notificationRequestForNotificationIdentifierInAnnouncementQueue:(id)queue;
 - (int64_t)_lastRequestAnnouncementTypeInQueue;
 - (unint64_t)_numberOfNotificationRequests;
 - (unint64_t)_numberOfThreads;
 - (void)clearRequestQueue;
-- (void)completeCurrentRequestWithSuccess:(BOOL)a3 forReason:(int64_t)a4 shouldEmitInstrumentationEvent:(BOOL)a5;
-- (void)deliverSummary:(id)a3 forNotificationWithIdentifier:(id)a4 completion:(id)a5;
-- (void)enqueueAnnouncementRequest:(id)a3;
-- (void)fetchUnreadNotificationsFromThreadAfterNotificationWithID:(id)a3 completion:(id)a4;
-- (void)markNotificationAsReadWithIdentifer:(id)a3;
+- (void)completeCurrentRequestWithSuccess:(BOOL)success forReason:(int64_t)reason shouldEmitInstrumentationEvent:(BOOL)event;
+- (void)deliverSummary:(id)summary forNotificationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)enqueueAnnouncementRequest:(id)request;
+- (void)fetchUnreadNotificationsFromThreadAfterNotificationWithID:(id)d completion:(id)completion;
+- (void)markNotificationAsReadWithIdentifer:(id)identifer;
 @end
 
 @implementation ADExternalNotificationRequestQueue
@@ -25,8 +25,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_queuedRequestMap objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_queuedRequestMap objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -38,13 +38,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -60,24 +60,24 @@
 
 - (unint64_t)_numberOfThreads
 {
-  v2 = [(NSMutableDictionary *)self->_queuedRequestMap allKeys];
-  v3 = [v2 count];
+  allKeys = [(NSMutableDictionary *)self->_queuedRequestMap allKeys];
+  v3 = [allKeys count];
 
   return v3;
 }
 
-- (void)markNotificationAsReadWithIdentifer:(id)a3
+- (void)markNotificationAsReadWithIdentifer:(id)identifer
 {
-  v4 = a3;
-  v5 = [(AFQueue *)self->_queuedNotificationRequestIdentifiers frontObject];
-  if (v5)
+  identiferCopy = identifer;
+  frontObject = [(AFQueue *)self->_queuedNotificationRequestIdentifiers frontObject];
+  if (frontObject)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v5;
-    v6 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v5];
+    v19 = frontObject;
+    v6 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:frontObject];
     v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v7)
     {
@@ -93,11 +93,11 @@
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 notification];
-          v13 = [v12 request];
+          notification = [v11 notification];
+          request = [notification request];
 
-          v14 = [v13 identifier];
-          v15 = [v14 isEqualToString:v4];
+          identifier = [request identifier];
+          v15 = [identifier isEqualToString:identiferCopy];
 
           if (v15)
           {
@@ -107,13 +107,13 @@
               *buf = 136315394;
               v25 = "[ADExternalNotificationRequestQueue markNotificationAsReadWithIdentifer:]";
               v26 = 2112;
-              v27 = v4;
+              v27 = identiferCopy;
               _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s found request with identifier: %@ in request queue", buf, 0x16u);
             }
 
-            v17 = [v11 completion];
+            completion = [v11 completion];
 
-            if (v17)
+            if (completion)
             {
               [v11 completeRequestWithSuccess:1 forReason:1 shouldEmitInstrumentationEvent:1];
             }
@@ -126,7 +126,7 @@
       while (v8);
     }
 
-    v5 = v19;
+    frontObject = v19;
   }
 
   else
@@ -141,22 +141,22 @@
   }
 }
 
-- (void)fetchUnreadNotificationsFromThreadAfterNotificationWithID:(id)a3 completion:(id)a4
+- (void)fetchUnreadNotificationsFromThreadAfterNotificationWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v35 = objc_alloc_init(NSMutableArray);
-  v8 = [(AFQueue *)self->_queuedNotificationRequestIdentifiers frontObject];
-  v9 = v8;
-  if (v8)
+  frontObject = [(AFQueue *)self->_queuedNotificationRequestIdentifiers frontObject];
+  v9 = frontObject;
+  if (frontObject)
   {
-    v33 = v8;
-    v34 = v7;
+    v33 = frontObject;
+    v34 = completionCopy;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v10 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v8];
+    v10 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:frontObject];
     v11 = [v10 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v11)
     {
@@ -175,11 +175,11 @@
           }
 
           v16 = *(*(&v37 + 1) + 8 * v15);
-          v17 = [v16 notification];
-          v18 = [v17 request];
+          notification = [v16 notification];
+          request = [notification request];
 
-          v19 = [v18 identifier];
-          v20 = [v19 isEqualToString:v6];
+          identifier = [request identifier];
+          v20 = [identifier isEqualToString:dCopy];
 
           if (v20)
           {
@@ -189,7 +189,7 @@
               *buf = 136315394;
               v42 = "[ADExternalNotificationRequestQueue fetchUnreadNotificationsFromThreadAfterNotificationWithID:completion:]";
               v43 = 2112;
-              v44 = v6;
+              v44 = dCopy;
               _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%s found request with identifier: %@ in request queue", buf, 0x16u);
             }
 
@@ -201,24 +201,24 @@
             v13 = 1;
             [v16 completeRequestWithSuccess:1 forReason:1 shouldEmitInstrumentationEvent:1];
             v22 = objc_alloc_init(AFBulletin);
-            v23 = [v16 notification];
+            notification2 = [v16 notification];
             [v16 appID];
             v24 = v14;
-            v25 = v6;
+            v25 = dCopy;
             v27 = v26 = v10;
-            [v22 setNotification:v23 fromSourceApp:v27];
+            [v22 setNotification:notification2 fromSourceApp:v27];
 
             [v22 setAnnouncementType:{objc_msgSend(v16, "announcementType")}];
-            v28 = [v16 summary];
-            v29 = [v28 summary];
-            [v22 setSummary:v29];
+            summary = [v16 summary];
+            v28Summary = [summary summary];
+            [v22 setSummary:v28Summary];
 
-            v30 = [v16 notification];
-            v31 = [v30 request];
-            [v22 setNotificationRequest:v31];
+            notification3 = [v16 notification];
+            request2 = [notification3 request];
+            [v22 setNotificationRequest:request2];
 
             v10 = v26;
-            v6 = v25;
+            dCopy = v25;
             v14 = v24;
             v12 = v36;
 
@@ -241,7 +241,7 @@
     }
 
     v9 = v33;
-    v7 = v34;
+    completionCopy = v34;
   }
 
   else
@@ -255,21 +255,21 @@
     }
   }
 
-  v7[2](v7, v35);
+  completionCopy[2](completionCopy, v35);
 }
 
-- (BOOL)removeAnnouncementRequest:(id)a3
+- (BOOL)removeAnnouncementRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  requestCopy = request;
+  v5 = requestCopy;
+  if (!requestCopy)
   {
 LABEL_10:
     v11 = 0;
     goto LABEL_14;
   }
 
-  if (self->_currentRequest == v4)
+  if (self->_currentRequest == requestCopy)
   {
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -282,9 +282,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v6 = [(ADAnnouncementRequest *)v4 completion];
+  completion = [(ADAnnouncementRequest *)requestCopy completion];
 
-  if (!v6)
+  if (!completion)
   {
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -340,9 +340,9 @@ LABEL_14:
   return v11;
 }
 
-- (id)notificationRequestForNotificationIdentifierInAnnouncementQueue:(id)a3
+- (id)notificationRequestForNotificationIdentifierInAnnouncementQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -354,7 +354,7 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_100167A84;
   v9[3] = &unk_100513A58;
-  v6 = v4;
+  v6 = queueCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)queuedRequestMap enumerateKeysAndObjectsUsingBlock:v9];
@@ -365,31 +365,31 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_isAnnounceNotificationRequest:(id)a3 equalToRequest:(id)a4
+- (BOOL)_isAnnounceNotificationRequest:(id)request equalToRequest:(id)toRequest
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 notification];
-  v8 = [v7 request];
-  v9 = [v8 identifier];
-  v10 = [v5 notification];
-  v11 = [v10 request];
-  v12 = [v11 identifier];
-  v13 = [v9 isEqualToString:v12];
+  toRequestCopy = toRequest;
+  requestCopy = request;
+  notification = [requestCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
+  notification2 = [toRequestCopy notification];
+  request2 = [notification2 request];
+  identifier2 = [request2 identifier];
+  v13 = [identifier isEqualToString:identifier2];
 
-  v14 = [v6 appID];
-  v15 = [v5 appID];
-  v16 = [v14 isEqualToString:v15];
+  appID = [requestCopy appID];
+  appID2 = [toRequestCopy appID];
+  v16 = [appID isEqualToString:appID2];
 
-  v17 = [v6 platform];
-  v18 = [v5 platform];
+  platform = [requestCopy platform];
+  platform2 = [toRequestCopy platform];
 
   if (!v13)
   {
     return 0;
   }
 
-  if (v17 == v18)
+  if (platform == platform2)
   {
     return v16;
   }
@@ -420,12 +420,12 @@ LABEL_14:
 
   while ([(AFQueue *)self->_queuedNotificationRequestIdentifiers count])
   {
-    v7 = [(AFQueue *)self->_queuedNotificationRequestIdentifiers dequeueObject];
+    dequeueObject = [(AFQueue *)self->_queuedNotificationRequestIdentifiers dequeueObject];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v7, 0];
+    v8 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:dequeueObject, 0];
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -456,12 +456,12 @@ LABEL_14:
   [(NSMutableDictionary *)self->_queuedRequestMap removeAllObjects];
 }
 
-- (void)completeCurrentRequestWithSuccess:(BOOL)a3 forReason:(int64_t)a4 shouldEmitInstrumentationEvent:(BOOL)a5
+- (void)completeCurrentRequestWithSuccess:(BOOL)success forReason:(int64_t)reason shouldEmitInstrumentationEvent:(BOOL)event
 {
   if (self->_currentRequest)
   {
-    v5 = a5;
-    v7 = a3;
+    eventCopy = event;
+    successCopy = success;
     [(AFWatchdogTimer *)self->_maxTimeEnqueueableTimer cancel];
     [(AFWatchdogTimer *)self->_resettingBurstTimer cancel];
     v9 = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:self->_currentRequest];
@@ -469,14 +469,14 @@ LABEL_14:
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       v17 = v10;
-      if (a4 > 0x10)
+      if (reason > 0x10)
       {
         v18 = @"(unknown)";
       }
 
       else
       {
-        v18 = *(&off_100514790 + a4);
+        v18 = *(&off_100514790 + reason);
       }
 
       v19 = v18;
@@ -485,14 +485,14 @@ LABEL_14:
       v27 = 2112;
       v28 = v9;
       v29 = 1024;
-      v30 = v7;
+      v30 = successCopy;
       v31 = 2112;
       v32 = v19;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s completing request with id: %@ with success: %d for reason: %@", buf, 0x26u);
     }
 
-    [(ADAnnouncementRequest *)self->_currentRequest completeRequestWithSuccess:v7 forReason:a4 shouldEmitInstrumentationEvent:v5];
-    if (!v7)
+    [(ADAnnouncementRequest *)self->_currentRequest completeRequestWithSuccess:successCopy forReason:reason shouldEmitInstrumentationEvent:eventCopy];
+    if (!successCopy)
     {
       v11 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -522,7 +522,7 @@ LABEL_14:
               objc_enumerationMutation(v12);
             }
 
-            [*(*(&v20 + 1) + 8 * v16) completeRequestWithSuccess:0 forReason:a4 shouldEmitInstrumentationEvent:v5];
+            [*(*(&v20 + 1) + 8 * v16) completeRequestWithSuccess:0 forReason:reason shouldEmitInstrumentationEvent:eventCopy];
             v16 = v16 + 1;
           }
 
@@ -540,13 +540,13 @@ LABEL_14:
 {
   if (self->_currentRequest)
   {
-    v3 = [(AFQueue *)self->_queuedNotificationRequestIdentifiers frontObject];
+    frontObject = [(AFQueue *)self->_queuedNotificationRequestIdentifiers frontObject];
     v4 = objc_alloc_init(NSMutableArray);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v5 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v3, 0];
+    v5 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:frontObject, 0];
     v6 = [v5 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v6)
     {
@@ -562,9 +562,9 @@ LABEL_14:
           }
 
           v10 = *(*(&v31 + 1) + 8 * i);
-          v11 = [v10 completion];
+          completion = [v10 completion];
 
-          if (v11)
+          if (completion)
           {
             [v4 addObject:v10];
           }
@@ -590,21 +590,21 @@ LABEL_14:
         _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "%s %lu unread notifications, starting request at first unread notification", buf, 0x16u);
       }
 
-      [(NSMutableDictionary *)self->_queuedRequestMap setObject:v4 forKey:v3];
+      [(NSMutableDictionary *)self->_queuedRequestMap setObject:v4 forKey:frontObject];
       goto LABEL_23;
     }
 
-    v15 = [(AFQueue *)self->_queuedNotificationRequestIdentifiers dequeueObject];
-    if (v15)
+    dequeueObject = [(AFQueue *)self->_queuedNotificationRequestIdentifiers dequeueObject];
+    if (dequeueObject)
     {
-      [(NSMutableDictionary *)self->_queuedRequestMap removeObjectForKey:v15];
+      [(NSMutableDictionary *)self->_queuedRequestMap removeObjectForKey:dequeueObject];
       v16 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315394;
         v36 = "[ADExternalNotificationRequestQueue nextAnnouncementRequest]";
         v37 = 2112;
-        v38 = v15;
+        v38 = dequeueObject;
         v17 = "%s removing %@ and associated requests from the request queue";
         v18 = v16;
         v19 = 22;
@@ -628,13 +628,13 @@ LABEL_35:
     }
 
 LABEL_23:
-    v21 = [(ADExternalNotificationRequestQueue *)self _nextRequestIdentifier];
-    if (v21)
+    _nextRequestIdentifier = [(ADExternalNotificationRequestQueue *)self _nextRequestIdentifier];
+    if (_nextRequestIdentifier)
     {
-      v22 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v21];
-      v23 = [v22 firstObject];
+      v22 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:_nextRequestIdentifier];
+      firstObject = [v22 firstObject];
       currentRequest = self->_currentRequest;
-      self->_currentRequest = v23;
+      self->_currentRequest = firstObject;
     }
 
     else
@@ -681,14 +681,14 @@ LABEL_31:
   return v14;
 }
 
-- (void)deliverSummary:(id)a3 forNotificationWithIdentifier:(id)a4 completion:(id)a5
+- (void)deliverSummary:(id)summary forNotificationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  summaryCopy = summary;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [(ADExternalNotificationRequestQueue *)self notificationRequestForNotificationIdentifierInAnnouncementQueue:v9];
+    v11 = [(ADExternalNotificationRequestQueue *)self notificationRequestForNotificationIdentifierInAnnouncementQueue:identifierCopy];
     v12 = AFSiriLogContextDaemon;
     if (v11)
     {
@@ -701,7 +701,7 @@ LABEL_31:
         _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s Found request, setting summary on %@", buf, 0x16u);
       }
 
-      [(ADAnnounceNotificationRequest *)v11 setSummary:v8];
+      [(ADAnnounceNotificationRequest *)v11 setSummary:summaryCopy];
       if (self->_currentRequest == v11)
       {
         [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:?];
@@ -727,9 +727,9 @@ LABEL_31:
               v18 = *(*(&v23 + 1) + 8 * i);
               if ([v18 summaryDecision] == 2)
               {
-                v19 = [v18 summary];
+                summary = [v18 summary];
 
-                if (!v19)
+                if (!summary)
                 {
                   v21 = AFSiriLogContextDaemon;
                   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -739,7 +739,7 @@ LABEL_31:
                     _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "%s There is still a notification pending a summary in this thread, don't announce yet.", buf, 0xCu);
                   }
 
-                  v10[2](v10, 1);
+                  completionCopy[2](completionCopy, 1);
 
                   goto LABEL_10;
                 }
@@ -769,7 +769,7 @@ LABEL_31:
         [(ADExternalNotificationRequestQueueObserver *)self->_delegate announcementRequestReadyToBeAnnounced:self->_currentRequest];
       }
 
-      v10[2](v10, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else
@@ -779,20 +779,20 @@ LABEL_31:
         *buf = 136315394;
         v29 = "[ADExternalNotificationRequestQueue deliverSummary:forNotificationWithIdentifier:completion:]";
         v30 = 2112;
-        v31 = v9;
+        v31 = identifierCopy;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Unable to find request with notificationIdentifier: %@", buf, 0x16u);
       }
 
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
 LABEL_10:
   }
 }
 
-- (void)enqueueAnnouncementRequest:(id)a3
+- (void)enqueueAnnouncementRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_100169188;
@@ -805,16 +805,16 @@ LABEL_10:
     *buf = 136315394;
     v50 = "[ADExternalNotificationRequestQueue enqueueAnnouncementRequest:]";
     v51 = 2112;
-    v52 = v5;
+    v52 = requestCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s enqueueing request: %@", buf, 0x16u);
   }
 
-  v8 = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:v5];
+  v8 = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:requestCopy];
   if (self->_currentRequest)
   {
-    v9 = [(ADAnnounceNotificationRequest *)self->_currentRequest announcementType];
-    v10 = [v5 announcementType];
-    v11 = [(ADExternalNotificationRequestQueue *)self _lastRequestAnnouncementTypeInQueue];
+    announcementType = [(ADAnnounceNotificationRequest *)self->_currentRequest announcementType];
+    announcementType2 = [requestCopy announcementType];
+    _lastRequestAnnouncementTypeInQueue = [(ADExternalNotificationRequestQueue *)self _lastRequestAnnouncementTypeInQueue];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
@@ -834,12 +834,12 @@ LABEL_10:
       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "%s current request type: %@, tail request type: %@, incoming announcement Type: %@", buf, 0x2Au);
     }
 
-    if (v10 == 1)
+    if (announcementType2 == 1)
     {
-      v13 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v8];
+      _lastRequestIdentifierInQueue = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v8];
       v14 = AFSiriLogContextDaemon;
       v15 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
-      if (v13)
+      if (_lastRequestIdentifierInQueue)
       {
         if (v15)
         {
@@ -850,11 +850,11 @@ LABEL_10:
           _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s found a thread id match for message announcement, adding it to: %@", buf, 0x16u);
         }
 
-        [v13 addObject:v5];
-        v16 = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:v5];
+        [_lastRequestIdentifierInQueue addObject:requestCopy];
+        v16 = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:requestCopy];
         v17 = [v8 isEqualToString:v16];
 
-        if (v17 && [v5 supportsImmediateBurstMode])
+        if (v17 && [requestCopy supportsImmediateBurstMode])
         {
           v18 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -879,28 +879,28 @@ LABEL_10:
           _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s No thread id match for message announcement, enqueue request: %@", buf, 0x16u);
         }
 
-        (v6[2])(v6, v5, v8);
+        (v6[2])(v6, requestCopy, v8);
       }
 
       goto LABEL_33;
     }
 
-    if (v10 == v9)
+    if (announcementType2 == announcementType)
     {
-      v13 = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:self->_currentRequest];
+      _lastRequestIdentifierInQueue = [(ADExternalNotificationRequestQueue *)self _identifierForNotificationRequest:self->_currentRequest];
       v30 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
       {
         *buf = 136315394;
         v50 = "[ADExternalNotificationRequestQueue enqueueAnnouncementRequest:]";
         v51 = 2112;
-        v52 = v13;
+        v52 = _lastRequestIdentifierInQueue;
         _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "%s same type as current request, adding it to the current request's queue %@", buf, 0x16u);
       }
 
-      v31 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v13];
-      [v31 addObject:v5];
-      if ([v5 supportsImmediateBurstMode])
+      v31 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:_lastRequestIdentifierInQueue];
+      [v31 addObject:requestCopy];
+      if ([requestCopy supportsImmediateBurstMode])
       {
         v32 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -918,7 +918,7 @@ LABEL_10:
 
     v33 = AFSiriLogContextDaemon;
     v34 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
-    if (v10 == v11)
+    if (announcementType2 == _lastRequestAnnouncementTypeInQueue)
     {
       if (v34)
       {
@@ -927,9 +927,9 @@ LABEL_10:
         _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "%s same type as tail request, adding it to the tail request's queue", buf, 0xCu);
       }
 
-      v13 = [(ADExternalNotificationRequestQueue *)self _lastRequestIdentifierInQueue];
-      v35 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:v13];
-      [v35 addObject:v5];
+      _lastRequestIdentifierInQueue = [(ADExternalNotificationRequestQueue *)self _lastRequestIdentifierInQueue];
+      v35 = [(NSMutableDictionary *)self->_queuedRequestMap objectForKey:_lastRequestIdentifierInQueue];
+      [v35 addObject:requestCopy];
 
       goto LABEL_33;
     }
@@ -943,14 +943,14 @@ LABEL_10:
       _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "%s No head or tail match of request type, enqueueing request: %@", buf, 0x16u);
     }
 
-    (v6[2])(v6, v5, v8);
+    (v6[2])(v6, requestCopy, v8);
   }
 
   else
   {
-    objc_storeStrong(&self->_currentRequest, a3);
-    (v6[2])(v6, v5, v8);
-    if ([v5 supportsImmediateBurstMode])
+    objc_storeStrong(&self->_currentRequest, request);
+    (v6[2])(v6, requestCopy, v8);
+    if ([requestCopy supportsImmediateBurstMode])
     {
       v47[0] = _NSConcreteStackBlock;
       v47[1] = 3221225472;
@@ -964,7 +964,7 @@ LABEL_10:
       v44[1] = 3221225472;
       v44[2] = sub_1001693B0;
       v44[3] = &unk_10051E010;
-      v22 = v5;
+      v22 = requestCopy;
       v45 = v22;
       v23 = v19;
       v46 = v23;
@@ -980,7 +980,7 @@ LABEL_10:
       v41[3] = &unk_10051E010;
       v42 = v22;
       v43 = v23;
-      v13 = v23;
+      _lastRequestIdentifierInQueue = v23;
       v28 = [v26 initWithTimeoutInterval:v27 onQueue:v41 timeoutHandler:3.0];
       resettingBurstTimer = self->_resettingBurstTimer;
       self->_resettingBurstTimer = v28;
@@ -1000,18 +1000,18 @@ LABEL_34:
 
 - (int64_t)_lastRequestAnnouncementTypeInQueue
 {
-  v3 = [(ADExternalNotificationRequestQueue *)self _lastRequestIdentifierInQueue];
-  if (v3 && (-[NSMutableDictionary objectForKey:](self->_queuedRequestMap, "objectForKey:", v3), v4 = objc_claimAutoreleasedReturnValue(), [v4 firstObject], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  _lastRequestIdentifierInQueue = [(ADExternalNotificationRequestQueue *)self _lastRequestIdentifierInQueue];
+  if (_lastRequestIdentifierInQueue && (-[NSMutableDictionary objectForKey:](self->_queuedRequestMap, "objectForKey:", _lastRequestIdentifierInQueue), v4 = objc_claimAutoreleasedReturnValue(), [v4 firstObject], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
-    v6 = [v5 announcementType];
+    announcementType = [v5 announcementType];
   }
 
   else
   {
-    v6 = 0;
+    announcementType = 0;
   }
 
-  return v6;
+  return announcementType;
 }
 
 - (id)_lastRequestIdentifierInQueue
@@ -1050,33 +1050,33 @@ LABEL_34:
   return v2;
 }
 
-- (id)_identifierForNotificationRequest:(id)a3
+- (id)_identifierForNotificationRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 notification];
-  v5 = [v4 request];
+  requestCopy = request;
+  notification = [requestCopy notification];
+  request = [notification request];
 
-  if ([v3 announcementType] == 1)
+  if ([requestCopy announcementType] == 1)
   {
-    v6 = [v5 content];
-    v7 = [v6 threadIdentifier];
+    content = [request content];
+    threadIdentifier = [content threadIdentifier];
 LABEL_6:
-    v8 = v7;
+    identifier = threadIdentifier;
 
     goto LABEL_7;
   }
 
-  if ([v3 announcementType] == 8 || objc_msgSend(v3, "announcementType") == 9)
+  if ([requestCopy announcementType] == 8 || objc_msgSend(requestCopy, "announcementType") == 9)
   {
-    v6 = [v3 announcementIdentifier];
-    v7 = [v6 UUIDString];
+    content = [requestCopy announcementIdentifier];
+    threadIdentifier = [content UUIDString];
     goto LABEL_6;
   }
 
-  v8 = [v5 identifier];
+  identifier = [request identifier];
 LABEL_7:
 
-  return v8;
+  return identifier;
 }
 
 @end

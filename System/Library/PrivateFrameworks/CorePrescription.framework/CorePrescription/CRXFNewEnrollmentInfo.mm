@@ -1,21 +1,21 @@
 @interface CRXFNewEnrollmentInfo
-- (CRXFNewEnrollmentInfo)initWithUUID:(id)a3 calibrationStatus:(unint64_t)a4;
+- (CRXFNewEnrollmentInfo)initWithUUID:(id)d calibrationStatus:(unint64_t)status;
 - (id)debugDescription;
 @end
 
 @implementation CRXFNewEnrollmentInfo
 
-- (CRXFNewEnrollmentInfo)initWithUUID:(id)a3 calibrationStatus:(unint64_t)a4
+- (CRXFNewEnrollmentInfo)initWithUUID:(id)d calibrationStatus:(unint64_t)status
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = CRXFNewEnrollmentInfo;
   v8 = [(CRXFNewEnrollmentInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_rxUUID, a3);
-    v9->_calibrationStatus = a4;
+    objc_storeStrong(&v8->_rxUUID, d);
+    v9->_calibrationStatus = status;
   }
 
   return v9;
@@ -25,9 +25,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRXFNewEnrollmentInfo *)self rxUUID];
+  rxUUID = [(CRXFNewEnrollmentInfo *)self rxUUID];
   v6 = CRXFCalibrationStatusAsString([(CRXFNewEnrollmentInfo *)self calibrationStatus]);
-  v7 = [v3 stringWithFormat:@"%@<%p> uuid: %@, calibrationStatus: %@", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@<%p> uuid: %@, calibrationStatus: %@", v4, self, rxUUID, v6];
 
   return v7;
 }

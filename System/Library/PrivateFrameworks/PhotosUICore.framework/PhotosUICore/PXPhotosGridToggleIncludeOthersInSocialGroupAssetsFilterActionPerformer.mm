@@ -1,15 +1,15 @@
 @interface PXPhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer
 - (NSString)activitySystemImageName;
 - (NSString)activityType;
-- (PXPhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXPhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer)initWithViewModel:(id)model actionType:(id)type;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
   v3 = PXContentFilterTitleForItemTag(24);
   if (v3)
@@ -45,26 +45,26 @@
 
 - (int64_t)menuElementState
 {
-  v2 = self;
-  v3 = [(PXPhotosGridActionPerformer *)v2 currentContentFilterState];
-  v4 = [(PXContentFilterState *)v3 isContentFilterActive:24];
+  selfCopy = self;
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)selfCopy currentContentFilterState];
+  v4 = [(PXContentFilterState *)currentContentFilterState isContentFilterActive:24];
 
   return v4;
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = self;
-  v2 = [(PXPhotosGridActionPerformer *)v3 currentContentFilterState];
-  [(PXContentFilterState *)v2 setIncludeOthersInSocialGroupAssets:[(PXContentFilterState *)v2 includeOthersInSocialGroupAssets]^ 1];
-  [(PXPhotosGridToggleFilterActionPerformer *)v3 updateToContentFilterStateAndFinishTask:v2];
+  selfCopy = self;
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)selfCopy currentContentFilterState];
+  [(PXContentFilterState *)currentContentFilterState setIncludeOthersInSocialGroupAssets:[(PXContentFilterState *)currentContentFilterState includeOthersInSocialGroupAssets]^ 1];
+  [(PXPhotosGridToggleFilterActionPerformer *)selfCopy updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (PXPhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4
+- (PXPhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer)initWithViewModel:(id)model actionType:(id)type
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PhotosGridToggleIncludeOthersInSocialGroupAssetsFilterActionPerformer();
-  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:a3 actionType:a4];
+  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:model actionType:type];
 }
 
 @end

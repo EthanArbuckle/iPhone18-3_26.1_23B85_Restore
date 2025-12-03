@@ -1,31 +1,31 @@
 @interface SISchemaUUFRShown
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaGridCardSection)gridCardSection;
-- (SISchemaUUFRShown)initWithDictionary:(id)a3;
-- (SISchemaUUFRShown)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUUFRShown)initWithDictionary:(id)dictionary;
+- (SISchemaUUFRShown)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteGridCardSection;
-- (void)setGridCardSection:(id)a3;
-- (void)setHasResponseCategory:(BOOL)a3;
-- (void)setHasViewRegionDesignation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setGridCardSection:(id)section;
+- (void)setHasResponseCategory:(BOOL)category;
+- (void)setHasViewRegionDesignation:(BOOL)designation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUUFRShown
 
-- (SISchemaUUFRShown)initWithDictionary:(id)a3
+- (SISchemaUUFRShown)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = SISchemaUUFRShown;
   v5 = [(SISchemaUUFRShown *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"viewID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"viewID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(SISchemaUUFRShown *)v5 setViewID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"snippetClass"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"snippetClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
     }
 
     v32 = v8;
-    v10 = [v4 objectForKeyedSubscript:@"siriUILocation"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"siriUILocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
     }
 
     v31 = v10;
-    v11 = [v4 objectForKeyedSubscript:@"dialogIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"dialogIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(SISchemaUUFRShown *)v5 setDialogIdentifier:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"siriResponseContext"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"siriResponseContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
     }
 
     v29 = v13;
-    v15 = [v4 objectForKeyedSubscript:@"aceViewID"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"aceViewID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(SISchemaUUFRShown *)v5 setAceViewID:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"aceViewClass"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"aceViewClass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(SISchemaUUFRShown *)v5 setAceViewClass:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"viewRegionDesignation"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"viewRegionDesignation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
 
     v30 = v11;
     v33 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"gridCardSection"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"gridCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(SISchemaUUFRShown *)v5 setGridCardSection:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"linkId"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,14 +108,14 @@
       [(SISchemaUUFRShown *)v5 setLinkId:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"responseCategory"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"responseCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUUFRShown setResponseCategory:](v5, "setResponseCategory:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -129,30 +129,30 @@
   return v5;
 }
 
-- (SISchemaUUFRShown)initWithJSON:(id)a3
+- (SISchemaUUFRShown)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUUFRShown *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUUFRShown *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUUFRShown *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -165,57 +165,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceViewClass)
   {
-    v4 = [(SISchemaUUFRShown *)self aceViewClass];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceViewClass"];
+    aceViewClass = [(SISchemaUUFRShown *)self aceViewClass];
+    v5 = [aceViewClass copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceViewClass"];
   }
 
   if (self->_aceViewID)
   {
-    v6 = [(SISchemaUUFRShown *)self aceViewID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"aceViewID"];
+    aceViewID = [(SISchemaUUFRShown *)self aceViewID];
+    v7 = [aceViewID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"aceViewID"];
   }
 
   if (self->_dialogIdentifier)
   {
-    v8 = [(SISchemaUUFRShown *)self dialogIdentifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"dialogIdentifier"];
+    dialogIdentifier = [(SISchemaUUFRShown *)self dialogIdentifier];
+    v9 = [dialogIdentifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"dialogIdentifier"];
   }
 
   if (self->_gridCardSection)
   {
-    v10 = [(SISchemaUUFRShown *)self gridCardSection];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    gridCardSection = [(SISchemaUUFRShown *)self gridCardSection];
+    dictionaryRepresentation = [gridCardSection dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"gridCardSection"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"gridCardSection"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"gridCardSection"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"gridCardSection"];
     }
   }
 
   if (self->_linkId)
   {
-    v13 = [(SISchemaUUFRShown *)self linkId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    linkId = [(SISchemaUUFRShown *)self linkId];
+    dictionaryRepresentation2 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"linkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"linkId"];
     }
   }
 
@@ -232,22 +232,22 @@
       v17 = off_1E78E6EA8[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"responseCategory"];
+    [dictionary setObject:v17 forKeyedSubscript:@"responseCategory"];
   }
 
   if (self->_siriResponseContext)
   {
-    v18 = [(SISchemaUUFRShown *)self siriResponseContext];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    siriResponseContext = [(SISchemaUUFRShown *)self siriResponseContext];
+    dictionaryRepresentation3 = [siriResponseContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"siriResponseContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"siriResponseContext"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"siriResponseContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"siriResponseContext"];
     }
   }
 
@@ -264,37 +264,37 @@
       v22 = off_1E78E6F18[v21];
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"siriUILocation"];
+    [dictionary setObject:v22 forKeyedSubscript:@"siriUILocation"];
   }
 
   if (self->_snippetClass)
   {
-    v23 = [(SISchemaUUFRShown *)self snippetClass];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"snippetClass"];
+    snippetClass = [(SISchemaUUFRShown *)self snippetClass];
+    v24 = [snippetClass copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"snippetClass"];
   }
 
   if (self->_subRequestId)
   {
-    v25 = [(SISchemaUUFRShown *)self subRequestId];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    subRequestId = [(SISchemaUUFRShown *)self subRequestId];
+    dictionaryRepresentation4 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"subRequestId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_viewID)
   {
-    v28 = [(SISchemaUUFRShown *)self viewID];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"viewID"];
+    viewID = [(SISchemaUUFRShown *)self viewID];
+    v29 = [viewID copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"viewID"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -310,12 +310,12 @@
       v31 = off_1E78E6F30[v30];
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"viewRegionDesignation"];
+    [dictionary setObject:v31 forKeyedSubscript:@"viewRegionDesignation"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -361,34 +361,34 @@
   return v14 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
   whichSubsection = self->_whichSubsection;
-  if (whichSubsection != [v4 whichSubsection])
+  if (whichSubsection != [equalCopy whichSubsection])
   {
     goto LABEL_57;
   }
 
-  v6 = [(SISchemaUUFRShown *)self viewID];
-  v7 = [v4 viewID];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self viewID];
+  viewID2 = [equalCopy viewID];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v8 = [(SISchemaUUFRShown *)self viewID];
-  if (v8)
+  viewID3 = [(SISchemaUUFRShown *)self viewID];
+  if (viewID3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUUFRShown *)self viewID];
-    v11 = [v4 viewID];
-    v12 = [v10 isEqual:v11];
+    v9 = viewID3;
+    viewID4 = [(SISchemaUUFRShown *)self viewID];
+    viewID5 = [equalCopy viewID];
+    v12 = [viewID4 isEqual:viewID5];
 
     if (!v12)
     {
@@ -400,20 +400,20 @@
   {
   }
 
-  v6 = [(SISchemaUUFRShown *)self snippetClass];
-  v7 = [v4 snippetClass];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self snippetClass];
+  viewID2 = [equalCopy snippetClass];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v13 = [(SISchemaUUFRShown *)self snippetClass];
-  if (v13)
+  snippetClass = [(SISchemaUUFRShown *)self snippetClass];
+  if (snippetClass)
   {
-    v14 = v13;
-    v15 = [(SISchemaUUFRShown *)self snippetClass];
-    v16 = [v4 snippetClass];
-    v17 = [v15 isEqual:v16];
+    v14 = snippetClass;
+    snippetClass2 = [(SISchemaUUFRShown *)self snippetClass];
+    snippetClass3 = [equalCopy snippetClass];
+    v17 = [snippetClass2 isEqual:snippetClass3];
 
     if (!v17)
     {
@@ -425,7 +425,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[104] & 1))
+  if ((*&self->_has & 1) != (equalCopy[104] & 1))
   {
     goto LABEL_57;
   }
@@ -433,26 +433,26 @@
   if (*&self->_has)
   {
     siriUILocation = self->_siriUILocation;
-    if (siriUILocation != [v4 siriUILocation])
+    if (siriUILocation != [equalCopy siriUILocation])
     {
       goto LABEL_57;
     }
   }
 
-  v6 = [(SISchemaUUFRShown *)self dialogIdentifier];
-  v7 = [v4 dialogIdentifier];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self dialogIdentifier];
+  viewID2 = [equalCopy dialogIdentifier];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v19 = [(SISchemaUUFRShown *)self dialogIdentifier];
-  if (v19)
+  dialogIdentifier = [(SISchemaUUFRShown *)self dialogIdentifier];
+  if (dialogIdentifier)
   {
-    v20 = v19;
-    v21 = [(SISchemaUUFRShown *)self dialogIdentifier];
-    v22 = [v4 dialogIdentifier];
-    v23 = [v21 isEqual:v22];
+    v20 = dialogIdentifier;
+    dialogIdentifier2 = [(SISchemaUUFRShown *)self dialogIdentifier];
+    dialogIdentifier3 = [equalCopy dialogIdentifier];
+    v23 = [dialogIdentifier2 isEqual:dialogIdentifier3];
 
     if (!v23)
     {
@@ -464,20 +464,20 @@
   {
   }
 
-  v6 = [(SISchemaUUFRShown *)self siriResponseContext];
-  v7 = [v4 siriResponseContext];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self siriResponseContext];
+  viewID2 = [equalCopy siriResponseContext];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v24 = [(SISchemaUUFRShown *)self siriResponseContext];
-  if (v24)
+  siriResponseContext = [(SISchemaUUFRShown *)self siriResponseContext];
+  if (siriResponseContext)
   {
-    v25 = v24;
-    v26 = [(SISchemaUUFRShown *)self siriResponseContext];
-    v27 = [v4 siriResponseContext];
-    v28 = [v26 isEqual:v27];
+    v25 = siriResponseContext;
+    siriResponseContext2 = [(SISchemaUUFRShown *)self siriResponseContext];
+    siriResponseContext3 = [equalCopy siriResponseContext];
+    v28 = [siriResponseContext2 isEqual:siriResponseContext3];
 
     if (!v28)
     {
@@ -489,20 +489,20 @@
   {
   }
 
-  v6 = [(SISchemaUUFRShown *)self aceViewID];
-  v7 = [v4 aceViewID];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self aceViewID];
+  viewID2 = [equalCopy aceViewID];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v29 = [(SISchemaUUFRShown *)self aceViewID];
-  if (v29)
+  aceViewID = [(SISchemaUUFRShown *)self aceViewID];
+  if (aceViewID)
   {
-    v30 = v29;
-    v31 = [(SISchemaUUFRShown *)self aceViewID];
-    v32 = [v4 aceViewID];
-    v33 = [v31 isEqual:v32];
+    v30 = aceViewID;
+    aceViewID2 = [(SISchemaUUFRShown *)self aceViewID];
+    aceViewID3 = [equalCopy aceViewID];
+    v33 = [aceViewID2 isEqual:aceViewID3];
 
     if (!v33)
     {
@@ -514,20 +514,20 @@
   {
   }
 
-  v6 = [(SISchemaUUFRShown *)self aceViewClass];
-  v7 = [v4 aceViewClass];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self aceViewClass];
+  viewID2 = [equalCopy aceViewClass];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v34 = [(SISchemaUUFRShown *)self aceViewClass];
-  if (v34)
+  aceViewClass = [(SISchemaUUFRShown *)self aceViewClass];
+  if (aceViewClass)
   {
-    v35 = v34;
-    v36 = [(SISchemaUUFRShown *)self aceViewClass];
-    v37 = [v4 aceViewClass];
-    v38 = [v36 isEqual:v37];
+    v35 = aceViewClass;
+    aceViewClass2 = [(SISchemaUUFRShown *)self aceViewClass];
+    aceViewClass3 = [equalCopy aceViewClass];
+    v38 = [aceViewClass2 isEqual:aceViewClass3];
 
     if (!v38)
     {
@@ -540,7 +540,7 @@
   }
 
   v39 = (*&self->_has >> 1) & 1;
-  if (v39 != ((v4[104] >> 1) & 1))
+  if (v39 != ((equalCopy[104] >> 1) & 1))
   {
     goto LABEL_57;
   }
@@ -548,26 +548,26 @@
   if (v39)
   {
     viewRegionDesignation = self->_viewRegionDesignation;
-    if (viewRegionDesignation != [v4 viewRegionDesignation])
+    if (viewRegionDesignation != [equalCopy viewRegionDesignation])
     {
       goto LABEL_57;
     }
   }
 
-  v6 = [(SISchemaUUFRShown *)self gridCardSection];
-  v7 = [v4 gridCardSection];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self gridCardSection];
+  viewID2 = [equalCopy gridCardSection];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v41 = [(SISchemaUUFRShown *)self gridCardSection];
-  if (v41)
+  gridCardSection = [(SISchemaUUFRShown *)self gridCardSection];
+  if (gridCardSection)
   {
-    v42 = v41;
-    v43 = [(SISchemaUUFRShown *)self gridCardSection];
-    v44 = [v4 gridCardSection];
-    v45 = [v43 isEqual:v44];
+    v42 = gridCardSection;
+    gridCardSection2 = [(SISchemaUUFRShown *)self gridCardSection];
+    gridCardSection3 = [equalCopy gridCardSection];
+    v45 = [gridCardSection2 isEqual:gridCardSection3];
 
     if (!v45)
     {
@@ -579,20 +579,20 @@
   {
   }
 
-  v6 = [(SISchemaUUFRShown *)self linkId];
-  v7 = [v4 linkId];
-  if ((v6 != 0) == (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self linkId];
+  viewID2 = [equalCopy linkId];
+  if ((viewID != 0) == (viewID2 == 0))
   {
     goto LABEL_56;
   }
 
-  v46 = [(SISchemaUUFRShown *)self linkId];
-  if (v46)
+  linkId = [(SISchemaUUFRShown *)self linkId];
+  if (linkId)
   {
-    v47 = v46;
-    v48 = [(SISchemaUUFRShown *)self linkId];
-    v49 = [v4 linkId];
-    v50 = [v48 isEqual:v49];
+    v47 = linkId;
+    linkId2 = [(SISchemaUUFRShown *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v50 = [linkId2 isEqual:linkId3];
 
     if (!v50)
     {
@@ -605,7 +605,7 @@
   }
 
   v51 = (*&self->_has >> 2) & 1;
-  if (v51 != ((v4[104] >> 2) & 1))
+  if (v51 != ((equalCopy[104] >> 2) & 1))
   {
     goto LABEL_57;
   }
@@ -613,18 +613,18 @@
   if (v51)
   {
     responseCategory = self->_responseCategory;
-    if (responseCategory != [v4 responseCategory])
+    if (responseCategory != [equalCopy responseCategory])
     {
       goto LABEL_57;
     }
   }
 
-  v6 = [(SISchemaUUFRShown *)self subRequestId];
-  v7 = [v4 subRequestId];
-  if ((v6 != 0) != (v7 == 0))
+  viewID = [(SISchemaUUFRShown *)self subRequestId];
+  viewID2 = [equalCopy subRequestId];
+  if ((viewID != 0) != (viewID2 == 0))
   {
-    v53 = [(SISchemaUUFRShown *)self subRequestId];
-    if (!v53)
+    subRequestId = [(SISchemaUUFRShown *)self subRequestId];
+    if (!subRequestId)
     {
 
 LABEL_60:
@@ -632,10 +632,10 @@ LABEL_60:
       goto LABEL_58;
     }
 
-    v54 = v53;
-    v55 = [(SISchemaUUFRShown *)self subRequestId];
-    v56 = [v4 subRequestId];
-    v57 = [v55 isEqual:v56];
+    v54 = subRequestId;
+    subRequestId2 = [(SISchemaUUFRShown *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v57 = [subRequestId2 isEqual:subRequestId3];
 
     if (v57)
     {
@@ -655,19 +655,19 @@ LABEL_58:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
-  v4 = [(SISchemaUUFRShown *)self viewID];
+  toCopy = to;
+  viewID = [(SISchemaUUFRShown *)self viewID];
 
-  if (v4)
+  if (viewID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaUUFRShown *)self snippetClass];
+  snippetClass = [(SISchemaUUFRShown *)self snippetClass];
 
-  if (v5)
+  if (snippetClass)
   {
     PBDataWriterWriteStringField();
   }
@@ -677,31 +677,31 @@ LABEL_58:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(SISchemaUUFRShown *)self dialogIdentifier];
+  dialogIdentifier = [(SISchemaUUFRShown *)self dialogIdentifier];
 
-  if (v6)
+  if (dialogIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SISchemaUUFRShown *)self siriResponseContext];
+  siriResponseContext = [(SISchemaUUFRShown *)self siriResponseContext];
 
-  if (v7)
+  if (siriResponseContext)
   {
-    v8 = [(SISchemaUUFRShown *)self siriResponseContext];
+    siriResponseContext2 = [(SISchemaUUFRShown *)self siriResponseContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(SISchemaUUFRShown *)self aceViewID];
+  aceViewID = [(SISchemaUUFRShown *)self aceViewID];
 
-  if (v9)
+  if (aceViewID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(SISchemaUUFRShown *)self aceViewClass];
+  aceViewClass = [(SISchemaUUFRShown *)self aceViewClass];
 
-  if (v10)
+  if (aceViewClass)
   {
     PBDataWriterWriteStringField();
   }
@@ -711,19 +711,19 @@ LABEL_58:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(SISchemaUUFRShown *)self gridCardSection];
+  gridCardSection = [(SISchemaUUFRShown *)self gridCardSection];
 
-  if (v11)
+  if (gridCardSection)
   {
-    v12 = [(SISchemaUUFRShown *)self gridCardSection];
+    gridCardSection2 = [(SISchemaUUFRShown *)self gridCardSection];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(SISchemaUUFRShown *)self linkId];
+  linkId = [(SISchemaUUFRShown *)self linkId];
 
-  if (v13)
+  if (linkId)
   {
-    v14 = [(SISchemaUUFRShown *)self linkId];
+    linkId2 = [(SISchemaUUFRShown *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -732,21 +732,21 @@ LABEL_58:
     PBDataWriterWriteInt32Field();
   }
 
-  v15 = [(SISchemaUUFRShown *)self subRequestId];
+  subRequestId = [(SISchemaUUFRShown *)self subRequestId];
 
-  v16 = v18;
-  if (v15)
+  v16 = toCopy;
+  if (subRequestId)
   {
-    v17 = [(SISchemaUUFRShown *)self subRequestId];
+    subRequestId2 = [(SISchemaUUFRShown *)self subRequestId];
     PBDataWriterWriteSubmessage();
 
-    v16 = v18;
+    v16 = toCopy;
   }
 }
 
-- (void)setHasResponseCategory:(BOOL)a3
+- (void)setHasResponseCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 4;
   }
@@ -784,21 +784,21 @@ LABEL_58:
   return v3;
 }
 
-- (void)setGridCardSection:(id)a3
+- (void)setGridCardSection:(id)section
 {
   v3 = 9;
-  if (!a3)
+  if (!section)
   {
     v3 = 0;
   }
 
   self->_whichSubsection = v3;
-  objc_storeStrong(&self->_gridCardSection, a3);
+  objc_storeStrong(&self->_gridCardSection, section);
 }
 
-- (void)setHasViewRegionDesignation:(BOOL)a3
+- (void)setHasViewRegionDesignation:(BOOL)designation
 {
-  if (a3)
+  if (designation)
   {
     v3 = 2;
   }
@@ -811,49 +811,49 @@ LABEL_58:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = SISchemaUUFRShown;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(SISchemaUUFRShown *)self deleteDialogIdentifier];
   }
 
-  v6 = [(SISchemaUUFRShown *)self siriResponseContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  siriResponseContext = [(SISchemaUUFRShown *)self siriResponseContext];
+  v7 = [siriResponseContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaUUFRShown *)self deleteSiriResponseContext];
   }
 
-  v9 = [(SISchemaUUFRShown *)self gridCardSection];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  gridCardSection = [(SISchemaUUFRShown *)self gridCardSection];
+  v10 = [gridCardSection applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaUUFRShown *)self deleteGridCardSection];
   }
 
-  v12 = [(SISchemaUUFRShown *)self linkId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  linkId = [(SISchemaUUFRShown *)self linkId];
+  v13 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaUUFRShown *)self deleteLinkId];
   }
 
-  v15 = [(SISchemaUUFRShown *)self subRequestId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  subRequestId = [(SISchemaUUFRShown *)self subRequestId];
+  v16 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaUUFRShown *)self deleteSubRequestId];
   }

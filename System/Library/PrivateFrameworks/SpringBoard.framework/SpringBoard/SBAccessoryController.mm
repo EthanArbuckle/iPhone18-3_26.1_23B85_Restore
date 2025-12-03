@@ -1,8 +1,8 @@
 @interface SBAccessoryController
 + (id)sharedInstance;
 - (BOOL)isWindowedAccessoryWindowVisible;
-- (void)_showWindowedAccessoryWindow:(BOOL)a3 forWindowScene:(id)a4;
-- (void)windowedAccessoryViewControllerForceDetachButtonTapped:(id)a3;
+- (void)_showWindowedAccessoryWindow:(BOOL)window forWindowScene:(id)scene;
+- (void)windowedAccessoryViewControllerForceDetachButtonTapped:(id)tapped;
 @end
 
 @implementation SBAccessoryController
@@ -29,13 +29,13 @@ uint64_t __39__SBAccessoryController_sharedInstance__block_invoke()
   return kdebug_trace();
 }
 
-- (void)_showWindowedAccessoryWindow:(BOOL)a3 forWindowScene:(id)a4
+- (void)_showWindowedAccessoryWindow:(BOOL)window forWindowScene:(id)scene
 {
-  v4 = a3;
-  v14 = a4;
-  if (v4)
+  windowCopy = window;
+  sceneCopy = scene;
+  if (windowCopy)
   {
-    v6 = [[SBWindowedAccessoryWindow alloc] initWithWindowScene:v14 role:@"SBTraitsParticipantRoleWindowedAccessory" debugName:@"Windowed Accessory Window"];
+    v6 = [[SBWindowedAccessoryWindow alloc] initWithWindowScene:sceneCopy role:@"SBTraitsParticipantRoleWindowedAccessory" debugName:@"Windowed Accessory Window"];
     window = self->_window;
     self->_window = &v6->super.super;
 
@@ -66,10 +66,10 @@ uint64_t __39__SBAccessoryController_sharedInstance__block_invoke()
 
   v12 = +[SBKeyboardFocusCoordinator sharedInstance];
   v13 = +[SBKeyboardFocusArbitrationReason showWindowedAccessoryWindow];
-  [v12 requestArbitrationForSBWindowScene:v14 forReason:v13];
+  [v12 requestArbitrationForSBWindowScene:sceneCopy forReason:v13];
 }
 
-- (void)windowedAccessoryViewControllerForceDetachButtonTapped:(id)a3
+- (void)windowedAccessoryViewControllerForceDetachButtonTapped:(id)tapped
 {
   v3 = +[SBUIController sharedInstanceIfExists];
   [v3 windowedAccessoryDismissed];

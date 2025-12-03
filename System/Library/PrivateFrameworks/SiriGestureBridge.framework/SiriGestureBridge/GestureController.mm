@@ -1,36 +1,36 @@
 @interface GestureController
 - (void)didDetectedError;
-- (void)didDetectedWithHeadGesture:(id)a3;
-- (void)didStartStreamingWithIsStreaming:(BOOL)a3;
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5;
+- (void)didDetectedWithHeadGesture:(id)gesture;
+- (void)didStartStreamingWithIsStreaming:(BOOL)streaming;
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to;
 @end
 
 @implementation GestureController
 
-- (void)notifyObserver:(id)a3 didChangeStateFrom:(unint64_t)a4 to:(unint64_t)a5
+- (void)notifyObserver:(id)observer didChangeStateFrom:(unint64_t)from to:(unint64_t)to
 {
-  v6 = a3;
-  v7 = self;
+  observerCopy = observer;
+  selfCopy = self;
   sub_266E2A5F4();
 }
 
-- (void)didDetectedWithHeadGesture:(id)a3
+- (void)didDetectedWithHeadGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
+  gestureCopy = gesture;
+  selfCopy = self;
   sub_266E3BAF8();
 }
 
 - (void)didDetectedError
 {
-  v2 = self;
+  selfCopy = self;
   sub_266E3CB58();
 }
 
-- (void)didStartStreamingWithIsStreaming:(BOOL)a3
+- (void)didStartStreamingWithIsStreaming:(BOOL)streaming
 {
-  v4 = self;
-  sub_266E3CBF8(a3);
+  selfCopy = self;
+  sub_266E3CBF8(streaming);
 }
 
 @end

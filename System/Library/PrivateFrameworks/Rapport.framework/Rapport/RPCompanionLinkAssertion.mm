@@ -1,20 +1,20 @@
 @interface RPCompanionLinkAssertion
-- (RPCompanionLinkAssertion)initWithCoder:(id)a3;
+- (RPCompanionLinkAssertion)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RPCompanionLinkAssertion
 
-- (RPCompanionLinkAssertion)initWithCoder:(id)a3
+- (RPCompanionLinkAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RPCompanionLinkAssertion;
   v5 = [(RPCompanionLinkAssertion *)&v11 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -32,29 +32,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   assertionID = self->_assertionID;
-  v8 = v4;
+  v8 = coderCopy;
   if (assertionID)
   {
-    [v4 encodeObject:assertionID forKey:@"asID"];
-    v4 = v8;
+    [coderCopy encodeObject:assertionID forKey:@"asID"];
+    coderCopy = v8;
   }
 
   destinationID = self->_destinationID;
   if (destinationID)
   {
     [v8 encodeObject:destinationID forKey:@"dID"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
     [v8 encodeObject:identifier forKey:@"id"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 

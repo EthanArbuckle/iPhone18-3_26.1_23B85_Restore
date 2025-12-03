@@ -1,9 +1,9 @@
 @interface MOWeatherManager
 - (MOWeatherManager)init;
-- (MOWeatherManager)initWithUniverse:(id)a3;
-- (void)_rehydrateWeather:(id)a3 handler:(id)a4;
-- (void)fetchWeatherBetweenStartDate:(id)a3 StartDate:(id)a4 EndDate:(id)a5 handler:(id)a6;
-- (void)rehydrateWeather:(id)a3 handler:(id)a4;
+- (MOWeatherManager)initWithUniverse:(id)universe;
+- (void)_rehydrateWeather:(id)weather handler:(id)handler;
+- (void)fetchWeatherBetweenStartDate:(id)date StartDate:(id)startDate EndDate:(id)endDate handler:(id)handler;
+- (void)rehydrateWeather:(id)weather handler:(id)handler;
 @end
 
 @implementation MOWeatherManager
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (MOWeatherManager)initWithUniverse:(id)a3
+- (MOWeatherManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 getService:v6];
+  v7 = [universeCopy getService:v6];
 
   v16.receiver = self;
   v16.super_class = MOWeatherManager;
@@ -50,34 +50,34 @@
     v8->_weatherDataProvider = v12;
 
     objc_storeStrong(&v8->_defaultManager, v7);
-    v14 = [(MOWeatherManager *)v8 defaultManager];
-    [v14 setObject:&__kCFBooleanTrue forKey:@"MODefaultsWeatherManagerRequestsDisabled"];
+    defaultManager = [(MOWeatherManager *)v8 defaultManager];
+    [defaultManager setObject:&__kCFBooleanTrue forKey:@"MODefaultsWeatherManagerRequestsDisabled"];
   }
 
   return v8;
 }
 
-- (void)fetchWeatherBetweenStartDate:(id)a3 StartDate:(id)a4 EndDate:(id)a5 handler:(id)a6
+- (void)fetchWeatherBetweenStartDate:(id)date StartDate:(id)startDate EndDate:(id)endDate handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MOWeatherManager *)self queue];
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MOWeatherManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = startDateCopy;
+  v22 = endDateCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = endDateCopy;
+  v17 = startDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handler___block_invoke(uint64_t a1)
@@ -122,30 +122,30 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
   (*(a1[6] + 16))();
 }
 
-- (void)rehydrateWeather:(id)a3 handler:(id)a4
+- (void)rehydrateWeather:(id)weather handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOWeatherManager *)self queue];
+  weatherCopy = weather;
+  handlerCopy = handler;
+  queue = [(MOWeatherManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __45__MOWeatherManager_rehydrateWeather_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = weatherCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = weatherCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateWeather:(id)a3 handler:(id)a4
+- (void)_rehydrateWeather:(id)weather handler:(id)handler
 {
-  v41 = a3;
-  v40 = a4;
-  v44 = self;
-  v6 = [(MOWeatherManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  weatherCopy = weather;
+  handlerCopy = handler;
+  selfCopy = self;
+  queue = [(MOWeatherManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = dispatch_group_create();
   v71 = 0;
@@ -166,7 +166,7 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = NSStringFromSelector(a2);
-    v12 = [v41 count];
+    v12 = [weatherCopy count];
     *buf = 138412802;
     *&buf[4] = v10;
     *&buf[12] = 2112;
@@ -176,11 +176,11 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@, %@, Fetch Weather Data START, events count, %lu", buf, 0x20u);
   }
 
-  v13 = [(MOWeatherManager *)self defaultManager];
-  v14 = [v13 objectForKey:@"MODefaultsWeatherManagerRequestsDisabled"];
-  v15 = [v14 BOOLValue];
+  defaultManager = [(MOWeatherManager *)self defaultManager];
+  v14 = [defaultManager objectForKey:@"MODefaultsWeatherManagerRequestsDisabled"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityWeather);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -195,9 +195,9 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@, %@, Fetch Weather Data END, the call to weather service is disabled by the default settings", buf, 0x16u);
     }
 
-    if (v40)
+    if (handlerCopy)
     {
-      v40[2]();
+      handlerCopy[2]();
     }
 
     else
@@ -231,7 +231,7 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    obj = v41;
+    obj = weatherCopy;
     v20 = [obj countByEnumeratingWithState:&v60 objects:v77 count:16];
     if (v20)
     {
@@ -247,36 +247,36 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
 
           v23 = *(*(&v60 + 1) + 8 * i);
           v24 = [CLLocation alloc];
-          v25 = [v23 location];
-          [v25 latitude];
+          location = [v23 location];
+          [location latitude];
           v27 = v26;
-          v28 = [v23 location];
-          [v28 longitude];
+          location2 = [v23 location];
+          [location2 longitude];
           v30 = [v24 initWithLatitude:v27 longitude:v29];
 
           dispatch_group_enter(v7);
-          v31 = [v23 predominantWeather];
-          LODWORD(v24) = v31 == 0;
+          predominantWeather = [v23 predominantWeather];
+          LODWORD(v24) = predominantWeather == 0;
 
           if (v24)
           {
             ++v65[3];
-            weatherDataProvider = v44->_weatherDataProvider;
-            v33 = [v23 startDate];
-            v34 = [v23 endDate];
+            weatherDataProvider = selfCopy->_weatherDataProvider;
+            startDate = [v23 startDate];
+            endDate = [v23 endDate];
             v53[0] = _NSConcreteStackBlock;
             v53[1] = 3221225472;
             v53[2] = __46__MOWeatherManager__rehydrateWeather_handler___block_invoke;
             v53[3] = &unk_1003382E8;
             v53[4] = v23;
-            v53[5] = v44;
+            v53[5] = selfCopy;
             v55 = v68;
             v56 = v69;
             v57 = buf;
             v58 = &v71;
             v59 = a2;
             v54 = v7;
-            [(MOWeatherDataProvider *)weatherDataProvider fetchHourlyWeatherFor:v30 startDate:v33 endDate:v34 completion:v53];
+            [(MOWeatherDataProvider *)weatherDataProvider fetchHourlyWeatherFor:v30 startDate:startDate endDate:endDate completion:v53];
           }
 
           else
@@ -292,7 +292,7 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
       while (v20);
     }
 
-    v35 = [(MOWeatherManager *)v44 queue];
+    queue2 = [(MOWeatherManager *)selfCopy queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __46__MOWeatherManager__rehydrateWeather_handler___block_invoke_109;
@@ -303,9 +303,9 @@ void __75__MOWeatherManager_fetchWeatherBetweenStartDate_StartDate_EndDate_handl
     v49 = buf;
     v50 = &v71;
     v51 = v69;
-    block[4] = v44;
-    v46 = v40;
-    dispatch_group_notify(v7, v35, block);
+    block[4] = selfCopy;
+    v46 = handlerCopy;
+    dispatch_group_notify(v7, queue2, block);
 
     _Block_object_dispose(&v64, 8);
     _Block_object_dispose(v68, 8);

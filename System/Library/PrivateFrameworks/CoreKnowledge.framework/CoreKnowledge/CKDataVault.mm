@@ -1,34 +1,34 @@
 @interface CKDataVault
-+ (BOOL)createDataVaultDirectoryAtPath:(id)a3 withStorageClass:(id)a4 error:(id *)a5;
-+ (id)errorWithDescription:(uint64_t)a1;
++ (BOOL)createDataVaultDirectoryAtPath:(id)path withStorageClass:(id)class error:(id *)error;
++ (id)errorWithDescription:(uint64_t)description;
 @end
 
 @implementation CKDataVault
 
-+ (BOOL)createDataVaultDirectoryAtPath:(id)a3 withStorageClass:(id)a4 error:(id *)a5
++ (BOOL)createDataVaultDirectoryAtPath:(id)path withStorageClass:(id)class error:(id *)error
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  [v9 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:a5];
+  pathCopy = path;
+  classCopy = class;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:error];
 
-  if (a5)
+  if (error)
   {
-    v10 = *a5;
-    if (*a5)
+    v10 = *error;
+    if (*error)
     {
       v11 = CKLogContextFramework;
       if (os_log_type_enabled(CKLogContextFramework, OS_LOG_TYPE_ERROR))
       {
         v24 = v11;
-        v25 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         v38 = 136315650;
         v39 = "+[CKDataVault createDataVaultDirectoryAtPath:withStorageClass:error:]";
         v40 = 2112;
-        v41 = v7;
+        v41 = pathCopy;
         v42 = 2112;
-        v43[0] = v25;
+        v43[0] = localizedDescription;
         _os_log_error_impl(&dword_1C8683000, v24, OS_LOG_TYPE_ERROR, "%s could not create directory at path %@: %@", &v38, 0x20u);
       }
 
@@ -36,12 +36,12 @@
     }
   }
 
-  v13 = [v7 UTF8String];
-  [v8 UTF8String];
+  uTF8String = [pathCopy UTF8String];
+  [classCopy UTF8String];
   v14 = rootless_check_datavault_flag();
   if (v14 == 1)
   {
-    if (!chmod(v13, 0x1C0u))
+    if (!chmod(uTF8String, 0x1C0u))
     {
       v20 = rootless_convert_to_datavault();
       v21 = CKLogContextFramework;
@@ -68,20 +68,20 @@
         v38 = 136315906;
         v39 = "+[CKDataVault createDataVaultDirectoryAtPath:withStorageClass:error:]";
         v40 = 2112;
-        v41 = v7;
+        v41 = pathCopy;
         v42 = 1024;
         LODWORD(v43[0]) = v35;
         WORD2(v43[0]) = 2080;
         *(v43 + 6) = v37;
         _os_log_error_impl(&dword_1C8683000, v34, OS_LOG_TYPE_ERROR, "%s Failed to convert to data vault: %@: [%i] %s", &v38, 0x26u);
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_5;
         }
       }
 
-      else if (!a5)
+      else if (!error)
       {
         goto LABEL_5;
       }
@@ -100,20 +100,20 @@
       v38 = 136315906;
       v39 = "+[CKDataVault createDataVaultDirectoryAtPath:withStorageClass:error:]";
       v40 = 2112;
-      v41 = v7;
+      v41 = pathCopy;
       v42 = 1024;
       LODWORD(v43[0]) = v31;
       WORD2(v43[0]) = 2080;
       *(v43 + 6) = v33;
       _os_log_error_impl(&dword_1C8683000, v30, OS_LOG_TYPE_ERROR, "%s Failed to set mode on directory %@: [%i] %s", &v38, 0x26u);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
       goto LABEL_5;
     }
@@ -121,7 +121,7 @@
     v17 = @"failed to set mode on directory";
 LABEL_17:
     [CKDataVault errorWithDescription:v17];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
     goto LABEL_18;
   }
 
@@ -154,20 +154,20 @@ LABEL_26:
     v38 = 136315906;
     v39 = "+[CKDataVault createDataVaultDirectoryAtPath:withStorageClass:error:]";
     v40 = 2112;
-    v41 = v7;
+    v41 = pathCopy;
     v42 = 1024;
     LODWORD(v43[0]) = v27;
     WORD2(v43[0]) = 2080;
     *(v43 + 6) = v29;
     _os_log_error_impl(&dword_1C8683000, v26, OS_LOG_TYPE_ERROR, "%s data vault status check failed at path %@: [%i] %s", &v38, 0x26u);
 
-    if (a5)
+    if (error)
     {
       goto LABEL_16;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
 LABEL_16:
     v17 = @"data vault status check failed";
@@ -181,7 +181,7 @@ LABEL_18:
   return v12;
 }
 
-+ (id)errorWithDescription:(uint64_t)a1
++ (id)errorWithDescription:(uint64_t)description
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v2 = a2;

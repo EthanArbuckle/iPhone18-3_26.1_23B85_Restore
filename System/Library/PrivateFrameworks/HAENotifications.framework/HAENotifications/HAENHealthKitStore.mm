@@ -1,9 +1,9 @@
 @interface HAENHealthKitStore
-+ (id)createHKCategorySampleForEvent:(id)a3;
++ (id)createHKCategorySampleForEvent:(id)event;
 + (id)sharedInstance;
 - (HAENHealthKitStore)init;
-- (id)saveNotificationEventToHealthKit:(id)a3;
-- (id)saveNotificationEventToHealthKit:(id)a3 withDelegate:(id)a4;
+- (id)saveNotificationEventToHealthKit:(id)kit;
+- (id)saveNotificationEventToHealthKit:(id)kit withDelegate:(id)delegate;
 @end
 
 @implementation HAENHealthKitStore
@@ -45,16 +45,16 @@ uint64_t __36__HAENHealthKitStore_sharedInstance__block_invoke()
   return v2;
 }
 
-+ (id)createHKCategorySampleForEvent:(id)a3
++ (id)createHKCategorySampleForEvent:(id)event
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 eventType] != 2003133803)
+  eventCopy = event;
+  if ([eventCopy eventType] != 2003133803)
   {
     v4 = HAENotificationsLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(HAENHealthKitStore *)v3 createHKCategorySampleForEvent:v4];
+      [(HAENHealthKitStore *)eventCopy createHKCategorySampleForEvent:v4];
     }
 
     v21 = 0;
@@ -64,20 +64,20 @@ uint64_t __36__HAENHealthKitStore_sharedInstance__block_invoke()
   if (objc_opt_class())
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v5 = [v3 metadata];
-    v6 = [v5 objectForKey:@"_HAENMetadataIdentifierWeeklyExposureDuration"];
+    metadata = [eventCopy metadata];
+    v6 = [metadata objectForKey:@"_HAENMetadataIdentifierWeeklyExposureDuration"];
 
     if (v6)
     {
       v7 = MEMORY[0x277CCD7E0];
-      v8 = [MEMORY[0x277CCDAB8] secondUnit];
+      secondUnit = [MEMORY[0x277CCDAB8] secondUnit];
       [v6 doubleValue];
-      v9 = [v7 quantityWithUnit:v8 doubleValue:?];
+      v9 = [v7 quantityWithUnit:secondUnit doubleValue:?];
       [v4 setObject:v9 forKey:*MEMORY[0x277CCC448]];
     }
 
-    v10 = [v3 metadata];
-    v11 = [v10 objectForKey:@"_HAENMetadataIdentifierWeeklyIncludesPrunableData"];
+    metadata2 = [eventCopy metadata];
+    v11 = [metadata2 objectForKey:@"_HAENMetadataIdentifierWeeklyIncludesPrunableData"];
 
     if (v11)
     {
@@ -85,27 +85,27 @@ uint64_t __36__HAENHealthKitStore_sharedInstance__block_invoke()
     }
 
     v12 = MEMORY[0x277CCD7E0];
-    v13 = [MEMORY[0x277CCDAB8] decibelAWeightedSoundPressureLevelUnit];
-    [v3 level];
-    v14 = [v12 quantityWithUnit:v13 doubleValue:?];
+    decibelAWeightedSoundPressureLevelUnit = [MEMORY[0x277CCDAB8] decibelAWeightedSoundPressureLevelUnit];
+    [eventCopy level];
+    v14 = [v12 quantityWithUnit:decibelAWeightedSoundPressureLevelUnit doubleValue:?];
     [v4 setObject:v14 forKey:*MEMORY[0x277CCC460]];
 
     v15 = MEMORY[0x277CCD0B8];
     v16 = [MEMORY[0x277CCD728] categoryTypeForIdentifier:*MEMORY[0x277CCB9A8]];
-    v17 = [v3 dateInterval];
-    v18 = [v17 startDate];
-    v19 = [v3 dateInterval];
-    v20 = [v19 endDate];
-    v21 = [v15 categorySampleWithType:v16 value:1 startDate:v18 endDate:v20 device:0 metadata:v4];
+    dateInterval = [eventCopy dateInterval];
+    startDate = [dateInterval startDate];
+    dateInterval2 = [eventCopy dateInterval];
+    endDate = [dateInterval2 endDate];
+    v21 = [v15 categorySampleWithType:v16 value:1 startDate:startDate endDate:endDate device:0 metadata:v4];
 
     v22 = HAENotificationsLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v3 uuid];
+      uuid = [eventCopy uuid];
       v26 = 138412546;
       v27 = v21;
       v28 = 2112;
-      v29 = v23;
+      v29 = uuid;
       _os_log_impl(&dword_25081E000, v22, OS_LOG_TYPE_DEFAULT, "created HKCategorySample [ %@ ] for event [ %@ ]", &v26, 0x16u);
     }
 
@@ -121,20 +121,20 @@ LABEL_14:
   return v21;
 }
 
-- (id)saveNotificationEventToHealthKit:(id)a3
+- (id)saveNotificationEventToHealthKit:(id)kit
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  kitCopy = kit;
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 uuid];
+    uuid = [kitCopy uuid];
     *buf = 138412290;
-    v17 = v6;
+    v17 = uuid;
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "saving notification event [ %@ ] to HealthKit", buf, 0xCu);
   }
 
-  v7 = [HAENHealthKitStore createHKCategorySampleForEvent:v4];
+  v7 = [HAENHealthKitStore createHKCategorySampleForEvent:kitCopy];
   v8 = v7;
   if (v7)
   {
@@ -144,7 +144,7 @@ LABEL_14:
     v13[2] = __55__HAENHealthKitStore_saveNotificationEventToHealthKit___block_invoke;
     v13[3] = &unk_27969F240;
     v14 = v7;
-    v15 = self;
+    selfCopy = self;
     dispatch_async(queue, v13);
 
     v10 = 0;
@@ -205,25 +205,25 @@ void __55__HAENHealthKitStore_saveNotificationEventToHealthKit___block_invoke_30
   }
 }
 
-- (id)saveNotificationEventToHealthKit:(id)a3 withDelegate:(id)a4
+- (id)saveNotificationEventToHealthKit:(id)kit withDelegate:(id)delegate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  kitCopy = kit;
+  delegateCopy = delegate;
   v8 = HAENotificationsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 uuid];
+    uuid = [kitCopy uuid];
     *buf = 138412546;
-    v20 = v9;
+    v20 = uuid;
     v21 = 2112;
-    v22 = v7;
+    v22 = delegateCopy;
     _os_log_impl(&dword_25081E000, v8, OS_LOG_TYPE_DEFAULT, "saving notification event [ %@ ] to HealthKit using delegate: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (delegateCopy)
   {
-    v10 = [HAENHealthKitStore createHKCategorySampleForEvent:v6];
+    v10 = [HAENHealthKitStore createHKCategorySampleForEvent:kitCopy];
     v11 = v10;
     if (v10)
     {
@@ -233,7 +233,7 @@ void __55__HAENHealthKitStore_saveNotificationEventToHealthKit___block_invoke_30
       v16[2] = __68__HAENHealthKitStore_saveNotificationEventToHealthKit_withDelegate___block_invoke;
       v16[3] = &unk_27969F240;
       v17 = v10;
-      v18 = v7;
+      v18 = delegateCopy;
       dispatch_async(queue, v16);
 
       v13 = 0;

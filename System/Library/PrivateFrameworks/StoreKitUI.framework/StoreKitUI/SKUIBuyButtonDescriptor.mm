@@ -1,19 +1,19 @@
 @interface SKUIBuyButtonDescriptor
-- (BOOL)canPerformLocalActionWithItemState:(id)a3;
-- (BOOL)canPersonalizeUsingItemState:(id)a3;
-- (void)setButtonText:(id)a3;
-- (void)setConfirmationText:(id)a3;
-- (void)setStoreIdentifier:(id)a3;
-- (void)setVariantIdentifier:(id)a3;
+- (BOOL)canPerformLocalActionWithItemState:(id)state;
+- (BOOL)canPersonalizeUsingItemState:(id)state;
+- (void)setButtonText:(id)text;
+- (void)setConfirmationText:(id)text;
+- (void)setStoreIdentifier:(id)identifier;
+- (void)setVariantIdentifier:(id)identifier;
 @end
 
 @implementation SKUIBuyButtonDescriptor
 
-- (void)setButtonText:(id)a3
+- (void)setButtonText:(id)text
 {
-  if (self->_buttonText != a3)
+  if (self->_buttonText != text)
   {
-    v5 = [a3 copy];
+    v5 = [text copy];
     buttonText = self->_buttonText;
     self->_buttonText = v5;
 
@@ -21,11 +21,11 @@
   }
 }
 
-- (void)setConfirmationText:(id)a3
+- (void)setConfirmationText:(id)text
 {
-  if (self->_confirmationText != a3)
+  if (self->_confirmationText != text)
   {
-    v5 = [a3 copy];
+    v5 = [text copy];
     confirmationText = self->_confirmationText;
     self->_confirmationText = v5;
 
@@ -33,11 +33,11 @@
   }
 }
 
-- (void)setStoreIdentifier:(id)a3
+- (void)setStoreIdentifier:(id)identifier
 {
-  if (self->_storeIdentifier != a3)
+  if (self->_storeIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     storeIdentifier = self->_storeIdentifier;
     self->_storeIdentifier = v5;
 
@@ -45,11 +45,11 @@
   }
 }
 
-- (void)setVariantIdentifier:(id)a3
+- (void)setVariantIdentifier:(id)identifier
 {
-  if (self->_variantIdentifier != a3)
+  if (self->_variantIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     variantIdentifier = self->_variantIdentifier;
     self->_variantIdentifier = v5;
 
@@ -57,19 +57,19 @@
   }
 }
 
-- (BOOL)canPersonalizeUsingItemState:(id)a3
+- (BOOL)canPersonalizeUsingItemState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_buttonType <= 3uLL && (itemIdentifier = self->_itemIdentifier, [v4 itemIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "longLongValue"), v7, itemIdentifier == v8) && ((storeIdentifier = self->_storeIdentifier) == 0 || (objc_msgSend(v5, "storeIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = -[SKUIStoreIdentifier isEqual:](storeIdentifier, "isEqual:", v10), v10, v11)))
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_buttonType <= 3uLL && (itemIdentifier = self->_itemIdentifier, [stateCopy itemIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "longLongValue"), v7, itemIdentifier == v8) && ((storeIdentifier = self->_storeIdentifier) == 0 || (objc_msgSend(v5, "storeIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = -[SKUIStoreIdentifier isEqual:](storeIdentifier, "isEqual:", v10), v10, v11)))
   {
-    v12 = [v5 variantIdentifier];
-    v13 = [(SKUIBuyButtonDescriptor *)self variantIdentifier];
-    v14 = v13;
+    variantIdentifier = [v5 variantIdentifier];
+    variantIdentifier2 = [(SKUIBuyButtonDescriptor *)self variantIdentifier];
+    v14 = variantIdentifier2;
     v15 = 1;
-    if (v12 && v13)
+    if (variantIdentifier && variantIdentifier2)
     {
-      v15 = [v12 isEqualToString:v13];
+      v15 = [variantIdentifier isEqualToString:variantIdentifier2];
     }
   }
 
@@ -81,13 +81,13 @@
   return v15;
 }
 
-- (BOOL)canPerformLocalActionWithItemState:(id)a3
+- (BOOL)canPerformLocalActionWithItemState:(id)state
 {
-  v4 = a3;
-  if ([(SKUIBuyButtonDescriptor *)self canPersonalizeUsingItemState:v4])
+  stateCopy = state;
+  if ([(SKUIBuyButtonDescriptor *)self canPersonalizeUsingItemState:stateCopy])
   {
     buttonType = self->_buttonType;
-    v6 = (buttonType != 2) ^ [v4 activeStateIsPreview];
+    v6 = (buttonType != 2) ^ [stateCopy activeStateIsPreview];
   }
 
   else

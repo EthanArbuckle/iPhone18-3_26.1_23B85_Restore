@@ -2,8 +2,8 @@
 - (SCNMTLComputePipeline)init;
 - (id)description;
 - (void)dealloc;
-- (void)setComputeFunction:(void *)a1;
-- (void)setState:(void *)a1;
+- (void)setComputeFunction:(void *)function;
+- (void)setState:(void *)state;
 @end
 
 @implementation SCNMTLComputePipeline
@@ -29,19 +29,19 @@
   return [v3 stringWithFormat:@"<%@: %p>", NSStringFromClass(v4), self];
 }
 
-- (void)setState:(void *)a1
+- (void)setState:(void *)state
 {
-  if (a1)
+  if (state)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 8);
+    objc_setProperty_nonatomic(state, newValue, newValue, 8);
   }
 }
 
-- (void)setComputeFunction:(void *)a1
+- (void)setComputeFunction:(void *)function
 {
-  if (a1)
+  if (function)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic(function, newValue, newValue, 16);
   }
 }
 

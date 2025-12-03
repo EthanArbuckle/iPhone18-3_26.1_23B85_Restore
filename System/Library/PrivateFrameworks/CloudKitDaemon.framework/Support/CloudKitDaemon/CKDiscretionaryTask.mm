@@ -1,28 +1,28 @@
 @interface CKDiscretionaryTask
 - (CKDiscretionaryClientConnection)connection;
-- (CKDiscretionaryTask)initWithConnection:(id)a3 operationID:(id)a4 group:(id)a5 bundleID:(id)a6 isSpringBoardApp:(BOOL)a7 requiresPastBuddy:(BOOL)a8 options:(id)a9 schedulerClass:(Class)a10 startHandler:(id)a11 suspendHandler:(id)a12;
+- (CKDiscretionaryTask)initWithConnection:(id)connection operationID:(id)d group:(id)group bundleID:(id)iD isSpringBoardApp:(BOOL)app requiresPastBuddy:(BOOL)buddy options:(id)options schedulerClass:(Class)self0 startHandler:(id)self1 suspendHandler:(id)self2;
 - (NDApplication)application;
 - (id)_schedulerTaskIdentifier;
-- (void)applicationEnteredForeground:(id)a3;
-- (void)applicationNoLongerInForeground:(id)a3;
+- (void)applicationEnteredForeground:(id)foreground;
+- (void)applicationNoLongerInForeground:(id)foreground;
 - (void)complete;
 - (void)dealloc;
-- (void)setResourceTimer:(id)a3;
-- (void)setTask:(id)a3;
+- (void)setResourceTimer:(id)timer;
+- (void)setTask:(id)task;
 @end
 
 @implementation CKDiscretionaryTask
 
-- (CKDiscretionaryTask)initWithConnection:(id)a3 operationID:(id)a4 group:(id)a5 bundleID:(id)a6 isSpringBoardApp:(BOOL)a7 requiresPastBuddy:(BOOL)a8 options:(id)a9 schedulerClass:(Class)a10 startHandler:(id)a11 suspendHandler:(id)a12
+- (CKDiscretionaryTask)initWithConnection:(id)connection operationID:(id)d group:(id)group bundleID:(id)iD isSpringBoardApp:(BOOL)app requiresPastBuddy:(BOOL)buddy options:(id)options schedulerClass:(Class)self0 startHandler:(id)self1 suspendHandler:(id)self2
 {
-  v67 = a8;
-  v17 = a3;
-  v69 = a4;
-  v70 = a5;
-  v71 = a6;
-  v18 = a9;
-  v19 = a11;
-  v20 = a12;
+  buddyCopy = buddy;
+  connectionCopy = connection;
+  dCopy = d;
+  groupCopy = group;
+  iDCopy = iD;
+  optionsCopy = options;
+  handlerCopy = handler;
+  suspendHandlerCopy = suspendHandler;
   v80.receiver = self;
   v80.super_class = CKDiscretionaryTask;
   v21 = [(CKDiscretionaryTask *)&v80 init];
@@ -32,41 +32,41 @@
     goto LABEL_36;
   }
 
-  objc_storeWeak(&v21->_connection, v17);
-  v23 = [v17 serialQueue];
+  objc_storeWeak(&v21->_connection, connectionCopy);
+  serialQueue = [connectionCopy serialQueue];
   serialQueue = v22->_serialQueue;
-  v22->_serialQueue = v23;
+  v22->_serialQueue = serialQueue;
 
-  objc_storeStrong(&v22->_operationID, a4);
-  objc_storeStrong(&v22->_options, a9);
-  objc_storeStrong(&v22->_schedulerClass, a10);
-  v25 = [v19 copy];
+  objc_storeStrong(&v22->_operationID, d);
+  objc_storeStrong(&v22->_options, options);
+  objc_storeStrong(&v22->_schedulerClass, class);
+  v25 = [handlerCopy copy];
   startHandler = v22->_startHandler;
   v22->_startHandler = v25;
 
-  v27 = [v20 copy];
+  v27 = [suspendHandlerCopy copy];
   suspendHandler = v22->_suspendHandler;
   v22->_suspendHandler = v27;
 
-  objc_storeStrong(&v22->_bundleID, a6);
-  v22->_isSpringBoardApp = a7;
+  objc_storeStrong(&v22->_bundleID, iD);
+  v22->_isSpringBoardApp = app;
   v29 = os_transaction_create();
   transaction = v22->_transaction;
   v22->_transaction = v29;
 
-  v31 = [v18 applicationBundleIdentifierOverride];
-  bundleID = v31;
-  if (!v31)
+  applicationBundleIdentifierOverride = [optionsCopy applicationBundleIdentifierOverride];
+  bundleID = applicationBundleIdentifierOverride;
+  if (!applicationBundleIdentifierOverride)
   {
     bundleID = v22->_bundleID;
   }
 
-  v33 = [v18 secondarySourceApplicationBundleId];
-  v34 = [NDCloudContainer containerIDForPrimaryIdentifier:bundleID secondaryIdentifier:v33];
+  secondarySourceApplicationBundleId = [optionsCopy secondarySourceApplicationBundleId];
+  v34 = [NDCloudContainer containerIDForPrimaryIdentifier:bundleID secondaryIdentifier:secondarySourceApplicationBundleId];
   cloudDocsContainerID = v22->_cloudDocsContainerID;
   v22->_cloudDocsContainerID = v34;
 
-  if (!v17 || !v22->_serialQueue || !v22->_operationID || (v36 = v22->_options) == 0 || !v22->_schedulerClass || !v22->_startHandler || !v22->_suspendHandler || !v22->_bundleID || !v22->_transaction)
+  if (!connectionCopy || !v22->_serialQueue || !v22->_operationID || (v36 = v22->_options) == 0 || !v22->_schedulerClass || !v22->_startHandler || !v22->_suspendHandler || !v22->_bundleID || !v22->_transaction)
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -89,11 +89,11 @@
       *buf = 134220032;
       v82 = v41;
       v83 = 2048;
-      v84 = v17;
+      v84 = connectionCopy;
       v85 = 2048;
       v86 = operationID;
       v87 = 2048;
-      v88 = options;
+      optionsCopy2 = options;
       v89 = 2048;
       v90 = schedulerClass;
       v91 = 2048;
@@ -110,19 +110,19 @@
     goto LABEL_21;
   }
 
-  v37 = [(CKDiscretionaryOptions *)v36 discretionaryNetworkBehavior];
-  if (v37 == 2)
+  discretionaryNetworkBehavior = [(CKDiscretionaryOptions *)v36 discretionaryNetworkBehavior];
+  if (discretionaryNetworkBehavior == 2)
   {
     v38 = 4;
   }
 
   else
   {
-    if (v37 == 1)
+    if (discretionaryNetworkBehavior == 1)
     {
-      v48 = [(CKDiscretionaryTask *)v22 application];
-      [v48 addObserver:v22];
-      if ([v48 hasForegroundBackgroundStates] && !objc_msgSend(v48, "isForeground"))
+      application = [(CKDiscretionaryTask *)v22 application];
+      [application addObserver:v22];
+      if ([application hasForegroundBackgroundStates] && !objc_msgSend(application, "isForeground"))
       {
         v49 = 3;
       }
@@ -137,7 +137,7 @@
       goto LABEL_30;
     }
 
-    if (v37)
+    if (discretionaryNetworkBehavior)
     {
       v66 = 0;
       goto LABEL_30;
@@ -157,10 +157,10 @@ LABEL_30:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v51 = v50;
-    v52 = [(CKDiscretionaryTask *)v22 operationID];
+    operationID = [(CKDiscretionaryTask *)v22 operationID];
     v53 = sub_100005454(v66);
     *buf = 138543618;
-    v82 = v52;
+    v82 = operationID;
     v83 = 2114;
     v84 = v53;
     _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "%{public}@ scheduling in state %{public}@", buf, 0x16u);
@@ -180,7 +180,7 @@ LABEL_30:
   v75[2] = sub_1000071B0;
   v75[3] = &unk_100010888;
   objc_copyWeak(&v76, buf);
-  v56 = [(objc_class *)a10 scheduleOperationID:v69 group:v70 bundleID:v71 requiresPastBuddy:v67 options:v18 state:v66 queue:v54 startHandler:v77 suspendHandler:v75];
+  v56 = [(objc_class *)class scheduleOperationID:dCopy group:groupCopy bundleID:iDCopy requiresPastBuddy:buddyCopy options:optionsCopy state:v66 queue:v54 startHandler:v77 suspendHandler:v75];
   v57 = v55[15];
   v55[15] = v56;
 
@@ -194,7 +194,7 @@ LABEL_30:
   handler[3] = &unk_100010480;
   objc_copyWeak(&v74, buf);
   dispatch_source_set_event_handler(v59, handler);
-  [v18 timeoutIntervalForResource];
+  [optionsCopy timeoutIntervalForResource];
   v61 = dispatch_time(0, (v60 * 1000000000.0));
   dispatch_source_set_timer(v55[13], v61, 0xFFFFFFFFFFFFFFFFLL, 0);
   dispatch_activate(v55[13]);
@@ -243,24 +243,24 @@ LABEL_37:
   [(CKDiscretionaryTask *)&v3 dealloc];
 }
 
-- (void)setResourceTimer:(id)a3
+- (void)setResourceTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   resourceTimer = self->_resourceTimer;
-  if (resourceTimer != v4 && resourceTimer != 0)
+  if (resourceTimer != timerCopy && resourceTimer != 0)
   {
     dispatch_source_cancel(resourceTimer);
     resourceTimer = self->_resourceTimer;
   }
 
-  self->_resourceTimer = v4;
+  self->_resourceTimer = timerCopy;
 }
 
-- (void)setTask:(id)a3
+- (void)setTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   task = self->_task;
-  if (task != v4 && task != 0)
+  if (task != taskCopy && task != 0)
   {
     if (self->_running)
     {
@@ -274,7 +274,7 @@ LABEL_37:
   }
 
   v7 = self->_task;
-  self->_task = v4;
+  self->_task = taskCopy;
 }
 
 - (NDApplication)application
@@ -286,9 +286,9 @@ LABEL_37:
 
   if (!self->_cloudDocsContainerID)
   {
-    v9 = [(CKDiscretionaryOptions *)self->_options applicationBundleIdentifierOverride];
-    bundleID = v9;
-    if (!v9)
+    applicationBundleIdentifierOverride = [(CKDiscretionaryOptions *)self->_options applicationBundleIdentifierOverride];
+    bundleID = applicationBundleIdentifierOverride;
+    if (!applicationBundleIdentifierOverride)
     {
       bundleID = self->_bundleID;
     }
@@ -337,10 +337,10 @@ LABEL_14:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(CKDiscretionaryTask *)self operationID];
+    operationID = [(CKDiscretionaryTask *)self operationID];
     cloudDocsContainerID = self->_cloudDocsContainerID;
     v17 = 138412546;
-    v18 = v7;
+    v18 = operationID;
     v19 = 2114;
     v20 = cloudDocsContainerID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "{public}%@ monitoring cloud docs container ID %{public}@", &v17, 0x16u);
@@ -364,13 +364,13 @@ LABEL_16:
 
   else
   {
-    v4 = [(CKDiscretionaryOptions *)self->_options applicationBundleIdentifierOverride];
+    applicationBundleIdentifierOverride = [(CKDiscretionaryOptions *)self->_options applicationBundleIdentifierOverride];
 
     bundleID = self->_bundleID;
-    if (v4)
+    if (applicationBundleIdentifierOverride)
     {
-      v6 = [(CKDiscretionaryOptions *)self->_options applicationBundleIdentifierOverride];
-      [v3 appendFormat:@":%@-%@", bundleID, v6];
+      applicationBundleIdentifierOverride2 = [(CKDiscretionaryOptions *)self->_options applicationBundleIdentifierOverride];
+      [v3 appendFormat:@":%@-%@", bundleID, applicationBundleIdentifierOverride2];
     }
 
     else
@@ -382,9 +382,9 @@ LABEL_16:
   return v3;
 }
 
-- (void)applicationEnteredForeground:(id)a3
+- (void)applicationEnteredForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -394,9 +394,9 @@ LABEL_16:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(CKDiscretionaryTask *)self operationID];
+    operationID = [(CKDiscretionaryTask *)self operationID];
     *buf = 138543362;
-    v12 = v7;
+    v12 = operationID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "applicationEnteredForeground, updating priority of %{public}@", buf, 0xCu);
   }
 
@@ -412,9 +412,9 @@ LABEL_16:
   objc_destroyWeak(buf);
 }
 
-- (void)applicationNoLongerInForeground:(id)a3
+- (void)applicationNoLongerInForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -424,9 +424,9 @@ LABEL_16:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(CKDiscretionaryTask *)self operationID];
+    operationID = [(CKDiscretionaryTask *)self operationID];
     *buf = 138543362;
-    v12 = v7;
+    v12 = operationID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "applicationNoLongerInForeground, updating priority of %{public}@", buf, 0xCu);
   }
 
@@ -453,9 +453,9 @@ LABEL_16:
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(CKDiscretionaryTask *)self operationID];
+    operationID = [(CKDiscretionaryTask *)self operationID];
     *buf = 138543362;
-    v9 = v5;
+    v9 = operationID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%{public}@ complete", buf, 0xCu);
   }
 

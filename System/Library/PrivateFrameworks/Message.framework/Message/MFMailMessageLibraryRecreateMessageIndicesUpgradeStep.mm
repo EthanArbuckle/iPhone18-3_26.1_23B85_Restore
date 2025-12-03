@@ -1,13 +1,13 @@
 @interface MFMailMessageLibraryRecreateMessageIndicesUpgradeStep
-+ (BOOL)runWithConnection:(id)a3;
++ (BOOL)runWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryRecreateMessageIndicesUpgradeStep
 
-+ (BOOL)runWithConnection:(id)a3
++ (BOOL)runWithConnection:(id)connection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  connectionCopy = connection;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -25,7 +25,7 @@
           objc_enumerationMutation(&unk_1F27754F0);
         }
 
-        if (([v3 executeStatementString:*(*(&v10 + 1) + 8 * i) errorMessage:@"Adding index"] & 1) == 0)
+        if (([connectionCopy executeStatementString:*(*(&v10 + 1) + 8 * i) errorMessage:@"Adding index"] & 1) == 0)
         {
           v7 = 0;
           goto LABEL_11;

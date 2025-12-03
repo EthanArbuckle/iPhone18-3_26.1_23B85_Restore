@@ -1,9 +1,9 @@
 @interface TileCellContentView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSArray)standardLabels;
-- (_TtC6HomeUI19TileCellContentView)initWithFrame:(CGRect)a3;
+- (_TtC6HomeUI19TileCellContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
@@ -29,19 +29,19 @@
   return v10;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20D015004(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20D015004(change);
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = sub_20D01524C(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v10 = sub_20D01524C(width, height, priority, fittingPriority);
   v12 = v11;
 
   v13 = v10;
@@ -51,7 +51,7 @@
   return result;
 }
 
-- (_TtC6HomeUI19TileCellContentView)initWithFrame:(CGRect)a3
+- (_TtC6HomeUI19TileCellContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -60,13 +60,13 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   TileCellContentView.updateConstraints()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TileCellContentView.layoutSubviews()();
 }
 

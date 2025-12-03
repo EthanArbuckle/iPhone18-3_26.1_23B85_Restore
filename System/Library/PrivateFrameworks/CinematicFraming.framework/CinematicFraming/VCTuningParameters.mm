@@ -1,6 +1,6 @@
 @interface VCTuningParameters
 - (VCTuningParameters)init;
-- (VCTuningParameters)initWithDictionary:(id)a3;
+- (VCTuningParameters)initWithDictionary:(id)dictionary;
 @end
 
 @implementation VCTuningParameters
@@ -27,15 +27,15 @@
   return v6;
 }
 
-- (VCTuningParameters)initWithDictionary:(id)a3
+- (VCTuningParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = VCTuningParameters;
   v5 = [(VCTuningParameters *)&v20 init];
   plist = v5->_plist;
-  v5->_plist = v4;
-  v7 = v4;
+  v5->_plist = dictionaryCopy;
+  v7 = dictionaryCopy;
 
   v8 = v5->_plist;
   v21 = 0;

@@ -1,24 +1,24 @@
 @interface _PUWallpaperShuffleMediaProviderImageOperation
-- (_PUWallpaperShuffleMediaProviderImageOperation)initWithSegmentationOperation:(id)a3 requestDescriptor:(id)a4 resultHandler:(id)a5;
-- (void)_handleRenderResponse:(id)a3;
+- (_PUWallpaperShuffleMediaProviderImageOperation)initWithSegmentationOperation:(id)operation requestDescriptor:(id)descriptor resultHandler:(id)handler;
+- (void)_handleRenderResponse:(id)response;
 - (void)cancel;
 - (void)px_start;
 @end
 
 @implementation _PUWallpaperShuffleMediaProviderImageOperation
 
-- (void)_handleRenderResponse:(id)a3
+- (void)_handleRenderResponse:(id)response
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v27 = 0;
-  v4 = [a3 result:&v27];
+  v4 = [response result:&v27];
   v5 = v27;
   v6 = v5;
   if (v4)
   {
     v7 = MEMORY[0x1E69B3B10];
-    v8 = [v4 image];
-    v9 = [v7 newCGImageFromBufferImage:v8];
+    image = [v4 image];
+    v9 = [v7 newCGImageFromBufferImage:image];
 
     if (v9)
     {
@@ -68,13 +68,13 @@ LABEL_10:
   }
 
 LABEL_11:
-  v17 = [(_PUWallpaperShuffleMediaProviderImageOperation *)self requestDescriptor];
-  v18 = [v17 options];
-  v19 = [v18 resultHandlerQueue];
-  v20 = v19;
-  if (v19)
+  requestDescriptor = [(_PUWallpaperShuffleMediaProviderImageOperation *)self requestDescriptor];
+  options = [requestDescriptor options];
+  resultHandlerQueue = [options resultHandlerQueue];
+  v20 = resultHandlerQueue;
+  if (resultHandlerQueue)
   {
-    v21 = v19;
+    v21 = resultHandlerQueue;
   }
 
   else
@@ -99,24 +99,24 @@ LABEL_11:
   v26[1] = *MEMORY[0x1E69E9840];
   if (![(_PUWallpaperShuffleMediaProviderImageOperation *)self isCancelled])
   {
-    v4 = [(_PUWallpaperShuffleMediaProviderImageOperation *)self segmentationLoadingOperation];
-    if (([v4 isFinished] & 1) == 0)
+    segmentationLoadingOperation = [(_PUWallpaperShuffleMediaProviderImageOperation *)self segmentationLoadingOperation];
+    if (([segmentationLoadingOperation isFinished] & 1) == 0)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleMediaProvider.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"segmentationOperation.isFinished"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUWallpaperShuffleMediaProvider.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"segmentationOperation.isFinished"}];
     }
 
-    v5 = [v4 segmentationItem];
-    v6 = v5;
-    if (!v5)
+    segmentationItem = [segmentationLoadingOperation segmentationItem];
+    v6 = segmentationItem;
+    if (!segmentationItem)
     {
-      v13 = [v4 error];
-      v7 = v13;
+      error = [segmentationLoadingOperation error];
+      composition = error;
       v14 = MEMORY[0x1E696ABC0];
-      if (v13)
+      if (error)
       {
         v25 = *MEMORY[0x1E696AA08];
-        v26[0] = v13;
+        v26[0] = error;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       }
 
@@ -129,7 +129,7 @@ LABEL_11:
       error = self->_error;
       self->_error = v19;
 
-      if (v7)
+      if (composition)
       {
       }
 
@@ -137,18 +137,18 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    v7 = [v5 composition];
-    v8 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithComposition:v7];
+    composition = [segmentationItem composition];
+    v8 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithComposition:composition];
     v9 = [objc_alloc(MEMORY[0x1E69B3C00]) initWithLevel:0];
     [v8 setPriority:v9];
 
     objc_storeStrong(&self->_renderRequest, v8);
-    v10 = [(_PUWallpaperShuffleMediaProviderImageOperation *)self requestDescriptor];
-    v11 = [v10 contentMode];
+    requestDescriptor = [(_PUWallpaperShuffleMediaProviderImageOperation *)self requestDescriptor];
+    contentMode = [requestDescriptor contentMode];
 
-    if (v11)
+    if (contentMode)
     {
-      if (v11 != 1)
+      if (contentMode != 1)
       {
 LABEL_15:
         objc_initWeak(&location, self);
@@ -174,8 +174,8 @@ LABEL_20:
     }
 
     v16 = objc_alloc(*v12);
-    v17 = [(_PUWallpaperShuffleMediaProviderImageOperation *)self requestDescriptor];
-    [v17 targetSize];
+    requestDescriptor2 = [(_PUWallpaperShuffleMediaProviderImageOperation *)self requestDescriptor];
+    [requestDescriptor2 targetSize];
     v18 = [v16 initWithTargetSize:?];
     [v8 setScalePolicy:v18];
 
@@ -187,31 +187,31 @@ LABEL_20:
 
 - (void)cancel
 {
-  v3 = [(NUBufferRenderRequest *)self->_renderRequest renderContext];
-  [v3 cancelAllRequests];
+  renderContext = [(NUBufferRenderRequest *)self->_renderRequest renderContext];
+  [renderContext cancelAllRequests];
 
   v4.receiver = self;
   v4.super_class = _PUWallpaperShuffleMediaProviderImageOperation;
   [(PXAsyncOperation *)&v4 cancel];
 }
 
-- (_PUWallpaperShuffleMediaProviderImageOperation)initWithSegmentationOperation:(id)a3 requestDescriptor:(id)a4 resultHandler:(id)a5
+- (_PUWallpaperShuffleMediaProviderImageOperation)initWithSegmentationOperation:(id)operation requestDescriptor:(id)descriptor resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  operationCopy = operation;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = _PUWallpaperShuffleMediaProviderImageOperation;
   v12 = [(PXAsyncOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestDescriptor, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_requestDescriptor, descriptor);
+    v14 = [handlerCopy copy];
     resultHandler = v13->_resultHandler;
     v13->_resultHandler = v14;
 
-    objc_storeStrong(&v13->_segmentationLoadingOperation, a3);
+    objc_storeStrong(&v13->_segmentationLoadingOperation, operation);
     [(_PUWallpaperShuffleMediaProviderImageOperation *)v13 addDependency:v13->_segmentationLoadingOperation];
   }
 

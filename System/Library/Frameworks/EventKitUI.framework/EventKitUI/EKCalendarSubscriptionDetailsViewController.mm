@@ -1,30 +1,30 @@
 @interface EKCalendarSubscriptionDetailsViewController
 - (BOOL)enableDoneInitially;
 - (BOOL)isNewCalendar;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (EKCalendarEditItemDelegate)delegate;
-- (EKCalendarSubscriptionDetailsViewController)initWithCalendar:(id)a3 store:(id)a4;
+- (EKCalendarSubscriptionDetailsViewController)initWithCalendar:(id)calendar store:(id)store;
 - (id)_tableHeaderView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int)sectionForCalendarEditItem:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)calendarItemStartedEditing:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int)sectionForCalendarEditItem:(id)item;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)calendarItemStartedEditing:(id)editing;
 - (void)resetBackgroundColor;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation EKCalendarSubscriptionDetailsViewController
 
-- (EKCalendarSubscriptionDetailsViewController)initWithCalendar:(id)a3 store:(id)a4
+- (EKCalendarSubscriptionDetailsViewController)initWithCalendar:(id)calendar store:(id)store
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v6 = a4;
+  calendarCopy = calendar;
+  storeCopy = store;
   v38.receiver = self;
   v38.super_class = EKCalendarSubscriptionDetailsViewController;
   v7 = [(EKCalendarSubscriptionDetailsViewController *)&v38 initWithStyle:2];
@@ -41,9 +41,9 @@
     v35[1] = 3221225472;
     v35[2] = __70__EKCalendarSubscriptionDetailsViewController_initWithCalendar_store___block_invoke;
     v35[3] = &unk_1E8442500;
-    v10 = v27;
+    v10 = calendarCopy;
     v36 = v10;
-    v11 = v6;
+    v11 = storeCopy;
     v37 = v11;
     v12 = [v9 predicateWithBlock:v35];
     v13 = [v25 filteredArrayUsingPredicate:v12];
@@ -116,9 +116,9 @@ void __70__EKCalendarSubscriptionDetailsViewController_initWithCalendar_store___
 
 - (void)resetBackgroundColor
 {
-  v3 = [(UIViewController *)self isPresentedInsidePopover];
-  v5 = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
-  if (v3)
+  isPresentedInsidePopover = [(UIViewController *)self isPresentedInsidePopover];
+  tableView = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
+  if (isPresentedInsidePopover)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -128,17 +128,17 @@ void __70__EKCalendarSubscriptionDetailsViewController_initWithCalendar_store___
     [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
   v4 = ;
-  [v5 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = EKCalendarSubscriptionDetailsViewController;
-  [(EKCalendarSubscriptionDetailsViewController *)&v6 viewWillAppear:a3];
-  v4 = [(EKCalendarSubscriptionDetailsViewController *)self _tableHeaderView];
-  v5 = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
-  [v5 setTableHeaderView:v4];
+  [(EKCalendarSubscriptionDetailsViewController *)&v6 viewWillAppear:appear];
+  _tableHeaderView = [(EKCalendarSubscriptionDetailsViewController *)self _tableHeaderView];
+  tableView = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
+  [tableView setTableHeaderView:_tableHeaderView];
 }
 
 - (id)_tableHeaderView
@@ -147,8 +147,8 @@ void __70__EKCalendarSubscriptionDetailsViewController_initWithCalendar_store___
   if (!tableHeaderView)
   {
     v4 = [EKSubscribedCalendarDescriptionHeader alloc];
-    v5 = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
-    [v5 bounds];
+    tableView = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
+    [tableView bounds];
     v6 = [(EKSubscribedCalendarDescriptionHeader *)v4 initWithParentWidth:CGRectGetWidth(v10)];
     v7 = self->_tableHeaderView;
     self->_tableHeaderView = v6;
@@ -162,78 +162,78 @@ void __70__EKCalendarSubscriptionDetailsViewController_initWithCalendar_store___
 - (void)viewWillLayoutSubviews
 {
   tableHeaderView = self->_tableHeaderView;
-  v3 = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
-  [v3 bounds];
+  tableView = [(EKCalendarSubscriptionDetailsViewController *)self tableView];
+  [tableView bounds];
   [(EKSubscribedCalendarDescriptionHeader *)tableHeaderView updateLayoutForWidth:CGRectGetWidth(v5)];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 numberOfSubitems];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  numberOfSubitems = [v4 numberOfSubitems];
 
-  return v5;
+  return numberOfSubitems;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   v8 = [v6 cellForSubitemAtIndex:v7];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 headerTitle];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  headerTitle = [v4 headerTitle];
 
-  return v5;
+  return headerTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:a4];
-  v5 = [v4 footerTitle];
+  v4 = [(NSArray *)self->_sections objectAtIndexedSubscript:section];
+  footerTitle = [v4 footerTitle];
 
-  return v5;
+  return footerTitle;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [v6 section]);
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
   [v8 calendarEditor:0 didSelectSubitem:v7];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v5 = a4;
-  v6 = -[NSArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [v5 section]);
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = -[NSArray objectAtIndexedSubscript:](sections, "objectAtIndexedSubscript:", [pathCopy section]);
+  v7 = [pathCopy row];
 
-  LOBYTE(v5) = [v6 calendarEditor:0 shouldSelectSubitem:v7];
-  return v5;
+  LOBYTE(pathCopy) = [v6 calendarEditor:0 shouldSelectSubitem:v7];
+  return pathCopy;
 }
 
-- (void)calendarItemStartedEditing:(id)a3
+- (void)calendarItemStartedEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(EKCalendarSubscriptionDetailsViewController *)self delegate];
-  [v5 calendarItemStartedEditing:v4];
+  editingCopy = editing;
+  delegate = [(EKCalendarSubscriptionDetailsViewController *)self delegate];
+  [delegate calendarItemStartedEditing:editingCopy];
 }
 
-- (int)sectionForCalendarEditItem:(id)a3
+- (int)sectionForCalendarEditItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(NSArray *)self->_sections count])
   {
     v5 = 0;
@@ -241,7 +241,7 @@ void __70__EKCalendarSubscriptionDetailsViewController_initWithCalendar_store___
     {
       v6 = [(NSArray *)self->_sections objectAtIndexedSubscript:v5];
 
-      if (v6 == v4)
+      if (v6 == itemCopy)
       {
         break;
       }
@@ -264,18 +264,18 @@ LABEL_5:
 
 - (BOOL)isNewCalendar
 {
-  v2 = [(EKCalendarSubscriptionDetailsViewController *)self delegate];
-  v3 = [v2 isNewCalendar];
+  delegate = [(EKCalendarSubscriptionDetailsViewController *)self delegate];
+  isNewCalendar = [delegate isNewCalendar];
 
-  return v3;
+  return isNewCalendar;
 }
 
 - (BOOL)enableDoneInitially
 {
-  v2 = [(EKCalendarSubscriptionDetailsViewController *)self delegate];
-  v3 = [v2 enableDoneInitially];
+  delegate = [(EKCalendarSubscriptionDetailsViewController *)self delegate];
+  enableDoneInitially = [delegate enableDoneInitially];
 
-  return v3;
+  return enableDoneInitially;
 }
 
 - (EKCalendarEditItemDelegate)delegate

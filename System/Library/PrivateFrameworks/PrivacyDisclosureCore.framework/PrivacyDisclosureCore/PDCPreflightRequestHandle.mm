@@ -1,8 +1,8 @@
 @interface PDCPreflightRequestHandle
 + (id)alreadyCompletedRequestHandle;
-- (PDCPreflightRequestHandle)initWithQueue:(id)a3 completionHandler:(id)a4;
+- (PDCPreflightRequestHandle)initWithQueue:(id)queue completionHandler:(id)handler;
 - (void)cancel;
-- (void)completeRequestWithResponse:(unint64_t)a3;
+- (void)completeRequestWithResponse:(unint64_t)response;
 @end
 
 @implementation PDCPreflightRequestHandle
@@ -28,10 +28,10 @@ void __58__PDCPreflightRequestHandle_alreadyCompletedRequestHandle__block_invoke
   atomic_exchange((alreadyCompletedRequestHandle_result + 8), 1u);
 }
 
-- (PDCPreflightRequestHandle)initWithQueue:(id)a3 completionHandler:(id)a4
+- (PDCPreflightRequestHandle)initWithQueue:(id)queue completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v15.receiver = self;
   v15.super_class = PDCPreflightRequestHandle;
   v9 = [(PDCPreflightRequestHandle *)&v15 init];
@@ -39,8 +39,8 @@ void __58__PDCPreflightRequestHandle_alreadyCompletedRequestHandle__block_invoke
   if (v9)
   {
     v9->_isComplete._Value = 0;
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [handlerCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v11;
 
@@ -50,7 +50,7 @@ void __58__PDCPreflightRequestHandle_alreadyCompletedRequestHandle__block_invoke
   return v10;
 }
 
-- (void)completeRequestWithResponse:(unint64_t)a3
+- (void)completeRequestWithResponse:(unint64_t)response
 {
   if ((atomic_exchange(&self->_isComplete._Value, 1u) & 1) == 0)
   {
@@ -61,7 +61,7 @@ void __58__PDCPreflightRequestHandle_alreadyCompletedRequestHandle__block_invoke
     v10[2] = __57__PDCPreflightRequestHandle_completeRequestWithResponse___block_invoke;
     v10[3] = &unk_279AA1EA8;
     v11 = v5;
-    v12 = a3;
+    responseCopy = response;
     v7 = v5;
     dispatch_async(queue, v10);
     completionHandler = self->_completionHandler;

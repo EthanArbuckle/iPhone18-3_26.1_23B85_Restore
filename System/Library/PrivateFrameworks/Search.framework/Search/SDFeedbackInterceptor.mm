@@ -1,19 +1,19 @@
 @interface SDFeedbackInterceptor
 + (id)sharedInstance;
 - (SDFeedbackInterceptor)init;
-- (id)_itemsFromSentSectionsWithProtectionClasses:(id)a3 filterWithResults:(id)a4;
-- (void)annotateRankingFeedback:(id)a3 completion:(id)a4;
+- (id)_itemsFromSentSectionsWithProtectionClasses:(id)classes filterWithResults:(id)results;
+- (void)annotateRankingFeedback:(id)feedback completion:(id)completion;
 - (void)cleanup;
-- (void)didClearInput:(id)a3;
-- (void)didEngageResult:(id)a3;
-- (void)didEngageSection:(id)a3;
-- (void)didPerformCommand:(id)a3;
-- (void)didRankSections:(id)a3;
+- (void)didClearInput:(id)input;
+- (void)didEngageResult:(id)result;
+- (void)didEngageSection:(id)section;
+- (void)didPerformCommand:(id)command;
+- (void)didRankSections:(id)sections;
 - (void)dumpTTRDebugFiles;
-- (void)resultsDidBecomeVisible:(id)a3;
-- (void)searchViewDidAppear:(id)a3;
-- (void)searchViewDidDisappear:(id)a3;
-- (void)willSendSections:(id)a3 forQuery:(id)a4 queryIdentifier:(unint64_t)a5 allowAnonymousDataCollection:(BOOL)a6 withRankerUsed:(id)a7 withRankingConfiguration:(id)a8 internalDebug:(BOOL)a9 keyboardPrimaryLanguage:(id)a10 clientID:(id)a11;
+- (void)resultsDidBecomeVisible:(id)visible;
+- (void)searchViewDidAppear:(id)appear;
+- (void)searchViewDidDisappear:(id)disappear;
+- (void)willSendSections:(id)sections forQuery:(id)query queryIdentifier:(unint64_t)identifier allowAnonymousDataCollection:(BOOL)collection withRankerUsed:(id)used withRankingConfiguration:(id)configuration internalDebug:(BOOL)debug keyboardPrimaryLanguage:(id)self0 clientID:(id)self1;
 @end
 
 @implementation SDFeedbackInterceptor
@@ -75,24 +75,24 @@ uint64_t __39__SDFeedbackInterceptor_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)annotateRankingFeedback:(id)a3 completion:(id)a4
+- (void)annotateRankingFeedback:(id)feedback completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v8 = SDFeedbackTransactionCreate(@"annotate");
-  v9 = [(SDFeedbackInterceptor *)self queue];
+  queue = [(SDFeedbackInterceptor *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__SDFeedbackInterceptor_annotateRankingFeedback_completion___block_invoke;
   v13[3] = &unk_1E82F94A8;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v6;
+  v15 = feedbackCopy;
+  v16 = completionCopy;
+  v10 = feedbackCopy;
   v11 = v8;
-  v12 = v7;
-  dispatch_async(v9, v13);
+  v12 = completionCopy;
+  dispatch_async(queue, v13);
 }
 
 void __60__SDFeedbackInterceptor_annotateRankingFeedback_completion___block_invoke(uint64_t a1)
@@ -298,17 +298,17 @@ LABEL_44:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)willSendSections:(id)a3 forQuery:(id)a4 queryIdentifier:(unint64_t)a5 allowAnonymousDataCollection:(BOOL)a6 withRankerUsed:(id)a7 withRankingConfiguration:(id)a8 internalDebug:(BOOL)a9 keyboardPrimaryLanguage:(id)a10 clientID:(id)a11
+- (void)willSendSections:(id)sections forQuery:(id)query queryIdentifier:(unint64_t)identifier allowAnonymousDataCollection:(BOOL)collection withRankerUsed:(id)used withRankingConfiguration:(id)configuration internalDebug:(BOOL)debug keyboardPrimaryLanguage:(id)self0 clientID:(id)self1
 {
   v80 = *MEMORY[0x1E69E9840];
-  v56 = a4;
-  v51 = a7;
-  v58 = a8;
-  v57 = a10;
-  v49 = a11;
-  v14 = a3;
+  queryCopy = query;
+  usedCopy = used;
+  configurationCopy = configuration;
+  languageCopy = language;
+  dCopy = d;
+  sectionsCopy = sections;
   v48 = SDFeedbackTransactionCreate(@"willSendSections");
-  v15 = [v14 copy];
+  v15 = [sectionsCopy copy];
 
   v16 = [v15 count];
   v17 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v15, "count")}];
@@ -334,22 +334,22 @@ LABEL_44:
         }
 
         v23 = *(*(&v75 + 1) + 8 * i);
-        v24 = [v23 results];
-        v25 = [v24 copy];
+        results = [v23 results];
+        v25 = [results copy];
         [v17 addObject:v25];
 
-        v26 = [v23 bundleIdentifier];
-        v27 = [v18 objectForKeyedSubscript:v26];
+        bundleIdentifier = [v23 bundleIdentifier];
+        v27 = [v18 objectForKeyedSubscript:bundleIdentifier];
         if (!v27)
         {
           v27 = objc_opt_new();
-          v28 = [v23 resultSet];
-          v29 = [v28 count];
+          resultSet = [v23 resultSet];
+          v29 = [resultSet count];
 
-          v30 = [v23 maxInitiallyVisibleResults];
-          if (v29 >= v30)
+          maxInitiallyVisibleResults = [v23 maxInitiallyVisibleResults];
+          if (v29 >= maxInitiallyVisibleResults)
           {
-            v31 = v30;
+            v31 = maxInitiallyVisibleResults;
           }
 
           else
@@ -358,9 +358,9 @@ LABEL_44:
           }
 
           [v27 setCountOfVisibleResults:v31];
-          [v18 setObject:v27 forKeyedSubscript:v26];
-          v32 = [v23 bundleIdentifier];
-          [v59 addObject:v32];
+          [v18 setObject:v27 forKeyedSubscript:bundleIdentifier];
+          bundleIdentifier2 = [v23 bundleIdentifier];
+          [v59 addObject:bundleIdentifier2];
         }
       }
 
@@ -370,40 +370,40 @@ LABEL_44:
     while (v20);
   }
 
-  [v58 lock];
-  v33 = [v58 queryDependentCategoryProbabilities];
-  v34 = [v33 copy];
+  [configurationCopy lock];
+  queryDependentCategoryProbabilities = [configurationCopy queryDependentCategoryProbabilities];
+  v34 = [queryDependentCategoryProbabilities copy];
 
-  [v58 unlock];
+  [configurationCopy unlock];
   v35 = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __183__SDFeedbackInterceptor_willSendSections_forQuery_queryIdentifier_allowAnonymousDataCollection_withRankerUsed_withRankingConfiguration_internalDebug_keyboardPrimaryLanguage_clientID___block_invoke;
   block[3] = &unk_1E82F94D0;
   block[4] = self;
-  v63 = v57;
+  v63 = languageCopy;
   v64 = obj;
   v65 = v17;
   v66 = v18;
   v67 = v34;
-  v74 = a6;
-  v68 = v56;
-  v69 = v49;
-  v70 = v51;
+  collectionCopy = collection;
+  v68 = queryCopy;
+  v69 = dCopy;
+  v70 = usedCopy;
   v71 = v59;
   v72 = v48;
-  v73 = a5;
+  identifierCopy = identifier;
   queuea = v35;
   v55 = v48;
   v36 = v59;
-  v60 = v51;
-  v37 = v49;
-  v38 = v56;
+  v60 = usedCopy;
+  v37 = dCopy;
+  v38 = queryCopy;
   v39 = v34;
   v40 = v18;
   v41 = v17;
   v42 = obj;
-  v43 = v57;
+  v43 = languageCopy;
   v44 = qos_class_self();
   if (v44 < 0x1A)
   {
@@ -804,20 +804,20 @@ uint64_t __183__SDFeedbackInterceptor_willSendSections_forQuery_queryIdentifier_
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)didEngageSection:(id)a3
+- (void)didEngageSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = SDFeedbackTransactionCreate(@"didEngageSection");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__SDFeedbackInterceptor_didEngageSection___block_invoke;
   block[3] = &unk_1E82F9018;
-  v10 = v4;
-  v11 = self;
+  v10 = sectionCopy;
+  selfCopy = self;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = sectionCopy;
   dispatch_async(queue, block);
 }
 
@@ -846,12 +846,12 @@ void __42__SDFeedbackInterceptor_didEngageSection___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_itemsFromSentSectionsWithProtectionClasses:(id)a3 filterWithResults:(id)a4
+- (id)_itemsFromSentSectionsWithProtectionClasses:(id)classes filterWithResults:(id)results
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v45 = a4;
-  v7 = [v45 count];
+  classesCopy = classes;
+  resultsCopy = results;
+  v7 = [resultsCopy count];
   if (v7)
   {
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
@@ -868,24 +868,24 @@ void __42__SDFeedbackInterceptor_didEngageSection___block_invoke(uint64_t a1)
   {
     v11 = v10;
     v12 = 0;
-    v42 = v6;
+    v42 = classesCopy;
     v37 = v10;
-    v38 = self;
+    selfCopy = self;
     do
     {
       v13 = [(NSMutableOrderedSet *)self->_sectionOrder objectAtIndexedSubscript:v12];
-      v14 = [(SDFeedbackInterceptor *)self sentSections];
+      sentSections = [(SDFeedbackInterceptor *)self sentSections];
       v41 = v13;
-      v15 = [v14 objectForKeyedSubscript:v13];
+      v15 = [sentSections objectForKeyedSubscript:v13];
 
-      v16 = [v15 mapResultIdToProtectionClass];
-      [v6 addEntriesFromDictionary:v16];
+      mapResultIdToProtectionClass = [v15 mapResultIdToProtectionClass];
+      [classesCopy addEntriesFromDictionary:mapResultIdToProtectionClass];
 
       v40 = v15;
       if (v7)
       {
-        v17 = [v15 arrayOfRankingItems];
-        v18 = [v17 count];
+        arrayOfRankingItems = [v15 arrayOfRankingItems];
+        v18 = [arrayOfRankingItems count];
         if (v18 < 1 || v7 < 1)
         {
           goto LABEL_33;
@@ -898,9 +898,9 @@ void __42__SDFeedbackInterceptor_didEngageSection___block_invoke(uint64_t a1)
         v43 = v18;
         do
         {
-          v23 = [v17 objectAtIndexedSubscript:v21];
-          v24 = [v23 identifier];
-          if (!v6 || ([v6 objectForKey:v24], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
+          v23 = [arrayOfRankingItems objectAtIndexedSubscript:v21];
+          identifier = [v23 identifier];
+          if (!classesCopy || ([classesCopy objectForKey:identifier], v25 = objc_claimAutoreleasedReturnValue(), v25, v25))
           {
             if (v22 < v7)
             {
@@ -908,9 +908,9 @@ void __42__SDFeedbackInterceptor_didEngageSection___block_invoke(uint64_t a1)
               v26 = v22;
               while (1)
               {
-                v27 = [v45 objectAtIndexedSubscript:v26];
-                v28 = [v27 identifier];
-                v29 = [v28 isEqualToString:v24];
+                v27 = [resultsCopy objectAtIndexedSubscript:v26];
+                identifier2 = [v27 identifier];
+                v29 = [identifier2 isEqualToString:identifier];
 
                 ++v26;
                 if (v29)
@@ -920,7 +920,7 @@ void __42__SDFeedbackInterceptor_didEngageSection___block_invoke(uint64_t a1)
 
                 if (v7 == v26)
                 {
-                  v6 = v42;
+                  classesCopy = v42;
                   v20 = v43;
                   v22 = v44;
                   goto LABEL_20;
@@ -930,7 +930,7 @@ void __42__SDFeedbackInterceptor_didEngageSection___block_invoke(uint64_t a1)
               [v9 addObject:v23];
 
               v22 = v26;
-              v6 = v42;
+              classesCopy = v42;
               v20 = v43;
             }
           }
@@ -942,7 +942,7 @@ LABEL_20:
 
         while (v21 < v20 && v22 < v7);
         v11 = v37;
-        self = v38;
+        self = selfCopy;
       }
 
       else
@@ -952,8 +952,8 @@ LABEL_20:
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v17 = [v15 arrayOfRankingItems];
-        v30 = [v17 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        arrayOfRankingItems = [v15 arrayOfRankingItems];
+        v30 = [arrayOfRankingItems countByEnumeratingWithState:&v46 objects:v50 count:16];
         if (v30)
         {
           v31 = v30;
@@ -964,7 +964,7 @@ LABEL_20:
             {
               if (*v47 != v32)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(arrayOfRankingItems);
               }
 
               v34 = *(*(&v46 + 1) + 8 * i);
@@ -974,7 +974,7 @@ LABEL_20:
               }
             }
 
-            v31 = [v17 countByEnumeratingWithState:&v46 objects:v50 count:16];
+            v31 = [arrayOfRankingItems countByEnumeratingWithState:&v46 objects:v50 count:16];
           }
 
           while (v31);
@@ -995,20 +995,20 @@ LABEL_33:
   return v9;
 }
 
-- (void)didPerformCommand:(id)a3
+- (void)didPerformCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = SDFeedbackTransactionCreate(@"didEngageResult");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__SDFeedbackInterceptor_didPerformCommand___block_invoke;
   block[3] = &unk_1E82F9018;
-  v10 = v4;
-  v11 = self;
+  v10 = commandCopy;
+  selfCopy = self;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = commandCopy;
   dispatch_async(queue, block);
 }
 
@@ -1411,15 +1411,15 @@ void __42__SDFeedbackInterceptor_dumpTTRDebugFiles__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didClearInput:(id)a3
+- (void)didClearInput:(id)input
 {
-  v3 = [MEMORY[0x1E69D3E90] sharedInstance];
-  [v3 writeRenderAndEngagementInfo];
+  mEMORY[0x1E69D3E90] = [MEMORY[0x1E69D3E90] sharedInstance];
+  [mEMORY[0x1E69D3E90] writeRenderAndEngagementInfo];
 }
 
-- (void)didRankSections:(id)a3
+- (void)didRankSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = SDFeedbackTransactionCreate(@"didRank");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1427,10 +1427,10 @@ void __42__SDFeedbackInterceptor_dumpTTRDebugFiles__block_invoke(uint64_t a1)
   block[2] = __41__SDFeedbackInterceptor_didRankSections___block_invoke;
   block[3] = &unk_1E82F9018;
   block[4] = self;
-  v10 = v4;
+  v10 = sectionsCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = sectionsCopy;
   dispatch_async(queue, block);
 }
 
@@ -1579,9 +1579,9 @@ LABEL_32:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didEngageResult:(id)a3
+- (void)didEngageResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = SDFeedbackTransactionCreate(@"didEngage");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1589,10 +1589,10 @@ LABEL_32:
   block[2] = __41__SDFeedbackInterceptor_didEngageResult___block_invoke;
   block[3] = &unk_1E82F9018;
   block[4] = self;
-  v10 = v4;
+  v10 = resultCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = resultCopy;
   dispatch_async(queue, block);
 }
 
@@ -1608,9 +1608,9 @@ id __41__SDFeedbackInterceptor_didEngageResult___block_invoke(void *a1)
   return result;
 }
 
-- (void)resultsDidBecomeVisible:(id)a3
+- (void)resultsDidBecomeVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v5 = SDFeedbackTransactionCreate(@"didBecomeVisible");
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1618,10 +1618,10 @@ id __41__SDFeedbackInterceptor_didEngageResult___block_invoke(void *a1)
   block[2] = __49__SDFeedbackInterceptor_resultsDidBecomeVisible___block_invoke;
   block[3] = &unk_1E82F9018;
   block[4] = self;
-  v10 = v4;
+  v10 = visibleCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = visibleCopy;
   dispatch_async(queue, block);
 }
 
@@ -1660,7 +1660,7 @@ void __49__SDFeedbackInterceptor_resultsDidBecomeVisible___block_invoke(uint64_t
 LABEL_9:
 }
 
-- (void)searchViewDidAppear:(id)a3
+- (void)searchViewDidAppear:(id)appear
 {
   v4 = SDFeedbackTransactionCreate(@"didAppear");
   queue = self->_queue;
@@ -1722,11 +1722,11 @@ void __45__SDFeedbackInterceptor_searchViewDidAppear___block_invoke_2(uint64_t a
   }
 }
 
-- (void)searchViewDidDisappear:(id)a3
+- (void)searchViewDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   v5 = SDFeedbackTransactionCreate(@"didDisappear");
-  if (self->_isInternalDevice && ![v4 viewDisappearEvent])
+  if (self->_isInternalDevice && ![disappearCopy viewDisappearEvent])
   {
     self->_engagedTTR = 1;
   }
@@ -1737,13 +1737,13 @@ void __45__SDFeedbackInterceptor_searchViewDidAppear___block_invoke_2(uint64_t a
   block[2] = __48__SDFeedbackInterceptor_searchViewDidDisappear___block_invoke;
   block[3] = &unk_1E82F9018;
   block[4] = self;
-  v11 = v4;
+  v11 = disappearCopy;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = disappearCopy;
   dispatch_async(queue, block);
-  v9 = [MEMORY[0x1E69D3E90] sharedInstance];
-  [v9 writeRenderAndEngagementInfo];
+  mEMORY[0x1E69D3E90] = [MEMORY[0x1E69D3E90] sharedInstance];
+  [mEMORY[0x1E69D3E90] writeRenderAndEngagementInfo];
 }
 
 id __48__SDFeedbackInterceptor_searchViewDidDisappear___block_invoke(void *a1)

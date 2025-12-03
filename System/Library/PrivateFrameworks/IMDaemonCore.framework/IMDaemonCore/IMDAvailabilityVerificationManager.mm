@@ -3,15 +3,15 @@
 + (id)availabilityStatusTypeIdentifier;
 + (id)sharedInstance;
 - (IMDAvailabilityVerificationManager)init;
-- (id)cachedAvailabilityVerificationTokensForHandleID:(id)a3;
-- (void)_inviteSenderHandleID:(id)a3 fromHandleID:(id)a4;
-- (void)_validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)a3 encryptionValidationToken:(id)a4 fromSender:(id)a5 completion:(id)a6;
-- (void)populateCacheWithAvailabilityVerificationTokensForHandleID:(id)a3;
-- (void)subscriptionInvitationReceived:(id)a3;
-- (void)subscriptionReceivedStatusUpdate:(id)a3;
-- (void)subscriptionServiceDaemonDisconnected:(id)a3;
-- (void)subscriptionStateChanged:(id)a3;
-- (void)verifyPersonalSubscriptionMatchesSubscriptionValidationToken:(id)a3 encryptionValidationToken:(id)a4 receivedByHandleID:(id)a5 fromHandleID:(id)a6 messageDate:(id)a7;
+- (id)cachedAvailabilityVerificationTokensForHandleID:(id)d;
+- (void)_inviteSenderHandleID:(id)d fromHandleID:(id)iD;
+- (void)_validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)token encryptionValidationToken:(id)validationToken fromSender:(id)sender completion:(id)completion;
+- (void)populateCacheWithAvailabilityVerificationTokensForHandleID:(id)d;
+- (void)subscriptionInvitationReceived:(id)received;
+- (void)subscriptionReceivedStatusUpdate:(id)update;
+- (void)subscriptionServiceDaemonDisconnected:(id)disconnected;
+- (void)subscriptionStateChanged:(id)changed;
+- (void)verifyPersonalSubscriptionMatchesSubscriptionValidationToken:(id)token encryptionValidationToken:(id)validationToken receivedByHandleID:(id)d fromHandleID:(id)iD messageDate:(id)date;
 @end
 
 @implementation IMDAvailabilityVerificationManager
@@ -44,7 +44,7 @@
     subscriptionValidationTokenByHandleIDCache = v2->_subscriptionValidationTokenByHandleIDCache;
     v2->_subscriptionValidationTokenByHandleIDCache = v6;
 
-    v8 = [objc_opt_class() availabilityStatusTypeIdentifier];
+    availabilityStatusTypeIdentifier = [objc_opt_class() availabilityStatusTypeIdentifier];
     v9 = [objc_alloc(MEMORY[0x231897B40](@"SKStatusSubscriptionService" @"StatusKit"))];
     availabilitySubscriptionService = v2->_availabilitySubscriptionService;
     v2->_availabilitySubscriptionService = v9;
@@ -62,11 +62,11 @@
   return v2;
 }
 
-- (id)cachedAvailabilityVerificationTokensForHandleID:(id)a3
+- (id)cachedAvailabilityVerificationTokensForHandleID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSCache *)self->_subscriptionValidationTokenByHandleIDCache objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSCache *)self->_subscriptionValidationTokenByHandleIDCache objectForKey:dCopy];
   if (v5)
   {
     if (IMOSLoggingEnabled())
@@ -77,7 +77,7 @@
         v10 = 138412546;
         v11 = v5;
         v12 = 2112;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Using cached availability verification tokens %@ for message to handleID %@", &v10, 0x16u);
       }
     }
@@ -91,7 +91,7 @@
       sub_22B7D0900();
     }
 
-    [(IMDAvailabilityVerificationManager *)self populateCacheWithAvailabilityVerificationTokensForHandleID:v4];
+    [(IMDAvailabilityVerificationManager *)self populateCacheWithAvailabilityVerificationTokensForHandleID:dCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -99,11 +99,11 @@
   return v5;
 }
 
-- (void)populateCacheWithAvailabilityVerificationTokensForHandleID:(id)a3
+- (void)populateCacheWithAvailabilityVerificationTokensForHandleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSCache *)self->_subscriptionValidationTokenByHandleIDCache objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSCache *)self->_subscriptionValidationTokenByHandleIDCache objectForKey:dCopy];
   v6 = IMOSLoggingEnabled();
   if (v5)
   {
@@ -115,7 +115,7 @@
         *buf = 138412546;
         v19 = v5;
         v20 = 2112;
-        v21 = v4;
+        v21 = dCopy;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Subscription validation tokens %@ is already cached for handleID: %@. Not fetching again", buf, 0x16u);
       }
     }
@@ -129,7 +129,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v19 = v4;
+        v19 = dCopy;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Fetching subscription validation token for handle handleID: %@", buf, 0xCu);
       }
     }
@@ -144,7 +144,7 @@
       v17[1] = 3221225472;
       v17[2] = sub_22B52FE58;
       v17[3] = &unk_278703B18;
-      v17[4] = v4;
+      v17[4] = dCopy;
       v17[5] = self;
       [(SKStatusSubscriptionService *)v11 subscriptionValidationTokensForHandle:v9 completion:v17];
     }
@@ -163,7 +163,7 @@
       v16[1] = 3221225472;
       v16[2] = sub_22B52FFFC;
       v16[3] = &unk_278703B40;
-      v16[4] = v4;
+      v16[4] = dCopy;
       v16[5] = self;
       [(SKStatusSubscriptionService *)v14 subscriptionValidationTokenForHandle:v9 completion:v16];
     }
@@ -187,30 +187,30 @@
   return 1;
 }
 
-- (void)verifyPersonalSubscriptionMatchesSubscriptionValidationToken:(id)a3 encryptionValidationToken:(id)a4 receivedByHandleID:(id)a5 fromHandleID:(id)a6 messageDate:(id)a7
+- (void)verifyPersonalSubscriptionMatchesSubscriptionValidationToken:(id)token encryptionValidationToken:(id)validationToken receivedByHandleID:(id)d fromHandleID:(id)iD messageDate:(id)date
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  validationTokenCopy = validationToken;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v29 = v12;
+      v29 = tokenCopy;
       v30 = 2112;
-      v31 = v15;
+      v31 = iDCopy;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Received request to validate validation token %@ from senderHandleID %@", buf, 0x16u);
     }
   }
 
   if ([objc_opt_class() deviceSupportsSubscriptionValidationTokens])
   {
-    [v16 timeIntervalSinceNow];
+    [dateCopy timeIntervalSinceNow];
     if (fabs(v18) <= 300.0)
     {
       availabilitySubscriptionService = self->_availabilitySubscriptionService;
@@ -232,10 +232,10 @@
       v23[2] = sub_22B5305A8;
       v23[3] = &unk_278703B68;
       objc_copyWeak(&v27, buf);
-      v24 = v12;
-      v25 = v15;
-      v26 = v14;
-      [(IMDAvailabilityVerificationManager *)self _validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:v24 encryptionValidationToken:v13 fromSender:v21 completion:v23];
+      v24 = tokenCopy;
+      v25 = iDCopy;
+      v26 = dCopy;
+      [(IMDAvailabilityVerificationManager *)self _validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:v24 encryptionValidationToken:validationTokenCopy fromSender:v21 completion:v23];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(buf);
@@ -247,11 +247,11 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v29 = v12;
+        v29 = tokenCopy;
         v30 = 2112;
-        v31 = v15;
+        v31 = iDCopy;
         v32 = 2112;
-        v33 = v16;
+        v33 = dateCopy;
         _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "Not processing validation token %@ for old message from %@ with date: %@", buf, 0x20u);
       }
 
@@ -274,45 +274,45 @@ LABEL_19:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)a3 encryptionValidationToken:(id)a4 fromSender:(id)a5 completion:(id)a6
+- (void)_validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:(id)token encryptionValidationToken:(id)validationToken fromSender:(id)sender completion:(id)completion
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  tokenCopy = token;
+  validationTokenCopy = validationToken;
+  senderCopy = sender;
+  completionCopy = completion;
   availabilitySubscriptionService = self->_availabilitySubscriptionService;
   if (objc_opt_respondsToSelector())
   {
     v14 = [objc_alloc(MEMORY[0x231897B40](@"SKSubscriptionValidationTokens" @"StatusKit"))];
-    [(SKStatusSubscriptionService *)self->_availabilitySubscriptionService validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v14 fromSender:v11 completion:v12];
+    [(SKStatusSubscriptionService *)self->_availabilitySubscriptionService validatePersonalStatusSubscriptionMatchesSubscriptionValidationTokens:v14 fromSender:senderCopy completion:completionCopy];
   }
 
   else
   {
-    [(SKStatusSubscriptionService *)self->_availabilitySubscriptionService validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:v15 fromSender:v11 completion:v12];
+    [(SKStatusSubscriptionService *)self->_availabilitySubscriptionService validatePersonalStatusSubscriptionMatchesSubscriptionValidationToken:tokenCopy fromSender:senderCopy completion:completionCopy];
   }
 }
 
-- (void)_inviteSenderHandleID:(id)a3 fromHandleID:(id)a4
+- (void)_inviteSenderHandleID:(id)d fromHandleID:(id)iD
 {
   v5 = MEMORY[0x277D1A8C0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  [v8 repairSharedFocusStatusFollowingFailedValidationWithHandleID:v7 fromHandleID:v6 completion:&unk_283F198A8];
+  iDCopy = iD;
+  dCopy = d;
+  sharedInstance = [v5 sharedInstance];
+  [sharedInstance repairSharedFocusStatusFollowingFailedValidationWithHandleID:dCopy fromHandleID:iDCopy completion:&unk_283F198A8];
 }
 
-- (void)subscriptionInvitationReceived:(id)a3
+- (void)subscriptionInvitationReceived:(id)received
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  receivedCopy = received;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = receivedCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Subscription invitation received, clearing cache. Subscription: %@", &v7, 0xCu);
     }
   }
@@ -322,17 +322,17 @@ LABEL_19:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionReceivedStatusUpdate:(id)a3
+- (void)subscriptionReceivedStatusUpdate:(id)update
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  updateCopy = update;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = updateCopy;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "Subscription received status update, no verification manager action required. Subscription: %@", &v6, 0xCu);
     }
   }
@@ -340,17 +340,17 @@ LABEL_19:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionStateChanged:(id)a3
+- (void)subscriptionStateChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = changedCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Subscription state changed, clearing cache. Subscription: %@", &v7, 0xCu);
     }
   }
@@ -360,9 +360,9 @@ LABEL_19:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriptionServiceDaemonDisconnected:(id)a3
+- (void)subscriptionServiceDaemonDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();

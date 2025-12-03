@@ -1,24 +1,24 @@
 @interface PRUISPosterContentViewCoordinator
 - (BSUIVibrancyEffectView)obscurableContentVibrancyView;
 - (CGRect)primaryContentTightFrame;
-- (PRUISPosterContentViewCoordinator)initWithBounds:(CGRect)a3;
+- (PRUISPosterContentViewCoordinator)initWithBounds:(CGRect)bounds;
 - (UIView)obscurableContentView;
 - (UIView)obscurableOverlayView;
 - (UIView)overlayContentView;
 - (UIView)vibrantObscurableContentView;
-- (id)updateContentViewsWithContentStyle:(id)a3 initialAppearance:(id)a4;
-- (void)setPrimaryContentTightFrame:(CGRect)a3;
+- (id)updateContentViewsWithContentStyle:(id)style initialAppearance:(id)appearance;
+- (void)setPrimaryContentTightFrame:(CGRect)frame;
 - (void)updateLayoutForChangedVibrantObscuredSubviewBounds;
 @end
 
 @implementation PRUISPosterContentViewCoordinator
 
-- (PRUISPosterContentViewCoordinator)initWithBounds:(CGRect)a3
+- (PRUISPosterContentViewCoordinator)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = PRUISPosterContentViewCoordinator;
   result = [(PRUISPosterContentViewCoordinator *)&v8 init];
@@ -43,8 +43,8 @@
     self->_obscurableContentContainerView = v4;
 
     [(UIView *)self->_obscurableContentContainerView setAutoresizingMask:18];
-    v6 = [(UIView *)self->_obscurableContentContainerView layer];
-    [v6 setName:@"obscurableContentContainerView"];
+    layer = [(UIView *)self->_obscurableContentContainerView layer];
+    [layer setName:@"obscurableContentContainerView"];
 
     obscurableContentContainerView = self->_obscurableContentContainerView;
   }
@@ -62,14 +62,14 @@
     self->_obscurableContentVibrancyView = v4;
 
     [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView setAutoresizingMask:18];
-    v6 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
-    [v6 setAutoresizingMask:18];
+    contentView = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
+    [contentView setAutoresizingMask:18];
 
-    v7 = [(PRUISPosterContentViewCoordinator *)self obscurableContentView];
-    [v7 addSubview:self->_obscurableContentVibrancyView];
+    obscurableContentView = [(PRUISPosterContentViewCoordinator *)self obscurableContentView];
+    [obscurableContentView addSubview:self->_obscurableContentVibrancyView];
 
-    v8 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView layer];
-    [v8 setName:@"obscurableContentVibrancyView"];
+    layer = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView layer];
+    [layer setName:@"obscurableContentVibrancyView"];
 
     obscurableContentVibrancyView = self->_obscurableContentVibrancyView;
   }
@@ -79,10 +79,10 @@
 
 - (UIView)vibrantObscurableContentView
 {
-  v2 = [(PRUISPosterContentViewCoordinator *)self obscurableContentVibrancyView];
-  v3 = [v2 contentView];
+  obscurableContentVibrancyView = [(PRUISPosterContentViewCoordinator *)self obscurableContentVibrancyView];
+  contentView = [obscurableContentVibrancyView contentView];
 
-  return v3;
+  return contentView;
 }
 
 - (UIView)overlayContentView
@@ -95,8 +95,8 @@
     self->_overlayContentView = v4;
 
     [(UIView *)self->_overlayContentView setAutoresizingMask:18];
-    v6 = [(UIView *)self->_overlayContentView layer];
-    [v6 setName:@"overlayContentView"];
+    layer = [(UIView *)self->_overlayContentView layer];
+    [layer setName:@"overlayContentView"];
 
     overlayContentView = self->_overlayContentView;
   }
@@ -114,11 +114,11 @@
     self->_obscurableOverlayView = v4;
 
     [(UIView *)self->_obscurableOverlayView setAutoresizingMask:18];
-    v6 = [(PRUISPosterContentViewCoordinator *)self obscurableContentView];
-    [v6 addSubview:self->_obscurableOverlayView];
+    obscurableContentView = [(PRUISPosterContentViewCoordinator *)self obscurableContentView];
+    [obscurableContentView addSubview:self->_obscurableOverlayView];
 
-    v7 = [(UIView *)self->_obscurableOverlayView layer];
-    [v7 setName:@"obscurableOverlayView"];
+    layer = [(UIView *)self->_obscurableOverlayView layer];
+    [layer setName:@"obscurableOverlayView"];
 
     obscurableOverlayView = self->_obscurableOverlayView;
   }
@@ -126,24 +126,24 @@
   return obscurableOverlayView;
 }
 
-- (id)updateContentViewsWithContentStyle:(id)a3 initialAppearance:(id)a4
+- (id)updateContentViewsWithContentStyle:(id)style initialAppearance:(id)appearance
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  appearanceCopy = appearance;
   obscurableContentVibrancyView = self->_obscurableContentVibrancyView;
-  v10 = v8;
+  currentAppearance = appearanceCopy;
   if (obscurableContentVibrancyView)
   {
-    v11 = [(BSUIVibrancyEffectView *)obscurableContentVibrancyView contentView];
-    [v11 setNeedsLayout];
+    contentView = [(BSUIVibrancyEffectView *)obscurableContentVibrancyView contentView];
+    [contentView setNeedsLayout];
 
-    v12 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
-    [v12 layoutIfNeeded];
+    contentView2 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
+    [contentView2 layoutIfNeeded];
 
     [(PRPosterContentStyleVibrantContentRenderer *)self->_vibrantContentStyleRenderer clearAllStyles];
-    v13 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
-    v14 = [v13 subviews];
+    contentView3 = [(BSUIVibrancyEffectView *)self->_obscurableContentVibrancyView contentView];
+    subviews = [contentView3 subviews];
 
     x = *MEMORY[0x1E695F058];
     y = *(MEMORY[0x1E695F058] + 8);
@@ -153,7 +153,7 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v19 = v14;
+    v19 = subviews;
     v20 = [v19 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v20)
     {
@@ -209,18 +209,18 @@
     {
       v29 = objc_alloc(MEMORY[0x1E69C5300]);
       v30 = self->_obscurableContentVibrancyView;
-      v31 = [(BSUIVibrancyEffectView *)v30 contentView];
-      v32 = [v29 initWithVibrancyView:v30 contentView:v31 contentBoundingRect:v8 styleBoundingRect:x initialAppearance:{y, width, height, self->_primaryContentTightFrame.origin.x, self->_primaryContentTightFrame.origin.y, self->_primaryContentTightFrame.size.width, self->_primaryContentTightFrame.size.height}];
+      contentView4 = [(BSUIVibrancyEffectView *)v30 contentView];
+      v32 = [v29 initWithVibrancyView:v30 contentView:contentView4 contentBoundingRect:appearanceCopy styleBoundingRect:x initialAppearance:{y, width, height, self->_primaryContentTightFrame.origin.x, self->_primaryContentTightFrame.origin.y, self->_primaryContentTightFrame.size.width, self->_primaryContentTightFrame.size.height}];
       v33 = self->_vibrantContentStyleRenderer;
       self->_vibrantContentStyleRenderer = v32;
     }
 
-    [v7 applyStyleWithRenderer:{self->_vibrantContentStyleRenderer, v35}];
-    objc_storeStrong(&self->_currentStyle, a3);
-    v10 = [(PRPosterContentStyleVibrantContentRenderer *)self->_vibrantContentStyleRenderer currentAppearance];
+    [styleCopy applyStyleWithRenderer:{self->_vibrantContentStyleRenderer, v35}];
+    objc_storeStrong(&self->_currentStyle, style);
+    currentAppearance = [(PRPosterContentStyleVibrantContentRenderer *)self->_vibrantContentStyleRenderer currentAppearance];
   }
 
-  return v10;
+  return currentAppearance;
 }
 
 - (void)updateLayoutForChangedVibrantObscuredSubviewBounds
@@ -231,13 +231,13 @@
   }
 }
 
-- (void)setPrimaryContentTightFrame:(CGRect)a3
+- (void)setPrimaryContentTightFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_primaryContentTightFrame, a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(self->_primaryContentTightFrame, frame))
   {
     self->_primaryContentTightFrame.origin.x = x;
     self->_primaryContentTightFrame.origin.y = y;

@@ -1,19 +1,19 @@
 @interface GKLoadSystemImageResourceOperation
-- (GKLoadSystemImageResourceOperation)initWithSystemImageName:(id)a3;
+- (GKLoadSystemImageResourceOperation)initWithSystemImageName:(id)name;
 - (void)main;
 @end
 
 @implementation GKLoadSystemImageResourceOperation
 
-- (GKLoadSystemImageResourceOperation)initWithSystemImageName:(id)a3
+- (GKLoadSystemImageResourceOperation)initWithSystemImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = GKLoadSystemImageResourceOperation;
   v5 = [(GKLoadSystemImageResourceOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     systemImageName = v5->_systemImageName;
     v5->_systemImageName = v6;
   }
@@ -27,8 +27,8 @@
   if (([(GKLoadSystemImageResourceOperation *)self isCancelled]& 1) == 0)
   {
     v3 = MEMORY[0x277D755B8];
-    v4 = [(GKLoadSystemImageResourceOperation *)self systemImageName];
-    v5 = [v3 _systemImageNamed:v4];
+    systemImageName = [(GKLoadSystemImageResourceOperation *)self systemImageName];
+    v5 = [v3 _systemImageNamed:systemImageName];
 
     if (v5)
     {
@@ -38,8 +38,8 @@
     else if (([(GKLoadSystemImageResourceOperation *)self isCancelled]& 1) == 0)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(GKLoadSystemImageResourceOperation *)self systemImageName];
-      v8 = [v6 stringWithFormat:@"No system image found for %@", v7];
+      systemImageName2 = [(GKLoadSystemImageResourceOperation *)self systemImageName];
+      v8 = [v6 stringWithFormat:@"No system image found for %@", systemImageName2];
 
       v9 = MEMORY[0x277CCA9B8];
       v12 = *MEMORY[0x277CCA450];

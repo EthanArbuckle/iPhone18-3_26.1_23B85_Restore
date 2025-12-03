@@ -1,10 +1,10 @@
 @interface PIAutoLoopExportRequest
 - (NUColorSpace)outputColorSpace;
-- (PIAutoLoopExportRequest)initWithComposition:(id)a3 destinationURL:(id)a4;
-- (PIAutoLoopExportRequest)initWithComposition:(id)a3 stabilizedVideoURL:(id)a4 longExposureDestinationURL:(id)a5 maskDestinationURL:(id)a6 destinationUTI:(id)a7;
-- (PIAutoLoopExportRequest)initWithMedia:(id)a3;
-- (PIAutoLoopExportRequest)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PIAutoLoopExportRequest)initWithComposition:(id)composition destinationURL:(id)l;
+- (PIAutoLoopExportRequest)initWithComposition:(id)composition stabilizedVideoURL:(id)l longExposureDestinationURL:(id)rL maskDestinationURL:(id)uRL destinationUTI:(id)i;
+- (PIAutoLoopExportRequest)initWithMedia:(id)media;
+- (PIAutoLoopExportRequest)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 @end
 
@@ -12,22 +12,22 @@
 
 - (NUColorSpace)outputColorSpace
 {
-  v2 = [(NUVideoExportRequest *)self outputSettings];
-  v3 = [v2 objectForKey:*MEMORY[0x1E6987D20]];
+  outputSettings = [(NUVideoExportRequest *)self outputSettings];
+  v3 = [outputSettings objectForKey:*MEMORY[0x1E6987D20]];
 
-  if (!v3 || ([MEMORY[0x1E69B3A10] colorSpaceFromVideoColorProperties:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v3 || ([MEMORY[0x1E69B3A10] colorSpaceFromVideoColorProperties:v3], (sRGBColorSpace = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+    sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
   }
 
-  return v4;
+  return sRGBColorSpace;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PIAutoLoopExportRequest;
-  v4 = [(NUVideoExportRequest *)&v6 copyWithZone:a3];
+  v4 = [(NUVideoExportRequest *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 27, self->_destinationUTI);
   objc_storeStrong(v4 + 28, self->_destinationLongExposureURL);
   objc_storeStrong(v4 + 29, self->_destinationMaskURL);
@@ -41,35 +41,35 @@
   return [(PIAutoLoopExportJob *)v3 initWithAutoLoopExportRequest:self];
 }
 
-- (PIAutoLoopExportRequest)initWithComposition:(id)a3 stabilizedVideoURL:(id)a4 longExposureDestinationURL:(id)a5 maskDestinationURL:(id)a6 destinationUTI:(id)a7
+- (PIAutoLoopExportRequest)initWithComposition:(id)composition stabilizedVideoURL:(id)l longExposureDestinationURL:(id)rL maskDestinationURL:(id)uRL destinationUTI:(id)i
 {
   v22.receiver = self;
   v22.super_class = PIAutoLoopExportRequest;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(NUExportRequest *)&v22 initWithComposition:a3 destinationURL:a4];
-  v15 = [v11 copy];
+  iCopy = i;
+  uRLCopy = uRL;
+  rLCopy = rL;
+  v14 = [(NUExportRequest *)&v22 initWithComposition:composition destinationURL:l];
+  v15 = [iCopy copy];
 
   destinationUTI = v14->_destinationUTI;
   v14->_destinationUTI = v15;
 
-  v17 = [v13 copy];
+  v17 = [rLCopy copy];
   destinationLongExposureURL = v14->_destinationLongExposureURL;
   v14->_destinationLongExposureURL = v17;
 
-  v19 = [v12 copy];
+  v19 = [uRLCopy copy];
   destinationMaskURL = v14->_destinationMaskURL;
   v14->_destinationMaskURL = v19;
 
   return v14;
 }
 
-- (PIAutoLoopExportRequest)initWithComposition:(id)a3 destinationURL:(id)a4
+- (PIAutoLoopExportRequest)initWithComposition:(id)composition destinationURL:(id)l
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  compositionCopy = composition;
+  lCopy = l;
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -108,8 +108,8 @@ LABEL_11:
           v25 = MEMORY[0x1E696AF00];
           v26 = specific;
           v27 = v23;
-          v28 = [v25 callStackSymbols];
-          v29 = [v28 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v25 callStackSymbols];
+          v29 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v32 = specific;
           v33 = 2114;
@@ -136,8 +136,8 @@ LABEL_11:
     {
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v19 callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v22;
       _os_log_error_impl(&dword_1C7694000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -155,10 +155,10 @@ LABEL_14:
   }
 }
 
-- (PIAutoLoopExportRequest)initWithRequest:(id)a3
+- (PIAutoLoopExportRequest)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -197,8 +197,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -225,8 +225,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -244,10 +244,10 @@ LABEL_14:
   }
 }
 
-- (PIAutoLoopExportRequest)initWithMedia:(id)a3
+- (PIAutoLoopExportRequest)initWithMedia:(id)media
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mediaCopy = media;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -286,8 +286,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -314,8 +314,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

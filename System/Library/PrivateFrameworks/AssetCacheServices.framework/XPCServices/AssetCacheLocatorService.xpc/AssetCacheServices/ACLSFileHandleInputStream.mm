@@ -1,23 +1,23 @@
 @interface ACLSFileHandleInputStream
-- (ACLSFileHandleInputStream)initWithFileHandle:(id)a3 fileOffset:(int64_t)a4 length:(int64_t)a5;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (ACLSFileHandleInputStream)initWithFileHandle:(id)handle fileOffset:(int64_t)offset length:(int64_t)length;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 @end
 
 @implementation ACLSFileHandleInputStream
 
-- (ACLSFileHandleInputStream)initWithFileHandle:(id)a3 fileOffset:(int64_t)a4 length:(int64_t)a5
+- (ACLSFileHandleInputStream)initWithFileHandle:(id)handle fileOffset:(int64_t)offset length:(int64_t)length
 {
-  v9 = a3;
+  handleCopy = handle;
   v13.receiver = self;
   v13.super_class = ACLSFileHandleInputStream;
   v10 = [(ACLSFileHandleInputStream *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fileHandle, a3);
-    v11->_fileOffset = a4;
-    v11->_fileEndOffset = a5 + a4;
+    objc_storeStrong(&v10->_fileHandle, handle);
+    v11->_fileOffset = offset;
+    v11->_fileEndOffset = length + offset;
     v11->_status = 0;
   }
 
@@ -41,19 +41,19 @@
   return result;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  if (self->_fileEndOffset - self->_fileOffset >= a4)
+  if (self->_fileEndOffset - self->_fileOffset >= length)
   {
-    v5 = a4;
+    lengthCopy = length;
   }
 
   else
   {
-    v5 = self->_fileEndOffset - self->_fileOffset;
+    lengthCopy = self->_fileEndOffset - self->_fileOffset;
   }
 
-  result = pread([(NSFileHandle *)self->_fileHandle fileDescriptor], a3, v5, self->_fileOffset);
+  result = pread([(NSFileHandle *)self->_fileHandle fileDescriptor], read, lengthCopy, self->_fileOffset);
   if (result >= 1)
   {
     self->_fileOffset += result;

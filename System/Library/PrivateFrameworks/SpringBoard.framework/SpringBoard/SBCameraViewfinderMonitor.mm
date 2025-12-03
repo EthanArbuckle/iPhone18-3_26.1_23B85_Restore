@@ -1,14 +1,14 @@
 @interface SBCameraViewfinderMonitor
 + (id)sharedInstance;
-- (id)addObserver:(id)a3;
+- (id)addObserver:(id)observer;
 - (void)_cancel;
-- (void)_removeObserver:(id)a3;
+- (void)_removeObserver:(id)observer;
 - (void)_start;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionWillBegin:(id)a4;
-- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)a3;
-- (void)cameraViewfinderSessionDidStartMovieRecording:(id)a3;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionWillBegin:(id)begin;
+- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)recording;
+- (void)cameraViewfinderSessionDidStartMovieRecording:(id)recording;
 - (void)dealloc;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -50,9 +50,9 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
 {
   if (!self->_cameraViewFinder)
   {
-    v4 = [MEMORY[0x277CF3B78] cameraViewfinder];
+    cameraViewfinder = [MEMORY[0x277CF3B78] cameraViewfinder];
     cameraViewFinder = self->_cameraViewFinder;
-    self->_cameraViewFinder = v4;
+    self->_cameraViewFinder = cameraViewfinder;
 
     [(FigCameraViewfinder *)self->_cameraViewFinder setDelegate:self queue:MEMORY[0x277D85CD0]];
     v6 = self->_cameraViewFinder;
@@ -61,38 +61,38 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4 && ![(NSHashTable *)self->_observers containsObject:v4])
+  observerCopy = observer;
+  if (observerCopy && ![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
     observers = self->_observers;
     if (!observers)
     {
-      v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v8 = self->_observers;
-      self->_observers = v7;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
-    [(NSHashTable *)observers addObject:v4];
+    [(NSHashTable *)observers addObject:observerCopy];
     if (self->_activeSessionAuditToken)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v4 cameraViewfinderMonitorSessionWillBegin:self auditToken:self->_activeSessionAuditToken];
+        [observerCopy cameraViewfinderMonitorSessionWillBegin:self auditToken:self->_activeSessionAuditToken];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v4 cameraViewfinderMonitorSessionDidBegin:self auditToken:self->_activeSessionAuditToken];
+        [observerCopy cameraViewfinderMonitorSessionDidBegin:self auditToken:self->_activeSessionAuditToken];
       }
     }
 
     if (self->_hasActiveMovieRecordingSession && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v4 cameraViewfinderMonitorSessionDidBeginMovieRecording:self];
+      [observerCopy cameraViewfinderMonitorSessionDidBeginMovieRecording:self];
     }
 
     if ([(NSHashTable *)self->_observers count]== 1)
@@ -100,7 +100,7 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
       [(SBCameraViewfinderMonitor *)self _start];
     }
 
-    v5 = [[SBCameraViewfinderMonitorToken alloc] initWithMonitor:self observer:v4];
+    v5 = [[SBCameraViewfinderMonitorToken alloc] initWithMonitor:self observer:observerCopy];
   }
 
   else
@@ -111,9 +111,9 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -134,16 +134,16 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionWillBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionWillBegin:(id)begin
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewfinderCopy = viewfinder;
+  beginCopy = begin;
+  v8 = beginCopy;
   v9 = MEMORY[0x277CF0B98];
-  if (v7)
+  if (beginCopy)
   {
-    [v7 clientAuditToken];
+    [beginCopy clientAuditToken];
   }
 
   else
@@ -154,15 +154,15 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   v10 = [v9 tokenFromAuditToken:buf];
   if (v10)
   {
-    v20 = v6;
+    v20 = viewfinderCopy;
     objc_storeStrong(&self->_activeSessionAuditToken, v10);
     v11 = SBLogCaptureViewfinderMonitor();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 bundleID];
+      bundleID = [v10 bundleID];
       v13 = [v10 pid];
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = bundleID;
       *&buf[12] = 1024;
       *&buf[14] = v13;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "viewfinderSessionWillBegin: Camera Viewfinder Active for: %@, pid: %i", buf, 0x12u);
@@ -200,20 +200,20 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
       while (v16);
     }
 
-    v6 = v20;
+    viewfinderCopy = v20;
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewfinderCopy = viewfinder;
+  beginCopy = begin;
+  v8 = beginCopy;
   v9 = MEMORY[0x277CF0B98];
-  if (v7)
+  if (beginCopy)
   {
-    [v7 clientAuditToken];
+    [beginCopy clientAuditToken];
   }
 
   else
@@ -225,16 +225,16 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   v11 = v10;
   if (v10)
   {
-    v21 = v6;
+    v21 = viewfinderCopy;
     if (([v10 hasSameProcessAsAuditToken:self->_activeSessionAuditToken] & 1) == 0)
     {
       v12 = SBLogCaptureViewfinderMonitor();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 bundleID];
+        bundleID = [v11 bundleID];
         v14 = [v11 pid];
         *buf = 138412546;
-        *&buf[4] = v13;
+        *&buf[4] = bundleID;
         *&buf[12] = 1024;
         *&buf[14] = v14;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "viewfinderSessionDidBegin: Camera Viewfinder Active for: %@, pid: %i", buf, 0x12u);
@@ -274,20 +274,20 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
       while (v17);
     }
 
-    v6 = v21;
+    viewfinderCopy = v21;
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewfinderCopy = viewfinder;
+  endCopy = end;
+  v8 = endCopy;
   v9 = MEMORY[0x277CF0B98];
-  if (v7)
+  if (endCopy)
   {
-    [v7 clientAuditToken];
+    [endCopy clientAuditToken];
   }
 
   else
@@ -308,14 +308,14 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
       v13 = SBLogCaptureViewfinderMonitor();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v11 bundleID];
+        bundleID = [v11 bundleID];
         *buf = 138412290;
-        *&buf[4] = v14;
+        *&buf[4] = bundleID;
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "Camera Viewfinder Inactive for: %@", buf, 0xCu);
       }
     }
 
-    v21 = v6;
+    v21 = viewfinderCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -348,11 +348,11 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
       while (v17);
     }
 
-    v6 = v21;
+    viewfinderCopy = v21;
   }
 }
 
-- (void)cameraViewfinderSessionDidStartMovieRecording:(id)a3
+- (void)cameraViewfinderSessionDidStartMovieRecording:(id)recording
 {
   v15 = *MEMORY[0x277D85DE8];
   self->_hasActiveMovieRecordingSession = 1;
@@ -360,7 +360,7 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:recording];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -393,7 +393,7 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)a3
+- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)recording
 {
   v15 = *MEMORY[0x277D85DE8];
   self->_hasActiveMovieRecordingSession = 0;
@@ -401,7 +401,7 @@ void __43__SBCameraViewfinderMonitor_sharedInstance__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSHashTable *)self->_observers copy:a3];
+  v4 = [(NSHashTable *)self->_observers copy:recording];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {

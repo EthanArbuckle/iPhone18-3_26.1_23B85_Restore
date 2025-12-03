@@ -3,7 +3,7 @@
 - (void)handleTextLinkTap;
 - (void)loadView;
 - (void)setUpInitialTableFooter;
-- (void)touchInCellAtIndexPath:(id)a3;
+- (void)touchInCellAtIndexPath:(id)path;
 @end
 
 @implementation AssistantDiagsUsageStatsUIViewController
@@ -89,11 +89,11 @@
   }
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
   v13 = 0;
-  v5 = objc_msgSend_tableManager(self, a2, a3);
-  objc_msgSend_tagOfCellAtIndexPath_tag_(v5, v6, a3, &v13);
+  v5 = objc_msgSend_tableManager(self, a2, path);
+  objc_msgSend_tagOfCellAtIndexPath_tag_(v5, v6, path, &v13);
   objc_msgSend_setRightNavigationButton_enable_hide_(self, v7, @"kNext", 1, 0);
   outResultsDict = self->super._outResultsDict;
   v10 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v9, v13 == 1399156324);

@@ -1,27 +1,27 @@
 @interface TSCEFunction_MODE
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
-+ (id)evaluateVector:(id)a3 context:(id)a4 functionSpec:(id)a5 resultFormat:(const TSCEFormat *)a6;
-+ (id)modeArrayForArray:(id)a3 context:(id)a4 functionSpec:(id)a5 originalArray:(id *)a6 outError:(id *)a7;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
++ (id)evaluateVector:(id)vector context:(id)context functionSpec:(id)spec resultFormat:(const TSCEFormat *)format;
++ (id)modeArrayForArray:(id)array context:(id)context functionSpec:(id)spec originalArray:(id *)originalArray outError:(id *)error;
 @end
 
 @implementation TSCEFunction_MODE
 
-+ (id)modeArrayForArray:(id)a3 context:(id)a4 functionSpec:(id)a5 originalArray:(id *)a6 outError:(id *)a7
++ (id)modeArrayForArray:(id)array context:(id)context functionSpec:(id)spec originalArray:(id *)originalArray outError:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  *a6 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v13, v11, v14, v15);
-  objc_msgSend_sortUsingSelector_(v11, v16, sel_compare_, v17, v18);
-  v27 = objc_msgSend_count(v11, v19, v20, v21, v22);
+  arrayCopy = array;
+  contextCopy = context;
+  *originalArray = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v13, arrayCopy, v14, v15);
+  objc_msgSend_sortUsingSelector_(arrayCopy, v16, sel_compare_, v17, v18);
+  v27 = objc_msgSend_count(arrayCopy, v19, v20, v21, v22);
   if (!v27)
   {
-    v37 = objc_msgSend_functionName(a5, v23, v24, v25, v26);
+    v37 = objc_msgSend_functionName(spec, v23, v24, v25, v26);
     objc_msgSend_noSuitableArgumentsFoundErrorForFunctionName_requiredType_(TSCEError, v40, v37, 8, v41);
-    *a7 = v42 = 0;
+    *error = v42 = 0;
     goto LABEL_25;
   }
 
-  v28 = objc_msgSend_objectAtIndex_(v11, v23, 0, v25, v26);
+  v28 = objc_msgSend_objectAtIndex_(arrayCopy, v23, 0, v25, v26);
   v36 = objc_msgSend_array(MEMORY[0x277CBEB18], v29, v30, v31, v32);
   if (v27 == 1)
   {
@@ -32,14 +32,14 @@ LABEL_4:
     goto LABEL_20;
   }
 
-  v58 = v12;
+  v58 = contextCopy;
   v43 = 0;
   v44 = 1;
   v45 = 1;
   v39 = 1;
   do
   {
-    v37 = objc_msgSend_objectAtIndex_(v11, v33, v44, v34, v35);
+    v37 = objc_msgSend_objectAtIndex_(arrayCopy, v33, v44, v34, v35);
 
     if (objc_msgSend_isEqual_(v37, v46, v28, v47, v48))
     {
@@ -81,7 +81,7 @@ LABEL_4:
     LODWORD(v27) = v39;
     v56 = v45 == v39;
     LODWORD(v39) = v45;
-    v12 = v58;
+    contextCopy = v58;
     if (v56)
     {
       goto LABEL_4;
@@ -90,7 +90,7 @@ LABEL_4:
 
   else
   {
-    v12 = v58;
+    contextCopy = v58;
     objc_msgSend_removeAllObjects(v36, v33, v38, v34, v35);
     objc_msgSend_addObject_(v36, v53, v28, v54, v55);
   }
@@ -99,7 +99,7 @@ LABEL_20:
   if (v39 == 1 || !objc_msgSend_count(v36, v33, v38, v34, v35))
   {
     objc_msgSend_noModeError(TSCEError, v33, v38, v34, v35);
-    *a7 = v42 = 0;
+    *error = v42 = 0;
   }
 
   else
@@ -112,17 +112,17 @@ LABEL_25:
   return v42;
 }
 
-+ (id)evaluateVector:(id)a3 context:(id)a4 functionSpec:(id)a5 resultFormat:(const TSCEFormat *)a6
++ (id)evaluateVector:(id)vector context:(id)context functionSpec:(id)spec resultFormat:(const TSCEFormat *)format
 {
-  v8 = a3;
-  v9 = a4;
-  v155 = v8;
-  v156 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13, v9);
+  vectorCopy = vector;
+  contextCopy = context;
+  v155 = vectorCopy;
+  v156 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13, contextCopy);
   v18 = objc_msgSend_zero(TSCENumberValue, v14, v15, v16, v17);
-  v23 = objc_msgSend_count(v8, v19, v20, v21, v22);
-  v158 = v9;
+  v23 = objc_msgSend_count(vectorCopy, v19, v20, v21, v22);
+  v158 = contextCopy;
   v164[0] = v158;
-  v164[1] = a5;
+  v164[1] = spec;
   v165 = 0;
   v166[0] = 0;
   *(v166 + 7) = 0;
@@ -137,7 +137,7 @@ LABEL_25:
     v28 = v18;
     while (1)
     {
-      v29 = objc_msgSend_valueAtIndex_accessContext_(v8, v24, v26, v164, v25);
+      v29 = objc_msgSend_valueAtIndex_accessContext_(vectorCopy, v24, v26, v164, v25);
       if (objc_msgSend_isError(v29, v30, v31, v32, v33))
       {
         v46 = objc_msgSend_errorWithContext_(v29, v34, v158, v36, v37);
@@ -164,7 +164,7 @@ LABEL_25:
         v79 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v76, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStatisticalFunctions.mm", v77, v78);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v74, v80, v75, v79, 4164, 0, "Have to set the type of vector appropriately.");
 
-        v8 = v155;
+        vectorCopy = v155;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v81, v82, v83, v84);
 LABEL_16:
         v69 = v27;
@@ -179,7 +179,7 @@ LABEL_17:
       }
 
       v163 = 0;
-      v46 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v29, v42, v158, a5, 0, &v163);
+      v46 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v29, v42, v158, spec, 0, &v163);
       v50 = v163;
       if (v50)
       {
@@ -191,7 +191,7 @@ LABEL_17:
 
       if ((v157 & 1) != 0 && (objc_msgSend_dimensionsMatchModuloCurrency_(v28, v47, v46, v48, v49) & 1) == 0)
       {
-        v153 = objc_msgSend_functionName(a5, v51, v52, v53, v54);
+        v153 = objc_msgSend_functionName(spec, v51, v52, v53, v54);
         v147 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v144, v153, v145, v146);
         v90 = 0;
         v91 = objc_msgSend_raiseErrorOrConvert_(v158, v148, v147, v149, v150);
@@ -225,7 +225,7 @@ LABEL_18:
     if (v157)
     {
 LABEL_46:
-      v46 = objc_msgSend_functionName(a5, v42, v43, v44, v45);
+      v46 = objc_msgSend_functionName(spec, v42, v43, v44, v45);
       v152 = objc_msgSend_mixedTypeManipulationErrorForFunctionName_(TSCEError, v137, v46, v138, v139);
       v91 = objc_msgSend_raiseErrorOrConvert_(v158, v140, v152, v141, v142);
       v90 = 0;
@@ -233,7 +233,7 @@ LABEL_46:
     }
 
     v162 = 0;
-    v69 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v29, v42, v158, a5, 0, &v162);
+    v69 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v29, v42, v158, spec, 0, &v162);
     v70 = v162;
 
     if (v70)
@@ -254,7 +254,7 @@ LABEL_21:
   v151 = v18;
   v160 = 0;
   v161 = 0;
-  v46 = objc_msgSend_modeArrayForArray_context_functionSpec_originalArray_outError_(TSCEFunction_MODE, v24, v156, v158, a5, &v161, &v160);
+  v46 = objc_msgSend_modeArrayForArray_context_functionSpec_originalArray_outError_(TSCEFunction_MODE, v24, v156, v158, spec, &v161, &v160);
   v29 = v161;
   v89 = v160;
   if (!v89)
@@ -297,7 +297,7 @@ LABEL_21:
           v152 = v116;
 LABEL_35:
           v115 = isEqual ^ 1;
-          v8 = v155;
+          vectorCopy = v155;
         }
 
         else
@@ -360,7 +360,7 @@ LABEL_47:
       v27 = 0;
     }
 
-    v8 = v155;
+    vectorCopy = v155;
     goto LABEL_47;
   }
 
@@ -376,23 +376,23 @@ LABEL_49:
   return v91;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v9 = **a5;
-  v10 = **a5;
+  v9 = **arguments;
+  v10 = **arguments;
   v21 = 0;
-  v12 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v10, v11, a3, a4, 0, 1, &v21);
+  v12 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v10, v11, context, spec, 0, 1, &v21);
   v16 = v21;
   if (v16)
   {
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v16, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v13, v16, v14, v15);
   }
 
   else
   {
     if (v9)
     {
-      objc_msgSend_formatWithContext_(v9, v13, a3, v14, v15);
+      objc_msgSend_formatWithContext_(v9, v13, context, v14, v15);
     }
 
     else
@@ -400,7 +400,7 @@ LABEL_49:
       memset(v20, 0, sizeof(v20));
     }
 
-    v17 = objc_msgSend_evaluateVector_context_functionSpec_resultFormat_(a1, v13, v12, a3, a4, v20);
+    v17 = objc_msgSend_evaluateVector_context_functionSpec_resultFormat_(self, v13, v12, context, spec, v20);
   }
 
   v18 = v17;

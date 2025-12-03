@@ -1,54 +1,54 @@
 @interface PKPaymentMethodCollectionViewCell
-- (void)configureWithItem:(id)a3 style:(unint64_t)a4 delegate:(id)a5;
+- (void)configureWithItem:(id)item style:(unint64_t)style delegate:(id)delegate;
 @end
 
 @implementation PKPaymentMethodCollectionViewCell
 
-- (void)configureWithItem:(id)a3 style:(unint64_t)a4 delegate:(id)a5
+- (void)configureWithItem:(id)item style:(unint64_t)style delegate:(id)delegate
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 paymentPass];
-  v11 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
-  v12 = [v11 textProperties];
+  itemCopy = item;
+  delegateCopy = delegate;
+  paymentPass = [itemCopy paymentPass];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  textProperties = [subtitleCellConfiguration textProperties];
   v13 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], 0);
-  [v12 setFont:v13];
+  [textProperties setFont:v13];
 
-  if (v10)
+  if (paymentPass)
   {
-    [v10 localizedDescription];
+    [paymentPass localizedDescription];
   }
 
   else
   {
-    v14 = [v11 textProperties];
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v14 setColor:v15];
+    textProperties2 = [subtitleCellConfiguration textProperties];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [textProperties2 setColor:secondaryLabelColor];
 
-    [v8 paymentMethodName];
+    [itemCopy paymentMethodName];
   }
   v16 = ;
-  [v11 setText:v16];
+  [subtitleCellConfiguration setText:v16];
 
-  if (a4)
+  if (style)
   {
-    if (a4 != 1)
+    if (style != 1)
     {
       goto LABEL_11;
     }
 
-    [v11 setDirectionalLayoutMargins:{16.0, 0.0, 16.0, 0.0}];
+    [subtitleCellConfiguration setDirectionalLayoutMargins:{16.0, 0.0, 16.0, 0.0}];
     v17 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
     v18 = MEMORY[0x1E69DC628];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __70__PKPaymentMethodCollectionViewCell_configureWithItem_style_delegate___block_invoke;
     v50[3] = &unk_1E8016230;
-    v19 = v8;
+    v19 = itemCopy;
     v51 = v19;
     v52 = v17;
-    v53 = v9;
+    v53 = delegateCopy;
     v20 = v17;
     v21 = [v18 actionWithHandler:v50];
     [v20 addAction:v21 forControlEvents:4096];
@@ -63,8 +63,8 @@
     goto LABEL_9;
   }
 
-  [v11 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
-  if ([v8 isSelected])
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+  if ([itemCopy isSelected])
   {
     v20 = objc_alloc_init(MEMORY[0x1E69DC788]);
     v58 = v20;
@@ -77,49 +77,49 @@ LABEL_9:
 
   [(PKPaymentMethodCollectionViewCell *)self setAccessories:MEMORY[0x1E695E0F0]];
 LABEL_11:
-  v25 = [v8 balance];
-  if (v25)
+  balance = [itemCopy balance];
+  if (balance)
   {
     v26 = [objc_alloc(MEMORY[0x1E69655F0]) initWithShape:0];
     [v26 setScale:2];
     [v26 setStyle:1];
-    v27 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
-    [v26 setColor:v27];
+    tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+    [v26 setColor:tertiarySystemGroupedBackgroundColor];
 
     v28 = *MEMORY[0x1E69655D0];
     v57[0] = v26;
     v29 = *MEMORY[0x1E69DB650];
     v56[0] = v28;
     v56[1] = v29;
-    v30 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v57[1] = v30;
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v57[1] = secondaryLabelColor2;
     v56[2] = *MEMORY[0x1E69DB648];
     v31 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], 0);
     v57[2] = v31;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:3];
 
-    v33 = [v25 formattedStringValue];
-    v34 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v33 attributes:v32];
-    [v11 setSecondaryAttributedText:v34];
+    formattedStringValue = [balance formattedStringValue];
+    v34 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:formattedStringValue attributes:v32];
+    [subtitleCellConfiguration setSecondaryAttributedText:v34];
   }
 
   else
   {
     v54[0] = *MEMORY[0x1E69DB650];
-    v35 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v54[1] = *MEMORY[0x1E69DB648];
-    v55[0] = v35;
+    v55[0] = secondaryLabelColor3;
     v36 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], 0);
     v55[1] = v36;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
 
     v37 = objc_alloc(MEMORY[0x1E696AAB0]);
-    if (v10)
+    if (paymentPass)
     {
       v38 = PKSanitizedPrimaryAccountRepresentationForPass();
       v32 = [v37 initWithString:v38 attributes:v26];
 
-      [v11 setSecondaryAttributedText:v32];
+      [subtitleCellConfiguration setSecondaryAttributedText:v32];
     }
 
     else
@@ -128,20 +128,20 @@ LABEL_11:
       v40 = PKLocalizedPaymentString(v39);
       v32 = [v37 initWithString:v40 attributes:v26];
 
-      [v11 setSecondaryAttributedText:v32];
+      [subtitleCellConfiguration setSecondaryAttributedText:v32];
       [(PKPaymentMethodCollectionViewCell *)self setUserInteractionEnabled:0];
     }
   }
 
   PKPassFrontFaceContentSize();
-  if (v10)
+  if (paymentPass)
   {
-    v41 = [[PKPassView alloc] initWithPass:v10 content:4 suppressedContent:1911];
+    v41 = [[PKPassView alloc] initWithPass:paymentPass content:4 suppressedContent:1911];
     [(PKPassView *)v41 setModallyPresented:1];
     [(PKPassView *)v41 setPaused:1];
     PKFloatRoundToPixel();
     v43 = [(PKPassView *)v41 snapshotOfFrontFaceWithRequestedSize:60.0, v42];
-    [v11 setImage:v43];
+    [subtitleCellConfiguration setImage:v43];
   }
 
   else
@@ -155,10 +155,10 @@ LABEL_11:
 
     v48 = [v43 resizedImageWithConstraints:v41];
     v49 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v48];
-    [v11 setImage:v49];
+    [subtitleCellConfiguration setImage:v49];
   }
 
-  [(PKPaymentMethodCollectionViewCell *)self setContentConfiguration:v11];
+  [(PKPaymentMethodCollectionViewCell *)self setContentConfiguration:subtitleCellConfiguration];
 }
 
 uint64_t __70__PKPaymentMethodCollectionViewCell_configureWithItem_style_delegate___block_invoke(uint64_t a1)

@@ -16,12 +16,12 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(PSReversedSubtitleDisclosureTableCellAccessibility *)self _axCellSelf];
-  v3 = [v2 titleLabel];
-  v4 = [v3 accessibilityLabel];
+  _axCellSelf = [(PSReversedSubtitleDisclosureTableCellAccessibility *)self _axCellSelf];
+  titleLabel = [_axCellSelf titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
 
-  v5 = [v2 detailTextLabel];
-  v6 = [v5 accessibilityLabel];
+  detailTextLabel = [_axCellSelf detailTextLabel];
+  accessibilityLabel2 = [detailTextLabel accessibilityLabel];
 
   v7 = __AXStringForVariables();
 
@@ -30,11 +30,11 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(PSReversedSubtitleDisclosureTableCellAccessibility *)self _axCellSelf];
-  v3 = [v2 valueLabel];
-  v4 = [v3 accessibilityLabel];
+  _axCellSelf = [(PSReversedSubtitleDisclosureTableCellAccessibility *)self _axCellSelf];
+  valueLabel = [_axCellSelf valueLabel];
+  accessibilityLabel = [valueLabel accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

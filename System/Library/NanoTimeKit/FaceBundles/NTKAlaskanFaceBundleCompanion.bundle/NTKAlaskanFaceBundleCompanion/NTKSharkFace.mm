@@ -1,14 +1,14 @@
 @interface NTKSharkFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)complicationConfiguration;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)unsafeDailySnapshotKey;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKSharkFace
@@ -17,15 +17,15 @@
 {
   v6.receiver = self;
   v6.super_class = NTKSharkFace;
-  v2 = [(NTKSharkFace *)&v6 unsafeDailySnapshotKey];
-  if ([v2 isEqualToString:NTKSensitiveSnapshotKey])
+  unsafeDailySnapshotKey = [(NTKSharkFace *)&v6 unsafeDailySnapshotKey];
+  if ([unsafeDailySnapshotKey isEqualToString:NTKSensitiveSnapshotKey])
   {
-    v3 = v2;
+    v3 = unsafeDailySnapshotKey;
   }
 
   else
   {
-    v3 = [v2 stringByAppendingString:@".shark"];
+    v3 = [unsafeDailySnapshotKey stringByAppendingString:@".shark"];
   }
 
   v4 = v3;
@@ -33,17 +33,17 @@
   return v4;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == &dword_0 + 1)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = [v3 supportsPDRCapability:3588072423] ^ 1;
+    v4 = [deviceCopy supportsPDRCapability:3588072423] ^ 1;
   }
 
   return v4;
@@ -61,9 +61,9 @@
   return v3;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottomLeft, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottomLeft, device}])
   {
     v4 = [NTKComplication timerComplicationWithDuration:180.0];
   }
@@ -76,35 +76,35 @@
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  if (a3 == 10)
+  slotCopy = slot;
+  if (mode == 10)
   {
     if ([(NTKSharkFace *)self deviceSupportsPigmentEditOption])
     {
-      v7 = [(NTKSharkFace *)self pigmentOptionProvider];
-      [v7 defaultColorOptionForSlot:v6];
+      pigmentOptionProvider = [(NTKSharkFace *)self pigmentOptionProvider];
+      [pigmentOptionProvider defaultColorOptionForSlot:slotCopy];
     }
 
     else
     {
-      v7 = [(NTKSharkFace *)self device];
-      [(NTKAlaskanColorEditOption *)NTKSharkColorEditOption optionWithColor:3003 forDevice:v7];
+      pigmentOptionProvider = [(NTKSharkFace *)self device];
+      [(NTKAlaskanColorEditOption *)NTKSharkColorEditOption optionWithColor:3003 forDevice:pigmentOptionProvider];
     }
     v8 = ;
   }
 
   else
   {
-    if (a3 != 11)
+    if (mode != 11)
     {
       v9 = 0;
       goto LABEL_10;
     }
 
-    v7 = [(NTKSharkFace *)self device];
-    v8 = [NTKSharkTimescaleEditOption optionWithTimescale:1 forDevice:v7];
+    pigmentOptionProvider = [(NTKSharkFace *)self device];
+    v8 = [NTKSharkTimescaleEditOption optionWithTimescale:1 forDevice:pigmentOptionProvider];
   }
 
   v9 = v8;
@@ -114,9 +114,9 @@ LABEL_10:
   return v9;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 11 || a3 == 10)
+  if (mode == 11 || mode == 10)
   {
     v4 = objc_opt_class();
   }
@@ -129,46 +129,46 @@ LABEL_10:
   return v4;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKSharkFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKSharkFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKSharkFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKSharkFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKSharkFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKSharkFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKSharkFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSharkFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKSharkFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKSharkFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKSharkFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKSharkFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = [NTKSharkFaceBundle localizedStringForKey:@"EDIT_MODE_LABEL_SHARK_TIMESCALE" comment:@"TIMESCALE"];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___NTKSharkFace;
-    v4 = objc_msgSendSuper2(&v6, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, a4);
+    v4 = objc_msgSendSuper2(&v6, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, device);
   }
 
   return v4;

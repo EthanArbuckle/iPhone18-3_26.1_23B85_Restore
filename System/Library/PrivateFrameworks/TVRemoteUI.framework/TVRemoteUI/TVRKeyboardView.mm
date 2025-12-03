@@ -1,34 +1,34 @@
 @interface TVRKeyboardView
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TVRKeyboardView)initWithStyleProvider:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TVRKeyboardView)initWithStyleProvider:(id)provider;
 - (TVRKeyboardViewDelegate)delegate;
-- (void)_cancelButton:(id)a3;
+- (void)_cancelButton:(id)button;
 - (void)_setupPadding;
 - (void)_setupSearchIcon;
-- (void)_textDidChange:(id)a3;
-- (void)handleTextActionPayload:(id)a3;
+- (void)_textDidChange:(id)change;
+- (void)handleTextActionPayload:(id)payload;
 - (void)layoutSubviews;
-- (void)setAttributes:(id)a3;
-- (void)setText:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setAttributes:(id)attributes;
+- (void)setText:(id)text;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation TVRKeyboardView
 
-- (TVRKeyboardView)initWithStyleProvider:(id)a3
+- (TVRKeyboardView)initWithStyleProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v40.receiver = self;
   v40.super_class = TVRKeyboardView;
   v6 = [(TVRKeyboardView *)&v40 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleProvider, a3);
+    objc_storeStrong(&v6->_styleProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x277D75D18]);
     contentView = v7->_contentView;
     v7->_contentView = v8;
@@ -49,23 +49,23 @@
     v7->_textField = v12;
 
     v14 = v7->_textField;
-    v15 = [(TVRUIStyleProvider *)v7->_styleProvider primaryTextAndGlyphColor];
-    [(_TVRTextField *)v14 setTextColor:v15];
+    primaryTextAndGlyphColor = [(TVRUIStyleProvider *)v7->_styleProvider primaryTextAndGlyphColor];
+    [(_TVRTextField *)v14 setTextColor:primaryTextAndGlyphColor];
 
     [(_TVRTextField *)v7->_textField setDelegate:v7];
     v16 = v7->_textField;
-    v17 = [(TVRUIStyleProvider *)v7->_styleProvider primaryTextAndGlyphColor];
-    [(_TVRTextField *)v16 setInsertionPointColor:v17];
+    primaryTextAndGlyphColor2 = [(TVRUIStyleProvider *)v7->_styleProvider primaryTextAndGlyphColor];
+    [(_TVRTextField *)v16 setInsertionPointColor:primaryTextAndGlyphColor2];
 
     v18 = *MEMORY[0x277CDA138];
-    v19 = [(_TVRTextField *)v7->_textField layer];
-    [v19 setCornerCurve:v18];
+    layer = [(_TVRTextField *)v7->_textField layer];
+    [layer setCornerCurve:v18];
 
-    v20 = [(_TVRTextField *)v7->_textField layer];
-    [v20 setCornerRadius:22.0];
+    layer2 = [(_TVRTextField *)v7->_textField layer];
+    [layer2 setCornerRadius:22.0];
 
-    v21 = [(_TVRTextField *)v7->_textField layer];
-    [v21 setMaskedCorners:15];
+    layer3 = [(_TVRTextField *)v7->_textField layer];
+    [layer3 setMaskedCorners:15];
 
     [(_TVRTextField *)v7->_textField setKeyboardAppearance:10];
     [(_TVRTextField *)v7->_textField addTarget:v7 action:sel__textDidChange_ forControlEvents:0x20000];
@@ -87,15 +87,15 @@
 
     if ((v24 & 1) == 0)
     {
-      v26 = [MEMORY[0x277D75230] plainButtonConfiguration];
+      plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
       v27 = MEMORY[0x277D755D0];
       v28 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v23 weight:*MEMORY[0x277D74410]];
       v29 = [v27 configurationWithFont:v28 scale:3];
 
       v30 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark" withConfiguration:v29];
-      [v26 setImage:v30];
+      [plainButtonConfiguration setImage:v30];
 
-      v31 = [MEMORY[0x277D75220] buttonWithConfiguration:v26 primaryAction:0];
+      v31 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
       dismissButton = v7->_dismissButton;
       v7->_dismissButton = v31;
 
@@ -107,8 +107,8 @@
       [(UIView *)v7->_contentView addSubview:v7->_dismissButton];
     }
 
-    v33 = [MEMORY[0x277D759A0] mainScreen];
-    [v33 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     [(TVRKeyboardView *)v7 sizeThatFits:v34, 1.79769313e308];
 
     [(TVRKeyboardView *)v7 bounds];
@@ -127,10 +127,10 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v8);
 
   v5 = 52.0;
@@ -157,9 +157,9 @@
   [(UIView *)self->_contentView frame];
   Height = CGRectGetHeight(v23);
   v13 = +[TVRUIDeviceInfo currentDeviceInfo];
-  v14 = [v13 isPad];
+  isPad = [v13 isPad];
 
-  if (v14)
+  if (isPad)
   {
     v15 = Width * 0.8;
     v24.origin.x = v4;
@@ -195,28 +195,28 @@
   [(_TVRTextField *)textField setFrame:8.0, 4.0, CGRectGetWidth(v28) + -16.0, 44.0];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     textField = self->_textField;
-    v6 = [(_TVRTextField *)textField canBecomeFirstResponder];
-    v7 = [(_TVRTextField *)self->_textField isFirstResponder];
+    canBecomeFirstResponder = [(_TVRTextField *)textField canBecomeFirstResponder];
+    isFirstResponder = [(_TVRTextField *)self->_textField isFirstResponder];
     v8 = 136315906;
     v9 = "[TVRKeyboardView textFieldDidBeginEditing:]";
     v10 = 2112;
     v11 = textField;
     v12 = 1024;
-    v13 = v6;
+    v13 = canBecomeFirstResponder;
     v14 = 1024;
-    v15 = v7;
+    v15 = isFirstResponder;
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s %@ canBecomeFirstResponder, %d, isFirstresponder:%d", &v8, 0x22u);
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   v6 = *MEMORY[0x277D85DE8];
   v3 = _TVRUIKeyboardLog();
@@ -231,27 +231,27 @@
 - (BOOL)becomeFirstResponder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVRTextField *)self->_textField becomeFirstResponder];
+  becomeFirstResponder = [(_TVRTextField *)self->_textField becomeFirstResponder];
   v4 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     textField = self->_textField;
-    v6 = [(_TVRTextField *)textField canBecomeFirstResponder];
-    v7 = [(_TVRTextField *)self->_textField isFirstResponder];
+    canBecomeFirstResponder = [(_TVRTextField *)textField canBecomeFirstResponder];
+    isFirstResponder = [(_TVRTextField *)self->_textField isFirstResponder];
     v9 = 136316162;
     v10 = "[TVRKeyboardView becomeFirstResponder]";
     v11 = 2112;
     v12 = textField;
     v13 = 1024;
-    v14 = v3;
+    v14 = becomeFirstResponder;
     v15 = 1024;
-    v16 = v6;
+    v16 = canBecomeFirstResponder;
     v17 = 1024;
-    v18 = v7;
+    v18 = isFirstResponder;
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s %@ result:%d canBecomeFirstResponder, %d, isFirstresponder:%d", &v9, 0x28u);
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
@@ -260,30 +260,30 @@
   v9.receiver = self;
   v9.super_class = TVRKeyboardView;
   [(TVRKeyboardView *)&v9 resignFirstResponder];
-  v3 = [(_TVRTextField *)self->_textField resignFirstResponder];
+  resignFirstResponder = [(_TVRTextField *)self->_textField resignFirstResponder];
   v4 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     textField = self->_textField;
-    v6 = [(_TVRTextField *)textField canBecomeFirstResponder];
-    v7 = [(_TVRTextField *)self->_textField isFirstResponder];
+    canBecomeFirstResponder = [(_TVRTextField *)textField canBecomeFirstResponder];
+    isFirstResponder = [(_TVRTextField *)self->_textField isFirstResponder];
     *buf = 136316162;
     v11 = "[TVRKeyboardView resignFirstResponder]";
     v12 = 2112;
     v13 = textField;
     v14 = 1024;
-    v15 = v3;
+    v15 = resignFirstResponder;
     v16 = 1024;
-    v17 = v6;
+    v17 = canBecomeFirstResponder;
     v18 = 1024;
-    v19 = v7;
+    v19 = isFirstResponder;
     _os_log_impl(&dword_26CFEB000, v4, OS_LOG_TYPE_DEFAULT, "%s %@ result:%d canBecomeFirstResponder, %d, isFirstresponder:%d", buf, 0x28u);
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained keyboardViewDidHitReturnKey:self];
@@ -297,8 +297,8 @@
   v29 = [MEMORY[0x277D755B8] systemImageNamed:@"magnifyingglass"];
   v3 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v29];
   [v3 setContentMode:1];
-  v4 = [(TVRUIStyleProvider *)self->_styleProvider primaryTextAndGlyphColor];
-  [v3 setTintColor:v4];
+  primaryTextAndGlyphColor = [(TVRUIStyleProvider *)self->_styleProvider primaryTextAndGlyphColor];
+  [v3 setTintColor:primaryTextAndGlyphColor];
 
   v5 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v5 addSubview:v3];
@@ -307,32 +307,32 @@
   v6 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   v19 = MEMORY[0x277CCAAD0];
-  v27 = [v3 heightAnchor];
-  v26 = [v27 constraintEqualToConstant:22.0];
+  heightAnchor = [v3 heightAnchor];
+  v26 = [heightAnchor constraintEqualToConstant:22.0];
   v30[0] = v26;
-  v25 = [v3 widthAnchor];
-  v24 = [v25 constraintEqualToConstant:22.0];
+  widthAnchor = [v3 widthAnchor];
+  v24 = [widthAnchor constraintEqualToConstant:22.0];
   v30[1] = v24;
-  v23 = [v3 centerXAnchor];
-  v22 = [v5 centerXAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  centerXAnchor = [v3 centerXAnchor];
+  centerXAnchor2 = [v5 centerXAnchor];
+  v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v30[2] = v21;
-  v18 = [v3 centerYAnchor];
-  v17 = [v5 centerYAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  centerYAnchor = [v3 centerYAnchor];
+  centerYAnchor2 = [v5 centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v30[3] = v16;
-  v15 = [v5 heightAnchor];
-  v7 = [v15 constraintEqualToConstant:44.0];
+  heightAnchor2 = [v5 heightAnchor];
+  v7 = [heightAnchor2 constraintEqualToConstant:44.0];
   v30[4] = v7;
-  v8 = [v5 widthAnchor];
-  v9 = [v8 constraintEqualToConstant:44.0];
+  widthAnchor2 = [v5 widthAnchor];
+  v9 = [widthAnchor2 constraintEqualToConstant:44.0];
   v30[5] = v9;
   v20 = v6;
-  v10 = [v6 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:44.0];
+  heightAnchor3 = [v6 heightAnchor];
+  v11 = [heightAnchor3 constraintEqualToConstant:44.0];
   v30[6] = v11;
-  v12 = [v6 widthAnchor];
-  v13 = [v12 constraintEqualToConstant:10.0];
+  widthAnchor3 = [v6 widthAnchor];
+  v13 = [widthAnchor3 constraintEqualToConstant:10.0];
   v30[7] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:8];
   [v19 activateConstraints:v14];
@@ -351,17 +351,17 @@
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = MEMORY[0x277CCAAD0];
-  v14 = [v3 heightAnchor];
-  v13 = [v14 constraintEqualToConstant:44.0];
+  heightAnchor = [v3 heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:44.0];
   v15[0] = v13;
-  v5 = [v3 widthAnchor];
-  v6 = [v5 constraintEqualToConstant:10.0];
+  widthAnchor = [v3 widthAnchor];
+  v6 = [widthAnchor constraintEqualToConstant:10.0];
   v15[1] = v6;
-  v7 = [v4 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:44.0];
+  heightAnchor2 = [v4 heightAnchor];
+  v8 = [heightAnchor2 constraintEqualToConstant:44.0];
   v15[2] = v8;
-  v9 = [v4 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:10.0];
+  widthAnchor2 = [v4 widthAnchor];
+  v10 = [widthAnchor2 constraintEqualToConstant:10.0];
   v15[3] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:4];
   [v12 activateConstraints:v11];
@@ -372,24 +372,24 @@
   [(_TVRTextField *)self->_textField setRightView:v4];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v5 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[TVRKeyboardView setText:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = textCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s text:%{public}@", &v11, 0x16u);
   }
 
-  [(_TVRTextField *)self->_textField setText:v4];
-  v6 = [(_TVRTextField *)self->_textField markedTextRange];
-  v7 = v6;
-  if (v6 && ([v6 isEmpty] & 1) == 0)
+  [(_TVRTextField *)self->_textField setText:textCopy];
+  markedTextRange = [(_TVRTextField *)self->_textField markedTextRange];
+  v7 = markedTextRange;
+  if (markedTextRange && ([markedTextRange isEmpty] & 1) == 0)
   {
     v10 = _TVRUIKeyboardLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -408,53 +408,53 @@
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 keyboardView:self didUpdateText:v4];
+    [v10 keyboardView:self didUpdateText:textCopy];
 LABEL_9:
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
-  v5 = a3;
-  if (self->_attributes != v5)
+  attributesCopy = attributes;
+  if (self->_attributes != attributesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_attributes, a3);
+    v6 = attributesCopy;
+    objc_storeStrong(&self->_attributes, attributes);
     [(TVRCKeyboardAttributes *)v6 applyToTextField:self->_textField];
-    v5 = v6;
+    attributesCopy = v6;
   }
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 data];
+    data = [payloadCopy data];
     v17 = 136315650;
     v18 = "[TVRKeyboardView handleTextActionPayload:]";
     v19 = 2114;
-    v20 = v4;
+    v20 = payloadCopy;
     v21 = 2048;
-    v22 = [v6 length];
+    v22 = [data length];
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s payload: %{public}@, data length: %lu", &v17, 0x20u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 documentState];
-    v8 = [v7 documentState];
-    v9 = [v8 contextBeforeInput];
+    documentState = [payloadCopy documentState];
+    v7DocumentState = [documentState documentState];
+    contextBeforeInput = [v7DocumentState contextBeforeInput];
 
     v10 = _TVRUIKeyboardLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v9 length];
-      v12 = [(TVRKeyboardView *)self text];
-      v13 = [v12 length];
+      v11 = [contextBeforeInput length];
+      text = [(TVRKeyboardView *)self text];
+      v13 = [text length];
       v17 = 134218240;
       v18 = v11;
       v19 = 2048;
@@ -469,11 +469,11 @@ LABEL_9:
   if (v15)
   {
     v16 = objc_loadWeakRetained(&self->_delegate);
-    [v16 keyboardView:self generatedTextInputPayload:v4];
+    [v16 keyboardView:self generatedTextInputPayload:payloadCopy];
   }
 }
 
-- (void)_cancelButton:(id)a3
+- (void)_cancelButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -485,24 +485,24 @@ LABEL_9:
   }
 }
 
-- (void)_textDidChange:(id)a3
+- (void)_textDidChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 text];
+    text = [changeCopy text];
     v13 = 136315394;
     v14 = "[TVRKeyboardView _textDidChange:]";
     v15 = 2048;
-    v16 = [v6 length];
+    v16 = [text length];
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "%s text length: %lu", &v13, 0x16u);
   }
 
-  v7 = [v4 markedTextRange];
-  v8 = v7;
-  if (!v7 || [v7 isEmpty])
+  markedTextRange = [changeCopy markedTextRange];
+  v8 = markedTextRange;
+  if (!markedTextRange || [markedTextRange isEmpty])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v10 = objc_opt_respondsToSelector();
@@ -510,8 +510,8 @@ LABEL_9:
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      v12 = [v4 text];
-      [v11 keyboardView:self didUpdateText:v12];
+      text2 = [changeCopy text];
+      [v11 keyboardView:self didUpdateText:text2];
     }
   }
 }

@@ -1,18 +1,18 @@
 @interface ADMonocularVideoPipeline
 + (id)defaults;
 + (id)supportedDimensions;
-+ (id)supportedDimensionsForNetwork:(id)a3;
-- (ADMonocularVideoPipeline)initWithParameters:(id)a3;
-- (int64_t)adjustForEngine:(unint64_t)a3;
-- (int64_t)preProcessColorInput:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4;
++ (id)supportedDimensionsForNetwork:(id)network;
+- (ADMonocularVideoPipeline)initWithParameters:(id)parameters;
+- (int64_t)adjustForEngine:(unint64_t)engine;
+- (int64_t)preProcessColorInput:(__CVBuffer *)input toBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation ADMonocularVideoPipeline
 
-- (ADMonocularVideoPipeline)initWithParameters:(id)a3
+- (ADMonocularVideoPipeline)initWithParameters:(id)parameters
 {
   v48 = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  parametersCopy = parameters;
   v40 = 335687376;
   v41 = 0u;
   v42 = 0u;
@@ -27,19 +27,19 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v5 = v34;
-  if (!v34)
+  v5 = parametersCopy;
+  if (!parametersCopy)
   {
     v5 = objc_opt_new();
   }
 
-  v34 = v5;
+  parametersCopy = v5;
   objc_storeStrong(&v4->_pipelineParameters, v5);
-  v6 = [(ADPipelineParameters *)v4->_pipelineParameters requestedDimensions];
-  if (!v6)
+  requestedDimensions = [(ADPipelineParameters *)v4->_pipelineParameters requestedDimensions];
+  if (!requestedDimensions)
   {
     v7 = +[ADMonocularVideoPipeline supportedDimensions];
-    v6 = [v7 objectAtIndexedSubscript:0];
+    requestedDimensions = [v7 objectAtIndexedSubscript:0];
   }
 
   v37 = 0u;
@@ -65,7 +65,7 @@ LABEL_35:
 
       v12 = *(*(&v35 + 1) + 8 * i);
       v13 = [ADMonocularVideoPipeline supportedDimensionsForNetwork:v12];
-      if ([v13 containsObject:v6])
+      if ([v13 containsObject:requestedDimensions])
       {
         v14 = v12;
 
@@ -84,7 +84,7 @@ LABEL_35:
 
     if (v16)
     {
-      v17 = [ADNetworkProvider createRequestedLayoutsForDimensions:v6];
+      v17 = [ADNetworkProvider createRequestedLayoutsForDimensions:requestedDimensions];
     }
 
     else
@@ -99,8 +99,8 @@ LABEL_35:
     if (v4->_networkProvider)
     {
       v21 = [v9 isEqualToString:@"CMM_PP"];
-      v22 = [objc_opt_class() defaults];
-      [v22 floatForKey:kADDeviceConfigurationKeyMonocularVideoNominalScaleFactor];
+      defaults = [objc_opt_class() defaults];
+      [defaults floatForKey:kADDeviceConfigurationKeyMonocularVideoNominalScaleFactor];
       v4->_nominalScaleFactor = v23;
 
       if (v4->_nominalScaleFactor < 0.0)
@@ -127,16 +127,16 @@ LABEL_35:
       }
 
       v4->_networkNominalEFL = v25;
-      v27 = [v6 width];
-      v28 = [v6 height];
-      if (v27 <= v28)
+      width = [requestedDimensions width];
+      height = [requestedDimensions height];
+      if (width <= height)
       {
-        v29 = v28;
+        v29 = height;
       }
 
       else
       {
-        v29 = v27;
+        v29 = width;
       }
 
       v4->_networkNominalEFL = (v29 / v26) * v4->_networkNominalEFL;
@@ -158,12 +158,12 @@ LABEL_35:
 LABEL_40:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v32 = [v6 width];
-      v33 = [v6 height];
+      width2 = [requestedDimensions width];
+      height2 = [requestedDimensions height];
       *buf = 67109376;
-      v44 = v32;
+      v44 = width2;
       v45 = 1024;
-      v46 = v33;
+      v46 = height2;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot find a CMM network that supports requested dimensions %dx%d", buf, 0xEu);
     }
   }
@@ -175,12 +175,12 @@ LABEL_36:
   return v18;
 }
 
-- (int64_t)preProcessColorInput:(__CVBuffer *)a3 toBuffer:(__CVBuffer *)a4
+- (int64_t)preProcessColorInput:(__CVBuffer *)input toBuffer:(__CVBuffer *)buffer
 {
   kdebug_trace();
   if (self->_shouldPreProcessColorInputs)
   {
-    [ADUtils convertRGBAFloat:a3 toPlanar:a4];
+    [ADUtils convertRGBAFloat:input toPlanar:buffer];
     v7 = 0;
   }
 
@@ -193,10 +193,10 @@ LABEL_36:
   return v7;
 }
 
-- (int64_t)adjustForEngine:(unint64_t)a3
+- (int64_t)adjustForEngine:(unint64_t)engine
 {
   self->_shouldPreProcessColorInputs = 0;
-  if (a3 - 3 > 1)
+  if (engine - 3 > 1)
   {
     return -22951;
   }
@@ -264,26 +264,26 @@ uint64_t __47__ADMonocularVideoPipeline_supportedDimensions__block_invoke()
   return result;
 }
 
-+ (id)supportedDimensionsForNetwork:(id)a3
++ (id)supportedDimensionsForNetwork:(id)network
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  networkCopy = network;
   {
     +[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions = objc_opt_new();
   }
 
-  v4 = [+[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions objectForKey:v3];
+  v4 = [+[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions objectForKey:networkCopy];
 
   if (!v4)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = networkCopy;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Getting supported dimensions for %@", &v10, 0xCu);
     }
 
-    v5 = [ADNetworkProvider nonRunnableProviderForNetwork:v3 requestedLayouts:MEMORY[0x277CBEC10]];
+    v5 = [ADNetworkProvider nonRunnableProviderForNetwork:networkCopy requestedLayouts:MEMORY[0x277CBEC10]];
     v6 = MEMORY[0x277CBEBF8];
     v7 = v5;
     if (v5)
@@ -291,10 +291,10 @@ uint64_t __47__ADMonocularVideoPipeline_supportedDimensions__block_invoke()
       v6 = [v5 supportedDimensionsForInput:@"rgb" expectedPixelFormat:1111970369];
     }
 
-    [+[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions setObject:v6 forKeyedSubscript:v3];
+    [+[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions setObject:v6 forKeyedSubscript:networkCopy];
   }
 
-  v8 = [+[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions objectForKeyedSubscript:v3];
+  v8 = [+[ADMonocularVideoPipeline supportedDimensionsForNetwork:]::allDimensions objectForKeyedSubscript:networkCopy];
 
   return v8;
 }

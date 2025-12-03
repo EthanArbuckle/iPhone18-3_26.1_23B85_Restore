@@ -1,50 +1,50 @@
 @interface _RWITCPConnection
-+ (_RWITCPConnection)TCPConnectionWithLockdownConnection:(_lockdown_connection *)a3;
-+ (_RWITCPConnection)TCPConnectionWithSocketPath:(id)a3;
-- (_RWITCPConnection)initWithServer:(id)a3 lockdownConnection:(_lockdown_connection *)a4;
++ (_RWITCPConnection)TCPConnectionWithLockdownConnection:(_lockdown_connection *)connection;
++ (_RWITCPConnection)TCPConnectionWithSocketPath:(id)path;
+- (_RWITCPConnection)initWithServer:(id)server lockdownConnection:(_lockdown_connection *)connection;
 - (_RWITCPConnectionDelegate)delegate;
 - (void)_closeInputStream;
 - (void)_closeOutputStream;
-- (void)_commonInitializationWithServer:(id)a3 socket:(int)a4 type:(int64_t)a5;
+- (void)_commonInitializationWithServer:(id)server socket:(int)socket type:(int64_t)type;
 - (void)_createInputSource;
 - (void)_createOutputSource;
 - (void)_dispatchSourceCancelled;
 - (void)_handleInput;
 - (void)_handleOutput;
-- (void)_processIncomingBytes:(const char *)a3 length:(int64_t)a4;
-- (void)_setOutputSourceSuspended:(BOOL)a3;
+- (void)_processIncomingBytes:(const char *)bytes length:(int64_t)length;
+- (void)_setOutputSourceSuspended:(BOOL)suspended;
 - (void)_shutdown;
 - (void)dealloc;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 @end
 
 @implementation _RWITCPConnection
 
-+ (_RWITCPConnection)TCPConnectionWithSocketPath:(id)a3
++ (_RWITCPConnection)TCPConnectionWithSocketPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy];
 
   if ((v6 & 1) == 0)
   {
     v9 = RWIDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(_RWITCPConnection *)v4 TCPConnectionWithSocketPath:v9];
+      [(_RWITCPConnection *)pathCopy TCPConnectionWithSocketPath:v9];
     }
 
     goto LABEL_9;
   }
 
-  v7 = [v4 lengthOfBytesUsingEncoding:4];
+  v7 = [pathCopy lengthOfBytesUsingEncoding:4];
   if (v7 >= 0x68)
   {
     v8 = RWIDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_RWITCPConnection *)v4 TCPConnectionWithSocketPath:v7, v8];
+      [(_RWITCPConnection *)pathCopy TCPConnectionWithSocketPath:v7, v8];
     }
 
 LABEL_9:
@@ -60,14 +60,14 @@ LABEL_9:
     {
       v16 = __error();
       v17 = strerror(*v16);
-      [(_RWITCPConnection *)v17 TCPConnectionWithSocketPath:v4];
+      [(_RWITCPConnection *)v17 TCPConnectionWithSocketPath:pathCopy];
     }
 
     goto LABEL_9;
   }
 
   v22.sa_family = 1;
-  strlcpy(v22.sa_data, [v4 UTF8String], 0x68uLL);
+  strlcpy(v22.sa_data, [pathCopy UTF8String], 0x68uLL);
   v14 = strlen(v22.sa_data);
   if (connect(v13, &v22, v14 + 2) == -1)
   {
@@ -76,14 +76,14 @@ LABEL_9:
     {
       v19 = __error();
       v20 = strerror(*v19);
-      [(_RWITCPConnection *)v20 TCPConnectionWithSocketPath:v4];
+      [(_RWITCPConnection *)v20 TCPConnectionWithSocketPath:pathCopy];
     }
 
     close(v13);
     goto LABEL_9;
   }
 
-  v10 = [[a1 alloc] initWithServer:0 socket:v13];
+  v10 = [[self alloc] initWithServer:0 socket:v13];
 LABEL_10:
 
   v11 = *MEMORY[0x277D85DE8];
@@ -91,7 +91,7 @@ LABEL_10:
   return v10;
 }
 
-+ (_RWITCPConnection)TCPConnectionWithLockdownConnection:(_lockdown_connection *)a3
++ (_RWITCPConnection)TCPConnectionWithLockdownConnection:(_lockdown_connection *)connection
 {
   if (lockdown_get_socket() == -1)
   {
@@ -106,35 +106,35 @@ LABEL_10:
 
   else
   {
-    v5 = [[a1 alloc] initWithServer:0 lockdownConnection:a3];
+    v5 = [[self alloc] initWithServer:0 lockdownConnection:connection];
   }
 
   return v5;
 }
 
-- (_RWITCPConnection)initWithServer:(id)a3 lockdownConnection:(_lockdown_connection *)a4
+- (_RWITCPConnection)initWithServer:(id)server lockdownConnection:(_lockdown_connection *)connection
 {
-  v6 = a3;
+  serverCopy = server;
   v11.receiver = self;
   v11.super_class = _RWITCPConnection;
   v7 = [(_RWITCPConnection *)&v11 init];
   if (v7)
   {
     socket = lockdown_get_socket();
-    v7->_connection = a4;
-    [(_RWITCPConnection *)v7 _commonInitializationWithServer:v6 socket:socket type:1];
+    v7->_connection = connection;
+    [(_RWITCPConnection *)v7 _commonInitializationWithServer:serverCopy socket:socket type:1];
     v9 = v7;
   }
 
   return v7;
 }
 
-- (void)_commonInitializationWithServer:(id)a3 socket:(int)a4 type:(int64_t)a5
+- (void)_commonInitializationWithServer:(id)server socket:(int)socket type:(int64_t)type
 {
-  v15 = a3;
-  objc_storeStrong(&self->_server, a3);
-  self->_socket = a4;
-  self->_type = a5;
+  serverCopy = server;
+  objc_storeStrong(&self->_server, server);
+  self->_socket = socket;
+  self->_type = type;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   outputMessageQueue = self->_outputMessageQueue;
   self->_outputMessageQueue = v9;
@@ -210,10 +210,10 @@ LABEL_9:
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
+  messageCopy = message;
+  v5 = messageCopy;
   connectionQueue = self->_connectionQueue;
   if (connectionQueue)
   {
@@ -222,7 +222,7 @@ LABEL_9:
     v7[2] = __33___RWITCPConnection_sendMessage___block_invoke;
     v7[3] = &unk_279EAA478;
     v7[4] = self;
-    v8 = v4;
+    v8 = messageCopy;
     dispatch_async(connectionQueue, v7);
   }
 }
@@ -279,10 +279,10 @@ LABEL_9:
   }
 }
 
-- (void)_setOutputSourceSuspended:(BOOL)a3
+- (void)_setOutputSourceSuspended:(BOOL)suspended
 {
   outputSource = self->_outputSource;
-  if (a3)
+  if (suspended)
   {
     dispatch_suspend(outputSource);
     v5 = 1;
@@ -408,13 +408,13 @@ LABEL_22:
   *buf = 67240450;
   *(buf + 1) = a3;
   *(buf + 4) = 2082;
-  *(buf + 10) = a1;
+  *(buf + 10) = self;
   _os_log_error_impl(&dword_273C9C000, log, OS_LOG_TYPE_ERROR, "_RWITCPConnection read failed: %{public}d - %{public}s", buf, 0x12u);
 }
 
-- (void)_processIncomingBytes:(const char *)a3 length:(int64_t)a4
+- (void)_processIncomingBytes:(const char *)bytes length:(int64_t)length
 {
-  [(NSMutableData *)self->_incomingData appendBytes:a3 length:a4];
+  [(NSMutableData *)self->_incomingData appendBytes:bytes length:length];
   incomingData = self->_incomingData;
   v13 = 0;
   v6 = [_RWITCPRelayMessage TCPRelayMessageFromDataStream:incomingData error:&v13];

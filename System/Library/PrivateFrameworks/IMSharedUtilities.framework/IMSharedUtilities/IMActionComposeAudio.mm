@@ -1,6 +1,6 @@
 @interface IMActionComposeAudio
 - (IMActionComposeAudio)init;
-- (IMActionComposeAudio)initWithPhoneNumber:(id)a3;
+- (IMActionComposeAudio)initWithPhoneNumber:(id)number;
 - (NSString)phoneNumber;
 - (id)dictionaryRepresentation;
 @end
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (IMActionComposeAudio)initWithPhoneNumber:(id)a3
+- (IMActionComposeAudio)initWithPhoneNumber:(id)number
 {
   v4 = sub_1A88C82E8();
   v5 = (self + OBJC_IVAR___IMActionComposeAudio_phoneNumber);
@@ -33,8 +33,8 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = 0x6D754E656E6F6870;
   *(inited + 40) = 0xEB00000000726562;
-  v4 = self;
-  v5 = [(IMActionComposeAudio *)v4 phoneNumber];
+  selfCopy = self;
+  phoneNumber = [(IMActionComposeAudio *)selfCopy phoneNumber];
   v6 = sub_1A88C82E8();
   v8 = v7;
 

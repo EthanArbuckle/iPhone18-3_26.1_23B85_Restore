@@ -1,21 +1,21 @@
 @interface LTMProcessor
-- (LTMProcessor)initWithCommandQueue:(id)a3;
-- (id)_applyGlobalCCM:(__n128)a3 globalCCM:(__n128)a4;
-- (id)_compressHighlight:(id)a3;
-- (id)_dehaze:(id)a3 hazeValues:;
-- (id)createIntermediateRGBAMetalTexture:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5;
-- (id)createLTMInTextureFromLuma:(id)a3 chroma:(id)a4;
-- (id)createLTMInTextureFromRGBAFloatTex:(id)a3 undoScaleDown:(float)a4;
-- (id)generateLinearRGBATexture:(float)a3;
-- (int)createShaders:(id)a3;
-- (int)getLTMTuningFromTuningParams:(LTMTuning *)a3 from:(id)a4;
-- (int)prepareToProcess:(unsigned int)a3;
+- (LTMProcessor)initWithCommandQueue:(id)queue;
+- (id)_applyGlobalCCM:(__n128)m globalCCM:(__n128)cM;
+- (id)_compressHighlight:(id)highlight;
+- (id)_dehaze:(id)_dehaze hazeValues:;
+- (id)createIntermediateRGBAMetalTexture:(id)texture width:(unint64_t)width height:(unint64_t)height;
+- (id)createLTMInTextureFromLuma:(id)luma chroma:(id)chroma;
+- (id)createLTMInTextureFromRGBAFloatTex:(id)tex undoScaleDown:(float)down;
+- (id)generateLinearRGBATexture:(float)texture;
+- (int)createShaders:(id)shaders;
+- (int)getLTMTuningFromTuningParams:(LTMTuning *)params from:(id)from;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)process;
 - (int)purgeResources;
 - (int)resetState;
-- (int)setDehazeTuningParamsFrom:(id)a3;
-- (int)setLTMComputeTuningParams:(sRefDriverInputs_SOFTISP *)a3 from:(id)a4;
-- (int)setLTMTuningParamsFrom:(id)a3;
+- (int)setDehazeTuningParamsFrom:(id)from;
+- (int)setLTMComputeTuningParams:(sRefDriverInputs_SOFTISP *)params from:(id)from;
+- (int)setLTMTuningParamsFrom:(id)from;
 - (void)_prepareHighlightCompressionCurve;
 - (void)_readDefaultsDehaze;
 - (void)_readDefaultsLTMparam;
@@ -24,9 +24,9 @@
 
 @implementation LTMProcessor
 
-- (LTMProcessor)initWithCommandQueue:(id)a3
+- (LTMProcessor)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   FigKTraceInit();
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -45,20 +45,20 @@
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     if (v7)
     {
-      v8 = [objc_alloc(MEMORY[0x1E6991778]) initWithbundle:v7 andOptionalCommandQueue:v4];
+      v8 = [objc_alloc(MEMORY[0x1E6991778]) initWithbundle:v7 andOptionalCommandQueue:queueCopy];
       v9 = *(v6 + 1);
       *(v6 + 1) = v8;
 
       if (*(v6 + 1))
       {
         v10 = objc_alloc(MEMORY[0x1E6991750]);
-        v11 = [*(v6 + 1) device];
-        v12 = [v10 initWithDevice:v11 allocatorType:2];
+        device = [*(v6 + 1) device];
+        v12 = [v10 initWithDevice:device allocatorType:2];
         [*(v6 + 1) setAllocator:v12];
 
-        v13 = [*(v6 + 1) allocator];
+        allocator = [*(v6 + 1) allocator];
 
-        if (v13)
+        if (allocator)
         {
           [v6 _readDefaultsMetalAllocator];
           v14 = objc_opt_new();
@@ -164,7 +164,7 @@ LABEL_12:
   return v20;
 }
 
-- (int)createShaders:(id)a3
+- (int)createShaders:(id)shaders
 {
   v4 = &self->globalFaceHistStat[148];
   v5 = [(FigMetalContext *)self->_metalContext computePipelineStateFor:@"SoftLTM::ltmDownsampleYCbCrToRGB" constants:0];
@@ -232,13 +232,13 @@ LABEL_12:
 - (int)purgeResources
 {
   v3 = &self->globalFaceHistStat[148];
-  v4 = [(FigMetalContext *)self->_metalContext allocator];
-  [v4 reset];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  [allocator reset];
 
   if (!*(v3 + 69))
   {
-    v5 = [(FigMetalContext *)self->_metalContext allocator];
-    [v5 purgeResources];
+    allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+    [allocator2 purgeResources];
   }
 
   self->_allocatorSetupComplete = 0;
@@ -255,7 +255,7 @@ LABEL_12:
   return 0;
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
   if (self->_allocatorSetupComplete)
   {
@@ -272,13 +272,13 @@ LABEL_12:
     externalMemoryResource = self->_externalMemoryResource;
     if (externalMemoryResource)
     {
-      v8 = [(CMIExternalMemoryResource *)externalMemoryResource allocatorBackend];
-      v9 = v8;
-      if (v8)
+      allocatorBackend = [(CMIExternalMemoryResource *)externalMemoryResource allocatorBackend];
+      v9 = allocatorBackend;
+      if (allocatorBackend)
       {
-        [v6 setMemSize:{objc_msgSend(v8, "memSize")}];
-        v10 = [(FigMetalContext *)self->_metalContext allocator];
-        v11 = [v10 setupWithDescriptor:v6 allocatorBackend:v9];
+        [v6 setMemSize:{objc_msgSend(allocatorBackend, "memSize")}];
+        allocator = [(FigMetalContext *)self->_metalContext allocator];
+        v11 = [allocator setupWithDescriptor:v6 allocatorBackend:v9];
 
         if (!v11)
         {
@@ -312,8 +312,8 @@ LABEL_12:
 
       [v6 setMemSize:allocatorForceSize];
       [v6 setWireMemory:self->_allocatorWireMemory];
-      v13 = [(FigMetalContext *)self->_metalContext allocator];
-      v14 = [v13 setupWithDescriptor:v6];
+      allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+      v14 = [allocator2 setupWithDescriptor:v6];
 
       if (!v14)
       {
@@ -356,21 +356,21 @@ LABEL_12:
   }
 
   self->_anon_584[896] = 0;
-  v6 = [*(v3 + 68) tuningParameters];
+  tuningParameters = [*(v3 + 68) tuningParameters];
 
-  if (v6)
+  if (tuningParameters)
   {
-    v7 = [*(v3 + 68) tuningParameters];
-    [(LTMProcessor *)self setLTMComputeTuningParams:&self->_driverInputMetadata.exposureTime from:v7];
+    tuningParameters2 = [*(v3 + 68) tuningParameters];
+    [(LTMProcessor *)self setLTMComputeTuningParams:&self->_driverInputMetadata.exposureTime from:tuningParameters2];
 
-    v8 = [*(v3 + 68) tuningParameters];
-    [(LTMProcessor *)self setDehazeTuningParamsFrom:v8];
+    tuningParameters3 = [*(v3 + 68) tuningParameters];
+    [(LTMProcessor *)self setDehazeTuningParamsFrom:tuningParameters3];
 
-    v9 = [*(v3 + 68) tuningParameters];
-    [(LTMProcessor *)self setLTMTuningParamsFrom:v9];
+    tuningParameters4 = [*(v3 + 68) tuningParameters];
+    [(LTMProcessor *)self setLTMTuningParamsFrom:tuningParameters4];
 
-    v10 = [*(v3 + 68) tuningParameters];
-    v11 = [v10 objectForKeyedSubscript:@"Features"];
+    tuningParameters5 = [*(v3 + 68) tuningParameters];
+    v11 = [tuningParameters5 objectForKeyedSubscript:@"Features"];
 
     if (v11)
     {
@@ -401,15 +401,15 @@ LABEL_12:
   [(LTMProcessor *)self _readDefaultsDehaze];
   if (*(v3 + 497) == 1)
   {
-    v13 = [*(v3 + 68) doHazeEstimation];
+    doHazeEstimation = [*(v3 + 68) doHazeEstimation];
   }
 
   else
   {
-    v13 = 0;
+    doHazeEstimation = 0;
   }
 
-  [*(v3 + 68) setDoHazeEstimation:v13];
+  [*(v3 + 68) setDoHazeEstimation:doHazeEstimation];
   if (*(v3 + 498) == 1)
   {
     v14 = objc_opt_new();
@@ -422,7 +422,7 @@ LABEL_12:
 LABEL_91:
       v103 = 0;
       v34 = 0;
-      v104 = 0;
+      compute = 0;
       goto LABEL_92;
     }
   }
@@ -440,15 +440,15 @@ LABEL_91:
     }
   }
 
-  v18 = [*(v3 + 68) inRGBImageUInt16Tex];
+  inRGBImageUInt16Tex = [*(v3 + 68) inRGBImageUInt16Tex];
 
   v19 = *(v3 + 68);
-  if (v18)
+  if (inRGBImageUInt16Tex)
   {
-    v20 = [v19 inRGBImageUInt16Tex];
-    v119 = v20;
+    inRGBImageUInt16Tex2 = [v19 inRGBImageUInt16Tex];
+    v119 = inRGBImageUInt16Tex2;
     FigMetalIncRef();
-    if (!v20)
+    if (!inRGBImageUInt16Tex2)
     {
       goto LABEL_84;
     }
@@ -462,15 +462,15 @@ LABEL_91:
     if ([*(v3 + 68) undoHRGainDownRatio])
     {
       v23 = *(v3 + 60);
-      v24 = [*(v3 + 68) inMetaData];
-      [v23 extractHRGainDownRatioFrom:v24];
+      inMetaData = [*(v3 + 68) inMetaData];
+      [v23 extractHRGainDownRatioFrom:inMetaData];
       v22 = v25;
     }
 
     *&v21 = v22;
-    v20 = [(LTMProcessor *)self generateLinearRGBATexture:v21];
-    v119 = v20;
-    if (!v20)
+    inRGBImageUInt16Tex2 = [(LTMProcessor *)self generateLinearRGBATexture:v21];
+    v119 = inRGBImageUInt16Tex2;
+    if (!inRGBImageUInt16Tex2)
     {
       goto LABEL_84;
     }
@@ -485,7 +485,7 @@ LABEL_84:
 
   if (*(v3 + 498) == 1)
   {
-    v26 = -[LTMGeometryDataV2 initWithInputTextureWidth:height:]([LTMGeometryDataV2 alloc], "initWithInputTextureWidth:height:", [v20 width], objc_msgSend(v20, "height"));
+    v26 = -[LTMGeometryDataV2 initWithInputTextureWidth:height:]([LTMGeometryDataV2 alloc], "initWithInputTextureWidth:height:", [inRGBImageUInt16Tex2 width], objc_msgSend(inRGBImageUInt16Tex2, "height"));
     v27 = *(v3 + 59);
     *(v3 + 59) = v26;
 
@@ -497,14 +497,14 @@ LABEL_94:
 LABEL_95:
       v34 = 0;
 LABEL_104:
-      v104 = 0;
+      compute = 0;
       goto LABEL_80;
     }
   }
 
   else
   {
-    v28 = -[LTMGeometryDataV1 initWithInputTextureWidth:height:]([LTMGeometryDataV1 alloc], "initWithInputTextureWidth:height:", [v20 width], objc_msgSend(v20, "height"));
+    v28 = -[LTMGeometryDataV1 initWithInputTextureWidth:height:]([LTMGeometryDataV1 alloc], "initWithInputTextureWidth:height:", [inRGBImageUInt16Tex2 width], objc_msgSend(inRGBImageUInt16Tex2, "height"));
     v29 = *(v3 + 59);
     *(v3 + 59) = v28;
 
@@ -530,7 +530,7 @@ LABEL_104:
     HIDWORD(v32) = vcvts_n_f32_s32(self->_driverInputMetadata.ccm.coeff[6].v16, 0xCuLL);
     v33.i32[0] = self->_driverInputMetadata.ccm.coeff[8].v16;
     v33.i32[1] = *&self->_driverInputMetadata.isLEDMainFlashforAWB;
-    v34 = [(LTMProcessor *)self _applyGlobalCCM:v20 globalCCM:COERCE_DOUBLE(vmul_f32(vcvt_f32_s32(v30), v31)), v32, COERCE_DOUBLE(vmul_f32(vcvt_f32_s32(v33), v31))];
+    v34 = [(LTMProcessor *)self _applyGlobalCCM:inRGBImageUInt16Tex2 globalCCM:COERCE_DOUBLE(vmul_f32(vcvt_f32_s32(v30), v31)), v32, COERCE_DOUBLE(vmul_f32(vcvt_f32_s32(v33), v31))];
     if (!v34)
     {
       [LTMProcessor process];
@@ -544,9 +544,9 @@ LABEL_103:
     v119 = v34;
   }
 
-  v36 = [*(v3 + 68) hazeEstimation];
+  hazeEstimation = [*(v3 + 68) hazeEstimation];
 
-  if (!v36)
+  if (!hazeEstimation)
   {
     if (![*(v3 + 68) doHazeEstimation])
     {
@@ -559,21 +559,21 @@ LABEL_103:
     }
 
     v44 = *&self->_driverInputMetadata.expBias;
-    v45 = [*(v3 + 61) hazeProperties];
+    hazeProperties = [*(v3 + 61) hazeProperties];
     LODWORD(v46) = v44;
-    [v45 setIspRes:v46];
+    [hazeProperties setIspRes:v46];
 
     [*(v3 + 68) evmExpRatio];
     v48 = v47;
-    v49 = [*(v3 + 61) hazeProperties];
+    hazeProperties2 = [*(v3 + 61) hazeProperties];
     LODWORD(v50) = v48;
-    [v49 setEvmExpRatio:v50];
+    [hazeProperties2 setEvmExpRatio:v50];
 
     [*(v3 + 61) setInputRGBTexture:v119];
     [*(v3 + 61) setHazeValue:0.0];
-    v51 = [*(v3 + 68) calcGlobalHistOnROI];
+    calcGlobalHistOnROI = [*(v3 + 68) calcGlobalHistOnROI];
     v52 = *(v3 + 59);
-    if (v51)
+    if (calcGlobalHistOnROI)
     {
       [v52 cropRect];
       v54 = v53;
@@ -669,8 +669,8 @@ LABEL_53:
   do
   {
     v113 = v38;
-    v39 = [*(v3 + 68) hazeEstimation];
-    v40 = [v39 objectAtIndexedSubscript:v37];
+    hazeEstimation2 = [*(v3 + 68) hazeEstimation];
+    v40 = [hazeEstimation2 objectAtIndexedSubscript:v37];
     [v40 floatValue];
     v117 = v113;
     *(&v117 & 0xFFFFFFFFFFFFFFF3 | (4 * (v37 & 3))) = v41;
@@ -763,61 +763,61 @@ LABEL_61:
   v85 = -[LTMProcessor _isOptimized:](self, "_isOptimized:", [*(v3 + 68) optimizationLevel]);
   v86 = v119;
   v87 = *(v3 + 59);
-  v88 = [*(v3 + 68) enableAntiAliasing];
-  v89 = [*(v3 + 68) calcGlobalHistOnROI];
+  enableAntiAliasing = [*(v3 + 68) enableAntiAliasing];
+  calcGlobalHistOnROI2 = [*(v3 + 68) calcGlobalHistOnROI];
   BYTE2(v109) = *(v3 + 500);
   BYTE1(v109) = *(v3 + 498);
   LOBYTE(v109) = *(v3 + 501);
-  v90 = [LTMStats startCalculateHITHStatistics:v4 ltmGeometry:"startCalculateHITHStatistics:ltmGeometry:inputDriverMetadata:optimized:enableAntiAliasing:calcGlobalHistOnROI:enhancedLocalHistogram:enableDualLTC:enableFATE:outputProcHITHStat:" inputDriverMetadata:v86 optimized:v87 enableAntiAliasing:&self->_driverInputMetadata.exposureTime calcGlobalHistOnROI:v85 enhancedLocalHistogram:v88 enableDualLTC:v89 enableFATE:v109 outputProcHITHStat:&self->_procHITHStat];
+  v90 = [LTMStats startCalculateHITHStatistics:v4 ltmGeometry:"startCalculateHITHStatistics:ltmGeometry:inputDriverMetadata:optimized:enableAntiAliasing:calcGlobalHistOnROI:enhancedLocalHistogram:enableDualLTC:enableFATE:outputProcHITHStat:" inputDriverMetadata:v86 optimized:v87 enableAntiAliasing:&self->_driverInputMetadata.exposureTime calcGlobalHistOnROI:v85 enhancedLocalHistogram:enableAntiAliasing enableDualLTC:calcGlobalHistOnROI2 enableFATE:v109 outputProcHITHStat:&self->_procHITHStat];
   if (!v90)
   {
     if (*(v3 + 498) == 1)
     {
       v91 = [LTMCurvesComputeV2 alloc];
       v92 = *(v3 + 59);
-      v93 = [*(v3 + 68) digitalFlash];
-      v94 = [*(v3 + 68) computeHDRCurves];
-      v95 = [*(v3 + 68) computeCurvesWoFaceBoost];
-      v96 = [*(v3 + 68) computeHDRCurvesWoFaceBoost];
+      digitalFlash = [*(v3 + 68) digitalFlash];
+      computeHDRCurves = [*(v3 + 68) computeHDRCurves];
+      computeCurvesWoFaceBoost = [*(v3 + 68) computeCurvesWoFaceBoost];
+      computeHDRCurvesWoFaceBoost = [*(v3 + 68) computeHDRCurvesWoFaceBoost];
       WORD2(v110) = *(v3 + 499);
       BYTE3(v110) = *(v3 + 501);
-      BYTE2(v110) = v96;
-      BYTE1(v110) = v95;
-      LOBYTE(v110) = v94;
-      v97 = [LTMCurvesComputeV2 initWith:v91 HITH:"initWith:HITH:geometryData:statsObj:optimized:digitalFlash:computeHDRCurves:computeCurvesWoFaceBoost:computeHDRCurvesWoFaceBoost:enhancedLocalHistogram:enableCB:enableFATE:" geometryData:&self->_driverInputMetadata.exposureTime statsObj:&self->_procHITHStat optimized:v92 digitalFlash:v4 computeHDRCurves:v85 computeCurvesWoFaceBoost:v93 computeHDRCurvesWoFaceBoost:v110 enhancedLocalHistogram:? enableCB:? enableFATE:?];
+      BYTE2(v110) = computeHDRCurvesWoFaceBoost;
+      BYTE1(v110) = computeCurvesWoFaceBoost;
+      LOBYTE(v110) = computeHDRCurves;
+      v97 = [LTMCurvesComputeV2 initWith:v91 HITH:"initWith:HITH:geometryData:statsObj:optimized:digitalFlash:computeHDRCurves:computeCurvesWoFaceBoost:computeHDRCurvesWoFaceBoost:enhancedLocalHistogram:enableCB:enableFATE:" geometryData:&self->_driverInputMetadata.exposureTime statsObj:&self->_procHITHStat optimized:v92 digitalFlash:v4 computeHDRCurves:v85 computeCurvesWoFaceBoost:digitalFlash computeHDRCurvesWoFaceBoost:v110 enhancedLocalHistogram:? enableCB:? enableFATE:?];
     }
 
     else
     {
       v98 = [LTMCurvesComputeV1 alloc];
       v99 = *(v3 + 59);
-      v100 = [*(v3 + 68) digitalFlash];
-      v101 = [*(v3 + 68) computeHDRCurves];
-      v102 = [*(v3 + 68) computeCurvesWoFaceBoost];
+      digitalFlash2 = [*(v3 + 68) digitalFlash];
+      computeHDRCurves2 = [*(v3 + 68) computeHDRCurves];
+      computeCurvesWoFaceBoost2 = [*(v3 + 68) computeCurvesWoFaceBoost];
       BYTE2(v110) = [*(v3 + 68) computeHDRCurvesWoFaceBoost];
-      BYTE1(v110) = v102;
-      LOBYTE(v110) = v101;
-      v97 = [LTMCurvesComputeV1 initWith:v98 HITH:"initWith:HITH:geometryData:statsObj:optimized:digitalFlash:computeHDRCurves:computeCurvesWoFaceBoost:computeHDRCurvesWoFaceBoost:" geometryData:&self->_driverInputMetadata.exposureTime statsObj:&self->_procHITHStat optimized:v99 digitalFlash:v4 computeHDRCurves:v85 computeCurvesWoFaceBoost:v100 computeHDRCurvesWoFaceBoost:v110];
+      BYTE1(v110) = computeCurvesWoFaceBoost2;
+      LOBYTE(v110) = computeHDRCurves2;
+      v97 = [LTMCurvesComputeV1 initWith:v98 HITH:"initWith:HITH:geometryData:statsObj:optimized:digitalFlash:computeHDRCurves:computeCurvesWoFaceBoost:computeHDRCurvesWoFaceBoost:" geometryData:&self->_driverInputMetadata.exposureTime statsObj:&self->_procHITHStat optimized:v99 digitalFlash:v4 computeHDRCurves:v85 computeCurvesWoFaceBoost:digitalFlash2 computeHDRCurvesWoFaceBoost:v110];
     }
 
     v103 = v97;
     v5 = MEMORY[0x1E695FF58];
     if (v97)
     {
-      v104 = [(LTMCurvesComputeV2 *)v97 compute];
-      v105 = [*(v3 + 68) inMetaData];
-      v34 = [v105 mutableCopy];
+      compute = [(LTMCurvesComputeV2 *)v97 compute];
+      inMetaData2 = [*(v3 + 68) inMetaData];
+      v34 = [inMetaData2 mutableCopy];
 
-      [v34 addEntriesFromDictionary:v104];
+      [v34 addEntriesFromDictionary:compute];
       [*(v3 + 68) setOutMetaData:v34];
       if (*v5 == 1)
       {
         kdebug_trace();
       }
 
-      v106 = [*(v3 + 68) outMetaData];
+      outMetaData = [*(v3 + 68) outMetaData];
 
-      if (!v106)
+      if (!outMetaData)
       {
         [LTMProcessor process];
 LABEL_92:
@@ -839,7 +839,7 @@ LABEL_80:
 LABEL_101:
   v103 = 0;
   v34 = 0;
-  v104 = 0;
+  compute = 0;
 LABEL_81:
   if (*v5 == 1)
   {
@@ -877,101 +877,101 @@ LABEL_81:
 
 - (void)_readDefaultsDehaze
 {
-  v3 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v3 reluC1];
+  hazeProperties = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties reluC1];
   v5 = v4;
-  v6 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties2 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v7) = v5;
-  [v6 setReluC1:v7];
+  [hazeProperties2 setReluC1:v7];
 
-  v8 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v8 reluC2];
+  hazeProperties3 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties3 reluC2];
   v10 = v9;
-  v11 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties4 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v12) = v10;
-  [v11 setReluC2:v12];
+  [hazeProperties4 setReluC2:v12];
 
-  v13 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v13 reluC3];
+  hazeProperties5 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties5 reluC3];
   v15 = v14;
-  v16 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties6 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v17) = v15;
-  [v16 setReluC3:v17];
+  [hazeProperties6 setReluC3:v17];
 
-  v18 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v18 reluC4];
+  hazeProperties7 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties7 reluC4];
   v20 = v19;
-  v21 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties8 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v22) = v20;
-  [v21 setReluC4:v22];
+  [hazeProperties8 setReluC4:v22];
 
-  v23 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v23 reluC5];
+  hazeProperties9 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties9 reluC5];
   v25 = v24;
-  v26 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties10 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v27) = v25;
-  [v26 setReluC5:v27];
+  [hazeProperties10 setReluC5:v27];
 
-  v28 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v28 sr_min];
+  hazeProperties11 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties11 sr_min];
   v30 = v29;
-  v31 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties12 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v32) = v30;
-  [v31 setSr_min:v32];
+  [hazeProperties12 setSr_min:v32];
 
-  v33 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v33 sr_var];
+  hazeProperties13 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties13 sr_var];
   v35 = v34;
-  v36 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties14 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v37) = v35;
-  [v36 setSr_var:v37];
+  [hazeProperties14 setSr_var:v37];
 
-  v38 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v38 sr_pow];
+  hazeProperties15 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties15 sr_pow];
   v40 = v39;
-  v41 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties16 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v42) = v40;
-  [v41 setSr_pow:v42];
+  [hazeProperties16 setSr_pow:v42];
 
-  v43 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v43 sr_sat];
+  hazeProperties17 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties17 sr_sat];
   v45 = v44;
-  v46 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties18 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v47) = v45;
-  [v46 setSr_sat:v47];
+  [hazeProperties18 setSr_sat:v47];
 
-  v48 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v48 min_display_black];
+  hazeProperties19 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties19 min_display_black];
   v50 = v49;
-  v51 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties20 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v52) = v50;
-  [v51 setMin_display_black:v52];
+  [hazeProperties20 setMin_display_black:v52];
 
-  v57 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v57 haze_threshold_divider];
+  hazeProperties21 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties21 haze_threshold_divider];
   v54 = v53;
-  v55 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties22 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v56) = v54;
-  [v55 setHaze_threshold_divider:v56];
+  [hazeProperties22 setHaze_threshold_divider:v56];
 }
 
-- (id)generateLinearRGBATexture:(float)a3
+- (id)generateLinearRGBATexture:(float)texture
 {
-  v5 = [(LTMIBPParams *)self->_ltmParams inLumaTex];
-  if (v5)
+  inLumaTex = [(LTMIBPParams *)self->_ltmParams inLumaTex];
+  if (inLumaTex)
   {
-    v6 = v5;
-    v7 = [(LTMIBPParams *)self->_ltmParams inChromaTex];
+    v6 = inLumaTex;
+    inChromaTex = [(LTMIBPParams *)self->_ltmParams inChromaTex];
 
-    if (v7)
+    if (inChromaTex)
     {
-      v8 = [(LTMIBPParams *)self->_ltmParams inRGBAFloatTex];
+      inRGBAFloatTex = [(LTMIBPParams *)self->_ltmParams inRGBAFloatTex];
 
-      if (!v8)
+      if (!inRGBAFloatTex)
       {
-        v9 = [(LTMIBPParams *)self->_ltmParams inLumaTex];
-        v10 = [(LTMIBPParams *)self->_ltmParams inChromaTex];
-        v11 = [(LTMProcessor *)self createLTMInTextureFromLuma:v9 chroma:v10];
+        inLumaTex2 = [(LTMIBPParams *)self->_ltmParams inLumaTex];
+        inChromaTex2 = [(LTMIBPParams *)self->_ltmParams inChromaTex];
+        v11 = [(LTMProcessor *)self createLTMInTextureFromLuma:inLumaTex2 chroma:inChromaTex2];
 
         if (!v11)
         {
@@ -988,9 +988,9 @@ LABEL_12:
     }
   }
 
-  v12 = [(LTMIBPParams *)self->_ltmParams inRGBAFloatTex];
+  inRGBAFloatTex2 = [(LTMIBPParams *)self->_ltmParams inRGBAFloatTex];
 
-  if (!v12)
+  if (!inRGBAFloatTex2)
   {
     FigDebugAssert3();
     v15 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -998,16 +998,16 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v13 = [(LTMIBPParams *)self->_ltmParams inLumaTex];
-  if (v13)
+  inLumaTex3 = [(LTMIBPParams *)self->_ltmParams inLumaTex];
+  if (inLumaTex3)
   {
 
     goto LABEL_9;
   }
 
-  v14 = [(LTMIBPParams *)self->_ltmParams inChromaTex];
+  inChromaTex3 = [(LTMIBPParams *)self->_ltmParams inChromaTex];
 
-  if (v14)
+  if (inChromaTex3)
   {
 LABEL_9:
     v15 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -1018,9 +1018,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [(LTMIBPParams *)self->_ltmParams inRGBAFloatTex];
-  *&v17 = a3;
-  v11 = [(LTMProcessor *)self createLTMInTextureFromRGBAFloatTex:v16 undoScaleDown:v17];
+  inRGBAFloatTex3 = [(LTMIBPParams *)self->_ltmParams inRGBAFloatTex];
+  *&v17 = texture;
+  v11 = [(LTMProcessor *)self createLTMInTextureFromRGBAFloatTex:inRGBAFloatTex3 undoScaleDown:v17];
 
   if (!v11)
   {
@@ -1032,31 +1032,31 @@ LABEL_15:
   return v11;
 }
 
-- (id)createIntermediateRGBAMetalTexture:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5
+- (id)createIntermediateRGBAMetalTexture:(id)texture width:(unint64_t)width height:(unint64_t)height
 {
-  v8 = [(FigMetalContext *)self->_metalContext allocator];
-  v9 = [v8 newTextureDescriptor];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  newTextureDescriptor = [allocator newTextureDescriptor];
 
-  if (v9)
+  if (newTextureDescriptor)
   {
-    v10 = [v9 desc];
-    [v10 setTextureType:2];
+    desc = [newTextureDescriptor desc];
+    [desc setTextureType:2];
 
-    v11 = [v9 desc];
-    [v11 setWidth:a4];
+    desc2 = [newTextureDescriptor desc];
+    [desc2 setWidth:width];
 
-    v12 = [v9 desc];
-    [v12 setHeight:a5];
+    desc3 = [newTextureDescriptor desc];
+    [desc3 setHeight:height];
 
-    v13 = [v9 desc];
-    [v13 setUsage:3];
+    desc4 = [newTextureDescriptor desc];
+    [desc4 setUsage:3];
 
-    v14 = [v9 desc];
-    [v14 setPixelFormat:113];
+    desc5 = [newTextureDescriptor desc];
+    [desc5 setPixelFormat:113];
 
-    [v9 setLabel:0];
-    v15 = [(FigMetalContext *)self->_metalContext allocator];
-    v16 = [v15 newTextureWithDescriptor:v9];
+    [newTextureDescriptor setLabel:0];
+    allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+    v16 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
 
     if (!v16)
     {
@@ -1073,16 +1073,16 @@ LABEL_15:
   return v16;
 }
 
-- (id)createLTMInTextureFromLuma:(id)a3 chroma:(id)a4
+- (id)createLTMInTextureFromLuma:(id)luma chroma:(id)chroma
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  v8 = chromaCopy;
+  if (lumaCopy)
   {
-    if (v7)
+    if (chromaCopy)
     {
-      v9 = vcvtd_n_f64_u64([v7 width] / 0x420uLL, 1uLL);
+      v9 = vcvtd_n_f64_u64([chromaCopy width] / 0x420uLL, 1uLL);
       if (v9 >= 1.0)
       {
         v10 = v9;
@@ -1101,31 +1101,31 @@ LABEL_15:
         goto LABEL_10;
       }
 
-      v12 = [(FigMetalContext *)self->_metalContext commandQueue];
-      v13 = [v12 commandBuffer];
+      commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+      commandBuffer = [commandQueue commandBuffer];
 
-      if (v13)
+      if (commandBuffer)
       {
-        v14 = [v13 computeCommandEncoder];
-        if (v14)
+        computeCommandEncoder = [commandBuffer computeCommandEncoder];
+        if (computeCommandEncoder)
         {
-          v15 = v14;
-          [v14 setComputePipelineState:self->_ltmDownsampleYCbCrToRGB];
-          [v15 setTexture:v6 atIndex:0];
+          v15 = computeCommandEncoder;
+          [computeCommandEncoder setComputePipelineState:self->_ltmDownsampleYCbCrToRGB];
+          [v15 setTexture:lumaCopy atIndex:0];
           [v15 setTexture:v8 atIndex:1];
           [v15 setTexture:v11 atIndex:2];
           [v15 setBytes:&v25 length:4 atIndex:0];
-          v16 = [(MTLComputePipelineState *)self->_ltmDownsampleYCbCrToRGB threadExecutionWidth];
-          v17 = [(MTLComputePipelineState *)self->_ltmDownsampleYCbCrToRGB maxTotalThreadsPerThreadgroup]/ v16;
+          threadExecutionWidth = [(MTLComputePipelineState *)self->_ltmDownsampleYCbCrToRGB threadExecutionWidth];
+          v17 = [(MTLComputePipelineState *)self->_ltmDownsampleYCbCrToRGB maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
           v22[0] = [v11 width];
           v22[1] = [v11 height];
           v22[2] = 1;
-          v21[0] = v16;
+          v21[0] = threadExecutionWidth;
           v21[1] = v17;
           v21[2] = 1;
           [v15 dispatchThreads:v22 threadsPerThreadgroup:v21];
           [v15 endEncoding];
-          [v13 commit];
+          [commandBuffer commit];
 
           goto LABEL_10;
         }
@@ -1164,16 +1164,16 @@ LABEL_10:
   return v11;
 }
 
-- (id)createLTMInTextureFromRGBAFloatTex:(id)a3 undoScaleDown:(float)a4
+- (id)createLTMInTextureFromRGBAFloatTex:(id)tex undoScaleDown:(float)down
 {
-  v6 = a3;
-  v7 = v6;
-  v24 = a4;
+  texCopy = tex;
+  v7 = texCopy;
+  downCopy = down;
   v23 = 1065353216;
-  if (v6)
+  if (texCopy)
   {
     v8 = 1.0;
-    if ([v6 width] >= 0x841)
+    if ([texCopy width] >= 0x841)
     {
       v23 = 0x40000000;
       v8 = 2.0;
@@ -1191,31 +1191,31 @@ LABEL_10:
       goto LABEL_9;
     }
 
-    v10 = [(FigMetalContext *)self->_metalContext commandQueue];
-    v11 = [v10 commandBuffer];
+    commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    if (v11)
+    if (commandBuffer)
     {
-      v12 = [v11 computeCommandEncoder];
-      if (v12)
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      if (computeCommandEncoder)
       {
-        v13 = v12;
-        [v12 setComputePipelineState:self->_ltmDownsampleRGBAFloatToRGB];
+        v13 = computeCommandEncoder;
+        [computeCommandEncoder setComputePipelineState:self->_ltmDownsampleRGBAFloatToRGB];
         [v13 setTexture:v7 atIndex:0];
         [v13 setTexture:v9 atIndex:1];
         [v13 setBytes:&v23 length:4 atIndex:0];
-        [v13 setBytes:&v24 length:4 atIndex:1];
-        v14 = [(MTLComputePipelineState *)self->_ltmDownsampleRGBAFloatToRGB threadExecutionWidth];
-        v15 = [(MTLComputePipelineState *)self->_ltmDownsampleRGBAFloatToRGB maxTotalThreadsPerThreadgroup]/ v14;
+        [v13 setBytes:&downCopy length:4 atIndex:1];
+        threadExecutionWidth = [(MTLComputePipelineState *)self->_ltmDownsampleRGBAFloatToRGB threadExecutionWidth];
+        v15 = [(MTLComputePipelineState *)self->_ltmDownsampleRGBAFloatToRGB maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
         v20[0] = [v9 width];
         v20[1] = [v9 height];
         v20[2] = 1;
-        v19[0] = v14;
+        v19[0] = threadExecutionWidth;
         v19[1] = v15;
         v19[2] = 1;
         [v13 dispatchThreads:v20 threadsPerThreadgroup:v19];
         [v13 endEncoding];
-        [v11 commit];
+        [commandBuffer commit];
 
         goto LABEL_9;
       }
@@ -1248,40 +1248,40 @@ LABEL_9:
   return v9;
 }
 
-- (id)_compressHighlight:(id)a3
+- (id)_compressHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   [(LTMProcessor *)self _prepareHighlightCompressionCurve];
-  v5 = -[LTMProcessor createIntermediateRGBAMetalTexture:width:height:](self, "createIntermediateRGBAMetalTexture:width:height:", @"ltmCompressedTexture", [v4 width], objc_msgSend(v4, "height"));
+  v5 = -[LTMProcessor createIntermediateRGBAMetalTexture:width:height:](self, "createIntermediateRGBAMetalTexture:width:height:", @"ltmCompressedTexture", [highlightCopy width], objc_msgSend(highlightCopy, "height"));
   if (v5)
   {
-    v6 = [(FigMetalContext *)self->_metalContext allocator];
-    v7 = [v6 newTextureDescriptor];
+    allocator = [(FigMetalContext *)self->_metalContext allocator];
+    newTextureDescriptor = [allocator newTextureDescriptor];
 
-    if (v7)
+    if (newTextureDescriptor)
     {
-      v8 = [v7 desc];
-      [v8 setTextureType:0];
+      desc = [newTextureDescriptor desc];
+      [desc setTextureType:0];
 
-      v9 = [v7 desc];
-      [v9 setWidth:257];
+      desc2 = [newTextureDescriptor desc];
+      [desc2 setWidth:257];
 
-      v10 = [v7 desc];
-      [v10 setHeight:1];
+      desc3 = [newTextureDescriptor desc];
+      [desc3 setHeight:1];
 
-      v11 = [v7 desc];
-      [v11 setDepth:1];
+      desc4 = [newTextureDescriptor desc];
+      [desc4 setDepth:1];
 
-      v12 = [v7 desc];
-      [v12 setPixelFormat:20];
+      desc5 = [newTextureDescriptor desc];
+      [desc5 setPixelFormat:20];
 
-      v13 = [v7 desc];
-      [v13 setUsage:1];
+      desc6 = [newTextureDescriptor desc];
+      [desc6 setUsage:1];
 
-      [v7 setLabel:0];
-      v14 = [(FigMetalContext *)self->_metalContext device];
-      v15 = [v7 desc];
-      v16 = [v14 newTextureWithDescriptor:v15];
+      [newTextureDescriptor setLabel:0];
+      device = [(FigMetalContext *)self->_metalContext device];
+      desc7 = [newTextureDescriptor desc];
+      v16 = [device newTextureWithDescriptor:desc7];
 
       if (v16)
       {
@@ -1291,28 +1291,28 @@ LABEL_9:
         v32 = xmmword_1C9335B90;
         v33 = 1;
         [v16 replaceRegion:&v29 mipmapLevel:0 slice:0 withBytes:highlightCompressionDataScaled bytesPerRow:0 bytesPerImage:0];
-        v17 = [(FigMetalContext *)self->_metalContext commandQueue];
-        v18 = [v17 commandBuffer];
+        commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+        commandBuffer = [commandQueue commandBuffer];
 
-        if (v18)
+        if (commandBuffer)
         {
-          v19 = [v18 computeCommandEncoder];
-          v20 = v19;
-          if (v19)
+          computeCommandEncoder = [commandBuffer computeCommandEncoder];
+          v20 = computeCommandEncoder;
+          if (computeCommandEncoder)
           {
-            [v19 setComputePipelineState:self->_ltmCompressHighlight];
-            [v20 setTexture:v4 atIndex:0];
+            [computeCommandEncoder setComputePipelineState:self->_ltmCompressHighlight];
+            [v20 setTexture:highlightCopy atIndex:0];
             v21 = 1;
             [v20 setTexture:v5 atIndex:1];
             [v20 setTexture:v16 atIndex:2];
-            v22 = [(MTLComputePipelineState *)self->_ltmCompressHighlight threadExecutionWidth];
-            v23 = [(MTLComputePipelineState *)self->_ltmCompressHighlight maxTotalThreadsPerThreadgroup]/ v22;
-            v24 = [v5 width];
-            v25 = [v5 height];
-            v29 = v24;
-            v30 = v25;
+            threadExecutionWidth = [(MTLComputePipelineState *)self->_ltmCompressHighlight threadExecutionWidth];
+            v23 = [(MTLComputePipelineState *)self->_ltmCompressHighlight maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+            width = [v5 width];
+            height = [v5 height];
+            v29 = width;
+            v30 = height;
             v31 = 1;
-            v28[0] = v22;
+            v28[0] = threadExecutionWidth;
             v28[1] = v23;
             v28[2] = 1;
             [v20 dispatchThreads:&v29 threadsPerThreadgroup:v28];
@@ -1333,7 +1333,7 @@ LABEL_9:
       {
         [LTMProcessor _compressHighlight:];
         v20 = 0;
-        v18 = 0;
+        commandBuffer = 0;
       }
     }
 
@@ -1341,7 +1341,7 @@ LABEL_9:
     {
       [LTMProcessor _compressHighlight:];
       v20 = 0;
-      v18 = 0;
+      commandBuffer = 0;
       v16 = 0;
     }
 
@@ -1352,15 +1352,15 @@ LABEL_9:
   {
     [LTMProcessor _compressHighlight:];
     v20 = 0;
-    v18 = 0;
+    commandBuffer = 0;
     v16 = 0;
-    v7 = 0;
+    newTextureDescriptor = 0;
     v21 = 1;
   }
 
 LABEL_7:
   [v20 endEncoding];
-  [v18 commit];
+  [commandBuffer commit];
   if (v21)
   {
     v26 = v5;
@@ -1374,36 +1374,36 @@ LABEL_7:
   return v26;
 }
 
-- (id)_dehaze:(id)a3 hazeValues:
+- (id)_dehaze:(id)_dehaze hazeValues:
 {
   v17 = v3;
-  v5 = a3;
+  _dehazeCopy = _dehaze;
   v6 = vcvt_s32_f32(vmul_f32(*v17.f32, vdup_n_s32(0x477FFF00u)));
   v20[1] = vmuls_lane_f32(65535.0, v17, 2);
   v20[0] = vuzp1_s16(v6, v6).u32[0];
-  v7 = -[LTMProcessor createIntermediateRGBAMetalTexture:width:height:](self, "createIntermediateRGBAMetalTexture:width:height:", @"ltmDehazedRGBATexture", [v5 width], objc_msgSend(v5, "height"));
+  v7 = -[LTMProcessor createIntermediateRGBAMetalTexture:width:height:](self, "createIntermediateRGBAMetalTexture:width:height:", @"ltmDehazedRGBATexture", [_dehazeCopy width], objc_msgSend(_dehazeCopy, "height"));
   if (v7)
   {
-    v8 = [(FigMetalContext *)self->_metalContext commandQueue];
-    v9 = [v8 commandBuffer];
+    commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    if (v9)
+    if (commandBuffer)
     {
-      v10 = [v9 computeCommandEncoder];
-      v11 = v10;
-      if (v10)
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      v11 = computeCommandEncoder;
+      if (computeCommandEncoder)
       {
-        [v10 setComputePipelineState:self->_ltmDehaze];
-        [v11 setTexture:v5 atIndex:0];
+        [computeCommandEncoder setComputePipelineState:self->_ltmDehaze];
+        [v11 setTexture:_dehazeCopy atIndex:0];
         v12 = 1;
         [v11 setTexture:v7 atIndex:1];
         [v11 setBytes:v20 length:8 atIndex:0];
-        v13 = [(MTLComputePipelineState *)self->_ltmDehaze threadExecutionWidth];
-        v14 = [(MTLComputePipelineState *)self->_ltmDehaze maxTotalThreadsPerThreadgroup]/ v13;
+        threadExecutionWidth = [(MTLComputePipelineState *)self->_ltmDehaze threadExecutionWidth];
+        v14 = [(MTLComputePipelineState *)self->_ltmDehaze maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
         v19[0] = [v7 width];
         v19[1] = [v7 height];
         v19[2] = 1;
-        v18[0] = v13;
+        v18[0] = threadExecutionWidth;
         v18[1] = v14;
         v18[2] = 1;
         [v11 dispatchThreads:v19 threadsPerThreadgroup:v18];
@@ -1424,13 +1424,13 @@ LABEL_7:
   {
     [LTMProcessor _dehaze:hazeValues:];
     v11 = 0;
-    v9 = 0;
+    commandBuffer = 0;
   }
 
   v12 = 0;
 LABEL_5:
   [v11 endEncoding];
-  [v9 commit];
+  [commandBuffer commit];
   if (v12)
   {
     v15 = v7;
@@ -1444,35 +1444,35 @@ LABEL_5:
   return v15;
 }
 
-- (id)_applyGlobalCCM:(__n128)a3 globalCCM:(__n128)a4
+- (id)_applyGlobalCCM:(__n128)m globalCCM:(__n128)cM
 {
   v20[0] = a2;
-  v20[1] = a3;
-  v20[2] = a4;
+  v20[1] = m;
+  v20[2] = cM;
   v7 = a6;
-  v8 = [a1 createIntermediateRGBAMetalTexture:@"ltmCCMRGBATexture" width:objc_msgSend(v7 height:{"width"), objc_msgSend(v7, "height")}];
+  v8 = [self createIntermediateRGBAMetalTexture:@"ltmCCMRGBATexture" width:objc_msgSend(v7 height:{"width"), objc_msgSend(v7, "height")}];
   if (v8)
   {
-    v9 = [a1[1] commandQueue];
-    v10 = [v9 commandBuffer];
+    commandQueue = [self[1] commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    if (v10)
+    if (commandBuffer)
     {
-      v11 = [v10 computeCommandEncoder];
-      v12 = v11;
-      if (v11)
+      computeCommandEncoder = [commandBuffer computeCommandEncoder];
+      v12 = computeCommandEncoder;
+      if (computeCommandEncoder)
       {
-        [v11 setComputePipelineState:a1[5178]];
+        [computeCommandEncoder setComputePipelineState:self[5178]];
         [v12 setTexture:v7 atIndex:0];
         v13 = 1;
         [v12 setTexture:v8 atIndex:1];
         [v12 setBytes:v20 length:48 atIndex:0];
-        v14 = [a1[5178] threadExecutionWidth];
-        v15 = [a1[5178] maxTotalThreadsPerThreadgroup] / v14;
+        threadExecutionWidth = [self[5178] threadExecutionWidth];
+        v15 = [self[5178] maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
         v19[0] = [v8 width];
         v19[1] = [v8 height];
         v19[2] = 1;
-        v18[0] = v14;
+        v18[0] = threadExecutionWidth;
         v18[1] = v15;
         v18[2] = 1;
         [v12 dispatchThreads:v19 threadsPerThreadgroup:v18];
@@ -1493,13 +1493,13 @@ LABEL_5:
   {
     [LTMProcessor _applyGlobalCCM:globalCCM:];
     v12 = 0;
-    v10 = 0;
+    commandBuffer = 0;
   }
 
   v13 = 0;
 LABEL_5:
   [v12 endEncoding];
-  [v10 commit];
+  [commandBuffer commit];
   if (v13)
   {
     v16 = v8;
@@ -1537,10 +1537,10 @@ LABEL_5:
   }
 }
 
-- (int)setLTMTuningParamsFrom:(id)a3
+- (int)setLTMTuningParamsFrom:(id)from
 {
   v11 = 0;
-  v4 = [a3 objectForKeyedSubscript:@"Exposure"];
+  v4 = [from objectForKeyedSubscript:@"Exposure"];
   if (v4)
   {
     v5 = &self->globalFaceHistStat[148];
@@ -1564,22 +1564,22 @@ LABEL_5:
   return 0;
 }
 
-- (int)setDehazeTuningParamsFrom:(id)a3
+- (int)setDehazeTuningParamsFrom:(id)from
 {
   v62 = 0;
-  v4 = [a3 objectForKeyedSubscript:@"Dehaze"];
+  v4 = [from objectForKeyedSubscript:@"Dehaze"];
   if (!v4)
   {
     goto LABEL_13;
   }
 
-  v5 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v5 reluC1];
+  hazeProperties = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties reluC1];
   [v4 cmi_floatValueForKey:@"reluC1" defaultValue:&v62 found:?];
   v7 = v6;
-  v8 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties2 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v9) = v7;
-  [v8 setReluC1:v9];
+  [hazeProperties2 setReluC1:v9];
 
   if ((v62 & 1) == 0)
   {
@@ -1589,13 +1589,13 @@ LABEL_25:
     goto LABEL_14;
   }
 
-  v10 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v10 reluC2];
+  hazeProperties3 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties3 reluC2];
   [v4 cmi_floatValueForKey:@"reluC2" defaultValue:&v62 found:?];
   v12 = v11;
-  v13 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties4 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v14) = v12;
-  [v13 setReluC2:v14];
+  [hazeProperties4 setReluC2:v14];
 
   if ((v62 & 1) == 0)
   {
@@ -1603,13 +1603,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v15 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v15 reluC3];
+  hazeProperties5 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties5 reluC3];
   [v4 cmi_floatValueForKey:@"reluC3" defaultValue:&v62 found:?];
   v17 = v16;
-  v18 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties6 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v19) = v17;
-  [v18 setReluC3:v19];
+  [hazeProperties6 setReluC3:v19];
 
   if ((v62 & 1) == 0)
   {
@@ -1617,13 +1617,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v20 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v20 reluC4];
+  hazeProperties7 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties7 reluC4];
   [v4 cmi_floatValueForKey:@"reluC4" defaultValue:&v62 found:?];
   v22 = v21;
-  v23 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties8 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v24) = v22;
-  [v23 setReluC4:v24];
+  [hazeProperties8 setReluC4:v24];
 
   if ((v62 & 1) == 0)
   {
@@ -1631,13 +1631,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v25 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v25 reluC5];
+  hazeProperties9 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties9 reluC5];
   [v4 cmi_floatValueForKey:@"reluC5" defaultValue:&v62 found:?];
   v27 = v26;
-  v28 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties10 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v29) = v27;
-  [v28 setReluC5:v29];
+  [hazeProperties10 setReluC5:v29];
 
   if ((v62 & 1) == 0)
   {
@@ -1645,13 +1645,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v30 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v30 sr_min];
+  hazeProperties11 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties11 sr_min];
   [v4 cmi_floatValueForKey:@"sr_min" defaultValue:&v62 found:?];
   v32 = v31;
-  v33 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties12 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v34) = v32;
-  [v33 setSr_min:v34];
+  [hazeProperties12 setSr_min:v34];
 
   if ((v62 & 1) == 0)
   {
@@ -1659,13 +1659,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v35 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v35 sr_var];
+  hazeProperties13 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties13 sr_var];
   [v4 cmi_floatValueForKey:@"sr_var" defaultValue:&v62 found:?];
   v37 = v36;
-  v38 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties14 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v39) = v37;
-  [v38 setSr_var:v39];
+  [hazeProperties14 setSr_var:v39];
 
   if ((v62 & 1) == 0)
   {
@@ -1673,13 +1673,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v40 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v40 sr_pow];
+  hazeProperties15 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties15 sr_pow];
   [v4 cmi_floatValueForKey:@"sr_pow" defaultValue:&v62 found:?];
   v42 = v41;
-  v43 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties16 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v44) = v42;
-  [v43 setSr_pow:v44];
+  [hazeProperties16 setSr_pow:v44];
 
   if ((v62 & 1) == 0)
   {
@@ -1687,13 +1687,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v45 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v45 sr_sat];
+  hazeProperties17 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties17 sr_sat];
   [v4 cmi_floatValueForKey:@"sr_sat" defaultValue:&v62 found:?];
   v47 = v46;
-  v48 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties18 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v49) = v47;
-  [v48 setSr_sat:v49];
+  [hazeProperties18 setSr_sat:v49];
 
   if ((v62 & 1) == 0)
   {
@@ -1701,13 +1701,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v50 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v50 min_display_black];
+  hazeProperties19 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties19 min_display_black];
   [v4 cmi_floatValueForKey:@"min_display_black" defaultValue:&v62 found:?];
   v52 = v51;
-  v53 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties20 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v54) = v52;
-  [v53 setMin_display_black:v54];
+  [hazeProperties20 setMin_display_black:v54];
 
   if ((v62 & 1) == 0)
   {
@@ -1715,13 +1715,13 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v55 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
-  [v55 haze_threshold_divider];
+  hazeProperties21 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  [hazeProperties21 haze_threshold_divider];
   [v4 cmi_floatValueForKey:@"haze_threshold_divider" defaultValue:&v62 found:?];
   v57 = v56;
-  v58 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
+  hazeProperties22 = [(HazeEstimation *)self->_hazeEstimator hazeProperties];
   LODWORD(v59) = v57;
-  [v58 setHaze_threshold_divider:v59];
+  [hazeProperties22 setHaze_threshold_divider:v59];
 
 LABEL_13:
   v60 = 0;
@@ -1730,18 +1730,18 @@ LABEL_14:
   return v60;
 }
 
-- (int)setLTMComputeTuningParams:(sRefDriverInputs_SOFTISP *)a3 from:(id)a4
+- (int)setLTMComputeTuningParams:(sRefDriverInputs_SOFTISP *)params from:(id)from
 {
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"SDR"];
-  v8 = [v6 objectForKeyedSubscript:@"HLG"];
-  v9 = [v6 objectForKeyedSubscript:@"DigitalFlash"];
-  v10 = [v6 objectForKeyedSubscript:@"DigitalFlashHLG"];
+  fromCopy = from;
+  v7 = [fromCopy objectForKeyedSubscript:@"SDR"];
+  v8 = [fromCopy objectForKeyedSubscript:@"HLG"];
+  v9 = [fromCopy objectForKeyedSubscript:@"DigitalFlash"];
+  v10 = [fromCopy objectForKeyedSubscript:@"DigitalFlashHLG"];
 
   v11 = 0;
   if (v7 && v8 && v9 && v10)
   {
-    v12 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&a3[1].hdrRatio from:v7];
+    v12 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&params[1].hdrRatio from:v7];
     if (v12)
     {
       v11 = v12;
@@ -1750,7 +1750,7 @@ LABEL_14:
 
     else
     {
-      v13 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&a3[1].flashMixPercentage[38] from:v8];
+      v13 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&params[1].flashMixPercentage[38] from:v8];
       if (v13)
       {
         v11 = v13;
@@ -1759,7 +1759,7 @@ LABEL_14:
 
       else
       {
-        v14 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&a3[1].flashMixPercentage[110] from:v9];
+        v14 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&params[1].flashMixPercentage[110] from:v9];
         if (v14)
         {
           v11 = v14;
@@ -1768,7 +1768,7 @@ LABEL_14:
 
         else
         {
-          v11 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&a3[1].flashMixPercentage[254] from:v10];
+          v11 = [(LTMProcessor *)self getLTMTuningFromTuningParams:&params[1].flashMixPercentage[254] from:v10];
           if (v11)
           {
             [LTMProcessor setLTMComputeTuningParams:from:];
@@ -1776,7 +1776,7 @@ LABEL_14:
 
           else
           {
-            LOBYTE(a3[1].flashMixPercentage[398]) = 1;
+            LOBYTE(params[1].flashMixPercentage[398]) = 1;
           }
         }
       }
@@ -1786,12 +1786,12 @@ LABEL_14:
   return v11;
 }
 
-- (int)getLTMTuningFromTuningParams:(LTMTuning *)a3 from:(id)a4
+- (int)getLTMTuningFromTuningParams:(LTMTuning *)params from:(id)from
 {
-  v5 = a4;
+  fromCopy = from;
   v37 = 0;
-  [v5 cmi_floatValueForKey:@"histDampingExponentHighlight" defaultValue:&v37 found:0.0];
-  a3->histDampingExponentHighlight = v6;
+  [fromCopy cmi_floatValueForKey:@"histDampingExponentHighlight" defaultValue:&v37 found:0.0];
+  params->histDampingExponentHighlight = v6;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
@@ -1800,218 +1800,218 @@ LABEL_59:
     goto LABEL_30;
   }
 
-  [v5 cmi_floatValueForKey:@"histDampingExponentMax" defaultValue:&v37 found:0.0];
-  a3->histDampingExponentMax = v7;
+  [fromCopy cmi_floatValueForKey:@"histDampingExponentMax" defaultValue:&v37 found:0.0];
+  params->histDampingExponentMax = v7;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"hmaxHeadroom" defaultValue:&v37 found:0.0];
-  a3->hmaxHeadroom = v8;
+  [fromCopy cmi_floatValueForKey:@"hmaxHeadroom" defaultValue:&v37 found:0.0];
+  params->hmaxHeadroom = v8;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"maxPaddingRange" defaultValue:&v37 found:0.0];
-  a3->maxPaddingRange = v9;
+  [fromCopy cmi_floatValueForKey:@"maxPaddingRange" defaultValue:&v37 found:0.0];
+  params->maxPaddingRange = v9;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"dispRangeActiveRatio" defaultValue:&v37 found:0.0];
-  a3->dispRangeActiveRatio = v10;
+  [fromCopy cmi_floatValueForKey:@"dispRangeActiveRatio" defaultValue:&v37 found:0.0];
+  params->dispRangeActiveRatio = v10;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"sceneBlackRatio" defaultValue:&v37 found:0.0];
-  a3->sceneBlackRatio = v11;
+  [fromCopy cmi_floatValueForKey:@"sceneBlackRatio" defaultValue:&v37 found:0.0];
+  params->sceneBlackRatio = v11;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"sceneBlackRatioDark" defaultValue:&v37 found:0.0];
-  a3->sceneBlackRatioDark = v12;
+  [fromCopy cmi_floatValueForKey:@"sceneBlackRatioDark" defaultValue:&v37 found:0.0];
+  params->sceneBlackRatioDark = v12;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"sceneBgOffset" defaultValue:&v37 found:0.0];
-  a3->sceneBgOffset = v13;
+  [fromCopy cmi_floatValueForKey:@"sceneBgOffset" defaultValue:&v37 found:0.0];
+  params->sceneBgOffset = v13;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"desatStrength" defaultValue:&v37 found:0.0];
-  a3->desatStrength = v14;
+  [fromCopy cmi_floatValueForKey:@"desatStrength" defaultValue:&v37 found:0.0];
+  params->desatStrength = v14;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"minFlareDark" defaultValue:&v37 found:0.0];
-  a3->minFlareDark = v15;
+  [fromCopy cmi_floatValueForKey:@"minFlareDark" defaultValue:&v37 found:0.0];
+  params->minFlareDark = v15;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"shadowSuppressBase" defaultValue:&v37 found:0.0];
-  a3->shadowSuppressBase = v16;
+  [fromCopy cmi_floatValueForKey:@"shadowSuppressBase" defaultValue:&v37 found:0.0];
+  params->shadowSuppressBase = v16;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"shadowSuppressMax" defaultValue:&v37 found:0.0];
-  a3->shadowSuppressMax = v17;
+  [fromCopy cmi_floatValueForKey:@"shadowSuppressMax" defaultValue:&v37 found:0.0];
+  params->shadowSuppressMax = v17;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"shadowSuppressEITAdj" defaultValue:&v37 found:0.0];
-  a3->shadowSuppressEITAdj = v18;
+  [fromCopy cmi_floatValueForKey:@"shadowSuppressEITAdj" defaultValue:&v37 found:0.0];
+  params->shadowSuppressEITAdj = v18;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"minSceneLux" defaultValue:&v37 found:0.0];
-  a3->minSceneLux = v19;
+  [fromCopy cmi_floatValueForKey:@"minSceneLux" defaultValue:&v37 found:0.0];
+  params->minSceneLux = v19;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"histSmoothingMax" defaultValue:&v37 found:0.0];
-  a3->histSmoothingMax = v20;
+  [fromCopy cmi_floatValueForKey:@"histSmoothingMax" defaultValue:&v37 found:0.0];
+  params->histSmoothingMax = v20;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"smoothingStrength" defaultValue:&v37 found:0.0];
-  a3->smoothingStrength = v21;
+  [fromCopy cmi_floatValueForKey:@"smoothingStrength" defaultValue:&v37 found:0.0];
+  params->smoothingStrength = v21;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"dispRangeDarkRatio" defaultValue:&v37 found:0.0];
-  a3->dispRangeDarkRatio = v22;
+  [fromCopy cmi_floatValueForKey:@"dispRangeDarkRatio" defaultValue:&v37 found:0.0];
+  params->dispRangeDarkRatio = v22;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"sceneModelSmoothing" defaultValue:&v37 found:0.0];
-  a3->sceneModelSmoothing = v23;
+  [fromCopy cmi_floatValueForKey:@"sceneModelSmoothing" defaultValue:&v37 found:0.0];
+  params->sceneModelSmoothing = v23;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"nonFaceRatioFloor" defaultValue:&v37 found:0.0];
-  a3->nonFaceRatioFloor = v24;
+  [fromCopy cmi_floatValueForKey:@"nonFaceRatioFloor" defaultValue:&v37 found:0.0];
+  params->nonFaceRatioFloor = v24;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"fstart" defaultValue:&v37 found:0.0];
-  a3->fstart = v25;
+  [fromCopy cmi_floatValueForKey:@"fstart" defaultValue:&v37 found:0.0];
+  params->fstart = v25;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"shadowDesat" defaultValue:&v37 found:0.0];
-  a3->shadowDesat = v26;
+  [fromCopy cmi_floatValueForKey:@"shadowDesat" defaultValue:&v37 found:0.0];
+  params->shadowDesat = v26;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"darkSceneLux" defaultValue:&v37 found:0.0];
-  a3->darkSceneLux = v27;
+  [fromCopy cmi_floatValueForKey:@"darkSceneLux" defaultValue:&v37 found:0.0];
+  params->darkSceneLux = v27;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_simdFloat4ValueForKey:@"darkSceneLuxThreshold" defaultValue:0 found:0.0];
-  *&a3[1].hmaxHeadroom = v28;
-  [v5 cmi_floatValueForKey:@"ambientViewingLux" defaultValue:&v37 found:0.0];
-  a3[1].sceneBlackRatioDark = v29;
+  [fromCopy cmi_simdFloat4ValueForKey:@"darkSceneLuxThreshold" defaultValue:0 found:0.0];
+  *&params[1].hmaxHeadroom = v28;
+  [fromCopy cmi_floatValueForKey:@"ambientViewingLux" defaultValue:&v37 found:0.0];
+  params[1].sceneBlackRatioDark = v29;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"ambientViewingChromaticityX" defaultValue:&v37 found:0.0];
-  a3[1].sceneBgOffset = v30;
+  [fromCopy cmi_floatValueForKey:@"ambientViewingChromaticityX" defaultValue:&v37 found:0.0];
+  params[1].sceneBgOffset = v30;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"ambientViewingChromaticityY" defaultValue:&v37 found:0.0];
-  a3[1].desatStrength = v31;
+  [fromCopy cmi_floatValueForKey:@"ambientViewingChromaticityY" defaultValue:&v37 found:0.0];
+  params[1].desatStrength = v31;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"sceneBlackMax" defaultValue:&v37 found:0.0];
-  a3[1].minFlareDark = v32;
+  [fromCopy cmi_floatValueForKey:@"sceneBlackMax" defaultValue:&v37 found:0.0];
+  params[1].minFlareDark = v32;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"dispLum" defaultValue:&v37 found:0.0];
-  a3[1].shadowSuppressBase = v33;
+  [fromCopy cmi_floatValueForKey:@"dispLum" defaultValue:&v37 found:0.0];
+  params[1].shadowSuppressBase = v33;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];
     goto LABEL_59;
   }
 
-  [v5 cmi_floatValueForKey:@"dispBlack" defaultValue:&v37 found:0.0];
-  a3[1].shadowSuppressMax = v34;
+  [fromCopy cmi_floatValueForKey:@"dispBlack" defaultValue:&v37 found:0.0];
+  params[1].shadowSuppressMax = v34;
   if ((v37 & 1) == 0)
   {
     [LTMProcessor getLTMTuningFromTuningParams:from:];

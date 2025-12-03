@@ -1,64 +1,64 @@
 @interface _UISizeTrackingView
-+ (id)viewWithRemoteViewController:(id)a3 viewControllerOperatorProxy:(id)a4 textEffectsOperatorProxy:(id)a5 remoteViewControllerImpl:(id)a6;
++ (id)viewWithRemoteViewController:(id)controller viewControllerOperatorProxy:(id)proxy textEffectsOperatorProxy:(id)operatorProxy remoteViewControllerImpl:(id)impl;
 - (BOOL)_canSendViewServiceActualBoundingPath;
 - (BOOL)_fencingEffectsAreVisible;
-- (BOOL)_needsTextEffectsUpdateToFrame:(CGRect)a3;
+- (BOOL)_needsTextEffectsUpdateToFrame:(CGRect)frame;
 - (CGRect)_boundsForRemoteViewService;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)_sizeForRemoteViewService;
 - (_UIRemoteViewController)remoteViewController;
 - (id)_boundingPathForRemoteViewService;
 - (id)nextResponder;
-- (int64_t)_interfaceOrientationForScene:(id)a3;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
+- (int64_t)_interfaceOrientationForScene:(id)scene;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
 - (void)_prepareForWindowHostingSceneRemoval;
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4;
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler;
 - (void)_setNeedsRemoteViewServiceBoundingPathUpdate;
-- (void)_textEffectsWindowDidRotate:(id)a3;
-- (void)_updateSceneGeometries:(id)a3;
-- (void)_updateSceneGeometries:(id)a3 forOrientation:(int64_t)a4;
-- (void)_updateTextEffectsGeometries:(CGRect)a3 textEffectsWindow:(id)a4;
+- (void)_textEffectsWindowDidRotate:(id)rotate;
+- (void)_updateSceneGeometries:(id)geometries;
+- (void)_updateSceneGeometries:(id)geometries forOrientation:(int64_t)orientation;
+- (void)_updateTextEffectsGeometries:(CGRect)geometries textEffectsWindow:(id)window;
 - (void)_updateTextEffectsGeometriesImmediately;
 - (void)_updateTextEffectsWindowHostedViewSize;
 - (void)_updateTextEffectsWindowSafeAreaInsets;
-- (void)_viewDidMoveFromScreen:(id)a3 toScreen:(id)a4;
-- (void)_willMoveToWindow:(id)a3;
+- (void)_viewDidMoveFromScreen:(id)screen toScreen:(id)toScreen;
+- (void)_willMoveToWindow:(id)window;
 - (void)dealloc;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)updateIntrinsicContentSize:(CGSize)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)updateIntrinsicContentSize:(CGSize)size;
 @end
 
 @implementation _UISizeTrackingView
 
-+ (id)viewWithRemoteViewController:(id)a3 viewControllerOperatorProxy:(id)a4 textEffectsOperatorProxy:(id)a5 remoteViewControllerImpl:(id)a6
++ (id)viewWithRemoteViewController:(id)controller viewControllerOperatorProxy:(id)proxy textEffectsOperatorProxy:(id)operatorProxy remoteViewControllerImpl:(id)impl
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  proxyCopy = proxy;
+  operatorProxyCopy = operatorProxy;
+  implCopy = impl;
   [objc_opt_class() __shouldHostRemoteTextEffectsWindow];
-  v14 = [a1 alloc];
+  v14 = [self alloc];
   v15 = [v14 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong((v15 + 424), a4);
-    objc_storeStrong((v16 + 432), a5);
-    objc_storeWeak((v16 + 408), v10);
-    objc_storeWeak((v16 + 416), v13);
+    objc_storeStrong((v15 + 424), proxy);
+    objc_storeStrong((v16 + 432), operatorProxy);
+    objc_storeWeak((v16 + 408), controllerCopy);
+    objc_storeWeak((v16 + 416), implCopy);
     v17 = *(MEMORY[0x1E695F050] + 16);
     *(v16 + 456) = *MEMORY[0x1E695F050];
     *(v16 + 472) = v17;
     [v16 setAutoresizingMask:18];
-    [v16 setClipsToBounds:{objc_msgSend(v10, "_viewClipsToBounds")}];
+    [v16 setClipsToBounds:{objc_msgSend(controllerCopy, "_viewClipsToBounds")}];
     [v16 _registerForGeometryChanges];
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v16 selector:sel__updateTextEffectsWindowHostedViewSize name:@"UITextEffectsWindowHostedViewSizeDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__updateTextEffectsWindowHostedViewSize name:@"UITextEffectsWindowHostedViewSizeDidChangeNotification" object:0];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v16 selector:sel__updateTextEffectsWindowSafeAreaInsets name:@"UITextEffectsWindowSafeAreaInsetsDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v16 selector:sel__updateTextEffectsWindowSafeAreaInsets name:@"UITextEffectsWindowSafeAreaInsetsDidChangeNotification" object:0];
 
     v20 = v16;
   }
@@ -69,13 +69,13 @@
 - (void)dealloc
 {
   v6[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UITextEffectsWindowHostedViewSizeDidChangeNotification";
   v6[1] = @"UITextEffectsWindowSafeAreaInsetsDidChangeNotification";
   v6[2] = @"UITextEffectsWindowDidRotateNotification";
   v6[3] = 0x1EFB921F0;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:4];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   [(UIView *)self _unregisterForGeometryChanges];
   v5.receiver = self;
@@ -83,7 +83,7 @@
   [(UIView *)&v5 dealloc];
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
   width = -1.0;
   height = -1.0;
@@ -98,41 +98,41 @@
   return result;
 }
 
-- (void)updateIntrinsicContentSize:(CGSize)a3
+- (void)updateIntrinsicContentSize:(CGSize)size
 {
-  self->_intrinsicContentSize = a3;
+  self->_intrinsicContentSize = size;
   *&self->_sizeTrackingViewFlags |= 1u;
   [(UIView *)self invalidateIntrinsicContentSize];
 
   [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (BOOL)_needsTextEffectsUpdateToFrame:(CGRect)a3
+- (BOOL)_needsTextEffectsUpdateToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIView *)self window];
-  v9 = [v8 windowScene];
-  v10 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:v9 forViewService:1];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  window = [(UIView *)self window];
+  windowScene = [window windowScene];
+  v10 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:windowScene forViewService:1];
 
-  v11 = self;
+  selfCopy = self;
   v12 = v10;
-  [(UIView *)v11 frame];
+  [(UIView *)selfCopy frame];
   v14 = x - v13;
-  [(UIView *)v11 frame];
+  [(UIView *)selfCopy frame];
   v16 = y - v15;
-  v17 = [(UIView *)v11 window];
-  [v17 convertRect:v11 fromView:{v14, v16, width, height}];
+  window2 = [(UIView *)selfCopy window];
+  [window2 convertRect:selfCopy fromView:{v14, v16, width, height}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(UIView *)v11 window];
+  window3 = [(UIView *)selfCopy window];
 
-  [v12 convertRect:v26 fromWindow:{v19, v21, v23, v25}];
+  [v12 convertRect:window3 fromWindow:{v19, v21, v23, v25}];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -142,9 +142,9 @@
   v36.origin.y = v30;
   v36.size.width = v32;
   v36.size.height = v34;
-  LOBYTE(v11) = CGRectEqualToRect(v36, v11->_formerTextEffectsContentFrame);
+  LOBYTE(selfCopy) = CGRectEqualToRect(v36, selfCopy->_formerTextEffectsContentFrame);
 
-  return v11 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (void)_updateTextEffectsWindowHostedViewSize
@@ -176,8 +176,8 @@
 
     else
     {
-      v11 = [MEMORY[0x1E698E730] sharedInstance];
-      if ([v11 isCarrierInstall])
+      mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+      if ([mEMORY[0x1E698E730] isCarrierInstall])
       {
         v12 = dyld_program_sdk_at_least();
 
@@ -193,27 +193,27 @@
     }
   }
 
-  v13 = [(UIView *)self traitCollection];
-  if ([v13 userInterfaceIdiom])
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom])
   {
 
     goto LABEL_29;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_remoteViewController);
-  v15 = [WeakRetained serviceBundleIdentifier];
-  v16 = [v15 hasPrefix:@"com.apple."];
+  serviceBundleIdentifier = [WeakRetained serviceBundleIdentifier];
+  v16 = [serviceBundleIdentifier hasPrefix:@"com.apple."];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [(UIView *)self window];
-    [v17 safeAreaInsets];
+    window = [(UIView *)self window];
+    [window safeAreaInsets];
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = [(UIView *)self window];
-    if (([v24 interfaceOrientation] - 3) > 1)
+    window2 = [(UIView *)self window];
+    if (([window2 interfaceOrientation] - 3) > 1)
     {
     }
 
@@ -252,49 +252,49 @@ LABEL_29:
   [(_UISizeTrackingView *)self _updateTextEffectsGeometries:?];
 }
 
-- (void)_textEffectsWindowDidRotate:(id)a3
+- (void)_textEffectsWindowDidRotate:(id)rotate
 {
   if (self->_observingTextEffectsWindowRotation)
   {
     self->_observingTextEffectsWindowRotation = 0;
     v5 = MEMORY[0x1E696AD88];
-    v6 = a3;
-    v7 = [v5 defaultCenter];
-    v8 = [v6 object];
-    [v7 removeObserver:self name:@"UITextEffectsWindowDidRotateNotification" object:v8];
+    rotateCopy = rotate;
+    defaultCenter = [v5 defaultCenter];
+    object = [rotateCopy object];
+    [defaultCenter removeObserver:self name:@"UITextEffectsWindowDidRotateNotification" object:object];
 
     [(UIView *)self frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v6 object];
+    object2 = [rotateCopy object];
 
-    [(_UISizeTrackingView *)self _updateTextEffectsGeometries:v17 textEffectsWindow:v10, v12, v14, v16];
+    [(_UISizeTrackingView *)self _updateTextEffectsGeometries:object2 textEffectsWindow:v10, v12, v14, v16];
   }
 }
 
-- (void)_updateTextEffectsGeometries:(CGRect)a3 textEffectsWindow:(id)a4
+- (void)_updateTextEffectsGeometries:(CGRect)geometries textEffectsWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  v11 = [(UIView *)self window];
-  if (v11)
+  height = geometries.size.height;
+  width = geometries.size.width;
+  y = geometries.origin.y;
+  x = geometries.origin.x;
+  windowCopy = window;
+  window = [(UIView *)self window];
+  if (window)
   {
-    v12 = v11;
+    v12 = window;
     WeakRetained = objc_loadWeakRetained(&self->_rvcImpl);
-    v14 = [WeakRetained _shouldUpdateRemoteTextEffectsWindow];
+    _shouldUpdateRemoteTextEffectsWindow = [WeakRetained _shouldUpdateRemoteTextEffectsWindow];
 
-    if (v14)
+    if (_shouldUpdateRemoteTextEffectsWindow)
     {
-      if (!v10)
+      if (!windowCopy)
       {
-        v15 = [(UIView *)self _window];
-        v16 = [v15 windowScene];
-        v10 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:v16 forViewService:1];
+        _window = [(UIView *)self _window];
+        windowScene = [_window windowScene];
+        windowCopy = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:windowScene forViewService:1];
       }
 
       v117 = 0;
@@ -320,16 +320,16 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v20 = [(UIView *)self window];
+        window2 = [(UIView *)self window];
         [v18 bounds];
-        [v20 convertRect:v18 fromView:?];
+        [window2 convertRect:v18 fromView:?];
         v22 = v21;
         v24 = v23;
         v26 = v25;
         v28 = v27;
 
-        v29 = [(UIView *)self window];
-        [v10 convertRect:v29 fromWindow:{v22, v24, v26, v28}];
+        window3 = [(UIView *)self window];
+        [windowCopy convertRect:window3 fromWindow:{v22, v24, v26, v28}];
         v30 = v118;
         v118[4] = v31;
         v30[5] = v32;
@@ -341,22 +341,22 @@ LABEL_48:
 
       else
       {
-        v36 = v10;
-        v37 = self;
-        [(UIView *)v37 frame];
+        v36 = windowCopy;
+        selfCopy = self;
+        [(UIView *)selfCopy frame];
         v39 = v38;
-        [(UIView *)v37 frame];
+        [(UIView *)selfCopy frame];
         v41 = v40;
-        v42 = [(UIView *)v37 window];
-        [v42 convertRect:v37 fromView:{x - v39, y - v41, width, height}];
+        window4 = [(UIView *)selfCopy window];
+        [window4 convertRect:selfCopy fromView:{x - v39, y - v41, width, height}];
         v44 = v43;
         v46 = v45;
         v48 = v47;
         v50 = v49;
 
-        v4 = [(UIView *)v37 window];
+        window5 = [(UIView *)selfCopy window];
 
-        [v36 convertRect:v4 fromWindow:{v44, v46, v48, v50}];
+        [v36 convertRect:window5 fromWindow:{v44, v46, v48, v50}];
         v52 = v51;
         v54 = v53;
         v56 = v55;
@@ -372,29 +372,29 @@ LABEL_48:
       v59 = *(v35 + 3);
       self->_formerTextEffectsContentFrame.origin = *(v35 + 2);
       self->_formerTextEffectsContentFrame.size = v59;
-      [v10 actualSceneFrame];
+      [windowCopy actualSceneFrame];
       v111 = v60;
       v62 = v61;
       v63 = *(v118 + 4);
       v64 = *(v118 + 5);
       v109 = *(v118 + 7);
       v110 = *(v118 + 6);
-      v65 = [v10 rootViewController];
-      v66 = v65;
-      if (v65)
+      rootViewController = [windowCopy rootViewController];
+      v66 = rootViewController;
+      if (rootViewController)
       {
         v112[0] = MEMORY[0x1E69E9820];
         v112[1] = 3221225472;
         v112[2] = __70___UISizeTrackingView__updateTextEffectsGeometries_textEffectsWindow___block_invoke;
         v112[3] = &unk_1E70FE3F8;
-        v113 = v65;
+        v113 = rootViewController;
         v114 = &v117;
         [v113 performWithSafeTransitionFrames:v112];
       }
 
-      if ([v10 _isHostedInAnotherProcess])
+      if ([windowCopy _isHostedInAnotherProcess])
       {
-        [v10 hostedSafeInsets];
+        [windowCopy hostedSafeInsets];
         v68 = v67;
         v70 = v69;
         v72 = v71;
@@ -403,8 +403,8 @@ LABEL_48:
 
       else
       {
-        v75 = [(UIView *)self _window];
-        [v75 safeAreaInsets];
+        _window2 = [(UIView *)self _window];
+        [_window2 safeAreaInsets];
         v68 = v76;
         v70 = v77;
         v72 = v78;
@@ -414,7 +414,7 @@ LABEL_48:
       if (!_UIDeviceNativeUserInterfaceIdiom())
       {
         has_internal_diagnostics = os_variant_has_internal_diagnostics();
-        if (has_internal_diagnostics & 1) != 0 || ([MEMORY[0x1E698E730] sharedInstance], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v4, "isCarrierInstall")))
+        if (has_internal_diagnostics & 1) != 0 || ([MEMORY[0x1E698E730] sharedInstance], window5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(window5, "isCarrierInstall")))
         {
           v81 = dyld_program_sdk_at_least();
           v82 = v81;
@@ -437,9 +437,9 @@ LABEL_39:
               [self->_textEffectsOperatorProxy __setHostedViewReference:{v111 + v63, v62 + v64, v110, v109}];
               v95 = *(v118 + 6);
               v96 = *(v118 + 7);
-              v97 = [(UIView *)self window];
-              v98 = [v97 windowScene];
-              if ([v98 _enhancedWindowingEnabled])
+              window6 = [(UIView *)self window];
+              windowScene2 = [window6 windowScene];
+              if ([windowScene2 _enhancedWindowingEnabled])
               {
                 v99 = MEMORY[0x1E695F060];
                 v100 = *MEMORY[0x1E695F060];
@@ -456,20 +456,20 @@ LABEL_39:
               {
               }
 
-              v102 = [v10 interfaceOrientation];
-              v103 = [(UIView *)self window];
-              v104 = [v103 interfaceOrientation];
+              interfaceOrientation = [windowCopy interfaceOrientation];
+              window7 = [(UIView *)self window];
+              interfaceOrientation2 = [window7 interfaceOrientation];
 
               [MEMORY[0x1E696AD88] defaultCenter];
-              if (v102 == v104)
+              if (interfaceOrientation == interfaceOrientation2)
                 v105 = {;
-                [v105 removeObserver:self name:@"UITextEffectsWindowDidRotateNotification" object:v10];
+                [v105 removeObserver:self name:@"UITextEffectsWindowDidRotateNotification" object:windowCopy];
                 v106 = 0;
               }
 
               else
                 v105 = {;
-                [v105 addObserver:self selector:sel__textEffectsWindowDidRotate_ name:@"UITextEffectsWindowDidRotateNotification" object:v10];
+                [v105 addObserver:self selector:sel__textEffectsWindowDidRotate_ name:@"UITextEffectsWindowDidRotateNotification" object:windowCopy];
                 v106 = 1;
               }
 
@@ -484,30 +484,30 @@ LABEL_39:
         }
       }
 
-      v83 = [(UIView *)self traitCollection];
-      if ([v83 userInterfaceIdiom])
+      traitCollection = [(UIView *)self traitCollection];
+      if ([traitCollection userInterfaceIdiom])
       {
 
         goto LABEL_39;
       }
 
       v84 = objc_loadWeakRetained(&self->_remoteViewController);
-      v85 = [v84 serviceBundleIdentifier];
-      v86 = [v85 hasPrefix:@"com.apple."];
+      serviceBundleIdentifier = [v84 serviceBundleIdentifier];
+      v86 = [serviceBundleIdentifier hasPrefix:@"com.apple."];
 
       if (v86)
       {
         goto LABEL_39;
       }
 
-      v87 = [(UIView *)self window];
-      [v87 safeAreaInsets];
+      window8 = [(UIView *)self window];
+      [window8 safeAreaInsets];
       v107 = v89;
       v108 = v88;
       v91 = v90;
 
-      v92 = [(UIView *)self window];
-      if (([v92 interfaceOrientation] - 3) > 1)
+      window9 = [(UIView *)self window];
+      if (([window9 interfaceOrientation] - 3) > 1)
       {
       }
 
@@ -541,30 +541,30 @@ LABEL_38:
 LABEL_49:
 }
 
-- (void)_updateSceneGeometries:(id)a3 forOrientation:(int64_t)a4
+- (void)_updateSceneGeometries:(id)geometries forOrientation:(int64_t)orientation
 {
-  v24 = a3;
-  v6 = [(UIView *)self _window];
-  v7 = [v6 windowScene];
-  v8 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:v7 forViewService:1];
+  geometriesCopy = geometries;
+  _window = [(UIView *)self _window];
+  windowScene = [_window windowScene];
+  v8 = [UITextEffectsWindow sharedTextEffectsWindowForWindowScene:windowScene forViewService:1];
 
   v9 = *MEMORY[0x1E695F060];
   v10 = *(MEMORY[0x1E695F060] + 8);
-  if (v24)
+  if (geometriesCopy)
   {
-    if (!a4 && (([UIApp _isSpringBoard] & 1) != 0 || (a4 = -[_UISizeTrackingView _interfaceOrientationForScene:](self, "_interfaceOrientationForScene:", v24)) == 0))
+    if (!orientation && (([UIApp _isSpringBoard] & 1) != 0 || (orientation = -[_UISizeTrackingView _interfaceOrientationForScene:](self, "_interfaceOrientationForScene:", geometriesCopy)) == 0))
     {
-      v11 = [(UIView *)self window];
-      a4 = [v11 interfaceOrientation];
+      window = [(UIView *)self window];
+      orientation = [window interfaceOrientation];
     }
 
-    self->_interfaceOrientation = a4;
-    v12 = [v24 settings];
-    [v12 frame];
+    self->_interfaceOrientation = orientation;
+    settings = [geometriesCopy settings];
+    [settings frame];
     v14 = v13;
     v16 = v15;
 
-    if ((a4 - 3) >= 2)
+    if ((orientation - 3) >= 2)
     {
       v17 = v16;
     }
@@ -574,7 +574,7 @@ LABEL_49:
       v17 = v14;
     }
 
-    if ((a4 - 3) < 2)
+    if ((orientation - 3) < 2)
     {
       v14 = v16;
     }
@@ -586,11 +586,11 @@ LABEL_49:
     v14 = *MEMORY[0x1E695F060];
     if ([v8 _isHostedInAnotherProcess])
     {
-      v18 = [(UIWindow *)v8 _fbsScene];
+      _fbsScene = [(UIWindow *)v8 _fbsScene];
 
       v17 = v10;
       v14 = v9;
-      if (!v18)
+      if (!_fbsScene)
       {
         [v8 hostedViewSize];
         v14 = v19;
@@ -599,8 +599,8 @@ LABEL_49:
     }
   }
 
-  v21 = [v8 windowScene];
-  if ([v21 _enhancedWindowingEnabled])
+  windowScene2 = [v8 windowScene];
+  if ([windowScene2 _enhancedWindowingEnabled])
   {
   }
 
@@ -616,29 +616,29 @@ LABEL_49:
   }
 }
 
-- (int64_t)_interfaceOrientationForScene:(id)a3
+- (int64_t)_interfaceOrientationForScene:(id)scene
 {
-  v3 = a3;
-  v4 = [v3 clientSettings];
-  v5 = v4;
-  if (v4 && [v4 isUISubclass])
+  sceneCopy = scene;
+  clientSettings = [sceneCopy clientSettings];
+  v5 = clientSettings;
+  if (clientSettings && [clientSettings isUISubclass])
   {
-    v6 = [v5 interfaceOrientation];
+    interfaceOrientation = [v5 interfaceOrientation];
   }
 
   else
   {
-    v7 = [v3 settings];
-    v6 = [v7 interfaceOrientation];
+    settings = [sceneCopy settings];
+    interfaceOrientation = [settings interfaceOrientation];
   }
 
-  return v6;
+  return interfaceOrientation;
 }
 
 - (BOOL)_fencingEffectsAreVisible
 {
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
     v4 = ![(UIView *)self isHidden];
   }
@@ -651,24 +651,24 @@ LABEL_49:
   return v4;
 }
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v6 = a4;
+  ancestorCopy = ancestor;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__229;
   v32 = __Block_byref_object_dispose__229;
-  v33 = a3->var9;
-  var0 = a3->var0;
-  if (v6)
+  v33 = changed->var9;
+  var0 = changed->var0;
+  if (ancestorCopy)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = (a3->var0 >> 3) & 1;
+    v8 = (changed->var0 >> 3) & 1;
   }
 
   if ((var0 & 0x10) != 0)
@@ -693,7 +693,7 @@ LABEL_49:
   if (v11 == 1)
   {
     v12 = objc_loadWeakRetained(&self->_rvcImpl);
-    v13 = [v12 _needsUnderflowPropertyUpdate];
+    _needsUnderflowPropertyUpdate = [v12 _needsUnderflowPropertyUpdate];
 
     v14 = v29[5] != 0;
   }
@@ -705,7 +705,7 @@ LABEL_49:
       goto LABEL_18;
     }
 
-    v13 = 0;
+    _needsUnderflowPropertyUpdate = 0;
     v14 = 1;
   }
 
@@ -714,7 +714,7 @@ LABEL_49:
   aBlock[2] = __52___UISizeTrackingView__geometryChanged_forAncestor___block_invoke;
   aBlock[3] = &unk_1E71284D8;
   v23 = v11;
-  v24 = v13;
+  v24 = _needsUnderflowPropertyUpdate;
   v25 = v8;
   v26 = v9;
   v27 = v14;
@@ -722,9 +722,9 @@ LABEL_49:
   aBlock[5] = &v28;
   v15 = _Block_copy(aBlock);
   v16 = objc_loadWeakRetained(&self->_remoteViewController);
-  v17 = [v16 __shouldRemoteViewControllerFenceOperations];
+  __shouldRemoteViewControllerFenceOperations = [v16 __shouldRemoteViewControllerFenceOperations];
 
-  if (v17 && (v18 = objc_loadWeakRetained(&self->_remoteViewController), v19 = [v18 __shouldRemoteViewControllerFenceGeometryChange:a3 forAncestor:v6], v18, v19))
+  if (__shouldRemoteViewControllerFenceOperations && (v18 = objc_loadWeakRetained(&self->_remoteViewController), v19 = [v18 __shouldRemoteViewControllerFenceGeometryChange:changed forAncestor:ancestorCopy], v18, v19))
   {
     v20 = objc_loadWeakRetained(&self->_remoteViewController);
     [v20 synchronizeAnimationsInActions:v15];
@@ -771,31 +771,31 @@ LABEL_18:
 
 - (BOOL)_canSendViewServiceActualBoundingPath
 {
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
     [(UIView *)self bounds];
-    [(UIView *)self convertRect:v3 toView:?];
+    [(UIView *)self convertRect:window toView:?];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [v3 bounds];
+    [window bounds];
     v16 = _UIRectEquivalentToRectWithAccuracy(v5, v7, v9, v11, v12, v13, v14, v15, 0.1);
-    v17 = [v3 _isHostedInAnotherProcess];
-    v18 = v17 & v16;
-    if (v17 & 1) == 0 && (v16)
+    _isHostedInAnotherProcess = [window _isHostedInAnotherProcess];
+    _isSceneSized = _isHostedInAnotherProcess & v16;
+    if (_isHostedInAnotherProcess & 1) == 0 && (v16)
     {
-      v18 = [v3 _isSceneSized];
+      _isSceneSized = [window _isSceneSized];
     }
   }
 
   else
   {
-    v18 = 0;
+    _isSceneSized = 0;
   }
 
-  return v18;
+  return _isSceneSized;
 }
 
 - (id)_boundingPathForRemoteViewService
@@ -816,12 +816,12 @@ LABEL_18:
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -834,12 +834,12 @@ LABEL_18:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -868,26 +868,26 @@ LABEL_18:
   }
 }
 
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(UIView *)self window];
-  [v8 convertPoint:0 fromWindow:{x, y}];
+  y = location.y;
+  x = location.x;
+  handlerCopy = handler;
+  window = [(UIView *)self window];
+  [window convertPoint:0 fromWindow:{x, y}];
   [(UIView *)self convertPoint:0 fromView:?];
   v10 = v9;
   v12 = v11;
 
   WeakRetained = objc_loadWeakRetained(&self->_rvcImpl);
-  [WeakRetained _scrollToTopFromTouchAtViewLocation:v7 resultHandler:{v10, v12}];
+  [WeakRetained _scrollToTopFromTouchAtViewLocation:handlerCopy resultHandler:{v10, v12}];
 }
 
-- (void)_willMoveToWindow:(id)a3
+- (void)_willMoveToWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(UIView *)self window];
-  if (v5 && (*&self->_sizeTrackingViewFlags & 2) != 0)
+  windowCopy = window;
+  window = [(UIView *)self window];
+  if (window && (*&self->_sizeTrackingViewFlags & 2) != 0)
   {
     [(UIView *)self _removeBoundingPathChangeObserver:self];
     *&self->_sizeTrackingViewFlags &= ~2u;
@@ -895,15 +895,15 @@ LABEL_18:
 
   [(_UISizeTrackingView *)self _setNeedsRemoteViewServiceBoundingPathUpdate];
   WeakRetained = objc_loadWeakRetained(&self->_rvcImpl);
-  v7 = v4;
+  v7 = windowCopy;
   if (WeakRetained)
   {
-    v8 = [v5 windowScene];
-    v9 = [v7 windowScene];
-    v10 = v9;
+    windowScene = [window windowScene];
+    windowScene2 = [v7 windowScene];
+    v10 = windowScene2;
     if (v7)
     {
-      if (v8 && v9 && v8 != v9)
+      if (windowScene && windowScene2 && windowScene != windowScene2)
       {
         [WeakRetained _setWantsKeyboardEnvironmentEventDeferring:0];
         [(_UIRemoteViewControllerLegacyImpl *)WeakRetained _endDynamicButtonEventDeferringIfNeeded];
@@ -930,64 +930,64 @@ LABEL_18:
   [(UIView *)&v11 _willMoveToWindow:v7];
 }
 
-- (void)_updateSceneGeometries:(id)a3
+- (void)_updateSceneGeometries:(id)geometries
 {
-  v4 = a3;
-  v5 = [(UIView *)self window];
-  v10 = [(UIWindow *)v5 _fbsScene];
+  geometriesCopy = geometries;
+  window = [(UIView *)self window];
+  _fbsScene = [(UIWindow *)window _fbsScene];
 
-  v6 = [v4 userInfo];
+  userInfo = [geometriesCopy userInfo];
 
-  v7 = [v6 objectForKey:0x1EFB92210];
-  v8 = [v7 intValue];
+  v7 = [userInfo objectForKey:0x1EFB92210];
+  intValue = [v7 intValue];
 
-  v9 = v10;
-  if (v10 && self->_interfaceOrientation != v8)
+  v9 = _fbsScene;
+  if (_fbsScene && self->_interfaceOrientation != intValue)
   {
-    [(_UISizeTrackingView *)self _updateSceneGeometries:v10 forOrientation:?];
-    v9 = v10;
+    [(_UISizeTrackingView *)self _updateSceneGeometries:_fbsScene forOrientation:?];
+    v9 = _fbsScene;
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   v56.receiver = self;
   v56.super_class = _UISizeTrackingView;
-  [(UIView *)&v56 _didMoveFromWindow:v6 toWindow:v7];
+  [(UIView *)&v56 _didMoveFromWindow:windowCopy toWindow:toWindowCopy];
   WeakRetained = objc_loadWeakRetained(&self->_rvcImpl);
-  v9 = [WeakRetained _serviceHasScrollToTopView];
+  _serviceHasScrollToTopView = [WeakRetained _serviceHasScrollToTopView];
 
-  if (v9)
+  if (_serviceHasScrollToTopView)
   {
-    [v6 _unregisterScrollToTopView:self];
-    [v7 _registerScrollToTopView:self];
+    [windowCopy _unregisterScrollToTopView:self];
+    [toWindowCopy _registerScrollToTopView:self];
   }
 
   [(UIView *)self frame];
   [(_UISizeTrackingView *)self _updateTextEffectsGeometries:?];
-  if (v7)
+  if (toWindowCopy)
   {
-    v10 = [v7[103] _FBSScene];
-    [(_UISizeTrackingView *)self _updateSceneGeometries:v10 forOrientation:0];
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:self selector:sel__updateSceneGeometries_ name:0x1EFB921F0 object:v7];
+    _FBSScene = [toWindowCopy[103] _FBSScene];
+    [(_UISizeTrackingView *)self _updateSceneGeometries:_FBSScene forOrientation:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__updateSceneGeometries_ name:0x1EFB921F0 object:toWindowCopy];
   }
 
-  if (v6)
+  if (windowCopy)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 removeObserver:self name:0x1EFB921F0 object:v6];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:0x1EFB921F0 object:windowCopy];
   }
 
   v13 = objc_loadWeakRetained(&self->_remoteViewController);
-  v14 = [v13 serviceViewShouldShareTouchesWithHost];
+  serviceViewShouldShareTouchesWithHost = [v13 serviceViewShouldShareTouchesWithHost];
 
   v15 = objc_loadWeakRetained(&self->_rvcImpl);
   v16 = v15;
-  if (v7 && v14)
+  if (toWindowCopy && serviceViewShouldShareTouchesWithHost)
   {
     [v15 _prepareTouchDeliveryPolicy];
   }
@@ -998,14 +998,14 @@ LABEL_18:
   }
 
   v17 = objc_loadWeakRetained(&self->_rvcImpl);
-  [v17 _noteWindowState:v7 != 0];
+  [v17 _noteWindowState:toWindowCopy != 0];
 
-  if (v7)
+  if (toWindowCopy)
   {
     if ((*&self->_sizeTrackingViewFlags & 2) == 0)
     {
-      v18 = [v7 screen];
-      v19 = [(UIView *)self _shouldSkipObservingBoundingPathChangesForScreen:v18];
+      screen = [toWindowCopy screen];
+      v19 = [(UIView *)self _shouldSkipObservingBoundingPathChangesForScreen:screen];
 
       if (!v19)
       {
@@ -1017,7 +1017,7 @@ LABEL_18:
 
   [(_UISizeTrackingView *)self _setNeedsRemoteViewServiceBoundingPathUpdate];
   v20 = objc_loadWeakRetained(&self->_rvcImpl);
-  v21 = v7;
+  v21 = toWindowCopy;
   if (v20)
   {
     if (!os_variant_has_internal_diagnostics())
@@ -1030,16 +1030,16 @@ LABEL_18:
       goto LABEL_17;
     }
 
-    v27 = [v21 rootViewController];
-    v28 = UIEqual_0(v27, v20);
+    rootViewController = [v21 rootViewController];
+    v28 = UIEqual_0(rootViewController, v20);
 
-    v29 = [v20 _owningRemoteViewController];
-    v30 = [v29 parentViewController];
+    _owningRemoteViewController = [v20 _owningRemoteViewController];
+    parentViewController = [_owningRemoteViewController parentViewController];
 
-    v31 = [v20 _owningRemoteViewController];
-    v32 = [v31 presentingViewController];
+    _owningRemoteViewController2 = [v20 _owningRemoteViewController];
+    presentingViewController = [_owningRemoteViewController2 presentingViewController];
 
-    if ((v28 & 1) != 0 || v30 || v32)
+    if ((v28 & 1) != 0 || parentViewController || presentingViewController)
     {
       goto LABEL_17;
     }
@@ -1103,15 +1103,15 @@ LABEL_18:
 
 LABEL_30:
 LABEL_17:
-    v22 = [*(v20 + 19) window];
-    if (v22)
+    window = [*(v20 + 19) window];
+    if (window)
     {
-      v23 = v22;
-      v24 = [*(v20 + 19) window];
-      v25 = [v24 windowScene];
-      v26 = [v21 windowScene];
+      v23 = window;
+      window2 = [*(v20 + 19) window];
+      windowScene = [window2 windowScene];
+      windowScene2 = [v21 windowScene];
 
-      if (v25 != v26)
+      if (windowScene != windowScene2)
       {
         [v20 _restoreTextEffectsRemoteView];
       }
@@ -1122,16 +1122,16 @@ LABEL_17:
   }
 }
 
-- (void)_viewDidMoveFromScreen:(id)a3 toScreen:(id)a4
+- (void)_viewDidMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   v13.receiver = self;
   v13.super_class = _UISizeTrackingView;
-  v6 = a4;
-  v7 = a3;
-  [(UIView *)&v13 _viewDidMoveFromScreen:v7 toScreen:v6];
+  toScreenCopy = toScreen;
+  screenCopy = screen;
+  [(UIView *)&v13 _viewDidMoveFromScreen:screenCopy toScreen:toScreenCopy];
   WeakRetained = objc_loadWeakRetained(&self->_rvcImpl);
-  v9 = v7;
-  v10 = v6;
+  v9 = screenCopy;
+  v10 = toScreenCopy;
   if (v10 && WeakRetained)
   {
     v11 = *(WeakRetained + 280);
@@ -1178,16 +1178,16 @@ LABEL_17:
 {
   v7.receiver = self;
   v7.super_class = _UISizeTrackingView;
-  v3 = [(UIView *)&v7 nextResponder];
-  v4 = [(UIView *)&self->super.super.super.isa __viewDelegate];
-  v5 = v4;
-  if (v3 && v3 == v4 && (*(v4 + 384) & 0x80) != 0)
+  nextResponder = [(UIView *)&v7 nextResponder];
+  __viewDelegate = [(UIView *)&self->super.super.super.isa __viewDelegate];
+  v5 = __viewDelegate;
+  if (nextResponder && nextResponder == __viewDelegate && (*(__viewDelegate + 384) & 0x80) != 0)
   {
 
-    v3 = 0;
+    nextResponder = 0;
   }
 
-  return v3;
+  return nextResponder;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface BottomPlayerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)accessibilityUpdateMetadata;
-- (void)setArtworkView:(id)a3;
+- (void)setArtworkView:(id)view;
 - (void)viewDidLoad;
 @end
 
 @implementation BottomPlayerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"nowPlayingItemStackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"nowPlayingItemRouteLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"nowPlayingItemTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasSwiftField:@"nowPlayingItemLargeTextTitleLabel" withSwiftType:"Optional<UILabel>"];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasSwiftField:@"nowPlayingItemLargeTextMarqueeView" withSwiftType:"Optional<MPUMarqueeView>"];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"skipButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"reverseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"playPauseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"accessibilityUpdateMetadata" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"accessibilityNowPlayingResponse" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"sharedListeningParticipantsLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"tracklist" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"playingItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"setArtworkView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MusicApplication.NowPlayingShuffleButton"];
-  [v3 validateClass:@"MusicApplication.NowPlayingRepeatButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"nowPlayingItemStackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"nowPlayingItemRouteLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"nowPlayingItemTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasSwiftField:@"nowPlayingItemLargeTextTitleLabel" withSwiftType:"Optional<UILabel>"];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasSwiftField:@"nowPlayingItemLargeTextMarqueeView" withSwiftType:"Optional<MPUMarqueeView>"];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"skipButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"reverseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"playPauseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"accessibilityUpdateMetadata" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"accessibilityNowPlayingResponse" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"sharedListeningParticipantsLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"tracklist" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponse" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MPCPlayerResponseTracklist" hasInstanceMethod:@"playingItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.BottomPlayerViewController" hasInstanceMethod:@"setArtworkView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingShuffleButton"];
+  [validationsCopy validateClass:@"MusicApplication.NowPlayingRepeatButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -60,7 +60,7 @@
   v14 = __UIAccessibilityCastAsClass();
 
   [v12 setIsAccessibilityElement:{objc_msgSend(v12, "isHidden") ^ 1}];
-  v15 = [v10 accessibilityLabel];
+  accessibilityLabel = [v10 accessibilityLabel];
   v16 = __UIAXStringForVariables();
   [v12 setAccessibilityLabel:{v16, @"__AXStringForVariablesSentinel"}];
 
@@ -90,19 +90,19 @@
     [v4 _setAccessibilityLabelBlock:v72];
   }
 
-  v18 = [v8 text];
+  text = [v8 text];
   v56 = v8;
   v57 = v6;
   v55 = v10;
-  if (v18)
+  if (text)
   {
     v19 = 1;
   }
 
   else
   {
-    v20 = [v10 text];
-    v19 = v20 != 0;
+    text2 = [v10 text];
+    v19 = text2 != 0;
   }
 
   v54 = v14;
@@ -302,10 +302,10 @@ uint64_t __85__BottomPlayerViewControllerAccessibility__accessibilityLoadAccessi
   [(BottomPlayerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setArtworkView:(id)a3
+- (void)setArtworkView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
     [(BottomPlayerViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
   }
@@ -322,7 +322,7 @@ uint64_t __85__BottomPlayerViewControllerAccessibility__accessibilityLoadAccessi
 
   v7.receiver = self;
   v7.super_class = BottomPlayerViewControllerAccessibility;
-  [(BottomPlayerViewControllerAccessibility *)&v7 setArtworkView:v4];
+  [(BottomPlayerViewControllerAccessibility *)&v7 setArtworkView:viewCopy];
 }
 
 @end

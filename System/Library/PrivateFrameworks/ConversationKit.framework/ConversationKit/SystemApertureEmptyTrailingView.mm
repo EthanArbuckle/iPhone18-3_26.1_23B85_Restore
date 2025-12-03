@@ -1,11 +1,11 @@
 @interface SystemApertureEmptyTrailingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 @end
 
 @implementation SystemApertureEmptyTrailingView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 1.0;
   v4 = 1.0;
@@ -14,9 +14,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  v4 = self;
+  selfCopy = self;
   SystemApertureEmptyTrailingView.sizeThatFits(_:for:)();
   v6 = v5;
   v8 = v7;

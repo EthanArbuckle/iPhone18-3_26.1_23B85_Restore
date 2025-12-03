@@ -3,8 +3,8 @@
 - (MCBookmarkManager)init;
 - (NSArray)userBookmarks;
 - (void)memberQueueRereadBookmarks;
-- (void)memberQueueSetUserBookmarks:(id)a3;
-- (void)setUserBookmarks:(id)a3;
+- (void)memberQueueSetUserBookmarks:(id)bookmarks;
+- (void)setUserBookmarks:(id)bookmarks;
 @end
 
 @implementation MCBookmarkManager
@@ -93,9 +93,9 @@ void __25__MCBookmarkManager_init__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1A795B000, v3, OS_LOG_TYPE_DEBUG, "Rereading bookmarks", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = MCSystemWebContentFilterCurrentUserBookmarksPath();
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:0];
+  v6 = [defaultManager fileExistsAtPath:v5 isDirectory:0];
 
   if (v6)
   {
@@ -144,13 +144,13 @@ void __25__MCBookmarkManager_init__block_invoke(uint64_t a1)
   }
 
   v18 = MCSystemWebContentFilterStashedUserBookmarksPath();
-  v19 = [v4 fileExistsAtPath:v18 isDirectory:0];
+  v19 = [defaultManager fileExistsAtPath:v18 isDirectory:0];
 
   v20 = MEMORY[0x1E695DF20];
   if (v19)
   {
-    v37 = v4;
-    v38 = self;
+    v37 = defaultManager;
+    selfCopy = self;
     v21 = MCSystemWebContentFilterStashedUserBookmarksPath();
     v22 = [v20 dictionaryWithContentsOfFile:v21];
 
@@ -214,31 +214,31 @@ void __25__MCBookmarkManager_init__block_invoke(uint64_t a1)
       while (v41);
     }
 
-    memberQueueStashedBookmarksByLabel = v38->_memberQueueStashedBookmarksByLabel;
-    v38->_memberQueueStashedBookmarksByLabel = v40;
+    memberQueueStashedBookmarksByLabel = selfCopy->_memberQueueStashedBookmarksByLabel;
+    selfCopy->_memberQueueStashedBookmarksByLabel = v40;
 
-    v4 = v37;
+    defaultManager = v37;
   }
 
   else
   {
-    v35 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
     v23 = self->_memberQueueStashedBookmarksByLabel;
-    self->_memberQueueStashedBookmarksByLabel = v35;
+    self->_memberQueueStashedBookmarksByLabel = dictionary;
   }
 
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)memberQueueSetUserBookmarks:(id)a3
+- (void)memberQueueSetUserBookmarks:(id)bookmarks
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_memberQueueCurrentUserBookmarks, a3);
+  bookmarksCopy = bookmarks;
+  objc_storeStrong(&self->_memberQueueCurrentUserBookmarks, bookmarks);
   memberQueueCurrentUserBookmarks = self->_memberQueueCurrentUserBookmarks;
   if (memberQueueCurrentUserBookmarks)
   {
-    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](memberQueueCurrentUserBookmarks, "count")}];
+    defaultManager = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](memberQueueCurrentUserBookmarks, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -259,8 +259,8 @@ void __25__MCBookmarkManager_init__block_invoke(uint64_t a1)
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v12) serializableDictionary];
-          [v7 addObject:v13];
+          serializableDictionary = [*(*(&v16 + 1) + 8 * v12) serializableDictionary];
+          [defaultManager addObject:serializableDictionary];
 
           ++v12;
         }
@@ -273,31 +273,31 @@ void __25__MCBookmarkManager_init__block_invoke(uint64_t a1)
     }
 
     v14 = MCSystemWebContentFilterCurrentUserBookmarksPath();
-    [v7 writeToFile:v14 atomically:1];
+    [defaultManager writeToFile:v14 atomically:1];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v14 = MCSystemWebContentFilterCurrentUserBookmarksPath();
-    [v7 removeItemAtPath:v14 error:0];
+    [defaultManager removeItemAtPath:v14 error:0];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUserBookmarks:(id)a3
+- (void)setUserBookmarks:(id)bookmarks
 {
-  v4 = a3;
-  v5 = [(MCBookmarkManager *)self memberQueue];
+  bookmarksCopy = bookmarks;
+  memberQueue = [(MCBookmarkManager *)self memberQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MCBookmarkManager_setUserBookmarks___block_invoke;
   v7[3] = &unk_1E77D02D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = bookmarksCopy;
+  v6 = bookmarksCopy;
+  dispatch_barrier_async(memberQueue, v7);
 }
 
 uint64_t __38__MCBookmarkManager_setUserBookmarks___block_invoke(uint64_t a1)
@@ -317,14 +317,14 @@ uint64_t __38__MCBookmarkManager_setUserBookmarks___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
   v12 = 0;
-  v3 = [(MCBookmarkManager *)self memberQueue];
+  memberQueue = [(MCBookmarkManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__MCBookmarkManager_userBookmarks__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

@@ -1,17 +1,17 @@
 @interface ATXPredictionSetReader
-+ (id)actionReader:(id)a3;
-+ (id)bundleIdReader:(id)a3;
-- (ATXPredictionSetReader)initWithData:(id)a3 predictedItemClass:(Class)a4;
-- (id)_scoredPredictionFromData:(id)a3 score:(float)a4;
-- (id)readScoredPredictionsWithLimit:(int)a3 filterPredicate:(id)a4;
++ (id)actionReader:(id)reader;
++ (id)bundleIdReader:(id)reader;
+- (ATXPredictionSetReader)initWithData:(id)data predictedItemClass:(Class)class;
+- (id)_scoredPredictionFromData:(id)data score:(float)score;
+- (id)readScoredPredictionsWithLimit:(int)limit filterPredicate:(id)predicate;
 @end
 
 @implementation ATXPredictionSetReader
 
-- (ATXPredictionSetReader)initWithData:(id)a3 predictedItemClass:(Class)a4
+- (ATXPredictionSetReader)initWithData:(id)data predictedItemClass:(Class)class
 {
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [ATXPredictionSetReader initWithData:a2 predictedItemClass:self];
   }
@@ -24,23 +24,23 @@
     goto LABEL_21;
   }
 
-  v9 = [MEMORY[0x1E69C5CE0] decompress:v7];
+  v9 = [MEMORY[0x1E69C5CE0] decompress:dataCopy];
   data = v8->_data;
   v8->_data = v9;
 
   if ([(NSData *)v8->_data length]>= 8)
   {
-    v8->_predictedItemClass = a4;
-    v12 = [(NSData *)v8->_data bytes];
-    v13 = v12;
-    v14 = *v12;
-    if (*v12 > -362938750)
+    v8->_predictedItemClass = class;
+    bytes = [(NSData *)v8->_data bytes];
+    v13 = bytes;
+    v14 = *bytes;
+    if (*bytes > -362938750)
     {
       if (v14 != -362938749)
       {
         if (v14 == -218895609)
         {
-          v16 = v12[1];
+          v16 = bytes[1];
           v8->_predictionCount = v16;
           if (v16 < 0)
           {
@@ -53,7 +53,7 @@
             goto LABEL_5;
           }
 
-          v17 = (v12 + 2);
+          v17 = (bytes + 2);
           goto LABEL_20;
         }
 
@@ -87,30 +87,30 @@ LABEL_22:
   return v11;
 }
 
-+ (id)bundleIdReader:(id)a3
++ (id)bundleIdReader:(id)reader
 {
-  v3 = a3;
-  v4 = [[ATXPredictionSetReader alloc] initWithData:v3 predictedItemClass:objc_opt_class()];
+  readerCopy = reader;
+  v4 = [[ATXPredictionSetReader alloc] initWithData:readerCopy predictedItemClass:objc_opt_class()];
 
   return v4;
 }
 
-+ (id)actionReader:(id)a3
++ (id)actionReader:(id)reader
 {
-  v3 = a3;
-  v4 = [[ATXPredictionSetReader alloc] initWithData:v3 predictedItemClass:objc_opt_class()];
+  readerCopy = reader;
+  v4 = [[ATXPredictionSetReader alloc] initWithData:readerCopy predictedItemClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)_scoredPredictionFromData:(id)a3 score:(float)a4
+- (id)_scoredPredictionFromData:(id)data score:(float)score
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   predictedItemClass = self->_predictedItemClass;
   if (predictedItemClass == objc_opt_class())
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
     if (v11)
     {
       goto LABEL_5;
@@ -119,7 +119,7 @@ LABEL_22:
     v11 = __atxlog_handle_default();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      [(ATXPredictionSetReader *)self _scoredPredictionFromData:v6 score:v11];
+      [(ATXPredictionSetReader *)self _scoredPredictionFromData:dataCopy score:v11];
     }
   }
 
@@ -128,7 +128,7 @@ LABEL_22:
     v8 = objc_autoreleasePoolPush();
     v9 = self->_predictedItemClass;
     v20 = 0;
-    v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:v9 fromData:v6 error:&v20];
+    v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:v9 fromData:dataCopy error:&v20];
     v11 = v20;
     objc_autoreleasePoolPop(v8);
     if (v10)
@@ -137,7 +137,7 @@ LABEL_22:
       v11 = v10;
 LABEL_5:
       v12 = [ATXScoredPrediction alloc];
-      *&v13 = a4;
+      *&v13 = score;
       v14 = [(ATXScoredPrediction *)v12 initWithPredictedItem:v11 score:v13];
       goto LABEL_12;
     }
@@ -164,15 +164,15 @@ LABEL_12:
   return v14;
 }
 
-- (id)readScoredPredictionsWithLimit:(int)a3 filterPredicate:(id)a4
+- (id)readScoredPredictionsWithLimit:(int)limit filterPredicate:(id)predicate
 {
-  v6 = a4;
+  predicateCopy = predicate;
   perPredictionDataStart = self->_perPredictionDataStart;
-  v7 = [(NSData *)self->_data bytes];
+  bytes = [(NSData *)self->_data bytes];
   v8 = [(NSData *)self->_data length];
-  if (self->_predictionCount >= a3)
+  if (self->_predictionCount >= limit)
   {
-    predictionCount = a3;
+    predictionCount = limit;
   }
 
   else
@@ -188,14 +188,14 @@ LABEL_12:
     while (1)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = ATXCacheReadData(&perPredictionDataStart, v7 + v8);
+      v14 = ATXCacheReadData(&perPredictionDataStart, bytes + v8);
       __dst = 0;
-      ATXCacheReadFloats(&perPredictionDataStart, v7 + v8, &__dst, 1);
+      ATXCacheReadFloats(&perPredictionDataStart, bytes + v8, &__dst, 1);
       LODWORD(v15) = __dst;
       v16 = [(ATXPredictionSetReader *)self _scoredPredictionFromData:v14 score:v15];
       if (v16)
       {
-        if (!v6 || [v6 evaluateWithObject:v16])
+        if (!predicateCopy || [predicateCopy evaluateWithObject:v16])
         {
           [v11 addObject:v16];
           if ([v11 count] >= v10)

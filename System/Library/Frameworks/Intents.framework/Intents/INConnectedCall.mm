@@ -1,11 +1,11 @@
 @interface INConnectedCall
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INConnectedCall)initWithAudioRoute:(int64_t)a3;
-- (INConnectedCall)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INConnectedCall)initWithAudioRoute:(int64_t)route;
+- (INConnectedCall)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
 @end
 
@@ -24,22 +24,22 @@
   return v3;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INConnectedCall;
   v6 = [(INConnectedCall *)&v11 description];
-  v7 = [(INConnectedCall *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INConnectedCall *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   audioRoute = self->_audioRoute;
   v7 = @"heySiriAudioRoute";
   v8 = @"unknown";
@@ -64,22 +64,22 @@
   }
 
   v10 = v9;
-  [v5 if_setObjectIfNonNil:v10 forKey:@"audioRoute"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"audioRoute"];
 
-  return v5;
+  return dictionary;
 }
 
-- (INConnectedCall)initWithCoder:(id)a3
+- (INConnectedCall)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"audioRoute"];
+  v4 = [coder decodeIntegerForKey:@"audioRoute"];
 
   return [(INConnectedCall *)self initWithAudioRoute:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -87,7 +87,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_audioRoute == v4->_audioRoute;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_audioRoute == equalCopy->_audioRoute;
   }
 
   return v5;
@@ -101,29 +101,29 @@
   return v3;
 }
 
-- (INConnectedCall)initWithAudioRoute:(int64_t)a3
+- (INConnectedCall)initWithAudioRoute:(int64_t)route
 {
   v5.receiver = self;
   v5.super_class = INConnectedCall;
   result = [(INConnectedCall *)&v5 init];
   if (result)
   {
-    result->_audioRoute = a3;
+    result->_audioRoute = route;
   }
 
   return result;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"audioRoute"];
+    v7 = [fromCopy objectForKeyedSubscript:@"audioRoute"];
     v8 = INCallAudioRouteWithString(v7);
 
-    v9 = [[a1 alloc] initWithAudioRoute:v8];
+    v9 = [[self alloc] initWithAudioRoute:v8];
   }
 
   else

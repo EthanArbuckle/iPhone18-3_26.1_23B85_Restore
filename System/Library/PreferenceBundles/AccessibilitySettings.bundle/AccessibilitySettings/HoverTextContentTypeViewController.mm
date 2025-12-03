@@ -1,7 +1,7 @@
 @interface HoverTextContentTypeViewController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation HoverTextContentTypeViewController
@@ -59,33 +59,33 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   v6 = +[AXSettings sharedInstance];
   v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 hoverTextContentType]);
 
-  v11 = v5;
-  v8 = [v11 specifier];
-  v9 = [v8 propertyForKey:@"HTContentType"];
+  v11 = cellCopy;
+  specifier = [v11 specifier];
+  v9 = [specifier propertyForKey:@"HTContentType"];
   v10 = [v9 isEqual:v7];
 
   [v11 setChecked:v10];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = HoverTextContentTypeViewController;
-  v6 = a4;
-  [(HoverTextContentTypeViewController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(HoverTextContentTypeViewController *)self specifierAtIndex:[(HoverTextContentTypeViewController *)self indexForIndexPath:v6, v11.receiver, v11.super_class]];
+  pathCopy = path;
+  [(HoverTextContentTypeViewController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(HoverTextContentTypeViewController *)self specifierAtIndex:[(HoverTextContentTypeViewController *)self indexForIndexPath:pathCopy, v11.receiver, v11.super_class]];
   v8 = [v7 propertyForKey:@"HTContentType"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v10 = +[AXSettings sharedInstance];
-  [v10 setHoverTextContentType:v9];
+  [v10 setHoverTextContentType:integerValue];
 
-  [(HoverTextContentTypeViewController *)self updateTableCheckedSelection:v6];
+  [(HoverTextContentTypeViewController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

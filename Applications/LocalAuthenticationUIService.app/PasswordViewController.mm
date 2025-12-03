@@ -1,12 +1,12 @@
 @interface PasswordViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (void)_cancel;
 - (void)_configureAndShowAlertController;
 - (void)_passwordConfirm;
 - (void)_passwordEntered;
 - (void)_passwordNext;
-- (void)_setCredential:(id)a3;
+- (void)_setCredential:(id)credential;
 - (void)didReceiveAuthenticationData;
 - (void)loadView;
 @end
@@ -18,9 +18,9 @@
   v5.receiver = self;
   v5.super_class = PasswordViewController;
   [(PasswordViewController *)&v5 loadView];
-  v3 = [(PasswordViewController *)self view];
+  view = [(PasswordViewController *)self view];
   v4 = [UIColor colorWithWhite:0.0 alpha:0.3];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
 - (void)didReceiveAuthenticationData
@@ -28,14 +28,14 @@
   v7.receiver = self;
   v7.super_class = PasswordViewController;
   [(TransitionViewController *)&v7 didReceiveAuthenticationData];
-  v3 = [(TransitionViewController *)self internalInfo];
-  v4 = [v3 objectForKey:@"PasswordMode"];
+  internalInfo = [(TransitionViewController *)self internalInfo];
+  v4 = [internalInfo objectForKey:@"PasswordMode"];
   self->_mode = [v4 unsignedIntValue];
 
   self->_state = self->_mode == 0;
-  v5 = [(TransitionViewController *)self authenticationSubtitle];
+  authenticationSubtitle = [(TransitionViewController *)self authenticationSubtitle];
   subtitle = self->_subtitle;
-  self->_subtitle = v5;
+  self->_subtitle = authenticationSubtitle;
 }
 
 - (void)_configureAndShowAlertController
@@ -71,13 +71,13 @@
   state = self->_state;
   if (!state)
   {
-    v25 = [(TransitionViewController *)self callerBundleId];
-    if (v25 && ([(TransitionViewController *)self callerName], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+    callerBundleId = [(TransitionViewController *)self callerBundleId];
+    if (callerBundleId && ([(TransitionViewController *)self callerName], (v26 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v40 = [NSBundle bundleForClass:objc_opt_class()];
       v39 = [v40 localizedStringForKey:@"APP_ASKING_CURRENT_PASSWORD" value:&stru_1000ADB50 table:@"MobileUI"];
-      v2 = [(TransitionViewController *)self callerName];
-      v27 = [NSString stringWithFormat:v39, v2];
+      callerName = [(TransitionViewController *)self callerName];
+      v27 = [NSString stringWithFormat:v39, callerName];
       v28 = 0;
       v29 = 1;
     }
@@ -104,7 +104,7 @@
     else if (!v29)
     {
 LABEL_26:
-      if (!v25)
+      if (!callerBundleId)
       {
 LABEL_28:
 
@@ -125,7 +125,7 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (!v25)
+    if (!callerBundleId)
     {
       goto LABEL_28;
     }
@@ -140,13 +140,13 @@ LABEL_27:
       goto LABEL_39;
     }
 
-    v15 = [(TransitionViewController *)self callerBundleId];
-    if (v15 && ([(TransitionViewController *)self callerName], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+    callerBundleId2 = [(TransitionViewController *)self callerBundleId];
+    if (callerBundleId2 && ([(TransitionViewController *)self callerName], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v40 = [NSBundle bundleForClass:objc_opt_class()];
       v39 = [v40 localizedStringForKey:@"APP_ASKING_CONFIRM_PASSWORD" value:&stru_1000ADB50 table:@"MobileUI"];
-      v2 = [(TransitionViewController *)self callerName];
-      v17 = [NSString stringWithFormat:v39, v2];
+      callerName = [(TransitionViewController *)self callerName];
+      v17 = [NSString stringWithFormat:v39, callerName];
       v18 = 0;
       v19 = 1;
     }
@@ -173,13 +173,13 @@ LABEL_27:
     else if (!v19)
     {
 LABEL_35:
-      if (!v15)
+      if (!callerBundleId2)
       {
 LABEL_37:
 
-        v34 = [(TransitionViewController *)self authenticationSubtitle];
+        authenticationSubtitle = [(TransitionViewController *)self authenticationSubtitle];
         subtitle = self->_subtitle;
-        self->_subtitle = v34;
+        self->_subtitle = authenticationSubtitle;
 
         v30 = [NSBundle bundleForClass:objc_opt_class()];
         v31 = [v30 localizedStringForKey:@"PASSWORD_ALERT_DONE" value:&stru_1000ADB50 table:@"MobileUI"];
@@ -198,7 +198,7 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    if (!v15)
+    if (!callerBundleId2)
     {
       goto LABEL_37;
     }
@@ -206,13 +206,13 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v20 = [(TransitionViewController *)self callerBundleId];
-  if (v20 && ([(TransitionViewController *)self callerName], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  callerBundleId3 = [(TransitionViewController *)self callerBundleId];
+  if (callerBundleId3 && ([(TransitionViewController *)self callerName], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v40 = [NSBundle bundleForClass:objc_opt_class()];
     v39 = [v40 localizedStringForKey:@"APP_ASKING_NEW_PASSWORD" value:&stru_1000ADB50 table:@"MobileUI"];
-    v2 = [(TransitionViewController *)self callerName];
-    v22 = [NSString stringWithFormat:v39, v2];
+    callerName = [(TransitionViewController *)self callerName];
+    v22 = [NSString stringWithFormat:v39, callerName];
     v23 = 0;
     v24 = 1;
   }
@@ -237,7 +237,7 @@ LABEL_36:
 
 LABEL_21:
 
-    if (!v20)
+    if (!callerBundleId3)
     {
       goto LABEL_19;
     }
@@ -251,7 +251,7 @@ LABEL_21:
   }
 
 LABEL_17:
-  if (v20)
+  if (callerBundleId3)
   {
 LABEL_18:
   }
@@ -276,8 +276,8 @@ LABEL_39:
   [(UIAlertAction *)self->_currentConfirmAction setEnabled:0];
   [v10 addObject:self->_currentConfirmAction];
   v37 = self->_alertController;
-  v38 = [(TransitionViewController *)self authenticationTitle];
-  [(UIAlertController *)v37 setTitle:v38];
+  authenticationTitle = [(TransitionViewController *)self authenticationTitle];
+  [(UIAlertController *)v37 setTitle:authenticationTitle];
 
   [(UIAlertController *)self->_alertController setMessage:self->_subtitle];
   [(UIAlertController *)self->_alertController _setActions:v10];
@@ -335,8 +335,8 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
 
 - (void)_passwordEntered
 {
-  v3 = [(UITextField *)self->_passwordField text];
-  v4 = [LACSecureData secureDataWithString:v3];
+  text = [(UITextField *)self->_passwordField text];
+  v4 = [LACSecureData secureDataWithString:text];
 
   [(PasswordViewController *)self _setCredential:v4];
   [v4 reset];
@@ -344,13 +344,13 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
 
 - (void)_passwordNext
 {
-  v3 = [(UITextField *)self->_passwordField text];
-  v4 = [v3 length];
+  text = [(UITextField *)self->_passwordField text];
+  v4 = [text length];
 
   if (v4)
   {
-    v5 = [(UITextField *)self->_passwordField text];
-    v6 = [LACSecureData secureDataWithString:v5];
+    text2 = [(UITextField *)self->_passwordField text];
+    v6 = [LACSecureData secureDataWithString:text2];
     newPassword = self->_newPassword;
     self->_newPassword = v6;
 
@@ -367,8 +367,8 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
 
 - (void)_passwordConfirm
 {
-  v3 = [(UITextField *)self->_passwordField text];
-  v4 = [LACSecureData secureDataWithString:v3];
+  text = [(UITextField *)self->_passwordField text];
+  v4 = [LACSecureData secureDataWithString:text];
 
   if ([(LACSecureData *)self->_newPassword isEqual:v4])
   {
@@ -395,16 +395,16 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
   [(LACSecureData *)self->_newPassword reset];
 }
 
-- (void)_setCredential:(id)a3
+- (void)_setCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   v5 = [LACACMHelper alloc];
-  v6 = [(TransitionViewController *)self cachedExternalizedContext];
-  v7 = [v6 externalizedContext];
-  v8 = [v5 initWithExternalizedContext:v7];
+  cachedExternalizedContext = [(TransitionViewController *)self cachedExternalizedContext];
+  externalizedContext = [cachedExternalizedContext externalizedContext];
+  v8 = [v5 initWithExternalizedContext:externalizedContext];
 
-  v9 = [(TransitionViewController *)self options];
-  v10 = [v9 objectForKey:&off_1000AF3F8];
+  options = [(TransitionViewController *)self options];
+  v10 = [options objectForKey:&off_1000AF3F8];
   [v10 doubleValue];
   v12 = v11;
 
@@ -419,7 +419,7 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
   }
 
   v18 = 0;
-  v14 = [v8 replacePassphraseCredentialWithPurpose:0 passphrase:v4 scope:v13 error:&v18];
+  v14 = [v8 replacePassphraseCredentialWithPurpose:0 passphrase:credentialCopy scope:v13 error:&v18];
 
   v15 = v18;
   if (v14)
@@ -446,29 +446,29 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
   [(TransitionViewController *)self uiCancel];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = [v11 length];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  v12 = [text length];
 
   if (location + length <= v12)
   {
-    v13 = &v12[[v10 length]];
+    v13 = &v12[[stringCopy length]];
     if (&v13[-length] <= 0x80)
     {
-      v14 = [v10 length];
+      v14 = [stringCopy length];
       if (v14 && location == v12 && !length)
       {
-        [v9 insertText:v10];
+        [fieldCopy insertText:stringCopy];
       }
 
       else if (!v14 && location == v12 - 1 && length == 1)
       {
-        [v9 deleteBackward];
+        [fieldCopy deleteBackward];
       }
 
       [(UIAlertAction *)self->_currentConfirmAction setEnabled:v13 != length];
@@ -478,10 +478,10 @@ void __58__PasswordViewController__configureAndShowAlertController__block_invoke
   return 0;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = [a3 text];
-  v4 = [v3 length] != 0;
+  text = [return text];
+  v4 = [text length] != 0;
 
   return v4;
 }

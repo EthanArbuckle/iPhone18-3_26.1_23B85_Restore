@@ -1,40 +1,40 @@
 @interface EKEventGenericDetailViewControllerOOPWrapperImpl
 - (CGSize)preferredContentSize;
-- (EKEventGenericDetailViewControllerOOPWrapperImpl)initWithTitle:(id)a3 viewID:(id)a4 event:(id)a5 leftBarButtonActions:(id)a6 rightBarButtonActions:(id)a7;
+- (EKEventGenericDetailViewControllerOOPWrapperImpl)initWithTitle:(id)title viewID:(id)d event:(id)event leftBarButtonActions:(id)actions rightBarButtonActions:(id)buttonActions;
 - (UIColor)oopContentBackgroundColor;
 - (id)_statusButtonsContainerView;
 - (id)_statusButtonsView;
 - (void)_updateBottomButtons;
-- (void)bottomStatusButtonTapped:(int64_t)a3;
-- (void)leftBarButtonTapped:(id)a3;
-- (void)rightBarButtonTapped:(id)a3;
-- (void)setBottomStatusButtonActions:(id)a3;
-- (void)setLeftBarButtonActions:(id)a3;
-- (void)setOopContentBackgroundColor:(id)a3;
-- (void)setRightBarButtonActions:(id)a3;
+- (void)bottomStatusButtonTapped:(int64_t)tapped;
+- (void)leftBarButtonTapped:(id)tapped;
+- (void)rightBarButtonTapped:(id)tapped;
+- (void)setBottomStatusButtonActions:(id)actions;
+- (void)setLeftBarButtonActions:(id)actions;
+- (void)setOopContentBackgroundColor:(id)color;
+- (void)setRightBarButtonActions:(id)actions;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventGenericDetailViewControllerOOPWrapperImpl
 
-- (EKEventGenericDetailViewControllerOOPWrapperImpl)initWithTitle:(id)a3 viewID:(id)a4 event:(id)a5 leftBarButtonActions:(id)a6 rightBarButtonActions:(id)a7
+- (EKEventGenericDetailViewControllerOOPWrapperImpl)initWithTitle:(id)title viewID:(id)d event:(id)event leftBarButtonActions:(id)actions rightBarButtonActions:(id)buttonActions
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  dCopy = d;
+  eventCopy = event;
+  actionsCopy = actions;
+  buttonActionsCopy = buttonActions;
   v20.receiver = self;
   v20.super_class = EKEventGenericDetailViewControllerOOPWrapperImpl;
   v17 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)&v20 init];
   if (v17)
   {
     EKUILogInitIfNeeded();
-    [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setTitle:v12];
-    objc_storeStrong(&v17->_viewID, a4);
-    objc_storeStrong(&v17->_event, a5);
-    [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setLeftBarButtonActions:v15];
-    [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setRightBarButtonActions:v16];
+    [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setTitle:titleCopy];
+    objc_storeStrong(&v17->_viewID, d);
+    objc_storeStrong(&v17->_event, event);
+    [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setLeftBarButtonActions:actionsCopy];
+    [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setRightBarButtonActions:buttonActionsCopy];
     [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setBottomStatusButtonActions:MEMORY[0x1E695E0F0]];
     v18 = [[_TtC10EventKitUI41EKEventGenericDetailViewControllerOOPImpl alloc] initWithHostViewID:v17->_viewID];
     [(EKEventGenericDetailViewControllerOOPWrapperImpl *)v17 setVc:v18];
@@ -52,46 +52,46 @@
   v3 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
   [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self addChildViewController:v3];
 
-  v4 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
+  view = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
   v5 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v6 = [v5 view];
-  [v4 addSubview:v6];
+  view2 = [v5 view];
+  [view addSubview:view2];
 
   v7 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
   [v7 didMoveToParentViewController:self];
 
   v8 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v9 = [v8 view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [v8 view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v24 = MEMORY[0x1E696ACD8];
   v35 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v34 = [v35 view];
-  v32 = [v34 leadingAnchor];
-  v33 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  view4 = [v35 view];
+  leadingAnchor = [view4 leadingAnchor];
+  view5 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
+  leadingAnchor2 = [view5 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v37[0] = v30;
   v29 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v28 = [v29 view];
-  v26 = [v28 topAnchor];
-  v27 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
-  v25 = [v27 topAnchor];
-  v23 = [v26 constraintEqualToAnchor:v25];
+  view6 = [v29 view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v37[1] = v23;
   v22 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v21 = [v22 view];
-  v20 = [v21 trailingAnchor];
-  v10 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
-  v11 = [v10 trailingAnchor];
-  v12 = [v20 constraintEqualToAnchor:v11];
+  view8 = [v22 view];
+  trailingAnchor = [view8 trailingAnchor];
+  view9 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v37[2] = v12;
   v13 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v14 = [v13 view];
-  v15 = [v14 bottomAnchor];
-  v16 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  view10 = [v13 view];
+  bottomAnchor = [view10 bottomAnchor];
+  view11 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self view];
+  bottomAnchor2 = [view11 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[3] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
   [v24 activateConstraints:v19];
@@ -110,32 +110,32 @@
 - (UIColor)oopContentBackgroundColor
 {
   v2 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  v3 = [v2 oopContentBackgroundColor];
+  oopContentBackgroundColor = [v2 oopContentBackgroundColor];
 
-  return v3;
+  return oopContentBackgroundColor;
 }
 
-- (void)setOopContentBackgroundColor:(id)a3
+- (void)setOopContentBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  [v5 setOopContentBackgroundColor:v4];
+  [v5 setOopContentBackgroundColor:colorCopy];
 }
 
-- (void)setLeftBarButtonActions:(id)a3
+- (void)setLeftBarButtonActions:(id)actions
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_leftBarButtonActions, a3);
+  actionsCopy = actions;
+  objc_storeStrong(&self->_leftBarButtonActions, actions);
   if ([(NSArray *)self->_leftBarButtonActions count])
   {
     [MEMORY[0x1E695DF70] array];
-    v20 = v19 = v5;
+    v20 = v19 = actionsCopy;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = v5;
+    v6 = actionsCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -175,7 +175,7 @@
       while (v8);
     }
 
-    v5 = v19;
+    actionsCopy = v19;
     v15 = v20;
   }
 
@@ -188,15 +188,15 @@
   self->_leftBarButtonItems = v15;
   v17 = v15;
 
-  v18 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self navigationItem];
-  [v18 setLeftBarButtonItems:v17];
+  navigationItem = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:v17];
 }
 
-- (void)setRightBarButtonActions:(id)a3
+- (void)setRightBarButtonActions:(id)actions
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_rightBarButtonActions, a3);
+  actionsCopy = actions;
+  objc_storeStrong(&self->_rightBarButtonActions, actions);
   if (![(NSArray *)self->_rightBarButtonActions count])
   {
     v19 = 0;
@@ -204,12 +204,12 @@
   }
 
   [MEMORY[0x1E695DF70] array];
-  v24 = v23 = v5;
+  v24 = v23 = actionsCopy;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v5;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v7)
   {
@@ -268,20 +268,20 @@ LABEL_12:
   while (v8);
 LABEL_15:
 
-  v5 = v23;
+  actionsCopy = v23;
   v19 = v24;
 LABEL_17:
   rightBarButtonItems = self->_rightBarButtonItems;
   self->_rightBarButtonItems = v19;
   v21 = v19;
 
-  v22 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self navigationItem];
-  [v22 setRightBarButtonItems:v21];
+  navigationItem = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v21];
 }
 
-- (void)setBottomStatusButtonActions:(id)a3
+- (void)setBottomStatusButtonActions:(id)actions
 {
-  objc_storeStrong(&self->_bottomStatusButtonActions, a3);
+  objc_storeStrong(&self->_bottomStatusButtonActions, actions);
 
   [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _updateBottomButtons];
 }
@@ -325,74 +325,74 @@ LABEL_17:
 {
   v38[4] = *MEMORY[0x1E69E9840];
   bottomStatusButtonActions = self->_bottomStatusButtonActions;
-  v4 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsView];
-  [v4 setActions:bottomStatusButtonActions];
+  _statusButtonsView = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsView];
+  [_statusButtonsView setActions:bottomStatusButtonActions];
 
   v5 = [(NSArray *)self->_bottomStatusButtonActions count];
-  v6 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self navigationController];
-  v7 = v6;
+  navigationController = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self navigationController];
+  v7 = navigationController;
   if (v5)
   {
-    [v6 setToolbarHidden:0];
+    [navigationController setToolbarHidden:0];
 
     v8 = CalSolariumEnabled();
-    v9 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self toolbarItems];
-    v10 = v9;
+    toolbarItems = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self toolbarItems];
+    v10 = toolbarItems;
     if (v8)
     {
 
       if (!v10)
       {
-        v11 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsView];
-        v35 = [v11 statusButtons];
+        _statusButtonsView2 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsView];
+        statusButtons = [_statusButtonsView2 statusButtons];
 
         v12 = objc_opt_new();
-        if ([v35 count])
+        if ([statusButtons count])
         {
           v13 = 0;
           do
           {
             v14 = objc_alloc(MEMORY[0x1E69DC708]);
-            v15 = [v35 objectAtIndexedSubscript:v13];
+            v15 = [statusButtons objectAtIndexedSubscript:v13];
             v16 = [v14 initWithCustomView:v15];
 
             [v12 addObject:v16];
             ++v13;
           }
 
-          while ([v35 count] > v13);
+          while ([statusButtons count] > v13);
         }
 
         [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self setToolbarItems:v12 animated:1];
       }
     }
 
-    else if (!v9 || (statusButtonsContainerView = self->_statusButtonsContainerView, v9, !statusButtonsContainerView))
+    else if (!toolbarItems || (statusButtonsContainerView = self->_statusButtonsContainerView, toolbarItems, !statusButtonsContainerView))
     {
-      v18 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsContainerView];
-      v19 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsView];
-      [v18 addSubview:v19];
+      _statusButtonsContainerView = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsContainerView];
+      _statusButtonsView3 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self _statusButtonsView];
+      [_statusButtonsContainerView addSubview:_statusButtonsView3];
       v30 = MEMORY[0x1E696ACD8];
-      v36 = [v19 leadingAnchor];
-      v34 = [v18 leadingAnchor];
-      v33 = [v36 constraintEqualToAnchor:v34];
+      leadingAnchor = [_statusButtonsView3 leadingAnchor];
+      leadingAnchor2 = [_statusButtonsContainerView leadingAnchor];
+      v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v38[0] = v33;
-      v32 = [v19 trailingAnchor];
-      v31 = [v18 trailingAnchor];
-      v29 = [v32 constraintEqualToAnchor:v31];
+      trailingAnchor = [_statusButtonsView3 trailingAnchor];
+      trailingAnchor2 = [_statusButtonsContainerView trailingAnchor];
+      v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v38[1] = v29;
-      v20 = [v19 topAnchor];
-      v21 = [v18 topAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      topAnchor = [_statusButtonsView3 topAnchor];
+      topAnchor2 = [_statusButtonsContainerView topAnchor];
+      v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v38[2] = v22;
-      v23 = [v19 bottomAnchor];
-      v24 = [v18 bottomAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      bottomAnchor = [_statusButtonsView3 bottomAnchor];
+      bottomAnchor2 = [_statusButtonsContainerView bottomAnchor];
+      v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v38[3] = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
       [v30 activateConstraints:v26];
 
-      v27 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v18];
+      v27 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:_statusButtonsContainerView];
       v37 = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
       [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self setToolbarItems:v28 animated:1];
@@ -401,18 +401,18 @@ LABEL_17:
 
   else
   {
-    [v6 setToolbarHidden:1];
+    [navigationController setToolbarHidden:1];
 
     [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self setToolbarItems:0 animated:1];
   }
 }
 
-- (void)leftBarButtonTapped:(id)a3
+- (void)leftBarButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if ([(NSArray *)self->_leftBarButtonActions count]&& [(NSArray *)self->_leftBarButtonItems count])
   {
-    v5 = [(NSArray *)self->_leftBarButtonItems indexOfObject:v4];
+    v5 = [(NSArray *)self->_leftBarButtonItems indexOfObject:tappedCopy];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, v5 >= [(NSArray *)self->_leftBarButtonActions count]))
     {
       if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -442,12 +442,12 @@ LABEL_17:
   }
 }
 
-- (void)rightBarButtonTapped:(id)a3
+- (void)rightBarButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if ([(NSArray *)self->_rightBarButtonActions count]&& [(NSArray *)self->_rightBarButtonItems count])
   {
-    v5 = [(NSArray *)self->_rightBarButtonItems indexOfObject:v4];
+    v5 = [(NSArray *)self->_rightBarButtonItems indexOfObject:tappedCopy];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, v5 >= [(NSArray *)self->_rightBarButtonActions count]))
     {
       if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -477,10 +477,10 @@ LABEL_17:
   }
 }
 
-- (void)bottomStatusButtonTapped:(int64_t)a3
+- (void)bottomStatusButtonTapped:(int64_t)tapped
 {
   v4 = [(EKEventGenericDetailViewControllerOOPWrapperImpl *)self vc];
-  [v4 bottomStatusButtonTapped:a3];
+  [v4 bottomStatusButtonTapped:tapped];
 }
 
 @end

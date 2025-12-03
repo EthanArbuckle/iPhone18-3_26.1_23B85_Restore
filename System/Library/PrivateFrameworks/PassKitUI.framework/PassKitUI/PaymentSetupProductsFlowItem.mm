@@ -1,7 +1,7 @@
 @interface PaymentSetupProductsFlowItem
 - (_TtC9PassKitUIP33_72014EF847C2945C10179480F21D54B228PaymentSetupProductsFlowItem)init;
-- (void)productsViewController:(id)a3 didSelectProduct:(id)a4;
-- (void)productsViewControllerDidSelectManualEntry:(id)a3;
+- (void)productsViewController:(id)controller didSelectProduct:(id)product;
+- (void)productsViewControllerDidSelectManualEntry:(id)entry;
 @end
 
 @implementation PaymentSetupProductsFlowItem
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)productsViewControllerDidSelectManualEntry:(id)a3
+- (void)productsViewControllerDidSelectManualEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
+  entryCopy = entry;
+  selfCopy = self;
   sub_1BD0DBA78();
 }
 
-- (void)productsViewController:(id)a3 didSelectProduct:(id)a4
+- (void)productsViewController:(id)controller didSelectProduct:(id)product
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD0DBB6C(v7);
+  controllerCopy = controller;
+  productCopy = product;
+  selfCopy = self;
+  sub_1BD0DBB6C(productCopy);
 }
 
 @end

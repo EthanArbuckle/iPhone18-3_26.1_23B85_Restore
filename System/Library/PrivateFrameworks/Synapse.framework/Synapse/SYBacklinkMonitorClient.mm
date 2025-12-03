@@ -3,11 +3,11 @@
 - (void)_configureConnectionAndResume;
 - (void)_createConnectionIfNeeded;
 - (void)_invalidateConnection;
-- (void)_processNotifyActiveUserActivityDidChange:(id)a3 context:(id)a4 serviceProxy:(id)a5 completion:(id)a6;
-- (void)createConnectionWithEndpoint:(id)a3;
+- (void)_processNotifyActiveUserActivityDidChange:(id)change context:(id)context serviceProxy:(id)proxy completion:(id)completion;
+- (void)createConnectionWithEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)notifyActiveUserActivityDidChange:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)updateWithFilterCache:(id)a3;
+- (void)notifyActiveUserActivityDidChange:(id)change context:(id)context completion:(id)completion;
+- (void)updateWithFilterCache:(id)cache;
 @end
 
 @implementation SYBacklinkMonitorClient
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SYBacklinkMonitorClient *)self _connection];
-  [v3 invalidate];
+  _connection = [(SYBacklinkMonitorClient *)self _connection];
+  [_connection invalidate];
 
   [(SYBacklinkMonitorClient *)self set_connection:0];
   v4.receiver = self;
@@ -43,40 +43,40 @@
   [(SYBacklinkMonitorClient *)&v4 dealloc];
 }
 
-- (void)notifyActiveUserActivityDidChange:(id)a3 context:(id)a4 completion:(id)a5
+- (void)notifyActiveUserActivityDidChange:(id)change context:(id)context completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 needsCacheUpdate])
+  changeCopy = change;
+  contextCopy = context;
+  completionCopy = completion;
+  if ([contextCopy needsCacheUpdate])
   {
     [(SYBacklinkMonitorClient *)self set_filterCache:0];
     v11 = 0;
     goto LABEL_6;
   }
 
-  v12 = [(SYBacklinkMonitorClient *)self _filterCache];
+  _filterCache = [(SYBacklinkMonitorClient *)self _filterCache];
 
-  if (!v12)
+  if (!_filterCache)
   {
 LABEL_7:
-    v14 = [(SYBacklinkMonitorClient *)self _clientQueue];
+    _clientQueue = [(SYBacklinkMonitorClient *)self _clientQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __80__SYBacklinkMonitorClient_notifyActiveUserActivityDidChange_context_completion___block_invoke;
     v17[3] = &unk_27856C3F0;
     v17[4] = self;
-    v18 = v8;
-    v19 = v9;
-    v20 = v10;
-    dispatch_async(v14, v17);
+    v18 = changeCopy;
+    v19 = contextCopy;
+    v20 = completionCopy;
+    dispatch_async(_clientQueue, v17);
 
     goto LABEL_8;
   }
 
-  v13 = [(SYBacklinkMonitorClient *)self _filterCache];
-  v11 = [v13 containsMatchingEntriesForItem:v8];
+  _filterCache2 = [(SYBacklinkMonitorClient *)self _filterCache];
+  v11 = [_filterCache2 containsMatchingEntriesForItem:changeCopy];
 
   if ([(SYBacklinkMonitorClient *)self _previousFilterCacheMatched]|| v11 != [(SYBacklinkMonitorClient *)self _previousFilterCacheMatched])
   {
@@ -89,13 +89,13 @@ LABEL_6:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v22 = v8;
+    v22 = changeCopy;
     _os_log_impl(&dword_225901000, v16, OS_LOG_TYPE_INFO, "BacklinkClient: Changed activity was filtered out: %p.", buf, 0xCu);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
 LABEL_8:
@@ -148,27 +148,27 @@ void __80__SYBacklinkMonitorClient_notifyActiveUserActivityDidChange_context_com
   }
 }
 
-- (void)updateWithFilterCache:(id)a3
+- (void)updateWithFilterCache:(id)cache
 {
-  [(SYBacklinkMonitorClient *)self set_filterCache:a3];
+  [(SYBacklinkMonitorClient *)self set_filterCache:cache];
 
   [(SYBacklinkMonitorClient *)self set_previousFilterCacheMatched:0];
 }
 
-- (void)_processNotifyActiveUserActivityDidChange:(id)a3 context:(id)a4 serviceProxy:(id)a5 completion:(id)a6
+- (void)_processNotifyActiveUserActivityDidChange:(id)change context:(id)context serviceProxy:(id)proxy completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  changeCopy = change;
+  contextCopy = context;
+  proxyCopy = proxy;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
-    v15 = [v13 copy];
-    v16 = [(SYBacklinkMonitorClient *)self _pendingCompletionBlocks];
+    v15 = [completionCopy copy];
+    _pendingCompletionBlocks = [(SYBacklinkMonitorClient *)self _pendingCompletionBlocks];
     v17 = MEMORY[0x22AA6A360](v15);
-    [v16 addObject:v17];
+    [_pendingCompletionBlocks addObject:v17];
   }
 
   else
@@ -180,31 +180,31 @@ void __80__SYBacklinkMonitorClient_notifyActiveUserActivityDidChange_context_com
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = v10;
+    v27 = changeCopy;
     _os_log_impl(&dword_225901000, v18, OS_LOG_TYPE_DEFAULT, "BacklinkClient: Sending request to service for activity info: %p.", buf, 0xCu);
   }
 
-  if ([v11 needsCacheUpdate])
+  if ([contextCopy needsCacheUpdate])
   {
-    [v11 setNeedsCacheUpdate:1];
+    [contextCopy setNeedsCacheUpdate:1];
   }
 
   else
   {
-    v19 = [(SYBacklinkMonitorClient *)self _filterCache];
-    [v11 setNeedsCacheUpdate:v19 == 0];
+    _filterCache = [(SYBacklinkMonitorClient *)self _filterCache];
+    [contextCopy setNeedsCacheUpdate:_filterCache == 0];
   }
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __101__SYBacklinkMonitorClient__processNotifyActiveUserActivityDidChange_context_serviceProxy_completion___block_invoke;
   v23[3] = &unk_27856BEA0;
-  v24 = v10;
+  v24 = changeCopy;
   v25 = v15;
   v23[4] = self;
-  v20 = v10;
+  v20 = changeCopy;
   v21 = v15;
-  [v12 activeUserActivityDidChange:v20 context:v11 completion:v23];
+  [proxyCopy activeUserActivityDidChange:v20 context:contextCopy completion:v23];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -271,9 +271,9 @@ void __101__SYBacklinkMonitorClient__processNotifyActiveUserActivityDidChange_co
 
 - (void)_createConnectionIfNeeded
 {
-  v3 = [(SYBacklinkMonitorClient *)self _connection];
+  _connection = [(SYBacklinkMonitorClient *)self _connection];
 
-  if (!v3)
+  if (!_connection)
   {
     v4 = os_log_create("com.apple.synapse", "BacklinkMonitor");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -285,9 +285,9 @@ void __101__SYBacklinkMonitorClient__processNotifyActiveUserActivityDidChange_co
     v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.synapse.backlink-service" options:0];
     [(SYBacklinkMonitorClient *)self set_connection:v5];
 
-    v6 = [(SYBacklinkMonitorClient *)self _connection];
-    v7 = [(SYBacklinkMonitorClient *)self _clientQueue];
-    [v6 _setQueue:v7];
+    _connection2 = [(SYBacklinkMonitorClient *)self _connection];
+    _clientQueue = [(SYBacklinkMonitorClient *)self _clientQueue];
+    [_connection2 _setQueue:_clientQueue];
 
     [(SYBacklinkMonitorClient *)self _configureConnectionAndResume];
   }
@@ -295,8 +295,8 @@ void __101__SYBacklinkMonitorClient__processNotifyActiveUserActivityDidChange_co
 
 - (void)_configureConnectionAndResume
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SYBacklinkMonitorClient.m" lineNumber:151 description:@"the XPC connection is unexpectedly nil"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SYBacklinkMonitorClient.m" lineNumber:151 description:@"the XPC connection is unexpectedly nil"];
 }
 
 void __56__SYBacklinkMonitorClient__configureConnectionAndResume__block_invoke(uint64_t a1)
@@ -328,26 +328,26 @@ void __56__SYBacklinkMonitorClient__configureConnectionAndResume__block_invoke_2
 - (void)_invalidateConnection
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 _pendingCompletionBlocks];
+  _pendingCompletionBlocks = [self _pendingCompletionBlocks];
   v5 = 134217984;
-  v6 = [v3 count];
+  v6 = [_pendingCompletionBlocks count];
   _os_log_error_impl(&dword_225901000, a2, OS_LOG_TYPE_ERROR, "BacklinkClient: Invalidating connection. Pending completion blocks: %ld", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createConnectionWithEndpoint:(id)a3
+- (void)createConnectionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(SYBacklinkMonitorClient *)self _clientQueue];
+  endpointCopy = endpoint;
+  _clientQueue = [(SYBacklinkMonitorClient *)self _clientQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SYBacklinkMonitorClient_createConnectionWithEndpoint___block_invoke;
   v7[3] = &unk_27856B5C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = endpointCopy;
+  v6 = endpointCopy;
+  dispatch_sync(_clientQueue, v7);
 }
 
 uint64_t __56__SYBacklinkMonitorClient_createConnectionWithEndpoint___block_invoke(uint64_t a1)

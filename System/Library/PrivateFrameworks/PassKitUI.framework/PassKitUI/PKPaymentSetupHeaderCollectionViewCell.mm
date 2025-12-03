@@ -1,26 +1,26 @@
 @interface PKPaymentSetupHeaderCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setHeaderView:(id)a3;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation PKPaymentSetupHeaderCollectionViewCell
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PKCollapsibleHeaderView *)self->_headerView removeFromSuperview];
   headerView = self->_headerView;
-  self->_headerView = v4;
-  v6 = v4;
+  self->_headerView = viewCopy;
+  v6 = viewCopy;
 
-  v7 = [(PKPaymentSetupHeaderCollectionViewCell *)self contentView];
-  [v7 addSubview:self->_headerView];
+  contentView = [(PKPaymentSetupHeaderCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_headerView];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKCollapsibleHeaderView *)self->_headerView sizeThatFits:a3.width, a3.height];
+  [(PKCollapsibleHeaderView *)self->_headerView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -31,12 +31,12 @@
   [(PKPaymentSetupHeaderCollectionViewCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PKCollapsibleHeaderView *)self->_headerView superview];
+  superview = [(PKCollapsibleHeaderView *)self->_headerView superview];
 
-  if (!v7)
+  if (!superview)
   {
-    v8 = [(PKPaymentSetupHeaderCollectionViewCell *)self contentView];
-    [v8 addSubview:self->_headerView];
+    contentView = [(PKPaymentSetupHeaderCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_headerView];
   }
 
   [(PKCollapsibleHeaderView *)self->_headerView sizeThatFits:v4, v6];

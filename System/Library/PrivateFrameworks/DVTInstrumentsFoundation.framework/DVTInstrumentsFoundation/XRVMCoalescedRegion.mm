@@ -1,34 +1,34 @@
 @interface XRVMCoalescedRegion
 - (BOOL)isFakeAggregate;
-- (XRVMCoalescedRegion)initWithCoder:(id)a3;
-- (XRVMCoalescedRegion)initWithRegions:(id)a3 groupName:(id)a4;
+- (XRVMCoalescedRegion)initWithCoder:(id)coder;
+- (XRVMCoalescedRegion)initWithRegions:(id)regions groupName:(id)name;
 - (id)displayPath;
 - (id)displayType;
-- (void)addRegion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addRegion:(id)region;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XRVMCoalescedRegion
 
-- (XRVMCoalescedRegion)initWithRegions:(id)a3 groupName:(id)a4
+- (XRVMCoalescedRegion)initWithRegions:(id)regions groupName:(id)name
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  regionsCopy = regions;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = XRVMCoalescedRegion;
   v8 = [(XRVMCoalescedRegion *)&v31 init];
   if (v8)
   {
-    if ([v6 count])
+    if ([regionsCopy count])
     {
-      objc_storeStrong(&v8->_groupName, a4);
+      objc_storeStrong(&v8->_groupName, name);
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
       subRegions = v8->_subRegions;
       v8->_subRegions = v9;
 
-      v11 = [v6 objectAtIndex:0];
-      v12 = [v11 location];
+      v11 = [regionsCopy objectAtIndex:0];
+      location = [v11 location];
       v13 = MEMORY[0x277D85F70];
       v14 = MEMORY[0x277D85F88];
       v15 = *MEMORY[0x277D85F70];
@@ -37,17 +37,17 @@
         v15 = *MEMORY[0x277D85F88];
       }
 
-      v8->super.start = v12 & ~v15;
-      v16 = [v6 lastObject];
-      v17 = [v16 location];
-      v18 = [v16 virtualSize];
+      v8->super.start = location & ~v15;
+      lastObject = [regionsCopy lastObject];
+      location2 = [lastObject location];
+      virtualSize = [lastObject virtualSize];
       v19 = *v13;
       if (*v13 >= *v14)
       {
         v19 = *v14;
       }
 
-      v8->super.length = (v18 + v17 - v8->super.start + v19) & ~v19;
+      v8->super.length = (virtualSize + location2 - v8->super.start + v19) & ~v19;
       -[XRVMRegion setPageSize:](v8, "setPageSize:", [v11 pageSize]);
       v8->super.current_prot = *(v11 + 24);
       v8->super.max_prot = *(v11 + 28);
@@ -61,7 +61,7 @@
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v20 = v6;
+      v20 = regionsCopy;
       v21 = [v20 countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v21)
       {
@@ -99,16 +99,16 @@
   return v8;
 }
 
-- (void)addRegion:(id)a3
+- (void)addRegion:(id)region
 {
-  v4 = a3;
-  if ((v4[35] & 1) == 0)
+  regionCopy = region;
+  if ((regionCopy[35] & 1) == 0)
   {
-    v20 = v4;
-    [(NSMutableArray *)self->_subRegions addObject:v4];
-    v5 = [v20 isNullRegion];
+    v20 = regionCopy;
+    [(NSMutableArray *)self->_subRegions addObject:regionCopy];
+    isNullRegion = [v20 isNullRegion];
     v6 = v20;
-    if ((v5 & 1) == 0)
+    if ((isNullRegion & 1) == 0)
     {
       self->_virtualSize += *(v20 + 2);
       if (self->super.current_prot != *(v20 + 6))
@@ -201,7 +201,7 @@
   return [(NSString *)groupName isEqualToString:v5];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = objc_opt_class();
   v6 = NSStringFromClass(v4);
@@ -209,9 +209,9 @@
   NSLog(&cfstr_SCalledDonT.isa, v6, Name);
 }
 
-- (XRVMCoalescedRegion)initWithCoder:(id)a3
+- (XRVMCoalescedRegion)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   Name = sel_getName(a2);
@@ -219,7 +219,7 @@
 
   v11.receiver = self;
   v11.super_class = XRVMCoalescedRegion;
-  v9 = [(XRVMRegion *)&v11 initWithCoder:v5];
+  v9 = [(XRVMRegion *)&v11 initWithCoder:coderCopy];
 
   return v9;
 }
@@ -229,39 +229,39 @@
   groupName = self->_groupName;
   if (groupName)
   {
-    v3 = groupName;
+    displayType = groupName;
   }
 
   else if ((self->_multiplicityFlags & 0x40) != 0)
   {
-    v3 = @"< multiple >";
+    displayType = @"< multiple >";
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = XRVMCoalescedRegion;
-    v3 = [(XRVMRegion *)&v5 displayType];
+    displayType = [(XRVMRegion *)&v5 displayType];
   }
 
-  return v3;
+  return displayType;
 }
 
 - (id)displayPath
 {
   if ((self->_multiplicityFlags & 0x20) != 0)
   {
-    v3 = @"< multiple >";
+    displayPath = @"< multiple >";
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = XRVMCoalescedRegion;
-    v3 = [(XRVMRegion *)&v5 displayPath];
+    displayPath = [(XRVMRegion *)&v5 displayPath];
   }
 
-  return v3;
+  return displayPath;
 }
 
 @end

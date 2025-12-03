@@ -1,21 +1,21 @@
 @interface RPPrivateAdvertiser
 - (RPPrivateAdvertiser)init;
-- (RPPrivateAdvertiser)initWithCoder:(id)a3;
+- (RPPrivateAdvertiser)initWithCoder:(id)coder;
 - (id)description;
 - (void)_activateDirect;
-- (void)_activateXPC:(BOOL)a3;
+- (void)_activateXPC:(BOOL)c;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_update;
-- (void)_updateIfNeededWithBlock:(id)a3;
+- (void)_updateIfNeededWithBlock:(id)block;
 - (void)activate;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)setAccessGroup:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setServiceInfo:(id)a3;
+- (void)setAccessGroup:(id)group;
+- (void)setLabel:(id)label;
+- (void)setServiceInfo:(id)info;
 @end
 
 @implementation RPPrivateAdvertiser
@@ -49,9 +49,9 @@ uint64_t __27__RPPrivateAdvertiser_init__block_invoke()
   return result;
 }
 
-- (RPPrivateAdvertiser)initWithCoder:(id)a3
+- (RPPrivateAdvertiser)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = RPPrivateAdvertiser;
   v5 = [(RPPrivateAdvertiser *)&v12 init];
@@ -60,7 +60,7 @@ uint64_t __27__RPPrivateAdvertiser_init__block_invoke()
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
     v6->_ucat = &gLogCategory_RPPrivateAdvertiser;
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -84,36 +84,36 @@ uint64_t __27__RPPrivateAdvertiser_init__block_invoke()
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accessGroup = self->_accessGroup;
-  v9 = v4;
+  v9 = coderCopy;
   if (accessGroup)
   {
-    [v4 encodeObject:accessGroup forKey:@"ag"];
-    v4 = v9;
+    [coderCopy encodeObject:accessGroup forKey:@"ag"];
+    coderCopy = v9;
   }
 
   clientID = self->_clientID;
   if (clientID)
   {
     [v9 encodeInt64:clientID forKey:@"cid"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   serviceInfo = self->_serviceInfo;
   if (serviceInfo)
   {
     [v9 encodeObject:serviceInfo forKey:@"si"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v9 encodeObject:serviceType forKey:@"st"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
@@ -152,15 +152,15 @@ uint64_t __27__RPPrivateAdvertiser_init__block_invoke()
   return v4;
 }
 
-- (void)setAccessGroup:(id)a3
+- (void)setAccessGroup:(id)group
 {
-  v4 = [a3 copy];
+  v4 = [group copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__RPPrivateAdvertiser_setAccessGroup___block_invoke;
   v6[3] = &unk_1E7C94CB0;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(RPPrivateAdvertiser *)self _updateIfNeededWithBlock:v6];
 }
@@ -203,24 +203,24 @@ LABEL_8:
   return 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)setServiceInfo:(id)a3
+- (void)setServiceInfo:(id)info
 {
-  v4 = [a3 copy];
+  v4 = [info copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__RPPrivateAdvertiser_setServiceInfo___block_invoke;
   v6[3] = &unk_1E7C94CB0;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v5 = v4;
   [(RPPrivateAdvertiser *)self _updateIfNeededWithBlock:v6];
 }
@@ -265,21 +265,21 @@ LABEL_8:
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v2->_activateCalled = 1;
-    dispatchQueue = v2->_dispatchQueue;
+    selfCopy->_activateCalled = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __31__RPPrivateAdvertiser_activate__block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 int *__31__RPPrivateAdvertiser_activate__block_invoke(uint64_t a1)
@@ -401,10 +401,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_activateXPC:(BOOL)a3
+- (void)_activateXPC:(BOOL)c
 {
   var0 = self->_ucat->var0;
-  if (a3)
+  if (c)
   {
     if (var0 <= 30)
     {
@@ -449,14 +449,14 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __36__RPPrivateAdvertiser__activateXPC___block_invoke;
   v14[3] = &unk_1E7C94CD8;
-  v15 = a3;
+  cCopy = c;
   v14[4] = self;
   v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __36__RPPrivateAdvertiser__activateXPC___block_invoke_2;
   v12[3] = &unk_1E7C94CD8;
-  v13 = a3;
+  cCopy2 = c;
   v12[4] = self;
   [v8 xpcPrivateAdvertiserActivate:self completion:v12];
 }
@@ -775,37 +775,37 @@ LABEL_6:
   }
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled && !v5->_changesPending)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled && !selfCopy->_changesPending)
   {
-    v5->_changesPending = 1;
-    dispatchQueue = v5->_dispatchQueue;
+    selfCopy->_changesPending = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__RPPrivateAdvertiser__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_update
 {
   if (!self->_invalidateCalled)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    changesPending = v2->_changesPending;
-    v2->_changesPending = 0;
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    changesPending = selfCopy->_changesPending;
+    selfCopy->_changesPending = 0;
+    objc_sync_exit(selfCopy);
 
-    var0 = v2->_ucat->var0;
+    var0 = selfCopy->_ucat->var0;
     if (changesPending)
     {
       if (var0 <= 30)
@@ -817,27 +817,27 @@ LABEL_6:
             goto LABEL_12;
           }
 
-          ucat = v2->_ucat;
+          ucat = selfCopy->_ucat;
         }
 
-        v9 = v2;
+        v9 = selfCopy;
         LogPrintF();
       }
 
 LABEL_12:
-      xpcCnx = v2->_xpcCnx;
+      xpcCnx = selfCopy->_xpcCnx;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __30__RPPrivateAdvertiser__update__block_invoke;
       v11[3] = &unk_1E7C92D58;
-      v11[4] = v2;
+      v11[4] = selfCopy;
       v6 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v11, v9];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __30__RPPrivateAdvertiser__update__block_invoke_2;
       v10[3] = &unk_1E7C92D58;
-      v10[4] = v2;
-      [v6 xpcPrivateAdvertiserUpdate:v2 completion:v10];
+      v10[4] = selfCopy;
+      [v6 xpcPrivateAdvertiserUpdate:selfCopy completion:v10];
 
       return;
     }
@@ -854,7 +854,7 @@ LABEL_12:
         return;
       }
 
-      v7 = v2->_ucat;
+      v7 = selfCopy->_ucat;
     }
 
     LogPrintF();

@@ -1,9 +1,9 @@
 @interface CADMockPermissionValidator
 - (CADMockPermissionValidator)init;
-- (CADMockPermissionValidator)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEventAccessLevel:(int)a3;
-- (void)setHasReminderAccess:(BOOL)a3;
+- (CADMockPermissionValidator)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEventAccessLevel:(int)level;
+- (void)setHasReminderAccess:(BOOL)access;
 @end
 
 @implementation CADMockPermissionValidator
@@ -22,25 +22,25 @@
   return result;
 }
 
-- (void)setEventAccessLevel:(int)a3
+- (void)setEventAccessLevel:(int)level
 {
-  if (a3 > 2)
+  if (level > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_22438FD50[a3];
+    v3 = qword_22438FD50[level];
   }
 
   self->_eventAuthorization = v3;
 }
 
-- (void)setHasReminderAccess:(BOOL)a3
+- (void)setHasReminderAccess:(BOOL)access
 {
   v3 = 2;
-  if (a3)
+  if (access)
   {
     v3 = 3;
   }
@@ -48,75 +48,75 @@
   self->_remindersAuthorization = v3;
 }
 
-- (CADMockPermissionValidator)initWithCoder:(id)a3
+- (CADMockPermissionValidator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CADMockPermissionValidator;
   v5 = [(CADMockPermissionValidator *)&v7 init];
   if (v5)
   {
-    v5->_eventAuthorization = [v4 decodeIntForKey:@"eventAuthorization"];
-    v5->_remindersAuthorization = [v4 decodeIntForKey:@"remindersAuthorization"];
-    v5->_isFirstPartyCalendarApp = [v4 decodeBoolForKey:@"isFirstPartyCalendarApp"];
-    v5->_isCalendarDaemon = [v4 decodeBoolForKey:@"isCalendarDaemon"];
-    v5->_isCalendarWidgetExtension = [v4 decodeBoolForKey:@"isCalendarWidgetExtension"];
-    v5->_isRemoteUIExtension = [v4 decodeBoolForKey:@"isRemoteUIExtension"];
-    v5->_isAutomatorApp = [v4 decodeBoolForKey:@"isAutomatorApp"];
-    v5->_isShortcutsApp = [v4 decodeBoolForKey:@"isShortcutsApp"];
-    v5->_canAccessProcedureAlarms = [v4 decodeBoolForKey:@"canAccessProcedureAlarms"];
-    v5->_canModifySuggestedEventCalendar = [v4 decodeBoolForKey:@"canModifySuggestedEventCalendar"];
-    v5->_canMakeSpotlightChanges = [v4 decodeBoolForKey:@"canMakeSpotlightChanges"];
-    v5->_canModifyBirthdayCalendar = [v4 decodeBoolForKey:@"canModifyBirthdayCalendar"];
-    v5->_canRequestDiagnostics = [v4 decodeBoolForKey:@"canRequestDiagnostics"];
-    v5->_canModifyCalendarDatabase = [v4 decodeBoolForKey:@"canModifyCalendarDatabase"];
-    v5->_testingAccessLevelGranted = [v4 decodeBoolForKey:@"testingAccessLevelGranted"];
-    v5->_internalAccessLevelGranted = [v4 decodeBoolForKey:@"internalAccessLevelGranted"];
-    v5->_storageManagementAccessGranted = [v4 decodeBoolForKey:@"storageManagementAccessGranted"];
-    v5->_hasSyncClientEntitlement = [v4 decodeBoolForKey:@"hasSyncClientEntitlement"];
-    v5->_hasCalendarToolEntitlement = [v4 decodeBoolForKey:@"hasCalendarToolEntitlement"];
-    v5->_hasChangeIdTrackingOverrideEntitlement = [v4 decodeBoolForKey:@"hasChangeIdTrackingOverrideEntitlement"];
-    v5->_hasNotificationCountEntitlement = [v4 decodeBoolForKey:@"hasNotificationCountEntitlement"];
-    v5->_hasManagedConfigurationBundleIDOverrideEntitlement = [v4 decodeBoolForKey:@"hasManagedConfigurationBundleIDOverrideEntitlement"];
-    v5->_shouldTrustClientEnforcedManagedConfigurationAccess = [v4 decodeBoolForKey:@"shouldTrustClientEnforcedManagedConfigurationAccess"];
-    v5->_allowsCustomDatabasePath = [v4 decodeBoolForKey:@"allowsCustomDatabasePath"];
-    v5->_allowsIntegrations = [v4 decodeBoolForKey:@"allowsIntegrations"];
-    v5->_hasCalendarTCCBypassEntitlement = [v4 decodeBoolForKey:@"hasCalendarTCCBypassEntitlement"];
+    v5->_eventAuthorization = [coderCopy decodeIntForKey:@"eventAuthorization"];
+    v5->_remindersAuthorization = [coderCopy decodeIntForKey:@"remindersAuthorization"];
+    v5->_isFirstPartyCalendarApp = [coderCopy decodeBoolForKey:@"isFirstPartyCalendarApp"];
+    v5->_isCalendarDaemon = [coderCopy decodeBoolForKey:@"isCalendarDaemon"];
+    v5->_isCalendarWidgetExtension = [coderCopy decodeBoolForKey:@"isCalendarWidgetExtension"];
+    v5->_isRemoteUIExtension = [coderCopy decodeBoolForKey:@"isRemoteUIExtension"];
+    v5->_isAutomatorApp = [coderCopy decodeBoolForKey:@"isAutomatorApp"];
+    v5->_isShortcutsApp = [coderCopy decodeBoolForKey:@"isShortcutsApp"];
+    v5->_canAccessProcedureAlarms = [coderCopy decodeBoolForKey:@"canAccessProcedureAlarms"];
+    v5->_canModifySuggestedEventCalendar = [coderCopy decodeBoolForKey:@"canModifySuggestedEventCalendar"];
+    v5->_canMakeSpotlightChanges = [coderCopy decodeBoolForKey:@"canMakeSpotlightChanges"];
+    v5->_canModifyBirthdayCalendar = [coderCopy decodeBoolForKey:@"canModifyBirthdayCalendar"];
+    v5->_canRequestDiagnostics = [coderCopy decodeBoolForKey:@"canRequestDiagnostics"];
+    v5->_canModifyCalendarDatabase = [coderCopy decodeBoolForKey:@"canModifyCalendarDatabase"];
+    v5->_testingAccessLevelGranted = [coderCopy decodeBoolForKey:@"testingAccessLevelGranted"];
+    v5->_internalAccessLevelGranted = [coderCopy decodeBoolForKey:@"internalAccessLevelGranted"];
+    v5->_storageManagementAccessGranted = [coderCopy decodeBoolForKey:@"storageManagementAccessGranted"];
+    v5->_hasSyncClientEntitlement = [coderCopy decodeBoolForKey:@"hasSyncClientEntitlement"];
+    v5->_hasCalendarToolEntitlement = [coderCopy decodeBoolForKey:@"hasCalendarToolEntitlement"];
+    v5->_hasChangeIdTrackingOverrideEntitlement = [coderCopy decodeBoolForKey:@"hasChangeIdTrackingOverrideEntitlement"];
+    v5->_hasNotificationCountEntitlement = [coderCopy decodeBoolForKey:@"hasNotificationCountEntitlement"];
+    v5->_hasManagedConfigurationBundleIDOverrideEntitlement = [coderCopy decodeBoolForKey:@"hasManagedConfigurationBundleIDOverrideEntitlement"];
+    v5->_shouldTrustClientEnforcedManagedConfigurationAccess = [coderCopy decodeBoolForKey:@"shouldTrustClientEnforcedManagedConfigurationAccess"];
+    v5->_allowsCustomDatabasePath = [coderCopy decodeBoolForKey:@"allowsCustomDatabasePath"];
+    v5->_allowsIntegrations = [coderCopy decodeBoolForKey:@"allowsIntegrations"];
+    v5->_hasCalendarTCCBypassEntitlement = [coderCopy decodeBoolForKey:@"hasCalendarTCCBypassEntitlement"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventAuthorization_low = LODWORD(self->_eventAuthorization);
-  v5 = a3;
-  [v5 encodeInt:eventAuthorization_low forKey:@"eventAuthorization"];
-  [v5 encodeInt:LODWORD(self->_remindersAuthorization) forKey:@"remindersAuthorization"];
-  [v5 encodeBool:self->_isFirstPartyCalendarApp forKey:@"isFirstPartyCalendarApp"];
-  [v5 encodeBool:self->_isCalendarDaemon forKey:@"isCalendarDaemon"];
-  [v5 encodeBool:self->_isCalendarWidgetExtension forKey:@"isCalendarWidgetExtension"];
-  [v5 encodeBool:self->_isRemoteUIExtension forKey:@"isRemoteUIExtension"];
-  [v5 encodeBool:self->_isAutomatorApp forKey:@"isAutomatorApp"];
-  [v5 encodeBool:self->_isShortcutsApp forKey:@"isShortcutsApp"];
-  [v5 encodeBool:self->_canAccessProcedureAlarms forKey:@"canAccessProcedureAlarms"];
-  [v5 encodeBool:self->_canModifySuggestedEventCalendar forKey:@"canModifySuggestedEventCalendar"];
-  [v5 encodeBool:self->_canMakeSpotlightChanges forKey:@"canMakeSpotlightChanges"];
-  [v5 encodeBool:self->_canModifyBirthdayCalendar forKey:@"canModifyBirthdayCalendar"];
-  [v5 encodeBool:self->_canRequestDiagnostics forKey:@"canRequestDiagnostics"];
-  [v5 encodeBool:self->_canModifyCalendarDatabase forKey:@"canModifyCalendarDatabase"];
-  [v5 encodeBool:self->_testingAccessLevelGranted forKey:@"testingAccessLevelGranted"];
-  [v5 encodeBool:self->_internalAccessLevelGranted forKey:@"internalAccessLevelGranted"];
-  [v5 encodeBool:self->_storageManagementAccessGranted forKey:@"storageManagementAccessGranted"];
-  [v5 encodeBool:self->_hasSyncClientEntitlement forKey:@"hasSyncClientEntitlement"];
-  [v5 encodeBool:self->_hasCalendarToolEntitlement forKey:@"hasCalendarToolEntitlement"];
-  [v5 encodeBool:self->_hasChangeIdTrackingOverrideEntitlement forKey:@"hasChangeIdTrackingOverrideEntitlement"];
-  [v5 encodeBool:self->_hasNotificationCountEntitlement forKey:@"hasNotificationCountEntitlement"];
-  [v5 encodeBool:self->_hasManagedConfigurationBundleIDOverrideEntitlement forKey:@"hasManagedConfigurationBundleIDOverrideEntitlement"];
-  [v5 encodeBool:self->_shouldTrustClientEnforcedManagedConfigurationAccess forKey:@"shouldTrustClientEnforcedManagedConfigurationAccess"];
-  [v5 encodeBool:self->_allowsCustomDatabasePath forKey:@"allowsCustomDatabasePath"];
-  [v5 encodeBool:self->_allowsIntegrations forKey:@"allowsIntegrations"];
-  [v5 encodeBool:self->_hasCalendarTCCBypassEntitlement forKey:@"hasCalendarTCCBypassEntitlement"];
+  coderCopy = coder;
+  [coderCopy encodeInt:eventAuthorization_low forKey:@"eventAuthorization"];
+  [coderCopy encodeInt:LODWORD(self->_remindersAuthorization) forKey:@"remindersAuthorization"];
+  [coderCopy encodeBool:self->_isFirstPartyCalendarApp forKey:@"isFirstPartyCalendarApp"];
+  [coderCopy encodeBool:self->_isCalendarDaemon forKey:@"isCalendarDaemon"];
+  [coderCopy encodeBool:self->_isCalendarWidgetExtension forKey:@"isCalendarWidgetExtension"];
+  [coderCopy encodeBool:self->_isRemoteUIExtension forKey:@"isRemoteUIExtension"];
+  [coderCopy encodeBool:self->_isAutomatorApp forKey:@"isAutomatorApp"];
+  [coderCopy encodeBool:self->_isShortcutsApp forKey:@"isShortcutsApp"];
+  [coderCopy encodeBool:self->_canAccessProcedureAlarms forKey:@"canAccessProcedureAlarms"];
+  [coderCopy encodeBool:self->_canModifySuggestedEventCalendar forKey:@"canModifySuggestedEventCalendar"];
+  [coderCopy encodeBool:self->_canMakeSpotlightChanges forKey:@"canMakeSpotlightChanges"];
+  [coderCopy encodeBool:self->_canModifyBirthdayCalendar forKey:@"canModifyBirthdayCalendar"];
+  [coderCopy encodeBool:self->_canRequestDiagnostics forKey:@"canRequestDiagnostics"];
+  [coderCopy encodeBool:self->_canModifyCalendarDatabase forKey:@"canModifyCalendarDatabase"];
+  [coderCopy encodeBool:self->_testingAccessLevelGranted forKey:@"testingAccessLevelGranted"];
+  [coderCopy encodeBool:self->_internalAccessLevelGranted forKey:@"internalAccessLevelGranted"];
+  [coderCopy encodeBool:self->_storageManagementAccessGranted forKey:@"storageManagementAccessGranted"];
+  [coderCopy encodeBool:self->_hasSyncClientEntitlement forKey:@"hasSyncClientEntitlement"];
+  [coderCopy encodeBool:self->_hasCalendarToolEntitlement forKey:@"hasCalendarToolEntitlement"];
+  [coderCopy encodeBool:self->_hasChangeIdTrackingOverrideEntitlement forKey:@"hasChangeIdTrackingOverrideEntitlement"];
+  [coderCopy encodeBool:self->_hasNotificationCountEntitlement forKey:@"hasNotificationCountEntitlement"];
+  [coderCopy encodeBool:self->_hasManagedConfigurationBundleIDOverrideEntitlement forKey:@"hasManagedConfigurationBundleIDOverrideEntitlement"];
+  [coderCopy encodeBool:self->_shouldTrustClientEnforcedManagedConfigurationAccess forKey:@"shouldTrustClientEnforcedManagedConfigurationAccess"];
+  [coderCopy encodeBool:self->_allowsCustomDatabasePath forKey:@"allowsCustomDatabasePath"];
+  [coderCopy encodeBool:self->_allowsIntegrations forKey:@"allowsIntegrations"];
+  [coderCopy encodeBool:self->_hasCalendarTCCBypassEntitlement forKey:@"hasCalendarTCCBypassEntitlement"];
 }
 
 @end

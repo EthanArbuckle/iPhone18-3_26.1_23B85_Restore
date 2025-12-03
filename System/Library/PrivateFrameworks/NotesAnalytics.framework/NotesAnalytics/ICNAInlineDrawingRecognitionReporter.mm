@@ -1,11 +1,11 @@
 @interface ICNAInlineDrawingRecognitionReporter
 + (id)sharedReporter;
 - (ICNAInlineDrawingRecognitionReporter)init;
-- (void)analyticsSessionWillEnd:(id)a3;
-- (void)createReportForDrawing:(id)a3 drawingID:(id)a4 attachment:(id)a5 insideNote:(id)a6;
+- (void)analyticsSessionWillEnd:(id)end;
+- (void)createReportForDrawing:(id)drawing drawingID:(id)d attachment:(id)attachment insideNote:(id)note;
 - (void)dealloc;
-- (void)reportNotification:(id)a3;
-- (void)submitReportsWithEventReporter:(id)a3;
+- (void)reportNotification:(id)notification;
+- (void)submitReportsWithEventReporter:(id)reporter;
 @end
 
 @implementation ICNAInlineDrawingRecognitionReporter
@@ -40,11 +40,11 @@ uint64_t __54__ICNAInlineDrawingRecognitionReporter_sharedReporter__block_invoke
     stagedReports = v2->_stagedReports;
     v2->_stagedReports = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_reportNotification_ name:*MEMORY[0x277D36520] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reportNotification_ name:*MEMORY[0x277D36520] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_analyticsSessionWillEnd_ name:@"ICNASessionWillEndNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_analyticsSessionWillEnd_ name:@"ICNASessionWillEndNotification" object:0];
   }
 
   return v2;
@@ -52,31 +52,31 @@ uint64_t __54__ICNAInlineDrawingRecognitionReporter_sharedReporter__block_invoke
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICNAInlineDrawingRecognitionReporter;
   [(ICNAInlineDrawingRecognitionReporter *)&v4 dealloc];
 }
 
-- (void)reportNotification:(id)a3
+- (void)reportNotification:(id)notification
 {
-  v14 = [a3 userInfo];
+  userInfo = [notification userInfo];
   objc_opt_class();
-  v4 = [v14 objectForKeyedSubscript:*MEMORY[0x277D36530]];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36530]];
   v5 = ICDynamicCast();
 
   objc_opt_class();
-  v6 = [v14 objectForKeyedSubscript:*MEMORY[0x277D36538]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36538]];
   v7 = ICDynamicCast();
 
   objc_opt_class();
-  v8 = [v14 objectForKeyedSubscript:*MEMORY[0x277D36528]];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36528]];
   v9 = ICDynamicCast();
 
   objc_opt_class();
-  v10 = [v14 objectForKeyedSubscript:*MEMORY[0x277D36540]];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D36540]];
   v11 = ICDynamicCast();
 
   if (v5)
@@ -95,64 +95,64 @@ uint64_t __54__ICNAInlineDrawingRecognitionReporter_sharedReporter__block_invoke
   }
 }
 
-- (void)createReportForDrawing:(id)a3 drawingID:(id)a4 attachment:(id)a5 insideNote:(id)a6
+- (void)createReportForDrawing:(id)drawing drawingID:(id)d attachment:(id)attachment insideNote:(id)note
 {
-  v10 = a6;
-  v11 = a5;
-  v40 = a4;
-  v12 = a3;
+  noteCopy = note;
+  attachmentCopy = attachment;
+  dCopy = d;
+  drawingCopy = drawing;
   v41 = objc_alloc_init(ICNAInlineDrawingRecognitionReport);
-  v13 = [(ICNAObject *)self eventReporter];
-  v14 = [v13 noteDataForModernNote:v10];
+  eventReporter = [(ICNAObject *)self eventReporter];
+  v14 = [eventReporter noteDataForModernNote:noteCopy];
   [(ICNAInlineDrawingRecognitionReport *)v41 setNoteData:v14];
 
-  v15 = [(ICNAObject *)self eventReporter];
-  v16 = [v15 noteAccessDataForModernNote:v10];
+  eventReporter2 = [(ICNAObject *)self eventReporter];
+  v16 = [eventReporter2 noteAccessDataForModernNote:noteCopy];
   [(ICNAInlineDrawingRecognitionReport *)v41 setNoteAccessData:v16];
 
-  v17 = [(ICNAObject *)self eventReporter];
-  v18 = [v10 account];
+  eventReporter3 = [(ICNAObject *)self eventReporter];
+  account = [noteCopy account];
 
-  v19 = [v17 accountDataForModernAccount:v18];
+  v19 = [eventReporter3 accountDataForModernAccount:account];
   [(ICNAInlineDrawingRecognitionReport *)v41 setAccountData:v19];
 
   v20 = +[ICNAIdentityManager sharedManager];
-  v38 = [v20 saltedID:v40 forClass:objc_opt_class()];
+  v38 = [v20 saltedID:dCopy forClass:objc_opt_class()];
 
-  v21 = [(ICNAObject *)self eventReporter];
-  v22 = [v21 pencilStrokeCountForDrawing:v12];
+  eventReporter4 = [(ICNAObject *)self eventReporter];
+  v22 = [eventReporter4 pencilStrokeCountForDrawing:drawingCopy];
 
-  v23 = [v12 strokes];
+  strokes = [drawingCopy strokes];
 
-  v24 = [v23 count] - v22;
-  v25 = [v11 handwritingSummary];
+  v24 = [strokes count] - v22;
+  handwritingSummary = [attachmentCopy handwritingSummary];
 
-  v39 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v26 = [(__CFString *)v25 componentsSeparatedByCharactersInSet:v39];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v26 = [(__CFString *)handwritingSummary componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   v27 = [v26 componentsJoinedByString:&stru_286E361B0];
 
   v28 = [v27 length];
-  v29 = [(__CFString *)v25 ic_numberOfLines];
-  v43.length = [(__CFString *)v25 length];
+  ic_numberOfLines = [(__CFString *)handwritingSummary ic_numberOfLines];
+  v43.length = [(__CFString *)handwritingSummary length];
   v43.location = 0;
-  v30 = CFStringTokenizerCopyBestStringLanguage(v25, v43);
+  v30 = CFStringTokenizerCopyBestStringLanguage(handwritingSummary, v43);
   v31 = [ICASDrawingRecognitionData alloc];
   v32 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v22)];
   v33 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v24)];
   v34 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v28)];
-  v35 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(v29)];
+  v35 = [MEMORY[0x277CCABB0] numberWithInteger:ICNARoundTo2SigFigsInt(ic_numberOfLines)];
   v36 = [(ICASDrawingRecognitionData *)v31 initWithCountOfPencilStrokes:v32 countOfFingerStrokes:v33 countOfRecognizedHandwrittenCharacters:v34 countOfRecognizedLines:v35 handwritingLanguage:v30 drawingID:v38];
   [(ICNAInlineDrawingRecognitionReport *)v41 setDrawingRecognitionData:v36];
 
-  v37 = [(ICNAInlineDrawingRecognitionReporter *)self stagedReports];
-  [v37 setObject:v41 forKeyedSubscript:v40];
+  stagedReports = [(ICNAInlineDrawingRecognitionReporter *)self stagedReports];
+  [stagedReports setObject:v41 forKeyedSubscript:dCopy];
 }
 
-- (void)analyticsSessionWillEnd:(id)a3
+- (void)analyticsSessionWillEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [endCopy object];
 
   v10 = ICDynamicCast();
 
@@ -167,22 +167,22 @@ uint64_t __54__ICNAInlineDrawingRecognitionReporter_sharedReporter__block_invoke
   }
 }
 
-- (void)submitReportsWithEventReporter:(id)a3
+- (void)submitReportsWithEventReporter:(id)reporter
 {
   v32 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v24 = self;
+  reporterCopy = reporter;
+  selfCopy = self;
   obj = [(ICNAInlineDrawingRecognitionReporter *)self stagedReports];
   objc_sync_enter(obj);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [(ICNAInlineDrawingRecognitionReporter *)self stagedReports];
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  stagedReports = [(ICNAInlineDrawingRecognitionReporter *)self stagedReports];
+  v5 = [stagedReports countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v5)
   {
-    v21 = v4;
+    v21 = stagedReports;
     v22 = *v27;
     do
     {
@@ -195,33 +195,33 @@ uint64_t __54__ICNAInlineDrawingRecognitionReporter_sharedReporter__block_invoke
         }
 
         v7 = *(*(&v26 + 1) + 8 * i);
-        v8 = [(ICNAInlineDrawingRecognitionReporter *)v24 stagedReports];
-        v9 = [v8 objectForKeyedSubscript:v7];
+        stagedReports2 = [(ICNAInlineDrawingRecognitionReporter *)selfCopy stagedReports];
+        v9 = [stagedReports2 objectForKeyedSubscript:v7];
 
         v10 = +[ICNAController sharedController];
         v11 = objc_opt_class();
-        v12 = [v9 noteData];
-        v30[0] = v12;
-        v13 = [v9 noteAccessData];
-        v30[1] = v13;
-        v14 = [v9 accountData];
-        v30[2] = v14;
-        v15 = [v9 drawingRecognitionData];
-        v30[3] = v15;
+        noteData = [v9 noteData];
+        v30[0] = noteData;
+        noteAccessData = [v9 noteAccessData];
+        v30[1] = noteAccessData;
+        accountData = [v9 accountData];
+        v30[2] = accountData;
+        drawingRecognitionData = [v9 drawingRecognitionData];
+        v30[3] = drawingRecognitionData;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
-        v17 = [v23 subTracker];
-        [v10 submitEventOfType:v11 pushThenPopDataObjects:v16 subTracker:v17];
+        subTracker = [reporterCopy subTracker];
+        [v10 submitEventOfType:v11 pushThenPopDataObjects:v16 subTracker:subTracker];
       }
 
-      v4 = v21;
+      stagedReports = v21;
       v5 = [v21 countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v5);
   }
 
-  v18 = [(ICNAInlineDrawingRecognitionReporter *)v24 stagedReports];
-  [v18 removeAllObjects];
+  stagedReports3 = [(ICNAInlineDrawingRecognitionReporter *)selfCopy stagedReports];
+  [stagedReports3 removeAllObjects];
 
   objc_sync_exit(obj);
   v19 = *MEMORY[0x277D85DE8];

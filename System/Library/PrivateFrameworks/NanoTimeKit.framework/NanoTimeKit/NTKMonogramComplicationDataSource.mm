@@ -1,12 +1,12 @@
 @interface NTKMonogramComplicationDataSource
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3;
-- (NTKMonogramComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (Class)richComplicationDisplayViewClassForDevice:(id)device;
+- (NTKMonogramComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_currentTimelineEntry;
 - (id)currentSwitcherTemplate;
 - (void)_handleMonogramTextReload;
 - (void)_reloadMonogramText;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 - (void)pause;
 - (void)resume;
 - (void)startListeningForMonogramNotifications;
@@ -15,11 +15,11 @@
 
 @implementation NTKMonogramComplicationDataSource
 
-- (NTKMonogramComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKMonogramComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v8.receiver = self;
   v8.super_class = NTKMonogramComplicationDataSource;
-  v5 = [(CLKCComplicationDataSource *)&v8 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(CLKCComplicationDataSource *)&v8 initWithComplication:complication family:family forDevice:device];
   v6 = v5;
   if (v5)
   {
@@ -50,11 +50,11 @@
   if (!self->_listeningForMonogramNotifications)
   {
     self->_listeningForMonogramNotifications = 1;
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__handleMonogramTextReload name:@"NTKCustomMonogramChangedNotification" object:0];
-    [v3 addObserver:self selector:sel__handleMonogramTextReload name:@"NTKFaceDefaultsChangedNotification" object:0];
-    [v3 addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBE620] object:0];
-    [v3 addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBB690] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:@"NTKCustomMonogramChangedNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:@"NTKFaceDefaultsChangedNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBE620] object:0];
+    [defaultCenter addObserver:self selector:sel__handleMonogramTextReload name:*MEMORY[0x277CBB690] object:0];
   }
 
   [(NTKMonogramComplicationDataSource *)self _reloadMonogramText];
@@ -63,17 +63,17 @@
 - (void)stopListeningForMonogramNotifications
 {
   self->_listeningForMonogramNotifications = 0;
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"NTKCustomMonogramChangedNotification" object:0];
-  [v3 removeObserver:self name:@"NTKFaceDefaultsChangedNotification" object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB690] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"NTKCustomMonogramChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"NTKFaceDefaultsChangedNotification" object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB690] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKMonogramComplicationDataSource;
@@ -87,10 +87,10 @@
     [(NTKMonogramComplicationDataSource *)self _reloadMonogramText];
   }
 
-  v3 = [(NTKMonogramComplicationDataSource *)self _currentTimelineEntry];
-  v4 = [v3 complicationTemplate];
+  _currentTimelineEntry = [(NTKMonogramComplicationDataSource *)self _currentTimelineEntry];
+  complicationTemplate = [_currentTimelineEntry complicationTemplate];
 
-  return v4;
+  return complicationTemplate;
 }
 
 - (id)_currentTimelineEntry
@@ -102,27 +102,27 @@
     self->_currentEntry = v3;
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(NTKTimelineEntryModel *)self->_currentEntry setEntryDate:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NTKTimelineEntryModel *)self->_currentEntry setEntryDate:date];
 
   [(NTKMonogramTimelineEntryModel *)self->_currentEntry setMonogram:self->_monogramText];
   v6 = self->_currentEntry;
-  v7 = [(CLKCComplicationDataSource *)self family];
+  family = [(CLKCComplicationDataSource *)self family];
 
-  return [(NTKTimelineEntryModel *)v6 entryForComplicationFamily:v7];
+  return [(NTKTimelineEntryModel *)v6 entryForComplicationFamily:family];
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NTKMonogramComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NTKMonogramComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
-- (Class)richComplicationDisplayViewClassForDevice:(id)a3
+- (Class)richComplicationDisplayViewClassForDevice:(id)device
 {
-  v3 = [(CLKCComplicationDataSource *)self family];
-  if (v3 == 10 || v3 == 9)
+  family = [(CLKCComplicationDataSource *)self family];
+  if (family == 10 || family == 9)
   {
     v4 = objc_opt_class();
   }
@@ -164,8 +164,8 @@
   if (![(NSString *)self->_monogramText isEqualToString:v7])
   {
     objc_storeStrong(&self->_monogramText, v5);
-    v6 = [(CLKCComplicationDataSource *)self delegate];
-    [v6 invalidateEntries];
+    delegate = [(CLKCComplicationDataSource *)self delegate];
+    [delegate invalidateEntries];
   }
 }
 

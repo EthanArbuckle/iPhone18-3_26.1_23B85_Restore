@@ -1,23 +1,23 @@
 @interface SBDisplayProfileRegistry
-- (id)_modifyParameters:(id)a3 orientation:(int64_t)a4 interfaceOrientationMode:(int64_t)a5 chamoisEnabled:(BOOL)a6;
+- (id)_modifyParameters:(id)parameters orientation:(int64_t)orientation interfaceOrientationMode:(int64_t)mode chamoisEnabled:(BOOL)enabled;
 - (uint64_t)activate;
 - (void)_registerEmbeddedDisplayProfile;
 - (void)_registerExtendedProfile;
 - (void)_registerMirroringProfile;
-- (void)embeddedFactory:(id)a3 modifyInitialSceneParameters:(id)a4;
-- (void)initWithStartupOrientation:(void *)a1;
-- (void)windowingModeForDisplay:(void *)a1;
+- (void)embeddedFactory:(id)factory modifyInitialSceneParameters:(id)parameters;
+- (void)initWithStartupOrientation:(void *)orientation;
+- (void)windowingModeForDisplay:(void *)display;
 @end
 
 @implementation SBDisplayProfileRegistry
 
-- (void)embeddedFactory:(id)a3 modifyInitialSceneParameters:(id)a4
+- (void)embeddedFactory:(id)factory modifyInitialSceneParameters:(id)parameters
 {
-  v9 = a4;
+  parametersCopy = parameters;
   startupEmbeddedOrientation = self->_startupEmbeddedOrientation;
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 appSwitcherDefaults];
-  v8 = -[SBDisplayProfileRegistry _modifyParameters:orientation:interfaceOrientationMode:chamoisEnabled:](self, "_modifyParameters:orientation:interfaceOrientationMode:chamoisEnabled:", v9, startupEmbeddedOrientation, 100, [v7 chamoisWindowingEnabled]);
+  appSwitcherDefaults = [v6 appSwitcherDefaults];
+  v8 = -[SBDisplayProfileRegistry _modifyParameters:orientation:interfaceOrientationMode:chamoisEnabled:](self, "_modifyParameters:orientation:interfaceOrientationMode:chamoisEnabled:", parametersCopy, startupEmbeddedOrientation, 100, [appSwitcherDefaults chamoisWindowingEnabled]);
 }
 
 - (void)_registerEmbeddedDisplayProfile
@@ -26,23 +26,23 @@
   embeddedDisplayProfileFactory = self->_embeddedDisplayProfileFactory;
   self->_embeddedDisplayProfileFactory = v3;
 
-  v5 = [(SBEmbeddedDisplayProfileFactory *)self->_embeddedDisplayProfileFactory createProfile];
-  NSMapInsert(self->_profileToWindowingMode, v5, 1);
-  [(SSKDisplayProfileRegistry *)self->_displayProfileRegistry registerDisplayProfile:v5];
+  createProfile = [(SBEmbeddedDisplayProfileFactory *)self->_embeddedDisplayProfileFactory createProfile];
+  NSMapInsert(self->_profileToWindowingMode, createProfile, 1);
+  [(SSKDisplayProfileRegistry *)self->_displayProfileRegistry registerDisplayProfile:createProfile];
 }
 
 - (void)_registerExtendedProfile
 {
   v3 = [SBExtendedDisplayProfileFactory alloc];
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 externalDisplayDefaults];
-  v6 = [(SBExtendedDisplayProfileFactory *)&v3->super.isa initWithDefaults:v5 delegate:self];
+  externalDisplayDefaults = [v4 externalDisplayDefaults];
+  v6 = [(SBExtendedDisplayProfileFactory *)&v3->super.isa initWithDefaults:externalDisplayDefaults delegate:self];
   extendedDisplayProfileFactory = self->_extendedDisplayProfileFactory;
   self->_extendedDisplayProfileFactory = v6;
 
-  v8 = [(SBExtendedDisplayProfileFactory *)self->_extendedDisplayProfileFactory createProfile];
-  NSMapInsert(self->_profileToWindowingMode, v8, 1);
-  [(SSKDisplayProfileRegistry *)self->_displayProfileRegistry registerDisplayProfile:v8];
+  createProfile = [(SBExtendedDisplayProfileFactory *)self->_extendedDisplayProfileFactory createProfile];
+  NSMapInsert(self->_profileToWindowingMode, createProfile, 1);
+  [(SSKDisplayProfileRegistry *)self->_displayProfileRegistry registerDisplayProfile:createProfile];
 }
 
 - (void)_registerMirroringProfile
@@ -51,29 +51,29 @@
   mirroringDisplayProfileFactory = self->_mirroringDisplayProfileFactory;
   self->_mirroringDisplayProfileFactory = v3;
 
-  v5 = [(SBMirroringDisplayProfileFactory *)self->_mirroringDisplayProfileFactory createProfile];
-  NSMapInsert(self->_profileToWindowingMode, v5, 0);
-  [(SSKDisplayProfileRegistry *)self->_displayProfileRegistry registerDisplayProfile:v5];
+  createProfile = [(SBMirroringDisplayProfileFactory *)self->_mirroringDisplayProfileFactory createProfile];
+  NSMapInsert(self->_profileToWindowingMode, createProfile, 0);
+  [(SSKDisplayProfileRegistry *)self->_displayProfileRegistry registerDisplayProfile:createProfile];
 }
 
-- (id)_modifyParameters:(id)a3 orientation:(int64_t)a4 interfaceOrientationMode:(int64_t)a5 chamoisEnabled:(BOOL)a6
+- (id)_modifyParameters:(id)parameters orientation:(int64_t)orientation interfaceOrientationMode:(int64_t)mode chamoisEnabled:(BOOL)enabled
 {
-  v9 = a3;
+  parametersCopy = parameters;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __98__SBDisplayProfileRegistry__modifyParameters_orientation_interfaceOrientationMode_chamoisEnabled___block_invoke;
   v12[3] = &__block_descriptor_41_e33_v16__0__FBSMutableSceneSettings_8l;
-  v12[4] = a5;
-  v13 = a6;
-  [v9 updateSettingsWithBlock:v12];
+  v12[4] = mode;
+  enabledCopy = enabled;
+  [parametersCopy updateSettingsWithBlock:v12];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __98__SBDisplayProfileRegistry__modifyParameters_orientation_interfaceOrientationMode_chamoisEnabled___block_invoke_2;
   v11[3] = &__block_descriptor_40_e39_v16__0__FBSMutableSceneClientSettings_8l;
-  v11[4] = a4;
-  [v9 updateClientSettingsWithBlock:v11];
+  v11[4] = orientation;
+  [parametersCopy updateClientSettingsWithBlock:v11];
 
-  return v9;
+  return parametersCopy;
 }
 
 void __98__SBDisplayProfileRegistry__modifyParameters_orientation_interfaceOrientationMode_chamoisEnabled___block_invoke(uint64_t a1, void *a2)
@@ -109,14 +109,14 @@ void __98__SBDisplayProfileRegistry__modifyParameters_orientation_interfaceOrien
   }
 }
 
-- (void)initWithStartupOrientation:(void *)a1
+- (void)initWithStartupOrientation:(void *)orientation
 {
-  if (!a1)
+  if (!orientation)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = orientation;
   v13.super_class = SBDisplayProfileRegistry;
   v3 = objc_msgSendSuper2(&v13, sel_init);
   if (v3)
@@ -154,26 +154,26 @@ void __98__SBDisplayProfileRegistry__modifyParameters_orientation_interfaceOrien
   return result;
 }
 
-- (void)windowingModeForDisplay:(void *)a1
+- (void)windowingModeForDisplay:(void *)display
 {
   v3 = a2;
-  if (a1)
+  if (display)
   {
     value = 0;
-    if (!NSMapMember(*(a1 + 7), v3, 0, &value))
+    if (!NSMapMember(*(display + 7), v3, 0, &value))
     {
-      v4 = [*(a1 + 1) displayProfileForIdentity:v3];
+      v4 = [*(display + 1) displayProfileForIdentity:v3];
       if (v4)
       {
-        value = NSMapGet(*(a1 + 6), v4);
-        NSMapInsert(*(a1 + 7), v3, value);
+        value = NSMapGet(*(display + 6), v4);
+        NSMapInsert(*(display + 7), v3, value);
       }
     }
 
-    a1 = value;
+    display = value;
   }
 
-  return a1;
+  return display;
 }
 
 @end

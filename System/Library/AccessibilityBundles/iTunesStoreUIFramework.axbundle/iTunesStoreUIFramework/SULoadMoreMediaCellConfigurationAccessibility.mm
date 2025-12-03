@@ -8,9 +8,9 @@
 {
   [self _accessibilityReloadMediaStrings];
   v3 = [(SULoadMoreMediaCellConfigurationAccessibility *)self safeValueForKey:@"_accessibilityStringsArrayPointer"];
-  v4 = [v3 bytes];
-  v5 = v4[1];
-  v8 = *v4;
+  bytes = [v3 bytes];
+  v5 = bytes[1];
+  v8 = *bytes;
   v6 = __UIAXStringForVariables();
 
   return v6;

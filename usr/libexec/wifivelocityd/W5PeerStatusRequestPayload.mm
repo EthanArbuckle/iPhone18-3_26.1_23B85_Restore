@@ -1,26 +1,26 @@
 @interface W5PeerStatusRequestPayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerStatusRequestPayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerStatusRequestPayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerStatusRequestPayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerStatusRequestPayload)initWithRequest:(id)a3
+- (W5PeerStatusRequestPayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = W5PeerStatusRequestPayload;
   v5 = [(W5PeerStatusRequestPayload *)&v9 init];
-  if (!v5 || (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) == 0))
+  if (!v5 || (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) == 0))
   {
 
     v7 = sub_100098A04();
@@ -48,8 +48,8 @@
   v3 = objc_alloc_init(NSMutableDictionary);
   if (self->_version)
   {
-    v4 = [(W5PeerStatusRequestPayload *)self version];
-    [v3 setObject:v4 forKey:@"version"];
+    version = [(W5PeerStatusRequestPayload *)self version];
+    [v3 setObject:version forKey:@"version"];
   }
 
   if (![v3 count])

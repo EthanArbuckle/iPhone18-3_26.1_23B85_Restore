@@ -1,16 +1,16 @@
 @interface PBFActivePosterConfigurationFilter
-- (BOOL)shouldIncludePosterConfiguration:(id)a3 inSwitcherConfiguration:(id)a4;
+- (BOOL)shouldIncludePosterConfiguration:(id)configuration inSwitcherConfiguration:(id)switcherConfiguration;
 @end
 
 @implementation PBFActivePosterConfigurationFilter
 
-- (BOOL)shouldIncludePosterConfiguration:(id)a3 inSwitcherConfiguration:(id)a4
+- (BOOL)shouldIncludePosterConfiguration:(id)configuration inSwitcherConfiguration:(id)switcherConfiguration
 {
-  v5 = a4;
-  v6 = uuidForPosterConfiguration(a3);
-  v7 = [v5 activeConfiguration];
+  switcherConfigurationCopy = switcherConfiguration;
+  v6 = uuidForPosterConfiguration(configuration);
+  activeConfiguration = [switcherConfigurationCopy activeConfiguration];
 
-  v8 = uuidForPosterConfiguration(v7);
+  v8 = uuidForPosterConfiguration(activeConfiguration);
   v9 = [v6 isEqual:v8];
 
   return v9;

@@ -1,33 +1,33 @@
 @interface _HKSectionedContextViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _HKSectionedContextViewConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       LOBYTE(v9) = 1;
       goto LABEL_8;
     }
 
-    v6 = [(_HKSectionedContextViewConfiguration *)v4 isHorizontalInTwoOverlaysMode];
-    if (v6 == [(_HKSectionedContextViewConfiguration *)self isHorizontalInTwoOverlaysMode])
+    isHorizontalInTwoOverlaysMode = [(_HKSectionedContextViewConfiguration *)equalCopy isHorizontalInTwoOverlaysMode];
+    if (isHorizontalInTwoOverlaysMode == [(_HKSectionedContextViewConfiguration *)self isHorizontalInTwoOverlaysMode])
     {
-      v7 = [(_HKSectionedContextViewConfiguration *)v5 bottomInsetsEnabled];
-      if (v7 == [(_HKSectionedContextViewConfiguration *)self bottomInsetsEnabled])
+      bottomInsetsEnabled = [(_HKSectionedContextViewConfiguration *)v5 bottomInsetsEnabled];
+      if (bottomInsetsEnabled == [(_HKSectionedContextViewConfiguration *)self bottomInsetsEnabled])
       {
-        v8 = [(_HKSectionedContextViewConfiguration *)v5 horizontalInsetsEnabled];
-        if (v8 == [(_HKSectionedContextViewConfiguration *)self horizontalInsetsEnabled])
+        horizontalInsetsEnabled = [(_HKSectionedContextViewConfiguration *)v5 horizontalInsetsEnabled];
+        if (horizontalInsetsEnabled == [(_HKSectionedContextViewConfiguration *)self horizontalInsetsEnabled])
         {
-          v11 = [(_HKSectionedContextViewConfiguration *)v5 topInsetsWithNoHeaderEnabled];
-          v9 = v11 ^ [(_HKSectionedContextViewConfiguration *)self topInsetsWithNoHeaderEnabled]^ 1;
+          topInsetsWithNoHeaderEnabled = [(_HKSectionedContextViewConfiguration *)v5 topInsetsWithNoHeaderEnabled];
+          v9 = topInsetsWithNoHeaderEnabled ^ [(_HKSectionedContextViewConfiguration *)self topInsetsWithNoHeaderEnabled]^ 1;
           goto LABEL_8;
         }
       }
@@ -40,7 +40,7 @@ LABEL_8:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_HKSectionedContextViewConfiguration);
   [(_HKSectionedContextViewConfiguration *)v4 setIsHorizontalInTwoOverlaysMode:[(_HKSectionedContextViewConfiguration *)self isHorizontalInTwoOverlaysMode]];

@@ -3,7 +3,7 @@
 - (void)finishAnimation;
 - (void)prepareAnimation;
 - (void)startAnimation;
-- (void)updateAnimationWithFactor:(double)a3;
+- (void)updateAnimationWithFactor:(double)factor;
 @end
 
 @implementation SXFadeComponentAnimationHandler
@@ -14,17 +14,17 @@
   v6.super_class = SXFadeComponentAnimationHandler;
   [(SXComponentAnimationHandler *)&v6 prepareAnimation];
   IsVoiceOverRunning = UIAccessibilityIsVoiceOverRunning();
-  v4 = [(SXComponentAnimationHandler *)self component];
+  component = [(SXComponentAnimationHandler *)self component];
   v5 = 1.0;
   if (!IsVoiceOverRunning)
   {
     [(SXFadeComponentAnimationHandler *)self initialAlpha];
   }
 
-  [v4 setAlpha:v5];
+  [component setAlpha:v5];
 }
 
-- (void)updateAnimationWithFactor:(double)a3
+- (void)updateAnimationWithFactor:(double)factor
 {
   v8.receiver = self;
   v8.super_class = SXFadeComponentAnimationHandler;
@@ -32,9 +32,9 @@
   if (!UIAccessibilityIsVoiceOverRunning())
   {
     [(SXFadeComponentAnimationHandler *)self initialAlpha];
-    v6 = v5 + (1.0 - v5) * a3;
-    v7 = [(SXComponentAnimationHandler *)self component];
-    [v7 setAlpha:v6];
+    v6 = v5 + (1.0 - v5) * factor;
+    component = [(SXComponentAnimationHandler *)self component];
+    [component setAlpha:v6];
   }
 }
 
@@ -72,15 +72,15 @@ void __49__SXFadeComponentAnimationHandler_startAnimation__block_invoke(uint64_t
   [(SXComponentAnimationHandler *)&v4 finishAnimation];
   if (!UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(SXComponentAnimationHandler *)self component];
-    [v3 setAlpha:1.0];
+    component = [(SXComponentAnimationHandler *)self component];
+    [component setAlpha:1.0];
   }
 }
 
 - (double)initialAlpha
 {
-  v3 = [(SXComponentAnimationHandler *)self animation];
-  [v3 initialAlpha];
+  animation = [(SXComponentAnimationHandler *)self animation];
+  [animation initialAlpha];
   if (v4 == 1.79769313e308)
   {
     v7 = 0.3;
@@ -88,8 +88,8 @@ void __49__SXFadeComponentAnimationHandler_startAnimation__block_invoke(uint64_t
 
   else
   {
-    v5 = [(SXComponentAnimationHandler *)self animation];
-    [v5 initialAlpha];
+    animation2 = [(SXComponentAnimationHandler *)self animation];
+    [animation2 initialAlpha];
     v7 = v6;
   }
 

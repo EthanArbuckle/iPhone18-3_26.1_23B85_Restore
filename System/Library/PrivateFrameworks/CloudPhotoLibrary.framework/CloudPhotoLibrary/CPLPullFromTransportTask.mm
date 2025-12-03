@@ -1,33 +1,33 @@
 @interface CPLPullFromTransportTask
-- (id)enumerateScopesForTaskInTransaction:(id)a3;
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6;
-- (id)scopeFilterInTransaction:(id)a3;
+- (id)enumerateScopesForTaskInTransaction:(id)transaction;
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier;
+- (id)scopeFilterInTransaction:(id)transaction;
 @end
 
 @implementation CPLPullFromTransportTask
 
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  transportScopeCopy = transportScope;
+  sessionCopy = session;
+  scopeCopy = scope;
   v14 = [CPLPullFromTransportScopeTask alloc];
-  v15 = [(CPLEngineSyncTask *)self engineLibrary];
-  v16 = [(CPLPullFromTransportScopeTask *)v14 initWithEngineLibrary:v15 session:v12 clientCacheIdentifier:v10 scope:v13 transportScope:v11];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  v16 = [(CPLPullFromTransportScopeTask *)v14 initWithEngineLibrary:engineLibrary session:sessionCopy clientCacheIdentifier:identifierCopy scope:scopeCopy transportScope:transportScopeCopy];
 
   return v16;
 }
 
-- (id)scopeFilterInTransaction:(id)a3
+- (id)scopeFilterInTransaction:(id)transaction
 {
-  v4 = [(CPLEngineSyncTask *)self session];
-  v5 = [v4 scopeIdentifiersExcludedFromMingling];
+  session = [(CPLEngineSyncTask *)self session];
+  scopeIdentifiersExcludedFromMingling = [session scopeIdentifiersExcludedFromMingling];
 
-  if (v5)
+  if (scopeIdentifiersExcludedFromMingling)
   {
-    v6 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-    v7 = [v6 filterForExcludedScopeIdentifiers:v5];
+    scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+    v7 = [scopes filterForExcludedScopeIdentifiers:scopeIdentifiersExcludedFromMingling];
   }
 
   else
@@ -38,12 +38,12 @@
   return v7;
 }
 
-- (id)enumerateScopesForTaskInTransaction:(id)a3
+- (id)enumerateScopesForTaskInTransaction:(id)transaction
 {
-  v3 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v4 = [v3 enumeratorForScopesNeedingToPullChangesFromTransport];
+  scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  enumeratorForScopesNeedingToPullChangesFromTransport = [scopes enumeratorForScopesNeedingToPullChangesFromTransport];
 
-  return v4;
+  return enumeratorForScopesNeedingToPullChangesFromTransport;
 }
 
 @end

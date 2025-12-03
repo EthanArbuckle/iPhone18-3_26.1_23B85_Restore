@@ -1,7 +1,7 @@
 @interface EDVisibleMessagesReloadRegistry
 + (id)log;
 - (EDVisibleMessagesReloadRegistry)init;
-- (id)addVisibleMessagesObserver:(id)a3;
+- (id)addVisibleMessagesObserver:(id)observer;
 - (void)_reloadVisibleMessages;
 - (void)dealloc;
 @end
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDVisibleMessagesReloadRegistry_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_111 != -1)
   {
     dispatch_once(&log_onceToken_111, block);
@@ -42,9 +42,9 @@ void __38__EDVisibleMessagesReloadRegistry_log__block_invoke(uint64_t a1)
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_UTILITY, 0);
@@ -55,13 +55,13 @@ void __38__EDVisibleMessagesReloadRegistry_log__block_invoke(uint64_t a1)
     v3->_observationScheduler = v9;
 
     objc_initWeak(&location, v3);
-    v11 = [*MEMORY[0x1E69ADA40] UTF8String];
+    uTF8String = [*MEMORY[0x1E69ADA40] UTF8String];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __39__EDVisibleMessagesReloadRegistry_init__block_invoke;
     handler[3] = &unk_1E82591F0;
     objc_copyWeak(&v20, &location);
-    notify_register_dispatch(v11, &v3->_notifyToken, v8, handler);
+    notify_register_dispatch(uTF8String, &v3->_notifyToken, v8, handler);
     v12 = objc_alloc(MEMORY[0x1E699B7A8]);
     v13 = v3->_observationScheduler;
     v17[0] = MEMORY[0x1E69E9820];
@@ -101,9 +101,9 @@ void __39__EDVisibleMessagesReloadRegistry_init__block_invoke_2(uint64_t a1)
   [(EDVisibleMessagesReloadRegistry *)&v3 dealloc];
 }
 
-- (id)addVisibleMessagesObserver:(id)a3
+- (id)addVisibleMessagesObserver:(id)observer
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, observer);
   v4 = objc_alloc_init(MEMORY[0x1E699B7F8]);
   objc_initWeak(&from, self);
   v8 = MEMORY[0x1E69E9820];
@@ -147,13 +147,13 @@ void __62__EDVisibleMessagesReloadRegistry_addVisibleMessagesObserver___block_in
 {
   v14 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = allObjects;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

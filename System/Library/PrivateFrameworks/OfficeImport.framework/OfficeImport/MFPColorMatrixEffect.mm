@@ -1,10 +1,10 @@
 @interface MFPColorMatrixEffect
-- (MFPColorMatrixEffect)initWithColorMatrix:(float)a3[5][5];
+- (MFPColorMatrixEffect)initWithColorMatrix:(float)matrix[5][5];
 @end
 
 @implementation MFPColorMatrixEffect
 
-- (MFPColorMatrixEffect)initWithColorMatrix:(float)a3[5][5]
+- (MFPColorMatrixEffect)initWithColorMatrix:(float)matrix[5][5]
 {
   v8.receiver = self;
   v8.super_class = MFPColorMatrixEffect;
@@ -17,11 +17,11 @@
     {
       for (i = 0; i != 5; ++i)
       {
-        (*mColorMatrix)[i] = (*a3)[i];
+        (*mColorMatrix)[i] = (*matrix)[i];
       }
 
       ++v5;
-      ++a3;
+      ++matrix;
       ++mColorMatrix;
     }
 

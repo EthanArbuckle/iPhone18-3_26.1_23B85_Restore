@@ -1,39 +1,39 @@
 @interface MXASRResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPayload:(id)a3;
+- (int)StringAsPayload:(id)payload;
 - (int)payload;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPayload;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setFinalSpeechRecognitionResponse:(id)a3;
-- (void)setRecognitionCandidate:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setFinalSpeechRecognitionResponse:(id)response;
+- (void)setRecognitionCandidate:(id)candidate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXASRResult
 
-- (void)setRecognitionCandidate:(id)a3
+- (void)setRecognitionCandidate:(id)candidate
 {
-  v4 = a3;
+  candidateCopy = candidate;
   [(MXASRResult *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 1;
   recognitionCandidate = self->_recognitionCandidate;
-  self->_recognitionCandidate = v4;
+  self->_recognitionCandidate = candidateCopy;
 }
 
-- (void)setFinalSpeechRecognitionResponse:(id)a3
+- (void)setFinalSpeechRecognitionResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   [(MXASRResult *)self clearOneofValuesForPayload];
   *&self->_has |= 1u;
   self->_payload = 2;
   finalSpeechRecognitionResponse = self->_finalSpeechRecognitionResponse;
-  self->_finalSpeechRecognitionResponse = v4;
+  self->_finalSpeechRecognitionResponse = responseCopy;
 }
 
 - (int)payload
@@ -49,20 +49,20 @@
   }
 }
 
-- (int)StringAsPayload:(id)a3
+- (int)StringAsPayload:(id)payload
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  payloadCopy = payload;
+  if ([payloadCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"recognition_candidate"])
+  else if ([payloadCopy isEqualToString:@"recognition_candidate"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"final_speech_recognition_response"])
+  else if ([payloadCopy isEqualToString:@"final_speech_recognition_response"])
   {
     v4 = 2;
   }
@@ -92,34 +92,34 @@
   v8.receiver = self;
   v8.super_class = MXASRResult;
   v4 = [(MXASRResult *)&v8 description];
-  v5 = [(MXASRResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXASRResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   requestId = self->_requestId;
   if (requestId)
   {
-    [v3 setObject:requestId forKey:@"request_id"];
+    [dictionary setObject:requestId forKey:@"request_id"];
   }
 
   recognitionCandidate = self->_recognitionCandidate;
   if (recognitionCandidate)
   {
-    v7 = [(MXRecognitionCandidate *)recognitionCandidate dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"recognition_candidate"];
+    dictionaryRepresentation = [(MXRecognitionCandidate *)recognitionCandidate dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"recognition_candidate"];
   }
 
   finalSpeechRecognitionResponse = self->_finalSpeechRecognitionResponse;
   if (finalSpeechRecognitionResponse)
   {
-    v9 = [(MXFinalSpeechRecognitionResponse *)finalSpeechRecognitionResponse dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"final_speech_recognition_response"];
+    dictionaryRepresentation2 = [(MXFinalSpeechRecognitionResponse *)finalSpeechRecognitionResponse dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"final_speech_recognition_response"];
   }
 
   if (*&self->_has)
@@ -141,61 +141,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_recognitionCandidate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_finalSpeechRecognitionResponse)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_payload;
-    *(v4 + 40) |= 1u;
+    toCopy[4] = self->_payload;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_requestId)
   {
-    [v4 setRequestId:?];
-    v4 = v5;
+    [toCopy setRequestId:?];
+    toCopy = v5;
   }
 
   if (self->_recognitionCandidate)
   {
     [v5 setRecognitionCandidate:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_finalSpeechRecognitionResponse)
   {
     [v5 setFinalSpeechRecognitionResponse:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -203,39 +203,39 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_requestId copyWithZone:a3];
+  v7 = [(NSString *)self->_requestId copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(MXRecognitionCandidate *)self->_recognitionCandidate copyWithZone:a3];
+  v9 = [(MXRecognitionCandidate *)self->_recognitionCandidate copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(MXFinalSpeechRecognitionResponse *)self->_finalSpeechRecognitionResponse copyWithZone:a3];
+  v11 = [(MXFinalSpeechRecognitionResponse *)self->_finalSpeechRecognitionResponse copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_payload != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_payload != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -243,13 +243,13 @@ LABEL_13:
   }
 
   requestId = self->_requestId;
-  if (requestId | *(v4 + 4) && ![(NSString *)requestId isEqual:?])
+  if (requestId | *(equalCopy + 4) && ![(NSString *)requestId isEqual:?])
   {
     goto LABEL_13;
   }
 
   recognitionCandidate = self->_recognitionCandidate;
-  if (recognitionCandidate | *(v4 + 3))
+  if (recognitionCandidate | *(equalCopy + 3))
   {
     if (![(MXRecognitionCandidate *)recognitionCandidate isEqual:?])
     {
@@ -258,7 +258,7 @@ LABEL_13:
   }
 
   finalSpeechRecognitionResponse = self->_finalSpeechRecognitionResponse;
-  if (finalSpeechRecognitionResponse | *(v4 + 1))
+  if (finalSpeechRecognitionResponse | *(equalCopy + 1))
   {
     v9 = [(MXFinalSpeechRecognitionResponse *)finalSpeechRecognitionResponse isEqual:?];
   }
@@ -290,18 +290,18 @@ LABEL_14:
   return v4 ^ v5 ^ [(MXFinalSpeechRecognitionResponse *)self->_finalSpeechRecognitionResponse hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[10])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[10])
   {
-    self->_payload = v4[4];
+    self->_payload = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  v10 = v4;
-  if (*(v4 + 4))
+  v10 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(MXASRResult *)self setRequestId:?];
     v5 = v10;

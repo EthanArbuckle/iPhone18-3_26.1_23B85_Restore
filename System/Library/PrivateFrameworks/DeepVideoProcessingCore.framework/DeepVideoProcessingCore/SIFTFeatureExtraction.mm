@@ -1,32 +1,32 @@
 @interface SIFTFeatureExtraction
 - (BOOL)setupMetal;
-- (SIFTFeatureExtraction)initWithAll:(id)a3 commmandQueue:(id)a4 NumberOfOctaveLayers:(int)a5 withSigma:(float)a6 contrastThreshold:(float)a7 edgeThreshold:(float)a8 accuracyMode:(BOOL)a9;
-- (SIFTFeatureExtraction)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (__CVBuffer)getDoGPyramidBufferImageOfOctave:(int)a3 andLayer:(int)a4 ind:(int)a5;
-- (__CVBuffer)getGaussPyramidBufferImageOfOctave:(int)a3 andLayer:(int)a4 ind:(int)a5;
-- (int)removeDuplicatedSorted:(id)a3 keypointsCount:(int)a4;
-- (int64_t)ExtractKeyPointFromInput1:(id)a3 toHdr1:(id)a4 Input2:(id)a5 toHdr2:(id)a6 count1:(int *)a7 count2:(int *)a8;
-- (int64_t)adjustLocalExtremasWithThreshold:(float)a3 waitForComplete:(BOOL)a4 edgeThreshold:(float)a5 ind:(int)a6;
-- (int64_t)allocateResourceWidth:(unsigned int)a3 andHeight:(unsigned int)a4 ind:(int)a5;
-- (int64_t)calculateDescriptorsForKeypoints:(id)a3 keypointsCount:(int)a4 intoHdr:(id)a5 waitForComplete:(BOOL)a6 ind:(int)a7;
-- (int64_t)calculateOrientations:(id)a3 withCounterBuffer:(id)a4 waitForComplete:(BOOL)a5 ind:(int)a6;
-- (int64_t)detect1:(id)a3 toHdr1:(id)a4 detect2:(id)a5 toHdr2:(id)a6 count1:(int *)a7 count2:(int *)a8;
-- (int64_t)findScaleSpaceExtremaWithWaitForComplete:(BOOL)a3 ind:(int)a4;
-- (int64_t)generateDoGImagesOctaveWaitForComplete:(BOOL)a3 ind:(int)a4;
+- (SIFTFeatureExtraction)initWithAll:(id)all commmandQueue:(id)queue NumberOfOctaveLayers:(int)layers withSigma:(float)sigma contrastThreshold:(float)threshold edgeThreshold:(float)edgeThreshold accuracyMode:(BOOL)mode;
+- (SIFTFeatureExtraction)initWithDevice:(id)device commmandQueue:(id)queue;
+- (__CVBuffer)getDoGPyramidBufferImageOfOctave:(int)octave andLayer:(int)layer ind:(int)ind;
+- (__CVBuffer)getGaussPyramidBufferImageOfOctave:(int)octave andLayer:(int)layer ind:(int)ind;
+- (int)removeDuplicatedSorted:(id)sorted keypointsCount:(int)count;
+- (int64_t)ExtractKeyPointFromInput1:(id)input1 toHdr1:(id)hdr1 Input2:(id)input2 toHdr2:(id)hdr2 count1:(int *)count1 count2:(int *)count2;
+- (int64_t)adjustLocalExtremasWithThreshold:(float)threshold waitForComplete:(BOOL)complete edgeThreshold:(float)edgeThreshold ind:(int)ind;
+- (int64_t)allocateResourceWidth:(unsigned int)width andHeight:(unsigned int)height ind:(int)ind;
+- (int64_t)calculateDescriptorsForKeypoints:(id)keypoints keypointsCount:(int)count intoHdr:(id)hdr waitForComplete:(BOOL)complete ind:(int)ind;
+- (int64_t)calculateOrientations:(id)orientations withCounterBuffer:(id)buffer waitForComplete:(BOOL)complete ind:(int)ind;
+- (int64_t)detect1:(id)detect1 toHdr1:(id)hdr1 detect2:(id)detect2 toHdr2:(id)hdr2 count1:(int *)count1 count2:(int *)count2;
+- (int64_t)findScaleSpaceExtremaWithWaitForComplete:(BOOL)complete ind:(int)ind;
+- (int64_t)generateDoGImagesOctaveWaitForComplete:(BOOL)complete ind:(int)ind;
 - (void)cleanResources;
 - (void)dealloc;
-- (void)freeResourceFromind:(int)a3;
+- (void)freeResourceFromind:(int)fromind;
 @end
 
 @implementation SIFTFeatureExtraction
 
-- (SIFTFeatureExtraction)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (SIFTFeatureExtraction)initWithDevice:(id)device commmandQueue:(id)queue
 {
   self->_refreshCalculation = 1;
   LODWORD(v4) = 1070386381;
   LODWORD(v5) = 1025758986;
   LODWORD(v6) = 10.0;
-  return [(SIFTFeatureExtraction *)self initWithAll:a3 commmandQueue:a4 NumberOfOctaveLayers:3 withSigma:0 contrastThreshold:v4 edgeThreshold:v5 accuracyMode:v6];
+  return [(SIFTFeatureExtraction *)self initWithAll:device commmandQueue:queue NumberOfOctaveLayers:3 withSigma:0 contrastThreshold:v4 edgeThreshold:v5 accuracyMode:v6];
 }
 
 - (void)dealloc
@@ -83,18 +83,18 @@
   [(SIFTFeatureExtraction *)&v16 dealloc];
 }
 
-- (void)freeResourceFromind:(int)a3
+- (void)freeResourceFromind:(int)fromind
 {
-  v5 = self->scaled_input_texture[a3];
-  self->scaled_input_texture[a3] = 0;
+  v5 = self->scaled_input_texture[fromind];
+  self->scaled_input_texture[fromind] = 0;
 
-  v6 = self->base_image[a3];
-  self->base_image[a3] = 0;
+  v6 = self->base_image[fromind];
+  self->base_image[fromind] = 0;
 
-  v7 = self->intermedia_base_image[a3];
-  self->intermedia_base_image[a3] = 0;
+  v7 = self->intermedia_base_image[fromind];
+  self->intermedia_base_image[fromind] = 0;
 
-  v8 = &self->super.super.isa + 80 * a3;
+  v8 = &self->super.super.isa + 80 * fromind;
   v9 = 80;
   do
   {
@@ -113,19 +113,19 @@
   }
 
   while (v9);
-  v12 = self->base_image_buffer[a3];
+  v12 = self->base_image_buffer[fromind];
   if (v12)
   {
     CVPixelBufferRelease(v12);
-    self->base_image_buffer[a3] = 0;
+    self->base_image_buffer[fromind] = 0;
   }
 
   intermedia_base_image_buffer = self->intermedia_base_image_buffer;
-  v14 = intermedia_base_image_buffer[a3];
+  v14 = intermedia_base_image_buffer[fromind];
   if (v14)
   {
     CVPixelBufferRelease(v14);
-    intermedia_base_image_buffer[a3] = 0;
+    intermedia_base_image_buffer[fromind] = 0;
   }
 }
 
@@ -163,39 +163,39 @@
   *[finalCount[1] contents] = 0;
 }
 
-- (__CVBuffer)getGaussPyramidBufferImageOfOctave:(int)a3 andLayer:(int)a4 ind:(int)a5
+- (__CVBuffer)getGaussPyramidBufferImageOfOctave:(int)octave andLayer:(int)layer ind:(int)ind
 {
-  v5 = a4 + self->_num_intervals * a3;
-  v6 = self->_gaussPyrImagesBuffer[a5];
-  copyTextureToBuffer1DCustomSize(self->_gaussPyrImagesTexture[a5][v5], v6[v5]);
+  v5 = layer + self->_num_intervals * octave;
+  v6 = self->_gaussPyrImagesBuffer[ind];
+  copyTextureToBuffer1DCustomSize(self->_gaussPyrImagesTexture[ind][v5], v6[v5]);
   return v6[v5];
 }
 
-- (__CVBuffer)getDoGPyramidBufferImageOfOctave:(int)a3 andLayer:(int)a4 ind:(int)a5
+- (__CVBuffer)getDoGPyramidBufferImageOfOctave:(int)octave andLayer:(int)layer ind:(int)ind
 {
-  v5 = a4 + self->_num_intervals * a3;
-  v6 = self->_DoGImagesBuffer[a5];
-  copyTextureToBuffer1DCustomSize(self->_DoGImagesTexture[a5][v5], v6[v5]);
+  v5 = layer + self->_num_intervals * octave;
+  v6 = self->_DoGImagesBuffer[ind];
+  copyTextureToBuffer1DCustomSize(self->_DoGImagesTexture[ind][v5], v6[v5]);
   return v6[v5];
 }
 
-- (int64_t)generateDoGImagesOctaveWaitForComplete:(BOOL)a3 ind:(int)a4
+- (int64_t)generateDoGImagesOctaveWaitForComplete:(BOOL)complete ind:(int)ind
 {
-  v16 = a3;
+  completeCopy = complete;
   v23 = *MEMORY[0x277D85DE8];
-  v17 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   if (self->_num_octaves < 1)
   {
 LABEL_12:
-    [v17 commit];
-    [(VEMetalBase *)self commandBufferWait:v17 flag:v16];
+    [commandBuffer commit];
+    [(VEMetalBase *)self commandBufferWait:commandBuffer flag:completeCopy];
     v12 = 0;
   }
 
   else
   {
     v6 = 0;
-    v7 = a4;
+    indCopy = ind;
     while (1)
     {
       v21 = 0u;
@@ -211,8 +211,8 @@ LABEL_12:
         v11 = location;
         do
         {
-          objc_storeStrong(v11, *(&self->_gaussPyrImagesTexture[v7][v9] + v6 * num_intervals));
-          objc_storeStrong(v10, *(&self->_DoGImagesTexture[v7][v9++] + self->_num_intervals * v6));
+          objc_storeStrong(v11, *(&self->_gaussPyrImagesTexture[indCopy][v9] + v6 * num_intervals));
+          objc_storeStrong(v10, *(&self->_DoGImagesTexture[indCopy][v9++] + self->_num_intervals * v6));
           num_intervals = self->_num_intervals;
           ++v10;
           ++v11;
@@ -221,7 +221,7 @@ LABEL_12:
         while (v9 < num_intervals);
       }
 
-      v12 = encodesubtractKernelOctaveToCommandBuffer(v17, self->_subtractKernelOctave, 16, location, v18, num_intervals);
+      v12 = encodesubtractKernelOctaveToCommandBuffer(commandBuffer, self->_subtractKernelOctave, 16, location, v18, num_intervals);
       for (i = 56; i != -8; i -= 8)
       {
       }
@@ -245,24 +245,24 @@ LABEL_12:
   return v12;
 }
 
-- (int64_t)adjustLocalExtremasWithThreshold:(float)a3 waitForComplete:(BOOL)a4 edgeThreshold:(float)a5 ind:(int)a6
+- (int64_t)adjustLocalExtremasWithThreshold:(float)threshold waitForComplete:(BOOL)complete edgeThreshold:(float)edgeThreshold ind:(int)ind
 {
-  v17 = a4;
+  completeCopy = complete;
   v23 = *MEMORY[0x277D85DE8];
-  v18 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   if (self->_num_octaves < 1)
   {
 LABEL_10:
-    [v18 commit];
-    [(VEMetalBase *)self commandBufferWait:v18 flag:v17];
+    [commandBuffer commit];
+    [(VEMetalBase *)self commandBufferWait:commandBuffer flag:completeCopy];
     v14 = 0;
   }
 
   else
   {
     v8 = 0;
-    v9 = a6;
-    v10 = a6;
+    indCopy = ind;
+    indCopy2 = ind;
     while (1)
     {
       v21 = 0u;
@@ -276,7 +276,7 @@ LABEL_10:
         v13 = location;
         do
         {
-          objc_storeStrong(v13, *(&self->_DoGImagesTexture[v9][v12++] + v8 * num_intervals));
+          objc_storeStrong(v13, *(&self->_DoGImagesTexture[indCopy][v12++] + v8 * num_intervals));
           num_intervals = self->_num_intervals;
           ++v13;
         }
@@ -284,7 +284,7 @@ LABEL_10:
         while (v12 < num_intervals);
       }
 
-      v14 = encodeAdjustLocalExtremasWithThreshold(v18, self->_refineExterma, 32, location, self->_keyPoints[v10][v8], self->nOctaveLayers, self->_adjustedKeyPointsCount[v10][v8], self->_keyPointsCount[v10][v8], num_intervals);
+      v14 = encodeAdjustLocalExtremasWithThreshold(commandBuffer, self->_refineExterma, 32, location, self->_keyPoints[indCopy2][v8], self->nOctaveLayers, self->_adjustedKeyPointsCount[indCopy2][v8], self->_keyPointsCount[indCopy2][v8], num_intervals);
       for (i = 7; i != -1; --i)
       {
       }
@@ -304,25 +304,25 @@ LABEL_10:
   return v14;
 }
 
-- (int)removeDuplicatedSorted:(id)a3 keypointsCount:(int)a4
+- (int)removeDuplicatedSorted:(id)sorted keypointsCount:(int)count
 {
-  v5 = [a3 contents];
-  qsort(v5, a4, 0x24uLL, comp);
-  if (a4 < 2)
+  contents = [sorted contents];
+  qsort(contents, count, 0x24uLL, comp);
+  if (count < 2)
   {
     return 1;
   }
 
   LODWORD(v6) = 0;
-  v7 = a4;
-  v8 = (v5 + 36);
-  v9 = v7 - 1;
+  countCopy = count;
+  v8 = (contents + 36);
+  v9 = countCopy - 1;
   do
   {
-    if (comp(&v5[36 * v6], v8))
+    if (comp(&contents[36 * v6], v8))
     {
       v6 = v6 + 1;
-      v10 = &v5[36 * v6];
+      v10 = &contents[36 * v6];
       v11 = *v8;
       v12 = *(v8 + 16);
       *(v10 + 8) = *(v8 + 32);
@@ -338,12 +338,12 @@ LABEL_10:
   return v6 + 1;
 }
 
-- (SIFTFeatureExtraction)initWithAll:(id)a3 commmandQueue:(id)a4 NumberOfOctaveLayers:(int)a5 withSigma:(float)a6 contrastThreshold:(float)a7 edgeThreshold:(float)a8 accuracyMode:(BOOL)a9
+- (SIFTFeatureExtraction)initWithAll:(id)all commmandQueue:(id)queue NumberOfOctaveLayers:(int)layers withSigma:(float)sigma contrastThreshold:(float)threshold edgeThreshold:(float)edgeThreshold accuracyMode:(BOOL)mode
 {
-  v16 = a3;
+  allCopy = all;
   v68.receiver = self;
   v68.super_class = SIFTFeatureExtraction;
-  v17 = [(VEMetalBase *)&v68 initWithDevice:v16 commmandQueue:a4];
+  v17 = [(VEMetalBase *)&v68 initWithDevice:allCopy commmandQueue:queue];
   if (!v17)
   {
     goto LABEL_16;
@@ -367,9 +367,9 @@ LABEL_16:
   v64 = v20;
   v65 = v19;
   v66 = v18;
-  v23 = v16;
-  v17->_sigma = a6;
-  v24 = a6 * a6 + -1.0;
+  v23 = allCopy;
+  v17->_sigma = sigma;
+  v24 = sigma * sigma + -1.0;
   if (v24 < 0.01)
   {
     v24 = 0.01;
@@ -377,12 +377,12 @@ LABEL_16:
 
   v25 = sqrt(v24);
   v17->sigma_diff = v25;
-  v17->contrastThreshold = a7;
-  v17->edgeThreshold = a8;
-  v17->_accuracyMode = a9;
+  v17->contrastThreshold = threshold;
+  v17->edgeThreshold = edgeThreshold;
+  v17->_accuracyMode = mode;
   v17->imageScale = 255.0;
-  v17->nOctaveLayers = a5;
-  v17->_num_intervals = a5 + 3;
+  v17->nOctaveLayers = layers;
+  v17->_num_intervals = layers + 3;
   v17->width = 0;
   v17->height = 0;
   gradual_guassian_kernel_sigmas = v17->gradual_guassian_kernel_sigmas;
@@ -424,12 +424,12 @@ LABEL_16:
       OUTLINED_FUNCTION_3_5([v42 initWithDevice:v43 kernelWidth:1 kernelHeight:v44 weights:{-[MTLBuffer contents](v17->gradual_gaussianCoeffs[v32], "contents")}], 992);
       v45 = objc_alloc(MEMORY[0x277CD7500]);
       gradual_guassian_kernel_sigmas = v17->gradual_guassian_kernel_sigmas;
-      v46 = [OUTLINED_FUNCTION_8_1() contents];
+      contents = [OUTLINED_FUNCTION_8_1() contents];
       v47 = v42;
       direct_guassian_kernel_sigmas = v17->direct_guassian_kernel_sigmas;
       v48 = v43;
       v23 = v67;
-      OUTLINED_FUNCTION_3_5([v47 initWithDevice:v48 kernelWidth:1 kernelHeight:v44 weights:v46], 1120);
+      OUTLINED_FUNCTION_3_5([v47 initWithDevice:v48 kernelWidth:1 kernelHeight:v44 weights:contents], 1120);
       ++v32;
     }
 
@@ -470,7 +470,7 @@ LABEL_16:
   while ((v51 & 1) != 0);
 
   v62 = v17;
-  v16 = v67;
+  allCopy = v67;
 LABEL_14:
 
   return v62;
@@ -544,12 +544,12 @@ LABEL_14:
   return result;
 }
 
-- (int64_t)allocateResourceWidth:(unsigned int)a3 andHeight:(unsigned int)a4 ind:(int)a5
+- (int64_t)allocateResourceWidth:(unsigned int)width andHeight:(unsigned int)height ind:(int)ind
 {
-  v9 = 2 * a3;
-  v10 = 2 * a4;
+  v9 = 2 * width;
+  v10 = 2 * height;
   v11 = OUTLINED_FUNCTION_9_0();
-  self->base_image_buffer[a5] = v11;
+  self->base_image_buffer[ind] = v11;
   if (!v11)
   {
     return 9;
@@ -557,22 +557,22 @@ LABEL_14:
 
   OUTLINED_FUNCTION_7_1();
   v15 = createTextureFromCVPixelBuffer(v12, v13, v14);
-  v16 = self->base_image[a5];
-  self->base_image[a5] = v15;
+  v16 = self->base_image[ind];
+  self->base_image[ind] = v15;
 
-  if (!self->base_image[a5])
+  if (!self->base_image[ind])
   {
     return 9;
   }
 
-  v17 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:55 width:a3 height:a4 mipmapped:0];
+  v17 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:55 width:width height:height mipmapped:0];
   [v17 setUsage:3];
   v18 = [(MTLDevice *)self->super._device newTextureWithDescriptor:v17];
-  v19 = self->scaled_input_texture[a5];
-  self->scaled_input_texture[a5] = v18;
+  v19 = self->scaled_input_texture[ind];
+  self->scaled_input_texture[ind] = v18;
 
   v20 = OUTLINED_FUNCTION_9_0();
-  self->intermedia_base_image_buffer[a5] = v20;
+  self->intermedia_base_image_buffer[ind] = v20;
   if (!v20)
   {
     goto LABEL_23;
@@ -580,10 +580,10 @@ LABEL_14:
 
   OUTLINED_FUNCTION_7_1();
   v24 = createTextureFromCVPixelBuffer(v21, v22, v23);
-  v25 = self->intermedia_base_image[a5];
-  self->intermedia_base_image[a5] = v24;
+  v25 = self->intermedia_base_image[ind];
+  self->intermedia_base_image[ind] = v24;
 
-  if (!self->intermedia_base_image[a5])
+  if (!self->intermedia_base_image[ind])
   {
     goto LABEL_23;
   }
@@ -591,7 +591,7 @@ LABEL_14:
   v26 = computeNumberOfOctaves(v9, v10);
   num_octaves = v26 >= 10 ? 10 : v26;
   self->_num_octaves = num_octaves;
-  if (!self->scaled_input_texture[a5])
+  if (!self->scaled_input_texture[ind])
   {
     goto LABEL_23;
   }
@@ -620,7 +620,7 @@ LABEL_19:
     {
       OUTLINED_FUNCTION_12_0();
       OUTLINED_FUNCTION_2_5();
-      *(v31 + 640 * a5 + 8 * v33) = v32;
+      *(v31 + 640 * ind + 8 * v33) = v32;
       if (!v32)
       {
         break;
@@ -630,7 +630,7 @@ LABEL_19:
       createTextureFromCVPixelBuffer(v34, v35, v36);
       objc_claimAutoreleasedReturnValue();
       OUTLINED_FUNCTION_2_5();
-      v38 = v37 + 640 * a5;
+      v38 = v37 + 640 * ind;
       v40 = *(v38 + 8 * v39);
       *(v38 + 8 * v39) = v41;
 
@@ -641,7 +641,7 @@ LABEL_19:
 
       OUTLINED_FUNCTION_12_0();
       OUTLINED_FUNCTION_2_5();
-      *(v42 + 640 * a5 + 8 * v44) = v43;
+      *(v42 + 640 * ind + 8 * v44) = v43;
       if (!v43)
       {
         break;
@@ -651,7 +651,7 @@ LABEL_19:
       createTextureFromCVPixelBuffer(v45, v46, v47);
       objc_claimAutoreleasedReturnValue();
       OUTLINED_FUNCTION_2_5();
-      v49 = v48 + 640 * a5;
+      v49 = v48 + 640 * ind;
       v51 = *(v49 + 8 * v50);
       *(v49 + 8 * v50) = v52;
 
@@ -680,18 +680,18 @@ LABEL_24:
   return v53;
 }
 
-- (int64_t)detect1:(id)a3 toHdr1:(id)a4 detect2:(id)a5 toHdr2:(id)a6 count1:(int *)a7 count2:(int *)a8
+- (int64_t)detect1:(id)detect1 toHdr1:(id)hdr1 detect2:(id)detect2 toHdr2:(id)hdr2 count1:(int *)count1 count2:(int *)count2
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v17;
+  detect1Copy = detect1;
+  hdr1Copy = hdr1;
+  detect2Copy = detect2;
+  hdr2Copy = hdr2;
+  v18 = hdr2Copy;
   v19 = 12;
-  if (v14 && v15 && v16 && v17)
+  if (detect1Copy && hdr1Copy && detect2Copy && hdr2Copy)
   {
     v22 = 0;
-    v20 = [(SIFTFeatureExtraction *)self ExtractKeyPointFromInput1:v14 toHdr1:v15 Input2:v16 toHdr2:v17 count1:&v22 + 4 count2:&v22];
+    v20 = [(SIFTFeatureExtraction *)self ExtractKeyPointFromInput1:detect1Copy toHdr1:hdr1Copy Input2:detect2Copy toHdr2:hdr2Copy count1:&v22 + 4 count2:&v22];
     if (v20)
     {
       v19 = v20;
@@ -701,13 +701,13 @@ LABEL_24:
     {
       if (!self->_streamingMode || self->_refreshCalculation)
       {
-        HIDWORD(v22) = [(SIFTFeatureExtraction *)self removeDuplicatedSorted:v15 keypointsCount:HIDWORD(v22)];
-        *a7 = HIDWORD(v22);
+        HIDWORD(v22) = [(SIFTFeatureExtraction *)self removeDuplicatedSorted:hdr1Copy keypointsCount:HIDWORD(v22)];
+        *count1 = HIDWORD(v22);
       }
 
       v19 = 0;
       LODWORD(v22) = [(SIFTFeatureExtraction *)self removeDuplicatedSorted:v18 keypointsCount:v22];
-      *a8 = v22;
+      *count2 = v22;
       self->_refreshCalculation = 0;
     }
   }
@@ -715,18 +715,18 @@ LABEL_24:
   return v19;
 }
 
-- (int64_t)ExtractKeyPointFromInput1:(id)a3 toHdr1:(id)a4 Input2:(id)a5 toHdr2:(id)a6 count1:(int *)a7 count2:(int *)a8
+- (int64_t)ExtractKeyPointFromInput1:(id)input1 toHdr1:(id)hdr1 Input2:(id)input2 toHdr2:(id)hdr2 count1:(int *)count1 count2:(int *)count2
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = v17;
+  input1Copy = input1;
+  hdr1Copy = hdr1;
+  input2Copy = input2;
+  hdr2Copy = hdr2;
+  v18 = hdr2Copy;
   v19 = 12;
-  if (v14 && v15 && v16 && v17)
+  if (input1Copy && hdr1Copy && input2Copy && hdr2Copy)
   {
-    v20 = [v14 width];
-    v21 = [v14 height];
+    width = [input1Copy width];
+    height = [input1Copy height];
     if ([OUTLINED_FUNCTION_5_1() isResourceAllocationNeededWidth:? Height:?])
     {
       [OUTLINED_FUNCTION_1_9() freeResourceFromind:?];
@@ -745,11 +745,11 @@ LABEL_24:
     }
 
     [(SIFTFeatureExtraction *)self cleanResources];
-    self->width = v20;
-    self->height = v21;
+    self->width = width;
+    self->height = height;
     if (self->_refreshCalculation || !self->_streamingMode)
     {
-      v22 = [(SIFTFeatureExtraction *)self generateBaseImage:v14 waitForComplete:0 ind:0];
+      v22 = [(SIFTFeatureExtraction *)self generateBaseImage:input1Copy waitForComplete:0 ind:0];
       if (v22)
       {
         goto LABEL_33;
@@ -841,17 +841,17 @@ LABEL_24:
       finalCount = self->_finalCount;
       if (v23)
       {
-        v22 = [(SIFTFeatureExtraction *)self calculateOrientations:v15 withCounterBuffer:*finalCount waitForComplete:0 ind:0];
+        v22 = [(SIFTFeatureExtraction *)self calculateOrientations:hdr1Copy withCounterBuffer:*finalCount waitForComplete:0 ind:0];
         if (!v22)
         {
           v22 = OUTLINED_FUNCTION_10_0(0, v27, v28, self->_finalCount[1]);
           if (!v22)
           {
-            *a7 = *[(MTLBuffer *)*finalCount contents];
+            *count1 = *[(MTLBuffer *)*finalCount contents];
             v29 = &self->_finalCount[1];
 LABEL_31:
             v19 = 0;
-            *a8 = *[*v29 contents];
+            *count2 = *[*v29 contents];
             goto LABEL_32;
           }
         }
@@ -877,17 +877,17 @@ LABEL_32:
   return v19;
 }
 
-- (int64_t)findScaleSpaceExtremaWithWaitForComplete:(BOOL)a3 ind:(int)a4
+- (int64_t)findScaleSpaceExtremaWithWaitForComplete:(BOOL)complete ind:(int)ind
 {
-  HIDWORD(v14) = a3;
-  v16 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  HIDWORD(v14) = complete;
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   num_octaves = self->_num_octaves;
   if (num_octaves < 1)
   {
 LABEL_9:
-    v10 = v16;
-    [v16 commit];
-    [(VEMetalBase *)self commandBufferWait:v16 flag:v15];
+    v10 = commandBuffer;
+    [commandBuffer commit];
+    [(VEMetalBase *)self commandBufferWait:commandBuffer flag:v15];
     v11 = 0;
   }
 
@@ -925,26 +925,26 @@ LABEL_8:
     }
 
     v11 = v9;
-    v10 = v16;
+    v10 = commandBuffer;
   }
 
   return v11;
 }
 
-- (int64_t)calculateOrientations:(id)a3 withCounterBuffer:(id)a4 waitForComplete:(BOOL)a5 ind:(int)a6
+- (int64_t)calculateOrientations:(id)orientations withCounterBuffer:(id)buffer waitForComplete:(BOOL)complete ind:(int)ind
 {
-  v7 = a5;
+  completeCopy = complete;
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
+  orientationsCopy = orientations;
+  bufferCopy = buffer;
+  v12 = bufferCopy;
   v13 = 12;
-  v31 = v10;
-  if (v10 && v11)
+  v31 = orientationsCopy;
+  if (orientationsCopy && bufferCopy)
   {
-    HIDWORD(v27) = v7;
-    v14 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-    v15 = v14;
+    HIDWORD(v27) = completeCopy;
+    commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+    v15 = commandBuffer;
     v30 = 7036;
     if (self->_num_octaves < 1)
     {
@@ -957,8 +957,8 @@ LABEL_13:
     else
     {
       v16 = 0;
-      v28 = v14;
-      v29 = 5 * a6;
+      v28 = commandBuffer;
+      v29 = 5 * ind;
       while (1)
       {
         v17.i32[1] = 0;
@@ -975,7 +975,7 @@ LABEL_13:
           v21 = location;
           do
           {
-            objc_storeStrong(v21, *(&self->_gaussPyrImagesTexture[a6][v20++] + v16 * num_intervals));
+            objc_storeStrong(v21, *(&self->_gaussPyrImagesTexture[ind][v20++] + v16 * num_intervals));
             num_intervals = self->_num_intervals;
             ++v21;
           }
@@ -1010,23 +1010,23 @@ LABEL_13:
   return v13;
 }
 
-- (int64_t)calculateDescriptorsForKeypoints:(id)a3 keypointsCount:(int)a4 intoHdr:(id)a5 waitForComplete:(BOOL)a6 ind:(int)a7
+- (int64_t)calculateDescriptorsForKeypoints:(id)keypoints keypointsCount:(int)count intoHdr:(id)hdr waitForComplete:(BOOL)complete ind:(int)ind
 {
   v7 = 12;
-  if (a3 && a5)
+  if (keypoints && hdr)
   {
-    v8 = a6;
+    completeCopy = complete;
     commandQueue = self->super._commandQueue;
-    v12 = a5;
-    v13 = a3;
-    v14 = [(MTLCommandQueue *)commandQueue commandBuffer];
+    hdrCopy = hdr;
+    keypointsCopy = keypoints;
+    commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
     encodeCalculateDescriptorsToCommandBuffer();
     v7 = v15;
 
     if (!v7)
     {
-      [v14 commit];
-      [(VEMetalBase *)self commandBufferWait:v14 flag:v8];
+      [commandBuffer commit];
+      [(VEMetalBase *)self commandBufferWait:commandBuffer flag:completeCopy];
     }
   }
 

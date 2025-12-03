@@ -1,40 +1,40 @@
 @interface VUIDocumentContextDataTVShow
-- (BOOL)isEqual:(id)a3;
-- (VUIDocumentContextDataTVShow)initWithAdamID:(id)a3;
-- (VUIDocumentContextDataTVShow)initWithShowID:(id)a3 episodeID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VUIDocumentContextDataTVShow)initWithAdamID:(id)d;
+- (VUIDocumentContextDataTVShow)initWithShowID:(id)d episodeID:(id)iD;
 - (id)jsonData;
 @end
 
 @implementation VUIDocumentContextDataTVShow
 
-- (VUIDocumentContextDataTVShow)initWithAdamID:(id)a3
+- (VUIDocumentContextDataTVShow)initWithAdamID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = VUIDocumentContextDataTVShow;
   v6 = [(VUIDocumentContextDataTVShow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_adamID, a3);
+    objc_storeStrong(&v6->_adamID, d);
     v7->_needsAdamIdToCanonicalIdConversion = 1;
   }
 
   return v7;
 }
 
-- (VUIDocumentContextDataTVShow)initWithShowID:(id)a3 episodeID:(id)a4
+- (VUIDocumentContextDataTVShow)initWithShowID:(id)d episodeID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = VUIDocumentContextDataTVShow;
   v9 = [(VUIDocumentContextDataTVShow *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_showID, a3);
-    objc_storeStrong(&v10->_episodeID, a4);
+    objc_storeStrong(&v9->_showID, d);
+    objc_storeStrong(&v10->_episodeID, iD);
     v10->_needsAdamIdToCanonicalIdConversion = 0;
   }
 
@@ -80,37 +80,37 @@ LABEL_9:
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_needsAdamIdToCanonicalIdConversion];
   [v3 setObject:v6 forKeyedSubscript:@"needsAdamIdToCanonicalIdConversion"];
 
-  v7 = [(VUIDocumentContextData *)self extensionContextData];
-  v8 = [v7 jsonData];
-  [v3 setObject:v8 forKeyedSubscript:@"tvExtensionConfig"];
+  extensionContextData = [(VUIDocumentContextData *)self extensionContextData];
+  jsonData = [extensionContextData jsonData];
+  [v3 setObject:jsonData forKeyedSubscript:@"tvExtensionConfig"];
 
   v9 = [v3 copy];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(VUIDocumentContextDataTVShow *)self showID];
-    v7 = [v5 showID];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    showID = [(VUIDocumentContextDataTVShow *)self showID];
+    showID2 = [v5 showID];
+    if ([showID isEqual:showID2])
     {
-      v8 = [(VUIDocumentContextDataTVShow *)self episodeID];
-      v9 = [v5 episodeID];
-      if ([v8 isEqual:v9])
+      episodeID = [(VUIDocumentContextDataTVShow *)self episodeID];
+      episodeID2 = [v5 episodeID];
+      if ([episodeID isEqual:episodeID2])
       {
-        v10 = [(VUIDocumentContextDataTVShow *)self adamID];
-        v11 = [v5 adamID];
-        if ([v10 isEqual:v11] && (v12 = -[VUIDocumentContextDataTVShow needsAdamIdToCanonicalIdConversion](self, "needsAdamIdToCanonicalIdConversion"), v12 == objc_msgSend(v5, "needsAdamIdToCanonicalIdConversion")))
+        adamID = [(VUIDocumentContextDataTVShow *)self adamID];
+        adamID2 = [v5 adamID];
+        if ([adamID isEqual:adamID2] && (v12 = -[VUIDocumentContextDataTVShow needsAdamIdToCanonicalIdConversion](self, "needsAdamIdToCanonicalIdConversion"), v12 == objc_msgSend(v5, "needsAdamIdToCanonicalIdConversion")))
         {
-          v16 = [(VUIDocumentContextData *)self extensionContextData];
-          v14 = [v5 extensionContextData];
-          v13 = [v16 isEqual:v14];
+          extensionContextData = [(VUIDocumentContextData *)self extensionContextData];
+          extensionContextData2 = [v5 extensionContextData];
+          v13 = [extensionContextData isEqual:extensionContextData2];
         }
 
         else

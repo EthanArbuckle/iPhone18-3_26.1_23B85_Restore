@@ -1,6 +1,6 @@
 @interface SleepingSampleHelpTileViewController
-- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithCoder:(id)a3;
-- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithCoder:(id)coder;
+- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -16,12 +16,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   v3 = sub_25137B264();
-  [(SleepingSampleHelpTileViewController *)v4 setView:v3];
+  [(SleepingSampleHelpTileViewController *)selfCopy setView:v3];
 }
 
-- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_251385F74();
   sub_251385F64();
@@ -31,10 +31,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_251385E64();
-    a3 = v7;
+    name = v7;
   }
 
   v8 = self + OBJC_IVAR____TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController_context;
@@ -45,8 +45,8 @@
   v10 = type metadata accessor for SleepingSampleHelpTileConfiguration(0);
   (*(*(v10 - 8) + 56))(self + v9, 1, 1, v10);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController____lazy_storage___tileView) = 0;
-  v11 = a4;
-  if (a3)
+  bundleCopy = bundle;
+  if (name)
   {
     v12 = sub_251385E34();
   }
@@ -58,12 +58,12 @@
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for SleepingSampleHelpTileViewController(0);
-  v13 = [(SleepingSampleHelpTileViewController *)&v15 initWithNibName:v12 bundle:a4];
+  v13 = [(SleepingSampleHelpTileViewController *)&v15 initWithNibName:v12 bundle:bundle];
 
   return v13;
 }
 
-- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithCoder:(id)a3
+- (_TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController)initWithCoder:(id)coder
 {
   sub_251385F74();
   sub_251385F64();
@@ -83,8 +83,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22HealthBalanceAppPlugin36SleepingSampleHelpTileViewController____lazy_storage___tileView) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SleepingSampleHelpTileViewController(0);
-  v8 = a3;
-  v9 = [(SleepingSampleHelpTileViewController *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(SleepingSampleHelpTileViewController *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

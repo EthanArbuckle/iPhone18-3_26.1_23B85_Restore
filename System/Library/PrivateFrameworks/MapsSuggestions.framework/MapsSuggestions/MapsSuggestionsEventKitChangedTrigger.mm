@@ -1,15 +1,15 @@
 @interface MapsSuggestionsEventKitChangedTrigger
-- (MapsSuggestionsEventKitChangedTrigger)initWithEventKit:(id)a3;
-- (void)eventKitDidChange:(id)a3;
+- (MapsSuggestionsEventKitChangedTrigger)initWithEventKit:(id)kit;
+- (void)eventKitDidChange:(id)change;
 @end
 
 @implementation MapsSuggestionsEventKitChangedTrigger
 
-- (MapsSuggestionsEventKitChangedTrigger)initWithEventKit:(id)a3
+- (MapsSuggestionsEventKitChangedTrigger)initWithEventKit:(id)kit
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  kitCopy = kit;
+  if (kitCopy)
   {
     v11.receiver = self;
     v11.super_class = MapsSuggestionsEventKitChangedTrigger;
@@ -17,11 +17,11 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_eventKit, a3);
+      objc_storeStrong(&v6->_eventKit, kit);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -40,19 +40,19 @@
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires one EventKit", buf, 0x26u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)eventKitDidChange:(id)a3
+- (void)eventKitDidChange:(id)change
 {
   v16 = *MEMORY[0x1E69E9840];
   eventKit = self->_eventKit;
   v6 = GEOFindOrCreateLog();
   v7 = v6;
-  if (eventKit == a3)
+  if (eventKit == change)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {

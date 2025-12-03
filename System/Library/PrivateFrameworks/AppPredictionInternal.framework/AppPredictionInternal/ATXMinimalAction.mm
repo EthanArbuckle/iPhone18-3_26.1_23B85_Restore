@@ -1,12 +1,12 @@
 @interface ATXMinimalAction
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXMinimalAction)initWithBundleId:(id)a3 actionType:(id)a4 paramHash:(int64_t)a5;
-- (ATXMinimalAction)initWithProto:(id)a3;
-- (ATXMinimalAction)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXMinimalAction:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXMinimalAction)initWithBundleId:(id)id actionType:(id)type paramHash:(int64_t)hash;
+- (ATXMinimalAction)initWithProto:(id)proto;
+- (ATXMinimalAction)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXMinimalAction:(id)action;
 - (id)actionFromDatastoreLookup;
-- (id)actionFromDatastoreLookupForDatastore:(id)a3;
+- (id)actionFromDatastoreLookupForDatastore:(id)datastore;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -15,24 +15,24 @@
 
 @implementation ATXMinimalAction
 
-- (ATXMinimalAction)initWithBundleId:(id)a3 actionType:(id)a4 paramHash:(int64_t)a5
+- (ATXMinimalAction)initWithBundleId:(id)id actionType:(id)type paramHash:(int64_t)hash
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = ATXMinimalAction;
   v10 = [(ATXMinimalAction *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [idCopy copy];
     bundleId = v10->_bundleId;
     v10->_bundleId = v11;
 
-    v13 = [v9 copy];
+    v13 = [typeCopy copy];
     actionType = v10->_actionType;
     v10->_actionType = v13;
 
-    v10->_paramHash = a5;
+    v10->_paramHash = hash;
   }
 
   return v10;
@@ -40,15 +40,15 @@
 
 - (id)actionFromDatastoreLookup
 {
-  v3 = [objc_opt_class() datastore];
-  v4 = [(ATXMinimalAction *)self actionFromDatastoreLookupForDatastore:v3];
+  datastore = [objc_opt_class() datastore];
+  v4 = [(ATXMinimalAction *)self actionFromDatastoreLookupForDatastore:datastore];
 
   return v4;
 }
 
-- (id)actionFromDatastoreLookupForDatastore:(id)a3
+- (id)actionFromDatastoreLookupForDatastore:(id)datastore
 {
-  v4 = a3;
+  datastoreCopy = datastore;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -59,9 +59,9 @@
   v8[1] = 3221225472;
   v8[2] = __58__ATXMinimalAction_actionFromDatastoreLookupForDatastore___block_invoke;
   v8[3] = &unk_2785987E0;
-  v5 = v4;
+  v5 = datastoreCopy;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   [v5 _doSync:v8];
   v6 = v13[5];
@@ -217,12 +217,12 @@ uint64_t __58__ATXMinimalAction_actionFromDatastoreLookupForDatastore___block_in
   return *v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -254,35 +254,35 @@ uint64_t __58__ATXMinimalAction_actionFromDatastoreLookupForDatastore___block_in
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXMinimalAction *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXMinimalAction *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXMinimalAction *)self isEqualToATXMinimalAction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXMinimalAction *)self isEqualToATXMinimalAction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXMinimalAction:(id)a3
+- (BOOL)isEqualToATXMinimalAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_bundleId;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == actionCopy[1])
   {
   }
 
@@ -298,7 +298,7 @@ uint64_t __58__ATXMinimalAction_actionFromDatastoreLookupForDatastore___block_in
 
   v8 = self->_actionType;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == actionCopy[2])
   {
 
     goto LABEL_9;
@@ -309,7 +309,7 @@ uint64_t __58__ATXMinimalAction_actionFromDatastoreLookupForDatastore___block_in
   if (v10)
   {
 LABEL_9:
-    v11 = self->_paramHash == v4[3];
+    v11 = self->_paramHash == actionCopy[3];
     goto LABEL_10;
   }
 
@@ -320,40 +320,40 @@ LABEL_10:
   return v11;
 }
 
-- (ATXMinimalAction)initWithProtoData:(id)a3
+- (ATXMinimalAction)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBMinimalAction alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBMinimalAction alloc] initWithData:dataCopy];
 
     self = [(ATXMinimalAction *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXMinimalAction *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXMinimalAction *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXMinimalAction)initWithProto:(id)a3
+- (ATXMinimalAction)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -369,16 +369,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 bundleId];
-  v7 = [v5 actionType];
-  v8 = [v5 paramHash];
+  v5 = protoCopy;
+  bundleId = [v5 bundleId];
+  actionType = [v5 actionType];
+  paramHash = [v5 paramHash];
 
-  self = [(ATXMinimalAction *)self initWithBundleId:v6 actionType:v7 paramHash:v8];
-  v9 = self;
+  self = [(ATXMinimalAction *)self initWithBundleId:bundleId actionType:actionType paramHash:paramHash];
+  selfCopy = self;
 LABEL_8:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)proto

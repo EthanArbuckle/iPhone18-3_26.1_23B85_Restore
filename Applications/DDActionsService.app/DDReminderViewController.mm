@@ -1,31 +1,31 @@
 @interface DDReminderViewController
 - (id)title;
-- (void)prepareForAction:(id)a3;
+- (void)prepareForAction:(id)action;
 @end
 
 @implementation DDReminderViewController
 
-- (void)prepareForAction:(id)a3
+- (void)prepareForAction:(id)action
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008664;
   block[3] = &unk_100018AD0;
-  v7 = a3;
-  v8 = self;
+  actionCopy = action;
+  selfCopy = self;
   v9 = a2;
-  v5 = v7;
+  v5 = actionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (id)title
 {
-  v2 = [(DDReminderCreationController *)self->_reminderDelegate title];
-  v3 = [v2 string];
-  v4 = v3;
-  if (v3)
+  title = [(DDReminderCreationController *)self->_reminderDelegate title];
+  string = [title string];
+  v4 = string;
+  if (string)
   {
-    v5 = v3;
+    v5 = string;
   }
 
   else

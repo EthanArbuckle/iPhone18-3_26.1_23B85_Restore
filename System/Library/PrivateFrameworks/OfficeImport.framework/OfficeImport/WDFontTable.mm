@@ -1,9 +1,9 @@
 @interface WDFontTable
 - (WDFontTable)init;
-- (id)createFontWithName:(id)a3;
+- (id)createFontWithName:(id)name;
 - (id)description;
-- (id)fontWithName:(id)a3;
-- (id)fontWithName:(id)a3 create:(BOOL)a4;
+- (id)fontWithName:(id)name;
+- (id)fontWithName:(id)name create:(BOOL)create;
 @end
 
 @implementation WDFontTable
@@ -42,29 +42,29 @@
   return v2;
 }
 
-- (id)fontWithName:(id)a3
+- (id)fontWithName:(id)name
 {
-  v3 = [(WDFontTable *)self fontWithName:a3 create:0];
+  v3 = [(WDFontTable *)self fontWithName:name create:0];
 
   return v3;
 }
 
-- (id)fontWithName:(id)a3 create:(BOOL)a4
+- (id)fontWithName:(id)name create:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  createCopy = create;
+  nameCopy = name;
+  if (nameCopy)
   {
-    v7 = [(OITSUNoCopyDictionary *)self->mFontTable objectForKey:v6];
+    v7 = [(OITSUNoCopyDictionary *)self->mFontTable objectForKey:nameCopy];
     v8 = v7;
-    if (!v4 || v7)
+    if (!createCopy || v7)
     {
       v9 = v7;
     }
 
     else
     {
-      v9 = [(WDFontTable *)self createFontWithName:v6];
+      v9 = [(WDFontTable *)self createFontWithName:nameCopy];
     }
 
     v10 = v9;
@@ -78,11 +78,11 @@
   return v10;
 }
 
-- (id)createFontWithName:(id)a3
+- (id)createFontWithName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v6 = [(OITSUNoCopyDictionary *)self->mFontTable objectForKey:v5];
     if (!v6)

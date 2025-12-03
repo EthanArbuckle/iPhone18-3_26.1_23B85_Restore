@@ -53,60 +53,60 @@
 - (unsigned)queueSize;
 - (unsigned)subPlaylistConnectionTlsHandshakeDurationInMs;
 - (unsigned)subPlaylistRequestDurationInMs;
-- (void)setAssetEndPoint:(int)a3;
-- (void)setAssetLocation:(int)a3;
-- (void)setAssetSource:(int)a3;
-- (void)setCmInitialStartupItemCreationToLtluDurationInMs:(unsigned int)a3;
-- (void)setCmInitialStartupItemCreationToReadyToPlayDurationInMs:(unsigned int)a3;
-- (void)setContentConnectionTlsHandshakeDurationInMs:(unsigned int)a3;
-- (void)setContentFirstSegmentDurationInMs:(unsigned int)a3;
-- (void)setEndPointType:(int)a3;
-- (void)setFormatBitDepth:(unsigned int)a3;
-- (void)setFormatBitrate:(unsigned int)a3;
-- (void)setFormatChannels:(unsigned int)a3;
-- (void)setFormatCodec:(int)a3;
-- (void)setFormatLayout:(int)a3;
-- (void)setFormatLayoutValue:(unsigned int)a3;
-- (void)setFormatSampleRate:(unsigned int)a3;
-- (void)setFormatTier:(int)a3;
-- (void)setHasBagWaitTime:(BOOL)a3;
-- (void)setHasLeaseWaitTime:(BOOL)a3;
-- (void)setHasLookupWaitTime:(BOOL)a3;
-- (void)setHasMediaRedownloadWaitTime:(BOOL)a3;
-- (void)setHasSubscriptionAssetLoadWaitTime:(BOOL)a3;
-- (void)setHasSuzeLeaseWaitTime:(BOOL)a3;
-- (void)setIsAccountDataReady:(BOOL)a3;
-- (void)setIsAutoPlay:(BOOL)a3;
-- (void)setIsDelegatedPlayback:(BOOL)a3;
-- (void)setIsFirstPlayAfterAppLaunch:(BOOL)a3;
-- (void)setIsHlsKeysReady:(BOOL)a3;
-- (void)setIsInterruptingPlayback:(BOOL)a3;
-- (void)setIsLeaseReady:(BOOL)a3;
-- (void)setIsMiniSinfAvailable:(BOOL)a3;
-- (void)setIsNonDefaultUser:(BOOL)a3;
-- (void)setIsOfflineKeyReady:(BOOL)a3;
-- (void)setIsOnlineKeyReady:(BOOL)a3;
-- (void)setIsPrimaryUser:(BOOL)a3;
-- (void)setIsRemoteSetQueue:(BOOL)a3;
-- (void)setIsSharePlayPlayback:(BOOL)a3;
-- (void)setIsShuffled:(BOOL)a3;
-- (void)setIsStoreBagReady:(BOOL)a3;
-- (void)setIsSuzeLease:(BOOL)a3;
-- (void)setMusicDomain:(int)a3;
-- (void)setNetworkConnectionType:(int)a3;
-- (void)setNumberOfSpeakers:(unsigned int)a3;
-- (void)setPrefetchedMetadataSource:(int)a3;
-- (void)setPrimaryPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)a3;
-- (void)setPrimaryPlaylistRequestDurationInMs:(unsigned int)a3;
-- (void)setQueueSize:(unsigned int)a3;
-- (void)setQueueType:(int)a3;
-- (void)setRouteConfiguration:(int)a3;
-- (void)setRouteType:(int)a3;
-- (void)setStreamingContentType:(int)a3;
-- (void)setSubPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)a3;
-- (void)setSubPlaylistRequestDurationInMs:(unsigned int)a3;
-- (void)setSubscriptionType:(int)a3;
-- (void)setWasMediaLibraryDatabaseUpgraded:(BOOL)a3;
+- (void)setAssetEndPoint:(int)point;
+- (void)setAssetLocation:(int)location;
+- (void)setAssetSource:(int)source;
+- (void)setCmInitialStartupItemCreationToLtluDurationInMs:(unsigned int)ms;
+- (void)setCmInitialStartupItemCreationToReadyToPlayDurationInMs:(unsigned int)ms;
+- (void)setContentConnectionTlsHandshakeDurationInMs:(unsigned int)ms;
+- (void)setContentFirstSegmentDurationInMs:(unsigned int)ms;
+- (void)setEndPointType:(int)type;
+- (void)setFormatBitDepth:(unsigned int)depth;
+- (void)setFormatBitrate:(unsigned int)bitrate;
+- (void)setFormatChannels:(unsigned int)channels;
+- (void)setFormatCodec:(int)codec;
+- (void)setFormatLayout:(int)layout;
+- (void)setFormatLayoutValue:(unsigned int)value;
+- (void)setFormatSampleRate:(unsigned int)rate;
+- (void)setFormatTier:(int)tier;
+- (void)setHasBagWaitTime:(BOOL)time;
+- (void)setHasLeaseWaitTime:(BOOL)time;
+- (void)setHasLookupWaitTime:(BOOL)time;
+- (void)setHasMediaRedownloadWaitTime:(BOOL)time;
+- (void)setHasSubscriptionAssetLoadWaitTime:(BOOL)time;
+- (void)setHasSuzeLeaseWaitTime:(BOOL)time;
+- (void)setIsAccountDataReady:(BOOL)ready;
+- (void)setIsAutoPlay:(BOOL)play;
+- (void)setIsDelegatedPlayback:(BOOL)playback;
+- (void)setIsFirstPlayAfterAppLaunch:(BOOL)launch;
+- (void)setIsHlsKeysReady:(BOOL)ready;
+- (void)setIsInterruptingPlayback:(BOOL)playback;
+- (void)setIsLeaseReady:(BOOL)ready;
+- (void)setIsMiniSinfAvailable:(BOOL)available;
+- (void)setIsNonDefaultUser:(BOOL)user;
+- (void)setIsOfflineKeyReady:(BOOL)ready;
+- (void)setIsOnlineKeyReady:(BOOL)ready;
+- (void)setIsPrimaryUser:(BOOL)user;
+- (void)setIsRemoteSetQueue:(BOOL)queue;
+- (void)setIsSharePlayPlayback:(BOOL)playback;
+- (void)setIsShuffled:(BOOL)shuffled;
+- (void)setIsStoreBagReady:(BOOL)ready;
+- (void)setIsSuzeLease:(BOOL)lease;
+- (void)setMusicDomain:(int)domain;
+- (void)setNetworkConnectionType:(int)type;
+- (void)setNumberOfSpeakers:(unsigned int)speakers;
+- (void)setPrefetchedMetadataSource:(int)source;
+- (void)setPrimaryPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)ms;
+- (void)setPrimaryPlaylistRequestDurationInMs:(unsigned int)ms;
+- (void)setQueueSize:(unsigned int)size;
+- (void)setQueueType:(int)type;
+- (void)setRouteConfiguration:(int)configuration;
+- (void)setRouteType:(int)type;
+- (void)setStreamingContentType:(int)type;
+- (void)setSubPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)ms;
+- (void)setSubPlaylistRequestDurationInMs:(unsigned int)ms;
+- (void)setSubscriptionType:(int)type;
+- (void)setWasMediaLibraryDatabaseUpgraded:(BOOL)upgraded;
 @end
 
 @implementation SASelfLoggerMWTMusicMetadata
@@ -118,11 +118,11 @@
   return *(self + v3);
 }
 
-- (void)setMusicDomain:(int)a3
+- (void)setMusicDomain:(int)domain
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_musicDomain;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = domain;
 }
 
 - (int)queueType
@@ -132,11 +132,11 @@
   return *(self + v3);
 }
 
-- (void)setQueueType:(int)a3
+- (void)setQueueType:(int)type
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_queueType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (unsigned)queueSize
@@ -146,11 +146,11 @@
   return *(self + v3);
 }
 
-- (void)setQueueSize:(unsigned int)a3
+- (void)setQueueSize:(unsigned int)size
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_queueSize;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = size;
 }
 
 - (BOOL)isShuffled
@@ -160,11 +160,11 @@
   return *(self + v3);
 }
 
-- (void)setIsShuffled:(BOOL)a3
+- (void)setIsShuffled:(BOOL)shuffled
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isShuffled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = shuffled;
 }
 
 - (int)prefetchedMetadataSource
@@ -174,11 +174,11 @@
   return *(self + v3);
 }
 
-- (void)setPrefetchedMetadataSource:(int)a3
+- (void)setPrefetchedMetadataSource:(int)source
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_prefetchedMetadataSource;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = source;
 }
 
 - (int)assetEndPoint
@@ -188,11 +188,11 @@
   return *(self + v3);
 }
 
-- (void)setAssetEndPoint:(int)a3
+- (void)setAssetEndPoint:(int)point
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_assetEndPoint;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = point;
 }
 
 - (int)streamingContentType
@@ -202,11 +202,11 @@
   return *(self + v3);
 }
 
-- (void)setStreamingContentType:(int)a3
+- (void)setStreamingContentType:(int)type
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_streamingContentType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (int)formatCodec
@@ -216,11 +216,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatCodec:(int)a3
+- (void)setFormatCodec:(int)codec
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatCodec;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = codec;
 }
 
 - (unsigned)formatBitrate
@@ -230,11 +230,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatBitrate:(unsigned int)a3
+- (void)setFormatBitrate:(unsigned int)bitrate
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatBitrate;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = bitrate;
 }
 
 - (unsigned)formatBitDepth
@@ -244,11 +244,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatBitDepth:(unsigned int)a3
+- (void)setFormatBitDepth:(unsigned int)depth
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatBitDepth;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = depth;
 }
 
 - (unsigned)formatChannels
@@ -258,11 +258,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatChannels:(unsigned int)a3
+- (void)setFormatChannels:(unsigned int)channels
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatChannels;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = channels;
 }
 
 - (int)formatLayout
@@ -272,11 +272,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatLayout:(int)a3
+- (void)setFormatLayout:(int)layout
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatLayout;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = layout;
 }
 
 - (unsigned)formatSampleRate
@@ -286,11 +286,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatSampleRate:(unsigned int)a3
+- (void)setFormatSampleRate:(unsigned int)rate
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatSampleRate;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = rate;
 }
 
 - (int)formatTier
@@ -300,11 +300,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatTier:(int)a3
+- (void)setFormatTier:(int)tier
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatTier;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tier;
 }
 
 - (unsigned)numberOfSpeakers
@@ -314,11 +314,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfSpeakers:(unsigned int)a3
+- (void)setNumberOfSpeakers:(unsigned int)speakers
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_numberOfSpeakers;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = speakers;
 }
 
 - (int)routeConfiguration
@@ -328,11 +328,11 @@
   return *(self + v3);
 }
 
-- (void)setRouteConfiguration:(int)a3
+- (void)setRouteConfiguration:(int)configuration
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_routeConfiguration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = configuration;
 }
 
 - (BOOL)isAccountDataReady
@@ -342,11 +342,11 @@
   return *(self + v3);
 }
 
-- (void)setIsAccountDataReady:(BOOL)a3
+- (void)setIsAccountDataReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isAccountDataReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (BOOL)isStoreBagReady
@@ -356,11 +356,11 @@
   return *(self + v3);
 }
 
-- (void)setIsStoreBagReady:(BOOL)a3
+- (void)setIsStoreBagReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isStoreBagReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (BOOL)isLeaseReady
@@ -370,11 +370,11 @@
   return *(self + v3);
 }
 
-- (void)setIsLeaseReady:(BOOL)a3
+- (void)setIsLeaseReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isLeaseReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (BOOL)isOnlineKeyReady
@@ -384,11 +384,11 @@
   return *(self + v3);
 }
 
-- (void)setIsOnlineKeyReady:(BOOL)a3
+- (void)setIsOnlineKeyReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isOnlineKeyReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (BOOL)isOfflineKeyReady
@@ -398,11 +398,11 @@
   return *(self + v3);
 }
 
-- (void)setIsOfflineKeyReady:(BOOL)a3
+- (void)setIsOfflineKeyReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isOfflineKeyReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (BOOL)isHlsKeysReady
@@ -412,11 +412,11 @@
   return *(self + v3);
 }
 
-- (void)setIsHlsKeysReady:(BOOL)a3
+- (void)setIsHlsKeysReady:(BOOL)ready
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isHlsKeysReady;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ready;
 }
 
 - (BOOL)isInterruptingPlayback
@@ -426,11 +426,11 @@
   return *(self + v3);
 }
 
-- (void)setIsInterruptingPlayback:(BOOL)a3
+- (void)setIsInterruptingPlayback:(BOOL)playback
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isInterruptingPlayback;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = playback;
 }
 
 - (BOOL)isRemoteSetQueue
@@ -440,11 +440,11 @@
   return *(self + v3);
 }
 
-- (void)setIsRemoteSetQueue:(BOOL)a3
+- (void)setIsRemoteSetQueue:(BOOL)queue
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isRemoteSetQueue;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = queue;
 }
 
 - (BOOL)isDelegatedPlayback
@@ -454,11 +454,11 @@
   return *(self + v3);
 }
 
-- (void)setIsDelegatedPlayback:(BOOL)a3
+- (void)setIsDelegatedPlayback:(BOOL)playback
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isDelegatedPlayback;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = playback;
 }
 
 - (BOOL)isNonDefaultUser
@@ -468,11 +468,11 @@
   return *(self + v3);
 }
 
-- (void)setIsNonDefaultUser:(BOOL)a3
+- (void)setIsNonDefaultUser:(BOOL)user
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isNonDefaultUser;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = user;
 }
 
 - (BOOL)isAutoPlay
@@ -482,11 +482,11 @@
   return *(self + v3);
 }
 
-- (void)setIsAutoPlay:(BOOL)a3
+- (void)setIsAutoPlay:(BOOL)play
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isAutoPlay;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = play;
 }
 
 - (BOOL)isFirstPlayAfterAppLaunch
@@ -496,11 +496,11 @@
   return *(self + v3);
 }
 
-- (void)setIsFirstPlayAfterAppLaunch:(BOOL)a3
+- (void)setIsFirstPlayAfterAppLaunch:(BOOL)launch
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isFirstPlayAfterAppLaunch;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = launch;
 }
 
 - (BOOL)isMiniSinfAvailable
@@ -510,11 +510,11 @@
   return *(self + v3);
 }
 
-- (void)setIsMiniSinfAvailable:(BOOL)a3
+- (void)setIsMiniSinfAvailable:(BOOL)available
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isMiniSinfAvailable;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = available;
 }
 
 - (BOOL)isSharePlayPlayback
@@ -524,11 +524,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSharePlayPlayback:(BOOL)a3
+- (void)setIsSharePlayPlayback:(BOOL)playback
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isSharePlayPlayback;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = playback;
 }
 
 - (BOOL)isSuzeLease
@@ -538,11 +538,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSuzeLease:(BOOL)a3
+- (void)setIsSuzeLease:(BOOL)lease
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isSuzeLease;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = lease;
 }
 
 - (int)networkConnectionType
@@ -552,11 +552,11 @@
   return *(self + v3);
 }
 
-- (void)setNetworkConnectionType:(int)a3
+- (void)setNetworkConnectionType:(int)type
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_networkConnectionType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (BOOL)wasMediaLibraryDatabaseUpgraded
@@ -566,11 +566,11 @@
   return *(self + v3);
 }
 
-- (void)setWasMediaLibraryDatabaseUpgraded:(BOOL)a3
+- (void)setWasMediaLibraryDatabaseUpgraded:(BOOL)upgraded
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_wasMediaLibraryDatabaseUpgraded;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = upgraded;
 }
 
 - (BOOL)isPrimaryUser
@@ -580,11 +580,11 @@
   return *(self + v3);
 }
 
-- (void)setIsPrimaryUser:(BOOL)a3
+- (void)setIsPrimaryUser:(BOOL)user
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_isPrimaryUser;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = user;
 }
 
 - (int)endPointType
@@ -594,11 +594,11 @@
   return *(self + v3);
 }
 
-- (void)setEndPointType:(int)a3
+- (void)setEndPointType:(int)type
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_endPointType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (int)routeType
@@ -608,11 +608,11 @@
   return *(self + v3);
 }
 
-- (void)setRouteType:(int)a3
+- (void)setRouteType:(int)type
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_routeType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (unsigned)formatLayoutValue
@@ -622,11 +622,11 @@
   return *(self + v3);
 }
 
-- (void)setFormatLayoutValue:(unsigned int)a3
+- (void)setFormatLayoutValue:(unsigned int)value
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_formatLayoutValue;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = value;
 }
 
 - (int)assetSource
@@ -636,11 +636,11 @@
   return *(self + v3);
 }
 
-- (void)setAssetSource:(int)a3
+- (void)setAssetSource:(int)source
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_assetSource;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = source;
 }
 
 - (int)assetLocation
@@ -650,11 +650,11 @@
   return *(self + v3);
 }
 
-- (void)setAssetLocation:(int)a3
+- (void)setAssetLocation:(int)location
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_assetLocation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = location;
 }
 
 - (int)subscriptionType
@@ -664,11 +664,11 @@
   return *(self + v3);
 }
 
-- (void)setSubscriptionType:(int)a3
+- (void)setSubscriptionType:(int)type
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_subscriptionType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (BOOL)hasLookupWaitTime
@@ -678,11 +678,11 @@
   return *(self + v3);
 }
 
-- (void)setHasLookupWaitTime:(BOOL)a3
+- (void)setHasLookupWaitTime:(BOOL)time
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_hasLookupWaitTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (BOOL)hasBagWaitTime
@@ -692,11 +692,11 @@
   return *(self + v3);
 }
 
-- (void)setHasBagWaitTime:(BOOL)a3
+- (void)setHasBagWaitTime:(BOOL)time
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_hasBagWaitTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (BOOL)hasLeaseWaitTime
@@ -706,11 +706,11 @@
   return *(self + v3);
 }
 
-- (void)setHasLeaseWaitTime:(BOOL)a3
+- (void)setHasLeaseWaitTime:(BOOL)time
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_hasLeaseWaitTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (BOOL)hasSuzeLeaseWaitTime
@@ -720,11 +720,11 @@
   return *(self + v3);
 }
 
-- (void)setHasSuzeLeaseWaitTime:(BOOL)a3
+- (void)setHasSuzeLeaseWaitTime:(BOOL)time
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_hasSuzeLeaseWaitTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (BOOL)hasSubscriptionAssetLoadWaitTime
@@ -734,11 +734,11 @@
   return *(self + v3);
 }
 
-- (void)setHasSubscriptionAssetLoadWaitTime:(BOOL)a3
+- (void)setHasSubscriptionAssetLoadWaitTime:(BOOL)time
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_hasSubscriptionAssetLoadWaitTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (BOOL)hasMediaRedownloadWaitTime
@@ -748,11 +748,11 @@
   return *(self + v3);
 }
 
-- (void)setHasMediaRedownloadWaitTime:(BOOL)a3
+- (void)setHasMediaRedownloadWaitTime:(BOOL)time
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_hasMediaRedownloadWaitTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (unsigned)cmInitialStartupItemCreationToReadyToPlayDurationInMs
@@ -762,11 +762,11 @@
   return *(self + v3);
 }
 
-- (void)setCmInitialStartupItemCreationToReadyToPlayDurationInMs:(unsigned int)a3
+- (void)setCmInitialStartupItemCreationToReadyToPlayDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_cmInitialStartupItemCreationToReadyToPlayDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)cmInitialStartupItemCreationToLtluDurationInMs
@@ -776,11 +776,11 @@
   return *(self + v3);
 }
 
-- (void)setCmInitialStartupItemCreationToLtluDurationInMs:(unsigned int)a3
+- (void)setCmInitialStartupItemCreationToLtluDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_cmInitialStartupItemCreationToLtluDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)primaryPlaylistConnectionTlsHandshakeDurationInMs
@@ -790,11 +790,11 @@
   return *(self + v3);
 }
 
-- (void)setPrimaryPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)a3
+- (void)setPrimaryPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_primaryPlaylistConnectionTlsHandshakeDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)primaryPlaylistRequestDurationInMs
@@ -804,11 +804,11 @@
   return *(self + v3);
 }
 
-- (void)setPrimaryPlaylistRequestDurationInMs:(unsigned int)a3
+- (void)setPrimaryPlaylistRequestDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_primaryPlaylistRequestDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)subPlaylistConnectionTlsHandshakeDurationInMs
@@ -818,11 +818,11 @@
   return *(self + v3);
 }
 
-- (void)setSubPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)a3
+- (void)setSubPlaylistConnectionTlsHandshakeDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_subPlaylistConnectionTlsHandshakeDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)subPlaylistRequestDurationInMs
@@ -832,11 +832,11 @@
   return *(self + v3);
 }
 
-- (void)setSubPlaylistRequestDurationInMs:(unsigned int)a3
+- (void)setSubPlaylistRequestDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_subPlaylistRequestDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)contentConnectionTlsHandshakeDurationInMs
@@ -846,11 +846,11 @@
   return *(self + v3);
 }
 
-- (void)setContentConnectionTlsHandshakeDurationInMs:(unsigned int)a3
+- (void)setContentConnectionTlsHandshakeDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_contentConnectionTlsHandshakeDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 - (unsigned)contentFirstSegmentDurationInMs
@@ -860,11 +860,11 @@
   return *(self + v3);
 }
 
-- (void)setContentFirstSegmentDurationInMs:(unsigned int)a3
+- (void)setContentFirstSegmentDurationInMs:(unsigned int)ms
 {
   v5 = OBJC_IVAR___SASelfLoggerMWTMusicMetadata_contentFirstSegmentDurationInMs;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = ms;
 }
 
 @end

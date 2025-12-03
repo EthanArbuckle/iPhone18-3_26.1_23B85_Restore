@@ -1,24 +1,24 @@
 @interface WFFileValue
-+ (id)createBookmarkWithFileURL:(id)a3 workflowID:(id)a4;
-+ (id)defaultValueWithWorkflowID:(id)a3;
++ (id)createBookmarkWithFileURL:(id)l workflowID:(id)d;
++ (id)defaultValueWithWorkflowID:(id)d;
 - (NSString)displayName;
 - (NSString)filename;
-- (WFFileValue)initWithBookmarkData:(id)a3 filename:(id)a4 displayName:(id)a5;
-- (WFFileValue)initWithFileLocation:(id)a3 filename:(id)a4 displayName:(id)a5;
-- (WFFileValue)initWithFileLocation:(id)a3 filename:(id)a4 displayName:(id)a5 reloadDisplayName:(BOOL)a6;
-- (WFFileValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFFileValue)initWithURL:(id)a3;
-- (WFFileValue)initWithURL:(id)a3 workflowID:(id)a4;
+- (WFFileValue)initWithBookmarkData:(id)data filename:(id)filename displayName:(id)name;
+- (WFFileValue)initWithFileLocation:(id)location filename:(id)filename displayName:(id)name;
+- (WFFileValue)initWithFileLocation:(id)location filename:(id)filename displayName:(id)name reloadDisplayName:(BOOL)displayName;
+- (WFFileValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFFileValue)initWithURL:(id)l;
+- (WFFileValue)initWithURL:(id)l workflowID:(id)d;
 - (WFPropertyListObject)serializedRepresentation;
-- (id)resolveURLWithWorkflowID:(id)a3 error:(id *)a4;
+- (id)resolveURLWithWorkflowID:(id)d error:(id *)error;
 @end
 
 @implementation WFFileValue
 
-- (id)resolveURLWithWorkflowID:(id)a3 error:(id *)a4
+- (id)resolveURLWithWorkflowID:(id)d error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = getWFFilesLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -35,19 +35,19 @@
     goto LABEL_43;
   }
 
-  v10 = [(WFFileValue *)self fileLocation];
+  fileLocation = [(WFFileValue *)self fileLocation];
 
-  if (v6 && v10)
+  if (dCopy && fileLocation)
   {
-    v11 = [(WFFileValue *)self fileLocation];
+    fileLocation2 = [(WFFileValue *)self fileLocation];
     v49 = 0;
-    v12 = [v11 resolveLocationWithError:&v49];
+    v12 = [fileLocation2 resolveLocationWithError:&v49];
     v13 = v49;
 
     v14 = getWFFilesLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(WFFileValue *)self fileLocation];
+      fileLocation3 = [(WFFileValue *)self fileLocation];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       *buf = 136315650;
@@ -75,13 +75,13 @@
       {
         v37 = v13;
         v9 = 0;
-        *a4 = v13;
+        *error = v13;
         v21 = v13;
         goto LABEL_42;
       }
 
       v42 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4 userInfo:0];
-      *a4 = v42;
+      *error = v42;
 
       v21 = 0;
 LABEL_41:
@@ -89,10 +89,10 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v18 = [MEMORY[0x1E69E0938] standardClient];
-    v19 = [v12 path];
+    standardClient = [MEMORY[0x1E69E0938] standardClient];
+    path = [v12 path];
     v48 = v13;
-    v20 = [v18 resolveFilePath:v19 workflowID:v6 error:&v48];
+    v20 = [standardClient resolveFilePath:path workflowID:dCopy error:&v48];
     v21 = v48;
 
     if (v20)
@@ -107,11 +107,11 @@ LABEL_41:
     v39 = getWFFilesLogObject();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
-      v40 = [v12 path];
+      path2 = [v12 path];
       *buf = 136315650;
       v51 = "[WFFileValue resolveURLWithWorkflowID:error:]";
       v52 = 2112;
-      v53 = v40;
+      v53 = path2;
       v54 = 2114;
       v55 = v21;
       _os_log_impl(&dword_1CA256000, v39, OS_LOG_TYPE_ERROR, "%s Failed to look up file path: %@: %{public}@", buf, 0x20u);
@@ -119,21 +119,21 @@ LABEL_41:
 
 LABEL_37:
     v41 = v21;
-    *a4 = v21;
+    *error = v21;
 LABEL_38:
 
     goto LABEL_41;
   }
 
-  v24 = [(WFFileValue *)self bookmarkData];
+  bookmarkData = [(WFFileValue *)self bookmarkData];
 
-  if (v24)
+  if (bookmarkData)
   {
-    v25 = [MEMORY[0x1E69E0938] standardClient];
-    v26 = [(WFFileValue *)self bookmarkData];
+    standardClient2 = [MEMORY[0x1E69E0938] standardClient];
+    bookmarkData2 = [(WFFileValue *)self bookmarkData];
     v46 = 0;
     v47 = 0;
-    v27 = [v25 resolveBookmarkData:v26 updatedData:&v47 error:&v46];
+    v27 = [standardClient2 resolveBookmarkData:bookmarkData2 updatedData:&v47 error:&v46];
     v12 = v47;
     v21 = v46;
 
@@ -156,7 +156,7 @@ LABEL_38:
       _os_log_impl(&dword_1CA256000, v38, OS_LOG_TYPE_ERROR, "%s Failed to resolve bookmark data error: %@", buf, 0x16u);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_38;
     }
@@ -164,9 +164,9 @@ LABEL_38:
     goto LABEL_37;
   }
 
-  v30 = [(WFFileValue *)self fileLocation];
+  fileLocation4 = [(WFFileValue *)self fileLocation];
 
-  if (!v30)
+  if (!fileLocation4)
   {
     v21 = 0;
     goto LABEL_25;
@@ -180,9 +180,9 @@ LABEL_38:
     _os_log_impl(&dword_1CA256000, v31, OS_LOG_TYPE_DEFAULT, "%s No workflowID given but a file location found. Falling back to non security scoped URL.", buf, 0xCu);
   }
 
-  v32 = [(WFFileValue *)self fileLocation];
+  fileLocation5 = [(WFFileValue *)self fileLocation];
   v45 = 0;
-  v33 = [v32 resolveLocationWithError:&v45];
+  v33 = [fileLocation5 resolveLocationWithError:&v45];
   v21 = v45;
 
   if (!v33)
@@ -197,10 +197,10 @@ LABEL_38:
       _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_ERROR, "%s Could not create file from file location %{public}@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v35 = v21;
-      *a4 = v21;
+      *error = v21;
     }
   }
 
@@ -235,13 +235,13 @@ LABEL_43:
     goto LABEL_6;
   }
 
-  v7 = [(WFFileValue *)self fileLocation];
+  fileLocation = [(WFFileValue *)self fileLocation];
 
-  if (v7)
+  if (fileLocation)
   {
-    v8 = [(WFFileValue *)self fileLocation];
+    fileLocation2 = [(WFFileValue *)self fileLocation];
     v16 = 0;
-    v5 = [v8 resolveLocationWithError:&v16];
+    v5 = [fileLocation2 resolveLocationWithError:&v16];
     v6 = v16;
 
     if (v5)
@@ -250,7 +250,7 @@ LABEL_43:
     }
 
 LABEL_14:
-    v11 = self->_cachedDisplayName;
+    lastPathComponent = self->_cachedDisplayName;
 
     goto LABEL_10;
   }
@@ -264,15 +264,15 @@ LABEL_14:
   }
 
 LABEL_6:
-  v9 = [v5 wf_localizedDisplayName];
-  if (v9 || (v9 = self->_cachedDisplayName) != 0)
+  wf_localizedDisplayName = [v5 wf_localizedDisplayName];
+  if (wf_localizedDisplayName || (wf_localizedDisplayName = self->_cachedDisplayName) != 0)
   {
     v10 = self->_displayName;
-    self->_displayName = v9;
+    self->_displayName = wf_localizedDisplayName;
 
     displayName = self->_displayName;
 LABEL_9:
-    v11 = displayName;
+    lastPathComponent = displayName;
     goto LABEL_10;
   }
 
@@ -286,12 +286,12 @@ LABEL_9:
     _os_log_impl(&dword_1CA256000, v14, OS_LOG_TYPE_ERROR, "%s Could not get displayName for URL: %@ falling back to last path component", buf, 0x16u);
   }
 
-  v11 = [v5 lastPathComponent];
+  lastPathComponent = [v5 lastPathComponent];
 
 LABEL_10:
   v12 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return lastPathComponent;
 }
 
 - (NSString)filename
@@ -304,9 +304,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = [(WFFileValue *)self fileLocation];
+  fileLocation = [(WFFileValue *)self fileLocation];
 
-  if (!v5)
+  if (!fileLocation)
   {
     v13 = 0;
     v7 = [(WFFileValue *)self resolveURLWithWorkflowID:0 error:&v13];
@@ -330,9 +330,9 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v6 = [(WFFileValue *)self fileLocation];
+  fileLocation2 = [(WFFileValue *)self fileLocation];
   v14 = 0;
-  v7 = [v6 resolveLocationWithError:&v14];
+  v7 = [fileLocation2 resolveLocationWithError:&v14];
   v8 = v14;
 
   if (!v7)
@@ -341,9 +341,9 @@ LABEL_7:
   }
 
 LABEL_5:
-  v9 = [v7 lastPathComponent];
+  lastPathComponent = [v7 lastPathComponent];
   v10 = self->_filename;
-  self->_filename = v9;
+  self->_filename = lastPathComponent;
 LABEL_9:
 
   v3 = self->_filename;
@@ -356,29 +356,29 @@ LABEL_10:
 - (WFPropertyListObject)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFFileValue *)self fileLocation];
-  v5 = [v4 serializedRepresentation];
+  fileLocation = [(WFFileValue *)self fileLocation];
+  serializedRepresentation = [fileLocation serializedRepresentation];
 
-  [v3 setValue:v5 forKey:@"fileLocation"];
-  v6 = [(WFFileValue *)self bookmarkData];
-  [v3 setValue:v6 forKey:@"bookmarkData"];
+  [v3 setValue:serializedRepresentation forKey:@"fileLocation"];
+  bookmarkData = [(WFFileValue *)self bookmarkData];
+  [v3 setValue:bookmarkData forKey:@"bookmarkData"];
 
-  v7 = [(WFFileValue *)self filename];
-  [v3 setValue:v7 forKey:@"filename"];
+  filename = [(WFFileValue *)self filename];
+  [v3 setValue:filename forKey:@"filename"];
 
-  v8 = [(WFFileValue *)self displayName];
-  [v3 setValue:v8 forKey:@"displayName"];
+  displayName = [(WFFileValue *)self displayName];
+  [v3 setValue:displayName forKey:@"displayName"];
 
   return v3;
 }
 
-- (WFFileValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFFileValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v49 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
+  providerCopy = provider;
+  representationCopy = representation;
   v9 = objc_opt_class();
-  v10 = WFEnforceClass_17313(v8, v9);
+  v10 = WFEnforceClass_17313(representationCopy, v9);
 
   if (v10)
   {
@@ -435,7 +435,7 @@ LABEL_10:
     if (v22)
     {
       self = [(WFFileValue *)self initWithFileLocation:v22 filename:v18 displayName:v21];
-      v17 = self;
+      selfCopy3 = self;
 LABEL_33:
 
       goto LABEL_34;
@@ -443,11 +443,11 @@ LABEL_33:
 
     if (!v14)
     {
-      v17 = 0;
+      selfCopy3 = 0;
       goto LABEL_33;
     }
 
-    v23 = v7;
+    v23 = providerCopy;
     v42 = v14;
     if (v23)
     {
@@ -471,10 +471,10 @@ LABEL_33:
     v25 = v24;
 
     v41 = v25;
-    v26 = [v25 workflow];
-    v27 = [v26 workflowID];
+    workflow = [v25 workflow];
+    workflowID = [workflow workflowID];
 
-    if (!v27)
+    if (!workflowID)
     {
       goto LABEL_28;
     }
@@ -487,11 +487,11 @@ LABEL_33:
       _os_log_impl(&dword_1CA256000, v28, OS_LOG_TYPE_DEFAULT, "%s Attempting to convert bookmark based file value into file location based value", buf, 0xCu);
     }
 
-    v29 = [MEMORY[0x1E69E0938] standardClient];
+    standardClient = [MEMORY[0x1E69E0938] standardClient];
     v43 = 0;
     v44 = 0;
     v14 = v42;
-    v30 = [v29 resolveBookmarkData:v42 updatedData:&v44 error:&v43];
+    v30 = [standardClient resolveBookmarkData:v42 updatedData:&v44 error:&v43];
     v39 = v44;
     v40 = v43;
 
@@ -508,18 +508,18 @@ LABEL_33:
       }
 
       self = [(WFFileValue *)self initWithBookmarkData:v42 filename:v18 displayName:v21];
-      v17 = self;
+      selfCopy3 = self;
       goto LABEL_32;
     }
 
     v37 = [WFFileValue alloc];
     v38 = v30;
     v36 = [v30 url];
-    v31 = [v41 workflow];
-    v32 = [v31 workflowID];
-    v17 = [(WFFileValue *)v37 initWithURL:v36 workflowID:v32];
+    workflow2 = [v41 workflow];
+    workflowID2 = [workflow2 workflowID];
+    selfCopy3 = [(WFFileValue *)v37 initWithURL:v36 workflowID:workflowID2];
 
-    if (v17)
+    if (selfCopy3)
     {
       v14 = v42;
     }
@@ -529,7 +529,7 @@ LABEL_33:
 LABEL_28:
       v14 = v42;
       self = [(WFFileValue *)self initWithBookmarkData:v42 filename:v18 displayName:v21];
-      v17 = self;
+      selfCopy3 = self;
     }
 
 LABEL_32:
@@ -537,22 +537,22 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v17 = 0;
+  selfCopy3 = 0;
 LABEL_34:
 
   v34 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy3;
 }
 
-- (WFFileValue)initWithFileLocation:(id)a3 filename:(id)a4 displayName:(id)a5 reloadDisplayName:(BOOL)a6
+- (WFFileValue)initWithFileLocation:(id)location filename:(id)filename displayName:(id)name reloadDisplayName:(BOOL)displayName
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  locationCopy = location;
+  filenameCopy = filename;
+  nameCopy = name;
+  if (!locationCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"fileLocation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"fileLocation"}];
   }
 
   v24.receiver = self;
@@ -561,15 +561,15 @@ LABEL_34:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fileLocation, a3);
-    objc_storeStrong(&v16->_filename, a4);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_fileLocation, location);
+    objc_storeStrong(&v16->_filename, filename);
+    v17 = [nameCopy copy];
     cachedDisplayName = v16->_cachedDisplayName;
     v16->_cachedDisplayName = v17;
 
-    if (!a6)
+    if (!displayName)
     {
-      v19 = [v14 copy];
+      v19 = [nameCopy copy];
       displayName = v16->_displayName;
       v16->_displayName = v19;
     }
@@ -580,15 +580,15 @@ LABEL_34:
   return v16;
 }
 
-- (WFFileValue)initWithFileLocation:(id)a3 filename:(id)a4 displayName:(id)a5
+- (WFFileValue)initWithFileLocation:(id)location filename:(id)filename displayName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  locationCopy = location;
+  filenameCopy = filename;
+  nameCopy = name;
+  if (!locationCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"fileLocation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"fileLocation"}];
   }
 
   v20.receiver = self;
@@ -597,13 +597,13 @@ LABEL_34:
   if (v13)
   {
     v14 = v13;
-    objc_storeStrong(&v13->_fileLocation, a3);
-    objc_storeStrong(&v14->_filename, a4);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_fileLocation, location);
+    objc_storeStrong(&v14->_filename, filename);
+    v15 = [nameCopy copy];
     cachedDisplayName = v14->_cachedDisplayName;
     v14->_cachedDisplayName = v15;
 
-    v17 = [(WFFileValue *)v14 initWithFileLocation:v10 filename:v11 displayName:v12 reloadDisplayName:1];
+    v17 = [(WFFileValue *)v14 initWithFileLocation:locationCopy filename:filenameCopy displayName:nameCopy reloadDisplayName:1];
   }
 
   else
@@ -614,14 +614,14 @@ LABEL_34:
   return v17;
 }
 
-- (WFFileValue)initWithURL:(id)a3 workflowID:(id)a4
+- (WFFileValue)initWithURL:(id)l workflowID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  lCopy = l;
+  dCopy = d;
+  if (!lCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
   }
 
   v20.receiver = self;
@@ -630,18 +630,18 @@ LABEL_34:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_URL, a3);
-    v12 = [WFFileLocation locationWithURL:v8];
+    objc_storeStrong(&v10->_URL, l);
+    v12 = [WFFileLocation locationWithURL:lCopy];
     fileLocation = v11->_fileLocation;
     v11->_fileLocation = v12;
 
-    v14 = [v8 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     filename = v11->_filename;
-    v11->_filename = v14;
+    v11->_filename = lastPathComponent;
 
-    if (v9)
+    if (dCopy)
     {
-      v16 = [objc_opt_class() createBookmarkWithFileURL:v8 workflowID:v9];
+      v16 = [objc_opt_class() createBookmarkWithFileURL:lCopy workflowID:dCopy];
     }
 
     v17 = v11;
@@ -650,34 +650,34 @@ LABEL_34:
   return v11;
 }
 
-- (WFFileValue)initWithBookmarkData:(id)a3 filename:(id)a4 displayName:(id)a5
+- (WFFileValue)initWithBookmarkData:(id)data filename:(id)filename displayName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  filenameCopy = filename;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = WFFileValue;
   v12 = [(WFFileValue *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bookmarkData, a3);
-    objc_storeStrong(&v13->_filename, a4);
-    objc_storeStrong(&v13->_cachedDisplayName, a5);
+    objc_storeStrong(&v12->_bookmarkData, data);
+    objc_storeStrong(&v13->_filename, filename);
+    objc_storeStrong(&v13->_cachedDisplayName, name);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (WFFileValue)initWithURL:(id)a3
+- (WFFileValue)initWithURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileValue.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
   }
 
   v20.receiver = self;
@@ -685,7 +685,7 @@ LABEL_34:
   v7 = [(WFFileValue *)&v20 init];
   if (v7)
   {
-    v8 = [objc_opt_class() createBookmarkWithFileURL:v6 workflowID:0];
+    v8 = [objc_opt_class() createBookmarkWithFileURL:lCopy workflowID:0];
     if (!v8)
     {
       v9 = getWFFilesLogObject();
@@ -694,54 +694,54 @@ LABEL_34:
         *buf = 136315394;
         v22 = "[WFFileValue initWithURL:]";
         v23 = 2112;
-        v24 = v6;
+        v24 = lCopy;
         _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_DEFAULT, "%s Could not create bookmark (%@) for data backed file value falling back to URL backing", buf, 0x16u);
       }
 
-      objc_storeStrong(&v7->_URL, a3);
-      v10 = [WFFileLocation locationWithURL:v6];
+      objc_storeStrong(&v7->_URL, l);
+      v10 = [WFFileLocation locationWithURL:lCopy];
       fileLocation = v7->_fileLocation;
       v7->_fileLocation = v10;
     }
 
-    v12 = [v6 wf_localizedDisplayName];
-    v13 = v12;
-    if (v12)
+    wf_localizedDisplayName = [lCopy wf_localizedDisplayName];
+    v13 = wf_localizedDisplayName;
+    if (wf_localizedDisplayName)
     {
-      v14 = v12;
+      lastPathComponent = wf_localizedDisplayName;
     }
 
     else
     {
-      v14 = [v6 lastPathComponent];
+      lastPathComponent = [lCopy lastPathComponent];
     }
 
-    v15 = v14;
+    v15 = lastPathComponent;
 
-    v16 = [v6 lastPathComponent];
-    v7 = [(WFFileValue *)v7 initWithBookmarkData:v8 filename:v16 displayName:v15];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    v7 = [(WFFileValue *)v7 initWithBookmarkData:v8 filename:lastPathComponent2 displayName:v15];
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-+ (id)defaultValueWithWorkflowID:(id)a3
++ (id)defaultValueWithWorkflowID:(id)d
 {
   v4 = +[WFShortcutsFileLocation locationAtRootDirectory];
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = WFLocalizedStringWithKey(@"Shortcuts iCloud Folder", @"Shortcuts");
   v7 = [v5 initWithFileLocation:v4 filename:@"Documents" displayName:v6 reloadDisplayName:0];
 
   return v7;
 }
 
-+ (id)createBookmarkWithFileURL:(id)a3 workflowID:(id)a4
++ (id)createBookmarkWithFileURL:(id)l workflowID:(id)d
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 wf_fileIsWritable];
+  lCopy = l;
+  dCopy = d;
+  wf_fileIsWritable = [lCopy wf_fileIsWritable];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -761,11 +761,11 @@ LABEL_34:
   v9 = v8;
   _Block_object_dispose(&v23, 8);
   v22 = 0;
-  v10 = [v8 wrapperWithURL:v5 readonly:v7 ^ 1u error:&v22];
+  v10 = [v8 wrapperWithURL:lCopy readonly:wf_fileIsWritable ^ 1u error:&v22];
   v11 = v22;
-  v12 = [MEMORY[0x1E69E0910] accessSpecifierForCurrentProcess];
-  v13 = [v12 bundleIdentifier];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E69E0E60]];
+  accessSpecifierForCurrentProcess = [MEMORY[0x1E69E0910] accessSpecifierForCurrentProcess];
+  bundleIdentifier = [accessSpecifierForCurrentProcess bundleIdentifier];
+  v14 = [bundleIdentifier isEqualToString:*MEMORY[0x1E69E0E60]];
 
   if (v14)
   {
@@ -777,7 +777,7 @@ LABEL_8:
       *buf = 136315650;
       *&buf[4] = "+[WFFileValue createBookmarkWithFileURL:workflowID:]";
       *&buf[12] = 2112;
-      *&buf[14] = v5;
+      *&buf[14] = lCopy;
       *&buf[22] = 2112;
       v28 = v15;
       _os_log_impl(&dword_1CA256000, v18, OS_LOG_TYPE_ERROR, "%s Could not create bookmark at URL: %@ with error: %@", buf, 0x20u);
@@ -787,9 +787,9 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v16 = [MEMORY[0x1E69E0938] standardClient];
+  standardClient = [MEMORY[0x1E69E0938] standardClient];
   v21 = v11;
-  v17 = [v16 createBookmarkWithURL:v10 workflowID:v6 error:&v21];
+  v17 = [standardClient createBookmarkWithURL:v10 workflowID:dCopy error:&v21];
   v15 = v21;
 
   if (!v17)
@@ -803,9 +803,9 @@ LABEL_8:
     *buf = 136315650;
     *&buf[4] = "+[WFFileValue createBookmarkWithFileURL:workflowID:]";
     *&buf[12] = 2112;
-    *&buf[14] = v5;
+    *&buf[14] = lCopy;
     *&buf[22] = 2112;
-    v28 = v6;
+    v28 = dCopy;
     _os_log_impl(&dword_1CA256000, v18, OS_LOG_TYPE_DEBUG, "%s Created bookmark at URL: %@ for workflowID: %@", buf, 0x20u);
   }
 

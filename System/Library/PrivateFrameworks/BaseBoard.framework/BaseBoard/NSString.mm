@@ -27,13 +27,13 @@ void __50__NSString_BSObjCInterface__bsobjc_typeQualifiers__block_invoke()
 
 - (id)bsobjc_structName
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AE88] scannerWithString:a1];
-    if (([v1 hasPrefix:@"{"] & 1) == 0 && !objc_msgSend(v2, "scanUpToString:intoString:", @"{", 0))
+    v2 = [MEMORY[0x1E696AE88] scannerWithString:self];
+    if (([selfCopy hasPrefix:@"{"] & 1) == 0 && !objc_msgSend(v2, "scanUpToString:intoString:", @"{", 0))
     {
-      v1 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -51,7 +51,7 @@ void __50__NSString_BSObjCInterface__bsobjc_typeQualifiers__block_invoke()
     {
       v9 = v4;
       v7 = [v2 scanUpToString:@"}" intoString:&v9];
-      v1 = v9;
+      selfCopy = v9;
 
       if (!v7)
       {
@@ -60,18 +60,18 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v6 = [v1 copy];
-      v5 = v1;
+      v6 = [selfCopy copy];
+      v5 = selfCopy;
     }
 
-    v1 = v6;
+    selfCopy = v6;
 
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

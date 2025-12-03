@@ -1,5 +1,5 @@
 @interface SFUnifiedTabBarItemTitleContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsMinimized;
 - (id)_accessibilityNavBarParent;
 - (id)accessibilityValue;
@@ -9,17 +9,17 @@
 
 @implementation SFUnifiedTabBarItemTitleContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SFCapsuleNavigationBar"];
-  [v3 validateClass:@"SFCapsuleNavigationBar" hasInstanceMethod:@"isMinimized" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"securityAnnotation" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"showsPrivateAnnotation" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"_showsPlaceholder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"showsSearchIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"showsSearchField" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceVariable:@"_titleLabel" withType:"SFURLLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SFCapsuleNavigationBar"];
+  [validationsCopy validateClass:@"SFCapsuleNavigationBar" hasInstanceMethod:@"isMinimized" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"securityAnnotation" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"showsPrivateAnnotation" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"_showsPlaceholder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"showsSearchIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceMethod:@"showsSearchField" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SFUnifiedTabBarItemTitleContainerView" hasInstanceVariable:@"_titleLabel" withType:"SFURLLabel"];
 }
 
 - (id)accessibilityValue
@@ -45,14 +45,14 @@
   }
 
   v5 = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
   if ([(SFUnifiedTabBarItemTitleContainerViewAccessibility *)self safeBoolForKey:@"_showsPlaceholder"])
   {
-    v7 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v6];
+    v7 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityLabel];
     [v7 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD970]];
 
-    v6 = v7;
+    accessibilityLabel = v7;
   }
 
   v8 = __UIAXStringForVariables();
@@ -64,15 +64,15 @@
 {
   v7.receiver = self;
   v7.super_class = SFUnifiedTabBarItemTitleContainerViewAccessibility;
-  v3 = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)self _accessibilityIsMinimized];
+  accessibilityTraits = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)&v7 accessibilityTraits];
+  _accessibilityIsMinimized = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)self _accessibilityIsMinimized];
   v5 = *MEMORY[0x29EDC7598];
-  if (v4)
+  if (_accessibilityIsMinimized)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -90,8 +90,8 @@
 
 - (BOOL)_accessibilityIsMinimized
 {
-  v2 = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)self _accessibilityNavBarParent];
-  v3 = [v2 safeBoolForKey:@"isMinimized"];
+  _accessibilityNavBarParent = [(SFUnifiedTabBarItemTitleContainerViewAccessibility *)self _accessibilityNavBarParent];
+  v3 = [_accessibilityNavBarParent safeBoolForKey:@"isMinimized"];
 
   return v3;
 }

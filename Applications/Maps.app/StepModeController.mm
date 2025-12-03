@@ -1,25 +1,25 @@
 @interface StepModeController
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
 - (IOSBasedChromeViewController)chromeViewController;
 - (StatusBarBackgroundViewStyle)statusBarBackgroundViewStyle;
 - (StatusBarSupplementaryView)statusBarSupplementaryView;
 - (StepActionCoordination)actionCoordinator;
 - (StepContainerViewController)containerViewController;
-- (StepModeController)initWithRoute:(id)a3 initialStepIndex:(unint64_t)a4 desiredUserTrackingMode:(id)a5;
+- (StepModeController)initWithRoute:(id)route initialStepIndex:(unint64_t)index desiredUserTrackingMode:(id)mode;
 - (id)personalizedItemSources;
-- (id)transitionControllerForPopToMode:(id)a3;
-- (id)transitionControllerForPushFromMode:(id)a3;
+- (id)transitionControllerForPopToMode:(id)mode;
+- (id)transitionControllerForPushFromMode:(id)mode;
 - (int64_t)preferredStatusBarStyle;
-- (void)_becomeTopContextInChromeViewController:(id)a3;
-- (void)_locationManagerApprovalDidChange:(id)a3;
-- (void)_resignTopContextInChromeViewController:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)getCurrentSceneTitleWithCompletion:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)setChromeViewController:(id)a3;
-- (void)setDesiredInitialCamera:(id)a3;
-- (void)updateWithDisplayedStep:(id)a3;
+- (void)_becomeTopContextInChromeViewController:(id)controller;
+- (void)_locationManagerApprovalDidChange:(id)change;
+- (void)_resignTopContextInChromeViewController:(id)controller;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)getCurrentSceneTitleWithCompletion:(id)completion;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)setChromeViewController:(id)controller;
+- (void)setDesiredInitialCamera:(id)camera;
+- (void)updateWithDisplayedStep:(id)step;
 - (void)willBeginDisplayingInSecureLockScreen;
 @end
 
@@ -34,43 +34,43 @@
 
 - (StatusBarSupplementaryView)statusBarSupplementaryView
 {
-  v2 = [(StepModeController *)self containerViewController];
-  v3 = [v2 statusBarSupplementaryView];
+  containerViewController = [(StepModeController *)self containerViewController];
+  statusBarSupplementaryView = [containerViewController statusBarSupplementaryView];
 
-  return v3;
+  return statusBarSupplementaryView;
 }
 
 - (StatusBarBackgroundViewStyle)statusBarBackgroundViewStyle
 {
-  v2 = [(StepModeController *)self containerViewController];
-  v3 = [v2 statusBarBackgroundViewStyle];
+  containerViewController = [(StepModeController *)self containerViewController];
+  statusBarBackgroundViewStyle = [containerViewController statusBarBackgroundViewStyle];
 
-  return v3;
+  return statusBarBackgroundViewStyle;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(StepModeController *)self containerViewController];
-  v3 = [v2 preferredStatusBarStyle];
+  containerViewController = [(StepModeController *)self containerViewController];
+  preferredStatusBarStyle = [containerViewController preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(StepModeController *)self containerViewController];
-  v3 = [v2 prefersStatusBarHidden];
+  containerViewController = [(StepModeController *)self containerViewController];
+  prefersStatusBarHidden = [containerViewController prefersStatusBarHidden];
 
-  return v3;
+  return prefersStatusBarHidden;
 }
 
 - (void)willBeginDisplayingInSecureLockScreen
 {
-  v2 = [(StepModeController *)self containerViewController];
-  [v2 willBeginDisplayingInSecureLockScreen];
+  containerViewController = [(StepModeController *)self containerViewController];
+  [containerViewController willBeginDisplayingInSecureLockScreen];
 }
 
-- (void)_locationManagerApprovalDidChange:(id)a3
+- (void)_locationManagerApprovalDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -80,21 +80,21 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)getCurrentSceneTitleWithCompletion:(id)a3
+- (void)getCurrentSceneTitleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(StepModeController *)self route];
-  v6 = [v5 destination];
-  v7 = [v6 name];
+  completionCopy = completion;
+  route = [(StepModeController *)self route];
+  destination = [route destination];
+  name = [destination name];
 
   v8 = +[NSBundle mainBundle];
-  if (v7)
+  if (name)
   {
     v9 = [v8 localizedStringForKey:@"[App switcher title] Directions to <destination>" value:@"localized string not found" table:0];
-    v10 = [(StepModeController *)self route];
-    v11 = [v10 destination];
-    v12 = [v11 name];
-    v13 = [NSString stringWithFormat:v9, v12];
+    route2 = [(StepModeController *)self route];
+    destination2 = [route2 destination];
+    name2 = [destination2 name];
+    v13 = [NSString stringWithFormat:v9, name2];
   }
 
   else
@@ -102,82 +102,82 @@
     v13 = [v8 localizedStringForKey:@"[App switcher title] Directions" value:@"localized string not found" table:0];
   }
 
-  v4[2](v4, v13);
+  completionCopy[2](completionCopy, v13);
 }
 
-- (void)_resignTopContextInChromeViewController:(id)a3
+- (void)_resignTopContextInChromeViewController:(id)controller
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:MKLocationManagerApprovalDidChangeNotification object:0];
 
-  v5 = [(StepModeController *)self chromeViewController];
-  v6 = [v5 mapView];
+  chromeViewController = [(StepModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  [v6 _setLocationPropagationEnabled:1];
-  [v6 _setShouldAnimatePositionWithRouteMatch:1];
-  [v6 _setClearUserLocationOnLocationReset:1];
+  [mapView _setLocationPropagationEnabled:1];
+  [mapView _setShouldAnimatePositionWithRouteMatch:1];
+  [mapView _setClearUserLocationOnLocationReset:1];
   v10 = *VKAnnotationTrackingBehaviorDefault;
   v11 = VKAnnotationTrackingBehaviorDefault[2];
-  [v6 _setUserTrackingBehavior:&v10];
-  [v6 _setAlwaysShowHeadingIndicatorIfSupported:1];
-  [v6 _setShowHeadingIndicatorForStepping:0];
-  [v6 _setApplicationState:0];
-  [v6 _clearRouteContext];
-  if ([v6 userTrackingMode])
+  [mapView _setUserTrackingBehavior:&v10];
+  [mapView _setAlwaysShowHeadingIndicatorIfSupported:1];
+  [mapView _setShowHeadingIndicatorForStepping:0];
+  [mapView _setApplicationState:0];
+  [mapView _clearRouteContext];
+  if ([mapView userTrackingMode])
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setTrackingMode:0 monitorBatteryState:0];
   }
 
-  v8 = [(StepModeController *)self chromeViewController];
-  v9 = [v8 userLocationView];
+  chromeViewController2 = [(StepModeController *)self chromeViewController];
+  userLocationView = [chromeViewController2 userLocationView];
 
-  [v9 setHeadingIndicatorStyle:self->_previousHeadingIndicatorStyle];
-  [v9 setEnabled:self->_previousEnabledStatus];
-  [v6 _setShouldSplitRouteLine:0];
+  [userLocationView setHeadingIndicatorStyle:self->_previousHeadingIndicatorStyle];
+  [userLocationView setEnabled:self->_previousEnabledStatus];
+  [mapView _setShouldSplitRouteLine:0];
   [(GEOComposedRoute *)self->_route setManeuverDisplayEnabled:0];
   [(NavigationPowerLogger *)self->_powerLogger stopLogging];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100F2BA00;
   v9[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = controllerCopy;
   v10 = v8;
-  [v7 addPreparation:v9];
+  [animationCopy addPreparation:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)_becomeTopContextInChromeViewController:(id)a3
+- (void)_becomeTopContextInChromeViewController:(id)controller
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_locationManagerApprovalDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
 
-  v5 = [(StepModeController *)self chromeViewController];
-  v6 = [v5 mapView];
+  chromeViewController = [(StepModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  [v6 setCompassEnabled:1];
-  [v6 setScaleEnabled:0];
-  [v6 _setLocationPropagationEnabled:0];
-  [v6 _setShouldAnimatePositionWithRouteMatch:0];
+  [mapView setCompassEnabled:1];
+  [mapView setScaleEnabled:0];
+  [mapView _setLocationPropagationEnabled:0];
+  [mapView _setShouldAnimatePositionWithRouteMatch:0];
   *&v14[1] = *(VKAnnotationTrackingBehaviorDefault + 1);
   *&v14[16] = VKAnnotationTrackingBehaviorDefault[2];
   v14[0] = 0;
-  [v6 _setUserTrackingBehavior:v14];
-  [v6 _setAlwaysShowHeadingIndicatorIfSupported:0];
-  v7 = [(StepModeController *)self actionCoordinator];
-  [v6 _setShowHeadingIndicatorForStepping:{objc_msgSend(v7, "isAuthorizedForPreciseLocation")}];
+  [mapView _setUserTrackingBehavior:v14];
+  [mapView _setAlwaysShowHeadingIndicatorIfSupported:0];
+  actionCoordinator = [(StepModeController *)self actionCoordinator];
+  [mapView _setShowHeadingIndicatorForStepping:{objc_msgSend(actionCoordinator, "isAuthorizedForPreciseLocation")}];
 
-  [v6 _setApplicationState:3];
+  [mapView _setApplicationState:3];
   if ([(GEOComposedRoute *)self->_route transportType]== 1)
   {
     v11 = sub_10006D178();
@@ -208,60 +208,60 @@
   }
 
   [(GEOComposedRoute *)self->_route setManeuverDisplayEnabled:1];
-  v8 = [(StepModeController *)self chromeViewController];
-  [v8 updateViewMode:0 animated:0];
+  chromeViewController2 = [(StepModeController *)self chromeViewController];
+  [chromeViewController2 updateViewMode:0 animated:0];
 
-  v9 = [(StepModeController *)self chromeViewController];
-  v10 = [v9 userLocationView];
+  chromeViewController3 = [(StepModeController *)self chromeViewController];
+  userLocationView = [chromeViewController3 userLocationView];
 
-  [v10 setMode:0 animated:1];
-  self->_previousHeadingIndicatorStyle = [v10 headingIndicatorStyle];
-  [v10 setHeadingIndicatorStyle:0];
-  self->_previousEnabledStatus = [v10 isEnabled];
-  [v10 setEnabled:0];
+  [userLocationView setMode:0 animated:1];
+  self->_previousHeadingIndicatorStyle = [userLocationView headingIndicatorStyle];
+  [userLocationView setHeadingIndicatorStyle:0];
+  self->_previousEnabledStatus = [userLocationView isEnabled];
+  [userLocationView setEnabled:0];
   if ([(GEOComposedRoute *)self->_route transportType])
   {
-    [v6 setShowsTraffic:0];
+    [mapView setShowsTraffic:0];
   }
 
   if (self->_desiredInitialCamera)
   {
-    [v6 setCamera:?];
+    [mapView setCamera:?];
   }
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100F2BE58;
   v9[3] = &unk_101661340;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = controllerCopy;
   v10 = v8;
-  [v7 addPreparation:v9];
+  [animationCopy addPreparation:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
   if (self->_route)
   {
     route = self->_route;
-    v3 = a3;
-    v4 = [NSArray arrayWithObjects:&route count:1];
-    [v3 setRoutes:{v4, route}];
+    configurationCopy = configuration;
+    configurationCopy2 = [NSArray arrayWithObjects:&route count:1];
+    [configurationCopy setRoutes:{configurationCopy2, route}];
   }
 
   else
   {
-    v4 = a3;
-    [v4 setRoutes:0];
+    configurationCopy2 = configuration;
+    [configurationCopy2 setRoutes:0];
   }
 
   return 1;
@@ -269,15 +269,15 @@
 
 - (id)personalizedItemSources
 {
-  v3 = [(StepModeController *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
+  chromeViewController = [(StepModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v4)
+  if (searchPinsManager)
   {
-    v5 = [(StepModeController *)self chromeViewController];
-    v6 = [v5 searchPinsManager];
-    v7 = [v6 routeStartEndItemSource];
-    v10 = v7;
+    chromeViewController2 = [(StepModeController *)self chromeViewController];
+    searchPinsManager2 = [chromeViewController2 searchPinsManager];
+    routeStartEndItemSource = [searchPinsManager2 routeStartEndItemSource];
+    v10 = routeStartEndItemSource;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -289,14 +289,14 @@
   return v8;
 }
 
-- (id)transitionControllerForPopToMode:(id)a3
+- (id)transitionControllerForPopToMode:(id)mode
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)transitionControllerForPushFromMode:(id)a3
+- (id)transitionControllerForPushFromMode:(id)mode
 {
   v3 = objc_opt_new();
 
@@ -326,8 +326,8 @@
     self->_containerViewController = v8;
 
     [(ContainerViewController *)self->_containerViewController setChromeContext:self];
-    v10 = [(StepModeController *)self chromeViewController];
-    [(ContainerViewController *)self->_containerViewController setChromeViewController:v10];
+    chromeViewController = [(StepModeController *)self chromeViewController];
+    [(ContainerViewController *)self->_containerViewController setChromeViewController:chromeViewController];
 
     containerViewController = self->_containerViewController;
   }
@@ -335,51 +335,51 @@
   return containerViewController;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_chromeViewController, v4);
-  [(ContainerViewController *)self->_containerViewController setChromeViewController:v4];
+  controllerCopy = controller;
+  objc_storeWeak(&self->_chromeViewController, controllerCopy);
+  [(ContainerViewController *)self->_containerViewController setChromeViewController:controllerCopy];
 }
 
 - (StepActionCoordination)actionCoordinator
 {
-  v2 = [(StepModeController *)self containerViewController];
-  v3 = [v2 stepActionCoordinator];
+  containerViewController = [(StepModeController *)self containerViewController];
+  stepActionCoordinator = [containerViewController stepActionCoordinator];
 
-  return v3;
+  return stepActionCoordinator;
 }
 
-- (void)updateWithDisplayedStep:(id)a3
+- (void)updateWithDisplayedStep:(id)step
 {
-  v4 = a3;
-  v5 = [(StepModeController *)self containerViewController];
-  [v5 updateWithDisplayedStep:v4];
+  stepCopy = step;
+  containerViewController = [(StepModeController *)self containerViewController];
+  [containerViewController updateWithDisplayedStep:stepCopy];
 }
 
-- (void)setDesiredInitialCamera:(id)a3
+- (void)setDesiredInitialCamera:(id)camera
 {
-  v4 = [a3 copy];
+  v4 = [camera copy];
   desiredInitialCamera = self->_desiredInitialCamera;
   self->_desiredInitialCamera = v4;
 }
 
-- (StepModeController)initWithRoute:(id)a3 initialStepIndex:(unint64_t)a4 desiredUserTrackingMode:(id)a5
+- (StepModeController)initWithRoute:(id)route initialStepIndex:(unint64_t)index desiredUserTrackingMode:(id)mode
 {
-  v9 = a3;
-  v10 = a5;
+  routeCopy = route;
+  modeCopy = mode;
   v16.receiver = self;
   v16.super_class = StepModeController;
   v11 = [(StepModeController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_route, a3);
-    v12->_initialStepIndex = a4;
-    if (v10)
+    objc_storeStrong(&v11->_route, route);
+    v12->_initialStepIndex = index;
+    if (modeCopy)
     {
       v12->_initializedWithUserTrackingMode = 1;
-      v12->_desiredTrackingMode = [v10 integerValue];
+      v12->_desiredTrackingMode = [modeCopy integerValue];
     }
 
     if ([(GEOComposedRoute *)v12->_route transportType]== 1)

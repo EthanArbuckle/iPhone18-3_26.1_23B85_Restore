@@ -1,33 +1,33 @@
 @interface PRMutableSwitcherConfiguration
 - (PRPosterConfiguration)desiredActiveConfiguration;
-- (id)focusConfigurationForPoster:(id)a3;
-- (id)homeConfigurationForPoster:(id)a3;
+- (id)focusConfigurationForPoster:(id)poster;
+- (id)homeConfigurationForPoster:(id)poster;
 - (id)incomingPosterConfigurations;
 - (id)incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)posterConfigurationsNeedingFocusConfigurationDeleted;
 - (id)posterConfigurationsNeedingFocusConfigurationUpdates;
 - (id)posterConfigurationsNeedingHomeScreenConfigurationUpdates;
-- (void)ingestNewPosterConfiguration:(id)a3;
-- (void)ingestNewPosterConfiguration:(id)a3 toBeAssociatedWithHomeScreenConfiguration:(id)a4;
-- (void)ingestNewPosterConfiguration:(id)a3 toBeAssociatedWithUUID:(id)a4;
-- (void)removeConfiguration:(id)a3;
-- (void)setFocusConfiguration:(id)a3 forPosterConfiguration:(id)a4;
-- (void)setHomeConfiguration:(id)a3 forPosterConfiguration:(id)a4;
+- (void)ingestNewPosterConfiguration:(id)configuration;
+- (void)ingestNewPosterConfiguration:(id)configuration toBeAssociatedWithHomeScreenConfiguration:(id)screenConfiguration;
+- (void)ingestNewPosterConfiguration:(id)configuration toBeAssociatedWithUUID:(id)d;
+- (void)removeConfiguration:(id)configuration;
+- (void)setFocusConfiguration:(id)configuration forPosterConfiguration:(id)posterConfiguration;
+- (void)setHomeConfiguration:(id)configuration forPosterConfiguration:(id)posterConfiguration;
 @end
 
 @implementation PRMutableSwitcherConfiguration
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PRMutableSwitcherConfiguration allocWithZone:a3];
-  v5 = [(PRSwitcherConfiguration *)self configurations];
-  v6 = [v5 copy];
-  v7 = [(PRSwitcherConfiguration *)self selectedConfiguration];
-  v8 = [(PRSwitcherConfiguration *)self activeConfiguration];
-  v9 = [(PRSwitcherConfiguration *)self associatedHomeScreenConfigurationsForServerIdentity];
-  v10 = [v9 copy];
-  v11 = [(PRSwitcherConfiguration *)v4 _initWithConfigurations:v6 selectedConfiguration:v7 activeConfiguration:v8 associatedHomeScreenConfigurations:v10];
+  v4 = [PRMutableSwitcherConfiguration allocWithZone:zone];
+  configurations = [(PRSwitcherConfiguration *)self configurations];
+  v6 = [configurations copy];
+  selectedConfiguration = [(PRSwitcherConfiguration *)self selectedConfiguration];
+  activeConfiguration = [(PRSwitcherConfiguration *)self activeConfiguration];
+  associatedHomeScreenConfigurationsForServerIdentity = [(PRSwitcherConfiguration *)self associatedHomeScreenConfigurationsForServerIdentity];
+  v10 = [associatedHomeScreenConfigurationsForServerIdentity copy];
+  v11 = [(PRSwitcherConfiguration *)v4 _initWithConfigurations:v6 selectedConfiguration:selectedConfiguration activeConfiguration:activeConfiguration associatedHomeScreenConfigurations:v10];
 
   v12 = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration copy];
   v13 = *(v11 + 56);
@@ -54,26 +54,26 @@
   desiredActiveConfiguration = self->_desiredActiveConfiguration;
   if (desiredActiveConfiguration)
   {
-    v3 = desiredActiveConfiguration;
+    activeConfiguration = desiredActiveConfiguration;
   }
 
   else
   {
-    v3 = [(PRSwitcherConfiguration *)self activeConfiguration];
+    activeConfiguration = [(PRSwitcherConfiguration *)self activeConfiguration];
   }
 
-  return v3;
+  return activeConfiguration;
 }
 
-- (id)focusConfigurationForPoster:(id)a3
+- (id)focusConfigurationForPoster:(id)poster
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration objectForKey:v4];
+  posterCopy = poster;
+  v5 = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration objectForKey:posterCopy];
   if (!v5 || ([MEMORY[0x1E695DFB0] null], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v7))
   {
     v10.receiver = self;
     v10.super_class = PRMutableSwitcherConfiguration;
-    v8 = [(PRSwitcherConfiguration *)&v10 focusConfigurationForPoster:v4];
+    v8 = [(PRSwitcherConfiguration *)&v10 focusConfigurationForPoster:posterCopy];
 
     v5 = v8;
   }
@@ -81,41 +81,41 @@
   return v5;
 }
 
-- (void)setFocusConfiguration:(id)a3 forPosterConfiguration:(id)a4
+- (void)setFocusConfiguration:(id)configuration forPosterConfiguration:(id)posterConfiguration
 {
-  v11 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  posterConfigurationCopy = posterConfiguration;
   overriddenFocusConfigurationForPosterConfiguration = self->_overriddenFocusConfigurationForPosterConfiguration;
   if (!overriddenFocusConfigurationForPosterConfiguration)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_overriddenFocusConfigurationForPosterConfiguration;
-    self->_overriddenFocusConfigurationForPosterConfiguration = v8;
+    self->_overriddenFocusConfigurationForPosterConfiguration = weakToStrongObjectsMapTable;
 
     overriddenFocusConfigurationForPosterConfiguration = self->_overriddenFocusConfigurationForPosterConfiguration;
   }
 
-  if (v11)
+  if (configurationCopy)
   {
-    [(NSMapTable *)overriddenFocusConfigurationForPosterConfiguration setObject:v11 forKey:v6];
+    [(NSMapTable *)overriddenFocusConfigurationForPosterConfiguration setObject:configurationCopy forKey:posterConfigurationCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
-    [(NSMapTable *)overriddenFocusConfigurationForPosterConfiguration setObject:v10 forKey:v6];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMapTable *)overriddenFocusConfigurationForPosterConfiguration setObject:null forKey:posterConfigurationCopy];
   }
 }
 
-- (id)homeConfigurationForPoster:(id)a3
+- (id)homeConfigurationForPoster:(id)poster
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_overriddenHomescreenConfigurationForPosterConfiguration objectForKey:v4];
+  posterCopy = poster;
+  v5 = [(NSMapTable *)self->_overriddenHomescreenConfigurationForPosterConfiguration objectForKey:posterCopy];
   if (!v5 || ([MEMORY[0x1E695DFB0] null], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v7))
   {
     v10.receiver = self;
     v10.super_class = PRMutableSwitcherConfiguration;
-    v8 = [(PRSwitcherConfiguration *)&v10 homeConfigurationForPoster:v4];
+    v8 = [(PRSwitcherConfiguration *)&v10 homeConfigurationForPoster:posterCopy];
 
     v5 = v8;
   }
@@ -123,16 +123,16 @@
   return v5;
 }
 
-- (void)setHomeConfiguration:(id)a3 forPosterConfiguration:(id)a4
+- (void)setHomeConfiguration:(id)configuration forPosterConfiguration:(id)posterConfiguration
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v11)
+  configurationCopy = configuration;
+  posterConfigurationCopy = posterConfiguration;
+  if (!configurationCopy)
   {
     [PRMutableSwitcherConfiguration setHomeConfiguration:a2 forPosterConfiguration:?];
   }
 
-  if (!v7)
+  if (!posterConfigurationCopy)
   {
     [PRMutableSwitcherConfiguration setHomeConfiguration:a2 forPosterConfiguration:?];
   }
@@ -140,33 +140,33 @@
   overriddenHomescreenConfigurationForPosterConfiguration = self->_overriddenHomescreenConfigurationForPosterConfiguration;
   if (!overriddenHomescreenConfigurationForPosterConfiguration)
   {
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v10 = self->_overriddenHomescreenConfigurationForPosterConfiguration;
-    self->_overriddenHomescreenConfigurationForPosterConfiguration = v9;
+    self->_overriddenHomescreenConfigurationForPosterConfiguration = weakToStrongObjectsMapTable;
 
     overriddenHomescreenConfigurationForPosterConfiguration = self->_overriddenHomescreenConfigurationForPosterConfiguration;
   }
 
-  [(NSMapTable *)overriddenHomescreenConfigurationForPosterConfiguration setObject:v11 forKey:v7];
+  [(NSMapTable *)overriddenHomescreenConfigurationForPosterConfiguration setObject:configurationCopy forKey:posterConfigurationCopy];
 }
 
-- (void)removeConfiguration:(id)a3
+- (void)removeConfiguration:(id)configuration
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = [a3 _path];
-  v5 = [v4 serverIdentity];
-  v6 = [v5 posterUUID];
+  _path = [configuration _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  v7 = [(PRSwitcherConfiguration *)self configurations];
-  v33 = [v7 mutableCopy];
+  configurations = [(PRSwitcherConfiguration *)self configurations];
+  v33 = [configurations mutableCopy];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v32 = self;
-  v8 = [(PRSwitcherConfiguration *)self configurations];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  selfCopy = self;
+  configurations2 = [(PRSwitcherConfiguration *)self configurations];
+  v9 = [configurations2 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v9)
   {
     v10 = v9;
@@ -177,33 +177,33 @@
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(configurations2);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v13 _path];
-        v15 = [v14 serverIdentity];
-        v16 = [v15 posterUUID];
-        v17 = [v16 isEqual:v6];
+        _path2 = [v13 _path];
+        serverIdentity2 = [_path2 serverIdentity];
+        posterUUID2 = [serverIdentity2 posterUUID];
+        v17 = [posterUUID2 isEqual:posterUUID];
 
         if (v17)
         {
           [v33 removeObject:v13];
           v18 = [v33 copy];
-          [(PRSwitcherConfiguration *)v32 setConfigurations:v18];
+          [(PRSwitcherConfiguration *)selfCopy setConfigurations:v18];
 
-          v19 = [(PRSwitcherConfiguration *)v32 collection];
-          v20 = [(PRSwitcherConfiguration *)v32 selectedConfiguration];
-          v21 = [v20 _path];
-          v22 = [v21 serverIdentity];
-          v23 = [v22 posterUUID];
-          v24 = [v23 isEqual:v6];
+          collection = [(PRSwitcherConfiguration *)selfCopy collection];
+          selectedConfiguration = [(PRSwitcherConfiguration *)selfCopy selectedConfiguration];
+          _path3 = [selectedConfiguration _path];
+          serverIdentity3 = [_path3 serverIdentity];
+          posterUUID3 = [serverIdentity3 posterUUID];
+          v24 = [posterUUID3 isEqual:posterUUID];
 
-          v31 = v19;
+          v31 = collection;
           if (v24)
           {
-            v25 = [v19 fallbackSelectedForSortedConfigurations:v33 reverse:0];
-            [(PRSwitcherConfiguration *)v32 setSelectedConfiguration:v25];
+            v25 = [collection fallbackSelectedForSortedConfigurations:v33 reverse:0];
+            [(PRSwitcherConfiguration *)selfCopy setSelectedConfiguration:v25];
           }
 
           else
@@ -211,22 +211,22 @@
             v25 = 0;
           }
 
-          v26 = [(PRSwitcherConfiguration *)v32 activeConfiguration];
-          v27 = [v26 _path];
-          v28 = [v27 serverIdentity];
-          v29 = [v28 posterUUID];
-          v30 = [v29 isEqual:v6];
+          activeConfiguration = [(PRSwitcherConfiguration *)selfCopy activeConfiguration];
+          _path4 = [activeConfiguration _path];
+          serverIdentity4 = [_path4 serverIdentity];
+          posterUUID4 = [serverIdentity4 posterUUID];
+          v30 = [posterUUID4 isEqual:posterUUID];
 
           if (v30)
           {
-            [(PRSwitcherConfiguration *)v32 setActiveConfiguration:v25];
+            [(PRSwitcherConfiguration *)selfCopy setActiveConfiguration:v25];
           }
 
           goto LABEL_16;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v10 = [configurations2 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v10)
       {
         continue;
@@ -239,25 +239,25 @@
 LABEL_16:
 }
 
-- (void)ingestNewPosterConfiguration:(id)a3
+- (void)ingestNewPosterConfiguration:(id)configuration
 {
-  v13 = a3;
-  if (![v13 incomingPosterType])
+  configurationCopy = configuration;
+  if (![configurationCopy incomingPosterType])
   {
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2];
   }
 
-  v5 = [v13 role];
-  v6 = [v5 isEqual:@"PRPosterRoleLockScreen"];
+  role = [configurationCopy role];
+  v6 = [role isEqual:@"PRPosterRoleLockScreen"];
 
   if ((v6 & 1) == 0)
   {
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2];
   }
 
-  v7 = [v13 path];
-  v8 = [v7 role];
-  v9 = [v8 isEqual:@"PRPosterRoleLockScreen"];
+  path = [configurationCopy path];
+  role2 = [path role];
+  v9 = [role2 isEqual:@"PRPosterRoleLockScreen"];
 
   if ((v9 & 1) == 0)
   {
@@ -274,16 +274,16 @@ LABEL_16:
     pathsToIngest = self->_pathsToIngest;
   }
 
-  [(NSMutableOrderedSet *)pathsToIngest addObject:v13];
+  [(NSMutableOrderedSet *)pathsToIngest addObject:configurationCopy];
 }
 
 - (id)incomingPosterConfigurations
 {
-  v2 = [(NSMutableOrderedSet *)self->_pathsToIngest array];
-  v3 = v2;
-  if (v2)
+  array = [(NSMutableOrderedSet *)self->_pathsToIngest array];
+  v3 = array;
+  if (array)
   {
-    v4 = v2;
+    v4 = array;
   }
 
   else
@@ -299,13 +299,13 @@ LABEL_16:
 - (id)posterConfigurationsNeedingHomeScreenConfigurationUpdates
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMapTable *)self->_overriddenHomescreenConfigurationForPosterConfiguration keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  keyEnumerator = [(NSMapTable *)self->_overriddenHomescreenConfigurationForPosterConfiguration keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -316,36 +316,36 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_overriddenHomescreenConfigurationForPosterConfiguration objectForKey:v9];
         if (v10)
         {
-          [v3 setObject:v10 forKey:v9];
+          [strongToStrongObjectsMapTable setObject:v10 forKey:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return strongToStrongObjectsMapTable;
 }
 
 - (id)posterConfigurationsNeedingFocusConfigurationUpdates
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  keyEnumerator = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -356,7 +356,7 @@ LABEL_16:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
@@ -385,17 +385,17 @@ LABEL_16:
 
         if (v13)
         {
-          [v15 setObject:v13 forKey:v8];
+          [strongToStrongObjectsMapTable setObject:v13 forKey:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  return v15;
+  return strongToStrongObjectsMapTable;
 }
 
 - (id)posterConfigurationsNeedingFocusConfigurationDeleted
@@ -406,8 +406,8 @@ LABEL_16:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  keyEnumerator = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -418,20 +418,20 @@ LABEL_16:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         v9 = [(NSMapTable *)self->_overriddenFocusConfigurationForPosterConfiguration objectForKey:v8];
-        v10 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v9 == v10)
+        if (v9 == null)
         {
           [v13 addObject:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -442,11 +442,11 @@ LABEL_16:
   return v11;
 }
 
-- (void)ingestNewPosterConfiguration:(id)a3 toBeAssociatedWithHomeScreenConfiguration:(id)a4
+- (void)ingestNewPosterConfiguration:(id)configuration toBeAssociatedWithHomeScreenConfiguration:(id)screenConfiguration
 {
-  v7 = a3;
-  v8 = a4;
-  v14 = v7;
+  configurationCopy = configuration;
+  screenConfigurationCopy = screenConfiguration;
+  v14 = configurationCopy;
   NSClassFromString(&cfstr_Princomingpost_0.isa);
   if (!v14)
   {
@@ -458,7 +458,7 @@ LABEL_16:
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2 toBeAssociatedWithHomeScreenConfiguration:?];
   }
 
-  v9 = v8;
+  v9 = screenConfigurationCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v9)
   {
@@ -470,23 +470,23 @@ LABEL_16:
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2 toBeAssociatedWithHomeScreenConfiguration:?];
   }
 
-  v10 = [(PRMutableSwitcherConfiguration *)self incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
-  v11 = [v9 _path];
-  v12 = [v11 serverIdentity];
-  v13 = [v12 posterUUID];
-  [v10 setObject:v14 forKey:v13];
+  incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = [(PRMutableSwitcherConfiguration *)self incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
+  _path = [v9 _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
+  [incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs setObject:v14 forKey:posterUUID];
 }
 
-- (void)ingestNewPosterConfiguration:(id)a3 toBeAssociatedWithUUID:(id)a4
+- (void)ingestNewPosterConfiguration:(id)configuration toBeAssociatedWithUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 incomingPosterType] != 4 && objc_msgSend(v7, "incomingPosterType") != 5)
+  configurationCopy = configuration;
+  dCopy = d;
+  if ([configurationCopy incomingPosterType] != 4 && objc_msgSend(configurationCopy, "incomingPosterType") != 5)
   {
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2 toBeAssociatedWithUUID:?];
   }
 
-  v11 = v7;
+  v11 = configurationCopy;
   NSClassFromString(&cfstr_Princomingpost_0.isa);
   if (!v11)
   {
@@ -498,7 +498,7 @@ LABEL_16:
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2 toBeAssociatedWithUUID:?];
   }
 
-  v9 = v8;
+  v9 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v9)
   {
@@ -510,8 +510,8 @@ LABEL_16:
     [PRMutableSwitcherConfiguration ingestNewPosterConfiguration:a2 toBeAssociatedWithUUID:?];
   }
 
-  v10 = [(PRMutableSwitcherConfiguration *)self incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
-  [v10 setObject:v11 forKey:v9];
+  incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = [(PRMutableSwitcherConfiguration *)self incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs];
+  [incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs setObject:v11 forKey:v9];
 }
 
 - (id)incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs
@@ -519,9 +519,9 @@ LABEL_16:
   incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = self->_incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs;
   if (!incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs)
   {
-    v4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v5 = self->_incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs;
-    self->_incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = v4;
+    self->_incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = strongToStrongObjectsMapTable;
 
     incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs = self->_incomingPosterConfigurationsToBeAssocatedWithExistingPosterConfigurationsUUIDs;
   }

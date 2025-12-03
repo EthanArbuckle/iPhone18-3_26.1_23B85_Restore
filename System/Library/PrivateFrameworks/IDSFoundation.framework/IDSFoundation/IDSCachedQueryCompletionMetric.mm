@@ -1,24 +1,24 @@
 @interface IDSCachedQueryCompletionMetric
-- (IDSCachedQueryCompletionMetric)initWithService:(id)a3 queryURITypes:(unsigned int)a4 queryReason:(id)a5 uriCount:(unint64_t)a6;
+- (IDSCachedQueryCompletionMetric)initWithService:(id)service queryURITypes:(unsigned int)types queryReason:(id)reason uriCount:(unint64_t)count;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation IDSCachedQueryCompletionMetric
 
-- (IDSCachedQueryCompletionMetric)initWithService:(id)a3 queryURITypes:(unsigned int)a4 queryReason:(id)a5 uriCount:(unint64_t)a6
+- (IDSCachedQueryCompletionMetric)initWithService:(id)service queryURITypes:(unsigned int)types queryReason:(id)reason uriCount:(unint64_t)count
 {
-  v11 = a3;
-  v12 = a5;
+  serviceCopy = service;
+  reasonCopy = reason;
   v16.receiver = self;
   v16.super_class = IDSCachedQueryCompletionMetric;
   v13 = [(IDSCachedQueryCompletionMetric *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_serviceIdentifier, a3);
-    v14->_queryURITypes = a4;
-    objc_storeStrong(&v14->_queryReason, a5);
-    v14->_uriCount = a6;
+    objc_storeStrong(&v13->_serviceIdentifier, service);
+    v14->_queryURITypes = types;
+    objc_storeStrong(&v14->_queryReason, reason);
+    v14->_uriCount = count;
   }
 
   return v14;

@@ -1,25 +1,25 @@
 @interface PBFPosterSnapshotContext
-+ (id)snapshotContextForDisplayContext:(id)a3 definition:(id)a4;
-+ (id)snapshotContextsForRequest:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PBFPosterSnapshotContext)initWithDisplayContext:(id)a3 definition:(id)a4;
++ (id)snapshotContextForDisplayContext:(id)context definition:(id)definition;
++ (id)snapshotContextsForRequest:(id)request;
+- (BOOL)isEqual:(id)equal;
+- (PBFPosterSnapshotContext)initWithDisplayContext:(id)context definition:(id)definition;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PBFPosterSnapshotContext
 
-+ (id)snapshotContextsForRequest:(id)a3
++ (id)snapshotContextsForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 definitions];
+  requestCopy = request;
+  definitions = [requestCopy definitions];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__PBFPosterSnapshotContext_snapshotContextsForRequest___block_invoke;
   v8[3] = &unk_2782C8980;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 bs_mapNoNulls:v8];
+  v9 = requestCopy;
+  v5 = requestCopy;
+  v6 = [definitions bs_mapNoNulls:v8];
 
   return v6;
 }
@@ -34,19 +34,19 @@ PBFPosterSnapshotContext *__55__PBFPosterSnapshotContext_snapshotContextsForRequ
   return v6;
 }
 
-+ (id)snapshotContextForDisplayContext:(id)a3 definition:(id)a4
++ (id)snapshotContextForDisplayContext:(id)context definition:(id)definition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PBFPosterSnapshotContext alloc] initWithDisplayContext:v6 definition:v5];
+  definitionCopy = definition;
+  contextCopy = context;
+  v7 = [[PBFPosterSnapshotContext alloc] initWithDisplayContext:contextCopy definition:definitionCopy];
 
   return v7;
 }
 
-- (PBFPosterSnapshotContext)initWithDisplayContext:(id)a3 definition:(id)a4
+- (PBFPosterSnapshotContext)initWithDisplayContext:(id)context definition:(id)definition
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  definitionCopy = definition;
   v12.receiver = self;
   v12.super_class = PBFPosterSnapshotContext;
   v9 = [(PBFPosterSnapshotContext *)&v12 init];
@@ -54,8 +54,8 @@ PBFPosterSnapshotContext *__55__PBFPosterSnapshotContext_snapshotContextsForRequ
   if (v9)
   {
     v9->_cachedHash = 0x7FFFFFFFFFFFFFFFLL;
-    objc_storeStrong(&v9->_displayContext, a3);
-    objc_storeStrong(&v10->_definition, a4);
+    objc_storeStrong(&v9->_displayContext, context);
+    objc_storeStrong(&v10->_definition, definition);
   }
 
   return v10;
@@ -76,10 +76,10 @@ PBFPosterSnapshotContext *__55__PBFPosterSnapshotContext_snapshotContextsForRequ
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -87,7 +87,7 @@ PBFPosterSnapshotContext *__55__PBFPosterSnapshotContext_snapshotContextsForRequ
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -110,8 +110,8 @@ PBFPosterSnapshotContext *__55__PBFPosterSnapshotContext_snapshotContextsForRequ
 
     if (v9 && ([(PBFPosterSnapshotContext *)v9 displayContext], v10 = objc_claimAutoreleasedReturnValue(), [(PBFPosterSnapshotContext *)self displayContext], v11 = objc_claimAutoreleasedReturnValue(), v12 = BSEqualObjects(), v11, v10, v12))
     {
-      v13 = [(PBFPosterSnapshotContext *)v9 definition];
-      v14 = [(PBFPosterSnapshotContext *)self definition];
+      definition = [(PBFPosterSnapshotContext *)v9 definition];
+      definition2 = [(PBFPosterSnapshotContext *)self definition];
       v8 = BSEqualObjects();
     }
 
@@ -129,9 +129,9 @@ PBFPosterSnapshotContext *__55__PBFPosterSnapshotContext_snapshotContextsForRequ
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_displayContext withName:@"displayContext"];
   v5 = [v3 appendObject:self->_definition withName:@"definition"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -3,26 +3,26 @@
 - (NSString)configurationName;
 - (NSString)flipBookName;
 - (NSString)toState;
-- (SBUISystemApertureSecureFlipBookAction)initWithConfigurationName:(id)a3 layoutMode:(id)a4 flipBookName:(id)a5 type:(int64_t)a6 toState:(id)a7 captureBoundsUpdateHandler:(id)a8 completionHandler:(id)a9;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (SBUISystemApertureSecureFlipBookAction)initWithConfigurationName:(id)name layoutMode:(id)mode flipBookName:(id)bookName type:(int64_t)type toState:(id)state captureBoundsUpdateHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (int64_t)type;
 - (void)markComplete;
-- (void)markCompleteWithUpdateCaptureBounds:(CGRect)a3;
+- (void)markCompleteWithUpdateCaptureBounds:(CGRect)bounds;
 @end
 
 @implementation SBUISystemApertureSecureFlipBookAction
 
-- (SBUISystemApertureSecureFlipBookAction)initWithConfigurationName:(id)a3 layoutMode:(id)a4 flipBookName:(id)a5 type:(int64_t)a6 toState:(id)a7 captureBoundsUpdateHandler:(id)a8 completionHandler:(id)a9
+- (SBUISystemApertureSecureFlipBookAction)initWithConfigurationName:(id)name layoutMode:(id)mode flipBookName:(id)bookName type:(int64_t)type toState:(id)state captureBoundsUpdateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  if (v15)
+  nameCopy = name;
+  modeCopy = mode;
+  bookNameCopy = bookName;
+  stateCopy = state;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (nameCopy)
   {
-    if (v17)
+    if (bookNameCopy)
     {
       goto LABEL_3;
     }
@@ -31,10 +31,10 @@
   else
   {
     [SBUISystemApertureSecureFlipBookAction initWithConfigurationName:layoutMode:flipBookName:type:toState:captureBoundsUpdateHandler:completionHandler:];
-    if (v17)
+    if (bookNameCopy)
     {
 LABEL_3:
-      if (v16)
+      if (modeCopy)
       {
         goto LABEL_4;
       }
@@ -44,17 +44,17 @@ LABEL_3:
   }
 
   [SBUISystemApertureSecureFlipBookAction initWithConfigurationName:layoutMode:flipBookName:type:toState:captureBoundsUpdateHandler:completionHandler:];
-  if (v16)
+  if (modeCopy)
   {
 LABEL_4:
-    if (v18)
+    if (stateCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
     [SBUISystemApertureSecureFlipBookAction initWithConfigurationName:layoutMode:flipBookName:type:toState:captureBoundsUpdateHandler:completionHandler:];
-    if (v20)
+    if (completionHandlerCopy)
     {
       goto LABEL_6;
     }
@@ -66,35 +66,35 @@ LABEL_11:
 
 LABEL_9:
   [SBUISystemApertureSecureFlipBookAction initWithConfigurationName:layoutMode:flipBookName:type:toState:captureBoundsUpdateHandler:completionHandler:];
-  if (!v18)
+  if (!stateCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  if (!v20)
+  if (!completionHandlerCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
   v21 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v22 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+  v22 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   [v21 setObject:v22 forSetting:1];
 
-  [v21 setObject:v18 forSetting:2];
-  [v21 setObject:v15 forSetting:3];
-  [v21 setObject:v17 forSetting:4];
-  [v21 setObject:v16 forSetting:5];
+  [v21 setObject:stateCopy forSetting:2];
+  [v21 setObject:nameCopy forSetting:3];
+  [v21 setObject:bookNameCopy forSetting:4];
+  [v21 setObject:modeCopy forSetting:5];
   v23 = MEMORY[0x1E698E5F8];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_layoutMode_flipBookName_type_toState_captureBoundsUpdateHandler_completionHandler___block_invoke;
   v30[3] = &unk_1E789FBE0;
-  v31 = v19;
-  v32 = v20;
-  v24 = v20;
-  v25 = v19;
+  v31 = handlerCopy;
+  v32 = completionHandlerCopy;
+  v24 = completionHandlerCopy;
+  v25 = handlerCopy;
   v26 = [v23 responderWithHandler:v30];
   [v26 setQueue:MEMORY[0x1E69E96A0]];
   v29.receiver = self;
@@ -133,17 +133,17 @@ void __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_lay
 
 - (int64_t)type
 {
-  v2 = [(SBUISystemApertureSecureFlipBookAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(SBUISystemApertureSecureFlipBookAction *)self info];
+  v3 = [info objectForSetting:1];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (NSString)toState
 {
-  v2 = [(SBUISystemApertureSecureFlipBookAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(SBUISystemApertureSecureFlipBookAction *)self info];
+  v3 = [info objectForSetting:2];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -166,8 +166,8 @@ void __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_lay
 
 - (NSString)configurationName
 {
-  v2 = [(SBUISystemApertureSecureFlipBookAction *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(SBUISystemApertureSecureFlipBookAction *)self info];
+  v3 = [info objectForSetting:3];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -190,8 +190,8 @@ void __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_lay
 
 - (NSString)flipBookName
 {
-  v2 = [(SBUISystemApertureSecureFlipBookAction *)self info];
-  v3 = [v2 objectForSetting:4];
+  info = [(SBUISystemApertureSecureFlipBookAction *)self info];
+  v3 = [info objectForSetting:4];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -214,8 +214,8 @@ void __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_lay
 
 - (NSNumber)layoutMode
 {
-  v2 = [(SBUISystemApertureSecureFlipBookAction *)self info];
-  v3 = [v2 objectForSetting:5];
+  info = [(SBUISystemApertureSecureFlipBookAction *)self info];
+  v3 = [info objectForSetting:5];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -240,17 +240,17 @@ void __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_lay
 {
   if ([(SBUISystemApertureSecureFlipBookAction *)self isValid]&& [(SBUISystemApertureSecureFlipBookAction *)self canSendResponse])
   {
-    v3 = [MEMORY[0x1E698E600] response];
-    [(SBUISystemApertureSecureFlipBookAction *)self sendResponse:v3];
+    response = [MEMORY[0x1E698E600] response];
+    [(SBUISystemApertureSecureFlipBookAction *)self sendResponse:response];
   }
 }
 
-- (void)markCompleteWithUpdateCaptureBounds:(CGRect)a3
+- (void)markCompleteWithUpdateCaptureBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(SBUISystemApertureSecureFlipBookAction *)self isValid]&& [(SBUISystemApertureSecureFlipBookAction *)self canSendResponse])
   {
     v10 = objc_alloc_init(MEMORY[0x1E698E700]);
@@ -262,16 +262,16 @@ void __150__SBUISystemApertureSecureFlipBookAction_initWithConfigurationName_lay
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 4)
+  if (setting - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E789FC00[a3 - 1];
+    return off_1E789FC00[setting - 1];
   }
 }
 

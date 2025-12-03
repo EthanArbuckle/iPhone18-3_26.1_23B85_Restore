@@ -1,5 +1,5 @@
 @interface MessageView
-- (MessageView)initWithTitle:(id)a3;
+- (MessageView)initWithTitle:(id)title;
 - (void)createAnimation;
 - (void)layoutSubviews;
 @end
@@ -10,8 +10,8 @@
 {
   v3 = self->_animationView;
   v25 = +[UITraitCollection _currentTraitCollection];
-  v4 = [(UIView *)v3 traitCollection];
-  [UITraitCollection _setCurrentTraitCollection:v4];
+  traitCollection = [(UIView *)v3 traitCollection];
+  [UITraitCollection _setCurrentTraitCollection:traitCollection];
 
   [(UIView *)v3 bounds];
   v6 = v5;
@@ -58,9 +58,9 @@
   [v17 setLineWidth:7.0];
   [v17 setLineJoin:kCALineJoinRound];
   [v17 setLineCap:kCALineCapRound];
-  v19 = [(UIView *)v3 layer];
+  layer = [(UIView *)v3 layer];
 
-  [v19 addSublayer:v17];
+  [layer addSublayer:v17];
   v20 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
   v21 = [NSNumber numberWithFloat:0.0];
   [v20 setFromValue:v21];
@@ -102,109 +102,109 @@
   }
 }
 
-- (MessageView)initWithTitle:(id)a3
+- (MessageView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v58.receiver = self;
   v58.super_class = MessageView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(MessageView *)&v58 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v8)
+  height = [(MessageView *)&v58 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v9 = [UIColor colorNamed:@"HUD"];
-    color = v8->_color;
-    v8->_color = v9;
+    color = height->_color;
+    height->_color = v9;
 
     v11 = [UIColor colorWithWhite:0.0 alpha:0.100000001];
-    [(MessageView *)v8 setBackgroundColor:v11];
+    [(MessageView *)height setBackgroundColor:v11];
 
-    [(MessageView *)v8 setUserInteractionEnabled:0];
+    [(MessageView *)height setUserInteractionEnabled:0];
     v12 = [UIVisualEffectView alloc];
     v13 = [UIBlurEffect effectWithStyle:7];
     v14 = [v12 initWithEffect:v13];
 
     [(UIVisualEffectView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(MessageView *)v8 addSubview:v14];
-    v15 = [(UIVisualEffectView *)v14 layer];
-    [v15 setCornerRadius:15.0];
+    [(MessageView *)height addSubview:v14];
+    layer = [(UIVisualEffectView *)v14 layer];
+    [layer setCornerRadius:15.0];
 
     [(UIVisualEffectView *)v14 setClipsToBounds:1];
-    visualEffectView = v8->_visualEffectView;
-    v8->_visualEffectView = v14;
+    visualEffectView = height->_visualEffectView;
+    height->_visualEffectView = v14;
     v17 = v14;
 
     v18 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(UIView *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [(UIVisualEffectView *)v17 contentView];
-    [v19 addSubview:v18];
+    contentView = [(UIVisualEffectView *)v17 contentView];
+    [contentView addSubview:v18];
 
-    animationView = v8->_animationView;
-    v8->_animationView = v18;
+    animationView = height->_animationView;
+    height->_animationView = v18;
     v21 = v18;
 
     v22 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(UIVisualEffectView *)v17 contentView];
-    [v23 addSubview:v22];
+    contentView2 = [(UIVisualEffectView *)v17 contentView];
+    [contentView2 addSubview:v22];
 
     [v22 setTextAlignment:1];
-    [v22 setAttributedText:v4];
-    [v22 setTextColor:v8->_color];
+    [v22 setAttributedText:titleCopy];
+    [v22 setTextColor:height->_color];
     [v22 setNumberOfLines:0];
-    v24 = [(UIVisualEffectView *)v17 centerYAnchor];
-    v25 = [(MessageView *)v8 centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
-    v57 = v4;
-    offsetConstraint = v8->_offsetConstraint;
-    v8->_offsetConstraint = v26;
+    centerYAnchor = [(UIVisualEffectView *)v17 centerYAnchor];
+    centerYAnchor2 = [(MessageView *)height centerYAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    v57 = titleCopy;
+    offsetConstraint = height->_offsetConstraint;
+    height->_offsetConstraint = v26;
 
-    v56 = [(UIVisualEffectView *)v17 centerXAnchor];
-    v55 = [(MessageView *)v8 centerXAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    centerXAnchor = [(UIVisualEffectView *)v17 centerXAnchor];
+    centerXAnchor2 = [(MessageView *)height centerXAnchor];
+    v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v59[0] = v54;
-    v59[1] = v8->_offsetConstraint;
-    v53 = [(UIVisualEffectView *)v17 widthAnchor];
-    v52 = [v53 constraintEqualToConstant:156.0];
+    v59[1] = height->_offsetConstraint;
+    widthAnchor = [(UIVisualEffectView *)v17 widthAnchor];
+    v52 = [widthAnchor constraintEqualToConstant:156.0];
     v59[2] = v52;
-    v51 = [(UIView *)v21 centerXAnchor];
-    v50 = [(UIVisualEffectView *)v17 centerXAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    centerXAnchor3 = [(UIView *)v21 centerXAnchor];
+    centerXAnchor4 = [(UIVisualEffectView *)v17 centerXAnchor];
+    v49 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v59[3] = v49;
-    v48 = [(UIView *)v21 topAnchor];
-    v47 = [(UIVisualEffectView *)v17 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:30.0];
+    topAnchor = [(UIView *)v21 topAnchor];
+    topAnchor2 = [(UIVisualEffectView *)v17 topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:30.0];
     v59[4] = v46;
-    v45 = [(UIView *)v21 heightAnchor];
-    v44 = [v45 constraintEqualToConstant:56.0];
+    heightAnchor = [(UIView *)v21 heightAnchor];
+    v44 = [heightAnchor constraintEqualToConstant:56.0];
     v59[5] = v44;
-    v43 = [(UIView *)v21 widthAnchor];
-    v42 = [v43 constraintEqualToConstant:60.0];
+    widthAnchor2 = [(UIView *)v21 widthAnchor];
+    v42 = [widthAnchor2 constraintEqualToConstant:60.0];
     v59[6] = v42;
-    v41 = [v22 leadingAnchor];
-    v40 = [(UIVisualEffectView *)v17 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:16.0];
+    leadingAnchor = [v22 leadingAnchor];
+    leadingAnchor2 = [(UIVisualEffectView *)v17 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v59[7] = v39;
-    v38 = [v22 trailingAnchor];
-    v37 = [(UIVisualEffectView *)v17 trailingAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37 constant:-16.0];
+    trailingAnchor = [v22 trailingAnchor];
+    trailingAnchor2 = [(UIVisualEffectView *)v17 trailingAnchor];
+    v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v59[8] = v36;
-    v35 = [v22 topAnchor];
-    v28 = [(UIView *)v21 bottomAnchor];
-    v29 = [v35 constraintEqualToAnchor:v28 constant:16.0];
+    topAnchor3 = [v22 topAnchor];
+    bottomAnchor = [(UIView *)v21 bottomAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
     v59[9] = v29;
-    v30 = [v22 bottomAnchor];
-    v31 = [(UIVisualEffectView *)v17 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:-16.0];
+    bottomAnchor2 = [v22 bottomAnchor];
+    bottomAnchor3 = [(UIVisualEffectView *)v17 bottomAnchor];
+    v32 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-16.0];
     v59[10] = v32;
     v33 = [NSArray arrayWithObjects:v59 count:11];
     [NSLayoutConstraint activateConstraints:v33];
 
-    v4 = v57;
+    titleCopy = v57;
   }
 
-  return v8;
+  return height;
 }
 
 @end

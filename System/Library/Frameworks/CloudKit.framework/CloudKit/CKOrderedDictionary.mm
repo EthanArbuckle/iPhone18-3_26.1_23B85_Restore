@@ -1,11 +1,11 @@
 @interface CKOrderedDictionary
-+ (CKOrderedDictionary)orderedDictionaryWithCapacity:(unint64_t)a3;
++ (CKOrderedDictionary)orderedDictionaryWithCapacity:(unint64_t)capacity;
 + (id)orderedDictionary;
 - (CKOrderedDictionary)init;
-- (CKOrderedDictionary)initWithCapacity:(unint64_t)a3;
+- (CKOrderedDictionary)initWithCapacity:(unint64_t)capacity;
 - (id)description;
-- (void)addObject:(id)a3 forKey:(id)a4;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)addObject:(id)object forKey:(id)key;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 @end
 
 @implementation CKOrderedDictionary
@@ -32,22 +32,22 @@
   return v4;
 }
 
-+ (CKOrderedDictionary)orderedDictionaryWithCapacity:(unint64_t)a3
++ (CKOrderedDictionary)orderedDictionaryWithCapacity:(unint64_t)capacity
 {
   v4 = [CKOrderedDictionary alloc];
-  v6 = objc_msgSend_initWithCapacity_(v4, v5, a3);
+  v6 = objc_msgSend_initWithCapacity_(v4, v5, capacity);
 
   return v6;
 }
 
-- (CKOrderedDictionary)initWithCapacity:(unint64_t)a3
+- (CKOrderedDictionary)initWithCapacity:(unint64_t)capacity
 {
   v9.receiver = self;
   v9.super_class = CKOrderedDictionary;
   v5 = [(CKOrderedDictionary *)&v9 init];
   if (v5)
   {
-    v6 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v4, a3);
+    v6 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v4, capacity);
     tuples = v5->tuples;
     v5->tuples = v6;
   }
@@ -96,21 +96,21 @@
   return v3;
 }
 
-- (void)addObject:(id)a3 forKey:(id)a4
+- (void)addObject:(id)object forKey:(id)key
 {
   tuples = self->tuples;
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v8 = [CKTuple2 alloc];
-  v11 = objc_msgSend_initWithObject1_object2_(v8, v9, v6, v7);
+  v11 = objc_msgSend_initWithObject1_object2_(v8, v9, keyCopy, objectCopy);
 
   objc_msgSend_addObject_(tuples, v10, v11);
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -134,7 +134,7 @@ LABEL_3:
       v19 = 0;
       v14 = objc_msgSend_v1(v13, v8, v9);
       v17 = objc_msgSend_v2(v13, v15, v16);
-      v4[2](v4, v14, v17, &v19);
+      blockCopy[2](blockCopy, v14, v17, &v19);
 
       if (v19)
       {

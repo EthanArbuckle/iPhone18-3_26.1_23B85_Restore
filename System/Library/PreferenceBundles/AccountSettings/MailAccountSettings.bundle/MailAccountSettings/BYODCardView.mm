@@ -1,14 +1,14 @@
 @interface BYODCardView
-- (BYODCardView)initWithFrame:(CGRect)a3;
+- (BYODCardView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BYODCardView
 
-- (BYODCardView)initWithFrame:(CGRect)a3
+- (BYODCardView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = BYODCardView;
-  return [(BYODCardView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(BYODCardView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

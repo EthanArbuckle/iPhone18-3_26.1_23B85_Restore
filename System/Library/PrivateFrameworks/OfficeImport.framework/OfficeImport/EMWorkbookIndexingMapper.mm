@@ -1,54 +1,54 @@
 @interface EMWorkbookIndexingMapper
-- (void)finishMappingWithState:(id)a3;
-- (void)mapElement:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 isLastElement:(BOOL)a6;
+- (void)finishMappingWithState:(id)state;
+- (void)mapElement:(id)element atIndex:(unint64_t)index withState:(id)state isLastElement:(BOOL)lastElement;
 @end
 
 @implementation EMWorkbookIndexingMapper
 
-- (void)finishMappingWithState:(id)a3
+- (void)finishMappingWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = EMWorkbookIndexingMapper;
-  [(CMIndexingMapper *)&v14 finishMappingWithState:v4];
-  v5 = [(CMMapper *)self document];
-  v6 = [v5 resources];
-  v7 = [v6 strings];
+  [(CMIndexingMapper *)&v14 finishMappingWithState:stateCopy];
+  document = [(CMMapper *)self document];
+  resources = [document resources];
+  strings = [resources strings];
 
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  for (i = 0; i < [v7 count]; ++i)
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(strings, "count")}];
+  for (i = 0; i < [strings count]; ++i)
   {
-    v10 = [v7 objectAtIndex:i];
-    v11 = [v10 string];
-    [v8 addObject:v11];
+    v10 = [strings objectAtIndex:i];
+    string = [v10 string];
+    [v8 addObject:string];
   }
 
-  v12 = [v4 textContent];
+  textContent = [stateCopy textContent];
   v13 = [v8 componentsJoinedByString:@"\n"];
-  [v12 appendString:v13];
+  [textContent appendString:v13];
 }
 
-- (void)mapElement:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 isLastElement:(BOOL)a6
+- (void)mapElement:(id)element atIndex:(unint64_t)index withState:(id)state isLastElement:(BOOL)lastElement
 {
-  v14 = a3;
-  v7 = a5;
+  elementCopy = element;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v14;
+    v8 = elementCopy;
     if (([v8 isHidden] & 1) == 0)
     {
-      v9 = [v8 name];
+      name = [v8 name];
 
-      if (v9)
+      if (name)
       {
-        v10 = [v7 textContent];
-        v11 = [v8 name];
-        v12 = [v11 string];
-        [v10 appendString:v12];
+        textContent = [stateCopy textContent];
+        name2 = [v8 name];
+        string = [name2 string];
+        [textContent appendString:string];
 
-        v13 = [v7 textContent];
-        [v13 appendString:@"\n"];
+        textContent2 = [stateCopy textContent];
+        [textContent2 appendString:@"\n"];
       }
     }
   }

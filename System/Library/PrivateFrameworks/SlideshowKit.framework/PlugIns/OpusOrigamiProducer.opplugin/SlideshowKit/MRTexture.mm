@@ -1,34 +1,34 @@
 @interface MRTexture
-- (MRTexture)initWithData:(void *)a3 width:(unsigned int)a4 height:(unsigned int)a5 rowBytes:(unsigned int)a6 inGLContext:(id)a7 options:(id *)a8;
-- (MRTexture)initWithDatas:(void *)a3 dataCount:(unint64_t)a4 width:(unsigned int)a5 height:(unsigned int)a6 rowBytes:(unsigned int)a7 inGLContext:(id)a8 options:(id *)a9;
-- (MRTexture)initWithTextureName:(unsigned int)a3 textureTarget:(unsigned int)a4 size:(id)a5 inGLContext:(id)a6 options:(id *)a7;
-- (id)_initWithSize:(id)a3 inGLContext:(id)a4 isFBO:(BOOL)a5 options:(id *)a6;
+- (MRTexture)initWithData:(void *)data width:(unsigned int)width height:(unsigned int)height rowBytes:(unsigned int)bytes inGLContext:(id)context options:(id *)options;
+- (MRTexture)initWithDatas:(void *)datas dataCount:(unint64_t)count width:(unsigned int)width height:(unsigned int)height rowBytes:(unsigned int)bytes inGLContext:(id)context options:(id *)options;
+- (MRTexture)initWithTextureName:(unsigned int)name textureTarget:(unsigned int)target size:(id)size inGLContext:(id)context options:(id *)options;
+- (id)_initWithSize:(id)size inGLContext:(id)context isFBO:(BOOL)o options:(id *)options;
 - (void)cleanup;
 - (void)dealloc;
-- (void)setBorderColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setLabel:(id)a3;
-- (void)uploadData:(void *)a3 rowBytes:(unint64_t)a4 toRect:(CGRect)a5;
+- (void)setBorderColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setLabel:(id)label;
+- (void)uploadData:(void *)data rowBytes:(unint64_t)bytes toRect:(CGRect)rect;
 @end
 
 @implementation MRTexture
 
-- (id)_initWithSize:(id)a3 inGLContext:(id)a4 isFBO:(BOOL)a5 options:(id *)a6
+- (id)_initWithSize:(id)size inGLContext:(id)context isFBO:(BOOL)o options:(id *)options
 {
-  v7 = a5;
-  objc_sync_enter(a4);
+  oCopy = o;
+  objc_sync_enter(context);
   v11 = [(MRTexture *)self init];
   if (v11)
   {
-    v12 = a4;
+    contextCopy = context;
     v13 = 1111970369;
-    v11->_parenGLContext = v12;
-    v11->_size = a3;
-    if (a6)
+    v11->_parenGLContext = contextCopy;
+    v11->_size = size;
+    if (options)
     {
-      v11->_hasMipmap = a6->var1;
-      v11->_isPowerOfTwo = a6->var2;
-      var3 = a6->var3;
-      if (a6->var3)
+      v11->_hasMipmap = options->var1;
+      v11->_isPowerOfTwo = options->var2;
+      var3 = options->var3;
+      if (options->var3)
       {
         v13 = 40;
       }
@@ -46,23 +46,23 @@
 
     v11->_textureTarget = 3553;
     v11->_pixelFormat = v13;
-    if (v7)
+    if (oCopy)
     {
-      v12 = [[EAGLContext alloc] initWithAPI:2 sharegroup:{-[EAGLContext sharegroup](v11->_parenGLContext, "sharegroup")}];
-      v11->_glContext = v12;
+      contextCopy = [[EAGLContext alloc] initWithAPI:2 sharegroup:{-[EAGLContext sharegroup](v11->_parenGLContext, "sharegroup")}];
+      v11->_glContext = contextCopy;
     }
 
-    if (v12)
+    if (contextCopy)
     {
       v15 = +[EAGLContext currentContext];
       v16 = v15;
-      if (v15 != v12)
+      if (v15 != contextCopy)
       {
-        [EAGLContext setCurrentContext:v12];
+        [EAGLContext setCurrentContext:contextCopy];
       }
 
       glGenTextures(1, &v11->_textureName);
-      if (v7)
+      if (oCopy)
       {
         glGenFramebuffers(1, &v11->_framebufferName);
         glBindFramebuffer(0x8D40u, v11->_framebufferName);
@@ -77,9 +77,9 @@
       glTexParameteri(v11->_textureTarget, 0x2802u, 33071);
       v11->_wrapT = 33071;
       glTexParameteri(v11->_textureTarget, 0x2803u, 33071);
-      if (a6)
+      if (options)
       {
-        var4 = a6->var4;
+        var4 = options->var4;
       }
 
       else
@@ -119,7 +119,7 @@
       }
 
       glTexImage2D(v11->_textureTarget, 0, v18, v11->_size.width, v11->_size.height, 0, v19, v20, 0);
-      if (v7)
+      if (oCopy)
       {
         glFramebufferTexture2D(0x8D40u, 0x8CE0u, v11->_textureTarget, v11->_textureName, 0);
         v21 = glCheckFramebufferStatus(0x8D40u);
@@ -161,25 +161,25 @@
     }
   }
 
-  objc_sync_exit(a4);
+  objc_sync_exit(context);
   return v11;
 }
 
-- (MRTexture)initWithTextureName:(unsigned int)a3 textureTarget:(unsigned int)a4 size:(id)a5 inGLContext:(id)a6 options:(id *)a7
+- (MRTexture)initWithTextureName:(unsigned int)name textureTarget:(unsigned int)target size:(id)size inGLContext:(id)context options:(id *)options
 {
-  objc_sync_enter(a6);
+  objc_sync_enter(context);
   v13 = [(MRTexture *)self init];
   if (v13)
   {
-    v14 = a6;
+    contextCopy = context;
     v15 = 1111970369;
-    v13->_parenGLContext = v14;
-    v13->_size = a5;
-    if (a7)
+    v13->_parenGLContext = contextCopy;
+    v13->_size = size;
+    if (options)
     {
-      v13->_hasMipmap = a7->var1;
-      v13->_isPowerOfTwo = a7->var2;
-      if (a7->var3)
+      v13->_hasMipmap = options->var1;
+      v13->_isPowerOfTwo = options->var2;
+      if (options->var3)
       {
         v15 = 40;
       }
@@ -190,9 +190,9 @@
       }
     }
 
-    v13->_textureTarget = a4;
+    v13->_textureTarget = target;
     v13->_pixelFormat = v15;
-    v13->_textureName = a3;
+    v13->_textureName = name;
     v13->_textureNameIsNotOurs = 1;
     v16 = +[EAGLContext currentContext];
     v17 = v16;
@@ -217,22 +217,22 @@
     }
   }
 
-  objc_sync_exit(a6);
+  objc_sync_exit(context);
   return v13;
 }
 
-- (MRTexture)initWithData:(void *)a3 width:(unsigned int)a4 height:(unsigned int)a5 rowBytes:(unsigned int)a6 inGLContext:(id)a7 options:(id *)a8
+- (MRTexture)initWithData:(void *)data width:(unsigned int)width height:(unsigned int)height rowBytes:(unsigned int)bytes inGLContext:(id)context options:(id *)options
 {
-  v10 = *&a5;
-  objc_sync_enter(a7);
+  v10 = *&height;
+  objc_sync_enter(context);
   v14 = [(MRTexture *)self init];
   if (!v14)
   {
     goto LABEL_39;
   }
 
-  v14->_parenGLContext = a7;
-  v14->_size = (a4 | (v10 << 32));
+  v14->_parenGLContext = context;
+  v14->_size = (width | (v10 << 32));
   v14->_textureTarget = 3553;
   v15 = +[EAGLContext currentContext];
   v16 = v15;
@@ -244,7 +244,7 @@
   glGenTextures(1, &v14->_textureName);
   glActiveTexture(0x84C0u);
   glBindTexture(v14->_textureTarget, v14->_textureName);
-  if (!a8)
+  if (!options)
   {
     hasMipmap = 0;
     p_hasMipmap = &v14->_hasMipmap;
@@ -286,12 +286,12 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  var1 = a8->var1;
+  var1 = options->var1;
   v14->_hasMipmap = var1;
   p_hasMipmap = &v14->_hasMipmap;
-  v14->_isPowerOfTwo = a8->var2;
-  var3 = a8->var3;
-  var5 = a8->var5;
+  v14->_isPowerOfTwo = options->var2;
+  var3 = options->var3;
+  var5 = options->var5;
   textureTarget = v14->_textureTarget;
   if (var1)
   {
@@ -377,7 +377,7 @@ LABEL_16:
     v29 = v26;
   }
 
-  glTexImage2D(v14->_textureTarget, 0, v27, v14->_size.width, v14->_size.height, 0, v28, v29, a3);
+  glTexImage2D(v14->_textureTarget, 0, v27, v14->_size.width, v14->_size.height, 0, v28, v29, data);
   if (*p_hasMipmap)
   {
     glGenerateMipmap(v14->_textureTarget);
@@ -391,19 +391,19 @@ LABEL_16:
 
   v14->_timestamp = MRGetCurrentTime();
 LABEL_39:
-  objc_sync_exit(a7);
+  objc_sync_exit(context);
   return v14;
 }
 
-- (MRTexture)initWithDatas:(void *)a3 dataCount:(unint64_t)a4 width:(unsigned int)a5 height:(unsigned int)a6 rowBytes:(unsigned int)a7 inGLContext:(id)a8 options:(id *)a9
+- (MRTexture)initWithDatas:(void *)datas dataCount:(unint64_t)count width:(unsigned int)width height:(unsigned int)height rowBytes:(unsigned int)bytes inGLContext:(id)context options:(id *)options
 {
-  v10 = *&a6;
-  objc_sync_enter(a8);
+  v10 = *&height;
+  objc_sync_enter(context);
   v15 = [(MRTexture *)self init];
   if (v15)
   {
-    v15->_parenGLContext = a8;
-    v15->_size = (a5 | (v10 << 32));
+    v15->_parenGLContext = context;
+    v15->_size = (width | (v10 << 32));
     v15->_textureTarget = 3553;
     v16 = +[EAGLContext currentContext];
     v17 = v16;
@@ -415,11 +415,11 @@ LABEL_39:
     glGenTextures(1, &v15->_textureName);
     glActiveTexture(0x84C0u);
     glBindTexture(v15->_textureTarget, v15->_textureName);
-    v15->_hasMipmap = a4 > 1;
-    if (a9)
+    v15->_hasMipmap = count > 1;
+    if (options)
     {
-      v15->_isPowerOfTwo = a9->var2;
-      var3 = a9->var3;
+      v15->_isPowerOfTwo = options->var2;
+      var3 = options->var3;
     }
 
     else
@@ -427,7 +427,7 @@ LABEL_39:
       var3 = 0;
     }
 
-    if (a4 < 2)
+    if (count < 2)
     {
       v19 = 9729;
     }
@@ -442,7 +442,7 @@ LABEL_39:
       v15->_hasMipmap = 0;
       NSLog(@"Consistency error: trying to build mipmaps on non-2D textures");
       v19 = 9729;
-      a4 = 1;
+      count = 1;
     }
 
     if (var3)
@@ -467,40 +467,40 @@ LABEL_39:
     glPixelStorei(0xCF5u, 1);
     if (var3)
     {
-      if (a4)
+      if (count)
       {
         v21 = 0;
         do
         {
-          if (a3[v21])
+          if (datas[v21])
           {
-            glTexImage2D(v15->_textureTarget, v21, 6409, v15->_size.width >> v21, v15->_size.height >> v21, 0, 0x1909u, 0x1401u, a3[v21]);
+            glTexImage2D(v15->_textureTarget, v21, 6409, v15->_size.width >> v21, v15->_size.height >> v21, 0, 0x1909u, 0x1401u, datas[v21]);
           }
 
           ++v21;
         }
 
-        while (a4 != v21);
+        while (count != v21);
       }
     }
 
-    else if (a4)
+    else if (count)
     {
       v22 = 0;
       do
       {
-        if (a3[v22])
+        if (datas[v22])
         {
-          glTexImage2D(v15->_textureTarget, v22, 6408, v15->_size.width >> v22, v15->_size.height >> v22, 0, 0x80E1u, 0x1401u, a3[v22]);
+          glTexImage2D(v15->_textureTarget, v22, 6408, v15->_size.width >> v22, v15->_size.height >> v22, 0, 0x80E1u, 0x1401u, datas[v22]);
         }
 
         ++v22;
       }
 
-      while (a4 != v22);
+      while (count != v22);
     }
 
-    glTexParameteri(v15->_textureTarget, 0x813Du, a4 - 1);
+    glTexParameteri(v15->_textureTarget, 0x813Du, count - 1);
     glFinish();
     if (+[EAGLContext currentContext]!= v16)
     {
@@ -510,7 +510,7 @@ LABEL_39:
     v15->_timestamp = MRGetCurrentTime();
   }
 
-  objc_sync_exit(a8);
+  objc_sync_exit(context);
   return v15;
 }
 
@@ -578,12 +578,12 @@ LABEL_39:
   objc_sync_exit(parenGLContext);
 }
 
-- (void)uploadData:(void *)a3 rowBytes:(unint64_t)a4 toRect:(CGRect)a5
+- (void)uploadData:(void *)data rowBytes:(unint64_t)bytes toRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   parenGLContext = self->_parenGLContext;
   objc_sync_enter(parenGLContext);
   v12 = +[EAGLContext currentContext];
@@ -607,7 +607,7 @@ LABEL_39:
     v15 = 32993;
   }
 
-  glTexSubImage2D(self->_textureTarget, 0, x, y, width, height, v15, 0x1401u, a3);
+  glTexSubImage2D(self->_textureTarget, 0, x, y, width, height, v15, 0x1401u, data);
   glFinish();
   if (+[EAGLContext currentContext]!= v12)
   {
@@ -619,23 +619,23 @@ LABEL_39:
   objc_sync_exit(parenGLContext);
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     textureName = self->_textureName;
-    v4 = [a3 UTF8String];
+    uTF8String = [label UTF8String];
 
-    glLabelObjectEXT(0x1702u, textureName, 0, v4);
+    glLabelObjectEXT(0x1702u, textureName, 0, uTF8String);
   }
 }
 
-- (void)setBorderColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBorderColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
-  self->_borderColor[0] = a3;
-  self->_borderColor[1] = a4;
-  self->_borderColor[2] = a5;
-  self->_borderColor[3] = a6;
+  self->_borderColor[0] = red;
+  self->_borderColor[1] = green;
+  self->_borderColor[2] = blue;
+  self->_borderColor[3] = alpha;
 }
 
 @end

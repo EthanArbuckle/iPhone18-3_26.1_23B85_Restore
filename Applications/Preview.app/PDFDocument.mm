@@ -1,19 +1,19 @@
 @interface PDFDocument
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7;
-- (_TtC17PreviewFoundation11PDFDocument)initWithFileURL:(id)a3;
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error;
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error;
+- (_TtC17PreviewFoundation11PDFDocument)initWithFileURL:(id)l;
 @end
 
 @implementation PDFDocument
 
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = a4;
+  selfCopy = self;
+  typeCopy = type;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (v8)
+  if (typeCopy)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -24,7 +24,7 @@
   return 1;
 }
 
-- (BOOL)writeContents:(id)a3 toURL:(id)a4 forSaveOperation:(int64_t)a5 originalContentsURL:(id)a6 error:(id *)a7
+- (BOOL)writeContents:(id)contents toURL:(id)l forSaveOperation:(int64_t)operation originalContentsURL:(id)rL error:(id *)error
 {
   v10 = sub_1000FF5D8(&qword_10020DAA8);
   __chkstk_darwin(v10 - 8);
@@ -36,14 +36,14 @@
   __chkstk_darwin(v17);
   v19 = &v25[-v18];
   swift_unknownObjectRetain();
-  v20 = a4;
-  v21 = self;
-  v22 = a6;
+  lCopy = l;
+  selfCopy = self;
+  rLCopy = rL;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
-  if (v22)
+  if (rLCopy)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -65,7 +65,7 @@
   return 1;
 }
 
-- (_TtC17PreviewFoundation11PDFDocument)initWithFileURL:(id)a3
+- (_TtC17PreviewFoundation11PDFDocument)initWithFileURL:(id)l
 {
   v3 = type metadata accessor for URL();
   __chkstk_darwin(v3 - 8);

@@ -1,8 +1,8 @@
 @interface SBIconLabelViewSimpleFactory
 + (id)sharedInstance;
-+ (void)configureLabelImageParametersBuilder:(id)a3;
-- (BOOL)canUseIconLabelView:(id)a3 toDisplayLabelWithSettings:(id)a4 imageParameters:(id)a5 forIconView:(id)a6;
-- (id)iconLabelViewWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5;
++ (void)configureLabelImageParametersBuilder:(id)builder;
+- (BOOL)canUseIconLabelView:(id)view toDisplayLabelWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)iconView;
+- (id)iconLabelViewWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view;
 @end
 
 @implementation SBIconLabelViewSimpleFactory
@@ -26,35 +26,35 @@ uint64_t __46__SBIconLabelViewSimpleFactory_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)iconLabelViewWithSettings:(id)a3 imageParameters:(id)a4 forIconView:(id)a5
+- (id)iconLabelViewWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)view
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SBIconSimpleLabelView alloc] initWithSettings:v9];
+  viewCopy = view;
+  parametersCopy = parameters;
+  settingsCopy = settings;
+  v10 = [[SBIconSimpleLabelView alloc] initWithSettings:settingsCopy];
   [(SBIconSimpleLabelView *)v10 setUserInteractionEnabled:0];
-  [(SBIconSimpleLabelView *)v10 setIconView:v7];
+  [(SBIconSimpleLabelView *)v10 setIconView:viewCopy];
 
-  [(SBIconSimpleLabelView *)v10 updateIconLabelWithSettings:v9 imageParameters:v8];
+  [(SBIconSimpleLabelView *)v10 updateIconLabelWithSettings:settingsCopy imageParameters:parametersCopy];
 
   return v10;
 }
 
-- (BOOL)canUseIconLabelView:(id)a3 toDisplayLabelWithSettings:(id)a4 imageParameters:(id)a5 forIconView:(id)a6
+- (BOOL)canUseIconLabelView:(id)view toDisplayLabelWithSettings:(id)settings imageParameters:(id)parameters forIconView:(id)iconView
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-+ (void)configureLabelImageParametersBuilder:(id)a3
++ (void)configureLabelImageParametersBuilder:(id)builder
 {
-  v3 = a3;
-  v5 = [v3 legibilitySettings];
-  v4 = [v5 primaryColor];
-  [v3 setFallbackTextColor:v4];
+  builderCopy = builder;
+  legibilitySettings = [builderCopy legibilitySettings];
+  primaryColor = [legibilitySettings primaryColor];
+  [builderCopy setFallbackTextColor:primaryColor];
 }
 
 @end

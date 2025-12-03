@@ -1,36 +1,36 @@
 @interface HVConsumerCoordinator
 + (id)defaultCoordinator;
-- (BOOL)deleteContentWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)harvestContentWithMinimumLevelOfService:(unsigned __int8)a3 ignoringDiscretionaryPowerBudget:(BOOL)a4 error:(id *)a5 shouldContinueBlock:(id)a6;
-- (BOOL)registerInteractionConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerMailConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerMessagesConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerNewsConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerNotesConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerNotificationsConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerParsecConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerPhotosConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerRemindersConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerSafariConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerSiriConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerThirdPartyAppConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
-- (BOOL)registerUserActivityConsumer:(id)a3 levelOfService:(unsigned __int8)a4;
+- (BOOL)deleteContentWithRequest:(id)request error:(id *)error;
+- (BOOL)harvestContentWithMinimumLevelOfService:(unsigned __int8)service ignoringDiscretionaryPowerBudget:(BOOL)budget error:(id *)error shouldContinueBlock:(id)block;
+- (BOOL)registerInteractionConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerMailConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerMessagesConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerNewsConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerNotesConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerNotificationsConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerParsecConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerPhotosConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerRemindersConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerSafariConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerSiriConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerThirdPartyAppConsumer:(id)consumer levelOfService:(unsigned __int8)service;
+- (BOOL)registerUserActivityConsumer:(id)consumer levelOfService:(unsigned __int8)service;
 - (HVConsumerCoordinator)init;
-- (HVConsumerCoordinator)initWithQueues:(id)a3 path:(id)a4;
-- (id)_consumersForOneDataSource:(void *)a3 guardedData:;
-- (id)_statsForConsumers:(uint64_t)a1;
-- (id)statsWithError:(id *)a3;
-- (uint64_t)_consumeContentFromAllDataSources:(int)a3 minimumLevelOfService:(char)a4 inMemoryItemsOnly:(void *)a5 guardedData:(void *)a6 shouldContinueBlock:(void *)a7 error:;
-- (void)_registerConsumer:(uint64_t)a3 levelOfService:(id *)a4 consumerMapTableOut:;
-- (void)contentAvailableFromSources:(unsigned int)a3;
-- (void)disableConsumptionOfDataSources:(unsigned int)a3;
-- (void)enableConsumptionOfDataSources:(unsigned int)a3;
-- (void)restoreConsumptionOfDataSources:(unsigned int)a3;
+- (HVConsumerCoordinator)initWithQueues:(id)queues path:(id)path;
+- (id)_consumersForOneDataSource:(void *)source guardedData:;
+- (id)_statsForConsumers:(uint64_t)consumers;
+- (id)statsWithError:(id *)error;
+- (uint64_t)_consumeContentFromAllDataSources:(int)sources minimumLevelOfService:(char)service inMemoryItemsOnly:(void *)only guardedData:(void *)data shouldContinueBlock:(void *)block error:;
+- (void)_registerConsumer:(uint64_t)consumer levelOfService:(id *)service consumerMapTableOut:;
+- (void)contentAvailableFromSources:(unsigned int)sources;
+- (void)disableConsumptionOfDataSources:(unsigned int)sources;
+- (void)enableConsumptionOfDataSources:(unsigned int)sources;
+- (void)restoreConsumptionOfDataSources:(unsigned int)sources;
 @end
 
 @implementation HVConsumerCoordinator
 
-- (id)statsWithError:(id *)a3
+- (id)statsWithError:(id *)error
 {
   v4 = objc_opt_new();
   dispatch_group_enter(self->_waitingForLock);
@@ -193,12 +193,12 @@ void __40__HVConsumerCoordinator_statsWithError___block_invoke_3(uint64_t a1, vo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_statsForConsumers:(uint64_t)a1
+- (id)_statsForConsumers:(uint64_t)consumers
 {
   v37 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v21 = v3;
-  if (a1)
+  if (consumers)
   {
     v4 = v3;
     v22 = objc_opt_new();
@@ -221,7 +221,7 @@ void __40__HVConsumerCoordinator_statsWithError___block_invoke_3(uint64_t a1, vo
           }
 
           v8 = *(*(&v26 + 1) + 8 * i);
-          v9 = [v8 consumerName];
+          consumerName = [v8 consumerName];
           v10 = [v5 objectForKey:v8];
           v11 = v10;
           if (v8)
@@ -258,7 +258,7 @@ void __40__HVConsumerCoordinator_statsWithError___block_invoke_3(uint64_t a1, vo
             v33 = v14;
             v31[3] = @"Number of Extractions";
             [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11[5]];
-            v15 = v24 = v9;
+            v15 = v24 = consumerName;
             v34 = v15;
             v31[4] = @"Number of Interruptions";
             v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v11[6]];
@@ -268,7 +268,7 @@ void __40__HVConsumerCoordinator_statsWithError___block_invoke_3(uint64_t a1, vo
             v36 = v17;
             v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&buf forKeys:v31 count:6];
 
-            v9 = v24;
+            consumerName = v24;
             [v22 setObject:v18 forKeyedSubscript:v24];
           }
         }
@@ -290,9 +290,9 @@ void __40__HVConsumerCoordinator_statsWithError___block_invoke_3(uint64_t a1, vo
   return v22;
 }
 
-- (BOOL)registerNotificationsConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerNotificationsConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -300,9 +300,9 @@ void __40__HVConsumerCoordinator_statsWithError___block_invoke_3(uint64_t a1, vo
   v10[2] = __70__HVConsumerCoordinator_registerNotificationsConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -322,36 +322,36 @@ void __70__HVConsumerCoordinator_registerNotificationsConsumer_levelOfService___
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:0x8000];
 }
 
-- (void)_registerConsumer:(uint64_t)a3 levelOfService:(id *)a4 consumerMapTableOut:
+- (void)_registerConsumer:(uint64_t)consumer levelOfService:(id *)service consumerMapTableOut:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
     v12 = v7;
-    if (!a4)
+    if (!service)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:sel__registerConsumer_levelOfService_consumerMapTableOut_ object:a1 file:@"HVConsumerCoordinator.m" lineNumber:881 description:{@"Invalid parameter not satisfying: %@", @"consumerMapTableOut"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__registerConsumer_levelOfService_consumerMapTableOut_ object:self file:@"HVConsumerCoordinator.m" lineNumber:881 description:{@"Invalid parameter not satisfying: %@", @"consumerMapTableOut"}];
     }
 
-    if (!*a4)
+    if (!*service)
     {
       v8 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:5 valueOptions:0];
-      v9 = *a4;
-      *a4 = v8;
+      v9 = *service;
+      *service = v8;
     }
 
     v10 = objc_opt_new();
-    [v10 setLevelOfService:a3];
-    [*a4 setObject:v10 forKey:v12];
+    [v10 setLevelOfService:consumer];
+    [*service setObject:v10 forKey:v12];
 
     v7 = v12;
   }
 }
 
-- (BOOL)registerUserActivityConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerUserActivityConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -359,9 +359,9 @@ void __70__HVConsumerCoordinator_registerNotificationsConsumer_levelOfService___
   v10[2] = __69__HVConsumerCoordinator_registerUserActivityConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -381,9 +381,9 @@ void __69__HVConsumerCoordinator_registerUserActivityConsumer_levelOfService___b
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:0x2000];
 }
 
-- (BOOL)registerInteractionConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerInteractionConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -391,9 +391,9 @@ void __69__HVConsumerCoordinator_registerUserActivityConsumer_levelOfService___b
   v10[2] = __68__HVConsumerCoordinator_registerInteractionConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -412,9 +412,9 @@ void __68__HVConsumerCoordinator_registerInteractionConsumer_levelOfService___bl
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:2048];
 }
 
-- (BOOL)registerThirdPartyAppConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerThirdPartyAppConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -422,9 +422,9 @@ void __68__HVConsumerCoordinator_registerInteractionConsumer_levelOfService___bl
   v10[2] = __70__HVConsumerCoordinator_registerThirdPartyAppConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -443,9 +443,9 @@ void __70__HVConsumerCoordinator_registerThirdPartyAppConsumer_levelOfService___
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:1024];
 }
 
-- (BOOL)registerSiriConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerSiriConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -453,9 +453,9 @@ void __70__HVConsumerCoordinator_registerThirdPartyAppConsumer_levelOfService___
   v10[2] = __61__HVConsumerCoordinator_registerSiriConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -474,9 +474,9 @@ void __61__HVConsumerCoordinator_registerSiriConsumer_levelOfService___block_inv
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:512];
 }
 
-- (BOOL)registerSafariConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerSafariConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -484,9 +484,9 @@ void __61__HVConsumerCoordinator_registerSiriConsumer_levelOfService___block_inv
   v10[2] = __63__HVConsumerCoordinator_registerSafariConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -505,9 +505,9 @@ void __63__HVConsumerCoordinator_registerSafariConsumer_levelOfService___block_i
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:256];
 }
 
-- (BOOL)registerRemindersConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerRemindersConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -515,9 +515,9 @@ void __63__HVConsumerCoordinator_registerSafariConsumer_levelOfService___block_i
   v10[2] = __66__HVConsumerCoordinator_registerRemindersConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -536,9 +536,9 @@ void __66__HVConsumerCoordinator_registerRemindersConsumer_levelOfService___bloc
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:128];
 }
 
-- (BOOL)registerPhotosConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerPhotosConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -546,9 +546,9 @@ void __66__HVConsumerCoordinator_registerRemindersConsumer_levelOfService___bloc
   v10[2] = __63__HVConsumerCoordinator_registerPhotosConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -568,9 +568,9 @@ void __63__HVConsumerCoordinator_registerPhotosConsumer_levelOfService___block_i
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:64];
 }
 
-- (BOOL)registerParsecConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerParsecConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -578,9 +578,9 @@ void __63__HVConsumerCoordinator_registerPhotosConsumer_levelOfService___block_i
   v10[2] = __63__HVConsumerCoordinator_registerParsecConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -599,9 +599,9 @@ void __63__HVConsumerCoordinator_registerParsecConsumer_levelOfService___block_i
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:16];
 }
 
-- (BOOL)registerNotesConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerNotesConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -609,9 +609,9 @@ void __63__HVConsumerCoordinator_registerParsecConsumer_levelOfService___block_i
   v10[2] = __62__HVConsumerCoordinator_registerNotesConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -630,9 +630,9 @@ void __62__HVConsumerCoordinator_registerNotesConsumer_levelOfService___block_in
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:8];
 }
 
-- (BOOL)registerNewsConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerNewsConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -640,9 +640,9 @@ void __62__HVConsumerCoordinator_registerNotesConsumer_levelOfService___block_in
   v10[2] = __61__HVConsumerCoordinator_registerNewsConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -661,9 +661,9 @@ void __61__HVConsumerCoordinator_registerNewsConsumer_levelOfService___block_inv
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:4];
 }
 
-- (BOOL)registerMessagesConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerMessagesConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -671,9 +671,9 @@ void __61__HVConsumerCoordinator_registerNewsConsumer_levelOfService___block_inv
   v10[2] = __65__HVConsumerCoordinator_registerMessagesConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -692,9 +692,9 @@ void __65__HVConsumerCoordinator_registerMessagesConsumer_levelOfService___block
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:2];
 }
 
-- (BOOL)registerMailConsumer:(id)a3 levelOfService:(unsigned __int8)a4
+- (BOOL)registerMailConsumer:(id)consumer levelOfService:(unsigned __int8)service
 {
-  v6 = a3;
+  consumerCopy = consumer;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v10[0] = MEMORY[0x277D85DD0];
@@ -702,9 +702,9 @@ void __65__HVConsumerCoordinator_registerMessagesConsumer_levelOfService___block
   v10[2] = __61__HVConsumerCoordinator_registerMailConsumer_levelOfService___block_invoke;
   v10[3] = &unk_278968F48;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
+  v11 = consumerCopy;
+  serviceCopy = service;
+  v8 = consumerCopy;
   [(_PASLock *)lock runWithLockAcquired:v10];
 
   return 1;
@@ -723,9 +723,9 @@ void __61__HVConsumerCoordinator_registerMailConsumer_levelOfService___block_inv
   [(HVBudget *)v5 registerLevelOfService:v6 oneDataSource:1];
 }
 
-- (BOOL)deleteContentWithRequest:(id)a3 error:(id *)a4
+- (BOOL)deleteContentWithRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
@@ -733,8 +733,8 @@ void __61__HVConsumerCoordinator_registerMailConsumer_levelOfService___block_inv
   v9[2] = __56__HVConsumerCoordinator_deleteContentWithRequest_error___block_invoke;
   v9[3] = &unk_278968F20;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = requestCopy;
+  v7 = requestCopy;
   [(_PASLock *)lock runWithLockAcquired:v9];
 
   return 1;
@@ -954,7 +954,7 @@ LABEL_24:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)restoreConsumptionOfDataSources:(unsigned int)a3
+- (void)restoreConsumptionOfDataSources:(unsigned int)sources
 {
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
@@ -963,7 +963,7 @@ LABEL_24:
   v6[2] = __57__HVConsumerCoordinator_restoreConsumptionOfDataSources___block_invoke;
   v6[3] = &unk_278968EF8;
   v6[4] = self;
-  v7 = a3;
+  sourcesCopy = sources;
   [(_PASLock *)lock runWithLockAcquired:v6];
 }
 
@@ -1000,7 +1000,7 @@ void __57__HVConsumerCoordinator_restoreConsumptionOfDataSources___block_invoke(
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableConsumptionOfDataSources:(unsigned int)a3
+- (void)disableConsumptionOfDataSources:(unsigned int)sources
 {
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
@@ -1009,7 +1009,7 @@ void __57__HVConsumerCoordinator_restoreConsumptionOfDataSources___block_invoke(
   v6[2] = __57__HVConsumerCoordinator_disableConsumptionOfDataSources___block_invoke;
   v6[3] = &unk_278968EF8;
   v6[4] = self;
-  v7 = a3;
+  sourcesCopy = sources;
   [(_PASLock *)lock runWithLockAcquired:v6];
 }
 
@@ -1050,7 +1050,7 @@ void __57__HVConsumerCoordinator_disableConsumptionOfDataSources___block_invoke(
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableConsumptionOfDataSources:(unsigned int)a3
+- (void)enableConsumptionOfDataSources:(unsigned int)sources
 {
   dispatch_group_enter(self->_waitingForLock);
   lock = self->_lock;
@@ -1059,7 +1059,7 @@ void __57__HVConsumerCoordinator_disableConsumptionOfDataSources___block_invoke(
   v6[2] = __56__HVConsumerCoordinator_enableConsumptionOfDataSources___block_invoke;
   v6[3] = &unk_278968EF8;
   v6[4] = self;
-  v7 = a3;
+  sourcesCopy = sources;
   [(_PASLock *)lock runWithLockAcquired:v6];
 }
 
@@ -1099,20 +1099,20 @@ void __56__HVConsumerCoordinator_enableConsumptionOfDataSources___block_invoke(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)harvestContentWithMinimumLevelOfService:(unsigned __int8)a3 ignoringDiscretionaryPowerBudget:(BOOL)a4 error:(id *)a5 shouldContinueBlock:(id)a6
+- (BOOL)harvestContentWithMinimumLevelOfService:(unsigned __int8)service ignoringDiscretionaryPowerBudget:(BOOL)budget error:(id *)error shouldContinueBlock:(id)block
 {
-  v7 = a3;
+  serviceCopy = service;
   v51 = *MEMORY[0x277D85DE8];
-  v21 = a6;
+  blockCopy = block;
   v9 = hv_default_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v7;
+    *&buf[4] = serviceCopy;
     _os_log_impl(&dword_2321EC000, v9, OS_LOG_TYPE_DEFAULT, "HVConsumerCoordinator: harvestContentWithMinimumLevelOfService: %u", buf, 8u);
   }
 
-  if ((v21[2])())
+  if ((blockCopy[2])())
   {
     v41 = 0;
     v42 = &v41;
@@ -1128,7 +1128,7 @@ void __56__HVConsumerCoordinator_enableConsumptionOfDataSources___block_invoke(u
     v33[3] = &unk_278968E58;
     v35 = &v41;
     v36 = &v37;
-    v10 = v21;
+    v10 = blockCopy;
     v33[4] = self;
     v34 = v10;
     v11 = MEMORY[0x238381E60](v33);
@@ -1154,8 +1154,8 @@ void __56__HVConsumerCoordinator_enableConsumptionOfDataSources___block_invoke(u
           v22[1] = 3221225472;
           v22[2] = __124__HVConsumerCoordinator_harvestContentWithMinimumLevelOfService_ignoringDiscretionaryPowerBudget_error_shouldContinueBlock___block_invoke_117;
           v22[3] = &unk_278968E80;
-          v26 = a4;
-          v27 = v7;
+          budgetCopy = budget;
+          v27 = serviceCopy;
           v24 = &v29;
           v22[4] = self;
           v23 = v11;
@@ -1184,13 +1184,13 @@ void __56__HVConsumerCoordinator_enableConsumptionOfDataSources___block_invoke(u
       *(v38 + 24) = v15;
     }
 
-    while ((v21[2](v10) & 1) != 0);
+    while ((blockCopy[2](v10) & 1) != 0);
     *(v42 + 24) = 1;
 LABEL_15:
     v17 = *(v30 + 24);
-    if (a5 && (v30[3] & 1) == 0)
+    if (error && (v30[3] & 1) == 0)
     {
-      *a5 = *(v46 + 5);
+      *error = *(v46 + 5);
       v17 = *(v30 + 24);
     }
 
@@ -1356,11 +1356,11 @@ LABEL_6:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_consumeContentFromAllDataSources:(int)a3 minimumLevelOfService:(char)a4 inMemoryItemsOnly:(void *)a5 guardedData:(void *)a6 shouldContinueBlock:(void *)a7 error:
+- (uint64_t)_consumeContentFromAllDataSources:(int)sources minimumLevelOfService:(char)service inMemoryItemsOnly:(void *)only guardedData:(void *)data shouldContinueBlock:(void *)block error:
 {
   v57 = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a6;
+  onlyCopy = only;
+  dataCopy = data;
   v15 = hv_default_log_handle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -1368,11 +1368,11 @@ LABEL_6:
     *buf = 138543618;
     *&buf[4] = v16;
     *&buf[12] = 1024;
-    *&buf[14] = a3;
+    *&buf[14] = sources;
     _os_log_impl(&dword_2321EC000, v15, OS_LOG_TYPE_DEFAULT, "HVConsumerCoordinator: consumeContentFromDataSources: %{public}@ with minimum LoS %hhu", buf, 0x12u);
   }
 
-  v18 = a3 != 1 || v14 == 0;
+  v18 = sources != 1 || dataCopy == 0;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -1391,29 +1391,29 @@ LABEL_6:
   v32[1] = 3221225472;
   v32[2] = __137__HVConsumerCoordinator__consumeContentFromAllDataSources_minimumLevelOfService_inMemoryItemsOnly_guardedData_shouldContinueBlock_error___block_invoke;
   v32[3] = &unk_278968ED0;
-  v40 = a3;
+  sourcesCopy = sources;
   v41 = v18;
-  v19 = v13;
+  v19 = onlyCopy;
   v39 = a2;
   v33 = v19;
-  v34 = a1;
-  v42 = a4;
-  v20 = v14;
+  selfCopy = self;
+  serviceCopy = service;
+  v20 = dataCopy;
   v35 = v20;
   v36 = &v43;
   v37 = buf;
   v38 = &v47;
   HVDataSourceRunBlockPerSetBit(a2, v32);
-  if (a7)
+  if (block)
   {
     v21 = *(*&buf[8] + 40);
     if (v21)
     {
-      *a7 = v21;
+      *block = v21;
     }
   }
 
-  v22 = *(a1 + 24);
+  v22 = *(self + 24);
   v23 = *(v44 + 6);
   v31 = 0;
   v24 = [v22 dequeuedContentConsumedForDataSources:v23 withError:&v31];
@@ -1433,11 +1433,11 @@ LABEL_6:
       _os_log_fault_impl(&dword_2321EC000, v27, OS_LOG_TYPE_FAULT, "HVConsumerCoordinator: _consumeContentWithGuardedData: consumptionCompletedWithError: %@", v51, 0xCu);
     }
 
-    if (a7)
+    if (block)
     {
       v28 = v25;
       v26 = 0;
-      *a7 = v25;
+      *block = v25;
     }
 
     else
@@ -2340,13 +2340,13 @@ LABEL_173:
   v122 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_consumersForOneDataSource:(void *)a3 guardedData:
+- (id)_consumersForOneDataSource:(void *)source guardedData:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  sourceCopy = source;
+  v6 = sourceCopy;
+  if (self)
   {
-    a1 = 0;
+    self = 0;
     if (a2 <= 255)
     {
       if (a2 <= 15)
@@ -2417,7 +2417,7 @@ LABEL_173:
 
       v7 = 56;
 LABEL_39:
-      a1 = *&v5[v7];
+      self = *&sourceCopy[v7];
       goto LABEL_40;
     }
 
@@ -2477,17 +2477,17 @@ LABEL_39:
 
 LABEL_40:
 
-  return a1;
+  return self;
 }
 
-- (void)contentAvailableFromSources:(unsigned int)a3
+- (void)contentAvailableFromSources:(unsigned int)sources
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = os_transaction_create();
   v7 = hv_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = HVDataSourceDescription(a3);
+    v8 = HVDataSourceDescription(sources);
     *buf = 138543362;
     v14 = v8;
     _os_log_impl(&dword_2321EC000, v7, OS_LOG_TYPE_DEFAULT, "HVConsumerCoordinator: contentAvailableFromSources: %{public}@", buf, 0xCu);
@@ -2499,7 +2499,7 @@ LABEL_40:
   v11[1] = 3221225472;
   v11[2] = __53__HVConsumerCoordinator_contentAvailableFromSources___block_invoke;
   v11[3] = &unk_278968E30;
-  v12 = a3;
+  sourcesCopy = sources;
   v11[4] = self;
   v11[5] = a2;
   [(_PASLock *)lock runWithLockAcquired:v11];
@@ -2627,11 +2627,11 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HVConsumerCoordinator)initWithQueues:(id)a3 path:(id)a4
+- (HVConsumerCoordinator)initWithQueues:(id)queues path:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queuesCopy = queues;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = HVConsumerCoordinator;
   v9 = [(HVConsumerCoordinator *)&v29 init];
@@ -2641,16 +2641,16 @@ LABEL_13:
     waitingForLock = v9->_waitingForLock;
     v9->_waitingForLock = v10;
 
-    v12 = [v8 stringByAppendingPathComponent:@"ConsumerCoordinator"];
+    v12 = [pathCopy stringByAppendingPathComponent:@"ConsumerCoordinator"];
     path = v9->_path;
     v9->_path = v12;
 
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
-    objc_sync_enter(v14);
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    objc_sync_enter(defaultManager);
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v16 = v9->_path;
     v28 = 0;
-    v17 = [v15 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v28];
+    v17 = [defaultManager2 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v28];
     v18 = v28;
 
     if ((v17 & 1) == 0)
@@ -2664,7 +2664,7 @@ LABEL_13:
       }
     }
 
-    objc_sync_exit(v14);
+    objc_sync_exit(defaultManager);
     v20 = objc_alloc(MEMORY[0x277D425F8]);
     v21 = objc_opt_new();
     v22 = [v20 initWithGuardedData:v21];
@@ -2675,7 +2675,7 @@ LABEL_13:
     serialQueue = v9->_serialQueue;
     v9->_serialQueue = v24;
 
-    objc_storeStrong(&v9->_queues, a3);
+    objc_storeStrong(&v9->_queues, queues);
     [(HVQueues *)v9->_queues registerQueueObserver:v9 dispatchQueue:v9->_serialQueue];
   }
 

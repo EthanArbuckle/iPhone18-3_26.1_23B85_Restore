@@ -1,25 +1,25 @@
 @interface MFWeakObjectCache
-- (MFWeakObjectCache)initWithBlock:(id)a3;
-- (id)objectForKey:(id)a3 shouldGenerate:(BOOL)a4 wasCached:(BOOL *)a5;
-- (id)weakObjectCacheRefForKey:(id)a3;
+- (MFWeakObjectCache)initWithBlock:(id)block;
+- (id)objectForKey:(id)key shouldGenerate:(BOOL)generate wasCached:(BOOL *)cached;
+- (id)weakObjectCacheRefForKey:(id)key;
 - (void)dealloc;
-- (void)removeObjectForKey:(id)a3;
+- (void)removeObjectForKey:(id)key;
 @end
 
 @implementation MFWeakObjectCache
 
-- (MFWeakObjectCache)initWithBlock:(id)a3
+- (MFWeakObjectCache)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = MFWeakObjectCache;
   v5 = [(MFWeakObjectCache *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (blockCopy)
     {
-      v7 = [v4 copy];
+      v7 = [blockCopy copy];
       block = v6->_block;
       v6->_block = v7;
 
@@ -49,20 +49,20 @@
   [(MFWeakObjectCache *)&v2 dealloc];
 }
 
-- (id)objectForKey:(id)a3 shouldGenerate:(BOOL)a4 wasCached:(BOOL *)a5
+- (id)objectForKey:(id)key shouldGenerate:(BOOL)generate wasCached:(BOOL *)cached
 {
-  v6 = a4;
-  v8 = [a3 copyWithZone:0];
+  generateCopy = generate;
+  v8 = [key copyWithZone:0];
   [(NSLock *)self->_lock lock];
   v9 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:v8];
   if (v9)
   {
     v10 = v9;
-    v11 = [v9 reference];
-    if (v11)
+    reference = [v9 reference];
+    if (reference)
     {
-      v12 = v11;
-      if (!a5)
+      v12 = reference;
+      if (!cached)
       {
         goto LABEL_15;
       }
@@ -73,11 +73,11 @@
     [(NSMutableDictionary *)self->_dictionary removeObjectForKey:v8];
   }
 
-  if (!v6)
+  if (!generateCopy)
   {
     v10 = 0;
     v12 = 0;
-    if (!a5)
+    if (!cached)
     {
       goto LABEL_15;
     }
@@ -85,7 +85,7 @@
 LABEL_11:
     v14 = 1;
 LABEL_14:
-    *a5 = v14;
+    *cached = v14;
     goto LABEL_15;
   }
 
@@ -93,7 +93,7 @@ LABEL_14:
   if (!v12)
   {
     v10 = 0;
-    if (!a5)
+    if (!cached)
     {
       goto LABEL_15;
     }
@@ -106,7 +106,7 @@ LABEL_14:
   objc_setAssociatedObject(v12, self, v13, 1);
 
   [(NSMutableDictionary *)self->_dictionary setObject:v10 forKeyedSubscript:v8];
-  if (a5)
+  if (cached)
   {
 LABEL_13:
     v14 = 0;
@@ -119,30 +119,30 @@ LABEL_15:
   return v12;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v8 = a3;
+  keyCopy = key;
   [(NSLock *)self->_lock lock];
-  v4 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:v8];
-  v5 = [v4 retainedReference];
-  v6 = v5;
-  if (v5)
+  v4 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:keyCopy];
+  retainedReference = [v4 retainedReference];
+  v6 = retainedReference;
+  if (retainedReference)
   {
-    v7 = objc_getAssociatedObject(v5, self);
+    v7 = objc_getAssociatedObject(retainedReference, self);
     [v7 setCache:0];
     objc_setAssociatedObject(v6, self, 0, 1);
   }
 
-  [(NSMutableDictionary *)self->_dictionary removeObjectForKey:v8];
+  [(NSMutableDictionary *)self->_dictionary removeObjectForKey:keyCopy];
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)weakObjectCacheRefForKey:(id)a3
+- (id)weakObjectCacheRefForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(_MFWeakObjectCacheRef);
   [(_MFWeakObjectCacheRef *)v5 setCache:self];
-  [(_MFWeakObjectCacheRef *)v5 setKey:v4];
+  [(_MFWeakObjectCacheRef *)v5 setKey:keyCopy];
 
   return v5;
 }

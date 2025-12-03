@@ -1,11 +1,11 @@
 @interface GKGridGraph
 - (GKGridGraph)initFromGridStartingAt:(vector_int2)position width:(int)width height:(int)height diagonalsAllowed:(BOOL)diagonalsAllowed nodeClass:(Class)nodeClass;
-- (GKGridGraph)initWithCoder:(id)a3;
+- (GKGridGraph)initWithCoder:(id)coder;
 - (id)nodeAtGridPosition:(vector_int2)position;
 - (id)nodeAtGridPositionNoNilCheck:(GKGridGraph *)self;
 - (void)connectNodeToAdjacentNodes:(GKGridGraphNode *)node;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeNodes:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeNodes:(id)nodes;
 @end
 
 @implementation GKGridGraph
@@ -55,15 +55,15 @@
   GKCGridGraph::connectNodeToAdjacentNodes(self->_cGridGraph, [(GKGridGraphNode *)v4 cGridGraphNode]);
 }
 
-- (void)removeNodes:(id)a3
+- (void)removeNodes:(id)nodes
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  nodesCopy = nodes;
+  v5 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -74,14 +74,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodesCopy);
         }
 
         (*(*self->_cGridGraph + 16))(self->_cGridGraph, [*(*(&v9 + 1) + 8 * v7++) cGraphNode]);
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [nodesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -90,32 +90,32 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (GKGridGraph)initWithCoder:(id)a3
+- (GKGridGraph)initWithCoder:(id)coder
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = GKGridGraph;
-  v5 = [(GKGraph *)&v29 initWithCoder:v4];
+  v5 = [(GKGraph *)&v29 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeIntForKey:@"gridOriginX"];
-    v7 = [v4 decodeIntForKey:@"gridOriginY"];
-    v8 = [v4 decodeIntForKey:@"gridWidth"];
-    v9 = [v4 decodeIntForKey:@"gridHeight"];
-    v23 = [v4 decodeBoolForKey:@"diagonalsAllowed"];
+    v6 = [coderCopy decodeIntForKey:@"gridOriginX"];
+    v7 = [coderCopy decodeIntForKey:@"gridOriginY"];
+    v8 = [coderCopy decodeIntForKey:@"gridWidth"];
+    v9 = [coderCopy decodeIntForKey:@"gridHeight"];
+    v23 = [coderCopy decodeBoolForKey:@"diagonalsAllowed"];
     v10 = *(v5 + 4);
     v11 = objc_opt_class();
     GKCGridGraph::initDontConstructNodes(v10, v8, v9, v23, v11, COERCE_DOUBLE(__PAIR64__(v7, v6)));
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [v5 nodes];
+    nodes = [v5 nodes];
     v21 = v9;
     v22 = v8;
-    v14 = [v13 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    v14 = [nodes countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v14)
     {
       v15 = *v26;
@@ -125,17 +125,17 @@
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(nodes);
           }
 
           v17 = *(*(&v25 + 1) + 8 * i);
           if ((GKCGridGraph::addNodeToGridNodes(*(v5 + 4), [v17 cGridGraphNode]) & 1) == 0)
           {
-            [v12 addObject:v17];
+            [array addObject:v17];
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v14 = [nodes countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v14);
@@ -143,7 +143,7 @@
 
     v24.receiver = v5;
     v24.super_class = GKGridGraph;
-    [(GKGraph *)&v24 removeNodes:v12];
+    [(GKGraph *)&v24 removeNodes:array];
     v18 = *(v5 + 4);
     *(v18 + 48) = v22;
     *(v18 + 52) = v21;
@@ -154,17 +154,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = GKGridGraph;
-  [(GKGraph *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:*(self->_cGridGraph + 5) forKey:@"gridOriginX"];
-  [v4 encodeInt:*(self->_cGridGraph + 11) forKey:@"gridOriginY"];
-  [v4 encodeInt:*(self->_cGridGraph + 12) forKey:@"gridWidth"];
-  [v4 encodeInt:*(self->_cGridGraph + 13) forKey:@"gridHeight"];
-  [v4 encodeBool:*(self->_cGridGraph + 56) forKey:@"diagonalsAllowed"];
+  [(GKGraph *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:*(self->_cGridGraph + 5) forKey:@"gridOriginX"];
+  [coderCopy encodeInt:*(self->_cGridGraph + 11) forKey:@"gridOriginY"];
+  [coderCopy encodeInt:*(self->_cGridGraph + 12) forKey:@"gridWidth"];
+  [coderCopy encodeInt:*(self->_cGridGraph + 13) forKey:@"gridHeight"];
+  [coderCopy encodeBool:*(self->_cGridGraph + 56) forKey:@"diagonalsAllowed"];
 }
 
 @end

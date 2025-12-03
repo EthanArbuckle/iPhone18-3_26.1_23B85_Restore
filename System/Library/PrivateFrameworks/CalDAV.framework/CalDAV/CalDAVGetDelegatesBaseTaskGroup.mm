@@ -1,39 +1,39 @@
 @interface CalDAVGetDelegatesBaseTaskGroup
-- (CalDAVGetDelegatesBaseTaskGroup)initWithAccountInfoProvider:(id)a3 principalURL:(id)a4 taskManager:(id)a5;
+- (CalDAVGetDelegatesBaseTaskGroup)initWithAccountInfoProvider:(id)provider principalURL:(id)l taskManager:(id)manager;
 - (NSSet)readOnlyPrincipalDetails;
 - (NSSet)readWritePrincipalDetails;
 - (id)_mappingsForPrincipalDetails;
-- (id)_popFromArray:(id)a3;
-- (void)_getPrincipalDetailsForURL:(id)a3;
-- (void)_processDetailsFromMultiStatus:(id)a3 allowWrite:(BOOL)a4;
-- (void)bailWithError:(id)a3;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
-- (void)taskGroup:(id)a3 didFinishWithError:(id)a4;
+- (id)_popFromArray:(id)array;
+- (void)_getPrincipalDetailsForURL:(id)l;
+- (void)_processDetailsFromMultiStatus:(id)status allowWrite:(BOOL)write;
+- (void)bailWithError:(id)error;
+- (void)task:(id)task didFinishWithError:(id)error;
+- (void)taskGroup:(id)group didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVGetDelegatesBaseTaskGroup
 
-- (CalDAVGetDelegatesBaseTaskGroup)initWithAccountInfoProvider:(id)a3 principalURL:(id)a4 taskManager:(id)a5
+- (CalDAVGetDelegatesBaseTaskGroup)initWithAccountInfoProvider:(id)provider principalURL:(id)l taskManager:(id)manager
 {
-  v8 = a4;
+  lCopy = l;
   v16.receiver = self;
   v16.super_class = CalDAVGetDelegatesBaseTaskGroup;
-  v9 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:a3 taskManager:a5];
+  v9 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:provider taskManager:manager];
   v10 = v9;
   if (v9)
   {
-    [(CalDAVGetDelegatesBaseTaskGroup *)v9 setPrincipalURL:v8];
+    [(CalDAVGetDelegatesBaseTaskGroup *)v9 setPrincipalURL:lCopy];
     v11 = [MEMORY[0x277CBEB58] set];
     [(CalDAVGetDelegatesBaseTaskGroup *)v10 setReadDetails:v11];
 
     v12 = [MEMORY[0x277CBEB58] set];
     [(CalDAVGetDelegatesBaseTaskGroup *)v10 setWriteDetails:v12];
 
-    v13 = [MEMORY[0x277CBEB18] array];
-    [(CalDAVGetDelegatesBaseTaskGroup *)v10 setReadPrincipalURLs:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    [(CalDAVGetDelegatesBaseTaskGroup *)v10 setReadPrincipalURLs:array];
 
-    v14 = [MEMORY[0x277CBEB18] array];
-    [(CalDAVGetDelegatesBaseTaskGroup *)v10 setWritePrincipalURLs:v14];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(CalDAVGetDelegatesBaseTaskGroup *)v10 setWritePrincipalURLs:array2];
   }
 
   return v10;
@@ -68,11 +68,11 @@ void __63__CalDAVGetDelegatesBaseTaskGroup__mappingsForPrincipalDetails__block_i
   [*(a1 + 32) addObject:v7];
 }
 
-- (void)_processDetailsFromMultiStatus:(id)a3 allowWrite:(BOOL)a4
+- (void)_processDetailsFromMultiStatus:(id)status allowWrite:(BOOL)write
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  statusCopy = status;
+  if (write)
   {
     [(CalDAVGetDelegatesBaseTaskGroup *)self writeDetails];
   }
@@ -86,8 +86,8 @@ void __63__CalDAVGetDelegatesBaseTaskGroup__mappingsForPrincipalDetails__block_i
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v6 responses];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  responses = [statusCopy responses];
+  v9 = [responses countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -101,13 +101,13 @@ void __63__CalDAVGetDelegatesBaseTaskGroup__mappingsForPrincipalDetails__block_i
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(responses);
         }
 
         v11 = [CalDAVPrincipalEmailDetailsResult resultFromResponseItem:*(*(&v18 + 1) + 8 * v13)];
 
-        v15 = [v11 addresses];
-        v16 = [v15 count];
+        addresses = [v11 addresses];
+        v16 = [addresses count];
 
         if (v16)
         {
@@ -119,7 +119,7 @@ void __63__CalDAVGetDelegatesBaseTaskGroup__mappingsForPrincipalDetails__block_i
       }
 
       while (v10 != v13);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [responses countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -128,66 +128,66 @@ void __63__CalDAVGetDelegatesBaseTaskGroup__mappingsForPrincipalDetails__block_i
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getPrincipalDetailsForURL:(id)a3
+- (void)_getPrincipalDetailsForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [CalDAVGetPrincipalEmailDetailsTaskGroup alloc];
-  v6 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  v7 = [(CoreDAVTaskGroup *)self taskManager];
-  v8 = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)v5 initWithAccountInfoProvider:v6 principalURL:v4 taskManager:v7];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  v8 = [(CalDAVGetPrincipalEmailDetailsTaskGroup *)v5 initWithAccountInfoProvider:accountInfoProvider principalURL:lCopy taskManager:taskManager];
 
   [(CalDAVGetDelegatesBaseTaskGroup *)self setGetPrincipalEmailDetailsTaskGroup:v8];
-  v9 = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
-  [v9 setDelegate:self];
+  getPrincipalEmailDetailsTaskGroup = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
+  [getPrincipalEmailDetailsTaskGroup setDelegate:self];
 
-  v10 = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
-  [v10 startTaskGroup];
+  getPrincipalEmailDetailsTaskGroup2 = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
+  [getPrincipalEmailDetailsTaskGroup2 startTaskGroup];
 }
 
-- (id)_popFromArray:(id)a3
+- (id)_popFromArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 lastObject];
-  [v3 removeLastObject];
+  arrayCopy = array;
+  lastObject = [arrayCopy lastObject];
+  [arrayCopy removeLastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (void)bailWithError:(id)a3
+- (void)bailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
+  errorCopy = error;
+  getPrincipalEmailDetailsTaskGroup = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
 
-  if (v5)
+  if (getPrincipalEmailDetailsTaskGroup)
   {
-    v6 = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
-    [v6 bailWithError:v4];
+    getPrincipalEmailDetailsTaskGroup2 = [(CalDAVGetDelegatesBaseTaskGroup *)self getPrincipalEmailDetailsTaskGroup];
+    [getPrincipalEmailDetailsTaskGroup2 bailWithError:errorCopy];
 
     [(CalDAVGetDelegatesBaseTaskGroup *)self setGetPrincipalEmailDetailsTaskGroup:0];
   }
 
   v7.receiver = self;
   v7.super_class = CalDAVGetDelegatesBaseTaskGroup;
-  [(CoreDAVTaskGroup *)&v7 bailWithError:v4];
+  [(CoreDAVTaskGroup *)&v7 bailWithError:errorCopy];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"CalDAVGetDelegatesBaseTaskGroup.m" lineNumber:113 description:@"Must implement task:didFinishWithError: in subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CalDAVGetDelegatesBaseTaskGroup.m" lineNumber:113 description:@"Must implement task:didFinishWithError: in subclass"];
 }
 
-- (void)taskGroup:(id)a3 didFinishWithError:(id)a4
+- (void)taskGroup:(id)group didFinishWithError:(id)error
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"CalDAVGetDelegatesBaseTaskGroup.m" lineNumber:117 description:@"Must implement taskGroup:didFinishWithError: in subclass"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CalDAVGetDelegatesBaseTaskGroup.m" lineNumber:117 description:@"Must implement taskGroup:didFinishWithError: in subclass"];
 }
 
 - (NSSet)readOnlyPrincipalDetails
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(CalDAVGetDelegatesBaseTaskGroup *)self readDetails];
-  v4 = [v2 setWithSet:v3];
+  readDetails = [(CalDAVGetDelegatesBaseTaskGroup *)self readDetails];
+  v4 = [v2 setWithSet:readDetails];
 
   return v4;
 }
@@ -195,8 +195,8 @@ void __63__CalDAVGetDelegatesBaseTaskGroup__mappingsForPrincipalDetails__block_i
 - (NSSet)readWritePrincipalDetails
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(CalDAVGetDelegatesBaseTaskGroup *)self writeDetails];
-  v4 = [v2 setWithSet:v3];
+  writeDetails = [(CalDAVGetDelegatesBaseTaskGroup *)self writeDetails];
+  v4 = [v2 setWithSet:writeDetails];
 
   return v4;
 }

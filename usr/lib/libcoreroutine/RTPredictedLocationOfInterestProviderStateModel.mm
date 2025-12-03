@@ -1,29 +1,29 @@
 @interface RTPredictedLocationOfInterestProviderStateModel
-- (RTPredictedLocationOfInterestProviderStateModel)initWithDataProtectionManager:(id)a3 learnedLocationManager:(id)a4 locationManager:(id)a5 metricManager:(id)a6 cache:(id)a7;
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4;
-- (void)fetchPredictedExitDatesWithCriteria:(id)a3 handler:(id)a4;
-- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4;
-- (void)onCacheEnabledDidChange:(BOOL)a3;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)setEncryptedDataAvailability:(int64_t)a3;
-- (void)setEncryptedDataAvailabilityNotificationNeeded:(BOOL)a3;
+- (RTPredictedLocationOfInterestProviderStateModel)initWithDataProtectionManager:(id)manager learnedLocationManager:(id)locationManager locationManager:(id)a5 metricManager:(id)metricManager cache:(id)cache;
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler;
+- (void)fetchPredictedExitDatesWithCriteria:(id)criteria handler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler;
+- (void)onCacheEnabledDidChange:(BOOL)change;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)setEncryptedDataAvailability:(int64_t)availability;
+- (void)setEncryptedDataAvailabilityNotificationNeeded:(BOOL)needed;
 - (void)updateEncryptedDataAvailabilityNotificationNeeded;
 @end
 
 @implementation RTPredictedLocationOfInterestProviderStateModel
 
-- (RTPredictedLocationOfInterestProviderStateModel)initWithDataProtectionManager:(id)a3 learnedLocationManager:(id)a4 locationManager:(id)a5 metricManager:(id)a6 cache:(id)a7
+- (RTPredictedLocationOfInterestProviderStateModel)initWithDataProtectionManager:(id)manager learnedLocationManager:(id)locationManager locationManager:(id)a5 metricManager:(id)metricManager cache:(id)cache
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v36 = a4;
-  v13 = a4;
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
   v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  metricManagerCopy = metricManager;
+  cacheCopy = cache;
+  if (managerCopy)
   {
-    if (v13)
+    if (locationManagerCopy2)
     {
       goto LABEL_3;
     }
@@ -41,7 +41,7 @@
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dataProtectionManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v13)
+    if (locationManagerCopy2)
     {
 LABEL_3:
       if (v14)
@@ -66,7 +66,7 @@ LABEL_3:
   if (v14)
   {
 LABEL_4:
-    if (v15)
+    if (metricManagerCopy)
     {
       goto LABEL_5;
     }
@@ -82,7 +82,7 @@ LABEL_22:
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: metricManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v16)
+    if (cacheCopy)
     {
       goto LABEL_6;
     }
@@ -101,17 +101,17 @@ LABEL_19:
     _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locationManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v15)
+  if (!metricManagerCopy)
   {
     goto LABEL_22;
   }
 
 LABEL_5:
-  if (v16)
+  if (cacheCopy)
   {
 LABEL_6:
-    v17 = 0;
-    if (v12 && v13 && v14 && v15)
+    selfCopy = 0;
+    if (managerCopy && locationManagerCopy2 && v14 && metricManagerCopy)
     {
       v37.receiver = self;
       v37.super_class = RTPredictedLocationOfInterestProviderStateModel;
@@ -120,39 +120,39 @@ LABEL_6:
       if (v18)
       {
         v33 = a5;
-        v34 = a6;
+        metricManagerCopy2 = metricManager;
         v20 = v18;
         v21 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = [(RTPredictedLocationOfInterestProviderStateModel *)v20 UTF8String];
+          uTF8String = [(RTPredictedLocationOfInterestProviderStateModel *)v20 UTF8String];
         }
 
         else
         {
           [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v20];
-          v28 = v32 = a7;
-          v22 = [v28 UTF8String];
+          v28 = v32 = cache;
+          uTF8String = [v28 UTF8String];
 
-          a7 = v32;
+          cache = v32;
         }
 
-        v29 = dispatch_queue_create(v22, v21);
+        v29 = dispatch_queue_create(uTF8String, v21);
 
         queue = v20->_queue;
         v20->_queue = v29;
 
-        objc_storeStrong(&v20->_dataProtectionManager, a3);
-        objc_storeStrong(&v20->_learnedLocationManager, v36);
+        objc_storeStrong(&v20->_dataProtectionManager, manager);
+        objc_storeStrong(&v20->_learnedLocationManager, locationManagerCopy);
         objc_storeStrong(&v20->_locationManager, v33);
-        objc_storeStrong(&v20->_metricManager, v34);
-        objc_storeStrong(&v20->_nextPredictedLocationsOfInterestCache, a7);
+        objc_storeStrong(&v20->_metricManager, metricManagerCopy2);
+        objc_storeStrong(&v20->_nextPredictedLocationsOfInterestCache, cache);
         [(RTNextPredictedLocationsOfInterestCache *)v20->_nextPredictedLocationsOfInterestCache setDelegate:v20];
       }
 
       self = v19;
-      v17 = self;
+      selfCopy = self;
     }
 
     goto LABEL_31;
@@ -169,68 +169,68 @@ LABEL_25:
     _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: cache (in %s:%d)", buf, 0x12u);
   }
 
-  v17 = 0;
+  selfCopy = 0;
 LABEL_31:
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)updateEncryptedDataAvailabilityNotificationNeeded
 {
-  v3 = [(RTPredictedLocationOfInterestProviderStateModel *)self nextPredictedLocationsOfInterestCache];
-  v4 = [v3 enabled];
+  nextPredictedLocationsOfInterestCache = [(RTPredictedLocationOfInterestProviderStateModel *)self nextPredictedLocationsOfInterestCache];
+  enabled = [nextPredictedLocationsOfInterestCache enabled];
 
-  [(RTPredictedLocationOfInterestProviderStateModel *)self setEncryptedDataAvailabilityNotificationNeeded:v4];
+  [(RTPredictedLocationOfInterestProviderStateModel *)self setEncryptedDataAvailabilityNotificationNeeded:enabled];
 }
 
-- (void)setEncryptedDataAvailabilityNotificationNeeded:(BOOL)a3
+- (void)setEncryptedDataAvailabilityNotificationNeeded:(BOOL)needed
 {
-  if (self->_encryptedDataAvailabilityNotificationNeeded != a3)
+  if (self->_encryptedDataAvailabilityNotificationNeeded != needed)
   {
-    self->_encryptedDataAvailabilityNotificationNeeded = a3;
-    if (a3)
+    self->_encryptedDataAvailabilityNotificationNeeded = needed;
+    if (needed)
     {
-      v6 = [(RTPredictedLocationOfInterestProviderStateModel *)self dataProtectionManager];
+      dataProtectionManager = [(RTPredictedLocationOfInterestProviderStateModel *)self dataProtectionManager];
       v5 = +[(RTNotification *)RTDataProtectionManagerNotificationEncryptedDataAvailability];
-      [v6 addObserver:self selector:sel_onDataProtectionNotification_ name:v5];
+      [dataProtectionManager addObserver:self selector:sel_onDataProtectionNotification_ name:v5];
     }
 
     else
     {
       [(RTPredictedLocationOfInterestProviderStateModel *)self setEncryptedDataAvailability:1];
-      v6 = [(RTPredictedLocationOfInterestProviderStateModel *)self dataProtectionManager];
+      dataProtectionManager = [(RTPredictedLocationOfInterestProviderStateModel *)self dataProtectionManager];
       v5 = +[(RTNotification *)RTDataProtectionManagerNotificationEncryptedDataAvailability];
-      [v6 removeObserver:self fromNotification:v5];
+      [dataProtectionManager removeObserver:self fromNotification:v5];
     }
   }
 }
 
-- (void)setEncryptedDataAvailability:(int64_t)a3
+- (void)setEncryptedDataAvailability:(int64_t)availability
 {
-  if (self->_encryptedDataAvailability != a3)
+  if (self->_encryptedDataAvailability != availability)
   {
-    self->_encryptedDataAvailability = a3;
-    if (a3 == 3)
+    self->_encryptedDataAvailability = availability;
+    if (availability == 3)
     {
-      v4 = [(RTPredictedLocationOfInterestProviderStateModel *)self nextPredictedLocationsOfInterestCache];
-      v5 = [v4 enabled];
+      nextPredictedLocationsOfInterestCache = [(RTPredictedLocationOfInterestProviderStateModel *)self nextPredictedLocationsOfInterestCache];
+      enabled = [nextPredictedLocationsOfInterestCache enabled];
 
-      if (v5)
+      if (enabled)
       {
-        v6 = [(RTPredictedLocationOfInterestProviderStateModel *)self locationManager];
+        locationManager = [(RTPredictedLocationOfInterestProviderStateModel *)self locationManager];
         v8[0] = MEMORY[0x277D85DD0];
         v8[1] = 3221225472;
         v8[2] = __80__RTPredictedLocationOfInterestProviderStateModel_setEncryptedDataAvailability___block_invoke;
         v8[3] = &unk_2788CC0D0;
         v8[4] = self;
-        [v6 fetchCurrentLocationWithHandler:v8];
+        [locationManager fetchCurrentLocationWithHandler:v8];
       }
     }
 
-    else if (a3 == 2)
+    else if (availability == 2)
     {
-      v7 = [(RTPredictedLocationOfInterestProviderStateModel *)self nextPredictedLocationsOfInterestCache];
-      [v7 clear];
+      nextPredictedLocationsOfInterestCache2 = [(RTPredictedLocationOfInterestProviderStateModel *)self nextPredictedLocationsOfInterestCache];
+      [nextPredictedLocationsOfInterestCache2 clear];
     }
   }
 }
@@ -299,30 +299,30 @@ void __80__RTPredictedLocationOfInterestProviderStateModel_setEncryptedDataAvail
   }
 }
 
-- (void)onCacheEnabledDidChange:(BOOL)a3
+- (void)onCacheEnabledDidChange:(BOOL)change
 {
-  v5 = [(RTPredictedLocationOfInterestProviderStateModel *)self queue];
+  queue = [(RTPredictedLocationOfInterestProviderStateModel *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__RTPredictedLocationOfInterestProviderStateModel_onCacheEnabledDidChange___block_invoke;
   v6[3] = &unk_2788C5070;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  changeCopy = change;
+  dispatch_async(queue, v6);
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTPredictedLocationOfInterestProviderStateModel *)self queue];
+  notificationCopy = notification;
+  queue = [(RTPredictedLocationOfInterestProviderStateModel *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__RTPredictedLocationOfInterestProviderStateModel_onDataProtectionNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __80__RTPredictedLocationOfInterestProviderStateModel_onDataProtectionNotification___block_invoke(uint64_t a1)
@@ -353,30 +353,30 @@ void __80__RTPredictedLocationOfInterestProviderStateModel_onDataProtectionNotif
   }
 }
 
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 referenceLocation];
-  v9 = [v6 referenceDate];
-  [v6 windowDuration];
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  referenceLocation = [criteriaCopy referenceLocation];
+  referenceDate = [criteriaCopy referenceDate];
+  [criteriaCopy windowDuration];
   v11 = v10;
-  v12 = [(RTPredictedLocationOfInterestProviderStateModel *)self learnedLocationManager];
+  learnedLocationManager = [(RTPredictedLocationOfInterestProviderStateModel *)self learnedLocationManager];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __109__RTPredictedLocationOfInterestProviderStateModel_fetchNextPredictedLocationsOfInterestWithCriteria_handler___block_invoke;
   v17[3] = &unk_2788D0830;
   v17[4] = self;
-  v18 = v8;
-  v19 = v6;
-  v20 = v9;
+  v18 = referenceLocation;
+  v19 = criteriaCopy;
+  v20 = referenceDate;
   v22 = v11;
-  v21 = v7;
-  v13 = v7;
-  v14 = v9;
-  v15 = v6;
-  v16 = v8;
-  [v12 fetchRecentLocationsOfInterestWithHandler:v17];
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = referenceDate;
+  v15 = criteriaCopy;
+  v16 = referenceLocation;
+  [learnedLocationManager fetchRecentLocationsOfInterestWithHandler:v17];
 }
 
 void __109__RTPredictedLocationOfInterestProviderStateModel_fetchNextPredictedLocationsOfInterestWithCriteria_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -507,22 +507,22 @@ void __109__RTPredictedLocationOfInterestProviderStateModel_fetchNextPredictedLo
   (*(*(a1 + 80) + 16))();
 }
 
-- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RTPredictedLocationOfInterestProviderStateModel *)self learnedLocationManager];
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  learnedLocationManager = [(RTPredictedLocationOfInterestProviderStateModel *)self learnedLocationManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __105__RTPredictedLocationOfInterestProviderStateModel_fetchPredictedLocationsOfInterestWithCriteria_handler___block_invoke;
   v12[3] = &unk_2788C5A70;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = criteriaCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v8;
-  v11 = v7;
-  [v9 fetchRecentLocationsOfInterestWithHandler:v12];
+  v10 = handlerCopy;
+  v11 = criteriaCopy;
+  [learnedLocationManager fetchRecentLocationsOfInterestWithHandler:v12];
 }
 
 void __105__RTPredictedLocationOfInterestProviderStateModel_fetchPredictedLocationsOfInterestWithCriteria_handler___block_invoke(uint64_t a1, void *a2)
@@ -572,21 +572,21 @@ void __105__RTPredictedLocationOfInterestProviderStateModel_fetchPredictedLocati
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)fetchPredictedExitDatesWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchPredictedExitDatesWithCriteria:(id)criteria handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTPredictedLocationOfInterestProviderStateModel *)self learnedLocationManager];
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  learnedLocationManager = [(RTPredictedLocationOfInterestProviderStateModel *)self learnedLocationManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __95__RTPredictedLocationOfInterestProviderStateModel_fetchPredictedExitDatesWithCriteria_handler___block_invoke;
   v11[3] = &unk_2788D0880;
-  v12 = v6;
-  v13 = v7;
+  v12 = criteriaCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [v8 fetchRecentLocationsOfInterestWithHandler:v11];
+  v9 = criteriaCopy;
+  v10 = handlerCopy;
+  [learnedLocationManager fetchRecentLocationsOfInterestWithHandler:v11];
 }
 
 void __95__RTPredictedLocationOfInterestProviderStateModel_fetchPredictedExitDatesWithCriteria_handler___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -2,23 +2,23 @@
 + (id)sharedInstance;
 - (BOOL)_displayMonitorHasAConnectedExternalIdentity;
 - (SBVideoOutController)init;
-- (void)_authenticationStateChanged:(id)a3;
+- (void)_authenticationStateChanged:(id)changed;
 - (void)_main_clearScreenSharingBackgroundActivityAssertion;
 - (void)_main_clearVideoOutBackgroundActivityAssertion;
 - (void)_main_startVideoOutBackgroundActivityAssertion;
 - (void)_main_updateScreenSharingBackgroundActivityAssertion;
-- (void)_main_updateScreenSharingBackgroundActivityAssertionSuppressionPreference:(id)a3;
+- (void)_main_updateScreenSharingBackgroundActivityAssertionSuppressionPreference:(id)preference;
 - (void)_main_updateVideoOutBackgroundActivityAssertion;
 - (void)_notifyThatScreenSharingChanged;
 - (void)_registerForNotifications;
 - (void)_unregisterForNotifications;
 - (void)_updateAVRoutes;
 - (void)_updateDisplayMonitorState;
-- (void)_updateScreenMirroringObserverWithSuppressionPreferenceFromDefaults:(id)a3;
-- (void)cacheDidRebuildAfterServerDeath:(id)a3;
+- (void)_updateScreenMirroringObserverWithSuppressionPreferenceFromDefaults:(id)defaults;
+- (void)cacheDidRebuildAfterServerDeath:(id)death;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
 @end
 
 @implementation SBVideoOutController
@@ -100,7 +100,7 @@
     if (!__controllerInstance_0)
     {
       kdebug_trace();
-      v5 = objc_alloc_init(a1);
+      v5 = objc_alloc_init(self);
       v6 = __controllerInstance_0;
       __controllerInstance_0 = v5;
 
@@ -134,30 +134,30 @@
     v3->_avCache = v6;
 
     [(SBAVSystemControllerCache *)v3->_avCache addObserver:v3];
-    v8 = [MEMORY[0x277D0AA90] sharedInstance];
+    mEMORY[0x277D0AA90] = [MEMORY[0x277D0AA90] sharedInstance];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __28__SBVideoOutController_init__block_invoke;
     block[3] = &unk_2783A92D8;
-    v22 = v8;
+    v22 = mEMORY[0x277D0AA90];
     v9 = v3;
     v23 = v9;
-    v10 = v8;
+    v10 = mEMORY[0x277D0AA90];
     v11 = MEMORY[0x277D85CD0];
     dispatch_async(MEMORY[0x277D85CD0], block);
     v12 = +[SBDefaults localDefaults];
-    v13 = [v12 statusBarDefaults];
+    statusBarDefaults = [v12 statusBarDefaults];
 
-    v9->_screenSharingSetsBackgroundActivity = [v13 suppressStatusBarOverrideForScreenSharing] ^ 1;
-    [(SBVideoOutController *)v9 _updateScreenMirroringObserverWithSuppressionPreferenceFromDefaults:v13];
+    v9->_screenSharingSetsBackgroundActivity = [statusBarDefaults suppressStatusBarOverrideForScreenSharing] ^ 1;
+    [(SBVideoOutController *)v9 _updateScreenMirroringObserverWithSuppressionPreferenceFromDefaults:statusBarDefaults];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"suppressStatusBarOverrideForScreenSharing"];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __28__SBVideoOutController_init__block_invoke_2;
     v18[3] = &unk_2783A92D8;
     v19 = v9;
-    v20 = v13;
-    v15 = v13;
+    v20 = statusBarDefaults;
+    v15 = statusBarDefaults;
     v16 = [v15 observeDefault:v14 onQueue:v11 withBlock:v18];
   }
 
@@ -227,16 +227,16 @@ uint64_t __28__SBVideoOutController_init__block_invoke_2(uint64_t a1)
 - (void)_registerForNotifications
 {
   [(SBVideoOutController *)self _unregisterForNotifications];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__authenticationStateChanged_ name:*MEMORY[0x277D66078] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__authenticationStateChanged_ name:*MEMORY[0x277D66078] object:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, SBVideoOutController_DisplayPortAccessoryConnected, @"com.apple.private.restrict-post.HaywireAccessoryAttached", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_unregisterForNotifications
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
 }
@@ -248,10 +248,10 @@ uint64_t __28__SBVideoOutController_init__block_invoke_2(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [MEMORY[0x277D0AA90] sharedInstance];
-  v3 = [v2 connectedIdentities];
+  mEMORY[0x277D0AA90] = [MEMORY[0x277D0AA90] sharedInstance];
+  connectedIdentities = [mEMORY[0x277D0AA90] connectedIdentities];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [connectedIdentities countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -261,15 +261,15 @@ uint64_t __28__SBVideoOutController_init__block_invoke_2(uint64_t a1)
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedIdentities);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
         if ([v7 isExternal])
         {
-          v8 = [v7 type];
+          type = [v7 type];
 
-          if (v8 == 1)
+          if (type == 1)
           {
             LOBYTE(v4) = 1;
             goto LABEL_12;
@@ -281,7 +281,7 @@ uint64_t __28__SBVideoOutController_init__block_invoke_2(uint64_t a1)
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [connectedIdentities countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -294,10 +294,10 @@ LABEL_12:
 
 - (void)_updateAVRoutes
 {
-  v3 = [(SBAVSystemControllerCache *)self->_avCache isAirplayDisplayActive];
-  if (self->_screenSharingViaAVSystemController != v3)
+  isAirplayDisplayActive = [(SBAVSystemControllerCache *)self->_avCache isAirplayDisplayActive];
+  if (self->_screenSharingViaAVSystemController != isAirplayDisplayActive)
   {
-    self->_screenSharingViaAVSystemController = v3;
+    self->_screenSharingViaAVSystemController = isAirplayDisplayActive;
     [(SBVideoOutController *)self updateScreenSharingBackgroundActivityAssertion];
 
     [(SBVideoOutController *)self _notifyThatScreenSharingChanged];
@@ -306,10 +306,10 @@ LABEL_12:
 
 - (void)_updateDisplayMonitorState
 {
-  v3 = [(SBVideoOutController *)self _displayMonitorHasAConnectedExternalIdentity];
-  if (self->_screenSharingViaDisplayMonitor != v3)
+  _displayMonitorHasAConnectedExternalIdentity = [(SBVideoOutController *)self _displayMonitorHasAConnectedExternalIdentity];
+  if (self->_screenSharingViaDisplayMonitor != _displayMonitorHasAConnectedExternalIdentity)
   {
-    self->_screenSharingViaDisplayMonitor = v3;
+    self->_screenSharingViaDisplayMonitor = _displayMonitorHasAConnectedExternalIdentity;
     BSDispatchMain();
     [(SBVideoOutController *)self _notifyThatScreenSharingChanged];
   }
@@ -317,35 +317,35 @@ LABEL_12:
 
 - (void)_notifyThatScreenSharingChanged
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SBAirPlayScreenSharingStatusChangedNotificationName" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBAirPlayScreenSharingStatusChangedNotificationName" object:self userInfo:0];
 }
 
-- (void)_authenticationStateChanged:(id)a3
+- (void)_authenticationStateChanged:(id)changed
 {
-  v4 = [SBApp authenticationController];
-  v5 = [v4 isAuthenticated];
+  authenticationController = [SBApp authenticationController];
+  isAuthenticated = [authenticationController isAuthenticated];
 
-  if (v5)
+  if (isAuthenticated)
   {
 
     [(SBVideoOutController *)self updateScreenSharingBackgroundActivityAssertion];
   }
 }
 
-- (void)displayMonitor:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayMonitor:(id)monitor didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v6 = a4;
-  if ([v6 isExternal] && objc_msgSend(v6, "type") == 1)
+  identityCopy = identity;
+  if ([identityCopy isExternal] && objc_msgSend(identityCopy, "type") == 1)
   {
     [(SBVideoOutController *)self _updateDisplayMonitorState];
   }
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
-  v5 = a4;
-  if ([v5 isExternal] && objc_msgSend(v5, "type") == 1)
+  identityCopy = identity;
+  if ([identityCopy isExternal] && objc_msgSend(identityCopy, "type") == 1)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -356,7 +356,7 @@ LABEL_12:
   }
 }
 
-- (void)cacheDidRebuildAfterServerDeath:(id)a3
+- (void)cacheDidRebuildAfterServerDeath:(id)death
 {
   [(SBVideoOutController *)self _registerForNotifications];
 
@@ -418,14 +418,14 @@ void __76__SBVideoOutController__main_updateScreenSharingBackgroundActivityAsser
   [WeakRetained _main_clearScreenSharingBackgroundActivityAssertion];
 }
 
-- (void)_main_updateScreenSharingBackgroundActivityAssertionSuppressionPreference:(id)a3
+- (void)_main_updateScreenSharingBackgroundActivityAssertionSuppressionPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   BSDispatchQueueAssertMain();
-  v5 = [v4 suppressStatusBarOverrideForScreenSharing];
+  suppressStatusBarOverrideForScreenSharing = [preferenceCopy suppressStatusBarOverrideForScreenSharing];
 
-  self->_screenSharingSetsBackgroundActivity = v5 ^ 1;
-  if (((v5 ^ 1) & 1) == 0)
+  self->_screenSharingSetsBackgroundActivity = suppressStatusBarOverrideForScreenSharing ^ 1;
+  if (((suppressStatusBarOverrideForScreenSharing ^ 1) & 1) == 0)
   {
     [(SBVideoOutController *)self _main_clearScreenSharingBackgroundActivityAssertion];
   }
@@ -433,18 +433,18 @@ void __76__SBVideoOutController__main_updateScreenSharingBackgroundActivityAsser
   [(SBVideoOutController *)self _updateAVRoutes];
 }
 
-- (void)_updateScreenMirroringObserverWithSuppressionPreferenceFromDefaults:(id)a3
+- (void)_updateScreenMirroringObserverWithSuppressionPreferenceFromDefaults:(id)defaults
 {
-  v4 = [a3 suppressStatusBarOverrideForScreenSharing];
+  suppressStatusBarOverrideForScreenSharing = [defaults suppressStatusBarOverrideForScreenSharing];
   screenMirroringObserver = self->_screenMirroringObserver;
-  if (v4)
+  if (suppressStatusBarOverrideForScreenSharing)
   {
     if (!screenMirroringObserver)
     {
       return;
     }
 
-    v6 = 0;
+    uIControllingObserver = 0;
   }
 
   else
@@ -454,11 +454,11 @@ void __76__SBVideoOutController__main_updateScreenSharingBackgroundActivityAsser
       return;
     }
 
-    v6 = [MEMORY[0x277D27A00] UIControllingObserver];
+    uIControllingObserver = [MEMORY[0x277D27A00] UIControllingObserver];
     screenMirroringObserver = self->_screenMirroringObserver;
   }
 
-  self->_screenMirroringObserver = v6;
+  self->_screenMirroringObserver = uIControllingObserver;
 }
 
 - (void)_main_clearVideoOutBackgroundActivityAssertion

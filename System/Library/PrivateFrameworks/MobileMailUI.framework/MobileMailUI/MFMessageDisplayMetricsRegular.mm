@@ -20,17 +20,17 @@
 
 - (double)headerBottomPadding
 {
-  v2 = [MEMORY[0x277CD6870] sharedFontMetricCache];
-  v3 = [v2 cachedFont:&__block_literal_global_7 forKey:@"messageRegularDisplayMetrics.bodyFont"];
+  mEMORY[0x277CD6870] = [MEMORY[0x277CD6870] sharedFontMetricCache];
+  v3 = [mEMORY[0x277CD6870] cachedFont:&__block_literal_global_7 forKey:@"messageRegularDisplayMetrics.bodyFont"];
 
-  v4 = [MEMORY[0x277CD6870] sharedFontMetricCache];
+  mEMORY[0x277CD6870]2 = [MEMORY[0x277CD6870] sharedFontMetricCache];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__MFMessageDisplayMetricsRegular_headerBottomPadding__block_invoke_2;
   v9[3] = &unk_278181B68;
   v5 = v3;
   v10 = v5;
-  [v4 cachedFloat:v9 forKey:@"messageRegularDisplayMetrics.headerBottomPadding"];
+  [mEMORY[0x277CD6870]2 cachedFloat:v9 forKey:@"messageRegularDisplayMetrics.headerBottomPadding"];
   v7 = v6;
 
   return v7;

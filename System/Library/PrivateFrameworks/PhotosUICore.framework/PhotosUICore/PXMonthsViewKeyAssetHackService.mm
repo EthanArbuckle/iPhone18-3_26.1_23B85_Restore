@@ -1,14 +1,14 @@
 @interface PXMonthsViewKeyAssetHackService
 - (BOOL)canPerformAction;
-- (BOOL)shouldSetKeyAssetForHighlight:(id)a3;
+- (BOOL)shouldSetKeyAssetForHighlight:(id)highlight;
 @end
 
 @implementation PXMonthsViewKeyAssetHackService
 
-- (BOOL)shouldSetKeyAssetForHighlight:(id)a3
+- (BOOL)shouldSetKeyAssetForHighlight:(id)highlight
 {
-  v4 = a3;
-  if (MEMORY[0x1A590BA50]([v4 type]))
+  highlightCopy = highlight;
+  if (MEMORY[0x1A590BA50]([highlightCopy type]))
   {
     v5 = 1;
   }
@@ -17,7 +17,7 @@
   {
     v7.receiver = self;
     v7.super_class = PXMonthsViewKeyAssetHackService;
-    v5 = [(PXDaysViewKeyAssetHackService *)&v7 shouldSetKeyAssetForHighlight:v4];
+    v5 = [(PXDaysViewKeyAssetHackService *)&v7 shouldSetKeyAssetForHighlight:highlightCopy];
   }
 
   return v5;
@@ -30,19 +30,19 @@
     return 0;
   }
 
-  v3 = [(PXKeyAssetHackService *)self asset];
-  v4 = v3;
-  if (v3)
+  asset = [(PXKeyAssetHackService *)self asset];
+  v4 = asset;
+  if (asset)
   {
-    v5 = [v3 photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
+    photoLibrary = [asset photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAsset:v4 withType:6 options:v6];
-    v8 = [v7 firstObject];
+    v7 = [MEMORY[0x1E6978650] fetchAssetCollectionsContainingAsset:v4 withType:6 options:librarySpecificFetchOptions];
+    firstObject = [v7 firstObject];
 
-    if (v8)
+    if (firstObject)
     {
-      v9 = [v8 type] == 5;
+      v9 = [firstObject type] == 5;
     }
 
     else

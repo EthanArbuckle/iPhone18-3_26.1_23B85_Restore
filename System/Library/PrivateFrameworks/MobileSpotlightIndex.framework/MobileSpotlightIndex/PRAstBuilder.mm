@@ -1,74 +1,74 @@
 @interface PRAstBuilder
-- (BOOL)astHasFieldNodes:(id)a3;
-- (BOOL)hasFieldKeywordPrefix:(id)a3;
+- (BOOL)astHasFieldNodes:(id)nodes;
+- (BOOL)hasFieldKeywordPrefix:(id)prefix;
 - (BOOL)hasNonEmailQPFilters;
-- (BOOL)isIgnoredToken:(id)a3;
-- (BOOL)isNegatedToken:(id)a3;
-- (BOOL)isQuotedToken:(id)a3;
-- (BOOL)node:(id)a3 containsFilter:(id)a4;
-- (BOOL)tokenizeQuery:(id)a3;
-- (PRAstBuilder)initWithLanguageCode:(id)a3 context:(PRContext *)a4 logHeader:(id)a5;
-- (id)buildASTFromQuery:(id)a3 queryUnderstanding:(id)a4;
-- (id)extractSourceTokenFromRange:(_NSRange)a3 originalQuery:(id)a4;
-- (id)getFilterSourceTokenForIndex:(int64_t)a3;
-- (id)parseExpressionAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4;
-- (id)parseFieldExpressionAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4;
-- (id)parseMultiTokenQuotedValueStartingWithValue:(id)a3 atIndex:(unint64_t)a4 consumedTokens:(unint64_t *)a5;
-- (id)parseNegatedTermAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4;
-- (id)parseQuotedExpressionAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4;
-- (id)parseSentKeywordAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4;
+- (BOOL)isIgnoredToken:(id)token;
+- (BOOL)isNegatedToken:(id)token;
+- (BOOL)isQuotedToken:(id)token;
+- (BOOL)node:(id)node containsFilter:(id)filter;
+- (BOOL)tokenizeQuery:(id)query;
+- (PRAstBuilder)initWithLanguageCode:(id)code context:(PRContext *)context logHeader:(id)header;
+- (id)buildASTFromQuery:(id)query queryUnderstanding:(id)understanding;
+- (id)extractSourceTokenFromRange:(_NSRange)range originalQuery:(id)query;
+- (id)getFilterSourceTokenForIndex:(int64_t)index;
+- (id)parseExpressionAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens;
+- (id)parseFieldExpressionAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens;
+- (id)parseMultiTokenQuotedValueStartingWithValue:(id)value atIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens;
+- (id)parseNegatedTermAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens;
+- (id)parseQuotedExpressionAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens;
+- (id)parseSentKeywordAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens;
 - (id)parseTokensIntoAST;
-- (id)stripNegationFromToken:(id)a3;
+- (id)stripNegationFromToken:(id)token;
 - (void)buildTokenToFilterAndU2LabelsMapping;
 - (void)dealloc;
-- (void)extractQUFiltersAndLabelsFromQueryUnderstanding:(id)a3;
-- (void)postProcessAstForMailToken:(id)a3;
-- (void)setMailTokenIgnoredInAst:(id)a3;
+- (void)extractQUFiltersAndLabelsFromQueryUnderstanding:(id)understanding;
+- (void)postProcessAstForMailToken:(id)token;
+- (void)setMailTokenIgnoredInAst:(id)ast;
 @end
 
 @implementation PRAstBuilder
 
-- (id)extractSourceTokenFromRange:(_NSRange)a3 originalQuery:(id)a4
+- (id)extractSourceTokenFromRange:(_NSRange)range originalQuery:(id)query
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     return &stru_1F4284FD0;
   }
 
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [a4 length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [query length])
   {
     return &stru_1F4284FD0;
   }
 
-  return [a4 substringWithRange:{location, length}];
+  return [query substringWithRange:{location, length}];
 }
 
-- (id)getFilterSourceTokenForIndex:(int64_t)a3
+- (id)getFilterSourceTokenForIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableArray *)self->_qpParsesRange count]<= a3)
+  if (index < 0 || [(NSMutableArray *)self->_qpParsesRange count]<= index)
   {
     return &stru_1F4284FD0;
   }
 
-  v5 = [-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{a3), "rangeValue"}];
+  v5 = [-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{index), "rangeValue"}];
   v7 = v6;
-  v8 = [(PRAstBuilder *)self originalQuery];
+  originalQuery = [(PRAstBuilder *)self originalQuery];
 
-  return [(PRAstBuilder *)self extractSourceTokenFromRange:v5 originalQuery:v7, v8];
+  return [(PRAstBuilder *)self extractSourceTokenFromRange:v5 originalQuery:v7, originalQuery];
 }
 
-- (id)parseQuotedExpressionAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4
+- (id)parseQuotedExpressionAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens
 {
   v7 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"'‘’“”«»„“‹›"];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if ([(NSArray *)self->_tokens count]<= a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if ([(NSArray *)self->_tokens count]<= index)
   {
 LABEL_12:
-    v12 = [(NSArray *)self->_tokens objectAtIndexedSubscript:a3];
-    v13 = [(NSArray *)self->_tokens count]- 1 == a3;
-    *a4 = 1;
+    v12 = [(NSArray *)self->_tokens objectAtIndexedSubscript:index];
+    v13 = [(NSArray *)self->_tokens count]- 1 == index;
+    *tokens = 1;
     v14 = [PRAstTermNode alloc];
     v15 = v12;
     v16 = v12;
@@ -81,31 +81,31 @@ LABEL_13:
   v9 = 0;
   while (1)
   {
-    v10 = [(NSArray *)self->_tokens objectAtIndexedSubscript:a3 + v9];
-    [v8 addObject:v10];
+    v10 = [(NSArray *)self->_tokens objectAtIndexedSubscript:index + v9];
+    [array addObject:v10];
     v11 = [v10 length] >= 2 && v9 == 0;
     if (v11 && ([v7 characterIsMember:{objc_msgSend(v10, "characterAtIndex:", objc_msgSend(v10, "length") - 1)}] & 1) != 0)
     {
-      v21 = a3;
+      indexCopy = index;
       goto LABEL_19;
     }
 
-    if (a3 + v9 > a3 && ([v7 characterIsMember:{objc_msgSend(v10, "characterAtIndex:", objc_msgSend(v10, "length") - 1)}] & 1) != 0)
+    if (index + v9 > index && ([v7 characterIsMember:{objc_msgSend(v10, "characterAtIndex:", objc_msgSend(v10, "length") - 1)}] & 1) != 0)
     {
       break;
     }
 
     ++v9;
-    if (a3 + v9 >= [(NSArray *)self->_tokens count])
+    if (index + v9 >= [(NSArray *)self->_tokens count])
     {
       goto LABEL_12;
     }
   }
 
-  v21 = a3 + v9;
+  indexCopy = index + v9;
 LABEL_19:
-  *a4 = v21 - a3 + 1;
-  v22 = [v8 componentsJoinedByString:@" "];
+  *tokens = indexCopy - index + 1;
+  v22 = [array componentsJoinedByString:@" "];
   v23 = v22;
   if ([v22 length])
   {
@@ -142,7 +142,7 @@ LABEL_14:
   return v19;
 }
 
-- (id)parseFieldExpressionAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4
+- (id)parseFieldExpressionAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens
 {
   v67 = *MEMORY[0x1E69E9840];
   v7 = [(NSArray *)self->_tokens objectAtIndexedSubscript:?];
@@ -160,14 +160,14 @@ LABEL_14:
         v13 = [objc_msgSend(v8 subarrayWithRange:{1, objc_msgSend(v8, "count") - 1), "componentsJoinedByString:", @":"}];
         if ([v13 length])
         {
-          if (-[PRAstBuilder isQuotedToken:](self, "isQuotedToken:", v13) && ((v14 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"'‘’“”«»„“‹›"], objc_msgSend(v13, "length") < 2) || (objc_msgSend(v14, "characterIsMember:", objc_msgSend(v13, "characterAtIndex:", objc_msgSend(v13, "length") - 1)) & 1) == 0) && (*buf = 0, (v15 = -[PRAstBuilder parseMultiTokenQuotedValueStartingWithValue:atIndex:consumedTokens:](self, "parseMultiTokenQuotedValueStartingWithValue:atIndex:consumedTokens:", v13, a3, buf)) != 0))
+          if (-[PRAstBuilder isQuotedToken:](self, "isQuotedToken:", v13) && ((v14 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"'‘’“”«»„“‹›"], objc_msgSend(v13, "length") < 2) || (objc_msgSend(v14, "characterIsMember:", objc_msgSend(v13, "characterAtIndex:", objc_msgSend(v13, "length") - 1)) & 1) == 0) && (*buf = 0, (v15 = -[PRAstBuilder parseMultiTokenQuotedValueStartingWithValue:atIndex:consumedTokens:](self, "parseMultiTokenQuotedValueStartingWithValue:atIndex:consumedTokens:", v13, index, buf)) != 0))
           {
             v16 = v15;
             v17 = *buf;
-            *a4 = *buf;
-            v18 = v17 + a3;
-            v19 = v17 + a3 - 1;
-            v20 = [-[NSArray objectAtIndexedSubscript:](self->_tokenRanges objectAtIndexedSubscript:{a3), "rangeValue"}];
+            *tokens = *buf;
+            v18 = v17 + index;
+            v19 = v17 + index - 1;
+            v20 = [-[NSArray objectAtIndexedSubscript:](self->_tokenRanges objectAtIndexedSubscript:{index), "rangeValue"}];
             v22 = v21;
             v69.location = [-[NSArray objectAtIndexedSubscript:](self->_tokenRanges objectAtIndexedSubscript:{v19), "rangeValue"}];
             v69.length = v23;
@@ -212,9 +212,9 @@ LABEL_14:
               }
             }
 
-            v51 = [(NSArray *)self->_tokens count]- 1 == a3;
+            v51 = [(NSArray *)self->_tokens count]- 1 == index;
             v52 = [[PRAstTermNode alloc] initWithValue:v36 sourceToken:v13 isLastToken:v51 isNegated:0 isIgnored:0];
-            *a4 = 1;
+            *tokens = 1;
             v28 = [PRAstFieldNode alloc];
             v29 = v12;
             v30 = v10;
@@ -241,19 +241,19 @@ LABEL_44:
       v61 = 0;
       if (v34 == 7)
       {
-        result = [(PRAstBuilder *)self parseSentKeywordAtIndex:a3 consumedTokens:a4];
+        result = [(PRAstBuilder *)self parseSentKeywordAtIndex:index consumedTokens:tokens];
         goto LABEL_45;
       }
 
-      v39 = [(PRAstBuilder *)self parseExpressionAtIndex:a3 + 1 consumedTokens:&v61];
+      v39 = [(PRAstBuilder *)self parseExpressionAtIndex:index + 1 consumedTokens:&v61];
       if (v39)
       {
         v40 = v39;
         v41 = v61;
-        *a4 = v61 + 1;
+        *tokens = v61 + 1;
         v42 = [(NSArray *)self->_tokens count];
         v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v7, -[PRAstNode sourceToken](v40, "sourceToken")];
-        v43 = -[NSDictionary objectForKeyedSubscript:](self->_tokenToU2LabelsMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3]);
+        v43 = -[NSDictionary objectForKeyedSubscript:](self->_tokenToU2LabelsMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index]);
         if ([v43 count])
         {
           v44 = [-[NSMutableArray objectAtIndexedSubscript:](self->_u2TokensLabel objectAtIndexedSubscript:{objc_msgSend(objc_msgSend(v43, "objectAtIndexedSubscript:", 0), "intValue")), "intValue"}] == 0;
@@ -279,7 +279,7 @@ LABEL_44:
           v49 = (v34 == 10) & v44;
         }
 
-        v53 = v41 + a3;
+        v53 = v41 + index;
         v54 = v42 - 1;
         v55 = *__error();
         v56 = _SILogForLogForCategory(19);
@@ -295,7 +295,7 @@ LABEL_44:
 
           *&buf[4] = logHeader;
           v63 = 2048;
-          v64 = a3;
+          indexCopy2 = index;
           v65 = 2112;
           v66 = v58;
           _os_log_impl(&dword_1C278D000, v56, OS_LOG_TYPE_DEFAULT, "%@ Token %lu is field node with IsIgnored = %@", buf, 0x20u);
@@ -312,7 +312,7 @@ LABEL_44:
         goto LABEL_44;
       }
 
-      if (v34 == 9 && a3 + 1 == [(NSArray *)self->_tokens count])
+      if (v34 == 9 && index + 1 == [(NSArray *)self->_tokens count])
       {
         v45 = *__error();
         v46 = _SILogForLogForCategory(19);
@@ -322,7 +322,7 @@ LABEL_44:
           *buf = 138412546;
           *&buf[4] = v47;
           v63 = 2048;
-          v64 = a3;
+          indexCopy2 = index;
           _os_log_impl(&dword_1C278D000, v46, OS_LOG_TYPE_DEFAULT, "%@ Token %lu is field node with IsIgnored = TRUE", buf, 0x16u);
         }
 
@@ -340,21 +340,21 @@ LABEL_44:
   }
 
   result = 0;
-  *a4 = 0;
+  *tokens = 0;
 LABEL_45:
   v59 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (id)parseMultiTokenQuotedValueStartingWithValue:(id)a3 atIndex:(unint64_t)a4 consumedTokens:(unint64_t *)a5
+- (id)parseMultiTokenQuotedValueStartingWithValue:(id)value atIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens
 {
   v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"'‘’“”«»„“‹›"];
-  v10 = [MEMORY[0x1E695DF70] arrayWithObject:a3];
-  for (i = a4 + 1; ; ++i)
+  v10 = [MEMORY[0x1E695DF70] arrayWithObject:value];
+  for (i = index + 1; ; ++i)
   {
     if (i >= [(NSArray *)self->_tokens count])
     {
-      *a5 = 0;
+      *tokens = 0;
       return 0;
     }
 
@@ -369,7 +369,7 @@ LABEL_45:
     }
   }
 
-  *a5 = i - a4 + 1;
+  *tokens = i - index + 1;
   v14 = [v10 componentsJoinedByString:@" "];
   v15 = v14;
   if ([v14 length])
@@ -391,23 +391,23 @@ LABEL_45:
   return v16;
 }
 
-- (BOOL)isIgnoredToken:(id)a3
+- (BOOL)isIgnoredToken:(id)token
 {
   if ([(PRAstLanguageProfile *)self->_languageProfile fieldTypeForKeyword:?]== 11)
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"-"];
+  return [token isEqualToString:@"-"];
 }
 
-- (id)parseSentKeywordAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4
+- (id)parseSentKeywordAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens
 {
   v31 = *MEMORY[0x1E69E9840];
   v7 = [(NSArray *)self->_tokens objectAtIndexedSubscript:?];
   v8 = [(NSArray *)self->_tokens count];
-  *a4 = 1;
-  v9 = -[NSDictionary objectForKeyedSubscript:](self->_tokenToU2LabelsMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3]);
+  *tokens = 1;
+  v9 = -[NSDictionary objectForKeyedSubscript:](self->_tokenToU2LabelsMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index]);
   if ([v9 count])
   {
     v10 = [-[NSMutableArray objectAtIndexedSubscript:](self->_u2TokensLabel objectAtIndexedSubscript:{objc_msgSend(objc_msgSend(v9, "objectAtIndexedSubscript:", 0), "intValue")), "intValue"}] == 0;
@@ -434,16 +434,16 @@ LABEL_45:
 
     v26 = logHeader;
     v27 = 2048;
-    v28 = a3;
+    indexCopy = index;
     v29 = 2112;
     v30 = v16;
   }
 
   *__error() = v13;
-  v17 = [[PRAstFieldNode alloc] initWithFieldType:7 originalKeyword:v7 expression:0 sourceToken:v7 isLastToken:v11 == a3 isIgnored:v12];
+  v17 = [[PRAstFieldNode alloc] initWithFieldType:7 originalKeyword:v7 expression:0 sourceToken:v7 isLastToken:v11 == index isIgnored:v12];
   if ((v12 & 1) == 0)
   {
-    v18 = v11 == a3;
+    v18 = v11 == index;
     if ((*(self->_context + 7) & 0x10) != 0)
     {
       v19 = @"kMDItemMailboxes=*sent";
@@ -465,11 +465,11 @@ LABEL_45:
   return v17;
 }
 
-- (id)parseNegatedTermAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4
+- (id)parseNegatedTermAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens
 {
   v7 = [(NSArray *)self->_tokens objectAtIndexedSubscript:?];
   v8 = [(NSArray *)self->_tokens count]- 1;
-  *a4 = 1;
+  *tokens = 1;
   v9 = [(PRAstBuilder *)self stripNegationFromToken:v7];
   v10 = [v9 length];
   v11 = [PRAstTermNode alloc];
@@ -487,33 +487,33 @@ LABEL_45:
     v14 = 0;
   }
 
-  v15 = [(PRAstTermNode *)v11 initWithValue:v12 sourceToken:v13 isLastToken:v8 == a3 isNegated:v14 isIgnored:0];
+  v15 = [(PRAstTermNode *)v11 initWithValue:v12 sourceToken:v13 isLastToken:v8 == index isNegated:v14 isIgnored:0];
 
   return v15;
 }
 
-- (id)parseExpressionAtIndex:(unint64_t)a3 consumedTokens:(unint64_t *)a4
+- (id)parseExpressionAtIndex:(unint64_t)index consumedTokens:(unint64_t *)tokens
 {
-  v5 = a3;
+  indexCopy = index;
   v104[1] = *MEMORY[0x1E69E9840];
-  if ([(NSArray *)self->_tokens count]<= a3)
+  if ([(NSArray *)self->_tokens count]<= index)
   {
     v13 = 0;
-    *a4 = 0;
+    *tokens = 0;
     goto LABEL_51;
   }
 
-  v7 = [(NSArray *)self->_tokens objectAtIndexedSubscript:v5];
+  v7 = [(NSArray *)self->_tokens objectAtIndexedSubscript:indexCopy];
   v8 = [(NSArray *)self->_tokens count]- 1;
-  *a4 = 1;
+  *tokens = 1;
   v9 = [(PRAstLanguageProfile *)self->_languageProfile fieldTypeForKeyword:v7];
   if ((v9 - 3) <= 3)
   {
     v10 = v9;
-    v11 = [[PRAstTermNode alloc] initWithValue:v7 sourceToken:v7 isLastToken:v8 == v5 isNegated:0 isIgnored:0];
+    v11 = [[PRAstTermNode alloc] initWithValue:v7 sourceToken:v7 isLastToken:v8 == indexCopy isNegated:0 isIgnored:0];
     v12 = [PRAstCompositeNode alloc];
     v104[0] = v11;
-    v13 = -[PRAstCompositeNode initWithNodeType:children:sourceToken:isLastToken:](v12, "initWithNodeType:children:sourceToken:isLastToken:", @"OR", [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:1], v7, v8 == v5);
+    v13 = -[PRAstCompositeNode initWithNodeType:children:sourceToken:isLastToken:](v12, "initWithNodeType:children:sourceToken:isLastToken:", @"OR", [MEMORY[0x1E695DEC8] arrayWithObjects:v104 count:1], v7, v8 == indexCopy);
     obj = [MEMORY[0x1E695DFD8] setWithArray:self->_qpParsesDesc];
     if (v10 == 3)
     {
@@ -545,7 +545,7 @@ LABEL_45:
       v100 = 2112;
       v101 = v82;
       v102 = 2048;
-      v103 = v5;
+      v103 = indexCopy;
       _os_log_impl(&dword_1C278D000, v20, OS_LOG_TYPE_DEFAULT, "%@ Added parse %@ at index %lu", buf, 0x20u);
     }
 
@@ -567,7 +567,7 @@ LABEL_45:
 
     v23 = v22;
     v76 = v7;
-    v77 = v5;
+    v77 = indexCopy;
     v79 = v13;
     v24 = 0;
     v25 = *v92;
@@ -621,11 +621,11 @@ LABEL_45:
     while (v23);
     v13 = v79;
     v7 = v76;
-    v5 = v77;
+    indexCopy = v77;
     if ((v24 & 1) == 0)
     {
 LABEL_41:
-      [(PRAstTermNode *)v13 addChild:[[PRAstQPFilterNode alloc] initWithFilterString:v82 sourceToken:v7 isLastToken:v78 == v5]];
+      [(PRAstTermNode *)v13 addChild:[[PRAstQPFilterNode alloc] initWithFilterString:v82 sourceToken:v7 isLastToken:v78 == indexCopy]];
     }
 
     goto LABEL_51;
@@ -641,12 +641,12 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = v17;
       v100 = 2048;
-      v101 = v5;
+      v101 = indexCopy;
       _os_log_impl(&dword_1C278D000, v16, OS_LOG_TYPE_DEFAULT, "%@ Token %lu is negated token", buf, 0x16u);
     }
 
     *__error() = v15;
-    v18 = [(PRAstBuilder *)self parseNegatedTermAtIndex:v5 consumedTokens:a4];
+    v18 = [(PRAstBuilder *)self parseNegatedTermAtIndex:indexCopy consumedTokens:tokens];
     goto LABEL_50;
   }
 
@@ -660,12 +660,12 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = v41;
       v100 = 2048;
-      v101 = v5;
+      v101 = indexCopy;
       _os_log_impl(&dword_1C278D000, v40, OS_LOG_TYPE_DEFAULT, "%@ Token %lu is ignored token", buf, 0x16u);
     }
 
     *__error() = v39;
-    v18 = [(PRAstBuilder *)self parseIgnoredTermAtIndex:v5 consumedTokens:a4];
+    v18 = [(PRAstBuilder *)self parseIgnoredTermAtIndex:indexCopy consumedTokens:tokens];
     goto LABEL_50;
   }
 
@@ -679,38 +679,38 @@ LABEL_41:
       *buf = 138412546;
       *&buf[4] = v44;
       v100 = 2048;
-      v101 = v5;
+      v101 = indexCopy;
       _os_log_impl(&dword_1C278D000, v43, OS_LOG_TYPE_DEFAULT, "%@ Token %lu is quoted token", buf, 0x16u);
     }
 
     *__error() = v42;
-    v18 = [(PRAstBuilder *)self parseQuotedExpressionAtIndex:v5 consumedTokens:a4];
+    v18 = [(PRAstBuilder *)self parseQuotedExpressionAtIndex:indexCopy consumedTokens:tokens];
     goto LABEL_50;
   }
 
   if ([(PRAstBuilder *)self hasFieldKeywordPrefix:v7])
   {
     *buf = 0;
-    v47 = [(PRAstBuilder *)self parseFieldExpressionAtIndex:v5 consumedTokens:buf];
+    v47 = [(PRAstBuilder *)self parseFieldExpressionAtIndex:indexCopy consumedTokens:buf];
     if (v47)
     {
       v13 = v47;
-      *a4 = *buf;
+      *tokens = *buf;
       goto LABEL_51;
     }
   }
 
   v48 = v7;
-  v49 = -[NSDictionary objectForKeyedSubscript:](self->_tokenToFilterMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5]);
+  v49 = -[NSDictionary objectForKeyedSubscript:](self->_tokenToFilterMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:indexCopy]);
   v50 = [v49 count];
-  v13 = [[PRAstTermNode alloc] initWithValue:v48 sourceToken:v48 isLastToken:v8 == v5 isNegated:0 isIgnored:0];
+  v13 = [[PRAstTermNode alloc] initWithValue:v48 sourceToken:v48 isLastToken:v8 == indexCopy isNegated:0 isIgnored:0];
   if (v50)
   {
-    *a4 = 1;
+    *tokens = 1;
     v51 = [PRAstCompositeNode alloc];
     v97 = v13;
-    v80 = -[PRAstCompositeNode initWithNodeType:children:sourceToken:isLastToken:](v51, "initWithNodeType:children:sourceToken:isLastToken:", @"OR", [MEMORY[0x1E695DEC8] arrayWithObjects:&v97 count:1], v48, v8 == v5);
-    v52 = [MEMORY[0x1E695DF90] dictionary];
+    v80 = -[PRAstCompositeNode initWithNodeType:children:sourceToken:isLastToken:](v51, "initWithNodeType:children:sourceToken:isLastToken:", @"OR", [MEMORY[0x1E695DEC8] arrayWithObjects:&v97 count:1], v48, v8 == indexCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
@@ -730,15 +730,15 @@ LABEL_41:
           }
 
           v57 = *(*(&v87 + 1) + 8 * j);
-          v58 = [v57 integerValue];
-          if (v58 < [(NSMutableArray *)self->_qpParsesDesc count])
+          integerValue = [v57 integerValue];
+          if (integerValue < [(NSMutableArray *)self->_qpParsesDesc count])
           {
-            v59 = [(NSMutableArray *)self->_qpParsesDesc objectAtIndexedSubscript:v58];
+            v59 = [(NSMutableArray *)self->_qpParsesDesc objectAtIndexedSubscript:integerValue];
             v60 = [objc_msgSend(v59 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "characterSetWithCharactersInString:", @"() ", "componentsJoinedByString:", &stru_1F4284FD0}];
-            v61 = [v52 objectForKeyedSubscript:v60];
-            if (!v61 || ([-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{objc_msgSend(v61, "integerValue")), "rangeValue"}], v63 = v62, objc_msgSend(-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange, "objectAtIndexedSubscript:", v58), "rangeValue"), v64 > v63))
+            v61 = [dictionary objectForKeyedSubscript:v60];
+            if (!v61 || ([-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{objc_msgSend(v61, "integerValue")), "rangeValue"}], v63 = v62, objc_msgSend(-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange, "objectAtIndexedSubscript:", integerValue), "rangeValue"), v64 > v63))
             {
-              [v52 setObject:v57 forKeyedSubscript:v60];
+              [dictionary setObject:v57 forKeyedSubscript:v60];
             }
           }
         }
@@ -753,8 +753,8 @@ LABEL_41:
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v65 = [v52 allValues];
-    v66 = [v65 countByEnumeratingWithState:&v83 objects:v95 count:16];
+    allValues = [dictionary allValues];
+    v66 = [allValues countByEnumeratingWithState:&v83 objects:v95 count:16];
     if (v66)
     {
       v67 = v66;
@@ -765,18 +765,18 @@ LABEL_41:
         {
           if (*v84 != v68)
           {
-            objc_enumerationMutation(v65);
+            objc_enumerationMutation(allValues);
           }
 
-          v70 = [*(*(&v83 + 1) + 8 * k) integerValue];
-          v71 = [(NSMutableArray *)self->_qpParsesDesc objectAtIndexedSubscript:v70];
-          v72 = [(PRAstBuilder *)self getFilterSourceTokenForIndex:v70];
-          v73 = [-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{v70), "rangeValue"}];
+          integerValue2 = [*(*(&v83 + 1) + 8 * k) integerValue];
+          v71 = [(NSMutableArray *)self->_qpParsesDesc objectAtIndexedSubscript:integerValue2];
+          v72 = [(PRAstBuilder *)self getFilterSourceTokenForIndex:integerValue2];
+          v73 = [-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{integerValue2), "rangeValue"}];
           v75 = v73 != 0x7FFFFFFFFFFFFFFFLL && v73 + v74 == [(NSString *)[(PRAstBuilder *)self originalQuery] length];
           [(PRAstCompositeNode *)v80 addChild:[[PRAstQPFilterNode alloc] initWithFilterString:v71 sourceToken:v72 isLastToken:v75]];
         }
 
-        v67 = [v65 countByEnumeratingWithState:&v83 objects:v95 count:16];
+        v67 = [allValues countByEnumeratingWithState:&v83 objects:v95 count:16];
       }
 
       while (v67);
@@ -801,8 +801,8 @@ LABEL_51:
   result = [(NSArray *)self->_tokens count];
   if (result)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     if ([(NSArray *)self->_tokens count])
     {
       v6 = 0;
@@ -814,33 +814,33 @@ LABEL_51:
         v10 = [(NSArray *)self->_tokens objectAtIndexedSubscript:v6];
         if ([(PRAstLanguageProfile *)self->_languageProfile fieldTypeForKeyword:v10]== 12)
         {
-          if ([v5 count])
+          if ([array2 count])
           {
-            if ([v5 count] == 1)
+            if ([array2 count] == 1)
             {
-              v11 = [v5 objectAtIndexedSubscript:0];
+              v11 = [array2 objectAtIndexedSubscript:0];
             }
 
             else
             {
-              v11 = [objc_alloc((v9 + 1816)) initWithNodeType:v7 children:v5 sourceToken:v8 isLastToken:0];
+              v11 = [objc_alloc((v9 + 1816)) initWithNodeType:v7 children:array2 sourceToken:v8 isLastToken:0];
             }
 
-            [v4 addObject:v11];
-            [v5 removeAllObjects];
+            [array addObject:v11];
+            [array2 removeAllObjects];
           }
         }
 
         else
         {
           v12 = [(PRAstLanguageProfile *)self->_languageProfile fieldTypeForKeyword:v10];
-          if (v12 == -1 || (v13 = v12, -[PRAstLanguageProfile argumentDirectionForKeyword:](self->_languageProfile, "argumentDirectionForKeyword:", v10) != 1) || ![v5 count] || (v14 = objc_msgSend(v5, "lastObject"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_msgSend(v14, "isIgnored") & 1) != 0)
+          if (v12 == -1 || (v13 = v12, -[PRAstLanguageProfile argumentDirectionForKeyword:](self->_languageProfile, "argumentDirectionForKeyword:", v10) != 1) || ![array2 count] || (v14 = objc_msgSend(array2, "lastObject"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_msgSend(v14, "isIgnored") & 1) != 0)
           {
             v24 = 0;
             v15 = [(PRAstBuilder *)self parseExpressionAtIndex:v6 consumedTokens:&v24];
             if (v15)
             {
-              [v5 addObject:v15];
+              [array2 addObject:v15];
             }
 
             v16 = v24;
@@ -853,7 +853,7 @@ LABEL_51:
             continue;
           }
 
-          [v5 removeLastObject];
+          [array2 removeLastObject];
           v23 = v6 == [(NSArray *)self->_tokens count]- 1;
           v17 = v8;
           v18 = v7;
@@ -863,7 +863,7 @@ LABEL_51:
           v7 = v18;
           v8 = v17;
           v9 = 0x1EEADE000;
-          [v5 addObject:{-[PRAstFieldNode initWithFieldType:originalKeyword:expression:sourceToken:isLastToken:isIgnored:](v20, "initWithFieldType:originalKeyword:expression:sourceToken:isLastToken:isIgnored:", v13, v10, v14, v21, v23, 0)}];
+          [array2 addObject:{-[PRAstFieldNode initWithFieldType:originalKeyword:expression:sourceToken:isLastToken:isIgnored:](v20, "initWithFieldType:originalKeyword:expression:sourceToken:isLastToken:isIgnored:", v13, v10, v14, v21, v23, 0)}];
         }
 
         ++v6;
@@ -872,32 +872,32 @@ LABEL_51:
       while (v6 < [(NSArray *)self->_tokens count]);
     }
 
-    if ([v5 count])
+    if ([array2 count])
     {
-      if ([v5 count] == 1)
+      if ([array2 count] == 1)
       {
-        v22 = [v5 objectAtIndexedSubscript:0];
+        v22 = [array2 objectAtIndexedSubscript:0];
       }
 
       else
       {
-        v22 = [[PRAstCompositeNode alloc] initWithNodeType:@"AND" children:v5 sourceToken:&stru_1F4284FD0 isLastToken:0];
+        v22 = [[PRAstCompositeNode alloc] initWithNodeType:@"AND" children:array2 sourceToken:&stru_1F4284FD0 isLastToken:0];
       }
 
-      [v4 addObject:v22];
+      [array addObject:v22];
     }
 
-    result = [v4 count];
+    result = [array count];
     if (result)
     {
-      if ([v4 count] == 1)
+      if ([array count] == 1)
       {
-        return [v4 objectAtIndexedSubscript:0];
+        return [array objectAtIndexedSubscript:0];
       }
 
       else
       {
-        return [[PRAstCompositeNode alloc] initWithNodeType:@"OR" children:v4 sourceToken:[(PRAstBuilder *)self originalQuery] isLastToken:1];
+        return [[PRAstCompositeNode alloc] initWithNodeType:@"OR" children:array sourceToken:[(PRAstBuilder *)self originalQuery] isLastToken:1];
       }
     }
   }
@@ -905,25 +905,25 @@ LABEL_51:
   return result;
 }
 
-- (id)stripNegationFromToken:(id)a3
+- (id)stripNegationFromToken:(id)token
 {
   if (![(PRAstBuilder *)self isNegatedToken:?])
   {
-    return a3;
+    return token;
   }
 
-  v4 = [a3 rangeOfComposedCharacterSequenceAtIndex:0];
+  v4 = [token rangeOfComposedCharacterSequenceAtIndex:0];
 
-  return [a3 substringFromIndex:v4 + v5];
+  return [token substringFromIndex:v4 + v5];
 }
 
-- (BOOL)isQuotedToken:(id)a3
+- (BOOL)isQuotedToken:(id)token
 {
-  v4 = [a3 length];
+  v4 = [token length];
   if (v4)
   {
     v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"'‘’“”«»„“‹›"];
-    v6 = [a3 characterAtIndex:0];
+    v6 = [token characterAtIndex:0];
 
     LOBYTE(v4) = [v5 characterIsMember:v6];
   }
@@ -931,20 +931,20 @@ LABEL_51:
   return v4;
 }
 
-- (BOOL)isNegatedToken:(id)a3
+- (BOOL)isNegatedToken:(id)token
 {
-  if ([a3 length] < 2)
+  if ([token length] < 2)
   {
     return 0;
   }
 
   v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"-~"];
-  v6 = [a3 characterAtIndex:0];
+  v6 = [token characterAtIndex:0];
 
   return [v5 characterIsMember:v6];
 }
 
-- (BOOL)hasFieldKeywordPrefix:(id)a3
+- (BOOL)hasFieldKeywordPrefix:(id)prefix
 {
   if ([(PRAstLanguageProfile *)self->_languageProfile fieldTypeForKeyword:?]!= -1)
   {
@@ -953,10 +953,10 @@ LABEL_2:
     return v5;
   }
 
-  LODWORD(v5) = [a3 containsString:@":"];
+  LODWORD(v5) = [prefix containsString:@":"];
   if (v5)
   {
-    v5 = [objc_msgSend(a3 componentsSeparatedByString:{@":", "firstObject"}];
+    v5 = [objc_msgSend(prefix componentsSeparatedByString:{@":", "firstObject"}];
     if (v5)
     {
       v6 = v5;
@@ -975,8 +975,8 @@ LABEL_2:
 
 - (void)buildTokenToFilterAndU2LabelsMapping
 {
-  v18 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_tokenRanges count])
   {
     v4 = 0;
@@ -984,7 +984,7 @@ LABEL_2:
     {
       v5 = [-[NSArray objectAtIndexedSubscript:](self->_tokenRanges objectAtIndexedSubscript:{v4), "rangeValue"}];
       v7 = v6;
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if ([(NSMutableArray *)self->_qpParsesRange count])
       {
         v9 = 0;
@@ -993,7 +993,7 @@ LABEL_2:
           v10 = [-[NSMutableArray objectAtIndexedSubscript:](self->_qpParsesRange objectAtIndexedSubscript:{v9), "rangeValue"}];
           if (v10 <= v5 && v5 + v7 <= v10 + v11)
           {
-            [v8 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v9)}];
+            [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v9)}];
           }
 
           ++v9;
@@ -1002,12 +1002,12 @@ LABEL_2:
         while (v9 < [(NSMutableArray *)self->_qpParsesRange count]);
       }
 
-      if ([v8 count])
+      if ([array count])
       {
-        [v18 setObject:v8 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v4)}];
+        [dictionary setObject:array forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v4)}];
       }
 
-      v13 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       if ([(NSMutableArray *)self->_u2TokensRange count])
       {
         v14 = 0;
@@ -1016,7 +1016,7 @@ LABEL_2:
           v15 = [-[NSMutableArray objectAtIndexedSubscript:](self->_u2TokensRange objectAtIndexedSubscript:{v14), "rangeValue"}];
           if (v15 <= v5 && v5 + v7 <= v15 + v16)
           {
-            [v13 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v14)}];
+            [array2 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v14)}];
           }
 
           ++v14;
@@ -1025,9 +1025,9 @@ LABEL_2:
         while (v14 < [(NSMutableArray *)self->_u2TokensRange count]);
       }
 
-      if ([v13 count])
+      if ([array2 count])
       {
-        [v3 setObject:v13 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v4)}];
+        [dictionary2 setObject:array2 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v4)}];
       }
 
       ++v4;
@@ -1036,24 +1036,24 @@ LABEL_2:
     while (v4 < [(NSArray *)self->_tokenRanges count]);
   }
 
-  self->_tokenToFilterMap = v18;
-  self->_tokenToU2LabelsMap = v3;
+  self->_tokenToFilterMap = dictionary;
+  self->_tokenToU2LabelsMap = dictionary2;
 }
 
-- (void)extractQUFiltersAndLabelsFromQueryUnderstanding:(id)a3
+- (void)extractQUFiltersAndLabelsFromQueryUnderstanding:(id)understanding
 {
   v50 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->_qpParsesDesc removeAllObjects];
   [(NSMutableArray *)self->_qpParsesRange removeAllObjects];
   [(NSMutableSet *)self->_specialIndices removeAllObjects];
   [(NSMutableArray *)self->_u2TokensLabel removeAllObjects];
-  v33 = self;
+  selfCopy = self;
   [(NSMutableArray *)self->_u2TokensRange removeAllObjects];
-  if (a3)
+  if (understanding)
   {
-    if ([a3 objectForKeyedSubscript:@"kQPQUOutputTokenInfo"])
+    if ([understanding objectForKeyedSubscript:@"kQPQUOutputTokenInfo"])
     {
-      v5 = [a3 objectForKeyedSubscript:@"kQPQUOutputTokenInfo"];
+      v5 = [understanding objectForKeyedSubscript:@"kQPQUOutputTokenInfo"];
       if ([v5 count])
       {
         v6 = 0;
@@ -1083,9 +1083,9 @@ LABEL_2:
                       {
                         if ([v11 count])
                         {
-                          [(NSMutableArray *)v33->_u2TokensRange addObject:v9];
+                          [(NSMutableArray *)selfCopy->_u2TokensRange addObject:v9];
                           v7 = 0x1E696B000;
-                          -[NSMutableArray addObject:](v33->_u2TokensLabel, "addObject:", [v11 objectAtIndexedSubscript:0]);
+                          -[NSMutableArray addObject:](selfCopy->_u2TokensLabel, "addObject:", [v11 objectAtIndexedSubscript:0]);
                         }
                       }
                     }
@@ -1102,9 +1102,9 @@ LABEL_2:
       }
     }
 
-    if ([a3 objectForKeyedSubscript:@"attributedParses"])
+    if ([understanding objectForKeyedSubscript:@"attributedParses"])
     {
-      v12 = [a3 objectForKeyedSubscript:@"attributedParses"];
+      v12 = [understanding objectForKeyedSubscript:@"attributedParses"];
       if ([v12 count])
       {
         v13 = [MEMORY[0x1E695DFA8] set];
@@ -1173,7 +1173,7 @@ LABEL_2:
               v34[3] = &unk_1E8197980;
               v34[5] = v13;
               v34[6] = buf;
-              v34[4] = v33;
+              v34[4] = selfCopy;
               [v23 enumerateAttributesInRange:0 options:v24 usingBlock:{0, v34}];
               _Block_object_dispose(buf, 8);
             }
@@ -1184,19 +1184,19 @@ LABEL_2:
           while (v20);
         }
 
-        if ([(NSMutableArray *)v33->_qpParsesDesc count])
+        if ([(NSMutableArray *)selfCopy->_qpParsesDesc count])
         {
           v25 = 0;
           obj = 138412802;
           do
           {
-            v26 = [(NSMutableArray *)v33->_qpParsesDesc objectAtIndexedSubscript:v25, obj];
-            v27 = [(NSMutableArray *)v33->_qpParsesRange objectAtIndexedSubscript:v25];
+            v26 = [(NSMutableArray *)selfCopy->_qpParsesDesc objectAtIndexedSubscript:v25, obj];
+            v27 = [(NSMutableArray *)selfCopy->_qpParsesRange objectAtIndexedSubscript:v25];
             v28 = *__error();
             v29 = _SILogForLogForCategory(19);
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
             {
-              logHeader = v33->_logHeader;
+              logHeader = selfCopy->_logHeader;
               *buf = obj;
               *&buf[4] = logHeader;
               *&buf[12] = 2112;
@@ -1210,7 +1210,7 @@ LABEL_2:
             ++v25;
           }
 
-          while (v25 < [(NSMutableArray *)v33->_qpParsesDesc count]);
+          while (v25 < [(NSMutableArray *)selfCopy->_qpParsesDesc count]);
         }
       }
     }
@@ -1290,9 +1290,9 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
   return result;
 }
 
-- (BOOL)tokenizeQuery:(id)a3
+- (BOOL)tokenizeQuery:(id)query
 {
-  QueryTokens = CreateQueryTokens(a3, 1);
+  QueryTokens = CreateQueryTokens(query, 1);
   if (!QueryTokens)
   {
     return 0;
@@ -1303,9 +1303,9 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
   if (*QueryTokens && (v7 = *(QueryTokens + 1), v8 = *(QueryTokens + 2), CFArrayGetCount(*QueryTokens)))
   {
     v39 = v5;
-    v40 = self;
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [MEMORY[0x1E695DF70] array];
+    selfCopy = self;
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     Count = CFArrayGetCount(v6);
     if (Count >= 1)
     {
@@ -1318,32 +1318,32 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
           v15 = ValueAtIndex;
           if (CFStringGetLength(ValueAtIndex) >= 1)
           {
-            [v9 addObject:v15];
+            [array addObject:v15];
             RangeAtIndex = getRangeAtIndex(v7, v8, i);
-            [v10 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithRange:", RangeAtIndex, v17)}];
+            [array2 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithRange:", RangeAtIndex, v17)}];
           }
         }
       }
     }
 
-    v18 = v40;
-    if (![(PRAstLanguageProfile *)[(PRAstBuilder *)v40 languageProfile] isSpaceDelimited])
+    v18 = selfCopy;
+    if (![(PRAstLanguageProfile *)[(PRAstBuilder *)selfCopy languageProfile] isSpaceDelimited])
     {
-      v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-      v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
-      if ([v9 count])
+      v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array, "count")}];
+      v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(array2, "count")}];
+      if ([array count])
       {
         v21 = 0;
         do
         {
-          v22 = [v9 objectAtIndexedSubscript:v21];
-          v23 = [objc_msgSend(v10 objectAtIndexedSubscript:{v21), "rangeValue"}];
+          v22 = [array objectAtIndexedSubscript:v21];
+          v23 = [objc_msgSend(array2 objectAtIndexedSubscript:{v21), "rangeValue"}];
           v25 = v24;
           v26 = v21 + 1;
-          if ([v22 isEqualToString:@":"] && v21 && v26 < objc_msgSend(v9, "count") && (v27 = objc_msgSend(v19, "lastObject"), -[PRAstLanguageProfile fieldTypeForKeyword:](-[PRAstBuilder languageProfile](v40, "languageProfile"), "fieldTypeForKeyword:", v27) != -1))
+          if ([v22 isEqualToString:@":"] && v21 && v26 < objc_msgSend(array, "count") && (v27 = objc_msgSend(v19, "lastObject"), -[PRAstLanguageProfile fieldTypeForKeyword:](-[PRAstBuilder languageProfile](selfCopy, "languageProfile"), "fieldTypeForKeyword:", v27) != -1))
           {
-            v28 = [v9 objectAtIndexedSubscript:v21 + 1];
-            v29 = [objc_msgSend(v10 objectAtIndexedSubscript:{v21 + 1), "rangeValue"}];
+            v28 = [array objectAtIndexedSubscript:v21 + 1];
+            v29 = [objc_msgSend(array2 objectAtIndexedSubscript:{v21 + 1), "rangeValue"}];
             v31 = v30;
             v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v27, v28];
             v33 = [objc_msgSend(v20 "lastObject")];
@@ -1369,21 +1369,21 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
           v21 = v26;
         }
 
-        while (v26 < [v9 count]);
-        v10 = v20;
-        v9 = v19;
-        v18 = v40;
+        while (v26 < [array count]);
+        array2 = v20;
+        array = v19;
+        v18 = selfCopy;
       }
 
       else
       {
-        v10 = v20;
-        v9 = v19;
+        array2 = v20;
+        array = v19;
       }
     }
 
-    v18->_tokens = v9;
-    v18->_tokenRanges = v10;
+    v18->_tokens = array;
+    v18->_tokenRanges = array2;
     v37 = 1;
     v5 = v39;
   }
@@ -1397,10 +1397,10 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
   return v37;
 }
 
-- (BOOL)node:(id)a3 containsFilter:(id)a4
+- (BOOL)node:(id)node containsFilter:(id)filter
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!node)
   {
     goto LABEL_17;
   }
@@ -1415,8 +1415,8 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v10 = [a3 children];
-      v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      children = [node children];
+      v11 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1427,17 +1427,17 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
           {
             if (*v17 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(children);
             }
 
-            if ([(PRAstBuilder *)self node:*(*(&v16 + 1) + 8 * i) containsFilter:a4])
+            if ([(PRAstBuilder *)self node:*(*(&v16 + 1) + 8 * i) containsFilter:filter])
             {
               result = 1;
               goto LABEL_18;
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v12 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v12)
           {
             continue;
@@ -1451,7 +1451,7 @@ uint64_t __64__PRAstBuilder_extractQUFiltersAndLabelsFromQueryUnderstanding___bl
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      result = -[PRAstBuilder node:containsFilter:](self, "node:containsFilter:", [a3 expression], a4);
+      result = -[PRAstBuilder node:containsFilter:](self, "node:containsFilter:", [node expression], filter);
 LABEL_18:
       v15 = *MEMORY[0x1E69E9840];
       return result;
@@ -1462,45 +1462,45 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [a3 filterString];
+  filterString = [node filterString];
   v8 = *MEMORY[0x1E69E9840];
 
-  return [v7 isEqualToString:a4];
+  return [filterString isEqualToString:filter];
 }
 
-- (id)buildASTFromQuery:(id)a3 queryUnderstanding:(id)a4
+- (id)buildASTFromQuery:(id)query queryUnderstanding:(id)understanding
 {
-  if (!a3)
+  if (!query)
   {
     return 0;
   }
 
-  if (![a3 length])
+  if (![query length])
   {
     return 0;
   }
 
-  [(PRAstBuilder *)self setOriginalQuery:a3];
-  if (![(PRAstBuilder *)self tokenizeQuery:a3])
+  [(PRAstBuilder *)self setOriginalQuery:query];
+  if (![(PRAstBuilder *)self tokenizeQuery:query])
   {
     return 0;
   }
 
-  [(PRAstBuilder *)self extractQUFiltersAndLabelsFromQueryUnderstanding:a4];
+  [(PRAstBuilder *)self extractQUFiltersAndLabelsFromQueryUnderstanding:understanding];
   [(PRAstBuilder *)self buildTokenToFilterAndU2LabelsMapping];
-  v7 = [(PRAstBuilder *)self parseTokensIntoAST];
+  parseTokensIntoAST = [(PRAstBuilder *)self parseTokensIntoAST];
   if ((*(self->_context + 28) & 0x10) != 0 && [(NSString *)[(PRAstLanguageProfile *)self->_languageProfile languageCode] isEqualToString:@"en"])
   {
-    [(PRAstBuilder *)self postProcessAstForMailToken:v7];
+    [(PRAstBuilder *)self postProcessAstForMailToken:parseTokensIntoAST];
   }
 
-  return v7;
+  return parseTokensIntoAST;
 }
 
-- (void)postProcessAstForMailToken:(id)a3
+- (void)postProcessAstForMailToken:(id)token
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!token)
   {
 LABEL_28:
     v17 = *MEMORY[0x1E69E9840];
@@ -1508,18 +1508,18 @@ LABEL_28:
   }
 
   v5 = [(PRAstBuilder *)self astHasFieldNodes:?];
-  v6 = [(PRAstBuilder *)self hasNonEmailQPFilters];
-  if (!v5 && !v6)
+  hasNonEmailQPFilters = [(PRAstBuilder *)self hasNonEmailQPFilters];
+  if (!v5 && !hasNonEmailQPFilters)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(a3, "children"), "count")}];
+      v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(token, "children"), "count")}];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      obj = [a3 children];
+      obj = [token children];
       v22 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v22)
       {
@@ -1592,7 +1592,7 @@ LABEL_24:
         while (v22);
       }
 
-      [a3 setChildren:v21];
+      [token setChildren:v21];
     }
 
     goto LABEL_28;
@@ -1600,18 +1600,18 @@ LABEL_24:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  [(PRAstBuilder *)self setMailTokenIgnoredInAst:a3];
+  [(PRAstBuilder *)self setMailTokenIgnoredInAst:token];
 }
 
-- (void)setMailTokenIgnoredInAst:(id)a3
+- (void)setMailTokenIgnoredInAst:(id)ast
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (ast)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && -[PRAstLanguageProfile fieldTypeForKeyword:](-[PRAstBuilder languageProfile](self, "languageProfile"), "fieldTypeForKeyword:", [a3 value]) == 3)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && -[PRAstLanguageProfile fieldTypeForKeyword:](-[PRAstBuilder languageProfile](self, "languageProfile"), "fieldTypeForKeyword:", [ast value]) == 3)
     {
-      [a3 setIsIgnored:1];
+      [ast setIsIgnored:1];
     }
 
     objc_opt_class();
@@ -1621,8 +1621,8 @@ LABEL_24:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = [a3 children];
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      children = [ast children];
+      v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = v6;
@@ -1634,14 +1634,14 @@ LABEL_24:
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(children);
             }
 
             [(PRAstBuilder *)self setMailTokenIgnoredInAst:*(*(&v11 + 1) + 8 * v9++)];
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v7);
@@ -1651,7 +1651,7 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[PRAstBuilder setMailTokenIgnoredInAst:](self, "setMailTokenIgnoredInAst:", [a3 expression]);
+      -[PRAstBuilder setMailTokenIgnoredInAst:](self, "setMailTokenIgnoredInAst:", [ast expression]);
     }
   }
 
@@ -1677,10 +1677,10 @@ LABEL_24:
   return v3;
 }
 
-- (BOOL)astHasFieldNodes:(id)a3
+- (BOOL)astHasFieldNodes:(id)nodes
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!nodes)
   {
     goto LABEL_14;
   }
@@ -1703,8 +1703,8 @@ LABEL_14:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 children];
-  v5 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  children = [nodes children];
+  v5 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v5)
   {
     goto LABEL_15;
@@ -1718,7 +1718,7 @@ LABEL_7:
   {
     if (*v13 != v8)
     {
-      objc_enumerationMutation(v6);
+      objc_enumerationMutation(children);
     }
 
     if ([(PRAstBuilder *)self astHasFieldNodes:*(*(&v12 + 1) + 8 * v9)])
@@ -1728,7 +1728,7 @@ LABEL_7:
 
     if (v7 == ++v9)
     {
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
       LOBYTE(v5) = 0;
       if (v7)
       {
@@ -1753,21 +1753,21 @@ LABEL_15:
   [(PRAstBuilder *)&v3 dealloc];
 }
 
-- (PRAstBuilder)initWithLanguageCode:(id)a3 context:(PRContext *)a4 logHeader:(id)a5
+- (PRAstBuilder)initWithLanguageCode:(id)code context:(PRContext *)context logHeader:(id)header
 {
   v10.receiver = self;
   v10.super_class = PRAstBuilder;
   v8 = [(PRAstBuilder *)&v10 init];
   if (v8)
   {
-    v8->_languageProfile = [[PRAstLanguageProfile alloc] initWithLanguageCode:a3];
+    v8->_languageProfile = [[PRAstLanguageProfile alloc] initWithLanguageCode:code];
     v8->_qpParsesDesc = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8->_qpParsesRange = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8->_u2TokensLabel = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8->_u2TokensRange = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8->_specialIndices = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v8->_logHeader = a5;
-    v8->_context = a4;
+    v8->_logHeader = header;
+    v8->_context = context;
   }
 
   return v8;

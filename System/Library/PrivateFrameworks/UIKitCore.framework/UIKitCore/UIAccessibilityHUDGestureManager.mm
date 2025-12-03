@@ -1,20 +1,20 @@
 @interface UIAccessibilityHUDGestureManager
-- (BOOL)_gestureRecognizer:(id)a3 canCancelGestureRecognizer:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (UIAccessibilityHUDGestureManager)initWithView:(id)a3 delegate:(id)a4;
+- (BOOL)_gestureRecognizer:(id)recognizer canCancelGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (UIAccessibilityHUDGestureManager)initWithView:(id)view delegate:(id)delegate;
 - (UIView)view;
 - (id)_bestViewControllerForView;
 - (id)_subscribedConcurrentGestureRecognizers;
 - (void)_backOff;
 - (void)_clearButtonItemGestureSubscriptions;
-- (void)_concurrentGestureRecognizerFired:(id)a3;
-- (void)_didToggleLargeContentViewer:(id)a3;
+- (void)_concurrentGestureRecognizerFired:(id)fired;
+- (void)_didToggleLargeContentViewer:(id)viewer;
 - (void)_dismissAccessibilityHUD;
-- (void)_gestureRecognizerChanged:(id)a3;
+- (void)_gestureRecognizerChanged:(id)changed;
 - (void)_invalidate;
-- (void)_setRecognizersEnabled:(BOOL)a3;
-- (void)_showAccessibilityHUDItem:(id)a3;
+- (void)_setRecognizersEnabled:(BOOL)enabled;
+- (void)_showAccessibilityHUDItem:(id)item;
 - (void)dealloc;
 @end
 
@@ -41,8 +41,8 @@
     v5 = objc_loadWeakRetained(&self->_view);
     [v5 removeGestureRecognizer:self->_gateRecognizer];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
   }
 }
 
@@ -53,8 +53,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(UIAccessibilityHUDGestureManager *)self _subscribedConcurrentGestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _subscribedConcurrentGestureRecognizers = [(UIAccessibilityHUDGestureManager *)self _subscribedConcurrentGestureRecognizers];
+  v4 = [_subscribedConcurrentGestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -65,20 +65,20 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_subscribedConcurrentGestureRecognizers);
         }
 
         [*(*(&v9 + 1) + 8 * i) removeTarget:self action:sel__concurrentGestureRecognizerFired_];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_subscribedConcurrentGestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(UIAccessibilityHUDGestureManager *)self _subscribedConcurrentGestureRecognizers];
-  [v8 removeAllObjects];
+  _subscribedConcurrentGestureRecognizers2 = [(UIAccessibilityHUDGestureManager *)self _subscribedConcurrentGestureRecognizers];
+  [_subscribedConcurrentGestureRecognizers2 removeAllObjects];
 }
 
 - (id)_subscribedConcurrentGestureRecognizers
@@ -86,9 +86,9 @@
   subscribedConcurrentGestureRecognizers = self->_subscribedConcurrentGestureRecognizers;
   if (!subscribedConcurrentGestureRecognizers)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = self->_subscribedConcurrentGestureRecognizers;
-    self->_subscribedConcurrentGestureRecognizers = v4;
+    self->_subscribedConcurrentGestureRecognizers = array;
 
     subscribedConcurrentGestureRecognizers = self->_subscribedConcurrentGestureRecognizers;
   }
@@ -96,18 +96,18 @@
   return subscribedConcurrentGestureRecognizers;
 }
 
-- (UIAccessibilityHUDGestureManager)initWithView:(id)a3 delegate:(id)a4
+- (UIAccessibilityHUDGestureManager)initWithView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = UIAccessibilityHUDGestureManager;
   v8 = [(UIAccessibilityHUDGestureManager *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_view, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_view, viewCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10 = [[_UIAccessibilityHUDLongPressGestureRecognizer alloc] initWithTarget:v9 action:sel__gestureRecognizerChanged_];
     recognizer = v9->_recognizer;
     v9->_recognizer = v10;
@@ -126,8 +126,8 @@
     [v15 addGestureRecognizer:v9->_gateRecognizer];
 
     [(UIAccessibilityHUDGestureManager *)v9 _setRecognizersEnabled:+[UILargeContentViewerInteraction isEnabled]];
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v9 selector:sel__didToggleLargeContentViewer_ name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__didToggleLargeContentViewer_ name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
 
     v17 = objc_loadWeakRetained(&v9->_delegate);
     if (objc_opt_respondsToSelector())
@@ -154,34 +154,34 @@
   return v9;
 }
 
-- (void)_setRecognizersEnabled:(BOOL)a3
+- (void)_setRecognizersEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    v5 = [WeakRetained traitCollection];
-    v6 = [v5 _isLargeContentViewerEnabled];
+    traitCollection = [WeakRetained traitCollection];
+    _isLargeContentViewerEnabled = [traitCollection _isLargeContentViewerEnabled];
   }
 
   else
   {
-    v6 = 0;
+    _isLargeContentViewerEnabled = 0;
   }
 
-  [(UIGestureRecognizer *)self->_recognizer setEnabled:v6];
+  [(UIGestureRecognizer *)self->_recognizer setEnabled:_isLargeContentViewerEnabled];
   gateRecognizer = self->_gateRecognizer;
 
-  [(UIGestureRecognizer *)gateRecognizer setEnabled:v6];
+  [(UIGestureRecognizer *)gateRecognizer setEnabled:_isLargeContentViewerEnabled];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_recognizer == v4 && (v5 = objc_loadWeakRetained(&self->_delegate), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
+  beginCopy = begin;
+  if (self->_recognizer == beginCopy && (v5 = objc_loadWeakRetained(&self->_delegate), v6 = objc_opt_respondsToSelector(), v5, (v6 & 1) != 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = objc_loadWeakRetained(&self->_view);
-    [(UILongPressGestureRecognizer *)v4 locationInView:v8];
+    [(UILongPressGestureRecognizer *)beginCopy locationInView:v8];
     v9 = [WeakRetained _accessibilityHUDGestureManager:self shouldBeginAtPoint:?];
   }
 
@@ -193,13 +193,13 @@
   return v9;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_gateRecognizer != v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_gateRecognizer != recognizerCopy)
   {
-    if (self->_recognizer != v6 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v9 = [WeakRetained _accessibilityHUDGestureManager:self shouldRecognizeSimultaneouslyWithGestureRecognizer:v7], WeakRetained, !v9))
+    if (self->_recognizer != recognizerCopy || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v9 = [WeakRetained _accessibilityHUDGestureManager:self shouldRecognizeSimultaneouslyWithGestureRecognizer:gestureRecognizerCopy], WeakRetained, !v9))
     {
       v15 = 0;
       goto LABEL_9;
@@ -208,11 +208,11 @@
     v10 = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
 
-    if ((v11 & 1) == 0 || (v12 = objc_loadWeakRetained(&self->_delegate), v13 = [v12 _accessibilityHUDGestureManager:self shouldTerminateHUDGestureForOtherGestureRecognizer:v7], v12, v13))
+    if ((v11 & 1) == 0 || (v12 = objc_loadWeakRetained(&self->_delegate), v13 = [v12 _accessibilityHUDGestureManager:self shouldTerminateHUDGestureForOtherGestureRecognizer:gestureRecognizerCopy], v12, v13))
     {
-      [v7 addTarget:self action:sel__concurrentGestureRecognizerFired_];
-      v14 = [(UIAccessibilityHUDGestureManager *)self _subscribedConcurrentGestureRecognizers];
-      [v14 addObject:v7];
+      [gestureRecognizerCopy addTarget:self action:sel__concurrentGestureRecognizerFired_];
+      _subscribedConcurrentGestureRecognizers = [(UIAccessibilityHUDGestureManager *)self _subscribedConcurrentGestureRecognizers];
+      [_subscribedConcurrentGestureRecognizers addObject:gestureRecognizerCopy];
     }
   }
 
@@ -222,13 +222,13 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 canCancelGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer canCancelGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_recognizer == a3 && (v7 = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_recognizer == recognizer && (v7 = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), v7, (v8 & 1) != 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v10 = [WeakRetained _accessibilityHUDGestureManager:self canCancelGestureRecognizer:v6];
+    v10 = [WeakRetained _accessibilityHUDGestureManager:self canCancelGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -239,10 +239,10 @@ LABEL_9:
   return v10;
 }
 
-- (void)_concurrentGestureRecognizerFired:(id)a3
+- (void)_concurrentGestureRecognizerFired:(id)fired
 {
-  v4 = a3;
-  if ([v4 state] != 4 && objc_msgSend(v4, "state") != 5)
+  firedCopy = fired;
+  if ([firedCopy state] != 4 && objc_msgSend(firedCopy, "state") != 5)
   {
     [(UIAccessibilityHUDGestureManager *)self _backOff];
   }
@@ -258,18 +258,18 @@ LABEL_9:
   }
 }
 
-- (void)_showAccessibilityHUDItem:(id)a3
+- (void)_showAccessibilityHUDItem:(id)item
 {
   if (self->_delegateDirectlyShowsHUD)
   {
-    v5 = a3;
+    itemCopy = item;
     obj = objc_loadWeakRetained(&self->_delegate);
-    [obj _accessibilityHUDGestureManager:self showHUDItem:v5];
+    [obj _accessibilityHUDGestureManager:self showHUDItem:itemCopy];
   }
 
   else
   {
-    v6 = a3;
+    itemCopy2 = item;
     obj = [(UIAccessibilityHUDGestureManager *)self _bestViewControllerForView];
     WeakRetained = objc_loadWeakRetained(&self->_viewControllerDisplayingHUD);
 
@@ -283,7 +283,7 @@ LABEL_9:
     }
 
     objc_storeWeak(&self->_viewControllerDisplayingHUD, v8);
-    [obj _showAccessibilityHUDItem:v6];
+    [obj _showAccessibilityHUDItem:itemCopy2];
   }
 }
 
@@ -304,7 +304,7 @@ LABEL_9:
   }
 }
 
-- (void)_didToggleLargeContentViewer:(id)a3
+- (void)_didToggleLargeContentViewer:(id)viewer
 {
   v4 = +[UILargeContentViewerInteraction isEnabled];
 
@@ -322,16 +322,16 @@ LABEL_9:
     v8 = v7;
     v10 = v9;
     v11 = objc_loadWeakRetained(&self->_view);
-    v12 = [v11 _viewControllerForAncestor];
+    _viewControllerForAncestor = [v11 _viewControllerForAncestor];
 
     v13 = 0;
-    if (v12)
+    if (_viewControllerForAncestor)
     {
       v14 = 3.40282347e38;
       while (1)
       {
-        v15 = [v12 view];
-        [v15 frame];
+        view = [_viewControllerForAncestor view];
+        [view frame];
         v17 = v16;
         v19 = v18;
 
@@ -343,24 +343,24 @@ LABEL_9:
 
         if (v20 < v14)
         {
-          v21 = v12;
+          v21 = _viewControllerForAncestor;
 
           v13 = v21;
           v14 = v20;
         }
 
-        v22 = [v12 view];
-        v23 = [v22 superview];
-        v24 = [v23 _viewControllerForAncestor];
+        view2 = [_viewControllerForAncestor view];
+        superview = [view2 superview];
+        _viewControllerForAncestor2 = [superview _viewControllerForAncestor];
 
-        v12 = v24;
-        if (!v24)
+        _viewControllerForAncestor = _viewControllerForAncestor2;
+        if (!_viewControllerForAncestor2)
         {
           goto LABEL_12;
         }
       }
 
-      v25 = v12;
+      v25 = _viewControllerForAncestor;
       v26 = v25;
     }
 
@@ -378,16 +378,16 @@ LABEL_12:
   return v6;
 }
 
-- (void)_gestureRecognizerChanged:(id)a3
+- (void)_gestureRecognizerChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [v4 locationInView:WeakRetained];
+  [changedCopy locationInView:WeakRetained];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 state];
-  switch(v10)
+  state = [changedCopy state];
+  switch(state)
   {
     case 3:
       v12 = objc_loadWeakRetained(&self->_delegate);

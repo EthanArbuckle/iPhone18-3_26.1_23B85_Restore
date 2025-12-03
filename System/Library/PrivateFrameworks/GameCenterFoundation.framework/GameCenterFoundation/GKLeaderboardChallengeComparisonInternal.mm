@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeComparisonInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeComparisonInternal)initWithServerRepresentation:(id)a3;
+- (GKLeaderboardChallengeComparisonInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardChallengeComparisonInternal
@@ -35,25 +35,25 @@ void __67__GKLeaderboardChallengeComparisonInternal_secureCodedPropertyKeys__blo
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeComparisonInternal)initWithServerRepresentation:(id)a3
+- (GKLeaderboardChallengeComparisonInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = GKLeaderboardChallengeComparisonInternal;
   v5 = [(GKLeaderboardChallengeComparisonInternal *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"challenges-count"];
+    v6 = [representationCopy objectForKeyedSubscript:@"challenges-count"];
     [(GKLeaderboardChallengeComparisonInternal *)v5 setCompletedChallengeCount:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"challenge-games-count"];
+    v7 = [representationCopy objectForKeyedSubscript:@"challenge-games-count"];
     [(GKLeaderboardChallengeComparisonInternal *)v5 setCompletedChallengeGameCount:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"completed-challenges"];
+    v8 = [representationCopy objectForKeyedSubscript:@"completed-challenges"];
     v9 = [GKLeaderboardChallengeDetailsPageInternal initWithServerFragment:v8];
     [(GKLeaderboardChallengeComparisonInternal *)v5 setCompletedChallenges:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"wins"];
+    v10 = [representationCopy objectForKeyedSubscript:@"wins"];
     v11 = [GKLeaderboardChallengeWinComparisonPageInternal initWithServerFragment:v10];
     [(GKLeaderboardChallengeComparisonInternal *)v5 setWonChallenges:v11];
   }

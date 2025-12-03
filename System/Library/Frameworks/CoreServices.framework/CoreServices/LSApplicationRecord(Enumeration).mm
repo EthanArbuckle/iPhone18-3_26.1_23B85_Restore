@@ -15,14 +15,14 @@
 
 + (id)displayOrderEnumeratorForViableDefaultAppsForCategory:()Enumeration options:
 {
-  v5 = a1 + 2;
-  v4 = a1[2];
+  v5 = self + 2;
+  v4 = self[2];
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = a1 + 2;
+  v6 = self + 2;
   do
   {
     v7 = *(v4 + 32);
@@ -46,7 +46,7 @@
   {
 LABEL_9:
     v10 = [LSApplicationRecord alloc];
-    v11 = *a1;
+    v11 = *self;
     v19 = 0;
     v12 = [(LSApplicationRecord *)v10 _initWithContext:v11 bundleID:a2 bundleData:0 error:&v19];
     v13 = v19;

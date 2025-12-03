@@ -1,7 +1,7 @@
 @interface PXActivityCoordinatorRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXActivityCoordinatorItem)item;
-- (PXActivityCoordinatorRecord)initWithItem:(id)a3;
+- (PXActivityCoordinatorRecord)initWithItem:(id)item;
 - (unint64_t)hash;
 @end
 
@@ -22,15 +22,15 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 item];
+    item = [equalCopy item];
     WeakRetained = objc_loadWeakRetained(&self->_item);
-    v7 = v5 == WeakRetained;
+    v7 = item == WeakRetained;
   }
 
   else
@@ -41,16 +41,16 @@
   return v7;
 }
 
-- (PXActivityCoordinatorRecord)initWithItem:(id)a3
+- (PXActivityCoordinatorRecord)initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = PXActivityCoordinatorRecord;
   v5 = [(PXActivityCoordinatorRecord *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_item, v4);
+    objc_storeWeak(&v5->_item, itemCopy);
   }
 
   return v6;

@@ -2,37 +2,37 @@
 + (Class)managedClass;
 - (BOOL)navigationInterrupted;
 - (GEOStorageRouteRequestStorage)routeRequestStorage;
-- (MSHistoryDirectionsItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistoryDirectionsItem)initWithStore:(id)a3 navigationInterrupted:(BOOL)a4 routeRequestStorage:(id)a5 sharedETAData:(id)a6;
+- (MSHistoryDirectionsItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistoryDirectionsItem)initWithStore:(id)store navigationInterrupted:(BOOL)interrupted routeRequestStorage:(id)storage sharedETAData:(id)data;
 - (NSData)sharedETAData;
-- (void)setNavigationInterrupted:(BOOL)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setRouteRequestStorage:(id)a3;
-- (void)setSharedETAData:(id)a3;
+- (void)setNavigationInterrupted:(BOOL)interrupted;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setRouteRequestStorage:(id)storage;
+- (void)setSharedETAData:(id)data;
 @end
 
 @implementation MSHistoryDirectionsItem
 
-- (MSHistoryDirectionsItem)initWithStore:(id)a3 navigationInterrupted:(BOOL)a4 routeRequestStorage:(id)a5 sharedETAData:(id)a6
+- (MSHistoryDirectionsItem)initWithStore:(id)store navigationInterrupted:(BOOL)interrupted routeRequestStorage:(id)storage sharedETAData:(id)data
 {
-  v6 = a6;
-  if (a6)
+  dataCopy = data;
+  if (data)
   {
-    v10 = a3;
-    v11 = a5;
-    v12 = v6;
-    v6 = sub_1B63BE924();
+    storeCopy = store;
+    storageCopy = storage;
+    v12 = dataCopy;
+    dataCopy = sub_1B63BE924();
     v14 = v13;
   }
 
   else
   {
-    v15 = a3;
-    v16 = a5;
+    storeCopy2 = store;
+    storageCopy2 = storage;
     v14 = 0xF000000000000000;
   }
 
-  return HistoryDirectionsItem.init(store:navigationInterrupted:routeRequestStorage:sharedETAData:)(a3, a4, a5, v6, v14);
+  return HistoryDirectionsItem.init(store:navigationInterrupted:routeRequestStorage:sharedETAData:)(store, interrupted, storage, dataCopy, v14);
 }
 
 + (Class)managedClass
@@ -42,53 +42,53 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62ED7B0(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62ED7B0(objectCopy, load);
 }
 
 - (BOOL)navigationInterrupted
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  LOBYTE(v4) = *(&v5->super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__navigationInterrupted);
+  LOBYTE(v4) = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__navigationInterrupted);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v4;
 }
 
-- (void)setNavigationInterrupted:(BOOL)a3
+- (void)setNavigationInterrupted:(BOOL)interrupted
 {
-  v4 = self;
-  sub_1B62EBF34(a3);
+  selfCopy = self;
+  sub_1B62EBF34(interrupted);
 }
 
 - (GEOStorageRouteRequestStorage)routeRequestStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62EC234();
 
   return v3;
 }
 
-- (void)setRouteRequestStorage:(id)a3
+- (void)setRouteRequestStorage:(id)storage
 {
   v5 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v7 = a3;
-  v8 = self;
+  storageCopy = storage;
+  selfCopy = self;
   [v6 lock];
-  sub_1B62EC7A0(*(&self->super.super.super.isa + v5), a3, v8);
+  sub_1B62EC7A0(*(&self->super.super.super.isa + v5), storage, selfCopy);
   [*(&self->super.super.super.isa + v5) unlock];
 }
 
 - (NSData)sharedETAData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62ECDCC();
   v5 = v4;
 
@@ -107,36 +107,36 @@
   return v6;
 }
 
-- (void)setSharedETAData:(id)a3
+- (void)setSharedETAData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B62ED984(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B62ED984(dataCopy, v7);
+  sub_1B6284F64(dataCopy, v7);
 }
 
-- (MSHistoryDirectionsItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryDirectionsItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__navigationInterrupted) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__routeRequestStorage) = xmmword_1B63C3E40;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryDirectionsItem__sharedETAData) = xmmword_1B63C3E40;
-  v10 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

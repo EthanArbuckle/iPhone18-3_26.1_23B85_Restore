@@ -1,44 +1,44 @@
 @interface VoiceOverGesturePickerPresenter
-+ (VoiceOverGesturePickerPresenter)presenterWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5;
-- (id)_initWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)presentWithController:(id)a3;
++ (VoiceOverGesturePickerPresenter)presenterWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock;
+- (id)_initWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)presentWithController:(id)controller;
 @end
 
 @implementation VoiceOverGesturePickerPresenter
 
-+ (VoiceOverGesturePickerPresenter)presenterWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5
++ (VoiceOverGesturePickerPresenter)presenterWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[VoiceOverGesturePickerPresenter alloc] _initWithSpecifier:v9 selectionBlock:v8 cancelBlock:v7];
+  cancelBlockCopy = cancelBlock;
+  blockCopy = block;
+  specifierCopy = specifier;
+  v10 = [[VoiceOverGesturePickerPresenter alloc] _initWithSpecifier:specifierCopy selectionBlock:blockCopy cancelBlock:cancelBlockCopy];
 
   return v10;
 }
 
-- (id)_initWithSpecifier:(id)a3 selectionBlock:(id)a4 cancelBlock:(id)a5
+- (id)_initWithSpecifier:(id)specifier selectionBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  specifierCopy = specifier;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   v15.receiver = self;
   v15.super_class = VoiceOverGesturePickerPresenter;
   v12 = [(VoiceOverGesturePickerPresenter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_specifier, a3);
-    [(VoiceOverGesturePickerPresenter *)v13 setUserSelectedGestureBlock:v10];
-    [(VoiceOverGesturePickerPresenter *)v13 setUserCanceledGestureSelectionBlock:v11];
+    objc_storeStrong(&v12->_specifier, specifier);
+    [(VoiceOverGesturePickerPresenter *)v13 setUserSelectedGestureBlock:blockCopy];
+    [(VoiceOverGesturePickerPresenter *)v13 setUserCanceledGestureSelectionBlock:cancelBlockCopy];
   }
 
   return v13;
 }
 
-- (void)presentWithController:(id)a3
+- (void)presentWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc_init(VoiceOverGesturePickerController);
   gesturePickerViewController = self->_gesturePickerViewController;
   self->_gesturePickerViewController = v5;
@@ -47,28 +47,28 @@
   [(VoiceOverGesturePickerController *)self->_gesturePickerViewController setPresenter:self];
   v13 = [[UINavigationController alloc] initWithRootViewController:self->_gesturePickerViewController];
   [v13 setModalPresentationStyle:2];
-  v7 = [v13 navigationBar];
-  v8 = [v7 topItem];
+  navigationBar = [v13 navigationBar];
+  topItem = [navigationBar topItem];
 
   v9 = settingsLocString(@"vo.touch.gestures", @"VoiceOverSettings");
-  [v8 setTitle:v9];
+  [topItem setTitle:v9];
 
   v10 = [UIBarButtonItem alloc];
   v11 = settingsLocString(@"vo.cancel", @"VoiceOverSettings");
   v12 = [v10 initWithTitle:v11 style:2 target:self action:"_cancelButtonTapped:"];
-  [v8 setLeftBarButtonItem:v12];
+  [topItem setLeftBarButtonItem:v12];
 
-  [v4 presentViewController:v13 animated:1 completion:0];
+  [controllerCopy presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
-  v4 = [(VoiceOverGesturePickerPresenter *)self userCanceledGestureSelectionBlock];
+  userCanceledGestureSelectionBlock = [(VoiceOverGesturePickerPresenter *)self userCanceledGestureSelectionBlock];
 
-  if (v4)
+  if (userCanceledGestureSelectionBlock)
   {
-    v5 = [(VoiceOverGesturePickerPresenter *)self userCanceledGestureSelectionBlock];
-    v5[2]();
+    userCanceledGestureSelectionBlock2 = [(VoiceOverGesturePickerPresenter *)self userCanceledGestureSelectionBlock];
+    userCanceledGestureSelectionBlock2[2]();
   }
 }
 

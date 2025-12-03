@@ -1,29 +1,29 @@
 @interface exfatFileSystem
-- (BOOL)isChecksumBootRegionValid:(char *)a3 bytesPerSector:(unint64_t)a4;
-- (id)startCheckWithTask:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)startFormatWithTask:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)syncRead:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6;
-- (unsigned)getDirEntrySetChecksum:(exfat_file_entry_set *)a3;
-- (void)getVolumeNameAndUUID:(id)a3 useAlt:(BOOL)a4 reply:(id)a5;
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
-- (void)loadVolume:(id)a3 reply:(id)a4;
-- (void)probeResource:(id)a3 replyHandler:(id)a4;
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5;
+- (BOOL)isChecksumBootRegionValid:(char *)valid bytesPerSector:(unint64_t)sector;
+- (id)startCheckWithTask:(id)task options:(id)options error:(id *)error;
+- (id)startFormatWithTask:(id)task options:(id)options error:(id *)error;
+- (id)syncRead:(id)read into:(void *)into startingAt:(int64_t)at length:(unint64_t)length;
+- (unsigned)getDirEntrySetChecksum:(exfat_file_entry_set *)checksum;
+- (void)getVolumeNameAndUUID:(id)d useAlt:(BOOL)alt reply:(id)reply;
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler;
+- (void)loadVolume:(id)volume reply:(id)reply;
+- (void)probeResource:(id)resource replyHandler:(id)handler;
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler;
 @end
 
 @implementation exfatFileSystem
 
-- (void)loadVolume:(id)a3 reply:(id)a4
+- (void)loadVolume:(id)volume reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = fs_errorForPOSIXError();
-  (*(a4 + 2))(v5, 0, v6);
+  (*(reply + 2))(replyCopy, 0, v6);
 }
 
-- (id)syncRead:(id)a3 into:(void *)a4 startingAt:(int64_t)a5 length:(unint64_t)a6
+- (id)syncRead:(id)read into:(void *)into startingAt:(int64_t)at length:(unint64_t)length
 {
   v13 = 0;
-  v7 = [a3 readInto:a4 startingAt:a5 length:a6 error:&v13];
+  v7 = [read readInto:into startingAt:at length:length error:&v13];
   v8 = v13;
   if (v8)
   {
@@ -35,7 +35,7 @@
     }
   }
 
-  else if (v7 == a6)
+  else if (v7 == length)
   {
     v9 = 0;
   }
@@ -54,10 +54,10 @@
   return v9;
 }
 
-- (BOOL)isChecksumBootRegionValid:(char *)a3 bytesPerSector:(unint64_t)a4
+- (BOOL)isChecksumBootRegionValid:(char *)valid bytesPerSector:(unint64_t)sector
 {
-  v4 = 11 * a4;
-  if (a4)
+  v4 = 11 * sector;
+  if (sector)
   {
     v5 = 0;
     v6 = 0;
@@ -68,7 +68,7 @@
 
     else
     {
-      v7 = 11 * a4;
+      v7 = 11 * sector;
     }
 
     do
@@ -77,7 +77,7 @@
       {
         HIDWORD(v9) = v6;
         LODWORD(v9) = v6;
-        v6 = (v9 >> 1) + a3[v5];
+        v6 = (v9 >> 1) + valid[v5];
       }
 
       ++v5;
@@ -91,8 +91,8 @@
     v6 = 0;
   }
 
-  v10 = &a3[v4];
-  v11 = &a3[12 * a4];
+  v10 = &valid[v4];
+  v11 = &valid[12 * sector];
   do
   {
     v12 = v10;
@@ -108,7 +108,7 @@
   return v12 >= v11;
 }
 
-- (unsigned)getDirEntrySetChecksum:(exfat_file_entry_set *)a3
+- (unsigned)getDirEntrySetChecksum:(exfat_file_entry_set *)checksum
 {
   v3 = 0;
   v4 = 0;
@@ -116,24 +116,24 @@
   {
     if ((v3 & 0x7FFFFFFFFFFFFFFELL) != 2)
     {
-      v4 = ((v4 >> 1) | (v4 << 15)) + *(&a3->var0.var0 + v3);
+      v4 = ((v4 >> 1) | (v4 << 15)) + *(&checksum->var0.var0 + v3);
     }
 
     ++v3;
   }
 
-  while (32 * a3->var0.var1 + 32 != v3);
+  while (32 * checksum->var0.var1 + 32 != v3);
   return v4;
 }
 
-- (void)getVolumeNameAndUUID:(id)a3 useAlt:(BOOL)a4 reply:(id)a5
+- (void)getVolumeNameAndUUID:(id)d useAlt:(BOOL)alt reply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  altCopy = alt;
+  dCopy = d;
+  replyCopy = reply;
   v77 = 0;
   v78 = 0;
-  v10 = 12 * [v8 blockSize];
+  v10 = 12 * [dCopy blockSize];
   v11 = malloc_type_calloc(1uLL, v10, 0x100004077774924uLL);
   if (!v11)
   {
@@ -150,7 +150,7 @@
   }
 
   v12 = v11;
-  if (v6)
+  if (altCopy)
   {
     v13 = v10;
   }
@@ -160,7 +160,7 @@
     v13 = 0;
   }
 
-  v14 = [(exfatFileSystem *)self syncRead:v8 into:v11 startingAt:v13 length:v10];
+  v14 = [(exfatFileSystem *)self syncRead:dCopy into:v11 startingAt:v13 length:v10];
   if (v14)
   {
     goto LABEL_22;
@@ -222,7 +222,7 @@ LABEL_21:
     }
 
     v12 = v22;
-    v14 = [(exfatFileSystem *)self syncRead:v8 into:&v22[v10] startingAt:v10 length:(12 << v21) - v10];
+    v14 = [(exfatFileSystem *)self syncRead:dCopy into:&v22[v10] startingAt:v10 length:(12 << v21) - v10];
     if (v14)
     {
 LABEL_22:
@@ -342,7 +342,7 @@ LABEL_22:
       do
       {
         v64 = v33;
-        v34 = [exfatFileSystem syncRead:"syncRead:into:startingAt:length:" into:v8 startingAt:v67 length:?];
+        v34 = [exfatFileSystem syncRead:"syncRead:into:startingAt:length:" into:dCopy startingAt:v67 length:?];
         if (v34)
         {
           goto LABEL_99;
@@ -462,7 +462,7 @@ LABEL_77:
     v52 = *(v12 + 20) + (v51 >> v21);
     if (v52)
     {
-      v34 = [(exfatFileSystem *)self syncRead:v8 into:v63 startingAt:v52 << v21 length:1 << v21];
+      v34 = [(exfatFileSystem *)self syncRead:dCopy into:v63 startingAt:v52 << v21 length:1 << v21];
       if (v34)
       {
 LABEL_99:
@@ -494,13 +494,13 @@ LABEL_98:
 LABEL_23:
   free(v12);
 LABEL_24:
-  v9[2](v9, v20, v19, v18);
+  replyCopy[2](replyCopy, v20, v19, v18);
 }
 
-- (void)probeResource:(id)a3 replyHandler:(id)a4
+- (void)probeResource:(id)resource replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  resourceCopy = resource;
+  handlerCopy = handler;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -519,9 +519,9 @@ LABEL_24:
   v34 = sub_10000D6A4;
   v35 = sub_10000D6B4;
   v36 = 0;
-  if ([v6 kind] == 1)
+  if ([resourceCopy kind] == 1)
   {
-    v8 = [FSBlockDeviceResource dynamicCast:v6];
+    v8 = [FSBlockDeviceResource dynamicCast:resourceCopy];
     v9 = fskit_std_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -530,8 +530,8 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: device matches!", buf, 0xCu);
     }
 
-    v10 = [v8 blockSize];
-    v11 = malloc_type_malloc(v10, 0x955AA0CDuLL);
+    blockSize = [v8 blockSize];
+    v11 = malloc_type_malloc(blockSize, 0x955AA0CDuLL);
     if (!v11)
     {
       v12 = fskit_std_log();
@@ -545,7 +545,7 @@ LABEL_24:
       v32[5] = v13;
     }
 
-    if (v32[5] || ([(exfatFileSystem *)self syncRead:v8 into:v11 startingAt:0 length:v10], v15 = objc_claimAutoreleasedReturnValue(), v16 = v32[5], v32[5] = v15, v16, v32[5]))
+    if (v32[5] || ([(exfatFileSystem *)self syncRead:v8 into:v11 startingAt:0 length:blockSize], v15 = objc_claimAutoreleasedReturnValue(), v16 = v32[5], v32[5] = v15, v16, v32[5]))
     {
       v17 = 0;
 LABEL_11:
@@ -554,7 +554,7 @@ LABEL_11:
         free(v11);
       }
 
-      v7[2](v7, v17, v32[5]);
+      handlerCopy[2](handlerCopy, v17, v32[5]);
       goto LABEL_17;
     }
 
@@ -572,15 +572,15 @@ LABEL_11:
       if (!v32[5])
       {
         v28 = v44[5];
-        v26 = [v38[5] fs_containerIdentifier];
-        v27 = [FSProbeResult usableProbeResultWithName:v28 containerID:v26];
+        fs_containerIdentifier = [v38[5] fs_containerIdentifier];
+        v27 = [FSProbeResult usableProbeResultWithName:v28 containerID:fs_containerIdentifier];
         goto LABEL_33;
       }
     }
 
     else
     {
-      v22 = -[exfatFileSystem syncRead:into:startingAt:length:](self, "syncRead:into:startingAt:length:", v8, v11, 12 * [v8 blockSize], v10);
+      v22 = -[exfatFileSystem syncRead:into:startingAt:length:](self, "syncRead:into:startingAt:length:", v8, v11, 12 * [v8 blockSize], blockSize);
       v23 = v32[5];
       v32[5] = v22;
 
@@ -597,8 +597,8 @@ LABEL_11:
         if (!v32[5])
         {
           v25 = v44[5];
-          v26 = [v38[5] fs_containerIdentifier];
-          v27 = [FSProbeResult usableProbeResultWithName:v25 containerID:v26];
+          fs_containerIdentifier = [v38[5] fs_containerIdentifier];
+          v27 = [FSProbeResult usableProbeResultWithName:v25 containerID:fs_containerIdentifier];
 LABEL_33:
           v17 = v27;
 
@@ -620,7 +620,7 @@ LABEL_33:
   }
 
   v19 = fs_errorForPOSIXError();
-  (v7)[2](v7, 0, v19);
+  (handlerCopy)[2](handlerCopy, 0, v19);
 
   v8 = 0;
   v17 = 0;
@@ -631,10 +631,10 @@ LABEL_17:
   _Block_object_dispose(&v43, 8);
 }
 
-- (id)startCheckWithTask:(id)a3 options:(id)a4 error:(id *)a5
+- (id)startCheckWithTask:(id)task options:(id)options error:(id *)error
 {
-  v34 = a3;
-  v8 = a4;
+  taskCopy = task;
+  optionsCopy = options;
   v9 = objc_alloc_init(NSProgress);
   v43 = 0;
   v44 = &v43;
@@ -643,7 +643,7 @@ LABEL_17:
   v47 = 0u;
   v48 = 0u;
   v49 = 0;
-  *a5 = 0;
+  *error = 0;
   v36 = v9;
   v35 = [FSTaskProgressUpdater progressUpdaterWithProgress:?];
   v10 = fskit_std_log();
@@ -661,23 +661,23 @@ LABEL_17:
     v13 = v11[1];
     v11[1] = v12;
 
-    objc_storeStrong(v11, a3);
+    objc_storeStrong(v11, task);
     v14 = 0;
     v15 = 0;
     v16 = 0;
     *(v11 + 4) = 2;
     while (1)
     {
-      v17 = [v8 taskOptions];
-      v18 = v16 < [v17 count];
+      taskOptions = [optionsCopy taskOptions];
+      v18 = v16 < [taskOptions count];
 
       if (!v18)
       {
         break;
       }
 
-      v19 = [v8 taskOptions];
-      v20 = [v19 objectAtIndexedSubscript:v16];
+      taskOptions2 = [optionsCopy taskOptions];
+      v20 = [taskOptions2 objectAtIndexedSubscript:v16];
 
       if ([v20 isEqualToString:@"-d"])
       {
@@ -715,11 +715,11 @@ LABEL_17:
     v24 = NSTemporaryDirectory();
     v25 = [v24 stringByAppendingPathComponent:v23];
     v26 = v25;
-    v27 = [v25 UTF8String];
+    uTF8String = [v25 UTF8String];
 
-    if (v27)
+    if (uTF8String)
     {
-      v28 = strdup(v27);
+      v28 = strdup(uTF8String);
     }
 
     else
@@ -737,7 +737,7 @@ LABEL_17:
     v32 = v36;
     v39 = v32;
     v42 = v11;
-    v40 = v34;
+    v40 = taskCopy;
     dispatch_async(v31, block);
 
     v30 = v32;
@@ -752,7 +752,7 @@ LABEL_17:
     }
 
     fs_errorForPOSIXError();
-    *a5 = v30 = 0;
+    *error = v30 = 0;
   }
 
   _Block_object_dispose(&v43, 8);
@@ -760,10 +760,10 @@ LABEL_17:
   return v30;
 }
 
-- (id)startFormatWithTask:(id)a3 options:(id)a4 error:(id *)a5
+- (id)startFormatWithTask:(id)task options:(id)options error:(id *)error
 {
-  v111 = a3;
-  v8 = a4;
+  taskCopy = task;
+  optionsCopy = options;
   v144 = 0;
   v145 = &v144;
   v146 = 0x3032000000;
@@ -785,8 +785,8 @@ LABEL_17:
   v131 = 0u;
   memset(&v130, 0, sizeof(v130));
   v129 = 0;
-  v109 = a5;
-  *a5 = 0;
+  errorCopy = error;
+  *error = 0;
   location = malloc_type_malloc(0x20uLL, 0x8004018A671A6uLL);
   if (!location)
   {
@@ -805,7 +805,7 @@ LABEL_55:
   location[2] = v15;
 
   v110 = [FSTaskProgressUpdater progressUpdaterWithProgress:v145[5]];
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   objc_storeStrong(location + 3, self);
   objc_storeStrong(location + 1, self->_resource);
   if (!newfs_get_print_function_callback())
@@ -825,28 +825,28 @@ LABEL_55:
   WORD4(v137) = 256;
   while (1)
   {
-    v18 = [v8 taskOptions];
-    v19 = [v18 count];
+    taskOptions = [optionsCopy taskOptions];
+    v19 = [taskOptions count];
 
     if (v17 >= v19)
     {
       break;
     }
 
-    v20 = [v8 taskOptions];
-    v21 = [v20 objectAtIndexedSubscript:v17];
+    taskOptions2 = [optionsCopy taskOptions];
+    v21 = [taskOptions2 objectAtIndexedSubscript:v17];
 
-    v22 = [v8 taskOptions];
-    if (v17 + 1 >= [v22 count])
+    taskOptions3 = [optionsCopy taskOptions];
+    if (v17 + 1 >= [taskOptions3 count])
     {
-      v25 = 0;
+      uTF8String = 0;
     }
 
     else
     {
-      v23 = [v8 taskOptions];
-      v24 = [v23 objectAtIndexedSubscript:v17 + 1];
-      v25 = [v24 UTF8String];
+      taskOptions4 = [optionsCopy taskOptions];
+      v24 = [taskOptions4 objectAtIndexedSubscript:v17 + 1];
+      uTF8String = [v24 UTF8String];
     }
 
     if ([v21 isEqual:@"-N"])
@@ -863,13 +863,13 @@ LABEL_55:
 
     if ([v21 isEqual:@"-I"])
     {
-      DWORD2(v133) = get_uint32(*([v21 UTF8String] + 1), v25, &v129);
+      DWORD2(v133) = get_uint32(*([v21 UTF8String] + 1), uTF8String, &v129);
       goto LABEL_17;
     }
 
     if ([v21 isEqual:@"-S"])
     {
-      uint32 = get_uint32(*([v21 UTF8String] + 1), v25, &v129);
+      uint32 = get_uint32(*([v21 UTF8String] + 1), uTF8String, &v129);
       if (v129)
       {
         goto LABEL_70;
@@ -888,7 +888,7 @@ LABEL_55:
 
     else if ([v21 isEqual:@"-a"])
     {
-      v33 = get_uint32(*([v21 UTF8String] + 1), v25, &v129);
+      v33 = get_uint32(*([v21 UTF8String] + 1), uTF8String, &v129);
       HIDWORD(v132) = v33;
       if (v129)
       {
@@ -906,7 +906,7 @@ LABEL_55:
 
     else if ([v21 isEqual:@"-b"])
     {
-      v40 = get_uint32(*([v21 UTF8String] + 1), v25, &v129);
+      v40 = get_uint32(*([v21 UTF8String] + 1), uTF8String, &v129);
       if (v129)
       {
         goto LABEL_70;
@@ -925,7 +925,7 @@ LABEL_55:
 
     else if ([v21 isEqual:@"-c"])
     {
-      v47 = get_uint32(*([v21 UTF8String] + 1), v25, &v129);
+      v47 = get_uint32(*([v21 UTF8String] + 1), uTF8String, &v129);
       LODWORD(v136) = v47;
       if (v129)
       {
@@ -943,7 +943,7 @@ LABEL_55:
 
     else if ([v21 isEqual:@"-n"])
     {
-      v56 = get_uint32(*([v21 UTF8String] + 1), v25, &v129);
+      v56 = get_uint32(*([v21 UTF8String] + 1), uTF8String, &v129);
       HIDWORD(v133) = v56;
       if (v129)
       {
@@ -963,7 +963,7 @@ LABEL_55:
     {
       if ([v21 isEqual:@"-s"])
       {
-        *(&v131 + 1) = get_uint64(*([v21 UTF8String] + 1), v25, &v129);
+        *(&v131 + 1) = get_uint64(*([v21 UTF8String] + 1), uTF8String, &v129);
 LABEL_17:
         if (v129)
         {
@@ -975,11 +975,11 @@ LABEL_17:
 
       if ([v21 isEqual:@"-v"])
       {
-        if (!verify_volume_name(v25))
+        if (!verify_volume_name(uTF8String))
         {
           v127 = newfs_ctx;
           v128 = qword_100026E38;
-          newfs_print(&v127, 506, v63, v64, v65, v66, v67, v68, v25);
+          newfs_print(&v127, 506, v63, v64, v65, v66, v67, v68, uTF8String);
           goto LABEL_68;
         }
 
@@ -994,7 +994,7 @@ LABEL_17:
           goto LABEL_69;
         }
 
-        CFStringAppendCString(Mutable, v25, 0x8000100u);
+        CFStringAppendCString(Mutable, uTF8String, 0x8000100u);
         CFStringNormalize(v76, kCFStringNormalizationFormC);
         Length = CFStringGetLength(v76);
         v126 = 0;
@@ -1004,20 +1004,20 @@ LABEL_17:
         {
           v127 = newfs_ctx;
           v128 = qword_100026E38;
-          newfs_print(&v127, 508, v78, v79, v80, v81, v82, v83, v25);
+          newfs_print(&v127, 508, v78, v79, v80, v81, v82, v83, uTF8String);
 LABEL_68:
           v104 = 22;
 LABEL_69:
           v129 = v104;
 LABEL_70:
 
-          v85 = 0;
+          uTF8String2 = 0;
           goto LABEL_71;
         }
 
         LOWORD(v134) = v126 >> 1;
         CFRelease(v76);
-        v108 = v25;
+        v108 = uTF8String;
       }
     }
 
@@ -1026,8 +1026,8 @@ LABEL_49:
     ++v17;
   }
 
-  v84 = [(FSBlockDeviceResource *)self->_resource bsdName];
-  v85 = [v84 UTF8String];
+  bsdName = [(FSBlockDeviceResource *)self->_resource bsdName];
+  uTF8String2 = [bsdName UTF8String];
 
   newfs_set_fd([(FSBlockDeviceResource *)self->_resource fileDescriptor]);
   if (newfs_get_fd() == -1)
@@ -1053,7 +1053,7 @@ LABEL_71:
   if (!v129)
   {
     newfs_set_volume_name(v108);
-    newfs_set_device_path(v85);
+    newfs_set_device_path(uTF8String2);
     newfs_set_sector_size([(FSBlockDeviceResource *)self->_resource blockSize]);
     newfs_set_partition_offset([(FSBlockDeviceResource *)self->_resource partitionBase]);
     newfs_set_total_sectors([(FSBlockDeviceResource *)self->_resource blockCount]);
@@ -1079,8 +1079,8 @@ LABEL_71:
     v116 = &v138;
     v117 = &v144;
     v125 = location;
-    v101 = v111;
-    v115 = v111;
+    v101 = taskCopy;
+    v115 = taskCopy;
     dispatch_async(v106, block);
 
     v100 = v145[5];
@@ -1088,7 +1088,7 @@ LABEL_71:
   }
 
 LABEL_56:
-  *v109 = fs_errorForPOSIXError();
+  *errorCopy = fs_errorForPOSIXError();
   if (location)
   {
     free(location);
@@ -1096,7 +1096,7 @@ LABEL_56:
 
   v100 = 0;
   v102 = v110;
-  v101 = v111;
+  v101 = taskCopy;
 LABEL_59:
 
   _Block_object_dispose(&v138, 8);
@@ -1105,11 +1105,11 @@ LABEL_59:
   return v100;
 }
 
-- (void)loadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)loadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resourceCopy = resource;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 136315138;
@@ -1123,16 +1123,16 @@ LABEL_59:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_resource, a3);
+    objc_storeStrong(&self->_resource, resource);
   }
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v13 = [v10 taskOptions];
+  taskOptions = [optionsCopy taskOptions];
   v14 = 0;
-  v15 = [v13 countByEnumeratingWithState:&v38 objects:v51 count:16];
+  v15 = [taskOptions countByEnumeratingWithState:&v38 objects:v51 count:16];
   if (v15)
   {
     v16 = *v39;
@@ -1142,13 +1142,13 @@ LABEL_59:
       {
         if (*v39 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(taskOptions);
         }
 
         v14 |= [*(*(&v38 + 1) + 8 * i) containsString:@"-f"];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v38 objects:v51 count:16];
+      v15 = [taskOptions countByEnumeratingWithState:&v38 objects:v51 count:16];
     }
 
     while (v15);
@@ -1172,51 +1172,51 @@ LABEL_59:
   v31[3] = &unk_10001C6D0;
   v31[4] = &v32;
   v31[5] = &buf;
-  [(exfatFileSystem *)self probeResource:v9 replyHandler:v31];
+  [(exfatFileSystem *)self probeResource:resourceCopy replyHandler:v31];
   if (!v33[5])
   {
     if ([*(*(&buf + 1) + 40) result] == 3)
     {
-      v20 = [*(*(&buf + 1) + 40) name];
-      if (v20)
+      name = [*(*(&buf + 1) + 40) name];
+      if (name)
       {
-        v18 = [*(*(&buf + 1) + 40) name];
+        name2 = [*(*(&buf + 1) + 40) name];
       }
 
       else
       {
-        v18 = &stru_10001C798;
+        name2 = &stru_10001C798;
       }
 
       v22 = [FSVolume alloc];
-      v23 = [*(*(&buf + 1) + 40) containerID];
-      v24 = [v23 volumeIdentifier];
-      v25 = [FSFileName nameWithString:v18];
-      v26 = [v22 initWithVolumeID:v24 volumeName:v25];
+      containerID = [*(*(&buf + 1) + 40) containerID];
+      volumeIdentifier = [containerID volumeIdentifier];
+      v25 = [FSFileName nameWithString:name2];
+      v26 = [v22 initWithVolumeID:volumeIdentifier volumeName:v25];
 
       if (v26)
       {
         v27 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
         {
-          v28 = [*(*(&buf + 1) + 40) containerID];
+          containerID2 = [*(*(&buf + 1) + 40) containerID];
           *v42 = 136315394;
           v43 = "[exfatFileSystem loadResource:options:replyHandler:]";
           v44 = 2112;
-          v45 = v28;
+          v45 = containerID2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "%s: loaded resource with volume ID (%@)", v42, 0x16u);
         }
 
         v29 = +[FSContainerStatus ready];
         [(exfatFileSystem *)self setContainerStatus:v29];
 
-        v11[2](v11, v26, 0);
+        handlerCopy[2](handlerCopy, v26, 0);
       }
 
       else
       {
         v30 = fs_errorForPOSIXError();
-        (v11)[2](v11, 0, v30);
+        (handlerCopy)[2](handlerCopy, 0, v30);
       }
 
       goto LABEL_30;
@@ -1226,26 +1226,26 @@ LABEL_59:
     {
       if ([*(*(&buf + 1) + 40) result])
       {
-        v18 = [NSError errorWithDomain:FSKitErrorDomain code:4503 userInfo:0];
-        v21 = [FSContainerStatus notReadyWithStatus:v18];
+        name2 = [NSError errorWithDomain:FSKitErrorDomain code:4503 userInfo:0];
+        v21 = [FSContainerStatus notReadyWithStatus:name2];
         [(exfatFileSystem *)self setContainerStatus:v21];
       }
 
       else
       {
-        v18 = fs_errorForPOSIXError();
+        name2 = fs_errorForPOSIXError();
       }
 
-      (v11)[2](v11, 0, v18);
+      (handlerCopy)[2](handlerCopy, 0, name2);
       goto LABEL_30;
     }
 
 LABEL_14:
-    v18 = fs_errorForPOSIXError();
-    v19 = [FSContainerStatus notReadyWithStatus:v18];
+    name2 = fs_errorForPOSIXError();
+    v19 = [FSContainerStatus notReadyWithStatus:name2];
     [(exfatFileSystem *)self setContainerStatus:v19];
 
-    (v11)[2](v11, 0, v18);
+    (handlerCopy)[2](handlerCopy, 0, name2);
 LABEL_30:
 
     goto LABEL_31;
@@ -1256,14 +1256,14 @@ LABEL_30:
     goto LABEL_14;
   }
 
-  (v11[2])(v11, 0);
+  (handlerCopy[2])(handlerCopy, 0);
 LABEL_31:
   _Block_object_dispose(&v32, 8);
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)unloadResource:(id)a3 options:(id)a4 replyHandler:(id)a5
+- (void)unloadResource:(id)resource options:(id)options replyHandler:(id)handler
 {
   resource = self->_resource;
   self->_resource = 0;

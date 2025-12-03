@@ -1,14 +1,14 @@
 @interface EDBiomeInteractionEventLog
 + (OS_os_log)log;
-+ (id)payloadFromData:(id)a3 message:(id)a4;
++ (id)payloadFromData:(id)data message:(id)message;
 - (EDBiomeInteractionEventLog)init;
-- (void)donateToBiomeWithEvent:(id)a3;
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4;
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4 account:(id)a5;
-- (void)persistEvent:(id)a3 date:(id)a4 conversationID:(int64_t)a5 data:(id)a6;
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 data:(id)a6;
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailbox:(id)a6;
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailboxType:(int64_t)a6;
+- (void)donateToBiomeWithEvent:(id)event;
+- (void)persistEvent:(id)event dataFromMessage:(id)message;
+- (void)persistEvent:(id)event dataFromMessage:(id)message account:(id)account;
+- (void)persistEvent:(id)event date:(id)date conversationID:(int64_t)d data:(id)data;
+- (void)persistEvent:(id)event date:(id)date message:(id)message data:(id)data;
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailbox:(id)mailbox;
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailboxType:(int64_t)type;
 @end
 
 @implementation EDBiomeInteractionEventLog
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __33__EDBiomeInteractionEventLog_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_14 != -1)
   {
     dispatch_once(&log_onceToken_14, block);
@@ -81,11 +81,11 @@ void __34__EDBiomeInteractionEventLog_init__block_invoke(uint64_t a1)
   *(v10 + 24) = v9;
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 data:(id)a6
+- (void)persistEvent:(id)event date:(id)date message:(id)message data:(id)data
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  eventCopy = event;
+  messageCopy = message;
+  dataCopy = data;
   v12 = +[EDBiomeInteractionEventLog log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -93,153 +93,153 @@ void __34__EDBiomeInteractionEventLog_init__block_invoke(uint64_t a1)
   }
 
   v13 = [MEMORY[0x1E695DFD8] setWithObjects:{*MEMORY[0x1E699AF60], *MEMORY[0x1E699AF58], 0}];
-  if (([v13 containsObject:v9] & 1) == 0)
+  if (([v13 containsObject:eventCopy] & 1) == 0)
   {
-    v14 = [EDBiomeInteractionEventLog payloadFromData:v11 message:v10];
-    v15 = [v10 messageIDHeader];
-    v16 = [v15 ec_messageIDSubstring];
+    v14 = [EDBiomeInteractionEventLog payloadFromData:dataCopy message:messageCopy];
+    messageIDHeader = [messageCopy messageIDHeader];
+    ec_messageIDSubstring = [messageIDHeader ec_messageIDSubstring];
 
-    v17 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:v9 messageId:v16 payload:v14];
+    v17 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:eventCopy messageId:ec_messageIDSubstring payload:v14];
     [(EDBiomeInteractionEventLog *)self donateToBiomeWithEvent:v17];
   }
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 conversationID:(int64_t)a5 data:(id)a6
+- (void)persistEvent:(id)event date:(id)date conversationID:(int64_t)d data:(id)data
 {
-  v9 = a3;
-  v10 = a6;
+  eventCopy = event;
+  dataCopy = data;
   v11 = +[EDBiomeInteractionEventLog log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [EDBiomeInteractionEventLog persistEvent:date:conversationID:data:];
   }
 
-  v12 = [EDBiomeInteractionEventLog payloadFromData:v10 message:0];
-  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+  v12 = [EDBiomeInteractionEventLog payloadFromData:dataCopy message:0];
+  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E699AF88]];
 
-  v14 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:v9 messageId:0 payload:v12];
+  v14 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:eventCopy messageId:0 payload:v12];
   [(EDBiomeInteractionEventLog *)self donateToBiomeWithEvent:v14];
 }
 
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4
+- (void)persistEvent:(id)event dataFromMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  messageCopy = message;
   v8 = +[EDBiomeInteractionEventLog log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [EDBiomeInteractionEventLog persistEvent:dataFromMessage:];
   }
 
-  v9 = [v7 messageIDHeader];
-  v10 = [v9 ec_messageIDSubstring];
+  messageIDHeader = [messageCopy messageIDHeader];
+  ec_messageIDSubstring = [messageIDHeader ec_messageIDSubstring];
 
-  v11 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:v7];
-  v12 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:v6 messageId:v10 payload:v11];
+  v11 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:messageCopy];
+  v12 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:eventCopy messageId:ec_messageIDSubstring payload:v11];
   [(EDBiomeInteractionEventLog *)self donateToBiomeWithEvent:v12];
 }
 
-- (void)persistEvent:(id)a3 dataFromMessage:(id)a4 account:(id)a5
+- (void)persistEvent:(id)event dataFromMessage:(id)message account:(id)account
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  messageCopy = message;
+  accountCopy = account;
   v11 = +[EDBiomeInteractionEventLog log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [EDBiomeInteractionEventLog persistEvent:dataFromMessage:account:];
   }
 
-  v12 = [v9 messageIDHeader];
-  v13 = [v12 ec_messageIDSubstring];
+  messageIDHeader = [messageCopy messageIDHeader];
+  ec_messageIDSubstring = [messageIDHeader ec_messageIDSubstring];
 
-  v14 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:v9];
-  v15 = [v10 identifier];
-  [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E699AF78]];
+  v14 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:messageCopy];
+  identifier = [accountCopy identifier];
+  [v14 setObject:identifier forKeyedSubscript:*MEMORY[0x1E699AF78]];
 
-  v16 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:v8 messageId:v13 payload:v14];
+  v16 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:eventCopy messageId:ec_messageIDSubstring payload:v14];
   [(EDBiomeInteractionEventLog *)self donateToBiomeWithEvent:v16];
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailbox:(id)a6
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailbox:(id)mailbox
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  eventCopy = event;
+  messageCopy = message;
+  mailboxCopy = mailbox;
   v12 = +[EDBiomeInteractionEventLog log];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [EDBiomeInteractionEventLog persistEvent:date:message:mailbox:];
   }
 
-  v13 = [v10 messageIDHeader];
-  v14 = [v13 ec_messageIDSubstring];
+  messageIDHeader = [messageCopy messageIDHeader];
+  ec_messageIDSubstring = [messageIDHeader ec_messageIDSubstring];
 
-  v15 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:v10];
-  if ([v9 isEqualToString:*MEMORY[0x1E699AF68]])
+  v15 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:messageCopy];
+  if ([eventCopy isEqualToString:*MEMORY[0x1E699AF68]])
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "type")}];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(mailboxCopy, "type")}];
     [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x1E699AFA0]];
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:v9 messageId:v14 payload:v15];
+  v17 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:eventCopy messageId:ec_messageIDSubstring payload:v15];
   [(EDBiomeInteractionEventLog *)self donateToBiomeWithEvent:v17];
 }
 
-- (void)persistEvent:(id)a3 date:(id)a4 message:(id)a5 mailboxType:(int64_t)a6
+- (void)persistEvent:(id)event date:(id)date message:(id)message mailboxType:(int64_t)type
 {
-  v9 = a3;
-  v10 = a5;
+  eventCopy = event;
+  messageCopy = message;
   v11 = +[EDBiomeInteractionEventLog log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [EDBiomeInteractionEventLog persistEvent:date:message:mailboxType:];
   }
 
-  v12 = [v10 messageIDHeader];
-  v13 = [v12 ec_messageIDSubstring];
+  messageIDHeader = [messageCopy messageIDHeader];
+  ec_messageIDSubstring = [messageIDHeader ec_messageIDSubstring];
 
-  v14 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:v10];
-  if ([v9 isEqualToString:*MEMORY[0x1E699AF68]])
+  v14 = [EDBiomeInteractionEventLog payloadFromData:MEMORY[0x1E695E0F8] message:messageCopy];
+  if ([eventCopy isEqualToString:*MEMORY[0x1E699AF68]])
   {
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x1E699AFA0]];
   }
 
-  v16 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:v9 messageId:v13 payload:v14];
+  v16 = [objc_alloc(MEMORY[0x1E699AC18]) initWithEventName:eventCopy messageId:ec_messageIDSubstring payload:v14];
   [(EDBiomeInteractionEventLog *)self donateToBiomeWithEvent:v16];
 }
 
-- (void)donateToBiomeWithEvent:(id)a3
+- (void)donateToBiomeWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__EDBiomeInteractionEventLog_donateToBiomeWithEvent___block_invoke;
   v7[3] = &unk_1E8250128;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = eventCopy;
+  v5 = eventCopy;
   v6 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v7);
   dispatch_async(self->_queue, v6);
 }
 
-+ (id)payloadFromData:(id)a3 message:(id)a4
++ (id)payloadFromData:(id)data message:(id)message
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  v7 = [v5 persistentID];
+  messageCopy = message;
+  v6 = [data mutableCopy];
+  persistentID = [messageCopy persistentID];
 
-  if (v7)
+  if (persistentID)
   {
-    v8 = [v5 persistentID];
-    [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E699AFA8]];
+    persistentID2 = [messageCopy persistentID];
+    [v6 setObject:persistentID2 forKeyedSubscript:*MEMORY[0x1E699AFA8]];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = v5;
+    v9 = messageCopy;
     v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v9, "globalMessageID")}];
     [v6 setObject:v10 forKeyedSubscript:*MEMORY[0x1E699AF98]];
   }

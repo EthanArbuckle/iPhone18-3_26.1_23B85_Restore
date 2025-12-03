@@ -1,8 +1,8 @@
 @interface OUKeyframeMeta
 - (OUKeyframeMeta)init;
 - (__n128)cameraPose;
-- (__n128)setCameraPose:(__n128)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (__n128)setCameraPose:(__n128)pose;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OUKeyframeMeta
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   objc_storeStrong((v4 + 8), self->_identifier);
@@ -39,17 +39,17 @@
 
 - (__n128)cameraPose
 {
-  result = *(a1 + 32);
-  v2 = *(a1 + 48);
-  v3 = *(a1 + 64);
-  v4 = *(a1 + 80);
+  result = *(self + 32);
+  v2 = *(self + 48);
+  v3 = *(self + 64);
+  v4 = *(self + 80);
   return result;
 }
 
-- (__n128)setCameraPose:(__n128)a3
+- (__n128)setCameraPose:(__n128)pose
 {
   result[2] = a2;
-  result[3] = a3;
+  result[3] = pose;
   result[4] = a4;
   result[5] = a5;
   return result;

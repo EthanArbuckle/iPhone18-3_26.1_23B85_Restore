@@ -1,32 +1,32 @@
 @interface PXPhotosDetailsLoadCoordinator
-+ (id)loadCoordinatorForContext:(id)a3;
++ (id)loadCoordinatorForContext:(id)context;
 - (BOOL)_canPerformRelatedFetch;
 - (BOOL)_canPerformSuggestionsFetch;
 - (PXPhotosDetailsLoadCoordinator)init;
 - (id)_createToken;
 - (id)tokenForLivePhotoVariations;
-- (void)performBlockWhenReadyToFetchRelated:(id)a3;
-- (void)performBlockWhenReadyToFetchSuggestions:(id)a3;
+- (void)performBlockWhenReadyToFetchRelated:(id)related;
+- (void)performBlockWhenReadyToFetchSuggestions:(id)suggestions;
 @end
 
 @implementation PXPhotosDetailsLoadCoordinator
 
 - (BOOL)_canPerformSuggestionsFetch
 {
-  v2 = [(PXPhotosDetailsLoadCoordinator *)self _tokens];
-  v3 = [v2 objectEnumerator];
-  v4 = [v3 nextObject];
-  v5 = v4 == 0;
+  _tokens = [(PXPhotosDetailsLoadCoordinator *)self _tokens];
+  objectEnumerator = [_tokens objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  v5 = nextObject == 0;
 
   return v5;
 }
 
 - (BOOL)_canPerformRelatedFetch
 {
-  v2 = [(PXPhotosDetailsLoadCoordinator *)self _tokens];
-  v3 = [v2 objectEnumerator];
-  v4 = [v3 nextObject];
-  v5 = v4 == 0;
+  _tokens = [(PXPhotosDetailsLoadCoordinator *)self _tokens];
+  objectEnumerator = [_tokens objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  v5 = nextObject == 0;
 
   return v5;
 }
@@ -120,37 +120,37 @@ void __52__PXPhotosDetailsLoadCoordinator__tokenDidComplete___block_invoke(uint6
   }
 }
 
-- (void)performBlockWhenReadyToFetchSuggestions:(id)a3
+- (void)performBlockWhenReadyToFetchSuggestions:(id)suggestions
 {
-  v7 = a3;
+  suggestionsCopy = suggestions;
   if ([(PXPhotosDetailsLoadCoordinator *)self _canPerformSuggestionsFetch])
   {
-    v7[2]();
+    suggestionsCopy[2]();
   }
 
   else
   {
-    v4 = [(PXPhotosDetailsLoadCoordinator *)self _suggestionsBlocks];
-    v5 = [v7 copy];
+    _suggestionsBlocks = [(PXPhotosDetailsLoadCoordinator *)self _suggestionsBlocks];
+    v5 = [suggestionsCopy copy];
     v6 = _Block_copy(v5);
-    [v4 addObject:v6];
+    [_suggestionsBlocks addObject:v6];
   }
 }
 
-- (void)performBlockWhenReadyToFetchRelated:(id)a3
+- (void)performBlockWhenReadyToFetchRelated:(id)related
 {
-  v7 = a3;
+  relatedCopy = related;
   if ([(PXPhotosDetailsLoadCoordinator *)self _canPerformRelatedFetch])
   {
-    v7[2]();
+    relatedCopy[2]();
   }
 
   else
   {
-    v4 = [(PXPhotosDetailsLoadCoordinator *)self _relatedBlocks];
-    v5 = [v7 copy];
+    _relatedBlocks = [(PXPhotosDetailsLoadCoordinator *)self _relatedBlocks];
+    v5 = [relatedCopy copy];
     v6 = _Block_copy(v5);
-    [v4 addObject:v6];
+    [_relatedBlocks addObject:v6];
   }
 }
 
@@ -164,8 +164,8 @@ void __52__PXPhotosDetailsLoadCoordinator__tokenDidComplete___block_invoke(uint6
 - (id)_createToken
 {
   v3 = [[PXPhotosDetailsLoadCoordinationToken alloc] _initWithLoadCoordinator:self];
-  v4 = [(PXPhotosDetailsLoadCoordinator *)self _tokens];
-  [v4 addObject:v3];
+  _tokens = [(PXPhotosDetailsLoadCoordinator *)self _tokens];
+  [_tokens addObject:v3];
 
   return v3;
 }
@@ -179,9 +179,9 @@ void __52__PXPhotosDetailsLoadCoordinator__tokenDidComplete___block_invoke(uint6
   if (v2)
   {
     v2->_timeoutDelay = 10.0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     tokens = v3->__tokens;
-    v3->__tokens = v4;
+    v3->__tokens = weakObjectsHashTable;
 
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     relatedBlocks = v3->__relatedBlocks;
@@ -195,14 +195,14 @@ void __52__PXPhotosDetailsLoadCoordinator__tokenDidComplete___block_invoke(uint6
   return v3;
 }
 
-+ (id)loadCoordinatorForContext:(id)a3
++ (id)loadCoordinatorForContext:(id)context
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, PXPhotosDetailsLoadCoordinatorAssociationKey);
+  contextCopy = context;
+  v4 = objc_getAssociatedObject(contextCopy, PXPhotosDetailsLoadCoordinatorAssociationKey);
   if (!v4)
   {
     v4 = objc_alloc_init(PXPhotosDetailsLoadCoordinator);
-    objc_setAssociatedObject(v3, PXPhotosDetailsLoadCoordinatorAssociationKey, v4, 1);
+    objc_setAssociatedObject(contextCopy, PXPhotosDetailsLoadCoordinatorAssociationKey, v4, 1);
   }
 
   return v4;

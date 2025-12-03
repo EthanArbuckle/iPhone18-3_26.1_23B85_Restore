@@ -1,11 +1,11 @@
 @interface CNContactImageUpdater
 + (id)descriptorForRequiredKeys;
 + (id)log;
-+ (void)updateMutableContact:(id)a3 withImageAndWallpaperPropertiesFromContact:(id)a4;
-+ (void)updateMutableContact:(id)a3 withImagePropertiesFromContact:(id)a4;
-+ (void)updateMutableContact:(id)a3 withWallpaperPropertiesFromContact:(id)a4;
-- (BOOL)updateImageWithImageContact:(id)a3 setAsMe:(BOOL)a4;
-- (CNContactImageUpdater)initWithContact:(id)a3 contactStore:(id)a4;
++ (void)updateMutableContact:(id)contact withImageAndWallpaperPropertiesFromContact:(id)fromContact;
++ (void)updateMutableContact:(id)contact withImagePropertiesFromContact:(id)fromContact;
++ (void)updateMutableContact:(id)contact withWallpaperPropertiesFromContact:(id)fromContact;
+- (BOOL)updateImageWithImageContact:(id)contact setAsMe:(BOOL)me;
+- (CNContactImageUpdater)initWithContact:(id)contact contactStore:(id)store;
 @end
 
 @implementation CNContactImageUpdater
@@ -25,24 +25,24 @@
   v7[9] = @"wallpaper";
   v7[10] = @"watchWallpaperImageData";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:11];
-  v4 = [a1 description];
+  v4 = [self description];
   v5 = [CNContact descriptorWithKeyDescriptors:v3 description:v4];
 
   return v5;
 }
 
-- (CNContactImageUpdater)initWithContact:(id)a3 contactStore:(id)a4
+- (CNContactImageUpdater)initWithContact:(id)contact contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CNContactImageUpdater;
   v9 = [(CNContactImageUpdater *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a4);
-    objc_storeStrong(&v10->_contact, a3);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_contact, contact);
     v11 = v10;
   }
 
@@ -70,43 +70,43 @@ uint64_t __28__CNContactImageUpdater_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)updateImageWithImageContact:(id)a3 setAsMe:(BOOL)a4
+- (BOOL)updateImageWithImageContact:(id)contact setAsMe:(BOOL)me
 {
-  v4 = a4;
+  meCopy = me;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contactCopy = contact;
   v7 = objc_alloc_init(CNSaveRequest);
   v8 = objc_opt_class();
-  v9 = [(CNContactImageUpdater *)self contact];
-  [v8 updateMutableContact:v9 withImageAndWallpaperPropertiesFromContact:v6];
+  contact = [(CNContactImageUpdater *)self contact];
+  [v8 updateMutableContact:contact withImageAndWallpaperPropertiesFromContact:contactCopy];
 
-  v10 = [(CNContactImageUpdater *)self contact];
-  v11 = [v10 hasBeenPersisted];
+  contact2 = [(CNContactImageUpdater *)self contact];
+  hasBeenPersisted = [contact2 hasBeenPersisted];
 
-  v12 = [(CNContactImageUpdater *)self contact];
-  if (v11)
+  contact3 = [(CNContactImageUpdater *)self contact];
+  if (hasBeenPersisted)
   {
-    [(CNSaveRequest *)v7 updateContact:v12];
+    [(CNSaveRequest *)v7 updateContact:contact3];
   }
 
   else
   {
-    [(CNSaveRequest *)v7 addContact:v12 toContainerWithIdentifier:0];
+    [(CNSaveRequest *)v7 addContact:contact3 toContainerWithIdentifier:0];
   }
 
   v13 = [objc_opt_class() log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CNContactImageUpdater *)self contact];
-    v15 = [v14 identifier];
+    contact4 = [(CNContactImageUpdater *)self contact];
+    identifier = [contact4 identifier];
     *buf = 138543362;
-    v30 = v15;
+    v30 = identifier;
     _os_log_impl(&dword_1954A0000, v13, OS_LOG_TYPE_DEFAULT, "Saving contact with identifier %{public}@", buf, 0xCu);
   }
 
-  v16 = [(CNContactImageUpdater *)self contactStore];
+  contactStore = [(CNContactImageUpdater *)self contactStore];
   v28 = 0;
-  v17 = [v16 executeSaveRequest:v7 error:&v28];
+  v17 = [contactStore executeSaveRequest:v7 error:&v28];
   v18 = v28;
 
   if ((v17 & 1) == 0)
@@ -120,7 +120,7 @@ uint64_t __28__CNContactImageUpdater_log__block_invoke()
     goto LABEL_20;
   }
 
-  if ((v4 & ~v11) != 0)
+  if ((meCopy & ~hasBeenPersisted) != 0)
   {
     v19 = [objc_opt_class() log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -129,10 +129,10 @@ uint64_t __28__CNContactImageUpdater_log__block_invoke()
       _os_log_impl(&dword_1954A0000, v19, OS_LOG_TYPE_DEFAULT, "Saving contact", buf, 2u);
     }
 
-    v20 = [(CNContactImageUpdater *)self contactStore];
-    v21 = [(CNContactImageUpdater *)self contact];
+    contactStore2 = [(CNContactImageUpdater *)self contactStore];
+    contact5 = [(CNContactImageUpdater *)self contact];
     v27 = 0;
-    v22 = [v20 setMeContact:v21 error:&v27];
+    v22 = [contactStore2 setMeContact:contact5 error:&v27];
     v23 = v27;
 
     if (v22)
@@ -166,63 +166,63 @@ LABEL_21:
   return v24;
 }
 
-+ (void)updateMutableContact:(id)a3 withImageAndWallpaperPropertiesFromContact:(id)a4
++ (void)updateMutableContact:(id)contact withImageAndWallpaperPropertiesFromContact:(id)fromContact
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() updateMutableContact:v6 withImagePropertiesFromContact:v5];
-  [objc_opt_class() updateMutableContact:v6 withWallpaperPropertiesFromContact:v5];
+  fromContactCopy = fromContact;
+  contactCopy = contact;
+  [objc_opt_class() updateMutableContact:contactCopy withImagePropertiesFromContact:fromContactCopy];
+  [objc_opt_class() updateMutableContact:contactCopy withWallpaperPropertiesFromContact:fromContactCopy];
 }
 
-+ (void)updateMutableContact:(id)a3 withImagePropertiesFromContact:(id)a4
++ (void)updateMutableContact:(id)contact withImagePropertiesFromContact:(id)fromContact
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 imageData];
-  [v6 setImageData:v7];
+  fromContactCopy = fromContact;
+  contactCopy = contact;
+  imageData = [fromContactCopy imageData];
+  [contactCopy setImageData:imageData];
 
-  [v5 cropRect];
-  [v6 setCropRect:?];
-  v8 = [v5 thumbnailImageData];
-  [v6 setThumbnailImageData:v8];
+  [fromContactCopy cropRect];
+  [contactCopy setCropRect:?];
+  thumbnailImageData = [fromContactCopy thumbnailImageData];
+  [contactCopy setThumbnailImageData:thumbnailImageData];
 
-  v9 = [v5 fullscreenImageData];
-  [v6 setFullscreenImageData:v9];
+  fullscreenImageData = [fromContactCopy fullscreenImageData];
+  [contactCopy setFullscreenImageData:fullscreenImageData];
 
-  v10 = [v5 preferredLikenessSource];
-  [v6 setPreferredLikenessSource:v10];
+  preferredLikenessSource = [fromContactCopy preferredLikenessSource];
+  [contactCopy setPreferredLikenessSource:preferredLikenessSource];
 
-  v11 = [v5 imageType];
-  [v6 setImageType:v11];
+  imageType = [fromContactCopy imageType];
+  [contactCopy setImageType:imageType];
 
-  v12 = [v5 imageHash];
-  [v6 setImageHash:v12];
+  imageHash = [fromContactCopy imageHash];
+  [contactCopy setImageHash:imageHash];
 
-  v13 = [v5 memojiMetadata];
-  [v6 setMemojiMetadata:v13];
+  memojiMetadata = [fromContactCopy memojiMetadata];
+  [contactCopy setMemojiMetadata:memojiMetadata];
 
-  v14 = [v5 avatarRecipeData];
-  [v6 setAvatarRecipeData:v14];
+  avatarRecipeData = [fromContactCopy avatarRecipeData];
+  [contactCopy setAvatarRecipeData:avatarRecipeData];
 
-  v15 = [v5 imageBackgroundColorsData];
+  imageBackgroundColorsData = [fromContactCopy imageBackgroundColorsData];
 
-  [v6 setImageBackgroundColorsData:v15];
+  [contactCopy setImageBackgroundColorsData:imageBackgroundColorsData];
 }
 
-+ (void)updateMutableContact:(id)a3 withWallpaperPropertiesFromContact:(id)a4
++ (void)updateMutableContact:(id)contact withWallpaperPropertiesFromContact:(id)fromContact
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v5 isKeyAvailable:@"wallpaper"])
+  contactCopy = contact;
+  fromContactCopy = fromContact;
+  if ([fromContactCopy isKeyAvailable:@"wallpaper"])
   {
-    v6 = [v5 wallpaper];
-    [v8 setWallpaper:v6];
+    wallpaper = [fromContactCopy wallpaper];
+    [contactCopy setWallpaper:wallpaper];
   }
 
-  if ([v5 isKeyAvailable:@"watchWallpaperImageData"])
+  if ([fromContactCopy isKeyAvailable:@"watchWallpaperImageData"])
   {
-    v7 = [v5 watchWallpaperImageData];
-    [v8 setWatchWallpaperImageData:v7];
+    watchWallpaperImageData = [fromContactCopy watchWallpaperImageData];
+    [contactCopy setWatchWallpaperImageData:watchWallpaperImageData];
   }
 }
 

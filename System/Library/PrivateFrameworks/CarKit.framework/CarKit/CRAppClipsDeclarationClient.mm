@@ -1,20 +1,20 @@
 @interface CRAppClipsDeclarationClient
-+ (void)_servicePerformBlock:(id)a3 errorHandler:(id)a4;
-+ (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)a3 completion:(id)a4;
++ (void)_servicePerformBlock:(id)block errorHandler:(id)handler;
++ (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CRAppClipsDeclarationClient
 
-+ (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)a3 completion:(id)a4
++ (void)fetchSupportedAppClipsForPairedVehicleIdentifier:(id)identifier completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = identifierCopy;
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_INFO, "fetchSupportedAppClipsForPairedVehicleIdentifier: %@", buf, 0xCu);
   }
 
@@ -22,16 +22,16 @@
   v13[1] = 3221225472;
   v13[2] = __91__CRAppClipsDeclarationClient_fetchSupportedAppClipsForPairedVehicleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E82FD228;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __91__CRAppClipsDeclarationClient_fetchSupportedAppClipsForPairedVehicleIdentifier_completion___block_invoke_21;
   v11[3] = &unk_1E82FBF48;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
-  [a1 _servicePerformBlock:v13 errorHandler:v11];
+  v10 = identifierCopy;
+  [self _servicePerformBlock:v13 errorHandler:v11];
 }
 
 void __91__CRAppClipsDeclarationClient_fetchSupportedAppClipsForPairedVehicleIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -99,10 +99,10 @@ void __91__CRAppClipsDeclarationClient_fetchSupportedAppClipsForPairedVehicleIde
   }
 }
 
-+ (void)_servicePerformBlock:(id)a3 errorHandler:(id)a4
++ (void)_servicePerformBlock:(id)block errorHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v7 = CarGeneralLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -120,17 +120,17 @@ void __91__CRAppClipsDeclarationClient_fetchSupportedAppClipsForPairedVehicleIde
   v14[2] = __65__CRAppClipsDeclarationClient__servicePerformBlock_errorHandler___block_invoke;
   v14[3] = &unk_1E82FD250;
   objc_copyWeak(&v16, buf);
-  v10 = v6;
+  v10 = handlerCopy;
   v15 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v14];
-  if (v5)
+  if (blockCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __65__CRAppClipsDeclarationClient__servicePerformBlock_errorHandler___block_invoke_2;
     v12[3] = &unk_1E82FBF70;
     v13 = v9;
-    v5[2](v5, v11, v12);
+    blockCopy[2](blockCopy, v11, v12);
   }
 
   objc_destroyWeak(&v16);

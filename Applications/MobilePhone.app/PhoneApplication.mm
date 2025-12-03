@@ -3,13 +3,13 @@
 - (BOOL)_faceTimeInvitationExists;
 - (BOOL)activeFaceTimeCallExists;
 - (BOOL)alwaysShowLocalVideo;
-- (BOOL)application:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (BOOL)applicationSuspendWithSettings:(id)a3;
+- (BOOL)application:(id)application willContinueUserActivityWithType:(id)type;
+- (BOOL)applicationSuspendWithSettings:(id)settings;
 - (BOOL)badgesMissedFaceTimeAudio;
 - (BOOL)badgesMissedFaceTimeVideo;
 - (BOOL)badgesMissedTelephonyCalls;
 - (BOOL)contentViewCanRotate;
-- (BOOL)dialVoicemailWithAccountID:(id)a3;
+- (BOOL)dialVoicemailWithAccountID:(id)d;
 - (BOOL)faceTimeAudioIsAvailable;
 - (BOOL)faceTimeInvitationExists;
 - (BOOL)faceTimeVideoIsAvailable;
@@ -17,9 +17,9 @@
 - (BOOL)inCall;
 - (BOOL)inFaceTime;
 - (BOOL)isLowGraphicsPerformanceDevice;
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (BOOL)showSplashScreenOnSignin;
-- (BOOL)showsCallsFromService:(int)a3;
+- (BOOL)showsCallsFromService:(int)service;
 - (BOOL)showsFaceTimeAudio;
 - (BOOL)showsFaceTimeAudioFavorites;
 - (BOOL)showsFaceTimeAudioRecents;
@@ -40,43 +40,43 @@
 - (TUCallCenter)callCenter;
 - (UIMenu)menuAudioOutput;
 - (UIMenu)menuItemRemoveAllRecents;
-- (id)_createRecentCallWithCallerId:(id)a3;
-- (id)_tableFromViewController:(id)a3;
-- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)a3;
-- (id)firstScrollViewInView:(id)a3;
-- (id)makeAudioOutputItemWithRoute:(id)a3;
+- (id)_createRecentCallWithCallerId:(id)id;
+- (id)_tableFromViewController:(id)controller;
+- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)strategy;
+- (id)firstScrollViewInView:(id)view;
+- (id)makeAudioOutputItemWithRoute:(id)route;
 - (id)makeAudioOutputItems;
 - (id)nameOfDefaultImageToUpdateAtSuspension;
-- (id)scrollTestsWithCount:(int64_t)a3 forScrollView:(id)a4;
+- (id)scrollTestsWithCount:(int64_t)count forScrollView:(id)view;
 - (int)userInterfaceScreenType;
 - (unint64_t)callHistoryControllerOptions;
 - (void)TestAddUnknownFavorite;
-- (void)_localeChangedNotification:(id)a3;
+- (void)_localeChangedNotification:(id)notification;
 - (void)_scroll;
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)applicationOpenURL:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)applicationOpenURL:(id)l;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)failTestOnMainThread:(id)a3 reason:(id)a4;
-- (void)finishTestOnMainThread:(id)a3;
-- (void)handleApplicationFinishedSnapshottingNotification:(id)a3;
-- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)a3;
-- (void)modifyTopLevelMenuEdit:(id)a3;
-- (void)modifyTopLevelMenuWindow:(id)a3 :(id)a4;
-- (void)openURL:(id)a3 withCompletionHandler:(id)a4;
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3;
-- (void)removeAllRecents:(id)a3;
-- (void)removeUnnecessarySubMenusEdit:(id)a3;
-- (void)removeUnnecessaryTopLevelMenus:(id)a3;
-- (void)runSwitchTabTestWithTabViewController:(id)a3 fromTab:(int)a4 switchTo:(int)a5 numberOfIterations:(int64_t)a6 testNameReference:(const void *)a7;
-- (void)setIgnoresInteractionEvents:(BOOL)a3;
+- (void)failTestOnMainThread:(id)thread reason:(id)reason;
+- (void)finishTestOnMainThread:(id)thread;
+- (void)handleApplicationFinishedSnapshottingNotification:(id)notification;
+- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)notification;
+- (void)modifyTopLevelMenuEdit:(id)edit;
+- (void)modifyTopLevelMenuWindow:(id)window :(id)a4;
+- (void)openURL:(id)l withCompletionHandler:(id)handler;
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen;
+- (void)removeAllRecents:(id)recents;
+- (void)removeUnnecessarySubMenusEdit:(id)edit;
+- (void)removeUnnecessaryTopLevelMenus:(id)menus;
+- (void)runSwitchTabTestWithTabViewController:(id)controller fromTab:(int)tab switchTo:(int)to numberOfIterations:(int64_t)iterations testNameReference:(const void *)reference;
+- (void)setIgnoresInteractionEvents:(BOOL)events;
 - (void)startScrollTest;
 - (void)startScrollVoicemailWithInteractionTest;
 - (void)startScrollWithInteractionTest;
-- (void)startSwitchTest:(int)a3;
-- (void)startTestOnMainThread:(id)a3;
-- (void)switchToTabWaitingForViewDidLoad:(PhoneTabBarController *)a3 to:(int)a4 completionHandler:(id)a5;
-- (void)tabBarControllerViewDidAppear:(id)a3;
+- (void)startSwitchTest:(int)test;
+- (void)startTestOnMainThread:(id)thread;
+- (void)switchToTabWaitingForViewDidLoad:(PhoneTabBarController *)load to:(int)to completionHandler:(id)handler;
+- (void)tabBarControllerViewDidAppear:(id)appear;
 - (void)warmInCallServiceIfNecessary;
 @end
 
@@ -97,9 +97,9 @@
   return v2;
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
-  v12 = a3;
+  launchingCopy = launching;
   if ((__HasInitialized & 1) == 0)
   {
     v4 = +[IDSServiceAvailabilityController sharedInstance];
@@ -126,9 +126,9 @@
   [v8 registerDefaults:&off_100295558];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     ABAddressBookSetAutorotationEnabled();
   }
@@ -144,84 +144,84 @@
 {
   if ([(PhoneApplication *)self shouldSnapshot])
   {
-    v3 = [(PhoneApplication *)self rootViewController];
-    v4 = [v3 baseViewController];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    baseViewController = [rootViewController baseViewController];
 
-    if ([v4 shouldSnapshot])
+    if ([baseViewController shouldSnapshot])
     {
-      v5 = [objc_opt_class() defaultPNGName];
+      defaultPNGName = [objc_opt_class() defaultPNGName];
     }
 
     else
     {
-      v5 = 0;
+      defaultPNGName = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    defaultPNGName = 0;
   }
 
-  return v5;
+  return defaultPNGName;
 }
 
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = screenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "-prepareForDefaultImageShapshotForScreen:%@", &v13, 0xCu);
   }
 
   v6 = +[UIScreen mainScreen];
 
-  if (v6 == v4)
+  if (v6 == screenCopy)
   {
-    v7 = [(PhoneApplication *)self shouldSnapshot];
+    shouldSnapshot = [(PhoneApplication *)self shouldSnapshot];
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 67109120;
-      LODWORD(v14) = v7;
+      LODWORD(v14) = shouldSnapshot;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "-prepareForDefaultImageShapshotForScreen: is considering snapshotting for main screen, shouldSnapshot=%d", &v13, 8u);
     }
 
-    if (v7)
+    if (shouldSnapshot)
     {
-      v9 = [(PhoneApplication *)self rootViewController];
-      v10 = [v9 baseViewController];
+      rootViewController = [(PhoneApplication *)self rootViewController];
+      baseViewController = [rootViewController baseViewController];
 
-      v11 = [v10 shouldSnapshot];
+      shouldSnapshot2 = [baseViewController shouldSnapshot];
       v12 = PHDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412546;
-        v14 = v10;
+        v14 = baseViewController;
         v15 = 1024;
-        v16 = v11;
+        v16 = shouldSnapshot2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "-prepareForDefaultImageShapshotForScreen: view controller %@ should snapshot=%d", &v13, 0x12u);
       }
 
-      if (v11)
+      if (shouldSnapshot2)
       {
-        [v10 prepareForSnapshot];
+        [baseViewController prepareForSnapshot];
       }
     }
   }
 }
 
-- (void)handleApplicationFinishedSnapshottingNotification:(id)a3
+- (void)handleApplicationFinishedSnapshottingNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "-handleApplicationFinishedSnapshottingNotification:%@", &v6, 0xCu);
   }
 
@@ -231,8 +231,8 @@
 - (void)warmInCallServiceIfNecessary
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:TUBundleIdentifierMobilePhoneApplication];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:TUBundleIdentifierMobilePhoneApplication];
 
   v5 = PHDefaultLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -295,27 +295,27 @@ void __48__PhoneApplication_warmInCallServiceIfNecessary__block_invoke_140(id a1
   }
 }
 
-- (BOOL)applicationSuspendWithSettings:(id)a3
+- (BOOL)applicationSuspendWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if ([UIApp usesUnifiedInterface])
   {
-    v5 = @"Default";
+    defaultPNGName = @"Default";
   }
 
   else
   {
-    v6 = [(PhoneRootViewController *)self->_rootController baseViewController];
-    v5 = [objc_opt_class() defaultPNGName];
+    baseViewController = [(PhoneRootViewController *)self->_rootController baseViewController];
+    defaultPNGName = [objc_opt_class() defaultPNGName];
 
-    if (!v5)
+    if (!defaultPNGName)
     {
-      [v4 removeObjectForKey:kUISuspendedDefaultPNGKey];
+      [settingsCopy removeObjectForKey:kUISuspendedDefaultPNGKey];
       goto LABEL_5;
     }
   }
 
-  [v4 setObject:v5 forKey:kUISuspendedDefaultPNGKey];
+  [settingsCopy setObject:defaultPNGName forKey:kUISuspendedDefaultPNGKey];
 
 LABEL_5:
   return 0;
@@ -323,8 +323,8 @@ LABEL_5:
 
 - (CGRect)phoneViewTabBarContentFrame
 {
-  v2 = [(PhoneRootViewController *)self->_rootController contentView];
-  [v2 bounds];
+  contentView = [(PhoneRootViewController *)self->_rootController contentView];
+  [contentView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -362,18 +362,18 @@ LABEL_5:
   [(PhoneApplication *)&v7 dealloc];
 }
 
-- (void)_localeChangedNotification:(id)a3
+- (void)_localeChangedNotification:(id)notification
 {
   ResetSharedNumberFormatter();
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PhoneApplicationLocaleChangedNotification" object:0];
 }
 
-- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)a3
+- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = [(PhoneApplication *)self callHistoryControllerOptions];
-  v5 = [(PhoneApplication *)self callHistoryController];
-  [v5 setOptions:v4];
+  callHistoryControllerOptions = [(PhoneApplication *)self callHistoryControllerOptions];
+  callHistoryController = [(PhoneApplication *)self callHistoryController];
+  [callHistoryController setOptions:callHistoryControllerOptions];
 
   if ((![(PhoneApplication *)self showsTelephonyCalls]|| ![(PhoneApplication *)self telephonyCallingIsAvailable]) && (![(PhoneApplication *)self showsFaceTimeAudio]|| ![(PhoneApplication *)self faceTimeAudioIsAvailable]) && (![(PhoneApplication *)self showsFaceTimeVideo]|| ![(PhoneApplication *)self faceTimeVideoIsAvailable]))
   {
@@ -401,40 +401,40 @@ LABEL_5:
   }
 }
 
-- (void)tabBarControllerViewDidAppear:(id)a3
+- (void)tabBarControllerViewDidAppear:(id)appear
 {
-  v4 = [a3 object];
-  v5 = [v4 currentTabViewType];
+  object = [appear object];
+  currentTabViewType = [object currentTabViewType];
 
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v5;
+    v7[1] = currentTabViewType;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "tabBarControllerViewDidAppear with tab: %d", v7, 8u);
   }
 
-  if (v5 == 2)
+  if (currentTabViewType == 2)
   {
     [(PhoneApplication *)self warmInCallServiceIfNecessary];
   }
 }
 
-- (void)openURL:(id)a3 withCompletionHandler:(id)a4
+- (void)openURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"non-nil";
-    if (!v7)
+    if (!handlerCopy)
     {
       v9 = @"nil";
     }
 
     *buf = 138412546;
-    v12 = v6;
+    v12 = lCopy;
     v13 = 2112;
     v14 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ %@", buf, 0x16u);
@@ -442,30 +442,30 @@ LABEL_5:
 
   v10.receiver = self;
   v10.super_class = PhoneApplication;
-  [(PhoneApplication *)&v10 openURL:v6 withCompletionHandler:v7];
+  [(PhoneApplication *)&v10 openURL:lCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)applicationOpenURL:(id)a3
+- (void)applicationOpenURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "applicationOpenURL %@", buf, 0xCu);
   }
 
-  v6 = [v4 scheme];
-  v7 = [v6 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v8 = [(PhoneApplication *)self rootViewController];
-  v9 = [v8 baseViewController];
+  rootViewController = [(PhoneApplication *)self rootViewController];
+  baseViewController = [rootViewController baseViewController];
 
-  if ([v7 isEqualToString:@"vmshow"])
+  if ([lowercaseString isEqualToString:@"vmshow"])
   {
-    v10 = [v4 voicemailMessageUUID];
-    if (![(PhoneApplication *)self hasEnhancedVoicemail]&& !v10)
+    voicemailMessageUUID = [lCopy voicemailMessageUUID];
+    if (![(PhoneApplication *)self hasEnhancedVoicemail]&& !voicemailMessageUUID)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -474,40 +474,40 @@ LABEL_5:
       block[4] = self;
       dispatch_async(&_dispatch_main_q, block);
 
-      v9 = 0;
+      baseViewController = 0;
     }
   }
 
-  if (v9)
+  if (baseViewController)
   {
-    v11 = [(PhoneApplication *)self rootViewController];
-    v12 = [v11 view];
-    [v12 setAlpha:1.0];
+    rootViewController2 = [(PhoneApplication *)self rootViewController];
+    view = [rootViewController2 view];
+    [view setAlpha:1.0];
 
     if (objc_opt_respondsToSelector())
     {
-      [v9 handleURL:v4];
+      [baseViewController handleURL:lCopy];
     }
   }
 }
 
-- (BOOL)dialVoicemailWithAccountID:(id)a3
+- (BOOL)dialVoicemailWithAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(TUCallProviderManager);
   v6 = [TUDialRequest alloc];
-  v7 = [v5 telephonyProvider];
-  v8 = [v6 initWithProvider:v7];
+  telephonyProvider = [v5 telephonyProvider];
+  v8 = [v6 initWithProvider:telephonyProvider];
 
   [v8 setDialType:2];
-  if (v4)
+  if (dCopy)
   {
-    [v8 setLocalSenderIdentityAccountUUID:v4];
+    [v8 setLocalSenderIdentityAccountUUID:dCopy];
   }
 
   [v8 setOriginatingUIType:41];
   [v8 dialType];
-  v9 = [v8 localSenderIdentityUUID];
+  localSenderIdentityUUID = [v8 localSenderIdentityUUID];
   v10 = PHShouldAttemptTelephonyCallWithDialTypeAndSenderIdentityUUID();
 
   if ((v10 & 1) == 0)
@@ -519,16 +519,16 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Aborting voicemail call, the device is in airplane mode", v18, 2u);
     }
 
-    v15 = [v8 provider];
-    v11 = +[UIAlertController networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:](UIAlertController, "networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:", v15, [v8 dialType], 0);
+    provider = [v8 provider];
+    v11 = +[UIAlertController networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:](UIAlertController, "networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:", provider, [v8 dialType], 0);
 
     if (!v11)
     {
       goto LABEL_16;
     }
 
-    v16 = [(PhoneApplication *)self rootViewController];
-    [v16 presentViewController:v11 animated:1 completion:0];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    [rootViewController presentViewController:v11 animated:1 completion:0];
     goto LABEL_15;
   }
 
@@ -546,10 +546,10 @@ LABEL_5:
   v11 = [v8 URL];
   if (!v11)
   {
-    v16 = PHDefaultLog();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    rootViewController = PHDefaultLog();
+    if (os_log_type_enabled(rootViewController, OS_LOG_TYPE_ERROR))
     {
-      [(PhoneApplication *)v8 dialVoicemailWithAccountID:v16];
+      [(PhoneApplication *)v8 dialVoicemailWithAccountID:rootViewController];
     }
 
 LABEL_15:
@@ -642,14 +642,14 @@ void __50__PhoneApplication_isLowGraphicsPerformanceDevice__block_invoke(id a1)
   isLowGraphicsPerformanceDevice_graphicsQuality = [v1 _graphicsQuality];
 }
 
-- (BOOL)showsCallsFromService:(int)a3
+- (BOOL)showsCallsFromService:(int)service
 {
-  if (a3 == 2)
+  if (service == 2)
   {
     return [UIApp showsFaceTimeAudio];
   }
 
-  if (a3 == 1)
+  if (service == 1)
   {
     return [UIApp showsTelephonyCalls];
   }
@@ -855,45 +855,45 @@ void __50__PhoneApplication_isLowGraphicsPerformanceDevice__block_invoke(id a1)
   return 0;
 }
 
-- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)a3
+- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)strategy
 {
-  v4 = [(PhoneApplication *)self callHistoryControllerOptions];
+  callHistoryControllerOptions = [(PhoneApplication *)self callHistoryControllerOptions];
 
-  return [TUCallHistoryController sharedControllerWithCoalescingStrategy:a3 options:v4];
+  return [TUCallHistoryController sharedControllerWithCoalescingStrategy:strategy options:callHistoryControllerOptions];
 }
 
 - (unint64_t)callHistoryControllerOptions
 {
-  v3 = [(PhoneApplication *)self showsFaceTimeAudioRecents];
+  showsFaceTimeAudioRecents = [(PhoneApplication *)self showsFaceTimeAudioRecents];
   if ([(PhoneApplication *)self showsFaceTimeVideoRecents])
   {
-    v3 |= 2uLL;
+    showsFaceTimeAudioRecents |= 2uLL;
   }
 
   if ([(PhoneApplication *)self showsTelephonyRecents])
   {
-    v3 |= 4uLL;
+    showsFaceTimeAudioRecents |= 4uLL;
   }
 
   if ([(PhoneApplication *)self showsThirdPartyRecents])
   {
-    return v3 | 8;
+    return showsFaceTimeAudioRecents | 8;
   }
 
   else
   {
-    return v3;
+    return showsFaceTimeAudioRecents;
   }
 }
 
-- (BOOL)application:(id)a3 willContinueUserActivityWithType:(id)a4
+- (BOOL)application:(id)application willContinueUserActivityWithType:(id)type
 {
-  v4 = a4;
+  typeCopy = type;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = typeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Activity continuity - Will continue with type = %@", &v7, 0xCu);
   }
 
@@ -907,9 +907,9 @@ void __50__PhoneApplication_isLowGraphicsPerformanceDevice__block_invoke(id a1)
   v10 = 0u;
   v11 = 0u;
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 displayedCalls];
+  displayedCalls = [v2 displayedCalls];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [displayedCalls countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -919,7 +919,7 @@ void __50__PhoneApplication_isLowGraphicsPerformanceDevice__block_invoke(id a1)
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(displayedCalls);
         }
 
         if ([UIApp showsCallsFromService:{objc_msgSend(*(*(&v8 + 1) + 8 * i), "service")}])
@@ -929,7 +929,7 @@ void __50__PhoneApplication_isLowGraphicsPerformanceDevice__block_invoke(id a1)
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [displayedCalls countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -944,11 +944,11 @@ LABEL_11:
   return v4;
 }
 
-- (id)scrollTestsWithCount:(int64_t)a3 forScrollView:(id)a4
+- (id)scrollTestsWithCount:(int64_t)count forScrollView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = objc_alloc_init(NSMutableArray);
-  if (a3 >= 2)
+  if (count >= 2)
   {
     v7 = 0;
     do
@@ -959,14 +959,14 @@ LABEL_11:
       v14[2] = __64__PhoneApplication_Testing__scrollTestsWithCount_forScrollView___block_invoke;
       v14[3] = &__block_descriptor_40_e5_v8__0l;
       v14[4] = v7;
-      v9 = [v8 initWithTestName:__CurrentTestName scrollView:v5 completionHandler:v14];
+      v9 = [v8 initWithTestName:__CurrentTestName scrollView:viewCopy completionHandler:v14];
       [v9 setShouldFlick:0];
       [v6 addObject:v9];
 
       ++v7;
     }
 
-    while (a3 - 1 != v7);
+    while (count - 1 != v7);
   }
 
   v10 = [RPTScrollViewTestParameters alloc];
@@ -974,8 +974,8 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __64__PhoneApplication_Testing__scrollTestsWithCount_forScrollView___block_invoke_96;
   v13[3] = &__block_descriptor_40_e5_v8__0l;
-  v13[4] = a3;
-  v11 = [v10 initWithTestName:__CurrentTestName scrollView:v5 completionHandler:v13];
+  v13[4] = count;
+  v11 = [v10 initWithTestName:__CurrentTestName scrollView:viewCopy completionHandler:v13];
   [v6 addObject:v11];
 
   return v6;
@@ -1007,58 +1007,58 @@ void __64__PhoneApplication_Testing__scrollTestsWithCount_forScrollView___block_
 
 - (void)_scroll
 {
-  v3 = [UIApp rootViewController];
-  v4 = [v3 baseViewController];
+  rootViewController = [UIApp rootViewController];
+  baseViewController = [rootViewController baseViewController];
 
   if ([__CurrentTestName rangeOfString:@"ScrollFavorites"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = 0;
+    favoritesViewController = 0;
   }
 
   else
   {
-    v5 = [v4 favoritesViewController];
+    favoritesViewController = [baseViewController favoritesViewController];
   }
 
   if ([__CurrentTestName rangeOfString:@"ScrollRecents"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v4 recentsTableViewController];
+    recentsTableViewController = [baseViewController recentsTableViewController];
 
-    v5 = v6;
+    favoritesViewController = recentsTableViewController;
   }
 
-  if ([__CurrentTestName rangeOfString:@"ScrollRecents"] != 0x7FFFFFFFFFFFFFFFLL && !v5)
+  if ([__CurrentTestName rangeOfString:@"ScrollRecents"] != 0x7FFFFFFFFFFFFFFFLL && !favoritesViewController)
   {
-    v5 = [v4 phoneRecentsController];
+    favoritesViewController = [baseViewController phoneRecentsController];
   }
 
   if ([__CurrentTestName rangeOfString:@"ScrollVoicemail"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 voicemailViewController];
-    v8 = [v7 viewControllers];
-    v9 = [v8 firstObject];
+    voicemailViewController = [baseViewController voicemailViewController];
+    viewControllers = [voicemailViewController viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    v5 = v9;
+    favoritesViewController = firstObject;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v5 collectionView];
+    collectionView = [favoritesViewController collectionView];
   }
 
   else
   {
-    v10 = 0;
+    collectionView = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v5 tableView];
+    tableView = [favoritesViewController tableView];
 
-    v10 = v11;
+    collectionView = tableView;
   }
 
-  if (v10 || ([v5 view], v12 = objc_claimAutoreleasedReturnValue(), -[PhoneApplication firstScrollViewInView:](self, "firstScrollViewInView:", v12), v10 = objc_claimAutoreleasedReturnValue(), v12, v10))
+  if (collectionView || ([favoritesViewController view], v12 = objc_claimAutoreleasedReturnValue(), -[PhoneApplication firstScrollViewInView:](self, "firstScrollViewInView:", v12), collectionView = objc_claimAutoreleasedReturnValue(), v12, collectionView))
   {
     [(PhoneApplication *)self startedTest:__CurrentTestName];
     v13 = [__CurrentTestOptions objectForKey:@"recapBased"];
@@ -1076,7 +1076,7 @@ void __64__PhoneApplication_Testing__scrollTestsWithCount_forScrollView___block_
         }
 
         v16 = __CurrentTestName;
-        v17 = [(PhoneApplication *)self scrollTestsWithCount:__TestIterations forScrollView:v10];
+        v17 = [(PhoneApplication *)self scrollTestsWithCount:__TestIterations forScrollView:collectionView];
         v18 = [RPTGroupScrollTestParameters newWithTestName:v16 parameters:v17 completionHandler:&__block_literal_global_1];
 
         [RPTTestRunner runTestWithParameters:v18];
@@ -1088,16 +1088,16 @@ void __64__PhoneApplication_Testing__scrollTestsWithCount_forScrollView___block_
     {
     }
 
-    [v10 _performScrollTest:__CurrentTestName iterations:__TestIterations delta:__YDelta];
+    [collectionView _performScrollTest:__CurrentTestName iterations:__TestIterations delta:__YDelta];
     goto LABEL_25;
   }
 
-  v10 = PHDefaultLog();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  collectionView = PHDefaultLog();
+  if (os_log_type_enabled(collectionView, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v5;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[WARN] Could not perform the scroll test, a scroll view does not exist for view controller (%@).", &v19, 0xCu);
+    v20 = favoritesViewController;
+    _os_log_impl(&_mh_execute_header, collectionView, OS_LOG_TYPE_DEFAULT, "[WARN] Could not perform the scroll test, a scroll view does not exist for view controller (%@).", &v19, 0xCu);
   }
 
 LABEL_25:
@@ -1123,20 +1123,20 @@ void __36__PhoneApplication_Testing___scroll__block_invoke(id a1)
 
   if ([__CurrentTestName rangeOfString:@"ScrollFavorites"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(PhoneRootViewController *)self->_rootController baseViewController];
-    [v5 switchToTab:1];
+    baseViewController = [(PhoneRootViewController *)self->_rootController baseViewController];
+    [baseViewController switchToTab:1];
   }
 
   if ([__CurrentTestName rangeOfString:@"ScrollRecents"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(PhoneRootViewController *)self->_rootController baseViewController];
-    [v6 switchToTab:2];
+    baseViewController2 = [(PhoneRootViewController *)self->_rootController baseViewController];
+    [baseViewController2 switchToTab:2];
   }
 
   if ([__CurrentTestName rangeOfString:@"ScrollVoicemail"] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(PhoneRootViewController *)self->_rootController baseViewController];
-    [v7 switchToTab:5];
+    baseViewController3 = [(PhoneRootViewController *)self->_rootController baseViewController];
+    [baseViewController3 switchToTab:5];
   }
 
   [(PhoneApplication *)self performSelector:"_scroll" withObject:0 afterDelay:0.5];
@@ -1162,22 +1162,22 @@ void __36__PhoneApplication_Testing___scroll__block_invoke(id a1)
 
 - (void)startScrollVoicemailWithInteractionTest
 {
-  v3 = [(PhoneApplication *)self rootViewController];
-  v4 = [v3 baseViewController];
+  rootViewController = [(PhoneApplication *)self rootViewController];
+  baseViewController = [rootViewController baseViewController];
 
-  v5 = [v4 voicemailViewController];
-  v6 = [v5 voicemailTabViewController];
-  v7 = [v6 viewController];
+  voicemailViewController = [baseViewController voicemailViewController];
+  voicemailTabViewController = [voicemailViewController voicemailTabViewController];
+  viewController = [voicemailTabViewController viewController];
 
-  [v4 switchToTab:5];
+  [baseViewController switchToTab:5];
   v8 = dispatch_time(0, 5000000000);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __68__PhoneApplication_Testing__startScrollVoicemailWithInteractionTest__block_invoke;
   v10[3] = &unk_1002852E0;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
+  v11 = viewController;
+  selfCopy = self;
+  v9 = viewController;
   dispatch_after(v8, &_dispatch_main_q, v10);
 }
 
@@ -1245,13 +1245,13 @@ void __68__PhoneApplication_Testing__startScrollVoicemailWithInteractionTest__bl
   dispatch_after(v8, &_dispatch_main_q, v10);
 }
 
-- (id)firstScrollViewInView:(id)a3
+- (id)firstScrollViewInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = viewCopy;
   }
 
   else
@@ -1260,8 +1260,8 @@ void __68__PhoneApplication_Testing__startScrollVoicemailWithInteractionTest__bl
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [viewCopy subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1272,7 +1272,7 @@ void __68__PhoneApplication_Testing__startScrollVoicemailWithInteractionTest__bl
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = [(PhoneApplication *)self firstScrollViewInView:*(*(&v13 + 1) + 8 * i)];
@@ -1283,7 +1283,7 @@ void __68__PhoneApplication_Testing__startScrollVoicemailWithInteractionTest__bl
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -1300,7 +1300,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)startSwitchTest:(int)a3
+- (void)startSwitchTest:(int)test
 {
   if ([__CurrentTestName rangeOfString:@"Favorites"] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1308,9 +1308,9 @@ LABEL_13:
 LABEL_13:
     v8 = 4;
 LABEL_14:
-    v5 = [(PhoneRootViewController *)self->_rootController baseViewController];
+    baseViewController = [(PhoneRootViewController *)self->_rootController baseViewController];
     [(PhoneApplication *)self startedTest:__CurrentTestName];
-    [(PhoneApplication *)self runSwitchTabTestWithTabViewController:v5 fromTab:v8 switchTo:v6 numberOfIterations:a3 testNameReference:&__CurrentTestName];
+    [(PhoneApplication *)self runSwitchTabTestWithTabViewController:baseViewController fromTab:v8 switchTo:v6 numberOfIterations:test testNameReference:&__CurrentTestName];
     goto LABEL_15;
   }
 
@@ -1346,24 +1346,24 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v5 = PHDefaultLog();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  baseViewController = PHDefaultLog();
+  if (os_log_type_enabled(baseViewController, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
     v10 = __CurrentTestName;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find a valid view type for test name %@", &v9, 0xCu);
+    _os_log_impl(&_mh_execute_header, baseViewController, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find a valid view type for test name %@", &v9, 0xCu);
   }
 
 LABEL_15:
 }
 
-- (id)_createRecentCallWithCallerId:(id)a3
+- (id)_createRecentCallWithCallerId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_alloc_init(CHRecentCall);
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
-  [v4 setUniqueId:v6];
+  uUIDString = [v5 UUIDString];
+  [v4 setUniqueId:uUIDString];
 
   v7 = +[NSDate date];
   [v4 setDate:v7];
@@ -1373,7 +1373,7 @@ LABEL_15:
   [v4 setServiceProvider:kCHServiceProviderTelephony];
   [v4 setDuration:1.0];
   [v4 setCallStatus:kCHCallStatusConnectedOutgoing];
-  [v4 setCallerId:v3];
+  [v4 setCallerId:idCopy];
 
   [v4 setRead:1];
 
@@ -1519,7 +1519,7 @@ void __51__PhoneApplication_Testing__TestAddUnknownFavorite__block_invoke_4(id a
   [v1 postNotificationName:TPFavoritesControllerFavoritesEntriesDidChangeNotification object:0];
 }
 
-- (id)_tableFromViewController:(id)a3
+- (id)_tableFromViewController:(id)controller
 {
   v10 = 0;
   v11 = &v10;
@@ -1529,10 +1529,10 @@ void __51__PhoneApplication_Testing__TestAddUnknownFavorite__block_invoke_4(id a
   block[1] = 3221225472;
   block[2] = __54__PhoneApplication_Testing___tableFromViewController___block_invoke;
   block[3] = &unk_1002853C0;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
-  v7 = a3;
-  v3 = v7;
+  controllerCopy = controller;
+  v3 = controllerCopy;
   dispatch_sync(&_dispatch_main_q, block);
   v4 = v11[3];
 
@@ -1548,65 +1548,65 @@ id __54__PhoneApplication_Testing___tableFromViewController___block_invoke(uint6
   return result;
 }
 
-- (void)startTestOnMainThread:(id)a3
+- (void)startTestOnMainThread:(id)thread
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __51__PhoneApplication_Testing__startTestOnMainThread___block_invoke;
   v4[3] = &unk_1002852E0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  threadCopy = thread;
+  v3 = threadCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)finishTestOnMainThread:(id)a3
+- (void)finishTestOnMainThread:(id)thread
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __52__PhoneApplication_Testing__finishTestOnMainThread___block_invoke;
   v4[3] = &unk_1002852E0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  threadCopy = thread;
+  v3 = threadCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)failTestOnMainThread:(id)a3 reason:(id)a4
+- (void)failTestOnMainThread:(id)thread reason:(id)reason
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __57__PhoneApplication_Testing__failTestOnMainThread_reason___block_invoke;
   block[3] = &unk_1002853E8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  threadCopy = thread;
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  v6 = threadCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&__CurrentTestName, a3);
-  objc_storeStrong(&__CurrentTestOptions, a4);
-  if ([v7 rangeOfString:@"Favorites"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v7, "rangeOfString:", @"Voicemail") != 0x7FFFFFFFFFFFFFFFLL)
+  testCopy = test;
+  optionsCopy = options;
+  objc_storeStrong(&__CurrentTestName, test);
+  objc_storeStrong(&__CurrentTestOptions, options);
+  if ([testCopy rangeOfString:@"Favorites"] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(testCopy, "rangeOfString:", @"Voicemail") != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = +[CAUILayoutManager shared];
     [v9 setLayout:0];
   }
 
-  if ([v7 rangeOfString:@"Scroll"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([testCopy rangeOfString:@"Scroll"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v7 rangeOfString:@"Switch"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([testCopy rangeOfString:@"Switch"] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (![v7 isEqualToString:@"TestAddUnknownFavorite"])
+      if (![testCopy isEqualToString:@"TestAddUnknownFavorite"])
       {
         v14.receiver = self;
         v14.super_class = PhoneApplication;
-        v12 = [(PhoneApplication *)&v14 runTest:v7 options:v8];
+        v12 = [(PhoneApplication *)&v14 runTest:testCopy options:optionsCopy];
         goto LABEL_13;
       }
 
@@ -1615,14 +1615,14 @@ id __54__PhoneApplication_Testing___tableFromViewController___block_invoke(uint6
 
     else
     {
-      v10 = [v8 objectForKey:@"iterations"];
-      v11 = [v10 intValue];
+      v10 = [optionsCopy objectForKey:@"iterations"];
+      intValue = [v10 intValue];
 
-      [(PhoneApplication *)self startSwitchTest:v11];
+      [(PhoneApplication *)self startSwitchTest:intValue];
     }
   }
 
-  else if ([v7 rangeOfString:@"Interaction"] == 0x7FFFFFFFFFFFFFFFLL)
+  else if ([testCopy rangeOfString:@"Interaction"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [(PhoneApplication *)self startScrollTest];
   }
@@ -1638,27 +1638,27 @@ LABEL_13:
   return v12;
 }
 
-- (void)setIgnoresInteractionEvents:(BOOL)a3
+- (void)setIgnoresInteractionEvents:(BOOL)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v8 = v3;
+    v8 = eventsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Called setIgnoresInteractionEvents: %d", buf, 8u);
   }
 
   v6.receiver = self;
   v6.super_class = PhoneApplication;
-  [(PhoneApplication *)&v6 setIgnoresInteractionEvents:v3];
+  [(PhoneApplication *)&v6 setIgnoresInteractionEvents:eventsCopy];
 }
 
 - (BOOL)_faceTimeInvitationExists
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 incomingVideoCall];
-  v4 = v3 != 0;
+  incomingVideoCall = [v2 incomingVideoCall];
+  v4 = incomingVideoCall != 0;
 
   return v4;
 }
@@ -1666,68 +1666,68 @@ LABEL_13:
 - (BOOL)_activeFaceTimeCallExists
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 activeVideoCall];
-  v4 = v3 != 0;
+  activeVideoCall = [v2 activeVideoCall];
+  v4 = activeVideoCall != 0;
 
   return v4;
 }
 
 - (BOOL)inFaceTime
 {
-  v2 = [UIApp showsFaceTimeVideo];
-  if (v2)
+  showsFaceTimeVideo = [UIApp showsFaceTimeVideo];
+  if (showsFaceTimeVideo)
   {
     if ([UIApp _faceTimeInvitationExists])
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(showsFaceTimeVideo) = 1;
     }
 
     else
     {
       v3 = UIApp;
 
-      LOBYTE(v2) = [v3 _activeFaceTimeCallExists];
+      LOBYTE(showsFaceTimeVideo) = [v3 _activeFaceTimeCallExists];
     }
   }
 
-  return v2;
+  return showsFaceTimeVideo;
 }
 
 - (BOOL)faceTimeInvitationExists
 {
-  v2 = [UIApp showsFaceTimeVideo];
-  if (v2)
+  showsFaceTimeVideo = [UIApp showsFaceTimeVideo];
+  if (showsFaceTimeVideo)
   {
     v3 = UIApp;
 
-    LOBYTE(v2) = [v3 _faceTimeInvitationExists];
+    LOBYTE(showsFaceTimeVideo) = [v3 _faceTimeInvitationExists];
   }
 
-  return v2;
+  return showsFaceTimeVideo;
 }
 
 - (BOOL)activeFaceTimeCallExists
 {
-  v2 = [UIApp showsFaceTimeVideo];
-  if (v2)
+  showsFaceTimeVideo = [UIApp showsFaceTimeVideo];
+  if (showsFaceTimeVideo)
   {
     v3 = UIApp;
 
-    LOBYTE(v2) = [v3 _activeFaceTimeCallExists];
+    LOBYTE(showsFaceTimeVideo) = [v3 _activeFaceTimeCallExists];
   }
 
-  return v2;
+  return showsFaceTimeVideo;
 }
 
-- (void)switchToTabWaitingForViewDidLoad:(PhoneTabBarController *)a3 to:(int)a4 completionHandler:(id)a5
+- (void)switchToTabWaitingForViewDidLoad:(PhoneTabBarController *)load to:(int)to completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = load;
+  *(v13 + 24) = to;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = type metadata accessor for TaskPriority();
@@ -1742,12 +1742,12 @@ LABEL_13:
   v16[3] = 0;
   v16[4] = &_sIeghH_IeAgH_TRTATu;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  loadCopy = load;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v11, &_sIeAgH_ytIeAgHr_TRTATu, v16);
 }
 
-- (void)runSwitchTabTestWithTabViewController:(id)a3 fromTab:(int)a4 switchTo:(int)a5 numberOfIterations:(int64_t)a6 testNameReference:(const void *)a7
+- (void)runSwitchTabTestWithTabViewController:(id)controller fromTab:(int)tab switchTo:(int)to numberOfIterations:(int64_t)iterations testNameReference:(const void *)reference
 {
   v13 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v13 - 8);
@@ -1755,74 +1755,74 @@ LABEL_13:
   v16 = type metadata accessor for TaskPriority();
   (*(*(v16 - 8) + 56))(v15, 1, 1, v16);
   type metadata accessor for MainActor();
-  v17 = a3;
-  v18 = self;
-  v19 = v17;
-  v20 = v18;
+  controllerCopy = controller;
+  selfCopy = self;
+  v19 = controllerCopy;
+  v20 = selfCopy;
   v21 = static MainActor.shared.getter();
   v22 = swift_allocObject();
   *(v22 + 16) = v21;
   *(v22 + 24) = &protocol witness table for MainActor;
-  *(v22 + 32) = a6;
+  *(v22 + 32) = iterations;
   *(v22 + 40) = v19;
   *(v22 + 48) = v20;
-  *(v22 + 56) = a4;
+  *(v22 + 56) = tab;
   *(v22 + 64) = 0x6154686374697753;
   *(v22 + 72) = 0xE900000000000062;
-  *(v22 + 80) = a7;
-  *(v22 + 88) = a5;
+  *(v22 + 80) = reference;
+  *(v22 + 88) = to;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v15, &closure #1 in PhoneApplication.runSwitchTabTest(_:initial:to:numberOfIterations:testNameRef:)partial apply, v22);
 }
 
 - (TUCallCenter)callCenter
 {
-  v2 = [objc_opt_self() sharedInstance];
+  sharedInstance = [objc_opt_self() sharedInstance];
 
-  return v2;
+  return sharedInstance;
 }
 
-- (void)removeUnnecessaryTopLevelMenus:(id)a3
+- (void)removeUnnecessaryTopLevelMenus:(id)menus
 {
   swift_unknownObjectRetain();
-  [a3 removeMenuForIdentifier:UIMenuFile];
-  [a3 removeMenuForIdentifier:UIMenuView];
-  [a3 removeMenuForIdentifier:UIMenuFormat];
+  [menus removeMenuForIdentifier:UIMenuFile];
+  [menus removeMenuForIdentifier:UIMenuView];
+  [menus removeMenuForIdentifier:UIMenuFormat];
 
   swift_unknownObjectRelease();
 }
 
-- (void)removeUnnecessarySubMenusEdit:(id)a3
+- (void)removeUnnecessarySubMenusEdit:(id)edit
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  [a3 removeMenuForIdentifier:UIMenuSpelling];
-  [a3 removeMenuForIdentifier:UIMenuSpellingPanel];
-  [a3 removeMenuForIdentifier:UIMenuSubstitutions];
-  [a3 removeMenuForIdentifier:UIMenuTransformations];
-  [a3 removeMenuForIdentifier:UIMenuSpeech];
+  selfCopy = self;
+  [edit removeMenuForIdentifier:UIMenuSpelling];
+  [edit removeMenuForIdentifier:UIMenuSpellingPanel];
+  [edit removeMenuForIdentifier:UIMenuSubstitutions];
+  [edit removeMenuForIdentifier:UIMenuTransformations];
+  [edit removeMenuForIdentifier:UIMenuSpeech];
   swift_unknownObjectRelease();
 }
 
-- (void)modifyTopLevelMenuEdit:(id)a3
+- (void)modifyTopLevelMenuEdit:(id)edit
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  specialized PhoneApplication.modifyTopLevelMenuEdit(_:)(a3);
+  selfCopy = self;
+  specialized PhoneApplication.modifyTopLevelMenuEdit(_:)(edit);
   swift_unknownObjectRelease();
 }
 
-- (void)modifyTopLevelMenuWindow:(id)a3 :(id)a4
+- (void)modifyTopLevelMenuWindow:(id)window :(id)a4
 {
   swift_unknownObjectRetain();
   v7 = a4;
-  v8 = self;
-  specialized PhoneApplication.modifyTopLevelMenuWindow(_:_:)(a3, a4);
+  selfCopy = self;
+  specialized PhoneApplication.modifyTopLevelMenuWindow(_:_:)(window, a4);
   swift_unknownObjectRelease();
 }
 
 - (UIMenu)menuItemRemoveAllRecents
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.super.isa = PhoneApplication.menuItemRemoveAllRecents.getter().super.super.isa;
 
   return v3.super.super.isa;
@@ -1830,7 +1830,7 @@ LABEL_13:
 
 - (UIMenu)menuAudioOutput
 {
-  v2 = self;
+  selfCopy = self;
   v3.super.super.isa = PhoneApplication.menuAudioOutput.getter().super.super.isa;
 
   return v3.super.super.isa;
@@ -1838,7 +1838,7 @@ LABEL_13:
 
 - (id)makeAudioOutputItems
 {
-  v2 = self;
+  selfCopy = self;
   PhoneApplication.makeAudioOutputItems()();
 
   type metadata accessor for NSMutableArray(0, &lazy cache variable for type metadata for UIMenuElement);
@@ -1847,19 +1847,19 @@ LABEL_13:
   return v3.super.isa;
 }
 
-- (id)makeAudioOutputItemWithRoute:(id)a3
+- (id)makeAudioOutputItemWithRoute:(id)route
 {
-  v4 = a3;
-  v5 = self;
-  v6 = PhoneApplication.makeAudioOutputItem(route:)(v4);
+  routeCopy = route;
+  selfCopy = self;
+  v6 = PhoneApplication.makeAudioOutputItem(route:)(routeCopy);
 
   return v6;
 }
 
-- (void)removeAllRecents:(id)a3
+- (void)removeAllRecents:(id)recents
 {
-  v4 = a3;
-  v5 = self;
+  recentsCopy = recents;
+  selfCopy = self;
   specialized PhoneApplication.removeAllRecents(_:)();
 }
 

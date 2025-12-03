@@ -1,20 +1,20 @@
 @interface OverlayManager
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (void)addOverlay:(id)a3 level:(int64_t)a4 fromProvider:(id)a5;
-- (void)addOverlayProvider:(id)a3;
-- (void)removeOverlay:(id)a3 fromProvider:(id)a4;
-- (void)removeOverlayProvider:(id)a3;
-- (void)setMapView:(id)a3;
-- (void)setSelectedLabelMarker:(id)a3;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (void)addOverlay:(id)overlay level:(int64_t)level fromProvider:(id)provider;
+- (void)addOverlayProvider:(id)provider;
+- (void)removeOverlay:(id)overlay fromProvider:(id)provider;
+- (void)removeOverlayProvider:(id)provider;
+- (void)setMapView:(id)view;
+- (void)setSelectedLabelMarker:(id)marker;
 @end
 
 @implementation OverlayManager
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_selectedItemUncertaintyRadiusOverlay == v7)
+  viewCopy = view;
+  overlayCopy = overlay;
+  if (self->_selectedItemUncertaintyRadiusOverlay == overlayCopy)
   {
     v9 = [[MKCircleRenderer alloc] initWithCircle:self->_selectedItemUncertaintyRadiusOverlay];
     [v9 setFillColor:self->_selectedItemUncertaintyRadiusColor];
@@ -22,19 +22,19 @@
 
   else
   {
-    v8 = [(NSMapTable *)self->_providerOverlays objectForKey:v7];
-    v9 = [v8 mapView:v6 rendererForOverlay:v7];
+    v8 = [(NSMapTable *)self->_providerOverlays objectForKey:overlayCopy];
+    v9 = [v8 mapView:viewCopy rendererForOverlay:overlayCopy];
   }
 
   return v9;
 }
 
-- (void)setSelectedLabelMarker:(id)a3
+- (void)setSelectedLabelMarker:(id)marker
 {
-  v5 = a3;
-  if (self->_selectedLabelMarker != v5)
+  markerCopy = marker;
+  if (self->_selectedLabelMarker != markerCopy)
   {
-    v40 = v5;
+    v40 = markerCopy;
     if (self->_selectedItemUncertaintyRadiusOverlay)
     {
       [(MKMapView *)self->_mapView removeOverlay:?];
@@ -45,17 +45,17 @@
       self->_selectedItemUncertaintyRadiusColor = 0;
     }
 
-    objc_storeStrong(&self->_selectedLabelMarker, a3);
-    v8 = [(VKLabelMarker *)self->_selectedLabelMarker featureAnnotation];
-    v9 = v8;
-    if (v8 && [v8 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+    objc_storeStrong(&self->_selectedLabelMarker, marker);
+    featureAnnotation = [(VKLabelMarker *)self->_selectedLabelMarker featureAnnotation];
+    v9 = featureAnnotation;
+    if (featureAnnotation && [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
     {
       v10 = v9;
-      v11 = [v10 parkedCar];
-      v12 = v11;
-      if (v11)
+      parkedCar = [v10 parkedCar];
+      v12 = parkedCar;
+      if (parkedCar)
       {
-        [v11 horizontalAccuracy];
+        [parkedCar horizontalAccuracy];
         if (v13 > 0.0)
         {
           [v12 coordinate];
@@ -66,21 +66,21 @@
           v20 = self->_selectedItemUncertaintyRadiusOverlay;
           self->_selectedItemUncertaintyRadiusOverlay = v19;
 
-          v21 = [v10 styleAttributes];
-          v22 = [v21 styleAttributes];
+          styleAttributes = [v10 styleAttributes];
+          v21StyleAttributes = [styleAttributes styleAttributes];
 
-          v23 = [GEOFeatureStyleAttributes styleAttributesForCalloutWithAttributes:v22];
+          v23 = [GEOFeatureStyleAttributes styleAttributesForCalloutWithAttributes:v21StyleAttributes];
 
-          v24 = [(OverlayManager *)self mapView];
-          v25 = [v24 window];
-          v26 = [v25 screen];
-          if (v26)
+          mapView = [(OverlayManager *)self mapView];
+          window = [mapView window];
+          screen = [window screen];
+          if (screen)
           {
-            v27 = [(OverlayManager *)self mapView];
-            [v27 window];
+            mapView2 = [(OverlayManager *)self mapView];
+            [mapView2 window];
             v28 = v39 = v23;
-            v29 = [v28 screen];
-            [v29 scale];
+            screen2 = [v28 screen];
+            [screen2 scale];
             v31 = v30;
 
             v23 = v39;
@@ -88,14 +88,14 @@
 
           else
           {
-            v27 = +[UIScreen mainScreen];
-            [v27 scale];
+            mapView2 = +[UIScreen mainScreen];
+            [mapView2 scale];
             v31 = v32;
           }
 
-          v33 = [(OverlayManager *)self mapView];
-          v34 = [v33 _mapLayer];
-          v35 = [v34 iconForStyleAttributes:v23 contentScale:8 size:1 transparent:v31];
+          mapView3 = [(OverlayManager *)self mapView];
+          _mapLayer = [mapView3 _mapLayer];
+          v35 = [_mapLayer iconForStyleAttributes:v23 contentScale:8 size:1 transparent:v31];
 
           if (v35)
           {
@@ -110,23 +110,23 @@
       }
     }
 
-    v5 = v40;
+    markerCopy = v40;
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   mapView = self->_mapView;
-  v8 = v5;
-  if (mapView != v5)
+  v8 = viewCopy;
+  if (mapView != viewCopy)
   {
     if (self->_selectedItemUncertaintyRadiusOverlay)
     {
       [(MKMapView *)mapView removeOverlay:?];
     }
 
-    objc_storeStrong(&self->_mapView, a3);
+    objc_storeStrong(&self->_mapView, view);
     selectedItemUncertaintyRadiusOverlay = self->_selectedItemUncertaintyRadiusOverlay;
     if (selectedItemUncertaintyRadiusOverlay)
     {
@@ -135,18 +135,18 @@
   }
 }
 
-- (void)removeOverlay:(id)a3 fromProvider:(id)a4
+- (void)removeOverlay:(id)overlay fromProvider:(id)provider
 {
   mapView = self->_mapView;
-  v6 = a3;
-  [(MKMapView *)mapView removeOverlay:v6];
-  [(NSMapTable *)self->_providerOverlays removeObjectForKey:v6];
+  overlayCopy = overlay;
+  [(MKMapView *)mapView removeOverlay:overlayCopy];
+  [(NSMapTable *)self->_providerOverlays removeObjectForKey:overlayCopy];
 }
 
-- (void)addOverlay:(id)a3 level:(int64_t)a4 fromProvider:(id)a5
+- (void)addOverlay:(id)overlay level:(int64_t)level fromProvider:(id)provider
 {
-  v12 = a3;
-  v8 = a5;
+  overlayCopy = overlay;
+  providerCopy = provider;
   providerOverlays = self->_providerOverlays;
   if (!providerOverlays)
   {
@@ -157,14 +157,14 @@
     providerOverlays = self->_providerOverlays;
   }
 
-  [(NSMapTable *)providerOverlays setObject:v8 forKey:v12];
-  [(MKMapView *)self->_mapView addOverlay:v12 level:a4];
+  [(NSMapTable *)providerOverlays setObject:providerCopy forKey:overlayCopy];
+  [(MKMapView *)self->_mapView addOverlay:overlayCopy level:level];
 }
 
-- (void)removeOverlayProvider:(id)a3
+- (void)removeOverlayProvider:(id)provider
 {
-  v4 = a3;
-  [(NSHashTable *)self->_providers removeObject:v4];
+  providerCopy = provider;
+  [(NSHashTable *)self->_providers removeObject:providerCopy];
   v5 = +[NSMutableArray array];
   v22 = 0u;
   v23 = 0u;
@@ -187,7 +187,7 @@
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = [(NSMapTable *)self->_providerOverlays objectForKey:v11];
-        if (v12 == v4)
+        if (v12 == providerCopy)
         {
           [v5 addObject:v11];
         }
@@ -229,22 +229,22 @@
   }
 }
 
-- (void)addOverlayProvider:(id)a3
+- (void)addOverlayProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   providers = self->_providers;
-  v8 = v4;
+  v8 = providerCopy;
   if (!providers)
   {
     v6 = [[NSHashTable alloc] initWithOptions:517 capacity:1];
     v7 = self->_providers;
     self->_providers = v6;
 
-    v4 = v8;
+    providerCopy = v8;
     providers = self->_providers;
   }
 
-  [(NSHashTable *)providers addObject:v4];
+  [(NSHashTable *)providers addObject:providerCopy];
 }
 
 @end

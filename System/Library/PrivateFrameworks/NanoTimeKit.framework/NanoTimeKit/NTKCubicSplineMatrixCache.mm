@@ -1,8 +1,8 @@
 @interface NTKCubicSplineMatrixCache
 + (id)sharedInstance;
-- ($6F5639B62F6C861EB4A71773F5DCFA27)closedSplineMatrixWithDimension:(int)a3;
-- ($6F5639B62F6C861EB4A71773F5DCFA27)openSplineMatrixWithDimension:(int)a3;
-- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)a3 cache:(id)a4 matrixGenerator:(id)a5;
+- ($6F5639B62F6C861EB4A71773F5DCFA27)closedSplineMatrixWithDimension:(int)dimension;
+- ($6F5639B62F6C861EB4A71773F5DCFA27)openSplineMatrixWithDimension:(int)dimension;
+- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)dimension cache:(id)cache matrixGenerator:(id)generator;
 - (NTKCubicSplineMatrixCache)init;
 @end
 
@@ -50,10 +50,10 @@ void __43__NTKCubicSplineMatrixCache_sharedInstance__block_invoke()
   sharedInstance___sharedInstance = v0;
 }
 
-- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)a3 cache:(id)a4 matrixGenerator:(id)a5
+- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)dimension cache:(id)cache matrixGenerator:(id)generator
 {
-  v8 = a4;
-  v9 = a5;
+  cacheCopy = cache;
+  generatorCopy = generator;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -63,12 +63,12 @@ void __43__NTKCubicSplineMatrixCache_sharedInstance__block_invoke()
   v15[1] = 3221225472;
   v15[2] = __77__NTKCubicSplineMatrixCache_splineMatrixWithDimension_cache_matrixGenerator___block_invoke;
   v15[3] = &unk_27877F170;
-  v19 = a3;
-  v17 = v9;
+  dimensionCopy = dimension;
+  v17 = generatorCopy;
   v18 = &v20;
-  v16 = v8;
-  v11 = v9;
-  v12 = v8;
+  v16 = cacheCopy;
+  v11 = generatorCopy;
+  v12 = cacheCopy;
   dispatch_sync(internalQueue, v15);
   v13 = v21[3];
 
@@ -102,26 +102,26 @@ void __77__NTKCubicSplineMatrixCache_splineMatrixWithDimension_cache_matrixGener
   }
 }
 
-- ($6F5639B62F6C861EB4A71773F5DCFA27)openSplineMatrixWithDimension:(int)a3
+- ($6F5639B62F6C861EB4A71773F5DCFA27)openSplineMatrixWithDimension:(int)dimension
 {
   openMatrixCache = self->_openMatrixCache;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __59__NTKCubicSplineMatrixCache_openSplineMatrixWithDimension___block_invoke;
   v5[3] = &__block_descriptor_36_e14______d_fi_8__0l;
-  v6 = a3;
-  return [(NTKCubicSplineMatrixCache *)self splineMatrixWithDimension:*&a3 cache:openMatrixCache matrixGenerator:v5];
+  dimensionCopy = dimension;
+  return [(NTKCubicSplineMatrixCache *)self splineMatrixWithDimension:*&dimension cache:openMatrixCache matrixGenerator:v5];
 }
 
-- ($6F5639B62F6C861EB4A71773F5DCFA27)closedSplineMatrixWithDimension:(int)a3
+- ($6F5639B62F6C861EB4A71773F5DCFA27)closedSplineMatrixWithDimension:(int)dimension
 {
   closedMatrixCache = self->_closedMatrixCache;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__NTKCubicSplineMatrixCache_closedSplineMatrixWithDimension___block_invoke;
   v5[3] = &__block_descriptor_36_e14______d_fi_8__0l;
-  v6 = a3;
-  return [(NTKCubicSplineMatrixCache *)self splineMatrixWithDimension:*&a3 cache:closedMatrixCache matrixGenerator:v5];
+  dimensionCopy = dimension;
+  return [(NTKCubicSplineMatrixCache *)self splineMatrixWithDimension:*&dimension cache:closedMatrixCache matrixGenerator:v5];
 }
 
 @end

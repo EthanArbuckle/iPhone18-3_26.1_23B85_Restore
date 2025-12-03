@@ -1,24 +1,24 @@
 @interface HPSProductUtils
-+ (BOOL)isAirPods:(id)a3;
-+ (BOOL)isAppleHeadphone:(id)a3;
-+ (BOOL)isBeatsNonWx:(id)a3;
-+ (BOOL)isFeatureSupported:(int)a3 byProductId:(unsigned int)a4;
++ (BOOL)isAirPods:(id)pods;
++ (BOOL)isAppleHeadphone:(id)headphone;
++ (BOOL)isBeatsNonWx:(id)wx;
++ (BOOL)isFeatureSupported:(int)supported byProductId:(unsigned int)id;
 + (BOOL)isRealityDevice;
-+ (id)getProductIDString:(unsigned int)a3;
-+ (id)getProductSpecificString:(unsigned int)a3 descriptionKey:(id)a4;
++ (id)getProductIDString:(unsigned int)string;
++ (id)getProductSpecificString:(unsigned int)string descriptionKey:(id)key;
 @end
 
 @implementation HPSProductUtils
 
-+ (id)getProductSpecificString:(unsigned int)a3 descriptionKey:(id)a4
++ (id)getProductSpecificString:(unsigned int)string descriptionKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (a3 <= 8214)
+  keyCopy = key;
+  if (string <= 8214)
   {
-    if (a3 > 8210)
+    if (string > 8210)
     {
-      if (a3 == 8211)
+      if (string == 8211)
       {
         v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v7 = v6;
@@ -26,12 +26,12 @@
         goto LABEL_30;
       }
 
-      if (a3 == 8212)
+      if (string == 8212)
       {
         goto LABEL_24;
       }
 
-      if (a3 != 8214)
+      if (string != 8214)
       {
         goto LABEL_36;
       }
@@ -43,7 +43,7 @@
 
     else
     {
-      if (a3 == 8202)
+      if (string == 8202)
       {
 LABEL_23:
         v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -52,7 +52,7 @@ LABEL_23:
         goto LABEL_30;
       }
 
-      if (a3 == 8209)
+      if (string == 8209)
       {
         v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v7 = v6;
@@ -60,7 +60,7 @@ LABEL_23:
         goto LABEL_30;
       }
 
-      if (a3 != 8210)
+      if (string != 8210)
       {
         goto LABEL_36;
       }
@@ -71,14 +71,14 @@ LABEL_23:
     }
 
 LABEL_30:
-    v9 = [v6 localizedStringForKey:v5 value:&stru_28634F910 table:v8];
+    v9 = [v6 localizedStringForKey:keyCopy value:&stru_28634F910 table:v8];
 
     goto LABEL_31;
   }
 
-  if (a3 <= 8222)
+  if (string <= 8222)
   {
-    if (a3 == 8215)
+    if (string == 8215)
     {
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = v6;
@@ -86,7 +86,7 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    if (a3 == 8218)
+    if (string == 8218)
     {
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = v6;
@@ -94,7 +94,7 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    if (a3 != 8221)
+    if (string != 8221)
     {
       goto LABEL_36;
     }
@@ -105,11 +105,11 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (a3 <= 8229)
+  if (string <= 8229)
   {
-    if (a3 != 8223)
+    if (string != 8223)
     {
-      if (a3 != 8228)
+      if (string != 8228)
       {
         goto LABEL_36;
       }
@@ -124,7 +124,7 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  if (a3 == 8230)
+  if (string == 8230)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = v6;
@@ -132,7 +132,7 @@ LABEL_24:
     goto LABEL_30;
   }
 
-  if (a3 == 8239)
+  if (string == 8239)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = v6;
@@ -144,7 +144,7 @@ LABEL_36:
   v13 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    [(HPSProductUtils *)v5 getProductSpecificString:a3 descriptionKey:v13];
+    [(HPSProductUtils *)keyCopy getProductSpecificString:string descriptionKey:v13];
   }
 
   v9 = &stru_28634F910;
@@ -153,9 +153,9 @@ LABEL_31:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109634;
-    v14[1] = a3;
+    v14[1] = string;
     v15 = 2112;
-    v16 = v5;
+    v16 = keyCopy;
     v17 = 2112;
     v18 = v9;
     _os_log_impl(&dword_25126C000, v10, OS_LOG_TYPE_DEFAULT, "HPSProductUtils: getProductSpecificString called with pid %d and descKey %@ value %@", v14, 0x1Cu);
@@ -166,13 +166,13 @@ LABEL_31:
   return v9;
 }
 
-+ (BOOL)isAppleHeadphone:(id)a3
++ (BOOL)isAppleHeadphone:(id)headphone
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  headphoneCopy = headphone;
+  v4 = headphoneCopy;
+  if (headphoneCopy)
   {
-    v5 = ([v3 isAppleAudioDevice] & 1) != 0 || objc_msgSend(v4, "productId") == 8209;
+    v5 = ([headphoneCopy isAppleAudioDevice] & 1) != 0 || objc_msgSend(v4, "productId") == 8209;
     if ([v4 productId] == 8214)
     {
       v5 = 1;
@@ -193,22 +193,22 @@ LABEL_31:
   return v5;
 }
 
-+ (BOOL)isAirPods:(id)a3
++ (BOOL)isAirPods:(id)pods
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  podsCopy = pods;
+  v4 = podsCopy;
+  if (podsCopy)
   {
-    v5 = [v3 productId];
-    v6 = ((v5 - 8194) < 0x23) & (0x420063101uLL >> (v5 - 2));
+    productId = [podsCopy productId];
+    v6 = ((productId - 8194) < 0x23) & (0x420063101uLL >> (productId - 2));
     v7 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v17[0] = 67109376;
       v17[1] = v6;
       v18 = 1024;
-      v19 = [v4 productId];
+      productId2 = [v4 productId];
       _os_log_impl(&dword_25126C000, v7, OS_LOG_TYPE_DEFAULT, "HPSProductUtils: isAirPods:%i productID:%i", v17, 0xEu);
     }
   }
@@ -228,16 +228,16 @@ LABEL_31:
   return v6;
 }
 
-+ (BOOL)isBeatsNonWx:(id)a3
++ (BOOL)isBeatsNonWx:(id)wx
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  wxCopy = wx;
+  v4 = wxCopy;
+  if (wxCopy)
   {
-    v5 = [v3 productId];
-    v6 = [v4 productId];
-    v7 = [v4 productId];
-    v10 = v5 == 8209 || v6 == 8214 || v7 == 8230;
+    productId = [wxCopy productId];
+    productId2 = [v4 productId];
+    productId3 = [v4 productId];
+    v10 = productId == 8209 || productId2 == 8214 || productId3 == 8230;
   }
 
   else
@@ -254,26 +254,26 @@ LABEL_31:
   return v10;
 }
 
-+ (BOOL)isFeatureSupported:(int)a3 byProductId:(unsigned int)a4
++ (BOOL)isFeatureSupported:(int)supported byProductId:(unsigned int)id
 {
-  v4 = 0x201C6B37FF01uLL >> (a4 - 2);
-  if (a4 - 8194 >= 0x2E)
+  v4 = 0x201C6B37FF01uLL >> (id - 2);
+  if (id - 8194 >= 0x2E)
   {
     LOBYTE(v4) = 0;
   }
 
-  v5 = 0x14630611u >> (a4 - 10);
-  if (a4 - 8202 >= 0x1D)
+  v5 = 0x14630611u >> (id - 10);
+  if (id - 8202 >= 0x1D)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a3)
+  if (supported)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a3 != 1)
+  if (supported != 1)
   {
     LOBYTE(v4) = v5;
   }
@@ -289,16 +289,16 @@ LABEL_31:
   return v3;
 }
 
-+ (id)getProductIDString:(unsigned int)a3
++ (id)getProductIDString:(unsigned int)string
 {
-  if (a3 - 8194 > 0x2D)
+  if (string - 8194 > 0x2D)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_2796B2AC8[a3 - 8194];
+    return off_2796B2AC8[string - 8194];
   }
 }
 

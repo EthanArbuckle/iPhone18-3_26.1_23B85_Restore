@@ -1,10 +1,10 @@
 @interface MapsDistanceUnitUpdater
 - (MapsDistanceUnitUpdater)init;
-- (MapsDistanceUnitUpdater)initWithKeyBagNotification:(id)a3;
-- (void)_localeDidChange:(id)a3;
+- (MapsDistanceUnitUpdater)initWithKeyBagNotification:(id)notification;
+- (void)_localeDidChange:(id)change;
 - (void)_updateDistanceUnit;
 - (void)dealloc;
-- (void)protectedDataDidBecomeAvailable:(id)a3;
+- (void)protectedDataDidBecomeAvailable:(id)available;
 - (void)start;
 - (void)stop;
 @end
@@ -19,16 +19,16 @@
   return v4;
 }
 
-- (MapsDistanceUnitUpdater)initWithKeyBagNotification:(id)a3
+- (MapsDistanceUnitUpdater)initWithKeyBagNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v9.receiver = self;
   v9.super_class = MapsDistanceUnitUpdater;
   v6 = [(MapsDistanceUnitUpdater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keybagNotification, a3);
+    objc_storeStrong(&v6->_keybagNotification, notification);
   }
 
   return v7;
@@ -97,14 +97,14 @@
   }
 }
 
-- (void)_localeDidChange:(id)a3
+- (void)_localeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "locale did change - %@", buf, 0xCu);
   }
 
@@ -116,7 +116,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)protectedDataDidBecomeAvailable:(id)a3
+- (void)protectedDataDidBecomeAvailable:(id)available
 {
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -135,8 +135,8 @@
 
 - (void)_updateDistanceUnit
 {
-  v3 = [(MapsDistanceUnitUpdater *)self keybagNotification];
-  v4 = [v3 canAccessFilesWithProtection:3];
+  keybagNotification = [(MapsDistanceUnitUpdater *)self keybagNotification];
+  v4 = [keybagNotification canAccessFilesWithProtection:3];
 
   if (v4)
   {
@@ -144,7 +144,7 @@
     v6 = [v5 stringForKey:@"DistanceUnits"];
 
     v7 = +[MSPMapsPaths mapsApplicationContainerPaths];
-    v8 = [v7 homeDirectory];
+    homeDirectory = [v7 homeDirectory];
     v9 = _CFPreferencesCopyAppValueWithContainer();
 
     if (v6)
@@ -216,8 +216,8 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  v12 = [(MapsDistanceUnitUpdater *)self keybagNotification];
-  v13 = [v12 addDataDidBecomeAvailableAfterFirstUnlockObserver:self];
+  keybagNotification2 = [(MapsDistanceUnitUpdater *)self keybagNotification];
+  v13 = [keybagNotification2 addDataDidBecomeAvailableAfterFirstUnlockObserver:self];
 
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))

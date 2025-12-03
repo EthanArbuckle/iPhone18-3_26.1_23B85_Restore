@@ -1,6 +1,6 @@
 @interface MSEntitlementChecker
-- (BOOL)hasEntitlement:(id)a3;
-- (MSEntitlementChecker)initWithDataSource:(id)a3 requestIdentifierProvider:(id)a4;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (MSEntitlementChecker)initWithDataSource:(id)source requestIdentifierProvider:(id)provider;
 - (MSRequestIdentifierProviding)requestIdentifierProvider;
 - (id)balloonPlugin;
 - (id)pluginBundleID;
@@ -8,18 +8,18 @@
 
 @implementation MSEntitlementChecker
 
-- (MSEntitlementChecker)initWithDataSource:(id)a3 requestIdentifierProvider:(id)a4
+- (MSEntitlementChecker)initWithDataSource:(id)source requestIdentifierProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = MSEntitlementChecker;
   v9 = [(MSEntitlementChecker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeWeak(&v10->_requestIdentifierProvider, v8);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeWeak(&v10->_requestIdentifierProvider, providerCopy);
   }
 
   return v10;
@@ -27,25 +27,25 @@
 
 - (id)pluginBundleID
 {
-  v2 = [(MSEntitlementChecker *)self dataSource];
-  v3 = [v2 pluginPayload];
-  v4 = [v3 pluginBundleID];
+  dataSource = [(MSEntitlementChecker *)self dataSource];
+  pluginPayload = [dataSource pluginPayload];
+  pluginBundleID = [pluginPayload pluginBundleID];
 
-  return v4;
+  return pluginBundleID;
 }
 
 - (id)balloonPlugin
 {
-  v2 = [(MSEntitlementChecker *)self pluginBundleID];
+  pluginBundleID = [(MSEntitlementChecker *)self pluginBundleID];
   v3 = +[IMBalloonPluginManager sharedInstance];
-  v4 = [v3 balloonPluginForBundleID:v2];
+  v4 = [v3 balloonPluginForBundleID:pluginBundleID];
 
   return v4;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   if (CKIsRunningInFullCKClient())
   {
     isKindOfClass = 1;
@@ -53,17 +53,17 @@
 
   else
   {
-    v6 = [(MSEntitlementChecker *)self balloonPlugin];
+    balloonPlugin = [(MSEntitlementChecker *)self balloonPlugin];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 extension], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([balloonPlugin extension], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v7;
-      v9 = [(MSEntitlementChecker *)self requestIdentifierProvider];
-      v10 = [v9 requestUUID];
+      requestIdentifierProvider = [(MSEntitlementChecker *)self requestIdentifierProvider];
+      requestUUID = [requestIdentifierProvider requestUUID];
 
-      v11 = [v8 _extensionContextForUUID:v10];
-      v12 = [v11 _auxiliaryConnection];
-      v13 = [v12 valueForEntitlement:v4];
+      v11 = [v8 _extensionContextForUUID:requestUUID];
+      _auxiliaryConnection = [v11 _auxiliaryConnection];
+      v13 = [_auxiliaryConnection valueForEntitlement:entitlementCopy];
 
       if (v13)
       {

@@ -17,8 +17,8 @@
 
 - (id)specifiers
 {
-  v3 = [(CSLAppClipsNotificationsController *)self specifier];
-  v4 = [v3 propertyForKey:@"AppClipSpecifiers"];
+  specifier = [(CSLAppClipsNotificationsController *)self specifier];
+  v4 = [specifier propertyForKey:@"AppClipSpecifiers"];
 
   if (v4)
   {

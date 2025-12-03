@@ -1,20 +1,20 @@
 @interface EDSearchableIndexDiagnosticsSnapshot
-- (EDSearchableIndexDiagnosticsSnapshot)initWithDate:(id)a3 indexableMessages:(id)a4 messagesIndexed:(id)a5 messagesToRedonate:(id)a6 turboMode:(BOOL)a7;
-- (EDSearchableIndexDiagnosticsSnapshot)initWithDictionary:(id)a3;
+- (EDSearchableIndexDiagnosticsSnapshot)initWithDate:(id)date indexableMessages:(id)messages messagesIndexed:(id)indexed messagesToRedonate:(id)redonate turboMode:(BOOL)mode;
+- (EDSearchableIndexDiagnosticsSnapshot)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
 @implementation EDSearchableIndexDiagnosticsSnapshot
 
-- (EDSearchableIndexDiagnosticsSnapshot)initWithDate:(id)a3 indexableMessages:(id)a4 messagesIndexed:(id)a5 messagesToRedonate:(id)a6 turboMode:(BOOL)a7
+- (EDSearchableIndexDiagnosticsSnapshot)initWithDate:(id)date indexableMessages:(id)messages messagesIndexed:(id)indexed messagesToRedonate:(id)redonate turboMode:(BOOL)mode
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  v17 = 0;
-  if (v12 && v13 && v14 && v15)
+  dateCopy = date;
+  messagesCopy = messages;
+  indexedCopy = indexed;
+  redonateCopy = redonate;
+  v16 = redonateCopy;
+  selfCopy = 0;
+  if (dateCopy && messagesCopy && indexedCopy && redonateCopy)
   {
     v22.receiver = self;
     v22.super_class = EDSearchableIndexDiagnosticsSnapshot;
@@ -22,33 +22,33 @@
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong(&v18->_date, a3);
-      objc_storeStrong(&v19->_indexableMessages, a4);
-      objc_storeStrong(&v19->_messagesIndexed, a5);
-      objc_storeStrong(&v19->_messagesToRedonate, a6);
-      v19->_turboMode = a7;
+      objc_storeStrong(&v18->_date, date);
+      objc_storeStrong(&v19->_indexableMessages, messages);
+      objc_storeStrong(&v19->_messagesIndexed, indexed);
+      objc_storeStrong(&v19->_messagesToRedonate, redonate);
+      v19->_turboMode = mode;
     }
 
     self = v19;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (EDSearchableIndexDiagnosticsSnapshot)initWithDictionary:(id)a3
+- (EDSearchableIndexDiagnosticsSnapshot)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Date"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Date"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 objectForKeyedSubscript:@"IndexableMessages"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"IndexableMessages"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v4 objectForKeyedSubscript:@"MessagesIndexed"];
+      v7 = [dictionaryCopy objectForKeyedSubscript:@"MessagesIndexed"];
       if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v8 = [v4 objectForKeyedSubscript:@"MessagesToRedonate"];
+        v8 = [dictionaryCopy objectForKeyedSubscript:@"MessagesToRedonate"];
         v9 = v8;
         v10 = &unk_1F45E6988;
         if (v8)
@@ -61,7 +61,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v4 objectForKeyedSubscript:@"Turbo"];
+          v12 = [dictionaryCopy objectForKeyedSubscript:@"Turbo"];
           v13 = v12;
           v14 = MEMORY[0x1E695E110];
           if (v12)
@@ -75,55 +75,55 @@
           if (objc_opt_isKindOfClass())
           {
             self = -[EDSearchableIndexDiagnosticsSnapshot initWithDate:indexableMessages:messagesIndexed:messagesToRedonate:turboMode:](self, "initWithDate:indexableMessages:messagesIndexed:messagesToRedonate:turboMode:", v5, v6, v7, v11, [v15 BOOLValue]);
-            v16 = self;
+            selfCopy = self;
           }
 
           else
           {
-            v16 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v16 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v16 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(EDSearchableIndexDiagnosticsSnapshot *)self date];
-  [v3 setObject:v4 forKeyedSubscript:@"Date"];
+  date = [(EDSearchableIndexDiagnosticsSnapshot *)self date];
+  [v3 setObject:date forKeyedSubscript:@"Date"];
 
-  v5 = [(EDSearchableIndexDiagnosticsSnapshot *)self indexableMessages];
-  [v3 setObject:v5 forKeyedSubscript:@"IndexableMessages"];
+  indexableMessages = [(EDSearchableIndexDiagnosticsSnapshot *)self indexableMessages];
+  [v3 setObject:indexableMessages forKeyedSubscript:@"IndexableMessages"];
 
-  v6 = [(EDSearchableIndexDiagnosticsSnapshot *)self messagesIndexed];
-  [v3 setObject:v6 forKeyedSubscript:@"MessagesIndexed"];
+  messagesIndexed = [(EDSearchableIndexDiagnosticsSnapshot *)self messagesIndexed];
+  [v3 setObject:messagesIndexed forKeyedSubscript:@"MessagesIndexed"];
 
-  v7 = [(EDSearchableIndexDiagnosticsSnapshot *)self messagesToRedonate];
-  [v3 setObject:v7 forKeyedSubscript:@"MessagesToRedonate"];
+  messagesToRedonate = [(EDSearchableIndexDiagnosticsSnapshot *)self messagesToRedonate];
+  [v3 setObject:messagesToRedonate forKeyedSubscript:@"MessagesToRedonate"];
 
   if ([(EDSearchableIndexDiagnosticsSnapshot *)self turboMode])
   {

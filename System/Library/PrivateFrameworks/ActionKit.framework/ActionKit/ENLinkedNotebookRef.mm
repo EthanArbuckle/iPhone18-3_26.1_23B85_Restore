@@ -1,74 +1,74 @@
 @interface ENLinkedNotebookRef
-+ (id)linkedNotebookRefFromLinkedNotebook:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ENLinkedNotebookRef)initWithCoder:(id)a3;
++ (id)linkedNotebookRefFromLinkedNotebook:(id)notebook;
+- (BOOL)isEqual:(id)equal;
+- (ENLinkedNotebookRef)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENLinkedNotebookRef
 
 - (unint64_t)hash
 {
-  v3 = [(ENLinkedNotebookRef *)self guid];
-  v4 = [v3 hash];
+  guid = [(ENLinkedNotebookRef *)self guid];
+  v4 = [guid hash];
 
-  v5 = [(ENLinkedNotebookRef *)self noteStoreUrl];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  noteStoreUrl = [(ENLinkedNotebookRef *)self noteStoreUrl];
+  v6 = [noteStoreUrl hash] - v4 + 32 * v4;
 
-  v7 = [(ENLinkedNotebookRef *)self shardId];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  shardId = [(ENLinkedNotebookRef *)self shardId];
+  v8 = [shardId hash] - v6 + 32 * v6;
 
-  v9 = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  sharedNotebookGlobalId = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
+  v10 = [sharedNotebookGlobalId hash] - v8 + 32 * v8;
 
   return v10 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(ENLinkedNotebookRef *)v7 guid];
-        v9 = [(ENLinkedNotebookRef *)self guid];
-        if (v8 != v9)
+        guid = [(ENLinkedNotebookRef *)v7 guid];
+        guid2 = [(ENLinkedNotebookRef *)self guid];
+        if (guid != guid2)
         {
-          v10 = [(ENLinkedNotebookRef *)v7 guid];
+          guid3 = [(ENLinkedNotebookRef *)v7 guid];
           [(ENLinkedNotebookRef *)self guid];
-          v34 = v33 = v10;
-          if (![v10 isEqualToString:?])
+          v34 = v33 = guid3;
+          if (![guid3 isEqualToString:?])
           {
             v11 = 0;
             goto LABEL_25;
           }
         }
 
-        v12 = [(ENLinkedNotebookRef *)v7 noteStoreUrl];
-        v13 = [(ENLinkedNotebookRef *)self noteStoreUrl];
-        if (v12 != v13)
+        noteStoreUrl = [(ENLinkedNotebookRef *)v7 noteStoreUrl];
+        noteStoreUrl2 = [(ENLinkedNotebookRef *)self noteStoreUrl];
+        if (noteStoreUrl != noteStoreUrl2)
         {
-          v3 = [(ENLinkedNotebookRef *)v7 noteStoreUrl];
-          v31 = [(ENLinkedNotebookRef *)self noteStoreUrl];
-          if (![v3 isEqualToString:?])
+          noteStoreUrl3 = [(ENLinkedNotebookRef *)v7 noteStoreUrl];
+          noteStoreUrl4 = [(ENLinkedNotebookRef *)self noteStoreUrl];
+          if (![noteStoreUrl3 isEqualToString:?])
           {
             v11 = 0;
 LABEL_23:
 
 LABEL_24:
-            if (v8 == v9)
+            if (guid == guid2)
             {
 LABEL_26:
 
@@ -81,38 +81,38 @@ LABEL_25:
           }
         }
 
-        v14 = [(ENLinkedNotebookRef *)v7 shardId];
-        v15 = [(ENLinkedNotebookRef *)self shardId];
-        v32 = v14;
-        v16 = v14 == v15;
-        v17 = v15;
+        shardId = [(ENLinkedNotebookRef *)v7 shardId];
+        shardId2 = [(ENLinkedNotebookRef *)self shardId];
+        v32 = shardId;
+        v16 = shardId == shardId2;
+        v17 = shardId2;
         if (v16)
         {
-          v29 = v3;
-          v30 = v13;
+          v29 = noteStoreUrl3;
+          v30 = noteStoreUrl2;
         }
 
         else
         {
-          v18 = [(ENLinkedNotebookRef *)v7 shardId];
-          v26 = [(ENLinkedNotebookRef *)self shardId];
-          v27 = v18;
-          if (![v18 isEqualToString:?])
+          shardId3 = [(ENLinkedNotebookRef *)v7 shardId];
+          shardId4 = [(ENLinkedNotebookRef *)self shardId];
+          v27 = shardId3;
+          if (![shardId3 isEqualToString:?])
           {
             v11 = 0;
             v24 = v32;
             goto LABEL_21;
           }
 
-          v29 = v3;
-          v30 = v13;
+          v29 = noteStoreUrl3;
+          v30 = noteStoreUrl2;
         }
 
         v28 = v17;
-        v19 = [(ENLinkedNotebookRef *)v7 sharedNotebookGlobalId];
-        v20 = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
-        v21 = v20;
-        if (v19 == v20)
+        sharedNotebookGlobalId = [(ENLinkedNotebookRef *)v7 sharedNotebookGlobalId];
+        sharedNotebookGlobalId2 = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
+        v21 = sharedNotebookGlobalId2;
+        if (sharedNotebookGlobalId == sharedNotebookGlobalId2)
         {
 
           v11 = 1;
@@ -120,20 +120,20 @@ LABEL_25:
 
         else
         {
-          v22 = [(ENLinkedNotebookRef *)v7 sharedNotebookGlobalId];
-          v23 = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
-          v11 = [v22 isEqualToString:v23];
+          sharedNotebookGlobalId3 = [(ENLinkedNotebookRef *)v7 sharedNotebookGlobalId];
+          sharedNotebookGlobalId4 = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
+          v11 = [sharedNotebookGlobalId3 isEqualToString:sharedNotebookGlobalId4];
         }
 
         v24 = v32;
         v17 = v28;
-        v3 = v29;
-        v13 = v30;
+        noteStoreUrl3 = v29;
+        noteStoreUrl2 = v30;
         if (v32 == v28)
         {
 LABEL_22:
 
-          if (v12 == v13)
+          if (noteStoreUrl == noteStoreUrl2)
           {
             goto LABEL_24;
           }
@@ -155,62 +155,62 @@ LABEL_27:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ENLinkedNotebookRef *)self guid];
-  [v4 encodeObject:v5 forKey:@"guid"];
+  coderCopy = coder;
+  guid = [(ENLinkedNotebookRef *)self guid];
+  [coderCopy encodeObject:guid forKey:@"guid"];
 
-  v6 = [(ENLinkedNotebookRef *)self noteStoreUrl];
-  [v4 encodeObject:v6 forKey:@"noteStoreUrl"];
+  noteStoreUrl = [(ENLinkedNotebookRef *)self noteStoreUrl];
+  [coderCopy encodeObject:noteStoreUrl forKey:@"noteStoreUrl"];
 
-  v7 = [(ENLinkedNotebookRef *)self shardId];
-  [v4 encodeObject:v7 forKey:@"shardId"];
+  shardId = [(ENLinkedNotebookRef *)self shardId];
+  [coderCopy encodeObject:shardId forKey:@"shardId"];
 
-  v8 = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
-  [v4 encodeObject:v8 forKey:@"sharedNotebookGlobalId"];
+  sharedNotebookGlobalId = [(ENLinkedNotebookRef *)self sharedNotebookGlobalId];
+  [coderCopy encodeObject:sharedNotebookGlobalId forKey:@"sharedNotebookGlobalId"];
 }
 
-- (ENLinkedNotebookRef)initWithCoder:(id)a3
+- (ENLinkedNotebookRef)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ENLinkedNotebookRef;
   v5 = [(ENLinkedNotebookRef *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"guid"];
+    v6 = [coderCopy decodeObjectForKey:@"guid"];
     [(ENLinkedNotebookRef *)v5 setGuid:v6];
 
-    v7 = [v4 decodeObjectForKey:@"noteStoreUrl"];
+    v7 = [coderCopy decodeObjectForKey:@"noteStoreUrl"];
     [(ENLinkedNotebookRef *)v5 setNoteStoreUrl:v7];
 
-    v8 = [v4 decodeObjectForKey:@"shardId"];
+    v8 = [coderCopy decodeObjectForKey:@"shardId"];
     [(ENLinkedNotebookRef *)v5 setShardId:v8];
 
-    v9 = [v4 decodeObjectForKey:@"sharedNotebookGlobalId"];
+    v9 = [coderCopy decodeObjectForKey:@"sharedNotebookGlobalId"];
     [(ENLinkedNotebookRef *)v5 setSharedNotebookGlobalId:v9];
   }
 
   return v5;
 }
 
-+ (id)linkedNotebookRefFromLinkedNotebook:(id)a3
++ (id)linkedNotebookRefFromLinkedNotebook:(id)notebook
 {
-  v3 = a3;
+  notebookCopy = notebook;
   v4 = objc_alloc_init(ENLinkedNotebookRef);
-  v5 = [v3 guid];
-  [(ENLinkedNotebookRef *)v4 setGuid:v5];
+  guid = [notebookCopy guid];
+  [(ENLinkedNotebookRef *)v4 setGuid:guid];
 
-  v6 = [v3 noteStoreUrl];
-  [(ENLinkedNotebookRef *)v4 setNoteStoreUrl:v6];
+  noteStoreUrl = [notebookCopy noteStoreUrl];
+  [(ENLinkedNotebookRef *)v4 setNoteStoreUrl:noteStoreUrl];
 
-  v7 = [v3 shardId];
-  [(ENLinkedNotebookRef *)v4 setShardId:v7];
+  shardId = [notebookCopy shardId];
+  [(ENLinkedNotebookRef *)v4 setShardId:shardId];
 
-  v8 = [v3 sharedNotebookGlobalId];
+  sharedNotebookGlobalId = [notebookCopy sharedNotebookGlobalId];
 
-  [(ENLinkedNotebookRef *)v4 setSharedNotebookGlobalId:v8];
+  [(ENLinkedNotebookRef *)v4 setSharedNotebookGlobalId:sharedNotebookGlobalId];
 
   return v4;
 }

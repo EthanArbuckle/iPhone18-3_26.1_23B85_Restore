@@ -1,9 +1,9 @@
 @interface TSDIOKServiceMatcher
-- (BOOL)startNotificationsWithMatchingDictionary:(id)a3;
+- (BOOL)startNotificationsWithMatchingDictionary:(id)dictionary;
 - (TSDIOKServiceMatcher)init;
 - (void)dealloc;
-- (void)handleServiceMatched:(id)a3;
-- (void)handleServiceTerminated:(id)a3;
+- (void)handleServiceMatched:(id)matched;
+- (void)handleServiceTerminated:(id)terminated;
 @end
 
 @implementation TSDIOKServiceMatcher
@@ -53,16 +53,16 @@
   return v2;
 }
 
-- (BOOL)startNotificationsWithMatchingDictionary:(id)a3
+- (BOOL)startNotificationsWithMatchingDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"IOProviderClass"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"IOProviderClass"];
   identifier = self->_identifier;
   self->_identifier = v6;
 
@@ -118,7 +118,7 @@ LABEL_7:
 LABEL_8:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(NSString *)self->_identifier UTF8String];
+    uTF8String = [(NSString *)self->_identifier UTF8String];
     v17 = "failed";
     if (v15)
     {
@@ -126,7 +126,7 @@ LABEL_8:
     }
 
     *buf = 136315394;
-    v26 = v16;
+    v26 = uTF8String;
     v27 = 2080;
     v28 = v17;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "TSDIOKServiceMatcher startNotificationsWithMatchingDictionary %s %s", buf, 0x16u);
@@ -151,25 +151,25 @@ LABEL_8:
   [(TSDIOKServiceMatcher *)&v6 dealloc];
 }
 
-- (void)handleServiceMatched:(id)a3
+- (void)handleServiceMatched:(id)matched
 {
-  v5 = a3;
-  v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 entryID]);
+  matchedCopy = matched;
+  v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [matchedCopy entryID]);
   if (([(NSMutableSet *)self->_matchedEntryIDs containsObject:v4]& 1) == 0)
   {
     [(NSMutableSet *)self->_matchedEntryIDs addObject:v4];
-    [(TSDIOKServiceMatcher *)self serviceMatched:v5];
+    [(TSDIOKServiceMatcher *)self serviceMatched:matchedCopy];
   }
 }
 
-- (void)handleServiceTerminated:(id)a3
+- (void)handleServiceTerminated:(id)terminated
 {
-  v5 = a3;
-  v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 entryID]);
+  terminatedCopy = terminated;
+  v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [terminatedCopy entryID]);
   if ([(NSMutableSet *)self->_matchedEntryIDs containsObject:v4])
   {
     [(NSMutableSet *)self->_matchedEntryIDs removeObject:v4];
-    [(TSDIOKServiceMatcher *)self serviceTerminated:v5];
+    [(TSDIOKServiceMatcher *)self serviceTerminated:terminatedCopy];
   }
 }
 

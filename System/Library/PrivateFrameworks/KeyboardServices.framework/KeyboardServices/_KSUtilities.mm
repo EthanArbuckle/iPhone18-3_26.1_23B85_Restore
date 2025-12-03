@@ -1,9 +1,9 @@
 @interface _KSUtilities
-+ (id)findAllDbsInDirectory:(id)a3;
++ (id)findAllDbsInDirectory:(id)directory;
 + (id)keyboardDirectory;
 + (id)keyboardServicesDirectory;
 + (id)userDictionaryWordKeyPairsFilePathLegacy;
-+ (void)createFileIfDoesNotExist:(id)a3;
++ (void)createFileIfDoesNotExist:(id)exist;
 @end
 
 @implementation _KSUtilities
@@ -22,8 +22,8 @@
 
 + (id)userDictionaryWordKeyPairsFilePathLegacy
 {
-  v2 = [a1 keyboardDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"UserDictionaryWordKeyPairs.plist"];
+  keyboardDirectory = [self keyboardDirectory];
+  v3 = [keyboardDirectory stringByAppendingPathComponent:@"UserDictionaryWordKeyPairs.plist"];
 
   return v3;
 }
@@ -40,51 +40,51 @@
   return v3;
 }
 
-+ (void)createFileIfDoesNotExist:(id)a3
++ (void)createFileIfDoesNotExist:(id)exist
 {
-  v3 = a3;
+  existCopy = exist;
   v7 = 0;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:existCopy isDirectory:&v7];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    [v6 createFileAtPath:v3 contents:0 attributes:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager2 createFileAtPath:existCopy contents:0 attributes:0];
   }
 }
 
-+ (id)findAllDbsInDirectory:(id)a3
++ (id)findAllDbsInDirectory:(id)directory
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  directoryCopy = directory;
+  array = [MEMORY[0x277CBEB18] array];
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 enumeratorAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager enumeratorAtPath:directoryCopy];
 
-  v8 = [v7 nextObject];
-  if (v8)
+  nextObject = [v7 nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    v9 = nextObject;
     do
     {
       if (([v9 hasSuffix:@"UserDictionary.db"] & 1) != 0 || objc_msgSend(v9, "hasSuffix:", @"CloudUserDictionary.sqlite"))
       {
-        v10 = [v3 stringByAppendingPathComponent:v9];
-        [v4 addObject:v10];
+        v10 = [directoryCopy stringByAppendingPathComponent:v9];
+        [array addObject:v10];
       }
 
-      v11 = [v7 nextObject];
+      nextObject2 = [v7 nextObject];
 
-      v9 = v11;
+      v9 = nextObject2;
     }
 
-    while (v11);
+    while (nextObject2);
   }
 
   objc_autoreleasePoolPop(v5);
 
-  return v4;
+  return array;
 }
 
 @end

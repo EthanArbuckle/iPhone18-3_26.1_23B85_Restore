@@ -1,47 +1,47 @@
 @interface HPSSpatialProfileSingleStepBottomContainer
-- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)a3;
-- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithCoder:(id)a3;
-- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithFrame:(CGRect)a3;
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4 animateInAlongSide:(id *)a5 animateOutAlongSide:(id *)a6 animatedCompletion:(id)a7;
-- (void)showContinueButton:(BOOL)a3;
-- (void)updateContinueButtonActionWithTarget:(id)a3 selector:(SEL)a4;
-- (void)updateContinueButtonTitleWithTitle:(id)a3;
+- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)string;
+- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithCoder:(id)coder;
+- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithFrame:(CGRect)frame;
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep animateInAlongSide:(id *)side animateOutAlongSide:(id *)alongSide animatedCompletion:(id)completion;
+- (void)showContinueButton:(BOOL)button;
+- (void)updateContinueButtonActionWithTarget:(id)target selector:(SEL)selector;
+- (void)updateContinueButtonTitleWithTitle:(id)title;
 @end
 
 @implementation HPSSpatialProfileSingleStepBottomContainer
 
-- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)a3
+- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithBudsInEarString:(id)string
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(string);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   return sub_2511F4BE0(sub_2511F9CD0, v4);
 }
 
-- (void)showContinueButton:(BOOL)a3
+- (void)showContinueButton:(BOOL)button
 {
-  v4 = self;
-  sub_2511F4E70(a3);
+  selfCopy = self;
+  sub_2511F4E70(button);
 }
 
-- (void)updateContinueButtonActionWithTarget:(id)a3 selector:(SEL)a4
+- (void)updateContinueButtonActionWithTarget:(id)target selector:(SEL)selector
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_2511F4F58(a3, a4);
+  selfCopy = self;
+  sub_2511F4F58(target, selector);
   swift_unknownObjectRelease();
 }
 
-- (void)updateContinueButtonTitleWithTitle:(id)a3
+- (void)updateContinueButtonTitleWithTitle:(id)title
 {
   sub_25121179C();
-  v4 = self;
+  selfCopy = self;
   sub_2511F50B4();
 }
 
-- (void)moveToEnrollmentFromStep:(int)a3 toStep:(int)a4 animateInAlongSide:(id *)a5 animateOutAlongSide:(id *)a6 animatedCompletion:(id)a7
+- (void)moveToEnrollmentFromStep:(int)step toStep:(int)toStep animateInAlongSide:(id *)side animateOutAlongSide:(id *)alongSide animatedCompletion:(id)completion
 {
-  v12 = _Block_copy(a7);
+  v12 = _Block_copy(completion);
   if (v12)
   {
     v13 = swift_allocObject();
@@ -54,12 +54,12 @@
     v13 = 0;
   }
 
-  v14 = self;
-  sub_2511F5440(a3, a4, a5, a6, v12, v13);
+  selfCopy = self;
+  sub_2511F5440(step, toStep, side, alongSide, v12, v13);
   sub_251146DF4(v12);
 }
 
-- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithCoder:(id)a3
+- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer_offscreenBottomContainerImpl;
   v5 = type metadata accessor for HPSSpatialProfileSingleStepBottomContainer.HPSSpatialProfileSingleStepBottomContainerImpl();
@@ -74,7 +74,7 @@
   return result;
 }
 
-- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithFrame:(CGRect)a3
+- (_TtC16HeadphoneConfigs42HPSSpatialProfileSingleStepBottomContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

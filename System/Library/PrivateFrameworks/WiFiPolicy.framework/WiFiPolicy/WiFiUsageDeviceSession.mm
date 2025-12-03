@@ -1,27 +1,27 @@
 @interface WiFiUsageDeviceSession
-- (WiFiUsageDeviceSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4;
-- (void)displayStateDidChange:(BOOL)a3;
-- (void)linkQualityDidChange:(id)a3;
+- (WiFiUsageDeviceSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities;
+- (void)displayStateDidChange:(BOOL)change;
+- (void)linkQualityDidChange:(id)change;
 @end
 
 @implementation WiFiUsageDeviceSession
 
-- (WiFiUsageDeviceSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4
+- (WiFiUsageDeviceSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities
 {
   v5.receiver = self;
   v5.super_class = WiFiUsageDeviceSession;
-  result = [(WiFiUsageSession *)&v5 initWithSessionType:1 andInterfaceName:a3 andCapabilities:a4];
+  result = [(WiFiUsageSession *)&v5 initWithSessionType:1 andInterfaceName:name andCapabilities:capabilities];
   result->_firstDisplayOn = 1;
   return result;
 }
 
-- (void)displayStateDidChange:(BOOL)a3
+- (void)displayStateDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = WiFiUsageDeviceSession;
   [(WiFiUsageSession *)&v9 displayStateDidChange:?];
-  if (v3)
+  if (changeCopy)
   {
     if (self->_firstDisplayOn)
     {
@@ -37,9 +37,9 @@
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(WiFiUsageSession *)self sessionStartTime];
-    [v5 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    sessionStartTime = [(WiFiUsageSession *)self sessionStartTime];
+    [date timeIntervalSinceDate:sessionStartTime];
     v8 = v7;
 
     if (v8 > 86400.0)
@@ -49,20 +49,20 @@
   }
 }
 
-- (void)linkQualityDidChange:(id)a3
+- (void)linkQualityDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = WiFiUsageDeviceSession;
-  [(WiFiUsageSession *)&v9 linkQualityDidChange:a3];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(WiFiUsageSession *)self sessionStartTime];
-  [v4 timeIntervalSinceDate:v5];
+  [(WiFiUsageSession *)&v9 linkQualityDidChange:change];
+  date = [MEMORY[0x277CBEAA8] date];
+  sessionStartTime = [(WiFiUsageSession *)self sessionStartTime];
+  [date timeIntervalSinceDate:sessionStartTime];
   v7 = v6;
 
   if (v7 > 86400.0)
   {
-    v8 = [(WiFiUsageSession *)self sessionStartTime];
-    NSLog(&cfstr_SSessionStarte.isa, "[WiFiUsageDeviceSession linkQualityDidChange:]", v8, *&v7);
+    sessionStartTime2 = [(WiFiUsageSession *)self sessionStartTime];
+    NSLog(&cfstr_SSessionStarte.isa, "[WiFiUsageDeviceSession linkQualityDidChange:]", sessionStartTime2, *&v7);
 
     [(WiFiUsageSession *)self sessionDidEnd];
     [(WiFiUsageSession *)self sessionDidStart];

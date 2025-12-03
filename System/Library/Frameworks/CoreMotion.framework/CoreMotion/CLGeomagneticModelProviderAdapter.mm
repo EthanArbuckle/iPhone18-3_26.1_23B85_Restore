@@ -1,15 +1,15 @@
 @interface CLGeomagneticModelProviderAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetDoSync:(id)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetDoSync:(id)sync;
 - (CLGeomagneticModelProviderAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)fetchGeomagneticModelData:(id)a3;
+- (void)fetchGeomagneticModelData:(id)data;
 @end
 
 @implementation CLGeomagneticModelProviderAdapter
@@ -110,13 +110,13 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < objc_msgSend_count(a3, a2, a3))
+  v5 = index + 1;
+  if (index + 1 < objc_msgSend_count(blocked, a2, blocked))
   {
-    v7 = objc_msgSend_objectAtIndexedSubscript_(a3, v6, v5);
-    objc_msgSend_becameFatallyBlocked_index_(v7, v8, a3, v5);
+    v7 = objc_msgSend_objectAtIndexedSubscript_(blocked, v6, v5);
+    objc_msgSend_becameFatallyBlocked_index_(v7, v8, blocked, v5);
   }
 }
 
@@ -140,35 +140,35 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = objc_msgSend_adaptee(self, a2, a3);
-  v5 = *(a3 + 2);
+  v4 = objc_msgSend_adaptee(self, a2, async);
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, v4);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  v6 = objc_msgSend_adaptee(self, a2, a3);
-  (*(a3 + 2))(a3, v6);
-  v7 = *(a4 + 2);
+  v6 = objc_msgSend_adaptee(self, a2, async);
+  (*(async + 2))(async, v6);
+  v7 = *(reply + 2);
 
-  v7(a4);
+  v7(reply);
 }
 
-- (BOOL)syncgetDoSync:(id)a3
+- (BOOL)syncgetDoSync:(id)sync
 {
-  v4 = objc_msgSend_adaptee(self, a2, a3);
-  (*(a3 + 2))(a3, v4);
+  v4 = objc_msgSend_adaptee(self, a2, sync);
+  (*(sync + 2))(sync, v4);
   return 0;
 }
 
-- (void)fetchGeomagneticModelData:(id)a3
+- (void)fetchGeomagneticModelData:(id)data
 {
-  v4 = objc_msgSend_adaptee(self, a2, a3);
+  v4 = objc_msgSend_adaptee(self, a2, data);
   (*(*v4 + 208))(v5);
-  (*(a3 + 2))(a3, v5);
+  (*(data + 2))(data, v5);
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface HDSeriesQuantityEventObserver
-- (HDSeriesQuantityEventObserver)initWithProfile:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (HDSeriesQuantityEventObserver)initWithProfile:(id)profile;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HDSeriesQuantityEventObserver
 
-- (HDSeriesQuantityEventObserver)initWithProfile:(id)a3
+- (HDSeriesQuantityEventObserver)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v14.receiver = self;
   v14.super_class = HDSeriesQuantityEventObserver;
   v5 = [(HDSeriesQuantityEventObserver *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_profile, v4);
-    v8 = [v4 dataManager];
+    v7 = objc_storeWeak(&v5->_profile, profileCopy);
+    dataManager = [profileCopy dataManager];
     v9 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB960]];
-    [v8 addObserver:v6 forDataType:v9];
+    [dataManager addObserver:v6 forDataType:v9];
 
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v11 = [WeakRetained dataManager];
+    dataManager2 = [WeakRetained dataManager];
     v12 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB9A0]];
-    [v11 addObserver:v6 forDataType:v12];
+    [dataManager2 addObserver:v6 forDataType:v12];
   }
 
   return v6;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   v35 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB960]];
   v34 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB9A0]];
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -39,7 +39,7 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v5;
+  obj = addedCopy;
   v7 = [obj countByEnumeratingWithState:&v42 objects:v49 count:16];
   if (v7)
   {
@@ -57,26 +57,26 @@
         }
 
         v13 = *(*(&v42 + 1) + 8 * i);
-        v14 = [v13 _source];
-        if (![v14 _isLocalDevice])
+        _source = [v13 _source];
+        if (![_source _isLocalDevice])
         {
           goto LABEL_11;
         }
 
-        v15 = [v13 endDate];
-        [v15 timeIntervalSinceNow];
+        endDate = [v13 endDate];
+        [endDate timeIntervalSinceNow];
         v17 = v16;
 
         if (v17 >= -600.0)
         {
-          v18 = [v13 sampleType];
-          v19 = [v18 isEqual:v35];
+          sampleType = [v13 sampleType];
+          v19 = [sampleType isEqual:v35];
 
           v20 = v11;
           if ((v19 & 1) != 0 || ([v13 sampleType], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqual:", v34), v21, v20 = v10, v22))
           {
-            v14 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v20];
-            [v6 addObject:v14];
+            _source = [MEMORY[0x277CCD830] quantityTypeForIdentifier:v20];
+            [v6 addObject:_source];
 LABEL_11:
 
             continue;
@@ -117,15 +117,15 @@ LABEL_11:
           if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v51 = self;
+            selfCopy = self;
             v52 = 2114;
             v53 = v27;
             _os_log_impl(&dword_228986000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: Observed addition of notification event. Requesting series data of type %{public}@ to get frozen.", buf, 0x16u);
           }
 
           WeakRetained = objc_loadWeakRetained(&self->_profile);
-          v30 = [WeakRetained dataCollectionManager];
-          v31 = [MEMORY[0x277CBEAA8] date];
+          dataCollectionManager = [WeakRetained dataCollectionManager];
+          date = [MEMORY[0x277CBEAA8] date];
           v32 = [MEMORY[0x277CBEB98] setWithObject:v27];
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
@@ -133,7 +133,7 @@ LABEL_11:
           v46[3] = &unk_278616020;
           v46[4] = self;
           v47 = v27;
-          [v30 requestAggregationThroughDate:v31 types:v32 mode:0 options:3 completion:v46];
+          [dataCollectionManager requestAggregationThroughDate:date types:v32 mode:0 options:3 completion:v46];
         }
       }
 

@@ -1,16 +1,16 @@
 @interface _NUIOSurfaceAsset
-- (_NUIOSurfaceAsset)initWithCIImage:(id)a3 type:(int64_t)a4 identifier:(id)a5;
-- (_NUIOSurfaceAsset)initWithIOSurface:(id)a3 type:(int64_t)a4 identifier:(id)a5;
+- (_NUIOSurfaceAsset)initWithCIImage:(id)image type:(int64_t)type identifier:(id)identifier;
+- (_NUIOSurfaceAsset)initWithIOSurface:(id)surface type:(int64_t)type identifier:(id)identifier;
 @end
 
 @implementation _NUIOSurfaceAsset
 
-- (_NUIOSurfaceAsset)initWithIOSurface:(id)a3 type:(int64_t)a4 identifier:(id)a5
+- (_NUIOSurfaceAsset)initWithIOSurface:(id)surface type:(int64_t)type identifier:(id)identifier
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  surfaceCopy = surface;
+  identifierCopy = identifier;
+  if (!surfaceCopy)
   {
     v15 = NUAssertLogger_10839();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v33 = v22;
         v34 = 2114;
@@ -43,8 +43,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,22 +53,22 @@
     _NUAssertFailHandler("[_NUIOSurfaceAsset initWithIOSurface:type:identifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUAsset.m", 732, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "surface != NULL");
   }
 
-  v10 = v9;
-  v11 = [MEMORY[0x1E695F658] imageWithIOSurface:v8];
+  v10 = identifierCopy;
+  v11 = [MEMORY[0x1E695F658] imageWithIOSurface:surfaceCopy];
   v31.receiver = self;
   v31.super_class = _NUIOSurfaceAsset;
-  v12 = [(_NUCIImageAsset *)&v31 initWithCIImage:v11 type:a4 identifier:v10];
+  v12 = [(_NUCIImageAsset *)&v31 initWithCIImage:v11 type:type identifier:v10];
   surface = v12->_surface;
-  v12->_surface = v8;
+  v12->_surface = surfaceCopy;
 
   return v12;
 }
 
-- (_NUIOSurfaceAsset)initWithCIImage:(id)a3 type:(int64_t)a4 identifier:(id)a5
+- (_NUIOSurfaceAsset)initWithCIImage:(id)image type:(int64_t)type identifier:(id)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  imageCopy = image;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_10855);
@@ -112,8 +112,8 @@ LABEL_8:
     {
       v18 = MEMORY[0x1E696AF00];
       v19 = v17;
-      v20 = [v18 callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v18 callStackSymbols];
+      v21 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v21;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -129,8 +129,8 @@ LABEL_8:
     v24 = MEMORY[0x1E696AF00];
     v25 = specific;
     v26 = v22;
-    v27 = [v24 callStackSymbols];
-    v28 = [v27 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v24 callStackSymbols];
+    v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v36 = specific;
     v37 = 2114;

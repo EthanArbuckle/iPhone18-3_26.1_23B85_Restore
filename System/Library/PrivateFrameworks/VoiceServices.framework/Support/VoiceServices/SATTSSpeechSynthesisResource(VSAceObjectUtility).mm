@@ -7,10 +7,10 @@
 - (id)vsDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 languageCode];
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
-  v5 = [a1 resourceVersion];
-  v6 = [v2 stringWithFormat:@"%@:%@", v4, v5];
+  languageCode = [self languageCode];
+  v4 = [languageCode stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  resourceVersion = [self resourceVersion];
+  v6 = [v2 stringWithFormat:@"%@:%@", v4, resourceVersion];
 
   return v6;
 }

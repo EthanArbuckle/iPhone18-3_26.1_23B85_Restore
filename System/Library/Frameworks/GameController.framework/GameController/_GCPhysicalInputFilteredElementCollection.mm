@@ -1,9 +1,9 @@
 @interface _GCPhysicalInputFilteredElementCollection
 - (id)_filteredElements;
-- (id)elementAtIndex:(unint64_t)a3;
+- (id)elementAtIndex:(unint64_t)index;
 - (id)elementEnumerator;
-- (id)elementForAlias:(id)a3;
-- (id)initWithCollection:(void *)a3 filter:;
+- (id)elementForAlias:(id)alias;
+- (id)initWithCollection:(void *)collection filter:;
 - (unint64_t)count;
 @end
 
@@ -11,31 +11,31 @@
 
 - (id)_filteredElements
 {
-  v5 = a1[3];
-  a1[3] = a2;
+  v5 = self[3];
+  self[3] = a2;
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 
   return a2;
 }
 
 - (unint64_t)count
 {
-  v2 = [(_GCPhysicalInputFilteredElementCollection *)self _filteredElements];
+  _filteredElements = [(_GCPhysicalInputFilteredElementCollection *)self _filteredElements];
 
-  return [v2 count];
+  return [_filteredElements count];
 }
 
-- (id)elementAtIndex:(unint64_t)a3
+- (id)elementAtIndex:(unint64_t)index
 {
-  v4 = [(_GCPhysicalInputFilteredElementCollection *)self _filteredElements];
+  _filteredElements = [(_GCPhysicalInputFilteredElementCollection *)self _filteredElements];
 
-  return [v4 objectAtIndex:a3];
+  return [_filteredElements objectAtIndex:index];
 }
 
-- (id)elementForAlias:(id)a3
+- (id)elementForAlias:(id)alias
 {
-  v4 = [(GCPhysicalInputElementCollection *)self->_backingCollection elementForAlias:a3];
+  v4 = [(GCPhysicalInputElementCollection *)self->_backingCollection elementForAlias:alias];
   v5 = v4;
   if (self->_filter && ![v4 conformsToProtocol:?])
   {
@@ -52,27 +52,27 @@
 
 - (id)elementEnumerator
 {
-  v2 = [(_GCPhysicalInputFilteredElementCollection *)self _filteredElements];
+  _filteredElements = [(_GCPhysicalInputFilteredElementCollection *)self _filteredElements];
 
-  return [v2 objectEnumerator];
+  return [_filteredElements objectEnumerator];
 }
 
-- (id)initWithCollection:(void *)a3 filter:
+- (id)initWithCollection:(void *)collection filter:
 {
-  if (a1)
+  if (self)
   {
     if (!obj)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_initWithCollection_filter_ object:a1 file:@"GCPhysicalInputElement.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %s", "collection != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithCollection_filter_ object:self file:@"GCPhysicalInputElement.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %s", "collection != nil"}];
     }
 
-    objc_storeStrong(a1 + 1, obj);
-    objc_storeStrong(a1 + 2, a3);
-    v6 = a1;
+    objc_storeStrong(self + 1, obj);
+    objc_storeStrong(self + 2, collection);
+    selfCopy = self;
   }
 
-  return a1;
+  return self;
 }
 
 @end

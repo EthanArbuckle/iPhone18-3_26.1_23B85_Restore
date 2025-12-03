@@ -1,15 +1,15 @@
 @interface JavaUtilHashtable_EntrySet
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
-- (JavaUtilHashtable_EntrySet)initWithJavaUtilHashtable:(id)a3;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
+- (JavaUtilHashtable_EntrySet)initWithJavaUtilHashtable:(id)hashtable;
 - (id)description;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (void)__javaClone;
 - (void)clear;
@@ -26,55 +26,55 @@
   return v3;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
-  v5 = [JavaUtilMap_Entry_class_() isInstance:a3];
+  v5 = [JavaUtilMap_Entry_class_() isInstance:id];
   if (v5)
   {
     v6 = JavaUtilMap_Entry_class_();
-    if (!a3)
+    if (!id)
     {
       objc_loadWeak(&self->this$0_);
       JreThrowNullPointerException();
     }
 
-    if (([v6 isInstance:a3] & 1) == 0)
+    if (([v6 isInstance:id] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     Weak = objc_loadWeak(&self->this$0_);
-    v8 = [a3 getKey];
-    v9 = [a3 getValue];
+    getKey = [id getKey];
+    getValue = [id getValue];
 
-    LOBYTE(v5) = sub_1001F7944(Weak, v8, v9);
+    LOBYTE(v5) = sub_1001F7944(Weak, getKey, getValue);
   }
 
   return v5;
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  v5 = [JavaUtilMap_Entry_class_() isInstance:a3];
+  v5 = [JavaUtilMap_Entry_class_() isInstance:id];
   if (v5)
   {
     v6 = JavaUtilMap_Entry_class_();
-    if (!a3)
+    if (!id)
     {
       objc_loadWeak(&self->this$0_);
       JreThrowNullPointerException();
     }
 
-    if (([v6 isInstance:a3] & 1) == 0)
+    if (([v6 isInstance:id] & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     Weak = objc_loadWeak(&self->this$0_);
-    v8 = [a3 getKey];
-    v9 = [a3 getValue];
+    getKey = [id getKey];
+    getValue = [id getValue];
 
-    LOBYTE(v5) = sub_1001F7A70(Weak, v8, v9);
+    LOBYTE(v5) = sub_1001F7A70(Weak, getKey, getValue);
   }
 
   return v5;
@@ -94,48 +94,48 @@
   [Weak clear];
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_EntrySet;
-  LOBYTE(a3) = [(JavaUtilAbstractSet *)&v7 removeAllWithJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilAbstractSet *)&v7 removeAllWithJavaUtilCollection:collection];
   objc_sync_exit(Weak);
-  return a3;
+  return collection;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_EntrySet;
-  LOBYTE(a3) = [(JavaUtilAbstractCollection *)&v7 retainAllWithJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilAbstractCollection *)&v7 retainAllWithJavaUtilCollection:collection];
   objc_sync_exit(Weak);
-  return a3;
+  return collection;
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_EntrySet;
-  LOBYTE(a3) = [(JavaUtilAbstractCollection *)&v7 containsAllWithJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilAbstractCollection *)&v7 containsAllWithJavaUtilCollection:collection];
   objc_sync_exit(Weak);
-  return a3;
+  return collection;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_EntrySet;
-  LOBYTE(a3) = [(JavaUtilAbstractSet *)&v7 isEqual:a3];
+  LOBYTE(equal) = [(JavaUtilAbstractSet *)&v7 isEqual:equal];
   objc_sync_exit(Weak);
-  return a3;
+  return equal;
 }
 
 - (id)description
@@ -155,25 +155,25 @@
   objc_sync_enter(Weak);
   v6.receiver = self;
   v6.super_class = JavaUtilHashtable_EntrySet;
-  v4 = [(JavaUtilAbstractCollection *)&v6 toArray];
+  toArray = [(JavaUtilAbstractCollection *)&v6 toArray];
   objc_sync_exit(Weak);
-  return v4;
+  return toArray;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v8.receiver = self;
   v8.super_class = JavaUtilHashtable_EntrySet;
-  v6 = [(JavaUtilAbstractCollection *)&v8 toArrayWithNSObjectArray:a3];
+  v6 = [(JavaUtilAbstractCollection *)&v8 toArrayWithNSObjectArray:array];
   objc_sync_exit(Weak);
   return v6;
 }
 
-- (JavaUtilHashtable_EntrySet)initWithJavaUtilHashtable:(id)a3
+- (JavaUtilHashtable_EntrySet)initWithJavaUtilHashtable:(id)hashtable
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, hashtable);
   JavaUtilAbstractSet_init(self, v4);
   return self;
 }

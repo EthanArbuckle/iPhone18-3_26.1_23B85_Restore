@@ -1,17 +1,17 @@
 @interface SecTaskWrap
-- (SecTaskWrap)initWithSecTaskRef:(__SecTask *)a3;
+- (SecTaskWrap)initWithSecTaskRef:(__SecTask *)ref;
 - (void)dealloc;
 @end
 
 @implementation SecTaskWrap
 
-- (SecTaskWrap)initWithSecTaskRef:(__SecTask *)a3
+- (SecTaskWrap)initWithSecTaskRef:(__SecTask *)ref
 {
   v4 = [(SecTaskWrap *)self init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_secTask = a3;
+    CFRetain(ref);
+    v4->_secTask = ref;
     v5 = v4;
   }
 

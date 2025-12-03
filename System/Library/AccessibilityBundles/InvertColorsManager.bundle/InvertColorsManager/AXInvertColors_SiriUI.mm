@@ -1,32 +1,32 @@
 @interface AXInvertColors_SiriUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_SiriUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriUISashView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
-  [v3 validateClass:@"SiriUISashView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SiriUIContentLabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_flamesView" withType:"SUICFlamesView"];
-  [v3 validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_glyphView" withType:"UIView"];
-  [v3 validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_touchInputView" withType:"UIView"];
-  [v3 validateClass:@"SiriUIContentCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"SiriUITextContainerView" hasProperty:@"textColor" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriUISashView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"SiriUISashView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SiriUIContentLabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_flamesView" withType:"SUICFlamesView"];
+  [validationsCopy validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_glyphView" withType:"UIView"];
+  [validationsCopy validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_touchInputView" withType:"UIView"];
+  [validationsCopy validateClass:@"SiriUIContentCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"SiriUITextContainerView" hasProperty:@"textColor" withType:"@"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SiriUISashViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SiriUIContentLabelInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SiriUIHelpButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SiriUISiriStatusViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SiriUIAudioRoutePickerButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SiriUIContentCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SiriUISashViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SiriUIContentLabelInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SiriUIHelpButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SiriUISiriStatusViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SiriUIAudioRoutePickerButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SiriUIContentCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

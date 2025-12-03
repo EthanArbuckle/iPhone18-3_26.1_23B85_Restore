@@ -1,34 +1,34 @@
 @interface VIOSessionThermalStateMonitor
 - (BOOL)shouldDisableVIOSession;
-- (VIOSessionThermalStateMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VIOSessionThermalStateMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (void)dealloc;
-- (void)processInfoThermalStateDidChangeNotification:(id)a3;
+- (void)processInfoThermalStateDidChangeNotification:(id)notification;
 - (void)reportStateToStateManager;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation VIOSessionThermalStateMonitor
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
   v4 = sub_100935578();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Thermal state threshold value changed", &v5, 0xCu);
   }
 
   [(VIOSessionThermalStateMonitor *)self reportStateToStateManager];
 }
 
-- (void)processInfoThermalStateDidChangeNotification:(id)a3
+- (void)processInfoThermalStateDidChangeNotification:(id)notification
 {
   v4 = sub_100935578();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Detected thermal state changed", buf, 0xCu);
   }
 
@@ -56,7 +56,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v19 = 136316418;
-        v20 = "[VIOSessionThermalStateMonitor reportStateToStateManager]";
+        selfCopy2 = "[VIOSessionThermalStateMonitor reportStateToStateManager]";
         v21 = 2080;
         v22 = "VIOSessionThermalStateMonitor.m";
         v23 = 1024;
@@ -77,34 +77,34 @@
         {
           v18 = +[NSThread callStackSymbols];
           v19 = 138412290;
-          v20 = v18;
+          selfCopy2 = v18;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@", &v19, 0xCu);
         }
       }
     }
   }
 
-  v6 = [(VIOSessionThermalStateMonitor *)self shouldDisableVIOSession];
+  shouldDisableVIOSession = [(VIOSessionThermalStateMonitor *)self shouldDisableVIOSession];
   v7 = sub_100935578();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (shouldDisableVIOSession)
   {
     if (v8)
     {
       v9 = +[NSProcessInfo processInfo];
-      v10 = [v9 thermalState];
+      thermalState = [v9 thermalState];
       Integer = GEOConfigGetInteger();
       v19 = 134349568;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2048;
-      v22 = v10;
+      v22 = thermalState;
       v23 = 2048;
       *v24 = Integer;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Will disable VIO with current thermal state: %ld, threshold: %ld", &v19, 0x20u);
     }
 
-    v12 = [(VIOSessionMonitor *)self stateManager];
-    [v12 recordSessionDisableEvent:5];
+    stateManager = [(VIOSessionMonitor *)self stateManager];
+    [stateManager recordSessionDisableEvent:5];
   }
 
   else
@@ -112,29 +112,29 @@
     if (v8)
     {
       v13 = +[NSProcessInfo processInfo];
-      v14 = [v13 thermalState];
+      thermalState2 = [v13 thermalState];
       v15 = GEOConfigGetInteger();
       v19 = 134349568;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2048;
-      v22 = v14;
+      v22 = thermalState2;
       v23 = 2048;
       *v24 = v15;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Will NOT disable VIO with current thermal state: %ld, threshold: %ld", &v19, 0x20u);
     }
 
-    v12 = [(VIOSessionMonitor *)self stateManager];
-    [v12 resetSessionDisableEvent:5];
+    stateManager = [(VIOSessionMonitor *)self stateManager];
+    [stateManager resetSessionDisableEvent:5];
   }
 }
 
 - (BOOL)shouldDisableVIOSession
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 thermalState];
-  LOBYTE(v3) = v3 >= GEOConfigGetInteger();
+  thermalState = [v2 thermalState];
+  LOBYTE(thermalState) = thermalState >= GEOConfigGetInteger();
 
-  return v3;
+  return thermalState;
 }
 
 - (void)dealloc
@@ -143,7 +143,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -153,11 +153,11 @@
   [(VIOSessionThermalStateMonitor *)&v4 dealloc];
 }
 
-- (VIOSessionThermalStateMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionThermalStateMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = VIOSessionThermalStateMonitor;
-  v4 = [(VIOSessionMonitor *)&v8 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v8 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100935578();

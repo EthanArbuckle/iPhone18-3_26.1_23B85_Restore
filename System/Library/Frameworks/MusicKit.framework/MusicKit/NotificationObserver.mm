@@ -1,10 +1,10 @@
 @interface NotificationObserver
-- (void)handleNotification:(id)a3;
+- (void)handleNotification:(id)notification;
 @end
 
 @implementation NotificationObserver
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
   v3 = sub_2177513E8();
   v4 = *(v3 - 8);
